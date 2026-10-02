@@ -1,0 +1,240 @@
+[
+  {
+    "id": "bas",
+    "word": "baş",
+    "category": "vucut",
+    "symbol": "symbols/head.svg",
+    "phrases": ["Başım dönüyor"],
+    "forms": { "agriyor": "Başım ağrıyor" },
+    "syllables": ["baş"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Vücudun en üstü.", "Saçlar oradadır.", "Şapka takılır."],
+      "sentence": ["Şapkayı … takarım.", "Yastığa … koydum."],
+      "firstSound": "b…"
+    },
+    "features": { "group": "vücut", "use": "düşünmek", "place": "en üst", "looks": "yuvarlak" }
+  },
+  {
+    "id": "bogaz",
+    "word": "boğaz",
+    "category": "vucut",
+    "symbol": "symbols/throat.svg",
+    "phrases": ["Yutkunamıyorum"],
+    "forms": { "agriyor": "Boğazım ağrıyor" },
+    "syllables": ["bo", "ğaz"],
+    "frequency": "medium",
+    "level": 2,
+    "cues": {
+      "semantic": ["Yemek oradan geçer.", "Boynun içindedir.", "Soğuk algınlığında ağrır."],
+      "sentence": ["Soğuk su içince … ağrıdı.", "Atkıyı … sardım."],
+      "firstSound": "b…"
+    },
+    "features": { "group": "vücut", "use": "yutmak", "place": "boyun", "looks": "içeride" }
+  },
+  {
+    "id": "gogus",
+    "word": "göğüs",
+    "category": "vucut",
+    "symbol": "symbols/chest_male.svg",
+    "phrases": ["Nefes alamıyorum"],
+    "forms": { "agriyor": "Göğsüm ağrıyor" },
+    "syllables": ["gö", "ğüs"],
+    "frequency": "medium",
+    "level": 2,
+    "cues": {
+      "semantic": ["Kalp ve ciğerler oradadır.", "Nefes alınca kabarır.", "Boynun altındadır."],
+      "sentence": ["Doktor steteskopu … dayadı.", "Nefes alınca … kabarır."],
+      "firstSound": "g…"
+    },
+    "features": { "group": "vücut", "use": "nefes almak", "place": "gövdenin üstü", "looks": "geniş" }
+  },
+  {
+    "id": "karin",
+    "word": "karın",
+    "category": "vucut",
+    "symbol": "symbols/stomach.svg",
+    "phrases": ["Midem bulanıyor"],
+    "forms": { "agriyor": "Karnım ağrıyor" },
+    "syllables": ["ka", "rın"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Mide oradadır.", "Acıkınca guruldar.", "Göbek oradadır."],
+      "sentence": ["Çok yedim, … doydu.", "Acıktım, … guruldıyor."],
+      "firstSound": "k…"
+    },
+    "features": { "group": "vücut", "use": "sindirmek", "place": "gövdenin ortası", "looks": "yumuşak" }
+  },
+  {
+    "id": "sirt",
+    "word": "sırt",
+    "category": "vucut",
+    "symbol": "symbols/back.svg",
+    "phrases": ["Sırtımı kaşır mısın?"],
+    "forms": { "agriyor": "Sırtım ağrıyor" },
+    "syllables": ["sırt"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Vücudun arka tarafı.", "Çanta oraya takılır.", "Kendin göremezsin."],
+      "sentence": ["Çantayı … taktım.", "Sandalyeye … yasladım."],
+      "firstSound": "s…"
+    },
+    "features": { "group": "vücut", "use": "taşımak", "place": "arka", "looks": "geniş, düz" }
+  },
+  {
+    "id": "kol",
+    "word": "kol",
+    "category": "vucut",
+    "symbol": "symbols/arm.svg",
+    "phrases": ["Kolumu kaldıramıyorum"],
+    "forms": { "agriyor": "Kolum ağrıyor" },
+    "syllables": ["kol"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Omuzdan ele kadar.", "Saat oraya takılır.", "Dirseği var."],
+      "sentence": ["Saatimi … taktım.", "Torunumu … aldım."],
+      "firstSound": "k…"
+    },
+    "features": { "group": "vücut", "use": "kaldırmak, sarılmak", "place": "omuz altı", "looks": "uzun" }
+  },
+  {
+    "id": "el",
+    "word": "el",
+    "category": "vucut",
+    "symbol": "symbols/fingers.svg",
+    "phrases": ["Elimi tutar mısın?"],
+    "forms": { "agriyor": "Elim ağrıyor" },
+    "syllables": ["el"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Beş parmağı var.", "Tutmak için kullanılır.", "Yüzük takılır."],
+      "sentence": ["Yemekten önce … yıkarım.", "Tokalaşırken … sıkarız."],
+      "firstSound": "e…"
+    },
+    "features": { "group": "vücut", "use": "tutmak", "place": "kolun ucu", "looks": "beş parmaklı" }
+  },
+  {
+    "id": "bacak",
+    "word": "bacak",
+    "category": "vucut",
+    "symbol": "symbols/leg.svg",
+    "phrases": ["Bacağım uyuştu"],
+    "forms": { "agriyor": "Bacağım ağrıyor" },
+    "syllables": ["ba", "cak"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Yürümek için kullanılır.", "Dizi var.", "Pantolon giyilir."],
+      "sentence": ["Çok yürüdüm, … yoruldu.", "Kol ve …"],
+      "firstSound": "b…"
+    },
+    "features": { "group": "vücut", "use": "yürümek", "place": "alt", "looks": "uzun" }
+  },
+  {
+    "id": "ayak",
+    "word": "ayak",
+    "category": "vucut",
+    "symbol": "symbols/foot.svg",
+    "phrases": ["Ayağım üşüyor"],
+    "forms": { "agriyor": "Ayağım ağrıyor" },
+    "syllables": ["a", "yak"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Ayakkabı giyilir.", "Üstüne basarsın.", "Beş parmağı var."],
+      "sentence": ["Çorabı … giydim.", "Yeni ayakkabı … vurdu."],
+      "firstSound": "a…"
+    },
+    "features": { "group": "vücut", "use": "basmak", "place": "en alt", "looks": "parmaklı" }
+  },
+  {
+    "id": "dis",
+    "word": "diş",
+    "category": "vucut",
+    "symbol": "symbols/tooth.svg",
+    "phrases": ["Protezim batıyor"],
+    "forms": { "agriyor": "Dişim ağrıyor" },
+    "syllables": ["diş"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Ağzın içindedir.", "Yemeği çiğner.", "Fırçalanır."],
+      "sentence": ["Yatmadan önce … fırçalarım.", "Diş hekimi … dolgu yaptı."],
+      "firstSound": "d…"
+    },
+    "features": { "group": "vücut", "use": "çiğnemek", "place": "ağız", "looks": "beyaz, sert" }
+  },
+  {
+    "id": "goz",
+    "word": "göz",
+    "category": "vucut",
+    "symbol": "symbols/eye.svg",
+    "phrases": ["Gözüm yanıyor", "İyi göremiyorum"],
+    "forms": { "agriyor": "Gözüm ağrıyor" },
+    "syllables": ["göz"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Onunla görürsün.", "Kirpikleri var.", "Uyurken kapanır."],
+      "sentence": ["Gözlüğü … takarım.", "Uykum geldi, … kapanıyor."],
+      "firstSound": "g…"
+    },
+    "features": { "group": "vücut", "use": "görmek", "place": "yüz", "looks": "yuvarlak, renkli" }
+  },
+  {
+    "id": "kulak",
+    "word": "kulak",
+    "category": "vucut",
+    "symbol": "symbols/ear.svg",
+    "phrases": ["İyi duyamıyorum"],
+    "forms": { "agriyor": "Kulağım ağrıyor" },
+    "syllables": ["ku", "lak"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Onunla duyarsın.", "Başın iki yanında.", "Küpe takılır."],
+      "sentence": ["Telefonu … dayadım.", "Göz ve …"],
+      "firstSound": "k…"
+    },
+    "features": { "group": "vücut", "use": "duymak", "place": "başın yanı", "looks": "kıvrımlı" }
+  },
+  {
+    "id": "diz",
+    "word": "diz",
+    "category": "vucut",
+    "symbol": "symbols/knee.svg",
+    "phrases": ["Dizim tutulmuş"],
+    "forms": { "agriyor": "Dizim ağrıyor" },
+    "syllables": ["diz"],
+    "frequency": "medium",
+    "level": 2,
+    "cues": {
+      "semantic": ["Bacağın ortasında.", "Bacak oradan bükülür.", "Merdivende zorlanır."],
+      "sentence": ["Merdiven çıkınca … ağrıyor.", "Namaz kılarken … çökeriz."],
+      "firstSound": "d…"
+    },
+    "features": { "group": "vücut", "use": "bükmek", "place": "bacak ortası", "looks": "yuvarlak eklem" }
+  },
+  {
+    "id": "omuz",
+    "word": "omuz",
+    "category": "vucut",
+    "symbol": "symbols/shoulder.svg",
+    "phrases": ["Omzumu kaldıramıyorum"],
+    "forms": { "agriyor": "Omzum ağrıyor" },
+    "syllables": ["o", "muz"],
+    "frequency": "low",
+    "level": 2,
+    "cues": {
+      "semantic": ["Kolun başladığı yer.", "Çanta askısı oraya takılır.", "Boynun iki yanında."],
+      "sentence": ["Çantayı … astım.", "Arkadaşım elini … koydu."],
+      "firstSound": "o…"
+    },
+    "features": { "group": "vücut", "use": "taşımak", "place": "boyun yanı", "looks": "yuvarlak" }
+  }
+]

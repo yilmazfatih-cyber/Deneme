@@ -1,0 +1,191 @@
+{
+  "stops": [
+    {
+      "id": "ben_ailem",
+      "label": "Ben ve ailem",
+      "symbol": "symbols/family.svg",
+      "personalCategories": ["kisiler"],
+      "words": ["es", "kizim", "oglum", "torunum", "annem", "babam", "ailem", "ev", "kedi", "kopek"]
+    },
+    {
+      "id": "temel",
+      "label": "Temel ihtiyaçlar",
+      "symbol": "symbols/water.svg",
+      "personalCategories": [],
+      "words": [
+        "su",
+        "tuvalet",
+        "ilac",
+        "yemek_yemek",
+        "uyumak",
+        "yatak",
+        "gozluk",
+        "telefon",
+        "yorgun",
+        "ac",
+        "susamis"
+      ]
+    },
+    {
+      "id": "evim",
+      "label": "Evim",
+      "symbol": "symbols/house.svg",
+      "personalCategories": ["ev_esyalari", "bakim", "giyim"],
+      "words": [
+        "kapi",
+        "pencere",
+        "sandalye",
+        "masa",
+        "koltuk",
+        "televizyon",
+        "kumanda",
+        "lamba",
+        "battaniye",
+        "anahtar",
+        "havlu",
+        "sabun"
+      ]
+    },
+    {
+      "id": "mutfak",
+      "label": "Mutfak ve yemek",
+      "symbol": "symbols/teapot.svg",
+      "personalCategories": ["kahvalti", "yemekler", "meyve_tatli", "icecek", "mutfak"],
+      "words": [
+        "ekmek",
+        "peynir",
+        "yumurta",
+        "zeytin",
+        "cay",
+        "corba",
+        "pilav",
+        "tavuk",
+        "elma",
+        "catal",
+        "kasik",
+        "bardak"
+      ]
+    },
+    {
+      "id": "saglik",
+      "label": "Sağlık",
+      "symbol": "symbols/tablets.svg",
+      "personalCategories": ["saglik", "vucut"],
+      "words": [
+        "doktor",
+        "hemsire",
+        "bas",
+        "karin",
+        "sirt",
+        "dis",
+        "goz",
+        "bacak",
+        "tansiyon",
+        "baston",
+        "eczane",
+        "hastane"
+      ]
+    },
+    {
+      "id": "disarida",
+      "label": "Dışarıda",
+      "symbol": "symbols/go_outside_to.svg",
+      "personalCategories": ["disarida"],
+      "words": ["market", "banka", "para", "cuzdan", "araba", "otobus", "taksi", "disari", "simit", "kac"]
+    },
+    {
+      "id": "duygular",
+      "label": "Duygular ve sohbet",
+      "symbol": "symbols/happy_lady.svg",
+      "personalCategories": ["duygular", "sohbet"],
+      "words": [
+        "mutlu",
+        "uzgun",
+        "kizgin",
+        "korkmus",
+        "iyi",
+        "kotu",
+        "merhaba",
+        "tamam",
+        "daha",
+        "bitti",
+        "nasil",
+        "ne"
+      ]
+    },
+    {
+      "id": "hobiler",
+      "label": "Hobilerim ve işim",
+      "symbol": "symbols/football.svg",
+      "personalCategories": ["hobiler"],
+      "words": ["futbol", "muzik", "gazete", "iskambil", "cicek", "okumak", "izlemek", "yemek_pisirmek", "yurumek"]
+    }
+  ],
+  "warmups": [
+    {
+      "id": "sayilar",
+      "label": "1'den 10'a",
+      "items": ["bir", "iki", "üç", "dört", "beş", "altı", "yedi", "sekiz", "dokuz", "on"]
+    },
+    {
+      "id": "gunler",
+      "label": "Haftanın günleri",
+      "items": ["pazartesi", "salı", "çarşamba", "perşembe", "cuma", "cumartesi", "pazar"]
+    },
+    {
+      "id": "aylar",
+      "label": "Yılın ayları",
+      "items": [
+        "ocak",
+        "şubat",
+        "mart",
+        "nisan",
+        "mayıs",
+        "haziran",
+        "temmuz",
+        "ağustos",
+        "eylül",
+        "ekim",
+        "kasım",
+        "aralık"
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "eczane",
+      "label": "Eczanede",
+      "prompt": "Eczanedesin. İlacını iste.",
+      "answer": "ilac",
+      "phrase": "İlacımı almak istiyorum"
+    },
+    {
+      "id": "market",
+      "label": "Markette",
+      "prompt": "Kahvaltı için bir şey alacaksın. Ne alırsın?",
+      "answer": "ekmek",
+      "phrase": "Ekmek istiyorum"
+    },
+    {
+      "id": "doktor",
+      "label": "Doktorda",
+      "prompt": "Doktor “Neren ağrıyor?” diye soruyor.",
+      "answer": "bas",
+      "phrase": "Başım ağrıyor"
+    },
+    {
+      "id": "misafir",
+      "label": "Misafir geldi",
+      "prompt": "Misafirine ne ikram edersin?",
+      "answer": "cay",
+      "phrase": "Çay ister misiniz?"
+    },
+    {
+      "id": "aksam",
+      "label": "Akşam",
+      "prompt": "Akşam oldu, haberler başlıyor. Neyi açarsın?",
+      "answer": "televizyon",
+      "phrase": "Televizyonu açar mısın?"
+    }
+  ]
+}

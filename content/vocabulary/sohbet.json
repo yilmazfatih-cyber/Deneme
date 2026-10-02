@@ -1,0 +1,155 @@
+[
+  {
+    "id": "merhaba",
+    "word": "merhaba",
+    "category": "sohbet",
+    "symbol": "symbols/hello.svg",
+    "phrases": ["Merhaba, hoş geldin", "Günaydın"],
+    "forms": {},
+    "syllables": ["mer", "ha", "ba"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Karşılaşınca söylenir.", "Selam vermek.", "El sallanır."],
+      "sentence": ["Komşuyu görünce … dedim.", "Selam, …"],
+      "firstSound": "m…"
+    },
+    "features": { "group": "selamlaşma", "use": "selam vermek", "place": "karşılaşma", "looks": "el sallamak" }
+  },
+  {
+    "id": "tamam",
+    "word": "tamam",
+    "category": "sohbet",
+    "symbol": "symbols/thumbs.svg",
+    "phrases": ["Tamam, anladım", "Olur"],
+    "forms": {},
+    "syllables": ["ta", "mam"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Kabul edince söylenir.", "Olur demek.", "Anlaştık demek."],
+      "sentence": ["Yarın gelirim, … mı?", "Anlaştık, …"],
+      "firstSound": "t…"
+    },
+    "features": { "group": "onay", "use": "kabul etmek", "place": "sohbet", "looks": "başparmak" }
+  },
+  {
+    "id": "daha",
+    "word": "daha",
+    "category": "sohbet",
+    "symbol": "symbols/more.svg",
+    "phrases": ["Biraz daha", "Daha fazla istiyorum"],
+    "forms": {},
+    "syllables": ["da", "ha"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Fazlasını istemek.", "Bir tane daha demek.", "Yetmedi demek."],
+      "sentence": ["Çok güzel olmuş, biraz … ver.", "Bir bardak … çay."],
+      "firstSound": "d…"
+    },
+    "features": { "group": "miktar", "use": "fazlasını istemek", "place": "sohbet", "looks": "eklemek" }
+  },
+  {
+    "id": "bitti",
+    "word": "bitti",
+    "category": "sohbet",
+    "symbol": "symbols/finish.svg",
+    "phrases": ["Yeter, teşekkürler", "İşim bitti"],
+    "forms": {},
+    "syllables": ["bit", "ti"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Sona ermek.", "Tamamlandı demek.", "Yeter demek."],
+      "sentence": ["Yemeğim …", "Film … , kapatabilirsin."],
+      "firstSound": "b…"
+    },
+    "features": { "group": "durum", "use": "bitirmek", "place": "sohbet", "looks": "çıkış oku" }
+  },
+  {
+    "id": "sabah",
+    "word": "sabah",
+    "category": "sohbet",
+    "symbol": "symbols/morning.svg",
+    "phrases": ["Günaydın", "Sabah görüşelim"],
+    "forms": {},
+    "syllables": ["sa", "bah"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Günün başı.", "Kahvaltı zamanı.", "Güneş doğar."],
+      "sentence": ["Her … kahvaltı ederim.", "Akşam değil, …"],
+      "firstSound": "s…"
+    },
+    "features": { "group": "zaman", "use": "güne başlamak", "place": "gün", "looks": "doğan güneş" }
+  },
+  {
+    "id": "gece",
+    "word": "gece",
+    "category": "sohbet",
+    "symbol": "symbols/night.svg",
+    "phrases": ["İyi geceler", "Gece iyi uyuyamadım"],
+    "forms": {},
+    "syllables": ["ge", "ce"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Hava karanlık.", "Uyku zamanı.", "Ay ve yıldızlar çıkar."],
+      "sentence": ["… iyi uyuyamadım.", "Gündüz değil, …"],
+      "firstSound": "g…"
+    },
+    "features": { "group": "zaman", "use": "uyumak", "place": "gün", "looks": "ay, yıldız" }
+  },
+  {
+    "id": "bugun",
+    "word": "bugün",
+    "category": "sohbet",
+    "symbol": "symbols/today.svg",
+    "phrases": ["Bugün ne yapacağız?", "Bugün kim gelecek?"],
+    "forms": {},
+    "syllables": ["bu", "gün"],
+    "frequency": "medium",
+    "level": 2,
+    "cues": {
+      "semantic": ["İçinde bulunduğun gün.", "Dün ile yarın arası.", "Şimdiki gün."],
+      "sentence": ["Dün değil, …", "… hava çok güzel."],
+      "firstSound": "b…"
+    },
+    "features": { "group": "zaman", "use": "zaman söylemek", "place": "takvim", "looks": "takvim yaprağı" }
+  },
+  {
+    "id": "yarin",
+    "word": "yarın",
+    "category": "sohbet",
+    "symbol": "symbols/tomorrow.svg",
+    "phrases": ["Yarın görüşürüz", "Yarın ne yapacağız?"],
+    "forms": {},
+    "syllables": ["ya", "rın"],
+    "frequency": "medium",
+    "level": 2,
+    "cues": {
+      "semantic": ["Bugünden sonraki gün.", "Daha gelmedi.", "Dünün tersi."],
+      "sentence": ["Bugün değil, …", "… doktora gideceğim."],
+      "firstSound": "y…"
+    },
+    "features": { "group": "zaman", "use": "plan yapmak", "place": "takvim", "looks": "takvim yaprağı" }
+  },
+  {
+    "id": "dun",
+    "word": "dün",
+    "category": "sohbet",
+    "symbol": "symbols/yesterday.svg",
+    "phrases": ["Dün ne oldu?", "Dün kim geldi?"],
+    "forms": {},
+    "syllables": ["dün"],
+    "frequency": "medium",
+    "level": 2,
+    "cues": {
+      "semantic": ["Bugünden önceki gün.", "Geçti gitti.", "Yarının tersi."],
+      "sentence": ["Yarın değil, …", "… kızım ziyarete geldi."],
+      "firstSound": "d…"
+    },
+    "features": { "group": "zaman", "use": "geçmişi anlatmak", "place": "takvim", "looks": "takvim yaprağı" }
+  }
+]

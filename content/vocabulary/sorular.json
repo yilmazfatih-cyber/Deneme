@@ -1,0 +1,121 @@
+[
+  {
+    "id": "ne",
+    "word": "ne",
+    "category": "sorular",
+    "symbol": "symbols/what.svg",
+    "phrases": ["Ne oldu?", "Bu ne?"],
+    "forms": {},
+    "syllables": ["ne"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Bir şeyi sorarken.", "Bilmediğin şey için.", "Soru sözcüğü."],
+      "sentence": ["Bu … acaba?", "Akşam yemeğinde … var?"],
+      "firstSound": "n…"
+    },
+    "features": { "group": "soru", "use": "şeyi sormak", "place": "cümle başı", "looks": "soru işareti" }
+  },
+  {
+    "id": "kim",
+    "word": "kim",
+    "category": "sorular",
+    "symbol": "symbols/who.svg",
+    "phrases": ["Kim geldi?", "Kim aradı?"],
+    "forms": {},
+    "syllables": ["kim"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Bir kişiyi sorarken.", "Kapı çalınca sorulur.", "Soru sözcüğü."],
+      "sentence": ["Kapı çaldı, gelen …?", "Telefonda … vardı?"],
+      "firstSound": "k…"
+    },
+    "features": { "group": "soru", "use": "kişiyi sormak", "place": "cümle başı", "looks": "soru işareti" }
+  },
+  {
+    "id": "nerede",
+    "word": "nerede",
+    "category": "sorular",
+    "symbol": "symbols/where.svg",
+    "phrases": ["Nerede o?", "Nereye gidiyoruz?"],
+    "forms": {},
+    "syllables": ["ne", "re", "de"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Bir yeri sorarken.", "Kaybolan bir şey için.", "Soru sözcüğü."],
+      "sentence": ["Gözlüğüm …?", "Tuvalet …?"],
+      "firstSound": "n…"
+    },
+    "features": { "group": "soru", "use": "yeri sormak", "place": "cümle sonu", "looks": "soru işareti" }
+  },
+  {
+    "id": "ne_zaman",
+    "word": "ne zaman",
+    "category": "sorular",
+    "symbol": "symbols/when.svg",
+    "phrases": ["Ne zaman gelecek?", "Ne zaman gidiyoruz?"],
+    "forms": {},
+    "syllables": ["ne", "za", "man"],
+    "frequency": "medium",
+    "level": 2,
+    "cues": {
+      "semantic": ["Zamanı sorarken.", "Saat ve gün için.", "Soru sözcüğü."],
+      "sentence": ["Doktor randevusu … ?", "Oğlum … gelecek?"],
+      "firstSound": "n…"
+    },
+    "features": { "group": "soru", "use": "zamanı sormak", "place": "cümle", "looks": "saat" }
+  },
+  {
+    "id": "neden",
+    "word": "neden",
+    "category": "sorular",
+    "symbol": "symbols/why.svg",
+    "phrases": ["Neden?", "Bu neden oldu?"],
+    "forms": {},
+    "syllables": ["ne", "den"],
+    "frequency": "medium",
+    "level": 2,
+    "cues": {
+      "semantic": ["Sebebini sorarken.", "Niçin demek.", "Soru sözcüğü."],
+      "sentence": ["Bugün … gelmedin?", "Bunu … yaptın?"],
+      "firstSound": "n…"
+    },
+    "features": { "group": "soru", "use": "sebebi sormak", "place": "cümle", "looks": "soru işareti" }
+  },
+  {
+    "id": "nasil",
+    "word": "nasıl",
+    "category": "sorular",
+    "symbol": "symbols/how.svg",
+    "phrases": ["Nasılsın?", "Bu nasıl yapılır?"],
+    "forms": {},
+    "syllables": ["na", "sıl"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Durumu sorarken.", "Hal hatır sorulur.", "Soru sözcüğü."],
+      "sentence": ["Bugün kendini … hissediyorsun?", "Bu kapı … açılıyor?"],
+      "firstSound": "n…"
+    },
+    "features": { "group": "soru", "use": "durumu sormak", "place": "cümle", "looks": "soru işareti" }
+  },
+  {
+    "id": "kac",
+    "word": "kaç",
+    "category": "sorular",
+    "symbol": "symbols/how_many.svg",
+    "phrases": ["Saat kaç?", "Kaç lira?"],
+    "forms": {},
+    "syllables": ["kaç"],
+    "frequency": "medium",
+    "level": 2,
+    "cues": {
+      "semantic": ["Sayıyı sorarken.", "Fiyatı sorarken.", "Soru sözcüğü."],
+      "sentence": ["Saat … oldu?", "Ekmek … lira?"],
+      "firstSound": "k…"
+    },
+    "features": { "group": "soru", "use": "sayı sormak", "place": "cümle", "looks": "sayılar" }
+  }
+]

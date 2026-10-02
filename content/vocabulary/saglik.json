@@ -1,0 +1,189 @@
+[
+  {
+    "id": "ilac",
+    "word": "ilaç",
+    "category": "saglik",
+    "symbol": "symbols/tablets.svg",
+    "phrases": ["İlacımı içme vakti", "İlacımı verir misin?"],
+    "forms": { "istiyorum": "İlacımı istiyorum", "nerede": "İlacım nerede?" },
+    "syllables": ["i", "laç"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Hastalıkta içilir.", "Eczaneden alınır.", "Doktor yazar."],
+      "sentence": ["Sabah tok karnına … içiyorum.", "Eczaneden reçeteli … aldım."],
+      "firstSound": "i…"
+    },
+    "features": { "group": "sağlık", "use": "iyileşmek", "place": "eczane, ecza dolabı", "looks": "hap, kutu" }
+  },
+  {
+    "id": "doktor",
+    "word": "doktor",
+    "category": "saglik",
+    "symbol": "symbols/doctor_1a.svg",
+    "phrases": ["Doktora gitmem lazım", "Doktoru arar mısın?"],
+    "forms": { "istiyorum": "Doktor istiyorum", "nerede": "Doktor nerede?" },
+    "syllables": ["dok", "tor"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Hastanede çalışır.", "Muayene eder.", "Reçete yazar."],
+      "sentence": ["Hastalanınca … giderim.", "Beni … muayene etti."],
+      "firstSound": "d…"
+    },
+    "features": { "group": "meslek", "use": "tedavi etmek", "place": "hastane", "looks": "beyaz önlüklü" }
+  },
+  {
+    "id": "hemsire",
+    "word": "hemşire",
+    "category": "saglik",
+    "symbol": "symbols/nurse_1a.svg",
+    "phrases": ["Hemşireyi çağırır mısın?"],
+    "forms": { "istiyorum": "Hemşire istiyorum", "nerede": "Hemşire nerede?" },
+    "syllables": ["hem", "şi", "re"],
+    "frequency": "medium",
+    "level": 2,
+    "cues": {
+      "semantic": ["Hastanede hastalara bakar.", "İğne yapar.", "Tansiyonu ölçer."],
+      "sentence": ["Serumu … taktı.", "Doktor ve …"],
+      "firstSound": "h…"
+    },
+    "features": { "group": "meslek", "use": "bakım vermek", "place": "hastane", "looks": "üniformalı" }
+  },
+  {
+    "id": "ambulans",
+    "word": "ambulans",
+    "category": "saglik",
+    "symbol": "symbols/ambulance.svg",
+    "phrases": ["Ambulans çağırın!", "Acil yardım lazım"],
+    "forms": { "istiyorum": "Ambulans istiyorum" },
+    "syllables": ["am", "bu", "lans"],
+    "frequency": "low",
+    "level": 2,
+    "cues": {
+      "semantic": ["Hastayı hastaneye götürür.", "Sireni çalar.", "112 aranınca gelir."],
+      "sentence": ["112'yi aradık, … geldi.", "Sireni çalan beyaz …"],
+      "firstSound": "a…"
+    },
+    "features": { "group": "araç", "use": "acil taşımak", "place": "yol, hastane", "looks": "beyaz, sirenli" }
+  },
+  {
+    "id": "termometre",
+    "word": "ateş ölçer",
+    "category": "saglik",
+    "symbol": "symbols/thermometer.svg",
+    "phrases": ["Ateşimi ölçer misin?", "Ateşim var"],
+    "forms": { "nerede": "Ateş ölçer nerede?" },
+    "syllables": ["a", "teş", "öl", "çer"],
+    "frequency": "low",
+    "level": 3,
+    "cues": {
+      "semantic": ["Ateşi ölçer.", "Koltuk altına ya da alna tutulur.", "Derece gösterir."],
+      "sentence": ["Ateşim var mı diye … baktım.", "Otuz sekiz derece, … öyle gösteriyor."],
+      "firstSound": "a…"
+    },
+    "features": { "group": "sağlık", "use": "ateş ölçmek", "place": "ecza dolabı", "looks": "ince, ekranlı" }
+  },
+  {
+    "id": "tansiyon",
+    "word": "tansiyon",
+    "category": "saglik",
+    "symbol": "symbols/blood_pressure.svg",
+    "phrases": ["Tansiyonumu ölçer misin?", "Başım dönüyor"],
+    "forms": {},
+    "syllables": ["tan", "si", "yon"],
+    "frequency": "medium",
+    "level": 2,
+    "cues": {
+      "semantic": ["Kolundan ölçülür.", "Büyük ve küçük diye söylenir.", "Yüksek olursa baş ağrıtır."],
+      "sentence": ["Hemşire … ölçtü.", "On iki sekiz, … normal."],
+      "firstSound": "t…"
+    },
+    "features": { "group": "sağlık", "use": "ölçmek", "place": "kol", "looks": "kolluklu alet" }
+  },
+  {
+    "id": "merhem",
+    "word": "merhem",
+    "category": "saglik",
+    "symbol": "symbols/cream_ointment.svg",
+    "phrases": ["Merhem sürer misin?"],
+    "forms": { "nerede": "Merhem nerede?" },
+    "syllables": ["mer", "hem"],
+    "frequency": "low",
+    "level": 3,
+    "cues": {
+      "semantic": ["Cilde sürülür.", "Tüpte durur.", "Yarayı iyileştirir."],
+      "sentence": ["Yanığa … sürdüm.", "Eczaneden bir tüp …"],
+      "firstSound": "m…"
+    },
+    "features": { "group": "sağlık", "use": "sürmek", "place": "ecza dolabı", "looks": "tüp" }
+  },
+  {
+    "id": "tekerlekli_sandalye",
+    "word": "tekerlekli sandalye",
+    "category": "saglik",
+    "symbol": "symbols/wheelchair.svg",
+    "phrases": ["Tekerlekli sandalyemi getirir misin?"],
+    "forms": { "istiyorum": "Tekerlekli sandalye istiyorum", "nerede": "Tekerlekli sandalye nerede?" },
+    "syllables": ["te", "ker", "lek", "li", "san", "dal", "ye"],
+    "frequency": "medium",
+    "level": 3,
+    "cues": {
+      "semantic": ["Yürüyemeyince oturulur.", "İki büyük tekerleği var.", "İtilerek gidilir."],
+      "sentence": ["Hastanede beni … ile gezdirdiler.", "Rampadan … ile çıktık."],
+      "firstSound": "t…"
+    },
+    "features": { "group": "yardımcı araç", "use": "gitmek", "place": "ev, hastane", "looks": "tekerlekli" }
+  },
+  {
+    "id": "baston",
+    "word": "baston",
+    "category": "saglik",
+    "symbol": "symbols/walking_stick.svg",
+    "phrases": ["Bastonumu verir misin?"],
+    "forms": { "nerede": "Bastonum nerede?" },
+    "syllables": ["bas", "ton"],
+    "frequency": "medium",
+    "level": 2,
+    "cues": {
+      "semantic": ["Yürürken destek olur.", "Elle tutulur.", "Ucu lastiklidir."],
+      "sentence": ["Yürürken … kullanıyorum.", "Dedem … ile yürürdü."],
+      "firstSound": "b…"
+    },
+    "features": { "group": "yardımcı araç", "use": "yürümek", "place": "kapı yanı", "looks": "uzun, saplı" }
+  },
+  {
+    "id": "isitme_cihazi",
+    "word": "işitme cihazı",
+    "category": "saglik",
+    "symbol": "symbols/hearing_aid_1.svg",
+    "phrases": ["İşitme cihazımı takar mısın?"],
+    "forms": { "nerede": "İşitme cihazım nerede?" },
+    "syllables": ["i", "şit", "me", "ci", "ha", "zı"],
+    "frequency": "low",
+    "level": 3,
+    "cues": {
+      "semantic": ["Kulağa takılır.", "Sesleri yükseltir.", "Pille çalışır."],
+      "sentence": ["Daha iyi duymak için … takarım.", "Kulağımdaki … pili bitti."],
+      "firstSound": "i…"
+    },
+    "features": { "group": "yardımcı araç", "use": "duymak", "place": "kulak", "looks": "küçük" }
+  },
+  {
+    "id": "dis_hekimi",
+    "word": "diş hekimi",
+    "category": "saglik",
+    "symbol": "symbols/dentist_1a.svg",
+    "phrases": ["Diş hekimine gitmem lazım"],
+    "forms": { "nerede": "Diş hekimi nerede?" },
+    "syllables": ["diş", "he", "ki", "mi"],
+    "frequency": "low",
+    "level": 3,
+    "cues": {
+      "semantic": ["Dişleri tedavi eder.", "Dolgu yapar.", "Ağzını açtırır."],
+      "sentence": ["Dişim ağrıyor, … gitmeliyim.", "Dolgumu … yaptı."],
+      "firstSound": "d…"
+    },
+    "features": { "group": "meslek", "use": "diş tedavisi", "place": "muayenehane", "looks": "maskeli, önlüklü" }
+  }
+]

@@ -1,0 +1,393 @@
+[
+  {
+    "id": "ekmek",
+    "word": "ekmek",
+    "category": "kahvalti",
+    "symbol": "symbols/bread_sliced.svg",
+    "phrases": ["Bir dilim ekmek verir misin?"],
+    "forms": { "istiyorum": "Ekmek istiyorum", "var_mi": "Ekmek var mı?" },
+    "syllables": ["ek", "mek"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Fırından alınır.", "Her yemekte sofrada olur.", "Dilim dilim kesilir."],
+      "sentence": ["Fırından sıcak … aldım.", "Peynirin yanına bir dilim …"],
+      "firstSound": "e…"
+    },
+    "features": { "group": "yiyecek", "use": "yemek", "place": "fırın, mutfak", "looks": "kahverengi kabuklu" }
+  },
+  {
+    "id": "peynir",
+    "word": "peynir",
+    "category": "kahvalti",
+    "symbol": "symbols/cheese.svg",
+    "phrases": ["Biraz peynir verir misin?"],
+    "forms": { "istiyorum": "Peynir istiyorum", "var_mi": "Peynir var mı?" },
+    "syllables": ["pey", "nir"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Sütten yapılır.", "Kahvaltıda yenir.", "Beyazı ve kaşarı olur."],
+      "sentence": ["Kahvaltıda ekmek ve …", "Domatesin yanına beyaz …"],
+      "firstSound": "p…"
+    },
+    "features": { "group": "yiyecek", "use": "yemek", "place": "buzdolabı", "looks": "beyaz ya da sarı" }
+  },
+  {
+    "id": "yumurta",
+    "word": "yumurta",
+    "category": "kahvalti",
+    "symbol": "symbols/egg_boiled.svg",
+    "phrases": ["Haşlanmış yumurta istiyorum"],
+    "forms": { "istiyorum": "Yumurta istiyorum", "var_mi": "Yumurta var mı?" },
+    "syllables": ["yu", "mur", "ta"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Tavuk yumurtlar.", "Haşlanır ya da kızartılır.", "Kabuğu kırılır."],
+      "sentence": ["Kahvaltıda haşlanmış bir …", "Menemene domates ve … koyulur."],
+      "firstSound": "y…"
+    },
+    "features": { "group": "yiyecek", "use": "yemek", "place": "buzdolabı", "looks": "oval, beyaz kabuklu" }
+  },
+  {
+    "id": "zeytin",
+    "word": "zeytin",
+    "category": "kahvalti",
+    "symbol": "symbols/olives.svg",
+    "phrases": ["Biraz zeytin verir misin?"],
+    "forms": { "istiyorum": "Zeytin istiyorum", "var_mi": "Zeytin var mı?" },
+    "syllables": ["zey", "tin"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Ağaçta yetişir.", "Yağı da yapılır.", "Siyahı ve yeşili olur."],
+      "sentence": ["Kahvaltıda peynir ve …", "Ege'de çok … ağacı var."],
+      "firstSound": "z…"
+    },
+    "features": { "group": "yiyecek", "use": "yemek", "place": "kahvaltı sofrası", "looks": "küçük, siyah ya da yeşil" }
+  },
+  {
+    "id": "bal",
+    "word": "bal",
+    "category": "kahvalti",
+    "symbol": "symbols/honey.svg",
+    "phrases": ["Ekmeğime bal sürer misin?"],
+    "forms": { "istiyorum": "Bal istiyorum", "var_mi": "Bal var mı?" },
+    "syllables": ["bal"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Arılar yapar.", "Tatlıdır.", "Kahvaltıda ekmeğe sürülür."],
+      "sentence": ["Arılar çiçeklerden … yapar.", "Kaymağın yanına biraz …"],
+      "firstSound": "b…"
+    },
+    "features": { "group": "yiyecek", "use": "yemek", "place": "kavanoz", "looks": "sarı, akışkan" }
+  },
+  {
+    "id": "recel",
+    "word": "reçel",
+    "category": "kahvalti",
+    "symbol": "symbols/jam.svg",
+    "phrases": ["Ekmeğime reçel sürer misin?"],
+    "forms": { "istiyorum": "Reçel istiyorum", "var_mi": "Reçel var mı?" },
+    "syllables": ["re", "çel"],
+    "frequency": "medium",
+    "level": 2,
+    "cues": {
+      "semantic": ["Meyve ve şekerle kaynatılır.", "Kavanozda durur.", "Vişneli, çilekli olur."],
+      "sentence": ["Annem yazın vişne … yapardı.", "Tereyağı ve çilek …"],
+      "firstSound": "r…"
+    },
+    "features": { "group": "yiyecek", "use": "yemek", "place": "kavanoz", "looks": "kırmızı, tatlı" }
+  },
+  {
+    "id": "domates",
+    "word": "domates",
+    "category": "kahvalti",
+    "symbol": "symbols/tomato.svg",
+    "phrases": ["Domates doğrar mısın?"],
+    "forms": { "istiyorum": "Domates istiyorum", "var_mi": "Domates var mı?" },
+    "syllables": ["do", "ma", "tes"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Kırmızı bir sebze.", "Salataya konur.", "Salçası yapılır."],
+      "sentence": ["Salataya salatalık ve …", "Menemen için biber ve …"],
+      "firstSound": "d…"
+    },
+    "features": { "group": "sebze", "use": "yemek", "place": "bahçe, pazar", "looks": "kırmızı, yuvarlak" }
+  },
+  {
+    "id": "salatalik",
+    "word": "salatalık",
+    "category": "kahvalti",
+    "symbol": "symbols/cucumber.svg",
+    "phrases": ["Salatalık doğrar mısın?"],
+    "forms": { "istiyorum": "Salatalık istiyorum", "var_mi": "Salatalık var mı?" },
+    "syllables": ["sa", "la", "ta", "lık"],
+    "frequency": "medium",
+    "level": 2,
+    "cues": {
+      "semantic": ["Yeşil ve uzun bir sebze.", "Cacığa konur.", "Serinletir."],
+      "sentence": ["Cacık yoğurt ve … ile yapılır.", "Domatesin yanına bir …"],
+      "firstSound": "s…"
+    },
+    "features": { "group": "sebze", "use": "yemek", "place": "bahçe, pazar", "looks": "yeşil, uzun" }
+  },
+  {
+    "id": "simit",
+    "word": "simit",
+    "category": "kahvalti",
+    "symbol": "symbols/bagel.svg",
+    "phrases": ["Çayın yanına simit istiyorum"],
+    "forms": { "istiyorum": "Simit istiyorum", "var_mi": "Simit var mı?" },
+    "syllables": ["si", "mit"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Susamlıdır.", "Halka şeklindedir.", "Simitçiden alınır."],
+      "sentence": ["Çayın yanında susamlı bir …", "Vapurda martılara … attık."],
+      "firstSound": "s…"
+    },
+    "features": { "group": "yiyecek", "use": "yemek", "place": "fırın, sokak", "looks": "yuvarlak, susamlı" }
+  },
+  {
+    "id": "corba",
+    "word": "çorba",
+    "category": "yemekler",
+    "symbol": "symbols/soup.svg",
+    "phrases": ["Sıcak çorba istiyorum"],
+    "forms": { "istiyorum": "Çorba istiyorum", "var_mi": "Çorba var mı?" },
+    "syllables": ["çor", "ba"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Kaşıkla içilir.", "Sıcak olur.", "Mercimeği, ezogelini olur."],
+      "sentence": ["Hasta olunca sıcak bir …", "Mercimek … içtim."],
+      "firstSound": "ç…"
+    },
+    "features": { "group": "yemek", "use": "içmek", "place": "kâse, tabak", "looks": "sıcak, sulu" }
+  },
+  {
+    "id": "pilav",
+    "word": "pilav",
+    "category": "yemekler",
+    "symbol": "symbols/rice.svg",
+    "phrases": ["Biraz daha pilav verir misin?"],
+    "forms": { "istiyorum": "Pilav istiyorum", "var_mi": "Pilav var mı?" },
+    "syllables": ["pi", "lav"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Pirinçten yapılır.", "Kuru fasulyenin yanında yenir.", "Tane tane olur."],
+      "sentence": ["Kuru fasulye ve …", "Pirinci yıkadım, … pişireceğim."],
+      "firstSound": "p…"
+    },
+    "features": { "group": "yemek", "use": "yemek", "place": "tencere, tabak", "looks": "beyaz, taneli" }
+  },
+  {
+    "id": "makarna",
+    "word": "makarna",
+    "category": "yemekler",
+    "symbol": "symbols/pasta.svg",
+    "phrases": ["Makarna yiyebilir miyim?"],
+    "forms": { "istiyorum": "Makarna istiyorum", "var_mi": "Makarna var mı?" },
+    "syllables": ["ma", "kar", "na"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Hamurdan yapılır.", "Suda haşlanır.", "Üstüne yoğurt ya da sos konur."],
+      "sentence": ["Suyu kaynattım, … atacağım.", "Salçalı … yaptım."],
+      "firstSound": "m…"
+    },
+    "features": { "group": "yemek", "use": "yemek", "place": "tencere, tabak", "looks": "uzun ya da kısa" }
+  },
+  {
+    "id": "tavuk",
+    "word": "tavuk",
+    "category": "yemekler",
+    "symbol": "symbols/chicken.svg",
+    "phrases": ["Tavuk yemek istiyorum"],
+    "forms": { "istiyorum": "Tavuk istiyorum", "var_mi": "Tavuk var mı?" },
+    "syllables": ["ta", "vuk"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Yumurta veren hayvan.", "Eti beyazdır.", "Fırında ya da haşlanmış yenir."],
+      "sentence": ["Fırında patatesli …", "Çorbaya biraz … eti koydum."],
+      "firstSound": "t…"
+    },
+    "features": { "group": "et", "use": "yemek", "place": "tabak", "looks": "beyaz et" }
+  },
+  {
+    "id": "et",
+    "word": "et",
+    "category": "yemekler",
+    "symbol": "symbols/meat.svg",
+    "phrases": ["Et yemek istiyorum"],
+    "forms": { "istiyorum": "Et istiyorum", "var_mi": "Et var mı?" },
+    "syllables": ["et"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Kasaptan alınır.", "Kırmızı olur.", "Izgara ya da haşlama yapılır."],
+      "sentence": ["Kasaptan bir kilo …", "Kuşbaşı … ile güveç yaptık."],
+      "firstSound": "e…"
+    },
+    "features": { "group": "et", "use": "yemek", "place": "kasap, tabak", "looks": "kırmızı" }
+  },
+  {
+    "id": "balik",
+    "word": "balık",
+    "category": "yemekler",
+    "symbol": "symbols/fish.svg",
+    "phrases": ["Balık yemek istiyorum"],
+    "forms": { "istiyorum": "Balık istiyorum", "var_mi": "Balık var mı?" },
+    "syllables": ["ba", "lık"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Denizde yaşar.", "Kılçıklıdır.", "Hamsi de bir çeşidi."],
+      "sentence": ["Kışın hamsi … çok güzel olur.", "Denizde … tuttuk."],
+      "firstSound": "b…"
+    },
+    "features": { "group": "et", "use": "yemek", "place": "deniz, balıkçı", "looks": "pullu, kılçıklı" }
+  },
+  {
+    "id": "salata",
+    "word": "salata",
+    "category": "yemekler",
+    "symbol": "symbols/salad.svg",
+    "phrases": ["Salata yapar mısın?"],
+    "forms": { "istiyorum": "Salata istiyorum", "var_mi": "Salata var mı?" },
+    "syllables": ["sa", "la", "ta"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Marul ve domatesle yapılır.", "Limon ve yağ dökülür.", "Yemeğin yanında olur."],
+      "sentence": ["Yemeğin yanına çoban …", "Marulu yıkadım, … yapacağım."],
+      "firstSound": "s…"
+    },
+    "features": { "group": "yemek", "use": "yemek", "place": "kâse", "looks": "yeşil, renkli" }
+  },
+  {
+    "id": "patates",
+    "word": "patates",
+    "category": "yemekler",
+    "symbol": "symbols/potato.svg",
+    "phrases": ["Patates kızartması istiyorum"],
+    "forms": { "istiyorum": "Patates istiyorum", "var_mi": "Patates var mı?" },
+    "syllables": ["pa", "ta", "tes"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Toprağın altında yetişir.", "Kızartılır ya da haşlanır.", "Püresi yapılır."],
+      "sentence": ["Kızarmış … ve köfte.", "Fırına tavuk ve … koydum."],
+      "firstSound": "p…"
+    },
+    "features": { "group": "sebze", "use": "yemek", "place": "tarla, pazar", "looks": "kahverengi kabuklu" }
+  },
+  {
+    "id": "yogurt",
+    "word": "yoğurt",
+    "category": "yemekler",
+    "symbol": "symbols/yogurt.svg",
+    "phrases": ["Yemeğin yanına yoğurt istiyorum"],
+    "forms": { "istiyorum": "Yoğurt istiyorum", "var_mi": "Yoğurt var mı?" },
+    "syllables": ["yo", "ğurt"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Sütten mayalanır.", "Ayranı yapılır.", "Kaşıkla yenir."],
+      "sentence": ["Ayran … ve sudan yapılır.", "Mantının üstüne sarımsaklı …"],
+      "firstSound": "y…"
+    },
+    "features": { "group": "süt ürünü", "use": "yemek", "place": "buzdolabı", "looks": "beyaz, koyu" }
+  },
+  {
+    "id": "elma",
+    "word": "elma",
+    "category": "meyve_tatli",
+    "symbol": "symbols/apple.svg",
+    "phrases": ["Elma soyar mısın?"],
+    "forms": { "istiyorum": "Elma istiyorum", "var_mi": "Elma var mı?" },
+    "syllables": ["el", "ma"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Ağaçta yetişen bir meyve.", "Kırmızısı ve yeşili olur.", "Soyulup dilimlenir."],
+      "sentence": ["Ağaçtan kırmızı bir … kopardım.", "Armut değil, …"],
+      "firstSound": "e…"
+    },
+    "features": { "group": "meyve", "use": "yemek", "place": "ağaç, pazar", "looks": "yuvarlak, kırmızı ya da yeşil" }
+  },
+  {
+    "id": "muz",
+    "word": "muz",
+    "category": "meyve_tatli",
+    "symbol": "symbols/banana.svg",
+    "phrases": ["Bir muz verir misin?"],
+    "forms": { "istiyorum": "Muz istiyorum", "var_mi": "Muz var mı?" },
+    "syllables": ["muz"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Sarı bir meyve.", "Kabuğu soyulur.", "Anamur'da yetişir."],
+      "sentence": ["Kabuğunu soydum, … yedim.", "Sarı ve uzun meyve, …"],
+      "firstSound": "m…"
+    },
+    "features": { "group": "meyve", "use": "yemek", "place": "pazar", "looks": "sarı, uzun" }
+  },
+  {
+    "id": "portakal",
+    "word": "portakal",
+    "category": "meyve_tatli",
+    "symbol": "symbols/orange.svg",
+    "phrases": ["Portakal soyar mısın?"],
+    "forms": { "istiyorum": "Portakal istiyorum", "var_mi": "Portakal var mı?" },
+    "syllables": ["por", "ta", "kal"],
+    "frequency": "medium",
+    "level": 2,
+    "cues": {
+      "semantic": ["Kışın yenen bir meyve.", "Suyu sıkılır.", "Turuncu renkli."],
+      "sentence": ["Taze sıkılmış … suyu.", "Kışın mandalina ve …"],
+      "firstSound": "p…"
+    },
+    "features": { "group": "meyve", "use": "yemek, suyunu içmek", "place": "pazar", "looks": "turuncu, yuvarlak" }
+  },
+  {
+    "id": "kek",
+    "word": "kek",
+    "category": "meyve_tatli",
+    "symbol": "symbols/cake_slice.svg",
+    "phrases": ["Çayın yanına kek istiyorum"],
+    "forms": { "istiyorum": "Kek istiyorum", "var_mi": "Kek var mı?" },
+    "syllables": ["kek"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Fırında pişen bir tatlı.", "Un, şeker ve yumurtayla yapılır.", "Dilim dilim kesilir."],
+      "sentence": ["Misafirlere çayın yanında …", "Fırında limonlu … pişti."],
+      "firstSound": "k…"
+    },
+    "features": { "group": "tatlı", "use": "yemek", "place": "fırın", "looks": "yumuşak, dilimli" }
+  },
+  {
+    "id": "dondurma",
+    "word": "dondurma",
+    "category": "meyve_tatli",
+    "symbol": "symbols/ice_cream.svg",
+    "phrases": ["Dondurma yemek istiyorum"],
+    "forms": { "istiyorum": "Dondurma istiyorum", "var_mi": "Dondurma var mı?" },
+    "syllables": ["don", "dur", "ma"],
+    "frequency": "low",
+    "level": 2,
+    "cues": {
+      "semantic": ["Soğuk bir tatlı.", "Yazın yenir.", "Külahta ya da kâsede olur."],
+      "sentence": ["Sıcak bir yaz günü külahta …", "Maraş … uzar uzar."],
+      "firstSound": "d…"
+    },
+    "features": { "group": "tatlı", "use": "yemek", "place": "buzluk, dondurmacı", "looks": "soğuk, renkli" }
+  }
+]

@@ -1,0 +1,12 @@
+[
+  { "id": "istiyorum", "label": "___ istiyorum", "fallback": "{w} istiyorum", "symbol": "symbols/want_to.svg" },
+  { "id": "agriyor", "label": "___ ağrıyor", "fallback": "{w} ağrıyor", "symbol": "symbols/headache.svg" },
+  { "id": "nerede", "label": "___ nerede?", "fallback": "{w} nerede?", "symbol": "symbols/where.svg" },
+  {
+    "id": "gitmek",
+    "label": "___ gitmek istiyorum",
+    "fallback": "{w} gitmek istiyorum",
+    "symbol": "symbols/go_to.svg"
+  },
+  { "id": "var_mi", "label": "___ var mı?", "fallback": "{w} var mı?", "symbol": "symbols/what.svg" }
+]

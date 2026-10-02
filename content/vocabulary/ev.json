@@ -1,0 +1,551 @@
+[
+  {
+    "id": "kapi",
+    "word": "kapı",
+    "category": "ev_esyalari",
+    "symbol": "symbols/door.svg",
+    "phrases": ["Kapıyı açar mısın?", "Kapıyı kapatır mısın?"],
+    "forms": {},
+    "syllables": ["ka", "pı"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Odaya girerken açılır.", "Kilidi ve kolu olur.", "Zili çalınca açarız."],
+      "sentence": ["Zil çaldı, … açar mısın?", "Çıkarken … kilitle."],
+      "firstSound": "k…"
+    },
+    "features": { "group": "ev eşyası", "use": "girmek, çıkmak", "place": "evin girişi", "looks": "dikdörtgen, kollu" }
+  },
+  {
+    "id": "pencere",
+    "word": "pencere",
+    "category": "ev_esyalari",
+    "symbol": "symbols/window.svg",
+    "phrases": ["Pencereyi açar mısın?", "Pencereyi kapatır mısın?"],
+    "forms": {},
+    "syllables": ["pen", "ce", "re"],
+    "frequency": "medium",
+    "level": 2,
+    "cues": {
+      "semantic": ["Camdan yapılır.", "Dışarıyı görürsün.", "Hava almak için açılır."],
+      "sentence": ["İçerisi havasız, … açalım.", "Perdeyi çek, … açık kalsın."],
+      "firstSound": "p…"
+    },
+    "features": { "group": "ev eşyası", "use": "hava almak, bakmak", "place": "duvar", "looks": "camlı" }
+  },
+  {
+    "id": "sandalye",
+    "word": "sandalye",
+    "category": "ev_esyalari",
+    "symbol": "symbols/chair.svg",
+    "phrases": ["Bir sandalye getirir misin?"],
+    "forms": { "istiyorum": "Sandalye istiyorum", "nerede": "Sandalye nerede?" },
+    "syllables": ["san", "dal", "ye"],
+    "frequency": "medium",
+    "level": 2,
+    "cues": {
+      "semantic": ["Üstüne oturulur.", "Masanın etrafında durur.", "Dört ayağı var."],
+      "sentence": ["Yorgunum, bir … getir.", "Masa ve dört …"],
+      "firstSound": "s…"
+    },
+    "features": { "group": "mobilya", "use": "oturmak", "place": "mutfak, salon", "looks": "dört ayaklı, sırtlı" }
+  },
+  {
+    "id": "masa",
+    "word": "masa",
+    "category": "ev_esyalari",
+    "symbol": "symbols/table.svg",
+    "phrases": ["Masaya koyar mısın?"],
+    "forms": { "nerede": "Masa nerede?" },
+    "syllables": ["ma", "sa"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Üstünde yemek yenir.", "Sandalyelerle birlikte durur.", "Örtü serilir."],
+      "sentence": ["Tabakları … üstüne koydum.", "Akşam yemeği için … kurduk."],
+      "firstSound": "m…"
+    },
+    "features": { "group": "mobilya", "use": "üstüne koymak, yemek", "place": "mutfak, salon", "looks": "düz, ayaklı" }
+  },
+  {
+    "id": "koltuk",
+    "word": "koltuk",
+    "category": "ev_esyalari",
+    "symbol": "symbols/arm_chair.svg",
+    "phrases": ["Koltuğa oturmak istiyorum"],
+    "forms": { "nerede": "Koltuk nerede?" },
+    "syllables": ["kol", "tuk"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Yumuşak, rahat bir oturak.", "Salonda durur.", "Kolçakları var."],
+      "sentence": ["Televizyonun karşısındaki rahat …", "Salona yeni bir … aldık."],
+      "firstSound": "k…"
+    },
+    "features": { "group": "mobilya", "use": "oturmak, dinlenmek", "place": "salon", "looks": "yumuşak, kollu" }
+  },
+  {
+    "id": "yatak",
+    "word": "yatak",
+    "category": "ev_esyalari",
+    "symbol": "symbols/single_bed.svg",
+    "phrases": ["Yatmak istiyorum", "Yatağa yatırır mısın?"],
+    "forms": {},
+    "syllables": ["ya", "tak"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Üstünde uyunur.", "Yastık ve yorgan olur.", "Yatak odasında durur."],
+      "sentence": ["Uykum geldi, … yatacağım.", "Sabah … topladım."],
+      "firstSound": "y…"
+    },
+    "features": { "group": "mobilya", "use": "uyumak", "place": "yatak odası", "looks": "geniş, yumuşak" }
+  },
+  {
+    "id": "televizyon",
+    "word": "televizyon",
+    "category": "ev_esyalari",
+    "symbol": "symbols/flatscreen_tv.svg",
+    "phrases": ["Televizyonu açar mısın?", "Televizyonu kapatır mısın?"],
+    "forms": {},
+    "syllables": ["te", "le", "viz", "yon"],
+    "frequency": "high",
+    "level": 2,
+    "cues": {
+      "semantic": ["Haber ve dizi izlenir.", "Kumandayla açılır.", "Salonda durur."],
+      "sentence": ["Akşam haberlerini … izledim.", "Kumandayı al, … aç."],
+      "firstSound": "t…"
+    },
+    "features": { "group": "elektronik", "use": "izlemek", "place": "salon", "looks": "ekranlı" }
+  },
+  {
+    "id": "kumanda",
+    "word": "kumanda",
+    "category": "ev_esyalari",
+    "symbol": "symbols/remote_control.svg",
+    "phrases": ["Kumandayı verir misin?"],
+    "forms": { "nerede": "Kumanda nerede?" },
+    "syllables": ["ku", "man", "da"],
+    "frequency": "medium",
+    "level": 2,
+    "cues": {
+      "semantic": ["Televizyonu açar.", "Düğmeleri var.", "Pille çalışır."],
+      "sentence": ["Kanalı değiştirmek için … ver.", "Televizyonun … nerede?"],
+      "firstSound": "k…"
+    },
+    "features": { "group": "elektronik", "use": "kanal değiştirmek", "place": "salon", "looks": "küçük, düğmeli" }
+  },
+  {
+    "id": "telefon",
+    "word": "telefon",
+    "category": "ev_esyalari",
+    "symbol": "symbols/mobile_phone.svg",
+    "phrases": ["Telefonumu verir misin?", "Telefon çalıyor"],
+    "forms": { "nerede": "Telefon nerede?" },
+    "syllables": ["te", "le", "fon"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Konuşmak için kullanılır.", "Çalar.", "Şarj edilir."],
+      "sentence": ["Kızım aradı, … çalıyor.", "Şarj aleti ve …"],
+      "firstSound": "t…"
+    },
+    "features": { "group": "elektronik", "use": "aramak, konuşmak", "place": "cep, masa", "looks": "küçük, ekranlı" }
+  },
+  {
+    "id": "anahtar",
+    "word": "anahtar",
+    "category": "ev_esyalari",
+    "symbol": "symbols/key_1.svg",
+    "phrases": ["Anahtarı verir misin?"],
+    "forms": { "nerede": "Anahtar nerede?" },
+    "syllables": ["a", "nah", "tar"],
+    "frequency": "medium",
+    "level": 2,
+    "cues": {
+      "semantic": ["Kapıyı açar.", "Kilide sokulur.", "Metaldir."],
+      "sentence": ["Kapıyı açmak için …", "Evin … cebimde."],
+      "firstSound": "a…"
+    },
+    "features": { "group": "eşya", "use": "kapı açmak", "place": "cep, çanta", "looks": "küçük, metal" }
+  },
+  {
+    "id": "gozluk",
+    "word": "gözlük",
+    "category": "ev_esyalari",
+    "symbol": "symbols/glasses.svg",
+    "phrases": ["Gözlüğümü verir misin?"],
+    "forms": { "nerede": "Gözlüğüm nerede?" },
+    "syllables": ["göz", "lük"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Daha iyi görmek için takılır.", "Camları var.", "Kılıfında durur."],
+      "sentence": ["Gazete okumak için … takarım.", "Okuma … nerede?"],
+      "firstSound": "g…"
+    },
+    "features": { "group": "eşya", "use": "görmek", "place": "yüz, kılıf", "looks": "iki camlı" }
+  },
+  {
+    "id": "lamba",
+    "word": "lamba",
+    "category": "ev_esyalari",
+    "symbol": "symbols/lamp.svg",
+    "phrases": ["Lambayı yakar mısın?", "Lambayı söndürür müsün?"],
+    "forms": {},
+    "syllables": ["lam", "ba"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Işık verir.", "Düğmesine basılır.", "Ampulü olur."],
+      "sentence": ["Hava karardı, … yakalım.", "Okurken masa … açık olsun."],
+      "firstSound": "l…"
+    },
+    "features": { "group": "ev eşyası", "use": "aydınlatmak", "place": "masa, tavan", "looks": "ampullü" }
+  },
+  {
+    "id": "battaniye",
+    "word": "battaniye",
+    "category": "ev_esyalari",
+    "symbol": "symbols/blanket.svg",
+    "phrases": ["Üşüdüm, battaniye verir misin?"],
+    "forms": { "istiyorum": "Battaniye istiyorum" },
+    "syllables": ["bat", "ta", "ni", "ye"],
+    "frequency": "medium",
+    "level": 2,
+    "cues": {
+      "semantic": ["Üşüyünce örtülür.", "Yünlüdür.", "Yatağın ya da koltuğun üstünde durur."],
+      "sentence": ["Üşüdüm, üstüme bir …", "Dizlerimin üstüne yünlü bir …"],
+      "firstSound": "b…"
+    },
+    "features": { "group": "ev eşyası", "use": "ısınmak", "place": "yatak, koltuk", "looks": "kalın, yumuşak" }
+  },
+  {
+    "id": "catal",
+    "word": "çatal",
+    "category": "mutfak",
+    "symbol": "symbols/fork.svg",
+    "phrases": ["Bir çatal verir misin?"],
+    "forms": { "istiyorum": "Çatal istiyorum", "nerede": "Çatal nerede?" },
+    "syllables": ["ça", "tal"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Yemek yerken kullanılır.", "Dişleri var.", "Bıçağın yanında durur."],
+      "sentence": ["Kaşık, bıçak ve …", "Makarnayı … ile yedim."],
+      "firstSound": "ç…"
+    },
+    "features": { "group": "mutfak eşyası", "use": "yemek", "place": "çekmece, masa", "looks": "metal, dişli" }
+  },
+  {
+    "id": "kasik",
+    "word": "kaşık",
+    "category": "mutfak",
+    "symbol": "symbols/spoon.svg",
+    "phrases": ["Bir kaşık verir misin?"],
+    "forms": { "istiyorum": "Kaşık istiyorum", "nerede": "Kaşık nerede?" },
+    "syllables": ["ka", "şık"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Çorba içmek için kullanılır.", "Yuvarlak ucu var.", "Çatalın yanında durur."],
+      "sentence": ["Çorbayı … ile içerim.", "Çayı çay … ile karıştırdım."],
+      "firstSound": "k…"
+    },
+    "features": {
+      "group": "mutfak eşyası",
+      "use": "yemek, karıştırmak",
+      "place": "çekmece, masa",
+      "looks": "metal, çukur uçlu"
+    }
+  },
+  {
+    "id": "bicak",
+    "word": "bıçak",
+    "category": "mutfak",
+    "symbol": "symbols/knife.svg",
+    "phrases": ["Bunu keser misin?"],
+    "forms": { "nerede": "Bıçak nerede?" },
+    "syllables": ["bı", "çak"],
+    "frequency": "medium",
+    "level": 2,
+    "cues": {
+      "semantic": ["Kesmek için kullanılır.", "Keskindir.", "Ekmeği dilimler."],
+      "sentence": ["Ekmeği … ile kestim.", "Çatal ve …"],
+      "firstSound": "b…"
+    },
+    "features": { "group": "mutfak eşyası", "use": "kesmek", "place": "çekmece, mutfak", "looks": "metal, keskin" }
+  },
+  {
+    "id": "tabak",
+    "word": "tabak",
+    "category": "mutfak",
+    "symbol": "symbols/plate.svg",
+    "phrases": ["Bir tabak verir misin?"],
+    "forms": { "istiyorum": "Tabak istiyorum", "nerede": "Tabak nerede?" },
+    "syllables": ["ta", "bak"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Yemek içine konur.", "Yuvarlaktır.", "Yemekten sonra yıkanır."],
+      "sentence": ["Pilavı … koydum.", "Bulaşık makinesine kirli …"],
+      "firstSound": "t…"
+    },
+    "features": { "group": "mutfak eşyası", "use": "yemek koymak", "place": "dolap, masa", "looks": "yuvarlak, düz" }
+  },
+  {
+    "id": "bardak",
+    "word": "bardak",
+    "category": "mutfak",
+    "symbol": "symbols/glass_drinking.svg",
+    "phrases": ["Bir bardak verir misin?"],
+    "forms": { "istiyorum": "Bardak istiyorum", "nerede": "Bardak nerede?" },
+    "syllables": ["bar", "dak"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["İçine su konur.", "Camdan yapılır.", "Ağzına götürüp içersin."],
+      "sentence": ["Bir … su verir misin?", "Çayı ince belli … koydum."],
+      "firstSound": "b…"
+    },
+    "features": { "group": "mutfak eşyası", "use": "içmek", "place": "dolap, masa", "looks": "cam, silindir" }
+  },
+  {
+    "id": "caydanlik",
+    "word": "çaydanlık",
+    "category": "mutfak",
+    "symbol": "symbols/teapot.svg",
+    "phrases": ["Çaydanlığı ocağa koyar mısın?"],
+    "forms": { "nerede": "Çaydanlık nerede?" },
+    "syllables": ["çay", "dan", "lık"],
+    "frequency": "low",
+    "level": 3,
+    "cues": {
+      "semantic": ["İçinde çay demlenir.", "Ocağa konur.", "Altta su, üstte demlik olur."],
+      "sentence": ["Çay demlemek için … ocağa koydum.", "Demlik ve …"],
+      "firstSound": "ç…"
+    },
+    "features": { "group": "mutfak eşyası", "use": "çay demlemek", "place": "ocak", "looks": "iki katlı, kulplu" }
+  },
+  {
+    "id": "tuvalet",
+    "word": "tuvalet",
+    "category": "bakim",
+    "symbol": "symbols/toilet.svg",
+    "phrases": ["Tuvalete götürür müsün?"],
+    "forms": { "gitmek": "Tuvalete gitmek istiyorum", "nerede": "Tuvalet nerede?" },
+    "syllables": ["tu", "va", "let"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Banyodadır.", "İhtiyaç için gidilir.", "Sifonu çekilir."],
+      "sentence": ["Lavabonun yanında … var.", "Çok su içtim, … gitmem lazım."],
+      "firstSound": "t…"
+    },
+    "features": { "group": "bakım", "use": "ihtiyaç gidermek", "place": "banyo", "looks": "klozet" }
+  },
+  {
+    "id": "dus",
+    "word": "duş",
+    "category": "bakim",
+    "symbol": "symbols/shower.svg",
+    "phrases": ["Duş almak istiyorum"],
+    "forms": { "istiyorum": "Duş istiyorum" },
+    "syllables": ["duş"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Banyoda yıkanırsın.", "Üstünden su akar.", "Sabun ve şampuan kullanılır."],
+      "sentence": ["Sabah sıcak bir … aldım.", "Banyoda … alacağım."],
+      "firstSound": "d…"
+    },
+    "features": { "group": "bakım", "use": "yıkanmak", "place": "banyo", "looks": "su akan başlık" }
+  },
+  {
+    "id": "havlu",
+    "word": "havlu",
+    "category": "bakim",
+    "symbol": "symbols/towel.svg",
+    "phrases": ["Havlu verir misin?"],
+    "forms": { "istiyorum": "Havlu istiyorum", "nerede": "Havlu nerede?" },
+    "syllables": ["hav", "lu"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Kurulanmak için kullanılır.", "Banyoda asılı durur.", "Yumuşaktır."],
+      "sentence": ["Duştan çıktım, … verir misin?", "Elimi … ile kuruladım."],
+      "firstSound": "h…"
+    },
+    "features": { "group": "bakım", "use": "kurulanmak", "place": "banyo", "looks": "yumuşak, pamuklu" }
+  },
+  {
+    "id": "sabun",
+    "word": "sabun",
+    "category": "bakim",
+    "symbol": "symbols/soap.svg",
+    "phrases": ["Sabun verir misin?"],
+    "forms": { "nerede": "Sabun nerede?", "var_mi": "Sabun var mı?" },
+    "syllables": ["sa", "bun"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Elini yıkarken köpürtürsün.", "Güzel kokar.", "Lavabonun yanında durur."],
+      "sentence": ["Ellerimi … ile yıkadım.", "Zeytinyağlı …"],
+      "firstSound": "s…"
+    },
+    "features": { "group": "bakım", "use": "yıkanmak", "place": "banyo", "looks": "küçük kalıp" }
+  },
+  {
+    "id": "dis_fircalamak",
+    "word": "diş fırçalamak",
+    "category": "bakim",
+    "symbol": "symbols/brush_teeth_to.svg",
+    "phrases": ["Dişlerimi fırçalamak istiyorum"],
+    "forms": { "istiyorum": "Diş fırçalamak istiyorum" },
+    "syllables": ["diş", "fır", "ça", "la", "mak"],
+    "frequency": "medium",
+    "level": 3,
+    "cues": {
+      "semantic": ["Macun ve fırçayla yapılır.", "Yatmadan önce yapılır.", "Ağzını temizler."],
+      "sentence": ["Yatmadan önce dişlerimi …", "Macunu fırçaya sürdüm, dişimi …"],
+      "firstSound": "d…"
+    },
+    "features": { "group": "bakım", "use": "temizlik", "place": "banyo", "looks": "fırça ve macun" }
+  },
+  {
+    "id": "tiras",
+    "word": "tıraş",
+    "category": "bakim",
+    "symbol": "symbols/shave_to.svg",
+    "phrases": ["Tıraş olmak istiyorum"],
+    "forms": { "istiyorum": "Tıraş olmak istiyorum" },
+    "syllables": ["tı", "raş"],
+    "frequency": "low",
+    "level": 2,
+    "cues": {
+      "semantic": ["Sakalı keser.", "Jilet ya da makineyle yapılır.", "Berberde de yapılır."],
+      "sentence": ["Sakalım uzadı, … olacağım.", "Berbere saç ve sakal … için gittim."],
+      "firstSound": "t…"
+    },
+    "features": { "group": "bakım", "use": "sakal kesmek", "place": "banyo, berber", "looks": "jilet, köpük" }
+  },
+  {
+    "id": "tarak",
+    "word": "tarak",
+    "category": "bakim",
+    "symbol": "symbols/comb.svg",
+    "phrases": ["Saçımı tarar mısın?"],
+    "forms": { "nerede": "Tarak nerede?" },
+    "syllables": ["ta", "rak"],
+    "frequency": "low",
+    "level": 2,
+    "cues": {
+      "semantic": ["Saçı düzeltir.", "Dişleri var.", "Aynanın önünde kullanılır."],
+      "sentence": ["Saçımı … ile taradım.", "Fırça ya da …"],
+      "firstSound": "t…"
+    },
+    "features": { "group": "bakım", "use": "saç taramak", "place": "banyo", "looks": "ince, dişli" }
+  },
+  {
+    "id": "gomlek",
+    "word": "gömlek",
+    "category": "giyim",
+    "symbol": "symbols/shirt.svg",
+    "phrases": ["Gömleğimi giymek istiyorum"],
+    "forms": { "istiyorum": "Gömlek istiyorum", "nerede": "Gömleğim nerede?" },
+    "syllables": ["göm", "lek"],
+    "frequency": "medium",
+    "level": 2,
+    "cues": {
+      "semantic": ["Üste giyilir.", "Düğmeleri var.", "Ütülenir."],
+      "sentence": ["Bayram için beyaz bir … giydim.", "Kravatın altına … giyilir."],
+      "firstSound": "g…"
+    },
+    "features": { "group": "giysi", "use": "giymek", "place": "dolap", "looks": "yakalı, düğmeli" }
+  },
+  {
+    "id": "pantolon",
+    "word": "pantolon",
+    "category": "giyim",
+    "symbol": "symbols/trousers.svg",
+    "phrases": ["Pantolonumu giymek istiyorum"],
+    "forms": { "nerede": "Pantolonum nerede?" },
+    "syllables": ["pan", "to", "lon"],
+    "frequency": "medium",
+    "level": 2,
+    "cues": {
+      "semantic": ["Bacaklara giyilir.", "Kemerle bağlanır.", "Cepleri olur."],
+      "sentence": ["Gömlek ve …", "Kemeri … taktım."],
+      "firstSound": "p…"
+    },
+    "features": { "group": "giysi", "use": "giymek", "place": "dolap", "looks": "iki paçalı" }
+  },
+  {
+    "id": "corap",
+    "word": "çorap",
+    "category": "giyim",
+    "symbol": "symbols/socks.svg",
+    "phrases": ["Çorabımı giydirir misin?", "Ayaklarım üşüyor"],
+    "forms": { "nerede": "Çorabım nerede?" },
+    "syllables": ["ço", "rap"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Ayağa giyilir.", "Ayakkabının içinde olur.", "Çift çift durur."],
+      "sentence": ["Ayaklarım üşüdü, yün … giydim.", "Ayakkabıyı giymeden önce …"],
+      "firstSound": "ç…"
+    },
+    "features": { "group": "giysi", "use": "ayağı ısıtmak", "place": "çekmece", "looks": "yumuşak, çift" }
+  },
+  {
+    "id": "terlik",
+    "word": "terlik",
+    "category": "giyim",
+    "symbol": "symbols/slippers.svg",
+    "phrases": ["Terliğimi verir misin?"],
+    "forms": { "nerede": "Terliğim nerede?" },
+    "syllables": ["ter", "lik"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Evde ayağa giyilir.", "Kapının önünde durur.", "Rahattır."],
+      "sentence": ["Eve girince ayakkabımı çıkarıp … giydim.", "Ev …"],
+      "firstSound": "t…"
+    },
+    "features": { "group": "giysi", "use": "evde giymek", "place": "kapı önü", "looks": "açık, rahat" }
+  },
+  {
+    "id": "mont",
+    "word": "mont",
+    "category": "giyim",
+    "symbol": "symbols/coat.svg",
+    "phrases": ["Montumu giymek istiyorum"],
+    "forms": { "nerede": "Montum nerede?" },
+    "syllables": ["mont"],
+    "frequency": "medium",
+    "level": 2,
+    "cues": {
+      "semantic": ["Dışarı çıkarken giyilir.", "Kışın ısıtır.", "Fermuarı olur."],
+      "sentence": ["Hava soğuk, … giy.", "Kaban ya da …"],
+      "firstSound": "m…"
+    },
+    "features": { "group": "giysi", "use": "ısınmak", "place": "askı", "looks": "kalın, fermuarlı" }
+  },
+  {
+    "id": "pijama",
+    "word": "pijama",
+    "category": "giyim",
+    "symbol": "symbols/pyjamas.svg",
+    "phrases": ["Pijamamı giymek istiyorum"],
+    "forms": { "nerede": "Pijamam nerede?" },
+    "syllables": ["pi", "ja", "ma"],
+    "frequency": "low",
+    "level": 2,
+    "cues": {
+      "semantic": ["Yatarken giyilir.", "İki parçadır.", "Pamukludur."],
+      "sentence": ["Yatmadan önce … giydim.", "Gece … ile uyurum."],
+      "firstSound": "p…"
+    },
+    "features": { "group": "giysi", "use": "uyumak", "place": "yatak odası", "looks": "rahat, pamuklu" }
+  }
+]

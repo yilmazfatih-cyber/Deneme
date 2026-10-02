@@ -1,0 +1,240 @@
+[
+  {
+    "id": "yemek_yemek",
+    "word": "yemek yemek",
+    "category": "eylemler",
+    "symbol": "symbols/eat_to.svg",
+    "phrases": ["Acıktım", "Yemek ne zaman?"],
+    "forms": { "istiyorum": "Yemek yemek istiyorum" },
+    "syllables": ["ye", "mek", "ye", "mek"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Acıkınca yaparsın.", "Çatal ve kaşıkla yapılır.", "Sofrada yapılır."],
+      "sentence": ["Acıktım, … istiyorum.", "Öğlen oldu, … zamanı."],
+      "firstSound": "y…"
+    },
+    "features": { "group": "eylem", "use": "doymak", "place": "sofra", "looks": "ağza götürmek" }
+  },
+  {
+    "id": "icmek",
+    "word": "içmek",
+    "category": "eylemler",
+    "symbol": "symbols/drink_to.svg",
+    "phrases": ["Bir şey içmek istiyorum"],
+    "forms": { "istiyorum": "İçmek istiyorum" },
+    "syllables": ["iç", "mek"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Susayınca yaparsın.", "Bardakla yapılır.", "Su, çay ile yapılır."],
+      "sentence": ["Susadım, su … istiyorum.", "Bir bardak çay … ister misin?"],
+      "firstSound": "i…"
+    },
+    "features": { "group": "eylem", "use": "susuzluğu gidermek", "place": "her yer", "looks": "bardağı ağza götürmek" }
+  },
+  {
+    "id": "uyumak",
+    "word": "uyumak",
+    "category": "eylemler",
+    "symbol": "symbols/sleep_male_to.svg",
+    "phrases": ["Uykum geldi", "Biraz dinlenmek istiyorum"],
+    "forms": { "istiyorum": "Uyumak istiyorum" },
+    "syllables": ["u", "yu", "mak"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Gece yatakta yaparsın.", "Gözlerin kapanır.", "Rüya görürsün."],
+      "sentence": ["Yoruldum, biraz … istiyorum.", "Öğleden sonra bir saat …"],
+      "firstSound": "u…"
+    },
+    "features": { "group": "eylem", "use": "dinlenmek", "place": "yatak", "looks": "gözler kapalı" }
+  },
+  {
+    "id": "yurumek",
+    "word": "yürümek",
+    "category": "eylemler",
+    "symbol": "symbols/walk_to.svg",
+    "phrases": ["Biraz yürüyelim mi?"],
+    "forms": { "istiyorum": "Yürümek istiyorum" },
+    "syllables": ["yü", "rü", "mek"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Ayaklarla yapılır.", "Parkta yapılır.", "Adım adım gidilir."],
+      "sentence": ["Her sabah parkta …", "Bastonla … daha kolay."],
+      "firstSound": "y…"
+    },
+    "features": { "group": "eylem", "use": "gitmek, hareket", "place": "park, yol", "looks": "adım atmak" }
+  },
+  {
+    "id": "oturmak",
+    "word": "oturmak",
+    "category": "eylemler",
+    "symbol": "symbols/sit_to.svg",
+    "phrases": ["Oturabilir miyim?"],
+    "forms": { "istiyorum": "Oturmak istiyorum" },
+    "syllables": ["o", "tur", "mak"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Sandalyede yapılır.", "Yorulunca yaparsın.", "Ayakta durmanın tersi."],
+      "sentence": ["Yoruldum, biraz … istiyorum.", "Koltukta … televizyon izledim."],
+      "firstSound": "o…"
+    },
+    "features": { "group": "eylem", "use": "dinlenmek", "place": "sandalye, koltuk", "looks": "dizler bükülü" }
+  },
+  {
+    "id": "kalkmak",
+    "word": "kalkmak",
+    "category": "eylemler",
+    "symbol": "symbols/stand_to.svg",
+    "phrases": ["Kalkmama yardım eder misin?"],
+    "forms": { "istiyorum": "Kalkmak istiyorum" },
+    "syllables": ["kalk", "mak"],
+    "frequency": "medium",
+    "level": 2,
+    "cues": {
+      "semantic": ["Oturmanın tersi.", "Ayağa yaparsın.", "Sabah yataktan yaparsın."],
+      "sentence": ["Sabah erkenden yataktan …", "Koltuktan … yardım et."],
+      "firstSound": "k…"
+    },
+    "features": { "group": "eylem", "use": "ayağa kalkmak", "place": "yatak, sandalye", "looks": "doğrulmak" }
+  },
+  {
+    "id": "yikanmak",
+    "word": "yıkanmak",
+    "category": "eylemler",
+    "symbol": "symbols/wash_hands_to.svg",
+    "phrases": ["Elimi yıkamak istiyorum"],
+    "forms": { "istiyorum": "Yıkanmak istiyorum" },
+    "syllables": ["yı", "kan", "mak"],
+    "frequency": "medium",
+    "level": 2,
+    "cues": {
+      "semantic": ["Su ve sabunla yapılır.", "Banyoda yapılır.", "Temizlenmek için."],
+      "sentence": ["Yemekten önce ellerimi …", "Banyoda … istiyorum."],
+      "firstSound": "y…"
+    },
+    "features": { "group": "eylem", "use": "temizlenmek", "place": "banyo, lavabo", "looks": "su ve köpük" }
+  },
+  {
+    "id": "okumak",
+    "word": "okumak",
+    "category": "eylemler",
+    "symbol": "symbols/read_book_to.svg",
+    "phrases": ["Gazete okumak istiyorum"],
+    "forms": { "istiyorum": "Okumak istiyorum" },
+    "syllables": ["o", "ku", "mak"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Kitapla yapılır.", "Gözlükle yapılır.", "Gazeteyle yapılır."],
+      "sentence": ["Gözlüğümü taktım, kitap …", "Sabah gazete …"],
+      "firstSound": "o…"
+    },
+    "features": { "group": "eylem", "use": "öğrenmek, eğlenmek", "place": "koltuk", "looks": "kitaba bakmak" }
+  },
+  {
+    "id": "izlemek",
+    "word": "izlemek",
+    "category": "eylemler",
+    "symbol": "symbols/watch_to.svg",
+    "phrases": ["Haberleri izlemek istiyorum", "Maçı izleyelim"],
+    "forms": { "istiyorum": "İzlemek istiyorum" },
+    "syllables": ["iz", "le", "mek"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Televizyonla yapılır.", "Gözle yapılır.", "Maç, dizi için yapılır."],
+      "sentence": ["Akşam dizi …", "Televizyonda maç …"],
+      "firstSound": "i…"
+    },
+    "features": { "group": "eylem", "use": "eğlenmek", "place": "salon", "looks": "ekrana bakmak" }
+  },
+  {
+    "id": "konusmak",
+    "word": "konuşmak",
+    "category": "eylemler",
+    "symbol": "symbols/talk_1_to.svg",
+    "phrases": ["Seninle konuşmak istiyorum", "Lütfen yavaş konuşun"],
+    "forms": { "istiyorum": "Konuşmak istiyorum" },
+    "syllables": ["ko", "nuş", "mak"],
+    "frequency": "medium",
+    "level": 2,
+    "cues": {
+      "semantic": ["Ağızla yapılır.", "Telefonda yapılır.", "Sohbet etmek."],
+      "sentence": ["Torunumla telefonda …", "Doktorla … istiyorum."],
+      "firstSound": "k…"
+    },
+    "features": { "group": "eylem", "use": "anlatmak", "place": "her yer", "looks": "ağız açık" }
+  },
+  {
+    "id": "gitmek",
+    "word": "gitmek",
+    "category": "eylemler",
+    "symbol": "symbols/go_to.svg",
+    "phrases": ["Gidelim mi?"],
+    "forms": { "istiyorum": "Gitmek istiyorum" },
+    "syllables": ["git", "mek"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Bir yere doğru yapılır.", "Gelmenin tersi.", "Yürüyerek ya da arabayla."],
+      "sentence": ["Eve … istiyorum.", "Yarın doktora …"],
+      "firstSound": "g…"
+    },
+    "features": { "group": "eylem", "use": "yer değiştirmek", "place": "yol", "looks": "uzaklaşmak" }
+  },
+  {
+    "id": "gelmek",
+    "word": "gelmek",
+    "category": "eylemler",
+    "symbol": "symbols/come_to.svg",
+    "phrases": ["Buraya gelir misin?", "Benimle gelir misin?"],
+    "forms": {},
+    "syllables": ["gel", "mek"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Gitmenin tersi.", "Yanına doğru yapılır.", "Misafirler yapar."],
+      "sentence": ["Buraya … misin?", "Bayramda çocuklar … istiyor."],
+      "firstSound": "g…"
+    },
+    "features": { "group": "eylem", "use": "yaklaşmak", "place": "yol", "looks": "yaklaşmak" }
+  },
+  {
+    "id": "acmak",
+    "word": "açmak",
+    "category": "eylemler",
+    "symbol": "symbols/open_to.svg",
+    "phrases": ["Bunu açar mısın?"],
+    "forms": { "istiyorum": "Açmak istiyorum" },
+    "syllables": ["aç", "mak"],
+    "frequency": "medium",
+    "level": 2,
+    "cues": {
+      "semantic": ["Kapatmanın tersi.", "Kapıyla, kavanozla yapılır.", "Kapağı kaldırırsın."],
+      "sentence": ["Kavanozun kapağını … misin?", "Pencereyi … istiyorum."],
+      "firstSound": "a…"
+    },
+    "features": { "group": "eylem", "use": "içine ulaşmak", "place": "kapı, kavanoz", "looks": "kapak kalkar" }
+  },
+  {
+    "id": "kapatmak",
+    "word": "kapatmak",
+    "category": "eylemler",
+    "symbol": "symbols/close_to.svg",
+    "phrases": ["Bunu kapatır mısın?"],
+    "forms": { "istiyorum": "Kapatmak istiyorum" },
+    "syllables": ["ka", "pat", "mak"],
+    "frequency": "medium",
+    "level": 2,
+    "cues": {
+      "semantic": ["Açmanın tersi.", "Kapıyla, televizyonla yapılır.", "Üşüyünce pencereyle yapılır."],
+      "sentence": ["Üşüdüm, pencereyi … misin?", "Televizyonu … istiyorum."],
+      "firstSound": "k…"
+    },
+    "features": { "group": "eylem", "use": "kapamak", "place": "kapı, pencere", "looks": "kapak iner" }
+  }
+]

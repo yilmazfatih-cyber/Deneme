@@ -1,0 +1,143 @@
+[
+  {
+    "id": "futbol",
+    "word": "futbol",
+    "category": "hobiler",
+    "symbol": "symbols/football.svg",
+    "phrases": ["Maç ne zaman?", "Maçı izleyelim"],
+    "forms": { "istiyorum": "Futbol izlemek istiyorum" },
+    "syllables": ["fut", "bol"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Topla oynanır.", "Kale ve gol var.", "Takımını tutarsın."],
+      "sentence": ["Akşam televizyonda … maçı var.", "Gol! Bu … maçı çok heyecanlı."],
+      "firstSound": "f…"
+    },
+    "features": {
+      "group": "spor",
+      "use": "izlemek, oynamak",
+      "place": "stadyum, televizyon",
+      "looks": "siyah beyaz top"
+    }
+  },
+  {
+    "id": "muzik",
+    "word": "müzik",
+    "category": "hobiler",
+    "symbol": "symbols/music.svg",
+    "phrases": ["Müzik açar mısın?", "Türkü dinlemek istiyorum"],
+    "forms": { "istiyorum": "Müzik dinlemek istiyorum" },
+    "syllables": ["mü", "zik"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Kulakla dinlenir.", "Şarkı ve türkü.", "Radyoda çalar."],
+      "sentence": ["Radyoda güzel bir … çalıyor.", "Şarkı, türkü, yani …"],
+      "firstSound": "m…"
+    },
+    "features": { "group": "sanat", "use": "dinlemek", "place": "radyo, telefon", "looks": "notalar" }
+  },
+  {
+    "id": "gazete",
+    "word": "gazete",
+    "category": "hobiler",
+    "symbol": "symbols/newspaper.svg",
+    "phrases": ["Gazete okur musun?", "Gazeteyi getirir misin?"],
+    "forms": { "istiyorum": "Gazete istiyorum", "nerede": "Gazete nerede?" },
+    "syllables": ["ga", "ze", "te"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Her gün haberleri yazar.", "Bakkaldan alınır.", "Sayfaları büyüktür."],
+      "sentence": ["Sabah çayla birlikte … okurum.", "Bakkaldan bir … aldım."],
+      "firstSound": "g…"
+    },
+    "features": { "group": "okuma", "use": "haber okumak", "place": "bakkal, masa", "looks": "büyük kâğıt" }
+  },
+  {
+    "id": "iskambil",
+    "word": "iskambil",
+    "category": "hobiler",
+    "symbol": "symbols/playing_cards.svg",
+    "phrases": ["Kâğıt oynayalım mı?", "Pişti oynayalım"],
+    "forms": { "istiyorum": "İskambil oynamak istiyorum" },
+    "syllables": ["is", "kam", "bil"],
+    "frequency": "low",
+    "level": 3,
+    "cues": {
+      "semantic": ["Kâğıtla oynanır.", "Pişti, batak oynanır.", "Karıştırılıp dağıtılır."],
+      "sentence": ["Akşam komşularla … oynadık.", "Desteyi karıştır, … dağıt."],
+      "firstSound": "i…"
+    },
+    "features": { "group": "oyun", "use": "oynamak", "place": "masa, kahvehane", "looks": "kâğıt deste" }
+  },
+  {
+    "id": "cicek",
+    "word": "çiçek",
+    "category": "hobiler",
+    "symbol": "symbols/flower.svg",
+    "phrases": ["Çiçekleri sular mısın?"],
+    "forms": { "istiyorum": "Çiçek istiyorum" },
+    "syllables": ["çi", "çek"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Bahçede açar.", "Güzel kokar.", "Saksıda büyür."],
+      "sentence": ["Balkondaki … suladım.", "Gül bir …"],
+      "firstSound": "ç…"
+    },
+    "features": { "group": "bitki", "use": "süslemek", "place": "bahçe, balkon", "looks": "renkli yapraklı" }
+  },
+  {
+    "id": "kedi",
+    "word": "kedi",
+    "category": "hobiler",
+    "symbol": "symbols/cat.svg",
+    "phrases": ["Kediyi besler misin?"],
+    "forms": { "nerede": "Kedi nerede?" },
+    "syllables": ["ke", "di"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Miyavlar.", "Süt içer.", "Fare yakalar."],
+      "sentence": ["Miyav diyen hayvan …", "Köpek ve …"],
+      "firstSound": "k…"
+    },
+    "features": { "group": "hayvan", "use": "sevmek, beslemek", "place": "ev, sokak", "looks": "tüylü, bıyıklı" }
+  },
+  {
+    "id": "kopek",
+    "word": "köpek",
+    "category": "hobiler",
+    "symbol": "symbols/dog.svg",
+    "phrases": ["Köpeği gezdirir misin?"],
+    "forms": { "nerede": "Köpek nerede?" },
+    "syllables": ["kö", "pek"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Havlar.", "Evi bekler.", "Tasmayla gezdirilir."],
+      "sentence": ["Hav hav diyen hayvan …", "Kedi ve …"],
+      "firstSound": "k…"
+    },
+    "features": { "group": "hayvan", "use": "sevmek, gezdirmek", "place": "ev, bahçe", "looks": "tüylü, kuyruklu" }
+  },
+  {
+    "id": "yemek_pisirmek",
+    "word": "yemek pişirmek",
+    "category": "hobiler",
+    "symbol": "symbols/cook_to.svg",
+    "phrases": ["Birlikte yemek yapalım"],
+    "forms": { "istiyorum": "Yemek pişirmek istiyorum" },
+    "syllables": ["ye", "mek", "pi", "şir", "mek"],
+    "frequency": "low",
+    "level": 3,
+    "cues": {
+      "semantic": ["Mutfakta ocakta yapılır.", "Tencere kullanılır.", "Tarifle yapılır."],
+      "sentence": ["Akşama dolma … için mutfaktayım.", "Annem bana … öğretti."],
+      "firstSound": "y…"
+    },
+    "features": { "group": "ev işi", "use": "yemek hazırlamak", "place": "mutfak", "looks": "tencere, ocak" }
+  }
+]

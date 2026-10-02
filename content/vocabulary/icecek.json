@@ -1,0 +1,87 @@
+[
+  {
+    "id": "su",
+    "word": "su",
+    "category": "icecek",
+    "symbol": "symbols/water.svg",
+    "phrases": ["Bir bardak su verir misin?"],
+    "forms": { "istiyorum": "Su istiyorum", "var_mi": "Su var mı?" },
+    "syllables": ["su"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["İçilir.", "Bardağa konur.", "Musluktan akar."],
+      "sentence": ["Susadım, bir bardak …", "Çiçekleri … ile sularım."],
+      "firstSound": "s…"
+    },
+    "features": { "group": "içecek", "use": "içmek", "place": "mutfak", "looks": "şeffaf" }
+  },
+  {
+    "id": "cay",
+    "word": "çay",
+    "category": "icecek",
+    "symbol": "symbols/tea.svg",
+    "phrases": ["Bir çay alabilir miyim?", "Çayım açık olsun"],
+    "forms": { "istiyorum": "Çay istiyorum", "var_mi": "Çay var mı?" },
+    "syllables": ["çay"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Demlenir.", "İnce belli bardakta içilir.", "Rize'de yetişir."],
+      "sentence": ["Kahvaltıda bir bardak …", "Demlikte … demleniyor."],
+      "firstSound": "ç…"
+    },
+    "features": { "group": "içecek", "use": "içmek", "place": "mutfak, kahvehane", "looks": "kızıl, sıcak" }
+  },
+  {
+    "id": "kahve",
+    "word": "kahve",
+    "category": "icecek",
+    "symbol": "symbols/coffee.svg",
+    "phrases": ["Orta şekerli kahve istiyorum"],
+    "forms": { "istiyorum": "Kahve istiyorum", "var_mi": "Kahve var mı?" },
+    "syllables": ["kah", "ve"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Cezvede pişirilir.", "Fincanda içilir.", "Köpüklü olur."],
+      "sentence": ["Bir fincan Türk …", "Yemekten sonra orta şekerli …"],
+      "firstSound": "k…"
+    },
+    "features": { "group": "içecek", "use": "içmek", "place": "mutfak", "looks": "koyu kahverengi" }
+  },
+  {
+    "id": "sut",
+    "word": "süt",
+    "category": "icecek",
+    "symbol": "symbols/milk.svg",
+    "phrases": ["Ilık süt istiyorum"],
+    "forms": { "istiyorum": "Süt istiyorum", "var_mi": "Süt var mı?" },
+    "syllables": ["süt"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["İnekten sağılır.", "Beyazdır.", "Yoğurdu ve peyniri yapılır."],
+      "sentence": ["Yatmadan önce bir bardak ılık …", "Kahvenin içine biraz …"],
+      "firstSound": "s…"
+    },
+    "features": { "group": "içecek", "use": "içmek", "place": "buzdolabı", "looks": "beyaz" }
+  },
+  {
+    "id": "meyve_suyu",
+    "word": "meyve suyu",
+    "category": "icecek",
+    "symbol": "symbols/orange_juice.svg",
+    "phrases": ["Soğuk meyve suyu istiyorum"],
+    "forms": { "istiyorum": "Meyve suyu istiyorum", "var_mi": "Meyve suyu var mı?" },
+    "syllables": ["mey", "ve", "su", "yu"],
+    "frequency": "low",
+    "level": 2,
+    "cues": {
+      "semantic": ["Meyveden sıkılır.", "Kutuda ya da şişede satılır.", "Tatlıdır."],
+      "sentence": ["Portakaldan taze … sıktım.", "Kahvaltıda bir bardak …"],
+      "firstSound": "m…"
+    },
+    "features": { "group": "içecek", "use": "içmek", "place": "buzdolabı", "looks": "renkli, sulu" }
+  }
+]

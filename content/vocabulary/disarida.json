@@ -1,0 +1,189 @@
+[
+  {
+    "id": "ev",
+    "word": "ev",
+    "category": "disarida",
+    "symbol": "symbols/house.svg",
+    "phrases": ["Eve dönelim"],
+    "forms": { "gitmek": "Eve gitmek istiyorum" },
+    "syllables": ["ev"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Ailenle yaşadığın yer.", "Kapısı, penceresi var.", "Akşam dönersin."],
+      "sentence": ["Yoruldum, … dönelim.", "Sıcak bir … gibisi yok."],
+      "firstSound": "e…"
+    },
+    "features": { "group": "yer", "use": "yaşamak", "place": "mahalle", "looks": "çatılı, kapılı" }
+  },
+  {
+    "id": "market",
+    "word": "market",
+    "category": "disarida",
+    "symbol": "symbols/shop.svg",
+    "phrases": ["Markete gidelim mi?"],
+    "forms": { "gitmek": "Markete gitmek istiyorum", "nerede": "Market nerede?" },
+    "syllables": ["mar", "ket"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Alışveriş yapılır.", "Ekmek, süt alınır.", "Kasada ödenir."],
+      "sentence": ["Süt bitti, … gidelim.", "Köşedeki … açık mı?"],
+      "firstSound": "m…"
+    },
+    "features": { "group": "yer", "use": "alışveriş", "place": "mahalle", "looks": "rafları olan dükkân" }
+  },
+  {
+    "id": "eczane",
+    "word": "eczane",
+    "category": "disarida",
+    "symbol": "symbols/medicine_cabinet.svg",
+    "phrases": ["İlacımı almam lazım"],
+    "forms": { "gitmek": "Eczaneye gitmek istiyorum", "nerede": "Eczane nerede?" },
+    "syllables": ["ec", "za", "ne"],
+    "frequency": "high",
+    "level": 2,
+    "cues": {
+      "semantic": ["İlaç satılır.", "Eczacı çalışır.", "Nöbetçisi gece açıktır."],
+      "sentence": ["Reçeteyi … götürdüm.", "Gece nöbetçi … açık."],
+      "firstSound": "e…"
+    },
+    "features": { "group": "yer", "use": "ilaç almak", "place": "hastane yanı", "looks": "kırmızı E harfli tabela" }
+  },
+  {
+    "id": "hastane",
+    "word": "hastane",
+    "category": "disarida",
+    "symbol": "symbols/ambulance.svg",
+    "phrases": ["Randevum var"],
+    "forms": { "gitmek": "Hastaneye gitmek istiyorum", "nerede": "Hastane nerede?" },
+    "syllables": ["has", "ta", "ne"],
+    "frequency": "medium",
+    "level": 2,
+    "cues": {
+      "semantic": ["Doktorlar orada çalışır.", "Hastalar yatar.", "Acil servisi var."],
+      "sentence": ["Kontrol için … gittim.", "Ambulans beni … götürdü."],
+      "firstSound": "h…"
+    },
+    "features": { "group": "yer", "use": "tedavi olmak", "place": "şehir", "looks": "büyük bina" }
+  },
+  {
+    "id": "banka",
+    "word": "banka",
+    "category": "disarida",
+    "symbol": "symbols/bank.svg",
+    "phrases": ["Emekli maaşımı çekmem lazım"],
+    "forms": { "gitmek": "Bankaya gitmek istiyorum", "nerede": "Banka nerede?" },
+    "syllables": ["ban", "ka"],
+    "frequency": "medium",
+    "level": 2,
+    "cues": {
+      "semantic": ["Para yatırılır.", "Maaş çekilir.", "Sıra numarası alınır."],
+      "sentence": ["Maaşımı çekmek için … gittim.", "Paramı … yatırdım."],
+      "firstSound": "b…"
+    },
+    "features": { "group": "yer", "use": "para işleri", "place": "çarşı", "looks": "camlı bina" }
+  },
+  {
+    "id": "para",
+    "word": "para",
+    "category": "disarida",
+    "symbol": "symbols/money.svg",
+    "phrases": ["Ne kadar?", "Paramı sayar mısın?"],
+    "forms": { "istiyorum": "Para istiyorum", "nerede": "Param nerede?" },
+    "syllables": ["pa", "ra"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Alışverişte ödenir.", "Kâğıt ve bozuk olur.", "Cüzdanda durur."],
+      "sentence": ["Ekmek almak için … lazım.", "Cüzdanımda biraz … var."],
+      "firstSound": "p…"
+    },
+    "features": { "group": "eşya", "use": "ödemek", "place": "cüzdan", "looks": "kâğıt, madeni" }
+  },
+  {
+    "id": "cuzdan",
+    "word": "cüzdan",
+    "category": "disarida",
+    "symbol": "symbols/wallet.svg",
+    "phrases": ["Cüzdanımı verir misin?"],
+    "forms": { "nerede": "Cüzdanım nerede?" },
+    "syllables": ["cüz", "dan"],
+    "frequency": "medium",
+    "level": 2,
+    "cues": {
+      "semantic": ["İçinde para durur.", "Cebe konur.", "Kimlik de içindedir."],
+      "sentence": ["Parayı … koydum.", "Kimliğim … içinde."],
+      "firstSound": "c…"
+    },
+    "features": { "group": "eşya", "use": "para taşımak", "place": "cep, çanta", "looks": "küçük, deri" }
+  },
+  {
+    "id": "araba",
+    "word": "araba",
+    "category": "disarida",
+    "symbol": "symbols/car.svg",
+    "phrases": ["Arabayla gidelim"],
+    "forms": { "nerede": "Araba nerede?" },
+    "syllables": ["a", "ra", "ba"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Yolda gider.", "Dört tekerleği var.", "Benzinle çalışır."],
+      "sentence": ["Oğlum beni … ile getirdi.", "… park yerinde."],
+      "firstSound": "a…"
+    },
+    "features": { "group": "araç", "use": "gitmek", "place": "yol", "looks": "tekerlekli" }
+  },
+  {
+    "id": "otobus",
+    "word": "otobüs",
+    "category": "disarida",
+    "symbol": "symbols/bus.svg",
+    "phrases": ["Otobüs ne zaman gelir?"],
+    "forms": { "nerede": "Otobüs durağı nerede?" },
+    "syllables": ["o", "to", "büs"],
+    "frequency": "medium",
+    "level": 2,
+    "cues": {
+      "semantic": ["Duraktan binilir.", "Çok kişi taşır.", "Kartla binilir."],
+      "sentence": ["Durakta … bekledim.", "Şehir merkezine … ile gittim."],
+      "firstSound": "o…"
+    },
+    "features": { "group": "araç", "use": "yolculuk", "place": "durak", "looks": "uzun, büyük" }
+  },
+  {
+    "id": "taksi",
+    "word": "taksi",
+    "category": "disarida",
+    "symbol": "symbols/taxi.svg",
+    "phrases": ["Taksi çağırır mısın?"],
+    "forms": { "istiyorum": "Taksi istiyorum" },
+    "syllables": ["tak", "si"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Sarı renkli araba.", "Taksimetre çalışır.", "Duraktan çağrılır."],
+      "sentence": ["Geç kaldık, bir … çağıralım.", "Sarı … kapıda bekliyor."],
+      "firstSound": "t…"
+    },
+    "features": { "group": "araç", "use": "gitmek", "place": "durak, yol", "looks": "sarı" }
+  },
+  {
+    "id": "disari",
+    "word": "dışarı",
+    "category": "disarida",
+    "symbol": "symbols/go_outside_to.svg",
+    "phrases": ["Biraz hava almak istiyorum", "Yürüyüşe çıkalım mı?"],
+    "forms": { "gitmek": "Dışarı çıkmak istiyorum" },
+    "syllables": ["dı", "şa", "rı"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Evin içi değil.", "Hava alınır.", "Bahçe, sokak."],
+      "sentence": ["Hava güzel, … çıkalım.", "İçerisi değil, …"],
+      "firstSound": "d…"
+    },
+    "features": { "group": "yer", "use": "hava almak, yürümek", "place": "sokak, bahçe", "looks": "açık hava" }
+  }
+]

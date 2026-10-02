@@ -1,0 +1,121 @@
+[
+  {
+    "id": "es",
+    "word": "eşim",
+    "category": "kisiler",
+    "symbol": "symbols/hold_hands_to.svg",
+    "phrases": ["Eşimi arar mısın?", "Eşimi görmek istiyorum"],
+    "forms": { "nerede": "Eşim nerede?" },
+    "syllables": ["e", "şim"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Hayatını paylaştığın kişi.", "Evlendiğin kişi.", "Aynı evde yaşarsınız."],
+      "sentence": ["Yıllardır birlikte yaşıyoruz, o benim …", "Düğünümüzde yanımdaki kişi …"],
+      "firstSound": "e…"
+    },
+    "features": { "group": "aile", "use": "birlikte yaşamak", "place": "ev", "looks": "en yakınım" }
+  },
+  {
+    "id": "kizim",
+    "word": "kızım",
+    "category": "kisiler",
+    "symbol": "symbols/daughter.svg",
+    "phrases": ["Kızımı arar mısın?", "Kızımı görmek istiyorum"],
+    "forms": { "nerede": "Kızım nerede?" },
+    "syllables": ["kı", "zım"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Senin çocuğun.", "Kız evladın.", "Annesi ya da babası sensin."],
+      "sentence": ["Oğlum değil, …", "Annesiyim, o benim …"],
+      "firstSound": "k…"
+    },
+    "features": { "group": "aile", "use": "sevmek, konuşmak", "place": "ev", "looks": "kız evlat" }
+  },
+  {
+    "id": "oglum",
+    "word": "oğlum",
+    "category": "kisiler",
+    "symbol": "symbols/son.svg",
+    "phrases": ["Oğlumu arar mısın?", "Oğlumu görmek istiyorum"],
+    "forms": { "nerede": "Oğlum nerede?" },
+    "syllables": ["oğ", "lum"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Senin çocuğun.", "Erkek evladın.", "Annesi ya da babası sensin."],
+      "sentence": ["Kızım değil, …", "Babasıyım, o benim …"],
+      "firstSound": "o…"
+    },
+    "features": { "group": "aile", "use": "sevmek, konuşmak", "place": "ev", "looks": "erkek evlat" }
+  },
+  {
+    "id": "torunum",
+    "word": "torunum",
+    "category": "kisiler",
+    "symbol": "symbols/grandparents.svg",
+    "phrases": ["Torunumu görmek istiyorum", "Torunumla konuşmak istiyorum"],
+    "forms": { "nerede": "Torunum nerede?" },
+    "syllables": ["to", "ru", "num"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Çocuğunun çocuğu.", "Sana dede ya da nine der.", "Ailenin en küçüklerinden."],
+      "sentence": ["Kızımın oğlu, benim …", "Bayramda elimi öpen …"],
+      "firstSound": "t…"
+    },
+    "features": { "group": "aile", "use": "sevmek, oynamak", "place": "ev", "looks": "küçük ya da genç" }
+  },
+  {
+    "id": "annem",
+    "word": "annem",
+    "category": "kisiler",
+    "symbol": "symbols/mum_parent.svg",
+    "phrases": ["Annemi arar mısın?", "Annemi özledim"],
+    "forms": { "nerede": "Annem nerede?" },
+    "syllables": ["an", "nem"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Seni doğuran kişi.", "Babanın eşi.", "Sana ninni söylerdi."],
+      "sentence": ["Babam ve …", "Beni dünyaya getiren …"],
+      "firstSound": "a…"
+    },
+    "features": { "group": "aile", "use": "sevmek", "place": "ev", "looks": "kadın" }
+  },
+  {
+    "id": "babam",
+    "word": "babam",
+    "category": "kisiler",
+    "symbol": "symbols/dad_parent.svg",
+    "phrases": ["Babamı arar mısın?", "Babamı özledim"],
+    "forms": { "nerede": "Babam nerede?" },
+    "syllables": ["ba", "bam"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Annenin eşi.", "Seni büyüten adam.", "Ailenin büyüğü."],
+      "sentence": ["Annem ve …", "Bana bisiklet sürmeyi öğreten …"],
+      "firstSound": "b…"
+    },
+    "features": { "group": "aile", "use": "sevmek", "place": "ev", "looks": "erkek" }
+  },
+  {
+    "id": "ailem",
+    "word": "ailem",
+    "category": "kisiler",
+    "symbol": "symbols/family.svg",
+    "phrases": ["Ailemi görmek istiyorum", "Ailemi arar mısın?"],
+    "forms": { "nerede": "Ailem nerede?" },
+    "syllables": ["a", "i", "lem"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Eşin, çocukların, torunların.", "En yakınların.", "Bayramda bir araya gelirsiniz."],
+      "sentence": ["Bayramda bütün … toplandı.", "Akrabalarım, yani …"],
+      "firstSound": "a…"
+    },
+    "features": { "group": "aile", "use": "birlikte olmak", "place": "ev", "looks": "kalabalık" }
+  }
+]

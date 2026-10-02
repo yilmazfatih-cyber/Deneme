@@ -1,0 +1,37 @@
+[
+  { "id": "evet", "label": "Evet", "speak": "Evet", "icon": "yes", "tone": "yes" },
+  { "id": "hayir", "label": "Hayır", "speak": "Hayır", "icon": "no", "tone": "no" },
+  { "id": "agri", "label": "Ağrım var", "speak": "Ağrım var", "symbol": "symbols/headache.svg", "tone": "urgent" },
+  {
+    "id": "su",
+    "label": "Su",
+    "speak": "Su istiyorum",
+    "symbol": "symbols/water.svg",
+    "wordId": "su",
+    "tone": "neutral"
+  },
+  {
+    "id": "tuvalet",
+    "label": "Tuvalet",
+    "speak": "Tuvalete gitmek istiyorum",
+    "symbol": "symbols/toilet.svg",
+    "wordId": "tuvalet",
+    "tone": "neutral"
+  },
+  {
+    "id": "yardim",
+    "label": "Yardım",
+    "speak": "Yardım eder misiniz?",
+    "symbol": "symbols/help_to.svg",
+    "tone": "urgent"
+  },
+  {
+    "id": "bekle",
+    "label": "Bekle",
+    "speak": "Biraz bekler misiniz?",
+    "symbol": "symbols/wait_to.svg",
+    "tone": "neutral"
+  },
+  { "id": "tekrar", "label": "Tekrar et", "speak": "Tekrar eder misiniz?", "icon": "repeat", "tone": "neutral" },
+  { "id": "bilmiyorum", "label": "Bilmiyorum", "speak": "Bilmiyorum", "icon": "unknown", "tone": "neutral" }
+]

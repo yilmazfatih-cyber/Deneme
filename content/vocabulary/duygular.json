@@ -1,0 +1,194 @@
+[
+  {
+    "id": "mutlu",
+    "word": "mutlu",
+    "category": "duygular",
+    "symbol": "symbols/happy_lady.svg",
+    "symbolVariants": { "kadin": "symbols/happy_lady.svg", "erkek": "symbols/happy_man.svg" },
+    "phrases": ["Mutluyum", "Bugün iyiyim"],
+    "forms": {},
+    "syllables": ["mut", "lu"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Sevinçli olmak.", "Gülümsersin.", "Üzgünün tersi."],
+      "sentence": ["Torunum geldi, çok …", "Üzgün değilim, …"],
+      "firstSound": "m…"
+    },
+    "features": { "group": "duygu", "use": "sevinmek", "place": "yüz", "looks": "gülümseyen" }
+  },
+  {
+    "id": "uzgun",
+    "word": "üzgün",
+    "category": "duygular",
+    "symbol": "symbols/sad_lady.svg",
+    "symbolVariants": { "kadin": "symbols/sad_lady.svg", "erkek": "symbols/sad_man.svg" },
+    "phrases": ["Üzgünüm", "Canım sıkkın"],
+    "forms": {},
+    "syllables": ["üz", "gün"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Mutlunun tersi.", "Ağlamaklı olursun.", "Kötü bir haber alınca."],
+      "sentence": ["Kötü haber aldım, çok …", "Mutlu değilim, …"],
+      "firstSound": "ü…"
+    },
+    "features": { "group": "duygu", "use": "üzülmek", "place": "yüz", "looks": "dudaklar aşağı" }
+  },
+  {
+    "id": "kizgin",
+    "word": "kızgın",
+    "category": "duygular",
+    "symbol": "symbols/angry_lady.svg",
+    "symbolVariants": { "kadin": "symbols/angry_lady.svg", "erkek": "symbols/angry_man.svg" },
+    "phrases": ["Kızgınım", "Buna sinirlendim"],
+    "forms": {},
+    "syllables": ["kız", "gın"],
+    "frequency": "medium",
+    "level": 2,
+    "cues": {
+      "semantic": ["Sinirli olmak.", "Kaşlar çatılır.", "Sakinin tersi."],
+      "sentence": ["Beni dinlemediler, çok …", "Sinirliyim, yani …"],
+      "firstSound": "k…"
+    },
+    "features": { "group": "duygu", "use": "sinirlenmek", "place": "yüz", "looks": "kaşlar çatık" }
+  },
+  {
+    "id": "korkmus",
+    "word": "korkmuş",
+    "category": "duygular",
+    "symbol": "symbols/afraid_lady.svg",
+    "symbolVariants": { "kadin": "symbols/afraid_lady.svg", "erkek": "symbols/afraid_man.svg" },
+    "phrases": ["Korkuyorum", "Yanımda kal"],
+    "forms": {},
+    "syllables": ["kork", "muş"],
+    "frequency": "medium",
+    "level": 2,
+    "cues": {
+      "semantic": ["Ürkmek.", "Kalbin hızlı atar.", "Karanlıkta olabilir."],
+      "sentence": ["Gök gürledi, çok …", "Endişeli ve …"],
+      "firstSound": "k…"
+    },
+    "features": { "group": "duygu", "use": "ürkmek", "place": "yüz", "looks": "gözler açık" }
+  },
+  {
+    "id": "endiseli",
+    "word": "endişeli",
+    "category": "duygular",
+    "symbol": "symbols/worried_lady.svg",
+    "symbolVariants": { "kadin": "symbols/worried_lady.svg", "erkek": "symbols/worried_man.svg" },
+    "phrases": ["Endişeliyim", "Aklım takıldı"],
+    "forms": {},
+    "syllables": ["en", "di", "şe", "li"],
+    "frequency": "medium",
+    "level": 3,
+    "cues": {
+      "semantic": ["Kaygılı olmak.", "Aklın bir şeye takılır.", "Rahat edemezsin."],
+      "sentence": ["Sonuçları bekliyorum, biraz …", "Kaygılıyım, yani …"],
+      "firstSound": "e…"
+    },
+    "features": { "group": "duygu", "use": "kaygılanmak", "place": "yüz", "looks": "alın kırışık" }
+  },
+  {
+    "id": "yorgun",
+    "word": "yorgun",
+    "category": "duygular",
+    "symbol": "symbols/yawn_to.svg",
+    "phrases": ["Yoruldum", "Dinlenmek istiyorum"],
+    "forms": {},
+    "syllables": ["yor", "gun"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Enerjin kalmaz.", "Esnersin.", "Dinlenmek istersin."],
+      "sentence": ["Çok yürüdüm, … düştüm.", "Uykum var, çok …"],
+      "firstSound": "y…"
+    },
+    "features": { "group": "duygu", "use": "dinlenmek istemek", "place": "beden", "looks": "esneyen" }
+  },
+  {
+    "id": "ac",
+    "word": "aç",
+    "category": "duygular",
+    "symbol": "symbols/hungry.svg",
+    "phrases": ["Acıktım", "Karnım aç"],
+    "forms": {},
+    "syllables": ["aç"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Yemek istersin.", "Karnın guruldar.", "Tokun tersi."],
+      "sentence": ["Sabahtan beri bir şey yemedim, çok …", "Tok değilim, …"],
+      "firstSound": "a…"
+    },
+    "features": { "group": "his", "use": "yemek istemek", "place": "karın", "looks": "yemek düşünen" }
+  },
+  {
+    "id": "susamis",
+    "word": "susamış",
+    "category": "duygular",
+    "symbol": "symbols/thirsty.svg",
+    "phrases": ["Susadım", "Su içmek istiyorum"],
+    "forms": {},
+    "syllables": ["su", "sa", "mış"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Su istersin.", "Ağzın kurur.", "Sıcakta olur."],
+      "sentence": ["Hava çok sıcak, çok …", "Bir bardak su ver, …"],
+      "firstSound": "s…"
+    },
+    "features": { "group": "his", "use": "içmek istemek", "place": "ağız", "looks": "içecek düşünen" }
+  },
+  {
+    "id": "sicak",
+    "word": "sıcak",
+    "category": "duygular",
+    "symbol": "symbols/hot_person.svg",
+    "phrases": ["Sıcakladım", "Pencereyi açar mısın?"],
+    "forms": {},
+    "syllables": ["sı", "cak"],
+    "frequency": "medium",
+    "level": 1,
+    "cues": {
+      "semantic": ["Terlersin.", "Yazın olur.", "Soğuğun tersi."],
+      "sentence": ["Kalorifer yanıyor, çok …", "Soğuk değil, …"],
+      "firstSound": "s…"
+    },
+    "features": { "group": "his", "use": "serinlemek istemek", "place": "beden", "looks": "terleyen" }
+  },
+  {
+    "id": "iyi",
+    "word": "iyi",
+    "category": "duygular",
+    "symbol": "symbols/good.svg",
+    "phrases": ["İyiyim", "Çok iyi"],
+    "forms": {},
+    "syllables": ["i", "yi"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["Kötünün tersi.", "Başparmak yukarı.", "Her şey yolunda."],
+      "sentence": ["Nasılsın? …", "Kötü değil, …"],
+      "firstSound": "i…"
+    },
+    "features": { "group": "durum", "use": "onaylamak", "place": "el işareti", "looks": "başparmak yukarı" }
+  },
+  {
+    "id": "kotu",
+    "word": "kötü",
+    "category": "duygular",
+    "symbol": "symbols/bad.svg",
+    "phrases": ["Kendimi kötü hissediyorum", "Hiç iyi değil"],
+    "forms": {},
+    "syllables": ["kö", "tü"],
+    "frequency": "high",
+    "level": 1,
+    "cues": {
+      "semantic": ["İyinin tersi.", "Başparmak aşağı.", "Bir şey yolunda değil."],
+      "sentence": ["Bugün kendimi … hissediyorum.", "İyi değil, …"],
+      "firstSound": "k…"
+    },
+    "features": { "group": "durum", "use": "itiraz etmek", "place": "el işareti", "looks": "başparmak aşağı" }
+  }
+]

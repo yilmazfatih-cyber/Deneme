@@ -1,0 +1,33 @@
+[
+  { "id": "kisiler", "label": "Kişiler", "fitz": "kisiler", "symbol": "symbols/family.svg" },
+  { "id": "yiyecek", "label": "Yiyecek", "fitz": "nesneler", "symbol": "symbols/dinner_hot.svg" },
+  {
+    "id": "kahvalti",
+    "label": "Kahvaltı",
+    "parent": "yiyecek",
+    "fitz": "nesneler",
+    "symbol": "symbols/breakfast_1.svg"
+  },
+  { "id": "yemekler", "label": "Yemekler", "parent": "yiyecek", "fitz": "nesneler", "symbol": "symbols/soup.svg" },
+  {
+    "id": "meyve_tatli",
+    "label": "Meyve ve tatlı",
+    "parent": "yiyecek",
+    "fitz": "nesneler",
+    "symbol": "symbols/fruit.svg"
+  },
+  { "id": "icecek", "label": "İçecek", "fitz": "nesneler", "symbol": "symbols/tea.svg" },
+  { "id": "saglik", "label": "Sağlık", "fitz": "nesneler", "symbol": "symbols/tablets.svg" },
+  { "id": "vucut", "label": "Vücut", "fitz": "nesneler", "symbol": "symbols/headache.svg" },
+  { "id": "ev", "label": "Evim", "fitz": "yerler", "symbol": "symbols/house.svg" },
+  { "id": "ev_esyalari", "label": "Eşyalar", "parent": "ev", "fitz": "nesneler", "symbol": "symbols/lamp.svg" },
+  { "id": "mutfak", "label": "Mutfak", "parent": "ev", "fitz": "nesneler", "symbol": "symbols/teapot.svg" },
+  { "id": "bakim", "label": "Bakım", "parent": "ev", "fitz": "nesneler", "symbol": "symbols/towel.svg" },
+  { "id": "giyim", "label": "Giyim", "parent": "ev", "fitz": "nesneler", "symbol": "symbols/shirt.svg" },
+  { "id": "disarida", "label": "Dışarıda", "fitz": "yerler", "symbol": "symbols/go_outside_to.svg" },
+  { "id": "eylemler", "label": "Yapmak", "fitz": "eylemler", "symbol": "symbols/walk_to.svg" },
+  { "id": "duygular", "label": "Duygular", "fitz": "duygular", "symbol": "symbols/happy_lady.svg" },
+  { "id": "sorular", "label": "Sorular", "fitz": "sorular", "symbol": "symbols/what.svg" },
+  { "id": "sohbet", "label": "Sohbet", "fitz": "sosyal", "symbol": "symbols/hello.svg" },
+  { "id": "hobiler", "label": "Hobilerim", "fitz": "nesneler", "symbol": "symbols/football.svg" }
+]
