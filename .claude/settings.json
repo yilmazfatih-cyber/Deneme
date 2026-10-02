@@ -19,6 +19,7 @@
       "Bash(git diff:*)",
       "Bash(git log:*)"
     ],
-    "deny": ["Bash(git push:*)", "Bash(rm -rf /:*)", "Read(./.env)", "Read(./.env.*)"]
+    "deny": ["Bash(rm -rf /:*)", "Read(./.env)", "Read(./.env.*)"],
+    "ask": ["Bash(git push:*)"]
   }
 }

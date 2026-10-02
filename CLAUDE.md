@@ -76,4 +76,4 @@ Engel varsa iş geri döner; Önemli olanlar aynı sprintte kapanır; Öneriler 
 4. **İnsan kapısı** (proje sahibi, mümkünse bir DKT ile): telefonda demo.
 
 Bir sprintte en fazla **3 düzeltme turu**. Üçüncü turdan sonra Engel kalırsa lider durur, seçenekleri `demo.md`'ye yazar ve sorar.
-Commit ancak insan onayından sonra atılır; `git push` insan tarafından yapılır.
+Commit ancak insan onayından sonra atılır; `git push` her seferinde insan onayı ister.
