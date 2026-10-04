@@ -248,7 +248,7 @@ matrisindedir; özetle: `debris` hiçbir başka bayrakla birleşmez; `glass`+`ba
 ağır yerçekiminde zaman baskısı ve saha yerçekiminde istenmeyen zincirleme kaymalar bölüm tasarımında bilinçli
 kullanılır; her biri gölge ya da görünür bir göstergeyle önceden okunabilir olmalıdır.
 
-### K-34 Alttan Üste (destek) kuralı — YENİ
+### K-34 Alttan Üste (destek) kuralı — YENİ (öneri P-1)
 **Kural:** Şantiyede bir yerleşimin doğru sayılması için, bloğun kapladığı her sütun `c` ve o sütundaki en alt hücre
 satırı `r` için, plan satırları `0 … r−1` içindeki `.` olmayan her hücre doğru dolu olmalıdır. Yani yapı her sütunda
 alttan üste kurulur; bir bloğun altında doldurulması gereken boş hücre (gömülü delik) bırakılamaz. `.` hücreleri bu
@@ -269,7 +269,7 @@ sütun 7'de r=2, satır 1 `.` (dolu sayılır), satır 0 dolu → doğru.
 
 Şantiye modu `build.mode` ile seçilir: `segments` (S1, varsayılan) ya da `carousel` (S5). Asansör (S6) moddan bağımsız
 bir eklentidir: `build.elevator` alanı varsa her iki modla birlikte çalışır (Bölüm 40'ta döner platform + asansör;
-TECH_DESIGN S-16/P-6 ile uyumlu, bkz. Önerilen karar P-4).
+TECH_DESIGN S-16 ve code-lead'in önerisiyle uyumlu; bkz. öneri P-4).
 
 ### K-22 `segments` — Kayan Şantiye (S1)
 **Kural:** Plan S dilimden oluşur (1 ≤ S ≤ 5; her dilim 2 sütun × en çok 8 satır). Bir anda yalnızca aktif dilim
@@ -415,7 +415,7 @@ döndüremez; yalnızca Vinç döndürür.
 **Kural:** Seri sayacı `c` bölüm başında 0'dır. Her doğru yerleşimde (sürükleme hamlesiyle) `c += 1`; `c = 4` olunca
 oyuncu 1 Altın Mala kazanır ve `c = 0` olur. Hatalı yerleşim (geri sekme, harç yapışması) ve cam kırılması `c = 0`
 yapar. Saha hamleleri, güçlendiriciler ve Altın Mala kullanımı `c`'yi değiştirmez; Geri Al `c`'yi hamle öncesi değerine
-döndürür. Altın Mala kullanımı: oyuncu malaya, sonra aktif (öndeki) dilimde **K-34'ü sağlayan** boş, `.` olmayan bir
+döndürür. Altın Mala kullanımı (K-34 kısıtı öneri P-1'in parçası): oyuncu malaya, sonra aktif (öndeki) dilimde **K-34'ü sağlayan** boş, `.` olmayan bir
 plan hücresine dokunur; hücre doğru renkle dolar ve kilitlenir (`?` ise açılır). "Destek gerektirmez" şu demektir:
 fiziksel taşıyıcı gerekmez, `.` üstündeki hücre de doldurulabilir; ama altında boş renkli hücre bırakılamaz (K-34).
 Altın Mala bölümler arasında taşınmaz; kazanınca kalanlar altına dönüşür (K-28), kaybedince yok olur.
@@ -473,7 +473,7 @@ Galibiyet serisi bonusu (META.md) aynı anda uygulanır ve güçlendiricilerle t
 
 ## 11. Bölüm akışı, şekiller, veri
 
-### K-43 Duraklatma ve bölümden çıkma — YENİ
+### K-43 Duraklatma ve bölümden çıkma — YENİ (`m = 0` cezasız çıkış: öneri P-7)
 **Kural:** Duraklatma sırasında hiçbir şey ilerlemez (G-H sayacı ve animasyonlar dahil). Bölümden çıkış onay ister.
 `m ≥ 1` iken çıkış **kayıp** sayılır (1 can, seri sıfırlanır, Köprü'de elenme). `m = 0` iken çıkış cezasızdır ve oyun
 öncesi güçlendiriciler iade edilir. Uygulama bölüm ortasında kapanırsa bir sonraki açılışta aynı kurallarla çıkış
@@ -572,7 +572,7 @@ Her satır bir test senaryosudur (test adı "E-xx …" ve ilgili K kimliği).
 | E-05 | Kepenk kapanırken şantiyede, geçit satırında raydan konmuş blok var | Blok yerinde kalır; kepenk yalnızca duvar sütununu kapatır, şantiye hücrelerini etkilemez | W4, K-12 |
 | E-06 | Blok, bir hücresi geçit (duvar sütunu) içindeyken bırakılır | İptal, hamle harcanmaz; kepenk/kayar kapı sürükleme sırasında değişmediği için "kapanırken içinde blok" oluşamaz | K-04, K-07 |
 | E-07 | Kayar kapı, sahada geçide komşu blok varken kayar | Hiçbir blok itilmez; kapı yalnızca duvar sütunundaki açık satırları değiştirir | W5 |
-| E-08 | Asansör yükselirken şantiyede yapışmış harçlı blok var | Harçlı blok yalnızca bütün hücreleri plan alanında (renkli ya da `.`) ise yapışır, değilse geri seker; bu yüzden h + b ≤ 8 ile tahta dışına çıkamaz | Y8, K-24 |
+| E-08 | Asansör yükselirken şantiyede yapışmış harçlı blok var | Harçlı blok yalnızca bütün hücreleri plan alanında (renkli ya da `.`) ise yapışır, değilse geri seker (öneri P-2b); bu yüzden h + b ≤ 8 ile tahta dışına çıkamaz | Y8, K-24 |
 | E-09 | Dilim Altın Mala ile tamamlanır | Mini hat: adım 8 kayma ve parti, 9 teslimat, 11 kazanma; `m` artmaz, zamanlayıcılar ilerlemez | K-33, K-35 |
 | E-10 | Anahtar açığa çıkar | Adım 5/6'da toplanır, Kilitli Geçit aynı anda açılır; ilk kullanım bir sonraki hamlede | W7, K-42 |
 | E-11 | Taşınan bloğun başlangıç hücrelerinden ikisi aynı kasaya komşu | Kasa yalnızca 1 kat kaybeder | Y1, K-35 |
@@ -625,7 +625,7 @@ Brif §12 veri tipine product-lead'in istediği ekler (kesin şema TECH_DESIGN'd
 | S-5 | İptal, hamle harcanmaz (K-07 satır 4). |
 | S-6 | Hamle sonunda; sürüklemede tahta donuk (K-08, K-35). |
 | S-7 | Başlangıç hücrelerinin 4-komşuluğu; saha yerçekimi düşüşleri sayılır (düşüş öncesi hücreler), teslimat sayılmaz; engel başına hamlede en çok 1 (K-35 adım 5–6). |
-| S-8 | Bırakınca, düşüşten önce, 1 sütun; hedef duvar/kenar/dolu ise kayma yok; ray etkilenmez. **Ek:** bırakma anında d = 0 (blok siluete oturmuş) ise kayma yok (W8). |
+| S-8 | Bırakınca, düşüşten önce, 1 sütun; hedef duvar/kenar/dolu ise kayma yok; ray etkilenmez. **Ek:** bırakma anında d = 0 (blok siluete oturmuş) ise kayma yok (W8, öneri P-2a). |
 | S-9 | **Farklı:** Şantiyede tavan aktif dilimin plan tepesidir (tahta satırı h + e); sahada y=7. Gerekçe ve öneri P-3. |
 | S-10 | d > eşik; d bırakma satırından; geri sekme ve teslimat düşüşünde cam kırılmaz (S3). |
 | S-11 | Kuyruğun sonuna (K-17). |

@@ -76,7 +76,7 @@ sahibi product-lead, ses tonu ve balon tasarımı design-lead'indir.
 - **Bölge:** duvar (şantiye üstüne eser) · **İlk bölüm:** 32
 - **Kural:** Serbest kipte şantiyeye bırakılan, genişliği 1 olan blok (balon dahil) düşmeden/yükselmeden önce `dir`
   yönünde 1 sütun kayar; koşullar: (a) bırakma anında d ≥ 1 (blok siluete oturmuş değil), (b) kaymış konum x=6–7
-  içinde, (c) kaymış konumun hücreleri boş ve açık gökyüzü koşulunu sağlıyor. Koşul tutmazsa kayma yok. Genişliği 2
+  içinde, (c) kaymış konumun hücreleri boş ve açık gökyüzü koşulunu sağlıyor. Koşul tutmazsa kayma yok. (a) maddesi öneri P-2a'dır. Genişliği 2
   olan bloklar, ray kipi, Vinç güçlendiricisi etkilenmez. Gölge kaymış inişi gösterir (GDD K-18).
 - **Veri:** `wall.fan: { dir: "left" | "right" }`.
 - **Örnek:** `dir right`; `B1` (6,7)'de bırakılır, top(6)=2, top(7)=3 → (7,7) boş → kayar → (7,3)'e iner.
@@ -148,7 +148,7 @@ sahibi product-lead, ses tonu ve balon tasarımı design-lead'indir.
 ### Y8 — Harçlı Blok
 - **Bölge:** saha (etkisi şantiyede) · **İlk bölüm:** 35
 - **Kural:** `mortar` bayraklı blok şantiyede hatalı yerleşirse ve bütün hücreleri plan alanında (renkli, `?` ya da `.`
-  hücre) ise geri sekmez, **yapışır** (kilitli değildir). Bir hücresi plan dışındaysa normal geri seker. Yapışmış blok
+  hücre) ise geri sekmez, **yapışır** (kilitli değildir). Bir hücresi plan dışındaysa normal geri seker (öneri P-2b). Yapışmış blok
   sürüklenebilir; iptal olmayan her hamlesi 2 hamle yer. Çekiçle kırılır, Boya Fırçası ile boyanırsa ve yeni renkle
   doğruysa kilitlenir, Vinçle taşınır. Yapışmış blok dilimin tamamlanmasını engeller (GDD K-15) ve üstüne doğru
   yerleşim yapılamaz (K-34). Doğru yerleşirse normal kilitlenir.
@@ -216,7 +216,7 @@ sahibi product-lead, ses tonu ve balon tasarımı design-lead'indir.
 - **Bölge:** şantiye ve saha · **İlk bölüm:** 38
 - **Kural:** `balloon` bayraklı blok bırakılınca yükselir. Sahada: üstündeki ilk dolu hücreye ya da y=7'ye kadar.
   Şantiyede serbest kipte: bırakma yüksekliğinden bağımsız olarak sütunlarının **tavanına** asılır; tavan = aktif dilimin
-  plan tepesi (bloğun en üst hücresi satır `h + e − 1`); bloğun sütunlarında siluet tavana ulaşmışsa blok siluetin üstünde
+  plan tepesi (bloğun en üst hücresi satır `h + e − 1`; öneri P-3); bloğun sütunlarında siluet tavana ulaşmışsa blok siluetin üstünde
   kalır (plan dışı → hatalı). Rayda bırakılan balon hareket etmez. Saha yerçekimi açıkken adım 6'da yükselir. Rüzgâr
   (genişlik 1) önce kaydırır; G-L yönlendirmesi yükselişte de kullanılabilir. Doğrulama K-16 ve K-34 iledir.
 - **Veri:** `flags: ["balloon"]`.

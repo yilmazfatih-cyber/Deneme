@@ -1,0 +1,188 @@
+{
+  "version": 1,
+  "source": "docs/META.md (product-lead, 2026-10-04). Real-money prices are owned by entrepreneur (docs/BUSINESS.md).",
+  "currency": "coins",
+  "startingWallet": {
+    "coins": 500,
+    "lives": 5,
+    "boosters": {
+      "hammer": 0,
+      "crane": 0,
+      "undo": 0,
+      "paintBrush": 0,
+      "thermos": 0,
+      "trowelStart": 0,
+      "openShutter": 0
+    }
+  },
+  "stars": { "perWin": 1, "perMasterModeWin": 0 },
+  "lives": {
+    "max": 5,
+    "regenMinutes": 30,
+    "reserveOnLevelStart": true,
+    "refundOnWin": true,
+    "refillFullCost": 900,
+    "rewardedAdLifePerDay": "entrepreneur_tbd"
+  },
+  "levelRewards": {
+    "winCoins": { "easy": 20, "normal": 30, "hard": 50, "superhard": 75 },
+    "bonusCoinsPerMoveLeft": 3,
+    "bonusMaxMovesCounted": 10,
+    "coinsPerLeftoverTrowel": 10
+  },
+  "outOfMoves": {
+    "extraMoves": 5,
+    "offerCosts": [900, 1350, 1800],
+    "maxOffersPerAttempt": 3,
+    "rewardedAdOffer": "entrepreneur_tbd"
+  },
+  "boosters": {
+    "hammer": { "kind": "inLevel", "unlockLevel": 8, "freeTrials": 3, "price": 600 },
+    "crane": { "kind": "inLevel", "unlockLevel": 10, "freeTrials": 2, "price": 900 },
+    "undo": { "kind": "inLevel", "unlockLevel": 13, "freeTrials": 3, "price": 300 },
+    "paintBrush": { "kind": "inLevel", "unlockLevel": 22, "freeTrials": 2, "price": 600 },
+    "thermos": { "kind": "preLevel", "unlockLevel": 12, "freeTrials": 3, "price": 450, "extraMoves": 3 },
+    "trowelStart": { "kind": "preLevel", "unlockLevel": 16, "freeTrials": 2, "price": 600, "trowels": 1 },
+    "openShutter": {
+      "kind": "preLevel",
+      "unlockLevel": 20,
+      "freeTrials": 2,
+      "price": 600,
+      "openForMoves": 5,
+      "requiresGapTypes": ["shutter", "locked"]
+    }
+  },
+  "combo": { "correctPlacementsPerTrowel": 4 },
+  "winStreak": {
+    "unlockLevel": 15,
+    "tiers": [
+      { "tier": 0, "minStreak": 0, "trowels": 0, "extraMoves": 0 },
+      { "tier": 1, "minStreak": 1, "trowels": 1, "extraMoves": 0 },
+      { "tier": 2, "minStreak": 2, "trowels": 1, "extraMoves": 2 },
+      { "tier": 3, "minStreak": 3, "trowels": 2, "extraMoves": 3 }
+    ]
+  },
+  "dailyReward": {
+    "unlockDay": 2,
+    "resetOnMissedDay": false,
+    "rewardedAdDoublesCoins": "entrepreneur_tbd",
+    "cycle": [
+      { "day": 1, "coins": 50 },
+      { "day": 2, "boosters": { "hammer": 1 } },
+      { "day": 3, "coins": 75 },
+      { "day": 4, "boosters": { "thermos": 1 } },
+      { "day": 5, "coins": 100 },
+      { "day": 6, "boosters": { "undo": 1 } },
+      { "day": 7, "coins": 200, "boosters": { "crane": 1 }, "unlimitedLivesMinutes": 15 }
+    ]
+  },
+  "levelChest": {
+    "everyLevels": 10,
+    "rewards": [
+      { "afterLevel": 10, "coins": 200, "boosters": { "hammer": 1, "thermos": 1 } },
+      { "afterLevel": 20, "coins": 250, "boosters": { "crane": 1, "trowelStart": 1 } },
+      {
+        "afterLevel": 30,
+        "coins": 300,
+        "boosters": { "paintBrush": 1, "openShutter": 1 },
+        "unlimitedLivesMinutes": 30
+      },
+      { "afterLevel": 40, "coins": 350, "boosters": { "hammer": 2, "crane": 1 } },
+      {
+        "afterLevel": 50,
+        "coins": 500,
+        "boosters": {
+          "hammer": 1,
+          "crane": 1,
+          "undo": 1,
+          "paintBrush": 1,
+          "thermos": 1,
+          "trowelStart": 1,
+          "openShutter": 1
+        },
+        "unlimitedLivesMinutes": 60
+      }
+    ]
+  },
+  "piggyBank": {
+    "unlockLevel": 20,
+    "coinsPerWin": { "easy": 20, "normal": 20, "hard": 30, "superhard": 40 },
+    "capacity": 3000,
+    "breakableAt": 1500,
+    "breakPrice": "entrepreneur_tbd"
+  },
+  "shop": { "unlockLevel": 5, "coinPacks": "entrepreneur_tbd", "starterPack": "entrepreneur_tbd" },
+  "masterMode": {
+    "status": "proposal_P-8",
+    "afterLevel": 50,
+    "levels": [11, 50],
+    "movesBuffer": 2,
+    "awardsStars": false
+  },
+  "town": {
+    "starsPerChapter": 10,
+    "chapters": [
+      {
+        "chapter": 1,
+        "tasks": [
+          { "id": "c1_t1", "nameKey": "town.c1.t1", "stars": 1 },
+          { "id": "c1_t2", "nameKey": "town.c1.t2", "stars": 1 },
+          { "id": "c1_t3", "nameKey": "town.c1.t3", "stars": 2 },
+          { "id": "c1_t4", "nameKey": "town.c1.t4", "stars": 2 },
+          { "id": "c1_t5", "nameKey": "town.c1.t5", "stars": 2 },
+          { "id": "c1_t6", "nameKey": "town.c1.t6", "stars": 2 }
+        ]
+      },
+      {
+        "chapter": 2,
+        "tasks": [
+          { "id": "c2_t1", "nameKey": "town.c2.t1", "stars": 1 },
+          { "id": "c2_t2", "nameKey": "town.c2.t2", "stars": 1 },
+          { "id": "c2_t3", "nameKey": "town.c2.t3", "stars": 1 },
+          { "id": "c2_t4", "nameKey": "town.c2.t4", "stars": 2 },
+          { "id": "c2_t5", "nameKey": "town.c2.t5", "stars": 2 },
+          { "id": "c2_t6", "nameKey": "town.c2.t6", "stars": 1 },
+          { "id": "c2_t7", "nameKey": "town.c2.t7", "stars": 2 }
+        ]
+      },
+      {
+        "chapter": 3,
+        "tasks": [
+          { "id": "c3_t1", "nameKey": "town.c3.t1", "stars": 1 },
+          { "id": "c3_t2", "nameKey": "town.c3.t2", "stars": 1 },
+          { "id": "c3_t3", "nameKey": "town.c3.t3", "stars": 2 },
+          { "id": "c3_t4", "nameKey": "town.c3.t4", "stars": 1 },
+          { "id": "c3_t5", "nameKey": "town.c3.t5", "stars": 2 },
+          { "id": "c3_t6", "nameKey": "town.c3.t6", "stars": 1 },
+          { "id": "c3_t7", "nameKey": "town.c3.t7", "stars": 2 }
+        ]
+      },
+      {
+        "chapter": 4,
+        "tasks": [
+          { "id": "c4_t1", "nameKey": "town.c4.t1", "stars": 1 },
+          { "id": "c4_t2", "nameKey": "town.c4.t2", "stars": 1 },
+          { "id": "c4_t3", "nameKey": "town.c4.t3", "stars": 1 },
+          { "id": "c4_t4", "nameKey": "town.c4.t4", "stars": 1 },
+          { "id": "c4_t5", "nameKey": "town.c4.t5", "stars": 1 },
+          { "id": "c4_t6", "nameKey": "town.c4.t6", "stars": 2 },
+          { "id": "c4_t7", "nameKey": "town.c4.t7", "stars": 1 },
+          { "id": "c4_t8", "nameKey": "town.c4.t8", "stars": 2 }
+        ]
+      },
+      {
+        "chapter": 5,
+        "tasks": [
+          { "id": "c5_t1", "nameKey": "town.c5.t1", "stars": 1 },
+          { "id": "c5_t2", "nameKey": "town.c5.t2", "stars": 1 },
+          { "id": "c5_t3", "nameKey": "town.c5.t3", "stars": 2 },
+          { "id": "c5_t4", "nameKey": "town.c5.t4", "stars": 1 },
+          { "id": "c5_t5", "nameKey": "town.c5.t5", "stars": 1 },
+          { "id": "c5_t6", "nameKey": "town.c5.t6", "stars": 1 },
+          { "id": "c5_t7", "nameKey": "town.c5.t7", "stars": 1 },
+          { "id": "c5_t8", "nameKey": "town.c5.t8", "stars": 2 }
+        ]
+      }
+    ]
+  }
+}

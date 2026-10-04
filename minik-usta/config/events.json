@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "source": "docs/META.md §6-§7 (product-lead, 2026-10-04). Bot models must not read payment history (BUSINESS E8).",
+  "rng": { "algorithm": "mulberry32", "seedFrom": "hash(eventOrWeekId, a, b, c)" },
+  "difficultyFactor": { "easy": 1.1, "normal": 1.0, "hard": 0.8, "superhard": 0.65 },
+  "wobblyBridge": {
+    "unlockLevel": 15,
+    "participants": 100,
+    "bots": 99,
+    "planks": 7,
+    "durationMinutes": 360,
+    "cooldownMinutes": 120,
+    "prizePoolCoins": 10000,
+    "split": "floor(pool / finishers)",
+    "countsLevelStartedBeforeDeadline": true,
+    "eliminateOn": ["levelLost", "quitAfterFirstMove"],
+    "extraMovesSavesFromElimination": true,
+    "masterModeWinsCount": true,
+    "bot": {
+      "skillMin": 0.5,
+      "skillRange": 0.45,
+      "attemptIntervalMinutes": { "min": 3, "max": 15 },
+      "winProbability": {
+        "formula": "clamp(skill * difficultyFactor[d_k], min, max)",
+        "min": 0.05,
+        "max": 0.97
+      },
+      "attemptDifficulty": "difficulty of level (playerLevelAtJoin + k - 1)"
+    }
+  },
+  "masterLeague": {
+    "unlockLevel": 25,
+    "weekStart": "Monday 00:00 UTC",
+    "groupSize": 100,
+    "bots": 99,
+    "pointsPerWin": { "easy": 1, "normal": 1, "hard": 2, "superhard": 3 },
+    "tiers": ["bronze", "silver", "gold", "diamond"],
+    "startTier": "bronze",
+    "promoteTop": 20,
+    "demoteBottom": 20,
+    "tieBreak": "earlierToReachScore",
+    "bot": {
+      "weeklyTargetFormula": "tierMultiplier * 100 * u^2",
+      "tierMultiplier": { "bronze": 0.6, "silver": 0.8, "gold": 1.0, "diamond": 1.3 },
+      "lateJoinScaling": "target * (1 - joinFractionOfWeek)",
+      "progressFormula": "floor(target * x^k), x = elapsed fraction since join",
+      "curveExponent": { "min": 0.8, "range": 0.4 }
+    },
+    "rewards": {
+      "coinMultiplier": { "bronze": 1, "silver": 1.5, "gold": 2, "diamond": 3 },
+      "byRank": [
+        {
+          "from": 1,
+          "to": 1,
+          "chest": true,
+          "coins": 300,
+          "boosters": { "crane": 1, "hammer": 1 },
+          "unlimitedLivesMinutes": 30
+        },
+        { "from": 2, "to": 2, "chest": true, "coins": 200, "boosters": { "hammer": 1, "thermos": 1 } },
+        { "from": 3, "to": 3, "chest": true, "coins": 150, "boosters": { "thermos": 1 } },
+        { "from": 4, "to": 20, "coins": 60 },
+        { "from": 21, "to": 50, "coins": 25 }
+      ]
+    }
+  }
+}
