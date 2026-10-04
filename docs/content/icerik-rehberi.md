@@ -68,9 +68,17 @@ Dosya adları sadeleşir: `help_,_to.svg` → `help_to.svg`. Semboller değişti
 
 ## Ses
 
-Hazır ses dosyaları henüz yok: tüm okumalar cihazın Türkçe sesiyle ya da kişisel kayıtla yapılır. Faz 1 açık işi:
-hızlı ihtiyaçlar + en sık 300 kelime için bir kez, yavaş ve net seslendirilmiş `audio/<id>.mp3` dosyaları;
-dosya adı kelime kimliğiyle aynı olmalı ve karttaki `audio` alanına yazılmalı.
+Uygulamanın okuduğu tüm sabit metinler (kelimeler, hazır cümleler, ipuçları, hızlı ihtiyaçlar, kalıplar, ısınma
+dizileri, senaryolar, arayüzde okunan cümleler; ≈1400 metin) açık kaynak **Piper** Türkçe sesiyle bir kez seslendirilir:
+
+- `scripts/audio-texts.ts` metinleri toplar; `scripts/make-audio.py` MP3'leri (`public/audio/<hash>.mp3`) ve
+  `content/audio.json` eşlemesini üretir. Anahtar `src/lib/audioKey.ts` (büyük harf/noktalama fark etmez).
+- GitHub'da **Actions → "Sesleri üret (Piper)" → Run workflow** çalıştırılır (model Hugging Face'ten indirilir);
+  sonuç depoya kaydedilir ve site yeniden yayınlanır. İçerik değişince yeniden çalıştırın.
+- Uygulama önce kaydı çalar; kayıt yoksa cümle cümle bakar, en son cihazın Türkçe sesine düşer. Böylece Google
+  servisleri olmayan telefonlarda (ör. Huawei) da ses gelir.
+- Bakım verenin eklediği kişisel kartların hazır kaydı olamaz: bu kartlara ses kaydı eklenmesi önerilir.
+- Ses modelinin lisansı `public/audio/MODEL_CARD.txt` dosyasındadır; ticari kullanımdan önce kontrol edilmeli.
 
 ## Klinik not
 

@@ -76,6 +76,11 @@ export function displayText(segments: Segment[]): string {
   return join(segments.map((s) => segmentText(s, false)))
 }
 
+/** Sesli okuma için parçalar: her parçanın hazır kaydı ayrı çalınır. */
+export function spokenParts(segments: Segment[]): string[] {
+  return segments.map((s) => segmentText(s, true)).filter(Boolean)
+}
+
 export function spokenText(segments: Segment[]): string {
   return join(segments.map((s) => segmentText(s, true)))
 }

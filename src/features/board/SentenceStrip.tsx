@@ -5,7 +5,7 @@ import { usePersonalItems, useSettings } from '../../lib/hooks'
 import { speak } from '../../lib/speech'
 import { tail } from '../../lib/text'
 import { findItem } from './items'
-import { displayText, lastItemId, spokenText } from './sentence'
+import { displayText, lastItemId, spokenParts, spokenText } from './sentence'
 import { useSentence, useToast } from './store'
 
 /** Üstte cümle şeridi: Söyle, Geri al, Temizle, Göster. Altında son kartın hazır cümleleri. */
@@ -30,7 +30,7 @@ export function SentenceStrip() {
         <button
           type="button"
           className="btn btn-primary strip-say"
-          onClick={() => void speak(spokenText(segments))}
+          onClick={() => void speak(spokenText(segments), { parts: spokenParts(segments) })}
           disabled={empty}
           data-testid="strip-say"
         >

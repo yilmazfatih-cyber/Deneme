@@ -1,0 +1,59 @@
+name: Sesleri üret (Piper)
+
+# Uygulamadaki tüm sabit metinleri açık kaynak Piper Türkçe sesiyle seslendirir,
+# public/audio/*.mp3 ve content/audio.json dosyalarını depoya kaydeder, ardından siteyi yeniden yayınlar.
+# Elle çalıştırılır: Actions → "Sesleri üret (Piper)" → Run workflow.
+on:
+  workflow_dispatch:
+    inputs:
+      voice:
+        description: 'Piper Türkçe sesi (dfki, fahrettin, fettah)'
+        default: dfki
+        required: true
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: audio
+  cancel-in-progress: false
+
+jobs:
+  audio:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+      - run: npm ci
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+      - run: pip install piper-tts
+      - name: Ses modelini indir
+        env:
+          VOICE: ${{ inputs.voice }}
+        run: |
+          base="https://huggingface.co/rhasspy/piper-voices/resolve/main/tr/tr_TR/${VOICE}/medium"
+          curl -fsSL -o model.onnx "$base/tr_TR-${VOICE}-medium.onnx"
+          curl -fsSL -o model.onnx.json "$base/tr_TR-${VOICE}-medium.onnx.json"
+          curl -fsSL -o public/audio/MODEL_CARD.txt "$base/MODEL_CARD" || echo "MODEL_CARD yok" > public/audio/MODEL_CARD.txt
+      - run: npx tsx scripts/audio-texts.ts > metinler.json
+      - run: python scripts/make-audio.py metinler.json model.onnx
+      - run: npm run validate:content
+      - name: Depoya kaydet
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/audio content/audio.json
+          git diff --cached --quiet && { echo "Değişiklik yok"; exit 0; }
+          git commit -m "Hazır ses dosyaları (Piper tr_TR-${{ inputs.voice }}-medium)"
+          git push
+      - name: Siteyi yeniden yayınla
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run pages.yml --ref "${{ github.ref_name }}"

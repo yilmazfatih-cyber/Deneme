@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Icon } from '../components/Icon'
 import { Page } from '../components/Shell'
-import { displayText, spokenText } from '../features/board/sentence'
+import { displayText, spokenParts, spokenText } from '../features/board/sentence'
 import { useSentence } from '../features/board/store'
 import { t } from '../i18n'
 import { speak } from '../lib/speech'
@@ -38,7 +38,9 @@ export function PartnerPage() {
         <button
           type="button"
           className="btn btn-primary"
-          onClick={() => void speak(segments.length ? spokenText(segments) : t('partner.default'))}
+          onClick={() =>
+            void speak(segments.length ? spokenText(segments) : t('partner.default'), { parts: spokenParts(segments) })
+          }
         >
           <Icon name="speak" />
           <span>{t('strip.say')}</span>

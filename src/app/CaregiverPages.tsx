@@ -507,7 +507,9 @@ export function VoiceTest() {
   const android = /Android/i.test(navigator.userAgent)
   let message = ''
   if (check) {
-    if (!check.supported) message = t('voice.unsupported')
+    if (check.clip && check.started)
+      message = check.turkish ? t('voice.clipsOk') : `${t('voice.clipsOk')} ${t('voice.clipsNoDevice')}`
+    else if (!check.supported) message = t('voice.unsupported')
     else if (!check.started) message = `${t('voice.silent')} ${android ? t('voice.androidHelp') : t('voice.otherHelp')}`
     else if (!check.turkish) message = t('voice.missing')
     else message = t('voice.ok', { name: check.voiceName ?? '' })

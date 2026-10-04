@@ -6,13 +6,29 @@
  * Türkçe ses yoksa tarayıcı başka dile düşebilir; kurulumdaki "Türkçe ses testi" bunu gösterir.
  */
 
+import manifest from '../../content/audio.json'
+import { audioKey, splitSentences } from './audioKey'
+
+/** Hazır kayıtlar: anahtar → dosya (scripts/make-audio.py üretir). */
+const clips = manifest as Record<string, string>
+
+export function clipFor(text: string): string | undefined {
+  const file = clips[audioKey(text)]
+  return file ? `${import.meta.env.BASE_URL}audio/${file}` : undefined
+}
+
+export function hasClips(): boolean {
+  return Object.keys(clips).length > 0
+}
+
 export interface SpeechConfig {
   rate: number
   voiceURI?: string
 }
 
 const config: SpeechConfig = { rate: 0.8 }
-let currentAudio: HTMLAudioElement | null = null
+/** Çalan kayıt; durdurulunca bekleyen söz de sonuçlanır (sıralı okuma takılmasın). */
+let currentAudio: { el: HTMLAudioElement; done: () => void } | null = null
 
 export function configureSpeech(next: Partial<SpeechConfig>): void {
   Object.assign(config, next)
@@ -105,32 +121,33 @@ function ttsBusy(): boolean {
 
 export function stopSpeaking(): void {
   if (currentAudio) {
-    currentAudio.pause()
+    const { el, done } = currentAudio
     currentAudio = null
+    el.pause()
+    done()
   }
   if (ttsBusy()) window.speechSynthesis.cancel()
 }
 
-function playUrl(url: string, revoke: boolean): Promise<void> {
+/** Kayıt çalar. Hazır kayıtlar yavaş okunmuştur (0,8); hız ayarı oynatma hızına çevrilir. */
+function playUrl(url: string, revoke: boolean, rate = 1): Promise<void> {
   return new Promise((resolve, reject) => {
     const audio = new Audio(url)
-    currentAudio = audio
-    const finish = () => {
+    audio.playbackRate = Math.min(1.6, Math.max(0.6, rate))
+    audio.preservesPitch = true
+    let settled = false
+    const finish = (error?: Error) => {
+      if (settled) return
+      settled = true
       if (revoke) URL.revokeObjectURL(url)
-      if (currentAudio === audio) currentAudio = null
+      if (currentAudio?.el === audio) currentAudio = null
+      if (error) reject(error)
+      else resolve()
     }
-    audio.onended = () => {
-      finish()
-      resolve()
-    }
-    audio.onerror = () => {
-      finish()
-      reject(new Error('ses çalınamadı'))
-    }
-    audio.play().catch((e: unknown) => {
-      finish()
-      reject(e instanceof Error ? e : new Error(String(e)))
-    })
+    currentAudio = { el: audio, done: () => finish() }
+    audio.onended = () => finish()
+    audio.onerror = () => finish(new Error('ses çalınamadı'))
+    audio.play().catch((e: unknown) => finish(e instanceof Error ? e : new Error(String(e))))
   })
 }
 
@@ -213,26 +230,68 @@ export interface SpeakOptions {
   blob?: Blob
   audioPath?: string
   rate?: number
+  /** Cümle şeridi gibi parçalı metin: her parça ayrı kayıtla okunur */
+  parts?: string[]
+}
+
+let speakGeneration = 0
+
+/** Metni parçalara böler: önce bütün hâlinin kaydı, yoksa cümle cümle kayıt ya da cihaz sesi. */
+function plan(text: string, parts?: string[]): { clip?: string; text: string }[] {
+  const whole = clipFor(text)
+  if (whole) return [{ clip: whole, text }]
+  const out: { clip?: string; text: string }[] = []
+  for (const part of parts?.length ? parts : [text]) {
+    const c = clipFor(part)
+    if (c) {
+      out.push({ clip: c, text: part })
+      continue
+    }
+    for (const sentence of splitSentences(part)) out.push({ clip: clipFor(sentence), text: sentence })
+  }
+  // Kayıtsız ardışık parçalar cihaz sesine tek seferde verilir (daha akıcı).
+  const merged: { clip?: string; text: string }[] = []
+  for (const p of out) {
+    const last = merged.at(-1)
+    if (!p.clip && last && !last.clip) last.text = `${last.text} ${p.text}`
+    else merged.push({ ...p })
+  }
+  return merged
 }
 
 export async function speak(text: string, opts: SpeakOptions = {}): Promise<void> {
-  const wasBusy = ttsBusy()
+  const gen = ++speakGeneration
+  let wasBusy = ttsBusy()
   stopSpeaking()
   if (opts.blob) {
     try {
       return await playUrl(URL.createObjectURL(opts.blob), true)
     } catch {
-      /* kayıt çalınamazsa cihaz sesine düş */
+      /* kayıt çalınamazsa sıradaki yola düş */
     }
   }
   if (opts.audioPath) {
     try {
-      return await playUrl(`${import.meta.env.BASE_URL}${opts.audioPath}`, false)
+      return await playUrl(`${import.meta.env.BASE_URL}${opts.audioPath}`, false, (opts.rate ?? config.rate) / 0.8)
     } catch {
-      /* dosya yoksa cihaz sesine düş */
+      /* dosya yoksa sıradaki yola düş */
     }
   }
-  await speakTts(text, opts.rate, wasBusy)
+  const rate = opts.rate ?? config.rate
+  for (const piece of plan(text, opts.parts)) {
+    if (gen !== speakGeneration) return
+    if (piece.clip) {
+      try {
+        await playUrl(piece.clip, false, rate / 0.8)
+        continue
+      } catch {
+        /* kayıt çalınamazsa cihaz sesi */
+      }
+    }
+    if (gen !== speakGeneration) return
+    await speakTts(piece.text, rate, wasBusy)
+    wasBusy = false
+  }
 }
 
 export interface VoiceCheck {
@@ -243,23 +302,34 @@ export interface VoiceCheck {
   voiceCount: number
   /** Test cümlesi gerçekten çalmaya başladı mı? */
   started: boolean
+  /** Hazır kayıtla mı çalındı? */
+  clip: boolean
   error?: string
 }
 
 /** Türkçe ses testi: test cümlesini okur ve ne olduğunu ayrıntılı bildirir. */
 export async function checkTurkishVoice(phrase: string): Promise<VoiceCheck> {
-  if (!speechSupported()) return { supported: false, turkish: false, voiceCount: 0, started: false }
   const wasBusy = ttsBusy()
   stopSpeaking()
-  const voices = await loadVoices()
-  const result = await speakTts(phrase, config.rate, wasBusy)
+  const voices = speechSupported() ? await loadVoices() : []
   const tr = turkishVoices()
+  const base = { supported: speechSupported(), turkish: tr.length > 0, voiceCount: voices.length }
+  const clip = clipFor(phrase)
+  if (clip) {
+    try {
+      await playUrl(clip, false, config.rate / 0.8)
+      return { ...base, started: true, clip: true, voiceName: tr[0]?.name }
+    } catch (e) {
+      if (!base.supported) return { ...base, started: false, clip: true, error: String(e) }
+    }
+  }
+  if (!base.supported) return { ...base, started: false, clip: false }
+  const result = await speakTts(phrase, config.rate, wasBusy)
   return {
-    supported: true,
-    turkish: tr.length > 0,
+    ...base,
     voiceName: result.started ? (result.voiceName ?? 'tr-TR') : tr[0]?.name,
-    voiceCount: voices.length,
     started: result.started,
+    clip: false,
     error: result.error,
   }
 }

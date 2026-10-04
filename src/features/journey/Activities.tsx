@@ -6,6 +6,7 @@ import type { PracticeResult } from '../../db'
 import { t } from '../../i18n'
 import { useBlobUrl } from '../../lib/hooks'
 import { playConfirmTone, recordingSupported, startRecording, type Recording } from '../../lib/media'
+import { speakable } from '../../lib/audioKey'
 import { speak } from '../../lib/speech'
 import { speakItem, type LearnItem } from './learn'
 import { cueAvailable, NOT_YET, type Step } from './session'
@@ -14,11 +15,6 @@ export interface Outcome {
   result: PracticeResult
   cueLevel: number
   responseMs: number
-}
-
-/** TTS "…" karakterini okumasın; kısa bir duraksama olsun. */
-function speakable(sentence: string): string {
-  return sentence.replace('…', ', ...')
 }
 
 function useResponseTimer() {

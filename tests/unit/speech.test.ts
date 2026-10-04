@@ -88,3 +88,49 @@ describe('sesli okuma (Google motoru)', () => {
     expect(r.error).toBeTruthy()
   })
 })
+
+describe('hazır kayıtlar', () => {
+  it('kayıt varsa cihaz sesine hiç gitmez; parçalı cümlede her parça kendi kaydıyla çalar', async () => {
+    vi.doMock('../../content/audio.json', () => ({
+      default: {
+        'su istiyorum': '00000001.mp3',
+        'karnım ağrıyor': '00000002.mp3',
+        'ağrım 8 üzerinden 10': '00000003.mp3',
+      },
+    }))
+    const played: string[] = []
+    class FakeAudio {
+      src: string
+      playbackRate = 1
+      preservesPitch = true
+      onended: (() => void) | null = null
+      onerror: (() => void) | null = null
+      constructor(src: string) {
+        this.src = src
+      }
+      play() {
+        played.push(this.src.split('/').pop()!)
+        setTimeout(() => this.onended?.(), 1)
+        return Promise.resolve()
+      }
+      pause() {}
+    }
+    vi.stubGlobal('Audio', FakeAudio)
+    const spoken = installSynth([], () => true)
+    const { speak, hasClips } = await import('../../src/lib/speech')
+    expect(hasClips()).toBe(true)
+
+    await speak('Su istiyorum')
+    expect(played).toEqual(['00000001.mp3'])
+
+    played.length = 0
+    await speak('Karnım ağrıyor. Ağrım 8 üzerinden 10.')
+    expect(played).toEqual(['00000002.mp3', '00000003.mp3'])
+
+    played.length = 0
+    await speak('Su ilaç', { parts: ['Su istiyorum', 'ilaç'] })
+    expect(played).toEqual(['00000001.mp3'])
+    expect(spoken.map((u) => u.text)).toEqual(['ilaç'])
+    vi.doUnmock('../../content/audio.json')
+  })
+})

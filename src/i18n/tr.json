@@ -197,6 +197,8 @@
   "voice.testPhrase": "Merhaba, ben Köprü. Sesim anlaşılıyor mu?",
   "voice.ok": "Türkçe ses bulundu: {name}",
   "voice.missing": "Bu cihazda Türkçe ses bulunamadı. Telefon ayarlarından Türkçe ses paketini indirin; hazır ses dosyası olan kelimeler yine de doğru okunur.",
+  "voice.clipsOk": "Hazır Türkçe kayıtlar çalışıyor; bunlar her telefonda, internetsiz de çalar.",
+  "voice.clipsNoDevice": "Telefonda Türkçe cihaz sesi yok: bakım verenin eklediği kartlara ses kaydı ekleyin, yoksa o kartlar sessiz kalır.",
   "voice.silent": "Test cümlesi çalınamadı.",
   "voice.androidHelp": "Telefon Ayarları → Erişilebilirlik → Metin okuma (TTS) çıkışı bölümünde Tercih edilen motor olarak Google'ı, dil olarak Türkçe'yi seçin; medya sesini açın; Chrome'u tamamen kapatıp yeniden açın.",
   "voice.otherHelp": "Medya sesini açın, telefonun sessiz modunu kapatın ve tarayıcıyı yeniden açın.",

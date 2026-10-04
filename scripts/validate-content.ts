@@ -54,6 +54,12 @@ if (journey) {
   for (const s of symbols) {
     if (!existsSync(join(root, 'public', s))) errors.push(`sembol dosyası yok: public/${s}`)
   }
+  const audio = JSON.parse(readFileSync(join(root, 'content/audio.json'), 'utf8')) as Record<string, string>
+  for (const [key, file] of Object.entries(audio)) {
+    if (!/^[0-9a-f]{8}\.mp3$/.test(file)) errors.push(`content/audio.json → ${key}: geçersiz dosya adı ${file}`)
+    else if (!existsSync(join(root, 'public/audio', file)))
+      errors.push(`ses dosyası yok: public/audio/${file} (${key})`)
+  }
   for (const w of words) {
     if (w.audio && !existsSync(join(root, 'public', w.audio)))
       errors.push(`${w.id}: ses dosyası yok: public/${w.audio}`)

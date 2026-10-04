@@ -17,7 +17,7 @@ Durum: ✓ yapıldı · ◐ kısmen · ○ yapılmadı
 - ✓ Sık kullanılanlar satırı, ilk harf/hece ile bulma, sayfalı ızgara, tutma süresi, sol el aynalama
 - ✓ Vücut haritası + 0–10 ağrı ölçeği, partner ekranı, Ben kartı
 - ✓ Kişisel kart (fotoğraf, kelime, ses kaydı, hazır kartın yerine geçme), kurulum sihirbazı, yedek/geri yükleme
-- ○ En sık 300 kelime + hızlı ihtiyaçlar için hazır ses dosyaları (`public/audio`) — seslendirme gerekiyor
+- ◐ Tüm sabit metinler için hazır ses dosyaları (Piper, `public/audio`) — üretim iş akışı hazır; insan sesiyle kayıt değerlendirilsin
 - ○ 5 afazili kullanıcıyla test (DKT ve afazi dernekleri aracılığıyla)
 
 ## Faz 2 — Modül B: öğrenme yolculuğu (S01'de öne çekildi) ◐
