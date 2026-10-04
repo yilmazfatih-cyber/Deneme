@@ -494,21 +494,46 @@ export function DisplaySettings() {
 
 export function VoiceTest() {
   const [check, setCheck] = useState<VoiceCheck | null>(null)
+  const [busy, setBusy] = useState(false)
   const run = async () => {
-    void speak(t('voice.testPhrase'))
-    setCheck(await checkTurkishVoice())
+    setBusy(true)
+    setCheck(null)
+    try {
+      setCheck(await checkTurkishVoice(t('voice.testPhrase')))
+    } finally {
+      setBusy(false)
+    }
+  }
+  const android = /Android/i.test(navigator.userAgent)
+  let message = ''
+  if (check) {
+    if (!check.supported) message = t('voice.unsupported')
+    else if (!check.started) message = `${t('voice.silent')} ${android ? t('voice.androidHelp') : t('voice.otherHelp')}`
+    else if (!check.turkish) message = t('voice.missing')
+    else message = t('voice.ok', { name: check.voiceName ?? '' })
   }
   return (
     <div className="voice-test">
-      <BigButton icon="speak" label={t('voice.test')} onClick={() => void run()} tone="secondary" testId="voice-test" />
+      <BigButton
+        icon="speak"
+        label={t('voice.test')}
+        onClick={() => void run()}
+        tone="secondary"
+        testId="voice-test"
+        disabled={busy}
+      />
       {check ? (
-        <p className="note" data-testid="voice-result">
-          {!check.supported
-            ? t('voice.unsupported')
-            : check.turkish
-              ? t('voice.ok', { name: check.voiceName ?? '' })
-              : t('voice.missing')}
-        </p>
+        <div className="note" data-testid="voice-result">
+          <p>{message}</p>
+          <p className="field-hint">
+            {t('voice.details', {
+              n: check.voiceCount,
+              tr: check.turkish ? t('nav.yes') : t('nav.no'),
+              started: check.started ? t('nav.yes') : t('nav.no'),
+            })}
+            {check.error ? ` · ${check.error}` : ''}
+          </p>
+        </div>
       ) : null}
     </div>
   )

@@ -47,12 +47,17 @@ function pickVoice(): SpeechSynthesisVoice | undefined {
   return voices.find((v) => v.voiceURI === config.voiceURI) ?? voices.find((v) => v.localService) ?? voices[0]
 }
 
+/** Konuşma sürüyor ya da sırada bekliyor mu? */
+function ttsBusy(): boolean {
+  return speechSupported() && (window.speechSynthesis.speaking || window.speechSynthesis.pending)
+}
+
 export function stopSpeaking(): void {
   if (currentAudio) {
     currentAudio.pause()
     currentAudio = null
   }
-  if (speechSupported()) window.speechSynthesis.cancel()
+  if (ttsBusy()) window.speechSynthesis.cancel()
 }
 
 function playUrl(url: string, revoke: boolean): Promise<void> {
@@ -78,19 +83,46 @@ function playUrl(url: string, revoke: boolean): Promise<void> {
   })
 }
 
-function speakTts(text: string, rate = config.rate): Promise<void> {
-  if (!speechSupported() || !text.trim()) return Promise.resolve()
+/** Android Chrome, konuşma bitmeden nesne çöpe giderse sesi keser; başvuruyu tut. */
+let activeUtterance: SpeechSynthesisUtterance | null = null
+
+export interface TtsResult {
+  started: boolean
+  error?: string
+}
+
+function speakTts(text: string, rate = config.rate, afterCancel = false): Promise<TtsResult> {
+  if (!speechSupported() || !text.trim()) return Promise.resolve({ started: false, error: 'desteklenmiyor' })
   return new Promise((resolve) => {
+    let started = false
+    let settled = false
+    const finish = (error?: string) => {
+      if (settled) return
+      settled = true
+      if (activeUtterance === u) activeUtterance = null
+      resolve({ started, error })
+    }
     const u = new SpeechSynthesisUtterance(text)
     u.lang = 'tr-TR'
     u.rate = rate
     const voice = pickVoice()
     if (voice) u.voice = voice
-    u.onend = () => resolve()
-    u.onerror = () => resolve()
-    window.speechSynthesis.speak(u)
+    u.onstart = () => {
+      started = true
+    }
+    u.onend = () => finish()
+    u.onerror = (e) => finish(e.error)
+    activeUtterance = u
+    const go = () => {
+      // Chrome bazen konuşmayı "duraklatılmış" bırakır; önce sürdür.
+      window.speechSynthesis.resume()
+      window.speechSynthesis.speak(u)
+    }
+    // Android Chrome: cancel() ardından hemen speak() yeni cümleyi sessizce düşürebilir; kısa bekle.
+    if (afterCancel) setTimeout(go, 120)
+    else go()
     // Bazı tarayıcılar onend göndermez; sonsuza dek bekleme.
-    setTimeout(resolve, Math.max(2500, text.length * 180))
+    setTimeout(() => finish(started ? undefined : 'baslamadi'), Math.max(4000, text.length * 200))
   })
 }
 
@@ -101,6 +133,7 @@ export interface SpeakOptions {
 }
 
 export async function speak(text: string, opts: SpeakOptions = {}): Promise<void> {
+  const wasBusy = ttsBusy()
   stopSpeaking()
   if (opts.blob) {
     try {
@@ -116,18 +149,34 @@ export async function speak(text: string, opts: SpeakOptions = {}): Promise<void
       /* dosya yoksa cihaz sesine düş */
     }
   }
-  return speakTts(text, opts.rate)
+  await speakTts(text, opts.rate, wasBusy)
 }
 
 export interface VoiceCheck {
   supported: boolean
   turkish: boolean
   voiceName?: string
+  /** Cihazdaki toplam ses sayısı */
+  voiceCount: number
+  /** Test cümlesi gerçekten çalmaya başladı mı? */
+  started: boolean
+  error?: string
 }
 
-export async function checkTurkishVoice(): Promise<VoiceCheck> {
-  if (!speechSupported()) return { supported: false, turkish: false }
-  await loadVoices()
+/** Türkçe ses testi: test cümlesini okur ve ne olduğunu ayrıntılı bildirir. */
+export async function checkTurkishVoice(phrase: string): Promise<VoiceCheck> {
+  if (!speechSupported()) return { supported: false, turkish: false, voiceCount: 0, started: false }
+  const wasBusy = ttsBusy()
+  stopSpeaking()
+  const voices = await loadVoices()
   const voice = pickVoice()
-  return { supported: true, turkish: !!voice, voiceName: voice?.name }
+  const result = await speakTts(phrase, config.rate, wasBusy)
+  return {
+    supported: true,
+    turkish: !!voice,
+    voiceName: voice?.name,
+    voiceCount: voices.length,
+    started: result.started,
+    error: result.error,
+  }
 }
