@@ -12,7 +12,7 @@ import { t } from '../i18n'
 import { backupFilename, createBackup, downloadBlob, readBackupSummary, restoreBackup } from '../lib/backup'
 import { useBlobUrl, usePersonalItems, useProfile, useSettings } from '../lib/hooks'
 import { recordingSupported, resizeImage, startRecording, type Recording } from '../lib/media'
-import { checkTurkishVoice, loadVoices, speak, turkishVoices, type VoiceCheck } from '../lib/speech'
+import { checkTurkishVoice, isGoogleVoice, loadVoices, speak, turkishVoices, type VoiceCheck } from '../lib/speech'
 import {
   canPromptInstall,
   isIos,
@@ -558,12 +558,19 @@ export function VoiceSettings() {
           ]}
           onChange={(speechRate) => void updateSettings({ speechRate })}
         />
-        {voices.length > 1 ? (
+        {voices.length ? (
           <Choice<string>
             label={t('voice.choose')}
-            value={s.voiceURI ?? voices[0]!.voiceURI}
-            options={voices.map((v) => ({ value: v.voiceURI, label: v.name }))}
-            onChange={(voiceURI) => void updateSettings({ voiceURI })}
+            hint={t('voice.chooseHint')}
+            value={s.voiceURI ?? ''}
+            options={[
+              { value: '', label: t('voice.auto') },
+              ...voices.map((v) => ({
+                value: v.voiceURI,
+                label: `${v.name}${isGoogleVoice(v) ? ' · Google' : ''}${v.localService ? '' : ` · ${t('voice.network')}`}`,
+              })),
+            ]}
+            onChange={(voiceURI) => void updateSettings({ voiceURI: voiceURI || undefined })}
           />
         ) : null}
         <VoiceTest />

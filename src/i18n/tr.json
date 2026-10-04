@@ -203,6 +203,9 @@
   "voice.details": "Cihazdaki ses sayısı: {n} · Türkçe ses: {tr} · Çalmaya başladı: {started}",
   "voice.unsupported": "Bu tarayıcı sesli okumayı desteklemiyor. Kayıtlı sesler yine de çalar.",
   "voice.choose": "Ses seçimi",
+  "voice.chooseHint": "Otomatik: önce Google'ın Türkçe sesi denenir; çalmazsa sıradaki ses denenir ve çalışan hatırlanır.",
+  "voice.auto": "Otomatik",
+  "voice.network": "internet gerekir",
 
   "journey.stopOrder": "Durak sırası",
   "journey.up": "Yukarı",
