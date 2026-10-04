@@ -38,6 +38,7 @@ jobs:
         env:
           VOICE: ${{ inputs.voice }}
         run: |
+          mkdir -p public/audio
           base="https://huggingface.co/rhasspy/piper-voices/resolve/main/tr/tr_TR/${VOICE}/medium"
           curl -fsSL -o model.onnx "$base/tr_TR-${VOICE}-medium.onnx"
           curl -fsSL -o model.onnx.json "$base/tr_TR-${VOICE}-medium.onnx.json"
