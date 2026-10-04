@@ -78,7 +78,8 @@ dizileri, senaryolar, arayüzde okunan cümleler; ≈1400 metin) açık kaynak *
 - Uygulama önce kaydı çalar; kayıt yoksa cümle cümle bakar, en son cihazın Türkçe sesine düşer. Böylece Google
   servisleri olmayan telefonlarda (ör. Huawei) da ses gelir.
 - Bakım verenin eklediği kişisel kartların hazır kaydı olamaz: bu kartlara ses kaydı eklenmesi önerilir.
-- Ses modelinin lisansı `public/audio/MODEL_CARD.txt` dosyasındadır; ticari kullanımdan önce kontrol edilmeli.
+- Şu anki ses: `tr_TR-dfki-medium` (DFKI veri seti, **CC BY-NC-SA 4.0 — ticari olmayan**). Ticari sürüm için
+  başka bir ses ya da insan sesiyle kayıt gerekir. Model kartı: `public/audio/MODEL_CARD.txt`.
 
 ## Klinik not
 

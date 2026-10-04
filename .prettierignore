@@ -7,3 +7,5 @@ playwright-report
 test-results
 tests/shots/output
 docs/sprints/**/shots
+content/audio.json
+public/audio

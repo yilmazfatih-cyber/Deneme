@@ -104,4 +104,7 @@ Deneysel ajan takımı modu (Mod 2) için `.claude/settings.json`'a `"env": { "C
 - Kod: proje sahibinin belirleyeceği lisans.
 - Semboller: Mulberry Symbols © Steve Lee, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) —
   değiştirilmeden kullanıldı; atıf uygulamanın "Hakkında" ekranında. Değiştirilen semboller aynı lisansla paylaşılmalıdır.
+- Hazır sesler: [Piper](https://github.com/rhasspy/piper) `tr_TR-dfki-medium` ile üretildi; ses verisi DFKI,
+  [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) — **ticari kullanım için başka bir ses gerekir**
+  (ör. insan sesiyle kayıt). Ayrıntı: `public/audio/MODEL_CARD.txt`.
 - Yazı tipi: Atkinson Hyperlegible Next, Braille Institute, SIL Open Font License 1.1.

@@ -847,6 +847,7 @@ export function AboutPage() {
       <p>{t('about.text')}</p>
       <p>{t('about.privacy')}</p>
       <p>{t('about.symbols')}</p>
+      <p>{t('about.voice')}</p>
       <p>{t('about.font')}</p>
       <p className="field-hint">{t('about.version', { v: __APP_VERSION__ })}</p>
     </Page>

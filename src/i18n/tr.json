@@ -260,6 +260,7 @@
   "about.title": "Hakkında",
   "about.text": "Köprü, afazili yetişkinlerin resimlerle kendini ifade etmesi ve kelimelerini pratik etmesi için hazırlanmış bir iletişim ve pratik desteğidir. Tedavi vaadinde bulunmaz.",
   "about.symbols": "Semboller: Mulberry Symbols, © Steve Lee, CC BY-SA 4.0 lisansıyla. mulberrysymbols.org",
+  "about.voice": "Hazır sesler: Piper tr_TR-dfki sesiyle üretildi (DFKI veri seti, CC BY-NC-SA 4.0 — ticari olmayan kullanım).",
   "about.font": "Yazı tipi: Atkinson Hyperlegible Next, Braille Institute, SIL Open Font License.",
   "about.privacy": "Veriler yalnızca bu telefonda tutulur. Sunucu, analitik ve reklam yoktur.",
   "about.version": "Sürüm {v}",
