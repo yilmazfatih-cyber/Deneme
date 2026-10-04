@@ -1,13 +1,17 @@
 # Engel kütüphanesi
 
-Sahip: product-lead · Sürüm: Faz 1 taslağı (2026-10-04) · Kaynak: `docs/BRIEF.md` §7, `docs/GDD.md`
+Sahip: product-lead · Sürüm: Faz 1 revizyonu (2026-10-04; R-08, R-10, R-21) · Kaynak: `docs/BRIEF.md` §7, `docs/GDD.md`
 
-Her engel: kimlik, bölge, kural (kodlanabilir), veri parametreleri, ilk bölüm, öğretici metin (TR/EN, en çok 12 kelime).
+Her engel: kimlik, bölge, kural (kodlanabilir), veri parametreleri, ilk bölüm, bilgi kartı metni (TR/EN, en çok 12 kelime).
 Genel kurallar (yol, düşüş, doğrulama, hamle sonu hattı) GDD'dedir; burada yalnızca engele özel olan yazılır.
 Hamle sonu adım numaraları GDD K-35'e göredir. `m` = tamamlanan hamle sayısı (bölüm başında 0).
 
-Öğretici metinler `tut.<kimlik>` i18n anahtarlarıyla `src/i18n/tr.json` / `en.json`'a girer (ör. `tut.W1`); metin
-sahibi product-lead, ses tonu ve balon tasarımı design-lead'indir.
+**Metin sahipliği (R-08):** Bu belgedeki TR/EN cümleler **engel bilgi kartı** metnidir (kural özeti; oyuncu engele
+dokununca ya da ilk karşılaşmada kartta görür). Anahtar `obs.{id}.desc`; `id` küçük harf, tire atılır (`obs.w1.desc`,
+`obs.gh.desc`, `obs.s7r.desc`). Yazarı product-lead, ton denetimi design-lead. Bölüm içinde ekranda görünen öğretici /
+Usta Dede satırları STORY §6'dadır (`tut.l{n}.{konu}`, design-lead). Kurallar: terim "blok" (parça değil); renk adı
+yok (renk körlüğü); bölüme göre değişen sayılar `{n}` yer tutucusuyla (ör. kepenk periyodu, platform dönüşü).
+**Duvar:** saha ile şantiye arasındaki sıfır genişlikli sınırdır (GDD §0, K-04; R-03).
 
 ---
 
@@ -18,32 +22,34 @@ sahibi product-lead, ses tonu ve balon tasarımı design-lead'indir.
 - **Kural:** Duvarda her zaman açık boşluk. Satırları tamamen geçide sığan blok tamamen sahadaki bir konumdan sağa
   ötelenerek ray kipine girer (GDD K-12); şantiyede bırakılınca düşmez.
 - **Veri:** `wall.gaps[] = { y, size, type: "static" }`; kısıt `y + size ≤ height − 1`.
-- **Öğretici:** TR "Geçitten giren parça düşmez, bıraktığın yerde kalır." · EN "Pieces sent through the gap don't fall; they stay put."
+- **Bilgi kartı** (`obs.w1.desc`): TR "Geçitten giren blok düşmez, bıraktığın yerde kalır." · EN "Blocks sent through a gap don't fall; they stay put."
 
 ### W2 — Yüksek Duvar
 - **Bölge:** duvar · **İlk bölüm:** 6
-- **Kural:** `height = 8`. Duvar sütunu y=0–7 arası kapalıdır (geçitler hariç); serbest kipte yalnızca Vinç Alanı
-  (y=8–9) üzerinden geçilir. Sonuç: duvar sütunundaki dikey hücre dizisi 2'den uzun bloklar (I3_0, I4_0, L4_0 …)
+- **Kural:** `height = 8`. Sınır y=0–7 arası kapalıdır (geçitler hariç); serbest kipte yalnızca Vinç Alanı
+  (y=8–9) üzerinden geçilir. Sonuç: sınırı geçen sütunundaki dikey hücre dizisi 2'den uzun bloklar (I3_0, I4_0, L4_0 …)
   duvarı aşamaz (GDD K-05). Düşüş mesafesi uzar (cam için önemli).
 - **Veri:** `wall.height: 8`.
-- **Öğretici:** TR "Duvar çok yüksek! Parçayı en tepeye kaldırıp öyle aşır." · EN "The wall is tall! Lift the piece to the very top."
+- **Bilgi kartı** (`obs.w2.desc`): TR "Duvar çok yüksek! Bloğu en tepeye kaldırıp öyle aşır." · EN "The wall is tall! Lift the block to the very top."
 
 ### W3 — Dar Geçit
 - **Bölge:** duvar · **İlk bölüm:** 9
-- **Kural:** `size = 1` olan her geçit. Yalnızca boyu 1 satır olan bloklar (B1, D2_90; ağırlar duvar sütununa hiç
-  giremez) geçer. Geçit tipinden bağımsızdır: dar kepenk, dar kayar kapı vb. olabilir.
+- **Kural:** `size = 1` olan her geçit. Yalnızca boyu 1 satır olan bloklar (B1, D2_90; ağırlar sınırı hiç
+  geçemez) geçer. Geçit tipinden bağımsızdır: dar kepenk, dar kayar kapı vb. olabilir.
 - **Veri:** `wall.gaps[].size: 1`.
-- **Öğretici:** TR "Dar geçitten yalnızca tek sıra boyundaki parçalar geçer." · EN "Only one-row-tall pieces fit through the narrow gap."
+- **Bilgi kartı** (`obs.w3.desc`): TR "Dar geçitten yalnızca tek sıra boyundaki bloklar geçer." · EN "Only one-row-tall blocks fit through a narrow gap."
 
 ### W4 — Kepenk
 - **Bölge:** duvar · **İlk bölüm:** 13
 - **Kural:** Geçit `m` için açıktır ⇔ `floor((m + phase) / period)` çift. Durum yalnızca hamle sonu adım 10'da değişir;
-  sürükleme sırasında sabittir. Kapalıyken geçit satırları kapalı duvar hücresidir (ray kipine girilemez). Bloklar duvar
-  sütununda duramadığı için "kapanırken içinde blok" oluşamaz (GDD E-06). Geçidin üstünde bir sonraki değişime kalan hamle
-  sayısı gösterilir.
+  sürükleme sırasında sabittir. Kapalıyken geçit satırları sınırın kapalı satırlarıdır (ray kipine girilemez). Bloklar
+  sınırı keserken bırakılamadığı için "kapanırken içinde blok" oluşamaz (GDD E-06). **Sayaç:** geçidin üstünde bir sonraki
+  değişime kalan hamle sayısı `k = period − ((m + phase) mod period)` (1…period) ve bir sonraki durum (açık/kapalı) gösterilir;
+  `k = 1` iken sayaç vurgulanır (sunum design-lead). Aynı sayaç dili S5 (dönmeye kalan) ve Y4 (`wetMoves`) için kullanılır.
 - **Veri:** `{ type: "shutter", y, size, period (1–4), phase (0 … 2·period−1) }`.
-- **Örnek:** `period 2, phase 0` → m=0,1 açık; 2,3 kapalı; 4,5 açık. `phase 2` → kapalı başlar.
-- **Öğretici:** TR "Kepenk iki hamlede bir açılıp kapanır. Sayaca bak!" · EN "The shutter opens and closes every two moves. Watch it!"
+- **Örnek:** `period 2, phase 0` → m=0,1 açık; 2,3 kapalı; 4,5 açık. `phase 2` → kapalı başlar. Sayaç: m=0 → 2 (sonra
+  kapalı), m=1 → 1 (sonra kapalı, vurgulu), m=2 → 2 (sonra açık).
+- **Bilgi kartı** (`obs.w4.desc`): TR "Kepenk {n} hamlede bir açılıp kapanır. Sayaca bak!" · EN "The shutter opens and closes every {n} moves. Watch the counter!"
 
 ### W5 — Kayar Kapı
 - **Bölge:** duvar · **İlk bölüm:** 16
@@ -52,35 +58,37 @@ sahibi product-lead, ses tonu ve balon tasarımı design-lead'indir.
   `b + size ≤ height − 1`, `a ≥ 0`.
 - **Veri:** `{ type: "slider", y (başlangıç), size, range: [a, b], dir (1 | −1, varsayılan 1) }`.
 - **Örnek:** `range [1,3], y 1, dir 1` → hamle sonları: 2, 3, 2, 1, 2 …
-- **Öğretici:** TR "Kayar kapı her hamleden sonra bir sıra kayar." · EN "The sliding door shifts one row after every move."
+- **Bilgi kartı** (`obs.w5.desc`): TR "Kayar kapı her hamleden sonra bir sıra kayar." · EN "The sliding gate shifts one row after every move."
 
 ### W6 — Boya Kapısı
 - **Bölge:** duvar · **İlk bölüm:** 22
-- **Kural:** İptal edilmeyen bir hamlede sürükleme yolu bu geçidin ray kipinden geçtiyse blok kapının rengine boyanır
-  (adım 1). Blok şantiyeye bırakılsa da sahaya geri çekilse de boya kalıcıdır; iptalde boya olmaz. Bayraklar korunur
+- **Kural:** İptal edilmeyen bir hamlede blok sürükleme sırasında bu geçidin ray kipine **girdiyse** (en az bir hücresi
+  sınırı bu geçidin satırlarında geçtiyse; yarım girip geri çıkmak dahil) kapının rengine boyanır (adım 1). Birden çok boya
+  kapısına girildiyse **son girilenin** rengi geçerlidir (GDD E-39). Blok şantiyeye bırakılsa da sahaya geri çekilse de boya kalıcıdır; iptalde boya olmaz. Bayraklar korunur
   (cam camdır). Sürükleme sırasında blok kapıdayken yeni rengini gösterir (önizleme). Hamle kaydında `via` alanı
-  (geçit indeksi) tutulur (öneri P-6).
+  (son girilen boya kapısının geçit indeksi) tutulur (öneri P-6, S-21).
 - **Veri:** `{ type: "paint", y, size, color }`.
 - **Örnek:** Kırmızı boya kapısı y=2. (4,2)'deki `B1` Y geçide girip sahada (5,6)'ya bırakılır → `B1` R, 1 hamle.
-- **Öğretici:** TR "Boya kapısından geçen parça kapının rengini alır." · EN "Pieces passing the paint door take its color."
+- **Bilgi kartı** (`obs.w6.desc`): TR "Boya kapısından geçen blok kapının rengini alır." · EN "Blocks passing the paint gate take its color."
 
 ### W7 — Kilitli Geçit
 - **Bölge:** duvar · **İlk bölüm:** 26
 - **Kural:** `keyId` eşleşen anahtar toplanana kadar kapalıdır; toplandığı denetimde (GDD K-42) kalıcı olarak açılır ve
-  sabit geçit gibi davranır. Açık Kepenk güçlendiricisi ilk 5 hamlede geçici olarak açar.
+  sabit geçit gibi davranır. Anahtarın konumu örtülü ama her zaman görünürdür (GDD K-42). Açık Kepenk güçlendiricisi ilk 5 hamlede geçici olarak açar.
 - **Veri:** geçit `{ type: "locked", y, size, keyId }`; anahtar `obstacles[] = { type: "key", x, y, id }` (saha hücresi,
   başta örtülü).
-- **Öğretici:** TR "Anahtarın üstündeki parçayı kaldır; kilit açılsın." · EN "Move the piece covering the key to unlock the gate."
+- **Bilgi kartı** (`obs.w7.desc`): TR "Anahtarın üstündeki bloğu kaldır; kilit açılsın." · EN "Move the block covering the key to unlock the gate."
 
 ### W8 — Rüzgâr Fanı
 - **Bölge:** duvar (şantiye üstüne eser) · **İlk bölüm:** 32
 - **Kural:** Serbest kipte şantiyeye bırakılan, genişliği 1 olan blok (balon dahil) düşmeden/yükselmeden önce `dir`
-  yönünde 1 sütun kayar; koşullar: (a) bırakma anında d ≥ 1 (blok siluete oturmuş değil), (b) kaymış konum x=6–7
+  yönünde 1 sütun kayar; koşullar: (a) bırakma anında d ≥ 1 (blok siluete oturmuş değil; balonda
+  `d = |bırakma satırı − tavan satırı|`, GDD E-35), (b) kaymış konum x=6–7
   içinde, (c) kaymış konumun hücreleri boş ve açık gökyüzü koşulunu sağlıyor. Koşul tutmazsa kayma yok. (a) maddesi öneri P-2a'dır. Genişliği 2
   olan bloklar, ray kipi, Vinç güçlendiricisi etkilenmez. Gölge kaymış inişi gösterir (GDD K-18).
 - **Veri:** `wall.fan: { dir: "left" | "right" }`.
 - **Örnek:** `dir right`; `B1` (6,7)'de bırakılır, top(6)=2, top(7)=3 → (7,7) boş → kayar → (7,3)'e iner.
-- **Öğretici:** TR "Rüzgâr ince parçaları bir sütun iter. Gölgeye bak!" · EN "Wind pushes thin pieces one column. Check the shadow!"
+- **Bilgi kartı** (`obs.w8.desc`): TR "Rüzgâr ince blokları bir sütun iter. Gölgeye bak!" · EN "Wind pushes thin blocks one column. Check the shadow!"
 
 ---
 
@@ -94,7 +102,7 @@ sahibi product-lead, ses tonu ve balon tasarımı design-lead'indir.
   Teslimat düşüşü kasaya etki etmez.
 - **Veri:** `obstacles[] = { type: "crate", x, y, hp }`.
 - **Örnek:** Kasa (2,3) hp 2. (2,4)'teki blok taşınır → hp 1. Sonra (1,3)'teki blok taşınır → kasa yok olur.
-- **Öğretici:** TR "Kasanın yanındaki parçayı oynat, kasa kırılsın." · EN "Move a piece next to a crate to break it."
+- **Bilgi kartı** (`obs.y1.desc`): TR "Kasanın yanındaki bloğu oynat, kasa kırılsın." · EN "Move a block next to a crate to break it."
 
 ### Y2 — Çimento Torbası
 - **Bölge:** saha · **İlk bölüm:** 18
@@ -103,7 +111,7 @@ sahibi product-lead, ses tonu ve balon tasarımı design-lead'indir.
   Hiçbir hedefe sayılmaz (tasarımda "engel" ve destek olarak kullanılır).
 - **Veri:** `obstacles[] = { type: "cement_bag", x, y }`.
 - **Örnek:** Torba (4,5), altı (4,4) boşalır → adım 6'da (4,4)'e, oradan ilk desteğe düşer.
-- **Öğretici:** TR "Torbanın yanındaki parçayı oynat; torba yırtılır." · EN "Move a piece beside the bag to tear it open."
+- **Bilgi kartı** (`obs.y2.desc`): TR "Torbanın yanındaki bloğu oynat; torba yırtılır." · EN "Move a block beside the bag to tear it open."
 
 ### Y3 — Zincir
 - **Bölge:** saha · **İlk bölüm:** 24
@@ -111,7 +119,7 @@ sahibi product-lead, ses tonu ve balon tasarımı design-lead'indir.
   aynı komşuluk kuralıyla bir kez tetiklenince zincir kalkar (`clear/chain` 1 sayılır). Çekiç zinciri kırar, bloğu değil.
 - **Veri:** `PiecePlacement.flags: ["chained"]`.
 - **Örnek:** Zincirli `O4` (0,0); (2,0)'daki blok taşınır → (2,0) zincirlinin komşusu (1,0)'a bitişik → zincir kalkar.
-- **Öğretici:** TR "Zincirli parçanın komşusunu oynat, zincir çözülsün." · EN "Move a neighbor to free the chained piece."
+- **Bilgi kartı** (`obs.y3.desc`): TR "Zincirli bloğun komşusunu oynat, zincir çözülsün." · EN "Move a neighbor to free the chained block."
 
 ### Y4 — Islak Beton
 - **Bölge:** saha · **İlk bölüm:** 28
@@ -120,30 +128,31 @@ sahibi product-lead, ses tonu ve balon tasarımı design-lead'indir.
   düşer. Çekiç bloğu kırar.
 - **Veri:** `flags: ["wet"], wetMoves: N`.
 - **Örnek:** wetMoves 2; hamle 1 sonu 1, hamle 2 sonu 0 → 3. hamlede tutulabilir.
-- **Öğretici:** TR "Islak beton kurusun; sayaç sıfır olunca kullanabilirsin." · EN "Wet concrete must dry; use it when the counter hits zero."
+- **Bilgi kartı** (`obs.y4.desc`): TR "Islak beton kurusun; sayaç sıfır olunca kullanabilirsin." · EN "Wet concrete must dry; use it when the counter hits zero."
 
 ### Y5 — Ağır Malzeme
 - **Bölge:** saha · **İlk bölüm:** 8
-- **Kural:** Genişliği ≥ 3 olan her yönelim ve I5, Q9 her zaman. Duvar sütununa giremez (ne serbest ne ray kipinde);
+- **Kural:** Genişliği ≥ 3 olan her yönelim ve I5, Q9 her zaman. Duvar sınırını geçemez (ne serbest ne ray kipinde);
   yalnızca sahada ve saha üstü Vinç Alanı'nda (x ≤ 5) sürüklenir. Çekiçle kırılır. Vinç güçlendiricisi I5/Q9 dışındakileri
   genişliği ≤ 2 yönelime döndürüp şantiyeye koyabilir (GDD K-37).
 - **Veri:** şekil kimliği (`I5_0`, `Q9_0`, `L4_90` …).
 - **Örnek:** `I5_0` (0,7)–(4,7) yukarı kaldırılıp (1,8)'de bırakılamaz (K-05 iptal); (0,7)'den (1,7)'ye kaydırılır (5,7 boşsa) → 1 hamle.
-- **Öğretici:** TR "Ağır malzeme duvarı geçemez. Kenara çek ya da kır." · EN "Heavy material can't cross the wall. Move it or smash it."
+- **Bilgi kartı** (`obs.y5.desc`): TR "Ağır malzeme duvarı geçemez. Kenara çek ya da kır." · EN "Heavy material can't cross the wall. Move it or smash it."
 
 ### Y6 — Saha Yerçekimi
 - **Bölge:** saha · **İlk bölüm:** 14
 - **Kural:** `gravity.yard = true` (GDD K-20). Bütün saha blokları (zincirli, ıslak, ağır dahil) adım 6'da düşer, balonlar
   yükselir; kasalar sabittir.
 - **Veri:** `gravity.yard: true`.
-- **Öğretici:** TR "Bu sahada bloklar düşer. Alttakini alınca üsttekiler iner." · EN "Here blocks fall. Take one and the ones above drop."
+- **Bilgi kartı** (`obs.y6.desc`): TR "Bu sahada bloklar düşer. Alttakini alınca üsttekiler iner." · EN "Here blocks fall. Take one and the ones above drop."
 
 ### Y7 — Altın Vida
 - **Bölge:** saha · **İlk bölüm:** 19
-- **Kural:** Bir saha hücresinin zemininde saklıdır; bölüm başında örtülüdür. Hücre boş kaldığı ilk denetimde toplanır
+- **Kural:** Bir saha hücresinin zemininde saklıdır; bölüm başında örtülüdür, konumu her zaman görünür (GDD K-42). Hücre
+  boş kaldığı ilk denetimde toplanır
   (GDD K-42), `collect/screw` 1 sayılır. Bir hücrede en çok 1 saklı nesne olur.
 - **Veri:** `obstacles[] = { type: "screw", x, y }`.
-- **Öğretici:** TR "Altın vidalar parçaların altında. Üstünü aç, topla!" · EN "Golden screws hide under pieces. Uncover them to collect!"
+- **Bilgi kartı** (`obs.y7.desc`): TR "Altın vidalar blokların altında. Üstünü aç, topla!" · EN "Golden screws hide under blocks. Uncover them to collect!"
 
 ### Y8 — Harçlı Blok
 - **Bölge:** saha (etkisi şantiyede) · **İlk bölüm:** 35
@@ -154,7 +163,7 @@ sahibi product-lead, ses tonu ve balon tasarımı design-lead'indir.
   yerleşim yapılamaz (K-34). Doğru yerleşirse normal kilitlenir.
 - **Veri:** `flags: ["mortar"]`.
 - **Örnek:** `B1` R harçlı (6,2) W hücresine düşer → yapışır. Oyuncu sahaya geri sürükler → kalan 10 → 8.
-- **Öğretici:** TR "Harçlı parça yanlış yere yapışır. Dikkatli bırak!" · EN "Mortar pieces stick where they land. Drop with care!"
+- **Bilgi kartı** (`obs.y8.desc`): TR "Harçlı blok yanlış yere düşerse yapışır. Dikkatli bırak!" · EN "A mortar block sticks if it lands wrong. Drop with care!"
 
 ---
 
@@ -164,7 +173,7 @@ sahibi product-lead, ses tonu ve balon tasarımı design-lead'indir.
 - **Bölge:** şantiye · **İlk bölüm:** 5
 - **Kural:** `build.mode = "segments"`, 2–5 dilim (GDD K-22, K-25). Dilim bitince kayma ve kamyon teslimatı.
 - **Veri:** `build.segments[]`, `yard.batches[]` (`forSegment` = dilim indeksi).
-- **Öğretici:** TR "Bir oda bitince şantiye kayar, kamyon malzeme getirir." · EN "Finish one part; the site slides and the truck delivers."
+- **Bilgi kartı** (`obs.s1.desc`): TR "Bu kısım bitince şantiye kayar, kamyon malzeme getirir." · EN "Finish this part; the site slides and the truck delivers."
 
 ### S2 — Plan Boşluğu
 - **Bölge:** şantiye · **İlk bölüm:** 4
@@ -173,7 +182,7 @@ sahibi product-lead, ses tonu ve balon tasarımı design-lead'indir.
   balon (S8), Altın Mala, Vinç.
 - **Veri:** `rows` içinde `.`.
 - **Örnek:** Plan sütun 7: y0 W, y1 `.`, y2 W. `B1` W sütun 7'ye bırakılır → (7,1)'e düşer → hatalı.
-- **Öğretici:** TR "Pencere boş kalmalı. Üstünü geçitten ya da köprüyle doldur." · EN "Keep the window empty. Fill above it via the gap."
+- **Bilgi kartı** (`obs.s2.desc`): TR "Taralı hücre boş kalmalı. Üstünü geçitten ya da köprüyle doldur." · EN "Keep hatched cells empty. Fill above them via a gap or bridge."
 
 ### S3 — Cam Blok
 - **Bölge:** şantiye (bayrak sahadaki blokta) · **İlk bölüm:** 21
@@ -182,7 +191,7 @@ sahibi product-lead, ses tonu ve balon tasarımı design-lead'indir.
   yükselişi, geri sekme, teslimat ve saha yerçekimi düşüşlerinde kırılmaz.
 - **Veri:** `flags: ["glass"]`.
 - **Örnek:** normal; cam `D2_90` (6,8)'de bırakılır, iniş (6,3) → d=5 > 3 → kırılır. (6,6)'ya indirilip bırakılırsa d=3 → sağlam.
-- **Öğretici:** TR "Cam kırılır! Parçayı aşağı indir, sonra bırak." · EN "Glass breaks! Lower the piece before you let go."
+- **Bilgi kartı** (`obs.s3.desc`): TR "Cam kırılır! Bloğu aşağı indir, sonra bırak." · EN "Glass breaks! Lower the block before you let go."
 
 ### S4 — Moloz
 - **Bölge:** şantiye · **İlk bölüm:** 17
@@ -191,26 +200,26 @@ sahibi product-lead, ses tonu ve balon tasarımı design-lead'indir.
   sahada sıradan, kullanılamaz bir blok olur. Şantiyede başka yere bırakılırsa hatalı → başlangıcına döner. Altı boşalsa da
   düşmez. Çekiç kırar (sayılır). Dilim, alanında moloz varken tamamlanmaz.
 - **Veri:** `build.debris[] = { shape, color, x, y, segment }` (`segment` öneri P-5).
-- **Öğretici:** TR "Eski moloz yolu tıkıyor. Önce onu sahaya taşı." · EN "Old rubble is in the way. Move it out first."
+- **Bilgi kartı** (`obs.s4.desc`): TR "Eski moloz yolu tıkıyor. Önce onu sahaya taşı." · EN "Old rubble is in the way. Move it out first."
 
 ### S5 — Döner Platform
 - **Bölge:** şantiye · **İlk bölüm:** 31
-- **Kural:** `build.mode = "carousel"` (GDD K-23).
+- **Kural:** `build.mode = "carousel"` (GDD K-23). Sayaç: dönmeye kalan hamle `carouselEvery − t` (W4 sayaç dili).
 - **Veri:** `build.carouselEvery` (2–6).
-- **Öğretici:** TR "Platform dört hamlede bir döner. Öndeki yüze inşa et." · EN "The platform turns every four moves. Build the front face."
+- **Bilgi kartı** (`obs.s5.desc`): TR "Platform {n} hamlede bir döner. Öndeki yüze inşa et." · EN "The platform turns every {n} moves. Build on the front face."
 
 ### S6 — Asansör İskele
 - **Bölge:** şantiye · **İlk bölüm:** 37
 - **Kural:** `build.elevator` (GDD K-24); her iki modla birleşebilir.
 - **Veri:** `build.elevator: { range: [a, b], start, dir }`.
-- **Öğretici:** TR "İskele her hamlede bir sıra iner çıkar. Geçide dikkat!" · EN "The scaffold moves one row each move. Mind the gap!"
+- **Bilgi kartı** (`obs.s6.desc`): TR "İskele her hamlede bir sıra iner çıkar. Geçide dikkat!" · EN "The scaffold moves one row each move. Mind the gap!"
 
 ### S7 — Gizli Plan
 - **Bölge:** şantiye · **İlk bölüm:** 27 (`repeat`), 29 (`mirrorOf`)
 - **Kural:** GDD K-32.
 - **Veri:** `rows` içinde `?`, `segments[].hidden: { kind: "repeat", period } | { kind: "mirrorOf", segment }`.
-- **Öğretici:** TR (27) "Soru işaretleri deseni tekrarlar. Aşağıdaki sıralara bak!" · EN "Question marks repeat the pattern. Look at the rows below!"
-  · TR (29) "Bu kule diğerinin aynası. Renkleri yer değiştir!" · EN "This tower mirrors the other. Swap the colors!"
+- **Bilgi kartı** (`obs.s7r.desc`, 27): TR "Soru işaretleri deseni tekrarlar. Aşağıdaki sıralara bak!" · EN "Question marks repeat the pattern. Look at the rows below!"
+  · (`obs.s7m.desc`, 29): TR "Bu kule diğerinin aynası. Renkleri yer değiştir!" · EN "This tower mirrors the other. Swap the colors!"
 
 ### S8 — Balonlu Blok
 - **Bölge:** şantiye ve saha · **İlk bölüm:** 38
@@ -219,26 +228,70 @@ sahibi product-lead, ses tonu ve balon tasarımı design-lead'indir.
   plan tepesi (bloğun en üst hücresi satır `h + e − 1`; öneri P-3); bloğun sütunlarında siluet tavana ulaşmışsa blok siluetin üstünde
   kalır (plan dışı → hatalı). Rayda bırakılan balon hareket etmez. Saha yerçekimi açıkken adım 6'da yükselir. Rüzgâr
   (genişlik 1) önce kaydırır; G-L yönlendirmesi yükselişte de kullanılabilir. Doğrulama K-16 ve K-34 iledir.
+  Tavanın üstünden (Vinç Alanı) bırakılan balon tavana **iner** (GDD E-35). Kamyonla gelen balon düşüp oturur, yükselmez;
+  Y6 açıksa sonraki hamlenin 6. adımında yükselir (E-36). Saha yerçekiminde düşen bloklarla karşılaşma "yarım adım"
+  kuralıyla çözülür (GDD K-35 adım 6, E-33).
 - **Veri:** `flags: ["balloon"]`.
 - **Örnek:** Plan h=6, sütun 7: y0–y3 dolu, y4 `.`, y5 W boş. `B1` W balon sütun 7'ye bırakılır → (7,5)'e asılır → doğru.
   Normal `B1` W aynı yerde (7,4) `.` hücresine düşerdi → hatalı.
-- **Öğretici:** TR "Balonlu parça yukarı süzülür ve tavana asılır." · EN "Balloon pieces float up and hang from the ceiling."
+- **Bilgi kartı** (`obs.s8.desc`): TR "Balonlu blok yukarı süzülür ve tavana asılır." · EN "Balloon blocks float up and hang from the ceiling."
 
 ### G-H — Ağır yerçekimi
 - **Bölge:** şantiye · **İlk bölüm:** 15
-- **Kural:** `gravity.build = "high"`: hızlı düşüş, 700 ms tutma (sonra zorla bırakma), cam eşiği 2 (GDD K-19).
+- **Kural:** `gravity.build = "high"`: `holdMs` tutma (sonra zorla bırakma), cam eşiği 2 (GDD K-19). `holdMs` = 700;
+  Ayarlar > Erişilebilirlik "Zaman baskısını azalt" açıksa 1400 (R-11). Bot ölçümü 700 ile yapılır.
 - **Veri:** `gravity.build: "high"`.
-- **Öğretici:** TR "Ağır yerçekimi! Şantiye üstünde parça çabucak kayıp düşer." · EN "Heavy gravity! Over the site, pieces slip and drop fast."
+- **Bilgi kartı** (`obs.gh.desc`): TR "Ağır yerçekimi! Şantiye üstünde blok çabucak kayıp düşer." · EN "Heavy gravity! Over the site, blocks slip and drop fast."
 
 ### G-L — Hafif yerçekimi
 - **Bölge:** şantiye · **İlk bölüm:** 23
-- **Kural:** `gravity.build = "low"`: yavaş düşüş; düşen/yükselen bloğa dokunup sola/sağa ≥ 0,5 hücre sürüklemek onu komşu
-  şantiye sütununa 1 kez kaydırır (o satırda hücreler boşsa); cam eşiği 4 (GDD K-19). Yönlendirilen yerleşim YAO'da
-  "duvar üstü" sayılır.
+- **Kural:** `gravity.build = "low"`: yavaş düşüş; düşüş/yükseliş sürerken tahtanın herhangi bir yerine dokunmak bloğu
+  dokunulan tarafa (bloğun orta çizgisine göre) 1 sütun kaydırır; koşul: kaymış hücreler x=6–7 içinde ve boş; düşüş
+  başına en çok 1; aynı hamle; koşul tutmazsa hak harcanmaz; kayıt `steer { dir, atRow }` (GDD K-19, R-10). Cam eşiği 4.
+  Yönlendirilen yerleşim YAO'da "duvar üstü" sayılır. Gölge yönlendirmeden sonra yeni inişi gösterir (K-18).
 - **Veri:** `gravity.build: "low"`.
-- **Öğretici:** TR "Hafif yerçekimi: düşen parçaya dokun, bir yana kaydır." · EN "Low gravity: touch a falling piece to nudge it sideways."
+- **Bilgi kartı** (`obs.gl.desc`): TR "Hafif yerçekimi: düşerken tahtaya dokun, blok o yana kayar." · EN "Low gravity: tap the board while it falls to nudge it."
 
 ---
+
+## Veri imzası (mekanik türetme; GDD K-45/9, R-21)
+
+`levels:validate` her bölümün mekanik kümesini aşağıdaki imzalardan türetir; "yeni mekanik" = önceki bölümlerin
+kümelerinde olmayan imza. İmzası olmayan öğretimler (kaldır–taşı–indir, gölge, kazı K-10, `clear`/`collect` hedef
+türleri, güçlendirici açılışları) yalnızca `tutorial` adımlarıyla ifade edilir.
+
+| Mekanik | Veri imzası | İlk bölüm |
+|---|---|---|
+| W1 | bir geçitte `type = "static"` | 3 |
+| W2 | `wall.height = 8` | 6 |
+| W3 | herhangi bir geçitte `size = 1` (tipten bağımsız, N2) | 9 |
+| W4 | `type = "shutter"` | 13 |
+| W5 | `type = "slider"` | 16 |
+| W6 | `type = "paint"` | 22 |
+| W7 | `type = "locked"` (+ `key` nesnesi) | 26 |
+| W8 | `wall.fan` var | 32 |
+| Y1 | `obstacles[]` içinde `crate` | 11 |
+| Y2 | `cement_bag` | 18 |
+| Y3 | herhangi bir blokta (parti 0 ya da k) `chained` | 24 |
+| Y4 | `wet` | 28 |
+| Y5 | herhangi bir blokta ağır şekil (GDD K-44) | 8 |
+| Y6 | `gravity.yard = true` | 14 |
+| Y7 | `screw` | 19 |
+| Y8 | `mortar` | 35 |
+| S1 | `build.mode = "segments"` ve dilim sayısı ≥ 2 | 5 |
+| S2 | herhangi bir planda `.` | 4 |
+| S3 | `glass` | 21 |
+| S4 | `build.debris[]` dolu | 17 |
+| S5 | `build.mode = "carousel"` | 31 |
+| S6 | `build.elevator` var | 37 |
+| S7-R | `hidden.kind = "repeat"` | 27 |
+| S7-M | `hidden.kind = "mirrorOf"` | 29 |
+| S8 | `balloon` | 38 |
+| G-H | `gravity.build = "high"` | 15 |
+| G-L | `gravity.build = "low"` | 23 |
+
+Denetim (product-lead, LEVELS §2–§3 üzerinden elle): 50 bölümün her birinde türetilen yeni mekanik ≤ 1 ve `teaches`
+alanlarıyla birebir. Bölüm 4'ün geçidi boy 2'dir (R-21), bu yüzden W3 ilk kez 9'da görünür.
 
 ## Aynı bloktaki bayrak birleşimleri
 
@@ -288,49 +341,52 @@ Okuma: satır × sütun (üst üçgen). `·` = birlikte bulunabilir, kuralları 
 
 ### Notlar
 
-- **N1** — Geçit tipleri aynı geçitte birleşmez (bir geçidin tek `type`'ı vardır); farklı geçitlerde aynı bölümde bulunabilir.
-- **N2** — W3 bir boyuttur (`size=1`), tip değildir: dar kepenk, dar kayar kapı, dar boya kapısı, dar kilitli geçit geçerlidir.
-- **N3** — Yüksek duvarda geçit tek kestirmedir: boyu > 2 dikey bloklar (I3_0, L4_0 …) şantiyeye yalnızca geçitten girer (K-05).
-- **N4** — Saklı nesne (anahtar/vida) kasa ya da torba altında olabilir: kasa yok olunca / torba düşünce ya da yırtılınca hücre boşalır, o denetimde toplanır. Saha yerçekimi zincirlemesiyle açılan hücre adım 6 denetiminde toplanır (K-42).
-- **N5** — Bir hücrede en çok 1 saklı nesne (anahtar ya da vida).
-- **N6** — Ağır blok duvar sütununa giremez: hiçbir geçitten geçemez, boyanamaz, kepenk/kilit onu etkilemez.
-- **N7** — Boya kapısı yalnızca rengi değiştirir; bayraklar (cam, harç, balon) korunur. Zincirli/ıslak blok tutulamadığı için serbest kalana kadar boyanamaz.
-- **N8** — İki zamanlayıcı aynı hamle sonunda ilerler; sıra adım 10'daki gibidir (kepenk → kayar kapı → döner platform → asansör → ıslak beton). Birbirlerinin girdisini kullanmazlar; sıra yalnızca olay/animasyon sırasıdır.
-- **N9** — Saha yerçekimi geçide giden saha tünelini kapatabilir ya da açabilir; gölge yoktur ama yerçekimi deterministiktir, hamle sonu animasyonu gösterir.
-- **N10** — `.` üstündeki hücreyi doldurmanın ana yolu raydır; geçit satırı `.`'nin hemen üstüne denk getirilir (Bölüm 4, 9).
-- **N11** — Raydan giren cam blok düşmediği için asla kırılmaz; cam bölümlerinde geçit güvenli ama pahalı yoldur (kazı gerekir).
-- **N12** — Yüksek duvarda blok Vinç Alanı'ndan bırakılırsa d büyür (8–9 satır); cam için mutlaka siluete yakın indirilmelidir.
-- **N13** — Rüzgâr kayması düşüş mesafesini değiştirmez (aynı satırdan düşer); kaymış sütunun silueti d'yi belirler.
-- **N14** — Geçit satırlarındaki moloz rayı tıkar; aynı moloz ray kipinde geçitten sahaya çekilebilir (1 hamle).
-- **N15** — Döner platform ile kepenk aynı periyotta tasarlanırsa senkron bulmaca olur (Bölüm 34): kepenk açıkken hangi yüzün önde olduğu `m`'den hesaplanabilir.
-- **N16** — Asansörde geçidin açıldığı plan satırı `g.y − e`'dir; ray yerleşimi hangi plan satırına gideceğini ofsete göre değiştirir.
-- **N17** — Kayar kapı ve asansör aynı hamlede oynar: geçidin plan satırı her hamle −2, 0 ya da +2 değişebilir.
-- **N18** — Rüzgâr 1 genişlikteki bloğu `.` sütununa itebilir; gölge bunu gösterir (E-16).
-- **N19** — Raydan giren balon yükselmez (iskele tutar); balonun anlamı serbest kipte tavana asılmaktır.
-- **N20** — Balon rüzgârla önce kayar, sonra tavana yükselir.
-- **N21** — G-H 700 ms sayacı yalnızca serbest kipte şantiye sütunlarına değince işler; raydaki blok için zaman baskısı yoktur.
-- **N22** — G-L yönlendirmesi rüzgâr kaymasını geri alabilir (düşüş başına 1 yönlendirme).
-- **N23** — Torba kasanın üstünde durur; kasa yok olunca torba adım 6'da düşer.
-- **N24** — Aynı komşu hareketi birden fazla engeli tetikler (kasa katı, torba, zincir); her biri hamle başına en çok 1 kez.
-- **N25** — Kasa düşmez ve destektir; saha yerçekiminde kasa üstündeki bloklar yerinde kalır.
-- **N26** — Düşen torba komşu etkisi üretmez (yalnızca düşen bloklar üretir).
-- **N27** — Zincirli ve ıslak bloklar saha yerçekimiyle düşer; düşmeleri zinciri çözmez, sayacı değiştirmez.
-- **N28** — Kamyonla gelen ıslak blok geldiği hamlede sayaç kaybetmez (E-31).
-- **N29** — Harçlı blok `.` (pencere) hücresine yapışabilir; dilim tamamlanamaz, 2 hamlelik çekme ya da Çekiç gerekir (E-24).
-- **N30** — Harçlı cam: önce kırılma denetlenir; kırılırsa sahaya döner, yapışmaz.
-- **N31** — Yapışmış harç kendi dilimiyle birlikte döner/kayar; asansörde çerçeveyle oynar. Yalnızca plan alanında yapıştığı için tahtadan taşmaz (E-08, E-32).
-- **N32** — Yanlış renkle `?` hücresine yapışan harç hücreyi açmaz; Boya Fırçası doğru renge boyarsa kilitlenir ve hücre açılır.
-- **N33** — Saha yerçekimi açıkken balonlar adım 6'da yükselir; düşen bloklarla aynı sütunda karşılaşırlarsa birbirine dayanıp durur.
-- **N34** — Torba balonun üstüne düşerse ikisi de durur (torba balona, balon torbaya dayanır).
-- **N35** — Asansör ofseti dilim geçişinde ve döner platform dönüşünde korunur; yeni gelen/öne geçen dilim mevcut `e` ile görünür.
-- **N36** — Balon `.` hücrelerinin üstündeki tavan hücrelerini doldurmanın duvar üstü yoludur (asma köprü, bayrak).
-- **N37** — Cam eşiği: G-H 2, normal 3, G-L 4. G-H'de 700 ms içinde indirmek gerekir.
-- **N38** — Moloz dilime aittir (`segment`); kayan şantiyede o dilim gelince, döner platformda kendi yüzündedir.
-- **N39** — G-L yönlendirmesi balonun yükselişinde de kullanılabilir.
-- **N40** — Kilitli geçidin anahtarı saha yerçekimiyle açığa çıkabilir (N4).
-- **N41** — Gizli `?` hücresine düşecek gölge her zorlukta nötrdür; Boya Kapısı rengi ipucu olarak tasarlanabilir.
-- **N42** — Döner platform ve kayan şantiyede teslim partisi dilim tamamlanma sayısına bağlıdır (K-23, K-25).
-- **N43** — Saha yerçekimi açıkken kamyon blokları da oturmuş sahaya düşer; teslimat sahayı yeniden oynatmaz.
+`[kural]` = test edilebilir kural; test adı "N33 …" biçimindedir ve kapsam aracı bunları zorlar (code-lead). `[not]` =
+tasarım notu, test gerektirmez.
+
+- **N1** [kural] — Geçit tipleri aynı geçitte birleşmez (bir geçidin tek `type`'ı vardır); farklı geçitlerde aynı bölümde bulunabilir.
+- **N2** [kural] — W3 bir boyuttur (`size=1`), tip değildir: dar kepenk, dar kayar kapı, dar boya kapısı, dar kilitli geçit geçerlidir.
+- **N3** [kural] — Yüksek duvarda geçit tek kestirmedir: boyu > 2 dikey bloklar (I3_0, L4_0 …) şantiyeye yalnızca geçitten girer (K-05).
+- **N4** [kural] — Saklı nesne (anahtar/vida) kasa ya da torba altında olabilir: kasa yok olunca / torba düşünce ya da yırtılınca hücre boşalır, o denetimde toplanır. Saha yerçekimi zincirlemesiyle açılan hücre adım 6 denetiminde toplanır (K-42).
+- **N5** [kural] — Bir hücrede en çok 1 saklı nesne (anahtar ya da vida).
+- **N6** [kural] — Ağır blok duvar sınırını geçemez: hiçbir geçitten geçemez, boyanamaz, kepenk/kilit onu etkilemez.
+- **N7** [kural] — Boya kapısı yalnızca rengi değiştirir; bayraklar (cam, harç, balon) korunur. Zincirli/ıslak blok tutulamadığı için serbest kalana kadar boyanamaz.
+- **N8** [kural] — İki zamanlayıcı aynı hamle sonunda ilerler; sıra adım 10'daki gibidir (kepenk → kayar kapı → döner platform → asansör → ıslak beton). Birbirlerinin girdisini kullanmazlar; sıra yalnızca olay/animasyon sırasıdır.
+- **N9** [not] — Saha yerçekimi geçide giden saha tünelini kapatabilir ya da açabilir; gölge yoktur ama yerçekimi deterministiktir, hamle sonu animasyonu gösterir.
+- **N10** [not] — `.` üstündeki hücreyi doldurmanın ana yolu raydır; geçit satırı `.`'nin hemen üstüne denk getirilir (Bölüm 4, 9).
+- **N11** [kural] — Raydan giren cam blok düşmediği için asla kırılmaz; cam bölümlerinde geçit güvenli ama pahalı yoldur (kazı gerekir).
+- **N12** [not] — Yüksek duvarda blok Vinç Alanı'ndan bırakılırsa d büyür (8–9 satır); cam için mutlaka siluete yakın indirilmelidir.
+- **N13** [kural] — Rüzgâr kayması düşüş mesafesini değiştirmez (aynı satırdan düşer); kaymış sütunun silueti d'yi belirler.
+- **N14** [kural] — Geçit satırlarındaki moloz rayı tıkar; aynı moloz ray kipinde geçitten sahaya çekilebilir (1 hamle).
+- **N15** [not] — Döner platform ile kepenk aynı periyotta tasarlanırsa senkron bulmaca olur (Bölüm 34): kepenk açıkken hangi yüzün önde olduğu `m`'den hesaplanabilir.
+- **N16** [kural] — Asansörde geçidin açıldığı plan satırı `g.y − e`'dir; ray yerleşimi hangi plan satırına gideceğini ofsete göre değiştirir.
+- **N17** [kural] — Kayar kapı ve asansör aynı hamlede oynar: geçidin plan satırı her hamle −2, 0 ya da +2 değişebilir.
+- **N18** [kural] — Rüzgâr 1 genişlikteki bloğu `.` sütununa itebilir; gölge bunu gösterir (E-16).
+- **N19** [kural] — Raydan giren balon yükselmez (iskele tutar); balonun anlamı serbest kipte tavana asılmaktır.
+- **N20** [kural] — Balon rüzgârla önce kayar, sonra tavana yükselir.
+- **N21** [kural] — G-H 700 ms sayacı yalnızca serbest kipte şantiye sütunlarına değince işler; raydaki blok için zaman baskısı yoktur.
+- **N22** [kural] — G-L yönlendirmesi rüzgâr kaymasını geri alabilir (düşüş başına 1 yönlendirme).
+- **N23** [kural] — Torba kasanın üstünde durur; kasa yok olunca torba adım 6'da düşer.
+- **N24** [kural] — Aynı komşu hareketi birden fazla engeli tetikler (kasa katı, torba, zincir); her biri hamle başına en çok 1 kez.
+- **N25** [kural] — Kasa düşmez ve destektir; saha yerçekiminde kasa üstündeki bloklar yerinde kalır.
+- **N26** [kural] — Düşen torba komşu etkisi üretmez (yalnızca düşen bloklar üretir).
+- **N27** [kural] — Zincirli ve ıslak bloklar saha yerçekimiyle düşer; düşmeleri zinciri çözmez, sayacı değiştirmez.
+- **N28** [kural] — Kamyonla gelen ıslak blok geldiği hamlede sayaç kaybetmez (E-31).
+- **N29** [kural] — Harçlı blok `.` (pencere) hücresine yapışabilir; dilim tamamlanamaz, 2 hamlelik çekme ya da Çekiç gerekir (E-24).
+- **N30** [kural] — Harçlı cam: önce kırılma denetlenir; kırılırsa sahaya döner, yapışmaz.
+- **N31** [kural] — Yapışmış harç kendi dilimiyle birlikte döner/kayar; asansörde çerçeveyle oynar. Yalnızca plan alanında yapıştığı için tahtadan taşmaz (E-08, E-32).
+- **N32** [kural] — Yanlış renkle `?` hücresine yapışan harç hücreyi açmaz; Boya Fırçası doğru renge boyarsa kilitlenir ve hücre açılır.
+- **N33** [kural] — Saha yerçekimi açıkken balonlar adım 6'da yükselir; düşen bloklarla aynı sütunda karşılaşırlarsa "yarım adım" kuralı geçerlidir (GDD K-35 adım 6): önce düşme yarısı (balon katı), sonra yükselme yarısı; blok balona oturur, balon bloğa dayanır, arada boşluk kalmaz (E-33).
+- **N34** [kural] — Torba balonun üstüne düşerse ikisi de durur (torba balona, balon torbaya dayanır).
+- **N35** [kural] — Asansör ofseti dilim geçişinde ve döner platform dönüşünde korunur; yeni gelen/öne geçen dilim mevcut `e` ile görünür.
+- **N36** [not] — Balon `.` hücrelerinin üstündeki tavan hücrelerini doldurmanın duvar üstü yoludur (asma köprü, bayrak).
+- **N37** [kural] — Cam eşiği: G-H 2, normal 3, G-L 4. G-H'de 700 ms içinde indirmek gerekir.
+- **N38** [kural] — Moloz dilime aittir (`segment`); kayan şantiyede o dilim gelince, döner platformda kendi yüzündedir.
+- **N39** [kural] — G-L yönlendirmesi balonun yükselişinde de kullanılabilir.
+- **N40** [kural] — Kilitli geçidin anahtarı saha yerçekimiyle açığa çıkabilir (N4).
+- **N41** [kural] — Gizli `?` hücresine düşecek gölge her zorlukta nötrdür; Boya Kapısı rengi ipucu olarak tasarlanabilir.
+- **N42** [kural] — Döner platform ve kayan şantiyede teslim partisi dilim tamamlanma sayısına bağlıdır (K-23, K-25).
+- **N43** [kural] — Saha yerçekimi açıkken kamyon blokları da oturmuş sahaya düşer; teslimat sahayı yeniden oynatmaz.
 
 ### İmkânsız çiftler
 

@@ -1,6 +1,6 @@
 # 50 bölüm planı
 
-Sahip: product-lead · Sürüm: Faz 1 taslağı (2026-10-04) · Kaynak: `docs/BRIEF.md` §8, `docs/GDD.md`, `docs/OBSTACLES.md`
+Sahip: product-lead · Sürüm: Faz 1 revizyonu (2026-10-04; R-01, R-08, R-18, R-21) · Kaynak: `docs/BRIEF.md` §8, `docs/GDD.md`, `docs/OBSTACLES.md`
 
 Bu belge 50 bölümün taslağıdır. 1–10. bölümler tam blockout'tur (duvar, geçitler, saha blokları, plan satırları, kamyon
 partileri, el çözümü). **1–5. bölümler Faz 2'de doğrudan JSON'a çevrilebilir.** 11–50. bölümler tek satırlık
@@ -17,9 +17,30 @@ profiliyle hedef kazanma oranına ayar (Kolay ≥ %90, Normal %65–80, Zor %40�
 1–10 minimumları **el çözümüdür** (aşağıdaki doğrulama notu); solver daha kısa bir çözüm bulursa bütçe ona göre düşer.
 
 **Doğrulama notu:** 1–10. bölümlerin blockout'ları, GDD kurallarını (duvar sütunu, açık gökyüzü, ray kipi, K-16,
-K-34, kamyon dökümü K-25) uygulayan bir karalama betiğiyle hücre hücre denetlendi: parçalar çakışmıyor, şekiller
+K-34, kamyon dökümü K-25) uygulayan bir karalama betiğiyle hücre hücre denetlendi: bloklar çakışmıyor, şekiller
 kimlikleriyle uyuşuyor, saha doluluğu %80–100, her çözüm adımı yol kuralıyla erişilebilir ve sonuç doğru yerleşim.
 Betik proje kodu değildir; resmî doğrulama Faz 2–3'te code-lead'in `levels:validate` ve `levels:solve` araçlarıyladır.
+Revizyon turunda (Bölüm 1 üst satır düzeni, Bölüm 4 geçit boyu 2) 1–10 aynı betikle yeniden denetlendi: hepsi çözülür,
+minimum hamle ve YAO değişmedi. El çözümleri Faz 2'de golden test olarak hamle dizisine çevrilir
+(`tests/golden/level_00N.hand.json`, code-lead).
+
+**JSON eşlemesi:** Blok tablosundaki satır sırası = JSON parti-0 dizi sırası (`piece:<i>` öğretici vurgusu bu sıradır);
+parti blokları `k<parti>_<indeks>` (0 tabanlı). `seed` yazılmazsa `id × 1000 + id` (GDD K-45/1). `teaches` yalnızca
+veri imzası olan mekanikler için yazılır (OBSTACLES "Veri imzası"); 1, 2, 7 ve 10. bölümlerin öğretimi yalnızca
+`tutorial` iledir.
+
+**Öğretici adımları:** her blockout'un altında `tutorial[]` biçiminde (GDD §14): `adım · Z (required) / Y (soft) ·
+vurgu · el · textKey · tamam koşulu`. Metin anahtarları yalnızca `tut.l{n}.{konu}` / `tut.ctx.{konu}` (STORY §6,
+design-lead); oyuncu metninde renk adı yok (R-08). Sunum (el, spot ışığı) UX_FLOWS §13'tedir; adım **sırası** buradaki
+el çözümüne uyar (R-01: K-34 yüzünden "önce temel").
+
+**K-34 öğretimi:** bağlamsal `tut.ctx.support` ilk K-34 reddinde bir kez (bütün bölümler). Doğal ilk tetik noktaları
+(betikle doğrulandı): Bölüm 3 (`f` raydan `a`'dan önce), Bölüm 4 (lento `p`, (7,1) dolmadan), Bölüm 6 (`D` yatay, `C`'den
+önce: renk doğru, destek yok). Bölüm 4'te ayrıca yumuşak öğretici adımı vardır.
+
+**Bölüm süresi hedef bandı (tahmin; entrepreneur önerisi KABUL):** 1–10 = 45–75 sn; 11–30 = 75–120 sn; 31–50 = 100–180 sn.
+Bot raporu ve Aşama 0 testinde `level_end.durationMs` medyanıyla ölçülür. Bandın altında kalan hikaye bölümleri Faz 3'te
+§4 madde 1'deki sırayla büyütülür (önce dilim yüksekliği, sonra şaşırtma).
 
 **Renk ve şekil açılışları** (brif §5, §6; GDD K-31, K-44):
 
@@ -101,9 +122,9 @@ Hamle sütunu 1–10 için `el minimumu + tampon`, 11–50 için `tahmini minimu
 | Minimum hamle (el çözümü) | 3 |
 | Hamle bütçesi | 3 + 8 = **11** |
 | YAO (çözüm) | 3 duvar üstü / 3 yerleşim = **%100** |
-| Öğretici | tut.l1.lift: elle gösterim: a bloğunu yukarı kaldır, sağa taşı, bırak. |
+| Öğretici | `tut.l1.lift`, `tut.l1.drop`, `tut.l1.match` (adımlar blockout'un altında) |
 
-**Tasarım niyeti:** Oyuncu bloğu yukarı kaldırıp duvarın üstünden aşırmanın ve bırakınca düşmenin oyunun temel hareketi olduğunu keşfeder; gölgenin düşüş yerini gösterdiğini görür.
+**Tasarım niyeti:** Oyuncu bloğu yukarı kaldırıp duvarın üstünden aşırmanın ve bırakınca düşmenin oyunun temel hareketi olduğunu keşfeder; gölgenin düşüş yerini gösterdiğini görür. İlk hedef `a` üst satırda, duvarın hemen solundadır (tek elle başparmağa en yakın yer; design-lead önerisi). `e` (yatay W) ve `h` (yatay Y) başta tutulabilir: `e` ilk hamlede "hatalı" gölge verir, `h` `a`'nın eşdeğeridir.
 
 Blockout (D = duvar sütunu: `#` kapalı, `=` geçit, `:` duvar üstü hava; şantiyede 1. dilimin planı, `+` = `.` boş kalacak hücre, `~` = plan dışı):
 
@@ -111,8 +132,8 @@ Blockout (D = duvar sütunu: `#` kapalı, `=` geçit, `:` duvar üstü hava; şa
        x: 0 1 2 3 4 5   D   6 7
    y=9:  · · · · · ·   :   · ·  ← Vinç Alanı
    y=8:  · · · · · ·   :   · ·
-   y=7:  a a b c d .   :   ~ ~
-   y=6:  e e b c d .   :   ~ ~
+   y=7:  d . b c a a   :   ~ ~
+   y=6:  d . b c e e   :   ~ ~
    y=5:  f f g g h h   :   ~ ~
    y=4:  i j j k k l   :   ~ ~
    y=3:  i m m n n l   :   ~ ~
@@ -123,11 +144,11 @@ Blockout (D = duvar sütunu: `#` kapalı, `=` geçit, `:` duvar üstü hava; şa
 
 | Kimlik | Şekil | Renk | Çapa (x,y) | Rol |
 |---|---|---|---|---|
-| `a` | `D2_90` | Y | (0,7) | hedef |
-| `e` | `D2_90` | W | (0,6) | dolgu |
+| `a` | `D2_90` | Y | (4,7) | hedef |
 | `b` | `D2_0` | W | (2,6) | hedef |
 | `c` | `D2_0` | W | (3,6) | hedef |
-| `d` | `D2_0` | Y | (4,6) | şaşırtma (başta tutulabilir) |
+| `d` | `D2_0` | Y | (0,6) | şaşırtma (başta tutulabilir) |
+| `e` | `D2_90` | W | (4,6) | şaşırtma (başta tutulabilir) |
 | `f` | `D2_90` | Y | (0,5) | dolgu |
 | `g` | `D2_90` | W | (2,5) | dolgu |
 | `h` | `D2_90` | Y | (4,5) | şaşırtma (başta tutulabilir) |
@@ -149,9 +170,14 @@ Blockout (D = duvar sütunu: `#` kapalı, `=` geçit, `:` duvar üstü hava; şa
 
 Çözüm (hamle hamle, doğrulandı):
 
-1. `a` (D2_90 Y) (0,7)'den kaldır → duvar üstünden x=6 üstüne taşı → bırak → (6,0)'ye iner — duvar üstü, doğru
+1. `a` (D2_90 Y) (4,7)'den kaldır → duvar üstünden x=6 üstüne taşı → bırak → (6,0)'ye iner — duvar üstü, doğru
 2. `b` (D2_0 W) (2,6)'den kaldır → duvar üstünden x=6 üstüne taşı → bırak → (6,1)'ye iner — duvar üstü, doğru
 3. `c` (D2_0 W) (3,6)'den kaldır → duvar üstünden x=7 üstüne taşı → bırak → (7,1)'ye iner — duvar üstü, doğru
+
+Öğretici adımları (`tutorial[]`):
+1. Z · `piece:0`, `crane` · drag: `a` → duvar üstü → x=6 üstü · `tut.l1.lift` · `overWall` ×1
+2. Z · `build` · — · `tut.l1.drop` · `placementCorrect` ×1
+3. Y · `piece:1`, `cell:6,1`, `cell:6,2` · drag: `b` → x=6 · `tut.l1.match` · `placementCorrect` ×1
 
 ### Bölüm 2 — Platform (Platform)
 
@@ -168,9 +194,9 @@ Blockout (D = duvar sütunu: `#` kapalı, `=` geçit, `:` duvar üstü hava; şa
 | Minimum hamle (el çözümü) | 3 |
 | Hamle bütçesi | 3 + 8 = **11** |
 | YAO (çözüm) | 3 duvar üstü / 3 yerleşim = **%100** |
-| Öğretici | tut.l2.shadow: gölge yeşilse doğru, kırmızıysa yanlış yer. |
+| Öğretici | `tut.l2.pattern`, `tut.l2.shadow` (adımlar aşağıda; oyuncu metninde renk adı yok) |
 
-**Tasarım niyeti:** Oyuncu aynı renk bölgesini doğru yönelimli bloğun doldurduğunu, ters yönelimli C3'ün gölgede kırmızı yandığını keşfeder.
+**Tasarım niyeti:** Oyuncu aynı renk bölgesini doğru yönelimli bloğun doldurduğunu, ters yönelimli C3'ün gölgede "hatalı" göründüğünü keşfeder.
 
 Blockout (D = duvar sütunu: `#` kapalı, `=` geçit, `:` duvar üstü hava; şantiyede 1. dilimin planı, `+` = `.` boş kalacak hücre, `~` = plan dışı):
 
@@ -210,6 +236,10 @@ Blockout (D = duvar sütunu: `#` kapalı, `=` geçit, `:` duvar üstü hava; şa
 2. `b` (C3_0 W) (2,6)'den kaldır → duvar üstünden x=6 üstüne taşı → bırak → (6,2)'ye iner — duvar üstü, doğru
 3. `c` (C3_180 Y) (4,6)'den kaldır → duvar üstünden x=6 üstüne taşı → bırak → (6,3)'ye iner — duvar üstü, doğru
 
+Öğretici adımları (`tutorial[]`):
+1. Y · `panorama`, `build` · — · `tut.l2.pattern` · `placementCorrect` ×1
+2. Y · `piece:1`, `build` · hold: `b` x=6 üstünde · `tut.l2.shadow` · `holdOverBuild` ×1 (≥ 500 ms)
+
 ### Bölüm 3 — Ön Duvar (Front Wall)
 
 | Alan | Değer |
@@ -225,7 +255,7 @@ Blockout (D = duvar sütunu: `#` kapalı, `=` geçit, `:` duvar üstü hava; şa
 | Minimum hamle (el çözümü) | 3 |
 | Hamle bütçesi | 3 + 8 = **11** |
 | YAO (çözüm) | 2 duvar üstü / 3 yerleşim = **%67** |
-| Öğretici | tut.W1: geçidi ve yanındaki sarı bloğu vurgula; sağa it. |
+| Öğretici | `tut.l1.match`, `tut.l3.gap`, `tut.l3.rail` (adımlar aşağıda; önce temel, K-34) |
 
 **Tasarım niyeti:** Oyuncu sahanın derinindeki bloğun geçitten tek hamlede şantiyeye girdiğini ve raydaki bloğun düşmediğini keşfeder.
 
@@ -247,8 +277,9 @@ Blockout (D = duvar sütunu: `#` kapalı, `=` geçit, `:` duvar üstü hava; şa
 
 | Kimlik | Şekil | Renk | Çapa (x,y) | Rol |
 |---|---|---|---|---|
-| `b` | `D2_90` | W | (2,7) | hedef |
 | `a` | `O4_0` | W | (0,6) | hedef |
+| `f` | `D2_90` | Y | (4,2) | hedef |
+| `b` | `D2_90` | W | (2,7) | hedef |
 | `e` | `D2_90` | G | (2,6) | dolgu |
 | `c` | `D2_0` | Y | (4,6) | şaşırtma (başta tutulabilir) |
 | `d` | `D2_0` | G | (5,6) | şaşırtma (başta tutulabilir) |
@@ -258,7 +289,6 @@ Blockout (D = duvar sütunu: `#` kapalı, `=` geçit, `:` duvar üstü hava; şa
 | `l` | `D2_90` | G | (4,3) | şaşırtma (başta tutulabilir) |
 | `j` | `O4_0` | Y | (0,2) | dolgu |
 | `k` | `O4_0` | W | (2,2) | dolgu |
-| `f` | `D2_90` | Y | (4,2) | hedef |
 | `m` | `O4_0` | W | (0,0) | dolgu |
 | `n` | `O4_0` | G | (2,0) | dolgu |
 | `o` | `O4_0` | Y | (4,0) | dolgu |
@@ -269,13 +299,21 @@ Blockout (D = duvar sütunu: `#` kapalı, `=` geçit, `:` duvar üstü hava; şa
 2. `f` (D2_90 Y) (4,2)'den sağa → geçitten raya → (6,2)'de bırak — ray, doğru
 3. `b` (D2_90 W) (2,7)'den kaldır → duvar üstünden x=6 üstüne taşı → bırak → (6,3)'ye iner — duvar üstü, doğru
 
+K-34 notu: `f` `a`'dan önce raya konursa (6–7, 0–1) boş kaldığı için hatalıdır (betikle doğrulandı); öğretici bu yüzden
+temelle başlar.
+
+Öğretici adımları (`tutorial[]`):
+1. Y · `piece:0`, `cell:6,0`, `cell:7,1` · drag: `a` → x=6 · `tut.l1.match` · `placementCorrect` ×1
+2. Z · `gap:0`, `piece:1` · drag: `f` sağa, geçitten · `tut.l3.gap` · `gapPass` ×1
+3. Y · `piece:1` · tap · `tut.l3.rail` · `placementCorrect` ×1
+
 ### Bölüm 4 — Pencere (The Window)
 
 | Alan | Değer |
 |---|---|
 | Öğretilen | S2 Plan Boşluğu (üstü geçitten) |
 | Zorluk / hedef kazanma | Kolay / ≥ %90 |
-| Duvar | height 6; geçit: y=3 boy 1 (static) |
+| Duvar | height 6; geçit: y=3 boy **2** (static; R-21, brifte boy 1) |
 | Yerçekimi | build `normal`, yard `false` |
 | Dilimler | 1. Ön Cephe `["RR", "WW", "W.", "WW", "YY"]` |
 | Desen | pencereli cephe |
@@ -284,7 +322,7 @@ Blockout (D = duvar sütunu: `#` kapalı, `=` geçit, `:` duvar üstü hava; şa
 | Minimum hamle (el çözümü) | 5 |
 | Hamle bütçesi | 5 + 8 = **13** |
 | YAO (çözüm) | 4 duvar üstü / 5 yerleşim = **%80** |
-| Öğretici | tut.S2: çapraz taralı hücreyi göster: 'Pencere boş kalmalı.' |
+| Öğretici | `tut.l4.window`, `tut.ctx.support`, `tut.l4.above` (adımlar aşağıda) |
 
 **Tasarım niyeti:** Oyuncu pencerenin üstünü tek genişlikteki blokla dolduramayacağını, geçitten gelen yatay lentonun pencerenin üstünde asılı kaldığını keşfeder.
 
@@ -297,7 +335,7 @@ Blockout (D = duvar sütunu: `#` kapalı, `=` geçit, `:` duvar üstü hava; şa
    y=7:  a a b c d d   :   ~ ~
    y=6:  e e b f g g   :   ~ ~
    y=5:  h h i i j j   #   ~ ~
-   y=4:  h h i i j j   #   R R
+   y=4:  h h i i j j   =   R R
    y=3:  k k l l p p   =   W W
    y=2:  k k l l q q   #   W +
    y=1:  r r s s u u   #   W W
@@ -307,16 +345,16 @@ Blockout (D = duvar sütunu: `#` kapalı, `=` geçit, `:` duvar üstü hava; şa
 | Kimlik | Şekil | Renk | Çapa (x,y) | Rol |
 |---|---|---|---|---|
 | `a` | `D2_90` | Y | (0,7) | hedef |
+| `b` | `D2_0` | W | (2,6) | hedef |
 | `c` | `B1_0` | W | (3,7) | hedef |
+| `p` | `D2_90` | W | (4,3) | hedef |
 | `d` | `D2_90` | R | (4,7) | hedef |
 | `e` | `D2_90` | R | (0,6) | dolgu |
-| `b` | `D2_0` | W | (2,6) | hedef |
 | `f` | `B1_0` | W | (3,6) | dolgu |
 | `g` | `D2_90` | Y | (4,6) | şaşırtma (başta tutulabilir) |
 | `h` | `O4_0` | W | (0,4) | dolgu |
 | `i` | `O4_0` | R | (2,4) | dolgu |
 | `j` | `O4_0` | Y | (4,4) | dolgu |
-| `p` | `D2_90` | W | (4,3) | hedef |
 | `k` | `O4_0` | Y | (0,2) | dolgu |
 | `l` | `O4_0` | W | (2,2) | dolgu |
 | `q` | `D2_90` | R | (4,2) | dolgu |
@@ -331,6 +369,16 @@ Blockout (D = duvar sütunu: `#` kapalı, `=` geçit, `:` duvar üstü hava; şa
 3. `c` (B1_0 W) (3,7)'den kaldır → duvar üstünden x=7 üstüne taşı → bırak → (7,1)'ye iner — duvar üstü, doğru
 4. `p` (D2_90 W) (4,3)'den sağa → geçitten raya → (6,3)'de bırak — ray, doğru
 5. `d` (D2_90 R) (4,7)'den kaldır → duvar üstünden x=6 üstüne taşı → bırak → (6,4)'ye iner — duvar üstü, doğru
+
+Geçit boyu 2 (R-21): W3'ün veri imzası (`size = 1`) ilk kez Bölüm 9'da görünür, K-45/9 istisnasız kalır. Satır 3–4
+geçidinden yeni kısa yol çıkmaz: tek sıralık R bloğu satır 4'e ulaşamaz (`j` kapatır), 2 sıralık bloklar renk karışık
+satırlara (W/R) uymaz; minimum 5 ve YAO %80 değişmedi (betikle doğrulandı). K-34 notu: `p` `c`'den önce raya konursa
+(7,1) boş kaldığı için hatalıdır — pencerenin üstündeki lento, altındaki duvar bitince konur.
+
+Öğretici adımları (`tutorial[]`):
+1. Y · `cell:7,2` · tap · `tut.l4.window` · `timeoutMs` 2500
+2. Y · `front` (inşa cephesi, GDD K-34 kanca 1) · — · `tut.ctx.support` · `placementCorrect` ×3
+3. Z · `gap:0`, `piece:3`, `cell:6,3`, `cell:7,3` · drag: `p` sağa, geçitten · `tut.l4.above` · `gapPass` ×1
 
 ### Bölüm 5 — İki Odalı Ev (Two-Room House)
 
@@ -347,7 +395,7 @@ Blockout (D = duvar sütunu: `#` kapalı, `=` geçit, `:` duvar üstü hava; şa
 | Minimum hamle (el çözümü) | 6 |
 | Hamle bütçesi | 6 + 5 = **11** |
 | YAO (çözüm) | 6 duvar üstü / 6 yerleşim = **%100** |
-| Öğretici | tut.S1: dilim bitince kayma ve kamyonu oynat; 'Kamyonda' göstergesini vurgula. |
+| Öğretici | `tut.l5.segments`, `tut.l5.truck` (adımlar aşağıda) |
 
 **Tasarım niyeti:** Oyuncu bir dilim bitince şantiyenin kaydığını ve kamyonun yeni malzemeyi sahanın boşalan yerlerine döktüğünü keşfeder.
 
@@ -397,6 +445,10 @@ Kamyon partileri:
 5. `k1_2` (C3_180 G) (2,6)'den kaldır → duvar üstünden x=6 üstüne taşı → bırak → (6,1)'ye iner — duvar üstü, doğru
 6. `k1_3` (D2_90 R) (4,7)'den kaldır → duvar üstünden x=6 üstüne taşı → bırak → (6,3)'ye iner — duvar üstü, doğru
 
+Öğretici adımları (`tutorial[]`):
+1. Y · `panorama` · — · `tut.l5.segments` · `segmentDone` ×1
+2. Y · `truck` · — · `tut.l5.truck` · `deliveryDone` ×1
+
 ### Bölüm 6 — Uzun Gövde (Tall Trunk)
 
 | Alan | Değer |
@@ -412,7 +464,7 @@ Kamyon partileri:
 | Minimum hamle (el çözümü) | 6 |
 | Hamle bütçesi | 6 + 5 = **11** |
 | YAO (çözüm) | 6 duvar üstü / 6 yerleşim = **%100** |
-| Öğretici | tut.W2: Vinç Alanı'nı vurgula; blok en tepeye çıkınca geçiş oku. |
+| Öğretici | `tut.l6.crane` (adım aşağıda) |
 
 **Tasarım niyeti:** Oyuncu duvar tahtanın tepesine kadar yükselince bloğu Vinç Alanı'na kaldırması gerektiğini ve uzun düşüşü keşfeder.
 
@@ -459,6 +511,14 @@ Blockout (D = duvar sütunu: `#` kapalı, `=` geçit, `:` duvar üstü hava; şa
 5. `E` (C3_0 W) (4,6)'den kaldır → duvar üstünden x=6 üstüne taşı → bırak → (6,4)'ye iner — duvar üstü, doğru
 6. `F` (C3_180 Y) (4,4)'den kaldır → duvar üstünden x=6 üstüne taşı → bırak → (6,5)'ye iner — duvar üstü, doğru
 
+K-34 notu: `D` `C`'den önce bırakılırsa (6,3)–(7,3)'e iner, renk doğru ama (7,1)–(7,2) boş → hatalı (`support`). Bu,
+"renk doğru, neden yanlış?" anının ilk doğal yeridir; bağlamsal `tut.ctx.support` burada tetiklenir. Bölüm 1'in bütün
+blokları 2 satır boyundadır, bu yüzden Vinç Alanı yükseklik sınırı (K-05) 6'da sınanmaz; uzun blok ipucu (design-lead
+önerisi) ilk uzun bloğun yüksek duvarla buluştuğu yerde bağlamsal verilir (I3/L4 2. hikaye bölümünde açılır).
+
+Öğretici adımları (`tutorial[]`):
+1. Z · `piece:0`, `crane`, `wall` · drag: `A` → y ≥ 8 → x=6 · `tut.l6.crane` · `overWall` ×1
+
 ### Bölüm 7 — Çatı Altı (Under the Roof)
 
 | Alan | Değer |
@@ -474,7 +534,7 @@ Blockout (D = duvar sütunu: `#` kapalı, `=` geçit, `:` duvar üstü hava; şa
 | Minimum hamle (el çözümü) | 7 |
 | Hamle bütçesi | 7 + 5 = **12** |
 | YAO (çözüm) | 5 duvar üstü / 5 yerleşim = **%100** |
-| Öğretici | tut.l7.dig: kırmızı bloğu boş köşeye taşı; altındaki ahşap açılır. |
+| Öğretici | `tut.l7.dig`, `tut.l7.free` (adımlar aşağıda) |
 
 **Tasarım niyeti:** Oyuncu gerekli bloğun üstündekini sahada boş bir yere taşımanın (kazı) bir hamleye değdiğini keşfeder.
 
@@ -523,6 +583,10 @@ Kamyon partileri:
 6. `k1_1` (C3_180 R) (2,4)'den kaldır → duvar üstünden x=6 üstüne taşı → bırak → (6,1)'ye iner — duvar üstü, doğru
 7. `k1_4` (D2_90 G) (0,6)'den kaldır → duvar üstünden x=6 üstüne taşı → bırak → (6,3)'ye iner — duvar üstü, doğru
 
+Öğretici adımları (`tutorial[]`):
+1. Z · `piece:0`, `piece:3`, `cell:0,6` · drag: `b` → (0,6) · `tut.l7.dig` · `yardMove` ×1
+2. Y · `piece:3` · tap · `tut.l7.free` · `timeoutMs` 2000
+
 ### Bölüm 8 — Bahçe Çiti (Garden Fence)
 
 | Alan | Değer |
@@ -538,7 +602,7 @@ Kamyon partileri:
 | Minimum hamle (el çözümü) | 7 |
 | Hamle bütçesi | 7 + 5 = **12** |
 | YAO (çözüm) | 6 duvar üstü / 6 yerleşim = **%100** |
-| Öğretici | tut.Y5: paleti göster; 'Kenara çek ya da kır.' Çekiç ücretsiz denemesi. |
+| Öğretici | `tut.l8.heavy`, `tut.l8.hammer` (adımlar aşağıda; Çekiç 3 ücretsiz deneme) |
 
 **Tasarım niyeti:** Oyuncu ağır paletin duvarı geçemediğini, yer açılınca kenara çekilebileceğini ya da Çekiç'le kırılabileceğini keşfeder.
 
@@ -588,6 +652,11 @@ Kamyon partileri:
 6. `k1_2` (C3_270 W) (3,3)'den kaldır → duvar üstünden x=6 üstüne taşı → bırak → (6,1)'ye iner — duvar üstü, doğru
 7. `k1_1` (D2_90 W) (3,2)'den kaldır → duvar üstünden x=6 üstüne taşı → bırak → (6,3)'ye iner — duvar üstü, doğru
 
+Öğretici adımları (`tutorial[]`; Çekiç adımı **yumuşak**tır: tasarım niyeti "kenara çek ya da kır" iki yolu da açık
+tutar; zorunlu Çekiç kazı dersini siler):
+1. Y · `piece:0` · tap · `tut.l8.heavy` · `timeoutMs` 2500
+2. Y · `booster:hammer`, `piece:0` · tap yuva, tap `Q` · `tut.l8.hammer` · `timeoutMs` 4000
+
 ### Bölüm 9 — İp Merdiven (Rope Ladder)
 
 | Alan | Değer |
@@ -603,7 +672,7 @@ Kamyon partileri:
 | Minimum hamle (el çözümü) | 8 |
 | Hamle bütçesi | 8 + 5 = **13** |
 | YAO (çözüm) | 7 duvar üstü / 8 yerleşim = **%88** |
-| Öğretici | tut.W3: 2 sıralık sarı bloğu geçide sokmayı dene → sığmaz; tek sıralık blok geçer. |
+| Öğretici | `tut.l1.match`, `tut.l9.narrow` (adımlar aşağıda; önce temel, K-34) |
 
 **Tasarım niyeti:** Oyuncu dar geçide yalnızca tek sıra boyundaki blokların girdiğini ve asılı basamağın yalnızca raydan kurulabildiğini keşfeder.
 
@@ -658,6 +727,11 @@ Kamyon partileri:
 7. `k1_1` (B1_0 W) (4,4)'den kaldır → duvar üstünden x=6 üstüne taşı → bırak → (6,3)'ye iner — duvar üstü, doğru
 8. `k1_0` (D2_90 W) (4,3)'den kaldır → duvar üstünden x=6 üstüne taşı → bırak → (6,4)'ye iner — duvar üstü, doğru
 
+Öğretici adımları (`tutorial[]`; `D` (D2_0, 2 sıra) geçide itilirse yapışkan takip geçit ağzında durur — dersin
+"sığmaz" yarısı budur):
+1. Y · `piece:3`, `build` · drag: `W` → x=6 · `tut.l1.match` · `placementCorrect` ×1
+2. Z · `gap:0`, `piece:5` · drag: `Y` sağa, dar geçitten · `tut.l9.narrow` · `gapPass` ×1
+
 ### Bölüm 10 — Ağaç Ev Tamam! (Treehouse Done!)
 
 | Alan | Değer |
@@ -673,7 +747,7 @@ Kamyon partileri:
 | Minimum hamle (el çözümü) | 11 |
 | Hamle bütçesi | 11 + 3 = **14** |
 | YAO (çözüm) | 8 duvar üstü / 9 yerleşim = **%89** |
-| Öğretici | tut.l10.crane: bölüm sonunda Vinç güçlendiricisi tanıtımı (ücretsiz deneme). |
+| Öğretici | `tut.l10.crane` (adım aşağıda; Vinç 2 ücretsiz deneme) |
 
 **Tasarım niyeti:** Oyuncu hikaye bölümündeki bütün araçları sırayla kullanır: paleti doğru anda kenara çekmek, dar geçitten asılı katı kurmak, kamyon dökümünü kazıyla açmak.
 
@@ -732,6 +806,9 @@ Kamyon partileri:
 10. `k2_1` (O4_0 R) (4,4)'den kaldır → duvar üstünden x=6 üstüne taşı → bırak → (6,1)'ye iner — duvar üstü, doğru
 11. `k2_0` (B1_0 R) (4,3)'den kaldır → duvar üstünden x=7 üstüne taşı → bırak → (7,3)'ye iner — duvar üstü, doğru
 
+Öğretici adımları (`tutorial[]`; Zor bölümde yumuşak: Vinç kullanımı serbest, bot oranı Vinçsiz ölçülür):
+1. Y · `booster:crane` · tap · `tut.l10.crane` · `timeoutMs` 3000
+
 ---
 
 ## 3. Bölüm 11–50 (tasarım kayıtları)
@@ -740,6 +817,33 @@ Sütunlar: **Kurulum** = bölüm genelindeki parametreler (duvar, geçitler, yer
 tahmini minimum + tampon = bütçe; **Hedef** = "orta" bot kazanma oranı. Duvar ve yerçekimi bölüm boyunca sabittir
 (geçitler, fan, `gravity` dilimden dilime değişmez); dilimden dilime değişebilenler plan (`.`, `?`), moloz ve kamyonla
 gelen blokların bayraklarıdır (cam, balon, harç, ıslak, zincir).
+
+**Engel bağımlılık dizini (11–50; entrepreneur isteği, kesme etkisini tek bakışta gösterir):**
+
+| Engel | Kullanıldığı bölümler | Engel | Kullanıldığı bölümler |
+|---|---|---|---|
+| W1 | 11, 12, 17, 19, 21, 24, 27, 29, 32, 37, 39 | Y6 | 14, 18, 20, 36, 41 |
+| W2 | 25, 33, 42, 50 | Y7 | 19, 36, 49 |
+| W3 | 16, 17, 19, 20, 22, 25, 27, 29, 30, 32, 35, 39, 43, 47, 50 | Y8 | 35, 40, 48, 50 |
+| W4 | 13, 20, 34, 35, 41 | S2 | 13, 16, 23, 38, 43, 45, 50 |
+| W5 | 16, 20, 43 | S3 | 21, 23, 25, 30, 33, 40, 42, 49, 50 |
+| W6 | 22, 25, 30, 43, 47, 50 | S4 | 17, 20, 45, 50 |
+| W7 | 26, 30, 45, 50 | S5 | 31, 34, 40, 48 |
+| W8 | 32, 33, 36, 40, 46, 47 | S6 | 37, 39, 40, 49 |
+| Y1 | 11, 12, 19, 41 | S7-R / S7-M | 27, 30, 44 / 29, 46, 50 |
+| Y2 | 18 | S8 | 38, 39, 44, 47, 50 |
+| Y3 | 24, 29, 45 | G-H / G-L | 15, 42 / 23, 49 |
+| Y4 | 28, 48 | Y5, S1 | Faz 3 blockout'ında (ağır blok ve çok dilim hemen her bölümde) |
+
+**B planı etkisi (BUSINESS P-7, entrepreneur kapsam kararı):** S5 Döner Platform ve S6 Asansör kesilirse 7 bölüm yeniden
+kurulur: 31, 34, 37, 39, 40, 48, 49. Yapı parçası ve zorluk etiketi korunur; 31 ve 37 "nefes / pekiştirme" bölümüne
+döner (yeni mekanik yok), 34 kepenk zamanlaması, 39 dar geçit + balon, 40 rüzgâr + harç + cam, 48 ıslak + harç, 49 hafif
+yerçekimi + cam + vida olur. G-L yönlendirmesi de kesilirse 23 ve 49'da `gravity.build = low` yalnızca cam eşiği 4 ve
+yavaş düşüş olarak kalır (yönlendirme öğretimi çıkar).
+
+**11–50 öğretici notları:** Bölüm 15'te ikinci yumuşak adım `tut.l15.setting` (Ayarlar > "Zaman baskısını azalt", R-11;
+metin design-lead). Bölüm 23'te G-L girdisi: düşerken tahtaya dokunma, dokunulan taraf = yön (GDD K-19, R-10). Bölüm
+19, 26, 36, 49'da saklı nesnelerin konumu görünür (GDD K-42).
 
 ### Hikaye Bölümü 2 — Mahalle Fırını (renkler W Y G R + O C; en çok 4)
 
@@ -779,7 +883,7 @@ gelen blokların bayraklarıdır (cam, balon, harç, ıslak, zincir).
 | 32 | Rüzgârlı Kıyı | W8 Rüzgâr Fanı (`dir right`) | Duvar 6, sabit geçit y=2 boy 1 | 3 | B, R, W, Y | 15+5 = 20 | Normal | %70 | Rüzgârın ince blokları kaydırdığını gölgeden okuyup sütunu ona göre seçmek ya da bloğu siluete indirmek. |
 | 33 | Fener Gövdesi | Kombinasyon | Duvar 8, fan `left`; cam bloklar; dilimler 2×8 | 3 | R, W, B, C | 17+5 = 22 | Normal | %65 | Yüksek duvar, rüzgâr ve camı aynı düşüşte hesaba katmak. |
 | 34 | Fener Odası | Kombinasyon (zamanlama) | Duvar 6, kepenk y=2 boy 2 (period 2, phase 0); `carousel`, `carouselEvery 4` | 3 | Y, B, R, P | 17+5 = 22 | Normal | %65 | Kepenk ile platformun aynı ritimde döndüğünü fark edip ray hamlelerini o ana denk getirmek. |
-| 35 | Islak Harç | Y8 Harçlı Blok | Duvar 6, kepenk y=3 boy 1 (period 3); harçlı bloklar 2. ve 3. partide | 3 | C, R, W, O | 18+3 = 21 | **Zor** | %45 | Harçlı bloğu yalnızca gölge yeşilken bırakmak; zorluk yeni engelden değil dar bütçeden gelir. |
+| 35 | Islak Harç | Y8 Harçlı Blok | Duvar 6, kepenk y=3 boy 1 (period 3); harçlı bloklar 2. ve 3. partide | 3 | C, R, W, O | 18+3 = 21 | **Zor** | %45 | Harçlı bloğu yalnızca gölge "doğru" iken bırakmak; zorluk yeni engelden değil dar bütçeden gelir. |
 | 36 | Martı Yuvaları | Kombinasyon | Duvar 6, fan `right`; `gravity.yard = true`; `collect screw 6` | 3 | W, G, B, Y | 16+5 = 21 | Normal (nefes) | %75 | Vidaları açan düşüş zincirlerini rüzgârlı yerleştirmeyle birleştirmek. |
 | 37 | Yükselen İskele | S6 Asansör İskele (`range [0,2]`) | Duvar 6, sabit geçit y=3 boy 1; `build.elevator` start 0 dir +1 | 3 | O, C, B, W | 16+5 = 21 | Normal | %70 | Geçidin hangi plan satırına açılacağını asansör ofsetinden hesaplamak. |
 | 38 | Köprü Halatları | S8 Balonlu Blok | Duvar 5; planlarda `.` sütunlarının üstünde tavan hücreleri | 3 | R, W, B, Y | 16+5 = 21 | Normal | %70 | Balonlu bloğun tavana asılıp boşluk üstündeki halatı kurduğunu keşfetmek. |
@@ -808,9 +912,12 @@ gelen blokların bayraklarıdır (cam, balon, harç, ıslak, zincir).
 1. **Hamle sayıları düştü (1–10'da %25–40).** Brif §8 sayıları "başlangıç tahmini"dir; nihai kural "minimum +
    tampon"dur. 1–10'un el minimumları 3–11 hamledir; bu, bölüm başına ≈ 1 dakika oyun (≈ 5 sn/hamle) ve brifin 1–3
    dakika oturum hedefiyle uyumludur. Faz 3'te bot raporu bölümleri kısa bulursa planlar büyütülür (önce dilim yüksekliği,
-   sonra şaşırtma sayısı). Proje sahibine açık soru olarak iletildi.
-2. **Bölüm 4'ün geçidi zaten dardır** (brif: y=3 boy 1). Dar geçit (W3) kısıtı Bölüm 4'te sınanmaz (rayda tek sıralık
-   doğru blok hazırdır); Bölüm 9'da iki sıralık şaşırtma blokları geçide sokulmaya çalışılınca öğretilir.
+   sonra şaşırtma sayısı). **Proje sahibine açık soru (R-18);** formül (solver minimumu + tampon, ardından bot ayarı)
+   geçerli kalır. Ölçüt §0'daki bölüm süresi bandıdır.
+2. **Bölüm 4'ün geçidi boy 2'dir** (brif: y=3 boy 1; R-21). Gerekçe: (a) doğrulayıcı mekanikleri veriden türetir
+   (OBSTACLES "Veri imzası"); boy 1 geçit Bölüm 4'e S2 ile birlikte ikinci yeni mekanik (W3) getirir ve K-45/9'a istisna
+   gerektirirdi; (b) W3'ün "blok sığmıyor" anı Bölüm 9'a saklanır; (c) Bölüm 4'ün çözümü, minimumu (5) ve YAO'su (%80)
+   değişmez (betikle doğrulandı). Alternatif ("W3 yalnızca `teaches` ile sayılır") istisna kuralı doğurduğu için seçilmedi.
 3. **Bölüm 5 ve 6 "Normal" etiketli tanıtım bölümleridir;** öğretim kuralı gereği sade tutuldu, hedef kazanma %80
    (Normal bandının üst ucu). Kazı (K-10) 7. bölümde öğretildiği için 1–6'da hiçbir çözüm kazı gerektirmez.
 4. **Bölüm 35 Zor ve yeni mekanik öğretir** (brif). Zorluk yeni engelden değil, +3 tampondan ve bilinen kepenkten gelir;
@@ -819,6 +926,11 @@ gelen blokların bayraklarıdır (cam, balon, harç, ıslak, zincir).
    plan, moloz ve kamyonla gelen blok bayraklarıyla verilir; duvar engelleri (kilitli dar geçit, boya kapısı) bütün
    dilimlerde ortaktır.
 6. **Bölüm 40 döner platform + asansör** birlikte: `build.elevator` ayrı alan (GDD K-24, öneri P-4).
+7. **İmza hareketin "yukarı" yarısı (design-lead gözlemi, proje sahibine AÇIK SORU):** 1–5. bölümlerde duvar (2–6)
+   tutulabilir blokların satırının (6–7) altında kaldığı için blok kaldırılmadan duvarı aşar; "yukarı" ilk kez Bölüm 6'da
+   (duvar 8) hissedilir. Öneri: Bölüm 1–2'de duvarı saha üst dolu satırının üstüne çıkarmak (ör. Bölüm 1 duvar 7, hedefler
+   y=6'da, üst satır kısmen boş). Brif "Duvar 2" dediği için uygulanmadı; ilk hamlenin kısa ve kolay kalması karşı
+   gerekçedir. Bölüm 1'in ilk hedefi bu turda duvarın yanına, üst satıra alındı (ergonomi; brif parametreleri değişmedi).
 
 ## 5. Bölüm tasarım kontrol listesi (her JSON için)
 
@@ -829,4 +941,7 @@ gelen blokların bayraklarıdır (cam, balon, harç, ıslak, zincir).
 - [ ] Ek hedefler (clear/collect) inşaatın son dilimi bitmeden tamamlanabilir (E-27'den kaçın).
 - [ ] Kamyon partileri boşalan alana sığar ya da kuyruk bilinçli tasarlanmıştır; parti sırası "önce gereken en üstte"
       ilkesine uyar (kazı istenen yer hariç).
-- [ ] Gölge her düşüşü doğru gösterir; gizli bilgi yalnızca `?` ile verilir (adalet ilkesi).
+- [ ] Gölge her düşüşü doğru gösterir; gizli bilgi yalnızca `?` ile verilir (adalet ilkesi); saklı nesnelerin konumu görünür.
+- [ ] Öğretici adımları `tut.l{n}.{konu}` / `tut.ctx.{konu}` anahtarlarıyla; adım sırası el çözümüne ve K-34'e uyar
+      (önce temel); oyuncu metninde renk adı ve "parça" yok.
+- [ ] Türetilen yeni mekanik ≤ 1 ve `teaches` ile birebir (OBSTACLES "Veri imzası").

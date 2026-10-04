@@ -1,6 +1,6 @@
 # GDD — Oyun kuralları
 
-Sahip: product-lead · Sürüm: Faz 1 taslağı (2026-10-04) · Kaynak: `docs/BRIEF.md` §4–§8, §10
+Sahip: product-lead · Sürüm: Faz 1 revizyonu (2026-10-04; orkestratör kararları R-01…R-24) · Kaynak: `docs/BRIEF.md` §4–§8, §10
 
 Bu belge oyunun **bütün** kurallarını kimlikle (K-xx) verir. Brifteki K-01…K-33 kimlikleri ve anlamları korunmuştur;
 yalnızca belirsizlikleri sayıyla kapatan açıklamalar eklenmiştir. Yeni kurallar K-34'ten başlar. Engel ayrıntıları
@@ -16,11 +16,11 @@ Her kural: **Kural** (test edilebilir cümle) + **Örnek** (koordinat, önce/son
 | Terim | Tanım |
 |---|---|
 | Hücre | Tahtadaki 1×1 kare. Genel koordinat `(x, y)`; x=0 en sol, y=0 en alt. |
-| Blok (parça) | Tek renkli poliomino. Kimlik `TÜR_AÇI` (ör. `C3_90`). Çapa = kutusunun sol alt köşesi. |
+| Blok | Tek renkli poliomino. Kimlik `TÜR_AÇI` (ör. `C3_90`). Çapa = kutusunun sol alt köşesi. Oyuncuya görünen metinde terim her zaman "blok / block"tur ("parça / piece" kullanılmaz, R-08). |
 | Saha | x=0–5, y=0–7 (48 hücre). Malzeme deposu. |
 | Şantiye | x=6–7, y=0–7. Aktif dilimin planı burada gösterilir. |
-| Duvar sütunu | Saha ile şantiye arasındaki mantıksal sütun. Genel koordinatta x indeksi yoktur (TECH_DESIGN §2.2: iç `ix=6`). |
-| Vinç Alanı | Tahtanın üstündeki y=8–9 satırları; x=0–5 üstü, duvar sütunu üstü ve x=6–7 üstü dahil. |
+| Duvar sınırı | x=5 ile x=6 arasındaki **sıfır genişlikli** sınır (R-03; TECH_DESIGN P-1). Satır `y`'de sınır **kapalıdır** ⇔ `y < height` ve `y` açık bir geçidin satırlarında değil; diğer satırlarda açıktır. Bir öteleme adımında sınırı geçen her hücre kendi satırında geçer ve o satır açık olmalıdır. Bloğun hücreleri sınırın iki yanındaysa blok "sınırı kesiyor"dur. (Önceki taslaktaki "duvar sütunu" ile kurallar eşdeğerdir; yalnızca ara konum sayısı değişir.) |
+| Vinç Alanı | Tahtanın üstündeki y=8–9 satırları; x=0–7 üstü ve sınırın üstü dahil. |
 | Hamle (tur) | İptal edilmeyen bir bırakma. Hamle sayacını düşürür, zamanlayıcıları 1 kez ilerletir. |
 | Serbest kip (FREE) | Bloğun saha, Vinç Alanı ya da duvar üstünden şantiyeye taşındığı kip. Şantiyede bırakılınca düşer. |
 | Ray kipi (RAIL) | Bloğun bir geçitten geçerek şantiyeye girdiği kip. Dikey konumu kilitli, bırakılınca düşmez. |
@@ -53,31 +53,33 @@ asansör yoksa `e = 0`). Plan yüksekliği `h` (1–8) ise `y ≥ h + e` şantiy
 **Örnek:** Plan `["YY","WW","WW"]` (h=3), e=0 → (6,0),(7,0)=Y; (6,1)…(7,2)=W; (6,3)…(7,7) plan dışı.
 
 ### K-04 Şantiye Duvarı
-**Kural:** Duvar, saha ile şantiye arasında 1 mantıksal sütundur. Parametreler: `height` (0–8) ve `gaps[]`
-(`y`, `size`, `type`). Duvar sütununun `y` satırındaki hücresi şu durumda **kapalıdır**: `y < height` ve `y` açık bir
-geçidin satır aralığında değil. Vinç Alanı satırları (8–9) her zaman açıktır.
+**Kural:** Duvar, saha (x ≤ 5) ile şantiye (x ≥ 6) arasındaki sıfır genişlikli sınırdır (§0). Parametreler:
+`height` (0–8) ve `gaps[]` (`y`, `size`, `type`). Sınır `y` satırında şu durumda **kapalıdır**: `y < height` ve `y` açık
+bir geçidin satır aralığında değil. Vinç Alanı satırları (8–9) her zaman açıktır.
 Geçit kısıtları (doğrulayıcı): `size ≥ 1`; `y ≥ 0`; `y + size ≤ height − 1` (geçidin üstünde en az 1 kapalı duvar
-satırı olmalı; aksi halde bu geçit değil alçak duvardır); geçitler örtüşmez. Blok duvar sütununda **bırakılamaz**
+satırı olmalı; aksi halde bu geçit değil alçak duvardır); geçitler örtüşmez. Blok sınırı keserken **bırakılamaz**
 (bırakılırsa iptal, K-07).
-**Örnek:** `height=6`, geçit `y=2, size=2` → duvar sütunu satır 0–1 kapalı, 2–3 geçit, 4–5 kapalı, 6–9 açık (duvar üstü
+**Örnek:** `height=6`, geçit `y=2, size=2` → sınır satır 0–1 kapalı, 2–3 geçit, 4–5 kapalı, 6–9 açık (duvar üstü
 hava). `height=6`, geçit `y=4, size=2` → 4+2=6 > 5 → doğrulayıcı hatası `gap_touches_top`.
 
 ### K-05 Vinç Alanı
 **Kural:** y=8–9 satırları bütün sütunlarda serbest havadır. Blok sürüklenirken buraya girebilir. Bırakma anında
 bloğun bütün hücreleri x ≤ 5 iken herhangi bir hücresi y ≥ 8 ise bırakma **iptaldir** (blok yerine döner, hamle
 harcanmaz). x=6–7 üstündeki Vinç Alanı'nda bırakılan blok şantiyeye düşer (K-11).
-**Sonuç (açık yükseklik):** Duvar sütunundan serbest kipte geçen her hücre `y ≥ height` olmalıdır. Bu yüzden duvarın
-üstünden geçebilecek bloğun duvar sütunundaki en yüksek dikey hücre dizisi `10 − height` satırı aşamaz. `height=8`
-iken yalnızca boyu ≤ 2 olan bloklar (B1, D2_0, D2_90, O4, C3 hepsi) duvarı aşar; I3_0, I4_0, L4_0 gibi boyu 3–4 olan
-dikey bloklar yalnızca uygun bir geçitten girebilir.
+**Sonuç (açık yükseklik):** Sınırı serbest kipte geçen her hücre `y ≥ height` olmalıdır. Bu yüzden duvarın üstünden
+geçebilecek bloğun sınırı geçen sütunundaki dikey hücre dizisi `10 − height` satırı aşamaz. `height=8` iken yalnızca
+boyu ≤ 2 olan bloklar (B1, D2_0, D2_90, O4, C3 hepsi) duvarı aşar; I3_0, I4_0, L4_0 gibi boyu 3–4 olan dikey bloklar
+yalnızca uygun bir geçitten girebilir. Yapışkan takibin (K-08) duvar tepesinde durması bir sunum olayıdır
+(`blockedByWallHeight`; design-lead bu anda vinç alanı sınırını ve yükseklik işaretini gösterir); kuralı değiştirmez.
 **Örnek:** `height=8`, `I3_0` (1×3) çapası (5,7) → yukarı sürüklenir, en fazla çapa (5,7)'ye (hücreler 7–9) çıkar;
-duvar sütununa girmek için 3 hücrenin de y ≥ 8 olması gerekir → imkânsız. `height=7` iken çapa (5,7) → hücreler
+sınırı geçmek için 3 hücrenin de y ≥ 8 olması gerekir → imkânsız. `height=7` iken çapa (5,7) → hücreler
 7,8,9 ≥ 7 → geçer.
 
 ### K-06 Yapı Panoraması
 **Kural:** Tahtanın üstünde bütün dilimlerin küçük önizlemesi bulunur: tamamlanan dilimler tam renkli, aktif dilim
 vurgulu çerçeveli, gelecek dilimler %30 opak gösterilir. Gizli `?` hücreleri panoramada da `?` görünür; açılınca
-(K-32) rengini alır. Panorama yalnızca bilgi verir; dokunmaya tepki vermez.
+(K-32) rengini alır. Panorama **oyun durumunu değiştirmez**; dokunuş yalnızca büyük önizleme açar (sunum design-lead'in,
+UX_FLOWS §5.1; R-22). Test: önizleme açılıp kapanınca oyun durumu (tahta, sayaçlar, `m`) bit bit aynıdır.
 **Örnek:** 3 dilimli bölümde 1. dilim bitince panorama: [dilim 1 renkli][dilim 2 çerçeveli][dilim 3 soluk].
 
 ---
@@ -85,17 +87,20 @@ vurgulu çerçeveli, gelecek dilimler %30 opak gösterilir. Gizli `?` hücreleri
 ## 2. Hareket
 
 ### K-07 Hamle, iptal ve hamle maliyeti
-**Kural:** Bloğu tutmak için parmak bloğa basar ve en az 0,3 hücre sürükler; daha azı dokunmadır, hiçbir şey olmaz.
-Bırakma anındaki konuma göre sonuç aşağıdaki tabloyla **tek** biçimde belirlenir:
+**Kural:** Dokunma ile sürükleme ayrımı sayı içermez: `tokens.drag.startThresholdPx` / `tokens.drag.holdMs`
+(design-lead) ile yapılır; eşik altında kalan bırakma **dokunmadır**, hiçbir şey olmaz (blok tutulmamış sayılır). Test
+token değerini okur. Bırakma anındaki konuma göre sonuç aşağıdaki tabloyla **tek** biçimde belirlenir (satırlar
+yukarıdan aşağı denenir, ilk tutan geçerlidir):
 
 | # | Bırakma konumu | Sonuç | Hamle maliyeti |
 |---|---|---|---|
 | 1 | Başlangıç konumu (aynı hücre kümesi, aynı kip) | İptal | 0 |
 | 2 | Serbest kip, bütün hücreler x ≤ 5 ve y ≤ 7 | Sahaya yerleşim (K-10) | 1 |
 | 3 | Serbest kip, bütün hücreler x ≤ 5, en az bir hücre y ≥ 8 | İptal (K-05) | 0 |
-| 4 | En az bir hücre duvar sütununda | İptal | 0 |
-| 5 | Serbest kip, bütün hücreler x ≥ 6 | Şantiyeye düşüş (K-11) → doğrulama (K-16) | 1 |
-| 6 | Ray kipi, bütün hücreler x ≥ 6 | Rayda yerleşim (K-12) → doğrulama (K-16) | 1 |
+| 4 | Blok duvar sınırını kesiyor (hücreleri sınırın iki yanında) | İptal | 0 |
+| 5 | Bütün hücreler x ≥ 6 ve şantiye **kapalı**: bütün dilimler tamamlanmış, bölüm ek hedef (K-41) yüzünden sürüyor | İptal (E-27) | 0 |
+| 6 | Serbest kip, bütün hücreler x ≥ 6 | Şantiyeye düşüş (K-11) → doğrulama (K-16) | 1 |
+| 7 | Ray kipi, bütün hücreler x ≥ 6 | Rayda yerleşim (K-12) → doğrulama (K-16) | 1 |
 
 Ek maliyetler: cam kırılması +1 (S3; toplam 2), harçla yapışmış bloğun her hamlesi 2 (Y8). Hamle sayacı 0'ın altına
 inmez (1 hamle kalmışken maliyeti 2 olan hamle sayacı 0 yapar). Sayaç 0 iken blok tutulamaz. İptal edilen bırakmada
@@ -105,7 +110,7 @@ Aynı blok (4,7)'de bırakılır (o hücre boş) → satır 2 → kalan hamle 12
 
 ### K-08 Yol kuralı ve yapışkan takip
 **Kural:** Blok yalnızca birim ötelemelerle (±1 x ya da ±1 y), her ara konumda bütün hücreleri boş ve geçerli olacak
-biçimde hareket eder (BFS). Diğer bloklar, kapalı duvar hücreleri, kasa, torba ve şantiye platformu geçilemez.
+biçimde hareket eder (BFS). Diğer bloklar, sınırın kapalı satırları, kasa, torba ve şantiye platformu geçilemez.
 Saklı nesneler (anahtar, vida) yolu kapatmaz. Tutma anında erişilebilir konum kümesi `R` hesaplanır; sürükleme
 süresince tahta donuktur (hiçbir şey düşmez, kırılmaz), bu yüzden `R` değişmez.
 Parmak hedefi `p = parmak − tutmaOfseti + (0; 1,2)` hücredir (blok parmağın 1,2 hücre üstünde görünür). Blok, `R`
@@ -133,7 +138,7 @@ sonundaki yerçekimi adımında düşer (K-20). Balonlu blok (S8) bırakıldığ
 Açık → hamle sonunda (4,4)'e (altında ilk destek) iner.
 
 ### K-11 Şantiyeye giriş A — Duvarın Üstünden (ana yol)
-**Kural:** Serbest kipte blok, duvar sütunundaki her hücresi `y ≥ height` olacak biçimde duvarı aşar ve şantiye
+**Kural:** Serbest kipte blok, sınırı geçen her hücresi `y ≥ height` olacak biçimde duvarı aşar ve şantiye
 üstüne gelir. Şantiye üstünde serbest kipteki blok için **açık gökyüzü** koşulu geçerlidir: bloğun kapladığı her
 şantiye sütunu `c` için bloğun o sütundaki en alt hücresi `y ≥ top(c)`. Parmak basılıyken blok bu koşulla aşağı
 indirilebilir (gölgenin altına inemez). Parmak kalkınca blok **düşer**: iniş satırı
@@ -150,8 +155,9 @@ olmalıdır (W4 kepenk açık, W7 kilit açılmış). Geçide giren blok **ray k
 dikey konumu kilitlidir. Ray kipinden sola, bütün hücreleri sahaya geçecek biçimde çıkılabilir (serbest kipe döner).
 Şantiye tarafından ray kipine girilemez. Rayda, bütün hücreleri x ≥ 6 iken bırakılan blok iskele tarafından tutulur
 ve **düşmez**; altı boş olabilir.
-**Örnek:** Geçit y=3, size=1. Sahada (4,3)–(5,3)'teki `D2_90` sağa ötelenir: (5,3)+duvar → duvar+(6,3) → (6,3)–(7,3);
-bırakılır → satır 3'te kalır. Aynı geçide `D2_0` (1×2, satır 3–4) giremez: satır 4 geçit dışında.
+**Örnek:** Geçit y=3, size=1. Sahada (4,3)–(5,3)'teki `D2_90` sağa ötelenir: (4,3)–(5,3) → (5,3)|(6,3) (sınırı
+kesiyor, ray kipi) → (6,3)–(7,3); bırakılır → satır 3'te kalır. Aynı geçide `D2_0` (1×2, satır 3–4) giremez: satır 4
+geçit dışında.
 
 ### K-13 Şantiyede serbest dikey hareket yoktur
 **Kural:** Şantiyede duran (kilitli) bloklar hiçbir yönde hareket etmez. Şantiyeye blok yalnızca (a) üstten düşerek
@@ -184,7 +190,7 @@ alanındadır ve o hücrenin plan rengi (gizliyse çözülmüş rengi) bloğun r
 de doğru. `D2_0` Y (6,0) → (6,0) W ≠ Y → hatalı.
 
 ### K-17 Hatalı yerleşim ("kötü geçiş") ve geri sekme
-**Kural:** K-16'nın herhangi bir koşulu bozulursa yerleşim hatalıdır: blok kırmızı parlar, sallanır (350 ms) ve geri
+**Kural:** K-16'nın herhangi bir koşulu bozulursa yerleşim hatalıdır: blok "hatalı" vurgusuyla parlar (görsel design-lead), sallanır (350 ms) ve geri
 seker; hamle yanar (maliyet 1), Usta Serisi sıfırlanır. Geri sekme hedefi şu sırayla aranır:
 1. Başlangıç konumunun bütün hücreleri boşsa oraya (kavisli animasyon). Sürükleme sırasında tahta donuk olduğundan
    (K-08) bu, saha ve moloz bloklarında her zaman sağlanır.
@@ -200,12 +206,17 @@ Moloz bloğu başlangıcı şantiyede (7,0)–(7,1) ise ve başka bir hatalı ye
 ### K-18 Düşüş gölgesi
 **Kural:** Serbest kipte blok şantiye sütunlarına değdiği sürece, bırakılırsa duracağı konum gölge olarak **her zaman
 doğru** gösterilir: rüzgâr kayması (W8), balon yükselişi (S8), asansör ofseti dahil. Ray kipinde gölge, bloğun kendi
-konumudur. Gölge konturu Kolay ve Normal bölümlerde doğru yerleşimde yeşil, hatalıda kırmızıdır ve cam kırılacaksa
-çatlak simgesi taşır; Zor ve Çok Zor bölümlerde yalnızca konum gösterilir. Gölge açılmamış bir `?` hücresine değiyorsa
-bütün zorluklarda kontur **nötr**dür (gizli bilgi sızmaz). Hafif yerçekiminde gölge yönlendirmesiz inişi gösterir.
-Görsel stil design-lead'indir.
-**Örnek:** Kolay bölüm, `C3_0` W'nin inişinde (7,3) Y hücresine denk geliyor → gölge kırmızı. Aynı durum Zor bölümde →
-gölge yalnızca konumu gösterir.
+konumudur. Gölge, doğruluk bilgisini `verdict` (K-34 "Görünürlük kancaları") ile taşır:
+- **Doğruluk** (doğru/hatalı ve nedeni): Kolay ve Normal bölümlerde gösterilir; Zor ve Çok Zor bölümlerde gölge yalnızca
+  konumu gösterir (nötr). Gölge açılmamış bir `?` hücresine değiyorsa bütün zorluklarda doğruluk **nötr**dür (gizli
+  bilgi sızmaz; doğru/hatalı sesi de çalmaz).
+- **Fizik bilgisi** (cam kırılacak: çatlak simgesi; rüzgâr kayması, balon yükselişi ve asansör ofseti dahil konum):
+  **bütün zorluklarda** ve nötr gölgede de gösterilir (K-21 okunabilirlik ilkesi).
+- **Hafif yerçekimi:** gölge önce yönlendirmesiz inişi gösterir; yönlendirme (K-19) yapılınca aynı karede yeni inişi
+  gösterir.
+Renk, desen ve rozetler design-lead'indir; oyuncuya görünen metinde renk adı geçmez (renk körlüğü, R-05/P-7).
+**Örnek:** Kolay bölüm, `C3_0` W'nin inişinde (7,3) Y hücresine denk geliyor → gölge "hatalı (renk)". Aynı durum Zor
+bölümde → gölge yalnızca konumu gösterir. Zor bölümde cam blok d=5 ile düşecek → gölge nötr ama çatlak simgesi var.
 
 ---
 
@@ -214,21 +225,47 @@ gölge yalnızca konumu gösterir.
 ### K-19 Şantiye yerçekimi (`gravity.build`)
 **Kural:** Bölüm parametresidir; değerler:
 
-| Ayar | Düşüş hızı (başlangıç, design-lead ince ayar) | Şantiye üstünde tutma | Cam kırılma eşiği (d > eşik ⇒ kırılır) | Yönlendirme |
-|---|---|---|---|---|
-| `low` (G-L) | 220 ms/satır | Sınırsız | 4 | Düşüş/yükseliş başına en çok 1 kez, komşu şantiye sütununa |
-| `normal` | 60 ms/satır | Sınırsız | 3 | Yok |
-| `high` (G-H) | 30 ms/satır | Serbest kipte bloğun bir hücresi şantiye sütununa değdiği andan 700 ms sonra blok o anki konumda zorla bırakılır; şantiye sütunlarından tamamen çıkınca sayaç sıfırlanır | 2 | Yok |
+| Ayar | Şantiye üstünde tutma | Cam kırılma eşiği (d > eşik ⇒ kırılır) | Yönlendirme |
+|---|---|---|---|
+| `low` (G-L) | Sınırsız | 4 | Düşüş/yükseliş başına en çok 1 kez, 1 sütun (aşağıda) |
+| `normal` | Sınırsız | 3 | Yok |
+| `high` (G-H) | Serbest kipte bloğun bir hücresi şantiye sütununa değdiği andan `holdMs` sonra blok o anki konumda zorla bırakılır; şantiye sütunlarından tamamen çıkınca sayaç sıfırlanır. `holdMs` = 700; Ayarlar > Erişilebilirlik "Zaman baskısını azalt" açıksa 1400 (R-11) | 2 | Yok |
 
-Gerçek zaman yalnızca G-H tutma süresinde ve G-L yönlendirme penceresinde vardır; solver ikisini de yok sayar.
-Erişilebilirlik ayarı "Zaman baskısını azalt" açıksa G-H tutma süresi 1400 ms olur (design-lead UX_FLOWS ile).
-**Örnek:** `high`, cam blok Vinç Alanı'nda (6,8)'de şantiyeye değdi; oyuncu 700 ms içinde (6,4)'e indiremedi, blok
-(6,6)'da bırakıldı, iniş (6,2) → d=4 > 2 → kırılır.
+**Düşüş hızı kural değildir:** görsel düşüş/yükseliş eğrisinin tek kaynağı `tokens.physics` (JUICE §0.1,
+design-lead). İniş satırı, cam kırılması ve doğrulama hızdan bağımsızdır. Gerçek zaman yalnızca G-H tutma süresinde ve
+G-L yönlendirme penceresinde vardır. Bot zorluk ölçümü `holdMs = 700` ile yapılır (1400 ayarı kolaylaştırıcıdır;
+LEVELS hedef kazanma oranları 700'e göredir).
+
+**G-L yönlendirme kuralı (R-10):**
+1. **Pencere:** serbest kipte şantiyeye bırakılan bloğun düşüşü (ya da balonun yükselişi) görsel olarak sürerken açıktır;
+   iniş satırına varış anı pencereye dahildir, iniş animasyonu bitince kapanır. Pencere içinde oyuncu yeni bir blok
+   tutarsa (R-12) pencere kapanır, blok o ana kadarki durumuyla (yönlendirilmediyse yönlendirmesiz) iner.
+2. **Girdi (biçim design-lead'in):** pencere içinde tahtanın herhangi bir yerine **dokunma** (K-07 eşiği altında).
+   Dokunuş noktası bloğun dikey orta çizgisinin solundaysa yön −1 (sol), sağındaysa +1 (sağ). Kaydırma (swipe) girdisi
+   de aynı yönü verir (design-lead seçimi).
+3. **Etki:** blok, dokunuş anındaki satırı `atRow`'da 1 sütun `yön` tarafına kayar; koşul: kaymış konumun bütün hücreleri
+   x=6–7 içinde ve boş. Kayma bir çıkıntının (üstü dolu hücrenin) altına girebilir (K-13'ün izin verdiği yol). Kaydıktan
+   sonra blok aynı yönde (düşüş ya da yükseliş) yeni sütun(lar)ında ilk desteğe/tavana kadar sürer.
+4. **Hak:** düşüş/yükseliş başına en çok 1 yönlendirme. Koşul tutmazsa (kenar, dolu hücre, 2 genişlikli blok) hiçbir
+   şey olmaz ve hak **harcanmaz**.
+5. **Aynı hamle:** yönlendirme ayrı hamle değildir; hamle sayacını, `m`'yi, zamanlayıcıları değiştirmez. Cam için `d`
+   bırakma satırı ile son iniş satırı arasındaki toplam düşüştür.
+6. **Kayıt ve solver:** hamle kaydı `steer: { dir, atRow }` taşır; çekirdek sonucu yalnızca bu iki değerden hesaplar
+   (görsel eğriden bağımsız). Solver yönlendirmeyi hamle parametresi olarak modeller: `atRow`, bırakma satırı ile
+   yönlendirmesiz iniş satırı (ikisi de dahil) arasındaki herhangi bir satır olabilir. YAO'da yönlendirilmiş yerleşim
+   "duvar üstü"dür.
+**Örnek:** `low`. Sütun 6: (6,0)–(6,1) dolu. Sütun 7: (7,0)–(7,1) dolu, (7,2) boş, (7,3) dolu (raydan konmuş çıkıntı).
+`B1` (6,8)'den bırakılır; yönlendirmesiz iniş (6,2). Blok (6,5)'teyken oyuncu bloğun sağına dokunur → (7,5)'e kayar →
+sütun 7'de (7,4)'e iner (çıkıntının üstü). Dokunuş blok (6,2)'ye vardığında gelirse (`atRow = 2`) → (7,2)'ye kayar ve
+çıkıntının altında kalır. Bloğun soluna dokunmak hiçbir şey yapmaz (sütun 5 şantiye dışı), hak harcanmaz.
+**Örnek (G-H):** `high`, cam blok Vinç Alanı'nda (6,8)'de şantiyeye değdi; oyuncu 700 ms içinde (6,4)'e indiremedi,
+blok (6,6)'da bırakıldı, iniş (6,2) → d=4 > 2 → kırılır.
 
 ### K-20 Saha yerçekimi (`gravity.yard`, varsayılan `false`)
 **Kural:** `true` ise hamle sonu yerçekimi adımında (K-35 adım 6) altı boş kalan saha blokları düşer; bütün
 desteksizler aynı anda 1'er satır iner, tekrar desteklenene kadar sürer (zincirleme). Destek: y=0 tabanı, Ahşap Kasa
-(Y1) ya da desteklenen başka bir blok/torba. Balonlu bloklar (S8) bu adımda tavana doğru yükselir. Zincirli ve ıslak
+(Y1) ya da desteklenen başka bir blok/torba. Balonlu bloklar (S8) bu adımda tavana doğru yükselir; düşen bloklarla
+aynı turda karşılaşmaları K-35 adım 6'nın "yarım adım" kuralıyla çözülür (E-33). Zincirli ve ıslak
 bloklar da düşer (yalnızca oyuncunun tutması yasaktır). Kasalar düşmez. Çimento Torbası (Y2) saha yerçekimi kapalıyken
 de düşer. Kamyon teslimatındaki bloklar ayardan bağımsız olarak düşer (K-25); bu düşüş sahadaki diğer blokları
 oynatmaz.
@@ -259,9 +296,28 @@ gömülü bir delik bir daha doldurulamaz ve bölüm sessizce çözümsüz kalı
 gölge rengiyle (K-18) öğretilir.
 **Örnek 1:** Plan `["WW","WW","WW","WW"]` (h=4), şantiyede yalnızca (6,0)–(6,1)'de doğru `D2_0` W var. `O4` W
 bırakılır → top(6)=2, top(7)=0 → iniş (6,2): dört hücre de W (K-16 koşul 1 sağlanır) ama sütun 7'de r=2 ve (7,0),(7,1)
-boş → K-34 bozulur → hatalı, gölge kırmızı. Doğru hamle: önce bir `D2_0` W'yi sütun 7'ye bırakmak.
+boş → K-34 bozulur → hatalı, gölge "hatalı (destek)". Doğru hamle: önce bir `D2_0` W'yi sütun 7'ye bırakmak.
 **Örnek 2:** Plan (alttan) y0 `WW`, y1 `W.`, y2 `WW`. (6,0)–(7,0) ve (6,1) dolu. `D2_90` W rayla (6,2)–(7,2)'ye girer:
 sütun 7'de r=2, satır 1 `.` (dolu sayılır), satır 0 dolu → doğru.
+**Durum:** KABUL (R-01; proje sahibine onay için sunulur). Kural test edilebilir kalır; aşağıdaki kancalar yalnızca
+oyuncunun kuralı **görmesi** içindir, sonucu değiştirmez.
+
+**Görünürlük kancaları (çekirdek bunları üretir, sunum design-lead'in):**
+1. **İnşa cephesi** `buildFront(state)`: aktif dilimin her sütunu `c` için, boş, `.` olmayan ve altındaki bütün plan
+   hücreleri doğru dolu ya da `.` olan **en alt** plan hücresi (sütun tamamsa yok). Altın Mala'nın seçilebilir hücreleri
+   (K-33) bu kümeyle aynıdır (`eligibleTrowelCells` = `buildFront`). Bütün
+   zorluklarda gösterilebilir (renk bilgisi değil, yapı sırası bilgisi).
+2. **Gölge kararı** `verdict = { ok, reasons[], missingSupport[] }`: `reasons` şu sabit sırayla dolar: `debris` (S4),
+   `outside` (plan alanı dışı), `window` (`.` hücresi), `color` (renk ya da çözülmüş `?` rengi), `support` (K-34).
+   **Birincil neden** = ilk eleman. `missingSupport` = K-34'ü bozan boş, `.` olmayan plan hücreleri (sütun, satır sıralı).
+   `support` nedeni gizli bilgi taşımadığı için gölge nötr olduğunda (Zor, `?`) da gösterilebilir.
+3. **Geri sekme olayı** `bounce { pieceId, reason, missingSupport[] }`: K-17 geri sekmesinde birincil neden ve eksik
+   destek hücreleri olayla birlikte yayınlanır (sekme sonrası vurgu bütün zorluklarda).
+4. **İlk karşılaşma:** oyuncunun hesabında ilk kez `reason = support` olan bir geri sekme (ya da harç yapışması) olunca
+   bağlamsal öğretici `tut.ctx.support` bir kez tetiklenir (metin STORY §6). Ayrıca Bölüm 4'te öğretici adımı vardır
+   (LEVELS).
+**Örnek 3 (kanca):** Örnek 1 durumunda `verdict = { ok: false, reasons: ["support"], missingSupport: [(7,0),(7,1)] }`;
+`buildFront = {(6,2), (7,0)}`.
 
 ---
 
@@ -305,12 +361,16 @@ satırı 3'e, e=2 iken plan satırı 1'e açılır.
 
 ### K-25 Partiler ve kamyon dökümü
 **Kural:** `yard.batches[k]` k'inci partidir. Parti 0'ın blokları bölüm başında kendi `(x, y)` konumlarındadır.
-Parti k ≥ 1 teslim edildiğinde blokları dizideki sırayla **kamyon kuyruğunun sonuna** eklenir ve hemen teslim denenir
-(K-26). Bir bloğun teslimi: aday sol sütunlar önce bloğun `x`'i, sonra (varsa) `dropColumns` listesindeki sütunlar
-sırasıyla, yoksa diğer bütün geçerli sütunlar `x`'e uzaklık sırasıyla (eşitlikte duvara yakın önce); her adayda blok
-y = 10 − boy'dan **yerçekimi ayarından bağımsız** düşürülür ve ilk desteğe oturur; bütün hücreleri y ≤ 7 olan ilk aday
-seçilir. Parti k ≥ 1 bloklarındaki `y` yok sayılır (veride 8 yazılır). Teslimat düşüşü sahadaki diğer blokları
-oynatmaz, komşu etkisi (kasa, torba, zincir) üretmez.
+Parti k ≥ 1 teslim edildiğinde (K-35 adım 8) blokları dizideki sırayla **kamyon kuyruğunun sonuna** eklenir; teslim
+**aynı hamlenin 9. adımında**, kuyruktaki eski bloklardan sonra denenir (K-26; tek deneme noktası adım 9'dur). Bir
+bloğun teslimi: aday sol sütun sırası (öncelik listesi, son aşama hiçbir zaman atlanmaz):
+1. bloğun `x`'i;
+2. varsa `dropColumns` listesindeki sütunlar, listedeki sırayla (1. aşamada denenenler atlanır);
+3. kalan bütün geçerli sol sütunlar (`0 … 6 − w`), `x`'e uzaklık sırasıyla, eşitlikte duvara yakın (büyük x) önce.
+Her adayda blok y = 10 − boy'dan **yerçekimi ayarından bağımsız** düşürülür ve ilk desteğe oturur; bütün hücreleri
+y ≤ 7 olan ilk aday seçilir (E-34). Parti k ≥ 1 bloklarındaki `y` yok sayılır (veride 8 yazılır). Teslimat düşüşü
+sahadaki diğer blokları oynatmaz, komşu etkisi (kasa, torba, zincir) üretmez. Balonlu blok da diğerleri gibi düşüp
+oturur, teslimatta yükselmez (E-36).
 **Örnek:** Parti 1: `[O4 G x=4, B1 R x=0]`. Sütun 4–5'in en üst dolu hücresi y=3 → `O4` (4,4)'e iner. Sütun 0 tamamen
 dolu → `B1` için sırayla x=1 (uzaklık 1), x=2 … denenir; x=1'de y=6 boş → (1,6)'ya iner.
 
@@ -337,11 +397,22 @@ dönüşür; elde kalan Altın Mala'lar da altına dönüşür (miktarlar META.m
 **Örnek:** Son hamlede (kalan 0) son dilim tamamlanır → kazanma; bonus 0 hamle.
 
 ### K-29 Kaybetme ve +5 hamle teklifi
-**Kural:** Adım 11'de hamle sayacı 0 ve bölüm kazanılmamışsa "Hamleler bitti!" penceresi açılır: +5 hamle teklifi
-(altınla; deneme başına en çok 3 teklif, fiyatlar META.md; ödüllü reklam seçeneği entrepreneur kararı). Kabul edilirse
-sayaç 5 olur ve oyun aynı durumdan sürer (zamanlayıcılar ilerlemez). Reddedilirse bölüm kaybedilir: 1 can gider,
-galibiyet serisi sıfırlanır, Sallanan Köprü'deyse oyuncu elenir.
-**Örnek:** Kalan 0, plan %90 dolu; oyuncu 900 altın öder → kalan 5, aynı tahta.
+**Kural:** Adım 11'de hamle sayacı 0 ve bölüm kazanılmamışsa "Hamleler bitti!" penceresi açılır. Pencere, bu denemenin
+`n`'inci teklifidir (`n` = 1, 2, 3; deneme = bölüm başından kazanma/kayıp/çıkışa kadar, K-43 devamı aynı denemedir):
+- **Altın seçeneği:** +5 hamle, fiyat `offerCosts[n−1]` = 900 / 1.350 / 1.800 (META §3.2).
+- **Reklam seçeneği:** +5 hamle; deneme başına en çok 1, günde en çok 3 (ve günlük toplam reklam tavanı) — META §3.2.
+- Hangisi kabul edilirse edilsin teklif `n`'e sayılır (R-15). 3 teklif kullanılmışsa pencere teklif içermez, doğrudan
+  sonuç (kayıp) gösterilir.
+- Oyuncunun ömründeki **ilk** teklif penceresinde altın seçeneğinin fiyatı 0'dır ("Usta Dede'den hediye"); teklif 1'e
+  sayılır (META §3.2).
+- Sallanan Köprü'de altın seçeneği yalnızca tur harcaması + fiyat ≤ 4.050 ise sunulur (META §6.1); reklam seçeneği bu
+  tavandan bağımsızdır.
+- Sunum ilkeleri (R-15; design-lead uygular): eşit boy düğmeler, altının gerçek para karşılığı, eskalasyon ve kalan
+  teklif sayısı görünür, baskı metni yok, seri kaybı bu pencerede yazılmaz (META §5).
+Kabul edilirse sayaç 5 olur ve oyun aynı durumdan sürer (zamanlayıcılar ilerlemez). Reddedilirse bölüm kaybedilir:
+1 can gider, galibiyet serisi sıfırlanır, Sallanan Köprü'deyse oyuncu elenir.
+**Örnek:** Kalan 0, plan %90 dolu; teklif 1'de oyuncu reklam izler → kalan 5. Yine biter → teklif 2: altın 1.350, reklam
+seçeneği yok (deneme başına 1 kullanıldı). Reddeder → kayıp.
 
 ### K-30 Kilitlenme ve Kamyon Yardımı
 **Kural:** Adım 12'de, bölüm sürüyorsa (kazanılmamış, sayaç > 0) şu kilitlenmeler aranır:
@@ -354,7 +425,10 @@ galibiyet serisi sıfırlanır, Sallanan Köprü'deyse oyuncu elenir.
 Tespit edilirse ücretsiz, hamle harcamayan **Kamyon Yardımı** çalışır: D1 → bütün zincirler ve ıslaklık kalkar;
 hâlâ D1 ise saha yeniden dizilir. D2 → eksik hücre sayısı kadar o renkte `B1` kamyonla teslim edilir (K-25 yolu).
 D3 → saha blokları, renk başına hücre toplamı korunarak yeniden şekillendirilip dizilir (TECH_DESIGN §9.7, S-19).
-Her durumda sonuçta en az bir doğru yerleşim ≤ 2 hamlede ulaşılabilir olmalıdır. Yardımın sayısı sınırsızdır.
+**Güvence (sonuç denetimi):** yardımdan sonra 1 hamlelik doğru yerleşim varsa yeterlidir; yoksa 20 ms bütçeli 2 hamle
+denetimi yapılır; o da bulamazsa yardım D3 yeniden şekillendirmesine yükselir (D3 yapıcı karıştırma doğru yerleşimi
+inşa yoluyla garanti eder). Yardımın sayısı sınırsızdır. D2'nin `B1` teslimatı kalır: boya kapısıyla rengi bilerek
+bozmak hamle kaybettirir (eksik her hücre için en az 1 hamle), bu yüzden istismar değildir.
 **Örnek:** Oyuncu Çekiç'le son `O4` R'yi kırdı; kalan planda 4 R hücresi, sahada R blok yok → D2 → kamyon 4 `B1` R getirir.
 
 ---
@@ -395,7 +469,8 @@ Doğrulayıcı: `count` ≤ bölümdeki ilgili nesne sayısı.
 
 ### K-42 Saklı nesnelerin toplanması — YENİ
 **Kural:** Anahtar (W7) ve Altın Vida (Y7) bir saha hücresinin zemininde saklıdır; bölüm başında o hücre bir blokla ya
-da kasayla örtülüdür (doğrulayıcı). Hamle sonunda adım 5 (taşıma ve komşu etkilerinden sonra) ve adım 6'dan (saha
+da kasayla örtülüdür (doğrulayıcı). "Saklı" = **örtülü ama konumu her zaman görünür**: örten bloğun/kasanın o hücresinde
+işaret gösterilir (sunum design-lead'in; adalet ilkesi — gizli bilgi yalnızca `?` ile verilir). Hamle sonunda adım 5 (taşıma ve komşu etkilerinden sonra) ve adım 6'dan (saha
 yerçekimi) sonra, hücresi **boş** olan her saklı nesne toplanır; hücre bu iki denetim arasında yeniden örtülse bile
 ilk denetimde toplanmış olur. Kasa altındaki nesne kasa yok olunca toplanır. Güçlendirici (Çekiç, Vinç) ile açılan
 hücre de aynı güçlendirici adımının sonunda toplanır.
@@ -450,11 +525,12 @@ bulunduğu yerde K-16'yı sağlıyorsa hemen kilitlenir (doğru yerleşim sayıl
 **Örnek:** Sahada `O4` Y, plan renkleri W/Y/R → R'ye boyanır → `O4` R.
 
 ### K-39 Geri Al — YENİ (K-14 istisnası)
-**Kural:** Son eylem bir sürükleme hamlesiyse (aradan güçlendirici, +5 teklifi ya da Kamyon Yardımı geçmemişse) o hamle
-tamamen geri alınır: blok konumları ve renkleri, hamle sayacı (cam cezası ve harç maliyeti dahil), `m`, zamanlayıcılar,
+**Kural:** Son eylem bir sürükleme hamlesiyse (aradan güçlendirici ya da +5 teklifi geçmemişse) o hamle tamamen geri
+alınır: blok konumları ve renkleri, hamle sayacı (cam cezası ve harç maliyeti dahil), `m`, zamanlayıcılar,
 seri sayacı, kazanılan Altın Mala, teslimatlar ve kuyruk, dilim geçişi, kırılan kasa katları, toplanan nesneler, hedef
-sayaçları. Derinlik 1'dir: Geri Al'dan sonra yeni bir hamle yapılmadan ikinci Geri Al kullanılamaz. Kayıp penceresi
-açıkken kullanılamaz.
+sayaçları. O hamlenin 12. adımında tetiklenen **Kamyon Yardımı da hamleyle birlikte** geri alınır (hamle öncesi
+anlık görüntüye dönülür; gerekirse yardım bir sonraki hamle sonunda yeniden çalışır; E-37). Derinlik 1'dir: Geri
+Al'dan sonra yeni bir hamle yapılmadan ikinci Geri Al kullanılamaz. Kayıp penceresi açıkken kullanılamaz.
 **Örnek:** Hamle 7'de bir blok hatalı yerleşti ve geri sekti (kalan 9 → 8, c=3 → 0). Geri Al → kalan 9, c=3, blok
 hamle öncesi konumunda.
 
@@ -473,12 +549,25 @@ Galibiyet serisi bonusu (META.md) aynı anda uygulanır ve güçlendiricilerle t
 
 ## 11. Bölüm akışı, şekiller, veri
 
-### K-43 Duraklatma ve bölümden çıkma — YENİ (`m = 0` cezasız çıkış: öneri P-7)
-**Kural:** Duraklatma sırasında hiçbir şey ilerlemez (G-H sayacı ve animasyonlar dahil). Bölümden çıkış onay ister.
-`m ≥ 1` iken çıkış **kayıp** sayılır (1 can, seri sıfırlanır, Köprü'de elenme). `m = 0` iken çıkış cezasızdır ve oyun
-öncesi güçlendiriciler iade edilir. Uygulama bölüm ortasında kapanırsa bir sonraki açılışta aynı kurallarla çıkış
-sayılır.
-**Örnek:** 3 hamle yapıldı, oyuncu çıkar → can 5 → 4, seri 3 → 0.
+### K-43 Duraklatma, bölümden çıkma ve kaldığı yerden devam — YENİ (R-13; `m = 0` cezasız çıkış P-7 KABUL)
+**Kural:**
+1. **Duraklatma:** hiçbir şey ilerlemez (G-H sayacı ve animasyonlar dahil).
+2. **Çıkış:** yalnızca oyuncunun onayıyla olur. `m ≥ 1` iken çıkış **kayıp** sayılır (1 can, seri sıfırlanır, Köprü'de
+   elenme). `m = 0` iken çıkış cezasızdır: ayrılan can iade edilir, oyun öncesi güçlendiriciler iade edilir, galibiyet
+   serisi bonusu **tüketilmez** (bir sonraki girişte aynen verilir), seri bozulmaz.
+3. **Kaldığı yerden devam (MVP):** uygulamanın kapanması, sistemin uygulamayı öldürmesi, telefon araması, sekme
+   kapanması **kayıp değildir**. Kayıp yalnızca (a) onaylı çıkışla (`m ≥ 1`) ya da (b) K-29'da teklifin reddiyle olur.
+   - Kayıt: bölüm başında ve her eylemden sonra (K-35 adım 12 bittiğinde) ve `pagehide`/`visibilitychange` anında
+     `inLevel = { levelId, seed, actions[], offersUsed, adOfferUsed, preBoosters, streakTier, outcomeWindow }` yazılır.
+     `actions[]` = sürükleme hamleleri (`drag.via` ve `steer` dahil), güçlendirici kullanımları, kabul edilen teklifler.
+   - Açılış: `inLevel` varsa oyun ana ekrana değil o bölüme döner; durum belirlenimci yeniden oynatmayla (ya da durum
+     tamponundan) kurulur ve sonuç bit bit aynıdır. Ayrılan can ayrılmış kalır. Başka bölüm başlatılamaz.
+   - Sürükleme ortasında kapanma = o sürükleme iptal (K-07 satır 1). G-H sayacı ve animasyonlar sıfırdan başlar.
+   - "Hamleler bitti" penceresi açıkken kapanırsa açılışta **aynı pencere** aynı teklif numarasıyla gelir (kaçış yolu
+     yok); kazanma ekranındayken kapanırsa ödüller verilmiş sayılır.
+   - Sallanan Köprü: devam eden bölüm süre dolduktan sonra biterse de sayılır (META §6.1, süre içinde başlatıldıysa).
+**Örnek:** 3 hamle yapıldı, oyuncu çıkışı onaylar → can 5 → 4, seri 3 → 0. 3 hamle yapıldı, telefon çaldı, sistem
+uygulamayı kapattı → açılışta aynı bölüm, kalan hamle ve tahta aynı; can ayrılmış, seri 3.
 
 ### K-44 Şekiller, yönelimler ve ağırlık — YENİ
 **Kural:** Hücreler brif §5'teki 0° tanımından **saat yönünde** 90°'lik dönüşle üretilir ve kutunun sol alt köşesine
@@ -492,8 +581,8 @@ açıldığında kullanılabilir ama 8. bölümden önce kullanılamaz.
 
 ### K-45 Bölüm verisi doğrulama kuralları — YENİ
 **Kural:** `npm run levels:validate` her bölüm için aşağıdakileri denetler; her madde ayrı hata kodudur:
-1. Şema (TECH_DESIGN), `id` 1–50, `chapter = ceil(id/10)`.
-2. Saha doluluğu %80–100 (K-02); parçalar ve engeller çakışmaz; bütün parti-0 hücreleri x ≤ 5, y ≤ 7.
+1. Şema (TECH_DESIGN), `id` 1–50, `chapter = ceil(id/10)`. `seed` verilmemişse `seed = id × 1000 + id` (ör. 4004).
+2. Saha doluluğu %80–100 (K-02); bloklar ve engeller çakışmaz; bütün parti-0 hücreleri x ≤ 5, y ≤ 7.
 3. Duvar: `0 ≤ height ≤ 8`; geçitler K-04 kısıtları; `paint` geçidinde `color`, `locked` geçidinde var olan `keyId`;
    `shutter` için `period ≥ 1`, `0 ≤ phase < 2·period`; `slider` için `range` geçidin `y`'sini içerir ve
    `range[1] + size ≤ height − 1`.
@@ -502,9 +591,13 @@ açıldığında kullanılabilir ama 8. bölümden önce kullanılamaz.
 6. Saklı nesneler başta örtülü (K-42); `collect`/`clear` sayıları ≤ nesne sayısı (K-41).
 7. Moloz şantiye alanında ve kendi dilimine göre yanlış; her moloz `segment` alanı taşır (öneri P-5).
 8. Solver: çözüm var; `moves ≥ min + tampon` (Kolay +8, Normal +5, Zor +3, Çok Zor +2); YAO ≥ %60 (K-46).
-9. Öğretim: `teaches` alanındaki mekanik bu bölümden önce hiçbir bölümde yoktur; bölümde, önceki bölümlerde
-   görülmemiş en çok 1 mekanik vardır.
-**Örnek:** Bölüm 9'da geçit `size=1`, `y=6`, `height=6` → 6+1 > 5 → `gap_touches_top`.
+9. Öğretim: bir bölümün mekanik kümesi veriden türetilir (OBSTACLES "Veri imzası" tablosu; yalnızca imzası tanımlı
+   mekanikler). Bölümde, önceki bölümlerin kümelerinde olmayan **en çok 1** mekanik vardır. `teaches` isteğe bağlıdır;
+   verilmişse türetilen yeni mekaniğe eşit olmalıdır (yeni mekanik yoksa `teaches` verilemez). Engel olmayan öğretimler
+   (kaldır–taşı–indir, gölge, kazı, güçlendirici açılışı) yalnızca `tutorial` adımlarıyla ifade edilir. W3'ün imzası
+   `size = 1` olduğundan ilk kez Bölüm 9'da görünür (Bölüm 4'ün geçidi boy 2'dir; R-21).
+**Örnek:** Bölüm 9'da geçit `size=1`, `y=6`, `height=6` → 6+1 > 5 → `gap_touches_top`. Bölüm 4'e `size=1` geçit
+konursa türetilen yeni mekanikler {S2, W3} olur → `too_many_new_mechanics`.
 
 ### K-46 YAO (Yukarı–Aşağı Oranı) — YENİ (brif §4.11)
 **Kural:** YAO = (serbest kipte şantiyeye girip doğru yerleşen sürükleme hamleleri) / (bütün doğru yerleşen sürükleme
@@ -525,12 +618,12 @@ satır küçükten büyüğe, aynı satırda x küçükten büyüğe (y, x sıra
 | Adım | İş | Kurallar |
 |---|---|---|
 | 0 | Bırakma sınıflandırması (K-07 tablosu). İptalse **dur**: hiçbir şey değişmez. | K-05, K-07 |
-| 1 | Blok bırakma konumuna taşınır. Sürükleme yolu bir Boya Kapısı'nın ray kipinden geçtiyse blok boyanır (W6, öneri P-6). G-H zorla bırakması sıradan bırakmadır. | K-10–K-12, W6 |
-| 2 | Şantiyede serbest kipteyse: rüzgâr kayması (W8) → düşüş ya da balon yükselişi (S8) → G-L yönlendirmesi → iniş. Cam (S3) d > eşikse kırılır, K-17 hedefine döner, adım 3 atlanır. Sahada bırakılan balon burada yükselir. | K-11, K-19, W8, S3, S8 |
+| 1 | Blok bırakma konumuna taşınır. Sürüklemede blok bir Boya Kapısı'nın ray kipine **girdiyse** (en az bir hücresi sınırı o geçidin satırlarında geçtiyse; yarım girip geri çıkmak dahil) blok boyanır; birden çok boya kapısına girildiyse **son girilenin** rengi geçerlidir, `drag.via` = son girilen boya kapısının geçit indeksi (W6, S-21). G-H zorla bırakması sıradan bırakmadır. | K-10–K-12, W6 |
+| 2 | Şantiyede serbest kipteyse: rüzgâr kayması (W8) → düşüş ya da balon yükselişi (S8) → G-L yönlendirmesi (`steer`, K-19) → iniş. Cam (S3) d > eşikse kırılır, K-17 hedefine döner, adım 3 atlanır. Sahada bırakılan balon burada yükselir. | K-11, K-19, W8, S3, S8 |
 | 3 | Şantiyedeyse doğrulama: doğru → kilitle, `?` aç, seri +1, gerekirse Altın Mala; hatalı → harçlı blok yapışır (Y8), değilse geri seker (K-17), seri 0. | K-14, K-16, K-17, K-32, K-33, K-34, Y8 |
 | 4 | Maliyet: sayaç −1 (cam kırıldıysa −2; yapışmış harçlı bloğun hamlesi −2), en az 0; `m += 1`. | K-07 |
 | 5 | Komşu etkileri: taşınan bloğun **başlangıç** hücrelerinin 4-komşusu olan kasa 1 kat kaybeder (Y1), torba yırtılır (Y2), zincirli bloğun zinciri kalkar (Y3); her engel bu hamlede en çok 1 kez etkilenir. Ardından saklı nesne denetimi #1 (K-42). | Y1, Y2, Y3, K-42 |
-| 6 | Saha yerçekimi: torbalar her zaman, diğer bloklar Y6 açıksa düşer; balonlar Y6 açıksa yükselir (K-20). Düşen her bloğun düşüş öncesi hücrelerine komşu engeller 5. adım kuralıyla etkilenir (bu hamlede daha önce etkilenen etkilenmez). Bir torba yırtıldıysa ya da kasa yok olduysa yerçekimi yeniden çalışır; değişiklik kalmayınca biter. Saklı nesne denetimi #2. | K-20, Y2, Y6, S8 |
+| 6 | Saha yerçekimi: torbalar her zaman, diğer bloklar Y6 açıksa düşer; balonlar Y6 açıksa yükselir (K-20). Her tur iki **yarım adımdır** (R-02): (a) **düşme yarısı** — balonlar katı sayılır, bütün desteksiz blok ve torbalar aynı anda 1 satır iner; (b) **yükselme yarısı** — diğer her şey katı sayılır, tutulmayan bütün balonlar aynı anda 1 satır çıkar. Hareket kalmayınca biter; aynı boş hücreyi hedefleyen düşen blok ve balon arasında boşluk kalmaz (E-33). Düşen her bloğun düşüş öncesi hücrelerine komşu engeller 5. adım kuralıyla etkilenir (bu hamlede daha önce etkilenen etkilenmez). Bir torba yırtıldıysa ya da kasa yok olduysa yerçekimi yeniden çalışır; değişiklik kalmayınca biter. Saklı nesne denetimi #2. | K-20, Y2, Y6, S8 |
 | 7 | Hedef sayaçları güncellenir. | K-41 |
 | 8 | Aktif (ya da öndeki) dilim tamamlandıysa: `segments` → kayma ve sonraki dilim; `carousel` → ön dilim sıradaki tamamlanmamış dilim, `t = 0`. Sıradaki parti kamyon kuyruğunun sonuna eklenir. | K-22, K-23, K-25 |
 | 9 | Teslimat: kuyruktaki bütün bloklar FIFO sırasıyla birer kez denenir. | K-25, K-26 |
@@ -569,9 +662,9 @@ Her satır bir test senaryosudur (test adı "E-xx …" ve ilgili K kimliği).
 | E-02 | Kalan 1 hamlede cam blok eşiği aşan yükseklikten bırakılır | Kırılır, sahaya döner, maliyet 2 → sayaç 0 (negatif olmaz) → "Hamleler bitti" | K-07, S3 |
 | E-03 | Teslimat sırasında sahada yer yok | Bloklar kuyrukta; sonraki hamlede yer açılınca o hamlenin 9. adımında düşer; arayüz "Kamyonda: N blok" | K-26 |
 | E-04 | Kuyrukta eski bloklar varken döner platformda yeni dilim tamamlanır | Yeni parti kuyruğun sonuna eklenir; eskiler önce denenir | K-23, K-26 |
-| E-05 | Kepenk kapanırken şantiyede, geçit satırında raydan konmuş blok var | Blok yerinde kalır; kepenk yalnızca duvar sütununu kapatır, şantiye hücrelerini etkilemez | W4, K-12 |
-| E-06 | Blok, bir hücresi geçit (duvar sütunu) içindeyken bırakılır | İptal, hamle harcanmaz; kepenk/kayar kapı sürükleme sırasında değişmediği için "kapanırken içinde blok" oluşamaz | K-04, K-07 |
-| E-07 | Kayar kapı, sahada geçide komşu blok varken kayar | Hiçbir blok itilmez; kapı yalnızca duvar sütunundaki açık satırları değiştirir | W5 |
+| E-05 | Kepenk kapanırken şantiyede, geçit satırında raydan konmuş blok var | Blok yerinde kalır; kepenk yalnızca sınırın o satırlarını kapatır, şantiye hücrelerini etkilemez | W4, K-12 |
+| E-06 | Blok geçitte sınırı keserken (hücreleri sınırın iki yanında) bırakılır | İptal, hamle harcanmaz; kepenk/kayar kapı sürükleme sırasında değişmediği için "kapanırken içinde blok" oluşamaz | K-04, K-07 |
+| E-07 | Kayar kapı, sahada geçide komşu blok varken kayar | Hiçbir blok itilmez; kapı yalnızca sınırın açık satırlarını değiştirir | W5 |
 | E-08 | Asansör yükselirken şantiyede yapışmış harçlı blok var | Harçlı blok yalnızca bütün hücreleri plan alanında (renkli ya da `.`) ise yapışır, değilse geri seker (öneri P-2b); bu yüzden h + b ≤ 8 ile tahta dışına çıkamaz | Y8, K-24 |
 | E-09 | Dilim Altın Mala ile tamamlanır | Mini hat: adım 8 kayma ve parti, 9 teslimat, 11 kazanma; `m` artmaz, zamanlayıcılar ilerlemez | K-33, K-35 |
 | E-10 | Anahtar açığa çıkar | Adım 5/6'da toplanır, Kilitli Geçit aynı anda açılır; ilk kullanım bir sonraki hamlede | W7, K-42 |
@@ -591,12 +684,21 @@ Her satır bir test senaryosudur (test adı "E-xx …" ve ilgili K kimliği).
 | E-24 | Harçlı blok `.` (pencere) hücresine yapışır | Dilim tamamlanamaz (K-15: dilim alanında fazladan blok); 2 hamlelik geri sürükleme ya da Çekiç gerekir | Y8, K-15 |
 | E-25 | Boya kapısından geçip boyanan blok şantiyede hatalı yerleşir | Geri seker, yeni rengini korur (boya hamle kesinleşince kalıcıdır) | W6, K-17 |
 | E-26 | Kalan son plan hücresi 1×1, o renkte yalnızca 2 hücreli bloklar var | D2 tetiklenmez (sayı yeter); D3 (solver) ya da Kamyon Yardımı şekil değişimi çözer | K-30 |
-| E-27 | `build` tamamlandı, `clear` hedefi eksik | Oyun sürer; şantiyede boş hücre yoktur, her şantiye bırakması hatalıdır; oyuncu saha hamleleriyle hedefi bitirir. Bölüm tasarımı bunu kaçınır (LEVELS kontrol listesi) | K-28, K-41 |
-| E-28 | Blok duvar üstünde, bir hücresi duvar sütununda, Vinç Alanı'nda bırakılır | İptal (duvar sütunu) | K-07 |
+| E-27 | `build` tamamlandı, `clear` hedefi eksik | Oyun sürer; şantiye **kapalıdır**: şantiyeye bırakma iptal (0 hamle, K-07 satır 5); oyuncu saha hamleleriyle hedefi bitirir. Bölüm tasarımı bunu kaçınır (LEVELS kontrol listesi) | K-07, K-28, K-41 |
+| E-28 | Blok duvar üstünde, Vinç Alanı'nda sınırı keserken bırakılır | İptal (K-07 satır 4) | K-07 |
 | E-29 | Sahada, başlangıçtan farklı ama yine saklı vidanın hücresini örten konuma bırakma | Hücre boş kalmadığı için vida toplanmaz | K-42 |
 | E-30 | Hamle sayacı 0 iken bloğa dokunma | Tutulamaz; kayıp penceresi zaten açıktır | K-09 |
 | E-31 | Islak blok teslimatla gelir (wetMoves 3) | Geldiği hamlede sayaç 3 kalır, sonraki 3 hamlenin 10. adımında 2, 1, 0 olur | Y4, K-35 |
 | E-32 | Döner platformda ön dilime yapışmış harç varken dönüş | Harç dilimiyle birlikte döner; dilim onu kaldırmadan tamamlanamaz | S5, Y8 |
+| E-33 | Y6 açık; aynı sütunda düşen blok (6. satır) ile yükselen balon (4. satır) arasında 1 boş hücre (5. satır) | Tur 1 düşme yarısı: blok 5'e iner; yükselme yarısı: balonun üstü dolu, kalır. Sonuç: blok 5'te balona oturur, balon bloğa dayanır, boşluk yok (R-02) | K-20, K-35, S8, N33 |
+| E-34 | Teslimat: bloğun `x`'i dolu, `dropColumns` [3, 0] ikisi de dolu | Aşama 3: kalan sütunlar `x`'e uzaklıkla denenir; liste son aşamayı kapatmaz. Hiçbiri olmazsa kuyrukta kalır | K-25, K-26 |
+| E-35 | Balon şantiyede tavanın **üstünden** (Vinç Alanı) bırakılır | Tavana **iner** (yükselmez); W8 için `d = |bırakma satırı − tavan satırı|`, `d = 0` ise rüzgâr kayması yok | S8, W8 |
+| E-36 | Kamyonla balonlu blok gelir (Y6 kapalı / açık) | Diğer bloklar gibi düşüp oturur, yükselmez. Y6 açıksa **sonraki** hamlenin 6. adımında yükselir; Y6 kapalıysa oyuncu bırakana kadar yerinde kalır | K-25, S8 |
+| E-37 | Hamle sonunda Kamyon Yardımı (D2) `B1` getirdi; oyuncu Geri Al kullanır | Hamle ve yardım birlikte geri alınır; `B1`'ler yok olur. Durum yine kilitliyse yardım bir sonraki hamle sonunda yeniden çalışır | K-30, K-39 |
+| E-38 | 5. hamleden sonra sistem uygulamayı kapatır, oyuncu 2 saat sonra açar | Bölüm aynı durumdan sürer (kalan hamle, tahta, seri, ayrılan can); kayıp değildir. Can yenilenmesi saatle işlemiştir | K-43 |
+| E-39 | Sürükleme sırasında blok önce R boya kapısına, sonra Y boya kapısına girip sahaya bırakılır | Blok Y olur (son girilen); `via` = Y kapısının indeksi; 1 hamle | W6, K-35 |
+| E-40 | G-L: blok düşerken oyuncu başka bir bloğu tutar | Yönlendirme penceresi kapanır, düşen blok yönlendirmesiz (ya da daha önce yönlendirildiyse o haliyle) iner; yeni blok tutulur | K-19, R-12 |
+| E-41 | `m = 0`, galibiyet serisi kademe 2 bonusu (+2 hamle, +1 mala) verilmiş; oyuncu çıkar | Ceza yok; can, oyun öncesi güçlendiriciler iade; bonus tüketilmez, sonraki girişte yine verilir | K-40, K-43 |
 
 ---
 
@@ -610,7 +712,13 @@ Brif §12 veri tipine product-lead'in istediği ekler (kesin şema TECH_DESIGN'd
 | `build.debris[].segment` | `number` (varsayılan 0) | Molozun hangi dilime ait olduğu (K-45/7, P-5) |
 | `wall.gaps[].dir` (slider) | `1 \| -1` (varsayılan 1) | Kayar kapının ilk yönü (W5) |
 | `PiecePlacement.y` (parti ≥ 1) | `8` yazılır, yok sayılır | Kamyon dökümü sütundan yapılır (K-25) |
-| Hamle kaydı `drag.via` | `number` (geçit indeksi, isteğe bağlı) | Boya kapısından geçip sahaya dönen blok (W6, P-6) |
+| Hamle kaydı `drag.via` | `number` (geçit indeksi, isteğe bağlı) | Son girilen boya kapısı (W6, K-35 adım 1, E-39) |
+| Hamle kaydı `steer` | `{ dir: 1 \| -1; atRow: number }` (isteğe bağlı) | G-L yönlendirmesi (K-19) |
+| `seed` | `number` (isteğe bağlı; yoksa `id × 1000 + id`) | K-45/1 |
+| `teaches` | mekanik kimliği (OBSTACLES veri imzası tablosu), isteğe bağlı | K-45/9 |
+| `tutorial[]` | `{ step, mode: 'required' \| 'soft', highlight: string[], hand?: { kind: 'tap' \| 'drag' \| 'hold', path?: [x, y][] }, textKey, done: { event, count? } \| { timeoutMs } }` | code-lead önerisi KABUL. `highlight` sözlüğü UX_FLOWS §13.1; `piece:<i>` = parti-0 dizi sırası = LEVELS tablosundaki satır sırası; partilerde `k<parti>_<indeks>`. `textKey` biçimi `tut.l<bölüm>.<konu>` (R-08) |
+| Kayıt `inLevel` | K-43 madde 3 | Kaldığı yerden devam (R-13) |
+| Kayıt, bölüm başına | `{ won: boolean, attempts: number }` | `attempts` yalnızca analytics içindir (`level_start.attempt`); kural kullanmaz |
 
 ---
 
@@ -626,7 +734,7 @@ Brif §12 veri tipine product-lead'in istediği ekler (kesin şema TECH_DESIGN'd
 | S-6 | Hamle sonunda; sürüklemede tahta donuk (K-08, K-35). |
 | S-7 | Başlangıç hücrelerinin 4-komşuluğu; saha yerçekimi düşüşleri sayılır (düşüş öncesi hücreler), teslimat sayılmaz; engel başına hamlede en çok 1 (K-35 adım 5–6). |
 | S-8 | Bırakınca, düşüşten önce, 1 sütun; hedef duvar/kenar/dolu ise kayma yok; ray etkilenmez. **Ek:** bırakma anında d = 0 (blok siluete oturmuş) ise kayma yok (W8, öneri P-2a). |
-| S-9 | **Farklı:** Şantiyede tavan aktif dilimin plan tepesidir (tahta satırı h + e); sahada y=7. Gerekçe ve öneri P-3. |
+| S-9 | **Farklı (R-02: GDD geçerli):** Şantiyede tavan aktif dilimin plan tepesidir (tahta satırı h + e); sahada y=7. Tavanın üstünden bırakılan balon tavana iner (E-35); teslimat balonu yükselmez (E-36). Öneri P-3. |
 | S-10 | d > eşik; d bırakma satırından; geri sekme ve teslimat düşüşünde cam kırılmaz (S3). |
 | S-11 | Kuyruğun sonuna (K-17). |
 | S-12 | Evet, torba her zaman düşer (K-20). |
@@ -638,11 +746,11 @@ Brif §12 veri tipine product-lead'in istediği ekler (kesin şema TECH_DESIGN'd
 | S-18 | Minimum hamleli çözüm, eşitlikte en yüksek YAO; yönlendirme ve balon duvar üstü; Mala/Vinç sayılmaz (K-46). |
 | S-19 | Evet, yalnızca D3'te; renk başına hücre toplamı korunur (K-30). |
 | S-20 | Hatalı yerleşim (harç yapışması dahil) ve cam kırılması bozar; saha hamlesi bozmaz (K-33). |
-| S-21 | **Farklı:** Sürükleme yolu boya kapısının ray kipinden geçen ve iptal edilmeyen her hamlede blok boyanır; sahaya geri dönse bile. Gerekçe: "boyahane" kullanımı duvar üstü yerleşimi (YAO) korur. Öneri P-6. |
+| S-21 | **Farklı (R-02: GDD geçerli):** Sürüklemede boya kapısının ray kipine giren (yarım girip çıkmak dahil) ve iptal edilmeyen her hamlede blok boyanır; sahaya geri dönse bile; birden çok kapıda son girilen geçerli (K-35 adım 1, E-39). Gerekçe: "boyahane" kullanımı duvar üstü yerleşimi (YAO) korur. Öneri P-6. |
 | S-22 | Evet, açıldığı denetimde toplanır (K-42). |
 | S-23 | Ping-pong; iptalde oynamaz (K-24). |
 | S-24 | `period` hamle açık + `period` hamle kapalı; açık ⇔ `floor((m + phase) / period)` çift; `phase = 0` açık başlar (W4). |
 | S-25 | Lig haftası UTC Pazartesi 00:00 (META). |
-| S-26 | Düşen/yükselen bloğa dokunup sola/sağa en az 0,5 hücre sürükleme; düşüş başına 1 kez (G-L). Girdi biçimi design-lead'le kesinleşir. |
+| S-26 | **Değişti (R-10):** düşüş/yükseliş sürerken tahtanın herhangi bir yerine dokunma; dokunulan taraf (bloğun orta çizgisine göre) = yön; 1 sütun; düşüş başına 1; aynı hamle; kayıt `steer { dir, atRow }` (K-19). |
 | S-27 | Evet; erişilebilirlik ayarıyla 1400 ms (K-19). |
 | S-28 | Hayır (§10 genel). |

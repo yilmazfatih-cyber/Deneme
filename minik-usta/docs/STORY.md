@@ -1,7 +1,10 @@
 # Hikaye ve karakterler — Minik Usta
 
-Sahip: design-lead · Durum: Faz 1 taslağı (2026-10-04) · Kaynak: `docs/BRIEF.md` §9 · Görünüm: `docs/ART_DIRECTION.md`
-§11 · Öğretici yerleşimi: `docs/UX_FLOWS.md` §13
+Sahip: design-lead · Durum: Faz 1 revizyonu (2026-10-04; R-07, R-08, R-09, R-14, R-15, R-19, R-24 işlendi) · Kaynak:
+`docs/BRIEF.md` §9 · Görünüm: `docs/ART_DIRECTION.md` §11 · Öğretici yerleşimi: `docs/UX_FLOWS.md` §13
+
+**Kapsam:** ara sahneler, görev satırları, ipuçları, etkinlik ve teklif metinleri **[MVP]**; §7.1 tepki balonları
+**[Sonra]**; "Devamı yolda…" sahnesi **[MVP]**.
 
 ---
 
@@ -23,6 +26,15 @@ Sahip: design-lead · Durum: Faz 1 taslağı (2026-10-04) · Kaynak: `docs/BRIEF
    kimliği diller arasında aynı kalsın diye çeviri değil, harf çevirisi).
 7. **Yazı görsellerin içinde değil:** tabela, kitap kapağı gibi yazılar çizime gömülmez; gerekirse i18n metin katmanı
    olarak üstüne basılır.
+8. **Tuna'nın yaşı oyunda geçmez** (BUSINESS S15): oyun içi metinde, mağaza materyalinde ve reklam kreatifinde yaş ya da
+   Tuna'yı küçük gösteren espri yok. Brifteki "8" yalnız iç belge bilgisidir. Sahnelerde yetişkin kasaba halkı en az
+   çocuklar kadar yer alır (esnaf, emekliler, veliler); espriler iş hayatından (referans, kartvizit, kalite kontrol).
+9. **İpucu dili (R-08):** oyuncuya görünen terim **"blok" / "block"** ("parça/piece" yok); öğretici ve ipucu
+   metninde **renk adı geçmez** (renk körü oyuncu); değişken sayılar `{n}` ile yazılır (ör. döner platform periyodu).
+   Ekranda görünen öğretici metnin tek kaynağı bu belgedir (§6); OBSTACLES'taki metinler engel bilgi kartıdır
+   (`obs.{id}.desc`, product-lead).
+10. **Ad ve firma (R-24):** "Kepche", `{company}` (varsayılan "Tuna & Co."; yalnız oyun içi firma adı, mağaza adı
+    değil). Oyun adı `app.title` anahtarından gelir; "Minik Usta" TR'de Tuna'nın lakabı olarak kalır.
 
 ---
 
@@ -42,7 +54,7 @@ Sahip: design-lead · Durum: Faz 1 taslağı (2026-10-04) · Kaynak: `docs/BRIEF
 
 | Karakter | Hikayedeki rolü | Konuşma biçimi | İmza söz (TR / EN) |
 | -------- | --------------- | -------------- | ------------------ |
-| **Tuna** (8) | Kahraman, "Minik Usta". Meraklı, enerjik, vazgeçmez. Her bölümde bir sorunu renkli bir yapıyla çözer. | Ünlemli, kısa, plan kuran cümleler. | "Plan hazır, kask tamam!" / "Plan ready, helmet on!" |
+| **Tuna** (iç bilgi: 8; oyunda yaş geçmez) | Kahraman, "Minik Usta". Meraklı, enerjik, vazgeçmez. Her bölümde bir sorunu renkli bir yapıyla çözer. | Ünlemli, kısa, plan kuran cümleler. | "Plan hazır, kask tamam!" / "Plan ready, helmet on!" |
 | **Usta Dede** | Emekli usta, firmanın kurucusu. Öğretmen; oyuncuya ipuçlarını o verir. Katlanır metresiyle işaret eder. | Sakin, atasözü tadında, kısa. | "Önce temeli düşün, evlat!" / "Think of the foundation first, kiddo!" |
 | **Kepçe** (EN: Kepche) | Sosis köpek, kazı maskotu. Kaskı kulaklarına büyük. Komik rahatlama. | Yalnız "Hav!" ve ses efektleri; duygusu yüzünden okunur. | "Hav!" / "Woof!" |
 | **Bay Gribeton** | Gribeton A.Ş.'nin patronu. Her şeyi gri betondan yapar; verimlilik takıntılı, kibirli ama komik ve iyi kalpli. Hikaye boyunca Tuna'ya ısınır. | Resmî, kendinden emin, "verimli", "maliyet", "dayanıklılık" kelimelerini sever. | "Gri, her renge yakışır." / "Gray goes with everything." |
@@ -64,8 +76,14 @@ Sahip: design-lead · Durum: Faz 1 taslağı (2026-10-04) · Kaynak: `docs/BRIEF
 | 4 Fener ve Köprü | 31–40 | Gribeton'un gri köprüsü çatladı; balıkçılar mahsur | Fener yanar, asma köprü kurulur; Gribeton ilk kez teşekkür eder | Bölüm 4 görev 1 | Bölüm 4 son görev |
 | 5 Festival Şatosu | 41–50 | Festivale şato lazım | Gribeton gri temeli getirir; birlikte inşa; "Yılın Firması" | Bölüm 5 görev 1 | Bölüm 5 son görev |
 
-Görevler bölümleri kilitlemez; yalnız ara sahneleri açar (brif §10). Görev yıldız maliyetleri aşağıda **öneridir**;
-kesin değerler product-lead'in `META.md` dosyasındadır.
+Görevler bölümleri kilitlemez; yalnız ara sahneleri açar (brif §10). **Görev listesi esastır (R-07):** 5 × 7 = 35
+görev, ad ve sıra bu belgededir; META ve `economy.json` bunlara göre güncellenir. Yıldız maliyetleri META'da
+kesinleşir; §5 aynı değerleri gösterir (product-lead §5 maliyetlerini kabul etti; fark çıkarsa META geçerlidir ve bu
+tablo eşitlenir).
+
+**Sahne tetikleyicileri (R-09, brif FTUE sırası):** prolog FTUE'de (Bölüm 1'den önce); `story.ch1.start` ilk görev
+yapılınca (ilk yıldız harcanınca); `story.chN.start` (N ≥ 2) önceki bitiş sahnesinden sonra ana ekrana **bir sonraki
+dönüşte** (iki sahne arka arkaya 8–10 panel olmasın); `story.chN.end` son görev yapılınca.
 
 i18n anahtarları: `story.<sahne>.p<n>.<konuşan>` (ör. `story.ch1.start.p2.gribeton`); görevler
 `town.ch<n>.t<m>.name` ve `town.ch<n>.t<m>.scene`; ipuçları `tut.*`.
@@ -96,8 +114,8 @@ gözlüğünü burnuna itmiş, gülümsüyor.
 
 **Panel 1** — Kasaba meydanı, ilan panosu. Tuna parlak bir "İş arıyoruz" ilanı asıyor. Ayşe Teyze elinde file, eğilmiş
 bakıyor.
-- Ayşe Teyze: "Çok tatlısın ama… sen kaç yaşındasın?" / "You're very sweet, but… how old are you?"
-- Tuna: "Sekiz buçuk! Buçuk önemli." / "Eight and a half! The half matters."
+- Ayşe Teyze: "İlanın şirin ama… referansın var mı?" / "Cute poster, but… any references?"
+- Tuna: "Dedem! Kırk yıllık usta." / "My grandpa! Forty years a master builder."
 
 **Panel 2** — Gri bir kamyonetten Bay Gribeton iniyor, klasörü göğsünde, burnu havada.
 - Gribeton: "Çocuk oyuncağı! Gerçek işler gri betondan yapılır." / "Child's play! Real work is made of gray concrete."
@@ -112,8 +130,9 @@ kazmaya başlamış.
 
 **Bitiş (`story.ch1.end`, 4 panel)**
 
-**Panel 1** — Renkli ağaç ev tamam; bayrağı dalgalanıyor. Çitin üstünden kasabanın çocukları ve birkaç yetişkin bakıyor.
-- Çocuk: "Vay! Bunu bir çocuk mu yaptı?" / "Whoa! A kid built that?"
+**Panel 1** — Renkli ağaç ev tamam; bayrağı dalgalanıyor. Çitin üstünden komşular bakıyor: postacı, bisikletli
+emekli bir çift, elinde fileyle bir anne.
+- Postacı: "Bunu kim yaptı? Kartvizitin var mı?" / "Who built this? Got a business card?"
 
 **Panel 2** — Tuna ağaç evin penceresinden el sallıyor; Kepçe ip merdivenin ortasında asılı kalmış, kask gözüne düşmüş.
 - Tuna: "Minik Usta İnşaat, hizmetinizde!" / "{company}, at your service!"
@@ -123,7 +142,8 @@ kazmaya başlamış.
 - Gribeton: "Hımm. Verimsiz… ama ilginç." / "Hmm. Inefficient… but interesting."
 - Ayşe Teyze: "Tuna! Fırınımın bacası çöktü!" / "Tuna! My bakery chimney collapsed!"
 
-**Panel 4** — Albüm kartı: ağaç ev, kenarında "Ağaç Ev" etiketi. Tuna, Dede ve Kepçe beşlik çakıyor (Kepçe patisiyle).
+**Panel 4** — Yapı kartı (yalnız gösterilir; Albüm Sonra, R-19): ağaç ev, kenarında "Ağaç Ev" etiketi (i18n katmanı).
+Tuna, Dede ve Kepçe beşlik çakıyor (Kepçe patisiyle).
 - Usta Dede: "İlk iş bitti. Sıradaki seni bekliyor." / "First job done. The next one awaits."
 
 ### 4.2 Hikaye Bölümü 2 — Mahalle Fırını
@@ -141,8 +161,8 @@ elleri yanaklarında.
 - Tuna: "Kiremitli, sıcacık, turuncu bir fırın yapalım!" / "Let's build a warm bakery with an orange tile roof!"
 
 **Panel 4** — Gribeton kaşını kaldırmış; Kepçe un çuvalına burnunu sokmuş, burnu bembeyaz çıkmış.
-- Gribeton: "Göreceğiz, Minik Usta." / "We'll see, junior."
-- Kepçe: "Hapşu!" / "Achoo!"
+- Gribeton: "Göreceğiz, Minik Usta." / "We'll see, Tuna."
+- Kepçe: "Hav?" / "Woof?"
 
 **Bitiş (`story.ch2.end`, 4 panel)**
 
@@ -167,8 +187,9 @@ kokunun üstünde neredeyse süzülüyor.
 Öğretmen Selin kucağında ıslak kitaplarla.
 - Selin: "Kütüphaneyi su bastı. Kitaplar sırılsıklam." / "The library flooded. The books are soaked."
 
-**Panel 2** — Okul bahçesinde çocuklar kitapları mandallarla ipe asıyor.
-- Çocuk: "Artık nerede okuyacağız?" / "Where will we read now?"
+**Panel 2** — Okul bahçesinde öğrenciler, veliler ve emekli okurlar kitapları mandallarla ipe asıyor (kütüphane
+okulun ve bütün kasabanın).
+- Emekli okur: "Kasabanın tek kütüphanesiydi!" / "That was the town's only library!"
 
 **Panel 3** — Selin karatahtaya bir mozaik deseni çizmiş; Tuna'nın gözleri parlıyor.
 - Selin: "Desenleri seversin, değil mi Tuna?" / "You like patterns, don't you, Tuna?"
@@ -180,7 +201,7 @@ kokunun üstünde neredeyse süzülüyor.
 
 **Bitiş (`story.ch3.end`, 4 panel)**
 
-**Panel 1** — Güneşli gün; mozaik duvar mor-mavi parlıyor, çocuklar içeri koşuyor.
+**Panel 1** — Güneşli gün; mozaik duvar mor-mavi parlıyor; öğrenciler, veliler ve emekli okurlar içeri doluyor.
 - Selin: "Bakın, her desen bir kural!" / "Look, every pattern is a rule!"
 
 **Panel 2** — Kepçe ağzında kemik resimli bir kitapla okuma köşesine kıvrılmış; Tuna gülüyor.
@@ -272,8 +293,9 @@ USTA").
 
 ## 5. Kasaba görevleri — mini sahneler
 
-Her görev kısa bir sahne oynatır (≤ 2 s yapı animasyonu + tek satır). Maliyetler öneri (bölüm başına toplam 10 ★ =
-10 bölümün yıldızı).
+Her görev kısa bir sahne oynatır (≤ 2 s yapı animasyonu + tek satırlık balon; MVP-lite). Liste esastır (R-07);
+maliyetler META ile aynıdır (hikaye bölümü başına toplam 10 ★ = 10 bölümün yıldızı). Anahtarlar
+`town.ch<n>.t<m>.name` (görev adı) ve `town.ch<n>.t<m>.scene` (sahne satırı).
 
 ### Bölüm 1 — Ağaç Ev
 
@@ -294,7 +316,7 @@ Her görev kısa bir sahne oynatır (≤ 2 s yapı animasyonu + tek satır). Mal
 | 1 | Fırın temeli / Bakery foundation | 1 | Ayşe Teyze temeli kutsar gibi un serper. / Ayşe sprinkles flour on it like a blessing. |
 | 2 | Fırın ağzı / Oven mouth | 1 | İlk ateş yanar: "Çıtır çıtır!" / The first fire crackles: "Crackle crackle!" |
 | 3 | Tezgâh / Counter | 1 | Ekmekler sıraya dizilir, Kepçe bir tanesini koklar. / Loaves line up; Kepche sniffs one. |
-| 4 | Vitrin / Shop window | 2 | Çocuklar burunlarını cama yapıştırır. / Kids press their noses to the glass. |
+| 4 | Vitrin / Shop window | 2 | Postacı burnunu cama yapıştırır. / The mail carrier presses their nose to the glass. |
 | 5 | Kiremit çatı / Tile roof | 2 | Gribeton geçerken durur, bir kiremidi tıklatır. / Gribeton stops to tap a tile. |
 | 6 | Baca / Chimney | 1 | Bacadan ekmek biçimli duman çıkar. / Bread-shaped smoke puffs out. |
 | 7 | Bahçe masaları / Garden tables | 2 | Kasaba halkı oturur, çay gelir. → Bitiş sahnesi / Townsfolk sit, tea arrives. → End scene |
@@ -308,8 +330,8 @@ Her görev kısa bir sahne oynatır (≤ 2 s yapı animasyonu + tek satır). Mal
 | 3 | Mozaik duvar / Mosaic wall | 2 | Selin desenin eksik taşını gösterir: "Tam burası!" / Selin points at the missing tile: "Right there!" |
 | 4 | Saat kulesi / Clock tower | 1 | Saat ilk kez çalar, güvercinler havalanır. / The clock chimes; pigeons take off. |
 | 5 | Büyük pencereler / Big windows | 2 | Güneş içeri dolar, raflar parlar. / Sunlight pours in. |
-| 6 | Bahçe duvarı / Garden wall | 1 | Çocuklar duvara tebeşirle desen çizer. / Kids chalk patterns on it. |
-| 7 | Açılış kapısı / Grand door | 2 | Selin kapıyı açar, çocuklar koşar. → Bitiş sahnesi / Selin opens the door; kids rush in. → End scene |
+| 6 | Bahçe duvarı / Garden wall | 1 | Veliler ve öğrenciler duvara tebeşirle desen çizer. / Parents and students chalk patterns on it. |
+| 7 | Açılış kapısı / Grand door | 2 | Selin kapıyı açar, kasaba halkı içeri dolar. → Bitiş sahnesi / Selin opens the door; the town pours in. → End scene |
 
 ### Bölüm 4 — Deniz Feneri ve Köprü
 
@@ -339,81 +361,95 @@ Her görev kısa bir sahne oynatır (≤ 2 s yapı animasyonu + tek satır). Mal
 
 ## 6. Usta Dede'nin ipucu satırları
 
-TR ≤ 8 kelime. Kimlikler `UX_FLOWS.md` §13 ile birebir.
+TR ≤ 8 kelime. Kimlikler `UX_FLOWS.md` §13 ile birebir (tek küme `tut.l{n}.{konu}`, `tut.ctx.*`, `tut.meta.*`; R-08).
+Terim "blok"; renk adı yok; kural doğruluğunu product-lead doğrular (GDD K-xx sütunu).
 
-| Kimlik | TR | EN |
-| ------ | -- | -- |
-| `tut.l1.lift` | Bloğu tut, duvarın üstünden kaldır! | Grab a block and lift it over the wall! |
-| `tut.l1.drop` | Şantiyenin üstünde bırak, kendisi düşer. | Let go above the site and it drops. |
-| `tut.l1.match` | Plandaki renge uyan bloğu seç. | Pick the block that matches the plan. |
-| `tut.l2.pattern` | Plana bak: renkler şerit şerit. | Look at the plan: colors come in stripes. |
-| `tut.l2.shadow` | Gölge, bloğun nereye düşeceğini gösterir. | The shadow shows where it will land. |
-| `tut.l3.gap` | Duvarda geçit var! Bloğu içinden geçir. | There's a gap! Slide the block through. |
-| `tut.l3.rail` | Geçitten giren blok rayda kalır, düşmez. | Through a gap, it rides the rail. No drop. |
-| `tut.l4.window` | Taralı yerler boş kalacak: pencere! | Hatched cells stay empty: it's a window! |
-| `tut.l4.above` | Pencerenin üstünü geçitten doldur. | Fill above the window through the gap. |
-| `tut.l5.segments` | Bu parça bitince şantiye kayar. | Finish this part and the site moves on. |
-| `tut.l5.truck` | Kamyon yeni malzeme getirdi! | The truck brought new materials! |
-| `tut.l6.crane` | Duvar yüksek. Bloğu en tepeye kaldır! | High wall! Lift the block all the way up! |
-| `tut.l7.dig` | Lazım olan altta. Üsttekini kenara koy. | What you need is below. Move the top one aside. |
-| `tut.l7.free` | İşte! Artık alabilirsin. | There! Now you can take it. |
-| `tut.l8.heavy` | Bu çok geniş, şantiyeye sığmaz. | Too wide. It won't fit on the site. |
-| `tut.l8.hammer` | Çekiçle kır, yol açılsın! | Smash it with the hammer! |
-| `tut.l9.narrow` | Dar geçitten yalnız tek sıra geçer. | Only one-row blocks fit a narrow gap. |
-| `tut.l10.crane` | Vinç her şeyi taşır, döndürür de! | The crane carries anything, and rotates it too! |
-| `tut.l11.crate` | Yanındaki bloğu oynat, kasa çatlar. | Move a block next to it to crack the crate. |
-| `tut.l12.clear` | Hedef: bütün kasaları kır! | Goal: break every crate! |
-| `tut.l12.thermos` | Termos: başlarken üç hamle daha. | Thermos: three extra moves at the start. |
-| `tut.l13.shutter` | Kepenk hamle sayar. Açıkken geçir! | The shutter counts moves. Pass while it's open! |
-| `tut.l13.undo` | Yanlış mı oldu? Geri Al kurtarır. | Oops? Undo saves the day. |
-| `tut.l14.gravity` | Dikkat! Alttakini alırsan üsttekiler düşer. | Careful! Take the bottom one and the rest fall. |
-| `tut.l15.heavyfall` | Ağır yük! Şantiyede uzun tutamazsın. | Heavy load! You can't hold it long up there. |
-| `tut.l16.slider` | Bu kapı her hamlede kayar. | This gate slides after every move. |
-| `tut.l16.trowel` | Mala Başlangıcı: Altın Mala'yla başla. | Trowel Start: begin with a Golden Trowel. |
-| `tut.l17.debris` | Moloz yanlış yerde. Sahaya taşı. | That debris doesn't belong. Carry it back. |
-| `tut.l18.bag` | Yanında oynarsan çimento torbası yırtılır. | Move next to the cement bag to tear it. |
-| `tut.l19.screw` | Altın vidalar blokların altında. Kaz! | Golden screws hide under blocks. Dig! |
-| `tut.l20.openshutter` | Açık Kepenk: beş hamle geçitler açık. | Open Shutter: all gaps open for five moves. |
-| `tut.l21.glass` | Cam kırılır! Çok yüksekten bırakma. | Glass breaks! Don't drop it from too high. |
-| `tut.l22.paint` | Boya kapısı bloğu kendi rengine boyar. | The paint gate recolors the block. |
-| `tut.l22.brush` | Boya Fırçası bir bloğun rengini değiştirir. | The Paint Brush changes a block's color. |
-| `tut.l23.steer` | Hafif blok süzülür. Dokun, yana kaysın. | Light blocks float. Tap to nudge them. |
-| `tut.l24.chain` | Zincirli blok bekler. Önce yanındakini oynat. | Chained! Move its neighbor first. |
-| `tut.l26.key` | Anahtar bir bloğun altında. Bul, kilit açılsın! | The key is under a block. Find it to unlock! |
-| `tut.l27.repeat` | Soru işareti mi? Desen tekrar ediyor. | Question marks? The pattern repeats. |
-| `tut.l28.wet` | Islak beton kurumadan oynamaz. Sayaca bak. | Wet concrete can't move yet. Watch the count. |
-| `tut.l29.mirror` | Bu taraf, öbür tarafın aynası. | This side mirrors the other one. |
-| `tut.l31.carousel` | Platform dönüyor! Öndekine yerleştir. | The platform turns! Build on the front one. |
-| `tut.l32.wind` | Rüzgâr ince blokları yana iter. | Wind pushes thin blocks sideways. |
-| `tut.l35.mortar` | Harçlı blok nereye düşerse yapışır. Dikkat! | Mortar blocks stick wherever they land! |
-| `tut.l37.elevator` | İskele iner çıkar. Geçide göre ayarla. | The scaffold moves. Time it with the gap. |
-| `tut.l38.balloon` | Balonlu blok düşmez, yükselir! | Balloon blocks don't fall. They rise! |
-| `tut.ctx.streak` | Hatasız dört doğru, Altın Mala getirir! | Four right in a row earns a Golden Trowel! |
-| `tut.ctx.goldtrowel` | Altın Mala'yla boş bir plan hücresine dokun. | Tap any empty plan cell with the Golden Trowel. |
-| `tut.ctx.bounce` | Renk uymadı, blok geri döndü. | Wrong color, so it bounced back. |
-| `tut.ctx.lastmoves` | Son beş hamle! Acele etme, düşün. | Five moves left! Think, don't rush. |
-| `tut.ctx.queue` | Sahada yer aç, kamyon boşaltsın. | Make room so the truck can unload. |
-| `tut.ctx.reshuffle` | Sıkıştık! Kamyon Yardımı geliyor. | We're stuck! Truck Help is on the way. |
-| `tut.ctx.blocked` | Bu blok şimdi kımıldamaz. Çevresine bak. | That one can't move yet. Look around it. |
-| `tut.meta.bridge` | Yedi bölümü art arda kazan, köprüyü geç! | Win seven in a row to cross the bridge! |
-| `tut.meta.league` | Usta Ligi: her hafta en iyiler yükselir. | Builder League: the best move up each week. |
-| `tut.meta.chest` | On bölüm tamam! Sandığı aç. | Ten levels done! Open the chest. |
-| `tut.meta.daily` | Her gün uğra, hediyen hazır. | Drop by every day for a gift. |
-| `tut.meta.shop` | Mağazada altın ve paketler var. | The shop has coins and bundles. |
-| `tut.meta.piggy` | Kazandıkça kumbara dolar. | Your brick bank fills as you win. |
+| Kimlik | TR | EN | Kural |
+| ------ | -- | -- | ----- |
+| `tut.l1.lift` | Bloğu tut, duvarın üstünden kaldır! | Grab a block and lift it over the wall! | K-11 |
+| `tut.l1.drop` | Şantiyenin üstünde bırak, kendisi düşer. | Let go above the site and it drops. | K-11 |
+| `tut.l1.match` | Plandaki renge uyan bloğu seç. | Pick the block that matches the plan. | K-16 |
+| `tut.l2.pattern` | Plana bak: renkler şerit şerit. | Look at the plan: colors come in stripes. | K-31 |
+| `tut.l2.shadow` | Gölgede ✓ varsa yer doğru. | A ✓ on the shadow means the spot is right. | K-18 |
+| `tut.l3.base` | Önce en alt katı kur. | Build the bottom floor first. | K-34 |
+| `tut.l3.gap` | Duvarda geçit var! Bloğu içinden kaydır. | There's a gap! Slide the block through. | K-12 |
+| `tut.l3.rail` | Raydaki blok düşmez. Sıradakini üstünden aşır. | On the rail it stays put. Lift the next one over. | K-12 |
+| `tut.l4.window` | Taralı yerler boş kalacak: pencere! | Hatched cells stay empty: it's a window! | S2 |
+| `tut.l4.below` | Önce pencerenin altını ve yanını kur. | Build below and beside the window first. | K-34 |
+| `tut.l4.above` | Pencerenin üstünü geçitten raya koy. | Set the top of the window via the gap. | K-12, S2 |
+| `tut.l5.segments` | Bu kat bitince şantiye kayar. | Finish this floor and the site moves on. | K-22 |
+| `tut.l5.truck` | Kamyon yeni malzeme getirdi! | The truck brought new materials! | K-25 |
+| `tut.l6.crane` | Duvar yüksek. Bloğu en tepeye kaldır! | High wall! Lift the block all the way up! | K-05 |
+| `tut.l7.dig` | Lazım olan altta. Üsttekini kenara koy. | What you need is below. Move the top one aside. | K-10 |
+| `tut.l7.free` | İşte! Artık alabilirsin. | There! Now you can take it. | K-09 |
+| `tut.l8.heavy` | Bu çok geniş. Kenara çek ya da kır. | Too wide. Drag it aside or smash it. | Y5, K-10 |
+| `tut.l8.hammer` | Sıkışırsan Çekiçle bir bloğu kır. | Stuck? Smash a block with the Hammer. | K-36 |
+| `tut.l9.narrow` | Dar geçitten yalnız tek sıra geçer. | Only one-row blocks fit a narrow gap. | W3 |
+| `tut.l9.base` | Önce merdivenin altını kur. | Build the bottom of the ladder first. | K-34 |
+| `tut.l9.hang` | Boşluktan indir, geçitten raya kaydır. | Drop it down the gap, then slide it onto the rail. | K-08, K-12 |
+| `tut.l10.crane` | Vinç gömülü bloğu da çıkarır, döndürür. | The Crane lifts even buried blocks and turns them. | K-37 |
+| `tut.l11.crate` | Yanındaki bloğu oynat, kasa çatlar. | Move a block next to it to crack the crate. | Y1 |
+| `tut.l12.clear` | Hedef: bütün kasaları kır! | Goal: break every crate! | K-41 |
+| `tut.l12.thermos` | Termos: başlarken üç hamle daha. | Thermos: three extra moves at the start. | K-40 |
+| `tut.l13.shutter` | Kepenk hamle sayar. Açıkken geçir! | The shutter counts moves. Pass while it's open! | W4 |
+| `tut.l13.undo` | Yanlış mı oldu? Geri Al kurtarır. | Oops? Undo takes back your last move. | K-39 |
+| `tut.l14.gravity` | Dikkat! Alttakini alırsan üsttekiler düşer. | Careful! Take the bottom one and the rest fall. | K-20 |
+| `tut.l15.heavyfall` | Ağır yük! Şantiyede uzun tutamazsın. | Heavy load! You can't hold it long up there. | K-19 |
+| `tut.l15.setting` | Süre kısa mı? Ayarlardan uzatabilirsin. | Too quick? You can extend it in Settings. | K-19 (R-11) |
+| `tut.l16.slider` | Bu kapı her hamlede kayar. | This gate slides after every move. | W5 |
+| `tut.l16.trowel` | Mala Başlangıcı: Altın Mala'yla başla. | Trowel Start: begin with a Golden Trowel. | K-40 |
+| `tut.l17.debris` | Moloz yanlış yerde. Sahaya taşı. | That debris doesn't belong. Carry it back. | S4 |
+| `tut.l18.bag` | Torbanın yanındaki bloğu oynat, yırtılsın. | Move the block next to the bag to tear it. | Y2 |
+| `tut.l19.screw` | Altın vidalar blokların altında. Kaz! | Golden screws hide under blocks. Dig! | Y7, K-42 |
+| `tut.l20.openshutter` | Açık Kepenk: beş hamle kepenkler ve kilitler açık. | Open Shutter: shutters and locks stay open for five moves. | K-40 |
+| `tut.l21.glass` | Cam kırılır! Çok yüksekten bırakma. | Glass breaks! Don't drop it from too high. | S3 |
+| `tut.l22.paint` | Geçitte boya, sahaya geri çek. | Paint it in the gate, then pull it back. | W6 |
+| `tut.l22.over` | Şimdi duvarın üstünden yerine koy. | Now lift it over into place. | K-11, K-46 |
+| `tut.l22.brush` | Boya Fırçası bir bloğun rengini değiştirir. | The Paint Brush changes a block's color. | K-38 |
+| `tut.l23.steer` | Düşerken bir yana dokun, o yana kaysın. | Tap a side while it falls to nudge it there. | K-19 G-L (R-10) |
+| `tut.l24.chain` | Zincirli blok bekler. Önce yanındakini oynat. | Chained! Move its neighbor first. | Y3 |
+| `tut.l26.key` | Anahtar bir bloğun altında. Bul, kilit açılsın! | The key is under a block. Find it to unlock! | W7, K-42 |
+| `tut.l27.repeat` | Soru işareti mi? Aşağıdaki desen tekrar ediyor. | Question marks? The pattern below repeats. | K-32 `repeat` |
+| `tut.l28.wet` | Islak beton kurumadan oynamaz. Sayaca bak. | Wet concrete can't move yet. Watch the count. | Y4 |
+| `tut.l29.mirror` | Bu taraf, öbür tarafın aynası. | This side mirrors the other one. | K-32 `mirrorOf` |
+| `tut.l31.carousel` | Platform dönüyor! Öndekine yerleştir. | The platform turns! Build on the front one. | S5 |
+| `tut.l32.wind` | Rüzgâr ince blokları yana iter. | Wind pushes thin blocks sideways. | W8 |
+| `tut.l35.mortar` | Harçlı blok yanlış yere düşerse yapışır. | A mortar block sticks if it lands in the wrong spot. | Y8 |
+| `tut.l37.elevator` | İskele iner çıkar. Geçide göre ayarla. | The scaffold moves. Time it with the gap. | S6 |
+| `tut.l38.balloon` | Balonlu blok düşmez, tavana yükselir! | Balloon blocks don't fall. They rise to the ceiling! | S8 |
+| `tut.ctx.streak` | Hatasız dört doğru, Altın Mala getirir! | Four right in a row earns a Golden Trowel! | K-33 |
+| `tut.ctx.goldtrowel` | Altın Mala'yla parlayan bir hücreye dokun. | Tap a glowing cell with the Golden Trowel. | K-33, K-34 |
+| `tut.ctx.bounce.color` | Renk uymadı, blok geri döndü. | Wrong color, so it bounced back. | K-16, K-17 |
+| `tut.ctx.bounce.window` | Orası pencere, boş kalmalı. | That's a window. It stays empty. | S2, K-17 |
+| `tut.ctx.bounce.offplan` | Plan dışına inşa edilmez. | Nothing gets built outside the plan. | K-16, K-17 |
+| `tut.ctx.bottomup` | Önce alttaki boşluğu doldur, evlat. | Fill the gap below first, kiddo. | K-34 (R-01) |
+| `tut.ctx.tootall` | Bu blok çok uzun, üstten geçemez. | Too tall to pass over the top. | K-05 |
+| `tut.ctx.lastmoves` | Son beş hamle! Acele etme, düşün. | Five moves left! Think, don't rush. | — |
+| `tut.ctx.queue` | Sahada yer aç, kamyon boşaltsın. | Make room so the truck can unload. | K-26 |
+| `tut.ctx.reshuffle` | Sıkıştık! Kamyon sahayı yeniden diziyor. | We're stuck! The truck is rearranging the yard. | K-30 D3 |
+| `tut.ctx.truckhelp.material` | Malzeme eksikti. Kamyon getirdi! | We were short on material. The truck brought more! | K-30 D2 |
+| `tut.ctx.truckhelp.free` | Zincirler çözüldü, beton kurudu. Devam! | Chains off, concrete dry. Carry on! | K-30 D1 |
+| `tut.ctx.blocked` | Bu blok şimdi kımıldamaz. Çevresine bak. | That one can't move yet. Look around it. | K-09 |
+| `tut.ctx.resume` | Kaldığın yerden devam, evlat. | Pick up where you left off. | K-43 (R-13) |
+| `tut.meta.bridge` | Yedi bölümü art arda kazan, köprüyü geç! | Win seven in a row to cross the bridge! | META §6 |
+| `tut.meta.league` | Usta Ligi: her hafta en iyiler yükselir. | Builder League: the best move up each week. | META §7 |
+| `tut.meta.chest` | On bölüm tamam! Sandığı aç. | Ten levels done! Open the chest. | META |
+| `tut.meta.daily` | Her gün uğra, hediyen hazır. | Drop by every day for a gift. | META |
+| `tut.meta.shop` | Mağazada altın ve paketler var. | The shop has coins and bundles. | — |
+| `tut.meta.piggy` | Kazandıkça kumbara dolar. | Your brick bank fills as you win. | META |
 
 ---
 
 ## 7. Diğer kısa metinler
 
-### 7.1 Tuna ve Kepçe tepki balonları (isteğe bağlı, oyun ekranı, 1 s)
+### 7.1 Tuna ve Kepçe tepki balonları **[Sonra]** (oyun ekranı, 1 s)
 
 | Kimlik | Durum | TR | EN |
 | ------ | ----- | -- | -- |
 | `react.tuna.combo` | Altın Mala | Usta işi! | Pro move! |
 | `react.tuna.segment` | Dilim tamam | Bir kat daha! | One more floor! |
 | `react.tuna.bad` | Hatalı yerleşim | Hımm, olmadı. | Hmm, not that one. |
-| `react.tuna.last` | Son 5 hamle | Az kaldı! | Almost there! |
+| `react.tuna.last` | Son 5 hamle (oyun içinde; teklif penceresinde **kullanılmaz**) | Az kaldı! | Almost there! |
 | `react.kepce.dig` | Kazı (K-10) | Hav! | Woof! |
 
 ### 7.2 Etkinlik metinleri
@@ -423,24 +459,119 @@ TR ≤ 8 kelime. Kimlikler `UX_FLOWS.md` §13 ile birebir.
 | `bridge.title` | Sallanan Köprü | Wobbly Bridge |
 | `bridge.rule` | Yedi bölümü art arda kazan, ödülü paylaş! | Win seven in a row and share the prize! |
 | `bridge.remaining` | Köprüde kalan: {n}/100 | Still on the bridge: {n}/100 |
+| `bridge.bots_label` | Rakiplerin: Renkli Tepe çırakları | Your rivals: Hue Hill apprentices |
+| `bridge.bots_info` | Rakiplerin bilgisayarın yönettiği Renkli Tepe çıraklarıdır. | Your rivals are computer-controlled Hue Hill apprentices. |
+| `bridge.rule_card.title` | Köprü kuralları | Bridge rules |
+| `bridge.rule_card.win` | Yedi bölümü art arda kazan. | Win seven levels in a row. |
+| `bridge.rule_card.lose` | Kaybedersen bu turdan çıkarsın. | If you lose, you're out of this round. |
+| `bridge.rule_card.continue` | Kaybedince +5 hamleyle devam edebilirsin. | You can continue with +5 moves after a loss. |
+| `bridge.rule_card.pool` | Ödül: ●{pool}, karşıya geçenler eşit böler. Süre: {time}. | Prize: ●{pool}, split evenly by everyone who crosses. Time: {time}. |
+| `bridge.rule_card.join` / `.later` | Katıl / Şimdi değil | Join / Not now |
 | `bridge.fell` | Köprüden düştün ama simit seni kurtardı! | You fell off, but the ring buoy saved you! |
-| `bridge.won` | Karşı kıyıdasın! Ödülün hazır. | You made it across! Your prize is ready. |
+| `bridge.timeup` | Süre doldu. Bir sonraki köprüde görüşürüz. | Time's up. See you on the next bridge. |
+| `bridge.finished` | Karşı kıyıdasın! Payın köprü kapanınca kesinleşir (şu an ●{share}). | You made it across! Your share is final when the bridge closes (now ●{share}). |
+| `bridge.payout` | Köprü kapandı. Payın: ●{share} | The bridge has closed. Your share: ●{share} |
+| `bridge.bot_tap` | {name} · bilgisayarın yönettiği çırak | {name} · computer-controlled apprentice |
 | `league.title` | Usta Ligi | Builder League |
+| `league.bots_label` | Rakiplerin: Renkli Tepe çırakları | Your rivals: Hue Hill apprentices |
+| `league.bots_info` | Ligdeki diğer 99 kişi bilgisayarın yönettiği çıraklardır. | The other 99 in your league are computer-controlled apprentices. |
+| `league.rule_card.points` | Kazandığın her bölüm puan getirir: Kolay/Normal 1 · Zor 2 · Çok Zor 3. | Every level you win scores: Easy/Normal 1 · Hard 2 · Super Hard 3. |
+| `league.rule_card.lines` | Hafta sonunda ilk 20 yükselir, son 20 iner. | At week's end the top 20 move up, the bottom 20 move down. |
 | `league.promote` | Terfi çizgisi | Promotion line |
 | `league.demote` | Düşme çizgisi | Relegation line |
 | `league.result.up` | Bir üst lige çıktın! | You moved up a league! |
 | `league.result.stay` | Ligini korudun. | You held your league. |
 | `league.result.down` | Bir alt lige indin. Hafta yeni! | You moved down. New week, new start! |
+| `npc.apprentice.badge` | çırak | apprentice |
+| `npc.apprentice.format` | Çırak {name} | Apprentice {name} |
 
-### 7.3 Kaybetme ve teklif metinleri
+"Hue Hill" EN çalışma çevirisidir (Renkli Tepe); NAMING kararına bağlıdır.
+
+### 7.3 Kaybetme ve teklif metinleri (R-15)
 
 | Kimlik | TR | EN |
 | ------ | -- | -- |
 | `lose.title` | Hamleler bitti! | Out of moves! |
-| `lose.left` | {n} hücre kaldı | {n} cells to go |
-| `lose.tuna` | Az kaldı! | So close! |
+| `lose.left` | Kalan: {n} hücre | Left: {n} cells |
 | `lose.offer` | +5 hamle | +5 moves |
-| `lose.giveup` | Vazgeç | Give up |
+| `lose.offer.count` | Teklif {n}/3 | Offer {n}/3 |
+| `lose.offer.last` | Teklif 3/3 · son teklif | Offer 3/3 · last offer |
+| `lose.ad` | Reklam izle · +5 hamle | Watch an ad · +5 moves |
+| `lose.decline` | Hayır, teşekkürler | No thanks |
+| `lose.buygold` | Altın al · eksik ●{n} | Get coins · ●{n} short |
+| `lose.bridge` | Devam etmezsen bu turdan çıkarsın. | If you don't continue, you're out of this round. |
+| `lose.bridgeCap` | Bu turun +5 sınırı doldu. | This round's +5 limit is reached. |
 | `lose.life` | Bir can gitti. | You lost a life. |
 | `lose.retry` | Tekrar dene | Try again |
 | `lose.streak` | Galibiyet serin sıfırlandı. | Your win streak was reset. |
+
+Kaldırılanlar: `lose.tuna` ("Az kaldı!" satın alma penceresinde baskı yaratıyordu; yerine Tuna yalnız "kararlı" ifade)
+ve `lose.giveup` ("Give up" suçlayıcı ton; yerine `lose.decline`).
+
+### 7.4 Renkli Tepe çırakları — bot adları (R-14, BUSINESS §4.6)
+
+Köprü ve Lig'deki 99 rakip için 100 ad çifti, anahtar `npc.apprentice.n001…n100`. Kural: kasaba temalı takma ad
+(meyve, sebze, alet, malzeme, doğa, hayvan, eşya); **gerçek insan adı-soyadı, kullanıcı adı biçimi ("Selin_U"), hikaye
+karakteri adı yok**; iki dilde de yaygın bir insan adı olarak okunan sözcükler elendi (ör. Hazel → Hazelnut, Olive,
+Basil, Ginger, Willow, Poppy, Daisy; TR'de Bulut, Deniz, Çınar, Lale, Meltem). Satırda ad her zaman "çırak" rozetiyle
+ya da `npc.apprentice.format` ile gösterilir. Atama: `hash32(eventInstanceId, botIndex) mod 100` (çakışmada sonraki
+boş ad; code-lead), ödeme verisinden bağımsız.
+
+| 1 | 2 | 3 | 4 | 5 |
+| - | - | - | - | - |
+| `n001` Fındık / Hazelnut | `n002` Ceviz / Walnut | `n003` Badem / Almond | `n004` Kestane / Chestnut | `n005` İncir / Fig |
+| `n006` Mürdüm / Damson | `n007` Ayva / Quince | `n008` Dut / Mulberry | `n009` Kayısı / Apricot | `n010` Armut / Pear |
+| `n011` Ahududu / Raspberry | `n012` Böğürtlen / Bramble | `n013` Çilek / Strawberry | `n014` Kavun / Melon | `n015` Limon / Lemon |
+| `n016` Nar / Pomegranate | `n017` Havuç / Carrot | `n018` Turp / Radish | `n019` Pancar / Beetroot | `n020` Susam / Sesame |
+| `n021` Tarçın / Cinnamon | `n022` Nane / Mint | `n023` Kekik / Thyme | `n024` Maydanoz / Parsley | `n025` Lahana / Cabbage |
+| `n026` Bezelye / Peapod | `n027` Keser / Adze | `n028` Rende / Woodplane | `n029` Pense / Pliers | `n030` Tornavida / Screwdriver |
+| `n031` Su Terazisi / Spirit Level | `n032` Şakul / Plumb Line | `n033` Şerit Metre / Tape Measure | `n034` Kürek / Shovel | `n035` Kazma / Pickaxe |
+| `n036` Tuğla / Brick | `n037` Kiremit / Rooftile | `n038` Kalas / Plank | `n039` Çivi / Nail | `n040` Somun / Hexnut |
+| `n041` Menteşe / Hinge | `n042` Makara / Pulley | `n043` Halat / Rope | `n044` Kova / Bucket | `n045` El Arabası / Wheelbarrow |
+| `n046` Merdiven / Ladder | `n047` İskele / Scaffold | `n048` Kum / Sand | `n049` Çakıl / Pebble | `n050` Mozaik / Mosaic |
+| `n051` Esinti / Gust | `n052` Çiy / Dewdrop | `n053` Dolu / Hailstone | `n054` Sis / Mist | `n055` Gökkuşağı / Rainbow |
+| `n056` Kar Tanesi / Snowflake | `n057` Kozalak / Pinecone | `n058` Palamut / Acorn | `n059` Meşe / Oak | `n060` Kavak / Poplar |
+| `n061` Ladin / Spruce | `n062` Yosun / Moss | `n063` Mantar / Mushroom | `n064` Devedikeni / Thistle | `n065` Dere / Creek |
+| `n066` Arnavut Taşı / Cobblestone | `n067` Tepecik / Hillock | `n068` Sincap / Squirrel | `n069` Kirpi / Hedgehog | `n070` Kunduz / Beaver |
+| `n071` Tavşan / Hare | `n072` Kaplumbağa / Tortoise | `n073` Baykuş / Owl | `n074` Serçe / Sparrow | `n075` Martı / Gull |
+| `n076` Ağaçkakan / Woodpecker | `n077` Bal Arısı / Honeybee | `n078` Karınca / Ant | `n079` Ateşböceği / Firefly | `n080` Salyangoz / Snail |
+| `n081` Kurbağa / Frog | `n082` Ördek / Duck | `n083` Keçi / Goat | `n084` Kaz / Goose | `n085` Pötikare / Gingham |
+| `n086` Fiyonk / Bowtie | `n087` Düğme / Button | `n088` Çan / Bell | `n089` Fener / Lantern | `n090` Uçurtma / Kite |
+| `n091` Topaç / Spinning Top | `n092` Misket / Marble | `n093` Şemsiye / Umbrella | `n094` Pusula / Compass | `n095` Çaydanlık / Teapot |
+| `n096` Kurabiye / Cookie | `n097` Lokum / Turkish Delight | `n098` Pişmaniye / Candy Floss | `n099` Bisküvi / Biscuit | `n100` Gofret / Wafer |
+
+### 7.5 Arayüz kısa metinleri (yeni ekranlar)
+
+| Kimlik | TR | EN |
+| ------ | -- | -- |
+| `exit.title` | Bölümden çık? | Leave the level? |
+| `exit.free` | Henüz hamle yapmadın; can gitmez. | No moves made yet, so no life is lost. |
+| `exit.cost` | Çıkarsan 1 can gider. | Leaving costs 1 life. |
+| `exit.bridge` | Köprüden düşersin. | You'll fall off the bridge. |
+| `exit.stay` / `exit.leave` | Kal / Çık | Stay / Leave |
+| `resume.title` | Kaldığın yerden devam | Pick up where you left off |
+| `lives.title` | Can doldur | Refill lives |
+| `lives.full` | Tam can (5) | Full lives (5) |
+| `lives.ad` | Reklam izle · +1 can (bugün {n}/{max}) | Watch an ad · +1 life (today {n}/{max}) |
+| `lives.wait` | Bekle | Wait |
+| `ads.tomorrow` | Yarın tekrar | Back tomorrow |
+| `ads.none` | Şu an reklam yok | No ad right now |
+| `daily.title` | Günlük hediye | Daily gift |
+| `daily.noLoss` | Bir gün gelmezsen ilerlemen kaybolmaz. | Miss a day and you keep your progress. |
+| `daily.claim` / `daily.double` | Topla / Reklam · ×2 | Collect / Ad · ×2 |
+| `chest.contains` | İçinde: | Inside: |
+| `chest.open` | Aç | Open |
+| `shop.testBuy` | Bu bir deneme satın alımıdır, ücret alınmaz. | This is a test purchase. You won't be charged. |
+| `shop.covers` | Eksik ●{n}'yi karşılar | Covers the ●{n} you need |
+| `shop.value` | +%{n} | +{n}% |
+| `piggy.status` | Kumbarada ●{n} / {max} | Piggy bank: ●{n} / {max} |
+| `piggy.threshold` | ●{n}'de kırılabilir | Can be broken at ●{n} |
+| `piggy.full` | Dolu | Full |
+| `piggy.break` | Kır | Break |
+| `booster.noShutter` | Bu bölümde kepenk yok | No shutters in this level |
+| `booster.noUndo` | Geri alınacak hamle yok | Nothing to undo |
+| `home.empty` | Yeni yapılar yolda | New buildings on the way |
+| `age.title` | Doğum yılın | Your birth year |
+| `age.check` | Yılı kontrol eder misin? | Could you check the year? |
+| `settings.timePressure` | Zaman baskısını azalt | Reduce time pressure |
+| `common.comingSoon` | Yakında | Coming soon |

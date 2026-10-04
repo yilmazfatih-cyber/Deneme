@@ -1,6 +1,8 @@
 # İsim ve marka
 
-Sahip: entrepreneur · Durum: Faz 1 taslağı (v1) · Tarih: 2026-10-04
+Sahip: entrepreneur · Durum: Faz 1 v2 (revizyon turu) · Tarih: 2026-10-04
+Revizyon: design-lead görsel değerlendirmesi (§5.1), oyun içi firma adı (§5.2), paket kimliği ve kısa ad (§6.1). Bu turda yeni
+web/mağaza/marka araması yapılmadı (ağ erişimi büyük ölçüde kapalı); §1'deki doğrulama sınırı aynen geçerli.
 İlgili: `docs/BUSINESS.md` §2 (benzerlikten kaçınma), §3 (hedef kitle), §11 R-03 / R-05.
 
 ---
@@ -123,10 +125,32 @@ Puanlar entrepreneur'ün yargısıdır; ölçüt tanımları §2'de.
    kullanıcı testi (§6 adım 6) geçmeden seçilmemeli. Başlık: "Hoppa Usta: Yapı Bulmacası" (26 karakter).
 
 Başlık uzunlukları Apple'ın 30 karakterlik uygulama adı sınırına göre seçildi (sınır bu oturumda ayrıca doğrulanmadı).
+"Little Builder" hiçbir mağaza adında, alt başlıkta ve EN metinde kullanılmaz (OR-24).
 
 **Tek ad mı, iki ad mı?** Öneri: **tek global marka** (EN ad) + TR mağazada Türkçe alt başlık. Gerekçe: tek marka ailesi
 tescili (TÜRKPATENT + EUIPO + USPTO), tek UA kreatif seti, tek topluluk adı. Royal Match ve Block Blast Türkiye'de de
 İngilizce adla yayında. TR adı ayrıca kullanılacaksa ayrı tescil gerekir.
+
+### 5.1 Görsel değerlendirme (design-lead, inceleme turu)
+
+- **Lift & Land:** mağaza kreatifi ve simge için en güçlüsü; yaylı aşırma hareketi logoda doğrudan çizilebilir (simge
+  kuralı BUSINESS §3 S5 ile aynı dil: duvar + yay + aşan blok).
+- **Hue Hill / Renktepe:** uzun vadeli dünya markasında en güçlüsü (palet, bölüm arka planları, kasaba ekranı zaten
+  "renkli tepe").
+- **Hoppa:** çocuk sinyali notuna design-lead de katılıyor.
+- Tek global EN marka seçilirse logo bir kez EN çizilir; TR oyuncu da EN logoyu görür. Seçimden sonra design-lead
+  ASSET_LIST `logo_wordmark` brifini yeniden yazar (şu an "MİNİK USTA", İ noktası yıldız). Logo insan sanatçı işidir ve
+  isimle birlikte marka başvurusuna girer (BUSINESS R-05).
+
+### 5.2 Oyun içi firma adı (`{company}`)
+
+| Dil | Ad | Durum |
+| --- | --- | --- |
+| TR | "Minik Usta İnşaat" (hikayedeki aile firması; görev c1 t6 "'Minik Usta İnşaat' tabelasını as") | Kalır: hikaye öğesi, mağaza başlığında yok (§2 ek ilke) |
+| EN | "Tuna & Co." (`{company}` yer tutucusu, STORY) | **Onay**, varsayılan. Marka değil, hikaye öğesi; tescil gerekmez. Ad çakışması aranmadı (doğrulanamadı); "& Co." genel kalıp olduğu için risk düşük (tahmin) |
+
+Seçilen oyun adı firma adına taşınmaz (ör. "Lift & Land Co." yok): oyun adı değişirse hikaye metni değişmesin. Kepçe EN
+"Kepche" (OR-24, P-6).
 
 ## 6. Sonraki adımlar (isim kararı Faz 1 onayında proje sahibinde)
 
@@ -136,9 +160,25 @@ tescili (TÜRKPATENT + EUIPO + USPTO), tek UA kreatif seti, tek topluluk adı. R
    oyun hizmetleri); ileride 28 (oyuncak), 25 (giyim). Maliyet tahmini BUSINESS §10'da.
 3. Alan adları bir kayıt kuruluşunda WHOIS ile doğrulanıp kaydedilir: önce .com; alınmışsa `<ad>game.com` + `.app`.
 4. Sosyal medya kullanıcı adları (Instagram, TikTok, YouTube, X) kontrol edilir ve alınır.
-5. App Store Connect'te uygulama kaydı (ad rezervasyonu) ve Google Play paket adı (`com.<firma>.<ad>`) belirlenir.
+5. App Store Connect'te uygulama kaydı (ad rezervasyonu) ve paket kimliği belirlenir (kurallar §6.1).
 6. Telaffuz ve hatırlanma testi: 10 TR + 10 EN konuşan yetişkine ad bir kez sesli söylenir, 1 dakika sonra yazdırılır;
    ≥ %80 doğru yazım ve olumsuz çağrışım bildirimi 0 olmalı.
+
+### 6.1 Paket kimliği ve kısa ad (code-lead incelemesi; BUSINESS P-13)
+
+- iOS bundle ID ve Android `applicationId` yayından sonra **değiştirilemez** ve Play URL'sinde görünür; görünen ad
+  sonradan değişebilir. Kimlik isim kararından sonra, ilk mağaza yüklemesinden (Faz 5 `npx cap init`) önce kesinleşir.
+- Biçim `com.<şirket>.<ad>`; yalnız `[a-z0-9.]`; "kids", "little", "minik" yok. `<şirket>` = tüzel kişiliğin adı
+  (henüz belirsiz; proje sahibinden).
+- Kod içi kimlikler (kayıt anahtarı `minikusta.save`, klasör adları) kod adı olarak kalır; isim değişikliği kayıt göçü
+  gerektirmez. Oyun adı metni yalnız i18n `app.title` anahtarında.
+- "&" Android `strings.xml`'de `&amp;` olarak kaçırılır; ana ekranda uzun adların kısalması cihazda doğrulanır.
+
+| Aday | Paket kimliği önerisi | Kısa ad (≤ 12 karakter; ana ekran, PWA `short_name`) |
+| --- | --- | --- |
+| Lift & Land / Kaldır Kondur | `com.<şirket>.liftland` | EN "Lift & Land" (11) · TR tek global marka ise aynı; TR ad kullanılırsa "Kondur" (6) — "Kaldır Kondur" 13 karakter, sığmaz |
+| Hue Hill / Renktepe | `com.<şirket>.huehill` | EN "Hue Hill" (8) · TR "Renktepe" (8) |
+| Hoppa Usta / Hoppa Builders | `com.<şirket>.hoppa` | TR "Hoppa Usta" (10) · EN "Hoppa" (5) — "Hoppa Builders" 14 karakter, sığmaz |
 
 ## 7. Kaynaklar (erişim 2026-10-04; WS = arama sonucu özeti)
 
