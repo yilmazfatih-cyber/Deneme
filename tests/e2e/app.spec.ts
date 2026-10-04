@@ -130,6 +130,8 @@ test.describe('kişiselleştirme ve erişilebilirlik', () => {
       ),
     })
     await page.getByTestId('item-save').click()
+    // Kayıt bitince uygulama kart listesine döner; ondan önce başka sayfaya geçmek yarış yaratır.
+    await expect(page.getByRole('button', { name: /Elif/ })).toBeVisible()
     await page.goto('./#/konus/k/kisiler')
     await expect(page.locator('.grid .tile').first()).toHaveAccessibleName('Elif')
   })
