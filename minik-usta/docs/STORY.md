@@ -362,7 +362,9 @@ maliyetler META ile aynıdır (hikaye bölümü başına toplam 10 ★ = 10 böl
 ## 6. Usta Dede'nin ipucu satırları
 
 TR ≤ 8 kelime. Kimlikler `UX_FLOWS.md` §13 ile birebir (tek küme `tut.l{n}.{konu}`, `tut.ctx.*`, `tut.meta.*`; R-08).
-Terim "blok"; renk adı yok; kural doğruluğunu product-lead doğrular (GDD K-xx sütunu).
+Terim "blok"; renk adı yok; kural doğruluğunu product-lead doğrular (GDD K-xx sütunu). Bölüm 1–10'da hangi satırın
+hangi adımda çıktığı LEVELS §2 `tutorial[]` verisindedir (ör. Bölüm 3 ve 9'un ilk adımı `tut.l1.match`, Bölüm 4'ün
+2. adımı `tut.ctx.support`); bu tablo yalnız metni tanımlar.
 
 | Kimlik | TR | EN | Kural |
 | ------ | -- | -- | ----- |
@@ -371,11 +373,9 @@ Terim "blok"; renk adı yok; kural doğruluğunu product-lead doğrular (GDD K-x
 | `tut.l1.match` | Plandaki renge uyan bloğu seç. | Pick the block that matches the plan. | K-16 |
 | `tut.l2.pattern` | Plana bak: renkler şerit şerit. | Look at the plan: colors come in stripes. | K-31 |
 | `tut.l2.shadow` | Gölgede ✓ varsa yer doğru. | A ✓ on the shadow means the spot is right. | K-18 |
-| `tut.l3.base` | Önce en alt katı kur. | Build the bottom floor first. | K-34 |
 | `tut.l3.gap` | Duvarda geçit var! Bloğu içinden kaydır. | There's a gap! Slide the block through. | K-12 |
 | `tut.l3.rail` | Raydaki blok düşmez. Sıradakini üstünden aşır. | On the rail it stays put. Lift the next one over. | K-12 |
 | `tut.l4.window` | Taralı yerler boş kalacak: pencere! | Hatched cells stay empty: it's a window! | S2 |
-| `tut.l4.below` | Önce pencerenin altını ve yanını kur. | Build below and beside the window first. | K-34 |
 | `tut.l4.above` | Pencerenin üstünü geçitten raya koy. | Set the top of the window via the gap. | K-12, S2 |
 | `tut.l5.segments` | Bu kat bitince şantiye kayar. | Finish this floor and the site moves on. | K-22 |
 | `tut.l5.truck` | Kamyon yeni malzeme getirdi! | The truck brought new materials! | K-25 |
@@ -384,9 +384,7 @@ Terim "blok"; renk adı yok; kural doğruluğunu product-lead doğrular (GDD K-x
 | `tut.l7.free` | İşte! Artık alabilirsin. | There! Now you can take it. | K-09 |
 | `tut.l8.heavy` | Bu çok geniş. Kenara çek ya da kır. | Too wide. Drag it aside or smash it. | Y5, K-10 |
 | `tut.l8.hammer` | Sıkışırsan Çekiçle bir bloğu kır. | Stuck? Smash a block with the Hammer. | K-36 |
-| `tut.l9.narrow` | Dar geçitten yalnız tek sıra geçer. | Only one-row blocks fit a narrow gap. | W3 |
-| `tut.l9.base` | Önce merdivenin altını kur. | Build the bottom of the ladder first. | K-34 |
-| `tut.l9.hang` | Boşluktan indir, geçitten raya kaydır. | Drop it down the gap, then slide it onto the rail. | K-08, K-12 |
+| `tut.l9.narrow` | Dar geçitten yalnız tek sıra geçer. | Only one-row blocks fit a narrow gap. | W3, K-12 |
 | `tut.l10.crane` | Vinç gömülü bloğu da çıkarır, döndürür. | The Crane lifts even buried blocks and turns them. | K-37 |
 | `tut.l11.crate` | Yanındaki bloğu oynat, kasa çatlar. | Move a block next to it to crack the crate. | Y1 |
 | `tut.l12.clear` | Hedef: bütün kasaları kır! | Goal: break every crate! | K-41 |
@@ -394,7 +392,7 @@ Terim "blok"; renk adı yok; kural doğruluğunu product-lead doğrular (GDD K-x
 | `tut.l13.shutter` | Kepenk hamle sayar. Açıkken geçir! | The shutter counts moves. Pass while it's open! | W4 |
 | `tut.l13.undo` | Yanlış mı oldu? Geri Al kurtarır. | Oops? Undo takes back your last move. | K-39 |
 | `tut.l14.gravity` | Dikkat! Alttakini alırsan üsttekiler düşer. | Careful! Take the bottom one and the rest fall. | K-20 |
-| `tut.l15.heavyfall` | Ağır yük! Şantiyede uzun tutamazsın. | Heavy load! You can't hold it long up there. | K-19 |
+| `tut.l15.heavyfall` | Ağır yerçekimi! Şantiyede uzun tutamazsın. | Heavy gravity! You can't hold it long up there. | K-19 G-H |
 | `tut.l15.setting` | Süre kısa mı? Ayarlardan uzatabilirsin. | Too quick? You can extend it in Settings. | K-19 (R-11) |
 | `tut.l16.slider` | Bu kapı her hamlede kayar. | This gate slides after every move. | W5 |
 | `tut.l16.trowel` | Mala Başlangıcı: Altın Mala'yla başla. | Trowel Start: begin with a Golden Trowel. | K-40 |
@@ -411,7 +409,7 @@ Terim "blok"; renk adı yok; kural doğruluğunu product-lead doğrular (GDD K-x
 | `tut.l26.key` | Anahtar bir bloğun altında. Bul, kilit açılsın! | The key is under a block. Find it to unlock! | W7, K-42 |
 | `tut.l27.repeat` | Soru işareti mi? Aşağıdaki desen tekrar ediyor. | Question marks? The pattern below repeats. | K-32 `repeat` |
 | `tut.l28.wet` | Islak beton kurumadan oynamaz. Sayaca bak. | Wet concrete can't move yet. Watch the count. | Y4 |
-| `tut.l29.mirror` | Bu taraf, öbür tarafın aynası. | This side mirrors the other one. | K-32 `mirrorOf` |
+| `tut.l29.mirror` | Bu kat, öbür katın aynası. | This floor mirrors the other one. | K-32 `mirrorOf` |
 | `tut.l31.carousel` | Platform dönüyor! Öndekine yerleştir. | The platform turns! Build on the front one. | S5 |
 | `tut.l32.wind` | Rüzgâr ince blokları yana iter. | Wind pushes thin blocks sideways. | W8 |
 | `tut.l35.mortar` | Harçlı blok yanlış yere düşerse yapışır. | A mortar block sticks if it lands in the wrong spot. | Y8 |
@@ -422,7 +420,7 @@ Terim "blok"; renk adı yok; kural doğruluğunu product-lead doğrular (GDD K-x
 | `tut.ctx.bounce.color` | Renk uymadı, blok geri döndü. | Wrong color, so it bounced back. | K-16, K-17 |
 | `tut.ctx.bounce.window` | Orası pencere, boş kalmalı. | That's a window. It stays empty. | S2, K-17 |
 | `tut.ctx.bounce.offplan` | Plan dışına inşa edilmez. | Nothing gets built outside the plan. | K-16, K-17 |
-| `tut.ctx.bottomup` | Önce alttaki boşluğu doldur, evlat. | Fill the gap below first, kiddo. | K-34 (R-01) |
+| `tut.ctx.support` | Önce alttaki boşluğu doldur, evlat. | Fill the gap below first, kiddo. | K-34 (R-01; GDD K-34 kanca, LEVELS B4 adım 2) |
 | `tut.ctx.tootall` | Bu blok çok uzun, üstten geçemez. | Too tall to pass over the top. | K-05 |
 | `tut.ctx.lastmoves` | Son beş hamle! Acele etme, düşün. | Five moves left! Think, don't rush. | — |
 | `tut.ctx.queue` | Sahada yer aç, kamyon boşaltsın. | Make room so the truck can unload. | K-26 |
@@ -496,6 +494,7 @@ Terim "blok"; renk adı yok; kural doğruluğunu product-lead doğrular (GDD K-x
 | `lose.offer` | +5 hamle | +5 moves |
 | `lose.offer.count` | Teklif {n}/3 | Offer {n}/3 |
 | `lose.offer.last` | Teklif 3/3 · son teklif | Offer 3/3 · last offer |
+| `lose.offer.gift` | +5 hamle · Usta Dede'den hediye | +5 moves · a gift from Grandpa |
 | `lose.ad` | Reklam izle · +5 hamle | Watch an ad · +5 moves |
 | `lose.decline` | Hayır, teşekkürler | No thanks |
 | `lose.buygold` | Altın al · eksik ●{n} | Get coins · ●{n} short |
@@ -575,3 +574,9 @@ boş ad; code-lead), ödeme verisinden bağımsız.
 | `age.check` | Yılı kontrol eder misin? | Could you check the year? |
 | `settings.timePressure` | Zaman baskısını azalt | Reduce time pressure |
 | `common.comingSoon` | Yakında | Coming soon |
+| `master.button` | Usta Modu | Master Mode |
+| `master.card.title` | Usta Modu | Master Mode |
+| `master.card.body` | Bildiğin bölümler, daha az hamle. | Levels you know, fewer moves. |
+| `master.card.chest` | Her 10 galibiyette Usta Sandığı. | A Master Chest every 10 wins. |
+| `master.card.start` / `.later` | Başla / Şimdi değil | Start / Not now |
+| `home.moreSoon` | Yeni bölümler yolda | New levels on the way |

@@ -226,8 +226,11 @@ Durumlar:
 - **Hata:** etkinlik verisi üretilemezse ikon gri + "!" rozeti; dokununca "Etkinlik şu an hazır değil. Biraz sonra bak."
 - **Kilitli:** kilitli kenar ikonları gösterilmez (sürpriz açılış); alt nav'da Takım ve Albüm kalıcı kilitli ("Yakında").
 - **Can yok:** Bölüm düğmesi gri değil (oyuncu yine dokunabilir) → Can penceresi (§3.1).
-- **İçerik sonu (Bölüm 50 bitti):** düğme "Usta Modu" — **MVP (onay bekliyor, R-17)**; Usta Modu MVP'ye girmezse
-  "Yeni bölümler yolda" (pasif) + "Devamı yolda…" sahnesi (STORY §4.5 son panel, MVP).
+- **İçerik sonu (Bölüm 50 bitti):** düğme "Usta Modu" (`master.button`) — **MVP (onay bekliyor, R-17)**. İlk dokunuşta
+  bir kez giriş kartı: `master.card.title` + `master.card.body` "Bildiğin bölümler, daha az hamle." + `master.card.chest`
+  + eşit boy "Başla" (yeşil) / "Şimdi değil" (krem). Düğmenin üstünde "Yeni bölümler yolda" bandı (`home.moreSoon`)
+  kalır. Usta Modu MVP'ye girmezse düğme yerine pasif "Yeni bölümler yolda" + "Devamı yolda…" sahnesi (STORY §4.5 son
+  panel, MVP).
 
 ### 3.1 Ana ekran pencereleri
 
@@ -271,7 +274,7 @@ animasyonu, "Seriyi kaybetme!" uyarısı ve geri sayım yok. Ödüller `config/e
 
 ```
        │  BÖLÜM SANDIĞI                     │
-       │   İçinde: 🔨1  ● 200  ⏱ 15 dk ∞♥    │  içerik ikonları kapalı sandığın ÜSTÜNDE baştan görünür
+       │   İçinde: ● 200  🔨1  🧪1          │  içerik ikonları kapalı sandığın ÜSTÜNDE baştan görünür (10. bölüm, META §8.2)
        │        ┌────────────┐               │
        │        │  sandık    │               │  ahşap alet sandığı 400×320
        │        └────────────┘               │
@@ -280,7 +283,8 @@ animasyonu, "Seriyi kaybetme!" uyarısı ve geri sayım yok. Ödüller `config/e
 
 Açılış = kapak kalkar (400 ms) → ikonlar **gösterilen sırayla** üst çubuğa uçar (120 ms arayla). Dönen çark, slot,
 yavaşlayan kart, "neredeyse" animasyonu ve rastgele seçim görseli **yok**; içerik sabittir ve açılmadan önce bellidir.
-Lig sandığı aynı pencereyi kullanır (Lig sonuç penceresinden açılır).
+Lig sandığı ve Usta Sandığı (Usta Modu, her 10 galibiyet; META §8.5) aynı pencereyi kullanır (Lig sonuç penceresinden /
+kazanma ekranından açılır).
 
 ---
 
@@ -464,9 +468,10 @@ takılmaması için dört katman:
 3. **Geri sekmeden sonra (bütün zorluklar):** K-34 yüzünden geri seken bloktan sonra eksik destek hücreleri 600 ms
    (`duration.supportFlash`) aynı yatay taramayla yanıp söner. Zor bölümde gölge gizli olsa da neden geriye dönük olarak
    öğrenilir.
-4. **İlk karşılaşmada Usta Dede (bir kez):** K-34 ilk kez bozulduğunda bağlamsal öğretici `tut.ctx.bottomup`
-   (yumuşak; vurgu = eksik destek hücreleri + inşa cephesi). Bölüm 3 öğreticisinin 1. adımı da sırayı ("önce alt kat")
-   doğal olarak öğretir (§13.2).
+4. **İlk karşılaşmada Usta Dede (bir kez):** K-34 ilk kez bozulduğunda bağlamsal öğretici `tut.ctx.support`
+   (yumuşak; vurgu = eksik destek hücreleri + inşa cephesi; GDD K-34 kanca). Bölüm 4'ün 2. adımı (LEVELS) aynı satırı
+   yumuşak adım olarak gösterir; orada görülürse bağlamsal tetik bir daha çıkmaz. Bölüm 3'ün 1. adımı sırayı ("önce
+   temel") doğal olarak öğretir (§13.2).
 
 ### 5.6 Hafif yerçekiminde yönlendirme girdisi (G-L) — R-10
 
@@ -474,9 +479,12 @@ takılmaması için dört katman:
   (dokunma = eşik altında bırakma, §5.3). **Dokunulan taraf = kayma yönü:** dokunuşun x'i düşen bloğun merkezinin
   sağındaysa sağa, solundaysa sola 1 sütun. Şantiye 2 sütunlu olduğu için sahaya ya da duvar sınırına yakın dokunuş
   "sol" sayılır; o yönde sütun yoksa hiçbir şey olmaz (çip 2 px titrer).
-- **Tutma ile ayrım:** sürükleme eşiğini aşan dokunuş yönlendirme değil **blok tutmadır**; R-12 gereği düşüş son
-  karesine atlar (yönlendirmesiz iner) ve yeni sürükleme başlar. Böylece "sıradaki bloğu tutmak" yanlışlıkla yönlendirme
-  sayılmaz (product-lead endişesi).
+- **Kaydırma (swipe):** blok tutmayan bir noktadan (boş hücre, şantiye, vinç alanı) başlayan yatay kaydırma da
+  yönlendirmedir; yön = kaydırma yönü (yatay yol ≥ `drag.steerSwipeMinPx` 48 px ve yataylık > dikeylik). Dokunma ile
+  aynı hakkı kullanır (düşüş başına 1). GDD K-19 madde 2'deki "kaydırma da aynı yönü verir" seçeneğinin tanımı budur.
+- **Tutma ile ayrım:** bir **bloğun üstünde** başlayıp sürükleme eşiğini aşan dokunuş yönlendirme değil **blok
+  tutmadır**; R-12 gereği düşüş son karesine atlar (yönlendirmesiz iner) ve yeni sürükleme başlar. Böylece "sıradaki
+  bloğu tutmak" yanlışlıkla yönlendirme sayılmaz (product-lead endişesi; GDD E-40).
 - **Kural sınırları (GDD K-19, product-lead):** düşüş/yükseliş başına en çok 1 yönlendirme, 1 sütun; 2 genişlikli
   blokta yok (çip görünmez, dokunuş yok sayılır).
 - **Görsel:** düşen bloğun üstünde 72 px "↔" çipi (`hud.steerChipPx`); yönlendirme kullanılınca çip söner; gölge yeni
@@ -549,6 +557,9 @@ y  360 ┌───────────────────────�
 
 - **Eşit seçenekler:** üç düğme aynı boy (920×152), alt alta, rahat bölgede; hiyerarşi yalnız renkle. Giriş
   animasyonu üçünde aynı; "+5" çipi pencere açılırken **bir kez** zıplar, sonra durur (JUICE #52).
+- **Ömür ilk teklifi (META §3.2):** oyuncunun hayatındaki ilk "Hamleler bitti" penceresinde turuncu düğme fiyatsızdır:
+  `lose.offer.gift` "+5 hamle · Usta Dede'den hediye" (PriceLabel yok, reklam düğmesi yok, "Teklif 1/3" görünür; teklif
+  1'e sayılır). Sonraki bütün denemelerde normal eskalasyon.
 - **Eskalasyon:** 1. teklif ● 900 (+ reklam alternatifi) · 2. teklif ● 1.350 ("Teklif 2/3") · 3. teklif ● 1.800
   ("Teklif 3/3 · son teklif"). 2. ve 3. teklifte reklam düğmesi yoktur, iki seçenek kalır (eşit boy). Reklamla alınan +5
   de sınıra sayılır; fiyat basamağı uzatma sırasına bağlıdır. 3. uzatmadan sonra hamle biterse Pencere 1 açılmaz,
@@ -819,9 +830,12 @@ Menü derinliği: Ana ekrandan her yere en fazla 2 dokunuş; oyun ekranına 1 (B
 - **Tahta sadeliği:** her öğretici bölümde tahta, yeni mekaniği gösteren tek bir net hamle içerir (bölüm tasarımı
   product-lead'in; öğretici adım verisi `LevelData.tutorial`). **Adımlar LEVELS §2 el çözümünün hamle sırasını izler**;
   zorunlu (Z) adım asla çözüm sırasını bozan bir hamle istemez.
+- **İş bölümü (R-08, LEVELS §0):** adım sayısı, Z/Y, `highlight` parça indeksleri, `textKey` ve `done` koşulu
+  **LEVELS `tutorial[]` verisidir** (product-lead); Bölüm 1–10 satırları aşağıda o veriyle birebirdir, fark çıkarsa
+  LEVELS geçerlidir. El yolunun biçimi, spot ışığı, vurgu animasyonu ve metnin kendisi (STORY §6) design-lead'indir.
 - **Adım alanları** (code-lead şeması): `step`, `mode` (`required` = Z / `soft` = Y), `highlight[]`, `hand`
-  (`tap` / `drag` + yol / `hold`), `textKey`, `done` (olay + sayı ya da `timeoutMs`). **Öneri ek alan:** `start`
-  (isteğe bağlı başlama olayı, ör. `segmentDone:1`; yoksa önceki adım bitince başlar).
+  (`tap` / `drag` + yol / `hold`), `textKey`, `done` (olay + sayı ya da `timeoutMs`). Adım, önceki adım bitince başlar
+  (ek başlama alanı yok).
 - **Vurgu kimlikleri** (`highlight` alanı için söz dağarcığı): `piece:<i>` (**JSON'daki parti-0 sırası = LEVELS
   tablosundaki satır sırası**, 0 tabanlı; partilerden gelen bloklar `piece:k<parti>_<i>`), `cell:x,y`, `gap:<i>`,
   `wall`, `crane`, `build`, `front` (inşa cephesi, §5.5), `panorama`, `goals`, `moves`, `truck`, `streak`,
@@ -835,28 +849,27 @@ sırasıyla.
 
 | Bölüm | Mekanik | Adım | Vurgu | El animasyonu | Usta Dede satırı | Tamam koşulu |
 | ----- | ------- | ---- | ----- | ------------- | ---------------- | ------------ |
-| 1 | Kaldır–taşı–indir | 1 Z | `piece:0 (a)` + `crane` | drag: a (0,7) → yukarı vinç alanına (y=8) → sağa duvar üstü → x=6 üstü (yay biçimli yol) | `tut.l1.lift` | blok duvar sınırını geçti |
-| 1 | Düşme | 2 Z | `build` (sütun 6) | parmak kalkma animasyonu (eldiven açılır) | `tut.l1.drop` | a (6,0)'a düştü |
-| 1 | Plan eşleşmesi | 3 Y | `piece:2 (b)` + plan hücreleri (6,1)–(6,2) | drag: b duvar üstünden x=6 | `tut.l1.match` | 2. doğru yerleşim |
-| 2 | Renk örüntüsü | 1 Y | `panorama` + plan şeritleri + `piece:0 (A)` | plan satırları boyunca yatay süpürme | `tut.l2.pattern` | 1 doğru yerleşim |
-| 2 | Düşüş gölgesi | 2 Y | şantiye üstündeki gölge | hold: blok şantiye üstünde tutulur, gölge rozeti ✓ ↔ ! değişir | `tut.l2.shadow` | oyuncu bir bloğu şantiye üstünde ≥ 0,5 s tuttu |
-| 3 | Önce alt kat (K-34) | 1 Y | `piece:1 (a)` + `front` (alt satır) | drag: a (0,6) → duvar üstü → x=6 | `tut.l3.base` | 1 doğru yerleşim |
-| 3 | Sabit geçit + ray (W1) | 2 Z | `gap:0` + `piece:11 (f)` | drag: f (4,2) → yatay sağa, geçitten → (6,2) | `tut.l3.gap` | f raya girdi ve bırakıldı |
-| 3 | Ray tutar | 3 Y | raydaki f + `piece:0 (b)` | tap raydaki bloğa (kelepçeler parlar), sonra b için duvar üstü drag | `tut.l3.rail` | 3. doğru yerleşim |
-| 4 | Plan boşluğu (S2) | 1 Y | `cell:7,2` (`.`) | hücre üzerinde tap | `tut.l4.window` | — (2,5 s sonra) |
-| 4 | Pencerenin altı | 2 Y | `piece:0 (a)`, `piece:4 (b)`, `piece:1 (c)` + `front` | drag: a duvar üstünden x=6 (yalnız ilki gösterilir) | `tut.l4.below` | 3 doğru yerleşim |
-| 4 | Pencerenin üstü (ray) | 3 Z | `gap:0` + `piece:10 (p)` | drag: p (4,3) → yatay sağa, geçitten → (6,3) | `tut.l4.above` | p raya yerleşti |
-| 5 | Kayan şantiye (S1) | 1 Y | `panorama` (2. dilim) | panoramada sağa ok | `tut.l5.segments` | — (2,5 s) |
-| 5 | Kamyon | 2 Y · başlangıç `segmentDone:1` | `truck` + sahadaki yeni bloklar | yok (kamyon animasyonu kendisi) | `tut.l5.truck` | teslimat bitti |
-| 6 | Yüksek duvar (W2) | 1 Z | `piece:0 (A)` + `crane` + `wall` | drag: A (0,7) → en üste (y=8) → sağa → x=6 | `tut.l6.crane` | blok vinç alanından geçti |
-| 7 | Kazı (K-10) | 1 Z | `piece:0 (b)` + `cell:0,6` + altındaki `piece:3 (f)` | drag: b (2,6) → sahada (0,6) | `tut.l7.dig` | sahada yeniden konumlandırma yapıldı |
-| 7 | Kazı sonrası | 2 Y | `piece:3 (f)` | drag: f duvar üstünden x=6 | `tut.l7.free` | 1 doğru yerleşim |
-| 8 | Ağır malzeme (Y5) | 1 Z | `piece:0 (Q)` + `cell:0,5` | drag: Q (3,5) → sahada (0,5) (ağırlık rozeti parlar) | `tut.l8.heavy` | Q sahada taşındı |
-| 8 | Çekiç açıldı | 2 Y | `booster:hammer` | tap yuvaya (3 ücretsiz deneme eklenir); kullanım isteğe bağlı | `tut.l8.hammer` | — (2,5 s) ya da Çekiç kullanıldı |
-| 9 | Dar geçit (W3) | 1 Y | `gap:0` + `piece:8 (D)` (2 sıralık blok) | yok; geçidin tek satırlık yarığı ve D'nin boyu yan yana parlar | `tut.l9.narrow` | — (2,5 s) |
-| 9 | Önce alt kat | 2 Y | `piece:3 (W)` + `front` | drag: W (4,6) → duvar üstü → x=6 | `tut.l9.base` | 1 doğru yerleşim |
-| 9 | Asılı basamak (ray) | 3 Z | `gap:0` + `piece:5 (Y)` | drag: Y (4,5) → boşluktan aşağı (4,3) → sağa, geçitten → (6,3) | `tut.l9.hang` | Y raya yerleşti |
-| 10 | Vinç açıldı | 1 Y · başlangıç `segmentDone:2` | `booster:crane` + gömülü `piece:k2_2` | tap yuva → tap blok → drag hedefe (gösterim; 2 ücretsiz deneme eklenir) | `tut.l10.crane` | Vinç kullanıldı ya da 1 hamle yapıldı |
+| 1 | Kaldır–taşı–indir | 1 Z | `piece:0 (a)` + `crane` | drag: a (4,7) → biraz yukarı → sağa, duvarın üstünden → x=6 üstü (yay biçimli yol) | `tut.l1.lift` | `overWall` ×1 |
+| 1 | Düşme | 2 Z | `build` (sütun 6) | parmak kalkma animasyonu (eldiven açılır) | `tut.l1.drop` | `placementCorrect` ×1 |
+| 1 | Plan eşleşmesi | 3 Y | `piece:1 (b)` + `cell:6,1`, `cell:6,2` | drag: b (2,6) duvar üstünden x=6 | `tut.l1.match` | `placementCorrect` ×1 |
+| 2 | Renk örüntüsü | 1 Y | `panorama` + `build` | el yok; plan şeritleri alttan üste 1,2 s'de bir sırayla parlar | `tut.l2.pattern` | `placementCorrect` ×1 |
+| 2 | Düşüş gölgesi | 2 Y | `piece:1 (b)` + `build` | hold: b şantiye üstünde tutulur, gölge rozeti ✓ ↔ ! değişir | `tut.l2.shadow` | `holdOverBuild` ×1 (≥ 500 ms) |
+| 3 | Önce temel (K-34 sırası) | 1 Y | `piece:0 (a)` + `cell:6,0`, `cell:7,1` | drag: a (0,6) → duvar üstü → x=6 | `tut.l1.match` | `placementCorrect` ×1 |
+| 3 | Sabit geçit + ray (W1) | 2 Z | `gap:0` + `piece:1 (f)` | drag: f (4,2) → yatay sağa, geçitten → (6,2) | `tut.l3.gap` | `gapPass` ×1 |
+| 3 | Ray tutar | 3 Y | `piece:1 (f)` (rayda) | tap raydaki bloğa (kelepçeler parlar) | `tut.l3.rail` | `placementCorrect` ×1 |
+| 4 | Plan boşluğu (S2) | 1 Y | `cell:7,2` (`.`) | hücre üzerinde tap | `tut.l4.window` | `timeoutMs` 2500 |
+| 4 | Pencerenin altı (K-34) | 2 Y | `front` (inşa cephesi) | el yok; cephe hücreleri nabız atar | `tut.ctx.support` | `placementCorrect` ×3 |
+| 4 | Pencerenin üstü (ray) | 3 Z | `gap:0` + `piece:3 (p)` + `cell:6,3`, `cell:7,3` | drag: p (4,3) → yatay sağa, geçitten → (6,3) | `tut.l4.above` | `gapPass` ×1 |
+| 5 | Kayan şantiye (S1) | 1 Y | `panorama` | panoramada sağa ok | `tut.l5.segments` | `segmentDone` ×1 |
+| 5 | Kamyon | 2 Y | `truck` | yok (kamyon animasyonu kendisi) | `tut.l5.truck` | `deliveryDone` ×1 |
+| 6 | Yüksek duvar (W2) | 1 Z | `piece:0 (A)` + `crane` + `wall` | drag: A (0,7) → en üste (y ≥ 8) → sağa → x=6 | `tut.l6.crane` | `overWall` ×1 |
+| 7 | Kazı (K-10) | 1 Z | `piece:0 (b)` + `piece:3 (f)` + `cell:0,6` | drag: b (2,6) → sahada (0,6) | `tut.l7.dig` | `yardMove` ×1 |
+| 7 | Kazı sonrası | 2 Y | `piece:3 (f)` | tap f (artık alınabilir) | `tut.l7.free` | `timeoutMs` 2000 |
+| 8 | Ağır malzeme (Y5) | 1 Y | `piece:0 (Q)` | tap Q (ağırlık rozeti parlar); iki yol da açık: kenara çek ya da kır | `tut.l8.heavy` | `timeoutMs` 2500 |
+| 8 | Çekiç açıldı | 2 Y | `booster:hammer` + `piece:0 (Q)` | tap yuva, tap Q (3 ücretsiz deneme eklenir; kullanım isteğe bağlı) | `tut.l8.hammer` | `timeoutMs` 4000 |
+| 9 | Önce temel | 1 Y | `piece:3 (W)` + `build` | drag: W (4,6) → duvar üstü → x=6 | `tut.l1.match` | `placementCorrect` ×1 |
+| 9 | Dar geçit (W3) + asılı basamak | 2 Z | `gap:0` + `piece:5 (Y)` | drag: Y (4,5) → boşluktan aşağı (4,3) → sağa, dar geçitten → (6,3). Adım açılırken dar yarık ve geçide sığmayan 2 sıralık `D` 0,8 s yan yana parlar (D itilirse yapışkan takip geçit ağzında durur, "sığmaz" dersi) | `tut.l9.narrow` | `gapPass` ×1 |
+| 10 | Vinç açıldı | 1 Y | `booster:crane` | tap yuva (2 ücretsiz deneme eklenir; Zor bölüm, kullanım serbest) | `tut.l10.crane` | `timeoutMs` 3000 |
 | 11 | Ahşap kasa (Y1) | 1 Y | `obstacle:0` + komşu blok | drag komşu bloğu → kasa çatlar | `tut.l11.crate` | ilk kasa katı kırıldı |
 | 12 | Temizleme hedefi | 1 Y | `goals` (kasa sayacı) | goals üstünde tap | `tut.l12.clear` | — (2 s) |
 | 12 | Termos açıldı | 2 Y | `pre:thermos` (bölüm öncesi pencerede) | tap yuvaya | `tut.l12.thermos` | yuva seçildi ya da Oyna |
@@ -899,7 +912,7 @@ sırasıyla.
 | İlk hatalı yerleşim — renk / şekil | geri seken blok + uyuşmayan hücreler | `tut.ctx.bounce.color` |
 | İlk hatalı yerleşim — pencere (`.`) | geri seken blok + `.` hücreleri | `tut.ctx.bounce.window` |
 | İlk hatalı yerleşim — plan dışı | geri seken blok + plan dışı hücreler | `tut.ctx.bounce.offplan` |
-| İlk K-34 hatası (altta boş plan hücresi) — R-01 | eksik destek hücreleri + `front` | `tut.ctx.bottomup` |
+| İlk K-34 hatası (altta boş plan hücresi) — R-01 | eksik destek hücreleri + `front` | `tut.ctx.support` |
 | İlk kez blok vinç alanına sığmadı (K-05) | vinç alanı sınırı + "2 sıra" işareti | `tut.ctx.tootall` |
 | Son 5 hamle ilk kez | `moves` | `tut.ctx.lastmoves` |
 | Kamyon kuyruğu ilk kez (K-26) | `truck` | `tut.ctx.queue` |
