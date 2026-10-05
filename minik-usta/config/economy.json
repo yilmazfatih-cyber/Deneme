@@ -224,11 +224,14 @@
     "starsPerChapter": 10,
     "cutscenes": {
       "prologue": "firstLaunch",
-      "chapterStart": "afterTask1",
+      "chapter1Start": "afterTask1",
+      "chapterStartFrom2": "nextHomeEntryAfterPreviousEnd",
+      "hideNextChapterTasksUntilStartPlayed": true,
       "chapterEnd": "afterLastTask",
+      "skippedCountsAsSeen": true,
       "maxCutscenesPerAction": 1
     },
-    "_doc": "Tasks, names and order = STORY §5 (35 tasks, R-07); star costs are final here and in META §1. Cutscene triggers R-09.",
+    "_doc": "Tasks, names and order = STORY §5 (35 tasks, R-07); star costs are final here and in META §1. Cutscene triggers META §1 (R-09): ch1 start after task 1; chN start (N>=2) on the next home-screen entry (screen transition or cold start) after ch(N-1) end; STORY §3, UX §8.",
     "chapters": [
       {
         "chapter": 1,

@@ -71,6 +71,8 @@ geçebilecek bloğun sınırı geçen sütunundaki dikey hücre dizisi `10 − h
 boyu ≤ 2 olan bloklar (B1, D2_0, D2_90, O4, C3 hepsi) duvarı aşar; I3_0, I4_0, L4_0 gibi boyu 3–4 olan dikey bloklar
 yalnızca uygun bir geçitten girebilir. Yapışkan takibin (K-08) duvar tepesinde durması bir sunum olayıdır
 (`blockedByWallHeight`; design-lead bu anda vinç alanı sınırını ve yükseklik işaretini gösterir); kuralı değiştirmez.
+Oyuncunun hesabındaki ilk `blockedByWallHeight` olayında bağlamsal öğretici `tut.ctx.tootall` bir kez tetiklenir (metin
+STORY §6, UX §13.2 bağlamsal tablo).
 **Örnek:** `height=8`, `I3_0` (1×3) çapası (5,7) → yukarı sürüklenir, en fazla çapa (5,7)'ye (hücreler 7–9) çıkar;
 sınırı geçmek için 3 hücrenin de y ≥ 8 olması gerekir → imkânsız. `height=7` iken çapa (5,7) → hücreler
 7,8,9 ≥ 7 → geçer.
@@ -231,6 +233,9 @@ bölümde → gölge yalnızca konumu gösterir. Zor bölümde cam blok d=5 ile 
 | `normal` | Sınırsız | 3 | Yok |
 | `high` (G-H) | Serbest kipte bloğun bir hücresi şantiye sütununa değdiği andan `holdMs` sonra blok o anki konumda zorla bırakılır; şantiye sütunlarından tamamen çıkınca sayaç sıfırlanır. `holdMs` = 700; Ayarlar > Erişilebilirlik "Zaman baskısını azalt" açıksa 1400 (R-11) | 2 | Yok |
 
+Bu kuraldaki `holdMs` G-H tutma süresidir (çekirdeğin yerçekimi profili, TECH_DESIGN); K-07'deki dokunma/sürükleme
+eşiği `tokens.drag.holdMs` ile ilgisi yoktur.
+
 **Düşüş hızı kural değildir:** görsel düşüş/yükseliş eğrisinin tek kaynağı `tokens.physics` (JUICE §0.1,
 design-lead). İniş satırı, cam kırılması ve doğrulama hızdan bağımsızdır. Gerçek zaman yalnızca G-H tutma süresinde ve
 G-L yönlendirme penceresinde vardır. Bot zorluk ölçümü `holdMs = 700` ile yapılır (1400 ayarı kolaylaştırıcıdır;
@@ -254,10 +259,13 @@ LEVELS hedef kazanma oranları 700'e göredir).
    (görsel eğriden bağımsız). Solver yönlendirmeyi hamle parametresi olarak modeller: `atRow`, bırakma satırı ile
    yönlendirmesiz iniş satırı (ikisi de dahil) arasındaki herhangi bir satır olabilir. YAO'da yönlendirilmiş yerleşim
    "duvar üstü"dür.
-**Örnek:** `low`. Sütun 6: (6,0)–(6,1) dolu. Sütun 7: (7,0)–(7,1) dolu, (7,2) boş, (7,3) dolu (raydan konmuş çıkıntı).
-`B1` (6,8)'den bırakılır; yönlendirmesiz iniş (6,2). Blok (6,5)'teyken oyuncu bloğun sağına dokunur → (7,5)'e kayar →
-sütun 7'de (7,4)'e iner (çıkıntının üstü). Dokunuş blok (6,2)'ye vardığında gelirse (`atRow = 2`) → (7,2)'ye kayar ve
-çıkıntının altında kalır. Bloğun soluna dokunmak hiçbir şey yapmaz (sütun 5 şantiye dışı), hak harcanmaz.
+**Örnek:** `low`. Sütun 6: (6,0)–(6,1) dolu. Sütun 7: (7,0)–(7,1) dolu, (7,2) plan `.` hücresi (boş), (7,3) dolu
+(raydan konmuş doğru blok = çıkıntı; altındaki `.` K-34'te dolu sayıldığı için doğrudur). `B1` (6,8)'den bırakılır;
+yönlendirmesiz iniş (6,2). Blok (6,5)'teyken oyuncu bloğun sağına dokunur → (7,5)'e kayar → sütun 7'de (7,4)'e iner
+(çıkıntının üstü). Dokunuş blok (6,2)'ye vardığında gelirse (`atRow = 2`) → (7,2)'ye kayar ve çıkıntının altında
+kalır; (7,2) `.` olduğu için yerleşim hatalıdır (`window`) ve blok geri seker — kural erişimi verir, doğruluğu K-16/K-34
+belirler. Çıkıntının altına **doğru** yerleşim yalnızca çıkıntı yanlış bir nesneyse (moloz S4, yapışmış harçlı blok Y8)
+mümkündür. Bloğun soluna dokunmak hiçbir şey yapmaz (sütun 5 şantiye dışı), hak harcanmaz.
 **Örnek (G-H):** `high`, cam blok Vinç Alanı'nda (6,8)'de şantiyeye değdi; oyuncu 700 ms içinde (6,4)'e indiremedi,
 blok (6,6)'da bırakıldı, iniş (6,2) → d=4 > 2 → kırılır.
 
@@ -643,8 +651,8 @@ satır küçükten büyüğe, aynı satırda x küçükten büyüğe (y, x sıra
 5. **Kazanma (11) kaybetmeden önce:** son hamlede biten bölüm kazanılır. Kazanma zamanlayıcılardan etkilenmez, ama
    kilitlenme (12) zamanlayıcı sonrası durumla bakılmalıdır (açılan bir kepenk D1'i çözebilir).
 
-**Birden fazla engelin aynı anda tetiklendiği örnek:** Bölümde kepenk (period 2, phase 1), asansör, ıslak beton ve
-torba var. Oyuncu (3,4)–(4,4) `D2_90`'ı ((5,4) boş olduğundan tutulabilir) şantiyeye doğru bırakır, dilim tamamlanır.
+**Birden fazla engelin aynı anda tetiklendiği örnek:** Bölümde kepenk (period 2, phase 1), asansör, ıslak beton,
+torba, zincir ve saha yerçekimi (`gravity.yard = true`, Y6) var. Oyuncu (3,4)–(4,4) `D2_90`'ı ((5,4) boş olduğundan tutulabilir) şantiyeye doğru bırakır, dilim tamamlanır.
 Adım 3 doğru → adım 4 kalan 12 → 11, m 5 → 6 → adım 5 (3,5)'teki torba yırtılır → adım 6 (3,6)'daki blok (3,4)'e düşer;
 düşüş öncesi komşusu (2,6)'daki zincirli bloğun zinciri kalkar → adım 8 dilim 2 gelir, parti 2 kuyruğa → adım 9 bloklar
 düşer → adım 10 kepenk durumu `floor((6+1)/2)=3` tek → kapalı; asansör e 1 → 2; ıslak sayaçlar −1 (yeni gelenler

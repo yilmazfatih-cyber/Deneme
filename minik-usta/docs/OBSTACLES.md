@@ -69,7 +69,7 @@ yok (renk körlüğü); bölüme göre değişen sayılar `{n}` yer tutucusuyla 
   (son girilen boya kapısının geçit indeksi) tutulur (öneri P-6, S-21).
 - **Veri:** `{ type: "paint", y, size, color }`.
 - **Örnek:** Kırmızı boya kapısı y=2. (4,2)'deki `B1` Y geçide girip sahada (5,6)'ya bırakılır → `B1` R, 1 hamle.
-- **Bilgi kartı** (`obs.w6.desc`): TR "Boya kapısından geçen blok kapının rengini alır." · EN "Blocks passing the paint gate take its color."
+- **Bilgi kartı** (`obs.w6.desc`): TR "Boya kapısına giren blok kapının rengini alır." · EN "A block that enters the paint gate takes its color."
 
 ### W7 — Kilitli Geçit
 - **Bölge:** duvar · **İlk bölüm:** 26
@@ -173,7 +173,7 @@ yok (renk körlüğü); bölüme göre değişen sayılar `{n}` yer tutucusuyla 
 - **Bölge:** şantiye · **İlk bölüm:** 5
 - **Kural:** `build.mode = "segments"`, 2–5 dilim (GDD K-22, K-25). Dilim bitince kayma ve kamyon teslimatı.
 - **Veri:** `build.segments[]`, `yard.batches[]` (`forSegment` = dilim indeksi).
-- **Bilgi kartı** (`obs.s1.desc`): TR "Bu kısım bitince şantiye kayar, kamyon malzeme getirir." · EN "Finish this part; the site slides and the truck delivers."
+- **Bilgi kartı** (`obs.s1.desc`): TR "Bu kat bitince şantiye kayar, kamyon malzeme getirir." · EN "Finish this floor; the site slides and the truck delivers."
 
 ### S2 — Plan Boşluğu
 - **Bölge:** şantiye · **İlk bölüm:** 4
@@ -219,7 +219,7 @@ yok (renk körlüğü); bölüme göre değişen sayılar `{n}` yer tutucusuyla 
 - **Kural:** GDD K-32.
 - **Veri:** `rows` içinde `?`, `segments[].hidden: { kind: "repeat", period } | { kind: "mirrorOf", segment }`.
 - **Bilgi kartı** (`obs.s7r.desc`, 27): TR "Soru işaretleri deseni tekrarlar. Aşağıdaki sıralara bak!" · EN "Question marks repeat the pattern. Look at the rows below!"
-  · (`obs.s7m.desc`, 29): TR "Bu kule diğerinin aynası. Renkleri yer değiştir!" · EN "This tower mirrors the other. Swap the colors!"
+  · (`obs.s7m.desc`, 29): TR "Bu kat, öbür katın aynası. Renkler yer değiştirir!" · EN "This floor mirrors the other. Colors swap sides!"
 
 ### S8 — Balonlu Blok
 - **Bölge:** şantiye ve saha · **İlk bölüm:** 38

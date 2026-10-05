@@ -161,8 +161,8 @@ yeşil üstünde ham kontrastı düşüktür (2,7:1); kontur ve gölge okunurlu�
 | `board.blueprintDeep` | #173D70 | plan dışı hücreler |
 | `board.planUnderlay` | #BCCADD | plan hücresi açık altlığı (üstüne renk %80; bileşik renk formülle üretilir) |
 | `board.buildFront` | #FFFFFF | inşa cephesi hücresinin düz konturu (K-34, §4) |
-| `board.blueprintLine` | #FFFFFF %14 | ince ızgara (2 px, her hücre) |
-| `board.blueprintLineMajor` | #FFFFFF %24 | kalın ızgara (3 px, her 2 hücre) |
+| `board.blueprintLine` + `alpha.blueprintLine` | #FFFFFF %14 | ince ızgara (2 px, her hücre) |
+| `board.blueprintLine` + `alpha.blueprintLineMajor` | #FFFFFF %24 | kalın ızgara (3 px, her 2 hücre); ayrı renk token'ı yok, yalnız alfa farklı |
 | `board.wall` / `wallLight` / `wallDark` | #A9AFB8 / #C9CED5 / #7D848E | duvar betonu |
 | `board.scaffold` / `scaffoldClamp` | #8A96A3 / #FF9A1F | iskele boruları ve kelepçeler |
 | `board.craneSky` | #FFFFFF %10 | vinç alanı bandı (gökyüzü üstüne) |

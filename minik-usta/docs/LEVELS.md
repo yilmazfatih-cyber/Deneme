@@ -16,7 +16,7 @@ blockout'a dönüşür.
 profiliyle hedef kazanma oranına ayar (Kolay ≥ %90, Normal %65–80, Zor %40–55, Çok Zor %25–40). Bu belgedeki
 1–10 minimumları **el çözümüdür** (aşağıdaki doğrulama notu); solver daha kısa bir çözüm bulursa bütçe ona göre düşer.
 
-**Doğrulama notu:** 1–10. bölümlerin blockout'ları, GDD kurallarını (duvar sütunu, açık gökyüzü, ray kipi, K-16,
+**Doğrulama notu:** 1–10. bölümlerin blockout'ları, GDD kurallarını (duvar sınırı, açık gökyüzü, ray kipi, K-16,
 K-34, kamyon dökümü K-25) uygulayan bir karalama betiğiyle hücre hücre denetlendi: bloklar çakışmıyor, şekiller
 kimlikleriyle uyuşuyor, saha doluluğu %80–100, her çözüm adımı yol kuralıyla erişilebilir ve sonuç doğru yerleşim.
 Betik proje kodu değildir; resmî doğrulama Faz 2–3'te code-lead'in `levels:validate` ve `levels:solve` araçlarıyladır.
@@ -126,7 +126,7 @@ Hamle sütunu 1–10 için `el minimumu + tampon`, 11–50 için `tahmini minimu
 
 **Tasarım niyeti:** Oyuncu bloğu yukarı kaldırıp duvarın üstünden aşırmanın ve bırakınca düşmenin oyunun temel hareketi olduğunu keşfeder; gölgenin düşüş yerini gösterdiğini görür. İlk hedef `a` üst satırda, duvarın hemen solundadır (tek elle başparmağa en yakın yer; design-lead önerisi). `e` (yatay W) ve `h` (yatay Y) başta tutulabilir: `e` ilk hamlede "hatalı" gölge verir, `h` `a`'nın eşdeğeridir.
 
-Blockout (D = duvar sütunu: `#` kapalı, `=` geçit, `:` duvar üstü hava; şantiyede 1. dilimin planı, `+` = `.` boş kalacak hücre, `~` = plan dışı):
+Blockout (D = duvar sınırı, çizimde ayrı sütun; çekirdekte sıfır genişlik (R-03): `#` kapalı, `=` geçit, `:` duvar üstü hava; şantiyede 1. dilimin planı, `+` = `.` boş kalacak hücre, `~` = plan dışı):
 
 ```
        x: 0 1 2 3 4 5   D   6 7
@@ -198,7 +198,7 @@ Blockout (D = duvar sütunu: `#` kapalı, `=` geçit, `:` duvar üstü hava; şa
 
 **Tasarım niyeti:** Oyuncu aynı renk bölgesini doğru yönelimli bloğun doldurduğunu, ters yönelimli C3'ün gölgede "hatalı" göründüğünü keşfeder.
 
-Blockout (D = duvar sütunu: `#` kapalı, `=` geçit, `:` duvar üstü hava; şantiyede 1. dilimin planı, `+` = `.` boş kalacak hücre, `~` = plan dışı):
+Blockout (D = duvar sınırı, çizimde ayrı sütun; çekirdekte sıfır genişlik (R-03): `#` kapalı, `=` geçit, `:` duvar üstü hava; şantiyede 1. dilimin planı, `+` = `.` boş kalacak hücre, `~` = plan dışı):
 
 ```
        x: 0 1 2 3 4 5   D   6 7
@@ -259,7 +259,7 @@ Blockout (D = duvar sütunu: `#` kapalı, `=` geçit, `:` duvar üstü hava; şa
 
 **Tasarım niyeti:** Oyuncu sahanın derinindeki bloğun geçitten tek hamlede şantiyeye girdiğini ve raydaki bloğun düşmediğini keşfeder.
 
-Blockout (D = duvar sütunu: `#` kapalı, `=` geçit, `:` duvar üstü hava; şantiyede 1. dilimin planı, `+` = `.` boş kalacak hücre, `~` = plan dışı):
+Blockout (D = duvar sınırı, çizimde ayrı sütun; çekirdekte sıfır genişlik (R-03): `#` kapalı, `=` geçit, `:` duvar üstü hava; şantiyede 1. dilimin planı, `+` = `.` boş kalacak hücre, `~` = plan dışı):
 
 ```
        x: 0 1 2 3 4 5   D   6 7
@@ -326,7 +326,7 @@ temelle başlar.
 
 **Tasarım niyeti:** Oyuncu pencerenin üstünü tek genişlikteki blokla dolduramayacağını, geçitten gelen yatay lentonun pencerenin üstünde asılı kaldığını keşfeder.
 
-Blockout (D = duvar sütunu: `#` kapalı, `=` geçit, `:` duvar üstü hava; şantiyede 1. dilimin planı, `+` = `.` boş kalacak hücre, `~` = plan dışı):
+Blockout (D = duvar sınırı, çizimde ayrı sütun; çekirdekte sıfır genişlik (R-03): `#` kapalı, `=` geçit, `:` duvar üstü hava; şantiyede 1. dilimin planı, `+` = `.` boş kalacak hücre, `~` = plan dışı):
 
 ```
        x: 0 1 2 3 4 5   D   6 7
@@ -399,7 +399,7 @@ satırlara (W/R) uymaz; minimum 5 ve YAO %80 değişmedi (betikle doğrulandı).
 
 **Tasarım niyeti:** Oyuncu bir dilim bitince şantiyenin kaydığını ve kamyonun yeni malzemeyi sahanın boşalan yerlerine döktüğünü keşfeder.
 
-Blockout (D = duvar sütunu: `#` kapalı, `=` geçit, `:` duvar üstü hava; şantiyede 1. dilimin planı, `+` = `.` boş kalacak hücre, `~` = plan dışı):
+Blockout (D = duvar sınırı, çizimde ayrı sütun; çekirdekte sıfır genişlik (R-03): `#` kapalı, `=` geçit, `:` duvar üstü hava; şantiyede 1. dilimin planı, `+` = `.` boş kalacak hücre, `~` = plan dışı):
 
 ```
        x: 0 1 2 3 4 5   D   6 7
@@ -468,7 +468,7 @@ Kamyon partileri:
 
 **Tasarım niyeti:** Oyuncu duvar tahtanın tepesine kadar yükselince bloğu Vinç Alanı'na kaldırması gerektiğini ve uzun düşüşü keşfeder.
 
-Blockout (D = duvar sütunu: `#` kapalı, `=` geçit, `:` duvar üstü hava; şantiyede 1. dilimin planı, `+` = `.` boş kalacak hücre, `~` = plan dışı):
+Blockout (D = duvar sınırı, çizimde ayrı sütun; çekirdekte sıfır genişlik (R-03): `#` kapalı, `=` geçit, `:` duvar üstü hava; şantiyede 1. dilimin planı, `+` = `.` boş kalacak hücre, `~` = plan dışı):
 
 ```
        x: 0 1 2 3 4 5   D   6 7
@@ -514,7 +514,8 @@ Blockout (D = duvar sütunu: `#` kapalı, `=` geçit, `:` duvar üstü hava; şa
 K-34 notu: `D` `C`'den önce bırakılırsa (6,3)–(7,3)'e iner, renk doğru ama (7,1)–(7,2) boş → hatalı (`support`). Bu,
 "renk doğru, neden yanlış?" anının ilk doğal yeridir; bağlamsal `tut.ctx.support` burada tetiklenir. Bölüm 1'in bütün
 blokları 2 satır boyundadır, bu yüzden Vinç Alanı yükseklik sınırı (K-05) 6'da sınanmaz; uzun blok ipucu (design-lead
-önerisi) ilk uzun bloğun yüksek duvarla buluştuğu yerde bağlamsal verilir (I3/L4 2. hikaye bölümünde açılır).
+önerisi) ilk uzun bloğun yüksek duvarla buluştuğu yerde bağlamsal `tut.ctx.tootall` olarak verilir (GDD K-05; I3/L4
+2. hikaye bölümünde açılır).
 
 Öğretici adımları (`tutorial[]`):
 1. Z · `piece:0`, `crane`, `wall` · drag: `A` → y ≥ 8 → x=6 · `tut.l6.crane` · `overWall` ×1
@@ -538,7 +539,7 @@ blokları 2 satır boyundadır, bu yüzden Vinç Alanı yükseklik sınırı (K-
 
 **Tasarım niyeti:** Oyuncu gerekli bloğun üstündekini sahada boş bir yere taşımanın (kazı) bir hamleye değdiğini keşfeder.
 
-Blockout (D = duvar sütunu: `#` kapalı, `=` geçit, `:` duvar üstü hava; şantiyede 1. dilimin planı, `+` = `.` boş kalacak hücre, `~` = plan dışı):
+Blockout (D = duvar sınırı, çizimde ayrı sütun; çekirdekte sıfır genişlik (R-03): `#` kapalı, `=` geçit, `:` duvar üstü hava; şantiyede 1. dilimin planı, `+` = `.` boş kalacak hücre, `~` = plan dışı):
 
 ```
        x: 0 1 2 3 4 5   D   6 7
@@ -606,7 +607,7 @@ Kamyon partileri:
 
 **Tasarım niyeti:** Oyuncu ağır paletin duvarı geçemediğini, yer açılınca kenara çekilebileceğini ya da Çekiç'le kırılabileceğini keşfeder.
 
-Blockout (D = duvar sütunu: `#` kapalı, `=` geçit, `:` duvar üstü hava; şantiyede 1. dilimin planı, `+` = `.` boş kalacak hücre, `~` = plan dışı):
+Blockout (D = duvar sınırı, çizimde ayrı sütun; çekirdekte sıfır genişlik (R-03): `#` kapalı, `=` geçit, `:` duvar üstü hava; şantiyede 1. dilimin planı, `+` = `.` boş kalacak hücre, `~` = plan dışı):
 
 ```
        x: 0 1 2 3 4 5   D   6 7
@@ -676,7 +677,7 @@ tutar; zorunlu Çekiç kazı dersini siler):
 
 **Tasarım niyeti:** Oyuncu dar geçide yalnızca tek sıra boyundaki blokların girdiğini ve asılı basamağın yalnızca raydan kurulabildiğini keşfeder.
 
-Blockout (D = duvar sütunu: `#` kapalı, `=` geçit, `:` duvar üstü hava; şantiyede 1. dilimin planı, `+` = `.` boş kalacak hücre, `~` = plan dışı):
+Blockout (D = duvar sınırı, çizimde ayrı sütun; çekirdekte sıfır genişlik (R-03): `#` kapalı, `=` geçit, `:` duvar üstü hava; şantiyede 1. dilimin planı, `+` = `.` boş kalacak hücre, `~` = plan dışı):
 
 ```
        x: 0 1 2 3 4 5   D   6 7
@@ -751,7 +752,7 @@ Kamyon partileri:
 
 **Tasarım niyeti:** Oyuncu hikaye bölümündeki bütün araçları sırayla kullanır: paleti doğru anda kenara çekmek, dar geçitten asılı katı kurmak, kamyon dökümünü kazıyla açmak.
 
-Blockout (D = duvar sütunu: `#` kapalı, `=` geçit, `:` duvar üstü hava; şantiyede 1. dilimin planı, `+` = `.` boş kalacak hücre, `~` = plan dışı):
+Blockout (D = duvar sınırı, çizimde ayrı sütun; çekirdekte sıfır genişlik (R-03): `#` kapalı, `=` geçit, `:` duvar üstü hava; şantiyede 1. dilimin planı, `+` = `.` boş kalacak hücre, `~` = plan dışı):
 
 ```
        x: 0 1 2 3 4 5   D   6 7
@@ -926,11 +927,13 @@ metin design-lead). Bölüm 23'te G-L girdisi: düşerken tahtaya dokunma, dokun
    plan, moloz ve kamyonla gelen blok bayraklarıyla verilir; duvar engelleri (kilitli dar geçit, boya kapısı) bütün
    dilimlerde ortaktır.
 6. **Bölüm 40 döner platform + asansör** birlikte: `build.elevator` ayrı alan (GDD K-24, öneri P-4).
-7. **İmza hareketin "yukarı" yarısı (design-lead gözlemi, proje sahibine AÇIK SORU):** 1–5. bölümlerde duvar (2–6)
-   tutulabilir blokların satırının (6–7) altında kaldığı için blok kaldırılmadan duvarı aşar; "yukarı" ilk kez Bölüm 6'da
-   (duvar 8) hissedilir. Öneri: Bölüm 1–2'de duvarı saha üst dolu satırının üstüne çıkarmak (ör. Bölüm 1 duvar 7, hedefler
-   y=6'da, üst satır kısmen boş). Brif "Duvar 2" dediği için uygulanmadı; ilk hamlenin kısa ve kolay kalması karşı
-   gerekçedir. Bölüm 1'in ilk hedefi bu turda duvarın yanına, üst satıra alındı (ergonomi; brif parametreleri değişmedi).
+7. **İmza hareketin "yukarı" yarısı (design-lead gözlemi; ölçümle kapandı, brif "Duvar 2" korunur):** Duvar 1–5'te
+   (2–6) tutulabilir blokların satırının (6–7) altında kalır, ama komşu bloklar düz yolu kapattığı için çözüm hamlelerinin
+   çoğu bloğu başlangıç satırının **üstüne** kaldırmayı gerektirir. Karalama betiğiyle ölçülen en az kaldırma (satır,
+   bütün yollar üzerinden en küçük tepe): Bölüm 1 `a` 0 · `b` 2 · `c` 1; Bölüm 2 `A` 2 · `b` 2 · `c` 0; Bölüm 3 `a` 2 ·
+   `b` 1; Bölüm 4 `a` 1 · `b` 2 · `c` 1 · `d` 0; Bölüm 5 6 hamleden 4'ü 2 satır; Bölüm 6 (duvar 8) 1–4. Yani "yukarı"
+   ilk oturumun **2. hamlesinde** (Bölüm 1 `b`, Vinç Alanı'na 2 satır) hissedilir; ilk hamle (`a`) kısa ve başparmağa
+   yakın kalır (ergonomi). Bölüm 1–2'de duvarı yükseltme önerisi bu yüzden uygulanmadı ve brif sapması gerekmiyor.
 
 ## 5. Bölüm tasarım kontrol listesi (her JSON için)
 

@@ -25,13 +25,22 @@ sayılar BUSINESS'ta da yazılıdır. Kapsam etiketleri: **MVP**, **MVP (onay be
 - Bölümler görevlerle **kilitlenmez**.
 - **Ara sahne tetikleyicileri (R-09, brif FTUE):**
   - Giriş `story.prologue` (3 panel): ilk açılışta, Bölüm 1'den önce (FTUE).
-  - Hikaye bölümü N başlangıcı `story.chN.start`: o hikaye bölümünün **1. görevi** yapılınca, görevin mini sahnesinden
-    sonra. Hikaye Bölümü 1 için bu, brifteki "Bölüm 1 → ana ekran → ilk yıldızı harcama → ilk ara sahne" sırasıdır;
-    2–5 için de aynı kural geçerlidir (brif: "ara sahneler görevlerle açılır"; STORY §3 ile aynı).
+  - Hikaye Bölümü 1 başlangıcı `story.ch1.start`: 1. görevi yapılınca, görevin mini sahnesinden sonra (brifteki
+    "Bölüm 1 → ana ekran → ilk yıldızı harcama → ilk ara sahne" sırası).
+  - Hikaye bölümü N ≥ 2 başlangıcı `story.chN.start`: `story.ch(N−1).end` kapandıktan sonra ana ekran **bir sonraki
+    kez açıldığında** oynar. "Açılma" = ana ekrana başka bir ekrandan (bölüm sonucu, mağaza, etkinlik, ayarlar) geçiş ya da
+    uygulamanın soğuk açılışı; bitiş sahnesinin kapanıp oyuncuyu ana ekranda bırakması sayılmaz. Hikayenin sorunu
+    (STORY §3) böylece o bölümün ilk görevinden **önce** anlatılır (brif: "her hikaye bölümünün başında" ara sahne; STORY
+    §3, UX §8 ile aynı). Bu sahne oynayana kadar kasaba ekranı tamamlanmış N−1 yapısını gösterir ve N'nin görev
+    baloncuğu çıkmaz.
   - Hikaye bölümü N bitişi `story.chN.end`: o hikaye bölümünün **son (7.) görevi** yapılınca (N = 5: büyük final).
-  - Bir eylem en çok bir ara sahne oynatır; N−1 bitişi ile N başlangıcı ayrı görev dokunuşlarıdır, arka arkaya otomatik
-    oynamaz. Görülen sahneler kayda yazılır.
-- Kasaba ekranı, görevleri bitmemiş en eski hikaye bölümünü gösterir; oyuncu bölümlerde ileride olabilir.
+  - Bir eylem en çok bir ara sahne oynatır; N−1 bitişi ile N başlangıcı arka arkaya oynamaz. Görülen sahneler kayda
+    yazılır; sahne "Geç" ile atlanırsa da görülmüş sayılır.
+  - **Örnek:** Oyuncu 7. görevi yapar → `story.ch1.end` oynar → ana ekran (ch2 baloncuğu yok) → Bölüm 12'yi oynar →
+    sonuç ekranından ana ekrana döner → `story.ch2.start` oynar → kasaba Mahalle Fırını'nı gösterir, "Fırın temeli"
+    baloncuğu çıkar.
+- Kasaba ekranı, görevleri bitmemiş en eski hikaye bölümünü gösterir (yukarıdaki N ≥ 2 başlangıç kuralı saklı); oyuncu
+  bölümlerde ileride olabilir.
 
 | Hikaye bölümü | Görev (STORY §5; anahtarlar `town.ch{n}.t{m}.name` / `town.ch{n}.t{m}.scene`) | ★ | Toplam |
 |---|---|---|---|
@@ -154,7 +163,7 @@ Açılış bölümünde öğretici adımı vardır; ücretsiz denemeler o an env
 | Katılımcılar | Oyuncu + 99 bot ("Renkli Tepe çırakları"; açıkça bot etiketli, adlar STORY `npc.apprentice.*`, gerçek insan adı yok; Köprü ekranında etiket + kural kartı — BUSINESS P-5, R-14) |
 | Tahta sayısı | 7. Katılımdan sonra **başlatılan** her kazanılmış bölüm = +1 tahta |
 | Elenme | Kayıp (K-29'da teklif reddi) ya da `m ≥ 1` iken onaylı çıkış → oyuncu suya düşer, simitle kıyıya yüzer, elenir. Uygulama kapanması elemez (K-43). Kayıp/elenme ekranında kalan oyuncu sayacı ve baskı metni gösterilmez (R-15) |
-| +5 hamle | Elenmeyi önler; fiyat etkinlik dışıyla aynı (900/1.350/1.800, deneme başına en çok 3, reklam dahil). **Tur harcama tavanı: 4.050 altın** (= 900 + 1.350 + 1.800, tek denemenin tam eskalasyonu; R-16, BUSINESS ile ortak değer). Altın seçeneği yalnızca `tur harcaması + fiyat ≤ 4.050` iken sunulur; değilse pencerede yalnız reklam (hakkı varsa) ve "Bırak" kalır. Reklam seçeneği tavandan bağımsızdır |
+| +5 hamle | Elenmeyi önler; fiyat etkinlik dışıyla aynı (900/1.350/1.800, deneme başına en çok 3, reklam dahil). **Tur harcama tavanı: 4.050 altın** (= 900 + 1.350 + 1.800, tek denemenin tam eskalasyonu; R-16, BUSINESS ile ortak değer; `events.json → wobblyBridge.bridgeSpendCapCoins`). Altın seçeneği yalnızca `tur harcaması + fiyat ≤ 4.050` iken sunulur; değilse pencerede yalnız reklam (hakkı varsa) ve "Bırak" kalır. Reklam seçeneği tavandan bağımsızdır |
 | Süre | Katılımdan itibaren 6 saat (`durationMinutes 360`). Süre içinde başlatılan bölüm, süre dolduktan sonra bitse de sayılır |
 | Süre dolarsa (7 tahta yok) | Ödül yok; "Süre doldu" (elenme mesajı değil) |
 | Ödül havuzu | 10.000 altın; 7. tahtaya ulaşan herkes (oyuncu + botlar) eşit böler: `floor(10000 / bitirenSayısı)` |
@@ -279,8 +288,8 @@ ve ilerleme çubuğunun yanında açılmadan önce görünür (BUSINESS E1).
 - Kırma bir satın alımdır: **$1,99 / 89,99 TL** (`piggy_break`). Kırılınca içerik cüzdana geçer, kumbara 0'a döner.
 - Doğrulama kuralı (`config:validate`): eşikteki altın/$ ≥ referans paketin (`coins_1000`) altın/$'ı (1.000 / 1,99 ≥
   1.000 / 1,99 ✓); dolu kumbara ≈ 2 kat değer.
-- Hız: 20. bölümden sonra ≈ 20 galibiyette eşik (≈ 40. bölüm), dolu hali Usta Modu'nda. Kumbara ödemeyen oyuncu için
-  kaynak değildir.
+- Hız (kayıpsız hesap, ilk katkı Bölüm 20 galibiyeti): eşik 1.000'e **17. galibiyette** (Bölüm 36) ulaşılır; Bölüm 50
+  sonunda 1.850; kapasite 2.000 Usta Modu'nun 3. galibiyetinde dolar. Kumbara ödemeyen oyuncu için kaynak değildir.
 
 ### 8.4 Mağaza (MVP'de sahte satın alma; fiyatlar entrepreneur'ün, BUSINESS §5)
 
@@ -307,7 +316,7 @@ gelir; JSON'daki USD/TRY yalnızca MVP gösterimi içindir.
   (bütçe daralması enflasyon yaratmaz).
 - Galibiyetler galibiyet serisine, Sallanan Köprü'ye ve Usta Ligi'ne sayılır.
 - Bölüm sandığı yerine her 10 Usta Modu galibiyetinde **Usta Sandığı**: 250 altın + 1 Çekiç (sabit içerik, açmadan önce
-  görünür; E1).
+  görünür; E1). Altın miktarı Faz 3'te §9 "ayar kuralı" ile kesinleşir.
 - "Yeni bölümler yolda" bandı ana ekranda kalır. Giriş kartı metni design-lead'in ("Usta Modu: bildiğin bölümler, daha
   az hamle." önerisi).
 
@@ -344,14 +353,16 @@ bantları):**
   medyan > 2.500 (paketler değer kaybeder) ya da 10 bölüm boyunca < 200 (hayal kırıklığı riski).
 - (b) **Kayıp kurtarma karışımı** (ödemeyen oyuncu): altınla %15–25, reklamla %30–40, kurtarılmayan %40–50.
 - **Taban (adalet):** 10 bölümlük gelir ≥ 900 → ödemeyen oyuncu 10 bölümde en az 1 kez +5'i altınla alabilir
-  (BUSINESS §5.4). 1–50'de sağlanır (≈ 1.010–1.120). Usta Modu tahmini (≈ 800–910) tabana yakındır: Faz 3 ölçümü < 900
-  çıkarsa Usta Sandığı altını entrepreneur ile birlikte yükseltilir (açık soru, closure).
+  (BUSINESS §5.4). 1–50'de sağlanır (≈ 1.010–1.120). Usta Modu tahmini (≈ 800–910) tabana yakındır. **Ayar kuralı:**
+  Faz 3 ekonomi simülasyonunda ödemeyen oyuncunun Usta Modu'ndaki 10 galibiyetlik medyan geliri `G` < 900 çıkarsa Usta
+  Sandığı altını `250 + 50 · ceil((900 − G) / 50)` olur (ör. G = 820 → 350); product-lead ve entrepreneur aynı değeri
+  META §8.5, `economy.json → masterMode.masterChest.coins` ve BUSINESS §9.2'ye yazar (R-16). G ≥ 900 ise 250 kalır.
 - Önceki "10 bölümde 2 kez +5 alamamalı" üst sınırı **kaldırıldı**: ödemeyen oyuncuda dönüşümü altın kıtlığı değil reklam
   tavanı belirler; kazanma oranı farklı oyuncularda aynı tavan farklı baskı üretir.
 - Ölçüm olayları: `coin_source`, `coin_sink`, `event_continue`, `level_end.durationMs` (code-lead, ANALYTICS).
 
 Kumbara kaynak değildir (yalnızca satın alımla açılır): 10 galibiyet × ≈ 55 ≈ 550 altın / 10 bölüm birikir; 1.000 eşiğine
-≈ 20 galibiyette ulaşır.
+17. galibiyette (Bölüm 36) ulaşır (§8.3).
 
 **Bonuslar ve güçlendirici kaynakları (10 bölüm başına):** sandık ≈ 2,4 güçlendirici, günlük ≈ 0,6, lig ≈ 0,1;
 ücretsiz denemeler (toplam 17) yalnızca açılışta.

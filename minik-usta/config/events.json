@@ -20,10 +20,10 @@
     "eliminateOn": ["levelLost", "confirmedQuitAfterFirstMove"],
     "appKillEliminates": false,
     "extraMovesSavesFromElimination": true,
-    "maxContinueCoinsPerRun": 4050,
+    "bridgeSpendCapCoins": 4050,
     "rewardedAdContinueIgnoresCoinCap": true,
     "masterModeWinsCount": true,
-    "_doc": "Split = floor(pool / finishers). Payout time = min(deadline (extended by the player's level started before it), max(playerDoneTime, lastBotEventTime)). Coin continue offered only if runSpend + price <= maxContinueCoinsPerRun (R-16).",
+    "_doc": "Split = floor(pool / finishers). Payout time = min(deadline (extended by the player's level started before it), max(playerDoneTime, lastBotEventTime)). Coin continue offered only if runSpend + price <= bridgeSpendCapCoins (R-16; same key as BUSINESS §4.5).",
     "bot": {
       "skillMin": 0.5,
       "skillRange": 0.45,

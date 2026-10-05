@@ -606,9 +606,9 @@ y    0 ┌───────────────────────�
 - Metin daktilo hızı `text.typewriterCps` (40 karakter/s); "animasyonları azalt" açıkken anında. Karakter "bla" sesleri
   **[Sonra]** (JUICE #81).
 - FTUE giriş sahnesi (3 panel) **otomatik** ilerler (her panel 1,8 s); diğer sahneler dokununca ilerler.
-- Tetikleyiciler (R-09, STORY §3): prolog FTUE'de; `story.ch1.start` ilk görev yapılınca; `story.chN.start` (N ≥ 2)
-  önceki bölümün bitiş sahnesinden sonra ana ekrana **bir sonraki dönüşte** (iki sahne arka arkaya oynamaz); bitiş
-  sahnesi son görev yapılınca.
+- Tetikleyiciler (R-09; kural META §1, STORY §3): prolog FTUE'de; `story.chN.start` o hikaye bölümünün **1. görevi**
+  yapılınca (görev mini sahnesinden sonra; N = 1 için FTUE adım 10); `story.chN.end` son (7.) görev yapılınca. Bir
+  eylem en çok bir ara sahne oynatır; bitiş ve sonraki başlangıç ayrı görev dokunuşlarıdır, arka arkaya oynamaz.
 - Bölüm sonu sahnesinin son paneli yapı kartını **yalnız gösterir** ve kapanır; "Albüme eklendi" animasyonu yok (R-19,
   Albüm Sonra).
 - Bellek: yalnız gösterilen ve sıradaki panel yüklüdür; geçilen panel boşaltılır (code-lead).

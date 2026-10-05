@@ -27,7 +27,10 @@ Sahip: design-lead · Durum: Faz 1 revizyonu (2026-10-04; R-01, R-10…R-12, R-1
    çalmaz (zincirleme düşüşlerde yığılma olmasın); 4 sesten fazlası aynı anda çalmaz. Üretim: 22,05 kHz mono
    (`audio.sampleRateHz`), sahne bazında ve boşta dilimlenerek (≤ 4 ms/kare) ön-çizilir. Perde ve ses farkları (kombo
    perdesi, `sfx_coin` +1 yarım ton, `sfx_land` +0…+4 dB, karakter sesi ±2 yarım ton) yeniden çizimle değil çalma
-   `rate` / `volume` ile yapılır. Ses kilidi açılmadan istenen sesler **atılır** (kuyruğa alınmaz).
+   `rate` / `volume` ile yapılır. Ses kilidi açılmadan istenen sesler **atılır** (kuyruğa alınmaz). ZzFX parametre
+   dizileri tek kaynaktadır: `tokens.json` → `audio.sfx.<ad>` (tek ses) ve `audio.seq.<ad>` (çok notalı fanfar,
+   `music_win`: `[ms, parametreler]` adımları tek arabellekte toplanır); Faz 2 P0 sesleri dolu, diğerleri mekanikleriyle
+   eklenir. Aşağıdaki sözlü tarifler bu dizilerin kaynağıdır.
 7. **Haptik ölçeği:**
 
    | Ad | Capacitor Haptics | Web `navigator.vibrate` |
@@ -73,7 +76,7 @@ Sahip: design-lead · Durum: Faz 1 revizyonu (2026-10-04; R-01, R-10…R-12, R-1
 
 | Ayar | Düşüş hızı | Not |
 | ---- | ---------- | --- |
-| `gravity.build = normal` | ivme 90 hücre/s², tavan 22 hücre/s (1 hücre ≈ 150 ms, 6 hücre ≈ 395 ms ≈ 66 ms/satır, 8 hücre ≈ 61 ms/satır) | K-19 "60 ms/satır" ile hizalı |
+| `gravity.build = normal` | ivme 90 hücre/s², tavan 22 hücre/s (1 hücre ≈ 150 ms, 6 hücre ≈ 395 ms ≈ 66 ms/satır, 8 hücre ≈ 61 ms/satır) | tek kaynak `tokens.physics`; K-19 ms değeri içermez (product-lead), çekirdek zamana bakmaz |
 | `low` (Hafif) | sabit 4,5 hücre/s (≈ 222 ms/satır; süzülme), hafif sinüs sallantı ±2° | düşerken tahtaya dokunulursa dokunulan yana 1 sütun kayar (K-19, UX §5.6); sabit hız yönlendirme penceresini öngörülebilir yapar |
 | `high` (Ağır) | ivme 300 hücre/s², tavan 40 hücre/s (6 hücre ≈ 216 ms ≈ 36 ms/satır, 8 hücre ≈ 33 ms/satır) | şantiye üstüne geçtikten 700 ms (ayar açıkken 1400 ms) sonra parmaktan kayar |
 | Saha yerçekimi / kamyon | ivme 80 hücre/s², tavan 20 hücre/s | zincirleme düşüşte sütunlar 30 ms kademeli |

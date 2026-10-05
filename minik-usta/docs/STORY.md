@@ -77,13 +77,13 @@ Sahip: design-lead · Durum: Faz 1 revizyonu (2026-10-04; R-07, R-08, R-09, R-14
 | 5 Festival Şatosu | 41–50 | Festivale şato lazım | Gribeton gri temeli getirir; birlikte inşa; "Yılın Firması" | Bölüm 5 görev 1 | Bölüm 5 son görev |
 
 Görevler bölümleri kilitlemez; yalnız ara sahneleri açar (brif §10). **Görev listesi esastır (R-07):** 5 × 7 = 35
-görev, ad ve sıra bu belgededir; META ve `economy.json` bunlara göre güncellenir. Yıldız maliyetleri META'da
-kesinleşir; §5 aynı değerleri gösterir (product-lead §5 maliyetlerini kabul etti; fark çıkarsa META geçerlidir ve bu
-tablo eşitlenir).
+görev, ad ve sıra bu belgededir; META ve `economy.json` bunlara göre güncellendi. Yıldız maliyetleri META §1'de
+kesindir; §5 aynı değerleri gösterir (fark çıkarsa META geçerlidir).
 
-**Sahne tetikleyicileri (R-09, brif FTUE sırası):** prolog FTUE'de (Bölüm 1'den önce); `story.ch1.start` ilk görev
-yapılınca (ilk yıldız harcanınca); `story.chN.start` (N ≥ 2) önceki bitiş sahnesinden sonra ana ekrana **bir sonraki
-dönüşte** (iki sahne arka arkaya 8–10 panel olmasın); `story.chN.end` son görev yapılınca.
+**Sahne tetikleyicileri (R-09, brif FTUE sırası; kural META §1, product-lead):** prolog FTUE'de (Bölüm 1'den önce);
+`story.chN.start` o hikaye bölümünün **1. görevi** yapılınca, görevin mini sahnesinden sonra (N = 1 için bu, brifteki
+"ilk yıldızı harcama → ilk ara sahne" adımıdır; 2–5 için aynı kural); `story.chN.end` son (7.) görev yapılınca. Bir
+eylem en çok bir ara sahne oynatır: N−1 bitişi ile N başlangıcı ayrı görev dokunuşlarıdır, arka arkaya oynamaz.
 
 i18n anahtarları: `story.<sahne>.p<n>.<konuşan>` (ör. `story.ch1.start.p2.gribeton`); görevler
 `town.ch<n>.t<m>.name` ve `town.ch<n>.t<m>.scene`; ipuçları `tut.*`.
