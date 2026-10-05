@@ -63,7 +63,7 @@ stili tetiklediği için kullanılmaz — ART_DIRECTION §1, BUSINESS S2–S5.)
 | `blk_<şekil>_<W..P>[_<bayrak>]` (bölüm başına tipik ≤ 24) | şekil kutusu, en çok 360×360 | `CanvasTexture` (bölüm başında pişirilir) | prosedürel | kod | ART_DIRECTION §3 tarifi; bölümde geçen her (şekil × renk × bayrak) birleşimi için **bir doku** (code-lead): kesintisiz dış kontur, dış ve içbükey köşe, parça düzeyinde parlama, iç dikiş, sembol. Tahtada parça başına tek `Image`. Renk körü modunda yeniden pişirilir (~10–30 ms). Final'de de prosedürel kalır (tutarlılık, renk körü modu, boyut). |
 | `blk_sil_<şekil>_<contact/lifted/crane>` | şekil kutusu + bulanıklık payı | `CanvasTexture` | prosedürel | kod | Temas, kaldırılmış ve vinç gölgesi için önceden bulanıklaştırılmış siluet (Canvas `shadowBlur`; çalışma anında Filter yok). |
 | `ghost_<şekil>_<valid/invalid/neutral>` | şekil kutusu | `CanvasTexture` | prosedürel | kod | Düşüş gölgesi: düz (doğru) / kesik kırmızı (hatalı) / kesik beyaz (nötr) kontur + %25 gövde (UX §5.4). |
-| `sym_<W..P>` (8) | 100×100 birim (hücrede 55 px) | SVG | prosedürel | kod | ART_DIRECTION §3.1 yolları. Final iyileştirme brifi: "8 simple monochrome glyphs, one per material: wood grain with knot, three sand dots, leaf, brick bond, roof-tile scallops, concrete cross-hatch, four-point sparkle, faceted gem. Each must stay distinct as a silhouette at 40 px and in grayscale. Stroke-based, rounded caps, 8% stroke weight." |
+| `sym_<W..P>` (8) | 100×100 birim (hücrede 55 px) | SVG | prosedürel | kod | ART_DIRECTION §3.1 yolları. Final iyileştirme brifi: "8 simple monochrome glyphs, one per material: wood grain with knot, three sand dots, leaf, brick bond, roof-tile scallops, concrete cross-hatch, four-point sparkle, faceted gem. Each must stay distinct as a silhouette at 40 px and in grayscale. W (wood grain), R (brick bond), O (tile scallops) and C (cross-hatch) are stroke-based with rounded caps and joins, 7–9% stroke weight; Y (three dots), G (leaf), B (sparkle) and P (gem) are filled silhouettes, G and P with base-color carved lines (vein, facets), per ART_DIRECTION §3.1. Keep this stroke/filled mix: it is what keeps the glyphs apart in grayscale." |
 | `flag_glass` | 120×120 katman | PNG/prosedürel | prosedürel | kod | İki çapraz beyaz parıltı + köşede çatlak cam rozeti (28 px). Final: "subtle glass overlay for a building block: two diagonal white streaks, faint inner rim, tiny cracked-glass corner badge; transparent background." |
 | `flag_mortar` | 120×140 (alttan 20 px taşar) | PNG | yer tutucu | P1 | Bloğun altından sarkan 3 gri harç damlası + 32 px mala rozeti. Final: "three soft gray mortar drips hanging from the bottom edge of a block, plus a small trowel badge; cartoon, thick outline." |
 | `flag_balloon_1`, `flag_balloon_2` | 80×120, 140×120 | PNG | yer tutucu | P1 | Beyaz balon(lar) + ip, kontur #3B2A1A. Final: "one / two white party balloons with short strings, glossy highlight, thick outline, tied to the top of a block." |
@@ -93,7 +93,7 @@ stili tetiklediği için kullanılmaz — ART_DIRECTION §1, BUSINESS S2–S5.)
 | `ghost_badge_ok`, `_warn`, `_support`, `_glass`, `_cancel` | Ø 44 (renk körü modunda 60) | SVG | prosedürel | kod | ✓ / ! / ↓ (K-34 eksik destek) / çatlak cam / ↩ (bırakma iptal olacak; UX §5.3); beyaz daire + koyu kontur. |
 | `hud_heavy_ring` | Ø 96 | prosedürel | prosedürel | kod | Ağır yerçekimi halka sayacı (UX §5.7): beyaz → son %30'da turuncu. |
 | `hud_steer_chip` | 72×72 | prosedürel | prosedürel | kod | Hafif yerçekimi "↔" çipi (UX §5.6). |
-| `segment_mini_<n>` | 2×8 hücre, hücre 12 px | prosedürel | prosedürel | kod | Panorama için planın küçük render'ı. |
+| `segment_mini_<n>` | 2×8 hücre, hücre 12 px | prosedürel | prosedürel | kod | Panorama için planın küçük render'ı (K-06): tamamlanan dilim tam renk, gelecek dilim plan renkleriyle %30 (`alpha.panoramaFuture`), `?` hücreleri `?` etiketiyle; büyük önizlemede semboller de çizilir (UX §5.1). |
 
 ---
 
@@ -104,7 +104,7 @@ stili tetiklediği için kullanılmaz — ART_DIRECTION §1, BUSINESS S2–S5.)
 | `wall_body` | 60×120 döşeme | PNG | prosedürel | kod | Beton gövde, dikey kalıp çizgileri. Final: "vertical concrete column segment, light gray, soft formwork lines, rounded edges, seamless vertically." |
 | `wall_cap` | 72×20 | PNG | prosedürel | kod | Sarı-siyah ikaz şeritli başlık. |
 | `gap_static_edge` | 72×14 | PNG | prosedürel | kod | İkaz bandı (üst/alt) + `gap_rail` 240×6 çelik ray. |
-| `gap_narrow_jaw` | 18×28 ×2 | SVG | yer tutucu | P0 | İçe bakan çelik çene (#4A525C). Final: "two small chunky steel wedge jaws pointing inward, bolted." |
+| `gap_narrow_jaw` | 18×28 ×2 | SVG | yer tutucu | P0 | İçe bakan çelik çene (#4A525C) + 10 px çelik çerçeve; W3 bir katmandır, `size = 1` olan **her** geçit tipinin üstüne eklenir (ART §5). Final: "two small chunky steel wedge jaws pointing inward, bolted." |
 | `gap_shutter_slats` | 60×(120·size) | PNG | yer tutucu | P0 | Yatay lamelli panjur; `gap_shutter_roll` 72×28 sarılı silindir. Final: "metal roller shutter, horizontal slats, gray-blue, closed and rolled-up states." |
 | `gap_slider_plate` + `badge_updown` | 72×(120·size), Ø 52 | PNG/SVG | yer tutucu | P0 | Turuncu kayar plaka, dikey ray izi, ▲▼ rozeti (dolu = sıradaki yön). |
 | `gap_paint_frame_<W..P>` | 72×(120·size) | prosedürel | prosedürel | kod | Geçit rengiyle 8 damla + damla rozeti içinde sembol. Final: "paint-splattered door frame, thick drips in the gate color, a drop-shaped badge on top." |
@@ -202,20 +202,21 @@ kayarsa Hikaye 4–5 sahneleri 4 panele indirilir (−3 panel; entrepreneur öne
 
 | Ad | Boyut | Format | Durum | Öncelik | Brif |
 | -- | ----- | ------ | ----- | -- | ---- |
-| `ui_button_<primary/secondary/danger/disabled>` | 9-dilim, köşe 48, dudak 12 | prosedürel | prosedürel | kod | ART_DIRECTION §2.3 renkleri; üst ışık bandı + dudak. |
+| `ui_button_<primary/secondary/neutral/danger/disabled>` | 9-dilim, köşe 48, dudak 12 | prosedürel | prosedürel | kod | ART_DIRECTION §2.3 renkleri (`ui.<tip>` / `Top` / `Lip` / `Stroke`); üst ışık bandı + dudak. `neutral` = dolgulu krem (`ui.neutral` / `neutralLip`, yazı `ui.ink`): R-15 teklif pencerelerinin "Hayır, teşekkürler" ve "Reklam izle" seçenekleri, eşit çift düğmelerin krem tarafı (UX §0.3). |
 | `ui_panel` | 9-dilim, köşe 48 | prosedürel | prosedürel | kod | Krem panel, kenar ışığı, alt dudak. |
 | `ui_close` | Ø 112 | SVG | yer tutucu | P0 | Kırmızı daire + beyaz kalın ×. |
 | `ui_tag_hard`, `ui_tag_superhard` | 240×80 | prosedürel | prosedürel | kod | Kırmızı / mor etiket, yazı i18n ("ZOR", "ÇOK ZOR"), kenarda ince ikaz şeridi (yalnız çok zor). |
 | `ui_toggle` | 176×96 | prosedürel | prosedürel | kod | Açık = yeşil, kapalı = gri; düğme topu krem. |
 | `ui_streak_bar` | 560×80 | prosedürel | prosedürel | kod | 4 boncuk + Altın Mala yuvası. |
 | `ui_moves_panel` | 280×224 | prosedürel | prosedürel | kod | Krem panel, büyük rakam alanı. |
-| `ui_booster_slot` | 172×172 | prosedürel | prosedürel | kod | Yuvarlak kare, çukur, adet rozeti / "+" / kilit. |
+| `ui_moves_chip` | 160×96 | prosedürel | prosedürel | kod | Hamle sayacı panelinin minyatürü + "+N" (Baloo 2 800); galibiyet serisi "+N hamle" bonusu (UX §4, JUICE #68). Termos ikonundan ayrıdır. |
+| `ui_booster_slot` | 172×172 | prosedürel | prosedürel | kod | Yuvarlak kare, çukur, adet rozeti / "+" / kilit; kilitli ve adet > 0 ise kilit + köşede gri adet rozeti (Ø 56, `ui.badgeLocked`, beyaz sayı; UX §0.3, META §4). |
 | `ui_tutorial_glove` | 140×160 | SVG | yer tutucu | P0 | Tuna'nın sarı iş eldiveni, işaret parmağı uzatılmış; 2 kare (açık, basılı). Final: "big yellow cartoon work glove pointing with the index finger, thick outline; pressed and released frames." |
 | `ui_spotlight` | — | prosedürel | prosedürel | kod | Karartma + yuvarlak dikdörtgen delikler; maske/Filter yok: delik çevresinde 4 dikdörtgen + 4 çeyrek daire köşe görüntüsü (UX §13.1, JUICE kural 11). |
 | `ui_loading_crane` | 96×96 (8 kare) | PNG | yer tutucu | P0 | Bloğu döndüren mini vinç döngüsü. |
 | `ui_progress_crane` | 840×200 | SVG | yer tutucu | P0 | Açılış yükleme vinci: kol + kanca + blok. |
 | `ui_panel_dots` | 24×24 | prosedürel | prosedürel | kod | Ara sahne ilerleme noktaları. |
-| `ui_price_label` | düğme içi 2 satır | prosedürel | prosedürel | kod | `PriceLabel` (UX §0.3): "● 900" + altında gerçek para karşılığı (`font.size.caption`, `ui.inkSoft`); her altın fiyatlı düğmede aynı bileşen. |
+| `ui_price_label` | düğme içi 2 satır | prosedürel | prosedürel | kod | `PriceLabel` (UX §0.3): `icon_coin` + "900" + altında gerçek para karşılığı (`font.size.caption`; renkli düğmede `ui.ink`, krem zeminde `ui.inkSoft`; her durumda ≥ 4,5:1); her altın fiyatlı düğmede aynı bileşen. |
 | `ui_test_badge` | 200×56 | prosedürel | prosedürel | kod | "test sürümü" rozeti (web MVP sahte satın alma, BUSINESS E9). |
 | `ui_bot_badge` | 140×48 | prosedürel | prosedürel | kod | "çırak" rozeti (`color.ui.botBadge`, R-14), bot satırında ad yanında. |
 | `ui_rule_card` | 9-dilim panel | prosedürel | prosedürel | kod | Köprü / Lig kural kartı (UX §9–§10), eşit boy "Katıl" / "Şimdi değil". |

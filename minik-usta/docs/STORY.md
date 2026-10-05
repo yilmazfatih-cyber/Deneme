@@ -35,6 +35,10 @@ Sahip: design-lead · Durum: Faz 1 revizyonu (2026-10-04; R-07, R-08, R-09, R-14
    (`obs.{id}.desc`, product-lead).
 10. **Ad ve firma (R-24):** "Kepche", `{company}` (varsayılan "Tuna & Co."; yalnız oyun içi firma adı, mağaza adı
     değil). Oyun adı `app.title` anahtarından gelir; "Minik Usta" TR'de Tuna'nın lakabı olarak kalır.
+11. **Satır içi simgeler (font alt kümesi, ART §8):** metne Baloo 2 alt kümesinde olmayan karakter (●, ✓, ★, ♥ gibi)
+    **yazılmaz**. Yerine simge yer tutucusu kullanılır; kod bunu satır yüksekliğinde (1 em) görüntü olarak çizer:
+    `{coin}` → `icon_coin` (altın miktarı: `{coin}{n}`), `{ok}` → `ghost_badge_ok` (gölgedeki ✓ rozeti). EN ve TR aynı
+    yer tutucuyu kullanır.
 
 ---
 
@@ -71,19 +75,23 @@ Sahip: design-lead · Durum: Faz 1 revizyonu (2026-10-04; R-07, R-08, R-09, R-14
 | ------------- | -------- | ----- | -------------- | ------------------------------- | --------------------------- |
 | 0 Giriş | — | Firma kapalı | Tuna tabelayı bulur | ilk açılış (FTUE) | — |
 | 1 Ağaç Ev | 1–10 | Kimse küçük bir çocuğa iş vermez; Gribeton güler | İlk yapı; kasaba fark eder | Bölüm 1 kasaba görevi 1 tamamlanınca | Bölüm 1'in son görevi tamamlanınca |
-| 2 Mahalle Fırını | 11–20 | Ayşe Teyze'nin bacası çöktü; Gribeton gri kutu önerir | Renkli fırın açılır; ilk gerçek müşteri | Bölüm 2 görev 1 | Bölüm 2 son görev |
-| 3 Okul Kütüphanesi | 21–30 | Kütüphaneyi su bastı | Mozaik duvarlı kütüphane; Selin'in desen ipuçları | Bölüm 3 görev 1 | Bölüm 3 son görev |
-| 4 Fener ve Köprü | 31–40 | Gribeton'un gri köprüsü çatladı; balıkçılar mahsur | Fener yanar, asma köprü kurulur; Gribeton ilk kez teşekkür eder | Bölüm 4 görev 1 | Bölüm 4 son görev |
-| 5 Festival Şatosu | 41–50 | Festivale şato lazım | Gribeton gri temeli getirir; birlikte inşa; "Yılın Firması" | Bölüm 5 görev 1 | Bölüm 5 son görev |
+| 2 Mahalle Fırını | 11–20 | Ayşe Teyze'nin bacası çöktü; Gribeton gri kutu önerir | Renkli fırın açılır; ilk gerçek müşteri | Bölüm 1 bitiş sahnesinden sonra ana ekranın bir sonraki açılışı (ekran geçişi ya da soğuk açılış) | Bölüm 2 son görev |
+| 3 Okul Kütüphanesi | 21–30 | Kütüphaneyi su bastı | Mozaik duvarlı kütüphane; Selin'in desen ipuçları | Bölüm 2 bitiş sahnesinden sonra ana ekranın bir sonraki açılışı (ekran geçişi ya da soğuk açılış) | Bölüm 3 son görev |
+| 4 Fener ve Köprü | 31–40 | Gribeton'un gri köprüsü çatladı; balıkçılar mahsur | Fener yanar, asma köprü kurulur; Gribeton ilk kez teşekkür eder | Bölüm 3 bitiş sahnesinden sonra ana ekranın bir sonraki açılışı (ekran geçişi ya da soğuk açılış) | Bölüm 4 son görev |
+| 5 Festival Şatosu | 41–50 | Festivale şato lazım | Gribeton gri temeli getirir; birlikte inşa; "Yılın Firması" | Bölüm 4 bitiş sahnesinden sonra ana ekranın bir sonraki açılışı (ekran geçişi ya da soğuk açılış) | Bölüm 5 son görev |
 
 Görevler bölümleri kilitlemez; yalnız ara sahneleri açar (brif §10). **Görev listesi esastır (R-07):** 5 × 7 = 35
 görev, ad ve sıra bu belgededir; META ve `economy.json` bunlara göre güncellendi. Yıldız maliyetleri META §1'de
 kesindir; §5 aynı değerleri gösterir (fark çıkarsa META geçerlidir).
 
-**Sahne tetikleyicileri (R-09, brif FTUE sırası; kural META §1, product-lead):** prolog FTUE'de (Bölüm 1'den önce);
-`story.chN.start` o hikaye bölümünün **1. görevi** yapılınca, görevin mini sahnesinden sonra (N = 1 için bu, brifteki
-"ilk yıldızı harcama → ilk ara sahne" adımıdır; 2–5 için aynı kural); `story.chN.end` son (7.) görev yapılınca. Bir
-eylem en çok bir ara sahne oynatır: N−1 bitişi ile N başlangıcı ayrı görev dokunuşlarıdır, arka arkaya oynamaz.
+**Sahne tetikleyicileri (R-09, brif FTUE sırası; kural META §1, product-lead; `economy.json` `town.cutscenes`):**
+prolog FTUE'de (Bölüm 1'den önce); `story.ch1.start` Hikaye Bölümü 1'in **1. görevi** yapılınca, görevin mini
+sahnesinden sonra (brifteki "ilk yıldızı harcama → ilk ara sahne" adımı); `story.chN.start` (N ≥ 2) `story.ch(N−1).end`
+kapandıktan sonra **ana ekranın bir sonraki açılışında** (başka bir ekrandan ana ekrana geçiş ya da soğuk açılış;
+bitiş sahnesinin kapanıp oyuncuyu ana ekranda bırakması açılış sayılmaz). Bu sahne oynayana kadar kasaba N−1 yapısını
+gösterir ve N'nin görev balonu çıkmaz; böylece hikayenin sorunu o bölümün ilk görevinden **önce** anlatılır.
+`story.chN.end` son (7.) görev yapılınca. Bir eylem en çok bir ara sahne oynatır: N−1 bitişi ile N başlangıcı arka
+arkaya oynamaz.
 
 i18n anahtarları: `story.<sahne>.p<n>.<konuşan>` (ör. `story.ch1.start.p2.gribeton`); görevler
 `town.ch<n>.t<m>.name` ve `town.ch<n>.t<m>.scene`; ipuçları `tut.*`.
@@ -372,7 +380,7 @@ hangi adımda çıktığı LEVELS §2 `tutorial[]` verisindedir (ör. Bölüm 3 
 | `tut.l1.drop` | Şantiyenin üstünde bırak, kendisi düşer. | Let go above the site and it drops. | K-11 |
 | `tut.l1.match` | Plandaki renge uyan bloğu seç. | Pick the block that matches the plan. | K-16 |
 | `tut.l2.pattern` | Plana bak: renkler şerit şerit. | Look at the plan: colors come in stripes. | K-31 |
-| `tut.l2.shadow` | Gölgede ✓ varsa yer doğru. | A ✓ on the shadow means the spot is right. | K-18 |
+| `tut.l2.shadow` | Gölgede {ok} varsa yer doğru. | A {ok} on the shadow means the spot is right. | K-18 |
 | `tut.l3.gap` | Duvarda geçit var! Bloğu içinden kaydır. | There's a gap! Slide the block through. | K-12 |
 | `tut.l3.rail` | Raydaki blok düşmez. Sıradakini üstünden aşır. | On the rail it stays put. Lift the next one over. | K-12 |
 | `tut.l4.window` | Taralı yerler boş kalacak: pencere! | Hatched cells stay empty: it's a window! | S2 |
@@ -396,7 +404,7 @@ hangi adımda çıktığı LEVELS §2 `tutorial[]` verisindedir (ör. Bölüm 3 
 | `tut.l15.setting` | Süre kısa mı? Ayarlardan uzatabilirsin. | Too quick? You can extend it in Settings. | K-19 (R-11) |
 | `tut.l16.slider` | Bu kapı her hamlede kayar. | This gate slides after every move. | W5 |
 | `tut.l16.trowel` | Mala Başlangıcı: Altın Mala'yla başla. | Trowel Start: begin with a Golden Trowel. | K-40 |
-| `tut.l17.debris` | Moloz yanlış yerde. Sahaya taşı. | That debris doesn't belong. Carry it back. | S4 |
+| `tut.l17.debris` | Moloz yanlış yerde. Sahaya taşı. | That debris doesn't belong. Carry it back. | S4; ayrıca ilk `debris` geri sekmesinin bağlamsal satırı (K-17, UX §13.2) |
 | `tut.l18.bag` | Torbanın yanındaki bloğu oynat, yırtılsın. | Move the block next to the bag to tear it. | Y2 |
 | `tut.l19.screw` | Altın vidalar blokların altında. Kaz! | Golden screws hide under blocks. Dig! | Y7, K-42 |
 | `tut.l20.openshutter` | Açık Kepenk: beş hamle kepenkler ve kilitler açık. | Open Shutter: shutters and locks stay open for five moves. | K-40 |
@@ -406,7 +414,7 @@ hangi adımda çıktığı LEVELS §2 `tutorial[]` verisindedir (ör. Bölüm 3 
 | `tut.l22.brush` | Boya Fırçası bir bloğun rengini değiştirir. | The Paint Brush changes a block's color. | K-38 |
 | `tut.l23.steer` | Düşerken bir yana dokun, o yana kaysın. | Tap a side while it falls to nudge it there. | K-19 G-L (R-10) |
 | `tut.l24.chain` | Zincirli blok bekler. Önce yanındakini oynat. | Chained! Move its neighbor first. | Y3 |
-| `tut.l26.key` | Anahtar bir bloğun altında. Bul, kilit açılsın! | The key is under a block. Find it to unlock! | W7, K-42 |
+| `tut.l26.key` | Anahtarın üstündeki bloğu kaldır, kilit açılsın! | Move the block off the key to unlock! | W7, K-42 (konum her zaman görünür) |
 | `tut.l27.repeat` | Soru işareti mi? Aşağıdaki desen tekrar ediyor. | Question marks? The pattern below repeats. | K-32 `repeat` |
 | `tut.l28.wet` | Islak beton kurumadan oynamaz. Sayaca bak. | Wet concrete can't move yet. Watch the count. | Y4 |
 | `tut.l29.mirror` | Bu kat, öbür katın aynası. | This floor mirrors the other one. | K-32 `mirrorOf` |
@@ -424,9 +432,9 @@ hangi adımda çıktığı LEVELS §2 `tutorial[]` verisindedir (ör. Bölüm 3 
 | `tut.ctx.tootall` | Bu blok çok uzun, üstten geçemez. | Too tall to pass over the top. | K-05 |
 | `tut.ctx.lastmoves` | Son beş hamle! Acele etme, düşün. | Five moves left! Think, don't rush. | — |
 | `tut.ctx.queue` | Sahada yer aç, kamyon boşaltsın. | Make room so the truck can unload. | K-26 |
-| `tut.ctx.reshuffle` | Sıkıştık! Kamyon sahayı yeniden diziyor. | We're stuck! The truck is rearranging the yard. | K-30 D3 |
+| `tut.ctx.reshuffle` | Sıkıştık! Kamyon sahayı yeniden diziyor. | We're stuck! The truck is rearranging the yard. | K-30 D3; D1 ikinci dalı (zincir/ıslaklık yok ya da hâlâ D1) |
 | `tut.ctx.truckhelp.material` | Malzeme eksikti. Kamyon getirdi! | We were short on material. The truck brought more! | K-30 D2 |
-| `tut.ctx.truckhelp.free` | Zincirler çözüldü, beton kurudu. Devam! | Chains off, concrete dry. Carry on! | K-30 D1 |
+| `tut.ctx.truckhelp.free` | Kamyon yardım etti, bloklar serbest. Devam! | The truck helped, the blocks are free. Carry on! | K-30 D1 (yalnız zincir/ıslaklık kalkıp D1 çözüldüyse) |
 | `tut.ctx.blocked` | Bu blok şimdi kımıldamaz. Çevresine bak. | That one can't move yet. Look around it. | K-09 |
 | `tut.ctx.resume` | Kaldığın yerden devam, evlat. | Pick up where you left off. | K-43 (R-13) |
 | `tut.meta.bridge` | Yedi bölümü art arda kazan, köprüyü geç! | Win seven in a row to cross the bridge! | META §6 |
@@ -463,12 +471,12 @@ hangi adımda çıktığı LEVELS §2 `tutorial[]` verisindedir (ör. Bölüm 3 
 | `bridge.rule_card.win` | Yedi bölümü art arda kazan. | Win seven levels in a row. |
 | `bridge.rule_card.lose` | Kaybedersen bu turdan çıkarsın. | If you lose, you're out of this round. |
 | `bridge.rule_card.continue` | Kaybedince +5 hamleyle devam edebilirsin. | You can continue with +5 moves after a loss. |
-| `bridge.rule_card.pool` | Ödül: ●{pool}, karşıya geçenler eşit böler. Süre: {time}. | Prize: ●{pool}, split evenly by everyone who crosses. Time: {time}. |
+| `bridge.rule_card.pool` | Ödül: {coin}{pool}, karşıya geçenler eşit böler. Süre: {time}. | Prize: {coin}{pool}, split evenly by everyone who crosses. Time: {time}. |
 | `bridge.rule_card.join` / `.later` | Katıl / Şimdi değil | Join / Not now |
 | `bridge.fell` | Köprüden düştün ama simit seni kurtardı! | You fell off, but the ring buoy saved you! |
 | `bridge.timeup` | Süre doldu. Bir sonraki köprüde görüşürüz. | Time's up. See you on the next bridge. |
-| `bridge.finished` | Karşı kıyıdasın! Payın köprü kapanınca kesinleşir (şu an ●{share}). | You made it across! Your share is final when the bridge closes (now ●{share}). |
-| `bridge.payout` | Köprü kapandı. Payın: ●{share} | The bridge has closed. Your share: ●{share} |
+| `bridge.finished` | Karşı kıyıdasın! Payın köprü kapanınca kesinleşir (şu an {coin}{share}). | You made it across! Your share is final when the bridge closes (now {coin}{share}). |
+| `bridge.payout` | Köprü kapandı. Payın: {coin}{share} | The bridge has closed. Your share: {coin}{share} |
 | `bridge.bot_tap` | {name} · bilgisayarın yönettiği çırak | {name} · computer-controlled apprentice |
 | `league.title` | Usta Ligi | Builder League |
 | `league.bots_label` | Rakiplerin: Renkli Tepe çırakları | Your rivals: Hue Hill apprentices |
@@ -497,15 +505,16 @@ hangi adımda çıktığı LEVELS §2 `tutorial[]` verisindedir (ör. Bölüm 3 
 | `lose.offer.gift` | +5 hamle · Usta Dede'den hediye | +5 moves · a gift from Grandpa |
 | `lose.ad` | Reklam izle · +5 hamle | Watch an ad · +5 moves |
 | `lose.decline` | Hayır, teşekkürler | No thanks |
-| `lose.buygold` | Altın al · eksik ●{n} | Get coins · ●{n} short |
-| `lose.bridge` | Devam etmezsen bu turdan çıkarsın. | If you don't continue, you're out of this round. |
-| `lose.bridgeCap` | Bu turun +5 sınırı doldu. | This round's +5 limit is reached. |
+| `lose.buygold` | Altın al · eksik {coin}{n} | Get coins · {coin}{n} short |
+| `lose.bridgeCap` | Bu turun altın sınırı bu teklife yetmez. | This round's coin limit doesn't cover this offer. |
 | `lose.life` | Bir can gitti. | You lost a life. |
 | `lose.retry` | Tekrar dene | Try again |
 | `lose.streak` | Galibiyet serin sıfırlandı. | Your win streak was reset. |
 
-Kaldırılanlar: `lose.tuna` ("Az kaldı!" satın alma penceresinde baskı yaratıyordu; yerine Tuna yalnız "kararlı" ifade)
-ve `lose.giveup` ("Give up" suçlayıcı ton; yerine `lose.decline`).
+Kaldırılanlar: `lose.tuna` ("Az kaldı!" satın alma penceresinde baskı yaratıyordu; yerine Tuna yalnız "kararlı" ifade),
+`lose.giveup` ("Give up" suçlayıcı ton; yerine `lose.decline`) ve `lose.bridge` ("Devam etmezsen bu turdan çıkarsın."
+kayıp penceresinde kural satırıydı; BUSINESS §4.5-4 ve R-15 gereği kural yalnız `bridge.rule_card.*` ve (i) panelinde).
+`lose.bridgeCap` tavan dolmadan da çıkar: tur harcaması + bu teklifin fiyatı > 4.050 (META §6.1).
 
 ### 7.4 Renkli Tepe çırakları — bot adları (R-14, BUSINESS §4.6)
 
@@ -557,14 +566,14 @@ boş ad; code-lead), ödeme verisinden bağımsız.
 | `ads.none` | Şu an reklam yok | No ad right now |
 | `daily.title` | Günlük hediye | Daily gift |
 | `daily.noLoss` | Bir gün gelmezsen ilerlemen kaybolmaz. | Miss a day and you keep your progress. |
-| `daily.claim` / `daily.double` | Topla / Reklam · ×2 | Collect / Ad · ×2 |
+| `daily.claim` / `daily.double` | Topla / Reklam · altın ×2 | Collect / Ad · coins ×2 |
 | `chest.contains` | İçinde: | Inside: |
 | `chest.open` | Aç | Open |
 | `shop.testBuy` | Bu bir deneme satın alımıdır, ücret alınmaz. | This is a test purchase. You won't be charged. |
-| `shop.covers` | Eksik ●{n}'yi karşılar | Covers the ●{n} you need |
+| `shop.covers` | Eksik {coin}{n}'yi karşılar | Covers the {coin}{n} you need |
 | `shop.value` | +%{n} | +{n}% |
-| `piggy.status` | Kumbarada ●{n} / {max} | Piggy bank: ●{n} / {max} |
-| `piggy.threshold` | ●{n}'de kırılabilir | Can be broken at ●{n} |
+| `piggy.status` | Kumbarada {coin}{n} / {max} | Piggy bank: {coin}{n} / {max} |
+| `piggy.threshold` | {coin}{n}'de kırılabilir | Can be broken at {coin}{n} |
 | `piggy.full` | Dolu | Full |
 | `piggy.break` | Kır | Break |
 | `booster.noShutter` | Bu bölümde kepenk yok | No shutters in this level |
@@ -574,6 +583,7 @@ boş ad; code-lead), ödeme verisinden bağımsız.
 | `age.check` | Yılı kontrol eder misin? | Could you check the year? |
 | `settings.timePressure` | Zaman baskısını azalt | Reduce time pressure |
 | `common.comingSoon` | Yakında | Coming soon |
+| `common.unlockAt` | {n}. bölümde açılır | Unlocks at level {n} |
 | `master.button` | Usta Modu | Master Mode |
 | `master.card.title` | Usta Modu | Master Mode |
 | `master.card.body` | Bildiğin bölümler, daha az hamle. | Levels you know, fewer moves. |

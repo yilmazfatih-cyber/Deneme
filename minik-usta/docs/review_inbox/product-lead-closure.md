@@ -169,3 +169,73 @@ Yeni satırlar (`tut.ctx.tootall`, `.lastmoves`, `.queue`, `.reshuffle`, `.truck
 - **Geri çekilen:** META'nın 36 görevlik listesi; kumbara 20/30/40 · 1.500 · 3.000; "10 bölümde 2 kez +5 alamaz" üst sınırı;
   K-43 "kapanma = çıkış"; K-07 0,3 hücre eşiği; K-19 ms/satır değerleri; ara sahnede "her hikaye bölümünde 1. görev" (P-14'ün
   ilk hali); Bölüm 1–2 duvar yükseltme sorusu.
+
+## Tutarlılık denetimi (tur 1)
+
+Tarih: 2026-10-05. Kaynak: bağımsız denetim + şüpheci onayı (27 bulgu). Dokunulan dosyalar: `docs/GDD.md`,
+`docs/LEVELS.md`, `docs/OBSTACLES.md`, `docs/META.md`, `config/economy.json`, `config/events.json` (iki JSON prettier ile
+biçimlendi ve ayrıştırıldı; economy.json'da içerik değişikliği yalnız 2 alan + 1 `_doc`, satır sayısındaki fark biçimdir).
+Bölüm 1–6 bir karalama betiğiyle (scratchpad; proje kodu değil) LEVELS.md'den doğrudan okunup yeniden doğrulandı.
+
+- #0 Bölüm 4 adım 2 `tut.ctx.support` anahtarı (Engel) → KAPANDI (yol b: GDD §14 + yeni §14.1 madde 1–2 — `textKey` = `tut.l<bölüm>.<konu>` ya da bağlamsal satırı yeniden kullanmak için `tut.ctx.<konu>`; yeni anahtar ailesi yok, R-08'in tek kümesi korunur; LEVELS §0 ve §5 GDD ile eşitlendi; code-lead regex'i ve "bölüm verisinde değil" cümlesini günceller)
+- #1 D2 yardım `B1`'lerinin zamanı ve `x`'i → KAPANDI (GDD K-30: adım 12'de kuyruğun sonuna eklenip aynı adımda bir kez denenir — K-25 "tek deneme noktası"na yazılı tek istisna; `x = 5`, `dropColumns` yok, sırayla tek tek; sığmayan kuyrukta kalır; güvence denetimi teslimattan sonra, kuyruktaki `B1` 2 hamle simülasyonunda 9. adımda teslim; D1 → D2 → D3 sırası; K-25, K-35 adım 12, E-23 güncellendi)
+- #2 +5 kabulünden sonra kilitlenme denetimi yok → KAPANDI (GDD K-29: kabulden sonra adım 12 bir kez çalışır; K-35 adım 12 satırı; yeni E-42)
+- #3 K-23 dilim tamamlanan hamlede `t` → KAPANDI (GDD K-23: o hamlenin adım 10'unda `t` artmaz, örnekle uyumlu ve adım adım yazıldı; Mala/güçlendiriciyle tamamlanmada da artmaz; K-35 adım 10, S-15, E-09, OBSTACLES S5)
+- #4 Asansör/kayar kapı sınırda dışarı bakan `dir` → KAPANDI (yol a: GDD K-24 ve OBSTACLES W5/S6 algoritması "önce `e + dir` aralık dışındaysa yön döner, sonra 1 adım"; doğrulayıcı kuralı gerekmez; örnekler `start 2, dir +1` → 1, 0, 1, 2 ve `y 3, dir 1` → 2, 1, 2, 3; test adı önerisi)
+- #5 `.` hücresindeki yanlış nesne ve K-34 → KAPANDI (GDD K-34: `.` yalnızca boşken dolu sayılır; içinde moloz/yapışmış harç varsa üstündeki yerleşim `support` hatası, o sütunda `buildFront` yok; kanca 1–2 `missingSupport` tanımı; yeni E-43, E-24 güncellendi; OBSTACLES Y8, S4; code-lead `dotMask & ~wrongOcc`)
+- #6 D2 sayımında moloz → KAPANDI (GDD K-30 D2 ve K-27: moloz bayraklı bloklar hiçbir terimde sayılmaz, boya kapısından geçen moloz dahil; ayrıca şantiyede yapışmış harçlı blok arz sayıldı (yanlış pozitif yardımı önler); yeni E-44; OBSTACLES S4)
+- #7 K-31 renk sayımı kapsamı → KAPANDI (GDD K-31 "renk kümesi" = plan (çözülmüş `?` dahil) ∪ bütün bloklar (parti 0, kamyon partileri, moloz) ∪ Boya Kapısı `color`; Bölüm 5 ve 22 örnekleri; LEVELS §0 aynı cümle)
+- #8 Güncelleme sonrası sürüm uyuşmazlığı → KAPANDI (GDD K-43 madde 4: deneme cezasız kapanır ve oynanmamış sayılır; can, oyun öncesi ve bölüm içi güçlendiriciler, tekliflere ödenen altının tamamı iade; seri bonusu tüketilmez; reklam sayaçları ve ömür ilk hediyesi geri verilmez; Köprü'de elenme/tahta yok, iade altın tur harcamasından düşülür; Lig puanı yok; `inLevel`'e `levelHash`, `rulesVersion`, `offerSpendCoins`; yeni E-45)
+- #10 Yapışmış cam+harç kırılma maliyeti → KAPANDI (GDD K-07: maliyetler toplanır, taban 1 / yapışmış harçta 2 + cam 1 → 3; K-35 adım 4; OBSTACLES S3, Y8; test "K-07 stuck glass mortar break cost")
+- #11 Duvarın iki yanında komşuluk → KAPANDI (GDD §0: x=5 ile x=6 hiçbir zaman komşu değil (R-03 eşdeğerliği); K-35 adım 5; yeni E-46; OBSTACLES S4)
+- #12 Zorunlu öğretici adımları kilitliyor (Engel) → KAPANDI (B1 adım 2 Y + `piece:0`; GDD §14.1 madde 3 `overWall`/`gapPass`/`holdOverBuild` = sürükleme sinyali, sayım adım başladıktan sonra; B4 yeni düzende adım 2 ×2, adım 3 `piece:2` — her 2 doğru yerleşimden sonra `p` rayı geçerli ve K-34'e uygun (betik); §14.1 madde 4: Z adımı veri kuralı + çalışma anı güvencesi (olay üretilemiyorsa adım atlanır); LEVELS §5 maddesi; B3/B6/B7/B9 Z adımları betikle denetlendi)
+- #13 Bölüm 3, 5, 6'da ✓ sonrası çıkmaz → KAPANDI (veri yolu seçildi, D3 MVP'de isteğe bağlı kalır: B3 üst satır `GG` + `b` G; B5 #34'teki değişiklik; B6 `E`/`F` renkleri ve y4–y6 plan satırları yer değiştirdi; B2 ve B4 de (#32, #33) — betik: 1–6'da Mala'sız, kazısız erişilebilen çıkmaz yok; LEVELS §5 "✓ sonrası çözüm" maddesi, §4 madde 8; GDD K-30'a D3'ün isteğe bağlı kalma koşulu yazıldı)
+- #14 Bölüm 2 adım 2 "!" gösteremiyor → KAPANDI (adım 2 `piece:2` (`c`) hold, gölge `color`+`support` → "!"; yeni adım 3 `piece:1` (`b`) ✓, `tut.l1.match` yeniden kullanıldı; tasarım niyeti netleşti; betikle doğrulandı)
+- #15 `tut.ctx.support` ne zaman çıkar → KAPANDI (GDD K-34 kanca 4 + §14.1 madde 2: Bölüm 4 adım 2 gösterilince `seenContextTips.support` işaretlenir — UX §5.5 ile aynı, design-lead'e değişiklik gerekmez; LEVELS §0 tetik listesi (yalnız Bölüm 3 doğal noktası) ve B6 notu "burada çıkmaz" olarak düzeltildi)
+- #16 Reklam seçeneği yalnız 1. teklifte → KAPANDI (GDD K-29 kural + örnek gerekçesi; Köprü satırı "tavan doluysa 2. ve 3. teklifte yalnız ret"; META §3.2, §3.3, §6.1; `economy.json → outOfMoves.rewardedAdOffer.offerIndex: 1` (BUSINESS §4.3 tablosuyla aynı alan) ve `_doc`)
+- #17 Bölüm 35 Zor ama niyet gölge "doğru"ya dayanıyor → KAPANDI (LEVELS §3 #35 niyeti: plan rengi + inşa cephesiyle (her zorlukta görünür) doğrulayıp gölge konumunda bırakmak; K-18 ve etiket değişmedi)
+- #18 Bölüm 7 kazı adımı yanlış konumla bitiyor → KAPANDI (GDD §14.1 `done.at`; B7 adım 1 `{ event: yardMove, count: 1, at: [0, 6] }`; `b` → (1,6) sonrası `f`'in tutulamadığı betikle doğrulandı; code-lead şemaya `at` ekler)
+- #19 G-L gölge geçişi "aynı karede" → KAPANDI (GDD K-18: "yönlendirme anında yeni inişi gösterir; geçiş animasyonu design-lead'in, JUICE #46 / UX §5.4")
+- #20 N8 animasyon sırası → KAPANDI (OBSTACLES N8: sıra yalnız olay sırası; animasyonlar JUICE §0 kural 10'a göre eşzamanlı; test yalnız olay sırasını denetler)
+- #22 Açılmadan gelen güçlendirici → KAPANDI (META §4 kuralı: envantere eklenir, yuva açılışa kadar kilitli, adet görünür, açılışta ücretsiz denemeler eklenir; sandık 10 içeriği korundu; test adı; `economy.json → boosters._doc`; UX kilitli yuvada adet rozeti design-lead'e)
+- #23 LiveOps parametreleri events.json/META'da yok → KAPANDI (`events.json`: `wobblyBridge.maxBridgesPerDay: null`, `wobblyBridge.finisherExtras: null`, `masterLeague.pointsMultiplier: 1`, `masterLeague.weekendMultiplier: null` (`factor`, `addPoints`, `difficulties`, `appliesTo: "playerAndBots"` tek değer), `liveOps { startUtc, endUtc, overrides }`; META §6.1, §7.1 satırları; META §7.3 madde 4 bot formülü `κ = M · κ_w`, aralık başına artış çarpımı, Hafta 3 ve 6 örnekleri; test "META 7.3 league multiplier equal for player and bots")
+- #24 META §6.1 sunum dili → KAPANDI (META §6.1: "altın seçeneği etkin değildir (sunum UX §7: gri düğme + `lose.bridgeCap`); reklam tavandan bağımsız (yalnız 1. teklif)"; "Bırak" ifadesi kaldırıldı)
+- #25 META §9 türetilmiş sayılar → KAPANDI (taban 35,2 (1–50) / 37 (Usta Modu); galibiyet 500; toplam ≈ 1.030–1.140; Usta Modu ≈ 840–950 (tabanın iki yanında, ayar kuralı metni korundu); sandık ≈ 3,2; günlük ≈ 0,9; kumbara ≈ 60/galibiyet ≈ 600/10 bölüm)
+- #26 Termos (12) ve Mala Başlangıcı (16) açılışları → KAPANDI (LEVELS §3 satır 12 ve 16; "11–50 öğretici notları"na `tut.l12.thermos`, `tut.l16.trowel` ve diğer açılış adımları (13, 20, 22); anahtarlar STORY §6'da mevcut)
+- #27 `tutorial[]` sözleşmesi ↔ LEVELS → KAPANDI ((a) #0 ile; (b) `done.minMs`, B2 `{ event: holdOverBuild, count: 1, minMs: 500 }`; (c) LEVELS 1–10 bütün dilim adlarına EN karşılığı (Steps, Platform, Front Wall, Front Facade, Left/Right Room, Tall Trunk, Beam/Eaves, Fence 1/2, Rope/Rungs, Trunk/Window Floor/Roof); ek: `segmentDone`, `deliveryDone` (B5) GDD sözlüğüne girdi)
+- #32 Bölüm 2 `d` çıkmazı → KAPANDI (`d` `B1_0` Y → G; betik: min 3, YAO %100, çıkmaz yok)
+- #33 Bölüm 4 iki `B1_0` W çıkmazı → KAPANDI (`b`, `c`, `f` → tek `C3_0` W (2,6), (3,7) boş; doluluk 47/48; min 4, YAO %75, bütçe 12 (§1 tablosu); öğretici adım 2 ×2, adım 3 `piece:2`; blockout, çözüm, §4 madde 2 ve 7 (kaldırma ölçümü `a` 1 · `b` 2 · `d` 0) güncellendi; betik: çıkmaz yok)
+- #34 Bölüm 5 çıkmazları → KAPANDI (`d` → `D2_90` R, `g` → `O4_0` R, parti 1 `B1_0` R → W; renkler G/R/W; betik: min 6, YAO %100, Mala'sız ve kazısız çıkmaz yok)
+- #36 K-03 örneği satır sırası → KAPANDI (`["WW","WW","YY"]` → (6,0),(7,0)=Y; Bölüm 1 planı ve K-15 ile aynı)
+- #37 Bölüm 2 dilimi 2×5 → KAPANDI (LEVELS §4 madde 9: O4 temel (2 satır) + C3 çifti çapraz şerit (3 satır) = 5; dilim satırında atıf)
+- Ek bulgu (denetim dışı, kendi betiğim) Bölüm 9'da ✓ sonrası çıkmaz adayları → AÇIK (Faz 2) (kazısız aramada 15 durum, 3 kazıya kadar 7'si kurtarılamadı; kazılı tam arama karalama betiğinin sınırını aşıyor; B9 notu yazıldı; Faz 2 `levels:solve` ile kesinleşince parti 1 sırası/şaşırtma renkleri düzeltilir. Bölüm 7, 8, 10 aynı denetimi Faz 2'de alır)
+
+Özet: **31 bulgu → 31 KAPANDI · 0 RET · 0 AÇIK SORU**; 1 ek bulgu AÇIK (Faz 2, product-lead).
+
+**Diğer ajanlara bağımlılıklar (bu tur):**
+- code-lead (TECH): §8.2 `textKey` regex'i `tut.ctx.*`'ı da kabul etsin, "bağlamsal öğreticiler bölüm verisinde değil"
+  cümlesi §14.1 madde 2'ye göre; `done` enum'una `holdOverBuild`, `segmentDone`, `deliveryDone`; `done.minMs`, `done.at`;
+  öğretici adımı gösterilince `seenContextTips` işareti; Z adımı çalışma anı güvencesi (§14.1 madde 4b). §9.7 D2:
+  adım 12 teslimatı, `x = 5`, D1 → D2 → D3 sırası, moloz hariç / yapışmış harç dahil arz, D3 aday kümesi. §6.1
+  `addMoves` (teklif kaynakları) → adım 12. §6.2 adım 4 (maliyet toplama, `moveCost` birleşimi §7.1), adım 5 (komşuluk
+  sınırı aşmaz), adım 10 (S5 artmama). K-24/W5 ping-pong algoritması. §5.2 `dotMask & ~wrongOcc`. §11.1 geçersiz deneme
+  iadeleri ve `inLevel` alanları. L-06/L-07'ye boya kapısı rengi. Satır ≈ 1753 "reklam yalnız 1. teklif". `config:validate`
+  şemasına `rewardedAdOffer.offerIndex`, `events.json` yeni alanları (`maxBridgesPerDay`, `finisherExtras`,
+  `pointsMultiplier`, `weekendMultiplier`, `liveOps`) ve bot simülasyonuna §7.3 madde 4. `levels:solve`'a ✓-tuzağı taraması
+  (LEVELS §5).
+- design-lead (UX §13.2): Bölüm 1 adım 2 Z → Y ve vurguya `piece:0 (a)`; Bölüm 2 adım 2 `piece:2 (c)` hold ("!") + yeni
+  adım 3 `piece:1 (b)` (`tut.l1.match`); Bölüm 4 adım 2 `placementCorrect` ×2, adım 3 `piece:2 (p)`; Bölüm 7 adım 1 tamam
+  koşulu "`b` (0,6)'ya yerleşti". UX §4/§5.1 kilitli güçlendirici yuvasında adet rozeti (META §4). UX §5.5 değişmez
+  (GDD artık aynı kuralı yazıyor). LEVELS blok düzeni değişen bölümler (2, 3, 4, 5, 6) için ekran görüntüleri Faz 2'de.
+- entrepreneur (BUSINESS): §5.4 satır ≈ 363 "≈ 1.010–1.120" → "≈ 1.030–1.140" (META §9); §7 LiveOps parametreleri artık
+  `events.json`'da (anahtar adları yukarıda), hafta temaları `liveOps.overrides` ile yazılır.
+
+## Tutarlılık denetimi (tur 2)
+
+- #0 GDD K-43/4 analytics `level_resume_invalid` ANALYTICS §2'de yok → KAPANDI (GDD K-43 madde 4: "(yerel tanılama kaydı; analytics olayı ANALYTICS §2'ye eklenirse `level_resume_invalid`)" — TECH §11.1 ile aynı; olay gerekiyorsa entrepreneur ANALYTICS §2'ye satır ekler (code-lead-closure #23 önerisi), GDD olay adını ancak tabloya girince koşulsuz kullanır)
+- #1 Duraklatma ↔ G-L yönlendirme penceresi çatışması → KAPANDI (TECH §4.7 `flushPending` listesi kural olarak kabul edildi: GDD K-19 madde 1'e pencereyi erken kapatan olayların tam listesi (a) yeni tutma, (b) Geri Al, (c) güçlendirici yuvası, (d) duraklatma / Android geri / çıkış menüsü, (e) arka plan / kapanma, (f) sahne değişimi + "listede olmayan hiçbir olay kapatmaz"; K-43 madde 1'e tek istisna ve gerekçe (çıkış onayı `m`'yi ve kaydı yarım hamleyle görmez; ilk düşüşte `m = 1`); yeni kenar durumu E-47; TECH değişikliği gerekmez)
+- #2 OBSTACLES S2 "`.` dolu sayılır" koşulsuz → KAPANDI (S2: "K-34'te `.` yalnızca boşken dolu sayılır (içinde moloz S4 ya da yapışmış harçlı blok Y8 varsa sayılmaz; GDD K-34, E-43)"; ek olarak GDD K-19 örneği ve K-34 Örnek 2'de "boş `.`" netleştirildi)
+- #3 GDD §14.1/4 Z adımı yalnız `piece:` ↔ UX Bölüm 17 `debris:0` → KAPANDI (§14.1/4 (a) "`piece:` ya da `debris:`", `piece:` içermeyen Z adımının `done`'ı `placementCorrect` olamaz (K-16 koşul 2; Bölüm 17 → `yardMove`); (b) çalışma anı denetimi `piece:` ve `debris:` bloklarına bakar, `yardMove` üretilebilirliği ikisi için aynı: K-10'a göre boş, x ≤ 5, y ≤ 7, `R`'de erişilebilir konum; LEVELS §5 kontrol listesi aynı biçimde güncellendi. code-lead'e bağımlılık: TECH §8.3 L-17 "zorunlu adımın `highlight`'ında en az bir `piece:`" → "`piece:` ya da `debris:`" ve `debris:`-yalnız Z adımında `done ≠ placementCorrect` denetimi; Z adımı çalışma anı güvencesi `debris:`'i de kapsar)
+- #4 GDD K-30 bütçeleri duvar saati gibi yazılmış → KAPANDI (D3: "belirlenimci düğüm bütçesi içinde (sayı TECH §9.7, cihaz hızından bağımsız; bütçe biterse 'kilit yok' sayılır)"; güvence: "belirlenimci iş bütçeli (≈ 20 ms; sayı TECH §9.7, cihaz hızından bağımsız) 2 hamle denetimi"; ek cümle: bütçeler iş sayısına bağlı → her cihazda aynı yardım (K-43 devamı bit bit aynı), sayıyı değiştirmek `rulesVersion`'ı artırır)
+
+Özet (tur 2): **5 bulgu → 5 KAPANDI · 0 RET · 0 AÇIK SORU.** Bağımlılıklar: entrepreneur (ANALYTICS §2'ye `level_resume_invalid` eklenip eklenmeyeceği, isteğe bağlı), code-lead (TECH §8.3 L-17 ve §14.1/4 çalışma anı denetimi `debris:` kapsamı).

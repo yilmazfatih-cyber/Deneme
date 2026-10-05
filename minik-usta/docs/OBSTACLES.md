@@ -1,6 +1,6 @@
 # Engel kütüphanesi
 
-Sahip: product-lead · Sürüm: Faz 1 revizyonu (2026-10-04; R-08, R-10, R-21) · Kaynak: `docs/BRIEF.md` §7, `docs/GDD.md`
+Sahip: product-lead · Sürüm: Faz 1 revizyonu (2026-10-04; R-08, R-10, R-21; tutarlılık denetimi tur 1, 2026-10-05) · Kaynak: `docs/BRIEF.md` §7, `docs/GDD.md`
 
 Her engel: kimlik, bölge, kural (kodlanabilir), veri parametreleri, ilk bölüm, bilgi kartı metni (TR/EN, en çok 12 kelime).
 Genel kurallar (yol, düşüş, doğrulama, hamle sonu hattı) GDD'dedir; burada yalnızca engele özel olan yazılır.
@@ -53,11 +53,13 @@ yok (renk körlüğü); bölüme göre değişen sayılar `{n}` yer tutucusuyla 
 
 ### W5 — Kayar Kapı
 - **Bölge:** duvar · **İlk bölüm:** 16
-- **Kural:** Geçidin alt satırı `y`, `range = [a, b]` içinde her hamle sonunda (adım 10) `dir` yönünde 1 satır kayar; sınıra
-  gelince bir sonraki hamlede yön döner (ping-pong). Boy `size` sabittir. Kapı hiçbir bloğu itmez. Kısıt:
+- **Kural:** Geçidin alt satırı `y`, `range = [a, b]` içinde her hamle sonunda (adım 10) şu sırayla kayar: (1) `y + dir`
+  aralığın dışındaysa önce yön döner (`dir = −dir`); (2) `y += dir` (1 satır; ping-pong, GDD K-24 ile aynı algoritma).
+  Başlangıçta sınırdaysa ve `dir` dışarı bakıyorsa (`y = b, dir = 1` ya da `y = a, dir = −1`; geçerli veri) ilk hamlede
+  önce yön döner; `y` hiçbir zaman aralığın dışına çıkmaz. Boy `size` sabittir. Kapı hiçbir bloğu itmez. Kısıt:
   `b + size ≤ height − 1`, `a ≥ 0`.
 - **Veri:** `{ type: "slider", y (başlangıç), size, range: [a, b], dir (1 | −1, varsayılan 1) }`.
-- **Örnek:** `range [1,3], y 1, dir 1` → hamle sonları: 2, 3, 2, 1, 2 …
+- **Örnek:** `range [1,3], y 1, dir 1` → hamle sonları: 2, 3, 2, 1, 2 … · `range [1,3], y 3, dir 1` → 2, 1, 2, 3, 2 …
 - **Bilgi kartı** (`obs.w5.desc`): TR "Kayar kapı her hamleden sonra bir sıra kayar." · EN "The sliding gate shifts one row after every move."
 
 ### W6 — Boya Kapısı
@@ -158,9 +160,10 @@ yok (renk körlüğü); bölüme göre değişen sayılar `{n}` yer tutucusuyla 
 - **Bölge:** saha (etkisi şantiyede) · **İlk bölüm:** 35
 - **Kural:** `mortar` bayraklı blok şantiyede hatalı yerleşirse ve bütün hücreleri plan alanında (renkli, `?` ya da `.`
   hücre) ise geri sekmez, **yapışır** (kilitli değildir). Bir hücresi plan dışındaysa normal geri seker (öneri P-2b). Yapışmış blok
-  sürüklenebilir; iptal olmayan her hamlesi 2 hamle yer. Çekiçle kırılır, Boya Fırçası ile boyanırsa ve yeni renkle
+  sürüklenebilir; iptal olmayan her hamlesi 2 hamle yer (cam da kırılırsa 3; maliyetler toplanır, GDD K-07). Çekiçle kırılır, Boya Fırçası ile boyanırsa ve yeni renkle
   doğruysa kilitlenir, Vinçle taşınır. Yapışmış blok dilimin tamamlanmasını engeller (GDD K-15) ve üstüne doğru
-  yerleşim yapılamaz (K-34). Doğru yerleşirse normal kilitlenir.
+  yerleşim yapılamaz (K-34); bir `.` hücresine yapışmışsa o `.` hücresi K-34'te "dolu" sayılmaz, o sütunda üstündeki her
+  yerleşim `support` nedeniyle hatalıdır (GDD E-43). Doğru yerleşirse normal kilitlenir.
 - **Veri:** `flags: ["mortar"]`.
 - **Örnek:** `B1` R harçlı (6,2) W hücresine düşer → yapışır. Oyuncu sahaya geri sürükler → kalan 10 → 8.
 - **Bilgi kartı** (`obs.y8.desc`): TR "Harçlı blok yanlış yere düşerse yapışır. Dikkatli bırak!" · EN "A mortar block sticks if it lands wrong. Drop with care!"
@@ -178,8 +181,9 @@ yok (renk körlüğü); bölüme göre değişen sayılar `{n}` yer tutucusuyla 
 ### S2 — Plan Boşluğu
 - **Bölge:** şantiye · **İlk bölüm:** 4
 - **Kural:** `.` hücresi boş kalmalıdır; bloğun herhangi bir hücresi `.` üstüne gelirse hatalı yerleşim. K-34'te `.`
-  dolu sayılır. `.` üstündeki hücre şu yollarla dolar: ray (W1), iki sütuna köprü kuran 2 geniş blok (duvar üstü),
-  balon (S8), Altın Mala, Vinç.
+  yalnızca boşken dolu sayılır (içinde moloz S4 ya da yapışmış harçlı blok Y8 varsa sayılmaz; GDD K-34, E-43). `.`
+  üstündeki hücre şu yollarla dolar: ray (W1), iki sütuna köprü kuran 2 geniş blok (duvar üstü), balon (S8), Altın
+  Mala, Vinç.
 - **Veri:** `rows` içinde `.`.
 - **Örnek:** Plan sütun 7: y0 W, y1 `.`, y2 W. `B1` W sütun 7'ye bırakılır → (7,1)'e düşer → hatalı.
 - **Bilgi kartı** (`obs.s2.desc`): TR "Taralı hücre boş kalmalı. Üstünü geçitten ya da köprüyle doldur." · EN "Keep hatched cells empty. Fill above them via a gap or bridge."
@@ -187,7 +191,8 @@ yok (renk körlüğü); bölüme göre değişen sayılar `{n}` yer tutucusuyla 
 ### S3 — Cam Blok
 - **Bölge:** şantiye (bayrak sahadaki blokta) · **İlk bölüm:** 21
 - **Kural:** `glass` bayraklı blok serbest kipte şantiyeye düşerken d > eşik (low 4, normal 3, high 2) ise kırılır:
-  doğrulama yapılmaz, blok GDD K-17 hedef sırasıyla sahaya döner, hamle maliyeti 2, Usta Serisi 0. Ray, Vinç, balon
+  doğrulama yapılmaz, blok GDD K-17 hedef sırasıyla sahaya döner, hamle maliyeti taban + 1 (sıradan blokta 2; yapışmış
+  harçlı cam blokta 2 + 1 = 3, GDD K-07), Usta Serisi 0. Ray, Vinç, balon
   yükselişi, geri sekme, teslimat ve saha yerçekimi düşüşlerinde kırılmaz.
 - **Veri:** `flags: ["glass"]`.
 - **Örnek:** normal; cam `D2_90` (6,8)'de bırakılır, iniş (6,3) → d=5 > 3 → kırılır. (6,6)'ya indirilip bırakılırsa d=3 → sağlam.
@@ -198,19 +203,25 @@ yok (renk körlüğü); bölüme göre değişen sayılar `{n}` yer tutucusuyla 
 - **Kural:** Bölüm başında dilimin şantiye alanında duran bloklar; hiçbir yerde doğru olamaz (GDD K-16). Tutulabilir
   (serbest kipte; satırları bir geçitteyse ray kipinde de). Sahaya bırakılınca (1 hamle) `clear/debris` 1 sayılır ve
   sahada sıradan, kullanılamaz bir blok olur. Şantiyede başka yere bırakılırsa hatalı → başlangıcına döner. Altı boşalsa da
-  düşmez. Çekiç kırar (sayılır). Dilim, alanında moloz varken tamamlanmaz.
+  düşmez. Çekiç kırar (sayılır). Dilim, alanında moloz varken tamamlanmaz. Moloz malzeme arzı değildir: K-27 ve K-30 D2
+  sayımlarında sahada da, kuyrukta da sayılmaz (GDD E-44). Bir `.` hücresindeki moloz o hücreyi K-34'te "dolu" yapmaz
+  (GDD K-34, E-43). Moloz şantiyeden alınırken (6,y)/(7,y) başlangıç hücreleri sahadaki (5,y) engellerine komşu
+  sayılmaz (duvar sınırı; GDD §0, E-46).
 - **Veri:** `build.debris[] = { shape, color, x, y, segment }` (`segment` öneri P-5).
 - **Bilgi kartı** (`obs.s4.desc`): TR "Eski moloz yolu tıkıyor. Önce onu sahaya taşı." · EN "Old rubble is in the way. Move it out first."
 
 ### S5 — Döner Platform
 - **Bölge:** şantiye · **İlk bölüm:** 31
-- **Kural:** `build.mode = "carousel"` (GDD K-23). Sayaç: dönmeye kalan hamle `carouselEvery − t` (W4 sayaç dili).
+- **Kural:** `build.mode = "carousel"` (GDD K-23). Sayaç: dönmeye kalan hamle `carouselEvery − t` (W4 sayaç dili). `t`
+  her hamlenin adım 10'unda 1 artar; **ön dilimin tamamlandığı hamlede artmaz** (dönüş adım 8'de olmuş, `t = 0` kalır) ve
+  güçlendirici / Altın Mala ile tamamlanmada da artmaz (mini hatta adım 10 yok).
 - **Veri:** `build.carouselEvery` (2–6).
 - **Bilgi kartı** (`obs.s5.desc`): TR "Platform {n} hamlede bir döner. Öndeki yüze inşa et." · EN "The platform turns every {n} moves. Build on the front face."
 
 ### S6 — Asansör İskele
 - **Bölge:** şantiye · **İlk bölüm:** 37
-- **Kural:** `build.elevator` (GDD K-24); her iki modla birleşebilir.
+- **Kural:** `build.elevator` (GDD K-24); her iki modla birleşebilir. Adım 10'da önce `e + dir` aralık dışındaysa yön
+  döner, sonra `e += dir` (W5 ile aynı ping-pong); başlangıçta sınırda ve dışarı bakan `dir` geçerli veridir.
 - **Veri:** `build.elevator: { range: [a, b], start, dir }`.
 - **Bilgi kartı** (`obs.s6.desc`): TR "İskele her hamlede bir sıra iner çıkar. Geçide dikkat!" · EN "The scaffold moves one row each move. Mind the gap!"
 
@@ -351,7 +362,7 @@ tasarım notu, test gerektirmez.
 - **N5** [kural] — Bir hücrede en çok 1 saklı nesne (anahtar ya da vida).
 - **N6** [kural] — Ağır blok duvar sınırını geçemez: hiçbir geçitten geçemez, boyanamaz, kepenk/kilit onu etkilemez.
 - **N7** [kural] — Boya kapısı yalnızca rengi değiştirir; bayraklar (cam, harç, balon) korunur. Zincirli/ıslak blok tutulamadığı için serbest kalana kadar boyanamaz.
-- **N8** [kural] — İki zamanlayıcı aynı hamle sonunda ilerler; sıra adım 10'daki gibidir (kepenk → kayar kapı → döner platform → asansör → ıslak beton). Birbirlerinin girdisini kullanmazlar; sıra yalnızca olay/animasyon sırasıdır.
+- **N8** [kural] — İki zamanlayıcı aynı hamle sonunda ilerler; sıra adım 10'daki gibidir (kepenk → kayar kapı → döner platform → asansör → ıslak beton). Birbirlerinin girdisini kullanmazlar; sıra yalnızca **olay (event) sırasıdır**. Animasyonlar bu sıraya bağlı değildir: JUICE §0 kural 10'a göre eşzamanlı oynar (sunum design-lead'in). Test yalnızca olay sırasını denetler.
 - **N9** [not] — Saha yerçekimi geçide giden saha tünelini kapatabilir ya da açabilir; gölge yoktur ama yerçekimi deterministiktir, hamle sonu animasyonu gösterir.
 - **N10** [not] — `.` üstündeki hücreyi doldurmanın ana yolu raydır; geçit satırı `.`'nin hemen üstüne denk getirilir (Bölüm 4, 9).
 - **N11** [kural] — Raydan giren cam blok düşmediği için asla kırılmaz; cam bölümlerinde geçit güvenli ama pahalı yoldur (kazı gerekir).

@@ -243,7 +243,7 @@ bildirimi gelirse: sanat ve mağaza materyalleri yeniden incelenir, hukuki gör�
 | E5  | Teklif penceresinde bütün seçenekler **eşit boyutta** (UX "Hamleler bitti": üç seçenek 920×152, alt alta: "+5 hamle ● 900", "Reklam izle +5", "Vazgeç"); hiyerarşi yalnız renkle. Suçlayıcı ya da aciliyet metni yok ("Az kaldı!", "Vazgeçiyorum, kaybetmek istiyorum" gibi); yalnız nötr bilgi satırı ("2 hücre kaldı"), vurgusuz ve animasyonsuz. | [K41]       |
 | E6  | Kayıp anındaki hamle fiyatı (900 / 5 = 180 altın/hamle) oyun öncesi planlı alımdan (Termos 450 / 3 = 150 altın/hamle) ucuz değildir; dürtüsel harcama ödüllendirilmez.                                                                                                  | —           |
 | E7  | Oyuncunun kendi belirlediği aylık harcama limiti ayarı.                                                                                                                                                                                                                | Sonra (mağaza sürümü) |
-| E8  | Bot zorluğu, bot elenme zamanları ve havuz bölüşümü oyuncunun ödeme geçmişinden bağımsızdır. Bot simülasyonu saf modül (`src/services/events/botSim.ts`), girdisi yalnız `(eventInstanceId, cohortIndex, config, joinAt, now)`; tohum `hash32(eventInstanceId, cohortIndex)`, `cohortIndex` = katılım saatinin kovası (cihaz kimliği, cüzdan, satın alma yok). Denetim: ESLint `no-restricted-imports` (economy, save, satın alma, analytics importu yasak); iki-kayıt eşitlik testi (0 ↔ 50 satın alma, 0 ↔ 1 M altın, +5 kullanmış ↔ kullanmamış → bot sıralamaları birebir aynı); `event_join` olayında `botSimVersion` + `seedHash`. Lig ve hafta sonu çarpanları botlara da uygulanır. | OR-14        |
+| E8  | Bot zorluğu, bot elenme zamanları ve havuz bölüşümü oyuncunun ödeme geçmişinden bağımsızdır. Bot simülasyonu saf modül (`src/services/events/botSim.ts`; imza TECH §11.2). Girdi: Köprü'de yalnız `(eventId, t_0, t, L_0)` + `config/events.json` + bölüm zorluk tablosu (META §6.2; `eventId` = katılım dakikası + etkinlik sıra numarası, `L_0` = katılım anındaki sıradaki bölüm); Lig'de yalnız `(weekId, groupId, joinAt, t, tier)` + `config/events.json` (META §7.1/§7.3). `installId` yalnız `groupId = hash32(weekId, installId)` hesabında kullanılır; ödeme, cüzdan ve satın alma verisi girmez. Denetim: ESLint `no-restricted-imports` (economy, save, satın alma, reklam, analytics importu yasak); iki-kayıt eşitlik testi (aynı etkinlik ve aynı `installId`; 0 ↔ 50 satın alma, 0 ↔ 1 M altın, +5 kullanmış ↔ kullanmamış → bot sıralamaları birebir aynı; TECH §11.2 "E8 bot standings are independent of purchases"); `event_join` olayında `botSimVersion` + `seedHash`. Lig ve hafta sonu çarpanları botlara da uygulanır. | OR-14        |
 | E9  | Web MVP mağazasında "Test sürümü — ödeme alınmaz" etiketi.                                                                                                                                                                                                             | [K29 §2.3.1] |
 | E10 | Günlük ödül döngüsü bir gün kaçırılınca **sıfırlanmaz, durur** (PEGI: ödüllendiren giriş sistemi PEGI 7, kaçırılan girişi cezalandıran PEGI 12). Takvimde kaçırılan gün "bekliyor" (saat simgesi) gösterilir; sıfırlama animasyonu yok. | [K42]       |
 | E11 | +5 teklif penceresinde galibiyet serisi kaybı yazılmaz ve gösterilmez; seri sıfırlanması yalnız sonuç penceresinde bildirilir (kayıp kaçınma baskısını teklif anından ayırır; META §5'e öneri). `m = 0` cezasız çıkışta seri bonusu tüketilmez. | —           |
@@ -267,8 +267,11 @@ karşılaştırma ("Köprüde kalan: 47/100").
 5. Gerçek para karşılığı görünür (E2).
 6. Etkinlik turu başına +5 hamleye harcanabilecek altın tavanı **4.050** (= 900 + 1.350 + 1.800, tek denemenin tam
    eskalasyonu; ≈ $8,06 / ≈ 364 TL, Avuç birim fiyatıyla hesap). Config: `events.json → wobblyBridge.bridgeSpendCapCoins: 4050`
-   (product-lead ekler). Tavana ulaşılınca altın teklifi yerine "Bir sonraki köprüde görüşürüz" gösterilir; 1. teklifteki
-   reklam alternatifi (deneme başına 1, günde 3) altın tavanından bağımsız kalır. Test adı önerisi: "Köprü +5 tavanı 4.050".
+   (product-lead). Altın seçeneği yalnız `tur harcaması + teklif fiyatı ≤ 4.050` iken etkindir (META §6.1, GDD K-29); değilse
+   altın düğmesi gizlenmez, gri kalır ve `lose.bridgeCap` metni gösterilir, tavan henüz dolmamış olsa da (ör. 3.150 + 1.800
+   = 4.950 > 4.050). Sunum ve metin design-lead'in (UX §7, STORY §7.3). 1. teklifteki reklam alternatifi (deneme başına 1,
+   günde 3) altın tavanından bağımsız kalır (`rewardedAdContinueIgnoresCoinCap`). Test: TECH §11.3 "R-16 bridge coin option
+   disabled (lose.bridgeCap) when runSpend + price > cap, ad option stays".
 7. Denetim metriği: Köprü içi +5 alımlarının toplam IAP gelirine oranı ≤ %25 (eşik tahmin). Aşılırsa tasarım gözden geçirilir;
    ilk adım seri yumuşak sıfırlama A/B testi (Sonra, §12.1).
 8. Beklenen bitiren payı ilk +5 fiyatının altında kalır: ≈ 650 altın (META §6.2) < 900. Havuz artışlarında da korunur
@@ -285,7 +288,8 @@ karşılaştırma ("Köprüde kalan: 47/100").
 | D. Gerçek oyuncu + boşlukları dolduran etiketli bot | **Backend hazır olunca (Kapı 3) kararı.**                                 |
 
 **Uygulama (B), Sallanan Köprü ve Usta Ligi'nde aynı (OR-14):** 99 rakip "Renkli Tepe çırakları". Ad kalıbı "Çırak Fındık" /
-EN "Apprentice Hazel"; 100 TR+EN ad çifti STORY'de (`npc.apprentice.*`, design-lead). Avatar = blok renklerinden birinde
+EN "Apprentice Hazelnut" (STORY §7.4 `npc.apprentice.format` + `n001`; iki dilde yaygın insan adı olan sözcükler, ör.
+"Hazel", elenir); 100 TR+EN ad çifti STORY'de (`npc.apprentice.*`, design-lead). Avatar = blok renklerinden birinde
 kask + küçük alet simgesi. Ülke bayrağı, "çevrimiçi" ışığı, gerçek kullanıcı adına benzeyen ad (ör. "Selin_U"), gerçek
 insan adı-soyadı, sahte "X seni geçti!" bildirimi yok. Köprü ve Lig başlığında (i) düğmesi; ilk girişte kural kartı:
 "Rakiplerin bilgisayarın yönettiği çıraklardır." Bot satırlarında ilk günden küçük "çırak" rozeti (D seçeneğine geçişte
@@ -334,9 +338,10 @@ Gerçek para karşılığı oranı (E2): 1 altın ≈ $0,00199 ≈ 0,09 TL (Avu�
 **Kumbara değer kuralı:** kırma eşiğindeki altın/$ hiçbir zaman Avuç paketinin altına düşmez (1.000 / $1,99 = 503 = Avuç);
 tavanda ≈ 2 kat değer (2.000 / $1,99 ≈ 1.005 altın/$). Kural `config:validate` kontrolüne yazılır (code-lead). $2,99 yerine
 $1,99: eşik ve tavan küçüldüğü için aynı değer oranı daha düşük fiyatta korunur ve ilk satın alma eşiği düşer.
-**Dolum hızı (hesap, varsayımlı zorluk karışımı %60 Kolay/Normal, %30 Zor, %10 Çok Zor → ≈ 62 altın/galibiyet):** eşiğe
-≈ 16–20 galibiyette (≈ Bölüm 36–40), tavana ≈ 32 galibiyette (≈ Bölüm 50 ya da Usta Modu'nun başı) ulaşılır. Böylece kumbara
-MVP içeriğinde ve soft launch Aşama 1'de ölçülebilir. LiveOps Hafta 4 "kapasite +%25" → tavan 2.500.
+**Dolum hızı (hesap, META §8.3 ile aynı; kayıpsız, ilk katkı Bölüm 20 galibiyeti):** LEVELS etiketleriyle (20–50: 23
+Normal, 4 Zor, 4 Çok Zor; ≈ 60 altın/galibiyet) eşik 1.000'e **17. galibiyette** (Bölüm 36) ulaşılır; Bölüm 50 sonunda
+1.850; tavan 2.000 Usta Modu'nun 3. galibiyetinde dolar. Böylece kumbara MVP içeriğinde ve soft launch Aşama 1'de
+ölçülebilir. LiveOps Hafta 4 "kapasite +%25" → tavan 2.500 (`liveOps.overrides` kapsamında değil → "kod", §7).
 
 ### 5.4 Altınla satılan öğeler (META / `economy.json` ile aynı)
 
@@ -350,15 +355,15 @@ MVP içeriğinde ve soft launch Aşama 1'de ölçülebilir. LiveOps Hafta 4 "kap
 | Çekiç                          | 600   | 1,19  | 54   |                                                     |
 | Boya Fırçası                   | 600   | 1,19  | 54   |                                                     |
 | Vinç                           | 900   | 1,79  | 81   | En güçlü bölüm içi güçlendirici                      |
-| Termos (+3 hamle, oyun öncesi) | 450   | 0,90  | 41   | E6                                                  |
+| Termos (+3 hamle, oyun öncesi) | 450   | 0,90  | 40   | E6                                                  |
 | Mala Başlangıcı                | 600   | 1,19  | 54   |                                                     |
 | Açık Kepenk                    | 600   | 1,19  | 54   |                                                     |
 
 **Ödemeyen oyuncu ölçütü (OR-16; META §9 ile ortak).** Alt sınır (adalet tabanı): kazanılan altınla ödemeyen oyuncu her
-10 bölümde en az 1 kez +5 alabilir (META §9: ≈ 1.120 altın / 10 bölüm ≥ 900 → karşılanıyor). Eski üst sınır ("2 kez
-alamaz") kontrol düğmesi olarak kullanılmaz; çünkü bölüm sandığı 50'den sonra biter, ödemeyen oyuncuda dönüşümü reklam
-tavanı belirler ve aynı altın tavanı farklı kazanma oranlarında farklı baskı üretir. Yerine iki ölçü (tahmin bantları;
-Faz 3 ekonomi simülasyonu ve soft launch'ta ölçülür, §6.2):
+10 bölümde en az 1 kez +5 alabilir (META §9: ≈ 1.030–1.140 altın / 10 bölüm; alt uç da ≥ 900 → karşılanıyor). Eski üst
+sınır ("2 kez alamaz") kontrol düğmesi olarak kullanılmaz; çünkü bölüm sandığı 50'den sonra biter, ödemeyen oyuncuda
+dönüşümü reklam tavanı belirler ve aynı altın tavanı farklı kazanma oranlarında farklı baskı üretir. Yerine iki ölçü
+(tahmin bantları; Faz 3 ekonomi simülasyonu ve soft launch'ta ölçülür, §6.2):
 
 - (a) Ödemeyen oyuncunun **medyan altın bakiyesi** Bölüm 11–50'de 400–1.500. 30. bölümde medyan > 2.500 → paketler
   değer kaybeder; 10 bölüm boyunca < 200 → hayal kırıklığı riski.
@@ -441,8 +446,12 @@ Faz 3 bot raporuna iki sütun (product-lead + code-lead): "altın / 10 bölüm" 
 ## 7. 8 haftalık LiveOps takvimi
 
 Kapsam: ilk mağaza sürümünden (soft launch Aşama 1) itibaren ilk 8 hafta. İlkeler: aynı anda en fazla 2 etkinlik
-(Köprü + Lig); hafta temaları yalnız `config/events.json` / `config/economy.json` değişikliğiyle (product-lead);
-"kod" etiketli maddeler code-lead'in takvimine 4 hafta önceden girer; zamanlı satın alma teklifi yok (P-2).
+(Köprü + Lig); "config" etiketli hafta temaları yalnız `config/events.json → liveOps` ile yazılır (product-lead; META
+§6.1, §7.1): Köprü ve Lig için tek pencere `[startUtc, endUtc)` (ISO 8601, UTC) ve bu pencerede temel değerlerin yerine
+geçen `liveOps.overrides`. Override kapsamı yalnız şu anahtarlardır: `wobblyBridge` → `prizePoolCoins`, `cooldownMinutes`,
+`maxBridgesPerDay`, `finisherExtras`; `masterLeague` → `pointsMultiplier`, `weekendMultiplier`. Bu kümenin dışındaki her
+değişiklik (`economy.json` dahil; zaman penceresi yok) "kod" etiketlidir ve code-lead'in takvimine 4 hafta önceden girer;
+product-lead yeni bir override anahtarı eklerse madde "config"e döner. Zamanlı satın alma teklifi yok (P-2).
 Varsayılan Köprü (META §6.1): katılım her an açık, katılımdan itibaren 6 saat, bitince 120 dk bekleme, havuz 10.000 altın,
 günlük üst sınır `maxBridgesPerDay` (değer product-lead'in). Lig ve hafta sonu puan çarpanları **botlara da** uygulanır (E8).
 Bütün çarpan ve havuz artışları §4.5-8 korumasına tabidir (beklenen pay < 900).
@@ -450,17 +459,20 @@ Bütün çarpan ve havuz artışları §4.5-8 korumasına tabidir (beklenen pay 
 | Hafta | Tema                          | Sallanan Köprü                              | Usta Ligi                               | İçerik                                   | Değişiklik türü | Ölçülen KPI                         |
 | ----- | ----------------------------- | ------------------------------------------- | --------------------------------------- | ---------------------------------------- | --------------- | ----------------------------------- |
 | 1     | Renkli Tepe'ye hoş geldin     | Varsayılan                                  | Herkes Bronz Mala'da başlar             | Bölüm 1–50 + Usta Modu (onay bekliyor)   | —               | FTUE hunisi, D1, çökme              |
-| 2     | Fırın Kokusu                  | Cuma–Pazar havuz 12.000 (+%20)              | Varsayılan                              | —                                        | config          | D7, Köprü katılımı                  |
-| 3     | İçerik güncellemesi 1         | Varsayılan                                  | Hafta sonu Zor/Çok Zor puanı ×2 (botlar dahil) | Bölüm 51–60 (Hikaye 6 başlar)            | config + içerik | İçerik sonu kaybı                   |
-| 4     | Altın Vida Haftası            | Kazanana +1 Altın Mala                      | Varsayılan                              | Kumbara tavanı +%25 (2.000 → 2.500)      | config          | Ödeyen oranı, kumbara dönüşümü      |
+| 2     | Fırın Kokusu                  | Cuma–Pazar havuz 12.000 (+%20): `liveOps.overrides.wobblyBridge.prizePoolCoins: 12000`; pencere Cuma 00:00 → Pazartesi 00:00 UTC | Varsayılan                              | —                                        | config          | D7, Köprü katılımı                  |
+| 3     | İçerik güncellemesi 1         | Varsayılan                                  | Hafta sonu Zor/Çok Zor puanı ×2 (botlar dahil): `liveOps.overrides.masterLeague.weekendMultiplier` = `{ factor: 2, addPoints: 0, difficulties: [hard, superhard], appliesTo: playerAndBots }`; pencere lig haftası (Pazartesi 00:00 → Pazartesi 00:00 UTC) | Bölüm 51–60 (Hikaye 6 başlar)            | config + içerik | İçerik sonu kaybı                   |
+| 4     | Altın Vida Haftası            | Bitirene (7. tahta) +1 Mala Başlangıcı (oyun öncesi +1 Altın Mala; Altın Mala bölümler arası taşınmaz, GDD K-33): `liveOps.overrides.wobblyBridge.finisherExtras` = `{ boosters: { trowelStart: 1 } }`; pencere lig haftası | Varsayılan                              | Kumbara tavanı +%25 (2.000 → 2.500; `economy.json → piggyBank.capacity`, override kapsamında değil → kod) | config + kod    | Ödeyen oranı, kumbara dönüşümü      |
 | 5     | İçerik güncellemesi 2         | Varsayılan                                  | Varsayılan                              | Bölüm 61–70 (Hikaye 6 sonu)              | içerik          | Bölüm 50+ oyuncuların D+3 tutması   |
-| 6     | Kepçe'nin Kazı Haftası (EN: Kepche's Dig Week) | Varsayılan                 | Hafta sonu tüm galibiyetler +1 puan (botlar dahil) | Kazı ağırlıklı bölümlerde ilk denemede 1 Termos hediye | config | Güçlendirici kullanımı, altın çıkışı |
+| 6     | Kepçe'nin Kazı Haftası (EN: Kepche's Dig Week) | Varsayılan                 | Hafta sonu tüm galibiyetler +1 puan (botlar dahil): `liveOps.overrides.masterLeague.weekendMultiplier` = `{ factor: 1, addPoints: 1, difficulties: [easy, normal, hard, superhard], appliesTo: playerAndBots }`; pencere lig haftası | Kazı ağırlıklı bölümlerde ilk denemede 1 Termos hediye (override kapsamında değil; "kazı ağırlıklı" bölüm listesi product-lead'in → kod) | config + kod | Güçlendirici kullanımı, altın çıkışı |
 | 7     | İçerik güncellemesi 3         | Varsayılan                                  | Varsayılan                              | Bölüm 71–90 (Hikaye 7)                   | içerik          | D30 eğilimi                         |
-| 8     | Festival ve değerlendirme     | Bekleme 120 → 60 dk (`cooldownMinutes`, config) | Sezon sonu: Elmas Mala rozeti           | —                                        | config          | Tüm KPI; 2. çeyrek planı            |
+| 8     | Festival ve değerlendirme     | Bekleme 120 → 60 dk: `liveOps.overrides.wobblyBridge.cooldownMinutes: 60`; pencere lig haftası | Sezon sonu: Elmas Mala rozeti (override kapsamında değil; rozet görseli design-lead'in → kod) | —                                        | config + kod    | Tüm KPI; 2. çeyrek planı            |
 
-`events.json` parametreleri (product-lead ekler; inceleme turunda kabul edildi): Köprü havuzu, `maxBridgesPerDay`,
-`cooldownMinutes`, `bridgeSpendCapCoins`, ödül ekleri, lig puan çarpanı ve hafta sonu çarpanı (ikisi de botlar dahil),
-başlangıç–bitiş (UTC). Belirsiz değerler `null` (yer tutucu), açıklamalar `_doc` önekli alanlarda (code-lead şeması).
+`events.json` parametreleri (product-lead ekler; inceleme turunda kabul edildi): temel değerler `wobblyBridge` →
+`prizePoolCoins`, `maxBridgesPerDay`, `cooldownMinutes`, `bridgeSpendCapCoins`, `finisherExtras`; `masterLeague` →
+`pointsMultiplier`, `weekendMultiplier` (ikisi de botlar dahil, E8). Hafta teması: `liveOps.startUtc` / `liveOps.endUtc`
+(UTC) ve `liveOps.overrides` (yukarıdaki anahtar kümesi). `bridgeSpendCapCoins` override kapsamında değildir: Köprü altın
+tavanı (4.050, §4.5-6) LiveOps haftalarında da değişmez. Belirsiz değerler `null` (yer tutucu), açıklamalar `_doc` önekli
+alanlarda (code-lead şeması).
 
 ---
 
@@ -512,9 +524,12 @@ Bu yüzden iki ajan da Usta Modu'nu MVP'de öneriyor.
   Köprü ve Lig'e sayılır; "Yeni bölümler yolda" bandı ana ekranda kalır. Sanat maliyeti 0. Üç koşulum:
   - (a) Altın ödülü, kumbara dolumu ve lig puanı bölümün **özgün** zorluk etiketinden hesaplanır (Usta Modu'nda Zor/Çok
     Zor'a kayan etiket altın ve puan enflasyonu yaratmaz).
-  - (b) **Usta Sandığı:** her 10 Usta Modu galibiyetinde sabit içerikli sandık, 250 altın + 1 güçlendirici (içerik önceden
-    görünür, E1; satılmaz). Bölüm sandığı 50'de bittiği için ödemeyen oyuncunun gelir tabanını korur (§5.4). Değer
-    product-lead'in dengesine tabidir; META ile aynı sayı yazılır.
+  - (b) **Usta Sandığı:** her 10 Usta Modu galibiyetinde sabit içerikli sandık, 250 altın + 1 Çekiç (içerik önceden
+    görünür, E1; satılmaz; `economy.json → masterMode.masterChest`). Bölüm sandığı 50'de bittiği için ödemeyen oyuncunun
+    gelir tabanını korur (§5.4). **Ayar kuralı (META §9, R-16; aynı formül):** Faz 3 ekonomi simülasyonunda ödemeyen
+    oyuncunun Usta Modu'ndaki 10 galibiyetlik medyan geliri `G` < 900 çıkarsa sandık altını `250 + 50 · ceil((900 − G) / 50)`
+    olur (ör. G = 820 → 350); G ≥ 900 ise 250 kalır. Değer product-lead'in dengesine tabidir; aynı sayı META §8.5,
+    `masterMode.masterChest.coins` ve burada yazılır.
   - (c) Giriş kartında tek satır: "Usta Modu: bildiğin bölümler, daha az hamle."
 - **Proje sahibi "Sonra" derse — MVP yedek kuralı (product-lead):** 50'den sonra "Oyna" 11–50'yi sırayla **özgün** hamle
   bütçesiyle tekrar oynatır; ödül yalnız kazanma tabanı (Bonus İnşaat yok), yıldız yok; Köprü ve Lig'e sayılır. Usta
@@ -731,7 +746,7 @@ Etkilenen: META §6, config/events.json, UX_FLOWS, src/services/events
 
 ### P-5 — Botlar açıkça etiketli çıraklar olarak sunulur
 Durum: KABUL (OR-14)     Sahip: entrepreneur     Tarih: 2026-10-04
-Karar: MVP ve soft launch'ta Köprü ve Lig'de 99 rakip "Renkli Tepe çırakları": "Çırak Fındık" / "Apprentice Hazel" ad kalıbı, kask + alet avatarı, "çırak" rozeti; bayrak, "çevrimiçi" işareti, gerçek kullanıcı adına benzeyen ad yok; (i) panelinde ve kural kartında "bilgisayarın yönettiği çıraklar" yazar. Backend gelince gerçek oyuncu + etiketli bot karması. Botları gerçek oyuncu gibi sunmak hiçbir aşamada yok.
+Karar: MVP ve soft launch'ta Köprü ve Lig'de 99 rakip "Renkli Tepe çırakları": "Çırak Fındık" / "Apprentice Hazelnut" ad kalıbı, kask + alet avatarı, "çırak" rozeti; bayrak, "çevrimiçi" işareti, gerçek kullanıcı adına benzeyen ad yok; (i) panelinde ve kural kartında "bilgisayarın yönettiği çıraklar" yazar. Backend gelince gerçek oyuncu + etiketli bot karması. Botları gerçek oyuncu gibi sunmak hiçbir aşamada yok.
 Gerekçe: Aldatıcı uygulama ve mağaza yanıltıcı pazarlama riski; Skillz–AviaGames emsali.
 Değişim: Lig'e genişletildi; rozet ve avatar sistemi; E8 kod denetimi.
 Etkilenen: META, STORY (çırak adları), UX_FLOWS, STORE_LISTING, src/services/events
@@ -752,7 +767,7 @@ Etkilenen: GDD, LEVELS, TECH_DESIGN, UX_FLOWS
 
 ### P-8 — İçerik sonu ve üretim temposu
 Durum: ÖNERİ — Usta Modu kapsamı proje sahibine açık soru (OR-17)     Sahip: entrepreneur + product-lead     Tarih: 2026-10-04
-Karar: Usta Modu MVP (onay bekliyor): 11–50 sırayla, hamle = solver min + 2, yıldız yok, Köprü/Lig'e sayılır; ödül ve lig puanı özgün zorluk etiketinden; her 10 galibiyette Usta Sandığı (250 altın + 1 güçlendirici); giriş kartı satırı. "Sonra" kararında yedek: 11–50 özgün bütçeyle tekrar, yalnız kazanma tabanı. Mağaza sürümünden sonra 2 haftada 10 bölüm (6 hafta), sonra 2 haftada 20 bölüm. Global lansman kapısı ≥ 150 bölüm.
+Karar: Usta Modu MVP (onay bekliyor): 11–50 sırayla, hamle = solver min + 2, yıldız yok, Köprü/Lig'e sayılır; ödül ve lig puanı özgün zorluk etiketinden; her 10 galibiyette Usta Sandığı (250 altın + 1 Çekiç; Faz 3'te G < 900 ise altın `250 + 50 · ceil((900 − G) / 50)`, META §9); giriş kartı satırı. "Sonra" kararında yedek: 11–50 özgün bütçeyle tekrar, yalnız kazanma tabanı. Mağaza sürümünden sonra 2 haftada 10 bölüm (6 hafta), sonra 2 haftada 20 bölüm. Global lansman kapısı ≥ 150 bölüm.
 Gerekçe: 50 bölüm ≈ 2,5–3,5 saat, medyan oyuncuda 7–9 günde biter (tahmin); Köprü ve Lig bölüm kazanmaya bağlı; D7/D30 hedefleri içerik gerektirir.
 Değişim: Sonra-1 → MVP (onay bekliyor); +1 → +2; Usta Sandığı ve özgün etiket koşulu.
 Etkilenen: LEVELS, META §8.5, config/economy.json (`masterMode`), ROADMAP (BUSINESS §9)

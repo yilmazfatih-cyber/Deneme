@@ -38,8 +38,8 @@
     "maxOffersPerAttempt": 3,
     "adOfferCountsTowardCap": true,
     "firstEverOfferFree": true,
-    "rewardedAdOffer": { "extraMoves": 5, "perAttempt": 1, "perDay": 3 },
-    "_doc": "Price index = offer number n (1..3) in the attempt, whichever option was taken before (GDD K-29, R-15)."
+    "rewardedAdOffer": { "extraMoves": 5, "perAttempt": 1, "perDay": 3, "offerIndex": 1 },
+    "_doc": "Price index = offer number n (1..3) in the attempt, whichever option was taken before (GDD K-29, R-15). Rewarded ad alternative only in offer n = 1 (offerIndex; BUSINESS §4.3, P-4), so at most 1 per attempt; not shown in the lifetime-first free offer. Accepting an offer runs pipeline step 12 (deadlock check + truck help) once (GDD K-29, E-42)."
   },
   "ads": {
     "dailyCapTotal": 6,
@@ -50,24 +50,13 @@
     "_doc": "Real-money equivalent of coin prices (BUSINESS E2); MVP shows a test-build label."
   },
   "boosters": {
+    "_doc": "Unlock rule (META §4): a booster granted before its unlockLevel (level chest 10 Thermos, daily reward, starter pack) is kept in inventory; its slot stays locked (not usable/selectable) until unlockLevel; freeTrials are added on top of the stored count at unlock.",
     "hammer": { "kind": "inLevel", "unlockLevel": 8, "freeTrials": 3, "price": 600 },
     "crane": { "kind": "inLevel", "unlockLevel": 10, "freeTrials": 2, "price": 900 },
     "undo": { "kind": "inLevel", "unlockLevel": 13, "freeTrials": 3, "price": 300 },
     "paintBrush": { "kind": "inLevel", "unlockLevel": 22, "freeTrials": 2, "price": 600 },
-    "thermos": {
-      "kind": "preLevel",
-      "unlockLevel": 12,
-      "freeTrials": 3,
-      "price": 450,
-      "extraMoves": 3
-    },
-    "trowelStart": {
-      "kind": "preLevel",
-      "unlockLevel": 16,
-      "freeTrials": 2,
-      "price": 600,
-      "trowels": 1
-    },
+    "thermos": { "kind": "preLevel", "unlockLevel": 12, "freeTrials": 3, "price": 450, "extraMoves": 3 },
+    "trowelStart": { "kind": "preLevel", "unlockLevel": 16, "freeTrials": 2, "price": 600, "trowels": 1 },
     "openShutter": {
       "kind": "preLevel",
       "unlockLevel": 20,
@@ -95,69 +84,26 @@
     "rewardedAdDoublesCoins": { "perDay": 1 },
     "cycle": [
       { "day": 1, "coins": 50 },
-      {
-        "day": 2,
-        "boosters": {
-          "hammer": 1
-        }
-      },
+      { "day": 2, "boosters": { "hammer": 1 } },
       { "day": 3, "coins": 75 },
-      {
-        "day": 4,
-        "boosters": {
-          "thermos": 1
-        }
-      },
+      { "day": 4, "boosters": { "thermos": 1 } },
       { "day": 5, "coins": 100 },
-      {
-        "day": 6,
-        "boosters": {
-          "undo": 1
-        }
-      },
-      {
-        "day": 7,
-        "coins": 200,
-        "boosters": {
-          "crane": 1
-        },
-        "unlimitedLivesMinutes": 15
-      }
+      { "day": 6, "boosters": { "undo": 1 } },
+      { "day": 7, "coins": 200, "boosters": { "crane": 1 }, "unlimitedLivesMinutes": 15 }
     ]
   },
   "levelChest": {
     "everyLevels": 10,
     "rewards": [
-      {
-        "afterLevel": 10,
-        "coins": 200,
-        "boosters": {
-          "hammer": 1,
-          "thermos": 1
-        }
-      },
-      {
-        "afterLevel": 20,
-        "coins": 250,
-        "boosters": {
-          "crane": 1,
-          "trowelStart": 1
-        }
-      },
+      { "afterLevel": 10, "coins": 200, "boosters": { "hammer": 1, "thermos": 1 } },
+      { "afterLevel": 20, "coins": 250, "boosters": { "crane": 1, "trowelStart": 1 } },
       {
         "afterLevel": 30,
         "coins": 300,
         "boosters": { "paintBrush": 1, "openShutter": 1 },
         "unlimitedLivesMinutes": 30
       },
-      {
-        "afterLevel": 40,
-        "coins": 350,
-        "boosters": {
-          "hammer": 2,
-          "crane": 1
-        }
-      },
+      { "afterLevel": 40, "coins": 350, "boosters": { "hammer": 2, "crane": 1 } },
       {
         "afterLevel": 50,
         "coins": 500,
@@ -236,236 +182,61 @@
       {
         "chapter": 1,
         "tasks": [
-          {
-            "id": "ch1_t1",
-            "nameKey": "town.ch1.t1.name",
-            "sceneKey": "town.ch1.t1.scene",
-            "stars": 1
-          },
-          {
-            "id": "ch1_t2",
-            "nameKey": "town.ch1.t2.name",
-            "sceneKey": "town.ch1.t2.scene",
-            "stars": 1
-          },
-          {
-            "id": "ch1_t3",
-            "nameKey": "town.ch1.t3.name",
-            "sceneKey": "town.ch1.t3.scene",
-            "stars": 1
-          },
-          {
-            "id": "ch1_t4",
-            "nameKey": "town.ch1.t4.name",
-            "sceneKey": "town.ch1.t4.scene",
-            "stars": 2
-          },
-          {
-            "id": "ch1_t5",
-            "nameKey": "town.ch1.t5.name",
-            "sceneKey": "town.ch1.t5.scene",
-            "stars": 2
-          },
-          {
-            "id": "ch1_t6",
-            "nameKey": "town.ch1.t6.name",
-            "sceneKey": "town.ch1.t6.scene",
-            "stars": 1
-          },
-          {
-            "id": "ch1_t7",
-            "nameKey": "town.ch1.t7.name",
-            "sceneKey": "town.ch1.t7.scene",
-            "stars": 2
-          }
+          { "id": "ch1_t1", "nameKey": "town.ch1.t1.name", "sceneKey": "town.ch1.t1.scene", "stars": 1 },
+          { "id": "ch1_t2", "nameKey": "town.ch1.t2.name", "sceneKey": "town.ch1.t2.scene", "stars": 1 },
+          { "id": "ch1_t3", "nameKey": "town.ch1.t3.name", "sceneKey": "town.ch1.t3.scene", "stars": 1 },
+          { "id": "ch1_t4", "nameKey": "town.ch1.t4.name", "sceneKey": "town.ch1.t4.scene", "stars": 2 },
+          { "id": "ch1_t5", "nameKey": "town.ch1.t5.name", "sceneKey": "town.ch1.t5.scene", "stars": 2 },
+          { "id": "ch1_t6", "nameKey": "town.ch1.t6.name", "sceneKey": "town.ch1.t6.scene", "stars": 1 },
+          { "id": "ch1_t7", "nameKey": "town.ch1.t7.name", "sceneKey": "town.ch1.t7.scene", "stars": 2 }
         ]
       },
       {
         "chapter": 2,
         "tasks": [
-          {
-            "id": "ch2_t1",
-            "nameKey": "town.ch2.t1.name",
-            "sceneKey": "town.ch2.t1.scene",
-            "stars": 1
-          },
-          {
-            "id": "ch2_t2",
-            "nameKey": "town.ch2.t2.name",
-            "sceneKey": "town.ch2.t2.scene",
-            "stars": 1
-          },
-          {
-            "id": "ch2_t3",
-            "nameKey": "town.ch2.t3.name",
-            "sceneKey": "town.ch2.t3.scene",
-            "stars": 1
-          },
-          {
-            "id": "ch2_t4",
-            "nameKey": "town.ch2.t4.name",
-            "sceneKey": "town.ch2.t4.scene",
-            "stars": 2
-          },
-          {
-            "id": "ch2_t5",
-            "nameKey": "town.ch2.t5.name",
-            "sceneKey": "town.ch2.t5.scene",
-            "stars": 2
-          },
-          {
-            "id": "ch2_t6",
-            "nameKey": "town.ch2.t6.name",
-            "sceneKey": "town.ch2.t6.scene",
-            "stars": 1
-          },
-          {
-            "id": "ch2_t7",
-            "nameKey": "town.ch2.t7.name",
-            "sceneKey": "town.ch2.t7.scene",
-            "stars": 2
-          }
+          { "id": "ch2_t1", "nameKey": "town.ch2.t1.name", "sceneKey": "town.ch2.t1.scene", "stars": 1 },
+          { "id": "ch2_t2", "nameKey": "town.ch2.t2.name", "sceneKey": "town.ch2.t2.scene", "stars": 1 },
+          { "id": "ch2_t3", "nameKey": "town.ch2.t3.name", "sceneKey": "town.ch2.t3.scene", "stars": 1 },
+          { "id": "ch2_t4", "nameKey": "town.ch2.t4.name", "sceneKey": "town.ch2.t4.scene", "stars": 2 },
+          { "id": "ch2_t5", "nameKey": "town.ch2.t5.name", "sceneKey": "town.ch2.t5.scene", "stars": 2 },
+          { "id": "ch2_t6", "nameKey": "town.ch2.t6.name", "sceneKey": "town.ch2.t6.scene", "stars": 1 },
+          { "id": "ch2_t7", "nameKey": "town.ch2.t7.name", "sceneKey": "town.ch2.t7.scene", "stars": 2 }
         ]
       },
       {
         "chapter": 3,
         "tasks": [
-          {
-            "id": "ch3_t1",
-            "nameKey": "town.ch3.t1.name",
-            "sceneKey": "town.ch3.t1.scene",
-            "stars": 1
-          },
-          {
-            "id": "ch3_t2",
-            "nameKey": "town.ch3.t2.name",
-            "sceneKey": "town.ch3.t2.scene",
-            "stars": 1
-          },
-          {
-            "id": "ch3_t3",
-            "nameKey": "town.ch3.t3.name",
-            "sceneKey": "town.ch3.t3.scene",
-            "stars": 2
-          },
-          {
-            "id": "ch3_t4",
-            "nameKey": "town.ch3.t4.name",
-            "sceneKey": "town.ch3.t4.scene",
-            "stars": 1
-          },
-          {
-            "id": "ch3_t5",
-            "nameKey": "town.ch3.t5.name",
-            "sceneKey": "town.ch3.t5.scene",
-            "stars": 2
-          },
-          {
-            "id": "ch3_t6",
-            "nameKey": "town.ch3.t6.name",
-            "sceneKey": "town.ch3.t6.scene",
-            "stars": 1
-          },
-          {
-            "id": "ch3_t7",
-            "nameKey": "town.ch3.t7.name",
-            "sceneKey": "town.ch3.t7.scene",
-            "stars": 2
-          }
+          { "id": "ch3_t1", "nameKey": "town.ch3.t1.name", "sceneKey": "town.ch3.t1.scene", "stars": 1 },
+          { "id": "ch3_t2", "nameKey": "town.ch3.t2.name", "sceneKey": "town.ch3.t2.scene", "stars": 1 },
+          { "id": "ch3_t3", "nameKey": "town.ch3.t3.name", "sceneKey": "town.ch3.t3.scene", "stars": 2 },
+          { "id": "ch3_t4", "nameKey": "town.ch3.t4.name", "sceneKey": "town.ch3.t4.scene", "stars": 1 },
+          { "id": "ch3_t5", "nameKey": "town.ch3.t5.name", "sceneKey": "town.ch3.t5.scene", "stars": 2 },
+          { "id": "ch3_t6", "nameKey": "town.ch3.t6.name", "sceneKey": "town.ch3.t6.scene", "stars": 1 },
+          { "id": "ch3_t7", "nameKey": "town.ch3.t7.name", "sceneKey": "town.ch3.t7.scene", "stars": 2 }
         ]
       },
       {
         "chapter": 4,
         "tasks": [
-          {
-            "id": "ch4_t1",
-            "nameKey": "town.ch4.t1.name",
-            "sceneKey": "town.ch4.t1.scene",
-            "stars": 1
-          },
-          {
-            "id": "ch4_t2",
-            "nameKey": "town.ch4.t2.name",
-            "sceneKey": "town.ch4.t2.scene",
-            "stars": 2
-          },
-          {
-            "id": "ch4_t3",
-            "nameKey": "town.ch4.t3.name",
-            "sceneKey": "town.ch4.t3.scene",
-            "stars": 2
-          },
-          {
-            "id": "ch4_t4",
-            "nameKey": "town.ch4.t4.name",
-            "sceneKey": "town.ch4.t4.scene",
-            "stars": 1
-          },
-          {
-            "id": "ch4_t5",
-            "nameKey": "town.ch4.t5.name",
-            "sceneKey": "town.ch4.t5.scene",
-            "stars": 1
-          },
-          {
-            "id": "ch4_t6",
-            "nameKey": "town.ch4.t6.name",
-            "sceneKey": "town.ch4.t6.scene",
-            "stars": 2
-          },
-          {
-            "id": "ch4_t7",
-            "nameKey": "town.ch4.t7.name",
-            "sceneKey": "town.ch4.t7.scene",
-            "stars": 1
-          }
+          { "id": "ch4_t1", "nameKey": "town.ch4.t1.name", "sceneKey": "town.ch4.t1.scene", "stars": 1 },
+          { "id": "ch4_t2", "nameKey": "town.ch4.t2.name", "sceneKey": "town.ch4.t2.scene", "stars": 2 },
+          { "id": "ch4_t3", "nameKey": "town.ch4.t3.name", "sceneKey": "town.ch4.t3.scene", "stars": 2 },
+          { "id": "ch4_t4", "nameKey": "town.ch4.t4.name", "sceneKey": "town.ch4.t4.scene", "stars": 1 },
+          { "id": "ch4_t5", "nameKey": "town.ch4.t5.name", "sceneKey": "town.ch4.t5.scene", "stars": 1 },
+          { "id": "ch4_t6", "nameKey": "town.ch4.t6.name", "sceneKey": "town.ch4.t6.scene", "stars": 2 },
+          { "id": "ch4_t7", "nameKey": "town.ch4.t7.name", "sceneKey": "town.ch4.t7.scene", "stars": 1 }
         ]
       },
       {
         "chapter": 5,
         "tasks": [
-          {
-            "id": "ch5_t1",
-            "nameKey": "town.ch5.t1.name",
-            "sceneKey": "town.ch5.t1.scene",
-            "stars": 1
-          },
-          {
-            "id": "ch5_t2",
-            "nameKey": "town.ch5.t2.name",
-            "sceneKey": "town.ch5.t2.scene",
-            "stars": 2
-          },
-          {
-            "id": "ch5_t3",
-            "nameKey": "town.ch5.t3.name",
-            "sceneKey": "town.ch5.t3.scene",
-            "stars": 1
-          },
-          {
-            "id": "ch5_t4",
-            "nameKey": "town.ch5.t4.name",
-            "sceneKey": "town.ch5.t4.scene",
-            "stars": 2
-          },
-          {
-            "id": "ch5_t5",
-            "nameKey": "town.ch5.t5.name",
-            "sceneKey": "town.ch5.t5.scene",
-            "stars": 1
-          },
-          {
-            "id": "ch5_t6",
-            "nameKey": "town.ch5.t6.name",
-            "sceneKey": "town.ch5.t6.scene",
-            "stars": 1
-          },
-          {
-            "id": "ch5_t7",
-            "nameKey": "town.ch5.t7.name",
-            "sceneKey": "town.ch5.t7.scene",
-            "stars": 2
-          }
+          { "id": "ch5_t1", "nameKey": "town.ch5.t1.name", "sceneKey": "town.ch5.t1.scene", "stars": 1 },
+          { "id": "ch5_t2", "nameKey": "town.ch5.t2.name", "sceneKey": "town.ch5.t2.scene", "stars": 2 },
+          { "id": "ch5_t3", "nameKey": "town.ch5.t3.name", "sceneKey": "town.ch5.t3.scene", "stars": 1 },
+          { "id": "ch5_t4", "nameKey": "town.ch5.t4.name", "sceneKey": "town.ch5.t4.scene", "stars": 2 },
+          { "id": "ch5_t5", "nameKey": "town.ch5.t5.name", "sceneKey": "town.ch5.t5.scene", "stars": 1 },
+          { "id": "ch5_t6", "nameKey": "town.ch5.t6.name", "sceneKey": "town.ch5.t6.scene", "stars": 1 },
+          { "id": "ch5_t7", "nameKey": "town.ch5.t7.name", "sceneKey": "town.ch5.t7.scene", "stars": 2 }
         ]
       }
     ]

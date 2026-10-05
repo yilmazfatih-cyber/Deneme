@@ -67,7 +67,7 @@ Proje sahibine giden sorular kararlardan ve kendi önerilerimden gelir (sonda).
 ## product-lead.md (22)
 
 - product-lead.md#ağır yerçekimi erişilebilirliği (→ code-lead, design-lead; "sayaç hiç olmasın") → KAPANDI (R-11 karar verdi: ayar açıkken 1400 ms; "sayaç yok" önerisi kararla değişti; UX §5.7 halka sayaç iki durumda da görünür)
-- product-lead.md#öğretici sırası ile LEVELS çözümü → KAPANDI (UX §13.2 Bölüm 1–10 satırları LEVELS `tutorial[]` ile birebir: B3 temel → ray Z → ray tutar; B4 pencere → `front` + `tut.ctx.support` → ray Z; B9 temel → dar geçit Z; `piece:<i>` = LEVELS tablo sırası, parantezde LEVELS kimliği)
+- product-lead.md#öğretici sırası ile LEVELS çözümü → KAPANDI (UX §13.2 Bölüm 1–10 satırları LEVELS `tutorial[]` ile birebir: B3 temel → ray Z → ray tutar; B4 pencere → `front` + `tut.ctx.support` → ray Z; B9 temel → dar geçit Z; `piece:<i>` = LEVELS tablo sırası, parantezde LEVELS kimliği). **Not (tutarlılık denetimi tur 2):** product-lead'in sonraki `tutorial[]` değişiklikleri (B1 adım 2 Y + `piece:0`; B2 3 adım; B4 adım 2 ×2, adım 3 `piece:2`; B7 `at: [0, 6]`) bu satır yazıldıktan sonra geldi; "birebir" ancak tur 2 #0 eşitlemesinden sonra yeniden doğrudur.
 - product-lead.md#K-34'ün öğretimi yok → KAPANDI (UX §5.4: rozet "↓" + eksik destek hücrelerinde yatay tarama, 45° yalnız renk uyuşmazlığında; §5.5 dört katman; `tut.ctx.support`; `tut.ctx.bounce.color/window/offplan` nedenlere ayrıldı; JUICE #83, #84; tokens `plan.front*`, `color.ghost.support`, `duration.supportFlash`)
 - product-lead.md#gizli hücrede gölge → KAPANDI (UX §5.4 satırı: açılmamış `?` hücresine değen gölge bütün zorluklarda nötr, rozet yok; JUICE #7 `sfx_ghost_ok` çalmaz; çatlak cam yine görünür)
 - product-lead.md#hafif yerçekiminde yönlendirme girdisi → KAPANDI (R-10 girdiyi "tahtaya dokunma, dokunulan taraf = yön" olarak bağladı; şantiye + vinç alanıyla sınırlama bu yüzden alınmadı. Endişe UX §5.6 "tutma ile ayrım" kuralıyla giderildi: bir bloğun üstünde başlayıp eşiği aşan dokunuş yönlendirme değil tutmadır (GDD E-40); `tut.l23.steer` "Düşerken bir yana dokun, o yana kaysın.")
@@ -122,7 +122,7 @@ Proje sahibine giden sorular kararlardan ve kendi önerilerimden gelir (sonda).
   `check.*` altında (TECH §10.2 `color.plan.X`, `color.symbolInk.X`, `color.planStroke.X` atıfları); yeni `audio.seq`
   biçimi `[ms, ZzFX parametreleri][]` (tek arabellekte toplama) — `sfx.ts` şeması buna göre; `audio._doc` anahtarı ad
   değildir.
-- product-lead: yok (UX §13.2 ve STORY §6 LEVELS'in güncel `tutorial[]` verisiyle birebir).
+- product-lead: yok (UX §13.2 ve STORY §6, tur 2 #0 eşitlemesinden sonra LEVELS'in güncel `tutorial[]` verisiyle birebir; B1 adım 2, B2 adım 2–3, B4 adım 2–3 ve B7 adım 1 satırları 2026-10-05'te LEVELS'e eşitlendi).
 - entrepreneur: ASSET §14 iş yükü tablosu BUSINESS §10'la karşılaştırılabilir (≈ 126 sanatçı-günü, P0 ≈ 67).
 
 ## Proje sahibine açık sorular (yorumlardan değil, karar ve önerilerden)
@@ -131,3 +131,52 @@ Proje sahibine giden sorular kararlardan ve kendi önerilerimden gelir (sonda).
 2. R-06: Ölçekleme FIT (brif) mi, EXPAND (öneri) mi? Belgeler ikisinde de çalışır.
 3. Tuna'nın görsel yaşı: brifteki 8 mi kalsın, 10–12 görünüme mi çekilsin? (Yaş her durumda oyun içi metinde geçmez.)
 4. Bilgi: blok paleti (P-1) brifteki hex'lerden renk körlüğü nedeniyle değişti; renk kodları ve B'nin adı "Gök Mavisi".
+
+## Tutarlılık denetimi (tur 1)
+
+Tarih: 2026-10-05. Bağımsız denetim + şüpheci onayı; yalnız design-lead dosyaları düzenlendi.
+
+- #0 Panorama gelecek dilimleri (K-06) → KAPANDI (UX §5.1: gelecek dilimler plan renkleriyle %30 opak `alpha.panoramaFuture`, `?` hücreleri `?` etiketiyle, semboller büyük önizlemede; ASCII taslak `▣▣ [▣▣] ░░ ░? ░░`; ASSET `segment_mini_<n>`; tokens `alpha.panoramaFuture` 0,3)
+- #1 Harç maliyeti önizlemesi (K-07, Y8) → KAPANDI (UX §5.1: "−2" çipi yalnız şantiyeye yapışmış harçlı blokta; sahadaki harçlı blokta çip yok; iptal öngörüsünde çip soluk)
+- #2 Gölge/geri sekme nedenleri ↔ `verdict.reasons` → KAPANDI (UX §5.4: "renk / şekil" → "renk (`color`)"; yeni `debris` satırı (rozet "!" + tarama + moloz vurgusu); satırlar `debris`/`outside`/`window`/`color`/`support` ile birebir + "birincil neden" notu; UX §13.2 ve STORY §6: `debris` geri sekmesi `tut.l17.debris` satırına eşlendi, yeni anahtar yok)
+- #3 Vinç alanı "2 sıra" işareti (K-05 `10 − height`) → KAPANDI (ART §5: açık yükseklik işareti `10 − height` çentik, duvar 7 → 3; UX §5.3 koşul "boy > `10 − height`"; UX §13.2 bağlamsal satır)
+- #4 Geri Al sayaç dönüşü (K-39) → KAPANDI (JUICE #64: sayaç harcanan miktar kadar, +1 ya da +2 geri döner)
+- #5 Dar geçit (W3) bir katman → KAPANDI (ART §5 "Dar" satırı: `size = 1` olan her tipe çene + 10 px çerçeve katmanı, tip işaretleri korunur; dar kepenk/kayar kapı/boya kapısı/kilitli görünümü tanımlı; ASSET `gap_narrow_jaw`)
+- #6 Bölüm 17 vurgu kimliği → KAPANDI (UX §13.1 sözlüğüne `debris:<i>` = `build.debris[]` sırası; satır 17 `debris:0`)
+- #7 Kamyon Yardımı D1 ikinci dalı → KAPANDI (JUICE #21a: zincir/ıslaklık yoksa ya da hâlâ D1 ise #21c + `tut.ctx.reshuffle`, birlikteyse 900 ms içine bindirme; #21c D1 `reshuffle` / D3 `reshape` ayrımı; UX §13.2 bağlamsal tablo; STORY `tut.ctx.truckhelp.free` metni her D1 dalında doğru olacak biçimde "Kamyon yardım etti, bloklar serbest. Devam!")
+- #8 Harç yapışmasında eksik destek → KAPANDI (JUICE #14: `mortarStuck.reason = support` ise ardından #84; #84 başlığı genişletildi; UX §5.5 madde 3 "geri sekme ya da harç yapışması", §5.4 ve §13.2 aynı)
+- #9 [Engel] ch2–ch5 başlangıç sahnesi tetikleyicisi → KAPANDI (STORY §3 tablo 2–5. satırlar ve metin META §1 / `economy.json town.cutscenes` ile birebir: ch1 = 1. görev, chN (N ≥ 2) = N−1 bitişinden sonra ana ekranın bir sonraki açılışı, bitiş sahnesinin kapanması açılış sayılmaz; UX §8 tetikleyici maddesi aynı metin + META örneği; UX §3 yeni durum "Başlangıç sahnesi bekleniyor"; UX §12 akışına H → S kenarı)
+- #10 Köprü altın düğmesi gri koşulu → KAPANDI (UX §7: `tur harcaması + bu teklifin fiyatı > 4.050` ise gri + `lose.bridgeCap`, örnekli; STORY `lose.bridgeCap` metni "Bu turun altın sınırı bu teklife yetmez." — tavan dolmadan da doğru)
+- #11 Usta Modu kazanma ekranı → KAPANDI (UX §6: yıldız yok, Bonus İnşaat ve Altın Mala normal, miktarlar özgün zorluk etiketinden (META §8.5); "yalnız kazanma tabanı" yalnız BUSINESS §9.2 "Sonra" yedeği notu)
+- #12 Galibiyet serisi bonusu Termos ikonuyla → KAPANDI (UX §4 ve JUICE #68: "Altın Mala ×N" + "+N hamle" çipi `ui_moves_chip`; Termos ikonu yalnız Termos güçlendiricisi; ASSET yeni `ui_moves_chip`)
+- #13 Günlük ödül ×2 altınsız günler → KAPANDI (UX §3.1: 2./4./6. günde ×2 düğmesi gösterilmez, "Topla" tek başına, reklam hakkı tüketilmez; 7. günde yalnız altın ikiye katlanır; STORY `daily.double` "Reklam · altın ×2")
+- #14 ●, ✓, ≈ font alt kümesi → KAPANDI (ART §8: alt kümeye U+2248 eklendi, pyftsubset ile ölçüldü 38.648 B; "i18n metninde alt küme dışı karakter yok" kuralı + code-lead test notu; STORY §0-11 satır içi simge yer tutucuları `{coin}` → `icon_coin`, `{ok}` → `ghost_badge_ok`; STORY'de 14 ● ve 1 ✓ değiştirildi; UX §0.3 wireframe "●" = simge notu, UX §9 `{coin}{share}`)
+- #15 128 px altı dokunma hedefleri → KAPANDI (UX §0.3 yeni "Görsel + pay" genel kalıbı; üst çubuk hapları 112 + 2×8 = 128; döndürme okları ve renk düğmeleri 112 + her yanda 8 = 128; durum şeridindeki Usta Serisi mala 96 + 2×16 = 128)
+- #16 PriceLabel 2. satır kontrastı + ART inkSoft değeri → KAPANDI (UX §0.3 ve ASSET `ui_price_label`: renkli düğmede `ui.ink` (turuncu 6,5:1, yeşil 5,3:1), krem zeminde `ui.inkSoft`; ART §2.3 inkSoft "8,1:1" → ölçülen 6,5:1 + renkli zeminde kullanılmaz notu)
+- #18 JUICE §0.1 K-19 cümlesi → KAPANDI (JUICE §0.1 dipnotu "GDD K-19 hız değeri içermez"; GDD'de değişiklik gerekmedi, K-19 zaten doğru)
+- #19 İskele sönme süresi → KAPANDI (200 ms tek değer: JUICE #18 ve ART §4 aynı; tokens `duration.scaffoldFade` 200 + mevcut `alpha.segmentDoneScaffold`)
+- #20 Kazanma süresi (#55) → KAPANDI (tokens `duration.winGlow` 400, `winRibbon` 600, `winConfetti` 1500; `duration.win` = toplam 2500 (eski 1500); JUICE #55 süre sütunu ve UX §6 sırası token adlarıyla)
+- #21 Anahtarsız görsel değerler + Kamyon Yardımı kilit süresi → KAPANDI (tokens: `a11y.colorBlindSupportHatchPx` 8, `colorBlindPaintSymbolScale` 1,3, `colorBlindContrastBoost` 0,15, `colorBlindGhostStrokeAddPx` 2, `duration.frontShift` 160, `truckHelpUnchain` 600, `truckHelpDeliver` 700, `bounceToQueue` 400, `alpha.ghostGlow` 0,4, `stroke.ghostGlowPx` 8; ART §10 token tablosu, "kontrast +%15" tanımı sayıyla; JUICE #21a/b, #83, #88 token adları; JUICE kural 3 ve UX §0.3 kilit "600–900 ms (varyanta göre)")
+- #22 Çıkış onayı "Kal" düğme boyu → KAPANDI (UX §0.3 yeni "Eşit çift düğme" kalıbı 440×152, birincil en küçük boy kuralının bilinçli istisnası, ≥ 128 px; çıkış onayı, günlük ödül, kural kartı, Usta Modu kartı bu kalıp; nötr düğme örneğinde "Kal" → "Çık" (Kal yeşil))
+- #23 B plan sembol mürekkebi kontrastı → KAPANDI (tokens `color.planInk.B` #FFFFFF → #14233D (4,8:1; inşa cephesinde 5,8:1); ayrıca `alpha.planInkLight` 0,9 → 1,0: R inşa cephesinde beyaz %90 ile 2,9:1'e düşüyordu, şimdi 3,2:1; ART §4 ölçülmüş kontrast listesi)
+- #24 "Gök Mavisi" adının ekrandaki yeri → KAPANDI (ART §2.1: renk adları yalnız belgelerde, oyuncuya görünen hiçbir metinde yok; STORY'ye `color.name.*` eklenmedi; ART §10'da ad etiketi yok notu)
+- #25 Hikaye Bölümü 4 arka plan katmanları → KAPANDI (ART §7 tokens'a eşitlendi: Uzak ufuk #7FD8D2, Orta deniz #2FB7B3, Yakın kayalık #3F7F8C + köpük; ch5 Yakın'a token #2E2464 yazıldı; "ilk hex = `color.chapter.*`" kuralı)
+- #26 Nötr düğme varyantı → KAPANDI (ASSET `ui_button_<primary/secondary/neutral/danger/disabled>`)
+- #27 Sembol brifi çizgi/dolu → KAPANDI (ASSET `sym_<W..P>`: W, R, O, C çizgi 7–9 %; Y, G, B, P dolu siluet, G ve P'de taban renkli oyma; ART §3.1'e atıf)
+- #30 Köprü kayıp penceresinde kural satırı (R-15) → KAPANDI (UX §7 Köprü durumundan `lose.bridge` çıkarıldı, yalnız nötr "Kalan: n hücre"; kural yalnız `bridge.rule_card.*` ve (i) panelinde; STORY §7.3'ten `lose.bridge` silindi, "Kaldırılanlar" notuna eklendi)
+- #31 `tut.l26.key` ve JUICE §0.1 dipnotu → KAPANDI (STORY: "Anahtarın üstündeki bloğu kaldır, kilit açılsın!" / "Move the block off the key to unlock!"; JUICE §0.1 dipnotu #18 ile aynı düzeltme)
+
+Bu turdan doğan bağımlılıklar:
+- code-lead: TECH §8.2 vurgu sözlüğü regex'i ve L-17'ye `debris:<i>` (< `build.debris` boyu); i18n alt küme testi ("i18n glyphs within Baloo 2 subset") ve `{coin}` / `{ok}` satır içi simge çizimi; `duration.win` 1500 → 2500 (toplam) + yeni `winGlow`/`winRibbon`/`winConfetti`; Kamyon Yardımı kilidi varyanta göre (`truckHelpUnchain` 600, `truckHelpDeliver` 700, `reshuffle` 900; TECH §5 "reshuffle 900" satırı); `lose.bridge` anahtarı kaldırıldı; `color.planInk.B` ve `alpha.planInkLight` değişti.
+- entrepreneur: BUSINESS §4.5-6 "tavana ulaşılınca 'Bir sonraki köprüde görüşürüz'" ifadesi UX §7'deki gri düğme + `lose.bridgeCap` ile eşitlenebilir (sunum UX'te; kural değişmedi).
+
+## Tutarlılık denetimi (tur 2)
+
+Tarih: 2026-10-05. Bağımsız denetim + şüpheci onayı; yalnız design-lead dosyaları düzenlendi.
+
+- #0 UX §13.2 Bölüm 1, 2, 4, 7 ↔ LEVELS `tutorial[]` → KAPANDI (UX §13.2: B1 adım 2 Z → **Y**, vurgu `piece:0 (a)` + `build`, el yok (LEVELS `—`; `a` oyuncunun parmağında); B2 adım 2 `piece:2 (c)` hold, gölge "!" + yeni adım 3 `piece:1 (b)` drag, `tut.l1.match`, `placementCorrect` ×1; B4 adım 2 `placementCorrect` ×2, adım 3 `piece:2 (p)`; B7 adım 1 `yardMove` ×1 + `at: [0, 6]`; B3, B5, B6, B8, B9, B10 yeniden karşılaştırıldı, fark yok. Bu dosyadaki iki "birebir" satırına tur 2 notu eklendi; STORY §6'da yeni anahtar gerekmedi)
+- #1 Kilitli yuvada adet (META §4) → KAPANDI (UX §0.3 "Kilitli öğe": adet > 0 ise sağ üst köşede gri adet rozeti Ø 56, `ui.badgeLocked` + beyaz sayı, kilitliyken "+" yok; UX §4 kilitli yuva durumu Bölüm 10 sandığı → Bölüm 11 Termos örneğiyle, açılışta 1 + 3 = 4; UX §5.1 bölüm içi yuvalar aynı; UX §2: 3–11 arası pencerede üç yuva kilitli görünür; UX §3.1 yeni "Kilitli güçlendirici ödülde ve pakette" paragrafı (günlük ödül, sandıklar, başlangıç paketi: tam renkli ikon + asma kilit + "Bölüm N"), §11 başlangıç paketi notu; tokens `color.ui.badgeLocked` #6B5440 (beyaz 7,1:1) + ART §2.3 satırı; ASSET `ui_booster_slot`; STORY §7.5 yeni `common.unlockAt` "{n}. bölümde açılır" (sayıya göre ek uyumu gerektirmeyen biçim), UX §0.3 ve JUICE #73 bu anahtara bağlandı)
+- #2 Kural özetleri ↔ GDD son hali → KAPANDI (UX §5.5/1 ve ART §4: inşa cephesi "doğru dolu ya da **boş** `.`; sütun tamamsa ya da altındaki `.`'da moloz / yapışmış harç varsa cephe yok, K-34 kanca 1, E-43"; UX §5.4 `support` satırı ve ART §4 tarama: eksik destek = `missingSupport` (boş plan hücreleri + yanlış nesneli `.`), ART'ta "geri sekme ya da harç yapışmasından sonra"; JUICE #84 "eksik destek hücreleri (`missingSupport`)"; JUICE #64 "+1 / +2 / +3" (yapışmış harçlı cam 3, K-07); UX §5.2 Altın Mala satırındaki §5.4 atfı §5.5 yapıldı)
+
+Bu turdan doğan bağımlılıklar:
+- code-lead: yeni token `color.ui.badgeLocked`; yeni i18n anahtarı `common.unlockAt` (`{n}` sayı); `ui_booster_slot` kilitli + adet > 0 durumu (gri rozet) ve ödül / paket pencerelerinde kilitli güçlendirici işareti (`icon_lock` 40 px + "Bölüm N").

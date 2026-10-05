@@ -1,6 +1,6 @@
 # Meta sistemler ve ekonomi
 
-Sahip: product-lead · Sürüm: Faz 1 revizyonu (2026-10-04; R-07, R-09, R-13–R-17) · Kaynak: `docs/BRIEF.md` §10, `docs/BUSINESS.md` §4–§5
+Sahip: product-lead · Sürüm: Faz 1 revizyonu (2026-10-04; R-07, R-09, R-13–R-17; tutarlılık denetimi tur 1, 2026-10-05) · Kaynak: `docs/BRIEF.md` §10, `docs/BUSINESS.md` §4–§5
 Makine okunur karşılıklar: `config/economy.json`, `config/events.json` (bu belgeyle birebir; çelişkide bu belge geçerlidir
 ve JSON düzeltilir).
 
@@ -85,7 +85,7 @@ kazanılınca oynayabilir. Görev adları ve sahne metinleri design-lead'indir (
 
 | Öğe | Altın | Not |
 |---|---|---|
-| +5 hamle (kayıp anında) | 900 → 1.350 → 1.800 | Fiyat teklif numarasına göre (`n` = 1, 2, 3). Deneme başına en çok 3 teklif; **reklamla alınan +5 de sayılır** (R-15); 4. yok. Ömürde ilk teklif ücretsiz ("Usta Dede'den hediye", teklif 1'e sayılır; **MVP**). Köprü'de aynı fiyat + tur tavanı 4.050 (§6.1) |
+| +5 hamle (kayıp anında) | 900 → 1.350 → 1.800 | Fiyat teklif numarasına göre (`n` = 1, 2, 3). Deneme başına en çok 3 teklif; **reklamla alınan +5 de sayılır** (R-15); reklam alternatifi yalnız 1. teklifte (§3.3); 4. yok. Ömürde ilk teklif ücretsiz ("Usta Dede'den hediye", teklif 1'e sayılır; **MVP**). Köprü'de aynı fiyat + tur tavanı 4.050 (§6.1) |
 | Tam can | 900 | |
 | Geri Al | 300 | |
 | Çekiç | 600 | |
@@ -105,7 +105,7 @@ paketinin (`coins_1000`) birim fiyatı × altın; MVP'de "test sürümü" etiket
 | Yerleşim | Tavan |
 |---|---|
 | +1 can (can 0 penceresi) | günde 2 |
-| +5 hamle ("Hamleler bitti") | deneme başına 1, günde 3; 3 teklif sınırına sayılır (R-15) |
+| +5 hamle ("Hamleler bitti") | **yalnız 1. teklifte** (bu yüzden deneme başına en çok 1), günde 3; ömrün ilk (ücretsiz) teklifinde reklam seçeneği yok; 3 teklif sınırına sayılır (R-15; GDD K-29; BUSINESS §4.3, P-4) |
 | Günlük ödül altını ×2 | günde 1 |
 | Toplam | günde 6 |
 
@@ -116,6 +116,14 @@ Gün = yerel takvim günü. Tavanlar ödeme geçmişinden bağımsızdır.
 ## 4. Güçlendirici açılışları ve ücretsiz denemeler
 
 Açılış bölümünde öğretici adımı vardır; ücretsiz denemeler o an envantere eklenir.
+
+**Açılmadan gelen güçlendirici (kural):** Bir güçlendirici açılış bölümünden önce ödül ya da paketle gelirse (bölüm
+sandığı 10'daki Termos; günlük ödülün Çekiç / Termos / Geri Al / Vinç günleri — günlük ödül 2. takvim gününde açılır,
+bölümden bağımsız; Bölüm 5'te açılan mağazanın başlangıç paketindeki Çekiç / Vinç / Termos) **envantere eklenir ve
+kaybolmaz**. Yuvası açılış bölümüne kadar kilitli kalır: bölüm içinde kullanılamaz, bölüm öncesi pencerede seçilemez;
+adedi kilitli yuvada görünür. Açılışta ücretsiz denemeler bu adede **eklenir** (ör. sandıktan 1 Termos + açılışta 3 = 4). Ödül ve paket
+pencereleri güçlendiriciyi kilitli olsa da gösterir (içerik açmadan önce görünür, BUSINESS E1). Test: "META 4 locked
+booster grant is kept and free trials add". Sunum (kilitli yuvada adet rozeti) design-lead'in (UX §4, §5.1).
 
 | Güçlendirici | Tür | Açılış | Ücretsiz deneme | Öğretici bağlamı |
 |---|---|---|---|---|
@@ -163,12 +171,15 @@ Açılış bölümünde öğretici adımı vardır; ücretsiz denemeler o an env
 | Katılımcılar | Oyuncu + 99 bot ("Renkli Tepe çırakları"; açıkça bot etiketli, adlar STORY `npc.apprentice.*`, gerçek insan adı yok; Köprü ekranında etiket + kural kartı — BUSINESS P-5, R-14) |
 | Tahta sayısı | 7. Katılımdan sonra **başlatılan** her kazanılmış bölüm = +1 tahta |
 | Elenme | Kayıp (K-29'da teklif reddi) ya da `m ≥ 1` iken onaylı çıkış → oyuncu suya düşer, simitle kıyıya yüzer, elenir. Uygulama kapanması elemez (K-43). Kayıp/elenme ekranında kalan oyuncu sayacı ve baskı metni gösterilmez (R-15) |
-| +5 hamle | Elenmeyi önler; fiyat etkinlik dışıyla aynı (900/1.350/1.800, deneme başına en çok 3, reklam dahil). **Tur harcama tavanı: 4.050 altın** (= 900 + 1.350 + 1.800, tek denemenin tam eskalasyonu; R-16, BUSINESS ile ortak değer; `events.json → wobblyBridge.bridgeSpendCapCoins`). Altın seçeneği yalnızca `tur harcaması + fiyat ≤ 4.050` iken sunulur; değilse pencerede yalnız reklam (hakkı varsa) ve "Bırak" kalır. Reklam seçeneği tavandan bağımsızdır |
+| +5 hamle | Elenmeyi önler; fiyat etkinlik dışıyla aynı (900/1.350/1.800, deneme başına en çok 3, reklam dahil). **Tur harcama tavanı: 4.050 altın** (= 900 + 1.350 + 1.800, tek denemenin tam eskalasyonu; R-16, BUSINESS ile ortak değer; `events.json → wobblyBridge.bridgeSpendCapCoins`). Altın seçeneği yalnızca `tur harcaması + fiyat ≤ 4.050` iken etkindir; değilse altın seçeneği etkin değildir (sunum UX §7: gri düğme + `lose.bridgeCap`). Reklam seçeneği tavandan bağımsızdır, ama yalnız 1. teklifte vardır (§3.3); tavan doluyken 2. ve 3. teklifte yalnız ret seçeneği kullanılabilir (GDD K-29) |
 | Süre | Katılımdan itibaren 6 saat (`durationMinutes 360`). Süre içinde başlatılan bölüm, süre dolduktan sonra bitse de sayılır |
 | Süre dolarsa (7 tahta yok) | Ödül yok; "Süre doldu" (elenme mesajı değil) |
 | Ödül havuzu | 10.000 altın; 7. tahtaya ulaşan herkes (oyuncu + botlar) eşit böler: `floor(10000 / bitirenSayısı)` |
 | Ödeme anı | `T_öde = min(T_son, max(T_oyuncu, T_bot))`. `T_son` = `t_0 + durationMinutes` (oyuncunun süre içinde başlattığı bölüm sürüyorsa o bölümün bitişi); `T_oyuncu` = oyuncunun bitirdiği ya da elendiği an (oyunda ise ∞); `T_bot` = botların son olay anı (her bot 7. tahtada ya da elenmeyle biter; en çok 7 deneme) |
 | Bekleme | Etkinlik bitince 120 dk sonra yeni etkinlik açılır |
+| Günlük üst sınır | `maxBridgesPerDay` (varsayılan `null` = sınır yok). Sayı verilirse oyuncu bir yerel takvim gününde en çok bu kadar Köprü turuna katılır; sayım katılım anına (`t_0`) göredir |
+| Bitiren ek ödülü | `finisherExtras` (varsayılan `null`). Verilirse 7. tahtaya ulaşan **oyuncuya** havuz payına ek olarak verilir (biçim `{ coins?, boosters? }`, ör. `{ "boosters": { "trowelStart": 1 } }`); havuz bölüşümü ve bot modeli değişmez |
+| LiveOps teması | `events.json → liveOps`: `[startUtc, endUtc)` (ISO 8601, UTC) penceresinde `liveOps.overrides.wobblyBridge` içindeki alanlar (`prizePoolCoins`, `cooldownMinutes`, `maxBridgesPerDay`, `finisherExtras`) temel değerlerin yerine geçer; pencere `null` ise tema yoktur. Bir Köprü turu katılım anındaki (`t_0`) değerlerle donar, tur boyunca değişmez. Havuz artışları BUSINESS §4.5-8 korumasına tabidir (beklenen pay < 900) |
 | Canlı sayaç | "Köprüde kalan: N/100" = 100 − elenenler; bitirenler köprünün ucunda görünür |
 | Usta Modu | 50'den sonra Usta Modu galibiyetleri tahta sayar |
 
@@ -218,6 +229,10 @@ doğrulanır.
 | Gruba giriş | Haftanın ilk kazanılan bölümünde 99 botlu gruba girilir; `groupId = hash(weekId, installId)` (ödemeden bağımsız, oyuncuya özgü) |
 | Katılımcılar | Oyuncu + 99 bot ("Renkli Tepe çırakları"; açıkça bot etiketli, adlar STORY `npc.apprentice.*`; lig ekranında etiket + kural kartı — R-14) |
 | Puan | Kolay/Normal galibiyet 1 · Zor 2 · Çok Zor 3 (Usta Modu dahil). Kayıp puan düşürmez |
+| Puan çarpanı | `masterLeague.pointsMultiplier` (varsayılan 1). Oyuncunun galibiyet puanı ve botların puan artışı **aynı** katsayıyla çarpılır (§7.3 madde 4; BUSINESS E8) |
+| Hafta sonu çarpanı | `masterLeague.weekendMultiplier` (varsayılan `null`). Verilirse `{ factor, addPoints, difficulties[], appliesTo: "playerAndBots" }`. Hafta sonu = lig haftasının UTC Cumartesi 00:00 → Pazartesi 00:00 aralığı. Bu aralıkta zorluğu `difficulties` içinde olan galibiyetin puanı `pts · factor + addPoints` olur; botlar §7.3 madde 4'teki beklenen oranla aynı ölçüde etkilenir. `appliesTo` her zaman `"playerAndBots"`dır (E8; doğrulayıcı başka değeri reddeder) |
+| Oyuncu puanı (çarpanlı) | `floor((pts · factor + addPoints) · pointsMultiplier)`; hafta sonu dışında ya da `difficulties` dışında `factor = 1`, `addPoints = 0` |
+| LiveOps teması | `liveOps.overrides.masterLeague` (`pointsMultiplier`, `weekendMultiplier`) `[startUtc, endUtc)` penceresinde temel değerlerin yerine geçer (§6.1 ile aynı pencere) |
 | Ligler | Bronz Mala → Gümüş Mala → Altın Mala → Elmas Mala. Yeni oyuncu Bronz'dan başlar |
 | Terfi / düşme | İlk 20 bir üst lige (Elmas'ta kalır), son 20 bir alt lige (Bronz'da kalır), diğerleri aynı ligde |
 | Eşitlik | Aynı puanda o puana daha erken ulaşan üstte |
@@ -248,6 +263,17 @@ Lig çarpanı (yalnızca altına uygulanır): Bronz ×1 · Gümüş ×1,5 · Alt
    `g_p` **sabit tamsayı tablodan** doğrusal ara değerdir (`Math.pow` yok; motorlar arası bit-aynı): `j = min(19,
    floor(20x))`, `g = T_p[j] + (T_p[j+1] − T_p[j]) · (20x − j)`. Tablo `events.json` → `masterLeague.bot.curveTable`
    (21 nokta, ‰; `T_p[j] = round(1000 · (j/20)^{üs})`). Örnek: p = 2 (doğrusal) → x = 0,5 → g = 500.
+4. **Çarpanlar (oyuncu ve botlara eşit; BUSINESS E8, §7):** taban eğri `B_i(t) = W'_i · g_{p_i}(x(t)) / 1000` (gerçek
+   sayı; madde 3'teki `P_i` = `floor(B_i)`). Katsayı `κ(t) = M(t) · κ_w(t)`: `M` = o anki `pointsMultiplier`; `κ_w = 1`
+   hafta sonu çarpanı yokken ya da hafta sonu aralığı dışında; içinde
+   `κ_w = Σ_{L=11..50} (pts(d_L) · f_L + a_L) / Σ_{L=11..50} pts(d_L)` (`d_L` = LEVELS §1 etiketi, botların beklenen
+   zorluk karışımı = Usta Modu sırası; `f_L = factor`, `a_L = addPoints` yalnız `d_L ∈ difficulties` ise, değilse 1 ve 0).
+   Puan: `P_i(t) = floor( Σ_j κ_j · (B_i(u_{j+1}) − B_i(u_j)) )`; `u_0 = t_giriş < u_1 < … < u_k = t`, κ'nin değiştiği
+   anlarda bölünmüş aralıklar (her aralıkta κ sabit). Çarpan yokken (κ ≡ 1) sonuç madde 3 ile bit bit aynıdır. Yalnız
+   dört işlem kullanılır. Örnek: BUSINESS Hafta 3 "hafta sonu Zor/Çok Zor ×2": 11–50'de 31 Normal · 5 Zor · 4 Çok Zor →
+   Σ pts = 31 + 10 + 12 = 53, çarpanlı Σ = 31 + 20 + 24 = 75 → κ_w = 75/53 ≈ 1,415. Hafta 6 "hafta sonu bütün
+   galibiyetler +1": (53 + 40)/53 ≈ 1,755. Test: "META 7.3 league multiplier equal for player and bots" (κ ≡ k sabitken
+   botun `P_i = floor(k · B_i)`, oyuncunun her galibiyet puanı `k` katı).
 
 **Beklenen eşikler (tam hafta):** 20. sıradaki bot `u ≈ 0,8` → Bronz'da ≈ 38, Elmas'ta ≈ 83 puan. 80. sıradaki bot
 `u ≈ 0,2` → Bronz'da ≈ 2 puan. Günde 4–5 galibiyet alan oyuncu Bronz'dan terfi eder; haftada 3 galibiyet düşmeyi önler.
@@ -329,16 +355,17 @@ gelir; JSON'daki USD/TRY yalnızca MVP gösterimi içindir.
 
 | Kaynak | Hesap | Altın / 10 bölüm |
 |---|---|---|
-| Bölüm galibiyeti | 10 × (ortalama taban 33 + bonus 5 hamle × 3 = 15) | 480 |
+| Bölüm galibiyeti | 10 × (ortalama taban 35 + bonus 5 hamle × 3 = 15); taban ortalaması 1–50 = 35,2 (LEVELS §1: 4 Kolay · 36 Normal · 6 Zor · 4 Çok Zor; §3.1 miktarları) | 500 |
 | Kalan Altın Mala | 10 × 0,5 mala × 10 | 50 |
 | Bölüm sandığı (1–50) | (200 + 250 + 300 + 350 + 500) / 5 | 320 |
 | Günlük ödül | ≈ 1,5 gün × 61 altın/gün (döngü altını 425 / 7) | 90 |
 | Sallanan Köprü | 10 bölümde 1 etkinlik × P(bitirme) × 650; P = 0,08 (yalın: 0,7⁷) … 0,25 (seri bonusu + kurtarmayla; Faz 3 ölçer) | 50–160 |
 | Usta Ligi | 10 bölümde ≈ 0,3 hafta × 60 | 20 |
-| **Toplam (1–50)** | | **≈ 1.010–1.120** |
+| **Toplam (1–50)** | | **≈ 1.030–1.140** |
 
 Usta Modu (50 sonrası): bölüm sandığı yerine Usta Sandığı (250); bütçe `min + 2` olduğu için bonus ≈ 1 hamle → galibiyet
-10 × (33 + 3) = 360, mala ≈ 30 → **≈ 800–910 / 10 galibiyet** (tahmin; Faz 3 ölçer, taban için aşağıya bakın).
+10 × (37 + 3) = 400 (taban ortalaması 11–50 = 37: 31 Normal · 5 Zor · 4 Çok Zor), mala ≈ 30 → 400 + 30 + 250 + 90 +
+50–160 + 20 = **≈ 840–950 / 10 galibiyet** (tahmin; Faz 3 ölçer, taban için aşağıya bakın).
 
 | Harcama | Fiyat | Not |
 |---|---|---|
@@ -353,7 +380,8 @@ bantları):**
   medyan > 2.500 (paketler değer kaybeder) ya da 10 bölüm boyunca < 200 (hayal kırıklığı riski).
 - (b) **Kayıp kurtarma karışımı** (ödemeyen oyuncu): altınla %15–25, reklamla %30–40, kurtarılmayan %40–50.
 - **Taban (adalet):** 10 bölümlük gelir ≥ 900 → ödemeyen oyuncu 10 bölümde en az 1 kez +5'i altınla alabilir
-  (BUSINESS §5.4). 1–50'de sağlanır (≈ 1.010–1.120). Usta Modu tahmini (≈ 800–910) tabana yakındır. **Ayar kuralı:**
+  (BUSINESS §5.4). 1–50'de sağlanır (≈ 1.030–1.140). Usta Modu tahmini (≈ 840–950) tabanın iki yanındadır (alt ucu
+  900'ün altında, üst ucu üstünde); sonuç Faz 3 ölçümüne kalır. **Ayar kuralı:**
   Faz 3 ekonomi simülasyonunda ödemeyen oyuncunun Usta Modu'ndaki 10 galibiyetlik medyan geliri `G` < 900 çıkarsa Usta
   Sandığı altını `250 + 50 · ceil((900 − G) / 50)` olur (ör. G = 820 → 350); product-lead ve entrepreneur aynı değeri
   META §8.5, `economy.json → masterMode.masterChest.coins` ve BUSINESS §9.2'ye yazar (R-16). G ≥ 900 ise 250 kalır.
@@ -361,8 +389,9 @@ bantları):**
   tavanı belirler; kazanma oranı farklı oyuncularda aynı tavan farklı baskı üretir.
 - Ölçüm olayları: `coin_source`, `coin_sink`, `event_continue`, `level_end.durationMs` (code-lead, ANALYTICS).
 
-Kumbara kaynak değildir (yalnızca satın alımla açılır): 10 galibiyet × ≈ 55 ≈ 550 altın / 10 bölüm birikir; 1.000 eşiğine
-17. galibiyette (Bölüm 36) ulaşır (§8.3).
+Kumbara kaynak değildir (yalnızca satın alımla açılır): 10 galibiyet × ≈ 60 ≈ 600 altın / 10 bölüm birikir (§8.3:
+1.850 altın / 31 galibiyet ≈ 60); 1.000 eşiğine 17. galibiyette (Bölüm 36) ulaşır (§8.3).
 
-**Bonuslar ve güçlendirici kaynakları (10 bölüm başına):** sandık ≈ 2,4 güçlendirici, günlük ≈ 0,6, lig ≈ 0,1;
-ücretsiz denemeler (toplam 17) yalnızca açılışta.
+**Bonuslar ve güçlendirici kaynakları (10 bölüm başına):** sandık ≈ 3,2 güçlendirici (§8.2: 2 + 2 + 2 + 3 + 7 = 16 / 5
+sandık), günlük ≈ 0,9 (döngüde 4 güçlendirici / 7 gün × ≈ 1,5 gün), lig ≈ 0,1; ücretsiz denemeler (toplam 17) yalnızca
+açılışta. Açılmadan gelen güçlendiriciler envanterde birikir (§4).
