@@ -6,7 +6,7 @@
 
 ## Proje özeti
 
-1. **Minik Usta** (EN: *Little Builder*, çalışma adı) dikey ekranlı bir mobil blok yerleştirme bulmacasıdır.
+1. **Minik Usta** (kod adı; mağaza adı D-068'e göre seçilecek, "Little Builder" kullanılmaz — D-033) dikey ekranlı bir mobil blok yerleştirme bulmacasıdır.
 2. Oyuncu soldaki 6×8 malzeme sahasından blok alır, duvarın üstünden kaldır–taşı–indir ya da geçitten geçirir.
 3. Sağdaki 2 sütunluk şantiyede renk planını inşa eder; her bölüm somut bir yapı parçası üretir.
 4. İmza hareket "yukarı–aşağı"dır: çözümdeki şantiye yerleştirmelerinin ≥ %60'ı duvar üstünden (YAO).
@@ -14,7 +14,7 @@
 6. Meta: yıldızla kasaba inşası, 5 hikaye bölümü, can/altın, galibiyet serisi, Sallanan Köprü, Usta Ligi (MVP'de botlu).
 7. MVP: 50 bölüm, 5 hikaye bölümü, kasaba ekranı, 2 etkinlik, ekonomi; mağaza sahte satın almalı.
 8. Önce mobil web (Vite + TypeScript + Phaser), sonra Capacitor ile iOS/Android.
-9. Kahraman Tuna (8), Usta Dede, köpek Kepçe ve rakip Bay Gribeton; Renkli Tepe kasabası.
+9. Kahraman Tuna (yaşı hiçbir metinde geçmez — D-044), Usta Dede, köpek Kepçe (EN: Kepche) ve rakip Bay Gribeton; Renkli Tepe kasabası.
 10. Tek doğruluk kaynağı: `docs/BRIEF.md`. Kararlar: `docs/DECISIONS.md`. Yorumlar: `docs/REVIEW_LOG.md`.
 
 ## Ajanlar ve sahiplik matrisi
