@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "id": 11,
+  "chapter": 2,
+  "name": {
+    "tr": "Test",
+    "en": "Test"
+  },
+  "difficulty": "normal",
+  "moves": 10,
+  "goals": [
+    {
+      "type": "clear",
+      "target": "crate",
+      "count": 1
+    }
+  ],
+  "gravity": {
+    "build": "normal",
+    "yard": false
+  },
+  "wall": {
+    "height": 4,
+    "gaps": []
+  },
+  "build": {
+    "mode": "segments",
+    "segments": [
+      {
+        "name": {
+          "tr": "A",
+          "en": "A"
+        },
+        "rows": [
+          "YY",
+          "YY",
+          "WW",
+          "WW"
+        ]
+      }
+    ]
+  },
+  "yard": {
+    "batches": [
+      {
+        "forSegment": 0,
+        "pieces": [
+          {
+            "shape": "O4_0",
+            "color": "W",
+            "x": 0,
+            "y": 6
+          },
+          {
+            "shape": "O4_0",
+            "color": "Y",
+            "x": 2,
+            "y": 6
+          },
+          {
+            "shape": "O4_0",
+            "color": "Y",
+            "x": 0,
+            "y": 4
+          },
+          {
+            "shape": "O4_0",
+            "color": "W",
+            "x": 2,
+            "y": 4
+          },
+          {
+            "shape": "O4_0",
+            "color": "Y",
+            "x": 4,
+            "y": 4
+          },
+          {
+            "shape": "O4_0",
+            "color": "W",
+            "x": 0,
+            "y": 2
+          },
+          {
+            "shape": "O4_0",
+            "color": "Y",
+            "x": 2,
+            "y": 2
+          },
+          {
+            "shape": "O4_0",
+            "color": "W",
+            "x": 4,
+            "y": 2
+          },
+          {
+            "shape": "O4_0",
+            "color": "Y",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "shape": "O4_0",
+            "color": "W",
+            "x": 2,
+            "y": 0
+          },
+          {
+            "shape": "O4_0",
+            "color": "Y",
+            "x": 4,
+            "y": 0
+          },
+          {
+            "shape": "D2_90",
+            "color": "W",
+            "x": 4,
+            "y": 6
+          }
+        ]
+      }
+    ]
+  },
+  "obstacles": [
+    {
+      "type": "crate",
+      "x": 4,
+      "y": 7,
+      "hp": 1
+    }
+  ]
+}

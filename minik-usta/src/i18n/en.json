@@ -1,0 +1,120 @@
+{
+  "ads": {
+    "none": "No ad right now",
+    "tomorrow": "Back tomorrow"
+  },
+  "booster": {
+    "noUndo": "Nothing to undo"
+  },
+  "build": {
+    "done": "Build complete!"
+  },
+  "common": {
+    "ok": "OK",
+    "unlockAt": "Unlocks at level {n}"
+  },
+  "exit": {
+    "bridge": "You'll fall off the bridge.",
+    "cost": "Leaving costs 1 life.",
+    "free": "No moves made yet, so no life is lost.",
+    "leave": "Leave",
+    "stay": "Stay",
+    "title": "Leave the level?"
+  },
+  "lose": {
+    "ad": "Watch an ad · +{n} moves",
+    "bridgeCap": "This round's coin limit doesn't cover this offer.",
+    "buygold": "Get coins · {coin}{n} short",
+    "decline": "No thanks",
+    "left": "Left: {n} cells",
+    "life": "You lost a life.",
+    "offer": {
+      "count": "Offer {n}/{max}",
+      "gift": "+{n} moves · a gift from Grandpa",
+      "last": "Offer {n}/{max} · last offer",
+      "moves": "+{n} moves"
+    },
+    "retry": "Try again",
+    "streak": "Your win streak was reset.",
+    "title": "Out of moves!"
+  },
+  "obs": {
+    "s1": {
+      "desc": "Finish this floor; the site slides and the truck delivers."
+    },
+    "s2": {
+      "desc": "Keep hatched cells empty. Fill above them via a gap or bridge."
+    },
+    "w1": {
+      "desc": "Blocks sent through a gap don't fall; they stay put."
+    }
+  },
+  "resume": {
+    "title": "Pick up where you left off",
+    "void": {
+      "body": "Level {n} will start from the beginning. Everything you spent is back.",
+      "bridge": "Your place on the bridge is safe.",
+      "title": "The game was updated"
+    }
+  },
+  "story": {
+    "prologue": {
+      "p1": {
+        "tuna": "What's this old sign?"
+      },
+      "p2": {
+        "dede": "Our old company! Closed for years."
+      },
+      "p3": {
+        "kepce": "Woof!",
+        "tuna": "{company} is open again!"
+      }
+    }
+  },
+  "town": {
+    "name": "Hue Hill"
+  },
+  "tut": {
+    "ctx": {
+      "blocked": "That one can't move yet. Look around it.",
+      "bounce": {
+        "color": "Wrong color, so it bounced back.",
+        "offplan": "Nothing gets built outside the plan.",
+        "window": "That's a window. It stays empty."
+      },
+      "goldtrowel": "Tap a glowing cell with the Golden Trowel.",
+      "lastmoves": "Five moves left! Think, don't rush.",
+      "queue": "Make room so the truck can unload.",
+      "reshuffle": "We're stuck! The truck is rearranging the yard.",
+      "resume": "Pick up where you left off.",
+      "streak": "Get {n} right in a row for a Golden Trowel!",
+      "support": "Fill the gap below first, kiddo.",
+      "tootall": "Too tall to pass over the top.",
+      "truckhelp": {
+        "free": "The truck helped, the blocks are free. Carry on!",
+        "material": "We were short on material. The truck brought more!"
+      }
+    },
+    "l1": {
+      "drop": "Let go above the site and it drops.",
+      "lift": "Grab a block and lift it over the wall!",
+      "match": "Pick the block that matches the plan."
+    },
+    "l2": {
+      "pattern": "Look at the plan: colors come in stripes.",
+      "shadow": "A {ok} on the shadow means the spot is right."
+    },
+    "l3": {
+      "gap": "There's a gap! Slide the block through.",
+      "rail": "On the rail it stays put. Lift the next one over."
+    },
+    "l4": {
+      "above": "Set the top of the window via the gap.",
+      "window": "Hatched cells stay empty: it's a window!"
+    },
+    "l5": {
+      "segments": "Finish this floor and the site moves on.",
+      "truck": "The truck brought new materials!"
+    }
+  }
+}

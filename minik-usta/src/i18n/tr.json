@@ -1,0 +1,120 @@
+{
+  "ads": {
+    "none": "Şu an reklam yok",
+    "tomorrow": "Yarın tekrar"
+  },
+  "booster": {
+    "noUndo": "Geri alınacak hamle yok"
+  },
+  "build": {
+    "done": "Yapı tamam!"
+  },
+  "common": {
+    "ok": "Tamam",
+    "unlockAt": "{n}. bölümde açılır"
+  },
+  "exit": {
+    "bridge": "Köprüden düşersin.",
+    "cost": "Çıkarsan 1 can gider.",
+    "free": "Henüz hamle yapmadın; can gitmez.",
+    "leave": "Çık",
+    "stay": "Kal",
+    "title": "Bölümden çık?"
+  },
+  "lose": {
+    "ad": "Reklam izle · +{n} hamle",
+    "bridgeCap": "Bu turun altın sınırı bu teklife yetmez.",
+    "buygold": "Altın al · eksik {coin}{n}",
+    "decline": "Hayır, teşekkürler",
+    "left": "Kalan: {n} hücre",
+    "life": "Bir can gitti.",
+    "offer": {
+      "count": "Teklif {n}/{max}",
+      "gift": "+{n} hamle · Usta Dede'den hediye",
+      "last": "Teklif {n}/{max} · son teklif",
+      "moves": "+{n} hamle"
+    },
+    "retry": "Tekrar dene",
+    "streak": "Galibiyet serin sıfırlandı.",
+    "title": "Hamleler bitti!"
+  },
+  "obs": {
+    "s1": {
+      "desc": "Bu kat bitince şantiye kayar, kamyon malzeme getirir."
+    },
+    "s2": {
+      "desc": "Taralı hücre boş kalmalı. Üstünü geçitten ya da köprüyle doldur."
+    },
+    "w1": {
+      "desc": "Geçitten giren blok düşmez, bıraktığın yerde kalır."
+    }
+  },
+  "resume": {
+    "title": "Kaldığın yerden devam",
+    "void": {
+      "body": "Bölüm {n} baştan başlayacak. Harcadıkların geri verildi.",
+      "bridge": "Köprüdeki yerin korundu.",
+      "title": "Oyun güncellendi"
+    }
+  },
+  "story": {
+    "prologue": {
+      "p1": {
+        "tuna": "Bu eski tabela da ne?"
+      },
+      "p2": {
+        "dede": "Bizim firma! Yıllardır kapalıydı."
+      },
+      "p3": {
+        "kepce": "Hav!",
+        "tuna": "Minik Usta İnşaat yeniden açıldı!"
+      }
+    }
+  },
+  "town": {
+    "name": "Renkli Tepe"
+  },
+  "tut": {
+    "ctx": {
+      "blocked": "Bu blok şimdi kımıldamaz. Çevresine bak.",
+      "bounce": {
+        "color": "Renk uymadı, blok geri döndü.",
+        "offplan": "Plan dışına inşa edilmez.",
+        "window": "Orası pencere, boş kalmalı."
+      },
+      "goldtrowel": "Altın Mala'yla parlayan bir hücreye dokun.",
+      "lastmoves": "Son beş hamle! Acele etme, düşün.",
+      "queue": "Sahada yer aç, kamyon boşaltsın.",
+      "reshuffle": "Sıkıştık! Kamyon sahayı yeniden diziyor.",
+      "resume": "Kaldığın yerden devam, evlat.",
+      "streak": "Hatasız {n} doğru, Altın Mala getirir!",
+      "support": "Önce alttaki boşluğu doldur, evlat.",
+      "tootall": "Bu blok çok uzun, üstten geçemez.",
+      "truckhelp": {
+        "free": "Kamyon yardım etti, bloklar serbest. Devam!",
+        "material": "Malzeme eksikti. Kamyon getirdi!"
+      }
+    },
+    "l1": {
+      "drop": "Şantiyenin üstünde bırak, kendisi düşer.",
+      "lift": "Bloğu tut, duvarın üstünden kaldır!",
+      "match": "Plandaki renge uyan bloğu seç."
+    },
+    "l2": {
+      "pattern": "Plana bak: renkler şerit şerit.",
+      "shadow": "Gölgede {ok} varsa yer doğru."
+    },
+    "l3": {
+      "gap": "Duvarda geçit var! Bloğu içinden kaydır.",
+      "rail": "Raydaki blok düşmez. Sıradakini üstünden aşır."
+    },
+    "l4": {
+      "above": "Pencerenin üstünü geçitten raya koy.",
+      "window": "Taralı yerler boş kalacak: pencere!"
+    },
+    "l5": {
+      "segments": "Bu kat bitince şantiye kayar.",
+      "truck": "Kamyon yeni malzeme getirdi!"
+    }
+  }
+}
