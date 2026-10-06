@@ -40,10 +40,11 @@ NAMING §5) ve kapanış dosyaları. Aynı konudaki öneriler tek kayıtta birle
 "ÖNERİ" kayıtları proje sahibinin onayını bekler; belgeler bu kayıtlarda varsayılan olarak öneriye göre yazılmıştır.
 
 ### D-004 — K-34 "Alttan Üste" (destek) kuralı ve görünürlük katmanları
-Durum: ÖNERİ     Sahip: product-lead (kural), design-lead (görünürlük), code-lead (uygulama)     Tarih: 2026-10-05
-Karar: Proje sahibi onayı bekliyor. Bir blok şantiyede ancak kapladığı her sütunda altındaki bütün `.` olmayan plan hücreleri doğru doluysa doğru yerleşir (`.` yalnız boşken dolu sayılır). Görünürlük: inşa cephesi vurgusu (`buildFront`), gölgede ↓ rozeti + eksik destek taraması, geri sekme/harç yapışması sonrası vurgu, ilk karşılaşmada `tut.ctx.support` ve Bölüm 4 yumuşak öğretici adımı. Tek `isCorrectPlacement` doğrulama, gölge, Vinç, Altın Mala, Boya Fırçası ve solver'da kullanılır.
+Durum: KABUL     Sahip: product-lead (kural), design-lead (görünürlük), code-lead (uygulama)     Tarih: 2026-10-05
+Karar: Bir blok şantiyede ancak kapladığı her sütunda altındaki bütün `.` olmayan plan hücreleri doğru doluysa doğru yerleşir (`.` yalnız boşken dolu sayılır). Görünürlük: inşa cephesi vurgusu (`buildFront`), gölgede ↓ rozeti + eksik destek taraması, geri sekme/harç yapışması sonrası vurgu, ilk karşılaşmada `tut.ctx.support` ve Bölüm 4 yumuşak öğretici adımı. Tek `isCorrectPlacement` doğrulama, gölge, Vinç, Altın Mala, Boya Fırçası ve solver'da kullanılır.
 Gerekçe: R-01; product-lead P-1, design-lead P-10 (+ P-7 ↓ rozeti), code-lead P-13 (O-2). Kural olmadan gömülü delik bölümü sessizce çözümsüz bırakır (Bölüm 3); 1–10 betikle doğrulandı, K-34 ihlali yok.
 Etkilenen: GDD K-34, K-18, K-33, E-43; LEVELS §0, B3/B4/B6; UX §5.4–5.5; ART §4; JUICE #83, #84; TECH §5.2, §6.4, §9.3, §14.1
+Onay: Proje sahibi, 2026-10-06 (önerilen yanıtla).
 
 ### D-005 — GDD kural ve verinin tek kaynağıdır (TECH ↔ GDD farkları)
 Durum: KABUL     Sahip: orkestratör     Tarih: 2026-10-05
@@ -106,10 +107,11 @@ Gerekçe: R-05; design-lead P-7 (genişletilmiş). Renk körü erişimi ve adale
 Etkilenen: UX §5.4; ART §2.3; JUICE #7; GDD K-18; TECH §5.1
 
 ### D-015 — Ekran ölçekleme: FIT mi EXPAND mı
-Durum: ÖNERİ     Sahip: design-lead + code-lead     Tarih: 2026-10-05
-Karar: Proje sahibi onayı bekliyor. Öneri EXPAND (1920–2400 yükseklik, tahta grubu `expandShare` 0,5 ile büyür). Kod ve belgeler `layout.top/bottom/board/popup` çapa sözleşmesiyle iki kipte de çalışır; seçim tek ayar.
+Durum: KABUL     Sahip: design-lead + code-lead     Tarih: 2026-10-05
+Karar: Öneri EXPAND (1920–2400 yükseklik, tahta grubu `expandShare` 0,5 ile büyür). Kod ve belgeler `layout.top/bottom/board/popup` çapa sözleşmesiyle iki kipte de çalışır; seçim tek ayar.
 Gerekçe: R-06; code-lead P-7 (O-1) = design-lead P-4. Brif FIT diyor; EXPAND uzun ekranlarda boş bant bırakmaz.
 Etkilenen: tokens `meta.scale`, `layout.*`; UX §0.1; TECH §10.1
+Onay: Proje sahibi, 2026-10-06 (önerilen yanıtla).
 
 ### D-016 — Kasaba görevleri: STORY'deki 35 görev esastır
 Durum: KABUL     Sahip: product-lead     Tarih: 2026-10-05
@@ -172,16 +174,18 @@ Gerekçe: R-16; BUSINESS P-3, P-11; product-lead META §3, §8, §9. Eşikteki k
 Etkilenen: `config/economy.json`, `config/events.json`; META §3–§9; BUSINESS §4–§5; UX §7, §11; TECH §11.3
 
 ### D-026 — Usta Modu (içerik sonu) MVP'de
-Durum: ÖNERİ     Sahip: product-lead + entrepreneur     Tarih: 2026-10-05
-Karar: Proje sahibi onayı bekliyor. 50. bölümden sonra 11…50 sırayla, sonra yeniden 11; hamle = solver minimumu + 2; yıldız yok; Köprü ve Lig'e sayılır; altın ve lig puanı özgün zorluk etiketinden; her 10 Usta Modu galibiyetinde Usta Sandığı 250 altın + 1 Çekiç. Faz 3 ayar kuralı: 10 galibiyetteki medyan gelir G < 900 ise sandık altını `250 + 50 · ceil((900 − G) / 50)`. "Sonra" kararında yedek: 11–50 özgün bütçeyle tekrar, yalnız kazanma tabanı.
+Durum: KABUL     Sahip: product-lead + entrepreneur     Tarih: 2026-10-05
+Karar: 50. bölümden sonra 11…50 sırayla, sonra yeniden 11; hamle = solver minimumu + 2; yıldız yok; Köprü ve Lig'e sayılır; altın ve lig puanı özgün zorluk etiketinden; her 10 Usta Modu galibiyetinde Usta Sandığı 250 altın + 1 Çekiç. Faz 3 ayar kuralı: 10 galibiyetteki medyan gelir G < 900 ise sandık altını `250 + 50 · ceil((900 − G) / 50)`. "Sonra" kararında yedek: 11–50 özgün bütçeyle tekrar, yalnız kazanma tabanı.
 Gerekçe: R-17; product-lead P-8, P-18; BUSINESS P-8. Köprü ve Lig bölüm kazanmaya bağlı; 50 bölüm medyan oyuncuda 7–9 günde biter (tahmin). Maliyet ≈ 1 g, sanat gerektirmez.
 Etkilenen: META §8.5, §9; `economy.json → masterMode`; BUSINESS §9.2, §12.1; UX §3, §6; TECH §14.3
+Onay: Proje sahibi, 2026-10-06 (önerilen yanıtla).
 
 ### D-027 — Hamle bütçeleri brif tahmininin altında
-Durum: ÖNERİ     Sahip: product-lead     Tarih: 2026-10-05
-Karar: Proje sahibi onayı bekliyor. Hamle bütçeleri brif tahminlerinin %25–40 altındadır; formül (solver minimumu + tampon, bot ayarı) geçerli kalır ve bölüm süresi bandıyla (1–10: 45–75 s; 11–30: 75–120 s; 31–50: 100–180 s) ölçülür.
+Durum: KABUL     Sahip: product-lead     Tarih: 2026-10-05
+Karar: Hamle bütçeleri brif tahminlerinin %25–40 altındadır; formül (solver minimumu + tampon, bot ayarı) geçerli kalır ve bölüm süresi bandıyla (1–10: 45–75 s; 11–30: 75–120 s; 31–50: 100–180 s) ölçülür.
 Gerekçe: R-18. Bütçe çözüm uzunluğundan türetilir; içerik pisti ve kayıp sıklığı süre bandıyla izlenir.
 Etkilenen: LEVELS §0, §1, §4; META; BUSINESS §6.2
+Onay: Proje sahibi, 2026-10-06 (önerilen yanıtla).
 
 ### D-028 — Albüm "Sonra"; kasaba görevi sahnesi MVP-lite
 Durum: KABUL     Sahip: entrepreneur (kapsam), design-lead (sunum)     Tarih: 2026-10-05
@@ -286,10 +290,11 @@ Gerekçe: design-lead P-19 (S15 kısmı), BUSINESS S15. Çocuğa yönelik sayıl
 Etkilenen: BUSINESS §3; STORY; STORE_LISTING
 
 ### D-045 — Tuna'nın görsel yaşı
-Durum: ÖNERİ     Sahip: design-lead     Tarih: 2026-10-05
-Karar: Proje sahibi onayı bekliyor. Seçenekler: brifteki 8 yaş görünümü ya da 10–12 yaş görünümü. design-lead 10–12'yi önerir; entrepreneur için isteğe bağlı (S1–S15 her durumda uygulanır).
+Durum: KABUL     Sahip: design-lead     Tarih: 2026-10-05
+Karar: Seçenekler: brifteki 8 yaş görünümü ya da 10–12 yaş görünümü. design-lead 10–12'yi önerir; entrepreneur için isteğe bağlı (S1–S15 her durumda uygulanır).
 Gerekçe: design-lead P-19. Brifteki karakter tanımını değiştirdiği için proje sahibinin kararı.
 Etkilenen: ART §11; ASSET §8; STORY
+Onay: Proje sahibi, 2026-10-06 (önerilen yanıtla).
 
 ### D-046 — Font Baloo 2, sabit genişlikli hane yuvaları
 Durum: KABUL     Sahip: design-lead (seçim), code-lead (yükleme)     Tarih: 2026-10-05
@@ -382,22 +387,25 @@ Gerekçe: code-lead P-14; R-05. Phaser 4'te RenderTexture/GenerateTexture yolu u
 Etkilenen: ART §3; ASSET §2; TECH §10.2
 
 ### D-061 — Faz 2 takvimi ≈ 6 hafta
-Durum: ÖNERİ     Sahip: code-lead (+ entrepreneur takvim)     Tarih: 2026-10-05
-Karar: Proje sahibi onayı bekliyor. Faz 2 = 26,25 g net / 29,5 g tamponlu (≈ 6 hf; brif planı 4 hf; tampon ≈ %12, TECH §14'ün %20 hedefinin altında); Faz 2–5 toplamı 93,5 g net / 110 g tamponlu ≈ 22,0 hf (29,5 + 39 + 23,5 + 18), BUSINESS §10'un 22 haftasına payı kalmadan sığar. Alternatif: TECH §14.1 kesme seçeneği (giriş sahnesi, ek ekran profilleri/CVD, analytics genişlemesi Faz 4'e; 28,5 g tamponlu ≈ 5,7 hf). K-34, K-35, K-43 kesilemez. (2026-10-06: son tutarlılık ve senkron turlarından sonra güncellendi.)
+Durum: KABUL     Sahip: code-lead (+ entrepreneur takvim)     Tarih: 2026-10-05
+Karar: Faz 2 = 26,25 g net / 29,5 g tamponlu (≈ 6 hf; brif planı 4 hf; tampon ≈ %12, TECH §14'ün %20 hedefinin altında); Faz 2–5 toplamı 93,5 g net / 110 g tamponlu ≈ 22,0 hf (29,5 + 39 + 23,5 + 18), BUSINESS §10'un 22 haftasına payı kalmadan sığar. Alternatif: TECH §14.1 kesme seçeneği (giriş sahnesi, ek ekran profilleri/CVD, analytics genişlemesi Faz 4'e; 28,5 g tamponlu ≈ 5,7 hf). K-34, K-35, K-43 kesilemez. (2026-10-06: son tutarlılık ve senkron turlarından sonra güncellendi.)
 Gerekçe: code-lead O-3; entrepreneur'ün %20 tampon isteği; K-34/K-35/devam/çapa işleri.
 Etkilenen: TECH §14; BUSINESS §10
+Onay: Proje sahibi, 2026-10-06 (önerilen yanıtla).
 
 ### D-062 — Test cihazları ve macOS derleme ortamı
-Durum: ÖNERİ     Sahip: code-lead + entrepreneur (bütçe)     Tarih: 2026-10-05
-Karar: Proje sahibi onayı bekliyor. Faz 2 başında 1 düşük seviye (≤ 3 GB RAM, Android 10–12) ve 1 orta seviye Android test telefonu alınır (BUSINESS §10 bütçesinde ayrıca 1 düşük Android ve 1 eski iPhone); Faz 5 iOS için fiziksel Mac ya da bulut macOS CI (≈ $1.000, fiyat doğrulanmadı).
+Durum: KABUL     Sahip: code-lead + entrepreneur (bütçe)     Tarih: 2026-10-05
+Karar: Faz 2 başında 1 düşük seviye (≤ 3 GB RAM, Android 10–12) ve 1 orta seviye Android test telefonu alınır (BUSINESS §10 bütçesinde ayrıca 1 düşük Android ve 1 eski iPhone); Faz 5 iOS için fiziksel Mac ya da bulut macOS CI (≈ $1.000, fiyat doğrulanmadı).
 Gerekçe: code-lead P-22 (O-4); D-032 çıkış kapısı gerçek cihaz ister; Capacitor iOS derlemesi macOS gerektirir.
 Etkilenen: TECH §10.7, §13, §14.1; BUSINESS §10
+Onay: Proje sahibi, 2026-10-06 (önerilen yanıtla).
 
 ### D-063 — Hedef kitle: yetişkin casual oyuncu
-Durum: ÖNERİ     Sahip: entrepreneur     Tarih: 2026-10-05
-Karar: Proje sahibi onayı bekliyor. Birincil kitle 25–54 yaş yetişkin casual bulmaca oyuncusu (çekirdek 35–54); oyun çocuğa yönelik değildir; BUSINESS §3'teki 15 koruma şartı (S1–S15) zorunlu; Play hedef yaşı 18+, Kids/Aile kategorisi yok.
+Durum: KABUL     Sahip: entrepreneur     Tarih: 2026-10-05
+Karar: Birincil kitle 25–54 yaş yetişkin casual bulmaca oyuncusu (çekirdek 35–54); oyun çocuğa yönelik değildir; BUSINESS §3'teki 15 koruma şartı (S1–S15) zorunlu; Play hedef yaşı 18+, Kids/Aile kategorisi yok.
 Gerekçe: BUSINESS P-1; brif §15 varsayım 8'in teyidi. Çocuk kahraman COPPA/Play faktörlerini tetikler (R-01).
 Etkilenen: ART, STORY, UX (yaş ekranı), STORE_LISTING, TECH (SDK başlatma sırası)
+Onay: Proje sahibi, 2026-10-06 (önerilen yanıtla).
 
 ### D-064 — Monetizasyon modeli
 Durum: KABUL     Sahip: entrepreneur     Tarih: 2026-10-05
@@ -406,16 +414,18 @@ Gerekçe: BUSINESS P-2 (R-15). Loot box ve karanlık örüntü düzenlemeleri; b
 Etkilenen: META; `economy.json`; UX; TECH §11
 
 ### D-065 — MVP kesme çizgisi ve B planı
-Durum: ÖNERİ     Sahip: entrepreneur     Tarih: 2026-10-05
-Karar: Proje sahibi onayı bekliyor. BUSINESS §12.1 tablosu MVP sınırıdır (eklenenler: bölüm içi devam, `m = 0` cezasız çıkış, sahte servis arayüzleri, 1400 ms seçeneği, ilk +5 hediyesi; Usta Modu D-026'ya bağlı). Faz 3 iki haftadan fazla kayarsa B planı: önce S6 Asansör, gerekirse S5 Döner Platform kesilir (en çok 7 bölüm: 31, 34, 37, 39, 40, 48, 49; bölüm sayısı 50 kalır); G-L ayrı yedeği "yalnız yavaş düşüş" (23, 49). Soru: B planı tetiklenince proje sahibine yeniden sorulmadan uygulansın mı?
+Durum: KABUL     Sahip: entrepreneur     Tarih: 2026-10-05
+Karar: BUSINESS §12.1 tablosu MVP sınırıdır (eklenenler: bölüm içi devam, `m = 0` cezasız çıkış, sahte servis arayüzleri, 1400 ms seçeneği, ilk +5 hediyesi; Usta Modu D-026'ya bağlı). Faz 3 iki haftadan fazla kayarsa B planı: önce S6 Asansör, gerekirse S5 Döner Platform kesilir (en çok 7 bölüm: 31, 34, 37, 39, 40, 48, 49; bölüm sayısı 50 kalır); G-L ayrı yedeği "yalnız yavaş düşüş" (23, 49). Soru: B planı tetiklenince proje sahibine yeniden sorulmadan uygulansın mı?
 Gerekçe: BUSINESS P-7; code-lead §14.2 maliyetleri (S5 + S6 ≈ 2,5 g, G-L ≈ 1 g).
 Etkilenen: BUSINESS §12; LEVELS §3; TECH §14.2
+Onay: Proje sahibi, 2026-10-06 (önerilen yanıtla).
 
 ### D-066 — Soft launch planı ve karar kapıları
-Durum: ÖNERİ     Sahip: entrepreneur     Tarih: 2026-10-05
-Karar: Proje sahibi onayı bekliyor. Aşama 0 web kapalı test (TR) → mağaza sürümü paketi (+1 hf) → Aşama 1 Android TR + Filipinler → Aşama 2 iOS + Android Kanada/Avustralya/Yeni Zelanda → Kapı 3 global (≥ 150 bölüm). Eşikler BUSINESS §8'de, test başlamadan sabitlenir. Takvim ≈ 43 hf; bütçe ≈ $277 bin (yalın senaryo ≈ $180 bin, tahmin).
+Durum: KABUL     Sahip: entrepreneur     Tarih: 2026-10-05
+Karar: Aşama 0 web kapalı test (TR) → mağaza sürümü paketi (+1 hf) → Aşama 1 Android TR + Filipinler → Aşama 2 iOS + Android Kanada/Avustralya/Yeni Zelanda → Kapı 3 global (≥ 150 bölüm). Eşikler BUSINESS §8'de, test başlamadan sabitlenir. Takvim ≈ 43 hf; bütçe ≈ $277 bin (yalın senaryo ≈ $180 bin, tahmin).
 Gerekçe: BUSINESS P-9; takvim ve bütçe proje sahibini bağlar.
 Etkilenen: BUSINESS §8, §10; ANALYTICS; TECH §13
+Onay: Proje sahibi, 2026-10-06 (önerilen yanıtla).
 
 ### D-067 — Paket kimliği ve kısa ad kuralı
 Durum: KABUL     Sahip: entrepreneur + code-lead     Tarih: 2026-10-05
@@ -424,7 +434,26 @@ Gerekçe: BUSINESS P-13; code-lead TECH §13'te kabul. Kimlik yayından sonra de
 Etkilenen: NAMING §6.1; TECH §13; i18n `app.title`
 
 ### D-068 — Oyun adı (mağaza markası)
-Durum: ÖNERİ     Sahip: entrepreneur     Tarih: 2026-10-05
-Karar: Proje sahibi onayı bekliyor. Aday sırası: 1 Lift & Land / Kaldır Kondur, 2 Hue Hill / Renktepe, 3 Hoppa Usta / Hoppa Builders (TR kullanıcı testi şartıyla). Öneri: tek global EN marka + TR mağazada Türkçe alt başlık. "Minik Usta" çalışma/kod adı olarak kalır. Paket kimliği için tüzel kişilik adı Faz 5'ten önce gerekir.
+Durum: KABUL     Sahip: entrepreneur     Tarih: 2026-10-05
+Karar: Aday sırası: 1 Lift & Land / Kaldır Kondur, 2 Hue Hill / Renktepe, 3 Hoppa Usta / Hoppa Builders (TR kullanıcı testi şartıyla). Öneri: tek global EN marka + TR mağazada Türkçe alt başlık. "Minik Usta" çalışma/kod adı olarak kalır. Paket kimliği için tüzel kişilik adı Faz 5'ten önce gerekir.
 Gerekçe: NAMING §5–§6; entrepreneur kapanış soruları 3. "Little Builder" çakışması (R-03); "Minik" öneki çocuk sinyali.
 Etkilenen: NAMING; ASSET `logo_wordmark`; STORE_LISTING; TECH §13
+Onay: Proje sahibi, 2026-10-06 (önerilen yanıtla).
+
+### D-069 — Kilitlenme denetimi D3'ün MVP kararı Faz 3'e bırakıldı
+Durum: KABUL     Sahip: orkestratör (product-lead + code-lead)     Tarih: 2026-10-06
+Karar: D3 (döşeme/erişim kilidi) MVP'de şimdilik isteğe bağlı kalır. Faz 3'teki solver taraması Zor/Çok Zor bölümlerde doğru yerleşim sonrası çıkmaz bulursa ya bölüm verisi düzeltilir ya D3 o bölümler için zorunlu yapılır; karar Faz 3 çıkışında verilir.
+Gerekçe: F-3 taraması 1–9. bölümlerde D1/D2'nin kaçırdığı çıkmaz bulmadı; 10. bölümde yalnız gereksiz hamlelerden sonra 3 durum var. Proje sahibi önerilen yanıtı onayladı.
+Etkilenen: GDD K-30, LEVELS §0/§5, TECH §9.7, §14.2
+
+### D-070 — Sallanan Köprü ödül havuzu 6.500 altın
+Durum: KABUL     Sahip: product-lead (+ entrepreneur)     Tarih: 2026-10-06
+Karar: Havuz 10.000 (brif örneği) yerine 6.500 altın; bu bot modeliyle tavan 6.863. LiveOps temaları da bu tavanı aşamaz.
+Gerekçe: D-024 etik kuralı — bitirene düşen beklenen pay her başlangıç bölümünde ilk +5 fiyatının (900) altında kalmalı. Proje sahibi onayladı.
+Etkilenen: config/events.json `wobblyBridge.prizePoolCoins`, META §6, BUSINESS §4.5/§5.4/§7, UX §9
+
+### D-071 — BRIEF §15 varsayımları onaylandı
+Durum: KABUL     Sahip: orkestratör     Tarih: 2026-10-06
+Karar: Varsayımlar 1–6 ve 8 olduğu gibi onaylandı. Değişikliklerle: 7 — botlar açıkça etiketli "Renkli Tepe çırakları" (D-023); 9 — TR + EN, "Minik Usta" yalnız kod adı, "Little Builder" kullanılmaz, mağaza adı D-068.
+Gerekçe: Faz 1 onay paketi; proje sahibi Faz 1'i önerilen yanıtlarla onayladı ve Faz 2'yi başlattı.
+Etkilenen: BRIEF §15, CLAUDE.md
