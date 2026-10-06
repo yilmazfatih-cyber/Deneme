@@ -383,7 +383,7 @@ Etkilenen: ART §3; ASSET §2; TECH §10.2
 
 ### D-061 — Faz 2 takvimi ≈ 6 hafta
 Durum: ÖNERİ     Sahip: code-lead (+ entrepreneur takvim)     Tarih: 2026-10-05
-Karar: Proje sahibi onayı bekliyor. Faz 2 = 25,5 g net / 29,5 g tamponlu (≈ 6 hf; brif planı 4 hf); Faz 2–5 toplamı 107,5 g ≈ 21,5 hf, 22 haftalık plan içinde. Alternatif: §14.1 kesme seçeneği (giriş sahnesi, ek ekran profilleri/CVD, analytics genişlemesi Faz 4'e; 28 g tamponlu). K-34, K-35, K-43 kesilemez.
+Karar: Proje sahibi onayı bekliyor. Faz 2 = 26,25 g net / 29,5 g tamponlu (≈ 6 hf; brif planı 4 hf; tampon ≈ %12, TECH §14'ün %20 hedefinin altında); Faz 2–5 toplamı 93,5 g net / 110 g tamponlu ≈ 22,0 hf (29,5 + 39 + 23,5 + 18), BUSINESS §10'un 22 haftasına payı kalmadan sığar. Alternatif: TECH §14.1 kesme seçeneği (giriş sahnesi, ek ekran profilleri/CVD, analytics genişlemesi Faz 4'e; 28,5 g tamponlu ≈ 5,7 hf). K-34, K-35, K-43 kesilemez. (2026-10-06: son tutarlılık ve senkron turlarından sonra güncellendi.)
 Gerekçe: code-lead O-3; entrepreneur'ün %20 tampon isteği; K-34/K-35/devam/çapa işleri.
 Etkilenen: TECH §14; BUSINESS §10
 

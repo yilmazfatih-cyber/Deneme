@@ -1167,3 +1167,11 @@ Proje sahibine sorular:
   göre yeniden yazılır. Faz 2 tamponu ≈ %12 (%20 hedefinin altında); 22 haftalık planda pay kalmadı.
 - Köprü havuzu 6.500 (D-024 koruması). 10.000 başlığı istenirse tek yol bot becerisini artırmak; bu durumda botlar LEVELS
   hedef bantlarını aşar (product-lead tur 1 #7).
+
+## Senkron geçişi ve orkestratör düzeltmeleri (2026-10-06)
+
+- Son turlardan kalan, sahiplere yönlendirilmiş 31 izleme maddesi sahipleri tarafından uygulandı (code-lead 16, product-lead 5, design-lead 4, entrepreneur 6); bağımsız kontrolcü hepsini doğruladı, eksik 0. Ayrıntı: `review_inbox/*-closure.md` → "Senkron geçişi (2026-10-06)".
+- Orkestratör editoryal düzeltmesi (code-lead bilgisine): TECH §14.3 kapanış cümlesi kendi tablosuyla eşitlendi — "Faz 4 ≈ 4,7 hf (23,5 g), Faz 5 ≈ 3,6 hf (18 g)" (entrepreneur notu).
+- D-061 metni güncel rakamlara çekildi: Faz 2 26,25 g net / 29,5 g tamponlu; Faz 2–5 93,5 g net / 110 g ≈ 22,0 hf; kesme seçeneği 28,5 g.
+- Bu noktada açık yorum ya da yönlendirilmiş iş kalmadı. Açık olanlar yalnız proje sahibi kararlarıdır (Faz 1 onay paketi).
+

@@ -2771,7 +2771,7 @@ B planı kesimi S5 + S6 ≈ 2,5 g kazandırır (solver faz karmaşıklığı dah
 turu 3: Faz 2 +0,5, JUICE P0)
 → **110 g tamponlu ≈ 22,0 hafta** (29,5 + 39 + 23,5 + 18; BUSINESS §10: 4 + 8 + 6 + 4 = 22 hf). Toplam
 sığar ama pay kalmadı; dağılım değişir: Faz 2 ≈ 6 hf (+2), Faz 3 ≈ 7,8 hf (son tutarlılık turu: hedef engelleyicileri +0,5 g,
-✓-tuzağı taraması +1 g; tur 2: öğretici 11–38 +0,5 g), Faz 4 ≈ 5 hf, Faz 5 ≈ 3,5–4 hf. Gerçek reklam/IAP SDK'ları,
+✓-tuzağı taraması +1 g; tur 2: öğretici 11–38 +0,5 g), Faz 4 ≈ 4,7 hf (23,5 g), Faz 5 ≈ 3,6 hf (18 g). Gerçek reklam/IAP SDK'ları,
 yaş ekranı ve mağaza sürümü işleri Aşama 1–2 kapsamındadır, burada sayılmadı.
 
 ---
