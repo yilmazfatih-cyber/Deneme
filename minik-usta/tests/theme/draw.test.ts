@@ -24,7 +24,15 @@ import {
   drawWhitePixel,
   drawYardFloor,
 } from '../../src/theme/draw/board.ts';
-import { blockPalette, css, parseHex, planPalette, symbolInk } from '../../src/theme/draw/color.ts';
+import {
+  blockPalette,
+  css,
+  lighten,
+  parseHex,
+  planPalette,
+  shade,
+  symbolInk,
+} from '../../src/theme/draw/color.ts';
 import type { DrawContext } from '../../src/theme/draw/context.ts';
 import { canvasCells, parseSvgPath, polyominoOutline } from '../../src/theme/draw/path.ts';
 import {
@@ -68,6 +76,7 @@ const CATALOGUE: readonly [string, (ctx: DrawContext) => void][] = [
     (ctx) => drawPlanCell(ctx, { color }, TOKENS),
   ]),
   ['plan cell R colour-blind', (ctx) => drawPlanCell(ctx, { color: 'R', mode: CB }, TOKENS)],
+  ['plan cell B build front', (ctx) => drawPlanCell(ctx, { color: 'B', front: true }, TOKENS)],
   [
     'plan dots (level 4 "W.")',
     (ctx) => drawPlanDots(ctx, { rows: 5, cols: 2, dots: [{ x: 1, y: 2 }] }, TOKENS),
@@ -384,16 +393,49 @@ describe('plan cells and build site (ART 4, D-013, K-15, S2, K-34)', () => {
     expect(opsOf(group, 'clip')).toHaveLength(1);
   });
 
-  it('K-34 build front: solid plan.frontStrokePx in board.buildFront, +15 % veil, outer glow', () => {
+  it('K-34 build front: solid plan.frontStrokePx in board.buildFront, outer glow, nothing painted over the symbol', () => {
     const ops = record((ctx) => drawBuildFront(ctx, TOKENS));
     expect(opsOf(ops, 'setLineDash')).toHaveLength(0);
-    expect(styleAt(ops, 'fill', 'fillStyle')).toEqual([css([255, 255, 255], TOKENS.plan.frontLighten)]);
+    expect(opsOf(ops, 'fill')).toHaveLength(0);
     expect(styleAt(ops, 'stroke', 'lineWidth')).toEqual([TOKENS.plan.frontStrokePx]);
     expect(styleAt(ops, 'stroke', 'strokeStyle')).toEqual([TOKENS.color.board.buildFront]);
     expect(styleAt(ops, 'stroke', 'shadowColor')).toEqual([
       css(parseHex(TOKENS.color.board.buildFront), TOKENS.alpha.buildFrontGlow),
     ]);
-    expect(styleAt(ops, 'fill', 'shadowColor')).toEqual([undefined]);
+  });
+
+  it('K-34 build-front plan cell: fill +plan.frontLighten white, symbol ink unchanged (ART 4 front contrasts)', () => {
+    for (const color of COLOR_CODES) {
+      for (const mode of [undefined, CB]) {
+        const pal = planPalette(TOKENS, color, mode);
+        const lit = lighten(pal.fill, TOKENS.plan.frontLighten);
+        const ops = record((ctx) => drawPlanCell(ctx, { color, mode, front: true }, TOKENS));
+        expect(styleAt(ops, 'fill', 'fillStyle')[0], color).toBe(css(lit));
+        expect(styleAt(ops, 'stroke', 'strokeStyle')[0]).toBe(css(shade(lit, TOKENS.plan.strokeFactor)));
+        const styles = [...styleAt(ops, 'fill', 'fillStyle'), ...styleAt(ops, 'stroke', 'strokeStyle')];
+        expect(styles, color).toContain(css(pal.ink.rgb, pal.ink.alpha));
+      }
+    }
+    // ART 4 measured front contrasts (fill lightened, ink 100 %): W 4,3 · R 3,2 · P 4,1 · B 5,8; colour-blind lowest R 3,5.
+    const lum = (c: readonly number[]): number => {
+      const lin = (v: number): number =>
+        v / 255 <= 0.04045 ? v / 255 / 12.92 : ((v / 255 + 0.055) / 1.055) ** 2.4;
+      return 0.2126 * lin(c[0] ?? 0) + 0.7152 * lin(c[1] ?? 0) + 0.0722 * lin(c[2] ?? 0);
+    };
+    const ratio = (color: (typeof COLOR_CODES)[number], mode?: typeof CB): number => {
+      const pal = planPalette(TOKENS, color, mode);
+      const a = lum(lighten(pal.fill, TOKENS.plan.frontLighten));
+      const b = lum(pal.ink.rgb);
+      return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+    };
+    const want = { W: 4.3, R: 3.2, P: 4.1, B: 5.8 } as const;
+    for (const [c, v] of Object.entries(want)) {
+      expect(Math.abs(ratio(c as keyof typeof want) - v)).toBeLessThanOrEqual(0.1);
+    }
+    const cb = [...COLOR_CODES].sort((x, y) => ratio(x, CB) - ratio(y, CB))[0];
+    expect(cb).toBe('R');
+    expect(Math.abs(ratio('R', CB) - 3.5)).toBeLessThanOrEqual(0.1);
+    for (const c of COLOR_CODES) expect(ratio(c, CB)).toBeGreaterThanOrEqual(3);
   });
 
   it('K-34 missing-support hatch is horizontal (not 45°), ghost.support at alpha.supportHatch; 8 px colour-blind', () => {

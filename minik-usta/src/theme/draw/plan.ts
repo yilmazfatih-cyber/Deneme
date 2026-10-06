@@ -9,7 +9,7 @@ import { mulberry32 } from '../../core/rng.ts';
 import type { ColorCode } from '../../core/types.ts';
 import type { Tokens } from '../tokens.ts';
 import { ART } from './art.ts';
-import { DEFAULT_MODE, WHITE, css, parseHex, planPalette } from './color.ts';
+import { DEFAULT_MODE, WHITE, css, lighten, parseHex, planPalette, shade } from './color.ts';
 import type { DrawMode } from './color.ts';
 import type { DrawContext, Size } from './context.ts';
 import { hatch45, insetOutline, polyominoOutline, roundRectPath, traceRoundedOutline } from './path.ts';
@@ -29,28 +29,37 @@ function planRect(ctx: DrawContext, tokens: Tokens): void {
 export interface PlanCellSpec {
   readonly color: ColorCode;
   readonly mode?: DrawMode;
+  /**
+   * Build-front state (K-34, R-01; ART §4 "+%15 açıklık"): the FILL is mixed with `plan.frontLighten` white while the
+   * symbol keeps its 100 % ink. ART's measured front contrasts (W 4,3 · R 3,2 · P 4,1 · B 5,8; colour-blind lowest
+   * R 3,5) only hold in this model — a white veil over the whole cell would also lighten the dark ink (B 3,7).
+   */
+  readonly front?: boolean;
 }
 
 /**
  * Colour plan cell (D-013): opaque composite of the chalk underlay `board.planUnderlay` and `block.X` at
  * `alpha.planFill` (colour-blind: `a11y.colorBlindPlanFill`), dashed `plan.strokePx` outline in composite ×
- * `plan.strokeFactor`, symbol at 100 % in `color.planInk.X`. No bevel, gloss or shadow (ART §4).
+ * `plan.strokeFactor`, symbol at 100 % in `color.planInk.X`. No bevel, gloss or shadow (ART §4). `front` bakes the
+ * build-front variant `plan_<c>_front`; the solid contour and glow come from `plan_front` on top.
  */
 export function drawPlanCell(ctx: DrawContext, spec: PlanCellSpec, tokens: Tokens): void {
   const mode = spec.mode ?? DEFAULT_MODE;
   const c = tokens.layout.grid.cellPx;
   const pal = planPalette(tokens, spec.color, mode);
+  const fill = spec.front === true ? lighten(pal.fill, tokens.plan.frontLighten) : pal.fill;
+  const stroke = spec.front === true ? shade(fill, tokens.plan.strokeFactor) : pal.stroke;
   ctx.save();
   planRect(ctx, tokens);
-  ctx.fillStyle = css(pal.fill);
+  ctx.fillStyle = css(fill);
   ctx.fill();
   ctx.setLineDash([...tokens.plan.dash]);
   ctx.lineWidth = tokens.plan.strokePx;
-  ctx.strokeStyle = css(pal.stroke);
+  ctx.strokeStyle = css(stroke);
   ctx.stroke();
   ctx.restore();
   const size = tokens.block.symbolSizeRatio * c * (mode.colorBlind ? tokens.a11y.colorBlindSymbolScale : 1);
-  drawSymbol(ctx, spec.color, c / 2, c / 2, size, pal.ink, pal.fill);
+  drawSymbol(ctx, spec.color, c / 2, c / 2, size, pal.ink, fill);
 }
 
 export interface PlanDotsSpec {
@@ -166,16 +175,15 @@ export function drawHiddenCell(ctx: DrawContext, tokens: Tokens): void {
 }
 
 /**
- * Build-front overlay `plan_front` (K-34, R-01; ART §4): drawn over a plan cell. A white `plan.frontLighten` veil
- * (= +15 % lightness), a solid `plan.frontStrokePx` outline in `board.buildFront` that covers the dashed one, and an
- * outer glow at `alpha.buildFrontGlow`.
+ * Build-front contour `plan_front` (K-34, R-01; ART §4 layer "inşa cephesi konturu"): drawn over the front plan cell
+ * (`plan_<c>_front`, which carries the +15 % lightening under an unchanged symbol) or over a `?` cell ("etiketi aynı
+ * düz konturla çerçevelenir"). A solid `plan.frontStrokePx` outline in `board.buildFront` that covers the dashed one,
+ * and an outer glow at `alpha.buildFrontGlow`. Nothing is painted over the symbol.
  */
 export function drawBuildFront(ctx: DrawContext, tokens: Tokens): void {
   const front = parseHex(tokens.color.board.buildFront);
   ctx.save();
   planRect(ctx, tokens);
-  ctx.fillStyle = css(WHITE, tokens.plan.frontLighten);
-  ctx.fill();
   ctx.shadowColor = css(front, tokens.alpha.buildFrontGlow);
   ctx.shadowBlur = ART.frontGlowPx;
   ctx.lineJoin = 'round';

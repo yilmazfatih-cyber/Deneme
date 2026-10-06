@@ -24,6 +24,7 @@ import {
   limitPage,
   packFrames,
   planFrameName,
+  planFrontFrameName,
   renderPage,
   silhouetteFrameName,
   uploadAtlas,
@@ -123,6 +124,7 @@ describe('boot atlas (TECH 10.2 a)', () => {
 
   it('TECH 10.2 the boot atlas holds the 8 plan cells, ?, front, support hatch, badges and board pieces on one 2048 page', () => {
     for (const c of COLOR_CODES) expect(names).toContain(planFrameName(c));
+    for (const c of COLOR_CODES) expect(names).toContain(planFrontFrameName(c));
     for (const n of [FRAME.hidden, FRAME.front, FRAME.supportHatch, FRAME.blueprintFloor, FRAME.gapRail]) {
       expect(names).toContain(n);
     }
@@ -132,6 +134,26 @@ describe('boot atlas (TECH 10.2 a)', () => {
     expectValidPages(pages, BOOT_PAGE.gutter);
     const cell = frames.find((f) => f.name === planFrameName('W'));
     expect([cell?.w, cell?.h]).toEqual([TOKENS.layout.grid.cellPx, TOKENS.layout.grid.cellPx]);
+  });
+
+  it('TECH 10.2 10.3 ASSET 2-3 frame names follow the docs (board_*, plan_*, blk_sil_*)', () => {
+    for (const n of [
+      'plan_front',
+      'plan_support_hatch',
+      'board_ceiling_beam',
+      'board_yard_floor',
+      'board_blueprint',
+      'board_blueprint_corner',
+      'board_scaffold_pole',
+      'board_scaffold_ledger',
+      'board_scaffold_clamp',
+      'gap_rail',
+    ]) {
+      expect(names).toContain(n);
+    }
+    expect(silhouetteFrameName('L4_270', 'contact')).toBe('blk_sil_L4_270_contact');
+    expect(silhouetteFrameName('O4_0', 'crane')).toBe('blk_sil_O4_0_crane');
+    expect(ghostFrameName('L4_270', 'valid')).toBe('ghost_L4_270_valid');
   });
 
   it('ART 10 colour-blind boot atlas: same frame names, different plan art', () => {
@@ -169,7 +191,7 @@ describe('level bake (TECH 10.2 b, D-060)', () => {
       const lv = level(n);
       const frames = levelFrames(lv, TOKENS);
       const names = frames.flatMap((f) => [f.name, ...f.aliases]);
-      const blocks = new Set(names.filter((x) => x.startsWith('blk_')));
+      const blocks = new Set(names.filter((x) => x.startsWith('blk_') && !x.startsWith('blk_sil_')));
       expect(blocks).toEqual(expectedCombos(lv));
       const shapes = new Set([...blocks].map((b) => b.split('_').slice(1, 3).join('_') as ShapeId));
       for (const s of shapes) {

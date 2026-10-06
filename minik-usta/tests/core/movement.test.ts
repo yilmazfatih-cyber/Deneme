@@ -16,6 +16,7 @@ import {
 } from '../../src/core/movement.ts';
 import type { DragRules, DragSession, DropClass } from '../../src/core/movement.ts';
 import {
+  GF,
   H,
   PF,
   SITE_TROWEL,
@@ -23,6 +24,7 @@ import {
   enqueuePiece,
   hasFlag,
   setFlag,
+  setGapField,
   setHdr,
   setPieceField,
   setSiteOcc,
@@ -403,6 +405,60 @@ describe('K-08 BFS path and sticky follow', () => {
     expect(d.distanceFromCurrent(N(1, 4))).toBe(3);
     expect(d.distanceFromCurrent(N(3, 4))).toBe(3);
     expect(d.follow(2, 4).node).toEqual(N(1, 4));
+  });
+
+  it('K-08 tie-break 3 between two rails: the smaller y wins whatever the gap order (data order or runtime y swap)', () => {
+    // GDD K-08 ties: (2) FREE before RAIL, (3) smaller y, (4) smaller x — the gap index is not a criterion.
+    // Piece 0 at (4,2), blocker at (5,2), debris at (6,2): R(6,1) and R(6,3) are 1 away from p = (6,2), 3 steps each.
+    const board = (ys: readonly [number, number]): GameState =>
+      initialState({
+        wall: { height: 5, gaps: ys.map((y) => ({ type: 'static' as const, y, size: 1 })) },
+        plan: ['WW', 'WW', 'WW'],
+        pieces: [
+          ['B1_0', 'W', 4, 2],
+          ['B1_0', 'W', 5, 2],
+        ],
+        debris: [['B1_0', 'R', 6, 2]],
+      });
+    const runtimeSwap = board([1, 3]);
+    // a W5-style runtime move: gap 0 now covers row 3 and gap 1 row 1 (the data order no longer matches y)
+    setGapField(runtimeSwap, 0, GF.y, 3);
+    setGapField(runtimeSwap, 1, GF.y, 1);
+    for (const [label, s, low] of [
+      ['data [1, 3]', board([1, 3]), 0],
+      ['data [3, 1]', board([3, 1]), 1],
+      ['runtime swap', runtimeSwap, 1],
+    ] as const) {
+      const d = drag(s, 0);
+      const high = 1 - low;
+      expect(d.distanceFromCurrent(R(low, 6, 1)), label).toBe(3);
+      expect(d.distanceFromCurrent(R(high, 6, 3)), label).toBe(3);
+      expect(d.isReachable(N(6, 2)), label).toBe(false);
+      expect(d.distanceFromCurrent(N(6, 3)), label).toBeGreaterThan(3);
+      expect(d.distanceFromCurrent(N(7, 2)), label).toBeGreaterThan(3);
+      expect(key(d.nearest(6, 2)), label).toBe(key(R(low, 6, 1)));
+      expect(key(d.follow(6, 2).node), label).toBe(key(R(low, 6, 1)));
+    }
+  });
+
+  it('K-08 tie-break 2 before 3 with two gaps: FREE beats RAIL even when the rail node has the smaller y', () => {
+    // piece 0 at (4,3), debris at (6,4); p = (6,4): FREE (5,4) and RAIL (6,3) are 1 away and 2 steps from (4,3)
+    for (const ys of [
+      [1, 3],
+      [3, 1],
+    ] as const) {
+      const s = initialState({
+        wall: { height: 5, gaps: ys.map((y) => ({ type: 'static' as const, y, size: 1 })) },
+        plan: ['WW', 'WW', 'WW', 'WW', 'WW'],
+        pieces: [['B1_0', 'W', 4, 3]],
+        debris: [['B1_0', 'R', 6, 4]],
+      });
+      const d = drag(s, 0);
+      const g3 = ys.indexOf(3);
+      expect(d.distanceFromCurrent(R(g3, 6, 3))).toBe(2);
+      expect(d.distanceFromCurrent(N(5, 4))).toBe(2);
+      expect(d.nearest(6, 4)).toEqual(N(5, 4));
+    }
   });
 
   it('K-08 hysteresis accepts exactly 0.2 improvement and rejects less', () => {

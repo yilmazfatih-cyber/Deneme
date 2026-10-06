@@ -436,66 +436,108 @@ function checkWall(level: LevelData, push: Push): void {
 }
 
 // ---------------------------------------------------------------------------------------------------------------
-// L-10 material (K-27): cumulative supply ≥ demand per colour, as a flow (each block counted once)
+// L-10 material (K-27): cumulative supply ≥ demand per colour; every block counts once, WHOLE, for one colour
 // ---------------------------------------------------------------------------------------------------------------
-
-/** Edmonds–Karp on a small dense graph. */
-function maxFlow(cap: number[][], s: number, t: number): number {
-  const n = cap.length;
-  let flow = 0;
-  for (;;) {
-    const parent = Array.from({ length: n }, () => -1);
-    parent[s] = s;
-    const queue = [s];
-    while (queue.length > 0 && (parent[t] ?? -1) < 0) {
-      const u = queue.shift() as number;
-      for (let v = 0; v < n; v++) {
-        if ((parent[v] ?? 0) < 0 && (cap[u]?.[v] ?? 0) > 0) {
-          parent[v] = u;
-          queue.push(v);
-        }
-      }
-    }
-    if ((parent[t] ?? -1) < 0) return flow;
-    let push = Infinity;
-    for (let v = t; v !== s; v = parent[v] ?? s) push = Math.min(push, cap[parent[v] ?? s]?.[v] ?? 0);
-    for (let v = t; v !== s; v = parent[v] ?? s) {
-      const u = parent[v] ?? s;
-      (cap[u] as number[])[v] = (cap[u]?.[v] ?? 0) - push;
-      (cap[v] as number[])[u] = (cap[v]?.[u] ?? 0) + push;
-    }
-    flow += push;
-  }
-}
 
 interface SupplyBlock {
   readonly forSegment: number;
   readonly color: ColorCode;
   readonly cells: number;
+  /** Paint gate colours this block can take on its way to the site (K-27 / TECH L-10, OBSTACLES W6). */
   readonly alts: readonly ColorCode[];
 }
 
-/** Returns the colours whose demand cannot be met (empty = enough material). */
+/** Search nodes of the whole-block assignment before `materialShortfall` settles for what it has proven. */
+const MATERIAL_SEARCH_BUDGET = 50_000;
+
+/**
+ * Returns the colours whose demand cannot be met (empty = enough material), in `COLOR_CODES` order.
+ *
+ * GDD K-27 sums "o renkteki … blokların hücre toplamı" and TECH L-10 counts a paint-gate block for the gate colour
+ * too, "her blok bir kez": a block is one colour as a whole, so a 4-cell block that is Y or P (after the gate)
+ * supplies 4 Y **or** 4 P, never 2 Y + 2 P. Single-colour blocks are counted directly; blocks with a choice are
+ * assigned by a depth-first branch and bound (largest blocks first, own colour before gate colours) that minimises
+ * the number of uncovered plan cells; the colours left uncovered by the best assignment are reported. A colour that is
+ * short on its own is therefore always reported, and a demand some assignment covers always gives `[]`.
+ * Pathological inputs (more than `MATERIAL_SEARCH_BUDGET` nodes) keep the best assignment found only when a shortage
+ * is already proven by the per-colour or total supply bound; otherwise nothing is reported, because the check must not
+ * refuse a level on an unproven claim (L-11 exact cover and the L-19 solver stay authoritative).
+ */
 export function materialShortfall(
   demand: Readonly<Partial<Record<ColorCode, number>>>,
   blocks: readonly SupplyBlock[],
 ): ColorCode[] {
-  const colors = COLOR_CODES.filter((c) => (demand[c] ?? 0) > 0);
-  if (colors.length === 0) return [];
-  // nodes: 0 source, 1..B blocks, B+1..B+8 colours, last sink
-  const B = blocks.length;
-  const sink = B + COLOR_CODES.length + 1;
-  const cap = Array.from({ length: sink + 1 }, () => Array.from({ length: sink + 1 }, () => 0));
-  blocks.forEach((b, i) => {
-    (cap[0] as number[])[i + 1] = b.cells;
-    for (const c of new Set([b.color, ...b.alts]))
-      (cap[i + 1] as number[])[B + 1 + COLOR_CODES.indexOf(c)] = b.cells;
-  });
-  COLOR_CODES.forEach((c, k) => {
-    (cap[B + 1 + k] as number[])[sink] = demand[c] ?? 0;
-  });
-  maxFlow(cap, 0, sink);
-  return colors.filter((c) => (cap[B + 1 + COLOR_CODES.indexOf(c)]?.[sink] ?? 0) > 0);
+  const rest = new Map<ColorCode, number>();
+  for (const c of COLOR_CODES) {
+    const d = demand[c] ?? 0;
+    if (d > 0) rest.set(c, d);
+  }
+  const flexible: { readonly cells: number; readonly colors: readonly ColorCode[] }[] = [];
+  for (const b of blocks) {
+    const colors = [...new Set([b.color, ...b.alts])];
+    const d = rest.get(b.color);
+    if (colors.length > 1) flexible.push({ cells: b.cells, colors });
+    else if (d !== undefined) rest.set(b.color, d - b.cells);
+  }
+  const open = [...rest].filter(([, d]) => d > 0).map(([c]) => c);
+  if (open.length === 0) return [];
+  const m = open.length;
+  const items = flexible
+    .map((b) => ({
+      cells: b.cells,
+      opts: b.colors.flatMap((c) => (open.includes(c) ? [open.indexOf(c)] : [])),
+    }))
+    .filter((it) => it.opts.length > 0)
+    .sort((a, b) => b.cells - a.cells);
+  const n = items.length;
+  // Suffix supplies for the lower bound: per open colour and in total, from item i on.
+  const suffix = Array.from({ length: n + 1 }, () => Array.from({ length: m + 1 }, () => 0));
+  for (let i = n - 1; i >= 0; i--) {
+    const it = items[i] as (typeof items)[number];
+    const row = suffix[i] as number[];
+    const next = suffix[i + 1] as number[];
+    for (let k = 0; k <= m; k++) row[k] = next[k] ?? 0;
+    for (const k of it.opts) row[k] = (row[k] ?? 0) + it.cells;
+    row[m] = (row[m] ?? 0) + it.cells;
+  }
+  const lowerBound = (i: number, d: readonly number[]): number => {
+    const s = suffix[i] as number[];
+    let perColor = 0;
+    let total = 0;
+    d.forEach((v, k) => {
+      perColor += Math.max(0, v - (s[k] ?? 0));
+      total += v;
+    });
+    return Math.max(perColor, total - (s[m] ?? 0));
+  };
+  const start = open.map((c) => rest.get(c) ?? 0);
+  const relaxedShort = lowerBound(0, start) > 0;
+  let best = start.reduce((s, v) => s + v, 0) + 1;
+  let bestRest: readonly number[] = start;
+  const seen = new Set<string>();
+  let nodes = 0;
+  // Exploring a state again cannot beat `best`: `best` only falls, so the first visit already found anything better.
+  const search = (i: number, d: readonly number[]): void => {
+    const uncovered = d.reduce((s, v) => s + v, 0);
+    if (uncovered < best && (uncovered === 0 || i === n)) {
+      best = uncovered;
+      bestRest = d;
+    }
+    if (best === 0 || i === n || lowerBound(i, d) >= best || nodes >= MATERIAL_SEARCH_BUDGET) return;
+    const key = `${i}|${d.join(',')}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+    nodes++;
+    const it = items[i] as (typeof items)[number];
+    for (const k of it.opts)
+      search(
+        i + 1,
+        d.map((v, j) => (j === k ? Math.max(0, v - it.cells) : v)),
+      );
+  };
+  search(0, start);
+  if (nodes >= MATERIAL_SEARCH_BUDGET && best > 0 && !relaxedShort) return [];
+  return open.filter((_, k) => (bestRest[k] ?? 0) > 0);
 }
 
 function supplyBlocks(level: LevelData): SupplyBlock[] {
@@ -686,7 +728,6 @@ export function tileLevel(
     topOf: (sx: number) => number,
   ): boolean => {
     const s = t.shape;
-    const viaPaint = color !== t.color;
     // FREE: over the wall (after a paint-gate detour when the colour is a paint colour).
     if (t.free && !t.balloon) {
       let landing = 0;
@@ -708,10 +749,11 @@ export function tileLevel(
       }
       if (rest === ay) return true;
     }
-    // RAIL through a gap (paint colour only through a paint gate of that colour).
+    // RAIL through a gap. W6 / S-21: paint is permanent once the block has entered a paint gate's rail (even half
+    // way and back into the yard), so a painted block may then use any gap; only a paint gate of another colour is
+    // excluded because entering it would repaint the block (last entered gate wins, E-39).
     for (const g of level.wall.gaps) {
-      if (viaPaint && !(g.type === 'paint' && g.color === color)) continue;
-      if (!viaPaint && g.type === 'paint' && g.color !== t.color) continue;
+      if (g.type === 'paint' && g.color !== color) continue;
       const starts = g.type === 'slider' ? range(g.range[0], g.range[1]) : [g.y];
       const fits = offsets.some((e) => starts.some((p) => p - e <= ay && ay + s.h <= p - e + g.size));
       if (!fits) continue;

@@ -10,8 +10,12 @@ import {
 } from '../../../src/core/level/logic.ts';
 import type { Issue, LogicContext } from '../../../src/core/level/logic.ts';
 import type { MechanicId } from '../../../src/core/level/schema.ts';
+import { mulberry32 } from '../../../src/core/rng.ts';
 import { shapeById } from '../../../src/core/shapes.ts';
+import { COLOR_CODES } from '../../../src/core/types.ts';
+import type { ColorCode } from '../../../src/core/types.ts';
 import { level, loadFixture } from '../../fixtures/builders.ts';
+import type { LevelSpec } from '../../fixtures/builders.ts';
 
 interface Case {
   /** Test name: rule id + code + short description. */
@@ -372,8 +376,74 @@ describe('K-45 logic details', () => {
     const block = { forSegment: 0, color: 'Y' as const, cells: 4, alts: ['P' as const] };
     expect(materialShortfall({ Y: 4 }, [block])).toEqual([]);
     expect(materialShortfall({ P: 4 }, [block])).toEqual([]);
-    expect(materialShortfall({ Y: 4, P: 1 }, [block]).length).toBe(1);
+    // Best assignment: the block stays Y (1 cell uncovered) rather than turning P (4 cells uncovered).
+    expect(materialShortfall({ Y: 4, P: 1 }, [block])).toEqual(['P']);
     expect(materialShortfall({ Y: 2, P: 2 }, [block, { ...block, cells: 2 }])).toEqual([]);
+  });
+
+  it('K-27 TECH L-10 "her blok bir kez": a block supplies one colour as a whole, never a cell split', () => {
+    const block = { forSegment: 0, color: 'Y' as const, cells: 4, alts: ['P' as const] };
+    // 4 cells as Y or as P, never 2 Y + 2 P (a cell-split flow would accept this).
+    expect(materialShortfall({ Y: 2, P: 2 }, [block])).toEqual(['P']);
+    // Total supply 6 = demand 6, but no whole-block split gives 3 + 3.
+    expect(materialShortfall({ Y: 3, P: 3 }, [block, { ...block, cells: 2 }])).toEqual(['P']);
+    // A colour that is short on its own is always reported, whatever the other blocks do.
+    const fixedW = { forSegment: 0, color: 'W' as const, cells: 2, alts: [] };
+    expect(materialShortfall({ W: 3, Y: 4 }, [fixedW, block])).toEqual(['W']);
+    expect(
+      materialShortfall({ W: 2, Y: 4, P: 4 }, [
+        fixedW,
+        block,
+        { ...block, color: 'P' as const, alts: ['Y' as const] },
+      ]),
+    ).toEqual([]);
+    // Same verdict in a level: paint gate P (rows 1–2), plan PP over YY, one O4 Y.
+    const lvl = level({
+      id: 22,
+      wall: { height: 6, gaps: [{ type: 'paint', y: 1, size: 2, color: 'P' }] },
+      plan: ['PP', 'YY'],
+      pieces: [['O4_0', 'Y', 0, 0]],
+    });
+    expect(checkLevel(lvl, { only: ['L-10'] }).map((i) => i.code)).toEqual(['material_short']);
+  });
+
+  it('K-27 whole-block assignment agrees with brute force on 400 seeded random demands (≤ 9 blocks)', () => {
+    const rng = mulberry32(0x6b27);
+    const pick = <T>(xs: readonly T[]): T => xs[rng.nextInt(xs.length)] as T;
+    const palette: readonly ColorCode[] = ['W', 'Y', 'P', 'R'];
+    for (let round = 0; round < 400; round++) {
+      const gates = [...new Set([pick(palette), pick(palette)])].slice(0, 1 + rng.nextInt(2));
+      const blocks = Array.from({ length: 1 + rng.nextInt(9) }, () => ({
+        forSegment: 0,
+        color: pick(palette),
+        cells: 1 + rng.nextInt(4),
+        alts: rng.nextInt(2) === 0 ? gates : [],
+      }));
+      const demand: Partial<Record<ColorCode, number>> = {};
+      for (const c of palette) if (rng.nextInt(3) > 0) demand[c] = rng.nextInt(9);
+      // Brute force: every block takes one of its colours as a whole.
+      let feasible = false;
+      const walk = (i: number, got: Partial<Record<ColorCode, number>>): void => {
+        if (feasible) return;
+        const b = blocks[i];
+        if (b === undefined) {
+          feasible = COLOR_CODES.every((c) => (got[c] ?? 0) >= (demand[c] ?? 0));
+          return;
+        }
+        for (const c of new Set([b.color, ...b.alts])) walk(i + 1, { ...got, [c]: (got[c] ?? 0) + b.cells });
+      };
+      walk(0, {});
+      const short = materialShortfall(demand, blocks);
+      expect(short.length === 0, JSON.stringify({ demand, blocks, short })).toBe(feasible);
+      for (const c of short) expect(demand[c] ?? 0).toBeGreaterThan(0);
+      // A colour whose whole eligible supply is too small is always named.
+      for (const c of palette) {
+        const supply = blocks
+          .filter((b) => b.color === c || b.alts.includes(c))
+          .reduce((n, b) => n + b.cells, 0);
+        if ((demand[c] ?? 0) > supply) expect(short).toContain(c);
+      }
+    }
   });
 
   it('K-27 untileable fixture becomes tileable with a 2-wide bridge over the window', () => {
@@ -400,6 +470,30 @@ describe('K-45 logic details', () => {
     expect(validateLevelJson(make([{ type: 'static', y: 2, size: 1 }]), { only: ['L-11'] }).issues).toEqual(
       [],
     );
+  });
+
+  it('K-27 W6 S-21 a painted block keeps its colour and may then use any gap except a paint gate of another colour', () => {
+    // Height 8: the 3-tall I3_0 never crosses the wall (K-05). Gap 0 = P paint gate rows 0–2; gap 1 rows 4–6.
+    // Plan column 7: W rows 0–3 (two D2_0 W over the wall), P rows 4–6. The Y I3_0 half-enters the P gate (painted P,
+    // "sahaya geri çekilse de boya kalıcıdır"), then rides gap 1 to (7,4)–(7,6).
+    type Gap = NonNullable<NonNullable<LevelSpec['wall']>['gaps']>[number];
+    const make = (gap1: Gap) =>
+      level({
+        id: 41,
+        wall: { height: 8, gaps: [{ type: 'paint', y: 0, size: 3, color: 'P' }, gap1] },
+        plan: ['.P', '.P', '.P', '.W', '.W', '.W', '.W'],
+        pieces: [
+          ['I3_0', 'Y', 0, 0],
+          ['D2_0', 'W', 1, 0],
+          ['D2_0', 'W', 2, 0],
+        ],
+      });
+    const tile = (gap1: Gap): string[] => checkLevel(make(gap1), { only: ['L-11'] }).map((i) => i.code);
+    expect(tile({ type: 'static', y: 4, size: 3 })).toEqual([]);
+    // A second P paint gate keeps the colour P.
+    expect(tile({ type: 'paint', y: 4, size: 3, color: 'P' })).toEqual([]);
+    // An R paint gate repaints the block R on entry (last entered gate wins, E-39): no P route to rows 4–6.
+    expect(tile({ type: 'paint', y: 4, size: 3, color: 'R' })).toEqual(['untileable']);
   });
 
   it('K-05 K-12 canReachSite: over the wall by box height or through a gap, never heavy', () => {

@@ -179,6 +179,19 @@ describe('phone profiles 390×844 and 360×800 in FIT and EXPAND (R-06, D-015)',
     expect(designHeight('expand', { width: 768, height: 1024 }, TOKENS)).toBe(1920);
   });
 
+  it('UX 0.1 44 pt rule as written: touch.minTargetPx 128 px = 44.4 pt at 375 and 46.2 pt on 390×844; 42.7 pt on 360×800 (DOC-AMBIGUITY, see review)', () => {
+    // UX §0.1 "en küçük dokunma hedefi 375 pt'de 44 pt = 128 px"; UX §14 "Dokunma hedefi ≥ 128 px (≈ 44 pt @375)"
+    expect(MIN_TARGET).toBe(128);
+    const pt = (width: number, height: number, mode: ScaleMode): number =>
+      Math.round(MIN_TARGET * fitViewport(mode, { width, height }, TOKENS).scale * 10) / 10;
+    for (const mode of MODES) {
+      expect(pt(375, 812, mode)).toBe(44.4);
+      expect(pt(390, 844, mode)).toBe(46.2);
+      // below 375 pt the fixed 128 px token is under 44 pt; the docs do not say whether that is allowed
+      expect(pt(360, 800, mode)).toBe(42.7);
+    }
+  });
+
   it('R-06 FIT letterboxes 151 pt on 390×844 and 160 px (20 %) on 360×800; EXPAND fills the screen', () => {
     expect(fitViewport('fit', PROFILES[0].viewport, TOKENS).letterboxPx).toBeCloseTo(150.67, 1);
     const fit360 = fitViewport('fit', PROFILES[1].viewport, TOKENS);
@@ -302,6 +315,24 @@ describe('board geometry (TECH 2.2 "Ekran eşlemesi", R-03)', () => {
     expect(geo.cellAt(g.yardX - 1, geo.rowTop(0))).toBeNull();
     expect(geo.cellAt(g.yardX, geo.craneTopY - 1)).toBeNull();
     expect(geo.cellAt(g.yardX, geo.boardBottomY + 1)).toBeNull();
+  });
+
+  it('K-01 cellAt: every cell owns the half-open box [left, left + 120) × [top, top + 120), FIT and EXPAND', () => {
+    for (const H of [1920, 2337, 2400]) {
+      const gg = createLayout(TOKENS, H).grid;
+      for (let x = 0; x < 8; x++) {
+        for (let y = 0; y < 10; y++) {
+          const r = gg.cellRect(x, y);
+          expect(gg.cellAt(r.x, r.y)).toEqual({ x, y });
+          expect(gg.cellAt(r.x + r.w - 0.5, r.y)).toEqual({ x, y });
+          expect(gg.cellAt(r.x, r.y + r.h - 0.5)).toEqual({ x, y });
+        }
+      }
+      // The board's bottom line is the first pixel BELOW row 0; the crane top line is row 9's first pixel.
+      expect(gg.cellAt(g.yardX, gg.boardBottomY)).toBeNull();
+      expect(gg.cellAt(g.yardX, gg.craneTopY)).toEqual({ x: 0, y: 9 });
+      expect(gg.cellAt(g.yardX, gg.rowTop(0))).toEqual({ x: 0, y: 0 });
+    }
   });
 
   it('TECH 2.2 pieceRect / anchorYAt: rows grow upward from boardBottomY', () => {

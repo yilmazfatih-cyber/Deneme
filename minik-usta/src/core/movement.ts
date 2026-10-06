@@ -170,7 +170,7 @@ export interface DragSession {
   distanceFromStart(node: DragNode): number;
   /** BFS steps from the current node (K-08 tie-break 1); −1 outside R. */
   distanceFromCurrent(node: DragNode): number;
-  /** R sorted by node code (FREE first, then by y, then by x). Allocates. */
+  /** R sorted by node code (mode: FREE, RAIL(0), RAIL(1) …; then y; then x). Not the K-08 tie order. Allocates. */
   reachableNodes(): DragNode[];
   /** Nodes one edge away from `node` (left, right, down, up order). Allocates. */
   neighbours(node: DragNode): DragNode[];
@@ -469,24 +469,45 @@ class Session implements DragSession {
 
   /**
    * K-08: the node of R with the smallest squared distance to p; ties (within D2_EPSILON) go to (1) fewer BFS steps
-   * from the current node, (2) FREE before RAIL, (3) smaller y, (4) smaller x — (2)–(4) are the node code order.
+   * from the current node, (2) FREE before RAIL, (3) smaller y, (4) smaller x (GDD K-08). The gap index only breaks
+   * the remaining tie (same anchor on two rails) for determinism: it ranks below y and x, so the result never depends
+   * on the order of `wall.gaps` in the data (nor on a runtime reorder, W5) — see `tieRank`.
    */
   private nearestCode(px: number, py: number): number {
     let best = this.cur;
     let bestD = this.d2(best, px, py);
     let bestDist = 0;
+    let bestRank = this.tieRank(best);
     for (let i = 0; i < this.reachableCount; i++) {
       const code = this.reach[i] ?? 0;
       const d = this.d2(code, px, py);
       if (d > bestD + D2_EPSILON) continue;
       const dist = this.distCur[code] ?? 0;
-      if (d < bestD - D2_EPSILON || dist < bestDist || (dist === bestDist && code < best)) {
+      if (d < bestD - D2_EPSILON || dist < bestDist) {
         best = code;
         bestD = d;
         bestDist = dist;
+        bestRank = this.tieRank(code);
+      } else if (dist === bestDist) {
+        const rank = this.tieRank(code);
+        if (rank < bestRank) {
+          best = code;
+          bestD = d;
+          bestRank = rank;
+        }
       }
     }
     return best;
+  }
+
+  /**
+   * K-08 tie-breaks (2)–(4) as one integer: FREE before RAIL, then smaller y, then smaller x; the gap index comes last
+   * (it is not a GDD criterion). Unlike the node code (`mode * 80 + iy * 8 + ix`), which ranks the gap index above y.
+   */
+  private tieRank(code: number): number {
+    const mode = Math.floor(code / NODES_PER_MODE);
+    const rest = code - mode * NODES_PER_MODE;
+    return ((mode === FREE ? 0 : NODES_PER_MODE) + rest) * (1 + this.railOpen.length) + mode;
   }
 
   /**

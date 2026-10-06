@@ -1,9 +1,9 @@
 /**
  * Procedural textures (docs/TECH_DESIGN.md §10.2, D-060, R-05).
  *
- * (a) Boot atlas `atlas` (≤ 2048 × 2048, once at boot): plan cells (8 colours), `?` cell, build front, missing-support
- *     hatch, ghost badges, blueprint floor / deep / corner, yard floor, scaffold, ceiling beam, W1 rail, crane line and
- *     a white pixel.
+ * (a) Boot atlas `atlas` (≤ 2048 × 2048, once at boot): plan cells (8 colours, each also in its build-front variant
+ *     `plan_<c>_front`), `?` cell, build-front contour, missing-support hatch, ghost badges, blueprint floor / deep /
+ *     corner, yard floor, scaffold, ceiling beam, W1 rail, crane line and a white pixel.
  * (b) Level bake `level-<id>` (≤ 2048 × 1024 pages, at level start): one frame per (shape × colour × flag set) of the
  *     level's pieces, per shape the blurred silhouettes and fall-shadow ghosts, per plan height the blueprint grid
  *     overlay, per plan its `.` overlay, and the wall.
@@ -222,18 +222,19 @@ export function renderPage(ctx: DrawContext, page: AtlasPage): void {
 // ---------------------------------------------------------------------------------------------------------------
 // Frame names (the scene looks frames up by these names through the TextureIndex).
 
+/** Names follow TECH §10.2–10.3 and ASSET_LIST §3 (`board_*`, `plan_*`); `board_blueprint_deep` has no ASSET row yet. */
 export const FRAME = Object.freeze({
   hidden: 'plan_hidden',
   front: 'plan_front',
   supportHatch: 'plan_support_hatch',
-  blueprintFloor: 'blueprint_floor',
-  blueprintDeep: 'blueprint_deep',
-  blueprintCorner: 'blueprint_corner',
-  yardFloor: 'yard_floor',
-  scaffoldPole: 'scaffold_pole',
-  scaffoldLedger: 'scaffold_ledger',
-  scaffoldClamp: 'scaffold_clamp',
-  ceilingBeam: 'ceiling_beam',
+  blueprintFloor: 'board_blueprint',
+  blueprintDeep: 'board_blueprint_deep',
+  blueprintCorner: 'board_blueprint_corner',
+  yardFloor: 'board_yard_floor',
+  scaffoldPole: 'board_scaffold_pole',
+  scaffoldLedger: 'board_scaffold_ledger',
+  scaffoldClamp: 'board_scaffold_clamp',
+  ceilingBeam: 'board_ceiling_beam',
   gapRail: 'gap_rail',
   craneLine: 'crane_line',
   whitePixel: 'px_white',
@@ -241,13 +242,17 @@ export const FRAME = Object.freeze({
 });
 
 export const planFrameName = (color: ColorCode): string => `plan_${color}`;
+/** Build-front variant of a plan cell (+`plan.frontLighten` fill, symbol unchanged); `plan_front` goes on top. */
+export const planFrontFrameName = (color: ColorCode): string => `plan_${color}_front`;
 export const badgeFrameName = (kind: BadgeKind): string => `ghost_badge_${kind}`;
 /** `blk_<shape>_<colour>[_<flag>…]` (ASSET §2); flags in BAKED_FLAGS order. */
 export function blockFrameName(shape: ShapeId, color: ColorCode, flags: readonly BakedFlag[] = []): string {
   const sorted = BAKED_FLAGS.filter((f) => flags.includes(f));
   return ['blk', shape, color, ...sorted].join('_');
 }
-export const silhouetteFrameName = (shape: ShapeId, kind: SilhouetteKind): string => `sil_${shape}_${kind}`;
+/** `blk_sil_<shape>_<contact|lifted|crane>` (ASSET §2). Shape ids never read `sil`, so no clash with block frames. */
+export const silhouetteFrameName = (shape: ShapeId, kind: SilhouetteKind): string =>
+  `blk_sil_${shape}_${kind}`;
 export const ghostFrameName = (shape: ShapeId, style: GhostStyle): string => `ghost_${shape}_${style}`;
 /** Blueprint grid overlay for a plan of height `rows`. */
 export const gridFrameName = (rows: number): string => `grid_h${rows}`;
@@ -289,6 +294,11 @@ export function bootAtlasFrames(tokens: Tokens, mode: DrawMode = DEFAULT_MODE): 
   return [
     ...COLOR_CODES.map((color) =>
       frame(planFrameName(color), cell, (ctx) => drawPlanCell(ctx, { color, mode }, tokens)),
+    ),
+    ...COLOR_CODES.map((color) =>
+      frame(planFrontFrameName(color), cell, (ctx) =>
+        drawPlanCell(ctx, { color, mode, front: true }, tokens),
+      ),
     ),
     frame(FRAME.hidden, cell, (ctx) => drawHiddenCell(ctx, tokens)),
     frame(FRAME.front, cell, (ctx) => drawBuildFront(ctx, tokens)),

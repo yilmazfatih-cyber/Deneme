@@ -236,7 +236,10 @@ export function createLayout(tokens: Tokens, H: number): Layout {
     },
     anchorYAt: (screenY, h) => (boardBottomY - screenY) / c - h,
     cellAt: (px, py) => {
-      const y = Math.floor((boardBottomY - py) / c);
+      // Row y owns [rowTop(y), rowTop(y) + c) like the x mapping owns [colLeft, colLeft + c): count rows from the
+      // grid top so the top-edge pixel belongs to the cell and `py = boardBottomY` is already below row 0.
+      const fromTop = Math.floor((py - (boardBottomY - gridRows * c)) / c);
+      const y = gridRows - 1 - fromTop;
       if (y < 0 || y >= gridRows) return null;
       if (px >= g.yardX && px < g.wallX) return { x: Math.floor((px - g.yardX) / c), y };
       if (px >= g.buildX && px < siteRight) return { x: g.yardCols + Math.floor((px - g.buildX) / c), y };

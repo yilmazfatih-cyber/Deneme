@@ -6,12 +6,30 @@
   "booster": {
     "noUndo": "Nothing to undo"
   },
+  "bridge": {
+    "dailyLimit": "That's all the bridges for today. Next bridge: {time}",
+    "extra": {
+      "got": "Bonus received: {extras}"
+    },
+    "play": "Play · Level {n}",
+    "rule_card": {
+      "daily": "You can join up to {n} bridges a day.",
+      "extra": "Bonus for crossing: {extras}"
+    }
+  },
   "build": {
     "done": "Build complete!"
   },
   "common": {
+    "minutes": "{n} min",
     "ok": "OK",
     "unlockAt": "Unlocks at level {n}"
+  },
+  "difficulty": {
+    "easy": "Easy",
+    "hard": "Hard",
+    "normal": "Normal",
+    "superhard": "Super Hard"
   },
   "exit": {
     "bridge": "You'll fall off the bridge.",
@@ -20,6 +38,35 @@
     "leave": "Leave",
     "stay": "Stay",
     "title": "Leave the level?"
+  },
+  "league": {
+    "bonus": {
+      "all": "Points bonus: every win ×{n}",
+      "fair": "Apprentices get the bonus too.",
+      "levels": {
+        "all": "every level",
+        "some": "{list} levels"
+      },
+      "now": "Active now",
+      "starts": "Starts in {time}",
+      "weekend": {
+        "add": "Weekend bonus: +{n} points on {levels}",
+        "factor": "Weekend bonus: ×{n} points on {levels}"
+      }
+    },
+    "header_lines": {
+      "both": "Top {up} promote, bottom {down} drop",
+      "bronze": "Top {up} promote",
+      "diamond": "Bottom {down} drop"
+    },
+    "points_line": "Points: Easy {easy} · Normal {normal} · Hard {hard} · Super Hard {superhard}",
+    "rule_card": {
+      "lines": {
+        "both": "When the week ends, the top {up} move up and the bottom {down} move down.",
+        "bronze": "When the week ends, the top {up} move up. No one moves down here.",
+        "diamond": "When the week ends, the bottom {down} move down a league."
+      }
+    }
   },
   "lose": {
     "ad": "Watch an ad · +{n} moves",
@@ -47,6 +94,13 @@
     },
     "w1": {
       "desc": "Blocks sent through a gap don't fall; they stay put."
+    }
+  },
+  "replay": {
+    "button": "Replay · Level {n}",
+    "card": {
+      "body": "Levels you know. Bridge and League go on.",
+      "title": "Replay round"
     }
   },
   "resume": {
@@ -103,6 +157,9 @@
     "l2": {
       "pattern": "Look at the plan: colors come in stripes.",
       "shadow": "A {ok} on the shadow means the spot is right."
+    },
+    "l23": {
+      "light": "Low gravity! Blocks fall slowly."
     },
     "l3": {
       "gap": "There's a gap! Slide the block through.",
