@@ -18,6 +18,11 @@ const L = TOKENS.layout;
 const { grid: g, board: b, top: t, bottom: bt, popup: p } = L;
 const W = TOKENS.meta.designWidth;
 const MIN_TARGET = TOKENS.touch.minTargetPx;
+/**
+ * UX §0.1 decision (b) (2026-10-06): the frequent targets of the closed list are ≥ 144 px = 48 dp at 360 dp
+ * (1080 / 360 × 48). An invariant of the tokens they are drawn from, not a token itself (tokens `touch._doc`).
+ */
+const FREQUENT_TARGET_PX = 144;
 /** UX §0.2: comfort zone starts at y 1056 (bottom 45 %) of the 1920 design. */
 const COMFORT_Y = 1056;
 
@@ -179,16 +184,21 @@ describe('phone profiles 390×844 and 360×800 in FIT and EXPAND (R-06, D-015)',
     expect(designHeight('expand', { width: 768, height: 1024 }, TOKENS)).toBe(1920);
   });
 
-  it('UX 0.1 44 pt rule as written: touch.minTargetPx 128 px = 44.4 pt at 375 and 46.2 pt on 390×844; 42.7 pt on 360×800 (DOC-AMBIGUITY, see review)', () => {
-    // UX §0.1 "en küçük dokunma hedefi 375 pt'de 44 pt = 128 px"; UX §14 "Dokunma hedefi ≥ 128 px (≈ 44 pt @375)"
+  it('UX 0.1 44 pt rule, decision (b): touch.minTargetPx is 128 px at every width — 44.4 pt at 375, 46.2 pt on 390×844, 42.7 dp on 360×800 (accepted)', () => {
+    // UX §0.1: "en küçük dokunma hedefi her ekran genişliğinde 128 px … 360 dp'de 42,7 dp … bilerek kabul edilir"
     expect(MIN_TARGET).toBe(128);
-    const pt = (width: number, height: number, mode: ScaleMode): number =>
+    const units = (width: number, height: number, mode: ScaleMode): number =>
       Math.round(MIN_TARGET * fitViewport(mode, { width, height }, TOKENS).scale * 10) / 10;
     for (const mode of MODES) {
-      expect(pt(375, 812, mode)).toBe(44.4);
-      expect(pt(390, 844, mode)).toBe(46.2);
-      // below 375 pt the fixed 128 px token is under 44 pt; the docs do not say whether that is allowed
-      expect(pt(360, 800, mode)).toBe(42.7);
+      expect(units(375, 812, mode)).toBe(44.4);
+      expect(units(390, 844, mode)).toBe(46.2);
+      expect(units(360, 800, mode)).toBe(42.7);
+      // the layout reads the token: the same px on every profile, whatever H
+      for (const prof of PROFILES) {
+        const l = createLayout(TOKENS, designHeight(mode, prof.viewport, TOKENS));
+        expect(l.touch.minTargetPx, `${prof.name} ${mode}`).toBe(MIN_TARGET);
+        expect(l.touch.hitSlopPx, `${prof.name} ${mode}`).toBe(TOKENS.touch.hitSlopPx);
+      }
     }
   });
 
@@ -244,11 +254,28 @@ describe('phone profiles 390×844 and 360×800 in FIT and EXPAND (R-06, D-015)',
 
       it(`UX 0.3 ${label}: touch targets (visual + pad) are ≥ touch.minTargetPx and stay on screen`, () => {
         for (const [name, r] of touchTargets(l)) {
-          const hit = hitArea(r, MIN_TARGET);
+          const hit = l.touch.hit(r);
+          expect(hit, name).toEqual(hitArea(r, MIN_TARGET));
           expect(Math.min(hit.w, hit.h), name).toBeGreaterThanOrEqual(MIN_TARGET);
           expect(hit.y, name).toBeGreaterThanOrEqual(0);
           expect(rectBottom(hit), name).toBeLessThanOrEqual(H);
         }
+      });
+
+      it(`UX 0.1 ${label}: frequent targets of the closed list (boosters, play button, nav tabs, popup options, block + pad) have a short side ≥ 144 px`, () => {
+        const frequent: [string, Rect][] = [
+          ...l.bottom.boosters.map((r, i): [string, Rect] => [`booster ${i}`, r]),
+          ['play button', l.bottom.playButton],
+          ...l.bottom.navTabs.map((r, i): [string, Rect] => [`nav tab ${i}`, r]),
+          ...l.popup.options(3).map((r, i): [string, Rect] => [`popup option ${i}`, r]),
+          ['block cell + pad', l.touch.blockHit(l.grid.cellRect(0, 0))],
+        ];
+        for (const [name, r] of frequent) {
+          expect(Math.min(r.w, r.h), name).toBeGreaterThanOrEqual(FREQUENT_TARGET_PX);
+        }
+        // UX §0.1: "blok hücresi 120 px … touch.hitSlopPx = 30 … ile 180 px'e çıkar"
+        const cell = l.grid.cellRect(2, 3);
+        expect(l.touch.blockHit(cell)).toEqual({ x: cell.x - 30, y: cell.y - 30, w: 180, h: 180 });
       });
 
       it(`UX 0.1 ${label}: popup options stay in the bottom comfort zone`, () => {

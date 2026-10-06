@@ -39,8 +39,8 @@ export type PieceId = number;
 export type CellIndex = number;
 
 /**
- * Where a piece is. Stored as an int in the state buffer. `pending` = truck block whose batch is not delivered yet
- * (TECH §2.1 lists 0–3; `pending` keeps undelivered supply apart from destroyed blocks, K-30 D2).
+ * Where a piece is. Stored as an int in the state buffer (TECH §2.1). `pending` = truck block whose batch is not queued
+ * yet; it keeps undelivered supply apart from destroyed (`gone`) blocks (K-30 D2, L-19 K-27).
  */
 export const Zone = { yard: 0, site: 1, queue: 2, gone: 3, pending: 4 } as const;
 export type Zone = (typeof Zone)[keyof typeof Zone];

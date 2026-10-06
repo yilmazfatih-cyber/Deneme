@@ -1,6 +1,6 @@
 # GDD — Oyun kuralları
 
-Sahip: product-lead · Sürüm: Faz 1 revizyonu (2026-10-04; orkestratör kararları R-01…R-24; tutarlılık denetimi tur 1–2, 2026-10-05) · Kaynak: `docs/BRIEF.md` §4–§8, §10
+Sahip: product-lead · Sürüm: Faz 1 revizyonu (2026-10-04; orkestratör kararları R-01…R-24; tutarlılık denetimi tur 1–2, 2026-10-05; Faz 2 ifade düzeltmesi K-08/K-26, kural değişmedi, 2026-10-06) · Kaynak: `docs/BRIEF.md` §4–§8, §10
 
 Bu belge oyunun **bütün** kurallarını kimlikle (K-xx) verir. Brifteki K-01…K-33 kimlikleri ve anlamları korunmuştur;
 yalnızca belirsizlikleri sayıyla kapatan açıklamalar eklenmiştir. Yeni kurallar K-34'ten başlar. Engel ayrıntıları
@@ -122,11 +122,20 @@ Saklı nesneler (anahtar, vida) yolu kapatmaz. Tutma anında erişilebilir konum
 süresince tahta donuktur (hiçbir şey düşmez, kırılmaz), bu yüzden `R` değişmez.
 Parmak hedefi `p = parmak − tutmaOfseti + (0; 1,2)` hücredir (blok parmağın 1,2 hücre üstünde görünür). Blok, `R`
 içinde `p`'ye Öklid uzaklığı en küçük konuma gider ("yapışkan takip"). Eşitlikte sırasıyla: (1) mevcut konumdan BFS
-adımı az olan, (2) serbest kip ray kipinden önce, (3) y'si küçük olan, (4) x'i küçük olan (TECH_DESIGN §4.4 düğüm sırası). Titremeyi önlemek için
+adımı az olan, (2) serbest kip ray kipinden önce (ray kipindeki iki konum arasında bu ölçüt eşittir), (3) çapa y'si
+küçük olan, (4) çapa x'i küçük olan, (5) yalnızca (1)–(4) de eşitse geçidin `wall.gaps` dizinindeki sırası küçük olan.
+Geçit dizini sıralamada **en sondadır**: iki ayrı geçidin rayındaki konumlar önce (3) y ve (4) x ile ayrılır, veride
+geçitlerin yazılış sırası (1)–(4)'ün sonucunu hiçbir zaman değiştirmez. Geçitler örtüşmediğinden (K-04, W5 `gap_overlap`)
+aynı çapa iki rayda bulunamaz; (5) geçerli veride hiç belirleyici olmaz, yalnızca belirlenimcilik içindir. Titremeyi önlemek için
 yeni konum ancak uzaklık karesi mevcut konumunkinden en az 0,2 küçükse seçilir. Blok ekranda hiçbir zaman bir engelin
 içinden "ışınlanmaz"; yeni konuma BFS yolu boyunca gider.
 **Örnek:** (2,6)'daki `B1` tutulur; parmak (2,3)'e (dolu, kapalı) iner. `R`'de en yakın konum (2,6)'dır (aşağısı dolu) →
 blok yerinde kalır. Parmak (3,9)'a çıkınca blok (2,7)→(2,8)→(3,8)→(3,9) yolunu izler.
+**Örnek (eşitlik):** `height=5`, iki sabit geçit `y=1` ve `y=3` (boy 1); sahada yalnızca (4,2) ve (5,2)'de `B1`, (6,2)'de
+moloz. (4,2)'deki `B1` tutulur, `p = (6,2)`. Ray konumları (6,1) ve (6,3) ikisi de 1 uzak ve 3 BFS adımı → (3) ile
+(6,1) seçilir; `gaps` dizisi `[y=3, y=1]` sırasıyla yazılsa da sonuç aynıdır. Tek geçit `y=3`, `B1` (4,3)'te, (6,4)'te
+moloz, `p = (6,4)` → serbest (5,4) ile ray (6,3) ikisi de 1 uzak ve 2 adım → (2) ile serbest (5,4) seçilir, ray konumunun
+y'si küçük olsa da.
 
 ### K-09 Çıkarma (tutulabilirlik)
 **Kural:** Bir blok ancak şu koşulların hepsi sağlanırsa tutulabilir: (a) 4 birim ötelemesinden en az biri K-08'e göre
@@ -429,9 +438,15 @@ dolu → `B1` için sırayla x=1 (uzaklık 1), x=2 … denenir; x=1'de y=6 boş 
 
 ### K-26 Kuyruk
 **Kural:** Yer bulamayan blok kuyrukta kalır. Hamle sonu adım 9'da kuyruktaki her blok sırayla (FIFO) bir kez denenir;
-yerleşemeyen blok sonrakileri bekletmez. Arayüz "Kamyonda: N blok" gösterir (N = kuyruktaki blok sayısı; N=0 iken
-gösterge gizli). Kuyruktaki bloklar tutulamaz, Çekiç'le hedeflenemez.
-**Örnek:** Kuyrukta `[O4 W, B1 Y]`; sahada yalnızca (5,7) boş → `O4` sığmaz, kalır; `B1` (5,7)'ye iner; gösterge "1 blok".
+yerleşemeyen blok sonrakileri bekletmez. Kuyruktaki bloklar tutulamaz, Çekiç'le hedeflenemez.
+**Kamyon göstergesi (çip):** tek sayı `N` gösterir. `N` = kuyrukta bekleyen **blok** sayısıdır (hücre ya da parti sayısı
+değil; bloğun boyu ve rengi sayıyı değiştirmez). Kuyruktaki her blok sayılır: sıradaki partinin henüz düşmemiş blokları
+(adım 8), sahada yer bulamayıp kuyruğa giren geri sekmiş blok (K-17 adım 3) ve Kamyon Yardımı `B1`'leri (K-30, E-23).
+Hamle sonunda görünen `N`, o hamlenin bütün adımlarından sonraki kuyruk uzunluğudur. `N = 0` iken gösterge **gizlidir**;
+`N ≥ 1` iken görünür. Metni GDD belirlemez: STORY anahtarı (`truck.queue`, TR "Kamyonda: {n}") ve yeri UX §5.1
+design-lead'indir; bu belgedeki "Kamyonda: N" yazımları yalnız bu sayıyı anar.
+**Örnek:** Kuyrukta `[O4 W, B1 Y]` (`N = 2`); sahada yalnızca (5,7) boş → `O4` sığmaz, kalır; `B1` (5,7)'ye iner →
+`N = 1` ("Kamyonda: 1"). Sonraki bir hamlede `O4` de düşerse `N = 0` → gösterge gizlenir.
 
 ### K-27 Parti içeriği
 **Kural:** Her parti, o dilimi bitirmeye yetecek doğru blokları ve şaşırtmacaları (decoy) içerir. Doğrulayıcı her
@@ -774,7 +789,7 @@ Her satır bir test senaryosudur (test adı "E-xx …" ve ilgili K kimliği).
 |---|---|---|---|
 | E-01 | Son hamle (kalan 1) son dilimi tamamlar | Adım 4 kalan 0; adım 11 önce kazanma → kazanılır, bonus 0 | K-28, K-35 |
 | E-02 | Kalan 1 hamlede cam blok eşiği aşan yükseklikten bırakılır | Kırılır, sahaya döner, maliyet 2 → sayaç 0 (negatif olmaz) → "Hamleler bitti" | K-07, S3 |
-| E-03 | Teslimat sırasında sahada yer yok | Bloklar kuyrukta; sonraki hamlede yer açılınca o hamlenin 9. adımında düşer; arayüz "Kamyonda: N blok" | K-26 |
+| E-03 | Teslimat sırasında sahada yer yok | Bloklar kuyrukta; sonraki hamlede yer açılınca o hamlenin 9. adımında düşer; kamyon göstergesi `N` = kuyruktaki blok sayısı ("Kamyonda: N"; `N = 0` iken gizli) | K-26 |
 | E-04 | Kuyrukta eski bloklar varken döner platformda yeni dilim tamamlanır | Yeni parti kuyruğun sonuna eklenir; eskiler önce denenir | K-23, K-26 |
 | E-05 | Kepenk kapanırken şantiyede, geçit satırında raydan konmuş blok var | Blok yerinde kalır; kepenk yalnızca sınırın o satırlarını kapatır, şantiye hücrelerini etkilemez | W4, K-12 |
 | E-06 | Blok geçitte sınırı keserken (hücreleri sınırın iki yanında) bırakılır | İptal, hamle harcanmaz; kepenk/kayar kapı sürükleme sırasında değişmediği için "kapanırken içinde blok" oluşamaz | K-04, K-07 |

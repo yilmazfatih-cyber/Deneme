@@ -1,6 +1,6 @@
 # Sanat yönü — Minik Usta
 
-Sahip: design-lead · Durum: Faz 1 revizyonu (2026-10-04; R-01, R-04, R-05, R-24 işlendi) · Kaynak: `docs/BRIEF.md` §6,
+Sahip: design-lead · Durum: Faz 1 revizyonu (2026-10-04; R-01, R-04, R-05, R-24 işlendi); Faz 2 boşluğu 2 (2026-10-06) · Kaynak: `docs/BRIEF.md` §6,
 §7, §9, §11 · Kod karşılığı: `src/theme/tokens.json` (her değerin tek kaynağı; türetilen renkler `check.*`, salt
 kontrol)
 
@@ -273,15 +273,24 @@ dörtgen) — gri tonlamada da ayırt edilirler.
   (bkz. JUICE) ve plan rengi + sembol açılır. `?` hücresine değen gölge bütün zorluklarda nötrdür.
 - **İnşa cephesi (K-34, R-01):** her şantiye sütununda doldurulabilir en alt boş plan hücresi (altındaki bütün hücreler
   doğru dolu ya da **boş** `.`; sütun tamamsa ya da altında yanlış nesne — moloz, yapışmış harçlı blok — duran bir `.`
-  varsa o sütunda cephe yok, GDD K-34 kanca 1, E-43) **düz** 6 px kontur (`plan.frontStrokePx`, `board.buildFront`) ve +%15 açıklık
-  (`plan.frontLighten`) alır; dış parlama `alpha.buildFrontGlow`. Diğer boş hücreler kesik konturda kalır. `?` hücresi
-  cephedeyse etiketi aynı düz konturla çerçevelenir (renk bilgisi vermez). Altın Mala hedefleri bu kümedir.
+  varsa o sütunda cephe yok, GDD K-34 kanca 1, E-43) iki katmanla çizilir (ASSET §3):
+  1. **Hücre: `plan_<c>_front`** — plan hücresinin aynı tarifi; yalnız **dolgu** +%15 açılır: bileşik dolgu %15 beyazla
+     karışır (`plan.frontLighten`; dolgu × 0,85 + #FFFFFF × 0,15; renk körü modunda %90'lık bileşikten aynı formül).
+     Kesik kontur açılmış dolgudan × 0,65 hesaplanır (2. katmanın altında kalır). **Sembol ve mürekkebi değişmez**
+     (%100, `color.planInk`); yukarıdaki kontrastların "inşa cephesi" değerleri bu modelle ölçüldü (beyaz perde sembolün
+     üstüne de çekilseydi koyu mürekkep açılır, B 5,8 → 3,7 düşerdi).
+  2. **Katman: `plan_front`** — yalnız **düz** 6 px kontur (`plan.frontStrokePx`, `board.buildFront`; plan kesik
+     konturuyla aynı yol, kesikleri örter) + dış parlama `alpha.buildFrontGlow` (8 px bulanıklık). Dolgu, açıklık ve
+     sembol **yok**; katman sırasındaki "inşa cephesi konturu" budur.
+  Diğer boş hücreler kesik konturda kalır. `?` hücresi cephedeyse açıklık almaz (renk bilgisi vermez); yalnız
+  `plan_front` konturu etiketli hücreyi çerçeveler. Altın Mala hedefleri bu kümedir.
 - **Eksik destek taraması (K-34):** yatay çizgi (6 px, 20 px aralık, `color.ghost.support` %85), hücre konturunun
   içinde; renk uyuşmazlığının 45° taramasından yön olarak ayrılır. Taranan hücreler `missingSupport` kümesidir: doğru
   dolu olmayan plan hücreleri ve içinde yanlış nesne (moloz, yapışmış harçlı blok) duran `.` hücreleri; ikincisinde
   tarama nesnenin üstüne çizilir. Yalnız gölgede (Kolay/Normal) ve geri sekme ya da harç yapışmasından sonra 600 ms
   görünür.
-- **Plan dışı:** `board.blueprintDeep`, ızgara yok.
+- **Plan dışı:** `board.blueprintDeep` #173D70 düz dolgu, ızgara, benek ve köşebent yok (doku `board_blueprint_deep`,
+  ASSET §3). Plan dışı = aktif dilimde `y ≥ h + e` şantiye hücreleri (GDD K-03, K-16 `outside`).
 - **Yerleşmiş blok:** §3 tarifinin aynısı + kilit işareti: yerleştiği an hücre köşelerinde 4 küçük "harç" noktası
   (beyaz %50, 6 px) belirir ve kalır (K-14 kilit, dokunulmaz).
 - **Düşüş gölgesi (K-18):** bkz. `UX_FLOWS.md` §5.4.
@@ -412,7 +421,9 @@ Ana ekranda aktif yapının yarı inşa hâli arka planın odağıdır (bkz. `AS
 | `font.size.small` | 38 | 14 | 600 | 1,25 | rozet, sayaç etiketi |
 | `font.size.caption` | 34 | 12 | 600 | 1,2 | **en küçük metin**, altı yasak |
 
-Büyük harf her zaman `toLocaleUpperCase('tr-TR')` ("MİNİK USTA", "ÇOK ZOR"). Başlıklar ve düğmeler: beyaz dolgu + 0,12 em
+Büyük harf her zaman `toLocaleUpperCase('tr-TR')` ("MİNİK USTA", "ÇOK ZOR"). **İstisna — oyun adı:** `app.title`
+(çalışma değeri "Lift & Land", STORY §0-10) büyük harfe çevrilmez, yazıldığı biçimde çizilir; marka adı Latin
+yazımlıdır ve TR yerelinde `toLocaleUpperCase` "LİFT" yazardı. Başlıklar ve düğmeler: beyaz dolgu + 0,12 em
 koyu kontur + 4 px gölge. Konuşma balonu metni: `ui.ink` düz.
 
 ---

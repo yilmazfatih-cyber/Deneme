@@ -1,6 +1,6 @@
 # UX akışları — Minik Usta
 
-Sahip: design-lead · Durum: Faz 1 revizyonu (2026-10-04; orkestratör kararları R-01…R-24 işlendi) · Kaynak:
+Sahip: design-lead · Durum: Faz 1 revizyonu (2026-10-04; orkestratör kararları R-01…R-24 işlendi); Faz 2 boşlukları 1 ve 3 (2026-10-06) · Kaynak:
 `docs/BRIEF.md` §4, §8, §10, §11 · Görsel tarifler: `docs/ART_DIRECTION.md` · Animasyonlar: `docs/JUICE.md` · Metinler:
 `docs/STORY.md` · Ölçüler: `src/theme/tokens.json` · Sayılar (fiyat, ödül, tavan): `config/economy.json`,
 `config/events.json` — bu belgedeki sayılar **örnektir**, ekran değeri her zaman config'ten okunur.
@@ -17,9 +17,20 @@ yeri ayrılmış · **[Mağaza]** yalnız Capacitor/mağaza sürümü. Etiketsiz
 - Tasarım tuvali **1080×1920 px** (dikey). Tüm wireframe koordinatları bu tuvalde, sol üst (0, 0).
 - **Telefona eşleme:** 375 pt genişlikte 1 pt = 2,88 px; 390 pt'de 1 pt = 2,77 px. Yani 1080 px genişlik = telefonun
   tam genişliği. Örnek: 120 px hücre = 41,7 pt (375) / 43,3 pt (390); 172 px güçlendirici yuvası = 60 / 62 pt.
-- **44 pt kuralı:** en küçük dokunma hedefi 375 pt'de 44 pt = **128 px**. Token: `touch.minTargetPx = 128`. Görseli
-  daha küçük olan öğeler (blok hücresi 120 px) görünmez **dokunma payı** (`touch.hitSlopPx = 30`, 0,25 hücre) ile
-  180 px'e çıkar; birden çok bloğun payı aynı noktayı kapsarsa dokunuş merkezine en yakın hücreye gider.
+- **44 pt kuralı — her genişlikte 128 px (karar 2026-10-06):** en küçük dokunma hedefi **her ekran genişliğinde 128
+  px** tasarım pikselidir; token `touch.minTargetPx = 128`, genişliğe göre değişmez. Karşılığı 375 pt'de 44,4 pt, 390
+  pt'de 46,2 pt, **360 dp'de 42,7 dp** (TECH §14.1 profili 360×800); 360'taki 42,7 dp bilerek kabul edilir. Gerekçe:
+  44 pt Apple'ın iOS sayısıdır ve 375/390 pt'de sağlanır; 360 dp Android/web profilidir ve orada Android'in kendi
+  önerisi 48 dp = 144 px'tir. 132 px'e çıkmak (360'ta tam 44 dp) yalnız 1,3 dp kazandırır, 48 dp'yi yine karşılamaz,
+  buna karşılık 96 / 112 px görsellerin payını büyütür (Usta Serisi şeridinin payı tahta kenarına taşar). Bunun yerine
+  **sık dokunulan hedefler 144 px tabanındadır** (360 dp'de ≥ 48 dp, 375 pt'de ≥ 50 pt). Kapalı liste: birincil,
+  ikincil ve nötr düğmeler, eşit çift düğmeler, pencere seçenekleri (920×152), güçlendirici yuvaları (172), blok
+  hücresi + pay (180), Bölüm düğmesi (176), alt navigasyon sekmeleri (176), sayısal tuşlar (§2.3). Listede olmayan her
+  hedef 128 px tabanındadır (duraklat, kapat, üst çubuk öğeleri, ayar dişlisi, açık/kapalı anahtarları, Usta Serisi
+  şeridi, Vinç döndürme okları, Boya Fırçası renk seçicisi, ara sahne "Geç", metin düğme). WCAG 2.5.8 (AA, 24 CSS px)
+  her profilde sağlanır (360'ta 42,7 CSS px). Görseli daha küçük olan öğeler (blok hücresi 120 px) görünmez **dokunma
+  payı** (`touch.hitSlopPx = 30`, 0,25 hücre) ile 180 px'e çıkar; birden çok bloğun payı aynı noktayı kapsarsa dokunuş
+  merkezine en yakın hücreye gider.
 - **Ölçekleme — FIT ve EXPAND (R-06; EXPAND önerisi P-4, proje sahibine soruldu):** Brif FIT diyor: tuval 1080×1920
   sabit, uzun ekranda üst/alt bant (390×844'te toplam 151 pt) arka plan rengiyle dolar. Öneri EXPAND: genişlik 1080
   sabit, yükseklik `H` ekran oranına göre **1920–2400 px** (Phaser `Scale.EXPAND`). Düzen **iki kipte de aynı çapa
@@ -54,7 +65,7 @@ yeri ayrılmış · **[Mağaza]** yalnız Capacitor/mağaza sürümü. Etiketsiz
  y=1920 └──────────────────────────────┘
 ```
 
-Kural: her ekranın **birincil eylemi y ≥ 1400** (alt %27) ve en az 128 px yüksekliktedir. Kapat/Geç/Duraklat gibi
+Kural: her ekranın **birincil eylemi y ≥ 1400** (alt %27) ve en az 144 px yüksekliktedir (sık hedef tabanı, §0.1). Kapat/Geç/Duraklat gibi
 geri dönüşü olan ikincil eylemler üst köşelerde durabilir. Tahta istisnadır: imza hareket "yukarı" gerektirir;
 blok parmağın 1,2 hücre üstünde göründüğü için parmak bloğun altında, daha rahat bölgede kalır.
 
@@ -66,7 +77,7 @@ blok parmağın 1,2 hücre üstünde göründüğü için parmak bloğun altınd
 | İkincil düğme | turuncu, 400×144 px |
 | Nötr düğme | dolgulu krem (`ui.neutral` / `neutralLip`), yazı `ui.ink`; ikincil düğmeyle **aynı boyda** kullanılır. "Hayır, teşekkürler", "Reklam izle", "Çık" gibi seçenekler bu kalıptır |
 | Eşit çift düğme | iki seçenek yan yana, **eşit boy 440×152** (aralarında 40 px, toplam 920 = `layout.popup` genişliği); biri yeşil ya da turuncu, öbürü krem. Birincil düğmenin "en az 560×160" kuralının **bilinçli istisnasıdır** (eşitlik kuralı, R-15); yükseklik ≥ 128 px ve rahat bölge (y ≥ 1056) şartı geçerlidir. Kullanım: çıkış onayı (Kal / Çık), günlük ödül (Topla / Reklam ×2), kural kartı (Katıl / Şimdi değil), Usta Modu / Tekrar turu kartı (Başla / Şimdi değil) |
-| Görsel + pay (dokunma alanı) | Kısa kenarı 128 px'ten küçük **her** dokunulabilir öğe görünmez pay ile en az 128 px'e tamamlanır (`touch.minTargetPx`); pay iki yana eşit eklenir (112 px → her yanda 8 px; 96 px → 16 px; 88 px → 20 px). Pay komşu hedefin payıyla çakışırsa dokunuş merkezine en yakın hedefe gider (blok payı kuralıyla aynı). Bu belgedeki "+ pay" notları bu kuraldır |
+| Görsel + pay (dokunma alanı) | Kısa kenarı 128 px'ten küçük **her** dokunulabilir öğe görünmez pay ile en az 128 px'e tamamlanır (`touch.minTargetPx`; her genişlikte 128 px, §0.1); pay iki yana eşit eklenir (112 px → her yanda 8 px; 96 px → 16 px; 88 px → 20 px). Pay komşu hedefin payıyla çakışırsa dokunuş merkezine en yakın hedefe gider (blok payı kuralıyla aynı). Bu belgedeki "+ pay" notları bu kuraldır |
 | Metin düğme | dolgusuz, `ui.inkSoft`, alt çizgi yok, dokunma alanı ≥ 128 px yükseklik. **Satın alma ya da reklam penceresinde reddetme seçeneği olarak kullanılmaz** (R-15) |
 | Fiyat etiketi (`PriceLabel`) | Altınla fiyatlanan **her** düğmede iki satır: üstte altın simgesi (`icon_coin` görüntüsü, 1 em; wireframe'lerdeki "●" bu simgedir, fontta karakter olarak yoktur) + "900" (`font.size.button`), altta gerçek para karşılığı yerel para biriminde: TR "≈ 81 TL", EN "≈ $1.79" (`font.size.caption`; asla altından büyük değil; mağaza sürümünde para birimi mağaza yerel ayarından). 2. satırın rengi zemine göre: **renkli düğmede (turuncu, yeşil) `ui.ink`** (turuncu üstünde 6,5:1, yeşil üstünde 5,3:1), krem zeminde `ui.inkSoft` (6,5:1). Bu satır R-15'in görünür olmasını istediği bilgidir; 4,5:1 altına inmez. Karşılık `config/economy.json`'daki referans fiyattan (Avuç paketi birim fiyatı) hesaplanır; web MVP'de yanında "test sürümü" etiketi (E9). Tek bileşen, bütün pencerelerde aynı (E2) |
 | Teklif penceresi kuralı (R-15) | Seçenekler **eşit boyutlu** (920×152, alt alta, `layout.popup.*`); hiyerarşi yalnız renkle (turuncu / krem / krem). Döngüsel dikkat animasyonu, geri sayım, "son şans", kayıp vurgusu, kalan oyuncu sayısı yok. × kapat her zaman var ve "Hayır" ile aynı sonucu verir |
@@ -88,34 +99,35 @@ blok parmağın 1,2 hücre üstünde göründüğü için parmak bloğun altınd
 ```
 y    0 ┌────────────────────────────────────┐
        │            gökyüzü #7FD3F7          │
-  300  │      ▣ ▣   bloklar yukarıdan       │  "MİNİK USTA" logosu 8 bloktan inşa olur
+  300  │      ▣ ▣   bloklar yukarıdan       │  oyun adı logosu (`app.title`) 8 bloktan inşa olur
   420  │   ┌──────────────────────────┐     │  logo kutusu 880×360, merkez (540, 560)
-       │   │  M İ N İ K   U S T A     │     │
+       │   │   L i f t  &  L a n d    │     │
   740  │   └──────────────────────────┘     │
   900  │        ☺ Tuna      🐕 Kepçe          │  Tuna kaskını düzeltir, Kepçe havlar (840×520 sahne)
  1420  │   ══════════════════════════      │  zemin çizgisi
  1560  │   ⌐▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀¬     │  yükleme: vinç kolu 840 px; kanca bloğu soldan sağa taşır
  1640  │   [▣]──────────────▶               │  blok konumu = yükleme yüzdesi
- 1840  │              v0.1.0  (34 px)       │
+ 1840  │          Sürüm 0.1.0  (34 px)      │  `app.version`
  1920  └────────────────────────────────────┘
 ```
 
 | Öğe | Konum / boyut | Not |
 | --- | ------------- | --- |
-| Logo | 880×360, merkez (540, 560) | 8 blok (W Y G R O C B P) düşer ve oyun adı yazısının arkasında kutuları oluşturur; yazı Baloo 2 800, 120 px. **Ad marka sabitinden** (`app.title` i18n) gelir; "MİNİK USTA" çalışma adıdır ve NAMING kararına kadar logo yer tutucudur. Düzen 8–12 harflik adlara ölçeklenir: blok sayısı = harf grubu sayısı (en çok 8), yazı 880 px'e sığmazsa 120 → 96 px |
+| Logo | 880×360, merkez (540, 560) | 8 blok (W Y G R O C B P) düşer ve oyun adı yazısının arkasında kutuları oluşturur; yazı Baloo 2 800, 120 px. **Ad marka sabitinden** (`app.title` i18n) gelir; çalışma değeri "Lift & Land" (D-068 aday sırası 1, STORY §0-10, §7.6) marka araması bitene kadar yer tutucudur. Ad **büyük harfe çevrilmez**, yazıldığı biçimde çizilir (TR yerelinde `upper` "LİFT" yazardı; ART §8). Düzen 8–12 harflik adlara ölçeklenir: blok sayısı = harf grubu sayısı (en çok 8), yazı 880 px'e sığmazsa 120 → 96 px |
 | Tuna + Kepçe sahnesi | 840×520, merkez (540, 1160) | Tuna kaskını düzeltir (0,6 s), Kepçe havlar (0,4 s). **[MVP-lite]**: karakter animasyonu Sonra; MVP'de durağan poz |
 | Yükleme vinci | 840×200, y 1540–1740 | taşınan blok x = 120 + 720 × yüzde |
-| Sürüm | merkez (540, 1840), 34 px `ui.inkSoft` | — |
+| Sürüm | merkez (540, 1840), 34 px `ui.inkSoft` | `app.version` "Sürüm {version}" (`package.json` sürümü) |
 
 Durumlar:
 
 - **Yükleniyor:** varsayılan. Animasyon en az 1,5 s (logo tamamlansın), yükleme bitince en fazla 0,3 s bekleyip geçer.
-- **Hata (kayıt bozuk / doku üretimi başarısız):** vinç durur, panel "Bir şeyler takıldı. Yeniden deneyelim mi?" +
-  "Tekrar dene" (y 1600). Kayıt bozuksa yedek kayıt yüklenir (code-lead), oyuncuya teknik ayrıntı gösterilmez.
+- **Hata (kayıt bozuk / doku üretimi başarısız):** vinç durur, panel `error.boot` "Bir şeyler takıldı. Yeniden deneyelim mi?" +
+  `common.retry` "Tekrar dene" (y 1600). Kayıt bozuksa yedek kayıt yüklenir (code-lead), oyuncuya teknik ayrıntı gösterilmez.
 - **Boş / kilitli:** yok.
 - **Geri dönen oyuncu:** splash → Ana ekran (FTUE değilse).
 - **Yarım kalan bölüm (R-13):** kayıtta `inLevel` varsa splash → doğrudan **oyun ekranı**, bölüm kaldığı hamleden
-  kurulur ve **Duraklat penceresi açık** gelir (başlık "Kaldığın yerden devam", birincil "Devam"). Can gitmez, seri
+  kurulur ve **Duraklat penceresi açık** gelir (başlık `resume.title` "Kaldığın yerden devam", birincil `common.continue`
+  "Devam"; üstte 1,5 s şerit `resume.strip` "Bölüm {n} · hamlelerin kayıtlı", JUICE #87). Can gitmez, seri
   bozulmaz; G-H sayacı ve animasyonlar sıfırdan başlar. Ayrıntı §5.1. **Üç istisna (GDD K-43 madde 3–4, D-022):**
   (a) `inLevel.outcomeWindow = 'outOfMoves'` ise Duraklat penceresi **açılmaz**; tahta kurulur ve doğrudan §7
   Pencere 1 **aynı teklif numarasıyla** ("Teklif n/3", aynı fiyat basamağı; reklam düğmesi §7 kuralıyla, yalnız 1.
@@ -175,7 +187,7 @@ tahtasının etkileşime açıldığı kare.
 | 5 | Geçiş (panel → tahta, 0,4 s) + Bölüm 1 tahtasının ilk yükleme düşüşü (0,4 s, §5.1 "ilk yükleme"; etkileşim düşüş bitince açılır) | 0,8 | 0 | **8,2** | Usta Dede balonu ve el animasyonu tahtayla aynı anda gelir. |
 
 - **Dokunuş:** gerekli dokunuş **0**. Oyuncu panelleri dokunarak hızlandırırsa en fazla 3 dokunuş (her panel 1) ya da
-  "Geç" ile **1 dokunuş**; her durumda ≤ 3. ✓
+  "Geç" (`common.skip`) ile **1 dokunuş**; her durumda ≤ 3. ✓
 - **Süre:** dokunmadan 8,2 s; panelleri dokunarak geçen oyuncu ~4–5 s. Yükleme bütçesi 2,0 s'yi 1,8 s aşsa bile 10 s
   içinde kalır (açılış animasyonu yüklemeyi örter; paneller yükleme bitmeden başlamaz). ✓
 - **Ses kilidi:** tarayıcılar sesi ilk kullanıcı dokunuşuna kadar engeller. İlk dokunuş (panel ya da blok) sesi açar;
@@ -190,7 +202,7 @@ tahtasının etkileşime açıldığı kare.
 
 | # | Ekran | Ne olur | Vurgu / el | Dokunuş |
 | - | ----- | ------- | ---------- | ------- |
-| 6 | Kazanma | Kısa kazanma gösterisi (≤ 3 s), yıldız ana ekrana uçar | "Devam" düğmesi nabız | 1 (Devam) |
+| 6 | Kazanma | Kısa kazanma gösterisi (≤ 3 s), yıldız ana ekrana uçar | "Devam" (`common.continue`) düğmesi nabız | 1 (Devam) |
 | 7 | Ana ekran | İlk açılış: alt nav ve kenar ikonları gizli (yalnız üst çubuk, görev balonu, "Bölüm 2"). Yıldız sayacı 1'i gösterir | görev balonu (ünlemli) spot ışığında, el dokunma animasyonu | 1 (görev balonu) |
 | 8 | Görev penceresi | `town.ch1.t1.name` ("Ağaç basamakları") + maliyet (★ META'dan) | "Yap ★1" düğmesi | 1 |
 | 9 | Görev sahnesi | Ağaç ev basamakları yükselir (≤ 2 s), `town.ch1.t1.scene` balonu | — | 0 |
@@ -209,7 +221,7 @@ dokunuş) etkilenmez.
 y  200 │   Doğum yılın                      │  h1, ortada; karakter, ödül, ipucu yok
   420  │   ┌──┐┌──┐┌──┐┌──┐                 │  4 haneli boş alan (varsayılan yok, kaydırma çarkı yok)
   560  │   └──┘└──┘└──┘└──┘                 │
-  900  │   [1][2][3]                        │  sayısal tuş takımı, her tuş 160×128, alt yarıda
+  900  │   [1][2][3]                        │  sayısal tuş takımı, her tuş 160×144 (sık hedef, §0.1), aralık 24, alt yarıda
        │   [4][5][6]   [7][8][9]   [⌫][0]   │
  1640  │   ┌──────────── DEVAM ───────────┐ │  birincil; 4 hane girilince etkin
 ```
@@ -437,12 +449,12 @@ Durum şeridi tahta grubuna aittir (tahtayla birlikte kayar); Tuna köşesi ve g
 
 | Öğe | Davranış |
 | --- | -------- |
-| Duraklat | Duraklat penceresi: Devam (birincil), Ses/Müzik/Titreşim anahtarları, "Bölümden çık" → **çıkış onayı** (aşağıda). |
+| Duraklat | Duraklat penceresi: başlık `pause.title` "Mola" (devam açılışında `resume.title`, §1), Devam (`common.continue`, birincil), Ses / Müzik / Titreşim anahtarları (`settings.sound` / `.music` / `.haptics`, durum `common.on` / `.off`), "Bölümden çık" (`pause.exit`) → **çıkış onayı** (aşağıda). |
 | Panorama | Planın tamamının küçük önizlemesi; dilimler 2 sütunluk sütunlar halinde, aktif dilim beyaz çerçeveli, tamamlananlar tam renkli, **gelecek dilimler plan renkleriyle %30 opak** (`alpha.panoramaFuture`; planları okunur; 12 px hücrede sembol okunmadığı için semboller dokununca açılan büyük önizlemede tam opak çizilir; döner platform gibi ileriyi planlatan bölümler buna dayanır); `?` hücreleri panoramada da `?` etiketiyle görünür, açılınca rengini alır (K-06). Taslakta `▣▣` tamamlanan, `[▣▣]` aktif, `░░` %30 opak gelecek dilim, `░?` gizli hücreli dilim. Dokun → 1,5 s büyük önizleme **[MVP-lite]**: oyun durumunu değiştirmez, hamle harcanmaz (K-06). |
-| Hedefler | `build` için yapı ikonu + dilim sayacı ("2/4"), `clear` / `collect` sayaçları. Hedef tamamlanınca ✓ ve yeşil. |
-| Hamle sayacı | Baloo 2 800, 120 px. Son 5 hamlede kırmızı nabız (JUICE). |
-| Usta Serisi | 4 boncuk; dolunca Altın Mala ikonu parlar ve "dokun, kullan" durumuna geçer (seçim: §5.2). Dokunma hedefi: 96 px şerit + üstte/altta 16 px pay → 128 px (§0.3). Renk körü modunda sayıyla da ("3/4"). |
-| Kamyon göstergesi | Kuyrukta blok varsa görünür: "Kamyonda: 3" (K-26); yoksa gizli. Geri sekip yer bulamayan blok bu çipe uçar (K-17 adım 3). |
+| Hedefler | `build` için yapı ikonu + dilim sayacı ("2/4"), `clear` / `collect` sayaçları; sayaç metni `common.count` "{n}/{max}". Hedef tamamlanınca ✓ ve yeşil. |
+| Hamle sayacı | Baloo 2 800, 120 px; altında etiket `hud.moves` "Hamle" (`font.size.small`). Son 5 hamlede kırmızı nabız (JUICE). |
+| Usta Serisi | 4 boncuk; dolunca Altın Mala ikonu parlar ve "dokun, kullan" durumuna geçer (seçim: §5.2). Dokunma hedefi: 96 px şerit + üstte/altta 16 px pay → 128 px (§0.3). Etiket `hud.streak` "Usta Serisi"; renk körü modunda sayıyla da ("3/4", `common.count`). |
+| Kamyon göstergesi | Kuyrukta blok varsa görünür: `truck.queue` "Kamyonda: 3" (K-26; sayı = kuyruktaki **blok** sayısı, hücre ya da parti değil); 0 iken gizli, "Kamyonda: 0" hiç yazılmaz. Geri sekip yer bulamayan blok bu çipe uçar (K-17 adım 3). |
 | Tuna + Kepçe | Etkileşimsiz tepki karakterleri (doğruda sevinç, hatalıda yüz buruşturma, komboda dans). Dokunulursa tek bir el sallama (işlevsiz). **[MVP-lite]**: MVP'de yalnız ifade değişimi; dans ve boşta göz kırpma Sonra. |
 | Güçlendiriciler | Çekiç (8), Vinç (10), Boya Fırçası (22), Geri Al (13). Adet rozeti; 0 → "+" mini satın alma (§4'teki pencere; yalnız oyuncu dokununca açılır, bölüm duraklar). Kilitli → asma kilit + bölüm no; açılıştan önce kazanılmış adet varsa gri adet rozeti (§0.3, §4; ör. günlük ödül döngüsünün 2. gününden gelen Çekiç, Bölüm 8'e kadar); dokununca `common.unlockAt` balonu, kullanılamaz. Ön koşulu sağlanmayan yuva gri (§5.2). |
 | Harç maliyeti önizlemesi | **Şantiyeye yapışmış** harçlı blok (Y8) sürüklenirken hamle sayacının altında "−2" çipi (K-07, OBSTACLES Y8: yapışmış bloğun iptal olmayan her hamlesi 2). Sahadaki, henüz yapışmamış harçlı blokta çip yok (maliyet 1). Bırakma iptal öngörüsündeyse (§5.3) çip %40 soluklaşır (iptal = 0 hamle). |
@@ -450,12 +462,17 @@ Durum şeridi tahta grubuna aittir (tahtayla birlikte kayar); Tuna köşesi ve g
 **Çıkış onayı (R-13, K-43):**
 
 ```
-       │  BÖLÜMDEN ÇIK?                     │
-       │  m = 0 : Henüz hamle yapmadın; can gitmez.        │  güçlendiriciler iade edilir
-       │  m ≥ 1 : Çıkarsan 1 can gider.                     │  + seri sıfırlanır satırı (s > 0 ise)
-       │  Köprüde (m ≥ 1) ek satır: Köprüden düşersin.       │
-       │  [   KAL   ]   [   ÇIK   ]                         │  eşit çift düğme 440×152 (§0.3); "Kal" yeşil, "Çık" krem
+       │  BÖLÜMDEN ÇIK?                     │  exit.title (h1, upper)
+       │  m = 0 : Henüz hamle yapmadın; can gitmez.        │  exit.free
+       │          Oyun öncesi güçlendiricilerin geri verilir. │  exit.refund (yalnız oyun öncesi güçlendirici varsa)
+       │  m ≥ 1 : Çıkarsan 1 can gider.                     │  exit.cost
+       │          Galibiyet serin sıfırlanır.               │  exit.streak (yalnız s > 0)
+       │  Köprüde (m ≥ 1) ek satır: Köprüden düşersin.       │  exit.bridge
+       │  [   KAL   ]   [   ÇIK   ]                         │  exit.stay / exit.leave; eşit çift düğme 440×152 (§0.3); "Kal" yeşil, "Çık" krem
 ```
+
+Satırlar body, `ui.ink`; görünme koşulları ve sıra STORY §7.5 notundadır. `m = 0`'da seri ve can satırı yoktur (K-43
+madde 2: cezasız çıkış); bölüm içi güçlendiriciler `m = 0`'da da iade edilmez, satırda geçmez.
 
 Geri tuşu ve × = "Kal". Uygulamanın kapanması, arama ya da sistem tarafından öldürülmesi **kayıp değildir**: her hamle
 sonunda hamle günlüğü kaydedilir; bir sonraki açılışta bölüm kaldığı yerden, Duraklat penceresi açık olarak sürer
@@ -467,7 +484,8 @@ onayla ya da teklif reddiyle olur.
 Durumlar: **ilk yükleme** (tahta 400 ms içinde bloklar yukarıdan yerine düşer; etkileşim bu animasyon bitince açılır)
 · **kilitlenme** (K-30 Kamyon Yardımı; nedene göre 3 varyant, JUICE #21) · **hamle bitti** (Kaybetme penceresi) ·
 **duraklatma** (uygulama arka plana atılınca otomatik; durum kaydedilir) · **devam** (yarım kalan bölüm; yukarıda) ·
-**hata** (beklenmeyen durum: oyun kaydı alınır, "Bölümü baştan başlat" teklif edilir, can gitmez) · **şantiye kapalı**
+**hata** (beklenmeyen durum: oyun kaydı alınır; §0.3 "Hata" kalıbı `error.level` "Bir şeyler takıldı. Can gitmez." +
+`error.restart` "Bölümü baştan başlat" teklif edilir, can gitmez) · **şantiye kapalı**
 (aşağıda).
 
 **Şantiye kapalı — "Yapı tamam!" (GDD E-27, K-07 satır 5, D-035):** bütün dilimler tamam ama bir `clear` hedefi eksikse
@@ -488,7 +506,9 @@ bölüm sürer ve şantiyeye bırakma iptaldir (0 hamle; TECH `siteClosed`). Oyu
 
 ### 5.2 Güçlendirici kullanım akışı
 
-1. Yuvaya dokun → yuva yükselir, tahta üstünde ince açıklama şeridi ("Kırmak için bir bloğa dokun") + "Vazgeç" (×).
+1. Yuvaya dokun → yuva yükselir, tahta üstünde ince açıklama şeridi (`booster.hint.<hammer|crane|brush|trowel>`, ör.
+   "Kırmak istediğine dokun."; Altın Mala'da Usta Serisi şeridine dokununca `booster.hint.trowel`) + "Vazgeç"
+   (`common.cancel`, ×).
    Seçilebilir hedefler 1,2 s'de bir parlar, seçilemeyenler %50 soluklaşır.
 2. Hedef seçimi ve ön koşullar (GDD K-33, K-36…K-40; hedef kümeleri çekirdekten gelir, ör. `eligibleTrowelCells`):
 
@@ -562,7 +582,8 @@ takılmaması için dört katman:
 1. **İnşa cephesi (bütün zorluklarda, her an):** her şantiye sütununda doldurulabilir en alt boş plan hücresi (altındaki
    bütün hücreler doğru dolu ya da **boş** `.`; sütun tamamsa ya da altındaki bir `.` hücresinde yanlış nesne — moloz,
    yapışmış harçlı blok — duruyorsa o sütunda cephe yok, GDD K-34 kanca 1, E-43) **düz** 6 px kontur (`plan.frontStrokePx`, `color.board.buildFront`) ve
-   `plan.frontLighten` (+%15) açıklıkla çizilir; diğer boş hücreler normal kesik konturda kalır. Oyuncu her sütunda
+   `plan.frontLighten` (+%15) açıklıkla çizilir (açıklık yalnız hücre dolgusunda, sembol değişmez; çerçeveler
+   `plan_<c>_front` + `plan_front`, ART §4); diğer boş hücreler normal kesik konturda kalır. Oyuncu her sütunda
    "sıradaki kat"ı görür. Bu renk bilgisi değil (kural bilgisi); Zor bölümde ve `?` hücrelerinde de gösterilir.
    Altın Mala'nın seçilebilir hücreleri bu kümeyle aynıdır (tek görsel dil).
 2. **Gölgede neden (Kolay/Normal):** §5.4 "altta boş plan hücresi" satırı: rozet "↓" + eksik destek hücrelerinde sarı
@@ -607,17 +628,17 @@ takılmaması için dört katman:
 
 ```
 y    0 ┌────────────────────────────────────┐
-  160  │      ✨  KAZANDIN!  ✨               │  başlık display 120 px
+  160  │      ✨  KAZANDIN!  ✨               │  başlık display 120 px, `win.title` (upper)
   360  │  ┌──────────────────────────────┐  │
        │  │   tamamlanan yapı parçası    │  │  yapı 720×720, son kez parlar
        │  │   (kurdele kesilir)          │  │  Bay Kurdele makasla kurdeleyi keser
  1080  │  └──────────────────────────────┘  │
- 1140  │   Bonus İnşaat:  +7 hamle → ● 21    │  kalan hamleler tek tek altına dönüşür (örnek: 3/hamle)
- 1200  │   Altın Mala ×1 → ● 10              │  kalan mala başına (yalnız mala varsa)
- 1260  │   ★ +1      ● +61                   │  ödül satırı: kazanma 30 + 21 + 10 (Normal örneği)
+ 1140  │   Bonus İnşaat · kalan 7 hamle  ● 21 │  `win.bonus` + `common.coins`; kalan hamleler tek tek altına dönüşür (örnek: 3/hamle)
+ 1200  │   Altın Mala ×1   ● 10              │  `win.trowel` + `common.coins`; kalan mala başına (yalnız mala varsa)
+ 1260  │   ★ +1      ● +61                   │  ödül satırı: ikon + `common.plus`; kazanma 30 + 21 + 10 (Normal örneği)
  1420  │   ☺🐕 dans                           │
  1600  │   ┌────────────────────────────┐   │
-       │   │          DEVAM             │   │  birincil 640×176, merkez (540, 1688)
+       │   │          DEVAM             │   │  `common.continue`; birincil 640×176, merkez (540, 1688)
  1776  │   └────────────────────────────┘   │
  1920  └────────────────────────────────────┘
 ```
@@ -639,6 +660,17 @@ yıldız satırı, Bonus İnşaat satırı ve kalan Altın Mala satırı **yok**
 zorluktan); etkinlik satırları (Köprü tahtası, Lig puanı) ve Usta Sandığı ilerlemesi normal. **Boş / hata / kilitli:**
 yok.
 
+Kazanma ekranında "Tekrar" düğmesi **yoktur**: ekranın tek birincil eylemi "Devam"dır (§0.2); bir bölümü yeniden oynamak
+Usta Modu / Tekrar turunun işidir (§3, `replay.button`). Metinler STORY §7.6 (`win.*`, `common.*`).
+
+**Faz 2 dikey dilimi (TECH §14.1 #12; Ana ekran Faz 4'te):** kazanmada "Devam" ve kayıp Pencere 2'de "Ana sayfa" **asgari
+ana ekrana** gider: oyun ekranıyla aynı arka plan + üstte `app.title` (logo yer tutucusu, 0,6× ölçek) + Bölüm
+düğmesi `home.play` "BÖLÜM N" (§3 ölçüleri: 720×176, `layout.bottom.playButtonBottomPx`). Üst çubuk, kasaba, görev
+balonu, kenar ikonları ve alt navigasyon yoktur; yıldız uçuşu ve ödül sayaçları oynamaz (sayaçlar kayıtta güncellenir).
+Bölüm 5 kazanılınca düğme `home.moreSoon` "Yeni bölümler yolda" bandıyla Bölüm 1'i açar (1–5 döngüsü; §3 "İçerik sonu"
+kuralının dilimdeki karşılığı, pasif düğme yok). Bölüm 1–2 FTUE kuralı geçerlidir: Bölüm 1 kazanılınca "Devam" asgari
+ana ekrana gelir ve "BÖLÜM 2" düğmesi nabız atar (§2.2 adım 11).
+
 ---
 
 ## 7. Kaybetme
@@ -657,7 +689,8 @@ y  456 ┌───────────────────────�
        │  │                ≈ 81 TL        │  │  TR "≈ 81 TL" / EN "≈ $1.79"
  1208  │  └──────────────────────────────┘  │
  1232  │  ┌──────────────────────────────┐  │
-       │  │ ▶ Reklam izle · +5 hamle      │  │  920×152 krem; yalnız 1. teklifte; "bugün 1/3"
+       │  │ ▶ Reklam izle · +5 hamle      │  │  920×152 krem; yalnız 1. teklifte; `lose.ad`
+       │  │                  bugün 1/3    │  │  2. satır `lose.adToday` (PriceLabel 2. satırının yeri ve renk kuralı, §0.3)
  1384  │  └──────────────────────────────┘  │
  1408  │  ┌──────────────────────────────┐  │
        │  │ Hayır, teşekkürler            │  │  920×152 krem — metin düğme DEĞİL
@@ -679,15 +712,17 @@ y  456 ┌───────────────────────�
 - **Baskı yok:** "Az kaldı!" balonu, geri sayım, kalp/seri kaybı uyarısı, ödül havuzu, "kalan oyuncu" sayısı bu
   pencerede **gösterilmez**. Seri sıfırlanması yalnız Pencere 2'de bildirilir (entrepreneur-2, META §5).
 
-**Pencere 2 — can kaybı:** "Bir can gitti." + kalp kırılmaz, **söner** (gri, 400 ms) + galibiyet serisi sıfırlandı
-satırı (seri > 0 ise) + "Tekrar dene" (birincil) + "Ana sayfa" (metin). Sallanan Köprü'de: Tuna simitle kıyıya yüzer
+**Pencere 2 — can kaybı:** `lose.life` "Bir can gitti." + kalp kırılmaz, **söner** (gri, 400 ms) + `lose.streak`
+"Galibiyet serin sıfırlandı." satırı (seri > 0 ise) + `lose.retry` "Tekrar dene" (birincil) + `common.home` "Ana sayfa"
+(metin düğme; Faz 2'de asgari ana ekrana, §6). Sallanan Köprü'de: Tuna simitle kıyıya yüzer
 (STORY) + `bridge.fell`; kalan oyuncu sayısı ve havuz **gösterilmez**.
 
 Durumlar:
 - **Altın yetmez:** turuncu düğme "Altın al · eksik ● 350" olur → Mağaza **kayıp bağlamıyla** açılır: eksik altını
   karşılayan en küçük paket (çoğunlukla Avuç 1.000) çerçeveyle vurgulanır; pahalı paket önseçilmez, sayfa otomatik
   kaydırılmaz. Dönüşte pencere aynı teklifle açık kalır.
-- **Reklam tavanı / reklam yok:** reklam düğmesi gri, "Yarın tekrar" ya da "Şu an reklam yok"; gizlenmez.
+- **Reklam tavanı / reklam yok:** reklam düğmesi gri, 2. satır `ads.tomorrow` "Yarın tekrar" ya da `ads.none` "Şu an reklam
+  yok" (`lose.adToday` yerine); gizlenmez.
 - **Köprü:** pencere normal Pencere 1 ile aynıdır; yalnız nötr "Kalan: n hücre" bilgisi (`lose.left`). Kural satırı
   (eski `lose.bridge` dahil), "kalan oyuncu" sayacı ve baskı metni **yok** (R-15, BUSINESS §4.5-3/-4, P-4); kural
   yalnız giriş kural kartında (`bridge.rule_card.lose` / `.continue`) ve (i) panelinde yazar. **Köprü harcama tavanı**
@@ -1107,7 +1142,8 @@ adım 2'de öğretilir.
 
 ## 14. Erişilebilirlik özeti
 
-- Dokunma hedefi ≥ 128 px (≈ 44 pt @375); bloklarda 30 px dokunma payı (`touch.hitSlopPx`).
+- Dokunma hedefi her genişlikte ≥ 128 px (`touch.minTargetPx`; 44,4 pt @375, 46,2 pt @390, 42,7 dp @360 — kabul, §0.1);
+  sık dokunulan hedefler ≥ 144 px (≥ 48 dp @360); bloklarda 30 px dokunma payı (`touch.hitSlopPx`).
 - Renk asla tek taşıyıcı değil: blok sembolleri, geçit siluetleri, gölge çizgi deseni + rozet (✓ / ! / ↓), eksik
   destek için ayrı tarama yönü; öğretici ve ipucu metinlerinde renk adı yok (R-08).
 - Animasyonları azalt: JUICE "azaltılmış hareket" sütunu = **solma varyantları** (R-12); ekran sallama yok,

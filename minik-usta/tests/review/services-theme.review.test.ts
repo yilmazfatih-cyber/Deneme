@@ -687,11 +687,9 @@ describe('i18n Phase 2 keys and texts (TECH 11.5, 14.1)', () => {
     expect(missing).toEqual([]);
   });
 
-  // DOC-AMBIGUITY: UX §6/§7/§1 name the texts "KAZANDIN!", "Devam" and "Ana sayfa" but STORY §6/§7 have no key row and
-  // no EN text for them, and D-017 / TECH §11.5 require every tr.json / en.json text to be copied verbatim from STORY
-  // (tests/services/i18n.test.ts). No Phase 2 window is built yet (TECH §14.1 #12), so no code holds these strings.
-  // Re-enable once design-lead adds the rows to STORY §7.5 (e.g. `win.title`, `common.continue`, `common.home`).
-  it.skip('CLAUDE.md "kodda sabit metin yok": Phase 2 windows (UX 6 win "KAZANDIN!" / "Devam", UX 7 "Ana sayfa", UX 1 resume "Devam") have i18n texts', () => {
+  // UX §6 / §7 / §1 name the texts "KAZANDIN!", "Devam" and "Ana sayfa"; STORY §7.6 (Phase 2A gap 1, 2026-10-06) gives
+  // them the rows `win.title` (drawn with upper()), `common.continue` and `common.home`, copied verbatim (D-017).
+  it('CLAUDE.md "kodda sabit metin yok": Phase 2 windows (UX 6 win "KAZANDIN!" / "Devam", UX 7 "Ana sayfa", UX 1 resume "Devam") have i18n texts', () => {
     const norm = (s: string): string =>
       s
         .toLocaleLowerCase('tr-TR')
@@ -700,6 +698,15 @@ describe('i18n Phase 2 keys and texts (TECH 11.5, 14.1)', () => {
     const trTexts = new Set([...TR_KEYS].map((k) => norm(textOf('tr', k) ?? '')));
     const missing = ['Kazandın!', 'Devam', 'Ana sayfa'].filter((t) => !trTexts.has(norm(t)));
     expect(missing).toEqual([]);
+    // STORY §7.6: one key per text, shared by every screen ("ekran başına kopya anahtar açılmaz")
+    const tr = createTranslator('tr');
+    expect(tr.upper(tr.t('win.title'))).toBe('KAZANDIN!');
+    expect([tr.t('common.continue'), tr.t('common.home')]).toEqual(['Devam', 'Ana sayfa']);
+    expect([EN_KEYS.has('win.title'), EN_KEYS.has('common.continue'), EN_KEYS.has('common.home')]).toEqual([
+      true,
+      true,
+      true,
+    ]);
   });
 
   it('STORY 0-10 "Oyun adı app.title anahtarından gelir": no Phaser / canvas text literal in src', () => {
@@ -721,11 +728,18 @@ describe('i18n Phase 2 keys and texts (TECH 11.5, 14.1)', () => {
     expect(offenders).toEqual([]);
   });
 
-  // DOC-AMBIGUITY: STORY §0-10 says the game name comes from `app.title`, but neither STORY nor NAMING gives the key a
-  // TR/EN value before the store-name decision (D-068); D-017 / TECH §11.5 forbid i18n texts that are not copied from
-  // STORY. BootScene draws the title only when the key exists. Re-enable once STORY has the `app.title` row.
-  it.skip('STORY 0-10 app.title exists in TR and EN', () => {
+  // STORY §0-10 "Oyun adı `app.title` anahtarından gelir"; STORY §7.6 gives the working value "Lift & Land" in both
+  // languages (D-068 candidate 1, NAMING §5), never upper-cased (ART §8 exception: TR upper() would write "LİFT").
+  it('STORY 0-10 app.title exists in TR and EN', () => {
     expect(TR_KEYS.has('app.title') && EN_KEYS.has('app.title')).toBe(true);
+    expect(createTranslator('tr').t('app.title')).toBe(createTranslator('en').t('app.title'));
+    // BootScene draws t('app.title') and never upper-cases it (comments stripped before the check)
+    const bootScene = readFileSync(join(ROOT, 'src/scenes/BootScene.ts'), 'utf8').replace(
+      /\/\*[\s\S]*?\*\/|\/\/.*$/gm,
+      '',
+    );
+    expect(bootScene).toMatch(/\bt\(\s*['"]app\.title['"]\s*\)/);
+    expect(bootScene).not.toMatch(/upper|toLocaleUpperCase|toUpperCase/);
   });
 
   it('STORY 7.3 offer texts with config numbers (D-017): "+5 hamle", "Teklif 3/3 · son teklif", EN "Offer 2/3"', () => {
@@ -1680,15 +1694,14 @@ describe('round 2: i18n text rules (ART 8, STORY 0, D-012)', () => {
     expect(createTranslator('en').t('story.prologue.p3.tuna')).toBe('Tuna & Co. is open again!');
   });
 
-  // DOC-AMBIGUITY: UX §5.1 (status strip) shows the K-26 truck queue chip with the text "Kamyonda: 3" and JUICE #20 / #88
-  // (Phase 2 P0, TECH §14.1) animate it, but STORY §6 / §7 have no key row for it and D-017 / TECH §11.5 allow only STORY
-  // texts in tr.json / en.json. No Phase 2 scene is built yet, so no code holds the string. Re-enable once design-lead
-  // adds the row (e.g. `truck.queue` "Kamyonda: {n}" / "On the truck: {n}").
-  it.skip('K-26 UX 5.1 the "Kamyonda: N" queue chip has an i18n text in TR and EN', () => {
+  // UX §5.1 (status strip) shows the K-26 truck queue chip "Kamyonda: 3"; JUICE #20 / #88 animate it. STORY §7.6
+  // `truck.queue` "Kamyonda: {n}" / "On the truck: {n}", `{n}` = queued BLOCKS (GDD K-26, product-lead PL-F2-5).
+  it('K-26 UX 5.1 the "Kamyonda: N" queue chip has an i18n text in TR and EN', () => {
     const tr = createTranslator('tr');
     const hits = [...TR_KEYS].filter((k) => /^Kamyonda: 3$/.test(tr.tDynamic(k, { n: 3 })));
     expect(hits).toHaveLength(1);
     expect(EN_KEYS.has(hits[0] ?? '')).toBe(true);
+    expect(createTranslator('en').tDynamic(hits[0] ?? '', { n: 3 })).toBe('On the truck: 3');
   });
 });
 
@@ -1770,26 +1783,43 @@ describe('round 2: layout on 390×844 and 360×800 (UX 0.1, 5.1; TECH 2.2)', () 
     }
   });
 
-  // DOC-AMBIGUITY: UX §0.1 states the rule at one width only — "en küçük dokunma hedefi 375 pt'de 44 pt = 128 px. Token:
-  // touch.minTargetPx = 128"; UX §14 repeats "Dokunma hedefi ≥ 128 px (≈ 44 pt @375)" and UX §0.3 sizes every pad from
-  // that fixed 128 px token. The design width is always
-  // 1080 px = the full screen width (UX §0.1 "Telefona eşleme"), so 128 px is 44.4 pt at 375, 46.2 pt at 390 (passes)
-  // but 42.7 pt/dp at 360 (360×800, a TECH §14.1 profile, FIT and EXPAND). The docs do not say whether the 44 pt minimum
-  // must also hold below 375 pt (then the token would have to be ≥ 132 px, or depend on the viewport) or whether 128 px
-  // is the rule as written. The code follows the token (tests/theme/layout.test.ts "UX 0.1 44 pt rule as written").
-  // Re-enable once design-lead decides: raise touch.minTargetPx to 132 (and the UX §0.3 pad examples), or state in
-  // UX §0.1 that 128 px is the minimum at every width (≈ 42.7 pt at 360).
-  it.skip('UX 0.1 "44 pt kuralı": the smallest touch target (touch.minTargetPx) is ≥ 44 pt on both phone profiles 390×844 and 360×800, FIT and EXPAND', () => {
-    // UX §0.1: "44 pt kuralı: en küçük dokunma hedefi 375 pt'de 44 pt = 128 px. Token: touch.minTargetPx = 128";
-    // TECH §14.1 makes 390×844 and 360×800 the phone profiles.
-    const small: string[] = [];
+  // UX §0.1 decision (b) (design-lead, 2026-10-06; tokens `touch._doc`): "en küçük dokunma hedefi her ekran genişliğinde
+  // 128 px … token touch.minTargetPx = 128, genişliğe göre değişmez. Karşılığı 375 pt'de 44,4 pt, 390 pt'de 46,2 pt,
+  // 360 dp'de 42,7 dp … bilerek kabul edilir" and "sık dokunulan hedefler 144 px tabanındadır (360 dp'de ≥ 48 dp …).
+  // Kapalı liste: … pencere seçenekleri (920×152), güçlendirici yuvaları (172), blok hücresi + pay (180), Bölüm düğmesi
+  // (176), alt navigasyon sekmeleri (176) …". TECH §10.1: `layout.touch` reads the tokens and does not depend on H.
+  it('UX 0.1 44 pt rule decision (b): touch.minTargetPx stays 128 px on 390×844 and 360×800 in FIT and EXPAND (≥ 44 pt on the iOS widths, 42.7 dp accepted at 360) and the closed-list frequent targets are ≥ 144 px', () => {
+    const frequentPx = (1080 / 360) * 48; // 48 dp at 360 dp
+    expect(frequentPx).toBe(144);
+    const seen: string[] = [];
+    const short: string[] = [];
     for (const p of PHONES) {
       for (const mode of ['fit', 'expand'] as const) {
-        const pt = TOKENS.touch.minTargetPx * fitViewport(mode, p.viewport, TOKENS).scale;
-        if (pt < 44) small.push(`${p.label} ${mode}: ${pt.toFixed(1)} pt`);
+        const l = createLayout(TOKENS, designHeight(mode, p.viewport, TOKENS));
+        const units = Math.round(l.touch.minTargetPx * fitViewport(mode, p.viewport, TOKENS).scale * 10) / 10;
+        seen.push(`${p.label} ${mode}: ${l.touch.minTargetPx} px = ${units}`);
+        const frequent: [string, { w: number; h: number }][] = [
+          ['booster slot', l.bottom.boosters[0] ?? { w: 0, h: 0 }],
+          ['Bölüm button', l.bottom.playButton],
+          ['nav tab', l.bottom.navTabs[0] ?? { w: 0, h: 0 }],
+          ['popup option', l.popup.options(1)[0] ?? { w: 0, h: 0 }],
+          ['block cell + pad', l.touch.blockHit(l.grid.cellRect(0, 0))],
+        ];
+        for (const [name, r] of frequent) {
+          if (Math.min(r.w, r.h) < frequentPx)
+            short.push(`${p.label} ${mode} ${name}: ${Math.min(r.w, r.h)} px`);
+        }
       }
     }
-    expect(small).toEqual([]);
+    expect(seen).toEqual([
+      '390×844 fit: 128 px = 46.2',
+      '390×844 expand: 128 px = 46.2',
+      '360×800 fit: 128 px = 42.7',
+      '360×800 expand: 128 px = 42.7',
+    ]);
+    expect(short).toEqual([]);
+    expect(TOKENS.touch.minTargetPx).toBe(128);
+    expect(TOKENS.layout.grid.cellPx + 2 * TOKENS.touch.hitSlopPx).toBe(180);
   });
 });
 
@@ -2667,13 +2697,10 @@ describe('round 3: i18n (STORY 0, 7.5; NAMING 5.2; TECH 11.5; UX 1, 5.1, 7)', ()
     }
   });
 
-  // DOC-AMBIGUITY: UX §5.1 exit confirm "m ≥ 1 : Çıkarsan 1 can gider. … + seri sıfırlanır satırı (s > 0 ise)" and UX §7
-  // Pencere 1 ad button '"bugün 1/3"' need texts that have no STORY §7.3 / §7.5 row: `lose.streak` is the past-tense
-  // Pencere 2 line ("Galibiyet serin sıfırlandı.") and `lives.ad` belongs to the Can window. D-017 / TECH §11.5 allow only
-  // STORY texts in tr.json / en.json, and both windows are TECH §14.1 #12 (Phase 2), so no code can hold these strings
-  // yet. Re-enable once design-lead adds the rows (e.g. `exit.streak` "Galibiyet serin sıfırlanır." / "Your win streak
-  // resets.", `lose.adToday` "bugün {n}/{max}" / "today {n}/{max}").
-  it.skip('UX 5.1 / UX 7 the exit-confirm streak line (s > 0) and the out-of-moves ad daily counter ("bugün 1/3") have i18n texts in TR and EN', () => {
+  // UX §5.1 exit confirm "m ≥ 1 : Çıkarsan 1 can gider. … + seri sıfırlanır satırı (s > 0 ise)" and UX §7 Pencere 1 ad
+  // button "bugün 1/3": STORY §7.5 `exit.streak` (future tense; `lose.streak` is the past-tense Pencere 2 line) and
+  // STORY §7.3 `lose.adToday` (`{n}` = today's ad number = watched + 1, `{max}` = rewardedAdOffer.perDay).
+  it('UX 5.1 / UX 7 the exit-confirm streak line (s > 0) and the out-of-moves ad daily counter ("bugün 1/3") have i18n texts in TR and EN', () => {
     const tr = createTranslator('tr');
     const all = [...TR_KEYS].map((k) => [k, tr.tDynamic(k, { n: 1, max: 3 })] as const);
     const streak = all.filter(([, t]) => /seri\S* sıfırlanır/u.test(t));

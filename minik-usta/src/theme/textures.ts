@@ -222,7 +222,7 @@ export function renderPage(ctx: DrawContext, page: AtlasPage): void {
 // ---------------------------------------------------------------------------------------------------------------
 // Frame names (the scene looks frames up by these names through the TextureIndex).
 
-/** Names follow TECH §10.2–10.3 and ASSET_LIST §3 (`board_*`, `plan_*`); `board_blueprint_deep` has no ASSET row yet. */
+/** Names follow TECH §10.2–10.3 and ASSET_LIST §3 (`board_*`, `plan_*`, `plan_<c>_front`, `board_blueprint_deep`). */
 export const FRAME = Object.freeze({
   hidden: 'plan_hidden',
   front: 'plan_front',

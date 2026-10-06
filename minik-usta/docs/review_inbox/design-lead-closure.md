@@ -240,3 +240,64 @@ Bu turdan doğan bağımlılıklar:
 - design-lead-K2 UX §9 Sallanan Köprü havuz sayısı (product-lead son tur 1 #7) → ZATEN YAPILMIŞ (UX §9 tel çerçevesi "Ödül havuzu: ● 6.500" = `config/events.json → wobblyBridge.prizePoolCoins` 6500; design dosyalarında "10.000" ya da 10.000'e göre türetilmiş pay örneği kalmadı (tarandı); değişiklik yok)
 - design-lead-K3 UX §13.1 `startOn` ve §13.2 Bölüm 35 satırı (product-lead son tur 1 #8) → KAPANDI (§13.1 adım alanlarında "isteğe bağlı `startOn` (GDD §14.1 madde 5)" ve "Adım, önceki adım bitince (varsa `startOn` olayıyla) başlar" zaten vardı, "ek başlama alanı yok" cümlesi kalmamıştı; §13.2 Bölüm 35 vurgusu "harçlı blok" → `piece:k<p>_<i>` (ilk teslim edilen harçlı blok; bölüm başında sahada yok, 2. ve 3. partide), adım bu blok teslim edilince başlar (`startOn: { event: deliveryDone, flag: mortar }`); tamam koşulu "— (2,5 s)" LEVELS §3 35·1 ile aynı)
 - design-lead-R: REVIEW_LOG "Son tutarlılık turları" / "Açık kalanlar" ve kapanış dosyalarının "Son tutarlılık turu 1/2/3", "Açık maddeler (F)", "Senkron geçişi" bölümleri tarandı; design-lead'e yazılmış başka açık madde yok (tur 1 "UX Köprü havuzu 6.500" = K2, "Açık kalanlar" design-lead satırı = K1, product-lead son tur 1 #7/#8 = K2/K3)
+
+## Faz 2
+
+Faz 2A boşlukları 1–3 (2026-10-06). Yalnız design-lead dosyaları düzenlendi: `docs/STORY.md`, `docs/UX_FLOWS.md`,
+`docs/JUICE.md`, `docs/ART_DIRECTION.md`, `docs/ASSET_LIST.md`, `src/theme/tokens.json` (yalnız `touch._doc`; geçerli
+JSON, Prettier'dan geçti, değer değişmedi). Boşluk 4 (TECH) code-lead'in, 5 (GDD K-08/K-26) product-lead'indir.
+
+- DL-F2-1 Faz 2 pencerelerinin STORY anahtar satırları → KAPANDI (TR + EN, §0 ton kuralları: renk adı yok, yer
+  tutucuya ek yok, alt küme dışı glif yok, EN'de he/she yok). §7.3 `lose.adToday` "bugün {n}/{max}" / "today
+  {n}/{max}" (`{max}` = `outOfMoves.rewardedAdOffer.perDay`, `{n}` = bugünkü sıra = izlenen + 1; `lives.ad` aynı anlam).
+  §7.5 `exit.streak` "Galibiyet serin sıfırlanır." / "Your win streak resets." (yalnız `m ≥ 1` ve `s > 0`),
+  `exit.refund` (yalnız `m = 0` ve oyun öncesi güçlendirici varken; K-43 madde 2), `resume.strip` "Bölüm {n} ·
+  hamlelerin kayıtlı" (JUICE #87 şeridi artık pencere başlığı `resume.title`'ı tekrarlamaz) + görünme koşulları ve
+  satır sırası notu. Yeni §7.6 (32 satır): `app.title` "Lift & Land" (iki dilde; D-068 aday sırası 1 + "tek global EN
+  marka", NAMING §5; marka araması bitene kadar yer tutucu, büyük harfe çevrilmez — TR yerelinde "LİFT" olurdu; ART §8
+  istisnası, UX §1, ASSET `logo_wordmark`), `app.version`, `common.continue` "Devam", `common.home` "Ana sayfa",
+  `common.retry`, `common.skip` "Geç", `common.cancel` "Vazgeç", `common.on` / `.off`, sayı biçimleri `common.count`
+  "{n}/{max}", `common.plus` "+{n}", `common.times` "×{n}", `common.coins` "{coin}{n}", `hud.moves`, `hud.streak`
+  "Usta Serisi" / "Builder Streak", `truck.queue` "Kamyonda: {n}" / "On the truck: {n}" (product-lead PL-F2-5 ile aynı;
+  N = kuyruktaki blok, 0'da gizli), `booster.hint.trowel` (+ `.hammer` / `.crane` / `.brush` mekanikleriyle), `pause.title`
+  "Mola", `pause.exit`, `settings.sound` / `.music` / `.haptics`, `win.title` "Kazandın!" / "You won!", `win.bonus`,
+  `win.trowel`, `error.boot` / `.level` / `.restart`, `home.play` "Bölüm {n}", `story.sign` "{company}" (giriş Panel 3
+  tabelası). Win "Tekrar" düğmesi için anahtar açılmadı: kazanma ekranının tek birincil eylemi "Devam" (UX §6 kuralı
+  yazıldı); kayıpta tekrar `lose.retry`. UX §1, §2, §5.1 (Duraklat, hedefler, hamle etiketi, Usta Serisi, kamyon çipi,
+  çıkış onayı tel çerçevesi, hata), §5.2 (açıklama şeridi), §6, §7 ve JUICE #20, #55, #87 anahtarlara bağlandı. UX §6'ya
+  "Faz 2 dikey dilimi" paragrafı: "Devam" / "Ana sayfa" asgari ana ekrana (arka plan + `app.title` + `home.play`; Bölüm 5
+  sonrası 1–5 döngüsü, `home.moreSoon`). Kontrol: STORY tablo ayrıştırıcısı (tests/services/i18n.test.ts kopyası) 37
+  yeni anahtarı okuyor; yaprak/düğüm çakışması yok; TR/EN yer tutucuları eşit; glifler ART §8 alt kümesinde; atlanmış
+  DOC-AMBIGUITY testlerinin koşulları (kazanma metinleri, `app.title`, tek "Kamyonda: 3", tek "seri… sıfırlanır", tek
+  "bugün 1/3") yeni satırlarla sağlanıyor.
+- DL-F2-2 ART §4 / ASSET §3 `plan_front` ifadesi ve `board_blueprint_deep` satırı → KAPANDI. ART §4 inşa cephesi iki
+  katman: (1) `plan_<c>_front` = plan hücresi tarifi, yalnız **dolgu** +%15 beyaza karışır (dolgu × 0,85 + beyaz ×
+  0,15; renk körü modunda %90 bileşikten), kesik kontur açılmış dolgudan × 0,65, **sembol ve mürekkep değişmez**
+  (ölçülen cephe kontrastları bu modelin; perde sembole de çekilseydi B 5,8 → 3,7); (2) `plan_front` = yalnız düz 6 px
+  kontur + dış parlama, dolgu / açıklık / sembol yok; cephedeki `?` hücresi açıklık almaz, yalnız kontur. "Plan dışı"
+  satırı `board_blueprint_deep` dokusuna ve `y ≥ h + e` tanımına (GDD K-03) bağlandı. ASSET §3: `plan_cell` →
+  `plan_<W..P>` (8; 120×120 çerçeve, 104×104 kutu), yeni `plan_<W..P>_front` (8) satırı, `plan_front` "yalnız katman"
+  olarak yeniden yazıldı, yeni `board_blueprint_deep` satırı (120×120, düz #173D70, ızgara/benek/köşebent yok). UX §5.5
+  ve JUICE #83 aynı ifadeye eşitlendi. Kod (`drawPlanCell` `front`, `drawBuildFront`, `drawBlueprintDeep`) zaten bu
+  modeldedir; değişiklik gerekmez.
+- DL-F2-3 UX §0.1 / §14 "44 pt kuralı" 360 px genişlikte → KAPANDI, seçenek **(b)**: `touch.minTargetPx = 128` px **her
+  genişlikte** en küçük hedeftir (375 pt'de 44,4 pt, 390'da 46,2 pt, 360 dp'de 42,7 dp — bilerek kabul). Gerekçe UX
+  §0.1'de: 44 pt iOS sayısıdır ve iOS profillerinde sağlanır; 360 dp Android/web profilidir ve oradaki öneri 48 dp =
+  144 px'tir; 132 px yalnız 1,3 dp kazandırır, 48 dp'ye yine yetmez, Usta Serisi şeridinin payını tahta kenarına
+  taşırırdı. Telafi kuralı: **sık dokunulan hedefler ≥ 144 px** (kapalı liste UX §0.1: düğmeler, pencere seçenekleri,
+  güçlendirici yuvaları, blok + pay, Bölüm düğmesi, alt nav, sayısal tuşlar); mevcut ölçülerin hepsi zaten ≥ 144, tek
+  değişiklik UX §2.3 sayısal tuş 160×128 → 160×144 [Mağaza]. §0.2 birincil eylem yüksekliği 128 → 144 (mevcut birincil
+  düğmeler 152–176, değişiklik yok). §0.3 pay örnekleri (112 → 8, 96 → 16, 88 → 20) değişmedi. `tokens.json` değer
+  değişmedi; `touch._doc` kararı yazıyor.
+
+Bu turdan doğan bağımlılıklar:
+- code-lead: (1) §7.3 / §7.5 / §7.6'daki 37 yeni anahtarı `tr.json` / `en.json`'a harfi harfine kopyalasın (D-017);
+  atlanmış dört DOC-AMBIGUITY testi (kazanma metinleri, `app.title`, `truck.queue`, `exit.streak` + `lose.adToday`)
+  açılsın. (2) "UX 0.1 44 pt kuralı" atlanmış testi karar (b)'ye göre yeniden yazılsın: `touch.minTargetPx` 128'de kalır
+  ve her profilde aynı px; 360×800'de 42,7 dp beklenen değer; yeni değişmez: UX §0.1 kapalı listedeki hedeflerin kısa
+  kenarı ≥ 144 px. `tests/theme/layout.test.ts` adındaki "DOC-AMBIGUITY" notu kaldırılabilir. (3) `src/theme/textures.ts`
+  yorumu "`board_blueprint_deep` has no ASSET row yet" artık geçersiz (ASSET §3 satırı var). (4) BootScene / logo
+  `app.title`'ı `upper()` ile çizmesin (ART §8 istisnası). (5) TECH §14.1 #12 "UI asgari" kalemine UX §6 "Faz 2 dikey
+  dilimi" asgari ana ekranı (`home.play`, Bölüm 5 sonrası 1–5 döngüsü) eklensin; süre tahmini code-lead'in.
+- entrepreneur: `app.title` çalışma değeri "Lift & Land" (bilgi; NAMING §6 marka araması sonucu farklı aday çıkarsa
+  yalnız `app.title` ve `logo_wordmark` değişir).

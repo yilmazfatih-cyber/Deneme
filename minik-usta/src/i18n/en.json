@@ -3,7 +3,17 @@
     "none": "No ad right now",
     "tomorrow": "Back tomorrow"
   },
+  "app": {
+    "title": "Lift & Land",
+    "version": "Version {version}"
+  },
   "booster": {
+    "hint": {
+      "brush": "Tap the block you want to paint.",
+      "crane": "Tap the block you want to move.",
+      "hammer": "Tap what you want to smash.",
+      "trowel": "Tap a glowing cell."
+    },
     "noUndo": "Nothing to undo"
   },
   "bridge": {
@@ -21,8 +31,19 @@
     "done": "Build complete!"
   },
   "common": {
+    "cancel": "Cancel",
+    "coins": "{coin}{n}",
+    "continue": "Continue",
+    "count": "{n}/{max}",
+    "home": "Home",
     "minutes": "{n} min",
+    "off": "Off",
     "ok": "OK",
+    "on": "On",
+    "plus": "+{n}",
+    "retry": "Try again",
+    "skip": "Skip",
+    "times": "×{n}",
     "unlockAt": "Unlocks at level {n}"
   },
   "difficulty": {
@@ -31,13 +52,28 @@
     "normal": "Normal",
     "superhard": "Super Hard"
   },
+  "error": {
+    "boot": "Something got stuck. Shall we try again?",
+    "level": "Something got stuck. No life is lost.",
+    "restart": "Restart the level"
+  },
   "exit": {
     "bridge": "You'll fall off the bridge.",
     "cost": "Leaving costs 1 life.",
     "free": "No moves made yet, so no life is lost.",
     "leave": "Leave",
+    "refund": "Your pre-game boosters come back to you.",
     "stay": "Stay",
+    "streak": "Your win streak resets.",
     "title": "Leave the level?"
+  },
+  "home": {
+    "moreSoon": "New levels on the way",
+    "play": "Level {n}"
+  },
+  "hud": {
+    "moves": "Moves",
+    "streak": "Builder Streak"
   },
   "league": {
     "bonus": {
@@ -70,6 +106,7 @@
   },
   "lose": {
     "ad": "Watch an ad · +{n} moves",
+    "adToday": "today {n}/{max}",
     "bridgeCap": "This round's coin limit doesn't cover this offer.",
     "buygold": "Get coins · {coin}{n} short",
     "decline": "No thanks",
@@ -96,6 +133,10 @@
       "desc": "Blocks sent through a gap don't fall; they stay put."
     }
   },
+  "pause": {
+    "exit": "Leave level",
+    "title": "Paused"
+  },
   "replay": {
     "button": "Replay · Level {n}",
     "card": {
@@ -104,12 +145,18 @@
     }
   },
   "resume": {
+    "strip": "Level {n} · your moves are saved",
     "title": "Pick up where you left off",
     "void": {
       "body": "Level {n} will start from the beginning. Everything you spent is back.",
       "bridge": "Your place on the bridge is safe.",
       "title": "The game was updated"
     }
+  },
+  "settings": {
+    "haptics": "Vibration",
+    "music": "Music",
+    "sound": "Sound"
   },
   "story": {
     "prologue": {
@@ -123,10 +170,14 @@
         "kepce": "Woof!",
         "tuna": "{company} is open again!"
       }
-    }
+    },
+    "sign": "{company}"
   },
   "town": {
     "name": "Hue Hill"
+  },
+  "truck": {
+    "queue": "On the truck: {n}"
   },
   "tut": {
     "ctx": {
@@ -173,5 +224,10 @@
       "segments": "Finish this floor and the site moves on.",
       "truck": "The truck brought new materials!"
     }
+  },
+  "win": {
+    "bonus": "Bonus Build · moves left: {n}",
+    "title": "You won!",
+    "trowel": "Golden Trowel ×{n}"
   }
 }

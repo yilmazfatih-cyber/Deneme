@@ -10,7 +10,8 @@
  * - `layout.board.*` y values are for H = 1920 and shift by `(H − 1920) × board.expandShare` (crane area, board,
  *   status strip, "Yapı tamam!" ribbon; ribbon x/w/h/tilt/notch do not depend on H);
  * - `layout.popup.*` anchored to the bottom: panel bottom `y = H − panelBottomPx`, options stacked bottom → top,
- *   never vertically centred.
+ *   never vertically centred;
+ * - `touch.*` tap target sizes, independent of H and of the screen width (UX §0.1 decision (b): 128 px everywhere).
  * In FIT, H = 1920 and every formula is the identity, so the same code serves both modes.
  *
  * TECH §10.1 names this `Layout.recompute(H)`: here a layout is an immutable value, so a resize (Phaser
@@ -179,6 +180,22 @@ export interface Layout {
      */
     options(n: number): readonly Rect[];
   };
+  /**
+   * Touch targets (UX §0.1 decision (b) of 2026-10-06, UX §0.3; TECH §10.1), read from `tokens.touch`. They depend
+   * neither on H nor on the screen width: the design width is always the full screen width, so 128 px is 44.4 pt at
+   * 375 pt, 46.2 pt at 390 pt and 42.7 dp at 360 dp (accepted). The frequent targets of the UX §0.1 closed list are
+   * sized ≥ 144 px (48 dp at 360) by their own tokens; that invariant is a test, not a token.
+   */
+  readonly touch: {
+    /** `touch.minTargetPx`: the smallest side of any tap target (visual + pad). */
+    readonly minTargetPx: number;
+    /** `touch.hitSlopPx`: invisible pad around a block cell on every side (120 → 180). */
+    readonly hitSlopPx: number;
+    /** UX §0.3 "Görsel + pay": `hitArea(r, minTargetPx)`. */
+    hit(r: Rect): Rect;
+    /** A block cell (or piece box) grown by `hitSlopPx` on every side (UX §0.1, TECH §10.3). */
+    blockHit(r: Rect): Rect;
+  };
 }
 
 /** Builds the layout for design height `H` (FIT: 1920; EXPAND: 1920…2400). */
@@ -189,6 +206,7 @@ export function createLayout(tokens: Tokens, H: number): Layout {
   }
   const W = tokens.meta.designWidth;
   const { grid: g, top: t, board: b, bottom: bt, popup: p } = tokens.layout;
+  const touch = tokens.touch;
   const base = tokens.meta.designHeight;
   const boardShift = (H - base) * b.expandShare;
   const by = (y: number): number => y + boardShift;
@@ -322,6 +340,17 @@ export function createLayout(tokens: Tokens, H: number): Layout {
           h: p.optionH,
         }));
       },
+    },
+    touch: {
+      minTargetPx: touch.minTargetPx,
+      hitSlopPx: touch.hitSlopPx,
+      hit: (r) => hitArea(r, touch.minTargetPx),
+      blockHit: (r) => ({
+        x: r.x - touch.hitSlopPx,
+        y: r.y - touch.hitSlopPx,
+        w: r.w + 2 * touch.hitSlopPx,
+        h: r.h + 2 * touch.hitSlopPx,
+      }),
     },
   };
   return deepFreeze(layout);

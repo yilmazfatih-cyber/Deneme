@@ -337,3 +337,22 @@ LEVELS değişmedi.
 
 Özet (Faz 2): **4 madde → 2 DOĞRULANDI · 1 AÇIK (Faz 3, Bölüm 5 yeniden tasarımı) · 1 BİLGİ.** Bölüm JSON'u ve LEVELS
 değişmedi.
+
+- PL-F2-5 Faz 2A boşluk 5 — GDD K-08 eşitlik sırası ve K-26 kamyon çipi anlamı → KAPANDI (yalnız ifade; kural, bölüm
+  verisi ve `rulesVersion` değişmedi). **K-08:** eşitlik sırası (1) BFS adımı az, (2) serbest kip ray kipinden önce,
+  (3) çapa y'si küçük, (4) çapa x'i küçük, (5) yalnız (1)–(4) de eşitse `wall.gaps` dizini küçük olan; geçit dizini
+  en sondadır ve geçitler örtüşmediği için (K-04, W5 `gap_overlap`) geçerli veride hiç belirleyici olmaz. Yanlış yönlendiren
+  "(TECH_DESIGN §4.4 düğüm sırası)" atfı kaldırıldı: TECH §4.4 "küçük düğüm numarası" (`mode·80 + iy·8 + ix`) geçit dizinini
+  y'nin üstüne koyar; çekirdek (`tieRank`, `src/core/movement.ts`) zaten GDD sırasını uygular. "Örnek (eşitlik)" eklendi
+  (iki geçitte (6,1) > (6,3) `gaps` sırasından bağımsız; serbest (5,4) > ray (6,3)) — `tests/review/movement.review.test.ts`
+  "K-08 tie-break 3 also orders RAIL nodes …" ve "K-08 tie-break 2 comes before 3 …" ile aynı kurulum. **K-26:** çip tek
+  sayı `N` = kuyruktaki **blok** sayısı (hücre/parti değil; adım 8 partisi, K-17 adım 3 ile kuyruğa giren blok ve K-30
+  `B1`'leri dahil); hamle sonunda görünen `N` bütün adımlardan sonraki kuyruk uzunluğu; `N = 0` gizli, `N ≥ 1` görünür.
+  Metin GDD'den çıkarıldı ("Kamyonda: N blok" → STORY `truck.queue` "Kamyonda: {n}" / "On the truck: {n}", design-lead,
+  boşluk 1; UX §5.1 ve JUICE #20/#88 yazımıyla aynı); K-26 örneği `N = 2 → 1 → 0`, E-03 satırı aynı anlamla. Çekirdek
+  `deliveryQueued{queued}` (adım 9) bu anlamla uyumlu. Bağımlılıklar: code-lead TECH §4.4 eşitlik maddesini "FREE önce,
+  küçük y, küçük x, son eşitlikte geçit dizini (`tieRank`)" yazsın; Faz 3'te K-30 D2 adım 12'de kuyruğa `B1` eklediğinde
+  çip de güncellensin (bugün `deliveryQueued` yalnız adım 9'da). BRIEF K-26 "Kamyonda: 3 blok" (orkestratör) anlamca aynı;
+  metin kaynağı STORY olduğundan işlem gerekmez.
+
+Özet (Faz 2, güncel): **5 madde → 2 DOĞRULANDI · 1 KAPANDI (PL-F2-5) · 1 AÇIK (Faz 3, Bölüm 5 yeniden tasarımı) · 1 BİLGİ.**

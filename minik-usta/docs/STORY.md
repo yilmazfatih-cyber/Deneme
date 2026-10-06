@@ -1,6 +1,7 @@
 # Hikaye ve karakterler — Minik Usta
 
-Sahip: design-lead · Durum: Faz 1 revizyonu (2026-10-04; R-07, R-08, R-09, R-14, R-15, R-19, R-24 işlendi) · Kaynak:
+Sahip: design-lead · Durum: Faz 1 revizyonu (2026-10-04; R-07, R-08, R-09, R-14, R-15, R-19, R-24 işlendi); Faz 2
+metin satırları (2026-10-06; §7.3 `lose.adToday`, §7.5 `exit.*` / `resume.strip`, yeni §7.6) · Kaynak:
 `docs/BRIEF.md` §9 · Görünüm: `docs/ART_DIRECTION.md` §11 · Öğretici yerleşimi: `docs/UX_FLOWS.md` §13
 
 **Kapsam:** ara sahneler, görev satırları, ipuçları, etkinlik ve teklif metinleri **[MVP]**; §7.1 tepki balonları
@@ -36,7 +37,11 @@ Sahip: design-lead · Durum: Faz 1 revizyonu (2026-10-04; R-07, R-08, R-09, R-14
    sayının okunuşuna göre değişir (900'ü, 40'ı, 1040'ta), metin bunu garanti edemez; cümle eksiz kurulur ("Eksik {coin}{n}
    için yeterli", "Kırma eşiği: {coin}{n}", "{n}. bölümde açılır").
 10. **Ad ve firma (R-24):** "Kepche", `{company}` (varsayılan "Tuna & Co."; yalnız oyun içi firma adı, mağaza adı
-    değil). Oyun adı `app.title` anahtarından gelir; "Minik Usta" TR'de Tuna'nın lakabı olarak kalır. Kasaba adı
+    değil). Oyun adı `app.title` anahtarından gelir; "Minik Usta" TR'de Tuna'nın lakabı olarak kalır. `app.title`
+    çalışma değeri iki dilde de **"Lift & Land"**dir (§7.6; D-068 aday sırası 1 ve "tek global EN marka" önerisi, NAMING
+    §5): marka araması (NAMING §6 adım 2) bitene kadar yer tutucudur, proje sahibi başka aday seçerse yalnız bu anahtar
+    ve `logo_wordmark` değişir. Oyun adı büyük harfe **çevrilmez**, yazıldığı biçimde çizilir (TR yerelinde
+    `toLocaleUpperCase` "LİFT" yazardı; ART §8). Kasaba adı
     oyuncuya görünen her metinde (TR ve EN) `{town}` yer tutucusudur; değeri tek kaynaktan, `town.name` anahtarından
     gelir (TR "Renkli Tepe", EN "Hue Hill" çalışma çevirisi; NAMING kararıyla yalnız bu anahtar değişir). Ek, yer
     tutucudan sonraki kelimeye bağlanır ("{town} Festivali'ne", "{town} çırakları"); yer tutucunun kendisine ek gelmez.
@@ -557,6 +562,7 @@ değilse `league.bonus.levels.some` (`{list}` = `difficulty.*` adları "/" ile, 
 | `lose.offer.last` | Teklif {n}/{max} · son teklif | Offer {n}/{max} · last offer |
 | `lose.offer.gift` | +{n} hamle · Usta Dede'den hediye | +{n} moves · a gift from Grandpa |
 | `lose.ad` | Reklam izle · +{n} hamle | Watch an ad · +{n} moves |
+| `lose.adToday` | bugün {n}/{max} | today {n}/{max} |
 | `lose.decline` | Hayır, teşekkürler | No thanks |
 | `lose.buygold` | Altın al · eksik {coin}{n} | Get coins · {coin}{n} short |
 | `lose.bridgeCap` | Bu turun altın sınırı bu teklife yetmez. | This round's coin limit doesn't cover this offer. |
@@ -570,7 +576,10 @@ kayıp penceresinde kural satırıydı; BUSINESS §4.5-4 ve R-15 gereği kural y
 `lose.bridgeCap` tavan dolmadan da çıkar: tur harcaması + bu teklifin fiyatı > 4.050 (META §6.1).
 Sayılar config'ten (D-017): `lose.offer.moves`, `lose.offer.gift` `{n}` = `economy.json → outOfMoves.extraMoves`, `lose.ad`
 `{n}` = `outOfMoves.rewardedAdOffer.extraMoves`; `lose.offer.count` / `.last` `{max}` = `outOfMoves.maxOffersPerAttempt`
-(`.last` yalnız `{n}` = `{max}` iken). `lose.offer.moves` eski `lose.offer`'dır: i18n anahtarları iç içe olduğundan (TECH
+(`.last` yalnız `{n}` = `{max}` iken). `lose.adToday` reklam düğmesinin 2. satırıdır (UX §7 Pencere 1, PriceLabel'ın
+2. satırıyla aynı yer ve renk kuralı): `{max}` = `outOfMoves.rewardedAdOffer.perDay`, `{n}` = bu reklamın bugünkü sırası
+(bugün izlenen + 1; "Teklif {n}/{max}" gibi sıra sayısı, kalan sayı değil). Tavan dolunca düğme gri ve 2. satır
+`ads.tomorrow` olur, `{n}` > `{max}` hiç yazılmaz. `lives.ad` `{n}` de aynı anlamdadır. `lose.offer.moves` eski `lose.offer`'dır: i18n anahtarları iç içe olduğundan (TECH
 §11.5) bir anahtar hem metin hem üst düğüm olamaz.
 
 ### 7.4 Renkli Tepe çırakları — bot adları (R-14, BUSINESS §4.6)
@@ -613,8 +622,11 @@ boş ad; code-lead), ödeme verisinden bağımsız.
 | `exit.free` | Henüz hamle yapmadın; can gitmez. | No moves made yet, so no life is lost. |
 | `exit.cost` | Çıkarsan 1 can gider. | Leaving costs 1 life. |
 | `exit.bridge` | Köprüden düşersin. | You'll fall off the bridge. |
+| `exit.streak` | Galibiyet serin sıfırlanır. | Your win streak resets. |
+| `exit.refund` | Oyun öncesi güçlendiricilerin geri verilir. | Your pre-game boosters come back to you. |
 | `exit.stay` / `exit.leave` | Kal / Çık | Stay / Leave |
 | `resume.title` | Kaldığın yerden devam | Pick up where you left off |
+| `resume.strip` | Bölüm {n} · hamlelerin kayıtlı | Level {n} · your moves are saved |
 | `resume.void.title` | Oyun güncellendi | The game was updated |
 | `resume.void.body` | Bölüm {n} baştan başlayacak. Harcadıkların geri verildi. | Level {n} will start from the beginning. Everything you spent is back. |
 | `resume.void.bridge` | Köprüdeki yerin korundu. | Your place on the bridge is safe. |
@@ -668,3 +680,85 @@ kullanılmaz, "—"), sayı config'e ya da i18n'e sabit yazılmaz (UX §11). `re
 K-43 madde 4, E-45; UX §1 (c)): `{n}` = o denemenin bölüm numarası; iade edilen can, güçlendirici ve altın metne yazılmaz, pencerenin iade satırında ikon + adet olarak
 görünür; `resume.void.bridge` yalnız Köprü turunda sayılan denemede gösterilir; elenme, kayıp ya da suçlama sözcüğü
 kullanılmaz. `build.done` oyun ekranındaki "Yapı tamam!" kurdelesidir (UX §5.1, GDD E-27, D-035).
+
+**Çıkış onayı ve devam (UX §5.1, §1; GDD K-43):** `exit.free` yalnız `m = 0`; `exit.refund` yalnız `m = 0` ve bu
+denemede oyun öncesi güçlendirici (`preBoosters`) varken, `exit.free`'nin altında (bölüm içi güçlendirici iade edilmez,
+K-43 madde 2); `exit.cost` yalnız `m ≥ 1`; `exit.streak` yalnız `m ≥ 1` ve galibiyet serisi `s > 0` iken (`m = 0`'da seri
+bozulmaz, satır yok); `exit.bridge` yalnız Köprü turunda `m ≥ 1`. Satır sırası `exit.cost` → `exit.streak` →
+`exit.bridge`. Onay penceresi gelecek zamanı (`exit.streak`), kayıp Pencere 2 geçmiş zamanı (`lose.streak`) kullanır.
+`resume.strip` yarım kalan bölümün açılışındaki 1,5 s'lik üst şerittir (JUICE #87): `{n}` = bölüm numarası. Duraklat
+penceresinin başlığı o sırada `resume.title`'dır; şerit başlığı tekrarlamaz, kaydın güvende olduğunu söyler. Teklif
+penceresine (UX §1 (a)) ya da güncelleme penceresine ((c)) açılan dönüşte şerit yoktur.
+
+### 7.6 Faz 2 ekranları — açılış, oyun ekranı, kazanma ve ortak düğmeler
+
+Faz 2 dikey diliminin (TECH §14.1 #12) bütün görünen metinleri §7.3, §7.5 ve bu tablodadır; ekran yerleşimi UX §1, §2, §5,
+§6, §7. Ortak düğme metinleri (`common.*`) her ekranda aynı anahtarla kullanılır; ekran başına kopya anahtar açılmaz.
+
+| Kimlik | TR | EN |
+| ------ | -- | -- |
+| `app.title` | Lift & Land | Lift & Land |
+| `app.version` | Sürüm {version} | Version {version} |
+| `common.continue` | Devam | Continue |
+| `common.home` | Ana sayfa | Home |
+| `common.retry` | Tekrar dene | Try again |
+| `common.skip` | Geç | Skip |
+| `common.cancel` | Vazgeç | Cancel |
+| `common.on` / `.off` | Açık / Kapalı | On / Off |
+| `common.count` | {n}/{max} | {n}/{max} |
+| `common.plus` | +{n} | +{n} |
+| `common.times` | ×{n} | ×{n} |
+| `common.coins` | {coin}{n} | {coin}{n} |
+| `hud.moves` | Hamle | Moves |
+| `hud.streak` | Usta Serisi | Builder Streak |
+| `truck.queue` | Kamyonda: {n} | On the truck: {n} |
+| `booster.hint.trowel` | Parlayan bir hücreye dokun. | Tap a glowing cell. |
+| `booster.hint.hammer` | Kırmak istediğine dokun. | Tap what you want to smash. |
+| `booster.hint.crane` | Taşımak istediğin bloğa dokun. | Tap the block you want to move. |
+| `booster.hint.brush` | Boyamak istediğin bloğa dokun. | Tap the block you want to paint. |
+| `pause.title` | Mola | Paused |
+| `pause.exit` | Bölümden çık | Leave level |
+| `settings.sound` | Ses | Sound |
+| `settings.music` | Müzik | Music |
+| `settings.haptics` | Titreşim | Vibration |
+| `win.title` | Kazandın! | You won! |
+| `win.bonus` | Bonus İnşaat · kalan {n} hamle | Bonus Build · moves left: {n} |
+| `win.trowel` | Altın Mala ×{n} | Golden Trowel ×{n} |
+| `error.boot` | Bir şeyler takıldı. Yeniden deneyelim mi? | Something got stuck. Shall we try again? |
+| `error.level` | Bir şeyler takıldı. Can gitmez. | Something got stuck. No life is lost. |
+| `error.restart` | Bölümü baştan başlat | Restart the level |
+| `home.play` | Bölüm {n} | Level {n} |
+| `story.sign` | {company} | {company} |
+
+Kullanım ve sayılar (D-017; sayılar config'ten, metne sabit yazılmaz):
+
+- `app.title`: oyun adı (§0-10); açılış logosu (UX §1) ve tarayıcı/PWA başlığı. Çalışma değeri "Lift & Land", büyük
+  harfe çevrilmez. `app.version` `{version}` = `package.json` sürümü, metin olarak (sayı biçimlemesi yok; UX §1 alt
+  satır, UX §11 Ayarlar alt satırı).
+- `common.count`: sayaç biçimi; hedefler panelindeki dilim ve `clear` / `collect` sayaçları ("2/4"), renk körü modunda
+  Usta Serisi ("3/4", `{max}` = `economy.json → combo.correctPlacementsPerTrowel`); Köprü tahtası satırı (Faz 4).
+  `common.plus`: ikon yanındaki artı sayı (kazanma ödül satırında yıldız ve altın, JUICE #53 "+1" çipleri).
+  `common.times`: ikon + adet (§7.2 `{extras}`, kayıp penceresi "Kasa ×1"). `common.coins`: altın miktarı her yerde bu
+  anahtarla yazılır (PriceLabel 1. satırı, Bonus İnşaat altını, iade satırı); `{coin}` simgesi §0-11, sayı yerel
+  biçimde (TR "1.350", EN "1,350").
+- `truck.queue` `{n}` = kamyon kuyruğundaki **blok** sayısı (GDD K-26; hücre ya da parti değil); `n = 0` iken çip
+  gizlidir, metin "0" göstermez (UX §5.1, JUICE #20, #88). `hud.moves` hamle sayacının altındaki etiket; `hud.streak`
+  Usta Serisi şeridinin etiketi (UX §5.1).
+- `booster.hint.*`: UX §5.2 madde 1 açıklama şeridi; yanında `common.cancel` (× ile). Faz 2'de yalnız `.trowel` (K-33,
+  Altın Mala seçimi); `.hammer`, `.crane`, `.brush` güçlendiricileriyle birlikte kullanılır. İlk Altın Mala seçiminde
+  Usta Dede balonu `tut.ctx.goldtrowel` ayrıca çıkar; şerit her seçimde görünür.
+- `pause.*`, `settings.*`, `common.on` / `.off`: Duraklat penceresi (UX §5.1) başlık `pause.title` (devam açılışında
+  `resume.title`), birincil `common.continue`, üç anahtar satırı, alt satırda `pause.exit` (→ çıkış onayı). Ayarlar
+  ekranı (UX §11) aynı `settings.*` satır adlarını kullanır.
+- `win.*` (UX §6): başlık `win.title` (`upper` ile "KAZANDIN!"); `win.bonus` `{n}` = altına dönüşen kalan hamle (en çok
+  `levelRewards.bonusMaxMovesCounted`), altını yanında `common.coins` sayar (JUICE #56); `win.trowel` `{n}` = kalan
+  Altın Mala (yalnız > 0), altını yine `common.coins`; ödül satırı = yıldız ikonu + `common.plus` · altın ikonu +
+  `common.plus`; tek düğme `common.continue`. Kazanma ekranında "Tekrar" düğmesi yoktur (ekran başına tek birincil eylem;
+  tekrar oynama Usta Modu / Tekrar turuyla, UX §3).
+- `error.*` (UX §0.3 "Hata" kalıbı; kırmızı ve suçlama yok): açılışta `error.boot` + `common.retry` (UX §1), oyun
+  ekranında `error.level` + `error.restart` (UX §5.1 "hata"; can gitmez). `common.retry` ve `lose.retry` aynı metindir
+  ama ayrı anahtardır: kayıp penceresinin metni ekonomiyle birlikte değişebilir.
+- `common.home`: kayıp Pencere 2'nin metin düğmesi (UX §7). `common.skip`: giriş sahnesi ve ara sahne "Geç" düğmesi
+  (UX §2.1, §8). `home.play` `{n}` = sıradaki bölüm; Bölüm düğmesi (`upper` ile "BÖLÜM 12"; UX §3 ve Faz 2 asgari ana
+  ekranı, UX §6). `story.sign`: giriş Panel 3 tabelasının metin katmanı (§0-7, §4.0); `upper` ile çizilir (TR "MİNİK
+  USTA İNŞAAT", EN "TUNA & CO.").
