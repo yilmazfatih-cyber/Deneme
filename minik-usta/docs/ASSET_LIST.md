@@ -182,9 +182,12 @@ figüranlar yalnız mutlu/şaşkın.
 Panel 1000×1000, WebP; konuşma balonları ve yazılar kodla üstüne basılır (görselde yazı yok). Toplam **47 panel**.
 Yer tutucu: düz renkli arka plan + karakter yer tutucu SVG'leri + 1 sahne nesnesi. Bellek: yalnız gösterilen ve sıradaki
 panel yüklü (panel başına ~4 MB GPU; code-lead). İlk yüke yalnız prolog paneli girer (≤ 300 KB toplam; UX §2.1), kalan
-44 panel tembel yüklenir. Bölüm sonu sahnesinin son paneli yapı kartını yalnız gösterir; "Albüme eklendi" yok (R-19).
-Sahnelerde yetişkin kasaba halkı en az çocuklar kadar yer alır (STORY §0-8). **Yedek plan:** Faz 3–4 sanat takvimi
-kayarsa Hikaye 4–5 sahneleri 4 panele indirilir (−3 panel; entrepreneur önerisi, metin STORY'de buna göre kısalır).
+44 panel tembel yüklenir. Yapı kartı yalnız `story.ch1.end` Panel 4'tedir (`cut_ch1_end_p4`) ve yalnız gösterilir;
+diğer bitiş sahneleri STORY'deki son panelleriyle kapanır; "Albüme eklendi" yok (R-19). Sahnelerde yetişkin kasaba
+halkı en az çocuklar kadar yer alır (STORY §0-8). **Yedek plan:** Faz 3–4 sanat takvimi kayarsa
+Hikaye 4–5 sahneleri 4 panele indirilir: `ch4_start` 5 → 4, `ch4_end` 5 → 4, `ch5_start` 4 (değişmez),
+`ch5_end` 6 → 4 = **−4 panel** (47 → 43; entrepreneur önerisi). Kısalacak ve birleşecek paneller STORY §4.4–§4.5
+"Yedek plan" notlarındadır; birleşen panelde balonlar korunur, kesilen panelin balonu komşu panele taşınır.
 
 | Ad | Adet | Durum | Öncelik | Brif |
 | -- | ---- | ----- | -- | ---- |
@@ -222,6 +225,8 @@ kayarsa Hikaye 4–5 sahneleri 4 panele indirilir (−3 panel; entrepreneur öne
 | `ui_rule_card` | 9-dilim panel | prosedürel | prosedürel | kod | Köprü / Lig kural kartı (UX §9–§10), eşit boy "Katıl" / "Şimdi değil". |
 | `ui_keypad_key` | 160×128 | prosedürel | prosedürel | kod | **[Mağaza]** yaş ekranı sayısal tuşu (UX §2.3). |
 | `ui_line_promote`, `ui_line_demote` | 1000×6 kesik | prosedürel | prosedürel | kod | Lig terfi (yeşil) / düşme (turuncu, kırmızı değil) çizgisi. |
+| `ui_site_ribbon` | 306×96 (`layout.board.siteRibbon*`) | prosedürel | prosedürel | kod | "Yapı tamam!" kurdelesi (UX §5.1, GDD E-27, D-035): `ui.gold` dolgu, 4 px `ui.goldDark` kenar, −6° eğik, uçları 24 px V kesik; metin i18n `build.done` (görselde yazı yok). JUICE #89–#90. |
+| `ui_bonus_band` | 1000×120 (iki satırda 1000×160) | prosedürel | prosedürel | kod | Lig LiveOps bandı (UX §10): `ui.panelInset` zemin, solda 12 px `ui.gold` şerit, köşe 24, sağda "Şimdi geçerli" / "Başlıyor" çipi. |
 
 **İkonlar** (128×128, SVG kaynak + atlas PNG; brif: ART_DIRECTION §9 ikon dili; her biri "chunky casual-game icon,
 thick dark outline, two-tone fill, white highlight pill, no text"):
@@ -229,6 +234,7 @@ thick dark outline, two-tone fill, white highlight pill, no text"):
 | Ad | Durum | Öncelik | Ek brif |
 | -- | ----- | -- | ------- |
 | `icon_life` | yer tutucu | P0 | Kalp, ortasında küçük beyaz yıldız. |
+| `icon_life_unlimited` | yer tutucu | P0 | `icon_life` kalbi; yıldız yerine ortasında **çizilmiş** kalın beyaz sonsuzluk işareti (yazı ya da font karakteri değil; ∞ Baloo 2 alt kümesinde yok, ART §8). Sınırsız can: üst çubukta süre boyunca kalbin yerine (yanında geri sayım), günlük ödül 7. gün, bölüm / lig sandığı içeriğinde (yanında süre `common.minutes` "{n} dk"; UX §3, §3.1). |
 | `icon_coin` | yer tutucu | P0 | Altın sikke, kabartma mala. |
 | `icon_star` | yer tutucu | P0 | Tombul 5 köşeli yıldız. |
 | `icon_hammer` | yer tutucu | P0 | Ahşap saplı kırmızı başlı çekiç, 20° eğik. |
@@ -316,7 +322,8 @@ M4A."
 
 ## 14. Sanat iş yükü ve takvim (tahmin)
 
-Entrepreneur'ün sayımı (BUSINESS §10: 1,5 FTE sanat, Faz 2–5 = 22 hafta); "gün" = sanatçı-günü, **tahmin**. Kapsam
+Kapasite BUSINESS §10'dandır (1,0 FTE Faz 2 başından 22 hafta + 0,5 FTE Faz 3 başından 16 hafta); "gün" =
+sanatçı-günü, **tahmin**. Kapsam
 kararlarından (R-07: 35 kasaba parçası; ifade kapsamı §8; albüm Sonra) sonra güncel:
 
 | Kalem | Adet × gün | Toplam | Öncelik |
@@ -327,13 +334,16 @@ kararlarından (R-07: 35 kasaba parçası; ifade kapsamı §8; albüm Sonra) son
 | Ana karakterler (6 ifade, insan sanatçı) | 4 × 4 | 16 | P0 |
 | Yan karakterler (3 ifade) | 4 × 1,5 | 6 | P0: Ayşe, Kurdele · P1: Selin, Rıza |
 | Figüranlar | 5 × 0,5 | 2,5 | P2 |
-| İkonlar | ~45 × 0,25 | 11,25 | P0: ~37 · P1: 8 (lig rozetleri, ödül bandı, Usta Sandığı) |
+| İkonlar | ~46 × 0,25 | 11,5 | P0: ~38 (`icon_life_unlimited` dahil) · P1: 8 (lig rozetleri, ödül bandı, Usta Sandığı) |
 | Engel / geçit görselleri | ~20 × 0,25 | 5 | P0 / P1 (engelin açıldığı bölüme göre) |
 | Logo, uygulama ikonu (2 varyant), öne çıkan görsel | — | 4 | P0 (insan sanatçı) |
 | **Toplam** | | **≈ 126** | P0 ≈ 67 · P1 ≈ 56 · P2 ≈ 2,5 |
 
-1,5 FTE ile ≈ 17 hafta: takvime sığar ama tampon yok; kritik yol ara sahne panelleri. Yedek plan: Hikaye 4–5 sahneleri 4
-panele (−3 gün, §9). Albüm kartları [Sonra] olduğu için sayıma girmez.
+**Kapasite ve pay (BUSINESS §10 ile aynı hesap):** talep ≈ 126 g; kapasite 1,0 FTE × 22 hf + 0,5 FTE × 16 hf = 110 + 40
+≈ 150 g → **sığar, pay ≈ %16 (≈ 24 g)**. "1,5 FTE ile ≈ 17 hafta" (D-047) iki sanatçının aynı gün başladığı varsayımıyla
+yalnız süre hesabıdır; tampon yokluğu anlamına gelmez. Kritik yol ara sahne panelleri (P1'in yarısı). Yedek plan:
+Hikaye 4–5 sahneleri 4 panele (−4 panel = −4 gün, §9) → talep ≈ 122 g, pay ≈ %19. Albüm kartları [Sonra] olduğu için
+sayıma girmez.
 
 ---
 

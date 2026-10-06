@@ -784,9 +784,9 @@ Hepsinin kapanış sahibi bulgunun yöneltildiği ajandır.
 - T2 #0 `level_resume_invalid` ANALYTICS'te yok → KAPANDI: GDD'de "yerel tanılama kaydı" (olay ancak tabloya girince).
 - T2 #1 Duraklatma ↔ G-L penceresi → KAPANDI: K-19 madde 1 kapatan olaylar listesi; E-47.
 - T2 #2 OBSTACLES S2 "`.` dolu sayılır" koşulsuz → KAPANDI: yalnız boşken.
-- T2 #3 GDD §14.1/4 Z adımı yalnız `piece:` ↔ UX Bölüm 17 `debris:0` → KAPANDI (GDD): "`piece:` ya da `debris:`". TECH L-17 bağımlılığı açık (aşağıda F-2).
+- T2 #3 GDD §14.1/4 Z adımı yalnız `piece:` ↔ UX Bölüm 17 `debris:0` → KAPANDI (GDD): "`piece:` ya da `debris:`". TECH L-17 bağımlılığı F-2'de KAPANDI (aşağıda).
 - T2 #4 K-30 bütçeleri duvar saati gibi → KAPANDI: belirlenimci iş bütçesi, `rulesVersion`.
-- Ek bulgu (denetim dışı) Bölüm 9 ✓ sonrası çıkmaz adayları → AÇIK (Faz 2, product-lead): `levels:solve` ile kesinleşince düzeltilecek (aşağıda F-3).
+- Ek bulgu (denetim dışı) Bölüm 9 ✓ sonrası çıkmaz adayları → KAPANDI (product-lead, F-3): Bölüm 1–10 karalama çözücüsüyle tarandı, veri düzeltildi (aşağıda F-3).
 
 ### code-lead (tur 1: 20, tur 2: 9 — hepsi KAPANDI)
 
@@ -809,7 +809,7 @@ Hepsinin kapanış sahibi bulgunun yöneltildiği ajandır.
 - T1 #18 (Önemli) Parlama hapı hücre sayısı → KAPANDI: parça başına tek hap.
 - T1 #19 (Önemli) `audio.seq` biçimi yoktu → KAPANDI: `[startMs, number[]][]`, tek arabellek.
 - T1 #20 (Öneri) Katman sırası ve atlasta R-01 katmanları ve tavan kirişi yok → KAPANDI.
-- T1 #23 (Önemli) `AnalyticsEvent` birliği ANALYTICS §2'den farklı → KAPANDI: tablodan birebir. Ek AÇIK SORU entrepreneur'e (aşağıda F-1).
+- T1 #23 (Önemli) `AnalyticsEvent` birliği ANALYTICS §2'den farklı → KAPANDI: tablodan birebir. Ek AÇIK SORU entrepreneur'e (aşağıda F-1; KAPANDI).
 - T2 #0 (Önemli) K-34 `.` hücresi yanlış nesneyle "dolu" sayılıyordu → KAPANDI: `wrongOcc`, `dotFree`; E-43 testleri.
 - T2 #1 (Önemli) K-30 D2 arzı ve yardım `B1` teslimatı → KAPANDI: `deliverHelp`, adım 12; E-44, E-23 testleri.
 - T2 #2 (Önemli) +5 kabulünden sonra adım 12, reklam yalnız 1. teklif → KAPANDI: `addMoves`, `canOfferAd`; E-42.
@@ -870,11 +870,13 @@ Hepsinin kapanış sahibi bulgunun yöneltildiği ajandır.
 
 | Ajan | Onaylı bulgu | KAPANDI | Açık |
 | --- | --- | --- | --- |
-| product-lead | 36 | 36 | 1 ek bulgu (Faz 2) |
+| product-lead | 36 | 36 | — (ek bulgu F-3 KAPANDI) |
 | code-lead | 29 | 29 | — |
 | design-lead | 32 | 32 | — |
 | entrepreneur | 8 | 8 | — |
-| **Toplam** | **105** | **105** | 1 |
+| **Toplam** | **105** | **105** | 0 |
+
+Son tutarlılık turlarının sayımı aşağıda, "Son tutarlılık turları (2026-10-05)" bölümündedir.
 
 ---
 
@@ -896,21 +898,272 @@ code-lead.md 22, code-lead-2.md 19, entrepreneur.md 39, entrepreneur-2.md 14, pr
 
 ### Kapanmamış madde beyanı
 
-**Kapanışsız yorum yoktur:** 191 tekil yorumun ve 18 dolaylı satırın hepsi hedefin kapanış dosyasında KAPANDI ya da
-RET ile kapanmıştır. Proje sahibine giden sorular yorumlardan değil kararlardan doğar (DECISIONS.md'de "ÖNERİ" kayıtları).
+**Kapanışsız yorum ve bulgu yoktur:** 191 tekil yorumun ve 18 dolaylı satırın hepsi hedefin kapanış dosyasında KAPANDI
+ya da RET ile kapanmıştır. Son tutarlılık turlarında onaylanan 94 bulgunun hepsi KAPANDI (0 RET; aşağıdaki bölüm).
+F-1, F-2, F-3 KAPANDI. Proje sahibine giden sorular yorumlardan değil kararlardan doğar (DECISIONS.md'de "ÖNERİ"
+kayıtları). Açık kalanlar yorum değil: ajanlar arası uygulanmamış bağımlılıklar ve proje sahibi soruları (aşağıda,
+"Son tutarlılık turlarından sonra açık kalanlar").
 
-Yorum olmayan, açık kalan 3 madde (orkestratör denetimi, 2026-10-05):
+Yorum olmayan 3 madde (orkestratör denetimi, 2026-10-05) — üçü de KAPANDI:
 - **F-1 — AÇIK SORU (code-lead → entrepreneur, ANALYTICS §2):** Köprü bölümündeki +5 reklamı hangi `ad_rewarded.placement`
   değerini kullanır? (`ad_rewarded` enum'unda `bridge_loss` yok; TECH geçici olarak `out_of_moves` kullanıyor.)
   `save_corrupt`, `level_resume_invalid`, `level_end.exitFree` (bool), `level_end.truckHelps` (int) ve
   `coin_source.reason = refund` tabloya eklensin mi? ANALYTICS §2 bu tarihte değişmedi; yanıt yok. Sahip: entrepreneur.
+  → KAPANDI (entrepreneur, 2026-10-05): ANALYTICS §2 v2. `ad_rewarded.placement` += `bridge_loss` (Köprü +5 reklamı;
+  `offer_shown.placement` ile aynı değer; ayrı tavan değil, günlük sayaç `out_of_moves` ile ortak, BUSINESS §4.3
+  perDay 3, toplam tavan 6). 5 önerinin hepsi eklendi: `level_resume_invalid { level, movesMade, cause }` (GDD K-43/4;
+  geçersiz denemede `level_start`'ı kapatan olay), `coin_source.reason = refund` (TECH §11.1 `voidAttempt` iadesi),
+  `level_end.exitFree` (K-43/2 `m = 0` çıkışı), `level_end.truckHelps` (Geri Al'la düşer, E-37; pano 3),
+  `save_corrupt { stage, recovered }` (bozuk metin gönderilmez). §2 altına "Değer tanımları", §3'e "kurtarma / iade
+  yazımından sonra gönderilir"; BUSINESS §6.4 olay listesi güncellendi. code-lead bağımlılığı (TECH §11.4, §11.1, §11.8)
+  son tutarlılık turu 1 code-lead #4 ile KAPANDI.
 - **F-2 — Uygulanmamış bağımlılık (product-lead T2 #3 → code-lead):** GDD §14.1/4a zorunlu öğretici adımında
   "`piece:` ya da `debris:`" diyor; TECH §8.3 L-17 hâlâ "en az bir `piece:`" diyor (UX Bölüm 17 `debris:0` Z adımını
   reddeder). Sahip: code-lead; Faz 2 #3'ten önce.
+  → KAPANDI (code-lead, 2026-10-05): TECH §8.3 L-17 Z adımının vurgusunda en az bir `piece:` ya da `debris:` ister
+  (yoksa `tut_highlight_invalid`); `piece:` içermeyen Z adımı `placementCorrect` ile bitemez (`tut_done_invalid`,
+  K-16 koşul 2); UX Bölüm 17 `debris:0` → `yardMove` geçerli. §8.2: `yardMove` = `pieceMoved` + `to.zone = 'yard'`
+  (şantiyeden sahaya moloz dahil), `placementCorrect` molozla üretilmez, `gapPass` = yolun ilk FREE → ray kenarı;
+  `debris:<i>` → `CompiledLevel.tutorialPieceIds` (§2.3); zorunlu adım kilit güvencesi `piece:` ve `debris:` bloklarını
+  kapsar (GDD §14.1/4b). Atlanan adım tamamlanan adımla aynı kaydı üretir (yeni olay yok). 3 test, 2 geçersiz + 1 geçerli
+  L-17 fikstürü. product-lead'e kontrol sorusu (engel değil) aşağıda.
 - **F-3 — Ek bulgu AÇIK (Faz 2, product-lead):** Bölüm 9'da ✓ sonrası çıkmaz adayları; `levels:solve` gelince parti 1
   sırası / şaşırtma renkleri düzeltilir; Bölüm 7, 8, 10 aynı denetimi alır.
+  → KAPANDI (product-lead, 2026-10-05): Bölüm 1–10 karalama çözücüsüyle tarandı (GDD hareket, yerçekimi, K-34 ve
+  teslimat kuralları; Kamyon Yardımı, Mala ve güçlendiriciler yok sayıldı; gevşetilmiş saha oyunu + çözümdeki kazı + 1
+  saha hamlesine kadar tam arama + her doğru yerleşimden sonra kalan bütçeyle derin arama). Çıkmaz önce → sonra:
+  B5 36 → 0, B7 110 → 0, B8 45 → 0, B9 ≥ 166 → 0, B10 (Zor) 30 → 0 kapsam içinde; B1–B4 ve B6 zaten 0. LEVELS veri
+  düzeltmeleri B5, B7, B8, B9, B10'da (renk, birleştirme, parti sırası); min, YAO, bütçe, doluluk, renk kümeleri ve
+  öğretici adımları değişmedi; el çözümleri betikle yeniden oynatıldı ve kazanıyor. LEVELS §0 tablosu, §4 madde 10,
+  §5 ölçütü; GDD K-30 D3 cümlesi; B9 "AÇIK (Faz 2)" notu kaldırıldı. B10'da yalnız gereksiz hamlelerden sonra kalan
+  durumlar belgelendi (tablo son tur 2 product-lead #0'da "30 → 2 kesin çıkmaz, Zor → uyarı" olarak düzeltildi).
+  Proje sahibine soru: D3 MVP'de zorunlu mu (aşağıda).
 
 Faz 2'ye devreden uygulama bağımlılıkları (yorum değil, design-lead → code-lead; değerler tokens/STORY'de, TECH metninde
 henüz yazılı değil): i18n glif alt küme testi ve `{coin}` / `{ok}` satır içi simge çizimi, `duration.win` = 2500 toplam
 (`winGlow` / `winRibbon` / `winConfetti`), Kamyon Yardımı kilidi varyanta göre (600 / 700 / 900 ms), `color.ui.badgeLocked`,
 `common.unlockAt`.
+
+---
+
+## Son tutarlılık turları (2026-10-05)
+
+F-1…F-3 kapandıktan sonra bütün belgeler üç tur daha bağımsız denetimden geçti. Her turda: aday bulgular → şüpheci onayı →
+her ajan yalnız kendi dosyalarını düzeltti. Aşağıda yalnız **onaylanmış** bulgular var. Numaralar kapanış dosyalarındaki
+"Son tutarlılık turu N" bölümleriyle aynıdır; atlanan numaralar onaylanmamış ya da başka ajana ait bulgulardır. Her
+bulgunun kapanış sahibi, altında yer aldığı ajandır. Ayrıntı: `docs/review_inbox/*-closure.md`.
+
+| Tur | Aday | Onaylı | code-lead | product-lead | design-lead | entrepreneur | KAPANDI | RET |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | 48 | 39 | 7 | 12 | 11 | 9 | 39 | 0 |
+| 2 | 26 | 23 | 9 | 4 | 6 | 4 | 23 | 0 |
+| 3 | — | 32 | 14 | 5 | 9 | 4 | 32 | 0 |
+| **Toplam** | **74 + tur 3** | **94** | **30** | **21** | **26** | **17** | **94** | **0** |
+
+Tur 3'ün aday sayısı orkestratör özetine ulaşmadı; onaylı sayısı kapanış dosyalarından sayıldı. **Yakınsama:** tur 3'te
+onaylı bulgu 32; turlar 0 onaylı bulguya inmedi (39 → 23 → 32).
+
+### Tur 1 (aday 48, onaylı 39)
+
+**code-lead (7)**
+- #0 [Önemli] `levels:solve` ✓-tuzağı taraması TECH'te yoktu; solver Kamyon Yardımı'nı kapatmıyordu → KAPANDI: TECH yeni
+  §9.8 (`levels:solve --traps`, L-27; kesin çıkmaz ve bütçe tuzağı Kolay/Normal'de hata, Zor/Çok Zor'da uyarı),
+  `applyMove(…, { noTruckHelp })`; playtest botlarının oynadığı oyunda adım 12 açık kalır; Faz 3 +1 g.
+- #1 [Önemli] E-47 TECH kapsamında yoktu → KAPANDI: E-01…E-47 (§0, §12.2, §12.4); §4.7 testi E-47 adıyla; Faz 3'te zorunlu.
+- #2 [Önemli] Solver ek hedefleri (K-41/K-42) ve W7 anahtarını hedeflemiyordu → KAPANDI: §9.3 hedef engelleyicileri,
+  §9.4 `h = max(…)` (kabul edilebilir ve tutarlı), §9.6 orta bot aynı küme; 6 test; Faz 3 +0,5 g.
+- #3 [Öneri] TECH içinde doğrulayıcı listesi ve faz kapsamı tutarsız → KAPANDI: §12.2 L-21…L-26; K-19 ve K-45/9 Faz 2'de;
+  `test:rules --phase N` tanımı.
+- #4 [Önemli] TECH §11.4/§11.1 ANALYTICS §2 v1'e göreydi → KAPANDI: birlik v2'ye çekildi (`save_corrupt`,
+  `level_resume_invalid`, `exitFree`, `truckHelps`, `bridge_loss`, `refund`); §11.1 gönderim sırası; 3 test.
+- #5 [Önemli] Paket kimliği kuralı D-067 ve NAMING §6.1 ile çelişiyordu → KAPANDI: TECH §13 `com.<şirket>.<ad>`, isim
+  kararından sonra ve ilk mağaza yüklemesinden önce kesinleşir.
+- #6 [Önemli] Faz 2 JUICE P0 listesinde #83–84 yoktu → KAPANDI: §14.1 kapsamına ve #11 `EventPlayer` kalemine eklendi.
+
+**product-lead (12)**
+- #0 [Önemli] GDD K-30'un D3'süz güvencesi LEVELS'taki Bölüm 5/6 kesin çıkmazlarıyla tutmuyordu → KAPANDI: (b) yolu,
+  güvence LEVELS §5 erişim kapsamıyla sınırlandı; kapsam dışı çıkmazlar LEVELS §0'da sayıldı; D3 sorusu proje sahibine.
+- #1 [Önemli] OBSTACLES N4 torba altı saklı nesne ↔ GDD K-42 / TECH L-14 → KAPANDI: N4'ten torba çıktı, matriste Y2×W7 ve
+  Y2×Y7 `·`; K-42'de torba örtü sayılmaz (`hidden_item_exposed`).
+- #2 [Önemli] Kayar kapıda `a < b` ve hareket aralığı boyunca örtüşmezlik yoktu → KAPANDI: OBSTACLES W5 ve GDD K-45/3
+  kısıtları, `slider_range` / `gap_overlap`, iki geçersiz örnek.
+- #3 [Önemli] LEVELS §0 öğretim kuralı hedef oranlar ve bölüm sırasıyla çelişiyordu → KAPANDI: ölçülebilir tanıtım bölümü
+  tanımı (27 bölüm), Normal ≥ %70 / Zor ≥ %50; 18, 24, 29 → %70, 35 → %50; bütçeler değişmedi.
+- #4 [Öneri] Yapışmış harçlı cam kırılınca dönüş yeri çelişkiliydi → KAPANDI: GDD K-17 istisnası (1. adım atlanır,
+  yapışma kalkar, maliyet 3) + örnek; OBSTACLES S3 ve Y8.
+- #5 [Öneri] §3 engel bağımlılık dizini veriyle uyuşmuyordu → KAPANDI: W3'e 37, S2'ye 44.
+- #6 [Öneri] K-45 örneği gerçek Bölüm 9'u geçersiz gösteriyordu → KAPANDI: örnek varsayımsal yapıldı.
+- #7 [Önemli] Köprü beklenen payı D-024 korumasını sağlamıyordu → KAPANDI: META §6.2 kesin hesap; `events.json`
+  `prizePoolCoins` 10.000 → 6.500 (en kötü ≈ 852, ortalama ≈ 605, tavan 6.863); `config:validate` `bridge_share_cap`.
+- #8 [Önemli] GDD §14.1 `done` sözlüğü UX §13.2 11–38 satırlarını ifade edemiyordu; Bölüm 35 başlama anı → KAPANDI: 7 yeni
+  olay + 4 süzgeç, madde 5 `startOn`, madde 6 kapsam; LEVELS §3 "11–38 `tutorial[]` `done` eşlemesi" tablosu.
+- #9 [Öneri] D-026 yedek kuralı META ve `economy.json`'da yoktu → KAPANDI: META §8.5 ve §9; `masterMode.variant` +
+  `replay` alanları.
+- #12 [Öneri] K-43/4 analytics cümlesi koşulluydu → KAPANDI: `level_resume_invalid` ve `coin_source{refund}` koşulsuz.
+- #14 [Öneri] LEVELS `levels:solve`'u Faz 2'de anıyordu (D-059) → KAPANDI: tarama Faz 3'te; Faz 2'de 1–5 golden test.
+
+**design-lead (11)**
+- #0 [Önemli] Bölüm 23 ve 32'nin Z adımında tutulabilir `piece:` yoktu → KAPANDI: B32 vurgusu `piece:<i>`; B23 iki adım
+  (Z `overWall` + Y `steered`), yeni `tut.l23.light`; 14, 22, 38 Z satırları açık yazıldı.
+- #1 [Önemli] D-035 "Yapı tamam!" sunumu yoktu → KAPANDI: UX §5.1 "Şantiye kapalı" durumu, JUICE #89–90, `build.done`,
+  yeni tokenlar, `ui_site_ribbon`.
+- #2 [Önemli] 50 sonrası pasif düğme D-026 yedeğiyle çelişiyordu → KAPANDI: UX §3 `master` / `replay` düzenleri,
+  `replay.*` metinleri, §6 ve §12.
+- #3 [Önemli] LiveOps parametrelerinin sunumu eksikti → KAPANDI: lig puanı yer tutucuları, `league.bonus.*`,
+  `difficulty.*`, UX §10 LiveOps bandı; Köprü ek ödül ve "günlük sınır doldu" durumu.
+- #4 [Önemli] Tuna'nın yaşıyla dalga geçen satır (S15, D-044) → KAPANDI: STORY §4.1 Panel 2 ve §3 Sorun sütunu yeniden yazıldı.
+- #5 [Öneri] Config sayıları metne gömülüydü (D-017) → KAPANDI: `{n}`, `{max}`, `{up}` / `{down}` yer tutucuları + config eşlemesi.
+- #6 [Öneri] Devam akışı teklif penceresi ve kazanma ekranı istisnalarını kapsamıyordu → KAPANDI: UX §1, §5.1, §12; JUICE #87.
+- #7 [Öneri] Bölüm 12 ve 16'da `pre:` adımı 2. sıradaydı → KAPANDI: `pre:` adımı 1.; UX §13.1 kuralı + `startOn` alanı.
+- #8 [Öneri] "Hamleler bitti" seçenekleri rahat bölgenin dışındaydı → KAPANDI: pencereler alttan çapalı,
+  `layout.popup.panelBottomPx` 296.
+- #9 [Öneri] Yedek plan panel tasarrufu yanlış (−3) → KAPANDI: −4 panel, 47 → 43; STORY §4.4–4.5 yedek plan notları.
+- #10 [Öneri] ASSET "tampon yok" BUSINESS kapasitesiyle çelişiyordu → KAPANDI: ASSET §14 ≈ 126 g / 150 g / %16.
+
+**entrepreneur (9)**
+- #0 [Önemli] E2 `PriceLabel` 2. satırı her zaman `ui.inkSoft` → KAPANDI: UX §0.3 kuralı (renkli düğmede `ui.ink`), ≥ 4,5:1.
+- #1 [Önemli] BUSINESS §10 Faz 2'yi 4 hafta sayıyordu (D-061) → KAPANDI: 6 + 7,7 + 4,7 + 3,6 ≈ 22 hf; B planı tetiği
+  Faz 2'nin 29,5 g tamponlu planına bağlandı.
+- #2 [Öneri] Ret etiketi "Vazgeç" ↔ "Hayır, teşekkürler" → KAPANDI: E4 ve E5 "Hayır, teşekkürler".
+- #3 [Öneri] Eskimiş durum etiketleri ve kırık atıflar → KAPANDI: P-12 KABUL (D-038), P-13 KABUL (D-067), S12 ve P-10 UX §2.3.
+- #4 [Öneri] ANALYTICS §2'de üç sorun → KAPANDI: v3 (`star_spent.task` = `ch{n}_t{m}`, `daily_double`,
+  `level_load_failed`, `cutscene_missing`); BUSINESS §6.4.
+- #5 [Önemli] §10 teknik ve sanat mutabakat tablosu eskiydi → KAPANDI: TECH §14 ve D-047 değerleri; pay ≈ %16.
+- #6 [Önemli] Öne çıkan görselde ağaç ev D-043 ile çelişiyordu → KAPANDI: STORE_LISTING §6 ve BUSINESS S5 fener / fırın.
+- #7 [Önemli] MVP kesme tablosu D-042 ve D-038'i yansıtmıyordu → KAPANDI: sol el modu "Sonra" satırı; ilk +5 hediyesi MVP.
+- #9 [Öneri] NAMING §5.2 geri çekilmiş görev listesine atıf yapıyordu → KAPANDI: STORY §1 ve §4.0 Panel 3 atfı.
+
+Tur 1'den doğan bağımlılıklar: code-lead'e TECH L-09, §5.2, §8.2/L-17, `bridge_share_cap`, pencere çapası (tur 2 #0–#2,
+#8 ve tur 3 #9'da KAPANDI); product-lead'e LEVELS §3 12/16/23 sırası (tur 2 #3'te KAPANDI); entrepreneur'e Köprü havuz
+sayıları (tur 2 #0–#1'de KAPANDI); design-lead'e UX Köprü havuzu 6.500 (UX §9'da uygulandı).
+
+### Tur 2 (aday 26, onaylı 23)
+
+**code-lead (9)**
+- #0 [Önemli] TECH §8.2 öğretici şeması GDD §14.1 `done` sözlüğünü, süzgeçleri ve `startOn`'u karşılamıyordu → KAPANDI:
+  16 üyeli `TutCond`, olay başına süzgeçler, `startOn`, `tap` + `pre:` pencere kapanınca biter, kilit güvencesi
+  GDD §14.1/4b'ye göre; L-17 olay ↔ bölüm içeriği denetimleri; 16 test; Faz 2 +0,25 g, Faz 3 +0,5 g.
+- #1 [Önemli] L-09 kayar kapı `a < b` ve aralık boyunca örtüşme denetimi yoktu → KAPANDI: `slider_range`, aralık boyunca
+  `gap_overlap`; 2 fikstür.
+- #2 [Önemli] K-17 yapışmış harçlı cam istisnası ve `stuck`'ın kalkması yoktu → KAPANDI: §5.2
+  `returnTarget(…, { skipStart })`, `stuck` yaşam döngüsü, `MoveScratch.wasStuck`; 3 test.
+- #3 [Öneri] §14.1 Faz 2 kapsamında K-31 yoktu → KAPANDI.
+- #4 [Öneri] §9.5 golden'lar 1–10 diyordu (D-059) → KAPANDI: Faz 2'de 1–5, Faz 3'te 6–10.
+- #5 [Öneri] G-L penceresini "yönlendirme dışındaki her girdi" kapatıyordu → KAPANDI: yalnız K-19/1 (a)–(f)
+  `flushPending` çağırır; P-16; test.
+- #6 [Öneri] 8×10 kenar modeline güncellenmemiş sayılar → KAPANDI: 80 hücre; tampon ≈ 2,2–2,4 KB; Geri Al ≈ 120 KB.
+- #7 [Önemli] TECH §11.4 ANALYTICS v2'de kalmıştı → KAPANDI: v4'e eşitlendi (`replay`, `daily_double`,
+  `level_load_failed`, `cutscene_missing`, `ch{n}_t{m}`); iki yönlü karşılaştırma 0 fark; 4 test.
+- #8 [Önemli] D-024 `bridge_share_cap` denetimi TECH'te yoktu → KAPANDI: §11.3 `config:validate` kuralı, 6 test
+  (6.863 geçer, 6.864 hata); Faz 4 +0,25 g.
+
+**product-lead (4)**
+- #0 [Öneri] LEVELS §0 F-3 tablosunda Bölüm 10 satırı TECH §9.8 sınıflamasıyla çelişiyordu → KAPANDI: Çıkmaz 30 → 2
+  (yalnız gereksiz hamleden sonra; Zor → uyarı), israf sonrası bütçe aşımı 1.
+- #1 [Öneri] GDD K-23 ve K-10 örnekleri test olarak yanlış sonuç veriyordu → KAPANDI: iki örnek düzeltildi.
+- #2 [Öneri] Moloz `segment` iki yerde farklı tanımlıydı → KAPANDI: isteğe bağlı (varsayılan 0); K-45/7, OBSTACLES S4,
+  LEVELS §5.
+- #3 [Önemli] LEVELS §3 11–38 `done` tablosu UX §13.2 sırasıyla çelişiyordu (12, 16, 23) → KAPANDI: `pre:` adımı 1.;
+  Bölüm 23 iki adım; GDD §14.1/3 atfı düzeltildi.
+
+**entrepreneur (4)**
+- #0 [Önemli] BUSINESS Köprü havuz sayıları eski 10.000'e göreydi; Hafta 2 12.000 D-024'ü bozuyordu → KAPANDI: §4.5-8
+  ortalama ≈ 605 / en kötü ≈ 852; §7 havuz 6.500; Hafta 2 bitirene +1 Termos (`finisherExtras.boosters`), havuz büyümez.
+- #1 [Öneri] Türetilmiş sayılar kaynakla uyuşmuyordu → KAPANDI: §5.4 ≈ 1.030–1.130; §9.1 ≈ 978.
+- #2 [Öneri] D-026 yedeğinde `level_start.mode` / `level_end.mode` tanımsızdı → KAPANDI: ANALYTICS v4 `mode` += `replay`;
+  zorluk ve süre panoları yalnız `story`.
+- #5 [Öneri] P-13 `{company}` NAMING §5.2 ile çelişiyordu → KAPANDI: oyun adı yalnız `app.title`.
+
+**design-lead (6)**
+- #0 [Önemli] JUICE §0 kural 12 Faz 2 P0 listesi TECH §14.1'in Faz 2 kurallarının (K-33, K-43, K-26/K-17 adım 3, W1)
+  sunum olaylarını içermiyordu → KAPANDI: Faz 2 P0 = #1–13, 15–20, 22, 23, 50–53, 55–58, 69–71, 83–84, 87, 88; yeni ses
+  tokenları (`sfx_streak_pip`, `sfx_trowel`, `sfx_clamp`, `sfx_gap_rail`).
+- #1 UX §13.2 bağlamsal tetikler GDD §14.1 ile çelişiyordu → KAPANDI: moloz bağlamsal satırı çıktı; Bölüm 13 adım 2
+  `timeoutMs` 3000; `tut.l*` bağlamsal tetik olamaz.
+- #2 Lig çizgi kuralı metni Bronz / Elmas'ta yanlıştı → KAPANDI: `league.rule_card.lines.both/.bronze/.diamond`,
+  `league.header_lines.*`; ayrıca `lose.offer` → `lose.offer.moves` (iç içe anahtar çakışması).
+- #3 Çıkış onayında "Kal" rengi ART ↔ UX → KAPANDI: ART §2.3 `ui.neutral` "Çık"; "Kal" yeşil.
+- #4 Kasabanın EN adı tutarsızdı → KAPANDI: `{town}` yer tutucusu, tek kaynak `town.name`.
+- #5 `shop.covers` sayıya sabit ek bağlıyordu → KAPANDI: eksiz cümle; `piggy.threshold`; STORY §0-9 kuralı.
+
+Tur 2'den doğan bağımlılıklar: code-lead'e TECH §14.1 JUICE P0 kümesi (tur 3 #11'de KAPANDI) ve yeni i18n anahtarları /
+ses dizileri; product-lead'e LEVELS 13·2 notu (tur 3 #4'te KAPANDI); code-lead'e `Mode` += `replay` (tur 2 #7'de KAPANDI).
+
+### Tur 3 (aday: orkestratör özetinde yok, onaylı 32)
+
+**code-lead (14)**
+- #0 [Önemli] `test:rules --phase` N-notlarını ve E-22'yi Faz 2'de zorunlu kılıyordu → KAPANDI: N-notu fazı OBSTACLES
+  matrisinden; Köprü/Lig E satırları Faz 4; test.
+- #1 [Önemli] L-04'te ağır şekil eşiği (Bölüm 8) yoktu → KAPANDI: `heavy` yalnız `id ≥ 8`, `shape_locked`; 2 fikstür.
+- #2 [Önemli] G-L yönlendirme koşulu yalnız `atRow` satırına bakıyordu → KAPANDI: kaymış konumun bütün hücreleri; test.
+- #3 [Önemli] `blockedByWallHeight` sütun boyuna bakıyordu → KAPANDI: kutu yüksekliği `h > 10 − height`; test.
+- #4 [Öneri] §1.4 akış özeti "yönlendirme dışı ilk girdi" diyordu → KAPANDI: K-19/1 (a)–(f) kapalı listesi.
+- #5 [Öneri] L-17 güçlendirici açılışı K-44'e atıflıydı → KAPANDI: META §4 `unlockLevel`; vurgu adı → anahtar eşlemesi.
+- #6 [Öneri] Ek A'da `b` hem torba hem mavi blok → KAPANDI: torba `%`; test.
+- #7 [Öneri] R-19 `powFixed` diyordu → KAPANDI: `curveTable`.
+- #8 [Öneri] §8.2 başlığı 35 adım diyordu → KAPANDI: zod 52/52 geçti, 15/15 reddedildi; "30 adım".
+- #9 [Önemli] §10.1 pencereleri dikey ortalıyordu → KAPANDI: alttan çapa (`panelBottomPx`), layout testi.
+- #10 [Önemli] G-L kaydırma eşiği UX / tokens'tan farklıydı → KAPANDI: `drag.steerSwipeMinPx` (48) ve `|dx| > |dy|`; test.
+- #11 [Önemli] §14 JUICE kapsamı eski listeyle sayılıyordu → KAPANDI: JUICE §0 kural 12 ile 36 olay; Faz 2 26,25 g net /
+  29,5 g tamponlu (tampon ≈ %12); Faz 2–5 93,5 g net / 110 g ≈ 22,0 hf.
+- #12 [Öneri] Parmak ofseti 80 ms yazılmıştı → KAPANDI: `duration.fingerOffset` 90 ms.
+- #13 [Öneri] §14.1 kesme seçeneği tutarsızdı → KAPANDI: −1 g net → 28,5 g ≈ 5,7 hf; BUSINESS tarafı entrepreneur tur 3
+  #1'de KAPANDI.
+
+**design-lead (9)**
+- #0 Güncellemeyle geçersiz kalan denemenin sunumu yoktu (K-43/4, E-45, D-022) → KAPANDI: UX §1 (c) tek düğmeli
+  güncelleme penceresi, iade satırı, `resume.void.*`; JUICE #87 (c); STORY dört anahtar.
+- #1 UX §5.2 madde 4 Geri Al'ı yok sayıyordu → KAPANDI: Geri Al istisnası (sayaç ve Usta Serisi hamle öncesine döner).
+- #2 JUICE cam kırılma dönüşü ve maliyeti → KAPANDI: #42 K-17 sırası, yapışmış harçlı camda −3.
+- #3 Yapı kartı yalnız ch1 bitişinde → KAPANDI: UX §8 ve ASSET §9 yalnız `story.ch1.end` Panel 4.
+- #4 `bridge.rule_card.continue` sabit +5 → KAPANDI: `+{n}` (`outOfMoves.extraMoves`).
+- #5 Köprü ekranında anahtarsız ve ekli sayı metinleri → KAPANDI: `bridge.play`, `common.unlockAt`.
+- #6 Sınırsız can ikonu yoktu, ∞ font alt kümesi dışında → KAPANDI: `icon_life_unlimited` (P0), ∞ yasak glif,
+  `common.minutes`.
+- #7 UX §2.1 ilk yükleme düşüşünü saymıyordu → KAPANDI: 8,2 s + 1,8 s pay = 10 s.
+- #10 ART §6 kasa kuşak sayısı çelişkisi → KAPANDI: kuşak sayısı = kat − 1.
+
+**entrepreneur (4)**
+- #0 Mağaza "+%" değer etiketi tek kurala bağlı değildi (BUSINESS §5.2) → KAPANDI: formül yazıldı; tablo
+  `economy.json`'dan yeniden üretildi (USD +%9…+%49, TL +%12…+%49).
+- #1 Faz 2–5 sayıları TECH §14'ten eskiydi (BUSINESS §10) → KAPANDI: 26,25 / 29,5 g; Faz 3 ≈ 7,8 hf; 110 g ≈ 22,0 hf;
+  kesme 28,5 g.
+- #2 `event_end` BUSINESS §6.4 MVP listesinde yoktu → KAPANDI: eklendi; 26 MVP olayı ANALYTICS §2 ile aynı.
+- #3 `store_open.source` UX girişlerini karşılamıyordu → KAPANDI: ANALYTICS v5 (`coin_plus`, `piggy`, `bridge_loss`).
+
+**product-lead (5)**
+- #0 GDD K-12 ↔ OBSTACLES S4/N14 moloz ray istisnası → KAPANDI: K-12'ye tek istisna; S4 ve N14 eşitlendi.
+- #1 `clear/debris` aynı molozu iki kez sayıyordu → KAPANDI: K-41 "her moloz en çok 1 kez"; K-36; S4.
+- #2 GDD §14 `tutorial[]` veri tipi satırı eskiydi → KAPANDI: `startOn?`, `Cond` süzgeçleri.
+- #3 LEVELS §0 golden notu D-059 / TECH §9.5 ile çelişiyordu → KAPANDI: 1–5 Faz 2'de, 6–10 Faz 3'te.
+- #4 LEVELS §3 13·2'de kaldırılmış bağlamsal tetik notu → KAPANDI.
+
+### Son tutarlılık turlarından sonra açık kalanlar
+
+Bunlar yorum ya da onaylı bulgu değil; tur 3 kapanışlarından doğan bağımlılıklar ve sorulardır.
+
+Ajanlar arası uygulanmamış bağımlılıklar:
+- **code-lead:** TECH §11.4 `store_open.source` birliği ANALYTICS v5'e (`'nav' | 'coin_plus' | 'piggy' | 'out_of_moves' |
+  'bridge_loss' | 'lives_zero' | 'booster_plus'`); çekilmezse iki yönlü tablo testi Faz 2'de kırılır (entrepreneur tur 3 #3).
+- **code-lead:** TECH §10.3 Albüm satırı "yapı kartı yalnız `story.ch1.end` Panel 4" (design-lead tur 3 #3); TECH §11.1
+  `voidAttempt` bekleyen bildirim kaydı (UX §1 (c), design-lead tur 3 #0).
+- **code-lead (Faz 2 uygulaması):** turların yeni i18n anahtarları ve yer tutucuları (`{town}`, `{company}`,
+  `resume.void.*`, `common.ok`, `common.minutes`, `bridge.play`, `league.*`, `replay.*`, `build.done`, `tut.l23.light` …),
+  yeni tokenlar ve sesler (`siteRibbon*`, `siteClosedRibbon`, `goalNudge`, `sfx_*`), `icon_life_unlimited`, devamda
+  `outcomeWindow` → Pencere 1, bekleyen sandık işareti, JUICE #90.
+- **design-lead:** UX §11 tel çerçevesi "+%10" → "+%9" ve STORY `shop.value` notu BUSINESS §5.2 kuralına (entrepreneur tur 3 #0).
+- **product-lead (isteğe bağlı, engel değil):** Çekiç'in doğrudan kırdığı kasa/torba/zincir `obstacleHit` sayılsın mı
+  (Bölüm 11/18/24 Y adımı); hamle sonu olaylarının hamle başına 1 sayılması ve plan dışı bırakılan yapışmış harçlı bloğun
+  başlangıca dönüp yapışık kalması okumalarının onayı; F-2: ray kipinde başlayan molozun başlangıcının `gapPass`
+  sayılmaması okuması; LEVELS §5 "Araç desteği code-lead'den istenir" → TECH §9.8 / L-27 atfı.
+- **Orkestratör:** D-061 metni ("25,5 g net … 107,5 g ≈ 21,5 hf … 28 g") → 26,25 g net / 29,5 g tamponlu; Faz 2–5
+  93,5 g net / 110 g ≈ 22,0 hf; kesme seçeneği 28,5 g.
+
+Proje sahibine sorular:
+- D3 (döşeme/erişim kilitlenmesi) MVP'de zorunlu mu, en azından Zor/Çok Zor bölümlerde? Şu an güvence LEVELS §5
+  kapsamıyla sınırlı; kapsam dışı çıkmazlar (B5 3, B6 2, B10 2; yalnız gereksiz hamlelerden sonra) +5 teklifi ya da kayıpla
+  biter (product-lead F-3, tur 1 #0; maliyet code-lead TECH §9.7).
+- D-061 (Faz 2 ≈ 6 hf) hâlâ ÖNERİ. Reddedilirse BUSINESS §10 Faz 2 satırı ve B planı tetiği kesme seçeneğine (28,5 g)
+  göre yeniden yazılır. Faz 2 tamponu ≈ %12 (%20 hedefinin altında); 22 haftalık planda pay kalmadı.
+- Köprü havuzu 6.500 (D-024 koruması). 10.000 başlığı istenirse tek yol bot becerisini artırmak; bu durumda botlar LEVELS
+  hedef bantlarını aşar (product-lead tur 1 #7).

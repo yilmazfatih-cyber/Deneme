@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "_doc": "docs/META.md §6-§7 (product-lead, revision 2026-10-04; consistency audit round 1 2026-10-05). Parameters only; formulas in META. Bot module is pure: reads only this file and (eventId|weekId, t0, t, L0, level difficulty table); never imports economy.json or the save (BUSINESS E8, R-14).",
+  "_doc": "docs/META.md §6-§7 (product-lead, revision 2026-10-04; consistency audit round 1 2026-10-05; final consistency pass 2026-10-05: Bridge pool 10000 -> 6500). Parameters only; formulas in META. Bot module is pure: reads only this file and (eventId|weekId, t0, t, L0, level difficulty table); never imports economy.json or the save (BUSINESS E8, R-14).",
   "rng": {
     "algorithm": "mulberry32",
     "hash": "fmix32-chain-v1",
@@ -16,7 +16,7 @@
     "durationMinutes": 360,
     "cooldownMinutes": 120,
     "maxBridgesPerDay": null,
-    "prizePoolCoins": 10000,
+    "prizePoolCoins": 6500,
     "finisherExtras": null,
     "countsLevelStartedBeforeDeadline": true,
     "eliminateOn": ["levelLost", "confirmedQuitAfterFirstMove"],
@@ -25,7 +25,7 @@
     "bridgeSpendCapCoins": 4050,
     "rewardedAdContinueIgnoresCoinCap": true,
     "masterModeWinsCount": true,
-    "_doc": "Split = floor(pool / finishers). Payout time = min(deadline (extended by the player's level started before it), max(playerDoneTime, lastBotEventTime)). Coin continue offered only if runSpend + price <= bridgeSpendCapCoins (R-16; same key as BUSINESS §4.5).",
+    "_doc": "Split = floor(pool / finishers). prizePoolCoins 6500 (was 10000): expected finisher share must stay < first +5 price (economy.json outOfMoves.offerCosts[0] = 900) for every L0 (15-50 and every Master Mode start 11-50), incl. finisherExtras.coins and every liveOps override; with this bot model the pool cap is 6863 (worst windows L0 44/45/49 ~852 at 6500). config:validate error bridge_share_cap (META §6.2 Koruma). Payout time = min(deadline (extended by the player's level started before it), max(playerDoneTime, lastBotEventTime)). Coin continue offered only if runSpend + price <= bridgeSpendCapCoins (R-16; same key as BUSINESS §4.5).",
     "bot": {
       "skillMin": 0.5,
       "skillRange": 0.45,
@@ -98,6 +98,6 @@
     "startUtc": null,
     "endUtc": null,
     "overrides": { "wobblyBridge": {}, "masterLeague": {} },
-    "_doc": "LiveOps theme window [startUtc, endUtc) as ISO 8601 UTC strings; null = no theme. Inside the window, keys under overrides replace the same keys of wobblyBridge (prizePoolCoins, cooldownMinutes, maxBridgesPerDay, finisherExtras) and masterLeague (pointsMultiplier, weekendMultiplier). A Bridge run freezes the values in force at its join time t0. Pool increases stay under BUSINESS §4.5-8 (expected share < 900). META §6.1, §7.1; BUSINESS §7."
+    "_doc": "LiveOps theme window [startUtc, endUtc) as ISO 8601 UTC strings; null = no theme. Inside the window, keys under overrides replace the same keys of wobblyBridge (prizePoolCoins, cooldownMinutes, maxBridgesPerDay, finisherExtras) and masterLeague (pointsMultiplier, weekendMultiplier). A Bridge run freezes the values in force at its join time t0. Pool overrides must pass the META §6.2 check (expected share + finisherExtras.coins < 900 for every L0; pool cap 6863 with the current bot model; BUSINESS §4.5-8). META §6.1, §7.1; BUSINESS §7."
   }
 }

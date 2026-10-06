@@ -139,7 +139,7 @@ G 1,25). WCAG 1.4.11 grafik nesne eşiği 3:1'dir. Kural:
 | `ui.heart` | #FF4F6A | can |
 | `ui.hazardYellow` / `hazardBlack` | #FFC21A / #2B2B2B | ikaz şeridi (45°, 24 px bant) |
 | `ui.overlay` | #141828 (%55) | açılır pencere arkası |
-| `ui.neutral` / `Top` / `Lip` / `Stroke` | #FFF9EA / #FFFFFF / #D9C08A / #6B5440 | nötr dolgulu düğme ("Hayır, teşekkürler", "Reklam izle", "Kal"); yazı `ui.ink` |
+| `ui.neutral` / `Top` / `Lip` / `Stroke` | #FFF9EA / #FFFFFF / #D9C08A / #6B5440 | nötr dolgulu düğme ("Hayır, teşekkürler", "Reklam izle", çıkış onayında "Çık"; "Kal" yeşil, eşit çift düğme, UX §0.3 ve §5.1); yazı `ui.ink` |
 | `ui.botBadge` | #E2D5B8 | "çırak" rozeti zemini (yazı `ui.inkSoft`) |
 | `color.ghost.valid` | #5CF59A | düşüş gölgesi doğru (Kolay/Normal) |
 | `color.ghost.invalid` | #FF4A3D | düşüş gölgesi hatalı (Kolay/Normal) |
@@ -329,7 +329,7 @@ olabilir; kepenk **yatay** lamel, kilitli **dikey** parmaklık + altın kilit �
 | Engel | Kimlik | Görsel tarif (hücre 120 px) | Ayırt eden |
 | ----- | ------ | --------------------------- | ---------- |
 | Ahşap kasa 3 kat | Y1 hp3 | Açık çam kasa #D9A35B, 4 yatay tahta (çizgi #A8743A), X çapraz destek, köşe çivileri (6 px, #6E7681); **2 metal kuşak** (12 px, #8A96A3) dikey; sağ altta 3 nokta (●●●). Kontur #6B4420 6 px. | W bloğundan ayrımı: açık çam + X destek + sembol yok + metal kuşak. |
-| Ahşap kasa 2 kat | Y1 hp2 | Aynı, **1 metal kuşak**; ●● ; köşede küçük çatlak. | Kuşak sayısı = kat. |
+| Ahşap kasa 2 kat | Y1 hp2 | Aynı, **1 metal kuşak**; ●● ; köşede küçük çatlak. | Nokta sayısı = kat; kuşak sayısı = kat − 1. |
 | Ahşap kasa 1 kat | Y1 hp1 | Kuşak yok; 2 çatlak çizgisi; ● ; tahta hafif eğik. | Kırılmaya hazır görünüm. |
 | Çimento torbası | Y2 | Kâğıt çuval siluetinde (alt geniş, üst bağlı) #EDE6D6, kontur #8C8272; ortada gri tuğla piktogramı (#9AA4B1); üstte ip bağı. Hafif "çökmüş" alt kenar. | Yumuşak çuval silueti, blok değil. |
 | Zincir | Y3 | §3 `chained` katmanı. | Çapraz zincir + kilit. |
@@ -390,7 +390,7 @@ Ana ekranda aktif yapının yarı inşa hâli arka planın odağıdır (bkz. `AS
   için), CDN'e bağımlılık yok. Yedek yığın: `"Baloo 2", "Nunito", system-ui, sans-serif`.
 - **Alt küme dışı karakter yasağı:** i18n metinlerinde (`src/i18n/tr.json`, `en.json`) yalnız yukarıdaki aralıklardaki
   karakterler bulunur; yoksa o karakter yedek fontla çizilir ve Fredoka'yı eleten "karışık font" sorunu geri gelir.
-  Baloo 2'de **olmayan** ● (U+25CF), ✓ (U+2713), ★, ♥, ↔, ↕ metne yazılmaz; satır içi simge yer tutucusu kullanılır
+  Baloo 2'de **olmayan** ● (U+25CF), ✓ (U+2713), ★, ♥, ∞ (U+221E), ↔, ↕ metne yazılmaz; satır içi simge yer tutucusu kullanılır
   (STORY §0-11: `{coin}` → `icon_coin`, `{ok}` → `ghost_badge_ok`). Wireframe'lerdeki "●" altın simgesidir, karakter
   değildir. **Test notu (code-lead):** i18n dosyalarındaki her karakter alt küme aralığında olmalı (ör. "i18n glyphs
   within Baloo 2 subset"); alt küme aralıkları tek listede tutulur ve font üretim betiği ile test aynı listeyi okur.
@@ -428,6 +428,7 @@ koyu kontur + 4 px gölge. Konuşma balonu metni: `ui.ink` düz.
 | İkon | Biçim |
 | ---- | ----- |
 | Can | kalp #FF4F6A, ortasında küçük beyaz yıldız (Tuna'nın kask çıkartması) |
+| Sınırsız can | aynı kalp; yıldız yerine çizilmiş kalın beyaz sonsuzluk işareti (vektör, font karakteri değil; §8 alt küme yasağı) |
 | Altın | sikke `ui.gold`, üstünde kabartma mala |
 | Yıldız | tombul 5 köşe `ui.star`, yuvarlatılmış uçlar |
 | Hamle | ikon yok; büyük sayaç rakamı ve altında "hamle" etiketi |

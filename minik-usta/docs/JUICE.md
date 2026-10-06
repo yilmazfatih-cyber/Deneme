@@ -55,7 +55,7 @@ Sahip: design-lead · Durum: Faz 1 revizyonu (2026-10-04; R-01, R-10…R-12, R-1
    `Sine.easeInOut`, `Expo.easeOut`, `Elastic.easeOut`, `Bounce.easeOut`.
 10. **Oynatma sırası = K-35 adımı** (product-lead): oyuncu neden-sonucu okuyabilsin diye hamle sonu olayları şu düzenle
     oynar:
-    - Adım 1–4 **sıralı**: bırakma → düşüş → doğrulama (doğru: #12 / hatalı: #13) → sayaç (#50; cam varsa −2).
+    - Adım 1–4 **sıralı**: bırakma → düşüş → doğrulama (doğru: #12 / hatalı: #13) → sayaç (#50; maliyet 1 / 2 / 3, GDD K-07).
     - Adım 5 (komşu etkileri: kasa, torba, zincir, toplama) **aynı anda**.
     - Adım 6 (saha yerçekimi zincirlemesi) 30 ms kademeli; döngü tekrarlarsa her tur ayrı dalga.
     - Adım 8 (dilim kayması 600 ms) → adım 9 (kamyon 700 ms): **sıralı ve girdi kilitli**.
@@ -68,10 +68,14 @@ Sahip: design-lead · Durum: Faz 1 revizyonu (2026-10-04; R-01, R-10…R-12, R-1
     flaş (alfa 0 → 0,6 → 0); ekran dışına kayan öğeler ekran kenarıyla doğal kırpılır; spot ışığı 4 dikdörtgen + 4
     çeyrek daire. Bulanık gölgeler açılışta pişirilmiş siluet dokularıdır. Faz 5 perf testinde pay kalırsa süpürme
     Mask filtresiyle yeniden denenir.
-12. **Kapsam etiketleri** (entrepreneur): **Faz 2 P0** = #1–13, 18, 19, 50–53, 55–58, 69–71, 83–84 · **engel
-    olayları** #22–49 ilgili engelle birlikte Faz 3 · **[MVP-lite]** #16 (yalnız ikon parlaması), #75 (konfetisiz sade
-    yükselme), #79 (blok düşüşü; karakter animasyonu Sonra) · **[Sonra]** #81 karakter "bla" sesleri, #82 boşta göz
-    kırpma ve dans, §7 müzik. Diğerleri MVP.
+12. **Kapsam etiketleri** (entrepreneur): **Faz 2 P0** = #1–13, 15–20, 22, 23, 50–53, 55–58, 69–71, 83–84, 87, 88
+    (TECH §14.1 kapsamına göre: #15–17 K-33 Usta Serisi / Altın Mala, #16 MVP-lite; #20 ve #88 K-26 kuyruk ve K-17
+    adım 3; #87 K-43 bölüm içi devam; #22–23 W1, Bölüm 3) · **engel olayları** #22–49 ilgili engelle birlikte Faz 3;
+    **istisna:** W1/S1/S2 olayları Faz 2'de (TECH §14.1; W1 = #22, #23; S1 = #18–20; S2'nin ayrı olayı yok, #7 ve #13
+    yeter) · **[MVP-lite]** #16 (yalnız ikon parlaması), #75 (konfetisiz
+    sade yükselme), #79 (blok düşüşü; karakter animasyonu Sonra) · **[Sonra]** #81 karakter "bla" sesleri, #82 boşta göz
+    kırpma ve dans, §7 müzik. Diğerleri MVP. Bu listenin sesleri `tokens.json` → `audio.sfx` / `audio.seq`'te doludur
+    (kural 6).
 
 ### 0.1 Fizik sabitleri (görsel)
 
@@ -149,7 +153,7 @@ hızdan bağımsızdır; `steer.atRow` bu eğriden hesaplanır (code-lead).
 | 39 | Anahtar alma | anahtar zeminden yükselir (1,0→1,3), döner, ilgili kilide doğru küçük iz bırakır (ya da hedef paneline) | 400 | `Back.easeOut` | 10 altın kıvılcım | `sfx_key`: üç nota çan (C6-E6-G6, 60 ms aralık) | başarı | yükselme 1,03, iz yok |
 | 40 | Vida toplama (Y7) | vida döne döne yükselir ve hedef panelindeki sayaca uçar (kavis), sayaç +1 zıplar | 500 | `Quad.easeInOut` | 8 altın kıvılcım + varışta 4 | `sfx_screw`: metalik "vıd" (sine 1200→1800 Hz 80 ms) + varışta `sfx_goal_tick` (sine 990 Hz 40 ms) | hafif | solma + sayaç güncellemesi |
 | 41 | Moloz taşındı / kırıldı (S4) | moloz sahaya bırakılınca toz çıkar; kırılırsa 6 beton parçasına ayrılır | 300 | `Quad.easeOut` | 12 gri parça + toz | `sfx_debris`: taş "kırt" (gürültü 60 ms, düşük bant) | orta | parçalar 3 |
-| 42 | Cam kırılma (S3, K-21) | cam blok inişte yıldız çatlakla çatlar (60 ms), parçalara ayrılır, parçalar düşer; ekran 2 px sallanır; blok K-17 sırasıyla **başlangıç hücresinde** (doluysa sahanın üstünden düşerek) yeniden belirir (+1 hamle cezası, toplam −2: sayaç kırmızı değil, turuncu "−1" ek çipi uçar) | 500 | `Expo.easeOut` | 20 cam kırığı (beyaz-mavi üçgen, dönerek), 6 parıltı | `sfx_glass`: yüksek gürültü vuruşu + sine 2400/3100 Hz şıngırtı 250 ms | orta | sallama yok; çatlak + 150 ms solma; "−1" çipi kalır |
+| 42 | Cam kırılma (S3, K-21) | cam blok inişte yıldız çatlakla çatlar (60 ms), parçalara ayrılır, parçalar düşer; ekran 2 px sallanır; blok K-17 hedef sırasıyla **sahaya** döner: başlangıç hücreleri (yapışmış harçlı cam blokta bu adım atlanır, yapışma kalkar) → sahanın üstünden düşürme → kamyon kuyruğu (#88); +1 hamle cezası (toplam −2, yapışmış harçlı camda −3; GDD K-07): sayaç kırmızı değil, turuncu "−1" ek çipi uçar | 500 | `Expo.easeOut` | 20 cam kırığı (beyaz-mavi üçgen, dönerek), 6 parıltı | `sfx_glass`: yüksek gürültü vuruşu + sine 2400/3100 Hz şıngırtı 250 ms | orta | sallama yok; çatlak + 150 ms solma; "−1" çipi kalır |
 | 43 | Balon yükselme (S8) | bırakılınca blok yukarı yükselir ve **tavana takılır** (aktif dilimin plan tepesindeki tavan kirişi, ya da siluet tavana ulaştıysa siluetin üstü), balon hafif şişer (1,0→1,1), varışta 2 küçük sekme, ip kirişe bağlanır. Tavanın **üstünden** bırakılan balonlu blok ipi gerilerek kirişe **aşağı süzülür** (`duration.ceilingSettle`) | yol / 5 hücre·s⁻¹ + 200 | `Sine.easeOut`, sekme `Bounce.easeOut` | 4 küçük yıldız | `sfx_balloon`: yükselen sine 400→900 Hz (yükselme boyunca, −10 dB) + varışta "pof" | hafif (varışta) | sekme yok |
 | 44 | Saha yerçekimi zincirleme (Y6) | altı boşalan bloklar sütun sütun 30 ms kademeli düşer, her inişte küçük squash | fizik | ivmeli | her iniş 3 toz | `sfx_land` (−8 dB, 60 ms tekrar kilidi) | hafif (yalnız ilk iniş) | squash yok |
 | 45 | Ağır yerçekimi kayma (G-H, 700 / 1400 ms) | şantiye üstüne geçince bloğun sağ üstünde Ø 96 halka sayaç dolar (beyaz → son %30'da turuncu; ayar açıkken 1400 ms, UX §5.7); son 300 ms'de hafif haptik tık; süre bitince blok parmaktan kayar (2° yatar) ve düşer | 700 / 1400 + düşüş | `Linear` (çubuk) | yok | `sfx_slip`: sine 500→300 Hz 120 ms | hafif (kayınca) | aynı (oyun bilgisi; çubuk kalır) |
@@ -174,6 +178,8 @@ hızdan bağımsızdır; `steer.atRow` bu eğriden hesaplanır (code-lead).
 | 57 | Kaybetme: "Hamleler bitti!" | tahta %20 kararır, yazı yukarıdan iner; Tuna üzgün değil "kararlı" | 400 | `Back.easeOut` | yok | `sfx_out_of_moves`: inen iki nota (sine 523→392 Hz, 2×150 ms), sert değil | orta | solma |
 | 58 | Can kaybı | kalp gri olur (dolgu aşağıdan yukarı söner), kırılma yok; sayaç −1 | 400 | `Quad.easeIn` | yok | `sfx_life_lost`: yumuşak alçalan sine 330→220 Hz 300 ms | hafif | anında gri |
 | 59 | Yıldız ana ekrana uçuşu | yıldız kazanma ekranından üst çubuktaki sayaca kavisle uçar, 2 tur döner, sayaç +1 zıplar | 700 | `Cubic.easeInOut` | 10 sarı iz kıvılcımı | `sfx_star`: çan sine 1568 Hz + 2093 Hz 200 ms | başarı | uçuş yerine sayaç zıplaması |
+| 89 | Şantiye kapandı — "Yapı tamam!" (E-27, D-035; son dilimin #18 dizisi bitince, bölüm `clear` hedefi yüzünden sürüyorsa) | altın kurdele (UX §5.1) soldan sağa gerilir: x ölçeği 0→1,05→1,0, metin `build.done` 0→1; ardından hedefler panelindeki eksik `clear` sayacı **3 nabız** (1,0→1,12→1,0, `ui.gold` kenar parlaması, her nabız `duration.goalNudge`) ve sahadaki kalan `clear` nesneleri bir kez beyaz %40 parlar (300 ms). Kırmızı yok, döngü yok | 400 (`duration.siteClosedRibbon`) + 3 × 600 (`goalNudge`) | kurdele `Back.easeOut`, nabız `Sine.easeInOut` | 8 altın kıvılcım (kurdele uçlarında) | `sfx_goal_done` (−6 dB; ödül değil bilgi) | hafif | kurdele 150 ms solarak belirir; nabız yerine sayaç kenarı 1,2 s sabit `ui.gold` |
+| 90 | Kapalı şantiyeye bırakma (iptal, `siteClosed`) | blok #8 gibi başladığı yere döner (0 hamle); kurdele bir kez ±3° sallanır; eksik `clear` sayacı **1 nabız** (#89 ile aynı biçim) | 220 (#8) ‖ 600 (`goalNudge`) | #8 / `Sine.easeInOut` | yok | `sfx_cancel` (#8) | yok | sallanma yok; sayaç kenarı 600 ms sabit `ui.gold` |
 
 ---
 
@@ -215,7 +221,7 @@ hızdan bağımsızdır; `steer.atRow` bu eğriden hesaplanır (code-lead).
 | 84 | Eksik destek vurgusu (K-34 geri sekmesi ya da harç yapışması, R-01; olay `bounce` / `mortarStuck`, `missingSupport[]`) | geri sekme (ya da #14 harç yapışması) bitince bloğun altında kalan **eksik destek hücreleri** (`missingSupport`: doğru dolu olmayan plan hücreleri ve içinde moloz ya da yapışmış harçlı blok duran `.` hücreleri; tarama nesnenin üstüne çizilir) sarı yatay taramayla (`color.ghost.support`) 3 kez yanıp söner; ilk kez olunca `tut.ctx.support` | 600 (`supportFlash`) | `Sine.easeInOut` | yok | `sfx_tick` ×2 (−14 dB) | yok | tarama 600 ms sabit görünür (yanıp sönme yok) |
 | 85 | Sandık açılışı (bölüm / lig sandığı) | içerik ikonları baştan kapalı sandığın üstünde; "Aç" ile kapak kalkar (400 ms), ikonlar **gösterilen sırayla** 120 ms arayla üst çubuğa uçar. Dönen çark, slot, yavaşlayan kart, "neredeyse" efekti **yok** (E1) | 400 + 120/öğe | `Back.easeOut` | 8 altın kıvılcım | `sfx_chest`: tahta kapak "kırt" + `sfx_coin` | başarı | kapak solar, ikonlar sayaçlara solarak geçer |
 | 86 | Günlük ödül toplama | bugünkü kutu ✓ ile döner, ödül ikonları üst çubuğa uçar (#74); reklamla ×2 seçildiyse ikinci dalga | 600 (`dailyClaim`) | `Back.easeOut` | 6 yıldız | `sfx_coin` | hafif | kutu anında ✓ |
-| 87 | Kaldığın yerden devam (R-13) | açılışta tahta son durumuyla belirir (bloklar düşmez, 150 ms solma), Duraklat penceresi açık gelir, üstte 1,5 s "Kaldığın yerden devam" şeridi | 150 + 1500 | `Quad.easeOut` | yok | `sfx_popup` | yok | aynı |
+| 87 | Kaldığın yerden devam (R-13) | açılışta tahta son durumuyla belirir (bloklar düşmez, 150 ms solma), Duraklat penceresi açık gelir, üstte 1,5 s "Kaldığın yerden devam" şeridi. **İstisnalar (GDD K-43 madde 3–4, D-022; UX §1):** (a) `outcomeWindow = 'outOfMoves'` ise Duraklat ve şerit yok: tahta solarak belirir, ardından #57'nin karartması atlanır ve Pencere 1 #52 girişiyle **aynı teklif numarasıyla** açılır ("+5" çipi yine bir kez zıplar); (b) kazanma ekranındayken kapandıysa bölüm açılmaz, ana ekran normal girişle gelir (#55 ve ödül uçuşları tekrar oynamaz); (c) güncellemeyle geçersiz kalan deneme (K-43 madde 4, E-45): bölüm açılmaz, tahta kurulmaz; ana ekran normal girişle gelir ve `resume.void` penceresi #70 ile açılır; "Tamam"da iade satırının ikonları #74 ile üst çubuğa uçar (altın > 0 ise sikke dalgası; Faz 2'de #74 yoksa sayaçlar anında güncellenir), ardından #71. Şerit, #52, #57, can kaybı ve Köprü düşmesi (#77) oynamaz | 150 + 1500 (istisna (a): 150 + #52 300; (c): #70 220 + #74 900 + #71 160) | `Quad.easeOut` | yok | `sfx_popup` (istisna (a): `sfx_offer`; (c): `sfx_popup` + #74 `sfx_coin`) | yok ((c): #74 hafif) | aynı; (c) #74 tek sikke + sayaç |
 | 88 | Geri sekme → kamyon kuyruğu (K-17 adım 3) | sahada yer bulamayan blok küçülerek "Kamyonda: N" çipine uçar, çip #20 gibi zıplar | 400 (`duration.bounceToQueue`) | `Quad.easeInOut` | yok | `sfx_queue` | yok | blok solar, çip sayısı değişir |
 
 ---

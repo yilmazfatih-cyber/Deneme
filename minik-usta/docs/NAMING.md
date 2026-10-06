@@ -146,7 +146,7 @@ tescili (TÜRKPATENT + EUIPO + USPTO), tek UA kreatif seti, tek topluluk adı. R
 
 | Dil | Ad | Durum |
 | --- | --- | --- |
-| TR | "Minik Usta İnşaat" (hikayedeki aile firması; görev c1 t6 "'Minik Usta İnşaat' tabelasını as") | Kalır: hikaye öğesi, mağaza başlığında yok (§2 ek ilke) |
+| TR | "Minik Usta İnşaat" (hikayedeki aile firması: STORY §1 "Firma", §4.0 giriş sahnesi Panel 3 tabelası; ayrı bir kasaba görevi yok) | Kalır: hikaye öğesi, mağaza başlığında yok (§2 ek ilke) |
 | EN | "Tuna & Co." (`{company}` yer tutucusu, STORY) | **Onay**, varsayılan. Marka değil, hikaye öğesi; tescil gerekmez. Ad çakışması aranmadı (doğrulanamadı); "& Co." genel kalıp olduğu için risk düşük (tahmin) |
 
 Seçilen oyun adı firma adına taşınmaz (ör. "Lift & Land Co." yok): oyun adı değişirse hikaye metni değişmesin. Kepçe EN

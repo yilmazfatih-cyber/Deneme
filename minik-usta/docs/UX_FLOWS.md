@@ -29,7 +29,12 @@ yeri ayrılmış · **[Mağaza]** yalnız Capacitor/mağaza sürümü. Etiketsiz
     "Bölüm N" düğmesi.
   - **Tahta grubu** (`layout.board.*`): vinç alanı + tahta + durum şeridi; y değerleri 1920 içindir, `H > 1920` iken
     `(H − 1920) × board.expandShare (0,5)` kadar aşağı kayar. FIT'te `H = 1920` → kayma 0.
-  - **Pencereler** `H` içinde dikey ortalanır; seçenek düğmeleri pencerenin altına dizilir (`layout.popup.*`).
+  - **Pencereler** alttan çapalanır: panel alt kenarı `y = H − layout.popup.panelBottomPx` (296); seçenek düğmeleri
+    panelin alt kenarından `optionsBottomInsetPx` (64) yukarıda alttan üste dizilir (`layout.popup.*`). FIT'te 3 alt
+    alta seçenek y 1056–1560 (rahat bölge, §0.2), tek düğme 1408–1560 (birincil y ≥ 1400); EXPAND'de panel alt kenarla
+    birlikte aşağı iner ve seçenekler yine alt %45'te kalır. Dikey ortalama kullanılmaz: ortalanan kısa ya da çok
+    seçenekli pencerede ilk düğme esneme bölgesine (y < 1056) çıkıyordu. En uzun pencere (bölüm öncesi, h 1280) FIT'te
+    y 344'ten başlar.
   - Arka plan katmanları 1080×2400 çizilir (ASSET_LIST §6); fazladan yükseklik gökyüzü ve yakın katmanla dolar.
   Bu belgedeki wireframe'ler `H = 1920`'yi gösterir; 2337 px'te (390×844, EXPAND) tahta 208 px aşağı kayar ve başparmak
   bölgesine yaklaşır. Ekran görüntüleri iki profilde de incelenir (`ios67` 1290×2796, `android` 1080×1920; TECH §12).
@@ -60,7 +65,7 @@ blok parmağın 1,2 hücre üstünde göründüğü için parmak bloğun altınd
 | Birincil düğme | yeşil, en az 560×160 px, 3B dudak 12 px, metin `font.size.button` (56 px) beyaz + kontur |
 | İkincil düğme | turuncu, 400×144 px |
 | Nötr düğme | dolgulu krem (`ui.neutral` / `neutralLip`), yazı `ui.ink`; ikincil düğmeyle **aynı boyda** kullanılır. "Hayır, teşekkürler", "Reklam izle", "Çık" gibi seçenekler bu kalıptır |
-| Eşit çift düğme | iki seçenek yan yana, **eşit boy 440×152** (aralarında 40 px, toplam 920 = `layout.popup` genişliği); biri yeşil ya da turuncu, öbürü krem. Birincil düğmenin "en az 560×160" kuralının **bilinçli istisnasıdır** (eşitlik kuralı, R-15); yükseklik ≥ 128 px ve rahat bölge (y ≥ 1056) şartı geçerlidir. Kullanım: çıkış onayı (Kal / Çık), günlük ödül (Topla / Reklam ×2), kural kartı (Katıl / Şimdi değil), Usta Modu kartı (Başla / Şimdi değil) |
+| Eşit çift düğme | iki seçenek yan yana, **eşit boy 440×152** (aralarında 40 px, toplam 920 = `layout.popup` genişliği); biri yeşil ya da turuncu, öbürü krem. Birincil düğmenin "en az 560×160" kuralının **bilinçli istisnasıdır** (eşitlik kuralı, R-15); yükseklik ≥ 128 px ve rahat bölge (y ≥ 1056) şartı geçerlidir. Kullanım: çıkış onayı (Kal / Çık), günlük ödül (Topla / Reklam ×2), kural kartı (Katıl / Şimdi değil), Usta Modu / Tekrar turu kartı (Başla / Şimdi değil) |
 | Görsel + pay (dokunma alanı) | Kısa kenarı 128 px'ten küçük **her** dokunulabilir öğe görünmez pay ile en az 128 px'e tamamlanır (`touch.minTargetPx`); pay iki yana eşit eklenir (112 px → her yanda 8 px; 96 px → 16 px; 88 px → 20 px). Pay komşu hedefin payıyla çakışırsa dokunuş merkezine en yakın hedefe gider (blok payı kuralıyla aynı). Bu belgedeki "+ pay" notları bu kuraldır |
 | Metin düğme | dolgusuz, `ui.inkSoft`, alt çizgi yok, dokunma alanı ≥ 128 px yükseklik. **Satın alma ya da reklam penceresinde reddetme seçeneği olarak kullanılmaz** (R-15) |
 | Fiyat etiketi (`PriceLabel`) | Altınla fiyatlanan **her** düğmede iki satır: üstte altın simgesi (`icon_coin` görüntüsü, 1 em; wireframe'lerdeki "●" bu simgedir, fontta karakter olarak yoktur) + "900" (`font.size.button`), altta gerçek para karşılığı yerel para biriminde: TR "≈ 81 TL", EN "≈ $1.79" (`font.size.caption`; asla altından büyük değil; mağaza sürümünde para birimi mağaza yerel ayarından). 2. satırın rengi zemine göre: **renkli düğmede (turuncu, yeşil) `ui.ink`** (turuncu üstünde 6,5:1, yeşil üstünde 5,3:1), krem zeminde `ui.inkSoft` (6,5:1). Bu satır R-15'in görünür olmasını istediği bilgidir; 4,5:1 altına inmez. Karşılık `config/economy.json`'daki referans fiyattan (Avuç paketi birim fiyatı) hesaplanır; web MVP'de yanında "test sürümü" etiketi (E9). Tek bileşen, bütün pencerelerde aynı (E2) |
@@ -111,7 +116,38 @@ Durumlar:
 - **Geri dönen oyuncu:** splash → Ana ekran (FTUE değilse).
 - **Yarım kalan bölüm (R-13):** kayıtta `inLevel` varsa splash → doğrudan **oyun ekranı**, bölüm kaldığı hamleden
   kurulur ve **Duraklat penceresi açık** gelir (başlık "Kaldığın yerden devam", birincil "Devam"). Can gitmez, seri
-  bozulmaz; G-H sayacı ve animasyonlar sıfırdan başlar. Ayrıntı §5.1.
+  bozulmaz; G-H sayacı ve animasyonlar sıfırdan başlar. Ayrıntı §5.1. **Üç istisna (GDD K-43 madde 3–4, D-022):**
+  (a) `inLevel.outcomeWindow = 'outOfMoves'` ise Duraklat penceresi **açılmaz**; tahta kurulur ve doğrudan §7
+  Pencere 1 **aynı teklif numarasıyla** ("Teklif n/3", aynı fiyat basamağı; reklam düğmesi §7 kuralıyla, yalnız 1.
+  teklifte) açılır; kaçış yolu yoktur (× = "Hayır, teşekkürler"). (b) Kazanma ekranındayken kapanmışsa ödüller kazanma
+  anında verilmiştir ve `inLevel` silinmiştir: splash → **Ana ekran**; kazanma ekranı yeniden gösterilmez, ödül tekrar
+  verilmez (TECH §11.1 tek davranış). Kazanmayla dolan bölüm / Usta Sandığı penceresi açılmadan kapanmışsa ana ekran
+  açılışında §3.1 sandık penceresi bir kez açılır. (c) **Güncellemeyle geçersiz kalan deneme (K-43 madde 4, E-45):**
+  `inLevel.levelHash` ya da `rulesVersion` uygulamadakinden farklıysa oyun ekranı **açılmaz**, tahta kurulmaz; deneme
+  oynanmamış sayılır ve iade açılış kaydında yapılmıştır (TECH §11.1 `voidAttempt`). Splash → **Ana ekran** (normal
+  giriş; Bölüm 1–2'de o anki FTUE düzeniyle) + tek düğmeli **güncelleme penceresi** (aşağıda). Pencere ana ekranın bu
+  açılışında her şeyden önce gelir; bekleyen ara sahne (§8) ve sandık penceresi "Tamam"dan sonra kendi kurallarıyla
+  oynar. Oyuncu aynı bölümü Bölüm düğmesiyle yeniden başlatır (seri bonusu tüketilmemiştir, §4'te yine görünür).
+  Elenme, kayıp, "deneme yandı" ya da suçlama dili yok; kırmızı yok, `tut.ctx.resume` gösterilmez.
+
+  ```
+         │  OYUN GÜNCELLENDİ                  │  resume.void.title (h1); × yok, geri tuşu = "Tamam"
+         │  Bölüm 18 baştan başlayacak.        │  resume.void.body (body): "Bölüm {n} baştan başlayacak.
+         │  Harcadıkların geri verildi.        │    Harcadıkların geri verildi."
+         │    ♥ 1    🔨 1    ● 1.350           │  iade satırı: yalnız > 0 kalemler, 96 px ikon + adet (aşağıda)
+         │  Köprüdeki yerin korundu.           │  resume.void.bridge (caption, ui.inkSoft); yalnız Köprü denemesinde
+         │  ┌──────────────────────────────┐  │
+         │  │            TAMAM             │  │  common.ok; birincil yeşil 920×152, y 1408–1560 (§0.1)
+         │  └──────────────────────────────┘  │
+  ```
+
+  İade satırı (TECH §11.1 iade listesinin görünür hali; sıra sabit): `icon_life` + "1" (ayrılan can; sınırsız can
+  süresinde can ayrılmadıysa yok) · oyun öncesi ve bölüm içi güçlendirici ikonları + adet (aynı güçlendirici
+  toplanır; Altın Mala yok, Mala Başlangıcı `icon_trowel_start`) · `{coin}{n}` (`offerSpendCoins` > 0 ise). Reklamla
+  alınan +5 ve ömür ilk teklif hediyesi geri verilmediği için satırda görünmez; hakkında metin de yazılmaz. "Tamam" →
+  satırdaki ikonlar üst çubuğa uçar (JUICE #74; altın > 0 ise sikke dalgası) ve pencere kapanır (JUICE #87 (c)).
+  Pencere bir kez gösterilir: içeriği `voidAttempt` ile aynı atomik kayıtta bekleyen bildirim olarak yazılır, "Tamam"la
+  silinir; "Tamam"dan önce uygulama kapanırsa sonraki açılışta aynı içerikle yeniden gelir (iade tekrar yapılmaz).
 - **Ses:** ses kilidi açılmadan istenen sesler **atılır**, kuyruğa alınmaz (TECH §11.6); açılış sesleri süstür.
 
 ---
@@ -136,11 +172,11 @@ tahtasının etkileşime açıldığı kare.
 | 2 | Giriş paneli 1 (otomatik) | 1,8 | 0 | 3,8 | Her panel 1,8 s sonra kendiliğinden geçer; dokunmak hemen geçirir. |
 | 3 | Giriş paneli 2 (otomatik) | 1,8 | 0 | 5,6 | |
 | 4 | Giriş paneli 3 (otomatik) | 1,8 | 0 | 7,4 | |
-| 5 | Geçiş (panel → tahta, 0,4 s) + Bölüm 1 tahtası açılır | 0,6 | 0 | **8,0** | Usta Dede balonu ve el animasyonu tahtayla aynı anda gelir. |
+| 5 | Geçiş (panel → tahta, 0,4 s) + Bölüm 1 tahtasının ilk yükleme düşüşü (0,4 s, §5.1 "ilk yükleme"; etkileşim düşüş bitince açılır) | 0,8 | 0 | **8,2** | Usta Dede balonu ve el animasyonu tahtayla aynı anda gelir. |
 
 - **Dokunuş:** gerekli dokunuş **0**. Oyuncu panelleri dokunarak hızlandırırsa en fazla 3 dokunuş (her panel 1) ya da
   "Geç" ile **1 dokunuş**; her durumda ≤ 3. ✓
-- **Süre:** dokunmadan 8,0 s; panelleri dokunarak geçen oyuncu ~4–5 s. Yükleme bütçesi 2,0 s'yi 2 s aşsa bile 10 s
+- **Süre:** dokunmadan 8,2 s; panelleri dokunarak geçen oyuncu ~4–5 s. Yükleme bütçesi 2,0 s'yi 1,8 s aşsa bile 10 s
   içinde kalır (açılış animasyonu yüklemeyi örter; paneller yükleme bitmeden başlamaz). ✓
 - **Ses kilidi:** tarayıcılar sesi ilk kullanıcı dokunuşuna kadar engeller. İlk dokunuş (panel ya da blok) sesi açar;
   dokunmadan geçen oyuncu ilk bloğu tuttuğunda sesi duyar. Ayrı bir "Başlamak için dokun" ekranı **yok**.
@@ -148,7 +184,7 @@ tahtasının etkileşime açıldığı kare.
   öneri ≤ 1,5 MB gzip ilk yük). Kurulu uygulama ve tekrar ziyaret için yukarıdaki tablo geçerlidir.
 - **Ölçüm kapısı:** iddia `npm run perf`'te otomatik doğrulanır (soğuk başlangıç, 4× CPU yavaşlatma; web ilk ziyaret
   için ayrıca "Fast 4G"); gezinme başlangıcı → `window.__levelInteractive` ≤ 10 s. Phaser paket ayrıştırması (0,3–0,8 s,
-  tahmin) 2 s'lik payın içindedir; aşılırsa önce panel süresi 1,8 → 1,5 s'ye iner.
+  tahmin) 1,8 s'lik payın içindedir; aşılırsa önce panel süresi 1,8 → 1,5 s'ye iner.
 
 ### 2.2 FTUE adımları (Bölüm 1 sonrası)
 
@@ -211,7 +247,7 @@ y    0 ┌───────────────────────�
 
 | Öğe | Konum / boyut | Davranış |
 | --- | ------------- | -------- |
-| Can | (24, 40) 300×112 görsel + üstte/altta 8 px pay → 128 px | Kalp + sayı + yenilenme sayacı (dolu ise "Dolu"); sınırsız can süresinde kalp içinde ∞ + geri sayım. Dokun → Can penceresi (§3.1). |
+| Can | (24, 40) 300×112 görsel + üstte/altta 8 px pay → 128 px | Kalp + sayı + yenilenme sayacı (dolu ise "Dolu"); sınırsız can süresinde kalp yerine `icon_life_unlimited` (çizilmiş sonsuzluk işareti; ∞ karakteri metne yazılmaz, ART §8) + geri sayım. Dokun → Can penceresi (§3.1). |
 | Altın | (348, 40) 360×112 görsel + üstte/altta 8 px pay → 128 px | Sikke + sayı + yeşil (+) 80 px. Dokun → Mağaza. |
 | Yıldız | (732, 40) 240×112 görsel + üstte/altta 8 px pay → 128 px | Yıldız + sayı. Dokun → görev penceresi. |
 | Ayarlar | (996, 52) 72×88 görsel + pay → 128 px | Dişli. Dokun → Ayarlar. |
@@ -233,11 +269,22 @@ Durumlar:
   bir sonraki açılışında (ekran geçişi ya da soğuk açılış) önce `story.chN.start` oynar, sonra N'nin ilk görev balonu
   belirir (§8).
 - **Can yok:** Bölüm düğmesi gri değil (oyuncu yine dokunabilir) → Can penceresi (§3.1).
-- **İçerik sonu (Bölüm 50 bitti):** düğme "Usta Modu" (`master.button`) — **MVP (onay bekliyor, R-17)**. İlk dokunuşta
-  bir kez giriş kartı: `master.card.title` + `master.card.body` "Bildiğin bölümler, daha az hamle." + `master.card.chest`
-  + eşit boy "Başla" (yeşil) / "Şimdi değil" (krem). Düğmenin üstünde "Yeni bölümler yolda" bandı (`home.moreSoon`)
-  kalır. Usta Modu MVP'ye girmezse düğme yerine pasif "Yeni bölümler yolda" + "Devamı yolda…" sahnesi (STORY §4.5 son
-  panel, MVP).
+- **Güncellemeyle geçersiz deneme dönüşü (K-43 madde 4, E-45):** açılışta yarım bölüm sürüm uyuşmazlığıyla
+  kapandıysa ana ekran normal düzeniyle gelir ve önce `resume.void` güncelleme penceresi açılır (§1 (c)); Bölüm
+  düğmesi aynı bölümü gösterir.
+- **İçerik sonu (Bölüm 50 bitti; D-026, META §8.5, `economy.json → masterMode.variant`):** iki düzen de MVP'dir ve
+  50'den sonra **Bölüm düğmesi hep oynanabilir kalır** (Köprü ve Lig ilerlemesi durmaz; pasif düğme yok). Her iki
+  düzende düğmenin üstünde "Yeni bölümler yolda" bandı (`home.moreSoon`) kalır; "Devamı yolda…" paneli `story.ch5.end`
+  sahnesinin son panelidir (STORY §4.5), ayrı bir ekran değildir.
+  - **`variant: master` (önerilen, onay bekliyor, R-17):** düğme "Usta Modu" (`master.button`). İlk dokunuşta bir kez
+    giriş kartı: `master.card.title` + `master.card.body` "Bildiğin bölümler, daha az hamle." + `master.card.chest` +
+    eşit boy "Başla" (yeşil) / "Şimdi değil" (krem). Sonraki dokunuşlar sıradaki bölümü açar (11…50, sonra yeniden 11).
+  - **`variant: replay` (proje sahibi Usta Modu için "Sonra" derse, D-026 yedeği):** düğme `replay.button` "Tekrar ·
+    Bölüm {n}" (sıradaki bölüm: 11…50, sonra yeniden 11; ZOR / ÇOK ZOR etiketi özgün zorluktan). İlk dokunuşta bir kez
+    giriş kartı: `replay.card.title` + `replay.card.body` "Bildiğin bölümler. Köprü ve Lig sürüyor." +
+    `master.card.chest` (Usta Sandığı bu düzende de verilir, META §8.5) + eşit boy "Başla" / "Şimdi değil". Hamle =
+    özgün bütçe; yıldız yok; ödül yalnız kazanma tabanı (Bonus İnşaat ve mala altını yok; kazanma ekranı §6); galibiyet
+    serisine, Köprü'ye ve Lig'e sayılır.
 
 ### 3.1 Ana ekran pencereleri
 
@@ -299,6 +346,10 @@ yavaşlayan kart, "neredeyse" animasyonu ve rastgele seçim görseli **yok**; i�
 Lig sandığı ve Usta Sandığı (Usta Modu, her 10 galibiyet; META §8.5) aynı pencereyi kullanır (Lig sonuç penceresinden /
 kazanma ekranından açılır).
 
+**Sınırsız can ödülde** (günlük ödül 7. gün, bölüm / lig sandığı; META §8): içerik satırında `icon_life_unlimited` +
+süre `common.minutes` "{n} dk" (ör. "30 dk"); açılmadan önce diğer içerikle birlikte görünür (E1). Toplanınca ikon
+üst çubuktaki kalbe uçar (JUICE #74) ve kalp süre boyunca `icon_life_unlimited` olur.
+
 **Kilitli güçlendirici ödülde ve pakette** (META §4, BUSINESS E1): günlük ödül kutuları, bölüm / lig sandığı içeriği ve
 mağazanın başlangıç paketi kartı, açılış bölümü henüz gelmemiş güçlendiriciyi de **gösterir**. İkon tam renkli kalır
 (içerik açmadan önce görünür), sağ alt köşesinde 40 px asma kilit (`icon_lock`) ve altında `font.size.caption`
@@ -311,21 +362,21 @@ Bölüm 5'te açılan başlangıç paketindeki Çekiç (8), Vinç (10), Termos (
 ## 4. Bölüm öncesi pencere
 
 ```
-y  300 ┌────────────────────────────────────┐ (×) 144 px hedef, köşe (1000, 300)
-       │  ┌──────────────────────────────┐  │  panel 960×1280, x 60–1020
-  360  │  │      BÖLÜM 12      [ZOR]     │  │  başlık h1 88 px
-  480  │  ├──────────────────────────────┤  │
+y  344 ┌────────────────────────────────────┐ (×) 144 px hedef, köşe (1000, 344)
+       │  ┌──────────────────────────────┐  │  panel 960×1280, x 60–1020; y 344–1624 (alttan çapa, §0.1)
+  404  │  │      BÖLÜM 12      [ZOR]     │  │  başlık h1 88 px
+  524  │  ├──────────────────────────────┤  │
        │  │   ┌──────────┐  ┌───┐ ┌───┐ │  │  hedefler: yapı resmi 280×280 + ek hedefler 160×160
        │  │   │ Tezgâh   │  │▦×6│ │✦×5│ │  │
-  800  │  │   └──────────┘  └───┘ └───┘ │  │
-  860  │  │  Galibiyet serisi: ▰▰▱ (2)   │  │  seri göstergesi 760×100 (Bölüm 15+)
-  980  │  │  ┌────┐  ┌────┐  ┌────┐      │  │  3 oyun öncesi güçlendirici yuvası 200×200
+  844  │  │   └──────────┘  └───┘ └───┘ │  │
+  904  │  │  Galibiyet serisi: ▰▰▱ (2)   │  │  seri göstergesi 760×100 (Bölüm 15+)
+ 1024  │  │  ┌────┐  ┌────┐  ┌────┐      │  │  3 oyun öncesi güçlendirici yuvası 200×200
        │  │  │ 🧪 │  │ 🪣 │  │ ▤↑ │      │  │  seçilince yeşil çerçeve + ✓
- 1180  │  │  └────┘  └────┘  └────┘      │  │
- 1380  │  │  ┌────────────────────────┐  │  │
-       │  │  │         OYNA           │  │  │  birincil 640×176, merkez (540, 1468)
- 1556  │  │  └────────────────────────┘  │  │
- 1580  └──┴──────────────────────────────┴──┘
+ 1224  │  │  └────┘  └────┘  └────┘      │  │
+ 1424  │  │  ┌────────────────────────┐  │  │
+       │  │  │         OYNA           │  │  │  birincil 640×176, merkez (540, 1512)
+ 1600  │  │  └────────────────────────┘  │  │
+ 1624  └──┴──────────────────────────────┴──┘
 ```
 
 | Öğe | Not |
@@ -408,12 +459,32 @@ Durum şeridi tahta grubuna aittir (tahtayla birlikte kayar); Tuna köşesi ve g
 
 Geri tuşu ve × = "Kal". Uygulamanın kapanması, arama ya da sistem tarafından öldürülmesi **kayıp değildir**: her hamle
 sonunda hamle günlüğü kaydedilir; bir sonraki açılışta bölüm kaldığı yerden, Duraklat penceresi açık olarak sürer
-("Kaldığın yerden devam"). Kayıp yalnız bu onayla ya da hamleler bitince olur.
+("Kaldığın yerden devam"). İstisnalar (§1): "Hamleler bitti" penceresi açıkken kapandıysa Duraklat yerine aynı
+teklifli Pencere 1 açılır; kazanma ekranındayken kapandıysa ana ekran gelir; güncellemeyle bölüm verisi ya da kural
+sürümü değiştiyse (K-43 madde 4) bölüm açılmaz, ana ekranda `resume.void` penceresi iadeyi gösterir. Kayıp yalnız bu
+onayla ya da teklif reddiyle olur.
 
 Durumlar: **ilk yükleme** (tahta 400 ms içinde bloklar yukarıdan yerine düşer; etkileşim bu animasyon bitince açılır)
 · **kilitlenme** (K-30 Kamyon Yardımı; nedene göre 3 varyant, JUICE #21) · **hamle bitti** (Kaybetme penceresi) ·
 **duraklatma** (uygulama arka plana atılınca otomatik; durum kaydedilir) · **devam** (yarım kalan bölüm; yukarıda) ·
-**hata** (beklenmeyen durum: oyun kaydı alınır, "Bölümü baştan başlat" teklif edilir, can gitmez).
+**hata** (beklenmeyen durum: oyun kaydı alınır, "Bölümü baştan başlat" teklif edilir, can gitmez) · **şantiye kapalı**
+(aşağıda).
+
+**Şantiye kapalı — "Yapı tamam!" (GDD E-27, K-07 satır 5, D-035):** bütün dilimler tamam ama bir `clear` hedefi eksikse
+bölüm sürer ve şantiyeye bırakma iptaldir (0 hamle; TECH `siteClosed`). Oyuncu bunu hamle yakmadan görmelidir:
+
+- **Kurdele:** son dilimin tamamlanma dizisi (JUICE #18) bitince duvarın ve şantiyenin üstüne altın kurdele gerilir
+  (JUICE #89): 306×96 px, x 750–1056, y 960–1056 (tahta grubu; EXPAND'de tahtayla birlikte kayar), −6° eğik, uçları
+  24 px V kesik; dolgu `ui.gold`, kenar 4 px `ui.goldDark`; metin `build.done` "Yapı tamam!" (STORY §7.5)
+  `font.size.small` `ui.ink` (8,5:1); 282 px'e sığmazsa `font.size.caption`. Kurdele bölüm sonuna kadar kalır,
+  dokunulmaz (dokunuş altındaki tahtaya geçer). Renk tek bilgi değildir: metin + kurdele biçimi.
+- **Eksik hedef nabzı:** hedefler panelindeki eksik `clear` sayacı 3 kez nabız atar ve sahadaki kalan `clear`
+  nesneleri bir kez parlar (JUICE #89). Kırmızı yok, geri sayım yok; nabız döngüsel değildir.
+- **İptal öngörüsü:** blok şantiye sütunlarına (x ≥ 6) taşındığı her konumda §5.3 iptal öngörüsünü gösterir (%60 opak +
+  "↩" rozeti); düşüş gölgesi (§5.4) çizilmez, çünkü düşüş olmayacak. Harç maliyeti çipi (§5.1 tablo) %40 soluklaşır.
+- **Bırakınca:** blok kavisle başladığı yere döner (JUICE #8, 0 hamle), kurdele bir kez sallanır ve eksik sayaç bir
+  kez nabız atar (JUICE #90). Usta Serisi ve hamle sayacı değişmez.
+- Bölüm tasarımı bu durumdan kaçınır (LEVELS §5 kontrol listesi); sunum yine de her bölümde hazırdır.
 
 ### 5.2 Güçlendirici kullanım akışı
 
@@ -431,7 +502,10 @@ Durumlar: **ilk yükleme** (tahta 400 ms içinde bloklar yukarıdan yerine düş
 | Açık Kepenk (K-40, oyun öncesi) | — | bölümde W4/W7 yok → bölüm öncesi pencerede gri "Bu bölümde kepenk yok" | Etkiyi yalnız Kepenk ve Kilitli geçitlerin üstündeki bayrak gösterir (JUICE #67) |
 
 3. Uygulama animasyonu (JUICE) → adet −1. Vazgeçilirse ya da geçersiz hedefe dokunulursa adet düşmez.
-4. Güçlendiriciler hamle harcamaz; hamle sayacı ve Usta Serisi değişmez (görsel geri bildirim de yok).
+4. Güçlendiriciler hamle harcamaz; Çekiç, Vinç, Boya Fırçası ve Altın Mala hamle sayacını ve Usta Serisi'nin boncuk
+   sayacını değiştirmez (görsel geri bildirim de yok; Altın Mala kullanılınca yalnız mala yuvasındaki adet 1 azalır). **İstisna
+   Geri Al:** son sürükleme hamlesini tümüyle geri aldığı için hamle sayacını harcanan kadar (+1 / +2 / +3) ve Usta
+   Serisi'ni (o hamlede kazanılan Altın Mala dahil) hamle öncesi değerine döndürür (GDD K-39, K-33; JUICE #64).
 
 ### 5.3 Sürükleme hissi (tasarım ilkesi 4)
 
@@ -445,7 +519,7 @@ Durumlar: **ilk yükleme** (tahta 400 ms içinde bloklar yukarıdan yerine düş
 | Yapışkan takip (K-08) | parmak ulaşılamaz yere giderse blok en yakın ulaşılabilir konumda kalır; ayrılık > 0,5 hücre ve > 150 ms ise bloktan parmağa noktalı **ip** (beyaz %60, 6 px) çıkar ve blok parmağa doğru 3° yaslanır | `drag.tetherDelayMs` |
 | Çarpma | yapışkan takip bir engele dayandığında blok o yöne 6 px esneyip geri gelir (JUICE: "takip engele çarptı") | — |
 | Vinç alanı tavanı (K-05, W2) | boyu > `10 − height` olan blok (duvar 8 → boy > 2, duvar 7 → boy > 3) duvar tepesinde takılırsa (`blockedByWallHeight`) vinç alanının kesik sınır çizgisi ve sağ kenardaki açık yükseklik işareti (`10 − height` çentik, ART §5) 400 ms parlar + çarpma esnemesi; ilk kez olunca bağlamsal öğretici `tut.ctx.tootall` | — |
-| İptal öngörüsü (K-05, K-07) | bırakma iptal olacak bir konumdaysa (saha üstünde havada, duvar sınırını kesiyor) blok %60 opak olur ve üstünde 44 px "↩" rozeti görünür; bırakınca kavisle döner (hamle yok) | — |
+| İptal öngörüsü (K-05, K-07) | bırakma iptal olacak bir konumdaysa (saha üstünde havada, duvar sınırını kesiyor, **şantiye kapalıyken şantiye üstünde** — K-07 satır 5, E-27, §5.1 "Yapı tamam!") blok %60 opak olur ve üstünde 44 px "↩" rozeti görünür; bırakınca kavisle döner (hamle yok) | — |
 | Bırakma (sahada) | hücreye 90 ms easeOutQuad oturma, ölçek 1,08 → 1,00 | — |
 | Bırakma (şantiye üstü) | düşüş (K-11) | JUICE |
 | Bırakma (geçerli değil) | başlangıç yerine 220 ms kavisle dönüş, hamle harcanmaz (K-07) | — |
@@ -473,6 +547,7 @@ Blok şantiyenin üstündeyken (duvar üstünden ya da vinç alanından geçmiş
 | Balon (S8) | gölge yukarıda, **tavan kirişinin** (ART §4) hemen altında + ip simgesi; balon tavanın üstünden bırakılırsa da gölge kirişin altında (blok iner) | aynı |
 | Hafif yerçekimi (G-L) | önce yönlendirmesiz iniş; yönlendirmeden sonra gölge **yeni inişe** 80 ms'de kayar | aynı |
 | Ray (K-12) | blok raydayken gölge yok; blok bulunduğu yerde kalacağı için kontur doğrudan bloğun üstünde gösterilir (doğru/hatalı ve K-34 kuralı aynı) | aynı |
+| Şantiye kapalı (E-27) | düşüş olmayacağı için gölge yok; yerine iptal öngörüsü (%60 opak + "↩", §5.3) ve "Yapı tamam!" kurdelesi (§5.1). Tek istisna budur: "gölge her zaman görünür" ilkesi düşüşün olduğu her durum içindir | aynı |
 
 Gölge yalnız **birincil nedeni** (çekirdeğin `verdict.reasons[0]`, sıra GDD K-34 kanca 2: `debris` → `outside` → `window` → `color` → `support`) gösterir; satırlar bu nedenlerle birebirdir. Şekil ayrı bir neden değildir: blok sınırlarının plandaki parça çizgisine uyması gerekmez (K-16).
 
@@ -554,11 +629,15 @@ dokununca ×3 hızlanır) → kalan Altın Mala satırı → ödüller → "Deva
 (her 10 bölüm) önce sandık penceresi (§3.1) açılır. **Bütün altın değerleri `config/economy.json`'dan** (META §3.1);
 wireframe sayıları örnektir.
 
-Durumlar: **etkinlik ilerlemesi** (Sallanan Köprü aktifse "Tahta 4/7" satırı eklenir; Lig puanı "+2 puan").
+Durumlar: **etkinlik ilerlemesi** (Sallanan Köprü aktifse "Tahta 4/7" satırı eklenir; 7. tahtada ve `finisherExtras`
+varsa altında `bridge.extra.got` satırı ve ikonlar üst çubuğa uçar, JUICE #74; Lig puanı "+2 puan" çarpanlı sonuçtur,
+bonus uygulandıysa yanında "×2" / "+1" çipi, §10).
 **Usta Modu** (MVP, onay bekliyor; META §8.5): yıldız satırı yok; Bonus İnşaat ve Altın Mala satırları **normal**
 oynar, miktarlar (kazanma tabanı, hamle başı, mala başı) bölümün **özgün** zorluk etiketinden hesaplanır (META §8.5,
-§9). Not: "yalnız kazanma tabanı, Bonus İnşaat yok" düzeni yalnız Usta Modu'nun "Sonra" kararına bağlı **yedek** kuraldır
-(BUSINESS §9.2); o karar verilmedikçe uygulanmaz. **Boş / hata / kilitli:** yok.
+§9). **Tekrar turu** (`masterMode.variant: replay`, D-026 yedeği, yalnız Usta Modu "Sonra" kararında; BUSINESS §9.2):
+yıldız satırı, Bonus İnşaat satırı ve kalan Altın Mala satırı **yok**; ödül satırında yalnız kazanma tabanı (özgün
+zorluktan); etkinlik satırları (Köprü tahtası, Lig puanı) ve Usta Sandığı ilerlemesi normal. **Boş / hata / kilitli:**
+yok.
 
 ---
 
@@ -567,26 +646,28 @@ oynar, miktarlar (kazanma tabanı, hamle başı, mala başı) bölümün **özg�
 **Pencere 1 — "Hamleler bitti!"** (R-15; BUSINESS §4.3, §4.5)
 
 ```
-y  360 ┌────────────────────────────────────┐ (×)  = "Hayır, teşekkürler"
+y  456 ┌────────────────────────────────────┐ (×)  = "Hayır, teşekkürler"
        │        HAMLELER BİTTİ!             │  h1
-  500  │   ┌──────────────┐                 │
+  596  │   ┌──────────────┐                 │
        │   │ kalan hedef  │  Kalan: 2 hücre  │  nötr bilgi: "Kalan: 2 hücre", "Kasa ×1"
-  800  │   └──────────────┘   ☺ Tuna        │  Tuna "kararlı" ifade, balon YOK
-  880  │   Teklif 1/3                        │  small, ui.inkSoft — eskalasyon ve sınır görünür
-  960  │  ┌──────────────────────────────┐  │
+  896  │   └──────────────┘   ☺ Tuna        │  Tuna "kararlı" ifade, balon YOK
+  976  │   Teklif 1/3                        │  small, ui.inkSoft — eskalasyon ve sınır görünür
+ 1056  │  ┌──────────────────────────────┐  │  ← rahat bölge sınırı (§0.2)
        │  │ +5 hamle          ● 900      │  │  920×152 turuncu; PriceLabel 2. satır:
        │  │                ≈ 81 TL        │  │  TR "≈ 81 TL" / EN "≈ $1.79"
- 1112  │  └──────────────────────────────┘  │
- 1136  │  ┌──────────────────────────────┐  │
+ 1208  │  └──────────────────────────────┘  │
+ 1232  │  ┌──────────────────────────────┐  │
        │  │ ▶ Reklam izle · +5 hamle      │  │  920×152 krem; yalnız 1. teklifte; "bugün 1/3"
- 1288  │  └──────────────────────────────┘  │
- 1312  │  ┌──────────────────────────────┐  │
+ 1384  │  └──────────────────────────────┘  │
+ 1408  │  ┌──────────────────────────────┐  │
        │  │ Hayır, teşekkürler            │  │  920×152 krem — metin düğme DEĞİL
- 1464  │  └──────────────────────────────┘  │
- 1528  └────────────────────────────────────┘
+ 1560  │  └──────────────────────────────┘  │  optionsBottomInsetPx 64
+ 1624  └────────────────────────────────────┘  panel alt kenarı = H − panelBottomPx (296)
 ```
 
-- **Eşit seçenekler:** üç düğme aynı boy (920×152), alt alta, rahat bölgede; hiyerarşi yalnız renkle. Giriş
+- **Eşit seçenekler:** üç düğme aynı boy (920×152), alt alta, rahat bölgede (FIT'te y 1056–1560, `layout.popup`
+  alttan çapası, §0.1; EXPAND'de daha aşağıda); hiyerarşi yalnız renkle. 2. ve 3. teklifte iki düğme kalır: alttan
+  dizildikleri için 1232–1560'ta, panel üst kenarı aynı oranda iner. Giriş
   animasyonu üçünde aynı; "+5" çipi pencere açılırken **bir kez** zıplar, sonra durur (JUICE #52).
 - **Ömür ilk teklifi (META §3.2):** oyuncunun hayatındaki ilk "Hamleler bitti" penceresinde turuncu düğme fiyatsızdır:
   `lose.offer.gift` "+5 hamle · Usta Dede'den hediye" (PriceLabel yok, reklam düğmesi yok, "Teklif 1/3" görünür; teklif
@@ -651,8 +732,9 @@ y    0 ┌───────────────────────�
   - Bir eylem en çok bir ara sahne oynatır; N−1 bitişi ile N başlangıcı arka arkaya oynamaz. Örnek (META §1): 7. görev
     → `story.ch1.end` → ana ekran (ch2 balonu yok) → Bölüm 12 → sonuç ekranından ana ekrana dönüş → `story.ch2.start`
     → kasaba Mahalle Fırını'nı gösterir, "Fırın temeli" balonu çıkar.
-- Bölüm sonu sahnesinin son paneli yapı kartını **yalnız gösterir** ve kapanır; "Albüme eklendi" animasyonu yok (R-19,
-  Albüm Sonra).
+- Yapı kartı yalnız `story.ch1.end` Panel 4'tedir ve **yalnız gösterilir**; diğer bitiş sahneleri (`story.ch2.end` …
+  `story.ch5.end`) STORY §4'teki son panelleriyle kapanır (ch5: "Devamı yolda…", §3). "Albüme eklendi" animasyonu yok
+  (R-19, Albüm Sonra).
 - Bellek: yalnız gösterilen ve sıradaki panel yüklüdür; geçilen panel boşaltılır (code-lead).
 
 Durumlar: **yükleniyor** (panel görseli hazır değilse yer tutucu SVG ile oynar — sahne asla bekletmez) · **hata**
@@ -665,7 +747,8 @@ Durumlar: **yükleniyor** (panel görseli hazır değilse yer tutucu SVG ile oyn
 ```
 y    0 ┌────────────────────────────────────┐
    40  │ [←]   SALLANAN KÖPRÜ (i)  ⏱ 5s 12d │  geri 128×128; başlık h2; (i) = kural kartı; geri sayım
-  200  │   Ödül havuzu: ● 10.000             │
+  200  │   Ödül havuzu: ● 6.500              │  `prizePoolCoins` (config; LiveOps teması değiştirebilir)
+  260  │   Karşıya geçene ek ödül: 🪣×1      │  yalnız `finisherExtras` ≠ null: `bridge.rule_card.extra` (caption)
   320  │   Köprüde kalan: 47 / 100           │  canlı sayaç (yalnız bu ekranda; kayıp penceresinde YOK)
   420  │   Rakiplerin: Renkli Tepe çırakları  │  caption, ui.inkSoft — bot etiketi her zaman görünür
   480  │  ┌──────────────────────────────┐  │
@@ -675,22 +758,33 @@ y    0 ┌───────────────────────�
  1000  │  └──────────────────────────────┘  │
  1060  │   Sen: 3. tahtadasın (Tuna kaskı)    │
  1560  │   ┌────────────────────────────┐   │
-       │   │   KATIL / BÖLÜM 18'İ OYNA  │   │  birincil 720×176
+       │   │  KATIL / OYNA · BÖLÜM 18   │   │  birincil 720×176; `bridge.rule_card.join` / `bridge.play`
  1736  │   └────────────────────────────┘   │
  1920  └────────────────────────────────────┘
 ```
 
 **Kural kartı (R-14, R-15):** ilk "Katıl"a basınca **bir kez** açılır (sonra (i) ile her zaman). İçerik
-(`bridge.rule_card.*`, STORY §7.2): 7 bölümü art arda kazan · kaybedersen elenirsin · +5 hamleyle devam edebilirsin ·
-ödül havuzu ve süre · "Rakiplerin bilgisayarın yönettiği Renkli Tepe çıraklarıdır." Düğmeler eşit boy: "Katıl" (yeşil)
-/ "Şimdi değil" (krem).
+(`bridge.rule_card.*`, STORY §7.2): {n} bölümü art arda kazan (`planks`) · kaybedersen elenirsin · +{n} hamleyle devam
+edebilirsin (`outOfMoves.extraMoves`) · ödül havuzu ve süre · **ek ödül** satırı (`bridge.rule_card.extra`, yalnız
+`finisherExtras` ≠ null; ikonlar içerikle birlikte önceden görünür, BUSINESS E1; açılış bölümü gelmemiş güçlendirici §3.1 kilit işaretiyle) · **günlük
+sınır** satırı (`bridge.rule_card.daily`, yalnız `maxBridgesPerDay` ≠ null) · "Rakiplerin bilgisayarın yönettiği
+Renkli Tepe çıraklarıdır." Katılmadan önce kart o anki config değerlerini, katıldıktan sonra (i) turun katılım anında
+(`t_0`) donmuş değerlerini gösterir (META §6.1 LiveOps teması). Düğmeler eşit boy: "Katıl" (yeşil) / "Şimdi değil"
+(krem).
 
-Durumlar: **katılmadı** (birincil "Katıl"; köprü boş, 100 kask kıyıda) · **aktif** ("Bölüm N'yi oyna") · **elendi**
-(oyuncunun kaskı simitle kıyıda; "Bir sonraki köprü: 3s 20d") · **süre doldu** (7 tahtaya ulaşılmadı: "Süre doldu.
+Durumlar: **katılmadı** (birincil "Katıl"; köprü boş, 100 kask kıyıda) · **aktif** (`bridge.play` "Oyna · Bölüm {n}",
+`{n}` = sıradaki bölüm; sayıya ek bağlanmaz, STORY §0-9) · **elendi** (oyuncunun kaskı simitle kıyıda; "Bir sonraki köprü: 3s 20d") · **süre doldu** (7 tahtaya ulaşılmadı: "Süre doldu.
 Bir sonraki köprüde görüşürüz." — elenme dili değil) · **bitirdi, bekliyor** (karşı kıyıdasın; `bridge.finished`
-"Karşı kıyıdasın! Payın köprü kapanınca kesinleşir (şu an {coin}{share})." + köprü kapanışına geri sayım; "Topla" yok) ·
+"Karşı kıyıdasın! Payın köprü kapanınca kesinleşir (şu an {coin}{share})." + köprü kapanışına geri sayım; "Topla" yok;
+`finisherExtras` varsa altında `bridge.extra.got` satırı — ek ödül 7. tahtada, kazanma ekranında verilmiştir, §6) ·
 **ödeme** (köprü kapandı: pay animasyonu + `bridge.payout` + "Topla") · **bekleme** (yeni köprüye geri sayım, gri
-köprü) · **kilitli** (Bölüm 15 öncesi; ana ekranda görünmez, derin bağlantıdan gelinirse "Bölüm 15'te açılır") ·
+köprü) · **günlük sınır doldu** (yalnız `maxBridgesPerDay` ≠ null ve bugün o kadar tura katıldıysa; sayım katılım anına
+göre, yerel takvim günü: köprü gri, kasklar kıyıda, `bridge.dailyLimit` "Bugünün köprüleri bitti. Sonraki köprü:
+{time}" — `{time}` = yerel gece yarısı ile bir sonraki köprünün açılışından geç olanına geri sayım; birincil düğmenin
+yerinde düğme değil bu metin durur (dokunulamaz, "bekleme" durumundaki gibi); ana ekran kenar ikonunda aynı geri
+sayım rozeti. Elenme ya da suçlama dili yok) ·
+**kilitli** (Bölüm 15 öncesi; ana ekranda görünmez, derin bağlantıdan gelinirse `common.unlockAt` "15. bölümde
+açılır") ·
 **hata** (bot simülasyonu üretilemezse "Köprü bakımda" + Ana ekran).
 
 ---
@@ -701,9 +795,11 @@ köprü) · **kilitli** (Bölüm 15 öncesi; ana ekranda görünmez, derin bağl
 y    0 ┌────────────────────────────────────┐
    40  │ [←]   USTA LİGİ (i)      ⏱ 3g 4s    │  (i) = kural kartı (puan, çizgiler, çıraklar)
   200  │   ┌─────┐  GÜMÜŞ MALA ligi          │  lig rozeti 200×200
-       │   │ 🏆  │  İlk 20 terfi, son 20 düşer│
+       │   │ 🏆  │  İlk 20 terfi, son 20 düşer│  `league.header_lines.*` (lige göre; çizgi kuralı aşağıda)
        │   └─────┘  Rakiplerin: Renkli Tepe çırakları │  caption, ui.inkSoft
-  460  │  ┌──────────────────────────────┐  │  liste 1000×1200, satır 120 px
+  460  │  ┌ Hafta sonu bonusu: Zor/Çok Zor ┐  │  LiveOps bandı 1000×120 (yalnız çarpan varken; aşağıda)
+       │  └ bölümlerde ×2 puan · Şimdi geçerli┘  │  2. satır caption: "Bonus çıraklara da uygulanır."
+  600  │  ┌──────────────────────────────┐  │  liste 1000×1060 (bant yokken y 460'tan 1000×1200), satır 120 px
        │  │ 1 ⛑ Fındık [çırak]  42 puan 🎁│  │  bot satırı (§0.3): kask avatar + ad + "çırak" rozeti
        │  │ 2 ⛑ Kiremit [çırak] 40 puan 🎁│  │  sağda ödül bandı ikonu: 1–3 sandık, 4–20 küçük kese,
        │  │ …                             │  │  21–50 tek sikke, 51+ yok (META §7.2)
@@ -712,11 +808,27 @@ y    0 ┌───────────────────────�
        │  │ 81 …          ▼ DÜŞME ÇİZGİSİ │  │  turuncu kesik çizgi 6 px (kırmızı değil)
  1660  │  └──────────────────────────────┘  │
  1680  │  ┃12 ⛑ Sen      18 puan ┃ (yapışık)│  oyuncu satırı alta yapışık 1000×136, vurgulu (Tuna kaskı)
- 1840  │   Puan: Kolay/Normal 1 · Zor 2 · Çok Zor 3 │
+ 1840  │ Puan: Kolay 1 · Normal 1 · Zor 2 · Çok Zor 3 │  `league.points_line`, caption; sayılar `pointsPerWin`
  1920  └────────────────────────────────────┘
 ```
 
-Çizgi kuralı: `tier = bronze` iken **düşme çizgisi yok**; `tier = diamond` iken **terfi çizgisi yok**. Satırda bayrak,
+**LiveOps bandı (META §7.1, BUSINESS §7; E8):** `pointsMultiplier` ≠ 1 ya da `weekendMultiplier` ≠ null iken (LiveOps
+penceresi `[startUtc, endUtc)` içinde) listenin üstünde 1000×120 krem bant (`ui.panelInset`, solda 12 px `ui.gold`
+şerit, köşe 24): 1. satır `font.size.small` `ui.ink` — `league.bonus.all` "Puan bonusu: her galibiyet ×{n}" ve/veya
+`league.bonus.weekend.factor` / `.add` ("Hafta sonu bonusu: Zor/Çok Zor bölümlerde ×2 puan", "… her bölümde +1 puan");
+iki bonus birlikteyse " · " ile tek satırda, sığmazsa bant 1000×160 ve iki satır. Sağda çip: hafta sonu çarpanı UTC
+Cumartesi 00:00 → Pazartesi 00:00 içindeyse `league.bonus.now` "Şimdi geçerli" (`ui.primary` dolgu, beyaz değil
+`ui.ink` yazı), değilse `league.bonus.starts` "Başlıyor: {time}"; yalnız `pointsMultiplier` varsa çip hep "Şimdi geçerli".
+2. satır `font.size.caption` `ui.inkSoft` (zeminde 5,8:1): `league.bonus.fair` "Bonus çıraklara da uygulanır." (çarpan botlara da
+uygulanır, E8 — oyuncu sıralamanın neden hızlandığını görür). Bant yokken liste y 460'tan başlar. Alt satır
+(`league.points_line`) hep **çarpansız taban** puanı gösterir; kural kartındaki `league.rule_card.points` de öyle.
+Kazanma ekranındaki "+N puan" satırı (§6) çarpanlı sonucu (`floor((pts · factor + addPoints) · pointsMultiplier)`)
+gösterir ve bonus uygulandıysa yanında küçük "×2" / "+1" çipi taşır. Metinler ve sayılar config'ten; sabit yazılmaz.
+
+Çizgi kuralı: `tier = bronze` iken **düşme çizgisi yok**; `tier = diamond` iken **terfi çizgisi yok**. Başlık satırı
+(`league.header_lines.*`) ve kural kartının çizgi satırı (`league.rule_card.lines.*`) aynı seçimi yapar: Bronz `.bronze`
+("İlk 20 terfi eder" / "Hafta bitince ilk 20 yükselir. Bu ligde düşme yok."), Elmas `.diamond` ("Son 20 düşer" /
+"Hafta bitince son 20 bir alt lige iner."), Gümüş ve Altın `.both`; sayılar `promoteTop` / `demoteBottom`. Satırda bayrak,
 çevrimiçi ışığı, kullanıcı adı biçimi yok (R-14). Bot satırına dokunma → "Çırak Fındık · bilgisayarın yönettiği çırak"
 balonu (1,2 s). Kural kartı ilk girişte bir kez açılır (`league.rule_card.*`).
 
@@ -742,12 +854,12 @@ y    0 ┌───────────────────────�
        │  │Avuç  │ │Kova  │ │El Ar.│       │  her kartta: ad, altın, fiyat, değer etiketi
        │  │●1.000│ │●2.750│ │●6.000│       │
        │  │$1,99 │ │$4,99 │ │$9,99 │       │
-       │  │  —   │ │ +%10 │ │ +%19 │       │  taban pakete göre fazla; "en popüler / en iyi değer" YOK
+       │  │  —   │ │ +%9  │ │ +%19 │       │  `shop.value` "+%{n}", BUSINESS §5.2 kuralı (USD örneği); "en popüler / en iyi değer" YOK
        │  └──────┘ └──────┘ └──────┘       │
        │  ┌──────┐ ┌──────┐ ┌──────┐       │  Kamyon ●13.000 $19,99 +%29 · Vinç Dolusu ●35.000 $49,99 +%39
  1460  │  └──────┘ └──────┘ └──────┘       │  · Şantiye ●75.000 $99,99 +%49
  1500  │  ┌──────────────────────────────┐  │  kumbara kartı (Bölüm 20+) 1000×240
-       │  │ 🧱 Kumbarada ● 1.350 / 2.000  │  │  doluluk çubuğu; "● 1.000'de kırılabilir"
+       │  │ 🧱 Kumbarada ● 1.350 / 2.000  │  │  doluluk çubuğu; "Kırma eşiği: ● 1.000"
        │  │ [ KIR · $1,99 ]               │  │  eşik altında gri; fiyat her zaman görünür
  1740  │  └──────────────────────────────┘  │
  1920  └────────────────────────────────────┘
@@ -755,12 +867,15 @@ y    0 ┌───────────────────────�
 
 Miktarlar ve fiyatlar **`config/economy.json`'dan** (BUSINESS §5.2–§5.3 ile aynı; wireframe değerleri örnektir). TR
 dilinde fiyat TL ("89,99 TL"), EN'de USD; mağaza sürümünde fiyat metni mağazadan gelir, gelene kadar "…".
+**Değer etiketi** (`shop.value` "+%{n}") BUSINESS §5.2 kuralıyla hesaplanır: taban paket (`priceDisplay.referenceSku`)
+ile karşılaştırma, oyuncuya **gösterilen para biriminin** fiyatlarıyla, **aşağı yuvarlanır**; taban paket ve `n < 1`
+çıkan paket "—". Değer config'e ya da i18n'e sabit yazılmaz; tel çerçevedeki "+%" değerleri USD örneğidir.
 Satın alma onayı (MVP): "Bu bir deneme satın alımıdır, ücret alınmaz."
 
 - **Kumbara kartı:** içerik, kapasite, kırma eşiği ve fiyat her zaman görünür. Eşik altında "Kır" gri. **Dolu** halinde
   yalnız küçük "Dolu" rozeti; "dolmak üzere", "hemen kır" bildirimi ya da geri sayım yok.
 - **Bağlamlı açılış:** Mağaza kayıp penceresinden ("Altın al") ya da mini satın almadan açılırsa eksik altını karşılayan
-  **en küçük** paket ince çerçeveyle vurgulanır ve üstünde "Eksik ● 350'yi karşılar" satırı çıkar; önseçim, otomatik
+  **en küçük** paket ince çerçeveyle vurgulanır ve üstünde "Eksik ● 350 için yeterli" satırı çıkar (`shop.covers`); önseçim, otomatik
   kaydırma ve pahalı paket vurgusu yok.
 
 Durumlar: **yükleniyor** (mağaza ürünleri yereldir; Capacitor'da mağaza fiyatları gelene kadar fiyat yerine "…") ·
@@ -806,8 +921,13 @@ flowchart TD
   A[1 Açılış] -->|ilk açılış| B[8 Giriş hikayesi - 3 panel, otomatik]
   A -->|kayıt var| H[3 Ana ekran - Kasaba]
   A -->|yarım bölüm var, R-13| PA
+  A -->|yarım bölüm, teklif penceresi açıktı - K-43/3| LL1
+  A -.->|kazanma ekranında kapandı: inLevel yok, ödül verilmiş| H
+  A -->|yarım bölüm, sürüm uyuşmazlığı - K-43/4, E-45| RV[3 Ana ekran + güncelleme penceresi resume.void, iade]
+  RV -->|Tamam| H
   B -->|Geç ya da panel 3 bitti| L[5 Oyun ekranı - Bölüm 1]
   H -->|Bölüm N düğmesi, N ≥ 3| P[4 Bölüm öncesi pencere]
+  H -->|50 sonrası: Usta Modu ya da Tekrar · Bölüm n, D-026| P
   H -->|Bölüm 1-2| L
   P -->|Oyna| L
   P -->|×| H
@@ -877,8 +997,9 @@ Menü derinliği: Ana ekrandan her yere en fazla 2 dokunuş; oyun ekranına 1 (B
   **LEVELS `tutorial[]` verisidir** (product-lead); Bölüm 1–10 satırları aşağıda o veriyle birebirdir, fark çıkarsa
   LEVELS geçerlidir. El yolunun biçimi, spot ışığı, vurgu animasyonu ve metnin kendisi (STORY §6) design-lead'indir.
 - **Adım alanları** (code-lead şeması): `step`, `mode` (`required` = Z / `soft` = Y), `highlight[]`, `hand`
-  (`tap` / `drag` + yol / `hold`), `textKey`, `done` (olay + sayı ya da `timeoutMs`). Adım, önceki adım bitince başlar
-  (ek başlama alanı yok).
+  (`tap` / `drag` + yol / `hold`), `textKey`, `done` (olay + sayı ya da `timeoutMs`), isteğe bağlı `startOn` (GDD §14.1
+  madde 5). Adım, önceki adım bitince (varsa `startOn` olayıyla) başlar. **`pre:` vurgulu adım her zaman 1. adımdır:**
+  bölüm öncesi pencere tahtadan önce açılır; oyun içi adımlar ondan sonra sıralanır (Bölüm 12, 16, 20).
 - **Vurgu kimlikleri** (`highlight` alanı için söz dağarcığı): `piece:<i>` (**JSON'daki parti-0 sırası = LEVELS
   tablosundaki satır sırası**, 0 tabanlı; partilerden gelen bloklar `piece:k<parti>_<i>`), `cell:x,y`, `gap:<i>`,
   `wall`, `crane`, `build`, `front` (inşa cephesi, §5.5), `panorama`, `goals`, `moves`, `truck`, `streak`,
@@ -891,6 +1012,12 @@ Menü derinliği: Ana ekrandan her yere en fazla 2 dokunuş; oyun ekranına 1 (B
 
 Z = zorunlu adım, Y = yumuşak adım. "Tamam koşulu" gerçekleşince sonraki adım. Satırlar 50 bölümlük plandaki ilk görünüş
 sırasıyla.
+
+**Z satırı kuralı (GDD §14.1 madde 4a, LEVELS §5):** her Z adımının vurgusu en az bir tutulabilir `piece:` ya da
+`debris:` içerir; spot ışığı o bloğu açık bırakır. Vurgusunda blok olmayan Z adımı çalışma anı güvencesiyle (madde 4b)
+başlar başlamaz atlanır, bu yüzden yazılmaz. Bölüm başında var olmayan bir şeyi (düşen blok, "↔" çipi, teslim edilecek
+blok) gösteren anlatım ya ayrı bir Y adımıdır ya da `startOn`'lu adımdır (madde 5). 11–50'de `piece:<i>` indeksi Faz 3
+blockout'ında LEVELS `tutorial[]`'a yazılır; parti bloğuysa `piece:k<parti>_<i>` + `startOn`.
 
 | Bölüm | Mekanik | Adım | Vurgu | El animasyonu | Usta Dede satırı | Tamam koşulu |
 | ----- | ------- | ---- | ----- | ------------- | ---------------- | ------------ |
@@ -917,26 +1044,27 @@ sırasıyla.
 | 9 | Dar geçit (W3) + asılı basamak | 2 Z | `gap:0` + `piece:5 (Y)` | drag: Y (4,5) → boşluktan aşağı (4,3) → sağa, dar geçitten → (6,3). Adım açılırken dar yarık ve geçide sığmayan 2 sıralık `D` 0,8 s yan yana parlar (D itilirse yapışkan takip geçit ağzında durur, "sığmaz" dersi) | `tut.l9.narrow` | `gapPass` ×1 |
 | 10 | Vinç açıldı | 1 Y | `booster:crane` | tap yuva (2 ücretsiz deneme eklenir; Zor bölüm, kullanım serbest) | `tut.l10.crane` | `timeoutMs` 3000 |
 | 11 | Ahşap kasa (Y1) | 1 Y | `obstacle:0` + komşu blok | drag komşu bloğu → kasa çatlar | `tut.l11.crate` | ilk kasa katı kırıldı |
-| 12 | Temizleme hedefi | 1 Y | `goals` (kasa sayacı) | goals üstünde tap | `tut.l12.clear` | — (2 s) |
-| 12 | Termos açıldı | 2 Y | `pre:thermos` (bölüm öncesi pencerede) | tap yuvaya | `tut.l12.thermos` | yuva seçildi ya da Oyna |
+| 12 | Termos açıldı | 1 Y | `pre:thermos` (bölüm öncesi pencerede; tahtadan önce açıldığı için 1. adım) | tap yuvaya | `tut.l12.thermos` | yuva seçildi ya da pencere kapandı (Oyna / ×) |
+| 12 | Temizleme hedefi | 2 Y | `goals` (kasa sayacı) | goals üstünde tap | `tut.l12.clear` | — (2 s) |
 | 13 | Kepenk (W4) | 1 Y | `gap:0` + sayaç rozeti | tap rozete | `tut.l13.shutter` | 1 hamle yapıldı |
-| 13 | Geri Al açıldı | 2 Y | `booster:undo` | tap | `tut.l13.undo` | — (ilk hatalı yerleşimde de tetiklenir) |
-| 14 | Saha yerçekimi (Y6) | 1 Z | alttaki blok + üstündeki sütun | drag alttaki bloğu çıkar → üsttekiler düşer | `tut.l14.gravity` | zincirleme düşüş oldu |
+| 13 | Geri Al açıldı | 2 Y | `booster:undo` | tap | `tut.l13.undo` | `timeoutMs` 3000 (Bölüm 10 Vinç adımı gibi; bağlamsal tetiği yok) |
+| 14 | Saha yerçekimi (Y6) | 1 Z | `piece:<i>` (alttaki blok) + üstündeki sütunun blokları | drag alttaki bloğu çıkar → üsttekiler düşer | `tut.l14.gravity` | zincirleme düşüş oldu |
 | 15 | Ağır yerçekimi (G-H) | 1 Y | `build` + halka sayaç (700 ms) | drag: hızlıca şantiye üstüne | `tut.l15.heavyfall` | ilk iniş |
 | 15 | Erişilebilirlik ayarı | 2 Y | — (balon yalnız) | yok | `tut.l15.setting` | — (2,5 s) |
 | 15 | Galibiyet serisi + Sallanan Köprü | — | Ana ekranda kenar ikonu | tap | `tut.meta.bridge` | ekran açıldı |
-| 16 | Kayar kapı (W5) | 1 Y | `gap:0` + ▲▼ rozeti | 1 hamle bekle, kapının kayışı gösterilir | `tut.l16.slider` | 1 hamle yapıldı |
-| 16 | Mala Başlangıcı açıldı | 2 Y | `pre:trowel` | tap | `tut.l16.trowel` | — |
+| 16 | Mala Başlangıcı açıldı | 1 Y | `pre:trowel` (bölüm öncesi pencerede; 1. adım) | tap yuvaya | `tut.l16.trowel` | yuva seçildi ya da pencere kapandı (Oyna / ×) |
+| 16 | Kayar kapı (W5) | 2 Y | `gap:0` + ▲▼ rozeti | 1 hamle bekle, kapının kayışı gösterilir | `tut.l16.slider` | 1 hamle yapıldı |
 | 17 | Moloz (S4) | 1 Z | `debris:0` (moloz) + saha boşluğu | drag molozu sahaya | `tut.l17.debris` | moloz taşındı |
 | 18 | Çimento torbası (Y2) | 1 Y | torba + komşu blok | drag komşu → torba yırtılır | `tut.l18.bag` | torba gitti |
 | 19 | Altın vida (Y7) | 1 Y | vida ışıltısı + üstündeki blok | drag üstteki bloğu kaldır | `tut.l19.screw` | ilk vida toplandı |
 | 20 | Açık Kepenk açıldı | 1 Y | `pre:shutter` | tap | `tut.l20.openshutter` | — |
 | 20 | Kumbara | — | Ana ekran sağ kenar | tap | `tut.meta.piggy` | — |
 | 21 | Cam blok (S3) | 1 Y | cam blok + gölgedeki çatlak rozeti | hold: blok yükseğe kaldırılınca çatlak rozeti belirir | `tut.l21.glass` | ilk cam blok sağlam indi |
-| 22 | Boya kapısı (W6) | 1 Z | `gap:0` (renkli damla) + blok | drag: blok geçide girer, boyanır, **sahaya geri çekilir** (yol boya düğümünden geçer, K-12 `via`) | `tut.l22.paint` | blok boyandı ve sahada |
+| 22 | Boya kapısı (W6) | 1 Z | `gap:0` (renkli damla) + `piece:<i>` (boyanacak blok) | drag: blok geçide girer, boyanır, **sahaya geri çekilir** (yol boya düğümünden geçer, K-12 `via`) | `tut.l22.paint` | blok boyandı ve sahada |
 | 22 | Boyalıyı duvar üstünden | 2 Y | boyanan blok + `crane` | drag: duvar üstünden şantiyeye | `tut.l22.over` | 1 doğru yerleşim |
 | 22 | Boya Fırçası açıldı | 3 Y | `booster:brush` | tap yuva → blok → renk | `tut.l22.brush` | kullanıldı ya da atlandı |
-| 23 | Hafif yerçekimi (G-L) | 1 Z | düşen blok + yan sütun + "↔" çipi | düşerken tahtada bloğun **yan sütun tarafına** tap (§5.6) → 1 sütun kayar | `tut.l23.steer` | yönlendirme yapıldı |
+| 23 | Hafif yerçekimi (G-L) | 1 Z | `piece:<i>` (çözümün ilk **1 genişlikli** bloğu; 2 genişlikli blok yönlendirilemez, K-19) + `crane` + `build` | drag: blok duvarın üstünden şantiyeye (yay biçimli yol, Bölüm 1 adım 1 gibi) | `tut.l23.light` | `overWall` ×1 (adım 2 blok parmaktayken başlar) |
+| 23 | Yönlendirme | 2 Y | `build`; düşüş başlayınca düşen bloğun "↔" çipi (§5.6) ve yan sütun nabız atar | blok parmaktayken el yok; düşüş başlayınca bloğun **yan sütun tarafına** tap (§5.6) → 1 sütun kayar; yönlendirilmeden inerse adım sürer, sonraki 1 genişlikli düşüşte el yeniden gösterilir | `tut.l23.steer` | `steered` ×1 |
 | 24 | Zincir (Y3) | 1 Y | zincirli blok + komşusu | drag komşu → zincir kopar | `tut.l24.chain` | zincir koptu |
 | 25 | Usta Ligi açıldı | — | Ana ekran sol kenar | tap | `tut.meta.league` | — |
 | 26 | Kilitli geçit (W7) | 1 Y | `gap:0` (kilit) + anahtarın köşe ışıltısı | drag anahtarın üstündeki bloğu kaldır | `tut.l26.key` | anahtar alındı, kilit açıldı |
@@ -944,10 +1072,10 @@ sırasıyla.
 | 28 | Islak beton (Y4) | 1 Y | ıslak blok sayacı | tap sayaç | `tut.l28.wet` | 1 hamle |
 | 29 | Gizli plan — ayna (S7) | 1 Y | `panorama` (1. ve 2. dilim) | ayna çizgisi + simetrik ok | `tut.l29.mirror` | ilk `?` doğru dolduruldu |
 | 31 | Döner platform (S5) | 1 Y | `build` + dönme sayacı (4) | dönen dilimler üstünde kavis oku | `tut.l31.carousel` | ilk dönüş |
-| 32 | Rüzgâr fanı (W8) | 1 Z | `fan` + gölgedeki sapma | hold: 1 geniş blok şantiye üstünde, kayan gölge | `tut.l32.wind` | rüzgârlı iniş |
-| 35 | Harçlı blok (Y8) | 1 Y | harçlı blok | tap mala rozetine | `tut.l35.mortar` | — (2,5 s) |
+| 32 | Rüzgâr fanı (W8) | 1 Z | `piece:<i>` (çözümün ilk **1 genişlikli** bloğu; rüzgâr yalnız ince bloğu iter, W8) + `fan` + `build`; gölgedeki sapma oku | drag: blok duvarın üstünden şantiyeye → hold: şantiye üstünde (d ≥ 1) tutulur, gölge rüzgârla 1 sütun kayar, bırak | `tut.l32.wind` | rüzgârlı iniş |
+| 35 | Harçlı blok (Y8) | 1 Y | `piece:k<p>_<i>` (ilk teslim edilen harçlı blok; harçlı bloklar bölüm başında sahada yok, 2. ve 3. partide gelir); adım bu blok teslim edilince başlar (`startOn: { event: deliveryDone, flag: mortar }`, GDD §14.1 madde 5) | tap mala rozetine | `tut.l35.mortar` | — (2,5 s) |
 | 37 | Asansör iskele (S6) | 1 Y | `build` çerçevesi + geçit | 1 hamle bekle, çerçeve 1 satır kayar | `tut.l37.elevator` | 1 hamle |
-| 38 | Balonlu blok (S8) | 1 Z | balonlu blok + tavan kirişi (plan tepesi) | drag şantiyeye, bırak → kirişe kadar yükselir | `tut.l38.balloon` | balonlu blok yerleşti |
+| 38 | Balonlu blok (S8) | 1 Z | `piece:<i>` (balonlu blok) + `build` (tavan kirişi, plan tepesi) | drag şantiyeye, bırak → kirişe kadar yükselir | `tut.l38.balloon` | balonlu blok yerleşti |
 
 **Bağlamsal öğreticiler** **[MVP]** (bölüm değil, ilk gerçekleştiği an; bir kez):
 
@@ -955,7 +1083,6 @@ sırasıyla.
 | ----- | ----- | ----- |
 | Usta Serisi ilk kez 3/4 | `streak` | `tut.ctx.streak` |
 | Altın Mala ilk kez kazanıldı | `streak` → `front` hücreleri | `tut.ctx.goldtrowel` |
-| İlk hatalı yerleşim — moloz (`debris`) | geri seken moloz + sahadaki boş hücreler | `tut.l17.debris` (Bölüm 17 adımında görüldüyse bir daha çıkmaz) |
 | İlk hatalı yerleşim — renk (`color`) | geri seken blok + uyuşmayan hücreler | `tut.ctx.bounce.color` |
 | İlk hatalı yerleşim — pencere (`.`) | geri seken blok + `.` hücreleri | `tut.ctx.bounce.window` |
 | İlk hatalı yerleşim — plan dışı | geri seken blok + plan dışı hücreler | `tut.ctx.bounce.offplan` |
@@ -967,8 +1094,14 @@ sırasıyla.
 | İlk taşınamayan bloğa dokunma | blok | `tut.ctx.blocked` |
 | Bölüm sandığı ilk dolum (10) | sandık | `tut.meta.chest` |
 | Günlük ödül ilk gün (2. gün) | sağ kenar | `tut.meta.daily` |
-| İlk yarım kalan bölüm dönüşü (R-13) | Duraklat penceresi | `tut.ctx.resume` |
+| İlk yarım kalan bölüm dönüşü (R-13) | Duraklat penceresi (dönüş teklif penceresine açıldıysa ya da deneme güncellemeyle geçersiz sayıldıysa (§1 (c)) satır gösterilmez, sonraki Duraklat'lı dönüşe kalır) | `tut.ctx.resume` |
 | Mağaza açılışı (5) | alt nav | `tut.meta.shop` |
+
+Oyun içi bağlamsal satırların anahtarı `tut.ctx.*`'dir, meta satırlarınki `tut.meta.*` (GDD §14.1 madde 1–2;
+`seenContextTips` `tut.ctx.*` için tutulur; `tut.l*` anahtarı bağlamsal tetik olamaz). Moloz (`debris`) geri sekmesi ve
+Geri Al için bağlamsal satır yoktur: S4 ilk kez Bölüm 17'de gelir ve o bölümün Z adımı
+`tut.l17.debris`'i zaten gösterir (sonraki moloz geri sekmelerinde gölgenin moloz tarifi, §5.4, yeter); Geri Al Bölüm 13
+adım 2'de öğretilir.
 
 ---
 

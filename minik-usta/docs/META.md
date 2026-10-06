@@ -174,7 +174,7 @@ booster grant is kept and free trials add". Sunum (kilitli yuvada adet rozeti) d
 | +5 hamle | Elenmeyi önler; fiyat etkinlik dışıyla aynı (900/1.350/1.800, deneme başına en çok 3, reklam dahil). **Tur harcama tavanı: 4.050 altın** (= 900 + 1.350 + 1.800, tek denemenin tam eskalasyonu; R-16, BUSINESS ile ortak değer; `events.json → wobblyBridge.bridgeSpendCapCoins`). Altın seçeneği yalnızca `tur harcaması + fiyat ≤ 4.050` iken etkindir; değilse altın seçeneği etkin değildir (sunum UX §7: gri düğme + `lose.bridgeCap`). Reklam seçeneği tavandan bağımsızdır, ama yalnız 1. teklifte vardır (§3.3); tavan doluyken 2. ve 3. teklifte yalnız ret seçeneği kullanılabilir (GDD K-29) |
 | Süre | Katılımdan itibaren 6 saat (`durationMinutes 360`). Süre içinde başlatılan bölüm, süre dolduktan sonra bitse de sayılır |
 | Süre dolarsa (7 tahta yok) | Ödül yok; "Süre doldu" (elenme mesajı değil) |
-| Ödül havuzu | 10.000 altın; 7. tahtaya ulaşan herkes (oyuncu + botlar) eşit böler: `floor(10000 / bitirenSayısı)` |
+| Ödül havuzu | 6.500 altın (`prizePoolCoins`; 2026-10-05 son tutarlılık turunda 10.000'den düşürüldü, gerekçe §6.2 "Koruma"); 7. tahtaya ulaşan herkes (oyuncu + botlar) eşit böler: `floor(prizePoolCoins / bitirenSayısı)` |
 | Ödeme anı | `T_öde = min(T_son, max(T_oyuncu, T_bot))`. `T_son` = `t_0 + durationMinutes` (oyuncunun süre içinde başlattığı bölüm sürüyorsa o bölümün bitişi); `T_oyuncu` = oyuncunun bitirdiği ya da elendiği an (oyunda ise ∞); `T_bot` = botların son olay anı (her bot 7. tahtada ya da elenmeyle biter; en çok 7 deneme) |
 | Bekleme | Etkinlik bitince 120 dk sonra yeni etkinlik açılır |
 | Günlük üst sınır | `maxBridgesPerDay` (varsayılan `null` = sınır yok). Sayı verilirse oyuncu bir yerel takvim gününde en çok bu kadar Köprü turuna katılır; sayım katılım anına (`t_0`) göredir |
@@ -207,14 +207,35 @@ davranışı modele girmez** (BUSINESS E8).
 bölüm zorluk tablosunu okur. `config/economy.json`'u ve oyuncu kaydını **import etmez** (lint kuralı, code-lead). Test:
 ödeme geçmişi farklı iki kayıtla aynı girdiler → bit bit aynı bot durumu.
 
-**Beklenen sonuçlar (hepsi Normal bölümler):** botun 7 tahtayı bitirme olasılığı `s_i^7`; ortalaması
-`(0,95^8 − 0,50^8) / (8 · 0,45) ≈ 0,18` → ≈ 18 bot biter. 7 denemeden 1–2'si Zor ise ≈ 11–14 bot. Oyuncu biterse payı
-≈ 10.000 / 15 ≈ 650 altın. Bir botun bitirme süresi ortalama 7 × 9 = 63 dk (21–105 dk) → 6 saatlik pencere oyuncuya
-rahat zaman bırakır.
+**Beklenen sonuçlar (madde 1–5'ten kesin hesap):** bir botun 7 tahtayı bitirme olasılığı
+`q(L_0) = (1/0,45) · ∫_{0,50}^{0,95} Π_{k=1..7} p_k(s) ds` (madde 4'teki kırpma dahil). `L_0 ≥ 15` iken pencerede Kolay
+bölüm yoktur (`f ≤ 1`, `s < 0,95` → `p` kırpılmaz), bu yüzden `q = E[s^7] · Π_k f(d_k)`,
+`E[s^7] = (0,95^8 − 0,50^8) / (8 · 0,45) ≈ 0,183`. Botların becerileri bağımsız olduğundan bitiren bot sayısı
+`B ~ Binom(99, q)`; oyuncu biterse beklenen payı `E[floor(prizePoolCoins / (1 + B))]`. 11–50'de her 7 bölümlük
+pencerede en az 1 Zor ya da Çok Zor vardır (yalnız Normal pencere yoktur; o varsayımsal durumda ≈ 18 bot biterdi).
+Pencere türleri (havuz 6.500; `L_0` = katılımdaki sıradaki bölüm, 50'den sonra Usta Modu sırası 11, 12 …):
 
-**Koruma (entrepreneur önerisi KABUL):** beklenen bitiren payı (≈ 650) < ilk +5 fiyatı (900): +5'e altın harcamak ödül
-havuzu için "rasyonel yatırım" olmaz. Havuz ya da bot becerisi değişirse bu eşitsizlik Faz 3 ekonomi simülasyonunda
-doğrulanır.
+| Penceredeki Zor / Çok Zor | Π f | Beklenen bitiren bot | Beklenen pay | `L_0` |
+|---|---|---|---|---|
+| 1 Zor | 0,80 | ≈ 14,5 | ≈ 443 | 21–23, 31–33, 41, 42; Usta Modu 11–13 |
+| 1 Çok Zor | 0,65 | ≈ 11,8 | ≈ 546 | 16–18, 26–28, 36–38 |
+| 2 Zor | 0,64 | ≈ 11,6 | ≈ 554 | 43 |
+| 1 Zor + 1 Çok Zor | 0,52 | ≈ 9,4 | ≈ 682 | 15, 19, 20, 24, 25, 29, 30, 34, 35, 39, 40, 46–48, 50; Usta Modu 14 |
+| 2 Zor + 1 Çok Zor | 0,416 | ≈ 7,5 | **≈ 852 (en kötü)** | 44, 45, 49 |
+
+`L_0` = 15–50 ortalaması ≈ 605 altın. Bir botun bitirme süresi ortalama 7 × 9 = 63 dk (21–105 dk) → 6 saatlik pencere
+oyuncuya rahat zaman bırakır.
+
+**Koruma (entrepreneur önerisi KABUL; D-024, BUSINESS §4.5-8):** her `L_0` için beklenen bitiren payı < ilk +5 fiyatı
+(900): +5'e altın harcamak ödül havuzu için "rasyonel yatırım" olmaz. Önceki 10.000 havuz bu koşulu `L_0` = 15–50'nin
+18'inde bozuyordu (1 Zor + 1 Çok Zor pencerede ≈ 1.049, en kötü pencerede ≈ 1.311; ortalama ≈ 930); havuz 6.500'e
+düşürüldü (en kötü ≈ 852). Bu bot modeliyle havuz tavanı **6.863**'tür (en kötü pencere 44/45/49).
+**Doğrulama kuralı (`config:validate`, code-lead):** temel değerler ve her `liveOps.overrides.wobblyBridge` birleşimi
+için, `L_0` = 15–50 ve Usta Modu döngüsünün her başlangıcı (11–50) üzerinde
+`E[floor(prizePoolCoins / (1 + B))] + (finisherExtras.coins ?? 0) < economy.json → outOfMoves.offerCosts[0]` (900) olmalıdır;
+değilse hata (`bridge_share_cap`; denetimi araç yapar, bot modülünün saflığı değişmez). `finisherExtras.boosters` altın sayılmaz (D-024 payı altındır). Bot becerisi
+(`bot.skillMin`, `skillRange`, `winProbability`), `difficultyFactor`, `bots`, `planks` ya da LEVELS zorluk etiketleri
+değişirse aynı denetim yeniden çalışır; Faz 3 ekonomi simülasyonu sonucu doğrular.
 
 ---
 
@@ -345,6 +366,15 @@ gelir; JSON'daki USD/TRY yalnızca MVP gösterimi içindir.
   görünür; E1). Altın miktarı Faz 3'te §9 "ayar kuralı" ile kesinleşir.
 - "Yeni bölümler yolda" bandı ana ekranda kalır. Giriş kartı metni design-lead'in ("Usta Modu: bildiğin bölümler, daha
   az hamle." önerisi).
+- **Yedek kural (D-026; proje sahibi Usta Modu için "Sonra" derse, `economy.json → masterMode.variant: "replay"`):**
+  50'den sonra "Oyna" aynı döngüyü (11–50, sonra 11) oynatır. Hamle = LEVELS'taki **özgün** bütçe (`moves`); yıldız yok.
+  Altın ödülü **yalnız kazanma tabanıdır** (özgün zorluk etiketinden, §3.1): Bonus İnşaat yok, kalan Altın Mala altını
+  yok (mala oyunda kazanılır ve kullanılır, yalnız bölüm sonu altına çevrilmez). Kumbara katkısı, lig puanı ve bot
+  zorluğu özgün etiketten (Usta Modu ile aynı); galibiyetler galibiyet serisine, Sallanan Köprü'ye ve Usta Ligi'ne
+  sayılır. Usta Sandığı **verilir** (aynı içerik, her 10 galibiyette; aynı §9 ayar kuralı): yedekte 10 galibiyetlik gelir
+  tahmini 370 (10 × 37 taban) + 250 + 90 + 50–150 + 20 ≈ 780–880 < 900 olduğundan Faz 3'te ayar kuralıyla sandık altını
+  300–400 olur (G = 880 → 300, G = 780 → 400). Gerekçe: özgün bütçeyle tekrar, çözümü bilen oyuncuya bonus altını
+  enflasyonu yaratır; taban + sandık tavanı (§9 Taban) korur. Sunum UX §6 (BUSINESS §9.2 atfı).
 
 ---
 
@@ -359,13 +389,14 @@ gelir; JSON'daki USD/TRY yalnızca MVP gösterimi içindir.
 | Kalan Altın Mala | 10 × 0,5 mala × 10 | 50 |
 | Bölüm sandığı (1–50) | (200 + 250 + 300 + 350 + 500) / 5 | 320 |
 | Günlük ödül | ≈ 1,5 gün × 61 altın/gün (döngü altını 425 / 7) | 90 |
-| Sallanan Köprü | 10 bölümde 1 etkinlik × P(bitirme) × 650; P = 0,08 (yalın: 0,7⁷) … 0,25 (seri bonusu + kurtarmayla; Faz 3 ölçer) | 50–160 |
+| Sallanan Köprü | 10 bölümde 1 etkinlik × P(bitirme) × 605 (§6.2 ortalama pay, havuz 6.500); P = 0,08 (yalın: 0,7⁷) … 0,25 (seri bonusu + kurtarmayla; Faz 3 ölçer) | 50–150 |
 | Usta Ligi | 10 bölümde ≈ 0,3 hafta × 60 | 20 |
-| **Toplam (1–50)** | | **≈ 1.030–1.140** |
+| **Toplam (1–50)** | | **≈ 1.030–1.130** |
 
 Usta Modu (50 sonrası): bölüm sandığı yerine Usta Sandığı (250); bütçe `min + 2` olduğu için bonus ≈ 1 hamle → galibiyet
 10 × (37 + 3) = 400 (taban ortalaması 11–50 = 37: 31 Normal · 5 Zor · 4 Çok Zor), mala ≈ 30 → 400 + 30 + 250 + 90 +
-50–160 + 20 = **≈ 840–950 / 10 galibiyet** (tahmin; Faz 3 ölçer, taban için aşağıya bakın).
+50–150 + 20 = **≈ 840–940 / 10 galibiyet** (tahmin; Faz 3 ölçer, taban için aşağıya bakın). Yedek kural (§8.5,
+`variant: "replay"`): 370 + 0 + 250 + 90 + 50–150 + 20 ≈ 780–880 → ayar kuralıyla Usta Sandığı 300–400 altın.
 
 | Harcama | Fiyat | Not |
 |---|---|---|
@@ -380,7 +411,7 @@ bantları):**
   medyan > 2.500 (paketler değer kaybeder) ya da 10 bölüm boyunca < 200 (hayal kırıklığı riski).
 - (b) **Kayıp kurtarma karışımı** (ödemeyen oyuncu): altınla %15–25, reklamla %30–40, kurtarılmayan %40–50.
 - **Taban (adalet):** 10 bölümlük gelir ≥ 900 → ödemeyen oyuncu 10 bölümde en az 1 kez +5'i altınla alabilir
-  (BUSINESS §5.4). 1–50'de sağlanır (≈ 1.030–1.140). Usta Modu tahmini (≈ 840–950) tabanın iki yanındadır (alt ucu
+  (BUSINESS §5.4). 1–50'de sağlanır (≈ 1.030–1.130). Usta Modu tahmini (≈ 840–940) tabanın iki yanındadır (alt ucu
   900'ün altında, üst ucu üstünde); sonuç Faz 3 ölçümüne kalır. **Ayar kuralı:**
   Faz 3 ekonomi simülasyonunda ödemeyen oyuncunun Usta Modu'ndaki 10 galibiyetlik medyan geliri `G` < 900 çıkarsa Usta
   Sandığı altını `250 + 50 · ceil((900 − G) / 50)` olur (ör. G = 820 → 350); product-lead ve entrepreneur aynı değeri

@@ -164,7 +164,17 @@
       "boosters": { "hammer": 1 },
       "contentVisibleBeforeOpen": true
     },
-    "_doc": "R-17 (owner approval pending), P-8. Order 11..50 then 11 again. Coins, piggy, league points and bot d_k use the level's original difficulty."
+    "variant": "master",
+    "replay": {
+      "movesBudget": "levelMoves",
+      "awardsStars": false,
+      "coinRewards": ["winBase"],
+      "bonusBuild": false,
+      "leftoverTrowelCoins": false,
+      "masterChest": true
+    },
+    "_doc": "R-17 (owner approval pending), P-8. Order 11..50 then 11 again. Coins, piggy, league points and bot d_k use the level's original difficulty.",
+    "_docVariant": "variant: 'master' = Master Mode (D-026, solver min + movesBuffer) | 'replay' = D-026 fallback if the owner says 'Later': same loop, original LEVELS moves, no stars, coins = win base only (no Bonus Build, no leftover trowel coins), piggy/league/bot difficulty from the original label, wins count for streak/Bridge/League, Master Chest kept with the same META §9 adjustment rule (expected G ~780-880 -> chest coins 300-400). META §8.5."
   },
   "town": {
     "starsPerChapter": 10,

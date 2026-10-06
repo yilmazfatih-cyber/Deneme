@@ -1,6 +1,6 @@
 # Mağaza sayfası ve kreatifler
 
-Sahip: entrepreneur · Durum: Faz 5'te doldurulacak (taslak iskelet, revizyon turu 2026-10-04)
+Sahip: entrepreneur · Durum: Faz 5'te doldurulacak (taslak iskelet, revizyon turu 2026-10-04; öne çıkan görsel D-043'e eşitlendi 2026-10-05)
 Bağlayıcı girdiler: `docs/BUSINESS.md` §2 (benzerlik kuralları), §3 S5–S10 ve S15 (çocuğa yönelik görünmeme şartları),
 §4.6 (bot iddiası yok); `docs/NAMING.md` (ad kararı bekleniyor; "Little Builder" hiçbir yerde yok, OR-24).
 
@@ -13,9 +13,10 @@ Bağlayıcı girdiler: `docs/BUSINESS.md` §2 (benzerlik kuralları), §3 S5–S
 5. **Kategori ve yaş** — Bulmaca; Play hedef yaş "18 ve üzeri"; IARC/Apple anketi.
 6. **Ekran görüntüsü senaryoları (8)** — 1. ekran: tahta + tamamlanan yapı; karakter ikincil.
    **Simge:** karakter ve kask yok; ikaz şeritli duvar + kesik çizgili yay + duvarı aşan tek blok, sıcak gökyüzü (S5).
-   **Öne çıkan görsel:** tahta ortası hamle (yaylı iz) + tamamlanmış ağaç ev; Tuna köşede küçük. Üretim istemlerinde
-   "toy box / toy-like" yok; "polished, tactile casual-game art for adults". Gönderim öncesi rakip yan yana
-   karşılaştırması (BUSINESS §2).
+   **Öne çıkan görsel** (D-043, ASSET §11 `store_feature_graphic`, 1024×500, yazı yok): sol yarı kaldır–aşır–indir anı
+   (saha, duvar, yaylı iz); sağ yarı tamamlanmış yetişkin dünyası yapısı (deniz feneri ya da mahalle fırını, ağaç ev
+   değil); Tuna küçük ve köşede. Üretim istemlerinde "toy box / toy-like" yok; "polished, tactile casual-game art for
+   adults". Gönderim öncesi rakip yan yana karşılaştırması (BUSINESS §2).
 7. **Uygulama önizleme videosu** — ilk 3 saniyede duvar üstü kaldır–indir.
 8. **10 reklam kreatifi konsepti** — başlıklar (Faz 5'te ayrıntılanacak):
    1. Tek hamle tatmini: blok duvarın üstünden süzülüp tam yerine oturur (ASMR ses).

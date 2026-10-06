@@ -56,8 +56,13 @@ yok (renk körlüğü); bölüme göre değişen sayılar `{n}` yer tutucusuyla 
 - **Kural:** Geçidin alt satırı `y`, `range = [a, b]` içinde her hamle sonunda (adım 10) şu sırayla kayar: (1) `y + dir`
   aralığın dışındaysa önce yön döner (`dir = −dir`); (2) `y += dir` (1 satır; ping-pong, GDD K-24 ile aynı algoritma).
   Başlangıçta sınırdaysa ve `dir` dışarı bakıyorsa (`y = b, dir = 1` ya da `y = a, dir = −1`; geçerli veri) ilk hamlede
-  önce yön döner; `y` hiçbir zaman aralığın dışına çıkmaz. Boy `size` sabittir. Kapı hiçbir bloğu itmez. Kısıt:
-  `b + size ≤ height − 1`, `a ≥ 0`.
+  önce yön döner; `y` hiçbir zaman aralığın dışına çıkmaz. Boy `size` sabittir. Kapı hiçbir bloğu itmez. Kısıt
+  (doğrulayıcı, GDD K-45/3): `0 ≤ a < b` (asansör K-24 ile aynı; `a = b` iken ping-pong aralık dışına çıkardı), `a ≤ y ≤ b`,
+  `b + size ≤ height − 1`; kayar kapının hareket boyunca kapsadığı bütün satırlar (`a … b + size − 1`) diğer geçitlerin
+  satırlarıyla örtüşmez (yalnız başlangıç `y`'si değil). Hata kodları `slider_range`, `gap_overlap`.
+  **Örnek (geçersiz):** `range [3,3], y 3, dir 1` → `a < b` değil → `slider_range` (kabul edilseydi ilk hamlede `dir = −1`,
+  `y = 2`, aralık dışı). `height 8`, kayar kapı `range [1,3]`, `size 2` (satır 1–4) + sabit geçit `y 4, size 1` → satır 4 ortak →
+  `gap_overlap`.
 - **Veri:** `{ type: "slider", y (başlangıç), size, range: [a, b], dir (1 | −1, varsayılan 1) }`.
 - **Örnek:** `range [1,3], y 1, dir 1` → hamle sonları: 2, 3, 2, 1, 2 … · `range [1,3], y 3, dir 1` → 2, 1, 2, 3, 2 …
 - **Bilgi kartı** (`obs.w5.desc`): TR "Kayar kapı her hamleden sonra bir sıra kayar." · EN "The sliding gate shifts one row after every move."
@@ -159,8 +164,10 @@ yok (renk körlüğü); bölüme göre değişen sayılar `{n}` yer tutucusuyla 
 ### Y8 — Harçlı Blok
 - **Bölge:** saha (etkisi şantiyede) · **İlk bölüm:** 35
 - **Kural:** `mortar` bayraklı blok şantiyede hatalı yerleşirse ve bütün hücreleri plan alanında (renkli, `?` ya da `.`
-  hücre) ise geri sekmez, **yapışır** (kilitli değildir). Bir hücresi plan dışındaysa normal geri seker (öneri P-2b). Yapışmış blok
-  sürüklenebilir; iptal olmayan her hamlesi 2 hamle yer (cam da kırılırsa 3; maliyetler toplanır, GDD K-07). Çekiçle kırılır, Boya Fırçası ile boyanırsa ve yeni renkle
+  hücre) ise geri sekmez, **yapışır** (kilitli değildir). Bir hücresi plan dışındaysa normal geri seker (öneri P-2b); yapışmış blok böyle bırakılırsa başlangıç konumuna döner
+  ve yapışık kalır (GDD K-17). Yapışmış blok
+  sürüklenebilir; iptal olmayan her hamlesi 2 hamle yer (cam da kırılırsa 3; maliyetler toplanır, GDD K-07; kırılan
+  yapışmış cam blok sahaya döner ve yapışma kalkar, GDD K-17). Çekiçle kırılır, Boya Fırçası ile boyanırsa ve yeni renkle
   doğruysa kilitlenir, Vinçle taşınır. Yapışmış blok dilimin tamamlanmasını engeller (GDD K-15) ve üstüne doğru
   yerleşim yapılamaz (K-34); bir `.` hücresine yapışmışsa o `.` hücresi K-34'te "dolu" sayılmaz, o sütunda üstündeki her
   yerleşim `support` nedeniyle hatalıdır (GDD E-43). Doğru yerleşirse normal kilitlenir.
@@ -192,7 +199,9 @@ yok (renk körlüğü); bölüme göre değişen sayılar `{n}` yer tutucusuyla 
 - **Bölge:** şantiye (bayrak sahadaki blokta) · **İlk bölüm:** 21
 - **Kural:** `glass` bayraklı blok serbest kipte şantiyeye düşerken d > eşik (low 4, normal 3, high 2) ise kırılır:
   doğrulama yapılmaz, blok GDD K-17 hedef sırasıyla sahaya döner, hamle maliyeti taban + 1 (sıradan blokta 2; yapışmış
-  harçlı cam blokta 2 + 1 = 3, GDD K-07), Usta Serisi 0. Ray, Vinç, balon
+  harçlı cam blokta 2 + 1 = 3, GDD K-07), Usta Serisi 0. Yapışmış harçlı cam blok kırılırsa (başlangıcı şantiyede)
+  K-17'nin 1. adımı atlanır: blok başlangıç konumuna değil, 2. adımla sahaya döner ve yapışma kalkar (GDD K-17 istisnası
+  ve örneği). Ray, Vinç, balon
   yükselişi, geri sekme, teslimat ve saha yerçekimi düşüşlerinde kırılmaz.
 - **Veri:** `flags: ["glass"]`.
 - **Örnek:** normal; cam `D2_90` (6,8)'de bırakılır, iniş (6,3) → d=5 > 3 → kırılır. (6,6)'ya indirilip bırakılırsa d=3 → sağlam.
@@ -201,13 +210,15 @@ yok (renk körlüğü); bölüme göre değişen sayılar `{n}` yer tutucusuyla 
 ### S4 — Moloz
 - **Bölge:** şantiye · **İlk bölüm:** 17
 - **Kural:** Bölüm başında dilimin şantiye alanında duran bloklar; hiçbir yerde doğru olamaz (GDD K-16). Tutulabilir
-  (serbest kipte; satırları bir geçitteyse ray kipinde de). Sahaya bırakılınca (1 hamle) `clear/debris` 1 sayılır ve
-  sahada sıradan, kullanılamaz bir blok olur. Şantiyede başka yere bırakılırsa hatalı → başlangıcına döner. Altı boşalsa da
-  düşmez. Çekiç kırar (sayılır). Dilim, alanında moloz varken tamamlanmaz. Moloz malzeme arzı değildir: K-27 ve K-30 D2
+  (serbest kipte; bütün satırları bir geçitteyse ve geçit o an açıksa ray kipinde de — GDD K-12'nin tek istisnası).
+  Sahaya bırakılınca (1 hamle; sürükleme ya da Vinç) `clear/debris` 1 sayılır ve sahada sıradan, kullanılamaz bir blok
+  olur. Şantiyede başka yere bırakılırsa hatalı → başlangıcına döner. Altı boşalsa da düşmez. Şantiyedeyken Çekiç kırar
+  (sayılır). Her moloz en çok 1 kez sayılır (GDD K-41): sahaya taşınmış moloz Çekiç'le kırılınca yeniden sayılmaz.
+  Dilim, alanında moloz varken tamamlanmaz. Moloz malzeme arzı değildir: K-27 ve K-30 D2
   sayımlarında sahada da, kuyrukta da sayılmaz (GDD E-44). Bir `.` hücresindeki moloz o hücreyi K-34'te "dolu" yapmaz
   (GDD K-34, E-43). Moloz şantiyeden alınırken (6,y)/(7,y) başlangıç hücreleri sahadaki (5,y) engellerine komşu
   sayılmaz (duvar sınırı; GDD §0, E-46).
-- **Veri:** `build.debris[] = { shape, color, x, y, segment }` (`segment` öneri P-5).
+- **Veri:** `build.debris[] = { shape, color, x, y, segment? }` (`segment` isteğe bağlı, verilmezse 0; P-5, GDD §14, K-45/7).
 - **Bilgi kartı** (`obs.s4.desc`): TR "Eski moloz yolu tıkıyor. Önce onu sahaya taşı." · EN "Old rubble is in the way. Move it out first."
 
 ### S5 — Döner Platform
@@ -329,10 +340,10 @@ Okuma: satır × sütun (üst üçgen). `·` = birlikte bulunabilir, kuralları 
 | **W4** |   |   |   | ■ | N1,N8 | N1 | N1 | · | · | · | · | N8 | N6 | N9 | · | · | · | N10 | N11 | N14 | N8,N15 | N8,N16 | · | N19 | N21 | · |
 | **W5** |   |   |   |   | ■ | N1 | N1 | · | · | · | · | N8 | N6 | N9 | · | · | · | N10 | N11 | N14 | N8 | N8,N17 | · | N19 | N21 | · |
 | **W6** |   |   |   |   |   | ■ | N1 | · | · | · | N7 | N7 | N6 | N9 | · | N7 | · | N10 | N7,N11 | N14 | · | N16 | N41 | N7,N19 | N21 | · |
-| **W7** |   |   |   |   |   |   | ■ | · | N4 | N4 | · | · | N6 | N40,N9 | N5 | · | · | N10 | N11 | N14 | · | N16 | · | N19 | N21 | · |
+| **W7** |   |   |   |   |   |   | ■ | · | N4 | · | · | · | N6 | N40,N9 | N5 | · | · | N10 | N11 | N14 | · | N16 | · | N19 | N21 | · |
 | **W8** |   |   |   |   |   |   |   | ■ | · | · | · | · | · | · | · | · | · | N18 | N13 | · | · | · | · | N20 | · | N22 |
 | **Y1** |   |   |   |   |   |   |   |   | ■ | N23 | N24 | · | · | N25 | N4 | · | · | · | · | · | · | · | · | · | · | · |
-| **Y2** |   |   |   |   |   |   |   |   |   | ■ | N24 | · | · | N26 | N4 | · | · | · | · | · | · | · | · | N34 | · | · |
+| **Y2** |   |   |   |   |   |   |   |   |   | ■ | N24 | · | · | N26 | · | · | · | · | · | · | · | · | · | N34 | · | · |
 | **Y3** |   |   |   |   |   |   |   |   |   |   | ■ | · | · | N27 | · | · | · | · | · | · | · | · | · | · | · | · |
 | **Y4** |   |   |   |   |   |   |   |   |   |   |   | ■ | · | N27 | · | · | N28 | · | · | · | N28 | · | · | · | · | · |
 | **Y5** |   |   |   |   |   |   |   |   |   |   |   |   | ■ | · | · | · | · | · | · | · | · | · | · | · | · | · |
@@ -358,7 +369,7 @@ tasarım notu, test gerektirmez.
 - **N1** [kural] — Geçit tipleri aynı geçitte birleşmez (bir geçidin tek `type`'ı vardır); farklı geçitlerde aynı bölümde bulunabilir.
 - **N2** [kural] — W3 bir boyuttur (`size=1`), tip değildir: dar kepenk, dar kayar kapı, dar boya kapısı, dar kilitli geçit geçerlidir.
 - **N3** [kural] — Yüksek duvarda geçit tek kestirmedir: boyu > 2 dikey bloklar (I3_0, L4_0 …) şantiyeye yalnızca geçitten girer (K-05).
-- **N4** [kural] — Saklı nesne (anahtar/vida) kasa ya da torba altında olabilir: kasa yok olunca / torba düşünce ya da yırtılınca hücre boşalır, o denetimde toplanır. Saha yerçekimi zincirlemesiyle açılan hücre adım 6 denetiminde toplanır (K-42).
+- **N4** [kural] — Saklı nesne (anahtar/vida) bir bloğun ya da kasanın altında olabilir (GDD K-42; Çimento Torbası Y2 örtü değildir, torba altındaki nesne doğrulayıcıda `hidden_item_exposed`, TECH L-14): kasa yok olunca hücre boşalır, o denetimde toplanır. Saha yerçekimi zincirlemesiyle açılan hücre adım 6 denetiminde toplanır (K-42).
 - **N5** [kural] — Bir hücrede en çok 1 saklı nesne (anahtar ya da vida).
 - **N6** [kural] — Ağır blok duvar sınırını geçemez: hiçbir geçitten geçemez, boyanamaz, kepenk/kilit onu etkilemez.
 - **N7** [kural] — Boya kapısı yalnızca rengi değiştirir; bayraklar (cam, harç, balon) korunur. Zincirli/ıslak blok tutulamadığı için serbest kalana kadar boyanamaz.
@@ -368,7 +379,7 @@ tasarım notu, test gerektirmez.
 - **N11** [kural] — Raydan giren cam blok düşmediği için asla kırılmaz; cam bölümlerinde geçit güvenli ama pahalı yoldur (kazı gerekir).
 - **N12** [not] — Yüksek duvarda blok Vinç Alanı'ndan bırakılırsa d büyür (8–9 satır); cam için mutlaka siluete yakın indirilmelidir.
 - **N13** [kural] — Rüzgâr kayması düşüş mesafesini değiştirmez (aynı satırdan düşer); kaymış sütunun silueti d'yi belirler.
-- **N14** [kural] — Geçit satırlarındaki moloz rayı tıkar; aynı moloz ray kipinde geçitten sahaya çekilebilir (1 hamle).
+- **N14** [kural] — Geçit satırlarındaki moloz rayı tıkar; geçit açıkken aynı moloz ray kipinde geçitten sahaya çekilebilir (1 hamle; GDD K-12 istisnası).
 - **N15** [not] — Döner platform ile kepenk aynı periyotta tasarlanırsa senkron bulmaca olur (Bölüm 34): kepenk açıkken hangi yüzün önde olduğu `m`'den hesaplanabilir.
 - **N16** [kural] — Asansörde geçidin açıldığı plan satırı `g.y − e`'dir; ray yerleşimi hangi plan satırına gideceğini ofsete göre değiştirir.
 - **N17** [kural] — Kayar kapı ve asansör aynı hamlede oynar: geçidin plan satırı her hamle −2, 0 ya da +2 değişebilir.

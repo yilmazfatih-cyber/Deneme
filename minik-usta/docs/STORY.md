@@ -32,9 +32,14 @@ Sahip: design-lead · Durum: Faz 1 revizyonu (2026-10-04; R-07, R-08, R-09, R-14
 9. **İpucu dili (R-08):** oyuncuya görünen terim **"blok" / "block"** ("parça/piece" yok); öğretici ve ipucu
    metninde **renk adı geçmez** (renk körü oyuncu); değişken sayılar `{n}` ile yazılır (ör. döner platform periyodu).
    Ekranda görünen öğretici metnin tek kaynağı bu belgedir (§6); OBSTACLES'taki metinler engel bilgi kartıdır
-   (`obs.{id}.desc`, product-lead).
+   (`obs.{id}.desc`, product-lead). TR'de sayı yer tutucusuna (`{n}`, `{coin}{n}`, `{max}`…) **ek bağlanmaz**: ek
+   sayının okunuşuna göre değişir (900'ü, 40'ı, 1040'ta), metin bunu garanti edemez; cümle eksiz kurulur ("Eksik {coin}{n}
+   için yeterli", "Kırma eşiği: {coin}{n}", "{n}. bölümde açılır").
 10. **Ad ve firma (R-24):** "Kepche", `{company}` (varsayılan "Tuna & Co."; yalnız oyun içi firma adı, mağaza adı
-    değil). Oyun adı `app.title` anahtarından gelir; "Minik Usta" TR'de Tuna'nın lakabı olarak kalır.
+    değil). Oyun adı `app.title` anahtarından gelir; "Minik Usta" TR'de Tuna'nın lakabı olarak kalır. Kasaba adı
+    oyuncuya görünen her metinde (TR ve EN) `{town}` yer tutucusudur; değeri tek kaynaktan, `town.name` anahtarından
+    gelir (TR "Renkli Tepe", EN "Hue Hill" çalışma çevirisi; NAMING kararıyla yalnız bu anahtar değişir). Ek, yer
+    tutucudan sonraki kelimeye bağlanır ("{town} Festivali'ne", "{town} çırakları"); yer tutucunun kendisine ek gelmez.
 11. **Satır içi simgeler (font alt kümesi, ART §8):** metne Baloo 2 alt kümesinde olmayan karakter (●, ✓, ★, ♥ gibi)
     **yazılmaz**. Yerine simge yer tutucusu kullanılır; kod bunu satır yüksekliğinde (1 em) görüntü olarak çizer:
     `{coin}` → `icon_coin` (altın miktarı: `{coin}{n}`), `{ok}` → `ghost_badge_ok` (gölgedeki ✓ rozeti). EN ve TR aynı
@@ -74,7 +79,7 @@ Sahip: design-lead · Durum: Faz 1 revizyonu (2026-10-04; R-07, R-08, R-09, R-14
 | Hikaye bölümü | Bölümler | Sorun | Duygusal vuruş | Başlangıç sahnesi tetikleyicisi | Bitiş sahnesi tetikleyicisi |
 | ------------- | -------- | ----- | -------------- | ------------------------------- | --------------------------- |
 | 0 Giriş | — | Firma kapalı | Tuna tabelayı bulur | ilk açılış (FTUE) | — |
-| 1 Ağaç Ev | 1–10 | Kimse küçük bir çocuğa iş vermez; Gribeton güler | İlk yapı; kasaba fark eder | Bölüm 1 kasaba görevi 1 tamamlanınca | Bölüm 1'in son görevi tamamlanınca |
+| 1 Ağaç Ev | 1–10 | Yeni açılan firmaya kimse iş vermez (referans yok); Gribeton burun kıvırır | İlk yapı; kasaba fark eder | Bölüm 1 kasaba görevi 1 tamamlanınca | Bölüm 1'in son görevi tamamlanınca |
 | 2 Mahalle Fırını | 11–20 | Ayşe Teyze'nin bacası çöktü; Gribeton gri kutu önerir | Renkli fırın açılır; ilk gerçek müşteri | Bölüm 1 bitiş sahnesinden sonra ana ekranın bir sonraki açılışı (ekran geçişi ya da soğuk açılış) | Bölüm 2 son görev |
 | 3 Okul Kütüphanesi | 21–30 | Kütüphaneyi su bastı | Mozaik duvarlı kütüphane; Selin'in desen ipuçları | Bölüm 2 bitiş sahnesinden sonra ana ekranın bir sonraki açılışı (ekran geçişi ya da soğuk açılış) | Bölüm 3 son görev |
 | 4 Fener ve Köprü | 31–40 | Gribeton'un gri köprüsü çatladı; balıkçılar mahsur | Fener yanar, asma köprü kurulur; Gribeton ilk kez teşekkür eder | Bölüm 3 bitiş sahnesinden sonra ana ekranın bir sonraki açılışı (ekran geçişi ya da soğuk açılış) | Bölüm 4 son görev |
@@ -125,8 +130,8 @@ bakıyor.
 - Ayşe Teyze: "İlanın şirin ama… referansın var mı?" / "Cute poster, but… any references?"
 - Tuna: "Dedem! Kırk yıllık usta." / "My grandpa! Forty years a master builder."
 
-**Panel 2** — Gri bir kamyonetten Bay Gribeton iniyor, klasörü göğsünde, burnu havada.
-- Gribeton: "Çocuk oyuncağı! Gerçek işler gri betondan yapılır." / "Child's play! Real work is made of gray concrete."
+**Panel 2** — Gri bir kamyonetten Bay Gribeton iniyor, klasörü göğsünde, burnu havada; renkli ilana göz ucuyla bakıyor.
+- Gribeton: "Renkli ilan mı? Verimsiz! Gerçek işler gri betondan yapılır." / "A colorful poster? Inefficient! Real work is made of gray concrete."
 
 **Panel 3** — Tuna'nın omzu düşük; Usta Dede katlanır metresiyle Tuna'nın kaskına hafifçe dokunuyor.
 - Usta Dede: "Önce temeli düşün, evlat. Küçükten başla." / "Think of the foundation first, kiddo. Start small."
@@ -258,12 +263,17 @@ Kaptan avuçlarını ağzına koymuş bağırıyor.
 **Panel 5** — Kepçe Gribeton'un cilalı ayakkabısını yalıyor; Gribeton tek ayak üstünde zıplıyor.
 - Gribeton: "Hey! Onlar cilalı!" / "Hey! Those are polished!"
 
+**Yedek plan (ASSET §9; yalnız sanat takvimi kayarsa, 4 + 4 panel):** başlangıçta Panel 3 kesilir — sönük fener Panel
+1'in arka planına çizilir, Rıza Kaptan'ın "Fener de söndü…" balonu Panel 1'de ikinci balon olur. Bitişte Panel 5
+kesilir — Kepçe'nin ayakkabı şakası Panel 4'ün ön planına küçük olarak girer, Gribeton'un "Hey! Onlar cilalı!"
+balonu Panel 4'te ikinci balondur.
+
 ### 4.5 Hikaye Bölümü 5 — Festival Şatosu
 
 **Başlangıç (`story.ch5.start`, 4 panel)**
 
 **Panel 1** — Belediye meydanı; Bay Kurdele kürsüde, dev makası havada.
-- Bay Kurdele: "Renkli Tepe Festivali'ne bir şato lazım!" / "The Colorful Hill Festival needs a castle!"
+- Bay Kurdele: "{town} Festivali'ne bir şato lazım!" / "The {town} Festival needs a castle!"
 
 **Panel 2** — Ayşe Teyze, Selin ve Rıza Kaptan aynı anda Tuna'yı gösteriyor; Tuna kızarmış.
 - Hep birlikte: "Minik Usta yapar!" / "Tuna can do it!"
@@ -296,6 +306,11 @@ USTA").
 **Panel 6** — Bahçede Kepçe topraktan eski, katlanmış bir harita çıkarmış, kafasını eğmiş.
 - Kepçe: "Hav?" / "Woof?"
 - (alt yazı) "Devamı yolda…" / "To be continued…"
+
+**Yedek plan (ASSET §9; yalnız sanat takvimi kayarsa):** başlangıç 4 panel kalır. Büyük final 6 → 4: Panel 1 + 2
+birleşir (kurdele kesilirken gökyüzünde blok biçimli havai fişekler; Bay Kurdele ve Kepçe balonları aynı panelde;
+"en yüksek detay" bu paneldir), Panel 3 + 4 birleşir (Bay Kurdele kupayı Tuna ile Gribeton'a birlikte uzatır; iki
+balon). Panel 5 (tabela) ve Panel 6 ("Devamı yolda…") değişmez.
 
 ---
 
@@ -396,7 +411,7 @@ hangi adımda çıktığı LEVELS §2 `tutorial[]` verisindedir (ör. Bölüm 3 
 | `tut.l10.crane` | Vinç gömülü bloğu da çıkarır, döndürür. | The Crane lifts even buried blocks and turns them. | K-37 |
 | `tut.l11.crate` | Yanındaki bloğu oynat, kasa çatlar. | Move a block next to it to crack the crate. | Y1 |
 | `tut.l12.clear` | Hedef: bütün kasaları kır! | Goal: break every crate! | K-41 |
-| `tut.l12.thermos` | Termos: başlarken üç hamle daha. | Thermos: three extra moves at the start. | K-40 |
+| `tut.l12.thermos` | Termos: başlarken {n} hamle daha. | Thermos: {n} extra moves at the start. | K-40 (`{n}` = `economy.json → boosters.thermos.extraMoves`) |
 | `tut.l13.shutter` | Kepenk hamle sayar. Açıkken geçir! | The shutter counts moves. Pass while it's open! | W4 |
 | `tut.l13.undo` | Yanlış mı oldu? Geri Al kurtarır. | Oops? Undo takes back your last move. | K-39 |
 | `tut.l14.gravity` | Dikkat! Alttakini alırsan üsttekiler düşer. | Careful! Take the bottom one and the rest fall. | K-20 |
@@ -404,15 +419,16 @@ hangi adımda çıktığı LEVELS §2 `tutorial[]` verisindedir (ör. Bölüm 3 
 | `tut.l15.setting` | Süre kısa mı? Ayarlardan uzatabilirsin. | Too quick? You can extend it in Settings. | K-19 (R-11) |
 | `tut.l16.slider` | Bu kapı her hamlede kayar. | This gate slides after every move. | W5 |
 | `tut.l16.trowel` | Mala Başlangıcı: Altın Mala'yla başla. | Trowel Start: begin with a Golden Trowel. | K-40 |
-| `tut.l17.debris` | Moloz yanlış yerde. Sahaya taşı. | That debris doesn't belong. Carry it back. | S4; ayrıca ilk `debris` geri sekmesinin bağlamsal satırı (K-17, UX §13.2) |
+| `tut.l17.debris` | Moloz yanlış yerde. Sahaya taşı. | That debris doesn't belong. Carry it back. | S4 (yalnız Bölüm 17 adımı; bağlamsal tetiği yok, UX §13.2) |
 | `tut.l18.bag` | Torbanın yanındaki bloğu oynat, yırtılsın. | Move the block next to the bag to tear it. | Y2 |
 | `tut.l19.screw` | Altın vidalar blokların altında. Kaz! | Golden screws hide under blocks. Dig! | Y7, K-42 |
-| `tut.l20.openshutter` | Açık Kepenk: beş hamle kepenkler ve kilitler açık. | Open Shutter: shutters and locks stay open for five moves. | K-40 |
+| `tut.l20.openshutter` | Açık Kepenk: {n} hamle kepenkler ve kilitler açık. | Open Shutter: shutters and locks stay open for {n} moves. | K-40 (`{n}` = `boosters.openShutter.openForMoves`) |
 | `tut.l21.glass` | Cam kırılır! Çok yüksekten bırakma. | Glass breaks! Don't drop it from too high. | S3 |
 | `tut.l22.paint` | Geçitte boya, sahaya geri çek. | Paint it in the gate, then pull it back. | W6 |
 | `tut.l22.over` | Şimdi duvarın üstünden yerine koy. | Now lift it over into place. | K-11, K-46 |
 | `tut.l22.brush` | Boya Fırçası bir bloğun rengini değiştirir. | The Paint Brush changes a block's color. | K-38 |
-| `tut.l23.steer` | Düşerken bir yana dokun, o yana kaysın. | Tap a side while it falls to nudge it there. | K-19 G-L (R-10) |
+| `tut.l23.light` | Hafif yerçekimi! Bloklar yavaş düşer. | Low gravity! Blocks fall slowly. | K-19 G-L (Bölüm 23 adım 1) |
+| `tut.l23.steer` | Düşerken bir yana dokun, o yana kaysın. | Tap a side while it falls to nudge it there. | K-19 G-L (R-10; Bölüm 23 adım 2) |
 | `tut.l24.chain` | Zincirli blok bekler. Önce yanındakini oynat. | Chained! Move its neighbor first. | Y3 |
 | `tut.l26.key` | Anahtarın üstündeki bloğu kaldır, kilit açılsın! | Move the block off the key to unlock! | W7, K-42 (konum her zaman görünür) |
 | `tut.l27.repeat` | Soru işareti mi? Aşağıdaki desen tekrar ediyor. | Question marks? The pattern below repeats. | K-32 `repeat` |
@@ -423,7 +439,7 @@ hangi adımda çıktığı LEVELS §2 `tutorial[]` verisindedir (ör. Bölüm 3 
 | `tut.l35.mortar` | Harçlı blok yanlış yere düşerse yapışır. | A mortar block sticks if it lands in the wrong spot. | Y8 |
 | `tut.l37.elevator` | İskele iner çıkar. Geçide göre ayarla. | The scaffold moves. Time it with the gap. | S6 |
 | `tut.l38.balloon` | Balonlu blok düşmez, tavana yükselir! | Balloon blocks don't fall. They rise to the ceiling! | S8 |
-| `tut.ctx.streak` | Hatasız dört doğru, Altın Mala getirir! | Four right in a row earns a Golden Trowel! | K-33 |
+| `tut.ctx.streak` | Hatasız {n} doğru, Altın Mala getirir! | Get {n} right in a row for a Golden Trowel! | K-33 (`{n}` = `combo.correctPlacementsPerTrowel`) |
 | `tut.ctx.goldtrowel` | Altın Mala'yla parlayan bir hücreye dokun. | Tap a glowing cell with the Golden Trowel. | K-33, K-34 |
 | `tut.ctx.bounce.color` | Renk uymadı, blok geri döndü. | Wrong color, so it bounced back. | K-16, K-17 |
 | `tut.ctx.bounce.window` | Orası pencere, boş kalmalı. | That's a window. It stays empty. | S2, K-17 |
@@ -437,9 +453,9 @@ hangi adımda çıktığı LEVELS §2 `tutorial[]` verisindedir (ör. Bölüm 3 
 | `tut.ctx.truckhelp.free` | Kamyon yardım etti, bloklar serbest. Devam! | The truck helped, the blocks are free. Carry on! | K-30 D1 (yalnız zincir/ıslaklık kalkıp D1 çözüldüyse) |
 | `tut.ctx.blocked` | Bu blok şimdi kımıldamaz. Çevresine bak. | That one can't move yet. Look around it. | K-09 |
 | `tut.ctx.resume` | Kaldığın yerden devam, evlat. | Pick up where you left off. | K-43 (R-13) |
-| `tut.meta.bridge` | Yedi bölümü art arda kazan, köprüyü geç! | Win seven in a row to cross the bridge! | META §6 |
+| `tut.meta.bridge` | {n} bölümü art arda kazan, köprüyü geç! | Win {n} in a row to cross the bridge! | META §6 (`{n}` = `events.json → wobblyBridge.planks`) |
 | `tut.meta.league` | Usta Ligi: her hafta en iyiler yükselir. | Builder League: the best move up each week. | META §7 |
-| `tut.meta.chest` | On bölüm tamam! Sandığı aç. | Ten levels done! Open the chest. | META |
+| `tut.meta.chest` | {n} bölüm tamam! Sandığı aç. | {n} levels done! Open the chest. | META §8.2 (`{n}` = `levelChest.everyLevels`) |
 | `tut.meta.daily` | Her gün uğra, hediyen hazır. | Drop by every day for a gift. | META |
 | `tut.meta.shop` | Mağazada altın ve paketler var. | The shop has coins and bundles. | — |
 | `tut.meta.piggy` | Kazandıkça kumbara dolar. | Your brick bank fills as you win. | META |
@@ -463,26 +479,46 @@ hangi adımda çıktığı LEVELS §2 `tutorial[]` verisindedir (ör. Bölüm 3 
 | Kimlik | TR | EN |
 | ------ | -- | -- |
 | `bridge.title` | Sallanan Köprü | Wobbly Bridge |
-| `bridge.rule` | Yedi bölümü art arda kazan, ödülü paylaş! | Win seven in a row and share the prize! |
-| `bridge.remaining` | Köprüde kalan: {n}/100 | Still on the bridge: {n}/100 |
-| `bridge.bots_label` | Rakiplerin: Renkli Tepe çırakları | Your rivals: Hue Hill apprentices |
-| `bridge.bots_info` | Rakiplerin bilgisayarın yönettiği Renkli Tepe çıraklarıdır. | Your rivals are computer-controlled Hue Hill apprentices. |
+| `bridge.rule` | {n} bölümü art arda kazan, ödülü paylaş! | Win {n} in a row and share the prize! |
+| `bridge.remaining` | Köprüde kalan: {n}/{max} | Still on the bridge: {n}/{max} |
+| `bridge.bots_label` | Rakiplerin: {town} çırakları | Your rivals: {town} apprentices |
+| `bridge.bots_info` | Rakiplerin bilgisayarın yönettiği {town} çıraklarıdır. | Your rivals are computer-controlled {town} apprentices. |
 | `bridge.rule_card.title` | Köprü kuralları | Bridge rules |
-| `bridge.rule_card.win` | Yedi bölümü art arda kazan. | Win seven levels in a row. |
+| `bridge.rule_card.win` | {n} bölümü art arda kazan. | Win {n} levels in a row. |
 | `bridge.rule_card.lose` | Kaybedersen bu turdan çıkarsın. | If you lose, you're out of this round. |
-| `bridge.rule_card.continue` | Kaybedince +5 hamleyle devam edebilirsin. | You can continue with +5 moves after a loss. |
+| `bridge.rule_card.continue` | Kaybedince +{n} hamleyle devam edebilirsin. | You can continue with +{n} moves after a loss. |
 | `bridge.rule_card.pool` | Ödül: {coin}{pool}, karşıya geçenler eşit böler. Süre: {time}. | Prize: {coin}{pool}, split evenly by everyone who crosses. Time: {time}. |
+| `bridge.rule_card.extra` | Karşıya geçene ek ödül: {extras} | Bonus for crossing: {extras} |
+| `bridge.rule_card.daily` | Günde en çok {n} köprüye katılabilirsin. | You can join up to {n} bridges a day. |
 | `bridge.rule_card.join` / `.later` | Katıl / Şimdi değil | Join / Not now |
+| `bridge.play` | Oyna · Bölüm {n} | Play · Level {n} |
 | `bridge.fell` | Köprüden düştün ama simit seni kurtardı! | You fell off, but the ring buoy saved you! |
 | `bridge.timeup` | Süre doldu. Bir sonraki köprüde görüşürüz. | Time's up. See you on the next bridge. |
 | `bridge.finished` | Karşı kıyıdasın! Payın köprü kapanınca kesinleşir (şu an {coin}{share}). | You made it across! Your share is final when the bridge closes (now {coin}{share}). |
 | `bridge.payout` | Köprü kapandı. Payın: {coin}{share} | The bridge has closed. Your share: {coin}{share} |
+| `bridge.extra.got` | Ek ödülün verildi: {extras} | Bonus received: {extras} |
+| `bridge.dailyLimit` | Bugünün köprüleri bitti. Sonraki köprü: {time} | That's all the bridges for today. Next bridge: {time} |
 | `bridge.bot_tap` | {name} · bilgisayarın yönettiği çırak | {name} · computer-controlled apprentice |
 | `league.title` | Usta Ligi | Builder League |
-| `league.bots_label` | Rakiplerin: Renkli Tepe çırakları | Your rivals: Hue Hill apprentices |
-| `league.bots_info` | Ligdeki diğer 99 kişi bilgisayarın yönettiği çıraklardır. | The other 99 in your league are computer-controlled apprentices. |
-| `league.rule_card.points` | Kazandığın her bölüm puan getirir: Kolay/Normal 1 · Zor 2 · Çok Zor 3. | Every level you win scores: Easy/Normal 1 · Hard 2 · Super Hard 3. |
-| `league.rule_card.lines` | Hafta sonunda ilk 20 yükselir, son 20 iner. | At week's end the top 20 move up, the bottom 20 move down. |
+| `league.bots_label` | Rakiplerin: {town} çırakları | Your rivals: {town} apprentices |
+| `league.bots_info` | Ligdeki diğer {n} kişi bilgisayarın yönettiği çıraklardır. | The other {n} in your league are computer-controlled apprentices. |
+| `league.rule_card.points` | Kazandığın her bölüm puan getirir: Kolay {easy} · Normal {normal} · Zor {hard} · Çok Zor {superhard}. | Every level you win scores: Easy {easy} · Normal {normal} · Hard {hard} · Super Hard {superhard}. |
+| `league.points_line` | Puan: Kolay {easy} · Normal {normal} · Zor {hard} · Çok Zor {superhard} | Points: Easy {easy} · Normal {normal} · Hard {hard} · Super Hard {superhard} |
+| `league.rule_card.lines.both` | Hafta bitince ilk {up} yükselir, son {down} iner. | When the week ends, the top {up} move up and the bottom {down} move down. |
+| `league.rule_card.lines.bronze` | Hafta bitince ilk {up} yükselir. Bu ligde düşme yok. | When the week ends, the top {up} move up. No one moves down here. |
+| `league.rule_card.lines.diamond` | Hafta bitince son {down} bir alt lige iner. | When the week ends, the bottom {down} move down a league. |
+| `league.header_lines.both` | İlk {up} terfi, son {down} düşer | Top {up} promote, bottom {down} drop |
+| `league.header_lines.bronze` | İlk {up} terfi eder | Top {up} promote |
+| `league.header_lines.diamond` | Son {down} düşer | Bottom {down} drop |
+| `league.bonus.all` | Puan bonusu: her galibiyet ×{n} | Points bonus: every win ×{n} |
+| `league.bonus.weekend.factor` | Hafta sonu bonusu: {levels} ×{n} puan | Weekend bonus: ×{n} points on {levels} |
+| `league.bonus.weekend.add` | Hafta sonu bonusu: {levels} +{n} puan | Weekend bonus: +{n} points on {levels} |
+| `league.bonus.levels.some` | {list} bölümlerde | {list} levels |
+| `league.bonus.levels.all` | her bölümde | every level |
+| `league.bonus.fair` | Bonus çıraklara da uygulanır. | Apprentices get the bonus too. |
+| `league.bonus.now` | Şimdi geçerli | Active now |
+| `league.bonus.starts` | Başlıyor: {time} | Starts in {time} |
+| `difficulty.easy` / `.normal` / `.hard` / `.superhard` | Kolay / Normal / Zor / Çok Zor | Easy / Normal / Hard / Super Hard |
 | `league.promote` | Terfi çizgisi | Promotion line |
 | `league.demote` | Düşme çizgisi | Relegation line |
 | `league.result.up` | Bir üst lige çıktın! | You moved up a league! |
@@ -491,7 +527,24 @@ hangi adımda çıktığı LEVELS §2 `tutorial[]` verisindedir (ör. Bölüm 3 
 | `npc.apprentice.badge` | çırak | apprentice |
 | `npc.apprentice.format` | Çırak {name} | Apprentice {name} |
 
-"Hue Hill" EN çalışma çevirisidir (Renkli Tepe); NAMING kararına bağlıdır.
+`{town}` = `town.name` (§0-10): EN "Hue Hill" çalışma çevirisidir (TR "Renkli Tepe"); NAMING kararına bağlıdır ve
+yalnız bu anahtarda değişir.
+
+**Sayılar config'ten (D-017, UX başlığı):** `bridge.rule`, `bridge.rule_card.win` ve `tut.meta.bridge` `{n}` =
+`events.json → wobblyBridge.planks`; `bridge.remaining` `{max}` = `wobblyBridge.participants`; `bridge.rule_card.daily`
+`{n}` = `maxBridgesPerDay`; `bridge.rule_card.continue` `{n}` = `economy.json → outOfMoves.extraMoves` (§7.3 ile aynı
+kaynak); `bridge.play` `{n}` = sıradaki bölüm numarası (`replay.button` kalıbı, ek yok, §0-9);
+`league.bots_info` `{n}` = `masterLeague.bots`; `league.rule_card.lines.*` ve `league.header_lines.*` `{up}` / `{down}` =
+`promoteTop` / `demoteBottom` (lige göre seçilir: `bronze` iken `.bronze`, düşme yok; `diamond` iken `.diamond`, terfi yok; Gümüş ve Altın'da `.both`; META §7.1, UX §10 çizgi kuralı);
+`league.rule_card.points` ve `league.points_line` `{easy}`…`{superhard}` = `masterLeague.pointsPerWin.*` (çarpansız
+taban; çarpan ayrı bantta). TR'de sayı rakamla yazılır. **LiveOps satırları
+(META §6.1, §7.1; sunum UX §9–§10):** `bridge.rule_card.extra`, `bridge.extra.got` yalnız `finisherExtras` ≠ `null`
+iken, `bridge.rule_card.daily` ve `bridge.dailyLimit` yalnız `maxBridgesPerDay` ≠ `null` iken görünür; değerler turun
+katılım anında (`t_0`) donmuş olanlardır. `{extras}` = `finisherExtras` içeriği satır içi simgelerle (§0-11): altın
+`{coin}{n}`, güçlendirici ikonu (1 em) + "×{n}", öğeler arasında " + ". `league.bonus.all` yalnız `pointsMultiplier` ≠ 1
+(ondalıkta yerel ayraç: "×1,5"); `league.bonus.weekend.factor` yalnız `weekendMultiplier.factor` ≠ 1,
+`.add` yalnız `addPoints` ≠ 0 iken; `{levels}` = `difficulties` dört zorluğu da içeriyorsa `league.bonus.levels.all`,
+değilse `league.bonus.levels.some` (`{list}` = `difficulty.*` adları "/" ile, ör. "Zor/Çok Zor").
 
 ### 7.3 Kaybetme ve teklif metinleri (R-15)
 
@@ -499,11 +552,11 @@ hangi adımda çıktığı LEVELS §2 `tutorial[]` verisindedir (ör. Bölüm 3 
 | ------ | -- | -- |
 | `lose.title` | Hamleler bitti! | Out of moves! |
 | `lose.left` | Kalan: {n} hücre | Left: {n} cells |
-| `lose.offer` | +5 hamle | +5 moves |
-| `lose.offer.count` | Teklif {n}/3 | Offer {n}/3 |
-| `lose.offer.last` | Teklif 3/3 · son teklif | Offer 3/3 · last offer |
-| `lose.offer.gift` | +5 hamle · Usta Dede'den hediye | +5 moves · a gift from Grandpa |
-| `lose.ad` | Reklam izle · +5 hamle | Watch an ad · +5 moves |
+| `lose.offer.moves` | +{n} hamle | +{n} moves |
+| `lose.offer.count` | Teklif {n}/{max} | Offer {n}/{max} |
+| `lose.offer.last` | Teklif {n}/{max} · son teklif | Offer {n}/{max} · last offer |
+| `lose.offer.gift` | +{n} hamle · Usta Dede'den hediye | +{n} moves · a gift from Grandpa |
+| `lose.ad` | Reklam izle · +{n} hamle | Watch an ad · +{n} moves |
 | `lose.decline` | Hayır, teşekkürler | No thanks |
 | `lose.buygold` | Altın al · eksik {coin}{n} | Get coins · {coin}{n} short |
 | `lose.bridgeCap` | Bu turun altın sınırı bu teklife yetmez. | This round's coin limit doesn't cover this offer. |
@@ -515,6 +568,10 @@ Kaldırılanlar: `lose.tuna` ("Az kaldı!" satın alma penceresinde baskı yarat
 `lose.giveup` ("Give up" suçlayıcı ton; yerine `lose.decline`) ve `lose.bridge` ("Devam etmezsen bu turdan çıkarsın."
 kayıp penceresinde kural satırıydı; BUSINESS §4.5-4 ve R-15 gereği kural yalnız `bridge.rule_card.*` ve (i) panelinde).
 `lose.bridgeCap` tavan dolmadan da çıkar: tur harcaması + bu teklifin fiyatı > 4.050 (META §6.1).
+Sayılar config'ten (D-017): `lose.offer.moves`, `lose.offer.gift` `{n}` = `economy.json → outOfMoves.extraMoves`, `lose.ad`
+`{n}` = `outOfMoves.rewardedAdOffer.extraMoves`; `lose.offer.count` / `.last` `{max}` = `outOfMoves.maxOffersPerAttempt`
+(`.last` yalnız `{n}` = `{max}` iken). `lose.offer.moves` eski `lose.offer`'dır: i18n anahtarları iç içe olduğundan (TECH
+§11.5) bir anahtar hem metin hem üst düğüm olamaz.
 
 ### 7.4 Renkli Tepe çırakları — bot adları (R-14, BUSINESS §4.6)
 
@@ -558,8 +615,12 @@ boş ad; code-lead), ödeme verisinden bağımsız.
 | `exit.bridge` | Köprüden düşersin. | You'll fall off the bridge. |
 | `exit.stay` / `exit.leave` | Kal / Çık | Stay / Leave |
 | `resume.title` | Kaldığın yerden devam | Pick up where you left off |
+| `resume.void.title` | Oyun güncellendi | The game was updated |
+| `resume.void.body` | Bölüm {n} baştan başlayacak. Harcadıkların geri verildi. | Level {n} will start from the beginning. Everything you spent is back. |
+| `resume.void.bridge` | Köprüdeki yerin korundu. | Your place on the bridge is safe. |
+| `common.ok` | Tamam | OK |
 | `lives.title` | Can doldur | Refill lives |
-| `lives.full` | Tam can (5) | Full lives (5) |
+| `lives.full` | Tam can ({max}) | Full lives ({max}) |
 | `lives.ad` | Reklam izle · +1 can (bugün {n}/{max}) | Watch an ad · +1 life (today {n}/{max}) |
 | `lives.wait` | Bekle | Wait |
 | `ads.tomorrow` | Yarın tekrar | Back tomorrow |
@@ -570,23 +631,40 @@ boş ad; code-lead), ödeme verisinden bağımsız.
 | `chest.contains` | İçinde: | Inside: |
 | `chest.open` | Aç | Open |
 | `shop.testBuy` | Bu bir deneme satın alımıdır, ücret alınmaz. | This is a test purchase. You won't be charged. |
-| `shop.covers` | Eksik {coin}{n}'yi karşılar | Covers the {coin}{n} you need |
+| `shop.covers` | Eksik {coin}{n} için yeterli | Covers the {coin}{n} you need |
 | `shop.value` | +%{n} | +{n}% |
 | `piggy.status` | Kumbarada {coin}{n} / {max} | Piggy bank: {coin}{n} / {max} |
-| `piggy.threshold` | {coin}{n}'de kırılabilir | Can be broken at {coin}{n} |
+| `piggy.threshold` | Kırma eşiği: {coin}{n} | Can be broken at {coin}{n} |
 | `piggy.full` | Dolu | Full |
 | `piggy.break` | Kır | Break |
 | `booster.noShutter` | Bu bölümde kepenk yok | No shutters in this level |
 | `booster.noUndo` | Geri alınacak hamle yok | Nothing to undo |
+| `build.done` | Yapı tamam! | Build complete! |
 | `home.empty` | Yeni yapılar yolda | New buildings on the way |
 | `age.title` | Doğum yılın | Your birth year |
 | `age.check` | Yılı kontrol eder misin? | Could you check the year? |
 | `settings.timePressure` | Zaman baskısını azalt | Reduce time pressure |
 | `common.comingSoon` | Yakında | Coming soon |
 | `common.unlockAt` | {n}. bölümde açılır | Unlocks at level {n} |
+| `common.minutes` | {n} dk | {n} min |
+| `town.name` | Renkli Tepe | Hue Hill |
 | `master.button` | Usta Modu | Master Mode |
 | `master.card.title` | Usta Modu | Master Mode |
 | `master.card.body` | Bildiğin bölümler, daha az hamle. | Levels you know, fewer moves. |
-| `master.card.chest` | Her 10 galibiyette Usta Sandığı. | A Master Chest every 10 wins. |
+| `master.card.chest` | Her {n} galibiyette Usta Sandığı. | A Master Chest every {n} wins. |
 | `master.card.start` / `.later` | Başla / Şimdi değil | Start / Not now |
 | `home.moreSoon` | Yeni bölümler yolda | New levels on the way |
+| `replay.button` | Tekrar · Bölüm {n} | Replay · Level {n} |
+| `replay.card.title` | Tekrar turu | Replay round |
+| `replay.card.body` | Bildiğin bölümler. Köprü ve Lig sürüyor. | Levels you know. Bridge and League go on. |
+
+
+Sayılar config'ten (D-017): `lives.full` `{max}` = `economy.json → lives.max`; `lives.ad` `{max}` =
+`lives.rewardedAdLifePerDay`; `master.card.chest` `{n}` = `masterMode.masterChest.everyWins`; `replay.button` `{n}` =
+sıradaki bölüm numarası; `common.minutes` `{n}` = ödüldeki sınırsız can süresi (`unlimitedLivesMinutes`; UX §3.1,
+`icon_life_unlimited` yanında); `shop.value` `{n}` = BUSINESS §5.2 değer etiketi kuralı (taban `priceDisplay.referenceSku`,
+oyuncuya gösterilen para biriminin fiyatlarıyla, aşağı yuvarlanır; taban paket ve `n < 1` çıkan pakette anahtar
+kullanılmaz, "—"), sayı config'e ya da i18n'e sabit yazılmaz (UX §11). `resume.void.*` güncellemeyle geçersiz kalan denemenin ana ekran penceresidir (GDD
+K-43 madde 4, E-45; UX §1 (c)): `{n}` = o denemenin bölüm numarası; iade edilen can, güçlendirici ve altın metne yazılmaz, pencerenin iade satırında ikon + adet olarak
+görünür; `resume.void.bridge` yalnız Köprü turunda sayılan denemede gösterilir; elenme, kayıp ya da suçlama sözcüğü
+kullanılmaz. `build.done` oyun ekranındaki "Yapı tamam!" kurdelesidir (UX §5.1, GDD E-27, D-035).
