@@ -290,3 +290,50 @@ tel çerçevesindeki havuz sayısı #7).
 - product-lead-K3 GDD §14.1/3 sayım okumaları → KAPANDI (`obstacleHit` = adım 5–6 komşu etkisi **ya da Çekiç'in doğrudan vuruşu** (K-36, `step: 1`) + Bölüm 11 örneği; `count` maddesine "her hamle sonu olayı bir sürükleme hamlesinde ya da güçlendirici kullanımında en çok 1 kez sayılır" onayı; `gapPass` = yalnız serbest → ray geçişi, ray kipinde başlayan molozun başlangıcı sayılmaz (TECH okuması onaylandı, K-12 moloz örneği); K-17'ye plan dışına bırakılan yapışmış harçlı bloğun 1. adımla başlangıca dönüp yapışık kalması (maliyet 2) + örnek; OBSTACLES Y8 aynı cümle. Bağımlılık: code-lead TECH §8.2 `obstacleHit` kaynağı ve §6.4 "yalnız adım 5–6" cümlesi + test adı)
 - product-lead-K4 atıf eşitlemesi → KAPANDI (GDD K-43/4 zaten koşulsuzdu, "ANALYTICS §2 v2" → "ANALYTICS §2; `level_resume_invalid` v2'den beri tabloda"; GDD K-30 "Faz 3'te `levels:solve --traps`, TECH §9.8, doğrulayıcı L-27"; LEVELS §5 "Araç desteği code-lead'den istenir" → "Araç: `levels:solve --traps` … TECH §9.8; L-27; Faz 3"; LEVELS §0 Faz 3 tarama cümlesine aynı atıf)
 - product-lead-R1 code-lead-closure son tur 1 notu: LEVELS §0 "Faz 2–3'te aynı tarama" → Faz 3 → ZATEN YAPILMIŞ (son tur 1 #14; §0 "Faz 3'te … Faz 2'de 1–5 el çözümleri golden"; bu geçişte yalnız K4 atfı eklendi)
+
+## Faz 2
+
+Entegratör raporu (golden tekrarları, doğrulayıcı) ↔ `docs/LEVELS.md` §2 ve GDD denetimi (2026-10-06). `levels/*.json` ve
+LEVELS değişmedi.
+
+- PL-F2-1 El çözümleri ve bölüm verisi → DOĞRULANDI, veri değişikliği yok. `level_001…005.json` LEVELS §2 ile alan alan
+  karşılaştırıldı: blok tablosu sırası = parti-0 dizi sırası, şekil, renk, çapa (23/13/15/15/13 blok), duvar boyu, geçit
+  (Bölüm 3 y=2 boy 2, Bölüm 4 y=3 boy 2, static), plan satırları ve dilim adları, bütçe 11/11/11/12/11, zorluk, `seed`
+  = id×1000+id, `teaches` (3 W1, 4 S2, 5 S1; 1 ve 2'de yok), öğretici adımları (vurgu, Z/Y, el yolu, `textKey`, `done`)
+  ve Bölüm 5 parti 1 (`D2_0` R x=2, `D2_90` R x=4, `C3_0` W x=0, `C3_180` G x=2; `y` = 8, GDD §14 / K-25). Fark yok.
+  Doluluk 46/47/48/47/46. `npm run levels:validate`: 5 dosya, 0 hata, 0 uyarı. `npx vitest run tests/golden`: 15/15.
+  Golden dosyalarındaki adımlar (başlangıç hücresi, giriş, iniş, dilim tamamlama, Bölüm 5 dökümü `k1_0` (2,6), `k1_1`
+  (4,7), `k1_2` (0,6), `k1_3` kuyrukta → 4. hamlenin 9. adımında (0,6)) LEVELS §2 çözüm satırlarıyla aynı; 3/3/3/4/6
+  hamle, kalan 8/8/8/8/5, YAO 3/3, 3/3, 2/3, 3/4, 6/6. 12 öğretici anahtarı `tr.json` ve `en.json`'da var (L-17).
+- PL-F2-2 Gerçek çekirdekle yeniden tarama (karalama betiği, proje kodu değil; `GameSession`/`applyMove` ile ✓
+  yerleşimler + 1 saha hamlesi, LEVELS §5 kapsamı) → DOĞRULANDI. En kısa çözüm 3/3/3/4/6 (el çözümünden kısa çözüm yok,
+  bütçe değişmez). ✓ yerleşimle girilen durumlarda kesin çıkmaz ve bütçe tuzağı 1–5'te 0 (F-3 tablosuyla aynı). Z adımları
+  her durumda geçerli: Bölüm 1 adım 1 (1 durum), Bölüm 3 adım 2 (ilk ✓ sonrası 13 durum, `f` geçitten), Bölüm 4 adım 3
+  (2 ✓ sonrası 38 durum, `p` (6,3)'e ✓). 1–4'te kapsamdaki **her** durum (saha hamlesiyle girilenler dahil) kalan bütçeyle
+  bitirilebilir.
+- PL-F2-3 Bölüm 5: tek gereksiz saha hamlesiyle girilen 4 kesin çıkmaz → AÇIK (Faz 3, product-lead; veri bu fazda
+  değişmedi). Örnek: el çözümü 1–3 (`b`, `a`, `c`; dilim 1 biter, `k1_3` kuyrukta), sonra `k1_0` (2,6)'dan (3,6)'ya
+  sahada kaydırılır → aynı hamlenin 9. adımında `k1_3` (`C3_180` G) (1,6)'ya düşer ve `k1_2`'nin (`C3_0` W) (1,6)
+  hücresini örter; saha 48/48 dolu, hiçbir ✓ yerleşim yok, D1/D2 tutmaz → kayıp (+5 teklifi de kurtarmaz). Diğer üçü:
+  `b`, `a`, `d` ✓ sonrası `c` → (0,7), `c` → (3,6) ya da `k1_0` → (3,6). Sınırsız hamleyle de kazanılamadıkları betikle
+  doğrulandı. F-3 ölçütü yalnız "✓ yerleşimle girilen" durumları saydığı için §0 tablosundaki 0 tanım gereği doğrudur,
+  ama §5 kamyon maddesinin amacı ("gereksiz bir saha hamlesinden sonra da döküm kazılabilir kalır") ve Bölüm 5 notundaki
+  "1 saha bırakmasına kadar kesin çıkmaz 0" cümlesi bu durumları kapsamıyor. Kök neden: dilim 1 sonrası sahada 10 boş
+  hücre var, parti 1 de 10 hücre; kuyruktaki blok saha hamlesinin 9. adımında da düşer (K-35 adım 9) ve sahayı tam
+  doldurur. Denenen 5 veri seçeneği (kamyon şaşırtması `k1_0`'ı çıkarmak; saha şaşırtması `d`'yi çıkarmak, 2 biçim;
+  parti sırası W, G, R, R; `k1_0` → `D2_90`) resmî ölçütte daha kötü (2–16 ✓ ile girilen çıkmaz); bu yüzden Faz 2'de
+  veri değişmedi. GDD K-30 kapsam dışı çıkmazların +5 teklifi ya da kayıpla bittiğini zaten kabul eder. Faz 3: Bölüm 5'in
+  üst satır düzeni ve parti 1 yeniden tasarlanır (parti sahayı %100 doldurmaz ya da kuyruktaki blok sıradaki gerekli
+  bloğu örtemez); doğrulama, saha hamlesiyle girilen durumları da sayan `levels:solve --traps` ile. Bu değişiklik
+  code-lead'in `tests/golden/level_005.hand.json` dosyasını ve Bölüm 5 verisine dayanan testlerini (E-03 kuyruk testi,
+  S1 ve oturum testleri) yeniden üretmesini gerektirir.
+  LEVELS değişikliği (Faz 3'te, veriyle birlikte): §0 F-3 paragrafına "ölçüt ✓ yerleşimle girilen durumları sayar;
+  saha hamlesiyle girilen çıkmazlar ayrı satırda" cümlesi, Bölüm 5 F-3 notuna yukarıdaki 4 durum.
+  Bağımlılık: code-lead, TECH §9.8 / L-27 tuzak taraması saha hamlesiyle girilen kesin çıkmazları ayrı bir uyarı
+  sınıfıyla raporlasın (ör. `trap_dead_end_after_yard_move`).
+- PL-F2-4 Raporun product-lead dışı maddeleri (code-lead TECH izleri, `rule-coverage` saplaması, Y2 `bagFell` olayı,
+  design-lead token ve i18n anahtarları, `levels` klasörünün `.prettierignore`'da kalması) → BİLGİ. Bölüm verisini
+  etkilemez. `levels` klasörünün Prettier dışında kalması onaylandı (dosyalar doğrulayıcıyla denetleniyor).
+
+Özet (Faz 2): **4 madde → 2 DOĞRULANDI · 1 AÇIK (Faz 3, Bölüm 5 yeniden tasarımı) · 1 BİLGİ.** Bölüm JSON'u ve LEVELS
+değişmedi.

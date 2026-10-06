@@ -839,32 +839,11 @@ export class SaveService {
 // ---------------------------------------------------------------------------------------------------------------
 // Level hash
 
-/** JSON with object keys sorted at every depth (stable across key order and whitespace). */
-export function canonicalJson(value: unknown): string {
-  if (Array.isArray(value)) return `[${value.map(canonicalJson).join(',')}]`;
-  if (value !== null && typeof value === 'object') {
-    const obj = value as Record<string, unknown>;
-    const keys = Object.keys(obj)
-      .filter((k) => obj[k] !== undefined)
-      .sort();
-    return `{${keys.map((k) => `${JSON.stringify(k)}:${canonicalJson(obj[k])}`).join(',')}}`;
-  }
-  return JSON.stringify(value) ?? 'null';
-}
-
 /**
- * `inLevel.levelHash` (TECH §11.1 "bölüm JSON karması"): two FNV-1a 32-bit lanes over the canonical JSON of the raw
- * level data → 16 hex chars. Any data change (moves, pieces, tutorial …) changes the hash; formatting does not.
+ * `inLevel.levelHash` (TECH §11.1 "bölüm JSON karması", GDD K-43 item 4): ONE implementation for the game, the save,
+ * the debug panel and the tools — core's FNV-1a 64 over canonical JSON (keys sorted at every depth, so key order and
+ * whitespace do not matter; any data change does). The caller hashes the level as loaded (`CompiledLevel.data`) both
+ * when it starts an attempt and when it checks a resume.
  */
-export function levelHash(levelData: unknown): string {
-  const text = canonicalJson(levelData);
-  let h1 = 0x811c9dc5;
-  let h2 = 0x9e3779b9;
-  for (let i = 0; i < text.length; i++) {
-    const c = text.charCodeAt(i);
-    h1 = Math.imul(h1 ^ c, 0x01000193) >>> 0;
-    h2 = Math.imul(h2 ^ c, 0x01000193) >>> 0;
-    h2 = (h2 ^ (h2 >>> 15)) >>> 0;
-  }
-  return h1.toString(16).padStart(8, '0') + h2.toString(16).padStart(8, '0');
-}
+export { canonicalJson } from '../core/moves.ts';
+export { levelHash } from '../core/session.ts';

@@ -12,7 +12,14 @@ import type { CompiledLevel } from '../../src/core/level/compile.ts';
 import { FREE, railMode } from '../../src/core/movement.ts';
 import { stateInvariantErrors } from '../../src/core/grid.ts';
 import type { GameState } from '../../src/core/state.ts';
-import type { DragNode, GameEvent, GameEventType, Move, PieceId } from '../../src/core/types.ts';
+import type {
+  DragNode,
+  GameEvent,
+  GameEventType,
+  Move,
+  PieceId,
+  SessionAction,
+} from '../../src/core/types.ts';
 
 export const N = (ix: number, iy: number): DragNode => ({ ix, iy, mode: FREE });
 export const RAIL = (gap: number, ix: number, iy: number): DragNode => ({ ix, iy, mode: railMode(gap) });
@@ -63,19 +70,21 @@ export function levelFile(id: number): CompiledLevel {
 }
 
 /**
- * LEVELS §2 hand solutions of levels 1, 3 and 5 as drag moves ("over the wall to x = c" = release at crane row 8 above
- * column c; "through the gap" = the rail node). Piece ids: batch 0 in table order, then truck batches (`k1_i`).
+ * LEVELS §2 hand solutions as drag moves, read from the golden files (tests/golden/level_00N.hand.json, TECH §9.5):
+ * one transcription for the golden replays and the pipeline tests. "Over the wall to x = c" = release at crane row 8
+ * above column c; "through the gap" = the rail node. Piece ids: batch 0 in table order, then truck batches (`k1_i`;
+ * level 5: 13 = k1_0, 14 = k1_1, 15 = k1_2, 16 = k1_3).
  */
-export const HAND: Readonly<Record<1 | 3 | 5, readonly Move[]>> = {
-  1: [dragTo(0, 6, 8), dragTo(1, 6, 8), dragTo(2, 7, 8)],
-  3: [dragTo(0, 6, 8), dragTo(1, 6, 2, 0), dragTo(2, 6, 8)],
-  // 13 = k1_0, 14 = k1_1, 15 = k1_2, 16 = k1_3
-  5: [
-    dragTo(2, 6, 8),
-    dragTo(1, 6, 8),
-    dragTo(0, 6, 8),
-    dragTo(15, 6, 8),
-    dragTo(16, 6, 8),
-    dragTo(14, 6, 8),
-  ],
+export function handMoves(id: number): Move[] {
+  const file = join(ROOT, 'tests', 'golden', `level_${String(id).padStart(3, '0')}.hand.json`);
+  const { log } = JSON.parse(readFileSync(file, 'utf8')) as { log: SessionAction[] };
+  return log.filter((a): a is Move => a.kind !== 'start' && a.kind !== 'undo');
+}
+
+export const HAND: Readonly<Record<1 | 2 | 3 | 4 | 5, readonly Move[]>> = {
+  1: handMoves(1),
+  2: handMoves(2),
+  3: handMoves(3),
+  4: handMoves(4),
+  5: handMoves(5),
 };

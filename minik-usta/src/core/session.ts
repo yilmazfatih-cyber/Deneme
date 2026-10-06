@@ -24,7 +24,6 @@ import type { Move, PreBooster, SessionAction } from './types.ts';
 import { H, STATE_FLAG, createInitialState, hdr, setHdr } from './state.ts';
 import type { GameState } from './state.ts';
 import type { CompiledLevel } from './level/compile.ts';
-import type { LevelData } from './level/schema.ts';
 import { NULL_SINK, applyMove, canonicalJson, fnv1a64, measureYao } from './moves.ts';
 import type { EventSink, MoveHooks, MoveResult, YaoMeasure } from './moves.ts';
 import { grantTrowels } from './combo.ts';
@@ -334,7 +333,11 @@ export class GameSession {
   }
 }
 
-/** K-43 item 4 `levelHash`: FNV-1a 64 of the canonical JSON of the (parsed) level data. */
-export function levelHash(data: LevelData): string {
+/**
+ * K-43 item 4 `levelHash` (TECH §11.1): FNV-1a 64 of the canonical JSON of the level data, 16 hex digits. The single
+ * implementation (services/save re-exports it). Hash the level as loaded (`CompiledLevel.data`, a `LevelData`) at
+ * attempt start and at resume; any JSON value is accepted so tools and tests can hash raw data too.
+ */
+export function levelHash(data: unknown): string {
   return fnv1a64(canonicalJson(data));
 }
