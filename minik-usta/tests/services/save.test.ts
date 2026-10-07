@@ -617,3 +617,24 @@ describe('level hash (TECH 11.1 levelHash)', () => {
     expect(levelHash({ ...a, wall: { height: 6, gaps: [{ y: 3, size: 1 }] } })).not.toBe(levelHash(a));
   });
 });
+
+describe('save first-launch settings (UX 11)', () => {
+  it('UX 11 reduce motion starts from the OS preference on first launch; a saved choice is kept afterwards', () => {
+    const store = new MemoryStore();
+    const clock = new FakeClock(1_700_000_000_000);
+    const open = (reduceMotion: boolean): SaveService =>
+      SaveService.open({
+        store,
+        clock,
+        scheduler: clock,
+        startingWallet: WALLET,
+        defaultSettings: { reduceMotion },
+      });
+    const first = open(true);
+    expect(first.data.settings).toMatchObject({ reduceMotion: true, lang: 'tr', sound: true });
+    first.commit((d) => {
+      d.settings.reduceMotion = false;
+    });
+    expect(open(true).data.settings.reduceMotion).toBe(false); // only a NEW save reads the OS preference
+  });
+});

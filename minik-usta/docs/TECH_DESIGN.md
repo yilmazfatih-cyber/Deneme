@@ -1005,6 +1005,9 @@ type GameEvent = EvBase & (
 - **Animasyon sırasında girdi (R-12, JUICE kural 3):** olaylar iki sınıftır.
   - *Engelleyici diziler:* dilim kayması (`duration.segment` 600), kamyon teslimatı (`truck` 700), Kamyon Yardımı /
     karıştırma (`reshuffle` 900). Yalnızca bunlar sürerken girdi kilitlidir; ekrana dokunmak kalanı 3× hızlandırır.
+    Kamyonun kilidi yalnız kamyonun kendisidir (700 ms, Faz 2 tur 2 #16): boş bir saha sütununa (≈ 9 satır) düşen
+    teslimat bloğu kilit bittikten sonra sıradan bir düşüş olarak iner (R-12 hızlı sarmasına açık); sonraki işaretler
+    yine son inişi bekler. Böylece her olayın toplam beklemesi ≤ 900 ms (JUICE §0 kural 3).
   - *Diğer her şey* (iniş, parıltı, geri sekme, saha zincirlemesi, zamanlayıcılar): oynarken gelen `pointerdown`
     tahtayı değiştiren bekleyen tween'leri **o an son karesine atlatır** (`fastForwardBoard()`), sürükleme gerçek
     durumdan başlar; parçacık ve ses kendi hızında sürer. Çekirdek durumu zaten kesin olduğundan bu güvenlidir.
@@ -1423,6 +1426,39 @@ yürür (`tutorial[]` bölüm ekranı ve bölüm öncesi pencere adımlarını t
 - **Bağlamsal satırın adımda gösterilmesi:** `textKey` `tut.ctx.<konu>` olan bir adım ekranda gösterildiği anda
   `seenContextTips.<konu>` işaretlenir ve kayıt hemen yazılır; o bağlamsal tetik bu hesapta bir daha çıkmaz (tek
   kullanım Bölüm 4 adım 2 → `seenContextTips.support`; §5.2 kanca 4). Test: "GDD 14.1 ctx step marks seenContextTips".
+- **Zorunlu adımda girdi kapısı (UX §13.1, GDD §14.1/4; Faz 2 tur 1 #12):** üst üste binen delikler sınır kutusunda
+  birleştiği için delik vurgusuz blokları da kapsayabilir; bu yüzden kapı parça kimliğiyledir: Z adımı vurgulu blok
+  içeriyorsa `TutorialController.allowsPick(id)` yalnız o blokları tutturur (`DragController` reddedilen basışa tepki
+  vermez) ve adımın sürükleme sinyalleri (`overWall`/`gapPass`/`holdOverBuild`) yalnız vurgulu bloğun sürüklemesinde
+  sayılır. Spot deliği vurgulu bloğu izler: hamle işlenince yeni yerinde (`TutorialOverlay` vurgu dikdörtgenlerini her
+  karede hesaplar, değişince yeniden kurar); sürükleme ortasında açılan adımda (Bölüm 1 adım 2) deliği bloğun o anki
+  sürükleme düğümünde (ray dahil) kurar ve o sürükleme boyunca düğüm değişiminde yeniden kurmaz (her kurulum bir
+  yeniden yerleşimdir; §10.6), bırakınca bloğun yeni yerine geçer. Testler "GDD
+  14.1 required step ignores non-highlighted block", "UX 13.1 a piece: hole sits on the dragged block …".
+  **Faz 2 tur 2:** (a) birleşen delik kutusunun hiçbir vurguya ait olmayan kısmı aynı karartmayla kapanır
+  (`highlights.spotlight` → `fills` = `darkRects(kutu, üyelerin 12 px paylı dikdörtgenleri)`, köşesiz; köşesi bir
+  dolgunun içinde kalan kutu köşesine koyu köşe parçası konmaz) ve zorunlu adımda dokunuş da yutar; (b) yutan bölgeler
+  duraklat düğmesinin dokunma alanında (`pauseHitRect`, ≥ 128 px) kesilir (`blockerRects`): Mola penceresi, ayarlar ve
+  "Bölümden çık" her adımda erişilebilir; (c) sürükleme boyunca sürüklenen blok (görüntü, parlama, kalkık gölge), gölge
+  görünümünün tamamı (gövde, kontur, rozet, taramalar, düşüş yolu, iptal rozeti) ve #4 ipi `overTutorial(d)` =
+  `DEPTH.tutorial + 5 + (d − fallShadow)/10` ile spot ışığının, eldivenin ve balonun üstüne çıkar, bırakınca döner
+  (`ShadowView.setRaised`, `PieceView` sürüklenirken); (d) balon adayları: HUD altı bant → vinç bandı → **üst yarıdaki
+  deliklerin altı** → durum şeridi üstü → üst kenar; `bubbleAvoid` (görünen dilimin planı + ekranın alt yarısı) delik
+  ağırlığıyla cezalanır (390×763, 360×740, 412×846, 375×667'de Bölüm 1–5 balonları üst yarıda, plan dışında); (e)
+  bağlamsal satır vurgusu olaydan türetilir (`ctxMoveHighlight`: geri seken blok `pid:<PieceId>` + birincil nedenin
+  iniş hücreleri `reasonCells`; `support` → eksik destek hücreleri + `front`; `blocked` → dokunulan blok); satır
+  sürükleme sırasında açılmaz. Testler "UX 13.1 merged hole: level 1 step 1 lights only the crane band and piece 0",
+  "UX 13.1 required step keeps the pause button …", "UX 13.1 the dragged block and its shadow look draw above the
+  spotlight during a drag", "UX 13.2 "Vurgu" column …".
+- **K-43 devamında öğretici (Faz 2 tur 2 #8):** devam eden denemede öğretici atlanmaz; `GameSession.replay(…, step)`
+  her eylemden sonra (başlangıç dahil, indeks 0) o anki oturumla çağrılır ve sahne `replayTutorialAction` ile
+  denetleyiciyi canlı oyundaki gibi besler: kilit güvencesi o anın durumunu görür; `tutorial_step` analitiği yeniden
+  gönderilmez. Günlükte sürükleme yolu ve saat olmadığı için bir sürükleme yalnız sonucunun kanıtladığı sinyalleri verir
+  (`pieceMoved.entry`: sahadan `overWall` → `overWall`; `gap` → `gapPass`; `overWall` → `holdOverBuild`, tutma süresi
+  varsayılır) ve `timeoutMs` adımı sonraki eylemden önce biter (`endTimedStep`). İptal edilen sürüklemenin sinyali
+  günlükte yoktur: o adım devamda yeniden açılır. Kapanış anında ekrandaki adım (zorunlu kapısı, `tut.ctx.*` satırı,
+  sayacı) aynen geri gelir. Testler "K-43 resume keeps the tutorial step …" (birim: Bölüm 1–5 el çözümünün her
+  noktasında canlı ile aynı adım; e2e: Bölüm 3 adım 2 kapısı).
 - **Vurgu → blok çözümü:** `compile` (§2.3) `CompiledLevel.tutorialPieceIds` tablosunu bir kez kurar: `piece:<i>` →
   parti 0'ın `i`. parçası, `piece:k<p>_<i>` → `p`. partinin `i`. parçası, `debris:<i>` → `build.debris[i]`'den
   oluşturulan moloz parçası (`flags.debris`); hepsi `PieceId`. Spot ışığı deliği, eldiven ve aşağıdaki kilit güvencesi
@@ -1487,7 +1523,11 @@ o zaman yukarıdaki kural `seenContextTips`'i işaretler), hesap başına bir ke
 işaretli değilse çıkar): `tut.ctx.support` (ilk `pieceBounced`/`mortarStuck` `reason = 'support'`, GDD K-34 kanca 4),
 `tut.ctx.tootall` (ilk `blockedByWallHeight`, K-05, §4.4), `tut.ctx.bounce.color/.window/.offplan` (birincil nedene
 göre), `tut.ctx.truckhelp.*` (`truckHelp.kind`) vb.; anahtar listesi STORY §6 / UX §13.2 bağlamsal tablosu, L-17 her
-anahtarın iki dilde var olduğunu denetler. Engel bilgi kartı metni `obs.{id}.desc` (R-08) i18n'dedir.
+anahtarın iki dilde var olduğunu denetler. Bir öğretici adımı ekrandayken bağlamsal satır gösterilmez, kuyrukta bekler
+(GDD K-34 kanca 4, LEVELS §0); gösterilebileceği anda tetiği artık geçerli değilse (kamyon kuyruğu boşaldı, seri
+sıfırlandı, altın mala yok, ya da anlık bir tetikten — geri sekme, tutulamayan blok, boyu uzun — sonra yeni bir eylem
+işlendi) **işaretlenmeden düşer** ve sonraki gerçekleşmede yeniden tetiklenir (Faz 2 tur 1 #13; `ContextTips.update`
+geçerlilik fonksiyonu, test "UX 13.2 a queued contextual tip whose trigger no longer holds is dropped unmarked"). Engel bilgi kartı metni `obs.{id}.desc` (R-08) i18n'dedir.
 
 Brif §12 tipinden farklar (hepsi öneri, P-6; GDD §14 ekleriyle uyumlu): `schemaVersion` eklendi; `gaps` tipine göre
 ayrık birleşim (kepenkte `period` zorunlu vb.); **`build.mode`'dan `'elevator'` çıkarıldı, `build.elevator` ayrı
@@ -2090,6 +2130,8 @@ Phaser 4'te `Create.GenerateTexture` / `TextureManager.generate` **yok** (§0); 
 | İnşa cephesi konturu (`plan_front`) | 1 | yalnız düz kontur `plan.frontStrokePx` (`color.board.buildFront`) + dış parlama `alpha.buildFrontGlow`; dolgu, açıklık ve sembol yok (ART §4 cephe katmanı 2); cephe hücresinin üstüne konur, `?` cephe hücresi açıklık almaz, yalnız kontur |
 | Plan dışı şantiye hücresi (`board_blueprint_deep`) | 1 | düz `color.board.blueprintDeep` dolgu; ızgara, benek, köşebent yok (ART §4 "Plan dışı", ASSET §3); aktif dilimde `y ≥ h + e` hücreleri (GDD K-03, K-16 `outside`) |
 | Eksik destek taraması (`plan_support_hatch`, K-34) | 1 | yatay çizgi `plan.supportHatchWidthPx` / `supportHatchSpacingPx`, `color.ghost.support` × `alpha.supportHatch` (45° renk taramasından desen olarak ayrı) |
+| Hatalı hücre taraması (`ghost_hatch45`, UX §5.4; Faz 2 tur 1 #1) | 1 | 45° çizgi, aynı kalınlık/aralık/opaklık, `color.ghost.invalid`; birincil neden `debris`/`outside`/`window`/`color` iken o nedenin hücrelerinde (çekirdek `reasonCells(state, pieceId, cells, reason)`; `support`'un hücresi yoktur, eksik destek taraması kullanılır); yalnız Kolay/Normal (gölge `wrong` tonunda), 2 Hz nabız |
+| Düşüş yolu (`ghost_path`, UX §5.4; Faz 2 tur 1 #2) | 1 | 6 px beyaz kesik dikey şerit (8/12), 8 satır boyu (1024'lük sayfaya sığar); sahne her dolu sütunda bloğun alt kenarından gölgenin üst kenarına kırpar, %35 alfa; rayda ve iptal öngörüsünde yok (token önerisi design-lead'e: `alpha.ghostPath`, `plan.ghostPathDash`) |
 | Tavan kirişi (`board_ceiling_beam`, S8) | 1 + 2 kelepçe | yatay boru `plan.ceilingBeamPx`, `color.board.scaffold` + uçlarda `color.board.scaffoldClamp`; aktif dilimin plan tepesinde, asansörle birlikte kayar |
 | `?` hücresi | 1 | beyaz %10 dolgu, kesik kontur, `plan.hiddenTagPx` kâğıt etiket + "?" |
 | Ozalit ızgara kaplaması | dilim başına 1 saydam doku | ince/kalın ızgara (`alpha.blueprintLine`/`Major`); **plan hücrelerinin üstünden, blokların altından** geçer (§10.3) |
@@ -2144,7 +2186,11 @@ bloğunun üstüne, sembolün altına) pişirilir; ıslak sayacı ayrı görünt
   bu etiketler o aileyi kullanır; kod tarafında tek satır.
 - **Filter'sız efektler** (§10.6): doldurma/silme efektleri (#12, #17, #28, #63) yeni renkli ikinci `Image`'ın `setCrop`
   genişliği tween'iyle; parlamalar `setTint().setTintMode(FILL)` + alfa tween'iyle; bulanık gölgeler önceden pişirilmiş
-  siluetlerle; spot ışığı 4 dikdörtgen + 4 çeyrek daire görüntüsüyle.
+  siluetlerle; spot ışığı 4 dikdörtgen + 4 çeyrek daire görüntüsüyle. Uygulama (Faz 2 tur 1): koyu katman canlı
+  dörtgenler (`Graphics.fillRect`), yuvarlak koyu köşeler ve beyaz kenar oyun başına bir kez çizilen küçük `tut_spot`
+  dokusunun parçalarıyla (4 köşe + 4 yay + 4 gerilmiş beyaz şerit / delik; `spotPieces.ts`) — spot değişimi doku
+  yüklemez (pişmiş `Graphics` kenarı bütün deliklerin kutusu kadar doku yüklüyordu: 4×'te sürüklemenin en uzun karesi).
+  Ses bankası ön-çizimi (`SoundBank.pump`) yalnız basış/sürükleme yokken çalışır.
 
 ### 10.3 Sahne düzeni ve nesneler
 
@@ -2185,6 +2231,10 @@ sayaç etiketleri. Parçacık: doku ailesi başına bir `ParticleEmitter` sahne 
 kullanılır; `particles.maxOnScreen` bütçesi `maxAliveParticles` ile emitter'lara bölünür (en eski patlama erken söner),
 `particles.win` dalga başına 40 × 2 dalga. Bölüm geçişinde
 sahne yok edilmez; `LevelScene.reset(level)` havuzları boşaltıp yeniden doldurur → bölümler arası geçişte tahsis yok.
+Uygulama (Faz 2 tur 1 #17): ana ekrana dönüş `scene.switch(Home)` ile `LevelScene`'i **uyutur** (havuzlar, HUD ve
+pişmiş dokuları kalır); ana ekranın bölüm düğmesi `scene.run(Level, { levelId })` ile uyandırır, `WAKE` olayı
+`startLevel` (reset yolu) çalıştırır; uyurken gelen yeniden boyutlanma uyanışta uygulanır. Harness
+`state().levelCreates` + duman testi "TECH 10.4 … woken, not created again".
 
 ### 10.5 Girdi
 
@@ -2192,6 +2242,11 @@ sahne yok edilmez; `LevelScene.reset(level)` havuzları boşaltıp yeniden doldu
 `drag.startThresholdPx` / `holdMs` aşılınca başlar; eşik altında bırakma dokunmadır (K-07). Parmak ofseti
 `tokens.drag.fingerOffsetCells` (1,2). Sürükleme sırasında `input.activePointers` ikinci parmağı yok sayar.
 `pointerupoutside` = mevcut düğümde bırakma. Animasyon sırasında girdi §6.3 (R-12); G-L yönlendirme girdisi §4.7.
+Faz 2 tur 2 #12: blok kalkıkken `DragController.update` her karede de `follow` çağırır (olay işleyicisindeki çağrı tek
+kare tepkiyi korur): parmak dururken parmak ofseti kayması, JUICE #1 zıplaması ve #4 esnemesi biter, `DragFeel` hızı
+söner ve ip sayacı karelerle işler (dinlenen parmakta ip ve 3° yaslanma görünür); değişiklik yoksa çekirdeğin `follow`'u
+önbellekteki `stay` sonucunu döndürür (düğüm değişimi ve sinyal yok). Dokunma (eşik altı bırakma, UX §5.3) `EventPlayer.tapped`
+ile oynar: 1 hücre zıplama, azaltılmış harekette ≤ %3 ölçek nabzı, iki kipte de hafif haptik (Faz 2 tur 2 #13).
 
 ### 10.6 Kare bütçesi (60 FPS = 16,7 ms)
 
@@ -2205,7 +2260,11 @@ sahne yok edilmez; `LevelScene.reset(level)` havuzları boşaltıp yeniden doldu
 
 Kurallar: sıcak yollarda (`pointermove`, `update`) tahsis yok; oyun sırasında Filter (shader geçişi) yok (yalnızca
 kazanma ekranında kısa parlama, "animasyonları azalt" kapalıysa); her karede yeniden çizilen `Graphics` yok
-(gölge = önceden çizilmiş hücre görüntüleri).
+(gölge = önceden çizilmiş hücre görüntüleri). Sürükleme karelerinde doku yükleme ve soğuk kod yok (Faz 2 tur 2 #11):
+Usta Dede balonları metin başına bir kez kurulur ve saklanır (bölümün adım satırları bölüm başında, `TutorialOverlay.prepare`;
+bağlamsal satır sürükleme sırasında açılmaz), `AudioContext` açılış ekranında oluşturulur (`AudioService.prepare`,
+etkinleştiren ilk girdi yalnız `resume()` + sessiz tampon) ve sürükleme yolu bölüm başında bir kez kuru çalıştırılır
+(`warmDragPath`: `tryBeginDrag`, `follow`, `classify`, `computeFall`, `shadowLook`, gölge görüntüleri, görünümün kalkışı).
 
 ### 10.7 Performans test planı
 
@@ -2219,9 +2278,12 @@ kazanma ekranında kısa parlama, "animasyonları azalt" kapalıysa); her karede
    (touchStart → 60 Hz touchMove dizisi → touchEnd) ile **gerçek sürükleme** olarak oynatır.
 5. Ölçümler: sayfa içi rAF örnekleyici (`window.__perf`) → ortalama FPS, p50/p95/p99 kare süresi, > 20 ms kare oranı;
    `PerformanceObserver('long-animation-frame')` (Chromium 123+); girdi gecikmesi = `touchmove.timeStamp` ile bloğun
-   yeni konumda çizildiği ilk rAF arasındaki fark (`DragController` ölçer); `Runtime.getHeapUsage` ile bellek.
+   yeni konumda çizildiği ilk rAF arasındaki fark (`DragController` pozu yazdığı olayda `DRAG_DRAWN_EVENT` yayar,
+   örnekleyici o pozu çizen `POST_RENDER`'a kadar ms ve **kare sayısı** olarak ölçer); `Runtime.getHeapUsage` ile bellek.
 6. Geçme ölçütü (brif §14): 4× yavaşlatmada **ortalama ≥ 50 FPS**, p95 ≤ 25 ms, sürüklemede > 50 ms uzun kare yok,
-   girdi gecikmesi ≤ 1 kare. **FTUE kapısı:** soğuk başlangıç, 4× CPU + CDP "Fast 4G" (web ilk ziyaret), gezinme
+   girdi gecikmesi ≤ 1 kare. `tools/perf.ts` (Faz 2 tur 1 #16) CPU tarafında kapı: `drag` ve `win` için ortalama ≥ 50
+   FPS ve p95 ≤ 25 ms, `drag`'de > 50 ms kare 0, FTUE ≤ 10 s; ölçülemeyen değer (`null`: kare yok, örnekleyici bozuk)
+   **FAIL**; girdi gecikmesi kare sayısı olarak raporlanır (SwiftShader'da kare temposu yazılımsal GPU'nun → gösterge). **FTUE kapısı:** soğuk başlangıç, 4× CPU + CDP "Fast 4G" (web ilk ziyaret), gezinme
    başlangıcı → `window.__levelInteractive` ≤ 10 s (giriş sahnesinin 3 paneli dahil, UX §2.1: dokunmadan 8,2 s +
    1,8 s yükleme aşım payı = 10,0 s; Phaser paket ayrıştırması payın içinde). Yükleme sırası: font +
    3 giriş paneli hazır olunca paneller başlar; açılış atlası, `level_001` derlemesi ve bölüm pişirmesi panellerin
@@ -2530,7 +2592,7 @@ type AnalyticsEvent =
   | { name: 'level_start'; level: number; attempt: number; mode: Mode; preBoosters: number }   // preBoosters = sayı
   | { name: 'level_end'; level: number; mode: Mode; result: 'win' | 'lose' | 'quit'; movesLeft: number;
       wrongPlacements: number; yao: number /* 0–100 */; durationMs: number; extensions: number /* 0–3 */;
-      exitFree: boolean; truckHelps: number }
+      exitFree: boolean; truckHelps: number }   // sayaçlar denemenin tamamı: K-43 devamında `GameSession.replay(…, sink)` olayları sayılır (Faz 2 tur 1 #19)
   | { name: 'level_resume'; level: number; movesMade: number }                                // R-13 devam açılışı
   | { name: 'level_resume_invalid'; level: number; movesMade: number;
       cause: 'level_hash' | 'rules_version' | 'both' }                                         // K-43/4, E-45; §11.1
@@ -2750,10 +2812,10 @@ bağımlılık yok: `node tools/solve.ts`. Koşulları:
 | `levels:check` | `levels:validate && levels:solve --traps && levels:bot` (solver ve tarama önbellekli) |
 | `events:sim` | `node tools/event-sim.ts` — Köprü/Lig bot dağılımı raporu (§11.2) |
 | `config:validate` | `node tools/validate-config.ts` — `config/economy.json` + `events.json` zod/mini şeması ve değer kuralları (kumbara R-16, `bridge_share_cap` META §6.2; §11.3); hata → çıkış 1. Aynı doğrulayıcı `tests/config/validate.test.ts` ile `npm test`'te koşar (Faz 4, §14.3) |
-| `screens` | `vite build --mode harness && node tools/screens.ts [--profile default\|ios67\|android] [--cvd]` → `artifacts/screens/<ekran>[.<cvd>].png` |
+| `screens` | `vite build --mode harness && node tools/screens.ts [--profile 390x844\|360x800\|390x763\|360x740] [--only <ad>,…] [--cvd protanopia,deuteranopia,tritanopia\|all]` → `artifacts/screens/<profil>[-<cvd>]/<ad>.png`. CVD: harness `&cvd=` → `#game` üstünde SVG `feColorMatrix` (Machado 2009, şiddet 1,0, doğrusal RGB). Faz 2 çekimleri 01a–01c giriş panelleri (harness `introPanel(n)`), 02–18, 19-palette (8 renk blok + plan + cephe + `.` + `?`, harness fikstür sahnesi), 20-home-l2, 21-home-more-soon, 22-pause, 23-cancel-preview, 24-bounce-support (JUICE #84'ün içinde: harness `waitCue(84)` + 100 ms oyun zamanı, Faz 2 tur 2 #6), 25-trowel-pick. Kısa görünümler 390×763 (TECH §10.1, Safari çubukları) ve 360×740 yalnız `starts` senaryosu: Bölüm 1–5 başlangıçları 02–06 (öğretici balonu, Faz 2 tur 2 #15) |
 | `perf` | `vite build --mode harness && node tools/perf.ts` (§10.7) |
 | `build:verify` | `vite build` sonrası `tools/verify-dist.ts`: `dist/` içinde `src/debug`/`src/harness` parçası, `__debug`/`__harness` dizgesi ya da `?debug` işleyicisi **yok** (R-20); `npm run build`'in parçası |
-| `test:rules` | `vitest list --json` çıktısını `tools/rule-coverage.ts` okur; GDD.md'deki **her K-01…K-46 ve E-01…E-47**, OBSTACLES.md'deki her engel kimliği (W1…W8, Y1…Y8, S1…S8, G-H, G-L) ve `[kural]` etiketli her N-notu en az bir test adında geçmiyorsa çıkış 1. Kimlik listesi belgelerden okunur (kod içinde liste yok). Faz 2–3'te `package.json` betiği `--phase N` verir (Faz 2: `--phase 2`, Faz 3: `--phase 3`, Faz 4'ten itibaren bayraksız = tam): K-xx yalnız §12.4 tablosunun F sütunundaki ilk faz ≤ N ise; engel kimlikleri Faz 2'de OBSTACLES "İlk bölüm" ≤ 5 olanlar (W1, S1, S2), Faz 3'te hepsi; **N-notları fazını OBSTACLES etkileşim matrisinden alır** (metindeki kimliklerden değil: N7, N24 gibi notların metninde engel kimliği geçmez): notun geçtiği her hücrenin fazı = iki engelin fazının büyüğü, notun fazı = bu hücre fazlarının en küçüğü (andığı K-xx'lerin F'sinden küçük olamaz) — Faz 2 engellerinin hücreleri W1×S1 `·`, W1×S2 N10 `[not]`, S1×S2 `·` olduğundan bütün `[kural]` notları en erken Faz 3'tedir (§14.2 "N-notu testleri"); **E-xx** andığı her K-xx ve engel kimliği (GDD §13 "Kurallar" sütunu + satır metni) bu kümelerdeyse, **ama** satırı Sallanan Köprü ya da Usta Ligi'ni anıyorsa (metin) ya da "Kurallar"ı `META` içeriyorsa Faz 4'te (Köprü/Lig §14.3 Faz 4). Ör. E-47 ("G-L: …") Faz 3'te, E-22 ("Sallanan Köprü'de …", K-29, META) ve E-45 (Köprü tur harcaması) Faz 4'te zorunlu olur. Betikle sayıldı (2026-10-06): `--phase 2` zorunlu E kümesi = E-01, E-03, E-06, E-21, E-27, E-28, E-30, E-34, E-38; Faz 4: E-22, E-45; kalan 36 E Faz 3; 38 `[kural]` notunun 38'i Faz 3 (eski "andığı kimlik" kuralı 31'ini — N1, N3, N5–N8, N11, N13, N14, N16–N20, N23–N35, N38, N40, N41, N43 — Faz 2'ye düşürüyordu). Test: "test:rules phase 2 requires no N-note and no bridge E row" (`tools/rule-coverage.ts`, gerçek belgelerle) |
+| `test:rules` | `vitest list --json` çıktısını `tools/rule-coverage.ts` okur; GDD.md'deki **her K-01…K-46 ve E-01…E-47**, OBSTACLES.md'deki her engel kimliği (W1…W8, Y1…Y8, S1…S8, G-H, G-L) ve `[kural]` etiketli her N-notu en az bir test adında geçmiyorsa çıkış 1. Kimlik listesi belgelerden okunur (kod içinde liste yok). Faz 2–3'te `package.json` betiği `--phase N` verir (Faz 2: `--phase 2`, Faz 3: `--phase 3`, Faz 4'ten itibaren bayraksız = tam): K-xx yalnız §12.4 tablosunun F sütunundaki ilk faz ≤ N ise; engel kimlikleri Faz 2'de OBSTACLES "İlk bölüm" ≤ 5 olanlar (W1, S1, S2), Faz 3'te hepsi; **N-notları fazını OBSTACLES etkileşim matrisinden alır** (metindeki kimliklerden değil: N7, N24 gibi notların metninde engel kimliği geçmez): notun geçtiği her hücrenin fazı = iki engelin fazının büyüğü, notun fazı = bu hücre fazlarının en küçüğü (andığı K-xx'lerin F'sinden küçük olamaz) — Faz 2 engellerinin hücreleri W1×S1 `·`, W1×S2 N10 `[not]`, S1×S2 `·` olduğundan bütün `[kural]` notları en erken Faz 3'tedir (§14.2 "N-notu testleri"); **E-xx** andığı her K-xx ve engel kimliği (GDD §13 "Kurallar" sütunu + satır metni) bu kümelerdeyse, **ama** satırı Sallanan Köprü ya da Usta Ligi'ni anıyorsa (metin) ya da "Kurallar"ı `META` içeriyorsa Faz 4'te (Köprü/Lig §14.3 Faz 4). Ör. E-47 ("G-L: …") Faz 3'te, E-22 ("Sallanan Köprü'de …", K-29, META) ve E-45 (Köprü tur harcaması) Faz 4'te zorunlu olur. Betikle sayıldı (2026-10-06): `--phase 2` zorunlu E kümesi = E-01, E-03, E-06, E-21, E-27, E-28, E-30, E-34, E-38; Faz 4: E-22, E-45; kalan 36 E Faz 3; 38 `[kural]` notunun 38'i Faz 3 (eski "andığı kimlik" kuralı 31'ini — N1, N3, N5–N8, N11, N13, N14, N16–N20, N23–N35, N38, N40, N41, N43 — Faz 2'ye düşürüyordu). Test: "test:rules phase 2 requires no N-note and no bridge E row" (`tools/rule-coverage.ts`, gerçek belgelerle). Uygulandı (Faz 2 tur 1 #20/#22): eşleşme `(^|[^\w-])ID(?!\d)` (K-1 ≠ K-10, S1 ≠ S10); eksik kimlik çıkış 1, belge/argüman hatası çıkış 2; `--list <dosya>` kayıtlı `vitest list --json` okur, `--print` kimlikleri yazar; K-xx kümesi GDD başlıklarından (tablo satırı olmayan K-xx hata) |
 | `golden:update` | (Faz 3; Faz 2 `package.json`'ında yok, solver yok) `node tools/solve.ts --update-golden` — **yalnız** solver golden'larını (`tests/golden/level_NNN.json`: çözüm + `eventLogHash` + YAO) yeniden yazar; diff incelenmeden işlenmez. **Kapsam dışı:** `tests/golden/level_NNN.hand.json` (LEVELS §2 el çözümleri, §9.5) elle yazılır; kural ya da olay değişikliğinde yalnız `eventLogHash` (gerekirse `finalAscii`) günlük incelendikten sonra elle güncellenir — test iletisi dosyayı adıyla söyler. Araç `*.hand.json`'a yazmaz (test: "golden:update never touches hand goldens", Faz 3) |
 | `typecheck` | `tsc --noEmit -p tsconfig.json && tsc -p tsconfig.core.json && tsc -p tsconfig.tools.json` |
 | `check` | `typecheck && lint && format:check && test && test:rules` |

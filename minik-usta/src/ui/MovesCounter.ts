@@ -12,6 +12,7 @@ import { t } from '../services/i18n.ts';
 import type { Rect } from '../theme/layout.ts';
 import { TOKENS } from '../theme/tokens.ts';
 import { hex, textStyle } from './text.ts';
+import { addBakedGraphics } from './BakedGraphics.ts';
 
 const C = TOKENS.color.ui;
 
@@ -31,12 +32,14 @@ export class MovesCounter {
   private bump = 1;
 
   constructor(scene: Phaser.Scene, depth: number) {
-    this.panel = scene.add.graphics();
-    this.danger = scene.add.graphics().setVisible(false);
+    this.panel = addBakedGraphics(scene);
+    this.danger = addBakedGraphics(scene).setVisible(false);
     this.cur = scene.add.text(0, 0, '', textStyle('display', C.ink)).setOrigin(0.5, 0.5);
     this.next = scene.add.text(0, 0, '', textStyle('display', C.ink)).setOrigin(0.5, 0.5).setVisible(false);
     this.label = scene.add.text(0, 0, t('hud.moves'), textStyle('small', C.inkSoft)).setOrigin(0.5, 0.5);
-    this.root = scene.add.container(0, 0, [this.panel, this.danger, this.cur, this.next, this.label]).setDepth(depth);
+    this.root = scene.add
+      .container(0, 0, [this.panel, this.danger, this.cur, this.next, this.label])
+      .setDepth(depth);
   }
 
   layout(rect: Rect): void {
@@ -56,6 +59,11 @@ export class MovesCounter {
     this.cur.setPosition(0, this.valueY);
     this.next.setPosition(0, this.valueY);
     this.label.setPosition(0, -h / 2 + (h - lip) * 0.82);
+  }
+
+  /** New language: the `hud.moves` label. */
+  relabel(): void {
+    this.label.setText(t('hud.moves'));
   }
 
   /** Shows `n` at once (level start, reduced motion, re-sync). */
@@ -93,6 +101,13 @@ export class MovesCounter {
     this.pulseOn = on && pulse;
   }
 
+  /** Reduced motion switched (JUICE §0 rule 8): the #51 loop stops (or starts again) at once, the red stays. */
+  setPulse(pulse: boolean, now: number): void {
+    const on = this.dangerOn && pulse;
+    if (on && !this.pulseOn) this.pulseStart = now;
+    this.pulseOn = on;
+  }
+
   /** Extra scale from a bump (#51 strong pulse, #53 1,2). */
   setBump(scale: number): void {
     this.bump = scale;
@@ -101,7 +116,8 @@ export class MovesCounter {
   /** Per frame: loop pulse × bump. `period` = `duration.lastMovesPulse`, `peak` = 1,06. */
   update(now: number, period: number, peak: number): void {
     let s = this.bump;
-    if (this.pulseOn) s *= 1 + (peak - 1) * 0.5 * (1 - Math.cos((2 * Math.PI * (now - this.pulseStart)) / period));
+    if (this.pulseOn)
+      s *= 1 + (peak - 1) * 0.5 * (1 - Math.cos((2 * Math.PI * (now - this.pulseStart)) / period));
     this.root.setScale(s);
   }
 

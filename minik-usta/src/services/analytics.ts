@@ -345,3 +345,59 @@ export class Analytics {
     return this.#log.toArray();
   }
 }
+
+/**
+ * Play session for ANALYTICS §3 `sessionId` and §2 `session_end { durationMs, levelsPlayed }`. A session starts when
+ * the app opens or comes back to the foreground, and ends when it goes to the background or the page is left
+ * (`visibilitychange: hidden`, `pagehide`; Capacitor `pause` in Faz 5). `session_end` is sent once per session (both
+ * lifecycle events may fire for one exit); `levelsPlayed` counts the `level_start` events of the session (a K-43 resume
+ * is not a new start).
+ */
+export class SessionTracker {
+  readonly #clock: Clock;
+  readonly #track: Track;
+  readonly #newId: () => string;
+  #id: string;
+  #start: number;
+  #levels = 0;
+  #open = true;
+
+  constructor(opts: { readonly clock: Clock; readonly track: Track; readonly newId: () => string }) {
+    this.#clock = opts.clock;
+    this.#track = opts.track;
+    this.#newId = opts.newId;
+    this.#id = opts.newId();
+    this.#start = opts.clock.now();
+  }
+
+  /** §3 `sessionId` of the current (or last ended) session. */
+  get id(): string {
+    return this.#id;
+  }
+
+  get open(): boolean {
+    return this.#open;
+  }
+
+  /** Every tracked event passes here first: a `level_start` counts toward `levelsPlayed`. */
+  observe(event: AnalyticsEvent): void {
+    if (event.name === 'level_start') this.#levels += 1;
+  }
+
+  /** App hidden / page left: `session_end` once. */
+  hidden(): void {
+    if (!this.#open) return;
+    this.#open = false;
+    const durationMs = Math.max(0, Math.round(this.#clock.now() - this.#start));
+    this.#track({ name: 'session_end', durationMs, levelsPlayed: this.#levels });
+  }
+
+  /** App visible again after a `session_end`: a new session (new id, clock and count). */
+  visible(): void {
+    if (this.#open) return;
+    this.#open = true;
+    this.#id = this.#newId();
+    this.#start = this.#clock.now();
+    this.#levels = 0;
+  }
+}

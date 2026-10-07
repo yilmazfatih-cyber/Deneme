@@ -9,7 +9,17 @@
     <meta name="theme-color" content="#7FD3F7" />
     <link rel="icon" href="data:," />
     <title>Minik Usta</title>
+    <!-- ART §8 / D-046 / TECH §10.2: Baloo 2 (OFL 1.1, fonts/OFL.txt) variable 400–800, Latin + Turkish subset,
+         self-hosted (offline, no CDN). Boot creates no Text before both HUD weights are loaded. -->
+    <link rel="preload" href="/fonts/baloo2-latin-tr.woff2" as="font" type="font/woff2" crossorigin />
     <style>
+      @font-face {
+        font-family: 'Baloo 2';
+        src: url('/fonts/baloo2-latin-tr.woff2') format('woff2');
+        font-weight: 400 800;
+        font-style: normal;
+        font-display: block;
+      }
       html,
       body {
         margin: 0;

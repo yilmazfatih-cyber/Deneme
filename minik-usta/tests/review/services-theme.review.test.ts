@@ -2611,22 +2611,33 @@ describe('round 3: draw recipes (ART 3, 4, 5; TECH 10.2; ASSET 2–3)', () => {
       clipAt,
     );
     expect(roundBox(bbox(pathPoints(clipPath)))).toEqual({ x0: 8, y0: 8, x1: 112, y1: 112 });
-    const hatch = paints(hatchOps).find((x) => x.op === 'stroke');
+    const strokes = paints(hatchOps).filter((x) => x.op === 'stroke');
+    const hatch = strokes.find((x) => parseColor(x.style).rgb.join() === hexRgb('#FFC21A').join());
     if (hatch === undefined) throw new Error('no support hatch');
     expect(hatch.lineWidth).toBe(6);
     expect(parseColor(hatch.style)).toEqual({ rgb: hexRgb('#FFC21A'), a: 0.85 });
+    // ART 4 (Faz 2 tur 2): under every yellow line a 10 px `ui.ink` line at 80 %, drawn first
+    const ink = strokes[0];
+    expect(ink).not.toBe(hatch);
+    expect(ink?.lineWidth).toBe(10);
+    expect(parseColor(ink?.style ?? '')).toEqual({ rgb: hexRgb(TOKENS.color.ui.ink), a: 0.8 });
     const starts = hatch.path.filter((o) => o[0] === 'moveTo').map((o) => Number(o[2]));
     const ends = hatch.path.filter((o) => o[0] === 'lineTo').map((o) => Number(o[2]));
     expect(ends).toEqual(starts); // horizontal
     starts.slice(1).forEach((y, i) => expect(y - (starts[i] ?? 0)).toBeCloseTo(20, 9));
   });
 
-  it('ART 5 W1 rails "2 çelik ray (6 px, board.scaffold)": the rail frame is a 6 px bar in #8A96A3', () => {
+  it('ART 5 W1 rails (Faz 2 tur 2) "ray 8 px koyu çelik board.rail + üstte 2 px board.wallLight, 40 px\'te bir 4×12 px travers": the rail frame', () => {
     const p = paints(recordOps((ctx) => drawGapRail(ctx, { length: 240 }, TOKENS)));
-    expect(p.map((x) => [x.op, x.style.toUpperCase(), ...x.args.map(Number)])).toEqual([
-      ['fillRect', TOKENS.color.board.scaffold.toUpperCase(), 0, 0, 240, 6],
-    ]);
-    expect(TOKENS.color.board.scaffold.toUpperCase()).toBe('#8A96A3');
+    const rows = p.map((x) => [x.op, x.style.toUpperCase(), ...x.args.map(Number)]);
+    const rail = TOKENS.color.board.rail.toUpperCase();
+    const light = TOKENS.color.board.wallLight.toUpperCase();
+    // the 12 px frame: the 8 px bar centred (y 2–10), the light line on its top edge, sleepers 4 × 12 every 40 px
+    expect(rows).toContainEqual(['fillRect', rail, 0, 2, 240, 8]);
+    expect(rows[rows.length - 1]).toEqual(['fillRect', light, 0, 2, 240, 2]);
+    const sleepers = rows.filter((r) => r[4] === 4 && r[5] === 12);
+    expect(sleepers.map((r) => r[2])).toEqual([18, 58, 98, 138, 178, 218]);
+    for (const sl of sleepers) expect([sl[1], sl[3]]).toEqual([rail, 0]);
   });
 
   it('TECH 10.2 / 10.3 and ASSET 2–3 texture names: plan_front, plan_support_hatch, board_ceiling_beam and ghost_badge_ok/_warn/_support/_glass/_cancel in the boot atlas; blk_<shape>_<c>, blk_sil_<shape>_<contact|lifted|crane> and ghost_<shape>_<valid|invalid|neutral> per shape', () => {

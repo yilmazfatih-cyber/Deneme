@@ -137,11 +137,30 @@ export interface GapRailSpec {
 }
 
 export function gapRailSize(spec: GapRailSpec): Size {
-  return { w: spec.length, h: ART.gapRailPx };
+  return { w: spec.length, h: Math.max(ART.gapRailPx, ART.gapRailSleeperH) };
 }
 
-/** One W1 steel rail (ART §5: 6 px, `board.rail`), laid on the opening's top and bottom boundaries. */
+/**
+ * One W1 steel rail (ART §5, Faz 2 tur 2), laid on the opening's top and bottom boundaries and drawn above the plan
+ * cells: an 8 px `board.rail` bar centred in the frame, a 2 px `board.wallLight` light line on its top edge and a
+ * 4 × 12 px `board.rail` sleeper notch every 40 px (from 20 px; baked at its real length, never stretched).
+ */
 export function drawGapRail(ctx: DrawContext, spec: GapRailSpec, tokens: Tokens): void {
+  const h = gapRailSize(spec).h;
+  const top = (h - ART.gapRailPx) / 2;
   ctx.fillStyle = tokens.color.board.rail;
-  ctx.fillRect(0, 0, spec.length, ART.gapRailPx);
+  for (
+    let x = ART.gapRailSleeperSpacingPx / 2;
+    x + ART.gapRailSleeperW <= spec.length;
+    x += ART.gapRailSleeperSpacingPx
+  )
+    ctx.fillRect(
+      x - ART.gapRailSleeperW / 2,
+      (h - ART.gapRailSleeperH) / 2,
+      ART.gapRailSleeperW,
+      ART.gapRailSleeperH,
+    );
+  ctx.fillRect(0, top, spec.length, ART.gapRailPx);
+  ctx.fillStyle = tokens.color.board.wallLight;
+  ctx.fillRect(0, top, spec.length, ART.gapRailLightPx);
 }

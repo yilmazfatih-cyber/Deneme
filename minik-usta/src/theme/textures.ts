@@ -63,8 +63,11 @@ import {
   drawBuildFront,
   drawHiddenCell,
   drawPlanCell,
+  drawFallPath,
   drawPlanDots,
   drawSupportHatch,
+  drawWrongHatch,
+  fallPathSize,
 } from './draw/plan.ts';
 import { drawGapRail, drawWall, gapRailSize, wallFrameOffset, wallSize } from './draw/wall.ts';
 
@@ -227,6 +230,10 @@ export const FRAME = Object.freeze({
   hidden: 'plan_hidden',
   front: 'plan_front',
   supportHatch: 'plan_support_hatch',
+  /** UX §5.4 45° hatch on the cells of the shadow's primary reason (`debris`, `outside`, `window`, `color`). */
+  wrongHatch: 'ghost_hatch45',
+  /** UX §5.4 fall path: dashed vertical strip, cropped by the scene. */
+  fallPath: 'ghost_path',
   blueprintFloor: 'board_blueprint',
   blueprintDeep: 'board_blueprint_deep',
   blueprintCorner: 'board_blueprint_corner',
@@ -275,11 +282,22 @@ const frame = (
 });
 
 /**
- * Length of the frames that are uniform along one axis (scaffold pole: vertical; ledger, ceiling beam, W1 rail:
- * horizontal). The scene stretches them with `setDisplaySize` (pole = site height, rail = `wallW + buildCols·cellPx`),
- * which keeps the boot atlas small.
+ * Length of the frames that are uniform along one axis (scaffold pole: vertical; ledger, ceiling beam: horizontal).
+ * The scene stretches them with `setDisplaySize` (pole = site height), which keeps the boot atlas small.
  */
 export const STRETCH_PX = 16;
+
+/** W1 rail length: through the wall opening and across the site (`wallW + buildCols·cellPx`); its sleepers do not stretch. */
+export const gapRailLength = (tokens: Tokens): number =>
+  tokens.layout.grid.wallW + tokens.layout.grid.buildCols * tokens.layout.grid.cellPx;
+
+/**
+ * Length of the baked fall-path strip: the board height (8 rows, 960 px — inside a 1024 px page, TECH §10.2 small
+ * devices). A longer gap (block in the crane rows over an empty column) shows the strip's last 960 px, ending on the
+ * shadow.
+ */
+export const FALL_PATH_LENGTH = (tokens: Tokens): number =>
+  tokens.layout.grid.rows * tokens.layout.grid.cellPx;
 
 /** Seed of the blueprint paper speckle: fixed, so every bake is identical (ART §4 "tohumlu gürültü, sabit"). */
 export const BLUEPRINT_SEED = 0x6d75; // "mu"
@@ -303,6 +321,10 @@ export function bootAtlasFrames(tokens: Tokens, mode: DrawMode = DEFAULT_MODE): 
     frame(FRAME.hidden, cell, (ctx) => drawHiddenCell(ctx, tokens)),
     frame(FRAME.front, cell, (ctx) => drawBuildFront(ctx, tokens)),
     frame(FRAME.supportHatch, cell, (ctx) => drawSupportHatch(ctx, { mode }, tokens)),
+    frame(FRAME.wrongHatch, cell, (ctx) => drawWrongHatch(ctx, { mode }, tokens)),
+    frame(FRAME.fallPath, fallPathSize({ length: FALL_PATH_LENGTH(tokens) }), (ctx) =>
+      drawFallPath(ctx, { length: FALL_PATH_LENGTH(tokens) }),
+    ),
     ...BADGE_KINDS.map((kind) =>
       frame(badgeFrameName(kind), badgeSize({ kind, mode }, tokens), (ctx) =>
         drawGhostBadge(ctx, { kind, mode }, tokens),
@@ -324,8 +346,8 @@ export function bootAtlasFrames(tokens: Tokens, mode: DrawMode = DEFAULT_MODE): 
     frame(FRAME.ceilingBeam, { w: STRETCH_PX, h: tokens.plan.ceilingBeamPx }, (ctx) =>
       drawCeilingBeam(ctx, { length: STRETCH_PX }, tokens),
     ),
-    frame(FRAME.gapRail, gapRailSize({ length: STRETCH_PX }), (ctx) =>
-      drawGapRail(ctx, { length: STRETCH_PX }, tokens),
+    frame(FRAME.gapRail, gapRailSize({ length: gapRailLength(tokens) }), (ctx) =>
+      drawGapRail(ctx, { length: gapRailLength(tokens) }, tokens),
     ),
     frame(FRAME.craneLine, { w: boardW, h: ART.craneLinePx }, (ctx) =>
       drawCraneLine(ctx, { length: boardW }, tokens),

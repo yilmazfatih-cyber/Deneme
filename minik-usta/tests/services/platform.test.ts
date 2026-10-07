@@ -2,7 +2,14 @@ import { describe, expect, it } from 'vitest';
 import { TOKENS } from '../../src/theme/tokens.ts';
 import { FakeClock, localDayKey, monotonicNow, systemClock } from '../../src/services/clock.ts';
 import { HAPTIC_NAMES, createWebHaptics } from '../../src/services/haptics.ts';
-import { appVersion, detectPlatform, onAppHidden, randomId } from '../../src/services/platform.ts';
+import {
+  appVersion,
+  detectPlatform,
+  onAppHidden,
+  onAppVisible,
+  randomId,
+  userActivation,
+} from '../../src/services/platform.ts';
 import type { LifecycleTarget } from '../../src/services/platform.ts';
 
 describe('clock (TECH 11)', () => {
@@ -100,5 +107,56 @@ describe('haptics (TECH 11.7)', () => {
     });
     expect(() => throwing.play('medium')).not.toThrow();
     expect(() => createWebHaptics().play('light')).not.toThrow(); // Node: no navigator.vibrate
+  });
+});
+
+describe('platform lifecycle and user activation (TECH 11.1, 11.6, 11.7)', () => {
+  function target() {
+    const listeners = new Map<string, Set<() => void>>();
+    const on = (t: string, fn: () => void): void =>
+      void listeners.set(t, (listeners.get(t) ?? new Set()).add(fn));
+    const off = (t: string, fn: () => void): void => void listeners.get(t)?.delete(fn);
+    const fire = (t: string): void => {
+      for (const fn of [...(listeners.get(t) ?? [])]) fn();
+    };
+    const doc = {
+      visibilityState: 'visible' as DocumentVisibilityState,
+      addEventListener: on,
+      removeEventListener: off,
+    };
+    const win = { addEventListener: on, removeEventListener: off };
+    return { doc, win, fire, size: () => [...listeners.values()].reduce((n, s) => n + s.size, 0) };
+  }
+
+  it('TECH 11.1 onAppVisible fires on visibilitychange → visible and on pageshow; unsubscribe removes both', () => {
+    const t = target();
+    let n = 0;
+    const off = onAppVisible(() => n++, { document: t.doc, window: t.win } as unknown as LifecycleTarget);
+    t.doc.visibilityState = 'hidden';
+    t.fire('visibilitychange');
+    expect(n).toBe(0);
+    t.doc.visibilityState = 'visible';
+    t.fire('visibilitychange');
+    t.fire('pageshow');
+    expect(n).toBe(2);
+    off();
+    expect(t.size()).toBe(0);
+  });
+
+  it('TECH 11.7 haptics send nothing before the first user gesture (Chrome blocks and logs vibrate)', () => {
+    const calls: unknown[] = [];
+    let active = false;
+    const h = createWebHaptics({ vibrate: (p) => (calls.push(p), true), activated: () => active });
+    h.play('light');
+    expect(calls).toEqual([]);
+    active = true;
+    h.play('light');
+    expect(calls).toEqual([TOKENS.haptic.light]);
+  });
+
+  it('TECH 11.6 userActivation reads navigator.userActivation, null when the browser has none', () => {
+    expect(userActivation({ navigator: {} })).toBeNull();
+    const ua = { isActive: true, hasBeenActive: true };
+    expect(userActivation({ navigator: { userActivation: ua } })).toBe(ua);
   });
 });

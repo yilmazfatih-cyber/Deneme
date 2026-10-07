@@ -1,9 +1,12 @@
 /**
  * Panorama strip (GDD K-06; UX_FLOWS §5.1; TECH_DESIGN §1.2, §10.3): a small preview of every segment of the plan in
  * `layout.top.panorama`. It only draws the data of core `panoramaView(state)` (a pure read; it never changes the game):
- * segments side by side as 2-column strips, bottom-aligned; completed segments in full block colour, the active one
- * framed in white with its plan colours, future ones with plan colours at `alpha.panoramaFuture`; unrevealed `?` cells
- * keep the `?` tag (K-32), `.` cells and cells outside the plan stay empty.
+ * segments side by side as 2-column strips, bottom-aligned on a common base, the block vertically centred in the strip;
+ * completed segments in full block colour, the active one framed in white with its plan colours, future ones with plan
+ * colours at `alpha.panoramaFuture`; unrevealed `?` cells keep the `?` tag (K-32), `.` cells and cells outside the plan
+ * stay empty. Cell size (UX §5.1 Faz 2 tur 2, review #7): from the level's tallest segment, `min(24, ⌊(110 − 2·pad) /
+ * rows⌋)`, at least 12 px — every segment at the same scale (an 8-row plan keeps 12 px, the 3–5-row plans of levels
+ * 1–5 get 18–24 px).
  *
  * Built from boot-atlas frames scaled down (≤ 16 images per segment); no RenderTexture. The tap → large preview is
  * MVP-lite UI work (TECH §14.1 #12).
@@ -25,11 +28,9 @@ export interface PanoramaStyle {
   readonly depth: number;
   /** Inner padding and active-frame line width (px), gap between segments (cells). */
   readonly padPx: number;
-  /**
-   * Rows the cell size is computed for (the board's plan rows, 8): every level shows the plan at the same scale,
-   * 12 px cells in the 110 px strip (UX §5.1 "12 px hücrede").
-   */
-  readonly refRows: number;
+  /** Cell size bounds (UX §5.1: 24 px at most, 12 px at least). */
+  readonly maxCellPx: number;
+  readonly minCellPx: number;
   readonly gapCells: number;
   readonly framePx: number;
 }
@@ -38,19 +39,35 @@ export interface PanoramaStyle {
 export function panoramaGeometry(
   rect: Rect,
   segments: readonly PanoramaSegment[],
-  style: Pick<PanoramaStyle, 'padPx' | 'gapCells' | 'refRows'>,
+  style: Pick<PanoramaStyle, 'padPx' | 'gapCells' | 'maxCellPx' | 'minCellPx'>,
 ): { cell: number; x0: number; bottom: number; colW: number; step: number } {
   const n = Math.max(1, segments.length);
-  const rows = Math.max(1, style.refRows, ...segments.map((s) => s.rows.length));
+  const rows = Math.max(1, ...segments.map((s) => s.rows.length));
   const innerW = rect.w - 2 * style.padPx;
   const innerH = rect.h - 2 * style.padPx;
   const byH = Math.floor(innerH / rows);
   const byW = Math.floor(innerW / (2 * n + style.gapCells * (n - 1)));
-  const cell = Math.max(1, Math.min(byH, byW));
+  const cell = Math.max(1, Math.min(byW, Math.max(style.minCellPx, Math.min(style.maxCellPx, byH))));
   const colW = 2 * cell;
   const step = colW + style.gapCells * cell;
   const total = n * colW + (n - 1) * style.gapCells * cell;
-  return { cell, x0: rect.x + (rect.w - total) / 2, bottom: rect.y + rect.h - style.padPx, colW, step };
+  // the tallest segment is vertically centred; the others stand on the same base
+  const bottom = rect.y + (rect.h + rows * cell) / 2;
+  return { cell, x0: rect.x + (rect.w - total) / 2, bottom, colW, step };
+}
+
+/** Column of segment `index` in the strip (JUICE #18: the completed segment flies here). */
+export function panoramaSlot(
+  rect: Rect,
+  segments: readonly PanoramaSegment[],
+  index: number,
+  style: Pick<PanoramaStyle, 'padPx' | 'gapCells' | 'maxCellPx' | 'minCellPx'>,
+): Rect | null {
+  const seg = segments[index];
+  if (!seg) return null;
+  const geo = panoramaGeometry(rect, segments, style);
+  const h = seg.rows.length * geo.cell;
+  return { x: geo.x0 + index * geo.step, y: geo.bottom - h, w: geo.colW, h };
 }
 
 export class Panorama {
@@ -104,6 +121,11 @@ export class Panorama {
         this.rect(px, left + geo.colW, top, f, h, white, 1);
       }
     });
+  }
+
+  /** Column of segment `index` for `segments` in `rect` (JUICE #18). */
+  slot(rect: Rect, segments: readonly PanoramaSegment[], index: number): Rect | null {
+    return panoramaSlot(rect, segments, index, this.style);
   }
 
   destroy(): void {

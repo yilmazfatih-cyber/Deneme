@@ -5,8 +5,8 @@
  * Order (JUICE §0 rule 10): steps 1–4 one after the other — release (#9 yard drop / #23 rail park), fall (#10) and
  * landing (#11), validation (#12 correct + #83 build front / #13 wrong → bounce, #88 to the truck queue, #84 missing
  * support; #15–16 streak with it), counter (#50, #51) —; step 6 yard cascade staggered by
- * `physics.yardCascadeStaggerMs`; step 8 segment slide (#18) then step 9 truck delivery (#19) and queue chip (#20),
- * both LOCKED; level end (#55 win + #56 bonus, #57 out of moves) last and locked. A final `end` cue re-syncs the board
+ * `physics.yardCascadeStaggerMs`; step 8 segment slide (#18, LOCKED) then step 9 truck delivery (#19: the 700 ms
+ * truck LOCKED, longer drops fall on unlocked) and queue chip (#20); level end (#55 win + #56 bonus, #57 out of moves) last and locked. A final `end` cue re-syncs the board
  * with the state. Trowel use (#17) and an accepted +5 offer (#53) replace steps 1–4.
  *
  * Durations come from the catalogue (tokens); falls from `tokens.physics` (motion.ts), never ms per row.
@@ -216,8 +216,7 @@ export function planMove(events: readonly GameEvent[], ctx: PlanContext, bonusMa
     if (e.reason !== 'move') continue;
     add(cue(50, t, ms(50), { ev: e, n: e.movesLeft }));
     const at = JUICE_VIEW.lastMovesAt;
-    if (e.movesLeft <= at)
-      add(cue(51, t, ms(51), { ev: e, n: e.movesLeft, first: ctx.movesBefore > at }));
+    if (e.movesLeft <= at) add(cue(51, t, ms(51), { ev: e, n: e.movesLeft, first: ctx.movesBefore > at }));
     t += ms(50);
   }
 
@@ -258,9 +257,11 @@ export function planMove(events: readonly GameEvent[], ctx: PlanContext, bonusMa
       ms: yardFallMs(e.rows),
     }));
     const lastLand = Math.max(...drops.map((d) => d.delay + d.ms));
-    const truckMs = Math.max(ms(19), lastLand + JUICE_VIEW.truckExitMs);
-    add(cue(19, t, truckMs, { lock: true, drops, ev: of('deliveryArrived', 9)[0] ?? null }));
-    t += truckMs;
+    // JUICE §0 rule 3 (review Faz 2 tur 2 #16): only the truck itself (#19, 700 ms) locks the board; a drop that falls
+    // longer (an empty yard column) lands as an ordinary fall after the lock, open to the R-12 fast-forward. The next
+    // cues still wait for the last landing.
+    add(cue(19, t, ms(19), { lock: true, drops, ev: of('deliveryArrived', 9)[0] ?? null }));
+    t += Math.max(ms(19), lastLand);
   }
   if (fromQueue.length > 0 || queuedEv) {
     const drops = fromQueue.map((e, i) => ({

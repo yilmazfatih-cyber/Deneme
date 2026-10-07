@@ -52,6 +52,40 @@ function setScale(t: Tweenable, s: number): void {
   t.scaleY = s;
 }
 
+/**
+ * #52 window entry: dim 200 ms → the panel slides up and settles; options enter 40 ms apart; the "+5" chip hops once
+ * while the window opens (no loop, R-15). Reduced: 150 ms fade, no hop. Shared with #87 exception (a).
+ */
+function offerWindow(c: JuiceCue, st: JuiceStage): void {
+  const w = c.window;
+  if (!w) return;
+  const ease = st.ease(JUICE[52].ease);
+  if (w.dim)
+    st.tween(w.dim, { alpha: T.alpha.overlay }, c.time, c.reduced ? c.ms : V.offerDimMs, linear, {
+      alpha: 0,
+    });
+  const enter = c.reduced ? c.time : c.time + V.offerDimMs;
+  if (c.reduced) st.tween(w.panel, { alpha: 1 }, enter, c.ms, linear, { alpha: 0 });
+  else
+    st.tween(w.panel, { y: w.panel.y, alpha: 1 }, enter, c.ms, ease, {
+      y: w.panel.y + V.offerSlidePx,
+      alpha: 1,
+    });
+  (w.options ?? []).forEach((o, i) => {
+    if (c.reduced) st.tween(o, { alpha: 1 }, enter, c.ms, linear, { alpha: 0 });
+    else
+      st.tween(o, { y: o.y, alpha: 1 }, enter + i * V.offerStaggerMs, c.ms, ease, {
+        y: o.y + V.offerSlidePx,
+        alpha: 0,
+      });
+  });
+  const chip = w.chip;
+  if (chip && !c.reduced) {
+    const y0 = chip.y;
+    st.drive(enter, c.ms, linear, (_k, u) => (chip.y = y0 - V.offerChipHopPx * Math.sin(Math.PI * u)), false);
+  }
+}
+
 const H: { readonly [K in JuiceId]: JuiceHandler } = {
   // #1 lift: scale 1 → 1,08 (reduced 1,03), 6 px hop (reduced none), lifted silhouette (PieceView)
   1: (c, st) => {
@@ -95,7 +129,8 @@ const H: { readonly [K in JuiceId]: JuiceHandler } = {
     const dx = c.dx ?? 0;
     const dy = c.dy ?? 0;
     if (c.first) {
-      if (!c.reduced) st.pieceNudge(c.piece, c.time, dx * T.drag.bumpPx, dy * T.drag.bumpPx, c.ms, easeOf(st, 4));
+      if (!c.reduced)
+        st.pieceNudge(c.piece, c.time, dx * T.drag.bumpPx, dy * T.drag.bumpPx, c.ms, easeOf(st, 4));
       const box = st.pieceBox(c.piece);
       if (box) {
         const p = centre(box);
@@ -200,7 +235,11 @@ const H: { readonly [K in JuiceId]: JuiceHandler } = {
     st.pieceFlash(c.piece, c.time, WHITE, V.flashPeak, c.ms, !c.reduced);
     const box = st.pieceBox(c.piece);
     if (box) {
-      st.burst('spark', count(c), top(box), { w: box.w, colors: [st.pieceColor(c.piece), WHITE], at: c.time });
+      st.burst('spark', count(c), top(box), {
+        w: box.w,
+        colors: [st.pieceColor(c.piece), WHITE],
+        at: c.time,
+      });
       if (!c.reduced) {
         for (const p of [
           { x: box.x, y: box.y },
@@ -249,7 +288,14 @@ const H: { readonly [K in JuiceId]: JuiceHandler } = {
   15: (c, st) => {
     const reached = c.n ?? 1;
     const i = reached - 1;
-    st.streakPip(i, c.time, c.reduced ? 1 : V.pipFrom, reducedScale(V.pipPeak, c.reduced), c.ms, easeOf(st, 15));
+    st.streakPip(
+      i,
+      c.time,
+      c.reduced ? 1 : V.pipFrom,
+      reducedScale(V.pipPeak, c.reduced),
+      c.ms,
+      easeOf(st, 15),
+    );
     st.burst('gold', count(c), st.beadPoint(i), { at: c.time });
     st.sound('sfx_streak_pip', { rate: comboRate(reached), at: c.time });
   },
@@ -257,7 +303,13 @@ const H: { readonly [K in JuiceId]: JuiceHandler } = {
   // #16 Golden Trowel earned (MVP-lite): the trowel icon 1,0 → 1,4 → 1,1 and glows (reduced ≤ 1,03), beads empty
   16: (c, st) => {
     st.trowelsSet(c.n ?? 1);
-    st.trowelPop(c.time, reducedScale(V.comboIconPeak, c.reduced), c.reduced ? 1 : V.comboIconRest, c.ms, easeOf(st, 16));
+    st.trowelPop(
+      c.time,
+      reducedScale(V.comboIconPeak, c.reduced),
+      c.reduced ? 1 : V.comboIconRest,
+      c.ms,
+      easeOf(st, 16),
+    );
     st.drive(c.time, c.ms, linear, (_k, u) => (u >= 1 ? st.streakSet(0) : undefined), false);
     st.sound('sfx_combo', { at: c.time });
     st.haptic('medium', c.time);
@@ -275,7 +327,11 @@ const H: { readonly [K in JuiceId]: JuiceHandler } = {
     st.trowelFill(d.cell, c.time, fly, sweep, c.reduced);
     const hit = c.time + fly;
     const r = st.cellRect(d.cell.x, d.cell.y);
-    st.burst('gold', count(c), centre(r), { w: r.w, colors: [st.colorOf(T.color.ui.gold), st.colorOf(d.color)], at: hit });
+    st.burst('gold', count(c), centre(r), {
+      w: r.w,
+      colors: [st.colorOf(T.color.ui.gold), st.colorOf(d.color)],
+      at: hit,
+    });
     st.sound('sfx_trowel', { at: hit });
     st.sound('sfx_place_ok', { at: hit + sweep });
     st.haptic('light', hit);
@@ -286,7 +342,8 @@ const H: { readonly [K in JuiceId]: JuiceHandler } = {
   18: (c, st) => {
     const site = st.cellRect(6, T.layout.grid.rows - 1);
     const colors = st.siteColors();
-    st.segmentDone(c.time, c.ms, c.reduced, c.toSeg ?? null, easeOf(st, 18));
+    const done = evOf(c, 'segmentCompleted');
+    st.segmentDone(c.time, c.ms, c.reduced, done ? done.seg : 0, c.toSeg ?? null, easeOf(st, 18));
     if (!c.reduced) st.shake(V.segmentShakePx, c.time, D.scaffoldFade);
     st.burst('confetti', count(c), top(site), {
       w: site.w * 2,
@@ -326,7 +383,13 @@ const H: { readonly [K in JuiceId]: JuiceHandler } = {
     if (c.n === undefined) return;
     st.railGlow(c.n, c.time, c.ms, !c.reduced);
     const box = c.piece === null ? null : st.pieceBox(c.piece);
-    if (box) st.burst('spark', count(c), { x: box.x, y: box.y + box.h }, { colors: [WHITE, st.colorOf(T.color.board.scaffoldClamp)] });
+    if (box)
+      st.burst(
+        'spark',
+        count(c),
+        { x: box.x, y: box.y + box.h },
+        { colors: [WHITE, st.colorOf(T.color.board.scaffoldClamp)] },
+      );
     st.sound('sfx_gap_rail');
     st.haptic('light');
   },
@@ -364,27 +427,7 @@ const H: { readonly [K in JuiceId]: JuiceHandler } = {
   // #52 +5 offer window (K-29): dim 200 ms → the window slides up and settles; options enter 40 ms apart; "+5" hops
   // once (no loop, R-15). Reduced: 150 ms fade, no hop.
   52: (c, st) => {
-    const w = c.window;
-    if (w) {
-      const ease = easeOf(st, 52);
-      if (w.dim) st.tween(w.dim, { alpha: T.alpha.overlay }, c.time, c.reduced ? c.ms : V.offerDimMs, linear, { alpha: 0 });
-      const enter = c.reduced ? c.time : c.time + V.offerDimMs;
-      if (c.reduced) st.tween(w.panel, { alpha: 1 }, enter, c.ms, linear, { alpha: 0 });
-      else st.tween(w.panel, { y: w.panel.y, alpha: 1 }, enter, c.ms, ease, { y: w.panel.y + V.offerSlidePx, alpha: 1 });
-      (w.options ?? []).forEach((o, i) => {
-        if (c.reduced) st.tween(o, { alpha: 1 }, enter, c.ms, linear, { alpha: 0 });
-        else
-          st.tween(o, { y: o.y, alpha: 1 }, enter + i * V.offerStaggerMs, c.ms, ease, {
-            y: o.y + V.offerSlidePx,
-            alpha: 0,
-          });
-      });
-      const chip = w.chip;
-      if (chip && !c.reduced) {
-        const y0 = chip.y;
-        st.drive(enter + c.ms, c.ms, linear, (_k, u) => (chip.y = y0 - V.offerChipHopPx * Math.sin(Math.PI * u)), false);
-      }
-    }
+    offerWindow(c, st);
     st.sound('sfx_offer', { at: c.time });
     st.haptic('medium', c.time);
   },
@@ -418,11 +461,16 @@ const H: { readonly [K in JuiceId]: JuiceHandler } = {
       const board = st.boardRect();
       const colors = Object.values(T.color.block).map((h) => st.colorOf(h));
       for (let wave = 0; wave < recipe.waves; wave++) {
-        st.burst('confetti', recipe.count, { x: board.x + board.w / 2, y: board.y + board.h * 0.35 }, {
-          w: board.w,
-          colors,
-          at: party + (wave * D.winConfetti) / (2 * recipe.waves),
-        });
+        st.burst(
+          'confetti',
+          recipe.count,
+          { x: board.x + board.w / 2, y: board.y + board.h * 0.35 },
+          {
+            w: board.w,
+            colors,
+            at: party + (wave * D.winConfetti) / (2 * recipe.waves),
+          },
+        );
       }
     }
     st.banner('win.title', party, V.winTitleMs, c.reduced ? 'fade' : 'pop', easeOf(st, 55));
@@ -491,7 +539,8 @@ const H: { readonly [K in JuiceId]: JuiceHandler } = {
         );
       return;
     }
-    if (!c.reduced) st.tween(b, { scaleX: V.buttonPressScale, scaleY: V.buttonPressScale }, c.time, c.ms, easeOf(st, 69));
+    if (!c.reduced)
+      st.tween(b, { scaleX: V.buttonPressScale, scaleY: V.buttonPressScale }, c.time, c.ms, easeOf(st, 69));
     st.drive(c.time, c.ms, easeOf(st, 69), (k) => b.setLip(lip + (pressed - lip) * k), false);
     st.sound('sfx_button');
     st.haptic('light');
@@ -501,13 +550,22 @@ const H: { readonly [K in JuiceId]: JuiceHandler } = {
   70: (c, st) => {
     const w = c.window;
     if (w) {
-      if (w.dim) st.tween(w.dim, { alpha: T.alpha.overlay }, c.time, c.reduced ? c.ms : V.popupDimMs, linear, { alpha: 0 });
+      if (w.dim)
+        st.tween(w.dim, { alpha: T.alpha.overlay }, c.time, c.reduced ? c.ms : V.popupDimMs, linear, {
+          alpha: 0,
+        });
       if (c.reduced) st.tween(w.panel, { alpha: 1 }, c.time, c.ms, linear, { alpha: 0 });
       else {
         const panel = w.panel;
         const ease = easeOf(st, 70);
         panel.alpha = 1;
-        st.drive(c.time, c.ms, linear, (_k, u) => setScale(panel, popCurve(ease(u), V.popupFrom, V.popupPeak, 1, 0.7)), false);
+        st.drive(
+          c.time,
+          c.ms,
+          linear,
+          (_k, u) => setScale(panel, popCurve(ease(u), V.popupFrom, V.popupPeak, 1, 0.7)),
+          false,
+        );
       }
     }
     st.sound('sfx_popup', { at: c.time });
@@ -551,7 +609,9 @@ const H: { readonly [K in JuiceId]: JuiceHandler } = {
     st.boardFadeIn(c.time, c.ms);
     const after = c.time + c.ms;
     if (c.variant === 'offer') {
-      H[52]({ ...c, id: 52, time: after, ms: juiceMs(52, c.reduced) }, st);
+      // exception (a): no Pause window — the out-of-moves window enters like #52 (same offer number), no haptic
+      offerWindow({ ...c, id: 52, time: after, ms: juiceMs(52, c.reduced) }, st);
+      st.sound('sfx_offer', { at: after });
       return;
     }
     st.toast('resume.strip', { n: st.levelNumber() }, after, D.resumeToast);

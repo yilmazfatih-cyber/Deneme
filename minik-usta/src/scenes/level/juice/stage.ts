@@ -177,7 +177,15 @@ export interface JuiceStage {
   supportFlash(cells: readonly At[], time: number, ms: number, blinks: number): void;
   railGlow(gap: number, time: number, ms: number, flow: boolean): void;
   clamps(id: PieceId, time: number, ms: number, pop: boolean): void;
-  segmentDone(time: number, ms: number, reduced: boolean, toSeg: number | null, ease: Ease): void;
+  /** #18: segment `seg` is done; `toSeg` slides in (null: it was the last one). */
+  segmentDone(
+    time: number,
+    ms: number,
+    reduced: boolean,
+    seg: number,
+    toSeg: number | null,
+    ease: Ease,
+  ): void;
   truck(time: number, ms: number, reduced: boolean, drops: readonly Drop[]): void;
   /** #20: blocks leave the queue chip and fly to the yard. */
   chipDrops(time: number, drops: readonly Drop[], ease: Ease, reduced: boolean): void;
@@ -201,7 +209,13 @@ export interface JuiceStage {
   queueSet(n: number): void;
   chipBump(time: number, peak: number, ms: number, ease: Ease): void;
   /** Title banner (`win.title` / `lose.title`): `pop` 0 → peak → 1, `drop` from the top, `fade`. */
-  banner(key: 'win.title' | 'lose.title', time: number, ms: number, mode: 'pop' | 'drop' | 'fade', ease: Ease): void;
+  banner(
+    key: 'win.title' | 'lose.title',
+    time: number,
+    ms: number,
+    mode: 'pop' | 'drop' | 'fade',
+    ease: Ease,
+  ): void;
   /** #55 step (1): the site blocks glow. */
   siteGlow(time: number, ms: number): void;
   /** #55 step (2): the ribbon over the site is cut. */

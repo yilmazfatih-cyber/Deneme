@@ -65,12 +65,17 @@ veri imzası olan mekanikler için yazılır (OBSTACLES "Veri imzası"); 1, 2, 7
 vurgu · el · textKey · tamam koşulu`. Metin anahtarı `tut.l{n}.{konu}`; bağlamsal bir satır öğretici adımında yeniden
 kullanılırsa `tut.ctx.{konu}` (GDD §14.1 madde 1–2; tek kullanım Bölüm 4 adım 2). Metinler STORY §6'dadır (design-lead);
 oyuncu metninde renk adı yok (R-08). Tamam koşulu `done` sözlüğü (sürükleme sinyali / hamle sonu olayı, süzgeçler,
-`minMs`, `at`) GDD §14.1 madde 3'te, isteğe bağlı başlama koşulu `startOn` madde 5'tedir (11–38 eşlemesi §3). Sunum (el, spot ışığı) UX_FLOWS §13'tedir; adım **sırası** buradaki
-el çözümüne uyar (R-01: K-34 yüzünden "önce temel").
+`minMs`, `at`) GDD §14.1 madde 3'te, isteğe bağlı başlama koşulu `startOn` madde 5'tedir (11–38 eşlemesi §3). Sunum
+(el, spot ışığı) UX_FLOWS §13'tedir; adım **sırası** buradaki el çözümüne uyar (R-01: K-34 yüzünden "önce temel") ve
+zamana değil olay sırasına bağlıdır (§5).
 
 **K-34 öğretimi:** Bölüm 4 adım 2 `tut.ctx.support` satırını yumuşak adım olarak gösterir ve `seenContextTips.support`
-işaretlenir (GDD K-34 kanca 4, §14.1). Bağlamsal tetik yalnızca bundan **önce** bir `support` reddi yaşayan oyuncuda
-çıkar; tek doğal nokta Bölüm 3'tür (`f` raydan `a`'dan önce; betikle doğrulandı). Bölüm 4'te lento `p` `b`'den önce ve
+işaretlenir (GDD K-34 kanca 4, §14.1). Adım 2 ilk doğru yerleşimden sonra açılır; adım 1 ekrandayken yaşanan bir `support`
+reddinin bağlamsal satırı kuyrukta bekler ve adım 2 aynı satırı gösterince düşer (bağlamsal satır öğretici adımı
+ekrandayken gösterilmez, UX §13). Bağlamsal satır yalnızca bundan **önce** bir `support` reddi yaşayan oyuncuda
+tetiklenir; tek doğal nokta Bölüm 3'tür (`f` raydan `a`'dan önce; betikle doğrulandı). Bölüm 3'ün öğretici adımları son
+doğru yerleşime kadar ekranda olduğundan (adım 3 son yerleşimle biter, Faz 2 tur 1 #1) satır orada gösterilmez, bölüm
+bitince kuyruktan düşer ve oyuncu onu Bölüm 4 adım 2'de görür. Bölüm 4'te lento `p` `b`'den önce ve
 Bölüm 6'da `D` `C`'den önce (renk doğru, destek yok) `support` redleri yine olur; orada Dede satırı çıkmaz, geri sekme
 ve eksik destek taraması (kanca 2–3) görünür.
 
@@ -285,7 +290,7 @@ Blockout (D = duvar sınırı, çizimde ayrı sütun; çekirdekte sıfır geniş
 
 Öğretici adımları (`tutorial[]`):
 1. Y · `panorama`, `build` · — · `tut.l2.pattern` · `placementCorrect` ×1
-2. Y · `piece:2`, `build` · hold: `c` x=6 üstünde (gölge "!") · `tut.l2.shadow` · `{ event: holdOverBuild, count: 1, minMs: 500 }`
+2. Y · `piece:2`, `build` · hold: `c` (4,7)'den (sol üst hücresi; `c` C3_180, çapa (4,6) `d`'nin hücresidir) x=6 üstünde (gölge "!") · `tut.l2.shadow` · `{ event: holdOverBuild, count: 1, minMs: 500 }`
 3. Y · `piece:1`, `build` · drag: `b` → x=6 (gölge ✓) · `tut.l1.match` · `placementCorrect` ×1
 
 ### Bölüm 3 — Ön Duvar (Front Wall)
@@ -356,8 +361,21 @@ y0–y1'i yalnızca `O4` W doldurur. Betik: min 3, YAO %67 (en iyi), çıkmaz yo
 
 Öğretici adımları (`tutorial[]`):
 1. Y · `piece:0`, `cell:6,0`, `cell:7,1` · drag: `a` → x=6 · `tut.l1.match` · `placementCorrect` ×1
-2. Z · `gap:0`, `piece:1` · drag: `f` sağa, geçitten · `tut.l3.gap` · `gapPass` ×1
+2. Z · `gap:0`, `piece:1` · drag: `f` sağa, geçitten · `tut.l3.gap` · `placementCorrect` ×1
 3. Y · `piece:1` · tap · `tut.l3.rail` · `placementCorrect` ×1
+
+Adım 2, `f` rayda (6,2)'ye doğru yerleşince biter; adım 3 o anda açılır, raydaki `f`'yi gösterir ("Sıradakini üstünden
+aşır") ve sıradaki doğru yerleşimle biter: `b` (ya da eşdeğeri `e`) duvar üstünden (6,3)'e (el çözümü 3. hamle) ya da
+`l` raydan (6,3)'e. Metin böylece `b` hamlesi boyunca ekranda kalır (Faz 2 tur 1 #1). Önceki veride adım 2 `gapPass` ×1
+idi: adım 3 sürükleme ortasında başlayıp aynı sürüklemenin bırakılmasıyla (`f`'nin ray yerleşimi) ≈ 0,4 sn'de bitiyordu.
+Adım 3'e `startOn: { event: placementCorrect }` eklemek de metni `b` hamlesine taşır, ama `gapPass` ile bırakma arasında
+(parmak hâlâ bloktayken) ekranda adım kalmaz; bırakma iptal edilir ya da `f` yanlış satıra (6,3) konup geri sekerse
+oyuncu adım 3 açılana kadar yönlendirmesiz kalır. `placementCorrect` ile Z adımı `f` rayda doğru yerleşene kadar sürer;
+iptal ya da geri sekmede `f` başlangıç hücresine, spot ışığının içine döner (K-17 adım 1; §5 "Z adımı kilitlemez"). y=2 (`YY`) satırını yalnız `f`
+doldurabildiği için `a`'dan sonraki ilk doğru yerleşim her zaman `f`'nindir; Z adımında spot dışı dokunuş geçmediği
+için `f` geçitten gelir. Betik (gerçek çekirdek + `TutorialController`, ✓ yerleşimler + ≤ 2 saha hamlesi, 852 kazanan
+sıra): her sırada 3 adım da gösterilir, hiçbiri atlanmaz, adım 3 bir sonraki hamlenin başında ekrandadır, kazanınca
+açık adım kalmaz.
 
 ### Bölüm 4 — Pencere (The Window)
 
@@ -432,11 +450,24 @@ yalnızca 4'lü seriden gelen Altın Mala ile dolabiliyordu (betik: 13 çıkmaz 
 `p`'nin ray yerleşimi geçerli ve K-34'e uygun (adım 3'ün Z koşulu, §5). `g` (`D2_90` Y) `a`'nın eşdeğeridir.
 
 Öğretici adımları (`tutorial[]`):
-1. Y · `cell:7,2` · tap · `tut.l4.window` · `timeoutMs` 2500
-2. Y · `front` (inşa cephesi, GDD K-34 kanca 1) · — · `tut.ctx.support` · `placementCorrect` ×2
+1. Y · `cell:7,2` · tap · `tut.l4.window` · `placementCorrect` ×1
+2. Y · `front` (inşa cephesi, GDD K-34 kanca 1) · — · `tut.ctx.support` · `placementCorrect` ×1
 3. Z · `gap:0`, `piece:2`, `cell:6,3`, `cell:7,3` · drag: `p` sağa, geçitten · `tut.l4.above` · `gapPass` ×1
 
 Adım 2 bağlamsal satırı yeniden kullanır; gösterildiği anda `seenContextTips.support` işaretlenir (GDD §14.1, K-34 kanca 4).
+
+Adım sırası zamandan bağımsızdır (Faz 2 tur 1 #0; GDD §14.1 madde 4a): adım 1 ilk doğru yerleşimle, adım 2 ikinci doğru
+yerleşimle biter. K-34 yüzünden ilk doğru yerleşim her zaman (6,0)'dadır (`a` ya da eşdeğeri `g`), ikincisi her zaman
+(6,1) çapasındadır (`b`: `W.` pencere satırını yalnız `C3_0` doldurur; `p` rayda (6,3)'e `b`'den önce destek reddi
+alır); böylece adım 3 `b`'den hemen sonra, `p` sahadayken açılır. Önceki veride adım 1 `timeoutMs` 2500 ve adım 2
+`placementCorrect` ×2 idi: `a` 2,5 sn dolmadan yerleşirse adım 2 `b` ile `p`'yi sayıyor, adım 3 `p` kilitliyken
+başlayıp kilit güvencesiyle atlanıyordu (golden çözüm de dersi atlıyordu). Yalnız adım 2'ye `at: [6, 1]` eklemek
+yetmez: `a` ve `b` 2,5 sn içinde biterse adım 2 hiç bitmez, bölüm sonuna kadar ekranda kalır ve adım 3 yine görünmez.
+Betik (gerçek çekirdek + `TutorialController`, ✓ yerleşimler + ≤ 1 saha hamlesi, 159 kazanan sıra): her sırada 3 adım
+da gösterilir, adım 3 atlanmaz, kazanınca açık adım kalmaz. ≤ 2 saha hamlesinde 3.975 sıranın 4'ünde adım 3 kilit
+güvencesiyle atlanır: dördünde de `b`'den sonra `i` ve `j` kazılır, `p` duvar üstünden (6,3)'e konur. Betik Z adımının
+dokunuş kısıtını (yalnız spot ışığı, UX §13.1) uygulamaz; bu sıralar LEVELS §5 kapsamı (✓ + 1 saha hamlesi) dışındadır
+ve atlama güvencenin tasarlanan davranışıdır.
 
 ### Bölüm 5 — İki Odalı Ev (Two-Room House)
 
@@ -1162,12 +1193,24 @@ güvencesi GDD §14.1 madde 4b).
 - [ ] Gölge her düşüşü doğru gösterir; gizli bilgi yalnızca `?` ile verilir (adalet ilkesi); saklı nesnelerin konumu görünür.
 - [ ] Öğretici adımları `tut.l{n}.{konu}` anahtarlarıyla (bağlamsal satır yeniden kullanılırsa `tut.ctx.{konu}`, GDD §14.1);
       adım sırası el çözümüne ve K-34'e uyar (önce temel); oyuncu metninde renk adı ve "parça" yok.
+- [ ] **Öğretici zamandan bağımsız ve görünür:** her erişilebilir hamle sırasında her adım gösterilir; `timeoutMs`'li
+      bir adımın ardından gelen adımın hamle sayımı, süre dolmadan yapılan hamlelere göre değişmez (değişiyorsa önceki
+      adım olayla biter; ör. Bölüm 4 adım 1 `placementCorrect` ×1). Adım, metninin anlattığı hamle boyunca ekrandadır:
+      sürükleme sinyaliyle açılan adım yalnız o sürüklemeyi anlatır (ör. Bölüm 1 adım 2 "bırak"); sonraki hamleyi
+      yönlendiren adım önceki hamlenin sonucuyla (hamle sonu olayı) açılır ve o hamlenin başında ekrandadır (ör. Bölüm 3
+      adım 3: adım 2 `placementCorrect` ×1 ile biter). Tarama: gerçek çekirdek + `TutorialController`, ✓ yerleşimler +
+      1 saha hamlesi, `timeoutMs` her hamle sırasına yerleştirilir (Faz 2 tur 1).
+- [ ] **Eldiven vurgulu bloktan başlar:** `drag` ya da `hold` eldiveninin `hand.path[0]`'ı, el çözümünde adımın açıldığı
+      anda vurgulu bir `piece:` ya da `debris:` bloğunun kapladığı hücredir (çapa değil: çapa bloğun hücresi olmayabilir)
+      ve o blok o anda tutulabilir (K-09). Vurgulu blok adım açılmadan taşınmıyorsa bu hücre JSON'daki başlangıç
+      hücrelerinden biridir (Bölüm 1–5'in bütün `drag`/`hold` adımları). Örnek: Bölüm 2 adım 2 `c` (`C3_180`, çapa (4,6),
+      hücreleri (5,6), (4,7), (5,7)) → `path[0]` = (4,7); (4,6) `d`'nin hücresidir ve `d` başta tutulamaz (Faz 2 tur 2).
 - [ ] Türetilen yeni mekanik ≤ 1 ve `teaches` ile birebir (OBSTACLES "Veri imzası").
 - [ ] **Z adımı kilitlemez:** zorunlu (Z) adım yalnızca istediği hamle, önceki adımın tamamlanabildiği **her** durumda
-      geçerli ve K-34'e uygunken başlar; `highlight` en az bir `piece:` ya da `debris:` içerir (`piece:` yoksa `done`
-      `placementCorrect` olamaz; ör. Bölüm 17 `debris:0` → `yardMove`) ve spot ışığı en az bir tutulabilir bloğu
-      açık bırakır; bırakma iptalinde (K-07 satır 1, 3, 4) blok spot dışında kalabiliyorsa adım yumuşaktır (GDD §14.1
-      madde 4).
+      (her hamle sırası ve `timeoutMs`'in hamlelere göre her dolma anı dahil) geçerli ve K-34'e uygunken başlar;
+      `highlight` en az bir `piece:` ya da `debris:` içerir (`piece:` yoksa `done` `placementCorrect` olamaz; ör. Bölüm
+      17 `debris:0` → `yardMove`) ve spot ışığı en az bir tutulabilir bloğu açık bırakır; bırakma iptalinde (K-07 satır
+      1, 3, 4) blok spot dışında kalabiliyorsa adım yumuşaktır (GDD §14.1 madde 4).
 - [ ] **✓ sonrası çözüm (F-3 ölçütü):** Kolay ve Normal bölümlerde gölgenin ✓ gösterdiği (doğru) her yerleşimden sonra,
       Mala'sız ve Kamyon Yardımı'sız: (a) **kesin çıkmaz yoktur** (bölüm hâlâ bitirilebilir); (b) **verimli oyuncu için
       bütçe tuzağı yoktur** (en kısa bir çözümün üzerindeki durumdan yapılan ✓ yerleşimden sonra kalan hamleyle çözüm

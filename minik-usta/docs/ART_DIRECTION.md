@@ -285,7 +285,9 @@ dörtgen) — gri tonlamada da ayırt edilirler.
   Diğer boş hücreler kesik konturda kalır. `?` hücresi cephedeyse açıklık almaz (renk bilgisi vermez); yalnız
   `plan_front` konturu etiketli hücreyi çerçeveler. Altın Mala hedefleri bu kümedir.
 - **Eksik destek taraması (K-34):** yatay çizgi (6 px, 20 px aralık, `color.ghost.support` %85), hücre konturunun
-  içinde; renk uyuşmazlığının 45° taramasından yön olarak ayrılır. Taranan hücreler `missingSupport` kümesidir: doğru
+  içinde; **her sarı çizginin altında 10 px `ui.ink` %80 alt çizgi** (Faz 2 tur 2: sarı çizgi tek başına açık plan
+  renklerinde kayboluyordu — Y #F2DD5E 1,15:1, G 1,14:1, C 1,03:1, O 1,39:1; sarı/koyu çift ikaz bandı gibi kendi
+  içinde ≥ 5:1 ve her plan renginde ya da ozalitte en az bir kenarı ≥ 2,7:1 verir); renk uyuşmazlığının 45° taramasından yön olarak ayrılır. Taranan hücreler `missingSupport` kümesidir: doğru
   dolu olmayan plan hücreleri ve içinde yanlış nesne (moloz, yapışmış harçlı blok) duran `.` hücreleri; ikincisinde
   tarama nesnenin üstüne çizilir. Yalnız gölgede (Kolay/Normal) ve geri sekme ya da harç yapışmasından sonra 600 ms
   görünür.
@@ -320,7 +322,7 @@ geçitten şantiyenin sağ kenarına kadar; geçit ya da çerçeve kayınca çiz
 
 | Tip | Kimlik | Görsel tarif | Bir bakışta ayırt eden |
 | --- | ------ | ------------ | ---------------------- |
-| Sabit | W1, `static` | Duvarda `size` satırlık açıklık; üst ve alt kenarda 14 px sarı-siyah ikaz bandı; açıklığın içinden şantiyeye uzanan **2 çelik ray** (6 px, `board.scaffold`, açıklığın üst ve alt sınırında). | Yalnızca ikaz bandı + ray. Temel tip. |
+| Sabit | W1, `static` | Duvarda `size` satırlık açıklık; üst ve alt kenarda 14 px sarı-siyah ikaz bandı; açıklığın içinden şantiyeye uzanan **2 çelik ray** (açıklığın üst ve alt sınırında). **Faz 2 tur 2:** ray 8 px koyu çelik `board.rail` #3F454D + üstte 2 px `board.wallLight` ışık çizgisi, 40 px'te bir 4×12 px travers çentiği; plan hücrelerinin ve ozalit ızgarasının **üstünde**, inşa cephesi konturu ve blokların altında çizilir (ray şantiye boyunca görünür; iskele kuşağı ve tavan kirişi açık gri `board.scaffold` kaldığı için aynı satır sınırında bile ayrışır). Eski tarif (6 px `board.scaffold`, zemin katmanında) rayı kuşak/kirişle aynı çizgi yapıyordu. | Yalnızca ikaz bandı + ray. Temel tip. |
 | Dar (**katman**, tip değil) | W3 = `size = 1` olan **her** geçit tipi (OBSTACLES W3, N2) | Geçidin kendi tip görünümünün **üstüne** eklenir: iki yanda içe bakan **çelik çene** (►◄, 18×28 px üçgenler, `board.narrowJaw` #4A525C) + açıklığın çevresinde 10 px çelik çerçeve. Tip işaretleri korunur ve tek satıra sığdırılır: dar sabit = ikaz bandı + ray; dar kepenk = lameller + sayaç rozeti (#35); dar kayar kapı = dikey ray izi + ▲▼ rozeti, turuncu plaka çenelerin dışında (#16); dar boya kapısı = damla çerçeve + sembol damlası, damlalar çerçevenin dışına sarkar (#22); dar kilitli = parmaklık (2 çubuk) + asma kilit 56×64'e küçülür, çene kilidi örtmez (#30). | İçe bakan çeneler + tek satırlık yarık; tip işareti ayrıca okunur. |
 | Kepenk | W4, `shutter` | Açıklığa **yatay metal panjur** lamelleri (8 px lamel, 4 px aralık, #7D8793 / #A3ABB5). Açıkken panjur üstte 28 px'lik silindir olarak sarılı durur. Duvarın üstünde sayaç rozeti: Ø 52 px, içinde "kaç hamle sonra değişecek" rakamı + 1 küçük kilit/açık kilit simgesi. | Lamelli panjur + sayaç rozeti. |
 | Kayar kapı | W5, `slider` | `range` boyunca duvarın yüzünde **2 dikey ray çizgisi** (4 px, beyaz %60); açıklığın yanında ▲▼ ok rozeti (Ø 52 px), bir sonraki hamledeki yön dolu, diğeri boş. Açıklık çerçevesi turuncu (#FF9A1F) "araba" plakası. | Dikey ray izi + yön oku. |

@@ -9,6 +9,8 @@
  * in the yard, debris rail start, the K-17 D2_0 debris example, E-43 with debris + S2 bridge), crane-row landing over a
  * full column (outside + support), Y8 re-drop onto its own cells (re-stick / lock), K-14 vs K-39 Undo, shadow purity
  * and repeatability, and a rail (K-12) shadow-equals-result property through applyMove.
+ * Round 4 (after the Faz 2 tur 1 fix #1): `reasonCells`, the cells behind each verdict reason (UX §5.4 45° hatch),
+ * against the K-16 / K-34 hook 2 definitions, on hand-built landings and on every landing of seeded random boards.
  * Every expectation below is derived from the GDD wording or its worked examples, not from the implementation.
  * Coordinates: global board cells (x 6–7 = site), plan rows written top → bottom as in level data.
  */
@@ -22,6 +24,7 @@ import {
   isSegmentComplete,
   nearestColumnsFirst,
   piecePlace,
+  reasonCells,
   returnBrokenPiece,
   returnTarget,
   settlePlacement,
@@ -2131,5 +2134,94 @@ describe('review round 3: K-12 rail placements through applyMove', () => {
     expect(wrong).toBeGreaterThan(150);
     expect(skipped).toBeLessThan(40);
     expect([...seen].sort()).toEqual(['color', 'outside', 'support', 'window']);
+  });
+});
+
+describe('review round 4: K-34 hook 2 reasonCells — the cells behind each verdict reason (UX 5.4; fixed: Faz 2 tur 1 #1)', () => {
+  const key = (cells: readonly { x: number; y: number }[]): string[] => cells.map((c) => `${c.x},${c.y}`);
+
+  it('K-16 (1) / K-34 hook 2: color → only the cells whose plan colour differs; window → only `.` cells; outside → only cells off the plan; support → none (its cells are missingSupport); debris → every cell', () => {
+    // plan (bottom → top): y0 WY, y1 W., y2 off the plan
+    const s = initialState({
+      plan: ['W.', 'WY'],
+      pieces: [
+        ['B1_0', 'Y', 0, 0],
+        ['C3_0', 'W', 2, 0],
+      ],
+      debris: [['B1_0', 'W', 7, 1]],
+    });
+    const cells = cellsOf('C3_0', 6, 0); // (6,0) W ✓, (7,0) Y ✗ colour, (6,1) W ✓
+    expect(isCorrectPlacement(s, 1, cells).reasons).toEqual(['color']);
+    expect(key(reasonCells(s, 1, cells, 'color'))).toEqual(['7,0']);
+    const high = cellsOf('C3_0', 6, 1); // (6,1) W ✓, (7,1) `.`, (6,2) off the plan
+    expect(isCorrectPlacement(s, 1, high).reasons.slice(0, 2)).toEqual(['outside', 'window']);
+    expect(key(reasonCells(s, 1, high, 'outside'))).toEqual(['6,2']);
+    expect(key(reasonCells(s, 1, high, 'window'))).toEqual(['7,1']);
+    expect(reasonCells(s, 1, high, 'color')).toEqual([]);
+    expect(reasonCells(s, 1, high, 'support')).toEqual([]);
+    const debris = 2;
+    const on = cellsOf('B1_0', 6, 0); // a W debris block over a W cell is still wrong (K-16 (2))
+    expect(isCorrectPlacement(s, debris, on).reasons[0]).toBe('debris');
+    expect(key(reasonCells(s, debris, on, 'debris'))).toEqual(['6,0']);
+  });
+
+  it('K-32 / K-16 (1) the colour reason reads the RESOLVED `?` colour (the shadow is neutral there, K-18, but the cell is named)', () => {
+    const s = initialState({
+      plan: ['??', 'WY'],
+      hidden: [{ kind: 'repeat', period: 1 }],
+      pieces: [
+        ['D2_90', 'Y', 0, 0],
+        ['D2_90', 'Y', 2, 0],
+      ],
+    });
+    toSite(s, 0, 6, 0, { locked: true });
+    // a D2_90 Y on row 1 (`??` = W Y by repeat): (6,1) resolves to W → wrong colour, (7,1) resolves to Y → fine
+    const cells = cellsOf('D2_90', 6, 1);
+    expect(isCorrectPlacement(s, 1, cells).reasons[0]).toBe('color');
+    expect(key(reasonCells(s, 1, cells, 'color'))).toEqual(['6,1']);
+  });
+
+  it('K-34 hook 2 property (seeded random boards): reasonCells(primary) is non-empty exactly for the cell reasons, is a subset of the landing in board order, and each named cell breaks that reason on its own', () => {
+    const r = mulberry32(20261006);
+    const rng = (): number => r.next();
+    const COLORS: ColorCode[] = ['W', 'Y', 'G'];
+    const pick = <T>(xs: readonly T[]): T => xs[Math.floor(rng() * xs.length)] as T;
+    let named = 0;
+    for (let trial = 0; trial < 300; trial++) {
+      const h = 1 + Math.floor(rng() * 4);
+      const plan = Array.from({ length: h }, () =>
+        [0, 1].map(() => (rng() < 0.15 ? '.' : pick(COLORS))).join(''),
+      );
+      if (plan.every((r) => r === '..')) continue;
+      const shape = pick(['B1_0', 'D2_0', 'D2_90', 'C3_0', 'C3_90', 'C3_180', 'C3_270', 'O4_0'] as ShapeId[]);
+      const color = pick(COLORS);
+      const s = initialState({ plan, pieces: [[shape, color, 0, 0]] });
+      const sh = shapeById(shape);
+      for (let ix = 6; ix + sh.w <= 8; ix++) {
+        for (let iy = 0; iy + sh.h <= 8; iy++) {
+          const cells = blockCells(sh, ix, iy);
+          const v = isCorrectPlacement(s, 0, cells);
+          const primary = v.reasons[0];
+          for (const reason of ['outside', 'window', 'color', 'support'] as VerdictReason[]) {
+            const got = reasonCells(s, 0, cells, reason);
+            const planAt = (x: number, y: number): string | null =>
+              y < h ? ((plan[h - 1 - y] ?? '')[x - 6] ?? null) : null;
+            const expected = cells.filter((c) => {
+              const ch = planAt(c.x, c.y);
+              if (reason === 'outside') return ch === null;
+              if (reason === 'window') return ch === '.';
+              if (reason === 'color') return ch !== null && ch !== '.' && ch !== color;
+              return false;
+            });
+            expect(key(got)).toEqual(key(expected));
+            if (reason === primary && reason !== 'support') {
+              expect(got.length).toBeGreaterThan(0);
+              named += 1;
+            }
+          }
+        }
+      }
+    }
+    expect(named).toBeGreaterThan(200);
   });
 });

@@ -48,6 +48,9 @@ export const OPEN_SHUTTER_MOVES = 5;
 export type SessionOutcome = BoosterOutcome;
 
 export type StartAction = Extract<SessionAction, { kind: 'start' }>;
+
+/** `GameSession.replay` observer: called after action `index` of the log applied (`start` = index 0). */
+export type ReplayStep = (index: number, action: SessionAction, session: GameSession) => void;
 export type StreakTier = StartAction['streakTier'];
 
 /** Win-streak level-start bonus of a tier (amounts: config/economy.json `winStreak`, META; read by meta). */
@@ -158,28 +161,40 @@ export class GameSession {
     return new GameSession(lvl, action, opts, false, sink);
   }
 
-  /** K-43 resume: rebuilds the attempt from its action log (no events). Throws `ReplayError` when it does not apply. */
-  static replay(lvl: CompiledLevel, log: readonly SessionAction[], opts: SessionOptions = {}): GameSession {
+  /**
+   * K-43 resume: rebuilds the attempt from its action log. Throws `ReplayError` when it does not apply. `sink` receives
+   * the events of every replayed action in log order (start included): the caller rebuilds per-attempt counters from
+   * them (`level_end.wrongPlacements`, `truckHelps`; review Faz 2 tur 1 #19). `step` is called after every action
+   * (`start` included, index 0) with the session as it is right then: the scene rebuilds its tutorial step from the log,
+   * each move seen with the state of its time (review Faz 2 tur 2 #8).
+   */
+  static replay(
+    lvl: CompiledLevel,
+    log: readonly SessionAction[],
+    opts: SessionOptions = {},
+    sink: EventSink = NULL_SINK,
+    step?: ReplayStep,
+  ): GameSession {
     const first = log[0];
     if (!first || first.kind !== 'start') throw new ReplayError(0, 'the log must start with a start action');
-    const session = new GameSession(lvl, first, opts, true, NULL_SINK);
+    const session = new GameSession(lvl, first, opts, true, sink);
+    step?.(0, first, session);
     for (let i = 1; i < log.length; i++) {
       const a = log[i] as SessionAction;
       if (a.kind === 'start') throw new ReplayError(i, 'a second start action');
       if (a.kind === 'undo') {
         if (!session.undo()) throw new ReplayError(i, `undo is not available (${session.undoBlock()})`);
-        continue;
-      }
-      if (a.kind === 'addMoves') {
+      } else if (a.kind === 'addMoves') {
         if (a.source !== 'offerCoins' && a.source !== 'offerAd')
           throw new ReplayError(i, `addMoves from ${a.source} belongs to the start action`);
         if (a.amount !== OFFER_MOVES) throw new ReplayError(i, `an offer adds ${OFFER_MOVES} moves`);
-        const res = session.acceptOffer(a.source);
+        const res = session.acceptOffer(a.source, sink);
         if (res.status !== 'applied') throw new ReplayError(i, `offer not accepted (${res.reason})`);
-        continue;
+      } else {
+        const res = session.commit(a, sink);
+        if (res.status !== 'applied') throw new ReplayError(i, `${a.kind} did not apply (${res.reason})`);
       }
-      const res = session.commit(a);
-      if (res.status !== 'applied') throw new ReplayError(i, `${a.kind} did not apply (${res.reason})`);
+      step?.(i, a, session);
     }
     return session;
   }

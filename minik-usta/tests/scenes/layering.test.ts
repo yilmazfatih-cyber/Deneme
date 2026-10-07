@@ -55,25 +55,43 @@ const WRITERS = new Set([
   'setBuildProgress',
 ]);
 
+/**
+ * The only exemption: the tutorial never-lock guarantee simulates a release through the K-35 pipeline on a BUFFER COPY
+ * (TECH §8.2 "tampon kopyasında `applyMove(kopya, …)`; sonuç atılır") — never on the live state.
+ */
+const SIMULATION_ONLY: Readonly<Record<string, readonly string[]>> = {
+  'src/scenes/level/tutorial/guarantee.ts': ['applyMove'],
+};
+
 describe('scene layering (TECH 1.1–1.4)', () => {
   const files = [...tsFiles(join(ROOT, 'src/scenes')), ...tsFiles(join(ROOT, 'src/ui'))];
 
   it('TECH 1.4 scenes and ui never write the game state: no core writer is imported, moves go through GameSession', () => {
     const offenders: string[] = [];
     for (const file of files) {
+      const rel = file.slice(ROOT.length).split('\\').join('/');
       for (const { module, names } of coreImports(file)) {
         for (const n of names) {
-          if (WRITERS.has(n) || /^set[A-Z]/.test(n))
-            offenders.push(`${file.slice(ROOT.length)}: ${n} from ${module}`);
+          if (SIMULATION_ONLY[rel]?.includes(n)) continue;
+          if (WRITERS.has(n) || /^set[A-Z]/.test(n)) offenders.push(`${rel}: ${n} from ${module}`);
         }
       }
     }
     expect(offenders).toEqual([]);
   });
 
+  it('TECH 8.2 the tutorial guarantee simulates only on a cloneState copy (the live state is never passed)', () => {
+    const code = readFileSync(join(ROOT, 'src/scenes/level/tutorial/guarantee.ts'), 'utf8');
+    const calls = [...code.matchAll(/applyMove\(\s*(\w+)/g)].map((m) => m[1]);
+    expect(calls).toEqual(['copy']);
+    expect(code).toMatch(/const copy = cloneState\(s\);/);
+  });
+
   it('TECH 1.4 the level scene commits drags through GameSession.commit and asks the core for the shadow', () => {
     const scene = readFileSync(join(ROOT, 'src/scenes/level/LevelScene.ts'), 'utf8');
-    expect(scene).toMatch(/\.commit\(\{ kind: 'drag', pieceId: id, to: node \}, sink\)/);
+    expect(scene).toMatch(
+      /const move = \{ kind: 'drag', pieceId: id, to: node \} as const;\s+const res = game\.commit\(move, sink\);/,
+    );
     expect(scene).toMatch(/computeFall\(s, session\.pieceId, node, \{ rules: this\.hooks\.fall \}\)/);
     const drag = readFileSync(join(ROOT, 'src/scenes/level/DragController.ts'), 'utf8');
     expect(drag).toMatch(/tryBeginDrag\(s, id, host\.dragRules\(\)\)/);

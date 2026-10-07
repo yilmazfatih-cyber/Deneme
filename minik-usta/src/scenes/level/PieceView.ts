@@ -19,7 +19,7 @@ import type { SilhouetteKind } from '../../theme/draw/block.ts';
 import { TOKENS } from '../../theme/tokens.ts';
 import { BOOT_ATLAS_KEY } from '../atlas.ts';
 import type { Frames } from '../atlas.ts';
-import { DEPTH } from './depth.ts';
+import { DEPTH, overTutorial } from './depth.ts';
 import { linear } from './motion.ts';
 import type { Ease, Pose, Track } from './motion.ts';
 import { VIEW } from './viewConstants.ts';
@@ -83,13 +83,14 @@ export class PieceView {
   xf: GroupXf | null = null;
 
   private dragged = false;
+  private drawnNow: { cx: number; cy: number; scale: number } | null = null;
   private shadowKind: SilhouetteKind = 'contact';
   private shadowFrom: SilhouetteKind = 'contact';
   private shadowAnim: { start: number; ms: number; ease: Ease } | null = null;
   private scaleAnim: Anim | null = null;
   private hopAnim: { start: number; ms: number; px: number } | null = null;
   private shake: { start: number; ms: number; px: number; cycles: number } | null = null;
-  private hop: { start: number; ms: number } | null = null;
+  private hop: { start: number; ms: number; pulse: boolean } | null = null;
   private flashOn = false;
   private frames: Frames | null = null;
 
@@ -199,6 +200,11 @@ export class PieceView {
     this.applyDepth();
   }
 
+  /** Box centre and scale of the last `render` (the rail shadow rides on the dragged block, ShadowView.follow). */
+  get drawn(): { readonly cx: number; readonly cy: number; readonly scale: number } | null {
+    return this.drawnNow;
+  }
+
   /** Current drag scale (lift animation), for the pose the DragController writes. */
   dragScale(now: number): number {
     return this.scaleAnim ? animAt(this.scaleAnim, now) : this.pose.scale;
@@ -211,13 +217,18 @@ export class PieceView {
   }
 
   /** UX §5.3 "Taşınamayan blok" / JUICE #2, #13: `px` left-right shake, `cycles` cycles over `ms`. */
-  startShake(now: number, ms: number = TOKENS.duration.blockedShake, px = VIEW.shakePx, cycles = VIEW.shakeCycles): void {
+  startShake(
+    now: number,
+    ms: number = TOKENS.duration.blockedShake,
+    px: number = VIEW.shakePx,
+    cycles: number = VIEW.shakeCycles,
+  ): void {
     this.shake = { start: now, ms, px, cycles };
   }
 
-  /** UX §5.3 tap without drag: a one-cell hop. */
-  startHop(now: number): void {
-    this.hop = { start: now, ms: VIEW.tapHopMs };
+  /** UX §5.3 tap without drag: a one-cell hop, or with reduced motion a ≤ 3 % scale pulse (JUICE §0 rule 8). */
+  startHop(now: number, reduced = false): void {
+    this.hop = { start: now, ms: VIEW.tapHopMs, pulse: reduced };
   }
 
   /** Flash overlay: `color` at `alpha` (0 hides it); `add` = additive white; `crop` 0…1 opens it left → right. */
@@ -256,9 +267,11 @@ export class PieceView {
       if (u >= 1) this.shake = null;
       else if (u >= 0) ox += this.shake.px * Math.sin(2 * Math.PI * this.shake.cycles * u);
     }
+    let pulse = 1;
     if (this.hop) {
       const u = (now - this.hop.start) / this.hop.ms;
       if (u >= 1 || u < 0) this.hop = null;
+      else if (this.hop.pulse) pulse = 1 + (VIEW.tapPulseScale - 1) * Math.sin(Math.PI * u);
       else oy -= VIEW.tapHopCells * g.cellPx * Math.sin(Math.PI * linear(u));
     }
     if (this.hopAnim) {
@@ -266,7 +279,7 @@ export class PieceView {
       if (u >= 1 || u < 0) this.hopAnim = null;
       else oy -= this.hopAnim.px * Math.sin(Math.PI * u);
     }
-    const scale = this.dragged ? this.dragScale(now) : this.pose.scale;
+    const scale = (this.dragged ? this.dragScale(now) : this.pose.scale) * pulse;
     const sx = scale * this.squashX;
     const sy = scale * this.squashY;
     // a squash keeps the block on the ground: the bottom edge stays where it was
@@ -286,7 +299,12 @@ export class PieceView {
       .setScale(sx * gs, sy * gs)
       .setAngle(this.tiltDeg)
       .setAlpha(alpha);
-    if (this.flashOn) this.overlay.setPosition(cx, cy).setScale(sx * gs, sy * gs).setAngle(this.tiltDeg);
+    this.drawnNow = { cx, cy, scale: scale * gs };
+    if (this.flashOn)
+      this.overlay
+        .setPosition(cx, cy)
+        .setScale(sx * gs, sy * gs)
+        .setAngle(this.tiltDeg);
 
     let shx = TOKENS.shadow[this.shadowKind].x;
     let shy = TOKENS.shadow[this.shadowKind].y;
@@ -310,10 +328,12 @@ export class PieceView {
       .setAlpha(sha * alpha);
   }
 
+  /** Placed / flying / dragged layers; while dragged, above the tutorial spotlight (`overTutorial`, UX §13.1). */
   private applyDepth(): void {
     const top = this.dragged || this.flying;
-    this.image.setDepth(top ? DEPTH.draggedBlock : DEPTH.placedBlocks);
-    this.overlay.setDepth((top ? DEPTH.draggedBlock : DEPTH.placedBlocks) + 1);
-    this.silhouette.setDepth(top ? DEPTH.draggedShadow : DEPTH.contactShadow);
+    const z = this.dragged ? overTutorial : (d: number): number => d;
+    this.image.setDepth(z(top ? DEPTH.draggedBlock : DEPTH.placedBlocks));
+    this.overlay.setDepth(z((top ? DEPTH.draggedBlock : DEPTH.placedBlocks) + 1));
+    this.silhouette.setDepth(z(top ? DEPTH.draggedShadow : DEPTH.contactShadow));
   }
 }

@@ -269,6 +269,8 @@ export function createDefaultSave(init: {
   readonly installId: string;
   readonly now: number;
   readonly wallet: StartingWallet;
+  /** First-launch settings that come from the device (UX §11: "Animasyonları azalt" starts from the OS setting). */
+  readonly settings?: Partial<Settings>;
 }): SaveData {
   const inventory: Partial<Record<BoosterId, number>> = {};
   for (const id of BOOSTER_IDS) {
@@ -287,7 +289,7 @@ export function createDefaultSave(init: {
     town: { completedTasks: [], seenScenes: [] },
     piggy: { coins: 0 },
     events: {},
-    settings: { ...DEFAULT_SETTINGS },
+    settings: { ...DEFAULT_SETTINGS, ...init.settings },
     firstOfferGiftUsed: false,
     payer: false,
     seenContextTips: {},
@@ -462,7 +464,8 @@ export type SaveDiagnostic =
   | {
       readonly kind: 'attemptVoided';
       readonly levelId: number;
-      readonly cause: ResumeCause;
+      /** `replay`: hash and rules matched but the saved log did not replay (a bug or a damaged log). */
+      readonly cause: ResumeCause | 'replay';
       readonly movesMade: number;
     }
   | { readonly kind: 'flushFailed'; readonly error: string };
@@ -477,6 +480,8 @@ export interface SaveServiceOptions {
   readonly track?: Track;
   readonly newId?: () => string;
   readonly debounceMs?: number;
+  /** Settings a NEW save starts with (first launch, `defaults` recovery), e.g. the OS reduced-motion preference. */
+  readonly defaultSettings?: Partial<Settings>;
 }
 
 export interface AttemptStart {
@@ -545,6 +550,7 @@ export class SaveService {
         installId: newId(),
         now: opts.clock.now(),
         wallet: opts.startingWallet,
+        ...(opts.defaultSettings ? { settings: opts.defaultSettings } : {}),
       });
     const fromBackup = (): SaveData | null => {
       const text = read(BACKUP_KEY);
@@ -779,6 +785,31 @@ export class SaveService {
       });
     }
     return { kind: 'void', cause, notice };
+  }
+
+  /**
+   * The saved log of an attempt whose level hash and rules version MATCHED did not replay (`GameSession.replay` threw:
+   * a bug or a damaged log). Same penalty-free void as K-43 item 4 (`voidAttempt`: refunds + `voidNotice`, one write),
+   * then `coin_source{ refund }` when coins came back. `level_resume_invalid` is not sent: its `cause` enum (ANALYTICS
+   * §2) names only hash / rules mismatches; the local diagnostic records `cause: 'replay'`.
+   */
+  voidUnreplayable(): DeepReadonly<VoidNotice> | null {
+    const il = this.#data.inLevel;
+    if (il === null) return null;
+    const { levelId, movesMade, offerSpendCoins } = il;
+    this.commit((d) => {
+      voidAttempt(d);
+    });
+    this.#diagnostics.push({ kind: 'attemptVoided', levelId, cause: 'replay', movesMade });
+    if (offerSpendCoins > 0) {
+      this.#track({
+        name: 'coin_source',
+        amount: offerSpendCoins,
+        reason: 'refund',
+        balanceAfter: this.#data.coins,
+      });
+    }
+    return this.#data.voidNotice as DeepReadonly<VoidNotice>;
   }
 
   /** "Tamam" on the `resume.void` window: the notice is removed in one write (the refund itself is never repeated). */

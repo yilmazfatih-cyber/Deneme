@@ -53,9 +53,23 @@ export const ART = Object.freeze({
   wallCapW: 72,
   /** ART §2.3 hazard stripes: 45°, 24 px bands. */
   hazardBandPx: 24,
-  /** ART §5 W1: "üst ve alt kenarda 14 px sarı-siyah ikaz bandı", ASSET `gap_static_edge` 72 × 14; rails 6 px. */
+  /**
+   * ART §4 missing-support hatch (Faz 2 tur 2): a `ui.ink` line at 80 % under every yellow line, 4 px wider than it
+   * (10 px under the 6 px line, 12 px under the colour-blind 8 px one): yellow on dark is ≥ 5:1 on any plan colour.
+   */
+  supportHatchInkExtraPx: 4,
+  supportHatchInkAlpha: 0.8,
+  /** ART §5 W1: "üst ve alt kenarda 14 px sarı-siyah ikaz bandı", ASSET `gap_static_edge` 72 × 14. */
   gapEdgePx: 14,
-  gapRailPx: 6,
+  /**
+   * ART §5 W1 rail (Faz 2 tur 2): 8 px dark steel `board.rail` with a 2 px `board.wallLight` light line on top and a
+   * 4 × 12 px sleeper notch every 40 px (the notch sticks out 2 px above and below the bar: the frame is 12 px high).
+   */
+  gapRailPx: 8,
+  gapRailLightPx: 2,
+  gapRailSleeperW: 4,
+  gapRailSleeperH: 12,
+  gapRailSleeperSpacingPx: 40,
   /** ART §5 crane area bottom line: "4 px kesik çizgi (16/12 px)". → `layout.board.craneLinePx`, `plan.craneDash` */
   craneLinePx: 4,
   craneDash: [16, 12] as readonly [number, number],

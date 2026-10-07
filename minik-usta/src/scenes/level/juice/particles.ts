@@ -46,12 +46,72 @@ interface FamilyStyle {
 
 /** Motion of each family (ART `fx_*`; JUICE rows give counts and the spark rise 120–220 px). */
 export const FAMILY_STYLE: Readonly<Record<ParticleFamily, FamilyStyle>> = Object.freeze({
-  dust: { speed: [60, 180], angle: 0, spread: 170, gravity: 260, life: [320, 520], size: [10, 18], aspect: 1, spin: 90, alpha: 0.75 },
-  grayDust: { speed: [50, 140], angle: 0, spread: 170, gravity: 260, life: [300, 480], size: [8, 14], aspect: 1, spin: 90, alpha: 0.8 },
-  spark: { speed: [460, 640], angle: 0, spread: 60, gravity: 900, life: [360, 560], size: [8, 14], aspect: 1, spin: 360, alpha: 1 },
-  gold: { speed: [220, 460], angle: 0, spread: 360, gravity: 520, life: [380, 620], size: [10, 16], aspect: 1, spin: 360, alpha: 1 },
-  confetti: { speed: [520, 900], angle: 0, spread: 80, gravity: 1100, life: [1100, 1500], size: [14, 22], aspect: 0.55, spin: 540, alpha: 1 },
-  wind: { speed: [700, 950], angle: 90, spread: 12, gravity: 0, life: [160, 220], size: [36, 56], aspect: 0.12, spin: 0, alpha: 0.6 },
+  dust: {
+    speed: [60, 180],
+    angle: 0,
+    spread: 170,
+    gravity: 260,
+    life: [320, 520],
+    size: [10, 18],
+    aspect: 1,
+    spin: 90,
+    alpha: 0.75,
+  },
+  grayDust: {
+    speed: [50, 140],
+    angle: 0,
+    spread: 170,
+    gravity: 260,
+    life: [300, 480],
+    size: [8, 14],
+    aspect: 1,
+    spin: 90,
+    alpha: 0.8,
+  },
+  spark: {
+    speed: [460, 640],
+    angle: 0,
+    spread: 60,
+    gravity: 900,
+    life: [360, 560],
+    size: [8, 14],
+    aspect: 1,
+    spin: 360,
+    alpha: 1,
+  },
+  gold: {
+    speed: [220, 460],
+    angle: 0,
+    spread: 360,
+    gravity: 520,
+    life: [380, 620],
+    size: [10, 16],
+    aspect: 1,
+    spin: 360,
+    alpha: 1,
+  },
+  confetti: {
+    speed: [520, 900],
+    angle: 0,
+    spread: 80,
+    gravity: 1100,
+    life: [1100, 1500],
+    size: [14, 22],
+    aspect: 0.55,
+    spin: 540,
+    alpha: 1,
+  },
+  wind: {
+    speed: [700, 950],
+    angle: 90,
+    spread: 12,
+    gravity: 0,
+    life: [160, 220],
+    size: [36, 56],
+    aspect: 0.12,
+    spin: 0,
+    alpha: 0.6,
+  },
 });
 
 export type RandomFn = () => number;
@@ -168,7 +228,16 @@ export class ParticleField {
    * over the last half of its life). No allocation.
    */
   forEach(
-    visit: (i: number, x: number, y: number, size: number, aspect: number, rot: number, color: number, alpha: number) => void,
+    visit: (
+      i: number,
+      x: number,
+      y: number,
+      size: number,
+      aspect: number,
+      rot: number,
+      color: number,
+      alpha: number,
+    ) => void,
   ): void {
     for (let i = 0; i < this.alive; i++) {
       const u = (this.age[i] ?? 0) / (this.life[i] ?? 1);

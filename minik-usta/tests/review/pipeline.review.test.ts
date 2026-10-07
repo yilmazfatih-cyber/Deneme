@@ -9,6 +9,8 @@
  * Round 3 adds the GDD worked examples of K-25 / K-26 / E-34 / E-03, E-09 on a non-final segment, the K-29 offer
  * exhaustion and decline paths, K-39 depth / trowel / GDD example cases, a prefix-by-prefix resume of the level 5 hand
  * solution, W1 × K-34 rail support, the S2 OBSTACLES example, K-35 steps 5 / 7 / 12 edges, N38 and the K-43 levelHash.
+ * Round 4 (after the Faz 2 tur 1 fix #19 / #21, `GameSession.replay(…, sink)`): the replay hands its sink the live
+ * event stream of the attempt, start bonuses, wrong placements, Undo, truck and +5 offers included.
  */
 import { describe, expect, it } from 'vitest';
 import { ArraySink, applyMove, eventLogHash, isLevelWon, measureYao } from '../../src/core/moves.ts';
@@ -2256,5 +2258,61 @@ describe('Round 3 · K-35 steps 5, 7, 8 and 12', () => {
       ['deadlockDetected', 12],
     ]);
     expect(calls).toEqual([1]);
+  });
+});
+
+describe('review round 4: K-43 replay(sink) gives the caller every event of the attempt (fixed: Faz 2 tur 1 #19 / #21)', () => {
+  /** Live: every commit / offer into one sink. Then the replay of the log into another; both streams must be equal. */
+  function liveThenReplay(
+    lvl: CompiledLevel,
+    start: { preBoosters?: readonly PreBooster[]; streakTier?: 0 | 1 | 2 | 3 },
+    opts: SessionOptions,
+    script: (game: GameSession, sink: ArraySink) => void,
+  ): { live: GameEvent[]; replayed: GameEvent[]; game: GameSession } {
+    const live = new ArraySink();
+    const game = GameSession.start(lvl, start, opts, live);
+    script(game, live);
+    const replayed = new ArraySink();
+    const again = GameSession.replay(lvl, game.log, opts, replayed);
+    expect(again.state.buf).toEqual(game.state.buf);
+    return { live: live.events, replayed: replayed.events, game };
+  }
+
+  it('K-43 / TECH 6 level 5 with Termos (K-40 start bonus), two K-17 wrong placements, one Undo (K-39) and the hand solution (truck, segment slide): the replay sink equals the live stream', () => {
+    const lvl = levelFile(5);
+    const { live, replayed, game } = liveThenReplay(lvl, { preBoosters: ['thermos'] }, {}, (g, sink) => {
+      expect(g.commit(drag(1, N(6, 8)), sink).status).toBe('applied'); // a onto G: K-17 bounce
+      expect(g.undo()).toBe(true);
+      expect(g.commit(drag(0, N(6, 8)), sink).status).toBe('applied'); // c onto G: K-17 bounce
+      for (const m of LEVEL5_HAND) expect(g.commit(m, sink).status).toBe('applied');
+    });
+    expect(game.outcome).toBe('won');
+    expect(live.filter((e) => e.t === 'placementWrong')).toHaveLength(2);
+    expect(live.some((e) => e.t === 'deliveryArrived')).toBe(true);
+    expect(live.some((e) => e.t === 'movesChanged' && e.reason !== 'move')).toBe(true); // Termos +3 at the start
+    expect(replayed).toEqual(live);
+    expect(eventLogHash(replayed)).toBe(eventLogHash(live));
+  });
+
+  it('K-43 / K-29 an accepted +5 offer (coins) and a K-40 streak bonus replay into the same events, in log order', () => {
+    const lvl = compiledLevel({
+      moves: 1,
+      plan: ['WW', 'WW'],
+      pieces: [
+        ['D2_90', 'W', 0, 0],
+        ['D2_90', 'W', 2, 0],
+        ['B1_0', 'Y', 5, 0],
+      ],
+    });
+    const opts: SessionOptions = { streakBonus: (): StreakBonus => ({ moves: 2, trowels: 0 }) };
+    const { live, replayed, game } = liveThenReplay(lvl, { streakTier: 1 }, opts, (g, sink) => {
+      for (const y of [1, 0, 1]) expect(g.commit(drag(2, N(5, y)), sink).status).toBe('applied');
+      expect(g.outcome).toBe('outOfMoves');
+      expect(g.acceptOffer('offerCoins', sink).status).toBe('applied');
+      expect(g.commit(drag(0, N(6, 8)), sink).status).toBe('applied');
+    });
+    expect(game.offersUsed).toBe(1);
+    expect(live.filter((e) => e.t === 'movesChanged' && e.reason === 'offer')).toHaveLength(1);
+    expect(replayed).toEqual(live);
   });
 });

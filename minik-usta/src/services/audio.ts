@@ -8,7 +8,8 @@
  *   (≤ `audio.prerenderBudgetMsPerFrame` per call, one whole sound at least).
  * - Playback policy (`SoundGate`): a sound name plays at most once per `audio.sameSoundCooldownMs`, at most
  *   `audio.maxVoices` sounds at once; requests while the audio context is locked are DROPPED, never queued.
- * - No `AudioContext` exists at import time. `AudioService` creates it lazily on `unlock()` (call it from a user gesture).
+ * - No `AudioContext` exists at import time. `AudioService` creates it on `prepare()` (boot, outside any input) or at
+ *   the latest on `unlock()` (call it from a user gesture), which resumes it.
  *   Engine-free: the Phaser sound manager can instead take `SoundBank` buffers through `toAudioBuffer` (TECH §11.6).
  */
 import { TOKENS } from '../theme/tokens.ts';
@@ -198,6 +199,18 @@ export interface AudioServiceOptions {
   readonly now?: () => number;
 }
 
+/** A one-sample silent buffer started inside the unlocking gesture (WebKit). Decoration: failures are ignored. */
+function kickSilent(ctx: AudioContext): void {
+  try {
+    const source = ctx.createBufferSource();
+    source.buffer = ctx.createBuffer(1, 1, ctx.sampleRate || TOKENS.audio.sampleRateHz);
+    source.connect(ctx.destination);
+    source.start(0);
+  } catch {
+    // no output device, or a minimal test double: nothing to unlock
+  }
+}
+
 function defaultContext(): AudioContext | null {
   const Ctor = (globalThis as { AudioContext?: typeof AudioContext }).AudioContext;
   return Ctor === undefined ? null : new Ctor();
@@ -214,6 +227,8 @@ export class AudioService {
   readonly #now: () => number;
   readonly #buffers = new Map<SoundName, AudioBuffer>();
   #ctx: AudioContext | null = null;
+  /** The silent buffer ran (first unlock). */
+  #kicked = false;
   #sound = true;
   #music = true;
 
@@ -223,10 +238,30 @@ export class AudioService {
     this.#now = opts.now ?? (() => performance.now());
   }
 
-  /** Creates (first call) and resumes the context. Call from a user gesture (iOS starts suspended). */
+  /**
+   * Creates (first call) and resumes the context. Call from an activation-triggering input event (pointerup, touchend,
+   * click, keydown; a touch `pointerdown` is not one): iOS and Chrome keep a context suspended until then. The first
+   * call also starts a one-sample silent buffer, which WebKit needs to really unlock output.
+   */
   unlock(): void {
+    this.prepare();
+    const ctx = this.#ctx;
+    if (ctx === null) return;
+    if (!this.#kicked) {
+      this.#kicked = true;
+      kickSilent(ctx);
+    }
+    if (ctx.state !== 'running' && ctx.state !== 'closed') void ctx.resume().catch(() => {});
+  }
+
+  /**
+   * Creates the context now, outside any input (TECH §10.7 item 6, review Faz 2 tur 2 #11): creating it costs ~45 ms
+   * at 4× CPU, which inside the first drag's touch handler was the drag's longest frame. Without user activation the
+   * context starts suspended; the first activating input then only `resume()`s it (synchronously in the handler, as
+   * WebKit requires) and starts the silent buffer.
+   */
+  prepare(): void {
     if (this.#ctx === null) this.#ctx = this.#createContext();
-    if (this.#ctx !== null && this.#ctx.state === 'suspended') void this.#ctx.resume();
   }
 
   get unlocked(): boolean {

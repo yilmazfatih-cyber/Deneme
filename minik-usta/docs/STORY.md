@@ -1,7 +1,7 @@
 # Hikaye ve karakterler — Minik Usta
 
 Sahip: design-lead · Durum: Faz 1 revizyonu (2026-10-04; R-07, R-08, R-09, R-14, R-15, R-19, R-24 işlendi); Faz 2
-metin satırları (2026-10-06; §7.3 `lose.adToday`, §7.5 `exit.*` / `resume.strip`, yeni §7.6) · Kaynak:
+metin satırları (2026-10-06; §7.3 `lose.adToday`, §7.5 `exit.*` / `resume.strip`, yeni §7.6; tur 2: §6 `tut.ctx.resume`) · Kaynak:
 `docs/BRIEF.md` §9 · Görünüm: `docs/ART_DIRECTION.md` §11 · Öğretici yerleşimi: `docs/UX_FLOWS.md` §13
 
 **Kapsam:** ara sahneler, görev satırları, ipuçları, etkinlik ve teklif metinleri **[MVP]**; §7.1 tepki balonları
@@ -457,7 +457,7 @@ hangi adımda çıktığı LEVELS §2 `tutorial[]` verisindedir (ör. Bölüm 3 
 | `tut.ctx.truckhelp.material` | Malzeme eksikti. Kamyon getirdi! | We were short on material. The truck brought more! | K-30 D2 |
 | `tut.ctx.truckhelp.free` | Kamyon yardım etti, bloklar serbest. Devam! | The truck helped, the blocks are free. Carry on! | K-30 D1 (yalnız zincir/ıslaklık kalkıp D1 çözüldüyse) |
 | `tut.ctx.blocked` | Bu blok şimdi kımıldamaz. Çevresine bak. | That one can't move yet. Look around it. | K-09 |
-| `tut.ctx.resume` | Kaldığın yerden devam, evlat. | Pick up where you left off. | K-43 (R-13) |
+| `tut.ctx.resume` | Tahta bıraktığın gibi duruyor, evlat. | The board is just as you left it, kiddo. | K-43 (R-13); başlık `resume.title`'ı tekrarlamaz (§7.5) |
 | `tut.meta.bridge` | {n} bölümü art arda kazan, köprüyü geç! | Win {n} in a row to cross the bridge! | META §6 (`{n}` = `events.json → wobblyBridge.planks`) |
 | `tut.meta.league` | Usta Ligi: her hafta en iyiler yükselir. | Builder League: the best move up each week. | META §7 |
 | `tut.meta.chest` | {n} bölüm tamam! Sandığı aç. | {n} levels done! Open the chest. | META §8.2 (`{n}` = `levelChest.everyLevels`) |
@@ -687,7 +687,8 @@ K-43 madde 2); `exit.cost` yalnız `m ≥ 1`; `exit.streak` yalnız `m ≥ 1` ve
 bozulmaz, satır yok); `exit.bridge` yalnız Köprü turunda `m ≥ 1`. Satır sırası `exit.cost` → `exit.streak` →
 `exit.bridge`. Onay penceresi gelecek zamanı (`exit.streak`), kayıp Pencere 2 geçmiş zamanı (`lose.streak`) kullanır.
 `resume.strip` yarım kalan bölümün açılışındaki 1,5 s'lik üst şerittir (JUICE #87): `{n}` = bölüm numarası. Duraklat
-penceresinin başlığı o sırada `resume.title`'dır; şerit başlığı tekrarlamaz, kaydın güvende olduğunu söyler. Teklif
+penceresinin başlığı o sırada `resume.title`'dır; şerit başlığı tekrarlamaz, kaydın güvende olduğunu söyler. İlk dönüşte
+başlığın altındaki `tut.ctx.resume` (§6) da başlığı tekrarlamaz, tahtanın aynı kaldığını söyler. Teklif
 penceresine (UX §1 (a)) ya da güncelleme penceresine ((c)) açılan dönüşte şerit yoktur.
 
 ### 7.6 Faz 2 ekranları — açılış, oyun ekranı, kazanma ve ortak düğmeler

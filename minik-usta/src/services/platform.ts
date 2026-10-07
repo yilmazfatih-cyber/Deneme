@@ -5,7 +5,9 @@
  * - `detectPlatform()` → ANALYTICS §3 `platform` (`'web' | 'android' | 'ios'`).
  * - `appVersion()` → ANALYTICS §3 `appVersion`.
  * - `onAppHidden()` → the lifecycle moments that must save at once (TECH §11.1: `visibilitychange: hidden`, `pagehide`;
- *   Capacitor `pause` in Faz 5), used by the save service after `GameSession.flushPending()` (§4.7 rule (5)).
+ *   Capacitor `pause` in Faz 5), used by the save service after `GameSession.flushPending()` (§4.7 rule (5));
+ *   `onAppVisible()` → back in the foreground (a new analytics session, audio resumes).
+ * - `userActivation()` → whether the page has had a user gesture (Web Audio start, `navigator.vibrate`).
  */
 
 export type Platform = 'web' | 'android' | 'ios';
@@ -57,6 +59,39 @@ export function onAppHidden(
     doc?.removeEventListener('visibilitychange', onVisibility);
     win?.removeEventListener('pagehide', onPageHide);
   };
+}
+
+/**
+ * Calls `handler` when the app comes back to the foreground (`visibilitychange` → `visible`, `pageshow` from the
+ * back/forward cache). Returns the unsubscribe function; the handler must be idempotent.
+ */
+export function onAppVisible(
+  handler: () => void,
+  target: LifecycleTarget = defaultLifecycleTarget(),
+): () => void {
+  const doc = target.document;
+  const win = target.window;
+  const onVisibility = (): void => {
+    if (doc?.visibilityState === 'visible') handler();
+  };
+  const onPageShow = (): void => handler();
+  doc?.addEventListener('visibilitychange', onVisibility);
+  win?.addEventListener('pageshow', onPageShow);
+  return () => {
+    doc?.removeEventListener('visibilitychange', onVisibility);
+    win?.removeEventListener('pageshow', onPageShow);
+  };
+}
+
+/** HTML user activation: `navigator.userActivation` where the browser has it (Chrome 72+, Safari 16.4+), else null. */
+export interface UserActivationLike {
+  readonly isActive: boolean;
+  readonly hasBeenActive: boolean;
+}
+
+export function userActivation(g: unknown = globalThis): UserActivationLike | null {
+  const ua = (g as { navigator?: { userActivation?: UserActivationLike } }).navigator?.userActivation;
+  return ua ?? null;
 }
 
 function defaultLifecycleTarget(): LifecycleTarget {

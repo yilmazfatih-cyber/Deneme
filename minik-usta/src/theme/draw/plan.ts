@@ -196,7 +196,9 @@ export function drawBuildFront(ctx: DrawContext, tokens: Tokens): void {
 /**
  * Missing-support hatch `plan_support_hatch` (K-34; ART §4, UX §5.4): HORIZONTAL lines (`plan.supportHatchWidthPx`,
  * colour-blind `a11y.colorBlindSupportHatchPx`) every `plan.supportHatchSpacingPx`, `color.ghost.support` at
- * `alpha.supportHatch`, inside the cell outline — a different pattern from the 45° colour hatch.
+ * `alpha.supportHatch`, inside the cell outline — a different pattern from the 45° colour hatch. Under every yellow line
+ * a `ui.ink` line at 80 %, 4 px wider (ART §4 Faz 2 tur 2, review #4: yellow alone was 1.03–1.39:1 on the light plan
+ * colours; the pair reads like a hazard band on every plan colour, JUICE #84 uses the same frame).
  */
 export function drawSupportHatch(ctx: DrawContext, spec: { readonly mode?: DrawMode }, tokens: Tokens): void {
   const mode = spec.mode ?? DEFAULT_MODE;
@@ -207,16 +209,64 @@ export function drawSupportHatch(ctx: DrawContext, spec: { readonly mode?: DrawM
   ctx.save();
   planRect(ctx, tokens);
   ctx.clip();
-  ctx.beginPath();
-  for (let k = 0; k < lines; k++) {
-    const y = c / 2 + (k - (lines - 1) / 2) * step;
-    ctx.moveTo(0, y);
-    ctx.lineTo(c, y);
-  }
+  const width = mode.colorBlind ? tokens.a11y.colorBlindSupportHatchPx : tokens.plan.supportHatchWidthPx;
+  const pass = (lineWidth: number, style: string): void => {
+    ctx.beginPath();
+    for (let k = 0; k < lines; k++) {
+      const y = c / 2 + (k - (lines - 1) / 2) * step;
+      ctx.moveTo(0, y);
+      ctx.lineTo(c, y);
+    }
+    ctx.lineCap = 'butt';
+    ctx.lineWidth = lineWidth;
+    ctx.strokeStyle = style;
+    ctx.stroke();
+  };
+  pass(width + ART.supportHatchInkExtraPx, css(parseHex(tokens.color.ui.ink), ART.supportHatchInkAlpha));
+  pass(width, css(parseHex(tokens.color.ghost.support), tokens.alpha.supportHatch));
+  ctx.restore();
+}
+
+/**
+ * Wrong-cell hatch `ghost_hatch45` (UX §5.4 rows `debris` / `outside` / `window` / `color`; review Faz 2 tur 1 #1): 45°
+ * lines in `color.ghost.invalid`, the same weight, gap and opacity as the K-34 hatch (`plan.supportHatchWidthPx`,
+ * colour-blind `a11y.colorBlindSupportHatchPx`; `plan.supportHatchSpacingPx` measured across the lines;
+ * `alpha.supportHatch`) inside the cell outline — the support hatch is horizontal, this one diagonal (pattern coding).
+ */
+export function drawWrongHatch(ctx: DrawContext, spec: { readonly mode?: DrawMode }, tokens: Tokens): void {
+  const mode = spec.mode ?? DEFAULT_MODE;
+  const c = tokens.layout.grid.cellPx;
+  ctx.save();
+  planRect(ctx, tokens);
+  ctx.clip();
+  hatch45(ctx, c, c, tokens.plan.supportHatchSpacingPx * Math.SQRT2);
   ctx.lineCap = 'butt';
   ctx.lineWidth = mode.colorBlind ? tokens.a11y.colorBlindSupportHatchPx : tokens.plan.supportHatchWidthPx;
-  ctx.strokeStyle = css(parseHex(tokens.color.ghost.support), tokens.alpha.supportHatch);
+  ctx.strokeStyle = css(parseHex(tokens.color.ghost.invalid), tokens.alpha.supportHatch);
   ctx.stroke();
+  ctx.restore();
+}
+
+/** UX §5.4 "Düşüş yolu": dashed vertical line, 6 px wide, 8 px dash / 12 px gap (no token yet: design-lead). */
+export const FALL_PATH = Object.freeze({ widthPx: 6, dashPx: 8, gapPx: 12, alpha: 0.35 });
+
+export function fallPathSize(spec: { readonly length: number }): Size {
+  return { w: FALL_PATH.widthPx + 4, h: spec.length };
+}
+
+/**
+ * Fall path strip `ghost_path` (UX §5.4): opaque white dashes (`FALL_PATH`) from the top down, centred in a strip
+ * `fallPathSize` wide; the scene crops it to the gap between the dragged block and its shadow and sets the 35 % alpha.
+ */
+export function drawFallPath(ctx: DrawContext, spec: { readonly length: number }): void {
+  const { w } = fallPathSize(spec);
+  const x = (w - FALL_PATH.widthPx) / 2;
+  const period = FALL_PATH.dashPx + FALL_PATH.gapPx;
+  ctx.save();
+  ctx.fillStyle = css(WHITE);
+  for (let y = 0; y < spec.length; y += period) {
+    ctx.fillRect(x, y, FALL_PATH.widthPx, Math.min(FALL_PATH.dashPx, spec.length - y));
+  }
   ctx.restore();
 }
 

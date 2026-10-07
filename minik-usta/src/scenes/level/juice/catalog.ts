@@ -22,8 +22,8 @@ import { JUICE_VIEW } from '../viewConstants.ts';
 
 /** JUICE §0 rule 12 "Faz 2 P0" = #1–13, 15–20, 22, 23, 50–53, 55–58, 69–71, 83–84, 87, 88 (36 events). */
 export const JUICE_P0_IDS = Object.freeze([
-  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 22, 23, 50, 51, 52, 53, 55, 56, 57, 58, 69, 70,
-  71, 83, 84, 87, 88,
+  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 22, 23, 50, 51, 52, 53, 55, 56, 57, 58,
+  69, 70, 71, 83, 84, 87, 88,
 ] as const);
 
 export type JuiceId = (typeof JUICE_P0_IDS)[number];
@@ -69,7 +69,12 @@ export function reducedCount(count: number): number {
   return Math.round(count * P.reducedFactor);
 }
 
-function parts(family: ParticleFamily, count: number, reduced = reducedCount(count), waves = 1): ParticleRecipe {
+function parts(
+  family: ParticleFamily,
+  count: number,
+  reduced = reducedCount(count),
+  waves = 1,
+): ParticleRecipe {
   return { family, count: Math.min(count, P.maxPerBurst), reduced, waves };
 }
 
@@ -112,7 +117,14 @@ const ROWS: { readonly [K in JuiceId]: Row } = {
     particles: parts('wind', V.windLines, 0),
   },
   7: { name: 'ghostSwitch', ms: D.ghostSwitch, ease: E.move, sounds: ['sfx_ghost_ok'] },
-  8: { name: 'cancel', ms: D.cancel, reducedMs: D.reducedFade, ease: E.slide, sounds: ['sfx_cancel'], fastForward: true },
+  8: {
+    name: 'cancel',
+    ms: D.cancel,
+    reducedMs: D.reducedFade,
+    ease: E.slide,
+    sounds: ['sfx_cancel'],
+    fastForward: true,
+  },
   9: {
     name: 'yardDrop',
     ms: D.setYard,
@@ -199,7 +211,14 @@ const ROWS: { readonly [K in JuiceId]: Row } = {
     haptic: 'light',
     particles: parts('spark', V.railSparks),
   },
-  23: { name: 'railClamp', ms: D.clamp, ease: E.pop, sounds: ['sfx_clamp'], haptic: 'light', fastForward: true },
+  23: {
+    name: 'railClamp',
+    ms: D.clamp,
+    ease: E.pop,
+    sounds: ['sfx_clamp'],
+    haptic: 'light',
+    fastForward: true,
+  },
   50: { name: 'movesTick', ms: D.movesTick, reducedMs: 0, ease: E.move, sounds: [] },
   51: {
     name: 'lastMoves',
@@ -209,7 +228,14 @@ const ROWS: { readonly [K in JuiceId]: Row } = {
     sounds: ['sfx_lastmoves'],
     haptic: 'light',
   },
-  52: { name: 'offerOpen', ms: D.offer, reducedMs: D.reducedFade, ease: E.pop, sounds: ['sfx_offer'], haptic: 'medium' },
+  52: {
+    name: 'offerOpen',
+    ms: D.offer,
+    reducedMs: D.reducedFade,
+    ease: E.pop,
+    sounds: ['sfx_offer'],
+    haptic: 'medium',
+  },
   53: {
     name: 'movesAdded',
     ms: D.movesAdd,
@@ -247,7 +273,14 @@ const ROWS: { readonly [K in JuiceId]: Row } = {
     haptic: 'medium',
     lock: true,
   },
-  58: { name: 'lifeLost', ms: D.lifeLost, reducedMs: 0, ease: E.moveIn, sounds: ['sfx_life_lost'], haptic: 'light' },
+  58: {
+    name: 'lifeLost',
+    ms: D.lifeLost,
+    reducedMs: 0,
+    ease: E.moveIn,
+    sounds: ['sfx_life_lost'],
+    haptic: 'light',
+  },
   69: {
     name: 'button',
     ms: D.buttonPress,

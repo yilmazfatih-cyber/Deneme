@@ -8,6 +8,7 @@
  * | ---------------------------- | -------- | ----------------- | ----- | ------------------------------ |
  * | easy/normal, correct         | valid    | ✓ `ok`            | no    | —                              |
  * | easy/normal, wrong           | invalid  | ! `warn`, ↓ `support` when `reasons[0]` is `support` | 2 Hz | cells of `missingSupport` when `reasons[0]` is `support` |
+ * | easy/normal, wrong, `reasons[0]` ∈ debris / outside / window / color | as above | ! `warn` | 2 Hz | — ; 45° hatch on the reason's cells (`mismatchCells`, core `reasonCells`) |
  * | hard/superhard               | neutral  | —                 | no    | — (UX §5.4: shown after the bounce only, §5.5) |
  * | touches an unrevealed `?`    | neutral  | —                 | no    | easy/normal: as above (support carries no hidden information, GDD K-34 hook 2) |
  * | glass will break (S3)        | as above | cracked glass (physics information, every difficulty) |
@@ -19,8 +20,11 @@
 import { shadowInfo } from '../../core/gravity.ts';
 import type { FallResult } from '../../core/gravity.ts';
 import type { CompiledLevel } from '../../core/level/compile.ts';
+import type { BoardCell } from '../../core/grid.ts';
 import type { DropClass } from '../../core/movement.ts';
-import type { At } from '../../core/types.ts';
+import { reasonCells } from '../../core/placement.ts';
+import type { GameState } from '../../core/state.ts';
+import type { At, PieceId } from '../../core/types.ts';
 import type { ShapeDef } from '../../core/shapes.ts';
 import type { BadgeKind } from '../../theme/draw/badge.ts';
 import type { Layout } from '../../theme/layout.ts';
@@ -36,14 +40,27 @@ export interface ShadowLook {
   readonly pulse: boolean;
   /** Plan cells under the K-34 horizontal hatch (`plan_support_hatch`). */
   readonly supportCells: readonly At[];
+  /**
+   * Landing cells under the 45° hatch (`ghost_hatch45`, UX §5.4): the cells of the primary reason when it is `debris`,
+   * `outside`, `window` or `color` (easy / normal wrong shadow only; empty otherwise).
+   */
+  readonly mismatchCells: readonly BoardCell[];
   /** Equality key: a change replays the JUICE #7 switch (badge pop). */
   readonly key: string;
 }
 
 const NONE: readonly At[] = Object.freeze([]);
+const NO_CELLS: readonly BoardCell[] = Object.freeze([]);
 
-/** UX §5.4 look of a release that falls (`siteFree`) or stays on the rail (`siteRail`). */
-export function shadowLook(fall: FallResult, difficulty: CompiledLevel['difficulty']): ShadowLook {
+/**
+ * UX §5.4 look of a release that falls (`siteFree`) or stays on the rail (`siteRail`). `of` (the state and the dragged
+ * piece) lets the core name the cells of the primary reason for the 45° hatch; without it there is no hatch.
+ */
+export function shadowLook(
+  fall: FallResult,
+  difficulty: CompiledLevel['difficulty'],
+  of?: { readonly state: GameState; readonly pieceId: PieceId },
+): ShadowLook {
   const info = shadowInfo(fall, difficulty);
   const easy = difficulty === 'easy' || difficulty === 'normal';
   const primary = info.reasons[0] ?? null;
@@ -51,6 +68,7 @@ export function shadowLook(fall: FallResult, difficulty: CompiledLevel['difficul
   let badge: BadgeKind | null = null;
   let pulse = false;
   let supportCells: readonly At[] = NONE;
+  let mismatchCells: readonly BoardCell[] = NO_CELLS;
   if (info.tone === 'correct') {
     outline = 'valid';
     badge = 'ok';
@@ -59,6 +77,7 @@ export function shadowLook(fall: FallResult, difficulty: CompiledLevel['difficul
     badge = primary === 'support' ? 'support' : 'warn';
     pulse = true;
     if (primary === 'support') supportCells = info.missingSupport;
+    else if (primary && of) mismatchCells = reasonCells(of.state, of.pieceId, fall.cells, primary);
   } else {
     outline = 'neutral';
     if (easy && primary === 'support') supportCells = info.missingSupport;
@@ -70,8 +89,9 @@ export function shadowLook(fall: FallResult, difficulty: CompiledLevel['difficul
     badge ?? '-',
     body ? 'b' : 'r',
     supportCells.map((c) => `${c.x},${c.y}`).join(';'),
+    mismatchCells.map((c) => `${c.x},${c.y}`).join(';'),
   ].join('|');
-  return { outline, body, badge, pulse, supportCells, key };
+  return { outline, body, badge, pulse, supportCells, mismatchCells, key };
 }
 
 /** UX §5.3 cancel preview: rows 3 (crane area over the yard), 4 (straddling the wall) and 5 (site closed, E-27). */

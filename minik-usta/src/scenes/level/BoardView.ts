@@ -4,8 +4,8 @@
  * look from baked frames (theme/textures.ts); nothing here decides a rule.
  *
  * Static part (rebuilt on a level change or a resize): crane-area band and line, yard floor and frame, the wall —
- * a 60 px strip that draws the zero-width boundary (R-03, K-04) with its W1 openings and rails —, blueprint floor,
- * scaffold, "pafta" corner.
+ * a 60 px strip that draws the zero-width boundary (R-03, K-04) with its W1 openings —, the W1 rails (over the plan
+ * cells, ART §5), blueprint floor, scaffold, "pafta" corner.
  * Site part (refreshed after every move): the plan of the segment shown (K-22) — colour cells (`plan_<c>`), unrevealed
  * `?` cells (`plan_hidden`), cells outside the plan (`board_blueprint_deep`, `y ≥ h + e`), the blueprint grid and `.`
  * overlays, the build front (core `buildFront`, K-34 hook 1: `plan_<c>_front` + `plan_front` contour over the plain
@@ -42,6 +42,14 @@ import { DEPTH } from './depth.ts';
 import { hexColor, setFrameAt, setFrameCentred, setRect } from './frameImage.ts';
 import { VIEW } from './viewConstants.ts';
 
+/** ART §5 W1 rails: over the plan cells, the blueprint grid and the `.` overlay; under the build front (review Faz 2 tur 2 #2). */
+export const RAIL_DEPTH = DEPTH.planOverlay + 2;
+/** JUICE #22 rail glow and its light spot: right above the rails. */
+export const RAIL_GLOW_DEPTH = RAIL_DEPTH + 1;
+
+/** UX §5.2 "seçilemeyenler %50 soluklaşır". */
+export const PICK_DIM_ALPHA = 0.5;
+
 /** Rails of one static gap (W1), for the #22 light flow. */
 export interface RailSet {
   readonly gap: number;
@@ -58,6 +66,11 @@ export class BoardView {
   private readonly freeImgs: Phaser.GameObjects.Image[] = [];
   private readonly frontImgs: Phaser.GameObjects.Image[] = [];
   private readonly trowelImgs = new Map<string, Phaser.GameObjects.Image>();
+  /** Plan-cell images by board cell `x,y` (cell, front fill, front contour) and the `.` overlay (UX §5.2 pick dim). */
+  private readonly planImgs = new Map<string, Phaser.GameObjects.Image[]>();
+  private dotsImg: Phaser.GameObjects.Image | null = null;
+  /** Cells the Golden Trowel pick mode keeps lit (null: no pick mode). */
+  private pickLit: ReadonlySet<string> | null = null;
   private readonly hatchImgs: Phaser.GameObjects.Image[] = [];
   private readonly glowImgs: Phaser.GameObjects.Image[] = [];
   private readonly clampImgs: Phaser.GameObjects.Image[] = [];
@@ -188,6 +201,8 @@ export class BoardView {
       const r = g.wallRect(lvl.wallHeight);
       setFrameAt(add(DEPTH.boardGround + 3), f.ref(FRAME.wall), r.x, r.y);
     }
+    // ART §5 (Faz 2 tur 2): the rails lie over the plan cells and the blueprint grid, under the build front and the
+    // blocks (`RAIL_DEPTH`), in dark steel — not on the ground layer under the plan, where they matched the scaffold
     const rail = f.ref(FRAME.gapRail);
     this.rails = [];
     lvl.gaps.forEach((gap, i) => {
@@ -195,9 +210,9 @@ export class BoardView {
       const r = g.gapRect(gapField(s, i, GF.y), gap.size);
       const rects: Rect[] = [];
       for (const y of [r.y, r.y + r.h]) {
-        const img = add(DEPTH.boardGround + 4);
-        setFrameAt(img, rail, g.wallX, y - ART.gapRailPx / 2);
-        img.setDisplaySize(g.wallW + siteW, ART.gapRailPx);
+        const img = add(RAIL_DEPTH);
+        setFrameAt(img, rail, g.wallX, y - rail.h / 2);
+        img.setDisplaySize(g.wallW + siteW, rail.h);
         rects.push({ x: g.wallX, y: y - ART.gapRailPx / 2, w: g.wallW + siteW, h: ART.gapRailPx });
       }
       this.rails.push({ gap: i, rails: rects });
@@ -226,6 +241,35 @@ export class BoardView {
     this.siteImgs = [];
     this.frontImgs.length = 0;
     this.trowelImgs.clear();
+    this.planImgs.clear();
+    this.dotsImg = null;
+  }
+
+  /**
+   * UX §5.2 Golden Trowel pick mode (review Faz 2 tur 2 #5): every plan cell of the segment shown that is not in
+   * `eligible` (and the `.` overlay) at 50 % (`alpha.disabled`-like, information: also with reduced motion); `null`
+   * lights everything again.
+   */
+  setPickDim(eligible: readonly At[] | null): void {
+    this.pickLit = eligible ? new Set(eligible.map((c) => `${c.x},${c.y}`)) : null;
+    this.applyPickDim();
+  }
+
+  /** Alpha of the plan-cell images now (tests, harness): `x,y` → alpha of its cell image. */
+  get planAlphas(): ReadonlyMap<string, number> {
+    const out = new Map<string, number>();
+    for (const [k, imgs] of this.planImgs) out.set(k, imgs[0]?.alpha ?? 1);
+    if (this.dotsImg) out.set('.', this.dotsImg.alpha);
+    return out;
+  }
+
+  private applyPickDim(): void {
+    const lit = this.pickLit;
+    for (const [k, imgs] of this.planImgs) {
+      const a = lit === null || lit.has(k) ? 1 : PICK_DIM_ALPHA;
+      for (const img of imgs) img.setAlpha(a);
+    }
+    this.dotsImg?.setAlpha(lit === null ? 1 : PICK_DIM_ALPHA);
   }
 
   /** Redraws the plan of the segment shown, its build front and ceiling beam (after a move, a shift, a resize). */
@@ -262,18 +306,23 @@ export class BoardView {
         if (color === undefined) continue;
         const hidden = ((plan.hiddenMask >> local) & 1) === 1 && ((revealed >> local) & 1) === 0;
         const isFront = front.has(`${x},${y}`);
-        setFrameAt(this.takeImg(DEPTH.planCells), f.ref(hidden ? FRAME.hidden : planFrameName(color)), cell.x, cell.y);
+        const cellImg = this.takeImg(DEPTH.planCells);
+        setFrameAt(cellImg, f.ref(hidden ? FRAME.hidden : planFrameName(color)), cell.x, cell.y);
+        const imgs = [cellImg];
         if (isFront) {
           // K-34 hook 1: the front look over the plain cell (the #83 crossfade fades these two in)
           if (!hidden) {
             const fill = this.takeImg(DEPTH.planCells + 1);
             setFrameAt(fill, f.ref(planFrontFrameName(color)), cell.x, cell.y);
             this.frontImgs.push(fill);
+            imgs.push(fill);
           }
           const contour = this.takeImg(DEPTH.buildFront);
           setFrameAt(contour, frontContour, cell.x, cell.y);
           this.frontImgs.push(contour);
+          imgs.push(contour);
         }
+        this.planImgs.set(`${x},${y}`, imgs);
         if (siteOcc(s, seg, sx, sy) === SITE_TROWEL) {
           const name = trowelCellFrameName(color);
           if (f.has(name)) {
@@ -290,7 +339,10 @@ export class BoardView {
     const grid = gridFrameName(plan.height);
     if (f.has(grid)) setFrameAt(this.takeImg(DEPTH.planOverlay), f.ref(grid), g.buildX, planTop);
     const dots = dotsFrameName(seg);
-    if (f.has(dots)) setFrameAt(this.takeImg(DEPTH.planOverlay + 1), f.ref(dots), g.buildX, planTop);
+    if (f.has(dots)) {
+      this.dotsImg = this.takeImg(DEPTH.planOverlay + 1);
+      setFrameAt(this.dotsImg, f.ref(dots), g.buildX, planTop);
+    }
 
     // ceiling beam on the plan top (S8 balloon ceiling; drawn in every level, ART §4) with a clamp at each end
     const beamPx = TOKENS.plan.ceilingBeamPx;
@@ -300,6 +352,7 @@ export class BoardView {
     const clamp = f.ref(FRAME.scaffoldClamp);
     setFrameCentred(this.takeImg(DEPTH.ceilingBeam + 1), clamp, g.buildX, planTop);
     setFrameCentred(this.takeImg(DEPTH.ceilingBeam + 1), clamp, g.buildX + siteW, planTop);
+    if (this.pickLit) this.applyPickDim();
   }
 
   // --- JUICE hooks -------------------------------------------------------------------------------------------------------
@@ -326,6 +379,8 @@ export class BoardView {
     this.siteImgs = [];
     this.frontImgs.length = 0;
     this.trowelImgs.clear();
+    this.planImgs.clear();
+    this.dotsImg = null;
     return this.outgoing;
   }
 
@@ -352,7 +407,10 @@ export class BoardView {
       if (!img) return;
       const r = layout.grid.cellRect(cell.x, cell.y);
       setFrameAt(img, ref, r.x, r.y);
-      img.setDepth(DEPTH.fallShadow + 1).setAlpha(0).setVisible(true);
+      img
+        .setDepth(DEPTH.fallShadow + 1)
+        .setAlpha(0)
+        .setVisible(true);
       out.push(img);
     });
     for (let i = cells.length; i < this.hatchImgs.length; i++) this.hatchImgs[i]?.setVisible(false);
@@ -396,7 +454,16 @@ export class BoardView {
     if (!this.dimImg) this.dimImg = this.scene.add.image(0, 0, BOOT_ATLAS_KEY, FRAME.whitePixel);
     const r = layout.board.board;
     const crane = layout.board.crane;
-    setRect(this.dimImg, f.ref(FRAME.whitePixel), r.x, crane.y, r.w, r.y + r.h - crane.y, hexColor(TOKENS.color.ui.overlay), 0);
+    setRect(
+      this.dimImg,
+      f.ref(FRAME.whitePixel),
+      r.x,
+      crane.y,
+      r.w,
+      r.y + r.h - crane.y,
+      hexColor(TOKENS.color.ui.overlay),
+      0,
+    );
     this.dimImg.setDepth(DEPTH.effects - 1).setVisible(true);
     return this.dimImg;
   }

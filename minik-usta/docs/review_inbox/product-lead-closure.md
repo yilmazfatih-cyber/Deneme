@@ -356,3 +356,111 @@ değişmedi.
   metin kaynağı STORY olduğundan işlem gerekmez.
 
 Özet (Faz 2, güncel): **5 madde → 2 DOĞRULANDI · 1 KAPANDI (PL-F2-5) · 1 AÇIK (Faz 3, Bölüm 5 yeniden tasarımı) · 1 BİLGİ.**
+
+## Faz 2 tur 1
+
+Doğrulama araçları (karalama, proje kodu değil; `scratchpad/tut2/`): `tutscan.ts` = gerçek çekirdek (`applyMove`) +
+gerçek `TutorialController`, kazanan her hamle sırası (✓ yerleşimler + ≤ N saha hamlesi; ray hamlesi `gapPass`, vinç
+hamlesi `overWall` sinyali gönderir), `timeoutMs` her hamle sırasının önüne/arkasına konur; ölçütler: adım hiç
+gösterilmedi / güvenceyle atlandı / hiçbir hamlenin başında ekranda değil / kazanınca ekranda kaldı. Ayrıca gerçek oyunda
+(harness, `pl/golden.ts`) Bölüm 3 ve 4 golden çözümleri öğretici iziyle yeniden oynatıldı.
+
+- PL-F2T1-0 [Önemli] Bölüm 4 adım 3 (Z, `tut.l4.above`) zamanlamaya bağlı atlanıyor → **DOĞRULANDI, KAPANDI (öneriden
+  sapmayla).** Kanıt doğru: `golden-L4.log` izinde `a` adım 1 açıkken yerleşti, adım 2 `b` ve `p`'yi saydı, adım 3 hiç
+  gösterilmedi. Betik (eski veri, ✓ + ≤ 1 saha hamlesi, 159 kazanan sıra × her timeout anı = 950 koşu): adım 3 791
+  koşuda gösterilmiyor (399'unda güvenceyle atlanıyor), adım 2 392 koşuda kazanınca ekranda kalıyor; bu GDD §14.1 madde
+  4a'yı ("önceki adımın tamamlanabildiği her durumda") bozuyordu. **Önerilen düzeltme yetmez:** yalnız adım 2'ye
+  `at: [6, 1]` eklenirse `a` ve `b` adım 1'in 2,5 sn'si içinde biterse adım 2 hiç bitmez, kazanınca ekranda kalır ve adım
+  3 yine görünmez (betik: ✓ kapsamında 20 koşunun 12'si, ≤ 1 saha hamlesinde 950'nin 617'si). Gerçekçi: bölüm başında
+  giriş kilidi yok, yeni tutuş önceki hamlenin efektlerini hemen bitirir (R-12 `fastForward`), `b`'nin hamle sonu hızlı
+  oyuncuda ≈ 1,5–2 sn'de gelir; öğretici her yeni denemede yeniden başlar (1–5 döngüsünde tekrar oynayan oyuncu).
+  **Uygulanan** (`levels/level_004.json`): adım 1 `done` `timeoutMs` 2500 → `placementCorrect` ×1; adım 2
+  `placementCorrect` ×2 → ×1; adım 3 değişmedi. `at` yazılmadı: K-34 ilk doğru yerleşimi (6,0)'a (`a`/`g`), ikinciyi
+  (6,1)'e (`b`) zorlar, `at: [6, 1]` betikte sonucu değiştirmiyor; ayrıca code-lead'in 1–5 adım satırı ayrıştırıcısı
+  (`tests/review/data.review.test.ts` "tutorial[] equals the LEVELS step list") `at`'ı okumuyor. Sonuç: ✓ + ≤ 1 saha
+  hamlesinde 159 sıranın hepsinde 3 adım gösterilir, hiçbiri atlanmaz, her adım bir hamlenin başında ekrandadır, kazanınca
+  açık adım kalmaz; ≤ 2 saha hamlesinde 3.975 sıranın 4'ünde adım 3 atlanır (hepsinde `b`'den sonra `i` ve `j` kazılıp
+  `p` duvar üstünden konur; Z adımının spot dışı dokunuş kısıtıyla gerçek oyunda olmaz, LEVELS §5 kapsamı dışında).
+  Gerçek oyunda (golden L4): adım 1 `a`'ya kadar, adım 2 `b`'ye kadar ekranda; adım 3 (Z) `p` hamlesinden önce açılır,
+  eldiven `p` tutulunca kaybolur, `gapPass` ile biter; konsol hatası yok. Belgeler: LEVELS §2 Bölüm 4 adım satırları +
+  "zamandan bağımsız" notu, §0 K-34 notu (adım 1 ekrandayken olan `support` reddinin satırı adım 2 ile düşer), §5 yeni
+  madde "Öğretici zamandan bağımsız ve görünür" ve "Z adımı kilitlemez" maddesinde "her durum" tanımı; GDD §14.1 madde
+  4a "her durum" = her hamle sırası + önceki `timeoutMs`'in her dolma anı (veri kuralı netleştirmesi; kural ve
+  `rulesVersion` değişmedi). Sunum etkisi: adım 1 balonu ve (7,2) tap eldiveni 2,5 sn yerine ilk doğru yerleşime kadar
+  kalır (design-lead'e, aşağıda).
+- PL-F2T1-1 [Önemli] Bölüm 3 adım 3 (`tut.l3.rail`) sürükleme ortasında başlayıp aynı bırakmayla bitiyor →
+  **DOĞRULANDI, KAPANDI (öneriden sapmayla).** Kanıt doğru: `golden-L3.log` izinde adım 3 `f` parmaktayken açılıp
+  ≈ 0,4 sn sonra `f`'nin ray yerleşimiyle bitti. Betik (eski veri, ✓ + ≤ 1 saha hamlesi, 67 sıra): adım 3 67 sıranın
+  hiçbirinde bir hamlenin başında ekranda değil. Önerilen `startOn: placementCorrect` da betikte geçer, ama `gapPass` ile
+  bırakma arasında (parmak hâlâ bloktayken) ekranda adım kalmaz: balon ve spot sürükleme ortasında kaybolup bırakmada geri
+  gelir, kuyruktaki bağlamsal satır (`LevelScene.updateTutorial` adım yokken ipucunu açar) o arada açılabilir; bırakma
+  iptal edilir ya da `f` yanlış satıra (6,3) konup geri sekerse oyuncu adım 3 açılana kadar yönlendirmesiz kalır.
+  **Uygulanan** (`levels/level_003.json`): adım 2 (Z) `done` `gapPass` ×1 → `placementCorrect` ×1; adım 3 değişmedi
+  (adım 2 bitince, yani `f` rayda (6,2)'ye doğru yerleşince açılır; sıradaki doğru yerleşimle — `b`/`e` duvar üstünden ya
+  da `l` raydan — biter). Z adımı `f` rayda doğru yerleşene kadar sürer; iptal ya da geri sekmede `f` başlangıç hücresine,
+  spotun içine döner (K-17 adım 1); y=2 satırını yalnız `f` doldurduğu için `a`'dan sonraki ilk doğru yerleşim her zaman
+  `f`'nindir. Betik: ✓ + ≤ 2 saha hamlesinde 852 sıranın hepsinde 3 adım gösterilir, atlanmaz, adım 3 sonraki hamlenin
+  başında ekrandadır, kazanınca açık adım kalmaz. Gerçek oyunda (golden L3): adım 3 `f` rayda yerleşince açılır, `b`
+  hamlesinin başında ekranda, kazanınca biter; konsol hatası yok. Belgeler: LEVELS §2 Bölüm 3 adım 2 satırı + not, §0 K-34
+  notu ve GDD K-34 kanca 4 (Bölüm 3'teki `support` reddinin bağlamsal satırı artık orada gösterilmez — adımlar son doğru
+  yerleşime kadar ekranda; bölüm bitince düşer, oyuncu satırı Bölüm 4 adım 2'de görür).
+- PL-F2T1-2 Bağımlılıklar → **AÇIK (diğer ajanlar).** code-lead: eski öğretici verisini kodlayan 3 test şimdi kırmızı
+  (`npm run check`: 3 failed / 1344 passed; typecheck, lint, format yeşil; `npm run build` yeşil):
+  `tests/scenes/tutorial.test.ts` "GDD 14.1 required gapPass step (level 3) is checked again after every move" ve "GDD
+  14.1 ctx step marks seenContextTips; timeoutMs ends a step (level 4)", `tests/review/presentation.review.test.ts` "GDD
+  14.1/3 count only counts events after the step started (level 4: …)". Hazır yama:
+  `/tmp/claude-0/-home-user-Deneme/d048d243-2250-5f24-8a7a-176fc8b274aa/scratchpad/tut2/proposed-tests.diff` (proje
+  kökünden `patch -p0`; temiz uygulanır, yeni veriyle 46 geçer + 4 beklenen hata, Prettier temiz): üç testi yeni veriye
+  çeker (`timeoutMs` ve "sayım adım başladıktan sonra" kuralları Bölüm 4 tahtasında sentetik `tutorial[]` ile korunur) ve
+  istenen kalıcı denetimi ekler — "LEVELS §5 tutorials of levels 1, 3, 4, 5 are order- and time-independent": kazanan
+  her sıra (Bölüm 3–4'te + 1 saha hamlesi) × her timeout anı; her adım gösterilir, atlanmaz, kazanınca açık adım yok,
+  `timeoutMs`'li ve sürükleme sinyaliyle açılan adım (Bölüm 1 adım 2) dışında her adım bir hamlenin başında ekranda. Bu
+  test eski Bölüm 3 ve 4 verisinde kırmızı, yenisinde yeşil (doğrulandı). design-lead: UX §13.2 satırları LEVELS ile
+  eşitlensin — Bölüm 3 adım 2 tamam koşulu `placementCorrect` ×1 (`f` rayda (6,2)'de); Bölüm 4 adım 1 `placementCorrect`
+  ×1 (ilk doğru yerleşim), adım 2 `placementCorrect` ×1 (`b`, (6,1)). Bölüm 4 adım 1'in tap eldiveni artık ilk doğru
+  yerleşime kadar ekranda (adımda blok vurgusu olmadığı için "ilk doğru dokunuşta kaybolur" kuralı tetiklenmez): kalması
+  ya da birkaç döngüden sonra durması design-lead kararı; el kaldırılacaksa veri aynı turda product-lead'den.
+- PL-F2T1-3 Yeni gözlem: Bölüm 2 adım 2 (`tut.l2.shadow`, `holdOverBuild` ≥ 500 ms) → **AÇIK (Faz 2 tur 2,
+  product-lead + design-lead).** Adımın bitişi sürükleme hızına bağlı: blok şantiye sütunları üstünde kesintisiz 500 ms
+  tutulmadan bırakılırsa sayılmaz; hiç beklemeyen oyuncuda adım 2 kazanınca ekranda kalır ve adım 3 (`tut.l1.match`) hiç
+  gösterilmez (betik, hold sinyali üretmeyen model: 61/61 sıra); LEVELS §5'in yeni "zamandan bağımsız ve görünür"
+  maddesini Bölüm 2 bu yüzden henüz karşılamıyor. Bu turda veri değişmedi (bulgu kapsamı dışı; UX §13.2 hold eldiveni
+  design-lead'in). Tur 2 için önerilen veri: adım 2 `done` → `turnEnd` ×1 (hold eldiveni gösterim olarak kalır, adım bir
+  sonraki hamleyle biter); seçim betikle ve design-lead ile. Yukarıdaki kalıcı test Bölüm 2'yi bu yüzden dışarıda bırakır.
+
+Özet (Faz 2 tur 1): **2 bulgu → 2 DOĞRULANDI ve KAPANDI (ikisi de öneriden gerekçeli sapmayla) · 1 bağımlılık AÇIK
+(code-lead test yaması hazır, design-lead UX §13.2) · 1 yeni gözlem AÇIK (Bölüm 2, tur 2).** `npm run levels:validate`
+5 dosya 0 hata; `npm run build` yeşil; `npm run check` yalnız code-lead'in eski veriyi kodlayan 3 testinde kırmızı.
+
+## Faz 2 tur 2
+
+- PL-F2T2-0 [Önemli] Bölüm 2 adım 2 (`tut.l2.shadow`, hold) eldiveni `c`'nin değil `d`'nin hücresinden başlıyor →
+  **DOĞRULANDI, KAPANDI (öneri aynen).** Kanıt doğru: `src/core/shapes.ts` C3 0° (0,0),(1,0),(0,1) → 180°
+  (1,0),(0,1),(1,1); `c` (C3_180, çapa (4,6)) hücreleri (5,6), (4,7), (5,7). (4,6) `d`'nin (B1_0 G) hücresi;
+  `TutorialOverlay` eldiveni `hand.path[i]` hücre merkezine koyar, yani eldiven tutulamayan `d`'ye basıyordu (betik:
+  gerçek çekirdek `tryBeginDrag`, `A` (6,0)'a yerleştikten sonra `d` `canPick` = false, `c` = true). **Uygulanan**
+  (`levels/level_002.json`): adım 2 `hand.path` `[[4,6],[4,8],[6,8]]` → `[[4,7],[4,8],[6,8]]`. Betikle doğrulandı
+  (adım 2'nin açıldığı durum, `A` yerleşmiş): parmak (4,7)'de tutulan `c` (tutma payı (0,1)) yol boyunca çapa
+  (4,6) → (4,7) → (6,7) izler, (5,7)'de `crossedWall`; (6,7)'de gölge (6,2)'ye iner, karar `color` + `support` (rozet
+  "!"), LEVELS tasarım niyetiyle aynı. Adım 3 eldiveni (2,6) zaten `b`'nin (C3_0) çapa hücresi; Bölüm 1, 3, 4'ün bütün
+  `drag` eldivenleri de vurgulu bloğun hücresinden başlıyor (betik). Belgeler: LEVELS §2 Bölüm 2 adım 2 satırına başlangıç
+  hücresi yazıldı ("hold: `c` (4,7)'den (sol üst hücresi; …)"; `tests/review/data.review.test.ts` adım satırı
+  ayrıştırıcısı yeşil); LEVELS §5'e yeni madde "Eldiven vurgulu bloktan başlar" (`drag`/`hold` eldiveninin
+  `path[0]`'ı, el çözümünde adımın açıldığı anda vurgulu `piece:`/`debris:` bloğunun kapladığı hücre; çapa değil; blok o
+  anda K-09'a göre tutulabilir). `npm run levels:validate` 5 dosya 0 hata; `npm run build` yeşil.
+  **code-lead'e (öneri):** L-17'ye denetim — `hand.kind` `drag`/`hold` ise `hand.path[0]`, adımın `highlight`'ındaki bir
+  `piece:<i>` (parti 0) ya da `debris:<i>` bloğunun JSON başlangıç hücrelerinden biri olmalı (`blockCells(shape, x, y)`;
+  çapa yetmez), değilse `tut_highlight_invalid` (ya da yeni kod); `tap` dışarıda (Bölüm 3 adım 3 tap raya taşınmış `f`'ye,
+  Bölüm 4 adım 1 tap `cell:7,2`'ye basar, ikisi doğru). Eski veride Bölüm 2 adım 2'de hata verir, yenisinde 1–5 temiz
+  (betik). `piece:k<p>_<i>` için başlangıç hücresi teslim konumudur; Faz 3'te. **design-lead'e:** UX §13.2 Bölüm 2 adım 2
+  satırı ("hold: c x=6 üstünde tutulur") başlangıç hücresi yazmıyor, çelişki yok; adım 3 satırı gibi "(4,7)" eklemek
+  isteğe bağlı. `shots/g-L2-1.png` eski yolu gösterir; `npm run screens` ile yenilenmeli (code-lead).
+- Kapsam dışı, değişmedi: PL-F2T1-3 (Bölüm 2 adım 2 `holdOverBuild` ≥ 500 ms bitişi sürükleme hızına bağlı) bu görevde
+  verilmedi; AÇIK kalır.
+- `npm run check` bu turda 1 testte kırmızı, bu bulguyla ilgisiz: `tests/services/i18n.test.ts` "D-017 every text is
+  verbatim from STORY …" — `tut.ctx.resume` STORY §6'da (23:51'de design-lead değiştirdi) "Tahta bıraktığın gibi duruyor,
+  evlat." / "The board is just as you left it, kiddo.", `src/i18n/tr.json`/`en.json`'da eski "Kaldığın yerden devam,
+  evlat." / "Pick up where you left off."; i18n dosyalarının STORY ile eşitlenmesi gerekiyor (code-lead).
+
+Özet (Faz 2 tur 2): **1 bulgu → 1 DOĞRULANDI ve KAPANDI** (veri + LEVELS §2 satırı + §5 kontrol maddesi); code-lead'e
+L-17 denetim önerisi; check'teki tek kırmızı test STORY ↔ i18n eşitlemesi (başka ajan).

@@ -219,7 +219,9 @@ describe('SoundBank, SoundGate, AudioService (TECH 11.6, JUICE 0 rule 6)', () =>
     svc.unlock();
     expect(created).toBe(1);
     expect(svc.unlocked).toBe(true);
-    expect(started).toEqual([]); // the dropped request was not queued
+    // only the one-sample silent kick of the unlock (WebKit); the dropped request was not queued
+    expect(started).toEqual(['rate 1']);
+    started.length = 0;
     expect(svc.play('sfx_pick', { rate: 1.5 })).toBe(true);
     expect(started).toEqual(['rate 1.5']);
     now = 100;

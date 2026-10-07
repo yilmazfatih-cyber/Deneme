@@ -11,7 +11,9 @@
  * - A non-adjacent node change is followed along the BFS path (12 ms / cell, ≤ 120 ms): the block never seems to pass
  *   through the wall or a block (TECH §4.4).
  * - Only the pointer that started the press is followed; a second finger is ignored (TECH §4.6).
- * - `pointerup` / `pointerupoutside` release at the current node; the host commits it through `GameSession`.
+ * - `pointerup` / `pointerupoutside` release at the current node; the host commits it through `GameSession`. A touch the
+ *   system cancelled (`touchcancel`: notification shade, incoming call, edge gesture — Phaser 4 routes it through the
+ *   up events with `pointer.wasCanceled`) is no release: the drag is aborted, the block goes home, nothing is spent.
  *
  * The controller never decides a rule: reachability, release class, landing and verdict come from the core.
  */
@@ -37,12 +39,20 @@ import { pieceAtPoint } from './hitTest.ts';
 import type { PieceView } from './PieceView.ts';
 import { VIEW } from './viewConstants.ts';
 
+/**
+ * Game event emitted right after a pointer move wrote the dragged block's new pose (TECH §10.7 item 5 input latency:
+ * the harness sampler counts the frames until that pose is rendered). Argument: the DOM event's `timeStamp`.
+ */
+export const DRAG_DRAWN_EVENT = 'dragDrawn';
+
 /** Presentation signals of a drag (tutorial `overWall` / `gapPass`, K-05 `blockedByWallHeight`; TECH §4.4, §8.2). */
 export type DragSignal = 'crossedWall' | 'enteredRail' | 'blockedByWallHeight';
 
 export interface DragHost {
   /** The state to pick on; null while the board takes no input (loading, level over, blocking sequence, R-12). */
   boardState(): GameState | null;
+  /** Tutorial input gate (required step: only its highlighted blocks); a refused press gets no reaction. */
+  mayPick(id: PieceId): boolean;
   layout(): Layout;
   /** `levelHooks(lvl).drag` (K-09 (c) `canPick`, RAIL `canPassGap`, K-07 row 5 `siteClosed`). */
   dragRules(): DragRules;
@@ -138,7 +148,13 @@ export class DragController {
     if (p?.lifted) this.host.aborted(p.session);
   }
 
-  /** Per frame: hold-to-lift, the finger-offset glide and BFS path following continue without pointer events. */
+  /**
+   * Per frame: hold-to-lift, and while lifted `follow` every frame (review Faz 2 tur 2 #12) — the finger-offset glide,
+   * the BFS path, the JUICE #1 hop and #4 stretch finish, and the drag feel (velocity decay, tether timer: the dotted
+   * tether and the lean appear under a resting finger) runs without pointer events. With an unmoved finger the core's
+   * `follow` returns its cached `stay` result (no node change, no signal). The pointer handler still moves the block in
+   * the event itself (one-frame response, TECH §4.6).
+   */
   update(now: number): void {
     const p = this.press;
     if (!p) return;
@@ -146,7 +162,7 @@ export class DragController {
       if (now - p.downAt >= TOKENS.drag.holdMs) this.lift(p, now);
       return;
     }
-    if (now - p.liftAt <= TOKENS.duration.fingerOffset || p.path) this.follow(p, now);
+    this.follow(p, now);
   }
 
   /** Board region of the invisible input zone: crane area top … board bottom, grown by the block hit slop. */
@@ -177,7 +193,7 @@ export class DragController {
     const s = host.boardState();
     if (!s) return;
     const id = pieceAtPoint(s, layout.grid, x, y, layout.touch.hitSlopPx);
-    if (id === null) return;
+    if (id === null || !host.mayPick(id)) return;
     const attempt = tryBeginDrag(s, id, host.dragRules());
     if (!attempt.ok) {
       host.pickFailed(id, attempt.reason);
@@ -219,11 +235,16 @@ export class DragController {
       return;
     }
     this.follow(p, now);
+    this.scene.game.events.emit(DRAG_DRAWN_EVENT, pointer.event?.timeStamp ?? null);
   }
 
   private up(pointer: Phaser.Input.Pointer): void {
     const p = this.press;
     if (!p || pointer.id !== p.pointerId) return;
+    if (pointer.wasCanceled) {
+      this.abort();
+      return;
+    }
     this.press = null;
     if (!p.lifted) {
       this.host.tapped(p.id);

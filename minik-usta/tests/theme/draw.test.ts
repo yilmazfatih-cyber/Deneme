@@ -438,18 +438,48 @@ describe('plan cells and build site (ART 4, D-013, K-15, S2, K-34)', () => {
     for (const c of COLOR_CODES) expect(ratio(c, CB)).toBeGreaterThanOrEqual(3);
   });
 
-  it('K-34 missing-support hatch is horizontal (not 45°), ghost.support at alpha.supportHatch; 8 px colour-blind', () => {
+  it('K-34 missing-support hatch is horizontal (not 45°), ghost.support at alpha.supportHatch over a 10 px ui.ink 80 % line (ART 4 Faz 2 tur 2); 8 px colour-blind', () => {
     const ops = record((ctx) => drawSupportHatch(ctx, {}, TOKENS));
-    const moves = opsOf(ops, 'moveTo').slice(1);
-    const lines = opsOf(ops, 'lineTo').slice(-moves.length);
-    expect(moves).toHaveLength(Math.floor((C - 2 * TOKENS.plan.insetPx) / TOKENS.plan.supportHatchSpacingPx));
-    moves.forEach((m, i) => expect(lines[i]?.[2]).toBe(m[2]));
+    const n = Math.floor((C - 2 * TOKENS.plan.insetPx) / TOKENS.plan.supportHatchSpacingPx);
+    const moves = opsOf(ops, 'moveTo').slice(-2 * n);
+    const lines = opsOf(ops, 'lineTo').slice(-2 * n);
+    expect(moves).toHaveLength(2 * n);
+    moves.forEach((m, i) => expect(lines[i]?.[2]).toBe(m[2])); // horizontal
+    moves.slice(0, n).forEach((m, i) => expect(moves[n + i]?.[2]).toBe(m[2])); // the yellow line on its ink line
     expect(styleAt(ops, 'stroke', 'strokeStyle')).toEqual([
+      css(parseHex(TOKENS.color.ui.ink), 0.8),
       css(parseHex(TOKENS.color.ghost.support), TOKENS.alpha.supportHatch),
     ]);
-    expect(styleAt(ops, 'stroke', 'lineWidth')).toEqual([TOKENS.plan.supportHatchWidthPx]);
+    expect(styleAt(ops, 'stroke', 'lineWidth')).toEqual([10, TOKENS.plan.supportHatchWidthPx]);
     const cb = record((ctx) => drawSupportHatch(ctx, { mode: CB }, TOKENS));
-    expect(styleAt(cb, 'stroke', 'lineWidth')).toEqual([TOKENS.a11y.colorBlindSupportHatchPx]);
+    expect(styleAt(cb, 'stroke', 'lineWidth')).toEqual([
+      TOKENS.a11y.colorBlindSupportHatchPx + 4,
+      TOKENS.a11y.colorBlindSupportHatchPx,
+    ]);
+  });
+
+  it('K-34 / ART 4 (Faz 2 tur 2) the support hatch reads on every plan colour: yellow on its ink line ≥ 4:1, and an edge ≥ 2.7:1 (yellow alone was 1.03–1.39:1 on C, G, Y, O)', () => {
+    const lum = (c: readonly number[]): number => {
+      const lin = (v: number): number =>
+        v / 255 <= 0.04045 ? v / 255 / 12.92 : ((v / 255 + 0.055) / 1.055) ** 2.4;
+      return 0.2126 * lin(c[0] ?? 0) + 0.7152 * lin(c[1] ?? 0) + 0.0722 * lin(c[2] ?? 0);
+    };
+    const ratio = (a: readonly number[], b: readonly number[]): number =>
+      (Math.max(lum(a), lum(b)) + 0.05) / (Math.min(lum(a), lum(b)) + 0.05);
+    const over = (top: readonly number[], a: number, bottom: readonly number[]): number[] =>
+      top.map((v, i) => v * a + (bottom[i] ?? 0) * (1 - a));
+    const ink = parseHex(TOKENS.color.ui.ink);
+    const yellow = parseHex(TOKENS.color.ghost.support);
+    for (const c of COLOR_CODES) {
+      const fill = planPalette(TOKENS, c).fill;
+      const inkOn = over(ink, 0.8, fill);
+      const pair = ratio(over(yellow, TOKENS.alpha.supportHatch, inkOn), inkOn);
+      const edge = ratio(inkOn, fill);
+      const alone = ratio(over(yellow, TOKENS.alpha.supportHatch, fill), fill);
+      expect(pair, c).toBeGreaterThanOrEqual(4);
+      expect(Math.max(pair, edge), c).toBeGreaterThanOrEqual(2.7);
+      expect(Math.max(pair, edge), c).toBeGreaterThan(alone);
+    }
   });
 
   it('ART 4 blueprint grid: thin lines every cell, major lines every 2 cells from the plan bottom', () => {
@@ -515,12 +545,24 @@ describe('wall and gaps (K-04, W1, ART 5)', () => {
     ).toHaveLength(2);
   });
 
-  it('W1 rails: 6 px board.rail bars', () => {
+  it('W1 rails (ART 5, Faz 2 tur 2): 8 px board.rail bar + 2 px board.wallLight line + a 4 × 12 sleeper every 40 px', () => {
     const ops = record((ctx) => drawGapRail(ctx, { length: 300 }, TOKENS));
+    const top = (ART.gapRailSleeperH - ART.gapRailPx) / 2;
+    const sleepers = [20, 60, 100, 140, 180, 220, 260].map((x) => [
+      'fillRect',
+      x - ART.gapRailSleeperW / 2,
+      0,
+      ART.gapRailSleeperW,
+      ART.gapRailSleeperH,
+    ]);
     expect(ops).toEqual([
       ['=fillStyle', TOKENS.color.board.rail],
-      ['fillRect', 0, 0, 300, ART.gapRailPx],
+      ...sleepers,
+      ['fillRect', 0, top, 300, ART.gapRailPx],
+      ['=fillStyle', TOKENS.color.board.wallLight],
+      ['fillRect', 0, top, 300, ART.gapRailLightPx],
     ]);
+    expect([ART.gapRailPx, ART.gapRailLightPx, ART.gapRailSleeperSpacingPx]).toEqual([8, 2, 40]);
   });
 });
 

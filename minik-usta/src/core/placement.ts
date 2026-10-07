@@ -179,6 +179,43 @@ export function isCorrectPlacement(s: GameState, pieceId: PieceId, cells: readon
   return { ok: false, reasons, missingSupport };
 }
 
+/**
+ * The cells behind one verdict reason (UX §5.4 45° hatch; review Faz 2 tur 1 #1): the `cells` of `isCorrectPlacement`
+ * that break `reason` — `debris`: every cell; `outside`: the cells outside the active plan area; `window`: the cells on
+ * `.` plan cells; `color`: the cells whose plan colour (resolved `?` colour) differs from the block's. `support` has no
+ * cell of the block (its cells are `Verdict.missingSupport`, under the block): empty. Board-cell order of `cells`.
+ */
+export function reasonCells(
+  s: GameState,
+  pieceId: PieceId,
+  cells: readonly BoardCell[],
+  reason: VerdictReason,
+): BoardCell[] {
+  if (reason === 'support') return [];
+  if (reason === 'debris') return cells.map((c) => ({ x: c.x, y: c.y }));
+  const plan = s.lvl.segments[visibleSegment(s)];
+  const elev = hdr(s, H.elev);
+  const color = pieceColor(s, pieceId);
+  const out: BoardCell[] = [];
+  for (const c of cells) {
+    const sx = c.x - SITE_X;
+    const sy = c.y - elev;
+    const inside = sx >= 0 && sx < SITE_COLS && sy >= 0;
+    const v =
+      inside && plan && sy < BOARD_ROWS
+        ? (plan.planColors[sy * SITE_COLS + sx] ?? PLAN_OUTSIDE)
+        : PLAN_OUTSIDE;
+    const hit =
+      reason === 'outside'
+        ? v === PLAN_OUTSIDE
+        : reason === 'window'
+          ? v === PLAN_DOT
+          : v !== PLAN_OUTSIDE && v !== PLAN_DOT && v !== color;
+    if (hit) out.push({ x: c.x, y: c.y });
+  }
+  return out;
+}
+
 /** Every cell is inside the visible segment's plan area (colour, `?` or `.`): the Y8 sticking condition (E-08). */
 export function allCellsInPlanArea(s: GameState, cells: readonly BoardCell[]): boolean {
   const plan = s.lvl.segments[visibleSegment(s)];

@@ -48,14 +48,14 @@
       "highlight": ["cell:7,2"],
       "hand": { "kind": "tap", "path": [[7, 2]] },
       "textKey": "tut.l4.window",
-      "done": { "timeoutMs": 2500 }
+      "done": { "event": "placementCorrect", "count": 1 }
     },
     {
       "step": 2,
       "mode": "soft",
       "highlight": ["front"],
       "textKey": "tut.ctx.support",
-      "done": { "event": "placementCorrect", "count": 2 }
+      "done": { "event": "placementCorrect", "count": 1 }
     },
     {
       "step": 3,

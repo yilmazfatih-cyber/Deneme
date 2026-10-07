@@ -67,7 +67,7 @@
         ]
       },
       "textKey": "tut.l3.gap",
-      "done": { "event": "gapPass", "count": 1 }
+      "done": { "event": "placementCorrect", "count": 1 }
     },
     {
       "step": 3,

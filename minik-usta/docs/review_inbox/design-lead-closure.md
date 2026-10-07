@@ -301,3 +301,16 @@ Bu turdan doğan bağımlılıklar:
   dilimi" asgari ana ekranı (`home.play`, Bölüm 5 sonrası 1–5 döngüsü) eklensin; süre tahmini code-lead'in.
 - entrepreneur: `app.title` çalışma değeri "Lift & Land" (bilgi; NAMING §6 marka araması sonucu farklı aday çıkarsa
   yalnız `app.title` ve `logo_wordmark` değişir).
+
+## Faz 2 tur 2
+
+- #0 [Önemli] 17-resume-strip, STORY §6 `tut.ctx.resume` başlığı tekrarlıyor → KAPANDI (design-lead tarafı). Bulgu
+  doğrulandı: iki profilin 17 numaralı görüntüsünde başlık `resume.title` "KALDIĞIN YERDEN DEVAM", hemen altındaki
+  `tut.ctx.resume` "Kaldığın yerden devam, evlat." aynı sözcükler. Şerit `resume.strip` "Bölüm 2 · hamlelerin kayıtlı"
+  ise başlığı tekrarlamıyor (STORY §7.5 kuralı zaten var); yani tekrar üç değil iki yerde. STORY §6 satırı TR
+  "Tahta bıraktığın gibi duruyor, evlat." / EN "The board is just as you left it, kiddo." oldu ("tahta" GDD K-01
+  terimi; 5 sözcük; `evlat`/`kiddo` öteki Usta Dede satırlarıyla aynı). §7.5 notuna "`tut.ctx.resume` da başlığı
+  tekrarlamaz, tahtanın aynı kaldığını söyler" cümlesi eklendi. Bağımlılık → code-lead: `src/i18n/tr.json` ve
+  `en.json` içindeki `tut.ctx.resume` bu metne harfi harfine eşitlensin (D-017); eşitlenene dek
+  `tests/services/i18n.test.ts` "D-017 every text is verbatim" testi kırmızıdır. Kod (`LevelWindows.openPause`)
+  değişmez; 17 numaralı görüntüler yeniden alınsın.

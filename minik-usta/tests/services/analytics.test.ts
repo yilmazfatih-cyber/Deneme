@@ -9,6 +9,7 @@ import {
   BOOSTER_IDS,
   COMMON_PARAMS,
   RingBuffer,
+  SessionTracker,
   validateEvent,
 } from '../../src/services/analytics.ts';
 import type {
@@ -252,5 +253,30 @@ describe('Analytics service (TECH 11.4)', () => {
     for (let i = 1; i <= 5; i++) r.push(i);
     expect(r.toArray()).toEqual([3, 4, 5]);
     expect(r.size).toBe(3);
+  });
+});
+
+describe('ANALYTICS session (§2 session_end, §3 sessionId)', () => {
+  it('ANALYTICS session_end once per background with duration and level starts; a new session after the foreground', () => {
+    const clock = new FakeClock(1_000);
+    const sent: AnalyticsEvent[] = [];
+    let n = 0;
+    const s = new SessionTracker({ clock, track: (e) => sent.push(e), newId: () => `s${n++}` });
+    expect(s.id).toBe('s0');
+    s.observe({ name: 'level_start', level: 1, attempt: 1, mode: 'story', preBoosters: 0 });
+    s.observe({ name: 'level_resume', level: 1, movesMade: 2 }); // a resume is not a new level
+    s.observe({ name: 'level_start', level: 2, attempt: 1, mode: 'story', preBoosters: 0 });
+    clock.advance(65_000);
+    s.hidden();
+    s.hidden(); // pagehide after visibilitychange: still one event
+    expect(sent).toEqual([{ name: 'session_end', durationMs: 65_000, levelsPlayed: 2 }]);
+    expect(validateEvent(sent[0])).toEqual([]);
+    s.visible();
+    expect([s.id, s.open]).toEqual(['s1', true]);
+    s.visible();
+    expect(s.id).toBe('s1');
+    clock.advance(5_000);
+    s.hidden();
+    expect(sent.at(-1)).toEqual({ name: 'session_end', durationMs: 5_000, levelsPlayed: 0 });
   });
 });

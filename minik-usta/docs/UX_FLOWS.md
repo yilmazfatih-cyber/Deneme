@@ -450,7 +450,7 @@ Durum şeridi tahta grubuna aittir (tahtayla birlikte kayar); Tuna köşesi ve g
 | Öğe | Davranış |
 | --- | -------- |
 | Duraklat | Duraklat penceresi: başlık `pause.title` "Mola" (devam açılışında `resume.title`, §1), Devam (`common.continue`, birincil), Ses / Müzik / Titreşim anahtarları (`settings.sound` / `.music` / `.haptics`, durum `common.on` / `.off`), "Bölümden çık" (`pause.exit`) → **çıkış onayı** (aşağıda). |
-| Panorama | Planın tamamının küçük önizlemesi; dilimler 2 sütunluk sütunlar halinde, aktif dilim beyaz çerçeveli, tamamlananlar tam renkli, **gelecek dilimler plan renkleriyle %30 opak** (`alpha.panoramaFuture`; planları okunur; 12 px hücrede sembol okunmadığı için semboller dokununca açılan büyük önizlemede tam opak çizilir; döner platform gibi ileriyi planlatan bölümler buna dayanır); `?` hücreleri panoramada da `?` etiketiyle görünür, açılınca rengini alır (K-06). Taslakta `▣▣` tamamlanan, `[▣▣]` aktif, `░░` %30 opak gelecek dilim, `░?` gizli hücreli dilim. Dokun → 1,5 s büyük önizleme **[MVP-lite]**: oyun durumunu değiştirmez, hamle harcanmaz (K-06). |
+| Panorama | Planın tamamının küçük önizlemesi; dilimler 2 sütunluk sütunlar halinde, aktif dilim beyaz çerçeveli, tamamlananlar tam renkli, **gelecek dilimler plan renkleriyle %30 opak** (`alpha.panoramaFuture`; planları okunur; döner platform gibi ileriyi planlatan bölümler buna dayanır). **Hücre boyu (Faz 2 tur 2):** bölümün en yüksek dilimine göre `min(24, ⌊(110 − 2·pay) / satır⌋)` px, en az 12 px; bütün dilimler aynı ölçekte, kutu içinde dikeyde ortalı (8 satırlık planda 12 px kalır; Bölüm 1–5'in 3–5 satırlık planlarında 18–24 px). 24 px'in altında sembol okunmadığı için semboller dokununca açılan büyük önizlemede tam opak çizilir; `?` hücreleri panoramada da `?` etiketiyle görünür, açılınca rengini alır (K-06). Taslakta `▣▣` tamamlanan, `[▣▣]` aktif, `░░` %30 opak gelecek dilim, `░?` gizli hücreli dilim. Dokun → 1,5 s büyük önizleme **[MVP-lite]**: oyun durumunu değiştirmez, hamle harcanmaz (K-06). |
 | Hedefler | `build` için yapı ikonu + dilim sayacı ("2/4"), `clear` / `collect` sayaçları; sayaç metni `common.count` "{n}/{max}". Hedef tamamlanınca ✓ ve yeşil. |
 | Hamle sayacı | Baloo 2 800, 120 px; altında etiket `hud.moves` "Hamle" (`font.size.small`). Son 5 hamlede kırmızı nabız (JUICE). |
 | Usta Serisi | 4 boncuk; dolunca Altın Mala ikonu parlar ve "dokun, kullan" durumuna geçer (seçim: §5.2). Dokunma hedefi: 96 px şerit + üstte/altta 16 px pay → 128 px (§0.3). Etiket `hud.streak` "Usta Serisi"; renk körü modunda sayıyla da ("3/4", `common.count`). |
@@ -1019,7 +1019,11 @@ Menü derinliği: Ana ekrandan her yere en fazla 2 dokunuş; oyun ekranına 1 (B
 - **Spot ışığı:** ekran `ui.overlay` %60 ile kararır; hedef(ler) yuvarlak dikdörtgen deliklerle açılır (12 px pay,
   6 px beyaz nabızlı kenar, 1,2 s). Maske/Filter kullanılmaz: delik çevresinde 4 dikdörtgen + 4 çeyrek daire köşe
   görüntüsü (code-lead). **Zorunlu adımda** delik dışındaki dokunuşlar yok sayılır; **yumuşak adımda** karartma %30 ve
-  her yer dokunulabilir.
+  her yer dokunulabilir. **Birleşen delik (Faz 2 tur 2):** pay yüzünden çakışan iki delik tek kutuya birleşirse kutunun
+  hiçbir vurguya ait olmayan kısmı (ör. Bölüm 1 adım 1'de `crane` + `piece:0` kutusundaki satır 7'nin öbür blokları)
+  aynı karartmayla kapanır (köşesiz dikdörtgenler); oyuncu yalnız vurgulanan şeyi aydınlık görür. **Sürüklenen blok**
+  ve ona bağlı gölge görünümü (ray konturu, rozet, düşüş gölgesi, iptal öngörüsü) sürükleme boyunca karartmanın
+  **üstünde** çizilir; oyuncunun elindeki blok ve hamlenin sonucu hiçbir adımda karanlıkta kalmaz.
 - **Usta Dede balonu:** ekranın üst yarısında (hedefi kapatmayacak yerde), büst 200 px + balon maks. 760×280,
   `font.size.body`. Metin kimliği **tek küme** `tut.l{bölüm}.{konu}` (R-08; küçük harf); bağlamsal satırlar
   `tut.ctx.*`, meta satırlar `tut.meta.*`. Ekranda görünen metnin tek kaynağı `STORY.md` §6 (TR ≤ 8 kelime). Terim
@@ -1068,7 +1072,7 @@ blockout'ında LEVELS `tutorial[]`'a yazılır; parti bloğuysa `piece:k<parti>_
 | 4 | Plan boşluğu (S2) | 1 Y | `cell:7,2` (`.`) | hücre üzerinde tap | `tut.l4.window` | `timeoutMs` 2500 |
 | 4 | Pencerenin altı (K-34) | 2 Y | `front` (inşa cephesi) | el yok; cephe hücreleri nabız atar | `tut.ctx.support` | `placementCorrect` ×2 |
 | 4 | Pencerenin üstü (ray) | 3 Z | `gap:0` + `piece:2 (p)` + `cell:6,3`, `cell:7,3` | drag: p (4,3) → yatay sağa, geçitten → (6,3) | `tut.l4.above` | `gapPass` ×1 |
-| 5 | Kayan şantiye (S1) | 1 Y | `panorama` | panoramada sağa ok | `tut.l5.segments` | `segmentDone` ×1 |
+| 5 | Kayan şantiye (S1) | 1 Y | `panorama` | panoramada sağa ok: aktif dilimin sağından sıradaki dilime beyaz ok (64×40, 4 px `ui.ink` kontur), dilimler arası boşlukta 1,2 s'de bir 16 px sağa kayar; azaltılmış harekette sabit. Sunum verisidir (bölüm JSON'unda `hand` yok; `panorama` vurgulu adımda bölümün ≥ 2 dilimi varsa çizilir) | `tut.l5.segments` | `segmentDone` ×1 |
 | 5 | Kamyon | 2 Y | `truck` | yok (kamyon animasyonu kendisi) | `tut.l5.truck` | `deliveryDone` ×1 |
 | 6 | Yüksek duvar (W2) | 1 Z | `piece:0 (A)` + `crane` + `wall` | drag: A (0,7) → en üste (y ≥ 8) → sağa → x=6 | `tut.l6.crane` | `overWall` ×1 |
 | 7 | Kazı (K-10) | 1 Z | `piece:0 (b)` + `piece:3 (f)` + `cell:0,6` | drag: b (2,6) → sahada (0,6) | `tut.l7.dig` | `yardMove` ×1, `at: [0, 6]` (`b` (0,6)'ya yerleşti; (1,6)'ya bırakılırsa adım sürer) |

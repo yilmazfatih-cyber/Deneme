@@ -367,8 +367,10 @@ oyuncunun kuralı **görmesi** içindir, sonucu değiştirmez.
    işaretli değilse. Bölüm 4'ün 2. öğretici adımı aynı satırı (`textKey` = `tut.ctx.support`) yumuşak adım olarak
    gösterir; adım gösterildiği anda `seenContextTips.support` işaretlenir ve bağlamsal tetik bir daha çıkmaz (genel
    kural §14.1 madde 2; sunum UX §5.5). Sonuç: bağlamsal satır yalnızca Bölüm 4'ten **önce** bir `support` reddi
-   yaşayan oyuncuda (ör. Bölüm 3'te `f` temelden önce raya) bağlamsal olarak çıkar; diğer herkes onu Bölüm 4 adım 2'de
-   görür. Bölüm 4'ten sonraki `support` redlerinde Dede satırı çıkmaz; neden gösterimi (kanca 2–3) her zaman sürer.
+   yaşayan oyuncuda, öğretici adımı ekranda değilken bağlamsal olarak çıkar; diğer herkes onu Bölüm 4 adım 2'de görür.
+   Bölüm 3'te `f` temelden önce raya konunca tetik olur, ama Bölüm 3'ün öğretici adımları son doğru yerleşime kadar
+   ekranda olduğu için satır orada gösterilmez; bölüm bitince düşer ve Bölüm 4 adım 2'de görünür (LEVELS §0). Bölüm
+   4'ten sonraki `support` redlerinde Dede satırı çıkmaz; neden gösterimi (kanca 2–3) her zaman sürer.
 **Örnek 3 (kanca):** Örnek 1 durumunda `verdict = { ok: false, reasons: ["support"], missingSupport: [(7,0),(7,1)] }`;
 `buildFront = {(6,2), (7,0)}`.
 
@@ -905,7 +907,10 @@ Brif §12 veri tipine product-lead'in istediği ekler (kesin şema TECH_DESIGN'd
 4. **Kilit güvencesi (zorunlu adım):** (a) Veri kuralı (LEVELS §5): Z adımının `highlight`'ı en az bir `piece:` ya da
    `debris:` (moloz, UX §13.1) içerir; `piece:` içermeyen Z adımının `done` olayı `placementCorrect` olamaz (moloz
    hiçbir yerde doğru olamaz, K-16 koşul 2; ör. Bölüm 17 `debris:0` adımı `yardMove` bekler). Z adımı yalnızca istediği
-   hamle, önceki adımın tamamlanabildiği **her** durumda geçerli ve K-34'e uygunsa yazılır; spot ışığı en az bir
+   hamle, önceki adımın tamamlanabildiği **her** durumda geçerli ve K-34'e uygunsa yazılır; "her durum" her hamle
+   sırasını ve önceki bir `timeoutMs`'in hamlelere göre her dolma anını kapsar (sayım adım başladıktan sonra başlar,
+   süre dolmadan yapılan hamleler sonraki adımın sayımına girmez; sonraki adımın bitişi bu yüzden süreye bağlı
+   kalıyorsa önceki adım olayla biter, ör. Bölüm 4 adım 1 `placementCorrect` ×1, LEVELS §2). Spot ışığı en az bir
    tutulabilir bloğu açık bırakır. (b) Çalışma anı: Z adımı başlarken ve her hamle sonunda, vurgulanan `piece:` ve
    `debris:` bloklarından hiçbiri adımın `done` olayını o anki durumda üretemiyorsa adım atlanır (tamam sayılır) ve
    sonraki adıma geçilir. "Üretemiyor" = blok K-09'a göre tutulamıyor ya da erişim kümesinde (K-08 `R`) olayı üreten

@@ -4,10 +4,11 @@
  * Web: `navigator.vibrate(pattern)`. Verified support (TECH §0): Chrome Android 32+ (user gesture required since
  * Chrome 60), Firefox Android accepts the call but does not vibrate, Safari / iOS Safari have no Vibration API → no-op.
  * Capacitor (Faz 5): `@capacitor/haptics` behind the same interface. Only the Settings "vibration" switch turns haptics
- * off; "reduce motion" does not.
+ * off; "reduce motion" does not. Before the first user gesture nothing is sent (Chrome would block and log the call).
  */
 import { TOKENS } from '../theme/tokens.ts';
 import type { Tokens } from '../theme/tokens.ts';
+import { userActivation } from './platform.ts';
 
 /** = `tokens.haptic` keys. */
 export type HapticName = keyof Tokens['haptic'];
@@ -26,6 +27,11 @@ export interface WebHapticsOptions {
   readonly vibrate?: VibrateFn | null;
   readonly patterns?: Tokens['haptic'];
   readonly enabled?: boolean;
+  /**
+   * Whether the page has had a user gesture. Chrome blocks (and logs) `vibrate` before the first one, so the call is
+   * skipped until then. Default: `navigator.userActivation.hasBeenActive` (no API → assume yes).
+   */
+  readonly activated?: () => boolean;
 }
 
 function navigatorVibrate(): VibrateFn | null {
@@ -39,9 +45,10 @@ export function createWebHaptics(opts: WebHapticsOptions = {}): Haptics {
   const vibrate = opts.vibrate === undefined ? navigatorVibrate() : opts.vibrate;
   const patterns = opts.patterns ?? TOKENS.haptic;
   let enabled = opts.enabled ?? true;
+  const activated = opts.activated ?? (() => userActivation()?.hasBeenActive ?? true);
   return {
     play(name) {
-      if (!enabled || vibrate === null) return;
+      if (!enabled || vibrate === null || !activated()) return;
       const p = patterns[name];
       try {
         vibrate(typeof p === 'number' ? p : [...p]);

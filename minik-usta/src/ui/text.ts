@@ -7,7 +7,9 @@ import { TOKENS } from '../theme/tokens.ts';
 
 export type FontRole = keyof typeof TOKENS.font.size;
 
-const FAMILY = [TOKENS.font.family, ...TOKENS.font.fallback].map((f) => (f.includes(' ') ? `"${f}"` : f)).join(', ');
+const FAMILY = [TOKENS.font.family, ...TOKENS.font.fallback]
+  .map((f) => (f.includes(' ') ? `"${f}"` : f))
+  .join(', ');
 
 /** Style of a text role (`font.size.<role>`, `font.weight.<role>`) in `color`, with an optional outline. */
 export function textStyle(

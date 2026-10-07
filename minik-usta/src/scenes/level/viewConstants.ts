@@ -15,6 +15,8 @@ export const VIEW = Object.freeze({
   /** UX §5.3 tap without drag: "1 hücrelik zıplama (120 ms)". → `drag.tapHopCells`, `duration.tapHop` */
   tapHopCells: 1,
   tapHopMs: 120,
+  /** The same tap with reduced motion (JUICE §0 rule 8: no hop, scale ≤ 3 %): a 1 → 1.03 → 1 pulse over `tapHopMs`. */
+  tapPulseScale: 1.03,
   /** JUICE #13: the wrong-placement bounce flies on an arc 1.5 cells high. → `drag.bounceArcCells` */
   bounceArcCells: 1.5,
   /** JUICE #8: the cancel return is "kavisli"; its height is not specified: 0.5 cell. → `drag.cancelArcCells` */
@@ -27,6 +29,15 @@ export const VIEW = Object.freeze({
   /** UX §5.1 panorama: inner padding of the strip and the gap between two segment columns (in panorama cells). */
   panoramaPadPx: 6,
   panoramaGapCells: 1,
+  /** UX §5.1 (Faz 2 tur 2) panorama cell: `min(24, ⌊(110 − 2·pad) / rows⌋)`, at least 12 px. */
+  panoramaMaxCellPx: 24,
+  panoramaMinCellPx: 12,
+  /** UX §13.2 level 5 row: the panorama arrow, 64 × 40 white with a 4 px `ui.ink` outline, sliding 16 px every 1.2 s. */
+  panoramaArrowW: 64,
+  panoramaArrowH: 40,
+  panoramaArrowStrokePx: 4,
+  panoramaArrowSlidePx: 16,
+  panoramaArrowPeriodMs: 1200,
   /** UX §5.1 "aktif dilim beyaz çerçeveli": frame line width. → `stroke.panoramaActivePx` */
   panoramaFramePx: 3,
   /** ART §2.4 `board.yardFrame` "20 px tahta kenar" (`board_yard_frame` is a P0 placeholder asset; flat strips here). */
@@ -42,6 +53,9 @@ export const PIECE_POOL_PREWARM = 48;
  * `particles.*`). Each entry names its JUICE row; "→ key" is the token name proposed to design-lead.
  */
 export const JUICE_VIEW = Object.freeze({
+  /** #87 / UX §1 `resume.strip` pill (review Faz 2 tur 1 #7): 96 px high, 32 px side pad. → `layout.toast*` */
+  toastH: 96,
+  toastPadPx: 32,
   /** #1 lift: "6 px yukarı zıplama". → `drag.liftHopPx` */
   liftHopPx: 6,
   /** #2 blocked: "engel 300 ms beyaz parlar"; 3 dust motes under the block. → `duration.blockedFlash` */

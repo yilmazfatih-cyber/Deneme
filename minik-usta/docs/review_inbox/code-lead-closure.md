@@ -248,3 +248,116 @@ Proje sahibi soruları TECH §16.3'te (O-1…O-4).
 - code-lead-R7 design-lead son tur 3: `npm run perf` 8,2 s + 1,8 s payı → KAPANDI (TECH §10.7 FTUE kapısı UX §2.1 bütçesiyle; kapı ≤ 10 s değişmedi)
 - code-lead-R8 product-lead son tur 2 #2 bilgi notu: §8.2 "varsayılanı olan yalnızca iki alan" cümlesi `debris[].segment`'i anmıyordu → KAPANDI (TECH §8.2: `segment` `z.optional`, verilmezse derlemede 0)
 - code-lead-R9 entrepreneur Açık maddeler F-1 (§11.1 "analytics olayı değil / göndermez" cümleleri, §11.8 Köprü reklam yorumu) → ZATEN YAPILMIŞ (son tur 1 #4; bu geçişte yalnız sürüm atfı v5)
+
+## Faz 2 tur 1
+
+Kaynaklar: `design-lead-phase2.md` tur 1 (ekran incelemesi, #0–#10), product-lead oyun testi (#11–#13), perf/kod
+incelemesi (#14–#20), kural incelemesi (#21–#22). Her bulgu önce kodda / ekranda doğrulandı. Aynı kusurun iki raporu
+birlikte kapandı (#11 = #14, #19 = #21, #20 = #22). product-lead'in Bölüm 3–4 öğretici veri değişikliği alındı: hazır
+test yaması (`scratchpad/tut2/proposed-tests.diff`) uygulandı ve #12 girdi kapısına uyarlandı (sıra-bağımsızlık testi
+artık Z adımında vurgusuz blok oynatan, gerçek oyunda oynanamayan sıraları atlıyor).
+
+- #0 [Engel] rayda kontur/rozet sürüklenen bloğun altında → KAPANDI. Doğrulandı (`fallShadow` 70 < `draggedBlock` 90,
+  rayda kontur bloğun tam yerinde). `ShadowView`: `look.body === false` iken kontur, rozet ve 45° tarama
+  `DEPTH.draggedBlock` + 2…4'te; her karede `PieceView.drawn` (çizilen merkez + kaldırma ölçeği 1,08 / azaltılmışta
+  1,03) ile `follow`; rozet sağ üst hücrede. Test "K-12 / K-18 rail look draws outline and badge above the dragged
+  block and follows its lift scale" (`tests/scenes/shadowView.test.ts`, sahte sahne).
+- #1 [Önemli] 45° tarama yok → KAPANDI (öneriden sapmayla). Çekirdeğe `Verdict.wrongCells` alanı yerine saf
+  `reasonCells(state, pieceId, cells, reason)` eklendi (`core/placement.ts`): `Verdict` olaylarda, golden ve 80+ test
+  fikstüründe birebir karşılaştırılıyor; ayrı fonksiyon aynı bilgiyi şekli bozmadan verir. `ShadowLook.mismatchCells`
+  (birincil neden `debris`/`outside`/`window`/`color`, yalnız `wrong` ton = Kolay/Normal) → `ghost_hatch45` (açılış
+  atlası; `color.ghost.invalid`, destek taramasıyla aynı 6 px / 20 px / `alpha.supportHatch`), 2 Hz nabız. Testler
+  "K-34 hook 2 reasonCells names the cells behind each verdict reason …", "UX 5.4 wrong colour: the 45° hatch …".
+- #2 [Önemli] düşüş yolu yok → KAPANDI. `ghost_path` (6 px, 8/12 kesik, beyaz; alfa %35 sahnede), her dolu sütunda
+  bloğun alt kenarından gölgenin üst kenarına kırpılır, `DEPTH.fallShadow`; rayda ve iptal öngörüsünde gizli. Şerit
+  8 satır (960 px) çünkü 1024'lük sayfa sınırı (TECH §10.2 küçük cihaz) 10 satıra izin vermiyor; daha uzun boşlukta
+  gölgeye bağlı son 960 px görünür. Test "K-18 a free fall … one fall path per column".
+- #3 [Önemli] Dede balonu HUD'u örtüyor → KAPANDI. `bubbleCandidates`: (1) HUD altı ile vinç alanı arası bant (sığarsa,
+  ortalı; 390×844'te 216 px, 360×800'de 248 px), (2) vinç bandı, (3) durum şeridi üstü, (4) üst kenar en son;
+  `bubbleSpot` duraklat/hedefler/hamle dikdörtgenlerini ceza alanı sayar (delik 4 kat ağır). Balon artık HUD altına
+  indiği için UX §13.1 genişliğini (760) kullanır. Test "UX 13.1 the Dede bubble goes under the HUD first …".
+- #4 [Önemli] spot deliği bloğu izlemiyor → KAPANDI. `TutorialOverlay` vurgu dikdörtgenlerini her karede hesaplar
+  (birkaç dikdörtgen, çizim yok) ve değişince yeniden kurar: hamle işlenip tahta durunca yeni yerinde; sürükleme
+  ortasında açılan adımda (Bölüm 1 adım 2) delik bloğun o anki sürükleme düğümünde (ray dahil) kurulur ve o sürükleme
+  boyunca düğüm değişiminde yeniden kurulmaz (önerideki gibi; ilk denemede her düğüm değişiminde kurmak 4×'te > 50 ms
+  kare üretti), bırakınca yeni yerine geçer. Spot kenarı ve yuvarlak koyu köşeler artık önceden çizilmiş parçalardan
+  (`spotPieces.ts`): yeniden kurulum doku yüklemez; balon metni yalnız değişince yeniden çizilir. Yeniden kurulumda
+  kaybolmuş eldiven geri gelmez. Test "UX 13.1 a piece: hole sits on the dragged block …".
+- #5 [Önemli] "KAZANDIN!" yok → KAPANDI (birinci seçenek). Kazanmada başlık gizlenmez; `EventPlayer.showBanner`
+  #55 başlığını son pozunda tutar (#55 hiç oynamamış K-43 devamında da çıkar); kayıp pencereleri gizlemeye devam eder.
+- #6 [Önemli] kazanma paneli tahtayı ve Usta Serisi'ni örtüyor → KAPANDI. `winPanelLayout`: panel durum şeridi altı
+  (+16) ile düğme üstü (−8) arasındaki bantta ortalı; satır adımı 60 → en az 44, iç pay 20 → en az 8 (390×844'te
+  bant 185 px: 1 satır 172, 2 satır 184 px). Önerilen +24/+24 boşlukla 390'da iki satır sığmıyordu (161 px). FIT
+  (H 1920) bant yok → eski yerleşim. Testler `tests/ui/winPanel.test.ts`.
+- #7 [Önemli] devam şeridi karartmanın altında → KAPANDI. Şerit `DEPTH.windows` + 5'te krem hap (`ui.panel`,
+  `radius.chip`, h 96, yan pay 32, alt gölge) + `ui.ink` yazı, vinç bandında. Kontrast testi (≥ 4,5:1).
+- #8 [Önemli] kalp kalkan gibi → KAPANDI. `heartSpans` her lobun kendi aralığını + sivri ucu ayrı verir (çakışanlar
+  birleşir); tepe çentiği 0,25 d. Test "UX 7 icon_life: two separate lobes …, a centre notch at least 0.12 d deep".
+  ART §9 beyaz yıldız çıkartması (Öneri) yapılmadı.
+- #9 [Önemli] kamyon çipi 2,1:1 → KAPANDI. Yazı `ui.ink` (turuncu üstünde 6,5:1). Kontrast testi.
+- #10 [Önemli] inceleme kapsamı eksik → KAPANDI. (a) `--cvd protanopia,deuteranopia,tritanopia|all` (harness `&cvd=`
+  → `#game` üstünde SVG `feColorMatrix`, Machado 2009, doğrusal RGB) → `artifacts/screens/<profil>-<cvd>/`;
+  (b) `19-palette` harness fikstür sahnesi (8 renk × blok / plan / cephe varyantı + `plan_front`, `.`, `?`);
+  (c) `01a/01b/01c-intro` harness `introPanel(n)` ile (duvar saati yok); (d) `20-home-l2`, `21-home-more-soon`,
+  `22-pause`, `23-cancel-preview` (yeni `cancel` sürükleme türü), `24-bounce-support`, `25-trowel-pick` (yeni `trowel`
+  dokunma hedefi). TECH §12.2 `screens` satırı güncellendi.
+- #11 / #14 [Engel] çıkış onayında "Kal" ve × çalışmıyor → KAPANDI. Doğrulandı (`openPause` `windows.open !== null`
+  iken dönüyordu). `openPause(resume, fromExit)`: çıkış penceresinden dönüşe izin verir; "Kal" ve × aynı yol (Android
+  geri tuşu Faz 5'te aynı `onStay`'e bağlanır). Duman testi "UX 12 exit confirm: "Kal" and × return to the Pause window,
+  then the level plays on" (can sayısı değişmez); harness × hedefi.
+- #12 [Önemli] Z adımında vurgusuz blok tutuluyor ve adımı bitiriyor → KAPANDI. `TutorialController.allowsPick`
+  (Z adımı vurgulu blok içeriyorsa yalnız onlar) → `DragController` `mayPick` kapısı (tepkisiz red); Z adımında
+  `overWall`/`gapPass`/`holdOverBuild` yalnız vurgulu bloğun sürüklemesinde sayılır. Birleşen delik görsel kaldı.
+  Test "GDD 14.1 required step ignores non-highlighted block (level 1 piece 3, level 3 piece 9)".
+- #13 [Önemli] bağlamsal satır bağlamsız anda çıkıyor → KAPANDI (öneriden sapmayla). "Yumuşak adımda adımın yerine
+  geçici göster" kısmı uygulanmadı: product-lead'in bu turda yazdığı GDD K-34 kanca 4 ve LEVELS §0 metni "bağlamsal
+  satır öğretici adımı ekrandayken gösterilmez; kuyrukta bekler, adım aynı satırı gösterince ya da bölüm bitince
+  düşer" diyor (kural sahibi). Uygulanan: kuyruktaki satır gösterilebileceği anda tetiği hâlâ geçerli değilse
+  (kamyon kuyruğu boş, seri sıfır, mala yok, ya da anlık tetikten sonra yeni eylem) işaretlenmeden düşer ve sonraki
+  gerçekleşmede yeniden tetiklenir — golden-L5'teki "kuyruk boşaldıktan sonra queue satırı" ve "4. doğrudan sonra
+  streak" durumları artık çıkmaz. Önerilen test adı ("… shows at first support bounce during soft step") kuralla
+  çeliştiği için yazılmadı; yerine "UX 13.2 a queued contextual tip whose trigger no longer holds is dropped
+  unmarked". Bölüm 2'de adım 2'nin açık kalması (renk satırının hiç çıkmaması) product-lead PL-F2T1-3 (tur 2) ile
+  birlikte çözülür.
+- #15 [Önemli] touchcancel bırakma sayılıyor → KAPANDI. Doğrulandı (Phaser 4 `TOUCH_CANCEL` → `processUpEvents`,
+  yalnız `wasCanceled`). `DragController.up`: `wasCanceled` → `abort()` (#8 dönüş, hiçbir şey harcanmaz);
+  `OptionButton`, `PauseButton`, `Popup` (× ve anahtarlar), `StatusStrip` mala, `TrowelPicker` (hücre ve Vazgeç) iptal
+  dokunuşunu dokunma saymaz. Konsol hatası için `installQuietTouchCancel`: TouchManager'ın tuval `touchcancel`
+  dinleyicisi aynı işi yapan ama yalnız `cancelable` olayda `preventDefault` çağıran dinleyiciyle değişir. Duman testi
+  "K-07 a system-cancelled touch (touchcancel) mid-drag commits no move …" (konsol hatası yok dahil).
+- #16 [Önemli] perf kapısı eksik → KAPANDI (kapı), kapının bir maddesi bugün KIRMIZI. 4× CPU tarafında ortalama ≥ 50
+  FPS + p95 ≤ 25 ms (`drag`, `win`), `drag`'de > 50 ms kare 0, FTUE ≤ 10 s; ölçülemeyen değer FAIL. Girdi gecikmesi
+  `DragController`'ın pozu yazdığı olaydan (`DRAG_DRAWN_EVENT`) o pozu çizen `POST_RENDER`'a, ms + kare sayısı
+  (gösterge, SwiftShader). TECH §10.7. Yeni kapının ortaya çıkardığı uzun kareler profillendi (karalama
+  `scratchpad/longframes/`) ve üçü giderildi: (1) spot kenarı/köşeleri her değişimde bütün delikler kadar doku
+  yüklüyordu → önceden çizilmiş parçalar (`spotPieces.ts`), (2) delik sürüklemenin her düğüm değişiminde yeniden
+  kuruluyordu → sürükleme başına bir kez, (3) ses bankası ön-çizimi sürükleme karelerinde çalışıyordu (tek uzun ses
+  4×'te ≈ 50 ms) → yalnız basış yokken. Son `npm run perf` (4×): drag ortalama 58,6 FPS (önce 50,8), p95 13,7 ms (önce
+  23), en uzun 62 ms (önce 149); win 53,7 FPS / p95 21,2 ms; FTUE 8 970 ms; girdi ≤ 1 kare (85 örnek); konsol hatası
+  yok. **Kalan tek FAIL:** `drag`'de 1 kare > 50 ms = oturumun ilk dokunuşunda `AudioContext` oluşturma (tarayıcı içi,
+  4×'te ≈ 42–47 ms, etkinleştirme işleyicisinde). Dokunuştan sonraya ertelemek iOS Safari'de sesi bozar (WebKit sesi
+  yalnız kullanıcı hareketi işleyicisinde başlatır); karar orkestratör / proje sahibine (bkz. issuesForOthers).
+- #17 [Önemli] her bölümde LevelScene yeniden kuruluyor → KAPANDI. Ana ekrana `scene.switch` (uyku), ana ekrandan
+  `scene.run` (uyanış) → `WAKE` → `startLevel`. Duman testi "TECH 10.4 … the level scene is woken, not created again"
+  (harness `levelCreates`). TECH §10.4.
+- #18 [Önemli] azaltılmış hareket EventPlayer dışında uygulanmıyor → KAPANDI. Ana ekran "BÖLÜM 2" nabzı yerine sabit
+  altın kenar; spot kenarı sabit alfa; eldiven yolunu bir kez oynatıp hedefte basılı durur (design-lead onayına
+  açık: alternatif tek kare poz); mala hücreleri sabit; seviye içinde ayar değişince `MovesCounter.setPulse` #51
+  döngüsünü hemen keser. Koruma testi `tests/scenes/reducedMotion.test.ts`.
+- #19 / #21 [Önemli] devamda `wrongPlacements`/`truckHelps` sıfırdan → KAPANDI. `GameSession.replay(lvl, log, opts,
+  sink)` her eylemin olaylarını verir; `LevelAttempt.resumed(deps, inLevel, replayed)` sayaçları kurar; LevelScene
+  devamda ArraySink ile oynatır. İnceleme testindeki `.fails` kaldırıldı (yeni API ile), ek test "K-43 resumed attempt
+  keeps level_end wrongPlacements and truckHelps …". Kayıt şeması değişmedi.
+- #20 / #22 [Önemli] `test:rules` taslak → KAPANDI. `tools/rule-coverage.ts` TECH §12.2'yi uygular (`vitest list
+  --json`; K-xx GDD başlıkları + §12.4 F; engeller OBSTACLES imza tablosu; N-notları etkileşim matrisi; E satırları
+  Kurallar + metin, Köprü/Lig/META → Faz 4); eksik → çıkış 1. `--phase 2` sonucu belgedeki kümeyle birebir: 35 K,
+  W1/S1/S2, 9 E, 0 N; `--phase 3` bugün 54 eksik kimlik raporluyor (Faz 3 işi). Testler "test:rules phase 2 requires no
+  N-note and no bridge E row" + 3 test; inceleme testindeki `.fails` kaldırıldı.
+
+Özet (Faz 2 tur 1): **23 bulgu (3 çift aynı kusur) → 20 kusur, hepsi doğrulandı; 20 KAPANDI (3'ü öneriden gerekçeli
+sapmayla: #1, #6, #13) · 0 RET · perf kapısının 1 maddesi kırmızı (#16, ilk dokunuşta `AudioContext`).** Ayrıca
+product-lead'in Bölüm 3–4 öğretici verisi ve test yaması alındı. Çalıştırılanlar: `npm run check` yeşil (72 dosya,
+1 375 test + 2 beklenen hata; `test:rules --phase 2` 47 kimlik), `npm run build` yeşil (verify-dist temiz), Playwright
+duman 6/6 (yeni: çıkışta Kal/×, touchcancel, uyku/uyanış), `npm run screens` 54/54 çekim iki profilde (+ `--cvd all`
+ile 19-palette), `npm run perf` yukarıdaki #16 satırı. Açık kalan önceki inceleme `.fails` testleri (bu turun listesinde
+değil): JUICE #19 kamyon kilidi ≤ 900 ms, UX §1 (c) geçersiz denemeden sonra ana ekran düğmesi.

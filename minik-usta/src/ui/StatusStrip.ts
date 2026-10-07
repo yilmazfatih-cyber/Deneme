@@ -12,6 +12,7 @@ import { t } from '../services/i18n.ts';
 import type { Rect } from '../theme/layout.ts';
 import { TOKENS } from '../theme/tokens.ts';
 import { hex, textStyle } from './text.ts';
+import { addBakedGraphics } from './BakedGraphics.ts';
 
 const C = TOKENS.color.ui;
 /** UX §5.1: 4 beads (K-33 `COMBO_FOR_TROWEL`). */
@@ -33,6 +34,11 @@ export class StatusStrip {
   private readonly chip: Phaser.GameObjects.Container;
   private readonly chipBg: Phaser.GameObjects.Graphics;
   private readonly chipText: Phaser.GameObjects.Text;
+  /** Colour-blind mode: the streak also as "3/4" (`common.count`, UX §5.1). */
+  private readonly countText: Phaser.GameObjects.Text;
+  private colorBlind = false;
+  private rect: Rect = { x: 0, y: 0, w: 0, h: 0 };
+  private leftW = 0;
   private streak = -1;
   private trowels = -1;
   private queued = -1;
@@ -43,21 +49,39 @@ export class StatusStrip {
   private onTrowel: (() => void) | null = null;
 
   constructor(scene: Phaser.Scene, depth: number) {
-    this.panel = scene.add.graphics().setDepth(depth);
-    this.label = scene.add.text(0, 0, t('hud.streak'), textStyle('small', C.ink)).setOrigin(0, 0.5).setDepth(depth + 1);
-    for (let i = 0; i < STREAK_BEADS; i++) this.beads.push(scene.add.graphics().setDepth(depth + 1));
-    this.glow = scene.add.graphics().setDepth(depth + 1).setAlpha(0);
-    this.trowel = scene.add.graphics().setDepth(depth + 2);
-    this.trowelCount = scene.add.text(0, 0, '', textStyle('small', C.ink)).setOrigin(0, 0.5).setDepth(depth + 2);
+    this.panel = addBakedGraphics(scene).setDepth(depth);
+    this.label = scene.add
+      .text(0, 0, t('hud.streak'), textStyle('small', C.ink))
+      .setOrigin(0, 0.5)
+      .setDepth(depth + 1);
+    for (let i = 0; i < STREAK_BEADS; i++) this.beads.push(addBakedGraphics(scene).setDepth(depth + 1));
+    this.glow = addBakedGraphics(scene)
+      .setDepth(depth + 1)
+      .setAlpha(0);
+    this.trowel = addBakedGraphics(scene).setDepth(depth + 2);
+    this.trowelCount = scene.add
+      .text(0, 0, '', textStyle('small', C.ink))
+      .setOrigin(0, 0.5)
+      .setDepth(depth + 2);
+    this.countText = scene.add
+      .text(0, 0, '', textStyle('small', C.ink))
+      .setOrigin(0, 0.5)
+      .setDepth(depth + 2)
+      .setVisible(false);
     const min = TOKENS.touch.minTargetPx;
+    // UX §5.1: the whole streak strip (96 px + 16 px pad above and below = 128 px) is the trowel's tap target
     this.trowelZone = scene.add.zone(0, 0, min, min).setDepth(depth + 3);
     this.trowelZone.setInteractive();
-    this.trowelZone.on('pointerup', () => {
-      if (this.trowels > 0) this.onTrowel?.();
+    this.trowelZone.on('pointerup', (pointer: Phaser.Input.Pointer) => {
+      if (this.trowels > 0 && !pointer.wasCanceled) this.onTrowel?.();
     });
-    this.chipBg = scene.add.graphics();
-    this.chipText = scene.add.text(0, 0, '', textStyle('small', C.inkOnDark)).setOrigin(0.5, 0.5);
-    this.chip = scene.add.container(0, 0, [this.chipBg, this.chipText]).setDepth(depth + 1).setVisible(false);
+    this.chipBg = addBakedGraphics(scene);
+    // ART §2.3: small text on a coloured ground is `ui.ink` (6.5:1 on `ui.secondary`; white was 2.1:1, review Faz 2 tur 1 #9)
+    this.chipText = scene.add.text(0, 0, '', textStyle('small', C.ink)).setOrigin(0.5, 0.5);
+    this.chip = scene.add
+      .container(0, 0, [this.chipBg, this.chipText])
+      .setDepth(depth + 1)
+      .setVisible(false);
     this.drawTrowel();
   }
 
@@ -67,6 +91,7 @@ export class StatusStrip {
   }
 
   layout(rect: Rect): void {
+    this.rect = rect;
     const y = rect.y + rect.h / 2;
     this.rowY = y;
     const x0 = rect.x;
@@ -77,9 +102,13 @@ export class StatusStrip {
     this.trowelX = beadsX + (STREAK_BEADS - 1) * BEAD_STEP + BEAD_R + PAD + ICON / 2;
     this.trowel.setPosition(this.trowelX, y);
     this.glow.setPosition(this.trowelX, y);
-    this.trowelZone.setPosition(this.trowelX, y);
     this.trowelCount.setPosition(this.trowelX + ICON / 2 + 4, y);
-    const leftW = this.trowelX + ICON / 2 + 4 + 72 - x0;
+    const countX = this.trowelX + ICON / 2 + 4 + 72;
+    this.countText.setPosition(countX, y);
+    const leftW = countX + (this.colorBlind ? this.countWidth() + PAD : 0) - x0;
+    this.leftW = leftW;
+    const zoneH = Math.max(TOKENS.touch.minTargetPx, rect.h);
+    this.trowelZone.setPosition(x0 + leftW / 2, y).setSize(leftW, zoneH, true);
     const g = this.panel.clear();
     g.fillStyle(hex(C.panel), 0.92).fillRoundedRect(x0, rect.y, leftW, rect.h, TOKENS.radius.chip);
     this.chipX = rect.x + rect.w;
@@ -89,10 +118,42 @@ export class StatusStrip {
     this.setStreak(Math.max(0, s));
   }
 
+  /** New language: the `hud.streak` label, the counts and the truck chip (`truck.queue`), then the layout. */
+  relabel(): void {
+    this.label.setText(t('hud.streak'));
+    const trowels = this.trowels;
+    this.trowels = -1;
+    if (trowels >= 0) this.setTrowels(trowels);
+    const streak = this.streak;
+    this.streak = -1;
+    if (streak >= 0) this.setStreak(streak);
+    if (this.rect.w > 0) this.layout(this.rect);
+  }
+
+  /** Settings colour-blind mode: the streak count is written as well (UX §5.1 "renk körü modunda sayıyla da"). */
+  setColorBlind(on: boolean): void {
+    if (on === this.colorBlind) return;
+    this.colorBlind = on;
+    this.countText.setVisible(on);
+    if (this.rect.w > 0) this.layout(this.rect);
+  }
+
+  /** Usta Serisi part of the strip (tutorial `streak` highlight). */
+  streakRect(): Rect {
+    return { x: this.rect.x, y: this.rect.y, w: this.leftW, h: this.rect.h };
+  }
+
+  /** "Kamyonda: N" chip (tutorial `truck` highlight; where it appears while hidden). */
+  chipRect(): Rect {
+    const w = this.chipText.width + 2 * PAD;
+    return { x: this.chipX - w, y: this.rowY - CHIP_H / 2, w, h: CHIP_H };
+  }
+
   /** K-33 streak `c` (0…3 shown; 4 earns a trowel and resets). */
   setStreak(n: number): void {
     if (n === this.streak) return;
     this.streak = n;
+    this.countText.setText(t('common.count', { n, max: STREAK_BEADS }));
     this.beads.forEach((b, i) => {
       b.clear();
       if (i < n) b.fillStyle(hex(C.gold), 1).fillCircle(0, 0, BEAD_R).lineStyle(3, hex(C.goldDark), 1);
@@ -150,9 +211,22 @@ export class StatusStrip {
   }
 
   destroy(): void {
-    for (const o of [this.panel, this.label, this.glow, this.trowel, this.trowelCount, this.trowelZone, ...this.beads])
+    for (const o of [
+      this.panel,
+      this.label,
+      this.glow,
+      this.trowel,
+      this.trowelCount,
+      this.trowelZone,
+      this.countText,
+      ...this.beads,
+    ])
       o.destroy();
     this.chip.destroy(true);
+  }
+
+  private countWidth(): number {
+    return this.countText.width || TOKENS.font.size.small * 1.6;
   }
 
   private drawChip(): void {
@@ -160,14 +234,23 @@ export class StatusStrip {
     this.chipText.setText(t('truck.queue', { n }));
     const w = this.chipText.width + 2 * PAD;
     const g = this.chipBg.clear();
-    g.fillStyle(hex(C.secondaryLip), 1).fillRoundedRect(-w / 2, -CHIP_H / 2 + 6, w, CHIP_H, TOKENS.radius.chip);
+    g.fillStyle(hex(C.secondaryLip), 1).fillRoundedRect(
+      -w / 2,
+      -CHIP_H / 2 + 6,
+      w,
+      CHIP_H,
+      TOKENS.radius.chip,
+    );
     g.fillStyle(hex(C.secondary), 1).fillRoundedRect(-w / 2, -CHIP_H / 2, w, CHIP_H, TOKENS.radius.chip);
     this.chip.setPosition(this.chipX - w / 2, this.rowY).setVisible(n > 0);
   }
 
   private drawTrowel(): void {
     drawTrowelIcon(this.trowel);
-    this.glow.clear().fillStyle(hex(C.gold), 1).fillCircle(0, 0, ICON / 2 + 8);
+    this.glow
+      .clear()
+      .fillStyle(hex(C.gold), 1)
+      .fillCircle(0, 0, ICON / 2 + 8);
   }
 }
 

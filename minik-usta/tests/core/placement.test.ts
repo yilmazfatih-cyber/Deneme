@@ -14,6 +14,7 @@ import {
   nearestColumnsFirst,
   piecePlace,
   placeAt,
+  reasonCells,
   returnBrokenPiece,
   returnTarget,
   settlePlacement,
@@ -381,6 +382,27 @@ describe('K-34 bottom-up support', () => {
 });
 
 // --- K-15 ------------------------------------------------------------------------------------------------------------
+
+describe('K-34 hook 2 reason cells (UX 5.4 45° hatch, review Faz 2 tur 1 #1)', () => {
+  it('K-34 hook 2 reasonCells names the cells behind each verdict reason: color, window, outside, debris; support has none', () => {
+    // plan rows top → bottom: row 2 = Y Y / row 1 = Y . / row 0 = W W
+    const s = initialState({ plan: ['YY', 'Y.', 'WW'], pieces: [['D2_90', 'W', 0, 0]] });
+    const row1 = cellsOf('D2_90', 6, 1);
+    const v = isCorrectPlacement(s, 0, row1);
+    expect(v.reasons.slice(0, 2)).toEqual(['window', 'color']);
+    expect(reasonCells(s, 0, row1, 'window')).toEqual([{ x: 7, y: 1 }]);
+    expect(reasonCells(s, 0, row1, 'color')).toEqual([{ x: 6, y: 1 }]);
+    expect(reasonCells(s, 0, row1, 'support')).toEqual([]);
+    const above = cellsOf('D2_90', 6, 3);
+    expect(isCorrectPlacement(s, 0, above).reasons[0]).toBe('outside');
+    expect(reasonCells(s, 0, above, 'outside')).toEqual([
+      { x: 6, y: 3 },
+      { x: 7, y: 3 },
+    ]);
+    expect(reasonCells(s, 0, cellsOf('D2_90', 6, 0), 'color')).toEqual([]); // W on W W
+    expect(reasonCells(s, 0, row1, 'debris')).toEqual(row1.map((c) => ({ x: c.x, y: c.y })));
+  });
+});
 
 describe('K-15 segment completion', () => {
   const spec = {

@@ -15,22 +15,33 @@ const SMOOTH = 0.5;
 
 export interface FeelFrame {
   /** Horizontal speed (cells/s, signed) and speed (cells/s) of the drawn block. */
-  readonly vx: number;
-  readonly speed: number;
+  vx: number;
+  speed: number;
   /** A contact started this frame (#4 stretch, dust, sound). */
-  readonly contact: boolean;
+  contact: boolean;
   /** The contact may vibrate (≤ 1 per `bumpHapticMs`). */
-  readonly haptic: boolean;
+  haptic: boolean;
   /** Unit push direction (screen: +x right, +y down). */
-  readonly dirX: number;
-  readonly dirY: number;
+  dirX: number;
+  dirY: number;
   /** Separation (cells). */
-  readonly sep: number;
+  sep: number;
   /** The dotted tether shows. */
-  readonly tether: boolean;
+  tether: boolean;
 }
 
 export class DragFeel {
+  /** The frame `step` returns (reused: no allocation per pointer move, TECH §10.6). */
+  private readonly frame: FeelFrame = {
+    vx: 0,
+    speed: 0,
+    contact: false,
+    haptic: false,
+    dirX: 0,
+    dirY: 0,
+    sep: 0,
+    tether: false,
+  };
   private lastAx = 0;
   private lastAy = 0;
   private lastT = 0;
@@ -52,7 +63,8 @@ export class DragFeel {
     this.started = true;
   }
 
-  step(now: number, ax: number, ay: number, px: number, py: number): FeelFrame {
+  /** The returned frame is reused by the next call: read it before stepping again. */
+  step(now: number, ax: number, ay: number, px: number, py: number): Readonly<FeelFrame> {
     if (!this.started) this.reset(now, ax, ay);
     const dt = (now - this.lastT) / 1000;
     if (dt > 0) {
@@ -79,7 +91,16 @@ export class DragFeel {
     // anchor y grows upward; screen y grows downward
     const dirX = sep > 0 ? dx / sep : 0;
     const dirY = sep > 0 ? -dy / sep : 0;
-    return { vx: this.vx, speed: Math.hypot(this.vx, this.vy), contact, haptic, dirX, dirY, sep, tether };
+    const f = this.frame;
+    f.vx = this.vx;
+    f.speed = Math.hypot(this.vx, this.vy);
+    f.contact = contact;
+    f.haptic = haptic;
+    f.dirX = dirX;
+    f.dirY = dirY;
+    f.sep = sep;
+    f.tether = tether;
+    return f;
   }
 
   end(): void {
