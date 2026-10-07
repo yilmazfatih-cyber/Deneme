@@ -464,3 +464,134 @@ gösterilmedi / güvenceyle atlandı / hiçbir hamlenin başında ekranda değil
 
 Özet (Faz 2 tur 2): **1 bulgu → 1 DOĞRULANDI ve KAPANDI** (veri + LEVELS §2 satırı + §5 kontrol maddesi); code-lead'e
 L-17 denetim önerisi; check'teki tek kırmızı test STORY ↔ i18n eşitlemesi (başka ajan).
+
+## Faz 2 tur 3
+
+Doğrulama araçları (karalama, proje kodu değil; `scratchpad/pl3/`): `tutscan2.ts` (gerçek `applyMove` + gerçek
+`TutorialController`; kazanan her sıra = ✓ yerleşimler + ≤ N saha hamlesi; iki sürükleme modeli: **tutuşlu** — her
+şantiye bırakması `holdOverBuild` üretir — ve **tutuşsuz** — hiç üretmez), `scen.ts l2` ve `golden.ts 2` (gerçek oyun,
+harness, dokunuş yolu + öğretici izi).
+
+- PL-F2T3-0 [Önemli] Bölüm 2 adım 2–3 sırası sürükleme hızına bağlı (tur 1'den açık PL-F2T1-3) → **DOĞRULANDI,
+  KAPANDI (öneri aynen).** Kanıt eski veride yeniden üretildi: tutuşlu modelde adım 3 (`tut.l1.match`, `b`) 61/61 sırada
+  hiçbir hamlenin başında ekranda değil (`b`'nin tutuşuyla açılıp aynı bırakmayla kapanıyor); tutuşsuz modelde adım 3
+  61/61 sırada hiç gösterilmiyor, adım 2 61/61 sırada kazanınca ekranda kalıyor. **Uygulanan** (`levels/level_002.json`):
+  adım 2 highlight `["piece:2","build"]` → `["piece:2","piece:1","build"]`, hold eldiveni `[[4,7],[4,8],[6,8]]` aynen,
+  `done` `{ holdOverBuild, count 1, minMs 500 }` → `{ placementCorrect, count 1 }`; adım 3 highlight `piece:1` →
+  `piece:2`, drag eldiveni `[[2,6],[2,8],[6,8]]` (`b`) → `[[4,7],[4,8],[6,8]]` (`c`), `textKey` ve `done`
+  (`placementCorrect` ×1) aynen. Gerekçe (K-34, betikle): kazanan bütün sıralarda ✓ sırası `A`|`g` → `b` → `c`
+  (≤ 1 saha hamlesi: 29 + 32 sıra; ≤ 2: 533 + 688); y=2 `WW`'yi yalnız `b` doldurur (`O4` W (7,3) Y hücresini örter),
+  kalan Y hücrelerini yalnız `c` (6,3)'te. Böylece adım 2 `b`'nin hamlesi boyunca, adım 3 `c`'nin hamlesinin başında
+  ekranda; `c`'nin gölgesi `b`'den önce "!" (`color` + `support`), sonra ✓ — tasarım niyeti ("!" ↔ ✓) korunur.
+  Sonuç (yeni veri, iki modelde de): ≤ 1 saha hamlesinde 61, ≤ 2'de 1.221 kazanan sırada her adım gösterilir, hiçbiri
+  atlanmaz, her adım bir hamlenin başında ekranda, kazanınca açık adım yok. `npm run levels:validate` 5 dosya 0 hata
+  0 uyarı (L-17 temiz: iki eldiven de `c`'nin (4,7) hücresinden). Adım bitişleri hamle sonu olayına dayandığı için K-43
+  sürdürmesi (`replayTutorialAction` her şantiye bırakmasına `holdOverBuild` verir) artık canlı oyunla aynı adımı kurar;
+  eski veride sürdürme adım 2'yi `b` ile, adım 3'ü aynı hamlede kapatıyordu (tur 2 `sc-l2.log`: yeniden açılış sonrası
+  `tut` "none"). Belgeler: LEVELS §2 Bölüm 2 tasarım niyeti, adım 2–3 satırları ve "zamandan ve sürükleme hızından
+  bağımsız" notu; LEVELS §5 "Öğretici zamandan bağımsız ve görünür" maddesine kural: `holdOverBuild` (`minMs`) 1–50
+  verisinde `done`/`startOn` olarak yazılmaz, `hold` eldiveni gösterimdir; tarama iki sürükleme modeliyle. GDD §14.1/3
+  `minMs` maddesi (eski "ör. Bölüm 2") biçim örneğine çevrildi + aynı veri kuralı (sözlük, kural ve `rulesVersion`
+  değişmedi).
+- PL-F2T3-1 [Önemli] Aynı bulgu (FINDING testi, `holdOverBuild` olmadan el çözümü: adım [2, 2, 2], `shown` 2) →
+  **DOĞRULANDI, KAPANDI (PL-F2T3-0 ile; seçenek (b): eşdeğer olay `placementCorrect` ×1).** Seçenek (a) `turnEnd` ×1
+  betikle reddedildi (`tutscan3.mts`: adımın açık olduğu hamleler + vurgulu bloğun o anki bölgesi; ✓ + ≤ 1 saha hamlesi,
+  61 sıra). Eski adım 3 (`piece:1`, `b` eldiveni) ile: adım 2 `b`'nin hamlesiyle biter, adım 3 `b` şantiyedeyken açılıp
+  yerleşmiş bloğu vurgular — 44/61 sıra (betiğin genel ölçütleri bunu yakalamıyordu: dördü de 0). Adım 3 `c` olsa bile:
+  `A`'dan sonraki bir saha hamlesi adım 2'yi bitirir, adım 3 (`c` → x=6, gölge henüz "!") `b`'nin hamlesinin başında
+  açılır ve `b` ile kapanır, `c`'nin hamlesi yönlendirmesiz kalır — 17/61 sıra. Yeni veride (iki modelde) adım 2 her
+  sırada `b`'nin, adım 3 `c`'nin hamlesinin başında ekranda; yerleşmiş bloğu vurgulayan adım 0/61. Tutuşsuz modelde el
+  çözümü (`A`, `b`, `c`) artık adım [2, 3, —] verir, 3 adım gösterilir, kazanınca açık adım yok (FINDING testinin
+  beklediği; testteki `[2, 2, 2]` satırı kusuru belgelediği için `.fails` kalkınca o satır da kalkmalı, code-lead).
+- PL-F2T3-2 Gerçek oyunda doğrulama (harness, 390×844, dokunuş yolu; `pl3/t3/`) → **DOĞRULANDI.** `golden.ts 2`: adım 1
+  `A`'ya kadar; `A` yerleşince adım 2 (`tut.l2.shadow`, vurgu `[2, 1]`) açılır ve `b`'nin hamlesi boyunca ekranda; `b`
+  yerleşince adım 3 (`tut.l1.match`, vurgu `[2]`) açılır, `c`'nin hamlesinin başında ekranda, kazanışla biter; kalan 8,
+  konsol hatası yok. `scen.ts l2` "fast b" (`speedCellsPerSec` 40, `endHoldMs` 0): `b` doğru yerleşince adım 2 → 3
+  (eski veride adım 2'de kalıyordu); yeniden açılış öncesi ve sonrası adım `2Y:tut.l1.match[2]` aynı (eski veride
+  sürdürme sonrası "none"); hata yok. Görüntüler `pl3/shots/l2-01-step2.png` (spot `c` + `b`, hold eldiveni x=6),
+  `l2-02-after-fast-b.png` (adım 3, `c` eldiveni (4,7)'den).
+- PL-F2T3-3 Bağımlılıklar → **AÇIK (diğer ajanlar).** **code-lead:** eski Bölüm 2 hold verisini kodlayan 2 test şimdi
+  kırmızı (`npx vitest run tests/scenes tests/review tests/golden tests/core/level`: 2 failed / 367 passed / 3 expected
+  fail): `tests/scenes/tutorial.test.ts:195` "GDD 14.1 holdOverBuild needs minMs (level 2 step 2)" (`holdMinMs()` artık
+  null) ve `tests/review/presentation.review.test.ts:1403` "… on the soft level 2 step 2 a `holdOverBuild` of any block
+  counts" — ikisi sentetik `tutorial[]`'a (`done: { event: 'holdOverBuild', count: 1, minMs: 500 }`) taşınmalı;
+  `holdOverBuild` sözlükte kalır (GDD §14.1/3), yalnız 1–50 verisinde kullanılmaz. `presentation.review.test.ts:2580`
+  FINDING testi `.fails` olmadan geçer hâle geldi (`[2, 2, 2]` satırı kusuru belgelediği için kaldırılmalı; kalan
+  `shown.size` 3 ve `tut.finished` doğru); `tests/scenes/tutorial.test.ts:502` Bölüm 2 dışlaması kaldırılabilir (yeni
+  veride ✓ + 1 saha hamlesi taraması temiz); `:1388`, `:1519` ve `:2236`–`:2328` testleri yeni veriyle yeşil (içlerindeki
+  hold sürücüleri `holdMinMs()` null olduğu için sinyal üretmez; Bölüm 2'ye özgü yorumlar güncellenebilir). Öneri: L-17'ye uyarı — `done`/`startOn` `holdOverBuild` ise
+  `tut_hold_done` (LEVELS §5 yeni kural). `shots/g-L2-*.png` `npm run screens` ile yenilenmeli. **design-lead:** UX
+  §13.2 satır 1107–1108 LEVELS ile eşitlenmeli — adım 2: vurgu `piece:2 (c)` + `piece:1 (b)` + `build`, el aynı (hold:
+  c (4,7)'den x=6 üstünde, rozet "!"), tamam `placementCorrect` ×1 (`b` (6,2)); adım 3: vurgu `piece:2 (c)` + `build`,
+  el drag: c (4,7) → duvar üstü → x=6 (rozet ✓), tamam `placementCorrect` ×1. Satır başlıkları ("yanlış yön" / "doğru
+  yön") artık aynı blok `c`'nin `b`'den önce "!" ve sonra ✓ göstermesini anlatıyor; ad değişikliği ve adım 2'de
+  oyuncu `c`'yi bırakıp geri sektikten sonra hold eldiveninin döngüsü (kalır mı, `b`'ye ikincil işaret gerekir mi)
+  design-lead kararı; veri gerekirse aynı turda product-lead'den.
+
+Özet (Faz 2 tur 3): **2 bulgu (aynı kök) → DOĞRULANDI ve KAPANDI** (veri: `level_002.json` adım 2–3; belgeler: LEVELS §2
+Bölüm 2 + §5 kuralı, GDD §14.1/3 `minMs` maddesi). PL-F2T1-3 bu turla KAPANDI. `npm run levels:validate` 5 dosya 0 hata
+0 uyarı; tarama iki modelde 61 + 1.221 sıra temiz; gerçek oyunda golden ve hızlı bırakma doğru. `npm run check`:
+typecheck, lint, format yeşil; `npm test` 2 failed / 1.430 passed / 3 expected fail (yalnız yukarıdaki 2 eski veri testi;
+`test:rules` bu yüzden çalışmadı). Açık: code-lead'in 2 testi, design-lead UX §13.2 iki satırı.
+
+## Faz 2 tur 4
+
+Doğrulama araçları (karalama, proje kodu değil; `scratchpad/pl4/`): `l3step3.test.ts` (gerçek `GameSession` +
+`tryBeginDrag` + `TutorialController`, el çözümü), `pres.test.ts` (`presentation.review.test.ts`'in mutlak yollu kopyası,
+yalnız balon adayı beklentisi değişik).
+
+- PL-F2T4-0 [Önemli] Bölüm 3 adım 3 (`tut.l3.rail`) tap eldiveni rayda kilitli `f`'ye basıyor → **DOĞRULANDI, KAPANDI
+  (öneri aynen).** Kanıt kodda doğru: `LevelScene.pickFailed` `locked` için tepkisiz döner (`src/scenes/level/LevelScene.ts`
+  853–855), `TutorialController` eldiveni yalnız vurgulu bir blok kaldırılınca (`dragStarted`) gizler, `tapped` yalnız
+  `done: tap` adımında sayar; adım 3'ün tek vurgulu bloğu `f` K-14 ile tutulamadığı için eldiven `b`'nin hamlesi boyunca
+  `f`'de kalıyordu, sıradaki blok vurgulanmıyordu. **Uygulanan** (`levels/level_003.json` adım 3): `highlight`
+  `["piece:1"]` → `["piece:1", "piece:2"]`, `hand` `{ tap, [[6,2]] }` → `{ drag, [[2,7],[2,8],[6,8]] }`; `mode` soft,
+  `textKey`, `done` (`placementCorrect` ×1) aynen. (2,7) `b`'nin (`D2_90` G, çapa (2,7), hücreleri (2,7)–(3,7)) hücresi;
+  yol el çözümünün 3. hamlesidir (Vinç Alanı (2,8) → duvar üstü (6,8) → (6,3)'e, `f`'nin üstüne ✓). Metin iki cümlesiyle
+  eşleşir: "Raydaki blok düşmez" → vurgulu `f`, "Sıradakini üstünden aşır" → `b` eldiveni. Betik (`l3step3.test.ts`, el
+  çözümü): `a`, `f` sonrası adım 3 ekranda, vurgulu bloklar [1, 2], `tryBeginDrag(f)` = `locked`, `tryBeginDrag(b)` ok;
+  `dragStarted(b)` → `handHidden` true (UX §13.1 "ilk doğru dokunuşta el kaybolur"); `b` yerleşince öğretici biter, kazanış.
+  `npm run levels:validate` 5 dosya 0 hata 0 uyarı (L-17 `hand.path[0]` denetimi temiz). `l` raydan (6,3)'e konursa adım
+  yine o yerleşimle biter (eldiven `l` vurgulu olmadığı için o sürüklemede kalır; adım yumuşak, metin üst yol içindir).
+  Belgeler: LEVELS §2 Bölüm 3 adım 3 satırı ve altındaki paragraf (spot `f` + `b`, eldiven `b`'den, eski tap verisinin
+  kusuru); LEVELS §5 "Eldiven vurgulu bloktan başlar" maddesine kural: `tap` eldiveni kilitli (K-14) ya da tutulamayan
+  (K-09) bloğa basmaz; böyle bloğu anlatan adım onu yalnız vurgular, eldiven sıradaki hamlenin tutulabilir bloğunu gösterir.
+  `tests/review/data.review.test.ts` (LEVELS adım satırı ↔ JSON) 155/155 yeşil.
+  **code-lead'e:** (1) `tests/review/presentation.review.test.ts:1501` `.fails` FINDING testi yeni veriyle hâlâ "geçer"
+  (`[3, 'tap']` beklentisi bozulur); yeni veriye çevrilmeli: adım 3 `hand.kind` `drag`, `tut.current.pieces` [1, 2],
+  `tryBeginDrag(f)` `locked`, `dragStarted(2)` → `handHidden` true. (2) Aynı dosyada `SHORT_EXPECTED` `'L3·3': 3` → `4`
+  (`:1641`): eldiven yolu artık vinçten geçtiği için UX §13.1 seçim kuralı L3·3'ü B2·2/B3·1 grubuna (aday 4) taşır; betikte
+  390×763, 360×740, 412×846, 375×667'de 200 ve 229 px kutuyla aday 4, diğer adaylar aynı, `bubbleProblems` (yasak alan, alt
+  yarı, şantiye sütunu) temiz. `npm run check` bu turda yalnız bu testte kırmızı (1 failed / 1.449 passed / 3 expected fail;
+  typecheck, lint, format yeşil). (3) `shots/g-L3-2.png` ve L3 öğretici görüntüleri `npm run screens` ile yenilenmeli.
+  **design-lead'e:** UX §13.2 satır 1111 (Bölüm 3 adım 3) LEVELS ile eşitlenmeli: vurgu `piece:1 (f)` (rayda) +
+  `piece:2 (b)`; el drag: b (2,7) → Vinç Alanı (2,8) → duvar üstünden x=6 (6,8), gölge (6,3)'te ✓; tamam `placementCorrect`
+  ×1. "kelepçeler parlar" tap gösterimi kalkar (JUICE #23 `f` raya otururken zaten oynar). UX §13.1 "Beklenen sonuç"
+  (satır 1060–1062): B3·3 "el yolu vinçten geçmeyen" (aday 3) grubundan "vinçten geçen" (aday 4) grubuna taşınmalı.
+  Tap eldiveninde ısrar edilirse veri geri alınabilir; o durumda öneri metnindeki seçenek (kilitli vurgulu bloğa dokunuşta
+  JUICE #23 parlaması + eldivenin kalkması) kod ve UX işidir, veri değişmez.
+- PL-F2T4-1 [Önemli] GDD K-43 `inLevel` listesi ve devamda öğretici adımı kuralı uygulamanın gerisinde → **DOĞRULANDI,
+  KAPANDI (öneri aynen + örnek).** Kanıt kodda doğru: `src/services/save.ts` `InLevelSchema.tutorial` (`TutorialAtSchema`
+  `{ index, shown, count, actions }`, varsayılan `null`), `SaveService.setTutorial`; `TutorialResume` kayıtlı konumu
+  `actions − 1`. eylemden sonra `restore` eder (zorunlu kapı, `tut.ctx.*` işareti, sayaç), sonraki eylemlerden yalnız hamle
+  sonu olaylarını okur; konum yoksa ya da `accepts` reddederse günlük `replayTutorialAction` ile oynatılır (TECH §8.2 "K-43
+  devamında öğretici"). GDD bu alanı ve "ekrandaki adım aynen geri gelir" kuralını yazmıyordu; LEVELS Bölüm 2 notu yalnız
+  hamle kaydından kurmayı anlatıyordu. **Uygulanan:** GDD K-43 madde 3 "Kayıt" maddesindeki `inLevel` listesine `tutorial`
+  ve alan tanımı (`index`, `shown`, `count`, `actions`; konum her değiştiğinde yazılır; öğreticisiz bölümde ve eski kayıtta
+  `null`); yeni alt madde: "Açılışta ekrandaki öğretici adımı (zorunlu kapısı, `tut.ctx.*` işareti ve sayacıyla) aynen geri
+  gelir; kayıtta konum yoksa (ya da konum bu bölümün öğreticisine uymuyorsa) adım hamle kaydından kurulur", konumdan sonraki
+  eylemlerden yalnız hamle sonu olayları sayılır, kayıtta olmayan sürükleme sinyali varsayılmaz; örnek: Bölüm 1 adım 1
+  `overWall` sonrası iptal edilen `a` → açılışta adım 2; Bölüm 3 adım 2 (Z) → aynı Z adımı ve kapısı. LEVELS Bölüm 2 notu
+  (eski satır 309) aynı anlama çekildi: adım kayıttaki konumdan aynen gelir; konumu olmayan eski kayıtta hamle kaydından
+  kurulur ve hamle sonu olayına dayandığı için yine canlı oyundakiyle aynıdır. Kural davranışı ve `rulesVersion`
+  değişmedi; mevcut testler ("K-43 resume keeps the tutorial step …", "K-43 inLevel.tutorial …", e2e Bölüm 3 adım 2 kapısı)
+  bu metni karşılıyor. code-lead-closure "Faz 2 tur 3" #1 son maddesindeki istek bu maddeyle kapandı.
+- Ek gözlem (bulgu değil, design-lead kararı): Bölüm 4 adım 1 (`cell:7,2`, tap eldiveni) da tepkisiz bir hedefe basar:
+  boş hücreye dokunuşun işleyicisi yok, adımda vurgulu blok olmadığı için eldiven adım bitene (ilk doğru yerleşim) kadar
+  kalır. Adımın amacı pencere hücresini göstermek olduğu için veri değişikliği önermiyorum; UX §13.1 "ilk doğru dokunuş"
+  hücre tap'ında tanımsız (ör. oyuncu herhangi bir bloğu kaldırınca eldiven kalksın mı) — gerekirse sonraki turda.
+
+Özet (Faz 2 tur 4): **2 bulgu → 2 DOĞRULANDI ve KAPANDI** (veri: `level_003.json` adım 3; belgeler: LEVELS §2 Bölüm 3 +
+§5 tap kuralı, LEVELS Bölüm 2 notu, GDD K-43 madde 3). `npm run levels:validate` 5 dosya 0 hata 0 uyarı; `npm run check`
+1 failed (balon adayı beklentisi `L3·3` 3 → 4, code-lead) / 1.449 passed / 3 expected fail. Açık: code-lead FINDING testi +
+`SHORT_EXPECTED` + ekran görüntüleri; design-lead UX §13.2 satır 1111 ve §13.1 "Beklenen sonuç" B3·3.

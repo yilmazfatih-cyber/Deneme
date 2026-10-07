@@ -1059,9 +1059,13 @@ Menü derinliği: Ana ekrandan her yere en fazla 2 dokunuş; oyun ekranına 1 (B
   - **Beklenen sonuç** (Bölüm 1–5, hesap 2026-10-07): 390×844 ve 360×800'de her adım aday 1. 390×763, 360×740, 412×846
     ve 375×667'de zorunlu adımlar (B1·1, B3·2, B4·3) aday 2; el yolu vinçten geçmeyen yumuşak adımlar (B2·1, B3·3,
     B4·1, B4·2, B5·1, B5·2) aday 3; el yolu vinçten geçen ya da blok vinçteyken başlayan yumuşak adımlar (B1·2, B1·3,
-    B2·2, B3·1; B2·3 aynı el yoluyla B1·3 gibi) aday 4. Hiçbir adımda balon delik, el yolu, şantiye sütunu, Duraklat
+    B2·2, B2·3, B3·1; B2·2 ve B2·3 aynı el yolunu kullanır: `c` (4,7) → vinç → x=6) aday 4. Hiçbir adımda balon delik, el yolu, şantiye sütunu, Duraklat
     ya da alt yarıya değmez; kısa ekranda yumuşak adımların bir kısmında hedefler/hamle panelinin alt kenarı örtülür
-    (kabul: saha blokları ve inşa alanı her zaman açık kalır).
+    (kabul: saha blokları ve inşa alanı her zaman açık kalır). **B1·2 dile bağlıdır (Faz 2 tur 3):** adım `overWall`'da,
+    blok (5,7) düğümündeyken açılır; paylı delik vinç bandındaki dar kutunun alt kenarına ancak 3 satırlık kutuda (TR,
+    229 px) 1 px değer → 3 satırda aday 4, 2 satırda aday 3. Faz 2 tur 4 çekiminde (390×763, 360×740, Baloo 2) TR
+    metni dar kutuda 2 satıra sığıyor → TR'de de aday 3 (balon alt kenarı delikten 28 px yukarıda). Kurallar bu
+    tablodan önce gelir.
 
   Metin kimliği **tek küme** `tut.l{bölüm}.{konu}` (R-08; küçük harf); bağlamsal satırlar
   `tut.ctx.*`, meta satırlar `tut.meta.*`. Ekranda görünen metnin tek kaynağı `STORY.md` §6 (TR ≤ 8 kelime). Terim
@@ -1102,13 +1106,13 @@ blockout'ında LEVELS `tutorial[]`'a yazılır; parti bloğuysa `piece:k<parti>_
 | 1 | Düşme | 2 Y | `piece:0 (a)` + `build` | el yok (`a` oyuncunun parmağında; adım `overWall` sinyaliyle, `a` havadayken başlar); sütun 6 hedef hücreleri nabız atar | `tut.l1.drop` | `placementCorrect` ×1 |
 | 1 | Plan eşleşmesi | 3 Y | `piece:1 (b)` + `cell:6,1`, `cell:6,2` | drag: b (2,6) duvar üstünden x=6 | `tut.l1.match` | `placementCorrect` ×1 |
 | 2 | Renk örüntüsü | 1 Y | `panorama` + `build` | el yok; plan şeritleri alttan üste 1,2 s'de bir sırayla parlar | `tut.l2.pattern` | `placementCorrect` ×1 |
-| 2 | Düşüş gölgesi — yanlış yön | 2 Y | `piece:2 (c)` + `build` | hold: c x=6 üstünde tutulur, gölge rozeti "!" | `tut.l2.shadow` | `holdOverBuild` ×1 (≥ 500 ms) |
-| 2 | Düşüş gölgesi — doğru yön | 3 Y | `piece:1 (b)` + `build` | drag: b (2,6) → duvar üstü → x=6 (gölge rozeti ✓) | `tut.l1.match` | `placementCorrect` ×1 |
+| 2 | Düşüş gölgesi — `c` sırası gelmeden: "!" | 2 Y | `piece:2 (c)` + `piece:1 (b)` + `build` | hold: c (4,7) (sol üst hücresi) → Vinç Alanı (4,8) → duvar üstünden x=6 (6,8), orada tutulur; gölge rozeti "!" (gösterim; metin `b`'nin hamlesi boyunca ekranda, vurgulu `b`'nin gölgesi ✓; LEVELS §2 Bölüm 2) | `tut.l2.shadow` | `placementCorrect` ×1 (`b` (6,2)'ye yerleşince) |
+| 2 | Düşüş gölgesi — aynı `c` sırası gelince: ✓ | 3 Y | `piece:2 (c)` + `build` | drag: c (4,7) → Vinç Alanı (4,8) → duvar üstünden x=6 (6,8); `b`'den sonra aynı yerde gölge rozeti ✓ | `tut.l1.match` | `placementCorrect` ×1 (`c` (6,3)'e yerleşince; kazanış) |
 | 3 | Önce temel (K-34 sırası) | 1 Y | `piece:0 (a)` + `cell:6,0`, `cell:7,1` | drag: a (0,6) → duvar üstü → x=6 | `tut.l1.match` | `placementCorrect` ×1 |
-| 3 | Sabit geçit + ray (W1) | 2 Z | `gap:0` + `piece:1 (f)` | drag: f (4,2) → yatay sağa, geçitten → (6,2) | `tut.l3.gap` | `gapPass` ×1 |
+| 3 | Sabit geçit + ray (W1) | 2 Z | `gap:0` + `piece:1 (f)` | drag: f (4,2) → yatay sağa, geçitten → (6,2) | `tut.l3.gap` | `placementCorrect` ×1 (LEVELS §2 Bölüm 3; raya oturan `f` doğru yerleşimdir) |
 | 3 | Ray tutar | 3 Y | `piece:1 (f)` (rayda) | tap raydaki bloğa (kelepçeler parlar) | `tut.l3.rail` | `placementCorrect` ×1 |
-| 4 | Plan boşluğu (S2) | 1 Y | `cell:7,2` (`.`) | hücre üzerinde tap | `tut.l4.window` | `timeoutMs` 2500 |
-| 4 | Pencerenin altı (K-34) | 2 Y | `front` (inşa cephesi) | el yok; cephe hücreleri nabız atar | `tut.ctx.support` | `placementCorrect` ×2 |
+| 4 | Plan boşluğu (S2) | 1 Y | `cell:7,2` (`.`) | hücre üzerinde tap | `tut.l4.window` | `placementCorrect` ×1 (LEVELS §2 Bölüm 4) |
+| 4 | Pencerenin altı (K-34) | 2 Y | `front` (inşa cephesi) | el yok; cephe hücreleri nabız atar | `tut.ctx.support` | `placementCorrect` ×1 (LEVELS §2 Bölüm 4) |
 | 4 | Pencerenin üstü (ray) | 3 Z | `gap:0` + `piece:2 (p)` + `cell:6,3`, `cell:7,3` | drag: p (4,3) → yatay sağa, geçitten → (6,3) | `tut.l4.above` | `gapPass` ×1 |
 | 5 | Kayan şantiye (S1) | 1 Y | `panorama` | panoramada sağa ok: aktif dilimin sağından sıradaki dilime beyaz ok (64×40, 4 px `ui.ink` kontur), dilimler arası boşlukta 1,2 s'de bir 16 px sağa kayar; azaltılmış harekette sabit. Sunum verisidir (bölüm JSON'unda `hand` yok; `panorama` vurgulu adımda bölümün ≥ 2 dilimi varsa çizilir) | `tut.l5.segments` | `segmentDone` ×1 |
 | 5 | Kamyon | 2 Y | `truck` | yok (kamyon animasyonu kendisi) | `tut.l5.truck` | `deliveryDone` ×1 |
@@ -1159,7 +1163,7 @@ blockout'ında LEVELS `tutorial[]`'a yazılır; parti bloğuysa `piece:k<parti>_
 | Tetik | Vurgu | Satır |
 | ----- | ----- | ----- |
 | Usta Serisi ilk kez 3/4 | `streak` | `tut.ctx.streak` |
-| Altın Mala ilk kez kazanıldı | `streak` → `front` hücreleri | `tut.ctx.goldtrowel` |
+| Altın Mala ilk kez kazanıldı | `streak` → `front` hücreleri | `tut.ctx.goldtrowel`. **Faz 2 tur 3:** oyuncu mala seçimini açınca (§5.2; aynı talimatı `booster.hint.trowel` şeridi verir) satır ekrandaysa kapanır, kuyruktaysa düşer; iki durumda da görülmüş sayılır. Seçim açıkken bu satır gösterilmez (aynı talimat iki kez görünmesin) |
 | İlk hatalı yerleşim — renk (`color`) | geri seken blok + uyuşmayan hücreler | `tut.ctx.bounce.color` |
 | İlk hatalı yerleşim — pencere (`.`) | geri seken blok + `.` hücreleri | `tut.ctx.bounce.window` |
 | İlk hatalı yerleşim — plan dışı | geri seken blok + plan dışı hücreler | `tut.ctx.bounce.offplan` |

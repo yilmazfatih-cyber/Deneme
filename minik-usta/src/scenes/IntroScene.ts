@@ -7,6 +7,9 @@
  * screen finds its bake ready. The prologue counts as seen when it ends, skipped or not
  * (`economy.json → town.cutscenes.skippedCountsAsSeen`).
  *
+ * The sound bank is pre-rendered in the intro's frames (`AudioService.pump`, ≤ `audio.prerenderBudgetMsPerFrame`) and
+ * the image shader variants are built (`shaderWarmup`), so level 1 starts with every P0 sound ready and no cold shader.
+ *
  * Every step of the intro runs on the wall clock of the game loop, the panel → board fade included: the UX §2.1 budget
  * is wall time, and Phaser's frame delta is clamped on slow frames (a frame hitch must not stretch the transition).
  *
@@ -32,6 +35,8 @@ import { PROLOGUE_SCENE } from './flow/launch.ts';
 import { LEVEL_SCENE_KEY } from './level/LevelScene.ts';
 import type { LevelSceneData } from './level/LevelScene.ts';
 import { loadLevelById } from './level/levels.ts';
+import { gameAudio } from './level/sceneServices.ts';
+import { shaderWarmup } from './shaderWarmup.ts';
 
 export const INTRO_SCENE_KEY = 'Intro';
 
@@ -100,6 +105,10 @@ export class IntroScene extends Phaser.Scene {
 
   update(): void {
     const now = this.clock();
+    // the idle intro fills the sound bank (review Faz 2 tur 4 #0): the FTUE path Boot → Intro → Level 1 skips the home
+    // screen, so without this every P0 sound was rendered during level 1's first moves (≤ 4 ms per frame, TECH §10.6)
+    gameAudio().pump();
+    shaderWarmup(this.game).step();
     if (this.held !== null) {
       if (this.shown !== this.held) this.showPanel(this.held);
       return;

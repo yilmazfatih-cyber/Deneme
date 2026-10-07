@@ -338,18 +338,21 @@ const H: { readonly [K in JuiceId]: JuiceHandler } = {
   },
 
   // #18 segment done (K-22, locked): scaffold fades, the structure flashes ×2, 3 px shake, the segment flies to the
-  // panorama and the next one enters from the right; 24 confetti. Reduced: no shake, 150 ms fade.
+  // panorama and the next one enters from the right; 24 confetti. Reduced: no shake, no confetti (JUICE §0 rule 8),
+  // 150 ms fade.
   18: (c, st) => {
     const site = st.cellRect(6, T.layout.grid.rows - 1);
     const colors = st.siteColors();
     const done = evOf(c, 'segmentCompleted');
     st.segmentDone(c.time, c.ms, c.reduced, done ? done.seg : 0, c.toSeg ?? null, easeOf(st, 18));
-    if (!c.reduced) st.shake(V.segmentShakePx, c.time, D.scaffoldFade);
-    st.burst('confetti', count(c), top(site), {
-      w: site.w * 2,
-      colors: colors.length > 0 ? colors : [WHITE],
-      at: c.time,
-    });
+    if (!c.reduced) {
+      st.shake(V.segmentShakePx, c.time, D.scaffoldFade);
+      st.burst('confetti', count(c), top(site), {
+        w: site.w * 2,
+        colors: colors.length > 0 ? colors : [WHITE],
+        at: c.time,
+      });
+    }
     st.sound('sfx_segment', { at: c.time });
     st.haptic('heavy', c.time);
   },

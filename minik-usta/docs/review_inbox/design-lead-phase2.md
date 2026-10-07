@@ -265,3 +265,161 @@ ve tritan G–B; sembol farkı belirgin: ağaç damarı ↔ tuğla derzi, yaprak
 - ART §5 W1 ray tarifi (renk, kalınlık, travers, katman) yazıldı (T2-3); `tokens.json` `board.rail` değişikliği
   code-lead'in test sabitiyle aynı turda — açık.
 - STORY `tut.ctx.resume` yeni satırı code-lead'in i18n eşitlemesiyle aynı turda — açık (T2-9).
+
+## Tur 3 (2026-10-07)
+
+Ekranlar yeniden çekildi: `npm run screens` (harness yeniden derlendi; 390×844 ve 360×800 tam set, 390×763 ve 360×740
+`start1`…`start5`; 64 çekim, 0 senaryo hatası, çıkış 0) + `node tools/screens.ts --cvd all --only 19-palette --profile
+360x800` (3 çekim). Koşu başka ajanların Playwright oturumlarıyla aynı anda yürüdüğü için yavaştı (360×800 `lose`
+658 s) ama kesilmedi. 67 PNG'nin her biri açıldı; şüpheli bölgeler kırpılıp büyütüldü (karalama `r3/`). Ölçüt tur 1–2 ile
+aynı; kendi dosyalarımda yaptıklarım en altta.
+
+### Tur 2 kapanış denetimi (ekrandan; `code-lead-closure.md` "Faz 2 tur 2")
+
+- #0 / T2-1 birleşen delik → **KAPANDI**: 02 (dört profil) satır 7'nin vurgusuz blokları karanlık, yalnız vinç bandı ve
+  `piece:0` aydınlık; 10'da `gap:0` + `piece:1` birleşik kutusundaki G (4..5, 3) de karanlık.
+- #1 / T2-2 → **KAPANDI**: 10 (iki profil) Z adımının %60 karartmasında raydaki Y bloğu, düz yeşil kontur ve ✓ rozeti
+  tam parlaklıkta; 07 / 08 / 23'te sürüklenen blok soluk değil.
+- #2 / T2-3 → **KISMEN**: alt ray şantiyede koyu çelik + travers çentikleriyle görünüyor (04, 05, 09; kırpıntı
+  `r3/04-rails-390.png`, `r3/05-rails-390.png`); üst ray geçidin üst kenarı plan tepesiyle aynı olduğunda (Bölüm 3 ve 4)
+  tavan kirişinin altında kalıyor → T3-2.
+- #3 / T2-4 → **KAPANDI** (20, iki profil: sabit altın kenar).
+- #4 / T2-5 → **KAPANDI** (09, 24: sarı + koyu çift çizgi Y / W plan hücrelerinde okunuyor).
+- #5 / T2-6 → **KAPANDI** (25, iki profil: (7,2) ve R satırı %50, cephe hücreleri altın konturlu).
+- #6 / T2-7 → **KAPANDI** (24: #84 taraması iki profilde de çekimde).
+- #7 / T2-8 → **KAPANDI** (03 / 06: hücre ≈ 19 px, ok çiziliyor); okun yeri için T3-3.
+- #9 Duraklat zorunlu adımda → ekranda tutarlı (02: Duraklat karartmanın altında, ek delik yok); işlev e2e'de.
+- #15 kısa ekranda balon → **KAPANDI** (çekilen beş başlangıç adımında): 390×763 ve 360×740'ta B1·1 aday 2 (satır 6–5'in
+  sol yarısı, aydınlık satır 7'nin altında, `H/2`'nin üstünde), B2·1 / B4·1 / B5·1 aday 3 (vinç bandı, dar kutu), B3·1
+  aday 4 (HUD'a taşan bant). Hiçbirinde balon delik, el yolu, şantiye sütunu ya da Duraklat'a değmiyor; UX §13.1
+  "Beklenen sonuç" ile birebir. 390×763 B3·1'de örtülen alan "alt kenar"dan fazla → T3-4.
+- T2-9 → **KAPANDI** (17: "Tahta bıraktığın gibi duruyor, evlat.").
+- Açık Öneri'ler (değişmedi): T2-10 (product-lead; `level_003.json` adım 2 vurgusu hâlâ `gap:0`, `piece:1`), T2-11,
+  T2-12 (12: "KAZANDIN!" blokların üstünde), T2-13, T2-14 (05: eldiven `.` hücresinin alt yarısını dört profilde örtüyor);
+  tur 1'den giriş balonu kuyruğu / §11.7 yer tutucuları (01a–c), mala ikonu (25), panorama zemini (03, 06).
+
+### Engel
+
+Yok. Bölüm 1–5 dört profilde okunuyor; renk + sembol 360 px'te ve üç CVD görünümünde ayrışıyor (19), pencerelerde
+eşit düğmeler, × ve "Teklif 1/3" var, baskı metni yok (13, 15, 16); Türkçe karakterler doğru ("HAMLELER BİTTİ!",
+"KALDIĞIN YERDEN DEVAM", "BÖLÜMDEN ÇIK?", "Bonus İnşaat", "MİNİK USTA İNŞAAT"); kırpılan ya da taşan öğe yok.
+
+### Önemli
+
+- **T3-1** [design-lead → code-lead] 25-trowel-pick (360×800): **ilk Altın Mala'da aynı talimat iki kez** → Usta Dede
+  balonu `tut.ctx.goldtrowel` "Altın Mala'yla parlayan bir hücreye dokun." ile seçim şeridi `booster.hint.trowel`
+  "Parlayan bir hücreye dokun." + "Vazgeç" aynı anda ekranda; öğretici çerçeveleri (`streak`, `front`) ile seçimin altın
+  konturları da üst üste. Bölüm 5'in el çözümünde mala 4. hamlede gelir, satır adım 2 (kamyon) bitene kadar kuyrukta
+  bekler ve oyuncu malaya dokunduğunda hâlâ ekrandadır: her yeni oyuncunun ilk mala anı. 390×844'te aynı senaryonun
+  çekiminde balon yok (zamanlamaya bağlı → inceleme seti de kararsız).
+  Kanıt: `LevelScene.ts:764-765` satır mala elde oldukça geçerli; `LevelScene.ts:966-973` `toggleTrowel` seçimi açarken
+  bağlamsal satıra dokunmuyor; `contextTips.ts:140` tetik `trowelEarned`.
+  Öneri: UX §13.2 bağlamsal tablo "Altın Mala ilk kez kazanıldı" satırı bu turda yazıldı — seçim açılınca satır ekrandaysa
+  kapanır, kuyruktaysa düşer, ikisinde de görülmüş sayılır; seçim açıkken gösterilmez. Test: "UX 13.2 opening the trowel
+  pick closes and marks tut.ctx.goldtrowel".
+
+### Öneri
+
+- **T3-2** [design-lead → code-lead] 04-l3-start, 05-l4-start, 10-drag-rail-gap (dört profil): geçidin üst kenarı plan
+  tepesine denk geldiğinde (Bölüm 3 satır 4, Bölüm 4 satır 5) üst ray 12 px açık gri tavan kirişinin altında kalıyor;
+  şantiyede "2 çelik ray"ın yalnız biri görünüyor. Kanıt: ray `DEPTH.planOverlay + 2` (`BoardView.ts:46`), kiriş
+  `DEPTH.ceilingBeam` 60 (`BoardView.ts:349-350`, aynı y). Taşıyan alt ray görünür olduğu için ders okunuyor. → Bu durumda
+  rayı kirişin üstüne (`DEPTH.ceilingBeam + 2`) çiz: 8 px koyu ray 12 px açık kirişin ortasında ikisini de okutur; ART §5
+  W1 satırına not Faz 3'te.
+- **T3-3** [design-lead → code-lead] 06-l5-start (dört profil): panorama oku (64×40) dilimler arası 1 hücrelik
+  (≈ 19 px, `viewConstants.ts:31` `panoramaGapCells: 1`) boşluğa sığmıyor; aktif dilimin sağ sütununun 2–3. satırını ve
+  sonraki dilimin sol kenarını örtüyor (kırpıntı `r3/06-pano-390.png`). Bilgi kaybı yok (aktif plan şantiyede tam boy).
+  → Ok gösterilirken dilim aralığı ≥ 64 + 2·8 px (592 px kutuda yer var) ya da ok dilimlerin altında, kutunun alt payında.
+- **T3-4** [design-lead → code-lead] 04-l3-start (390×763): aday 4'te balon kutusu büste dikey ortalı olduğu için
+  hedefler sayacı "0/1" ve "Hamle" etiketinin yarısı örtülüyor (UX "alt kenar örtülür" kabulünden fazla; 360×740'ta yalnız
+  alt dudak). Yumuşak adım, oyun bilgisi tahtada; kısa ekranlarda Safari araç çubuğuyla sık görülen oran. → Aday 4'te
+  kutuyu büstün alt kenarına hizala (dikey ortalama yerine); UX §13.1'e Faz 3'te işlenir.
+- **T3-5** [design-lead → code-lead] 12-win (iki profil): Duraklat kazanma ekranında tam parlak ve dokunulabilir
+  görünüyor ama dokununca hiçbir şey olmuyor (`LevelScene.ts:1143` `outcome !== 'playing'` → dönüş). → Kazanma ve kayıp
+  penceresi açıkken Duraklat'ı gizle ya da `ui.disabled` tonuna çek.
+- **T3-6** [design-lead → code-lead] ekran seti: kısa profiller yalnız Bölüm 1–5'in 1. adımını çekiyor; kısa ekranın en
+  riskli anları (zorunlu B3·2, B4·3 ve sürükleme ortasında açılan B1·2) inceleme setinde yok (birim testleri geometriyi
+  kapsıyor). → `SHORT_PROFILES`'a `10-drag-rail-gap` ve `18-tutorial-l1` eşdeğerleri. T3-1 düzelince 25 kendiliğinden
+  kararlı olur.
+
+### design-lead kendi işleri (bu tur)
+
+- UX §13.2 bağlamsal tablo: `tut.ctx.goldtrowel` mala seçimi açılınca kapanır / düşer, görülmüş sayılır (T3-1).
+- UX §13.2 öğretici tablosu LEVELS §2 verisiyle eşitlendi: B3·2 tamam koşulu `placementCorrect` ×1 (eski `gapPass`),
+  B4·1 `placementCorrect` ×1 (eski `timeoutMs` 2500), B4·2 `placementCorrect` ×1 (eski ×2). Bölüm JSON'ları zaten böyleydi.
+- UX §13.1 "Beklenen sonuç": B1·2'nin dile bağlı adayı (TR 4, EN 3) code-lead'in tur 2 bilgisiyle yazıldı.
+- ASSET_LIST `gap_static_edge` satırı: `gap_rail` 300×12 (duvar 60 + şantiye 240; kod zaten böyle pişiriyor).
+- `tokens.json` değişmedi. Çalıştırılan doğrulama: `vitest` UX / ASSET okuyan iki dosya (`schema.test.ts`,
+  `audio.test.ts`) 26/26 yeşil.
+
+## Tur 4 (2026-10-07)
+
+Ekranlar yeniden çekildi: `npm run screens` (harness yeniden derlendi; 390×844 ve 360×800 tam set, 390×763 ve 360×740
+`start1`…`start5`; 64 çekim / 28 senaryo, 0 senaryo hatası, konsol hatası yok, çıkış 0) + `node tools/screens.ts --cvd all
+--only 19-palette --profile 360x800` (3 çekim). Araç kısa profilleri hâlâ yalnız başlangıç adımlarında çekiyor (T3-6);
+bu yüzden aynı harness ve aynı dokunma yoluyla karalama betiği (`r4shots.ts`, `r4probe.ts`, `r4resume.ts`) 13 ek çekim
+aldı: Bölüm 2 adım 2 (eldiven + `c` x=6'da tutulurken) ve adım 3 (390×844, 390×763, 360×740), Bölüm 1 adım 2 sürükleme
+ortası (390×763, 360×740, 360×800; 360×800'de 1,5 s sonra ikinci kare), Bölüm 2 K-43 yeniden yükleme + devam (390×844).
+67 + 13 PNG'nin her biri açıldı; şüpheli bölgeler kırpılıp piksel ölçüldü (karalama `r4/`). Ölçüt tur 1–3 ile aynı.
+
+### Tur 3 kapanış denetimi (ekrandan; `code-lead-closure.md` "Faz 2 tur 3")
+
+- #0 / T3-1 ilk Altın Mala'da çift talimat → **KAPANDI**: 25-trowel-pick iki profilde yalnız şerit
+  `booster.hint.trowel` "Parlayan bir hücreye dokun." + "Vazgeç"; Usta Dede balonu, `streak` / `front` çerçeveleri yok;
+  iki seçilebilir hücre altın konturlu, öbür plan hücreleri %50. Çekim artık profil zamanlamasından bağımsız.
+- #1 K-43 devamında öğretici konumu → **KAPANDI** (ekrandan): Bölüm 2 golden hamle 1 → yeniden yükleme → "KALDIĞIN
+  YERDEN DEVAM" → Devam: adım 2 (`tut.l2.shadow`, hold eldiveni) yüklemeden önceki gibi ekranda; `savedAttempt.tutorial`
+  önce = sonra `{ index 1, shown true, count 0, actions 2 }` (karalama `l2-resume-390x844.png`). 17 iki profilde aynı.
+- #2 JUICE #18 azaltılmış harekette konfeti → **KAPANDI**: 12-win iki profilde konfeti yok, "KAZANDIN!" sabit pankart.
+- product-lead Bölüm 2 verisi (PL-F2T3) ekranda doğru: adım 2 (Y) `c` + `b` + şantiye aydınlık, hold eldiveni
+  `c` (4,7) → (4,8) → (6,8); `c` x=6'da tutulunca kesik kırmızı kontur + "!" + uyuşmayan hücrelerde 45° tarama
+  (`color`, `support`); `b`'nin doğru yerleşimiyle adım 3 (`tut.l1.match`, `c` eldiveni) açılıyor. Balon 390×844'te
+  aday 1, 390×763 ve 360×740'ta aday 4 (UX §13.1 "Beklenen sonuç" ile aynı; T3-4 aşağıda).
+- Açık Öneri'ler (kodda değişmedi, ekranda aynı): T3-2 (04 / 10: üst ray tavan kirişinin altında), T3-3 (06: panorama
+  oku dilimlerin üstünde), T3-5 (12: Duraklat kazanmada tam parlak), T2-10 (product-lead; `level_003.json` adım 2 vurgusu
+  `gap:0`, `piece:1`), T2-11, T2-12 (12: "KAZANDIN!" blokların üstünde), T2-13, T2-14 (05: eldiven `.` hücresinin alt
+  yarısında, dört profil); tur 1'den giriş balonu kuyruğu / §11.7 yer tutucuları (01a–c), mala ikonu (25), panorama zemini.
+
+### Engel
+
+Yok. Bölüm 1–5 dört profilde okunuyor; renk + sembol 360 px'te ve üç CVD görünümünde ayrışıyor (19: G/O/Y protan ve
+deutan'da sembolle — yaprak / dalga / nokta — ayrılıyor); pencerelerde eşit düğmeler (Kal / Çık, +5 hamle / Hayır), ×,
+"Teklif 1/3" var, baskı metni yok (13, 15, 16); Türkçe karakterler doğru ("HAMLELER BİTTİ!", "BÖLÜMDEN ÇIK?", "KALDIĞIN
+YERDEN DEVAM", "Bonus İnşaat", "Şantiyenin üstünde bırak, kendisi düşer."); kırpılan, taşan öğe ve yatay taşma yok.
+
+### Önemli
+
+Yok.
+
+### Öneri
+
+- **T4-1** [design-lead → code-lead] Bölüm 1 adım 2 sürükleme ortası (karalama `l1-s2-hold-*`, 390×763 / 360×740 /
+  360×800): adım `overWall`'da (5,7) düğümünde açılınca `piece:0` deliği o düğümde donuyor; blok (6..7, 8)'e gidip 1,5 s
+  beklese de delik kutusunun sol kenarı x 646'da (tasarım px, 360×800 ve 360×740 ölçüldü) sahanın 5. sütununu yarıdan
+  kesiyor: duvar şeridi ve 5. sütun blok yarıları aydınlık, taşınan blok kutunun dışında (blok zaten karartmanın üstünde
+  çiziliyor). Kanıt: `TutorialOverlay.ts:265-266` `heldDrag` yalnız parça değişince yenilenir, `:325` rebuild anındaki
+  düğümü alır. Yumuşak adım (%30), bilgi kaybı yok. → Adım sürükleme ortasında açılırken sürüklenen bloğun `piece:`
+  dikdörtgenini deliğe katma (blok UX §13.1 gereği zaten üstte); vurgu `build` deliği olarak kalır. B1·2 balonu yine
+  aday 3 (yasak alan küçülür); `presentation.review.test.ts:1635` notu ve `:1655` "hole … at the drag node" testi buna göre.
+- **T4-2** [design-lead → code-lead] Bölüm 2 adım 2–3 (karalama `l2-s2-*`, `l2-s3-*`; 03): `piece:` deliği bloğun sınır
+  kutusu (`highlights.ts:41-44` `pieceRect(ax, ay, w, h)`); C3 `c`'nin kutusundaki dolgu bloğu `d` (B1 G, (4,6)) ve B2·2'de
+  `b` kutusundaki boş (3,7) de aydınlık. B2·3'te "Plandaki renge uyan bloğu seç." metniyle sarı `c` ile yeşil `d` aynı
+  delikte; `d` LEVELS §2'ye göre hiçbir zaman doğru değil. Zorunlu adımlarda (B1·1, B3·2, B4·3) bloklar D2 olduğu için
+  etkisiz. → Dikdörtgen olmayan blokta kutunun bloğa ait olmayan hücrelerini birleşen-delik dolgusu gibi köşesiz karart
+  (UX §13.1 "oyuncu yalnız vurgulananı aydınlık görür"); Faz 3'te L/T/C bloklu zorunlu adımlar gelmeden.
+- **T3-4 (güncel)** [design-lead → code-lead] 390×763'te aday 4 balonu artık üç adımda hedefler sayacını ve "Hamle"
+  etiketini örtüyor: 04-l3-start (B3·1) ve yeni Bölüm 2 verisiyle B2·2, B2·3 (karalama `l2-s2-390x763`, `l2-s3-390x763`:
+  "0/1"in alt yarısı ve "Hamle"nin "H"si kutunun altında). 360×740'ta yalnız alt dudak. Öneri aynı: aday 4'te kutuyu
+  büstün alt kenarına hizala.
+- **T3-6 (güncel)** [design-lead → code-lead] kısa profil seti: tur 4'te gereken çekimler karalama betiğiyle alınabildi
+  (aynı `harnessClient` çağrıları); `SHORT_PROFILES` senaryolarına Bölüm 2 adım 2 / 3 ve Bölüm 1 adım 2 sürükleme ortası
+  eklenirse T3-4 ve T4-1 inceleme setinde kalır.
+
+### design-lead kendi işleri (bu tur)
+
+- UX §13.2 Bölüm 2 satırları `level_002.json` / LEVELS §2 (PL-F2T3) ile eşitlendi: adım 2 vurgu `piece:2 (c)` +
+  `piece:1 (b)` + `build`, hold `c` (4,7) → vinç → x=6, tamam `placementCorrect` ×1 (eski `holdOverBuild` ≥ 500 ms);
+  adım 3 vurgu `piece:2 (c)`, drag `c` (eski `b`).
+- UX §13.1 "Beklenen sonuç": B2·2 ve B2·3 aynı el yolu (aday 4); B1·2 notu çekime göre düzeltildi — Baloo 2 ile TR metni
+  dar kutuda 2 satır → TR'de de aday 3 (balon alt kenarı delikten 28 px yukarıda; kural tablodan önce gelir).
+- `tokens.json` değişmedi. Doğrulama: `vitest tests/core/level/schema.test.ts` (UX §13.1 okuyan) 16/16 yeşil.

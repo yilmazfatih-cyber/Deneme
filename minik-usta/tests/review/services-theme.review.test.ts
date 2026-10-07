@@ -25,6 +25,10 @@
  * margins, ribbon and streak strip numbers, D-015's single scale setting, ART §3's "120 px'te" column and the layer
  * colours the ART §3 table leaves out, the ART §4 plan cell box, the W1 rail colour, the TECH §10.2 / ASSET texture names,
  * `{company}` and the tone of `resume.void.*`.
+ *
+ * Round 4 (after the Faz 2 tur 3 fixes): the new K-43 write path `SaveService.setTutorial` (`inLevel.tutorial`) against
+ * TECH §11.1's one-atomic-write rule (main + backup in one write, nothing written for an unchanged or refused value) and
+ * the main-save recovery: whichever copy loads, its tutorial position and its action log come from the same write.
  */
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
@@ -2719,5 +2723,66 @@ describe('round 3: i18n (STORY 0, 7.5; NAMING 5.2; TECH 11.5; UX 1, 5.1, 7)', ()
     expect(streak).toHaveLength(1);
     expect(adToday).toHaveLength(1);
     expect(EN_KEYS.has(streak[0]?.[0] ?? '') && EN_KEYS.has(adToday[0]?.[0] ?? '')).toBe(true);
+  });
+});
+
+// =====================================================================================================================
+// Round 4 — K-43 `inLevel.tutorial` write path (Faz 2 tur 3 #1; TECH 8.2 "K-43 devamında öğretici", 11.1)
+// =====================================================================================================================
+
+describe('round 4: K-43 the tutorial position in the in-level record (TECH 8.2, 11.1; fixed: Faz 2 tur 3 #1)', () => {
+  it('K-43 / TECH 11.1 "tek atomik yazım": every changed tutorial position is ONE write (main + backup) and the backup holds the same position; an unchanged one, a refused one, null twice and a position with no attempt write nothing; a main save that does not load comes back from the backup with the position and the log of the same write', () => {
+    const j = journal();
+    const s = j.open();
+    s.beginAttempt(start({ levelId: 1, seed: 1001 }));
+    take(j.log);
+    const same = (): void => {
+      expect(stored(j.store, BACKUP_KEY).inLevel).toEqual(stored(j.store).inLevel);
+    };
+    s.setTutorial({ index: 0, shown: true, count: 0, actions: 1 });
+    expect(take(j.log)).toEqual(ONE_WRITE);
+    same();
+    s.setTutorial({ index: 0, shown: true, count: 0, actions: 1 });
+    expect(take(j.log)).toEqual([]);
+    s.setTutorial({ index: 1, shown: true, count: 0, actions: 1 }); // overWall mid-drag (no action yet)
+    expect(take(j.log)).toEqual(ONE_WRITE);
+    same();
+    s.recordAction(drag(0, 6, 0), { movesMade: 1 }); // the release: the action write carries the step on screen
+    expect(take(j.log)).toEqual(ONE_WRITE);
+    expect(stored(j.store).inLevel?.tutorial).toEqual({ index: 1, shown: true, count: 0, actions: 1 });
+    expect(stored(j.store).inLevel?.actions).toHaveLength(2);
+    same();
+    for (const bad of [
+      { index: 1, shown: true, count: 0, actions: 0 },
+      { index: 1.5, shown: true, count: 0, actions: 2 },
+      { index: 1, shown: true, count: -1, actions: 2 },
+    ])
+      expect(() => s.setTutorial(bad)).toThrow();
+    expect(take(j.log)).toEqual([]);
+    expect(s.data.inLevel?.tutorial).toEqual({ index: 1, shown: true, count: 0, actions: 1 });
+    s.setTutorial({ index: 2, shown: true, count: 0, actions: 2 }); // the move's cues ended: step 3
+    expect(take(j.log)).toEqual(ONE_WRITE);
+    same();
+    s.setTutorial(null);
+    expect(take(j.log)).toEqual(ONE_WRITE);
+    s.setTutorial(null);
+    expect(take(j.log)).toEqual([]);
+    s.setTutorial({ index: 2, shown: true, count: 0, actions: 2 });
+    take(j.log);
+
+    // the main copy is damaged: the backup of the same write comes back, position and log together
+    j.store.set(SAVE_KEY, '{"v":1,"data":');
+    const back = j.open();
+    const d = back.resumeOnLaunch(() => IDENT);
+    if (d.kind !== 'resume') throw new Error(d.kind);
+    expect(d.inLevel.tutorial).toEqual({ index: 2, shown: true, count: 0, actions: 2 });
+    expect(d.inLevel.actions).toHaveLength(2);
+    expect(d.inLevel.tutorial?.actions ?? 0).toBeLessThanOrEqual(d.inLevel.actions.length);
+
+    back.endAttempt();
+    take(j.log);
+    back.setTutorial({ index: 0, shown: true, count: 0, actions: 1 }); // no attempt: nothing to write
+    expect(take(j.log)).toEqual([]);
+    expect(back.data.inLevel).toBeNull();
   });
 });

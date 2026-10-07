@@ -253,6 +253,26 @@ export class ContextTips {
     }
   }
 
+  /**
+   * The player did what the tip teaches through a screen that gives the same instruction itself (UX §13.2 "Altın Mala
+   * ilk kez kazanıldı", Faz 2 tur 3: the trowel pick's `booster.hint.trowel` strip): the tip leaves the screen if it
+   * shows, drops if it waits, and counts as seen in both cases, so it never comes back. Not triggered yet: no-op.
+   */
+  retire(topic: CtxTopic): void {
+    let hit = false;
+    if (this.#showing?.topic === topic) {
+      this.#showing = null;
+      this.#version += 1;
+      hit = true;
+    }
+    const i = this.#queue.findIndex((q) => q.topic === topic);
+    if (i >= 0) {
+      this.#queue.splice(i, 1);
+      hit = true;
+    }
+    if (hit && !this.#host.seen(topic)) this.#host.markSeen(topic);
+  }
+
   /** The player started a drag: the tip leaves (it never covers the board while playing). */
   dismiss(): void {
     if (!this.#showing) return;

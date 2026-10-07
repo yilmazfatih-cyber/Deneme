@@ -150,6 +150,13 @@ export function installHarness(game: Phaser.Game): HarnessApi {
     };
   };
 
+  const tutorialHand = (lv: LevelScene): HarnessState['tutorialHand'] => {
+    const step = lv.tutorialController?.current ?? null;
+    const hand = step?.data.hand;
+    if (!step || !hand) return null;
+    return { kind: hand.kind, hidden: step.handHidden };
+  };
+
   const rendererName = (): HarnessState['renderer'] => {
     const type = game.renderer?.type;
     if (type === Phaser.WEBGL) return 'webgl';
@@ -208,8 +215,22 @@ export function installHarness(game: Phaser.Game): HarnessApi {
       busy: lv?.eventPlayer.busy ?? false,
       locked: lv?.eventPlayer.locked ?? false,
       tutorial: lv ? tutorialInfo(lv) : null,
+      tutorialHand: lv ? tutorialHand(lv) : null,
+      contextTip: {
+        showing: lv?.contextTips.showing ?? null,
+        queued: lv ? [...lv.contextTips.queued] : [],
+        seen: Object.entries(appSave().data.seenContextTips)
+          .filter(([, on]) => on === true)
+          .map(([topic]) => topic),
+      },
       lives: { stored: appSave().data.lives.stored, reserved: appSave().data.lives.reserved },
-      savedAttempt: il ? { levelId: il.levelId, actions: il.actions.length } : null,
+      savedAttempt: il
+        ? {
+            levelId: il.levelId,
+            actions: il.actions.length,
+            tutorial: il.tutorial ? { ...il.tutorial } : null,
+          }
+        : null,
       reducedMotion: lv?.eventPlayer.reduced ?? appSave().data.settings.reduceMotion,
       levelCreates,
       objects: objectCount(),

@@ -1461,15 +1461,27 @@ yürür (`tutorial[]` bölüm ekranı ve bölüm öncesi pencere adımlarını t
   "UX 13.1 required step keeps the pause button …", "UX 13.1 the dragged block and its shadow look draw above the
   spotlight during a drag", "UX 13.2 "Vurgu" column …", "UX 13.1 Faz 2 tur 2b "Beklenen sonuç": on 390×763 …", "UX 13.1
   Faz 2 tur 2b: no band under the HUD at FIT H 1920 …".
-- **K-43 devamında öğretici (Faz 2 tur 2 #8):** devam eden denemede öğretici atlanmaz; `GameSession.replay(…, step)`
-  her eylemden sonra (başlangıç dahil, indeks 0) o anki oturumla çağrılır ve sahne `replayTutorialAction` ile
-  denetleyiciyi canlı oyundaki gibi besler: kilit güvencesi o anın durumunu görür; `tutorial_step` analitiği yeniden
-  gönderilmez. Günlükte sürükleme yolu ve saat olmadığı için bir sürükleme yalnız sonucunun kanıtladığı sinyalleri verir
-  (`pieceMoved.entry`: sahadan `overWall` → `overWall`; `gap` → `gapPass`; `overWall` → `holdOverBuild`, tutma süresi
-  varsayılır) ve `timeoutMs` adımı sonraki eylemden önce biter (`endTimedStep`). İptal edilen sürüklemenin sinyali
-  günlükte yoktur: o adım devamda yeniden açılır. Kapanış anında ekrandaki adım (zorunlu kapısı, `tut.ctx.*` satırı,
-  sayacı) aynen geri gelir. Testler "K-43 resume keeps the tutorial step …" (birim: Bölüm 1–5 el çözümünün her
-  noktasında canlı ile aynı adım; e2e: Bölüm 3 adım 2 kapısı).
+- **K-43 devamında öğretici (Faz 2 tur 2 #8, Faz 2 tur 3 #1):** devam eden denemede öğretici atlanmaz ve kapanış anında
+  ekrandaki adımdan ileri gitmez. Günlük tek başına yetmez (iptal edilen sürüklemenin `overWall` / `gapPass` sinyali
+  günlüğe yazılmaz; tutuşun süresi günlükte yoktur), bu yüzden sahne ekrandaki konumu `inLevel.tutorial = { index,
+  shown, count, actions }` olarak tutar (§11.1): `index` = sıralı `tutorial[]` indeksi (`length` = bitti), `shown` =
+  ekranda (false: `startOn` bekliyor), `count` = koşula sayılan olay, `actions` = konumun içerdiği günlük girdisi
+  (`start` dahil; hamle sonu olayı okunmuş son eylem). Konum her değiştiğinde (sürükleme sinyali, hamle sonu, dokunuş,
+  süre) `SaveService.setTutorial` ile hemen yazılır (yerinde, yalnız giriş doğrulanır; değişmeyen konum yazılmaz);
+  her eylem kaydı ve `pagehide` / `visibilitychange` yazımı onu taşır (sahnenin gizlenme işleyicisi de çağırır).
+  Devamda `GameSession.replay(…, step)` her eylemden sonra (başlangıç dahil, indeks 0) o anki oturumla çağrılır ve
+  `TutorialResume` denetleyiciyi kurar: kayıtlı konum varsa `actions − 1`. eylemden sonra `restore` (adım, zorunlu
+  kapısı, `tut.ctx.*` işareti, sayaç; eldiven yeniden görünür, kilit güvencesi o anın durumunu görür) ve sonraki
+  eylemlerden (kapanış hamlenin efektleri oynarken geldiyse) yalnız hamle sonu olayları okunur — sürükleme sinyalleri
+  konumun içindedir; böylece devam kayıttaki adımdan ileri gidemez ve hiçbir tutuş süresi varsayılmaz. Kayıtlı konum
+  yoksa (eski kayıt) ya da bu öğreticiye ait olamıyorsa (`accepts`: indeks aralıkta, `startOn`'suz adım beklemez,
+  sayaç eşiğin altında, `actions` 1…günlük boyu) günlük `replayTutorialAction` ile oynatılır: sürükleme yalnız
+  sonucunun kanıtladığı sinyalleri verir (`pieceMoved.entry`: sahadan `overWall` → `overWall`; `gap` → `gapPass`;
+  `holdOverBuild` asla varsayılmaz) ve `timeoutMs` adımı sonraki eylemden önce biter (`endTimedStep`). `tutorial_step`
+  analitiği yeniden gönderilmez. Testler "K-43 resume keeps the tutorial step …" (birim: Bölüm 1 sınırı keserek (5,8)
+  bırakılıp iptal edilen `a`, Bölüm 2 hızlı `b`, efekt sırasında kapanma, süreli adım altında yapılan hamle, Bölüm 1–5
+  el çözümünün her noktası, bozuk konum; e2e: Bölüm 3 adım 2 kapısı, Bölüm 1 iptal, Bölüm 2 hızlı `b`), "K-43
+  inLevel.tutorial …" (kayıt).
 - **Vurgu → blok çözümü:** `compile` (§2.3) `CompiledLevel.tutorialPieceIds` tablosunu bir kez kurar: `piece:<i>` →
   parti 0'ın `i`. parçası, `piece:k<p>_<i>` → `p`. partinin `i`. parçası, `debris:<i>` → `build.debris[i]`'den
   oluşturulan moloz parçası (`flags.debris`); hepsi `PieceId`. Spot ışığı deliği, eldiven ve aşağıdaki kilit güvencesi
@@ -1538,7 +1550,12 @@ anahtarın iki dilde var olduğunu denetler. Bir öğretici adımı ekrandayken 
 (GDD K-34 kanca 4, LEVELS §0); gösterilebileceği anda tetiği artık geçerli değilse (kamyon kuyruğu boşaldı, seri
 sıfırlandı, altın mala yok, ya da anlık bir tetikten — geri sekme, tutulamayan blok, boyu uzun — sonra yeni bir eylem
 işlendi) **işaretlenmeden düşer** ve sonraki gerçekleşmede yeniden tetiklenir (Faz 2 tur 1 #13; `ContextTips.update`
-geçerlilik fonksiyonu, test "UX 13.2 a queued contextual tip whose trigger no longer holds is dropped unmarked"). Engel bilgi kartı metni `obs.{id}.desc` (R-08) i18n'dedir.
+geçerlilik fonksiyonu, test "UX 13.2 a queued contextual tip whose trigger no longer holds is dropped unmarked").
+Aynı talimatı kendi veren bir ekran açılınca satır emekliye ayrılır (`ContextTips.retire`): Altın Mala seçimi (UX §5.2,
+`booster.hint.trowel` şeridi) açılınca `tut.ctx.goldtrowel` ekrandaysa kapanır, kuyruktaysa düşer, ikisinde de
+görülmüş sayılır; seçim açıkken gösterilmez (UX §13.2 Faz 2 tur 3; `LevelScene.toggleTrowel`, geçerlilik
+`trowelsOf > 0 && !picker.active`; testler "UX 13.2 opening the trowel pick closes and marks tut.ctx.goldtrowel" birim
++ e2e Bölüm 5). Engel bilgi kartı metni `obs.{id}.desc` (R-08) i18n'dedir.
 
 Brif §12 tipinden farklar (hepsi öneri, P-6; GDD §14 ekleriyle uyumlu): `schemaVersion` eklendi; `gaps` tipine göre
 ayrık birleşim (kepenkte `period` zorunlu vb.); **`build.mode`'dan `'elevator'` çıkarıldı, `build.elevator` ayrı
@@ -1581,7 +1598,7 @@ numarası `L-xx` (yalnızca kod ve test düzeni için). Araç çıktısı ve tes
 | L-14 | 6 | `hidden_item_exposed` | Vida ve anahtar başta bir bloğun ya da kasanın altında; kasa `hp` 1–3 | error |
 | L-15 | 6 | `goal_count_too_high`, `goal_build_missing` | `build` tam bir kez; `clear.count` ≤ ilgili nesne sayısı; `collect.count` ≤ vida sayısı (K-41) | error |
 | L-16 | 9 | `teaches_mismatch` | `teaches` verilmişse veriden türetilen **tek yeni** mekaniğe eşit; yeni mekanik yoksa `teaches` verilemez (GDD K-45/9) | error |
-| L-17 | — | `tut_key_missing`, `tut_highlight_invalid`, `tut_done_invalid` | `tutorial.textKey` hem `tr.json` hem `en.json`'da; her `highlight` öğesi §8.2 vurgu sözlüğündendir (UX §13.1; regex şemada) **ve** bölümde vardır: `piece:<i>` < parti 0 boyu; `piece:k<p>_<i>`: `1 ≤ p` < parti sayısı, `i` < o partinin boyu; `gap:<i>` < geçit sayısı; `obstacle:<i>` < engel sayısı; `debris:<i>` < `build.debris` boyu; `cell:x,y` tahtada; `fan` ⇒ `wall.fan`; `truck` ⇒ parti sayısı ≥ 2; `booster:<b>` / `pre:<p>` ⇒ o öğe bu bölümde açık (META §4, `economy.json → boosters.<ad>.unlockLevel ≤ id`; vurgu adı → anahtar: `hammer`, `crane`, `undo`, `thermos` aynı, `brush` → `paintBrush`, `trowel` → `trowelStart`, `shutter` → `openShutter`). `done` **ve `startOn`** (aynı denetim; olay bu bölümde hiç gerçekleşemiyorsa `tut_done_invalid`): `segmentDone` ⇒ dilim ≥ 2, `deliveryDone` ⇒ parti ≥ 2 (`flag` ⇒ k ≥ 1 partilerinden birinde o bayraklı blok), `gapPass` ⇒ geçit ≥ 1, `obstacleHit` `type: crate`/`cement_bag` ⇒ o türde engel, `type: chain` ⇒ `chained` bayraklı blok, `itemCollected` `type: screw`/`key` ⇒ o türde engel, `landed.flag` ⇒ o bayraklı blok, `landed.wind` ⇒ `wall.fan`, `steered` ⇒ `gravity.build = 'low'`, `yardFall` ⇒ `gravity.yard`, `carouselTurn` ⇒ `mode = 'carousel'`, `placementCorrect.hidden` ⇒ en az bir dilimde `?`, `yardMove.painted` ⇒ bir `paint` geçidi; **parti vurgusu ve `startOn` (GDD §14.1/5, UX §13.1):** `piece:k<p>_<i>` vurgusu yalnız `startOn.event = 'deliveryDone'` olan adımda yazılabilir ve `startOn` teslimatındaki bloğu gösterir — blok `startOn` süzgecini sağlar (`flag` ⇒ bloğun `flags`'inde) ve `segments` kipinde `p`, süzgeci sağlayan bloğu olan k ≥ 1 partilerinin teslim sırasında (`forSegment` artan, eşitlikte dizi sırası) `startOn.count`'uncusudur (varsayılan 1.); `carousel` kipinde teslim sırası oyuncuya bağlı olduğundan yalnız süzgeç denetlenir; bozulursa `tut_highlight_invalid` (ör. LEVELS Bölüm 35: ilk harçlı blok taşıyan parti); `done.at` bölgesi olayla uyumlu (`yardMove` ⇒ `x ≤ 5`, `placementCorrect` ⇒ `x ≥ 6`); zorunlu (Z) adımın `highlight`'ında en az bir `piece:` **ya da** `debris:` (GDD §14.1/4a; yoksa `tut_highlight_invalid`); `piece:` içermeyen Z adımının `done.event`'i `placementCorrect` olamaz (moloz hiçbir yerde doğru olamaz, K-16 koşul 2; olursa `tut_done_invalid`; ör. UX Bölüm 17 `debris:0` → `yardMove` geçerli); adımlar `step` 1, 2, … ardışık; **eldiven başlangıcı (LEVELS §5, Faz 2 tur 2):** `hand.kind` `drag`/`hold` ise `hand.path[0]` adımın vurgusundaki bir `piece:<i>` (parti 0) ya da `debris:<i>` (dilim 0) bloğunun JSON başlangıç hücrelerinden biridir (`shape.cells` + `x,y`; çapa yetmez), değilse `tut_highlight_invalid` (`tutorial[i].hand.path[0]`); yalnız parti bloğu / sonraki dilim molozu vurgulayan adım Faz 3'te, `tap` denetlenmez. Test "L-17 a drag / hold glove starts on a cell of a highlighted block …" | error |
+| L-17 | — | `tut_key_missing`, `tut_highlight_invalid`, `tut_done_invalid`, `tut_hold_done` (uyarı) | `tutorial.textKey` hem `tr.json` hem `en.json`'da; her `highlight` öğesi §8.2 vurgu sözlüğündendir (UX §13.1; regex şemada) **ve** bölümde vardır: `piece:<i>` < parti 0 boyu; `piece:k<p>_<i>`: `1 ≤ p` < parti sayısı, `i` < o partinin boyu; `gap:<i>` < geçit sayısı; `obstacle:<i>` < engel sayısı; `debris:<i>` < `build.debris` boyu; `cell:x,y` tahtada; `fan` ⇒ `wall.fan`; `truck` ⇒ parti sayısı ≥ 2; `booster:<b>` / `pre:<p>` ⇒ o öğe bu bölümde açık (META §4, `economy.json → boosters.<ad>.unlockLevel ≤ id`; vurgu adı → anahtar: `hammer`, `crane`, `undo`, `thermos` aynı, `brush` → `paintBrush`, `trowel` → `trowelStart`, `shutter` → `openShutter`). `done` **ve `startOn`** (aynı denetim; olay bu bölümde hiç gerçekleşemiyorsa `tut_done_invalid`): `segmentDone` ⇒ dilim ≥ 2, `deliveryDone` ⇒ parti ≥ 2 (`flag` ⇒ k ≥ 1 partilerinden birinde o bayraklı blok), `gapPass` ⇒ geçit ≥ 1, `obstacleHit` `type: crate`/`cement_bag` ⇒ o türde engel, `type: chain` ⇒ `chained` bayraklı blok, `itemCollected` `type: screw`/`key` ⇒ o türde engel, `landed.flag` ⇒ o bayraklı blok, `landed.wind` ⇒ `wall.fan`, `steered` ⇒ `gravity.build = 'low'`, `yardFall` ⇒ `gravity.yard`, `carouselTurn` ⇒ `mode = 'carousel'`, `placementCorrect.hidden` ⇒ en az bir dilimde `?`, `yardMove.painted` ⇒ bir `paint` geçidi; **parti vurgusu ve `startOn` (GDD §14.1/5, UX §13.1):** `piece:k<p>_<i>` vurgusu yalnız `startOn.event = 'deliveryDone'` olan adımda yazılabilir ve `startOn` teslimatındaki bloğu gösterir — blok `startOn` süzgecini sağlar (`flag` ⇒ bloğun `flags`'inde) ve `segments` kipinde `p`, süzgeci sağlayan bloğu olan k ≥ 1 partilerinin teslim sırasında (`forSegment` artan, eşitlikte dizi sırası) `startOn.count`'uncusudur (varsayılan 1.); `carousel` kipinde teslim sırası oyuncuya bağlı olduğundan yalnız süzgeç denetlenir; bozulursa `tut_highlight_invalid` (ör. LEVELS Bölüm 35: ilk harçlı blok taşıyan parti); `done.at` bölgesi olayla uyumlu (`yardMove` ⇒ `x ≤ 5`, `placementCorrect` ⇒ `x ≥ 6`); zorunlu (Z) adımın `highlight`'ında en az bir `piece:` **ya da** `debris:` (GDD §14.1/4a; yoksa `tut_highlight_invalid`); `piece:` içermeyen Z adımının `done.event`'i `placementCorrect` olamaz (moloz hiçbir yerde doğru olamaz, K-16 koşul 2; olursa `tut_done_invalid`; ör. UX Bölüm 17 `debris:0` → `yardMove` geçerli); adımlar `step` 1, 2, … ardışık; **eldiven başlangıcı (LEVELS §5, Faz 2 tur 2):** `hand.kind` `drag`/`hold` ise `hand.path[0]` adımın vurgusundaki bir `piece:<i>` (parti 0) ya da `debris:<i>` (dilim 0) bloğunun JSON başlangıç hücrelerinden biridir (`shape.cells` + `x,y`; çapa yetmez), değilse `tut_highlight_invalid` (`tutorial[i].hand.path[0]`); yalnız parti bloğu / sonraki dilim molozu vurgulayan adım Faz 3'te, `tap` denetlenmez. Test "L-17 a drag / hold glove starts on a cell of a highlighted block …"; **tutuş olayı (LEVELS §5, GDD §14.1/3, Faz 2 tur 3):** `done` ya da `startOn` `holdOverBuild` ise `tut_hold_done` **uyarısı** (tutuşu beklemeden bırakan oyuncuda olay gelmez; adım hamle sonu olayıyla biter, `hold` eldiveni gösterimdir), test "L-17 tut_hold_done …" | error (`tut_hold_done` warn) |
 | L-18 | — | `difficulty_sawtooth` | Zorluk etiketi testere dişi planına uyar (10, 15, 25, 35, 45, 49 Zor; 20, 30, 40, 50 Çok Zor) | warn |
 | L-19 | 8, K-27 | `unsolvable`, `moves_buffer_low`, `yao_low`, `material_short` | (solver aşaması) Çözülebilir, `moves ≥ min + tampon` (Kolay +8, Normal +5, Zor +3, Çok Zor +2), **YAO ≥ %60** (K-46). **K-27 tam denetimi:** solver çözümü çekirdekte oynatılır; her dilim aktif (carousel'de öne) geldiği anda ve her renk `c` için "o dilimin boş `c` hücresi ≤ o ana kadar teslim edilmiş, henüz kullanılmamış (sahada + kuyrukta + şantiyede yapışmış harçlı) ağır olmayan, **moloz olmayan** `c` blokların hücre toplamı" sağlanmalı (GDD K-27: sahaya taşınmış moloz arz değildir; terimler K-30 D2 ile aynı, §9.7); bozulursa `material_short` (`rule: 'K-27'`, dilim ve renkle) | error |
 | L-20 | — | `bot_band` | (bot aşaması) Orta bot kazanma oranı hedef bantta (Kolay ≥ %90, Normal %65–80, Zor %40–55, Çok Zor %25–40) | warn |
@@ -2201,7 +2218,9 @@ bloğunun üstüne, sembolün altına) pişirilir; ıslak sayacı ayrı görünt
   dörtgenler (`Graphics.fillRect`), yuvarlak koyu köşeler ve beyaz kenar oyun başına bir kez çizilen küçük `tut_spot`
   dokusunun parçalarıyla (4 köşe + 4 yay + 4 gerilmiş beyaz şerit / delik; `spotPieces.ts`) — spot değişimi doku
   yüklemez (pişmiş `Graphics` kenarı bütün deliklerin kutusu kadar doku yüklüyordu: 4×'te sürüklemenin en uzun karesi).
-  Ses bankası ön-çizimi (`SoundBank.pump`) yalnız basış/sürükleme yokken çalışır.
+  Ses bankası ön-çizimi (`AudioService.pump` → `SoundBank.pump`) ve gölgelendirici ısıtması yalnız boş karelerde çalışır:
+  basış/sürükleme yokken, hamle işlenen karede değil (bırakma, Altın Mala: `commitFrame`) ve ipuçları oynarken
+  (`player.busy`) değil (Faz 2 tur 4 #0).
 
 ### 10.3 Sahne düzeni ve nesneler
 
@@ -2276,7 +2295,12 @@ Usta Dede balonları metin ve kutu genişliği başına bir kez kurulur, **kurul
 `bakeNow`: `BakedGraphics` aksi halde ilk görünür karesinde tuval + doku yükler) ve saklanır (bölümün adım satırları bölüm
 başında, `TutorialOverlay.prepare`; bağlamsal satır sürükleme sırasında açılmaz), JUICE #55 / #57 başlık metinleri bölüm
 başında kurulur (`EventPlayer.startLevel`; dil değişince yenilenir; kazanma karelerinde metin dokusu yok), ses bankası
-ana ekranın boş karelerinde de doldurulur (`HomeScene.update` → `bank.pump`), `AudioContext` açılış ekranında oluşturulur (`AudioService.prepare`,
+giriş sahnesinin ve ana ekranın karelerinde de doldurulur (`IntroScene.update` / `HomeScene.update` → `AudioService.pump`; FTUE
+yolu Boot → Giriş → Bölüm 1 ana ekrandan geçmez, Bölüm 1 dolu bankayla açılır — Faz 2 tur 4 #0; `pump` biten sesin
+`AudioBuffer`'ını da boş karede kurar, ilk `play` kopyalamaz), görüntü toplu çizim gölgelendiricisinin doku sayısı
+varyantları (`BatchHandlerQuad`, 1 … `maxTexturesPerBatch`) aynı boş karelerde kare başına bir tane derlenir
+(`shaderWarmup.ts`; önceden Bölüm 1'in ilk kaldırışında bir program bağlanıyordu, 4×'te ≈ 4–5 ms; mobilde
+`autoMobileTextures` tek doku kullanır, iş kalmaz), `AudioContext` açılış ekranında oluşturulur (`AudioService.prepare`,
 etkinleştiren ilk girdi yalnız `resume()` + sessiz tampon) ve sürükleme yolu bölüm başında bir kez kuru çalıştırılır
 (`warmDragPath`: `tryBeginDrag`, `follow`, `classify`, `computeFall`, `shadowLook`, gölge görüntüleri, görünümün kalkışı).
 
@@ -2297,7 +2321,9 @@ etkinleştiren ilk girdi yalnız `resume()` + sessiz tampon) ve sürükleme yolu
 6. Geçme ölçütü (brif §14): 4× yavaşlatmada **ortalama ≥ 50 FPS**, p95 ≤ 25 ms, sürüklemede > 50 ms uzun kare yok,
    girdi gecikmesi ≤ 1 kare. `tools/perf.ts` (Faz 2 tur 1 #16) CPU tarafında kapı: `drag` ve `win` için ortalama ≥ 50
    FPS ve p95 ≤ 25 ms, `drag`'de > 50 ms kare 0, FTUE ≤ 10 s; ölçülemeyen değer (`null`: kare yok, örnekleyici bozuk)
-   **FAIL**; girdi gecikmesi kare sayısı olarak raporlanır (SwiftShader'da kare temposu yazılımsal GPU'nun → gösterge). **FTUE kapısı:** soğuk başlangıç, 4× CPU + CDP "Fast 4G" (web ilk ziyaret), gezinme
+   **FAIL**; girdi gecikmesi kare sayısı olarak raporlanır (SwiftShader'da kare temposu yazılımsal GPU'nun → gösterge).
+   Tanı satırı (Faz 2 tur 4): her kovanın en uzun CPU karesi bölünmüş yazılır — hangi sürükleme (`L<bölüm> m<hamle>`),
+   dokunma işleyicileri (+ olay türleri), `update`, `render`, penceredeki sıra (`PerfStats.cpuMaxFrame`). **FTUE kapısı:** soğuk başlangıç, 4× CPU + CDP "Fast 4G" (web ilk ziyaret), gezinme
    başlangıcı → `window.__levelInteractive` ≤ 10 s (giriş sahnesinin 3 paneli dahil, UX §2.1: dokunmadan 8,2 s +
    1,8 s yükleme aşım payı = 10,0 s; Phaser paket ayrıştırması payın içinde). Yükleme sırası: font +
    3 giriş paneli hazır olunca paneller başlar; açılış atlası, `level_001` derlemesi ve bölüm pişirmesi panellerin
@@ -2369,6 +2395,9 @@ interface InLevel {
   outcomeWindow: 'none' | 'outOfMoves';          // açık kayıp penceresi (kaçış yolu yok); kazanmada inLevel zaten silinir
   levelHash: string; rulesVersion: number;       // teknik ek: levelHash(CompiledLevel.data) + RULES_VERSION (aşağıda)
   attemptId: string; startedAt: number;          // can bölüm başında ayrıldı (META)
+  tutorial: { index: number; shown: boolean; count: number; actions: number } | null;
+                                                 // K-43 öğretici konumu (§8.2 "K-43 devamında öğretici", Faz 2 tur 3 #1);
+                                                 // değişince hemen yazılır; eski kayıtta yok → null (z._default)
 }
 ```
 
@@ -2740,6 +2769,15 @@ node", "i18n {town} and {company} filled without caller params".
     denetimi (`sfx.ts`'in istediği her ad ASSET §13 listesinde ve) **iki kümenin birleşiminde** aranır; `_doc` ile
     başlayan anahtarlar ad sayılmaz. Eksik ad açılışta geliştirme hatasıdır, üretimde sessiz geçer. Testler:
     "ASSET 13 every sfx name resolves in audio.sfx or audio.seq", "audio seq mix peak <= 1".
+- **Dilimleme (Faz 2 tur 4 #0):** dilim birimi bütün ses değil, `RENDER_CHUNK_SAMPLES` = 512 örnektir. `ZzfxRender`
+  (`zzfxSynth.ts`) ZzFX döngüsünün durumunu (frekans, kayma, faz, filtre, sayaçlar) çağrılar arasında saklar,
+  `run(n)` en çok `n` örnek çizer ve kaldığı yerden sürer; `buildSamples` bunun sona kadar tek koşusudur (aritmetik ve
+  sırası aynı: çıktı bit bit eşit, test). `RecipeRender` `audio.seq`'i adım adım çizer, her dilimi çıktıya ekler (toplama
+  sırası adım sırası: eski karışımla aynı float32 toplamlar), sonra tepe ve ölçek geçişleri de dilimli. `SoundBank.pump`
+  bütçe dolana kadar dilim çizer (çağrı başına en az bir dilim), yarım kalan sesi sonraki karede sürdürür; aşım en çok
+  bir dilimdir (512 örnek ≈ 0,13 ms 1×, ≈ 0,5 ms 4×). Eski davranış her çağrıda en az bir **bütün** sesi çiziyordu:
+  `music_win` tek başına 11,5 ms (1×) ≈ 46 ms (4×) idi. Çağıranlar `AudioService.pump` üzerinden: `IntroScene`,
+  `HomeScene`, `LevelScene` (§10.6); `AudioService.pump` her çağrıda biten bir sesin `AudioBuffer`'ını da kurar.
 - Ayarlar: ses/müzik ayrı kısılır; sekme gizlenince `sound.pauseAll()`.
 
 ### 11.7 Haptik
@@ -2881,7 +2919,9 @@ mağaza/web üretim paketi olarak dağıtılmaz. DOM katmanıdır (Phaser değil
   eşitlik testi, Monte Carlo beklenen değerler, save migration zinciri (eski sürüm fikstürleri), `inLevel` devamı.
 - **Sahne duman testi (Faz 2, Playwright, harness paketi):** Bölüm 1 açılır, CDP dokunma olaylarıyla bir blok duvar
   üstünden taşınır, `window.__harness.state()` ile çekirdek durumu denetlenir; sayfa yeniden yüklenince bölüm aynı
-  durumdan sürer (K-43); konsolda hata olmamalı.
+  durumdan sürer (K-43; öğretici adımı da: Bölüm 3 zorunlu adım kapısı, Bölüm 1'de iptal edilen sınır bırakması, Bölüm
+  2 hızlı bırakma — `state().savedAttempt.tutorial`); Altın Mala seçimi `tut.ctx.goldtrowel`'i kapatır
+  (`state().contextTip`); konsolda hata olmamalı.
 - **Performans:** §10.7 + `vitest bench`.
 - Ortam: Vitest `environment: 'node'` (mevcut); core testleri DOM'suz koşar (saflığın ek kanıtı).
 

@@ -3,3 +3,5 @@ dist
 artifacts/screens
 coverage
 *.log
+artifacts/harness
+artifacts/perf

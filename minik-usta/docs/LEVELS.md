@@ -248,7 +248,7 @@ zorunlu adım olsaydı `a` spot ışığı dışında kalır ve oyuncu kilitleni
 | YAO (çözüm) | 3 duvar üstü / 3 yerleşim = **%100** |
 | Öğretici | `tut.l2.pattern`, `tut.l2.shadow`, `tut.l1.match` (adımlar aşağıda; oyuncu metninde renk adı yok) |
 
-**Tasarım niyeti:** Oyuncu aynı renk bölgesini doğru yönelimli bloğun doldurduğunu, ters yönelimli C3'ün (`c`, `C3_180`) gölgede "hatalı" (!) göründüğünü, doğru bloğun (`b`, `C3_0`) gölgesinin ✓ gösterdiğini keşfeder (öğretici adım 2 `c`'yi, adım 3 `b`'yi tutturur; betikle doğrulandı: 1. doğru yerleşimden sonra `c`'nin x=6 gölgesi `color` (birincil) + `support`, `b`'ninki doğru).
+**Tasarım niyeti:** Oyuncu aynı renk bölgesini doğru yönelimli bloğun doldurduğunu, ters yönelimli C3'ün (`c`, `C3_180`) gölgede "hatalı" (!) göründüğünü, doğru bloğun (`b`, `C3_0`) gölgesinin ✓ gösterdiğini keşfeder (öğretici adım 2 `c`'yi tutturup gölgedeki "!"'i gösterir, `b`'yi de vurgular ve `b`'nin doğru yerleşimiyle biter; adım 3 `c`'yi ✓ gölgeyle yerleştirtir; betikle doğrulandı: 1. doğru yerleşimden sonra `c`'nin x=6 gölgesi `color` (birincil) + `support`, `b`'ninki doğru; `b`'den sonra `c`'ninki doğru).
 
 Blockout (D = duvar sınırı, çizimde ayrı sütun; çekirdekte sıfır genişlik (R-03): `#` kapalı, `=` geçit, `:` duvar üstü hava; şantiyede 1. dilimin planı, `+` = `.` boş kalacak hücre, `~` = plan dışı):
 
@@ -290,8 +290,25 @@ Blockout (D = duvar sınırı, çizimde ayrı sütun; çekirdekte sıfır geniş
 
 Öğretici adımları (`tutorial[]`):
 1. Y · `panorama`, `build` · — · `tut.l2.pattern` · `placementCorrect` ×1
-2. Y · `piece:2`, `build` · hold: `c` (4,7)'den (sol üst hücresi; `c` C3_180, çapa (4,6) `d`'nin hücresidir) x=6 üstünde (gölge "!") · `tut.l2.shadow` · `{ event: holdOverBuild, count: 1, minMs: 500 }`
-3. Y · `piece:1`, `build` · drag: `b` → x=6 (gölge ✓) · `tut.l1.match` · `placementCorrect` ×1
+2. Y · `piece:2`, `piece:1`, `build` · hold: `c` (4,7)'den (sol üst hücresi; `c` C3_180, çapa (4,6) `d`'nin hücresidir) x=6 üstünde (gölge "!") · `tut.l2.shadow` · `placementCorrect` ×1
+3. Y · `piece:2`, `build` · drag: `c` (4,7)'den → x=6 (`b`'den sonra gölge ✓) · `tut.l1.match` · `placementCorrect` ×1
+
+Adım sırası zamandan ve sürükleme hızından bağımsızdır (Faz 2 tur 3; §5 "Öğretici zamandan bağımsız ve görünür"): adım 1
+ilk doğru yerleşimle (`A` ya da eşdeğeri `g`, (6,0)), adım 2 ikinci doğru yerleşimle, adım 3 üçüncüsüyle (kazanış) biter.
+K-34 sırayı zorunlu kılar: y=2 (`WW`) satırını yalnız `b` (`C3_0` W, (6,2)) doldurur (`O4` W (7,3)'ü örter, Y ve G
+blokların rengi tutmaz), y=3–4'ü (`WY`/`YY` kalanı) yalnız `c` (6,3)'te; bu yüzden adım 1'den sonraki ilk doğru
+yerleşim her zaman `b`'nin, ondan sonraki `c`'nindir. Adım 2'nin hold eldiveni gösterimdir: `c`'nin gölgesi x=6'da "!"
+(`color` + `support`), metin "Gölgede ✓ varsa yer doğru." `b`'nin hamlesi boyunca ekranda kalır (vurgulu `b`'nin gölgesi
+✓); adım 3 `b` yerleşince açılır, `c`'nin hamlesinin başında ekrandadır, eldiven `c`'yi (4,7)'den x=6'ya götürür (gölge
+artık ✓) ve kazanışla biter. Önceki veride adım 2 `{ event: holdOverBuild, count: 1, minMs: 500 }`, adım 3 `piece:1`
+drag (`b`) idi: normal hızda adım 2 `b`'nin 500 ms tutuşuyla bitiyor, adım 3 aynı sürüklemenin ortasında açılıp aynı
+bırakmayla kapanıyordu (hiçbir hamlenin başında ekranda değil, 61/61 sıra); beklemeden bırakan oyuncuda adım 2 kazanınca
+ekranda kalıyor, adım 3 hiç görünmüyordu (61/61). Betik (gerçek çekirdek + `TutorialController`, tutuş sinyalli ve
+sinyalsiz iki model, ✓ yerleşimler + ≤ 1 saha hamlesinde 61, ≤ 2'de 1.221 kazanan sıra): her sırada 3 adım da gösterilir,
+hiçbiri atlanmaz, her adım bir hamlenin başında ekrandadır, kazanınca açık adım kalmaz. K-43 devamında ekrandaki adım
+kayıttaki öğretici konumundan (`inLevel.tutorial`) aynen geri gelir; konumu olmayan eski kayıtta adım hamle kaydından
+kurulur ve adım bitişleri sürükleme sinyaline değil hamle sonu olayına dayandığı için o durumda da canlı oyundakiyle
+aynıdır (GDD K-43 madde 3).
 
 ### Bölüm 3 — Ön Duvar (Front Wall)
 
@@ -362,11 +379,16 @@ y0–y1'i yalnızca `O4` W doldurur. Betik: min 3, YAO %67 (en iyi), çıkmaz yo
 Öğretici adımları (`tutorial[]`):
 1. Y · `piece:0`, `cell:6,0`, `cell:7,1` · drag: `a` → x=6 · `tut.l1.match` · `placementCorrect` ×1
 2. Z · `gap:0`, `piece:1` · drag: `f` sağa, geçitten · `tut.l3.gap` · `placementCorrect` ×1
-3. Y · `piece:1` · tap · `tut.l3.rail` · `placementCorrect` ×1
+3. Y · `piece:1`, `piece:2` · drag: `b` (2,7)'den (sol hücresi; çapa) → Vinç Alanı (2,8) → duvar üstünden x=6 (6,8); gölge (6,3)'te ✓ · `tut.l3.rail` · `placementCorrect` ×1
 
-Adım 2, `f` rayda (6,2)'ye doğru yerleşince biter; adım 3 o anda açılır, raydaki `f`'yi gösterir ("Sıradakini üstünden
-aşır") ve sıradaki doğru yerleşimle biter: `b` (ya da eşdeğeri `e`) duvar üstünden (6,3)'e (el çözümü 3. hamle) ya da
-`l` raydan (6,3)'e. Metin böylece `b` hamlesi boyunca ekranda kalır (Faz 2 tur 1 #1). Önceki veride adım 2 `gapPass` ×1
+Adım 2, `f` rayda (6,2)'ye doğru yerleşince biter; adım 3 o anda açılır. Spot ışığı raydaki `f`'yi ("Raydaki blok
+düşmez") ve sıradaki `b`'yi gösterir; eldiven `b`'yi (2,7)'den Vinç Alanı'ndan duvarın üstünden x=6'ya götürür
+("Sıradakini üstünden aşır"; `b` (6,3)'e, `f`'nin üstüne iner) ve oyuncu vurgulu `b`'yi kaldırınca kaybolur (UX §13.1).
+Adım sıradaki doğru yerleşimle biter: `b` (ya da eşdeğeri `e`) duvar üstünden (6,3)'e (el çözümü 3. hamle) ya da `l`
+raydan (6,3)'e. Metin böylece `b` hamlesi boyunca ekranda kalır (Faz 2 tur 1 #1). Önceki veride adım 3 yalnız `piece:1`
+vurgulayıp tap eldiveniyle raydaki `f`'ye (6,2) basıyordu: `f` K-14'e göre kilitli olduğu için dokunuş tepkisizdi,
+"doğru dokunuş" olamadığından eldiven `b`'nin hamlesi boyunca `f`'de kalıyor, sıradaki blok vurgulanmıyordu (Faz 2 tur 4;
+§5 "Eldiven vurgulu bloktan başlar"). Önceki veride adım 2 `gapPass` ×1
 idi: adım 3 sürükleme ortasında başlayıp aynı sürüklemenin bırakılmasıyla (`f`'nin ray yerleşimi) ≈ 0,4 sn'de bitiyordu.
 Adım 3'e `startOn: { event: placementCorrect }` eklemek de metni `b` hamlesine taşır, ama `gapPass` ile bırakma arasında
 (parmak hâlâ bloktayken) ekranda adım kalmaz; bırakma iptal edilir ya da `f` yanlış satıra (6,3) konup geri sekerse
@@ -1198,13 +1220,20 @@ güvencesi GDD §14.1 madde 4b).
       adım olayla biter; ör. Bölüm 4 adım 1 `placementCorrect` ×1). Adım, metninin anlattığı hamle boyunca ekrandadır:
       sürükleme sinyaliyle açılan adım yalnız o sürüklemeyi anlatır (ör. Bölüm 1 adım 2 "bırak"); sonraki hamleyi
       yönlendiren adım önceki hamlenin sonucuyla (hamle sonu olayı) açılır ve o hamlenin başında ekrandadır (ör. Bölüm 3
-      adım 3: adım 2 `placementCorrect` ×1 ile biter). Tarama: gerçek çekirdek + `TutorialController`, ✓ yerleşimler +
-      1 saha hamlesi, `timeoutMs` her hamle sırasına yerleştirilir (Faz 2 tur 1).
+      adım 3: adım 2 `placementCorrect` ×1 ile biter). Adımın bitişi sürükleme hızına bağlı olmaz: `holdOverBuild`
+      (`minMs`) tutuşu beklemeden bırakan oyuncuda hiç gelmez, bu yüzden 1–50 verisinde `done` ya da `startOn` olarak
+      yazılmaz; `hold` eldiveni gösterimdir, adım hamle sonu olayıyla biter (ör. Bölüm 2 adım 2 `placementCorrect` ×1,
+      Faz 2 tur 3). Tarama: gerçek çekirdek + `TutorialController`, ✓ yerleşimler + 1 saha hamlesi, `timeoutMs` her
+      hamle sırasına yerleştirilir (Faz 2 tur 1); sürükleme sinyalleri tutuşlu (her şantiye bırakması `holdOverBuild`
+      üretir) ve tutuşsuz (hiç üretmez) iki modelle ayrı ayrı (Faz 2 tur 3).
 - [ ] **Eldiven vurgulu bloktan başlar:** `drag` ya da `hold` eldiveninin `hand.path[0]`'ı, el çözümünde adımın açıldığı
       anda vurgulu bir `piece:` ya da `debris:` bloğunun kapladığı hücredir (çapa değil: çapa bloğun hücresi olmayabilir)
       ve o blok o anda tutulabilir (K-09). Vurgulu blok adım açılmadan taşınmıyorsa bu hücre JSON'daki başlangıç
       hücrelerinden biridir (Bölüm 1–5'in bütün `drag`/`hold` adımları). Örnek: Bölüm 2 adım 2 `c` (`C3_180`, çapa (4,6),
       hücreleri (5,6), (4,7), (5,7)) → `path[0]` = (4,7); (4,6) `d`'nin hücresidir ve `d` başta tutulamaz (Faz 2 tur 2).
+      `tap` eldiveni kilitli (K-14) ya da tutulamayan (K-09) bloğa basmaz: o dokunuş tepkisizdir ve eldiven adım boyunca
+      kalır; böyle bir bloğu anlatan adım onu yalnız vurgular, eldiven sıradaki hamlenin tutulabilir bloğunu gösterir
+      (ör. Bölüm 3 adım 3: `f` rayda vurgulu, `drag` eldiveni `b`'den; Faz 2 tur 4).
 - [ ] Türetilen yeni mekanik ≤ 1 ve `teaches` ile birebir (OBSTACLES "Veri imzası").
 - [ ] **Z adımı kilitlemez:** zorunlu (Z) adım yalnızca istediği hamle, önceki adımın tamamlanabildiği **her** durumda
       (her hamle sırası ve `timeoutMs`'in hamlelere göre her dolma anı dahil) geçerli ve K-34'e uygunken başlar;

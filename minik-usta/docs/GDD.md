@@ -674,10 +674,22 @@ Galibiyet serisi bonusu (META.md) aynı anda uygulanır ve güçlendiricilerle t
    kapanması **kayıp değildir**. Kayıp yalnızca (a) onaylı çıkışla (`m ≥ 1`) ya da (b) K-29'da teklifin reddiyle olur.
    - Kayıt: bölüm başında ve her eylemden sonra (K-35 adım 12 bittiğinde) ve `pagehide`/`visibilitychange` anında
      `inLevel = { levelId, levelHash, rulesVersion, seed, actions[], offersUsed, adOfferUsed, offerSpendCoins,
-     preBoosters, streakTier, outcomeWindow }` yazılır (`levelHash`, `rulesVersion`, `offerSpendCoins` madde 4 içindir).
-     `actions[]` = sürükleme hamleleri (`drag.via` ve `steer` dahil), güçlendirici kullanımları, kabul edilen teklifler.
+     preBoosters, streakTier, outcomeWindow, tutorial }` yazılır (`levelHash`, `rulesVersion`, `offerSpendCoins` madde 4
+     içindir). `actions[]` = sürükleme hamleleri (`drag.via` ve `steer` dahil), güçlendirici kullanımları, kabul edilen
+     teklifler. `tutorial: { index, shown, count, actions }` = ekrandaki öğretici adımının konumu (`index` sıralı
+     `tutorial[]` indeksi, `tutorial[]` uzunluğu = öğretici bitti; `shown` adım ekranda, false = `startOn` bekliyor;
+     `count` adımın koşuluna sayılan olay; `actions` konumun içerdiği `actions[]` girdisi, `start` dahil); konum her
+     değiştiğinde (sürükleme sinyali, hamle sonu, dokunuş, süre) yazılır; öğreticisiz bölümde ve eski kayıtta `null`.
    - Açılış: `inLevel` varsa oyun ana ekrana değil o bölüme döner; durum belirlenimci yeniden oynatmayla (ya da durum
      tamponundan) kurulur ve sonuç bit bit aynıdır. Ayrılan can ayrılmış kalır. Başka bölüm başlatılamaz.
+   - Açılışta ekrandaki öğretici adımı (zorunlu kapısı, `tut.ctx.*` işareti ve sayacıyla) aynen geri gelir; kayıtta
+     konum yoksa (ya da konum bu bölümün öğreticisine uymuyorsa: indeks, sayaç ya da `actions` aralık dışı; `startOn`'suz adım
+     `shown` false) adım hamle kaydından kurulur. Konumdan sonra kayda geçmiş eylemlerin (kapanış hamlenin efektleri
+     oynarken geldiyse) yalnız hamle sonu olayları sayılır; devam kayıttaki adımdan ileri gitmez ve kayıtta olmayan bir
+     sürükleme sinyali (iptal edilen sürüklemenin `overWall` / `gapPass`'ı, `holdOverBuild` süresi) varsayılmaz.
+     Örnek: Bölüm 1 adım 1 (`overWall`) ekrandayken `a` sınırı geçip iptal edilir (adım 2 açılır, hamle yok), sonra
+     uygulama kapanır → açılışta adım 2 ekranda (hamle kaydı tek başına adım 1'i kurardı). Bölüm 3 adım 2 (Z) ekrandayken
+     kapanır → açılışta aynı Z adımı ve spot dışı dokunuş kapısı geri gelir.
    - Sürükleme ortasında kapanma = o sürükleme iptal (K-07 satır 1). G-H sayacı ve animasyonlar sıfırdan başlar.
    - "Hamleler bitti" penceresi açıkken kapanırsa açılışta **aynı pencere** aynı teklif numarasıyla gelir (kaçış yolu
      yok); kazanma ekranındayken kapanırsa ödüller verilmiş sayılır.
@@ -898,7 +910,10 @@ Brif §12 veri tipine product-lead'in istediği ekler (kesin şema TECH_DESIGN'd
      sonu olayı bir sürükleme hamlesinde ya da bir güçlendirici kullanımında (mini hat, Çekiç vuruşu dahil) **en çok 1
      kez** sayılır: aynı hamlede eşleşen birden çok etki ("en az bir" tanımları; ör. iki kasa kat kaybetti, üç blok
      düştü) `count`'u 1 artırır.
-   - `minMs` yalnız `holdOverBuild` içindir (ör. Bölüm 2: `{ event: 'holdOverBuild', count: 1, minMs: 500 }`).
+   - `minMs` yalnız `holdOverBuild` içindir (biçim: `{ event: 'holdOverBuild', count: 1, minMs: 500 }`). Bölüm verisi
+     `holdOverBuild`'i adım bitişi (`done`) ya da `startOn` olarak kullanmaz: tutuşu beklemeden bırakan oyuncuda olay
+     gelmez ve adım kazanana kadar ekranda kalır (LEVELS §5 "Öğretici zamandan bağımsız ve görünür"). `hold` eldiveni
+     gösterimdir; adım hamle sonu olayıyla biter (ör. Bölüm 2 adım 2: `{ event: 'placementCorrect', count: 1 }`).
    - `at: [x, y]` yalnız `yardMove` ve `placementCorrect` içindir: olay yalnızca blok bu çapaya yerleşince sayılır
      (ör. Bölüm 7 kazı adımı: `{ event: 'yardMove', count: 1, at: [0, 6] }`).
    - UX §13.2'deki 11–38. bölüm satırlarının bu sözlükle `done` eşlemesi LEVELS §3 "11–38 `tutorial[]` `done`

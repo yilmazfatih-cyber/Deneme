@@ -190,7 +190,8 @@ const ROWS: { readonly [K in JuiceId]: Row } = {
     ease: E.slide,
     sounds: ['sfx_segment'],
     haptic: 'heavy',
-    particles: parts('confetti', P.segment),
+    // JUICE §0 rule 8: no confetti when reduced (like #55); the segment flies to the panorama (information) instead
+    particles: parts('confetti', P.segment, 0),
     lock: true,
   },
   19: {

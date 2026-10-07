@@ -88,6 +88,7 @@ describe('UX 1 / UX 12 launch route (K-43, D-018)', () => {
         attemptId: 'a',
         startedAt: 0,
         bridgeEventId: null,
+        tutorial: null,
       },
       window: 'outOfMoves',
     });

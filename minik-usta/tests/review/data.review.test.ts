@@ -1364,7 +1364,10 @@ describe('review GDD 14.1 tutorial data (L-17)', () => {
       { event: 'holdOverBuild', minMs: 500 },
     ];
     for (const done of possible)
-      expect(l17(withTutorial(1, [soft(['build'], done)])), JSON.stringify(done)).toEqual([]);
+      expect(l17(withTutorial(1, [soft(['build'], done)])), JSON.stringify(done)).toEqual(
+        // possible, but drag-speed dependent: a warning since Faz 2 tur 3 (LEVELS 5, L-17 `tut_hold_done`)
+        'event' in done && done.event === 'holdOverBuild' ? ['tut_hold_done'] : [],
+      );
     expect(l17(withTutorial(5, [soft(['build'], { event: 'segmentDone' })]))).toEqual([]);
     expect(l17(withTutorial(5, [soft(['build'], { event: 'deliveryDone' })]))).toEqual([]);
     expect(l17(withTutorial(3, [soft(['build'], { event: 'gapPass' })]))).toEqual([]);

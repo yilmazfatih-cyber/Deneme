@@ -2,6 +2,7 @@
  * Ghost trail of one block (JUICE #3 drag trail "3 karelik soluk iz (%25)", #6 wall pass "3 hayalet %30 → 0", #10 fall
  * "2 karelik dikey iz (%20)"): up to 3 pooled images repeat where the block was 1, 2, 3 frames ago (a fixed ring buffer;
  * no allocation per frame). `tint` null shows the block itself, a colour shows a filled silhouette (white ghosts).
+ * `GhostTrails` keeps the block-image trails (#3, #10) and the white wall-pass ghosts (#6) on separate pools.
  */
 import Phaser from 'phaser';
 import { FRAME } from '../../theme/textures.ts';
@@ -99,5 +100,38 @@ export class Trail {
         .setAlpha(base * (1 - k / (this.frames + 1)))
         .setVisible(true);
     });
+  }
+}
+
+/**
+ * The trails of the EventPlayer: block-image trails (`tint` null: #3 drag, #10 fall) and coloured silhouettes (#6 white
+ * wall-pass ghosts, fading) run on two pools. One drag frame sends #6 (`crossedWall`) and then #3 (`moved`); on one
+ * shared trail the #3 request — repeated every frame above `drag.trailMinSpeedCells` — replaced the white ghosts at once
+ * (no tint, 25 %, no fade), so a fast wall pass never showed #6 (review Faz 2 tur 4 #1). The silhouettes are created
+ * second, so at the same depth they draw over the block ghosts.
+ */
+export class GhostTrails {
+  readonly block: Trail;
+  readonly wall: Trail;
+
+  constructor(scene: Phaser.Scene) {
+    this.block = new Trail(scene);
+    this.wall = new Trail(scene);
+  }
+
+  /** A coloured trail fades out over `ms` (#6); a block-image trail keeps its alpha (#3, #10). */
+  begin(view: PieceView, time: number, frames: number, alpha: number, tint: number | null, ms: number): void {
+    if (tint === null) this.block.begin(view, time, frames, alpha, null, ms, false);
+    else this.wall.begin(view, time, frames, alpha, tint, ms, true);
+  }
+
+  stop(view?: PieceView): void {
+    this.block.stop(view);
+    this.wall.stop(view);
+  }
+
+  update(now: number): void {
+    this.block.update(now);
+    this.wall.update(now);
   }
 }

@@ -131,6 +131,22 @@ export const SessionActionSchema = z.discriminatedUnion('kind', [
 ]);
 
 /**
+ * K-43 tutorial position (TECH §8.2 "K-43 devamında öğretici", review Faz 2 tur 3 #1): the step the player saw, so a
+ * resume reopens it exactly — the action log alone cannot (a cancelled drag's `overWall` / `gapPass` is not logged,
+ * a hold has no duration in it). `index` = step index in the sorted `tutorial[]` (`tutorial.length` = finished),
+ * `shown` = on screen (false: waiting for its `startOn`), `count` = events counted toward its `done` / `startOn`,
+ * `actions` = how many `actions[]` entries (`start` included) the position includes: the move ends after it (a kill
+ * while the last move's cues played) are applied on resume.
+ */
+export const TutorialAtSchema = z.object({
+  index: nonNeg(),
+  shown: z.boolean(),
+  count: nonNeg(),
+  actions: z.int().check(z.gte(1)),
+});
+export type TutorialAt = z.output<typeof TutorialAtSchema>;
+
+/**
  * Running attempt (TECH §11.1 `InLevel`; GDD K-43 item 3). Fields beyond TECH: `mode` (the same `level_end.mode` after a
  * resume), `movesMade` (`m` after the last action, for `level_resume*` without replay), `bridgeEventId` (the attempt
  * counts for a Wobbly Bridge run: `voidAttempt` lowers that run's spend and sets `voidNotice.bridge`).
@@ -152,6 +168,8 @@ export const InLevelSchema = z.object({
   attemptId: z.string(),
   startedAt: z.number(),
   bridgeEventId: z.nullable(z.string()),
+  /** The tutorial step on screen (`TutorialAtSchema`); null = no tutorial position yet (level without one, old save). */
+  tutorial: z._default(z.nullable(TutorialAtSchema), null),
 });
 
 /** `recordAction` counters: `m` after the action and the coins paid for an accepted offer. */
@@ -695,6 +713,7 @@ export class SaveService {
         attemptId,
         startedAt,
         bridgeEventId: a.bridgeEventId ?? null,
+        tutorial: null,
       };
     });
     return attempt;
@@ -727,6 +746,35 @@ export class SaveService {
       if (entry.source === 'offerAd') il.adOfferUsed = true;
       il.offerSpendCoins += info.offerCoins ?? 0;
       il.outcomeWindow = 'none';
+    }
+    this.#write();
+  }
+
+  /**
+   * K-43 tutorial position (review Faz 2 tur 3 #1): kept current in `inLevel.tutorial` and written at once when it
+   * changes (a step change by a drag signal, a move end, a timeout), so every action record and a `pagehide` /
+   * `visibilitychange` write carry the step on screen. Same hot path as `recordAction` (in place, entry checked only).
+   * No attempt, or the same position: nothing written.
+   */
+  setTutorial(at: TutorialAt | null): void {
+    const il = this.#data.inLevel;
+    if (il === null) return;
+    const cur = il.tutorial;
+    if (
+      at !== null &&
+      cur !== null &&
+      cur.index === at.index &&
+      cur.shown === at.shown &&
+      cur.count === at.count &&
+      cur.actions === at.actions
+    )
+      return;
+    if (at === null && cur === null) return;
+    if (at === null) il.tutorial = null;
+    else {
+      const parsed = TutorialAtSchema.safeParse(at);
+      if (!parsed.success) throw new Error(`setTutorial: invalid position\n${z.prettifyError(parsed.error)}`);
+      il.tutorial = parsed.data;
     }
     this.#write();
   }

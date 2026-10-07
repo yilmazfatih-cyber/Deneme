@@ -34,6 +34,8 @@ interface Bucket {
   readonly input: number[];
   readonly inputFrames: number[];
   readonly long: number[];
+  /** Breakdown of the frame with the longest CPU side (diagnostics of `cpuMax`). */
+  worst: PerfStats['cpuMaxFrame'];
 }
 
 function quantile(sorted: readonly number[], q: number): number {
@@ -59,6 +61,10 @@ export class PerfSampler {
   private preRender = 0;
   private handlerStart = 0;
   private handlerMs = 0;
+  /** Touch event types dispatched since the previous frame (diagnostics). */
+  private handlerTypes = new Set<string>();
+  /** Recorded frames since the current recording window started. */
+  private windowFrame = 0;
 
   constructor(game: Phaser.Game) {
     game.events.on(Phaser.Core.Events.PRE_STEP, () => {
@@ -73,6 +79,7 @@ export class PerfSampler {
         type,
         () => {
           this.handlerStart = performance.now();
+          this.handlerTypes.add(type);
         },
         { capture: true, passive: true },
       );
@@ -113,6 +120,7 @@ export class PerfSampler {
         input: [],
         inputFrames: [],
         long: [],
+        worst: null,
       };
       this.buckets.set(label, b);
     }
@@ -120,6 +128,8 @@ export class PerfSampler {
     this.prevTs = null;
     this.pendingDrawn = [];
     this.handlerMs = 0;
+    this.handlerTypes.clear();
+    this.windowFrame = 0;
   }
 
   stop(): void {
@@ -168,6 +178,7 @@ export class PerfSampler {
       inputFramesMax: inputFrames[inputFrames.length - 1] ?? 0,
       longFrames: b.long.length,
       longestFrameMs: round(Math.max(0, ...b.long), 1),
+      cpuMaxFrame: b.worst,
     };
   }
 
@@ -179,17 +190,32 @@ export class PerfSampler {
   private frame(rafTime: number): void {
     const handlers = this.handlerMs;
     this.handlerMs = 0;
+    const touches = this.handlerTypes.size > 0 ? [...this.handlerTypes].join('+') : '';
+    this.handlerTypes.clear();
     this.frameSeq += 1;
     const b = this.active;
     if (!b) return;
     const now = performance.now();
     b.frames += 1;
+    this.windowFrame += 1;
     if (this.prevTs !== null) b.intervals.push(rafTime - this.prevTs);
     this.prevTs = rafTime;
+    const cpu = handlers + Math.max(0, now - this.preStep);
+    const update = Math.max(0, this.preRender - this.preStep);
+    const render = Math.max(0, now - this.preRender);
     b.work.push(Math.max(0, now - rafTime));
-    b.cpu.push(handlers + Math.max(0, now - this.preStep));
-    b.update.push(Math.max(0, this.preRender - this.preStep));
-    b.render.push(Math.max(0, now - this.preRender));
+    b.cpu.push(cpu);
+    b.update.push(update);
+    b.render.push(render);
+    if (b.worst === null || cpu > b.worst.cpuMs)
+      b.worst = {
+        cpuMs: round(cpu),
+        handlersMs: round(handlers),
+        updateMs: round(update),
+        renderMs: round(render),
+        touches,
+        frameInWindow: this.windowFrame,
+      };
     for (const d of this.pendingDrawn) {
       b.input.push(Math.max(0, now - d.eventTs));
       b.inputFrames.push(this.frameSeq - d.seq);

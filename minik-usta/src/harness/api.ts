@@ -120,10 +120,30 @@ export interface HarnessState extends HarnessStatus {
   readonly busy: boolean;
   readonly locked: boolean;
   readonly tutorial: TutorialInfo | null;
+  /** The glove of the step on screen (UX §13.1): its gesture and whether the first right touch hid it (null: none). */
+  readonly tutorialHand: { readonly kind: 'tap' | 'drag' | 'hold'; readonly hidden: boolean } | null;
+  /**
+   * Contextual Usta Dede lines (UX §13.2, `tut.ctx.<topic>`): the one on screen, the ones waiting, and the topics the
+   * account has seen (`seenContextTips`).
+   */
+  readonly contextTip: {
+    readonly showing: string | null;
+    readonly queued: readonly string[];
+    readonly seen: readonly string[];
+  };
   /** Saved lives (META: `stored`, and the one `reserved` by the running attempt). */
   readonly lives: { readonly stored: number; readonly reserved: number };
-  /** K-43 saved attempt (`inLevel`). */
-  readonly savedAttempt: { readonly levelId: number; readonly actions: number } | null;
+  /** K-43 saved attempt (`inLevel`): level, log length and the saved tutorial position (`inLevel.tutorial`). */
+  readonly savedAttempt: {
+    readonly levelId: number;
+    readonly actions: number;
+    readonly tutorial: {
+      readonly index: number;
+      readonly shown: boolean;
+      readonly count: number;
+      readonly actions: number;
+    } | null;
+  } | null;
   readonly reducedMotion: boolean;
   /** Times the level scene ran `create` (TECH §10.4: level changes reuse it — home sleeps it, the next level wakes it). */
   readonly levelCreates: number;
@@ -173,6 +193,18 @@ export interface PerfStats {
   /** `long-animation-frame` entries (Chromium 123+) during the phase, and the longest one. */
   readonly longFrames: number;
   readonly longestFrameMs: number;
+  /**
+   * The frame with the longest CPU side: its split (touch handlers, update, render), the touch events dispatched before
+   * it (`touchstart+touchmove`, `touchend`, … ; '' none) and its index in its recording window (1 = first frame).
+   */
+  readonly cpuMaxFrame: {
+    readonly cpuMs: number;
+    readonly handlersMs: number;
+    readonly updateMs: number;
+    readonly renderMs: number;
+    readonly touches: string;
+    readonly frameInWindow: number;
+  } | null;
 }
 
 export interface HarnessApi {

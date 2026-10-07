@@ -5,6 +5,8 @@ import { describe, expect, it } from 'vitest';
 import { TOKENS } from '../../src/theme/tokens.ts';
 import {
   AudioService,
+  RENDER_CHUNK_SAMPLES,
+  RecipeRender,
   SoundBank,
   SoundGate,
   assertDisjointSoundSets,
@@ -14,7 +16,7 @@ import {
   soundNames,
 } from '../../src/services/audio.ts';
 import type { AudioTokens, SoundName } from '../../src/services/audio.ts';
-import { ZZFX_DEFAULTS, buildSamples } from '../../src/services/audio/zzfxSynth.ts';
+import { ZZFX_DEFAULTS, ZzfxRender, buildSamples } from '../../src/services/audio/zzfxSynth.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const read = (rel: string): string => readFileSync(join(ROOT, rel), 'utf8');
@@ -133,12 +135,17 @@ describe('sound names and recipes (TECH 11.6, ASSET 13)', () => {
 });
 
 describe('SoundBank, SoundGate, AudioService (TECH 11.6, JUICE 0 rule 6)', () => {
-  it('TECH 11.6 SoundBank.pump renders at least one sound per call within the frame budget', () => {
-    // a frozen timer: every render fits the budget
+  it('TECH 11.6 SoundBank.pump renders in resumable chunks within the frame budget (review Faz 2 tur 4 #0)', () => {
+    // a frozen timer: every render fits the budget, everything in one call
     const bank = new SoundBank({ now: () => 0 });
     bank.request(['sfx_pick', 'sfx_land', 'music_win', 'sfx_pick']);
     expect(bank.pending).toBe(3);
-    // every timer read advances 5 ms > budget 4 ms: exactly one sound per pump
+    expect(bank.pump(TOKENS.audio.prerenderBudgetMsPerFrame)).toBe(0);
+    expect(bank.get('music_win')).toEqual(renderSound('music_win'));
+    bank.request(['sfx_pick']);
+    expect(bank.pending).toBe(0);
+
+    // every timer read advances 5 ms > budget 4 ms: exactly one chunk per pump, never a whole long sound
     let t = 0;
     const slow = new SoundBank({
       now: () => {
@@ -146,17 +153,93 @@ describe('SoundBank, SoundGate, AudioService (TECH 11.6, JUICE 0 rule 6)', () =>
         return t;
       },
     });
-    slow.request(['sfx_pick', 'sfx_land', 'music_win']);
-    expect(slow.pump()).toBe(2);
-    expect(slow.get('sfx_pick')).toBeDefined();
-    expect(slow.get('sfx_land')).toBeUndefined();
+    slow.request(['sfx_pick', 'music_win']);
+    const pickChunks = Math.ceil(renderSound('sfx_pick').length / RENDER_CHUNK_SAMPLES);
+    for (let k = 1; k < pickChunks; k++) {
+      expect(slow.pump()).toBe(2);
+      expect(slow.get('sfx_pick')).toBeUndefined();
+    }
     expect(slow.pump()).toBe(1);
-    expect(slow.pump()).toBe(0);
-    // a fast clock renders everything in one call
-    expect(bank.pump(TOKENS.audio.prerenderBudgetMsPerFrame)).toBe(0);
-    expect(bank.get('music_win')?.length).toBeGreaterThan(SR * 2);
-    bank.request(['sfx_pick']);
-    expect(bank.pending).toBe(0);
+    expect(slow.get('sfx_pick')).toEqual(renderSound('sfx_pick'));
+    // music_win (a seq): render + mix chunks, then the peak pass (and a scale pass when the mix peaked over 1)
+    slow.request(['music_win']); // in progress: not queued twice
+    expect(slow.pending).toBe(1);
+    let pumps = 0;
+    while (slow.pending > 0) {
+      slow.pump();
+      pumps++;
+      if (slow.pending > 0) expect(slow.get('music_win')).toBeUndefined();
+    }
+    const win = renderSound('music_win');
+    const renderUnits = TOKENS.audio.seq.music_win.reduce((n, [, p]) => n + buildSamples(p, SR).length, 0);
+    expect(pumps).toBeGreaterThanOrEqual(Math.ceil((renderUnits + win.length) / RENDER_CHUNK_SAMPLES));
+    expect(pumps).toBeLessThanOrEqual(
+      Math.ceil((renderUnits + 2 * win.length) / RENDER_CHUNK_SAMPLES) +
+        TOKENS.audio.seq.music_win.length +
+        2,
+    );
+    expect(slow.get('music_win')).toEqual(win);
+  });
+
+  it('TECH 11.6 a sound rendered chunk by chunk is bit-identical to the one-shot render (every token sound)', () => {
+    for (const name of soundNames()) {
+      const recipe = resolveSound(name);
+      if (recipe === null) throw new Error(name);
+      const r = new RecipeRender(recipe, SR);
+      let calls = 0;
+      while (!r.done) {
+        const used = r.run(97);
+        expect(used).toBeLessThanOrEqual(97);
+        calls++;
+      }
+      expect(calls, name).toBeGreaterThan(1);
+      expect(r.samples, name).toEqual(renderSound(name));
+    }
+    // the synth alone: `run(n)` renders at most n samples and resumes where it stopped
+    const z = new ZzfxRender(TOKENS.audio.sfx.sfx_fall, SR);
+    expect(z.run(10)).toBe(10);
+    expect(z.rendered).toBe(10);
+    while (!z.done) expect(z.run(RENDER_CHUNK_SAMPLES)).toBeLessThanOrEqual(RENDER_CHUNK_SAMPLES);
+    expect(z.run(RENDER_CHUNK_SAMPLES)).toBe(0);
+    expect(z.samples).toEqual(buildSamples(TOKENS.audio.sfx.sfx_fall, SR));
+  });
+
+  it('TECH 11.6 AudioService.pump copies finished sounds into AudioBuffers off the input path (review Faz 2 tur 4 #0)', () => {
+    let buffers = 0;
+    const ctx = {
+      state: 'running',
+      sampleRate: SR,
+      destination: {},
+      resume: () => Promise.resolve(),
+      createBuffer: (_c: number, len: number) => {
+        buffers++;
+        return { getChannelData: () => new Float32Array(len) };
+      },
+      createGain: () => ({ gain: { value: 1 }, connect: (n: unknown) => n }),
+      createBufferSource: () => ({
+        buffer: null,
+        playbackRate: { value: 1 },
+        onended: null,
+        connect: (n: unknown) => n,
+        start: () => {},
+      }),
+    } as unknown as AudioContext;
+    const svc = new AudioService({ createContext: () => ctx, bank: new SoundBank({ now: () => 0 }) });
+    svc.bank.request(['sfx_pick', 'sfx_land']);
+    // no context yet: rendered, nothing copied (the finished names wait)
+    expect(svc.pump(1e9)).toBe(0);
+    expect(buffers).toBe(0);
+    svc.prepare();
+    svc.pump(); // one copy per call
+    expect(buffers).toBe(1);
+    svc.pump();
+    expect(buffers).toBe(2);
+    svc.pump();
+    expect(buffers).toBe(2);
+    // the first plays reuse them: no buffer is created inside the (input-driven) play
+    expect(svc.play('sfx_pick')).toBe(true);
+    expect(svc.play('sfx_land')).toBe(true);
+    expect(buffers).toBe(2);
   });
 
   it('JUICE 0 rule 6 same sound at most once per 60 ms and at most 4 voices', () => {

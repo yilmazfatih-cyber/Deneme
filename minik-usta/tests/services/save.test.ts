@@ -337,6 +337,49 @@ describe('K-43 in-level record and resume (TECH 11.1)', () => {
     expect(stored(h.store).inLevel?.actions).toHaveLength(5);
   });
 
+  it('K-43 inLevel.tutorial: the tutorial position is written at once, kept by action records, read back on resume (Faz 2 tur 3 #1)', () => {
+    const h = harness();
+    const s = h.open();
+    s.beginAttempt(start());
+    expect(s.data.inLevel?.tutorial).toBeNull();
+    s.setTutorial({ index: 0, shown: true, count: 0, actions: 1 });
+    // a drag signal ends step 1 mid-drag, then the drag is cancelled: no action, the new step is on disk already
+    s.setTutorial({ index: 1, shown: true, count: 0, actions: 1 });
+    expect(stored(h.store).inLevel?.tutorial).toEqual({ index: 1, shown: true, count: 0, actions: 1 });
+    const written = h.store.get(SAVE_KEY);
+    s.setTutorial({ index: 1, shown: true, count: 0, actions: 1 }); // unchanged: no write
+    expect(h.store.get(SAVE_KEY)).toBe(written);
+    s.recordAction(drag(1, 6, 0), { movesMade: 1 });
+    expect(stored(h.store).inLevel?.tutorial).toEqual({ index: 1, shown: true, count: 0, actions: 1 });
+    expect(() => s.setTutorial({ index: -1, shown: true, count: 0, actions: 1 })).toThrow(/invalid position/);
+    expect(() => s.setTutorial({ index: 0, shown: true, count: 0, actions: 0 })).toThrow(/invalid position/);
+    const after = h.open();
+    const d = after.resumeOnLaunch(() => IDENTITY);
+    expect(d.kind === 'resume' ? d.inLevel.tutorial : null).toEqual({
+      index: 1,
+      shown: true,
+      count: 0,
+      actions: 1,
+    });
+    after.endAttempt();
+    after.setTutorial({ index: 2, shown: true, count: 0, actions: 3 }); // no attempt: nothing to write
+    expect(after.data.inLevel).toBeNull();
+  });
+
+  it('K-43 a development save without inLevel.tutorial loads with null (z._default, schema rule)', () => {
+    const h = harness();
+    const s = h.open();
+    s.beginAttempt(start());
+    const doc = JSON.parse(h.store.get(SAVE_KEY) ?? '{}') as { data: { inLevel: Record<string, unknown> } };
+    delete doc.data.inLevel['tutorial'];
+    h.store.set(SAVE_KEY, JSON.stringify(doc));
+    h.store.set(BACKUP_KEY, 'garbage'); // the main save itself must load
+    const again = h.open();
+    expect(again.data.inLevel?.levelId).toBe(3);
+    expect(again.data.inLevel?.tutorial).toBeNull();
+    expect(h.events.some((e) => e.name === 'save_corrupt')).toBe(false);
+  });
+
   it('K-43 app hidden during a pending G-L fall commits the released move before the write', () => {
     const h = harness();
     const s = h.open();
@@ -482,6 +525,7 @@ describe('K-43 in-level record and resume (TECH 11.1)', () => {
       attemptId: 'x',
       startedAt: 0,
       bridgeEventId: null,
+      tutorial: null,
     };
     expect(base.inLevel).toBeNull();
     expect(resumeCause(il, { levelHash: 'h', rulesVersion: 1 })).toBeNull();

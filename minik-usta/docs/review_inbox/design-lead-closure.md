@@ -363,3 +363,18 @@ Bu turdan doğan bağımlılıklar:
   beklentisi olarak kullanılabilir; 390×763 ve 360×740 testlere ve `tools/screens.ts` profillerine. (2) UX §5.2 Altın
   Mala soluklaşması kapsamı (`.` hücreleri dahil, bloklar hariç, azaltılmış harekette de). (3) `color.board.rail` artık
   #3F454D; 04 / 05 / 10 / 24 ekranları yeniden çekilsin.
+
+## Faz 2 tur 4
+
+- #0 [Önemli] (product) UX §13.2 Bölüm 2 adım 2–3 ↔ `level_002.json` / LEVELS §2 Bölüm 2 → KAPANDI. Doğrulama:
+  bulgunun ana kısmı (vurgu, el, tamam koşulu) tur 4 ekran incelememde zaten eşitlenmişti
+  (`design-lead-phase2.md` "Tur 4 · design-lead kendi işleri"); satırlar §13.1'e eklenen iki satır yüzünden artık
+  1109–1110'da, `holdOverBuild` UX'te hiç geçmiyor. Kalan iki eksik düzeltildi: (1) başlıklar "yanlış yön" / "doğru yön"
+  aynı `c`'nin (C3_180, yönü hiç değişmiyor) önce "!", sonra ✓ göstermesini anlatıyor: "Düşüş gölgesi — `c` sırası
+  gelmeden: "!"" / "Düşüş gölgesi — aynı `c` sırası gelince: ✓"; (2) tamam koşulları `placementCorrect` ×1 (`b` (6,2)'ye
+  yerleşince) ve `placementCorrect` ×1 (`c` (6,3)'e yerleşince; kazanış). Adım 2 el sütununa LEVELS'taki "metin `b`'nin
+  hamlesi boyunca ekranda, vurgulu `b`'nin gölgesi ✓" ve "(4,7) = `c`'nin sol üst hücresi" eklendi. Kısmen farklı
+  yazıldı: adım 3 el yolu için önerilen "duvar üstü" tek başına yazılmadı; "Vinç Alanı (4,8) → duvar üstünden x=6
+  (6,8)" oldu, çünkü JSON yolu `[[4,7],[4,8],[6,8]]` y=8'den (GDD sözlüğü: Vinç Alanı y=8–9) geçiyor ve §13.1 balon
+  yerleşimi B2·2 / B2·3'ü bu yüzden "el yolu vinçten geçen → aday 4" sınıfında sayıyor. Kod ve veri değişmez (zaten
+  böyle). `tokens.json` değişmedi; `vitest tests/core/level/schema.test.ts` (UX §13.1 okuyan) 16/16 yeşil.

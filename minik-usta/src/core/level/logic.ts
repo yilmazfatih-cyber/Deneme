@@ -1135,6 +1135,16 @@ function checkTutorial(level: LevelData, ctx: LogicContext, push: Push): void {
       if (!cond) continue;
       const why = conditionImpossible(level, cond);
       if (why) push('L-17', 'tut_done_invalid', `${path}.${field}`, why);
+      // LEVELS §5 / GDD §14.1/3 (Faz 2 tur 3, product-lead PL-F2T3-3): a player who releases without resting never
+      // sends `holdOverBuild`, so level data ends / starts no step on it (the `hold` glove is only a demonstration)
+      if (cond.event === 'holdOverBuild')
+        push(
+          'L-17',
+          'tut_hold_done',
+          `${path}.${field}`,
+          'holdOverBuild depends on the drag speed: end the step on a move-end event (LEVELS 5)',
+          'warn',
+        );
     }
     if (st.mode === 'required') {
       if (!hasPiece && !hasDebris)

@@ -105,7 +105,7 @@ stili tetiklediği için kullanılmaz — ART_DIRECTION §1, BUSINESS S2–S5.)
 | -- | ----- | ------ | ----- | -- | ---- |
 | `wall_body` | 60×120 döşeme | PNG | prosedürel | kod | Beton gövde, dikey kalıp çizgileri. Final: "vertical concrete column segment, light gray, soft formwork lines, rounded edges, seamless vertically." |
 | `wall_cap` | 72×20 | PNG | prosedürel | kod | Sarı-siyah ikaz şeritli başlık. |
-| `gap_static_edge` | 72×14 | PNG | prosedürel | kod | İkaz bandı (üst/alt) + `gap_rail` 240×12 çerçeve: ortada 8 px `board.rail` #3F454D ray, üst kenarında 2 px `board.wallLight` ışık çizgisi, 40 px'te bir 4×12 px travers çentiği (ART §5, Faz 2 tur 2; gerçek boyunda pişirilir, gerilmez). |
+| `gap_static_edge` | 72×14 | PNG | prosedürel | kod | İkaz bandı (üst/alt) + `gap_rail` 300×12 çerçeve (duvar şeridi 60 + şantiye 240; ray açıklıktan da geçer, Faz 2 tur 3): ortada 8 px `board.rail` #3F454D ray, üst kenarında 2 px `board.wallLight` ışık çizgisi, 40 px'te bir 4×12 px travers çentiği (ART §5, Faz 2 tur 2; gerçek boyunda pişirilir, gerilmez). |
 | `gap_narrow_jaw` | 18×28 ×2 | SVG | yer tutucu | P0 | İçe bakan çelik çene (#4A525C) + 10 px çelik çerçeve; W3 bir katmandır, `size = 1` olan **her** geçit tipinin üstüne eklenir (ART §5). Final: "two small chunky steel wedge jaws pointing inward, bolted." |
 | `gap_shutter_slats` | 60×(120·size) | PNG | yer tutucu | P0 | Yatay lamelli panjur; `gap_shutter_roll` 72×28 sarılı silindir. Final: "metal roller shutter, horizontal slats, gray-blue, closed and rolled-up states." |
 | `gap_slider_plate` + `badge_updown` | 72×(120·size), Ø 52 | PNG/SVG | yer tutucu | P0 | Turuncu kayar plaka, dikey ray izi, ▲▼ rozeti (dolu = sıradaki yön). |

@@ -608,6 +608,45 @@ describe('K-45 logic details', () => {
     expect(checkLevel(glove([[4, 6]], 'tap'), { only: ['L-17'] })).toEqual([]); // a tap may press any cell
   });
 
+  it('L-17 tut_hold_done: a holdOverBuild done / startOn is a warning (LEVELS 5, Faz 2 tur 3); levels 1–5 have none', () => {
+    const lvl = level({
+      id: 2,
+      plan: ['WW'],
+      pieces: [['B1_0', 'W', 0, 0]],
+      tutorial: [
+        {
+          step: 1,
+          mode: 'soft',
+          highlight: ['piece:0', 'build'],
+          textKey: 'tut.l2.shadow',
+          done: { event: 'holdOverBuild', count: 1, minMs: 500 },
+        },
+        {
+          step: 2,
+          mode: 'soft',
+          highlight: ['build'],
+          textKey: 'tut.l1.match',
+          startOn: { event: 'holdOverBuild', count: 1, minMs: 500 },
+          done: { event: 'placementCorrect', count: 1 },
+        },
+      ],
+    });
+    const issues = checkLevel(lvl, { only: ['L-17'] });
+    expect(issues.map((i) => [i.code, i.path, i.severity])).toEqual([
+      ['tut_hold_done', 'tutorial[0].done', 'warn'],
+      ['tut_hold_done', 'tutorial[1].startOn', 'warn'],
+    ]);
+    for (const id of [1, 2, 3, 4, 5]) {
+      const data = JSON.parse(
+        readFileSync(join(ROOT, 'levels', `level_${String(id).padStart(3, '0')}.json`), 'utf8'),
+      ) as LevelData;
+      expect(
+        checkLevel(data, { only: ['L-17'] }).filter((i) => i.code === 'tut_hold_done'),
+        `level ${id}`,
+      ).toEqual([]);
+    }
+  });
+
   it('L-17 every level 1–5 glove starts on its highlighted block', () => {
     for (const id of [1, 2, 3, 4, 5]) {
       const data = JSON.parse(

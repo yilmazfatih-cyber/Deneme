@@ -486,6 +486,23 @@ describe('JUICE P0 handlers against a recording stage', () => {
     }
   });
 
+  it('JUICE 0 rule 8 reduced: no confetti burst (#18, #55)', () => {
+    // "konfeti yok (sabit pankart)": no handler bursts the confetti family when reduced, and both confetti rows say 0
+    const confettiIds = JUICE_P0_IDS.filter((id) => JUICE[id].particles?.family === 'confetti');
+    expect(confettiIds).toEqual([18, 55]);
+    for (const id of confettiIds) expect(juiceParticles(id, true), `#${id}`).toBe(0);
+    let fullConfetti = 0;
+    for (const id of JUICE_P0_IDS) {
+      for (const v of variants(id)) {
+        const bursts = (reduced: boolean): number =>
+          runHandler(id, v, reduced).filter((c) => c.name === 'burst' && c.args[0] === 'confetti').length;
+        expect(bursts(true), `#${id} reduced`).toBe(0);
+        fullConfetti += bursts(false);
+      }
+    }
+    expect(fullConfetti).toBeGreaterThan(0); // the full variants still celebrate (#18 and #55)
+  });
+
   it('JUICE #12 / #15 the placement and streak sounds follow the streak pitch (audio.comboSemitones)', () => {
     const calls = runHandler(12, variants(12)[0] ?? {}, false);
     const place = calls.find((c) => c.name === 'sound' && c.args[0] === 'sfx_place_ok');

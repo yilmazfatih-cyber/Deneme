@@ -15,7 +15,9 @@
  * (win, or out of moves with no offer left) is saved right after the commit (`LevelAttempt.settle`), before its cues —
  * the window opens when the cues end. A resumed attempt (Boot → `resume`) is rebuilt by `GameSession.replay` and opens
  * on the Pause window with the `resume.strip` (JUICE #87) or the same offer window; a log that does not replay voids
- * the attempt penalty-free (`voidUnreplayable`) and goes home, where the `resume.void` window shows.
+ * the attempt penalty-free (`voidUnreplayable`) and goes home, where the `resume.void` window shows. The tutorial
+ * position on screen is kept in `inLevel.tutorial` (written whenever it changes, with the log entries whose move end it
+ * includes) and restored on resume (`TutorialResume`, review Faz 2 tur 3 #1).
  *
  * Settings (UX §5.1 switches → `changeSetting`): a language change relabels the HUD, the open window and the tutorial
  * balloon in place; "reduce motion" switches the EventPlayer to the fade variants (JUICE §0 rule 8); colour-blind mode
@@ -104,13 +106,14 @@ import { loadLevelById } from './levels.ts';
 import { PieceLayer } from './PieceLayer.ts';
 import { blockersAbove, pieceFrameName } from './pieceState.ts';
 import { gameAudio, gameHaptics, systemReducedMotion } from './sceneServices.ts';
+import { shaderWarmup } from '../shaderWarmup.ts';
 import { ShadowView } from './ShadowView.ts';
 import { cancelPreview, shadowLook, showsShadow } from './shadowLook.ts';
 import { TrowelPicker } from './TrowelPicker.ts';
 import { ContextTips, ctxFromMove, ctxMoveHighlight } from './tutorial/contextTips.ts';
 import { pidHighlight } from './tutorial/highlights.ts';
 import type { CtxTopic } from './tutorial/contextTips.ts';
-import { TutorialController, replayTutorialAction } from './tutorial/TutorialController.ts';
+import { TutorialController, TutorialResume } from './tutorial/TutorialController.ts';
 import { TutorialOverlay } from './TutorialOverlay.ts';
 import type { OverlayContent } from './TutorialOverlay.ts';
 import { JUICE_VIEW, VIEW } from './viewConstants.ts';
@@ -174,6 +177,14 @@ export class LevelScene extends Phaser.Scene {
   private overlay!: TutorialOverlay;
   private tips!: ContextTips;
   private tutorial: TutorialController | null = null;
+  /**
+   * K-43 tutorial save (review Faz 2 tur 3 #1): log entries (`start` included) whose move end the tutorial has read,
+   * the log length of the move whose cues play now (read at its `planEnded`), and the position last saved.
+   */
+  private tutActions = 0;
+  private tutPendingActions = 0;
+  private tutSavedVersion = -1;
+  private tutSavedActions = -1;
   private tutorialVersion = -1;
   private tipsVersion = -1;
   private overlayKey = '';
@@ -190,6 +201,8 @@ export class LevelScene extends Phaser.Scene {
   private ended: AttemptEnd | null = null;
   /** `holdOverBuild`: since when the dragged block touches the site columns in FREE mode (null: not now). */
   private holdSince: number | null = null;
+  /** A move was committed since the last update (release / trowel): that frame does not pre-render sounds. */
+  private commitFrame = false;
   /** Outline of the fall shadow last shown in this drag (JUICE #7 switch). */
   private lastOutline: string | null = null;
   private lastLookKey: string | null = null;
@@ -294,6 +307,7 @@ export class LevelScene extends Phaser.Scene {
     const onHidden = (): void => {
       if (!this.sys.isActive()) return;
       this.drag.abort();
+      this.saveTutorial(); // K-43: the step on screen, also when it changed in this frame's input
       // UX §5.1 "duraklatma (uygulama arka plana atılınca otomatik)"; the save writes itself (appSave lifecycle) and
       // the audio is suspended page-wide (installAudioUnlock)
       if (this.session?.outcome === 'playing' && !this.windows.open) this.openPause(false);
@@ -340,9 +354,16 @@ export class LevelScene extends Phaser.Scene {
     const dt = Math.min(MAX_FRAME_MS, delta) * this.player.rate();
     this.animNow += dt;
     const now = this.animNow;
-    // the sound bank pre-renders in idle frames only: one long sound costs ~50 ms at 4× CPU (TECH §10.7 item 6: no
-    // frame > 50 ms while dragging); a sound not rendered yet is skipped, never rendered on demand
-    if (!this.drag.active) gameAudio().bank.pump();
+    // the sound bank pre-renders (≤ audio.prerenderBudgetMsPerFrame, in resumable chunks) and the image shader variants
+    // are built (one per frame, shaderWarmup.ts) in idle frames only: not
+    // during a press or drag, not in the frame of a commit (release / trowel: applyMove + plan + save write), not while
+    // cues play (review Faz 2 tur 4 #0; TECH §10.7 item 6). A sound not rendered yet is skipped, never rendered on demand.
+    const commitFrame = this.commitFrame;
+    this.commitFrame = false;
+    if (!this.drag.active && !commitFrame && !this.player.busy) {
+      gameAudio().pump();
+      shaderWarmup(this.game).step();
+    }
     this.player.update(now, dt);
     this.pieces.update(this.layoutNow, now);
     this.drag.update(now);
@@ -367,6 +388,11 @@ export class LevelScene extends Phaser.Scene {
   /** The tutorial of the level (debug panel, harness). */
   get tutorialController(): TutorialController | null {
     return this.tutorial;
+  }
+
+  /** Contextual Usta Dede lines `tut.ctx.*` (harness: the one on screen and the queue). */
+  get contextTips(): ContextTips {
+    return this.tips;
   }
 
   /** The open window, if any (harness). */
@@ -431,6 +457,10 @@ export class LevelScene extends Phaser.Scene {
     this.lvl = null;
     this.attempt = null;
     this.tutorial = null;
+    this.tutActions = 0;
+    this.tutPendingActions = 0;
+    this.tutSavedVersion = -1;
+    this.tutSavedActions = -1;
     this.tips.clear();
     this.overlay.show(null, this.animNow);
     this.lastEvents = null;
@@ -464,8 +494,11 @@ export class LevelScene extends Phaser.Scene {
       resumed = { actions: il.actions as SessionAction[], window: 'pause' };
     const replayed = new ArraySink();
     if (resumed) {
-      // the tutorial is rebuilt from the log, each move with the state of its time (review Faz 2 tur 2 #8)
+      // the tutorial goes back to the saved position on screen, or is rebuilt from the log of an older save, each move
+      // with the state of its time (review Faz 2 tur 2 #8, Faz 2 tur 3 #1)
       const tut = this.makeTutorial(lvl);
+      const savedTut = il && il.levelId === id ? il.tutorial : null;
+      const tutResume = tut ? new TutorialResume(tut, savedTut, resumed.actions.length) : null;
       let mark = 0;
       try {
         session = GameSession.replay(
@@ -477,9 +510,7 @@ export class LevelScene extends Phaser.Scene {
             this.replaying = at;
             const events = replayed.events.slice(mark);
             mark = replayed.events.length;
-            if (!tut) return;
-            if (index === 0) tut.start(this.animNow);
-            else replayTutorialAction(tut, action, events, this.animNow);
+            tutResume?.action(index, action, events, this.animNow);
           },
         );
       } catch (e) {
@@ -494,6 +525,7 @@ export class LevelScene extends Phaser.Scene {
         this.replaying = null;
       }
       this.tutorial = tut;
+      this.tutActions = resumed.actions.length; // the replay read every move end
       const deps = { save, track: appTrack, clock: systemClock };
       // the attempt's counters cover the moves before the kill too (ANALYTICS §2 level_end, K-43 item 3)
       this.attempt = save.data.inLevel
@@ -529,8 +561,10 @@ export class LevelScene extends Phaser.Scene {
     if (!resumed) {
       this.tutorial = this.makeTutorial(lvl);
       this.tutorial?.start(this.animNow);
+      this.tutActions = session.log.length; // `start`
     }
     this.tutorialVersion = -1;
+    this.saveTutorial();
 
     if (resumed) {
       // a log whose last move ended the game but whose outcome was not written (crash between two writes): save it now
@@ -721,6 +755,25 @@ export class LevelScene extends Phaser.Scene {
       } else if (content?.kind === 'step' && content.step.handHidden) this.overlay.hideHand();
     }
     this.overlay.update(now);
+    this.saveTutorial();
+  }
+
+  /**
+   * K-43 (review Faz 2 tur 3 #1; TECH §8.2): the tutorial position on screen goes to `inLevel.tutorial` whenever it
+   * changes — a drag signal, a move end, a tap, a timeout — written at once (`SaveService.setTutorial`), so every action
+   * record and the `pagehide` / `visibilitychange` write carry it. Per frame and from the hidden handler; an unchanged
+   * position costs two number compares (no allocation in drag frames), an unchanged value no write (`setTutorial`).
+   */
+  private saveTutorial(): void {
+    const tut = this.tutorial;
+    const game = this.session;
+    if (!tut || !game || !this.attempt || this.attempt.ended || game.outcome !== 'playing') return;
+    if (tut.positionVersion === this.tutSavedVersion && this.tutActions === this.tutSavedActions) return;
+    const pos = tut.position();
+    if (!pos) return;
+    this.tutSavedVersion = tut.positionVersion;
+    this.tutSavedActions = this.tutActions;
+    appSave().setTutorial({ ...pos, actions: this.tutActions });
   }
 
   private overlayContent(): OverlayContent {
@@ -762,7 +815,7 @@ export class LevelScene extends Phaser.Scene {
       case 'streak':
         return comboOf(s) === economy.combo.correctPlacementsPerTrowel - 1;
       case 'goldtrowel':
-        return trowelsOf(s) > 0;
+        return trowelsOf(s) > 0 && !this.picker.active; // UX §13.2: never while the pick is open
       case 'lastmoves':
         return game.movesLeft > 0 && game.movesLeft <= JUICE_VIEW.lastMovesAt;
       case 'resume':
@@ -895,6 +948,7 @@ export class LevelScene extends Phaser.Scene {
   private release(session: DragSession, node: DragNode): void {
     const game = this.session;
     const id = session.pieceId;
+    this.commitFrame = true;
     this.holdSince = null;
     this.shadow.hide();
     this.shadow.hideCancel();
@@ -932,6 +986,7 @@ export class LevelScene extends Phaser.Scene {
     this.settle(game);
     this.lastEvents = events;
     this.lastMovesBefore = movesBefore;
+    this.tutPendingActions = game.log.length;
   }
 
   /** Saves a game-ending outcome once (`LevelAttempt.settle`); the window waits for `planEnded`. */
@@ -971,11 +1026,15 @@ export class LevelScene extends Phaser.Scene {
     if (!this.boardState() || this.drag.active) return;
     this.player.fastForward();
     this.picker.start(this.animNow);
+    // UX §13.2 (Faz 2 tur 3): the pick's hint strip gives the same instruction as `tut.ctx.goldtrowel`, so the line
+    // closes if it shows, drops if it waits, and counts as seen — never the same text twice
+    if (this.picker.active) this.tips.retire('goldtrowel');
   }
 
   private commitTrowel(target: TrowelTarget): void {
     const game = this.session;
     if (!game) return;
+    this.commitFrame = true;
     const s = game.state;
     const queuedBefore = queueIds(s);
     const movesBefore = game.movesLeft;
@@ -999,6 +1058,8 @@ export class LevelScene extends Phaser.Scene {
     this.lastEvents = null;
     if (events) {
       this.tutorial?.moveEnded(events, this.animNow);
+      this.tutActions = Math.max(this.tutActions, this.tutPendingActions);
+      this.saveTutorial();
       const topics = ctxFromMove(
         events,
         this.lastMovesBefore,
@@ -1100,6 +1161,7 @@ export class LevelScene extends Phaser.Scene {
     this.attempt?.observe(sink.events);
     this.lastEvents = sink.events;
     this.lastMovesBefore = movesBefore;
+    this.tutPendingActions = game.log.length;
     this.windows.close();
     this.board.hideDim();
     this.player.playMove(sink.events, {

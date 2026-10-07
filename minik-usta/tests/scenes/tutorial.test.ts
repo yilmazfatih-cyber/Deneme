@@ -40,9 +40,11 @@ import type { Layout } from '../../src/theme/layout.ts';
 import { UI } from '../../src/ui/uiConstants.ts';
 import {
   TutorialController,
+  TutorialResume,
   highlightedPieces,
   replayTutorialAction,
 } from '../../src/scenes/level/tutorial/TutorialController.ts';
+import type { SavedTutorialPosition } from '../../src/scenes/level/tutorial/TutorialController.ts';
 import { pauseHitRect } from '../../src/ui/PauseButton.ts';
 import { moveMatches } from '../../src/scenes/level/tutorial/tutorialEvents.ts';
 import { handMoves, levelFile } from '../core/moves.fixtures.ts';
@@ -192,11 +194,37 @@ describe('GDD 14.1 TutorialController on the level 1–5 tutorials (UX 13.2)', (
     ]);
   });
 
-  it('GDD 14.1 holdOverBuild needs minMs (level 2 step 2)', () => {
-    const r = run(levelFile(2));
+  it('GDD 14.1 holdOverBuild needs minMs (synthetic level 2 tutorial; levels 1–50 do not use it, LEVELS §5)', () => {
+    // the pre-Faz 2 tur 3 level 2 step 2 shape: `holdOverBuild` stays in the GDD §14.1/3 vocabulary, only level data
+    // 1–50 do not use it (product-lead PL-F2T3-0)
+    const tutorial = [
+      {
+        step: 1,
+        mode: 'soft' as const,
+        highlight: ['panorama', 'build'],
+        textKey: 'tut.l2.pattern',
+        done: { event: 'placementCorrect' as const, count: 1 },
+      },
+      {
+        step: 2,
+        mode: 'soft' as const,
+        highlight: ['piece:2', 'build'],
+        textKey: 'tut.l2.shadow',
+        done: { event: 'holdOverBuild' as const, count: 1, minMs: 500 },
+      },
+      {
+        step: 3,
+        mode: 'soft' as const,
+        highlight: ['piece:1'],
+        textKey: 'tut.l1.match',
+        done: { event: 'placementCorrect' as const, count: 1 },
+      },
+    ];
+    const r = run(compile({ ...rawLevel(2), tutorial }));
     r.tut.start(0);
     const [m1] = handMoves(2);
     if (!m1) throw new Error('hand moves');
+    expect(r.tut.holdMinMs()).toBeNull(); // step 1 does not listen for it
     r.play(m1);
     expect(step(r)).toBe(2);
     expect(r.tut.holdMinMs()).toBe(500);
@@ -205,6 +233,18 @@ describe('GDD 14.1 TutorialController on the level 1–5 tutorials (UX 13.2)', (
     expect(step(r)).toBe(2);
     r.tut.dragSignal('holdOverBuild', 0, 500);
     expect(step(r)).toBe(3);
+    expect(r.tut.holdMinMs()).toBeNull();
+  });
+
+  it('LEVELS 5 levels 1–5 data use no holdOverBuild (done / startOn), so no hold timer runs in them', () => {
+    for (const n of [1, 2, 3, 4, 5] as const) {
+      for (const st of levelFile(n).data.tutorial ?? []) {
+        expect('event' in st.done ? st.done.event : 'timeoutMs', `level ${n} step ${st.step}`).not.toBe(
+          'holdOverBuild',
+        );
+        expect(st.startOn?.event, `level ${n} step ${st.step}`).not.toBe('holdOverBuild');
+      }
+    }
   });
 
   it('GDD 14.1 ctx step marks seenContextTips (level 4 step 2 opens at the first correct placement, no timer)', () => {
@@ -392,6 +432,43 @@ describe('UX 13.2 contextual tips tut.ctx.* (GDD 14.1/2, K-34 hook 4)', () => {
     tips.update(2510, true, 2500);
     expect(tips.showing).toBe('lastmoves');
   });
+
+  it('UX 13.2 opening the trowel pick closes and marks tut.ctx.goldtrowel', () => {
+    // ContextTips side of the rule (the scene calls `retire('goldtrowel')` when the pick opens, LevelScene.toggleTrowel;
+    // the e2e "UX 13.2 … level 5" drives it through the real trowel icon)
+    const seen = new Set<CtxTopic>();
+    const host = { seen: (t: CtxTopic) => seen.has(t), markSeen: (t: CtxTopic) => void seen.add(t) };
+    // (a) the line shows → the pick opens: it closes, stays seen, a later trowel never brings it back
+    const a = new ContextTips(host);
+    a.trigger('goldtrowel', 4, ['streak', 'front']);
+    a.update(0, true, 2500);
+    expect(a.showing).toBe('goldtrowel');
+    const v = a.version;
+    a.retire('goldtrowel');
+    expect(a.showing).toBeNull();
+    expect(a.highlight).toEqual([]); // the streak / front frames leave with it
+    expect(a.version).toBeGreaterThan(v);
+    expect(seen.has('goldtrowel')).toBe(true);
+    a.trigger('goldtrowel', 9);
+    a.update(10, true, 2500);
+    expect(a.showing).toBeNull();
+    // (b) the line waits behind a step (level 5 step 2) → the pick opens: it drops and counts as seen; others stay
+    seen.clear();
+    const b = new ContextTips(host);
+    b.trigger('goldtrowel', 4);
+    b.trigger('lastmoves', 4);
+    b.update(0, false, 2500);
+    b.retire('goldtrowel');
+    expect(b.queued).toEqual(['lastmoves']);
+    expect(seen.has('goldtrowel')).toBe(true);
+    b.update(10, true, 2500);
+    expect(b.showing).toBe('lastmoves');
+    // (c) never triggered: nothing to retire, nothing marked
+    seen.clear();
+    const c = new ContextTips(host);
+    c.retire('goldtrowel');
+    expect(seen.size).toBe(0);
+  });
 });
 
 describe('UX 13.1 spotlight geometry (no mask, JUICE 0 rule 11)', () => {
@@ -459,7 +536,7 @@ describe('UX 13.1 tutorial texts exist in both languages (STORY 6, D-017)', () =
   });
 });
 
-describe('LEVELS §5 tutorials of levels 1, 3, 4, 5 are order- and time-independent (Faz 2 tur 1)', () => {
+describe('LEVELS §5 tutorials of levels 1–5 are order- and time-independent (Faz 2 tur 1; level 2 since Faz 2 tur 3)', () => {
   /** Every winning order of ✓ placements plus at most `yardMoves` yard moves (rail moves send `gapPass`). */
   function winningOrders(
     lvl: CompiledLevel,
@@ -499,11 +576,11 @@ describe('LEVELS §5 tutorials of levels 1, 3, 4, 5 are order- and time-independ
     return out;
   }
 
-  // level 2 is left out: its step 2 waits for holdOverBuild (≥ 500 ms over the build), a drag-time signal this walk does
-  // not model (product-lead observation, Faz 2 tur 1)
-  // ✓ placements only; levels 3 and 4 (Faz 2 tur 1 #0, #1) also with 1 yard move anywhere in the order
+  // ✓ placements only; levels 2, 3 and 4 (Faz 2 tur 1 #0, #1; level 2 since its step 2 ends on `placementCorrect`
+  // instead of a `holdOverBuild` this walk cannot model, product-lead PL-F2T3-0) also with 1 yard move anywhere
   for (const [n, yardMoves] of [
     [1, 0],
+    [2, 1],
     [3, 1],
     [4, 1],
     [5, 0],
@@ -867,5 +944,172 @@ describe('review Faz 2 tur 2: merged holes, pause through the spotlight, K-43 tu
       r3.tut.dragSignal('gapPass', 2); // a drag of another block never counts
       expect(step(r3)).toBe(2);
     }
+  });
+});
+
+describe('review Faz 2 tur 3 #1: K-43 resume from the saved tutorial position (inLevel.tutorial)', () => {
+  /** Resumes like LevelScene: `GameSession.replay` + `TutorialResume` with the saved position (null: old save). */
+  function resumed(
+    lvl: CompiledLevel,
+    log: readonly SessionAction[],
+    saved: SavedTutorialPosition | null,
+  ): { tut: TutorialController; usable: boolean; tips: string[] } {
+    let at: GameSession | null = null;
+    const hooks = levelHooks(lvl);
+    const tips: string[] = [];
+    const tut = new TutorialController(lvl, {
+      state: () => at?.state ?? null,
+      dragRules: () => hooks.drag ?? {},
+      hooks: () => hooks,
+      markContextTip: (t) => tips.push(t),
+      stepEnded: () => undefined,
+    });
+    const resume = new TutorialResume(tut, saved, log.length);
+    const sink = new ArraySink();
+    let mark = 0;
+    GameSession.replay(lvl, log, { hooks }, sink, (index, action, session) => {
+      at = session;
+      const events = sink.events.slice(mark);
+      mark = sink.events.length;
+      resume.action(index, action, events, 0);
+    });
+    return { tut, usable: resume.usable, tips };
+  }
+
+  /** The live drag of `m` with its drag signals (no hold: levels 1–5 use none). */
+  function liveDrag(r: Run, m: Move): void {
+    if (m.kind !== 'drag') return;
+    const at = tryBeginDrag(r.game.state, m.pieceId, levelHooks(r.lvl).drag ?? {});
+    if (!at.ok) throw new Error(at.reason);
+    r.tut.dragStarted(m.pieceId);
+    for (const node of at.session.pathTo(m.to) ?? []) {
+      const res = at.session.moveTo(node);
+      if (res.crossedWall) r.tut.dragSignal('overWall', 0);
+      if (res.enteredRail) r.tut.dragSignal('gapPass', 0);
+    }
+  }
+
+  const savedOf = (r: Run, actions = r.game.log.length): SavedTutorialPosition => {
+    const pos = r.tut.position();
+    if (!pos) throw new Error('tutorial not started');
+    return { ...pos, actions };
+  };
+
+  it('K-43 resume keeps the tutorial step: level 1 `a` released straddling the wall at (5,8) (K-07 row 4) is cancelled — step 2 comes back, not step 1 and its gate', () => {
+    const r = run(levelFile(1));
+    r.tut.start(0);
+    const a = r.lvl.tutorialPieceIds.get('piece:0') ?? -1;
+    const straddle: Move = { kind: 'drag', pieceId: a, to: { ix: 5, iy: 8, mode: FREE } };
+    liveDrag(r, straddle); // overWall on the way: step 1 (Z) ends in the air, step 2 opens
+    expect(step(r)).toBe(2);
+    expect(r.game.commit(straddle).status).not.toBe('applied'); // the release cancels: no action is logged
+    expect(r.game.log.length).toBe(1);
+    const saved = savedOf(r);
+    expect(saved).toEqual({ index: 1, shown: true, count: 0, actions: 1 });
+    const back = resumed(r.lvl, r.game.log, saved);
+    expect(back.usable).toBe(true);
+    expect(back.tut.current?.data.step).toBe(2);
+    expect(back.tut.current?.required).toBe(false);
+    expect(back.tut.allowsPick(3)).toBe(true); // no step 1 gate
+    // the log alone (an old save) cannot know the cancelled drag's signal: step 1 again (the finding)
+    expect(resumed(r.lvl, r.game.log, null).tut.current?.data.step).toBe(1);
+  });
+
+  it('K-43 resume keeps the tutorial step: level 2 `b` released fast (no hold) → step 3 after the reload, as live', () => {
+    const r = run(levelFile(2));
+    r.tut.start(0);
+    const [mA, mB] = handMoves(2);
+    if (!mA || !mB) throw new Error('hand moves');
+    liveDrag(r, mA);
+    r.play(mA);
+    expect(step(r)).toBe(2);
+    liveDrag(r, mB); // fast: no holdOverBuild (and level 2 listens for none, PL-F2T3-0)
+    r.play(mB);
+    expect(step(r)).toBe(3);
+    const back = resumed(r.lvl, r.game.log, savedOf(r));
+    expect(back.tut.current?.data.step).toBe(3);
+    expect(back.tut.current?.pieces).toEqual(r.tut.current?.pieces);
+    expect(resumed(r.lvl, r.game.log, null).tut.current?.data.step).toBe(3);
+  });
+
+  it("K-43 a kill while the last move's cues played: the saved position + the later move ends (level 2: saved after A, b logged)", () => {
+    const r = run(levelFile(2));
+    r.tut.start(0);
+    const [mA, mB] = handMoves(2);
+    if (!mA || !mB) throw new Error('hand moves');
+    r.play(mA);
+    const saved = savedOf(r); // planEnded of A wrote step 2 with 2 log entries
+    expect(saved).toEqual({ index: 1, shown: true, count: 0, actions: 2 });
+    expect(r.game.commit(mB).status).toBe('applied'); // b is logged; its cues still play when the app is killed
+    const back = resumed(r.lvl, r.game.log, saved);
+    expect(back.tut.current?.data.step).toBe(3); // b's move end is read on resume, as live after its cues
+  });
+
+  it('K-43 the resume never goes past the saved step: a timed step the player moved under stays (the log replay ran ahead)', () => {
+    const tutorial = [
+      {
+        step: 1,
+        mode: 'soft' as const,
+        highlight: ['cell:7,2'],
+        textKey: 'tut.l4.window',
+        done: { timeoutMs: 2500 },
+      },
+      {
+        step: 2,
+        mode: 'soft' as const,
+        highlight: ['front'],
+        textKey: 'tut.ctx.support',
+        done: { event: 'placementCorrect' as const, count: 1 },
+      },
+    ];
+    const r = run(compile({ ...rawLevel(4), tutorial }));
+    r.tut.start(0);
+    const [m1] = handMoves(4);
+    if (!m1) throw new Error('hand moves');
+    r.play(m1, 100); // within the 2,5 s: step 1 is still on screen
+    expect(step(r)).toBe(1);
+    const saved = savedOf(r);
+    const back = resumed(r.lvl, r.game.log, saved);
+    expect(back.tut.current?.data.step).toBe(1);
+    expect(back.tips).toEqual([]); // step 2's `tut.ctx.support` was never shown, so it is not marked
+    // the log replay ends the timed step before the move and counts the move for step 2: past the live step
+    const old = resumed(r.lvl, r.game.log, null);
+    expect(old.tut.current?.data.step ?? 'finished').not.toBe(1);
+  });
+
+  it('K-43 levels 1–5 at every point of the hand solution: the saved position resumes the live step', () => {
+    for (const id of [1, 2, 3, 4, 5]) {
+      const lvl = levelFile(id);
+      const live = run(lvl);
+      live.tut.start(0);
+      for (const m of handMoves(id)) {
+        liveDrag(live, m);
+        live.play(m);
+        const back = resumed(lvl, live.game.log, savedOf(live));
+        expect([id, back.tut.position()]).toEqual([id, live.tut.position()]);
+        expect(back.tut.current?.required ?? null).toBe(live.tut.current?.required ?? null);
+        expect(back.tut.current?.pieces ?? null).toEqual(live.tut.current?.pieces ?? null);
+      }
+      expect(live.tut.finished).toBe(true);
+    }
+  });
+
+  it('K-43 a foreign or damaged saved position is not used (the log replay rebuilds the tutorial)', () => {
+    const lvl = levelFile(1); // 3 steps, no startOn
+    const log = GameSession.start(lvl).log;
+    for (const bad of [
+      { index: 4, shown: false, count: 0, actions: 1 }, // past "finished"
+      { index: 3, shown: true, count: 0, actions: 1 }, // finished is never shown
+      { index: 0, shown: false, count: 0, actions: 1 }, // waits, but the step has no startOn
+      { index: 0, shown: true, count: 1, actions: 1 }, // count 1 of 1 would have ended the step
+      { index: 1, shown: true, count: 0, actions: 2 }, // more actions than the log has
+    ]) {
+      const back = resumed(lvl, log, bad);
+      expect(back.usable, JSON.stringify(bad)).toBe(false);
+      expect(back.tut.current?.data.step).toBe(1);
+    }
+    const done = resumed(lvl, log, { index: 3, shown: false, count: 0, actions: 1 });
+    expect(done.usable).toBe(true);
+    expect(done.tut.finished).toBe(true);
   });
 });

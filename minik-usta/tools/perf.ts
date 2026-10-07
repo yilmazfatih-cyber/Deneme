@@ -127,6 +127,8 @@ interface RateResult {
   readonly renderer: string;
   readonly isolation: string;
   readonly drag: PerfStats | null;
+  /** Level and move whose drag window holds the drag bucket's longest CPU frame (diagnostics). */
+  readonly dragWorstAt: string | null;
   readonly win: PerfStats | null;
   readonly levels: { readonly id: number; readonly moves: number; readonly won: boolean }[];
   readonly heapMB: number | null;
@@ -159,6 +161,17 @@ async function userDataDirOf(browser: Browser): Promise<string> {
   }
 }
 
+/** Where the drag bucket's longest CPU frame was recorded (`L<level> m<move>`), updated after every drag window. */
+const dragWorst = { cpuMs: 0, at: null as string | null };
+
+async function noteDragWorst(gp: GamePage, at: string): Promise<void> {
+  const w = (await perfStats(gp.page, 'drag'))?.cpuMaxFrame ?? null;
+  if (w && w.cpuMs > dragWorst.cpuMs) {
+    dragWorst.cpuMs = w.cpuMs;
+    dragWorst.at = at;
+  }
+}
+
 async function playLevelMeasured(gp: GamePage, id: number): Promise<{ moves: number; won: boolean }> {
   await loadLevel(gp.page, id);
   const moves = await golden(gp.page, id);
@@ -175,6 +188,7 @@ async function playLevelMeasured(gp: GamePage, id: number): Promise<{ moves: num
     await gp.touch.release();
     if (!last) await perfStop(gp.page);
     await waitLog(gp.page, before, 20_000);
+    await noteDragWorst(gp, `L${id} m${i}`);
     if (!last) await assertLastMove(gp.page, move);
     if (last) {
       await waitWindow(gp.page, 'win', 900_000);
@@ -202,6 +216,8 @@ async function gameplayRun(
     let isolation = 'off';
     if (isolate) isolation = isolateGpu(chromiumProcesses(await userDataDirOf(browser)));
     await gp.page.evaluate(() => window.__harness!.perfReset());
+    dragWorst.cpuMs = 0;
+    dragWorst.at = null;
     await gp.cdp.send('Emulation.setCPUThrottlingRate', { rate });
     const played: { id: number; moves: number; won: boolean }[] = [];
     for (const id of levels) {
@@ -216,6 +232,7 @@ async function gameplayRun(
       renderer,
       isolation,
       drag: await perfStats(gp.page, 'drag'),
+      dragWorstAt: dragWorst.at,
       win: await perfStats(gp.page, 'win'),
       levels: played,
       heapMB: Math.round((heap.usedSize / 1024 / 1024) * 10) / 10,
@@ -287,6 +304,16 @@ async function ftueRun(browser: Browser, url: string, rate: number, network: boo
 }
 
 // --- report --------------------------------------------------------------------------------------------------------------
+
+/** The longest CPU frame of a bucket, split (diagnostics: which drag, which part of the frame). */
+function worstRow(s: PerfStats | null, at: string | null): string {
+  const w = s?.cpuMaxFrame;
+  if (!w) return '';
+  return (
+    `    longest CPU frame ${w.cpuMs} ms${at ? ` in ${at}` : ''}: touch handlers ${w.handlersMs} ` +
+    `(${w.touches || 'none'}), update ${w.updateMs}, render ${w.renderMs}; frame ${w.frameInWindow} of its window\n`
+  );
+}
 
 function row(label: string, s: PerfStats | null): string {
   if (!s) return `  ${label.padEnd(10)} no frames`;
@@ -387,7 +414,7 @@ async function main(): Promise<number> {
 
   for (const r of runs) {
     process.stdout.write(`\n${r.rate}× CPU, ${r.renderer}, isolation: ${r.isolation}, heap ${r.heapMB} MB\n`);
-    process.stdout.write(`${row('drag', r.drag)}\n${row('win', r.win)}\n`);
+    process.stdout.write(`${row('drag', r.drag)}\n${worstRow(r.drag, r.dragWorstAt)}${row('win', r.win)}\n`);
     for (const c of r.consoleErrors) process.stdout.write(`  console error: ${c}\n`);
   }
   for (const f of ftue) {

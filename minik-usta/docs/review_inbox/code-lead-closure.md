@@ -418,9 +418,10 @@ denetimi uygulandı (aşağıda).
   #55/#57 başlık metni kazanma karesinde kuruluyordu → `EventPlayer.startLevel`'de gizli kurulur (dil değişince yenilenir;
   ilk ekran koşusunda gizli kurulmadığı için "HAMLELER BİTTİ!" sol üst köşede göründü — düzeltildi, e2e Bölüm 1 testi iki
   başlığın bitişe kadar görünmediğini ve kazanınca "KAZANDIN!"ın göründüğünü denetler). Ek: ses bankası
-  ana ekranda da doldurulur. Son `npm run perf` (sessiz makine, 4×): drag 59,3 FPS, p95 12,6 ms, en uzun 37 ms (> 50 ms kare
-  0); win 55,5 FPS, p95 18,2 ms (bu çalışmanın ilk ölçümünde 25,9 → FAIL); FTUE 8 790 ms; girdi ≤ 1 kare (80 örnek); 1×'te
-  drag/win 60 FPS. Bütün kapılar PASS (bir önceki koşu da PASS: drag en uzun 47 ms, win p95 15,1, FTUE 9 155 ms). Not: başka iş yükü çalışırken (vitest/tsc) drag en uzun karesi 64 ms'ye çıkabiliyor; kapı ölçümü
+  ana ekranda da doldurulur. Son `npm run perf` (sessiz makine, 4×): drag 59,4 FPS, p95 12,4 ms, en uzun 37,5 ms (> 50 ms kare
+  0); win 55,4 FPS, p95 19,1 ms (bu çalışmanın ilk ölçümünde 25,9 → FAIL); FTUE 8 704 ms; girdi ≤ 1 kare (76 örnek); 1×'te
+  drag/win 60 FPS. Bütün kapılar PASS (önceki iki koşu da PASS: drag en uzun 47 / 37 ms, win p95 15,1 / 18,2, FTUE
+  9 155 / 8 790 ms). Not: başka iş yükü çalışırken (vitest/tsc) drag en uzun karesi 64 ms'ye çıkabiliyor; kapı ölçümü
   sessiz makinede yapılmalı.
 - #12 [Önemli] dinlenen parmakta blok donuyor → KAPANDI (önceki çalışma). Blok kalkıkken `DragController.update` her karede
   `follow` çağırır (değişmeyen parmakta çekirdek önbellekteki `stay` sonucunu döndürür); ofset kayması, #1, #4, #3 biter.
@@ -469,3 +470,178 @@ bağlamda). TECH §8.2 (balon yerleşimi), §8.3 (L-17), §10.6 (ön pişirme, b
 güncellendi. design-lead'e bilgi: UX "Beklenen sonuç"ta Bölüm 1 adım 2 satırı metnin dar kutudaki satır sayısına bağlı
 (TR 3 satır → 4, EN 2 satır → 3); ASSET `gap_rail` 240×12 yazıyor, ray ART §5'e göre duvar açıklığından da geçtiği için kod
 `wallW + 240` = 300 px pişiriyor.
+
+## Faz 2 tur 3
+
+Kaynaklar: design-lead ekran incelemesi T3-1 (#0), product-lead PL-F2T1-3 devamı (#1), perf/kod incelemesi (#2);
+product-lead'in tur 3 veri değişikliği (`level_002.json` adım 2–3, PL-F2T3-0…3) ve design-lead'in UX §13.2 "Altın Mala
+ilk kez kazanıldı" satırı. Üç bulgunun hiçbiri önceki (kesilen) bir çalışmada yapılmamıştı; üçü de bu çalışmada kodda
+yeniden doğrulandı ve yazıldı.
+
+- #0 [Önemli] ilk Altın Mala'da aynı talimat iki kez (`tut.ctx.goldtrowel` balonu + `booster.hint.trowel` şeridi) →
+  DOĞRULANDI, KAPANDI. Kanıt kodda aynen: `tipStillValid('goldtrowel')` yalnız `trowelsOf > 0`, `toggleTrowel` satıra
+  dokunmuyordu. UX §13.2 kuralı uygulandı: `ContextTips.retire(topic)` — satır ekrandaysa kapanır (vurgusu `streak` /
+  `front` çerçeveleriyle birlikte), kuyruktaysa düşer, iki durumda da `seenContextTips` işaretlenir (bir daha
+  tetiklenmez); hiç tetiklenmemişse işaretlemez. `LevelScene.toggleTrowel` seçim gerçekten açılınca
+  `retire('goldtrowel')` çağırır; geçerlilik `trowelsOf > 0 && !picker.active` (seçim açıkken asla gösterilmez).
+  Testler: birim "UX 13.2 opening the trowel pick closes and marks tut.ctx.goldtrowel" (ekranda / kuyrukta / hiç
+  tetiklenmemiş üç durum), e2e "UX 13.2 opening the trowel pick closes and marks tut.ctx.goldtrowel (level 5, first
+  Golden Trowel)" (gerçek dokunuşla 4 hamle → satır ekranda ya da kuyrukta → mala ikonuna dokunuş → satır yok, kuyrukta
+  yok, görülmüş; 3 s bekleme ve "Vazgeç" sonrası da yok). Harness `state().contextTip = { showing, queued, seen }`
+  eklendi. 25-trowel-pick artık profil zamanlamasından bağımsız (balon hiçbir profilde yok).
+- #1 [Önemli] K-43 devamında öğretici günlükten kuruluyor: iptal edilen sürüklemenin sinyali kayboluyor, her şantiye
+  bırakmasına `holdOverBuild` varsayılıyor → DOĞRULANDI, KAPANDI (öneriden gerekçeli iki sapmayla). Kanıt birim testte
+  yeniden üretildi: Bölüm 1'de `a` (5,8)'de sınırı keserek bırakılıp iptal edilince günlük yalnız `start`, eski devam
+  adım 1'i (Z, kapısıyla) açıyordu. Uygulanan:
+  - Kayıt: `inLevel.tutorial = { index, shown, count, actions } | null` (`TutorialAtSchema`, `z._default(null)`: eski
+    geliştirme kayıtları yüklenir). `SaveService.setTutorial` yerinde günceller, yalnız girdiyi doğrular, değişmeyen
+    değeri yazmaz, değişeni hemen yazar. Sahne konumu her karede `positionVersion` ile (tahsissiz iki sayı karşılaştırması)
+    izler: sürükleme sinyali, hamle sonu, dokunuş, süre — her değişiklik o karede diske; her eylem kaydı ve
+    `pagehide`/`visibilitychange` yazımı güncel konumu taşır, sahnenin gizlenme işleyicisi de ayrıca yazar.
+  - Devam: `TutorialResume` (`GameSession.replay` adım geri çağrısı). Kayıtlı konum varsa `actions − 1`. eylemden sonra
+    `TutorialController.restore` (adım, zorunlu kapı, `tut.ctx.*` işareti, sayaç; kilit güvencesi o anki durumla), sonraki
+    eylemlerden yalnız hamle sonu olayları okunur. Kayıt yoksa ya da `accepts` reddederse (indeks aralık dışı, `startOn`'suz
+    adım beklemede, sayaç eşikte, `actions` günlükten uzun) günlük `replayTutorialAction` ile oynatılır;
+    `holdOverBuild` artık hiçbir yolda varsayılmaz.
+  - Sapma 1 (alan): öneri `{ index, count }` diyordu; `shown` (adım ekranda mı, `startOn` mu bekliyor — aynı indeks iki
+    durumda olabilir) ve `actions` (konumun hangi günlük girdisine kadar hamle sonlarını içerdiği) eklendi. `actions`
+    olmadan "kayıttan ileri gidemez" kuralı, kapanış son hamlenin efektleri oynarken gelirse o hamlenin meşru hamle sonu
+    olayını da keserdi (adım bir hamle geride kalırdı); `actions` ile devam tam canlı oyunun efekt sonundaki adımı kurar.
+  - Sapma 2 (yol): "günlükle kur, sonra kayıtlı indekse ilerlet" yerine kayıtlı konum varken günlüğün o kısmı
+    denetleyiciye verilmez, konum doğrudan kurulur. Sonuç aynıdır (kayıttan ileri gidemez, geri kalmaz), ama günlük
+    tekrarı kayıtlı konumu aşarsa yan etkisi olmaz: süreli adım altında yapılan hamlede eski yol bir sonraki adımı açıp
+    onun `tut.ctx.*` satırını görülmüş işaretliyordu (test aşağıda).
+  - Testler (birim, `tests/scenes/tutorial.test.ts` "review Faz 2 tur 3 #1"): Bölüm 1 sınırı keserek iptal → adım 2 (eski
+    yol adım 1 verdiği de kayıtlı), Bölüm 2 hızlı `b` → adım 3, efektler oynarken kapanma (konum `A`'dan sonra, `b`
+    günlükte) → adım 3, süreli adım altında hamle → adım 1 kalır ve `tut.ctx.support` işaretlenmez (eski yol ileri gidiyor),
+    Bölüm 1–5 el çözümünün her noktasında `position()` canlıyla eşit, bozuk/yabancı 5 konum reddedilir. Kayıt
+    (`tests/services/save.test.ts`): "K-43 inLevel.tutorial …" (hemen yazım, değişmeyende yazım yok, eylem kaydı taşır,
+    geçersiz konum hata, deneme yokken yok sayılır), "K-43 a development save without inLevel.tutorial loads with null".
+    e2e (`tests/e2e/smoke.spec.ts`): "K-43 resume keeps the tutorial step: level 1 `a` released straddling the wall at
+    (5,8) (cancelled) …" ve "… level 2 `b` released fast …" (iki durumda yeniden yükleme öncesi/sonrası `tutorial` eşit,
+    `savedAttempt.tutorial` beklenen konum, kalan golden kazanıyor). TECH §8.2 "K-43 devamında öğretici", §11.1
+    `InLevel`, §12 duman testi güncellendi.
+  - product-lead: GDD K-43 madde 3 `inLevel` alan listesine `tutorial` satırı (bulgu metnindeki iş bölümü) henüz yok;
+    eklenecek biçim `tutorial: { index, shown, count, actions }`.
+- #2 [Önemli] JUICE #18 azaltılmış harekette konfeti → DOĞRULANDI, KAPANDI (öneri aynen + savunma). `catalog.ts` #18
+  `parts('confetti', P.segment, 0)` (#55 gibi); `handlers.ts` #18 konfeti patlamasını sallamayla birlikte yalnız tam
+  kipte çağırır (azaltılmışta 0 parçacıklı çağrı da yok). Test "JUICE 0 rule 8 reduced: no confetti burst (#18, #55)":
+  konfeti ailesi yalnız #18/#55, ikisinin azaltılmış sayısı 0, bütün P0 işleyicilerin bütün varyantlarında
+  azaltılmışta 'confetti' `burst` çağrısı 0, tam kipte > 0.
+- product-lead tur 3 verisi (`level_002.json` adım 2–3) alındı (PL-F2T3-3): kırmızı iki test sentetik `tutorial[]`'a
+  taşındı — "GDD 14.1 holdOverBuild needs minMs (synthetic level 2 tutorial; …)" ve review "GDD 14.1/3 drag signals: …
+  on a soft `holdOverBuild` step (the pre-Faz 2 tur 3 level 2 step 2) …" (`withTutorial`); FINDING "level 2 …
+  `holdOverBuild`" testinin `.fails`'i ve kusuru belgeleyen `[2, 2, 2]` satırı kaldırıldı (test adı düzeltildi, yeşil);
+  "LEVELS §5 … order- and time-independent" taramasına Bölüm 2 (✓ + 1 saha hamlesi) eklendi; yeni test "LEVELS 5 levels
+  1–5 data use no holdOverBuild …". Önerilen L-17 uyarısı uygulandı: `done`/`startOn` `holdOverBuild` →
+  `tut_hold_done` (warn), test "L-17 tut_hold_done …"; `data.review` testi bu uyarıyı bekleyecek biçimde güncellendi;
+  TECH §8.3 L-17 satırı. `levels:validate` 5 dosya 0 hata 0 uyarı.
+
+Özet (Faz 2 tur 3): **3 bulgu → 3 DOĞRULANDI ve KAPANDI (#1 öneriden gerekçeli iki sapmayla: kayıt alanı
+`{ index, shown, count, actions }`, kayıtlı konum varken günlük tekrarı yerine doğrudan `restore`) · 0 RET.**
+product-lead'in Bölüm 2 verisi alındı, kırmızı 2 test ve FINDING `.fails`'i kapandı, önerdiği `tut_hold_done` uyarısı
+eklendi. Çalıştırılanlar (son kodla): `npm run check` yeşil (75 dosya, 1 446 test + 2 beklenen hata — kalan iki `.fails`
+bu turun listesinde değil: Bölüm 3 adım 3 eldiveni kilitli `f`'ye dokunuyor, `level_end.wrongPlacements` harçlı blok
+çift sayımı; `test:rules --phase 2` 47 kimlik), `npm run build` yeşil (verify-dist temiz), `npm run build:harness`
+yeşil, `levels:validate` 5 dosya 0 hata 0 uyarı, Playwright duman 11/11 (yeni 3: Bölüm 1 iptal + yeniden yükleme,
+Bölüm 2 hızlı `b` + yeniden yükleme, Bölüm 5 mala seçimi), `npm run screens` 64 çekim / 28 senaryo 0 hata (25-trowel-pick
+iki profilde de yalnız şerit + "Vazgeç", balon yok), `npm run perf` PASS (4×: drag 59,3 FPS, p95 13,5 ms, en uzun
+35,7 ms, > 50 ms kare 0; win 55,2 FPS, p95 17,4 ms; FTUE 8 656 ms; girdi ≤ 1 kare). Not (perf): bu çalışmada dört
+koşudan ikisinde sürükleme kovasında tek bir kare 50 ms'yi aştı (67,7 ve 53,2 ms; diğer kapılar PASS). Profil
+(karalama `longframes/run3.ts`, küçültülmemiş harness, perf'in drag kovasıyla aynı aralık, Bölüm 1–5 × 3 geçiş = 57
+sürükleme, 802 kare) ≥ 40 ms hiçbir kesinti bulmadı (en uzun 39,4 ms); yeni `setTutorial` yazımı Node'da 0,03 ms/çağrı
+(kayıt 2,2 KB). Kapı SwiftShader + 4× yavaşlatmada eşiğe yakın ve gürültülü; tur 2 notu gibi ölçüm sessiz makinede
+tekrarlanmalı, Faz 3'te kapı "> 50 ms kare ≤ 1" ya da iki koşunun en iyisi olarak yeniden tartışılabilir (code-lead
+önerisi, karar orkestratörün). Bu turun listesinde olmayan design-lead Öneri'leri T3-2…T3-6 (ray/kiriş derinliği,
+panorama oku aralığı, aday 4 hizası, kazanmada Duraklat, kısa profil çekimleri) açık; sonraki tura / Faz 3.
+
+## Faz 2 tur 4
+
+Kaynaklar: perf/kod incelemesi r4 (#0 Engel, #1 Önemli); product-lead tur 4 verisi (`level_003.json` adım 3,
+PL-F2T4-0 içindeki code-lead istekleri 1–3); design-lead tur 4 kapanışı (#0 UX §13.2 Bölüm 2: kod/veri değişikliği
+istemiyor). Önceki (kesilen) çalışmadan kalan bir değişiklik yoktu: iki bulgu da kodda aynen duruyordu
+(`SoundBank.pump` bütün ses, tek `Trail`), bu dosyada tur 4 bölümü yoktu; ikisi de bu çalışmada yeniden doğrulandı ve
+yazıldı.
+
+- #0 [Engel] (perf-code) ses bankası ön-çizimi bütçeye uymuyor, Bölüm 1 drag karelerinde bütün ses çiziliyor →
+  DOĞRULANDI, KAPANDI (öneri (a), (b), (c) aynen + üç ek). Kanıt yeniden üretildi: Node 1×'te tek çizim `music_win`
+  11,7 ms, `sfx_fall` 7,4 ms; `pump` her çağrıda en az bir **bütün** ses çiziyordu, `LevelScene` yalnız `drag.active`'e
+  bakıyordu, `IntroScene.update` bankaya dokunmuyordu.
+  - (b) `zzfxSynth.ts`: `ZzfxRender` — ZzFX döngüsünün bütün durumu (frekans, kayma, faz, filtre geçmişi, sayaçlar)
+    çağrılar arasında saklanır, `run(n)` en çok `n` örnek çizer ve kaldığı yerden sürer (sıcak döngü yerel
+    değişkenlerle, hız aynı); `buildSamples` bunun sona kadar tek koşusu. `audio.ts`: `RecipeRender` — `audio.seq`
+    adımlarını sırayla dilim dilim çizip çıktıya ekler (adım sentezi adım başlarken kurulur: tahsis de dilimlere
+    yayılır), sonra tepe ve ölçek geçişleri de dilimli; `mixSequence`/`renderRecipe` bunun tek koşusu.
+    `SoundBank.pump` bütçe dolana kadar `RENDER_CHUNK_SAMPLES` = 512 örneklik dilim çizer (çağrı başına en az bir
+    dilim), yarım kalan sesi sonraki çağrıda sürdürür; `request` sürmekte olan sesi yeniden kuyruğa almaz, `pending`
+    onu da sayar. Çıktı bit bit aynı: 33 sesin SHA-256'sı değişiklikten önce/sonra eşit (karalama `r4/ref.ts`).
+    Gerçek saatle Node 1×: bütün banka 8–19 `pump`'ta, en uzun `pump` 4,1–4,4 ms (bütçe 4 ms + bir dilim; tek seferlik
+    JIT/GC aykırı 6,3 ms); dilim başına en çok ≈ 0,37 ms 1×.
+  - (a) `IntroScene.update` → `gameAudio().pump()` (giriş 8 s boşta; FTUE kapısı değişmedi: 4× 8 656 / 8 862 ms).
+  - (c) `LevelScene.update`: ön-çizim yalnız `!drag.active && !commitFrame && !player.busy`; `commitFrame` bırakmada
+    (`release`) ve Altın Mala hamlesinde (`commitTrowel`) kurulur, sonraki `update` okuyup siler.
+  - Ek 1: `AudioService.pump()` (sahneler artık bunu çağırır) bankayı pompalar ve bağlam varsa biten bir sesin
+    `AudioBuffer`'ını boş karede kurar; ilk `play` kopyalamaz (profilde Bölüm 1'in ilk kaldırışında `toAudioBuffer`
+    1,5 ms, 4×).
+  - Ek 2: `src/scenes/shaderWarmup.ts` — profil ve `linkProgram` yığın kaydı (karalama `r4/shaders.ts`, küçültülmemiş
+    harness, Bölüm 1–5) bütün koşudaki tek program bağlamasını Bölüm 1 hamle 0'ın kaldırış karesinde gösterdi:
+    `BatchHandlerQuad`'ın yeni doku sayısı varyantı (`finalizeTextureCount` → `getCurrentProgramSuite`, ≈ 4–5 ms 4×).
+    Isıtma 1 … `maxTexturesPerBatch` varyantlarını Giriş / Ana ekran / bölüm boş karelerinde kare başına bir tane
+    kurar; sonrası kayıtta sürükleme sırasındaki bağlamaların hepsi `ShaderWarmup.step` (boş kare), `run` kaynaklı 0.
+    Mobilde Phaser tek doku kullanır (`autoMobileTextures`), iş kalmaz. Phaser 4.2.1 API'si `node_modules/phaser`
+    kaynağından ve `types/phaser.d.ts`'ten doğrulandı.
+  - Ek 3 (araç): perf raporu her kovanın en uzun CPU karesini bölünmüş yazar (`PerfStats.cpuMaxFrame`: hangi sürükleme
+    `L<n> m<i>`, dokunma işleyicileri + olay türleri, `update`, `render`, penceredeki sıra; `tools/perf.ts` "longest CPU
+    frame" satırı). Bu sayede kalan uzun karelerin bırakma (`touchend` + ilk ipuçları) ve kaldırış kareleri olduğu
+    görüldü (ilk koşudaki 53 ms bu satır yokken ölçüldü, atanamadı).
+  - Testler (`tests/services/audio.test.ts`): "TECH 11.6 SoundBank.pump renders in resumable chunks within the frame
+    budget" (her okumada 5 ms ilerleyen saatte çağrı başına tam bir dilim; `music_win` hiçbir çağrıda bütün çizilmez,
+    çağrı sayısı dilim sınırları içinde; sonuç `renderSound` ile eşit), "TECH 11.6 a sound rendered chunk by chunk is
+    bit-identical to the one-shot render (every token sound)" (97 örneklik dilimlerle 33 ses + `ZzfxRender.run` sınırı),
+    "TECH 11.6 AudioService.pump copies finished sounds into AudioBuffers off the input path". Eski "at least one sound
+    per call" testi yeni sözleşmeye göre yeniden yazıldı. TECH §10.2, §10.6, §10.7 (tanı satırı), §11.6 ("Dilimleme")
+    güncellendi.
+  - Perf (4× kapı): yalnız (a)–(c) ile ilk tam koşu FAIL (> 50 ms kare 1: 53 ms, cpuMax 81,3 → 53); tanı satırıyla 4×
+    koşuları en uzun 37 (L3 m1 bırakma), 29,9, 47,6 (L1 m0 ilk kaldırış: `update` 31,2), tam koşu 35,5 ms PASS. Ek 1–2
+    sonrası son kodla iki tam `npm run perf`: **A exit 0** (drag 59,7 FPS, p95 12,8, en uzun 31,1 ms L1 m0 `touchmove`
+    karesi, > 50 ms 0; win 55,5 FPS p95 24; FTUE 8 656 ms) ve **B exit 0** (drag 59,5 FPS, p95 12,4, en uzun 31,7 ms
+    L2 m1 `render` 26,5, > 50 ms 0; win 55,5 FPS p95 16,7; FTUE 8 862 ms); 1×'te en uzun drag karesi 6,2 / 6,3 ms.
+- #1 [Önemli] (perf-code) hızlı duvar geçişinde JUICE #6 beyaz hayaletleri #3 izi tarafından eziliyor → DOĞRULANDI,
+  KAPANDI (birincil öneri: ayrı iz). Kanıt kodda aynen: `follow` önce `crossedWall` (#6, `Trail.begin(WHITE, 200 ms,
+  fade)`), sonra `moved` (#3, hız > `drag.trailMinSpeedCells` ise `Trail.begin(null, 80 ms, fade yok)`), ikisi tek
+  `trailFx`. `Trail.ts`'e `GhostTrails`: blok görüntüsü izleri (`tint` null: #3, #10) ve renkli silüetler (#6, solan)
+  iki ayrı havuzda; beyaz silüetler ikinci kurulduğu için aynı derinlikte blok izinin üstünde çizilir. `EventPlayer`
+  `trailFx`'i `GhostTrails` yaptı, `trail()` rengi havuz seçimine bırakır. Test `tests/scenes/trail.test.ts` (gerçek
+  `GhostTrails` + `JUICE_HANDLERS[6]`/`[3]`, Phaser sahte): "JUICE 6 a fast wall pass (> drag.trailMinSpeedCells) keeps
+  the 3 white ghosts, fading, for the whole 200 ms" (hız 16 hücre/s, #3 her karede: 200 ms boyunca 3 beyaz hayalet,
+  alfa ≤ %30 ve azalan; #3 izi kendi havuzunda sürer; 200 ms sonra beyazlar biter) ve "… a slow wall pass shows only
+  the white ghosts". İki havuzu tek havuza bağlayan geçici değişiklikle iki test de kırmızı (eski kusur yakalanıyor).
+- product-lead tur 4 verisi (PL-F2T4-0, `level_003.json` adım 3: vurgu `piece:1` + `piece:2`, `drag` eldiveni
+  b (2,7) → (2,8) → (6,8)) alındı:
+  - (1) `presentation.review.test.ts` FINDING `.fails` testi pozitif teste çevrildi: "UX 13.1 … level 3 step 3 (LEVELS
+    §5 tap rule, PL-F2T4-0; was FINDING …)" — adım 3 `hand.kind` `drag`, `pieces` [1, 2], `tryBeginDrag(f)` `locked`,
+    eldiven b'nin bir hücresinden başlar, vinç satırından (y = 8) geçer, x = 6'da biter; sıradaki el hamlesi b'nin,
+    `dragStarted(b)` → `handHidden` true.
+  - (2) `SHORT_EXPECTED` `'L3·3'` 3 → 4 (UX §13.1 kuralı: el yolu vinçten geçen yumuşak adım → aday 4).
+  - Ek e2e (`smoke.spec.ts`): "UX 13.1 level 3 step 3: f on the rail is only highlighted, the glove drags b, and lifting
+    b hides it" — gerçek dokunuşla a, f; adım 3 ekranda (`pieces` [1, 2], eldiven `drag`, görünür), b'nin sürüklemesi
+    parmak basılıyken eldiven gizli, kalan golden kazanır. Bunun için harness `state().tutorialHand = { kind, hidden }`
+    (ayrı alan: `tutorial` eşitliği bekleyen K-43 testleri etkilenmez).
+  - (3) ekran görüntüleri `npm run screens` ile yenilendi (aşağıda).
+  - design-lead'e (product-lead'in de istediği): UX §13.1 "Beklenen sonuç" satırı (1060–1062) B3·3'ü hâlâ "el yolu
+    vinçten geçmeyen → aday 3" grubunda sayıyor; kod kuralı uygular ve yeni veriyle aday 4 verir. Satır güncellenmeli
+    (B3·3 → aday 4 grubu); kod ve test değişmez.
+
+Özet (Faz 2 tur 4): **2 bulgu → 2 DOĞRULANDI ve KAPANDI** (#0 öneri (a)–(c) aynen + `AudioService.pump` ile
+`AudioBuffer` ön-kurulumu, gölgelendirici varyant ısıtması ve perf tanı satırı; #1 birincil öneri: ayrı iz havuzu) ·
+**0 RET**. product-lead'in Bölüm 3 adım 3 verisi alındı (FINDING `.fails` → pozitif test, `SHORT_EXPECTED` L3·3 → 4,
+yeni e2e, harness `tutorialHand`). Çalıştırılanlar (son kodla): `npm run check` yeşil (76 dosya, 1 455 test + 2
+beklenen hata — kalan iki `.fails` bu turun listesinde değil: `level_end.wrongPlacements` harçlı blok çift sayımı ve
+K-43 öldürmesinden sonra `tutorial_step` hunisi; `test:rules --phase 2` 47 kimlik), `npm run build` yeşil (verify-dist
+temiz), `npm run build:harness` yeşil, `levels:validate` 5 dosya 0 hata 0 uyarı, `npm run perf` iki kez exit 0 (A: drag
+59,7 FPS / p95 12,8 / en uzun 31,1 ms; B: 59,5 FPS / 12,4 / 31,7 ms; > 50 ms kare 0 / 0; win p95 24 / 16,7 ms; FTUE
+8 656 / 8 862 ms), Playwright duman 12/12 (yeni: Bölüm 3 adım 3 eldiveni), `npm run screens` 64 çekim / 28 senaryo 0
+hata. Not (perf): kapı SwiftShader + 4× yavaşlatmada hâlâ gürültülü (bu çalışmadaki 4× koşularının en uzun kareleri
+29,9–53 ms); kalan uzun kareler bırakma (`touchend` + ilk ipuçları) ve kaldırış kareleri, artık rapor satırında
+görünür. Açık (bu turun listesinde değil): design-lead T4-1, T4-2, T3-4, T3-6 (sonraki tura / Faz 3); design-lead'e UX
+§13.1 "Beklenen sonuç" B3·3 satırı (yukarıda).

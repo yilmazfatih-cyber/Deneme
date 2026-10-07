@@ -47,7 +47,7 @@
     {
       "step": 2,
       "mode": "soft",
-      "highlight": ["piece:2", "build"],
+      "highlight": ["piece:2", "piece:1", "build"],
       "hand": {
         "kind": "hold",
         "path": [
@@ -57,17 +57,17 @@
         ]
       },
       "textKey": "tut.l2.shadow",
-      "done": { "event": "holdOverBuild", "count": 1, "minMs": 500 }
+      "done": { "event": "placementCorrect", "count": 1 }
     },
     {
       "step": 3,
       "mode": "soft",
-      "highlight": ["piece:1", "build"],
+      "highlight": ["piece:2", "build"],
       "hand": {
         "kind": "drag",
         "path": [
-          [2, 6],
-          [2, 8],
+          [4, 7],
+          [4, 8],
           [6, 8]
         ]
       },

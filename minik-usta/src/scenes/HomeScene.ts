@@ -31,6 +31,7 @@ import { HOME_SCENE_KEY, LEVEL_SCENE_KEY } from './level/LevelScene.ts';
 import type { HomeSceneData, LevelSceneData } from './level/LevelScene.ts';
 import { DEPTH } from './level/depth.ts';
 import { gameAudio } from './level/sceneServices.ts';
+import { shaderWarmup } from './shaderWarmup.ts';
 
 const C = TOKENS.color.ui;
 
@@ -105,7 +106,8 @@ export class HomeScene extends Phaser.Scene {
 
   update(time: number): void {
     // the idle home screen fills the sound bank (TECH §10.6): fewer budgeted slices are left for the level's idle frames
-    gameAudio().bank.pump();
+    gameAudio().pump();
+    shaderWarmup(this.game).step();
     if (!this.button || !this.target.pulse || this.reduced) return;
     const period = TOKENS.duration.lastMovesPulse;
     const k = 0.5 - 0.5 * Math.cos((2 * Math.PI * (time % period)) / period);

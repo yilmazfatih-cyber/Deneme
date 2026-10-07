@@ -66,7 +66,7 @@ import { ParticleLayer } from './ParticleLayer.ts';
 import type { PieceLayer } from './PieceLayer.ts';
 import { statePose } from './pieceState.ts';
 import type { PieceView } from './PieceView.ts';
-import { Trail } from './Trail.ts';
+import { GhostTrails } from './Trail.ts';
 import { TRUCK_H, TRUCK_W, Truck } from './Truck.ts';
 import { JUICE_VIEW, VIEW } from './viewConstants.ts';
 import { addBakedGraphics } from '../../ui/BakedGraphics.ts';
@@ -150,7 +150,7 @@ export class EventPlayer implements JuiceStage {
   private readonly services: PlayerServices;
   private readonly later = new Timeline();
   private readonly particles: ParticleLayer;
-  private readonly trailFx: Trail;
+  private readonly trailFx: GhostTrails;
   private readonly truckView: Truck;
   private readonly feel = new DragFeel();
   private readonly dots: Phaser.GameObjects.Image[] = [];
@@ -182,7 +182,7 @@ export class EventPlayer implements JuiceStage {
     this.services = services;
     this.playback = new Playback<MoveCue>((cue, time, instant) => this.runCue(cue, time, instant));
     this.particles = new ParticleLayer(scene, DEPTH.effects + 2);
-    this.trailFx = new Trail(scene);
+    this.trailFx = new GhostTrails(scene);
     this.truckView = new Truck(scene, DEPTH.effects);
     for (let i = 0; i < V.tetherDots; i++)
       this.dots.push(
@@ -822,7 +822,7 @@ export class EventPlayer implements JuiceStage {
   trail(id: PieceId, time: number, frames: number, alpha: number, tint: number | null, ms: number): void {
     if (this.fx.instantBoard) return;
     const v = this.host.pieces.view(id);
-    if (v) this.trailFx.begin(v, time, frames, alpha, tint, ms, tint !== null);
+    if (v) this.trailFx.begin(v, time, frames, alpha, tint, ms);
   }
 
   tether(id: PieceId, finger: Point | null, leanDeg: number): void {

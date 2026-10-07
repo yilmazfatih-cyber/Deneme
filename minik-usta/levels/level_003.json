@@ -72,8 +72,15 @@
     {
       "step": 3,
       "mode": "soft",
-      "highlight": ["piece:1"],
-      "hand": { "kind": "tap", "path": [[6, 2]] },
+      "highlight": ["piece:1", "piece:2"],
+      "hand": {
+        "kind": "drag",
+        "path": [
+          [2, 7],
+          [2, 8],
+          [6, 8]
+        ]
+      },
       "textKey": "tut.l3.rail",
       "done": { "event": "placementCorrect", "count": 1 }
     }
