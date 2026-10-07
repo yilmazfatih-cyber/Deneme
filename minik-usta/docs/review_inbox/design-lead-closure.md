@@ -314,3 +314,52 @@ Bu turdan doğan bağımlılıklar:
   `en.json` içindeki `tut.ctx.resume` bu metne harfi harfine eşitlensin (D-017); eşitlenene dek
   `tests/services/i18n.test.ts` "D-017 every text is verbatim" testi kırmızıdır. Kod (`LevelWindows.openPause`)
   değişmez; 17 numaralı görüntüler yeniden alınsın.
+
+## Faz 2 tur 2b
+
+Tarih: 2026-10-07. Tur 2 kod düzeltmelerinin dayandığı sunum tarifleri ve token'lar denetlendi; yalnız eksikler yazıldı.
+Düzenlenen: `src/theme/tokens.json`, `docs/ART_DIRECTION.md`, `docs/UX_FLOWS.md`, `docs/JUICE.md`, `docs/ASSET_LIST.md`.
+Kontrol: `npx vitest run` 75 dosya / 1425 test yeşil (2 beklenen hata = FINDING testleri), `prettier --check
+src/theme/tokens.json` temiz; UX §13.1 "Vurgu kimlikleri" şema testi (yeni metin o maddenin önünde) ve ART §2.4 tablo
+testi geçiyor.
+
+- #2 W1 rayları → KAPANDI (design-lead tarafı). `tokens.json` `color.board.rail` #8A96A3 → **#3F454D** (tur 2'de
+  ertelenmişti; test sabiti artık `TOKENS.color.board.rail`'i okuyor, `services-theme.review.test.ts` "ART 5 W1 rails" ve
+  `tests/theme/draw.test.ts` yeşil). ART §5 W1 tarifi (8 px, 2 px `wallLight` ışık, 40 px'te 4×12 travers, plan
+  hücreleri + ızgaranın üstü / cephe konturu ve blokların altı) zaten vardı. Eklenenler: ART §2.4 tablosuna
+  `board.rail` satırı (tablo testi token'la karşılaştırıyor); ART §4 "Katman sırası"na "W1 rayı ve #22 ışığı";
+  ASSET `gap_static_edge` satırındaki eski "`gap_rail` 240×6" → 240×12 çerçeve tarifi; JUICE #22 ışığın katmanı.
+- #4 K-34 eksik destek taraması → ZATEN YAPILMIŞ (ART §4: her 6 px sarı çizginin altında 10 px `ui.ink` %80, ölçümler
+  yazılı). Eksik eşitlemeler yazıldı: ASSET §3 `plan_support_hatch` satırı ve JUICE #84 aynı çerçeveyi anıyor.
+- #0 birleşen delik ve #1 sürüklenen blok karartmanın üstünde → ZATEN YAPILMIŞ (UX §13.1 "Spot ışığı", tur 2). Eklenen:
+  derinlik sırası tek cümle — karartma → el → balon → sürüklenen blok ve gölgesi → pencereler (kod `overTutorial`
+  zaten böyle).
+- #9 zorunlu adım Duraklat'ı yutuyor → KAPANDI (UX §13.1): zorunlu adımda tek istisna Duraklat (128 px dokunma alanı);
+  Mola, ses/müzik/titreşim ve "Bölümden çık" öğretici boyunca erişilir; düğme karartmanın altında kalır, ek delik yok.
+- #7 panorama ve Bölüm 5 oku → ZATEN YAPILMIŞ (UX §5.1 hücre = `min(24, ⌊(110 − 2·pay)/satır⌋)` ≥ 12, en yüksek dilim,
+  dikeyde ortalı; UX §13.2 Bölüm 5 satırı 64×40 beyaz ok, 4 px `ui.ink`, `panorama` vurgulu ve ≥ 2 dilim). Değişiklik yok.
+- #5 Altın Mala seçiminde soluklaşma → KESİNLEŞTİRİLDİ (UX §5.2 tablo): "diğer hücreler %50" yerine aktif dilimin cephe
+  dışındaki plan hücreleri ve `.` hücreleri seçim açıkken %50 opak; yerleşmiş bloklar, saha, HUD değişmez; azaltılmış
+  harekette de; kullanım / Vazgeç / × ile %100'e döner.
+- #15 kısa ekranda balon yerleşimi → KARAR YAZILDI (UX §13.1 "Usta Dede balonu → Yerleşim"). Yasak alanlar: delikler,
+  **el yolu**, **şantiye sütunu** (x ≥ `grid.wallX`, vinç üstünden satır 0'a), Duraklat, **alt yarı**, yumuşak adımda
+  sahadaki bloklar/engeller. Ceza: hedefler, hamle, panorama. Kutu: geniş ≤ 760 ya da dar (sağ kenar ≤ 734 = duvar − 16;
+  ölçüm Baloo 2 600 44 px: L1–5 TR/EN satırları geniş kutuda ≤ 2, dar kutuda ≤ 3 satır, yükseklik ≤ 229). Aday sırası:
+  (1) HUD altı bandı, geniş, sığıyorsa; (2) saha bandı, dar, satır 7'den yasakların altına iner, alt kenar ≤ H/2;
+  (3) vinç bandı, dar; (4) HUD'a taşan bant, geniş, alt kenar vinç üstü − 16, Duraklat'a değerse x = 168;
+  (5) durum şeridi üstü, son çare. Seçim sözlük sıralı: önce yasak kesişimi, sonra ceza (ağırlıklı toplam değil).
+  Karalama benzetimi (kodun `highlightAll` / `spotlightHoles` / el çözümü adımlarıyla) 390×844, 360×800, 390×763,
+  360×740, 412×846, 375×667'de Bölüm 1–5'in bütün adımlarında: delik, el yolu, şantiye sütunu, Duraklat ve alt yarı
+  ihlali **sıfır**; uzun ekranlarda hep aday 1, kısa ekranlarda zorunlu adım aday 2, eli vinçten geçmeyen yumuşak adım
+  aday 3, geçen aday 4 (hedefler/hamle panelinin alt kısmı örtülür — kabul). B2·3 benzetimde açılmadı (tutma sinyali
+  yok); el yolu B1·3 ile aynı olduğu için aynı sonuç beklenir.
+
+Bu turdan doğan bağımlılıklar:
+- code-lead: (1) `bubbleCandidates` / `bubbleSpot` / `bubbleAvoid` UX §13.1 yeni yerleşime göre güncellensin: dar kutu
+  (`SpeechBubble` `maxW` ile, kutu ≤ 494), şantiye sütunu + el yolu + Duraklat dokunma alanı + yumuşak adımda saha
+  blokları yasak; mevcut "deliklerin altı" adayı geniş kutuyla şantiye sütununun satır 6–5'ini, son aday `y = margin`
+  Duraklat'ı örtüyor; `HOLE_WEIGHT` ağırlıklı toplamı yerine sözlük sıralı seçim. `presentation.review.test.ts`
+  `bubbleProblems` denetimine "şantiye sütunu", "el yolu", "Duraklat" eklensin; UX §13.1 "Beklenen sonuç" satırı test
+  beklentisi olarak kullanılabilir; 390×763 ve 360×740 testlere ve `tools/screens.ts` profillerine. (2) UX §5.2 Altın
+  Mala soluklaşması kapsamı (`.` hücreleri dahil, bloklar hariç, azaltılmış harekette de). (3) `color.board.rail` artık
+  #3F454D; 04 / 05 / 10 / 24 ekranları yeniden çekilsin.

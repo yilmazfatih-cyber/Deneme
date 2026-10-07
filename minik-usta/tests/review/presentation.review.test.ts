@@ -33,6 +33,7 @@ import { loadLevel } from '../../src/core/level/compile.ts';
 import type { CompiledLevel } from '../../src/core/level/compile.ts';
 import { levelHooks } from '../../src/core/obstacles/registry.ts';
 import { computeFall } from '../../src/core/gravity.ts';
+import { SITE_X } from '../../src/core/coords.ts';
 import { FREE, tryBeginDrag } from '../../src/core/movement.ts';
 import { ArraySink } from '../../src/core/moves.ts';
 import { GameSession, RULES_VERSION, levelHash } from '../../src/core/session.ts';
@@ -70,15 +71,18 @@ import {
 } from '../../src/scenes/level/tutorial/contextTips.ts';
 import type { CtxTopic } from '../../src/scenes/level/tutorial/contextTips.ts';
 import {
-  bubbleAvoid,
-  bubbleCandidates,
-  bubbleSpot,
+  bubbleForbidden,
+  bubblePenalties,
   highlightAll,
   highlightRects,
-  hudPenalties,
+  padRect,
   pidHighlight,
-  spotlightHoles,
+  placeBubble,
+  siteColumn,
+  yardBlockRects,
 } from '../../src/scenes/level/tutorial/highlights.ts';
+import type { BubbleCandidate, BubbleQuery } from '../../src/scenes/level/tutorial/highlights.ts';
+import { pauseHitRect } from '../../src/ui/PauseButton.ts';
 import { JUICE_HANDLERS } from '../../src/scenes/level/juice/handlers.ts';
 import type { JuiceId } from '../../src/scenes/level/juice/catalog.ts';
 import { planMove } from '../../src/scenes/level/juice/plan.ts';
@@ -1473,6 +1477,8 @@ describe('review round 2: GDD 14.1/4 required-step gate and the LEVELS 2 tutoria
 interface StepView {
   readonly step: number;
   readonly highlight: readonly string[];
+  readonly required: boolean;
+  readonly hand: readonly (readonly [number, number])[];
   readonly state: ReturnType<typeof cloneState>;
   readonly dragging: { readonly pieceId: number; readonly ix: number; readonly iy: number } | null;
 }
@@ -1486,7 +1492,14 @@ function stepViews(id: 1 | 2 | 3 | 4 | 5): { lvl: CompiledLevel; views: StepView
   const snap = (dragging: StepView['dragging']): void => {
     const c = tut.current;
     if (c && !views.some((v) => v.step === c.data.step))
-      views.push({ step: c.data.step, highlight: c.data.highlight, state: cloneState(game.state), dragging });
+      views.push({
+        step: c.data.step,
+        highlight: c.data.highlight,
+        required: c.required,
+        hand: c.data.hand?.path ?? [],
+        state: cloneState(game.state),
+        dragging,
+      });
   };
   tut.start(0);
   snap(null);
@@ -1503,6 +1516,12 @@ function stepViews(id: 1 | 2 | 3 | 4 | 5): { lvl: CompiledLevel; views: StepView
         tut.dragSignal(sig, (now += 10));
         snap({ pieceId: m.pieceId, ix: node.ix, iy: node.iy });
       }
+      // the scene's hold timer (level 2 step 2 `holdOverBuild`): the block rests FREE over the site long enough
+      const min = tut.holdMinMs();
+      if (min !== null && node.mode === FREE && node.ix >= SITE_X) {
+        tut.dragSignal('holdOverBuild', (now += min), min);
+        snap({ pieceId: m.pieceId, ix: node.ix, iy: node.iy });
+      }
     }
     const sink = new ArraySink();
     expect(game.commit(m, sink).status).toBe('applied');
@@ -1512,8 +1531,11 @@ function stepViews(id: 1 | 2 | 3 | 4 | 5): { lvl: CompiledLevel; views: StepView
   return { lvl, views };
 }
 
-/** UX 13.1 bubble: bust 200 + 16 + bubble ≤ 760 wide; every level 1–5 line fits 2 lines → the bust height. */
-function bubbleFor(layout: Layout, lvl: CompiledLevel, v: StepView): { spot: Rect; holes: Rect[] } {
+/**
+ * UX 13.1 bubble (Faz 2 tur 2b): bust 200 + 16 + box; every level 1–5 line fits 2 lines in the wide box (760) → the bust
+ * height, ≤ 3 lines in the narrow box (494) → at most 229 px (`narrowH`).
+ */
+function bubbleQuery(layout: Layout, lvl: CompiledLevel, v: StepView, narrowH = 200): BubbleQuery {
   const rects = highlightAll(v.highlight, {
     layout,
     state: v.state,
@@ -1521,34 +1543,71 @@ function bubbleFor(layout: Layout, lvl: CompiledLevel, v: StepView): { spot: Rec
     hud: { truck: null, streak: null },
     dragging: v.dragging,
   });
-  const holes = spotlightHoles(rects, UI.spotPadPx);
-  const maxW = TOKENS.meta.designWidth - 2 * TOKENS.layout.marginPx - UI.dedeBustPx - 16;
-  const w = UI.dedeBustPx + 16 + Math.min(UI.bubbleMaxW, maxW);
-  const h = UI.dedeBustPx;
-  // as TutorialOverlay places it (Faz 2 tur 2 #15: the candidate under the upper holes, the plan and the lower half avoided)
-  const candidates = bubbleCandidates(layout, w, h, TOKENS.layout.marginPx, UI.bubbleHudGapPx, holes);
-  const spot =
-    bubbleSpot(candidates, holes, hudPenalties(layout), bubbleAvoid(layout, v.state)) ?? candidates[0];
-  if (!spot) throw new Error('no bubble spot');
-  return { spot, holes };
+  return {
+    layout,
+    lit: rects.map((r) => padRect(r, UI.spotPadPx)),
+    handPath: v.hand,
+    yardBlocks: v.required ? [] : yardBlockRects(layout, v.state, v.dragging?.pieceId ?? null),
+    panoramaLit: v.highlight.includes('panorama'),
+    size: (maxW) => ({
+      w: UI.dedeBustPx + 16 + Math.min(maxW, 700),
+      h: maxW < 700 ? narrowH : UI.dedeBustPx,
+      lines: maxW < 700 ? 3 : 2,
+    }),
+  };
 }
 
-/** UX 13.1: upper half, over no spotlight hole and none of the HUD parts the player reads. */
-function bubbleProblems(width: number, height: number): string[] {
+function bubbleFor(layout: Layout, lvl: CompiledLevel, v: StepView, narrowH = 200) {
+  const q = bubbleQuery(layout, lvl, v, narrowH);
+  const pause = pauseHitRect(layout.top.pause);
+  const place = placeBubble(q, TOKENS.layout.marginPx, UI.dedeBustPx, UI.bubbleMaxW, pause);
+  return { place, forbidden: bubbleForbidden(q, pause), penalties: bubblePenalties(layout, q.panoramaLit) };
+}
+
+/** UX 13.1: the bubble touches no forbidden area (lit holes, glove path, site column, pause, lower half, soft-step yard blocks). */
+function bubbleProblems(width: number, height: number, narrowH = 200): string[] {
   const layout = layoutOf(width, height);
   const out: string[] = [];
   for (const id of [1, 2, 3, 4, 5] as const) {
     const { lvl, views } = stepViews(id);
     for (const v of views) {
-      const { spot, holes } = bubbleFor(layout, lvl, v);
-      const where = `${width}×${height} L${id} step ${v.step}`;
-      if (spot.y + spot.h / 2 > layout.H / 2)
-        out.push(`${where}: lower half (y ${spot.y}–${spot.y + spot.h})`);
-      if (holes.some((h) => rectsOverlap(h, spot))) out.push(`${where}: covers a spotlight hole`);
-      if (hudPenalties(layout).some((r) => rectsOverlap(r, spot))) out.push(`${where}: covers the HUD`);
-      const plan = bubbleAvoid(layout, v.state)[1];
-      if (plan && rectsOverlap(plan, spot)) out.push(`${where}: covers the plan`);
+      const { place, forbidden } = bubbleFor(layout, lvl, v, narrowH);
+      const where = `${width}×${height} L${id} step ${v.step} (candidate ${place.candidate})`;
+      const r = place.rect;
+      if (r.y + r.h > layout.H / 2) out.push(`${where}: lower half (y ${r.y}–${r.y + r.h})`);
+      if (forbidden.some((f) => rectsOverlap(f, r))) out.push(`${where}: touches a forbidden area`);
+      if (rectsOverlap(siteColumn(layout), r)) out.push(`${where}: covers the site column`);
     }
+  }
+  return out;
+}
+
+/** UX 13.1 "Beklenen sonuç" (2026-10-07) on the short screens: required → 2, glove not via the crane → 3, else 4. */
+const SHORT_EXPECTED: Readonly<Record<string, BubbleCandidate>> = {
+  'L1·1': 2,
+  'L3·2': 2,
+  'L4·3': 2,
+  'L2·1': 3,
+  'L3·3': 3,
+  'L4·1': 3,
+  'L4·2': 3,
+  'L5·1': 3,
+  'L5·2': 3,
+  // the step opens at `overWall` with the block's hole at node (5, 7) (rows 7, padded to y 612.5 at 390×763): a 3-line
+  // narrow box (229 px) from the crane top touches it → 4, as in the UX table; a 2-line one (200 px) does not → 3
+  'L1·2': 4,
+  'L1·3': 4,
+  'L2·2': 4,
+  'L2·3': 4,
+  'L3·1': 4,
+};
+
+function candidatesOf(width: number, height: number, narrowH = 200): Record<string, BubbleCandidate> {
+  const layout = layoutOf(width, height);
+  const out: Record<string, BubbleCandidate> = {};
+  for (const id of [1, 2, 3, 4, 5] as const) {
+    const { lvl, views } = stepViews(id);
+    for (const v of views) out[`L${id}·${v.step}`] = bubbleFor(layout, lvl, v, narrowH).place.candidate;
   }
   return out;
 }
@@ -1588,8 +1647,22 @@ describe('review round 2: UX 13.1 spotlight holes and the Usta Dede bubble (fixe
     ).toEqual([box(step3.state, 1, 6, 2)]);
   });
 
-  it('UX 13.1 on 390×844 and 360×800 the bubble of every level 1–5 step is in the upper half, under the HUD, over no hole and no pause / goals / moves panel', () => {
+  it('UX 13.1 on 390×844 and 360×800 the bubble of every level 1–5 step is in the upper half, under the HUD (candidate 1), over no forbidden area and no pause / goals / moves panel', () => {
     expect([...bubbleProblems(390, 844), ...bubbleProblems(360, 800)]).toEqual([]);
+    for (const [w, h] of [
+      [390, 844],
+      [360, 800],
+    ] as const) {
+      const layout = layoutOf(w, h);
+      for (const id of [1, 2, 3, 4, 5] as const) {
+        const { lvl, views } = stepViews(id);
+        for (const v of views) {
+          const { place, penalties } = bubbleFor(layout, lvl, v);
+          expect(place.candidate, `${w}×${h} L${id}·${v.step}`).toBe(1);
+          expect(penalties.some((p) => rectsOverlap(p, place.rect))).toBe(false);
+        }
+      }
+    }
   });
 
   it('UX 13.1 "ekranın üst yarısında (hedefi kapatmayacak yerde)" on short screens too: 390×763 (TECH 10.1, 390×844 in Safari), 360×740, 412×846, 375×667 — the level 1 step 1 bubble stays in the upper half, off the plan (fixed: Faz 2 tur 2 #15)', () => {
@@ -1598,7 +1671,21 @@ describe('review round 2: UX 13.1 spotlight holes and the Usta Dede bubble (fixe
       ...bubbleProblems(360, 740),
       ...bubbleProblems(412, 846),
       ...bubbleProblems(375, 667),
+      ...bubbleProblems(390, 763, 229),
+      ...bubbleProblems(375, 667, 229),
     ]).toEqual([]);
+  });
+
+  it('UX 13.1 Faz 2 tur 2b "Beklenen sonuç": on 390×763, 360×740, 412×846 and 375×667 required steps take the yard band (2), soft steps whose glove avoids the crane the crane band (3), the others the band over the HUD (4)', () => {
+    for (const [w, h] of [
+      [390, 763],
+      [360, 740],
+      [412, 846],
+      [375, 667],
+    ] as const) {
+      expect(candidatesOf(w, h), `${w}×${h}`).toEqual({ ...SHORT_EXPECTED, 'L1·2': 3 });
+      expect(candidatesOf(w, h, 229), `${w}×${h} 3-line narrow box`).toEqual(SHORT_EXPECTED);
+    }
   });
 });
 

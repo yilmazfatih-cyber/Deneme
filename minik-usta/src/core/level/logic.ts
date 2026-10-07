@@ -1127,6 +1127,7 @@ function checkTutorial(level: LevelData, ctx: LogicContext, push: Push): void {
         else if (unlock > level.id) bad(`${key} unlocks at level ${unlock}`);
       }
     });
+    checkGloveStart(level, st, path, push);
     for (const [field, cond] of [
       ['done', 'event' in st.done ? st.done : undefined],
       ['startOn', st.startOn],
@@ -1152,6 +1153,50 @@ function checkTutorial(level: LevelData, ctx: LogicContext, push: Push): void {
         );
     }
   });
+}
+
+/**
+ * L-17 glove start (LEVELS §5 "Eldiven vurgulu bloktan başlar", product-lead Faz 2 tur 2): a `drag` / `hold` glove's
+ * `path[0]` is a cell of a highlighted `piece:<i>` (batch 0) or `debris:<i>` (segment 0) block at its JSON start — the
+ * finger presses the block it moves, not its anchor nor a neighbour. A step whose blocks are all truck blocks
+ * (`piece:k<p>_<i>`, start = the delivery) or debris of a later segment is not checked here (Phase 3). `tap` is not checked
+ * (it may press a cell or a block that moved).
+ */
+function checkGloveStart(
+  level: LevelData,
+  st: NonNullable<LevelData['tutorial']>[number],
+  path: string,
+  push: Push,
+): void {
+  const hand = st.hand;
+  const first = hand?.path?.[0];
+  if (!hand || hand.kind === 'tap' || !first) return;
+  const starts: (readonly [number, number])[] = [];
+  let checkable = false;
+  for (const h of st.highlight) {
+    const [kind, arg = ''] = h.split(':') as [string, string | undefined];
+    let block: { shape: ShapeId; x: number; y: number } | undefined;
+    if (kind === 'piece' && /^\d+$/.test(arg)) block = level.yard.batches[0]?.pieces[Number(arg)];
+    else if (kind === 'debris') {
+      const d = level.build.debris?.[Number(arg)];
+      if (d && (d.segment ?? 0) === 0) block = d;
+    }
+    if (!block) continue;
+    checkable = true;
+    const { x, y } = block;
+    for (const c of shapeById(block.shape).cells) starts.push([x + c.x, y + c.y]);
+  }
+  if (!checkable) return;
+  const [fx, fy] = first;
+  if (!starts.some(([x, y]) => x === fx && y === fy))
+    push(
+      'L-17',
+      'tut_highlight_invalid',
+      `${path}.hand.path[0]`,
+      `a ${hand.kind} glove starts on a highlighted block's cell (LEVELS 5): (${fx},${fy}) is none of ${starts
+        .map(([x, y]) => `(${x},${y})`)
+        .join(' ')}`,
+    );
 }
 
 /** L-18 (LEVELS §0 sawtooth). */

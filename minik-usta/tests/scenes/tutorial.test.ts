@@ -20,16 +20,24 @@ import type { CtxTopic } from '../../src/scenes/level/tutorial/contextTips.ts';
 import { canProduce } from '../../src/scenes/level/tutorial/guarantee.ts';
 import {
   blockerRects,
+  bubbleBoxWidths,
   bubbleCandidates,
-  bubbleSpot,
+  bubbleForbidden,
   darkRects,
+  handStrips,
   highlightAll,
   highlightRects,
-  hudPenalties,
   insideAny,
+  padRect,
+  placeBubble,
   spotlight,
   spotlightHoles,
+  yardBlockRects,
 } from '../../src/scenes/level/tutorial/highlights.ts';
+import type { BubbleQuery, BubbleSize } from '../../src/scenes/level/tutorial/highlights.ts';
+import { rectsOverlap } from '../../src/theme/layout.ts';
+import type { Layout } from '../../src/theme/layout.ts';
+import { UI } from '../../src/ui/uiConstants.ts';
 import {
   TutorialController,
   highlightedPieces,
@@ -85,6 +93,27 @@ function run(lvl: CompiledLevel, game: GameSession = GameSession.start(lvl)): Ru
 }
 
 const step = (r: Run): number | null => r.tut.current?.data.step ?? null;
+
+// --- UX 13.1 bubble placement helpers (Faz 2 tur 2b) ----------------------------------------------------------------------
+
+const M = TOKENS.layout.marginPx;
+const PAUSE = (layout: Layout) => pauseHitRect(layout.top.pause);
+const rectRightOf = (r: { x: number; w: number }): number => r.x + r.w;
+/** Every level 1–5 line: 2 lines in a box ≥ 600 px (bust height), 3 in the narrow one. */
+const size = (maxW: number): BubbleSize => ({
+  w: UI.dedeBustPx + 16 + Math.min(maxW, 700),
+  h: maxW < 600 ? 229 : UI.dedeBustPx,
+  lines: maxW < 600 ? 3 : 2,
+});
+const query = (layout: Layout, over: Partial<BubbleQuery>): BubbleQuery => ({
+  layout,
+  lit: [],
+  handPath: [],
+  yardBlocks: [],
+  panoramaLit: false,
+  size,
+  ...over,
+});
 
 describe('GDD 14.1 TutorialController on the level 1–5 tutorials (UX 13.2)', () => {
   it('GDD 14.1 level 1: lift (required, overWall) → drop → match along the hand solution', () => {
@@ -385,7 +414,7 @@ describe('UX 13.1 spotlight geometry (no mask, JUICE 0 rule 11)', () => {
     expect(insideAny(holes, 600, 600)).toBe(false);
   });
 
-  it('UX 13.1 the bubble avoids the holes (level 1 step 1: crane + piece)', () => {
+  it('UX 13.1 the bubble never touches a lit hole nor the glove path (level 1 step 1: crane + piece 0, FIT H 1920 → the yard band)', () => {
     const lvl = levelFile(1);
     const g = GameSession.start(lvl);
     const layout = createLayout(TOKENS, 1920);
@@ -396,15 +425,22 @@ describe('UX 13.1 spotlight geometry (no mask, JUICE 0 rule 11)', () => {
       hud: { truck: null, streak: null },
     });
     expect(rects).toHaveLength(2);
-    const holes = spotlightHoles(rects, 12);
-    const top = { x: 24, y: 24, w: 1032, h: 240 };
-    const board = { x: 24, y: 700, w: 1032, h: 240 };
-    expect(bubbleSpot([top, board], holes)).toEqual(top);
-    const panorama = spotlightHoles(
-      highlightAll(['panorama'], { layout, state: g.state, level: lvl, hud: { truck: null, streak: null } }),
-      12,
+    const q = query(layout, {
+      lit: rects.map((r) => padRect(r, UI.spotPadPx)),
+      handPath: [
+        [4, 7],
+        [4, 8],
+        [6, 8],
+      ],
+    });
+    const place = placeBubble(q, M, UI.dedeBustPx, UI.bubbleMaxW, PAUSE(layout));
+    expect(place.candidate).toBe(2);
+    expect(bubbleForbidden(q, PAUSE(layout)).some((f) => rectsOverlap(f, place.rect))).toBe(false);
+    expect(handStrips(layout, q.handPath).some((f) => rectsOverlap(f, place.rect))).toBe(false);
+    expect(place.rect.y + place.rect.h).toBeLessThanOrEqual(layout.H / 2);
+    expect(place.boxMaxW).toBe(
+      bubbleBoxWidths(layout, UI.dedeBustPx, UI.bubbleMaxW, M, PAUSE(layout)).narrow,
     );
-    expect(bubbleSpot([top, board], panorama)).toEqual(board);
   });
 });
 
@@ -603,23 +639,44 @@ describe('review Faz 2 tur 1: tutorial input gate, holes, bubble and contextual 
   it('UX 13.1 the Dede bubble goes under the HUD first and never over pause / goals / moves (EXPAND 390×844 and 360×800)', () => {
     for (const H of [Math.round((1080 * 844) / 390), Math.round((1080 * 800) / 360)]) {
       const layout = createLayout(TOKENS, H);
-      const candidates = bubbleCandidates(layout, 700, 200, TOKENS.layout.marginPx, 16);
-      const first = candidates[0];
-      expect(first?.y).toBeGreaterThanOrEqual(layout.top.groupBottomY + 16);
-      expect((first?.y ?? 0) + 200).toBeLessThanOrEqual(layout.board.crane.y);
-      const spot = bubbleSpot(candidates, [], hudPenalties(layout));
-      expect(spot).toEqual(first);
-      for (const hud of hudPenalties(layout)) {
-        const s = spot ?? { x: 0, y: 0, w: 0, h: 0 };
-        const overlap = s.x < hud.x + hud.w && hud.x < s.x + s.w && s.y < hud.y + hud.h && hud.y < s.y + s.h;
-        expect(overlap).toBe(false);
-      }
+      const q = query(layout, {});
+      const first = bubbleCandidates(q, M, UI.dedeBustPx, UI.bubbleMaxW, PAUSE(layout))[0];
+      expect(first?.candidate).toBe(1);
+      expect(first?.rect.y).toBe(layout.top.groupBottomY + 16);
+      expect((first?.rect.y ?? 0) + 200).toBeLessThanOrEqual(layout.board.crane.y);
+      const place = placeBubble(q, M, UI.dedeBustPx, UI.bubbleMaxW, PAUSE(layout));
+      expect(place.candidate).toBe(1);
+      for (const hud of [PAUSE(layout), layout.top.goals, layout.top.moves, layout.top.panorama])
+        expect(rectsOverlap(hud, place.rect)).toBe(false);
     }
-    // FIT (H 1920): no band under the HUD; the crane band comes first, the top margin is last
+  });
+
+  it('UX 13.1 Faz 2 tur 2b: no band under the HUD at FIT H 1920; with the crane band and the yard taken the band over the HUD moves beside the pause button (x = 168, box to the right margin); a forbidden area outweighs a penalty; a box needing > 3 lines is invalid', () => {
     const fit = createLayout(TOKENS, 1920);
-    const c = bubbleCandidates(fit, 700, 200, TOKENS.layout.marginPx, 16);
-    expect(c[0]?.y).toBe(fit.board.crane.y);
-    expect(c[c.length - 1]?.y).toBe(TOKENS.layout.marginPx);
+    const pause = PAUSE(fit);
+    const widths = bubbleBoxWidths(fit, UI.dedeBustPx, UI.bubbleMaxW, M, pause);
+    expect(widths).toEqual({ wide: 760, narrow: 494, besidePause: 672 });
+    const crane = padRect(fit.board.crane, UI.spotPadPx);
+    const g = GameSession.start(levelFile(1));
+    const q = query(fit, { lit: [crane], yardBlocks: yardBlockRects(fit, g.state) });
+    const all = bubbleCandidates(q, M, UI.dedeBustPx, UI.bubbleMaxW, pause);
+    expect(all.map((c) => c.candidate)).not.toContain(1);
+    const c4 = all.find((c) => c.candidate === 4);
+    expect(c4?.rect.x).toBe(rectRightOf(pause) + 16);
+    expect(c4?.boxMaxW).toBe(672);
+    expect((c4?.rect.y ?? 0) + (c4?.rect.h ?? 0)).toBe(fit.board.crane.y - 16);
+    const place = placeBubble(q, M, UI.dedeBustPx, UI.bubbleMaxW, pause);
+    expect(place.candidate).toBe(4); // it covers goals / moves (penalties), the others touch the crane hole or the yard
+    expect(bubbleForbidden(q, pause).some((f) => rectsOverlap(f, place.rect))).toBe(false);
+    // the same, but the text needs 4 lines in every box but the narrow one → the narrow candidates only
+    const tall = placeBubble(
+      { ...q, size: (w) => ({ ...size(w), lines: w === widths.narrow ? 3 : 4 }) },
+      M,
+      UI.dedeBustPx,
+      UI.bubbleMaxW,
+      pause,
+    );
+    expect(tall.boxMaxW).toBe(widths.narrow);
   });
 
   it('UX 13.2 a queued contextual tip whose trigger no longer holds is dropped unmarked (queue emptied, a later move)', () => {

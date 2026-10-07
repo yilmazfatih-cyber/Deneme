@@ -9,8 +9,8 @@
  * start before the release, so it spends no move (K-07 row 1).
  *
  * Output: artifacts/screens/<profile>/<name>.png. The short views 390 × 763 and 360 × 740 (`SHORT_PROFILES`) get the
- * `starts` scenario only: the level 1–5 start screens, where the first tutorial step's bubble is placed (review Faz 2
- * tur 2 #15). Options: `--profile 390x844|360x800|390x763|360x740` (default all),
+ * `start1`…`start5` scenarios only (one fresh context each): the level 1–5 start screens, where the first tutorial
+ * step's bubble is placed (review Faz 2 tur 2 #15). Options: `--profile 390x844|360x800|390x763|360x740` (default all),
  * `--only <name-prefix>[,…]` (scenarios that produce a matching shot), `--cvd protanopia,deuteranopia,tritanopia|all`
  * (TECH §12.2: the same shots through a Machado 2009 colour-vision filter on `#game`, into
  * artifacts/screens/<profile>-<cvd>/).
@@ -105,24 +105,26 @@ async function continueHome(gp: GamePage): Promise<void> {
   await settle(gp);
 }
 
-/** The short views' scenario: the start screen of every slice level (tutorial step 1 + its Usta Dede bubble). */
-const STARTS: Scenario = {
-  id: 'starts',
-  shots: ['02-l1-start', '03-l2-start', '04-l3-start', '05-l4-start', '06-l5-start'],
+/**
+ * The short views' scenarios: the start screen of every slice level (tutorial step 1 + its Usta Dede bubble), one fresh
+ * context per level — the first `loadLevel` saves an attempt and the harness loads no other level over it (K-43: one
+ * attempt at a time).
+ */
+const STARTS: readonly Scenario[] = [
+  '02-l1-start',
+  '03-l2-start',
+  '04-l3-start',
+  '05-l4-start',
+  '06-l5-start',
+].map((name, i) => ({
+  id: `start${i + 1}`,
+  shots: [name],
   run: async (gp, shoot) => {
-    for (const [i, name] of [
-      '02-l1-start',
-      '03-l2-start',
-      '04-l3-start',
-      '05-l4-start',
-      '06-l5-start',
-    ].entries()) {
-      await loadLevel(gp.page, i + 1);
-      await settle(gp);
-      await shoot(name);
-    }
+    await loadLevel(gp.page, i + 1);
+    await settle(gp);
+    await shoot(name);
   },
-};
+}));
 
 const SCENARIOS: readonly Scenario[] = [
   {
@@ -379,7 +381,7 @@ async function main(): Promise<number> {
   if (profiles.length === 0) throw new Error(`unknown profile ${profileName}`);
   const wanted = (s: Scenario): boolean => !only || s.shots.some((n) => only.some((o) => n.startsWith(o)));
   const scenariosOf = (p: Profile): readonly Scenario[] =>
-    SHORT_PROFILES.includes(p) ? [STARTS].filter(wanted) : SCENARIOS.filter(wanted);
+    SHORT_PROFILES.includes(p) ? STARTS.filter(wanted) : SCENARIOS.filter(wanted);
   const cvdArg = arg('--cvd');
   const cvds: (CvdKind | null)[] =
     cvdArg === null ? [null] : cvdArg === 'all' ? [...CVD_KINDS] : cvdArg.split(',').filter(isCvdKind);

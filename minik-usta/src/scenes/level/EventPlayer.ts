@@ -226,6 +226,8 @@ export class EventPlayer implements JuiceStage {
     this.reset();
     this.gravity = gravity;
     this.hudSync(s, true);
+    // the #55 / #57 titles are made (or refreshed after a language change) here, not in the level end's frames
+    for (const key of ['win.title', 'lose.title'] as const) this.bannerText(key).setText(upper(t(key)));
   }
 
   /** Hides the JUICE #55 / #57 title banners (a window with its own title took over the screen). */
@@ -259,7 +261,8 @@ export class EventPlayer implements JuiceStage {
           textStyle('display', TOKENS.color.ui.inkOnDark, { color: TOKENS.color.ui.ink, px: 16 }),
         )
         .setOrigin(0.5)
-        .setDepth(DEPTH.hud + 10);
+        .setDepth(DEPTH.hud + 10)
+        .setVisible(false); // made ahead at level start (`startLevel`): shown only by #55 / #57 / `showBanner`
       this.banners.set(key, text);
     }
     return text;

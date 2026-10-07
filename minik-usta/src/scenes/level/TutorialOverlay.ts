@@ -12,9 +12,10 @@
  * - Glove: Tuna's yellow glove plays the step's `hand` (`tap` press + ring, `drag` along the path with a dotted trail,
  *   `hold` = path then pressed `gloveHoldMs`), loop `duration.tutorialHandLoop` incl. `tutorialHandPause`; it never
  *   blocks the player's touch and leaves after the first correct touch.
- * - Usta Dede bubble: upper half, never over a hole, the plan nor the HUD it would hide (pause, goals, moves): first
- *   free band of `bubbleCandidates` (under the HUD group, crane band, under the upper holes, above the status strip, top
- *   margin last; review Faz 2 tur 2 #15).
+ * - Usta Dede bubble (UX §13.1 Faz 2 tur 2b, review Faz 2 tur 2 #15): `placeBubble` — never on a lit hole, the glove's
+ *   path, the site column, the pause button, the lower half (nor, in a soft step or a tip, the yard's blocks); the HUD
+ *   panels only as a last resort. Placed when the content is shown and on a resize, not when a hole follows its block.
+ *   Each text has a wide and a narrow box variant (and one beside the pause button on a very short screen), built once.
  * - Panorama arrow (UX §13.2 level 5 row, Faz 2 tur 2 #7; presentation, not level data): whenever `panorama` is lit and
  *   the level has ≥ 2 segments, a 64 × 40 white arrow with an ink outline points from the active segment to the next
  *   one in the strip, sliding 16 px right every 1.2 s (steady with reduced motion).
@@ -38,20 +39,21 @@ import { drawGlove, drawPanoramaArrow } from '../../ui/icons.ts';
 import { pauseHitRect } from '../../ui/PauseButton.ts';
 import { SpeechBubble } from '../../ui/SpeechBubble.ts';
 import { hex } from '../../ui/text.ts';
+import { rectBottom } from '../../theme/layout.ts';
 import { UI } from '../../ui/uiConstants.ts';
 import { DEPTH } from './depth.ts';
 import { SpotPieces } from './spotPieces.ts';
 import {
   blockerRects,
-  bubbleAvoid,
-  bubbleCandidates,
-  bubbleSpot,
+  bubbleBoxWidths,
   darkRects,
   highlightAll,
-  hudPenalties,
+  padRect,
+  placeBubble,
   spotlight,
+  yardBlockRects,
 } from './tutorial/highlights.ts';
-import type { HudRects } from './tutorial/highlights.ts';
+import type { BubblePlace, HudRects } from './tutorial/highlights.ts';
 import type { ShownStep } from './tutorial/TutorialController.ts';
 import { addBakedGraphics } from '../../ui/BakedGraphics.ts';
 import { VIEW } from './viewConstants.ts';
@@ -93,11 +95,16 @@ export class TutorialOverlay {
   private readonly arrow: Phaser.GameObjects.Graphics;
   /** Rest position of the panorama arrow (null: not shown). */
   private arrowAt: { x: number; y: number } | null = null;
-  /** Ready bubbles by text (the level's step texts from `prepare`, tips on first use). */
-  private readonly bubbles = new Map<string, SpeechBubble>();
+  /** Ready bubbles by box width + text (the level's step texts from `prepare`, tips on first use). */
+  private readonly bubbles = new Map<string, { readonly text: string; readonly bubble: SpeechBubble }>();
   /** The bubble on screen. */
   private bubble: SpeechBubble | null = null;
+  /** Box width limit of the wide variant (UX §13.1: 760 within the margins). */
   private readonly bubbleMaxW: number;
+  /** Text keys of the last `prepare` (built again on a resize). */
+  private preparedKeys: readonly string[] = [];
+  /** Where the bubble of the content on screen goes (placed on `show` and on a resize). */
+  private place: BubblePlace | null = null;
   private blockers: Phaser.GameObjects.Zone[] = [];
   private content: OverlayContent = null;
   private suppressed = false;
@@ -137,7 +144,7 @@ export class TutorialOverlay {
       .setDepth(d + 2)
       .setVisible(false);
     drawPanoramaArrow(this.arrow, VIEW.panoramaArrowW, VIEW.panoramaArrowH, VIEW.panoramaArrowStrokePx);
-    // left-aligned; it goes under the HUD (bubbleCandidates), so it may use the UX §13.1 width within the margins
+    // left-aligned at the margin: the UX §13.1 wide box within the margins
     const maxW = TOKENS.meta.designWidth - 2 * TOKENS.layout.marginPx - UI.dedeBustPx - 16;
     this.bubbleMaxW = Math.min(UI.bubbleMaxW, maxW);
   }
@@ -147,23 +154,54 @@ export class TutorialOverlay {
    * ready bubbles; called again after a language change.
    */
   prepare(keys: readonly string[]): void {
+    this.preparedKeys = [...keys];
     const texts = keys.map((k) => tDynamic(k));
     const keep = new Set(texts);
-    for (const [text, b] of this.bubbles) {
-      if (keep.has(text)) continue;
-      if (b === this.bubble) this.bubble = null;
-      b.destroy();
-      this.bubbles.delete(text);
+    for (const [key, v] of this.bubbles) {
+      if (keep.has(v.text)) continue;
+      if (v.bubble === this.bubble) this.bubble = null;
+      v.bubble.destroy();
+      this.bubbles.delete(key);
     }
-    for (const text of texts) this.bubbleFor(text);
+    const layout = this.host.layout();
+    const pause = pauseHitRect(layout.top.pause);
+    const widths = this.boxWidths();
+    for (const text of texts) {
+      const wide = this.bubbleFor(text, widths.wide);
+      this.bubbleFor(text, widths.narrow);
+      // candidate 4 moves beside the pause button on a very short screen (UX §13.1)
+      if (layout.board.crane.y - UI.bubbleHudGapPx - wide.height < rectBottom(pause))
+        this.bubbleFor(text, widths.besidePause);
+    }
   }
 
-  private bubbleFor(text: string): SpeechBubble {
-    let b = this.bubbles.get(text);
+  private boxWidths(): ReturnType<typeof bubbleBoxWidths> {
+    const layout = this.host.layout();
+    return bubbleBoxWidths(
+      layout,
+      UI.dedeBustPx,
+      this.bubbleMaxW,
+      TOKENS.layout.marginPx,
+      pauseHitRect(layout.top.pause),
+    );
+  }
+
+  /** The bubble of `text` whose box is at most `maxW` wide (the wide one when it is narrow enough already). */
+  private bubbleFor(text: string, maxW: number): SpeechBubble {
+    const wideKey = `${this.bubbleMaxW}|${text}`;
+    let wide = this.bubbles.get(wideKey)?.bubble;
+    if (!wide) {
+      wide = new SpeechBubble(this.scene, DEPTH.tutorial + 4, { bust: true, maxW: this.bubbleMaxW });
+      wide.setText(text).prebake();
+      this.bubbles.set(wideKey, { text, bubble: wide });
+    }
+    if (wide.boxWidth <= maxW) return wide;
+    const key = `${maxW}|${text}`;
+    let b = this.bubbles.get(key)?.bubble;
     if (!b) {
-      b = new SpeechBubble(this.scene, DEPTH.tutorial + 4, { bust: true, maxW: this.bubbleMaxW });
-      b.setText(text);
-      this.bubbles.set(text, b);
+      b = new SpeechBubble(this.scene, DEPTH.tutorial + 4, { bust: true, maxW });
+      b.setText(text).prebake();
+      this.bubbles.set(key, { text, bubble: b });
     }
     return b;
   }
@@ -173,6 +211,7 @@ export class TutorialOverlay {
     this.content = content;
     this.handSince = now;
     this.handOff = content?.kind === 'step' && content.step.handHidden;
+    this.place = null;
     this.rebuild();
   }
 
@@ -197,6 +236,8 @@ export class TutorialOverlay {
   }
 
   relayout(): void {
+    if (this.preparedKeys.length > 0) this.prepare(this.preparedKeys);
+    this.place = null;
     this.rebuild();
   }
 
@@ -208,6 +249,11 @@ export class TutorialOverlay {
   /** The bubble's rect when shown (harness). */
   get bubbleRect(): Rect | null {
     return this.bubble?.visible ? this.bubble.rect : null;
+  }
+
+  /** The UX §13.1 candidate the bubble on screen took (harness, screens). */
+  get bubbleCandidate(): number | null {
+    return this.bubble?.visible ? (this.place?.candidate ?? null) : null;
   }
 
   setReduced(on: boolean): void {
@@ -245,7 +291,7 @@ export class TutorialOverlay {
     this.clearBlockers();
     for (const o of [this.dark, this.glove, this.ring, this.dots, this.arrow]) o.destroy();
     this.spot.destroy();
-    for (const b of this.bubbles.values()) b.destroy();
+    for (const v of this.bubbles.values()) v.bubble.destroy();
     this.bubbles.clear();
     this.bubble = null;
   }
@@ -317,27 +363,38 @@ export class TutorialOverlay {
     // rounded dark corners + pulsing white edge around every hole (pieces, no bake); a corner a fill covers is dark
     this.spot.show(this.holes, darkCorners, darkCorners ? sp.fills : []);
 
-    // Usta Dede bubble
+    // Usta Dede bubble (UX §13.1 Faz 2 tur 2b): placed when the content is shown and on a resize only
     const key = content.kind === 'step' ? content.step.data.textKey : content.textKey;
     const params = content.kind === 'tip' ? content.params : undefined;
-    const bubble = this.bubbleFor(tDynamic(key, params));
+    const text = tDynamic(key, params);
+    const ids = content.kind === 'step' ? content.step.data.highlight : content.highlight;
+    if (!this.place) {
+      const s = this.host.state();
+      const hand = content.kind === 'step' && !this.handOff ? content.step.data.hand : undefined;
+      const required = content.kind === 'step' && content.step.required;
+      this.place = placeBubble(
+        {
+          layout,
+          lit: rects.map((r) => padRect(r, UI.spotPadPx)),
+          handPath: hand?.path ?? [],
+          yardBlocks: !required && s ? yardBlockRects(layout, s, this.heldDrag?.pieceId ?? null) : [],
+          panoramaLit: ids.includes('panorama'),
+          size: (maxW) => {
+            const b = this.bubbleFor(text, maxW);
+            return { w: b.width, h: b.height, lines: b.lineCount };
+          },
+        },
+        TOKENS.layout.marginPx,
+        UI.dedeBustPx,
+        this.bubbleMaxW,
+        pauseHitRect(layout.top.pause),
+      );
+    }
+    const bubble = this.bubbleFor(text, this.place.boxMaxW);
     this.bubble = bubble;
-    const m = TOKENS.layout.marginPx;
-    const candidates = bubbleCandidates(
-      layout,
-      bubble.width,
-      bubble.height,
-      m,
-      UI.bubbleHudGapPx,
-      this.holes,
-    );
-    const s = this.host.state();
-    const avoid = s ? bubbleAvoid(layout, s) : [];
-    const spot = bubbleSpot(candidates, this.holes, hudPenalties(layout), avoid) ?? candidates[0];
-    if (spot) bubble.setPosition(spot.x, spot.y).setVisible(true);
+    bubble.setPosition(this.place.rect.x, this.place.rect.y).setVisible(true);
 
     // UX §13.2 level 5: the panorama arrow from the active segment to the next one
-    const ids = content.kind === 'step' ? content.step.data.highlight : content.highlight;
     const pair = ids.includes('panorama') ? this.host.panoramaArrow() : null;
     if (pair) {
       const y = (pair.from.y + pair.from.h / 2 + pair.to.y + pair.to.h / 2) / 2;

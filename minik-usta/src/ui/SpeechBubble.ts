@@ -10,7 +10,7 @@ import { drawDedeBust } from './icons.ts';
 import { InlineLabel } from './InlineLabel.ts';
 import { hex, textStyle } from './text.ts';
 import { UI } from './uiConstants.ts';
-import { addBakedGraphics } from './BakedGraphics.ts';
+import { addBakedGraphics, bakeNow } from './BakedGraphics.ts';
 
 const C = TOKENS.color.ui;
 
@@ -83,6 +83,16 @@ export class SpeechBubble {
     return Math.max(this.size.h, this.opts.bust ? UI.dedeBustPx : 0);
   }
 
+  /** Width of the box alone (without the bust). */
+  get boxWidth(): number {
+    return this.size.w;
+  }
+
+  /** Lines of the wrapped text (UX §13.1: a candidate whose box needs more than 3 is invalid). */
+  get lineCount(): number {
+    return this.lines.length;
+  }
+
   setText(text: string): this {
     if (text === this.text) return this;
     this.text = text;
@@ -127,6 +137,13 @@ export class SpeechBubble {
       this.root.add(l.root);
     });
     this.lines = labels;
+    return this;
+  }
+
+  /** Bakes the box and the bust now (a bubble built ahead of time shows without a bake in that frame). */
+  prebake(): this {
+    bakeNow(this.bg);
+    if (this.bust) bakeNow(this.bust);
     return this;
   }
 

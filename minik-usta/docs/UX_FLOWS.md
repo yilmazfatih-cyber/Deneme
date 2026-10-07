@@ -518,7 +518,7 @@ bölüm sürer ve şantiyeye bırakma iptaldir (0 hamle; TECH `siteClosed`). Oyu
 | Vinç (K-37) | zincirsiz, ıslak olmayan saha bloğu / moloz / harçlı blok | zincirli ve ıslak bloklar soluk + küçük kilit/damla rozeti | Hedef: sahada boş yer **ya da** şantiyede yalnız **doğru** konum (K-34 dahil). Taşırken gölge kuralı: geçersiz hedefte gölge gri, bırakınca blok geri döner ve vinç harcanmaz. Döndürme: blok üstünde 2 ok, 112 px görsel + her yanda 8 px pay → 128 px (§0.3). I5/Q9 şantiye üstünde gri |
 | Boya Fırçası (K-38) | saha bloğu, yapışmış harçlı blok | moloz | Renk seçici yalnız **bu bölümün plan renklerini** gösterir (2–5 düğme, 112 px + sembol, her yanda 8 px pay → 128 px hedef, düğmeler arası ≥ 16 px; alt yarıda) |
 | Geri Al (K-39) | — (anında) | son eylem sürükleme değilse, Geri Al'dan sonra yeni hamle yapılmadıysa (derinlik 1), kayıp penceresi açıkken: yuva gri, dokununca "Geri alınacak hamle yok" balonu | Etkinken yuva ikonunda küçük nabız yok (sakin) |
-| Altın Mala (K-33) | aktif dilimde **K-34'ü sağlayan** boş, `.` olmayan plan hücreleri = inşa cephesi (§5.5) | diğer hücreler %50 soluk | Geçerli hücreler altın kesik konturla nabız atar. Geçersiz hücreye dokunma: hücre 2 px titrer, mala harcanmaz |
+| Altın Mala (K-33) | aktif dilimde **K-34'ü sağlayan** boş, `.` olmayan plan hücreleri = inşa cephesi (§5.5) | aktif dilimin cephe dışındaki plan hücreleri ve `.` hücreleri seçim açıkken %50 opak (Faz 2 tur 2b; yerleşmiş bloklar, saha ve HUD değişmez; azaltılmış harekette de, çünkü bilgidir); seçim kapanınca (kullanım, Vazgeç ya da ×) %100'e döner | Geçerli hücreler altın kesik konturla nabız atar. Geçersiz hücreye dokunma: hücre 2 px titrer, mala harcanmaz |
 | Açık Kepenk (K-40, oyun öncesi) | — | bölümde W4/W7 yok → bölüm öncesi pencerede gri "Bu bölümde kepenk yok" | Etkiyi yalnız Kepenk ve Kilitli geçitlerin üstündeki bayrak gösterir (JUICE #67) |
 
 3. Uygulama animasyonu (JUICE) → adet −1. Vazgeçilirse ya da geçersiz hedefe dokunulursa adet düşmez.
@@ -1018,14 +1018,52 @@ Menü derinliği: Ana ekrandan her yere en fazla 2 dokunuş; oyun ekranına 1 (B
   0,6 s). El, oyuncunun gerçek dokunuşunu engellemez; oyuncu ilk doğru dokunuşu yapınca el kaybolur.
 - **Spot ışığı:** ekran `ui.overlay` %60 ile kararır; hedef(ler) yuvarlak dikdörtgen deliklerle açılır (12 px pay,
   6 px beyaz nabızlı kenar, 1,2 s). Maske/Filter kullanılmaz: delik çevresinde 4 dikdörtgen + 4 çeyrek daire köşe
-  görüntüsü (code-lead). **Zorunlu adımda** delik dışındaki dokunuşlar yok sayılır; **yumuşak adımda** karartma %30 ve
-  her yer dokunulabilir. **Birleşen delik (Faz 2 tur 2):** pay yüzünden çakışan iki delik tek kutuya birleşirse kutunun
-  hiçbir vurguya ait olmayan kısmı (ör. Bölüm 1 adım 1'de `crane` + `piece:0` kutusundaki satır 7'nin öbür blokları)
+  görüntüsü (code-lead). **Zorunlu adımda** delik dışındaki dokunuşlar yok sayılır; **tek istisna Duraklat** (128 px
+  dokunma alanı, Faz 2 tur 2b): her adımda dokunulur, Mola penceresi, ses/müzik/titreşim ve "Bölümden çık" öğretici
+  boyunca erişilir. Duraklat karartmanın altında kalır (ek delik açılmaz, dikkat hedefte kalır). **Yumuşak adımda**
+  karartma %30 ve her yer dokunulabilir. **Birleşen delik (Faz 2 tur 2):** pay yüzünden çakışan iki delik tek kutuya
+  birleşirse kutunun hiçbir vurguya ait olmayan kısmı (ör. Bölüm 1 adım 1'de `crane` + `piece:0` kutusundaki satır 7'nin öbür blokları)
   aynı karartmayla kapanır (köşesiz dikdörtgenler); oyuncu yalnız vurgulanan şeyi aydınlık görür. **Sürüklenen blok**
   ve ona bağlı gölge görünümü (ray konturu, rozet, düşüş gölgesi, iptal öngörüsü) sürükleme boyunca karartmanın
-  **üstünde** çizilir; oyuncunun elindeki blok ve hamlenin sonucu hiçbir adımda karanlıkta kalmaz.
+  **üstünde** çizilir; oyuncunun elindeki blok ve hamlenin sonucu hiçbir adımda karanlıkta kalmaz. Sıra (alttan üste):
+  karartma → el → Usta Dede balonu → sürüklenen blok ve gölgesi → pencereler.
 - **Usta Dede balonu:** ekranın üst yarısında (hedefi kapatmayacak yerde), büst 200 px + balon maks. 760×280,
-  `font.size.body`. Metin kimliği **tek küme** `tut.l{bölüm}.{konu}` (R-08; küçük harf); bağlamsal satırlar
+  `font.size.body`. **Yerleşim (Faz 2 tur 2b; kısa ekranlar 390×763, 360×740 dahil):** balon = büst + 16 px + kutu,
+  solda (x = `layout.marginPx`); adım başında ve ekran yeniden boyutlanınca aşağıdaki adaylardan seçilir.
+  - **Yasak alanlar** (balon değmez): spot ışığı delikleri (12 px pay dahil); **elin yolu** (adımın el yolu
+    noktalarını birleştiren hücre şeritleri; dokunma elinde hedef hücre; eldiven balonun altında kalır, örtülürse ders
+    görünmez); **şantiye sütunu** (duvarın sol kenarından, `grid.wallX` = 750, sağa; vinç alanının üst kenarından
+    satır 0'ın alt kenarına kadar: bırakılan bloğun gölgesi, düşüş yolu ve inişi burada); Duraklat dokunma alanı; **alt yarı**
+    (balonun alt kenarı `H / 2`'yi geçmez); **yumuşak adımda** sahadaki bloklar ve engeller (dokunulabilirler; zorunlu
+    adımda vurgusuz bloklar karanlık ve tepkisiz olduğu için üstleri yasak değildir).
+  - **Ceza alanları** (değebilir, en son tercih): hedefler paneli, hamle sayacı, panorama (vurgulu değilse; vurguluysa
+    delik).
+  - **Kutu genişliği:** geniş kutu ≤ 760 px (Bölüm 1–5 satırları TR/EN ≤ 2 satır → balon yüksekliği büst = 200 px);
+    dar kutu, sağ kenar duvarın 16 px solunda (x ≤ 734 → kutu ≤ 494 px; Bölüm 1–5 satırları ≤ 3 satır → ≤ 229 px).
+    Kutuya 3 satırdan fazla düşen metin o aday için geçersizdir (280 px tavanı).
+  - **Adaylar (sırayla):**
+    1. **HUD altı bandı**, geniş kutu: y = üst grup alt kenarı + 16 (`top.groupBottomY` + 16 = 280). Yalnız balon vinç
+       alanına girmeden sığıyorsa (bant 390×844'te 216 px, 360×800'de 248 px; 390×763'te 104, 360×740'ta 158 px → sığmaz).
+    2. **Saha bandı**, dar kutu: y satır 7'nin üst kenarından başlar; balon bir yasak alana değdikçe o alanın alt
+       kenarı + 16'ya iner; alt kenar `H / 2`'yi geçerse aday yoktur. Zorunlu adımın adayıdır (ör. Bölüm 1 adım 1: balon
+       satır 6–5'in sol yarısında, karanlık blokların üstünde).
+    3. **Vinç bandı**, dar kutu: y = vinç alanının üst kenarı (`board.crane.y`). Vinç vurgulu ya da elin yolu vinçten
+       geçiyorsa yasağa değer, düşer. Sürüklenen blok balonun üstünde çizildiği için oyuncu taşıdığı bloğu görür.
+    4. **HUD'a taşan bant**, geniş kutu: alt kenar vinç alanının 16 px üstünde (y = `board.crane.y` − 16 − yükseklik);
+       hedefler panelinin ve hamle sayacının alt kısmını örter (ceza). Duraklat'a değerse balon Duraklat'ın sağından
+       başlar (x = 168) ve kutu sağ kenar boşluğuna (x ≤ 1056) sığacak kadar daralır.
+    5. **Durum şeridinin üstü** (alt yarı), dar kutu: alt kenar durum şeridinin 24 px üstünde. Son çare.
+  - **Seçim:** yasak ve ceza alanlarının hiçbirine değmeyen ilk aday; yoksa yasak alana değmeyenler arasından ceza
+    alanıyla en az kesişen (eşitlikte sıradaki ilk); hepsi yasak alana değiyorsa yasak kesişimi en küçük olan. Yasak
+    alan cezadan her zaman ağır basar (ağırlıklı toplam değil, önce yasak sonra ceza karşılaştırılır).
+  - **Beklenen sonuç** (Bölüm 1–5, hesap 2026-10-07): 390×844 ve 360×800'de her adım aday 1. 390×763, 360×740, 412×846
+    ve 375×667'de zorunlu adımlar (B1·1, B3·2, B4·3) aday 2; el yolu vinçten geçmeyen yumuşak adımlar (B2·1, B3·3,
+    B4·1, B4·2, B5·1, B5·2) aday 3; el yolu vinçten geçen ya da blok vinçteyken başlayan yumuşak adımlar (B1·2, B1·3,
+    B2·2, B3·1; B2·3 aynı el yoluyla B1·3 gibi) aday 4. Hiçbir adımda balon delik, el yolu, şantiye sütunu, Duraklat
+    ya da alt yarıya değmez; kısa ekranda yumuşak adımların bir kısmında hedefler/hamle panelinin alt kenarı örtülür
+    (kabul: saha blokları ve inşa alanı her zaman açık kalır).
+
+  Metin kimliği **tek küme** `tut.l{bölüm}.{konu}` (R-08; küçük harf); bağlamsal satırlar
   `tut.ctx.*`, meta satırlar `tut.meta.*`. Ekranda görünen metnin tek kaynağı `STORY.md` §6 (TR ≤ 8 kelime). Terim
   **"blok"** ("parça" değil); öğretici ve ipucu metninde **renk adı geçmez** (renk körü oyuncu). OBSTACLES'taki
   metinler engel bilgi kartıdır (`obs.{id}.desc`, product-lead).

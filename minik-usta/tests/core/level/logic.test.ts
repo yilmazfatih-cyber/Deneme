@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import {
   CHECK_IDS,
@@ -9,12 +11,14 @@ import {
   validateLevelJson,
 } from '../../../src/core/level/logic.ts';
 import type { Issue, LogicContext } from '../../../src/core/level/logic.ts';
-import type { MechanicId } from '../../../src/core/level/schema.ts';
+import type { LevelData, MechanicId } from '../../../src/core/level/schema.ts';
 import { mulberry32 } from '../../../src/core/rng.ts';
 import { shapeById } from '../../../src/core/shapes.ts';
 import { COLOR_CODES } from '../../../src/core/types.ts';
 import type { ColorCode } from '../../../src/core/types.ts';
 import { level, loadFixture } from '../../fixtures/builders.ts';
+
+const ROOT = join(import.meta.dirname, '..', '..', '..');
 import type { LevelSpec } from '../../fixtures/builders.ts';
 
 interface Case {
@@ -559,6 +563,59 @@ describe('K-45 logic details', () => {
     const issues = checkLevel(lvl, { only: ['L-17'], boosterUnlock: { hammer: 8, thermos: 12 } });
     expect(issues.map((i) => i.path)).toEqual(['tutorial[1].highlight[0]']);
     expect(issues[0]?.code).toBe('tut_highlight_invalid');
+  });
+
+  it('L-17 a drag / hold glove starts on a cell of a highlighted block at its start (LEVELS 5; level 2 step 2 old (4,6) → error, new (4,7) → clean)', () => {
+    const glove = (path: [number, number][], kind: 'drag' | 'hold' | 'tap' = 'hold') =>
+      level({
+        id: 2,
+        plan: ['WW'],
+        pieces: [
+          ['C3_180', 'W', 4, 6],
+          ['B1_0', 'G', 4, 5],
+        ],
+        tutorial: [
+          {
+            step: 1,
+            mode: 'soft',
+            highlight: ['piece:0', 'build'],
+            hand: { kind, path },
+            textKey: 'tut.l2.shadow',
+            done: { event: 'placementCorrect', count: 1 },
+          },
+        ],
+      });
+    // C3_180 anchored (4,6) covers (5,6), (4,7), (5,7): (4,6) is the anchor, not a block cell
+    const bad = checkLevel(
+      glove([
+        [4, 6],
+        [4, 8],
+        [6, 8],
+      ]),
+      { only: ['L-17'] },
+    );
+    expect(bad.map((i) => [i.code, i.path])).toEqual([['tut_highlight_invalid', 'tutorial[0].hand.path[0]']]);
+    expect(
+      checkLevel(
+        glove([
+          [4, 7],
+          [4, 8],
+          [6, 8],
+        ]),
+        { only: ['L-17'] },
+      ),
+    ).toEqual([]);
+    expect(checkLevel(glove([[4, 6]], 'tap'), { only: ['L-17'] })).toEqual([]); // a tap may press any cell
+  });
+
+  it('L-17 every level 1–5 glove starts on its highlighted block', () => {
+    for (const id of [1, 2, 3, 4, 5]) {
+      const data = JSON.parse(
+        readFileSync(join(ROOT, 'levels', `level_${String(id).padStart(3, '0')}.json`), 'utf8'),
+      ) as LevelData;
+      const glove = checkLevel(data, { only: ['L-17'] }).filter((i) => i.path.endsWith('hand.path[0]'));
+      expect(glove, `level ${id}`).toEqual([]);
+    }
   });
 
   it('GDD 14.1 tutorial steps are numbered 1, 2, … and done.at regions match the event', () => {

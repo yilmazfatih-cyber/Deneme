@@ -167,6 +167,7 @@ yeşil üstünde ham kontrastı düşüktür (2,7:1); kontur ve gölge okunurlu�
 | `board.blueprintLine` + `alpha.blueprintLineMajor` | #FFFFFF %24 | kalın ızgara (3 px, her 2 hücre); ayrı renk token'ı yok, yalnız alfa farklı |
 | `board.wall` / `wallLight` / `wallDark` | #A9AFB8 / #C9CED5 / #7D848E | duvar betonu |
 | `board.scaffold` / `scaffoldClamp` | #8A96A3 / #FF9A1F | iskele boruları ve kelepçeler |
+| `board.rail` | #3F454D | W1 geçit rayı (koyu çelik, 8 px; üst ışık çizgisi `wallLight`; §5). İskele ve tavan kirişinden bilerek ayrı ton |
 | `board.craneSky` | #FFFFFF %10 | vinç alanı bandı (gökyüzü üstüne) |
 | `board.craneLine` | #FFFFFF %45 | vinç alanı alt sınırı (kesik çizgi) |
 
@@ -255,7 +256,8 @@ dörtgen) — gri tonlamada da ayırt edilirler.
   yüksekliğini bir bakışta gösterir; asansörde (S6) çerçeveyle birlikte hareket eder. Balon kirişe çarpınca 2 küçük
   sekme yapar ve ipi kirişe bağlanır (JUICE #43).
 - **Katman sırası** (alttan üste): ozalit zemin → plan hücreleri → **ozalit ızgara katmanı** (dilim başına önceden
-  çizilmiş tek saydam doku) → inşa cephesi konturu → yerleşmiş bloklar → tavan kirişi → gölge → sürüklenen blok.
+  çizilmiş tek saydam doku) → W1 rayı ve #22 ışığı (§5) → inşa cephesi konturu → yerleşmiş bloklar → tavan kirişi →
+  gölge → sürüklenen blok.
 - **Plan hücresi (renk):** içe 8 px çekik, köşe yarıçapı 0,14c; önce açık altlık `board.planUnderlay` #BCCADD,
   üstüne renk %80 (`alpha.planFill`; renk körü modunda `a11y.colorBlindPlanFill` %90 — formül esastır, bileşik hex
   `check.plan` yalnız kontroldür; dolgu opak olduğu için düz renk çizilir); kontur 4 px **kesik** (14 px çizgi, 10 px boşluk), bileşik dolgu × 0,65; sembol

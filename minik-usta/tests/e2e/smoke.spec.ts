@@ -4,7 +4,8 @@
  * `npx playwright test -c tests/e2e/playwright.config.ts`.
  *
  * - load: the first launch boots into the 3-panel intro;
- * - level 1 played by its hand golden wins with exactly the golden's action log and moves left;
+ * - level 1 played by its hand golden wins with exactly the golden's action log and moves left; the level-end titles
+ *   made at level start stay hidden until the win;
  * - level 2 reloaded mid-level resumes the same attempt (same log, same board hash) on the Pause window, and the rest
  *   of the golden wins it;
  * - UX §12 / §5.1 exit confirm: "Kal" and × go back to the Pause window, "Devam" plays on (K-43 item 2: no life lost);
@@ -47,9 +48,17 @@ test.describe('scene smoke (TECH 12.4)', () => {
     await page.goto('/?harness=1&reducedMotion=1');
     await waitReady(page);
     await loadLevel(page, 1);
+    await waitInteractive(page, 1);
+    // the #55 / #57 titles are made at level start (TECH §10.6) but stay hidden until a level ends
+    const title = (key: string) =>
+      page.evaluate((k) => window.__harness!.tapPoint({ kind: 'text', key: k }), key);
+    expect(await title('lose.title')).toBeNull();
+    expect(await title('win.title')).toBeNull();
     const moves = await golden(page, 1);
     await playMoves(gp, moves);
     await waitWindow(page, 'win', 120_000);
+    expect(await title('win.title')).not.toBeNull(); // UX §6: the win screen keeps "KAZANDIN!"
+    expect(await title('lose.title')).toBeNull();
     const s = await state(page);
     expect(s.outcome).toBe('won');
     expect(s.log.slice(1)).toEqual(moves.map((m) => ({ kind: 'drag', pieceId: m.pieceId, to: m.to })));

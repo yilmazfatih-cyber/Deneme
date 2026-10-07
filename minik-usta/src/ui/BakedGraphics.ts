@@ -102,6 +102,13 @@ function makeBakedClass(Base: GraphicsClass): GraphicsClass {
       quad.renderWebGLStep(renderer, quad, drawingContext, parentMatrix);
     }
 
+    /** Bakes now when stale (WebGL only): a widget built ahead of time uploads its texture outside the frame that shows it. */
+    bakeNow(): void {
+      const renderer = this.scene?.sys?.renderer as object | undefined;
+      if (!renderer || !('gl' in renderer)) return;
+      if (this.stale || this.bakedLength !== this.commandBuffer.length) this.bake();
+    }
+
     private bake(): void {
       this.stale = false;
       this.bakedLength = this.commandBuffer.length;
@@ -149,4 +156,13 @@ export function addBakedGraphics(
     probe.destroy();
   }
   return scene.add.existing(new bakedClass(scene, options));
+}
+
+/**
+ * Bakes a graphics made by `addBakedGraphics` now instead of on its first render (TECH §10.6 "sürükleme karelerinde doku
+ * yükleme yok"): a hidden widget prepared at level start (the Usta Dede bubbles) then shows in a drag frame without a
+ * canvas bake or texture upload. A plain Graphics is left alone.
+ */
+export function bakeNow(g: Phaser.GameObjects.Graphics): void {
+  (g as unknown as { bakeNow?: () => void }).bakeNow?.();
 }
