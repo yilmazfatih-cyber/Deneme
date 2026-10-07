@@ -62,13 +62,16 @@ minik-usta/
 | `npm test`                | Vitest birim testleri                                       | Hazır   |
 | `npm run typecheck`       | `tsc --noEmit`                                              | Hazır   |
 | `npm run lint` / `format` | ESLint / Prettier                                           | Hazır   |
-| `npm run check`           | typecheck + lint + format:check + test                      | Hazır   |
-| `npm run levels:validate` | Bölüm JSON'larını zod şeması ve mantık kurallarıyla doğrular | Faz 2   |
+| `npm run check`           | typecheck + lint + format:check + test + test:rules         | Hazır   |
+| `npm run levels:validate` | Bölüm JSON'larını zod şeması ve mantık kurallarıyla doğrular | Hazır   |
 | `npm run levels:solve`    | Solver: minimum hamle, çözüm dizisi, YAO                    | Faz 3   |
 | `npm run levels:bot`      | Playtest botu (acemi/orta/usta × 500) → LEVEL_REPORT        | Faz 3   |
 | `npm run levels:preview`  | Bölümlerin ASCII/PNG önizlemesi                             | Faz 3   |
 | `npm run levels:check`    | validate + solve + bot                                      | Faz 3   |
-| `npm run screens`         | Playwright ile 390×844 ekran görüntüleri → `artifacts/screens/` | Faz 2 |
+| `npm run screens`         | Playwright ekran görüntüleri (390×844, 360×800, kısa profiller) → `artifacts/screens/` | Hazır |
+| `npm run perf`            | 4× CPU yavaşlatmalı performans + FTUE kapıları → `artifacts/perf/` | Hazır |
+| `npm run build:harness`   | Playwright kancalı test derlemesi → `artifacts/harness/` (üretime girmez) | Hazır |
+| `npm run test:rules`      | K-xx kural kapsamı denetimi (`--phase 2`)                   | Hazır |
 
 Playwright önceden kurulu Chromium'u kullanır (`/opt/pw-browsers/chromium`); `playwright install` çalıştırılmaz.
 
