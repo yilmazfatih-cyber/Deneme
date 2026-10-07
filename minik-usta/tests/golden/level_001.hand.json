@@ -1,0 +1,60 @@
+{
+  "level": 1,
+  "source": "docs/LEVELS.md §2 Bölüm 1 — Çözüm 1–3",
+  "budget": 11,
+  "minMoves": 3,
+  "movesLeft": 8,
+  "yao": { "overWall": 3, "rail": 0 },
+  "steps": [
+    {
+      "piece": "a",
+      "ref": "piece:0",
+      "shape": "D2_90",
+      "color": "Y",
+      "from": [4, 7],
+      "entry": "overWall",
+      "lands": [6, 0]
+    },
+    {
+      "piece": "b",
+      "ref": "piece:1",
+      "shape": "D2_0",
+      "color": "W",
+      "from": [2, 6],
+      "entry": "overWall",
+      "lands": [6, 1]
+    },
+    {
+      "piece": "c",
+      "ref": "piece:2",
+      "shape": "D2_0",
+      "color": "W",
+      "from": [3, 6],
+      "entry": "overWall",
+      "lands": [7, 1],
+      "segmentCompleted": 0
+    }
+  ],
+  "log": [
+    { "kind": "start", "preBoosters": [], "streakTier": 0 },
+    { "kind": "drag", "pieceId": 0, "to": { "ix": 6, "iy": 8, "mode": 0 } },
+    { "kind": "drag", "pieceId": 1, "to": { "ix": 6, "iy": 8, "mode": 0 } },
+    { "kind": "drag", "pieceId": 2, "to": { "ix": 7, "iy": 8, "mode": 0 } }
+  ],
+  "eventLogHash": "b9ac3526d164ff35",
+  "finalAscii": [
+    "L1 turn 3 moves 8 seg 1/1 elev 0",
+    " y  0 1 2 3 4 5 | W | 6 7",
+    " 9  . . . . . . | : | . .",
+    " 8  . . . . . . | : | . .",
+    " 7  y . . . . . | : | . .",
+    " 6  y . . . w w | : | . .",
+    " 5  y y w w y y | : | . .",
+    " 4  w y y w w y | : | . .",
+    " 3  w w w y y y | : | . .",
+    " 2  w w y y w w | : | W W",
+    " 1  y w w y y w | # | W W",
+    " 0  y y y w w w | # | Y Y",
+    "plan seg0 (top→bottom): WW WW YY"
+  ]
+}

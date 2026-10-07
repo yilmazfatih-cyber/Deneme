@@ -1,0 +1,233 @@
+{
+  "ads": {
+    "none": "Şu an reklam yok",
+    "tomorrow": "Yarın tekrar"
+  },
+  "app": {
+    "title": "Lift & Land",
+    "version": "Sürüm {version}"
+  },
+  "booster": {
+    "hint": {
+      "brush": "Boyamak istediğin bloğa dokun.",
+      "crane": "Taşımak istediğin bloğa dokun.",
+      "hammer": "Kırmak istediğine dokun.",
+      "trowel": "Parlayan bir hücreye dokun."
+    },
+    "noUndo": "Geri alınacak hamle yok"
+  },
+  "bridge": {
+    "dailyLimit": "Bugünün köprüleri bitti. Sonraki köprü: {time}",
+    "extra": {
+      "got": "Ek ödülün verildi: {extras}"
+    },
+    "play": "Oyna · Bölüm {n}",
+    "rule_card": {
+      "daily": "Günde en çok {n} köprüye katılabilirsin.",
+      "extra": "Karşıya geçene ek ödül: {extras}"
+    }
+  },
+  "build": {
+    "done": "Yapı tamam!"
+  },
+  "common": {
+    "cancel": "Vazgeç",
+    "coins": "{coin}{n}",
+    "continue": "Devam",
+    "count": "{n}/{max}",
+    "home": "Ana sayfa",
+    "minutes": "{n} dk",
+    "off": "Kapalı",
+    "ok": "Tamam",
+    "on": "Açık",
+    "plus": "+{n}",
+    "retry": "Tekrar dene",
+    "skip": "Geç",
+    "times": "×{n}",
+    "unlockAt": "{n}. bölümde açılır"
+  },
+  "difficulty": {
+    "easy": "Kolay",
+    "hard": "Zor",
+    "normal": "Normal",
+    "superhard": "Çok Zor"
+  },
+  "error": {
+    "boot": "Bir şeyler takıldı. Yeniden deneyelim mi?",
+    "level": "Bir şeyler takıldı. Can gitmez.",
+    "restart": "Bölümü baştan başlat"
+  },
+  "exit": {
+    "bridge": "Köprüden düşersin.",
+    "cost": "Çıkarsan 1 can gider.",
+    "free": "Henüz hamle yapmadın; can gitmez.",
+    "leave": "Çık",
+    "refund": "Oyun öncesi güçlendiricilerin geri verilir.",
+    "stay": "Kal",
+    "streak": "Galibiyet serin sıfırlanır.",
+    "title": "Bölümden çık?"
+  },
+  "home": {
+    "moreSoon": "Yeni bölümler yolda",
+    "play": "Bölüm {n}"
+  },
+  "hud": {
+    "moves": "Hamle",
+    "streak": "Usta Serisi"
+  },
+  "league": {
+    "bonus": {
+      "all": "Puan bonusu: her galibiyet ×{n}",
+      "fair": "Bonus çıraklara da uygulanır.",
+      "levels": {
+        "all": "her bölümde",
+        "some": "{list} bölümlerde"
+      },
+      "now": "Şimdi geçerli",
+      "starts": "Başlıyor: {time}",
+      "weekend": {
+        "add": "Hafta sonu bonusu: {levels} +{n} puan",
+        "factor": "Hafta sonu bonusu: {levels} ×{n} puan"
+      }
+    },
+    "header_lines": {
+      "both": "İlk {up} terfi, son {down} düşer",
+      "bronze": "İlk {up} terfi eder",
+      "diamond": "Son {down} düşer"
+    },
+    "points_line": "Puan: Kolay {easy} · Normal {normal} · Zor {hard} · Çok Zor {superhard}",
+    "rule_card": {
+      "lines": {
+        "both": "Hafta bitince ilk {up} yükselir, son {down} iner.",
+        "bronze": "Hafta bitince ilk {up} yükselir. Bu ligde düşme yok.",
+        "diamond": "Hafta bitince son {down} bir alt lige iner."
+      }
+    }
+  },
+  "lose": {
+    "ad": "Reklam izle · +{n} hamle",
+    "adToday": "bugün {n}/{max}",
+    "bridgeCap": "Bu turun altın sınırı bu teklife yetmez.",
+    "buygold": "Altın al · eksik {coin}{n}",
+    "decline": "Hayır, teşekkürler",
+    "left": "Kalan: {n} hücre",
+    "life": "Bir can gitti.",
+    "offer": {
+      "count": "Teklif {n}/{max}",
+      "gift": "+{n} hamle · Usta Dede'den hediye",
+      "last": "Teklif {n}/{max} · son teklif",
+      "moves": "+{n} hamle"
+    },
+    "retry": "Tekrar dene",
+    "streak": "Galibiyet serin sıfırlandı.",
+    "title": "Hamleler bitti!"
+  },
+  "obs": {
+    "s1": {
+      "desc": "Bu kat bitince şantiye kayar, kamyon malzeme getirir."
+    },
+    "s2": {
+      "desc": "Taralı hücre boş kalmalı. Üstünü geçitten ya da köprüyle doldur."
+    },
+    "w1": {
+      "desc": "Geçitten giren blok düşmez, bıraktığın yerde kalır."
+    }
+  },
+  "pause": {
+    "exit": "Bölümden çık",
+    "title": "Mola"
+  },
+  "replay": {
+    "button": "Tekrar · Bölüm {n}",
+    "card": {
+      "body": "Bildiğin bölümler. Köprü ve Lig sürüyor.",
+      "title": "Tekrar turu"
+    }
+  },
+  "resume": {
+    "strip": "Bölüm {n} · hamlelerin kayıtlı",
+    "title": "Kaldığın yerden devam",
+    "void": {
+      "body": "Bölüm {n} baştan başlayacak. Harcadıkların geri verildi.",
+      "bridge": "Köprüdeki yerin korundu.",
+      "title": "Oyun güncellendi"
+    }
+  },
+  "settings": {
+    "haptics": "Titreşim",
+    "music": "Müzik",
+    "sound": "Ses"
+  },
+  "story": {
+    "prologue": {
+      "p1": {
+        "tuna": "Bu eski tabela da ne?"
+      },
+      "p2": {
+        "dede": "Bizim firma! Yıllardır kapalıydı."
+      },
+      "p3": {
+        "kepce": "Hav!",
+        "tuna": "Minik Usta İnşaat yeniden açıldı!"
+      }
+    },
+    "sign": "{company}"
+  },
+  "town": {
+    "name": "Renkli Tepe"
+  },
+  "truck": {
+    "queue": "Kamyonda: {n}"
+  },
+  "tut": {
+    "ctx": {
+      "blocked": "Bu blok şimdi kımıldamaz. Çevresine bak.",
+      "bounce": {
+        "color": "Renk uymadı, blok geri döndü.",
+        "offplan": "Plan dışına inşa edilmez.",
+        "window": "Orası pencere, boş kalmalı."
+      },
+      "goldtrowel": "Altın Mala'yla parlayan bir hücreye dokun.",
+      "lastmoves": "Son beş hamle! Acele etme, düşün.",
+      "queue": "Sahada yer aç, kamyon boşaltsın.",
+      "reshuffle": "Sıkıştık! Kamyon sahayı yeniden diziyor.",
+      "resume": "Tahta bıraktığın gibi duruyor, evlat.",
+      "streak": "Hatasız {n} doğru, Altın Mala getirir!",
+      "support": "Önce alttaki boşluğu doldur, evlat.",
+      "tootall": "Bu blok çok uzun, üstten geçemez.",
+      "truckhelp": {
+        "free": "Kamyon yardım etti, bloklar serbest. Devam!",
+        "material": "Malzeme eksikti. Kamyon getirdi!"
+      }
+    },
+    "l1": {
+      "drop": "Şantiyenin üstünde bırak, kendisi düşer.",
+      "lift": "Bloğu tut, duvarın üstünden kaldır!",
+      "match": "Plandaki renge uyan bloğu seç."
+    },
+    "l2": {
+      "pattern": "Plana bak: renkler şerit şerit.",
+      "shadow": "Gölgede {ok} varsa yer doğru."
+    },
+    "l23": {
+      "light": "Hafif yerçekimi! Bloklar yavaş düşer."
+    },
+    "l3": {
+      "gap": "Duvarda geçit var! Bloğu içinden kaydır.",
+      "rail": "Raydaki blok düşmez. Sıradakini üstünden aşır."
+    },
+    "l4": {
+      "above": "Pencerenin üstünü geçitten raya koy.",
+      "window": "Taralı yerler boş kalacak: pencere!"
+    },
+    "l5": {
+      "segments": "Bu kat bitince şantiye kayar.",
+      "truck": "Kamyon yeni malzeme getirdi!"
+    }
+  },
+  "win": {
+    "bonus": "Bonus İnşaat · kalan {n} hamle",
+    "title": "Kazandın!",
+    "trowel": "Altın Mala ×{n}"
+  }
+}

@@ -5,7 +5,17 @@ import globals from 'globals'
 import tseslint from 'typescript-eslint'
 
 export default tseslint.config(
-  { ignores: ['dist', 'dev-dist', 'node_modules', 'playwright-report', 'test-results', 'tests/shots/output'] },
+  {
+    ignores: [
+      'minik-usta',
+      'dist',
+      'dev-dist',
+      'node_modules',
+      'playwright-report',
+      'test-results',
+      'tests/shots/output',
+    ],
+  },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ['**/*.{ts,tsx}'],
