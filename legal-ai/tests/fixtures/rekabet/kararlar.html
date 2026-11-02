@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head><meta charset="utf-8"><title>Kararlar - Rekabet Kurumu</title></head>
+<body>
+<header><nav><a href="/tr">Ana Sayfa</a> <a href="/tr/Kararlar">Kararlar</a></nav></header>
+<main>
+<h1>Kurul Kararları</h1>
+<form method="get" action="/tr/Kararlar">
+  <select name="kararTuru"><option>Tümü</option><option>Rekabet İhlali</option></select>
+  <input name="baslangicTarihi"><input name="bitisTarihi">
+</form>
+<table class="table kararlar">
+  <thead><tr><th>Karar Sayısı</th><th>Karar Tarihi</th><th>Karar Türü</th><th>Konu</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>23-45/678-234</td>
+      <td>28.09.2023</td>
+      <td>Rekabet İhlali</td>
+      <td><a href="/Karar?kararId=3f2a1b4c-5d6e-4f70-8a9b-0c1d2e3f4a5b">Hızlı tüketim malları sektöründe faaliyet gösteren teşebbüslerin yeniden satış fiyatını belirlediği iddiası</a></td>
+    </tr>
+    <tr>
+      <td>23-44/650-221</td>
+      <td>21.09.2023</td>
+      <td>Birleşme ve Devralma</td>
+      <td><a href="/Karar?kararId=9a8b7c6d-1e2f-4a3b-9c8d-7e6f5a4b3c2d">ABC Enerji A.Ş.'nin tek kontrolünün XYZ Holding tarafından devralınması</a></td>
+    </tr>
+  </tbody>
+</table>
+<ul class="pagination">
+  <li class="active"><a href="/tr/Kararlar?page=1">1</a></li>
+  <li><a href="/tr/Kararlar?page=2">2</a></li>
+</ul>
+</main>
+<footer>Rekabet Kurumu</footer>
+</body>
+</html>

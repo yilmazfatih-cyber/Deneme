@@ -1,0 +1,20 @@
+{
+  "data": {
+    "data": [
+      {
+        "id": "Y1003",
+        "daire": "22. Hukuk Dairesi",
+        "esasNo": "2019/777",
+        "kararNo": "2020/88",
+        "kararTarihi": "15.01.2020",
+        "arananKelime": "kıdem tazminatı",
+        "index": 3,
+        "siraNo": 3
+      }
+    ],
+    "recordsTotal": 3,
+    "recordsFiltered": 3,
+    "draw": 2
+  },
+  "metadata": { "FMTY": "SUCCESS" }
+}

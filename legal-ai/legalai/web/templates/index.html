@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>legalai — Hukuki arama ve analiz</title>
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+<a class="skip-link" href="#sonuc">İçeriğe geç</a>
+
+<header class="site-header">
+  <div class="wrap header-row">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">§</span>
+      <div>
+        <h1>legalai</h1>
+        <p class="tagline">Türkiye hukuk kaynaklarında arama ve kaynak bağlantılı analiz</p>
+      </div>
+    </div>
+    <dl class="stats" aria-label="Veri tabanı özeti">
+      <div><dt>Belge</dt><dd id="stat-docs">{{ "{:,}".format(stats.documents).replace(",", ".") }}</dd></div>
+      <div><dt>Parça</dt><dd id="stat-chunks">{{ "{:,}".format(stats.chunks).replace(",", ".") }}</dd></div>
+      <div><dt>Son güncelleme</dt><dd id="stat-last">{{ stats.last_fetched_at or "—" }}</dd></div>
+    </dl>
+  </div>
+</header>
+
+<main class="wrap">
+  <form id="form" class="panel query-form" novalidate>
+    <div class="field">
+      <label for="question">Hukuki soru ya da arama ifadesi</label>
+      <textarea id="question" name="question" rows="3" required
+        placeholder="Örn. İşçinin haklı nedenle feshinde kıdem tazminatı hakkı doğar mı?"></textarea>
+      <p class="hint">“Analiz et” kaynaklara dayalı gerekçeli yanıt üretir; “Sadece ara” yalnızca eşleşen belge parçalarını listeler.</p>
+    </div>
+
+    <fieldset class="field sources-field">
+      <legend>Kaynaklar <span class="muted">(boş bırakılırsa hepsi)</span></legend>
+      <div class="sources-grid">
+        {% for s in sources %}
+        <label class="check">
+          <input type="checkbox" name="sources" value="{{ s.id }}">
+          <span class="badge badge-{{ s.id }}" aria-hidden="true"></span>
+          <span>{{ s.name }}</span>
+          {% if stats.by_source and stats.by_source.get(s.id) %}
+          <span class="count" title="Veri tabanındaki belge sayısı">{{ stats.by_source.get(s.id) }}</span>
+          {% endif %}
+        </label>
+        {% endfor %}
+      </div>
+      <div class="sources-actions">
+        <button type="button" class="link-btn" id="sel-all">Hepsini seç</button>
+        <button type="button" class="link-btn" id="sel-none">Temizle</button>
+      </div>
+    </fieldset>
+
+    <div class="row">
+      <div class="field">
+        <label for="since">Başlangıç tarihi</label>
+        <input type="date" id="since" name="since">
+      </div>
+      <div class="field">
+        <label for="until">Bitiş tarihi</label>
+        <input type="date" id="until" name="until">
+      </div>
+      <div class="field field-k">
+        <label for="k">Parça sayısı</label>
+        <input type="number" id="k" name="k" min="1" max="50" value="12">
+      </div>
+    </div>
+
+    <div class="actions">
+      <button type="submit" class="btn btn-primary" id="btn-analyze">Analiz et</button>
+      <button type="button" class="btn" id="btn-search">Sadece ara</button>
+      <span id="status" class="status" role="status" aria-live="polite"></span>
+    </div>
+  </form>
+
+  <div id="error" class="alert" role="alert" hidden></div>
+
+  <section id="sonuc" class="results" aria-live="polite" aria-busy="false">
+    <div id="loading" class="loading" hidden>
+      <span class="spinner" aria-hidden="true"></span>
+      <span id="loading-text">Çalışıyor…</span>
+    </div>
+
+    <article id="analysis" class="panel analysis" hidden>
+      <header class="result-head">
+        <h2>Analiz</h2>
+        <p class="meta"><span id="an-model"></span> <span id="an-usage"></span></p>
+      </header>
+      <div id="an-body" class="prose"></div>
+      <h3 class="citations-title">Kaynaklar</h3>
+      <ol id="an-citations" class="citations"></ol>
+    </article>
+
+    <section id="search" class="panel search-results" hidden>
+      <header class="result-head">
+        <h2>Arama sonuçları</h2>
+        <p class="meta" id="search-meta"></p>
+      </header>
+      <ol id="hits" class="hits"></ol>
+    </section>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p id="disclaimer">Bu uygulamanın çıktıları hukuki danışmanlık değildir; tüm kaynaklar doğrudan bağlantılarından doğrulanmalıdır.</p>
+    {% if model %}<p class="muted">Model: {{ model }}</p>{% endif %}
+  </div>
+</footer>
+
+<script id="source-names" type="application/json">{{ source_names | tojson }}</script>
+<script>
+(function () {
+  "use strict";
+
+  var SOURCE_NAMES = JSON.parse(document.getElementById("source-names").textContent);
+  var $ = function (id) { return document.getElementById(id); };
+
+  var form = $("form");
+  var question = $("question");
+  var status = $("status");
+  var errorBox = $("error");
+  var loading = $("loading");
+  var loadingText = $("loading-text");
+  var results = $("sonuc");
+  var analysisEl = $("analysis");
+  var searchEl = $("search");
+  var btnAnalyze = $("btn-analyze");
+  var btnSearch = $("btn-search");
+  var controller = null;
+
+  // --------------------------------------------------------------- yardımcılar
+
+  function el(tag, attrs, children) {
+    var node = document.createElement(tag);
+    if (attrs) {
+      Object.keys(attrs).forEach(function (k) {
+        if (k === "text") node.textContent = attrs[k];
+        else if (k === "html") node.innerHTML = attrs[k];
+        else if (attrs[k] !== null && attrs[k] !== undefined) node.setAttribute(k, attrs[k]);
+      });
+    }
+    (children || []).forEach(function (c) {
+      if (c === null || c === undefined) return;
+      node.appendChild(typeof c === "string" ? document.createTextNode(c) : c);
+    });
+    return node;
+  }
+
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  }
+
+  // Satır içi: **kalın**, *italik*, `kod`. Önce kaçış, sonra dönüştürme.
+  function inline(s) {
+    var h = escapeHtml(s);
+    h = h.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+    h = h.replace(/(^|[^*])\*([^*\n]+?)\*(?!\*)/g, "$1<em>$2</em>");
+    h = h.replace(/`([^`\n]+?)`/g, "<code>$1</code>");
+    return h;
+  }
+
+  // Segment metni -> blok HTML. "\n\n" paragraf, "\n" satır sonu, "- " / "1. " madde.
+  function blocks(text) {
+    var out = [];
+    String(text || "").replace(/\r\n/g, "\n").split(/\n{2,}/).forEach(function (para) {
+      var lines = para.split("\n").filter(function (l) { return l.trim().length; });
+      if (!lines.length) return;
+      var isUl = lines.every(function (l) { return /^\s*[-*•]\s+/.test(l); });
+      var isOl = lines.every(function (l) { return /^\s*\d+[.)]\s+/.test(l); });
+      if (isUl || isOl) {
+        var items = lines.map(function (l) {
+          return "<li>" + inline(l.replace(/^\s*(?:[-*•]|\d+[.)])\s+/, "")) + "</li>";
+        }).join("");
+        out.push(isUl ? "<ul>" + items + "</ul>" : "<ol>" + items + "</ol>");
+        return;
+      }
+      var heading = lines.length === 1 && /^#{1,4}\s+/.test(lines[0]);
+      if (heading) {
+        var level = lines[0].match(/^(#{1,4})/)[1].length + 2; // h3..h6
+        out.push("<h" + level + ">" + inline(lines[0].replace(/^#{1,4}\s+/, "")) + "</h" + level + ">");
+        return;
+      }
+      out.push("<p>" + lines.map(inline).join("<br>") + "</p>");
+    });
+    return out.join("");
+  }
+
+  function sourceBadge(sourceId, withText) {
+    var name = SOURCE_NAMES[sourceId] || sourceId;
+    return el("span", { "class": "badge badge-" + sourceId + (withText ? " badge-text" : ""), title: name },
+      withText ? [name] : []);
+  }
+
+  function citationLink(cit, n) {
+    var a = el("a", {
+      "class": "cite",
+      href: cit ? cit.url : "#cit-" + n,
+      target: "_blank",
+      rel: "noopener noreferrer",
+      "aria-label": "Kaynak " + n + (cit ? ": " + cit.title : "")
+    }, ["[" + n + "]"]);
+    if (cit) a.title = cit.title;
+    return el("sup", null, [a]);
+  }
+
+  function formatDate(iso) {
+    if (!iso) return "";
+    var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso);
+    return m ? m[3] + "." + m[2] + "." + m[1] : iso;
+  }
+
+  function setLoading(on, text) {
+    loading.hidden = !on;
+    loadingText.textContent = text || "Çalışıyor…";
+    results.setAttribute("aria-busy", on ? "true" : "false");
+    btnAnalyze.disabled = on;
+    btnSearch.disabled = on;
+    status.textContent = on ? (text || "") : "";
+  }
+
+  function showError(msg) {
+    errorBox.hidden = !msg;
+    errorBox.textContent = msg || "";
+  }
+
+  function readForm() {
+    var sources = Array.prototype.slice.call(form.querySelectorAll('input[name="sources"]:checked'))
+      .map(function (c) { return c.value; });
+    return {
+      question: question.value.trim(),
+      sources: sources.length ? sources : null,
+      since: $("since").value || null,
+      until: $("until").value || null,
+      k: Math.max(1, Math.min(50, parseInt($("k").value, 10) || 12))
+    };
+  }
+
+  function validate(data) {
+    if (!data.question) {
+      showError("Lütfen bir soru ya da arama ifadesi yazın.");
+      question.focus();
+      return false;
+    }
+    if (data.since && data.until && data.since > data.until) {
+      showError("Başlangıç tarihi bitiş tarihinden sonra olamaz.");
+      $("since").focus();
+      return false;
+    }
+    return true;
+  }
+
+  function abortPrevious() {
+    if (controller) controller.abort();
+    controller = ("AbortController" in window) ? new AbortController() : null;
+    return controller ? controller.signal : undefined;
+  }
+
+  function errorMessage(resp, payload) {
+    if (payload && typeof payload.detail === "string") return payload.detail;
+    if (payload && Array.isArray(payload.detail) && payload.detail.length) {
+      return payload.detail.map(function (d) { return d.msg || JSON.stringify(d); }).join("; ");
+    }
+    return "Sunucu " + resp.status + " yanıtı verdi.";
+  }
+
+  // --------------------------------------------------------------- analiz
+
+  function renderAnalysis(data) {
+    var citMap = {};
+    (data.citations || []).forEach(function (c) { citMap[c.index] = c; });
+
+    $("an-model").textContent = data.model ? "Model: " + data.model : "";
+    var u = data.usage || {};
+    var inTok = u.input_tokens != null ? u.input_tokens : u.input;
+    var outTok = u.output_tokens != null ? u.output_tokens : u.output;
+    $("an-usage").textContent = (inTok != null || outTok != null)
+      ? "· Jeton: " + (inTok != null ? inTok : "?") + " giriş / " + (outTok != null ? outTok : "?") + " çıkış"
+      : "";
+
+    var body = $("an-body");
+    body.innerHTML = "";
+    (data.segments || []).forEach(function (seg) {
+      var wrap = el("div", { "class": "segment" });
+      wrap.innerHTML = blocks(seg.text);
+      var idx = seg.citation_indexes || [];
+      if (idx.length) {
+        var refs = el("span", { "class": "refs" });
+        idx.forEach(function (n) { refs.appendChild(citationLink(citMap[n], n)); });
+        var last = wrap.lastElementChild;
+        if (last && (last.tagName === "UL" || last.tagName === "OL")) last = last.lastElementChild;
+        if (last && /^(P|LI|H\d)$/.test(last.tagName)) {
+          last.appendChild(document.createTextNode(" "));
+          last.appendChild(refs);
+        } else {
+          wrap.appendChild(el("p", { "class": "refs-line" }, [refs]));
+        }
+      }
+      body.appendChild(wrap);
+    });
+
+    var list = $("an-citations");
+    list.innerHTML = "";
+    (data.citations || []).forEach(function (c) {
+      var full = c.cited_text || "";
+      var short = full.length > 280 ? full.slice(0, 280).replace(/\s+\S*$/, "") + "…" : full;
+      var quote = el("blockquote", { "class": "cited", text: short });
+      var more = null;
+      if (short !== full) {
+        more = el("button", { type: "button", "class": "link-btn", "aria-expanded": "false" }, ["Daha fazla"]);
+        more.addEventListener("click", function () {
+          var open = more.getAttribute("aria-expanded") === "true";
+          quote.textContent = open ? short : full;
+          more.textContent = open ? "Daha fazla" : "Daha az";
+          more.setAttribute("aria-expanded", open ? "false" : "true");
+        });
+      }
+      var li = el("li", { id: "cit-" + c.index, "class": "citation" }, [
+        el("span", { "class": "cit-no", "aria-hidden": "true" }, ["[" + c.index + "]"]),
+        el("div", { "class": "cit-body" }, [
+          el("div", { "class": "cit-head" }, [
+            el("a", { href: c.url, target: "_blank", rel: "noopener noreferrer", "class": "cit-title" }, [c.title || c.url]),
+            sourceBadge(c.source, true),
+            c.heading ? el("span", { "class": "heading-tag" }, [c.heading]) : null
+          ]),
+          full ? quote : null,
+          el("div", { "class": "cit-foot" }, [
+            more,
+            el("a", { href: c.url, target: "_blank", rel: "noopener noreferrer", "class": "cit-url" }, [c.url])
+          ])
+        ])
+      ]);
+      list.appendChild(li);
+    });
+
+    if (data.disclaimer) $("disclaimer").textContent = data.disclaimer;
+    searchEl.hidden = true;
+    analysisEl.hidden = false;
+    analysisEl.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  // --------------------------------------------------------------- arama
+
+  function renderHits(data) {
+    var hits = data.hits || [];
+    $("search-meta").textContent = hits.length
+      ? hits.length + " parça bulundu." : "Eşleşen belge bulunamadı. Farklı sözcükler ya da daha geniş bir tarih aralığı deneyin.";
+    var list = $("hits");
+    list.innerHTML = "";
+    hits.forEach(function (h) {
+      var metaParts = [];
+      if (h.court) metaParts.push(h.court);
+      if (h.case_no) metaParts.push("E. " + h.case_no);
+      if (h.decision_no) metaParts.push("K. " + h.decision_no);
+      var d = formatDate(h.decision_date || h.published_at);
+      if (d) metaParts.push(d);
+      if (h.heading) metaParts.push(h.heading);
+
+      var li = el("li", { "class": "hit" }, [
+        el("div", { "class": "hit-head" }, [
+          el("a", { href: h.link || h.url, target: "_blank", rel: "noopener noreferrer", "class": "hit-title" }, [h.title || h.url]),
+          sourceBadge(h.source, true)
+        ]),
+        metaParts.length ? el("p", { "class": "hit-meta" }, [metaParts.join(" · ")]) : null,
+        el("p", { "class": "snippet" }, [h.snippet || ""]),
+        el("div", { "class": "hit-foot" }, [
+          el("a", { href: h.link || h.url, target: "_blank", rel: "noopener noreferrer", "class": "cit-url" }, [h.link || h.url]),
+          typeof h.score === "number" ? el("span", { "class": "score", title: "Benzerlik puanı" }, ["puan " + h.score.toFixed(3)]) : null
+        ])
+      ]);
+      list.appendChild(li);
+    });
+    analysisEl.hidden = true;
+    searchEl.hidden = false;
+    searchEl.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  // --------------------------------------------------------------- istekler
+
+  function handle(resp) {
+    return resp.text().then(function (t) {
+      var payload = null;
+      try { payload = t ? JSON.parse(t) : null; } catch (e) { payload = null; }
+      if (!resp.ok) throw new Error(errorMessage(resp, payload));
+      return payload;
+    });
+  }
+
+  function fail(err) {
+    if (err && err.name === "AbortError") return;
+    showError(err && err.message ? err.message : "Beklenmeyen bir hata oluştu.");
+  }
+
+  function analyze() {
+    var data = readForm();
+    showError("");
+    if (!validate(data)) return;
+    var signal = abortPrevious();
+    setLoading(true, "Kaynaklar taranıyor ve analiz hazırlanıyor… Bu işlem bir dakikaya kadar sürebilir.");
+    fetch("/api/analyze", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+      signal: signal
+    }).then(handle).then(renderAnalysis).catch(fail).then(function () { setLoading(false); });
+  }
+
+  function search() {
+    var data = readForm();
+    showError("");
+    if (!validate(data)) return;
+    var signal = abortPrevious();
+    var params = new URLSearchParams();
+    params.set("q", data.question);
+    if (data.sources) params.set("sources", data.sources.join(","));
+    if (data.since) params.set("since", data.since);
+    if (data.until) params.set("until", data.until);
+    params.set("k", String(data.k));
+    setLoading(true, "Aranıyor…");
+    fetch("/api/search?" + params.toString(), { signal: signal })
+      .then(handle).then(renderHits).catch(fail).then(function () { setLoading(false); });
+  }
+
+  form.addEventListener("submit", function (e) { e.preventDefault(); analyze(); });
+  btnSearch.addEventListener("click", search);
+  question.addEventListener("keydown", function (e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === "Enter") { e.preventDefault(); analyze(); }
+  });
+  $("sel-all").addEventListener("click", function () {
+    form.querySelectorAll('input[name="sources"]').forEach(function (c) { c.checked = true; });
+  });
+  $("sel-none").addEventListener("click", function () {
+    form.querySelectorAll('input[name="sources"]').forEach(function (c) { c.checked = false; });
+  });
+})();
+</script>
+</body>
+</html>

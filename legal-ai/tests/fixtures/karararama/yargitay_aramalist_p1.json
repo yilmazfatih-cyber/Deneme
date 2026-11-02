@@ -1,0 +1,30 @@
+{
+  "data": {
+    "data": [
+      {
+        "id": "Y1001",
+        "daire": "9. Hukuk Dairesi",
+        "esasNo": "2023/1234",
+        "kararNo": "2023/5678",
+        "kararTarihi": "12.05.2023",
+        "arananKelime": "kıdem tazminatı",
+        "index": 1,
+        "siraNo": 1
+      },
+      {
+        "id": "Y1002",
+        "daire": "Hukuk Genel Kurulu",
+        "esasNo": "2022/9-100",
+        "kararNo": "2023/41",
+        "kararTarihi": "01.02.2023",
+        "arananKelime": "kıdem tazminatı",
+        "index": 2,
+        "siraNo": 2
+      }
+    ],
+    "recordsTotal": 3,
+    "recordsFiltered": 3,
+    "draw": 1
+  },
+  "metadata": { "FMTY": "SUCCESS" }
+}

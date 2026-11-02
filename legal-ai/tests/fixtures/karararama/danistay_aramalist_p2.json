@@ -1,0 +1,20 @@
+{
+  "data": {
+    "data": [
+      {
+        "id": "D2003",
+        "daire": "6. Daire",
+        "esasNo": "2019/120",
+        "kararNo": "2021/900",
+        "kararTarihi": "05.05.2021",
+        "arananKelime": "imar planı",
+        "index": 3,
+        "siraNo": 3
+      }
+    ],
+    "recordsTotal": 3,
+    "recordsFiltered": 3,
+    "draw": 2
+  },
+  "metadata": { "FMTY": "SUCCESS" }
+}

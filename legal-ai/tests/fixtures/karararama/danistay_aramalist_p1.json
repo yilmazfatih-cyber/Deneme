@@ -1,0 +1,30 @@
+{
+  "data": {
+    "data": [
+      {
+        "id": "D2001",
+        "daire": "10. Daire",
+        "esasNo": "2021/4455",
+        "kararNo": "2023/1122",
+        "kararTarihi": "20.03.2023",
+        "arananKelime": "imar planı",
+        "index": 1,
+        "siraNo": 1
+      },
+      {
+        "id": "D2002",
+        "daire": "İdari Dava Daireleri Kurulu",
+        "esasNo": "2020/300",
+        "kararNo": "2022/15",
+        "kararTarihi": "09.11.2022",
+        "arananKelime": "imar planı",
+        "index": 2,
+        "siraNo": 2
+      }
+    ],
+    "recordsTotal": 3,
+    "recordsFiltered": 3,
+    "draw": 1
+  },
+  "metadata": { "FMTY": "SUCCESS" }
+}

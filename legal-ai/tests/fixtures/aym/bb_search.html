@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head><meta charset="utf-8"><title>Kararlar Bilgi Bankası - Arama</title></head>
+<body>
+<form action="/Ara" method="get">
+  <input type="text" name="KelimeAra[]" value="ifade özgürlüğü">
+  <button type="submit">Ara</button>
+</form>
+<table class="table sonuclar">
+  <thead><tr><th>Başvuru</th><th>Başvuru No</th><th>Karar Tarihi</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><a href="/BB/2020/1234">AYŞE YILMAZ BAŞVURUSU</a></td>
+      <td>Başvuru Numarası: 2017/12345</td>
+      <td>Karar Tarihi: 12/11/2020</td>
+    </tr>
+    <tr>
+      <td><a href="https://kararlarbilgibankasi.anayasa.gov.tr/BB/2019/987">MEHMET DEMİR BAŞVURUSU</a></td>
+      <td>Başvuru Numarası: 2016/4567</td>
+      <td>Karar Tarihi: 03/10/2019</td>
+    </tr>
+  </tbody>
+</table>
+<ul class="pagination"><li class="active"><a href="/Ara?KelimeAra[]=ifade&page=1">1</a></li></ul>
+</body>
+</html>

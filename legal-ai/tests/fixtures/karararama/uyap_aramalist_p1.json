@@ -1,0 +1,30 @@
+{
+  "data": {
+    "data": [
+      {
+        "id": "U3001",
+        "birim": "İstanbul Bölge Adliye Mahkemesi 12. Hukuk Dairesi",
+        "esasNo": "2022/1500",
+        "kararNo": "2023/700",
+        "kararTarihi": "30.06.2023",
+        "arananKelime": "kira tespiti",
+        "index": 1,
+        "siraNo": 1
+      },
+      {
+        "id": "U3002",
+        "birim": "Ankara 3. Sulh Hukuk Mahkemesi",
+        "esasNo": "2021/88",
+        "kararNo": "2022/310",
+        "kararTarihi": "14.09.2022",
+        "arananKelime": "kira tespiti",
+        "index": 2,
+        "siraNo": 2
+      }
+    ],
+    "recordsTotal": 3,
+    "recordsFiltered": 3,
+    "draw": 1
+  },
+  "metadata": { "FMTY": "SUCCESS" }
+}
