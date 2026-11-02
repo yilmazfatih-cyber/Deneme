@@ -9,3 +9,5 @@ tests/shots/output
 docs/sprints/**/shots
 content/audio.json
 public/audio
+# Unity projesi (C#, YAML); Prettier kapsamı dışında
+RoyalMatchUnity
