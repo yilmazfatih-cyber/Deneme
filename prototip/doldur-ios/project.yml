@@ -1,0 +1,110 @@
+name: Doldur
+options:
+  bundleIdPrefix: com.ornek.doldur
+  deploymentTarget:
+    iOS: '17.0'
+  createIntermediateGroups: true
+
+settings:
+  base:
+    SWIFT_VERSION: '5.9'
+    MARKETING_VERSION: '0.1.0'
+    CURRENT_PROJECT_VERSION: '1'
+    TARGETED_DEVICE_FAMILY: '1'
+    # Kendi Apple Developer takım kimliğinizi yazın (Xcode > Signing & Capabilities).
+    DEVELOPMENT_TEAM: ''
+
+targets:
+  Doldur:
+    type: application
+    platform: iOS
+    sources: [App, Shared]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.ornek.doldur
+    info:
+      path: App/Info.plist
+      properties:
+        CFBundleDisplayName: Doldur
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+    entitlements:
+      path: App/Doldur.entitlements
+      properties:
+        com.apple.security.application-groups: [group.com.ornek.doldur]
+    dependencies:
+      - target: DoldurBroadcast
+      - target: DoldurKeyboard
+      - target: DoldurSafari
+
+  # Ekranı sürekli izleyen ajan: ReplayKit yayın (ekran kaydı) uzantısı.
+  DoldurBroadcast:
+    type: app-extension
+    platform: iOS
+    sources: [BroadcastExtension, Shared]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.ornek.doldur.broadcast
+    info:
+      path: BroadcastExtension/Info.plist
+      properties:
+        CFBundleDisplayName: Doldur Ajan
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.broadcast-services-upload
+          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).SampleHandler
+          RPBroadcastProcessMode: RPBroadcastProcessModeSampleBuffer
+    entitlements:
+      path: BroadcastExtension/DoldurBroadcast.entitlements
+      properties:
+        com.apple.security.application-groups: [group.com.ornek.doldur]
+
+  # Alanı dolduran el: özel klavye uzantısı.
+  DoldurKeyboard:
+    type: app-extension
+    platform: iOS
+    sources: [KeyboardExtension, Shared]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.ornek.doldur.keyboard
+    info:
+      path: KeyboardExtension/Info.plist
+      properties:
+        CFBundleDisplayName: Doldur Klavye
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.keyboard-service
+          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).KeyboardViewController
+          NSExtensionAttributes:
+            IsASCIICapable: false
+            PrefersRightToLeft: false
+            PrimaryLanguage: tr-TR
+            # Uygulama grubundaki profile ve ekran analizine erişmek için "Tam Erişim" gerekir.
+            RequestsOpenAccess: true
+    entitlements:
+      path: KeyboardExtension/DoldurKeyboard.entitlements
+      properties:
+        com.apple.security.application-groups: [group.com.ornek.doldur]
+
+  # Web formlarını tek dokunuşla dolduran Safari uzantısı.
+  DoldurSafari:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: SafariExtension/SafariWebExtensionHandler.swift
+      - path: Shared
+      - path: SafariExtension/Resources
+        type: folder
+        buildPhase: resources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.ornek.doldur.safari
+    info:
+      path: SafariExtension/Info.plist
+      properties:
+        CFBundleDisplayName: Doldur Safari
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.Safari.web-extension
+          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).SafariWebExtensionHandler
+    entitlements:
+      path: SafariExtension/DoldurSafari.entitlements
+      properties:
+        com.apple.security.application-groups: [group.com.ornek.doldur]

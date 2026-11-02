@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      :root {
+        color-scheme: light dark;
+        font-family: -apple-system, system-ui, sans-serif;
+      }
+      body {
+        margin: 0;
+        padding: 16px;
+        min-width: 260px;
+      }
+      button {
+        display: block;
+        width: 100%;
+        min-height: 52px;
+        margin-bottom: 10px;
+        border: 0;
+        border-radius: 12px;
+        font-size: 17px;
+        font-weight: 600;
+      }
+      #fill {
+        background: #2f6fed;
+        color: #fff;
+      }
+      #undo {
+        background: rgba(127, 127, 127, 0.18);
+        color: inherit;
+      }
+      label {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        margin-bottom: 12px;
+        font-size: 15px;
+      }
+      #result {
+        font-size: 15px;
+        line-height: 1.4;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="fill">Formu doldur</button>
+    <label><input type="checkbox" id="overwrite" /> Dolu alanların üzerine yaz</label>
+    <button id="undo">Geri al</button>
+    <p id="result" role="status"></p>
+    <script src="popup.js"></script>
+  </body>
+</html>
