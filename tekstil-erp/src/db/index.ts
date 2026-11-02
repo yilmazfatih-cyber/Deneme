@@ -74,7 +74,8 @@ export async function exportAll(): Promise<string> {
     const rows = await table.toArray();
     dump[table.name] = rows.map((r) => {
       if (table.name === 'documents') {
-        const { blob: _blob, ...rest } = r as { blob?: Blob };
+        const rest = { ...(r as Record<string, unknown>) };
+        delete rest.blob;
         return rest;
       }
       return r;
