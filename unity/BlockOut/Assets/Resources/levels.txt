@@ -1,0 +1,157 @@
+# Block Out — bölüm dosyası
+# Biçim:
+#   level: <ad>          bölüm başlar
+#   time: <saniye>       süre
+#   map:                 sonraki satırlar harita (. boş, # duvar, harf = blok kimliği)
+#   colors: a:R b:B      blok harfi -> renk (R kırmızı, B mavi, G yeşil, Y sarı, P mor, O turuncu, C camgöbeği, K pembe)
+#   frozen: c:2          buzlu blok: önce 2 blok çıkmalı
+#   gates: U,0,2,R ; R,1,2,B   kapı: kenar (U üst, D alt, L sol, R sağ), başlangıç, uzunluk, renk
+# Haritada satır 0 en üsttedir (U kenarı). Sütun 0 en soldadır (L kenarı).
+
+level: 1
+time: 60
+map:
+aa..
+....
+...b
+...b
+colors: a:R b:B
+gates: U,0,2,R ; R,2,2,B
+
+level: 2
+time: 60
+map:
+aab.
+..b.
+cc..
+..dd
+colors: a:R b:B c:G d:Y
+gates: U,0,2,R ; R,0,2,B ; L,2,1,G ; D,2,2,Y
+
+level: 3
+time: 75
+map:
+aabb.
+c.ddd
+c....
+c.ee.
+.ff..
+colors: a:R b:B c:G d:Y e:R f:B
+gates: U,0,2,R ; U,2,2,B ; L,1,3,G ; R,1,3,Y ; D,2,2,R ; D,0,2,B
+
+level: 4
+time: 90
+map:
+aabcc
+.db..
+.dee.
+ff.g.
+...g.
+colors: a:R b:B c:G d:Y e:R f:B g:G
+gates: U,0,2,R ; U,3,2,G ; R,1,2,R ; D,0,2,B ; L,1,2,Y ; D,3,1,G
+
+level: 5
+time: 90
+map:
+aa.bb
+cdd.e
+c...e
+fff.e
+.ggg.
+colors: a:R b:R c:B d:G e:Y f:P g:O
+gates: U,0,2,R ; U,3,2,R ; L,1,2,B ; R,1,3,Y ; D,0,3,P ; D,1,3,O ; L,0,1,G
+
+level: 6
+time: 100
+map:
+aabbb.
+a.c..d
+e.c.fd
+e.c.f.
+ggg.f.
+.hh.ii
+colors: a:R b:B c:G d:Y e:P f:O g:R h:B i:G
+frozen: c:2
+gates: U,0,2,R ; U,2,3,B ; L,2,2,P ; R,1,2,Y ; D,0,3,R ; D,1,2,B ; D,4,2,G ; R,2,3,O ; U,2,1,G
+
+level: 7
+time: 110
+map:
+.aab.c
+dd.b.c
+..eb..
+f.e.gg
+f.hh.i
+.jj..i
+colors: a:R b:B c:G d:Y e:P f:O g:R h:B i:G j:Y
+frozen: b:3
+gates: U,1,2,R ; U,5,1,G ; L,1,1,Y ; L,3,2,O ; R,3,2,R ; D,2,2,B ; R,4,2,G ; D,1,2,Y ; U,2,1,B ; D,4,1,P
+
+level: 8
+time: 120
+map:
+aab.cc
+a.b..d
+ee.f.d
+g..f.h
+g.ii.h
+.jj.kk
+colors: a:R b:B c:G d:Y e:P f:O g:R h:B i:G j:Y k:P
+frozen: f:2 i:3
+gates: U,0,2,R ; U,2,1,B ; U,4,2,G ; R,1,2,Y ; L,2,1,P ; D,3,1,O ; L,3,2,R ; R,3,2,B ; D,2,2,G ; D,1,2,Y ; D,4,2,P
+
+level: 9
+time: 120
+map:
+.aa.bb.
+c..d..e
+c.ddd.e
+f.....g
+f.hh..g
+.ii.jj.
+colors: a:R b:B c:G d:Y e:P f:O g:R h:B i:G j:Y
+frozen: d:4
+gates: U,1,2,R ; U,4,2,B ; L,1,2,G ; R,1,2,P ; L,3,2,O ; R,3,2,R ; D,2,2,B ; D,1,2,G ; D,4,2,Y ; U,2,3,Y
+
+level: 10
+time: 130
+map:
+aaa.bb.
+c.d.e.f
+c.d.e.f
+g.dhh.i
+g...j.i
+.kk.j..
+.ll.mm.
+colors: a:R b:B c:G d:Y e:P f:O g:R h:B i:G j:Y k:P l:O m:R
+frozen: d:3 j:2
+gates: U,0,3,R ; U,4,2,B ; L,1,2,G ; R,1,2,O ; L,3,2,R ; R,3,2,G ; D,1,2,O ; D,4,2,R ; U,2,1,Y ; D,2,1,P ; L,5,2,P ; R,5,2,Y ; D,3,2,B
+
+level: 11
+time: 140
+map:
+aab.cc.
+a.b.d.e
+f.b.d.e
+f.ggg.h
+i...j.h
+i.kkj..
+.ll..mm
+colors: a:R b:B c:G d:Y e:P f:O g:R h:B i:G j:Y k:P l:O m:R
+frozen: b:3 g:4
+gates: U,0,2,R ; U,2,1,B ; U,4,2,G ; R,1,2,P ; L,2,2,O ; R,3,2,B ; L,4,2,G ; D,1,2,O ; D,5,2,R ; L,3,1,R ; D,2,1,Y ; D,4,1,Y ; L,0,1,P ; D,2,3,P
+
+level: 12
+time: 150
+map:
+.aabbc.
+d....c.
+d.ee.c.
+f.ee.gg
+f..h...
+i..h.jj
+i.kk.l.
+.mm..l.
+colors: a:R b:B c:G d:Y e:P f:O g:R h:B i:G j:Y k:P l:O m:R
+frozen: e:5 h:3
+gates: U,1,2,R ; U,3,2,B ; R,0,3,G ; L,1,2,Y ; L,3,2,O ; R,3,2,R ; R,5,2,Y ; L,5,2,G ; D,1,2,R ; D,2,2,P ; D,5,2,O ; U,2,2,P ; D,3,1,B
