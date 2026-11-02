@@ -75,7 +75,7 @@ namespace RoyalMatch
             var vel = new List<Vector3>();
             for (int i = 0; i < n; i++)
             {
-                var sr = Spawn(parent, Art.Particle(), pos, c, 45);
+                var sr = Spawn(parent, (i % 3 == 0) ? Art.FxStarSmall() : Art.FxCircle(), pos, c, 45);
                 float a = Random.Range(0f, Mathf.PI * 2f), sp = Random.Range(2.5f, 5.5f);
                 sr.transform.localScale = Vector3.one * Random.Range(0.6f, 1.1f);
                 parts.Add(sr); vel.Add(new Vector3(Mathf.Cos(a) * sp, Mathf.Sin(a) * sp, 0f));
@@ -98,6 +98,9 @@ namespace RoyalMatch
 
         public static IEnumerator Ring(Transform parent, Vector3 pos, Color c, float radius, float dur = 0.35f)
         {
+            var glow = Spawn(parent, Art.FxLight(), pos, new Color(c.r, c.g, c.b, 0.8f), 43);
+            glow.transform.localScale = Vector3.one * radius;
+            Object.Destroy(glow.gameObject, dur * 0.6f);
             var sr = Spawn(parent, Art.Ring(), pos, c, 44);
             float t = 0f;
             while (t < dur)

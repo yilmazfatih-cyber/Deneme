@@ -20,10 +20,10 @@ namespace RoyalMatch
                 {
                     new RoomDef { name = "Kral Salonu", tasks = new[] {
                         T("Halı", "carpet", 0.5f, 0.2f, 2.4f), T("Kanepe", "sofa", 0.5f, 0.33f, 1.9f), T("Tablo", "painting", 0.72f, 0.72f, 1.3f),
-                        T("Lamba", "lamp", 0.14f, 0.42f, 1.3f), T("Bitki", "plant", 0.88f, 0.4f, 1.3f) } },
+                        T("Koltuk", "chair", 0.16f, 0.42f, 1.3f), T("Bitki", "plant", 0.88f, 0.4f, 1.3f) } },
                     new RoomDef { name = "Yatak Odası", tasks = new[] {
                         T("Yatak", "bed", 0.5f, 0.3f, 2.2f), T("Halı", "carpet", 0.5f, 0.14f, 1.8f), T("Kitaplık", "bookshelf", 0.14f, 0.5f, 1.5f),
-                        T("Lamba", "lamp", 0.86f, 0.42f, 1.2f), T("Tablo", "painting", 0.5f, 0.78f, 1.2f) } },
+                        T("Lamba", "lamp", 0.86f, 0.42f, 1.2f), T("Televizyon", "tv", 0.5f, 0.6f, 1.1f) } },
                     new RoomDef { name = "Kraliyet Bahçesi", tasks = new[] {
                         T("Çeşme", "fountain", 0.5f, 0.32f, 2.2f), T("Bank", "bench", 0.2f, 0.26f, 1.5f), T("Bank", "bench", 0.8f, 0.26f, 1.5f),
                         T("Çiçek", "plant", 0.14f, 0.55f, 1.3f), T("Çiçek", "plant", 0.86f, 0.55f, 1.3f) } },
@@ -107,7 +107,7 @@ namespace RoyalMatch
                 float size = 128f * t.scale;
                 if (style >= 0)
                 {
-                    var f = Ui.Img(area.rectTransform, Art.Furniture(t.kind, style), Color.white, new Vector2(size, size), pos);
+                    var f = Ui.Img(area.rectTransform, Art.FurnitureAny(t.kind, style), Color.white, new Vector2(size * 1.25f, size), pos);
                     if (i == lastPlaced) { f.transform.localScale = Vector3.zero; f.gameObject.AddComponent<PlaceIn>(); }
                 }
                 else
@@ -118,7 +118,7 @@ namespace RoyalMatch
             }
 
             // Üst şerit
-            Ui.IconBtn(root, Art.Back(), Art.Hex("#2F6FD0"), 120f, new Vector2(30f, -30f), () => GameManager.I.ShowMap(), new Vector2(0f, 1f));
+            Ui.IconBtn(root, Art.IconBack(), Art.Hex("#2F6FD0"), 120f, new Vector2(30f, -30f), () => GameManager.I.ShowMap(), new Vector2(0f, 1f));
             Ui.Pill(root, Art.StarIcon(), d.stars.ToString(), new Vector2(-30f, -40f), new Vector2(280f, 90f), new Vector2(1f, 1f));
             var title = Ui.Wood(root, new Vector2(520f, 110f), new Vector2(0f, -30f), new Vector2(0.5f, 1f));
             Ui.Txt(title.rectTransform, room.name, 44, Art.Hex("#2B1B10"), Vector2.zero, new Vector2(500f, 100f), null, TextAnchor.MiddleCenter, false);
@@ -132,10 +132,10 @@ namespace RoyalMatch
                 var t = room.tasks[i];
                 bool done = Rooms.Choice(i) >= 0;
                 var row = Ui.Panel(root, done ? Art.Hex("#CFE8C9") : Art.Hex("#FFF4DF"), new Vector2(920f, 100f), new Vector2(0f, y), new Vector2(0.5f, 0f), true);
-                Ui.Img(row.rectTransform, done ? Art.Furniture(t.kind, Rooms.Choice(i)) : Art.FurnitureGhost(t.kind), done ? Color.white : Art.Hex("#8B5A2B"), new Vector2(80f, 80f), new Vector2(16f, 0f), new Vector2(0f, 0.5f));
+                Ui.Img(row.rectTransform, done ? Art.FurnitureAny(t.kind, Rooms.Choice(i)) : Art.FurnitureGhost(t.kind), done ? Color.white : Art.Hex("#8B5A2B"), new Vector2(80f, 80f), new Vector2(16f, 0f), new Vector2(0f, 0.5f));
                 Ui.Txt(row.rectTransform, t.name, 36, Art.Hex("#2B1B10"), new Vector2(110f, 0f), new Vector2(400f, 90f), new Vector2(0f, 0.5f), TextAnchor.MiddleLeft, false);
                 if (done)
-                    Ui.Img(row.rectTransform, Art.Check(), Art.Hex("#2A8A2A"), new Vector2(64f, 64f), new Vector2(-30f, 0f), new Vector2(1f, 0.5f));
+                    Ui.Img(row.rectTransform, Art.IconCheck(), Art.Hex("#2A8A2A"), new Vector2(64f, 64f), new Vector2(-30f, 0f), new Vector2(1f, 0.5f));
                 else
                 {
                     var b = Ui.Btn(row.rectTransform, "  1", d.stars >= 1 ? Art.GreenBtn : Art.Hex("#8A94A6"), new Vector2(180f, 78f), new Vector2(-16f, 0f), () =>
@@ -172,7 +172,7 @@ namespace RoyalMatch
                 int style = s;
                 float x = (s - 1) * 270f;
                 var slot = Ui.Panel(p, Art.Hex("#FFF3D6"), new Vector2(240f, 300f), new Vector2(x, -10f), null, true);
-                Ui.Img(slot.rectTransform, Art.Furniture(t.kind, style), Color.white, new Vector2(200f, 200f), new Vector2(0f, 30f));
+                Ui.Img(slot.rectTransform, Art.FurnitureAny(t.kind, style), Color.white, new Vector2(210f, 170f), new Vector2(0f, 30f));
                 Ui.Btn(slot.rectTransform, "Seç", Art.GreenBtn, new Vector2(180f, 70f), new Vector2(0f, -100f), () =>
                 {
                     if (Save.Data.stars < 1) return;

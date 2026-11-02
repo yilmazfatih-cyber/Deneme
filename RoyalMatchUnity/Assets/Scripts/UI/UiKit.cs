@@ -199,7 +199,7 @@ namespace RoyalMatch
 
         public static void CloseButton(RectTransform panel, Action onClose = null)
         {
-            IconBtn(panel, Art.Close(), Art.RedBtn, 96f, new Vector2(14f, 14f), () => { ClosePopup(panel); if (onClose != null) onClose(); }, new Vector2(1f, 1f), 0.5f);
+            IconBtn(panel, Art.IconClose(), Art.RedBtn, 96f, new Vector2(14f, 14f), () => { ClosePopup(panel); if (onClose != null) onClose(); }, new Vector2(1f, 1f), 0.5f);
         }
 
         public static Color Hex(string h) { return Art.Hex(h); }

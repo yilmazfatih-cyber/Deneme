@@ -551,7 +551,23 @@ namespace RoyalMatch
             views[p.id] = v;
             v.transform.localScale = Vector3.zero;
             StartCoroutine(Fx.Ring(boardRoot, pos, Color.white, 0.9f, 0.25f));
+            var tw = Fx.Spawn(boardRoot, Art.FxTwirl(), pos, new Color(1f, 0.95f, 0.7f, 0.9f), 41);
+            StartCoroutine(Spin(tw, 0.4f));
             yield return Tween.Scale(v.transform, Vector3.one * 0.92f, 0.18f, Ease.OutBack);
+        }
+
+        private IEnumerator Spin(SpriteRenderer sr, float dur)
+        {
+            float t = 0f;
+            while (t < dur && sr != null)
+            {
+                t += Time.deltaTime; float k = t / dur;
+                sr.transform.localEulerAngles = new Vector3(0, 0, k * 240f);
+                sr.transform.localScale = Vector3.one * (0.6f + k * 1.2f);
+                sr.color = new Color(1f, 0.95f, 0.7f, 0.9f * (1f - k));
+                yield return null;
+            }
+            if (sr != null) Destroy(sr.gameObject);
         }
 
         private IEnumerator AnimateGravity()

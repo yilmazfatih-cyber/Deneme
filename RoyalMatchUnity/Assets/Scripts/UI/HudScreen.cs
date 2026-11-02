@@ -84,12 +84,12 @@ namespace RoyalMatch
                 goalIcons[g] = icon.rectTransform;
                 goalTexts[g] = Ui.Badge(topPanel, level.goals[i].count.ToString(), Art.NavyUi, 58f, new Vector2(x + 44f, -54f));
                 shown[g] = level.goals[i].count;
-                var ck = Ui.Img(topPanel, Art.Check(), Art.Hex("#52C83C"), new Vector2(56f, 56f), new Vector2(x + 44f, -54f));
+                var ck = Ui.Img(topPanel, Art.IconCheck(), Art.Hex("#52C83C"), new Vector2(56f, 56f), new Vector2(x + 44f, -54f));
                 ck.gameObject.SetActive(false);
                 goalChecks[g] = ck;
             }
 
-            Ui.IconBtn(topPanel, Art.Gear(), Art.Hex("#2F6FD0"), 120f, new Vector2(-40f, 0f), ShowPause, new Vector2(1f, 0.5f));
+            Ui.IconBtn(topPanel, Art.IconGear(), Art.Hex("#2F6FD0"), 120f, new Vector2(-40f, 0f), ShowPause, new Vector2(1f, 0.5f));
 
             if (level.difficulty != Difficulty.Normal)
                 Ui.RibbonTitle(rt, level.difficulty == Difficulty.Hard ? "ZOR SEVİYE" : "ÇOK ZOR SEVİYE",

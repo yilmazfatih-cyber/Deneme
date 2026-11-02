@@ -70,6 +70,15 @@ Animasyonlar (hepsi kodla, dış paket yok):
 - Harita: Kral hafifçe sallanır, bulutlar kayar, seviye düğmesi nabız atar; tüm düğmeler basınca küçülür.
 - Pencereler küçükten yaylanarak açılır, perde yumuşak belirir; odada yeni eşya yaylanarak yerleşir, boş yerler nabız atar.
 
+## Hazır çizimler (CC0)
+
+`Assets/Resources/Art/` altında Kenney'nin kamu malı (CC0) paketlerinden seçilmiş gerçek çizimler var:
+**Furniture Kit** (şato odalarındaki eşyalar: kanepe, masa, lamba, bitki, yatak, kitaplık, bank, koltuk, televizyon),
+**Game Icons** (ayarlar, ev, geri, kapat, artı, onay, ses) ve **Particle Pack** (yıldız, ışık, girdap, parıltı efektleri).
+`Art.Ext()` bu dosyaları yükler; dosya yoksa kodla üretilen görsel devreye girer, yani klasör silinse bile oyun çalışır.
+Taşlar, güçlendiriciler, engeller, Kral ve panolar bilinçli olarak kodla üretilmeye devam eder: bu stil için
+Royal Match kalitesinde kamu malı bir paket yok, Royal Match'in kendi çizimleri ise telifli olduğu için kullanılmadı.
+
 ## Kod yapısı
 
 ```
@@ -77,9 +86,11 @@ Assets/Scripts/
   Core/      Bootstrap (otomatik kurulum), GameManager (ekran akışı), SaveData (PlayerPrefs JSON), Tween, Enums
   Board/     BoardModel (saf oyun mantığı: eşleme, güçlendiriciler, kombolar, engeller, yer çekimi, karıştırma)
              BoardController (girdi, tur akışı, animasyon), BoardView (taş/efekt görünümleri), LevelData + LevelGenerator
-  Art/       Painter (SDF tabanlı piksel boyama), ArtLibrary (taşlar, güçlendiriciler, engeller), ArtIcons (arayüz, kral, odalar)
+  Art/       Painter (SDF tabanlı piksel boyama), ArtLibrary (taşlar, güçlendiriciler, engeller), ArtIcons (arayüz, kral, odalar),
+             ArtExternal (Resources/Art altındaki hazır CC0 PNG'leri yükler, yoksa kodla üretilene düşer)
   UI/        UiKit (uGUI kurucu), HudScreen, MapScreen (+ seviye öncesi, mağaza, ayarlar), RoomScreen
   Audio/     Sfx (sentezlenmiş sesler)
+Resources/Art/ Kenney CC0 çizimleri (mobilya, simge, parçacık) + LICENSE-CC0.txt
 Docs/        Ekran taslakları ve üretilen görsellerin önizlemeleri
 ```
 

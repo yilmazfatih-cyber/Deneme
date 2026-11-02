@@ -31,7 +31,7 @@ namespace RoyalMatch
             var coinsPill = ms.coinsText.transform.parent.gameObject;
             var coinBtn = coinsPill.AddComponent<Button>(); coinBtn.onClick.AddListener(() => ShopPopup.Show(root));
             var plus = Ui.Img(coinsPill.transform, Art.CircleUi(), Art.GreenBtn, new Vector2(54f, 54f), new Vector2(-8f, 0f), new Vector2(1f, 0.5f));
-            Ui.Img(plus.rectTransform, Art.Plus(), Color.white, new Vector2(34f, 34f), Vector2.zero);
+            Ui.Img(plus.rectTransform, Art.IconPlus(), Color.white, new Vector2(34f, 34f), Vector2.zero);
             ms.starsText = Ui.Pill(root, Art.StarIcon(), d.stars.ToString(), new Vector2(-30f, -40f), new Vector2(300f, 90f), new Vector2(1f, 1f));
 
             // Konuşma balonu + Kral
@@ -45,7 +45,7 @@ namespace RoyalMatch
             var room = Rooms.Get(d.roomIndex);
             int done = 0; for (int i = 0; i < room.tasks.Length; i++) if (Rooms.Choice(i) >= 0) done++;
             var roomPanel = Ui.Glass(root, new Vector2(760f, 110f), new Vector2(0f, -130f));
-            Ui.Img(roomPanel.rectTransform, Art.Home(), Color.white, new Vector2(64f, 64f), new Vector2(60f, 0f), new Vector2(0f, 0.5f));
+            Ui.Img(roomPanel.rectTransform, Art.IconHome(), Color.white, new Vector2(64f, 64f), new Vector2(60f, 0f), new Vector2(0f, 0.5f));
             Ui.Txt(roomPanel.rectTransform, room.name + "   " + done + "/" + room.tasks.Length, 40, Color.white, new Vector2(30f, 0f), new Vector2(600f, 100f));
             var rb = roomPanel.gameObject.AddComponent<Button>(); rb.onClick.AddListener(() => GameManager.I.ShowRooms());
             roomPanel.gameObject.AddComponent<PressScale>();
@@ -70,7 +70,7 @@ namespace RoyalMatch
             // Alt gezinti
             var bar = Ui.Wood(root, new Vector2(1120f, 220f), new Vector2(0f, -10f), new Vector2(0.5f, 0f));
             string[] labels = { "Şato", "Mağaza", "Ayarlar" };
-            Sprite[] icons = { Art.Home(), Art.Coin(), Art.Gear() };
+            Sprite[] icons = { Art.IconHome(), Art.Coin(), Art.IconGear() };
             Color[] cols = { Art.Hex("#2F6FD0"), Art.Hex("#B9831A"), Art.Hex("#5C6676") };
             System.Action[] acts = { () => GameManager.I.ShowRooms(), () => ShopPopup.Show(root), () => SettingsPopup.Show(root) };
             for (int i = 0; i < 3; i++)

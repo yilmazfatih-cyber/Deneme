@@ -1,0 +1,6 @@
+Bu klasördeki PNG dosyaları Kenney (www.kenney.nl) tarafından üretilmiş ve
+Creative Commons Zero (CC0 1.0) ile kamuya sunulmuştur:
+  furniture/ : Furniture Kit (yan görünüm)
+  icons/     : Game Icons
+  fx/        : Particle Pack
+Atıf zorunlu değildir; yine de teşekkürler Kenney. https://creativecommons.org/publicdomain/zero/1.0/
