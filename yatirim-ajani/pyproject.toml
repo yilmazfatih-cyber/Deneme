@@ -18,3 +18,4 @@ include = ["yatirim_ajani*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["."]
