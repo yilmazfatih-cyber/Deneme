@@ -17,12 +17,17 @@ Ortam değişkenleri:
   OZETCI_MAX_CHARS Tek seferde modele verilecek en çok karakter (parçalama eşiği)
   OZETCI_DEVICE    "auto" | "cpu" | "cuda" | "mps"  (transformers arka uçları için)
   OZETCI_OCR_MAX_NEW_TOKENS  Docling VLM için sayfa başına üst sınır (varsayılan 3072)
+  OZETCI_DPI       Taranmış sayfa görüntüleme çözünürlüğü, 72-300 arasına kırpılır (varsayılan 170)
+  OZETCI_MAX_PAGES PDF'ten okunacak en çok sayfa (varsayılan 200)
+  OZETCI_MBOX_LIMIT .mbox'tan okunacak en çok ileti (varsayılan 500)
+  OZETCI_N_CTX     Model bağlam penceresi (varsayılan 8192); OZETCI_MAX_NEW_TOKENS yanıt üst sınırı (350)
 """
 
 from __future__ import annotations
 
 import os
 from dataclasses import dataclass, field
+from typing import Optional
 
 DEFAULT_LLM = "Qwen/Qwen3-0.6B"
 DEFAULT_LLM_GGUF_HINT = "Qwen/Qwen3-0.6B-GGUF (Qwen3-0.6B-Q8_0.gguf)"
@@ -42,7 +47,7 @@ PARAM_BUDGET_M = {
     "HuggingFaceTB/SmolLM2-360M-Instruct": 362,
     "google/gemma-3-270m-it": 268,
     "Qwen/Qwen2.5-0.5B-Instruct": 494,
-    "Qwen/Qwen3.5-0.8B": 900,
+    "Qwen/Qwen3.5-0.8B": 873,
     "PaddlePaddle/PaddleOCR-VL-1.5": 959,
 }
 
@@ -66,7 +71,10 @@ class Settings:
     max_chars: int = field(default_factory=lambda: _env_int("OZETCI_MAX_CHARS", 6000))
     max_new_tokens: int = field(default_factory=lambda: _env_int("OZETCI_MAX_NEW_TOKENS", 350))
     n_ctx: int = field(default_factory=lambda: _env_int("OZETCI_N_CTX", 8192))
-    dpi: int = field(default_factory=lambda: _env_int("OZETCI_DPI", 170))
+    dpi: int = field(default_factory=lambda: min(300, max(72, _env_int("OZETCI_DPI", 170))))
+    max_pages: int = field(default_factory=lambda: _env_int("OZETCI_MAX_PAGES", 200))
+    mbox_limit: int = field(default_factory=lambda: _env_int("OZETCI_MBOX_LIMIT", 500))
+    pdf_password: Optional[str] = None
     device: str = field(default_factory=lambda: os.environ.get("OZETCI_DEVICE", "auto"))
     ocr_max_new_tokens: int = field(default_factory=lambda: _env_int("OZETCI_OCR_MAX_NEW_TOKENS", 3072))
 

@@ -2,7 +2,8 @@
 
 Üç katman:
   * ``ozetci.extract``   — PDF / .eml / .mbox / görüntü dosyalarını metne çevirir (gerekirse OCR ile).
-  * ``ozetci.ocr``       — 1B altı görsel-dil modeliyle (SmolDocling / Granite-Docling) sayfa görüntüsünü metne çevirir.
+  * ``ozetci.ocr``       — PP-OCRv5 latin (RapidOCR, ≈15 M, varsayılan) ya da seçenek olarak Granite-Docling /
+                           PaddleOCR-VL görsel-dil modeliyle sayfa görüntüsünü metne çevirir.
   * ``ozetci.summarize`` — 1B altı dil modeliyle (Qwen3-0.6B) metni özetler; ağırlık yoksa çıkarımsal yedek.
 
 Giriş noktası: :class:`ozetci.pipeline.Ozetci` ve komut satırı ``ozetci``.

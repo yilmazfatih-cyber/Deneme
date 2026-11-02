@@ -50,3 +50,13 @@ def test_blank_scanned_page_is_not_sent_to_ocr():
     ocr = FakeOCR()
     doc = extract_pdf(data, ocr=ocr)
     assert ocr.calls == 0 and doc.metadata.get("blank_pages") == 1 and doc.pages[1].ocr_applied
+
+
+def test_render_pixel_cap(scanned_pdf_path):
+    import pypdfium2 as pdfium
+    from ozetci.extract.pdf import MAX_RENDER_PIXELS, render_page
+
+    pdf = pdfium.PdfDocument(str(scanned_pdf_path))
+    img = render_page(pdf, 1, dpi=3000)
+    assert img.size[0] * img.size[1] <= MAX_RENDER_PIXELS * 1.01
+    pdf.close()

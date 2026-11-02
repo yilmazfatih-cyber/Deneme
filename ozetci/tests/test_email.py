@@ -137,3 +137,11 @@ def test_tiny_inline_image_is_skipped(tmp_path: Path):
     ocr = FakeOCR()
     doc = extract_eml(_eml(tmp_path, "logo.eml", raw), ocr=ocr)
     assert ocr.calls == 0 and not doc.children and doc.metadata.get("skipped_inline_images") == 1
+
+
+def test_turkish_date_formatting(sample_eml_path):
+    doc = extract_eml(sample_eml_path)
+    assert "Tarih: 3 Mart 2025 10:15" in doc.text
+    from ozetci.extract.email import format_date_tr
+
+    assert format_date_tr("bozuk tarih") == "bozuk tarih"

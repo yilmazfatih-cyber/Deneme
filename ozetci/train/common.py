@@ -14,7 +14,6 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from ozetci.summarize.prompts import build_messages  # noqa: E402
-from ozetci.textutil import clean_text, detect_language  # noqa: E402
 
 
 def example_to_prompt_completion(text: str, summary: str, kind: str, lang: str, title: str | None = None) -> dict:

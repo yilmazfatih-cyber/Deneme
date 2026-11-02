@@ -33,6 +33,8 @@ KIND_HINT = {
     ("email", "en"): "Summarize the e-mail below. State who asks whom for what, and any deadlines.",
     ("document", "tr"): "Aşağıdaki belgeyi özetle. Konuyu, önemli rakamları ve kararları belirt.",
     ("document", "en"): "Summarize the document below. State the topic, key figures and decisions.",
+    ("mbox", "tr"): "Aşağıdaki posta kutusundaki iletileri özetle. Her ileti için kimden geldiğini ve ne istendiğini belirt.",
+    ("mbox", "en"): "Summarize the mailbox messages below. For each message, state who sent it and what is requested.",
 }
 
 CHUNK_TR = (
@@ -64,7 +66,7 @@ def build_messages(text: str, kind: str, language: str, title: str | None = None
         instruction = MERGE_EN if lang == "en" else MERGE_TR
         fmt = FORMAT_EN if lang == "en" else FORMAT_TR
     else:
-        instruction = KIND_HINT.get((kind if kind in ("email", "document") else "document", lang))
+        instruction = KIND_HINT.get((kind if kind in ("email", "document", "mbox") else "document", lang))
         fmt = FORMAT_EN if lang == "en" else FORMAT_TR
     head = f"{instruction}\n{fmt}".strip()
     title_line = f"\nBaşlık: {title}" if (title and lang == "tr") else (f"\nTitle: {title}" if title else "")

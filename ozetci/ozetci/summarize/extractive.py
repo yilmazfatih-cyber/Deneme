@@ -18,14 +18,17 @@ from .base import Summary
 _ACTION_RE_TR = re.compile(
     r"\blütfen\b|\brica (ederim|ederiz|olunur)\b|\bgerek(iyor|mektedir|li|ir)\b|\bbekl(iyoruz|iyorum|enmektedir)\b|"
     r"\bson (tarih|gün|ödeme)\b|\ben geç\b|\btarihine kadar\b|"
-    r"(gönder|ilet|öde|onayla|imzala|doldur|teslim et|katıl|yanıtla|bildir|hatırlat)(in|iniz|melisiniz|malısınız|ebilir misiniz|abilir misiniz|er misiniz|ır mısınız|ir misiniz|meniz|manız)\b|"
-    r"\b(misiniz|mısınız|müsünüz|musunuz)\b|\bödenmesi\b|\bzorunlu(dur)?\b"
+    r"(gönder|ilet|öde|onayla|imzala|doldur|teslim et|katıl|yanıtla|bildir|hatırlat|incele|kontrol et|paylaş)"
+    r"(in|iniz|yin|yiniz|melisiniz|malısınız|ebilir misiniz|abilir misiniz|er misiniz|ır mısınız|ir misiniz|meniz|manız|"
+    r"ebilir misin|abilir misin|er misin|ır mısın|ir misin|meni|manı)\b|"
+    r"\b(gönder|ilet|öde|onayla|imzala|doldur|bildir|yanıtla|hatırlat|incele|paylaş)[.!]?$|"
+    r"\b(misiniz|mısınız|müsünüz|musunuz|misin|mısın|müsün|musun)\b|\bödenmesi\b|\bzorunlu(dur)?\b"
 )
 _ACTION_RE_EN = re.compile(
     r"\bplease\b|\bneeds? to\b|\bdeadline\b|\bdue (on|by|date)\b|\bby (monday|tuesday|wednesday|thursday|friday|saturday|sunday|end of|eod|cob|\d)|"
     r"\bmust\b|\bshould\b|\bcould you\b|\bcan you\b|\bkindly\b|\baction required\b|\brequired\b|\bremind(er)?\b|\bno later than\b"
 )
-_LABEL_LINE_RE = re.compile(r"^\[(Ek|Diğer ekler|Attachment)[^\]]*\]\s*$")
+_LABEL_LINE_RE = re.compile(r"^\[(Ek|Diğer ekler|Attachment|İleti)[^\]]*\]\s*$")
 _SALUTATION_RE = re.compile(r"^(merhaba|selam|sayın|sevgili|değerli|iyi günler|günaydın|hi|hello|dear|good (morning|afternoon))\b[^.!?]{0,60}$")
 _WORD_RE = re.compile(r"[^\W\d_]{2,}")
 _NUMBER_RE = re.compile(r"\d")
@@ -43,10 +46,15 @@ class ExtractiveSummarizer:
         lang = detect_language(text) if language == "auto" else language
         if lang == "unknown":
             lang = "tr"
-        body = _drop_header_lines(text) if kind == "email" else text
-        body = "\n".join(ln for ln in body.split("\n") if not _LABEL_LINE_RE.match(ln.strip()) and not _SALUTATION_RE.match(tr_lower(ln.strip())))
-        sentences = [re.sub(r"\s+", " ", s) for s in split_sentences(body.replace("\n", " ")) if len(s.split()) >= 3]
-        sentences = _dedupe([s for s in sentences if not _SALUTATION_RE.match(tr_lower(s))])
+        body = _drop_header_lines(text) if kind in ("email", "mbox") else text
+        kept = [ln for ln in body.split("\n") if not _LABEL_LINE_RE.match(ln.strip())]
+        no_salut = [ln for ln in kept if not _SALUTATION_RE.match(tr_lower(ln.strip()))]
+        body = "\n".join(no_salut if any(ln.strip() for ln in no_salut) else kept)  # selamlama süzgeci belgeyi boşaltmasın
+        if not body.strip():
+            return Summary(text="", language=lang, backend=self.name, notes=["belgeden metin çıkarılamadı"])
+        all_sentences = [re.sub(r"\s+", " ", s) for s in split_sentences(body.replace("\n", " "))]
+        all_sentences = _dedupe([s for s in all_sentences if not _SALUTATION_RE.match(tr_lower(s))])
+        sentences = [s for s in all_sentences if len(s.split()) >= 3]
         lines = [ln.strip() for ln in body.split("\n") if len(ln.split()) >= 2]
         if len(sentences) <= 1 and len(lines) >= 3:
             # noktalaması olmayan OCR/tablo/form metni: satırları birim kabul et
@@ -60,7 +68,8 @@ class ExtractiveSummarizer:
         summary_text = truncate_words(" ".join(sentences[i] for i in top), 120)
         # Eylemler önce seçilir (e-postada en değerli bilgi); maddeler özet ve eylemleri yinelemez
         action_re = _ACTION_RE_EN if lang == "en" else _ACTION_RE_TR
-        actions = [s for s in sentences if action_re.search(tr_lower(s))][: self.max_actions]
+        # "Lütfen ödeyiniz." gibi iki kelimelik emirler de eylem sayılır
+        actions = [s for s in all_sentences if len(s.split()) >= 2 and action_re.search(tr_lower(s))][: self.max_actions]
         used = {sentences[i] for i in top} | set(actions)
         bullets = [sentences[i] for i in sorted(ranked[self.max_sentences :]) if sentences[i] not in used][: self.max_bullets]
         return Summary(text=summary_text, bullets=bullets, actions=actions, language=lang, backend=self.name,

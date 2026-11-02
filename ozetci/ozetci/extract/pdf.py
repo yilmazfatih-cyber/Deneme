@@ -15,6 +15,7 @@ Source = Union[str, Path, bytes]
 MIN_CHARS_PER_PAGE = 40
 MIN_ALNUM_RATIO = 0.55  # harf+rakam / boşluk dışı karakter (fatura kalem sayfaları rakam ağırlıklıdır)
 BLANK_PAGE_STDDEV = 3.0  # bu değerin altında gri sapması olan sayfa boş sayılır, OCR'a gitmez
+MAX_RENDER_PIXELS = 25_000_000  # ~5000x5000; afiş/CAD boyutlu sayfalar belleği şişirmesin
 
 
 def page_needs_ocr(text: str, min_chars: int = MIN_CHARS_PER_PAGE, min_alnum: float = MIN_ALNUM_RATIO) -> bool:
@@ -52,9 +53,11 @@ def page_is_blank(image, stddev: float = BLANK_PAGE_STDDEV) -> bool:
 
 
 def render_page(pdf, index: int, dpi: int = 170):
-    """Sayfayı PIL görüntüsüne çevirir (OCR için)."""
+    """Sayfayı PIL görüntüsüne çevirir (OCR için); toplam piksel ``MAX_RENDER_PIXELS``'i aşmaz."""
     page = pdf[index]
-    bitmap = page.render(scale=dpi / 72.0)
+    w, h = page.get_size()
+    scale = min(dpi / 72.0, (MAX_RENDER_PIXELS / max(1.0, w * h)) ** 0.5)
+    bitmap = page.render(scale=max(scale, 0.1))
     return bitmap.to_pil().convert("RGB")
 
 

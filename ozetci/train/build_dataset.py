@@ -4,14 +4,12 @@
 İstemler çalışma zamanındaki ``ozetci.summarize.prompts`` ile birebir aynıdır; böylece
 eğitilen model, uygulamanın gönderdiği istemi görür.
 
-Kaynaklar (hepsi açık; lisanslara dikkat — README'deki tabloya bakın):
-  * csebuetnlp/xlsum (turkish)          — haber özetleme, CC BY-NC-SA 4.0 (TİCARİ DEĞİL)
-  * GEM/wiki_lingua (tr)                 — WikiHow nasıl-yapılır özetleri, CC BY-NC-SA (TİCARİ DEĞİL)
-  * reciTAL/mlsum (tu)                   — haber özetleme, araştırma amaçlı
-  * ytu-ce-cosmos/Turkish-Summarization? — varsa; betik ad çakışmasına dayanıklıdır
-  * sentence-transformers/aeslc / aeslc — İngilizce e-posta -> konu satırı (çok kısa hedef)
-  * Yale-LILY/aeslc, enron e-posta kümeleri — İngilizce e-posta gövdesi
+Kaynaklar (SOURCES / OPTIONAL_SOURCES listeleriyle birebir; lisanslar için README tablosuna bakın):
+  * csebuetnlp/xlsum (turkish, english) — haber özetleme, CC BY-NC-SA 4.0 (TİCARİ DEĞİL)
+  * GEM/wiki_lingua (tr)                — WikiHow nasıl-yapılır özetleri, CC BY-NC-SA (TİCARİ DEĞİL)
+  * reciTAL/mlsum (tu)                  — haber özetleme, araştırma amaçlı
   * ccdv/govreport-summarization (CC BY 4.0 kaynak), FiscalNote/billsum (CC0) — uzun belge özetleme (İngilizce)
+  * Yale-LILY/aeslc (isteğe bağlı, --only ile) — İngilizce e-posta -> konu satırı (çok kısa hedef)
 
 Açık Türkçe E-POSTA özetleme kümesi yoktur; haber kümeleri de e-posta üslubunu kapsamaz. Bu yüzden
 asıl eğitim verisi ``make_synth.py`` ile öğretmen modelden üretilen sentetik Türkçe e-posta/belge özetleridir;
@@ -149,6 +147,10 @@ def main(argv=None) -> int:
     p.add_argument("--synth", default=None, help="öğretmen modelle üretilmiş jsonl (text, summary, kind, lang)")
     p.add_argument("--only", nargs="*", default=None, help="yalnızca bu HF kimlikleri (Yale-LILY/aeslc gibi isteğe bağlı kümeler de buradan açılır)")
     args = p.parse_args(argv)
+    known = {s[0] for s in SOURCES + OPTIONAL_SOURCES}
+    unknown = set(args.only or []) - known
+    if unknown:
+        p.error(f"bilinmeyen küme kimliği: {sorted(unknown)}; geçerli: {sorted(known)}")
 
     train, evalset = build_rows(args)
     out = Path(args.out)

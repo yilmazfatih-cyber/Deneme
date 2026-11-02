@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "1B altı açık modellerle PDF, e-posta ve görüntü okuyup özetleyen küçük Türkçe/İngilizce özetleyici"
 readme = "README.md"
 requires-python = ">=3.10"
-license = { text = "Apache-2.0" }
+license = "Apache-2.0"
 dependencies = [
   "pypdfium2>=4.30",
   "pillow>=10",
@@ -12,9 +12,9 @@ dependencies = [
 
 [project.optional-dependencies]
 # Transformers tabanlı çalıştırma (LLM + OCR). CPU'da da çalışır.
-hf = ["torch>=2.2", "transformers>=4.51", "accelerate>=0.30"]
+hf = ["torch>=2.2", "transformers>=4.56", "accelerate>=0.30"]  # dtype= anahtar kelimesi 4.56 ile geldi
 # llama.cpp ile GGUF (CPU'da en hızlı yol)
-gguf = ["llama-cpp-python>=0.3.0"]
+gguf = ["llama-cpp-python>=0.3.0", "jinja2>=3", "huggingface_hub>=1.0"]
 # DocTags -> Markdown dönüşümü (SmolDocling / Granite-Docling çıktısı için)
 ocr = ["docling-core>=2.0"]
 # Hafif klasik OCR (PP-OCRv5 latin, ONNX Runtime; ~15 MB; modeller ilk kullanımda indirilir)
@@ -24,8 +24,8 @@ rapid-offline = ["rapidocr_onnxruntime>=1.3"]
 # Klasik OCR yedeği (sistemde tesseract + tur dil paketi gerekir)
 tesseract = ["pytesseract>=0.3.10"]
 # İnce ayar (LoRA) ve veri hazırlama
-train = ["torch>=2.2", "transformers>=4.51", "peft>=0.12", "trl>=0.19", "datasets>=2.19", "accelerate>=0.30"]
-dev = ["pytest>=8"]
+train = ["torch>=2.2", "transformers>=4.56", "peft>=0.12", "trl>=0.19", "datasets>=4", "accelerate>=0.30"]  # datasets>=4: uzak betik çalıştırmaz
+dev = ["pytest>=8", "jinja2>=3"]
 
 [project.scripts]
 ozetci = "ozetci.cli:main"

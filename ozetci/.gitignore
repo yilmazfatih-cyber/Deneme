@@ -2,7 +2,13 @@
 __pycache__/
 *.pyc
 .pytest_cache/
+.ruff_cache/
 runs/
 models/
 *.gguf
 .hf_cache/
+# kendi e-posta/PDF metinlerinizden üretilen eğitim verisi: paylaşmayın
+data/
+*.egg-info/
+build/
+dist/

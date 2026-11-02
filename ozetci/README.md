@@ -31,14 +31,14 @@ Seçenekler (hepsi tek başına 1B altı):
 | --- | --- | --- | --- | --- |
 | `ibm-granite/granite-docling-258M` | 258 M | Apache-2.0 | kanıt yok (İngilizce; ja/ar/zh deneysel) | tablo ve okuma sırası önemliyse, İngilizce belgeler |
 | `ds4sd/SmolDocling-256M-preview` | 256 M | Apache-2.0 / CDLA-P-2.0 (kart tutarsız) | kanıt yok | Granite-Docling'in öncülü |
-| `PaddlePaddle/PaddleOCR-VL-1.5` | ≈ 959 M | Apache-2.0 | listede | en iyi düzen + Türkçe; ama LLM ile toplam 1B'yi aşar |
+| `PaddlePaddle/PaddleOCR-VL-1.5` | ≈ 959 M | Apache-2.0 | listede | en iyi düzen + Türkçe; ama LLM ile toplam 1B'yi aşar (motor deneysel, gerçek ağırlıkla sınanmadı) |
 | `tesseract` (`tur+eng`) | — | Apache-2.0 | var | sistemde tesseract varsa hızlı yedek |
 
 | LLM seçeneği | Parametre | Lisans | Türkçe | Ne zaman |
 | --- | --- | --- | --- | --- |
-| `Qwen/Qwen3.5-0.8B` | ≈ 900 M (görsel kodlayıcı dahil) | Apache-2.0 | 201 dil iddiası, açık liste yok | daha iyi kalite istenirse; yeni mimari, araç desteği daha genç |
+| `Qwen/Qwen3.5-0.8B` | ≈ 873 M (görsel kodlayıcı dahil) | Apache-2.0 | 201 dil iddiası, açık liste yok | daha iyi kalite istenirse; yeni mimari, araç desteği daha genç |
 | `Qwen/Qwen2.5-0.5B-Instruct` | 494 M | Apache-2.0 | listede | daha az bellek |
-| `google/gemma-3-270m-it` | 268 M | Gemma Terms | belirsiz | ince ayar tabanı olarak çok ucuz; Türkçe'de daha verimli tokenizer |
+| `google/gemma-3-270m-it` | 268 M | Gemma Terms | belirsiz | ince ayar tabanı olarak çok ucuz; Türkçede daha verimli tokenizer |
 | `HuggingFaceTB/SmolLM2-360M-Instruct` | 362 M | Apache-2.0 | yalnızca İngilizce | İngilizce-only kullanım |
 
 Rakamlar üretici bildirimleridir; `huggingface.co` bu geliştirme ortamından erişilemediği için
@@ -50,10 +50,10 @@ Adayların tamamı, doğrulama sonuçları ve kaynaklarla birlikte `docs/MODEL_S
 ```bash
 cd ozetci
 python -m venv .venv && source .venv/bin/activate
-pip install -e ".[hf,rapid]"          # transformers + Qwen3 için torch, RapidOCR
+pip install -e ".[hf,rapid]"          # transformers (>= 4.56) + Qwen3 için torch, RapidOCR
 # CPU'da en hızlı yol: GGUF
 pip install -e ".[gguf,rapid]"
-huggingface-cli download Qwen/Qwen3-0.6B-GGUF Qwen3-0.6B-Q8_0.gguf --local-dir models
+hf download Qwen/Qwen3-0.6B-GGUF Qwen3-0.6B-Q8_0.gguf --local-dir models   # huggingface_hub >= 1.0 'hf' komutu
 ```
 
 Model ağırlıkları ilk çalıştırmada indirilir (Qwen3-0.6B ≈ 1,5 GB fp16 / 805 MB Q8_0; PP-OCRv5
@@ -63,12 +63,13 @@ latin modelleri ≈ 15 MB). Sonrasında internet gerekmez.
 
 ```bash
 ozetci ozetle fatura.pdf                      # PDF (metin katmanı yoksa OCR)
-ozetci ozetle gelen.eml --json                # e-posta + PDF/görüntü ekleri
+ozetci ozetle gelen.eml --json                # e-posta + PDF/görüntü ekleri (JSON her zaman liste)
 ozetci ozetle kutu.mbox                       # birden çok ileti
 ozetci ozetle taranmis.png --dil tr           # görüntü -> OCR -> özet
 ozetci --model models/Qwen3-0.6B-Q8_0.gguf ozetle rapor.pdf     # GGUF arka ucu
 ozetci --ocr ibm-granite/granite-docling-258M oku tablo.pdf     # yalnızca metin çıkar
-ozetci bilgi                                  # ayarlar, kurulu arka uçlar, parametre bütçesi
+ozetci --parola 1234 ozetle gizli.pdf         # parola korumalı PDF
+ozetci bilgi                                  # ayarlar, kurulu paketler, parametre bütçesi
 ```
 
 Python:
@@ -88,7 +89,10 @@ alanına yazılır ve `notlar`da belirtilir. Özetteki **metinde geçmeyen rakam
 Ortam değişkenleri: `OZETCI_LLM` (HF kimliği ya da `.gguf` yolu), `OZETCI_OCR` (`rapid`, `rapid:en`,
 HF Docling kimliği, `tesseract`, `none`), `OZETCI_BACKEND` (`auto|hf|gguf|extractive`), `OZETCI_THREADS`,
 `OZETCI_DEVICE` (`auto|cpu|cuda|mps`), `OZETCI_MAX_CHARS` (parçalama eşiği, varsayılan 6000 karakter ≈ 2000 belirteç),
-`OZETCI_OCR_MAX_NEW_TOKENS` (Docling VLM sayfa başına üst sınır).
+`OZETCI_N_CTX` (bağlam, 8192), `OZETCI_MAX_NEW_TOKENS` (yanıt üst sınırı, 350), `OZETCI_DPI` (72-300, varsayılan 170),
+`OZETCI_MAX_PAGES` (PDF sayfa sınırı, 200), `OZETCI_MBOX_LIMIT` (ileti sınırı, 500), `OZETCI_OCR_MAX_NEW_TOKENS`
+(Docling VLM sayfa başına üst sınır, 3072). `--backend gguf` yalnızca `.gguf` yoluyla, `--backend hf` yalnızca HF
+kimliğiyle çalışır; uyumsuz çiftte açık hata verilir, sessizce yedeğe düşülmez.
 
 Model ağırlığı yoksa `extractive` yedek çalışır: en bilgilendirici cümleleri seçer, hiçbir şey
 üretmez. Testler bu yedekle ve rastgele ağırlıklı minik bir Qwen3 ile internetsiz koşar.
@@ -154,16 +158,16 @@ işleyip aynı istemi üretir (HF ve GGUF yolları birebir aynı girdiyi verir).
 | GovReport | `ccdv/govreport-summarization` | EN uzun rapor | CC BY 4.0 (kaynak) | evet |
 | BillSum | `FiscalNote/billsum` | EN yasa metni | CC0 | evet |
 | AESLC (isteğe bağlı, `--only`) | `Yale-LILY/aeslc` | EN e-posta → konu satırı (çok kısa) | Enron türevi, kart belirsiz | dikkat |
-| Dolly-15k (tr çeviri) | `atasoglu/databricks-dolly-15k-tr` | TR talimat | CC BY-SA 3.0 | evet (paylaş-aynı) |
 
 **Açık bir Türkçe e-posta özetleme kümesi yoktur.** Bu yüzden ürün kalitesi için asıl veri, kendi
 belgeleriniz/e-postalarınızdan (yalnızca kendi makinenizde çalışan bir öğretmenle) üretilen sentetik
 özetlerdir; önerilen hacim 60-120 bin Türkçe örnek, 2-3 bin elle denetlenmiş değerlendirme örneği.
+`data/` dizini bu kişisel metinleri içerir: sürüm kontrolüne eklemeyin, paylaşmayın (`.gitignore`'da).
+`make_synth.py` vekil (proxy) ortam değişkenlerini yok sayar; API anahtarı `OZETCI_TEACHER_API_KEY` ile verilir.
 
 ## Sınırlar (dürüst liste)
 
 - 1B altı bir model **uydurabilir**; rakam/tarih denetimi notu vardır ama her çıktı okunmalıdır.
-  Hukuki, tıbbi, mali kararlar için insan onayı şarttır.
 - PP-OCR latin modeli Türkçe harfleri tanır ama el yazısı ve kötü taramalarda `ı/i`, `ş/s` karışır;
   Granite-Docling'in Türkçe kanıtı yoktur. Taranmış Türkçe belgelerde OCRTurk benzeri bir örneklemle
   kendi ölçümünüzü yapın.
@@ -172,7 +176,7 @@ belgeleriniz/e-postalarınızdan (yalnızca kendi makinenizde çalışan bir ö�
   koşu **yapılamadı**. Kod yolları rastgele ağırlıklı minik bir Qwen3 ile (transformers, TRL LoRA, birleştirme)
   ve RapidOCR'ın gömülü modeliyle doğrulandı; GGUF arka ucunda yalnızca şablon işleme birim testle denendi,
   gerçek bir GGUF dosyasıyla üretim bu ortamda çalıştırılamadı.
-- Terapi/karar aracı değildir; yalnızca okuma ve özetleme desteğidir.
+- Hukuki, tıbbi ve mali kararlar için tek başına kullanılmaz; yalnızca okuma ve özetleme desteğidir.
 
 ## Testler
 

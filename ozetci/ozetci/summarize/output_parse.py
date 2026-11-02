@@ -74,6 +74,8 @@ def parse_summary(raw: str, language: str = "tr", backend: str = "") -> Summary:
             continue
         m = _HEAD_RE.match(line)
         if m:
+            if not saw_header:
+                sections["text"] = []  # başlıktan önceki giriş cümlesi ("İşte özet:") atılır
             saw_header = True
             current = _section_of(m.group(1))
             rest = (m.group(2) or "").strip().strip("*").strip()

@@ -10,7 +10,8 @@ hedefler yazdırır. Çıktı ``build_dataset.py --synth`` ile birleştirilir.
 
     python train/make_synth.py --inputs dokumanlar/*.txt --base-url http://localhost:8000/v1 --model Qwen/Qwen3-8B --out data/synth.jsonl
 
-Gizlilik: kendi e-postalarınızı yalnızca KENDİ makinenizde çalışan bir öğretmene verin.
+Gizlilik: kendi e-postalarınızı yalnızca KENDİ makinenizde çalışan bir öğretmene verin. Vekil (proxy) ortam
+değişkenleri varsayılan olarak yok sayılır; ``http://`` uzak uç noktaya metin düz metin olarak gider.
 """
 
 from __future__ import annotations
@@ -18,6 +19,7 @@ from __future__ import annotations
 import argparse
 import glob
 import json
+import os
 import sys
 import urllib.request
 from pathlib import Path
@@ -28,14 +30,16 @@ sys.path.insert(0, str(ROOT))
 from ozetci.summarize.output_parse import strip_thinking  # noqa: E402
 
 
-def chat(base_url: str, model: str, messages: list[dict], api_key: str = "none", max_tokens: int = 400) -> str:
+def chat(base_url: str, model: str, messages: list[dict], api_key: str = "none", max_tokens: int = 400, use_proxy: bool = False) -> str:
     body = json.dumps({
         "model": model, "messages": messages, "temperature": 0.2, "max_tokens": max_tokens,
         "chat_template_kwargs": {"enable_thinking": False},  # vLLM / llama.cpp server: Qwen3 düşünme kapalı
     }).encode()
     req = urllib.request.Request(f"{base_url.rstrip('/')}/chat/completions", data=body,
                                  headers={"Content-Type": "application/json", "Authorization": f"Bearer {api_key}"})
-    with urllib.request.urlopen(req, timeout=180) as resp:
+    # Ortam vekilini (HTTP_PROXY) yok say: kendi makinenizdeki öğretmene giden metin dışarı sızmasın
+    opener = urllib.request.build_opener(urllib.request.ProxyHandler({})) if not use_proxy else urllib.request.build_opener()
+    with opener.open(req, timeout=180) as resp:
         data = json.load(resp)
     msg = data["choices"][0]["message"]
     return strip_thinking(msg.get("content") or "")  # 'reasoning_content' alanı zaten dışarıda kalır
@@ -62,11 +66,13 @@ def main(argv=None) -> int:
     p.add_argument("--inputs", nargs="+", required=True, help="metin dosyaları (glob olabilir)")
     p.add_argument("--base-url", required=True)
     p.add_argument("--model", required=True)
-    p.add_argument("--api-key", default="none")
+    p.add_argument("--api-key", default=None, help="varsayılan: OZETCI_TEACHER_API_KEY ortam değişkeni (komut satırında görünmesin)")
+    p.add_argument("--use-proxy", action="store_true", help="HTTP(S)_PROXY ortam değişkenlerini kullan (varsayılan: yok sayılır)")
     p.add_argument("--kind", default="auto", choices=["auto", "email", "document"])
     p.add_argument("--out", default=str(ROOT / "data" / "synth.jsonl"))
     p.add_argument("--max-chars", type=int, default=9000)
     args = p.parse_args(argv)
+    api_key = args.api_key or os.environ.get("OZETCI_TEACHER_API_KEY", "none")
 
     rows = []
     files = [f for pat in args.inputs for f in glob.glob(pat)]
@@ -78,7 +84,7 @@ def main(argv=None) -> int:
         lang = "tr" if lang == "unknown" else lang
         kind = args.kind if args.kind != "auto" else ("email" if text.startswith(("Kimden:", "From:")) else "document")
         try:
-            target = chat(args.base_url, args.model, build_messages(text, kind, lang, stage="final"))
+            target = chat(args.base_url, args.model, build_messages(text, kind, lang, stage="final"), api_key=api_key, use_proxy=args.use_proxy)
         except Exception as exc:
             print(f"[hata] {f}: {exc}", file=sys.stderr)
             continue

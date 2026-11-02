@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import logging
-import os
 from pathlib import Path
 from typing import Optional, Union
 
@@ -16,13 +15,22 @@ log = logging.getLogger("ozetci")
 
 
 def build_generator(settings: Settings):
-    """Ayarlara göre metin üretici kurar; ``None`` dönerse çıkarımsal yedek kullanılır."""
+    """Ayarlara göre metin üretici kurar; ``None`` dönerse çıkarımsal yedek kullanılır.
+
+    ``backend`` açıkça ``hf`` ya da ``gguf`` ise model türü uyuşmazlığı ve kurulum hatası
+    sessizce yutulmaz: ``ValueError`` / kütüphane hatası yükselir. ``auto`` modda yedeğe
+    düşüş uyarı günlüğüyle bildirilir.
+    """
     backend = settings.backend.lower()
     llm = settings.llm
     is_gguf = llm.lower().endswith(".gguf")
     if backend == "extractive":
         return None
-    if backend in ("gguf", "auto") and is_gguf:
+    if backend == "gguf" and not is_gguf:
+        raise ValueError(f"GGUF arka ucu için --model/OZETCI_LLM bir .gguf dosyası olmalı (ör. models/Qwen3-0.6B-Q8_0.gguf); verilen: {llm!r}")
+    if backend == "hf" and is_gguf:
+        raise ValueError(f"transformers (hf) arka ucu için --model/OZETCI_LLM bir HF model kimliği olmalı (ör. Qwen/Qwen3-0.6B); verilen: {llm!r}")
+    if is_gguf:
         try:
             from .summarize.gguf_backend import LlamaCppGenerator
 
@@ -30,17 +38,17 @@ def build_generator(settings: Settings):
         except Exception as exc:
             if backend == "gguf":
                 raise
-            log.warning("GGUF arka ucu kurulamadı (%s); transformers deneniyor", exc)
-    if backend in ("hf", "auto") and not is_gguf:
-        try:
-            from .summarize.hf_backend import HFGenerator
+            log.warning("GGUF arka ucu kurulamadı (%s); çıkarımsal yedek kullanılacak", exc)
+            return None
+    try:
+        from .summarize.hf_backend import HFGenerator
 
-            return HFGenerator(llm, device=settings.resolve_device(), threads=settings.threads, n_ctx=settings.n_ctx)
-        except Exception as exc:
-            if backend == "hf":
-                raise
-            log.warning("transformers arka ucu kurulamadı (%s); çıkarımsal yedek kullanılacak", exc)
-    return None
+        return HFGenerator(llm, device=settings.resolve_device(), threads=settings.threads, n_ctx=settings.n_ctx)
+    except Exception as exc:
+        if backend == "hf":
+            raise
+        log.warning("transformers arka ucu kurulamadı (%s); çıkarımsal yedek kullanılacak", exc)
+        return None
 
 
 class Ozetci:
@@ -73,6 +81,12 @@ class Ozetci:
             self._ocr = engine
         return self._ocr
 
+    def _ocr_kwargs(self) -> dict:
+        spec = self.settings.ocr.lower()
+        if spec.startswith(("rapid", "tesseract", "none")):
+            return {}
+        return {"max_new_tokens": self.settings.ocr_max_new_tokens, "threads": self.settings.threads}
+
     @property
     def summarizer(self):
         if self._summarizer is None:
@@ -83,32 +97,30 @@ class Ozetci:
                 self._summarizer = LLMSummarizer(gen, max_chars=self.settings.max_chars, max_new_tokens=self.settings.max_new_tokens)
         return self._summarizer
 
-    def _ocr_kwargs(self) -> dict:
-        spec = self.settings.ocr.lower()
-        if spec.startswith(("rapid", "tesseract", "none")):
-            return {}
-        return {"max_new_tokens": self.settings.ocr_max_new_tokens, "threads": self.settings.threads}
-
     # --- API --------------------------------------------------------------
     def read(self, path: Union[str, Path], use_ocr: bool = True) -> Document:
-        doc = load(path, ocr=self.ocr if use_ocr else None, dpi=self.settings.dpi) if _is_pdf(path) else load(path, ocr=self.ocr if use_ocr else None)
-        return doc
+        s = self.settings
+        return load(
+            path,
+            ocr=self.ocr if use_ocr else None,
+            dpi=s.dpi,
+            max_pages=s.max_pages,
+            password=s.pdf_password,
+            limit=s.mbox_limit,
+        )
 
     def summarize(self, source: Union[str, Path, Document], language: str = "auto") -> Summary:
         doc = source if isinstance(source, Document) else self.read(source)
         text = doc.full_text()
-        summary = self.summarizer.summarize(text, kind=doc.kind, language=language, title=doc.title)
         pending = _pending_ocr(doc)
+        if not text.strip():
+            summary = Summary(text="", language="tr" if language == "auto" else language, backend=getattr(self.summarizer, "name", ""), notes=["belgeden metin çıkarılamadı"])
+        else:
+            summary = self.summarizer.summarize(text, kind=doc.kind, language=language, title=doc.title)
         if pending:
             summary.notes.append(f"{pending} sayfa taranmış görüntü; OCR motoru olmadığı için okunamadı")
-        if not text.strip():
-            summary.notes.append("belgeden metin çıkarılamadı")
         return summary
 
 
 def _pending_ocr(doc: Document) -> int:
     return doc.metadata.get("pending_ocr_pages", 0) + sum(_pending_ocr(c) for c in doc.children)
-
-
-def _is_pdf(path) -> bool:
-    return str(path).lower().endswith(".pdf")

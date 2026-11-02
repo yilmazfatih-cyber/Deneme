@@ -113,3 +113,24 @@ def test_gguf_template_rendering_matches_hf_style():
     gen._jinja = LlamaCppGenerator._build_template(tpl)
     out = gen._render([{"role": "user", "content": "Merhaba"}])
     assert out.endswith("<|im_start|>assistant\n<think>\n\n</think>\n\n") and "<|im_start|>user\nMerhaba<|im_end|>" in out
+
+
+def test_gguf_template_is_sandboxed():
+    from ozetci.summarize.gguf_backend import LlamaCppGenerator
+
+    evil = "{{ ''.__class__.__mro__[1].__subclasses__() }}"
+    gen = LlamaCppGenerator.__new__(LlamaCppGenerator)
+    gen._is_qwen3 = False
+    gen._jinja = LlamaCppGenerator._build_template(evil)
+    assert gen._render([{"role": "user", "content": "x"}]) is None  # SecurityError -> yedek yola düşer
+
+
+def test_parse_drops_preamble_before_first_header():
+    s = parse_summary("İşte istediğiniz özet:\nÖZET: Bütçe onaylandı.\nMADDELER:\n- Bir", "tr")
+    assert s.text == "Bütçe onaylandı." and s.bullets == ["Bir"]
+
+
+def test_extractive_catches_second_person_requests():
+    text = "Merhaba Mehmet,\nMart ayı faturası ekte. Ödeme dekontunu bana iletir misin? Lütfen ödeyiniz.\nİyi çalışmalar."
+    s = ExtractiveSummarizer(max_sentences=1).summarize(text, kind="email")
+    assert any("iletir misin" in a for a in s.actions) and any("Lütfen ödeyiniz" in a for a in s.actions)

@@ -17,6 +17,7 @@ import io
 import mailbox
 import re
 from email import policy
+from email.utils import parsedate_to_datetime
 from email.message import EmailMessage
 from html.parser import HTMLParser
 from pathlib import Path
@@ -54,6 +55,20 @@ _SIGNATURE_RES = [
     re.compile(r"^\s*This (e-?mail|message) .{0,80}(confidential|intended)", re.I),
 ]
 _RECOVER_RE = re.compile(r"^\s*(Not|NOT|P\.?S\.?|Ek bilgi|Ek not)\s*:", re.I)
+_TR_MONTHS = ("Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık")
+
+
+def format_date_tr(raw: str) -> str:
+    """RFC 2822 tarihini '3 Mart 2025 10:15' biçimine çevirir; çözülemezse ham değer kalır."""
+    if not raw:
+        return ""
+    try:
+        dt = parsedate_to_datetime(raw)
+    except Exception:
+        return raw
+    if dt is None:
+        return raw
+    return f"{dt.day} {_TR_MONTHS[dt.month - 1]} {dt.year} {dt:%H:%M}"
 
 
 class _HTMLToText(HTMLParser):
@@ -251,12 +266,13 @@ def _image_is_tiny(data: bytes) -> bool:
         return len(data) < _MIN_IMAGE_BYTES
 
 
-def message_to_document(msg: EmailMessage, ocr=None, source_name: str = "<email>", strip_quotes: bool = True, _depth: int = 0) -> Document:
+def message_to_document(msg: EmailMessage, ocr=None, source_name: str = "<email>", strip_quotes: bool = True, dpi: int = 170, _depth: int = 0) -> Document:
     subject = _header(msg, "Subject")
     sender = _header(msg, "From")
     to = _header(msg, "To")
     cc = _header(msg, "Cc")
-    date = _header(msg, "Date")
+    date_raw = _header(msg, "Date")
+    date = format_date_tr(date_raw)
 
     body, body_part = _best_body(msg)
     if strip_quotes:
@@ -276,7 +292,7 @@ def message_to_document(msg: EmailMessage, ocr=None, source_name: str = "<email>
     text = "\n".join(header_lines) + ("\n\n" + body if body else "")
 
     doc = Document(kind="email", source=source_name, text=clean_text(text), title=subject or None)
-    doc.metadata.update({"from": sender, "to": to, "cc": cc, "date": date, "subject": subject,
+    doc.metadata.update({"from": sender, "to": to, "cc": cc, "date": date_raw, "subject": subject,
                          "message_id": _header(msg, "Message-ID")})
 
     from .pdf import extract_pdf
@@ -295,7 +311,7 @@ def message_to_document(msg: EmailMessage, ocr=None, source_name: str = "<email>
                 continue
             inner = part.get_payload(0) if part.is_multipart() else None
             if inner is not None:
-                child = message_to_document(inner, ocr=ocr, source_name=filename or "iletilen-ileti", strip_quotes=strip_quotes, _depth=_depth + 1)
+                child = message_to_document(inner, ocr=ocr, source_name=filename or "iletilen-ileti", strip_quotes=strip_quotes, dpi=dpi, _depth=_depth + 1)
                 child.title = child.title or filename or "İletilen ileti"
                 doc.children.append(child)
             continue
@@ -308,7 +324,7 @@ def message_to_document(msg: EmailMessage, ocr=None, source_name: str = "<email>
         data = part.get_payload(decode=True) or b""
         try:
             if ctype in _PDF_TYPES or filename.lower().endswith(".pdf"):
-                child = extract_pdf(data, ocr=ocr, source_name=filename)
+                child = extract_pdf(data, ocr=ocr, dpi=dpi, source_name=filename)
                 child.title = filename
                 doc.children.append(child)
                 continue
@@ -335,7 +351,7 @@ def parse_eml_bytes(data: bytes) -> EmailMessage:
     return email.message_from_bytes(data, policy=policy.default)
 
 
-def extract_eml(src: Union[str, Path, bytes], ocr=None, source_name: Optional[str] = None, strip_quotes: bool = True) -> Document:
+def extract_eml(src: Union[str, Path, bytes], ocr=None, source_name: Optional[str] = None, strip_quotes: bool = True, dpi: int = 170) -> Document:
     if isinstance(src, bytes):
         msg = parse_eml_bytes(src)
         name = source_name or "<bytes>.eml"
@@ -343,17 +359,23 @@ def extract_eml(src: Union[str, Path, bytes], ocr=None, source_name: Optional[st
         with open(src, "rb") as fh:
             msg = parse_eml_bytes(fh.read())
         name = source_name or str(src)
-    return message_to_document(msg, ocr=ocr, source_name=name, strip_quotes=strip_quotes)
+    return message_to_document(msg, ocr=ocr, source_name=name, strip_quotes=strip_quotes, dpi=dpi)
 
 
-def extract_mbox(path: Union[str, Path], ocr=None, strip_quotes: bool = True, limit: Optional[int] = None) -> list[Document]:
-    box = mailbox.mbox(str(path), factory=lambda f: email.message_from_binary_file(f, policy=policy.default))
+def extract_mbox(path: Union[str, Path], ocr=None, strip_quotes: bool = True, limit: Optional[int] = None, dpi: int = 170) -> list[Document]:
+    p = Path(path)
+    if not p.is_file():
+        raise FileNotFoundError(f"Dosya bulunamadı: {p}")
+    try:
+        box = mailbox.mbox(str(p), factory=lambda f: email.message_from_binary_file(f, policy=policy.default), create=False)
+    except mailbox.NoSuchMailboxError as exc:
+        raise FileNotFoundError(f"Dosya bulunamadı: {p}") from exc
     docs: list[Document] = []
     try:
         for i, msg in enumerate(box):
             if limit is not None and i >= limit:
                 break
-            docs.append(message_to_document(msg, ocr=ocr, source_name=f"{path}#{i}", strip_quotes=strip_quotes))
+            docs.append(message_to_document(msg, ocr=ocr, source_name=f"{p}#{i}", strip_quotes=strip_quotes, dpi=dpi))
     finally:
         box.close()
     return docs

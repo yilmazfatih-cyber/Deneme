@@ -71,39 +71,50 @@ def load_html(path: Union[str, Path]) -> Document:
     return Document(kind="text", source=str(p), text=reflow(html_to_text(_decode_file(p))), title=p.stem)
 
 
-def load_many(path: Union[str, Path], ocr=None, **kwargs) -> list[Document]:
+def load_many(
+    path: Union[str, Path],
+    ocr=None,
+    dpi: int = 170,
+    max_pages: Optional[int] = None,
+    password: Optional[str] = None,
+    limit: Optional[int] = None,
+) -> list[Document]:
     """Bir yol için bir ya da daha çok belge döndürür (.mbox birden çok ileti içerir)."""
-    kind = sniff_kind(path)
+    p = Path(path)
+    if not p.is_file():
+        raise FileNotFoundError(f"Dosya bulunamadı: {path}")
+    kind = sniff_kind(p)
     if kind == "pdf":
         from .pdf import extract_pdf
 
-        return [extract_pdf(path, ocr=ocr, **kwargs)]
+        return [extract_pdf(p, ocr=ocr, dpi=dpi, max_pages=max_pages, password=password)]
     if kind == "email":
         from .email import extract_eml
 
-        return [extract_eml(path, ocr=ocr, **kwargs)]
+        return [extract_eml(p, ocr=ocr, dpi=dpi)]
     if kind == "mbox":
         from .email import extract_mbox
 
-        return extract_mbox(path, ocr=ocr, **kwargs)
+        return extract_mbox(p, ocr=ocr, limit=limit, dpi=dpi)
     if kind == "image":
         from .image import extract_image
 
-        return [extract_image(path, ocr=ocr)]
+        return [extract_image(p, ocr=ocr)]
     if kind == "text":
-        return [load_text(path)]
+        return [load_text(p)]
     if kind == "html":
-        return [load_html(path)]
+        return [load_html(p)]
     raise ValueError(f"Desteklenmeyen dosya türü: {path}")
 
 
 def load(path: Union[str, Path], ocr=None, **kwargs) -> Document:
     docs = load_many(path, ocr=ocr, **kwargs)
-    if len(docs) == 1:
+    if len(docs) == 1 and sniff_kind(path) != "mbox":
         return docs[0]
-    # mbox: tüm iletileri tek belgede birleştir
-    merged = Document(kind="email", source=str(path), title=f"{len(docs)} ileti")
+    # mbox: tüm iletileri tek belgede birleştir; her ileti "[İleti i/n]" diye etiketlenir (ek değildir)
+    merged = Document(kind="mbox", source=str(path), title=f"{len(docs)} ileti")
+    for i, d in enumerate(docs, 1):
+        d.label = f"[İleti {i}/{len(docs)}: {d.title or '(konusuz)'}]"
     merged.children = docs
-    merged.text = ""
     merged.metadata["message_count"] = len(docs)
     return merged

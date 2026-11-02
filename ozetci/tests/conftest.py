@@ -25,7 +25,6 @@ def make_pdf(pages: list[list[str]], image_pages: int = 0, title: str = "Test Be
 
     font_id = add(b"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>")
     page_ids: list[int] = []
-    pages_id_placeholder = None
     page_objs = []
     for lines in pages:
         stream = b"BT /F1 12 Tf 50 780 Td 16 TL\n"

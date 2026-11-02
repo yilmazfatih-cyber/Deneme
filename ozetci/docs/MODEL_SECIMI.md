@@ -13,8 +13,8 @@ birebir sayım yapılmadı. Kaynak bağlantıları her satırın altındadır.
 | OCR (düzen/tablo) | Granite-Docling-258M | DocTags → Markdown; tablo ve okuma sırası korunur; Türkçe kanıtı yok (İngilizce odaklı) |
 | OCR (en iyi kalite) | PaddleOCR-VL-1.5 ≈ 959 M | Türkçe listede, OmniDocBench lideri; tek başına 1B altı ama LLM ile toplam 1B'yi aşar |
 | LLM (varsayılan) | Qwen3-0.6B | Türkçe (tur_Latn) ön eğitim listesinde açıkça var; Apache-2.0; 32K bağlam; olgun GGUF/LoRA araçları |
-| LLM (seçenek) | Qwen3.5-0.8B ≈ 873 M | Daha güçlü, 201 dil iddiası ama Türkçe açıkça listelenmemiş; yeni mimari, araç desteği daha genç |
-| LLM (en küçük) | Gemma-3-270M / Qwen2.5-0.5B | Çok düşük bellek; Türkçe'de daha verimli tokenizer (Gemma, ~2.1 belirteç/kelime; Qwen3 ~2.55) |
+| LLM (seçenek) | Qwen3.5-0.8B ≈ 873 M (görsel kodlayıcı dahil) | Daha güçlü, 201 dil iddiası ama Türkçe açıkça listelenmemiş; yeni mimari, araç desteği daha genç |
+| LLM (en küçük) | Gemma-3-270M / Qwen2.5-0.5B | Çok düşük bellek; Türkçede daha verimli tokenizer (Gemma, ~2.1 belirteç/kelime; Qwen3 ~2.55) |
 
 Elenenler (1B üstü ya da kapalı): LightOnOCR-1B (≈1.16B), MinerU2.5 (1.2B, AGPL), HunyuanOCR (1.12B, bölgesel lisans), dots.ocr (1.7B),
 DeepSeek-OCR (3B MoE), Chandra, Nanonets-OCR (3B), olmOCR (7B), Llama-3.2-1B (1.23B), Kumru-2B, EuroLLM (en küçük 1.7B),

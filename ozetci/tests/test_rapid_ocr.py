@@ -2,7 +2,6 @@
 
 import pytest
 
-from conftest import make_image
 
 from ozetci.ocr import build_ocr
 

@@ -25,7 +25,7 @@ class NullOCR:
 
 
 def build_ocr(spec: str, device: str = "cpu", **kwargs):
-    """``spec``'e göre motor kurar: ``"none"``, ``"rapid"``, ``"tesseract"`` veya bir HF model kimliği (Docling VLM)."""
+    """``spec``'e göre motor kurar: ``"none"``, ``"rapid[:dil]"``, ``"tesseract"``, bir PaddleOCR-VL kimliği ya da bir Docling VLM kimliği."""
     spec = (spec or "none").strip()
     if spec.lower() in ("none", "off", "kapali", "kapalı", ""):
         return NullOCR()
@@ -41,6 +41,10 @@ def build_ocr(spec: str, device: str = "cpu", **kwargs):
         lang = spec.split(":", 1)[1] if ":" in spec else "latin"
         kwargs.pop("device", None)
         return RapidOCREngine(lang=lang, **kwargs)
+    if "paddleocr-vl" in spec.lower() or "paddleocr_vl" in spec.lower():
+        from .paddle_vl import PaddleOCRVLEngine
+
+        return PaddleOCRVLEngine(model_id=spec, device=device, **kwargs)
     from .docling_vlm import DoclingVLMOCR
 
     return DoclingVLMOCR(model_id=spec, device=device, **kwargs)

@@ -44,6 +44,7 @@ class Document:
     attachments: list[Attachment] = field(default_factory=list)
     metadata: dict[str, Any] = field(default_factory=dict)
     language: str = "unknown"
+    label: Optional[str] = None  # alt belge etiketi; yoksa "[Ek: …]"
 
     @property
     def needs_ocr(self) -> bool:
@@ -55,8 +56,8 @@ class Document:
             for child in self.children:
                 child_text = child.full_text(include_children=True)
                 if child_text:
-                    label = child.title or child.source
-                    parts.append(f"[Ek: {label}]\n{child_text}")
+                    label = child.label or f"[Ek: {child.title or child.source}]"
+                    parts.append(f"{label}\n{child_text}")
         return "\n\n".join(parts)
 
     def char_count(self) -> int:

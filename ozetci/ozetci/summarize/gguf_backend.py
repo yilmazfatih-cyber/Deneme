@@ -40,9 +40,11 @@ class LlamaCppGenerator:
     def _build_template(source: str):
         try:
             import jinja2
+            from jinja2.sandbox import ImmutableSandboxedEnvironment
         except ImportError:  # pragma: no cover
             return None
-        env = jinja2.Environment(trim_blocks=True, lstrip_blocks=True, keep_trailing_newline=True)
+        # Şablon model dosyasından gelir: sandbox'sız Jinja ile keyfi kod çalışabilirdi
+        env = ImmutableSandboxedEnvironment(trim_blocks=True, lstrip_blocks=True, keep_trailing_newline=True)
 
         def raise_exception(message):
             raise jinja2.TemplateError(message)

@@ -16,7 +16,6 @@ düşük kaynaklı makineler ve hızlı taramalar için iyi bir seçimdir.
 from __future__ import annotations
 
 import logging
-from typing import Optional
 
 from ..textutil import clean_text
 
