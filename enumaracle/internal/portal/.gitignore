@@ -1,2 +1,2 @@
-dist/*
-!dist/index.html
+# Root .gitignore excludes every "dist"; the built portal is intentionally committed so `go build` ships the UI.
+!dist/
