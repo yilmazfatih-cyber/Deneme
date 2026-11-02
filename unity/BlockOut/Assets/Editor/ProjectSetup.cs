@@ -8,14 +8,17 @@ using UnityEngine;
 namespace BlockOut.EditorTools
 {
     /// <summary>
-    /// Proje ilk açıldığında sahneyi ve oyuncu ayarlarını kurar; menüden APK derlenir.
-    /// Böylece depoda elle yazılmış .unity / ProjectSettings dosyası tutmak gerekmez.
+    /// Sahne depoda hazır gelir (Assets/Scenes/Main.unity). Bu betik yalnızca
+    ///  - oyuncu ayarlarını (dikey ekran, paket adı) ilk açılışta bir kez uygular,
+    ///  - sahne silinmişse yeniden üretir,
+    ///  - menüden tek tıkla Android APK derler.
     /// </summary>
     [InitializeOnLoad]
     public static class ProjectSetup
     {
         const string ScenePath = "Assets/Scenes/Main.unity";
         const string ApkPath = "Builds/BlockOut.apk";
+        const string MarkerPath = "Library/blockout-setup.done";
 
         static ProjectSetup()
         {
@@ -25,16 +28,19 @@ namespace BlockOut.EditorTools
         static void EnsureOnce()
         {
             if (EditorApplication.isPlayingOrWillChangePlaymode || EditorApplication.isCompiling) return;
-            if (File.Exists(ScenePath)) return;
+            if (File.Exists(MarkerPath)) return;
             Setup();
+            Directory.CreateDirectory("Library");
+            File.WriteAllText(MarkerPath, "ok");
         }
 
         [MenuItem("Block Out/Projeyi hazırla (sahne + ayarlar)")]
         public static void Setup()
         {
-            CreateScene();
+            if (!File.Exists(ScenePath)) CreateScene();
+            EnsureBuildScenes();
             ApplyPlayerSettings();
-            Debug.Log("Block Out: sahne ve ayarlar hazır. Oynatmak için Play'e basın; APK için Block Out > Android APK derle.");
+            Debug.Log("Block Out: proje hazır. Oynatmak için Play'e basın; APK için Block Out > Android APK derle.");
         }
 
         static void CreateScene()
@@ -44,8 +50,14 @@ namespace BlockOut.EditorTools
             var go = new GameObject("Block Out");
             go.AddComponent<GameBootstrap>();
             EditorSceneManager.SaveScene(scene, ScenePath);
-            EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(ScenePath, true) };
             AssetDatabase.Refresh();
+        }
+
+        static void EnsureBuildScenes()
+        {
+            foreach (EditorBuildSettingsScene s in EditorBuildSettings.scenes)
+                if (s.path == ScenePath && s.enabled) return;
+            EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(ScenePath, true) };
         }
 
         static void ApplyPlayerSettings()
@@ -63,7 +75,7 @@ namespace BlockOut.EditorTools
         [MenuItem("Block Out/Android APK derle")]
         public static void BuildAndroid()
         {
-            if (!File.Exists(ScenePath)) Setup();
+            Setup();
             Directory.CreateDirectory("Builds");
             var options = new BuildPlayerOptions
             {

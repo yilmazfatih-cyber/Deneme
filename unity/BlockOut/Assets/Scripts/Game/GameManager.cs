@@ -17,6 +17,7 @@ namespace BlockOut.Game
     {
         public BoardView BoardView;
         public UIController UI;
+        public MenuController Menu;
 
         public int LevelIndex { get; private set; }
         public Board Board { get; private set; }
@@ -27,6 +28,9 @@ namespace BlockOut.Game
         public int Moves { get; private set; }
         public bool CanUndo { get { return undoStack.Count > 0; } }
         public LevelDef Level { get; private set; }
+        /// <summary>Açılmış en yüksek bölüm dizini (0 tabanlı).</summary>
+        public int UnlockedIndex { get; private set; }
+        public bool InMenu { get; private set; }
 
         const string LevelKey = "bo_level";
         const string HammerKey = "bo_hammers";
@@ -34,6 +38,7 @@ namespace BlockOut.Game
         List<LevelDef> handmade = new List<LevelDef>();
         readonly List<Board> undoStack = new List<Board>();
         bool snapshotPending;
+        bool dragMoved;
 
         void Awake()
         {
@@ -44,12 +49,33 @@ namespace BlockOut.Game
                 catch (Exception e) { Debug.LogError("levels.txt okunamadı: " + e.Message); }
             }
             Hammers = PlayerPrefs.GetInt(HammerKey, 3);
-            LevelIndex = PlayerPrefs.GetInt(LevelKey, 0);
+            UnlockedIndex = PlayerPrefs.GetInt(LevelKey, 0);
+            LevelIndex = UnlockedIndex;
         }
 
         void Start()
         {
-            LoadLevel(LevelIndex);
+            ShowMenu();
+        }
+
+        /// <summary>Ana menüye döner; tahta gizlenir, süre durur.</summary>
+        public void ShowMenu()
+        {
+            Running = false;
+            InMenu = true;
+            HammerMode = false;
+            BoardView.SetVisible(false);
+            if (UI != null) UI.ShowHud(false);
+            if (Menu != null) Menu.Show();
+        }
+
+        /// <summary>Menüden bölüm başlatır.</summary>
+        public void Play(int index)
+        {
+            InMenu = false;
+            if (Menu != null) Menu.Hide();
+            BoardView.SetVisible(true);
+            LoadLevel(Mathf.Clamp(index, 0, UnlockedIndex));
         }
 
         public LevelDef GetLevel(int index)
@@ -91,6 +117,7 @@ namespace BlockOut.Game
             {
                 TimeLeft = 0f;
                 Running = false;
+                if (Sfx.Instance != null) Sfx.Instance.Lose();
                 if (UI != null) UI.ShowTimeOver();
             }
         }
@@ -101,11 +128,14 @@ namespace BlockOut.Game
         public void BeginDrag(Block b)
         {
             snapshotPending = true;
+            dragMoved = false;
         }
 
         public void EndDrag()
         {
             snapshotPending = false;
+            if (dragMoved && Sfx.Instance != null) Sfx.Instance.Move();
+            dragMoved = false;
         }
 
         void EnsureSnapshot()
@@ -126,6 +156,7 @@ namespace BlockOut.Game
                 EnsureSnapshot();
                 Board.Move(b, d);
                 BoardView.OnBlockMoved(b);
+                dragMoved = true;
                 return StepResult.Moved;
             }
             if (Board.CanExit(b, d))
@@ -133,6 +164,8 @@ namespace BlockOut.Game
                 EnsureSnapshot();
                 Board.Remove(b);
                 BoardView.OnBlockExited(b, d);
+                dragMoved = false;
+                if (Sfx.Instance != null) Sfx.Instance.Exit();
                 AfterChange();
                 return StepResult.Exited;
             }
@@ -154,13 +187,18 @@ namespace BlockOut.Game
             {
                 Running = false;
                 int next = LevelIndex + 1;
-                PlayerPrefs.SetInt(LevelKey, next);
-                if (next % 3 == 0)
+                if (next > UnlockedIndex)
                 {
-                    Hammers++;
-                    PlayerPrefs.SetInt(HammerKey, Hammers);
+                    UnlockedIndex = next;
+                    PlayerPrefs.SetInt(LevelKey, next);
+                    if (next % 3 == 0)
+                    {
+                        Hammers++;
+                        PlayerPrefs.SetInt(HammerKey, Hammers);
+                    }
+                    PlayerPrefs.Save();
                 }
-                PlayerPrefs.Save();
+                if (Sfx.Instance != null) Sfx.Instance.Win();
                 if (UI != null) UI.ShowWin();
             }
         }
@@ -197,6 +235,7 @@ namespace BlockOut.Game
             HammerMode = false;
             Board.Remove(b);
             BoardView.OnBlockExited(b, Dir.Up);
+            if (Sfx.Instance != null) Sfx.Instance.Hammer();
             AfterChange();
             return true;
         }

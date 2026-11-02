@@ -70,6 +70,7 @@ namespace BlockOut.Game
                 {
                     foreach (GameObject g in iceParts) Destroy(g);
                     iceParts.Clear();
+                    if (Sfx.Instance != null) Sfx.Instance.Thaw();
                     StartCoroutine(Pop());
                 }
                 return;

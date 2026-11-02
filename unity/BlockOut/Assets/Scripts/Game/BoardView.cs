@@ -151,6 +151,11 @@ namespace BlockOut.Game
 
         // --- güncellemeler --------------------------------------------------------------
 
+        public void SetVisible(bool visible)
+        {
+            if (root != null) root.gameObject.SetActive(visible);
+        }
+
         public BlockView GetView(Block b)
         {
             BlockView v;
