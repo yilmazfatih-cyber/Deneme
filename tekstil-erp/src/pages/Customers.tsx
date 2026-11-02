@@ -8,13 +8,14 @@ import { CUSTOMER_SEGMENTS, ORDER_STATUS } from '../db/schema';
 import { fmtDate, fmtMoney, fmtNum } from '../lib/format';
 import { uid } from '../lib/id';
 
+const EMPTY: never[] = [];
 const empty: Omit<Customer, 'id' | 'createdAt'> = { name: '', segment: 'toptan', country: 'Türkiye' };
 
 export default function Customers() {
-  const customers = useLiveQuery(() => db.customers.orderBy('name').toArray(), []) ?? [];
-  const orders = useLiveQuery(() => db.orders.toArray(), []) ?? [];
-  const invoices = useLiveQuery(() => db.invoices.toArray(), []) ?? [];
-  const payments = useLiveQuery(() => db.payments.toArray(), []) ?? [];
+  const customers = useLiveQuery(() => db.customers.orderBy('name').toArray(), []) ?? EMPTY;
+  const orders = useLiveQuery(() => db.orders.toArray(), []) ?? EMPTY;
+  const invoices = useLiveQuery(() => db.invoices.toArray(), []) ?? EMPTY;
+  const payments = useLiveQuery(() => db.payments.toArray(), []) ?? EMPTY;
   const [q, setQ] = useState('');
   const [segment, setSegment] = useState<CustomerSegment | 'hepsi'>('hepsi');
   const [editing, setEditing] = useState<Partial<Customer> | null>(null);

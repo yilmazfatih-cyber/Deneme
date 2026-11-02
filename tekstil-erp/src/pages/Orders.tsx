@@ -9,6 +9,7 @@ import { fmtDate, fmtMoney, fmtNum, fromInputDate, toInputDate } from '../lib/fo
 import { docNo, uid } from '../lib/id';
 
 const DAY = 86_400_000;
+const EMPTY: never[] = [];
 const statusTone: Record<OrderStatus, 'good' | 'warn' | 'bad' | 'info' | 'neutral'> = {
   teklif: 'neutral',
   onaylandi: 'info',
@@ -22,13 +23,14 @@ const FLOW: OrderStatus[] = ['teklif', 'onaylandi', 'uretimde', 'sevk', 'tamamla
 type Draft = Omit<Order, 'id' | 'total'> & { id?: string };
 
 export default function Orders() {
-  const orders = useLiveQuery(() => db.orders.toArray(), []) ?? [];
-  const customers = useLiveQuery(() => db.customers.orderBy('name').toArray(), []) ?? [];
-  const products = useLiveQuery(() => db.products.orderBy('name').toArray(), []) ?? [];
-  const invoices = useLiveQuery(() => db.invoices.toArray(), []) ?? [];
+  const orders = useLiveQuery(() => db.orders.toArray(), []) ?? EMPTY;
+  const customers = useLiveQuery(() => db.customers.orderBy('name').toArray(), []) ?? EMPTY;
+  const products = useLiveQuery(() => db.products.orderBy('name').toArray(), []) ?? EMPTY;
+  const invoices = useLiveQuery(() => db.invoices.toArray(), []) ?? EMPTY;
   const [filter, setFilter] = useState<OrderStatus | 'acik' | 'hepsi'>('acik');
   const [draft, setDraft] = useState<Draft | null>(null);
   const [selected, setSelected] = useState<Order | null>(null);
+  const [now] = useState(() => Date.now());
 
   const cName = (id: string) => customers.find((c) => c.id === id)?.name ?? '—';
   const pName = (id: string) => products.find((p) => p.id === id)?.name ?? '—';
@@ -42,7 +44,7 @@ export default function Orders() {
     [orders, filter],
   );
   const open = orders.filter((o) => !['tamamlandi', 'iptal'].includes(o.status));
-  const late = open.filter((o) => o.dueDate < Date.now());
+  const late = open.filter((o) => o.dueDate < now);
   const invoiced = new Set(invoices.filter((i) => i.source === 'siparis').map((i) => i.sourceDocumentId));
 
   function newDraft(): Draft {
@@ -142,7 +144,7 @@ export default function Orders() {
         <Stat label="Açık sipariş" value={fmtNum(open.length)} />
         <Stat label="Açık tutar (TRY)" value={fmtMoney(open.filter((o) => o.currency === 'TRY').reduce((s, o) => s + o.total, 0))} />
         <Stat label="Termini geçen" value={fmtNum(late.length)} trend={late.length ? 'down' : 'flat'} />
-        <Stat label="Bu ay tamamlanan" value={fmtNum(orders.filter((o) => o.status === 'tamamlandi' && o.dueDate > Date.now() - 30 * DAY).length)} />
+        <Stat label="Bu ay tamamlanan" value={fmtNum(orders.filter((o) => o.status === 'tamamlandi' && o.dueDate > now - 30 * DAY).length)} />
       </div>
 
       <Card title="Sipariş listesi">
@@ -178,7 +180,7 @@ export default function Orders() {
                     <td>{cName(o.customerId)}</td>
                     <td>{fmtDate(o.orderDate)}</td>
                     <td>
-                      {fmtDate(o.dueDate)} {o.dueDate < Date.now() && !['tamamlandi', 'iptal'].includes(o.status) && <Badge tone="bad">geçti</Badge>}
+                      {fmtDate(o.dueDate)} {o.dueDate < now && !['tamamlandi', 'iptal'].includes(o.status) && <Badge tone="bad">geçti</Badge>}
                     </td>
                     <td>
                       <Badge tone={statusTone[o.status]}>{ORDER_STATUS[o.status]}</Badge>

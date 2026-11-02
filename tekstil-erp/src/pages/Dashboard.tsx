@@ -11,16 +11,18 @@ import { fmtDate, fmtMoney, fmtNum } from '../lib/format';
 import { lowStock, stockFromMovements } from '../lib/stock';
 
 const DAY = 86_400_000;
+const EMPTY: never[] = [];
 
 export default function Dashboard() {
-  const products = useLiveQuery(() => db.products.toArray(), []) ?? [];
-  const movements = useLiveQuery(() => db.movements.toArray(), []) ?? [];
-  const orders = useLiveQuery(() => db.orders.toArray(), []) ?? [];
-  const invoices = useLiveQuery(() => db.invoices.toArray(), []) ?? [];
-  const payments = useLiveQuery(() => db.payments.toArray(), []) ?? [];
-  const production = useLiveQuery(() => db.productionOrders.toArray(), []) ?? [];
-  const customers = useLiveQuery(() => db.customers.toArray(), []) ?? [];
-  const samples = useLiveQuery(() => db.visitorSamples.where('at').above(Date.now() - 7 * DAY).toArray(), []) ?? [];
+  const [now] = useState(() => Date.now());
+  const products = useLiveQuery(() => db.products.toArray(), []) ?? EMPTY;
+  const movements = useLiveQuery(() => db.movements.toArray(), []) ?? EMPTY;
+  const orders = useLiveQuery(() => db.orders.toArray(), []) ?? EMPTY;
+  const invoices = useLiveQuery(() => db.invoices.toArray(), []) ?? EMPTY;
+  const payments = useLiveQuery(() => db.payments.toArray(), []) ?? EMPTY;
+  const production = useLiveQuery(() => db.productionOrders.toArray(), []) ?? EMPTY;
+  const customers = useLiveQuery(() => db.customers.toArray(), []) ?? EMPTY;
+  const samples = useLiveQuery(() => db.visitorSamples.where('at').above(now - 7 * DAY).toArray(), [now]) ?? EMPTY;
   const [tableView, setTableView] = useState(false);
 
   const levels = useMemo(() => stockFromMovements(movements), [movements]);
@@ -31,7 +33,7 @@ export default function Dashboard() {
   const anomalies = useMemo(() => detectAnomalies(invoices), [invoices]);
   const openOrders = orders.filter((o) => !['tamamlandi', 'iptal'].includes(o.status));
   const openProduction = production.filter((p) => p.status === 'devam' || p.status === 'planlandi');
-  const lateProduction = openProduction.filter((p) => p.dueDate < Date.now());
+  const lateProduction = openProduction.filter((p) => p.dueDate < now);
   const visitors = samples.reduce((s, v) => s + v.entries, 0);
   const customerName = (id: string) => customers.find((c) => c.id === id)?.name ?? '—';
   const productName = (id: string) => products.find((p) => p.id === id)?.name ?? '—';
