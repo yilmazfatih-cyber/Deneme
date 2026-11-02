@@ -1,0 +1,774 @@
+:root {
+  --bg: #fff5f7;
+  --bg-2: #ffe9ee;
+  --card: #ffffff;
+  --text: #2b2230;
+  --muted: #8b7f90;
+  --line: #f3dde3;
+  --primary: #f2557a;
+  --primary-dark: #d93f66;
+  --primary-soft: #ffd6df;
+  --fertile: #5bc2bb;
+  --fertile-soft: #d6f3f0;
+  --ovulation: #1fa39a;
+  --luteal: #b89ad6;
+  --follicular: #f7b267;
+  --shadow: 0 8px 24px rgba(242, 85, 122, 0.12);
+  --radius: 20px;
+  --tap: 48px;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family:
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    Arial,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#root {
+  min-height: 100dvh;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  border: 0;
+  background: none;
+  padding: 0;
+}
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- Düzen ---------- */
+
+.screen {
+  padding: 16px 16px calc(96px + var(--safe-b));
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.screen-title {
+  font-size: 26px;
+  font-weight: 700;
+  margin: 8px 0 0;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px;
+}
+
+.card h3 {
+  margin: 0 0 8px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.card p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.row.between {
+  justify-content: space-between;
+}
+
+.grow {
+  flex: 1;
+}
+
+/* ---------- Düğmeler ---------- */
+
+.btn {
+  min-height: var(--tap);
+  padding: 12px 20px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition:
+    transform 0.08s ease,
+    background 0.15s ease;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn.primary {
+  background: var(--primary);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(242, 85, 122, 0.35);
+}
+
+.btn.primary:hover {
+  background: var(--primary-dark);
+}
+
+.btn.secondary {
+  background: var(--primary-soft);
+  color: var(--primary-dark);
+}
+
+.btn.ghost {
+  background: transparent;
+  color: var(--primary-dark);
+}
+
+.btn.danger {
+  background: #fde8e8;
+  color: #b42318;
+}
+
+.btn.block {
+  width: 100%;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.icon-btn {
+  width: var(--tap);
+  height: var(--tap);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+
+/* ---------- Halka ---------- */
+
+.ring-wrap {
+  position: relative;
+  width: min(300px, 78vw);
+  aspect-ratio: 1;
+  margin: 0 auto;
+}
+
+.ring-wrap svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.ring-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 36px;
+  gap: 4px;
+}
+
+.ring-kicker {
+  font-size: 15px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.ring-main {
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.ring-main.small {
+  font-size: 24px;
+}
+
+.ring-sub {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* ---------- Hafta şeridi ---------- */
+
+.week {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.week-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 0;
+  border-radius: 14px;
+  min-height: 64px;
+}
+
+.week-day .wd {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.week-day .num {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.week-day.today .num {
+  box-shadow: 0 0 0 2px var(--primary);
+}
+
+.week-day.sel {
+  background: var(--bg-2);
+}
+
+/* ---------- Gün hücreleri (ortak) ---------- */
+
+.num.period {
+  background: var(--primary);
+  color: #fff;
+}
+
+.num.predicted {
+  border: 2px dashed var(--primary);
+  color: var(--primary-dark);
+}
+
+.num.fertile {
+  background: var(--fertile-soft);
+  color: #0f6f69;
+}
+
+.num.ovulation {
+  background: var(--ovulation);
+  color: #fff;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--luteal);
+}
+
+.dot.hidden {
+  visibility: hidden;
+}
+
+/* ---------- Çipler ---------- */
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  min-height: 44px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--bg);
+  border: 1.5px solid var(--line);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.chip[aria-pressed='true'] {
+  background: var(--primary-soft);
+  border-color: var(--primary);
+  color: var(--primary-dark);
+}
+
+.chip .ic {
+  font-size: 16px;
+}
+
+/* ---------- Alt sayfa ---------- */
+
+.sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(43, 34, 48, 0.45);
+  z-index: 40;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.sheet {
+  width: 100%;
+  max-width: 520px;
+  max-height: 92dvh;
+  background: var(--card);
+  border-radius: 24px 24px 0 0;
+  padding: 8px 16px calc(16px + var(--safe-b));
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: up 0.2s ease-out;
+}
+
+@keyframes up {
+  from {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+.sheet-handle {
+  width: 40px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--line);
+  margin: 0 auto;
+}
+
+.sheet h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.section h4 {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+textarea,
+input[type='number'],
+input[type='date'],
+select {
+  width: 100%;
+  font: inherit;
+  border: 1.5px solid var(--line);
+  border-radius: 14px;
+  padding: 12px;
+  background: var(--bg);
+  color: var(--text);
+  min-height: var(--tap);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* ---------- Sekme çubuğu ---------- */
+
+.tabbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  max-width: 520px;
+  background: var(--card);
+  border-top: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 6px 0 calc(6px + var(--safe-b));
+  z-index: 30;
+}
+
+.tab {
+  min-height: 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.tab .ic {
+  font-size: 22px;
+}
+
+.tab[aria-current='page'] {
+  color: var(--primary-dark);
+}
+
+/* ---------- Takvim ---------- */
+
+.cal-head {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px 2px;
+}
+
+.cal-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  min-height: 52px;
+  padding: 4px 0;
+  border-radius: 12px;
+}
+
+.cal-day .num {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.cal-day.today .num {
+  box-shadow: 0 0 0 2px var(--primary);
+}
+
+.cal-day.sel {
+  background: var(--bg-2);
+}
+
+.cal-day.other {
+  opacity: 0.35;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend i {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* ---------- Analiz ---------- */
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.stat {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px;
+}
+
+.stat .v {
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--primary-dark);
+}
+
+.stat .l {
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  height: 140px;
+  padding-top: 8px;
+}
+
+.bar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  height: 100%;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.bar i {
+  width: 100%;
+  max-width: 36px;
+  border-radius: 8px 8px 4px 4px;
+  background: var(--primary-soft);
+  display: block;
+}
+
+.bar b {
+  font-size: 13px;
+  color: var(--text);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.list-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+  gap: 12px;
+}
+
+.list-row:last-child {
+  border-bottom: 0;
+}
+
+/* ---------- Ayarlar ---------- */
+
+.setting {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: var(--tap);
+  padding: 8px 0;
+}
+
+.setting label {
+  font-weight: 600;
+}
+
+.switch {
+  width: 52px;
+  height: 32px;
+  border-radius: 16px;
+  background: var(--line);
+  position: relative;
+  flex: none;
+}
+
+.switch::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  transition: left 0.15s ease;
+}
+
+.switch[aria-checked='true'] {
+  background: var(--primary);
+}
+
+.switch[aria-checked='true']::after {
+  left: 23px;
+}
+
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stepper button {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--bg-2);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--primary-dark);
+}
+
+.stepper output {
+  min-width: 56px;
+  text-align: center;
+  font-weight: 800;
+  font-size: 20px;
+}
+
+/* ---------- Kurulum ---------- */
+
+.onb {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 20px calc(24px + var(--safe-b));
+  gap: 20px;
+  background: linear-gradient(180deg, #ffe9ee 0%, var(--bg) 60%);
+}
+
+.onb h1 {
+  font-size: 30px;
+  margin: 24px 0 0;
+}
+
+.onb .lead {
+  font-size: 17px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.onb .steps {
+  display: flex;
+  gap: 6px;
+}
+
+.onb .steps i {
+  height: 4px;
+  flex: 1;
+  border-radius: 2px;
+  background: var(--line);
+}
+
+.onb .steps i.on {
+  background: var(--primary);
+}
+
+.banner {
+  background: var(--primary-soft);
+  color: var(--primary-dark);
+  border-radius: 16px;
+  padding: 12px 16px;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.phase-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  background: var(--bg-2);
+  color: var(--primary-dark);
+}
+
+.phase-pill.fertile,
+.phase-pill.ovulation {
+  background: var(--fertile-soft);
+  color: #0f6f69;
+}
+
+.phase-pill.luteal {
+  background: #efe6f8;
+  color: #6b4a99;
+}
+
+.phase-pill.follicular {
+  background: #fff0dc;
+  color: #9a5a0c;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

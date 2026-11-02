@@ -1,0 +1,17 @@
+{
+  "name": "Döngü — adet takibi",
+  "short_name": "Döngü",
+  "description": "Adet, belirti ve doğurgan gün takibi. Çevrimdışı çalışır, veriler telefonda kalır.",
+  "lang": "tr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fff5f7",
+  "theme_color": "#f2557a",
+  "categories": ["health", "lifestyle"],
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}
