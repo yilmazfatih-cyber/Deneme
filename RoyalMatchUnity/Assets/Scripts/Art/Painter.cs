@@ -136,12 +136,18 @@ namespace RoyalMatch
     {
         public readonly int W, H;
         private readonly Color[] px;
+        /// <summary>Şekiller 1x koordinatlarla yazılır; tuval bu çarpanla büyütülerek boyanır.</summary>
+        public readonly float Scale;
 
-        public Painter(int w, int h)
+        public Painter(int w, int h, float scale = 1f)
         {
-            W = w; H = h; px = new Color[w * h];
+            W = w; H = h; Scale = scale; px = new Color[w * h];
             for (int i = 0; i < px.Length; i++) px[i] = new Color(0, 0, 0, 0);
         }
+
+        public Color[] Pixels { get { return px; } }
+
+        private float D(Shape s, int x, int y) { return s((x + 0.5f) / Scale, (y + 0.5f) / Scale) * Scale; }
 
         private static Color Blend(Color dst, Color src, float a)
         {
@@ -162,7 +168,7 @@ namespace RoyalMatch
             for (int y = 0; y < H; y++)
                 for (int x = 0; x < W; x++)
                 {
-                    float cov = Coverage(s(x + 0.5f, y + 0.5f));
+                    float cov = Coverage(D(s, x, y));
                     if (cov > 0f) px[y * W + x] = Blend(px[y * W + x], c, cov);
                 }
             return this;
@@ -173,11 +179,11 @@ namespace RoyalMatch
         {
             for (int y = 0; y < H; y++)
             {
-                float k = Mathf.Clamp01((y - y0) / Mathf.Max(1f, y1 - y0));
+                float k = Mathf.Clamp01((y / Scale - y0) / Mathf.Max(1f, y1 - y0));
                 Color c = Color.Lerp(bottom, top, k);
                 for (int x = 0; x < W; x++)
                 {
-                    float cov = Coverage(s(x + 0.5f, y + 0.5f));
+                    float cov = Coverage(D(s, x, y));
                     if (cov > 0f) px[y * W + x] = Blend(px[y * W + x], c, cov);
                 }
             }
@@ -190,10 +196,10 @@ namespace RoyalMatch
             for (int y = 0; y < H; y++)
                 for (int x = 0; x < W; x++)
                 {
-                    float d = s(x + 0.5f, y + 0.5f);
+                    float d = D(s, x, y);
                     if (d < 0f)
                     {
-                        float k = Mathf.Clamp01(1f + d / depth); // kenarda 1, içeride 0
+                        float k = Mathf.Clamp01(1f + d / (depth * Scale)); // kenarda 1, içeride 0
                         if (k > 0f) px[y * W + x] = Blend(px[y * W + x], edge, k * k);
                     }
                 }
@@ -202,11 +208,11 @@ namespace RoyalMatch
 
         public Painter Stroke(Shape s, float width, Color c)
         {
-            float hw = width * 0.5f;
+            float hw = width * 0.5f * Scale;
             for (int y = 0; y < H; y++)
                 for (int x = 0; x < W; x++)
                 {
-                    float d = Mathf.Abs(s(x + 0.5f, y + 0.5f)) - hw;
+                    float d = Mathf.Abs(D(s, x, y)) - hw;
                     float cov = Coverage(d);
                     if (cov > 0f) px[y * W + x] = Blend(px[y * W + x], c, cov);
                 }
@@ -219,7 +225,7 @@ namespace RoyalMatch
             for (int y = 0; y < H; y++)
                 for (int x = 0; x < W; x++)
                 {
-                    float d = s(x + 0.5f - dx, y + 0.5f - dy);
+                    float d = s((x + 0.5f) / Scale - dx, (y + 0.5f) / Scale - dy);
                     float cov = Mathf.Clamp01(1f - (d + blur * 0.5f) / Mathf.Max(0.001f, blur));
                     if (cov > 0f) px[y * W + x] = Blend(px[y * W + x], c, cov);
                 }
@@ -232,9 +238,70 @@ namespace RoyalMatch
             for (int y = 0; y < H; y++)
                 for (int x = 0; x < W; x++)
                 {
-                    float d = Mathf.Sqrt((x + 0.5f - cx) * (x + 0.5f - cx) + (y + 0.5f - cy) * (y + 0.5f - cy)) / radius;
+                    float d = Mathf.Sqrt(((x + 0.5f) / Scale - cx) * ((x + 0.5f) / Scale - cx) + ((y + 0.5f) / Scale - cy) * ((y + 0.5f) / Scale - cy)) / radius;
                     float k = Mathf.Clamp01(1f - d);
                     if (k > 0f) px[y * W + x] = Blend(px[y * W + x], c, k * k);
+                }
+            return this;
+        }
+
+        /// <summary>İç gölge: şeklin içinde, (dx,dy) yönünde kaydırılmış kopyanın dışında kalan bant koyulaşır (hacim).</summary>
+        public Painter InnerShadow(Shape s, float dx, float dy, float blur, Color c)
+        {
+            for (int y = 0; y < H; y++)
+                for (int x = 0; x < W; x++)
+                {
+                    float d = D(s, x, y);
+                    if (d >= 0f) continue;
+                    float d2 = s((x + 0.5f) / Scale - dx, (y + 0.5f) / Scale - dy);
+                    float k = Mathf.Clamp01((d2 + blur * 0.5f) / Mathf.Max(0.001f, blur)); // kaydırılmış kopyanın dışında 1
+                    float edge = Mathf.Clamp01(-d / Scale); // kenar yumuşatma
+                    if (k > 0f) px[y * W + x] = Blend(px[y * W + x], c, k * edge);
+                }
+            return this;
+        }
+
+        /// <summary>Kenar ışığı: şeklin kenarında, verilen yöne bakan ince parlak bant.</summary>
+        public Painter RimLight(Shape s, float dx, float dy, float width, Color c)
+        {
+            for (int y = 0; y < H; y++)
+                for (int x = 0; x < W; x++)
+                {
+                    float d = D(s, x, y);
+                    if (d >= 0f) continue;
+                    float d2 = s((x + 0.5f) / Scale - dx, (y + 0.5f) / Scale - dy);
+                    float k = Mathf.Clamp01(d2 / Mathf.Max(0.001f, width));
+                    float edge = Mathf.Clamp01(-d / Scale);
+                    if (k > 0f) px[y * W + x] = Blend(px[y * W + x], c, k * edge);
+                }
+            return this;
+        }
+
+        /// <summary>Radyal geçiş: merkezde inner, yarıçapta outer.</summary>
+        public Painter FillRadial(Shape s, float cx, float cy, float radius, Color inner, Color outer)
+        {
+            for (int y = 0; y < H; y++)
+                for (int x = 0; x < W; x++)
+                {
+                    float cov = Coverage(D(s, x, y));
+                    if (cov <= 0f) continue;
+                    float px0 = (x + 0.5f) / Scale - cx, py0 = (y + 0.5f) / Scale - cy;
+                    float k = Mathf.Clamp01(Mathf.Sqrt(px0 * px0 + py0 * py0) / radius);
+                    px[y * W + x] = Blend(px[y * W + x], Color.Lerp(inner, outer, k), cov);
+                }
+            return this;
+        }
+
+        /// <summary>Yatay geçiş.</summary>
+        public Painter FillGradientX(Shape s, Color left, Color right, float x0, float x1)
+        {
+            for (int y = 0; y < H; y++)
+                for (int x = 0; x < W; x++)
+                {
+                    float cov = Coverage(D(s, x, y));
+                    if (cov <= 0f) continue;
+                    float k = Mathf.Clamp01((x / Scale - x0) / Mathf.Max(1f, x1 - x0));
+                    px[y * W + x] = Blend(px[y * W + x], Color.Lerp(left, right, k), cov);
                 }
             return this;
         }
@@ -259,8 +326,9 @@ namespace RoyalMatch
         public Sprite ToSliced(float border, float pixelsPerUnit = 100f)
         {
             Texture2D tex = ToTexture();
+            float b = border * Scale;
             return Sprite.Create(tex, new Rect(0, 0, W, H), new Vector2(0.5f, 0.5f), pixelsPerUnit, 0,
-                SpriteMeshType.FullRect, new Vector4(border, border, border, border));
+                SpriteMeshType.FullRect, new Vector4(b, b, b, b));
         }
     }
 }

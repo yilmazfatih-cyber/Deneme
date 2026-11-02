@@ -13,6 +13,7 @@ namespace RoyalMatch
         void OnWon(int bonusMoves);
         void OnLost();
         void OnMessage(string text);
+        void OnFlash();
     }
 
     /// <summary>
@@ -76,13 +77,9 @@ namespace RoyalMatch
 
         private void BuildStatic()
         {
-            // Çerçeve
-            var frame = Fx.Spawn(boardRoot, Art.RoundRect(), Vector3.zero, Art.Hex("#6B3F1D"), 0);
-            frame.drawMode = SpriteDrawMode.Sliced; frame.size = new Vector2(model.W + 0.6f, model.H + 0.6f);
-            var inner = Fx.Spawn(boardRoot, Art.RoundRect(), new Vector3(0, -0.04f, 0), Art.Hex("#A8723F"), 1);
-            inner.drawMode = SpriteDrawMode.Sliced; inner.size = new Vector2(model.W + 0.42f, model.H + 0.42f);
-            var inner2 = Fx.Spawn(boardRoot, Art.RoundRect(), Vector3.zero, Art.Hex("#1B2A4D"), 2);
-            inner2.drawMode = SpriteDrawMode.Sliced; inner2.size = new Vector2(model.W + 0.2f, model.H + 0.2f);
+            // Çerçeve: ahşap + altın şerit + koyu iç (tek 9-slice sprite)
+            var frame = Fx.Spawn(boardRoot, Art.BoardFrame(), Vector3.zero, Color.white, 0);
+            frame.drawMode = SpriteDrawMode.Sliced; frame.size = new Vector2(model.W + 0.5f, model.H + 0.5f);
 
             cellViews = new CellView[model.W, model.H];
             for (int x = 0; x < model.W; x++)
@@ -92,7 +89,7 @@ namespace RoyalMatch
                     var cv = new CellView();
                     cellViews[x, y] = cv;
                     if (!c.exists) continue;
-                    cv.back = Fx.Spawn(boardRoot, Art.CellBack(), CellPos(x, y), (x + y) % 2 == 0 ? new Color(0.16f, 0.22f, 0.42f, 1f) : new Color(0.2f, 0.27f, 0.5f, 1f), 3);
+                    cv.back = Fx.Spawn(boardRoot, Art.CellBack(), CellPos(x, y), (x + y) % 2 == 0 ? Art.Hex("#23305A") : Art.Hex("#2B3A66"), 3);
                     RefreshCell(x, y);
                 }
             selectRing = Fx.Spawn(boardRoot, Art.SelectRing(), Vector3.zero, new Color(1f, 1f, 1f, 0.9f), 30);
@@ -281,13 +278,20 @@ namespace RoyalMatch
             Busy = true; ClearHint();
             PieceView va = views[ca.piece.id], vb = views[cb.piece.id];
             Sfx.Play(SfxKind.Swap);
+            va.sr.sortingOrder = 21;
+            StartCoroutine(Tween.Scale(va.transform, Vector3.one * 1.05f, 0.08f));
             StartCoroutine(Tween.Move(va.transform, CellPos(b.x, b.y), 0.16f, Ease.OutCubic));
             yield return Tween.Move(vb.transform, CellPos(a.x, a.y), 0.16f, Ease.OutCubic);
+            va.sr.sortingOrder = 20;
+            StartCoroutine(Tween.Scale(va.transform, Vector3.one * 0.92f, 0.08f));
 
             var result = model.TrySwap(a, b);
             if (result != BoardModel.SwapResult.Ok)
             {
                 Sfx.Play(SfxKind.Invalid, 0.6f);
+                StartCoroutine(Fx.Shake(va.transform, 0.06f, 0.16f));
+                StartCoroutine(Fx.Shake(vb.transform, 0.06f, 0.16f));
+                yield return Tween.Delay(0.16f);
                 StartCoroutine(Tween.Move(va.transform, CellPos(a.x, a.y), 0.16f, Ease.OutCubic));
                 yield return Tween.Move(vb.transform, CellPos(b.x, b.y), 0.16f, Ease.OutCubic);
                 Busy = false; idleTimer = 0f;
@@ -475,7 +479,7 @@ namespace RoyalMatch
                         boom = true; wait = Mathf.Max(wait, 0.5f); break;
                 }
             }
-            if (boom) { Sfx.Play(SfxKind.Boom); StartCoroutine(Fx.Shake(cam.transform, 0.12f, 0.3f)); }
+            if (boom) { Sfx.Play(SfxKind.Boom); StartCoroutine(Fx.Shake(cam.transform, 0.12f, 0.3f)); listener.OnFlash(); }
 
             // 3) taş, engel, çimen, zincir
             foreach (var e in evs)

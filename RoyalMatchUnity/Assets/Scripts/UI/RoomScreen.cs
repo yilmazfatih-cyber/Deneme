@@ -67,8 +67,25 @@ namespace RoyalMatch
         }
     }
 
+    /// <summary>Oda ekranı coroutine taşıyıcısı.</summary>
+    public class RoomFx : MonoBehaviour { }
+
+    /// <summary>Yeni yerleştirilen eşya yaylanarak belirir.</summary>
+    public class PlaceIn : MonoBehaviour
+    {
+        private float t;
+        private void Update()
+        {
+            t += Time.deltaTime / 0.45f;
+            transform.localScale = Vector3.one * Mathf.LerpUnclamped(0f, 1f, Ease.OutBack(Mathf.Clamp01(t)));
+            if (t >= 1f) Destroy(this);
+        }
+    }
+
     public static class RoomScreen
     {
+        private static int lastPlaced = -1;
+
         public static void Build(RectTransform parent)
         {
             var root = Ui.Node(parent, "Rooms");
@@ -88,14 +105,22 @@ namespace RoyalMatch
                 int style = Rooms.Choice(i);
                 Vector2 pos = new Vector2((t.pos.x - 0.5f) * 1080f, (t.pos.y - 0.5f) * 1080f);
                 float size = 128f * t.scale;
-                if (style >= 0) Ui.Img(area.rectTransform, Art.Furniture(t.kind, style), Color.white, new Vector2(size, size), pos);
-                else Ui.Img(area.rectTransform, Art.FurnitureGhost(t.kind), new Color(1f, 1f, 1f, 0.55f), new Vector2(size * 0.6f, size * 0.6f), pos);
+                if (style >= 0)
+                {
+                    var f = Ui.Img(area.rectTransform, Art.Furniture(t.kind, style), Color.white, new Vector2(size, size), pos);
+                    if (i == lastPlaced) { f.transform.localScale = Vector3.zero; f.gameObject.AddComponent<PlaceIn>(); }
+                }
+                else
+                {
+                    var g = Ui.Img(area.rectTransform, Art.FurnitureGhost(t.kind), new Color(1f, 1f, 1f, 0.55f), new Vector2(size * 0.6f, size * 0.6f), pos);
+                    g.gameObject.AddComponent<Pulse>().amp = 0.08f;
+                }
             }
 
             // Üst şerit
             Ui.IconBtn(root, Art.Back(), Art.Hex("#2F6FD0"), 120f, new Vector2(30f, -30f), () => GameManager.I.ShowMap(), new Vector2(0f, 1f));
             Ui.Pill(root, Art.StarIcon(), d.stars.ToString(), new Vector2(-30f, -40f), new Vector2(280f, 90f), new Vector2(1f, 1f));
-            var title = Ui.Panel(root, Art.Hex("#F7E7C6"), new Vector2(520f, 100f), new Vector2(0f, -40f), new Vector2(0.5f, 1f));
+            var title = Ui.Wood(root, new Vector2(520f, 110f), new Vector2(0f, -30f), new Vector2(0.5f, 1f));
             Ui.Txt(title.rectTransform, room.name, 44, Art.Hex("#2B1B10"), Vector2.zero, new Vector2(500f, 100f), null, TextAnchor.MiddleCenter, false);
             Ui.Txt(root, "Oda " + (d.completedRooms + 1), 30, Color.white, new Vector2(0f, -150f), new Vector2(400f, 40f), new Vector2(0.5f, 1f));
 
@@ -106,27 +131,28 @@ namespace RoyalMatch
                 int idx = i;
                 var t = room.tasks[i];
                 bool done = Rooms.Choice(i) >= 0;
-                var row = Ui.Panel(root, done ? Art.Hex("#CFE8C9") : Art.Hex("#F7E7C6"), new Vector2(900f, 96f), new Vector2(0f, y), new Vector2(0.5f, 0f), true);
+                var row = Ui.Panel(root, done ? Art.Hex("#CFE8C9") : Art.Hex("#FFF4DF"), new Vector2(920f, 100f), new Vector2(0f, y), new Vector2(0.5f, 0f), true);
                 Ui.Img(row.rectTransform, done ? Art.Furniture(t.kind, Rooms.Choice(i)) : Art.FurnitureGhost(t.kind), done ? Color.white : Art.Hex("#8B5A2B"), new Vector2(80f, 80f), new Vector2(16f, 0f), new Vector2(0f, 0.5f));
                 Ui.Txt(row.rectTransform, t.name, 36, Art.Hex("#2B1B10"), new Vector2(110f, 0f), new Vector2(400f, 90f), new Vector2(0f, 0.5f), TextAnchor.MiddleLeft, false);
                 if (done)
                     Ui.Img(row.rectTransform, Art.Check(), Art.Hex("#2A8A2A"), new Vector2(64f, 64f), new Vector2(-30f, 0f), new Vector2(1f, 0.5f));
                 else
                 {
-                    var b = Ui.Btn(row.rectTransform, "1", d.stars >= 1 ? Art.GreenBtn : Art.Hex("#8A94A6"), new Vector2(170f, 74f), new Vector2(-16f, 0f), () =>
+                    var b = Ui.Btn(row.rectTransform, "  1", d.stars >= 1 ? Art.GreenBtn : Art.Hex("#8A94A6"), new Vector2(180f, 78f), new Vector2(-16f, 0f), () =>
                     {
                         if (Save.Data.stars < 1) { Sfx.Play(SfxKind.Invalid); return; }
                         ShowChoice(root, idx, t);
                     }, new Vector2(1f, 0.5f), 36);
-                    Ui.Img(b.transform, Art.StarIcon(), Color.white, new Vector2(44f, 44f), new Vector2(-40f, 4f));
+                    Ui.Img(b.transform, Art.StarIcon(), Color.white, new Vector2(48f, 48f), new Vector2(-44f, 4f));
                 }
                 y -= 106f;
             }
 
             if (Rooms.RoomComplete(d.roomIndex))
             {
-                var p = Ui.Popup(root, "ODA TAMAMLANDI!", new Vector2(760f, 640f), Art.Hex("#4CC94A"));
-                Ui.Img(p, Art.Trophy(), Color.white, new Vector2(220f, 220f), new Vector2(0f, 90f));
+                var p = Ui.Popup(root, "ODA TAMAMLANDI!", new Vector2(760f, 660f), Art.GreenBtn);
+                Ui.Img(p, Art.Trophy(), Color.white, new Vector2(220f, 220f), new Vector2(0f, 80f)).gameObject.AddComponent<Bob>();
+                var fx = root.gameObject.AddComponent<RoomFx>(); fx.StartCoroutine(Ui.Confetti(root));
                 Ui.Txt(p, room.name + " hazır. Kral çok memnun!", 38, Art.Hex("#2B1B10"), new Vector2(0f, -70f), new Vector2(640f, 60f), null, TextAnchor.MiddleCenter, false);
                 Ui.Btn(p, "SONRAKİ ODA", Art.GreenBtn, new Vector2(460f, 120f), new Vector2(0f, -200f), () =>
                 {
@@ -153,7 +179,9 @@ namespace RoyalMatch
                     Save.Data.stars--; Save.Store();
                     Rooms.SetChoice(taskIndex, style);
                     Sfx.Play(SfxKind.Star);
+                    lastPlaced = taskIndex;
                     GameManager.I.ShowRooms();
+                    lastPlaced = -1;
                 }, null, 34);
             }
         }

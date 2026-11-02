@@ -52,6 +52,24 @@ Seviyeler `LevelGenerator` tarafından belirlenimci üretilir: engeller sırayla
 vazo 8, tabak 12, yumurta 16, zincir 20, posta kutusu 26, kasa 32), tahta 7×7 → 8×8 → 9×9 büyür,
 10. seviyeden sonra köşe kesikli şekiller gelir.
 
+## Görsel tasarım ve animasyon
+
+Ekran taslakları `Docs/taslak-*.png` dosyalarında (oyun, harita, seviye öncesi, kazanma, oda).
+Görseller 256 px'de SDF boyamayla üretilir: dikey ışık geçişi, altta iç gölge, üstte kenar ışığı,
+kalın koyu kenar, büyük yumuşak parıltı. Arayüz dili: ahşap çerçeve + altın şerit + parşömen pano,
+koyu cam göstergeler, renkli kurdele başlıklar, alt kenarı koyu hacimli düğmeler.
+
+Animasyonlar (hepsi kodla, dış paket yok):
+
+- Taşlar yukarıdan sırayla düşer, yere inince ezilip toparlanır; geçersiz hamlede titrer.
+- Hedefe sayılan her taş tahtadan üst panodaki simgeye kavisle uçar, varınca sayaç düşer ve simge zıplar.
+- Güçlendirici oluşumunda taşlar merkeze toplanır, halka ve parıltıyla yeni taş yaylanarak belirir.
+- Roket izi, TNT halkası + ekran sarsıntısı + beyaz flaş, Işık Topu şimşekleri, Pervane kavisli uçuş.
+- Üst pano ve güçlendirici tepsisi ekrana yaylanarak girer; seçili güçlendirici nabız atar; hamle ≤ 5 iken kutu kızarır.
+- Kazanma: konfeti, sırayla beliren üç yıldız, artan altın sayacı, yaylanan Devam düğmesi.
+- Harita: Kral hafifçe sallanır, bulutlar kayar, seviye düğmesi nabız atar; tüm düğmeler basınca küçülür.
+- Pencereler küçükten yaylanarak açılır, perde yumuşak belirir; odada yeni eşya yaylanarak yerleşir, boş yerler nabız atar.
+
 ## Kod yapısı
 
 ```
@@ -62,7 +80,7 @@ Assets/Scripts/
   Art/       Painter (SDF tabanlı piksel boyama), ArtLibrary (taşlar, güçlendiriciler, engeller), ArtIcons (arayüz, kral, odalar)
   UI/        UiKit (uGUI kurucu), HudScreen, MapScreen (+ seviye öncesi, mağaza, ayarlar), RoomScreen
   Audio/     Sfx (sentezlenmiş sesler)
-Docs/        Üretilen görsellerin önizlemeleri
+Docs/        Ekran taslakları ve üretilen görsellerin önizlemeleri
 ```
 
 `BoardModel` Unity bileşeni değildir; `Clone()` ile kopyalanıp simülasyon yapılabilir. Geliştirme
