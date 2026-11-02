@@ -110,11 +110,19 @@ test('pairwiseDebts çiftleri netleştirir', () => {
 
 test('pairwiseDebts birden çok ödeyende oranla böler', () => {
   const d = pairwiseDebts([{ amount: 10000, payers: { a: 7500, b: 2500 }, shares: { a: 2500, b: 2500, c: 5000 } }])
-  // c'nin 50'si: a'ya 37,50, b'ye 12,50. b'nin 25'i a'ya 18,75; a'nın 25'i b'ye 6,25 → b→a net 12,50
+  // Harcama içinde net: a +50 (75 ödedi, payı 25), b 0, c −50 → yalnızca c→a 50
   const find = (f, t) => d.find((x) => x.from === f && x.to === t)?.amount
-  assert.equal(find('c', 'a'), 3750)
-  assert.equal(find('c', 'b'), 1250)
-  assert.equal(find('b', 'a'), 1250)
+  assert.equal(find('c', 'a'), 5000)
+  assert.equal(d.length, 1)
+  // İki alacaklı: a 60 ödedi, b 40 ödedi, pay c 100 → c→a 60, c→b 40
+  const d2 = pairwiseDebts([{ amount: 10000, payers: { a: 6000, b: 4000 }, shares: { c: 10000 } }])
+  assert.deepEqual(
+    d2.sort((x, y) => x.to.localeCompare(y.to)),
+    [
+      { from: 'c', to: 'a', amount: 6000 },
+      { from: 'c', to: 'b', amount: 4000 },
+    ],
+  )
 })
 
 test('simplifyDebts en az ödemeyle kapatır', () => {
@@ -145,4 +153,141 @@ test('totals ödemeleri saymaz', () => {
   assert.equal(t.total, 39000)
   assert.equal(t.paid.ali, 30000)
   assert.equal(t.share.can, 14500)
+})
+
+import { normalizeGroup, formatNumber, formatDate } from './hesap.mjs'
+
+test('pairwiseDebts çok ödeyende netBalances ile tutarlı (1 kuruş artık kalmaz)', () => {
+  const entries = [
+    { amount: 10000, payers: { ali: 5000, ayse: 5000 }, shares: splitEqual(10000, ['ali', 'ayse', 'can']) },
+  ]
+  const net = netBalances(entries, ['ali', 'ayse', 'can'])
+  const after = { ...net }
+  for (const d of pairwiseDebts(entries)) {
+    after[d.from] += d.amount
+    after[d.to] -= d.amount
+  }
+  assert.ok(
+    Object.values(after).every((v) => v === 0),
+    JSON.stringify({ net, after }),
+  )
+})
+
+test('pairwiseDebts rastgele çok ödeyenli girdilerde her zaman kapanır', () => {
+  let seed = 7
+  const rnd = (n) => (seed = (seed * 48271) % 2147483647) % n
+  const ids = ['a', 'b', 'c', 'd']
+  for (let t = 0; t < 300; t++) {
+    const entries = []
+    for (let k = 0; k < 1 + rnd(4); k++) {
+      const amount = 1 + rnd(5000)
+      const payerIds = ids.filter(() => rnd(2)).concat(ids[rnd(4)])
+      const w = {}
+      for (const p of new Set(payerIds)) w[p] = 1 + rnd(5)
+      const payers = distribute(amount, w)
+      const sharers = ids.filter(() => rnd(3) > 0).concat(ids[rnd(4)])
+      const shares = splitEqual(amount, [...new Set(sharers)])
+      entries.push({ amount, payers, shares })
+    }
+    const net = netBalances(entries, ids)
+    const after = { ...net }
+    for (const d of pairwiseDebts(entries)) {
+      assert.ok(d.amount > 0)
+      after[d.from] += d.amount
+      after[d.to] -= d.amount
+    }
+    assert.ok(
+      Object.values(after).every((v) => v === 0),
+      JSON.stringify({ entries, net, after }),
+    )
+  }
+})
+
+test('distribute geçersiz girdide donmaz, hata verir', () => {
+  assert.throws(() => distribute(12.5, { a: 1, b: 1 }), /tam sayı/)
+  assert.deepEqual(distribute(100, { a: Infinity }), {})
+  assert.deepEqual(distribute(100, { a: 1, b: NaN, c: -1 }), { a: 100 })
+})
+
+test('hata metinleri Türkçe sayı biçiminde', () => {
+  assert.throws(() => splitExact(10000, { a: 1250 }), /12,50.*100,00/)
+  assert.throws(() => splitPercent(1000, { a: 33.33, b: 33.33, c: 33.33 }), /99,99/)
+  assert.equal(formatNumber(125075), '1.250,75')
+})
+
+test('formatDate geçersiz tarihte boş döner', () => {
+  assert.equal(formatDate('2026-11-02"><img src=x>'), '')
+  assert.equal(formatDate(undefined), '')
+  assert.ok(formatDate('2026-11-02').includes('2026'))
+})
+
+test('normalizeGroup bozuk veriyi temizler', () => {
+  assert.throws(() => normalizeGroup({ name: 'Ev' }), /tanınmadı/)
+  assert.throws(() => normalizeGroup({ id: '"><img>' }), /tanınmadı/)
+  const g = normalizeGroup({
+    id: 'g1',
+    name: '  Ev  ',
+    currency: '<img src=x onerror=alert(1)>',
+    meId: 'zzz',
+    members: [
+      { id: 'a', name: 'Ali' },
+      { id: 'b', name: 'Ayşe' },
+      { id: 'bad id', name: 'X' },
+      { id: 'a', name: 'Dup' },
+      'junk',
+    ],
+    entries: [
+      {
+        id: 'e1',
+        amount: 1000,
+        date: '2026-01-05',
+        payers: { a: 1000 },
+        shares: { a: 500, b: 500 },
+        splitType: 'equal',
+        splitInput: { a: true, b: true },
+      },
+      {
+        id: 'e2',
+        amount: 1000,
+        date: 'x"><s>',
+        payers: { a: 1000 },
+        shares: { a: 500, b: 500 },
+        splitType: 'weird',
+        splitInput: 5,
+      },
+      { id: 'e3', amount: 12.5, payers: { a: 12.5 }, shares: { b: 12.5 } },
+      { id: 'e4', amount: 1000, payers: { a: 500 }, shares: { b: 1000 } },
+      { id: 'e5', kind: 'payment', amount: 300, payers: { a: 300 }, shares: { b: 300 }, date: '2026-02-02' },
+      {
+        id: 'e6',
+        amount: 1000,
+        payers: { a: 1000 },
+        shares: { b: 1000, ghost: 0 },
+        splitType: 'equal',
+        splitInput: { b: true, ghost: true },
+      },
+    ],
+    deleted: { e9: 123, '"><': 1, e8: 'no' },
+  })
+  assert.equal(g.name, 'Ev')
+  assert.equal(g.currency, 'TRY')
+  assert.equal(g.meId, null)
+  assert.deepEqual(
+    g.members.map((m) => m.id),
+    ['a', 'b'],
+  )
+  assert.deepEqual(
+    g.entries.map((e) => e.id),
+    ['e1', 'e2', 'e5', 'e6'],
+  )
+  const e2 = g.entries[1]
+  assert.match(e2.date, /^\d{4}-\d{2}-\d{2}$/)
+  assert.equal(e2.splitType, 'exact')
+  assert.deepEqual(e2.splitInput, { a: 500, b: 500 })
+  assert.equal(g.entries[2].kind, 'payment')
+  // e6: splitInput'taki hayalet üye atılır, kalan eşit bölüşme shares ile uyuşur
+  assert.equal(g.entries[3].splitType, 'equal')
+  assert.deepEqual(g.entries[3].splitInput, { b: true })
+  assert.deepEqual(g.entries[3].shares, { b: 1000 })
+  assert.deepEqual(g.deleted, { e9: 123 })
 })

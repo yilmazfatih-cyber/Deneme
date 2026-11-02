@@ -2,7 +2,6 @@
 import {
   parseAmount,
   formatAmount,
-  splitEqual,
   computeShares,
   validatePayers,
   netBalances,
@@ -12,6 +11,9 @@ import {
   uid,
   today,
   formatDate,
+  formatNumber,
+  normalizeGroup,
+  CURRENCIES,
 } from './hesap.mjs'
 
 const STORAGE_KEY = 'bolus:v1'
@@ -28,7 +30,6 @@ const CATEGORIES = [
   ['tatil', '✈️', 'Tatil'],
   ['diger', '📎', 'Diğer'],
 ]
-const CURRENCIES = ['TRY', 'EUR', 'USD', 'GBP']
 const COLORS = ['#0f766e', '#b45309', '#1d4ed8', '#be185d', '#4d7c0f', '#7c3aed', '#c2410c', '#0369a1']
 const SPLIT_LABELS = { equal: 'Eşit', exact: 'Tutar', percent: 'Yüzde', shares: 'Hisse' }
 
@@ -45,16 +46,40 @@ function load() {
     if (!raw) return emptyState()
     const s = JSON.parse(raw)
     if (!s || !Array.isArray(s.groups)) return emptyState()
-    s.settings = { simplify: true, ...(s.settings || {}) }
-    return s
+    return sanitizeState(s)
   } catch {
     return emptyState()
   }
 }
 
-function save() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
+/** Dış kaynaktan gelen durumu güvenli hâle getirir: bozuk gruplar atılır. */
+function sanitizeState(s) {
+  const groups = []
+  for (const g of s.groups) {
+    try {
+      groups.push(normalizeGroup(g))
+    } catch {
+      /* bozuk grup atlanır */
+    }
+  }
+  const activeGroupId = groups.some((g) => g.id === s.activeGroupId) ? s.activeGroupId : groups[0]?.id || null
+  return { version: 1, activeGroupId, groups, settings: { simplify: s.settings?.simplify !== false } }
 }
+
+let lastSaved = null
+
+function save() {
+  lastSaved = JSON.stringify(state)
+  localStorage.setItem(STORAGE_KEY, lastSaved)
+}
+
+// Başka bir sekme/pencere kaydettiyse buradaki kopyayı tazele (üzerine yazma olmasın).
+window.addEventListener('storage', (e) => {
+  if (e.key !== STORAGE_KEY || e.newValue === lastSaved) return
+  state = load()
+  lastSaved = e.newValue
+  if (!document.querySelector('form#f')) render()
+})
 
 function activeGroup() {
   return state.groups.find((g) => g.id === state.activeGroupId) || state.groups[0] || null
@@ -137,7 +162,8 @@ function toast(text, { action, onAction, ms = 6000 } = {}) {
 function confirmDialog({ title, text, ok = 'Tamam', cancel = 'Vazgeç', danger = false, extra }) {
   return new Promise((resolve) => {
     const d = document.createElement('dialog')
-    d.innerHTML = `<div class="body"><h3>${esc(title)}</h3>${text ? `<p>${esc(text)}</p>` : ''}
+    d.setAttribute('aria-labelledby', 'dlg-title')
+    d.innerHTML = `<div class="body"><h3 id="dlg-title">${esc(title)}</h3>${text ? `<p>${esc(text)}</p>` : ''}
       <div class="actions">
         <button type="button" class="btn" data-v="cancel">${esc(cancel)}</button>
         ${extra ? `<button type="button" class="btn" data-v="extra">${esc(extra)}</button>` : ''}
@@ -162,7 +188,8 @@ function confirmDialog({ title, text, ok = 'Tamam', cancel = 'Vazgeç', danger =
 function promptDialog({ title, text, value = '', placeholder = '', ok = 'Kaydet' }) {
   return new Promise((resolve) => {
     const d = document.createElement('dialog')
-    d.innerHTML = `<form method="dialog" class="body"><h3>${esc(title)}</h3>${text ? `<p>${esc(text)}</p>` : ''}
+    d.setAttribute('aria-labelledby', 'dlg-title')
+    d.innerHTML = `<form method="dialog" class="body"><h3 id="dlg-title">${esc(title)}</h3>${text ? `<p>${esc(text)}</p>` : ''}
       <label class="field"><span class="sr-only">${esc(title)}</span>
       <input type="text" name="v" value="${esc(value)}" placeholder="${esc(placeholder)}" autocomplete="off" required /></label>
       <div class="actions"><button type="button" class="btn" data-v="cancel">Vazgeç</button>
@@ -221,6 +248,21 @@ function bottomNav(current) {
   </div></nav>`
 }
 
+/** Tıklanabilir satırları klavye ve ekran okuyucu için düğme gibi bağlar. */
+function bindRows(selector, handler) {
+  app.querySelectorAll(selector).forEach((row) => {
+    row.setAttribute('role', 'button')
+    row.setAttribute('tabindex', '0')
+    row.addEventListener('click', () => handler(row))
+    row.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault()
+        handler(row)
+      }
+    })
+  })
+}
+
 function avatar(group, id) {
   return `<span class="avatar" style="background:${memberColor(group, id)}" aria-hidden="true">${esc(initials(memberName(group, id)))}</span>`
 }
@@ -273,7 +315,16 @@ async function createGroupFlow() {
     ok: 'Oluştur',
   })
   if (!name) return
-  const g = { id: uid(), name, currency: 'TRY', members: [], entries: [], meId: null, createdAt: Date.now() }
+  const g = {
+    id: uid(),
+    name,
+    currency: 'TRY',
+    members: [],
+    entries: [],
+    meId: null,
+    deleted: {},
+    createdAt: Date.now(),
+  }
   state.groups.push(g)
   state.activeGroupId = g.id
   save()
@@ -323,10 +374,10 @@ function entryLine(g, e) {
     const paid = e.payers[me] || 0
     const share = e.shares[me] || 0
     const diff = paid - share
-    if (diff > 0) side = `<span class="badge pos">sana ${money(diff)} borçlu</span>`
-    else if (diff < 0) side = `<span class="badge neg">borcun ${money(-diff)}</span>`
-    else if (share) side = `<span class="badge">payın ${money(share)}</span>`
-    else side = `<span class="muted" style="font-size:13px">dahil değilsin</span>`
+    if (diff > 0) side = `<span class="badge pos">size ${money(diff)} borçlu</span>`
+    else if (diff < 0) side = `<span class="badge neg">borcunuz ${money(-diff)}</span>`
+    else if (share) side = `<span class="badge">payınız ${money(share)}</span>`
+    else side = `<span class="muted" style="font-size:13px">dahil değilsiniz</span>`
   }
   return `<div class="row link" data-id="${e.id}" data-kind="expense">
     <span class="emoji" aria-hidden="true">${emoji}</span>
@@ -337,16 +388,7 @@ function entryLine(g, e) {
 
 function renderExpenses(g) {
   const { query } = route()
-  const q = (query.get('q') || '').toLocaleLowerCase('tr-TR')
   const entries = [...g.entries].sort((a, b) => (b.date + b.createdAt).localeCompare(a.date + a.createdAt))
-  const filtered = q
-    ? entries.filter((e) =>
-        [e.description, e.note, category(e.category)[2], ...Object.keys(e.payers).map((id) => memberName(g, id))]
-          .join(' ')
-          .toLocaleLowerCase('tr-TR')
-          .includes(q),
-      )
-    : entries
   const t = totals(g.entries)
   const net = netBalances(
     g.entries,
@@ -354,12 +396,21 @@ function renderExpenses(g) {
   )
   const mine = g.meId ? net[g.meId] || 0 : null
 
-  let list = ''
-  if (filtered.length === 0) {
-    list = `<div class="card"><div class="empty"><div class="big">🧾</div>
+  const listHtml = (qRaw) => {
+    const q = (qRaw || '').toLocaleLowerCase('tr-TR')
+    const filtered = q
+      ? entries.filter((e) =>
+          [e.description, e.note, category(e.category)[2], ...Object.keys(e.payers).map((id) => memberName(g, id))]
+            .join(' ')
+            .toLocaleLowerCase('tr-TR')
+            .includes(q),
+        )
+      : entries
+    if (filtered.length === 0) {
+      return `<div class="card"><div class="empty"><div class="big">🧾</div>
       ${entries.length === 0 ? '<p>Henüz harcama yok.</p><p class="muted">Sağ alttaki düğmeyle ilk harcamayı ekleyin.</p>' : '<p>Eşleşen harcama yok.</p>'}
       </div></div>`
-  } else {
+    }
     let month = ''
     const chunks = []
     for (const e of filtered) {
@@ -376,8 +427,12 @@ function renderExpenses(g) {
       chunks.push(entryLine(g, e))
     }
     chunks.push('</div>')
-    list = chunks.join('')
+    return chunks.join('')
   }
+  const bindList = () =>
+    bindRows('#list .row[data-id]', (row) =>
+      go(`${row.dataset.kind === 'payment' ? 'odeme' : 'gider'}/${row.dataset.id}`),
+    )
 
   app.innerHTML = `${header(g.name)}<main>
     ${
@@ -387,13 +442,13 @@ function renderExpenses(g) {
     }
     <div class="stats">
       <div class="stat"><div class="k">Toplam harcama</div><div class="v">${money(t.total)}</div></div>
-      <div class="stat"><div class="k">${g.meId ? 'Senin bakiyen' : 'Harcama sayısı'}</div>
+      <div class="stat"><div class="k">${g.meId ? 'Bakiyeniz' : 'Harcama sayısı'}</div>
         <div class="v ${mine === null ? '' : mine > 0 ? 'pos' : mine < 0 ? 'neg' : ''}">${
           mine === null ? g.entries.filter((e) => e.kind !== 'payment').length : money(mine, { sign: true })
         }</div></div>
     </div>
-    ${entries.length > 3 ? `<input type="search" id="q" placeholder="Ara: açıklama, kişi, kategori" value="${esc(query.get('q') || '')}" aria-label="Harcama ara" />` : ''}
-    ${list}
+    ${entries.length > 3 ? `<input type="search" id="q" placeholder="Ara: açıklama, kişi, kategori" value="${esc(query.get('q') || '')}" aria-label="Harcama ara" autocomplete="off" />` : ''}
+    <div id="list">${listHtml(query.get('q'))}</div>
     ${g.members.length > 0 ? `<div class="actions"><a class="btn" href="#/odeme/yeni">💸 Ödeme kaydet</a></div>` : ''}
   </main>
   ${g.members.length > 0 ? `<button type="button" class="fab" id="fab">＋ Harcama ekle</button>` : ''}
@@ -403,15 +458,11 @@ function renderExpenses(g) {
   document.getElementById('q')?.addEventListener('input', (e) => {
     const v = e.target.value
     history.replaceState(null, '', v ? `#/?q=${encodeURIComponent(v)}` : '#/')
-    const pos = e.target.selectionStart
-    render()
-    const el = document.getElementById('q')
-    el?.focus()
-    el?.setSelectionRange(pos, pos)
+    renderedHash = location.hash
+    document.getElementById('list').innerHTML = listHtml(v)
+    bindList()
   })
-  app.querySelectorAll('.row[data-id]').forEach((row) => {
-    row.addEventListener('click', () => go(`${row.dataset.kind === 'payment' ? 'odeme' : 'gider'}/${row.dataset.id}`))
-  })
+  bindList()
 }
 
 // --- Bakiyeler ---
@@ -452,7 +503,7 @@ function renderBalances(g) {
               <div class="grow"><div class="title">${esc(memberName(g, d.from))} <span class="debt-arrow">→</span> ${esc(memberName(g, d.to))}</div>
               <div class="sub">${esc(memberName(g, d.from))} borçlu</div></div>
               <div class="amt neg">${money(d.amount)}</div>
-              <button type="button" class="btn small" data-settle="${d.from}|${d.to}|${d.amount}">Ödendi</button></div>`,
+              <button type="button" class="btn small" data-settle="${d.from}|${d.to}|${d.amount}" aria-label="${esc(memberName(g, d.from))} → ${esc(memberName(g, d.to))} ${money(d.amount)} ödendi">Ödendi</button></div>`,
               )
               .join('')
       }
@@ -486,7 +537,7 @@ function renderMembers(g) {
           (m) => `<div class="row">${avatar(g, m.id)}
           <div class="grow"><div class="title">${esc(m.name)}</div>
           <div class="sub">${t.paid[m.id] || t.share[m.id] ? `ödedi ${money(t.paid[m.id] || 0)} · payı ${money(t.share[m.id] || 0)}` : 'henüz harcaması yok'}</div></div>
-          <label class="row" style="min-height:auto;gap:6px;font-size:13px"><input type="radio" name="me" value="${m.id}" ${g.meId === m.id ? 'checked' : ''} /> ben</label>
+          <label class="row" style="min-height:auto;gap:6px;font-size:13px"><input type="radio" name="me" value="${m.id}" aria-label="${esc(m.name)} benim" ${g.meId === m.id ? 'checked' : ''} /> ben</label>
           <button type="button" class="btn small" data-rename="${m.id}" aria-label="${esc(m.name)} adını değiştir">✏️</button>
           <button type="button" class="btn small danger" data-del="${m.id}" aria-label="${esc(m.name)} sil">🗑️</button></div>`,
         )
@@ -541,7 +592,7 @@ function renderMembers(g) {
     b.addEventListener('click', async () => {
       const id = b.dataset.del
       const m = g.members.find((x) => x.id === id)
-      const used = g.entries.some((e) => e.payers[id] || e.shares[id])
+      const used = g.entries.some((e) => id in e.payers || id in e.shares || (e.splitInput && id in e.splitInput))
       if (used) {
         await confirmDialog({
           title: 'Silinemez',
@@ -555,6 +606,7 @@ function renderMembers(g) {
       if (v !== 'ok') return
       g.members = g.members.filter((x) => x.id !== id)
       if (g.meId === id) g.meId = null
+      g.deleted[id] = Date.now()
       save()
       render()
     }),
@@ -616,7 +668,14 @@ function renderExpenseForm(g, id, query) {
           Object.entries(existing.payers).map(([k, v]) => [k, (v / 100).toFixed(2).replace('.', ',')]),
         ),
         splitType: existing.splitType,
-        splitInput: { ...existing.splitInput },
+        splitInput: Object.fromEntries(
+          Object.entries(existing.splitInput)
+            .filter(([k]) => ids.includes(k))
+            .map(([k, v]) => [
+              k,
+              existing.splitType === 'exact' ? (v ? (v / 100).toFixed(2).replace('.', ',') : '') : v,
+            ]),
+        ),
       }
     : {
         description: '',
@@ -659,7 +718,7 @@ function renderExpenseForm(g, id, query) {
           <input type="text" inputmode="decimal" data-payer="${m.id}" value="${esc(f.payers[m.id] || '')}" placeholder="0,00" aria-label="${esc(m.name)} ödedi" /></div>`,
           )
           .join('')}
-        <p class="hint" id="payer-hint"></p>
+        <p class="hint" id="payer-hint" aria-live="polite"></p>
       </div>
       <label class="row" style="margin-top:8px;gap:8px"><input type="checkbox" name="multiPayer" ${f.multiPayer ? 'checked' : ''} /> Birden fazla kişi ödedi</label>
     </div>
@@ -671,13 +730,13 @@ function renderExpenseForm(g, id, query) {
           .join('')}
       </div>
       <div id="split-lines"></div>
-      <p class="hint" id="split-hint"></p>
+      <p class="hint" id="split-hint" aria-live="polite"></p>
     </div>
 
     <div class="card">
       <label class="field"><span>Not (isteğe bağlı)</span><textarea name="note" placeholder="Fiş numarası, kim ne aldı…">${esc(f.note)}</textarea></label>
     </div>
-    <p class="hint err" id="form-err"></p>
+    <p class="hint err" id="form-err" role="alert"></p>
     <div class="actions">
       ${existing ? `<button type="button" class="btn danger" id="del">Sil</button>` : ''}
       <button type="submit" class="btn primary">${existing ? 'Kaydet' : 'Ekle'}</button>
@@ -735,15 +794,18 @@ function renderExpenseForm(g, id, query) {
       }
       if (f.splitType === 'equal') {
         const n = Object.values(f.splitInput).filter(Boolean).length
+        const base = n ? Math.floor(amount / n) : 0
+        const extra = n ? amount - base * n : 0
         hint.textContent = n
-          ? `${n} kişi · kişi başı ${money(splitEqual(amount, Object.keys(shares))[Object.keys(shares)[0]] || 0)}`
+          ? `${n} kişi · kişi başı ${money(base)}${extra ? ` (${extra} kişiye +${formatNumber(1)})` : ''}`
           : 'En az bir kişi seçin'
       } else if (f.splitType === 'exact') {
         const sum = Object.values(f.splitInput).reduce((a, v) => a + (parseAmount(v) ?? 0), 0)
         hint.textContent = `Girilen ${money(sum)} · kalan ${money(amount - sum)}`
       } else if (f.splitType === 'percent') {
-        const sum = Object.values(f.splitInput).reduce((a, v) => a + (Number(v) || 0), 0)
-        hint.textContent = `Toplam %${sum} · kalan %${Math.round((100 - sum) * 100) / 100}`
+        const sum = Math.round(Object.values(f.splitInput).reduce((a, v) => a + (Number(v) || 0), 0) * 100) / 100
+        const pct = (x) => String(Math.round(x * 100) / 100).replace('.', ',')
+        hint.textContent = `Toplam %${pct(sum)} · kalan %${pct(100 - sum)}`
       } else {
         const sum = Object.values(f.splitInput).reduce((a, v) => a + (Number(v) || 0), 0)
         hint.textContent = `Toplam ${sum} hisse`
@@ -856,20 +918,18 @@ function renderExpenseForm(g, id, query) {
 
 function deleteEntry(g, entry) {
   g.entries = g.entries.filter((x) => x.id !== entry.id)
+  g.deleted[entry.id] = Date.now()
   save()
   go('')
-  setTimeout(
-    () =>
-      toast('Silindi.', {
-        action: 'Geri al',
-        onAction: () => {
-          g.entries.push(entry)
-          save()
-          render()
-        },
-      }),
-    0,
-  )
+  toast('Silindi.', {
+    action: 'Geri al',
+    onAction: () => {
+      delete g.deleted[entry.id]
+      g.entries.push(entry)
+      save()
+      render()
+    },
+  })
 }
 
 // --- Ödeme formu ---
@@ -899,7 +959,7 @@ function renderPaymentForm(g, id, query) {
       <label class="field"><span>Tarih</span><input type="date" name="date" value="${esc(existing?.date || today())}" required /></label>
       <label class="field"><span>Not (isteğe bağlı)</span><input type="text" name="note" value="${esc(existing?.note || '')}" placeholder="Havale, nakit…" /></label>
     </div>
-    <p class="hint err" id="form-err"></p>
+    <p class="hint err" id="form-err" role="alert"></p>
     <div class="actions">
       ${existing ? `<button type="button" class="btn danger" id="del">Sil</button>` : ''}
       <button type="submit" class="btn primary">${existing ? 'Kaydet' : 'Kaydet'}</button>
@@ -991,13 +1051,11 @@ function renderSettings(g) {
   document.getElementById('export').onclick = exportFile
   document.getElementById('import').onclick = importFile
   document.getElementById('new-group').onclick = createGroupFlow
-  app.querySelectorAll('[data-g]').forEach((row) =>
-    row.addEventListener('click', () => {
-      state.activeGroupId = row.dataset.g
-      save()
-      go('')
-    }),
-  )
+  bindRows('[data-g]', (row) => {
+    state.activeGroupId = row.dataset.g
+    save()
+    go('')
+  })
   document.getElementById('wipe').onclick = async () => {
     const v = await confirmDialog({
       title: 'Tüm veriler silinsin mi?',
@@ -1038,16 +1096,18 @@ function importFile() {
     try {
       const data = JSON.parse(await file.text())
       if (!data || !Array.isArray(data.groups)) throw new Error('Dosya Bölüş yedeği değil.')
+      const clean = sanitizeState(data)
+      if (clean.groups.length === 0) throw new Error('Dosyada geçerli grup yok.')
       const v = await confirmDialog({
         title: 'Yedek yüklensin mi?',
-        text: `${data.groups.length} grup bulundu. "Üzerine yaz" mevcut her şeyi siler; "Birleştir" grupları yan yana ekler.`,
+        text: `${clean.groups.length} grup bulundu. "Üzerine yaz" mevcut her şeyi siler; "Birleştir" grupları yan yana ekler.`,
         ok: 'Üzerine yaz',
         extra: 'Birleştir',
         danger: true,
       })
       if (v === 'cancel') return
-      if (v === 'ok') state = { ...emptyState(), ...data, settings: { simplify: true, ...(data.settings || {}) } }
-      else for (const grp of data.groups) mergeGroup(grp, 'merge')
+      if (v === 'ok') state = clean
+      else for (const grp of clean.groups) mergeGroup(grp, 'merge')
       if (!state.groups.find((x) => x.id === state.activeGroupId)) state.activeGroupId = state.groups[0]?.id || null
       save()
       go('')
@@ -1072,12 +1132,28 @@ function mergeGroup(incoming, mode) {
     return
   }
   const cur = state.groups[i]
-  for (const m of incoming.members) if (!cur.members.some((x) => x.id === m.id)) cur.members.push(m)
+  // Silinenler (mezar taşları): iki tarafın silme kayıtları birleşir; silme, kayıttan yeniyse kazanır.
+  for (const [id, ts] of Object.entries(incoming.deleted || {})) cur.deleted[id] = Math.max(cur.deleted[id] || 0, ts)
+  cur.entries = cur.entries.filter((e) => !(cur.deleted[e.id] > (e.updatedAt || 0)))
+  for (const m of incoming.members) {
+    if (cur.members.some((x) => x.id === m.id)) continue
+    if (cur.deleted[m.id] && !incoming.entries.some((e) => m.id in e.payers || m.id in e.shares)) continue
+    cur.members.push(m)
+  }
   for (const e of incoming.entries) {
+    if (cur.deleted[e.id] > (e.updatedAt || 0)) continue
     const j = cur.entries.findIndex((x) => x.id === e.id)
     if (j < 0) cur.entries.push(e)
     else if ((e.updatedAt || 0) > (cur.entries[j].updatedAt || 0)) cur.entries[j] = e
   }
+  // Silinmiş üye bir kayıtta geçiyorsa (karşı tarafta hâlâ kullanılıyor) geri gelir.
+  const referenced = new Set(cur.entries.flatMap((e) => [...Object.keys(e.payers), ...Object.keys(e.shares)]))
+  cur.members = cur.members.filter((m) => !cur.deleted[m.id] || referenced.has(m.id))
+  for (const m of incoming.members) {
+    if (referenced.has(m.id) && !cur.members.some((x) => x.id === m.id)) cur.members.push(m)
+  }
+  // Doğrulamadan geçir: paylar ile üyeler tutarlı kalsın.
+  state.groups[i] = normalizeGroup(cur)
 }
 
 function exportCsv(g) {
@@ -1124,16 +1200,29 @@ async function encodeGroup(g) {
 }
 
 async function decodeGroup(code) {
-  const [kind, data] = [code.slice(0, 2), code.slice(2)]
-  let bytes = unb64url(data)
-  if (kind === 'd.') {
-    const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream('deflate-raw'))
-    bytes = new Uint8Array(await new Response(stream).arrayBuffer())
-  } else if (kind !== 'j.') throw new Error('Bağlantı tanınmadı')
-  const g = JSON.parse(new TextDecoder().decode(bytes))
-  if (!g || !g.id || !Array.isArray(g.members) || !Array.isArray(g.entries))
+  // Mesajlaşma uygulamaları bağlantı sonuna nokta/parantez ekleyebilir.
+  const clean = String(code).replace(/[^A-Za-z0-9_.-]/g, '')
+  const [kind, data] = [clean.slice(0, 2), clean.slice(2).replace(/[^A-Za-z0-9_-]/g, '')]
+  if (kind !== 'd.' && kind !== 'j.') throw new Error('Bağlantı tanınmadı')
+  if (kind === 'd.' && typeof DecompressionStream === 'undefined')
+    throw new Error('Bu tarayıcı sıkıştırılmış bağlantıyı açamıyor; telefonu güncelleyin ya da .json yedek isteyin')
+  let raw
+  try {
+    let bytes = unb64url(data)
+    if (kind === 'd.') {
+      const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream('deflate-raw'))
+      bytes = new Uint8Array(await new Response(stream).arrayBuffer())
+    }
+    raw = JSON.parse(new TextDecoder().decode(bytes))
+  } catch (e) {
+    console.error(e)
+    throw new Error('Bağlantı eksik ya da bozuk kopyalanmış; gönderenden tekrar isteyin')
+  }
+  try {
+    return normalizeGroup(raw)
+  } catch {
     throw new Error('Bağlantıda grup verisi yok')
-  return g
+  }
 }
 
 async function shareGroup(g) {
@@ -1174,11 +1263,11 @@ async function renderImportLink(code) {
     <div class="card"><h2>Paylaşılan grup</h2>
       <div class="row"><span class="emoji" aria-hidden="true">🏠</span><div class="grow"><div class="title">${esc(g.name)}</div>
       <div class="sub">${g.members.map((m) => esc(m.name)).join(', ')} · ${g.entries.length} kayıt · toplam ${formatAmount(totals(g.entries).total, g.currency)}</div></div></div>
-      <label class="field" style="margin-top:12px"><span>Bu grupta sen kimsin?</span><select id="me">
+      <label class="field" style="margin-top:12px"><span>Bu grupta siz kimsiniz?</span><select id="me">
         <option value="">— seçme —</option>
         ${g.members.map((m) => `<option value="${m.id}" ${meGuess === m.id ? 'selected' : ''}>${esc(m.name)}</option>`).join('')}
       </select></label>
-      ${exists ? '<p class="hint">Bu grup telefonunuzda zaten var. "Üzerine yaz" bağlantıdaki hâli alır; "Birleştir" iki tarafın kayıtlarını birleştirir (aynı kayıtta yeni olan kazanır).</p>' : ''}
+      ${exists ? '<p class="hint">Bu grup telefonunuzda zaten var. "Üzerine yaz" bağlantıdaki hâli alır; "Birleştir" iki tarafın kayıtlarını birleştirir (aynı kayıtta yeni olan kazanır; silmeler de taşınır).</p>' : ''}
       <div class="actions">
         <a class="btn" href="#/">Vazgeç</a>
         ${exists ? '<button type="button" class="btn" id="merge">Birleştir</button>' : ''}
@@ -1188,7 +1277,7 @@ async function renderImportLink(code) {
   bindCommon()
   const finish = (mode) => {
     const me = document.getElementById('me').value || null
-    mergeGroup({ ...g, meId: me }, mode)
+    mergeGroup(g, mode)
     const cur = state.groups.find((x) => x.id === g.id)
     if (me) cur.meId = me
     state.activeGroupId = g.id

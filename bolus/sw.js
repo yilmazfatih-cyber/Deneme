@@ -1,5 +1,5 @@
 // Bölüş service worker: uygulama kabuğunu önbelleğe alır; internet yoksa önbellekten açılır.
-const CACHE = 'bolus-v1'
+const CACHE = 'bolus-v2'
 const SHELL = ['./', './index.html', './app.mjs', './hesap.mjs', './manifest.webmanifest', './icon.svg']
 
 self.addEventListener('install', (e) => {
@@ -22,10 +22,17 @@ self.addEventListener('fetch', (e) => {
   e.respondWith(
     fetch(e.request)
       .then((res) => {
-        const copy = res.clone()
-        caches.open(CACHE).then((c) => c.put(e.request, copy))
+        // Yalnızca sağlıklı yanıtlar önbelleğe girer; dağıtım sırasındaki 404 iyi kopyayı ezmesin.
+        if (res.ok && res.type === 'basic') {
+          const copy = res.clone()
+          e.waitUntil(caches.open(CACHE).then((c) => c.put(e.request, copy)))
+        }
         return res
       })
-      .catch(() => caches.match(e.request, { ignoreSearch: true }).then((r) => r || caches.match('./index.html'))),
+      .catch(() =>
+        caches
+          .match(e.request, { ignoreSearch: true })
+          .then((r) => r || (e.request.mode === 'navigate' ? caches.match('./index.html') : Response.error())),
+      ),
   )
 })

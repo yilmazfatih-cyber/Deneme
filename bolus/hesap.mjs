@@ -1,6 +1,20 @@
 // Bölüş — para bölüşme hesapları (saf fonksiyonlar, tarayıcı ve Node'da aynı çalışır).
 // Tüm tutarlar kuruş cinsinden tam sayıdır; kayan nokta hatası olmaz.
 
+export const CURRENCIES = ['TRY', 'EUR', 'USD', 'GBP']
+export const SPLIT_TYPES = ['equal', 'exact', 'percent', 'shares']
+const ID_RE = /^[A-Za-z0-9_-]{1,40}$/
+const DATE_RE = /^\d{4}-\d{2}-\d{2}$/
+
+/** Kuruşu hata metinleri için "12,50" biçiminde yazar (para birimi olmadan). */
+export function formatNumber(cents) {
+  try {
+    return new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(cents / 100)
+  } catch {
+    return (cents / 100).toFixed(2).replace('.', ',')
+  }
+}
+
 /** "12,50" / "12.50" / "1.250,75" gibi girdileri kuruşa çevirir. Geçersizse null döner. */
 export function parseAmount(input) {
   if (typeof input === 'number') return Number.isFinite(input) ? Math.round(input * 100) : null
@@ -45,7 +59,8 @@ export function formatAmount(cents, currency = 'TRY', { sign = false } = {}) {
  * weights: { id: ağırlık (>0) }
  */
 export function distribute(total, weights) {
-  const ids = Object.keys(weights).filter((id) => weights[id] > 0)
+  if (!Number.isInteger(total)) throw new Error('Tutar kuruş cinsinden tam sayı olmalı')
+  const ids = Object.keys(weights).filter((id) => Number.isFinite(weights[id]) && weights[id] > 0)
   if (ids.length === 0) return {}
   const sum = ids.reduce((a, id) => a + weights[id], 0)
   const out = {}
@@ -59,12 +74,14 @@ export function distribute(total, weights) {
     remainders.push({ id, r: Math.abs(exact - floor) })
   }
   let left = total - given
+  if (!Number.isFinite(left)) throw new Error('Tutar çok büyük')
   remainders.sort((a, b) => b.r - a.r || ids.indexOf(a.id) - ids.indexOf(b.id))
   const step = left > 0 ? 1 : -1
-  for (let i = 0; left !== 0; i = (i + 1) % remainders.length) {
+  for (let i = 0; left !== 0 && i < remainders.length; i++) {
     out[remainders[i].id] += step
     left -= step
   }
+  if (left !== 0) throw new Error('Dağıtım tamamlanamadı')
   return out
 }
 
@@ -86,7 +103,7 @@ export function splitExact(total, amounts) {
     sum += v
   }
   if (sum !== total) {
-    throw new Error(`Payların toplamı (${sum / 100}) tutara (${total / 100}) eşit değil`)
+    throw new Error(`Payların toplamı (${formatNumber(sum)}) tutara (${formatNumber(total)}) eşit değil`)
   }
   return out
 }
@@ -102,7 +119,8 @@ export function splitPercent(total, percents) {
     w[id] = p
     sum += p
   }
-  if (Math.abs(sum - 100) > 0.005) throw new Error(`Yüzdelerin toplamı ${sum}, 100 olmalı`)
+  if (Math.abs(sum - 100) > 0.005)
+    throw new Error(`Yüzdelerin toplamı ${String(Math.round(sum * 100) / 100).replace('.', ',')}, 100 olmalı`)
   return distribute(total, w)
 }
 
@@ -144,7 +162,8 @@ export function computeShares(expense) {
 /** Ödeyenler toplamı tutara eşit mi? */
 export function validatePayers(amount, payers) {
   const sum = Object.values(payers).reduce((a, v) => a + (v || 0), 0)
-  if (sum !== amount) throw new Error(`Ödeyenlerin toplamı (${sum / 100}) tutara (${amount / 100}) eşit değil`)
+  if (sum !== amount)
+    throw new Error(`Ödeyenlerin toplamı (${formatNumber(sum)}) tutara (${formatNumber(amount)}) eşit değil`)
   if (Object.values(payers).some((v) => v < 0)) throw new Error('Ödenen tutar eksi olamaz')
   return true
 }
@@ -177,19 +196,39 @@ export function pairwiseDebts(entries) {
   }
   for (const e of entries) {
     const payers = Object.entries(e.payers || {}).filter(([, v]) => v > 0)
-    const totalPaid = payers.reduce((a, [, v]) => a + v, 0)
-    if (totalPaid === 0) continue
-    for (const [who, share] of Object.entries(e.shares || {})) {
-      if (!share) continue
-      if (payers.length === 1) {
-        add(who, payers[0][0], share)
-      } else {
-        const w = {}
-        for (const [p, v] of payers) w[p] = v
-        const parts = distribute(share, w)
-        for (const [p, v] of Object.entries(parts)) add(who, p, v)
-      }
+    if (payers.length === 0) continue
+    if (payers.length === 1) {
+      for (const [who, share] of Object.entries(e.shares || {})) if (share) add(who, payers[0][0], share)
+      continue
     }
+    // Birden çok ödeyen: harcama içinde net alacaklılar ve net borçlular belirlenir,
+    // her borçlunun borcu alacaklılara alacakları oranında dağıtılır.
+    const net = {}
+    for (const [p, v] of payers) net[p] = (net[p] || 0) + v
+    for (const [who, v] of Object.entries(e.shares || {})) net[who] = (net[who] || 0) - (v || 0)
+    const credit = {}
+    const debtors = []
+    for (const [id, v] of Object.entries(net)) {
+      if (v > 0) credit[id] = v
+      else if (v < 0) debtors.push([id, -v])
+    }
+    if (debtors.length === 0) continue
+    const rows = debtors.map(([d, amt]) => [d, distribute(amt, credit)])
+    // Kuruş yuvarlamaları sütun toplamlarını bozabilir; tek tek düzelt (satır toplamı sabit kalır).
+    const column = {}
+    for (const [, parts] of rows) for (const [p, v] of Object.entries(parts)) column[p] = (column[p] || 0) + v
+    for (let guard = 0; guard < 1000; guard++) {
+      const over = Object.keys(credit).find((p) => (column[p] || 0) > credit[p])
+      const under = Object.keys(credit).find((p) => (column[p] || 0) < credit[p])
+      if (!over || !under) break
+      const row = rows.find(([, parts]) => (parts[over] || 0) > 0)
+      if (!row) break
+      row[1][over] -= 1
+      row[1][under] = (row[1][under] || 0) + 1
+      column[over] -= 1
+      column[under] = (column[under] || 0) + 1
+    }
+    for (const [d, parts] of rows) for (const [p, v] of Object.entries(parts)) add(d, p, v)
   }
   // Çiftleri netleştir
   const out = []
@@ -265,13 +304,108 @@ export function today() {
 
 /** "2026-11-02" → "2 Kas 2026" */
 export function formatDate(iso) {
-  if (!iso) return ''
+  if (typeof iso !== 'string' || !DATE_RE.test(iso)) return ''
   const [y, m, d] = iso.split('-').map(Number)
   try {
     return new Intl.DateTimeFormat('tr-TR', { day: 'numeric', month: 'short', year: 'numeric' }).format(
       new Date(y, m - 1, d),
     )
   } catch {
-    return iso
+    return ''
+  }
+}
+
+const isObj = (v) => v && typeof v === 'object' && !Array.isArray(v)
+const isId = (v) => typeof v === 'string' && ID_RE.test(v)
+const cleanText = (v, max) => (typeof v === 'string' ? v.trim().slice(0, max) : '')
+
+/** Kuruş sözlüğünü temizler: yalnızca geçerli kimlikli, tam sayı ve >= 0 değerler kalır. */
+function cleanCents(obj, validIds) {
+  const out = {}
+  if (!isObj(obj)) return out
+  for (const [k, v] of Object.entries(obj)) {
+    if (validIds.has(k) && Number.isInteger(v) && v > 0) out[k] = v
+  }
+  return out
+}
+
+/**
+ * Dışarıdan gelen (yedek, bağlantı, localStorage) grup verisini doğrular ve temizler.
+ * Düzeltilemeyen gruplarda hata fırlatır; bozuk kayıtlar sessizce atılır.
+ */
+export function normalizeGroup(raw) {
+  if (!isObj(raw) || !isId(raw.id)) throw new Error('Grup verisi tanınmadı')
+  const members = []
+  const memberIds = new Set()
+  for (const m of Array.isArray(raw.members) ? raw.members : []) {
+    if (!isObj(m) || !isId(m.id) || memberIds.has(m.id)) continue
+    const name = cleanText(m.name, 60)
+    if (!name) continue
+    memberIds.add(m.id)
+    members.push({ id: m.id, name })
+  }
+  const entries = []
+  const entryIds = new Set()
+  for (const e of Array.isArray(raw.entries) ? raw.entries : []) {
+    if (!isObj(e) || !isId(e.id) || entryIds.has(e.id)) continue
+    if (!Number.isInteger(e.amount) || e.amount <= 0) continue
+    const payers = cleanCents(e.payers, memberIds)
+    const shares = cleanCents(e.shares, memberIds)
+    const sum = (o) => Object.values(o).reduce((a, b) => a + b, 0)
+    if (sum(payers) !== e.amount || sum(shares) !== e.amount) continue
+    const kind = e.kind === 'payment' ? 'payment' : 'expense'
+    if (kind === 'payment' && (Object.keys(payers).length !== 1 || Object.keys(shares).length !== 1)) continue
+    let splitType = SPLIT_TYPES.includes(e.splitType) ? e.splitType : 'exact'
+    let splitInput = isObj(e.splitInput) ? {} : null
+    if (splitInput) {
+      for (const [k, v] of Object.entries(e.splitInput)) {
+        if (!memberIds.has(k)) continue
+        if (splitType === 'equal') {
+          if (v) splitInput[k] = true
+        } else if (splitType === 'exact') {
+          if (Number.isInteger(v) && v >= 0) splitInput[k] = v
+        } else if (Number.isFinite(Number(v)) && Number(v) >= 0) splitInput[k] = Number(v)
+      }
+      try {
+        const check = computeShares({ amount: e.amount, splitType, splitInput })
+        if (JSON.stringify(check) !== JSON.stringify(shares)) splitInput = null
+      } catch {
+        splitInput = null
+      }
+    }
+    if (!splitInput) {
+      splitType = 'exact'
+      splitInput = { ...shares }
+    }
+    entryIds.add(e.id)
+    entries.push({
+      id: e.id,
+      kind,
+      description: cleanText(e.description, 120) || (kind === 'payment' ? 'Ödeme' : 'Harcama'),
+      amount: e.amount,
+      date: typeof e.date === 'string' && DATE_RE.test(e.date) ? e.date : today(),
+      category: isId(e.category) ? e.category : 'diger',
+      note: cleanText(e.note, 500),
+      payers,
+      splitType,
+      splitInput,
+      shares,
+      createdAt: Number.isFinite(e.createdAt) ? e.createdAt : 0,
+      updatedAt: Number.isFinite(e.updatedAt) ? e.updatedAt : 0,
+    })
+  }
+  const deleted = {}
+  if (isObj(raw.deleted)) {
+    for (const [k, v] of Object.entries(raw.deleted)) if (isId(k) && Number.isFinite(v)) deleted[k] = v
+  }
+  return {
+    id: raw.id,
+    name: cleanText(raw.name, 60) || 'Grup',
+    currency: CURRENCIES.includes(raw.currency) ? raw.currency : 'TRY',
+    members,
+    entries,
+    meId: isId(raw.meId) && memberIds.has(raw.meId) ? raw.meId : null,
+    deleted,
+    createdAt: Number.isFinite(raw.createdAt) ? raw.createdAt : 0,
   }
 }

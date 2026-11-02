@@ -28,7 +28,8 @@ Sunucu olmadığı için cihazlar kendiliğinden eşitlenmez. Akış şöyle:
 
 1. Harcamaları giren kişi **Ayarlar → Paylaşım bağlantısı** der; bağlantı panoya kopyalanır (telefonda paylaşım menüsü açılır).
 2. Bağlantıyı evdekilere gönderir. Açan kişi kendini seçer, **Telefonuma al** der.
-3. Daha sonra iki taraf da değişiklik yaptıysa **Birleştir** seçilir: aynı kayıtta son güncellenen kazanır, yeni kayıtlar birleşir.
+3. Daha sonra iki taraf da değişiklik yaptıysa **Birleştir** seçilir: aynı kayıtta son güncellenen kazanır, yeni kayıtlar birleşir,
+   silinen kayıtlar karşı tarafta da silinir.
 
 Pratikte en kolayı: harcamaları tek kişi girer, haftada bir bağlantı atar. Herkes kendi telefonunda "ben"i seçince
 listede kendi borç/alacağını görür.
@@ -46,6 +47,9 @@ Hesap mantığı `hesap.mjs` dosyasında saf fonksiyonlardır; testleri:
 ```bash
 node --test bolus/hesap.test.mjs
 ```
+
+İçe aktarılan her veri (yedek, bağlantı, localStorage) `normalizeGroup` ile doğrulanır: geçersiz kimlik, tarih, para birimi
+ve tutarı tutmayan kayıtlar atılır.
 
 Dosyalar: `index.html` (kabuk ve stil) · `app.mjs` (ekranlar, depolama, paylaşım) · `hesap.mjs` (bölüşme, bakiye, sadeleştirme) ·
 `sw.js` (çevrimdışı) · `manifest.webmanifest` · `icon.svg`.
