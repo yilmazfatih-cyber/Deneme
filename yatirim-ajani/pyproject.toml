@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "yatirim-ajani"
+version = "0.1.0"
+description = "Araştıran, olasılıklı tahmin yazan, sanal işlem yapan ve Midas için öneren yatırım ajanı"
+requires-python = ">=3.11"
+dependencies = ["anthropic>=2.3", "pandas>=2.2", "numpy>=1.26", "pydantic>=2.7"]
+
+[project.optional-dependencies]
+yahoo = ["yfinance>=0.2.50"]
+test = ["pytest>=8"]
+
+[tool.setuptools.packages.find]
+include = ["yatirim_ajani*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
