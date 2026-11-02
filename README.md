@@ -10,6 +10,9 @@ Kelime bulmakta zorlanan afazili yetişkinler için Türkçe bir web uygulaması
 
 > Köprü bir iletişim ve pratik desteğidir; tedavinin yerini almaz. Dil ve konuşma terapistiyle birlikte kullanılmalıdır.
 
+> **Ayrıca:** aynı depoda [`bolus/`](bolus/README.md) altında Splitwise benzeri, ev içi ortak harcama uygulaması **Bölüş** var;
+> GitHub Pages'te `/bolus/` adresinde yayınlanır.
+
 Ürün planı: [`docs/PLAN.md`](docs/PLAN.md) · Yol haritası: [`docs/ROADMAP.md`](docs/ROADMAP.md) ·
 Ekip anayasası: [`CLAUDE.md`](CLAUDE.md) · Son demo: [`docs/sprints/S01/demo.md`](docs/sprints/S01/demo.md)
 

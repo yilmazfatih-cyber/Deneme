@@ -1,9 +1,10 @@
 name: Yayınla (GitHub Pages)
 
 # Her güncellemede uygulamayı derler ve https://<kullanıcı>.github.io/<depo>/ adresinde yayınlar.
+# Bölüş (ortak harcama uygulaması) derleme gerektirmez; bolus/ klasörü olduğu gibi /bolus/ altında yayınlanır.
 on:
   push:
-    branches: [main, claude/merhaba-f982gj]
+    branches: [main, claude/merhaba-f982gj, claude/hopeful-johnson-m02kmc]
   workflow_dispatch:
 
 permissions:
@@ -26,6 +27,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+      - name: Bölüş uygulamasını ekle
+        run: cp -r bolus dist/bolus
       - uses: actions/configure-pages@v5
         with:
           enablement: true
