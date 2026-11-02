@@ -5,7 +5,18 @@ import globals from 'globals'
 import tseslint from 'typescript-eslint'
 
 export default tseslint.config(
-  { ignores: ['dist', 'dev-dist', 'node_modules', 'playwright-report', 'test-results', 'tests/shots/output'] },
+  {
+    // Alt projeler kendi araç zincirleriyle denetlenir (ozetci: Python, wa-asistan: kendi tsc/vitest/prettier'ı)
+    ignores: [
+      'dist',
+      'dev-dist',
+      'node_modules',
+      'playwright-report',
+      'test-results',
+      'tests/shots/output',
+      'wa-asistan',
+    ],
+  },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ['**/*.{ts,tsx}'],

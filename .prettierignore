@@ -9,3 +9,6 @@ tests/shots/output
 docs/sprints/**/shots
 content/audio.json
 public/audio
+# Alt projeler kendi biçim denetimini yapar
+ozetci
+wa-asistan
