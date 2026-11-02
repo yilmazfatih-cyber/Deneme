@@ -9,6 +9,7 @@
  */
 import type { FinanceCategory, Invoice, InvoiceType, JournalEntry, JournalLine, Payment } from '../db/schema';
 import { FINANCE_CATEGORIES } from '../db/schema';
+import { foldLower } from '../lib/text';
 
 // ---------------- Hesap planı ----------------
 export const ACCOUNTS = {
@@ -112,7 +113,7 @@ const KEYWORDS: Record<FinanceCategory, string[]> = {
   kira: ['kira', 'kirası', 'fabrika kirası', 'depo kirası', 'aidat', 'gayrimenkul', 'osb'],
   nakliye: ['nakliye', 'lojistik', 'kargo', 'sevkiyat', 'palet', 'navlun', 'gümrük', 'konteyner', 'aras', 'yurtiçi kargo', 'mng', 'ups', 'dhl', 'tır'],
   'makine-bakim': ['bakım', 'bakim', 'servis', 'yedek parça', 'makine', 'makina', 'iğne', 'igne', 'platin', 'kalibrasyon', 'onarım', 'tamir', 'mayer', 'karl mayer', 'picanol'],
-  'vergi-sgk': ['sgk', 'vergi', 'kdv', 'stopaj', 'muhtasar', 'geçici vergi', 'damga', 'harç', 'ceza', 'prim'],
+  'vergi-sgk': ['sgk', 'stopaj', 'muhtasar', 'geçici vergi', 'damga vergisi', 'gelir vergisi', 'kurumlar vergisi', 'vergi cezası', 'vergi borcu', 'harç', 'ceza', 'prim', 'bağkur', 'emlak vergisi', 'mtv'],
   'banka-finansman': ['faiz', 'komisyon', 'kredi', 'banka masrafı', 'bsmv', 'kkdf', 'leasing', 'faktoring', 'teminat', 'swap'],
   pazarlama: ['fuar', 'reklam', 'katalog', 'numune', 'pazarlama', 'stant', 'premiere vision', 'texworld', 'sponsorluk', 'web sitesi', 'sosyal medya'],
   'ofis-genel': ['kırtasiye', 'ofis', 'telefon', 'internet', 'yazılım', 'lisans', 'temizlik', 'güvenlik', 'danışmanlık', 'muhasebe', 'avukat', 'noter', 'sigorta'],
@@ -120,7 +121,9 @@ const KEYWORDS: Record<FinanceCategory, string[]> = {
   diger: [],
 };
 
-const trLower = (s: string) => s.toLocaleLowerCase('tr-TR');
+
+/** Her faturada geçen, kategori bilgisi taşımayan kalıplar */
+const BOILERPLATE = /vergi dairesi|vergi no(?:su)?|vergi kimlik|vkn|tckn|kdv|matrah|e-?fatura|e-?arsiv|fatura/g;
 
 export interface CategoryGuess {
   category: FinanceCategory;
@@ -129,7 +132,7 @@ export interface CategoryGuess {
 }
 
 export function categorize(text: string, type: InvoiceType = 'alis'): CategoryGuess {
-  const t = trLower(text);
+  const t = foldLower(text).replace(BOILERPLATE, ' ');
   if (type === 'satis') return { category: 'satis-geliri', confidence: 0.95, matched: ['satış faturası'] };
   const scores = new Map<FinanceCategory, { score: number; matched: string[] }>();
   for (const [cat, words] of Object.entries(KEYWORDS) as [FinanceCategory, string[]][]) {
@@ -137,7 +140,7 @@ export function categorize(text: string, type: InvoiceType = 'alis'): CategoryGu
     let score = 0;
     const matched: string[] = [];
     for (const w of words) {
-      if (t.includes(w)) {
+      if (t.includes(foldLower(w))) {
         score += 1 + Math.min(w.length, 12) / 12; // uzun eşleşme daha güvenilir
         matched.push(w);
       }

@@ -6,6 +6,7 @@
 import type { Currency, InvoiceExtraction, InvoiceLine, InvoiceType } from '../db/schema';
 import { parseTrNumber } from '../lib/format';
 import { categorize } from './finance';
+import { foldLower, foldTr } from '../lib/text';
 
 export interface ParseContext {
   companyName?: string;
@@ -14,6 +15,12 @@ export interface ParseContext {
 }
 
 const trLower = (s: string) => s.toLocaleLowerCase('tr-TR');
+const isOwnName = (line: string, own?: string) => {
+  if (!own) return false;
+  const a = foldLower(line);
+  const b = foldLower(own);
+  return a.includes(b) || (b.length >= 6 && b.includes(a));
+};
 
 /** OCR'nin sık karıştırdığı harfleri sayı bağlamında düzeltir: O→0, l/I→1, S→5, B→8.
  *  Yalnızca en az iki rakam içeren ve sadece rakam/ayraç/karışan-harf karakterlerinden oluşan parçalara dokunur. */
@@ -95,28 +102,37 @@ function detectTaxNo(text: string, ownTaxNo?: string): string | undefined {
   return loose[0];
 }
 
-const TITLE_RE = /\b(a\.?\s?ş\.?|ltd\.?\s*şti\.?|limited|anonim|san\.?|tic\.?|sanayi|ticaret|gmbh|inc\.?|s\.?r\.?l\.?|koll\.?\s*şti\.?)/i;
+const TITLE_RE = /(?:\ba\.\s?s\.?|\ba\.s\b|\bas\.|\bltd\.?|\bsti\.?|\blimited\b|\banonim\b|\bsan\.|\btic\.|\bsanayi\b|\bticaret\b|\bgmbh\b|\binc\.?|\bs\.?r\.?l\.?\b|\bkoll\.)/i;
 
-function detectCounterparty(text: string, companyName?: string): string | undefined {
-  const own = companyName ? trLower(companyName) : undefined;
-  const lines = text
-    .split('\n')
-    .map((l) => l.replace(/\s{2,}/g, ' ').trim())
-    .filter((l) => l.length >= 4 && l.length <= 90);
-  const isOwn = (l: string) => own && (trLower(l).includes(own) || own.includes(trLower(l)));
-  // 1) "Sayın" / "Alıcı" / "Satıcı" sonrası
-  for (let i = 0; i < lines.length; i++) {
-    const m = lines[i].match(/^(?:say[ıi]n|al[ıi]c[ıi]|sat[ıi]c[ıi]|müşteri|unvan[ıi]?)\s*[:：]?\s*(.+)$/i);
-    if (m) {
-      const cand = m[1].trim() || lines[i + 1];
-      if (cand && !isOwn(cand) && !/^\d/.test(cand)) return cleanName(cand);
-    }
+/**
+ * Karşı taraf unvanı. Fatura türüne göre öncelik değişir:
+ *  - alış faturasında satıcı (başlıktaki unvan, "Satıcı:" etiketi) aranır; "Sayın/Alıcı" bölümü bizimdir,
+ *  - satış faturasında "Sayın/Alıcı" sonrası aranır.
+ * Karşılaştırmalar aksan katlamalı yapılır (OCR "Ş"yi "S" okuyabilir).
+ */
+function detectCounterparty(text: string, type: InvoiceType, companyName?: string): string | undefined {
+  const rawLines = text.split('\n').map((l) => l.replace(/\s{2,}/g, ' ').trim());
+  const idx = rawLines.map((_, i) => i).filter((i) => rawLines[i].length >= 4 && rawLines[i].length <= 90);
+  const folded = rawLines.map((l) => foldTr(l));
+  const own = (l: string) => isOwnName(l, companyName);
+  let buyer: string | undefined;
+  let seller: string | undefined;
+  const titles: string[] = [];
+  for (let k = 0; k < idx.length; k++) {
+    const i = idx[k];
+    const f = folded[i];
+    const m = f.match(/^(?:sayin|alici|musteri|unvani?)\s*[:：]?\s*(.*)$/i);
+    const ms = f.match(/^(?:satici|duzenleyen|tedarikci)\s*[:：]?\s*(.*)$/i);
+    const pick = (rest: string) => {
+      const cand = rest.trim() ? rawLines[i].slice(rawLines[i].length - rest.trim().length) : rawLines[idx[k + 1] ?? -1];
+      return cand && !own(cand) && !/^\d/.test(cand) ? cleanName(cand) : undefined;
+    };
+    if (m) buyer = buyer ?? pick(m[1]);
+    else if (ms) seller = seller ?? pick(ms[1]);
+    else if (TITLE_RE.test(f) && !own(rawLines[i]) && !/fatura|kdv|toplam|tarih/i.test(f)) titles.push(cleanName(rawLines[i]));
   }
-  // 2) Unvan içeren ilk satır (kendi şirketimiz hariç)
-  for (const l of lines) {
-    if (TITLE_RE.test(l) && !isOwn(l) && !/fatura|kdv|toplam|tarih/i.test(l)) return cleanName(l);
-  }
-  return undefined;
+  if (type === 'satis') return buyer ?? titles[0];
+  return seller ?? titles.find((t) => t !== buyer) ?? buyer;
 }
 
 function cleanName(s: string): string {
@@ -156,6 +172,7 @@ function detectLines(text: string): InvoiceLine[] {
 
 export function parseInvoiceText(rawText: string, ctx: ParseContext = {}): InvoiceExtraction {
   const text = rawText.replace(/\r/g, '').replace(/[ \t]+/g, ' ');
+  const ftext = foldTr(text); // etiket aramaları aksansız metinde yapılır
   const notes: string[] = [];
   let found = 0;
   let weight = 0;
@@ -167,7 +184,7 @@ export function parseInvoiceText(rawText: string, ctx: ParseContext = {}): Invoi
   const invoiceNo = detectInvoiceNo(text);
   mark(invoiceNo, 2);
 
-  const dateRaw = findAfterLabel(text, /fatura\s*tarihi|düzenle(?:n)?me\s*tarihi|tarih|date/i, DATE_RE);
+  const dateRaw = findAfterLabel(ftext, /fatura\s*tarihi|duzenle(?:n)?me\s*tarihi|tarih|date/i, DATE_RE);
   let date = dateRaw ? parseDate(dateRaw) : undefined;
   if (!date) {
     const any = text.match(new RegExp(DATE_RE));
@@ -175,21 +192,34 @@ export function parseInvoiceText(rawText: string, ctx: ParseContext = {}): Invoi
   }
   mark(date, 2);
 
-  const dueRaw = findAfterLabel(text, /vade\s*tarihi|son\s*ödeme(?:\s*tarihi)?|ödeme\s*tarihi|vade/i, DATE_RE);
+  const dueRaw = findAfterLabel(ftext, /vade\s*tarihi|son\s*odeme(?:\s*tarihi)?|odeme\s*tarihi|vade/i, DATE_RE);
   const dueDate = dueRaw ? parseDate(dueRaw) : undefined;
   mark(dueDate, 0.5);
 
   const counterpartyTaxNo = detectTaxNo(text, ctx.taxNo);
   mark(counterpartyTaxNo, 1);
 
-  const counterpartyName = detectCounterparty(text, ctx.companyName);
+  // Tür: kendi şirketimiz satıcı konumunda mı?
+  let type: InvoiceType = 'alis';
+  const lowered = foldLower(text);
+  const ownIdx = ctx.companyName ? lowered.indexOf(foldLower(ctx.companyName)) : -1;
+  const ownTaxIdx = ctx.taxNo ? text.indexOf(ctx.taxNo) : -1;
+  const buyerIdx = lowered.search(/sayin|alici/);
+  const ownPos = ownIdx >= 0 ? ownIdx : ownTaxIdx;
+  if (ownPos >= 0) {
+    // Kendi adımız "Sayın/Alıcı" bölümünden ÖNCE geçiyorsa satıcıyız (fatura başlığı satıcıya aittir)
+    if (buyerIdx < 0 || ownPos < buyerIdx) type = 'satis';
+  }
+  if (/\bsatis\s*faturasi\b/i.test(lowered) && ownPos >= 0) type = 'satis';
+
+  const counterpartyName = detectCounterparty(text, type, ctx.companyName);
   mark(counterpartyName, 2);
 
   const currency = detectCurrency(text);
 
-  let subtotal = findAmount(text, /mal\s*\/?\s*hizmet\s*toplam\s*tutar[ıi]|ara\s*toplam|matrah|kdv\s*matrah[ıi]|toplam\s*tutar(?!\s*\(kdv\s*dahil\))|net\s*tutar/i);
-  let vatTotal = findAmount(text, /hesaplanan\s*kdv|toplam\s*kdv|kdv\s*tutar[ıi]|kdv\s*\(?%?\s*\d{1,2}\)?|kdv/i);
-  let total = findAmount(text, /ödenecek\s*tutar|vergiler\s*dahil\s*toplam(?:\s*tutar)?|genel\s*toplam|kdv\s*dahil\s*toplam|toplam\s*\(kdv\s*dahil\)|^\s*toplam\s*[:\s]|grand\s*total|total/im);
+  let subtotal = findAmount(ftext, /mal\s*\/?\s*hizmet\s*toplam\s*tutari|ara\s*toplam|matrah|kdv\s*matrahi|toplam\s*tutar(?!\s*\(kdv\s*dahil\))|net\s*tutar/i);
+  let vatTotal = findAmount(ftext, /hesaplanan\s*kdv|toplam\s*kdv|kdv\s*tutari|kdv\s*\(?%?\s*\d{1,2}\)?|kdv/i);
+  let total = findAmount(ftext, /odenecek\s*tutar|vergiler\s*dahil\s*toplam(?:\s*tutar)?|genel\s*toplam|kdv\s*dahil\s*toplam|toplam\s*\(kdv\s*dahil\)|^\s*toplam\s*[:\s]|grand\s*total|total/im);
   // "TOPLAM" tek başına; ara toplam ile aynıysa genel toplam değildir
   if (total !== undefined && subtotal !== undefined && Math.abs(total - subtotal) < 0.01 && vatTotal) total = subtotal + vatTotal;
 
@@ -230,19 +260,6 @@ export function parseInvoiceText(rawText: string, ctx: ParseContext = {}): Invoi
   if (total === undefined) notes.push('Fatura toplamı bulunamadı; elle girin.');
   if (!date) notes.push('Fatura tarihi bulunamadı.');
   if (!counterpartyName) notes.push('Karşı taraf unvanı tespit edilemedi.');
-
-  // Tür: kendi şirketimiz satıcı konumunda mı?
-  let type: InvoiceType = 'alis';
-  const lowered = trLower(text);
-  const ownIdx = ctx.companyName ? lowered.indexOf(trLower(ctx.companyName)) : -1;
-  const ownTaxIdx = ctx.taxNo ? text.indexOf(ctx.taxNo) : -1;
-  const buyerIdx = lowered.search(/say[ıi]n|al[ıi]c[ıi]/);
-  const ownPos = ownIdx >= 0 ? ownIdx : ownTaxIdx;
-  if (ownPos >= 0) {
-    // Kendi adımız "Sayın/Alıcı" bölümünden ÖNCE geçiyorsa satıcıyız (fatura başlığı satıcıya aittir)
-    if (buyerIdx < 0 || ownPos < buyerIdx) type = 'satis';
-  }
-  if (/\bsat[ıi]ş\s*faturas[ıi]\b/i.test(text) && ownPos >= 0) type = 'satis';
 
   let lines = detectLines(text).filter((l) => !ctx.companyName || !trLower(l.description).includes(trLower(ctx.companyName)));
   if (vatRate !== undefined) lines = lines.map((l) => ({ ...l, vatRate: l.vatRate === 20 && vatRate !== undefined ? vatRate : l.vatRate }));

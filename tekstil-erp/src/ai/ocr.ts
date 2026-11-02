@@ -30,7 +30,14 @@ async function getWorker(langs: string): Promise<Worker> {
     await old.terminate().catch(() => undefined);
   }
   workerLangs = langs;
+  // Worker, WASM çekirdeği ve dil verileri uygulamayla birlikte sunulur (public/tesseract, public/tessdata);
+  // böylece CDN erişimi olmayan / çevrimdışı ortamlarda da OCR çalışır.
+  const base = typeof document !== 'undefined' ? document.baseURI : '/';
   workerPromise = createWorker(langs, 1, {
+    workerPath: new URL('tesseract/worker.min.js', base).href,
+    corePath: new URL('tesseract/', base).href,
+    langPath: new URL('tessdata/', base).href,
+    gzip: true,
     logger: (m) => progressListener?.({ status: translateStatus(m.status), progress: m.progress ?? 0 }),
   });
   return workerPromise;

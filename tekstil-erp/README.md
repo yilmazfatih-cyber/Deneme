@@ -27,19 +27,20 @@ cd tekstil-erp
 npm install
 npm run dev        # http://localhost:5173
 npm run build      # dist/ — herhangi bir statik barındırmaya (GitHub Pages, Nginx, S3) kopyalanabilir
-npm run check      # tip denetimi + ESLint + birim testler
+npm run check      # tip denetimi + ESLint + birim testler (vitest)
 ```
 
 Kamera ve barkod okuma için tarayıcı **HTTPS** veya `localhost` ister. Üretimde HTTPS'li bir statik sunucu yeterlidir.
 
-### Açık modellerin ilk indirmesi
+### Açık modeller nereden gelir?
 
-Uygulama kodu küçüktür; modeller ilk kullanımda indirilir ve Service Worker ile önbelleğe alınır
-(sonraki kullanımlar çevrimdışı çalışır):
-
-- COCO-SSD lite: ~6 MB (kamera analizi ilk açılışta)
-- Tesseract.js çekirdek + `tur` ve `eng` dil verileri: ~15 MB (ilk OCR'da)
-- PDF.js worker: paketle birlikte gelir
+- **OCR tamamen yerel:** Tesseract.js worker'ı ve WASM çekirdeği `npm run build`/`npm run dev` öncesinde
+  `scripts/copy-tesseract.mjs` ile `public/tesseract/` altına kopyalanır; Türkçe ve İngilizce dil verileri
+  ([tessdata_fast](https://github.com/tesseract-ocr/tessdata_fast), ~2 MB'ar) `public/tessdata/` içinde depoya dahildir.
+  CDN erişimi olmayan kapalı ağlarda da çalışır.
+- **Kişi algılama:** COCO-SSD `lite_mobilenet_v2` (~6 MB) ilk kullanımda TensorFlow.js model deposundan indirilir,
+  Service Worker ile önbelleğe alınır ve sonrasında çevrimdışı çalışır.
+- **PDF.js worker:** paketle birlikte gelir.
 
 ### İsteğe bağlı yerel LLM (Ollama)
 

@@ -11,7 +11,10 @@
     "typecheck": "tsc -b --noEmit",
     "lint": "eslint .",
     "test": "vitest run",
-    "check": "npm run typecheck && npm run lint && npm run test"
+    "check": "npm run typecheck && npm run lint && npm run test",
+    "prepare:assets": "node scripts/copy-tesseract.mjs",
+    "predev": "npm run prepare:assets",
+    "prebuild": "npm run prepare:assets"
   },
   "dependencies": {
     "@tensorflow-models/coco-ssd": "^2.2.3",

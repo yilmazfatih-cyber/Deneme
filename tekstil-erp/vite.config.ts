@@ -22,12 +22,13 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,woff2}'],
+        globIgnores: ['**/tesseract/**', '**/tessdata/**'],
         maximumFileSizeToCacheInBytes: 8 * 1024 * 1024,
         runtimeCaching: [
           {
             // Açık model ağırlıkları (TF.js COCO-SSD, Tesseract dil verileri) ilk indirmeden sonra çevrimdışı kalır
             urlPattern: ({ url }) =>
-              /tfhub|kaggle|storage\.googleapis|tessdata|jsdelivr|unpkg/.test(url.hostname + url.pathname),
+              /tfhub|kaggle|storage\.googleapis|tessdata|tesseract|jsdelivr|unpkg/.test(url.hostname + url.pathname),
             handler: 'CacheFirst',
             options: { cacheName: 'ai-models', expiration: { maxEntries: 60, maxAgeSeconds: 60 * 60 * 24 * 180 } },
           },

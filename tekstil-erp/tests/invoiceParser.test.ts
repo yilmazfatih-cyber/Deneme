@@ -114,3 +114,32 @@ describe('parseInvoiceText', () => {
     expect(r.confidence).toBeLessThan(0.75);
   });
 });
+
+describe('aksansız OCR metni (Ş→S, Ö→O)', () => {
+  const text = `FATURA
+Bursa Elektrik Dagitim A.S.
+VKN: 1234567890  Vergi Dairesi: Nilufer
+Fatura No: BED2025000112299
+Fatura Tarihi: 15.10.2026
+Son Odeme Tarihi: 30.10.2026
+Sayin: Sirketim Tekstil San. Tic. Ltd. Sti.
+Elektrik tuketimi Eylul 2026   1 adet   184.300,00   184.300,00
+Mal Hizmet Toplam Tutari: 184.300,00 TL
+Hesaplanan KDV (%20): 36.860,00 TL
+Odenecek Tutar: 221.160,00 TL`;
+  const r = parseInvoiceText(text, { companyName: 'Şirketim Tekstil', taxNo: '9990001112' });
+
+  it('satıcıyı karşı taraf olarak seçer, kendi şirketimizi değil', () => {
+    expect(r.type).toBe('alis');
+    expect(r.counterpartyName).toMatch(/Bursa Elektrik/);
+  });
+  it('aksansız etiketlerden vade ve tutarları okur', () => {
+    expect(r.dueDate).toBeDefined();
+    expect(r.subtotal).toBe(184300);
+    expect(r.vatTotal).toBe(36860);
+    expect(r.total).toBe(221160);
+  });
+  it('KDV/vergi dairesi kalıplarına aldanmadan enerji kategorisi verir', () => {
+    expect(r.category).toBe('enerji');
+  });
+});
