@@ -1,0 +1,23 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+# model dosyaları büyük: depoya girmez
+models/
+*.gguf
+# kurulum betiğinin ürettiği Modelfile ve günlük
+.Modelfile.olusan
+.olusan-*.Modelfile
+.ollama-serve.log
+# kendi veritabanlarınız depoya girmesin; küçük örnek veritabanı (≈ 32 KB) hariç
+*.sqlite
+*.sqlite3
+*.db
+!ornek/dukkan.sqlite
+*.tmp
+# kişisel ayarlar
+text2sql.toml

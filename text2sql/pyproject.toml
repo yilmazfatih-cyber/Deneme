@@ -1,0 +1,39 @@
+[project]
+name = "text2sql-yerel"
+version = "0.1.0"
+description = "Türkçe sorudan SQL üreten, Ollama ya da llama.cpp ile tamamen yerel çalışan küçük araç"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "Apache-2.0"
+dependencies = [
+  "tomli>=2; python_version < '3.11'",  # text2sql.toml okumak için (3.11+ tomllib)
+]
+
+[project.optional-dependencies]
+# llama.cpp ile doğrudan GGUF (Ollama'sız yol). GPU için derleme seçenekleri README'de.
+gguf = ["llama-cpp-python>=0.3.0"]
+# PostgreSQL ve MySQL / MariaDB
+db = ["sqlalchemy>=2.0", "psycopg[binary]>=3.1", "pymysql>=1.1"]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+[project.scripts]
+text2sql = "text2sql.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["text2sql*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-p no:cacheprovider"
+
+[tool.ruff]
+line-length = 150
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+ignore = ["E731"]  # kısa lambda yardımcıları

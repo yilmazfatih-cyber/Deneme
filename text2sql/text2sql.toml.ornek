@@ -1,0 +1,14 @@
+# Bu dosyayı text2sql.toml adıyla, komutu çalıştırdığınız klasöre kopyalayın.
+# Öncelik: varsayılanlar < profil < text2sql.toml < ortam değişkenleri < komut satırı.
+
+profil = "qwen"            # qwen | slm-sql | prem | buyuk
+# model = "text2sql"       # Ollama'daki model adı (profilden gelir)
+# backend = "ollama"       # ollama | llamacpp
+# ollama_host = "http://localhost:11434"
+# gguf_path = "models/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf"   # llamacpp için
+num_ctx = 4096             # büyük şemalarda 8192
+sample_rows = 2            # istemde tablo başına örnek satır
+retries = 1                # hata olursa modele geri verip yeniden deneme
+limit = 200                # en çok gösterilecek satır
+timeout = 180              # model yanıtı için saniye
+query_timeout = 30         # sorgu çalıştırma için saniye

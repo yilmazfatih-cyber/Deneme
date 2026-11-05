@@ -1,0 +1,29 @@
+# text2sql için Ollama Modelfile (profiller: qwen, slm-sql, buyuk; hepsi Qwen2.5-Coder tabanlı).
+# Kurulum betiği FROM satırını seçilen profile göre değiştirip "ollama create" çalıştırır:
+#   python -m text2sql.config --profil qwen modelfile_text > .Modelfile.olusan
+#   ollama create text2sql -f .Modelfile.olusan
+# Elle (yalnızca qwen profili): ollama pull qwen2.5-coder:1.5b && ollama create text2sql -f Modelfile
+# num_predict satırı da profile göre (buyuk: 2048) değiştirilir.
+#
+# Sohbet şablonu (TEMPLATE) taban modelden gelir. hf.co/... etiketleri ya da yerel .gguf ile kurulan
+# profillerde Ollama şablonu GGUF içindeki tokenizer.chat_template'ten çıkarır (Qwen ChatML).
+FROM qwen2.5-coder:1.5b
+
+PARAMETER temperature 0
+PARAMETER top_k 1
+PARAMETER num_ctx 4096
+PARAMETER num_predict 512
+PARAMETER stop "<|im_end|>"
+PARAMETER stop "<|endoftext|>"
+
+# text2sql/prompt.py içindeki SYSTEM_PROMPT ile aynı tutulur (tests/test_schema_prompt.py denetler).
+# Not: text2sql istekleri kendi sistem mesajını (şema dahil) gönderir; bu SYSTEM yalnızca
+# "ollama run text2sql" ile elle kullanımda devreye girer.
+SYSTEM """You are a text-to-SQL assistant. You convert a question about a database into one SQL query.
+Rules:
+- Reply with exactly one SQL statement inside a ```sql code block. No explanations, no comments.
+- Use only the tables and columns that appear in the given schema. Never invent names.
+- Write SQL for the given dialect only.
+- The question may be in Turkish. Keep text values (names, cities, statuses) exactly as they appear in the data.
+- Prefer explicit JOINs on the foreign keys shown in the schema.
+- If the question asks for a list, return the useful columns, not only ids."""

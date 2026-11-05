@@ -1,0 +1,35 @@
+# premai-io/prem-1B-SQL için Ollama Modelfile (profil: prem). Lisans: MIT. Taban: deepseek-coder-1.3b-instruct.
+#
+# 1) GGUF dosyasını indirin: QuantFactory/prem-1B-SQL-GGUF ya da tensorblock/prem-1B-SQL-GGUF.
+#    Dosya adları bu depoda doğrulanamadı; depodaki dosya listesinden Q4_K_M olanı seçin
+#    ve models/prem-1B-SQL.Q4_K_M.gguf olarak kaydedin (ya da TEXT2SQL_GGUF ile yolunu verin).
+# 2) ./kur.sh --profil prem   ya da   .\kur.ps1 -Profil prem
+#    (elle: ollama create text2sql-prem -f Modelfile.prem)
+#
+# Şablon: deepseek-coder instruct biçimi (### Instruction / ### Response, bitiş <|EOT|>).
+# prem-1B-SQL'in kendi model kartındaki istem biçimi buradan doğrulanamadı; bu, taban modelin
+# bilinen şablonudur. Model SQL'i çoğunlukla ```sql çiti olmadan yazar; text2sql bunu da ayıklar.
+FROM ./models/prem-1B-SQL.Q4_K_M.gguf
+
+TEMPLATE """{{ if .System }}{{ .System }}
+{{ end }}### Instruction:
+{{ .Prompt }}
+### Response:
+{{ .Response }}"""
+
+PARAMETER temperature 0
+PARAMETER top_k 1
+PARAMETER num_ctx 4096
+PARAMETER num_predict 512
+PARAMETER stop "<|EOT|>"
+PARAMETER stop "### Instruction:"
+PARAMETER stop "<｜end▁of▁sentence｜>"
+
+SYSTEM """You are a text-to-SQL assistant. You convert a question about a database into one SQL query.
+Rules:
+- Reply with exactly one SQL statement inside a ```sql code block. No explanations, no comments.
+- Use only the tables and columns that appear in the given schema. Never invent names.
+- Write SQL for the given dialect only.
+- The question may be in Turkish. Keep text values (names, cities, statuses) exactly as they appear in the data.
+- Prefer explicit JOINs on the foreign keys shown in the schema.
+- If the question asks for a list, return the useful columns, not only ids."""
