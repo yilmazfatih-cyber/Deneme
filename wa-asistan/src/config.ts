@@ -14,6 +14,8 @@ export interface Config {
   defaultModel: string
   modelAliases: Record<string, string>
   appName: string
+  /** extra HTTP headers for every model request (JSON in LLM_EXTRA_HEADERS), e.g. a Hermes session header */
+  extraHeaders: Record<string, string>
   ownerNumber?: string
   allowedNumbers: string[]
   replyInSelfChat: boolean
@@ -24,6 +26,8 @@ export interface Config {
   llmTimeoutMs: number
   usdTry?: number
   fxRefreshHours: number
+  /** multiplies the USD→TRY rate: card fee, top-up commission, bank margin (1 = none) */
+  tlMultiplier: number
   monthlyBudgetTl: number
   costFooter: boolean
   stt?: { baseUrl: string; apiKey: string; model: string }
@@ -53,9 +57,28 @@ export function normalizePhone(raw: string): string {
   return raw.replace(/\D+/g, '')
 }
 
+/**
+ * Phone numbers from ALLOWED_NUMBERS. Entries are separated by commas, semicolons or new lines; a number may
+ * contain spaces or brackets ("+90 532 123 45 67"). Full numbers separated by spaces only are told apart too.
+ * Entries too short to be a phone number are dropped; every number is listed once.
+ */
+function parsePhoneList(raw: string | undefined): string[] {
+  const out = new Set<string>()
+  for (const entry of (raw ?? '').split(/[,;\n\r]+/)) {
+    const tokens = entry.trim().split(/\s+/)
+    const separate = tokens.length > 1 && tokens.every((t) => normalizePhone(t).length >= 7)
+    for (const piece of separate ? tokens : [entry]) {
+      const digits = normalizePhone(piece)
+      if (digits.length >= 7) out.add(digits)
+    }
+  }
+  return [...out]
+}
+
 function bool(v: string | undefined, fallback: boolean): boolean {
   if (v === undefined || v.trim() === '') return fallback
-  return !/^(0|false|hayır|hayir|no|kapalı|kapali|off)$/i.test(v.trim())
+  // Turkish lower-casing first: "HAYIR" → "hayır" and "HAYİR" → "hayir".
+  return !/^(0|false|hayır|hayir|no|kapalı|kapali|off)$/.test(v.trim().toLocaleLowerCase('tr-TR'))
 }
 
 function num(name: string, v: string | undefined, fallback: number, opts: { min?: number; max?: number } = {}): number {
@@ -96,8 +119,28 @@ function parseAliases(raw: string | undefined): Record<string, string> {
   }
   const out: Record<string, string> = {}
   for (const [k, v] of Object.entries(parsed as Record<string, unknown>)) {
-    if (typeof v !== 'string' || !v.trim()) throw new ConfigError(`MODEL_ALIASES: "${k}" için model kimliği metin olmalı.`)
+    if (typeof v !== 'string' || !v.trim())
+      throw new ConfigError(`MODEL_ALIASES: "${k}" için model kimliği metin olmalı.`)
     out[k.trim().toLocaleLowerCase('tr-TR')] = v.trim()
+  }
+  return out
+}
+
+function parseHeaders(raw: string | undefined): Record<string, string> {
+  if (!raw || !raw.trim()) return {}
+  let parsed: unknown
+  try {
+    parsed = JSON.parse(raw)
+  } catch {
+    throw new ConfigError('LLM_EXTRA_HEADERS geçerli JSON olmalı, örnek: {"X-Hermes-Session-Id":"wa"}')
+  }
+  if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+    throw new ConfigError('LLM_EXTRA_HEADERS bir JSON nesnesi olmalı (başlık adı → değer).')
+  }
+  const out: Record<string, string> = {}
+  for (const [k, v] of Object.entries(parsed as Record<string, unknown>)) {
+    if (typeof v !== 'string') throw new ConfigError(`LLM_EXTRA_HEADERS: "${k}" değeri metin olmalı.`)
+    out[k] = v
   }
   return out
 }
@@ -110,18 +153,18 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env, cwd = process.c
     throw new ConfigError(`LLM_BASE_URL geçerli bir adres değil: "${llmBaseUrl}"`)
   }
   const llmApiKey = env.LLM_API_KEY?.trim() ?? ''
-  if (!llmApiKey) throw new ConfigError('LLM_API_KEY boş. .env dosyasına sağlayıcı anahtarınızı yazın (bkz. .env.example).')
+  if (!llmApiKey)
+    throw new ConfigError('LLM_API_KEY boş. .env dosyasına sağlayıcı anahtarınızı yazın (bkz. .env.example).')
   const provider = detectProvider(llmBaseUrl, env.LLM_PROVIDER)
   const defaultModel = env.DEFAULT_MODEL?.trim() || (provider === 'openrouter' ? 'openrouter/auto' : '')
-  if (!defaultModel) throw new ConfigError('DEFAULT_MODEL boş. OpenRouter dışındaki sağlayıcılarda varsayılan modeli yazmalısınız.')
+  if (!defaultModel)
+    throw new ConfigError('DEFAULT_MODEL boş. OpenRouter dışındaki sağlayıcılarda varsayılan modeli yazmalısınız.')
 
-  const allowedNumbers = (env.ALLOWED_NUMBERS ?? '')
-    .split(/[,;\s]+/)
-    .map(normalizePhone)
-    .filter((s) => s.length >= 7)
+  const allowedNumbers = parsePhoneList(env.ALLOWED_NUMBERS)
   const ownerNumber = env.OWNER_NUMBER?.trim() ? normalizePhone(env.OWNER_NUMBER) : undefined
   const pairingPhone = env.PAIRING_PHONE?.trim() ? normalizePhone(env.PAIRING_PHONE) : undefined
-  if (pairingPhone !== undefined && pairingPhone.length < 7) throw new ConfigError('PAIRING_PHONE ülke koduyla, yalnızca rakamlardan oluşmalı (örnek: 905321234567).')
+  if (pairingPhone !== undefined && pairingPhone.length < 7)
+    throw new ConfigError('PAIRING_PHONE ülke koduyla, yalnızca rakamlardan oluşmalı (örnek: 905321234567).')
 
   const sttBase = env.STT_BASE_URL?.trim()
   const stt = sttBase
@@ -142,6 +185,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env, cwd = process.c
     defaultModel,
     modelAliases: parseAliases(env.MODEL_ALIASES),
     appName: env.APP_NAME?.trim() || 'WA Asistan',
+    extraHeaders: parseHeaders(env.LLM_EXTRA_HEADERS),
     ...(ownerNumber ? { ownerNumber } : {}),
     allowedNumbers,
     replyInSelfChat: bool(env.REPLY_IN_SELF_CHAT, true),
@@ -152,6 +196,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env, cwd = process.c
     llmTimeoutMs: Math.floor(num('LLM_TIMEOUT_MS', env.LLM_TIMEOUT_MS, 180_000, { min: 1000 })),
     ...(usdTry !== undefined ? { usdTry } : {}),
     fxRefreshHours: num('FX_REFRESH_HOURS', env.FX_REFRESH_HOURS, 6, { min: 0.1 }),
+    tlMultiplier: num('TL_CARPAN', env.TL_CARPAN, 1, { min: 0.1, max: 10 }),
     monthlyBudgetTl: num('MONTHLY_BUDGET_TL', env.MONTHLY_BUDGET_TL, 0, { min: 0 }),
     costFooter: bool(env.COST_FOOTER, true),
     ...(stt ? { stt } : {}),

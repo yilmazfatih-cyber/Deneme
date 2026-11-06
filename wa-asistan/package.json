@@ -5,7 +5,7 @@
   "description": "WhatsApp üzerinden çalışan, tek anahtarla 70+ modele erişen, maliyeti TL ile tutan kişisel asistan",
   "type": "module",
   "engines": {
-    "node": ">=20.11"
+    "node": ">=22.12.0"
   },
   "scripts": {
     "start": "tsx src/main.ts",
@@ -15,11 +15,11 @@
     "test:watch": "vitest",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "check": "npm run typecheck && npm run format:check && npm run test"
+    "check": "npm run typecheck && npm run format:check && npm run test",
+    "ice-aktar": "tsx src/cli/import.ts"
   },
   "dependencies": {
     "baileys": "7.0.0-rc14",
-    "dotenv": "^18.0.9",
     "pino": "^9.6.0",
     "pino-pretty": "^13.2.0",
     "qrcode-terminal": "^0.12.0"

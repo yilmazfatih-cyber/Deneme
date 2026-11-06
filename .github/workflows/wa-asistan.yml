@@ -1,0 +1,27 @@
+name: wa-asistan
+
+# Alt proje wa-asistan/ kendi araç zincirine sahiptir; kök CI onu çalıştırmaz.
+on:
+  push:
+    paths: ['wa-asistan/**', '.github/workflows/wa-asistan.yml']
+  pull_request:
+    paths: ['wa-asistan/**', '.github/workflows/wa-asistan.yml']
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [22, 26]
+    defaults:
+      run:
+        working-directory: wa-asistan
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+          cache-dependency-path: wa-asistan/package-lock.json
+      - run: npm ci
+      - run: npm run check

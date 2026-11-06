@@ -167,7 +167,9 @@ export interface Catalog {
   get(id: string): ModelInfo | undefined
   /** case-insensitive substring over id and name */
   search(query: string, limit?: number): ModelInfo[]
-  resolve(query: string): { kind: 'ok'; model: ModelInfo } | { kind: 'ambiguous'; candidates: ModelInfo[] } | { kind: 'none' }
+  resolve(
+    query: string,
+  ): { kind: 'ok'; model: ModelInfo } | { kind: 'ambiguous'; candidates: ModelInfo[] } | { kind: 'none' }
   /** built-in + user aliases resolved against the live list */
   featured(): Array<{ alias: string; model?: ModelInfo }>
   /** fetch + persist; errors propagate */
@@ -202,6 +204,21 @@ export interface Transcriber {
   transcribe(audio: Buffer, mime: string): Promise<string>
 }
 
+/** Personal information layer (see src/profile/store.ts). Optional: the bot works without it. */
+export interface ProfileProvider {
+  /** system-prompt block with the profile parts relevant to `query`; '' when nothing applies */
+  contextFor(query: string, budgetChars?: number): string
+  stats(): {
+    files: Array<{ name: string; chars: number; chunks: number }>
+    totalChars: number
+    notes: number
+    events: number
+  }
+  listNotes(): string[]
+  addNote(text: string): { ok: true; n: number } | { ok: false; kind: string; reason: string }
+  removeNote(n: number): string | undefined
+}
+
 export interface AppContext {
   config: Config
   llm: LlmClient
@@ -212,6 +229,7 @@ export interface AppContext {
   store: ChatStore
   access: AccessControl
   settings: SettingsStore
+  profile?: ProfileProvider
   sender: Sender
   log: Logger
   /** injectable clock (ms since epoch) */
