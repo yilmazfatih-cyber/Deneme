@@ -67,6 +67,19 @@ CREATE TABLE IF NOT EXISTS islemler (
     maliyet REAL NOT NULL,
     neden TEXT
 );
+CREATE TABLE IF NOT EXISTS odul_gunlugu (
+    id INTEGER PRIMARY KEY,
+    piyasa TEXT NOT NULL,
+    hisse TEXT NOT NULL,
+    zaman TEXT NOT NULL,
+    kayma_dk INTEGER NOT NULL DEFAULT 0,
+    etiket TEXT NOT NULL,
+    eylem TEXT NOT NULL,
+    tahmin REAL,
+    gerceklesen REAL,
+    odul REAL,
+    model_surumu TEXT
+);
 CREATE TABLE IF NOT EXISTS oneriler (
     id INTEGER PRIMARY KEY,
     zaman TEXT NOT NULL,

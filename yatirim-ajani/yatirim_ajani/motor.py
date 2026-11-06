@@ -49,7 +49,10 @@ def tara(
     strateji: StratejiAyarlari = StratejiAyarlari(),
     saat_denetimi: bool = True,
     dolum_fiyati: Callable[[str], float | None] | None = None,
+    giris_filtresi: Callable[[str, pd.DataFrame], tuple[bool, str]] | None = None,
 ) -> list[AdimSonucu]:
+    """`giris_filtresi(hisse, cubuklar)` → (geçti mi, gerekçe). Saatlik model kapısı buradan bağlanır:
+    model eşiği geçmezse AL sinyali üretilmez; satışlar filtreden etkilenmez."""
     araci = SanalAraci(db, piyasa)
     bekci = RiskBekcisi(risk, piyasa, saat_denetimi=saat_denetimi)
     an = veri.an
@@ -80,6 +83,11 @@ def tara(
         t = tezler.get(h)
         tez = Tez(t["karar"], t["olasilik"]) if t is not None else None
         s = sinyal_uret(h, df, tez, adet, maliyet, risk, strateji)
+        if s is not None and s.yon == "AL" and giris_filtresi is not None:
+            gecti, neden = giris_filtresi(h, df)
+            if not gecti:
+                continue
+            s = Sinyal(s.hisse, s.yon, s.hedef_oran, f"{s.neden}; {neden}")
         if s is not None:
             sinyaller.append(s)
 

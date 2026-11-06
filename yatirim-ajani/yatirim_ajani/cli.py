@@ -9,7 +9,14 @@ from datetime import datetime
 
 import pandas as pd
 
+from pathlib import Path
+
 from .arastirma.ajan import AjanHatasi, ArastirmaAjani, tez_kaydet
+from .arastirma.ekip import Ekip, gorevleri_json, teslimi_kaydet
+from .ogrenme.egitim import egit_ve_olc, kayma_karsilastir, model_yukle
+from .ogrenme.kapi import saatlik_kapi
+from .veri.bolme import Bolme
+from .veri.saatlik import SaatlikVeriSeti
 from .ayarlar import PIYASALAR, Ayarlar, ayarlari_yukle
 from .depo import baglan
 from .geriye_test import geriye_test
@@ -74,9 +81,16 @@ def _tara_bir_kez(a: argparse.Namespace, ayarlar: Ayarlar, db, kaynak) -> None:
     araci = SanalAraci(db, piyasa)
     araci.hesap_ac(ayarlar.baslangic_nakit[a.piyasa])
     strateji = StratejiAyarlari(kisa_pencere=a.kisa, uzun_pencere=a.uzun)
+    kapi = None
+    if a.aralik == "1h":
+        model = model_yukle(ayarlar, piyasa, 0)
+        if model is None:
+            print("Uyarı: eğitilmiş saatlik model yok (`egit` çalıştırın); yalnız kural katmanıyla taranıyor.")
+        else:
+            kapi = saatlik_kapi(model, ayarlar.risk.min_net_getiri, piyasa)
     sonuclar = tara(
         db, piyasa, ayarlar.risk, veri, _hisseler(a.hisseler, ayarlar, a.piyasa), a.aralik, strateji,
-        saat_denetimi=not a.saat_denetimi_kapali,
+        saat_denetimi=not a.saat_denetimi_kapali, giris_filtresi=kapi,
     )  # fmt: skip
     yol = onerileri_kaydet(db, piyasa, sonuclar, an, ayarlar.rapor_klasoru)
     zaman = f"{pd.Timestamp(an).tz_convert(piyasa.saat_dilimi):%H:%M}"
@@ -181,6 +195,85 @@ def komut_geriye_test(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
     return 0
 
 
+def komut_veri_cek(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
+    piyasa = PIYASALAR[a.piyasa]
+    vs = SaatlikVeriSeti(ayarlar.veri_klasoru, piyasa.saat_dilimi)
+    semboller = [piyasa.sembol(h) for h in _hisseler(a.hisseler, ayarlar, a.piyasa)] + [piyasa.gosterge]
+    bas = pd.Timestamp(a.baslangic).tz_localize(piyasa.saat_dilimi).to_pydatetime()
+    rapor = vs.cek(kaynak_olustur(a.veri, a.csv_klasoru), semboller, bas, bes_dakika=not a.bes_dakika_yok)
+    bolme = Bolme(Path(ayarlar.veri_klasoru) / "etiketler.csv", ayarlar.test_orani, ayarlar.tohum)
+    for s, r in rapor.items():
+        df = vs.yukle(s, "1h")
+        if not df.empty:
+            bolme.guncelle(list({z.date() for z in df.index}))
+        print(f"{s:<10} 1h {r.get('satir_1h', 0):>6} satır  5m {r.get('satir_5m', 0):>6}  "
+              f"çift {r['cift_zaman']} geçersiz {r['gecersiz_fiyat']} sıfır-hacim {r['sifir_hacim']} sıçrama {r['buyuk_sicrama']}")
+    print(f"Gün etiketleri: {bolme.ozet()}  (dosya: {bolme.yol})")
+    if a.veri == "yahoo":
+        print("Not: Yahoo 1 saatlik veriyi yalnız son ~730 gün, 5 dakikalığı son ~60 gün verir.")
+    return 0
+
+
+def komut_egit(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
+    piyasa = PIYASALAR[a.piyasa]
+    db = baglan(ayarlar.veritabani)
+    hisseler = _hisseler(a.hisseler, ayarlar, a.piyasa)
+    if a.kayma_kiyasla:
+        print("Kayma kıyası (sıralama yalnız train korelasyonuna göre; test sütunu seçimde kullanılmaz):")
+        print(kayma_karsilastir(ayarlar, piyasa, hisseler).to_string(index=False))
+        print()
+    try:
+        s = egit_ve_olc(ayarlar, piyasa, hisseler, a.kayma, db)
+    except ValueError as h:
+        print(h)
+        return 1
+    print(s.metin(ayarlar.risk.min_net_getiri))
+    return 0
+
+
+def komut_ekip(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
+    piyasa = PIYASALAR[a.piyasa]
+    an, canli = _an(a.an, piyasa.saat_dilimi)
+    db = baglan(ayarlar.veritabani)
+    son = db.execute("SELECT MAX(an) FROM tezler WHERE piyasa = ? AND model = 'ekip'", (piyasa.kod,)).fetchone()[0]
+    if son and not a.zorla and canli:
+        gecen = (pd.Timestamp(an) - pd.Timestamp(son)).days
+        if gecen < ayarlar.ajan.arastirma_gun_araligi:
+            print(f"Son ekip oturumu {gecen} gün önce; bütçe için {ayarlar.ajan.arastirma_gun_araligi} günde bir. --zorla ile geçilir.")
+            return 0
+    veri = ZamanKilitliVeri(kaynak_olustur(a.veri, a.csv_klasoru), an, canli=canli)
+    egitim_ozeti = None
+    satir = db.execute(
+        "SELECT etiket, eylem, COUNT(*), AVG(odul), AVG(gerceklesen) FROM odul_gunlugu WHERE piyasa = ? GROUP BY 1, 2",
+        (piyasa.kod,),
+    ).fetchall()
+    if satir:
+        egitim_ozeti = "\n".join(f"{r[0]} {r[1]}: {r[2]} karar, ort. ödül {r[3]:+.4%}, ort. ham getiri {r[4]:+.4%}" for r in satir)
+    try:
+        ekip = Ekip(ayarlar.ajan, piyasa, veri, db, egitim_ozeti=egitim_ozeti)
+        sonuc = ekip.oturum(_hisseler(a.hisseler, ayarlar, a.piyasa))
+    except TypeError as h:
+        if "authentication" in str(h):
+            print("Anthropic API anahtarı yok. `export ANTHROPIC_API_KEY=...` ile tanımlayın.")
+            return 1
+        raise
+    except AjanHatasi as h:
+        print(f"Oturum başarısız: {h}")
+        return 1
+    kimlikler = teslimi_kaydet(db, piyasa, veri, sonuc, "ekip")
+    print(f"Haftalık not: {sonuc.teslim.haftalik_not}")
+    if sonuc.teslim.model_notu:
+        print(f"Model notu: {sonuc.teslim.model_notu}")
+    for t in sonuc.teslim.tezler:
+        print(f"  {t.hisse:<7} {t.karar:<4} p={t.olasilik:.0%} {t.ufuk_gun}g — {t.ozet}")
+    print(f"{len(kimlikler)} tez kaydedildi; {len(sonuc.gorevler)} alt görev; {sonuc.girdi_token}+{sonuc.cikti_token} token")
+    yol = Path(ayarlar.rapor_klasoru) / f"ekip-{piyasa.kod}-{pd.Timestamp(an):%Y%m%d}.json"
+    yol.parent.mkdir(parents=True, exist_ok=True)
+    yol.write_text(gorevleri_json(sonuc), encoding="utf-8")
+    print(f"Görev kayıtları: {yol}")
+    return 0
+
+
 def komut_yeniden_baslat(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
     SanalAraci(baglan(ayarlar.veritabani), PIYASALAR[a.piyasa]).yeniden_baslat()
     print(f"{a.piyasa.upper()} hesabı yeniden açıldı.")
@@ -240,6 +333,24 @@ def ayristirici() -> argparse.ArgumentParser:
     sp.add_argument("--tezsiz-olasilik", type=float, default=0.7, help="Tez yerine varsayılan olasılık")
     sp.add_argument("--risksiz-oran", type=float, default=0.0, help="Yıllık; BIST için mevduat/politika faizi girin")
     sp.set_defaults(islev=komut_geriye_test)
+
+    sp = alt.add_parser("veri-cek", help="Saatlik (ve 5 dk) çubukları çek, temizle, gün etiketle")
+    ortak(sp)
+    sp.add_argument("--baslangic", default="2024-01-01")
+    sp.add_argument("--bes-dakika-yok", action="store_true", help="Kaymalı saat için 5 dk veriyi çekme")
+    sp.set_defaults(islev=komut_veri_cek)
+
+    sp = alt.add_parser("egit", help="Saatlik bandit modelini train günlerinde eğit, test günlerinde ölç")
+    ortak(sp)
+    sp.add_argument("--kayma", type=int, default=0, help="Saat kayması dk (0, 15, 30, 45)")
+    sp.add_argument("--kayma-kiyasla", action="store_true", help="Kaymaları train verisinde kıyasla")
+    sp.set_defaults(islev=komut_egit)
+
+    sp = alt.add_parser("ekip", help="Haftalık ekip oturumu: Fable baş, Opus analist, Sonnet mühendis, Haiku stajyer")
+    ortak(sp)
+    sp.add_argument("--an", help="Geçmiş karar anı (zaman kilitli)")
+    sp.add_argument("--zorla", action="store_true", help="Haftalık aralığı bekleme")
+    sp.set_defaults(islev=komut_ekip)
 
     sp = alt.add_parser("yeniden-baslat", help="Düşüş sınırıyla durmuş sanal hesabı yeniden aç")
     sp.add_argument("--piyasa", choices=list(PIYASALAR), required=True)
