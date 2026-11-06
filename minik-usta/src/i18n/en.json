@@ -1,0 +1,233 @@
+{
+  "ads": {
+    "none": "No ad right now",
+    "tomorrow": "Back tomorrow"
+  },
+  "app": {
+    "title": "Lift & Land",
+    "version": "Version {version}"
+  },
+  "booster": {
+    "hint": {
+      "brush": "Tap the block you want to paint.",
+      "crane": "Tap the block you want to move.",
+      "hammer": "Tap what you want to smash.",
+      "trowel": "Tap a glowing cell."
+    },
+    "noUndo": "Nothing to undo"
+  },
+  "bridge": {
+    "dailyLimit": "That's all the bridges for today. Next bridge: {time}",
+    "extra": {
+      "got": "Bonus received: {extras}"
+    },
+    "play": "Play · Level {n}",
+    "rule_card": {
+      "daily": "You can join up to {n} bridges a day.",
+      "extra": "Bonus for crossing: {extras}"
+    }
+  },
+  "build": {
+    "done": "Build complete!"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "coins": "{coin}{n}",
+    "continue": "Continue",
+    "count": "{n}/{max}",
+    "home": "Home",
+    "minutes": "{n} min",
+    "off": "Off",
+    "ok": "OK",
+    "on": "On",
+    "plus": "+{n}",
+    "retry": "Try again",
+    "skip": "Skip",
+    "times": "×{n}",
+    "unlockAt": "Unlocks at level {n}"
+  },
+  "difficulty": {
+    "easy": "Easy",
+    "hard": "Hard",
+    "normal": "Normal",
+    "superhard": "Super Hard"
+  },
+  "error": {
+    "boot": "Something got stuck. Shall we try again?",
+    "level": "Something got stuck. No life is lost.",
+    "restart": "Restart the level"
+  },
+  "exit": {
+    "bridge": "You'll fall off the bridge.",
+    "cost": "Leaving costs 1 life.",
+    "free": "No moves made yet, so no life is lost.",
+    "leave": "Leave",
+    "refund": "Your pre-game boosters come back to you.",
+    "stay": "Stay",
+    "streak": "Your win streak resets.",
+    "title": "Leave the level?"
+  },
+  "home": {
+    "moreSoon": "New levels on the way",
+    "play": "Level {n}"
+  },
+  "hud": {
+    "moves": "Moves",
+    "streak": "Builder Streak"
+  },
+  "league": {
+    "bonus": {
+      "all": "Points bonus: every win ×{n}",
+      "fair": "Apprentices get the bonus too.",
+      "levels": {
+        "all": "every level",
+        "some": "{list} levels"
+      },
+      "now": "Active now",
+      "starts": "Starts in {time}",
+      "weekend": {
+        "add": "Weekend bonus: +{n} points on {levels}",
+        "factor": "Weekend bonus: ×{n} points on {levels}"
+      }
+    },
+    "header_lines": {
+      "both": "Top {up} promote, bottom {down} drop",
+      "bronze": "Top {up} promote",
+      "diamond": "Bottom {down} drop"
+    },
+    "points_line": "Points: Easy {easy} · Normal {normal} · Hard {hard} · Super Hard {superhard}",
+    "rule_card": {
+      "lines": {
+        "both": "When the week ends, the top {up} move up and the bottom {down} move down.",
+        "bronze": "When the week ends, the top {up} move up. No one moves down here.",
+        "diamond": "When the week ends, the bottom {down} move down a league."
+      }
+    }
+  },
+  "lose": {
+    "ad": "Watch an ad · +{n} moves",
+    "adToday": "today {n}/{max}",
+    "bridgeCap": "This round's coin limit doesn't cover this offer.",
+    "buygold": "Get coins · {coin}{n} short",
+    "decline": "No thanks",
+    "left": "Left: {n} cells",
+    "life": "You lost a life.",
+    "offer": {
+      "count": "Offer {n}/{max}",
+      "gift": "+{n} moves · a gift from Grandpa",
+      "last": "Offer {n}/{max} · last offer",
+      "moves": "+{n} moves"
+    },
+    "retry": "Try again",
+    "streak": "Your win streak was reset.",
+    "title": "Out of moves!"
+  },
+  "obs": {
+    "s1": {
+      "desc": "Finish this floor; the site slides and the truck delivers."
+    },
+    "s2": {
+      "desc": "Keep hatched cells empty. Fill above them via a gap or bridge."
+    },
+    "w1": {
+      "desc": "Blocks sent through a gap don't fall; they stay put."
+    }
+  },
+  "pause": {
+    "exit": "Leave level",
+    "title": "Paused"
+  },
+  "replay": {
+    "button": "Replay · Level {n}",
+    "card": {
+      "body": "Levels you know. Bridge and League go on.",
+      "title": "Replay round"
+    }
+  },
+  "resume": {
+    "strip": "Level {n} · your moves are saved",
+    "title": "Pick up where you left off",
+    "void": {
+      "body": "Level {n} will start from the beginning. Everything you spent is back.",
+      "bridge": "Your place on the bridge is safe.",
+      "title": "The game was updated"
+    }
+  },
+  "settings": {
+    "haptics": "Vibration",
+    "music": "Music",
+    "sound": "Sound"
+  },
+  "story": {
+    "prologue": {
+      "p1": {
+        "tuna": "What's this old sign?"
+      },
+      "p2": {
+        "dede": "Our old company! Closed for years."
+      },
+      "p3": {
+        "kepce": "Woof!",
+        "tuna": "{company} is open again!"
+      }
+    },
+    "sign": "{company}"
+  },
+  "town": {
+    "name": "Hue Hill"
+  },
+  "truck": {
+    "queue": "On the truck: {n}"
+  },
+  "tut": {
+    "ctx": {
+      "blocked": "That one can't move yet. Look around it.",
+      "bounce": {
+        "color": "Wrong color, so it bounced back.",
+        "offplan": "Nothing gets built outside the plan.",
+        "window": "That's a window. It stays empty."
+      },
+      "goldtrowel": "Tap a glowing cell with the Golden Trowel.",
+      "lastmoves": "Five moves left! Think, don't rush.",
+      "queue": "Make room so the truck can unload.",
+      "reshuffle": "We're stuck! The truck is rearranging the yard.",
+      "resume": "The board is just as you left it, kiddo.",
+      "streak": "Get {n} right in a row for a Golden Trowel!",
+      "support": "Fill the gap below first, kiddo.",
+      "tootall": "Too tall to pass over the top.",
+      "truckhelp": {
+        "free": "The truck helped, the blocks are free. Carry on!",
+        "material": "We were short on material. The truck brought more!"
+      }
+    },
+    "l1": {
+      "drop": "Let go above the site and it drops.",
+      "lift": "Grab a block and lift it over the wall!",
+      "match": "Pick the block that matches the plan."
+    },
+    "l2": {
+      "pattern": "Look at the plan: colors come in stripes.",
+      "shadow": "A {ok} on the shadow means the spot is right."
+    },
+    "l23": {
+      "light": "Low gravity! Blocks fall slowly."
+    },
+    "l3": {
+      "gap": "There's a gap! Slide the block through.",
+      "rail": "On the rail it stays put. Lift the next one over."
+    },
+    "l4": {
+      "above": "Set the top of the window via the gap.",
+      "window": "Hatched cells stay empty: it's a window!"
+    },
+    "l5": {
+      "segments": "Finish this floor and the site moves on.",
+      "truck": "The truck brought new materials!"
+    }
+  },
+  "win": {
+    "bonus": "Bonus Build · moves left: {n}",
+    "title": "You won!",
+    "trowel": "Golden Trowel ×{n}"
+  }
+}

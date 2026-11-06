@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "id": 4,
+  "chapter": 1,
+  "name": {
+    "tr": "Test",
+    "en": "Test"
+  },
+  "difficulty": "easy",
+  "moves": 10,
+  "goals": [
+    {
+      "type": "build"
+    }
+  ],
+  "gravity": {
+    "build": "normal",
+    "yard": false
+  },
+  "wall": {
+    "height": 4,
+    "gaps": []
+  },
+  "build": {
+    "mode": "segments",
+    "segments": [
+      {
+        "name": {
+          "tr": "A",
+          "en": "A"
+        },
+        "rows": [
+          "YY",
+          "YY",
+          "WW",
+          "WW"
+        ]
+      }
+    ]
+  },
+  "yard": {
+    "batches": [
+      {
+        "forSegment": 0,
+        "pieces": [
+          {
+            "shape": "O4_0",
+            "color": "W",
+            "x": 0,
+            "y": 6
+          },
+          {
+            "shape": "O4_0",
+            "color": "Y",
+            "x": 2,
+            "y": 6
+          },
+          {
+            "shape": "O4_0",
+            "color": "W",
+            "x": 4,
+            "y": 6
+          },
+          {
+            "shape": "O4_0",
+            "color": "Y",
+            "x": 0,
+            "y": 4
+          },
+          {
+            "shape": "O4_0",
+            "color": "W",
+            "x": 2,
+            "y": 4
+          },
+          {
+            "shape": "O4_0",
+            "color": "Y",
+            "x": 4,
+            "y": 4
+          },
+          {
+            "shape": "O4_0",
+            "color": "W",
+            "x": 0,
+            "y": 2
+          },
+          {
+            "shape": "O4_0",
+            "color": "Y",
+            "x": 2,
+            "y": 2
+          },
+          {
+            "shape": "O4_0",
+            "color": "W",
+            "x": 4,
+            "y": 2
+          },
+          {
+            "shape": "O4_0",
+            "color": "Y",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "shape": "O4_0",
+            "color": "W",
+            "x": 2,
+            "y": 0
+          },
+          {
+            "shape": "O4_0",
+            "color": "Y",
+            "x": 4,
+            "y": 0
+          }
+        ]
+      }
+    ]
+  },
+  "obstacles": [],
+  "teaches": "W1"
+}

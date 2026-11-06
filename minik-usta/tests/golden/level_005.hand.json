@@ -1,0 +1,99 @@
+{
+  "level": 5,
+  "source": "docs/LEVELS.md §2 Bölüm 5 — Çözüm 1–6 (kamyon partisi 1: k1_0 … k1_3)",
+  "budget": 11,
+  "minMoves": 6,
+  "movesLeft": 5,
+  "yao": { "overWall": 6, "rail": 0 },
+  "steps": [
+    {
+      "piece": "b",
+      "ref": "piece:2",
+      "shape": "D2_90",
+      "color": "G",
+      "from": [2, 6],
+      "entry": "overWall",
+      "lands": [6, 0]
+    },
+    {
+      "piece": "a",
+      "ref": "piece:1",
+      "shape": "O4_0",
+      "color": "W",
+      "from": [0, 6],
+      "entry": "overWall",
+      "lands": [6, 1]
+    },
+    {
+      "piece": "c",
+      "ref": "piece:0",
+      "shape": "D2_90",
+      "color": "R",
+      "from": [4, 7],
+      "entry": "overWall",
+      "lands": [6, 3],
+      "segmentCompleted": 0,
+      "delivered": [
+        ["piece:k1_0", 2, 6],
+        ["piece:k1_1", 4, 7],
+        ["piece:k1_2", 0, 6]
+      ],
+      "queue": ["piece:k1_3"]
+    },
+    {
+      "piece": "k1_2",
+      "ref": "piece:k1_2",
+      "shape": "C3_0",
+      "color": "W",
+      "from": [0, 6],
+      "entry": "overWall",
+      "lands": [6, 0],
+      "delivered": [["piece:k1_3", 0, 6]],
+      "queue": []
+    },
+    {
+      "piece": "k1_3",
+      "ref": "piece:k1_3",
+      "shape": "C3_180",
+      "color": "G",
+      "from": [0, 6],
+      "entry": "overWall",
+      "lands": [6, 1]
+    },
+    {
+      "piece": "k1_1",
+      "ref": "piece:k1_1",
+      "shape": "D2_90",
+      "color": "R",
+      "from": [4, 7],
+      "entry": "overWall",
+      "lands": [6, 3],
+      "segmentCompleted": 1
+    }
+  ],
+  "log": [
+    { "kind": "start", "preBoosters": [], "streakTier": 0 },
+    { "kind": "drag", "pieceId": 2, "to": { "ix": 6, "iy": 8, "mode": 0 } },
+    { "kind": "drag", "pieceId": 1, "to": { "ix": 6, "iy": 8, "mode": 0 } },
+    { "kind": "drag", "pieceId": 0, "to": { "ix": 6, "iy": 8, "mode": 0 } },
+    { "kind": "drag", "pieceId": 15, "to": { "ix": 6, "iy": 8, "mode": 0 } },
+    { "kind": "drag", "pieceId": 16, "to": { "ix": 6, "iy": 8, "mode": 0 } },
+    { "kind": "drag", "pieceId": 14, "to": { "ix": 6, "iy": 8, "mode": 0 } }
+  ],
+  "eventLogHash": "7ac72f481d62305b",
+  "finalAscii": [
+    "L5 turn 6 moves 5 seg 2/2 elev 0",
+    " y  0 1 2 3 4 5 | W | 6 7",
+    " 9  . . . . . . | : | . .",
+    " 8  . . . . . . | : | . .",
+    " 7  . . r . . . | : | . .",
+    " 6  . . r . r r | : | . .",
+    " 5  g g r r r r | : | . .",
+    " 4  g g r r r r | : | . .",
+    " 3  r r g g w w | # | R R",
+    " 2  r r g g w w | # | G G",
+    " 1  w w r r g g | # | W G",
+    " 0  w w r r g g | # | W W",
+    "plan seg1 (top→bottom): RR GG WG WW"
+  ]
+}
