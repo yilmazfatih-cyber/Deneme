@@ -19,27 +19,27 @@ dosya ──► okuma (PDF metin katmanı / e-posta ayrıştırma)
 
 ## Parametre bütçesi
 
-| Rol | Varsayılan model | Parametre | Lisans | Türkçe | Not |
-| --- | --- | --- | --- | --- | --- |
-| OCR | PP-OCRv5 latin (RapidOCR, ONNX) | ≈ 15 M | Apache-2.0 | listede (`tr`) | sezim + tanıma; ~15 MB, CPU'da < 1 sn/sayfa |
-| Özet | `Qwen/Qwen3-0.6B` | ≈ 600 M (gömme dahil ≈ 596 M) | Apache-2.0 | 119 dil listesinde | 32K bağlam; GGUF Q8_0 ≈ 805 MB |
-| **Toplam** | | **≈ 615 M < 1 000 M** | | | |
+| Rol        | Varsayılan model                | Parametre                     | Lisans     | Türkçe             | Not                                         |
+| ---------- | ------------------------------- | ----------------------------- | ---------- | ------------------ | ------------------------------------------- |
+| OCR        | PP-OCRv5 latin (RapidOCR, ONNX) | ≈ 15 M                        | Apache-2.0 | listede (`tr`)     | sezim + tanıma; ~15 MB, CPU'da < 1 sn/sayfa |
+| Özet       | `Qwen/Qwen3-0.6B`               | ≈ 600 M (gömme dahil ≈ 596 M) | Apache-2.0 | 119 dil listesinde | 32K bağlam; GGUF Q8_0 ≈ 805 MB              |
+| **Toplam** |                                 | **≈ 615 M < 1 000 M**         |            |                    |                                             |
 
 Seçenekler (hepsi tek başına 1B altı):
 
-| OCR seçeneği | Parametre | Lisans | Türkçe | Ne zaman |
-| --- | --- | --- | --- | --- |
-| `ibm-granite/granite-docling-258M` | 258 M | Apache-2.0 | kanıt yok (İngilizce; ja/ar/zh deneysel) | tablo ve okuma sırası önemliyse, İngilizce belgeler |
-| `ds4sd/SmolDocling-256M-preview` | 256 M | Apache-2.0 / CDLA-P-2.0 (kart tutarsız) | kanıt yok | Granite-Docling'in öncülü |
-| `PaddlePaddle/PaddleOCR-VL-1.5` | ≈ 959 M | Apache-2.0 | listede | en iyi düzen + Türkçe; ama LLM ile toplam 1B'yi aşar (motor deneysel, gerçek ağırlıkla sınanmadı) |
-| `tesseract` (`tur+eng`) | — | Apache-2.0 | var | sistemde tesseract varsa hızlı yedek |
+| OCR seçeneği                       | Parametre | Lisans                                  | Türkçe                                   | Ne zaman                                                                                          |
+| ---------------------------------- | --------- | --------------------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `ibm-granite/granite-docling-258M` | 258 M     | Apache-2.0                              | kanıt yok (İngilizce; ja/ar/zh deneysel) | tablo ve okuma sırası önemliyse, İngilizce belgeler                                               |
+| `ds4sd/SmolDocling-256M-preview`   | 256 M     | Apache-2.0 / CDLA-P-2.0 (kart tutarsız) | kanıt yok                                | Granite-Docling'in öncülü                                                                         |
+| `PaddlePaddle/PaddleOCR-VL-1.5`    | ≈ 959 M   | Apache-2.0                              | listede                                  | en iyi düzen + Türkçe; ama LLM ile toplam 1B'yi aşar (motor deneysel, gerçek ağırlıkla sınanmadı) |
+| `tesseract` (`tur+eng`)            | —         | Apache-2.0                              | var                                      | sistemde tesseract varsa hızlı yedek                                                              |
 
-| LLM seçeneği | Parametre | Lisans | Türkçe | Ne zaman |
-| --- | --- | --- | --- | --- |
-| `Qwen/Qwen3.5-0.8B` | ≈ 873 M (görsel kodlayıcı dahil) | Apache-2.0 | 201 dil iddiası, açık liste yok | daha iyi kalite istenirse; yeni mimari, araç desteği daha genç |
-| `Qwen/Qwen2.5-0.5B-Instruct` | 494 M | Apache-2.0 | listede | daha az bellek |
-| `google/gemma-3-270m-it` | 268 M | Gemma Terms | belirsiz | ince ayar tabanı olarak çok ucuz; Türkçede daha verimli tokenizer |
-| `HuggingFaceTB/SmolLM2-360M-Instruct` | 362 M | Apache-2.0 | yalnızca İngilizce | İngilizce-only kullanım |
+| LLM seçeneği                          | Parametre                        | Lisans      | Türkçe                          | Ne zaman                                                          |
+| ------------------------------------- | -------------------------------- | ----------- | ------------------------------- | ----------------------------------------------------------------- |
+| `Qwen/Qwen3.5-0.8B`                   | ≈ 873 M (görsel kodlayıcı dahil) | Apache-2.0  | 201 dil iddiası, açık liste yok | daha iyi kalite istenirse; yeni mimari, araç desteği daha genç    |
+| `Qwen/Qwen2.5-0.5B-Instruct`          | 494 M                            | Apache-2.0  | listede                         | daha az bellek                                                    |
+| `google/gemma-3-270m-it`              | 268 M                            | Gemma Terms | belirsiz                        | ince ayar tabanı olarak çok ucuz; Türkçede daha verimli tokenizer |
+| `HuggingFaceTB/SmolLM2-360M-Instruct` | 362 M                            | Apache-2.0  | yalnızca İngilizce              | İngilizce-only kullanım                                           |
 
 Rakamlar üretici bildirimleridir; `huggingface.co` bu geliştirme ortamından erişilemediği için
 safetensors üzerinden birebir sayılmadı. `ozetci bilgi` komutu seçili bileşenlerin bütçesini yazar.
@@ -137,7 +137,7 @@ python train/eval.py --data data/eval.jsonl --model models/ozetci-qwen3-0.6b --l
 Eğitim istemi çalışma zamanındaki istemle **birebir aynıdır** (`train/common.py` → `ozetci/summarize/prompts.py`),
 böylece model tam olarak uygulamanın gönderdiği girdiyi görür. İki hedef türü vardır:
 
-- **Açık kümeler** (haber/rapor özetleri) yalnızca *düz özet* öğretir: çalışma zamanındaki "bölüm özeti"
+- **Açık kümeler** (haber/rapor özetleri) yalnızca _düz özet_ öğretir: çalışma zamanındaki "bölüm özeti"
   istemiyle eşlenir. Bu kümelerde eylem bilgisi olmadığından biçimli hedef üretmek modele her zaman
   "EYLEMLER: Yok" yazmayı öğretirdi.
 - **Sentetik veri** (`make_synth.py`) ÖZET / MADDELER / EYLEMLER biçimini ve Türkçe e-posta üslubunu öğretir.
@@ -149,15 +149,15 @@ işleyip aynı istemi üretir (HF ve GGUF yolları birebir aynı girdiyi verir).
 
 ### Veri kümeleri ve lisanslar
 
-| Küme | HF kimliği | Dil / tür | Lisans | Ticari |
-| --- | --- | --- | --- | --- |
-| XL-Sum (tr) | `csebuetnlp/xlsum` (`turkish`) | TR haber | CC BY-NC-SA 4.0 | hayır |
-| WikiLingua (tr) | `GEM/wiki_lingua` (`tr`) | TR nasıl-yapılır | CC BY-NC-SA | hayır |
-| MLSUM (tu) | `reciTAL/mlsum` (`tu`) | TR haber | araştırma | hayır |
-| XL-Sum (en) | `csebuetnlp/xlsum` (`english`) | EN haber | CC BY-NC-SA 4.0 | hayır |
-| GovReport | `ccdv/govreport-summarization` | EN uzun rapor | CC BY 4.0 (kaynak) | evet |
-| BillSum | `FiscalNote/billsum` | EN yasa metni | CC0 | evet |
-| AESLC (isteğe bağlı, `--only`) | `Yale-LILY/aeslc` | EN e-posta → konu satırı (çok kısa) | Enron türevi, kart belirsiz | dikkat |
+| Küme                           | HF kimliği                     | Dil / tür                           | Lisans                      | Ticari |
+| ------------------------------ | ------------------------------ | ----------------------------------- | --------------------------- | ------ |
+| XL-Sum (tr)                    | `csebuetnlp/xlsum` (`turkish`) | TR haber                            | CC BY-NC-SA 4.0             | hayır  |
+| WikiLingua (tr)                | `GEM/wiki_lingua` (`tr`)       | TR nasıl-yapılır                    | CC BY-NC-SA                 | hayır  |
+| MLSUM (tu)                     | `reciTAL/mlsum` (`tu`)         | TR haber                            | araştırma                   | hayır  |
+| XL-Sum (en)                    | `csebuetnlp/xlsum` (`english`) | EN haber                            | CC BY-NC-SA 4.0             | hayır  |
+| GovReport                      | `ccdv/govreport-summarization` | EN uzun rapor                       | CC BY 4.0 (kaynak)          | evet   |
+| BillSum                        | `FiscalNote/billsum`           | EN yasa metni                       | CC0                         | evet   |
+| AESLC (isteğe bağlı, `--only`) | `Yale-LILY/aeslc`              | EN e-posta → konu satırı (çok kısa) | Enron türevi, kart belirsiz | dikkat |
 
 **Açık bir Türkçe e-posta özetleme kümesi yoktur.** Bu yüzden ürün kalitesi için asıl veri, kendi
 belgeleriniz/e-postalarınızdan (yalnızca kendi makinenizde çalışan bir öğretmenle) üretilen sentetik
