@@ -8,7 +8,7 @@ Yanıt biçimi önerisi: her satıra bir harf (a/b/c) veya kendi cümlenizi yaz�
 
 | # | Soru | Teknik varsayılan (karar gelene kadar) |
 | --- | --- | --- |
-| F-1 | Persona gerçek bir insanı temsil ettiğini iddia edebilir mi? | Hayır; her zaman "sentetik segment örneği" |
+| F-1 | Persona gerçek bir insanı temsil ettiğini iddia edebilir mi? | **KARAR VERİLDİ (ADR-001): evet, her gerçek müşteri için istatistiksel dijital ikiz.** Rıza ve dil kuralları 06'da tasarlanacak |
 | F-2 | Sentetik sonuç gerçek ölçümün yerine geçebilir mi? | Yalnızca geri alınabilir karar sınıflarında; rapor notu kalıcı |
 | F-3 | Hassas özellikler ve kalıp yargıya yakın farklar modellensin mi? | Varsayılan kapalı; ölçülür ama hedefleme raporuna girmez |
 | F-4 | Kullanıcıya ne kadar belirsizlik gösterilmeli? | İlk ekranda güven sınıfı + "ne bilmiyoruz"; "ayırt edilemiyor" gizlenemez |
@@ -22,6 +22,8 @@ Yanıt biçimi önerisi: her satıra bir harf (a/b/c) veya kendi cümlenizi yaz�
 ---
 
 ## F-1 · Persona "gerçek bir insanı" temsil ettiğini iddia edebilir mi?
+
+> **Karar (2026-11-07, proje sahibi): Evet, dijital ikiz.** Bkz. `decisions/ADR-001-dijital-ikiz.md` ve `mimari/07-dijital-ikiz-istatistik.md`. Aşağıdaki metin karar öncesi tartışmadır.
 
 Geldiği bölümler: 01 F1, 02 S1/S6, 03 F1, 05 S1, 06 S1.
 
