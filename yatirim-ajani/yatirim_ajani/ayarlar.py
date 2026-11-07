@@ -104,13 +104,27 @@ class Ayarlar:
     )
     evren: dict[str, list[str]] = field(
         default_factory=lambda: {
-            # Tez: Türkiye'de köklü, devletle ilişkisi güçlü büyükler büyür.
+            # Geniş evren (BIST 50 kesiti). Çekirdek liste ayrı: `saglam_cekirdek`.
             "bist": [
                 "ASELS", "TUPRS", "AHGAZ", "THYAO", "KCHOL", "SAHOL", "BIMAS", "EREGL", "SISE", "TCELL",
                 "TTKOM", "HALKB", "VAKBN", "ISCTR", "FROTO", "TOASO", "PGSUS", "ENKAI", "KOZAL", "AKBNK",
+                "YKBNK", "GARAN", "ARCLK", "PETKM", "TAVHL", "MGROS", "SASA", "HEKTS", "OYAKC", "GUBRF",
+                "ASTOR", "KONTR", "CIMSA", "AKSEN", "ODAS", "TKFEN", "ULKER", "DOAS", "BRSAN", "KRDMD",
             ],  # fmt: skip
             "abd": ["AAPL", "MSFT", "NVDA", "GOOGL", "AMZN", "JPM", "KO", "XOM"],
         }
+    )
+    # Sağlam çekirdek: köklü, yönetimi güçlü şirketler. Tüm para burada olmak zorunda DEĞİL;
+    # ajan için bir güven işaretidir, zorunlu ağırlık değildir.
+    saglam_cekirdek: list[str] = field(
+        default_factory=lambda: ["ASELS", "TUPRS", "AHGAZ", "THYAO", "KCHOL", "SAHOL", "BIMAS", "EREGL"]
+    )
+    tez_notu: str = (
+        "Türkiye'de köklü, devletle ilişkisi sağlam ve yönetimi güçlü şirketler uzun vadede büyür; "
+        "bazılarında büyüme durmuş olabilir ve fiyat gel-git yapar. Asıl ölçüt büyüklük değil, "
+        "yönetim kalitesidir: AHGAZ büyük bir şirket değildir ama başında Ahlatcı vardır. "
+        "Paranın tamamının çekirdek listede olması gerekmez; çekirdek dışı hisseler de yönetim "
+        "kalitesi ve değerleme uygunsa alınabilir."
     )
     risk: RiskAyarlari = field(default_factory=RiskAyarlari)
     ajan: AjanAyarlari = field(default_factory=AjanAyarlari)

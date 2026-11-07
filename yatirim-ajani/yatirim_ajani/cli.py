@@ -250,7 +250,8 @@ def komut_ekip(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
     if satir:
         egitim_ozeti = "\n".join(f"{r[0]} {r[1]}: {r[2]} karar, ort. ödül {r[3]:+.4%}, ort. ham getiri {r[4]:+.4%}" for r in satir)
     try:
-        ekip = Ekip(ayarlar.ajan, piyasa, veri, db, egitim_ozeti=egitim_ozeti)
+        ekip = Ekip(ayarlar.ajan, piyasa, veri, db, egitim_ozeti=egitim_ozeti,
+                    tez_notu=ayarlar.tez_notu, cekirdek=ayarlar.saglam_cekirdek)  # fmt: skip
         sonuc = ekip.oturum(_hisseler(a.hisseler, ayarlar, a.piyasa))
     except TypeError as h:
         if "authentication" in str(h):

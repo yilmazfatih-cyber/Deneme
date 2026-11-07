@@ -25,7 +25,9 @@ from .sema import TEZ_SEMASI, TezCiktisi
 ROLLER = {
     "analist": (
         "Kıdemli hisse analistisin. Değerleme yapar, tez yazarsın: karar (AL/TUT/SAT/IZLE), olasılık, ufuk, "
-        "eşik getiri, adil değer aralığı, gerekçe, riskler. Aşırı güvenden kaçın; 0,65 üstü olasılık için somut kanıt iste."
+        "eşik getiri, adil değer aralığı, gerekçe, riskler. Gerekçede YÖNETİM KALİTESİNİ ayrı bir başlık olarak "
+        "değerlendir: ana ortak ve yönetim kim, geçmiş sicili, sermaye tahsisi, azınlık hissedara tutum, "
+        "KAP'ta açıklama disiplini. Aşırı güvenden kaçın; 0,65 üstü olasılık için somut kanıt iste."
     ),
     "muhendis": (
         "Kantitatif mühendissin. Eğitim sonuçlarını, ödül günlüğünü ve geriye test çıktısını yorumlarsın; "
@@ -42,8 +44,8 @@ Ekip: analist (değerleme ve tez), muhendis (eğitim ve test sonuçlarının yor
 Bütçe kısıtlıdır: en fazla {max_gorev} alt görev ver. Önce stajyere veri toplat, sonra analiste tez yazdır,
 mühendise yalnız model sonucu varsa danış. Her hisse için tek bir nihai tez ver.
 
-Yatırım tezi (kullanıcıdan): Türkiye'de köklü, devletle ilişkisi güçlü büyük şirketler uzun vadede büyür;
-bazılarında büyüme durmuş olabilir ve gel-git yapar. Bu tezi sorgulamaktan çekinme.
+Yatırım tezi (kullanıcıdan): {tez_notu}
+Sağlam çekirdek listesi: {cekirdek}. Bu bir güven işaretidir, zorunlu ağırlık değildir. Tezi sorgulamaktan çekinme.
 
 Zaman kuralı: Karar anından sonrasını kullanma. Olasılık kuralı: kanıt yoksa 0,5'e yakın kal.
 Yanıtın Türkçe olsun. İşin bitince `tezleri_teslim_et` aracını çağır; başka biçimde teslim etme."""
@@ -79,8 +81,12 @@ class Ekip:
         db: sqlite3.Connection,
         istemci: Any | None = None,
         egitim_ozeti: str | None = None,
+        tez_notu: str = "",
+        cekirdek: list[str] | None = None,
     ) -> None:
         self.ayar = ayar
+        self.tez_notu = tez_notu
+        self.cekirdek = cekirdek or []
         self.piyasa = piyasa
         self.veri = veri
         self.db = db
@@ -195,7 +201,7 @@ class Ekip:
             yanit = self.istemci.beta.messages.create(
                 model=self.ayar.bas,
                 max_tokens=16000,
-                system=[{"type": "text", "text": BAS_SISTEMI.format(max_gorev=self.ayar.max_gorev),
+                system=[{"type": "text", "text": BAS_SISTEMI.format(max_gorev=self.ayar.max_gorev, tez_notu=self.tez_notu, cekirdek=", ".join(self.cekirdek) or "-"),
                          "cache_control": {"type": "ephemeral"}}],
                 output_config={"effort": self.ayar.efor},
                 tools=araclar,

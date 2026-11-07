@@ -10,11 +10,19 @@ tohum = 2024
 bist = 1000000.0 # TRY, sanal
 abd = 5000.0    # USD, sanal
 
+# Sağlam çekirdek: güven işareti, zorunlu ağırlık değil. Asıl ölçüt yönetim kalitesi.
+saglam_cekirdek = ["ASELS", "TUPRS", "AHGAZ", "THYAO", "KCHOL", "SAHOL", "BIMAS", "EREGL"]
+tez_notu = """Türkiye'de köklü, devletle ilişkisi sağlam ve yönetimi güçlü şirketler uzun vadede büyür;
+bazılarında büyüme durmuş olabilir ve fiyat gel-git yapar. Asıl ölçüt büyüklük değil, yönetim kalitesidir:
+AHGAZ büyük değildir ama başında Ahlatcı vardır. Paranın tamamının çekirdekte olması gerekmez."""
+
 [evren]
-# Tez: köklü, devletle ilişkisi güçlü büyükler. İstediğiniz gibi değiştirin.
+# Taranan geniş evren (BIST 50 kesiti). İstediğiniz gibi değiştirin.
 bist = [
   "ASELS", "TUPRS", "AHGAZ", "THYAO", "KCHOL", "SAHOL", "BIMAS", "EREGL", "SISE", "TCELL",
   "TTKOM", "HALKB", "VAKBN", "ISCTR", "FROTO", "TOASO", "PGSUS", "ENKAI", "KOZAL", "AKBNK",
+  "YKBNK", "GARAN", "ARCLK", "PETKM", "TAVHL", "MGROS", "SASA", "HEKTS", "OYAKC", "GUBRF",
+  "ASTOR", "KONTR", "CIMSA", "AKSEN", "ODAS", "TKFEN", "ULKER", "DOAS", "BRSAN", "KRDMD",
 ]
 abd = ["AAPL", "MSFT", "NVDA", "GOOGL", "AMZN", "JPM", "KO", "XOM"]
 
