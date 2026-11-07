@@ -1,0 +1,59 @@
+# Kubernetes manifests. Secrets (DB DSN, master key, admin password) come from
+# the "enumaracle" Secret created by the operator's secret management, e.g.:
+#   kubectl create secret generic enumaracle \
+#     --from-literal=ENUMARACLE_DB_DSN='postgres://...' \
+#     --from-literal=ENUMARACLE_MASTER_KEY="$(openssl rand -base64 32)" \
+#     --from-literal=ENUMARACLE_ADMIN_PASSWORD='...'
+apiVersion: v1
+kind: ConfigMap
+metadata: { name: enumaracle }
+data:
+  ENUMARACLE_DB_DRIVER: postgres
+  ENUMARACLE_PUBLIC_BASE_URL: https://enumaracle.operator.example
+  ENUMARACLE_ENUM_ZONE: e164.operator.enum.
+  ENUMARACLE_SIP_DOMAIN: sip.operator.example
+  ENUMARACLE_COOKIE_SECURE: "true"
+  ENUMARACLE_LOOKUP_TTL: 5s
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: enumaracle, labels: { app: enumaracle } }
+spec:
+  replicas: 2
+  selector: { matchLabels: { app: enumaracle } }
+  template:
+    metadata:
+      labels: { app: enumaracle }
+      annotations: { prometheus.io/scrape: "true", prometheus.io/port: "8080" }
+    spec:
+      securityContext: { runAsNonRoot: true, seccompProfile: { type: RuntimeDefault } }
+      containers:
+        - name: enumaracle
+          image: registry.operator.example/enumaracle:1.0.0
+          envFrom: [{ configMapRef: { name: enumaracle } }, { secretRef: { name: enumaracle } }]
+          ports:
+            - { name: http, containerPort: 8080 }
+            - { name: dns-udp, containerPort: 5353, protocol: UDP }
+            - { name: dns-tcp, containerPort: 5353, protocol: TCP }
+          readinessProbe: { httpGet: { path: /readyz, port: http }, periodSeconds: 5 }
+          livenessProbe: { httpGet: { path: /healthz, port: http }, periodSeconds: 10 }
+          resources:
+            requests: { cpu: 250m, memory: 256Mi }
+            limits: { memory: 1Gi }
+          securityContext: { allowPrivilegeEscalation: false, readOnlyRootFilesystem: true, capabilities: { drop: [ALL] } }
+---
+apiVersion: v1
+kind: Service
+metadata: { name: enumaracle-http }
+spec:
+  selector: { app: enumaracle }
+  ports: [{ name: http, port: 80, targetPort: http }]
+---
+apiVersion: v1
+kind: Service
+metadata: { name: enumaracle-dns }
+spec:
+  selector: { app: enumaracle }
+  ports:
+    - { name: dns-udp, port: 53, targetPort: dns-udp, protocol: UDP }
+    - { name: dns-tcp, port: 53, targetPort: dns-tcp, protocol: TCP }

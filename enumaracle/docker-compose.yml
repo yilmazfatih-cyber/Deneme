@@ -1,0 +1,28 @@
+# Production-like stack: Enumaracle + PostgreSQL 17.
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: enumaracle
+      POSTGRES_USER: enumaracle
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U enumaracle"]
+      interval: 5s
+      retries: 10
+  enumaracle:
+    build: .
+    depends_on:
+      db: { condition: service_healthy }
+    environment:
+      ENUMARACLE_DB_DRIVER: postgres
+      ENUMARACLE_DB_DSN: postgres://enumaracle:${POSTGRES_PASSWORD}@db:5432/enumaracle?sslmode=disable
+      ENUMARACLE_MASTER_KEY: ${ENUMARACLE_MASTER_KEY:?set ENUMARACLE_MASTER_KEY (openssl rand -base64 32)}
+      ENUMARACLE_ADMIN_EMAIL: ${ENUMARACLE_ADMIN_EMAIL:-admin@enumaracle.local}
+      ENUMARACLE_ADMIN_PASSWORD: ${ENUMARACLE_ADMIN_PASSWORD:-}
+      ENUMARACLE_PUBLIC_BASE_URL: ${ENUMARACLE_PUBLIC_BASE_URL:-http://localhost:8080}
+      ENUMARACLE_DEMO_DATA: ${ENUMARACLE_DEMO_DATA:-false}
+    ports: ["8080:8080", "5353:5353/udp", "5353:5353/tcp"]
+volumes:
+  pgdata:
