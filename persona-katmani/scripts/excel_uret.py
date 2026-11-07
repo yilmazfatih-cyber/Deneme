@@ -21,7 +21,7 @@ CIKTI = KOK / "data" / "davranis-etkileri.xlsx"
 
 SUTUNLAR = [
     "kayit_id", "alan", "alt_konu", "etki_adi", "etki_tanimi", "yon",
-    "etki_buyuklugu_deger", "etki_buyuklugu_olcusu", "guven_araligi", "p_veya_bf", "orneklem_n",
+    "etki_buyuklugu_deger", "etki_buyuklugu_olcusu", "guven_araligi", "orneklem_n",
     "populasyon_ulke", "populasyon_yas", "baglam", "yontem",
     "moderator_degisken", "moderator_yonu_ve_buyuklugu", "bireysel_fark_olcegi",
     "persona_parametresi", "parametre_dagilimi_onerisi", "kanit_gucu",
@@ -29,7 +29,7 @@ SUTUNLAR = [
 ]
 GENISLIK = {
     "kayit_id": 9, "alan": 16, "alt_konu": 22, "etki_adi": 28, "etki_tanimi": 60, "yon": 9,
-    "etki_buyuklugu_deger": 10, "etki_buyuklugu_olcusu": 14, "guven_araligi": 18, "p_veya_bf": 10,
+    "etki_buyuklugu_deger": 10, "etki_buyuklugu_olcusu": 14, "guven_araligi": 18,
     "orneklem_n": 14, "populasyon_ulke": 18, "populasyon_yas": 16, "baglam": 16, "yontem": 14,
     "moderator_degisken": 20, "moderator_yonu_ve_buyuklugu": 45, "bireysel_fark_olcegi": 20,
     "persona_parametresi": 22, "parametre_dagilimi_onerisi": 30, "kanit_gucu": 8,
