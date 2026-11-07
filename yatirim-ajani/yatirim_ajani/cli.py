@@ -337,7 +337,7 @@ def ayristirici() -> argparse.ArgumentParser:
 
     sp = alt.add_parser("veri-cek", help="Saatlik (ve 5 dk) çubukları çek, temizle, gün etiketle")
     ortak(sp)
-    sp.add_argument("--baslangic", default="2024-01-01")
+    sp.add_argument("--baslangic", default="2024-11-01", help="Yahoo 1 saatlik veriyi son ~730 gün verir; daha eskisi otomatik sınıra çekilir")
     sp.add_argument("--bes-dakika-yok", action="store_true", help="Kaymalı saat için 5 dk veriyi çekme")
     sp.set_defaults(islev=komut_veri_cek)
 

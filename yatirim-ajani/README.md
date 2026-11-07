@@ -94,8 +94,9 @@ python -m yatirim_ajani arastir --piyasa bist --hisseler THYAO --an 2025-06-30T1
 Saatlik strateji dil modeliyle değil, ölçülebilir bir modelle çalışır. Akış:
 
 ```bash
-# 1. 2024'ten beri saatlik (ve son 60 gün 5 dakikalık) çubukları çek, temizle, günleri etiketle
-python -m yatirim_ajani veri-cek --piyasa bist --baslangic 2024-01-01
+# 1. Kasım 2024'ten beri saatlik (ve son 60 gün 5 dakikalık) çubukları çek, temizle, günleri etiketle
+#    (Yahoo 1 saatlik veriyi yalnız son ~730 gün verir; daha eski başlangıç otomatik sınıra çekilir)
+python -m yatirim_ajani veri-cek --piyasa bist
 
 # 2. Train günlerinde eğit, test günlerinde ölç; kaymalı saatleri (00/15/30/45) train'de kıyasla
 python -m yatirim_ajani egit --piyasa bist --kayma-kiyasla
