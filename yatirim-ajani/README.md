@@ -89,10 +89,53 @@ Ajanın geçmişte nasıl karar verirdi sorusu için zaman kilitli mod (web ve t
 python -m yatirim_ajani arastir --piyasa bist --hisseler THYAO --an 2025-06-30T18:30
 ```
 
+## Saatlik öğrenme (ilk ay: yalnız eğitim, gerçek para yok)
+
+Saatlik strateji dil modeliyle değil, ölçülebilir bir modelle çalışır. Akış:
+
+```bash
+# 1. 2024'ten beri saatlik (ve son 60 gün 5 dakikalık) çubukları çek, temizle, günleri etiketle
+python -m yatirim_ajani veri-cek --piyasa bist --baslangic 2024-01-01
+
+# 2. Train günlerinde eğit, test günlerinde ölç; kaymalı saatleri (00/15/30/45) train'de kıyasla
+python -m yatirim_ajani egit --piyasa bist --kayma-kiyasla
+
+# 3. Haftalık ekip oturumu (Fable baş, Opus analist, Sonnet mühendis, Haiku stajyer)
+python -m yatirim_ajani ekip --piyasa bist
+
+# 4. Saatlik tarama: tez AL + eğilim + model kapısı (beklenen net getiri ≥ eşik) → sanal işlem + öneri
+python -m yatirim_ajani canli --piyasa bist --aralik 1h --dakika 60
+```
+
+Nasıl çalışır:
+
+- **Train/test etiketi gün bazında ve rastgeledir.** Zaman sırası bozulmaz; her işlem günü tohumlu
+  rastgele %20 olasılıkla test olur ve etiket `veri/saatlik/etiketler.csv` içinde sabit kalır.
+  Satır satır etiketleme yapılmaz: komşu saatlerin özellikleri birbirine sızar ve sonuç şişer.
+- **Ödül = masraf sonrası net getiri.** Karar çubuk kapanışında verilir, emir sonraki çubuğun
+  açılışından dolar, çubuk kapanışında çıkılır; spread + kayma + komisyon iki kez düşülür.
+- **Model bir bağlamsal bandit** (ridge, numpy): AL eyleminin beklenen net getirisini öğrenir.
+  Eşik (`risk.min_net_getiri`, varsayılan %0,5) modelin dışındadır; model onu gevşetemez.
+  `--kayma-kiyasla` ve ridge seçimi yalnız train günlerinde yapılır; test seçime karışmaz.
+- **Ödül günlüğü** (`odul_gunlugu` tablosu) her kararın tahminini ve gerçekleşen sonucunu tutar.
+  Günlük büyüdükçe aynı özellik ve ödülle FinRL/PPO'ya geçilir (`ogrenme/rl.py`, `FINRL_NOTU`).
+- **Kronos** (açık kaynak K-line temel modeli) için bu veri seti doğrudan girdi olabilir; ince ayar
+  GPU ister ve bu depoda yapılmaz. `veri/saatlik/*.csv` dosyaları Kronos'un beklediği OHLCV biçimindedir.
+
+Beklentiyi doğru kurun: BIST büyük hisselerinde saatlik hareket çoğunlukla %0,5–0,9'dur ve
+yayımlanmış saatlik yön tahmini çalışmaları %54–56 doğrulukta kalır. Eşik bu yüzden çoğu saat
+"bekle" der; günde 0–2 işlem normaldir. Rastgele yürüyüş (sentetik) veride model hiç işlem
+önermez; gerçek veride de öyle çıkarsa bu bir hata değil, dürüst bir sonuçtur.
+
+Ekip oturumu bütçesi: haftada bir oturum, en fazla 8 alt görev. Kaba maliyet oturum başına 1–3 $.
+
 ## Bilmeniz gerekenler
 
 - **Midas'ın herkese açık emir API'si yok.** Bu yüzden sistem emir göndermez. `raporlar/` altına
   "şu hisseden şu kadar, şu limit fiyattan" öneri dosyası yazar; emri siz Midas'ta verirsiniz.
+  Önerilerin bir kısmını uygulayıp bir kısmını atlasanız da sanal hesap hepsini uygulamış gibi
+  ilerler; böylece stratejinin kendi sicili sizin seçimlerinizden bağımsız ölçülür.
+  Gerçek emir API'si isteyen otomasyon için AlgoLab (Deniz Yatırım) gibi bir kurum gerekir.
   Midas bir API açarsa ya da API'li bir aracı kuruma geçerseniz `yurutme/` altına yeni bir
   yürütücü eklenir. Risk bekçisi aynı kalır.
 - **Yahoo verisi sınırlıdır.** 1 dakikalık veri yalnız son 7 gün için gelir ve gecikmeli olabilir.
