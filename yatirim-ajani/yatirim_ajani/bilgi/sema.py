@@ -40,6 +40,7 @@ class Olay(BaseModel):
     tur: str  # yukselis | dusus | sok | rejim | haber | bilanço | ihale | faiz | secim | ...
     baslik: str = Field(max_length=160)
     anlam: str  # Ne oldu, neden önemli; 2–5 cümle. Semantik eşleşme için.
+    yon: Literal["olumlu", "olumsuz", "notr"] = "notr"  # haberin yönü (karar anında bilinebilir); kıyas kuralı için
     yatirimci_tepkisi: Tepki = "belirsiz"
     tepki_aciklama: str = ""  # Kitle nasıl davrandı; kısa.
     onden_gorulebilir: Literal["evet", "kismen", "hayir"] = "kismen"

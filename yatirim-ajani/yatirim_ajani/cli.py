@@ -371,8 +371,21 @@ def komut_bilgi_yukle(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
     from .bilgi import Olay, OlayPaketi, ekle
 
     ham = json.loads(Path(a.dosya).read_text(encoding="utf-8"))
+    liste = ham if isinstance(ham, list) else ham.get("olaylar", [])
+    ESANLAM = {"piyasa": "yerel_makro", "makro": "yerel_makro", "global": "kuresel", "sirket": "sirket", "şirket": "sirket", "sektör": "sektor"}
+    for o in liste:
+        if isinstance(o, dict):
+            o["kapsam"] = ESANLAM.get(str(o.get("kapsam", "")).lower(), o.get("kapsam"))
+            if o.get("hisse") in ("", "null"):
+                o["hisse"] = None
+            if o.get("guven") is not None:
+                o["guven"] = min(max(float(o["guven"]), 0.0), 1.0)
+            if o.get("yon") not in ("olumlu", "olumsuz", "notr"):
+                # Yön yoksa türden çıkar: yükseliş/olumlu haber → olumlu, düşüş/şok-negatif → olumsuz
+                g = o.get("getiri")
+                o["yon"] = "olumlu" if (g is not None and g > 0) else "olumsuz" if (g is not None and g < 0) else "notr"
     try:
-        paket = OlayPaketi.model_validate({"olaylar": ham} if isinstance(ham, list) else ham)
+        paket = OlayPaketi.model_validate({"olaylar": liste})
     except ValidationError as h:
         print(f"Geçersiz dosya: {h}")
         return 1
@@ -504,6 +517,224 @@ def komut_simule(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
     return 0
 
 
+def komut_saglamlik(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
+    """Ezber testleri: etiket karıştırma, rejim kırılımı, maliyet stresi, deneme günlüğü + Deflated
+    Sharpe, parametre bütçesi (1/100), kıyas modelleri (al-tut, momentum, haber kuralı)."""
+    import json
+
+    import numpy as np
+
+    from .bilgi import sorgula
+    from .ogrenme.saglamlik import (
+        deflated_sharpe, deneme_kaydet, deneme_sayisi, gunluk_getiriler, gunluk_sharpe, haber_kurali,
+        kural_parametreleri, mlp_parametreleri, rejim_kirilimi, rejimler, ridge_parametreleri,
+    )  # fmt: skip
+    from .ogrenme.simulasyon import (
+        GUNLUK_OZELLIKLER, STRATEJILER, ModelKapili, gunluk_ozellikler, hedef_ertesi_gun, kesme_indeksi,
+        model_egit_ve_tahmin, panel_kur, simule, uzun_tablo,
+    )  # fmt: skip
+
+    piyasa = PIYASALAR[a.piyasa]
+    vs = SaatlikVeriSeti(ayarlar.veri_klasoru, piyasa.saat_dilimi)
+    bolme = Bolme(Path(ayarlar.veri_klasoru) / "etiketler.csv", ayarlar.test_orani, ayarlar.tohum)
+    db = baglan(ayarlar.veritabani)
+    panel = panel_kur(vs, piyasa, _hisseler(a.hisseler, ayarlar, a.piyasa))
+    kes = kesme_indeksi(panel, a.secim_ay)
+    nakit = a.nakit or ayarlar.baslangic_nakit[a.piyasa]
+    c = (piyasa.spread_bps + piyasa.kayma_bps) / 10_000 + piyasa.komisyon_orani
+    g = vs.saatlik(piyasa.gosterge)
+    gun = pd.Series(pd.to_datetime(g.index.date), index=g.index)
+    gosterge = g["kapanis"].groupby(gun).last()
+    rejim = rejimler(gosterge, panel.gunler)
+    pencere = f"ileri:{panel.gunler[kes].date()}→{panel.gunler[-1].date()}"
+    R: list[str] = [f"# Sağlamlık testleri — {piyasa.kod.upper()} — {datetime.now():%Y-%m-%d %H:%M}", "",
+                    f"Ölçüm penceresi (ileriye yürüyen): {pencere}; seçim penceresi ilk {a.secim_ay} ay. Nakit {nakit:,.0f}, tek yön maliyet {c:.2%}.", ""]  # fmt: skip
+    karar_sayisi_gunluk = int(panel.kapanis.iloc[kes:].notna().sum().sum())
+    R.append(f"Karar anı (ileri pencerede, hisse×gün): {karar_sayisi_gunluk:,} → parametre bütçesi {karar_sayisi_gunluk // 100}.")
+    R.append("")
+
+    # --- Kıyas modelleri ---
+    R += ["## 1. Kıyas modelleri (maliyet sonrası, ileriye yürüyen)", "", "| Model | Bitiş | Getiri | Sharpe | Maks düşüş | Maliyet 2× bitiş | Boğa | Ayı | Yatay |", "|---|---|---|---|---|---|---|---|---|"]
+    def satir(ad, st, parametreler, aile):
+        n = simule(panel, st, ad, nakit, c, bas=kes)
+        x2 = simule(panel, st, ad, nakit, 2 * c, bas=kes)
+        rk = rejim_kirilimi(n.egri, rejim).set_index("rejim")["toplam"] if len(n.egri) > 2 else pd.Series(dtype=float)
+        deneme_kaydet(db, aile, n, parametreler, pencere)
+        sr = gunluk_sharpe(n.egri)
+        R.append(f"| {ad} | {n.bitis:,.0f} | {n.getiri:+.1%} | {('-' if sr is None else f'{sr:.2f}')} | {n.max_dusus:.1%} | {x2.bitis:,.0f} ({x2.getiri:+.1%}) "
+                 f"| {rk.get('boga', float('nan')):+.1%} | {rk.get('ayi', float('nan')):+.1%} | {rk.get('yatay', float('nan')):+.1%} |")  # fmt: skip
+        return n
+    kiyas = {}
+    kiyas["al_tut"] = satir("al-tut", STRATEJILER["al_tut"], {}, "kiyas")
+    kiyas["momentum"] = satir("haftalık momentum (20g, ilk 10)", STRATEJILER["haftalik_momentum"], {"pencere": 20, "n": 10}, "kiyas")
+    kiyas["trend"] = satir("trend 50g", STRATEJILER["trend_50"], {"pencere": 50}, "kiyas")
+    olaylar = sorgula(db, limit=100000)
+    n_olumlu = int(((olaylar.get("yon", pd.Series(dtype=str)) == "olumlu") & (olaylar["kaynak_tipi"] != "sayisal")).sum()) if not olaylar.empty else 0
+    if n_olumlu >= 5:
+        kiyas["haber"] = satir(f"haber olumluysa al ({n_olumlu} olay, 20g tut)", haber_kurali(olaylar), {"tutma_gun": 20}, "kiyas")
+    else:
+        R.append(f"| haber olumluysa al | — | — | — | — | — | — | — | — | (bilgi veritabanında yönü 'olumlu' olan tarihli haber olayı: {n_olumlu}; en az 5 gerekir) |")
+    R.append("")
+    R.append(f"Rejim günleri (ileri pencere): {rejim.iloc[kes:].value_counts().to_dict()}")
+    R.append("")
+
+    # --- Modeller, deneme günlüğü, DSR ---
+    tablo = uzun_tablo(gunluk_ozellikler(panel, gosterge), hedef_ertesi_gun(panel), panel.gunler)
+    tr = bolme.maske(pd.DatetimeIndex(tablo["gun"]), "train")
+    bitis = panel.gunler[kes]
+    R += ["## 2. Modeller: deneme günlüğü ve Deflated Sharpe", ""]
+    esikler = (0.0, 0.0025, 0.005, 0.0075, 0.01)
+    denemeler = []
+    param_raporlari = []
+    for tur in ("ridge", "mlp"):
+        tah, bilgi, model = model_egit_ve_tahmin(tablo, bitis, tr, tur, model_dondur=True)
+        if tur == "ridge":
+            param_raporlari.append(ridge_parametreleri(model, GUNLUK_OZELLIKLER, karar_sayisi_gunluk))
+        else:
+            param_raporlari.append(mlp_parametreleri(model, GUNLUK_OZELLIKLER, karar_sayisi_gunluk))
+        for esik in esikler:
+            st = ModelKapili(tah, esik, 2 * c)
+            secim = simule(panel, st, f"{tur}@{esik:.2%}", nakit, c, bit=kes)
+            ileri = simule(panel, st, f"{tur}@{esik:.2%}", nakit, c, bas=kes)
+            x2 = simule(panel, st, f"{tur}@{esik:.2%}", nakit, 2 * c, bas=kes)
+            deneme_kaydet(db, f"model_{tur}", ileri, {"esik": esik, **{k: v for k, v in bilgi.items() if isinstance(v, (int, float))}}, pencere)
+            denemeler.append({"tur": tur, "esik": esik, "secim_odul": secim.odul, "ileri": ileri, "x2": x2,
+                              "sharpe": gunluk_sharpe(ileri.egri), "rejim": rejim_kirilimi(ileri.egri, rejim) if len(ileri.egri) > 2 else None})  # fmt: skip
+    N = deneme_sayisi(db, pencere)
+    secilen = max(denemeler, key=lambda d: d["secim_odul"])
+    sr_list = [d["sharpe"] for d in denemeler if d["sharpe"] is not None]
+    R.append("| Model | Eşik | Seçim ödülü (ilk yıl) | İleri bitiş | Sharpe | Maks düşüş | Maliyet 2× | Boğa | Ayı | Yatay |")
+    R.append("|---|---|---|---|---|---|---|---|---|---|")
+    for d in denemeler:
+        rk = d["rejim"].set_index("rejim")["toplam"] if d["rejim"] is not None else pd.Series(dtype=float)
+        isaret = " **(seçilen)**" if d is secilen else ""
+        R.append(f"| {d['tur']}{isaret} | {d['esik']:.2%} | {d['secim_odul']:+.3f} | {d['ileri'].bitis:,.0f} ({d['ileri'].getiri:+.1%}) | "
+                 f"{('-' if d['sharpe'] is None else f'{d["sharpe"]:.2f}')} | {d['ileri'].max_dusus:.1%} | {d['x2'].bitis:,.0f} "
+                 f"| {rk.get('boga', float('nan')):+.1%} | {rk.get('ayi', float('nan')):+.1%} | {rk.get('yatay', float('nan')):+.1%} |")  # fmt: skip
+    R.append("")
+    if secilen["sharpe"] is not None and len(secilen["ileri"].egri) > 10:
+        d = deflated_sharpe(secilen["sharpe"], sr_list, gunluk_getiriler(secilen["ileri"].egri))
+        R.append(f"Deneme günlüğünde bu pencere için toplam **{N} deneme** (bu koşu dahil). Seçilen modelin Sharpe'ı {secilen['sharpe']:.2f}; "
+                 f"{d['deneme']} denemeden beklenen en büyük şans Sharpe'ı {d['beklenen_max_sharpe']:.2f}; **Deflated Sharpe olasılığı {d['dsr']:.2f}** "
+                 f"(0,95 üstü anlamlı; 0,5 civarı şans).")  # fmt: skip
+    else:
+        R.append(f"Deneme günlüğünde bu pencere için toplam {N} deneme. Seçilen model işlem yapmadı; Sharpe tanımsız.")
+    R.append("")
+
+    # --- Etiket karıştırma ---
+    R += ["## 3. Etiket karıştırma (sızıntı testi)", ""]
+    rng = np.random.default_rng(ayarlar.tohum)
+    karisik_sonuclar = []
+    for i in range(a.karistirma):
+        t2 = tablo.copy()
+        idx = np.flatnonzero(tr & (t2["gun"] < bitis).to_numpy())
+        t2.loc[t2.index[idx], "hedef"] = rng.permutation(t2["hedef"].to_numpy()[idx])
+        tah2, bilgi2 = model_egit_ve_tahmin(t2, bitis, tr, secilen["tur"])
+        ileri2 = simule(panel, ModelKapili(tah2, secilen["esik"], 2 * c), f"karisik{i}", nakit, c, bas=kes)
+        karisik_sonuclar.append((bilgi2.get("disari_korelasyon", float("nan")), ileri2.getiri))
+    gercek_kor = next((dn for dn in [None]), None)
+    R.append(f"Seçilen model ({secilen['tur']}, eşik {secilen['esik']:.2%}) gerçek etiketle ileri getiri {secilen['ileri'].getiri:+.1%}.")
+    R.append("Eğitim hedefleri karıştırılıp yeniden eğitildiğinde ({} tekrar):".format(a.karistirma))
+    for kor, get in karisik_sonuclar:
+        R.append(f"- dışarı korelasyon {kor:+.3f}, ileri getiri {get:+.1%}")
+    ort_karisik = float(np.nanmean([g for _, g in karisik_sonuclar])) if karisik_sonuclar else float("nan")
+    R.append(f"Karışık ortalama {ort_karisik:+.1%}. Gerçek sonuç karışık dağılımın içindeyse model sinyal değil gürültü/sızıntı taşıyor; "
+             "karışık sonuçlar da pozitifse kazanç modelden değil piyasa sürüklenmesinden geliyor.")  # fmt: skip
+    R.append("")
+
+    # --- Parametre bütçesi ---
+    R += ["## 4. Parametre bütçesi (her 100 karar anına 1 parametre)", ""]
+    param_raporlari.append(kural_parametreleri("trend_50", {"pencere": 50}, karar_sayisi_gunluk))
+    param_raporlari.append(kural_parametreleri("haftalik_momentum", {"pencere": 20, "n": 10}, karar_sayisi_gunluk))
+    for pr in param_raporlari:
+        R += ["```", pr.metin(), "```", ""]
+    uygun = [pr.ad for pr in param_raporlari if pr.butce_icinde]
+    R.append(f"Bütçeye uyan modeller: {', '.join(uygun) or 'yok'}. Bütçeyi aşanlar son testte kullanılmaz.")
+    R.append("")
+    R += ["## 5. Karar", "",
+          "LLM ajanı ve sayısal model, kıyasları (al-tut, momentum, haber kuralı) maliyet sonrası ve rejimler arasında TUTARLI biçimde "
+          "geçmiyorsa işe yaramıyor sayılır. Bu rapordaki sayılarla:", ""]  # fmt: skip
+    en_iyi_kiyas = max(kiyas.items(), key=lambda kv: kv[1].bitis)
+    R.append(f"- En iyi kıyas: {en_iyi_kiyas[0]} → {en_iyi_kiyas[1].bitis:,.0f}. Seçilen model → {secilen['ileri'].bitis:,.0f}. "
+             + ("Model kıyası geçiyor." if secilen["ileri"].bitis > en_iyi_kiyas[1].bitis else "**Model kıyası geçemiyor.**"))  # fmt: skip
+    R.append("- Parametre dökümü yukarıda; son test (veri unutturulup yalnız parametrelerle) için `veri/saatlik/model_*.json` dosyaları ve bu rapor yeter.")
+    R.append("")
+    R.append("Yatırım tavsiyesi değildir.")
+    metin = "\n".join(R)
+    print(metin)
+    yol = Path(ayarlar.rapor_klasoru) / f"saglamlik-{piyasa.kod}-{panel.gunler[-1]:%Y%m%d}.md"
+    yol.parent.mkdir(parents=True, exist_ok=True)
+    yol.write_text(metin + "\n", encoding="utf-8")
+    print(f"\nRapor: {yol}")
+    return 0
+
+
+def _agac_kurucu(a: argparse.Namespace, ayarlar: Ayarlar):
+    from .bilgi import SEKTORLER, sorgula
+    from .ogrenme.agac import AgacKurucu, ozellik_havuzu
+    from .ogrenme.simulasyon import kesme_indeksi, panel_kur
+    from .veri.saatlik import SaatlikVeriSeti as _VS
+
+    piyasa = PIYASALAR[a.piyasa]
+    vs = _VS(ayarlar.veri_klasoru, piyasa.saat_dilimi)
+    db = baglan(ayarlar.veritabani)
+    hisseler = _hisseler(a.hisseler, ayarlar, a.piyasa)
+    panel = panel_kur(vs, piyasa, hisseler)
+    g = vs.saatlik(piyasa.gosterge)
+    gun = pd.Series(pd.to_datetime(g.index.date), index=g.index)
+    gosterge = g["kapanis"].groupby(gun).last()
+    hacim = {}
+    for h in panel.hisseler:
+        df = vs.saatlik(piyasa.sembol(h))
+        hacim[h] = df["hacim"].groupby(pd.Series(pd.to_datetime(df.index.date), index=df.index)).sum()
+    hacim = pd.DataFrame(hacim)
+    olaylar = sorgula(db, limit=100000)
+    oz, turler = ozellik_havuzu(panel, gosterge, hacim, olaylar, SEKTORLER)
+    kes = kesme_indeksi(panel, a.secim_ay)
+    c = (piyasa.spread_bps + piyasa.kayma_bps) / 10_000 + piyasa.komisyon_orani
+    nakit = a.nakit or ayarlar.baslangic_nakit[a.piyasa]
+    return AgacKurucu(panel, oz, turler, kes, c, nakit, a.esik, db=db), piyasa
+
+
+def komut_agac(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
+    """Açgözlü parametre ağacı: tek başına en iyi parametreden başla, en çok iyileştireni ekle."""
+    kurucu, piyasa = _agac_kurucu(a, ayarlar)
+    agac = kurucu.kur(derinlik=a.derinlik, isin=a.isin)
+    yol = Path(ayarlar.rapor_klasoru) / f"agac-{piyasa.kod}-{kurucu.panel.gunler[-1]:%Y%m%d}.json"
+    agac.kaydet(yol)
+    d = agac.dugumler
+    en_iyi = max((x for x in d.values() if x.id >= 0), key=lambda x: x.dogrulama_odul)
+    print(f"{len(d) - 1} düğüm, {len(kurucu.onbellek)} ayrı parametre kümesi denendi; ağaç: {yol}")
+    print(f"Eşik {agac.esik:.2%}; seçim {agac.secim_penceresi}; ileri {agac.ileri_penceresi}")
+    print("\nKök adayları (tek parametre, doğrulama ödülü):")
+    for cid in d[-1].cocuklar:
+        x = d[cid]
+        print(f"  {x.eklenen:<18} [{x.tur}] ödül {x.dogrulama_odul:+.3f} kor {x.dogrulama_korelasyon:+.3f} işlem {x.dogrulama_islem} | ileri {x.ileri_getiri:+.1%} (bilgi)")
+    print(f"\nDoğrulamada en iyi düğüm (#{en_iyi.id}, {len(en_iyi.parametreler)} parametre): {en_iyi.parametreler}")
+    print(f"  doğrulama ödülü {en_iyi.dogrulama_odul:+.3f}, kor {en_iyi.dogrulama_korelasyon:+.3f} | ileri {en_iyi.ileri_getiri:+.1%} → {en_iyi.ileri_bitis:,.0f} (bilgi, seçimde kullanılmadı)")
+    return 0
+
+
+def komut_agac_degerlendir(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
+    """Budanmış parametre listesini (JSON: ["g1","mom20",...] ya da {"parametreler":[...]}) son teste sokar."""
+    import json
+
+    from .ogrenme.agac import agac_degerlendir
+
+    ham = json.loads(Path(a.dosya).read_text(encoding="utf-8"))
+    params = ham["parametreler"] if isinstance(ham, dict) else ham
+    kurucu, piyasa = _agac_kurucu(a, ayarlar)
+    bilinmeyen = [p for p in params if p not in kurucu.oz]
+    if bilinmeyen:
+        print(f"Bilinmeyen parametre: {bilinmeyen}")
+        return 1
+    r = agac_degerlendir(kurucu, params)
+    print(f"Parametreler ({r['parametre_sayisi']}): {params}")
+    print(f"Doğrulama ödülü {r['dogrulama_odul']:+.3f}, korelasyon {r['dogrulama_korelasyon']:+.3f}, işlem {r['dogrulama_islem']}")
+    print(f"İleriye yürüyen: getiri {r['ileri_getiri']:+.1%} → {r['ileri_bitis']:,.0f}, işlem {r['ileri_islem']}")
+    return 0
+
+
 def komut_yeniden_baslat(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
     SanalAraci(baglan(ayarlar.veritabani), PIYASALAR[a.piyasa]).yeniden_baslat()
     print(f"{a.piyasa.upper()} hesabı yeniden açıldı.")
@@ -594,6 +825,30 @@ def ayristirici() -> argparse.ArgumentParser:
     sp.add_argument("--nakit", type=float)
     sp.add_argument("--secim-ay", type=int, default=12, help="İlk N ay seçim/eğitim, kalanı ileriye yürüyen ölçüm")
     sp.set_defaults(islev=komut_simule)
+
+    sp = alt.add_parser("saglamlik", help="Ezber testleri: etiket karıştırma, rejim, maliyet 2×, deneme günlüğü + Deflated Sharpe, parametre bütçesi")
+    ortak(sp)
+    sp.add_argument("--nakit", type=float)
+    sp.add_argument("--secim-ay", type=int, default=12)
+    sp.add_argument("--karistirma", type=int, default=5, help="Etiket karıştırma tekrar sayısı")
+    sp.set_defaults(islev=komut_saglamlik)
+
+    sp = alt.add_parser("agac", help="Açgözlü parametre ağacı (sayısal + LLM sinyalleri); budama için JSON")
+    ortak(sp)
+    sp.add_argument("--nakit", type=float)
+    sp.add_argument("--secim-ay", type=int, default=12)
+    sp.add_argument("--esik", type=float, default=0.005)
+    sp.add_argument("--derinlik", type=int, default=6)
+    sp.add_argument("--isin", type=int, default=2, help="Her düğümde tutulan alternatif dal sayısı")
+    sp.set_defaults(islev=komut_agac)
+
+    sp = alt.add_parser("agac-degerlendir", help="Budanmış parametre listesini ileriye yürüyen testte değerlendir")
+    sp.add_argument("dosya")
+    ortak(sp)
+    sp.add_argument("--nakit", type=float)
+    sp.add_argument("--secim-ay", type=int, default=12)
+    sp.add_argument("--esik", type=float, default=0.005)
+    sp.set_defaults(islev=komut_agac_degerlendir)
 
     sp = alt.add_parser("bilgi-olaylar", help="Veriden sayısal olayları çıkar (yükseliş/düşüş/şok/hacim), bilgi veritabanına yaz")
     ortak(sp)

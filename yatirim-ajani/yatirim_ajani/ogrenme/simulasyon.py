@@ -321,7 +321,8 @@ def model_egit_ve_tahmin(
     train_maskesi: np.ndarray,
     tur: str = "ridge",
     ridge: float = 1.0,
-) -> tuple[pd.DataFrame, dict[str, float]]:
+    model_dondur: bool = False,
+):
     """`egitim_bitis`ten önceki ve train etiketli günlerle eğitir; TÜM günler için tahmin döndürür.
 
     Tahminler eğitim dönemi için örnek içi (şişkin), sonrası için gerçek ileriye dönüktür.
@@ -334,15 +335,17 @@ def model_egit_ve_tahmin(
     y = tablo["hedef"].to_numpy(dtype=float)
     bilgi: dict[str, float] = {"egitim_satiri": int(egit.sum())}
     if tur == "mlp":
-        m, b = egit_mlp(X[egit], y[egit])
-        th = m.tahmin(X)
+        model, b = egit_mlp(X[egit], y[egit])
+        th = model.tahmin(X)
         bilgi.update(b)
     else:
-        m2 = _ridge(X[egit], y[egit], ridge)
-        th = m2.q(X)
+        model = _ridge(X[egit], y[egit], ridge)
+        th = model.q(X)
     dis = ~egit & (tablo["gun"] >= egitim_bitis).to_numpy()
     if dis.sum() > 10 and th[dis].std() > 0:
         bilgi["disari_korelasyon"] = float(np.corrcoef(th[dis], y[dis])[0, 1])
     bilgi["ici_korelasyon"] = float(np.corrcoef(th[egit], y[egit])[0, 1]) if th[egit].std() > 0 else 0.0
     tah = pd.Series(th, index=pd.MultiIndex.from_arrays([tablo["gun"], tablo["hisse"]])).unstack()
+    if model_dondur:
+        return tah, bilgi, model
     return tah, bilgi

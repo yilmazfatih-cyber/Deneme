@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS olaylar (
     tur TEXT NOT NULL,
     baslik TEXT NOT NULL,
     anlam TEXT NOT NULL,
+    yon TEXT NOT NULL DEFAULT 'notr',
     yatirimci_tepkisi TEXT NOT NULL,
     tepki_aciklama TEXT,
     onden_gorulebilir TEXT NOT NULL,
@@ -43,6 +44,9 @@ SAYISAL = ["getiri", "endekse_gore", "oynaklik_oncesi", "hacim_z", "mom20_oncesi
 
 def hazirla(db: sqlite3.Connection) -> None:
     db.executescript(SEMA)
+    sutunlar = {r[1] for r in db.execute("PRAGMA table_info(olaylar)")}
+    if "yon" not in sutunlar:  # eski veritabanı
+        db.execute("ALTER TABLE olaylar ADD COLUMN yon TEXT NOT NULL DEFAULT 'notr'")
 
 
 def ekle(db: sqlite3.Connection, olay: Olay) -> int | None:
@@ -60,10 +64,12 @@ def ekle(db: sqlite3.Connection, olay: Olay) -> int | None:
         (d["kapsam"], d["hisse"], d["sektor"], d["baslangic"], d["bitis"], d["tur"], d["baslik"]),
     ).fetchone()
     if mevcut:
-        guncelle = {k: v for k, v in d.items() if k in ("anlam", "yatirimci_tepkisi", "tepki_aciklama", "onden_gorulebilir", "guven", "etiketler", "kaynaklar")}
+        guncelle = {k: v for k, v in d.items() if k in ("anlam", "yon", "yatirimci_tepkisi", "tepki_aciklama", "onden_gorulebilir", "guven", "etiketler", "kaynaklar")}
         for k in SAYISAL + ["takip_5g", "takip_20g"]:
             if d[k] is not None:
                 guncelle[k] = d[k]
+        if d["kaynak_tipi"] != "sayisal":
+            guncelle["kaynak_tipi"] = "birlesik"  # sayısal kayıt + anlam = birleşik
         db.execute(f"UPDATE olaylar SET {', '.join(f'{k}=?' for k in guncelle)} WHERE id=?", (*guncelle.values(), mevcut[0]))
         db.commit()
         return int(mevcut[0])
