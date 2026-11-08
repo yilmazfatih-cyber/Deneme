@@ -3,7 +3,7 @@
 Yönlendirici dosyaları ayrı paketlerce yazılır; burada yalnız bir araya getirilir:
   system, catalog, modules, jobs   → aiplatform/api/routers/{system,catalog,modules,jobs}.py   (çekirdek)
   run, gateway, kvkk                → aiplatform/api/routers/{run,gateway,kvkk}.py                   (modüller + KVKK)
-  erp, audit, approvals             → aiplatform/api/routers/{erp,audit,approvals}.py           (ERP entegrasyonu)
+  erp, audit, approvals, demo       → aiplatform/api/routers/{erp,audit,approvals,demo}.py      (ERP entegrasyonu + Demo ERP)
 Statik yönetim arayüzü: aiplatform/web/ → "/"
 """
 
@@ -36,6 +36,7 @@ ROUTERS = [
     "aiplatform.api.routers.erp",
     "aiplatform.api.routers.audit",
     "aiplatform.api.routers.approvals",
+    "aiplatform.api.routers.demo",
 ]
 
 # Modül çalışma zamanlarının kayıt olması için içe aktarılır (her biri @register kullanır)

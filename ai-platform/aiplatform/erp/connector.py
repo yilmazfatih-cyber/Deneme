@@ -137,7 +137,16 @@ class ERPConnector(abc.ABC):
 
         with session_scope() as s:
             ap = s.get(Approval, approval_id)
-            if ap is None or ap.status != "approved" or ap.action != name:
+            tool_matches = False
+            if ap is not None:
+                if ap.module == "erp":
+                    tool_matches = ap.action == name
+                else:  # katalog modülünün onayı: araç adı payload içinde taşınır
+                    try:
+                        tool_matches = (json.loads(ap.payload_json or "{}") or {}).get("tool") == name
+                    except (TypeError, ValueError):
+                        tool_matches = False
+            if ap is None or ap.status != "approved" or not tool_matches:
                 raise ErpError(
                     "approval_invalid",
                     "Bu yazma işlemi için geçerli bir onay bulunamadı.",

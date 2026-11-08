@@ -9,6 +9,7 @@ route("sistem", () => import("./pages/sistem.js"));
 route("denetim", () => import("./pages/denetim.js"));
 route("onaylar", () => import("./pages/onaylar.js"));
 route("erp", () => import("./pages/erp.js"));
+route("demo", () => import("./pages/demo.js"));
 
 document.getElementById("drawer-close").addEventListener("click", () => {
   closeDrawer();

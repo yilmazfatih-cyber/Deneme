@@ -31,8 +31,9 @@ aiplatform check fatura-cikarim  # modül bu makinede çalışır mı, ne kadar 
 aiplatform serve                 # http://127.0.0.1:8080  → yönetim arayüzü
 ```
 
-Demo ERP ile uçtan uca: `python -m aiplatform.erp.mock_erp ~/.aiplatform/mock_erp.db` → arayüzde ERP
-bağlantısı ekle → `dogal-dil-sql` modülünü kur → "geçen yıl en çok ciro yapan 5 cari" diye sor.
+Satış demosu: arayüzde **Demo ERP** sekmesi → "Demo verisini kur" → ERP görünümlü ekranlar (cari kartlar, gelen evrak,
+faturalar, raporlar, nakit ve yatırım, onay kutusu, KVKK göstergesi); her düğme gerçek modül API'sini çağırır,
+kurulu olmayan modülde Türkçe hata ve mağaza bağlantısı gösterir. Ayrıntı: `docs/demo/DEMO.md`.
 
 ## Ekran görüntüleri
 
@@ -50,6 +51,8 @@ bağlantısı ekle → `dogal-dil-sql` modülünü kur → "geçen yıl en çok 
 | [docs/ERP_ENTEGRASYON.md](docs/ERP_ENTEGRASYON.md) | SQL / REST / webhook, onay kuyruğu, örnek istekler |
 | [docs/KVKK.md](docs/KVKK.md) | maskeleme tasarımı, ilkeler, müşteri bazında doldurulacaklar |
 | [docs/MODUL_SEMASI.md](docs/MODUL_SEMASI.md) | katalog alanları, yeni modül ekleme |
+| [docs/demo/DEMO.md](docs/demo/DEMO.md) | Demo ERP ekranları: kurulum, 15 dakikalık demo senaryosu, LLM yokken neler çalışır |
+| [docs/sunum/README.md](docs/sunum/README.md) | keşif toplantısı sunum şablonu (14 slayt) |
 
 ## Proje yapısı
 

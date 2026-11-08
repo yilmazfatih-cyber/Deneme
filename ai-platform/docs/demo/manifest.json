@@ -1,0 +1,236 @@
+{
+  "uyari": "Bütün belgeler sentetiktir; gerçek şirket veya kişi içermez.",
+  "alici": {
+    "unvan": "Örnek Şirket A.Ş.",
+    "vkn": "1234567890",
+    "vergi_dairesi": "Örnek Vergi Dairesi",
+    "adres": "Örnek Mah. Deneme Cad. No: 1, 34000 İstanbul"
+  },
+  "belgeler": [
+    {
+      "dosya_adi": "fatura_tedarikci01_2026-10.pdf",
+      "tur": "fatura",
+      "belge_no": "T01-2026-000418",
+      "tarih": "2026-10-24",
+      "cari_id": 21,
+      "tedarikci_unvan": "Tedarikçi 01 A.Ş.",
+      "tedarikci_vkn": "7679520118",
+      "aciklama": "Rulman, filtre ve conta seti alımı — tek KDV oranı (%20).",
+      "goruntu": "fatura_tedarikci01_2026-10_tarama.png",
+      "beklenen": {
+        "satirlar": [
+          {
+            "urun_kodu": "URN-0001",
+            "aciklama": "URN-0001 Rulman tip A01",
+            "miktar": 40,
+            "birim": "Adet",
+            "birim_fiyat": 78.5,
+            "kdv_orani": 20,
+            "tutar": 3140.0,
+            "kdv": 628.0
+          },
+          {
+            "urun_kodu": "URN-0005",
+            "aciklama": "URN-0005 Filtre tip A05",
+            "miktar": 60,
+            "birim": "Adet",
+            "birim_fiyat": 44.2,
+            "kdv_orani": 20,
+            "tutar": 2652.0,
+            "kdv": 530.4
+          },
+          {
+            "urun_kodu": "URN-0003",
+            "aciklama": "URN-0003 Conta seti tip A03",
+            "miktar": 25,
+            "birim": "Adet",
+            "birim_fiyat": 32.1,
+            "kdv_orani": 20,
+            "tutar": 802.5,
+            "kdv": 160.5
+          }
+        ],
+        "ara_toplam": 6594.5,
+        "kdv_toplam": 1318.9,
+        "genel_toplam": 7913.4,
+        "dogru_genel_toplam": 7913.4
+      }
+    },
+    {
+      "dosya_adi": "fatura_tedarikci02_2026-10.pdf",
+      "tur": "fatura",
+      "belge_no": "ABC2026000000731",
+      "tarih": "2026-10-29",
+      "cari_id": 22,
+      "tedarikci_unvan": "Tedarikçi 02 Ltd. Şti.",
+      "tedarikci_vkn": "2810604319",
+      "aciklama": "Ambalaj ve palet — karışık KDV (%20 ve %10).",
+      "goruntu": null,
+      "beklenen": {
+        "satirlar": [
+          {
+            "urun_kodu": "URN-0011",
+            "aciklama": "URN-0011 Rulo ambalaj tip A11",
+            "miktar": 30,
+            "birim": "Adet",
+            "birim_fiyat": 181.4,
+            "kdv_orani": 20,
+            "tutar": 5442.0,
+            "kdv": 1088.4
+          },
+          {
+            "urun_kodu": "URN-0012",
+            "aciklama": "URN-0012 Palet tip A12",
+            "miktar": 12,
+            "birim": "Adet",
+            "birim_fiyat": 248.7,
+            "kdv_orani": 10,
+            "tutar": 2984.4,
+            "kdv": 298.44
+          },
+          {
+            "urun_kodu": "URN-0006",
+            "aciklama": "URN-0006 Vida kutusu tip A06",
+            "miktar": 80,
+            "birim": "Adet",
+            "birim_fiyat": 20.75,
+            "kdv_orani": 20,
+            "tutar": 1660.0,
+            "kdv": 332.0
+          }
+        ],
+        "ara_toplam": 10086.4,
+        "kdv_toplam": 1718.84,
+        "genel_toplam": 11805.24,
+        "dogru_genel_toplam": 11805.24
+      }
+    },
+    {
+      "dosya_adi": "fatura_tedarikci03_2026-11.pdf",
+      "tur": "fatura",
+      "belge_no": "GIB2026000004102",
+      "tarih": "2026-11-03",
+      "cari_id": 23,
+      "tedarikci_unvan": "Tedarikçi 03 A.Ş.",
+      "tedarikci_vkn": "9239916192",
+      "aciklama": "Sensör, kablo makarası, kayış — üç farklı KDV oranı (%20, %1, %10).",
+      "goruntu": "fatura_tedarikci03_2026-11_tarama.png",
+      "beklenen": {
+        "satirlar": [
+          {
+            "urun_kodu": "URN-0009",
+            "aciklama": "URN-0009 Sensör tip A09",
+            "miktar": 4,
+            "birim": "Adet",
+            "birim_fiyat": 676.0,
+            "kdv_orani": 20,
+            "tutar": 2704.0,
+            "kdv": 540.8
+          },
+          {
+            "urun_kodu": "URN-0010",
+            "aciklama": "URN-0010 Kablo makarası tip A10",
+            "miktar": 2,
+            "birim": "Adet",
+            "birim_fiyat": 772.9,
+            "kdv_orani": 1,
+            "tutar": 1545.8,
+            "kdv": 15.46
+          },
+          {
+            "urun_kodu": "URN-0002",
+            "aciklama": "URN-0002 Kayış tip A02",
+            "miktar": 15,
+            "birim": "Adet",
+            "birim_fiyat": 115.6,
+            "kdv_orani": 10,
+            "tutar": 1734.0,
+            "kdv": 173.4
+          }
+        ],
+        "ara_toplam": 5983.8,
+        "kdv_toplam": 729.66,
+        "genel_toplam": 6713.46,
+        "dogru_genel_toplam": 6713.46
+      }
+    },
+    {
+      "dosya_adi": "fatura_tedarikci04_2026-11.pdf",
+      "tur": "fatura",
+      "belge_no": "T04-2026-001207",
+      "tarih": "2026-11-05",
+      "cari_id": 24,
+      "tedarikci_unvan": "Tedarikçi 04 Ltd. Şti.",
+      "tedarikci_vkn": "2308136893",
+      "aciklama": "Elektrik motoru ve hidrolik hortum — genel toplam bilerek 100 TL fazla basıldı (doğrulama uyarısı).",
+      "goruntu": null,
+      "beklenen": {
+        "satirlar": [
+          {
+            "urun_kodu": "URN-0007",
+            "aciklama": "URN-0007 Elektrik motoru tip A07",
+            "miktar": 1,
+            "birim": "Adet",
+            "birim_fiyat": 3664.4,
+            "kdv_orani": 20,
+            "tutar": 3664.4,
+            "kdv": 732.88
+          },
+          {
+            "urun_kodu": "URN-0004",
+            "aciklama": "URN-0004 Hidrolik hortum tip A04",
+            "miktar": 6,
+            "birim": "Adet",
+            "birim_fiyat": 296.8,
+            "kdv_orani": 20,
+            "tutar": 1780.8,
+            "kdv": 356.16
+          }
+        ],
+        "ara_toplam": 5445.2,
+        "kdv_toplam": 1089.04,
+        "genel_toplam": 6634.24,
+        "dogru_genel_toplam": 6534.24
+      }
+    },
+    {
+      "dosya_adi": "irsaliye_tedarikci01_2026-11.pdf",
+      "tur": "irsaliye",
+      "belge_no": "IRS-T01-2026-0932",
+      "tarih": "2026-11-06",
+      "cari_id": 21,
+      "tedarikci_unvan": "Tedarikçi 01 A.Ş.",
+      "tedarikci_vkn": "7679520118",
+      "aciklama": "Sevk irsaliyesi — fiyat içermez.",
+      "goruntu": null,
+      "beklenen": {
+        "satirlar": [
+          {
+            "urun_kodu": "URN-0001",
+            "aciklama": "URN-0001 Rulman tip A01",
+            "miktar": 40,
+            "birim": "Adet"
+          },
+          {
+            "urun_kodu": "URN-0013",
+            "aciklama": "URN-0013 Rulman tip B13",
+            "miktar": 20,
+            "birim": "Adet"
+          }
+        ]
+      }
+    },
+    {
+      "dosya_adi": "sozlesme_tedarikci05.pdf",
+      "tur": "sozlesme",
+      "belge_no": "SZL-2026-014",
+      "tarih": "2026-09-01",
+      "cari_id": 25,
+      "tedarikci_unvan": "Tedarikçi 05 A.Ş.",
+      "tedarikci_vkn": "2384495711",
+      "aciklama": "İki sayfalık tedarik çerçeve sözleşmesi (vade, ceza, KVKK, fesih maddeleri).",
+      "goruntu": null,
+      "beklenen": {}
+    }
+  ]
+}

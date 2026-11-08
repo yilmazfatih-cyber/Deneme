@@ -10,7 +10,7 @@ from fastapi.testclient import TestClient
 
 WEB = Path(__file__).resolve().parents[1] / "aiplatform" / "web"
 JS_FILES = sorted(p.relative_to(WEB).as_posix() for p in WEB.rglob("*.js"))
-PAGES = ["magaza", "kurulu", "sistem", "denetim", "onaylar", "erp"]
+PAGES = ["magaza", "kurulu", "sistem", "denetim", "onaylar", "erp", "demo"]
 
 
 @pytest.fixture(scope="module")
