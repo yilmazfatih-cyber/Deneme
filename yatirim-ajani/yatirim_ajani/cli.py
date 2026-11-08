@@ -332,6 +332,178 @@ def komut_tez_yukle(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
     return 0 if kimlikler else 1
 
 
+def komut_bilgi_olaylar(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
+    """Veriden sayısal olayları çıkarır, bilgi veritabanına yazar, anlamlandırma için JSON döker."""
+    import json
+
+    from .bilgi import ekle, tum_olaylar
+
+    piyasa = PIYASALAR[a.piyasa]
+    vs = SaatlikVeriSeti(ayarlar.veri_klasoru, piyasa.saat_dilimi)
+    db = baglan(ayarlar.veritabani)
+    olaylar = tum_olaylar(vs, piyasa, _hisseler(a.hisseler, ayarlar, a.piyasa))
+    for o in olaylar:
+        ekle(db, o)
+    sayim = {}
+    for o in olaylar:
+        sayim[(o.kapsam, o.tur)] = sayim.get((o.kapsam, o.tur), 0) + 1
+    print(f"{len(olaylar)} sayısal olay kaydedildi:")
+    for (k, t), n in sorted(sayim.items()):
+        print(f"  {k:<12} {t:<9} {n}")
+    if a.json_cikti:
+        Path(a.json_cikti).parent.mkdir(parents=True, exist_ok=True)
+        Path(a.json_cikti).write_text(
+            json.dumps([o.model_dump(exclude_none=True) for o in olaylar], ensure_ascii=False, indent=1), encoding="utf-8"
+        )
+        print(f"JSON: {a.json_cikti}")
+    return 0
+
+
+def komut_bilgi_yukle(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
+    """Dil modelinin ya da kullanıcının yazdığı anlamlı olayları (JSON) bilgi veritabanına ekler.
+
+    Biçim: {"olaylar": [Olay, ...]} ya da düz liste. Aynı anahtarlı sayısal kayıt varsa metni güncellenir.
+    """
+    import json
+
+    from pydantic import ValidationError
+
+    from .bilgi import Olay, OlayPaketi, ekle
+
+    ham = json.loads(Path(a.dosya).read_text(encoding="utf-8"))
+    try:
+        paket = OlayPaketi.model_validate({"olaylar": ham} if isinstance(ham, list) else ham)
+    except ValidationError as h:
+        print(f"Geçersiz dosya: {h}")
+        return 1
+    db = baglan(ayarlar.veritabani)
+    n = 0
+    for o in paket.olaylar:
+        if o.hisse and o.hisse.upper().startswith("TERA"):
+            continue
+        if o.kaynak_tipi == "metin" and any(getattr(o, k) is not None for k in ("getiri", "endekse_gore")):
+            o.kaynak_tipi = "birlesik"
+        ekle(db, Olay.model_validate(o.model_dump()))
+        n += 1
+    print(f"{n} olay yüklendi.")
+    return 0
+
+
+def komut_bilgi_sorgu(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
+    from .bilgi import ozet_metni, sorgula
+
+    db = baglan(ayarlar.veritabani)
+    baslangic = None
+    if a.son:
+        baslangic = (datetime.now() - pd.Timedelta(days=a.son)).date().isoformat()
+    df = sorgula(db, hisse=a.hisse, sektor=a.sektor, kapsam=a.kapsam, baslangic=baslangic, metin=a.metin, limit=a.limit)
+    print(ozet_metni(df, uzun=not a.kisa))
+    return 0
+
+
+def komut_bilgi_benzer(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
+    """Bugünkü sayısal duruma (son 20 gün) en çok benzeyen geçmiş olaylar ve o zaman ne olduğu."""
+    from .bilgi import benzer, bugunku_durum, ozet_metni
+
+    piyasa = PIYASALAR[a.piyasa]
+    vs = SaatlikVeriSeti(ayarlar.veri_klasoru, piyasa.saat_dilimi)
+    db = baglan(ayarlar.veritabani)
+    hisseler = [a.hisse.upper()] if a.hisse else _hisseler(None, ayarlar, a.piyasa)
+    for h in hisseler:
+        durum = bugunku_durum(vs, piyasa, h)
+        if not durum:
+            continue
+        df = benzer(db, durum, hisse=None if a.tum_hisseler else h, k=a.k)
+        if df.empty:
+            continue
+        ozet = ", ".join(f"{k} {v:+.2f}" for k, v in durum.items() if v is not None)
+        print(f"\n== {h}  bugün: {ozet}")
+        print(ozet_metni(df, uzun=not a.kisa))
+    return 0
+
+
+def komut_simule(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
+    """Strateji ailesini 1M TL ile simüle eder; üç ölçüm; model eşiği yalnız ilk yılda seçilir."""
+    from .ogrenme.simulasyon import (
+        STRATEJILER, ModelKapili, gunluk_ozellikler, hedef_ertesi_gun, kesme_indeksi, model_egit_ve_tahmin,
+        panel_kur, simule, uc_olcum, uzun_tablo,
+    )  # fmt: skip
+
+    piyasa = PIYASALAR[a.piyasa]
+    vs = SaatlikVeriSeti(ayarlar.veri_klasoru, piyasa.saat_dilimi)
+    bolme = Bolme(Path(ayarlar.veri_klasoru) / "etiketler.csv", ayarlar.test_orani, ayarlar.tohum)
+    panel = panel_kur(vs, piyasa, _hisseler(a.hisseler, ayarlar, a.piyasa))
+    if len(panel.gunler) < 60:
+        print("Simülasyon için en az 60 gün gerekir; önce veri-cek.")
+        return 1
+    kes = kesme_indeksi(panel, a.secim_ay)
+    nakit = a.nakit or ayarlar.baslangic_nakit[a.piyasa]
+    c = (piyasa.spread_bps + piyasa.kayma_bps) / 10_000 + piyasa.komisyon_orani
+    satirlar = [
+        f"# Strateji simülasyonu — {piyasa.kod.upper()} — {panel.gunler[0].date()} → {panel.gunler[-1].date()}",
+        "",
+        f"Başlangıç {nakit:,.0f} {piyasa.para_birimi}; {len(panel.hisseler)} hisse; tek yön maliyet {c:.2%}.",
+        f"Ödül = log(W_T/W_0) − maks düşüş. Seçim penceresi ilk {a.secim_ay} ay (→ {panel.gunler[kes].date()}); "
+        "ileriye yürüyen ölçüm sonrası.",
+        "",
+        "| Strateji | Tüm dönem (geriye bakışlı) | Yalnız test günleri | İleriye yürüyen | Maks düşüş (ileri) | Maliyet (ileri) |",
+        "|---|---|---|---|---|---|",
+    ]
+    sonuclar = {}
+    for ad, st in STRATEJILER.items():
+        r = uc_olcum(panel, st, ad, nakit, c, bolme, kes)
+        sonuclar[ad] = r
+        satirlar.append(
+            f"| {ad} | {r['tum_donem'].bitis:,.0f} ({r['tum_donem'].getiri:+.1%}) | {r['test_gunleri'].bitis:,.0f} ({r['test_gunleri'].getiri:+.1%}) "
+            f"| **{r['ileriye_yuruyen'].bitis:,.0f} ({r['ileriye_yuruyen'].getiri:+.1%})** | {r['ileriye_yuruyen'].max_dusus:.1%} | {r['ileriye_yuruyen'].islem_maliyeti:,.0f} |"
+        )
+    # Model kapılı: eşik ve model türü yalnız seçim penceresindeki ödüle göre
+    g = vs.saatlik(piyasa.gosterge)
+    gosterge = None
+    if not g.empty:
+        gun = pd.Series(pd.to_datetime(g.index.date), index=g.index)
+        gosterge = g["kapanis"].groupby(gun).last()
+    tablo = uzun_tablo(gunluk_ozellikler(panel, gosterge), hedef_ertesi_gun(panel), panel.gunler)
+    tr = bolme.maske(pd.DatetimeIndex(tablo["gun"]), "train")
+    bitis = panel.gunler[kes]
+    en_iyi = None
+    for tur in ("ridge", "mlp"):
+        tah, bilgi = model_egit_ve_tahmin(tablo, bitis, tr, tur)
+        for esik in (0.0, 0.0025, 0.005, 0.0075, 0.01):
+            st = ModelKapili(tah, esik, 2 * c)
+            secim = simule(panel, st, f"{tur}@{esik:.2%}", nakit, c, bit=kes)  # yalnız seçim penceresi (örnek içi)
+            ileri = simule(panel, st, f"{tur}@{esik:.2%}", nakit, c, bas=kes)
+            tum = simule(panel, st, f"{tur}@{esik:.2%}", nakit, c)
+            test = simule(panel, st, f"{tur}@{esik:.2%}", nakit, c, gun_maskesi=bolme.maske(panel.gunler, "test"))
+            satirlar.append(
+                f"| model {tur} eşik {esik:.2%} | {tum.bitis:,.0f} ({tum.getiri:+.1%}) | {test.bitis:,.0f} ({test.getiri:+.1%}) "
+                f"| **{ileri.bitis:,.0f} ({ileri.getiri:+.1%})** | {ileri.max_dusus:.1%} | {ileri.islem_maliyeti:,.0f} |"
+            )
+            if en_iyi is None or secim.odul > en_iyi[0]:
+                en_iyi = (secim.odul, tur, esik, ileri, bilgi)
+    assert en_iyi is not None
+    _, tur, esik, ileri, bilgi = en_iyi
+    satirlar += [
+        "",
+        f"Seçim penceresi ödülüne göre seçilen model: **{tur}, eşik {esik:.2%}** → ileriye yürüyen sonuç "
+        f"**{ileri.bitis:,.0f} ({ileri.getiri:+.1%})**, maks düşüş {ileri.max_dusus:.1%}, maliyet {ileri.islem_maliyeti:,.0f}. "
+        f"Dışarı korelasyon {bilgi.get('disari_korelasyon', float('nan')):.3f}.",
+        "",
+        "Okuma kılavuzu: 'Tüm dönem' sütunu seçimin yapıldığı veriyi de kapsar, şişkindir. 'İleriye yürüyen' sütunu "
+        "bugünkü paraya en yakın dürüst tahmindir. Hiçbir strateji al-tut'u ileriye yürüyen ölçümde anlamlı ve "
+        "maliyet sonrası geçmiyorsa, cevap 'al-tut ya da nakit'tir.",
+        "",
+        "Yatırım tavsiyesi değildir.",
+    ]
+    metin = "\n".join(satirlar)
+    print(metin)
+    yol = Path(ayarlar.rapor_klasoru) / f"simulasyon-{piyasa.kod}-{panel.gunler[-1]:%Y%m%d}.md"
+    yol.parent.mkdir(parents=True, exist_ok=True)
+    yol.write_text(metin + "\n", encoding="utf-8")
+    print(f"\nRapor: {yol}")
+    return 0
+
+
 def komut_yeniden_baslat(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
     SanalAraci(baglan(ayarlar.veritabani), PIYASALAR[a.piyasa]).yeniden_baslat()
     print(f"{a.piyasa.upper()} hesabı yeniden açıldı.")
@@ -416,6 +588,40 @@ def ayristirici() -> argparse.ArgumentParser:
     sp.add_argument("--an", help="Geçmiş karar anı (zaman kilitli)")
     sp.add_argument("--zorla", action="store_true", help="Haftalık aralığı bekleme")
     sp.set_defaults(islev=komut_ekip)
+
+    sp = alt.add_parser("simule", help="Strateji ailesi: al-tut, gece, gündüz, momentum, trend, model kapılı; 3 ölçüm")
+    ortak(sp)
+    sp.add_argument("--nakit", type=float)
+    sp.add_argument("--secim-ay", type=int, default=12, help="İlk N ay seçim/eğitim, kalanı ileriye yürüyen ölçüm")
+    sp.set_defaults(islev=komut_simule)
+
+    sp = alt.add_parser("bilgi-olaylar", help="Veriden sayısal olayları çıkar (yükseliş/düşüş/şok/hacim), bilgi veritabanına yaz")
+    ortak(sp)
+    sp.add_argument("--json-cikti", help="Anlamlandırma için olay listesini bu JSON'a yaz")
+    sp.set_defaults(islev=komut_bilgi_olaylar)
+
+    sp = alt.add_parser("bilgi-yukle", help="Anlamlı olayları (JSON) bilgi veritabanına ekle")
+    sp.add_argument("dosya")
+    sp.set_defaults(islev=komut_bilgi_yukle)
+
+    sp = alt.add_parser("bilgi-sorgu", help="Bilgi veritabanını sorgula (hisse/sektör/kapsam/metin/son N gün)")
+    sp.add_argument("--piyasa", choices=list(PIYASALAR), default="bist")
+    sp.add_argument("--hisse")
+    sp.add_argument("--sektor")
+    sp.add_argument("--kapsam", choices=["sirket", "sektor", "yerel_makro", "kuresel"])
+    sp.add_argument("--metin", help="anlam/başlık/etiket içinde ara")
+    sp.add_argument("--son", type=int, help="Son N gün")
+    sp.add_argument("--limit", type=int, default=50)
+    sp.add_argument("--kisa", action="store_true")
+    sp.set_defaults(islev=komut_bilgi_sorgu)
+
+    sp = alt.add_parser("bilgi-benzer", help="Bugünkü duruma sayısal olarak en çok benzeyen geçmiş olaylar")
+    sp.add_argument("--piyasa", choices=list(PIYASALAR), default="bist")
+    sp.add_argument("--hisse")
+    sp.add_argument("--k", type=int, default=3)
+    sp.add_argument("--tum-hisseler", action="store_true", help="Benzerliği yalnız aynı hissede değil tüm olaylarda ara")
+    sp.add_argument("--kisa", action="store_true")
+    sp.set_defaults(islev=komut_bilgi_benzer)
 
     sp = alt.add_parser("yeniden-baslat", help="Düşüş sınırıyla durmuş sanal hesabı yeniden aç")
     sp.add_argument("--piyasa", choices=list(PIYASALAR), required=True)
