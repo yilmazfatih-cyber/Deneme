@@ -147,6 +147,42 @@ yazılır. Haftalık rapor ayrıca bir GitHub Issue olarak açılır; telefonunu
 
 `ekip` komutu (API anahtarıyla çalışan sürüm) kodda durur; aboneliği aşan bir ihtiyaç olursa açılır.
 
+## Bilgi veritabanı: sayı + anlam
+
+`olaylar` tablosu (veri/ajan.db) Kasım 2024'ten bugüne piyasada iz bırakmış olayları hem sayısal
+katsayılarla (aralık getirisi, endekse göre fark, hacim z-skoru, sonraki 5/20 gün) hem metinle
+(ne oldu, yatırımcı kitlesi nasıl tepki verdi, önden görülebilir miydi, kaynaklar) tutar.
+
+```bash
+python -m yatirim_ajani bilgi-olaylar --piyasa bist      # veriden sayısal olayları çıkar
+python -m yatirim_ajani bilgi-yukle bilgi_kaynak/x.json  # anlam katmanını ekle (Olay şeması: bilgi/sema.py)
+python -m yatirim_ajani bilgi-sorgu --hisse ASELS --son 90
+python -m yatirim_ajani bilgi-benzer --hisse ASELS       # bugünkü duruma benzeyen geçmiş olaylar, sonrası ne oldu
+```
+
+`bilgi_kaynak/` klasöründeki JSON dosyaları anlam katmanının kaynağıdır (sektör grupları + makro
+zaman çizelgesi); iş akışı her akşam bunları veritabanına yeniden yükler. `docs/tersine-analiz-2026-11.md`
+10 hisse için geriye bakışlı "bu hareket nereden geldi" anlatısıdır; tahmin kanıtı değildir.
+
+## Strateji simülasyonu
+
+```bash
+python -m yatirim_ajani simule --piyasa bist
+```
+
+Al-tut, gece (kapanış→açılış), gündüz, gece+momentum, trend, haftalık momentum ve model kapılı
+(ridge / numpy MLP) stratejileri 1.000.000 TL ile maliyetli simüle eder. Üç ölçüm verir: tüm dönem
+(geriye bakışlı, şişkin), yalnız test günleri, ileriye yürüyen (ilk 12 ay seçim, kalanı ölçüm).
+Model eşiği yalnız seçim penceresinde seçilir. Kas 2024–Kas 2026 bulgusu: kazanç gecede oluşur,
+gün içi ortalaması negatiftir; her gün al-sat maliyetle ölür; hiçbir model ileriye yürüyen ölçümde
+al-tut'u güvenilir biçimde geçmedi.
+
+## İstek üzerine "bugün neye yatırılır"
+
+Claude Code'da "Yatırım ajanı — bugün neye yatırılır" görevi elle çalıştırılır (aboneliğinizden);
+yönerge `GUNLUK.md`. Çıktı: hisse bazlı olasılıklı öneri, gece taşıma kararı, bilgi veritabanından
+en benzer geçmiş olay, GitHub Issue.
+
 ## Bilmeniz gerekenler
 
 - **Midas'ın herkese açık emir API'si yok.** Bu yüzden sistem emir göndermez. `raporlar/` altına
