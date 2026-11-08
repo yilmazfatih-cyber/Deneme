@@ -734,6 +734,41 @@ def komut_agac_degerlendir(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
     return 0
 
 
+def komut_evrim(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
+    """Hücre bahçesi: su (sermaye) gerçekleşen getiriye göre dağılır; kuruyan silinir, kazanan dallanır."""
+    from .bilgi import SEKTORLER, sorgula
+    from .ogrenme.agac import ozellik_havuzu
+    from .ogrenme.evrim import Bahce
+    from .ogrenme.simulasyon import panel_kur
+
+    piyasa = PIYASALAR[a.piyasa]
+    vs = SaatlikVeriSeti(ayarlar.veri_klasoru, piyasa.saat_dilimi)
+    db = baglan(ayarlar.veritabani)
+    panel = panel_kur(vs, piyasa, _hisseler(a.hisseler, ayarlar, a.piyasa))
+    g = vs.saatlik(piyasa.gosterge)
+    gosterge = g["kapanis"].groupby(pd.Series(pd.to_datetime(g.index.date), index=g.index)).last()
+    hacim = pd.DataFrame({h: (lambda df: df["hacim"].groupby(pd.Series(pd.to_datetime(df.index.date), index=df.index)).sum())(vs.saatlik(piyasa.sembol(h))) for h in panel.hisseler})
+    oz, turler = ozellik_havuzu(panel, gosterge, hacim, sorgula(db, limit=100000), SEKTORLER)
+    havuz = [p for p in oz if p not in ("ay_sonu",)]
+    c = ((piyasa.spread_bps + piyasa.kayma_bps) / 10_000 + piyasa.komisyon_orani) * a.maliyet_carpani
+    nakit = a.nakit or ayarlar.baslangic_nakit[a.piyasa]
+    bahce = Bahce(panel, oz, c, nakit, havuz, tohum=a.tohum if a.tohum is not None else ayarlar.tohum, eta=a.eta, dongu=a.dongu, max_hucre=a.max_hucre, isinma=a.isinma)
+    s = bahce.calistir()
+    yol = Path(ayarlar.rapor_klasoru) / f"evrim-{piyasa.kod}-{panel.gunler[-1]:%Y%m%d}.json"
+    s.kaydet(yol)
+    canli = [h for h in s.hucreler.values() if h.olum is None]
+    kuruyan = [h for h in s.hucreler.values() if h.olum is not None]
+    print(f"Bahçe {s.gunler[0]} → {s.gunler[-1]}: bitiş {s.egri.iloc[-1]:,.0f} ({s.egri.iloc[-1] / nakit - 1:+.1%}) | al-tut {s.al_tut_egri.iloc[-1]:,.0f} ({s.al_tut_egri.iloc[-1] / nakit - 1:+.1%}) | maliyet {s.maliyet_toplam:,.0f}")
+    dd = float((s.egri / s.egri.cummax() - 1).min())
+    print(f"Maks düşüş {dd:.1%}; toplam hücre {len(s.hucreler)}, canlı {len(canli)}, kurumuş {len(kuruyan)}; dallanma {sum(1 for o in s.olaylar if o['tur'] == 'dallandi')}")
+    print("\nCanlı hücreler (su payı, kümülatif getiri):")
+    for h in sorted(canli, key=lambda x: -(x.pay_gecmisi[-1] if x.pay_gecmisi else 0.0))[:10]:
+        su = h.pay_gecmisi[-1] if h.pay_gecmisi else 0.0
+        print(f"  #{h.id:<3} su {su:5.1%}  kümülatif {h.kumulatif:+7.1%}  {h.tur:<6} {h.parametreler} eşik {h.esik:.2%}")
+    print(f"\nKayıt: {yol}")
+    return 0
+
+
 def komut_yeniden_baslat(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
     SanalAraci(baglan(ayarlar.veritabani), PIYASALAR[a.piyasa]).yeniden_baslat()
     print(f"{a.piyasa.upper()} hesabı yeniden açıldı.")
@@ -848,6 +883,17 @@ def ayristirici() -> argparse.ArgumentParser:
     sp.add_argument("--secim-ay", type=int, default=12)
     sp.add_argument("--esik", type=float, default=0.005)
     sp.set_defaults(islev=komut_agac_degerlendir)
+
+    sp = alt.add_parser("evrim", help="Hücre bahçesi: su gerçekleşen getiriye göre dağılır, kuruyan silinir, kazanan dallanır")
+    ortak(sp)
+    sp.add_argument("--nakit", type=float)
+    sp.add_argument("--eta", type=float, default=8.0, help="Su güncelleme hızı (çarpımsal ağırlık)")
+    sp.add_argument("--dongu", type=int, default=21, help="Evrim döngüsü (işlem günü)")
+    sp.add_argument("--max-hucre", type=int, default=14)
+    sp.add_argument("--isinma", type=int, default=120, help="İlk eğitim için beklenen gün")
+    sp.add_argument("--tohum", type=int, help="Mutasyon rastgeleliği (varsayılan ayarlardaki tohum)")
+    sp.add_argument("--maliyet-carpani", type=float, default=1.0, help="Stres testi için 2.0")
+    sp.set_defaults(islev=komut_evrim)
 
     sp = alt.add_parser("bilgi-olaylar", help="Veriden sayısal olayları çıkar (yükseliş/düşüş/şok/hacim), bilgi veritabanına yaz")
     ortak(sp)
