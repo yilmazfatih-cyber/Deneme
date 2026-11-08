@@ -144,10 +144,8 @@ anlamı farklıdır:
 B "belirlenmemiş" bir parametreyi A'dan doldurmaz; yalnız-B kipinde o parametre geniş aralıkla ve "veriniz bunu söylemiyor" notuyla
 görünür. Doldurma yalnız A+B kipinde, açık birleştirmeyle olur (§10). Ortak koruma kuralları:
 
-1. **Olabilirlik tavlaması:** oturum/ziyaret içi olaylar bağımsız değildir; oturum etkisi ξ_ij ve log olabilirlik çarpanı α ∈ (0,1]
-   (C3 kapsamasıyla kalibre). B'nin aşırı kesinliğine karşı ilk savunmadır.
-2. **Birimler arası varyansın alt sınırı:** σ sıfıra çökerse birimler aynılaşır (kalıp yargı çöküşü); sonsal σ öncülün alt %5'inin altında
-   ise uyarı.
+1. **Olabilirlik tavlaması:** oturum içi olaylar bağımsız değildir; oturum etkisi ξ_ij ve çarpan α ∈ (0,1] (C3 ile kalibre).
+2. **Varyans alt sınırı:** σ sıfıra çökerse birimler aynılaşır (kalıp yargı çöküşü); öncülün alt %5'inin altında uyarı.
 3. **Öncül-veri çatışma testi** (A içinde): birimin toplu verisi üst seviyenin öncül öngörüsünde kuyruktaysa "atipik" bayrağı.
 4. **Sonsaldan çekiliş, ortalama değil** (03 P3).
 5. **Küçük örneklem eşiği:** A'da S2–S3 birimi n < 50 (varsayım) bağımsız gözlemde "yerel" alamaz; B'de toplam etkin müşteri < 50 ise
@@ -155,22 +153,17 @@ görünür. Doldurma yalnız A+B kipinde, açık birleştirmeyle olur (§10). Or
 
 ### 3.6 S3 ve B'de gözlem türleri: fiziksel konum ve web sitesi
 
-| Fiziksel mağaza | A (S3, toplu) | B (müşteri düzeyi) |
+| Kanal · gözlem | A (S3, toplu) | B (müşteri düzeyi) |
 | --- | --- | --- |
-| Ziyaret sayısı, saat dağılımı (kapı sayacı) | Konum trafiği, ölçeğin paydası | — |
-| Kasa (POS) fişi: sepet, tutar, ödeme biçimi, taksit | Mağaza/gün oranları → `eta_fiyat`, `beta_simdicilik` | Yalnız sadakat kartına bağlı fişler |
-| Kampanya tepkisi (kupon, raf etiketi, "son gün" afişi) | Mağaza düzeyi tepki → `theta_kitlik`, `lambda_kayip` | Kartlı kupon kullanımı |
-| Konum türü ve çevresi | Γ³ sabit etkisi | Ortak değişken |
+| Mağaza · ziyaret sayısı, saat dağılımı (kapı sayacı) | Trafik, ölçeğin paydası | — |
+| Mağaza · kasa (POS) fişi: sepet, tutar, taksit | Mağaza/gün oranları → `eta_fiyat`, `beta_simdicilik` | Yalnız sadakat kartına bağlı fişler |
+| Mağaza · kampanya tepkisi (kupon, raf etiketi, afiş) | Mağaza düzeyi tepki → `theta_kitlik`, `lambda_kayip` | Kartlı kupon kullanımı |
+| Web · olay günlüğü (04 §7), görünürlük | Sayfa düzeyi oranlar | Oturum dizisi → `dikkat_esigi`, `w_yorum`, `kappa_secim_yuku` |
+| Web · sepet, ödeme, terk; yükleme ve hata | Site terk ve sabır eğrisi | `lambda_kayip`, `eta_fiyat`, `sabir`, `hayal_kirikligi_esigi` |
+| Web · reklam atlama; A/B testleri | Toplu atlama eğrisi; kol etkisi | `tau_reklam_tolerans`; kişi içi nedensel tanımlama |
 
-| Web sitesi / uygulama | A (S3, toplu) | B (müşteri düzeyi) |
-| --- | --- | --- |
-| Olay günlüğü (04 §7): görüntüleme, tıklama, kaydırma, görünürlük | Sayfa düzeyi oranlar | Takma adlı oturum dizisi → `dikkat_esigi`, `w_yorum`, `kappa_secim_yuku` |
-| Sepet, ödeme, terk | Site terk eğrisi | `lambda_kayip`, `eta_fiyat`, `phi_guven_isareti` |
-| Yükleme süresi, hatalar | Site düzeyi sabır eğrisi | `sabir`, `hayal_kirikligi_esigi` |
-| Reklam oynatma/atlama | Toplu atlama eğrisi | `tau_reklam_tolerans` (sağdan sansürlü) |
-| A/B testleri | Kol düzeyi nedensel etki | Kişi içi nedensel tanımlama |
-
-Fiziksel mağazada B ancak rızalı sadakat kartıyla kurulur ve kart sahiplerini temsil eder; web'de B verisi boldur.
+Fiziksel mağazada B ancak rızalı sadakat kartıyla kurulur ve kart sahiplerini temsil eder; web'de B verisi boldur. Konum türü
+(AVM, cadde, semt) A'da Γ³ sabit etkisi, B'de yalnız ortak değişkendir.
 
 ### 3.7 Kaynak B: sıfırdan gerçek müşteri modeli
 
@@ -298,17 +291,17 @@ Parametrik olmayan noktada (hangi menüye bakılır) LLM motorun sınırları i�
 
 ## 6. Doğrulama
 
-1. **Simülasyon tabanlı kalibrasyon** (SBC; Talts ve ark., arXiv:1804.06788): A'nın her seviyesi, B ve birleştirme için ayrı kapı.
-2. **Öncül öngörü kontrolü:** A'nın her seviyesi ve B'nin zayıf öncülü akla yatkın davranış üretmeli (ör. sepet terk %20–%95; varsayım).
-3. **Sonsal öngörü kontrolü** (Gabry ve ark., arXiv:1709.01449): terk oranı, atlama zamanı, birimler arası varyans (03 P3), kuyruklar
-   (P4), alt grup farkları (P5), A'da S2–S3, B'de küme ve nüfus düzeyinde.
+1. **SBC** (Talts ve ark., arXiv:1804.06788): A'nın her seviyesi, B ve birleştirme için ayrı kapı.
+2. **Öncül öngörü kontrolü:** A seviyeleri ve B'nin zayıf öncülü akla yatkın davranış üretmeli (ör. sepet terk %20–%95; varsayım).
+3. **Sonsal öngörü kontrolü** (Gabry ve ark., arXiv:1709.01449): terk oranı, atlama zamanı, varyans (03 P3), kuyruklar (P4), alt grup
+   farkları (P5).
 4. **Tutma isabeti.** Zaman temelli bölme (03 §8.2); log öngörü yoğunluğu, olay başına Brier, %80 aralık kapsaması. Temel çizgiler:
    A'da her seviye bir üstünü geçmeli (geçemeyen "yerel" iddiasını kaybeder); B havuzsuz frekans tahminini ve A'nın S3 öngörüsünü
    geçmeli; A+B hem A'yı hem B'yi geçmeli, geçemiyorsa birleştirme ağırlığı yanlıştır.
 5. **Aktarım testi:** kiracının yeni A/B'sinde profiller koşulur, gerçek kollarla karşılaştırılır (03 §8.4(c) mühürlü kör tahmin).
-6. **B'nin aşırı kesinlik testi (A'ya karşı).** B'nin %80 aralığı A'nın öngörü aralığını dışlıyor ve n_eff küçükse (varsayım: < 500) iki
-   açıklama vardır: gerçek fark ya da B'nin aşırı kesinliği. Ayırt etmek için B'nin tutma kapsamasına bakılır: kapsama hedefin altındaysa
-   (< %70) B aşırı kesindir, tavlama α düşürülür ve "fark" bulgusu askıya alınır; kapsama hedefteyse fark gerçek kabul edilir.
+6. **B'nin aşırı kesinlik testi (A'ya karşı).** B'nin %80 aralığı A'nın öngörü aralığını dışlıyor ve n_eff küçükse (varsayım: < 500), ya
+   gerçek fark vardır ya B aşırı kesindir. B'nin tutma kapsaması hedefin altındaysa (< %70) B aşırı kesindir: α düşürülür, "fark"
+   bulgusu askıya alınır; kapsama hedefteyse fark kabul edilir.
 7. **A'nın Türkiye öncüllerinin kalibrasyonu (B'ye karşı).** Kiracılar boyunca standartlaştırılmış farklar z_t = Δ_t / sd(Δ_t) toplanır.
    A iyi kalibre ise z_t ortalaması ≈ 0 ve varyansı ≈ 1'dir; ortalama sistematik olarak sapıyorsa S1 yanlıdır, varyans > 1 ise S1–S3
    aralıkları dardır. Bu istatistik kimliksiz ve en az beş kiracıdan S1'e akar (§3.1, F-9); S1'in yanlılık düzeltmesi ve aktarım çarpanı
@@ -381,7 +374,7 @@ motor, sabitlenen parametrelere koşullu olarak kalanları ilgili sonsaldan çek
 |r| > 0,5 (varsayım) ise tasarım uyarı verir. **A'nın seviyesi her zaman seçilebilir:** A+B'de A'yı S1'de tutmak, "Türkiye genelinden
 farkımız" sorusunu; S3'te tutmak, "bu konumun tipik kitlesinden farkımız" sorusunu yanıtlar.
 
-**Yalnız B her zaman daha iyi değildir.** B yalnız mevcut müşteriyi temsil eder; yeni kitleye yönelik kararda A daha uygundur.
+Yalnız B her zaman daha iyi değildir: B yalnız mevcut müşteriyi temsil eder.
 
 ### 9.2 Rapor: "parametre kaynağı" sütunu ve B vurgusu
 
@@ -408,8 +401,7 @@ uydurmayı gerektirmez; öncül değişimi önem ağırlığıyla yapılır:
 p_A+B(θ | y_B) ∝ p_B(θ | y_B) · p_A(θ) / p₀(θ)        ağırlık w_s = p_A(θ_s) / p₀(θ_s),  θ_s ~ p_B
 ```
 
-Ağırlıklar Pareto-düzeltilmiş önem örneklemesiyle kararlı kılınır (PSIS; Vehtari ve ark., arXiv:1507.02646); k̂ > 0,7 ise B, A öncülüyle
-yeniden NUTS ile uydurulur. Birleştirmede A, **sağlam karışım** biçiminde girer (0,8 · p_A + 0,2 · geniş bileşen): B, A ile çatışıyorsa
+Ağırlıklar PSIS ile kararlı kılınır (Vehtari ve ark., arXiv:1507.02646); k̂ > 0,7 ise B, A öncülüyle yeniden NUTS ile uydurulur. Birleştirmede A, **sağlam karışım** biçiminde girer (0,8 · p_A + 0,2 · geniş bileşen): B, A ile çatışıyorsa
 geniş bileşen ağırlık kazanır ve birleşik kestirim B'ye kayar. Böylece müşterinin gerçek farkı A tarafından "yumuşatılıp" silinmez
 (ADR-003 gerekçesi).
 
@@ -442,10 +434,9 @@ başına raporlanan alanlar:
 **Çoklu karşılaştırma.** Yaklaşık 20 parametrede rastlantısal "anlamlı fark" çıkar. Farklar ayrıca ortak bir hiyerarşik modelde birlikte
 büzülür (Δ_k ~ N(0, s_Δ)); rapordaki sınıf büzülmüş Δ'dan hesaplanır (Gelman, Hill & Yajima 2012, doi:10.1080/19345747.2011.618213).
 
-**Fark kendi başına bulgudur.** Şablon: "Türkiye genelinde (A, S1) kargo ücreti görüldüğünde sepet terki %22 [%17; %28]; sizin
-müşterilerinizde (B, n = 3.120) %31 [%27; %35]. Fark +9 yp [+3; +15], anlamlı." Olası açıklamalar yanında verilir: (a) *gerçek fark*
-(B örneklemi büyük, uyaran rastgele, kümelerde tutarlı); (b) *köprü/ölçüm farkı* (aynı yönlü sapma birçok kiracıda görülürse güçlenir,
-§6.7); (c) *seçim yanlılığı* (gözlemsel maruziyet, kitle bileşimi; §4.2). A içindeki seviyeler arası tutarsızlık (S3 toplu verisi S1'den
+**Fark kendi başına bulgudur.** Şablon: "Türkiye genelinde (A, S1) kargo ücreti görülünce sepet terki %22 [%17; %28]; sizin
+müşterilerinizde (B, n = 3.120) %31 [%27; %35]. Fark +9 yp [+3; +15], anlamlı." Olası açıklama yanında verilir: (a) *gerçek fark*;
+(b) *köprü/ölçüm farkı* (aynı sapma birçok kiracıda görülürse güçlenir, §6.7); (c) *seçim yanlılığı* (§4.2). A içindeki seviyeler arası tutarsızlık (S3 toplu verisi S1'den
 |z| ≥ 3 sapıyor) aynı tabloda "A iç çatışması" satırı olarak gösterilir.
 
 Anlamlı fark taşıyan parametreye dayanan bir karar önerisi, raporda A ve B ile ayrı ayrı da koşulur ve üç sonuç birlikte verilir.
@@ -470,16 +461,9 @@ BehaviorScale {
 }
 ```
 
-| Alan | Soru | Kural |
-| --- | --- | --- |
-| `prevalence` | Ne kadar yaygın? | Birim/olay oranı; tanım cümlesi zorunlu |
-| `effect_size` | Ne büyüklükte? | Ölçü ve karşıtlık zorunlu; `causal: false` ise "ilişki" denir |
-| `heterogeneity` | Nasıl dağılmış? | Birimler arası SD, yüzdelikler; çok tepeli ise alt grup sinyali |
-| `subunits` | Alt birimlerde aralık | A'da şehir/konum, B'de küme |
-| `n` | Kaç gözlem? | Birim, olay, etkin örneklem ayrı |
-| `confidence` | Ne kadar emin? | Düşük/orta/yüksek; aralık genişliği, daralma ve nedensellikten |
-| `vs_other` | Diğer kaynaktan farkı | §10.2 sınıfı |
-| `k_anon_ok` | Yayınlanabilir mi? | B'de birim < 50 ise üretilir, rapora girmez |
+Kurallar: `prevalence` tanım cümlesi ve `effect_size` ölçü + karşıtlık olmadan geçersizdir; `causal: false` ise rapor "ilişki" der;
+`heterogeneity` çok tepeliyse alt grup sinyali açılır; `n` birim, olay ve etkin örneklemi ayrı verir; `confidence` aralık genişliği,
+daralma ve nedensellikten türetilir; B'de birim < 50 ise nesne üretilir ama `k_anon_ok: false` ile rapora girmez.
 
 A'da nesne literatür, kamu verisi ve toplu konum verisinden; B'de müşteri gözleminden üretilir. Simülasyon sonucu da aynı nesneyle döner
 (`origin: simulated`); gözlenen ve simüle ölçek yan yana durur, fark 03'ün kalibrasyonuna girer.
@@ -488,8 +472,8 @@ A'da nesne literatür, kamu verisi ve toplu konum verisinden; B'de müşteri gö
 
 Arayüz: `06-guven-gizlilik.md`. Kişiye gösterim, erişim/itiraz arayüzü ve kişi düzeyi dışa aktarma kaldırılmıştır (ADR-002, ADR-003).
 
-- **Amaç sınırı:** B verisi (olay dizisi, sonsal çekilişler, küme üyelikleri) yalnız B kestirimi, birleştirme ve toplu çıkarım için işlenir.
-  Kişi kimliğiyle rapor, dışa aktarım, CRM'e geri yazım ve bireysel arayüz yoktur.
+- **Amaç sınırı:** B verisi yalnız B kestirimi, birleştirme ve toplu çıkarım için işlenir; kişi kimliğiyle rapor, dışa aktarım, CRM'e geri
+  yazım ve bireysel arayüz yoktur.
 - **Depo:** kiracı anahtarıyla şifreli; `subject_ref` takma adı depodan çıkmaz. B kümeleri ve A'nın S2–S3 özetleri k ≥ 50 kuralına tabidir (06 §3.3).
 - **Standart KVKK silme:** kişinin olayları, çekilişleri, üyelikleri silinir; hiper uydurma alt örneklemindeyse sonraki planlı uydurma onsuz
   yapılır (varsayım: ≤ 30 gün, hukuki görüşle doğrulanmalı); gerekirse alt örneklem parçalara bölünür (SISA; Bourtoule ve ark.,
@@ -499,9 +483,8 @@ Arayüz: `06-guven-gizlilik.md`. Kişiye gösterim, erişim/itiraz arayüzü ve 
 
 ## 13. Arayüzler
 
-- **02:** sınıflar `general_profile` (A), `customer_profile` (B), `fused_profile` (A+B); `evidence_grounded_individual` kalkar. `profile`
-  bloğu §5.3 biçiminde; B4 alanları profil parametrelerinden türetilir. §6'da kanıt = parametre + daraltan olay + kaynak/etiket; B'de
-  belirlenmemiş parametreye yanıt "verimiz bunu söylemiyor" der. §11.2 karta §6 alanları.
+- **02:** sınıflar `general_profile` (A), `customer_profile` (B), `fused_profile` (A+B); `evidence_grounded_individual` kalkar; `profile`
+  bloğu §5.3; B'de belirlenmemiş parametreye yanıt "verimiz bunu söylemiyor" der; §11.2 karta §6 alanları.
 - **03:** B'nin kendi kalibrasyonu (tutulan oturum); A–B uyuşmazlık metriği (§6.6-6.7: z_t ortalaması ve varyansı); birleşiğin A ve B'ye
   göre kazancı; `override_rate`. Formül sahibi 03'tür (B3).
 - **04:** `decision_point_type`; `llm_clamped` ve özellik uyuşmazlığı olayları; fiziksel mağaza toplu olay türleri.
@@ -522,38 +505,37 @@ Arayüz: `06-guven-gizlilik.md`. Kişiye gösterim, erişim/itiraz arayüzü ve 
 ## Kaynaklar
 
 - ADR-001; ADR-002; ADR-003; `data/SEMA.md`; 02; 03; `MIMARI.md` §4.
-- Abril-Pla ve ark. (2023), PyMC — doi:10.7717/peerj-cs.1516
-- Allenby & Rossi (1998), Marketing models of consumer heterogeneity — doi:10.1016/S0304-4076(98)00055-4
-- Allenby, Arora & Ginter (1998), On the heterogeneity of demand — doi:10.2307/3152035 (varsayım: DOI doğrulanmalı)
-- Andreoni & Sprenger (2012), Estimating time preferences from convex budgets — doi:10.1257/aer.102.7.3333
-- Betancourt & Girolami, Hamiltonian Monte Carlo for hierarchical models — arXiv:1312.0906
-- Bourtoule ve ark., Machine Unlearning — arXiv:1912.03817
-- Brown, Imai, Vieider & Camerer (2024), Meta-analysis of loss aversion — doi:10.1257/jel.20221698
-- Carpenter ve ark. (2017), Stan — doi:10.18637/jss.v076.i01
-- Chernev, Böckenholt & Goodman (2015), Choice overload — doi:10.1016/j.jcps.2014.08.002
-- Falk ve ark. (2018), Global evidence on economic preferences — doi:10.1093/qje/qjy013
-- Fay & Herriot (1979), Estimates of income for small places — doi:10.1080/01621459.1979.10482505
-- Gabry ve ark., Visualization in Bayesian workflow — arXiv:1709.01449
-- Gelman, Hill & Yajima (2012), Why we (usually) don't have to worry about multiple comparisons — doi:10.1080/19345747.2011.618213
-- Kahneman & Tversky (1979), Prospect theory — doi:10.2307/1914185
-- Kruschke (2018), Rejecting or accepting parameter values in Bayesian estimation — doi:10.1177/2515245918771304
-- Laibson (1997), Golden eggs and hyperbolic discounting — doi:10.1162/003355397555253
-- Lewandowski, Kurowicka & Joe (2009), LKJ — doi:10.1016/j.jmva.2009.04.008
-- Park ve ark., Generative agent simulations of 1,000 people — arXiv:2411.10109
+- Abril-Pla ve ark. (2023) — doi:10.7717/peerj-cs.1516
+- Allenby & Rossi (1998) — doi:10.1016/S0304-4076(98)00055-4
+- Allenby, Arora & Ginter (1998) — doi:10.2307/3152035 (varsayım: DOI doğrulanmalı)
+- Andreoni & Sprenger (2012) — doi:10.1257/aer.102.7.3333
+- Betancourt & Girolami — arXiv:1312.0906
+- Bourtoule ve ark. — arXiv:1912.03817
+- Brown, Imai, Vieider & Camerer (2024) — doi:10.1257/jel.20221698
+- Carpenter ve ark. (2017) — doi:10.18637/jss.v076.i01
+- Chernev, Böckenholt & Goodman (2015) — doi:10.1016/j.jcps.2014.08.002
+- Falk ve ark. (2018) — doi:10.1093/qje/qjy013
+- Fay & Herriot (1979) — doi:10.1080/01621459.1979.10482505
+- Gabry ve ark. — arXiv:1709.01449
+- Gelman, Hill & Yajima (2012) — doi:10.1080/19345747.2011.618213
+- Kahneman & Tversky (1979) — doi:10.2307/1914185
+- Kruschke (2018) — doi:10.1177/2515245918771304
+- Laibson (1997) — doi:10.1162/003355397555253
+- Lewandowski, Kurowicka & Joe (2009) — doi:10.1016/j.jmva.2009.04.008
+- Park ve ark. — arXiv:2411.10109
 - Phan, Pradhan & Jankowiak, NumPyro — arXiv:1912.11554
-- Radev ve ark., BayesFlow — arXiv:2003.06281
-- Schmidli ve ark. (2014), Robust meta-analytic-predictive priors — doi:10.1111/biom.12242
-- Talts ve ark., Simulation-based calibration — arXiv:1804.06788
-- Train & Weeks (2005), Preference space vs WTP space — doi:10.1007/1-4020-3684-1_1 (varsayım: DOI doğrulanmalı)
+- Radev ve ark. — arXiv:2003.06281
+- Schmidli ve ark. (2014) — doi:10.1111/biom.12242
+- Talts ve ark. — arXiv:1804.06788
+- Train & Weeks (2005) — doi:10.1007/1-4020-3684-1_1 (varsayım: DOI doğrulanmalı)
 - TÜİK veri portalı — https://data.tuik.gov.tr
 - Vehtari, Gelman & Gabry, PSIS-LOO — arXiv:1507.04544
-- Vehtari ve ark., Pareto smoothed importance sampling — arXiv:1507.02646
+- Vehtari ve ark. — arXiv:1507.02646
 
 ## Felsefi sorular (proje sahibine)
 
-ADR-001/002/003 ile kapananlar yeniden sorulmaz: zaaf temelli hedefleme (yok), kişinin profilini görmesi ve itirazı (bireysel arayüz yok),
-"ikiz" adı (yalnız B kümesi), kültür öncülü (S0→S1→S2 kabul), gerçek müşteri verisinin genel modelle yumuşatılması (hayır, bağımsız
-Kaynak B), rıza geri çekmede geçmiş raporlar (F-15'e daraldı, hukuki görüşle kapanır). Yeni çerçeveden çıkan sorular:
+ADR-001/002/003 ile kapananlar (hedefleme, bireysel arayüz, "ikiz" adı, kültür öncülü, B'nin A ile yumuşatılması; F-15 hukuki görüşe
+kaldı) yeniden sorulmaz. Yeni sorular:
 
 **1. Şehir ve konum düzeyinde küçük örneklemle "yerel kalıp yargı" üretilebilir mi?**
 - Soru: Bir semt mağazasının az sayıda gözleminden "bu semtin insanı fiyata çok duyarlı" profili çıkarsa, ya da veri yokken S2 profili
