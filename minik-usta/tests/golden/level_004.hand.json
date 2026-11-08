@@ -1,0 +1,71 @@
+{
+  "level": 4,
+  "source": "docs/LEVELS.md §2 Bölüm 4 — Çözüm 1–4",
+  "budget": 12,
+  "minMoves": 4,
+  "movesLeft": 8,
+  "yao": { "overWall": 3, "rail": 1 },
+  "steps": [
+    {
+      "piece": "a",
+      "ref": "piece:0",
+      "shape": "D2_90",
+      "color": "Y",
+      "from": [0, 7],
+      "entry": "overWall",
+      "lands": [6, 0]
+    },
+    {
+      "piece": "b",
+      "ref": "piece:1",
+      "shape": "C3_0",
+      "color": "W",
+      "from": [2, 6],
+      "entry": "overWall",
+      "lands": [6, 1]
+    },
+    {
+      "piece": "p",
+      "ref": "piece:2",
+      "shape": "D2_90",
+      "color": "W",
+      "from": [4, 3],
+      "entry": "gap",
+      "gap": 0,
+      "lands": [6, 3]
+    },
+    {
+      "piece": "d",
+      "ref": "piece:3",
+      "shape": "D2_90",
+      "color": "R",
+      "from": [4, 7],
+      "entry": "overWall",
+      "lands": [6, 4],
+      "segmentCompleted": 0
+    }
+  ],
+  "log": [
+    { "kind": "start", "preBoosters": [], "streakTier": 0 },
+    { "kind": "drag", "pieceId": 0, "to": { "ix": 6, "iy": 8, "mode": 0 } },
+    { "kind": "drag", "pieceId": 1, "to": { "ix": 6, "iy": 8, "mode": 0 } },
+    { "kind": "drag", "pieceId": 2, "to": { "ix": 6, "iy": 3, "mode": 1 } },
+    { "kind": "drag", "pieceId": 3, "to": { "ix": 6, "iy": 8, "mode": 0 } }
+  ],
+  "eventLogHash": "127d42dc12434990",
+  "finalAscii": [
+    "L4 turn 4 moves 8 seg 1/1 elev 0",
+    " y  0 1 2 3 4 5 | W | 6 7",
+    " 9  . . . . . . | : | . .",
+    " 8  . . . . . . | : | . .",
+    " 7  . . . . . . | : | . .",
+    " 6  r r . . y y | : | . .",
+    " 5  w w r r y y | # | . .",
+    " 4  w w r r y y | = | R R",
+    " 3  y y w w . . | = | W W",
+    " 2  y y w w r r | # | W .",
+    " 1  r r y y w w | # | W W",
+    " 0  r r y y w w | # | Y Y",
+    "plan seg0 (top→bottom): RR WW W. WW YY"
+  ]
+}
