@@ -607,8 +607,9 @@ def komut_saglamlik(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
     for d in denemeler:
         rk = d["rejim"].set_index("rejim")["toplam"] if d["rejim"] is not None else pd.Series(dtype=float)
         isaret = " **(seçilen)**" if d is secilen else ""
+        sharpe_m = "-" if d["sharpe"] is None else f"{d['sharpe']:.2f}"
         R.append(f"| {d['tur']}{isaret} | {d['esik']:.2%} | {d['secim_odul']:+.3f} | {d['ileri'].bitis:,.0f} ({d['ileri'].getiri:+.1%}) | "
-                 f"{('-' if d['sharpe'] is None else f'{d["sharpe"]:.2f}')} | {d['ileri'].max_dusus:.1%} | {d['x2'].bitis:,.0f} "
+                 f"{sharpe_m} | {d['ileri'].max_dusus:.1%} | {d['x2'].bitis:,.0f} "
                  f"| {rk.get('boga', float('nan')):+.1%} | {rk.get('ayi', float('nan')):+.1%} | {rk.get('yatay', float('nan')):+.1%} |")  # fmt: skip
     R.append("")
     if secilen["sharpe"] is not None and len(secilen["ileri"].egri) > 10:
