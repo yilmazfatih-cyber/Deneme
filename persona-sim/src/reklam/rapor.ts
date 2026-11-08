@@ -13,6 +13,9 @@ export type Guven = 'yuksek' | 'orta' | 'dusuk' | 'ayirt_edilemiyor';
 export type Oneri = 'hedefle' | 'dene' | 'hedefleme' | 'kacin';
 
 export interface HedeflemeSatiri {
+  /** 'segment' veya 'kume' (ADR-006) */
+  birim: 'segment' | 'kume';
+  /** grup kimliği: segment id veya küme id */
   segmentId: string;
   segmentAd: string;
   /** maruz (reklam gösterilmesi atanan) grup büyüklüğü — niyet-tedavi (ITT) */
@@ -73,8 +76,16 @@ export function hedeflemeRaporu(
   donusumOlayi: 'satin_al' | 'kasa',
   kampanya: Kampanya,
   esikler: RaporEsikleri = VARSAYILAN_ESIKLER,
+  kumeler: { id: string; ad: string }[] = [],
 ): HedeflemeSatiri[] {
   const kontrolAd = kontrolEtiketi(kampanya.ad);
+  const birim: 'segment' | 'kume' = kampanya.hedefBirimi === 'kume' ? 'kume' : 'segment';
+  const gruplar: { id: string; ad: string }[] = birim === 'kume' ? kumeler : segmentler;
+  const grupOf = new Map<string, string>();
+  for (const g of girdiler) {
+    const k = birim === 'kume' ? g.musteri.kumeId : g.musteri.segmentId;
+    if (k !== undefined) grupOf.set(g.musteri.id, k);
+  }
   const birimMaliyet = kampanya.bin_maliyetiTL / 1000;
 
   // Dönüşen müşteriler (tekil) ve kampanyanın reklam olayları
@@ -85,7 +96,7 @@ export function hedeflemeRaporu(
   for (const o of gunluk.liste()) {
     if (o.tur === donusumOlayi && (o.ortam === 'eticaret' || o.ortam === 'magaza')) donusen.add(o.musteriId);
     if (o.ortam !== 'reklam' || o.veri?.['kampanya'] !== kampanya.ad) continue;
-    if (o.tur === 'reklam_goster') gosterimSegment.set(o.segmentId, (gosterimSegment.get(o.segmentId) ?? 0) + 1);
+    if (o.tur === 'reklam_goster') { const gk = grupOf.get(o.musteriId); if (gk !== undefined) gosterimSegment.set(gk, (gosterimSegment.get(gk) ?? 0) + 1); }
     else if (o.tur === 'reklam_tikla') tiklayan.add(o.musteriId);
     else if (o.tur === 'reklam_rahatsiz') rahatsiz.add(o.musteriId);
   }
@@ -95,7 +106,9 @@ export function hedeflemeRaporu(
   for (const g of girdiler) {
     const grup = g.reklamKaynagi === kampanya.ad ? 1 : g.reklamKaynagi === kontrolAd ? 0 : -1;
     if (grup < 0) continue;
-    const s = sayac.get(g.musteri.segmentId) ?? { n1: 0, x1: 0, n0: 0, x0: 0, tik: 0, rah: 0 };
+    const gk = grupOf.get(g.musteri.id);
+    if (gk === undefined) continue;
+    const s = sayac.get(gk) ?? { n1: 0, x1: 0, n0: 0, x0: 0, tik: 0, rah: 0 };
     const id = g.musteri.id;
     if (grup === 1) {
       s.n1++;
@@ -106,11 +119,11 @@ export function hedeflemeRaporu(
       s.n0++;
       if (donusen.has(id)) s.x0++;
     }
-    sayac.set(g.musteri.segmentId, s);
+    sayac.set(gk, s);
   }
 
   const satirlar: HedeflemeSatiri[] = [];
-  for (const seg of segmentler) {
+  for (const seg of gruplar) {
     const s = sayac.get(seg.id);
     if (!s) continue; // hedef dışı segment: rapora girmez
     const p1 = s.n1 > 0 ? s.x1 / s.n1 : 0;
@@ -138,6 +151,7 @@ export function hedeflemeRaporu(
     else oneri = 'dene';
 
     satirlar.push({
+      birim,
       segmentId: seg.id,
       segmentAd: seg.ad,
       maruzKalan: s.n1,

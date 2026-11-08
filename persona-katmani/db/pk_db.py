@@ -8,6 +8,7 @@ Kullanım (depo kökünden):
   python3 -I persona-katmani/db/pk_db.py yukle-pos  KIRACI MAGAZA dosya.csv   # sütunlar: musteri_id,magaza_id,tarih,tutar,urun_sayisi,kampanya
   python3 -I persona-katmani/db/pk_db.py yukle-kamera MAGAZA dosya.csv        # sütunlar: bolge_id,bolge_ad,dilim_baslangic,kisi_sayisi,ort_bekleme_sn
   python3 -I persona-katmani/db/pk_db.py kaynak-b KIRACI [MAGAZA]   # fişlerden Kaynak B (bütçe) kestirimi + S1 ile fark raporu
+  python3 -I persona-katmani/db/pk_db.py kaynak-b-kume KIRACI [k]  # fişlerden davranış kümeleri (ADR-006; ≥50 müşteri, nötr ad)
   python3 -I persona-katmani/db/pk_db.py yukle-kosu kosu.json       # persona-sim'den dışa aktarılan koşu (olaylar, KPI, hedefleme raporu)
   python3 -I persona-katmani/db/pk_db.py ozet
 Ortam değişkeni PK_DB ile dosya yolu değiştirilebilir. PostgreSQL için schema.sql aynen kullanılır (PRAGMA satırı hariç).
@@ -169,9 +170,18 @@ def yukle_kosu(dosya: str) -> None:
     c.executemany("INSERT INTO sim_olay(kosu_id,t,ortam,sim_musteri,segment_id,tur,veri) VALUES (?,?,?,?,?,?,?)",
                   [(k["id"], o["t"], o["ortam"], o["musteriId"], o.get("segmentId"), o["tur"], json.dumps(o.get("veri"), ensure_ascii=False) if o.get("veri") is not None else None) for o in d.get("olaylar", [])])
     c.executemany("INSERT OR REPLACE INTO sim_kpi(kosu_id, ad, deger) VALUES (?,?,?)", [(k["id"], ad, float(v)) for ad, v in d.get("kpi", {}).items() if isinstance(v, (int, float))])
+    for km in d.get("kumeler", []):
+        kid = f"{k.get('kiraci_id') or 'sim'}:{k['id']}:{km['id']}"
+        c.execute("INSERT OR REPLACE INTO kaynak_b_kume(id,kiraci_id,kod,ad,n,pay,ziyaret_ayda,sepet_medyan_tl,kampanya_payi,theta_carpanlari,guven,surum) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
+                  (kid, k.get("kiraci_id") or "sim", km["id"], km["ad"], max(50, int(km["n"])), km["pay"], km["merkez"]["ziyaretAyda"], km["merkez"]["sepetMedyanTL"], km["merkez"]["kampanyaPayi"],
+                   json.dumps(km.get("thetaCarpanlari", {})), km.get("guven", "dusuk"), k["id"]))
+        c.execute("INSERT OR IGNORE INTO kiraci(id, ad) VALUES (?,?)", (k.get("kiraci_id") or "sim", "simülasyon"))
     for h in d.get("hedefleme", []):
-        c.execute("INSERT INTO hedefleme_raporu(kosu_id,kampanya_id,segment_id,maruz_kalan,kontrol,tiklama_orani,donusum_maruz,donusum_kontrol,artis_puan,ga_alt,ga_ust,artan_donusum_maliyeti_tl,rahatsizlik_orani,guven,oneri) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-                  (k["id"], k.get("kampanya_id"), h["segmentId"], h["maruzKalan"], h["kontrol"], h.get("tiklamaOrani"), h.get("donusumMaruz"), h.get("donusumKontrol"),
+        birim = h.get("birim", "segment")
+        seg = h["segmentId"] if birim == "segment" else None
+        kume = f"{k.get('kiraci_id') or 'sim'}:{k['id']}:{h['segmentId']}" if birim == "kume" else None
+        c.execute("INSERT INTO hedefleme_raporu(kosu_id,kampanya_id,birim,segment_id,kume_id,maruz_kalan,kontrol,tiklama_orani,donusum_maruz,donusum_kontrol,artis_puan,ga_alt,ga_ust,artan_donusum_maliyeti_tl,rahatsizlik_orani,guven,oneri) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                  (k["id"], k.get("kampanya_id"), birim, seg, kume, h["maruzKalan"], h["kontrol"], h.get("tiklamaOrani"), h.get("donusumMaruz"), h.get("donusumKontrol"),
                    h.get("artisPuan"), (h.get("artisGuvenAraligi") or [None, None])[0], (h.get("artisGuvenAraligi") or [None, None])[1], h.get("artanDonusumBasinaMaliyetTL"),
                    h.get("rahatsizlikOrani"), h.get("guven", "dusuk"), h.get("oneri", "dene")))
     denetim(c, "kosu", k["id"], {"olay": len(d.get("olaylar", [])), "hedefleme": len(d.get("hedefleme", []))})
@@ -216,6 +226,72 @@ def kaynak_b(kiraci: str, magaza: str | None = None) -> None:
     denetim(c, "rapor", f"kaynak_b:{kiraci}:{magaza or 'hepsi'}", {"n": n})
     c.commit()
     print(f"Kaynak B: butce medyan {medyan:.0f} TL [%95: {alt95:.0f}–{ust95:.0f}], log-sd {sd:.2f}, n={n}, güven {guven}")
+
+
+def kaynak_b_kume(kiraci: str, k: int = 3, asgari_n: int = 50, seed: int = 7) -> None:
+    """Fişlerden davranış kümeleri (ADR-006). Özellikler: ziyaret/ay, sepet medyanı, kampanya günü payı. k-means, küçük küme birleştirme, nötr ad."""
+    c = baglan()
+    rows = c.execute("""SELECT p.musteri_id, p.zaman, p.tutar_tl, p.kampanya_id IS NOT NULL kamp FROM pos_islem p JOIN magaza m ON m.id=p.magaza_id
+                        WHERE m.kiraci_id=? AND p.musteri_id IS NOT NULL AND p.iade=0 AND p.tutar_tl>0""", (kiraci,)).fetchall()
+    grup: dict[str, list] = {}
+    for r in rows: grup.setdefault(r["musteri_id"], []).append(r)
+    oz = []
+    for mid, fisler in grup.items():
+        if len(fisler) < 2: continue
+        gunler = [datetime.fromisoformat(f["zaman"]) for f in fisler]
+        aralik = max(30.0, (max(gunler) - min(gunler)).days + 30)
+        tutarlar = sorted(f["tutar_tl"] for f in fisler)
+        oz.append((mid, len(fisler) / aralik * 30, statistics.median(tutarlar), sum(1 for f in fisler if f["kamp"]) / len(fisler)))
+    if len(oz) < asgari_n * 2:
+        print(f"kümeleme için en az {asgari_n*2} kimlikli müşteri gerekir; {len(oz)} var"); return
+    ham = [(math.log(z + 0.05), math.log(s + 1), kp) for _, z, s, kp in oz]
+    ort = [statistics.fmean(v[d] for v in ham) for d in range(3)]
+    sd = [statistics.pstdev([v[d] for v in ham]) or 1 for d in range(3)]
+    X = [tuple((v[d] - ort[d]) / sd[d] for d in range(3)) for v in ham]
+    rnd = random.Random(seed)
+    k = min(k, len(oz) // asgari_n)
+    merkez = [X[rnd.randrange(len(X))]]
+    while len(merkez) < k:
+        d2 = [min(sum((a - b) ** 2 for a, b in zip(x, m)) for m in merkez) + 1e-9 for x in X]
+        merkez.append(X[rnd.choices(range(len(X)), weights=d2)[0]])
+    atama = [0] * len(X)
+    for _ in range(60):
+        yeni = [min(range(k), key=lambda j: sum((a - b) ** 2 for a, b in zip(x, merkez[j]))) for x in X]
+        degisti = yeni != atama; atama = yeni
+        for j in range(k):
+            uy = [X[i] for i in range(len(X)) if atama[i] == j]
+            if uy: merkez[j] = tuple(sum(u[d] for u in uy) / len(uy) for d in range(3))
+        if not degisti: break
+    # küçük kümeleri birleştir
+    for _ in range(10):
+        sayim = {j: atama.count(j) for j in set(atama)}
+        kucuk = [j for j, n in sayim.items() if n < asgari_n]
+        if not kucuk or len(sayim) <= 1: break
+        j0 = kucuk[0]
+        m0 = merkez[j0]
+        hedef = min((j for j in sayim if j != j0), key=lambda j: sum((a - b) ** 2 for a, b in zip(m0, merkez[j])))
+        atama = [hedef if a == j0 else a for a in atama]
+    genel = (statistics.median(o[1] for o in oz), statistics.median(o[2] for o in oz), statistics.median(o[3] for o in oz))
+    kumeler = []
+    for j in sorted(set(atama), key=lambda j: statistics.median(oz[i][2] for i in range(len(oz)) if atama[i] == j)):
+        uy = [oz[i] for i in range(len(oz)) if atama[i] == j]
+        z, s, kp = (statistics.median(u[1] for u in uy), statistics.median(u[2] for u in uy), statistics.median(u[3] for u in uy))
+        sik = "sık gelen" if z > genel[0] * 1.25 else "seyrek gelen" if z < genel[0] * 0.8 else "orta sıklıkta gelen"
+        sep = "büyük sepet" if s > genel[1] * 1.25 else "küçük sepet" if s < genel[1] * 0.8 else "orta sepet"
+        kam = "kampanya günlerini tercih eden" if kp > genel[2] + 0.08 else "kampanyadan bağımsız" if kp < genel[2] - 0.08 else "kampanyaya nötr"
+        kumeler.append((len(uy), z, s, kp, f"{sik}, {sep}, {kam}"))
+    c.execute("DELETE FROM kaynak_b_kume WHERE kiraci_id=? AND surum=?", (kiraci, SURUM))
+    for i, (n, z, s, kp, ad) in enumerate(kumeler, 1):
+        kod = f"K{i}"
+        carpan = {"butce": round(min(3, max(0.3, s / genel[1])), 3), "eta_fiyat": round(min(1.6, max(0.6, 1 + (kp - genel[2]) * 2)), 3), "sabir": round(min(1.3, max(0.8, 1 + (z - genel[0]) * 0.1)), 3)}
+        c.execute("INSERT INTO kaynak_b_kume(id,kiraci_id,kod,ad,n,pay,ziyaret_ayda,sepet_medyan_tl,kampanya_payi,theta_carpanlari,guven,surum) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
+                  (f"{kiraci}:{SURUM}:{kod}", kiraci, kod, f"{kod} · {ad}", n, n / len(oz), z, s, kp, json.dumps(carpan), "yuksek" if n >= 200 else "orta" if n >= 100 else "dusuk", SURUM))
+        print(f"{kod} · {ad}: n={n}, ziyaret/ay {z:.2f}, sepet medyanı {s:.0f} TL, kampanya payı {kp:.2f}")
+    # küme üyeliği müşteri tablosuna (yalnız kestirim ve toplu rapor için; dışa aktarılmaz)
+    for i, j in enumerate(sorted(set(atama), key=lambda j: statistics.median(oz[q][2] for q in range(len(oz)) if atama[q] == j)), 1):
+        c.executemany("UPDATE musteri SET b_kume_id=? WHERE id=?", [(f"{kiraci}:{SURUM}:K{i}", oz[q][0]) for q in range(len(oz)) if atama[q] == j])
+    denetim(c, "rapor", f"kaynak_b_kume:{kiraci}", {"kume": len(kumeler), "musteri": len(oz)})
+    c.commit()
 
 
 # ───────────────────────── örnek veri ─────────────────────────
@@ -298,6 +374,7 @@ def main(argv: list[str]) -> None:
     elif k == "yukle-pos": yukle_pos(argv[2], argv[3], argv[4])
     elif k == "yukle-kamera": yukle_kamera(argv[2], argv[3])
     elif k == "kaynak-b": kaynak_b(argv[2], argv[3] if len(argv) > 3 else None)
+    elif k == "kaynak-b-kume": kaynak_b_kume(argv[2], int(argv[3]) if len(argv) > 3 else 3)
     elif k == "yukle-kosu": yukle_kosu(argv[2])
     elif k == "ozet": ozet()
     else: print(f"bilinmeyen komut: {k}\n{__doc__}"); sys.exit(2)

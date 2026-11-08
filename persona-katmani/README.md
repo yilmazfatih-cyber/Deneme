@@ -39,7 +39,8 @@ araştırma, rol tanımları, altı bölümlük mimari ve proje sahibine bırak�
 | `docs/decisions/ADR-002-genelden-ozele.md` | Karar: hedefleme ve kişiye gösterim yok; Dünya → Türkiye → şehir → konum/site seviye zinciri (F-11…F-14) |
 | `docs/decisions/ADR-003-iki-kaynak.md` | Karar: gerçek müşteri verisi bağımsız Kaynak B; A, B veya A+B birleşik ve fark raporu |
 | `docs/decisions/ADR-004-magaza-verisi.md` | Karar: mağaza verisi doğrudan şirketten, sepet tutarları ve mağaza toplamları (F-18) |
-| `docs/decisions/ADR-005-veritabani.md` | Karar: tek şema (PostgreSQL hedef, SQLite ile çalışır), 24 tablo, denetim kaydı |
+| `docs/decisions/ADR-005-veritabani.md` | Karar: tek şema (PostgreSQL hedef, SQLite ile çalışır), 25 tablo, denetim kaydı |
+| `docs/decisions/ADR-006-hedefleme-birimi.md` | Karar: reklam hedefleme birimi segment + Kaynak B davranış kümeleri (≥ 50 kişi, nötr ad) |
 | `db/` | Veritabanı: `schema.sql`, `pk_db.py` (kur, yükle, Kaynak B, koşu içe aktarma), demo veri |
 | `../persona-sim/` | 2D simülasyon uygulaması (Vite + TypeScript): mağaza, e-ticaret hunisi, reklam hedefleme, kalibrasyon |
 | `data/davranis-etkileri.xlsx` | Literatür etki kitaplığı (S0 Dünya / S1 Türkiye öncülleri): 225 bulgu, 184 kaynak, 28 persona parametresi; sayfalar Özet · Etkiler · Moderatörler · Parametreler · Fark matrisi · Kaynaklar · Şema |

@@ -1,6 +1,6 @@
 # ADR-004 · Fiziksel mağaza verisi doğrudan şirketten: müşteri sepet tutarları ve mağaza başı tutarlar (F-18)
 
-Tarih: 2026-11-08 · Durum: Kabul edildi (proje sahibi)
+Tarih: 2026-11-08 · Durum: Kabul edildi (proje sahibi) · **Düzeltme (aynı gün):** kamera verisi **yalnız toplu bölge sayımı** olarak kaynak kabul edildi (kimlik, yüz, cihaz takibi yok); `kamera_bolge` / `kamera_sayim` tabloları ve mağaza simülasyonunun `gercekBolgeSayimlari` girdisi bunun içindir.
 
 ## Karar
 

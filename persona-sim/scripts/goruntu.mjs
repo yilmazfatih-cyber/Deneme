@@ -32,10 +32,17 @@ await page.goto(`${kok}?seed=7&n=600&sure=1800&hiz=600&sekme=reklam&kampanya=1`,
 await page.getByRole('button', { name: 'E-ticarette koş' }).click();
 await bitmesiniBekle();
 await page.screenshot({ path: 'docs/shots/03-hedefleme.png' });
-await page.goto(`${kok}?sekme=kalibrasyon`, { waitUntil: 'networkidle' });
+await page.goto(`${kok}?sekme=kalibrasyon&seed=7&n=800&sure=1800&hiz=600`, { waitUntil: 'networkidle' });
 await page.getByRole('button', { name: 'Örnek fiş verisi üret' }).click();
 await page.waitForTimeout(500);
 await page.screenshot({ path: 'docs/shots/04-kaynak-b.png' });
+// Küme hedefli kampanya (ADR-006)
+await sekme('Reklam ve hedefleme');
+await page.getByText('Kampanyayı koşudan önce uygula').click();
+await page.getByLabel('Hedef birimi').selectOption('kume');
+await page.getByRole('button', { name: 'E-ticarette koş' }).click();
+await bitmesiniBekle();
+await page.screenshot({ path: 'docs/shots/05-kume-hedefleme.png' });
 console.log(hatalar.length ? `HATALAR:\n${hatalar.join('\n')}` : 'konsol hatası yok');
 await browser.close();
 preview.kill();

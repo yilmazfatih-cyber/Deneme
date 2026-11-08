@@ -10,8 +10,8 @@ import { EticaretOrtami, VARSAYILAN_VARYANT, VARYANT_B } from './eticaret';
 import type { SiteVaryanti } from './eticaret';
 import { ORNEK_KAMPANYALAR, kampanyaUygula, hedeflemeRaporu, raporMetni } from './reklam';
 import type { Kampanya, HedeflemeSatiri } from './reklam';
-import { posOku, kaynakBUydur, farkRaporu, butceCarpani, ornekPosCsv } from './kalibrasyon';
-import type { KaynakB } from './kalibrasyon';
+import { posOku, kaynakBUydur, farkRaporu, butceCarpani, ornekPosCsv, kumele, kumeAta } from './kalibrasyon';
+import type { KaynakB, KaynakBKume } from './kalibrasyon';
 import { el, kaydirma, secim, kutu, dugme, tablo, tl, yuzde, bicimle, kpiKarti, canvasHazirla, sayiAlani } from './ui/kontroller';
 
 type Sekme = 'magaza' | 'eticaret' | 'reklam' | 'kalibrasyon';
@@ -30,6 +30,7 @@ interface Durum {
   varyantAdi: 'A' | 'B';
   varyant: SiteVaryanti;
   kaynakB: KaynakB | null;
+  kumeler: KaynakBKume[];
 }
 
 const durum: Durum = {
@@ -46,6 +47,7 @@ const durum: Durum = {
   varyantAdi: 'A',
   varyant: structuredClone(VARSAYILAN_VARYANT),
   kaynakB: null,
+  kumeler: [],
 };
 
 interface Kosu {
@@ -179,9 +181,28 @@ function solPaneliCiz(): void {
       kaydirma('Bütçe', { min: 1000, max: 200000, adim: 1000, deger: k.butceTL, bicim: (x) => tl(x) }, (x) => (k.butceTL = x)),
       kaydirma('Kontrol grubu (görmeyen)', { min: 0.05, max: 0.5, adim: 0.05, deger: k.kontrolGrubuOrani, bicim: (x) => yuzde(x, 0) }, (x) => (k.kontrolGrubuOrani = x)),
     );
-    const hedef = el('div', { class: 'not', text: 'Hedef segmentler (ADR-002: kişi değil, segment):' });
+    if (durum.kumeler.length > 0) {
+      f.append(secim('Hedef birimi', [{ deger: 'segment', ad: 'Segment (Kaynak A)' }, { deger: 'kume', ad: 'Davranış kümesi (Kaynak B)' }], k.hedefBirimi ?? 'segment', (x) => {
+        k.hedefBirimi = x as 'segment' | 'kume';
+        if (x === 'kume' && durum.kaynak !== 'A+B') durum.kaynak = 'A+B';
+        solPaneliCiz();
+      }));
+    }
+    if (k.hedefBirimi === 'kume' && durum.kumeler.length > 0) {
+      f.append(el('div', { class: 'not', text: 'Hedef kümeler (ADR-006: en az 50 kişi, kişi değil):' }));
+      for (const km of durum.kumeler) {
+        const secili = (k.hedefKumeler ?? 'hepsi') === 'hepsi' || (k.hedefKumeler as string[]).includes(km.id);
+        f.append(kutu(`${km.ad} (n=${km.n})`, secili, (x) => {
+          const mevcut = new Set((k.hedefKumeler ?? 'hepsi') === 'hepsi' ? durum.kumeler.map((q) => q.id) : (k.hedefKumeler as string[]));
+          if (x) mevcut.add(km.id); else mevcut.delete(km.id);
+          k.hedefKumeler = mevcut.size === durum.kumeler.length ? 'hepsi' : [...mevcut];
+        }));
+      }
+    }
+    const hedef = el('div', { class: 'not', text: k.hedefBirimi === 'kume' ? 'Segment seçimi küme hedefinde kullanılmaz.' : 'Hedef segmentler (ADR-002: kişi değil, segment):' });
     f.append(hedef);
     for (const s of TURKIYE_SEGMENTLERI) {
+      if (k.hedefBirimi === 'kume') break;
       const secili = k.hedefSegmentler === 'hepsi' || k.hedefSegmentler.includes(s.id);
       f.append(kutu(s.ad, secili, (x) => {
         const mevcut = new Set(k.hedefSegmentler === 'hepsi' ? TURKIYE_SEGMENTLERI.map((t) => t.id) : k.hedefSegmentler);
@@ -220,8 +241,11 @@ function baslat(ortamAdi: 'magaza' | 'eticaret'): void {
   const oncul = onculSec(durum.seviye);
   const musteriler = nufusUret(durum.musteriSayisi, oncul, TURKIYE_SEGMENTLERI, rng.fork(), durum.kaynak === 'A+B' && durum.kaynakB ? 'A+B' : 'A');
   if (durum.kaynak === 'A+B' && durum.kaynakB) {
-    const c = butceCarpani(oncul, durum.kaynakB);
-    for (const m of musteriler) m.theta.butce *= c;
+    if (durum.kumeler.length > 0) kumeAta(musteriler, durum.kumeler, rng.fork()); // küme çarpanları bütçeyi zaten ölçekler (ADR-006)
+    else { const c = butceCarpani(oncul, durum.kaynakB); for (const m of musteriler) m.theta.butce *= c; }
+  }
+  if (durum.kampanya.hedefBirimi === 'kume' && !musteriler.some((m) => m.kumeId)) {
+    durum.kampanya.hedefBirimi = 'segment'; // kümesiz nüfusta küme hedefi anlamsız
   }
   const gunluk = new OlayGunlugu();
   let girdiler: MusteriGirdisi[];
@@ -268,7 +292,7 @@ function bitir(): void {
   if (!kosu) return;
   kosu.bitti = true;
   if (durum.kampanyaAktif) {
-    kosu.hedefleme = hedeflemeRaporu(kosu.gunluk, kosu.girdiler, TURKIYE_SEGMENTLERI, kosu.ortamAdi === 'magaza' ? 'kasa' : 'satin_al', durum.kampanya);
+    kosu.hedefleme = hedeflemeRaporu(kosu.gunluk, kosu.girdiler, TURKIYE_SEGMENTLERI, kosu.ortamAdi === 'magaza' ? 'kasa' : 'satin_al', durum.kampanya, undefined, durum.kumeler);
   }
   durdur();
   ciz();
@@ -337,7 +361,8 @@ function sagPaneliCiz(): void {
       el('span', {}, `${r.artisPuan >= 0 ? '+' : ''}${bicimle(r.artisPuan, 1)} yp`, el('br'), el('small', { text: `[${bicimle(r.artisGuvenAraligi[0], 1)}; ${bicimle(r.artisGuvenAraligi[1], 1)}]` })),
       el('span', {}, el('span', { class: `etiket ${r.oneri}`, text: r.oneri }), el('br'), el('small', { text: r.artanDonusumBasinaMaliyetTL === null ? '–' : `${tl(r.artanDonusumBasinaMaliyetTL)}/dönüşüm` })),
     ]);
-    sagPanel.append(el('fieldset', {}, el('legend', { text: 'Hedefleme (segment düzeyi)' }), tablo(['Segment', 'Artış (yüzde puan, %95 GA)', 'Öneri'], h, [1])));
+    const birimAd = kosu.hedefleme[0]?.birim === 'kume' ? 'Küme' : 'Segment';
+    sagPanel.append(el('fieldset', {}, el('legend', { text: `Hedefleme (${birimAd.toLowerCase()} düzeyi)` }), tablo([birimAd, 'Artış (yüzde puan, %95 GA)', 'Öneri'], h, [1])));
     sagPanel.append(el('pre', { class: 'rapor', text: raporMetni(kosu.hedefleme, durum.kampanya) }));
   }
   // segment özeti
@@ -350,6 +375,18 @@ function sagPaneliCiz(): void {
     return [el('span', {}, renk, ` ${s.ad.split(' (')[0]}`), giris, giris ? yuzde(d / giris) : '–', giris ? yuzde(terk / giris) : '–'];
   });
   sagPanel.append(el('fieldset', {}, el('legend', { text: 'Segment başına' }), tablo(['Segment', 'Giriş', 'Dönüşüm', 'Terk'], satirlar, [1, 2, 3])));
+  if (durum.kumeler.length > 0 && kosu.musteriler.some((m) => m.kumeId)) {
+    const kumeOf = new Map(kosu.musteriler.map((m) => [m.id, m.kumeId] as const));
+    const ks: Record<string, { giris: number; d: number; terk: number }> = {};
+    for (const o of kosu.gunluk.liste()) {
+      if (o.ortam !== kosu.ortamAdi) continue;
+      const kid = kumeOf.get(o.musteriId); if (!kid) continue;
+      const r = (ks[kid] ??= { giris: 0, d: 0, terk: 0 });
+      if (o.tur === 'giris') r.giris++; else if (o.tur === donusumTuru) r.d++; else if (o.tur === 'terk') r.terk++;
+    }
+    sagPanel.append(el('fieldset', {}, el('legend', { text: 'Küme başına (Kaynak B)' }), tablo(['Küme', 'Giriş', 'Dönüşüm', 'Terk'],
+      durum.kumeler.map((km) => { const r = ks[km.id] ?? { giris: 0, d: 0, terk: 0 }; return [km.ad, r.giris, r.giris ? yuzde(r.d / r.giris) : '–', r.giris ? yuzde(r.terk / r.giris) : '–']; }), [1, 2, 3])));
+  }
 
   if (kosu.ortamAdi === 'magaza' && kosu.ortam instanceof MagazaOrtami) {
     const b = kosu.ortam.bolgeSayimlari();
@@ -373,12 +410,21 @@ function kalibrasyonPaneli(hedef: HTMLElement): void {
     if (kayitlar.length === 0) { sonuc.replaceChildren(el('p', { class: 'not', text: 'Okunabilir satır yok.' })); return; }
     const b = kaynakBUydur(kayitlar);
     durum.kaynakB = b;
+    const ks = kumele(kayitlar, { k: 3, seed: durum.seed });
+    durum.kumeler = ks.kumeler;
+    if (ks.kumeler.length === 0 && durum.kampanya.hedefBirimi === 'kume') durum.kampanya.hedefBirimi = 'segment';
     const aMedyan = kosu?.ortam.kpi().ortSepetTL ?? kosu?.oncul.parametreler.butce.merkez ?? onculSec(durum.seviye).parametreler.butce.merkez;
     const fark = farkRaporu({ sepetMedyanTL: aMedyan, sepetLogSd: onculSec(durum.seviye).parametreler.butce.yayilim }, b);
     sonuc.replaceChildren(
       el('div', { class: 'kpi' }, kpiKarti('Fiş', bicimle(b.n, 0)), kpiKarti('Sepet medyanı', tl(b.sepetMedyanTL)), kpiKarti('Güven', b.guven), kpiKarti('Müşteri', bicimle(b.musteriSayisi ?? 0, 0))),
       el('p', { class: 'not', text: `Bütçe çarpanı (A → A+B): ×${butceCarpani(onculSec(durum.seviye), b).toFixed(2)}. "Parametre kaynağı: A+B" seçilirse mağaza simülasyonunda bütçe buna ölçeklenir.` }),
       tablo(['Parametre', 'A (genel)', 'B (gerçek)', 'Fark', 'Anlamlılık', 'Yorum'], fark.map((x) => [x.parametre, bicimle(x.aDeger, 1), bicimle(x.bDeger, 1), `${x.fark >= 0 ? '+' : ''}${bicimle(x.fark, 1)}`, x.anlamlilik, x.yorum]), [1, 2, 3]),
+      el('fieldset', {}, el('legend', { text: `Davranış kümeleri (ADR-006) · ${ks.genel.musteriSayisi} kimlikli müşteri` }),
+        ks.kumeler.length === 0 ? el('p', { class: 'not', text: ks.uyarilar.join(' ') }) :
+          tablo(['Küme', 'Müşteri', 'Pay', 'Ziyaret/ay', 'Sepet medyanı', 'Kampanya payı', 'θ çarpanları', 'Güven'],
+            ks.kumeler.map((km) => [km.ad, km.n, yuzde(km.pay, 0), bicimle(km.merkez.ziyaretAyda, 2), tl(km.merkez.sepetMedyanTL), yuzde(km.merkez.kampanyaPayi, 0),
+              Object.entries(km.thetaCarpanlari).map(([a, c]) => `${a} ×${(c as number).toFixed(2)}`).join(', '), km.guven]), [1, 2, 3, 4, 5]),
+        el('p', { class: 'not', text: ks.uyarilar.length ? ks.uyarilar.join(' ') : 'Küme adları kod + davranış betimlemesidir; kişi kimliği dışa verilmez. "Reklam" sekmesinde hedef birimi olarak seçilebilir.' })),
     );
   };
   d.append(
@@ -408,6 +454,7 @@ function disaAktarJson(): void {
     olaylar: kosu.gunluk.liste(),
     kpi: kosu.ortam.kpi(),
     hedefleme: kosu.hedefleme ?? [],
+    kumeler: durum.kumeler.map((k) => ({ id: k.id, ad: k.ad, n: k.n, pay: k.pay, merkez: k.merkez, thetaCarpanlari: k.thetaCarpanlari, guven: k.guven })),
   };
   const blob = new Blob([JSON.stringify(veri)], { type: 'application/json' });
   const a = el('a', { href: URL.createObjectURL(blob), download: `${kosu.id}.json` });

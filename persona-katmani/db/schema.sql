@@ -192,6 +192,21 @@ CREATE TABLE IF NOT EXISTS kaynak_b_kestirim (
   olusturma     TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
+-- Kaynak B davranış kümeleri (ADR-006): yalnız davranış özellikleri; küme ≥ 50 müşteri; ad = kod + nötr betimleme
+CREATE TABLE IF NOT EXISTS kaynak_b_kume (
+  id               TEXT PRIMARY KEY,           -- '<kiraci>:<surum>:K1'
+  kiraci_id        TEXT NOT NULL REFERENCES kiraci(id),
+  kod              TEXT NOT NULL,              -- K1, K2, ...
+  ad               TEXT NOT NULL,
+  n                INTEGER NOT NULL CHECK (n >= 50),
+  pay              REAL NOT NULL,
+  ziyaret_ayda     REAL, sepet_medyan_tl REAL, kampanya_payi REAL,
+  theta_carpanlari TEXT,                       -- JSON {butce, eta_fiyat, sabir}
+  guven            TEXT NOT NULL,
+  surum            TEXT NOT NULL,
+  olusturma        TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
 -- A ile B farkı (07 §10.2)
 CREATE TABLE IF NOT EXISTS fark_raporu (
   id             INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -250,7 +265,9 @@ CREATE TABLE IF NOT EXISTS hedefleme_raporu (
   id               INTEGER PRIMARY KEY AUTOINCREMENT,
   kosu_id          TEXT NOT NULL REFERENCES simulasyon_kosusu(id) ON DELETE CASCADE,
   kampanya_id      TEXT REFERENCES kampanya(id),
-  segment_id       TEXT NOT NULL REFERENCES segment(id),
+  birim            TEXT NOT NULL DEFAULT 'segment', -- segment | kume (ADR-006)
+  segment_id       TEXT REFERENCES segment(id),
+  kume_id          TEXT REFERENCES kaynak_b_kume(id),
   maruz_kalan      INTEGER NOT NULL,
   kontrol          INTEGER NOT NULL,
   tiklama_orani    REAL,

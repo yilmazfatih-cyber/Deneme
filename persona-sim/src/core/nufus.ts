@@ -31,6 +31,8 @@ export interface Musteri {
   theta: Theta;
   /** A: genel model, B: gerçek müşteri modeli, 'A+B': birleşik (ADR-003) */
   kaynak: 'A' | 'B' | 'A+B';
+  /** Kaynak B davranış kümesi (ADR-006); yalnız gerçek fiş verisi varsa atanır */
+  kumeId?: string;
 }
 
 /**

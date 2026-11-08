@@ -19,6 +19,10 @@ export interface Kampanya {
   /** 0–1 */
   kisisellestirme?: number;
   hedefSegmentler: string[] | 'hepsi';
+  /** Hedef birimi: sosyolojik segment (varsayılan) veya Kaynak B davranış kümesi (ADR-006). */
+  hedefBirimi?: 'segment' | 'kume';
+  /** hedefBirimi 'kume' ise: küme kimlikleri; kümesi olmayan müşteri (Kaynak B yoksa) hedef dışıdır */
+  hedefKumeler?: string[] | 'hepsi';
   /** kişi başı ortalama gösterim (Poisson) */
   ortalamaMaruziyet: number;
   butceTL: number;
@@ -62,8 +66,18 @@ export function poisson(rng: Rng, lambda: number): number {
   return k - 1;
 }
 
-export function hedefteMi(kampanya: Kampanya, segmentId: string): boolean {
+export function hedefteMi(kampanya: Kampanya, segmentId: string, kumeId?: string): boolean {
+  if (kampanya.hedefBirimi === 'kume') {
+    if (kumeId === undefined) return false;
+    const h = kampanya.hedefKumeler ?? 'hepsi';
+    return h === 'hepsi' || h.includes(kumeId);
+  }
   return kampanya.hedefSegmentler === 'hepsi' || kampanya.hedefSegmentler.includes(segmentId);
+}
+
+/** Raporlama/hedefleme için müşterinin grup anahtarı. */
+export function grupAnahtari(kampanya: Kampanya, m: Musteri): string | undefined {
+  return kampanya.hedefBirimi === 'kume' ? m.kumeId : m.segmentId;
 }
 
 function reklamNesnesi(k: Kampanya, maruziyetSayisi: number): Reklam {
@@ -90,7 +104,7 @@ export function kampanyaUygula(
   // 1) Atama: kontrol / maruz (bütçeden önce, tüm hedef kitle için)
   const maruzIndisler: number[] = [];
   musteriler.forEach((m, i) => {
-    if (!hedefteMi(kampanya, m.segmentId)) return; // organik: reklamKaynagi yok
+    if (!hedefteMi(kampanya, m.segmentId, m.kumeId)) return; // organik: reklamKaynagi yok
     if (rng.bernoulli(kampanya.kontrolGrubuOrani)) {
       girdiler[i] = { musteri: m, niyet: 0, reklamKaynagi: kontrolEtiketi(kampanya.ad) };
     } else {

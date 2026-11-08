@@ -11,7 +11,7 @@ kontrol grubuyla ölçen tarayıcı uygulaması. Tasarımı `../persona-katmani/
 cd persona-sim
 npm install
 npm run dev        # http://localhost:5173/persona-sim/
-npm run check      # tip denetimi + 51 birim testi
+npm run check      # tip denetimi + 56 birim testi
 npm run build      # dist/
 PLAYWRIGHT_CHROMIUM_EXECUTABLE=/yol/chrome node scripts/goruntu.mjs   # 4 sekmenin ekran görüntüsü → docs/shots/
 ```
@@ -25,7 +25,7 @@ URL parametreleri (demo): `?seed=7&n=400&sure=1800&hiz=240&sekme=eticaret&kampan
 | Mağaza (2D) | Üstten görünüm: giriş, 3 koridor × 2 raf (6 kategori, 23 ürün), promosyon adası, kasalar; müşteriler segment renginde; bölge ısı haritası; kasa kuyruğu ve terk; kamera benzeri **toplu** bölge sayımları; fişler |
 | E-ticaret hunisi | Açılış → liste → ürün → sepet → ödeme → satın al; varyant A/B (ücretsiz kargo eşiği, rozet, kargo ücretinin nerede göründüğü, ön seçili ek hizmet, taksit, seçenek sayısı, yükleme süresi); aşama başına terk |
 | Reklam ve hedefleme | Kampanya (kanal, yaratıcı, indirim, kişiselleştirme, sıklık, bütçe, hedef segmentler, kontrol grubu) → koşu → segment başına maruz/kontrol dönüşümü, artış (yüzde puan) ve %95 güven aralığı, artan dönüşüm başına maliyet, rahatsızlık, öneri (hedefle / dene / hedefleme / kaçın) |
-| Kaynak B (gerçek veri) | Şirketin fiş CSV'si → sepet tutarı dağılımı (Kaynak B) → Kaynak A ile fark raporu → "A+B" seçilince mağaza bütçesi gerçek veriye ölçeklenir |
+| Kaynak B (gerçek veri) | Şirketin fiş CSV'si → sepet tutarı dağılımı (Kaynak B) → Kaynak A ile fark raporu → davranış kümeleri (ADR-006: ≥ 50 müşteri, nötr ad) → "A+B" seçilince nüfus kümelere göre ölçeklenir; kümeler reklamda hedef birimi olur |
 
 ![Mağaza](docs/shots/01-magaza.png)
 ![Hedefleme](docs/shots/03-hedefleme.png)
