@@ -1,0 +1,34 @@
+{
+  "_not": "persona-sim/src/core/parametreler.ts ile aynı değerler; iki dosya birlikte güncellenir. Kaynak: data/davranis-etkileri.xlsx kayıt kimlikleri.",
+  "surum": "2026-11-08",
+  "parametreler": {
+    "lambda_kayip":          {"aciklama": "kayıptan kaçınma λ", "olcek": "çarpan", "S0": ["lognormal", 1.5, 0.3, 1.0, 4.0], "kaynak": "EK Brown 2024; Walasek 2024"},
+    "beta_simdicilik":       {"aciklama": "şimdicilik β (1 = yok)", "olcek": "oran", "S0": ["normal", 0.82, 0.08, 0.4, 1.0], "S1_toplam": -0.04, "kaynak": "EK β=0.82; TR-013, TR-015"},
+    "delta_iskonto":         {"aciklama": "yıllık iskonto faktörü", "olcek": "oran", "S0": ["normal", 0.75, 0.1, 0.3, 0.99], "kaynak": "EK düzeltilmiş yıllık oran"},
+    "rho_risk":              {"aciklama": "göreli riskten kaçınma", "olcek": "çarpan", "S0": ["lognormal", 0.7, 0.4, 0.05, 4.0], "S1_carpan": 1.1, "kaynak": "EK GPS; TR-010"},
+    "w_sosyal_kanit":        {"aciklama": "popülerlik ağırlığı", "olcek": "logit", "S0": ["lognormal", 0.3, 0.5, 0, 2], "S1_carpan": 1.1, "kaynak": "WB hacim esnekliği; TR-002"},
+    "tau_reklam_tolerans":   {"aciklama": "reklama tahammül", "olcek": "çarpan", "S0": ["lognormal", 1.0, 0.5, 0.1, 5], "kaynak": "RK ad load; kaçınma"},
+    "eta_fiyat":             {"aciklama": "fiyat duyarlılığı", "olcek": "esneklik", "S0": ["lognormal", 1.2, 0.4, 0.2, 5], "S1_carpan": 1.15, "kaynak": "WB fiyat; TR-017, TR-033"},
+    "w_yorum":               {"aciklama": "yorum puanı/hacmi ağırlığı", "olcek": "logit", "S0": ["lognormal", 0.42, 0.4, 0, 2], "kaynak": "WB You 2015"},
+    "kappa_secim_yuku":      {"aciklama": "seçim yükü terk eğilimi", "olcek": "oran", "S0": ["lognormal", 0.1, 0.6, 0, 1], "kaynak": "WB Chernev 2015"},
+    "theta_kitlik":          {"aciklama": "kıtlık/aciliyet tepkisi", "olcek": "logit", "S0": ["normal", 0.1, 0.15, -0.4, 0.6], "kaynak": "WB aciliyet"},
+    "phi_guven_isareti":     {"aciklama": "güven işareti ağırlığı", "olcek": "logit", "S0": ["lognormal", 0.3, 0.5, 0, 2], "S1_carpan": 1.5, "kaynak": "WB Özpolat; TR-006, TR-010, TR-045"},
+    "sabir":                 {"aciklama": "terk öncesi tahammül süresi", "olcek": "saniye", "S0": ["lognormal", 90, 0.5, 10, 900], "S1_carpan": 0.95, "kaynak": "WB yükleme; TR-001"},
+    "dikkat_esigi":          {"aciklama": "uyaranı fark etme olasılığı", "olcek": "olasılık", "S0": ["normal", 0.3, 0.1, 0.05, 0.8], "kaynak": "RK banner körlüğü"},
+    "varsayilan_yapiskanlik":{"aciklama": "ön seçili seçenekte kalma", "olcek": "d", "S0": ["normal", 0.68, 0.2, 0, 1.5], "kaynak": "Jachimowicz 2019"},
+    "tau_karar":             {"aciklama": "karar gürültüsü", "olcek": "çarpan", "S0": ["lognormal", 1.0, 0.3, 0.3, 3], "kaynak": "07 §2"},
+    "nu_yenilik":            {"aciklama": "yenilik arayışı", "olcek": "olasılık", "S0": ["normal", 0.3, 0.15, 0, 1], "kaynak": "07 §2"},
+    "okuma_hizi":            {"aciklama": "okuma hızı", "olcek": "kelime/dk", "S0": ["lognormal", 200, 0.2, 80, 450], "kaynak": "07 §2"},
+    "hayal_kirikligi_esigi": {"aciklama": "terk öncesi sürtünme sayısı", "olcek": "adet", "S0": ["lognormal", 3, 0.4, 1, 10], "kaynak": "07 §2"},
+    "butce":                 {"aciklama": "alışveriş başına bütçe", "olcek": "TL", "S0": ["lognormal", 800, 0.7, 50, 20000], "kaynak": "S3/B verisi gelene kadar S0"}
+  },
+  "segmentler": [
+    {"id": "genc_dusuk", "ad": "Genç, düşük gelir (öğrenci / yeni çalışan)", "yas": "18-24", "gelir": "dusuk", "cinsiyet": "karma", "pay": 0.16, "renk": "#f59e0b"},
+    {"id": "genc_profesyonel", "ad": "Genç profesyonel (25-34, orta/yüksek gelir)", "yas": "25-34", "gelir": "orta", "cinsiyet": "karma", "pay": 0.18, "renk": "#3b82f6"},
+    {"id": "ebeveyn_orta", "ad": "Ebeveyn, orta gelir (35-44)", "yas": "35-44", "gelir": "orta", "cinsiyet": "karma", "pay": 0.20, "renk": "#10b981"},
+    {"id": "ebeveyn_dusuk", "ad": "Ebeveyn, düşük gelir (35-44)", "yas": "35-44", "gelir": "dusuk", "cinsiyet": "karma", "pay": 0.12, "renk": "#ef4444"},
+    {"id": "orta_yas_yuksek", "ad": "Orta yaş, yüksek gelir (45-54)", "yas": "45-54", "gelir": "yuksek", "cinsiyet": "karma", "pay": 0.12, "renk": "#8b5cf6"},
+    {"id": "orta_yas_orta", "ad": "Orta yaş, orta gelir (45-54)", "yas": "45-54", "gelir": "orta", "cinsiyet": "karma", "pay": 0.10, "renk": "#14b8a6"},
+    {"id": "emekli", "ad": "55+ (emekli / emeklilik yakını)", "yas": "55+", "gelir": "orta", "cinsiyet": "karma", "pay": 0.12, "renk": "#64748b"}
+  ]
+}

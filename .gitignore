@@ -30,3 +30,4 @@ tests/shots/output
 dev-dist
 persona-sim/node_modules
 persona-sim/dist
+persona-katmani/db/*.sqlite
