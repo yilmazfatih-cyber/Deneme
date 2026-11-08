@@ -23,18 +23,24 @@ sürekli kalibre eder**. Simülasyon ölçümün yerine geçmez; hangi soruya uy
 | Aşırı güven | Rapor ilk ekranında güven sınıfı + "ne bilmiyoruz"; sentetik etiketi her alıntıda; filigran | 05, 06 |
 | Düşük riskli kararlar için | Uygunluk kapısı K1–K10; ödeme istekliliği ve ihtiyaç keşfi varsayılan kırmızı | 05 |
 
-## 2b. Genelden özele davranış modeli (ADR-001 + ADR-002) ve etki kitaplığı
+## 2b. İki kaynaklı davranış modeli (ADR-001, ADR-002, ADR-003) ve etki kitaplığı
 
 Proje sahibinin iki kararı birlikte okunur: katman gerçek müşteriler için istatistiksel profil üretir (ADR-001), ama bunu bir
 kişinin psikolojisini kopyalayarak değil, **sosyolog gibi, genelden özele** inerek yapar (ADR-002). Birim "X kişisinin ikizi"
 değil, **seviye bazlı davranış profili**dir; kişi düzeyi veri yalnızca genel çıkarım için işlenir, hedefleme ve kişiye gösterim yoktur.
 
 ```
-S0 Dünya ──► S1 Türkiye ──► S2 Şehir / bölge ──► S3 Konum (mağaza) / site ──► S4 Gerçek müşteri
-literatür      TR çalışmaları,  bölgesel istatistik,   konum türü veya sitenin     kiracının gerçek
-etki kitaplığı GPS ülke puanı,  kiracının şehir logu   kendi olay günlüğü          müşterilerinin gözlemi
+KAYNAK A · Genel model (genelden özele)
+S0 Dünya ──► S1 Türkiye ──► S2 Şehir / bölge ──► S3 Konum (mağaza) / site
+literatür      TR çalışmaları,  bölgesel istatistik,   konum türü veya sitenin
+etki kitaplığı GPS ülke puanı,  kiracının şehir logu   toplu olay günlüğü
                TÜİK
    her seviye üsttekini öncül alır, kendi verisiyle günceller; veri yoksa "miras" etiketiyle taşır
+
+KAYNAK B · Gerçek müşteri modeli (bağımsız, sıfırdan)
+kiracının gerçek müşterilerinin gözlemleri ──► kendi öncülü, kendi belirsizliği; A'dan öncül almaz
+
+SUNUM: yalnız A · yalnız B · A+B birleşik + FARK (parametre başına yön, büyüklük, anlamlılık)
 ```
 
 - **Parametre vektörü θ** (kayıptan kaçınma, şimdicilik, risk, sosyal kanıt, reklam toleransı, fiyat ve yorum duyarlılığı,
@@ -43,16 +49,18 @@ etki kitaplığı GPS ülke puanı,  kiracının şehir logu   kendi olay günl�
 - **S0 ve S1 literatürden:** `data/davranis-etkileri.xlsx` 176 bulgu ve 152 kaynaktan etki büyüklüklerini, güven aralıklarını ve
   moderatörleri taşır; her satır bir parametreye, bir prior önerisine ve bir seviyeye (S0 Dünya / S1 Türkiye) bağlanır.
   "Fark matrisi" sayfası yaş, cinsiyet, gelir, eğitim, kültür, deneyim, cihaz ve kategori farklarının hangi parametreyi etkilediğini gösterir.
-- **S2–S4 kiracının verisinden:** şehir bazlı toplu davranış, konum türü (AVM, cadde, semt) veya sitenin olay günlüğü, gerçek müşteri
-  gözlemleri. Kiracılar arası paylaşım yalnızca S1'e toplulaştırılmış hata istatistiği olarak gider (F-9 ile uyumlu).
-- **Kullanım serbestliği:** çalışma tasarımında `parameter_level` seçilir (yalnız S0 … S4 dahil, karışık mümkün); rapor her parametrenin
-  hangi seviyeden geldiğini gösterir; S4 (gerçek müşteri) parametreleri ayrı vurgulanır.
+- **S2–S3 kiracının toplu verisinden:** şehir bazlı davranış, konum türü (AVM, cadde, semt) veya sitenin olay günlüğü. Kiracılar arası
+  paylaşım yalnızca S1'e toplulaştırılmış hata istatistiği olarak gider (F-9 ile uyumlu).
+- **Kaynak B sıfırdan:** gerçek müşteri gözlemlerinden, A'dan bağımsız kestirilir; genel öncülle yumuşatılmaz ki müşterinin gerçek
+  farkı silinmesin. A ile B'nin farkı kendi başına bulgudur ve iki kaynak birbirini doğrular (ADR-003).
+- **Kullanım serbestliği:** çalışma tasarımında `parameter_source ∈ {A, B, A+B}` ve A için `level ∈ {S0..S3}` seçilir; rapor her parametrenin
+  hangi kaynaktan ve seviyeden geldiğini gösterir; A+B kipinde fark tablosu zorunludur.
 - **Ölçek analizi:** her seviyede davranışın ne kadar yaygın ve ne büyüklükte olduğu `BehaviorScale` nesnesiyle (oran, etki, varyans, n, güven) raporlanır.
 - **Aşırı kesinliğe karşı:** her parametre "miras / kısmen yerel / yerel" etiketi taşır; bir parametre ancak o seviyede onu tanımlayan
   gözlem varsa serbest bırakılır.
 - **Hibrit karar:** model kapsamındaki karar noktalarında olasılığı istatistik motoru verir ve eylemi örnekler; LLM özellik çıkarır
   ve gerekçeyi sonradan yazar; `override_rate` ile LLM'in sayıyı ezmesi izlenir.
-- **Gizlilik:** S4 kişi düzeyi veri yalnızca kestirim için işlenir, kişi kimliğiyle dışa aktarılmaz, bireysel arayüz yoktur; standart
+- **Gizlilik:** Kaynak B'deki kişi düzeyi veri yalnızca kestirim için işlenir, kişi kimliğiyle dışa aktarılmaz, bireysel arayüz yoktur; standart
   KVKK silme (06'nın sonraki turu).
 
 ## 3. Katmanlar ve akış
@@ -103,8 +111,8 @@ Bölümler bağımsız yazıldığı için aşağıdaki noktalarda tek bir tanı
 | B6 | Kullanıcı tasarımı persona (U7) | 01 F5, 05 S5 | Teknik varsayılan: ayrı "keşif" katmanı, istatistiğe girmez, raporda işaretli. Nihai karar: FELSEFI-KARARLAR F-5. |
 | B7 | Global kalibrasyon düzelticisine müşteri verisi | 03 F5, 06 §4 | Teknik varsayılan: yalnızca toplulaştırılmış hata istatistiği, açık izinle. Nihai karar: F-9. |
 | B8 | Ortam havuzu ile LLM havuzu ölçeklemesi | 01 ve 04 uyumlu | Ayrı ölçeklenir; `EnvironmentRunner.run(job) -> SessionRef` sözleşmesi (04 §12) kabul. |
-| B10 | Davranış profili ↔ persona şeması | 07 S0–S4 seviye zinciri; 02 §5 en küçük birimi hücre sayıyordu | 02 §5 sınıfları `population_sampled` (S0–S2), `site_grounded` (S3), `customer_grounded` (S4) olur; `behavioral_profile` (B4) alanları 07'nin profil bloğundan beslenir. |
-| B11 | İkiz metrikleri | 07 yeni metrik ailesi istiyor (kişi düzeyi tutulan oturum isabeti, dört taban çizgisiyle karşılaştırma) | 03 §7'ye "T" kodlu metrik ailesi eklenir; ikiz segment ortalamasını geçemezse "kişiye özgü" iddiası düşer. |
+| B10 | Davranış profili ↔ persona şeması | 07 iki kaynak (A: S0–S3, B: gerçek müşteri); 02 §5 en küçük birimi hücre sayıyordu | 02 §5 sınıfları `general_profile` (A), `customer_profile` (B), `fused_profile` (A+B) olur; `behavioral_profile` (B4) alanları 07'nin profil bloğundan beslenir. |
+| B11 | Kaynak B metrikleri ve A–B uyuşmazlığı | 07 yeni metrik ailesi istiyor (B'nin tutulan oturum isabeti, A ile B'nin fark anlamlılığı) | 03 §7'ye "T" kodlu metrik ailesi eklenir; B genel modeli (A) geçemezse "müşteriye özgü" iddiası düşer; A–B farkı raporda güven aralığıyla verilir. |
 | B9 | Çok ajanlı B2B komite | 05 istiyor, 01 §7 destekliyor | Rol bazlı ajan grubu; komite içi etkileşim MVP'de yok (sıralı bireysel koşu + sentez), ikinci aşamada. |
 
 ## 5. Bileşen sözleşmeleri (kısa)

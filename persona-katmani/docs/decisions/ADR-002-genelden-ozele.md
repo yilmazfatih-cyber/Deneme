@@ -1,6 +1,6 @@
 # ADR-002 · İkiz bireysel psikoloji değil, genelden özele sosyolojik davranış modeli (F-11, F-12, F-13, F-14)
 
-Tarih: 2026-11-08 · Durum: Kabul edildi (proje sahibi)
+Tarih: 2026-11-08 · Durum: Kabul edildi (proje sahibi) · **ADR-003 ile düzeltildi:** S4 zincirin halkası değil, bağımsız Kaynak B'dir
 
 ## Karar
 
