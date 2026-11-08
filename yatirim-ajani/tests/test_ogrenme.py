@@ -99,3 +99,18 @@ def test_yahoo_siniri_baslangici_ceker():
     assert yahoo_sinirina_cek(datetime(2024, 1, 1), "1h", simdi).date() == (simdi - pd.Timedelta(days=729)).date()
     assert yahoo_sinirina_cek(datetime(2026, 10, 1), "1h", simdi).date() == date(2026, 10, 1)
     assert yahoo_sinirina_cek(datetime(2024, 1, 1), "1d", simdi).date() == date(2024, 1, 1)
+
+
+def test_olcum_saatlik_esit_agirlikli_portfoy():
+    from yatirim_ajani.ogrenme.rl import BanditModel, olc
+
+    # 3 hisse × 2 saat; model hepsine AL der (q = 1). Saat 1: +%1, +%1, -%1 → ort +%0,33; saat 2: hepsi +%2.
+    m = BanditModel([0.0], 1.0, [0.0], [1.0], 1.0)
+    X = np.zeros((6, 1))
+    g = np.array([0.01, 0.01, -0.01, 0.02, 0.02, 0.02])
+    z = np.array([1, 1, 1, 2, 2, 2])
+    o = olc(m, X, g, g, 0.0, "t", z)
+    beklenen = (1 + 0.01 / 3) * 1.02 - 1
+    assert o.al_tut_getiri == pytest.approx(beklenen) and o.toplam_net_getiri == pytest.approx(beklenen)
+    # Havuz çarpımı olsaydı 6 getiri art arda çarpılırdı; o değer farklıdır.
+    assert o.toplam_net_getiri != pytest.approx(np.prod(1 + g) - 1)

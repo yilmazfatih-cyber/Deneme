@@ -91,11 +91,12 @@ def egit_ve_olc(
     esik = ayarlar.risk.min_net_getiri
     yol = Path(ayarlar.veri_klasoru) / f"model_{piyasa.kod}_kayma{kayma_dk}.json"
     model.kaydet(yol)
+    zamanlar = np.array([t.value for _, t in kimler])  # saat anahtarı (ns)
     sonuc = EgitimSonucu(
         kayma_dk=kayma_dk,
         hisse_sayisi=len({h for h, _ in kimler}),
-        train=olc(model, X[tr], odul[tr], ham[tr], esik, "train"),
-        test=olc(model, X[test], odul[test], ham[test], esik, "test"),
+        train=olc(model, X[tr], odul[tr], ham[tr], esik, "train", zamanlar[tr]),
+        test=olc(model, X[test], odul[test], ham[test], esik, "test", zamanlar[test]),
         ridge_skoru=skor,
         esik_taramasi=esik_taramasi(model, X[tr], odul[tr], (0.0, 0.0025, 0.005, 0.0075, 0.01, 0.015)),
         model_yolu=yol,

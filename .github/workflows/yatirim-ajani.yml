@@ -48,7 +48,12 @@ jobs:
 
       - name: Çıktı dalını al
         run: |
-          git fetch origin ajan-ciktilari:ajan-ciktilari 2>/dev/null || git branch ajan-ciktilari $(git commit-tree -m "ajan çıktıları" $(git hash-object -t tree /dev/null))
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if ! git fetch origin ajan-ciktilari:ajan-ciktilari 2>/dev/null; then
+            bos=$(git commit-tree -m "ajan çıktıları" "$(git hash-object -t tree /dev/null)") || exit 1
+            git branch ajan-ciktilari "$bos"
+          fi
           git worktree add cikti ajan-ciktilari
           mkdir -p cikti/veri cikti/raporlar
           cp -r cikti/veri yatirim-ajani/ 2>/dev/null || true
@@ -62,6 +67,9 @@ jobs:
           mkdir -p raporlar
           python -m yatirim_ajani egit --piyasa bist --kayma-kiyasla | tee "raporlar/egitim-bist-$(date +%Y%m%d).md"
           python -m yatirim_ajani coz --veri csv --csv-klasoru veri/saatlik --aralik 1h || true
+          python -m yatirim_ajani bilgi-olaylar --piyasa bist
+          for f in bilgi_kaynak/*.json; do [ -f "$f" ] && python -m yatirim_ajani bilgi-yukle "$f" || true; done
+          python -m yatirim_ajani simule --piyasa bist > /dev/null
 
       - name: Saatlik tarama
         if: steps.is.outputs.ad == 'tara'
