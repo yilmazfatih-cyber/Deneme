@@ -18,11 +18,11 @@ Yanıt biçimi önerisi: her satıra bir harf (a/b/c) veya kendi cümlenizi yaz�
 | F-8 | Personaya insan adı/yüz; algıya insan kusuru eklensin mi? | Ad var, fotoğraf yok, "sentetik" etiketi sürekli; algı bozulması kalibre edilene kadar kapalı |
 | F-9 | Müşteri verisi ortak kalibrasyon düzelticisine girsin mi? | Yalnızca toplulaştırılmış hata istatistiği, açık izinle |
 | F-10 | Hangi işler ve çıktı biçimleri reddedilir? | Siyasi reklam reddi; kumar/yüksek faiz insan incelemeli; sahipsiz site yok; filigran kaldırılamaz |
-| F-11 | *(yeni, 07)* Kişinin kestirilen zayıf noktası (yüksek şimdicilik, düşük sabır, kıtlık tepkisi) üzerinden hedefleme yapılabilir mi? | Hayır; ikiz çıktısı kişi kimliğiyle kiracının pazarlama sistemine geri yazılamaz |
-| F-12 | *(yeni, 07)* Kişi kendi ikizinin parametrelerini görür mü, itiraz edebilir mi? | Sade dille görür ve itiraz edebilir; isterse ham parametreyi de görür |
-| F-13 | *(yeni, 07)* Hiçbir parametresi kişiye özgü olmayan soğuk kayıt "ikiz" diye adlandırılabilir mi? | Hayır; soğuk aşamada adı "segment ikizi taslağı" |
-| F-14 | *(yeni, 07)* Kültür/ülke moderatörü veri gelmeden kişiye parametre atasın mı? | Atar ama kart "bu değer kişiden değil nüfus öncülünden" der |
-| F-15 | *(yeni, 07)* Rıza geri çekilince geçmiş ikiz raporları ne olur? | Toplu sonuçlarda (k ≥ 50 ikiz) kalır; tek ikiz veya küçük grupta silinir/işaretlenir |
+| F-11 | Kişinin zayıf noktası üzerinden hedefleme? | **KARAR (ADR-002): Hayır.** Kişi parametreleri yalnızca genel çıkarım için; kişi kimliğiyle dışa aktarım yok |
+| F-12 | Kişi kendi ikizini görür mü? | **KARAR (ADR-002): Hayır.** Bireye yönelik arayüz yok; ikiz müşteri şirketin analiz nesnesi |
+| F-13 | Soğuk kayıt "ikiz" diye adlandırılabilir mi? | **KARAR (ADR-002):** birim seviye bazlı "davranış profili"; "ikiz" yalnızca gerçek müşteri kümesi (S4) için, tek kişi için değil |
+| F-14 | Kültür/ülke öncülü veri gelmeden atansın mı? | **KARAR (ADR-002): Evet.** Dünya → Türkiye → şehir → konum/site → gerçek müşteri zinciri tasarımın kendisi; kart hangi seviyeden miras aldığını söyler |
+| F-15 | Rıza geri çekilince geçmiş raporlar? | Daraldı (ADR-002): kişi kimliğiyle rapor yok; yalnızca S4 kestiriminden silme. Hukuki görüşle kapanacak |
 
 ---
 
@@ -197,6 +197,8 @@ Geldiği bölümler: 04 S4, 06 S4/S5.
 ---
 
 ## F-11 … F-15 · Dijital ikiz kararının doğurduğu yeni sorular
+
+> **Karar (2026-11-08, proje sahibi):** F-11 hayır, F-12 hayır, F-13 ve F-14 "genelden özele sosyolojik model" çerçevesiyle çözüldü; F-15 daraldı. Bkz. `decisions/ADR-002-genelden-ozele.md`. Aşağıdaki metin karar öncesi tartışmadır.
 
 ADR-001 ile F-1 kapandı; `mimari/07-dijital-ikiz-istatistik.md` beş yeni değer sorusu çıkardı. Tam metin, seçenekler ve
 gerekçeler 07'nin "Felsefi sorular" bölümünde; özet tabloda. Kısa yorum:

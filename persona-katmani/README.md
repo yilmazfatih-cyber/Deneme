@@ -32,11 +32,12 @@ araştırma, rol tanımları, altı bölümlük mimari ve proje sahibine bırak�
 | `docs/mimari/04-ortamlar.md` | Web/uygulama/Figma/reklam sandbox'ları, eylem alanı, olay şeması (Ortam Müh.) |
 | `docs/mimari/05-icgoru-ve-urun.md` | Kullanım senaryoları, sektör şablonları, rapor biçimi, kullanım sınırları (İçgörü Mimarı) |
 | `docs/mimari/06-guven-gizlilik.md` | Veri sınıfları, KVKK/GDPR/SOC 2, kötüye kullanım, açıklama (Güven ve Gizlilik) |
-| `docs/mimari/07-dijital-ikiz-istatistik.md` | Kişi başı istatistiksel dijital ikiz: parametre vektörü, hiyerarşik Bayesçi model, hibrit karar, doğrulama (Araştırmacı) |
+| `docs/mimari/07-dijital-ikiz-istatistik.md` | Genelden özele istatistiksel davranış profili: S0–S4 seviye zinciri, parametre vektörü, hiyerarşik Bayesçi model, seviye seçimi, hibrit karar, doğrulama (Araştırmacı) |
 | `docs/MIMARI.md` | Bütünleşik mimari: tek diyagram, bileşen sözleşmeleri, yol haritası |
 | `docs/FELSEFI-KARARLAR.md` | Proje sahibinin karar vereceği sorular; her biri seçenekler ve öneriyle |
-| `docs/decisions/ADR-001-dijital-ikiz.md` | Karar: persona dijital ikiz olacak (F-1) |
-| `data/davranis-etkileri.xlsx` | Literatür etki kitaplığı: 176 bulgu, 152 kaynak, 28 persona parametresi; sayfalar Özet · Etkiler · Moderatörler · Parametreler · Fark matrisi · Kaynaklar · Şema |
+| `docs/decisions/ADR-001-dijital-ikiz.md` | Karar: gerçek müşteriler için istatistiksel profil (F-1) |
+| `docs/decisions/ADR-002-genelden-ozele.md` | Karar: hedefleme ve kişiye gösterim yok; Dünya → Türkiye → şehir → konum/site → gerçek müşteri seviye zinciri (F-11…F-14) |
+| `data/davranis-etkileri.xlsx` | Literatür etki kitaplığı (S0 Dünya / S1 Türkiye öncülleri): 176 bulgu, 152 kaynak, 28 persona parametresi; sayfalar Özet · Etkiler · Moderatörler · Parametreler · Fark matrisi · Kaynaklar · Şema |
 | `data/kaynak/*.csv` | Excel'in kaynağı: ekonomik_davranis (61), uygulama_reklam (62), web_urun (53); şema `data/SEMA.md` |
 | `scripts/excel_uret.py` | CSV'lerden Excel'i yeniden üretir: `python3 persona-katmani/scripts/excel_uret.py` |
 

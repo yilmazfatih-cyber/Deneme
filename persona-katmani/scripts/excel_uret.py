@@ -28,7 +28,7 @@ SUTUNLAR = [
     "yazarlar", "yil", "baslik", "dergi", "doi", "url", "kaynak_dogrulama", "notlar",
 ]
 GENISLIK = {
-    "kayit_id": 9, "alan": 16, "alt_konu": 22, "etki_adi": 28, "etki_tanimi": 60, "yon": 9,
+    "seviye": 16, "kayit_id": 9, "alan": 16, "alt_konu": 22, "etki_adi": 28, "etki_tanimi": 60, "yon": 9,
     "etki_buyuklugu_deger": 10, "etki_buyuklugu_olcusu": 14, "guven_araligi": 18,
     "orneklem_n": 14, "populasyon_ulke": 18, "populasyon_yas": 16, "baglam": 16, "yontem": 14,
     "moderator_degisken": 20, "moderator_yonu_ve_buyuklugu": 45, "bireysel_fark_olcegi": 20,
@@ -48,6 +48,21 @@ def oku() -> list[dict]:
                 satir["_dosya"] = yol.name
                 satirlar.append(satir)
     return satirlar
+
+
+def seviye(satir: dict) -> str:
+    """ADR-002 S0–S4: bulgunun hangi seviyeye öncül olabileceği (populasyon_ulke + baglam'dan türetilir)."""
+    u = (satir["populasyon_ulke"] + " " + satir["notlar"]).lower()
+    b = satir["baglam"].lower()
+    tr = any(k in u for k in ("türkiye", "turkey", "turkiye", "(tr", "tr dahil", "tr)"))
+    cok_ulke = any(k in u for k in ("ülke", "countr", "global", "uluslararası", "çok ülkeli", "karışık"))
+    if tr and not cok_ulke:
+        return "S1 Türkiye"
+    if tr and cok_ulke:
+        return "S0 Dünya (TR dahil)"
+    if "gerçek işlem" in b or "log" in b or "saha" in b:
+        return "S0 Dünya (saha/log)"
+    return "S0 Dünya"
 
 
 def sayi(s: str):
@@ -112,6 +127,8 @@ def main() -> None:
     ws.append([])
     ws.append(["Okuma notu: etki büyüklükleri makalelerin özet/tablolarından ve ikincil kaynaklardan derlendi; 'kaynak_dogrulama' "
                "yalnızca meta verinin doğrulandığını söyler. 'notlar' sütununda 'doğrulanmadı' yazan sayılar prior olarak kullanılmadan önce makaleden kontrol edilmeli."])
+    ws.append(["Seviye (ADR-002): S0 Dünya = literatür öncülü; S1 Türkiye = Türkiye örneklemli bulgu. S2 şehir, S3 konum/site ve S4 gerçek müşteri "
+               "parametreleri literatürden değil kiracının kendi verisinden hesaplanır; bu tabloda yalnızca S0 ve S1 bulunur."])
     ws.append(["Kanıt gücü: 5 ön tescilli/çok ülkeli meta-analiz · 4 meta-analiz · 3 çok çalışmalı deney veya büyük saha · 2 tek deney · 1 gözlemsel/anket/sektör raporu"])
     ws.column_dimensions["A"].width = 28
     for k in "BCDE":
@@ -119,8 +136,8 @@ def main() -> None:
 
     # Etkiler
     tablo_yaz(
-        wb.create_sheet("Etkiler"), SUTUNLAR,
-        [[sayi(s[k]) if k in ("etki_buyuklugu_deger", "kanit_gucu", "yil") else s[k] for k in SUTUNLAR] for s in satirlar],
+        wb.create_sheet("Etkiler"), ["seviye"] + SUTUNLAR,
+        [[seviye(s)] + [sayi(s[k]) if k in ("etki_buyuklugu_deger", "kanit_gucu", "yil") else s[k] for k in SUTUNLAR] for s in satirlar],
         "Etkiler",
     )
 
@@ -145,18 +162,22 @@ def main() -> None:
         guc = [float(s["kanit_gucu"]) for s in grup if s["kanit_gucu"].replace(".", "", 1).isdigit()]
         oneriler = sorted({s["parametre_dagilimi_onerisi"] for s in grup if s["parametre_dagilimi_onerisi"]})
         modler = sorted({s["moderator_degisken"] for s in grup if s["moderator_degisken"]})
+        sev = defaultdict(int)
+        for s in grup:
+            sev[seviye(s).split(" ")[0]] += 1
         psatir.append([
             p, len(grup), ", ".join(sorted({s["alan"] for s in grup})),
+            sev.get("S0", 0), sev.get("S1", 0),
             round(max(guc), 1) if guc else None,
             " | ".join(oneriler)[:900],
             ", ".join(modler)[:400],
             ", ".join(s["kayit_id"] for s in grup),
         ])
-    pbas = ["persona_parametresi", "bulgu_sayisi", "alanlar", "en_yuksek_kanit_gucu",
+    pbas = ["persona_parametresi", "bulgu_sayisi", "alanlar", "S0_dunya_bulgu", "S1_turkiye_bulgu", "en_yuksek_kanit_gucu",
             "prior_onerileri", "moderatorler", "kayitlar"]
     wsP = wb.create_sheet("Parametreler")
     tablo_yaz(wsP, pbas, psatir, "Parametreler")
-    for k, w in zip("ABCDEFG", (24, 10, 36, 10, 80, 50, 60)):
+    for k, w in zip("ABCDEFGHI", (24, 10, 36, 9, 9, 10, 80, 50, 60)):
         wsP.column_dimensions[k].width = w
 
 
