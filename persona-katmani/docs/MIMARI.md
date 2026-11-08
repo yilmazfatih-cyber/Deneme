@@ -46,7 +46,7 @@ SUNUM: yalnız A · yalnız B · A+B birleşik + FARK (parametre başına yön, 
 - **Parametre vektörü θ** (kayıptan kaçınma, şimdicilik, risk, sosyal kanıt, reklam toleransı, fiyat ve yorum duyarlılığı,
   kıtlık, güven işareti, sabır, dikkat eşiği, varsayılan yapışkanlığı + 07'nin eklediği karar gürültüsü, dalgınlık, okuma hızı,
   hayal kırıklığı eşiği, yenilik arayışı, söz-davranış farkı, kategori sapması) her seviyede ayrı kestirilir.
-- **S0 ve S1 literatürden:** `data/davranis-etkileri.xlsx` 176 bulgu ve 152 kaynaktan etki büyüklüklerini, güven aralıklarını ve
+- **S0 ve S1 literatürden:** `data/davranis-etkileri.xlsx` 225 bulgu ve 184 kaynaktan (49 satırı Türkiye örneklemli S1 öncülü) etki büyüklüklerini, güven aralıklarını ve
   moderatörleri taşır; her satır bir parametreye, bir prior önerisine ve bir seviyeye (S0 Dünya / S1 Türkiye) bağlanır.
   "Fark matrisi" sayfası yaş, cinsiyet, gelir, eğitim, kültür, deneyim, cihaz ve kategori farklarının hangi parametreyi etkilediğini gösterir.
 - **S2–S3 kiracının toplu verisinden:** şehir bazlı davranış, konum türü (AVM, cadde, semt) veya sitenin olay günlüğü. Kiracılar arası
@@ -154,4 +154,4 @@ ucuz katmanın sadakat maliyeti (O2) ölçülmeden oran sabitlenmez.
 - Türkiye için kamu istatistiği granülaritesi düşük olabilir; küçük hücrelerde yeniden tanımlama riski ile temsil arasında gerilim (02, 06).
 - Hukuki ifadeler (KVKK/GDPR) hukuki görüş değildir; 06'daki "doğrulanmalı" işaretleri avukat incelemesi bekler.
 - Talp'ın gerçek ilan metinleri görülmedi; roller rakip ilanlarından türetildi (01-roller.md).
-- Etki kitaplığındaki sayıların çoğu makale özetlerinden ve ikincil kaynaklardan alındı; 176 satırın 77'sinde sayısal etki var, kalanında yalnızca yön/moderatör. `notlar` sütununda "doğrulanmadı" yazanlar prior olarak kullanılmadan önce makaleden kontrol edilmeli. Türkiye'ye özgü hakemli etki büyüklüğü çok az (Global Preferences Survey ülke puanları, iki anket).
+- Etki kitaplığındaki sayıların çoğu makale özetlerinden ve ikincil kaynaklardan alındı; 225 satırın yaklaşık 100ünde sayısal etki var, kalanında yalnızca yön/moderatör. `notlar` sütununda "doğrulanmadı" yazanlar prior olarak kullanılmadan önce makaleden kontrol edilmeli. Türkiye'ye özgü hakemli etki büyüklüğü çok az (Global Preferences Survey ülke puanları, iki anket).
