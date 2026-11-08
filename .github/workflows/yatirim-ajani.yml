@@ -1,0 +1,84 @@
+name: Yatırım ajanı
+
+# Dil modeli kullanmaz; yalnız veri, eğitim ve saatlik tarama. Çıktılar `ajan-ciktilari` dalına yazılır,
+# kod dallarına dokunulmaz. Haftalık araştırma Claude Code zamanlanmış göreviyle yapılır (yatirim-ajani/EKIP.md).
+# Saatler UTC; BIST seansı 10:00–18:00 TRT = 07:00–15:00 UTC.
+
+on:
+  workflow_dispatch:
+    inputs:
+      is:
+        description: 'veri-egitim | tara'
+        default: veri-egitim
+        required: true
+  schedule:
+    - cron: '45 16 * * 1-5' # 19:45 TRT hafta içi: veri çek + eğit
+    - cron: '20 7-14 * * 1-5' # 10:20–17:20 TRT saat başı +20 dk: saatlik tarama (Yahoo ~15 dk gecikmeli)
+
+permissions:
+  contents: write
+
+concurrency:
+  group: yatirim-ajani
+  cancel-in-progress: false
+
+jobs:
+  calistir:
+    runs-on: ubuntu-latest
+    env:
+      TZ: Europe/Istanbul
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: pip install -q -e "yatirim-ajani[yahoo]"
+
+      - name: Hangi iş?
+        id: is
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "ad=${{ inputs.is }}" >> "$GITHUB_OUTPUT"
+          elif [ "${{ github.event.schedule }}" = "45 16 * * 1-5" ]; then
+            echo "ad=veri-egitim" >> "$GITHUB_OUTPUT"
+          else
+            echo "ad=tara" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Çıktı dalını al
+        run: |
+          git fetch origin ajan-ciktilari:ajan-ciktilari 2>/dev/null || git branch ajan-ciktilari $(git commit-tree -m "ajan çıktıları" $(git hash-object -t tree /dev/null))
+          git worktree add cikti ajan-ciktilari
+          mkdir -p cikti/veri cikti/raporlar
+          cp -r cikti/veri yatirim-ajani/ 2>/dev/null || true
+          cp -r cikti/raporlar yatirim-ajani/ 2>/dev/null || true
+
+      - name: Veri çek ve eğit
+        if: steps.is.outputs.ad == 'veri-egitim'
+        working-directory: yatirim-ajani
+        run: |
+          python -m yatirim_ajani veri-cek --piyasa bist
+          mkdir -p raporlar
+          python -m yatirim_ajani egit --piyasa bist --kayma-kiyasla | tee "raporlar/egitim-bist-$(date +%Y%m%d).md"
+          python -m yatirim_ajani coz --veri csv --csv-klasoru veri/saatlik --aralik 1h || true
+
+      - name: Saatlik tarama
+        if: steps.is.outputs.ad == 'tara'
+        working-directory: yatirim-ajani
+        run: |
+          python -m yatirim_ajani veri-cek --piyasa bist --baslangic "$(date -d '-10 days' +%Y-%m-%d)" --bes-dakika-yok
+          python -m yatirim_ajani tara --piyasa bist --veri csv --csv-klasoru veri/saatlik --aralik 1h --saat-denetimi-kapali
+
+      - name: Çıktıları kaydet
+        run: |
+          rm -rf cikti/veri cikti/raporlar
+          cp -r yatirim-ajani/veri cikti/ 2>/dev/null || true
+          cp -r yatirim-ajani/raporlar cikti/ 2>/dev/null || true
+          cd cikti
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet && { echo "Değişiklik yok"; exit 0; }
+          git commit -q -m "ajan çıktıları: ${{ steps.is.outputs.ad }} $(date '+%Y-%m-%d %H:%M %Z')"
+          git push origin ajan-ciktilari

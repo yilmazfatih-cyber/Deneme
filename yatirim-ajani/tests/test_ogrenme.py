@@ -90,3 +90,12 @@ def test_egitim_akisi_sentetik(tmp_path):
     n = db.execute("SELECT COUNT(*) FROM odul_gunlugu").fetchone()[0]
     assert n == s.train.karar_sayisi + s.test.karar_sayisi
     assert "Sonuç:" in s.metin(a.risk.min_net_getiri)
+
+
+def test_yahoo_siniri_baslangici_ceker():
+    from yatirim_ajani.veri.kaynak import yahoo_sinirina_cek
+
+    simdi = datetime(2026, 11, 7).astimezone()
+    assert yahoo_sinirina_cek(datetime(2024, 1, 1), "1h", simdi).date() == (simdi - pd.Timedelta(days=729)).date()
+    assert yahoo_sinirina_cek(datetime(2026, 10, 1), "1h", simdi).date() == date(2026, 10, 1)
+    assert yahoo_sinirina_cek(datetime(2024, 1, 1), "1d", simdi).date() == date(2024, 1, 1)

@@ -43,6 +43,24 @@ class VeriKaynagi(Protocol):
         ...
 
 
+# Yahoo gün içi veriyi yalnız yakın geçmiş için verir; daha eski başlangıç isteği kırpılmaz, REDDEDİLİR.
+YAHOO_GUN_ICI_SINIRI_GUN = {"1m": 7, "2m": 59, "5m": 59, "15m": 59, "30m": 59, "60m": 729, "1h": 729}
+
+
+def yahoo_sinirina_cek(baslangic: datetime, aralik: str, simdi: datetime | None = None) -> datetime:
+    sinir = YAHOO_GUN_ICI_SINIRI_GUN.get(aralik)
+    if sinir is None:
+        return baslangic
+    simdi = simdi or datetime.now().astimezone()
+    if baslangic.tzinfo is None:
+        baslangic = baslangic.astimezone()
+    en_erken = simdi - timedelta(days=sinir)
+    if baslangic < en_erken:
+        print(f"Not: Yahoo {aralik} veriyi son {sinir} gün için verir; başlangıç {en_erken:%Y-%m-%d} olarak alındı.")
+        return en_erken
+    return baslangic
+
+
 class YahooKaynak:
     """Yahoo Finance (yfinance) üzerinden ücretsiz veri.
 
@@ -61,6 +79,7 @@ class YahooKaynak:
     ) -> pd.DataFrame:
         import yfinance as yf
 
+        baslangic = yahoo_sinirina_cek(baslangic, aralik)
         df = yf.download(
             sembol,
             start=baslangic,

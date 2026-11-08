@@ -15,10 +15,10 @@ tags: [summarization, email, pdf, ocr, turkish, sub-1b]
 
 ## Sonuçlar (kendi değerlendirme kümeniz)
 
-| Küme | ROUGE-L | Biçim uyumu | Uydurma rakam oranı |
-| --- | --- | --- | --- |
-| eval.jsonl (n=__) | __ | __ | __ |
-| taranmış TR PDF (n=__) | __ | __ | __ |
+| Küme                   | ROUGE-L | Biçim uyumu | Uydurma rakam oranı |
+| ---------------------- | ------- | ----------- | ------------------- |
+| eval.jsonl (n=__)      | __      | __          | __                  |
+| taranmış TR PDF (n=__) | __      | __          | __                  |
 
 ## Sınırlar
 
