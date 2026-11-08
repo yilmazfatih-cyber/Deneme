@@ -1,0 +1,7 @@
+veri/
+!veri/.gitkeep
+cikti/
+__pycache__/
+*.pt
+*.onnx
+.pytest_cache/
