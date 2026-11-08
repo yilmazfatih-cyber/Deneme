@@ -5,3 +5,6 @@ __pycache__/
 *.pt
 *.onnx
 .pytest_cache/
+
+!modeller/
+!modeller/*.pt
