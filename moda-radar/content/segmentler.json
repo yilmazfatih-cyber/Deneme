@@ -1,0 +1,64 @@
+{
+  "surum": "0.1",
+  "ulke": "TR",
+  "sehir": "Istanbul",
+  "not": "Gecikme degerleri sezon cinsinden ONSELdir (ADR-003); moda_radar/tahmin/gecikme.py veriyle gunceller.",
+  "segmentler": [
+    {
+      "kod": "luks",
+      "ad": "Lüks",
+      "cipa_markalar": ["Beymen", "Vakko"],
+      "gecikme_onsel": { "alt": 0.5, "ust": 1.5, "mod": 1 },
+      "oncu_kaynak": "podyum",
+      "fiyat_bandi_try": { "kadin_ust_alt": 4000, "kadin_ust_ust": 40000 },
+      "notlar": "Podyuma en yakın; hacim küçük; renk riski yüksek ürün kabul görür."
+    },
+    {
+      "kod": "premium",
+      "ad": "Premium hızlı moda",
+      "cipa_markalar": ["Zara", "Massimo Dutti", "Ipekyol"],
+      "gecikme_onsel": { "alt": 1.5, "ust": 3, "mod": 2 },
+      "oncu_kaynak": "podyum",
+      "fiyat_bandi_try": { "kadin_ust_alt": 900, "kadin_ust_ust": 4000 },
+      "notlar": "Renk sinyali en net; pilot segment."
+    },
+    {
+      "kod": "orta",
+      "ad": "Orta kitle",
+      "cipa_markalar": ["LC Waikiki", "Koton", "DeFacto"],
+      "gecikme_onsel": { "alt": 2, "ust": 4, "mod": 3 },
+      "oncu_kaynak": "podyum+premium_raf",
+      "fiyat_bandi_try": { "kadin_ust_alt": 300, "kadin_ust_ust": 1200 },
+      "notlar": "En büyük hacim; Türkiye'ye özgü renk tercihleri; pilot segment."
+    },
+    {
+      "kod": "deger",
+      "ad": "Değer",
+      "cipa_markalar": ["Addax", "LC Waikiki alt seri"],
+      "gecikme_onsel": { "alt": 3, "ust": 5, "mod": 3.5 },
+      "oncu_kaynak": "orta_raf",
+      "fiyat_bandi_try": { "kadin_ust_alt": 150, "kadin_ust_ust": 600 },
+      "notlar": "Fiyat baskısı deseni belirler; düşük baskı maliyeti tutar."
+    },
+    {
+      "kod": "pazar",
+      "ad": "Pazar",
+      "cipa_markalar": [],
+      "oncu_kanallar": ["Merter toptancı Instagram", "Osmanbey toptancı Instagram", "Laleli"],
+      "referans_pazarlar": ["Kadıköy Salı", "Ulus", "Bağcılar", "Esenyurt", "Fatih Çarşamba"],
+      "gecikme_onsel": { "alt": 4, "ust": 6, "mod": 5 },
+      "oncu_kaynak": "toptanci_instagram",
+      "fiyat_bandi_try": { "kadin_ust_alt": 100, "kadin_ust_ust": 400 },
+      "notlar": "Web sitesi yok; saha fotoğrafı; dizi ve TikTok etkisi podyumdan güçlü. P3'te etkin."
+    }
+  ],
+  "kesen_boyutlar": [
+    {
+      "kod": "tesettur",
+      "ad": "Tesettür",
+      "aciklama": "Her segmentte ayrı pay; kapalı yaka, uzun kol, bol siluet ağırlığı."
+    },
+    { "kod": "iklim", "ad": "İklim bölgesi", "aciklama": "Marmara referans; diğer bölgeler P3." },
+    { "kod": "yas", "ad": "Yaş bandı", "aciklama": "18–24, 25–39, 40+." }
+  ]
+}

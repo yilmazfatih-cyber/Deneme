@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "moda-radar"
+version = "0.1.0"
+description = "Defilelerden sezon rengi (Pantone TCX), kumaş, desen tahmini ve segment bazlı yatırım kararı"
+requires-python = ">=3.12"
+dependencies = ["pydantic>=2.7"]
+
+[project.optional-dependencies]
+veri = ["duckdb>=1.0", "pyarrow>=16", "playwright>=1.45"]
+renk = ["numpy>=1.26", "scikit-learn>=1.5", "colour-science>=0.4.4", "Pillow>=10"]
+tahmin = ["numpy>=1.26", "pandas>=2.2", "scikit-learn>=1.5"]
+test = ["pytest>=8", "ruff>=0.5"]
+
+[tool.setuptools.packages.find]
+include = ["moda_radar*"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
