@@ -14,7 +14,8 @@ HARFLER = "ءآأؤإئابةتثجحخدذرزسشصضطظعغفقكلمنهو�
 # Osmanlı belgelerinde görülen diğer işaretler.
 ISARETLER = "ـ،؛؟٪٫٬.:()«»-/ "
 RAKAMLAR = "٠١٢٣٤٥٦٧٨٩0123456789"
-HAREKELER = "ًٌٍَُِّْٰ"
+HAREKELER = "ًٌٍَُِّْٰٕٓٔ"  # harekeler + birleşik med/hemze (U+0653–U+0655)
+DUZENLEME_IMLERI = "{}[]*\"●•|<>_"  # çevriyazı düzenleme imleri; görüntüde karşılığı yok
 # Farsça/Urduca biçimler → Osmanlı yazımında kullanılan karşılıkları.
 ESDEGER = {
     # Son konumda ى / ي / ی aynı görünür; tek sembole indirgemek CTC'yi rahatlatır.
@@ -42,7 +43,7 @@ BOSLUK = "<b>"  # CTC blank
 def normallestir(metin: str, hareke_at: bool = True, tatvil_at: bool = True) -> str:
     """Sunum biçimlerini (FExx ligatürleri) çöz, eşdeğerleri birleştir, fazlalıkları at."""
     out = []
-    for ch in metin:
+    for ch in metin or "":
         o = ord(ch)
         if 0xFB50 <= o <= 0xFDFF or 0xFE70 <= o <= 0xFEFF:
             ch = unicodedata.normalize("NFKC", ch)
@@ -54,6 +55,8 @@ def normallestir(metin: str, hareke_at: bool = True, tatvil_at: bool = True) -> 
         s = "".join(c for c in s if c not in HAREKELER)
     if tatvil_at:
         s = s.replace("ـ", "")
+    for c in DUZENLEME_IMLERI:
+        s = s.replace(c, "")
     s = " ".join(s.split())
     return s
 

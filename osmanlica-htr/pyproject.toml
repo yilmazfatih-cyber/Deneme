@@ -7,10 +7,11 @@ name = "osmanlica-htr"
 version = "0.1.0"
 description = "Osmanlıca (rik'a odaklı) küçük satır/kelime tanıma modeli ve A/B/C/D etiketleme döngüsü"
 requires-python = ">=3.10"
-dependencies = ["torch>=2.1", "numpy", "pillow>=10", "scipy"]
+dependencies = ["torch>=2.1", "numpy", "pillow>=10", "scipy", "pyarrow"]
 
 [project.optional-dependencies]
 disa = ["onnx", "onnxruntime"]
+lora = ["transformers>=4.45", "peft>=0.13", "accelerate", "protobuf"]
 test = ["pytest"]
 
 [project.scripts]

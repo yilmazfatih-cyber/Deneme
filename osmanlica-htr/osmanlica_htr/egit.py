@@ -65,15 +65,22 @@ def egit(
     kayitlar = []
     for m in manifestler:
         kayitlar.extend(manifest_oku(Path(m)))
+    import re
+
+    latin = [k for k in kayitlar if re.search(r"[A-Za-z]", k["metin"])]
+    if latin:
+        gunluk(f"Latin harf içeren {len(latin)} satır dışarıda bırakıldı")
+        kayitlar = [k for k in kayitlar if not re.search(r"[A-Za-z]", k["metin"])]
     if not kayitlar:
         raise SystemExit("Eğitilecek örnek yok.")
     gercek = [k for k in kayitlar if k.get("kaynak") == "etiket"]
-    sentez = [k for k in kayitlar if k.get("kaynak") != "etiket"]
+    sentez = [k for k in kayitlar if k.get("kaynak") == "sentez"]
+    acik = [k for k in kayitlar if k.get("kaynak") not in ("etiket", "sentez")]  # Muharaf, OpenITI, MAKHZAN...
     if sentez_ust_sinir is not None and len(sentez) > sentez_ust_sinir:
         random.Random(tohum).shuffle(sentez)
         sentez = sentez[:sentez_ust_sinir]
-        kayitlar = sentez + gercek
-    gunluk(f"örnek: {len(sentez)} sentetik + {len(gercek)} gerçek (×{gercek_agirlik})")
+        kayitlar = sentez + acik + gercek
+    gunluk(f"örnek: {len(sentez)} sentetik + {len(acik)} açık veri + {len(gercek)} kendi etiketimiz (×{gercek_agirlik})")
 
     if baslangic:
         model, alfabe, meta = model_yukle(baslangic, cihaz)
@@ -91,13 +98,13 @@ def egit(
 
     # Doğrulama kümesi: gerçek varsa gerçekten, yoksa sentetikten
     rng = random.Random(tohum)
-    havuz = gercek if len(gercek) >= 40 else kayitlar
+    havuz = gercek if len(gercek) >= 40 else (acik if len(acik) >= 200 else kayitlar)
     havuz = list(havuz)
     rng.shuffle(havuz)
     n_dog = max(16, int(len(havuz) * dogrulama_orani)) if len(havuz) > 32 else max(1, len(havuz) // 5)
     dogrulama = havuz[:n_dog]
     dog_kimlik = {id(k) for k in dogrulama}
-    egitim = [k for k in sentez if id(k) not in dog_kimlik] + [k for k in gercek if id(k) not in dog_kimlik] * gercek_agirlik
+    egitim = [k for k in sentez + acik if id(k) not in dog_kimlik] + [k for k in gercek if id(k) not in dog_kimlik] * gercek_agirlik
 
     ds_e = SatirVeriSeti(egitim, alfabe, egitim=True)
     ds_d = SatirVeriSeti(dogrulama, alfabe, egitim=False)

@@ -124,6 +124,37 @@ def _bilgi(a):
     print("alfabe:", "".join(alfabe.to_json()))
 
 
+def _veri(a):
+    from . import veritabani as v
+
+    kaynak, gercek = Path(a.kaynak), Path(a.gercek)
+    adimlar = ["muharaf", "openiti", "makhzan", "commons", "birlestir"] if a.adim == "hepsi" else [a.adim]
+    for adim in adimlar:
+        if adim == "muharaf":
+            v.muharaf_donustur(kaynak / "muharaf", gercek / "muharaf", en_fazla=a.en_fazla)
+        elif adim == "openiti":
+            v.openiti_osmanli_donustur(kaynak, gercek / "openiti_matbu", en_fazla=a.en_fazla)
+        elif adim == "makhzan":
+            v.makhzan_osmanli_donustur(kaynak, gercek / "makhzan_elyazisi")
+        elif adim == "commons":
+            v.commons_indir(a.kategori, kaynak / "commons", en_fazla=a.en_fazla or 400)
+        elif adim == "birlestir":
+            v.birlestir(gercek, Path(a.veritabani))
+
+
+def _lora(a):
+    from .lora import lora_egit
+
+    lora_egit(a.taban, [Path(m) for m in a.manifest], Path(a.cikti), donem=a.donem, parti=a.parti, ogrenme_orani=a.ogrenme_orani, r=a.r, en_fazla=a.en_fazla, en_fazla_adim=a.en_fazla_adim)
+
+
+def _lora_tahmin(a):
+    from .lora import lora_tahmin
+
+    for s in lora_tahmin(Path(a.adaptor), [Path(g) for g in a.goruntu], secenek=a.secenek):
+        print(json.dumps(s, ensure_ascii=False))
+
+
 def main(argv=None):
     p = argparse.ArgumentParser(prog="osm", description="Osmanlıca rik'a satır/kelime tanıma: veri, eğitim, etiketleme.")
     sp = p.add_subparsers(dest="komut", required=True)
@@ -189,6 +220,33 @@ def main(argv=None):
     s = sp.add_parser("bilgi", help="Model dosyası hakkında bilgi")
     s.add_argument("--model", required=True)
     s.set_defaults(f=_bilgi)
+
+    s = sp.add_parser("veri", help="Açık kaynak gerçek veriyi indir ve veritabanına dönüştür (Muharaf, OpenITI, MAKHZAN, Commons)")
+    s.add_argument("adim", choices=["hepsi", "muharaf", "openiti", "makhzan", "commons", "birlestir"])
+    s.add_argument("--kaynak", default=str(VERI / "kaynak"), help="Ham indirme klasörü")
+    s.add_argument("--gercek", default=str(VERI / "gercek"), help="Dönüştürülmüş satırların klasörü")
+    s.add_argument("--veritabani", default=str(VERI / "veritabani.jsonl"))
+    s.add_argument("--en-fazla", type=int, default=None, help="Kaynak başına en fazla satır / görüntü")
+    s.add_argument("--kategori", default="Category:Documents of the Ottoman Empire")
+    s.set_defaults(f=_veri)
+
+    s = sp.add_parser("lora", help="Hazır TrOCR modeline LoRA ile Osmanlıca öğret (GPU önerilir)")
+    s.add_argument("--taban", default="RayR1/trocr-base-arabic-handwritten")
+    s.add_argument("--manifest", action="append", required=True)
+    s.add_argument("--cikti", default=str(KOK / "cikti" / "lora_ota"))
+    s.add_argument("--donem", type=int, default=3)
+    s.add_argument("--parti", type=int, default=8)
+    s.add_argument("--ogrenme-orani", type=float, default=2e-4)
+    s.add_argument("--r", type=int, default=16)
+    s.add_argument("--en-fazla", type=int, default=None)
+    s.add_argument("--en-fazla-adim", type=int, default=None, help="Deneme için adım sınırı")
+    s.set_defaults(f=_lora)
+
+    s = sp.add_parser("lora-tahmin", help="LoRA adaptörüyle satır oku (A/B/C)")
+    s.add_argument("goruntu", nargs="+")
+    s.add_argument("--adaptor", required=True)
+    s.add_argument("--secenek", type=int, default=3)
+    s.set_defaults(f=_lora_tahmin)
 
     a = p.parse_args(argv)
     a.f(a)

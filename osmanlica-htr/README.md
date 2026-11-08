@@ -7,6 +7,10 @@ CRNN+CTC modeli ve onu gerçek veriyle büyütmek için bir **A/B/C/D etiketleme
 - Gerçek veri yokken yazı tiplerinden (4'ü rik'a) sentetik veriyle **ön eğitim**; sonra sizin etiketlerinizle ince ayar.
 - Etiketleme: sayfa → satır (→ kaba kelime) kesilir, model her kesit için **A / B / C** önerir, doğrusu yoksa **D** ile
   yazarsınız. Her etiket anında eğitim manifestine düşer; "Modeli güncelle" düğmesi ince ayarı arka planda başlatır.
+- **Gerçek veritabanı** tek komutla kurulur: 37.852 çevriyazılı satır (Muharaf rik'a el yazısı 24.494, OpenITI Osmanlıca
+  matbu 9.893, MAKHZAN Osmanlıca el yazması 3.465). Ayrıntı ve lisanslar: [`docs/veritabani.md`](docs/veritabani.md).
+- **LoRA yolu** da var: hazır bir Arapça TrOCR modeline Osmanlıca harfleri sözlük genişletme + LoRA ile öğretir
+  (`osm lora`); büyük modeli öğretmen yapıp küçük modeli damıtmak için.
 - Neden klasik OCR olmuyor, güncel Arapça HTR/OCR depoları ve veri kümeleri: [`docs/arastirma.md`](docs/arastirma.md).
 
 ![etiketleme arayüzü](docs/etiketleme-arayuzu.png)
@@ -22,14 +26,19 @@ python -m pytest -q tests              # 8 test
 
 GPU gerekmez; CPU'da çalışır (GPU varsa otomatik kullanılır). Yazı tipleri `fonts/` içinde gelir (SIL OFL).
 
-## Hızlı akış (gerçek veriyle)
+## Hızlı akış
 
 ```bash
 # 1) Sentetik ön eğitim verisi (bir kez, ~3 dk)
 osm sentez --adet 24000 --cikti veri/sentez_v0
 
-# 2) Ön eğitim (CPU'da 24k örnek × 10 dönem ≈ birkaç saat; GPU'da dakikalar)
+# 2) Açık kaynak gerçek veritabanı (≈ 6,5 GB indirme; Muharaf + OpenITI + MAKHZAN → veri/veritabani.jsonl)
+osm veri hepsi
+
+# 2b) Ön eğitim: önce sentetik (CPU'da 24k × 10 dönem ≈ 2 sa), sonra gerçek veritabanıyla devam
 osm egit --manifest veri/sentez_v0/manifest.jsonl --cikti cikti/v0 --donem 10 --ogrenme-orani 2e-3
+osm egit --manifest veri/veritabani.jsonl --manifest veri/sentez_v0/manifest.jsonl --sentez-ust-sinir 8000 \
+         --baslangic cikti/v0/model.pt --cikti cikti/v2 --donem 8
 
 # 3) Sayfalarınızı satırlara böl, etiket kuyruğuna ekle
 osm bolut belgeler/ --duzey satir            # ya da --duzey kelime (kaba kelime kesimi)
@@ -50,6 +59,22 @@ osm disa --model veri/model_ince/model.pt --int8                      # ONNX + i
 ```
 
 Etiketleme sunucusu modeli dosya değiştiğinde kendiliğinden yeniler; ince ayar bitince öneriler yeni modelden gelir.
+
+## LoRA ile hazır büyük modele Osmanlıca öğretme
+
+```bash
+osm lora --taban RayR1/trocr-base-arabic-handwritten --manifest veri/veritabani.jsonl --cikti cikti/lora_ota --donem 3
+osm lora-tahmin satir.png --adaptor cikti/lora_ota
+```
+
+- LoRA tek başına yeni harf **üretemez**: Osmanlıca harfler (پ چ ژ گ ڭ ی…) çözücünün sözlüğünde yoksa model onları
+  yazamaz. Betik eksik karakterleri yeni token olarak ekler, gömme ve çıkış katmanını büyütüp tam eğitir, dikkat
+  katmanlarına LoRA takar (eğitilebilir pay ≈ %5–8).
+- Byte düzeyi tokenizer kullanan modellerde (HATFormer, Qwen tabanlı VLM'ler) sözlük genişletmeye gerek yoktur; LoRA yeter.
+- Bu yol "en küçük model" hedefine terstir (TrOCR-large ≈ 600 M parametre, GPU ister). Önerilen kullanım: LoRA'lı büyük
+  modeli **öğretmen** yapıp etiketsiz satırları sahte etiketlemek ve 1,9 M'lik CRNN'i bununla eğitmek (damıtma).
+  Literatürde (Al-azzawi vd. 2026) 100–1.000 satırlık rejimde küçük CRNN zaten Transformer'ı geçiyor; LoRA'lı büyük model
+  ancak on binlerce satırla fark yaratır.
 
 ## Tasarım kararları
 
@@ -76,11 +101,13 @@ osmanlica_htr/
   egit.py      eğitim döngüsü (OneCycle, en iyi CER'i kaydeder)
   tahmin.py    Tahminci, CTC hizalamasından kelime kutuları
   etiketle.py  yalnızca stdlib ile etiketleme sunucusu (A/B/C/D, geri al, arka planda ince ayar)
+  veritabani.py Muharaf / OpenITI / MAKHZAN / Commons indirme ve tek veritabanına dönüştürme
+  lora.py      hazır TrOCR modeline sözlük genişletme + LoRA (peft) ile Osmanlıca öğretme
   cli.py       `osm` komutları
 fonts/         17 Arap harfli OFL yazı tipi (4 rik'a)
 metin/         sentetik veri için ~1.700 kelimelik Osmanlıca tohum sözlük (kendi listenizi ekleyin)
-veri/          (git dışı) sentetik veri, kırpımlar, kuyruk, etiketler, ince ayar modelleri
-docs/          araştırma raporu, ekran görüntüsü
+veri/          (git dışı) sentetik veri, veritabanı (kaynak/ ham indirmeler, gercek/ satırlar), kırpımlar, kuyruk, etiketler
+docs/          araştırma raporu, veritabanı belgesi, ekran görüntüsü
 ```
 
 ## Veri biçimleri
