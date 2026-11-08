@@ -24,6 +24,7 @@ dependencies = [
   "numpy>=1.26",
   "numpy-financial>=1.0",
   "packaging>=23",
+  "cryptography>=42",
 ]
 
 [project.optional-dependencies]
@@ -36,13 +37,13 @@ belge = ["docling>=2.0", "pdfplumber>=0.11", "pypdfium2>=4.30", "pillow>=10"]
 ocr-tesseract = ["pytesseract>=0.3.10"]
 ocr-paddle = ["paddleocr>=3.0"]
 gomme = ["sentence-transformers>=3.0"]
-siniflandirma = ["transformers>=4.45", "torch>=2.2", "optimum[onnxruntime]>=1.21"]
+siniflandirma = ["transformers>=4.45", "torch>=2.2", "optimum[onnxruntime]>=1.21", "scikit-learn>=1.4", "sentence-transformers>=3.0"]
 ses = ["faster-whisper>=1.0"]
 tts = ["piper-tts>=1.2"]
 zaman-serisi = ["chronos-forecasting>=1.4", "pandas>=2.2"]
 tablo-ml = ["lightgbm>=4.3", "scikit-learn>=1.4", "pandas>=2.2"]
 eslestirme = ["splink>=4.0", "pandas>=2.2"]
-konu = ["bertopic>=0.16", "keybert>=0.8"]
+konu = ["bertopic>=0.16", "keybert>=0.8", "scikit-learn>=1.4"]
 gorsel = ["transformers>=4.45", "torch>=2.2", "pillow>=10"]
 nesne = ["rfdetr>=1.0"]
 text2sql = ["sqlglot>=25"]

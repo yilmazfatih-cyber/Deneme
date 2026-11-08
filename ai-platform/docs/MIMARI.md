@@ -109,8 +109,17 @@ buna göre güncellenir. Motor süreci `installer/process.py` ile yönetilir (ba
 | POST | `/v1/chat/completions`, GET `/v1/models` | OpenAI uyumlu geçit: maskeleme (istemcide) + güvenlik denetimi (varsa) + model seçimi (`llm_model_priority` içinden kurulu ilk) + denetim günlüğü; vekil olarak LLM motoruna iletir, `stream: true` desteklenir |
 | POST | `/api/kvkk/mask`, `/api/kvkk/unmask`, `/api/kvkk/scan` | KVKK Kalkanı kısa yolları (modül run ile aynı işlev) |
 
-`runtimes/llm.py` — `LLMClient`: `chat(messages, *, json_schema=None, tools=None, temperature=0.2, max_tokens=None, model=None) -> LLMResult(content, tool_calls, usage, model)`,
-`stream_chat(...)`, `embed(texts, model_id)`, `available_models()`. İstemci rolünde sunucuya ulaşılamazsa yerel küçük LLM'e düşer.
+`runtimes/llm.py` — `LLMClient`: `chat(messages, *, json_schema=None, tools=None, temperature=0.2, max_tokens=None, model=None, images=None, preferred=None, extra=None) -> LLMResult(content, tool_calls, usage, model, raw, parsed, masked_entities, endpoint)`,
+`stream_chat(...)`, `embed(texts, model_id)`, `available_models()`. İstemci rolünde sunucuya giden mesajlar maskelenir ve yanıt geri açılır
+(akışta da); sunucuya ulaşılamazsa yerel küçük LLM'e düşer ve veri makineden çıkmadığı için maskelemez.
+
+Uygulanan ek kurallar: istemci rolünde iletim, maskeleme zorunluysa **veya** zorunlu bileşenlerin hepsi sunucudaysa yapılır; iç içe tüm
+metin alanları maskelenir (base64 ve dosya alanları atlanır); yüklenen dosyalar (görüntü/ses/PDF) maskelenemez → meta `files_unmasked`
+uyarısı. Geçitte kurulu olmayan katalog modeli istenirse `auto`'ya düşülür ve `X-AIP-Model-Fallback: auto` başlığı döner. Kullanıcı
+kimliği şimdilik `X-AIP-User` başlığından okunur (kimlik doğrulama katmanı bunun yerini alacak). 202 gövdesi `{"approval_id","message","meta"}`.
+Ek hata kodları: `module_disabled` (409), `unknown_module` / `unknown_action` (404), `blocked_by_policy` (400, ek alan `risk`), `mapping_not_found` (404).
+Veri klasörü (`AIP_DATA_DIR`) dosyaları: `platform.db`, `kvkk.key` (Fernet anahtarı), `vectors.db`, `evrak_siniflar.json`, `llm_engine.json`,
+`webhook_routes.json`, klasörler `models/`, `logs/`, `classifiers/`, `tablo_ml/`, `glossaries/`, `sozlesme_kontrol/`, `sozlesme_standartlari/`.
 
 ### ERP, denetim, onaylar (erp-web)
 | GET/POST | `/api/erp/connections` | salt-okunur SQL bağlantıları (URL gizlenir), tablo beyaz listesi; `POST .../{id}/test` |
