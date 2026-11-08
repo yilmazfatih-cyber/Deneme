@@ -42,6 +42,7 @@ araştırma, rol tanımları, altı bölümlük mimari ve proje sahibine bırak�
 | `docs/decisions/ADR-005-veritabani.md` | Karar: tek şema (PostgreSQL hedef, SQLite ile çalışır), 25 tablo, denetim kaydı |
 | `docs/decisions/ADR-006-hedefleme-birimi.md` | Karar: reklam hedefleme birimi segment + Kaynak B davranış kümeleri (≥ 50 kişi, nötr ad) |
 | `docs/decisions/ADR-007-acik-sorular-kapandi.md` | Kararlar: F-2 geçebilir, F-3 modellenmesin, F-4 tek skor, F-5 düzenlenebilir, F-6 müşteri, F-7 davranış, F-9 girsin, F-10 red yok, F-16 yazılsın |
+| `docs/decisions/ADR-008-persona-insanlik.md` | Karar F-8: numara, algı kusuru eklensin, sabır modeli ile müşteri kararı ayrı gösterilsin |
 | `db/` | Veritabanı: `schema.sql`, `pk_db.py` (kur, yükle, Kaynak B, koşu içe aktarma), demo veri |
 | `../persona-sim/` | 2D simülasyon uygulaması (Vite + TypeScript): mağaza, e-ticaret hunisi, reklam hedefleme, kalibrasyon |
 | `data/davranis-etkileri.xlsx` | Literatür etki kitaplığı (S0 Dünya / S1 Türkiye öncülleri): 225 bulgu, 184 kaynak, 28 persona parametresi; sayfalar Özet · Etkiler · Moderatörler · Parametreler · Fark matrisi · Kaynaklar · Şema |

@@ -375,6 +375,22 @@ function sagPaneliCiz(): void {
     return [el('span', {}, renk, ` ${s.ad.split(' (')[0]}`), giris, giris ? yuzde(d / giris) : '–', giris ? yuzde(terk / giris) : '–'];
   });
   sagPanel.append(el('fieldset', {}, el('legend', { text: 'Segment başına' }), tablo(['Segment', 'Giriş', 'Dönüşüm', 'Terk'], satirlar, [1, 2, 3])));
+  // Terk nedenleri (ADR-008): sabır modeli sonlandırdı vs müşteri vazgeçti
+  {
+    const SABIR = new Set(['kuyruk', 'bekleme', 'yavas_yukleme', 'sabir', 'hayal_kirikligi', 'oturum_sonu']);
+    let sabir = 0, karar = 0, giris = 0;
+    for (const o of kosu.gunluk.liste()) {
+      if (o.ortam !== kosu.ortamAdi) continue;
+      if (o.tur === 'giris') giris++;
+      if (o.tur !== 'terk') continue;
+      const n = String(o.veri?.['neden'] ?? o.veri?.['sebep'] ?? '');
+      if (SABIR.has(n)) sabir++; else karar++;
+    }
+    sagPanel.append(el('fieldset', {}, el('legend', { text: 'Terk nedenleri (ADR-008)' }), tablo(['Tür', 'Sayı', 'Giriş payı'], [
+      ['Sabır modeli sonlandırdı (kuyruk, yükleme, bekleme, oturum süresi)', sabir, giris ? yuzde(sabir / giris) : '–'],
+      ['Müşteri vazgeçti (hemen çıkma, seçim yükü, ilgi yok)', karar, giris ? yuzde(karar / giris) : '–'],
+    ], [1, 2])));
+  }
   if (durum.kumeler.length > 0 && kosu.musteriler.some((m) => m.kumeId)) {
     const kumeOf = new Map(kosu.musteriler.map((m) => [m.id, m.kumeId] as const));
     const ks: Record<string, { giris: number; d: number; terk: number }> = {};

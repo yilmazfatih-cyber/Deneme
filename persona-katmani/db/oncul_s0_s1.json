@@ -20,7 +20,8 @@
     "nu_yenilik":            {"aciklama": "yenilik arayışı", "olcek": "olasılık", "S0": ["normal", 0.3, 0.15, 0, 1], "kaynak": "07 §2"},
     "okuma_hizi":            {"aciklama": "okuma hızı", "olcek": "kelime/dk", "S0": ["lognormal", 200, 0.2, 80, 450], "kaynak": "07 §2"},
     "hayal_kirikligi_esigi": {"aciklama": "terk öncesi sürtünme sayısı", "olcek": "adet", "S0": ["lognormal", 3, 0.4, 1, 10], "kaynak": "07 §2"},
-    "butce":                 {"aciklama": "alışveriş başına bütçe", "olcek": "TL", "S0": ["lognormal", 800, 0.7, 50, 20000], "kaynak": "S3/B verisi gelene kadar S0"}
+    "butce":                 {"aciklama": "alışveriş başına bütçe", "olcek": "TL", "S0": ["lognormal", 800, 0.7, 50, 20000], "kaynak": "S3/B verisi gelene kadar S0"},
+    "gorus_kaybi":           {"aciklama": "düşük belirginlikli uyaranı kaçırma eğilimi (insan algı kusuru; F-8, kalibre edilmemiş)", "olcek": "olasılık", "S0": ["normal", 0.25, 0.1, 0, 0.8], "kaynak": "ADR-008 varsayım; RK banner körlüğü"}
   },
   "segmentler": [
     {"id": "genc_dusuk", "ad": "Genç, düşük gelir (öğrenci / yeni çalışan)", "yas": "18-24", "gelir": "dusuk", "cinsiyet": "karma", "pay": 0.16, "renk": "#f59e0b"},

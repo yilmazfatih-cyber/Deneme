@@ -88,9 +88,13 @@ export function terkOlasiligi(theta: Theta, gecenSaniye: number, surtunmeSayisi:
   return clamp(1 - Math.exp(-tehlike * dtSaniye), 0, 1);
 }
 
-/** Bir uyaranı (raf, afiş, banner) fark etme olasılığı; `belirginlik` 0–1. */
+/**
+ * Bir uyaranı (raf, afiş, banner) fark etme olasılığı; `belirginlik` 0–1.
+ * `gorus_kaybi` (ADR-008): insan algı kusuru; belirginliği düşük uyaranlar daha çok kaçar, belirgin olanlar etkilenmez.
+ */
 export function farkEtmeOlasiligi(theta: Theta, belirginlik: number): number {
-  return clamp(theta.dikkat_esigi * (0.5 + belirginlik), 0, 1);
+  const kusur = 1 - theta.gorus_kaybi * (1 - belirginlik);
+  return clamp(theta.dikkat_esigi * (0.5 + belirginlik) * kusur, 0, 1);
 }
 
 /** Varsayılan/ön seçili seçenekte kalma olasılığı (d → olasılık; Jachimowicz d=0.68 ≈ %63). */

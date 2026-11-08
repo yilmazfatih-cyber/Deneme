@@ -26,6 +26,7 @@ export const PARAMETRE_ADLARI = [
   'okuma_hizi', // kelime/dakika                                                 07 §2 ek parametre
   'hayal_kirikligi_esigi', // terk öncesi tahammül edilen sürtünme olayı sayısı  07 §2 ek parametre
   'butce', // alışveriş başına bütçe (TL)                                       TR: sepet tutarı dağılımı; S3/B verisiyle değişir
+  'gorus_kaybi', // düşük belirginlikli uyaranı kaçırma eğilimi (0–1); insan algı kusuru (ADR-008). KALİBRE EDİLMEMİŞ VARSAYIM.
 ] as const;
 
 export type ParametreAdi = (typeof PARAMETRE_ADLARI)[number];
@@ -89,6 +90,7 @@ export const S0_DUNYA: OnculSeti = {
     okuma_hizi: ln(200, 0.2, 80, 450),
     hayal_kirikligi_esigi: ln(3, 0.4, 1, 10),
     butce: ln(800, 0.7, 50, 20000),
+    gorus_kaybi: nm(0.25, 0.1, 0, 0.8),
   },
 };
 

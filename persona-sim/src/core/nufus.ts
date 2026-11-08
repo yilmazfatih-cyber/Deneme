@@ -44,6 +44,7 @@ export interface Musteri {
  * - yüksek gelir: bütçe ↑, fiyat duyarlılığı ↓, kıtlık tepkisi ↓.
  * - kadın: risk alma ↓ (EK GPS, Byrnes), reklamdan kaçınma davranışsal (TR Rojas-Méndez) → tau_reklam_tolerans ~.
  * - eğitim/deneyim artınca yorumun etkisi ↑ (WB Zhu & Zhang), karanlık desene duyarlılık ↓ (WB Luguri).
+ * - gorus_kaybi (ADR-008): yaşla artar (45-54 ×1.2, 55+ ×1.6) — kalibre edilmemiş varsayım.
  */
 export const TURKIYE_SEGMENTLERI: Segment[] = [
   {
@@ -73,12 +74,12 @@ export const TURKIYE_SEGMENTLERI: Segment[] = [
   },
   {
     id: 'orta_yas_orta', ad: 'Orta yaş, orta gelir (45-54)', pay: 0.1, yas: '45-54', gelir: 'orta', cinsiyet: 'karma',
-    kaydirmalar: { butce: 1.1, rho_risk: 1.15, w_yorum: 1.2, okuma_hizi: 0.9, sabir: 1.1, varsayilan_yapiskanlik: 1.1 },
+    kaydirmalar: { butce: 1.1, rho_risk: 1.15, w_yorum: 1.2, okuma_hizi: 0.9, sabir: 1.1, varsayilan_yapiskanlik: 1.1, gorus_kaybi: 1.2 },
     kaynaklar: ['EK-GPS yaş', 'WB-von Helversen'], renk: '#14b8a6',
   },
   {
     id: 'emekli', ad: '55+ (emekli / emeklilik yakını)', pay: 0.12, yas: '55+', gelir: 'orta', cinsiyet: 'karma',
-    kaydirmalar: { rho_risk: 1.3, w_yorum: 1.3, okuma_hizi: 0.75, sabir: 1.3, dikkat_esigi: 0.8, nu_yenilik: 0.6, varsayilan_yapiskanlik: 1.25, tau_reklam_tolerans: 0.9, butce: 0.9 },
+    kaydirmalar: { rho_risk: 1.3, w_yorum: 1.3, okuma_hizi: 0.75, sabir: 1.3, dikkat_esigi: 0.8, nu_yenilik: 0.6, varsayilan_yapiskanlik: 1.25, tau_reklam_tolerans: 0.9, butce: 0.9, gorus_kaybi: 1.6 },
     kaynaklar: ['WB-von Helversen 2018', 'EK-GPS yaş', 'RK-Pandora 55+', 'RK-yaş'], renk: '#64748b',
   },
 ];

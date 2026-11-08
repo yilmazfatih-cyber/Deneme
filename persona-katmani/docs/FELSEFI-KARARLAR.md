@@ -15,7 +15,7 @@ Yanıt biçimi önerisi: her satıra bir harf (a/b/c) veya kendi cümlenizi yaz�
 | F-5 | Müşteri personayı elle düzenleyebilir / yazabilir mi? | **KARAR (ADR-007): düzenleyebilir**; değişiklik koşuda işaretlenir |
 | F-6 | Manipülatif optimizasyon (karanlık desen) sınırını kim çizer? | **KARAR (ADR-007): müşteri çizer**; ürün yalnız raporlar |
 | F-7 | Söz ile davranış çelişirse personanın "görüşü" hangisi? | **KARAR (ADR-007): davranış**; söz yalnız gerekçe |
-| F-8 | *(açık; yeniden anlatılacak)* Personaya insan adı/yüz; algıya insan kusuru eklensin mi? | Ad var, fotoğraf yok, "sentetik" etiketi sürekli; algı bozulması kalibre edilene kadar kapalı |
+| F-8 | Personaya insan adı/yüz; algıya insan kusuru eklensin mi? | **KARAR (ADR-008): numara (ad/yüz yok); algı kusuru eklensin (varsayım etiketli); sabır modeli ve müşteri kararı ayrı gösterilsin** |
 | F-9 | Müşteri verisi ortak kalibrasyon düzelticisine girsin mi? | **KARAR (ADR-007): girsin**; varsayılan dahil, çıkış hakkı |
 | F-10 | Hangi işler ve çıktı biçimleri reddedilir? | **KARAR (ADR-007): şu an hiçbiri reddedilmez** |
 | F-11 | Kişinin zayıf noktası üzerinden hedefleme? | **KARAR (ADR-002): Hayır.** Kişi parametreleri yalnızca genel çıkarım için; kişi kimliğiyle dışa aktarım yok |

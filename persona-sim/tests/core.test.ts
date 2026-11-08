@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { Rng, clamp } from '../src/core/rng';
 import { PARAMETRE_ADLARI, S0_DUNYA, onculSec, thetaOrnekle, thetaMedyan } from '../src/core/parametreler';
 import { TURKIYE_SEGMENTLERI, nufusUret } from '../src/core/nufus';
-import { fayda, satinAlmaOlasiligi, reklamTepkisi, secimOlasiliklari, terkOlasiligi } from '../src/core/karar';
+import { fayda, satinAlmaOlasiligi, reklamTepkisi, secimOlasiliklari, terkOlasiligi, farkEtmeOlasiligi } from '../src/core/karar';
 
 describe('rng', () => {
   it('aynı tohum aynı dizi', () => {
@@ -77,6 +77,11 @@ describe('karar', () => {
     expect(b.farkEtti).toBeLessThan(a.farkEtti);
     const duyarli = { ...th, eta_fiyat: th.eta_fiyat * 1.5 };
     expect(reklamTepkisi(duyarli, { kanal: 'sosyal', yaratici: 'indirim', belirginlik: 0.6, maruziyetSayisi: 1, indirimOrani: 0.3 }).tiklama).toBeGreaterThan(a.tiklama);
+  });
+  it('görüş kaybı düşük belirginlikte fark etmeyi düşürür, yüksek belirginlikte etkilemez (ADR-008)', () => {
+    const kusurlu = { ...th, gorus_kaybi: 0.6 }, kusursuz = { ...th, gorus_kaybi: 0 };
+    expect(farkEtmeOlasiligi(kusurlu, 0.1)).toBeLessThan(farkEtmeOlasiligi(kusursuz, 0.1));
+    expect(farkEtmeOlasiligi(kusurlu, 1)).toBeCloseTo(farkEtmeOlasiligi(kusursuz, 1), 6);
   });
   it('clamp', () => expect(clamp(5, 0, 1)).toBe(1));
 });
