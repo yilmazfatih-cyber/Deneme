@@ -208,3 +208,19 @@ describe('hedeflemeRaporu', () => {
     expect(satirlar.some((s) => s.artisPuan > 0)).toBe(true);
   });
 });
+
+import { hedeflemeSkoru } from '../src/reklam/rapor';
+describe('tek skor (F-4)', () => {
+  it('pozitif ve kesin artış 50 üstü, negatif artış 50 altı, rahatsızlık düşürür', () => {
+    const iyi = hedeflemeSkoru(0.07, 0.02, 0.12, 0.1, 2, false);
+    const kotu = hedeflemeSkoru(-0.03, -0.08, 0.02, 0.1, null, false);
+    const rahatsiz = hedeflemeSkoru(0.07, 0.02, 0.12, 0.5, 2, false);
+    expect(iyi).toBeGreaterThan(60);
+    expect(kotu).toBeLessThan(50);
+    expect(rahatsiz).toBeLessThan(iyi);
+    expect(hedeflemeSkoru(0.3, 0.2, 0.4, 0, 0, false)).toBeLessThanOrEqual(100);
+  });
+  it('küçük örneklem skoru 50ye çeker', () => {
+    expect(Math.abs(hedeflemeSkoru(0.07, -0.05, 0.19, 0.1, null, true) - 50)).toBeLessThan(Math.abs(hedeflemeSkoru(0.07, -0.05, 0.19, 0.1, null, false) - 50) + 1e-9);
+  });
+});

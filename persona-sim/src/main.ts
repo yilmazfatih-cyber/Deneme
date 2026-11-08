@@ -356,13 +356,13 @@ function sagPaneliCiz(): void {
   }
 
   if (kosu.hedefleme) {
-    const h = kosu.hedefleme.map((r) => [
+    const h = [...kosu.hedefleme].sort((a, b) => b.skor - a.skor).map((r) => [
       el('span', {}, el('b', { text: r.segmentAd.split(' (')[0] ?? r.segmentAd }), el('br'), el('small', { text: `maruz ${yuzde(r.donusumMaruz)} · kontrol ${yuzde(r.donusumKontrol)}` })),
-      el('span', {}, `${r.artisPuan >= 0 ? '+' : ''}${bicimle(r.artisPuan, 1)} yp`, el('br'), el('small', { text: `[${bicimle(r.artisGuvenAraligi[0], 1)}; ${bicimle(r.artisGuvenAraligi[1], 1)}]` })),
+      el('span', {}, el('b', { text: `${r.skor}` }), el('small', { text: '/100' }), el('br'), el('small', { text: `${r.artisPuan >= 0 ? '+' : ''}${bicimle(r.artisPuan, 1)} yp [${bicimle(r.artisGuvenAraligi[0], 1)}; ${bicimle(r.artisGuvenAraligi[1], 1)}]` })),
       el('span', {}, el('span', { class: `etiket ${r.oneri}`, text: r.oneri }), el('br'), el('small', { text: r.artanDonusumBasinaMaliyetTL === null ? '–' : `${tl(r.artanDonusumBasinaMaliyetTL)}/dönüşüm` })),
     ]);
     const birimAd = kosu.hedefleme[0]?.birim === 'kume' ? 'Küme' : 'Segment';
-    sagPanel.append(el('fieldset', {}, el('legend', { text: `Hedefleme (${birimAd.toLowerCase()} düzeyi)` }), tablo([birimAd, 'Artış (yüzde puan, %95 GA)', 'Öneri'], h, [1])));
+    sagPanel.append(el('fieldset', {}, el('legend', { text: `Hedefleme (${birimAd.toLowerCase()} düzeyi)` }), tablo([birimAd, 'Skor', 'Öneri'], h, [1])));
     sagPanel.append(el('pre', { class: 'rapor', text: raporMetni(kosu.hedefleme, durum.kampanya) }));
   }
   // segment özeti
@@ -471,7 +471,7 @@ function ciz(): void {
   altBar.replaceChildren(
     el('span', { text: `Öncül: ${durum.seviye === 'S1' ? 'S1 Türkiye' : 'S0 Dünya'} · kaynak ${durum.kaynak}${durum.kaynak === 'A+B' && durum.kaynakB ? ` (B: ${bicimle(durum.kaynakB.n, 0)} fiş)` : ''} · tohum ${durum.seed}` }),
     el('span', { text: kosu ? `Olay: ${bicimle(kosu.gunluk.liste().length, 0)}` : '' }),
-    el('span', { text: 'Simülasyon karar desteğidir; ölçümün yerine geçmez.' }),
+    el('span', { text: 'Sonuçlar kalibrasyon geçmişiyle birlikte okunur (ADR-007).' }),
   );
 }
 

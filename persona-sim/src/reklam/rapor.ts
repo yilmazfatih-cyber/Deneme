@@ -32,6 +32,8 @@ export interface HedeflemeSatiri {
   rahatsizlikOrani: number;
   guven: Guven;
   oneri: Oneri;
+  /** 0–100 tek skor (F-4, ADR-007): artış büyüklüğü, aralığın sıfırdan uzaklığı, rahatsızlık ve maliyetten */
+  skor: number;
 }
 
 /** Grup başına asgari müşteri; altında fark "ayırt edilemiyor" (varsayım). */
@@ -67,6 +69,20 @@ export function oranFarkiGA(x1: number, n1: number, x0: number, n0: number): [nu
   const se = Math.sqrt((q1 * (1 - q1)) / (n1 + 2) + (q0 * (1 - q0)) / (n0 + 2));
   const d = q1 - q0;
   return [d - Z95 * se, d + Z95 * se];
+}
+
+/**
+ * Tek skor (F-4): 50 nötr. Artış (yüzde puan) ve aralığın sıfırdan uzaklığı yukarı, rahatsızlık ve maliyet aşağı iter; küçük örneklem 50'ye çeker.
+ * Skor ayrıntıdaki aralığın yerine geçmez, özetidir.
+ */
+export function hedeflemeSkoru(fark: number, alt: number, ust: number, rahatsizlik: number, maliyet: number | null, kucukN: boolean): number {
+  const yp = fark * 100;
+  const genislik = Math.max(1e-6, (ust - alt) * 100);
+  const kesinlik = Math.max(-1, Math.min(1, (yp / genislik) * 2)); // aralığın tamamı sıfırın üstündeyse ≥ 1
+  let s = 50 + 6 * yp + 20 * kesinlik - 60 * Math.max(0, rahatsizlik - 0.15);
+  if (maliyet !== null && Number.isFinite(maliyet)) s -= Math.min(15, maliyet / 20);
+  if (kucukN) s = 50 + (s - 50) * 0.4;
+  return Math.round(Math.max(0, Math.min(100, s)));
 }
 
 export function hedeflemeRaporu(
@@ -150,7 +166,9 @@ export function hedeflemeRaporu(
     else if (!kucukN && alt > 0 && rahatsizlikOrani <= esikler.rahatsizlikDusuk) oneri = 'hedefle';
     else oneri = 'dene';
 
+    const skor = hedeflemeSkoru(fark, alt, ust, rahatsizlikOrani, artanDonusumBasinaMaliyetTL, kucukN);
     satirlar.push({
+      skor,
       birim,
       segmentId: seg.id,
       segmentAd: seg.ad,
@@ -217,7 +235,7 @@ export function raporMetni(
     const [a, u] = r.artisGuvenAraligi;
     const maliyet = r.artanDonusumBasinaMaliyetTL === null ? 'hesaplanamaz (artış yok)' : `≈ ${ondalik(r.artanDonusumBasinaMaliyetTL, r.artanDonusumBasinaMaliyetTL < 10 ? 2 : 0)} TL`;
     s.push('');
-    s.push(`• ${r.segmentAd} — ${ONERI_METNI[r.oneri]}`);
+    s.push(`• ${r.segmentAd} — skor ${r.skor}/100 — ${ONERI_METNI[r.oneri]}`);
     s.push(`  Gerekçe: ${gerekce(r, esikler)}.`);
     s.push(`  Güven: ${GUVEN_METNI[r.guven]}.`);
     s.push(

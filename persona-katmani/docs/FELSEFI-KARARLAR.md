@@ -9,15 +9,15 @@ Yanıt biçimi önerisi: her satıra bir harf (a/b/c) veya kendi cümlenizi yaz�
 | # | Soru | Teknik varsayılan (karar gelene kadar) |
 | --- | --- | --- |
 | F-1 | Persona gerçek bir insanı temsil ettiğini iddia edebilir mi? | **KARAR VERİLDİ (ADR-001): evet, her gerçek müşteri için istatistiksel dijital ikiz.** Rıza ve dil kuralları 06'da tasarlanacak |
-| F-2 | Sentetik sonuç gerçek ölçümün yerine geçebilir mi? | Yalnızca geri alınabilir karar sınıflarında; rapor notu kalıcı |
-| F-3 | Hassas özellikler ve kalıp yargıya yakın farklar modellensin mi? | Varsayılan kapalı; ölçülür ama hedefleme raporuna girmez |
-| F-4 | Kullanıcıya ne kadar belirsizlik gösterilmeli? | İlk ekranda güven sınıfı + "ne bilmiyoruz"; "ayırt edilemiyor" gizlenemez |
-| F-5 | Müşteri personayı elle düzenleyebilir / yazabilir mi? | Yalnızca kanıt yükleyerek; elle yazılan ayrı keşif katmanında, istatistiğe girmez |
-| F-6 | Manipülatif optimizasyon (karanlık desen) sınırını kim çizer? | Açık yasak listesi red, gri bölge raporlanır |
-| F-7 | Söz ile davranış çelişirse personanın "görüşü" hangisi? | İkisi eşit, çelişki ayrı bulgu; insan say-do gap'i diye pazarlanmaz |
-| F-8 | Personaya insan adı/yüz; algıya insan kusuru eklensin mi? | Ad var, fotoğraf yok, "sentetik" etiketi sürekli; algı bozulması kalibre edilene kadar kapalı |
-| F-9 | Müşteri verisi ortak kalibrasyon düzelticisine girsin mi? | Yalnızca toplulaştırılmış hata istatistiği, açık izinle |
-| F-10 | Hangi işler ve çıktı biçimleri reddedilir? | Siyasi reklam reddi; kumar/yüksek faiz insan incelemeli; sahipsiz site yok; filigran kaldırılamaz |
+| F-2 | Sentetik sonuç gerçek ölçümün yerine geçebilir mi? | **KARAR (ADR-007): geçebilir.** Kalibrasyon döngüsü öneri olarak kalır |
+| F-3 | Hassas özellikler ve kalıp yargıya yakın farklar modellensin mi? | **KARAR (ADR-007): modellenmesin.** Hassas özellik hiçbir şemaya girmez |
+| F-4 | Kullanıcıya ne kadar belirsizlik gösterilmeli? | **KARAR (ADR-007): tek skor** (0–100 hedefleme skoru); aralık ayrıntıda |
+| F-5 | Müşteri personayı elle düzenleyebilir / yazabilir mi? | **KARAR (ADR-007): düzenleyebilir**; değişiklik koşuda işaretlenir |
+| F-6 | Manipülatif optimizasyon (karanlık desen) sınırını kim çizer? | **KARAR (ADR-007): müşteri çizer**; ürün yalnız raporlar |
+| F-7 | Söz ile davranış çelişirse personanın "görüşü" hangisi? | **KARAR (ADR-007): davranış**; söz yalnız gerekçe |
+| F-8 | *(açık; yeniden anlatılacak)* Personaya insan adı/yüz; algıya insan kusuru eklensin mi? | Ad var, fotoğraf yok, "sentetik" etiketi sürekli; algı bozulması kalibre edilene kadar kapalı |
+| F-9 | Müşteri verisi ortak kalibrasyon düzelticisine girsin mi? | **KARAR (ADR-007): girsin**; varsayılan dahil, çıkış hakkı |
+| F-10 | Hangi işler ve çıktı biçimleri reddedilir? | **KARAR (ADR-007): şu an hiçbiri reddedilmez** |
 | F-11 | Kişinin zayıf noktası üzerinden hedefleme? | **KARAR (ADR-002): Hayır.** Kişi parametreleri yalnızca genel çıkarım için; kişi kimliğiyle dışa aktarım yok |
 | F-12 | Kişi kendi ikizini görür mü? | **KARAR (ADR-002): Hayır.** Bireye yönelik arayüz yok; ikiz müşteri şirketin analiz nesnesi |
 | F-13 | Soğuk kayıt "ikiz" diye adlandırılabilir mi? | **KARAR (ADR-002):** birim seviye bazlı "davranış profili"; "ikiz" yalnızca gerçek müşteri kümesi (S4) için, tek kişi için değil |
