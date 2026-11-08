@@ -206,9 +206,9 @@ def defile_tara(
 ) -> dict:
     """Tek defileyi tarar: sayfa → look URL'leri → `gorsel` tablosu; renk modülü varsa her görseli bellekte işler.
 
-    Sayfa HTML'i ve görsel baytı hiçbir yerde saklanmaz. Dönen sözlük: bulunan, kaydedilen, renkli, hata.
+    Sayfa HTML'i ve görsel baytı hiçbir yerde saklanmaz. Dönen sözlük: bulunan, kaydedilen, renkli, nitelikli, hata.
     """
-    from moda_radar.veri import renk_koprusu
+    from moda_radar.veri import nitelik_koprusu, renk_koprusu
 
     bugun = bugun or date.today()
     if d.kaynak != "vogue":
@@ -221,11 +221,13 @@ def defile_tara(
         urller = urller[:gorsel_siniri]
     defile_id = depo.ekle_defile(d)
     renk_var = renk_koprusu.renk_modulu_var()
+    nitelik_var = nitelik_koprusu.nitelik_acik()
     sonuc = {"defile": d.kaynak_kimligi, "bulunan": len(urller), "kaydedilen": 0, "renkli": 0, "hata": 0}
+    sonuc["nitelikli"] = 0
     for sira, gurl in enumerate(urller, start=1):
         gorsel_id = depo.ekle_gorsel(defile_id, gurl, bugun, sira)
         sonuc["kaydedilen"] += 1
-        if not renk_var:
+        if not (renk_var or nitelik_var):
             continue
         try:
             bayt = tarayici.getir(gurl, kabul="image/*")
@@ -234,7 +236,9 @@ def defile_tara(
             sonuc["hata"] += 1
             continue
         kaynak = Kaynak(tur=KaynakTuru.PODYUM, url=gurl, tarama_tarihi=bugun, sezon=d.sezon, marka=d.marka)
-        kayitlar = renk_koprusu.renk_kayitlari(bayt, kaynak, parca_id=f"{gorsel_id}-tam", k=renk_k)
+        kayitlar = renk_koprusu.renk_kayitlari(bayt, kaynak, parca_id=f"{gorsel_id}-tam", k=renk_k) if renk_var else []
+        if nitelik_var:  # renk köprüsüne paralel; görsel bu çağrıdan sonra düşer
+            sonuc["nitelikli"] += nitelik_koprusu.etiketle_ve_kaydet(depo, bayt, kaynak, gorsel_id, gorsel_id) > 0
         del bayt  # ADR-002: bayt atılır
         if kayitlar:
             depo.ekle_parca_renk(kayitlar, gorsel_id=gorsel_id)

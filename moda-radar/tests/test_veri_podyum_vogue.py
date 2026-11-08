@@ -76,9 +76,11 @@ class SahteTarayici:
 
 
 def test_defile_tara_yalniz_url_kaydeder(tmp_path, monkeypatch):
-    from moda_radar.veri import renk_koprusu
+    from moda_radar.veri import nitelik_koprusu, renk_koprusu
 
     monkeypatch.setattr(renk_koprusu, "renk_modulu_var", lambda: False)
+    monkeypatch.setattr(nitelik_koprusu, "nitelik_acik", lambda: False)
+    monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
     d = DefileTanimi(
         sezon="SS27",
         marka="Ornek Ev",

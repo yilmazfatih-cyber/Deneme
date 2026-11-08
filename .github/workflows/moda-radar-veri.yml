@@ -40,7 +40,7 @@ jobs:
           python-version: '3.12'
           cache: pip
       # beautifulsoup4 perakende ayrıştırıcısı içindir; pyproject [veri] grubuna eklenince bu satırdan çıkar.
-      - run: pip install -q -e "moda-radar[veri,renk]" "beautifulsoup4>=4.12"
+      - run: pip install -q -e "moda-radar[veri,renk,gorsel]" "beautifulsoup4>=4.12"
       - run: python -m playwright install --with-deps chromium
 
       - name: Veri dalını al
@@ -64,6 +64,8 @@ jobs:
 
       - name: Podyum (Vogue Runway)
         working-directory: moda-radar
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: python -m moda_radar topla --sezon "${{ steps.sezon.outputs.ad }}" --kaynak podyum
 
       - name: Perakende

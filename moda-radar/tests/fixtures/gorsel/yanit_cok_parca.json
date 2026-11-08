@@ -1,0 +1,46 @@
+{
+  "parcalar": [
+    {
+      "parca_konumu": "dis",
+      "kategori": "kadin-dis",
+      "siluet": "oversize",
+      "boy": "kalca",
+      "yaka": "gomlek",
+      "kol": "uzun",
+      "kumas_gorunumu": "deri",
+      "desen": "duz",
+      "detay": "cep-kapakli",
+      "doku": "parlak",
+      "kapanma": "fermuar",
+      "renk_sayisi": "tek"
+    },
+    {
+      "parca_konumu": "alt",
+      "kategori": "kadin-alt",
+      "siluet": "bol",
+      "boy": "maksi",
+      "yaka": "bilinmiyor",
+      "kol": "bilinmiyor",
+      "kumas_gorunumu": "keten",
+      "desen": "cizgili",
+      "detay": "pile",
+      "doku": "mat",
+      "kapanma": "bilinmiyor",
+      "renk_sayisi": "iki"
+    },
+    {
+      "parca_konumu": "aksesuar",
+      "kategori": "aksesuar",
+      "siluet": "bilinmiyor",
+      "boy": "bilinmiyor",
+      "yaka": "bilinmiyor",
+      "kol": "bilinmiyor",
+      "kumas_gorunumu": "deri",
+      "desen": "duz",
+      "detay": "yok",
+      "doku": "parlak",
+      "kapanma": "bilinmiyor",
+      "renk_sayisi": "tek"
+    }
+  ]
+}
