@@ -63,6 +63,19 @@ interface Kosu {
 }
 
 let kosu: Kosu | null = null;
+
+// URL parametreleri (demo ve ekran görüntüsü için): ?seed=7&n=300&sure=900&hiz=120&sekme=eticaret&kampanya=1
+{
+  const q = new URLSearchParams(location.search);
+  const sayi = (k: string): number | null => (q.has(k) && Number.isFinite(Number(q.get(k))) ? Number(q.get(k)) : null);
+  durum.seed = sayi('seed') ?? durum.seed;
+  durum.musteriSayisi = sayi('n') ?? durum.musteriSayisi;
+  durum.sureSaniye = sayi('sure') ?? durum.sureSaniye;
+  durum.hiz = sayi('hiz') ?? durum.hiz;
+  if (q.get('kampanya') === '1') durum.kampanyaAktif = true;
+  const s = q.get('sekme');
+  if (s === 'magaza' || s === 'eticaret' || s === 'reklam' || s === 'kalibrasyon') durum.sekme = s;
+}
 let animasyon = 0;
 let sonKpiZamani = 0;
 
@@ -74,8 +87,10 @@ baslik.append(sekmeler);
 const solPanel = el('aside');
 const sahne = el('section', { class: 'sahne' });
 const canvas = el('canvas');
+const merkez = el('div', { class: 'merkez' });
+merkez.hidden = true;
 const altBar = el('div', { class: 'alt-bar' });
-sahne.append(canvas, altBar);
+sahne.append(canvas, merkez, altBar);
 const sagPanel = el('aside', { class: 'sag' });
 const ana = el('main', {}, solPanel, sahne, sagPanel);
 app.append(baslik, ana);
@@ -236,7 +251,7 @@ function baslat(ortamAdi: 'magaza' | 'eticaret'): void {
     const adimSayisi = Math.max(1, Math.ceil(dt / 1));
     for (let i = 0; i < adimSayisi && !kosu.ortam.bittiMi(); i++) kosu.ortam.adim(dt / adimSayisi);
     cizSahne();
-    if (simdi - sonKpiZamani > 300) { sonKpiZamani = simdi; sagPaneliCiz(); }
+    if (simdi - sonKpiZamani > 300 && durum.sekme !== 'kalibrasyon') { sonKpiZamani = simdi; sagPaneliCiz(); }
     if (kosu.ortam.bittiMi()) { bitir(); return; }
     animasyon = requestAnimationFrame(dongu);
   };
@@ -260,6 +275,10 @@ function bitir(): void {
 }
 
 function cizSahne(): void {
+  const merkezde = durum.sekme === 'kalibrasyon';
+  merkez.hidden = !merkezde;
+  canvas.hidden = merkezde;
+  if (merkezde) return;
   const { ctx, w, h } = canvasHazirla(canvas);
   ctx.clearRect(0, 0, w, h);
   if (durum.sekme === 'magaza' || durum.sekme === 'eticaret') {
@@ -285,7 +304,12 @@ function cizSahne(): void {
 // ───────────────────────────── sağ panel: KPI ve raporlar ─────────────────────────────
 function sagPaneliCiz(): void {
   sagPanel.replaceChildren();
-  if (durum.sekme === 'kalibrasyon') { kalibrasyonPaneli(); return; }
+  if (durum.sekme === 'kalibrasyon') {
+    merkez.replaceChildren();
+    kalibrasyonPaneli(merkez);
+    sagPanel.append(el('p', { class: 'not', text: 'Kaynak B burada yalnız bütçe (sepet tutarı) parametresini kestirir. Diğer parametreler için fiş satırı, kampanya ve kanal verisi gerekir (07 §4.4).' }));
+    return;
+  }
   if (!kosu) { sagPanel.append(el('p', { class: 'not', text: 'Henüz koşu yok.' })); return; }
   const k = kosu.ortam.kpi();
   const kart = el('div', { class: 'kpi' });
@@ -307,6 +331,15 @@ function sagPaneliCiz(): void {
     sagPanel.append(el('fieldset', {}, el('legend', { text: `Kampanya · ${durum.kampanya.ad}` }), kk));
   }
 
+  if (kosu.hedefleme) {
+    const h = kosu.hedefleme.map((r) => [
+      el('span', {}, el('b', { text: r.segmentAd.split(' (')[0] ?? r.segmentAd }), el('br'), el('small', { text: `maruz ${yuzde(r.donusumMaruz)} · kontrol ${yuzde(r.donusumKontrol)}` })),
+      el('span', {}, `${r.artisPuan >= 0 ? '+' : ''}${bicimle(r.artisPuan, 1)} yp`, el('br'), el('small', { text: `[${bicimle(r.artisGuvenAraligi[0], 1)}; ${bicimle(r.artisGuvenAraligi[1], 1)}]` })),
+      el('span', {}, el('span', { class: `etiket ${r.oneri}`, text: r.oneri }), el('br'), el('small', { text: r.artanDonusumBasinaMaliyetTL === null ? '–' : `${tl(r.artanDonusumBasinaMaliyetTL)}/dönüşüm` })),
+    ]);
+    sagPanel.append(el('fieldset', {}, el('legend', { text: 'Hedefleme (segment düzeyi)' }), tablo(['Segment', 'Artış (yüzde puan, %95 GA)', 'Öneri'], h, [1])));
+    sagPanel.append(el('pre', { class: 'rapor', text: raporMetni(kosu.hedefleme, durum.kampanya) }));
+  }
   // segment özeti
   const ozet = kosu.gunluk.segmentOzeti(kosu.ortamAdi);
   const donusumTuru = kosu.ortamAdi === 'magaza' ? 'kasa' : 'satin_al';
@@ -318,17 +351,6 @@ function sagPaneliCiz(): void {
   });
   sagPanel.append(el('fieldset', {}, el('legend', { text: 'Segment başına' }), tablo(['Segment', 'Giriş', 'Dönüşüm', 'Terk'], satirlar, [1, 2, 3])));
 
-  if (kosu.hedefleme) {
-    const h = kosu.hedefleme.map((r) => [
-      r.segmentAd.split(' (')[0] ?? r.segmentAd,
-      `${yuzde(r.donusumMaruz)} / ${yuzde(r.donusumKontrol)}`,
-      `${r.artisPuan >= 0 ? '+' : ''}${bicimle(r.artisPuan * 100, 1)} p [${bicimle(r.artisGuvenAraligi[0] * 100, 1)}; ${bicimle(r.artisGuvenAraligi[1] * 100, 1)}]`,
-      r.artanDonusumBasinaMaliyetTL === null ? '–' : tl(r.artanDonusumBasinaMaliyetTL),
-      el('span', { class: `etiket ${r.oneri}`, text: r.oneri }),
-    ]);
-    sagPanel.append(el('fieldset', {}, el('legend', { text: 'Hedefleme (segment düzeyi)' }), tablo(['Segment', 'Dönüşüm maruz/kontrol', 'Artış (%95 GA)', '₺ / artan dönüşüm', 'Öneri'], h, [1, 2, 3])));
-    sagPanel.append(el('pre', { class: 'rapor', text: raporMetni(kosu.hedefleme, durum.kampanya) }));
-  }
   if (kosu.ortamAdi === 'magaza' && kosu.ortam instanceof MagazaOrtami) {
     const b = kosu.ortam.bolgeSayimlari();
     sagPanel.append(el('fieldset', {}, el('legend', { text: 'Bölge sayımları (kamera benzeri, toplu)' }), tablo(['Bölge', 'Anlık', 'Toplam', 'Ort. bekleme'], b.map((x) => [x.ad, x.anlik, x.toplam, `${bicimle(x.ortBeklemeSn, 0)} sn`]), [1, 2, 3])));
@@ -339,7 +361,7 @@ function sagPaneliCiz(): void {
   }
 }
 
-function kalibrasyonPaneli(): void {
+function kalibrasyonPaneli(hedef: HTMLElement): void {
   const f = el('fieldset', {}, el('legend', { text: 'Kaynak B · şirketin fiş verisi (ADR-003/004)' }));
   f.append(el('p', { class: 'not', text: 'CSV sütunları: musteri_id, magaza_id, tarih, tutar, urun_sayisi, kampanya. Kimlik yalnız takma ad olmalı. Veri yalnız tarayıcıda kalır.' }));
   const alan = el('textarea', { placeholder: 'musteri_id,magaza_id,tarih,tutar,urun_sayisi,kampanya\n...' });
@@ -369,8 +391,8 @@ function kalibrasyonPaneli(): void {
     }),
   );
   f.append(d, sonuc);
-  sagPanel.append(f);
-  sagPanel.append(el('p', { class: 'not', text: 'Sunucu tarafı: persona-katmani/db/pk_db.py yukle-pos ve kaynak-b aynı hesabı veritabanında yapar; buradaki uydurma demo içindir.' }));
+  hedef.append(f);
+  hedef.append(el('p', { class: 'not', text: 'Sunucu tarafı: persona-katmani/db/pk_db.py yukle-pos ve kaynak-b aynı hesabı veritabanında yapar; buradaki uydurma demo içindir.' }));
 }
 
 // ───────────────────────────── dışa aktarım ─────────────────────────────
