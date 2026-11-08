@@ -122,7 +122,7 @@ Her kart gerekçe (≤ 3 cümle), kaynak sayısı ve "bu kararı değiştirecek 
 
 ## 10. Teknoloji
 
-Python 3.12 · Pydantic 2 · Parquet + DuckDB · Playwright (tarama) · scikit-learn (k-means, regresyon) · colour-science
+Python 3.12 · Pydantic 2 · SQLite tek dosya (ADR-005; DuckDB analiz için opsiyonel) · Playwright + BeautifulSoup (tarama) · scikit-learn (k-means, regresyon) · colour-science
 (ΔE2000) · Claude vision (etiket) · pytest, ruff. Sunucu yok; CLI ve Markdown rapor. Gösterge paneli P4'te.
 
 Dil: kod tanımlayıcıları ve belgeler Türkçe; kütüphane adları olduğu gibi.

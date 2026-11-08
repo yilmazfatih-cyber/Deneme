@@ -1,0 +1,123 @@
+{
+  "surum": "0.1",
+  "ulke": "TR",
+  "not": "Segment -> marka -> kategori listeleme URL'si + CSS seçicileri. URL'ler ve seçiciler bu oturumda ağ erişimi olmadan, sitelerin bilinen yapısına göre yazıldı: hepsi 'dogrulandi': false. İlk GitHub Actions çalışmasında 'bulunan: 0' veren hedeflerin URL'si ve seçicileri tarayıcı geliştirici araçlarıyla düzeltilip 'dogrulandi': true yapılır. Sayfa HTML'i saklanmaz; robots.txt ve saniyede <= 1 istek. Trendyol pazaryeridir: orta ve deger segmentlerinde fiyat bandı filtresiyle çapraz doğrulama içindir, çıpa değildir.",
+  "segmentler": {
+    "luks": {
+      "Beymen": {
+        "dogrulandi": false,
+        "js": false,
+        "para": "TRY",
+        "kategoriler": {
+          "kadin-ust": "https://www.beymen.com/tr/kadin-giyim-bluz-10094",
+          "kadin-elbise": "https://www.beymen.com/tr/kadin-giyim-elbise-10097"
+        },
+        "secici": {
+          "kart": "div.m-productCard",
+          "baslik": ".m-productCard__desc",
+          "fiyat": ".m-productCard__newPrice, .m-productCard__price",
+          "eski_fiyat": ".m-productCard__oldPrice",
+          "link": "a",
+          "gorsel": "img",
+          "gorsel_nitelik": ["data-src", "src"]
+        }
+      }
+    },
+    "premium": {
+      "Zara": {
+        "dogrulandi": false,
+        "js": true,
+        "para": "TRY",
+        "kategoriler": {
+          "kadin-ust": "https://www.zara.com/tr/tr/kadin-gomlekler-l1217.html",
+          "kadin-elbise": "https://www.zara.com/tr/tr/kadin-elbiseler-l1066.html"
+        },
+        "secici": {
+          "kart": "li.product-grid-product",
+          "baslik": ".product-grid-product-info__name, a.product-link h2",
+          "fiyat": ".money-amount__main",
+          "eski_fiyat": ".price-old__amount .money-amount__main",
+          "link": "a.product-link",
+          "gorsel": "img.media-image__image",
+          "gorsel_nitelik": ["src", "data-src"]
+        }
+      }
+    },
+    "orta": {
+      "LC Waikiki": {
+        "dogrulandi": false,
+        "js": true,
+        "para": "TRY",
+        "kategoriler": {
+          "kadin-ust": "https://www.lcw.com/kadin-bluz-t-1036",
+          "kadin-elbise": "https://www.lcw.com/kadin-elbise-t-1022"
+        },
+        "secici": {
+          "kart": ".product-card",
+          "baslik": ".product-card__title",
+          "fiyat": ".product-price__price, .price-in-cart",
+          "eski_fiyat": ".product-price__old-price",
+          "link": "a",
+          "gorsel": "img",
+          "gorsel_nitelik": ["data-src", "src"]
+        }
+      },
+      "Trendyol": {
+        "dogrulandi": false,
+        "js": false,
+        "para": "TRY",
+        "capraz_dogrulama": true,
+        "kategoriler": {
+          "kadin-ust": "https://www.trendyol.com/kadin-bluz-x-g1-c1019?prc=300-1200"
+        },
+        "secici": {
+          "kart": "div.p-card-wrppr",
+          "baslik": ".prdct-desc-cntnr-name, .prdct-desc-cntnr-ttl",
+          "fiyat": ".prc-box-dscntd, .price-item",
+          "eski_fiyat": ".prc-box-orgnl",
+          "link": "a",
+          "gorsel": "img.p-card-img",
+          "gorsel_nitelik": ["src", "data-src"]
+        }
+      }
+    },
+    "deger": {
+      "Addax": {
+        "dogrulandi": false,
+        "js": false,
+        "para": "TRY",
+        "kategoriler": {
+          "kadin-ust": "https://www.addax.com.tr/bluz/",
+          "kadin-elbise": "https://www.addax.com.tr/elbise/"
+        },
+        "secici": {
+          "kart": ".product-item",
+          "baslik": ".product-name, .product-item-name",
+          "fiyat": ".product-price, .sale-price",
+          "eski_fiyat": ".old-price",
+          "link": "a",
+          "gorsel": "img",
+          "gorsel_nitelik": ["data-src", "src"]
+        }
+      },
+      "Trendyol": {
+        "dogrulandi": false,
+        "js": false,
+        "para": "TRY",
+        "capraz_dogrulama": true,
+        "kategoriler": {
+          "kadin-ust": "https://www.trendyol.com/kadin-bluz-x-g1-c1019?prc=150-600"
+        },
+        "secici": {
+          "kart": "div.p-card-wrppr",
+          "baslik": ".prdct-desc-cntnr-name, .prdct-desc-cntnr-ttl",
+          "fiyat": ".prc-box-dscntd, .price-item",
+          "eski_fiyat": ".prc-box-orgnl",
+          "link": "a",
+          "gorsel": "img.p-card-img",
+          "gorsel_nitelik": ["src", "data-src"]
+        }
+      }
+    }
+  }
+}

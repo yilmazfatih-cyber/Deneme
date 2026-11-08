@@ -16,7 +16,7 @@ Sen Moda Radar'ın veri mühendisisin. Önce `CLAUDE.md`, `docs/PLAN.md` (bölü
 - Şema sözleşmesi `moda_radar/sema.py`'dedir; alan eklerken diğer ajanların okuyacağı belgeyi (`docs/PLAN.md` bölüm 3) baş mimara bildir.
 - Tarama: saniyede ≤ 1 istek, robots.txt denetimi, `content/tarama-yasak.json`'a uy, kullanıcı aracısı dürüst.
   Görsel diske yazılmaz; bellekte işlenip atılır (ADR-002). Her kayıtta `kaynak_url`, `tarama_tarihi`.
-- Depolama: Parquet, sezon ve segment bölümlemeli; DuckDB görünümleri `moda_radar/veri/gorunum.sql`.
+- Depolama: SQLite tek dosya `veri/moda.db` (ADR-005), her yazım tek transaction; DuckDB yalnız analiz için opsiyonel.
 - Zaman kilidi: `moda_radar/veri/zaman_kilidi.py`; geriye testte `tarama_tarihi > T` olan hiçbir kayıt okunmaz; birim testle kanıtla.
 - `python -m moda_radar dogrula`: `content/*.json` Pydantic ile + çapraz kurallar (taksonomi değerleri, segment kodları).
 - Her değişiklikten sonra `pytest`, `ruff check .`, `ruff format .`. Yeni bağımlılık ADR ister.

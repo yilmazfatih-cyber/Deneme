@@ -1,0 +1,90 @@
+{
+  "surum": "kural-0",
+  "kaynak": "docs/PLAN.md bölüm 8 (karar kuralı sürüm 0); yatirim-analisti 2026-11",
+  "tarih": "2026-11-08",
+  "not": "Eşikler ayardır, koda gömülmez. Değiştirmek için bu dosyayı düzenleyin ve kural sürümünü artırın.",
+  "yatir_ivme": 0.6,
+  "dene_ivme_alt": 0.45,
+  "uyum_alt": 0.3,
+  "marj_hedef": {
+    "luks": 65,
+    "premium": 58,
+    "orta": 52,
+    "deger": 45,
+    "pazar": 35
+  },
+  "marj_taban": 15,
+  "rakip_yogun": 4,
+  "deneme_partisi_yuzde": {
+    "alt": 10,
+    "ust": 20
+  },
+  "celiski_olasilik_farki": 0.35,
+  "cikis_baskin_agirlik": 0.25,
+  "eksen_agirliklari": {
+    "renk": 0.4,
+    "siluet": 0.25,
+    "kumas_gorunumu": 0.2,
+    "desen": 0.15,
+    "detay": 0.0
+  },
+  "uyum_agirliklari": {
+    "kumas_gorunumu": 0.35,
+    "desen": 0.3,
+    "siluet": 0.2,
+    "detay": 0.15
+  },
+  "stok_riski": {
+    "moda_rengi_ivme_alt": 0.6
+  },
+  "notr_renk": {
+    "kroma_ust": 12,
+    "lacivert": {
+      "L_ust": 35,
+      "ton_alt": 230,
+      "ton_ust": 300,
+      "kroma_ust": 40
+    },
+    "toprak": {
+      "ton_alt": 40,
+      "ton_ust": 90,
+      "kroma_ust": 35
+    }
+  },
+  "satin_alma_takvimi": {
+    "SS": {
+      "bas_ay": 9,
+      "son_ay": 11,
+      "yil_farki": -1,
+      "aciklama": "SS siparişi önceki yıl Eylül–Kasım"
+    },
+    "FW": {
+      "bas_ay": 3,
+      "son_ay": 5,
+      "yil_farki": 0,
+      "aciklama": "FW siparişi aynı yıl Mart–Mayıs"
+    }
+  },
+  "varsayilan_esik_raf_payi": 0.04,
+  "cikis": {
+    "erken_olasilik_ust": 0.3,
+    "orta_olasilik_ust": 0.5,
+    "indirim_ayi": {
+      "SS": {
+        "erken": "Mayıs başı",
+        "orta": "Haziran ortası",
+        "olagan": "Temmuz"
+      },
+      "FW": {
+        "erken": "Kasım başı",
+        "orta": "Aralık ortası",
+        "olagan": "Ocak"
+      }
+    },
+    "indirim_yuzde": {
+      "erken": "%20",
+      "orta": "%20–30",
+      "olagan": "sezon sonu olağan oran"
+    }
+  }
+}
