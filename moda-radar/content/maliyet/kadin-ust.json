@@ -269,6 +269,28 @@
         "alt": 100,
         "ust": 170
       }
+    },
+    "yunlu": {
+      "luks": {
+        "alt": 1500,
+        "ust": 3000
+      },
+      "premium": {
+        "alt": 430,
+        "ust": 750
+      },
+      "orta": {
+        "alt": 220,
+        "ust": 370
+      },
+      "deger": {
+        "alt": 150,
+        "ust": 250
+      },
+      "pazar": {
+        "alt": 110,
+        "ust": 200
+      }
     }
   },
   "ek_maliyet_seviyeleri": {
