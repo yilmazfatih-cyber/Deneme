@@ -56,6 +56,10 @@ input[type=text]{font:inherit;width:100%;box-sizing:border-box;min-height:56px;p
 <button onclick="gonder('atla','')">Atla (S)</button>
 <button onclick="gonder('bozuk','')">Kesim bozuk (X)</button>
 <button onclick="geri()">Geri al (Z)</button></div></div>
+<div class="kart"><div style="margin-bottom:8px"><b>Sayfa yükle</b> <span class="kucuk">(jpg/png/tif; satırlara bölünüp kuyruğa eklenir)</span></div>
+<div class="sira"><input id="dosyalar" type="file" accept="image/*" multiple style="flex:2;min-height:56px">
+<select id="duzey" style="min-height:56px;font:inherit"><option value="satir">satır olarak</option><option value="kelime">kaba kelime olarak</option></select>
+<button onclick="yukleSayfa()">Yükle ve böl</button></div><div id="yukle_durum" class="kucuk" style="margin-top:6px"></div></div>
 <div class="kart ipucu kucuk"><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> seçenek · <kbd>Enter</kbd> yazdığınızı kaydet · <kbd>S</kbd> atla · <kbd>X</kbd> bozuk · <kbd>Z</kbd> geri ·
 <button style="min-height:36px;padding:4px 10px" onclick="egit()">Modeli güncelle</button> <span id="egitim"></span></div>
 </main>
@@ -79,6 +83,10 @@ async function gonder(secim,metin){ if(!oge) return;
   yukle(); }
 async function geri(){ await fetch('/api/geri',{method:'POST'}); yukle(); }
 async function egit(){ const r=await fetch('/api/egit',{method:'POST'}); const j=await r.json(); document.getElementById('egitim').textContent=j.mesaj; }
+async function yukleSayfa(){ const f=document.getElementById('dosyalar').files; if(!f.length){return;}
+  const fd=new FormData(); for(const x of f) fd.append('dosya',x); fd.append('duzey',document.getElementById('duzey').value);
+  document.getElementById('yukle_durum').textContent='Bölütleniyor…';
+  const r=await fetch('/api/yukle',{method:'POST',body:fd}); const j=await r.json(); document.getElementById('yukle_durum').textContent=j.mesaj; if(!oge) yukle(); }
 async function egitimDurum(){ const r=await fetch('/api/egitim'); const j=await r.json(); if(j.mesaj) document.getElementById('egitim').textContent=j.mesaj; }
 document.addEventListener('keydown',e=>{
   const d=document.getElementById('d'); const yaziyor=document.activeElement===d;
@@ -113,7 +121,12 @@ class Durum:
         if self.kuyruk.exists():
             for s in self.kuyruk.read_text(encoding="utf-8").splitlines():
                 if s.strip():
-                    self.ogeler.append(json.loads(s))
+                    o = json.loads(s)
+                    # Kırpımlar veri_kok/kirpim altında durur; kuyruk kayıtları kirpim köküne görelidir.
+                    for alan in ("dosya", "satir_dosya"):
+                        if alan in o and not (self.veri_kok / o[alan]).exists() and (self.veri_kok / "kirpim" / o[alan]).exists():
+                            o[alan] = f"kirpim/{o[alan]}"
+                    self.ogeler.append(o)
         if self.duzey != "hepsi":
             self.ogeler = [o for o in self.ogeler if o["tur"] == self.duzey] or self.ogeler
         self.islenen: dict[str, dict] = {}
@@ -200,6 +213,30 @@ class Durum:
         b = io.BytesIO()
         img.save(b, "PNG")
         return b.getvalue()
+
+    def sayfa_yukle(self, dosyalar: list[tuple[str, bytes]], duzey: str = "satir") -> str:
+        """Yüklenen sayfa görüntülerini kaydet, bölütle, kuyruğa ekle, kuyruğu yeniden yükle."""
+        from .bolut import kuyruga_ekle, sayfayi_isle
+
+        sdir = self.veri_kok / "sayfalar"
+        sdir.mkdir(parents=True, exist_ok=True)
+        kdir = self.veri_kok / "kirpim"
+        toplam, satir_sayisi = 0, 0
+        for ad, govde in dosyalar:
+            ad = Path(ad).name or f"sayfa_{int(time.time())}.png"
+            hedef = sdir / ad
+            if hedef.exists():
+                hedef = sdir / f"{hedef.stem}_{int(time.time())}{hedef.suffix}"
+            hedef.write_bytes(govde)
+            try:
+                kayit = sayfayi_isle(hedef, kdir, kelime=(duzey == "kelime"))
+            except Exception as e:  # noqa: BLE001
+                return f"{ad}: bölütleme hatası: {e}"
+            satir_sayisi += len(kayit["satirlar"])
+            toplam += kuyruga_ekle(kayit, self.kuyruk, kdir, duzey=duzey)
+        with self.kilit:
+            self._yukle()
+        return f"{len(dosyalar)} sayfa, {satir_sayisi} satır bulundu, kuyruğa {toplam} öğe eklendi."
 
     def egitimi_baslat(self) -> str:
         if self.egitim_sureci and self.egitim_sureci.poll() is None:
@@ -293,6 +330,20 @@ def sunucu_baslat(durum: Durum, port: int = 8765, ac: bool = True):
         def do_POST(self):
             yol = urlparse(self.path).path
             n = int(self.headers.get("Content-Length") or 0)
+            if yol == "/api/yukle":
+                from email.parser import BytesParser
+                from email.policy import default as _policy
+
+                ham = self.rfile.read(n)
+                msg = BytesParser(policy=_policy).parsebytes(b"Content-Type: " + self.headers.get("Content-Type", "").encode() + b"\r\n\r\n" + ham)
+                dosyalar, duzey = [], "satir"
+                for part in msg.iter_parts():
+                    if part.get_param("name", header="content-disposition") == "duzey":
+                        duzey = part.get_payload(decode=True).decode("utf-8", "ignore").strip() or "satir"
+                    elif part.get_filename():
+                        dosyalar.append((part.get_filename(), part.get_payload(decode=True)))
+                self._json({"mesaj": durum.sayfa_yukle(dosyalar, duzey) if dosyalar else "Dosya seçilmedi."})
+                return
             govde = json.loads(self.rfile.read(n) or b"{}") if n else {}
             if yol == "/api/etiket":
                 self._json({"tamam": durum.etiketle(govde.get("kimlik", ""), govde.get("secim", "atla"), govde.get("metin", ""))})
