@@ -1,0 +1,1143 @@
+# Modül kataloğu — mağazada görünen 30 modül (N00 ana model + 29 niş).
+# Her modül: bileşenler (model + biçim + hedef), dışa açtığı işlemler (POST /api/modules/{id}/run/{action}),
+# KVKK bildirimi, bağımlılıklar, ERP temas noktaları.
+# `artifact` boş bırakıldığında kurulum sihirbazı donanıma göre seçer (GPU varsa vllm/bf16, yoksa llamacpp/q4).
+
+- id: kvkk-kalkani
+  niche_code: N12
+  name: KVKK Kalkanı
+  tagline: Kişisel verileri sunucuya gitmeden önce bilgisayarda maskeler.
+  description: >
+    TCKN (11 hane + sağlama algoritması), T.C. IBAN, telefon, VKN, plaka, e-posta için kural tabanlı
+    tanıyıcılar; ad-soyad, adres, kurum gibi serbest metin varlıkları için GLiNER. Maskeleme sözlüğü
+    yerelde tutulur, yanıt geri açılır (de-anonymization) ve her işlem denetim günlüğüne yazılır.
+    Diğer tüm modüllerin önünde çalışır.
+  package: KVKK Kalkanı
+  roles: [Herkes]
+  tier: T0
+  status: stable
+  components:
+    - role: rules
+      model: presidio
+      artifact: default
+      target: client
+      shared: true
+    - role: ner
+      model: gliner-multi-pii-v1
+      artifact: default
+      target: client
+      shared: true
+  actions:
+    - id: mask
+      name: Maskele
+      description: Metindeki kişisel verileri yer tutucularla değiştirir, eşleme anahtarı döner.
+      input_schema: {type: object, required: [text], properties: {text: {type: string}, entities: {type: array, items: {type: string}}}}
+      output_schema: {type: object, properties: {masked_text: {type: string}, mapping_id: {type: string}, findings: {type: array}}}
+    - id: unmask
+      name: Geri aç
+      description: Maskeli yanıtı eşleme anahtarıyla orijinal değerlere döndürür.
+      input_schema: {type: object, required: [text, mapping_id], properties: {text: {type: string}, mapping_id: {type: string}}}
+      output_schema: {type: object, properties: {text: {type: string}}}
+    - id: scan
+      name: Tara
+      description: Metinde hangi kişisel veri türlerinin geçtiğini raporlar (maskelemeden).
+      input_schema: {type: object, required: [text], properties: {text: {type: string}}}
+      output_schema: {type: object, properties: {findings: {type: array}}}
+  kvkk:
+    data_categories: [kimlik, iletişim, finans, lokasyon]
+    special_categories: true
+    masking_required: false
+    purpose: Diğer modüllere giden verilerde kişisel verilerin asgariye indirilmesi
+    retention_days: 365
+  erp_touchpoints: []
+  kpis: [Maskelenen kişisel veri sayısı, Yanlış negatif oranı (örneklem denetimi)]
+
+- id: ana-model
+  niche_code: N00
+  name: Ana Model (GPU sunucu)
+  tagline: Şirketin ortak büyük modeli; zor görevler, görsel anlama ve diğer modüllerin yedeği.
+  description: >
+    Qwen3.5-35B-A3B (3B aktif parametreli MoE, Apache-2.0, görsel girdi) sunucuda OpenAI uyumlu
+    /v1 API olarak çalışır. GPU'suz sunucuda da CPU'da çalışabilir (yavaş). Tüm LLM tabanlı modüller
+    uygun olduğunda bu modele yönlenir; sunucuya ulaşılamazsa bilgisayardaki küçük modele düşerler.
+  package: Orkestrasyon
+  roles: [BT]
+  tier: T2
+  status: stable
+  components:
+    - role: llm
+      model: qwen3.5-35b-a3b
+      target: server
+      shared: true
+    - role: guard
+      model: granite-guardian-3.1-2b
+      target: server
+      shared: true
+      optional: true
+      note: Güvenlik Denetimi modülüyle paylaşılır
+    - role: llm_alt
+      model: gemma-4-26b-a4b
+      target: server
+      shared: true
+      optional: true
+      note: Türkçe akıcılık öncelikli şirketler için alternatif ana model
+    - role: llm_small
+      model: gpt-oss-20b
+      target: server
+      shared: true
+      optional: true
+      note: 16-24 GB GPU'lu sunucular için küçük ana model (Türkçe orta)
+  actions:
+    - id: chat
+      name: Sohbet
+      description: OpenAI uyumlu sohbet tamamlama (ayrıca /v1/chat/completions altında).
+      input_schema: {type: object, required: [messages], properties: {messages: {type: array}, json_schema: {type: object}}}
+      output_schema: {type: object, properties: {content: {type: string}, usage: {type: object}}}
+    - id: health
+      name: Sağlık
+      description: Modelin yüklü ve yanıt verir olduğunu, bağlam uzunluğunu, bellek kullanımını döner.
+  kvkk:
+    data_categories: [serbest metin]
+    special_categories: false
+    masking_required: true
+    purpose: Diğer modüllerin dil işleme ihtiyaçlarının karşılanması
+    retention_days: 30
+  depends_on: [kvkk-kalkani]
+  erp_touchpoints: []
+  kpis: [Ortalama yanıt süresi, Eş zamanlı kullanıcı]
+
+- id: ocr-belge-okuma
+  niche_code: N01
+  name: OCR — Taranmış Belge Okuma
+  tagline: Taranmış PDF ve fotoğrafı düzeniyle birlikte metne çevirir.
+  description: >
+    Taranmış sayfalar GPU sunucudaki PaddleOCR-VL ile düzen + metin + tablo olarak okunur. GPU yoksa
+    bilgisayarda Tesseract (tur+eng) çalışır; kalite düşer, hız sayfa başına 1-3 sn kalır.
+  package: Belge İşleme
+  roles: [Muhasebe, Satın Alma, İK, Hukuk]
+  tier: T1
+  components:
+    - role: ocr
+      model: paddleocr-vl-1.6
+      artifact: default
+      target: server
+      shared: true
+    - role: ocr_fallback
+      model: tesseract-tur
+      artifact: system
+      target: client
+      shared: true
+      optional: true
+    - role: ocr_alt
+      model: glm-ocr
+      artifact: bf16
+      target: server
+      shared: true
+      optional: true
+      note: MIT lisanslı alternatif OCR (vLLM ile servis)
+  actions:
+    - id: read
+      name: Oku
+      description: PDF/görüntü dosyasını sayfa sayfa Markdown + blok listesine çevirir.
+      input_schema: {type: object, required: [file], properties: {file: {type: string, format: binary}, pages: {type: string}}}
+      output_schema: {type: object, properties: {pages: {type: array}, markdown: {type: string}, engine: {type: string}}}
+  kvkk:
+    data_categories: [belge içeriği (her tür)]
+    special_categories: true
+    masking_required: true
+    purpose: Taranmış belgelerin aranabilir ve işlenebilir metne çevrilmesi
+  depends_on: [kvkk-kalkani]
+  erp_touchpoints: ["belge.arsiv (metin katmanı ekleme)"]
+  kpis: [Sayfa başına süre, Karakter doğruluğu (örneklem)]
+
+- id: pdf-ayristirma
+  niche_code: N02
+  name: PDF ve Ofis Belgesi Ayrıştırma
+  tagline: Dijital PDF, Word, Excel ve sunumları yapılı Markdown/JSON'a çevirir; tabloları ayırır.
+  description: >
+    Docling ile düzen, okuma sırası ve tablo yapısı; pdfplumber ile hızlı metin katmanı. Taranmış
+    sayfa tespit edilirse OCR modülüne devreder. Tamamen bilgisayarda çalışır.
+  package: Belge İşleme
+  roles: [Herkes]
+  tier: T0
+  status: stable
+  components:
+    - role: parser
+      model: docling
+      artifact: default
+      target: client
+    - role: layout
+      model: granite-docling-258m
+      artifact: default
+      target: either
+      optional: true
+      note: Karmaşık düzen ve tablo yapısı için
+  actions:
+    - id: parse
+      name: Ayrıştır
+      description: Dosyayı Markdown, JSON blokları ve tablo listesine çevirir.
+      input_schema: {type: object, required: [file], properties: {file: {type: string, format: binary}}}
+      output_schema: {type: object, properties: {markdown: {type: string}, tables: {type: array}, is_scanned: {type: boolean}}}
+  kvkk:
+    data_categories: [belge içeriği]
+    special_categories: false
+    masking_required: false
+    purpose: Belgelerin yerel olarak metne çevrilmesi (sunucuya veri gitmez)
+  erp_touchpoints: ["belge.arsiv"]
+  kpis: [Tablo yakalama oranı]
+
+- id: ozetleme
+  niche_code: N03
+  name: Belge ve Rapor Özetleme
+  tagline: Uzun belge, e-posta zinciri veya toplantı notunu maddeler ve eylemlerle özetler.
+  description: >
+    Parçala-özetle-birleştir yöntemiyle 200+ sayfaya kadar; çıktıda rakamlar kaynak sayfaya bağlanır.
+    Kısa metinler bilgisayardaki Qwen3.5-4B ile, uzun belgeler ana modelle işlenir.
+  package: Metin Asistanı
+  roles: [Herkes]
+  tier: T0
+  components:
+    - role: llm
+      model: qwen3.5-4b
+      target: either
+      shared: true
+  actions:
+    - id: summarize
+      name: Özetle
+      description: Metni başlık, özet, maddeler, eylemler ve sayı doğrulama uyarılarıyla özetler.
+      input_schema: {type: object, required: [text], properties: {text: {type: string}, style: {type: string, enum: [kisa, yonetici, madde, eylem]}, max_words: {type: integer}}}
+      output_schema: {type: object, properties: {summary: {type: string}, bullets: {type: array}, actions: {type: array}, unverified_numbers: {type: array}}}
+  kvkk:
+    data_categories: [serbest metin]
+    special_categories: false
+    masking_required: true
+    purpose: Çalışanların belge okuma yükünün azaltılması
+  depends_on: [kvkk-kalkani]
+  erp_touchpoints: ["belge.arsiv", "eposta.gelen"]
+  kpis: [Okuma süresi tasarrufu]
+
+- id: sozlesme-analizi
+  niche_code: N04
+  name: Sözleşme ve Uzun Belge Analizi
+  tagline: Tarafları, süreleri, cezai şartları ve riskli maddeleri çıkarır; standart maddelerle kıyaslar.
+  description: >
+    Ana modelin uzun bağlamıyla (128K+) sözleşmeyi tek seferde okur; şirketin standart madde kütüphanesiyle
+    farkları işaretler. Çıktı yapılandırılmış JSON ve insan okunur rapordur.
+  package: Hukuk & Uyum
+  roles: [Hukuk, Satın Alma, Yönetim]
+  tier: T2
+  components:
+    - role: llm
+      model: qwen3.5-35b-a3b
+      target: server
+      shared: true
+    - role: parser
+      model: docling
+      artifact: default
+      target: client
+      shared: true
+  actions:
+    - id: analyze
+      name: Analiz et
+      description: Sözleşme metninden taraflar, tarihler, tutarlar, yükümlülükler, cezai şartlar ve risk notları.
+      input_schema: {type: object, required: [text], properties: {text: {type: string}, checklist_id: {type: string}}}
+      output_schema: {type: object, properties: {parties: {type: array}, dates: {type: array}, obligations: {type: array}, risks: {type: array}, report_md: {type: string}}}
+    - id: compare
+      name: Standartla kıyasla
+      description: Maddeleri şirketin standart madde setiyle karşılaştırır, sapmaları listeler.
+      input_schema: {type: object, required: [text, standard_id]}
+  kvkk:
+    data_categories: [kimlik, iletişim, finans, ticari sır]
+    special_categories: false
+    masking_required: true
+    purpose: Sözleşme inceleme süresinin kısaltılması ve gözden kaçan maddelerin azaltılması
+  depends_on: [kvkk-kalkani, ana-model, pdf-ayristirma]
+  erp_touchpoints: ["sozlesme.kayit (öneri alanları)", "takvim.hatirlatma (yenileme tarihi)"]
+  kpis: [İnceleme süresi, Yakalanan sapma sayısı]
+
+- id: fatura-cikarim
+  niche_code: N05
+  name: Fatura / İrsaliye / Form → Yapılandırılmış Veri
+  tagline: Belge görüntüsünden tedarikçi, tarih, kalemler, KDV ve toplamı JSON olarak çıkarır; toplamı doğrular.
+  description: >
+    OCR çıktısı + ana modelin görsel yeteneğiyle şema zorlamalı JSON üretir. Satır toplamları, KDV ve genel
+    toplam kodla doğrulanır; uyuşmazlık varsa kayıt 'kontrol gerekli' olarak işaretlenir. ERP'ye yalnız
+    öneri kayıt açılır, insan onaylar.
+  package: Finans & Satın Alma
+  roles: [Muhasebe, Satın Alma]
+  tier: T1
+  components:
+    - role: ocr
+      model: paddleocr-vl-1.6
+      artifact: default
+      target: server
+      shared: true
+    - role: llm
+      model: qwen3.5-35b-a3b
+      target: server
+      shared: true
+    - role: extractor
+      model: nuextract-2.0-4b
+      artifact: bf16
+      target: server
+      optional: true
+      note: Çok yüksek hacimde ana modeli rahatlatan özel çıkarım modeli
+  actions:
+    - id: extract
+      name: Alanları çıkar
+      description: Fatura/irsaliye alanlarını şemaya göre çıkarır ve aritmetik doğrulama yapar.
+      input_schema: {type: object, required: [file], properties: {file: {type: string, format: binary}, schema_id: {type: string, enum: [fatura, irsaliye, dekont, form]}}}
+      output_schema: {type: object, properties: {fields: {type: object}, lines: {type: array}, validation: {type: object}, confidence: {type: number}}}
+    - id: propose_entry
+      name: ERP'ye öneri kayıt
+      description: Çıkarılan veriyi ERP'de onay bekleyen kayıt olarak açar.
+      human_approval: true
+      input_schema: {type: object, required: [fields]}
+  kvkk:
+    data_categories: [kimlik, iletişim, finans, vergi]
+    special_categories: false
+    masking_required: true
+    purpose: Fatura ve belge giriş sürecinin hızlandırılması
+  depends_on: [kvkk-kalkani, ana-model, ocr-belge-okuma]
+  erp_touchpoints: ["fatura.olustur (öneri, onay bekler)", "tedarikci.ara"]
+  kpis: [Fatura giriş süresi, Alan doğruluğu, Geri dönen kayıt oranı]
+
+- id: finans-hesap
+  niche_code: N06
+  name: Finansal Hesaplama Motoru
+  tagline: Geri ödeme süresi, NBD, İVO, amortisman ve nakit akışı tabloları; hesap kodda, açıklama modelde.
+  description: >
+    Hesaplar numpy-financial ve platformun deterministik formül kütüphanesiyle yapılır; LLM yalnız doğal dil
+    isteğinden parametreleri çıkarır (araç çağırma) ve sonucu Türkçe yorumlar. Modelin ürettiği hiçbir sayı
+    rapora doğrudan girmez.
+  package: Finans & Planlama
+  roles: [Finans, Yönetim]
+  tier: T0
+  status: stable
+  components:
+    - role: engine
+      model: finance-engine
+      artifact: default
+      target: client
+    - role: llm
+      model: qwen3.5-4b
+      target: either
+      shared: true
+      optional: true
+      note: Doğal dil → parametre ve Türkçe yorum için
+  actions:
+    - id: payback
+      name: Geri ödeme süresi
+      description: Basit ve iskontolu geri ödeme süresi.
+      input_schema: {type: object, required: [investment, cash_flows], properties: {investment: {type: number}, cash_flows: {type: array, items: {type: number}}, rate: {type: number}}}
+      output_schema: {type: object, properties: {simple_years: {type: number}, discounted_years: {type: number}, table: {type: array}}}
+    - id: npv_irr
+      name: NBD ve İVO
+      description: Net bugünkü değer, iç verim oranı, kârlılık endeksi.
+      input_schema: {type: object, required: [rate, cash_flows]}
+    - id: amortization
+      name: Kredi / amortisman tablosu
+      description: Eşit taksit, anapara ve faiz ayrımıyla tablo.
+      input_schema: {type: object, required: [principal, annual_rate, months]}
+    - id: cashflow_projection
+      name: Nakit akışı projeksiyonu
+      description: Aylık gelir/gider varsayımlarından 12-60 aylık nakit tablosu.
+      input_schema: {type: object, required: [months, opening_balance, inflows, outflows]}
+    - id: ask
+      name: Doğal dilde sor
+      description: Türkçe soruyu uygun hesaba çevirir, hesaplar ve yorumlar (LLM gerektirir).
+      input_schema: {type: object, required: [question]}
+  kvkk:
+    data_categories: [finansal veri (kişisel olmayan)]
+    special_categories: false
+    masking_required: false
+    purpose: Yatırım ve nakit kararlarının hızlı, denetlenebilir hesaplanması
+  erp_touchpoints: ["db.readonly (nakit, alacak, borç bakiyeleri)"]
+  kpis: [Hesap hatası (sıfır hedef), Analiz hazırlama süresi]
+
+- id: dogal-dil-sql
+  niche_code: N07
+  name: Doğal Dil → SQL (ERP Sorgulama)
+  tagline: "'Geçen çeyrek en çok düşen 10 müşteri' gibi soruları salt-okunur SQL'e çevirir ve çalıştırır."
+  description: >
+    ERP veritabanı şeması (yalnız izin verilen tablolar) modele açıklanır; üretilen SQL sqlglot ile ayrıştırılır,
+    yalnız SELECT'e izin verilir, LIMIT eklenir, zaman aşımıyla salt-okunur kullanıcıda çalışır. Sonuç tablo +
+    Türkçe açıklama olarak döner.
+  package: Veri & Raporlama
+  roles: [Finans, Satış, Yönetim]
+  tier: T1
+  components:
+    - role: llm
+      model: qwen2.5-coder-7b
+      target: server
+      shared: true
+    - role: guard
+      model: null
+      target: either
+      pip_extras: [text2sql]
+      ram_gb: 0.1
+      note: sqlglot ile SQL doğrulama
+    - role: llm_alt
+      model: arctic-text2sql-r1-7b
+      artifact: bf16
+      target: server
+      shared: true
+      optional: true
+      note: Yalnız Text2SQL için eğitilmiş alternatif (GPU + vLLM)
+  actions:
+    - id: ask
+      name: Soru sor
+      description: Türkçe soruyu SQL'e çevirir, doğrular, çalıştırır ve sonucu açıklar.
+      input_schema: {type: object, required: [question], properties: {question: {type: string}, connection_id: {type: string}, dry_run: {type: boolean}}}
+      output_schema: {type: object, properties: {sql: {type: string}, rows: {type: array}, columns: {type: array}, explanation: {type: string}}}
+    - id: schema
+      name: Şema özeti
+      description: Bağlantıdaki izinli tabloların ve sütunların özetini döner.
+  kvkk:
+    data_categories: [müşteri, tedarikçi, finans]
+    special_categories: false
+    masking_required: true
+    purpose: Raporlama taleplerinin BT'ye gitmeden yanıtlanması
+  depends_on: [kvkk-kalkani]
+  erp_touchpoints: ["db.readonly (salt okunur kullanıcı, tablo beyaz listesi)"]
+  kpis: [Rapor talebi karşılama süresi, Doğru sorgu oranı]
+
+- id: kod-uretimi
+  niche_code: N08
+  name: Kod ve Betik Üretimi
+  tagline: ERP eklenti kodu, rapor makrosu ve veri dönüşüm betiği üretir; sandbox'ta dener.
+  description: >
+    Qwen2.5-Coder-7B ile Python/SQL/JavaScript/C# üretimi; çalıştırma yalnız izole sandbox'ta (ağ kapalı,
+    süre sınırlı). Üretilen kod ERP'ye insan onayı olmadan dağıtılmaz.
+  package: Veri & Raporlama
+  roles: [BT]
+  tier: T1
+  components:
+    - role: llm
+      model: qwen2.5-coder-7b
+      target: server
+      shared: true
+  actions:
+    - id: generate
+      name: Kod üret
+      description: Açıklamadan kod ve kısa test üretir.
+      input_schema: {type: object, required: [spec], properties: {spec: {type: string}, language: {type: string}}}
+    - id: run_sandbox
+      name: Sandbox'ta çalıştır
+      description: Üretilen Python kodunu ağ kapalı, 10 sn sınırlı alt süreçte çalıştırır.
+      input_schema: {type: object, required: [code]}
+  kvkk:
+    data_categories: [yok (kod)]
+    special_categories: false
+    masking_required: true
+    purpose: Geliştirme süresinin kısaltılması
+  depends_on: [kvkk-kalkani]
+  erp_touchpoints: ["eklenti.api (okuma)"]
+  kpis: [Geliştirme süresi]
+
+- id: semantik-arama
+  niche_code: N09
+  name: Semantik Arama (Gömme)
+  tagline: Belgeleri anlamına göre indeksler ve arar; bilgi asistanının temeli.
+  description: >
+    Metin parçalanır, bge-m3 (sunucu) veya multilingual-e5-small (bilgisayar) ile vektöre çevrilir, yerel
+    SQLite tabanlı vektör deposunda saklanır. Sorgu tarafı bilgisayarda çalışabilir.
+  package: Bilgi Yönetimi
+  roles: [Herkes]
+  tier: T0
+  status: stable
+  components:
+    - role: embedder
+      model: bge-m3
+      artifact: safetensors
+      target: server
+      shared: true
+    - role: embedder_client
+      model: multilingual-e5-small
+      artifact: safetensors
+      target: client
+      shared: true
+      optional: true
+    - role: embedder_tr
+      model: turkish-e5-large
+      artifact: safetensors
+      target: server
+      shared: true
+      optional: true
+      note: Yalnız Türkçe külliyat için alternatif; bge-m3 ile kıyaslayın
+  actions:
+    - id: index
+      name: İndeksle
+      description: Belge koleksiyonunu parçalayıp vektör deposuna ekler.
+      input_schema: {type: object, required: [collection, documents]}
+    - id: search
+      name: Ara
+      description: Sorguya en yakın parçaları skorla döner.
+      input_schema: {type: object, required: [collection, query], properties: {collection: {type: string}, query: {type: string}, top_k: {type: integer}}}
+      output_schema: {type: object, properties: {hits: {type: array}}}
+  kvkk:
+    data_categories: [belge içeriği]
+    special_categories: false
+    masking_required: false
+    purpose: Kurumsal belgelerde anlamsal arama (vektörler şirket içinde kalır)
+  erp_touchpoints: ["belge.arsiv", "prosedur.kutuphane"]
+  kpis: [İlk 5'te doğru belge oranı]
+
+- id: yeniden-siralama
+  niche_code: N10
+  name: Yeniden Sıralama (Reranker)
+  tagline: Arama sonuçlarını çapraz kodlayıcıyla yeniden puanlayarak isabeti artırır.
+  description: bge-reranker-v2-m3 ile ilk 20-50 adayı yeniden sıralar; RAG cevaplarının doğruluğunu belirgin artırır.
+  package: Bilgi Yönetimi
+  roles: [Herkes]
+  tier: T0
+  components:
+    - role: reranker
+      model: bge-reranker-v2-m3
+      artifact: safetensors
+      target: either
+      shared: true
+  actions:
+    - id: rerank
+      name: Yeniden sırala
+      description: Sorgu ve aday metinleri puanlar.
+      input_schema: {type: object, required: [query, candidates], properties: {query: {type: string}, candidates: {type: array}, top_k: {type: integer}}}
+  kvkk:
+    data_categories: [belge içeriği]
+    special_categories: false
+    masking_required: false
+    purpose: Arama isabetinin artırılması
+  depends_on: [semantik-arama]
+  erp_touchpoints: []
+  kpis: [Recall@10 artışı]
+
+- id: metin-siniflandirma
+  niche_code: N11
+  name: Metin Sınıflandırma ve Yönlendirme
+  tagline: E-posta ve talepleri kategori, aciliyet ve duyguya göre etiketler; sıfır-atışla başlar.
+  description: >
+    İlk gün etiketli veri olmadan mDeBERTa sıfır-atış sınıflandırma; birikmiş örneklerle BERTurk ince ayarı
+    yapılarak CPU'da milisaniyelik model elde edilir. Tamamen bilgisayarda çalışır.
+  package: Müşteri Hizmetleri
+  roles: [Müşteri Hizmetleri, Satış]
+  tier: T0
+  status: stable
+  components:
+    - role: zero_shot
+      model: mdeberta-v3-xnli
+      artifact: safetensors
+      target: client
+      shared: true
+    - role: finetune_base
+      model: berturk-base
+      artifact: safetensors
+      target: client
+      shared: true
+      optional: true
+    - role: zero_shot_llm
+      model: qwen3.5-0.8b
+      target: client
+      shared: true
+      optional: true
+      note: Etiket tanımı serbest metin olduğunda LLM ile sıfır-atış
+  actions:
+    - id: classify
+      name: Sınıflandır
+      description: Metni verilen etiketlerden birine/birkaçına atar, olasılıklarla.
+      input_schema: {type: object, required: [text, labels], properties: {text: {type: string}, labels: {type: array}, multi_label: {type: boolean}}}
+      output_schema: {type: object, properties: {labels: {type: array}, scores: {type: array}}}
+    - id: train
+      name: Örneklerle eğit
+      description: Etiketli örneklerden BERTurk sınıflandırıcı eğitir (yerelde).
+      input_schema: {type: object, required: [examples]}
+  kvkk:
+    data_categories: [iletişim içeriği]
+    special_categories: false
+    masking_required: false
+    purpose: Gelen taleplerin doğru birime hızlı yönlendirilmesi
+  erp_touchpoints: ["talep.olustur (kategori önerisi)", "eposta.gelen"]
+  kpis: [Yönlendirme doğruluğu, İlk yanıt süresi]
+
+- id: varlik-cikarma
+  niche_code: N13
+  name: Varlık Çıkarma (NER)
+  tagline: Metinden şirket, kişi, tarih, tutar, ürün kodu gibi alanları ERP alanlarına eşler.
+  description: GLiNER ile sıfır-atış; etiketler ERP alan adlarıyla birebir tanımlanır. Bilgisayarda çalışır.
+  package: Belge İşleme
+  roles: [Muhasebe, Satın Alma, Hukuk]
+  tier: T0
+  status: stable
+  components:
+    - role: ner
+      model: gliner-multi-v2.1
+      artifact: default
+      target: client
+      shared: true
+  actions:
+    - id: extract
+      name: Varlıkları çıkar
+      description: Verilen etiket listesine göre varlıkları konum ve skorla döner.
+      input_schema: {type: object, required: [text, labels]}
+      output_schema: {type: object, properties: {entities: {type: array}}}
+  kvkk:
+    data_categories: [kimlik, kurum, finans]
+    special_categories: false
+    masking_required: false
+    purpose: Belgelerden yapılandırılmış alan çıkarımı
+  erp_touchpoints: ["cari.ara", "urun.ara"]
+  kpis: [Alan doğruluğu]
+
+- id: ceviri
+  niche_code: N14
+  name: Çeviri (TR ↔ EN ve çok dilli)
+  tagline: Tedarikçi belgelerini ve yazışmaları terim sözlüğüne sadık çevirir.
+  description: >
+    Kısa metinler bilgisayarda Opus-MT ile anında; belge çevirisi sunucuda MADLAD-400 veya ana modelle
+    (üslup ve bağlam korunur). Şirket terim sözlüğü zorunlu eşleme olarak uygulanır.
+  package: Metin Asistanı
+  roles: [Satın Alma, Satış, Hukuk]
+  tier: T0
+  components:
+    - role: mt_tr_en
+      model: opus-mt-tr-en
+      artifact: default
+      target: client
+      shared: true
+    - role: mt_en_tr
+      model: opus-mt-en-tr
+      artifact: default
+      target: client
+      shared: true
+    - role: mt_multi
+      model: madlad400-3b-mt
+      artifact: safetensors
+      target: server
+      shared: true
+      optional: true
+    - role: llm
+      model: qwen3.5-4b
+      target: either
+      shared: true
+      optional: true
+      note: Bağlamlı ve resmî üslup çevirisi
+  actions:
+    - id: translate
+      name: Çevir
+      description: Metni hedef dile çevirir; sözlük terimlerini korur.
+      input_schema: {type: object, required: [text, target_lang], properties: {text: {type: string}, source_lang: {type: string}, target_lang: {type: string}, glossary_id: {type: string}, mode: {type: string, enum: [hizli, belge]}}}
+      output_schema: {type: object, properties: {text: {type: string}, engine: {type: string}}}
+  kvkk:
+    data_categories: [yazışma içeriği]
+    special_categories: false
+    masking_required: true
+    purpose: Yabancı dildeki belge ve yazışmaların anlaşılması
+  depends_on: [kvkk-kalkani]
+  erp_touchpoints: ["eposta.gelen", "belge.arsiv"]
+  kpis: [Çeviri süresi, Terim tutarlılığı]
+
+- id: konusma-metin
+  niche_code: N15
+  name: Konuşmadan Metne (Toplantı ve Çağrı)
+  tagline: Ses kayıtlarını zaman damgalı Türkçe metne döker; konuşmacıları ayırır.
+  description: >
+    Sunucuda Whisper large-v3-turbo (GPU'da 1 saat kayıt 1-2 dk); bilgisayarda kişisel notlar için
+    Whisper small. Çıktı özetleme ve sınıflandırma modüllerine zincirlenebilir.
+  package: Ses
+  roles: [Müşteri Hizmetleri, Yönetim, Satış]
+  tier: T1
+  components:
+    - role: asr
+      model: whisper-large-v3-turbo
+      artifact: ct2
+      target: server
+      shared: true
+    - role: asr_client
+      model: whisper-small
+      artifact: ct2
+      target: client
+      shared: true
+      optional: true
+  actions:
+    - id: transcribe
+      name: Yazıya dök
+      description: Ses dosyasını segmentli metne çevirir.
+      input_schema: {type: object, required: [file], properties: {file: {type: string, format: binary}, language: {type: string}, diarize: {type: boolean}}}
+      output_schema: {type: object, properties: {text: {type: string}, segments: {type: array}, duration_s: {type: number}}}
+  kvkk:
+    data_categories: [ses kaydı, kimlik, iletişim içeriği]
+    special_categories: true
+    masking_required: true
+    purpose: Çağrı ve toplantı kayıtlarının yazılı hale getirilmesi (açık rıza ve aydınlatma gerekir)
+  depends_on: [kvkk-kalkani]
+  erp_touchpoints: ["cagri.kayit", "toplanti.not"]
+  kpis: [Kelime hata oranı (örneklem), İşlem süresi]
+
+- id: metin-ses
+  niche_code: N16
+  name: Metinden Sese
+  tagline: Raporları ve uyarıları Türkçe seslendirir; erişilebilirlik ve sesli bildirim.
+  description: Piper tr_TR sesiyle bilgisayarda anında seslendirme. Ses klonlama içermez.
+  package: Ses
+  roles: [Herkes]
+  tier: T0
+  status: stable
+  components:
+    - role: tts
+      model: piper-tr
+      artifact: dfki-medium
+      target: client
+      shared: true
+  actions:
+    - id: speak
+      name: Seslendir
+      description: Metni WAV ses dosyasına çevirir.
+      input_schema: {type: object, required: [text]}
+      output_schema: {type: object, properties: {audio_wav_base64: {type: string}, duration_s: {type: number}}}
+  kvkk:
+    data_categories: [yok]
+    special_categories: false
+    masking_required: false
+    purpose: Erişilebilirlik ve sesli bildirim
+  erp_touchpoints: []
+  kpis: []
+
+- id: gorsel-anlama
+  niche_code: N17
+  name: Görsel Anlama
+  tagline: Ürün fotoğrafı, hasar, etiket ve ekran görüntüsü hakkında Türkçe soru-cevap.
+  description: Ana modelin natif görsel yeteneğiyle; bilgisayarda Qwen3.5-4B (görsel) ile düşük çözünürlüklü yedek.
+  package: Operasyon & Saha
+  roles: [Depo, Kalite, Satın Alma]
+  tier: T2
+  components:
+    - role: llm
+      model: qwen3.5-35b-a3b
+      target: server
+      shared: true
+    - role: llm_client
+      model: qwen3.5-4b
+      target: client
+      shared: true
+      optional: true
+  actions:
+    - id: ask
+      name: Görsele sor
+      description: Görüntü + soru → cevap; isteğe bağlı JSON şeması.
+      input_schema: {type: object, required: [image, question], properties: {image: {type: string, format: binary}, question: {type: string}, json_schema: {type: object}}}
+  kvkk:
+    data_categories: [görüntü (kişi içerebilir)]
+    special_categories: false
+    masking_required: true
+    purpose: Saha ve depo görsellerinden hızlı bilgi çıkarımı
+  depends_on: [kvkk-kalkani, ana-model]
+  erp_touchpoints: ["urun.ara", "hasar.kayit (öneri)"]
+  kpis: [Hasar raporu hazırlama süresi]
+
+- id: nesne-tespiti
+  niche_code: N18
+  name: Nesne Tespiti ve Sayım
+  tagline: Raf, koli, araç ve ürün sayımı; kalite kontrol kamerası.
+  description: RF-DETR (Apache-2.0) ile kendi sınıflarınız için ince ayar; saha bilgisayarında veya sunucuda çalışır.
+  package: Operasyon & Saha
+  roles: [Depo, Üretim, Güvenlik]
+  tier: T1
+  components:
+    - role: detector
+      model: rf-detr
+      artifact: default
+      target: either
+  actions:
+    - id: detect
+      name: Tespit et
+      description: Görüntüdeki nesneleri sınıf, kutu ve skorla döner.
+      input_schema: {type: object, required: [image], properties: {image: {type: string, format: binary}, classes: {type: array}}}
+    - id: count
+      name: Say
+      description: Belirli sınıftaki nesneleri sayar.
+      input_schema: {type: object, required: [image, class_name]}
+  kvkk:
+    data_categories: [görüntü (kamera)]
+    special_categories: false
+    masking_required: false
+    purpose: Sayım ve kalite kontrol otomasyonu
+  erp_touchpoints: ["stok.sayim (öneri)"]
+  kpis: [Sayım süresi, Sayım hatası]
+
+- id: zaman-serisi
+  niche_code: N19
+  name: Zaman Serisi Tahmini
+  tagline: Satış, nakit akışı, stok talebi ve tahsilat için sıfır-atış tahmin ve güven aralığı.
+  description: >
+    Chronos-Bolt ile eğitim gerektirmeden ERP serilerinden tahmin; klasik temel çizgi (mevsimsel naive)
+    ile her zaman karşılaştırılır ve ikisi de raporlanır.
+  package: Finans & Planlama
+  roles: [Finans, Satın Alma, Planlama]
+  tier: T0
+  status: stable
+  components:
+    - role: forecaster
+      model: chronos-bolt-small
+      artifact: default
+      target: client
+      shared: true
+    - role: forecaster_server
+      model: chronos-bolt-base
+      artifact: default
+      target: server
+      shared: true
+      optional: true
+  actions:
+    - id: forecast
+      name: Tahmin et
+      description: Geçmiş seriden ileriye dönük nokta tahmini ve %10/%50/%90 aralıkları.
+      input_schema: {type: object, required: [series, horizon], properties: {series: {type: array, items: {type: number}}, horizon: {type: integer}, freq: {type: string}}}
+      output_schema: {type: object, properties: {median: {type: array}, low: {type: array}, high: {type: array}, baseline: {type: array}, backtest_mape: {type: number}}}
+  kvkk:
+    data_categories: [toplulaştırılmış finansal veri]
+    special_categories: false
+    masking_required: false
+    purpose: Planlama ve nakit yönetimi
+  erp_touchpoints: ["db.readonly (satış, stok, tahsilat serileri)"]
+  kpis: [MAPE, Stok tükenme oranı]
+
+- id: tablo-ml
+  niche_code: N20
+  name: Tablo Verisi Tahmini (Risk Skorları)
+  tagline: Geç ödeme riski, müşteri kaybı ve benzeri skorlar; açıklanabilir (SHAP) sonuç.
+  description: LightGBM ile eğitim ve skorlama; özellik önem dereceleri raporlanır. Kişisel veri yerine müşteri kodu kullanılır.
+  package: Finans & Planlama
+  roles: [Finans, Satış]
+  tier: T0
+  status: stable
+  components:
+    - role: ml
+      model: lightgbm
+      artifact: default
+      target: either
+  actions:
+    - id: train
+      name: Eğit
+      description: Etiketli tablo verisinden model eğitir, doğrulama metriklerini döner.
+      input_schema: {type: object, required: [rows, target]}
+    - id: score
+      name: Skorla
+      description: Yeni satırlar için olasılık ve en etkili özellikleri döner.
+      input_schema: {type: object, required: [model_id, rows]}
+  kvkk:
+    data_categories: [müşteri kodu, finansal davranış]
+    special_categories: false
+    masking_required: false
+    purpose: Alacak riski yönetimi (otomatik karar yok, skor öneridir)
+  erp_touchpoints: ["db.readonly (cari hareketler)", "cari.risk_notu (öneri)"]
+  kpis: [AUC, Tahsilat süresi]
+
+- id: yazim-denetimi
+  niche_code: N21
+  name: Türkçe Yazım ve Üslup Düzeltme
+  tagline: Yazım, noktalama ve resmî üslup düzeltmesi; anlamı değiştirmez.
+  description: Bilgisayardaki Qwen3.5-2B ile "yalnız düzelt" istemi; değişiklikler fark (diff) olarak gösterilir.
+  package: Metin Asistanı
+  roles: [Herkes]
+  tier: T0
+  components:
+    - role: llm
+      model: qwen3.5-2b
+      target: client
+      shared: true
+  actions:
+    - id: correct
+      name: Düzelt
+      description: Metni düzeltir ve değişiklik listesini döner.
+      input_schema: {type: object, required: [text], properties: {text: {type: string}, style: {type: string, enum: [resmi, samimi, koru]}}}
+      output_schema: {type: object, properties: {text: {type: string}, changes: {type: array}}}
+  kvkk:
+    data_categories: [yazışma içeriği]
+    special_categories: false
+    masking_required: false
+    purpose: Yazışma kalitesi (bilgisayarda işlenir)
+  erp_touchpoints: []
+  kpis: []
+
+- id: yazma-asistani
+  niche_code: N22
+  name: Yazma Asistanı
+  tagline: E-posta, teklif, tutanak ve rapor metni taslakları; şirket üslup rehberine uyar.
+  description: Bilgisayarda Qwen3.5-4B veya Gemma 4 E4B; uzun teklifler ana modele yönlenir. Üslup rehberi sistem istemidir.
+  package: Satış Asistanı
+  roles: [Satış, Yönetim, Herkes]
+  tier: T0
+  components:
+    - role: llm
+      model: qwen3.5-4b
+      target: either
+      shared: true
+    - role: llm_alt
+      model: gemma-4-e4b
+      target: either
+      shared: true
+      optional: true
+      note: Türkçe akıcılığı için alternatif
+    - role: llm_tr
+      model: kumru-2b
+      artifact: bf16
+      target: either
+      shared: true
+      optional: true
+      note: Yerli Türkçe model; üslup kıyası için
+  actions:
+    - id: draft
+      name: Taslak yaz
+      description: Amaç, alıcı ve notlardan metin taslağı üretir.
+      input_schema: {type: object, required: [purpose], properties: {purpose: {type: string}, recipient: {type: string}, notes: {type: string}, tone: {type: string}, length: {type: string}}}
+    - id: reply
+      name: Yanıtla
+      description: Gelen e-postaya bağlama uygun yanıt taslağı.
+      input_schema: {type: object, required: [incoming], properties: {incoming: {type: string}, intent: {type: string}}}
+  kvkk:
+    data_categories: [iletişim içeriği, kimlik]
+    special_categories: false
+    masking_required: true
+    purpose: Yazışma hazırlama süresinin kısaltılması
+  depends_on: [kvkk-kalkani]
+  erp_touchpoints: ["eposta.gelen", "teklif.sablon"]
+  kpis: [Yanıt süresi]
+
+- id: bilgi-asistani
+  niche_code: N23
+  name: Şirket İçi Bilgi Asistanı (RAG)
+  tagline: Prosedür, sözleşme ve ürün bilgisine kaynak göstererek cevap verir.
+  description: >
+    Semantik arama + yeniden sıralama + ana model. Cevaplar yalnız bulunan parçalardan üretilir, her cümle
+    kaynağa bağlanır; kaynak yoksa 'bilmiyorum' der.
+  package: Bilgi Yönetimi
+  roles: [Herkes]
+  tier: T1
+  components:
+    - role: llm
+      model: qwen3.5-9b
+      target: server
+      shared: true
+    - role: embedder
+      model: bge-m3
+      artifact: safetensors
+      target: server
+      shared: true
+    - role: reranker
+      model: bge-reranker-v2-m3
+      artifact: safetensors
+      target: server
+      shared: true
+  actions:
+    - id: ask
+      name: Sor
+      description: Koleksiyonda arar, yeniden sıralar, kaynaklı cevap üretir.
+      input_schema: {type: object, required: [collection, question], properties: {collection: {type: string}, question: {type: string}, top_k: {type: integer}}}
+      output_schema: {type: object, properties: {answer: {type: string}, citations: {type: array}, confidence: {type: string}}}
+  kvkk:
+    data_categories: [belge içeriği, soru metni]
+    special_categories: false
+    masking_required: true
+    purpose: Kurumsal bilgiye hızlı erişim
+  depends_on: [kvkk-kalkani, semantik-arama, yeniden-siralama]
+  erp_touchpoints: ["prosedur.kutuphane", "belge.arsiv"]
+  kpis: [İlk temasta çözüm, Kaynaklı cevap oranı]
+
+- id: guvenlik-denetimi
+  niche_code: N24
+  name: Güvenlik Denetimi (Prompt Injection ve Politika)
+  tagline: Belgelere gizlenmiş talimatları ve politika dışı istekleri yakalar.
+  description: Granite Guardian ile girdi/çıktı denetimi; RAG cevabının bağlama bağlılığı (groundedness) kontrolü.
+  package: KVKK Kalkanı
+  roles: [BT]
+  tier: T1
+  components:
+    - role: guard
+      model: granite-guardian-3.1-2b
+      artifact: bf16
+      target: server
+      shared: true
+  actions:
+    - id: check
+      name: Denetle
+      description: Metni risk kategorilerine göre puanlar (jailbreak, zararlı, veri sızdırma).
+      input_schema: {type: object, required: [text], properties: {text: {type: string}, context: {type: string}}}
+      output_schema: {type: object, properties: {risk: {type: string}, scores: {type: object}, blocked: {type: boolean}}}
+  kvkk:
+    data_categories: [istek metni]
+    special_categories: false
+    masking_required: false
+    purpose: Yapay zekâ kötüye kullanımının önlenmesi
+  erp_touchpoints: []
+  kpis: [Engellenen saldırı sayısı, Yanlış pozitif oranı]
+
+- id: kayit-eslestirme
+  niche_code: N25
+  name: Kayıt Eşleştirme ve Tekilleştirme
+  tagline: Mükerrer müşteri/tedarikçi kayıtlarını bulur ve birleştirme önerir.
+  description: Splink (olasılıksal) + RapidFuzz (bulanık) + isteğe bağlı gömme benzerliği; açıklanabilir skor.
+  package: Veri & Raporlama
+  roles: [Muhasebe, Satın Alma, BT]
+  tier: T0
+  status: stable
+  components:
+    - role: matcher
+      model: splink
+      artifact: default
+      target: either
+    - role: embedder
+      model: multilingual-e5-small
+      artifact: safetensors
+      target: client
+      shared: true
+      optional: true
+  actions:
+    - id: find_duplicates
+      name: Mükerrerleri bul
+      description: Kayıt listesinde olası eşleşmeleri skorla döner.
+      input_schema: {type: object, required: [records], properties: {records: {type: array}, threshold: {type: number}}}
+    - id: match
+      name: Eşleştir
+      description: Yeni kaydı mevcutlarla karşılaştırır.
+      input_schema: {type: object, required: [record, candidates]}
+  kvkk:
+    data_categories: [kimlik, iletişim, adres]
+    special_categories: false
+    masking_required: false
+    purpose: Ana veri kalitesi (bilgisayarda veya sunucuda, dışarı çıkmaz)
+  erp_touchpoints: ["cari.liste (okuma)", "cari.birlestir (öneri)"]
+  kpis: [Mükerrer kayıt oranı]
+
+- id: konu-cikarma
+  niche_code: N26
+  name: Konu ve Anahtar Kelime Çıkarma
+  tagline: Şikayet ve geri bildirimleri otomatik konulara ayırır; eğilimleri gösterir.
+  description: BERTopic + gömme; konu adlarını özetleme modülü yazar. Bilgisayarda çalışır.
+  package: Müşteri Hizmetleri
+  roles: [Müşteri Hizmetleri, Pazarlama]
+  tier: T0
+  components:
+    - role: topics
+      model: bertopic
+      artifact: default
+      target: either
+    - role: embedder
+      model: multilingual-e5-small
+      artifact: safetensors
+      target: client
+      shared: true
+  actions:
+    - id: topics
+      name: Konuları çıkar
+      description: Metin listesinden konu kümeleri ve temsilci kelimeler.
+      input_schema: {type: object, required: [texts]}
+    - id: keywords
+      name: Anahtar kelimeler
+      description: Tek metinden anahtar kelime/ifade listesi.
+      input_schema: {type: object, required: [text]}
+  kvkk:
+    data_categories: [geri bildirim içeriği]
+    special_categories: false
+    masking_required: false
+    purpose: Müşteri sesinin analizi
+  erp_touchpoints: ["talep.liste"]
+  kpis: [Tema tespit süresi]
+
+- id: el-yazisi
+  niche_code: N27
+  name: El Yazısı Okuma
+  tagline: Form ve saha notlarındaki el yazısını okur; düşük güvende insan doğrulaması ister.
+  description: Ana modelin görsel yeteneğiyle; her alan için güven skoru, eşik altı alanlar işaretlenir.
+  package: Belge İşleme
+  roles: [Saha, İK, Muhasebe]
+  tier: T2
+  components:
+    - role: llm
+      model: qwen3.5-35b-a3b
+      target: server
+      shared: true
+  actions:
+    - id: read
+      name: Oku
+      description: Görüntüdeki el yazısı alanlarını metne çevirir.
+      input_schema: {type: object, required: [image], properties: {image: {type: string, format: binary}, fields: {type: array}}}
+  kvkk:
+    data_categories: [form içeriği, kimlik]
+    special_categories: false
+    masking_required: true
+    purpose: Kâğıt formların dijitalleştirilmesi
+  depends_on: [kvkk-kalkani, ana-model]
+  erp_touchpoints: ["form.kayit (öneri)"]
+  kpis: [Alan doğruluğu]
+
+- id: evrak-siniflandirma
+  niche_code: N28
+  name: Gelen Evrak Sınıflandırma
+  tagline: Fatura, sözleşme, dilekçe, teklif, dekont gibi türleri ayırır ve ilgili birime yönlendirir.
+  description: Gömme + k-NN ile sınıf başına 20-30 örnekle başlar; OCR gerekirse OCR modülüne devreder.
+  package: Belge İşleme
+  roles: [Ön Büro, Muhasebe]
+  tier: T0
+  components:
+    - role: embedder
+      model: multilingual-e5-small
+      artifact: safetensors
+      target: client
+      shared: true
+    - role: parser
+      model: docling
+      artifact: default
+      target: client
+      shared: true
+  actions:
+    - id: classify
+      name: Türünü belirle
+      description: Belgeyi eğitilmiş evrak türlerinden birine atar.
+      input_schema: {type: object, required: [file]}
+    - id: train
+      name: Örnek ekle
+      description: Etiketli örnek belgeleri sınıf merkezlerine ekler.
+      input_schema: {type: object, required: [examples]}
+  kvkk:
+    data_categories: [belge içeriği]
+    special_categories: false
+    masking_required: false
+    purpose: Gelen evrakın doğru birime yönlendirilmesi
+  depends_on: [pdf-ayristirma]
+  erp_touchpoints: ["evrak.kayit (tür önerisi)"]
+  kpis: [Yönlendirme doğruluğu]
+
+- id: is-akisi-ajani
+  niche_code: N29
+  name: İş Akışı Ajanı (Araç Çağırma)
+  tagline: Çok adımlı işleri ERP API'lerini sırayla çağırarak yürütür; yazma adımları onay bekler.
+  description: >
+    Ana model araç tanımlarını (ERP API, diğer modüller) JSON fonksiyon çağrısı olarak kullanır. Okuma
+    araçları serbest, yazma araçları insan onayı kuyruğuna düşer. Her adım denetim günlüğüne yazılır.
+  package: Orkestrasyon
+  roles: [Yönetim, BT]
+  tier: T2
+  components:
+    - role: llm
+      model: qwen3.5-35b-a3b
+      target: server
+      shared: true
+  actions:
+    - id: run
+      name: Görev çalıştır
+      description: Doğal dil görevini araç çağrılarıyla planlar ve yürütür.
+      input_schema: {type: object, required: [task], properties: {task: {type: string}, tools: {type: array}, max_steps: {type: integer}}}
+      output_schema: {type: object, properties: {steps: {type: array}, result: {type: string}, pending_approvals: {type: array}}}
+      human_approval: true
+    - id: approve
+      name: Onayla
+      description: Bekleyen yazma adımını onaylar veya reddeder.
+      input_schema: {type: object, required: [approval_id, decision]}
+      human_approval: true
+  kvkk:
+    data_categories: [göreve bağlı]
+    special_categories: false
+    masking_required: true
+    purpose: Tekrarlı çok adımlı işlerin otomasyonu (insan gözetimli)
+  depends_on: [kvkk-kalkani, ana-model]
+  erp_touchpoints: ["eklenti.api (okuma serbest, yazma onaylı)"]
+  kpis: [Tamamlanan görev, Onay bekleme süresi]

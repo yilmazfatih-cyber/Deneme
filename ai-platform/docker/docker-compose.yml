@@ -1,0 +1,92 @@
+# Yerel AI Platformu — GPU sunucu kurulumu
+#
+#   docker compose --profile cpu  up -d      # GPU yok: platform + llama-server (CPU)
+#   docker compose --profile gpu  up -d      # NVIDIA GPU: platform + vLLM
+#   docker compose --profile ollama up -d    # Ollama ile model yönetimi
+#
+# Modeller ${AIP_DATA_DIR:-./data}/models altına iner; ilk kurulumdan sonra internet gerekmez.
+# Platform konteyneri Docker soketine erişir: vLLM konteynerini "ana-model" kurulumunda kendisi başlatır.
+
+services:
+  platform:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: aiplatform:0.1.0
+    container_name: aip-platform
+    restart: unless-stopped
+    environment:
+      AIP_ROLE: server
+      AIP_HOST: 0.0.0.0
+      AIP_PORT: "8080"
+      AIP_DATA_DIR: /data
+      AIP_LLM_ENGINE: ${AIP_LLM_ENGINE:-auto}
+      AIP_LLM_BASE_URL: ${AIP_LLM_BASE_URL:-http://llm:8000/v1}
+      AIP_ERP_DB_URL: ${AIP_ERP_DB_URL:-}
+      AIP_ERP_ALLOWED_TABLES: ${AIP_ERP_ALLOWED_TABLES:-[]}
+      AIP_ERP_WEBHOOK_SECRET: ${AIP_ERP_WEBHOOK_SECRET:-}
+      HF_HOME: /data/hf-cache
+    volumes:
+      - ${AIP_DATA_DIR:-./data}:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://127.0.0.1:8080/api/system/health',timeout=3)"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+
+  # ---- GPU: vLLM (OpenAI uyumlu /v1). Model yolu kurulumdan sonra: /models/<model_id>/<artifact_id>
+  llm:
+    profiles: ["gpu"]
+    image: vllm/vllm-openai:latest
+    container_name: aip-vllm
+    restart: unless-stopped
+    ipc: host
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    environment:
+      HF_HUB_OFFLINE: "1"
+    volumes:
+      - ${AIP_DATA_DIR:-./data}/models:/models
+    command: >
+      --model ${AIP_VLLM_MODEL_PATH:-/models/qwen3.5-35b-a3b/fp8}
+      --served-model-name ${AIP_VLLM_SERVED_NAME:-qwen3.5-35b-a3b}
+      --max-model-len ${AIP_LLM_CONTEXT:-32768}
+      --gpu-memory-utilization 0.90
+      --host 0.0.0.0 --port 8000
+    ports:
+      - "8001:8000"
+
+  # ---- CPU veya karma: llama.cpp sunucusu (GGUF)
+  llm-cpu:
+    profiles: ["cpu"]
+    image: ghcr.io/ggml-org/llama.cpp:server
+    container_name: aip-llama
+    restart: unless-stopped
+    volumes:
+      - ${AIP_DATA_DIR:-./data}/models:/models
+    command: >
+      -m ${AIP_GGUF_PATH:-/models/qwen3.5-4b/q4_k_m/Qwen3.5-4B-Q4_K_M.gguf}
+      --mmproj ${AIP_MMPROJ_PATH:-/models/qwen3.5-4b/q4_k_m/mmproj-F16.gguf}
+      -c ${AIP_LLM_CONTEXT:-32768} --jinja --host 0.0.0.0 --port 8000
+      -t ${AIP_LLM_THREADS:-8}
+    ports:
+      - "8001:8000"
+
+  # ---- Ollama
+  ollama:
+    profiles: ["ollama"]
+    image: ollama/ollama:latest
+    container_name: aip-ollama
+    restart: unless-stopped
+    volumes:
+      - ${AIP_DATA_DIR:-./data}/ollama:/root/.ollama
+    ports:
+      - "11434:11434"
