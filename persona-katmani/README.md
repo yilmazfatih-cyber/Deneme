@@ -16,6 +16,9 @@ araştırma, rol tanımları, altı bölümlük mimari ve proje sahibine bırak�
 3. Her role karşılık `model: opus` ile çalışan bir ajan tanımlandı (`.claude/agents/pk-*.md`) ve her ajan kendi mimari
    bölümünü yazdı → `docs/mimari/0N-*.md`.
 4. Bölümler `docs/MIMARI.md`'de bütünleştirildi; teknik olmayan kararlar `docs/FELSEFI-KARARLAR.md`'de proje sahibine soruldu.
+5. Proje sahibi F-1'i "dijital ikiz" olarak karara bağladı (ADR-001). Üç Opus araştırmacısı ekonomik davranış, uygulama içi
+   reklam ve web ürün davranışı literatüründen etki büyüklükleri ve bireysel farkları `data/kaynak/*.csv`'ye çıkardı;
+   `scripts/excel_uret.py` bunları `data/davranis-etkileri.xlsx`'e dönüştürdü. Kişi başı istatistiksel ikiz üretimi `docs/mimari/07`.
 
 ## Dosyalar
 
@@ -29,8 +32,13 @@ araştırma, rol tanımları, altı bölümlük mimari ve proje sahibine bırak�
 | `docs/mimari/04-ortamlar.md` | Web/uygulama/Figma/reklam sandbox'ları, eylem alanı, olay şeması (Ortam Müh.) |
 | `docs/mimari/05-icgoru-ve-urun.md` | Kullanım senaryoları, sektör şablonları, rapor biçimi, kullanım sınırları (İçgörü Mimarı) |
 | `docs/mimari/06-guven-gizlilik.md` | Veri sınıfları, KVKK/GDPR/SOC 2, kötüye kullanım, açıklama (Güven ve Gizlilik) |
+| `docs/mimari/07-dijital-ikiz-istatistik.md` | Kişi başı istatistiksel dijital ikiz: parametre vektörü, hiyerarşik Bayesçi model, hibrit karar, doğrulama (Araştırmacı) |
 | `docs/MIMARI.md` | Bütünleşik mimari: tek diyagram, bileşen sözleşmeleri, yol haritası |
 | `docs/FELSEFI-KARARLAR.md` | Proje sahibinin karar vereceği sorular; her biri seçenekler ve öneriyle |
+| `docs/decisions/ADR-001-dijital-ikiz.md` | Karar: persona dijital ikiz olacak (F-1) |
+| `data/davranis-etkileri.xlsx` | Literatür etki kitaplığı: 176 bulgu, 152 kaynak, 28 persona parametresi; sayfalar Özet · Etkiler · Moderatörler · Parametreler · Fark matrisi · Kaynaklar · Şema |
+| `data/kaynak/*.csv` | Excel'in kaynağı: ekonomik_davranis (61), uygulama_reklam (62), web_urun (53); şema `data/SEMA.md` |
+| `scripts/excel_uret.py` | CSV'lerden Excel'i yeniden üretir: `python3 persona-katmani/scripts/excel_uret.py` |
 
 ## Ajanları yeniden çalıştırma
 

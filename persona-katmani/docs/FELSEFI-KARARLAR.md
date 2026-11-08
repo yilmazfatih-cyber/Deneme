@@ -18,6 +18,11 @@ Yanıt biçimi önerisi: her satıra bir harf (a/b/c) veya kendi cümlenizi yaz�
 | F-8 | Personaya insan adı/yüz; algıya insan kusuru eklensin mi? | Ad var, fotoğraf yok, "sentetik" etiketi sürekli; algı bozulması kalibre edilene kadar kapalı |
 | F-9 | Müşteri verisi ortak kalibrasyon düzelticisine girsin mi? | Yalnızca toplulaştırılmış hata istatistiği, açık izinle |
 | F-10 | Hangi işler ve çıktı biçimleri reddedilir? | Siyasi reklam reddi; kumar/yüksek faiz insan incelemeli; sahipsiz site yok; filigran kaldırılamaz |
+| F-11 | *(yeni, 07)* Kişinin kestirilen zayıf noktası (yüksek şimdicilik, düşük sabır, kıtlık tepkisi) üzerinden hedefleme yapılabilir mi? | Hayır; ikiz çıktısı kişi kimliğiyle kiracının pazarlama sistemine geri yazılamaz |
+| F-12 | *(yeni, 07)* Kişi kendi ikizinin parametrelerini görür mü, itiraz edebilir mi? | Sade dille görür ve itiraz edebilir; isterse ham parametreyi de görür |
+| F-13 | *(yeni, 07)* Hiçbir parametresi kişiye özgü olmayan soğuk kayıt "ikiz" diye adlandırılabilir mi? | Hayır; soğuk aşamada adı "segment ikizi taslağı" |
+| F-14 | *(yeni, 07)* Kültür/ülke moderatörü veri gelmeden kişiye parametre atasın mı? | Atar ama kart "bu değer kişiden değil nüfus öncülünden" der |
+| F-15 | *(yeni, 07)* Rıza geri çekilince geçmiş ikiz raporları ne olur? | Toplu sonuçlarda (k ≥ 50 ikiz) kalır; tek ikiz veya küçük grupta silinir/işaretlenir |
 
 ---
 
@@ -190,6 +195,18 @@ Geldiği bölümler: 04 S4, 06 S4/S5.
   filigran (05, 06 §9), satış süreci ve kullanım politikası.
 
 ---
+
+## F-11 … F-15 · Dijital ikiz kararının doğurduğu yeni sorular
+
+ADR-001 ile F-1 kapandı; `mimari/07-dijital-ikiz-istatistik.md` beş yeni değer sorusu çıkardı. Tam metin, seçenekler ve
+gerekçeler 07'nin "Felsefi sorular" bölümünde; özet tabloda. Kısa yorum:
+
+- **F-11 zayıf noktadan hedefleme:** teknik olarak en kolay ve en kârlı kullanım; aynı zamanda 06'nın manipülasyon tanımının
+  kişi düzeyine inmiş hâli. Ekip "ikiz → pazarlama sistemine kişi kimliğiyle geri yazma yok" diyor.
+- **F-12 kişinin kendi ikizini görmesi:** KVKK erişim hakkıyla da ilişkili; "ben böyle değilim" itirazı bir veri düzeltme talebidir.
+- **F-13 soğuk ikiz adı:** pazarlama "ikiz" demek ister; soğuk kayıt aslında segment ortalamasıdır.
+- **F-14 kültür öncülü:** F-3'ün devamı; veri gelmeden "kültürü gereği" atama kalıp yargıya en yakın nokta.
+- **F-15 rıza geri çekme:** toplu sonuç ile bireysel iz arasında sınır nereye çekilecek.
 
 ## Yanıtlarınız geldiğinde ne olur
 

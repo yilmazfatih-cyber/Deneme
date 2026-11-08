@@ -1,6 +1,6 @@
 # Persona Katmanı — bütünleşik mimari
 
-Bu belge altı rol bölümünü (`mimari/01`–`06`) tek çerçevede toplar, bölümler arası sözleşmeleri sabitler ve
+Bu belge yedi rol bölümünü (`mimari/01`–`07`) tek çerçevede toplar, bölümler arası sözleşmeleri sabitler ve
 çelişen noktalarda bütünleştirme kararı verir. Ayrıntı her zaman ilgili bölümdedir; burada tekrar edilmez.
 Değer ve ilke soruları karar verilmeden `FELSEFI-KARARLAR.md`'ye taşınmıştır.
 
@@ -22,6 +22,25 @@ sürekli kalibre eder**. Simülasyon ölçümün yerine geçmez; hangi soruya uy
 | Kanıtsız kesinlik | Kaynağı olmayan alan yok (`unknown`); kanıt yoksa "bilmiyorum" birinci sınıf çıktı; atıf oranı (U3) | 02, 03 |
 | Aşırı güven | Rapor ilk ekranında güven sınıfı + "ne bilmiyoruz"; sentetik etiketi her alıntıda; filigran | 05, 06 |
 | Düşük riskli kararlar için | Uygunluk kapısı K1–K10; ödeme istekliliği ve ihtiyaç keşfi varsayılan kırmızı | 05 |
+
+## 2b. Dijital ikiz kararı (ADR-001) ve etki kitaplığı
+
+Proje sahibi F-1'i karara bağladı: katman, müşterinin **her gerçek müşterisi için istatistiksel bir dijital ikiz** üretir.
+Bunun mimarideki karşılığı `mimari/07-dijital-ikiz-istatistik.md`:
+
+- Kişi başı parametre vektörü θ_i (kayıptan kaçınma, şimdicilik, risk, sosyal kanıt, reklam toleransı, fiyat ve yorum
+  duyarlılığı, kıtlık, güven işareti, sabır, dikkat eşiği, varsayılan yapışkanlığı + 07'nin eklediği karar gürültüsü, dalgınlık,
+  okuma hızı, hayal kırıklığı eşiği, yenilik arayışı, kişi düzeyi söz-davranış farkı, kategori sapması).
+- **Öncüller literatürden:** `data/davranis-etkileri.xlsx` 176 bulgu ve 152 kaynaktan etki büyüklüklerini, güven aralıklarını ve
+  moderatörleri (yaş, cinsiyet, gelir, eğitim, kültür/ülke, deneyim, cihaz, kategori) taşır; her satır bir persona parametresine
+  ve bir prior önerisine bağlanır. "Fark matrisi" sayfası hangi farkın hangi parametreyi etkilediğini gösterir.
+- **Katmanlı model:** literatür → kiracı → (segment) → kişi; kısmi havuzlama, moderatör regresyonu, lab/Türkiye-dışı örneklem
+  için genişletme çarpanı, sağlam karışım öncülü. Kiracılar birbirinin öncülünü beslemez (F-9 ile uyumlu).
+- **Aşırı kesinliğe karşı:** her parametre "segmentten miras / kısmen kişisel / kişiye özgü" etiketi taşır; bir parametre ancak
+  kişi onu tanımlayan bir uyaranı gerçekten görmüşse kişi düzeyinde serbest bırakılır; soğuk ikiz "segment ikizi taslağı" diye adlandırılır.
+- **Hibrit karar:** model kapsamındaki karar noktalarında olasılığı istatistik motoru verir ve eylemi örnekler; LLM özellik çıkarır
+  ve gerekçeyi sonradan yazar; `override_rate` metriğiyle LLM'in sayıyı ezmesi izlenir.
+- **Rıza:** k-anonimlik yerine kişi rızası; silme talebi posterior'a ve kiracı düzeyi kestirimlere yayılır (06'nın sonraki turu).
 
 ## 3. Katmanlar ve akış
 
@@ -71,6 +90,8 @@ Bölümler bağımsız yazıldığı için aşağıdaki noktalarda tek bir tanı
 | B6 | Kullanıcı tasarımı persona (U7) | 01 F5, 05 S5 | Teknik varsayılan: ayrı "keşif" katmanı, istatistiğe girmez, raporda işaretli. Nihai karar: FELSEFI-KARARLAR F-5. |
 | B7 | Global kalibrasyon düzelticisine müşteri verisi | 03 F5, 06 §4 | Teknik varsayılan: yalnızca toplulaştırılmış hata istatistiği, açık izinle. Nihai karar: F-9. |
 | B8 | Ortam havuzu ile LLM havuzu ölçeklemesi | 01 ve 04 uyumlu | Ayrı ölçeklenir; `EnvironmentRunner.run(job) -> SessionRef` sözleşmesi (04 §12) kabul. |
+| B10 | Dijital ikiz ↔ persona şeması | 07 `evidence_grounded_individual` ve `twin` bloğu; 02 §5 en küçük birimi hücre sayıyordu | 02 §5 ve §11 bir sonraki turda 07'ye göre güncellenir; `behavioral_profile` (B4) alanları 07'nin `twin` bloğundan beslenir. |
+| B11 | İkiz metrikleri | 07 yeni metrik ailesi istiyor (kişi düzeyi tutulan oturum isabeti, dört taban çizgisiyle karşılaştırma) | 03 §7'ye "T" kodlu metrik ailesi eklenir; ikiz segment ortalamasını geçemezse "kişiye özgü" iddiası düşer. |
 | B9 | Çok ajanlı B2B komite | 05 istiyor, 01 §7 destekliyor | Rol bazlı ajan grubu; komite içi etkileşim MVP'de yok (sıralı bireysel koşu + sentez), ikinci aşamada. |
 
 ## 5. Bileşen sözleşmeleri (kısa)
@@ -99,8 +120,8 @@ ucuz katmanın sadakat maliyeti (O2) ölçülmeden oran sabitlenmez.
 
 | Aşama | Kapsam | Çıkış ölçütü |
 | --- | --- | --- |
-| 0 · Omurga (6-8 hafta) | Uygunluk kapısı, `PopulationSpec` + persona üretimi (TÜİK/kamu istatistiği + müşteri anketi), web sandbox, olay günlüğü, yönlendirici, temel rapor | Bir e-ticaret sepet akışında 200 persona × 2 varyant koşusu; rapor ilk ekranda güven sınıfı gösteriyor |
-| 1 · Kalibrasyon (8 hafta) | Kör tahmin mühürü, backtest veri kümesi, metrik panosu, regresyon kapıları, reklam görseli ortamı | 10 gerçek A/B sonucuyla ilk kalibrasyon kaydı; P3 ve P5 raporlanıyor |
+| 0 · Omurga (6-8 hafta) | Uygunluk kapısı, `PopulationSpec` + persona üretimi (TÜİK/kamu istatistiği + müşteri anketi), **etki kitaplığından prior üretimi (07 §3)**, web sandbox, olay günlüğü, yönlendirici, temel rapor | Bir e-ticaret sepet akışında 200 persona × 2 varyant koşusu; rapor ilk ekranda güven sınıfı gösteriyor |
+| 1 · Kalibrasyon (8 hafta) | Kör tahmin mühürü, backtest veri kümesi, metrik panosu, regresyon kapıları, reklam görseli ortamı, **kiracı düzeyi hiyerarşik model ve ilk sıcak ikizler (07 §7)** | 10 gerçek A/B sonucuyla ilk kalibrasyon kaydı; P3 ve P5 raporlanıyor |
 | 2 · Genişleme | Figma, mobil, video reklam, B2B komite, Türkiye sektör şablonları, SOC 2 kontrol kanıtları | İkinci sektör şablonu canlı; kalibre edilmiş hücrede koşullu temsil dili |
 | 3 · Strateji merceği | Pazar/segment ölçeğinde simülasyon | Yalnızca 03'ün nüfus düzeyi metrikleri eşiği geçince |
 
@@ -112,3 +133,4 @@ ucuz katmanın sadakat maliyeti (O2) ölçülmeden oran sabitlenmez.
 - Türkiye için kamu istatistiği granülaritesi düşük olabilir; küçük hücrelerde yeniden tanımlama riski ile temsil arasında gerilim (02, 06).
 - Hukuki ifadeler (KVKK/GDPR) hukuki görüş değildir; 06'daki "doğrulanmalı" işaretleri avukat incelemesi bekler.
 - Talp'ın gerçek ilan metinleri görülmedi; roller rakip ilanlarından türetildi (01-roller.md).
+- Etki kitaplığındaki sayıların çoğu makale özetlerinden ve ikincil kaynaklardan alındı; 176 satırın 77'sinde sayısal etki var, kalanında yalnızca yön/moderatör. `notlar` sütununda "doğrulanmadı" yazanlar prior olarak kullanılmadan önce makaleden kontrol edilmeli. Türkiye'ye özgü hakemli etki büyüklüğü çok az (Global Preferences Survey ülke puanları, iki anket).

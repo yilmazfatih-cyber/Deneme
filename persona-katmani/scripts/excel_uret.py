@@ -159,6 +159,65 @@ def main() -> None:
     for k, w in zip("ABCDEFG", (24, 10, 36, 10, 80, 50, 60)):
         wsP.column_dimensions[k].width = w
 
+
+    # Fark matrisi: moderatör sınıfı × persona parametresi (satır sayısı)
+    SINIF = [
+        ("yaş", r"ya[şs]|kuşak|genç|yaşlı|z kuşağı|55\+"),
+        ("cinsiyet", r"cinsiyet|kadın|erkek"),
+        ("gelir / servet", r"gelir|servet|zengin|yoksul|bütçe"),
+        ("eğitim / bilişsel", r"eğitim|bilişsel|crt|sayısal|okuryazar|zek"),
+        ("kültür / ülke", r"kültür|ülke|hofstede|bireyc|kolektif|belirsizlik|türkiye|bölge"),
+        ("deneyim / aşinalık", r"deneyim|aşina|tecrübe|yeni müşteri|internet kullanım"),
+        ("cihaz / kanal", r"cihaz|mobil|masaüstü|kanal|platform"),
+        ("ürün / kategori", r"kategori|ürün tipi|hedonik|faydacı|fiyat düzeyi|marka"),
+        ("kişilik / güdü", r"kişilik|big five|maksimiz|düzenleyici|güdü|ihtiyaç|tutum|gizlilik kaygısı"),
+        ("bağlam / zaman", r"bağlam|zaman|baskı|yük|yorgun|sıklık|saat"),
+    ]
+    def sinifla(m: str) -> str:
+        m = m.lower()
+        for ad, rx in SINIF:
+            if re.search(rx, m):
+                return ad
+        return "diğer"
+    matris = defaultdict(lambda: defaultdict(int))
+    ornek = defaultdict(list)
+    for s in satirlar:
+        if not s["moderator_degisken"]:
+            continue
+        sinif = sinifla(s["moderator_degisken"])
+        for pp in re.split(r"[;,/]\s*", s["persona_parametresi"]):
+            pp = pp.strip()
+            if pp:
+                matris[sinif][pp] += 1
+                if len(ornek[(sinif, pp)]) < 2:
+                    ornek[(sinif, pp)].append(f"{s['kayit_id']}: {s['moderator_yonu_ve_buyuklugu'][:90]}")
+    tum_param = sorted({pp for d in matris.values() for pp in d})
+    wsF = wb.create_sheet("Fark matrisi")
+    wsF.append(["Moderatör sınıfı \\ parametre"] + tum_param + ["toplam"])
+    for c in wsF[1]:
+        c.fill, c.font = BASLIK_DOLGU, BASLIK_YAZI
+        c.alignment = Alignment(wrap_text=True, vertical="top", text_rotation=60)
+    for sinif in [a for a, _ in SINIF] + ["diğer"]:
+        if sinif not in matris:
+            continue
+        satir = [sinif] + [matris[sinif].get(pp, None) for pp in tum_param]
+        satir.append(sum(matris[sinif].values()))
+        wsF.append(satir)
+    wsF.append([])
+    wsF.append(["Hücre örnekleri (sınıf · parametre → kayıt: yön)"])
+    wsF.cell(row=wsF.max_row, column=1).font = Font(bold=True)
+    for (sinif, pp), liste in sorted(ornek.items()):
+        for o in liste:
+            wsF.append([sinif, pp, o])
+    wsF.column_dimensions["A"].width = 26
+    wsF.column_dimensions["B"].width = 24
+    wsF.column_dimensions["C"].width = 110
+    for i in range(2, len(tum_param) + 3):
+        if i != 3:
+            wsF.column_dimensions[get_column_letter(i)].width = 6
+    wsF.row_dimensions[1].height = 120
+    wsF.freeze_panes = "B2"
+
     # Kaynaklar
     kaynak = {}
     for s in satirlar:
