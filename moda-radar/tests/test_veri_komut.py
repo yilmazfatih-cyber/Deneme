@@ -49,3 +49,53 @@ def test_sinyal_yukle_db_ozet_gecikme(capsys, tmp_path):
     assert "| sinyal |" in capsys.readouterr().out
     assert main(["gecikme-olc", "--segment", "orta", "--kategori", "kadin-ust", "--db", db]) == 0
     assert '"n": 0' in capsys.readouterr().out
+
+
+def _sahte_perakende(monkeypatch, sonuclar):
+    """Her hedef için sonuç sözlüğü ya da istisna; ağa çıkılmaz."""
+    from moda_radar.veri import perakende
+
+    hs = [
+        perakende.PerakendeHedefi(segment="orta", marka=m, kategori="kadin-ust", url=f"https://{m}.invalid", secici={})
+        for m in sonuclar
+    ]
+    monkeypatch.setattr(perakende, "kaynaklari_oku", dict)
+    monkeypatch.setattr(perakende, "hedefler", lambda veri, segment=None, kategori=None: hs)
+    denenen = []
+
+    def sahte_tara(depo, h, tarayici):
+        denenen.append(h.marka)
+        s = sonuclar[h.marka]
+        if isinstance(s, Exception):
+            raise s
+        return {"hedef": f"orta/{h.marka}/kadin-ust", "bulunan": s}
+
+    monkeypatch.setattr(perakende, "kaynak_tara", sahte_tara)
+    return denenen
+
+
+def test_topla_perakende_hedef_istisnasi_otekileri_durdurmaz(monkeypatch, capsys, tmp_path):
+    class PlaywrightHatasi(Exception):  # playwright._impl._errors.Error gibi: AG_HATALARI dışında
+        pass
+
+    hata = PlaywrightHatasi("Page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.lcw.com/x\nCall log: ...")
+    denenen = _sahte_perakende(monkeypatch, {"Zara": 0, "LCW": hata, "Addax": 12, "Trendyol": 30})
+    assert main(["topla", "--kaynak", "perakende", "--db", str(tmp_path / "m.db")]) == 0
+    assert denenen == ["Zara", "LCW", "Addax", "Trendyol"]
+    satirlar = capsys.readouterr().out.strip().splitlines()
+    lcw = json.loads(satirlar[1])
+    assert lcw["hedef"] == "orta/LCW/kadin-ust" and lcw["bulunan"] == 0
+    assert lcw["hata"] == "PlaywrightHatasi: Page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.lcw.com/x"
+    assert satirlar[-1].startswith("perakende: 4 hedef, 42 ürün, 1 hata")
+
+
+def test_topla_perakende_hic_urun_yoksa_cikis_1(monkeypatch, capsys, tmp_path):
+    _sahte_perakende(monkeypatch, {"Zara": 0, "LCW": RuntimeError("robots")})
+    assert main(["topla", "--kaynak", "perakende", "--db", str(tmp_path / "m.db")]) == 1
+    assert "perakende: 2 hedef, 0 ürün, 1 hata" in capsys.readouterr().out
+
+
+def test_kisa_hata_tek_satir_ve_sinirli():
+    assert komut.kisa_hata(ValueError("a\nb")) == "ValueError: a"
+    assert komut.kisa_hata(KeyError()) == "KeyError"
+    assert len(komut.kisa_hata(OSError("x" * 500))) == 200

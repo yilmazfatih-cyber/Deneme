@@ -16,6 +16,7 @@ import json
 import logging
 import re
 import unicodedata
+import urllib.error
 from collections.abc import Callable
 from datetime import date
 from html.parser import HTMLParser
@@ -52,6 +53,50 @@ def marka_slug(marka: str) -> str:
 
 def defile_url(d: DefileTanimi) -> str:
     return f"{TABAN}/{d.kaynak_kimligi}"
+
+
+# Marka adı → Vogue slug adayları (sırayla denenir; `content/defileler.json`'daki kimlik her zaman ilk adaydır).
+# Şema (`DefileTanimi`) alternatif alanı taşımadığı için burada tutulur. 2026-11-08 Actions çalışmasında 404 verenler.
+SLUG_ADAYLARI: dict[str, tuple[str, ...]] = {
+    "Versace": ("versace",),
+    "Ferragamo": ("ferragamo", "salvatore-ferragamo"),
+    "Burberry": ("burberry", "burberry-prorsum"),
+    "JW Anderson": ("jw-anderson", "j-w-anderson"),
+}
+
+
+class DefileBulunamadi(OSError):
+    """Tüm slug adayları 404 verdi; Vogue defileyi (henüz) yayımlamamış olabilir."""
+
+
+def kimlik_adaylari(d: DefileTanimi) -> list[str]:
+    """Denenecek `kaynak_kimligi` listesi: önce içerikteki, sonra `SLUG_ADAYLARI`'ndaki slug'lar (aynı sezon yolu)."""
+    sezon_yolu, _, _ = d.kaynak_kimligi.rpartition("/")
+    adaylar = [d.kaynak_kimligi]
+    for slug in SLUG_ADAYLARI.get(d.marka, ()):
+        k = f"{sezon_yolu}/{slug}" if sezon_yolu else slug
+        if k not in adaylar:
+            adaylar.append(k)
+    return adaylar
+
+
+def _404_mu(e: Exception) -> bool:
+    return isinstance(e, urllib.error.HTTPError) and e.code == 404
+
+
+def defile_sayfasi(d: DefileTanimi, tarayici) -> tuple[str, str]:
+    """(kullanılan kaynak_kimligi, HTML). 404'te sıradaki aday denenir; hepsi 404 ise `DefileBulunamadi`."""
+    denenen: list[str] = []
+    for kimlik in kimlik_adaylari(d):
+        try:
+            return kimlik, tarayici.metin(f"{TABAN}/{kimlik}")
+        except urllib.error.HTTPError as e:
+            if not _404_mu(e):
+                raise
+            denenen.append(kimlik.rsplit("/", 1)[-1])
+    raise DefileBulunamadi(
+        f"404 (denenen: {', '.join(denenen)}) — Vogue bu defileyi yayımlamamış olabilir; bu durumda hata normaldir"
+    )
 
 
 # --- saf ayrıştırıcı ---
@@ -213,10 +258,19 @@ def defile_tara(
     bugun = bugun or date.today()
     if d.kaynak != "vogue":
         return {"defile": d.kaynak_kimligi, "atlandi": f"kaynak {d.kaynak} için toplayıcı yok"}
+    kimlik, html = defile_sayfasi(d, tarayici)
+    if kimlik != d.kaynak_kimligi:
+        log.info("vogue: %s için alternatif slug kullanıldı: %s (içerikte: %s)", d.marka, kimlik, d.kaynak_kimligi)
+        d = d.model_copy(update={"kaynak_kimligi": kimlik})
     url = defile_url(d)
-    urller = look_urlleri(tarayici.metin(url))
+    urller = look_urlleri(html)
+    del html
     if not urller:  # galeri ayrı sayfada olabilir
-        urller = look_urlleri(tarayici.metin(url + "/slideshow/collection"))
+        try:
+            urller = look_urlleri(tarayici.metin(url + "/slideshow/collection"))
+        except urllib.error.HTTPError as e:
+            if not _404_mu(e):
+                raise
     if gorsel_siniri:
         urller = urller[:gorsel_siniri]
     defile_id = depo.ekle_defile(d)

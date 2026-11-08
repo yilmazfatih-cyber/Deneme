@@ -132,19 +132,32 @@ def _topla_perakende(args) -> int:
         return 0
     from moda_radar.veri.ag import Tarayici
 
-    tarayici, basarili, hatali = Tarayici(), 0, 0
+    tarayici, basarili, hatali, urun = Tarayici(), 0, 0, 0
     with _depo(args.db) as depo:
         for h in hedefler:
+            ad = f"{h.segment}/{h.marka}/{h.kategori}"
             try:
                 s = perakende.kaynak_tara(depo, h, tarayici)
-            except AG_HATALARI as e:
+            # Hedef başına yalıtım: Playwright'ın kendi Error sınıfı dahil hiçbir hata sonraki hedefleri durdurmaz.
+            except Exception as e:  # noqa: BLE001
                 hatali += 1
-                print(f"HATA {h.segment}/{h.marka}/{h.kategori}: {e}", file=sys.stderr)
+                print(json.dumps({"hedef": ad, "bulunan": 0, "hata": kisa_hata(e)}, ensure_ascii=False))
                 continue
             print(json.dumps(s, ensure_ascii=False))
             basarili += s["bulunan"] > 0
-    print(f"perakende: {basarili}/{len(hedefler)} hedef ürün verdi, {hatali} hata, {tarayici.istek_sayisi} istek")
+            urun += s["bulunan"]
+    print(
+        f"perakende: {len(hedefler)} hedef, {urun} ürün, {hatali} hata"
+        f" · {basarili} hedef ürün verdi, {tarayici.istek_sayisi} istek"
+    )
     return 0 if basarili > 0 else 1
+
+
+def kisa_hata(e: BaseException, sinir: int = 200) -> str:
+    """Günlük için tek satırlık hata: 'Error: Page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://...'."""
+    ilk = (str(e).strip().splitlines() or [""])[0]
+    metin = f"{type(e).__name__}: {ilk}" if ilk else type(e).__name__
+    return metin if len(metin) <= sinir else metin[: sinir - 1] + "…"
 
 
 def ozet_markdown(o: dict) -> str:
