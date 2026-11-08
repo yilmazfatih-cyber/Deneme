@@ -36,11 +36,20 @@ def ekle(alt) -> list[str]:
     p.add_argument("--sezon", required=True)
     p.add_argument("--db", type=Path, default=VARSAYILAN_DB)
     p.add_argument("--klasor", type=Path, default=SEZONLAR, help="raporun yazılacağı docs/sezonlar klasörü")
-    return ["etiketle", "etiket-uyum"]
+    from moda_radar.gorsel import oturum
+
+    return ["etiketle", "etiket-uyum", *oturum.ekle(alt)]
 
 
 def calistir(args) -> int:
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
+    if args.komut in ("etiket-bekleyen", "etiket-yukle"):
+        from moda_radar.gorsel import oturum
+
+        if getattr(args, "sezon", None) and not SEZON_DESENI.match(args.sezon):
+            print(f"sezon SS27/FW27 biçiminde olmalı: {args.sezon!r}", file=sys.stderr)
+            return 2
+        return oturum.calistir(args)
     if not SEZON_DESENI.match(args.sezon):
         print(f"sezon SS27/FW27 biçiminde olmalı: {args.sezon!r}", file=sys.stderr)
         return 2

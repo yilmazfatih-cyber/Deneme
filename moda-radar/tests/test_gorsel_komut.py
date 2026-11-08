@@ -14,7 +14,7 @@ from moda_radar.veri.depo import Depo
 def _ayristir(argv):
     p = argparse.ArgumentParser()
     alt = p.add_subparsers(dest="komut", required=True)
-    assert komut.ekle(alt) == ["etiketle", "etiket-uyum"]
+    assert komut.ekle(alt) == ["etiketle", "etiket-uyum", "etiket-bekleyen", "etiket-yukle"]
     return p.parse_args(argv)
 
 
