@@ -288,3 +288,60 @@ class TaksonomiDosyasi(BaseModel):
             if not 3 <= len(degerler) <= 16:
                 raise ValueError(f"{eksen}: eksen başına 3-16 değer (ADR-004)")
         return self
+
+
+# --- Veritabanı ve sinyal katmanı (docs/ARAYUZ.md) ---
+
+
+class SinyalKaydi(BaseModel):
+    """Bir sezon için bir niteliğin podyum sinyali. Görselden (DB) ya da yayımlanmış defile raporundan (content/sinyaller) gelir."""
+
+    sezon: str
+    nitelik_ekseni: str = Field(description="renk | siluet | kumas_gorunumu | desen | detay | boy | yaka | kol")
+    nitelik_degeri: str = Field(description="TCX kodu veya taksonomi değeri")
+    podyum_payi: float = Field(
+        ge=0, le=1, description="Defile parçaları içindeki pay (ya da rapor sırasından türetilmiş kestirim)"
+    )
+    marka_sayisi: int = Field(ge=0)
+    kaynak_turu: Literal["gorsel", "rapor"]
+    kaynak_url: str
+    kaynak_tarihi: date
+    guven: float = Field(ge=0, le=1, default=0.5, description="Rapor kaynaklı sinyalde düşük, görsel sayımında yüksek")
+    not_: str | None = Field(default=None, alias="not")
+
+    @field_validator("sezon")
+    @classmethod
+    def sezon_bicimi(cls, v: str) -> str:
+        if not SEZON_DESENI.match(v):
+            raise ValueError("sezon SS27 veya FW27 biçiminde olmalı")
+        return v
+
+
+class GozlemKaydi(BaseModel):
+    """Bir niteliğin bir segmentin rafında görülmesi: gecikme ölçümünün ham maddesi."""
+
+    ulke: str = "TR"
+    segment: str
+    marka: str
+    kategori: str
+    nitelik_ekseni: str
+    nitelik_degeri: str
+    ilk_gorulme: date
+    son_gorulme: date
+    urun_sayisi: int = Field(ge=1)
+    raf_payi: float | None = Field(
+        default=None, ge=0, le=1, description="Kategori içindeki ürün payı; bilinmiyorsa None"
+    )
+    kaynak_url: str
+    kaynak_turu: Literal["site", "rapor", "saha"] = "site"
+
+
+class DefileTanimi(BaseModel):
+    """Taranacak bir defile (content/defileler.json)."""
+
+    sezon: str
+    marka: str
+    sehir: Literal["Paris", "Milano", "Londra", "New York", "Istanbul", "Kopenhag", "Diger"]
+    kaynak: Literal["vogue", "tagwalk", "youtube", "marka"]
+    kaynak_kimligi: str = Field(description="ör. vogue slug 'spring-2027-ready-to-wear/prada'")
+    tarih: date | None = None

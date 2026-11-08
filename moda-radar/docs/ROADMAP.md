@@ -10,6 +10,15 @@ Her aşama bir "sezon" döngüsüyle (`/sezon <KOD>`) yürütülür. Aşama biti
 | **P3 Pazar + ülke** | Pazar segmenti (toptancı Instagram + saha fotoğrafı); ikinci ülke (aday: Almanya veya Körfez)                          | Gösterge paneli                             | Pazar segmenti gecikmesi ölçüldü; ikinci ülke yalnız `content/` ekleyerek çalıştı  |
 | **P4 Ürün**         | Gösterge paneli, haftalık otomatik rapor (GitHub Actions), abonelik denemesi                                           |                                             | Haftalık rapor 4 hafta kesintisiz                                                  |
 
+## Veri akışı (2026-11-08 kararı)
+
+Geliştirme oturumlarının ağı moda ve perakende sitelerine kapalı. Veritabanı (`veri/moda.db`, SQLite) bu yüzden
+**GitHub Actions**'ta haftalık dolar (`.github/workflows/moda-radar-veri.yml`) ve `moda-verileri` dalında yaşar; kod
+dallarına girmez. İlk günden cevap verebilmek için `content/sinyaller/` altında yayımlanmış defile raporlarından
+(Pantone sezon raporu, Vogue Runway özetleri, Tagwalk) türetilmiş **rapor sinyalleri** var; görsel sayımı geldikçe
+bunların ağırlığı düşer (`guven` alanı). Podyum→raf gecikmesi, perakende tarayıcısının her hafta kaydettiği
+`ilk_gorulme` tarihleriyle ölçülür (`gecikme-olc`).
+
 ## Birikim listesi
 
 - Coloro kütüphanesi eşlemesi (lisans sorulacak)

@@ -21,16 +21,19 @@ Plan: `docs/PLAN.md` · Yol haritası: `docs/ROADMAP.md` · Kararlar: `docs/deci
 
 ## Komutlar (hedef arayüz; `moda_radar/cli.py` bunu uygular)
 
-| Komut                                                                           | Ne yapar                                                      |
-| ------------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| `python -m moda_radar topla --sezon SS27 --kaynak podyum`                       | Defile görsellerini indirir, etiketler, görseli siler         |
-| `python -m moda_radar topla --sezon SS27 --kaynak perakende --segment zara`     | Perakende ürün sayfalarını tarar, nitelik + renk kaydı üretir |
-| `python -m moda_radar renk --sezon SS27`                                        | Sezon paletini çıkarır, Pantone TCX eşler                     |
-| `python -m moda_radar tahmin --sezon SS27 --ulke TR --segment hepsi`            | Nitelik × segment olasılık tablosu                            |
-| `python -m moda_radar yatirim --sezon SS27 --segment zara --kategori kadin-ust` | Ürün kartları: yatır / dene / bekle / girme                   |
-| `python -m moda_radar geriye-test --tahmin SS25 --veri-kadar 2024-09-30`        | Zaman kilidiyle geçmiş sezon tahmini ve karne                 |
-| `python -m moda_radar dogrula`                                                  | `content/` JSON'larını şemayla ve çapraz kurallarla doğrular  |
-| `pytest` · `ruff check .` · `ruff format --check .`                             | Birim test, lint, biçim                                       |
+| Komut                                                                                                  | Ne yapar                                                                      |
+| ------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------- |
+| `python -m moda_radar topla --sezon SS27 --kaynak podyum`                                              | Defile görsellerini indirir, etiketler, görseli siler                         |
+| `python -m moda_radar topla --sezon SS27 --kaynak perakende --segment zara`                            | Perakende ürün sayfalarını tarar, nitelik + renk kaydı üretir                 |
+| `python -m moda_radar renk --sezon SS27`                                                               | Sezon paletini çıkarır, Pantone TCX eşler                                     |
+| `python -m moda_radar tahmin --sezon SS27 --ulke TR --segment hepsi`                                   | Nitelik × segment olasılık tablosu                                            |
+| `python -m moda_radar yatirim --sezon SS27 --segment zara --kategori kadin-ust`                        | Ürün kartları: yatır / dene / bekle / girme                                   |
+| `python -m moda_radar geriye-test --tahmin SS25 --veri-kadar 2024-09-30`                               | Zaman kilidiyle geçmiş sezon tahmini ve karne                                 |
+| `python -m moda_radar dogrula`                                                                         | `content/` JSON'larını şemayla ve çapraz kurallarla doğrular                  |
+| `python -m moda_radar sor --segment orta --renk "#2E5A88" --desen duz --siluet oversize --kumas keten` | Tek ürün için beş boyutlu yatırım kartı (kullanıcı sorusu)                    |
+| `python -m moda_radar esle --hex "#DA321C"`                                                            | Hex → en yakın iki Pantone TCX, ΔE ve güven                                   |
+| `python -m moda_radar db-ozet` · `sinyal-yukle` · `gecikme-olc`                                        | Veritabanı özeti; rapor sinyallerini DB'ye yükler; podyum→raf gecikmesi ölçer |
+| `pytest` · `ruff check .` · `ruff format --check .`                                                    | Birim test, lint, biçim                                                       |
 
 ## Klasör sahipliği (her klasörün tek yazarı vardır)
 
@@ -51,7 +54,7 @@ Her bulgu: **önem** (Engel / Önemli / Öneri) + **yer** + **somut düzeltme**.
 
 ## Mimari özeti
 
-- **Python 3.12, sunucusuz.** Veri Parquet + DuckDB (`veri/`), şemalar Pydantic (`moda_radar/sema.py`). Raporlar Markdown + JSON.
+- **Python 3.12, sunucusuz.** Veri SQLite tek dosya (`veri/moda.db`, ADR-005; `moda-verileri` dalında yaşar, GitHub Actions haftalık doldurur), şemalar Pydantic (`moda_radar/sema.py`). Raporlar Markdown + JSON. Modüller arası imzalar `docs/ARAYUZ.md`.
 - **Görsel → etiket:** Nitelik çıkarma için görsel dil modeli yapılandırılmış JSON üretir (`content/taksonomi.json` sözlüğüyle);
   toplu etiketleme Sonnet 5.5, örneklem denetimi Opus 5.5 (ADR-004). Görsel diske yazılmaz, bellekten işlenip atılır.
 - **Renk:** Giysi maskesi → Lab → k-means (k=3..5) → baskın/vurgu renk → sezon paleti → ΔE2000 ile Pantone TCX eşlemesi (ADR-001).
