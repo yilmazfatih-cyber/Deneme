@@ -62,7 +62,7 @@ def ekle(db: sqlite3.Connection, olay: Olay) -> int | None:
     d["kaynaklar"] = json.dumps(d["kaynaklar"], ensure_ascii=False)
     d["eklenme"] = date.today().isoformat()
     mevcut = db.execute(
-        "SELECT id FROM olaylar WHERE kapsam=? AND IFNULL(hisse,'')=IFNULL(?,'') AND IFNULL(sektor,'')=IFNULL(?,'')"
+        "SELECT id, kaynak_tipi FROM olaylar WHERE kapsam=? AND IFNULL(hisse,'')=IFNULL(?,'') AND IFNULL(sektor,'')=IFNULL(?,'')"
         " AND baslangic=? AND bitis=? AND tur=? AND baslik=?",
         (d["kapsam"], d["hisse"], d["sektor"], d["baslangic"], d["bitis"], d["tur"], d["baslik"]),
     ).fetchone()
@@ -71,8 +71,8 @@ def ekle(db: sqlite3.Connection, olay: Olay) -> int | None:
         for k in SAYISAL + ["takip_5g", "takip_20g"]:
             if d[k] is not None:
                 guncelle[k] = d[k]
-        if d["kaynak_tipi"] != "sayisal":
-            guncelle["kaynak_tipi"] = "birlesik"  # sayısal kayıt + anlam = birleşik
+        if d["kaynak_tipi"] != "sayisal" and mevcut[1] == "sayisal":
+            guncelle["kaynak_tipi"] = "birlesik"  # sayısal kayıt + anlam = birleşik; metin kayıt metin kalır
         db.execute(f"UPDATE olaylar SET {', '.join(f'{k}=?' for k in guncelle)} WHERE id=?", (*guncelle.values(), mevcut[0]))
         db.commit()
         return int(mevcut[0])
