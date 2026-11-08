@@ -206,7 +206,7 @@ kullanılır.
 | Yavaş yükleme, form hatası sonrası terk | Rekabet eden riskler | `sabir`, `hayal_kirikligi_esigi` | 04 §6.2 |
 | Görünür alan maruziyeti | Eşik altında "görülmedi" gizil değişkeni | `dikkat_esigi` | Görünürlük olayı yoksa tanımsız |
 | Anket/görüşme (`stated`) | y_söz = f(θ) + b_soz_davranis + gürültü | Tümü zayıfça; `b_soz_davranis` | Söz tek başına daraltamaz (02 §6.3) |
-| Mağaza ziyareti ve sepet tutarı (toplu, yalnız A) | Negatif binom ziyaret; lognormal tutar | S3 Γ³, toplu `eta_fiyat` | Kişiye bağlanmaz |
+| Mağaza işlem verisi: fiş tutarı, fiş sayısı, mağaza toplamı (ADR-004) | Negatif binom ziyaret/fiş sayısı; lognormal tutar; kampanya dönemi × tutar | A: S3 Γ³, toplu `eta_fiyat`; B: müşteri kimliği varsa küme düzeyinde `eta_fiyat`, `beta_simdicilik` (taksit varsa), `nu_yenilik` (kategori çeşitliliği) | Ayrıntı §4.4 |
 
 ### 4.2 Tanımlanabilirlik sorunları ve çözümleri
 
@@ -234,6 +234,27 @@ y_ije ~ Olay_e( g_e( z_i , s_ije , ξ_ij , d_ij ) ) ^ α        (α: §3.5 tavla
   z_i: B kişi/küme parametresi, ya da A'da μ³_l     s_ije: uyaran özellikleri
   ξ_ij: oturum/ziyaret niyeti ~ N(0, σ_ξ)           d_ij: cihaz, kanal veya konum etkisi
 ```
+
+### 4.4 Mağaza işlem verisi: ne tanımlar, ne tanımlamaz (ADR-004)
+
+Fiziksel mağaza verisi doğrudan şirketten gelir: müşteri bazında fiş (sepet) tutarları ve mağaza bazında toplam tutarlar. Bu veri
+tarayıcı olay günlüğünden çok daha seyrektir; aşağıdaki tablo hangi ayrıntı düzeyinde hangi parametrenin serbest bırakılabileceğini söyler.
+Tabloda olmayan parametreler (`dikkat_esigi`, `tau_reklam_tolerans`, `w_yorum`, `okuma_hizi`, `kappa_secim_yuku`, `varsayilan_yapiskanlik`)
+mağaza verisinden **tanımlanamaz**; A'da miras kalır, B'de "belirlenmemiş" görünür.
+
+| Veri ayrıntısı | Gözlem | Tanımladığı parametre | Düzey | Not |
+| --- | --- | --- | --- | --- |
+| Yalnız mağaza toplamı (gün/hafta) | Toplam tutar, fiş sayısı, kampanya dönemi | S3 Γ³ (konum etkisi); toplu `eta_fiyat` (kampanya dönemi tutar/fiş değişimi) | A | Kitle bileşimi ile konum etkisi ayrışmaz (§4.2); "bileşim olabilir" etiketi |
+| Müşteri kimlikli fiş tutarı | Kişi başı tutar dağılımı, ziyaret aralığı | B kümeleri: harcama düzeyi, ziyaret sıklığı; `sabir` yalnız ziyaret aralığı düzensizliği üzerinden zayıfça | B | Harcama düzeyi θ'da değil, küme betimleyicisidir; `BehaviorScale` ile raporlanır |
+| + kampanya/indirim dönemi işareti | Kampanya içi vs dışı tutar ve sıklık farkı | `eta_fiyat` (küme), `theta_kitlik` (süreli kampanyaysa) | A, B | Rastgele atanmamışsa `observational` |
+| + fiş satırı (ürün, adet, indirimli mi) | Ürün seçimi; indirimli/indirimsiz ikame | `eta_fiyat` kişi/küme; `nu_yenilik` (yeni kategori oranı); `lambda_kayip` yalnız fiyat artışı sonrası ikame gözlenirse | B | Karışık lojit §4.1 satır 1 ile aynı model |
+| + ödeme biçimi (taksit sayısı, peşin) | Taksit tercihi × tutar | `beta_simdicilik`, `delta_iskonto` (zayıf; faiz/vade farkı bilinmeli) | B | Türkiye'de taksit yaygın (S1 TR-033); "şimdi" seçeneği yoksa β tanımsız (§4.2) |
+| + iade/değişim kaydı | İade oranı, iade süresi | `lambda_kayip` (zayıf), `rho_risk` (bilinmeyen marka iadesi) | B | Pişmanlık ölçütü olarak yorumlanır, kanıt gücü düşük |
+
+Kurallar: (1) mağaza verisi A'nın S3'üne **toplu**, B'ye **müşteri kimlikli** girer; aynı fiş iki yere birden tam ağırlıkla girmez
+(§10.1 çift sayım kontrolü). (2) Müşteri kimliği yoksa B beslenmez; rapor "mağaza için yalnız Kaynak A" der. (3) Kişi başı tutar
+"zenginlik" olarak adlandırılmaz; küme adı §Felsefi soru 2 kurallarına tabidir. (4) Online ve mağaza verisi aynı müşteriye bağlanabiliyorsa
+`c_kategori` benzeri bir **kanal sapması** (`c_kanal`) parametresi B'de serbest bırakılır; bağlanamıyorsa iki ayrı B kümesi seti tutulur.
 
 ## 5. θ → LLM persona: hibrit karar mimarisi
 
@@ -479,7 +500,7 @@ Arayüz: `06-guven-gizlilik.md`. Kişiye gösterim, erişim/itiraz arayüzü ve 
   yapılır (varsayım: ≤ 30 gün, hukuki görüşle doğrulanmalı); gerekirse alt örneklem parçalara bölünür (SISA; Bourtoule ve ark.,
   arXiv:1912.03817). Kişi kimliğiyle rapor olmadığından geçmiş raporlar değişmez (F-15'in daralmış hâli).
 - **LLM sağlayıcısına** yalnız sözel özet ve uyaran gider (06 §5).
-- **Fiziksel mağazada** B'ye yalnız rızalı sadakat kartına bağlı fişler girer; kamera, yüz tanıma, cihaz izleme kaynak değildir (Felsefi soru 3).
+- **Fiziksel mağazada** veri doğrudan şirketin POS/ERP dışa aktarımından gelir: müşteri bazlı fiş tutarları (B) ve mağaza toplamları (A, S3). Kamera, yüz tanıma, cihaz izleme kaynak değildir (ADR-004).
 
 ## 13. Arayüzler
 
@@ -557,12 +578,4 @@ kaldı) yeniden sorulmaz. Yeni sorular:
 - Önerim: (b); kiracı ek ad verebilir ama yasak liste ona da uygulanır.
 - Etkilediği parça: §3.7, §5.3 `display_name`, 02 kimlik kartı, 05 ürün dili.
 
-**3. Fiziksel mağaza verisi hangi yollarla toplanabilir?**
-- Soru: A'nın S3'ü ve Kaynak B için yalnız kasa fişi, toplu kapı sayacı ve rızalı sadakat kartı mı, yoksa Wi-Fi/Bluetooth cihaz izleme,
-  raf önü kamera ve yüzden demografi tahmini de kaynak olabilir mi?
-- Neden teknik değil: Kamera ve cihaz izleme `dikkat_esigi`ni mağazada tanımlamanın tek yoludur; ama habersiz izlenmek çerezden çok
-  daha müdahaleci algılanır; "dijital iz" ile "bedenin gözlenmesi" arasındaki çizgi değer kararıdır (hukuki görüş de gerekir).
-- Seçenekler: (a) Fiş + rızalı sadakat kartı + toplu kapı sayacı. (b) (a) + kişiyi tanımayan, cihazda toplulaştıran kamera sayımı (yüz
-  yok, yalnız raf önü bekleme istatistiği). (c) Kiracının hukuken topladığı her veri.
-- Önerim: İlk sürümde (a); (b) ayrı ADR ve hukuki görüşten sonra.
-- Etkilediği parça: §3.6, §4.1 son satır, §12, 04 olay sözlüğü, 06.
+**3. Fiziksel mağaza verisi hangi yollarla toplanabilir?** — **Karar verildi (ADR-004):** doğrudan şirketten, müşteri sepet tutarları ve mağaza başı tutarlar. Kamera ve cihaz izleme gündemde değil. Bkz. §4.4.
