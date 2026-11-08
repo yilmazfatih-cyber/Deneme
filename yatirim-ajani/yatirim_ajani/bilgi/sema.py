@@ -37,6 +37,7 @@ class Olay(BaseModel):
     sektor: str | None = None  # sektör olayı için; şirket olayında otomatik doldurulur
     baslangic: str  # YYYY-MM-DD
     bitis: str  # YYYY-MM-DD
+    kamuya_acilma: str | None = None  # bilginin kamuya açıldığı an (ISO, saatli); point-in-time disiplini için
     tur: str  # yukselis | dusus | sok | rejim | haber | bilanço | ihale | faiz | secim | ...
     baslik: str = Field(max_length=160)
     anlam: str  # Ne oldu, neden önemli; 2–5 cümle. Semantik eşleşme için.
