@@ -23,6 +23,7 @@ dependencies = [
   "rapidfuzz>=3.9",
   "numpy>=1.26",
   "numpy-financial>=1.0",
+  "packaging>=23",
 ]
 
 [project.optional-dependencies]
@@ -61,6 +62,7 @@ aiplatform = ["web/**/*", "catalog/*.yaml"]
 testpaths = ["tests"]
 pythonpath = ["."]
 asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
 markers = ["slow: model indiren veya ağır bağımlılık isteyen testler"]
 
 [tool.ruff]

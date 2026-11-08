@@ -67,7 +67,7 @@ Tüm yanıtlar JSON; hata gövdesi `{"error": {"code": str, "message": str, "hin
 {
  "module_id": "fatura-cikarim", "target": "server", "status": "ok|warn|fail",
  "selected": [{"role": "ocr", "model": "paddleocr-vl-1.6", "artifact": "default", "runtime": "paddleocr", "disk_gb": 2, "ram_gb": 5, "vram_gb": 3, "shared_already_installed": false}],
- "totals": {"disk_gb": 25, "ram_gb": 8, "vram_gb": 27, "after_install": {"vram_used_gb": 31, "vram_total_gb": 48, "vram_pct": 65, "ram_pct": 40, "disk_pct": 12}},
+ "totals": {"disk_gb": 25, "ram_gb": 8, "vram_gb": 29, "after_install": {"vram_used_gb": 31, "vram_total_gb": 48, "vram_pct": 65, "ram_pct": 40, "disk_pct": 12}},
  "checks": [{"id": "vram", "status": "ok|warn|fail", "message": "Türkçe açıklama", "required": 27, "available": 48}],
  "missing_dependencies": ["kvkk-kalkani"],
  "recommendation": "Türkçe tek cümle: kurulabilir / CPU'da yavaş çalışır / şu donanım gerekir"
@@ -76,6 +76,13 @@ Tüm yanıtlar JSON; hata gövdesi `{"error": {"code": str, "message": str, "hin
 Kurallar: `vram` kontrolü GPU yoksa ve bileşen `gpu_required` ise **fail**; GPU yok ama `gpu_required=false` ise **warn** + `cpu_note`.
 `shared=true` ve aynı model/artifact zaten kuruluysa disk ve bellek **0** sayılır. KV önbellek payı: LLM bileşenleri için
 `+0.25 GB × beklenen eş zamanlı kullanıcı (varsayılan 8)`. Toplam > %90 kapasite → fail, > %75 → warn.
+Ek kurallar (uygulandı): modül biçimi belirtmemişse ve tercih edilen biçim %90 sınırını aşıyorsa sığan sonraki biçim seçilir
+(48 GB GPU'da ana model fp8 yerine GGUF Q4); GPU'da çalışan bileşen RAM'e yalnız `ram_gb − vram_gb` yazar; Apple birleşik
+bellekte RAM denetimi RAM + VRAM toplamıyla yapılır; `tier` denetimi (makine katmanı modül katmanından düşükse warn) ve
+`runtime` denetimi (vLLM seçili ama NVIDIA/Docker GPU yoksa fail); eksik bağımlılık warn sayılır ve kurulum onları aynı
+işte önce kurar. Rapor alanları ayrıca: `skipped_optional`, `profile_tier`, `module_tier`; `selected[]` içinde `delegated`,
+`on_gpu`, `kv_cache_gb`, `optional`, `gpu_required`, `cpu_note`, `note`. Ek uçlar: `GET /api/catalog/plan?modules=a,b`,
+`POST /api/modules/{id}/uninstall?force=true` (bağımlı modül varsa 409 `has_dependents`).
 
 ### Kurulum ve işler (cekirdek)
 | POST | `/api/modules/{id}/install` | gövde `{"target": "auto|server|client", "artifacts": {"role": "artifact_id"}?, "with_optional": false}` → `202 {"job_id"}` |
