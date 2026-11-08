@@ -28,3 +28,5 @@ test-results
 playwright-report
 tests/shots/output
 dev-dist
+persona-sim/node_modules
+persona-sim/dist
