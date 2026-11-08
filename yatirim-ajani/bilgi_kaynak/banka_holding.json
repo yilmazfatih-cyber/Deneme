@@ -4030,7 +4030,9 @@
     "https://www.getmidas.com/midasin-kulaklari/turkiye-cumhuriyet-merkez-bankasi-faiz-kararini-acikladi-aralik-2-p-77575",
     "https://www.getmidas.com/midasin-kulaklari/tcmb-sonrasi-borsada-yukselis-bankacilik-endeksinde-artis-6yi-asti-p-69912"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumlu",
+   "kamuya_acilma": "2024-12-26T14:00:00+03:00"
   },
   {
    "kapsam": "sektor",
@@ -4057,7 +4059,9 @@
     "https://www.hisse.net/haber/imamoglu-nun-tutuklanmasi-sonrasi-tcmb-den-kritik-banka-zirvesi-7457",
     "https://tr.euronews.com/2025/03/21/imamoglu-gozaltisi-piyasayi-sarsiyor-borsada-dusus-devam-ediyor"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumsuz",
+   "kamuya_acilma": "2025-03-20"
   },
   {
    "kapsam": "sektor",
@@ -4082,7 +4086,9 @@
     "https://www.forbes.com.tr/ekonomi/chp-kurultay-davasi-piyasalari-hareketlendirdi",
     "https://www.limasolbank.com.tr/wp-content/uploads/2025/10/GUNLUK-FINANS-BULTENI-24.10.2025-.pdf"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumlu",
+   "kamuya_acilma": "2025-10-24"
   },
   {
    "kapsam": "sektor",
@@ -4105,7 +4111,9 @@
    "kaynaklar": [
     "https://medyascope.tv/2025/11/11/ibb-iddianamesi-borsayi-vurdu-bankacilik-endeksi-yuzde-47-eridi/"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumsuz",
+   "kamuya_acilma": "2025-11-11"
   },
   {
    "kapsam": "sektor",
@@ -4132,7 +4140,9 @@
     "https://www.ahlatciyatirim.com.tr/arastirma/gun-ici-endeks-degerlendirme-raporlari/34551/G%C3%BCn_%C4%B0%C3%A7i_Endeks_De%C4%9Ferlendirme_Raporu_22.01.2026.pdf",
     "https://www.finansopia.com/ekonomi/borsa/borsa-istanbulda-rekor-islem-hacmi-gerceklesti/"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "notr",
+   "kamuya_acilma": "2026-01-22T14:00:00+03:00"
   },
   {
    "kapsam": "sirket",
@@ -4158,7 +4168,9 @@
     "https://www.capital.com.tr/haberler/tum-haberler/is-bankasi-isctr-2025-4-ceyrek-bilanco-tarihini-acikladi",
     "https://www.turkiyegazetesi.com.tr/ekonomi/borsada-29-yil-sonra-ilk-ocakta-en-cok-yukselen-15-hisse-1767438"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumlu",
+   "kamuya_acilma": "2026-02-06"
   },
   {
    "kapsam": "sirket",
@@ -4183,7 +4195,9 @@
     "https://rotaborsa.com/vakifbank-vakbn-2025-4-ceyrek-bilancosu-beklentiyi-karsiladi-mi/",
     "https://www.ahlatciyatirim.com.tr/arastirma/gun-ici-endeks-degerlendirme-raporlari/34643/G%C3%BCn_%C4%B0%C3%A7i_Endeks_De%C4%9Ferlendirme_Raporu.13.02.2026.pdf"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumlu",
+   "kamuya_acilma": "2026-02-09"
   },
   {
    "kapsam": "sirket",
@@ -4207,7 +4221,9 @@
     "https://www.karar.com/ekonomi-haberleri/kamu-bankalarinda-ust-duzey-atama-halkbank-ve-vakifbankin-genel-2040934",
     "https://www.karar.com/guncel-haberler/bloomberg-abddeki-halkbank-davasinin-bitmesine-dikkat-cekti-kamu-2041437"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "notr",
+   "kamuya_acilma": "2026-04-08"
   },
   {
    "kapsam": "sirket",
@@ -4232,7 +4248,9 @@
     "https://www.cnbce.com/haberler/2019dan-bu-yana-suren-surec-kapandi-abdde-halkbank-davasi-resmen-dusuruldu-h31774",
     "https://www.forbes.com.tr/haberler/abd-li-yargic-halkbank-aleyhindeki-ceza-davasini-resmen-dusurdu"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumlu",
+   "kamuya_acilma": "2026-06-17"
   }
  ]
 }

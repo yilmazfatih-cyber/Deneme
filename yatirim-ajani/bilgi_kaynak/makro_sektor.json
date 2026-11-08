@@ -24,7 +24,9 @@
     "https://www.qnbinvest.com.tr/investodak/qnbarastirma/turkiyenin-kredi-notu-gelisimi",
     "https://www.cnbce.com/haberler/kritik-tarihler-netlesti-turkiyenin-kredi-notu-icin-takvim-belli-oldu-fitch-kredi-notu-sp-kredi-notu-moodys-kredi-notu-h21588"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumlu",
+   "kamuya_acilma": "2024-11-01"
   },
   {
    "kapsam": "yerel_makro",
@@ -48,7 +50,9 @@
     "https://data.tuik.gov.tr/Kategori/GetKategori?p=enflasyon-ve-fiyat-106",
     "https://kureansiklopedi.com/tr/detay/turkiye-cumhuriyet-merkez-bankasi-20242025-faiz-ka"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "notr",
+   "kamuya_acilma": "2024-11-04T10:00+03:00"
   },
   {
    "kapsam": "kuresel",
@@ -72,7 +76,9 @@
    "kaynaklar": [
     "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "notr",
+   "kamuya_acilma": "2024-11-05"
   },
   {
    "kapsam": "sektor",
@@ -125,7 +131,9 @@
     "https://www.doviz.com/faiz-kararlari",
     "https://kureansiklopedi.com/tr/detay/turkiye-cumhuriyet-merkez-bankasi-20242025-faiz-ka"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "notr",
+   "kamuya_acilma": "2024-11-21T14:00+03:00"
   },
   {
    "kapsam": "sektor",
@@ -201,7 +209,9 @@
    "kaynaklar": [
     "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumsuz",
+   "kamuya_acilma": "2024-12-18T14:00-05:00"
   },
   {
    "kapsam": "yerel_makro",
@@ -224,7 +234,9 @@
    "kaynaklar": [
     "https://www.finansopia.com/ekonomi/yillara-gore-asgari-ucret-miktarlari/"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "notr",
+   "kamuya_acilma": "2024-12-24"
   },
   {
    "kapsam": "yerel_makro",
@@ -250,7 +262,9 @@
     "https://www.doviz.com/faiz-kararlari",
     "https://kureansiklopedi.com/tr/detay/turkiye-cumhuriyet-merkez-bankasi-20242025-faiz-ka"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumlu",
+   "kamuya_acilma": "2024-12-26T14:00+03:00"
   },
   {
    "kapsam": "yerel_makro",
@@ -275,7 +289,9 @@
     "https://www.borsagundem.com.tr/tcmbnin-2025-yili-faiz-politikasi-faiz-kararlari-ve-gelismeler",
     "https://www.doviz.com/faiz-kararlari"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumlu",
+   "kamuya_acilma": "2025-01-23T14:00+03:00"
   },
   {
    "kapsam": "kuresel",
@@ -298,7 +314,9 @@
    "kaynaklar": [
     "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "notr",
+   "kamuya_acilma": "2025-01-29T14:00-05:00"
   },
   {
    "kapsam": "sektor",
@@ -379,7 +397,9 @@
     "https://www.borsagundem.com.tr/tcmbnin-2025-yili-faiz-politikasi-faiz-kararlari-ve-gelismeler",
     "https://kureansiklopedi.com/tr/detay/turkiye-cumhuriyet-merkez-bankasi-20242025-faiz-ka"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumlu",
+   "kamuya_acilma": "2025-02-27"
   },
   {
    "kapsam": "sektor",
@@ -497,7 +517,9 @@
     "https://www.borsagundem.com.tr/tcmbnin-2025-yili-faiz-politikasi-faiz-kararlari-ve-gelismeler",
     "https://www.doviz.com/faiz-kararlari"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumlu",
+   "kamuya_acilma": "2025-03-06T14:00+03:00"
   },
   {
    "kapsam": "sektor",
@@ -1092,7 +1114,9 @@
     "https://www.forbes.com.tr/ekonomi/borsa-istanbul-da-bist-100-endeksi-haftayi-yuzde-7-81-kayipla-kapatti",
     "https://www.diken.com.tr/mehmet-simsek-piyasalarin-saglikli-isleyisi-icin-her-sey-yapiliyor/"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumsuz",
+   "kamuya_acilma": "2025-03-19"
   },
   {
    "kapsam": "sektor",
@@ -1150,7 +1174,9 @@
     "https://www.forbes.com.tr/ekonomi/borsa-istanbul-da-bist-100-endeksi-haftayi-yuzde-7-81-kayipla-kapatti",
     "https://www.borsagundem.com.tr/tcmbnin-2025-yili-faiz-politikasi-faiz-kararlari-ve-gelismeler"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumsuz",
+   "kamuya_acilma": "2025-03-20"
   },
   {
    "kapsam": "yerel_makro",
@@ -1236,7 +1262,9 @@
    "kaynaklar": [
     "https://www.levyinstitute.org/publications/the-us-supreme-court-rules-and-future-prospects-of-trumps-tariff-gambit/"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumsuz",
+   "kamuya_acilma": "2025-04-02T16:00-04:00"
   },
   {
    "kapsam": "sektor",
@@ -1293,7 +1321,9 @@
     "https://www.borsagundem.com.tr/tcmbnin-2025-yili-faiz-politikasi-faiz-kararlari-ve-gelismeler",
     "https://www.doviz.com/faiz-kararlari"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumsuz",
+   "kamuya_acilma": "2025-04-17T14:00+03:00"
   },
   {
    "kapsam": "sektor",
@@ -1345,7 +1375,9 @@
    "kaynaklar": [
     "https://www.levyinstitute.org/publications/the-us-supreme-court-rules-and-future-prospects-of-trumps-tariff-gambit/"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumlu",
+   "kamuya_acilma": "2025-05-12"
   },
   {
    "kapsam": "sektor",
@@ -1432,7 +1464,9 @@
     "https://data.tuik.gov.tr/Kategori/GetKategori?p=enflasyon-ve-fiyat-106",
     "https://www.borsagundem.com.tr/tcmbnin-2025-yili-faiz-politikasi-faiz-kararlari-ve-gelismeler"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumlu",
+   "kamuya_acilma": "2025-06-03T10:00+03:00"
   },
   {
    "kapsam": "kuresel",
@@ -1457,7 +1491,9 @@
    "kaynaklar": [
     "https://www.aa.com.tr/tr/enerjiterminali/petrol/abd-israil-iran-savasinda-126-dolari-asan-brent-ilk-yariyi-zirvesinin-yuzde-42-altinda-kapatti/58076"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumsuz",
+   "kamuya_acilma": "2025-06-13"
   },
   {
    "kapsam": "yerel_makro",
@@ -1483,7 +1519,9 @@
     "https://www.doviz.com/faiz-kararlari",
     "https://www.borsagundem.com.tr/tcmbnin-2025-yili-faiz-politikasi-faiz-kararlari-ve-gelismeler"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumlu",
+   "kamuya_acilma": "2025-06-19T14:00+03:00"
   },
   {
    "kapsam": "sektor",
@@ -1722,7 +1760,9 @@
    "kaynaklar": [
     "https://www.cnbce.com/borsa/bist100-ve-bankacilik-endeksinde-kurultay-yukselisi-30-haziran-2025-h14436"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumlu",
+   "kamuya_acilma": "2025-06-30"
   },
   {
    "kapsam": "sektor",
@@ -1777,7 +1817,9 @@
     "https://www.borsagundem.com.tr/tcmbnin-2025-yili-faiz-politikasi-faiz-kararlari-ve-gelismeler",
     "https://www.doviz.com/faiz-kararlari"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumlu",
+   "kamuya_acilma": "2025-07-24T14:00+03:00"
   },
   {
    "kapsam": "yerel_makro",
@@ -1800,7 +1842,9 @@
     "https://www.qnbinvest.com.tr/investodak/qnbarastirma/turkiyenin-kredi-notu-gelisimi",
     "https://www.cnbce.com/haberler/kritik-tarihler-netlesti-turkiyenin-kredi-notu-icin-takvim-belli-oldu-fitch-kredi-notu-sp-kredi-notu-moodys-kredi-notu-h21588"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumlu",
+   "kamuya_acilma": "2025-07-25"
   },
   {
    "kapsam": "sektor",
@@ -1855,7 +1899,9 @@
    "kaynaklar": [
     "https://www.levyinstitute.org/publications/the-us-supreme-court-rules-and-future-prospects-of-trumps-tariff-gambit/"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "notr",
+   "kamuya_acilma": "2025-08-07"
   },
   {
    "kapsam": "sektor",
@@ -1911,7 +1957,9 @@
     "https://www.agbi.com/markets/2025/09/turkish-stocks-tumble-after-latest-political-upheaval/",
     "https://bianet.org/haber/removal-of-chp-istanbul-leadership-triggers-sharp-decline-on-istanbul-stock-exchange-311087"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumsuz",
+   "kamuya_acilma": "2025-09-02"
   },
   {
    "kapsam": "yerel_makro",
@@ -1936,7 +1984,9 @@
     "https://www.borsagundem.com.tr/tcmbnin-2025-yili-faiz-politikasi-faiz-kararlari-ve-gelismeler",
     "https://www.doviz.com/faiz-kararlari"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumlu",
+   "kamuya_acilma": "2025-09-11T14:00+03:00"
   },
   {
    "kapsam": "sektor",
@@ -2057,7 +2107,9 @@
     "https://www.bloomberght.com/borsa-chp-davasinin-ertelenmesiyle-yukseldi-3757131",
     "https://www.karar.com/ekonomi-haberleri/chp-kurultay-davasinda-erteleme-piyasalari-hareketlendirdi-borsa-1972067"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumlu",
+   "kamuya_acilma": "2025-09-15"
   },
   {
    "kapsam": "kuresel",
@@ -2083,7 +2135,9 @@
     "https://www.wellsfargoadvisors.com/research-analysis/reports/fed-rate.htm",
     "https://www.dunya.com/foto-galeri/ekonomi/7-yil-sonra-ilk-yasandi-yabancilarin-aralikta-en-cok-aldigi-ve-sattigi-hisseler-belli-oldu-galeri-810488"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumlu",
+   "kamuya_acilma": "2025-09-17T14:00-04:00"
   },
   {
    "kapsam": "sektor",
@@ -2171,7 +2225,9 @@
    "kaynaklar": [
     "https://www.borsamatik.com.tr/reuters-haberi-sonrasi-halkbank-hisseleri-tavana-yaklasti-haber-174426"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumlu",
+   "kamuya_acilma": "2025-10-01"
   },
   {
    "kapsam": "sektor",
@@ -2225,7 +2281,9 @@
    "kaynaklar": [
     "https://www.levyinstitute.org/publications/the-us-supreme-court-rules-and-future-prospects-of-trumps-tariff-gambit/"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumsuz",
+   "kamuya_acilma": "2025-10-10"
   },
   {
    "kapsam": "yerel_makro",
@@ -2251,7 +2309,9 @@
     "https://www.doviz.com/faiz-kararlari",
     "https://www.getmidas.com/midasin-kulaklari/bist-100-yeniden-11-puani-asti-p-187517"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumlu",
+   "kamuya_acilma": "2025-10-23T14:00+03:00"
   },
   {
    "kapsam": "sektor",
@@ -2339,7 +2399,9 @@
     "https://www.dunya.com/foto-galeri/ekonomi/7-yil-sonra-ilk-yasandi-yabancilarin-aralikta-en-cok-aldigi-ve-sattigi-hisseler-belli-oldu-galeri-810488",
     "https://www.sozcu.com.tr/yabancilar-7-yil-sonra-geri-dondu-bir-hisseye-akin-ettiler-p282549"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumlu",
+   "kamuya_acilma": "2025-12-11T14:00+03:00"
   },
   {
    "kapsam": "sektor",
@@ -2396,7 +2458,9 @@
     "https://www.qnbinvest.com.tr/investodak/qnbarastirma/2026-asgari-ucret-aciklandi-net-28075-tl",
     "https://www.ey.com/tr_tr/insights/tax/2026-asgari-ucret"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "notr",
+   "kamuya_acilma": "2025-12-23"
   },
   {
    "kapsam": "sektor",
@@ -2615,7 +2679,9 @@
     "https://data.tuik.gov.tr/Kategori/GetKategori?p=enflasyon-ve-fiyat-106",
     "https://www.capital.com.tr/haberler/tum-haberler/borsa-1997den-bu-yana-en-iyi-ocak-ayi-performansini-gosterdi-1-yorum-var"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumlu",
+   "kamuya_acilma": "2026-01-05T10:00+03:00"
   },
   {
    "kapsam": "sektor",
@@ -2709,7 +2775,9 @@
     "https://www.trthaber.com/haber/ekonomi/bist-100-endeksi-1997den-beri-en-iyi-ocak-ayi-performansini-sergiledi-933163.html",
     "https://www.qnbinvest.com.tr/investodak/qnbarastirma/yabanci-yatirimcilar-ocak-ayinda-1-milyar-abd-dolari-tutarinda-hisse-senedi-aldi"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumlu",
+   "kamuya_acilma": "2026-01-22T14:00+03:00"
   },
   {
    "kapsam": "yerel_makro",
@@ -2733,7 +2801,9 @@
     "https://www.ntv.com.tr/ntvpara/fitch-turkiyenin-kredi-notu-gorunumunu-pozitife-cevirdi-1708762",
     "https://www.capital.com.tr/haberler/tum-haberler/moodys-turkiye-icin-degerlendirme-aciklamadi"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumlu",
+   "kamuya_acilma": "2026-01-23"
   },
   {
    "kapsam": "kuresel",
@@ -2760,7 +2830,9 @@
     "https://www.axios.com/2026/03/18/fed-powell-interest-rate",
     "https://www.investmentnews.com/fixed-income/federal-reserve-rate-announcement/266367"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "notr",
+   "kamuya_acilma": "2026-01-28T14:00-05:00"
   },
   {
    "kapsam": "yerel_makro",
@@ -2784,7 +2856,9 @@
     "https://www.capital.com.tr/haberler/tum-haberler/tuik-2026-yili-ocak-ayi-enflasyon-rakamlarini-acikladi",
     "https://data.tuik.gov.tr/Kategori/GetKategori?p=enflasyon-ve-fiyat-106"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumsuz",
+   "kamuya_acilma": "2026-02-03T10:00+03:00"
   },
   {
    "kapsam": "sektor",
@@ -2874,7 +2948,9 @@
     "https://perkinscoie.com/insights/update/supreme-court-holds-ieepa-tariffs-unlawful-president-trump-terminates-and-partially",
     "https://www.freshfruitportal.com/news/2026/02/20/supreme-court-trump-tariffs/"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumlu",
+   "kamuya_acilma": "2026-02-20"
   },
   {
    "kapsam": "sektor",
@@ -3067,7 +3143,9 @@
     "https://www.forbes.com.tr/para-yatirim/iran-abd-ateskesiyle-petrol-fiyatlari-hizla-dustu-8-nisan-2026-brent-petrol-varil-fiyati",
     "https://reflexhaber.com/brent-petrol-90-dolarin-altina-geriledi-piyasada-gozler-hurmuz-bogazi-aciklamasinda"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumsuz",
+   "kamuya_acilma": "2026-02-28"
   },
   {
    "kapsam": "yerel_makro",
@@ -3100,7 +3178,9 @@
     "https://www.forbes.com.tr/para-yatirim/iran-savasi-sonrasi-kuresel-tahvil-satisi-turkiye-22-milyar-dolarla-one-cikiyor",
     "https://www.limasolbank.com.tr/wp-content/uploads/2026/03/GUNLUK-FINANS-BULTENI-12.03.2026-.pdf"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumsuz",
+   "kamuya_acilma": "2026-02-28"
   },
   {
    "kapsam": "sektor",
@@ -3188,7 +3268,9 @@
     "https://www.cnbce.com/doviz/merkez-bankasi-acikladi-iran-savasinin-rezervlere-etkisi-belli-oldu-h26623",
     "https://www.ekonomigazetesi.com/ekonomi/subat-enflasyonu-yuzde-296-73986"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumsuz",
+   "kamuya_acilma": "2026-03-03"
   },
   {
    "kapsam": "sektor",
@@ -3273,7 +3355,9 @@
     "https://medyascope.tv/2026/03/24/tcmb-altin-rezervlerini-devreye-almayi-degerlendiriyor-bloomberg/",
     "https://www.cnbce.com/doviz/merkez-bankasi-acikladi-iran-savasinin-rezervlere-etkisi-belli-oldu-h26623"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "notr",
+   "kamuya_acilma": "2026-03-12T14:00+03:00"
   },
   {
    "kapsam": "sektor",
@@ -3431,7 +3515,9 @@
     "https://paratic.com/borsada-ateskes-coskusu-endeks-bir-ayin-zirvesine-cikti/",
     "https://reflexhaber.com/brent-petrol-90-dolarin-altina-geriledi-piyasada-gozler-hurmuz-bogazi-aciklamasinda"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumlu",
+   "kamuya_acilma": "2026-04-07"
   },
   {
    "kapsam": "yerel_makro",
@@ -3521,7 +3607,9 @@
     "https://www.borsaningundemi.com/etiket/gorunum",
     "https://www.cnbce.com/haberler/kritik-tarihler-netlesti-turkiyenin-kredi-notu-icin-takvim-belli-oldu-fitch-kredi-notu-sp-kredi-notu-moodys-kredi-notu-h21588"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "notr",
+   "kamuya_acilma": "2026-04-17"
   },
   {
    "kapsam": "sektor",
@@ -3581,7 +3669,9 @@
     "https://www.gcmyatirim.com.tr/egitim/makaleler/tcmb-2026-faiz-karari-takvimi-toplanti-tarihleri-ve-faiz-oranlari",
     "https://halktv.com.tr/ekonomi/8-mayis-2026-borsa-istanbul-endeksi-bist100-kac-puan-artanlar-azalanlar-1027979h"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumlu",
+   "kamuya_acilma": "2026-04-22T14:00+03:00"
   },
   {
    "kapsam": "yerel_makro",
@@ -3605,7 +3695,9 @@
     "https://www.ensonhaber.com/son-dakika-tuik-nisan-2026-enflasyon-rakamlarini-acikladi-h1531689",
     "https://tr.al-ain.com/article/tuik-mayis-2026-enflasyon-rakamlarini-acikladi-resmi-veriler-belli-oldu"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumsuz",
+   "kamuya_acilma": "2026-05-04T10:00+03:00"
   },
   {
    "kapsam": "sektor",
@@ -3802,7 +3894,9 @@
     "https://www.ekonomim.com/ekonomi/mutlak-butlan-soku-sonrasi-haftanin-son-gununde-borsa-istanbul-guclu-yukseldi-haberi-895718",
     "https://www.forbes.com.tr/para-yatirim/borsa-istanbul-daki-mutlak-butlan-ruzgari-tersine-dondu-chp-itiraz-surecini-baslatti"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumsuz",
+   "kamuya_acilma": "2026-05-21"
   },
   {
    "kapsam": "yerel_makro",
@@ -3829,7 +3923,9 @@
     "https://www.limasolbank.com.tr/wp-content/uploads/2026/06/GUNLUK-FINANS-BULTENI-10.06.2026-.pdf",
     "https://halktv.com.tr/ekonomi/24-haziran-2026-borsa-istanbul-endeksi-bist100-kac-puan-artanlar-azalanlar-1038228h"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "notr",
+   "kamuya_acilma": "2026-06-11T14:00+03:00"
   },
   {
    "kapsam": "sektor",
@@ -3884,7 +3980,9 @@
     "https://www.cnbc.com/2026/07/29/fed-rate-decision-july-2026.html",
     "https://www.federalreserve.gov/monetarypolicy/files/monetary20260729a1.pdf"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumsuz",
+   "kamuya_acilma": "2026-06-17T14:00-04:00"
   },
   {
    "kapsam": "sektor",
@@ -4000,7 +4098,9 @@
     "https://www.cnnturk.com/dunya/son-dakika-abddeki-halkbank-davasi-dustu-3432028",
     "https://www.cnbce.com/borsa/abd-davasi-sonrasi-halkbank-hisselerinde-ralli-borsada-tavani-gordu-halkbank-hisse-halkb-hisse-halkbank-abd-dava-h26462"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumlu",
+   "kamuya_acilma": "2026-06-17"
   },
   {
    "kapsam": "sektor",
@@ -4091,7 +4191,9 @@
     "https://www.ntv.com.tr/ekonomi/petrol-yeniden-100-dolari-asti-1715576",
     "https://www.cnbce.com/enerji/hurmuzde-art-arda-saldirilar-brent-petrol-100-dolari-gecti-h36821"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumsuz",
+   "kamuya_acilma": "2026-07-01"
   },
   {
    "kapsam": "sektor",
@@ -4147,7 +4249,9 @@
     "https://www.gcmyatirim.com.tr/egitim/makaleler/tcmb-2026-faiz-karari-takvimi-toplanti-tarihleri-ve-faiz-oranlari",
     "https://infoyatirim.com/blog/kesfet/tuik-temmuz-2026-enflasyon-verileri-aciklandi"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumsuz",
+   "kamuya_acilma": "2026-07-14"
   },
   {
    "kapsam": "sektor",
@@ -4358,7 +4462,9 @@
     "https://am.jpmorgan.com/us/en/asset-management/adv/insights/portfolio-insights/fixed-income/fixed-income-perspectives/fomc-statement-september-2026/",
     "https://halktv.com.tr/ekonomi/9-eylul-akaryakit-fiyatlari-ne-kadar-petrol-benzin-motorin-lpg-1053924h"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumsuz",
+   "kamuya_acilma": "2026-09-08"
   },
   {
    "kapsam": "yerel_makro",
@@ -4448,7 +4554,9 @@
     "https://www.doviz.com/faiz-kararlari",
     "https://www.borsamatik.com.tr/halkbank-hisselerinde-sert-yukselis-haber-180461"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "notr",
+   "kamuya_acilma": "2026-09-10T14:00+03:00"
   },
   {
    "kapsam": "sektor",
@@ -4611,7 +4719,9 @@
     "https://ntv.com.tr/turkiye/fon-sorusturmasi-spk-fonlarin-tasfiye-surecini-6-aya-cikardi-1742738",
     "https://www.bloomberght.com/piyasalarda-gunun-ozeti-16-eylul-2026-bist-100-de-degisimler-ve-doviz-fiyatlari-pkh-3788513"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumsuz",
+   "kamuya_acilma": "2026-09-15"
   },
   {
    "kapsam": "yerel_makro",
@@ -4918,7 +5028,9 @@
     "https://www.tgrthaber.com/ekonomi/borsa-neden-dusuyor-7-ekim-2026-bist100-neden-dususte-3363892",
     "https://www.endeks24.com/bist-100-iki-ayda-yuzde-25-dustu"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumsuz",
+   "kamuya_acilma": "2026-10-15"
   },
   {
    "kapsam": "yerel_makro",
@@ -4942,7 +5054,9 @@
     "https://www.ensonhaber.com/son-dakika-tcmb-ekim-2026da-politika-faizini-yuzde-36ya-indirdi-h1575946",
     "https://www.gcmyatirim.com.tr/egitim/makaleler/tcmb-2026-faiz-karari-takvimi-toplanti-tarihleri-ve-faiz-oranlari"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumlu",
+   "kamuya_acilma": "2026-10-22T14:00+03:00"
   },
   {
    "kapsam": "kuresel",
@@ -4968,7 +5082,9 @@
     "https://www.wellsfargoadvisors.com/research-analysis/reports/fed-rate.htm",
     "https://www.bloomberght.com/piyasa-ozeti-3-kasim-2026-borsa-doviz-altin-ve-kripto-piyasalarindaki-son-durum-pkh-3793325"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "notr",
+   "kamuya_acilma": "2026-10-28T14:00-04:00"
   },
   {
    "kapsam": "sektor",
@@ -5084,7 +5200,9 @@
     "https://www.bloomberght.com/piyasa-ozeti-3-kasim-2026-borsa-doviz-altin-ve-kripto-piyasalarindaki-son-durum-pkh-3793325",
     "https://www.bloomberght.com/piyasa-ozeti-2-kasim-2026-borsa-doviz-altin-ve-kripto-piyasalarindaki-son-durum-pkh-3793116"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumsuz",
+   "kamuya_acilma": "2026-11-03T10:00+03:00"
   },
   {
    "kapsam": "sektor",

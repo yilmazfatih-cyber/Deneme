@@ -5471,7 +5471,8 @@
     "https://www.paramedya.com/devami/141603/sasada-sok-dususun-iste-nedeni/",
     "https://www.haber32.com.tr/sasa-polyester-sasa-hisseleri-neden-dusuyor-son-dakika-ekim-2025-yorum-fiyat-analiz"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumsuz"
   },
   {
    "kapsam": "sirket",
@@ -5497,7 +5498,9 @@
     "https://bolgeninsesigazetesi.com/sasa-2026-bilancosunu-acikladi-492-milyon-tl-net-kar-geldi-hisseler-neden-dustu",
     "https://www.borsagundem.com.tr/sasanin-net-zarari-138-milyar-liraya-geriledi"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumsuz",
+   "kamuya_acilma": "2026-08-05"
   },
   {
    "kapsam": "sirket",
@@ -5525,7 +5528,9 @@
     "https://www.borsatek.com/hekts-sermaye-artirimi-spk-onay/",
     "https://rotaborsa.com/oyak-yatirim-hektas-hekts-sermaye-artirimi-icin-spkya-basvurdu/"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumsuz",
+   "kamuya_acilma": "2026-07-02"
   },
   {
    "kapsam": "sirket",
@@ -5550,7 +5555,8 @@
     "https://www.borsaningundemi.com/haber/gubretas-hisselerinde-razi-dususu-1874863",
     "https://www.gazeteduvar.com.tr/gubretasta-ne-oluyor-irandaki-kara-kutu-makale-1656971"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumsuz"
   },
   {
    "kapsam": "sirket",
@@ -5576,7 +5582,8 @@
     "https://www.borsatek.com/ak-yatirim-brsan-922-tl-hedef-fiyat-belirledi/",
     "https://www.getmidas.com/midasin-kulaklari/brsan-neden-tavan-oldu-p-503916"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumsuz"
   },
   {
    "kapsam": "sektor",
@@ -5600,7 +5607,9 @@
     "https://www.unlumenkul.com/borsa-analiz/sektor-ve-sirket-haberleri/abd-celik-ithalatina-ek-25-gumruk-vergisi-getiriyor-10022025/",
     "https://en.wikipedia.org/wiki/Tariffs_in_the_second_Trump_administration"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "notr",
+   "kamuya_acilma": "2025-02-10"
   },
   {
    "kapsam": "sektor",
@@ -5626,7 +5635,9 @@
     "https://demircelikstore.com/haber/abden-yeni-celik-duzenlemesi-50-kota-disi-vergi-ve-ergitme-dokme-kurali-yururlukte",
     "https://a1capital.com.tr/wp-content/uploads/2026/06/AB-CELIK-KOTASI.pdf"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumsuz",
+   "kamuya_acilma": "2025-10-07"
   },
   {
    "kapsam": "sirket",
@@ -5649,7 +5660,9 @@
    "kaynaklar": [
     "https://emlakkulisi.com/guncel/tekfen-holding-hisseleri-neden-yukseldi/1513968"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumlu",
+   "kamuya_acilma": "2026-01-05"
   },
   {
    "kapsam": "sirket",
@@ -5676,7 +5689,9 @@
     "https://www.piapiri.com/analizler/arastirma-raporlari/tekfen-holding-tekfn-hisse-analizi-2026/",
     "https://www.bloomberght.com/borsa/hisse/tekfen-holding-a/kap-haberi/346195"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumlu",
+   "kamuya_acilma": "2026-07-24"
   },
   {
    "kapsam": "piyasa",
@@ -5702,7 +5717,9 @@
     "https://www.haberturk.com/bilgi/foto/borsa-neden-dustu-16-eylul-2026-carsamba-borsa-istanbul-bist-100-endeksi-ile-hisseler-neden-dusuyor-3912932",
     "https://www.foreks.com/haber/detay/6aaa4d4124008d7d4373241c/PICNEWS/tr/borsa-istanbul-da-sert-dusus-21-mayis-tan-bu-yana-gorulen-en-buyuk-geri-cekilme-16-09-26/"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumsuz",
+   "kamuya_acilma": "2026-09-16"
   }
  ]
 }

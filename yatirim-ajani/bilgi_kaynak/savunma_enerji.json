@@ -5362,7 +5362,9 @@
     "https://www.forbes.com.tr/ekonomi/borsa-istanbul-da-bist-100-endeksi-haftayi-yuzde-7-81-kayipla-kapatti",
     "https://www.diken.com.tr/borsa-ikinci-kez-devre-kesti/"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumsuz",
+   "kamuya_acilma": "2025-03-19"
   },
   {
    "kapsam": "kuresel",
@@ -5387,7 +5389,9 @@
     "https://www.ekonomist.com.tr/petrol/ateskes-haberlerinin-ardindan-petrol-fiyatlarinda-sert-dusus-61530",
     "https://www.cumhuriyet.com.tr/ekonomi/israil-ve-iran-ateskesi-piyasalara-olumlu-yansidi-borsalar-yukseldi-petrol-dustu-2412119"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumsuz",
+   "kamuya_acilma": "2025-06-24"
   },
   {
    "kapsam": "sirket",
@@ -5410,7 +5414,9 @@
    "kaynaklar": [
     "https://www.aydinpost.com/petkim-hisseleri-neden-dustu-son-dakika-analiz-ve-yorum-ekim-2025"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumlu",
+   "kamuya_acilma": "2025-10-01"
   },
   {
    "kapsam": "sirket",
@@ -5436,7 +5442,9 @@
     "https://www.borsamatik.com.tr/kontrolmatikin-dramatik-dusus-hikayesi-haber-178933",
     "https://www.politikam.com/kontrolmatik-kontr-hisseleri-bist-100den-cikarildi-hisseler-neden-dusuyor"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumsuz",
+   "kamuya_acilma": "2026-04-01"
   },
   {
    "kapsam": "sirket",
@@ -5465,7 +5473,8 @@
     "https://www.politikam.com/kontrolmatik-kontr-hisseleri-bist-100den-cikarildi-hisseler-neden-dusuyor",
     "https://www.borsamatik.com.tr/tahvil-odeyemeyen-kontrolmatik-hisseleri-tavan-yapti-haber-178664"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumsuz"
   },
   {
    "kapsam": "sirket",
@@ -5488,7 +5497,9 @@
    "kaynaklar": [
     "https://paratic.com/kontrolmatike-tmsf-kayyumu-atandi-hisseler-tavan-oldu/"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumsuz",
+   "kamuya_acilma": "2026-10-28"
   },
   {
    "kapsam": "kuresel",
@@ -5517,7 +5528,9 @@
     "https://enerjihaber.com/haber/hurmuz-gerilimi-petrolu-vurdu-brent-95-dolari-asti",
     "https://www.apara.com.tr/gundem/2026/11/06/brent-petrolde-100-dolar-alarmi-hurmuz-bogazindaki-saldirilar-fiyatlari-yukseltti"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumlu",
+   "kamuya_acilma": "2026-02-27"
   },
   {
    "kapsam": "piyasa",
@@ -5544,7 +5557,9 @@
     "https://www.ekoturk.com/haberler/aselsandan-tarihi-rekor-piyasa-degeri-2-trilyon-lirayi-asti/",
     "https://www.savunmaplus.com/aselsan-borsa-tarihine-gecti-2-trilyon-liralik-dev-rekor/"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumlu",
+   "kamuya_acilma": "2026-05-11"
   },
   {
    "kapsam": "piyasa",
@@ -5572,7 +5587,9 @@
     "https://medyascope.tv/2026/11/03/fon-krizi-basladigindan-bu-yana-borsa-istanbulda-neler-oldu/",
     "https://gazeteoksijen.com/ekonomi/fon-krizi-borsa-istanbulu-vurdu-1-5-ayda-6-4-trilyon-lira-eridi-294655"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "olumsuz",
+   "kamuya_acilma": "2026-09-15"
   },
   {
    "kapsam": "sirket",
@@ -5597,7 +5614,9 @@
     "https://emlakkulisi.com/guncel/socar-petkimde-hisse-satisi/1186141",
     "https://piyasa.paratic.com/hisse-senetleri/petkm/"
    ],
-   "kaynak_tipi": "metin"
+   "kaynak_tipi": "metin",
+   "yon": "notr",
+   "kamuya_acilma": "2026-06-02"
   }
  ]
 }
