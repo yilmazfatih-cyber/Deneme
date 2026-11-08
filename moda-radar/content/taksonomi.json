@@ -1,0 +1,66 @@
+{
+  "surum": "0.1",
+  "not": "Kapali sozluk. Model bu degerler disina cikamaz; 'bilinmiyor' secebilir. Eksen basina 5-15 deger (ADR-004).",
+  "eksenler": {
+    "kategori": [
+      "kadin-ust",
+      "kadin-alt",
+      "kadin-elbise",
+      "kadin-dis",
+      "erkek-ust",
+      "erkek-alt",
+      "erkek-dis",
+      "aksesuar",
+      "bilinmiyor"
+    ],
+    "parca_konumu": ["ust", "alt", "dis", "tam", "aksesuar"],
+    "siluet": ["dar", "duz", "kutu", "oversize", "a-kesim", "bol", "yapili-omuz", "beli-vurgulu", "bilinmiyor"],
+    "boy": ["crop", "bel", "kalca", "diz-ustu", "diz", "midi", "maksi", "bilinmiyor"],
+    "yaka": ["bisiklet", "v", "gomlek", "hakim", "kayik", "kalp", "balikci", "kapusonlu", "yakasiz", "bilinmiyor"],
+    "kol": ["kolsuz", "kisa", "truvakar", "uzun", "balon", "dusuk-omuz", "bilinmiyor"],
+    "kumas_gorunumu": [
+      "pamuklu",
+      "keten",
+      "denim",
+      "ipeksi",
+      "saten",
+      "triko",
+      "deri",
+      "suet",
+      "tul",
+      "dantel",
+      "kadife",
+      "teknik",
+      "bilinmiyor"
+    ],
+    "desen": [
+      "duz",
+      "cizgili",
+      "ekose",
+      "puantiye",
+      "cicekli",
+      "hayvan",
+      "geometrik",
+      "batik",
+      "soyut",
+      "logo",
+      "bilinmiyor"
+    ],
+    "detay": [
+      "yok",
+      "firfir",
+      "pile",
+      "buzgu",
+      "nakis",
+      "dugme-on",
+      "fermuar-gorunur",
+      "cep-kapakli",
+      "kemer",
+      "yirtmac",
+      "bilinmiyor"
+    ],
+    "doku": ["duz", "burumsuk", "fitilli", "orgulu", "kabartma", "parlak", "mat", "bilinmiyor"],
+    "kapanma": ["yok", "dugme", "fermuar", "bagcik", "citcit", "bilinmiyor"],
+    "renk_sayisi": ["tek", "iki", "cok"]
+  }
+}

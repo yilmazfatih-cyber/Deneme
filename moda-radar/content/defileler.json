@@ -1,0 +1,918 @@
+{
+  "surum": "0.1",
+  "not": "Taranacak defileler. Vogue slug'lari marka adindan turetildi (istisnalar: Dior -> christian-dior, Michael Kors -> michael-kors-collection); ilk taramada 404 veren slug duzeltilir. 'tarih' bos ise gecikme olcumu sezonun nominal tarihini kullanir. Istanbul (Mercedes-Benz Fashion Week Istanbul) defileleri Vogue'da yok: kaynak 'marka', toplayici henuz yok (resmi galeri/YouTube, P1).",
+  "defileler": [
+    {
+      "sezon": "SS27",
+      "marka": "Chanel",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2027-ready-to-wear/chanel",
+      "tarih": null
+    },
+    {
+      "sezon": "SS27",
+      "marka": "Dior",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2027-ready-to-wear/christian-dior",
+      "tarih": null
+    },
+    {
+      "sezon": "SS27",
+      "marka": "Saint Laurent",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2027-ready-to-wear/saint-laurent",
+      "tarih": null
+    },
+    {
+      "sezon": "SS27",
+      "marka": "Louis Vuitton",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2027-ready-to-wear/louis-vuitton",
+      "tarih": null
+    },
+    {
+      "sezon": "SS27",
+      "marka": "Balenciaga",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2027-ready-to-wear/balenciaga",
+      "tarih": null
+    },
+    {
+      "sezon": "SS27",
+      "marka": "Loewe",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2027-ready-to-wear/loewe",
+      "tarih": null
+    },
+    {
+      "sezon": "SS27",
+      "marka": "Hermès",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2027-ready-to-wear/hermes",
+      "tarih": null
+    },
+    {
+      "sezon": "SS27",
+      "marka": "Miu Miu",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2027-ready-to-wear/miu-miu",
+      "tarih": null
+    },
+    {
+      "sezon": "SS27",
+      "marka": "Chloé",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2027-ready-to-wear/chloe",
+      "tarih": null
+    },
+    {
+      "sezon": "SS27",
+      "marka": "Givenchy",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2027-ready-to-wear/givenchy",
+      "tarih": null
+    },
+    {
+      "sezon": "SS27",
+      "marka": "Valentino",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2027-ready-to-wear/valentino",
+      "tarih": null
+    },
+    {
+      "sezon": "SS27",
+      "marka": "Isabel Marant",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2027-ready-to-wear/isabel-marant",
+      "tarih": null
+    },
+    {
+      "sezon": "SS27",
+      "marka": "Rick Owens",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2027-ready-to-wear/rick-owens",
+      "tarih": null
+    },
+    {
+      "sezon": "SS27",
+      "marka": "Prada",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2027-ready-to-wear/prada",
+      "tarih": null
+    },
+    {
+      "sezon": "SS27",
+      "marka": "Gucci",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2027-ready-to-wear/gucci",
+      "tarih": null
+    },
+    {
+      "sezon": "SS27",
+      "marka": "Fendi",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2027-ready-to-wear/fendi",
+      "tarih": null
+    },
+    {
+      "sezon": "SS27",
+      "marka": "Versace",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2027-ready-to-wear/versace",
+      "tarih": null
+    },
+    {
+      "sezon": "SS27",
+      "marka": "Bottega Veneta",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2027-ready-to-wear/bottega-veneta",
+      "tarih": null
+    },
+    {
+      "sezon": "SS27",
+      "marka": "Max Mara",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2027-ready-to-wear/max-mara",
+      "tarih": null
+    },
+    {
+      "sezon": "SS27",
+      "marka": "Jil Sander",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2027-ready-to-wear/jil-sander",
+      "tarih": null
+    },
+    {
+      "sezon": "SS27",
+      "marka": "Ferragamo",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2027-ready-to-wear/ferragamo",
+      "tarih": null
+    },
+    {
+      "sezon": "SS27",
+      "marka": "Dolce & Gabbana",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2027-ready-to-wear/dolce-gabbana",
+      "tarih": null
+    },
+    {
+      "sezon": "SS27",
+      "marka": "Etro",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2027-ready-to-wear/etro",
+      "tarih": null
+    },
+    {
+      "sezon": "SS27",
+      "marka": "Burberry",
+      "sehir": "Londra",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2027-ready-to-wear/burberry",
+      "tarih": null
+    },
+    {
+      "sezon": "SS27",
+      "marka": "Simone Rocha",
+      "sehir": "Londra",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2027-ready-to-wear/simone-rocha",
+      "tarih": null
+    },
+    {
+      "sezon": "SS27",
+      "marka": "Erdem",
+      "sehir": "Londra",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2027-ready-to-wear/erdem",
+      "tarih": null
+    },
+    {
+      "sezon": "SS27",
+      "marka": "JW Anderson",
+      "sehir": "Londra",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2027-ready-to-wear/jw-anderson",
+      "tarih": null
+    },
+    {
+      "sezon": "SS27",
+      "marka": "Roksanda",
+      "sehir": "Londra",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2027-ready-to-wear/roksanda",
+      "tarih": null
+    },
+    {
+      "sezon": "SS27",
+      "marka": "Michael Kors",
+      "sehir": "New York",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2027-ready-to-wear/michael-kors-collection",
+      "tarih": null
+    },
+    {
+      "sezon": "SS27",
+      "marka": "Carolina Herrera",
+      "sehir": "New York",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2027-ready-to-wear/carolina-herrera",
+      "tarih": null
+    },
+    {
+      "sezon": "SS27",
+      "marka": "Tory Burch",
+      "sehir": "New York",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2027-ready-to-wear/tory-burch",
+      "tarih": null
+    },
+    {
+      "sezon": "SS27",
+      "marka": "Khaite",
+      "sehir": "New York",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2027-ready-to-wear/khaite",
+      "tarih": null
+    },
+    {
+      "sezon": "SS27",
+      "marka": "Coach",
+      "sehir": "New York",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2027-ready-to-wear/coach",
+      "tarih": null
+    },
+    {
+      "sezon": "SS27",
+      "marka": "Özgür Masur",
+      "sehir": "Istanbul",
+      "kaynak": "marka",
+      "kaynak_kimligi": "mbfwi/ss27/ozgur-masur",
+      "tarih": null
+    },
+    {
+      "sezon": "SS27",
+      "marka": "Gizia",
+      "sehir": "Istanbul",
+      "kaynak": "marka",
+      "kaynak_kimligi": "mbfwi/ss27/gizia",
+      "tarih": null
+    },
+    {
+      "sezon": "SS27",
+      "marka": "Bashaques",
+      "sehir": "Istanbul",
+      "kaynak": "marka",
+      "kaynak_kimligi": "mbfwi/ss27/bashaques",
+      "tarih": null
+    },
+    {
+      "sezon": "SS27",
+      "marka": "Mehtap Elaidi",
+      "sehir": "Istanbul",
+      "kaynak": "marka",
+      "kaynak_kimligi": "mbfwi/ss27/mehtap-elaidi",
+      "tarih": null
+    },
+    {
+      "sezon": "SS27",
+      "marka": "Niyazi Erdoğan",
+      "sehir": "Istanbul",
+      "kaynak": "marka",
+      "kaynak_kimligi": "mbfwi/ss27/niyazi-erdogan",
+      "tarih": null
+    },
+    {
+      "sezon": "FW26",
+      "marka": "Chanel",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2026-ready-to-wear/chanel",
+      "tarih": null
+    },
+    {
+      "sezon": "FW26",
+      "marka": "Dior",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2026-ready-to-wear/christian-dior",
+      "tarih": null
+    },
+    {
+      "sezon": "FW26",
+      "marka": "Saint Laurent",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2026-ready-to-wear/saint-laurent",
+      "tarih": null
+    },
+    {
+      "sezon": "FW26",
+      "marka": "Louis Vuitton",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2026-ready-to-wear/louis-vuitton",
+      "tarih": null
+    },
+    {
+      "sezon": "FW26",
+      "marka": "Balenciaga",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2026-ready-to-wear/balenciaga",
+      "tarih": null
+    },
+    {
+      "sezon": "FW26",
+      "marka": "Loewe",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2026-ready-to-wear/loewe",
+      "tarih": null
+    },
+    {
+      "sezon": "FW26",
+      "marka": "Hermès",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2026-ready-to-wear/hermes",
+      "tarih": null
+    },
+    {
+      "sezon": "FW26",
+      "marka": "Miu Miu",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2026-ready-to-wear/miu-miu",
+      "tarih": null
+    },
+    {
+      "sezon": "FW26",
+      "marka": "Chloé",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2026-ready-to-wear/chloe",
+      "tarih": null
+    },
+    {
+      "sezon": "FW26",
+      "marka": "Givenchy",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2026-ready-to-wear/givenchy",
+      "tarih": null
+    },
+    {
+      "sezon": "FW26",
+      "marka": "Valentino",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2026-ready-to-wear/valentino",
+      "tarih": null
+    },
+    {
+      "sezon": "FW26",
+      "marka": "Isabel Marant",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2026-ready-to-wear/isabel-marant",
+      "tarih": null
+    },
+    {
+      "sezon": "FW26",
+      "marka": "Rick Owens",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2026-ready-to-wear/rick-owens",
+      "tarih": null
+    },
+    {
+      "sezon": "FW26",
+      "marka": "Prada",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2026-ready-to-wear/prada",
+      "tarih": null
+    },
+    {
+      "sezon": "FW26",
+      "marka": "Gucci",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2026-ready-to-wear/gucci",
+      "tarih": null
+    },
+    {
+      "sezon": "FW26",
+      "marka": "Fendi",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2026-ready-to-wear/fendi",
+      "tarih": null
+    },
+    {
+      "sezon": "FW26",
+      "marka": "Versace",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2026-ready-to-wear/versace",
+      "tarih": null
+    },
+    {
+      "sezon": "FW26",
+      "marka": "Bottega Veneta",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2026-ready-to-wear/bottega-veneta",
+      "tarih": null
+    },
+    {
+      "sezon": "FW26",
+      "marka": "Max Mara",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2026-ready-to-wear/max-mara",
+      "tarih": null
+    },
+    {
+      "sezon": "FW26",
+      "marka": "Jil Sander",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2026-ready-to-wear/jil-sander",
+      "tarih": null
+    },
+    {
+      "sezon": "FW26",
+      "marka": "Ferragamo",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2026-ready-to-wear/ferragamo",
+      "tarih": null
+    },
+    {
+      "sezon": "FW26",
+      "marka": "Dolce & Gabbana",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2026-ready-to-wear/dolce-gabbana",
+      "tarih": null
+    },
+    {
+      "sezon": "FW26",
+      "marka": "Etro",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2026-ready-to-wear/etro",
+      "tarih": null
+    },
+    {
+      "sezon": "FW26",
+      "marka": "Burberry",
+      "sehir": "Londra",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2026-ready-to-wear/burberry",
+      "tarih": null
+    },
+    {
+      "sezon": "FW26",
+      "marka": "Simone Rocha",
+      "sehir": "Londra",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2026-ready-to-wear/simone-rocha",
+      "tarih": null
+    },
+    {
+      "sezon": "FW26",
+      "marka": "Erdem",
+      "sehir": "Londra",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2026-ready-to-wear/erdem",
+      "tarih": null
+    },
+    {
+      "sezon": "FW26",
+      "marka": "JW Anderson",
+      "sehir": "Londra",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2026-ready-to-wear/jw-anderson",
+      "tarih": null
+    },
+    {
+      "sezon": "FW26",
+      "marka": "Roksanda",
+      "sehir": "Londra",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2026-ready-to-wear/roksanda",
+      "tarih": null
+    },
+    {
+      "sezon": "FW26",
+      "marka": "Michael Kors",
+      "sehir": "New York",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2026-ready-to-wear/michael-kors-collection",
+      "tarih": null
+    },
+    {
+      "sezon": "FW26",
+      "marka": "Carolina Herrera",
+      "sehir": "New York",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2026-ready-to-wear/carolina-herrera",
+      "tarih": null
+    },
+    {
+      "sezon": "FW26",
+      "marka": "Tory Burch",
+      "sehir": "New York",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2026-ready-to-wear/tory-burch",
+      "tarih": null
+    },
+    {
+      "sezon": "FW26",
+      "marka": "Khaite",
+      "sehir": "New York",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2026-ready-to-wear/khaite",
+      "tarih": null
+    },
+    {
+      "sezon": "FW26",
+      "marka": "Coach",
+      "sehir": "New York",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "fall-2026-ready-to-wear/coach",
+      "tarih": null
+    },
+    {
+      "sezon": "FW26",
+      "marka": "Özgür Masur",
+      "sehir": "Istanbul",
+      "kaynak": "marka",
+      "kaynak_kimligi": "mbfwi/fw26/ozgur-masur",
+      "tarih": null
+    },
+    {
+      "sezon": "FW26",
+      "marka": "Gizia",
+      "sehir": "Istanbul",
+      "kaynak": "marka",
+      "kaynak_kimligi": "mbfwi/fw26/gizia",
+      "tarih": null
+    },
+    {
+      "sezon": "FW26",
+      "marka": "Bashaques",
+      "sehir": "Istanbul",
+      "kaynak": "marka",
+      "kaynak_kimligi": "mbfwi/fw26/bashaques",
+      "tarih": null
+    },
+    {
+      "sezon": "FW26",
+      "marka": "Mehtap Elaidi",
+      "sehir": "Istanbul",
+      "kaynak": "marka",
+      "kaynak_kimligi": "mbfwi/fw26/mehtap-elaidi",
+      "tarih": null
+    },
+    {
+      "sezon": "FW26",
+      "marka": "Niyazi Erdoğan",
+      "sehir": "Istanbul",
+      "kaynak": "marka",
+      "kaynak_kimligi": "mbfwi/fw26/niyazi-erdogan",
+      "tarih": null
+    },
+    {
+      "sezon": "SS26",
+      "marka": "Chanel",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2026-ready-to-wear/chanel",
+      "tarih": null
+    },
+    {
+      "sezon": "SS26",
+      "marka": "Dior",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2026-ready-to-wear/christian-dior",
+      "tarih": null
+    },
+    {
+      "sezon": "SS26",
+      "marka": "Saint Laurent",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2026-ready-to-wear/saint-laurent",
+      "tarih": null
+    },
+    {
+      "sezon": "SS26",
+      "marka": "Louis Vuitton",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2026-ready-to-wear/louis-vuitton",
+      "tarih": null
+    },
+    {
+      "sezon": "SS26",
+      "marka": "Balenciaga",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2026-ready-to-wear/balenciaga",
+      "tarih": null
+    },
+    {
+      "sezon": "SS26",
+      "marka": "Loewe",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2026-ready-to-wear/loewe",
+      "tarih": null
+    },
+    {
+      "sezon": "SS26",
+      "marka": "Hermès",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2026-ready-to-wear/hermes",
+      "tarih": null
+    },
+    {
+      "sezon": "SS26",
+      "marka": "Miu Miu",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2026-ready-to-wear/miu-miu",
+      "tarih": null
+    },
+    {
+      "sezon": "SS26",
+      "marka": "Chloé",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2026-ready-to-wear/chloe",
+      "tarih": null
+    },
+    {
+      "sezon": "SS26",
+      "marka": "Givenchy",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2026-ready-to-wear/givenchy",
+      "tarih": null
+    },
+    {
+      "sezon": "SS26",
+      "marka": "Valentino",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2026-ready-to-wear/valentino",
+      "tarih": null
+    },
+    {
+      "sezon": "SS26",
+      "marka": "Isabel Marant",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2026-ready-to-wear/isabel-marant",
+      "tarih": null
+    },
+    {
+      "sezon": "SS26",
+      "marka": "Rick Owens",
+      "sehir": "Paris",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2026-ready-to-wear/rick-owens",
+      "tarih": null
+    },
+    {
+      "sezon": "SS26",
+      "marka": "Prada",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2026-ready-to-wear/prada",
+      "tarih": null
+    },
+    {
+      "sezon": "SS26",
+      "marka": "Gucci",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2026-ready-to-wear/gucci",
+      "tarih": null
+    },
+    {
+      "sezon": "SS26",
+      "marka": "Fendi",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2026-ready-to-wear/fendi",
+      "tarih": null
+    },
+    {
+      "sezon": "SS26",
+      "marka": "Versace",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2026-ready-to-wear/versace",
+      "tarih": null
+    },
+    {
+      "sezon": "SS26",
+      "marka": "Bottega Veneta",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2026-ready-to-wear/bottega-veneta",
+      "tarih": null
+    },
+    {
+      "sezon": "SS26",
+      "marka": "Max Mara",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2026-ready-to-wear/max-mara",
+      "tarih": null
+    },
+    {
+      "sezon": "SS26",
+      "marka": "Jil Sander",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2026-ready-to-wear/jil-sander",
+      "tarih": null
+    },
+    {
+      "sezon": "SS26",
+      "marka": "Ferragamo",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2026-ready-to-wear/ferragamo",
+      "tarih": null
+    },
+    {
+      "sezon": "SS26",
+      "marka": "Dolce & Gabbana",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2026-ready-to-wear/dolce-gabbana",
+      "tarih": null
+    },
+    {
+      "sezon": "SS26",
+      "marka": "Etro",
+      "sehir": "Milano",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2026-ready-to-wear/etro",
+      "tarih": null
+    },
+    {
+      "sezon": "SS26",
+      "marka": "Burberry",
+      "sehir": "Londra",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2026-ready-to-wear/burberry",
+      "tarih": null
+    },
+    {
+      "sezon": "SS26",
+      "marka": "Simone Rocha",
+      "sehir": "Londra",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2026-ready-to-wear/simone-rocha",
+      "tarih": null
+    },
+    {
+      "sezon": "SS26",
+      "marka": "Erdem",
+      "sehir": "Londra",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2026-ready-to-wear/erdem",
+      "tarih": null
+    },
+    {
+      "sezon": "SS26",
+      "marka": "JW Anderson",
+      "sehir": "Londra",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2026-ready-to-wear/jw-anderson",
+      "tarih": null
+    },
+    {
+      "sezon": "SS26",
+      "marka": "Roksanda",
+      "sehir": "Londra",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2026-ready-to-wear/roksanda",
+      "tarih": null
+    },
+    {
+      "sezon": "SS26",
+      "marka": "Michael Kors",
+      "sehir": "New York",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2026-ready-to-wear/michael-kors-collection",
+      "tarih": null
+    },
+    {
+      "sezon": "SS26",
+      "marka": "Carolina Herrera",
+      "sehir": "New York",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2026-ready-to-wear/carolina-herrera",
+      "tarih": null
+    },
+    {
+      "sezon": "SS26",
+      "marka": "Tory Burch",
+      "sehir": "New York",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2026-ready-to-wear/tory-burch",
+      "tarih": null
+    },
+    {
+      "sezon": "SS26",
+      "marka": "Khaite",
+      "sehir": "New York",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2026-ready-to-wear/khaite",
+      "tarih": null
+    },
+    {
+      "sezon": "SS26",
+      "marka": "Coach",
+      "sehir": "New York",
+      "kaynak": "vogue",
+      "kaynak_kimligi": "spring-2026-ready-to-wear/coach",
+      "tarih": null
+    },
+    {
+      "sezon": "SS26",
+      "marka": "Özgür Masur",
+      "sehir": "Istanbul",
+      "kaynak": "marka",
+      "kaynak_kimligi": "mbfwi/ss26/ozgur-masur",
+      "tarih": null
+    },
+    {
+      "sezon": "SS26",
+      "marka": "Gizia",
+      "sehir": "Istanbul",
+      "kaynak": "marka",
+      "kaynak_kimligi": "mbfwi/ss26/gizia",
+      "tarih": null
+    },
+    {
+      "sezon": "SS26",
+      "marka": "Bashaques",
+      "sehir": "Istanbul",
+      "kaynak": "marka",
+      "kaynak_kimligi": "mbfwi/ss26/bashaques",
+      "tarih": null
+    },
+    {
+      "sezon": "SS26",
+      "marka": "Mehtap Elaidi",
+      "sehir": "Istanbul",
+      "kaynak": "marka",
+      "kaynak_kimligi": "mbfwi/ss26/mehtap-elaidi",
+      "tarih": null
+    },
+    {
+      "sezon": "SS26",
+      "marka": "Niyazi Erdoğan",
+      "sehir": "Istanbul",
+      "kaynak": "marka",
+      "kaynak_kimligi": "mbfwi/ss26/niyazi-erdogan",
+      "tarih": null
+    }
+  ]
+}

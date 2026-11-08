@@ -1,0 +1,120 @@
+name: Moda Radar veri toplama
+
+# Haftalık podyum + perakende taraması (moda-radar/). Veritabanı tek SQLite dosyasıdır (ADR-005) ve yalnız
+# `moda-verileri` dalında yaşar; kod dallarına dokunulmaz. Görsel ve sayfa HTML'i hiçbir yere yazılmaz (ADR-002).
+# Bir adım hata verirse sonraki adımlar yine çalışır ve iş kırmızı biter; DB yazımları transaction içinde
+# olduğundan tutarlı kalan dosya bütünlük denetiminden geçerse dala kaydedilir.
+
+on:
+  workflow_dispatch:
+    inputs:
+      sezon:
+        description: 'Podyum sezonu (SS27, FW26 ...) ya da guncel'
+        default: guncel
+        required: true
+      segment:
+        description: 'Perakende segmenti (boş = hepsi): luks | premium | orta | deger'
+        default: ''
+        required: false
+  schedule:
+    - cron: '17 4 * * 1' # pazartesi 04:17 UTC (07:17 TRT)
+
+permissions:
+  contents: write
+
+concurrency:
+  group: moda-radar-veri
+  cancel-in-progress: false
+
+jobs:
+  topla:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    env:
+      TZ: Europe/Istanbul
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      # beautifulsoup4 perakende ayrıştırıcısı içindir; pyproject [veri] grubuna eklenince bu satırdan çıkar.
+      - run: pip install -q -e "moda-radar[veri,renk]" "beautifulsoup4>=4.12"
+      - run: python -m playwright install --with-deps chromium
+
+      - name: Veri dalını al
+        id: dal
+        run: |
+          git fetch origin moda-verileri:moda-verileri 2>/dev/null || git branch moda-verileri $(git commit-tree -m "moda-verileri: boş başlangıç" $(git hash-object -t tree /dev/null))
+          git worktree add veri-dali moda-verileri
+          mkdir -p moda-radar/veri
+          cp veri-dali/veri/moda.db moda-radar/veri/moda.db 2>/dev/null || echo "Önceki DB yok; yenisi kurulacak"
+
+      - name: Sezon
+        id: sezon
+        working-directory: moda-radar
+        run: |
+          s="${{ inputs.sezon }}"
+          if [ -z "$s" ] || [ "$s" = "guncel" ]; then
+            s=$(python -c "from moda_radar.veri.komut import guncel_sezon; print(guncel_sezon())")
+          fi
+          echo "ad=$s" >> "$GITHUB_OUTPUT"
+          echo "Sezon: $s"
+
+      - name: Podyum (Vogue Runway)
+        working-directory: moda-radar
+        run: python -m moda_radar topla --sezon "${{ steps.sezon.outputs.ad }}" --kaynak podyum
+
+      - name: Perakende
+        if: ${{ !cancelled() }}
+        working-directory: moda-radar
+        run: |
+          if [ -n "${{ inputs.segment }}" ]; then
+            python -m moda_radar topla --kaynak perakende --segment "${{ inputs.segment }}"
+          else
+            python -m moda_radar topla --kaynak perakende
+          fi
+
+      - name: Rapor sinyallerini yükle
+        if: ${{ !cancelled() }}
+        working-directory: moda-radar
+        run: python -m moda_radar sinyal-yukle
+
+      - name: Gecikme ölçümü
+        if: ${{ !cancelled() }}
+        working-directory: moda-radar
+        run: |
+          for seg in luks premium orta deger; do
+            python -m moda_radar gecikme-olc --segment "$seg" --kategori kadin-ust
+          done
+
+      - name: Özet
+        if: ${{ !cancelled() }}
+        working-directory: moda-radar
+        run: |
+          python -m moda_radar db-ozet > veri/OZET.md
+          cat veri/OZET.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Veri dalına kaydet
+        if: ${{ !cancelled() && steps.dal.outcome == 'success' }}
+        run: |
+          # Yarım kalmış transaction varsa sqlite açılışta geri alır; bütünlük bozuksa dal güncellenmez.
+          python - <<'PY'
+          import sqlite3, sys
+          b = sqlite3.connect("moda-radar/veri/moda.db")
+          sonuc = b.execute("PRAGMA integrity_check").fetchone()[0]
+          b.close()
+          print("integrity_check:", sonuc)
+          sys.exit(0 if sonuc == "ok" else 1)
+          PY
+          mkdir -p veri-dali/veri
+          cp moda-radar/veri/moda.db veri-dali/veri/moda.db
+          cp moda-radar/veri/OZET.md veri-dali/veri/OZET.md 2>/dev/null || true
+          cd veri-dali
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add veri/moda.db veri/OZET.md
+          git diff --cached --quiet && { echo "Değişiklik yok"; exit 0; }
+          git commit -q -m "moda-verileri: ${{ steps.sezon.outputs.ad }} $(date '+%Y-%m-%d %H:%M %Z')"
+          git push origin moda-verileri

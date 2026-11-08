@@ -1,0 +1,41 @@
+{
+  "sezon": "SS27",
+  "ornek": true,
+  "derleyen": "veri-muhendisi",
+  "not": "BICIM ORNEGIDIR, GERCEK VERI DEGILDIR. 'ornek': true oldugu icin sinyal-yukle bu dosyayi atlar. Arastirmaci her sezon icin ayri dosya yazar (ör. SS27.json); her kayitta kaynak_url ve kaynak_tarihi zorunlu (ilke 7). Rapor kaynakli sinyalde guven <= 0.5 tutulur.",
+  "sinyaller": [
+    {
+      "nitelik_ekseni": "renk",
+      "nitelik_degeri": "17-1564 TCX",
+      "podyum_payi": 0.05,
+      "marka_sayisi": 6,
+      "kaynak_turu": "rapor",
+      "kaynak_url": "https://ornek.invalid/sezon-raporu-ss27",
+      "kaynak_tarihi": "2026-10-08",
+      "guven": 0.3,
+      "not": "ornek kayit"
+    },
+    {
+      "nitelik_ekseni": "kumas_gorunumu",
+      "nitelik_degeri": "keten",
+      "podyum_payi": 0.12,
+      "marka_sayisi": 9,
+      "kaynak_turu": "rapor",
+      "kaynak_url": "https://ornek.invalid/sezon-raporu-ss27",
+      "kaynak_tarihi": "2026-10-08",
+      "guven": 0.3,
+      "not": "ornek kayit"
+    },
+    {
+      "nitelik_ekseni": "siluet",
+      "nitelik_degeri": "oversize",
+      "podyum_payi": 0.2,
+      "marka_sayisi": 11,
+      "kaynak_turu": "rapor",
+      "kaynak_url": "https://ornek.invalid/sezon-raporu-ss27",
+      "kaynak_tarihi": "2026-10-08",
+      "guven": 0.3,
+      "not": "ornek kayit"
+    }
+  ]
+}

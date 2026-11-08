@@ -1,0 +1,349 @@
+{
+  "surum": "0.1",
+  "kategori": "kadin-ust",
+  "para_birimi": "TRY",
+  "kaynak": "tahmini bant, yatirim-analisti 2026-11, saha doğrulaması gerekli",
+  "tarih": "2026-11-08",
+  "not": "Kesin veri değildir. Adet başına kumaş + fason (kesim, dikim, ütü-paket) maliyeti, KDV hariç. Satış fiyatı KDV dahil raf fiyatıdır; marj brüttür (mağaza, lojistik, iade düşülmemiş). Referans pazarlar: Bursa (dokuma), Zeytinburnu (kumaş), Merter (fason). Kumaş görünümü bir lif iddiası değildir: 'ipeksi' pazar ve değer segmentinde polyester/viskon karşılığıdır.",
+  "kumas_maliyeti": {
+    "pamuklu": {
+      "luks": {
+        "alt": 900,
+        "ust": 1800
+      },
+      "premium": {
+        "alt": 260,
+        "ust": 450
+      },
+      "orta": {
+        "alt": 130,
+        "ust": 220
+      },
+      "deger": {
+        "alt": 90,
+        "ust": 150
+      },
+      "pazar": {
+        "alt": 70,
+        "ust": 120
+      }
+    },
+    "keten": {
+      "luks": {
+        "alt": 1350,
+        "ust": 2700
+      },
+      "premium": {
+        "alt": 390,
+        "ust": 680
+      },
+      "orta": {
+        "alt": 200,
+        "ust": 330
+      },
+      "deger": {
+        "alt": 140,
+        "ust": 220
+      },
+      "pazar": {
+        "alt": 100,
+        "ust": 180
+      }
+    },
+    "denim": {
+      "luks": {
+        "alt": 1170,
+        "ust": 2340
+      },
+      "premium": {
+        "alt": 340,
+        "ust": 580
+      },
+      "orta": {
+        "alt": 170,
+        "ust": 290
+      },
+      "deger": {
+        "alt": 120,
+        "ust": 200
+      },
+      "pazar": {
+        "alt": 90,
+        "ust": 160
+      }
+    },
+    "ipeksi": {
+      "luks": {
+        "alt": 1260,
+        "ust": 2520
+      },
+      "premium": {
+        "alt": 360,
+        "ust": 630
+      },
+      "orta": {
+        "alt": 180,
+        "ust": 310
+      },
+      "deger": {
+        "alt": 130,
+        "ust": 210
+      },
+      "pazar": {
+        "alt": 100,
+        "ust": 170
+      }
+    },
+    "saten": {
+      "luks": {
+        "alt": 1170,
+        "ust": 2340
+      },
+      "premium": {
+        "alt": 340,
+        "ust": 580
+      },
+      "orta": {
+        "alt": 170,
+        "ust": 290
+      },
+      "deger": {
+        "alt": 120,
+        "ust": 200
+      },
+      "pazar": {
+        "alt": 90,
+        "ust": 160
+      }
+    },
+    "triko": {
+      "luks": {
+        "alt": 1260,
+        "ust": 2520
+      },
+      "premium": {
+        "alt": 360,
+        "ust": 630
+      },
+      "orta": {
+        "alt": 180,
+        "ust": 310
+      },
+      "deger": {
+        "alt": 130,
+        "ust": 210
+      },
+      "pazar": {
+        "alt": 100,
+        "ust": 170
+      }
+    },
+    "deri": {
+      "luks": {
+        "alt": 3150,
+        "ust": 6300
+      },
+      "premium": {
+        "alt": 910,
+        "ust": 1580
+      },
+      "orta": {
+        "alt": 460,
+        "ust": 770
+      },
+      "deger": {
+        "alt": 320,
+        "ust": 520
+      },
+      "pazar": {
+        "alt": 240,
+        "ust": 420
+      }
+    },
+    "suet": {
+      "luks": {
+        "alt": 2700,
+        "ust": 5400
+      },
+      "premium": {
+        "alt": 780,
+        "ust": 1350
+      },
+      "orta": {
+        "alt": 390,
+        "ust": 660
+      },
+      "deger": {
+        "alt": 270,
+        "ust": 450
+      },
+      "pazar": {
+        "alt": 210,
+        "ust": 360
+      }
+    },
+    "tul": {
+      "luks": {
+        "alt": 1080,
+        "ust": 2160
+      },
+      "premium": {
+        "alt": 310,
+        "ust": 540
+      },
+      "orta": {
+        "alt": 160,
+        "ust": 260
+      },
+      "deger": {
+        "alt": 110,
+        "ust": 180
+      },
+      "pazar": {
+        "alt": 80,
+        "ust": 140
+      }
+    },
+    "dantel": {
+      "luks": {
+        "alt": 1440,
+        "ust": 2880
+      },
+      "premium": {
+        "alt": 420,
+        "ust": 720
+      },
+      "orta": {
+        "alt": 210,
+        "ust": 350
+      },
+      "deger": {
+        "alt": 140,
+        "ust": 240
+      },
+      "pazar": {
+        "alt": 110,
+        "ust": 190
+      }
+    },
+    "kadife": {
+      "luks": {
+        "alt": 1350,
+        "ust": 2700
+      },
+      "premium": {
+        "alt": 390,
+        "ust": 680
+      },
+      "orta": {
+        "alt": 200,
+        "ust": 330
+      },
+      "deger": {
+        "alt": 140,
+        "ust": 220
+      },
+      "pazar": {
+        "alt": 100,
+        "ust": 180
+      }
+    },
+    "teknik": {
+      "luks": {
+        "alt": 1260,
+        "ust": 2520
+      },
+      "premium": {
+        "alt": 360,
+        "ust": 630
+      },
+      "orta": {
+        "alt": 180,
+        "ust": 310
+      },
+      "deger": {
+        "alt": 130,
+        "ust": 210
+      },
+      "pazar": {
+        "alt": 100,
+        "ust": 170
+      }
+    }
+  },
+  "ek_maliyet_seviyeleri": {
+    "luks": {
+      "dusuk": 80,
+      "orta": 200,
+      "yuksek": 500
+    },
+    "premium": {
+      "dusuk": 25,
+      "orta": 60,
+      "yuksek": 150
+    },
+    "orta": {
+      "dusuk": 10,
+      "orta": 25,
+      "yuksek": 60
+    },
+    "deger": {
+      "dusuk": 6,
+      "orta": 15,
+      "yuksek": 40
+    },
+    "pazar": {
+      "dusuk": 4,
+      "orta": 10,
+      "yuksek": 30
+    }
+  },
+  "desen_ek_maliyet": {
+    "duz": "yok",
+    "cizgili": "dusuk",
+    "ekose": "dusuk",
+    "puantiye": "dusuk",
+    "logo": "dusuk",
+    "cicekli": "orta",
+    "soyut": "orta",
+    "geometrik": "orta",
+    "hayvan": "orta",
+    "batik": "orta",
+    "bilinmiyor": "dusuk"
+  },
+  "detay_ek_maliyet": {
+    "yok": "yok",
+    "dugme-on": "dusuk",
+    "fermuar-gorunur": "dusuk",
+    "cep-kapakli": "dusuk",
+    "kemer": "dusuk",
+    "yirtmac": "yok",
+    "pile": "orta",
+    "buzgu": "orta",
+    "firfir": "orta",
+    "nakis": "yuksek",
+    "bilinmiyor": "dusuk"
+  },
+  "hedef_satis_fiyati": {
+    "luks": {
+      "alt": 6000,
+      "ust": 18000
+    },
+    "premium": {
+      "alt": 1100,
+      "ust": 2600
+    },
+    "orta": {
+      "alt": 400,
+      "ust": 1000
+    },
+    "deger": {
+      "alt": 200,
+      "ust": 500
+    },
+    "pazar": {
+      "alt": 150,
+      "ust": 350
+    }
+  }
+}

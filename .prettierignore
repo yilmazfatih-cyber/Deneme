@@ -9,4 +9,7 @@ tests/shots/output
 docs/sprints/**/shots
 content/audio.json
 public/audio
+moda-radar/tests/fixtures
+.pytest_cache
+.ruff_cache
 yatirim-ajani/bilgi_kaynak
