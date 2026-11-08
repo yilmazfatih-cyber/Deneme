@@ -1,0 +1,11 @@
+ad: Garanti BBVA
+tur: hesap
+oncelik: 10
+tanima: [Garanti]
+sutunlar:
+  tarih: [Tarih]
+  aciklama: [Açıklama]
+  tutar: [Tutar]
+  bakiye: [Bakiye]
+  kanal: [Kanal]
+isaret_ters: false

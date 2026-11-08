@@ -1,0 +1,15 @@
+# Genel şablon: çoğu bankanın hesap hareketi dökümüyle çalışır.
+# Sütun adları büyük/küçük harf ve Türkçe karakterden bağımsız eşleşir.
+ad: Genel
+tur: hesap            # hesap | kart
+oncelik: 0            # birden fazla şablon uyarsa yüksek olan kazanır
+tanima: []            # başlıkta bu kelimelerden biri geçerse bu şablon seçilir
+sutunlar:
+  tarih: [Tarih, İşlem Tarihi, Islem Tarihi, Hareket Tarihi, Valör, Date]
+  aciklama: [Açıklama, Aciklama, İşlem Açıklaması, Description, Detay]
+  tutar: [Tutar, İşlem Tutarı, Islem Tutari, Amount, Miktar]
+  borc: [Borç, Borc, Çıkan, Cikan, Gider, Debit]
+  alacak: [Alacak, Giren, Gelir, Credit]
+  bakiye: [Bakiye, Balance]
+  kanal: [Kanal, İşlem Kanalı, Channel]
+isaret_ters: false     # true ise pozitif tutar "giden" sayılır (kart ekstreleri)

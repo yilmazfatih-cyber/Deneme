@@ -1,0 +1,13 @@
+# Kredi kartı ekstresi: pozitif tutar harcamadır, negatif tutar ödeme/iadedir.
+ad: Kredi Kartı
+tur: kart
+oncelik: 5
+tanima: [Ekstre, Kart No, Taksit, Harcama Tarihi, Kart Hareketleri]
+sutunlar:
+  tarih: [İşlem Tarihi, Islem Tarihi, Harcama Tarihi, Tarih, Date]
+  aciklama: [Açıklama, Aciklama, İşyeri, Isyeri, Merchant, Description]
+  tutar: [Tutar, İşlem Tutarı, Harcama Tutarı, Amount]
+  borc: [Borç, Borc, Harcama]
+  alacak: [Alacak, Ödeme, Odeme, İade]
+  taksit: [Taksit, Taksit No]
+isaret_ters: true

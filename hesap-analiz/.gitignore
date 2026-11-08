@@ -1,0 +1,13 @@
+# Kişisel veri asla depoya girmez
+girdi/*
+!girdi/.gitkeep
+rapor/*
+!rapor/.gitkeep
+kisiler.csv
+__pycache__/
+*.pyc
+.pytest_cache/
+ornek/veri/
+ornek/rapor/
+ornek/kisiler.csv
+.venv/

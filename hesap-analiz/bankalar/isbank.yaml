@@ -1,0 +1,11 @@
+ad: İş Bankası
+tur: hesap
+oncelik: 10
+tanima: [İş Bankası, Is Bankasi, İşcep]
+sutunlar:
+  tarih: [Tarih, İşlem Tarihi]
+  aciklama: [Açıklama]
+  tutar: [Tutar]
+  bakiye: [Bakiye]
+  kanal: [Kanal, İşlem Kanalı]
+isaret_ters: false

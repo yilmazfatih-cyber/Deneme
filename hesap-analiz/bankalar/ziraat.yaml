@@ -1,0 +1,11 @@
+ad: Ziraat Bankası
+tur: hesap
+oncelik: 10
+tanima: [Ziraat]
+sutunlar:
+  tarih: [Tarih, İşlem Tarihi]
+  aciklama: [Açıklama]
+  tutar: [Tutar]
+  bakiye: [Bakiye]
+  kanal: [Kanal]
+isaret_ters: false

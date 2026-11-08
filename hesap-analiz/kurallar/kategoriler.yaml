@@ -1,0 +1,45 @@
+# Kategori kuralları.
+# Alanlar: kategori (zorunlu), anahtarlar (zorunlu), yon (gelen|giden, isteğe bağlı),
+#          karsi_taraf (kurum varsayılan | belirsiz → kişi/kurum kararı ad tahminine kalır). Açıklama sadeleştirilir (büyük harf, Türkçe karakter atılır),
+# sonra anahtar kelimeler sırayla aranır. İlk eşleşen kategori kazanır.
+# Kendi marketini, kiracını vb. buraya eklemen yeterli.
+- kategori: Maaş
+  yon: gelen
+  anahtarlar: [MAAS, UCRET ODEMESI, PERSONEL ODEME]
+- kategori: Kira
+  karsi_taraf: belirsiz   # ev sahibi kişi olabilir; ad tahmini karar versin
+  anahtarlar: [KIRA]
+- kategori: Kredi Kartı Ödemesi
+  anahtarlar: [KART BORC, KK ODEME, KREDI KARTI ODEME, KART ODEME, EKSTRE ODEME, BONUS ODEME, MAXIMUM ODEME, AXESS ODEME, WORLD ODEME]
+- kategori: Kredi Taksidi
+  anahtarlar: [KREDI TAKSIT, TUKETICI KREDISI, KONUT KREDISI, IHTIYAC KREDISI]
+- kategori: Fatura
+  anahtarlar: [ELEKTRIK, ENERJISA, CK BOGAZICI, BEDAS, AYEDAS, DOGALGAZ, IGDAS, BASKENTGAZ, ISKI, ASKI, IZSU, SU FATURA, TURKCELL, VODAFONE, TURK TELEKOM, TTNET, SUPERONLINE, DIGITURK, DSMART, TIVIBU, AIDAT]
+- kategori: Abonelik
+  anahtarlar: [NETFLIX, SPOTIFY, YOUTUBE, APPLE COM, GOOGLE, ICLOUD, AMAZON PRIME, DISNEY, EXXEN, BLUTV, GAIN, MICROSOFT, ADOBE]
+- kategori: Market
+  anahtarlar: [MIGROS, BIM, A101, SOK MARKET, CARREFOUR, MACRO, FILE, HAKMAR, METRO, GETIR, YEMEKSEPETI, TRENDYOL GO, BAKKAL, MARKET]
+- kategori: Akaryakıt
+  anahtarlar: [SHELL, OPET, PETROL OFISI, BP, TOTAL, AYTEMIZ, LUKOIL, AKARYAKIT, BENZIN]
+- kategori: Ulaşım
+  anahtarlar: [ISTANBULKART, AKBIL, ANKARAKART, IZMIRIM, METRO, IETT, UBER, BITAKSI, TAKSI, THY, PEGASUS, OTOBUS, HGS, OGS, KOPRU, OTOYOL]
+- kategori: Yeme İçme
+  anahtarlar: [RESTORAN, RESTAURANT, CAFE, KAFE, KAHVE, STARBUCKS, BURGER, PIZZA, DONER, LOKANTA, YEMEK, FIRIN, PASTANE]
+- kategori: Sağlık
+  anahtarlar: [ECZANE, HASTANE, MEDICAL, POLIKLINIK, KLINIK, SAGLIK, DIS, OPTIK]
+- kategori: Giyim
+  anahtarlar: [LC WAIKIKI, LCW, DEFACTO, KOTON, MAVI, ZARA, HM, BERSHKA, FLO, DERIMOD, BOYNER, GIYIM]
+- kategori: Alışveriş
+  anahtarlar: [TRENDYOL, HEPSIBURADA, AMAZON, N11, CICEKSEPETI, TEKNOSA, MEDIAMARKT, VATAN, IKEA, KOCTAS, BAUHAUS]
+- kategori: Nakit
+  anahtarlar: [ATM, NAKIT, PARA CEKME, PARA YATIRMA]
+- kategori: Banka Ücreti
+  anahtarlar: [HESAP ISLETIM, ISLETIM UCRETI, EFT UCRET, HAVALE UCRET, KOMISYON, BSMV, MASRAF, KART AIDAT, YILLIK UCRET]
+- kategori: Vergi / Sigorta
+  anahtarlar: [VERGI, SGK, BAGKUR, SIGORTA, MTV, TRAFIK CEZASI, HARC]
+- kategori: Eğitim
+  anahtarlar: [OKUL, KURS, UNIVERSITE, EGITIM, KRES, DERSHANE, UDEMY]
+- kategori: Yatırım
+  anahtarlar: [FON ALIM, FON SATIM, HISSE, ALTIN, DOVIZ, BORSA, MIDAS, VADELI]
+# Kişilere yapılan/alınan transferler yukarıdakilere uymazsa otomatik olarak
+# "Kişi Transferi" kategorisine düşer; kalan her şey "Diğer" olur.
