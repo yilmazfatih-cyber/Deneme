@@ -223,11 +223,12 @@ def kural_parametreleri(ad: str, parametreler: dict[str, float | int], karar_say
 # Kıyas: "haber olumluysa al"
 # ----------------------------------------------------------------------------------------------
 def haber_kurali(olaylar: pd.DataFrame, tutma_gun: int = 20) -> Strateji:
-    """Bilgi veritabanındaki tarihli olaylardan: yönü `olumlu` olan bir olayın bitişinden sonraki
-    `tutma_gun` gün boyunca o hisseyi tut (eşit ağırlık). Olay bitişi karar gününe eşit ya da önce
-    olmalı (geleceğe bakmaz). Sayısal tespitli olaylar (kaynak_tipi sayisal) HARİÇ: onlar fiyattan
-    türetildi, haber değil."""
-    ol = olaylar[(olaylar["kapsam"] == "sirket") & (olaylar["kaynak_tipi"] != "sayisal") & (olaylar.get("yon", "notr") == "olumlu")]
+    """Bilgi veritabanındaki tarihli METİN olaylarından: yönü `olumlu` olan bir olayın bitişinden sonraki
+    `tutma_gun` gün boyunca o hisseyi tut (eşit ağırlık). Olay bitişi karar gününe eşit ya da önce olmalı."""
+    # YALNIZ saf metin olayları: sayısal tespitli olayların varlığı tüm örneklemden bulunur (geleceğe bakar),
+    # bu yüzden "birlesik" kayıtlar da dışarıda. Yön, haberin yayın anındaki algısıdır; LLM tarafından
+    # sonradan etiketlendiği için yine geriye bakış riski taşır (raporda işaretlenir).
+    ol = olaylar[(olaylar["kapsam"] == "sirket") & (olaylar["kaynak_tipi"] == "metin") & (olaylar.get("yon", "notr") == "olumlu")]
     ol = ol.assign(bitis=pd.to_datetime(ol["bitis"]))
 
     def strateji(p: Panel, t: int) -> tuple[pd.Series, pd.Series]:

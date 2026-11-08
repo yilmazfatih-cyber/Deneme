@@ -381,9 +381,8 @@ def komut_bilgi_yukle(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
             if o.get("guven") is not None:
                 o["guven"] = min(max(float(o["guven"]), 0.0), 1.0)
             if o.get("yon") not in ("olumlu", "olumsuz", "notr"):
-                # Yön yoksa türden çıkar: yükseliş/olumlu haber → olumlu, düşüş/şok-negatif → olumsuz
-                g = o.get("getiri")
-                o["yon"] = "olumlu" if (g is not None and g > 0) else "olumsuz" if (g is not None and g < 0) else "notr"
+                # Yön verilmediyse NÖTR kalır. Gerçekleşen getiriden türetmek geleceği bilmek olur.
+                o["yon"] = "notr"
     try:
         paket = OlayPaketi.model_validate({"olaylar": liste})
     except ValidationError as h:
@@ -569,9 +568,9 @@ def komut_saglamlik(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
     kiyas["momentum"] = satir("haftalık momentum (20g, ilk 10)", STRATEJILER["haftalik_momentum"], {"pencere": 20, "n": 10}, "kiyas")
     kiyas["trend"] = satir("trend 50g", STRATEJILER["trend_50"], {"pencere": 50}, "kiyas")
     olaylar = sorgula(db, limit=100000)
-    n_olumlu = int(((olaylar.get("yon", pd.Series(dtype=str)) == "olumlu") & (olaylar["kaynak_tipi"] != "sayisal")).sum()) if not olaylar.empty else 0
+    n_olumlu = int(((olaylar.get("yon", pd.Series(dtype=str)) == "olumlu") & (olaylar["kaynak_tipi"] == "metin")).sum()) if not olaylar.empty else 0
     if n_olumlu >= 5:
-        kiyas["haber"] = satir(f"haber olumluysa al ({n_olumlu} olay, 20g tut)", haber_kurali(olaylar), {"tutma_gun": 20}, "kiyas")
+        kiyas["haber"] = satir(f"haber olumluysa al ({n_olumlu} metin olay, 20g tut; yön LLM'ce sonradan etiketli)", haber_kurali(olaylar), {"tutma_gun": 20}, "kiyas")
     else:
         R.append(f"| haber olumluysa al | — | — | — | — | — | — | — | — | (bilgi veritabanında yönü 'olumlu' olan tarihli haber olayı: {n_olumlu}; en az 5 gerekir) |")
     R.append("")

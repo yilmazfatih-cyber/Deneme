@@ -64,7 +64,9 @@ def bilgi_sinyalleri(panel: Panel, olaylar: pd.DataFrame, sektorler: dict[str, s
     oz = {ad: sifir() for ad in BILGI_SINYALLERI}
     if olaylar is None or olaylar.empty:
         return oz
-    ol = olaylar[olaylar["kaynak_tipi"] != "sayisal"].copy()
+    # Yalnız saf metin olayları: sayısal tespitli (ve onlara anlam eklenmiş "birlesik") olayların
+    # varlığı tüm örneklemden bulunur, geleceğe bakar; sinyal olarak kullanılamaz.
+    ol = olaylar[olaylar["kaynak_tipi"] == "metin"].copy()
     if ol.empty:
         return oz
     ol["bitis"] = pd.to_datetime(ol["bitis"])
