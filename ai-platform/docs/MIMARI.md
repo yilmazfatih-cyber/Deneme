@@ -129,6 +129,16 @@ Veri klasörü (`AIP_DATA_DIR`) dosyaları: `platform.db`, `kvkk.key` (Fernet an
 | GET | `/api/audit?from&to&module&user&limit` , GET `/api/audit/summary` | denetim günlüğü ve KVKK raporu (maskelenen varlık sayıları, modül kullanımı) |
 | GET | `/api/erp/tools` | iş akışı ajanının kullanabileceği araç tanımları (OpenAI function şeması): okuma araçları serbest, yazma araçları `human_approval` |
 
+Uygulanan ek uçlar: `POST /api/erp/connections/demo` (örnek ERP'yi kurar), `PATCH`/`DELETE /api/erp/connections/{id}`,
+`POST /api/erp/connections/{id}/query`, `POST /api/erp/tools/call` (okuma aracı çalışır, yazma aracı onaya düşer), `GET /api/erp/webhooks`.
+Bağlantı türleri `sql | rest | mock` (yalnız mock'un yazma aracı vardır: `fatura_oneri_olustur`). Ortam değişkeni bağlantıları
+`varsayilan` (AIP_ERP_DB_URL) ve `erp-api` (AIP_ERP_API_BASE_URL) kimliğiyle listelenir. Onay durumları `pending | approved | rejected |
+executed | failed` (çalışırken hata → failed, hata `result.error`). Onay kaydı sözleşmesi: `module="erp"` ise `action` araç adı, payload
+`{"connection_id","args"}`; katalog modülüyse modül `ctx.extra={"approved": True, "approval_id": ...}` ile yeniden çağrılır ve yalnız o zaman yazar.
+Araç adları `erp_<bağlantı>__<araç>` ve `<modül>__<eylem>`; her araçta `human_approval` ve `source`. Geçersiz imzalı webhook gövdesi saklanmaz;
+eşlenen eylem onaylıysa iş kuyruğu yerine onay kuyruğuna gider. `/api/audit` yanıtı `{items, total, limit, offset, modules, available}`.
+Kullanıcı kimliği her yerde `X-AIP-User` başlığıdır; onay kararları için gerçek kimlik doğrulama katmanı gerekir (yol haritası).
+
 `erp/connector.py` soyut sınıf: `ERPConnector.list_tools()`, `call_tool(name, args) -> dict`, `read_only: bool`.
 Uygulamalar: `SQLReadOnlyConnector` (SQLAlchemy, yalnız beyaz liste tablolar, `SET TRANSACTION READ ONLY`/salt-okunur kullanıcı),
 `RESTConnector` (OpenAPI'den araç üretir; `AIP_ERP_API_BASE_URL`), `MockERP` (SQLite örnek veri: cari, fatura, stok, satış — demo ve testler).

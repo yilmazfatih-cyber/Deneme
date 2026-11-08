@@ -90,7 +90,7 @@ class ModelSpec(BaseModel):
     artifacts: list[ModelArtifact] = Field(min_length=1)
 
     @model_validator(mode="after")
-    def _unique_artifacts(self) -> "ModelSpec":
+    def _unique_artifacts(self) -> ModelSpec:
         ids = [a.id for a in self.artifacts]
         if len(ids) != len(set(ids)):
             raise ValueError(f"{self.id}: artifact id tekrarı: {ids}")
@@ -167,7 +167,7 @@ class Catalog(BaseModel):
     modules: dict[str, ModuleSpec]
 
     @model_validator(mode="after")
-    def _cross_check(self) -> "Catalog":
+    def _cross_check(self) -> Catalog:
         errors: list[str] = []
         for m in self.modules.values():
             for c in m.components:

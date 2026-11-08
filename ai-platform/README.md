@@ -34,6 +34,12 @@ aiplatform serve                 # http://127.0.0.1:8080  → yönetim arayüzü
 Demo ERP ile uçtan uca: `python -m aiplatform.erp.mock_erp ~/.aiplatform/mock_erp.db` → arayüzde ERP
 bağlantısı ekle → `dogal-dil-sql` modülünü kur → "geçen yıl en çok ciro yapan 5 cari" diye sor.
 
+## Ekran görüntüleri
+
+| Mağaza | Gereksinim paneli | Sistem |
+| --- | --- | --- |
+| ![Mağaza](docs/ekran/ui_magaza.png) | ![Gereksinim](docs/ekran/ui_fatura_gereksinim.png) | ![Sistem](docs/ekran/ui_sistem.png) |
+
 ## Belgeler
 
 | Belge | İçerik |

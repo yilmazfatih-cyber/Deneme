@@ -1,9 +1,9 @@
 from .loader import CATALOG_DIR, get_catalog, load_catalog
 from .schema import (
+    KVKK,
     Action,
     Catalog,
     Component,
-    KVKK,
     LicenseClass,
     ModelArtifact,
     ModelSpec,
@@ -14,11 +14,11 @@ from .schema import (
 )
 
 __all__ = [
-    "Action",
     "CATALOG_DIR",
+    "KVKK",
+    "Action",
     "Catalog",
     "Component",
-    "KVKK",
     "LicenseClass",
     "ModelArtifact",
     "ModelSpec",
