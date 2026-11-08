@@ -1,0 +1,71 @@
+{
+ "baslangic_nakit": 1000000.0,
+ "baslangic_gun": "2026-11-09",
+ "maliyet_bps": 5.0,
+ "nakit": 1000000.0,
+ "pozisyonlar": {},
+ "emirler": [
+  {
+   "id": 1,
+   "verildi": "2026-11-08T21:43:01.521459+03:00",
+   "gun": "2026-11-09",
+   "hisse": "KCHOL",
+   "yon": "AL",
+   "adet": 480,
+   "limit": 208.0,
+   "tip": "LIMIT",
+   "pencere": "17:00-17:50",
+   "durum": "bekliyor",
+   "neden": "Tez AL 0,56/30g; pay %10 (ATR %3,0); limit Cuma kapanış 205,90 +%1",
+   "dolum": null
+  },
+  {
+   "id": 2,
+   "verildi": "2026-11-08T21:43:02.927957+03:00",
+   "gun": "2026-11-09",
+   "hisse": "BIMAS",
+   "yon": "AL",
+   "adet": 267,
+   "limit": 374.5,
+   "tip": "LIMIT",
+   "pencere": "17:00-17:50",
+   "durum": "bekliyor",
+   "neden": "Tez AL 0,56/30g; pay %10 (ATR %3,0); limit 370,75 +%1",
+   "dolum": null
+  },
+  {
+   "id": 3,
+   "verildi": "2026-11-08T21:43:04.452150+03:00",
+   "gun": "2026-11-09",
+   "hisse": "TUPRS",
+   "yon": "AL",
+   "adet": 268,
+   "limit": 343.25,
+   "tip": "LIMIT",
+   "pencere": "17:00-17:50",
+   "durum": "bekliyor",
+   "neden": "Tez AL 0,56/30g; pay %9,2 (ATR %3,8); limit 339,75 +%1",
+   "dolum": null
+  },
+  {
+   "id": 4,
+   "verildi": "2026-11-08T21:43:06.084051+03:00",
+   "gun": "2026-11-09",
+   "hisse": "AHGAZ",
+   "yon": "AL",
+   "adet": 1950,
+   "limit": 47.22,
+   "tip": "LIMIT",
+   "pencere": "17:00-17:50",
+   "durum": "bekliyor",
+   "neden": "Trend: MA50 ve MA200 üstünde tek çekirdek hisse (60g +%38); kullanıcı tezi (yönetim); pay %9,2 (ATR %3,8); limit 46,74 +%1",
+   "dolum": null
+  }
+ ],
+ "islemler": [],
+ "degerleme": [],
+ "notlar": [
+  "Hafta 1 (9-13 Kasım 2026): yönetim kuralları yatirim-ajani/HAFTA.md. Sanal hesap; emirler kullanıcıya saat+fiyat+adetle sunulur, dolum gerçek 5dk çubuklarla."
+ ],
+ "sayac": 4
+}
