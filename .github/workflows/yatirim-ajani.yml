@@ -48,7 +48,12 @@ jobs:
 
       - name: Çıktı dalını al
         run: |
-          git fetch origin ajan-ciktilari:ajan-ciktilari 2>/dev/null || git branch ajan-ciktilari $(git commit-tree -m "ajan çıktıları" $(git hash-object -t tree /dev/null))
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if ! git fetch origin ajan-ciktilari:ajan-ciktilari 2>/dev/null; then
+            bos=$(git commit-tree -m "ajan çıktıları" "$(git hash-object -t tree /dev/null)") || exit 1
+            git branch ajan-ciktilari "$bos"
+          fi
           git worktree add cikti ajan-ciktilari
           mkdir -p cikti/veri cikti/raporlar
           cp -r cikti/veri yatirim-ajani/ 2>/dev/null || true

@@ -88,9 +88,9 @@ class Olcum:
     islem_sayisi: int
     isabet: float | None  # AL kararlarının kaçı pozitif net getiri verdi
     ort_net_getiri: float | None  # AL başına
-    toplam_net_getiri: float  # sırayla birikik (her AL tam pozisyon varsayımı)
+    toplam_net_getiri: float  # saatlik eşit ağırlıklı portföy olarak bileşik; sinyal yoksa nakit
     sharpe: float | None
-    al_tut_getiri: float  # aynı saatlerde hep pozisyonda olsaydık (maliyetsiz)
+    al_tut_getiri: float  # aynı saatlerde tüm hisselerde eşit ağırlıkla hep pozisyonda olsaydık (maliyetsiz)
     korelasyon: float | None  # Q tahmini ile gerçekleşen ödül
     detay: dict[str, float] = field(default_factory=dict)
 
@@ -104,12 +104,36 @@ class Olcum:
         )
 
 
-def olc(model: BanditModel, X: np.ndarray, odul: np.ndarray, ham_getiri: np.ndarray, esik: float, etiket: str) -> Olcum:
+def _saatlik_portfoy(getiri: np.ndarray, zamanlar: np.ndarray | None, secili: np.ndarray | None = None) -> np.ndarray:
+    """Kararları saat bazında bir portföye çevirir: aynı saatteki (seçili) hisseler eşit ağırlıklıdır.
+
+    Tek havuzdaki on binlerce hisse-saat getirisini art arda çarpmak portföy değil, anlamsız bir
+    bileşiktir (oynaklık sürtünmesiyle -%100'e çöker). Burada her saat için seçili hisselerin
+    ortalama getirisi alınır; o saatte seçili hisse yoksa getiri 0'dır (nakit).
+    """
+    if zamanlar is None:
+        return getiri if secili is None else np.where(secili, getiri, 0.0)
+    df = pd.DataFrame({"z": zamanlar, "g": getiri, "s": True if secili is None else secili})
+    df = df[df["s"]]
+    saatlik = df.groupby("z")["g"].mean()
+    tum = pd.Index(np.unique(zamanlar))
+    return saatlik.reindex(tum, fill_value=0.0).to_numpy(dtype=float)
+
+
+def olc(
+    model: BanditModel,
+    X: np.ndarray,
+    odul: np.ndarray,
+    ham_getiri: np.ndarray,
+    esik: float,
+    etiket: str,
+    zamanlar: np.ndarray | None = None,
+) -> Olcum:
     q = model.q(X)
     al = q >= esik
     n_al = int(al.sum())
     kazanc = odul[al]
-    seri = np.where(al, odul, 0.0)
+    seri = _saatlik_portfoy(odul, zamanlar, al)
     yillik = np.sqrt(252 * 8)
     sharpe = float(seri.mean() / seri.std() * yillik) if n_al > 1 and seri.std() > 0 else None
     kor = float(np.corrcoef(q, odul)[0, 1]) if len(q) > 2 and q.std() > 0 else None
@@ -121,7 +145,7 @@ def olc(model: BanditModel, X: np.ndarray, odul: np.ndarray, ham_getiri: np.ndar
         ort_net_getiri=float(kazanc.mean()) if n_al else None,
         toplam_net_getiri=float(np.prod(1 + seri) - 1),
         sharpe=sharpe,
-        al_tut_getiri=float(np.prod(1 + ham_getiri) - 1),
+        al_tut_getiri=float(np.prod(1 + _saatlik_portfoy(ham_getiri, zamanlar)) - 1),
         korelasyon=kor,
     )
 
