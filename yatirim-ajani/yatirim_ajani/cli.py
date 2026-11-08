@@ -140,7 +140,7 @@ def komut_canli(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
 def komut_coz(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
     db = baglan(ayarlar.veritabani)
     veri = ZamanKilitliVeri(kaynak_olustur(a.veri, a.csv_klasoru), datetime.now().astimezone(), canli=True)
-    n = tahminleri_coz(db, veri, lambda p, h: PIYASALAR[p].sembol(h))
+    n = tahminleri_coz(db, veri, lambda p, h: PIYASALAR[p].sembol(h), a.aralik)
     print(f"{n} tahmin çözüldü.\n")
     print(karne(db).metin())
     return 0
@@ -275,6 +275,63 @@ def komut_ekip(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
     return 0
 
 
+def komut_tez_yukle(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
+    """Claude Code ekip oturumunun ürettiği tez JSON'unu veritabanına ve tahmin günlüğüne yazar.
+
+    Dosya biçimi: {"an": "2026-11-10T08:30+03:00", "haftalik_not": "...", "tezler": [TezCiktisi, ...]}
+    Giriş fiyatı, çekilmiş saatlik veriden (veri_klasoru) karar anına göre bulunur; JSON'da
+    "giris_fiyati" verilmişse o kullanılır.
+    """
+    import json
+
+    from .arastirma.ajan import ArastirmaSonucu
+    from .arastirma.sema import TezCiktisi
+    from pydantic import ValidationError
+
+    piyasa = PIYASALAR[a.piyasa]
+    ham = json.loads(Path(a.dosya).read_text(encoding="utf-8"))
+    an_ts = pd.Timestamp(ham.get("an") or datetime.now().astimezone())
+    if an_ts.tzinfo is None:
+        an_ts = an_ts.tz_localize(piyasa.saat_dilimi)
+    an = an_ts.to_pydatetime()
+    db = baglan(ayarlar.veritabani)
+    vs = SaatlikVeriSeti(ayarlar.veri_klasoru, piyasa.saat_dilimi)
+    veri = ZamanKilitliVeri(kaynak_olustur("csv", ayarlar.veri_klasoru), an, canli=False)
+    satirlar = [f"# Haftalık ekip oturumu — {piyasa.kod.upper()} — {an_ts:%Y-%m-%d %H:%M}", ""]
+    if ham.get("haftalik_not"):
+        satirlar += [ham["haftalik_not"], ""]
+    satirlar += ["| Hisse | Karar | Olasılık | Ufuk | Eşik | Giriş | Adil değer | Özet |", "|---|---|---|---|---|---|---|---|"]
+    kimlikler = []
+    for t_ham in ham.get("tezler", []):
+        try:
+            t = TezCiktisi.model_validate(t_ham)
+        except ValidationError as h:
+            print(f"Geçersiz tez atlandı: {h}")
+            continue
+        fiyat = t_ham.get("giris_fiyati")
+        if fiyat is None:
+            df = vs.saatlik(piyasa.sembol(t.hisse))
+            df = df[df.index <= an_ts]
+            fiyat = float(df["kapanis"].iloc[-1]) if not df.empty else None
+        kimlik = tez_kaydet(db, piyasa, ArastirmaSonucu(tez=t, giris_fiyati=fiyat, tur_sayisi=0), veri, a.model)
+        kimlikler.append(kimlik)
+        adil = (
+            f"{t.adil_deger_alt:,.0f}–{t.adil_deger_ust:,.0f}"
+            if t.adil_deger_alt is not None and t.adil_deger_ust is not None
+            else "-"
+        )
+        satirlar.append(
+            f"| {t.hisse} | {t.karar} | {t.olasilik:.0%} | {t.ufuk_gun}g | {t.esik_getiri:+.0%} | "
+            f"{fiyat if fiyat is None else f'{fiyat:,.2f}'} | {adil} | {t.ozet} |"
+        )
+    satirlar += ["", "Bu bir yatırım tavsiyesi değildir; sanal portföy ve tahmin karnesi içindir."]
+    yol = Path(ayarlar.rapor_klasoru) / f"ekip-{piyasa.kod}-{an_ts:%Y%m%d}.md"
+    yol.parent.mkdir(parents=True, exist_ok=True)
+    yol.write_text("\n".join(satirlar) + "\n", encoding="utf-8")
+    print(f"{len(kimlikler)} tez kaydedildi (giriş fiyatı olmayanlar tahmin günlüğüne girmez). Rapor: {yol}")
+    return 0 if kimlikler else 1
+
+
 def komut_yeniden_baslat(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
     SanalAraci(baglan(ayarlar.veritabani), PIYASALAR[a.piyasa]).yeniden_baslat()
     print(f"{a.piyasa.upper()} hesabı yeniden açıldı.")
@@ -319,6 +376,7 @@ def ayristirici() -> argparse.ArgumentParser:
     sp = alt.add_parser("coz", help="Vadesi gelen tahminleri çöz ve karneyi göster")
     sp.add_argument("--veri", choices=["yahoo", "csv", "sentetik"], default="yahoo")
     sp.add_argument("--csv-klasoru")
+    sp.add_argument("--aralik", default="1d", help="Vade fiyatı için çubuk aralığı (CSV kaynağında 1h)")
     sp.set_defaults(islev=komut_coz)
 
     sp = alt.add_parser("rapor", help="Sanal portföy, son tezler ve tahmin karnesi")
@@ -346,6 +404,12 @@ def ayristirici() -> argparse.ArgumentParser:
     sp.add_argument("--kayma", type=int, default=0, help="Saat kayması dk (0, 15, 30, 45)")
     sp.add_argument("--kayma-kiyasla", action="store_true", help="Kaymaları train verisinde kıyasla")
     sp.set_defaults(islev=komut_egit)
+
+    sp = alt.add_parser("tez-yukle", help="Claude Code ekip oturumunun tez JSON'unu kaydet, rapor yaz")
+    sp.add_argument("dosya")
+    sp.add_argument("--piyasa", choices=list(PIYASALAR), required=True)
+    sp.add_argument("--model", default="claude-code-ekip", help="Tezlerin kaynağı olarak kaydedilen etiket")
+    sp.set_defaults(islev=komut_tez_yukle)
 
     sp = alt.add_parser("ekip", help="Haftalık ekip oturumu: Fable baş, Opus analist, Sonnet mühendis, Haiku stajyer")
     ortak(sp)

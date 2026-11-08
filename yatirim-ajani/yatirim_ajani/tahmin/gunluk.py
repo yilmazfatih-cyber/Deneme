@@ -44,7 +44,7 @@ def tahmin_ekle(
     return int(imlec.lastrowid or 0)
 
 
-def tahminleri_coz(db: sqlite3.Connection, veri: ZamanKilitliVeri, piyasa_sembol) -> int:
+def tahminleri_coz(db: sqlite3.Connection, veri: ZamanKilitliVeri, piyasa_sembol, aralik: str = "1d") -> int:
     """Vadesi `veri.an`'dan önce dolmuş tahminleri, vadedeki kapanış fiyatıyla çözer.
 
     `piyasa_sembol(piyasa, hisse)` veri kaynağındaki sembolü döndürür.
@@ -56,7 +56,7 @@ def tahminleri_coz(db: sqlite3.Connection, veri: ZamanKilitliVeri, piyasa_sembol
     for t in satirlar:
         vade = pd.Timestamp(t["vade"])
         sembol = piyasa_sembol(t["piyasa"], t["hisse"])
-        df = veri.cubuklar(sembol, (vade - pd.Timedelta(days=10)).to_pydatetime(), vade.to_pydatetime())
+        df = veri.cubuklar(sembol, (vade - pd.Timedelta(days=10)).to_pydatetime(), vade.to_pydatetime(), aralik)
         if df.empty:
             continue
         son = float(df["kapanis"].iloc[-1])

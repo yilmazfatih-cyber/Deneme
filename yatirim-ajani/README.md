@@ -128,7 +128,24 @@ yayımlanmış saatlik yön tahmini çalışmaları %54–56 doğrulukta kalır.
 "bekle" der; günde 0–2 işlem normaldir. Rastgele yürüyüş (sentetik) veride model hiç işlem
 önermez; gerçek veride de öyle çıkarsa bu bir hata değil, dürüst bir sonuçtur.
 
-Ekip oturumu bütçesi: haftada bir oturum, en fazla 8 alt görev. Kaba maliyet oturum başına 1–3 $.
+Ekip oturumu bütçesi: haftada bir oturum, en fazla 8 alt görev.
+
+## Otomatik çalışma: GitHub Actions + Claude Code (API anahtarı gerekmez)
+
+Dil modeli gerektirmeyen her iş GitHub Actions'ta çalışır; haftalık araştırma Claude Code'un
+zamanlanmış göreviyle, aboneliğiniz üzerinden yapılır. API anahtarına gerek kalmaz.
+
+| İş                             | Nerede                                            | Ne zaman                         |
+| ------------------------------ | ------------------------------------------------- | -------------------------------- |
+| Veri çekme + eğitim + karne    | `.github/workflows/yatirim-ajani.yml`             | Hafta içi 19:45 (TRT)            |
+| Saatlik tarama + Midas önerisi | aynı iş akışı                                     | Hafta içi 10:20–17:20, saat başı |
+| Haftalık ekip araştırması      | Claude Code zamanlanmış görevi, yönerge `EKIP.md` | Pazartesi sabahı                 |
+
+Bütün çıktılar (`veri/`, `raporlar/`, `veri/ajan.db`) kod dallarına değil **`ajan-ciktilari`** dalına
+yazılır. Haftalık rapor ayrıca bir GitHub Issue olarak açılır; telefonunuza bildirim düşer.
+İşleri elle başlatmak için: Actions → "Yatırım ajanı" → Run workflow → `veri-egitim` ya da `tara`.
+
+`ekip` komutu (API anahtarıyla çalışan sürüm) kodda durur; aboneliği aşan bir ihtiyaç olursa açılır.
 
 ## Bilmeniz gerekenler
 
