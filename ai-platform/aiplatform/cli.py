@@ -177,6 +177,18 @@ def cmd_plan(a: argparse.Namespace) -> int:
 
 
 def cmd_install(a: argparse.Namespace) -> int:
+    """Bir veya birden çok modülü sırayla kurar; ilk hata komutu durdurur."""
+    rc = 0
+    for module_id in a.module_id:
+        if len(a.module_id) > 1:
+            print(f"\n=== {module_id} ===")
+        rc = _install_one(a, module_id)
+        if rc != 0:
+            break
+    return rc
+
+
+def _install_one(a: argparse.Namespace, module_id: str) -> int:
     from .installer import installer
     from .installer.jobs import get_job_manager
 
@@ -184,7 +196,7 @@ def cmd_install(a: argparse.Namespace) -> int:
 
     async def run() -> dict:
         installer.bootstrap(restart_engine=False)
-        job_id = installer.submit_install(a.module_id, a.target, artifacts, a.with_optional)
+        job_id = installer.submit_install(module_id, a.target, artifacts, a.with_optional)
         jm = get_job_manager()
         last_pct = -1
         async for ev in jm.subscribe(job_id):
@@ -207,7 +219,7 @@ def cmd_install(a: argparse.Namespace) -> int:
         return 130
     if job.get("status") == "done":
         res = job.get("result") or {}
-        print(f"\nKuruldu: {a.module_id} ({res.get('target', '')})")
+        print(f"\nKuruldu: {module_id} ({res.get('target', '')})")
         for w in res.get("warnings", []):
             print(f"  {w}")
         return 0
@@ -303,8 +315,8 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--json", action="store_true")
     s.set_defaults(func=cmd_check)
 
-    s = sub.add_parser("install", help="Modülü kur")
-    s.add_argument("module_id")
+    s = sub.add_parser("install", help="Modülü kur (birden çok verilebilir)")
+    s.add_argument("module_id", nargs="+")
     s.add_argument("--target", choices=["auto", "server", "client"], default="auto")
     s.add_argument("--with-optional", action="store_true")
     s.add_argument(
