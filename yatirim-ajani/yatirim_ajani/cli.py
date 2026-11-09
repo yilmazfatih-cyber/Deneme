@@ -972,6 +972,30 @@ def komut_strateji_istatistik(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
     return 0
 
 
+def komut_olay_calismasi(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
+    from .dosya.olay_calismasi import calistir, rapor
+
+    o = calistir(a.dosya_db, a.cikti, a.rapor, a.istatistik)
+    print(rapor(o) if a.yazdir and o.get("olay") else f"olay {o.get('olay')} (güvenli {o.get('guvenli_olay')}) → {a.rapor}")
+    return 0
+
+
+def komut_piyasa_analiz(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
+    from .dosya.piyasa import calistir, rapor
+
+    s = calistir(a.dosya_db, a.makro, a.rejimler, a.islemler, a.cikti, a.rapor)
+    print(rapor(s) if a.yazdir else f"piyasa analizi → {a.rapor}")
+    return 0
+
+
+def komut_sektor_analiz(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
+    from .dosya.sektor import calistir
+
+    s = calistir(a.dosya_db, a.ham, a.cikti, a.rapor, a.profil or [])
+    print(f"sektör analizi: {s['sektor_sayisi']} sektör, profil {s['profil_sayisi']} → {a.rapor}")
+    return 0
+
+
 def ayristirici() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="yatirim_ajani", description="Araştıran, öneren, sanal işlem yapan yatırım ajanı")
     p.add_argument("--ayarlar", help="ayarlar.toml yolu")
@@ -1237,6 +1261,34 @@ def ayristirici() -> argparse.ArgumentParser:
     sp.add_argument("--rapor", help="Markdown rapor yolu")
     sp.add_argument("--yazdir", action="store_true")
     sp.set_defaults(islev=komut_strateji_istatistik)
+
+
+    sp = alt.add_parser("olay-calismasi", help="Havuzlanmış olay çalışması: tüm hisselerin olayları, tür ve büyüklüğe göre tepki; bot dal istatistiklerini günceller")
+    sp.add_argument("--dosya-db", default="veri/dosya/dosya.sqlite")
+    sp.add_argument("--cikti", default="veri/mimari/olay_calismasi.json")
+    sp.add_argument("--rapor", default="raporlar/olay-calismasi.md")
+    sp.add_argument("--istatistik", default="veri/mimari/strateji_istatistik.json", help="Bot dal istatistiklerinin yazılacağı dosya")
+    sp.add_argument("--yazdir", action="store_true")
+    sp.set_defaults(islev=komut_olay_calismasi)
+
+    sp = alt.add_parser("piyasa-analiz", help="Piyasa düzeyi: PPK/TÜFE günleri, rejimlere göre endeks/sektör/strateji")
+    sp.add_argument("--dosya-db", default="veri/dosya/dosya.sqlite")
+    sp.add_argument("--makro", default="dosya_kaynak/makro_seriler.json")
+    sp.add_argument("--rejimler", default="dosya_kaynak/makro_rejimler.json")
+    sp.add_argument("--islemler", default="veri/mimari/strateji_islemleri.csv.gz")
+    sp.add_argument("--cikti", default="veri/mimari/piyasa_analiz.json")
+    sp.add_argument("--rapor", default="raporlar/piyasa-analiz.md")
+    sp.add_argument("--yazdir", action="store_true")
+    sp.set_defaults(islev=komut_piyasa_analiz)
+
+
+    sp = alt.add_parser("sektor-analiz", help="Sektör endeksleri, rotasyon testi, makro/küresel sürücülere duyarlılık")
+    sp.add_argument("--dosya-db", default="veri/dosya/dosya.sqlite")
+    sp.add_argument("--ham", default="veri/dosya/ham")
+    sp.add_argument("--cikti", default="veri/mimari/sektor_analiz.json")
+    sp.add_argument("--rapor", default="raporlar/sektor-analiz.md")
+    sp.add_argument("--profil", action="append", help="Sektör profil JSON'u (tekrarlanabilir)")
+    sp.set_defaults(islev=komut_sektor_analiz)
 
     sp = alt.add_parser("yeniden-baslat", help="Düşüş sınırıyla durmuş sanal hesabı yeniden aç")
     sp.add_argument("--piyasa", choices=list(PIYASALAR), required=True)
