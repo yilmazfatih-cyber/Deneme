@@ -1,0 +1,238 @@
+{
+ "not": "FROTO olay çizelgesi (ajan araştırması, web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "FROTO",
+   "sektor": null,
+   "baslangic": "2024-04-08",
+   "bitis": "2024-04-16",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Ford Otosan 2023 kârından pay başına brüt 43,30 TL (net 38,97 TL) temettü; hak kullanım 8 Nisan 2024",
+   "anlam": "Teklif Mart 2024'te açıklandı; hak kullanım 8 Nisan, ödeme 16 Nisan 2024.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.7,
+   "etiketler": [
+    "temettü"
+   ],
+   "kaynaklar": [
+    "https://www.getmidas.com/midasin-kulaklari/ford-otosan-2024te-ne-kadar-temettu-odeyecek-froto-temettu-verimi-ve-gecmisi-p-36005",
+    "https://www.stockopedia.com/share-prices/ford-otomotiv-sanayi-as-IST:FROTO.E/news/brief-ford-otomotiv-proposes-to-pay-net-cash-profit-of-38-97-lira-per-share-019e6d7c-6e65-7c4f-a98c-2478bfc47fea/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 43.3,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "FROTO",
+   "sektor": null,
+   "baslangic": "2024-11-22",
+   "bitis": "2024-11-26",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Ford Otosan ara temettü: pay başına brüt 14,25 TL (net 12,825 TL); hak kullanım 22 Kasım 2024",
+   "anlam": "Kâr payı avansı niteliğinde ara dağıtım; ödeme 26 Kasım 2024.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.65,
+   "etiketler": [
+    "ara temettü"
+   ],
+   "kaynaklar": [
+    "https://www.getmidas.com/midasin-kulaklari/ford-otosan-2024te-ne-kadar-temettu-odeyecek-froto-temettu-verimi-ve-gecmisi-p-36005",
+    "https://piapiri.com/analizler/temettu-takvimi/ford-otosan-temettu-karari"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 14.25,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "FROTO",
+   "sektor": null,
+   "baslangic": "2025-03-26",
+   "bitis": "2025-04-03",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Ford Otosan 2024 kârından pay başına brüt 17,10 TL temettü, toplam 6,0 mlr TL; hak kullanım 3 Nisan 2025",
+   "anlam": "26 Mart 2025 genel kurulu brüt 6.000.561.000 TL nakit temettüyü onayladı (pay başına brüt 17,10, net 14,535 TL).",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.75,
+   "etiketler": [
+    "temettü"
+   ],
+   "kaynaklar": [
+    "https://www.ekonomist.com.tr/borsa/ford-froto-temettu-odeme-tarihi-ne-zaman-ne-kadar-dagitacak--58824",
+    "https://piapiri.com/analizler/temettu-takvimi/ford-otosan-temettu-karari"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 6000561000,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": 17.1,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "FROTO",
+   "sektor": null,
+   "baslangic": "2025-12-03",
+   "bitis": "2025-12-03",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Ford Otosan net 5,14 TL pay başına ara temettü; ödeme 3 Aralık 2025",
+   "anlam": "Midas, 2025'te iki kez temettü ödendiğini ve Aralık ödemesinin net 5,14 TL olduğunu yazıyor; brüt tutar ve hak kullanım günü görülmedi.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.4,
+   "etiketler": [
+    "ara temettü"
+   ],
+   "kaynaklar": [
+    "https://www.getmidas.com/midasin-kulaklari/ford-otosan-2025de-2-kez-temettu-odemesi-yapacak-p-193514"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "FROTO",
+   "sektor": null,
+   "baslangic": "2026-03-16",
+   "bitis": "2026-03-18",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Ford Otosan 2025 kârından pay başına net 3,09 TL temettü; ödeme 16-18 Mart 2026",
+   "anlam": "Infoyatirim: yönetim kurulu net 3,09 TL ödeme kararı aldı, ödeme 16 Mart, hesaplara geçiş 18 Mart 2026. 2025 net kârı %33 düşüşle 33,99 mlr TL. Brüt tutar görülmedi; tek kaynak.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.4,
+   "etiketler": [
+    "temettü",
+    "kâr düşüşü"
+   ],
+   "kaynaklar": [
+    "https://infoyatirim.com/blog/temettu/ford-otosan-2026-yilinda-hisse-basina-net-309-tl-temettu-odeme-karari-aldi",
+    "https://www.cnbce.com/otomotiv/ford-otosanin-kari-2025te-yuzde-33-geriledi-h24684"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 33990000000,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "FROTO",
+   "sektor": null,
+   "baslangic": "2026-03-13",
+   "bitis": "2026-03-13",
+   "kamuya_acilma": null,
+   "tur": "birlesme_devralma",
+   "baslik": "Ford Otosan Koç Finansman'ın %100'ünü 137 mn dolara satın alıyor",
+   "anlam": "13 Mart 2026 KAP: Koç Holding (%50), Arçelik (%47) ve diğer Koç şirketleri (%3) payları devredilecek; değer 137 mn dolar (kapanış düzeltmelerine tabi). Rekabet Kurumu onayı verildi, kapanış çalışmaları Temmuz 2026 itibarıyla sürüyordu. Grup içi işlem; finansman kolu FROTO bilançosuna girer.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.65,
+   "etiketler": [
+    "Koç Finansman",
+    "grup içi"
+   ],
+   "kaynaklar": [
+    "https://rotaborsa.com/?p=425670",
+    "https://infoyatirim.com/blog/borsanin-gozunden/koc-finansman-ford-otosana-geciyor",
+    "https://www.borsagundem.com.tr/ford-otosan-koc-finansman-paylarinin-tamamini-devraldi"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 137000000.0,
+    "para_birimi": "USD",
+    "oran": 1.0,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "FROTO",
+   "sektor": null,
+   "baslangic": "2026-11-27",
+   "bitis": "2026-11-27",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Ford Otosan 10,77 mlr TL toplam brüt ara temettü önerisi; hak kullanım 27 Kasım 2026",
+   "anlam": "Bir kaynakta yönetim kurulu toplam 10.772.937 bin TL nakit kâr payı önerdi, hak kullanım tarihi 27 Kasım 2026; karar günü görülmedi. Pay başına tutar hesaplanmadı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.35,
+   "etiketler": [
+    "ara temettü"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/frotodan-yatirimcilarina-nakit-temettu-hisse-basina-ne-kadar-odenecek/",
+    "https://borsacoo.com/bildirim/76172"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 10772937000,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

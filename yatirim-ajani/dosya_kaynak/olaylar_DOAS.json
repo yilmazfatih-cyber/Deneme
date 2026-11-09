@@ -1,0 +1,106 @@
+{
+ "not": "DOAS olay çizelgesi (ajan araştırması, web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "DOAS",
+   "sektor": null,
+   "baslangic": "2025-03-01",
+   "bitis": "2025-03-01",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Doğuş Otomotiv 4Ç24 net kâr 1,2 mlr TL, beklenti 633,5 mn TL (tarih yaklaşık)",
+   "anlam": "Dördüncü çeyrekte beklentinin yaklaşık iki katı net kâr açıklandı (Paratic: 'beklentiyi ikiye katladı'). Açıklama günü görülmedi; 1 Mart 2025 yer tutucudur (Şubat-Mart).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.3,
+   "etiketler": [
+    "bilanço",
+    "4Ç24"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/dogus-otomotiv-2024-net-kariyla-beklentiyi-ikiye-katladi/",
+    "https://piapiri.com/analizler/arastirma-raporlari/dogus-otomotiv-4-ceyrek-2024-sonuclari"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 1200000000,
+    "beklenti": 633500000,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "DOAS",
+   "sektor": null,
+   "baslangic": "2025-05-20",
+   "bitis": "2025-05-22",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Doğuş Otomotiv lot başına 23,18 TL temettü; hak kullanım 20 Mayıs 2025, ödeme 22 Mayıs",
+   "anlam": "Kaynak 'lot başına 23,18 TL' diyor; brüt/net ayrımı belirtilmemiş.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.45,
+   "etiketler": [
+    "temettü"
+   ],
+   "kaynaklar": [
+    "https://bigpara.hurriyet.com.tr/borsa-haberleri/galeri-doas-temettu-tarihi-2025-belli-oldu-mu-dogus-otomotiv-doas-temettu-odemesi-ne-zaman-yapilacak_ID1609535/",
+    "https://kap.org.tr/en/api/BildirimPdf/1589325"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 23.18,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "DOAS",
+   "sektor": null,
+   "baslangic": "2026-04-08",
+   "bitis": "2026-08-13",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Doğuş Otomotiv iki taksit temettü: toplam net 25,5 TL; taksitler 13 Nisan ve 13 Ağustos 2026",
+   "anlam": "8 Nisan 2026 KAP ödeme takvimi; Rota Borsa 13 Ağustos taksiti için brüt 15 TL/net 12,75 TL diyor, toplam net 25,5 TL ile uyumlu görünüyor. Brüt toplam hesaplanmadı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.45,
+   "etiketler": [
+    "temettü",
+    "taksit"
+   ],
+   "kaynaklar": [
+    "https://kap.org.tr/en/api/BildirimPdf/1589325",
+    "https://rotaborsa.com/?p=468755"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

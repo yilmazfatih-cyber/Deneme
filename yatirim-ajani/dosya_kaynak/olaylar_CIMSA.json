@@ -1,0 +1,141 @@
+{
+ "not": "CIMSA olay çizelgesi (ajan araştırması, web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "CIMSA",
+   "sektor": null,
+   "baslangic": "2024-08-28",
+   "bitis": "2024-08-28",
+   "kamuya_acilma": null,
+   "tur": "birlesme_devralma",
+   "baslik": "Çimsa İrlandalı Mannok'un %94,7'sini satın almak için anlaştı (işletme değeri 330 mn euro)",
+   "anlam": "Hisse alım sözleşmesi Ağustos 2024'te imzalandı (KAP 28 Ağustos; kaynaklarda 26-28 Ağustos farkı). Toplam şirket değeri 330 mn euro, %94,7 pay için borç düşülmüş bedel 253,48 mn euro. Çimsa yabancı para gelirinin payını %70 üzerine çıkarmayı ve AB/İngiltere karbon rejimi içinde üretici olmayı hedefliyor.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.8,
+   "etiketler": [
+    "Mannok",
+    "İrlanda",
+    "satın alma"
+   ],
+   "kaynaklar": [
+    "https://www.ekonomist.com.tr/sirketler/cimsa-dan-yurt-disinda-330-milyon-euroluk-satin-alma--52672",
+    "https://www.bloomberght.com/cimsa-dan-yurt-disinda-satin-alma-2359127",
+    "https://globalconstructionreview.com/turkeys-cimsa-to-buy-northern-irelands-mannok-for-e330m"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 330000000.0,
+    "para_birimi": "EUR",
+    "oran": 0.947,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "CIMSA",
+   "sektor": null,
+   "baslangic": "2024-10-02",
+   "bitis": "2024-10-02",
+   "kamuya_acilma": null,
+   "tur": "birlesme_devralma",
+   "baslik": "Çimsa Mannok devrini tamamladı",
+   "anlam": "Kapanış tarihi iki kaynakta 2 Ekim 2024 (CNBC-e, financialreports); Paratic 2 Eylül diyor, çelişki var. İşlemle Mannok'un İrlanda ve Kuzey İrlanda tesisleri (Ballyconnell ~1,4 Mt, Derrylin ~0,45 Mt) Çimsa'ya geçti.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.5,
+   "etiketler": [
+    "Mannok",
+    "kapanış"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/borsa/bist-100un-dev-cimento-sirketi-yeni-satin-almayi-kapa-acikladi-sirketin-tam-kontrolunu-sagladi-h30593",
+    "https://financialreports.eu/filings/6619104/content"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": 0.947,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "CIMSA",
+   "sektor": null,
+   "baslangic": "2025-02-26",
+   "bitis": "2025-04-04",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Çimsa pay başına brüt 0,6345 TL (net 0,5393 TL) temettü; hak kullanım 2 Nisan 2025",
+   "anlam": "KAP bildirimi 26 Şubat 2025; hak kullanım tarihi 2 Nisan, ödeme 4 Nisan 2025.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.8,
+   "etiketler": [
+    "temettü"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/cimsa-cimento-yatirimcilarina-0-6-2-tl-temettu-verecek/",
+    "https://www.hisse.net/borsa/hisseler/cimsa-cimsa/sermayetemettu"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 0.6345237,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "CIMSA",
+   "sektor": null,
+   "baslangic": "2026-03-30",
+   "bitis": "2026-04-01",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Çimsa 2025 kârından pay başına brüt 0,7403 TL (net 0,6292 TL), toplam 700 mn TL temettü",
+   "anlam": "Yönetim kurulu teklifi 30 Mart 2026 genel kurulunda görüşüldü; hak kullanım tarihi 1 Nisan 2026. Önceki yıla göre pay başına %17 artış.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.7,
+   "etiketler": [
+    "temettü"
+   ],
+   "kaynaklar": [
+    "https://infoyatirim.com/blog/temettu/cimsa-2026-temettu-karari",
+    "https://www.finansopia.com/kap-bildirimleri/cimsa-cimento-cimsa-2026-yili-temettu-kararini-acikladi/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 700000000.0,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": 0.7402776,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

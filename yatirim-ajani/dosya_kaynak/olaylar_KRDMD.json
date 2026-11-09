@@ -1,0 +1,139 @@
+{
+ "not": "KRDMD olay çizelgesi (ajan araştırması, web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "KRDMD",
+   "sektor": null,
+   "baslangic": "2025-03-21",
+   "bitis": "2025-03-21",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Kardemir 2025 yılında hiçbir pay grubuna nakit temettü dağıtmama kararı aldı",
+   "anlam": "KAP'a bildirilen teklif genel kurulda oy çokluğuyla kabul edildi; açıklama tarihi kaynaklarda 13 veya 21 Mart olarak çelişiyor. Haber akışında hisse 21 Mart seansını yaklaşık %10 düşüşle 28,7 TL'den kapattı. Son nakit temettü 2023'te brüt 0,22 TL idi; 2024 zararı nedeniyle dağıtım beklentisi zayıftı.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "Kaynaklı aktarım: hisse 21 Mart 2025'te yaklaşık %10 düştü (28,7 TL).",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.5,
+   "etiketler": [
+    "temettü yok"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/kardemir-krdmd-2025-yilina-iliskin-temettu-kararini-acikladi/",
+    "https://paratic.com/hissesi-taban-olan-kardemir-2025te-temettu-dagitacak-mi/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "KRDMD",
+   "sektor": null,
+   "baslangic": "2026-09-25",
+   "bitis": "2027-01-25",
+   "kamuya_acilma": null,
+   "tur": "geri_alim",
+   "baslik": "Kardemir azami 750 mn TL'lik, 4 aylık pay geri alım programı başlattı (sermayenin %1'i)",
+   "anlam": "25 Eylül 2026 yönetim kurulu kararıyla en fazla 11,4 mn TL nominal (çıkarılmış sermayenin %1'i) geri alınabilecek, ayrılan fon 750 mn TL, süre 4 ay. 13 Ekim 2026'da 175.107 TL nominal KRDMD payı 43,44-43,66 TL aralığında alındı. Pay grubu ve fiyat üst sınırı kaynaklarda net değil.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.75,
+   "etiketler": [
+    "geri alım"
+   ],
+   "kaynaklar": [
+    "https://www.foreks.com/haber/detay/6ab8d4ba95016b5817e60c66/FRKS/tr/kardemir-azami-750-milyon-lira-tutarli-geri-alim-programi-baslatma-karari-aldi-27-09-26/",
+    "https://www.qnbinvest.com.tr/investodak/qnbarastirma/kardemir-750-milyon-tllik-pay-geri-alim-programi-acikladi",
+    "https://www.hisse.net/haber/krdmd-hisselerinden-175-bin-lotluk-geri-alim-102016"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 750000000,
+    "para_birimi": "TRY",
+    "oran": 0.01,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": 4
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "KRDMD",
+   "sektor": null,
+   "baslangic": "2025-08-01",
+   "bitis": "2025-08-01",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Kardemir 2Ç25 net kâr 1,316 mlr TL; beklenti yalnızca 62 mn TL (tarih yaklaşık)",
+   "anlam": "İkinci çeyrekte 1.316.175.998 TL net kâr açıklandı, ortalama beklenti 62 mn TL'ydi (çok büyük pozitif sapma). Önceki çeyrek zararlıydı. Açıklama günü kaynaklarda görülmediği için 1 Ağustos 2025 yalnızca yer tutucudur (ay doğruluğu).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.3,
+   "etiketler": [
+    "bilanço",
+    "2Ç25"
+   ],
+   "kaynaklar": [
+    "https://rotaborsa.com/kardemir-demir-celik-krdmd-2025-2-ceyrek-bilancosunda-net-kar-beklentileri-asti/",
+    "https://www.qnbinvest.com.tr/investodak/qnbarastirma/kardemir-krdmd-2c25-bilanco-degerlendirmesi"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 1316175998,
+    "beklenti": 62000000,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "KRDMD",
+   "sektor": null,
+   "baslangic": "2026-08-01",
+   "bitis": "2026-08-01",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Kardemir 2026 ilk yarı net kâr 5,98 mlr TL; geçen yıl aynı dönemde 335,8 mn TL zarar (tarih yaklaşık)",
+   "anlam": "CNBC-e'ye göre ilk yarıda 5,98 mlr TL net kâr açıklandı ve zarardan kâra dönüş sağlandı. Açıklama günü ve rakamın 9 aylık 6,58 mlr TL ile uyumu doğrulanamadı; 1 Ağustos 2026 yer tutucudur (ay doğruluğu).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.3,
+   "etiketler": [
+    "bilanço",
+    "zarardan kâra"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/borsa/kardemir-bilancosunu-acikladi-598-milyar-tl-net-kar-h35073"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 5980000000,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

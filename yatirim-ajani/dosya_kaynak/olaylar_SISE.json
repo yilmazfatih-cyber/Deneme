@@ -1,0 +1,208 @@
+{
+ "not": "SISE olay çizelgesi (ajan araştırması, web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "SISE",
+   "sektor": null,
+   "baslangic": "2024-12-26",
+   "bitis": "2024-12-26",
+   "kamuya_acilma": null,
+   "tur": "birlesme_devralma",
+   "baslik": "Şişecam, Ciner Grubu'nun ABD soda külü şirketlerindeki paylarını 285,4 mn dolara satın alma anlaşması imzaladı",
+   "anlam": "Şişecam Wyoming/Chemicals Resources (dolaylı %20,4) ve Pacific Soda'daki (%40) Ciner paylarının alımı için 26 Aralık 2024'te anlaşıldı; bedel geliştirme bedeli dahil 285,39 mn dolar. Şişecam'ın Pacific Soda'daki payı %100'e çıkıyor; yıllık 5 Mt doğal soda külü projesi tamamen Şişecam'a geçti.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.75,
+   "etiketler": [
+    "Ciner",
+    "soda külü",
+    "ABD"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/sisecamdan-285-milyon-dolarlik-yatirim-karari/",
+    "https://www.bloomberght.com/sisecam-abd-de-soda-kulu-operasyonlarinda-tum-hisseleri-aldi-3738050",
+    "https://www.cnbce.com/haberler/sisecam-abddeki-soda-yatirim-ve-operasyonlarinda-ciner-grubuna-ait-paylarin-tamamini-satin-aldi-h8029"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 285390000.0,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "SISE",
+   "sektor": null,
+   "baslangic": "2025-02-27",
+   "bitis": "2025-02-27",
+   "kamuya_acilma": null,
+   "tur": "bedelli",
+   "baslik": "Şişecam kayıtlı sermaye tavanını 5 mlr TL'den 20 mlr TL'ye çıkarma önerisi",
+   "anlam": "27 Şubat 2025'te yönetim kurulu tavan artışını önerdi, genel kurul 20 mlr TL'yi onayladı. Tavan artışı kendi başına sermaye artırımı değildir; ileride bedelli/bedelsiz için alan açar.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.55,
+   "etiketler": [
+    "kayıtlı sermaye tavanı"
+   ],
+   "kaynaklar": [
+    "https://rotaborsa.com/?p=466682",
+    "https://www.borsaningundemi.com/haber/sise-cam-sermaye-artirimi-icin-basvurdu-90754"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 20000000000.0,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "SISE",
+   "sektor": null,
+   "baslangic": "2025-05-30",
+   "bitis": "2025-06-03",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Şişecam pay başına brüt 0,6529 TL (net 0,5550 TL) temettü; hak kullanım 30 Mayıs 2025",
+   "anlam": "2024 kârından dağıtım; ödeme tarihi 3 Haziran (bir kaynak 6 Haziran diyor).",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.7,
+   "etiketler": [
+    "temettü"
+   ],
+   "kaynaklar": [
+    "https://www.capital.com.tr/haberler/tum-haberler/sisecam-sise-ne-zaman-ne-kadar-temettu-dagitacak-2025",
+    "https://piapiri.com/analizler/temettu-takvimi/sisecam-2025-temettu-karari"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 0.6529089,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "SISE",
+   "sektor": null,
+   "baslangic": "2026-06-01",
+   "bitis": "2026-06-03",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Şişecam 2025 kârından pay başına brüt 0,5876 TL (net 0,4995 TL) temettü; hak kullanım 1 Haziran 2026",
+   "anlam": "Bir kaynakta brüt 0,59, diğerinde 0,49 TL (net) geçiyor; net/brüt farkıyla tutarlı. Önceki yıla göre pay başına düşüş.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.7,
+   "etiketler": [
+    "temettü"
+   ],
+   "kaynaklar": [
+    "https://infoyatirim.com/blog/temettu/sisecam-sise-2026-temettu-karari",
+    "https://piapiri.com/analizler/temettu-takvimi/sisecam-2025-temettu-karari"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 0.587618,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "SISE",
+   "sektor": null,
+   "baslangic": "2026-02-16",
+   "bitis": "2026-02-16",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Şişecam 4Ç25 net kâr 3,88 mlr TL, beklenti 1,77 mlr TL; önceki yılın aynı çeyreği zararlı",
+   "anlam": "Bilanço 16 Şubat 2026'da KAP'ta; 4Ç25'te 3.884.677.000 TL net kâr açıklandı, anket beklentisi 1,77 mlr TL (yaklaşık +%120 sapma). Bir kaynak 4Ç24'te 1,93 mlr TL zarar olduğunu yazıyor (zarardan kâra). Yıllık 2025 kâr rakamı kaynaklarda tutarsız, burada kullanılmadı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.5,
+   "etiketler": [
+    "bilanço",
+    "4Ç25"
+   ],
+   "kaynaklar": [
+    "https://www.finansopia.com/kap-bildirimleri/sisecam-sise-2025-yili-4-ceyrek-bilancosunu-acikladi/",
+    "https://www.gcmyatirim.com.tr/arastirma-analiz/ozel-raporlar/2026-02-17-sise-cam-sise-2025-4-ceyrek-bilanco-analizi"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 3884677000,
+    "beklenti": 1770000000,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "SISE",
+   "sektor": null,
+   "baslangic": "2026-03-16",
+   "bitis": "2026-03-16",
+   "kamuya_acilma": null,
+   "tur": "yatirim",
+   "baslik": "Şişecam TR9 düzcam tesisini devreye aldı; toplam düzcam kapasitesi ~5,1 mn ton",
+   "anlam": "Şirket TR9 düzcam hattını 16 Mart 2026'da devreye aldı, toplam düzcam kapasitesi yılda yaklaşık 5,1 mn tona çıktı. Yatırım tutarı kaynakta yok.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.5,
+   "etiketler": [
+    "düzcam",
+    "kapasite"
+   ],
+   "kaynaklar": [
+    "https://rotaborsa.com/?p=466682",
+    "https://www.sisecam.com/en/press-releases/sisecams-net-sales-reached-57-5-billion-try-in-the-first-quarter-of-2026"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

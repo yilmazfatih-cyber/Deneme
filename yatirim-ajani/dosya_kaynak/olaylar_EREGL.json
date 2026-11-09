@@ -1,0 +1,243 @@
+{
+ "not": "EREGL olay çizelgesi (ajan araştırması, web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "EREGL",
+   "sektor": null,
+   "baslangic": "2024-05-08",
+   "bitis": "2024-05-08",
+   "kamuya_acilma": "2024-05-08T18:30",
+   "tur": "bedelsiz",
+   "baslik": "Erdemir %100 bedelsiz sermaye artırımı için SPK'ya başvurdu (3,5 mlr TL -> 7 mlr TL)",
+   "anlam": "Yönetim kurulu 28 Şubat 2024'te %100 bedelsiz artırım kararı almıştı; 8 Mayıs 2024 seans sonrası KAP bildirimiyle SPK başvurusu yapıldı. Kaynak, iç kaynaklardan (sermaye düzeltme farkları) sermayenin 3,5 mlr TL'den 7 mlr TL'ye çıkarılmasını öngörüyordu. Payların ikiye katlanması likidite ve lot sayısını artırır.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.65,
+   "etiketler": [
+    "bedelsiz",
+    "SPK başvurusu"
+   ],
+   "kaynaklar": [
+    "https://paraajansi.com.tr/gundem/borsanin-devi-eregl-lotlari-2ye-katliyor-100-bedelsiz-19386677h",
+    "https://www.ekonomist.com.tr/borsa/erdemir-eregli-demir-celik-den-eregl-bedelsiz-kararinda-degisiklik-52976"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": 1.0,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "EREGL",
+   "sektor": null,
+   "baslangic": "2024-11-21",
+   "bitis": "2024-11-27",
+   "kamuya_acilma": null,
+   "tur": "bedelsiz",
+   "baslik": "SPK Erdemir'in %100 bedelsiz artırımını onayladı; bedelsiz hakkı 27 Kasım 2024'te",
+   "anlam": "SPK 21 Kasım 2024 tarihli bülteninde (2024/53) esas sözleşme değişikliğini onayladı, şirket 22 Kasım'da KAP'a bildirdi. Sermaye 3,5 mlr TL'den 7 mlr TL'ye çıktı; bedelsiz hak kullanım tarihi 27 Kasım 2024, ticaret sicil tescili 19 Aralık 2024. Fiyat bölünmesi nedeniyle ekran fiyatı yarıya iner, ekonomik değer değişmez.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.8,
+   "etiketler": [
+    "bedelsiz",
+    "SPK onayı"
+   ],
+   "kaynaklar": [
+    "https://www.steelradar.com/spk-eregli-demir-celikin-bedelsiz-sermaye-artirimina-onay-verdi/",
+    "https://rotaborsa.com/erdemir-eregli-demir-celik-eregl-9-bedelsiz-sermaye-artirimi-yapti/",
+    "https://www.ekonomist.com.tr/borsa/eregli-den-bedelsiz-ve-temettu-aciklamasi-48119"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": 1.0,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "EREGL",
+   "sektor": null,
+   "baslangic": "2025-05-21",
+   "bitis": "2025-07-04",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Erdemir pay başına brüt 0,25 TL (net 0,2125 TL) temettü; hak kullanım Temmuz 2025",
+   "anlam": "26 Mart 2025 genel kurulu pay başına brüt 0,25 TL temettü kabul etti; 21 Mayıs 2025 yönetim kurulu kararıyla dağıtım takvimi belirlendi. Kaynaklarda hak kullanım/ödeme tarihi 2-4 Temmuz arasında farklı aktarılıyor. Düşük karlılık dönemine rağmen simgesel bir nakit dağıtımdır.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.5,
+   "etiketler": [
+    "temettü"
+   ],
+   "kaynaklar": [
+    "https://www.capital.com.tr/haberler/tum-haberler/erdemir-eregli-demir-celik-eregl-temettu-odeme-tarihi-2025",
+    "https://www.ekonomist.com.tr/borsa/erdemir-eregli-demir-celik-eregl-temettu-tarihi-belli-oldu-2025-60307"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 0.25,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "EREGL",
+   "sektor": null,
+   "baslangic": "2026-06-03",
+   "bitis": "2026-06-03",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Erdemir 2025 kârından pay başına brüt 0,55 TL (net 0,4675 TL) temettü",
+   "anlam": "2026 genel kurulu 2025 mali yılı için pay başına brüt 0,55 TL temettü kararı aldı; bir kaynak hak kullanım tarihini 3 Haziran 2026 olarak veriyor. Önceki yılın (0,25 TL) iki katından fazla ancak tarih tek kaynaktan.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.4,
+   "etiketler": [
+    "temettü"
+   ],
+   "kaynaklar": [
+    "https://www.capital.com.tr/haberler/tum-haberler/erdemir-eregli-demir-celik-eregl-temettu-odeme-tarihi-2025",
+    "https://www.cnbce.com/borsa/borsa-dev-sirketten-temettu-karari-ne-kadar-kar-payi-dagitacak-erdemir-eregli-hisse-eregl-hisse-eregl-temettu-temettu-hisseler-2026-h27368"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 0.55,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "EREGL",
+   "sektor": null,
+   "baslangic": "2024-10-01",
+   "bitis": "2024-10-31",
+   "kamuya_acilma": null,
+   "tur": "regulasyon",
+   "baslik": "Türkiye Çin, Hindistan, Japonya, Rusya çıkışlı sıcak haddelenmiş yassı çeliğe damping vergisi uyguladı (%6,10-43,31)",
+   "anlam": "Türk Çelik Üreticileri Derneği'nin (Erdemir dahil) şikayetiyle başlatılan soruşturma sonunda Ekim 2024'ten itibaren %6,10-43,31 aralığında önlem uygulandı. Erdemir'in ana ürün grubunda ithalat baskısını azaltıcı yönde. Tam yürürlük günü kaynakta yok (ay doğruluğu).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.4,
+   "etiketler": [
+    "antidamping",
+    "HRC",
+    "ithalat"
+   ],
+   "kaynaklar": [
+    "https://eurometal.net/turkey-determines-dumping-margins-on-hrc-imports-from-china-india-japan-and-russia/",
+    "https://www.argusmedia.com/zh/news-and-insights/latest-market-news/2617292-turkey-levies-hrc-anti-dumping-duties-on-four-countries"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "EREGL",
+   "sektor": null,
+   "baslangic": "2025-08-30",
+   "bitis": "2025-08-30",
+   "kamuya_acilma": null,
+   "tur": "regulasyon",
+   "baslik": "Güney Kore çıkışlı sıcak haddelenmiş kalın saca %4,34-9,40 kesin damping vergisi (Erdemir'in başvurusu)",
+   "anlam": "Ticaret Bakanlığı kararı 30 Ağustos 2025 Resmi Gazete'de yayımlandı; soruşturma Erdemir'in şikayetiyle açılmıştı. Oranlar CIF değerin %4,34-9,40'ı; Argus, oranların düşük olduğunu ve Kore satışlarının sürmesinin beklendiğini yazıyor.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.55,
+   "etiketler": [
+    "antidamping",
+    "kalın sac"
+   ],
+   "kaynaklar": [
+    "https://iiu.isit.or.th/en/news/Business news/Content-7800.aspx",
+    "https://www.argusmedia.com/pt/news-and-insights/latest-market-news/2727044-turkey-imposes-4-9pc-ad-duties-on-s-korean-hrp"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "EREGL",
+   "sektor": null,
+   "baslangic": "2026-02-25",
+   "bitis": "2026-02-25",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Erdemir 2025: net kâr 511,8 mn TL (2024: 13,48 mlr TL); 4Ç25 net zarar 1,87 mlr TL, beklenti -2,72 mlr TL",
+   "anlam": "2025 yıllık net dönem kârı 13,48 mlr TL'den 511,8 mn TL'ye geriledi (yaklaşık -%96). 4Ç25'te -1,872 mlr TL net zarar açıklandı; Matriks anketi -2,718 mlr TL idi (beklentiden iyi). Açıklama günü kaynaklarda net olmadığından tarih yaklaşıktır (analist raporu 25 Şubat 2026).",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.35,
+   "etiketler": [
+    "bilanço",
+    "4Ç25"
+   ],
+   "kaynaklar": [
+    "https://www.finansopia.com/kap-bildirimleri/erdemir-eregli-demir-celik-eregl-2025-yili-4-ceyrek-bilancosunu-acikladi/",
+    "https://paratic.com/net-kar-beklentiyi-asti-eregl-hedef-fiyatlari-aciklaniyor/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": -1872300000,
+    "beklenti": -2717800000,
+    "sure_ay": null
+   }
+  }
+ ]
+}

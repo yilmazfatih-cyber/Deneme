@@ -1,0 +1,177 @@
+{
+ "not": "OYAKC olay çizelgesi (ajan araştırması, web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "OYAKC",
+   "sektor": null,
+   "baslangic": "2024-03-06",
+   "bitis": "2024-03-06",
+   "kamuya_acilma": null,
+   "tur": "pay_satisi",
+   "baslik": "TCC-OYAK hisse devri tamamlandı; Taiwan Cement Cimpor/OYAK Denizli yapısında pay aldı (740 mn dolar nakit)",
+   "anlam": "OYAK ile Taiwan Cement Corporation arasındaki 11 Aralık 2023 anlaşması uyarınca devir 6 Mart 2024'te gerçekleşti; OYAK'ın Cimpor Portugal Holdings'teki %60 payının satışı (işletme değeri 800 mn euro) Türkiye'ye 740 mn dolar nakit girişi sağlayacaktı. Yapının OYAKC'ye etkisi kaynaklarda net değil, ortaklık yapısı açıklamaları karışık.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.4,
+   "etiketler": [
+    "TCC",
+    "OYAK",
+    "Cimpor"
+   ],
+   "kaynaklar": [
+    "https://www.capital.com.tr/haberler/tum-haberler/oyak-ve-tcc-arasinda-740-milyon-dolarlik-imza",
+    "https://www.bloomberght.com/oyak-ve-tcc-arasindaki-isbirliginde-imzalar-atildi-2343618",
+    "https://www.dha.com.tr/ekonomi/oyak-ile-tcc-arasinda-740-milyon-dolarlik-is-birligi-anlasmasi-imzalandi-2357610"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 740000000.0,
+    "para_birimi": "USD",
+    "oran": 0.6,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "OYAKC",
+   "sektor": null,
+   "baslangic": "2025-10-30",
+   "bitis": "2025-10-30",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "OYAK Çimento 2024 kârından pay başına brüt 1,00 TL (net 0,85 TL) temettü ödedi",
+   "anlam": "2024 olağan genel kurulunda kabul edilen temettü için hak kullanım ve ödeme tarihi kaynaklarda 30 Ekim 2025 olarak veriliyor (olağandışı geç tarih; bir kaynakta farklı anlatım olabilir).",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.5,
+   "etiketler": [
+    "temettü"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/oyak-cimento-oyakc-2025-yili-temettu-kararini-acikladi/",
+    "https://ekofin.net/sirket/detay/OYAKC/sermaye-ve-temettuler/temettuler"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 1.0,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "OYAKC",
+   "sektor": null,
+   "baslangic": "2026-03-31",
+   "bitis": "2026-03-31",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "OYAK Çimento 2025 kârından temettü dağıtmama; odak büyüme yatırımları",
+   "anlam": "2025 net kârı 8,8 mlr TL (net satış 56,5 mlr TL) olmasına rağmen QNB ve haber kaynakları kâr payı dağıtılmayacağını yazıyor; olağan genel kurul 31 Mart 2026, tescil 2 Nisan 2026. Karar metni görülmedi, kaynaklar çelişkili.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.4,
+   "etiketler": [
+    "temettü yok",
+    "büyüme yatırımı"
+   ],
+   "kaynaklar": [
+    "https://www.qnbinvest.com.tr/investodak/qnbarastirma/oyak-cimento-temettu-dagitmiyor-nakit-guclu-odak-yatirimda",
+    "https://paratic.com/oyak-cimentonun-2025-net-kari-8-8-milyar-tl-oldu/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 8800000000,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "OYAKC",
+   "sektor": null,
+   "baslangic": "2026-08-14",
+   "bitis": "2026-08-14",
+   "kamuya_acilma": null,
+   "tur": "birlesme_devralma",
+   "baslik": "TCC yeni yapılanma planı: Cimpor International yurt dışı borsalarda işlem görecek; OYAKC'nin BIST statüsü değişmeyecek",
+   "anlam": "KAP bildirimi 14 Ağustos 2026 tarihli; plan çimento faaliyetlerini uluslararası tek platformda toplamayı hedefliyor, şirket Borsa İstanbul işlem statüsünün ve faaliyetlerinin değişmeyeceğini belirtti. Ayrıntı ve oranlar kaynaklarda yok.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.5,
+   "etiketler": [
+    "TCC",
+    "Cimpor International",
+    "yapılanma"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/borsa/oyak-cimento-icin-dikkat-ceken-gelisme-yeni-yapilanma-sureci-basliyor-h35076",
+    "https://kap.org.tr/en/api/BildirimPdf/1650583"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "OYAKC",
+   "sektor": null,
+   "baslangic": "2026-11-06",
+   "bitis": "2026-12-07",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "OYAK Çimento geçmiş yıl kârlarından 2,43 mlr TL brüt (pay başına 0,50 TL) temettüyü olağanüstü genel kurula sundu",
+   "anlam": "6 Kasım 2026 yönetim kurulu kararı: 2.430.827.892 TL brüt nakit temettü (pay başına brüt 0,50 TL, net 0,425 TL), ödeme önerisi 7 Aralık 2026; OGK onayına bağlı. Mart'taki dağıtmama kararından sonra gelen sürpriz.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.75,
+   "etiketler": [
+    "temettü",
+    "OGK"
+   ],
+   "kaynaklar": [
+    "https://www.foreks.com/haber/detay/6aee04ab4b1852391445dc85/PICNEWS/tr/oyak-cimento-dan-2-43-milyar-tl-lik-temettu-dagitim-onerisi-06-11-26/",
+    "https://paratic.com/oyak-cimentodan-oyakc-2-4-milyar-tl-temettu-onerisi/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 2430827892,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": 0.5,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

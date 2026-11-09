@@ -1,0 +1,187 @@
+{
+ "not": "BRSAN olay çizelgesi (ajan araştırması, web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "BRSAN",
+   "sektor": null,
+   "baslangic": "2025-10-31",
+   "bitis": "2025-10-31",
+   "kamuya_acilma": null,
+   "tur": "yeni_is",
+   "baslik": "Borusan Berg Pipe ABD'de 686 mn dolarlık yeni hat borusu siparişi aldı",
+   "anlam": "KAP'a göre sevkiyatlar 2026-2027'de yapılacak; şirket 2026 konsolide gelire yaklaşık 230 mn dolar, 2027'ye yaklaşık 456 mn dolar katkı bekliyor. Büyük çaplı hat borusu siparişi şirketin gelir görünürlüğünü artırır.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.85,
+   "etiketler": [
+    "ABD",
+    "hat borusu",
+    "sipariş",
+    "2026-2027 sevkiyat"
+   ],
+   "kaynaklar": [
+    "https://www.bloomberght.com/borusan-in-abd-istirakine-yuklu-siparis-3760458",
+    "https://paratic.com/borusanin-abdli-bagli-ortakligina-686-milyon-dolarlik-yeni-is/",
+    "https://www.yatirimx.com.tr/sirket-haberleri/brsanin-kasasi-doldu-abd-isi-686-milyon-dolar/14400"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 686000000.0,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "BRSAN",
+   "sektor": null,
+   "baslangic": "2026-04-24",
+   "bitis": "2026-04-24",
+   "kamuya_acilma": null,
+   "tur": "yeni_is",
+   "baslik": "Borusan Berg Pipe ABD'de yaklaşık 100 mn dolarlık yeni sipariş aldı",
+   "anlam": "24 Nisan 2026 KAP bildirimi: büyük çaplı hat borularının 2027'de üretilip sevk edilmesi bekleniyor ve aynı yıl konsolide gelire yansıyacak.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.8,
+   "etiketler": [
+    "ABD",
+    "hat borusu",
+    "sipariş",
+    "2027 sevkiyat"
+   ],
+   "kaynaklar": [
+    "https://kap.org.tr/tr/api/BildirimPdf/1597236",
+    "https://www.foreks.com/haber/detay/69ebac0967ad3132ebe2c8c1/PICNEWS/tr/borusan-berg-pipe-abd-den-yeni-siparis-aldi-24-04-26/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 100000000.0,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "BRSAN",
+   "sektor": null,
+   "baslangic": "2026-06-01",
+   "bitis": "2026-06-01",
+   "kamuya_acilma": null,
+   "tur": "yeni_is",
+   "baslik": "Borusan Boru'nun ABD iştirakine yaklaşık 742 mn dolarlık yeni satış siparişi",
+   "anlam": "Üretimin ağırlıklı kısmı 2027'de, kalanı 2028 ilk çeyreğinde tamamlanacak. Nisan'daki 100 mn dolarla birlikte iki ayda 842 mn dolarlık sipariş birikti (CNBC-e hesabı). Tarih 1 Haziran 2026; bir başka özet Temmuz diyor, çelişki var.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.65,
+   "etiketler": [
+    "ABD",
+    "hat borusu",
+    "sipariş",
+    "2027-2028 sevkiyat"
+   ],
+   "kaynaklar": [
+    "https://www.bloomberght.com/borusan-abd-de-yaklasik-742-milyon-dolarlik-yeni-siparis-aldi-3778695",
+    "https://www.ekonomist.com.tr/borsa/kap-a-bildirdi-borusan-dan-abd-de-742-milyon-dolarlik-sozlesme-74948",
+    "https://www.cnbce.com/borsa/bist-100-sirketi-kapa-duyurdu-abddeki-istirakinden-742-milyon-dolarlik-yeni-siparis-h30813"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 742000000.0,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "BRSAN",
+   "sektor": null,
+   "baslangic": "2026-08-13",
+   "bitis": "2026-08-13",
+   "kamuya_acilma": null,
+   "tur": "yeni_is",
+   "baslik": "Borusan Boru ABD iştiraki farklı müşterilerden yaklaşık 360 mn dolarlık sipariş aldı",
+   "anlam": "KAP bildirimine göre büyük kısmı 2027'de, kalanı 2028'de gelire yansıyacak. Arka arkaya gelen ABD siparişleri doğal gaz/hat borusu talebini gösteriyor.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.75,
+   "etiketler": [
+    "ABD",
+    "hat borusu",
+    "sipariş",
+    "2027-2028 sevkiyat"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/borsa/borsanin-sanayi-sirketinden-abdde-dev-siparis-360-milyon-dolarlik-yeni-anlasma-borusan-borudan-abdde-dev-siparis-360-milyon-dolarlik-yeni-anlasma-h35001"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 360000000.0,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "BRSAN",
+   "sektor": null,
+   "baslangic": "2026-08-21",
+   "bitis": "2026-08-21",
+   "kamuya_acilma": null,
+   "tur": "yeni_is",
+   "baslik": "Borusan Boru'ya ABD'den yaklaşık 555 mn dolarlık sipariş; 2028'de gelire yansıyacak",
+   "anlam": "KAP: üretim ve sevkiyat 2028'de olacak. SteelRadar 553 mn, diğer kaynaklar 555 mn dolar yazıyor (rakam farkı).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.7,
+   "etiketler": [
+    "ABD",
+    "hat borusu",
+    "sipariş",
+    "2028 sevkiyat"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/borsa/borusan-boruya-abdden-555-milyon-dolarlik-siparis-2028de-gelire-yansiyacak-h35577",
+    "https://www.hisse.net/haber/borusandan-abdde-555-milyon-dolarlik-dev-anlasma-89626",
+    "https://www.steelradar.com/borusan-berg-pipe-abdde-553-milyon-dolarlik-yeni-hat-borusu-siparisi-aldi/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 555000000.0,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

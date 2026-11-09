@@ -1,0 +1,142 @@
+{
+ "not": "TOASO olay çizelgesi (ajan araştırması, web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "TOASO",
+   "sektor": null,
+   "baslangic": "2025-04-18",
+   "bitis": "2025-04-18",
+   "kamuya_acilma": null,
+   "tur": "birlesme_devralma",
+   "baslik": "Rekabet Kurulu Tofaş'ın Stellantis Otomotiv Pazarlama'yı (400 mn euro) devralmasına şartlı izin verdi",
+   "anlam": "18 Nisan 2025 KAP: ikinci taahhüt paketi kabul edilerek izin çıktı; izin yatırım ve dağıtım taahhütlerine bağlandı. Devir bedeli 400 mn euro (2023'te imzalanan sözleşme). Habertürk'e göre hisse bir önceki gün onay beklentisiyle %9,99 tavan olmuştu.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "beklenti_alimi",
+   "tepki_aciklama": "Habertürk: onay beklentisiyle hisse önceki gün %9,99 tavan oldu.",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.8,
+   "etiketler": [
+    "Stellantis",
+    "Rekabet Kurulu"
+   ],
+   "kaynaklar": [
+    "https://www.haberturk.com/rekabet-kurulu-ndan-tofasstellantis-devralma-islemine-onay-3783766-ekonomi",
+    "https://www.cumhuriyet.com.tr/otomotiv/stellantisin-tofasi-devralma-islemi-onaylandi-2320350",
+    "https://www.getmidas.com/midasin-kulaklari/rekabet-kurumu-tofasin-stellantisi-devralmasini-onayladi-p-120641"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 400000000.0,
+    "para_birimi": "EUR",
+    "oran": 1.0,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "TOASO",
+   "sektor": null,
+   "baslangic": "2025-04-18",
+   "bitis": "2025-04-21",
+   "kamuya_acilma": null,
+   "tur": "yatirim",
+   "baslik": "Tofaş çoklu enerji platformunda yeni hafif ticari araç için 256 mn euroya kadar yatırım kararı aldı",
+   "anlam": "Stellantis Europe ile anlaşma: Stellantis markaları için hafif ticari araç (K9/Combi) Türkiye'de üretilecek; yıllık 150 bin adet kapasite, üretim 2026 3Ç'de başlayacak. Başlık CNBC-e'ye göre hisseler yüzde 8 yükseldi. Karar tarihi Rekabet onayına yakın (haber kimlikleri bitişik); gün kesin değil.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "CNBC-e başlığı: hisseler %8 yükseldi (gün içi detay doğrulanmadı).",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.5,
+   "etiketler": [
+    "Stellantis",
+    "hafif ticari",
+    "yatırım"
+   ],
+   "kaynaklar": [
+    "https://www.cnnturk.com/otomobil/tofastan-256-milyon-euroluk-yatirim-karari-2273310",
+    "https://www.cnbce.com/otomotiv/stellantis-onayi-sonrasi-tofastan-256-milyon-euroluk-yatirim-karari-hisseler-yuzde-8-yukseldi-h11884",
+    "https://www.haberturk.com/tofas-tan-256-milyon-euro-luk-yatirim-karari-3783866-ekonomi"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 256000000.0,
+    "para_birimi": "EUR",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "TOASO",
+   "sektor": null,
+   "baslangic": "2025-02-28",
+   "bitis": "2025-04-07",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Tofaş 2024 kârından pay başına brüt 12 TL (net 10,20 TL) temettü",
+   "anlam": "28 Şubat 2025 KAP teklifi; hak kullanım 3 Nisan, ödeme 7 Nisan 2025 (YatırımX/MKK). Bazı kaynaklarda 18 TL gibi uyuşmayan rakamlar var.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.65,
+   "etiketler": [
+    "temettü"
+   ],
+   "kaynaklar": [
+    "https://www.yatirimx.com.tr/piyasa/mkkdan-tofas-otomobil-toaso-temettu-duyurusu-2025/7733",
+    "https://www.forbes.com.tr/ekonomi/tofas-tan-yatirimciya-temettu-karari"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 12.0,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "TOASO",
+   "sektor": null,
+   "baslangic": "2026-03-23",
+   "bitis": "2026-03-23",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Tofaş 2025 kârından pay başına brüt 20 TL (net 17 TL) temettü; hak kullanım 23 Mart 2026",
+   "anlam": "Forbes: konsolide net kâr 8,353 mlr TL, hak kullanım 23 Mart 2026. CNBC-e ödeme için 30 Nisan diyor ve farklı pay başı tutar listeliyor; tutarsızlık var.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.5,
+   "etiketler": [
+    "temettü"
+   ],
+   "kaynaklar": [
+    "https://www.forbes.com.tr/ekonomi/tofas-tan-yatirimciya-temettu-karari",
+    "https://www.cnbce.com/borsa/borsada-temettu-ruzgarina-4-sirket-daha-eklendi-hisse-basina-ne-kadar-odeme-yapilacak-temettu-hisseler-2026-beyaz-filo-hisse-netcad-hisse-flap-hisse-g26840"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 20.0,
+    "net_kar": 8353000000,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

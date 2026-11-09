@@ -1,0 +1,143 @@
+{
+ "not": "ARCLK olay çizelgesi (ajan araştırması, web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "ARCLK",
+   "sektor": null,
+   "baslangic": "2024-04-01",
+   "bitis": "2024-04-01",
+   "kamuya_acilma": null,
+   "tur": "birlesme_devralma",
+   "baslik": "Arçelik-Whirlpool Avrupa birleşmesi tamamlandı: Beko Europe kuruldu (Arçelik %75, Whirlpool %25); MENA devralındı",
+   "anlam": "1 Nisan 2024 KAP: Beko B.V. ile Whirlpool EMEA Holdings katkı sözleşmesi tamamlandı. Arçelik Beko Europe'u tam konsolide ediyor, Whirlpool'un MENA faaliyetlerinin tamamını aldı. Oran kapanış bilançosundaki net borç/işletme sermayesi düzeltmesiyle kesinleşecek (geçici). Rekabet izni AB ve İngiltere'den alınmıştı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.85,
+   "etiketler": [
+    "Beko Europe",
+    "Whirlpool",
+    "MENA"
+   ],
+   "kaynaklar": [
+    "https://rotaborsa.com/?p=157593",
+    "https://kyodonewsprwire.jp/release/202404028916",
+    "https://news.streetbeat.com/article/38039582"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": 0.75,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ARCLK",
+   "sektor": null,
+   "baslangic": "2025-11-07",
+   "bitis": "2025-11-07",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Arçelik 3Ç25 net zarar 2,06 mlr TL, beklenti 1,1 mlr TL (tarih yaklaşık)",
+   "anlam": "Zarar konsensüsün yaklaşık iki katı (ertelenmiş vergi gideri etkisi). Açıklama günü görülmedi, 7 Kasım 2025 yer tutucudur; sapma bu bilgiyle ≥%20.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.3,
+   "etiketler": [
+    "bilanço",
+    "3Ç25"
+   ],
+   "kaynaklar": [
+    "https://marbas.com.tr/assets/ARCLK-2025-3.CEYREK-BILANCO-DEGERLENDIRMESI.pdf",
+    "https://paratic.com/arcelik-bilancosu-aciklandi-net-zarar-beklentiyi-ikiye-katladi/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": -2060000000,
+    "beklenti": -1100000000,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ARCLK",
+   "sektor": null,
+   "baslangic": "2026-03-01",
+   "bitis": "2026-03-01",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Arçelik 2025 yıllık net zarar 8,36 mlr TL (2024: 2,21 mlr TL kâr); 4Ç25 zarar 1,64 mlr TL, beklenti 2,10 mlr TL (tarih yaklaşık)",
+   "anlam": "Yıllık 8.355.688.000 TL net zarar, 2024'te 2.210.878.000 TL kâr (TMS 29 etkisiyle 2024 karşılaştırması tartışmalı). 4Ç25 zararı konsensüsten küçük çıktı. Açıklama günü görülmedi, 1 Mart 2026 yer tutucudur.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.35,
+   "etiketler": [
+    "bilanço",
+    "kârdan zarara"
+   ],
+   "kaynaklar": [
+    "https://marbas.com.tr/assets/ARCLK-2025-3.CEYREK-BILANCO-DEGERLENDIRMESI.pdf",
+    "https://yatirim.akbank.com/_layouts/15/AkbankYatirimciPortali/Rapor/Download.aspx?ID=10431"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": -8355688000,
+    "beklenti": -2100000000,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ARCLK",
+   "sektor": null,
+   "baslangic": "2026-03-13",
+   "bitis": "2026-03-13",
+   "kamuya_acilma": null,
+   "tur": "birlesme_devralma",
+   "baslik": "Arçelik, Koç Finansman'daki %47 payını Ford Otosan'a satıyor (toplam değer 137 mn dolar)",
+   "anlam": "13 Mart 2026 KAP: Koç Finansman'ın %100'ü 137 mn dolara Ford Otosan'a devrediliyor; Arçelik'in payı %47. Arçelik'in kendi tutarı kaynakta verilmedi (hesaplanmadı). Grup içi finansman iştiraki çıkışı.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.55,
+   "etiketler": [
+    "Koç Finansman",
+    "grup içi"
+   ],
+   "kaynaklar": [
+    "https://rotaborsa.com/?p=425670",
+    "https://infoyatirim.com/blog/borsanin-gozunden/koc-finansman-ford-otosana-geciyor"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 137000000.0,
+    "para_birimi": "USD",
+    "oran": 0.47,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}
