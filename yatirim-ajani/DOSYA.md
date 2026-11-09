@@ -58,12 +58,23 @@ Dürüstlük notları: tek hissede 2 yıl ≈ 700 gün, ≥%10 düşüş bölüm
 (BIST 100 genelinde aynı sütunun davranışı). Seviye sütunları (piyasa değeri, dolar fiyatı) örneklem içi ortalamaya
 dönüşü gösterir, öngörü değildir; çeyreklik adımlı sütunların bağımsız değer sayısı çeyrek sayısı kadardır.
 
-## 5. Ölçekleme planı ve kuyruk
+## 5. Ölçekleme durumu ve kuyruk
 
-1. KCHOL (tamamlandı: 3.975 satır, 86 sütun, 134 olay).
-2. BIST 100: `dosya_kaynak/bist100.json` listesi; Actions `dosya-veri` gece işi tüm listeyi çeker; gece araştırmacı görevi
-   her gece N hisse için omurga + analiz kurar, gün sonu satırlarını ve analizleri `ajan-ciktilari`ya yazar; kesit özeti.
-   Olay çizelgesi yalnız önemli türler (bilanço, temettü, sermaye, pay satışı, derecelendirme) için stajyer ajanlarla.
-3. Tüm BIST: günlük çözünürlük (saatlik veri 730 günle sınırlı ve hacimli), aynı sütunlar.
+1. KCHOL: tamam (3.979 satır, 92 sütun, 131 olay; 55 olay KCHOL ve iştirakleri için elle derlendi).
+2. BIST 100 (ilk aşama, 2026-11-09): 74 hisse kuruldu (63'ü BIST 100 yedek listesinden + 40'lık evren; KOZAL veri yok, kodu
+   değişmiş görünüyor: TRALT). 288.075 gün-saat satırı, 52.223 gün sonu satırı. F/K, PD/DD, FD/FAVÖK 64 hissede dolu;
+   bankalar ve sigorta (AKBNK, GARAN, YKBNK, ISCTR, VAKBN, HALKB, TSKB, ALBRK, ANHYT) mali tablo biçimi farklı olduğu için
+   temel sütunları boş. Temettü 52, bedelsiz/bölünme 19 hissede.
+   Eksik: BIST 100 listesinin 37 kodu (canlı kaynaklar bu ortamda kapalı: İş Yatırım 401, TradingView/Vikipedi erişilemedi).
+   Liste tamamlanınca `dosya_kaynak/bist100.json` güncellenir ve `dosya-veri` işi `hisseler=XU100` ile yeniden çalışır (≈5 dk).
+3. Tüm BIST: aynı iş akışı, liste dosyası (`dosya_kaynak/bist_tum.json`) ile; saatlik veri 730 günle sınırlı.
 
-Kuyruk: `ajan-ciktilari:veri/dosya/kuyruk.json` → `{"bekleyen": [...], "biten": {"KCHOL": "2026-11-09"}}`.
+Çıktılar (`ajan-ciktilari`): `veri/dosya/ham/` (ham veri), `veri/dosya/gunluk/<HİSSE>.csv.gz` (gün sonu satırları, tüm sütunlar),
+`veri/dosya/<HİSSE>_analiz.json`, `veri/dosya/kesit_analiz.json`, `raporlar/dosya-<HİSSE>-YYYYMMDD.md`, `raporlar/dosya-kesit-*.md`.
+Tam gün-saat omurgası ve `dosya.sqlite` (≈250 MB) git'e konmaz; ham veriden saniyeler içinde yeniden kurulur (KCHOL örneği
+`veri/dosya/KCHOL_omurga.csv.gz`).
+
+Kesit bulguları (74 hisse, 2024-01 → 2026-11; evren eşit ağırlık al-tut +%39, Sharpe 0,62): gece getirisi 72 hissede
+pozitif, gün içi 71 hissede negatif. 6 aylık momentum uzun-kısa portföyü aylık +%2,0 (Sharpe 1,40, t 2,2) ama
+Deflated Sharpe 0,83 (58 deneme; 0,95 eşiğinin altında) ve kısa bacak bireyde fiilen uygulanamaz; yalnız uzun hali
+Sharpe 0,69. Değer (PD/DD, FD/FAVÖK) ve kâr büyümesi kesitte doğru yönde ama çeyreklik adım sütunları, bağımsız gözlem az.

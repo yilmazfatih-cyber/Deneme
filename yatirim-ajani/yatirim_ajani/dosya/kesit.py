@@ -50,6 +50,9 @@ def havuz_istatistik(G: pd.DataFrame, hedef: str = "ileri_20g", sinyal: str = "s
     for f in OZELLIKLER:
         if f not in G.columns or G[f].notna().sum() < 500:
             continue
+        # Piyasa düzeyi sütunlar (XU100, USD/TRY, makro olay sayaçları) o gün tüm hisselerde aynıdır: kesitte sıralanamaz
+        if G.groupby("gun")[f].nunique().median() < 5:
+            continue
         q = kesit_kantil(G, f)
         d = G.assign(kq=q).dropna(subset=["kq", hedef])
         if d.empty:
