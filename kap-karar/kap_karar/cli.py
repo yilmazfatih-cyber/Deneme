@@ -56,10 +56,13 @@ def cmd_kur(a: argparse.Namespace) -> int:
         return 1
     db = depo.ac(a.db)
     toplam = 0
+    hepsi: list[Olay] = []
     for dosya in sorted(VERI.glob("*.json")):
-        eklenen = depo.json_yukle(db, dosya)
+        eklenen = depo.json_yukle(db, dosya, bag_yaz=False)
         print(f"{dosya.name}: {len(eklenen)} olay")
         toplam += len(eklenen)
+        hepsi += eklenen
+    print(f"Elle bağ: {depo.elle_baglari_yaz(db, hepsi)}")
     if not a.ajansiz:
         ya = ice_aktar.yukle(Path(a.ajan_dizini) if a.ajan_dizini else None)
         for o in ya:

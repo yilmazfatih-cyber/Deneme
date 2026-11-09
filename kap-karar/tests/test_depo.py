@@ -56,3 +56,37 @@ def test_veri_dosyalari_sema_uyumlu():
                     f"{d.name}: {o['kod']} tanımsız parametre {p}"
             for b in o.get("bagli", []):
                 assert b["kod"] in kodlar or True
+
+
+def test_dosyalar_arasi_elle_bag(tmp_path):
+    db_yolu = tmp_path / "t.sqlite"
+    main(["--db", str(db_yolu), "kur", "--ajansiz"])
+    db = depo.ac(db_yolu)
+    o = depo.olay_getir(db, "KAP-2026-09-14-PEKGY-tera-cagri")
+    giden = {(b["kod"], b["otomatik"]) for b in depo.baglar(db, o.id, "giden")}
+    assert ("2026-09-17-spk-131-fon-tasfiye", 0) in giden  # başka dosyadaki olaya elle bağ
+
+
+def test_ice_aktar_siniflandirma():
+    from kap_karar import ice_aktar
+    ol = {o.baslik[:20]: o.tur for o in ice_aktar.yukle()}
+    if not ol:
+        return  # yatirim-ajani yoksa atla
+    tum = list(ice_aktar.yukle())
+    for o in tum:
+        b = o.baslik.lower()
+        if b.startswith("fed "):
+            assert o.tur == "fed_karari", o.baslik
+        if "msci" in b:
+            assert o.tur == "endeks_saglayici_karari", o.baslik
+        if "tmsf kayyum" in b:
+            assert o.tur == "yonetim_degisikligi", o.baslik
+
+
+def test_elle_bag_agirligi_korunur(tmp_path):
+    db_yolu = tmp_path / "t.sqlite"
+    main(["--db", str(db_yolu), "kur", "--ajansiz"])
+    db = depo.ac(db_yolu)
+    o = depo.olay_getir(db, "KAP-2026-06-18-AKCNS-heidelberg-devir")
+    b = [x for x in depo.baglar(db, o.id, "giden") if x["kod"] == "KAP-2026-09-16-AKCNS-cagri-onay" and x["iliski"] == "ardil"]
+    assert b and b[0]["agirlik"] == 0.9 and b[0]["otomatik"] == 0

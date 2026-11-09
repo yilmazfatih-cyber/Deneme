@@ -133,7 +133,7 @@ def elle_baglari_yaz(db: sqlite3.Connection, olay_listesi: list[Olay]) -> int:
     tum = olaylar(db)
     kimlik = {o.kod: o.id for o in tum}
     sayac = 0
-    for b in elle_baglar(olay_listesi):
+    for b in elle_baglar(olay_listesi, set(kimlik)):
         sayac += _bag_yaz(db, kimlik, b)
     db.commit()
     return sayac
@@ -144,7 +144,9 @@ def _bag_yaz(db: sqlite3.Connection, kimlik: dict[str, int], b: Bag) -> int:
         return 0
     db.execute(
         """INSERT INTO baglar (kaynak_id, hedef_id, iliski, aciklama, agirlik, otomatik) VALUES (?,?,?,?,?,?)
-           ON CONFLICT(kaynak_id, hedef_id, iliski) DO UPDATE SET aciklama=excluded.aciklama, agirlik=excluded.agirlik,
+           ON CONFLICT(kaynak_id, hedef_id, iliski) DO UPDATE SET
+             aciklama=CASE WHEN baglar.otomatik=0 AND excluded.otomatik=1 THEN baglar.aciklama ELSE excluded.aciklama END,
+             agirlik=CASE WHEN baglar.otomatik=0 AND excluded.otomatik=1 THEN baglar.agirlik ELSE excluded.agirlik END,
              otomatik=MIN(baglar.otomatik, excluded.otomatik)""",
         (kimlik[b.kaynak_kod], kimlik[b.hedef_kod], b.iliski, b.aciklama, b.agirlik, int(b.otomatik)),
     )
@@ -190,7 +192,7 @@ def zincir(db: sqlite3.Connection, olay_id: int, derinlik: int = 3, en_az_agirli
     return sonuc
 
 
-def json_yukle(db: sqlite3.Connection, yol: Path) -> list[Olay]:
+def json_yukle(db: sqlite3.Connection, yol: Path, bag_yaz: bool = True) -> list[Olay]:
     veri = json.loads(Path(yol).read_text(encoding="utf-8"))
     kayitlar = veri["olaylar"] if isinstance(veri, dict) else veri
     eklenen: list[Olay] = []
@@ -198,7 +200,8 @@ def json_yukle(db: sqlite3.Connection, yol: Path) -> list[Olay]:
         o = Olay(**{a: k[a] for a in k if a in Olay.__dataclass_fields__})
         olay_ekle(db, o)
         eklenen.append(o)
-    elle_baglari_yaz(db, eklenen)
+    if bag_yaz:
+        elle_baglari_yaz(db, eklenen)
     return eklenen
 
 

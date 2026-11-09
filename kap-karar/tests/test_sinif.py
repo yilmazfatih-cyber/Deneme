@@ -37,3 +37,15 @@ def test_bilinmeyen_metin():
     import pytest
     with pytest.raises(ValueError):
         siniflandir("bugün hava güzel")
+
+
+def test_kisaltma_kucuk_harf():
+    s = siniflandir("MSCI Türkiye endeks değişikliklerini dondurdu")
+    assert s.tur == "endeks_saglayici_karari"
+    assert s.parametreler["eylem"] == "askiya_alma"
+
+
+def test_tarife():
+    s = siniflandir("Karşılıklı tarifeler yürürlüğe girdi; Türkiye %15 orana tabi tutuldu")
+    assert s.tur == "kuresel_ticaret"
+    assert s.parametreler["yon"] == "tirmanma" and s.parametreler["turkiye_orani"] == 15

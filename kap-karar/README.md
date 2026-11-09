@@ -41,13 +41,13 @@ python3 -m kap_karar ekle --json yeni_olaylar.json                       # veri/
 `analiz` metinden çıkaramadığı parametreleri **"Eksik parametreler"** satırında listeler; `--param anahtar=deger`
 ile verince karar netleşir ve güven puanı yükselir.
 
-## Ağaçlar (32)
+## Ağaçlar (33)
 
 | Kapsam | Türler |
 | --- | --- |
 | Şirket (KAP) | `temettu`, `bedelli_sermaye_artirimi`, `bedelsiz_sermaye_artirimi`, `pay_geri_alim`, `birlesme_devralma`, `yeni_sozlesme`, `ihale`, `finansal_rapor`, `kredi_derecelendirme_sirket`, `ortaklik_yapisi`, `borclanma_araci`, `halka_arz`, `yonetim_degisikligi`, `dava_yaptirim`, `varlik_islemi`, `tesvik_belgesi`, `piyasa_hareketi` |
 | Yerel makro | `tcmb_faiz_karari`, `tcmb_enflasyon_raporu`, `enflasyon_verisi`, `kredi_notu_ulke`, `siyasi_belirsizlik`, `piyasa_guven_sorusturma`, `endeks_saglayici_karari`, `kur_hareketi`, `buyume_verisi`, `maliye_butce_ovp`, `enerji_fiyat_duzenlemesi`, `sektor_duzenlemesi`, `genel_haber` |
-| Küresel | `jeopolitik_sok`, `fed_karari` |
+| Küresel | `jeopolitik_sok`, `fed_karari`, `kuresel_ticaret` |
 
 Her ağaç `kap_karar/agaclar.py` içinde tek bir sözlüktür: sorular (`anahtar` = parametre, `dallar` = koşul → sonraki
 düğüm) ve yapraklar (`sonuc`, `egilim`, `eylem`, `gerekce`, `izlenecek`, `etkilenen`). Yeni ağaç eklemek için
@@ -59,7 +59,7 @@ kopuk dal ve erişilemeyen düğümleri yakalar.
 | Tablo | İçerik |
 | --- | --- |
 | `olaylar` | kod, tarih, kaynak (kap/gundem/makro/kuresel), kapsam, tür, hisse, sektör, başlık, özet, yön, parametreler (JSON), etiketler, kaynak URL'leri, güven |
-| `agaclar` | 32 ağacın tanımı (JSON) |
+| `agaclar` | 33 ağacın tanımı (JSON) |
 | `kararlar` | her olayın ağaçta izlediği yol, sonuç kodu, eğilim, eylem, izlenecekler, eksik parametreler, güven |
 | `baglar` | kaynak → hedef olay, ilişki (`tetikler`, `girdi`, `guclendirir`, `zayiflatir`, `ardil`, `ayni_tema`, `aciklar`), açıklama, ağırlık, elle/otomatik |
 
@@ -76,8 +76,20 @@ ardışık olaylar; ortak etiket). `kur` ve `--kaydet` sonrası otomatik bağlar
   URL'si ve güven derecesi var; `guven ≤ 0.5` olanlar ikincil kaynaklı veya yaklaşık değer içerir.
 - `veri/kap_sirket_2025_2026.json` — 15 şirket olayı (ASELS, KCHOL, TUPRS, ISCTR, HALKB, TKFEN, MEGMT, MERCN):
   sözleşme, temettü, bilanço, not artışı, ikincil halka arz, pay devri, bedelsiz. **KAP'ın tamamı değil**, örnek kümedir.
+- `veri/kap_sirket_2026_ek.json` — 21 şirket olayı daha: Aselsan'ın Haziran–Kasım 2026 sözleşmeleri (1,1 milyar $ hava
+  savunma dahil), Akçansa'da Heidelberg devri ve zorunlu pay alım teklifi, Peker GYO'da Tera'nın ertelenen çağrısı,
+  THY 737 MAX siparişi, Koç'un Tüpraş blok satışı, Garanti/Turkcell/Akfen GYO geri alımları, Şekerbank/Karsu/CVK
+  bedellileri, Akbank/Garanti/İş Bankası 3Ç26 bilançoları.
 - `../yatirim-ajani/bilgi_kaynak/*.json` — ~800 fiyat hareketi ve anlatılı makro olay (Kas 2024 → Kas 2026),
   `piyasa_hareketi` ve ilgili makro ağaçlara eşlenerek içe aktarılır (kod öneki `YA-`).
 
-**Sınır:** KAP sitesi (kap.org.tr) bu ortamdan erişilemediği için tüm bildirimler otomatik çekilmedi. Toplu yükleme
-için bildirimleri `{"olaylar": [...]}` biçiminde JSON'a yazıp `ekle --json` ile verin; tek haber için `analiz --kaydet`.
+**Sınır:** KAP sitesi (kap.org.tr) bulut ortamının ağ geçidinde engelli; tüm bildirimler otomatik çekilemedi.
+KAP'a erişebilen bir bilgisayarda:
+
+```bash
+python3 scripts/kap_cek.py --baslangic 2025-11-08 --bitis 2026-11-08      # haftalık dilimlerle sorgular
+python3 -m kap_karar ekle --json veri/kap_bildirimleri_2025-11-08_2026-11-08.json
+```
+
+KAP'ın API'si değişirse sitenin "Bildirim Sorgu" sayfasından dışa aktarılan dosya `--ham-dosya` ile verilir.
+Tek haber için `analiz --kaydet` yeterlidir.

@@ -46,11 +46,12 @@ KURALLAR: list[tuple[str, list[str], float]] = [
     ("jeopolitik_sok", [r"savaş", r"saldırı", r"füze", r"hürmüz", r"ateşkes", r"barış", r"ambargo", r"yaptırım paketi", r"iran", r"israil", r"boğaz.*kapa"], 1.0),
     ("siyasi_belirsizlik", [r"kurultay", r"chp", r"kayyum", r"seçim", r"anayasa", r"hükümet", r"cumhurbaşkan", r"bakan.*istifa", r"mutlak butlan"], 0.9),
     ("piyasa_guven_sorusturma", [r"fon soruşturma", r"manipülasyon", r"portföy yönetim şirket", r"tasfiye", r"masak", r"tutukland", r"borsa istanbul genel müdür"], 1.1),
-    ("endeks_saglayici_karari", [r"msci", r"ftse", r"endeks sağlayıcı", r"gelişen piyasa.*sınıf", r"askıya ald"], 1.2),
+    ("endeks_saglayici_karari", [r"msc[iı]", r"ftse", r"endeks sağlayıcı", r"gelişen piyasa.*sınıf", r"askıya ald"], 1.2),
     ("kur_hareketi", [r"dolar/tl", r"usd/try", r"kur.*(sıçra|yüksel|düş)", r"rezerv", r"swap", r"müdahale", r"döviz sat"], 1.0),
     ("buyume_verisi", [r"gsyh", r"gsyih", r"büyüme.*çeyrek", r"ekonomi.*büyüdü", r"milli gelir"], 1.2),
     ("maliye_butce_ovp", [r"orta vadeli program", r"ovp", r"bütçe", r"asgari ücret", r"emekli (maaş|zam)", r"memur (maaş|zam)", r"vergi paketi", r"ötv", r"kdv", r"kurumlar vergisi", r"torba"], 1.0),
-    ("enerji_fiyat_duzenlemesi", [r"elektrik.*zam", r"doğalgaz.*zam", r"doğal gaz.*zam", r"epdk", r"botaş", r"tarife", r"brent", r"petrol fiyat"], 1.0),
+    ("enerji_fiyat_duzenlemesi", [r"elektrik.*zam", r"doğalgaz.*zam", r"doğal gaz.*zam", r"epdk", r"botaş", r"elektrik.*tarife", r"brent", r"petrol fiyat"], 1.0),
+    ("kuresel_ticaret", [r"tarife", r"gümrük vergisi", r"ticaret savaş", r"[iı]eepa", r"karşılıklı vergi", r"section 122"], 1.3),
     ("fed_karari", [r"\bfed\b", r"fomc", r"federal reserve", r"powell", r"warsh"], 1.3),
     ("sektor_duzenlemesi", [r"bddk", r"kredi büyüme sınır", r"kredi kartı.*sınır", r"ithalat.*vergi", r"gümrük vergisi", r"tavan fiyat", r"zorunlu karşılık", r"makro ihtiyati"], 1.0),
 ]
@@ -208,6 +209,7 @@ def parametre_cikar(tur: str, metin: str) -> tuple[dict[str, Any], list[str]]:  
             p["odeme"] = "nakit"
         if y:
             p["prim"] = y[0]
+        p["teklif_durumu"] = "ertelendi" if _var(m, r"ertele", r"iptal", r"geri çek", r"vazgeç") else "aktif"
     elif tur == "ortaklik_yapisi":
         if y:
             p["pay_orani"] = max(y)
@@ -297,7 +299,7 @@ def parametre_cikar(tur: str, metin: str) -> tuple[dict[str, Any], list[str]]:  
         if _var(m, r"%\s*25|yüzde 25.*sermaye"):
             p["buyukluk_pd_orani"] = 20.0
     elif tur == "yonetim_degisikligi":
-        if _var(m, r"soruşturma", r"gözaltı", r"tutukl", r"usulsüz"):
+        if _var(m, r"soruşturma", r"gözaltı", r"tutukl", r"usulsüz", r"kayyum", r"kayyım", r"tmsf"):
             p["neden"] = "sorusturma"
         elif _var(m, r"istifa"):
             p["neden"] = "istifa"
@@ -317,9 +319,9 @@ def parametre_cikar(tur: str, metin: str) -> tuple[dict[str, Any], list[str]]:  
             p["pozisyon"] = "yk_uyesi"
         p["ardil_belli"] = bool(_var(m, r"yerine .* atan", r"atanmıştır", r"getirilmiştir", r"vekâleten"))
     elif tur == "dava_yaptirim":
-        if _var(m, r"lehine", r"lehimize", r"reddine", r"iptal edilmiş", r"beraat", r"kaldırıl"):
+        if _var(m, r"lehine", r"lehimize", r"reddine", r"iptal edilmiş", r"beraat", r"kaldırıl", r"düşürüldü", r"davası düştü"):
             p["lehte"] = True
-        elif _var(m, r"aleyh", r"ceza.*(verildi|uyguland|kesildi)", r"mahkûm", r"tazminat.*hükm"):
+        elif _var(m, r"aleyh", r"ceza.*(verildi|uyguland|kesildi)", r"mahkûm", r"tazminat.*hükm", r"yakın izleme", r"endeks(ler)?den çıkar", r"iddianame"):
             p["lehte"] = False
         p["kesinlesti"] = bool(_var(m, r"kesinleş")) and not _var(m, r"kesinleşme(miş|di)")
         if _var(m, r"itiraz", r"temyiz", r"istinaf", r"yargı yolu"):
@@ -454,7 +456,7 @@ def parametre_cikar(tur: str, metin: str) -> tuple[dict[str, Any], list[str]]:  
         p["kapsam_genislik"] = "genis" if _var(m, r"\d+ fon", r"milyar", r"portföy yönetim şirketleri", r"onlarca", r"\d{2,} (kişi|isim)") else "dar"
         p["duzenleyici_etkilendi"] = bool(_var(m, r"spk (yönetici|daire|eski)", r"borsa istanbul (genel müdür|yönetici)", r"eski spk"))
     elif tur == "endeks_saglayici_karari":
-        if _var(m, r"askıya", r"ertele"):
+        if _var(m, r"askıya", r"ertele", r"dondur"):
             p["eylem"] = "askiya_alma"
         elif _var(m, r"sınıf.*(düşür|uyar)", r"sınırda piyasa", r"frontier"):
             p["eylem"] = "sinif_dusurme_uyarisi"
@@ -514,6 +516,15 @@ def parametre_cikar(tur: str, metin: str) -> tuple[dict[str, Any], list[str]]:  
             p["kesim"] = "sanayi"
         else:
             p["kesim"] = "mesken"
+    elif tur == "kuresel_ticaret":
+        yumusak = _var(m, r"uzlaş", r"indiril", r"iptal", r"askıya", r"anlaşma")
+        sert = _var(m, r"yürürlüğe gir", r"açıkladı", r"tehdit", r"artır", r"tabi tutuldu")
+        p["yon"] = "yumusama" if yumusak or (_var(m, r"ertele") and not sert) else "tirmanma"
+        d = re.search(r"türkiye.{0,40}?(?:%|yüzde)\s*" + _SAYI, m)
+        if d:
+            p["turkiye_orani"] = _sayi(d.group(1))
+        if _var(m, r"çin.*(%|yüzde)\s*(1[0-9]{2}|[5-9][0-9])"):
+            p["rakip_daha_yuksek"] = True
     elif tur == "sektor_duzenlemesi":
         p["yon"] = "gevsetici" if _var(m, r"kaldır", r"gevşet", r"esnet", r"teşvik", r"indirim") else "sikilastirici"
         p["kalici"] = bool(_var(m, r"kanun", r"yönetmelik", r"kalıcı")) and not _var(m, r"geçici", r"ay süreyle", r"yıl sonuna kadar")

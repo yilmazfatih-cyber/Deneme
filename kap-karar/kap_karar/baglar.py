@@ -38,6 +38,8 @@ TUR_KURALLARI: list[tuple[str, str, int, str, str, float]] = [
     ("piyasa_guven_sorusturma", "tcmb_faiz_karari", 45, "zayiflatir", "Güven krizi faiz indiriminin olumlu etkisini bastırır", 0.5),
     ("endeks_saglayici_karari", "kur_hareketi", 21, "tetikler", "Pasif çıkış rezerv ve kura yansır", 0.4),
     ("fed_karari", "kur_hareketi", 14, "girdi", "Fed kararı dolar endeksi üzerinden TL'ye yansır", 0.4),
+    ("kuresel_ticaret", "fed_karari", 60, "girdi", "Tarife kaynaklı enflasyon Fed patikasını etkiler", 0.4),
+    ("kuresel_ticaret", "kur_hareketi", 14, "tetikler", "Ticaret şoku risk iştahı üzerinden TL'yi etkiler", 0.4),
     ("yeni_sozlesme", "finansal_rapor", 120, "girdi", "Büyük sözleşme sonraki çeyrek gelirine yansır", 0.5),
     ("ihale", "yeni_sozlesme", 180, "ardil", "İhale kazanımı sözleşme imzasına dönüşür", 0.7),
     ("finansal_rapor", "temettu", 120, "girdi", "Yıllık kâr temettü kararının kaynağıdır", 0.5),
@@ -62,6 +64,7 @@ SEKTOR_KANALI: dict[str, tuple[set[str], str]] = {
     "maliye_butce_ovp": ({"perakende", "gida", "otomotiv", "icecek_tutun"}, "girdi"),
     "piyasa_guven_sorusturma": ({"araci_kurum", "holding", "banka"}, "zayiflatir"),
     "endeks_saglayici_karari": ({"banka", "kamu_banka", "holding", "havacilik"}, "tetikler"),
+    "kuresel_ticaret": ({"otomotiv", "demir_celik", "dayanikli_tuketim", "tekstil"}, "girdi"),
 }
 
 
@@ -108,8 +111,8 @@ def otomatik_baglar(olaylar: list[Olay]) -> list[Bag]:
     return list(baglar.values())
 
 
-def elle_baglar(olaylar: list[Olay]) -> list[Bag]:
-    kodlar = {o.kod for o in olaylar}
+def elle_baglar(olaylar: list[Olay], bilinen: set[str] | None = None) -> list[Bag]:
+    kodlar = {o.kod for o in olaylar} | (bilinen or set())
     sonuc: list[Bag] = []
     for o in olaylar:
         for b in o.bagli:

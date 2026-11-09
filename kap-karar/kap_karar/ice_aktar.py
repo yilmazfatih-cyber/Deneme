@@ -8,6 +8,7 @@ eşleşmeyenler → genel_haber.
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 from typing import Any
 
@@ -30,13 +31,49 @@ TUR_ESLEME: dict[str, str] = {
 VARSAYILAN_KAYNAK_DIZINI = Path(__file__).resolve().parent.parent.parent / "yatirim-ajani" / "bilgi_kaynak"
 
 
+# (desen, hisse varsa tür, hisse yoksa tür) — kaynak dosyadaki kaba "faiz/haber/tarife" etiketinden önce bakılır
+BASLIK_KURALLARI: list[tuple[str, str | None, str | None]] = [
+    (r"kayyum|kayyım", "yonetim_degisikligi", "siyasi_belirsizlik"),
+    (r"yakın izleme|endeks(ler)?den çıkar", "dava_yaptirim", None),
+    (r"dava(sı)?.{0,20}(düşürüldü|düştü)", "dava_yaptirim", "siyasi_belirsizlik"),
+    (r"genel müdür|ceo\b", "yonetim_degisikligi", None),
+    (r"ortak oldu|%\s*\d+[,.]?\d*\s*ortak|payını devr|hissesini sat", "ortaklik_yapisi", None),
+    (r"\bmsc[iı]\b|\bftse\b", "endeks_saglayici_karari", "endeks_saglayici_karari"),
+    (r"\bfed\b|fomc|powell|warsh", None, "fed_karari"),
+    (r"tarife|gümrük vergisi|[iı]eepa", None, "kuresel_ticaret"),
+    (r"asgari ücret|emekli (maaş|zam)|memur zam|\bovp\b|bütçe", None, "maliye_butce_ovp"),
+    (r"ara toplantı|gecelik borç verme|politika faizi|\btcmb\b.*faiz", "tcmb_faiz_karari", "tcmb_faiz_karari"),
+    (r"imamoğlu|\bchp\b|iddianame|kurultay|öcalan|seçim", "siyasi_belirsizlik", "siyasi_belirsizlik"),
+    (r"tarihi zirve|rekor", "piyasa_hareketi", "piyasa_hareketi"),
+    (r"nakit girişi|anlaşması:", "varlik_islemi", None),
+    (r"bilanço|net kâr|net kar|\d[çÇ]\d\d", "finansal_rapor", None),
+]
+
+
 def _tur_sec(o: dict[str, Any]) -> str:
+    import re
+
+    from .sinif import kucult
+
+    if o.get("tur", "").lower() not in ("yukselis", "dusus", "sok"):
+        b = kucult(o.get("baslik", ""))
+        hisse = _hisse(o)
+        for desen, sirket_turu, makro_turu in BASLIK_KURALLARI:
+            if re.search(desen, b):
+                t = sirket_turu if hisse else makro_turu
+                if t:
+                    return t
     t = TUR_ESLEME.get(o.get("tur", "").lower())
     if t:
         return t
     adaylar = tur_bul(o.get("baslik", "") + " " + o.get("anlam", ""))
     makro = [a for a in adaylar if a[0] not in ("piyasa_hareketi",)]
     return makro[0][0] if makro else "genel_haber"
+
+
+def _hisse(o: dict[str, Any]) -> str | None:
+    h = o.get("hisse")
+    return None if not h or h.upper() in ("SEKTOR", "BIST100", "XU100", "MAKRO") else h
 
 
 def donustur(o: dict[str, Any], kaynak_dosya: str) -> Olay:
@@ -50,6 +87,15 @@ def donustur(o: dict[str, Any], kaynak_dosya: str) -> Olay:
             "hacim_z": o.get("hacim_z"),
             "neden_biliniyor": bool(o.get("anlam")) and o.get("onden_gorulebilir") in ("evet", "kismen"),
         }
+    elif tur == "fed_karari" or tur == "tcmb_faiz_karari":
+        p, _ = parametre_cikar(tur, metin)
+        bp = re.search(r"(\d+)\s*bp", metin)
+        if bp and "degisim_bp" not in p:
+            v = float(bp.group(1))
+            p["degisim_bp"] = -v if re.search(r"indir|ilk indirim", metin.lower()) else v
+        bas = o.get("baslik", "").lower()
+        if re.search(r"sabit|tuttu", bas) and not re.search(r"indir|artır", bas.split(";")[0]):
+            p["degisim_bp"] = 0.0
     elif tur == "genel_haber":
         p = {"yon": o.get("yon", "notr"), "kalici": o.get("tur") in ("rejim",)}
     else:
@@ -61,7 +107,7 @@ def donustur(o: dict[str, Any], kaynak_dosya: str) -> Olay:
     return Olay(
         kod=kod, tarih=o["baslangic"], kaynak=kaynak, kapsam=kapsam, tur=tur,  # type: ignore[arg-type]
         baslik=o["baslik"][:200], ozet=(o.get("anlam", "") + (" — Tepki: " + o["tepki_aciklama"] if o.get("tepki_aciklama") else ""))[:1200],
-        hisse=o.get("hisse"), sektor=o.get("sektor"), yon=o.get("yon", "notr"),
+        hisse=_hisse(o), sektor=o.get("sektor"), yon=o.get("yon", "notr"),
         parametreler={k: v for k, v in p.items() if v is not None}, etiketler=[e for e in etiketler if e],
         kaynaklar=list(o.get("kaynaklar", [])), guven=float(o.get("guven", 0.5)),
     )

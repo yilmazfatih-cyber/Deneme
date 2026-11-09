@@ -43,3 +43,13 @@ def test_bedelli_borc_agir():
 def test_temettu_yuksek_saglam():
     k = karar_ver("temettu", {"nakit": True, "temettu_verimi": 8, "dagitim_orani": 60})
     assert k.sonuc_kodu == "L_yuksek_saglam"
+
+
+def test_cagri_ertelendi():
+    k = karar_ver("birlesme_devralma", {"rol": "hedef", "teklif_durumu": "ertelendi", "zorunlu_cagri": True})
+    assert k.sonuc_kodu == "L_hedef_ertelendi" and k.egilim == "olumsuz"
+
+
+def test_kuresel_ticaret():
+    assert karar_ver("kuresel_ticaret", {"yon": "tirmanma", "turkiye_orani": 15, "rakip_daha_yuksek": True}).sonuc_kodu == "L_goreli_avantaj"
+    assert karar_ver("kuresel_ticaret", {"yon": "yumusama"}).egilim == "olumlu"
