@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kap-karar"
+version = "0.1.0"
+description = "KAP bildirimlerini ve ekonomi gündemini karar ağacına dönüştüren, olayları birbirine bağlayan yerel veritabanı"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+test = ["pytest>=8"]
+
+[project.scripts]
+kap-karar = "kap_karar.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["kap_karar*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
