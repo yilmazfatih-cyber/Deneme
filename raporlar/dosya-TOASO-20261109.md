@@ -1,11 +1,11 @@
 # Hisse dosyası analizi — TOASO
 
-Satır: 3980 (gün sonu satırı 713) · 2024-01-02 18:00:00 → 2026-11-09 14:30:00. Sanal/araştırma amaçlıdır, yatırım tavsiyesi değildir.
+Satır: 3981 (gün sonu satırı 713) · 2024-01-02 18:00:00 → 2026-11-09 15:30:00. Sanal/araştırma amaçlıdır, yatırım tavsiyesi değildir.
 
 Etiketler: 20 gün içinde ≥%10 düşüş görülen gün sayısı 219 (29 bağımsız bölüm); ≥%10 yükseliş 218 gün (26 bölüm). Bölüm sayısı azsa istatistikler zayıftır.
 
 ## Gece / gün içi ayrışması
-713 günde gece (kapanış→açılış) toplam +184.4% (t=2.9), gün içi (açılış→kapanış) toplam -59.3% (t=-1.4).
+713 günde gece (kapanış→açılış) toplam +184.4% (t=2.9), gün içi (açılış→kapanış) toplam -59.2% (t=-1.4).
 
 ## Sat sinyali öncesi görülen değerler (sinyal günleri vs diğer günler, medyan)
 
@@ -22,7 +22,7 @@ Etiketler: 20 gün içinde ≥%10 düşüş görülen gün sayısı 219 (29 bağ
 | ma200_uzaklik | 0.0465 | 0.0518 | +0.32 |
 | endekse_gore_20g | -0.00153 | -0.011 | +0.32 |
 | net_borc_ozkaynak | 0.174 | 0.0697 | +0.31 |
-| halka_aciklik | 0.241 | 0.241 | +0.28 |
+| olay_yon_5g | 0 | 0 | -0.29 |
 
 ## Al sinyali öncesi görülen değerler
 
@@ -60,28 +60,33 @@ Spearman korelasyonu özellik ile 20 gün ileri getiri arasında; p Bonferroni i
 | mom_12_1 | 441 | 441 |  | -0.17 | 0.011 | +5.8% | -2.2% | 34% | 44% | -0.482–-0.237 | 0.433–1.07 |
 | oynaklik_60g | 632 | 632 |  | +0.14 | 0.012 | -5.4% | +4.1% | 48% | 31% | 0.273–0.348 | 0.443–0.616 |
 | getiri_120g | 573 | 572 |  | -0.15 | 0.020 | +2.1% | -4.6% | 17% | 50% | -0.451–-0.169 | 0.28–0.791 |
-| beta_60g | 632 | 631 |  | +0.14 | 0.024 | -4.0% | +3.7% | 39% | 20% | 0.518–0.759 | 1.13–1.42 |
+| beta_60g | 632 | 631 |  | +0.14 | 0.025 | -4.0% | +3.7% | 39% | 20% | 0.518–0.759 | 1.13–1.42 |
 
 ## Olay etkisi (XU100'e göre anormal ileri getiri; olaydan sonraki ilk gün sonu satırından)
 
 | Tür | Hissenin kendi olayı mı | n | İlk gün tepki | 1g | 5g | 20g | 20g pozitif oranı |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| faiz | hayır | 23 | +0.5% | +0.3% | +1.2% | +1.3% | 61% |
-| siyasi | hayır | 9 | +0.1% | +0.0% | +0.9% | -0.1% | 56% |
-| enflasyon | hayır | 6 | +1.2% | +1.6% | -0.7% | -0.1% | 50% |
-| jeopolitik | hayır | 5 | -2.4% | -0.3% | +0.5% | +1.3% | 60% |
+| temettu | evet | 2 | -0.1% | -0.3% | -1.6% | +8.9% | 50% |
+| faiz | hayır | 41 | +0.5% | +0.1% | +1.0% | +1.2% | 61% |
+| siyasi | hayır | 17 | -0.4% | +0.1% | -0.4% | +0.8% | 59% |
+| derecelendirme | hayır | 15 | -0.5% | +0.3% | +0.1% | -0.2% | 47% |
+| jeopolitik | hayır | 10 | -1.2% | -0.1% | +0.5% | -0.0% | 50% |
+| enflasyon | hayır | 9 | +1.7% | +1.0% | -0.9% | -1.1% | 44% |
+| regulasyon | hayır | 6 | -2.1% | +0.3% | -0.6% | -3.0% | 33% |
+| haber | hayır | 5 | +0.7% | -0.2% | +2.4% | -0.5% | 20% |
+| kuresel_faiz | hayır | 5 | -0.4% | +0.7% | +2.5% | +1.7% | 40% |
 | sok | hayır | 5 | -3.8% | +0.6% | +0.9% | +0.4% | 40% |
 | tarife | hayır | 5 | +1.8% | -0.8% | +0.3% | -1.2% | 20% |
-| derecelendirme | hayır | 4 | +0.2% | -0.2% | +1.4% | +2.3% | 75% |
+| kur | hayır | 4 | -1.2% | -0.9% | -2.7% | -9.7% | 0% |
 | dusus | hayır | 3 | -2.5% | -1.1% | -2.4% | +1.1% | 67% |
 | yukselis | hayır | 3 | +2.4% | +1.6% | +2.3% | +0.4% | 67% |
 | butce_vergi | hayır | 2 | -0.3% | +0.5% | +3.4% | +6.2% | 100% |
-| kur | hayır | 2 | -3.4% | +0.3% | +0.7% | -8.4% | 0% |
-| YÖN: olumlu | evet | 1 | - | +9.6% | +10.9% | +14.3% | nan% |
+| YÖN: notr | evet | 1 | - | -1.0% | -3.0% | +24.3% | nan% |
+| YÖN: olumlu | evet | 4 | - | +3.4% | +5.7% | +3.9% | nan% |
 
 ## Kural taraması (ileriye yürüyen)
 
-Eğitim 427 gün, test 286 gün, 195 deneme. Al-tut Sharpe: eğitim 0.47, test 0.04.
+Eğitim 427 gün, test 286 gün, 195 deneme. Al-tut Sharpe: eğitim 0.47, test 0.05.
 Eğitimde seçilen kural: **ivol_60g > 0.2711 ise nakde geç** (kantil 0.1). Eğitim Sharpe 1.70 → test Sharpe -1.0; testte nakitte kalma oranı 81%; nakde geçilen günlerin gerçekleşen 20g getirisi: eğitim -1.0%, test +1.4%.
 Deflated Sharpe (deneme sayısı 195): 0.00 — 0,95 üstü anlamlı, 0,5 civarı şans.
 
@@ -107,4 +112,4 @@ Seçim yalnız eğitim Sharpe'ına göre; 'sonradan bakış' tablosu şans tavan
 
 ## Son durum (en yeni satır)
 
-getiri_1g=0.00863, getiri_5g=0.108, getiri_20g=-0.0748, getiri_60g=-0.0835, getiri_120g=-0.189, mom_12_1=0.113, zirve_52h_yakinlik=0.711, zirveden_dusus=-0.289, oynaklik_20g=0.589, oynaklik_60g=0.461, atr_20g_oran=0.0411, rsi_14=51.5, ma20_uzaklik=0.0459, ma50_uzaklik=-0.0558, ma200_uzaklik=-0.148, hacim_z_20=4.15, amihud_20g=0.0383, devir_hizi_20g=0.0265, gece_ort_20g=-0.00213, gunici_ort_20g=-0.00216, aof_1g_sapma=0.0114, max_gunluk_20g=0.0935, min_gunluk_20g=-0.0778, ivol_60g=0.334, endekse_gore_1g=-0.00754, endekse_gore_20g=-0.0257, endekse_gore_60g=0.0928, beta_60g=1.13, xu100_getiri_20g=-0.0491, xu100_ma200_uzaklik=-0.141, usdtry_getiri_20g=0.0191, dolar_getiri_60g=-0.125, piyasa_degeri_mn=1.23e+05, halka_aciklik=0.241, fk=8.43, kazanc_verimi=0.119, pd_dd=1.87, fd_favok=11.5, snak_verimi=-0.266, temettu_verimi=0.0815, roe_ttm=0.221, net_kar_marji=0.0309, kar_buyume_yillik=0.435, satis_buyume_yillik=0.135, net_borc_ozkaynak=0.903, bilancodan_gun=81.8, olay_sayi_5g=1, olay_yon_5g=-1
+getiri_1g=0.0115, getiri_5g=0.111, getiri_20g=-0.0722, getiri_60g=-0.0809, getiri_120g=-0.187, mom_12_1=0.113, zirve_52h_yakinlik=0.713, zirveden_dusus=-0.287, oynaklik_20g=0.589, oynaklik_60g=0.461, atr_20g_oran=0.0411, rsi_14=51.5, ma20_uzaklik=0.0489, ma50_uzaklik=-0.0531, ma200_uzaklik=-0.146, hacim_z_20=4.15, amihud_20g=0.0383, devir_hizi_20g=0.0265, gece_ort_20g=-0.00213, gunici_ort_20g=-0.00216, aof_1g_sapma=0.0114, max_gunluk_20g=0.0935, min_gunluk_20g=-0.0778, ivol_60g=0.334, endekse_gore_1g=-0.0112, endekse_gore_20g=-0.0292, endekse_gore_60g=0.0901, beta_60g=1.13, xu100_getiri_20g=-0.043, xu100_ma200_uzaklik=-0.135, usdtry_getiri_20g=0.0191, dolar_getiri_60g=-0.123, piyasa_degeri_mn=1.23e+05, halka_aciklik=0.241, fk=8.45, kazanc_verimi=0.118, pd_dd=1.87, fd_favok=11.5, snak_verimi=-0.265, temettu_verimi=0.0813, roe_ttm=0.221, net_kar_marji=0.0309, kar_buyume_yillik=0.435, satis_buyume_yillik=0.135, net_borc_ozkaynak=0.903, bilancodan_gun=81.9, olay_sayi_5g=2, olay_yon_5g=0

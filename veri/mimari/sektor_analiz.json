@@ -1,0 +1,2669 @@
+{
+ "sektor_sayisi": 28,
+ "kumulatif": {
+  "savunma": 6.201492303014814,
+  "ulasim": 3.296635985380023,
+  "enerji_dagitim": 2.262005203457431,
+  "kamu_banka": 2.199876622060442,
+  "holding_insaat": 2.0546585691419046,
+  "havalimani": 1.823774322930038,
+  "madencilik": 1.572239995731989,
+  "sigorta": 1.4782051673302203,
+  "gyo": 1.375944912050127,
+  "banka": 1.0167760350788861,
+  "madencilik_altin": 1.011049785152649,
+  "perakende": 0.9504652492011509,
+  "kimya_gubre": 0.822885800555812,
+  "telekom": 0.8167225215390725,
+  "rafineri_petrokimya": 0.5232426601163847,
+  "demir_celik": 0.5109284828826763,
+  "enerji_uretim": 0.23168796331232433,
+  "havacilik": 0.19805926555553777,
+  "cimento": 0.1697432259889935,
+  "gida": 0.12434758985002858,
+  "holding": 0.07191186310781439,
+  "araci_kurum": -0.1135786761330555,
+  "otomotiv": -0.20536929744708132,
+  "cam": -0.23006930171123685,
+  "kimya": -0.2500872043313901,
+  "dayanikli_tuketim": -0.447819276509947,
+  "enerji_ekipman": -0.5797727704948408,
+  "kimya_tarim": -0.9112426089067347
+ },
+ "son_3_ay": {
+  "kamu_banka": 0.2559909941595724,
+  "enerji_dagitim": 0.1745892577841066,
+  "havalimani": 0.10999999999999877,
+  "banka": 0.09595629869181233,
+  "havacilik": -0.001052290015253421,
+  "demir_celik": -0.005131328789241052,
+  "rafineri_petrokimya": -0.04620115664858637,
+  "gyo": -0.04746554059070274,
+  "savunma": -0.04792107117688471,
+  "madencilik": -0.07556633372923538,
+  "otomotiv": -0.100721784088321,
+  "telekom": -0.10579330227334749,
+  "perakende": -0.11991110757392998,
+  "cam": -0.12892152989932637,
+  "sigorta": -0.13859176332719958,
+  "holding_insaat": -0.14078976051100034,
+  "gida": -0.15621162986790904,
+  "araci_kurum": -0.15691004681234455,
+  "madencilik_altin": -0.17647055131321066,
+  "enerji_uretim": -0.1823325639111193,
+  "ulasim": -0.19828815977175407,
+  "kimya": -0.23808034782092113,
+  "holding": -0.24258475000752933,
+  "cimento": -0.2604208848278379,
+  "dayanikli_tuketim": -0.26642524152578684,
+  "kimya_gubre": -0.26998223801065746,
+  "kimya_tarim": -0.36395759687545237,
+  "enerji_ekipman": -0.4414731938453965
+ },
+ "rotasyon": {
+  "ay": 32,
+  "toplam_net": 1.0414246636741673,
+  "toplam_esit": 0.2944470571817541,
+  "toplam_xu100": 0.2906471182133017,
+  "ort_fark": 0.020731078241661913,
+  "t_fark": 1.2736027559339747,
+  "pozitif_ay": 0.5625,
+  "son_secim": [
+   "enerji_dagitim",
+   "kamu_banka"
+  ],
+  "aylar": [
+   {
+    "ay": "2024-04",
+    "secim": [
+     "gyo",
+     "havalimani"
+    ],
+    "net": 0.0869568696237148,
+    "esit": 0.11248487912222273,
+    "xu100": 0.10527902433790781
+   },
+   {
+    "ay": "2024-05",
+    "secim": [
+     "havalimani",
+     "ulasim"
+    ],
+    "net": 0.16210303915566693,
+    "esit": 0.04841140358327689,
+    "xu100": 0.03531857389622761
+   },
+   {
+    "ay": "2024-06",
+    "secim": [
+     "sigorta",
+     "ulasim"
+    ],
+    "net": 0.22252370559821089,
+    "esit": 0.03269540270998116,
+    "xu100": 0.023787355475698213
+   },
+   {
+    "ay": "2024-07",
+    "secim": [
+     "sigorta",
+     "ulasim"
+    ],
+    "net": -0.0776130946902302,
+    "esit": 0.016973717471618882,
+    "xu100": -0.0008734849978681014
+   },
+   {
+    "ay": "2024-08",
+    "secim": [
+     "perakende",
+     "sigorta"
+    ],
+    "net": -0.11495133430145688,
+    "esit": -0.06097132316147398,
+    "xu100": -0.07570539766838857
+   },
+   {
+    "ay": "2024-09",
+    "secim": [
+     "cimento",
+     "madencilik"
+    ],
+    "net": -0.16278757433527713,
+    "esit": -0.030753967123469655,
+    "xu100": -0.017023999033885406
+   },
+   {
+    "ay": "2024-10",
+    "secim": [
+     "cimento",
+     "kimya_gubre"
+    ],
+    "net": -0.03257501329444412,
+    "esit": -0.05773455068508037,
+    "xu100": -0.0829625514976644
+   },
+   {
+    "ay": "2024-11",
+    "secim": [
+     "holding_insaat",
+     "kimya_gubre"
+    ],
+    "net": 0.16331198192977592,
+    "esit": 0.10712569773181062,
+    "xu100": 0.08371253043804572
+   },
+   {
+    "ay": "2024-12",
+    "secim": [
+     "enerji_dagitim",
+     "kimya_gubre"
+    ],
+    "net": 0.08584404416295777,
+    "esit": 0.03404439207273667,
+    "xu100": 0.02930169404405869
+   },
+   {
+    "ay": "2025-01",
+    "secim": [
+     "kimya_gubre",
+     "ulasim"
+    ],
+    "net": -0.0380810994732349,
+    "esit": 0.004373545885572015,
+    "xu100": 0.014126066316914043
+   },
+   {
+    "ay": "2025-02",
+    "secim": [
+     "araci_kurum",
+     "savunma"
+    ],
+    "net": -0.025316197354767478,
+    "esit": -0.033324247816317286,
+    "xu100": -0.03627781036646005
+   },
+   {
+    "ay": "2025-03",
+    "secim": [
+     "savunma",
+     "ulasim"
+    ],
+    "net": 0.14896267512439876,
+    "esit": 0.044848201353840655,
+    "xu100": -0.00309826391917134
+   },
+   {
+    "ay": "2025-04",
+    "secim": [
+     "holding_insaat",
+     "savunma"
+    ],
+    "net": 0.050715683540426826,
+    "esit": -0.046124982316181125,
+    "xu100": -0.059352159715977404
+   },
+   {
+    "ay": "2025-05",
+    "secim": [
+     "savunma",
+     "ulasim"
+    ],
+    "net": -0.04560365568052649,
+    "esit": -0.025374601645167794,
+    "xu100": -0.00801178737801278
+   },
+   {
+    "ay": "2025-06",
+    "secim": [
+     "holding_insaat",
+     "savunma"
+    ],
+    "net": 0.08773745340691175,
+    "esit": 0.07073621625760051,
+    "xu100": 0.10420961557180974
+   },
+   {
+    "ay": "2025-07",
+    "secim": [
+     "gyo",
+     "savunma"
+    ],
+    "net": 0.1489848404464782,
+    "esit": 0.0784251541919568,
+    "xu100": 0.08176617809715503
+   },
+   {
+    "ay": "2025-08",
+    "secim": [
+     "banka",
+     "gyo"
+    ],
+    "net": 0.020133951085060775,
+    "esit": 0.0689185561433355,
+    "xu100": 0.0510257092616242
+   },
+   {
+    "ay": "2025-09",
+    "secim": [
+     "kimya_tarim",
+     "savunma"
+    ],
+    "net": 0.0037355356721532913,
+    "esit": -0.02098247505636836,
+    "xu100": -0.025209121971122905
+   },
+   {
+    "ay": "2025-10",
+    "secim": [
+     "enerji_ekipman",
+     "savunma"
+    ],
+    "net": -0.032813865276761334,
+    "esit": 0.01795380089930477,
+    "xu100": -0.005656856436150992
+   },
+   {
+    "ay": "2025-11",
+    "secim": [
+     "kimya_gubre",
+     "madencilik"
+    ],
+    "net": -0.04936765668228221,
+    "esit": -0.0138116596744186,
+    "xu100": -0.0032884522776240876
+   },
+   {
+    "ay": "2025-12",
+    "secim": [
+     "madencilik",
+     "madencilik_altin"
+    ],
+    "net": 0.2402129006923125,
+    "esit": 0.03506711275852551,
+    "xu100": 0.0335152245843402
+   },
+   {
+    "ay": "2026-01",
+    "secim": [
+     "madencilik",
+     "madencilik_altin"
+    ],
+    "net": 0.38419170524656854,
+    "esit": 0.19489910979307384,
+    "xu100": 0.22802879094497874
+   },
+   {
+    "ay": "2026-02",
+    "secim": [
+     "madencilik",
+     "madencilik_altin"
+    ],
+    "net": 0.052996347411041866,
+    "esit": -0.0026503415789639884,
+    "xu100": -0.00768069221717238
+   },
+   {
+    "ay": "2026-03",
+    "secim": [
+     "madencilik",
+     "madencilik_altin"
+    ],
+    "net": -0.23444326872028326,
+    "esit": -0.06954872376674194,
+    "xu100": -0.06837640939092504
+   },
+   {
+    "ay": "2026-04",
+    "secim": [
+     "kimya_gubre",
+     "savunma"
+    ],
+    "net": 0.21534789758045536,
+    "esit": 0.09446469007465574,
+    "xu100": 0.1296097725796923
+   },
+   {
+    "ay": "2026-05",
+    "secim": [
+     "enerji_ekipman",
+     "savunma"
+    ],
+    "net": -0.06637925981481874,
+    "esit": -0.015070332818395362,
+    "xu100": -0.05449144838089759
+   },
+   {
+    "ay": "2026-06",
+    "secim": [
+     "holding_insaat",
+     "kimya_tarim"
+    ],
+    "net": -0.10824304128880785,
+    "esit": -0.020667858779583496,
+    "xu100": 0.033076075918098136
+   },
+   {
+    "ay": "2026-07",
+    "secim": [
+     "demir_celik",
+     "enerji_dagitim"
+    ],
+    "net": 0.004835067055953936,
+    "esit": -0.01925229464156068,
+    "xu100": -0.0525064254724078
+   },
+   {
+    "ay": "2026-08",
+    "secim": [
+     "demir_celik",
+     "ulasim"
+    ],
+    "net": -0.025880392980386746,
+    "esit": 0.026644330038029358,
+    "xu100": 0.07536667052465895
+   },
+   {
+    "ay": "2026-09",
+    "secim": [
+     "enerji_dagitim",
+     "rafineri_petrokimya"
+    ],
+    "net": -0.03364264904005909,
+    "esit": -0.1059814093469528,
+    "xu100": -0.16844450103129494
+   },
+   {
+    "ay": "2026-10",
+    "secim": [
+     "enerji_dagitim",
+     "rafineri_petrokimya"
+    ],
+    "net": -0.0598364435136981,
+    "esit": -0.13742171588333194,
+    "xu100": -0.09877759328225089
+   },
+   {
+    "ay": "2026-11",
+    "secim": [
+     "enerji_dagitim",
+     "kamu_banka"
+    ],
+    "net": NaN,
+    "esit": NaN,
+    "xu100": 0.08840194357295772
+   }
+  ]
+ },
+ "duyarlilik": [
+  {
+   "sektor": "araci_kurum",
+   "surucu": "brent",
+   "eszamanli_beta": 0.035040387277805,
+   "eszamanli_kor": 0.04528131587241538,
+   "ongoru_rho_20g": -0.28576203208556145,
+   "ongoru_t": -1.6602886821254728,
+   "ay": 33
+  },
+  {
+   "sektor": "banka",
+   "surucu": "brent",
+   "eszamanli_beta": 0.0006814722977489659,
+   "eszamanli_kor": 0.0013256176081968118,
+   "ongoru_rho_20g": 0.13836898395721917,
+   "ongoru_t": 0.7778886049969613,
+   "ay": 33
+  },
+  {
+   "sektor": "cam",
+   "surucu": "brent",
+   "eszamanli_beta": 0.021617473302768284,
+   "eszamanli_kor": 0.03550277325083546,
+   "ongoru_rho_20g": -0.31985294117647056,
+   "ongoru_t": -1.8796068151925915,
+   "ay": 33
+  },
+  {
+   "sektor": "cimento",
+   "surucu": "brent",
+   "eszamanli_beta": -0.016635930228798272,
+   "eszamanli_kor": -0.029735924272397966,
+   "ongoru_rho_20g": -0.35327540106951877,
+   "ongoru_t": -2.1025264170268363,
+   "ay": 33
+  },
+  {
+   "sektor": "dayanikli_tuketim",
+   "surucu": "brent",
+   "eszamanli_beta": 0.0037798620444084246,
+   "eszamanli_kor": 0.006050447624298656,
+   "ongoru_rho_20g": -0.05180481283422462,
+   "ongoru_t": -0.28882481626063977,
+   "ay": 33
+  },
+  {
+   "sektor": "demir_celik",
+   "surucu": "brent",
+   "eszamanli_beta": 0.0013167131438491081,
+   "eszamanli_kor": 0.0025154190062858374,
+   "ongoru_rho_20g": 0.05548128342245986,
+   "ongoru_t": 0.3093832471899185,
+   "ay": 33
+  },
+  {
+   "sektor": "enerji_dagitim",
+   "surucu": "brent",
+   "eszamanli_beta": 0.04487983796912225,
+   "eszamanli_kor": 0.0639093626356082,
+   "ongoru_rho_20g": -0.13101604278074863,
+   "ongoru_t": -0.7358089444219866,
+   "ay": 33
+  },
+  {
+   "sektor": "enerji_ekipman",
+   "surucu": "brent",
+   "eszamanli_beta": -0.0031588549746452196,
+   "eszamanli_kor": -0.003607973026747781,
+   "ongoru_rho_20g": 0.0798796791443851,
+   "ongoru_t": 0.44617698366749053,
+   "ay": 33
+  },
+  {
+   "sektor": "enerji_uretim",
+   "surucu": "brent",
+   "eszamanli_beta": 0.019742266125869334,
+   "eszamanli_kor": 0.03968829638485801,
+   "ongoru_rho_20g": -0.20788770053475936,
+   "ongoru_t": -1.1833221242872927,
+   "ay": 33
+  },
+  {
+   "sektor": "gida",
+   "surucu": "brent",
+   "eszamanli_beta": -0.01629400521165816,
+   "eszamanli_kor": -0.027360469381513337,
+   "ongoru_rho_20g": -0.15173796791443853,
+   "ongoru_t": -0.8547384763942039,
+   "ay": 33
+  },
+  {
+   "sektor": "gyo",
+   "surucu": "brent",
+   "eszamanli_beta": -0.0030236486233699805,
+   "eszamanli_kor": -0.004874882362678484,
+   "ongoru_rho_20g": -0.1290106951871658,
+   "ongoru_t": -0.7243544346114797,
+   "ay": 33
+  },
+  {
+   "sektor": "havacilik",
+   "surucu": "brent",
+   "eszamanli_beta": -0.03685901126798208,
+   "eszamanli_kor": -0.07368334008177532,
+   "ongoru_rho_20g": -0.1951871657754011,
+   "ongoru_t": -1.1080687262575564,
+   "ay": 33
+  },
+  {
+   "sektor": "havalimani",
+   "surucu": "brent",
+   "eszamanli_beta": -0.059730125908127735,
+   "eszamanli_kor": -0.08406209771312631,
+   "ongoru_rho_20g": -0.012032085561497314,
+   "ongoru_t": -0.06699666696537482,
+   "ay": 33
+  },
+  {
+   "sektor": "holding",
+   "surucu": "brent",
+   "eszamanli_beta": -0.008506887377484087,
+   "eszamanli_kor": -0.021998307659411055,
+   "ongoru_rho_20g": -0.004010695187165775,
+   "ongoru_t": -0.022330785336885338,
+   "ay": 33
+  },
+  {
+   "sektor": "holding_insaat",
+   "surucu": "brent",
+   "eszamanli_beta": -0.028781086541173017,
+   "eszamanli_kor": -0.04291489112876604,
+   "ongoru_rho_20g": -0.026403743315508016,
+   "ongoru_t": -0.14706109239860912,
+   "ay": 33
+  },
+  {
+   "sektor": "kamu_banka",
+   "surucu": "brent",
+   "eszamanli_beta": 0.002153870393659599,
+   "eszamanli_kor": 0.0026928725784578526,
+   "ongoru_rho_20g": 0.11764705882352947,
+   "ongoru_t": 0.6596117943898866,
+   "ay": 33
+  },
+  {
+   "sektor": "kimya",
+   "surucu": "brent",
+   "eszamanli_beta": 0.022994991043759076,
+   "eszamanli_kor": 0.040333185858909715,
+   "ongoru_rho_20g": 0.313168449197861,
+   "ongoru_t": 1.8360035233576986,
+   "ay": 33
+  },
+  {
+   "sektor": "kimya_gubre",
+   "surucu": "brent",
+   "eszamanli_beta": -0.007969008772968755,
+   "eszamanli_kor": -0.007806522185860871,
+   "ongoru_rho_20g": 0.05447860962566851,
+   "ongoru_t": 0.30377518624401073,
+   "ay": 33
+  },
+  {
+   "sektor": "kimya_tarim",
+   "surucu": "brent",
+   "eszamanli_beta": 0.05373336853278021,
+   "eszamanli_kor": 0.039821825096957475,
+   "ongoru_rho_20g": 0.19251336898395724,
+   "ongoru_t": 1.092301279841889,
+   "ay": 33
+  },
+  {
+   "sektor": "madencilik",
+   "surucu": "brent",
+   "eszamanli_beta": -0.022371024120330867,
+   "eszamanli_kor": -0.022950912095895094,
+   "ongoru_rho_20g": -0.4358288770053476,
+   "ongoru_t": -2.6961253561486154,
+   "ay": 33
+  },
+  {
+   "sektor": "madencilik_altin",
+   "surucu": "brent",
+   "eszamanli_beta": 0.03143006224302541,
+   "eszamanli_kor": 0.029721586468661396,
+   "ongoru_rho_20g": -0.24866310160427815,
+   "ongoru_t": -1.4293947914056313,
+   "ay": 33
+  },
+  {
+   "sektor": "otomotiv",
+   "surucu": "brent",
+   "eszamanli_beta": 0.012477597633173963,
+   "eszamanli_kor": 0.0305465826906343,
+   "ongoru_rho_20g": -0.14070855614973266,
+   "ongoru_t": -0.7913047274030488,
+   "ay": 33
+  },
+  {
+   "sektor": "perakende",
+   "surucu": "brent",
+   "eszamanli_beta": -0.01926227992505751,
+   "eszamanli_kor": -0.03223522650343734,
+   "ongoru_rho_20g": -0.21557486631016046,
+   "ongoru_t": -1.2291711723346985,
+   "ay": 33
+  },
+  {
+   "sektor": "rafineri_petrokimya",
+   "surucu": "brent",
+   "eszamanli_beta": 0.0518116101893747,
+   "eszamanli_kor": 0.07960982699344006,
+   "ongoru_rho_20g": -0.0845588235294117,
+   "ongoru_t": -0.47249585327210575,
+   "ay": 33
+  },
+  {
+   "sektor": "savunma",
+   "surucu": "brent",
+   "eszamanli_beta": -0.04255202913311735,
+   "eszamanli_kor": -0.04680405180811079,
+   "ongoru_rho_20g": -0.007352941176470569,
+   "ongoru_t": -0.040940550599960726,
+   "ay": 33
+  },
+  {
+   "sektor": "sigorta",
+   "surucu": "brent",
+   "eszamanli_beta": 0.0032588189134325858,
+   "eszamanli_kor": 0.0033572248306069172,
+   "ongoru_rho_20g": -0.1283422459893049,
+   "ongoru_t": -0.7205382804553868,
+   "ay": 33
+  },
+  {
+   "sektor": "telekom",
+   "surucu": "brent",
+   "eszamanli_beta": -0.02032715475991888,
+   "eszamanli_kor": -0.0352415732982004,
+   "ongoru_rho_20g": -0.06417112299465237,
+   "ongoru_t": -0.35802761907843345,
+   "ay": 33
+  },
+  {
+   "sektor": "ulasim",
+   "surucu": "brent",
+   "eszamanli_beta": -0.04603114413863105,
+   "eszamanli_kor": -0.039724023259122436,
+   "ongoru_rho_20g": -0.3512700534759358,
+   "ongoru_t": -2.0889061310979433,
+   "ay": 33
+  },
+  {
+   "sektor": "araci_kurum",
+   "surucu": "altin",
+   "eszamanli_beta": 0.034776067884798485,
+   "eszamanli_kor": 0.02499516220156641,
+   "ongoru_rho_20g": 0.33422459893048134,
+   "ongoru_t": 1.9744262373990693,
+   "ay": 33
+  },
+  {
+   "sektor": "banka",
+   "surucu": "altin",
+   "eszamanli_beta": -0.026675987186675208,
+   "eszamanli_kor": -0.02886130079547198,
+   "ongoru_rho_20g": 0.21290106951871665,
+   "ongoru_t": 1.2131970326992019,
+   "ay": 33
+  },
+  {
+   "sektor": "cam",
+   "surucu": "altin",
+   "eszamanli_beta": -0.02913676160814329,
+   "eszamanli_kor": -0.026614846824279458,
+   "ongoru_rho_20g": 0.17413101604278078,
+   "ongoru_t": 0.9845621197469435,
+   "ay": 33
+  },
+  {
+   "sektor": "cimento",
+   "surucu": "altin",
+   "eszamanli_beta": 0.04036610415883583,
+   "eszamanli_kor": 0.04012700741711546,
+   "ongoru_rho_20g": -0.04311497326203212,
+   "ongoru_t": -0.24027744149295324,
+   "ay": 33
+  },
+  {
+   "sektor": "dayanikli_tuketim",
+   "surucu": "altin",
+   "eszamanli_beta": 0.012804637456527497,
+   "eszamanli_kor": 0.011399982533791162,
+   "ongoru_rho_20g": 0.02907754010695194,
+   "ongoru_t": 0.1619653771790895,
+   "ay": 33
+  },
+  {
+   "sektor": "demir_celik",
+   "surucu": "altin",
+   "eszamanli_beta": -0.025134640989502233,
+   "eszamanli_kor": -0.026704068753882218,
+   "ongoru_rho_20g": 0.0003342245989305098,
+   "ongoru_t": 0.0018608839150424784,
+   "ay": 33
+  },
+  {
+   "sektor": "enerji_dagitim",
+   "surucu": "altin",
+   "eszamanli_beta": -0.016117210484165957,
+   "eszamanli_kor": -0.01276522360718129,
+   "ongoru_rho_20g": 0.15073529411764708,
+   "ongoru_t": 0.8489586641189139,
+   "ay": 33
+  },
+  {
+   "sektor": "enerji_ekipman",
+   "surucu": "altin",
+   "eszamanli_beta": 0.1067485898347048,
+   "eszamanli_kor": 0.06780806089426474,
+   "ongoru_rho_20g": -0.17613636363636362,
+   "ongoru_t": -0.9962615443752372,
+   "ay": 33
+  },
+  {
+   "sektor": "enerji_uretim",
+   "surucu": "altin",
+   "eszamanli_beta": 0.03699994676988482,
+   "eszamanli_kor": 0.04136682018707703,
+   "ongoru_rho_20g": -0.026403743315508023,
+   "ongoru_t": -0.14706109239860915,
+   "ay": 33
+  },
+  {
+   "sektor": "gida",
+   "surucu": "altin",
+   "eszamanli_beta": -0.011539752561856995,
+   "eszamanli_kor": -0.01077650099426589,
+   "ongoru_rho_20g": 0.1647727272727273,
+   "ongoru_t": 0.930129132122219,
+   "ay": 33
+  },
+  {
+   "sektor": "gyo",
+   "surucu": "altin",
+   "eszamanli_beta": -0.04858970630072296,
+   "eszamanli_kor": -0.04357149248651405,
+   "ongoru_rho_20g": 0.01470588235294129,
+   "ongoru_t": 0.08188774281093214,
+   "ay": 33
+  },
+  {
+   "sektor": "havacilik",
+   "surucu": "altin",
+   "eszamanli_beta": -0.04784586882773211,
+   "eszamanli_kor": -0.05319314302757573,
+   "ongoru_rho_20g": 0.05247326203208558,
+   "ongoru_t": 0.29256181215164123,
+   "ay": 33
+  },
+  {
+   "sektor": "havalimani",
+   "surucu": "altin",
+   "eszamanli_beta": -0.03756594635280182,
+   "eszamanli_kor": -0.02940535792505332,
+   "ongoru_rho_20g": -0.024398395721925294,
+   "ongoru_t": -0.13588496915024037,
+   "ay": 33
+  },
+  {
+   "sektor": "holding",
+   "surucu": "altin",
+   "eszamanli_beta": 0.03826603780670607,
+   "eszamanli_kor": 0.05503230058384457,
+   "ongoru_rho_20g": 0.022058823529411725,
+   "ongoru_t": 0.1228482236324826,
+   "ay": 33
+  },
+  {
+   "sektor": "holding_insaat",
+   "surucu": "altin",
+   "eszamanli_beta": 0.006245613564357513,
+   "eszamanli_kor": 0.005179186180039956,
+   "ongoru_rho_20g": 0.14939839572192518,
+   "ongoru_t": 0.8412564146994738,
+   "ay": 33
+  },
+  {
+   "sektor": "kamu_banka",
+   "surucu": "altin",
+   "eszamanli_beta": -0.022177580690647878,
+   "eszamanli_kor": -0.015421824206873602,
+   "ongoru_rho_20g": 0.26637700534759357,
+   "ongoru_t": 1.5387200165978916,
+   "ay": 33
+  },
+  {
+   "sektor": "kimya",
+   "surucu": "altin",
+   "eszamanli_beta": -0.00012003274455346614,
+   "eszamanli_kor": -0.00011708859727129919,
+   "ongoru_rho_20g": -0.3602941176470588,
+   "ongoru_t": -2.1504603349203766,
+   "ay": 33
+  },
+  {
+   "sektor": "kimya_gubre",
+   "surucu": "altin",
+   "eszamanli_beta": 0.09126709605279906,
+   "eszamanli_kor": 0.049727069771697066,
+   "ongoru_rho_20g": 0.2540106951871657,
+   "ongoru_t": 1.4622308057087647,
+   "ay": 33
+  },
+  {
+   "sektor": "kimya_tarim",
+   "surucu": "altin",
+   "eszamanli_beta": 0.08180211147457772,
+   "eszamanli_kor": 0.033718399357286925,
+   "ongoru_rho_20g": -0.19017379679144375,
+   "ongoru_t": -1.0785255041029924,
+   "ay": 33
+  },
+  {
+   "sektor": "madencilik",
+   "surucu": "altin",
+   "eszamanli_beta": 0.15790971370990922,
+   "eszamanli_kor": 0.09009662310670875,
+   "ongoru_rho_20g": 0.24565508021390378,
+   "ongoru_t": 1.4109860176749496,
+   "ay": 33
+  },
+  {
+   "sektor": "madencilik_altin",
+   "surucu": "altin",
+   "eszamanli_beta": 0.2612562282565586,
+   "eszamanli_kor": 0.13741012728021207,
+   "ongoru_rho_20g": 0.19050802139037437,
+   "ongoru_t": 1.0804922983585574,
+   "ay": 33
+  },
+  {
+   "sektor": "otomotiv",
+   "surucu": "altin",
+   "eszamanli_beta": 0.024935338065630044,
+   "eszamanli_kor": 0.033949430986491815,
+   "ongoru_rho_20g": 0.05815508021390367,
+   "ongoru_t": 0.32434271334190956,
+   "ay": 33
+  },
+  {
+   "sektor": "perakende",
+   "surucu": "altin",
+   "eszamanli_beta": 0.02638708380833093,
+   "eszamanli_kor": 0.02455839705319087,
+   "ongoru_rho_20g": 0.24532085561497333,
+   "ongoru_t": 1.4089432888983284,
+   "ay": 33
+  },
+  {
+   "sektor": "rafineri_petrokimya",
+   "surucu": "altin",
+   "eszamanli_beta": 0.03084660518146931,
+   "eszamanli_kor": 0.026361632931874445,
+   "ongoru_rho_20g": -0.12299465240641717,
+   "ongoru_t": -0.6900445204375083,
+   "ay": 33
+  },
+  {
+   "sektor": "savunma",
+   "surucu": "altin",
+   "eszamanli_beta": -0.02057963987531302,
+   "eszamanli_kor": -0.012590016244509124,
+   "ongoru_rho_20g": -0.08054812834224591,
+   "ongoru_t": -0.44993496288195806,
+   "ay": 33
+  },
+  {
+   "sektor": "sigorta",
+   "surucu": "altin",
+   "eszamanli_beta": -0.03976577120631656,
+   "eszamanli_kor": -0.022785310480679156,
+   "ongoru_rho_20g": 0.2038770053475935,
+   "ongoru_t": 1.1594925141424817,
+   "ay": 33
+  },
+  {
+   "sektor": "telekom",
+   "surucu": "altin",
+   "eszamanli_beta": 0.0004929031511508896,
+   "eszamanli_kor": 0.000475297612127174,
+   "ongoru_rho_20g": 0.5080213903743314,
+   "ongoru_t": 3.2838702131684383,
+   "ay": 33
+  },
+  {
+   "sektor": "ulasim",
+   "surucu": "altin",
+   "eszamanli_beta": -0.014358320309569943,
+   "eszamanli_kor": -0.0068911337486764115,
+   "ongoru_rho_20g": 0.18282085561497322,
+   "ongoru_t": 1.03535303330396,
+   "ay": 33
+  },
+  {
+   "sektor": "araci_kurum",
+   "surucu": "vix",
+   "eszamanli_beta": -0.00027941161779372235,
+   "eszamanli_kor": -0.0285365562066805,
+   "ongoru_rho_20g": -0.0858957219251337,
+   "ongoru_t": -0.48002123420825804,
+   "ay": 33
+  },
+  {
+   "sektor": "banka",
+   "surucu": "vix",
+   "eszamanli_beta": -0.0001722993949715529,
+   "eszamanli_kor": -0.026488707660920877,
+   "ongoru_rho_20g": -0.15240641711229946,
+   "ongoru_t": -0.858593183840592,
+   "ay": 33
+  },
+  {
+   "sektor": "cam",
+   "surucu": "vix",
+   "eszamanli_beta": -0.00026152986912299355,
+   "eszamanli_kor": -0.03394576526755391,
+   "ongoru_rho_20g": 0.08957219251336904,
+   "ongoru_t": 0.5007296280889661,
+   "ay": 33
+  },
+  {
+   "sektor": "cimento",
+   "surucu": "vix",
+   "eszamanli_beta": -0.0004454336735414165,
+   "eszamanli_kor": -0.06292730866881724,
+   "ongoru_rho_20g": 0.3856951871657754,
+   "ongoru_t": 2.3275512548744204,
+   "ay": 33
+  },
+  {
+   "sektor": "dayanikli_tuketim",
+   "surucu": "vix",
+   "eszamanli_beta": -0.00010469970366320758,
+   "eszamanli_kor": -0.013245366164510794,
+   "ongoru_rho_20g": -0.046122994652406414,
+   "ongoru_t": -0.25707555386384345,
+   "ay": 33
+  },
+  {
+   "sektor": "demir_celik",
+   "surucu": "vix",
+   "eszamanli_beta": -0.0006061317626941848,
+   "eszamanli_kor": -0.09151830552712834,
+   "ongoru_rho_20g": -0.04044117647058825,
+   "ongoru_t": -0.22535129630784775,
+   "ay": 33
+  },
+  {
+   "sektor": "enerji_dagitim",
+   "surucu": "vix",
+   "eszamanli_beta": 0.0002502155432071548,
+   "eszamanli_kor": 0.02816011669820503,
+   "ongoru_rho_20g": 0.3068181818181819,
+   "ongoru_t": 1.7948608032163136,
+   "ay": 33
+  },
+  {
+   "sektor": "enerji_ekipman",
+   "surucu": "vix",
+   "eszamanli_beta": -0.00036717072582301654,
+   "eszamanli_kor": -0.03314541058551537,
+   "ongoru_rho_20g": 0.27339572192513373,
+   "ongoru_t": 1.5824933470386724,
+   "ay": 33
+  },
+  {
+   "sektor": "enerji_uretim",
+   "surucu": "vix",
+   "eszamanli_beta": 0.00022213009697816426,
+   "eszamanli_kor": 0.03529349133985987,
+   "ongoru_rho_20g": -0.041109625668449216,
+   "ongoru_t": -0.22908236537088222,
+   "ay": 33
+  },
+  {
+   "sektor": "gida",
+   "surucu": "vix",
+   "eszamanli_beta": 8.802103332000495e-05,
+   "eszamanli_kor": 0.01168164263154022,
+   "ongoru_rho_20g": -0.17045454545454547,
+   "ongoru_t": -0.9631458630193337,
+   "ay": 33
+  },
+  {
+   "sektor": "gyo",
+   "surucu": "vix",
+   "eszamanli_beta": -0.00021747013727466195,
+   "eszamanli_kor": -0.027710183896953282,
+   "ongoru_rho_20g": -0.07620320855614966,
+   "ongoru_t": -0.4255187864323415,
+   "ay": 33
+  },
+  {
+   "sektor": "havacilik",
+   "surucu": "vix",
+   "eszamanli_beta": 4.9744472431164905e-05,
+   "eszamanli_kor": 0.007859451042205536,
+   "ongoru_rho_20g": 0.1373663101604278,
+   "ongoru_t": 0.7721429170558867,
+   "ay": 33
+  },
+  {
+   "sektor": "havalimani",
+   "surucu": "vix",
+   "eszamanli_beta": 2.6408319334227005e-05,
+   "eszamanli_kor": 0.002937342005350688,
+   "ongoru_rho_20g": -0.07352941176470593,
+   "ongoru_t": -0.4105056571379888,
+   "ay": 33
+  },
+  {
+   "sektor": "holding",
+   "surucu": "vix",
+   "eszamanli_beta": 0.0001452261021929489,
+   "eszamanli_kor": 0.029681444325119714,
+   "ongoru_rho_20g": -0.2095588235294119,
+   "ongoru_t": -1.1932694545805205,
+   "ay": 33
+  },
+  {
+   "sektor": "holding_insaat",
+   "surucu": "vix",
+   "eszamanli_beta": -7.060626565206558e-05,
+   "eszamanli_kor": -0.008320814357740573,
+   "ongoru_rho_20g": 0.3051470588235295,
+   "ongoru_t": 1.7840780938362752,
+   "ay": 33
+  },
+  {
+   "sektor": "kamu_banka",
+   "surucu": "vix",
+   "eszamanli_beta": -0.00043525132108831885,
+   "eszamanli_kor": -0.043007410592061174,
+   "ongoru_rho_20g": -0.03910427807486624,
+   "ongoru_t": -0.21789006233641517,
+   "ay": 33
+  },
+  {
+   "sektor": "kimya",
+   "surucu": "vix",
+   "eszamanli_beta": 1.5796339896329407e-05,
+   "eszamanli_kor": 0.002189815440039944,
+   "ongoru_rho_20g": -0.22560160427807485,
+   "ongoru_t": -1.289336115640713,
+   "ay": 33
+  },
+  {
+   "sektor": "kimya_gubre",
+   "surucu": "vix",
+   "eszamanli_beta": -0.0005025515034357699,
+   "eszamanli_kor": -0.038908172247053854,
+   "ongoru_rho_20g": -0.06584224598930488,
+   "ongoru_t": -0.3673913334602821,
+   "ay": 33
+  },
+  {
+   "sektor": "kimya_tarim",
+   "surucu": "vix",
+   "eszamanli_beta": -0.0009012384922506485,
+   "eszamanli_kor": -0.05278661162917012,
+   "ongoru_rho_20g": 0.03977272727272718,
+   "ongoru_t": 0.2216205303128264,
+   "ay": 33
+  },
+  {
+   "sektor": "madencilik",
+   "surucu": "vix",
+   "eszamanli_beta": 0.0003822198173964087,
+   "eszamanli_kor": 0.03099196014163796,
+   "ongoru_rho_20g": 0.08455882352941176,
+   "ongoru_t": 0.4724958532721061,
+   "ay": 33
+  },
+  {
+   "sektor": "madencilik_altin",
+   "surucu": "vix",
+   "eszamanli_beta": 0.00017768896015845392,
+   "eszamanli_kor": 0.013279880041408166,
+   "ongoru_rho_20g": 0.003342245989304768,
+   "ongoru_t": 0.018608942047953728,
+   "ay": 33
+  },
+  {
+   "sektor": "otomotiv",
+   "surucu": "vix",
+   "eszamanli_beta": 0.00019346142931099536,
+   "eszamanli_kor": 0.03743241161497091,
+   "ongoru_rho_20g": -0.0003342245989304374,
+   "ongoru_t": -0.0018608839150420756,
+   "ay": 33
+  },
+  {
+   "sektor": "perakende",
+   "surucu": "vix",
+   "eszamanli_beta": 0.0007396080164607349,
+   "eszamanli_kor": 0.09782422291409679,
+   "ongoru_rho_20g": 0.033756684491978654,
+   "ongoru_t": 0.1880564419133223,
+   "ay": 33
+  },
+  {
+   "sektor": "rafineri_petrokimya",
+   "surucu": "vix",
+   "eszamanli_beta": -2.870608199243421e-05,
+   "eszamanli_kor": -0.003485944525824614,
+   "ongoru_rho_20g": 0.17012032085561493,
+   "ongoru_t": 0.9612010003035808,
+   "ay": 33
+  },
+  {
+   "sektor": "savunma",
+   "surucu": "vix",
+   "eszamanli_beta": -0.0005835749882744307,
+   "eszamanli_kor": -0.05073022711719931,
+   "ongoru_rho_20g": 0.10661764705882361,
+   "ongoru_t": 0.5970249215531571,
+   "ay": 33
+  },
+  {
+   "sektor": "sigorta",
+   "surucu": "vix",
+   "eszamanli_beta": -0.0006040790163511677,
+   "eszamanli_kor": -0.049183667333565446,
+   "ongoru_rho_20g": -0.26804812834224606,
+   "ongoru_t": -1.5491179794641836,
+   "ay": 33
+  },
+  {
+   "sektor": "telekom",
+   "surucu": "vix",
+   "eszamanli_beta": 0.00028256514800571345,
+   "eszamanli_kor": 0.03871722738070213,
+   "ongoru_rho_20g": 0.06350267379679145,
+   "ongoru_t": 0.3542829846608963,
+   "ay": 33
+  },
+  {
+   "sektor": "ulasim",
+   "surucu": "vix",
+   "eszamanli_beta": 0.0008046738592281349,
+   "eszamanli_kor": 0.054883665831650295,
+   "ongoru_rho_20g": -0.1995320855614973,
+   "ongoru_t": -1.1337457968469544,
+   "ay": 33
+  },
+  {
+   "sektor": "araci_kurum",
+   "surucu": "abd10y",
+   "eszamanli_beta": -0.014192438002553029,
+   "eszamanli_kor": -0.037720122449421065,
+   "ongoru_rho_20g": -0.24766042780748668,
+   "ongoru_t": -1.4232536702518699,
+   "ay": 33
+  },
+  {
+   "sektor": "banka",
+   "surucu": "abd10y",
+   "eszamanli_beta": 0.002894810354173036,
+   "eszamanli_kor": 0.01158126827653212,
+   "ongoru_rho_20g": 0.3572860962566844,
+   "ongoru_t": 2.129866659589432,
+   "ay": 33
+  },
+  {
+   "sektor": "cam",
+   "surucu": "abd10y",
+   "eszamanli_beta": 0.006782085468688442,
+   "eszamanli_kor": 0.022907967199892035,
+   "ongoru_rho_20g": -0.3526069518716578,
+   "ongoru_t": -2.097982658081728,
+   "ay": 33
+  },
+  {
+   "sektor": "cimento",
+   "surucu": "abd10y",
+   "eszamanli_beta": -0.013784702952740237,
+   "eszamanli_kor": -0.0506973803992956,
+   "ongoru_rho_20g": -0.49064171122994665,
+   "ongoru_t": -3.1350681766514477,
+   "ay": 33
+  },
+  {
+   "sektor": "dayanikli_tuketim",
+   "surucu": "abd10y",
+   "eszamanli_beta": 0.008047158552332321,
+   "eszamanli_kor": 0.02649232421502675,
+   "ongoru_rho_20g": -0.1554144385026738,
+   "ongoru_t": -0.8759543810532678,
+   "ay": 33
+  },
+  {
+   "sektor": "demir_celik",
+   "surucu": "abd10y",
+   "eszamanli_beta": -0.008548729121385367,
+   "eszamanli_kor": -0.03360272354120181,
+   "ongoru_rho_20g": -0.08188502673796791,
+   "ongoru_t": -0.45745275963635096,
+   "ay": 33
+  },
+  {
+   "sektor": "enerji_dagitim",
+   "surucu": "abd10y",
+   "eszamanli_beta": -0.0025724028843132976,
+   "eszamanli_kor": -0.00753387032318311,
+   "ongoru_rho_20g": -0.1587566844919787,
+   "ongoru_t": -0.8952739088394687,
+   "ay": 33
+  },
+  {
+   "sektor": "enerji_ekipman",
+   "surucu": "abd10y",
+   "eszamanli_beta": 0.00896925426819795,
+   "eszamanli_kor": 0.02107869336119679,
+   "ongoru_rho_20g": -0.1945187165775401,
+   "ongoru_t": -1.1041244730993256,
+   "ay": 33
+  },
+  {
+   "sektor": "enerji_uretim",
+   "surucu": "abd10y",
+   "eszamanli_beta": 0.012048180641091357,
+   "eszamanli_kor": 0.0498357136040456,
+   "ongoru_rho_20g": -0.3686497326203209,
+   "ongoru_t": -2.2080730003073787,
+   "ay": 33
+  },
+  {
+   "sektor": "gida",
+   "surucu": "abd10y",
+   "eszamanli_beta": 0.0005214686741022443,
+   "eszamanli_kor": 0.0018016800630582307,
+   "ongoru_rho_20g": -0.10060160427807492,
+   "ongoru_t": -0.5629821539047636,
+   "ay": 33
+  },
+  {
+   "sektor": "gyo",
+   "surucu": "abd10y",
+   "eszamanli_beta": 0.005541960753270351,
+   "eszamanli_kor": 0.01837647516677826,
+   "ongoru_rho_20g": -0.02306149732620329,
+   "ongoru_t": -0.1284351405096012,
+   "ay": 33
+  },
+  {
+   "sektor": "havacilik",
+   "surucu": "abd10y",
+   "eszamanli_beta": 0.003956129029202992,
+   "eszamanli_kor": 0.01627233312053021,
+   "ongoru_rho_20g": -0.304144385026738,
+   "ongoru_t": -1.7776172013340488,
+   "ay": 33
+  },
+  {
+   "sektor": "havalimani",
+   "surucu": "abd10y",
+   "eszamanli_beta": -0.028948536698722462,
+   "eszamanli_kor": -0.08379138240598297,
+   "ongoru_rho_20g": 0.24933155080213923,
+   "ongoru_t": 1.4334915917560096,
+   "ay": 33
+  },
+  {
+   "sektor": "holding",
+   "surucu": "abd10y",
+   "eszamanli_beta": -1.2371477944955076e-06,
+   "eszamanli_kor": -6.5825464021147455e-06,
+   "ongoru_rho_20g": -0.1995320855614973,
+   "ongoru_t": -1.1337457968469544,
+   "ay": 33
+  },
+  {
+   "sektor": "holding_insaat",
+   "surucu": "abd10y",
+   "eszamanli_beta": 0.00040451677692728016,
+   "eszamanli_kor": 0.001241055271439285,
+   "ongoru_rho_20g": -0.3673128342245989,
+   "ongoru_t": -2.1988139955658785,
+   "ay": 33
+  },
+  {
+   "sektor": "kamu_banka",
+   "surucu": "abd10y",
+   "eszamanli_beta": 0.0003644450311907003,
+   "eszamanli_kor": 0.0009371178654314231,
+   "ongoru_rho_20g": 0.22593582887700545,
+   "ongoru_t": 1.2913489145703936,
+   "ay": 33
+  },
+  {
+   "sektor": "kimya",
+   "surucu": "abd10y",
+   "eszamanli_beta": 0.00729792105742709,
+   "eszamanli_kor": 0.026337964000877883,
+   "ongoru_rho_20g": 0.10528074866310153,
+   "ongoru_t": 0.589454269437847,
+   "ay": 33
+  },
+  {
+   "sektor": "kimya_gubre",
+   "surucu": "abd10y",
+   "eszamanli_beta": -0.02161948999271538,
+   "eszamanli_kor": -0.04355767445593791,
+   "ongoru_rho_20g": -0.2356283422459893,
+   "ongoru_t": -1.3499328204400478,
+   "ay": 33
+  },
+  {
+   "sektor": "kimya_tarim",
+   "surucu": "abd10y",
+   "eszamanli_beta": -0.002323538816448742,
+   "eszamanli_kor": -0.003541546693208326,
+   "ongoru_rho_20g": 0.014037433155080192,
+   "ongoru_t": 0.07816482161654423,
+   "ay": 33
+  },
+  {
+   "sektor": "madencilik",
+   "surucu": "abd10y",
+   "eszamanli_beta": 0.011939658518647074,
+   "eszamanli_kor": 0.025203435568693158,
+   "ongoru_rho_20g": -0.28843582887700536,
+   "ongoru_t": -1.6772261336062233,
+   "ay": 33
+  },
+  {
+   "sektor": "madencilik_altin",
+   "surucu": "abd10y",
+   "eszamanli_beta": -0.01147568398119962,
+   "eszamanli_kor": -0.022318822229612477,
+   "ongoru_rho_20g": -0.16711229946524062,
+   "ongoru_t": -0.9437125156081052,
+   "ay": 33
+  },
+  {
+   "sektor": "otomotiv",
+   "surucu": "abd10y",
+   "eszamanli_beta": 0.0011857610755837216,
+   "eszamanli_kor": 0.005972863648711018,
+   "ongoru_rho_20g": -0.2042112299465241,
+   "ongoru_t": -1.1614759683122686,
+   "ay": 33
+  },
+  {
+   "sektor": "perakende",
+   "surucu": "abd10y",
+   "eszamanli_beta": -0.013018768065575607,
+   "eszamanli_kor": -0.04482772322538,
+   "ongoru_rho_20g": -0.10962566844919798,
+   "ongoru_t": -0.6140709301079069,
+   "ay": 33
+  },
+  {
+   "sektor": "rafineri_petrokimya",
+   "surucu": "abd10y",
+   "eszamanli_beta": -0.00043052648667380204,
+   "eszamanli_kor": -0.0013605215103126092,
+   "ongoru_rho_20g": -0.43482620320855603,
+   "ongoru_t": -2.6884743381907863,
+   "ay": 33
+  },
+  {
+   "sektor": "savunma",
+   "surucu": "abd10y",
+   "eszamanli_beta": -0.009539075048525471,
+   "eszamanli_kor": -0.02157920242948225,
+   "ongoru_rho_20g": -0.14739304812834225,
+   "ongoru_t": -0.8297118740889043,
+   "ay": 33
+  },
+  {
+   "sektor": "sigorta",
+   "surucu": "abd10y",
+   "eszamanli_beta": -0.026420145267949502,
+   "eszamanli_kor": -0.05597851151636201,
+   "ongoru_rho_20g": -0.07586898395721936,
+   "ongoru_t": -0.4236416471591673,
+   "ay": 33
+  },
+  {
+   "sektor": "telekom",
+   "surucu": "abd10y",
+   "eszamanli_beta": 0.009378454611541893,
+   "eszamanli_kor": 0.033440743326272504,
+   "ongoru_rho_20g": 0.01905080213903749,
+   "ongoru_t": 0.10608963069741231,
+   "ay": 33
+  },
+  {
+   "sektor": "ulasim",
+   "surucu": "abd10y",
+   "eszamanli_beta": -0.006643580144641926,
+   "eszamanli_kor": -0.01179661462085734,
+   "ongoru_rho_20g": -0.04979946524064174,
+   "ongoru_t": -0.2776161437262908,
+   "ay": 33
+  },
+  {
+   "sektor": "araci_kurum",
+   "surucu": "dxy",
+   "eszamanli_beta": -0.174353172248673,
+   "eszamanli_kor": -0.03565346272216433,
+   "ongoru_rho_20g": 0.0013368983957219253,
+   "ongoru_t": 0.007443541896339379,
+   "ay": 33
+  },
+  {
+   "sektor": "banka",
+   "surucu": "dxy",
+   "eszamanli_beta": -0.06507589707343814,
+   "eszamanli_kor": -0.02003142946988255,
+   "ongoru_rho_20g": -0.026737967914438526,
+   "ongoru_t": -0.14892394868134048,
+   "ay": 33
+  },
+  {
+   "sektor": "cam",
+   "surucu": "dxy",
+   "eszamanli_beta": -0.11717550749642427,
+   "eszamanli_kor": -0.03045200631821368,
+   "ongoru_rho_20g": 0.11764705882352937,
+   "ongoru_t": 0.659611794389886,
+   "ay": 33
+  },
+  {
+   "sektor": "cimento",
+   "surucu": "dxy",
+   "eszamanli_beta": -0.12617477802869245,
+   "eszamanli_kor": -0.0356888378431261,
+   "ongoru_rho_20g": -0.06818181818181819,
+   "ongoru_t": -0.3805057678087877,
+   "ay": 33
+  },
+  {
+   "sektor": "dayanikli_tuketim",
+   "surucu": "dxy",
+   "eszamanli_beta": -0.011030098156611975,
+   "eszamanli_kor": -0.0027939115578605564,
+   "ongoru_rho_20g": 0.2118983957219252,
+   "ongoru_t": 1.2072141146676194,
+   "ay": 33
+  },
+  {
+   "sektor": "demir_celik",
+   "surucu": "dxy",
+   "eszamanli_beta": -0.015521855580142279,
+   "eszamanli_kor": -0.004692327438977093,
+   "ongoru_rho_20g": -0.16811497326203217,
+   "ongoru_t": -0.9495389707050862,
+   "ay": 33
+  },
+  {
+   "sektor": "enerji_dagitim",
+   "surucu": "dxy",
+   "eszamanli_beta": 0.15588298899483763,
+   "eszamanli_kor": 0.03512640071479248,
+   "ongoru_rho_20g": -0.14939839572192515,
+   "ongoru_t": -0.8412564146994735,
+   "ay": 33
+  },
+  {
+   "sektor": "enerji_ekipman",
+   "surucu": "dxy",
+   "eszamanli_beta": -0.0757487149354192,
+   "eszamanli_kor": -0.013690974728123383,
+   "ongoru_rho_20g": 0.1527406417112299,
+   "ongoru_t": 0.8605209895601627,
+   "ay": 33
+  },
+  {
+   "sektor": "enerji_uretim",
+   "surucu": "dxy",
+   "eszamanli_beta": -0.010175922005987258,
+   "eszamanli_kor": -0.0032371642070373775,
+   "ongoru_rho_20g": 0.14538770053475933,
+   "ongoru_t": 0.8181777929094103,
+   "ay": 33
+  },
+  {
+   "sektor": "gida",
+   "surucu": "dxy",
+   "eszamanli_beta": 0.26376919632319595,
+   "eszamanli_kor": 0.07008825923294643,
+   "ongoru_rho_20g": 0.1731283422459893,
+   "ongoru_t": 0.9787171551428222,
+   "ay": 33
+  },
+  {
+   "sektor": "gyo",
+   "surucu": "dxy",
+   "eszamanli_beta": 0.122619271148273,
+   "eszamanli_kor": 0.03128335121255995,
+   "ongoru_rho_20g": -0.17981283422459896,
+   "ongoru_t": -1.0177438593265085,
+   "ay": 33
+  },
+  {
+   "sektor": "havacilik",
+   "surucu": "dxy",
+   "eszamanli_beta": 0.122237078152909,
+   "eszamanli_kor": 0.03866821175732297,
+   "ongoru_rho_20g": -0.09291443850267375,
+   "ongoru_t": -0.5195733233690712,
+   "ay": 33
+  },
+  {
+   "sektor": "havalimani",
+   "surucu": "dxy",
+   "eszamanli_beta": -0.11506329218331215,
+   "eszamanli_kor": -0.025625084705216235,
+   "ongoru_rho_20g": 0.44786096256684493,
+   "ongoru_t": 2.788922203160778,
+   "ay": 33
+  },
+  {
+   "sektor": "holding",
+   "surucu": "dxy",
+   "eszamanli_beta": -0.13410768800062997,
+   "eszamanli_kor": -0.05487793596410166,
+   "ongoru_rho_20g": 0.018048128342245985,
+   "ongoru_t": 0.10050409598060228,
+   "ay": 33
+  },
+  {
+   "sektor": "holding_insaat",
+   "surucu": "dxy",
+   "eszamanli_beta": -0.11863303554642668,
+   "eszamanli_kor": -0.027991874198912865,
+   "ongoru_rho_20g": -0.11731283422459886,
+   "ongoru_t": -0.6577117104689676,
+   "ay": 33
+  },
+  {
+   "sektor": "kamu_banka",
+   "surucu": "dxy",
+   "eszamanli_beta": -0.13132262220016186,
+   "eszamanli_kor": -0.025981098170810405,
+   "ongoru_rho_20g": -0.1557486631016042,
+   "ongoru_t": -0.8778849343480992,
+   "ay": 33
+  },
+  {
+   "sektor": "kimya",
+   "surucu": "dxy",
+   "eszamanli_beta": 0.047968779406257996,
+   "eszamanli_kor": 0.013314150303915457,
+   "ongoru_rho_20g": 0.29411764705882354,
+   "ongoru_t": 1.713361042105855,
+   "ay": 33
+  },
+  {
+   "sektor": "kimya_gubre",
+   "surucu": "dxy",
+   "eszamanli_beta": -0.38101024285185764,
+   "eszamanli_kor": -0.059062478148529086,
+   "ongoru_rho_20g": -0.2399732620320855,
+   "ongoru_t": -1.37633167911788,
+   "ay": 33
+  },
+  {
+   "sektor": "kimya_tarim",
+   "surucu": "dxy",
+   "eszamanli_beta": -0.20133929130432518,
+   "eszamanli_kor": -0.02361170505317608,
+   "ongoru_rho_20g": 0.08088235294117643,
+   "ongoru_t": 0.45181418129776374,
+   "ay": 33
+  },
+  {
+   "sektor": "madencilik",
+   "surucu": "dxy",
+   "eszamanli_beta": -0.1367167370629242,
+   "eszamanli_kor": -0.022195312961327155,
+   "ongoru_rho_20g": -0.21524064171122997,
+   "ongoru_t": -1.2271728283666232,
+   "ay": 33
+  },
+  {
+   "sektor": "madencilik_altin",
+   "surucu": "dxy",
+   "eszamanli_beta": -0.5660574231772075,
+   "eszamanli_kor": -0.08470498247621695,
+   "ongoru_rho_20g": -0.17747326203208563,
+   "ongoru_t": -1.0040682621206944,
+   "ay": 33
+  },
+  {
+   "sektor": "otomotiv",
+   "surucu": "dxy",
+   "eszamanli_beta": -0.002538835112081569,
+   "eszamanli_kor": -0.0009835391592592003,
+   "ongoru_rho_20g": -0.16544117647058823,
+   "ongoru_t": -0.9340084406772533,
+   "ay": 33
+  },
+  {
+   "sektor": "perakende",
+   "surucu": "dxy",
+   "eszamanli_beta": -0.052027195804236336,
+   "eszamanli_kor": -0.013777770925639015,
+   "ongoru_rho_20g": 0.10828877005347594,
+   "ongoru_t": 0.6064928475801445,
+   "ay": 33
+  },
+  {
+   "sektor": "rafineri_petrokimya",
+   "surucu": "dxy",
+   "eszamanli_beta": 0.03984069905937211,
+   "eszamanli_kor": 0.009686976841848391,
+   "ongoru_rho_20g": -0.012032085561497348,
+   "ongoru_t": -0.06699666696537501,
+   "ay": 33
+  },
+  {
+   "sektor": "savunma",
+   "surucu": "dxy",
+   "eszamanli_beta": -0.02235198040156567,
+   "eszamanli_kor": -0.0038904595605648903,
+   "ongoru_rho_20g": -0.1300133689839572,
+   "ongoru_t": -0.7300805503438843,
+   "ay": 33
+  },
+  {
+   "sektor": "sigorta",
+   "surucu": "dxy",
+   "eszamanli_beta": 0.19461573892364775,
+   "eszamanli_kor": 0.03172633302123041,
+   "ongoru_rho_20g": 0.02807486631016037,
+   "ongoru_t": 0.15637587986853588,
+   "ay": 33
+  },
+  {
+   "sektor": "telekom",
+   "surucu": "dxy",
+   "eszamanli_beta": -0.0022850570927511206,
+   "eszamanli_kor": -0.0006268988468778195,
+   "ongoru_rho_20g": -0.19318181818181815,
+   "ongoru_t": -1.0962407564536145,
+   "ay": 33
+  },
+  {
+   "sektor": "ulasim",
+   "surucu": "dxy",
+   "eszamanli_beta": -0.08077385222725622,
+   "eszamanli_kor": -0.011030564998766616,
+   "ongoru_rho_20g": -0.06082887700534757,
+   "ongoru_t": -0.33930918321235165,
+   "ay": 33
+  },
+  {
+   "sektor": "araci_kurum",
+   "surucu": "eem",
+   "eszamanli_beta": -0.012715933455839754,
+   "eszamanli_kor": -0.008534800776561331,
+   "ongoru_rho_20g": 0.1236631016042782,
+   "ongoru_t": 0.6938528440274957,
+   "ay": 33
+  },
+  {
+   "sektor": "banka",
+   "surucu": "eem",
+   "eszamanli_beta": 0.02628073761033595,
+   "eszamanli_kor": 0.026552328246179063,
+   "ongoru_rho_20g": 0.09425133689839574,
+   "ongoru_t": 0.5271157248921988,
+   "ay": 33
+  },
+  {
+   "sektor": "cam",
+   "surucu": "eem",
+   "eszamanli_beta": 0.05354033555202597,
+   "eszamanli_kor": 0.04567025496699662,
+   "ongoru_rho_20g": 0.2740641711229947,
+   "ongoru_t": 1.586676329514644,
+   "ay": 33
+  },
+  {
+   "sektor": "cimento",
+   "surucu": "eem",
+   "eszamanli_beta": 0.04251618705562302,
+   "eszamanli_kor": 0.03947334524444947,
+   "ongoru_rho_20g": -0.19485294117647048,
+   "ongoru_t": -1.106096399424167,
+   "ay": 33
+  },
+  {
+   "sektor": "dayanikli_tuketim",
+   "surucu": "eem",
+   "eszamanli_beta": 0.04378784948846369,
+   "eszamanli_kor": 0.03640492771540675,
+   "ongoru_rho_20g": 0.13335561497326207,
+   "ongoru_t": 0.7491841648607453,
+   "ay": 33
+  },
+  {
+   "sektor": "demir_celik",
+   "surucu": "eem",
+   "eszamanli_beta": 0.10719784347616165,
+   "eszamanli_kor": 0.10637032544967477,
+   "ongoru_rho_20g": 0.06517379679144378,
+   "ongoru_t": 0.3636454796324991,
+   "ay": 33
+  },
+  {
+   "sektor": "enerji_dagitim",
+   "surucu": "eem",
+   "eszamanli_beta": -0.021978432150402436,
+   "eszamanli_kor": -0.016255671509815224,
+   "ongoru_rho_20g": 0.07453208556149725,
+   "ongoru_t": 0.41613451974571114,
+   "ay": 33
+  },
+  {
+   "sektor": "enerji_ekipman",
+   "surucu": "eem",
+   "eszamanli_beta": 0.056565149883309344,
+   "eszamanli_kor": 0.03355813438548211,
+   "ongoru_rho_20g": -0.10026737967914434,
+   "ongoru_t": -0.5610927544744981,
+   "ay": 33
+  },
+  {
+   "sektor": "enerji_uretim",
+   "surucu": "eem",
+   "eszamanli_beta": 0.028772052728731814,
+   "eszamanli_kor": 0.030043572596994465,
+   "ongoru_rho_20g": 0.06584224598930488,
+   "ongoru_t": 0.3673913334602821,
+   "ay": 33
+  },
+  {
+   "sektor": "gida",
+   "surucu": "eem",
+   "eszamanli_beta": -0.08555981733361623,
+   "eszamanli_kor": -0.07462439334602282,
+   "ongoru_rho_20g": 0.1493983957219251,
+   "ongoru_t": 0.8412564146994733,
+   "ay": 33
+  },
+  {
+   "sektor": "gyo",
+   "surucu": "eem",
+   "eszamanli_beta": 0.0325014082079112,
+   "eszamanli_kor": 0.02721635730368327,
+   "ongoru_rho_20g": -0.17546791443850282,
+   "ongoru_t": -0.9923603221572569,
+   "ay": 33
+  },
+  {
+   "sektor": "havacilik",
+   "surucu": "eem",
+   "eszamanli_beta": -0.003090276631270425,
+   "eszamanli_kor": -0.0032087675201509925,
+   "ongoru_rho_20g": 0.15173796791443864,
+   "ongoru_t": 0.8547384763942044,
+   "ay": 33
+  },
+  {
+   "sektor": "havalimani",
+   "surucu": "eem",
+   "eszamanli_beta": 0.024120260336014873,
+   "eszamanli_kor": 0.01763127763210171,
+   "ongoru_rho_20g": 0.032754010695187234,
+   "ongoru_t": 0.18246451602050215,
+   "ay": 33
+  },
+  {
+   "sektor": "holding",
+   "surucu": "eem",
+   "eszamanli_beta": 0.02237796004593557,
+   "eszamanli_kor": 0.030057603736237722,
+   "ongoru_rho_20g": 0.1667780748663103,
+   "ongoru_t": 0.9417710343057031,
+   "ay": 33
+  },
+  {
+   "sektor": "holding_insaat",
+   "surucu": "eem",
+   "eszamanli_beta": 0.025593654803897484,
+   "eszamanli_kor": 0.01982204281870443,
+   "ongoru_rho_20g": 0.04211229946524053,
+   "ongoru_t": 0.23467954826856538,
+   "ay": 33
+  },
+  {
+   "sektor": "kamu_banka",
+   "surucu": "eem",
+   "eszamanli_beta": 0.0806812784456754,
+   "eszamanli_kor": 0.05239188312691797,
+   "ongoru_rho_20g": 0.1641042780748663,
+   "ongoru_t": 0.9262511409435262,
+   "ay": 33
+  },
+  {
+   "sektor": "kimya",
+   "surucu": "eem",
+   "eszamanli_beta": 0.0444040144325958,
+   "eszamanli_kor": 0.04045449555733607,
+   "ongoru_rho_20g": -0.06283422459893057,
+   "ongoru_t": -0.35053882900390404,
+   "ay": 33
+  },
+  {
+   "sektor": "kimya_gubre",
+   "surucu": "eem",
+   "eszamanli_beta": 0.08919471694025458,
+   "eszamanli_kor": 0.045382396414167595,
+   "ongoru_rho_20g": -0.17145721925133683,
+   "ongoru_t": -0.9689825084993088,
+   "ay": 33
+  },
+  {
+   "sektor": "kimya_tarim",
+   "surucu": "eem",
+   "eszamanli_beta": 0.29797226145182465,
+   "eszamanli_kor": 0.11469590972692029,
+   "ongoru_rho_20g": -0.056818181818181684,
+   "ongoru_t": -0.31686212526223817,
+   "ay": 33
+  },
+  {
+   "sektor": "madencilik",
+   "surucu": "eem",
+   "eszamanli_beta": -0.0006723219048662124,
+   "eszamanli_kor": -0.00035826684304567747,
+   "ongoru_rho_20g": 0.063168449197861,
+   "ongoru_t": 0.3524108473086572,
+   "ay": 33
+  },
+  {
+   "sektor": "madencilik_altin",
+   "surucu": "eem",
+   "eszamanli_beta": 0.09646117585448946,
+   "eszamanli_kor": 0.04737773538329164,
+   "ongoru_rho_20g": 0.1049465240641711,
+   "ongoru_t": 0.5875621130773829,
+   "ay": 33
+  },
+  {
+   "sektor": "otomotiv",
+   "surucu": "eem",
+   "eszamanli_beta": 0.029973314266590875,
+   "eszamanli_kor": 0.038113751185475706,
+   "ongoru_rho_20g": 0.38101604278074874,
+   "ongoru_t": 2.2944840901195875,
+   "ay": 33
+  },
+  {
+   "sektor": "perakende",
+   "surucu": "eem",
+   "eszamanli_beta": -0.06281377448591524,
+   "eszamanli_kor": -0.05460006999071629,
+   "ongoru_rho_20g": 0.10193850267379675,
+   "ongoru_t": 0.5705416837853259,
+   "ay": 33
+  },
+  {
+   "sektor": "rafineri_petrokimya",
+   "surucu": "eem",
+   "eszamanli_beta": 0.023758813360411885,
+   "eszamanli_kor": 0.01896091698125026,
+   "ongoru_rho_20g": -0.19151069518716582,
+   "ongoru_t": -1.0863950236538655,
+   "ay": 33
+  },
+  {
+   "sektor": "savunma",
+   "surucu": "eem",
+   "eszamanli_beta": 0.04946828180181512,
+   "eszamanli_kor": 0.028260835879402355,
+   "ongoru_rho_20g": -0.2650401069518717,
+   "ongoru_t": -1.5304124062690447,
+   "ay": 33
+  },
+  {
+   "sektor": "sigorta",
+   "surucu": "eem",
+   "eszamanli_beta": -0.014771373641581435,
+   "eszamanli_kor": -0.007903802547886302,
+   "ongoru_rho_20g": 0.07820855614973267,
+   "ongoru_t": 0.436784674543542,
+   "ay": 33
+  },
+  {
+   "sektor": "telekom",
+   "surucu": "eem",
+   "eszamanli_beta": -0.058972651166431675,
+   "eszamanli_kor": -0.05310364688390559,
+   "ongoru_rho_20g": 0.28108288770053486,
+   "ongoru_t": 1.6307494018366242,
+   "ay": 33
+  },
+  {
+   "sektor": "ulasim",
+   "surucu": "eem",
+   "eszamanli_beta": -0.003907381713615248,
+   "eszamanli_kor": -0.0017514694622864173,
+   "ongoru_rho_20g": -0.015708556149732593,
+   "ongoru_t": -0.08747233206891175,
+   "ay": 33
+  },
+  {
+   "sektor": "araci_kurum",
+   "surucu": "spx",
+   "eszamanli_beta": 0.019740541522392362,
+   "eszamanli_kor": 0.009946380627999102,
+   "ongoru_rho_20g": 0.1955213903743315,
+   "ongoru_t": 1.110041454422413,
+   "ay": 33
+  },
+  {
+   "sektor": "banka",
+   "surucu": "spx",
+   "eszamanli_beta": 0.06509797082878416,
+   "eszamanli_kor": 0.04937343928692949,
+   "ongoru_rho_20g": 0.23161764705882357,
+   "ongoru_t": 1.325640762308335,
+   "ay": 33
+  },
+  {
+   "sektor": "cam",
+   "surucu": "spx",
+   "eszamanli_beta": 0.008313691918019173,
+   "eszamanli_kor": 0.0053236211946070975,
+   "ongoru_rho_20g": -0.07787433155080223,
+   "ongoru_t": -0.4349066598761557,
+   "ay": 33
+  },
+  {
+   "sektor": "cimento",
+   "surucu": "spx",
+   "eszamanli_beta": 0.07905692596083527,
+   "eszamanli_kor": 0.05509231747533664,
+   "ongoru_rho_20g": -0.2690508021390375,
+   "ongoru_t": -1.5553639803521122,
+   "ay": 33
+  },
+  {
+   "sektor": "dayanikli_tuketim",
+   "surucu": "spx",
+   "eszamanli_beta": -0.0007421044191885681,
+   "eszamanli_kor": -0.0004631614932510457,
+   "ongoru_rho_20g": 0.1821524064171123,
+   "ongoru_t": 1.031437304295162,
+   "ay": 33
+  },
+  {
+   "sektor": "demir_celik",
+   "surucu": "spx",
+   "eszamanli_beta": 0.12914371488521695,
+   "eszamanli_kor": 0.09618541177549332,
+   "ongoru_rho_20g": 0.0471256684491978,
+   "ongoru_t": 0.26267645918879134,
+   "ay": 33
+  },
+  {
+   "sektor": "enerji_dagitim",
+   "surucu": "spx",
+   "eszamanli_beta": -0.021766679338644766,
+   "eszamanli_kor": -0.012085406332870783,
+   "ongoru_rho_20g": -0.22560160427807488,
+   "ongoru_t": -1.289336115640713,
+   "ay": 33
+  },
+  {
+   "sektor": "enerji_ekipman",
+   "surucu": "spx",
+   "eszamanli_beta": 0.10325438096380998,
+   "eszamanli_kor": 0.04597892871540957,
+   "ongoru_rho_20g": -0.2302807486631016,
+   "ongoru_t": -1.317559361593565,
+   "ay": 33
+  },
+  {
+   "sektor": "enerji_uretim",
+   "surucu": "spx",
+   "eszamanli_beta": -0.02540746319168346,
+   "eszamanli_kor": -0.01991331330883658,
+   "ongoru_rho_20g": -0.021724598930481336,
+   "ongoru_t": -0.12098600125893622,
+   "ay": 33
+  },
+  {
+   "sektor": "gida",
+   "surucu": "spx",
+   "eszamanli_beta": -0.04396152599834931,
+   "eszamanli_kor": -0.028779630810060654,
+   "ongoru_rho_20g": 0.09692513368983963,
+   "ongoru_t": 0.5422092023266238,
+   "ay": 33
+  },
+  {
+   "sektor": "gyo",
+   "surucu": "spx",
+   "eszamanli_beta": 0.11073898886547655,
+   "eszamanli_kor": 0.06961282275236426,
+   "ongoru_rho_20g": 0.24699197860962566,
+   "ongoru_t": 1.4191622977368445,
+   "ay": 33
+  },
+  {
+   "sektor": "havacilik",
+   "surucu": "spx",
+   "eszamanli_beta": -0.043505239627705874,
+   "eszamanli_kor": -0.0339065774901165,
+   "ongoru_rho_20g": 0.12065508021390374,
+   "ongoru_t": 0.6767228610486644,
+   "ay": 33
+  },
+  {
+   "sektor": "havalimani",
+   "surucu": "spx",
+   "eszamanli_beta": -0.0035416120516888376,
+   "eszamanli_kor": -0.0019434065011843915,
+   "ongoru_rho_20g": 0.29311497326203206,
+   "ongoru_t": 1.7069700043679426,
+   "ay": 33
+  },
+  {
+   "sektor": "holding",
+   "surucu": "spx",
+   "eszamanli_beta": 0.006189343423685605,
+   "eszamanli_kor": 0.0062399331288147735,
+   "ongoru_rho_20g": 0.22794117647058823,
+   "ongoru_t": 1.3034358316420644,
+   "ay": 33
+  },
+  {
+   "sektor": "holding_insaat",
+   "surucu": "spx",
+   "eszamanli_beta": -0.02745820921913474,
+   "eszamanli_kor": -0.015962091865579116,
+   "ongoru_rho_20g": -0.2780748663101602,
+   "ongoru_t": -1.6118267379380056,
+   "ay": 33
+  },
+  {
+   "sektor": "kamu_banka",
+   "surucu": "spx",
+   "eszamanli_beta": 0.1266901317226643,
+   "eszamanli_kor": 0.0617582379187608,
+   "ongoru_rho_20g": 0.1768048128342246,
+   "ongoru_t": 1.0001641889406063,
+   "ay": 33
+  },
+  {
+   "sektor": "kimya",
+   "surucu": "spx",
+   "eszamanli_beta": 0.05293686561246941,
+   "eszamanli_kor": 0.03619964174140308,
+   "ongoru_rho_20g": 0.18348930481283432,
+   "ongoru_t": 1.0392702478183946,
+   "ay": 33
+  },
+  {
+   "sektor": "kimya_gubre",
+   "surucu": "spx",
+   "eszamanli_beta": 0.08694845874470448,
+   "eszamanli_kor": 0.03321016648191255,
+   "ongoru_rho_20g": -0.020053475935828877,
+   "ongoru_t": -0.1116754856201489,
+   "ay": 33
+  },
+  {
+   "sektor": "kimya_tarim",
+   "surucu": "spx",
+   "eszamanli_beta": 0.34952889268618964,
+   "eszamanli_kor": 0.10099876090563745,
+   "ongoru_rho_20g": 0.0016711229946523515,
+   "ongoru_t": 0.009304432047560896,
+   "ay": 33
+  },
+  {
+   "sektor": "madencilik",
+   "surucu": "spx",
+   "eszamanli_beta": -0.06965707576423073,
+   "eszamanli_kor": -0.02786096075533401,
+   "ongoru_rho_20g": -0.25668449197860965,
+   "ongoru_t": -1.4787023158171493,
+   "ay": 33
+  },
+  {
+   "sektor": "madencilik_altin",
+   "surucu": "spx",
+   "eszamanli_beta": 0.030760941996063412,
+   "eszamanli_kor": 0.011341806883993383,
+   "ongoru_rho_20g": 0.06784759358288764,
+   "ongoru_t": 0.37863189622478843,
+   "ay": 33
+  },
+  {
+   "sektor": "otomotiv",
+   "surucu": "spx",
+   "eszamanli_beta": 0.03455358901670542,
+   "eszamanli_kor": 0.03297931151087782,
+   "ongoru_rho_20g": 0.2185828877005347,
+   "ongoru_t": 1.2471767602696617,
+   "ay": 33
+  },
+  {
+   "sektor": "perakende",
+   "surucu": "spx",
+   "eszamanli_beta": -0.11859561590886421,
+   "eszamanli_kor": -0.07737638532135498,
+   "ongoru_rho_20g": 0.07586898395721926,
+   "ongoru_t": 0.42364164715916675,
+   "ay": 33
+  },
+  {
+   "sektor": "rafineri_petrokimya",
+   "surucu": "spx",
+   "eszamanli_beta": -0.012876777320193945,
+   "eszamanli_kor": -0.00771440876953351,
+   "ongoru_rho_20g": -0.25735294117647056,
+   "ongoru_t": -1.4828258524957776,
+   "ay": 33
+  },
+  {
+   "sektor": "savunma",
+   "surucu": "spx",
+   "eszamanli_beta": 0.041537464134930736,
+   "eszamanli_kor": 0.017813900709584555,
+   "ongoru_rho_20g": -0.42479946524064166,
+   "ongoru_t": -2.612632325568832,
+   "ay": 33
+  },
+  {
+   "sektor": "sigorta",
+   "surucu": "spx",
+   "eszamanli_beta": 0.10353776009204238,
+   "eszamanli_kor": 0.04158865114356615,
+   "ongoru_rho_20g": 0.1627673796791444,
+   "ongoru_t": 0.9184990863838122,
+   "ay": 33
+  },
+  {
+   "sektor": "telekom",
+   "surucu": "spx",
+   "eszamanli_beta": -0.06230487679254152,
+   "eszamanli_kor": -0.04211692037074197,
+   "ongoru_rho_20g": -0.06818181818181797,
+   "ongoru_t": -0.3805057678087865,
+   "ay": 33
+  },
+  {
+   "sektor": "ulasim",
+   "surucu": "spx",
+   "eszamanli_beta": -0.06749086373610706,
+   "eszamanli_kor": -0.022707180403589024,
+   "ongoru_rho_20g": 0.033088235294117654,
+   "ongoru_t": 0.18432842920119596,
+   "ay": 33
+  },
+  {
+   "sektor": "araci_kurum",
+   "surucu": "eurtry",
+   "eszamanli_beta": 0.17191672210200162,
+   "eszamanli_kor": 0.04347611992211678,
+   "ongoru_rho_20g": -0.06250000000000001,
+   "ongoru_t": -0.348666929104239,
+   "ay": 33
+  },
+  {
+   "sektor": "banka",
+   "surucu": "eurtry",
+   "eszamanli_beta": -0.12979869000069588,
+   "eszamanli_kor": -0.04944956173014709,
+   "ongoru_rho_20g": 0.07052139037433156,
+   "ongoru_t": 0.39362650890844525,
+   "ay": 33
+  },
+  {
+   "sektor": "cam",
+   "surucu": "eurtry",
+   "eszamanli_beta": 0.21594255922232605,
+   "eszamanli_kor": 0.06944864435540586,
+   "ongoru_rho_20g": -0.11296791443850265,
+   "ongoru_t": -0.6330309896724898,
+   "ay": 33
+  },
+  {
+   "sektor": "cimento",
+   "surucu": "eurtry",
+   "eszamanli_beta": 0.23296889614433255,
+   "eszamanli_kor": 0.08173583984634483,
+   "ongoru_rho_20g": -0.08422459893048122,
+   "ongoru_t": -0.4706149112603675,
+   "ay": 33
+  },
+  {
+   "sektor": "dayanikli_tuketim",
+   "surucu": "eurtry",
+   "eszamanli_beta": 0.2301809797436621,
+   "eszamanli_kor": 0.07213475338255176,
+   "ongoru_rho_20g": -0.13268716577540113,
+   "ongoru_t": -0.7453613827679698,
+   "ay": 33
+  },
+  {
+   "sektor": "demir_celik",
+   "surucu": "eurtry",
+   "eszamanli_beta": 0.05835269009998673,
+   "eszamanli_kor": 0.021879553082809755,
+   "ongoru_rho_20g": 0.19652406417112303,
+   "ongoru_t": 1.115962055146481,
+   "ay": 33
+  },
+  {
+   "sektor": "enerji_dagitim",
+   "surucu": "eurtry",
+   "eszamanli_beta": 0.06480087934198485,
+   "eszamanli_kor": 0.01806567344720212,
+   "ongoru_rho_20g": 0.11931818181818182,
+   "ongoru_t": 0.6691156372710244,
+   "ay": 33
+  },
+  {
+   "sektor": "enerji_ekipman",
+   "surucu": "eurtry",
+   "eszamanli_beta": 0.03792057836368443,
+   "eszamanli_kor": 0.008484073109999227,
+   "ongoru_rho_20g": -0.12600267379679142,
+   "ongoru_t": -0.707189567035761,
+   "ay": 33
+  },
+  {
+   "sektor": "enerji_uretim",
+   "surucu": "eurtry",
+   "eszamanli_beta": -0.04100935149810543,
+   "eszamanli_kor": -0.01617612419107081,
+   "ongoru_rho_20g": -0.07052139037433151,
+   "ongoru_t": -0.393626508908445,
+   "ay": 33
+  },
+  {
+   "sektor": "gida",
+   "surucu": "eurtry",
+   "eszamanli_beta": -0.17390555786658354,
+   "eszamanli_kor": -0.057308456152464694,
+   "ongoru_rho_20g": -0.09759358288770058,
+   "ongoru_t": -0.5459844099928578,
+   "ay": 33
+  },
+  {
+   "sektor": "gyo",
+   "surucu": "eurtry",
+   "eszamanli_beta": -0.11681517087826732,
+   "eszamanli_kor": -0.036873201024294054,
+   "ongoru_rho_20g": 0.06216577540106956,
+   "ongoru_t": 0.34679514696746705,
+   "ay": 33
+  },
+  {
+   "sektor": "havacilik",
+   "surucu": "eurtry",
+   "eszamanli_beta": 0.12492256284904107,
+   "eszamanli_kor": 0.04901718686854473,
+   "ongoru_rho_20g": 0.18315508021390373,
+   "ongoru_t": 1.0373114544747266,
+   "ay": 33
+  },
+  {
+   "sektor": "havalimani",
+   "surucu": "eurtry",
+   "eszamanli_beta": 0.3685405037665838,
+   "eszamanli_kor": 0.10117417077541901,
+   "ongoru_rho_20g": -0.3435828877005349,
+   "ongoru_t": -2.0369960803050473,
+   "ay": 33
+  },
+  {
+   "sektor": "holding",
+   "surucu": "eurtry",
+   "eszamanli_beta": 0.12609731881848518,
+   "eszamanli_kor": 0.06400135137172143,
+   "ongoru_rho_20g": 0.16042780748663096,
+   "ongoru_t": 0.9049454661101423,
+   "ay": 33
+  },
+  {
+   "sektor": "holding_insaat",
+   "surucu": "eurtry",
+   "eszamanli_beta": 0.1379115205031614,
+   "eszamanli_kor": 0.0403599252991522,
+   "ongoru_rho_20g": 0.0665106951871657,
+   "ongoru_t": 0.37113768406441655,
+   "ay": 33
+  },
+  {
+   "sektor": "kamu_banka",
+   "surucu": "eurtry",
+   "eszamanli_beta": -0.11172854632840488,
+   "eszamanli_kor": -0.0273551227415811,
+   "ongoru_rho_20g": 0.23228609625668448,
+   "ongoru_t": 1.329684435241501,
+   "ay": 33
+  },
+  {
+   "sektor": "kimya",
+   "surucu": "eurtry",
+   "eszamanli_beta": 0.09535349956049081,
+   "eszamanli_kor": 0.03282357726689329,
+   "ongoru_rho_20g": -0.23228609625668453,
+   "ongoru_t": -1.3296844352415012,
+   "ay": 33
+  },
+  {
+   "sektor": "kimya_gubre",
+   "surucu": "eurtry",
+   "eszamanli_beta": 0.04950402264164229,
+   "eszamanli_kor": 0.009497296753730022,
+   "ongoru_rho_20g": 0.20487967914438493,
+   "ongoru_t": 1.165444149032907,
+   "ay": 33
+  },
+  {
+   "sektor": "kimya_tarim",
+   "surucu": "eurtry",
+   "eszamanli_beta": 0.2224947294429734,
+   "eszamanli_kor": 0.03229079994746986,
+   "ongoru_rho_20g": -0.05949197860962558,
+   "ongoru_t": -0.33182505233932463,
+   "ay": 33
+  },
+  {
+   "sektor": "madencilik",
+   "surucu": "eurtry",
+   "eszamanli_beta": -0.09219070509551676,
+   "eszamanli_kor": -0.018507065039833646,
+   "ongoru_rho_20g": 0.27339572192513373,
+   "ongoru_t": 1.5824933470386724,
+   "ay": 33
+  },
+  {
+   "sektor": "madencilik_altin",
+   "surucu": "eurtry",
+   "eszamanli_beta": 0.481271991953076,
+   "eszamanli_kor": 0.08912808878120879,
+   "ongoru_rho_20g": 0.2162433155080214,
+   "ongoru_t": 1.233169220288456,
+   "ay": 33
+  },
+  {
+   "sektor": "otomotiv",
+   "surucu": "eurtry",
+   "eszamanli_beta": 0.05483196566246979,
+   "eszamanli_kor": 0.026333500359023754,
+   "ongoru_rho_20g": 0.27372994652406407,
+   "ongoru_t": 1.584584528011808,
+   "ay": 33
+  },
+  {
+   "sektor": "perakende",
+   "surucu": "eurtry",
+   "eszamanli_beta": 0.050404508406697385,
+   "eszamanli_kor": 0.016556598096248647,
+   "ongoru_rho_20g": -0.1604278074866311,
+   "ongoru_t": -0.904945466110143,
+   "ay": 33
+  },
+  {
+   "sektor": "rafineri_petrokimya",
+   "surucu": "eurtry",
+   "eszamanli_beta": -0.062190382657906905,
+   "eszamanli_kor": -0.01871468998442516,
+   "ongoru_rho_20g": -0.007687165775401164,
+   "ongoru_t": -0.042801592301052696,
+   "ay": 33
+  },
+  {
+   "sektor": "savunma",
+   "surucu": "eurtry",
+   "eszamanli_beta": 0.05304579137080632,
+   "eszamanli_kor": 0.011421489552103889,
+   "ongoru_rho_20g": 0.046122994652406414,
+   "ongoru_t": 0.25707555386384345,
+   "ay": 33
+  },
+  {
+   "sektor": "sigorta",
+   "surucu": "eurtry",
+   "eszamanli_beta": -0.0579188732824482,
+   "eszamanli_kor": -0.011680759255525608,
+   "ongoru_rho_20g": -0.002673796791443805,
+   "ongoru_t": -0.014887123704377798,
+   "ay": 33
+  },
+  {
+   "sektor": "telekom",
+   "surucu": "eurtry",
+   "eszamanli_beta": -0.0513943531755135,
+   "eszamanli_kor": -0.017427731980669856,
+   "ongoru_rho_20g": 0.3008021390374331,
+   "ongoru_t": 1.7561277292519168,
+   "ay": 33
+  },
+  {
+   "sektor": "ulasim",
+   "surucu": "eurtry",
+   "eszamanli_beta": -0.12164652161809049,
+   "eszamanli_kor": -0.020593089414301914,
+   "ongoru_rho_20g": 0.033088235294117564,
+   "ongoru_t": 0.18432842920119547,
+   "ay": 33
+  },
+  {
+   "sektor": "araci_kurum",
+   "surucu": "usdtry",
+   "eszamanli_beta": 0.24601010131160395,
+   "eszamanli_kor": 0.029635874275579253,
+   "ongoru_rho_20g": -0.18482620320855617,
+   "ongoru_t": -1.0471091588798365,
+   "ay": 33
+  },
+  {
+   "sektor": "banka",
+   "surucu": "usdtry",
+   "eszamanli_beta": -0.9212727763907835,
+   "eszamanli_kor": -0.16719085673136821,
+   "ongoru_rho_20g": 0.07085561497326205,
+   "ongoru_t": 0.3955014282529616,
+   "ay": 33
+  },
+  {
+   "sektor": "cam",
+   "surucu": "usdtry",
+   "eszamanli_beta": 0.021592397533192725,
+   "eszamanli_kor": 0.003307947008349759,
+   "ongoru_rho_20g": -0.3074866310160429,
+   "ongoru_t": -1.79917900949593,
+   "ay": 33
+  },
+  {
+   "sektor": "cimento",
+   "surucu": "usdtry",
+   "eszamanli_beta": 0.23827951782280615,
+   "eszamanli_kor": 0.03980906183585777,
+   "ongoru_rho_20g": -0.3459224598930483,
+   "ongoru_t": -2.0527448398271773,
+   "ay": 33
+  },
+  {
+   "sektor": "dayanikli_tuketim",
+   "surucu": "usdtry",
+   "eszamanli_beta": 0.45070159209973726,
+   "eszamanli_kor": 0.06728160718701802,
+   "ongoru_rho_20g": 0.19919786096256695,
+   "ongoru_t": 1.1317681882366777,
+   "ay": 33
+  },
+  {
+   "sektor": "demir_celik",
+   "surucu": "usdtry",
+   "eszamanli_beta": 0.03950381299565196,
+   "eszamanli_kor": 0.0070533790589176575,
+   "ongoru_rho_20g": 0.1610962566844921,
+   "ongoru_t": 0.9088163202360596,
+   "ay": 33
+  },
+  {
+   "sektor": "enerji_dagitim",
+   "surucu": "usdtry",
+   "eszamanli_beta": 0.7694049016098039,
+   "eszamanli_kor": 0.10217869530894189,
+   "ongoru_rho_20g": -0.09224598930481279,
+   "ongoru_t": -0.5158031882549541,
+   "ay": 33
+  },
+  {
+   "sektor": "enerji_ekipman",
+   "surucu": "usdtry",
+   "eszamanli_beta": 0.022913907930724235,
+   "eszamanli_kor": 0.0024412331362404813,
+   "ongoru_rho_20g": 0.041109625668449244,
+   "ongoru_t": 0.2290823653708824,
+   "ay": 33
+  },
+  {
+   "sektor": "enerji_uretim",
+   "surucu": "usdtry",
+   "eszamanli_beta": 0.1652198866621887,
+   "eszamanli_kor": 0.031033769745567326,
+   "ongoru_rho_20g": 0.002005347593582945,
+   "ongoru_t": 0.01116532531688616,
+   "ay": 33
+  },
+  {
+   "sektor": "gida",
+   "surucu": "usdtry",
+   "eszamanli_beta": -0.15973236781968558,
+   "eszamanli_kor": -0.0250656412431852,
+   "ongoru_rho_20g": -0.1664438502673797,
+   "ongoru_t": -0.9398298869257153,
+   "ay": 33
+  },
+  {
+   "sektor": "gyo",
+   "surucu": "usdtry",
+   "eszamanli_beta": -0.24049856240897718,
+   "eszamanli_kor": -0.03616231500772437,
+   "ongoru_rho_20g": -0.16109625668449198,
+   "ongoru_t": -0.908816320236059,
+   "ay": 33
+  },
+  {
+   "sektor": "havacilik",
+   "surucu": "usdtry",
+   "eszamanli_beta": 0.3993488056017177,
+   "eszamanli_kor": 0.07461747183872568,
+   "ongoru_rho_20g": 0.02740641711229938,
+   "ongoru_t": 0.15264981180953752,
+   "ay": 33
+  },
+  {
+   "sektor": "havalimani",
+   "surucu": "usdtry",
+   "eszamanli_beta": 0.6907565979509268,
+   "eszamanli_kor": 0.0903319983954673,
+   "ongoru_rho_20g": -0.011029411764706046,
+   "ongoru_t": -0.06141290125608408,
+   "ay": 33
+  },
+  {
+   "sektor": "holding",
+   "surucu": "usdtry",
+   "eszamanli_beta": -0.03846426161051981,
+   "eszamanli_kor": -0.009296539829476409,
+   "ongoru_rho_20g": 0.20955882352941177,
+   "ongoru_t": 1.1932694545805198,
+   "ay": 33
+  },
+  {
+   "sektor": "holding_insaat",
+   "surucu": "usdtry",
+   "eszamanli_beta": 0.47809723750249367,
+   "eszamanli_kor": 0.06662645159163581,
+   "ongoru_rho_20g": 0.01470588235294117,
+   "ongoru_t": 0.08188774281093146,
+   "ay": 33
+  },
+  {
+   "sektor": "kamu_banka",
+   "surucu": "usdtry",
+   "eszamanli_beta": -0.7973593014045073,
+   "eszamanli_kor": -0.0929952426676892,
+   "ongoru_rho_20g": 0.002005347593582831,
+   "ongoru_t": 0.011165325316885523,
+   "ay": 33
+  },
+  {
+   "sektor": "kimya",
+   "surucu": "usdtry",
+   "eszamanli_beta": 0.16288869942630066,
+   "eszamanli_kor": 0.026700590891975372,
+   "ongoru_rho_20g": 0.19919786096256684,
+   "ongoru_t": 1.131768188236677,
+   "ay": 33
+  },
+  {
+   "sektor": "kimya_gubre",
+   "surucu": "usdtry",
+   "eszamanli_beta": -0.4992484192562206,
+   "eszamanli_kor": -0.045625576378837365,
+   "ongoru_rho_20g": 0.06316844919786094,
+   "ongoru_t": 0.3524108473086568,
+   "ay": 33
+  },
+  {
+   "sektor": "kimya_tarim",
+   "surucu": "usdtry",
+   "eszamanli_beta": -0.19059749091052167,
+   "eszamanli_kor": -0.013176752945456784,
+   "ongoru_rho_20g": 0.049465240641711275,
+   "ongoru_t": 0.2757483625855056,
+   "ay": 33
+  },
+  {
+   "sektor": "madencilik",
+   "surucu": "usdtry",
+   "eszamanli_beta": 0.1705822145774352,
+   "eszamanli_kor": 0.016306652101251953,
+   "ongoru_rho_20g": -0.08689839572192515,
+   "ongoru_t": -0.485666981880925,
+   "ay": 33
+  },
+  {
+   "sektor": "madencilik_altin",
+   "surucu": "usdtry",
+   "eszamanli_beta": 0.5986884867247425,
+   "eszamanli_kor": 0.05281497271426514,
+   "ongoru_rho_20g": -0.11864973262032087,
+   "ongoru_t": -0.6653134126962869,
+   "ay": 33
+  },
+  {
+   "sektor": "otomotiv",
+   "surucu": "usdtry",
+   "eszamanli_beta": 0.2588199356729765,
+   "eszamanli_kor": 0.05919065471081004,
+   "ongoru_rho_20g": 0.02105614973262028,
+   "ongoru_t": 0.11726167763480984,
+   "ay": 33
+  },
+  {
+   "sektor": "perakende",
+   "surucu": "usdtry",
+   "eszamanli_beta": 0.1329854769941058,
+   "eszamanli_kor": 0.02080111338403525,
+   "ongoru_rho_20g": -0.474933155080214,
+   "ongoru_t": -3.004829737286415,
+   "ay": 33
+  },
+  {
+   "sektor": "rafineri_petrokimya",
+   "surucu": "usdtry",
+   "eszamanli_beta": 0.31726431608643957,
+   "eszamanli_kor": 0.045479196596917196,
+   "ongoru_rho_20g": 0.08155080213903747,
+   "ongoru_t": 0.4555730790198912,
+   "ay": 33
+  },
+  {
+   "sektor": "savunma",
+   "surucu": "usdtry",
+   "eszamanli_beta": 0.6714944892130327,
+   "eszamanli_kor": 0.06887258990539928,
+   "ongoru_rho_20g": 0.15508021390374352,
+   "ongoru_t": 0.8740241360181324,
+   "ay": 33
+  },
+  {
+   "sektor": "sigorta",
+   "surucu": "usdtry",
+   "eszamanli_beta": 0.26308094191870035,
+   "eszamanli_kor": 0.025273914048474327,
+   "ongoru_rho_20g": -0.022727272727272773,
+   "ongoru_t": -0.12657279263185034,
+   "ay": 33
+  },
+  {
+   "sektor": "telekom",
+   "surucu": "usdtry",
+   "eszamanli_beta": -0.4093164660997392,
+   "eszamanli_kor": -0.0661175620486496,
+   "ongoru_rho_20g": -0.07787433155080227,
+   "ongoru_t": -0.4349066598761559,
+   "ay": 33
+  },
+  {
+   "sektor": "ulasim",
+   "surucu": "usdtry",
+   "eszamanli_beta": -0.0052932228968512116,
+   "eszamanli_kor": -0.0004266999925183092,
+   "ongoru_rho_20g": 0.004010695187165792,
+   "ongoru_t": 0.022330785336885435,
+   "ay": 33
+  }
+ ],
+ "profil_sayisi": 0
+}

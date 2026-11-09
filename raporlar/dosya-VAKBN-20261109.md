@@ -1,6 +1,6 @@
 # Hisse dosyası analizi — VAKBN
 
-Satır: 3980 (gün sonu satırı 713) · 2024-01-02 18:00:00 → 2026-11-09 14:30:00. Sanal/araştırma amaçlıdır, yatırım tavsiyesi değildir.
+Satır: 3981 (gün sonu satırı 713) · 2024-01-02 18:00:00 → 2026-11-09 15:30:00. Sanal/araştırma amaçlıdır, yatırım tavsiyesi değildir.
 
 Etiketler: 20 gün içinde ≥%10 düşüş görülen gün sayısı 169 (30 bağımsız bölüm); ≥%10 yükseliş 280 gün (32 bölüm). Bölüm sayısı azsa istatistikler zayıftır.
 
@@ -59,30 +59,34 @@ Spearman korelasyonu özellik ile 20 gün ileri getiri arasında; p Bonferroni i
 | xu100_getiri_20g | 673 | 671 |  | -0.15 | 0.004 | +4.8% | +1.3% | 27% | 21% | -0.166–-0.0409 | 0.0783–0.222 |
 | ma50_uzaklik | 643 | 643 |  | -0.14 | 0.009 | +7.1% | +2.5% | 20% | 25% | -0.192–-0.0565 | 0.128–0.386 |
 | rsi_14 | 678 | 674 |  | -0.13 | 0.020 | +5.9% | +1.2% | 19% | 18% | 26.6–42 | 65–83.2 |
-| beta_60g | 632 | 632 |  | -0.13 | 0.053 | +5.5% | +2.8% | 28% | 40% | 0.246–0.964 | 1.26–1.6 |
-| ivol_60g | 573 | 570 |  | +0.12 | 0.103 | +0.5% | +0.7% | 30% | 36% | 0.205–0.257 | 0.343–0.44 |
+| beta_60g | 632 | 632 |  | -0.13 | 0.054 | +5.5% | +2.8% | 28% | 40% | 0.246–0.964 | 1.26–1.6 |
+| ivol_60g | 573 | 570 |  | +0.12 | 0.102 | +0.5% | +0.7% | 30% | 36% | 0.205–0.257 | 0.343–0.44 |
 
 ## Olay etkisi (XU100'e göre anormal ileri getiri; olaydan sonraki ilk gün sonu satırından)
 
 | Tür | Hissenin kendi olayı mı | n | İlk gün tepki | 1g | 5g | 20g | 20g pozitif oranı |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| faiz | hayır | 23 | +0.2% | -0.8% | -0.4% | -0.6% | 43% |
-| siyasi | hayır | 9 | +0.3% | -1.5% | +0.3% | -4.4% | 33% |
-| enflasyon | hayır | 6 | +0.7% | +0.3% | +1.4% | +4.5% | 67% |
-| jeopolitik | hayır | 5 | -0.9% | -1.4% | -3.3% | -7.4% | 40% |
+| faiz | hayır | 41 | +0.3% | -0.4% | +0.1% | +1.5% | 49% |
+| siyasi | hayır | 17 | +0.7% | -0.5% | +1.9% | -0.5% | 41% |
+| derecelendirme | hayır | 15 | -0.9% | -0.5% | +0.7% | +3.9% | 53% |
+| jeopolitik | hayır | 10 | -0.0% | -0.5% | -2.0% | -4.3% | 40% |
+| enflasyon | hayır | 9 | +1.2% | +0.5% | +0.5% | +2.8% | 56% |
+| regulasyon | hayır | 6 | -0.0% | +0.4% | -1.0% | -0.7% | 33% |
+| haber | hayır | 5 | +1.1% | +1.5% | +3.3% | +5.4% | 40% |
+| kuresel_faiz | hayır | 5 | +0.5% | +0.5% | +4.4% | +3.9% | 60% |
 | sok | hayır | 5 | -7.9% | -0.9% | +6.0% | +10.0% | 80% |
 | tarife | hayır | 5 | +0.6% | -0.4% | -1.2% | -1.9% | 60% |
-| derecelendirme | hayır | 4 | +1.2% | -1.9% | -2.6% | -0.1% | 50% |
+| kur | hayır | 4 | -0.8% | -1.1% | -1.7% | -4.9% | 25% |
 | dusus | hayır | 3 | -2.2% | +0.7% | +0.6% | -3.4% | 67% |
 | yukselis | hayır | 3 | +2.8% | +0.3% | -2.3% | -4.9% | 67% |
 | butce_vergi | hayır | 2 | +0.1% | -1.6% | -0.3% | +5.1% | 50% |
-| kur | hayır | 2 | -2.4% | -2.0% | -3.8% | -8.6% | 0% |
-| YÖN: olumlu | evet | 1 | - | -0.3% | +7.2% | +0.9% | nan% |
+| YÖN: notr | evet | 1 | - | -3.4% | -8.0% | -18.9% | nan% |
+| YÖN: olumlu | evet | 3 | - | -0.8% | +2.5% | +1.0% | nan% |
 
 ## Kural taraması (ileriye yürüyen)
 
 Eğitim 427 gün, test 286 gün, 212 deneme. Al-tut Sharpe: eğitim 1.27, test 0.64.
-Eğitimde seçilen kural: **getiri_1g < -0.009323 ise nakde geç** (kantil 0.3). Eğitim Sharpe 2.68 → test Sharpe 1.39; testte nakitte kalma oranı 33%; nakde geçilen günlerin gerçekleşen 20g getirisi: eğitim +3.1%, test +1.8%.
+Eğitimde seçilen kural: **getiri_1g < -0.009323 ise nakde geç** (kantil 0.3). Eğitim Sharpe 2.68 → test Sharpe 1.4; testte nakitte kalma oranı 33%; nakde geçilen günlerin gerçekleşen 20g getirisi: eğitim +3.1%, test +1.8%.
 Deflated Sharpe (deneme sayısı 212): 0.39 — 0,95 üstü anlamlı, 0,5 civarı şans.
 
 Seçim yalnız eğitim Sharpe'ına göre; 'sonradan bakış' tablosu şans tavanını gösterir, strateji değildir.
@@ -107,4 +111,4 @@ Seçim yalnız eğitim Sharpe'ına göre; 'sonradan bakış' tablosu şans tavan
 
 ## Son durum (en yeni satır)
 
-getiri_1g=0.0218, getiri_5g=0.139, getiri_20g=-0.00472, getiri_60g=0.0976, getiri_120g=0.0947, mom_12_1=0.306, zirve_52h_yakinlik=0.802, zirveden_dusus=-0.198, oynaklik_20g=0.434, oynaklik_60g=0.559, atr_20g_oran=0.0377, rsi_14=55.7, ma20_uzaklik=0.0559, ma50_uzaklik=0.0196, ma200_uzaklik=0.0152, hacim_z_20=1.57, amihud_20g=0.0236, devir_hizi_20g=0.0469, gece_ort_20g=-0.00391, gunici_ort_20g=0.00344, aof_1g_sapma=0.0242, max_gunluk_20g=0.0605, min_gunluk_20g=-0.0523, ivol_60g=0.392, endekse_gore_1g=0.00563, endekse_gore_20g=0.0444, endekse_gore_60g=0.274, beta_60g=1.4, xu100_getiri_20g=-0.0491, xu100_ma200_uzaklik=-0.141, usdtry_getiri_20g=0.0191, dolar_getiri_60g=0.0478, piyasa_degeri_mn=3.35e+05, halka_aciklik=0.0539, temettu_verimi=0, olay_sayi_5g=1, olay_yon_5g=-1
+getiri_1g=0.0236, getiri_5g=0.141, getiri_20g=-0.00295, getiri_60g=0.0995, getiri_120g=0.0967, mom_12_1=0.306, zirve_52h_yakinlik=0.804, zirveden_dusus=-0.196, oynaklik_20g=0.434, oynaklik_60g=0.559, atr_20g_oran=0.0377, rsi_14=55.7, ma20_uzaklik=0.0577, ma50_uzaklik=0.0214, ma200_uzaklik=0.017, hacim_z_20=1.57, amihud_20g=0.0236, devir_hizi_20g=0.0469, gece_ort_20g=-0.00391, gunici_ort_20g=0.00344, aof_1g_sapma=0.0242, max_gunluk_20g=0.0605, min_gunluk_20g=-0.0523, ivol_60g=0.392, endekse_gore_1g=0.000892, endekse_gore_20g=0.04, endekse_gore_60g=0.271, beta_60g=1.4, xu100_getiri_20g=-0.043, xu100_ma200_uzaklik=-0.135, usdtry_getiri_20g=0.0191, dolar_getiri_60g=0.0497, piyasa_degeri_mn=3.35e+05, halka_aciklik=0.0539, temettu_verimi=0, olay_sayi_5g=2, olay_yon_5g=0

@@ -58,25 +58,28 @@ Spearman korelasyonu özellik ile 20 gün ileri getiri arasında; p Bonferroni i
 | mom_12_1 | 442 | 442 |  | -0.16 | 0.027 | +3.4% | -15.8% | 29% | 51% | -0.388–-0.232 | 1.92–3.83 |
 | endekse_gore_20g | 674 | 674 |  | -0.13 | 0.036 | +5.4% | -2.0% | 24% | 50% | -0.673–-0.116 | 0.179–0.58 |
 | aof_1g_sapma | 693 | 692 |  | +0.12 | 0.046 | -1.5% | +4.2% | 47% | 37% | -0.0253–1.54 | 1.6–1.77 |
-| olay_yon_5g | 694 | 7 |  | +0.12 | 0.067 | +1.5% | +12.7% | 35% | 24% | -4–0 | 1–2 |
 | beta_60g | 633 | 633 |  | -0.12 | 0.078 | +12.8% | -1.8% | 28% | 34% | -0.204–0.394 | 0.892–1.61 |
 | usdtry_getiri_20g | 673 | 665 |  | -0.12 | 0.083 | +6.3% | +0.5% | 28% | 33% | -0.013–0.00945 | 0.019–0.0482 |
+| net_borc_ozkaynak | 694 | 12 | çeyreklik adım | -0.12 | 0.106 | +4.1% | -1.1% | 26% | 40% | -0.356–-0.07 | 0.279–0.297 |
 
 ## Olay etkisi (XU100'e göre anormal ileri getiri; olaydan sonraki ilk gün sonu satırından)
 
 | Tür | Hissenin kendi olayı mı | n | İlk gün tepki | 1g | 5g | 20g | 20g pozitif oranı |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| faiz | hayır | 23 | +1.3% | -0.2% | +4.1% | +12.2% | 61% |
-| siyasi | hayır | 9 | -0.7% | -0.9% | -0.2% | +8.6% | 67% |
-| enflasyon | hayır | 6 | +2.4% | +1.0% | -1.0% | +2.0% | 33% |
-| jeopolitik | hayır | 5 | -3.0% | -0.4% | +1.9% | -0.7% | 40% |
+| faiz | hayır | 41 | +1.2% | -0.2% | +3.3% | +9.0% | 56% |
+| siyasi | hayır | 17 | -0.5% | -0.3% | +1.5% | +8.8% | 65% |
+| derecelendirme | hayır | 15 | -0.1% | +1.4% | +2.9% | -10.1% | 33% |
+| jeopolitik | hayır | 10 | +0.8% | -0.0% | -1.6% | -1.8% | 30% |
+| enflasyon | hayır | 9 | +2.9% | +1.4% | +0.7% | +7.4% | 44% |
+| regulasyon | hayır | 6 | -1.2% | -2.1% | +2.7% | +8.6% | 67% |
+| haber | hayır | 5 | +1.6% | +0.4% | +9.1% | -2.0% | 40% |
+| kuresel_faiz | hayır | 5 | -2.3% | -1.3% | +5.4% | +16.7% | 60% |
 | sok | hayır | 5 | -3.9% | +0.5% | +2.6% | +4.4% | 60% |
 | tarife | hayır | 5 | +0.4% | +0.5% | -0.5% | +1.9% | 40% |
-| derecelendirme | hayır | 4 | +1.3% | +1.2% | -0.4% | +2.8% | 50% |
+| kur | hayır | 4 | -0.7% | -1.8% | +2.8% | -9.5% | 75% |
 | dusus | hayır | 3 | -3.1% | +1.0% | -2.5% | -2.7% | 33% |
 | yukselis | hayır | 3 | +2.9% | +3.2% | +2.0% | -1.3% | 67% |
 | butce_vergi | hayır | 2 | +2.9% | -1.0% | +3.7% | +8.5% | 50% |
-| kur | hayır | 2 | -0.2% | -0.9% | +2.2% | -27.6% | 50% |
 
 ## Kural taraması (ileriye yürüyen)
 
@@ -106,4 +109,4 @@ Seçim yalnız eğitim Sharpe'ına göre; 'sonradan bakış' tablosu şans tavan
 
 ## Son durum (en yeni satır)
 
-getiri_1g=0.00969, getiri_5g=0.295, getiri_20g=0.055, getiri_60g=-0.123, getiri_120g=-0.665, mom_12_1=-0.385, zirve_52h_yakinlik=0.301, zirveden_dusus=-0.699, oynaklik_20g=0.839, oynaklik_60g=0.652, atr_20g_oran=0.0532, rsi_14=60.8, ma20_uzaklik=0.174, ma50_uzaklik=0.0813, ma200_uzaklik=-0.509, hacim_z_20=1.67, amihud_20g=0.128, devir_hizi_20g=0.0268, gece_ort_20g=0.00227, gunici_ort_20g=0.00452, aof_1g_sapma=0.0361, max_gunluk_20g=0.101, min_gunluk_20g=-0.0994, ivol_60g=0.55, endekse_gore_1g=-0.00648, endekse_gore_20g=0.104, endekse_gore_60g=0.0531, beta_60g=1.29, xu100_getiri_20g=-0.0491, xu100_ma200_uzaklik=-0.141, usdtry_getiri_20g=0.0191, dolar_getiri_60g=-0.163, piyasa_degeri_mn=5.52e+04, halka_aciklik=0.282, fk=207, kazanc_verimi=0.00484, pd_dd=4.38, fd_favok=45.2, snak_verimi=-0.0514, temettu_verimi=0, roe_ttm=0.0212, net_kar_marji=0.33, kar_buyume_yillik=0.781, satis_buyume_yillik=0.717, net_borc_ozkaynak=0.297, bilancodan_gun=81.8, olay_sayi_5g=1, olay_yon_5g=-1
+getiri_1g=0.00969, getiri_5g=0.295, getiri_20g=0.055, getiri_60g=-0.123, getiri_120g=-0.665, mom_12_1=-0.385, zirve_52h_yakinlik=0.301, zirveden_dusus=-0.699, oynaklik_20g=0.839, oynaklik_60g=0.652, atr_20g_oran=0.0532, rsi_14=60.8, ma20_uzaklik=0.174, ma50_uzaklik=0.0813, ma200_uzaklik=-0.509, hacim_z_20=1.67, amihud_20g=0.128, devir_hizi_20g=0.0268, gece_ort_20g=0.00227, gunici_ort_20g=0.00452, aof_1g_sapma=0.0361, max_gunluk_20g=0.101, min_gunluk_20g=-0.0994, ivol_60g=0.55, endekse_gore_1g=-0.00999, endekse_gore_20g=0.101, endekse_gore_60g=0.0502, beta_60g=1.29, xu100_getiri_20g=-0.0458, xu100_ma200_uzaklik=-0.138, usdtry_getiri_20g=0.0191, dolar_getiri_60g=-0.163, piyasa_degeri_mn=5.52e+04, halka_aciklik=0.282, fk=207, kazanc_verimi=0.00484, pd_dd=4.38, fd_favok=45.2, snak_verimi=-0.0514, temettu_verimi=0, roe_ttm=0.0212, net_kar_marji=0.33, kar_buyume_yillik=0.781, satis_buyume_yillik=0.717, net_borc_ozkaynak=0.297, bilancodan_gun=81.8, olay_sayi_5g=2, olay_yon_5g=0

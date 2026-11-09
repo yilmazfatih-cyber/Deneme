@@ -1,6 +1,6 @@
 # Hisse dosyası analizi — SASA
 
-Satır: 3981 (gün sonu satırı 714) · 2024-01-02 18:00:00 → 2026-11-09 14:30:00. Sanal/araştırma amaçlıdır, yatırım tavsiyesi değildir.
+Satır: 3982 (gün sonu satırı 714) · 2024-01-02 18:00:00 → 2026-11-09 15:30:00. Sanal/araştırma amaçlıdır, yatırım tavsiyesi değildir.
 
 Etiketler: 20 gün içinde ≥%10 düşüş görülen gün sayısı 290 (32 bağımsız bölüm); ≥%10 yükseliş 182 gün (24 bölüm). Bölüm sayısı azsa istatistikler zayıftır.
 
@@ -52,33 +52,38 @@ Spearman korelasyonu özellik ile 20 gün ileri getiri arasında; p Bonferroni i
 | endekse_gore_60g | 634 | 634 |  | -0.51 | 0.000 | +7.7% | -14.2% | 21% | 78% | -0.46–-0.203 | 0.0173–0.352 |
 | amihud_20g | 633 | 611 |  | +0.27 | 0.000 | -7.9% | +5.9% | 54% | 28% | 0.00278–0.00508 | 0.0135–0.0297 |
 | ivol_60g | 574 | 573 |  | -0.28 | 0.000 | +3.8% | -9.9% | 23% | 55% | 0.189–0.287 | 0.494–0.64 |
-| snak_verimi | 644 | 504 |  | -0.24 | 0.000 | +7.1% | -2.5% | 26% | 42% | -0.205–-0.151 | 0.014–0.0413 |
+| snak_verimi | 644 | 504 |  | -0.24 | 0.000 | +7.1% | -2.7% | 26% | 43% | -0.205–-0.151 | 0.014–0.0413 |
 | oynaklik_60g | 633 | 628 |  | -0.23 | 0.000 | +2.6% | -9.1% | 37% | 54% | 0.301–0.382 | 0.587–0.718 |
 | ma50_uzaklik | 644 | 642 |  | -0.20 | 0.000 | -2.0% | -9.9% | 29% | 64% | -0.263–-0.125 | 0.0475–0.605 |
-| bilancodan_gun | 694 | 303 | seviye | +0.19 | 0.000 | -3.1% | +2.9% | 48% | 32% | 0.917–19 | 79–113 |
+| bilancodan_gun | 694 | 303 | seviye | +0.19 | 0.000 | -3.3% | +3.2% | 48% | 32% | 0.917–19 | 79–113 |
 | net_kar_marji | 694 | 12 | çeyreklik adım | +0.19 | 0.000 | -3.9% | -0.5% | 45% | 32% | -0.897–-0.0697 | 0.99–1.01 |
-| oynaklik_20g | 673 | 664 |  | -0.18 | 0.000 | -0.9% | -8.9% | 35% | 63% | 0.167–0.336 | 0.565–1.01 |
 | satis_buyume_yillik | 605 | 10 | çeyreklik adım | -0.19 | 0.000 | +2.4% | -8.4% | 32% | 61% | -0.196–-0.162 | 0.282–0.362 |
+| oynaklik_20g | 673 | 664 |  | -0.18 | 0.000 | -0.9% | -8.9% | 35% | 63% | 0.167–0.336 | 0.565–1.01 |
 | beta_60g | 633 | 633 |  | -0.18 | 0.000 | -1.1% | -7.7% | 50% | 54% | 0.577–1.01 | 1.34–1.61 |
-| net_borc_ozkaynak | 694 | 12 | çeyreklik adım | +0.17 | 0.000 | -8.3% | +6.3% | 60% | 7% | 0.707–0.786 | 0.922–1.82 |
+| net_borc_ozkaynak | 694 | 12 | çeyreklik adım | +0.17 | 0.001 | -8.3% | +6.3% | 60% | 7% | 0.707–0.786 | 0.922–1.82 |
 
 ## Olay etkisi (XU100'e göre anormal ileri getiri; olaydan sonraki ilk gün sonu satırından)
 
 | Tür | Hissenin kendi olayı mı | n | İlk gün tepki | 1g | 5g | 20g | 20g pozitif oranı |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| bedelli | evet | 3 | -3.1% | -1.1% | -0.2% | +6.5% | 33% |
 | dusus | evet | 2 | +1.8% | -1.2% | -5.3% | -10.2% | 0% |
-| faiz | hayır | 23 | -0.1% | +0.3% | -0.7% | -2.3% | 17% |
-| siyasi | hayır | 9 | -1.1% | -0.5% | -3.2% | -3.8% | 33% |
-| enflasyon | hayır | 6 | -0.4% | -1.8% | -4.7% | -10.8% | 17% |
-| jeopolitik | hayır | 5 | -1.2% | -0.8% | -0.4% | +0.7% | 60% |
+| yatirim | evet | 2 | +0.3% | -0.9% | -1.6% | -2.5% | 50% |
+| faiz | hayır | 41 | -0.3% | +0.2% | -0.7% | -2.1% | 22% |
+| siyasi | hayır | 17 | -0.6% | +0.1% | -3.0% | -4.2% | 35% |
+| derecelendirme | hayır | 15 | -0.5% | -0.0% | +0.5% | +3.5% | 27% |
+| jeopolitik | hayır | 10 | +0.1% | -0.2% | -0.3% | -1.4% | 40% |
+| enflasyon | hayır | 9 | +0.7% | -1.7% | -6.8% | -12.6% | 11% |
+| regulasyon | hayır | 6 | -1.8% | -1.9% | -1.3% | +0.7% | 67% |
+| haber | hayır | 5 | +1.2% | -1.4% | -5.9% | -13.1% | 0% |
+| kuresel_faiz | hayır | 5 | -1.5% | -0.3% | -2.3% | -14.8% | 20% |
 | sok | hayır | 5 | -7.8% | -4.2% | -10.3% | -12.4% | 20% |
 | tarife | hayır | 5 | +0.7% | +1.6% | +4.2% | +4.5% | 40% |
-| derecelendirme | hayır | 4 | +0.0% | +0.4% | +0.1% | +7.5% | 25% |
+| kur | hayır | 4 | -1.2% | -0.9% | -0.4% | +2.1% | 50% |
 | dusus | hayır | 3 | -1.5% | -0.0% | -1.2% | +4.1% | 67% |
 | yukselis | hayır | 3 | +2.8% | +0.4% | +0.4% | -0.3% | 67% |
 | butce_vergi | hayır | 2 | -1.8% | +2.3% | +1.6% | -16.8% | 0% |
-| kur | hayır | 2 | -2.0% | -0.1% | +0.6% | +2.6% | 50% |
-| YÖN: olumsuz | evet | 2 | - | -1.2% | -5.3% | -10.2% | nan% |
+| YÖN: olumlu | evet | 6 | - | -0.6% | -1.8% | -0.1% | nan% |
 
 ## Kural taraması (ileriye yürüyen)
 
@@ -108,4 +113,4 @@ Seçim yalnız eğitim Sharpe'ına göre; 'sonradan bakış' tablosu şans tavan
 
 ## Son durum (en yeni satır)
 
-getiri_1g=0.0316, getiri_5g=0.101, getiri_20g=-0.16, getiri_60g=-0.321, getiri_120g=-0.426, mom_12_1=-0.368, zirve_52h_yakinlik=0.459, zirveden_dusus=-0.541, oynaklik_20g=0.552, oynaklik_60g=0.614, atr_20g_oran=0.0494, rsi_14=38.3, ma20_uzaklik=-0.0169, ma50_uzaklik=-0.198, ma200_uzaklik=-0.333, hacim_z_20=0.133, amihud_20g=0.019, devir_hizi_20g=0.051, gece_ort_20g=-0.00389, gunici_ort_20g=-0.00409, aof_1g_sapma=0.00573, max_gunluk_20g=0.1, min_gunluk_20g=-0.046, ivol_60g=0.453, endekse_gore_1g=0.0155, endekse_gore_20g=-0.111, endekse_gore_60g=-0.145, beta_60g=1.44, xu100_getiri_20g=-0.0491, xu100_ma200_uzaklik=-0.141, usdtry_getiri_20g=0.0191, dolar_getiri_60g=-0.352, piyasa_degeri_mn=8.56e+04, halka_aciklik=0.452, kazanc_verimi=-0.177, pd_dd=0.444, fd_favok=15.1, snak_verimi=-0.119, temettu_verimi=0, roe_ttm=-0.0787, net_kar_marji=-0.0542, satis_buyume_yillik=0.282, net_borc_ozkaynak=0.707, bilancodan_gun=81.8, olay_sayi_5g=1, olay_yon_5g=-1
+getiri_1g=0.0316, getiri_5g=0.101, getiri_20g=-0.16, getiri_60g=-0.321, getiri_120g=-0.426, mom_12_1=-0.368, zirve_52h_yakinlik=0.459, zirveden_dusus=-0.541, oynaklik_20g=0.552, oynaklik_60g=0.614, atr_20g_oran=0.0494, rsi_14=38.3, ma20_uzaklik=-0.0169, ma50_uzaklik=-0.198, ma200_uzaklik=-0.333, hacim_z_20=0.133, amihud_20g=0.019, devir_hizi_20g=0.051, gece_ort_20g=-0.00389, gunici_ort_20g=-0.00409, aof_1g_sapma=0.00573, max_gunluk_20g=0.1, min_gunluk_20g=-0.046, ivol_60g=0.453, endekse_gore_1g=0.00892, endekse_gore_20g=-0.117, endekse_gore_60g=-0.15, beta_60g=1.44, xu100_getiri_20g=-0.043, xu100_ma200_uzaklik=-0.135, usdtry_getiri_20g=0.0191, dolar_getiri_60g=-0.352, piyasa_degeri_mn=8.56e+04, halka_aciklik=0.452, kazanc_verimi=-0.177, pd_dd=0.444, fd_favok=15.1, snak_verimi=-0.119, temettu_verimi=0, roe_ttm=-0.0787, net_kar_marji=-0.0542, satis_buyume_yillik=0.282, net_borc_ozkaynak=0.707, bilancodan_gun=81.9, olay_sayi_5g=2, olay_yon_5g=0

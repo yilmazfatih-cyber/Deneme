@@ -1,11 +1,11 @@
 # Hisse dosyası analizi — SAHOL
 
-Satır: 3980 (gün sonu satırı 713) · 2024-01-02 18:00:00 → 2026-11-09 14:30:00. Sanal/araştırma amaçlıdır, yatırım tavsiyesi değildir.
+Satır: 3981 (gün sonu satırı 713) · 2024-01-02 18:00:00 → 2026-11-09 15:30:00. Sanal/araştırma amaçlıdır, yatırım tavsiyesi değildir.
 
 Etiketler: 20 gün içinde ≥%10 düşüş görülen gün sayısı 159 (23 bağımsız bölüm); ≥%10 yükseliş 205 gün (19 bölüm). Bölüm sayısı azsa istatistikler zayıftır.
 
 ## Gece / gün içi ayrışması
-713 günde gece (kapanış→açılış) toplam +175.8% (t=3.1), gün içi (açılış→kapanış) toplam -47.9% (t=-1.0).
+713 günde gece (kapanış→açılış) toplam +175.8% (t=3.1), gün içi (açılış→kapanış) toplam -47.6% (t=-1.0).
 
 ## Sat sinyali öncesi görülen değerler (sinyal günleri vs diğer günler, medyan)
 
@@ -66,22 +66,28 @@ Spearman korelasyonu özellik ile 20 gün ileri getiri arasında; p Bonferroni i
 
 | Tür | Hissenin kendi olayı mı | n | İlk gün tepki | 1g | 5g | 20g | 20g pozitif oranı |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| faiz | hayır | 23 | +0.4% | -0.3% | -0.5% | -2.7% | 39% |
-| siyasi | hayır | 9 | -0.2% | -1.4% | -1.6% | -6.0% | 22% |
-| enflasyon | hayır | 6 | +0.2% | -0.1% | -1.6% | +1.0% | 67% |
-| haber | hayır | 6 | -0.1% | -1.3% | +0.3% | +0.7% | 67% |
-| jeopolitik | hayır | 5 | -2.7% | +0.2% | -0.7% | -0.4% | 40% |
+| birlesme_devralma | evet | 4 | +0.1% | +0.0% | -2.2% | -2.6% | 25% |
+| geri_alim | evet | 2 | -0.2% | -0.1% | +1.3% | -1.5% | 0% |
+| temettu | evet | 2 | -0.4% | +0.2% | +1.9% | -5.1% | 0% |
+| faiz | hayır | 41 | +0.4% | -0.1% | -0.1% | -2.0% | 44% |
+| siyasi | hayır | 17 | -0.2% | -0.6% | -1.4% | -3.4% | 29% |
+| derecelendirme | hayır | 15 | +0.5% | +0.4% | +0.6% | -0.7% | 47% |
+| haber | hayır | 10 | +0.0% | -0.8% | +0.5% | +1.3% | 50% |
+| jeopolitik | hayır | 10 | -1.1% | +0.5% | -0.5% | -2.0% | 40% |
+| enflasyon | hayır | 9 | +0.8% | -0.2% | -1.7% | +2.0% | 67% |
+| regulasyon | hayır | 6 | +0.1% | +0.5% | -1.3% | -0.8% | 50% |
+| kuresel_faiz | hayır | 5 | +1.0% | +0.8% | +0.7% | -1.7% | 20% |
 | sok | hayır | 5 | -6.7% | +0.2% | +3.1% | +3.0% | 80% |
 | tarife | hayır | 5 | +2.4% | -0.6% | -1.2% | -4.0% | 20% |
-| derecelendirme | hayır | 4 | +2.0% | -0.9% | -0.9% | -2.3% | 50% |
+| kur | hayır | 4 | -0.5% | -0.1% | -0.1% | +0.7% | 25% |
 | dusus | hayır | 3 | -2.4% | -1.8% | -1.6% | -3.2% | 33% |
 | yukselis | hayır | 3 | +4.3% | -1.2% | -0.4% | -3.1% | 0% |
 | butce_vergi | hayır | 2 | -0.6% | +2.3% | +1.2% | +2.9% | 100% |
-| kur | hayır | 2 | -2.0% | +0.6% | +0.7% | -1.3% | 0% |
+| YÖN: notr | evet | 5 | - | -0.7% | -1.7% | -3.5% | nan% |
 
 ## Kural taraması (ileriye yürüyen)
 
-Eğitim 427 gün, test 286 gün, 211 deneme. Al-tut Sharpe: eğitim 0.84, test 0.01.
+Eğitim 427 gün, test 286 gün, 211 deneme. Al-tut Sharpe: eğitim 0.84, test 0.03.
 Eğitimde seçilen kural: **zirveden_dusus > -0.2565 ise nakde geç** (kantil 0.2). Eğitim Sharpe 2.09 → test Sharpe 1.5; testte nakitte kalma oranı 90%; nakde geçilen günlerin gerçekleşen 20g getirisi: eğitim -2.5%, test -0.1%.
 Deflated Sharpe (deneme sayısı 211): 0.37 — 0,95 üstü anlamlı, 0,5 civarı şans.
 
@@ -107,4 +113,4 @@ Seçim yalnız eğitim Sharpe'ına göre; 'sonradan bakış' tablosu şans tavan
 
 ## Son durum (en yeni satır)
 
-getiri_1g=0.00345, getiri_5g=0.053, getiri_20g=0.0474, getiri_60g=-0.0224, getiri_120g=-0.0613, mom_12_1=0.0688, zirve_52h_yakinlik=0.78, zirveden_dusus=-0.22, oynaklik_20g=0.394, oynaklik_60g=0.359, atr_20g_oran=0.0345, rsi_14=52.2, ma20_uzaklik=0.024, ma50_uzaklik=-0.0126, ma200_uzaklik=-0.068, hacim_z_20=-0.136, amihud_20g=0.00727, devir_hizi_20g=0.0289, gece_ort_20g=-0.00119, gunici_ort_20g=0.000682, aof_1g_sapma=0.0124, max_gunluk_20g=0.0491, min_gunluk_20g=-0.0576, ivol_60g=0.238, endekse_gore_1g=-0.0127, endekse_gore_20g=0.0965, endekse_gore_60g=0.154, beta_60g=0.954, xu100_getiri_20g=-0.0491, xu100_ma200_uzaklik=-0.141, usdtry_getiri_20g=0.0191, dolar_getiri_60g=-0.0667, piyasa_degeri_mn=1.83e+05, halka_aciklik=0.512, fk=8.73, kazanc_verimi=0.115, pd_dd=0.438, fd_favok=4.62, snak_verimi=-1.04, temettu_verimi=0.0162, roe_ttm=0.0501, net_kar_marji=0.198, kar_buyume_yillik=5.94, satis_buyume_yillik=-0.0709, net_borc_ozkaynak=1.18, bilancodan_gun=81.8, olay_sayi_5g=1, olay_yon_5g=-1
+getiri_1g=0.00976, getiri_5g=0.0597, getiri_20g=0.054, getiri_60g=-0.0162, getiri_120g=-0.0553, mom_12_1=0.0688, zirve_52h_yakinlik=0.785, zirveden_dusus=-0.215, oynaklik_20g=0.394, oynaklik_60g=0.359, atr_20g_oran=0.0345, rsi_14=52.2, ma20_uzaklik=0.0304, ma50_uzaklik=-0.00639, ma200_uzaklik=-0.0622, hacim_z_20=-0.136, amihud_20g=0.00727, devir_hizi_20g=0.0289, gece_ort_20g=-0.00119, gunici_ort_20g=0.000682, aof_1g_sapma=0.0124, max_gunluk_20g=0.0491, min_gunluk_20g=-0.0576, ivol_60g=0.238, endekse_gore_1g=-0.013, endekse_gore_20g=0.0969, endekse_gore_60g=0.155, beta_60g=0.954, xu100_getiri_20g=-0.043, xu100_ma200_uzaklik=-0.135, usdtry_getiri_20g=0.0191, dolar_getiri_60g=-0.0608, piyasa_degeri_mn=1.85e+05, halka_aciklik=0.512, fk=7.29, kazanc_verimi=0.137, pd_dd=0.417, fd_favok=4.76, snak_verimi=-0.722, temettu_verimi=0.0161, roe_ttm=0.0572, net_kar_marji=0.452, kar_buyume_yillik=5.5, satis_buyume_yillik=-0.866, net_borc_ozkaynak=1.15, bilancodan_gun=3.88, olay_sayi_5g=3, olay_yon_5g=0

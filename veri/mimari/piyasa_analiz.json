@@ -1,0 +1,1108 @@
+{
+ "ppk": [
+  {
+   "kategori": "beklenen artış",
+   "n": 1,
+   "xu100_gun": 0.00976405603252073,
+   "xu100_ertesi": 0.021591439852665095,
+   "finans_eksi_xu100": -0.010329188811369993,
+   "holding_eksi_xu100": 0.00931706702055339,
+   "sanayi_eksi_xu100": 0.017935872831828455,
+   "enerji_eksi_xu100": 0.011160304700019531,
+   "tuketim_eksi_xu100": -0.01164174098895876,
+   "ulasim_eksi_xu100": -0.006199298615426313,
+   "teknoloji_savunma_eksi_xu100": -0.0030755683611889406
+  },
+  {
+   "kategori": "beklenen indirim",
+   "n": 5,
+   "xu100_gun": 0.00016958268980757918,
+   "xu100_ertesi": 0.0032191361994987843,
+   "finans_eksi_xu100": -0.011330792195158876,
+   "holding_eksi_xu100": 0.009439690506392144,
+   "sanayi_eksi_xu100": 0.009859380998178699,
+   "enerji_eksi_xu100": 0.007346016079404978,
+   "tuketim_eksi_xu100": -0.0021364191199929315,
+   "ulasim_eksi_xu100": 0.0029084859811002116,
+   "teknoloji_savunma_eksi_xu100": 0.003643590989016032
+  },
+  {
+   "kategori": "güvercin sürpriz",
+   "n": 3,
+   "xu100_gun": -0.0021861874468965814,
+   "xu100_ertesi": 0.001142382579792563,
+   "finans_eksi_xu100": -0.00224643997509284,
+   "holding_eksi_xu100": -0.003720222129908674,
+   "sanayi_eksi_xu100": 0.0016455070448477972,
+   "enerji_eksi_xu100": 0.0015206077690434236,
+   "tuketim_eksi_xu100": -5.338325617999564e-05,
+   "ulasim_eksi_xu100": -0.00473490037264232,
+   "teknoloji_savunma_eksi_xu100": -8.432525743661105e-05
+  },
+  {
+   "kategori": "sabit",
+   "n": 16,
+   "xu100_gun": 0.002046672289416393,
+   "xu100_ertesi": -0.005462434680933756,
+   "finans_eksi_xu100": -0.006205457600103812,
+   "holding_eksi_xu100": 0.002299181175398962,
+   "sanayi_eksi_xu100": 0.002479208228866368,
+   "enerji_eksi_xu100": 0.004507676698087303,
+   "tuketim_eksi_xu100": -0.0025318384908181437,
+   "ulasim_eksi_xu100": -0.003021995728398775,
+   "teknoloji_savunma_eksi_xu100": -0.0027957231250085174
+  },
+  {
+   "kategori": "şahin sürpriz",
+   "n": 3,
+   "xu100_gun": 0.01219072183281337,
+   "xu100_ertesi": 0.0066601472112432685,
+   "finans_eksi_xu100": -0.001703373918340019,
+   "holding_eksi_xu100": -0.0018182590655228057,
+   "sanayi_eksi_xu100": -0.00530443594911225,
+   "enerji_eksi_xu100": -0.007184998211389131,
+   "tuketim_eksi_xu100": -0.003849213234483302,
+   "ulasim_eksi_xu100": -0.010587573735184949,
+   "teknoloji_savunma_eksi_xu100": 0.01859713466019138
+  }
+ ],
+ "tufe": [
+  {
+   "kategori": "beklentiye yakın",
+   "n": 13,
+   "xu100_gun": -0.009288447334192642,
+   "xu100_ertesi": 0.006143128952568488,
+   "finans_eksi_xu100": -0.001505717711431695,
+   "holding_eksi_xu100": 0.002139082995823853,
+   "sanayi_eksi_xu100": -0.0008542063978139063,
+   "enerji_eksi_xu100": 0.003981675766905122,
+   "tuketim_eksi_xu100": 0.006012017742974692,
+   "ulasim_eksi_xu100": 0.0026745632643880965,
+   "teknoloji_savunma_eksi_xu100": 0.0043466825871640346
+  },
+  {
+   "kategori": "düşük geldi (≤ −0,2 puan)",
+   "n": 11,
+   "xu100_gun": 0.012259073098445821,
+   "xu100_ertesi": 0.004024569024690131,
+   "finans_eksi_xu100": 0.006350167632289549,
+   "holding_eksi_xu100": -0.0033714868147366223,
+   "sanayi_eksi_xu100": -0.005138903836215964,
+   "enerji_eksi_xu100": -0.008594835055760445,
+   "tuketim_eksi_xu100": -0.0043614950799918326,
+   "ulasim_eksi_xu100": -0.0014422534664121482,
+   "teknoloji_savunma_eksi_xu100": 0.006787639155481347
+  },
+  {
+   "kategori": "yüksek geldi (≥ +0,2 puan)",
+   "n": 11,
+   "xu100_gun": -0.006732443382414632,
+   "xu100_ertesi": 0.005213055930093569,
+   "finans_eksi_xu100": -0.0057767209139861116,
+   "holding_eksi_xu100": 0.001193184406303195,
+   "sanayi_eksi_xu100": 0.0014069285028591309,
+   "enerji_eksi_xu100": 0.0009687519000530498,
+   "tuketim_eksi_xu100": 0.007435427186493459,
+   "ulasim_eksi_xu100": 0.011124748627528203,
+   "teknoloji_savunma_eksi_xu100": 0.005157419242408857
+  }
+ ],
+ "ppk_gunler": [
+  {
+   "tarih": "2024-01-25",
+   "kategori": "beklenen artış",
+   "xu100_gun": 0.00976405603252073,
+   "xu100_ertesi": 0.021591439852665095,
+   "finans_eksi_xu100": -0.010329188811369993,
+   "holding_eksi_xu100": 0.00931706702055339,
+   "sanayi_eksi_xu100": 0.017935872831828455,
+   "enerji_eksi_xu100": 0.011160304700019531,
+   "tuketim_eksi_xu100": -0.01164174098895876,
+   "ulasim_eksi_xu100": -0.006199298615426313,
+   "teknoloji_savunma_eksi_xu100": -0.0030755683611889406,
+   "olay": "PPK"
+  },
+  {
+   "tarih": "2024-02-22",
+   "kategori": "sabit",
+   "xu100_gun": 0.003769352499425782,
+   "xu100_ertesi": 0.002888565499382434,
+   "finans_eksi_xu100": -0.011000740360324047,
+   "holding_eksi_xu100": 0.0035625823541642065,
+   "sanayi_eksi_xu100": 0.006729460724052611,
+   "enerji_eksi_xu100": 0.007335780052496381,
+   "tuketim_eksi_xu100": -0.002107579263321409,
+   "ulasim_eksi_xu100": -0.010129044181838714,
+   "teknoloji_savunma_eksi_xu100": 0.017686898808414675,
+   "olay": "PPK"
+  },
+  {
+   "tarih": "2024-03-21",
+   "kategori": "şahin sürpriz",
+   "xu100_gun": 0.02072568637239902,
+   "xu100_ertesi": -0.003194525002304993,
+   "finans_eksi_xu100": 0.005837565311718185,
+   "holding_eksi_xu100": -0.013095643735190454,
+   "sanayi_eksi_xu100": -0.019173377700710995,
+   "enerji_eksi_xu100": -0.03284658707277709,
+   "tuketim_eksi_xu100": -0.008368599977649696,
+   "ulasim_eksi_xu100": -0.007197399327924958,
+   "teknoloji_savunma_eksi_xu100": 0.029739433459864927,
+   "olay": "PPK"
+  },
+  {
+   "tarih": "2024-04-25",
+   "kategori": "sabit",
+   "xu100_gun": -0.0005451296428180541,
+   "xu100_ertesi": 0.020459390816264023,
+   "finans_eksi_xu100": -0.024783077559818012,
+   "holding_eksi_xu100": 0.012433576831484173,
+   "sanayi_eksi_xu100": 0.003833171800721604,
+   "enerji_eksi_xu100": 0.005585304377876581,
+   "tuketim_eksi_xu100": 0.017790429382080586,
+   "ulasim_eksi_xu100": 0.0072393128520453764,
+   "teknoloji_savunma_eksi_xu100": -0.003964099305172053,
+   "olay": "PPK"
+  },
+  {
+   "tarih": "2024-05-23",
+   "kategori": "sabit",
+   "xu100_gun": -0.00979877667385276,
+   "xu100_ertesi": -0.010729655287236461,
+   "finans_eksi_xu100": -0.0001648558212036244,
+   "holding_eksi_xu100": -0.007182878490662396,
+   "sanayi_eksi_xu100": 0.0031852889523608045,
+   "enerji_eksi_xu100": -0.003784332155674811,
+   "tuketim_eksi_xu100": 0.007125949912663002,
+   "ulasim_eksi_xu100": -0.0038053786872052076,
+   "teknoloji_savunma_eksi_xu100": 0.006403164190156371,
+   "olay": "PPK"
+  },
+  {
+   "tarih": "2024-06-27",
+   "kategori": "sabit",
+   "xu100_gun": 0.01851871338891775,
+   "xu100_ertesi": -0.0030896271656053464,
+   "finans_eksi_xu100": 0.0033199381183744645,
+   "holding_eksi_xu100": -0.006803583337894338,
+   "sanayi_eksi_xu100": -0.0001087491937316748,
+   "enerji_eksi_xu100": -0.010986118646127255,
+   "tuketim_eksi_xu100": -0.00381839018667692,
+   "ulasim_eksi_xu100": -0.010089855277795712,
+   "teknoloji_savunma_eksi_xu100": -0.009548705904168156,
+   "olay": "PPK"
+  },
+  {
+   "tarih": "2024-07-23",
+   "kategori": "sabit",
+   "xu100_gun": -0.007455589122124295,
+   "xu100_ertesi": -0.008828206016953,
+   "finans_eksi_xu100": -0.011402520612006972,
+   "holding_eksi_xu100": -0.0012640594755731881,
+   "sanayi_eksi_xu100": 0.0041207223156029035,
+   "enerji_eksi_xu100": 0.009999315447692239,
+   "tuketim_eksi_xu100": 0.003671978593317212,
+   "ulasim_eksi_xu100": -0.004942297573920507,
+   "teknoloji_savunma_eksi_xu100": 0.0005980207170350376,
+   "olay": "PPK"
+  },
+  {
+   "tarih": "2024-08-20",
+   "kategori": "sabit",
+   "xu100_gun": -0.0071512789906970076,
+   "xu100_ertesi": -0.0077637419749312375,
+   "finans_eksi_xu100": 0.00397424624177628,
+   "holding_eksi_xu100": -0.006588841686077627,
+   "sanayi_eksi_xu100": 0.004792508834350282,
+   "enerji_eksi_xu100": 0.00874879771687199,
+   "tuketim_eksi_xu100": -0.023919748017026714,
+   "ulasim_eksi_xu100": 0.014410746891714926,
+   "teknoloji_savunma_eksi_xu100": -0.0124491569475302,
+   "olay": "PPK"
+  },
+  {
+   "tarih": "2024-09-19",
+   "kategori": "sabit",
+   "xu100_gun": 0.02057390243746493,
+   "xu100_ertesi": -0.0075483988568200155,
+   "finans_eksi_xu100": 0.0027540644158250867,
+   "holding_eksi_xu100": 0.004269129931774678,
+   "sanayi_eksi_xu100": -0.0017521222893465242,
+   "enerji_eksi_xu100": -0.000839340090451203,
+   "tuketim_eksi_xu100": -0.01912067302200073,
+   "ulasim_eksi_xu100": 0.006279423135380324,
+   "teknoloji_savunma_eksi_xu100": -0.004618297994401832,
+   "olay": "PPK"
+  },
+  {
+   "tarih": "2024-10-17",
+   "kategori": "sabit",
+   "xu100_gun": 0.0051696968163801316,
+   "xu100_ertesi": -0.02318298655237294,
+   "finans_eksi_xu100": 0.0013675093479095677,
+   "holding_eksi_xu100": 0.0121968582663416,
+   "sanayi_eksi_xu100": 0.010988328734170879,
+   "enerji_eksi_xu100": 0.01133347962152122,
+   "tuketim_eksi_xu100": 0.0010924124281779246,
+   "ulasim_eksi_xu100": 0.010081307289799779,
+   "teknoloji_savunma_eksi_xu100": 0.0026483823154677868,
+   "olay": "PPK"
+  },
+  {
+   "tarih": "2024-11-21",
+   "kategori": "sabit",
+   "xu100_gun": 0.02968651492505381,
+   "xu100_ertesi": 0.014591903740087675,
+   "finans_eksi_xu100": 0.022266974151339755,
+   "holding_eksi_xu100": -0.0012029184570155754,
+   "sanayi_eksi_xu100": -0.00926736334588502,
+   "enerji_eksi_xu100": -0.005102382336055183,
+   "tuketim_eksi_xu100": -0.016036774580328705,
+   "ulasim_eksi_xu100": -0.018746946706136247,
+   "teknoloji_savunma_eksi_xu100": -0.009092942200477738,
+   "olay": "PPK"
+  },
+  {
+   "tarih": "2024-12-26",
+   "kategori": "güvercin sürpriz",
+   "xu100_gun": 0.0037005084509864616,
+   "xu100_ertesi": 0.01012189008954234,
+   "finans_eksi_xu100": -0.0023812456538498837,
+   "holding_eksi_xu100": -0.004782919375113955,
+   "sanayi_eksi_xu100": -0.001968473918170354,
+   "enerji_eksi_xu100": -0.0038926354071564186,
+   "tuketim_eksi_xu100": 0.009129723531184316,
+   "ulasim_eksi_xu100": 0.002685554459611439,
+   "teknoloji_savunma_eksi_xu100": -0.00019208865941233721,
+   "olay": "PPK"
+  },
+  {
+   "tarih": "2025-01-23",
+   "kategori": "beklenen indirim",
+   "xu100_gun": 0.0023581983093636794,
+   "xu100_ertesi": 0.002033969602482255,
+   "finans_eksi_xu100": -0.013886882141933732,
+   "holding_eksi_xu100": 0.010516296483383591,
+   "sanayi_eksi_xu100": 0.011204218653461585,
+   "enerji_eksi_xu100": 0.007120266006073902,
+   "tuketim_eksi_xu100": -0.003683367415109366,
+   "ulasim_eksi_xu100": 0.0009689577280045103,
+   "teknoloji_savunma_eksi_xu100": 0.021937786665236825,
+   "olay": "PPK"
+  },
+  {
+   "tarih": "2025-03-06",
+   "kategori": "beklenen indirim",
+   "xu100_gun": 0.018791815522648525,
+   "xu100_ertesi": 0.010185490408571196,
+   "finans_eksi_xu100": -0.01406777194096539,
+   "holding_eksi_xu100": 0.009129132823127318,
+   "sanayi_eksi_xu100": 0.021783133259339754,
+   "enerji_eksi_xu100": 0.020788929693709005,
+   "tuketim_eksi_xu100": -0.026306380012028823,
+   "ulasim_eksi_xu100": 0.01120081476658813,
+   "teknoloji_savunma_eksi_xu100": 0.003930853421053371,
+   "olay": "PPK"
+  },
+  {
+   "tarih": "2025-03-20",
+   "kategori": "sabit",
+   "xu100_gun": -0.0014537934231428906,
+   "xu100_ertesi": -0.07353392493678124,
+   "finans_eksi_xu100": -0.05428870438882968,
+   "holding_eksi_xu100": 0.029199640988427956,
+   "sanayi_eksi_xu100": 0.018124715244184155,
+   "enerji_eksi_xu100": 0.010546483348020944,
+   "tuketim_eksi_xu100": 0.0198012068884178,
+   "ulasim_eksi_xu100": 0.022147873314080024,
+   "teknoloji_savunma_eksi_xu100": 0.0059960586623982,
+   "olay": "PPK"
+  },
+  {
+   "tarih": "2025-04-17",
+   "kategori": "şahin sürpriz",
+   "xu100_gun": 0.012797064368236688,
+   "xu100_ertesi": -0.009070408637736005,
+   "finans_eksi_xu100": -0.01086499829027926,
+   "holding_eksi_xu100": 0.00921612509893227,
+   "sanayi_eksi_xu100": -0.005355624058121697,
+   "enerji_eksi_xu100": 0.0034951916003878106,
+   "tuketim_eksi_xu100": 0.0036878135507035052,
+   "ulasim_eksi_xu100": -0.011701405209880361,
+   "teknoloji_savunma_eksi_xu100": 0.02779921164567689,
+   "olay": "PPK"
+  },
+  {
+   "tarih": "2025-06-19",
+   "kategori": "sabit",
+   "xu100_gun": -0.009709608924067692,
+   "xu100_ertesi": 0.006215659980556509,
+   "finans_eksi_xu100": -0.007176308771615181,
+   "holding_eksi_xu100": 0.017663975485944273,
+   "sanayi_eksi_xu100": -0.003992365125945823,
+   "enerji_eksi_xu100": 0.006541985234495989,
+   "tuketim_eksi_xu100": -0.0023784250857145275,
+   "ulasim_eksi_xu100": -0.023493077828693504,
+   "teknoloji_savunma_eksi_xu100": -0.009417251246519487,
+   "olay": "PPK"
+  },
+  {
+   "tarih": "2025-07-24",
+   "kategori": "güvercin sürpriz",
+   "xu100_gun": 0.008327983897892244,
+   "xu100_ertesi": -0.0038619930003547243,
+   "finans_eksi_xu100": 0.003755603429399911,
+   "holding_eksi_xu100": -0.0034990716643149454,
+   "sanayi_eksi_xu100": 0.005633543708714968,
+   "enerji_eksi_xu100": 0.0024064943106251267,
+   "tuketim_eksi_xu100": -0.004510370909734366,
+   "ulasim_eksi_xu100": -0.01142928544209501,
+   "teknoloji_savunma_eksi_xu100": -0.0014997835083631061,
+   "olay": "PPK"
+  },
+  {
+   "tarih": "2025-09-11",
+   "kategori": "güvercin sürpriz",
+   "xu100_gun": -0.01858705468956845,
+   "xu100_ertesi": -0.0028327493498099265,
+   "finans_eksi_xu100": -0.008113677700828548,
+   "holding_eksi_xu100": -0.002878675350297122,
+   "sanayi_eksi_xu100": 0.0012714513439987772,
+   "enerji_eksi_xu100": 0.006047964403661562,
+   "tuketim_eksi_xu100": -0.004779502389989938,
+   "ulasim_eksi_xu100": -0.005460970135443388,
+   "teknoloji_savunma_eksi_xu100": 0.0014388963954656102,
+   "olay": "PPK"
+  },
+  {
+   "tarih": "2025-10-23",
+   "kategori": "şahin sürpriz",
+   "xu100_gun": 0.003049414757804403,
+   "xu100_ertesi": 0.032245375273770804,
+   "finans_eksi_xu100": -8.268877645898351e-05,
+   "holding_eksi_xu100": -0.001575258560310233,
+   "sanayi_eksi_xu100": 0.00861569391149594,
+   "enerji_eksi_xu100": 0.007796400838221888,
+   "tuketim_eksi_xu100": -0.006866853276503715,
+   "ulasim_eksi_xu100": -0.012863916667749525,
+   "teknoloji_savunma_eksi_xu100": -0.0017472411249676763,
+   "olay": "PPK"
+  },
+  {
+   "tarih": "2025-12-11",
+   "kategori": "beklenen indirim",
+   "xu100_gun": -0.0003087313357874599,
+   "xu100_ertesi": 0.005744454396781951,
+   "finans_eksi_xu100": -0.0068617699883080085,
+   "holding_eksi_xu100": 0.0014873251000334764,
+   "sanayi_eksi_xu100": 0.0018915187292262512,
+   "enerji_eksi_xu100": 0.004756268486523748,
+   "tuketim_eksi_xu100": 0.012510500116834652,
+   "ulasim_eksi_xu100": -0.004027924116993237,
+   "teknoloji_savunma_eksi_xu100": -0.01677529289782757,
+   "olay": "PPK"
+  },
+  {
+   "tarih": "2026-01-22",
+   "kategori": "beklenen indirim",
+   "xu100_gun": 0.010403144354190541,
+   "xu100_ertesi": 0.007346333733816657,
+   "finans_eksi_xu100": -0.016614100806245424,
+   "holding_eksi_xu100": 0.029107708772738647,
+   "sanayi_eksi_xu100": 0.00871433899426816,
+   "enerji_eksi_xu100": 0.006623707754874648,
+   "tuketim_eksi_xu100": 0.0033903773565493265,
+   "ulasim_eksi_xu100": 0.007101048569030488,
+   "teknoloji_savunma_eksi_xu100": 0.008567080492403178,
+   "olay": "PPK"
+  },
+  {
+   "tarih": "2026-03-12",
+   "kategori": "sabit",
+   "xu100_gun": 0.00867181731147415,
+   "xu100_ertesi": -0.010437379960139048,
+   "finans_eksi_xu100": -0.018916850200811484,
+   "holding_eksi_xu100": 0.000588746303623355,
+   "sanayi_eksi_xu100": 0.0035552342757939354,
+   "enerji_eksi_xu100": 0.021255374042447945,
+   "tuketim_eksi_xu100": -0.004465701753054459,
+   "ulasim_eksi_xu100": -0.006290955382604213,
+   "teknoloji_savunma_eksi_xu100": -0.007824495844823512,
+   "olay": "PPK"
+  },
+  {
+   "tarih": "2026-04-22",
+   "kategori": "sabit",
+   "xu100_gun": -0.002785290360463044,
+   "xu100_ertesi": 0.0010961715458448484,
+   "finans_eksi_xu100": -0.011620968406302357,
+   "holding_eksi_xu100": -0.010330059492254785,
+   "sanayi_eksi_xu100": -0.00435717694241412,
+   "enerji_eksi_xu100": -0.0034862842852797418,
+   "tuketim_eksi_xu100": -0.0035480668684173726,
+   "ulasim_eksi_xu100": -0.008383038236289025,
+   "teknoloji_savunma_eksi_xu100": -0.00787643847628594,
+   "olay": "PPK"
+  },
+  {
+   "tarih": "2026-06-11",
+   "kategori": "sabit",
+   "xu100_gun": -0.0018721605139708775,
+   "xu100_ertesi": 0.015233622817341974,
+   "finans_eksi_xu100": 0.004162344313797417,
+   "holding_eksi_xu100": -0.004863872118627122,
+   "sanayi_eksi_xu100": 0.000421315264236035,
+   "enerji_eksi_xu100": -0.0033191480811028363,
+   "tuketim_eksi_xu100": -0.008990959436782889,
+   "ulasim_eksi_xu100": -0.005156609714773164,
+   "teknoloji_savunma_eksi_xu100": 0.012836365114873663,
+   "olay": "PPK"
+  },
+  {
+   "tarih": "2026-07-23",
+   "kategori": "sabit",
+   "xu100_gun": -0.0026739577022723005,
+   "xu100_ertesi": -0.008811180720966205,
+   "finans_eksi_xu100": -0.0016521483081609282,
+   "holding_eksi_xu100": -0.01303569114156785,
+   "sanayi_eksi_xu100": 0.0020666016486288437,
+   "enerji_eksi_xu100": 0.01903199910606636,
+   "tuketim_eksi_xu100": -0.014918783768688382,
+   "ulasim_eksi_xu100": -0.023088273261075598,
+   "teknoloji_savunma_eksi_xu100": -0.027383836191009075,
+   "olay": "PPK"
+  },
+  {
+   "tarih": "2026-09-10",
+   "kategori": "sabit",
+   "xu100_gun": -0.010197655394645344,
+   "xu100_ertesi": 0.006040832177387934,
+   "finans_eksi_xu100": 0.0038737762383887157,
+   "holding_eksi_xu100": 0.00814429284429603,
+   "sanayi_eksi_xu100": 0.0013277607650829925,
+   "enerji_eksi_xu100": -0.0007380861834017736,
+   "tuketim_eksi_xu100": 0.009313708924265288,
+   "ulasim_eksi_xu100": 0.0056148817129310635,
+   "teknoloji_savunma_eksi_xu100": 0.001274764301905984,
+   "olay": "PPK"
+  },
+  {
+   "tarih": "2026-10-22",
+   "kategori": "beklenen indirim",
+   "xu100_gun": -0.03039651340137739,
+   "xu100_ertesi": -0.009214567144158137,
+   "finans_eksi_xu100": -0.005223436098341826,
+   "holding_eksi_xu100": -0.0030420106473223116,
+   "sanayi_eksi_xu100": 0.005703695354597745,
+   "enerji_eksi_xu100": -0.002559091544156414,
+   "tuketim_eksi_xu100": 0.0034067743537895545,
+   "ulasim_eksi_xu100": -0.0007004670411288327,
+   "teknoloji_savunma_eksi_xu100": 0.0005575272642143574,
+   "olay": "PPK"
+  }
+ ],
+ "rejimler": [
+  {
+   "ad": "2024 Q1: sıkılaştırmanın son adımları ve yerel seçim belirsizliği",
+   "bas": "2024-01-01",
+   "bit": "2024-03-31",
+   "gun": 63,
+   "xu100": 0.1991134431786321,
+   "en_iyi_sektorler": [
+    [
+     "havalimani",
+     0.6938021155231482
+    ],
+    [
+     "gyo",
+     0.3944056131535565
+    ],
+    [
+     "otomotiv",
+     0.3052423960984796
+    ]
+   ],
+   "en_kotu_sektorler": [
+    [
+     "kimya_tarim",
+     -0.16913215922297564
+    ],
+    [
+     "kimya_gubre",
+     -0.05913660342435745
+    ],
+    [
+     "demir_celik",
+     -0.027211936778606227
+    ]
+   ],
+   "gece_medyan_gunluk": 0.0024183773569561584,
+   "gunici_medyan_gunluk": -0.0015957609136053597
+  },
+  {
+   "ad": "Seçim sonrası ortodoksi rallisi",
+   "bas": "2024-04-01",
+   "bit": "2024-07-31",
+   "gun": 79,
+   "xu100": 0.17051283314809895,
+   "en_iyi_sektorler": [
+    [
+     "sigorta",
+     1.7062095334729497
+    ],
+    [
+     "ulasim",
+     0.6345678258825236
+    ],
+    [
+     "telekom",
+     0.6291417419129595
+    ]
+   ],
+   "en_kotu_sektorler": [
+    [
+     "kimya_tarim",
+     -0.2807121892479194
+    ],
+    [
+     "enerji_ekipman",
+     -0.06219616373298664
+    ],
+    [
+     "madencilik_altin",
+     -0.005150168919057285
+    ]
+   ],
+   "gece_medyan_gunluk": 0.001748210257579541,
+   "gunici_medyan_gunluk": -0.0018393809965120411
+  },
+  {
+   "ad": "Yüksek reel faiz, dezenflasyon, borsada ayı dönemi",
+   "bas": "2024-08-01",
+   "bit": "2024-12-25",
+   "gun": 103,
+   "xu100": -0.07005334899465954,
+   "en_iyi_sektorler": [
+    [
+     "kimya_gubre",
+     0.6963737257340004
+    ],
+    [
+     "ulasim",
+     0.49773423106648185
+    ],
+    [
+     "enerji_dagitim",
+     0.2285534186220104
+    ]
+   ],
+   "en_kotu_sektorler": [
+    [
+     "kimya_tarim",
+     -0.6848184843801602
+    ],
+    [
+     "gida",
+     -0.3853190468745985
+    ],
+    [
+     "madencilik",
+     -0.23040156917563848
+    ]
+   ],
+   "gece_medyan_gunluk": 0.0012310342860675227,
+   "gunici_medyan_gunluk": -0.0022744728097982003,
+   "en_iyi_stratejiler": [
+    [
+     "ay_sonu",
+     0.02803625667761146,
+     70
+    ],
+    [
+     "macd_kesisimi",
+     0.014580783985379004,
+     68
+    ],
+    [
+     "zirve_52h",
+     0.010430610611759917,
+     28
+    ]
+   ],
+   "en_kotu_stratejiler": [
+    [
+     "kirilim_20g",
+     -0.012223901799563675,
+     34
+    ],
+    [
+     "aof_donus",
+     -0.0047393040328172304,
+     57
+    ]
+   ]
+  },
+  {
+   "ad": "İndirim döngüsünün başlangıcı",
+   "bas": "2024-12-26",
+   "bit": "2025-03-18",
+   "gun": 58,
+   "xu100": 0.09516709983545169,
+   "en_iyi_sektorler": [
+    [
+     "savunma",
+     0.6802721088435368
+    ],
+    [
+     "holding_insaat",
+     0.3100006760712015
+    ],
+    [
+     "kamu_banka",
+     0.264055794928723
+    ]
+   ],
+   "en_kotu_sektorler": [
+    [
+     "cam",
+     -0.06538638547331277
+    ],
+    [
+     "havalimani",
+     -0.06394316163410274
+    ],
+    [
+     "enerji_ekipman",
+     -0.059120058091995054
+    ]
+   ],
+   "gece_medyan_gunluk": 0.001581420635024311,
+   "gunici_medyan_gunluk": -0.001019911123975925,
+   "en_iyi_stratejiler": [
+    [
+     "kisa_vadeli_ters_donus",
+     0.011568106686620271,
+     23
+    ],
+    [
+     "ay_sonu",
+     0.009835247127218665,
+     212
+    ],
+    [
+     "aof_ustu_kapanis",
+     0.004379408758564671,
+     101
+    ]
+   ],
+   "en_kotu_stratejiler": [
+    [
+     "ma50_trend",
+     -0.016863774109756636,
+     72
+    ],
+    [
+     "golden_cross",
+     -0.01618512721239851,
+     35
+    ]
+   ]
+  },
+  {
+   "ad": "Mart 2025 siyasi şok, acil sıkılaştırma ve tarife şoku",
+   "bas": "2025-03-19",
+   "bit": "2025-06-30",
+   "gun": 67,
+   "xu100": -0.08390604464074702,
+   "en_iyi_sektorler": [
+    [
+     "ulasim",
+     0.35480810862580525
+    ],
+    [
+     "savunma",
+     0.21619430727321665
+    ],
+    [
+     "gyo",
+     0.1371001520284847
+    ]
+   ],
+   "en_kotu_sektorler": [
+    [
+     "araci_kurum",
+     -0.3074003895334265
+    ],
+    [
+     "sigorta",
+     -0.2912578231070754
+    ],
+    [
+     "enerji_ekipman",
+     -0.2853786773112108
+    ]
+   ],
+   "gece_medyan_gunluk": 0.0,
+   "gunici_medyan_gunluk": -0.0024824103354523785,
+   "en_iyi_stratejiler": [
+    [
+     "ay_sonu",
+     0.013804897445825415,
+     284
+    ],
+    [
+     "zirve_52h",
+     0.013369035866864,
+     22
+    ],
+    [
+     "aof_ustu_kapanis",
+     0.0030261023039214593,
+     125
+    ]
+   ],
+   "en_kotu_stratejiler": [
+    [
+     "taban_donusu",
+     -0.04147801922974174,
+     28
+    ],
+    [
+     "ma50_trend",
+     -0.025508377617553674,
+     53
+    ]
+   ]
+  },
+  {
+   "ad": "İndirimlere dönüş, siyasi dava takvimi ve not artışı",
+   "bas": "2025-07-01",
+   "bit": "2025-12-31",
+   "gun": 130,
+   "xu100": 0.13522212508158793,
+   "en_iyi_sektorler": [
+    [
+     "madencilik_altin",
+     0.7049999237060565
+    ],
+    [
+     "madencilik",
+     0.6938153359779955
+    ],
+    [
+     "diger",
+     0.659064929449853
+    ]
+   ],
+   "en_kotu_sektorler": [
+    [
+     "dayanikli_tuketim",
+     -0.1722448855030294
+    ],
+    [
+     "havacilik",
+     -0.15480208873573698
+    ],
+    [
+     "kimya_tarim",
+     -0.0315457856922392
+    ]
+   ],
+   "gece_medyan_gunluk": 0.002385920979251055,
+   "gunici_medyan_gunluk": -0.003070079427659078,
+   "en_iyi_stratejiler": [
+    [
+     "rsi_asiri_satim",
+     0.0134728574363693,
+     66
+    ],
+    [
+     "golden_cross",
+     0.010797514641121983,
+     110
+    ],
+    [
+     "ay_sonu",
+     0.006359775372764854,
+     432
+    ]
+   ],
+   "en_kotu_stratejiler": [
+    [
+     "gap_kapatma",
+     -0.007628610228477293,
+     65
+    ],
+    [
+     "acilis_ilk_saat_momentum",
+     -0.005057547608866309,
+     186
+    ]
+   ]
+  },
+  {
+   "ad": "2026 başı: 'Goldilocks' — düşük CDS, Fitch pozitif, kademeli indirim",
+   "bas": "2026-01-01",
+   "bit": "2026-02-27",
+   "gun": 41,
+   "xu100": 0.21859667976790398,
+   "en_iyi_sektorler": [
+    [
+     "kimya_gubre",
+     0.536357091432685
+    ],
+    [
+     "diger",
+     0.5146048173595723
+    ],
+    [
+     "madencilik_altin",
+     0.49560125858912896
+    ]
+   ],
+   "en_kotu_sektorler": [
+    [
+     "kimya_tarim",
+     -0.016286629773137995
+    ],
+    [
+     "kimya",
+     -0.010482361670155482
+    ],
+    [
+     "havalimani",
+     0.03893951946976015
+    ]
+   ],
+   "gece_medyan_gunluk": 0.0029934507196915927,
+   "gunici_medyan_gunluk": -0.0007908952109751399,
+   "en_iyi_stratejiler": [
+    [
+     "golden_cross",
+     0.04269074663399487,
+     33
+    ],
+    [
+     "ma50_trend",
+     0.03151921308145929,
+     53
+    ],
+    [
+     "macd_kesisimi",
+     0.01743406532381958,
+     96
+    ]
+   ],
+   "en_kotu_stratejiler": [
+    [
+     "ay_sonu",
+     -0.038265992436867395,
+     148
+    ],
+    [
+     "rsi_saatlik_30",
+     -0.009432285984242707,
+     175
+    ]
+   ]
+  },
+  {
+   "ad": "İran savaşı: petrol şoku, örtük sıkılaştırma ve 'mutlak butlan'",
+   "bas": "2026-02-28",
+   "bit": "2026-06-14",
+   "gun": 68,
+   "xu100": 0.015462076818228976,
+   "en_iyi_sektorler": [
+    [
+     "diger",
+     0.6403857470276313
+    ],
+    [
+     "kimya_tarim",
+     0.2913907682115089
+    ],
+    [
+     "kimya",
+     0.25533419420753933
+    ]
+   ],
+   "en_kotu_sektorler": [
+    [
+     "madencilik_altin",
+     -0.2924836814171823
+    ],
+    [
+     "araci_kurum",
+     -0.2521666866873987
+    ],
+    [
+     "ulasim",
+     -0.16080055210490019
+    ]
+   ],
+   "gece_medyan_gunluk": 0.001494816104817498,
+   "gunici_medyan_gunluk": -0.0025707128833539206,
+   "en_iyi_stratejiler": [
+    [
+     "ay_sonu",
+     0.019097353351067457,
+     222
+    ],
+    [
+     "temettu_oncesi",
+     0.012716704493731204,
+     33
+    ],
+    [
+     "kirilim_20g",
+     0.003850695353495348,
+     218
+    ]
+   ],
+   "en_kotu_stratejiler": [
+    [
+     "golden_cross",
+     -0.015126127459559845,
+     44
+    ],
+    [
+     "goreli_guc",
+     -0.010038295888164564,
+     113
+    ]
+   ]
+  },
+  {
+   "ad": "Ateşkes ve normalleşme: repo dönüşü, CDS dipte",
+   "bas": "2026-06-15",
+   "bit": "2026-09-14",
+   "gun": 65,
+   "xu100": 0.020064713540782098,
+   "en_iyi_sektorler": [
+    [
+     "rafineri_petrokimya",
+     0.4868796477467632
+    ],
+    [
+     "enerji_dagitim",
+     0.37224080833969375
+    ],
+    [
+     "madencilik_altin",
+     0.2066974808461226
+    ]
+   ],
+   "en_kotu_sektorler": [
+    [
+     "kimya_tarim",
+     -0.2743590116657596
+    ],
+    [
+     "madencilik",
+     -0.23261116794836245
+    ],
+    [
+     "enerji_ekipman",
+     -0.17139402777528479
+    ]
+   ],
+   "gece_medyan_gunluk": 0.0019209538801250314,
+   "gunici_medyan_gunluk": -0.003335352624954546,
+   "en_iyi_stratejiler": [
+    [
+     "rsi_asiri_satim",
+     0.0052799133581624014,
+     53
+    ],
+    [
+     "ay_sonu",
+     0.0023148553084109233,
+     222
+    ],
+    [
+     "ema_kesisim_saatlik",
+     -8.67826399172711e-06,
+     652
+    ]
+   ],
+   "en_kotu_stratejiler": [
+    [
+     "golden_cross",
+     -0.03135913022028256,
+     50
+    ],
+    [
+     "goreli_guc",
+     -0.029255133131235768,
+     83
+    ]
+   ]
+  },
+  {
+   "ad": "Fon krizi, MSCI uyarısı ve Fed artışı: güven kaybı, ardından ilk indirim",
+   "bas": "2026-09-15",
+   "bit": "2026-11-09",
+   "gun": 39,
+   "xu100": -0.1752532272854136,
+   "en_iyi_sektorler": [
+    [
+     "havalimani",
+     0.1400560224089633
+    ],
+    [
+     "banka",
+     0.011683758752104811
+    ],
+    [
+     "havacilik",
+     -0.016208977795708845
+    ]
+   ],
+   "en_kotu_sektorler": [
+    [
+     "kimya_tarim",
+     -0.36395759687545226
+    ],
+    [
+     "kimya_gubre",
+     -0.3551255230125522
+    ],
+    [
+     "enerji_ekipman",
+     -0.3381326051040541
+    ]
+   ],
+   "gece_medyan_gunluk": -0.0019900972136111528,
+   "gunici_medyan_gunluk": -0.002568481119158139,
+   "en_iyi_stratejiler": [
+    [
+     "ay_sonu",
+     0.038244791035518914,
+     221
+    ],
+    [
+     "kirilim_20g",
+     0.0024967470368674975,
+     30
+    ],
+    [
+     "gap_kapatma",
+     0.0012536286290623301,
+     84
+    ]
+   ],
+   "en_kotu_stratejiler": [
+    [
+     "kisa_vadeli_ters_donus",
+     -0.02967817193777046,
+     39
+    ],
+    [
+     "macd_kesisimi",
+     -0.022289087428106872,
+     31
+    ]
+   ]
+  }
+ ]
+}

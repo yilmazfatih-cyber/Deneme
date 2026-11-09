@@ -1,11 +1,11 @@
 # Hisse dosyası analizi — CIMSA
 
-Satır: 3980 (gün sonu satırı 713) · 2024-01-02 18:00:00 → 2026-11-09 14:30:00. Sanal/araştırma amaçlıdır, yatırım tavsiyesi değildir.
+Satır: 3981 (gün sonu satırı 713) · 2024-01-02 18:00:00 → 2026-11-09 15:30:00. Sanal/araştırma amaçlıdır, yatırım tavsiyesi değildir.
 
 Etiketler: 20 gün içinde ≥%10 düşüş görülen gün sayısı 171 (35 bağımsız bölüm); ≥%10 yükseliş 218 gün (25 bölüm). Bölüm sayısı azsa istatistikler zayıftır.
 
 ## Gece / gün içi ayrışması
-713 günde gece (kapanış→açılış) toplam +220.4% (t=3.4), gün içi (açılış→kapanış) toplam -54.9% (t=-1.2).
+713 günde gece (kapanış→açılış) toplam +220.4% (t=3.4), gün içi (açılış→kapanış) toplam -55.0% (t=-1.2).
 
 ## Sat sinyali öncesi görülen değerler (sinyal günleri vs diğer günler, medyan)
 
@@ -49,7 +49,7 @@ Spearman korelasyonu özellik ile 20 gün ileri getiri arasında; p Bonferroni i
 | fd_favok | 643 | 629 |  | -0.29 | 0.000 | +7.4% | -1.9% | 6% | 39% | 4.95–5.69 | 7.57–9.8 |
 | getiri_20g | 673 | 673 |  | -0.28 | 0.000 | +5.3% | -2.1% | 6% | 41% | -0.2–-0.0775 | 0.111–0.328 |
 | ma20_uzaklik | 673 | 672 |  | -0.26 | 0.000 | +5.1% | -1.8% | 6% | 33% | -0.134–-0.0503 | 0.0653–0.176 |
-| amihud_20g | 672 | 668 |  | +0.25 | 0.000 | -1.7% | +5.4% | 26% | 13% | 0.0258–0.0374 | 0.0649–0.13 |
+| amihud_20g | 672 | 668 |  | +0.25 | 0.000 | -1.7% | +5.3% | 26% | 13% | 0.0258–0.0374 | 0.0649–0.13 |
 | xu100_ma200_uzaklik | 493 | 493 |  | -0.29 | 0.000 | +5.0% | -1.0% | 24% | 37% | -0.118–-0.0163 | 0.144–0.312 |
 | xu100_getiri_20g | 673 | 671 |  | -0.24 | 0.000 | +5.0% | -2.4% | 11% | 33% | -0.166–-0.0409 | 0.0783–0.222 |
 | rsi_14 | 678 | 673 |  | -0.24 | 0.000 | +4.8% | -0.4% | 4% | 34% | 17.8–40.2 | 60.8–82.5 |
@@ -66,22 +66,29 @@ Spearman korelasyonu özellik ile 20 gün ileri getiri arasında; p Bonferroni i
 
 | Tür | Hissenin kendi olayı mı | n | İlk gün tepki | 1g | 5g | 20g | 20g pozitif oranı |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| faiz | hayır | 23 | +0.7% | -0.0% | -0.4% | +0.4% | 48% |
-| siyasi | hayır | 9 | -0.7% | +0.3% | +0.5% | +0.6% | 56% |
-| enflasyon | hayır | 6 | +0.7% | -0.4% | -3.6% | -3.8% | 17% |
-| jeopolitik | hayır | 5 | -3.2% | -0.6% | -1.2% | +3.0% | 100% |
+| birlesme_devralma | evet | 2 | -0.6% | -2.0% | +1.8% | +5.3% | 100% |
+| temettu | evet | 2 | +1.3% | +1.0% | +3.0% | +3.2% | 50% |
+| faiz | hayır | 41 | +0.7% | +0.1% | -0.2% | +0.3% | 49% |
+| siyasi | hayır | 17 | -0.2% | +0.2% | -0.8% | -1.4% | 41% |
+| derecelendirme | hayır | 15 | +0.6% | +0.2% | +0.4% | -2.7% | 33% |
+| jeopolitik | hayır | 10 | -1.6% | -0.3% | +0.0% | +1.9% | 80% |
+| enflasyon | hayır | 9 | +1.0% | -0.2% | -3.6% | -2.1% | 22% |
+| regulasyon | hayır | 6 | +0.5% | -0.6% | -0.6% | +1.3% | 67% |
+| haber | hayır | 5 | -0.2% | +1.1% | +2.5% | -1.9% | 20% |
+| kuresel_faiz | hayır | 5 | +0.2% | +0.5% | +0.6% | -3.4% | 20% |
 | sok | hayır | 5 | -5.1% | +1.0% | +4.2% | +5.5% | 100% |
 | tarife | hayır | 5 | +2.1% | +0.1% | +2.3% | -1.2% | 40% |
-| derecelendirme | hayır | 4 | +0.9% | +0.5% | +2.8% | +1.2% | 50% |
+| kur | hayır | 4 | -1.0% | +0.4% | +2.6% | +1.0% | 50% |
 | dusus | hayır | 3 | +0.0% | +1.5% | +1.5% | -2.3% | 33% |
 | yukselis | hayır | 3 | +3.6% | +0.4% | +3.1% | -1.2% | 33% |
 | butce_vergi | hayır | 2 | -0.4% | -0.4% | +0.4% | -2.0% | 50% |
-| kur | hayır | 2 | -2.7% | +2.0% | +6.2% | +2.3% | 50% |
+| YÖN: notr | evet | 1 | - | +2.4% | +6.7% | -0.4% | nan% |
+| YÖN: olumlu | evet | 3 | - | -1.4% | +1.0% | +5.8% | nan% |
 
 ## Kural taraması (ileriye yürüyen)
 
 Eğitim 427 gün, test 286 gün, 197 deneme. Al-tut Sharpe: eğitim 0.81, test -0.03.
-Eğitimde seçilen kural: **amihud_20g < 0.05677 ise nakde geç** (kantil 0.7). Eğitim Sharpe 2.03 → test Sharpe 0.22; testte nakitte kalma oranı 65%; nakde geçilen günlerin gerçekleşen 20g getirisi: eğitim -1.1%, test -0.8%.
+Eğitimde seçilen kural: **amihud_20g < 0.05677 ise nakde geç** (kantil 0.7). Eğitim Sharpe 2.03 → test Sharpe 0.21; testte nakitte kalma oranı 65%; nakde geçilen günlerin gerçekleşen 20g getirisi: eğitim -1.1%, test -0.8%.
 Deflated Sharpe (deneme sayısı 197): 0.08 — 0,95 üstü anlamlı, 0,5 civarı şans.
 
 Seçim yalnız eğitim Sharpe'ına göre; 'sonradan bakış' tablosu şans tavanını gösterir, strateji değildir.
@@ -106,4 +113,4 @@ Seçim yalnız eğitim Sharpe'ına göre; 'sonradan bakış' tablosu şans tavan
 
 ## Son durum (en yeni satır)
 
-getiri_1g=0.00707, getiri_5g=0.0777, getiri_20g=0.0354, getiri_60g=-0.0607, getiri_120g=-0.206, mom_12_1=-0.0949, zirve_52h_yakinlik=0.723, zirveden_dusus=-0.277, oynaklik_20g=0.393, oynaklik_60g=0.338, atr_20g_oran=0.0318, rsi_14=59.2, ma20_uzaklik=0.0729, ma50_uzaklik=0.0216, ma200_uzaklik=-0.113, hacim_z_20=-0.828, amihud_20g=0.106, devir_hizi_20g=0.0137, gece_ort_20g=-0.00378, gunici_ort_20g=0.00552, aof_1g_sapma=0.0083, max_gunluk_20g=0.05, min_gunluk_20g=-0.0347, ivol_60g=0.231, endekse_gore_1g=-0.0091, endekse_gore_20g=0.0845, endekse_gore_60g=0.116, beta_60g=0.872, xu100_getiri_20g=-0.0491, xu100_ma200_uzaklik=-0.141, usdtry_getiri_20g=0.0191, dolar_getiri_60g=-0.103, piyasa_degeri_mn=4.04e+04, halka_aciklik=0.361, fk=8.89, kazanc_verimi=0.112, pd_dd=1.08, fd_favok=6.03, snak_verimi=-0.026, temettu_verimi=0.0173, roe_ttm=0.121, net_kar_marji=0.0995, kar_buyume_yillik=0.413, satis_buyume_yillik=-0.0917, net_borc_ozkaynak=0.702, bilancodan_gun=81.8, olay_sayi_5g=1, olay_yon_5g=-1
+getiri_1g=0.00519, getiri_5g=0.0757, getiri_20g=0.0334, getiri_60g=-0.0624, getiri_120g=-0.207, mom_12_1=-0.0949, zirve_52h_yakinlik=0.722, zirveden_dusus=-0.278, oynaklik_20g=0.393, oynaklik_60g=0.338, atr_20g_oran=0.0318, rsi_14=59.2, ma20_uzaklik=0.0708, ma50_uzaklik=0.0197, ma200_uzaklik=-0.114, hacim_z_20=-0.828, amihud_20g=0.106, devir_hizi_20g=0.0137, gece_ort_20g=-0.00378, gunici_ort_20g=0.00552, aof_1g_sapma=0.0083, max_gunluk_20g=0.05, min_gunluk_20g=-0.0347, ivol_60g=0.231, endekse_gore_1g=-0.0175, endekse_gore_20g=0.0764, endekse_gore_60g=0.109, beta_60g=0.872, xu100_getiri_20g=-0.043, xu100_ma200_uzaklik=-0.135, usdtry_getiri_20g=0.0191, dolar_getiri_60g=-0.105, piyasa_degeri_mn=4.03e+04, halka_aciklik=0.361, fk=8.87, kazanc_verimi=0.113, pd_dd=1.08, fd_favok=6.03, snak_verimi=-0.0261, temettu_verimi=0.0174, roe_ttm=0.121, net_kar_marji=0.0995, kar_buyume_yillik=0.413, satis_buyume_yillik=-0.0917, net_borc_ozkaynak=0.702, bilancodan_gun=81.9, olay_sayi_5g=2, olay_yon_5g=0

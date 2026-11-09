@@ -33,9 +33,9 @@ Etiketler: 20 gün içinde ≥%10 düşüş görülen gün sayısı 251 (32 bağ
 | fd_favok | 6.67 | 7.6 | -0.45 |
 | net_borc_ozkaynak | 0.000337 | -0.00922 | +0.44 |
 | piyasa_degeri_mn | 1.42e+04 | 1.56e+04 | -0.35 |
-| olay_sayi_5g | 0 | 0 | +0.35 |
 | bilancodan_gun | 58 | 43 | +0.34 |
 | xu100_ma200_uzaklik | 0.0591 | 0.0807 | -0.33 |
+| ma20_uzaklik | 0.0017 | -0.0238 | +0.32 |
 
 ## Koşullu istatistik: özellik kovaları (en düşük %20 → en yüksek %20) ve 20 gün ileri getiri
 
@@ -66,17 +66,20 @@ Spearman korelasyonu özellik ile 20 gün ileri getiri arasında; p Bonferroni i
 
 | Tür | Hissenin kendi olayı mı | n | İlk gün tepki | 1g | 5g | 20g | 20g pozitif oranı |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| faiz | hayır | 23 | -0.3% | +0.3% | +0.9% | -1.0% | 26% |
-| siyasi | hayır | 9 | -0.8% | -0.6% | -2.4% | +2.4% | 44% |
-| enflasyon | hayır | 6 | +0.3% | -1.5% | -3.1% | -11.2% | 0% |
-| jeopolitik | hayır | 5 | -4.7% | +0.3% | -1.1% | +2.7% | 40% |
+| faiz | hayır | 41 | -0.2% | +0.5% | +1.6% | -1.0% | 27% |
+| siyasi | hayır | 17 | -0.3% | -0.2% | -0.4% | -0.5% | 35% |
+| derecelendirme | hayır | 15 | -0.3% | +0.8% | -0.9% | -1.7% | 27% |
+| jeopolitik | hayır | 10 | -1.7% | -0.1% | -2.4% | -2.0% | 20% |
+| enflasyon | hayır | 9 | +0.6% | -0.8% | -2.8% | -11.5% | 0% |
+| regulasyon | hayır | 6 | -1.1% | -2.3% | -1.2% | -1.6% | 17% |
+| haber | hayır | 5 | +1.0% | -3.5% | -1.6% | -8.6% | 0% |
+| kuresel_faiz | hayır | 5 | -1.9% | -0.8% | -3.6% | -8.7% | 0% |
 | sok | hayır | 5 | -0.4% | +0.4% | -7.2% | -2.5% | 20% |
 | tarife | hayır | 5 | +2.8% | -1.0% | +0.0% | +5.4% | 60% |
-| derecelendirme | hayır | 4 | +0.9% | +1.8% | +1.3% | +0.5% | 25% |
+| kur | hayır | 4 | -0.4% | +0.9% | +4.6% | +2.2% | 75% |
 | dusus | hayır | 3 | -1.3% | +0.1% | -1.4% | +3.6% | 33% |
 | yukselis | hayır | 3 | +1.7% | -0.9% | -2.0% | +12.5% | 67% |
 | butce_vergi | hayır | 2 | +1.5% | -3.0% | -5.5% | -13.3% | 0% |
-| kur | hayır | 2 | +0.1% | -0.1% | +0.3% | +1.4% | 50% |
 
 ## Kural taraması (ileriye yürüyen)
 
@@ -106,4 +109,4 @@ Seçim yalnız eğitim Sharpe'ına göre; 'sonradan bakış' tablosu şans tavan
 
 ## Son durum (en yeni satır)
 
-getiri_1g=0.0505, getiri_5g=0.143, getiri_20g=-0.0459, getiri_60g=-0.126, getiri_120g=-0.373, mom_12_1=-0.58, zirve_52h_yakinlik=0.381, zirveden_dusus=-0.619, oynaklik_20g=0.362, oynaklik_60g=0.53, atr_20g_oran=0.0374, rsi_14=44.9, ma20_uzaklik=0.0473, ma50_uzaklik=-0.0744, ma200_uzaklik=-0.283, hacim_z_20=-0.565, amihud_20g=0.241, devir_hizi_20g=0.0144, gece_ort_20g=-0.00198, gunici_ort_20g=-0.00163, aof_1g_sapma=0.0112, max_gunluk_20g=0.0543, min_gunluk_20g=-0.0396, ivol_60g=0.519, endekse_gore_1g=0.0343, endekse_gore_20g=0.00325, endekse_gore_60g=0.0502, beta_60g=0.19, xu100_getiri_20g=-0.0491, xu100_ma200_uzaklik=-0.141, usdtry_getiri_20g=0.0191, dolar_getiri_60g=-0.166, piyasa_degeri_mn=1.04e+04, halka_aciklik=0.699, kazanc_verimi=-0.234, pd_dd=0.328, fd_favok=5.82, snak_verimi=0.14, temettu_verimi=0, roe_ttm=-0.0767, net_kar_marji=-0.97, satis_buyume_yillik=-0.0815, net_borc_ozkaynak=-0.0663, bilancodan_gun=81.8, olay_sayi_5g=1, olay_yon_5g=-1
+getiri_1g=0.0505, getiri_5g=0.143, getiri_20g=-0.0459, getiri_60g=-0.126, getiri_120g=-0.373, mom_12_1=-0.58, zirve_52h_yakinlik=0.381, zirveden_dusus=-0.619, oynaklik_20g=0.362, oynaklik_60g=0.53, atr_20g_oran=0.0374, rsi_14=44.9, ma20_uzaklik=0.0473, ma50_uzaklik=-0.0744, ma200_uzaklik=-0.283, hacim_z_20=-0.565, amihud_20g=0.241, devir_hizi_20g=0.0144, gece_ort_20g=-0.00198, gunici_ort_20g=-0.00163, aof_1g_sapma=0.0112, max_gunluk_20g=0.0543, min_gunluk_20g=-0.0396, ivol_60g=0.519, endekse_gore_1g=0.0308, endekse_gore_20g=-3.54e-05, endekse_gore_60g=0.0474, beta_60g=0.19, xu100_getiri_20g=-0.0458, xu100_ma200_uzaklik=-0.138, usdtry_getiri_20g=0.0191, dolar_getiri_60g=-0.166, piyasa_degeri_mn=1.04e+04, halka_aciklik=0.699, kazanc_verimi=-0.234, pd_dd=0.328, fd_favok=5.82, snak_verimi=0.14, temettu_verimi=0, roe_ttm=-0.0767, net_kar_marji=-0.97, satis_buyume_yillik=-0.0815, net_borc_ozkaynak=-0.0663, bilancodan_gun=81.8, olay_sayi_5g=2, olay_yon_5g=0
