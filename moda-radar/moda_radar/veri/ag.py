@@ -22,10 +22,17 @@ class TaramaYasak(RuntimeError):
 
 
 def yasak_alanlar(yol: Path = YASAK_DOSYASI) -> set[str]:
+    """`alanlar` öğesi düz alan adı ya da `{"alan": ..., "neden": ..., "kaynak": ...}` olabilir."""
     try:
-        return {a.lower() for a in json.loads(yol.read_text("utf-8")).get("alanlar", [])}
-    except (OSError, json.JSONDecodeError):
+        ogeler = json.loads(yol.read_text("utf-8")).get("alanlar", [])
+    except (OSError, json.JSONDecodeError, AttributeError):
         return set()
+    alanlar = set()
+    for o in ogeler:
+        ad = o.get("alan") if isinstance(o, dict) else o
+        if isinstance(ad, str) and ad.strip():
+            alanlar.add(ad.strip().lower())
+    return alanlar
 
 
 class Tarayici:
@@ -36,6 +43,7 @@ class Tarayici:
         self.zaman_asimi = zaman_asimi
         self.yasaklar = yasak_alanlar() if yasaklar is None else yasaklar
         self._robots: dict[str, urllib.robotparser.RobotFileParser] = {}
+        self._robots_hatasi: dict[str, str] = {}  # robots.txt alınamayan alan → neden (5xx / ağ hatası)
         self._son_istek = 0.0
         self.istek_sayisi = 0
 
@@ -60,16 +68,30 @@ class Tarayici:
                     rp.parse(y.read().decode("utf-8", "replace").splitlines())
             except urllib.error.HTTPError as e:
                 # 4xx: robots yok → izinli; 5xx: belirsiz → izin yok (kibar taraf)
-                rp.parse([] if 400 <= e.code < 500 else ["User-agent: *", "Disallow: /"])
-            except (urllib.error.URLError, TimeoutError, OSError):
+                if 400 <= e.code < 500:
+                    rp.parse([])
+                else:
+                    rp.parse(["User-agent: *", "Disallow: /"])
+                    self._robots_hatasi[alan] = f"robots.txt HTTP {e.code}"
+            except (urllib.error.URLError, TimeoutError, OSError) as e:
                 rp.parse(["User-agent: *", "Disallow: /"])
+                self._robots_hatasi[alan] = f"robots.txt alınamadı ({getattr(e, 'reason', e)})"
             self._robots[alan] = rp
         return self._robots[alan].can_fetch(KULLANICI_ARACISI, url)
 
+    def yasak_nedeni(self, url: str) -> str:
+        """`izinli_mi` False döndükten sonra günlük için neden: yasak liste, robots kuralı ya da robots.txt'e ulaşılamadı."""
+        alan = urlsplit(url).netloc.lower()
+        if any(alan == y or alan.endswith("." + y) for y in self.yasaklar):
+            return f"tarama-yasak.json listesinde: {url}"
+        if alan in self._robots_hatasi:
+            return f"{self._robots_hatasi[alan]}; kibar taraf taramaz: {url}"
+        return f"robots.txt izin vermiyor: {url}"
+
     def getir(self, url: str, kabul: str = "text/html,*/*;q=0.5") -> bytes:
-        """URL'yi bellekte getirir. İzin yoksa TaramaYasak."""
+        """URL'yi bellekte getirir. İzin yoksa TaramaYasak (nedeniyle)."""
         if not self.izinli_mi(url):
-            raise TaramaYasak(f"robots.txt / tarama-yasak.json izin vermiyor: {url}")
+            raise TaramaYasak(self.yasak_nedeni(url))
         self._bekle()
         istek = urllib.request.Request(
             url,

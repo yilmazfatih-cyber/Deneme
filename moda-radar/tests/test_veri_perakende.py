@@ -24,6 +24,15 @@ SECICI = {
     "metin,beklenen",
     [
         ("1.299,90 TL", 1299.90),
+        ("7.999,00 TL", 7999.0),
+        ("1299.99", 1299.99),
+        (" 1299.99 TL ", 1299.99),
+        ("1.299,90\u00a0TL", 1299.90),
+        ("₺ 12.999,90", 12999.90),
+        ("1 299,90 TL", 1299.90),
+        ("%30 1.299,90 TL", 1299.90),
+        ("30% indirim 899,90 TL", 899.90),
+        ("1.299", 1299.0),
         ("₺1.499", 1499.0),
         ("899 TL", 899.0),
         ("1,299.95", 1299.95),
@@ -47,14 +56,32 @@ def test_urunleri_ayikla():
     assert (b["fiyat"], b["indirim_yuzde"], b["gorsel_url"]) == (1499.0, None, "https://cdn.ornek.invalid/img/102.jpg")
 
 
-def test_kaynak_dosyasi_gecerli_ve_dogrulanmamis():
+def test_kaynak_dosyasi_gecerli_ve_dogrulananlarin_tarihi_var():
     veri = perakende.kaynaklari_oku()
     hs = perakende.hedefler(veri)
-    markalar = {h.marka for h in hs}
-    assert {"Beymen", "Zara", "LC Waikiki", "Addax", "Trendyol"} <= markalar
-    assert {h.segment for h in hs} == {"luks", "premium", "orta", "deger"}
-    assert not any(h.dogrulandi for h in hs)  # ağsız yazıldı; ilk CI çalışmasında doğrulanacak
-    assert [h.marka for h in perakende.hedefler(veri, "luks")] == ["Beymen"] * len(perakende.hedefler(veri, "luks"))
+    segment = {h.marka: h.segment for h in hs}
+    assert segment == {"Beymen": "luks", "Ipekyol": "premium", "Koton": "orta", "DeFacto": "orta", "Addax": "deger"}
+    for h in hs:
+        assert h.kategori in {"kadin-ust", "kadin-elbise"}
+        if h.dogrulandi:
+            date.fromisoformat(h.dogrulama_tarihi)
+    assert {h.marka for h in hs if h.dogrulandi} == {"Beymen", "Ipekyol", "Koton", "DeFacto"}
+
+
+def test_bot_engelli_hedefler_kapali_ve_alanlari_yasak():
+    from moda_radar.veri.ag import yasak_alanlar
+
+    veri = perakende.kaynaklari_oku()
+    kapali = [h for h in perakende.hedefler(veri, kapalilar=True) if h not in perakende.hedefler(veri)]
+    assert {h.marka for h in kapali} == {"Zara", "LC Waikiki", "Trendyol"}
+    yasak = yasak_alanlar()
+    assert {"www.zara.com", "www.massimodutti.com", "www.trendyol.com", "www.lcw.com"} <= yasak
+    for seg in veri["segmentler"].values():
+        for k in seg.values():
+            if k.get("etkin", True) is False:
+                assert k["neden"] and not k["dogrulandi"]
+    acik = {h.url.split("/")[2] for h in perakende.hedefler(veri)}
+    assert not acik & yasak
 
 
 def test_kaynak_dogrulama_eksik_secici():
@@ -64,6 +91,22 @@ def test_kaynak_dogrulama_eksik_secici():
     assert any("eksik seçiciler" in h for h in hatalar)
     assert any("dogrulandi" in h for h in hatalar)
     assert any("https://" in h for h in hatalar)
+
+
+def test_kaynak_dogrulama_tarih_ve_neden():
+    secici = {"kart": "a", "baslik": "a", "fiyat": "a", "link": "a"}
+    k = {"kategoriler": {"kadin-ust": "https://x.invalid"}, "secici": secici}
+    hatalar = perakende.kaynaklari_dogrula(
+        {"segmentler": {"orta": {"A": dict(k, dogrulandi=True), "B": dict(k, dogrulandi=False, etkin=False)}}}
+    )
+    assert any("orta/A" in h and "dogrulama_tarihi" in h for h in hatalar)
+    assert any("orta/B" in h and "neden" in h for h in hatalar)
+    tamam = {
+        "A": dict(k, dogrulandi=True, dogrulama_tarihi="2026-11-09"),
+        "B": dict(k, dogrulandi=False, etkin=False, neden="403"),
+    }
+    assert perakende.kaynaklari_dogrula({"segmentler": {"orta": tamam}}) == []
+    assert [h.marka for h in perakende.hedefler({"segmentler": {"orta": tamam}})] == ["A"]
 
 
 class SahteTarayici:
@@ -93,6 +136,25 @@ def test_kaynak_tara_upsert_ve_pasif(tmp_path, monkeypatch):
             "SELECT ilk_gorulme, son_gorulme FROM perakende_urun WHERE url LIKE '%p-101%'"
         ).fetchone()
         assert tuple(r) == ("2027-03-01", "2027-03-08")
+
+
+def test_gorsel_alinamazsa_sayilir_tek_uyari(tmp_path, monkeypatch, caplog):
+    from moda_radar.veri import renk_koprusu
+    from moda_radar.veri.ag import TaramaYasak
+
+    monkeypatch.setattr(renk_koprusu, "renk_modulu_var", lambda: True)
+
+    class GorselsizTarayici(SahteTarayici):
+        def getir(self, url, kabul=""):
+            raise TaramaYasak(f"robots.txt alınamadı (Tunnel connection failed); kibar taraf taramaz: {url}")
+
+    h = perakende.PerakendeHedefi(
+        segment="orta", marka="Ornek", kategori="kadin-ust", url="https://www.ornek.invalid/k", secici=SECICI
+    )
+    with Depo(tmp_path / "m.db") as depo:
+        s = perakende.kaynak_tara(depo, h, GorselsizTarayici(FIXTURE.read_text("utf-8")), bugun=date(2027, 3, 1))
+    assert (s["bulunan"], s["renkli"], s["gorsel_alinamadi"]) == (2, 0, 2)
+    assert caplog.text.count("ürün görseli alınamadı") == 1
 
 
 def test_bos_sayfa_uyari(tmp_path):
@@ -229,16 +291,65 @@ def test_sayfa_getir_ikinci_deneme_de_duserse_hata_yukselir(monkeypatch):
     assert len(pw.kayit["launch"]) == 2  # en fazla bir yeniden deneme
 
 
-def test_zara_ve_lcw_kart_secici_alternatifleri():
-    veri = perakende.kaynaklari_oku()
-    zara = veri["segmentler"]["premium"]["Zara"]["secici"]["kart"]
-    lcw = veri["segmentler"]["orta"]["LC Waikiki"]["secici"]["kart"]
-    assert {"li.product-grid-product", "article[data-productid]", ".product-grid__product"} <= {
-        s.strip() for s in zara.split(",")
-    }
-    assert {".product-card", "[data-product-id]", ".product-item"} <= {s.strip() for s in lcw.split(",")}
-    html = '<article data-productid="1"><a class="product-link" href="p1.html"><h2>Gömlek</h2></a></article>'
-    secici = dict(veri["segmentler"]["premium"]["Zara"]["secici"], kart=zara)
-    assert [u["url"] for u in perakende.urunleri_ayikla(html, secici, "https://www.zara.com/tr/tr/")] == [
-        "https://www.zara.com/tr/tr/p1.html"
+MAGAZALAR = Path(__file__).parent / "fixtures" / "perakende_magazalar.html"
+
+
+@pytest.mark.parametrize(
+    "segment,marka,taban,beklenen",
+    [
+        (
+            "orta",
+            "Koton",
+            "https://www.koton.com/kadin-bluz/",
+            [
+                ("Sentetik Keten Gömlek", 1299.99, None, "https://www.koton.com/sentetik-keten-gomlek-1/", "k1_on.jpg"),
+                ("Sentetik Saten Bluz", 599.99, None, "https://www.koton.com/sentetik-saten-bluz-2/", "k2.jpg"),
+            ],
+        ),
+        (
+            "orta",
+            "DeFacto",
+            "https://www.defacto.com.tr/kadin-bluz",
+            [
+                ("Sentetik Basic Bluz", 766.99, 41.0, "https://www.defacto.com.tr/sentetik-basic-bluz-11", "d11.jpg"),
+                (
+                    "Sentetik Maxi Elbise",
+                    1799.99,
+                    None,
+                    "https://www.defacto.com.tr/sentetik-maxi-elbise-12",
+                    "d12.jpg",
+                ),
+            ],
+        ),
+        (
+            "premium",
+            "Ipekyol",
+            "https://www.ipekyol.com.tr/giyim/bluz-modelleri",
+            [
+                (
+                    "Sentetik vatkalı bluz",
+                    7999.0,
+                    None,
+                    "https://www.ipekyol.com.tr/urun/sentetik-vatkali-bluz",
+                    "i21.jpg",
+                ),
+                (
+                    "Sentetik triko elbise",
+                    11999.0,
+                    None,
+                    "https://www.ipekyol.com.tr/urun/sentetik-triko-elbise",
+                    "i22.jpg",
+                ),
+            ],
+        ),
+    ],
+)
+def test_dogrulanmis_seciciler_sentetik_kartlarda(segment, marka, taban, beklenen):
+    """content/perakende-kaynaklar.json seçicileri, gerçek kart yapısını taklit eden sentetik HTML'de çalışır; öteki
+    mağazaların kartları karışmaz (her mağazanın seçicisi yalnız kendi 2 kartını bulur)."""
+    secici = perakende.kaynaklari_oku()["segmentler"][segment][marka]["secici"]
+    urunler = perakende.urunleri_ayikla(MAGAZALAR.read_text("utf-8"), secici, taban)
+    bulunan = [
+        (u["baslik"], u["fiyat"], u["indirim_yuzde"], u["url"], u["gorsel_url"].rsplit("/", 1)[1]) for u in urunler
     ]
+    assert bulunan == beklenen

@@ -33,6 +33,7 @@ class PerakendeHedefi:
     secici: dict
     js: bool = False
     dogrulandi: bool = False
+    dogrulama_tarihi: str | None = None
     para: str = "TRY"
     ulke: str = "TR"
     notlar: list[str] = field(default_factory=list)
@@ -47,6 +48,8 @@ def kaynaklari_oku(yol: Path = KAYNAK_DOSYASI) -> dict:
 
 
 def kaynaklari_dogrula(veri: dict) -> list[str]:
+    """Şekil denetimi: zorunlu seçiciler, `dogrulandi` (true ise ISO `dogrulama_tarihi`), https URL'leri; `etkin: false`
+    hedef taranmaz ama `neden` yazmak zorundadır."""
     hatalar = []
     for seg, markalar in veri.get("segmentler", {}).items():
         for marka, k in markalar.items():
@@ -56,6 +59,13 @@ def kaynaklari_dogrula(veri: dict) -> list[str]:
                 hatalar.append(f"{yer}: eksik seçiciler {eksik}")
             if "dogrulandi" not in k:
                 hatalar.append(f"{yer}: 'dogrulandi' alanı zorunlu")
+            elif k["dogrulandi"]:
+                try:
+                    date.fromisoformat(str(k.get("dogrulama_tarihi")))
+                except ValueError:
+                    hatalar.append(f"{yer}: doğrulanmış hedefin 'dogrulama_tarihi' (YYYY-AA-GG) olmalı")
+            if k.get("etkin", True) is False and not k.get("neden"):
+                hatalar.append(f"{yer}: 'etkin': false hedef 'neden' yazmalı")
             if not k.get("kategoriler"):
                 hatalar.append(f"{yer}: en az bir kategori gerekli")
             for kat, url in k.get("kategoriler", {}).items():
@@ -64,12 +74,17 @@ def kaynaklari_dogrula(veri: dict) -> list[str]:
     return hatalar
 
 
-def hedefler(veri: dict, segment: str | None = None, kategori: str | None = None) -> list[PerakendeHedefi]:
+def hedefler(
+    veri: dict, segment: str | None = None, kategori: str | None = None, *, kapalilar: bool = False
+) -> list[PerakendeHedefi]:
+    """Taranacak hedefler; `etkin: false` olanlar (bot engeli, yasak alan) `kapalilar=True` verilmedikçe dışarıda."""
     sonuc = []
     for seg, markalar in veri.get("segmentler", {}).items():
         if segment and seg != segment:
             continue
         for marka, k in markalar.items():
+            if k.get("etkin", True) is False and not kapalilar:
+                continue
             for kat, url in k["kategoriler"].items():
                 if kategori and kat != kategori:
                     continue
@@ -82,6 +97,7 @@ def hedefler(veri: dict, segment: str | None = None, kategori: str | None = None
                         secici=k["secici"],
                         js=bool(k.get("js", False)),
                         dogrulandi=bool(k.get("dogrulandi", False)),
+                        dogrulama_tarihi=k.get("dogrulama_tarihi"),
                         para=k.get("para", "TRY"),
                         ulke=veri.get("ulke", "TR"),
                     )
@@ -92,24 +108,28 @@ def hedefler(veri: dict, segment: str | None = None, kategori: str | None = None
 # --- saf ayrıştırıcı ---
 
 
+# Yüzde ifadeleri ('%30', '30 %') fiyat değildir; ayrıştırmadan önce silinir.
+_YUZDE = re.compile(r"%\s*\d+(?:[.,]\d+)?|\d+(?:[.,]\d+)?\s*%")
+# Önce binlik gruplu sayı (1.299,90 · 1,299.95 · 1 299,90), yoksa düz sayı (1299.99 · 49,9 · 899).
+_SAYI = re.compile(r"\d{1,3}(?:[.,\s\u00a0\u202f]\d{3})+(?:[.,]\d{1,2})?(?!\d)|\d+(?:[.,]\d{1,2})?(?!\d)")
+
+
 def fiyat_coz(metin: str | None) -> float | None:
-    """'1.299,95 TL' → 1299.95 · '₺899' → 899.0 · '1,299.95' → 1299.95 · boş → None."""
+    """'1.299,90 TL' → 1299.9 · '₺1.499' → 1499.0 · '1299.99' → 1299.99 · '1,299.95' → 1299.95 · boş → None.
+
+    Son ayırıcıdan sonra 1–2 hane varsa ondalıktır; öteki ayırıcılar (nokta, virgül, boşluk) binliktir.
+    """
     if not metin:
         return None
-    m = re.search(r"\d[\d.,\s ]*", metin)
+    m = _SAYI.search(_YUZDE.sub(" ", metin))
     if not m:
         return None
-    s = re.sub(r"[\s ]", "", m[0]).rstrip(".,")
-    if "," in s and "." in s:
-        ondalik = "," if s.rfind(",") > s.rfind(".") else "."
-        binlik = "." if ondalik == "," else ","
-        s = s.replace(binlik, "").replace(ondalik, ".")
-    elif "," in s:
-        s = s.replace(",", ".") if len(s.rsplit(",", 1)[1]) in (1, 2) else s.replace(",", "")
-    elif "." in s and len(s.rsplit(".", 1)[1]) == 3:
-        s = s.replace(".", "")  # 1.299 → binlik ayırıcı
+    s = m[0]
+    ondalik = re.search(r"[.,](\d{1,2})$", s)
+    tam = s[: ondalik.start()] if ondalik else s
+    tam = re.sub(r"[.,\s\u00a0\u202f]", "", tam)
     try:
-        return float(s)
+        return float(f"{tam}.{ondalik[1]}" if ondalik else tam)
     except ValueError:
         return None
 
@@ -253,7 +273,8 @@ def sayfa_getir(hedef: PerakendeHedefi, tarayici) -> str:
     from moda_radar.veri.ag import TaramaYasak
 
     if not tarayici.izinli_mi(hedef.url):
-        raise TaramaYasak(f"robots.txt izin vermiyor: {hedef.url}")
+        neden = getattr(tarayici, "yasak_nedeni", None)
+        raise TaramaYasak(neden(hedef.url) if neden else f"robots.txt izin vermiyor: {hedef.url}")
     sync_playwright, zaman_asimi, pw_hatasi = _playwright()
     with sync_playwright() as pw:
         for http2_kapali in (False, True):
@@ -310,7 +331,10 @@ def kaynak_tara(depo, hedef: PerakendeHedefi, tarayici, *, bugun: date | None = 
             try:
                 bayt = tarayici.getir(u["gorsel_url"], kabul="image/*")
             except (OSError, RuntimeError) as e:
-                log.warning("ürün görseli alınamadı %s: %s", u["gorsel_url"], e)
+                # Aynı CDN'de genelde hepsi düşer: ilkini günlüğe yaz, gerisini say (özet satırında görünür).
+                if not sonuc.get("gorsel_alinamadi"):
+                    log.warning("%s: ürün görseli alınamadı %s: %s", sonuc["hedef"], u["gorsel_url"], e)
+                sonuc["gorsel_alinamadi"] = sonuc.get("gorsel_alinamadi", 0) + 1
                 continue
             sezon = sezon_tahmini(bugun)
             kaynak = Kaynak(

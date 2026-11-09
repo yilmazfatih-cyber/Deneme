@@ -1,0 +1,7054 @@
+{
+  "sezon": "SS27",
+  "onceki": null,
+  "esik_de": 6.0,
+  "parca_rengi_sayisi": 7532,
+  "satirlar": [
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 7.020411431373517,
+        "a": 1.0579887019276688,
+        "b": 0.052059789058889215
+      },
+      "hex": "#171515",
+      "pantone": {
+        "kod": "19-3911 TCX",
+        "hex": "#26262A",
+        "delta_e": 5.8264,
+        "ad": "Black Beauty"
+      },
+      "ikinci_aday": {
+        "kod": "19-4008 TCX",
+        "hex": "#2B2929",
+        "delta_e": 6.2447,
+        "ad": "Meteorite"
+      },
+      "podyum_payi": 0.08411413377533006,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 29,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 13.049106731736028,
+        "a": 2.788514081346859,
+        "b": 4.54933463720449
+      },
+      "hex": "#28201B",
+      "pantone": {
+        "kod": "19-4008 TCX",
+        "hex": "#2B2929",
+        "delta_e": 5.0424,
+        "ad": "Meteorite"
+      },
+      "ikinci_aday": {
+        "kod": "19-1106 TCX",
+        "hex": "#392D2B",
+        "delta_e": 5.4714,
+        "ad": "Mole"
+      },
+      "podyum_payi": 0.0407904854716156,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 26,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 21.10081938522684,
+        "a": 2.9745561578042015,
+        "b": 6.04827740132522
+      },
+      "hex": "#3B312A",
+      "pantone": {
+        "kod": "19-0840 TCX",
+        "hex": "#3F352F",
+        "delta_e": 1.5399,
+        "ad": "Delicioso"
+      },
+      "ikinci_aday": {
+        "kod": "19-0712 TCX",
+        "hex": "#40342B",
+        "delta_e": 1.8473,
+        "ad": "Demitasse"
+      },
+      "podyum_payi": 0.034391963046890614,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 28,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 14.653795610460163,
+        "a": 7.822430752578874,
+        "b": 11.17597558320002
+      },
+      "hex": "#342116",
+      "pantone": {
+        "kod": "19-1106 TCX",
+        "hex": "#392D2B",
+        "delta_e": 7.0362,
+        "ad": "Mole"
+      },
+      "ikinci_aday": {
+        "kod": "19-0712 TCX",
+        "hex": "#40342B",
+        "delta_e": 7.1973,
+        "ad": "Demitasse"
+      },
+      "podyum_payi": 0.029535972965327617,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 24,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 85.42688876645086,
+        "a": 2.1848907370129727,
+        "b": 0.9367821423548459
+      },
+      "hex": "#DBD4D4",
+      "pantone": {
+        "kod": "13-0002 TCX",
+        "hex": "#DBD5D1",
+        "delta_e": 2.0868,
+        "ad": "White Sand"
+      },
+      "ikinci_aday": {
+        "kod": "13-3803 TCX",
+        "hex": "#D7CDCD",
+        "delta_e": 2.1908,
+        "ad": "Lilac Ash"
+      },
+      "podyum_payi": 0.026751984572644178,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 23,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 92.66066635398985,
+        "a": 0.39135596302815207,
+        "b": 1.5242279244291925
+      },
+      "hex": "#ECEAE7",
+      "pantone": {
+        "kod": "11-1001 TCX",
+        "hex": "#EFEBE7",
+        "delta_e": 0.9514,
+        "ad": "White Alyssum"
+      },
+      "ikinci_aday": {
+        "kod": "11-4201 TCX",
+        "hex": "#F0EEE9",
+        "delta_e": 1.6234,
+        "ad": "Cloud Dancer"
+      },
+      "podyum_payi": 0.02507124595955945,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 17,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 83.4593570601762,
+        "a": 0.9262089934136861,
+        "b": 8.478645809917905
+      },
+      "hex": "#D9CFC0",
+      "pantone": {
+        "kod": "13-0907 TCX",
+        "hex": "#D8CCBB",
+        "delta_e": 1.284,
+        "ad": "Sandshell"
+      },
+      "ikinci_aday": {
+        "kod": "12-4301 TCX",
+        "hex": "#D6CEBE",
+        "delta_e": 1.3129,
+        "ad": "Almond Milk"
+      },
+      "podyum_payi": 0.02019121661326264,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 22,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 18.893550600681767,
+        "a": 1.5012870563469323,
+        "b": -1.7657545695047443
+      },
+      "hex": "#2F2D30",
+      "pantone": {
+        "kod": "19-4203 TCX",
+        "hex": "#2F2D30",
+        "delta_e": 0.2227,
+        "ad": "Moonless Night"
+      },
+      "ikinci_aday": {
+        "kod": "19-0303 TCX",
+        "hex": "#2D2C2F",
+        "delta_e": 0.6576,
+        "ad": "Jet Black"
+      },
+      "podyum_payi": 0.020067252653246093,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 21,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 27.235934490275135,
+        "a": 1.7386040279381576,
+        "b": 1.055437176764875
+      },
+      "hex": "#443F3F",
+      "pantone": {
+        "kod": "19-0000 TCX",
+        "hex": "#413E3D",
+        "delta_e": 1.0939,
+        "ad": "Raven"
+      },
+      "ikinci_aday": {
+        "kod": "19-0506 TCX",
+        "hex": "#44413C",
+        "delta_e": 3.244,
+        "ad": "Black Ink"
+      },
+      "podyum_payi": 0.0198510961885657,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 25,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 35.66557564508543,
+        "a": 0.75446719430343,
+        "b": -1.2217216697204063
+      },
+      "hex": "#545456",
+      "pantone": {
+        "kod": "19-3910 TCX",
+        "hex": "#4E5055",
+        "delta_e": 2.3887,
+        "ad": "Iron Gate"
+      },
+      "ikinci_aday": {
+        "kod": "19-3901 TCX",
+        "hex": "#4D4B4F",
+        "delta_e": 3.1835,
+        "ad": "Magnet"
+      },
+      "podyum_payi": 0.0192745873895853,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 18,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 72.91162790423837,
+        "a": 2.1520073674791282,
+        "b": 6.774344202712753
+      },
+      "hex": "#BCB1A7",
+      "pantone": {
+        "kod": "15-4503 TCX",
+        "hex": "#BBB1A8",
+        "delta_e": 0.722,
+        "ad": "Chateau Gray"
+      },
+      "ikinci_aday": {
+        "kod": "14-0000 TCX",
+        "hex": "#C1B7B0",
+        "delta_e": 2.2751,
+        "ad": "Silver Gray"
+      },
+      "podyum_payi": 0.018791307803630787,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 26,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 51.79537422315751,
+        "a": 0.16176944269704457,
+        "b": -0.12690195799746465
+      },
+      "hex": "#7C7B7C",
+      "pantone": {
+        "kod": "17-4014 TCX",
+        "hex": "#807D7F",
+        "delta_e": 2.1965,
+        "ad": "Titanium"
+      },
+      "ikinci_aday": {
+        "kod": "17-1500 TCX",
+        "hex": "#827E7C",
+        "delta_e": 2.4972,
+        "ad": "Steeple Gray"
+      },
+      "podyum_payi": 0.017334661946738324,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 16,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 71.9591117934617,
+        "a": 0.7480856370714011,
+        "b": -0.19637097637662965
+      },
+      "hex": "#B2B0B1",
+      "pantone": {
+        "kod": "14-4202 TCX",
+        "hex": "#AFB1B4",
+        "delta_e": 2.025,
+        "ad": "Harbor Mist"
+      },
+      "ikinci_aday": {
+        "kod": "15-4101 TCX",
+        "hex": "#AEB2B5",
+        "delta_e": 2.9356,
+        "ad": "High Rise"
+      },
+      "podyum_payi": 0.016659063650157978,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 19,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 25.120978224328578,
+        "a": 8.10120666613783,
+        "b": 4.111044432979657
+      },
+      "hex": "#4A3736",
+      "pantone": {
+        "kod": "19-1016 TCX",
+        "hex": "#433331",
+        "delta_e": 2.0231,
+        "ad": "Java"
+      },
+      "ikinci_aday": {
+        "kod": "19-1518 TCX",
+        "hex": "#503938",
+        "delta_e": 2.0628,
+        "ad": "Puce"
+      },
+      "podyum_payi": 0.01580016408527772,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 25,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 16.73603227466537,
+        "a": 10.725164502143317,
+        "b": 8.007853065335418
+      },
+      "hex": "#3B231E",
+      "pantone": {
+        "kod": "19-1419 TCX",
+        "hex": "#4A342E",
+        "delta_e": 5.3184,
+        "ad": "Chicory Coffee"
+      },
+      "ikinci_aday": {
+        "kod": "19-1110 TCX",
+        "hex": "#3C2D2E",
+        "delta_e": 5.8605,
+        "ad": "Chocolate Plum"
+      },
+      "podyum_payi": 0.01562563531668475,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 21,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 15.399375797583904,
+        "a": 5.485670995633607,
+        "b": 0.8636639907509591
+      },
+      "hex": "#2F2425",
+      "pantone": {
+        "kod": "19-1018 TCX",
+        "hex": "#34292A",
+        "delta_e": 1.6849,
+        "ad": "Ganache"
+      },
+      "ikinci_aday": {
+        "kod": "19-3909 TCX",
+        "hex": "#2E272A",
+        "delta_e": 2.4082,
+        "ad": "Black Bean"
+      },
+      "podyum_payi": 0.014689651559181118,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 25,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 48.02491268365214,
+        "a": 1.7974452896177613,
+        "b": 7.222811866967639
+      },
+      "hex": "#7A7166",
+      "pantone": {
+        "kod": "18-1108 TCX",
+        "hex": "#807669",
+        "delta_e": 2.4186,
+        "ad": "Fallen Rock"
+      },
+      "ikinci_aday": {
+        "kod": "18-1110 TCX",
+        "hex": "#82776B",
+        "delta_e": 2.7605,
+        "ad": "Brindle"
+      },
+      "podyum_payi": 0.014601850929947863,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 21,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 62.77554628648581,
+        "a": 0.2321681887079635,
+        "b": 18.528032364309585
+      },
+      "hex": "#A59777",
+      "pantone": {
+        "kod": "16-1110 TCX",
+        "hex": "#A6997A",
+        "delta_e": 0.9122,
+        "ad": "Olive Gray"
+      },
+      "ikinci_aday": {
+        "kod": "16-1118 TCX",
+        "hex": "#A49775",
+        "delta_e": 1.1665,
+        "ad": "Sponge"
+      },
+      "podyum_payi": 0.014044686724172153,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 15,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 55.55854791228835,
+        "a": 2.1756528648534212,
+        "b": 9.360954510028424
+      },
+      "hex": "#908375",
+      "pantone": {
+        "kod": "16-1109 TCX",
+        "hex": "#928475",
+        "delta_e": 0.8727,
+        "ad": "Greige"
+      },
+      "ikinci_aday": {
+        "kod": "17-1105 TCX",
+        "hex": "#918579",
+        "delta_e": 1.2211,
+        "ad": "Roasted Cashew"
+      },
+      "podyum_payi": 0.014040463097678943,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 19,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 33.46110975707159,
+        "a": 6.482610596571838,
+        "b": 4.158548533331153
+      },
+      "hex": "#5C4B48",
+      "pantone": {
+        "kod": "19-1213 TCX",
+        "hex": "#5A4743",
+        "delta_e": 1.7462,
+        "ad": "Shopping Bag"
+      },
+      "ikinci_aday": {
+        "kod": "19-1012 TCX",
+        "hex": "#58423F",
+        "delta_e": 3.6116,
+        "ad": "French Roast"
+      },
+      "podyum_payi": 0.013508733468723761,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 21,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 45.156761773611464,
+        "a": 0.6721455524404998,
+        "b": 1.462094819509736
+      },
+      "hex": "#6D6A68",
+      "pantone": {
+        "kod": "18-0601 TCX",
+        "hex": "#6C6868",
+        "delta_e": 1.7312,
+        "ad": "Charcoal Gray"
+      },
+      "ikinci_aday": {
+        "kod": "18-0503 TCX",
+        "hex": "#686767",
+        "delta_e": 1.92,
+        "ad": "Gargoyle"
+      },
+      "podyum_payi": 0.013431570419678896,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 20,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 7.546560044493298,
+        "a": 5.881753946565697,
+        "b": 4.756399624357449
+      },
+      "hex": "#20140F",
+      "pantone": {
+        "kod": "19-1018 TCX",
+        "hex": "#34292A",
+        "delta_e": 7.267,
+        "ad": "Ganache"
+      },
+      "ikinci_aday": {
+        "kod": "19-3909 TCX",
+        "hex": "#2E272A",
+        "delta_e": 7.6972,
+        "ad": "Black Bean"
+      },
+      "podyum_payi": 0.013248901426404799,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 14,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 33.37072209341581,
+        "a": 0.5420141231780773,
+        "b": 9.427130721554429
+      },
+      "hex": "#554E40",
+      "pantone": {
+        "kod": "19-0822 TCX",
+        "hex": "#5A5348",
+        "delta_e": 2.3727,
+        "ad": "Tarmac"
+      },
+      "ikinci_aday": {
+        "kod": "19-0511 TCX",
+        "hex": "#545144",
+        "delta_e": 2.8483,
+        "ad": "Grape Leaf"
+      },
+      "podyum_payi": 0.012742925609209267,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 17,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 67.03122103371295,
+        "a": 4.350988623095909,
+        "b": 1.5139612711557393
+      },
+      "hex": "#ACA0A1",
+      "pantone": {
+        "kod": "16-3803 TCX",
+        "hex": "#A49CA0",
+        "delta_e": 2.8724,
+        "ad": "Gull Gray"
+      },
+      "ikinci_aday": {
+        "kod": "16-3801 TCX",
+        "hex": "#A49E9E",
+        "delta_e": 2.9667,
+        "ad": "Opal Gray"
+      },
+      "podyum_payi": 0.011916196307651391,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 20,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 12.762648298911888,
+        "a": -1.5146831337762046,
+        "b": -1.1714716191568122
+      },
+      "hex": "#1E2223",
+      "pantone": {
+        "kod": "19-4004 TCX",
+        "hex": "#2A2B2D",
+        "delta_e": 3.8385,
+        "ad": "Tap Shoe"
+      },
+      "ikinci_aday": {
+        "kod": "19-4006 TCX",
+        "hex": "#292A2D",
+        "delta_e": 3.9332,
+        "ad": "Caviar"
+      },
+      "podyum_payi": 0.011566579471885956,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 16,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 62.943387411403684,
+        "a": 1.656941749578962,
+        "b": 4.7107633085083
+      },
+      "hex": "#9F9790",
+      "pantone": {
+        "kod": "16-5803 TCX",
+        "hex": "#A09C98",
+        "delta_e": 2.5531,
+        "ad": "Flint Gray"
+      },
+      "ikinci_aday": {
+        "kod": "16-1406 TCX",
+        "hex": "#A89C94",
+        "delta_e": 2.5981,
+        "ad": "Atmosphere"
+      },
+      "podyum_payi": 0.010317453615589504,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 21,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 75.06837199256472,
+        "a": 8.64289431696995,
+        "b": 11.528602384154137
+      },
+      "hex": "#D1B3A4",
+      "pantone": {
+        "kod": "14-1307 TCX",
+        "hex": "#CDB2A5",
+        "delta_e": 1.2002,
+        "ad": "Rose Dust"
+      },
+      "ikinci_aday": {
+        "kod": "14-1310 TCX",
+        "hex": "#D7B8AB",
+        "delta_e": 1.6894,
+        "ad": "Cameo Rose"
+      },
+      "podyum_payi": 0.010010678157850166,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 12,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 39.639725937765185,
+        "a": 1.9436192656338638,
+        "b": 4.7306766501138915
+      },
+      "hex": "#645C56",
+      "pantone": {
+        "kod": "19-0808 TCX",
+        "hex": "#685C53",
+        "delta_e": 2.2424,
+        "ad": "Morel"
+      },
+      "ikinci_aday": {
+        "kod": "18-1304 TCX",
+        "hex": "#6D625B",
+        "delta_e": 2.8939,
+        "ad": "Falcon"
+      },
+      "podyum_payi": 0.009322297827775853,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 20,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 58.94104441731253,
+        "a": 11.935826455012668,
+        "b": 48.724754473035524
+      },
+      "hex": "#B78435",
+      "pantone": {
+        "kod": "17-0949 TCX",
+        "hex": "#B1832F",
+        "delta_e": 2.1483,
+        "ad": "Chai Tea"
+      },
+      "ikinci_aday": {
+        "kod": "16-0948 TCX",
+        "hex": "#B68A3A",
+        "delta_e": 2.6368,
+        "ad": "Harvest Gold"
+      },
+      "podyum_payi": 0.009074164580137243,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 9,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 77.359876227596,
+        "a": 7.414417672963967,
+        "b": 42.96736195382266
+      },
+      "hex": "#E5B86F",
+      "pantone": {
+        "kod": "14-0847 TCX",
+        "hex": "#F1BF70",
+        "delta_e": 2.4036,
+        "ad": "Buff Yellow"
+      },
+      "ikinci_aday": {
+        "kod": "13-0932 TCX",
+        "hex": "#EDC373",
+        "delta_e": 3.1147,
+        "ad": "Cornsilk"
+      },
+      "podyum_payi": 0.00907035429494076,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 6,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 52.80273453501023,
+        "a": 17.140489012645137,
+        "b": -19.252044179488788
+      },
+      "hex": "#8C759F",
+      "pantone": {
+        "kod": "17-3615 TCX",
+        "hex": "#8F7DA5",
+        "delta_e": 2.7908,
+        "ad": "Chalk Violet"
+      },
+      "ikinci_aday": {
+        "kod": "17-3520 TCX",
+        "hex": "#9879A2",
+        "delta_e": 3.2038,
+        "ad": "Diffused Orchid"
+      },
+      "podyum_payi": 0.008699046529269581,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 2,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 70.66102707463632,
+        "a": 1.3940202640841004,
+        "b": 21.906939801074717
+      },
+      "hex": "#BEAB85",
+      "pantone": {
+        "kod": "15-1119 TCX",
+        "hex": "#BFA77F",
+        "delta_e": 1.8119,
+        "ad": "Taos Taupe"
+      },
+      "ikinci_aday": {
+        "kod": "16-0924 TCX",
+        "hex": "#C4AB86",
+        "delta_e": 2.2148,
+        "ad": "Croissant"
+      },
+      "podyum_payi": 0.008511228633064192,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 17,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 56.77245314026427,
+        "a": 6.959908017215706,
+        "b": 6.291864445400564
+      },
+      "hex": "#99847E",
+      "pantone": {
+        "kod": "16-3800 TCX",
+        "hex": "#9F8D89",
+        "delta_e": 3.3558,
+        "ad": "Satellite"
+      },
+      "ikinci_aday": {
+        "kod": "17-1418 TCX",
+        "hex": "#977D70",
+        "delta_e": 4.0049,
+        "ad": "Ginger Snap"
+      },
+      "podyum_payi": 0.00845513660550893,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 23,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 28.253212225513604,
+        "a": 33.51858150005987,
+        "b": 17.322291926010138
+      },
+      "hex": "#75292A",
+      "pantone": {
+        "kod": "19-1531 TCX",
+        "hex": "#752329",
+        "delta_e": 1.7289,
+        "ad": "Sun Dried Tomato"
+      },
+      "ikinci_aday": {
+        "kod": "19-1534 TCX",
+        "hex": "#72262C",
+        "delta_e": 2.1322,
+        "ad": "Merlot"
+      },
+      "podyum_payi": 0.008396416818391062,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 15,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 82.236843354894,
+        "a": 7.7597214379762915,
+        "b": 4.3366424899024185
+      },
+      "hex": "#DFC7C5",
+      "pantone": {
+        "kod": "13-1504 TCX",
+        "hex": "#E4CCC6",
+        "delta_e": 1.8721,
+        "ad": "Peach Blush"
+      },
+      "ikinci_aday": {
+        "kod": "12-2902 TCX",
+        "hex": "#E5D0CF",
+        "delta_e": 2.2216,
+        "ad": "Mauve Chalk"
+      },
+      "podyum_payi": 0.008024404736321671,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 14,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 41.84100096193985,
+        "a": 0.12310935493594614,
+        "b": 14.277571210485243
+      },
+      "hex": "#6C624B",
+      "pantone": {
+        "kod": "18-0820 TCX",
+        "hex": "#695E4B",
+        "delta_e": 2.1346,
+        "ad": "Capers"
+      },
+      "ikinci_aday": {
+        "kod": "18-0615 TCX",
+        "hex": "#685E4F",
+        "delta_e": 3.4696,
+        "ad": "Stone Gray"
+      },
+      "podyum_payi": 0.007842367652114888,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 12,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 59.59374143722684,
+        "a": 0.0596715781118738,
+        "b": -1.1418523132666816
+      },
+      "hex": "#8F9091",
+      "pantone": {
+        "kod": "17-5102 TCX",
+        "hex": "#8D8F8F",
+        "delta_e": 1.4748,
+        "ad": "Griffin"
+      },
+      "ikinci_aday": {
+        "kod": "16-5101 TCX",
+        "hex": "#929090",
+        "delta_e": 1.7251,
+        "ad": "Wet Weather"
+      },
+      "podyum_payi": 0.007821523513508895,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 16,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 29.246303719409553,
+        "a": 10.761160184693656,
+        "b": 17.783596118402553
+      },
+      "hex": "#5D3E2A",
+      "pantone": {
+        "kod": "18-1028 TCX",
+        "hex": "#684832",
+        "delta_e": 3.4489,
+        "ad": "Emperador"
+      },
+      "ikinci_aday": {
+        "kod": "19-1224 TCX",
+        "hex": "#5D4236",
+        "delta_e": 3.8881,
+        "ad": "Fondue Fudge"
+      },
+      "podyum_payi": 0.00777647689718881,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 7,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 82.79074753415307,
+        "a": -4.795681917556883,
+        "b": 7.117961187126289
+      },
+      "hex": "#CBD0C1",
+      "pantone": {
+        "kod": "13-6105 TCX",
+        "hex": "#CBCEBE",
+        "delta_e": 1.2791,
+        "ad": "Celadon Tint"
+      },
+      "ikinci_aday": {
+        "kod": "13-6006 TCX",
+        "hex": "#CAD3C1",
+        "delta_e": 1.6826,
+        "ad": "Almost Aqua"
+      },
+      "podyum_payi": 0.007261405689551833,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 11,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 63.074418231029505,
+        "a": 12.90155301842101,
+        "b": 5.89851367145673
+      },
+      "hex": "#B3908F",
+      "pantone": {
+        "kod": "16-1806 TCX",
+        "hex": "#AE8C8E",
+        "delta_e": 2.1568,
+        "ad": "Woodrose"
+      },
+      "ikinci_aday": {
+        "kod": "16-1707 TCX",
+        "hex": "#AF9294",
+        "delta_e": 2.4272,
+        "ad": "Deauville Mauve"
+      },
+      "podyum_payi": 0.006983925657291921,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 23,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 80.57586732908096,
+        "a": 0.7077093072670311,
+        "b": 21.245375962731462
+      },
+      "hex": "#D9C6A1",
+      "pantone": {
+        "kod": "13-0919 TCX",
+        "hex": "#D2C29D",
+        "delta_e": 1.5062,
+        "ad": "Soybean"
+      },
+      "ikinci_aday": {
+        "kod": "13-0715 TCX",
+        "hex": "#D8C9A3",
+        "delta_e": 1.5663,
+        "ad": "Sea Mist"
+      },
+      "podyum_payi": 0.006670520905045959,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 18,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 22.231855486433286,
+        "a": 3.475537996395715,
+        "b": -8.381192247694628
+      },
+      "hex": "#343442",
+      "pantone": {
+        "kod": "19-4022 TCX",
+        "hex": "#323441",
+        "delta_e": 1.2965,
+        "ad": "Parisian Night"
+      },
+      "ikinci_aday": {
+        "kod": "19-3927 TCX",
+        "hex": "#3B3B48",
+        "delta_e": 2.2795,
+        "ad": "Graphite"
+      },
+      "podyum_payi": 0.006552016877796592,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 12,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 25.73481146691891,
+        "a": -2.250392758308279,
+        "b": 2.5349639344116426
+      },
+      "hex": "#3B3E39",
+      "pantone": {
+        "kod": "19-0508 TCX",
+        "hex": "#3B3A36",
+        "delta_e": 2.678,
+        "ad": "Peat"
+      },
+      "ikinci_aday": {
+        "kod": "19-4305 TCX",
+        "hex": "#363838",
+        "delta_e": 3.6518,
+        "ad": "Pirate Black"
+      },
+      "podyum_payi": 0.005993231904403023,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 13,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 60.166890938302636,
+        "a": 3.9230976681562137,
+        "b": -1.1850881751803912
+      },
+      "hex": "#978F93",
+      "pantone": {
+        "kod": "17-3802 TCX",
+        "hex": "#918C8F",
+        "delta_e": 2.2409,
+        "ad": "Gull"
+      },
+      "ikinci_aday": {
+        "kod": "17-2601 TCX",
+        "hex": "#92898A",
+        "delta_e": 2.6675,
+        "ad": "Zinc"
+      },
+      "podyum_payi": 0.005937036697617411,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 15,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 60.483790815615365,
+        "a": 20.3776335477212,
+        "b": 12.638756420598646
+      },
+      "hex": "#BC847D",
+      "pantone": {
+        "kod": "16-1516 TCX",
+        "hex": "#C08A80",
+        "delta_e": 2.0413,
+        "ad": "Cameo Brown"
+      },
+      "ikinci_aday": {
+        "kod": "17-1514 TCX",
+        "hex": "#B5817D",
+        "delta_e": 2.0861,
+        "ad": "Ash Rose"
+      },
+      "podyum_payi": 0.0059215087942111125,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 13,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 71.33066612290058,
+        "a": 9.871935568633438,
+        "b": 5.069328226273265
+      },
+      "hex": "#C5A8A6",
+      "pantone": {
+        "kod": "15-1607 TCX",
+        "hex": "#C6A4A4",
+        "delta_e": 2.4181,
+        "ad": "Pale Mauve"
+      },
+      "ikinci_aday": {
+        "kod": "16-1509 TCX",
+        "hex": "#BBA5A0",
+        "delta_e": 3.0916,
+        "ad": "Shadow Gray"
+      },
+      "podyum_payi": 0.005770093143104916,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 18,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 13.984708864214467,
+        "a": 5.214056995271095,
+        "b": -5.7342389675365375
+      },
+      "hex": "#27212C",
+      "pantone": {
+        "kod": "19-3713 TCX",
+        "hex": "#2C2A33",
+        "delta_e": 3.4285,
+        "ad": "Deep Well"
+      },
+      "ikinci_aday": {
+        "kod": "19-3924 TCX",
+        "hex": "#2A2A35",
+        "delta_e": 4.0308,
+        "ad": "Night Sky"
+      },
+      "podyum_payi": 0.005715444870614682,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 11,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 86.0925129273941,
+        "a": -2.7061618153314337,
+        "b": 16.869721690284138
+      },
+      "hex": "#DFD8B7",
+      "pantone": {
+        "kod": "13-0513 TCX",
+        "hex": "#D8CFB2",
+        "delta_e": 2.3788,
+        "ad": "Frozen Dew"
+      },
+      "ikinci_aday": {
+        "kod": "13-0611 TCX",
+        "hex": "#D2CBAF",
+        "delta_e": 3.2533,
+        "ad": "Moth"
+      },
+      "podyum_payi": 0.0056205639916638754,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 10,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 40.93363745649227,
+        "a": 11.237459143544344,
+        "b": 5.780848070244557
+      },
+      "hex": "#765A58",
+      "pantone": {
+        "kod": "18-1409 TCX",
+        "hex": "#6C5656",
+        "delta_e": 3.0952,
+        "ad": "Peppercorn"
+      },
+      "ikinci_aday": {
+        "kod": "18-1326 TCX",
+        "hex": "#7E5C54",
+        "delta_e": 3.3848,
+        "ad": "Nutmeg"
+      },
+      "podyum_payi": 0.005535873960310834,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 17,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 26.31638935165299,
+        "a": 20.2147544461693,
+        "b": 11.570352245458277
+      },
+      "hex": "#5F312E",
+      "pantone": {
+        "kod": "19-1327 TCX",
+        "hex": "#603535",
+        "delta_e": 2.2933,
+        "ad": "Andorra"
+      },
+      "ikinci_aday": {
+        "kod": "19-1331 TCX",
+        "hex": "#6A3331",
+        "delta_e": 2.7399,
+        "ad": "Madder Brown"
+      },
+      "podyum_payi": 0.005435431434287646,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 15,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 21.846140074638146,
+        "a": -0.10667093445329003,
+        "b": 10.204471080643716
+      },
+      "hex": "#3A3425",
+      "pantone": {
+        "kod": "19-0509 TCX",
+        "hex": "#36362D",
+        "delta_e": 4.3485,
+        "ad": "Rosin"
+      },
+      "ikinci_aday": {
+        "kod": "19-0414 TCX",
+        "hex": "#434237",
+        "delta_e": 5.5462,
+        "ad": "Forest Night"
+      },
+      "podyum_payi": 0.005313481427497643,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 13,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 51.677540686466685,
+        "a": 5.32384914887183,
+        "b": 10.639806684767546
+      },
+      "hex": "#8B7869",
+      "pantone": {
+        "kod": "17-0808 TCX",
+        "hex": "#8E7C71",
+        "delta_e": 2.2196,
+        "ad": "Taupe Gray"
+      },
+      "ikinci_aday": {
+        "kod": "17-1316 TCX",
+        "hex": "#937B6A",
+        "delta_e": 2.3797,
+        "ad": "Portabella"
+      },
+      "podyum_payi": 0.005299828398037485,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 14,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 75.23348475947674,
+        "a": -4.177664892106827,
+        "b": 5.276552893199502
+      },
+      "hex": "#B6BBAF",
+      "pantone": {
+        "kod": "15-5704 TCX",
+        "hex": "#B2B6AC",
+        "delta_e": 1.7446,
+        "ad": "Mineral Gray"
+      },
+      "ikinci_aday": {
+        "kod": "14-4502 TCX",
+        "hex": "#BAC2BA",
+        "delta_e": 2.5228,
+        "ad": "Mercury"
+      },
+      "podyum_payi": 0.005288185167804222,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 8,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 52.40103192407809,
+        "a": -2.0197400788623927,
+        "b": 2.578023444372833
+      },
+      "hex": "#7B7E79",
+      "pantone": {
+        "kod": "18-4105 TCX",
+        "hex": "#80817D",
+        "delta_e": 1.823,
+        "ad": "Moon Mist"
+      },
+      "ikinci_aday": {
+        "kod": "17-0613 TCX",
+        "hex": "#807D6F",
+        "delta_e": 4.5942,
+        "ad": "Vetiver"
+      },
+      "podyum_payi": 0.0051020276093971546,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 6,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 18.840087421157765,
+        "a": 18.71070160086235,
+        "b": 15.899579069585336
+      },
+      "hex": "#4B2218",
+      "pantone": {
+        "kod": "19-1432 TCX",
+        "hex": "#56352D",
+        "delta_e": 6.2464,
+        "ad": "Chocolate Fondant"
+      },
+      "ikinci_aday": {
+        "kod": "19-1435 TCX",
+        "hex": "#66352B",
+        "delta_e": 6.8797,
+        "ad": "Cherry Mahogany"
+      },
+      "podyum_payi": 0.00502426793284976,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 12,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 60.332750537144044,
+        "a": 14.17239791441063,
+        "b": -14.354989490561795
+      },
+      "hex": "#9F8AAB",
+      "pantone": {
+        "kod": "16-3817 TCX",
+        "hex": "#9F86AA",
+        "delta_e": 1.6968,
+        "ad": "Rhapsody"
+      },
+      "ikinci_aday": {
+        "kod": "16-3525 TCX",
+        "hex": "#A98BAF",
+        "delta_e": 2.7852,
+        "ad": "Regal Orchid"
+      },
+      "podyum_payi": 0.004986208003435335,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 2,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 50.10057684085044,
+        "a": 0.45255306255641153,
+        "b": 16.39984637767027
+      },
+      "hex": "#83765B",
+      "pantone": {
+        "kod": "18-0617 TCX",
+        "hex": "#80765F",
+        "delta_e": 1.5267,
+        "ad": "Covert Green"
+      },
+      "ikinci_aday": {
+        "kod": "17-0620 TCX",
+        "hex": "#817A60",
+        "delta_e": 3.0587,
+        "ad": "Aloe"
+      },
+      "podyum_payi": 0.0049097253444671946,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 11,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 38.094914782662855,
+        "a": 54.88759374843762,
+        "b": 31.18984174772471
+      },
+      "hex": "#AD212B",
+      "pantone": {
+        "kod": "18-1658 TCX",
+        "hex": "#A4292E",
+        "delta_e": 1.8015,
+        "ad": "Pompeian Red"
+      },
+      "ikinci_aday": {
+        "kod": "18-1657 TCX",
+        "hex": "#AA182B",
+        "delta_e": 1.811,
+        "ad": "Salsa"
+      },
+      "podyum_payi": 0.004782829901391748,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 15,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 37.650814611613455,
+        "a": -1.629499744123103,
+        "b": 3.8243528383006846
+      },
+      "hex": "#595952",
+      "pantone": {
+        "kod": "18-0306 TCX",
+        "hex": "#5C5D5B",
+        "delta_e": 3.0802,
+        "ad": "Gunmetal"
+      },
+      "ikinci_aday": {
+        "kod": "19-0312 TCX",
+        "hex": "#55584C",
+        "delta_e": 3.2546,
+        "ad": "Beetle"
+      },
+      "podyum_payi": 0.004781419484651306,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 8,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 92.9406538002601,
+        "a": -0.12512602172795076,
+        "b": 11.051667198489033
+      },
+      "hex": "#F4EAD6",
+      "pantone": {
+        "kod": "11-0107 TCX",
+        "hex": "#F5EDD6",
+        "delta_e": 1.5166,
+        "ad": "Papyrus"
+      },
+      "ikinci_aday": {
+        "kod": "11-0106 TCX",
+        "hex": "#F0EAD6",
+        "delta_e": 1.6728,
+        "ad": "Sweet Corn"
+      },
+      "podyum_payi": 0.004754796027809727,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 3,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 67.43228429086268,
+        "a": 9.097590624695092,
+        "b": -3.038621933937104
+      },
+      "hex": "#B39FAA",
+      "pantone": {
+        "kod": "15-2205 TCX",
+        "hex": "#BFA3AF",
+        "delta_e": 3.3589,
+        "ad": "Dawn Pink"
+      },
+      "ikinci_aday": {
+        "kod": "15-2705 TCX",
+        "hex": "#C0A5AE",
+        "delta_e": 3.4379,
+        "ad": "Keepsake Lilac"
+      },
+      "podyum_payi": 0.004692458158700816,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 9,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 50.095027158216304,
+        "a": 8.450690589679589,
+        "b": 5.695965309501883
+      },
+      "hex": "#89726E",
+      "pantone": {
+        "kod": "18-1807 TCX",
+        "hex": "#8B6F70",
+        "delta_e": 3.2908,
+        "ad": "Twilight Mauve"
+      },
+      "ikinci_aday": {
+        "kod": "17-1510 TCX",
+        "hex": "#957A76",
+        "delta_e": 3.6998,
+        "ad": "Antler"
+      },
+      "podyum_payi": 0.004632793564606874,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 17,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 46.10761783442185,
+        "a": 59.267353369096,
+        "b": 42.83257348914059
+      },
+      "hex": "#CD3228",
+      "pantone": {
+        "kod": "18-1564 TCX",
+        "hex": "#CA3422",
+        "delta_e": 1.8378,
+        "ad": "Poinciana"
+      },
+      "ikinci_aday": {
+        "kod": "18-1664 TCX",
+        "hex": "#D01C1F",
+        "delta_e": 2.1476,
+        "ad": "Fiery Red"
+      },
+      "podyum_payi": 0.004507665974464901,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 9,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 86.15071566066311,
+        "a": -1.24723932579349,
+        "b": -3.5461490931731907
+      },
+      "hex": "#D2D8DE",
+      "pantone": {
+        "kod": "13-4103 TCX",
+        "hex": "#C9D3DC",
+        "delta_e": 2.2268,
+        "ad": "Illusion Blue"
+      },
+      "ikinci_aday": {
+        "kod": "13-4108 TCX",
+        "hex": "#D5D5D8",
+        "delta_e": 3.2081,
+        "ad": "Nimbus Cloud"
+      },
+      "podyum_payi": 0.004414094580004433,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 8,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 39.91865663035591,
+        "a": 5.555985304315459,
+        "b": -1.541253912610418
+      },
+      "hex": "#665B61",
+      "pantone": {
+        "kod": "19-3905 TCX",
+        "hex": "#5F575C",
+        "delta_e": 2.304,
+        "ad": "Rabbit"
+      },
+      "ikinci_aday": {
+        "kod": "18-1404 TCX",
+        "hex": "#69595C",
+        "delta_e": 2.5115,
+        "ad": "Sparrow"
+      },
+      "podyum_payi": 0.004306752446632816,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 11,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 29.4093522518151,
+        "a": -1.2437800266694898,
+        "b": -4.762528244753714
+      },
+      "hex": "#3F464D",
+      "pantone": {
+        "kod": "19-0201 TCX",
+        "hex": "#434447",
+        "delta_e": 3.2296,
+        "ad": "Asphalt"
+      },
+      "ikinci_aday": {
+        "kod": "19-4014 TCX",
+        "hex": "#434854",
+        "delta_e": 3.9218,
+        "ad": "Ombre Blue"
+      },
+      "podyum_payi": 0.004283516047226606,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 13,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 41.166726281739486,
+        "a": -2.4831471344870977,
+        "b": -6.988715833060015
+      },
+      "hex": "#56636C",
+      "pantone": {
+        "kod": "18-4214 TCX",
+        "hex": "#58646D",
+        "delta_e": 0.5376,
+        "ad": "Stormy Weather"
+      },
+      "ikinci_aday": {
+        "kod": "18-3918 TCX",
+        "hex": "#546477",
+        "delta_e": 4.3442,
+        "ad": "China Blue"
+      },
+      "podyum_payi": 0.0042834524537170605,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 13,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 46.27706960288644,
+        "a": 4.23414356539174,
+        "b": 0.7926331864931945
+      },
+      "hex": "#756B6C",
+      "pantone": {
+        "kod": "17-1503 TCX",
+        "hex": "#787376",
+        "delta_e": 3.7365,
+        "ad": "Storm Front"
+      },
+      "ikinci_aday": {
+        "kod": "18-4016 TCX",
+        "hex": "#767275",
+        "delta_e": 3.7954,
+        "ad": "December Sky"
+      },
+      "podyum_payi": 0.004269726622744356,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 16,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 19.02614302770866,
+        "a": 27.091475368932343,
+        "b": 14.034675148748628
+      },
+      "hex": "#551A1B",
+      "pantone": {
+        "kod": "19-1535 TCX",
+        "hex": "#6A282C",
+        "delta_e": 5.357,
+        "ad": "Syrah"
+      },
+      "ikinci_aday": {
+        "kod": "19-1724 TCX",
+        "hex": "#64242E",
+        "delta_e": 5.5819,
+        "ad": "Cabernet"
+      },
+      "podyum_payi": 0.004105905860501869,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 10,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 46.65117216986556,
+        "a": -13.842358627393923,
+        "b": 22.919958964104943
+      },
+      "hex": "#657447",
+      "pantone": {
+        "kod": "18-0107 TCX",
+        "hex": "#5A7247",
+        "delta_e": 3.1068,
+        "ad": "Kale"
+      },
+      "ikinci_aday": {
+        "kod": "18-0108 TCX",
+        "hex": "#6F7755",
+        "delta_e": 4.1061,
+        "ad": "Dill"
+      },
+      "podyum_payi": 0.004057516412133353,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 2,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 66.35427342793477,
+        "a": -8.007822971392422,
+        "b": 59.96476960036161
+      },
+      "hex": "#B1A32B",
+      "pantone": {
+        "kod": "16-0840 TCX",
+        "hex": "#B9A023",
+        "delta_e": 3.1276,
+        "ad": "Antique Moss"
+      },
+      "ikinci_aday": {
+        "kod": "15-0643 TCX",
+        "hex": "#BCA949",
+        "delta_e": 3.7438,
+        "ad": "Cress Green"
+      },
+      "podyum_payi": 0.003984333461655058,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 5,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 66.46608149626192,
+        "a": 6.258183383824163,
+        "b": 22.71245292763226
+      },
+      "hex": "#BB9D79",
+      "pantone": {
+        "kod": "16-1324 TCX",
+        "hex": "#B89B72",
+        "delta_e": 2.2375,
+        "ad": "Lark"
+      },
+      "ikinci_aday": {
+        "kod": "16-1334 TCX",
+        "hex": "#B69574",
+        "delta_e": 2.5352,
+        "ad": "Tan"
+      },
+      "podyum_payi": 0.003847503240591718,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 10,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 68.2461898034446,
+        "a": 10.117655283659529,
+        "b": 47.927579008440446
+      },
+      "hex": "#D09E4E",
+      "pantone": {
+        "kod": "16-0947 TCX",
+        "hex": "#CF9F52",
+        "delta_e": 0.6632,
+        "ad": "Bright Gold"
+      },
+      "ikinci_aday": {
+        "kod": "15-1142 TCX",
+        "hex": "#D1A054",
+        "delta_e": 0.8641,
+        "ad": "Honey Gold"
+      },
+      "podyum_payi": 0.003778752871436282,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 7,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 73.3328933071388,
+        "a": 7.69964737515824,
+        "b": -6.882285269636218
+      },
+      "hex": "#BDB0C1",
+      "pantone": {
+        "kod": "14-3805 TCX",
+        "hex": "#BAAFBC",
+        "delta_e": 1.7948,
+        "ad": "Iris"
+      },
+      "ikinci_aday": {
+        "kod": "15-3807 TCX",
+        "hex": "#BCB4C4",
+        "delta_e": 2.1618,
+        "ad": "Misty Lilac"
+      },
+      "podyum_payi": 0.003737924456690586,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 6,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 43.16835792409067,
+        "a": 26.90560477889565,
+        "b": 16.36132991950838
+      },
+      "hex": "#96534C",
+      "pantone": {
+        "kod": "18-1438 TCX",
+        "hex": "#964F4C",
+        "delta_e": 1.9362,
+        "ad": "Marsala"
+      },
+      "ikinci_aday": {
+        "kod": "18-1433 TCX",
+        "hex": "#98594B",
+        "delta_e": 3.1658,
+        "ad": "Chutney"
+      },
+      "podyum_payi": 0.0037281976981812957,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 15,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 53.29070974375459,
+        "a": 31.195997416684342,
+        "b": 43.159757994847745
+      },
+      "hex": "#C06835",
+      "pantone": {
+        "kod": "16-1448 TCX",
+        "hex": "#C86733",
+        "delta_e": 1.7754,
+        "ad": "Burnt Orange"
+      },
+      "ikinci_aday": {
+        "kod": "17-1353 TCX",
+        "hex": "#C86B3C",
+        "delta_e": 2.3541,
+        "ad": "Apricot Orange"
+      },
+      "podyum_payi": 0.0036618320016728757,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 3,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 53.162344798646835,
+        "a": 61.910397188683824,
+        "b": 40.76509020239252
+      },
+      "hex": "#E6433D",
+      "pantone": {
+        "kod": "17-1558 TCX",
+        "hex": "#DF3F32",
+        "delta_e": 2.6264,
+        "ad": "Grenadine"
+      },
+      "ikinci_aday": {
+        "kod": "17-1564 TCX",
+        "hex": "#DD4132",
+        "delta_e": 2.9217,
+        "ad": "Fiesta"
+      },
+      "podyum_payi": 0.003598406070833819,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 8,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 27.41322935438595,
+        "a": 9.10914920574416,
+        "b": -2.559312039166925
+      },
+      "hex": "#4D3C45",
+      "pantone": {
+        "kod": "19-1606 TCX",
+        "hex": "#524144",
+        "delta_e": 3.3438,
+        "ad": "Raisin"
+      },
+      "ikinci_aday": {
+        "kod": "19-3316 TCX",
+        "hex": "#473442",
+        "delta_e": 3.5293,
+        "ad": "Plum Perfect"
+      },
+      "podyum_payi": 0.003578119798264261,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 8,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 74.98289604638438,
+        "a": 5.770044825328577,
+        "b": 1.8032195929533805
+      },
+      "hex": "#C5B5B5",
+      "pantone": {
+        "kod": "14-3803 TCX",
+        "hex": "#D1C0BF",
+        "delta_e": 3.0005,
+        "ad": "Hushed Violet"
+      },
+      "ikinci_aday": {
+        "kod": "15-1905 TCX",
+        "hex": "#C5AEB1",
+        "delta_e": 3.3598,
+        "ad": "Burnished Lilac"
+      },
+      "podyum_payi": 0.003430796962309942,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 16,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 35.59010499676597,
+        "a": 1.7089745956555753,
+        "b": 22.132078692953527
+      },
+      "hex": "#625230",
+      "pantone": {
+        "kod": "19-0622 TCX",
+        "hex": "#63563B",
+        "delta_e": 2.757,
+        "ad": "Military Olive"
+      },
+      "ikinci_aday": {
+        "kod": "19-0516 TCX",
+        "hex": "#574D35",
+        "delta_e": 4.2864,
+        "ad": "Dark Olive"
+      },
+      "podyum_payi": 0.0032858187173151064,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 4,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 38.7508200441076,
+        "a": 35.767585690151485,
+        "b": 21.452140623256614
+      },
+      "hex": "#96403A",
+      "pantone": {
+        "kod": "18-1547 TCX",
+        "hex": "#973A36",
+        "delta_e": 1.493,
+        "ad": "Bossa Nova"
+      },
+      "ikinci_aday": {
+        "kod": "18-1531 TCX",
+        "hex": "#8F423B",
+        "delta_e": 1.6749,
+        "ad": "Barn Red"
+      },
+      "podyum_payi": 0.003066310703033035,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 14,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 53.972323074561245,
+        "a": 18.93486460928532,
+        "b": 10.111822039473516
+      },
+      "hex": "#A67570",
+      "pantone": {
+        "kod": "17-1516 TCX",
+        "hex": "#9B716B",
+        "delta_e": 3.1239,
+        "ad": "Burlwood"
+      },
+      "ikinci_aday": {
+        "kod": "17-1518 TCX",
+        "hex": "#B47B77",
+        "delta_e": 3.4829,
+        "ad": "Old Rose"
+      },
+      "podyum_payi": 0.003041075797820499,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 17,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 73.66902106757213,
+        "a": -1.0090516238866023,
+        "b": -7.227114347192222
+      },
+      "hex": "#ACB6C2",
+      "pantone": {
+        "kod": "14-4206 TCX",
+        "hex": "#B0B7BE",
+        "delta_e": 2.2813,
+        "ad": "Pearl Blue"
+      },
+      "ikinci_aday": {
+        "kod": "14-4210 TCX",
+        "hex": "#A3B4C4",
+        "delta_e": 2.8077,
+        "ad": "Celestial Blue"
+      },
+      "podyum_payi": 0.002915578729465425,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 10,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 54.77112715102652,
+        "a": 27.828412417561317,
+        "b": 16.647806452987346
+      },
+      "hex": "#B87068",
+      "pantone": {
+        "kod": "17-1424 TCX",
+        "hex": "#B07069",
+        "delta_e": 1.9146,
+        "ad": "Brick Dust"
+      },
+      "ikinci_aday": {
+        "kod": "17-1520 TCX",
+        "hex": "#AF6C67",
+        "delta_e": 2.4658,
+        "ad": "Canyon Rose"
+      },
+      "podyum_payi": 0.0027986699497455766,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 13,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 76.70607029352328,
+        "a": -2.0301162703530964,
+        "b": 62.31354581117332
+      },
+      "hex": "#DABB43",
+      "pantone": {
+        "kod": "14-0754 TCX",
+        "hex": "#E4BF45",
+        "delta_e": 2.1182,
+        "ad": "Super Lemon"
+      },
+      "ikinci_aday": {
+        "kod": "13-0739 TCX",
+        "hex": "#DEC05F",
+        "delta_e": 3.2079,
+        "ad": "Cream Gold"
+      },
+      "podyum_payi": 0.0027669927024806112,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 8,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 11.833049779005748,
+        "a": 9.511553547741844,
+        "b": -19.630524811484282
+      },
+      "hex": "#1B1C3A",
+      "pantone": {
+        "kod": "19-3815 TCX",
+        "hex": "#2A293E",
+        "delta_e": 5.5958,
+        "ad": "Evening Blue"
+      },
+      "ikinci_aday": {
+        "kod": "19-3831 TCX",
+        "hex": "#27293D",
+        "delta_e": 6.0506,
+        "ad": "Maritime Blue"
+      },
+      "podyum_payi": 0.0027624891208330535,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 9,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 23.386490826338353,
+        "a": 3.531995528508926,
+        "b": 16.96285901510616
+      },
+      "hex": "#45351E",
+      "pantone": {
+        "kod": "19-0712 TCX",
+        "hex": "#40342B",
+        "delta_e": 6.3358,
+        "ad": "Demitasse"
+      },
+      "ikinci_aday": {
+        "kod": "19-0815 TCX",
+        "hex": "#5A4632",
+        "delta_e": 6.5311,
+        "ad": "Desert Palm"
+      },
+      "podyum_payi": 0.0027577758692648186,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 11,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 14.396424811854404,
+        "a": 0.6061040384351047,
+        "b": -7.471739396543401
+      },
+      "hex": "#1F252F",
+      "pantone": {
+        "kod": "19-3922 TCX",
+        "hex": "#262934",
+        "delta_e": 2.1574,
+        "ad": "Sky Captain"
+      },
+      "ikinci_aday": {
+        "kod": "19-4020 TCX",
+        "hex": "#262B37",
+        "delta_e": 2.3174,
+        "ad": "Dark Sapphire"
+      },
+      "podyum_payi": 0.0026619998815779573,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 13,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 43.73708625955369,
+        "a": -8.958682951744413,
+        "b": -22.675836067537475
+      },
+      "hex": "#336D8C",
+      "pantone": {
+        "kod": "18-4232 TCX",
+        "hex": "#2A6A8B",
+        "delta_e": 1.5124,
+        "ad": "Faience"
+      },
+      "ikinci_aday": {
+        "kod": "18-4432 TCX",
+        "hex": "#00698B",
+        "delta_e": 3.604,
+        "ad": "Turkish Tile"
+      },
+      "podyum_payi": 0.0023976064962655313,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 3,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 45.55406123615329,
+        "a": -2.6730183590258245,
+        "b": 1.803321656699634
+      },
+      "hex": "#686D69",
+      "pantone": {
+        "kod": "18-5105 TCX",
+        "hex": "#686D6C",
+        "delta_e": 1.8984,
+        "ad": "Sedona Sage"
+      },
+      "ikinci_aday": {
+        "kod": "18-0510 TCX",
+        "hex": "#646762",
+        "delta_e": 2.3693,
+        "ad": "Castor Gray"
+      },
+      "podyum_payi": 0.0023956859446601078,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 7,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 41.26057428871887,
+        "a": -8.899167482749647,
+        "b": -12.536587082358157
+      },
+      "hex": "#416675",
+      "pantone": {
+        "kod": "18-4417 TCX",
+        "hex": "#436573",
+        "delta_e": 0.7844,
+        "ad": "Tapestry"
+      },
+      "ikinci_aday": {
+        "kod": "18-4718 TCX",
+        "hex": "#426972",
+        "delta_e": 3.3427,
+        "ad": "Hydro"
+      },
+      "podyum_payi": 0.0022682130750620033,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 4,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 74.85975829153973,
+        "a": 10.265296380236709,
+        "b": 67.96456456098525
+      },
+      "hex": "#E9AF30",
+      "pantone": {
+        "kod": "14-0951 TCX",
+        "hex": "#E2A829",
+        "delta_e": 1.8001,
+        "ad": "Golden Rod"
+      },
+      "ikinci_aday": {
+        "kod": "15-0955 TCX",
+        "hex": "#ECA825",
+        "delta_e": 2.8081,
+        "ad": "Old Gold"
+      },
+      "podyum_payi": 0.002242533986577146,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 5,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 52.06228702457415,
+        "a": 47.192369335011506,
+        "b": 24.350508979174062
+      },
+      "hex": "#CD5655",
+      "pantone": {
+        "kod": "17-1644 TCX",
+        "hex": "#D75C5D",
+        "delta_e": 2.8836,
+        "ad": "Spiced Coral"
+      },
+      "ikinci_aday": {
+        "kod": "17-1544 TCX",
+        "hex": "#C65D52",
+        "delta_e": 3.2861,
+        "ad": "Burnt Sienna"
+      },
+      "podyum_payi": 0.002219726639175553,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 11,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 36.1850567050951,
+        "a": 22.933387648387896,
+        "b": 10.211116923047523
+      },
+      "hex": "#7C4646",
+      "pantone": {
+        "kod": "18-1426 TCX",
+        "hex": "#844B4D",
+        "delta_e": 2.39,
+        "ad": "Apple Butter"
+      },
+      "ikinci_aday": {
+        "kod": "19-1334 TCX",
+        "hex": "#7C423C",
+        "delta_e": 3.0666,
+        "ad": "Henna"
+      },
+      "podyum_payi": 0.0022143678271139165,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 14,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 19.301122386910052,
+        "a": 5.80108495406186,
+        "b": -23.59868283024216
+      },
+      "hex": "#1E2E51",
+      "pantone": {
+        "kod": "19-3940 TCX",
+        "hex": "#263056",
+        "delta_e": 2.093,
+        "ad": "Blue Depths"
+      },
+      "ikinci_aday": {
+        "kod": "19-4027 TCX",
+        "hex": "#233658",
+        "delta_e": 2.763,
+        "ad": "Estate Blue"
+      },
+      "podyum_payi": 0.0021923079729220508,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 6,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 56.09603338199289,
+        "a": 4.2443031541023215,
+        "b": 24.56561980136782
+      },
+      "hex": "#9C835C",
+      "pantone": {
+        "kod": "17-1022 TCX",
+        "hex": "#988467",
+        "delta_e": 3.1473,
+        "ad": "Kelp"
+      },
+      "ikinci_aday": {
+        "kod": "17-0929 TCX",
+        "hex": "#998456",
+        "delta_e": 3.1476,
+        "ad": "Fennel Seed"
+      },
+      "podyum_payi": 0.002129213246431689,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 11,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 31.524586570607916,
+        "a": -9.123978892777066,
+        "b": -6.1643270984284735
+      },
+      "hex": "#334F53",
+      "pantone": {
+        "kod": "19-4726 TCX",
+        "hex": "#274E55",
+        "delta_e": 2.4989,
+        "ad": "Atlantic Deep"
+      },
+      "ikinci_aday": {
+        "kod": "19-4820 TCX",
+        "hex": "#33565E",
+        "delta_e": 2.9218,
+        "ad": "Balsam"
+      },
+      "podyum_payi": 0.002122783876663071,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 3,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 38.1453522734625,
+        "a": 12.213259395206384,
+        "b": 21.136844617002676
+      },
+      "hex": "#775238",
+      "pantone": {
+        "kod": "18-1031 TCX",
+        "hex": "#755139",
+        "delta_e": 0.6464,
+        "ad": "Toffee"
+      },
+      "ikinci_aday": {
+        "kod": "18-1033 TCX",
+        "hex": "#704F37",
+        "delta_e": 1.7796,
+        "ad": "Dachshund"
+      },
+      "podyum_payi": 0.002053094031548387,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 7,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 92.02832908202234,
+        "a": 5.595277981556142,
+        "b": -1.5290733024327896
+      },
+      "hex": "#F2E5EB",
+      "pantone": {
+        "kod": "11-2511 TCX",
+        "hex": "#F4E1E6",
+        "delta_e": 2.2598,
+        "ad": "Shrinking Violet"
+      },
+      "ikinci_aday": {
+        "kod": "11-2409 TCX",
+        "hex": "#F5E3E2",
+        "delta_e": 3.6363,
+        "ad": "Delicacy"
+      },
+      "podyum_payi": 0.0019524844944505773,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 3,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 7.565424973452819,
+        "a": 3.756690433193214,
+        "b": -7.625890918230593
+      },
+      "hex": "#171521",
+      "pantone": {
+        "kod": "19-3924 TCX",
+        "hex": "#2A2A35",
+        "delta_e": 6.4639,
+        "ad": "Night Sky"
+      },
+      "ikinci_aday": {
+        "kod": "19-3922 TCX",
+        "hex": "#262934",
+        "delta_e": 6.4806,
+        "ad": "Sky Captain"
+      },
+      "podyum_payi": 0.0019132006616625233,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 8,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 26.4780081400381,
+        "a": 10.118226856384517,
+        "b": -33.61060322332643
+      },
+      "hex": "#263C72",
+      "pantone": {
+        "kod": "19-3864 TCX",
+        "hex": "#273C76",
+        "delta_e": 0.8227,
+        "ad": "Mazarine Blue"
+      },
+      "ikinci_aday": {
+        "kod": "19-4044 TCX",
+        "hex": "#243F6C",
+        "delta_e": 1.9804,
+        "ad": "Limoges"
+      },
+      "podyum_payi": 0.0018805716789497807,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 8,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 83.54147110158111,
+        "a": 3.1269673668500024,
+        "b": 39.35328220040866
+      },
+      "hex": "#EFCC86",
+      "pantone": {
+        "kod": "12-0729 TCX",
+        "hex": "#EBCF89",
+        "delta_e": 2.0708,
+        "ad": "Sundress"
+      },
+      "ikinci_aday": {
+        "kod": "13-0932 TCX",
+        "hex": "#EDC373",
+        "delta_e": 3.0475,
+        "ad": "Cornsilk"
+      },
+      "podyum_payi": 0.0018680594186238082,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 6,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 64.99546225600876,
+        "a": -3.7603752533715618,
+        "b": 8.036792031222312
+      },
+      "hex": "#9D9F8F",
+      "pantone": {
+        "kod": "16-6008 TCX",
+        "hex": "#959889",
+        "delta_e": 2.3726,
+        "ad": "Seagrass"
+      },
+      "ikinci_aday": {
+        "kod": "16-0213 TCX",
+        "hex": "#999B85",
+        "delta_e": 2.7673,
+        "ad": "Tea"
+      },
+      "podyum_payi": 0.001820947298351939,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 7,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 33.93924364578417,
+        "a": 10.56935699768878,
+        "b": -7.285821189835096
+      },
+      "hex": "#5C4B5B",
+      "pantone": {
+        "kod": "18-3410 TCX",
+        "hex": "#634F62",
+        "delta_e": 2.2612,
+        "ad": "Vintage Violet"
+      },
+      "ikinci_aday": {
+        "kod": "18-1706 TCX",
+        "hex": "#6C5765",
+        "delta_e": 5.0697,
+        "ad": "Black Plum"
+      },
+      "podyum_payi": 0.0016997910867699868,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 3,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 30.058374074947803,
+        "a": -2.4677374637161784,
+        "b": -16.232671549823866
+      },
+      "hex": "#304960",
+      "pantone": {
+        "kod": "19-4125 TCX",
+        "hex": "#274357",
+        "delta_e": 2.9231,
+        "ad": "Majolica Blue"
+      },
+      "ikinci_aday": {
+        "kod": "19-4121 TCX",
+        "hex": "#2C4053",
+        "delta_e": 3.2221,
+        "ad": "Blue Wing Teal"
+      },
+      "podyum_payi": 0.0015928662231535862,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 5,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 44.21577099533913,
+        "a": 57.40193329998874,
+        "b": 28.71023088352282
+      },
+      "hex": "#C2313C",
+      "pantone": {
+        "kod": "18-1652 TCX",
+        "hex": "#BB363F",
+        "delta_e": 1.4123,
+        "ad": "Rococco Red"
+      },
+      "ikinci_aday": {
+        "kod": "17-1654 TCX",
+        "hex": "#CB3441",
+        "delta_e": 2.1037,
+        "ad": "Poinsettia"
+      },
+      "podyum_payi": 0.0014981265361155725,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 8,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 48.450470944976935,
+        "a": 21.89695487226586,
+        "b": 12.993937201904224
+      },
+      "hex": "#9D645E",
+      "pantone": {
+        "kod": "17-1525 TCX",
+        "hex": "#A1655B",
+        "delta_e": 1.8251,
+        "ad": "Cedar Wood"
+      },
+      "ikinci_aday": {
+        "kod": "18-1435 TCX",
+        "hex": "#A26666",
+        "delta_e": 2.9539,
+        "ad": "Withered Rose"
+      },
+      "podyum_payi": 0.0014536031895134986,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 13,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 67.59247380783341,
+        "a": 20.914011579510188,
+        "b": 12.746551035600223
+      },
+      "hex": "#D1968F",
+      "pantone": {
+        "kod": "16-1511 TCX",
+        "hex": "#D19C97",
+        "delta_e": 2.0647,
+        "ad": "Rose Tan"
+      },
+      "ikinci_aday": {
+        "kod": "16-1518 TCX",
+        "hex": "#CE8E8B",
+        "delta_e": 2.9371,
+        "ad": "Rosette"
+      },
+      "podyum_payi": 0.0014341951567949658,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 9,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 50.87578391776265,
+        "a": 38.79414495778456,
+        "b": 43.46279347749546
+      },
+      "hex": "#C25B30",
+      "pantone": {
+        "kod": "18-1248 TCX",
+        "hex": "#B55A30",
+        "delta_e": 2.9253,
+        "ad": "Rust"
+      },
+      "ikinci_aday": {
+        "kod": "18-1447 TCX",
+        "hex": "#C25A3C",
+        "delta_e": 3.5196,
+        "ad": "Orange Rust"
+      },
+      "podyum_payi": 0.0014053825804391767,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 4,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 31.533661112852805,
+        "a": 2.6615286870403936,
+        "b": -8.897275419155799
+      },
+      "hex": "#474958",
+      "pantone": {
+        "kod": "19-3930 TCX",
+        "hex": "#434452",
+        "delta_e": 1.8619,
+        "ad": "Odyssey Gray"
+      },
+      "ikinci_aday": {
+        "kod": "19-4014 TCX",
+        "hex": "#434854",
+        "delta_e": 2.528,
+        "ad": "Ombre Blue"
+      },
+      "podyum_payi": 0.001399089753103088,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 9,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 58.61697758552473,
+        "a": 40.904585471817626,
+        "b": 55.43841329325534
+      },
+      "hex": "#DF6C29",
+      "pantone": {
+        "kod": "16-1255 TCX",
+        "hex": "#E47127",
+        "delta_e": 1.9635,
+        "ad": "Russet Orange"
+      },
+      "ikinci_aday": {
+        "kod": "16-1454 TCX",
+        "hex": "#D86D39",
+        "delta_e": 2.8822,
+        "ad": "Jaffa Orange"
+      },
+      "podyum_payi": 0.0013912649616687127,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 5,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 53.50269753107725,
+        "a": -6.517645219107709,
+        "b": 12.228979271595803
+      },
+      "hex": "#7D826B",
+      "pantone": {
+        "kod": "17-0115 TCX",
+        "hex": "#80856D",
+        "delta_e": 1.0047,
+        "ad": "Oil Green"
+      },
+      "ikinci_aday": {
+        "kod": "17-6212 TCX",
+        "hex": "#717E6F",
+        "delta_e": 4.9774,
+        "ad": "Sea Spray"
+      },
+      "podyum_payi": 0.001372474397892946,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 6,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 72.23517343156543,
+        "a": -2.7475643299239083,
+        "b": 17.365973493932568
+      },
+      "hex": "#B9B291",
+      "pantone": {
+        "kod": "14-0418 TCX",
+        "hex": "#BAB696",
+        "delta_e": 1.7574,
+        "ad": "Bog"
+      },
+      "ikinci_aday": {
+        "kod": "15-0522 TCX",
+        "hex": "#B5AD88",
+        "delta_e": 1.9831,
+        "ad": "Pale Olive Green"
+      },
+      "podyum_payi": 0.0013587681008675047,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 6,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 58.35259992047116,
+        "a": -2.478982746462582,
+        "b": 2.8624636563931882
+      },
+      "hex": "#8A8D87",
+      "pantone": {
+        "kod": "17-1501 TCX",
+        "hex": "#8B8C89",
+        "delta_e": 2.345,
+        "ad": "Wild Dove"
+      },
+      "ikinci_aday": {
+        "kod": "17-6206 TCX",
+        "hex": "#888D82",
+        "delta_e": 2.5631,
+        "ad": "Shadow"
+      },
+      "podyum_payi": 0.001354670871544114,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 9,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 18.445785342667445,
+        "a": 23.105321752622615,
+        "b": 1.4287263708843296
+      },
+      "hex": "#4B1E2C",
+      "pantone": {
+        "kod": "19-1528 TCX",
+        "hex": "#582B36",
+        "delta_e": 3.9219,
+        "ad": "Windsor Wine"
+      },
+      "ikinci_aday": {
+        "kod": "19-1627 TCX",
+        "hex": "#502B33",
+        "delta_e": 4.1046,
+        "ad": "Port Royale"
+      },
+      "podyum_payi": 0.0013295213180977467,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 6,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 39.014231230639176,
+        "a": -24.34140466035399,
+        "b": 32.14199430696338
+      },
+      "hex": "#436524",
+      "pantone": {
+        "kod": "18-0135 TCX",
+        "hex": "#476A30",
+        "delta_e": 2.4091,
+        "ad": "Treetop"
+      },
+      "ikinci_aday": {
+        "kod": "18-0330 TCX",
+        "hex": "#4E632C",
+        "delta_e": 3.1955,
+        "ad": "Twist Of Lime"
+      },
+      "podyum_payi": 0.0013141008853750846,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 47.87025184316555,
+        "a": 5.738610632909463,
+        "b": 18.255523772012832
+      },
+      "hex": "#866D53",
+      "pantone": {
+        "kod": "18-1022 TCX",
+        "hex": "#836B4F",
+        "delta_e": 1.3003,
+        "ad": "Ermine"
+      },
+      "ikinci_aday": {
+        "kod": "18-1018 TCX",
+        "hex": "#7F674F",
+        "delta_e": 2.5783,
+        "ad": "Otter"
+      },
+      "podyum_payi": 0.0012704578122823638,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 6,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 79.29874166232058,
+        "a": 17.811301179534453,
+        "b": 4.411951161319349
+      },
+      "hex": "#E8B9BD",
+      "pantone": {
+        "kod": "14-1909 TCX",
+        "hex": "#E6B2B8",
+        "delta_e": 1.8481,
+        "ad": "Coral Blush"
+      },
+      "ikinci_aday": {
+        "kod": "13-2005 TCX",
+        "hex": "#F4C3C4",
+        "delta_e": 2.8579,
+        "ad": "Strawberry Cream"
+      },
+      "podyum_payi": 0.0012568331954028692,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 6,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 66.32222850956379,
+        "a": -3.3759761385480997,
+        "b": 43.75418150082828
+      },
+      "hex": "#B4A151",
+      "pantone": {
+        "kod": "16-0639 TCX",
+        "hex": "#AF9841",
+        "delta_e": 3.03,
+        "ad": "Golden Olive"
+      },
+      "ikinci_aday": {
+        "kod": "15-0643 TCX",
+        "hex": "#BCA949",
+        "delta_e": 3.2548,
+        "ad": "Cress Green"
+      },
+      "podyum_payi": 0.0012130621102096142,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 8,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 30.5226239795746,
+        "a": 37.76977564231064,
+        "b": 25.702208014905263
+      },
+      "hex": "#822922",
+      "pantone": {
+        "kod": "19-1540 TCX",
+        "hex": "#7E392F",
+        "delta_e": 4.1536,
+        "ad": "Burnt Henna"
+      },
+      "ikinci_aday": {
+        "kod": "19-1555 TCX",
+        "hex": "#7D2027",
+        "delta_e": 4.636,
+        "ad": "Red Dahlia"
+      },
+      "podyum_payi": 0.0011987212617549036,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 10,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 47.12452862060118,
+        "a": 32.540737651046875,
+        "b": 13.689956465022936
+      },
+      "hex": "#A8595A",
+      "pantone": {
+        "kod": "18-1630 TCX",
+        "hex": "#AD5D5D",
+        "delta_e": 1.8527,
+        "ad": "Dusty Cedar"
+      },
+      "ikinci_aday": {
+        "kod": "17-1537 TCX",
+        "hex": "#B35457",
+        "delta_e": 2.6666,
+        "ad": "Mineral Red"
+      },
+      "podyum_payi": 0.0011977220708675551,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 9,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 48.80296193211306,
+        "a": 7.925052023082564,
+        "b": 40.98557838575829
+      },
+      "hex": "#936D2C",
+      "pantone": {
+        "kod": "18-0940 TCX",
+        "hex": "#91672F",
+        "delta_e": 3.5105,
+        "ad": "Golden Brown"
+      },
+      "ikinci_aday": {
+        "kod": "18-0939 TCX",
+        "hex": "#927240",
+        "delta_e": 3.5655,
+        "ad": "Cumin"
+      },
+      "podyum_payi": 0.0011947189595909206,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 7,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 28.481717055499793,
+        "a": 45.583739826290945,
+        "b": 5.821088240894147
+      },
+      "hex": "#81183C",
+      "pantone": {
+        "kod": "19-2030 TCX",
+        "hex": "#7A1F3D",
+        "delta_e": 1.6413,
+        "ad": "Beet Red"
+      },
+      "ikinci_aday": {
+        "kod": "19-1940 TCX",
+        "hex": "#7C2439",
+        "delta_e": 2.8638,
+        "ad": "Rumba Red"
+      },
+      "podyum_payi": 0.0011550083708771178,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 3,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 25.691002378829996,
+        "a": 6.052419559903651,
+        "b": -18.47453681829438
+      },
+      "hex": "#363B59",
+      "pantone": {
+        "kod": "19-3925 TCX",
+        "hex": "#363756",
+        "delta_e": 2.2263,
+        "ad": "Patriot Blue"
+      },
+      "ikinci_aday": {
+        "kod": "19-3935 TCX",
+        "hex": "#404466",
+        "delta_e": 3.4328,
+        "ad": "Deep Cobalt"
+      },
+      "podyum_payi": 0.0011352240797456081,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 7,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 54.929762015350995,
+        "a": 41.74256559853087,
+        "b": 5.587676341747192
+      },
+      "hex": "#C8647C",
+      "pantone": {
+        "kod": "17-1926 TCX",
+        "hex": "#CE5B78",
+        "delta_e": 2.3462,
+        "ad": "Fruit Dove"
+      },
+      "ikinci_aday": {
+        "kod": "17-1929 TCX",
+        "hex": "#D16277",
+        "delta_e": 2.5023,
+        "ad": "Rapture Rose"
+      },
+      "podyum_payi": 0.0011107593764383549,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 5,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 64.53478014989558,
+        "a": 12.60957919709442,
+        "b": 15.014796217084847
+      },
+      "hex": "#BC9482",
+      "pantone": {
+        "kod": "16-1219 TCX",
+        "hex": "#BE9785",
+        "delta_e": 1.0379,
+        "ad": "Tuscany"
+      },
+      "ikinci_aday": {
+        "kod": "16-1220 TCX",
+        "hex": "#C79685",
+        "delta_e": 2.8613,
+        "ad": "Cafe Creme"
+      },
+      "podyum_payi": 0.0011106281642800702,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 13,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 31.548261941716778,
+        "a": -5.350676431293451,
+        "b": 19.41381980258952
+      },
+      "hex": "#4D4C2B",
+      "pantone": {
+        "kod": "19-0323 TCX",
+        "hex": "#4A5335",
+        "delta_e": 4.9443,
+        "ad": "Chive"
+      },
+      "ikinci_aday": {
+        "kod": "19-0419 TCX",
+        "hex": "#414832",
+        "delta_e": 5.5256,
+        "ad": "Rifle Green"
+      },
+      "podyum_payi": 0.0011075441859248875,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 5,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 51.30508155927227,
+        "a": -5.217947800673899,
+        "b": -18.00458876160696
+      },
+      "hex": "#5C7E99",
+      "pantone": {
+        "kod": "17-4023 TCX",
+        "hex": "#5B7E98",
+        "delta_e": 0.219,
+        "ad": "Blue Heaven"
+      },
+      "ikinci_aday": {
+        "kod": "17-4020 TCX",
+        "hex": "#66829A",
+        "delta_e": 2.3637,
+        "ad": "Blue Shadow"
+      },
+      "podyum_payi": 0.0010971778205011765,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 5,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 55.30866581600489,
+        "a": 4.546119421519776,
+        "b": 49.38766993812592
+      },
+      "hex": "#A2802A",
+      "pantone": {
+        "kod": "17-0840 TCX",
+        "hex": "#9A803A",
+        "delta_e": 3.4205,
+        "ad": "Amber Green"
+      },
+      "ikinci_aday": {
+        "kod": "18-0835 TCX",
+        "hex": "#997B38",
+        "delta_e": 3.6598,
+        "ad": "Dried Tobacco"
+      },
+      "podyum_payi": 0.0010788729269643525,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 7,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 53.148596859349226,
+        "a": 11.239615790625104,
+        "b": 18.249078244605396
+      },
+      "hex": "#9C7760",
+      "pantone": {
+        "kod": "17-1417 TCX",
+        "hex": "#997867",
+        "delta_e": 2.3951,
+        "ad": "Beaver Fur"
+      },
+      "ikinci_aday": {
+        "kod": "17-1322 TCX",
+        "hex": "#9E7E67",
+        "delta_e": 2.786,
+        "ad": "Burro"
+      },
+      "podyum_payi": 0.0010702099527638393,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 10,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 71.04736172477176,
+        "a": -40.288789256186774,
+        "b": 4.349814277163885
+      },
+      "hex": "#49C1A5",
+      "pantone": {
+        "kod": "14-5721 TCX",
+        "hex": "#4BC3A8",
+        "delta_e": 0.7046,
+        "ad": "Electric Green"
+      },
+      "ikinci_aday": {
+        "kod": "15-5718 TCX",
+        "hex": "#55C6A9",
+        "delta_e": 1.5924,
+        "ad": "Biscay Green"
+      },
+      "podyum_payi": 0.0010677288331512184,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 86.60559123248625,
+        "a": -6.708114970350102,
+        "b": 19.129631534343496
+      },
+      "hex": "#DBDBB4",
+      "pantone": {
+        "kod": "12-0315 TCX",
+        "hex": "#D4DBB2",
+        "delta_e": 2.2647,
+        "ad": "White Jade"
+      },
+      "ikinci_aday": {
+        "kod": "13-0614 TCX",
+        "hex": "#DCD8A8",
+        "delta_e": 2.9254,
+        "ad": "Garden Glade"
+      },
+      "podyum_payi": 0.0010615221084002747,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 65.26766298837096,
+        "a": -3.9731020837552737,
+        "b": -16.62897471691794
+      },
+      "hex": "#85A2BC",
+      "pantone": {
+        "kod": "16-4120 TCX",
+        "hex": "#7BA0C0",
+        "delta_e": 2.2624,
+        "ad": "Dusk Blue"
+      },
+      "ikinci_aday": {
+        "kod": "16-4013 TCX",
+        "hex": "#8699AB",
+        "delta_e": 4.0263,
+        "ad": "Ashley Blue"
+      },
+      "podyum_payi": 0.0010430187880536906,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 4,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 42.48835499356286,
+        "a": 57.29521907612978,
+        "b": 15.020179619974847
+      },
+      "hex": "#BA2D4F",
+      "pantone": {
+        "kod": "18-1741 TCX",
+        "hex": "#B63753",
+        "delta_e": 1.5634,
+        "ad": "Raspberry Wine"
+      },
+      "ikinci_aday": {
+        "kod": "18-1856 TCX",
+        "hex": "#C6174E",
+        "delta_e": 2.3174,
+        "ad": "Virtual Pink"
+      },
+      "podyum_payi": 0.001042662023457714,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 3,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 77.5759752263137,
+        "a": 15.500707071202822,
+        "b": -5.816297750110619
+      },
+      "hex": "#D8B6CB",
+      "pantone": {
+        "kod": "14-3206 TCX",
+        "hex": "#D4B9CB",
+        "delta_e": 2.0927,
+        "ad": "Winsome Orchid"
+      },
+      "ikinci_aday": {
+        "kod": "14-3204 TCX",
+        "hex": "#CEADBE",
+        "delta_e": 2.8204,
+        "ad": "Fragrant Lilac"
+      },
+      "podyum_payi": 0.0010045153607119058,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 4,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 51.6298681104029,
+        "a": -15.060268401320018,
+        "b": 22.941883397709276
+      },
+      "hex": "#6F8153",
+      "pantone": {
+        "kod": "18-0332 TCX",
+        "hex": "#77824A",
+        "delta_e": 3.5502,
+        "ad": "Grasshopper"
+      },
+      "ikinci_aday": {
+        "kod": "18-0324 TCX",
+        "hex": "#757A4E",
+        "delta_e": 4.5046,
+        "ad": "Calliste Green"
+      },
+      "podyum_payi": 0.00099160552684778,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 5,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 47.93460085239542,
+        "a": 13.630610625286792,
+        "b": 10.498015149696892
+      },
+      "hex": "#8E6961",
+      "pantone": {
+        "kod": "18-1421 TCX",
+        "hex": "#8B645A",
+        "delta_e": 2.0282,
+        "ad": "Cognac"
+      },
+      "ikinci_aday": {
+        "kod": "18-1320 TCX",
+        "hex": "#876155",
+        "delta_e": 3.5416,
+        "ad": "Clove"
+      },
+      "podyum_payi": 0.0009808949916099666,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 7,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 65.85792173781621,
+        "a": -6.951481687760808,
+        "b": -0.46830501297621
+      },
+      "hex": "#92A4A1",
+      "pantone": {
+        "kod": "16-5304 TCX",
+        "hex": "#95A69F",
+        "delta_e": 1.9158,
+        "ad": "Jadeite"
+      },
+      "ikinci_aday": {
+        "kod": "16-5106 TCX",
+        "hex": "#90A8A4",
+        "delta_e": 2.3043,
+        "ad": "Blue Surf"
+      },
+      "podyum_payi": 0.0009808744713988224,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 5,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 70.36236558617153,
+        "a": 38.424093525168985,
+        "b": 2.4241312591996373
+      },
+      "hex": "#EE91A9",
+      "pantone": {
+        "kod": "15-2216 TCX",
+        "hex": "#F18AAD",
+        "delta_e": 2.7172,
+        "ad": "Sachet Pink"
+      },
+      "ikinci_aday": {
+        "kod": "15-1920 TCX",
+        "hex": "#EE819F",
+        "delta_e": 3.6088,
+        "ad": "Morning Glory"
+      },
+      "podyum_payi": 0.0009518522466943722,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 3,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 22.761567097889408,
+        "a": -5.289761351692234,
+        "b": -11.445622667604745
+      },
+      "hex": "#203947",
+      "pantone": {
+        "kod": "19-4326 TCX",
+        "hex": "#203E4A",
+        "delta_e": 2.4474,
+        "ad": "Reflecting Pond"
+      },
+      "ikinci_aday": {
+        "kod": "19-4125 TCX",
+        "hex": "#274357",
+        "delta_e": 4.2393,
+        "ad": "Majolica Blue"
+      },
+      "podyum_payi": 0.0009370875465570834,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 4,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 73.02639384020206,
+        "a": 5.523157720003526,
+        "b": -18.026160939978233
+      },
+      "hex": "#ADB1D4",
+      "pantone": {
+        "kod": "15-3909 TCX",
+        "hex": "#AAAAC4",
+        "delta_e": 3.727,
+        "ad": "Cosmic Sky"
+      },
+      "ikinci_aday": {
+        "kod": "14-3911 TCX",
+        "hex": "#BAB8D3",
+        "delta_e": 4.0165,
+        "ad": "Purple Heather"
+      },
+      "podyum_payi": 0.0009314644690208329,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 4,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 58.03849249276824,
+        "a": 25.249718483586822,
+        "b": 3.6624005167742055
+      },
+      "hex": "#B87B86",
+      "pantone": {
+        "kod": "16-1710 TCX",
+        "hex": "#B98391",
+        "delta_e": 3.0275,
+        "ad": "Foxglove"
+      },
+      "ikinci_aday": {
+        "kod": "17-1718 TCX",
+        "hex": "#BA797D",
+        "delta_e": 3.1038,
+        "ad": "Dusty Rose"
+      },
+      "podyum_payi": 0.0009295324331723639,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 3,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 48.67653745263018,
+        "a": 15.044416264534453,
+        "b": 28.356570732098312
+      },
+      "hex": "#996944",
+      "pantone": {
+        "kod": "17-1044 TCX",
+        "hex": "#976F4C",
+        "delta_e": 2.8129,
+        "ad": "Chipmunk"
+      },
+      "ikinci_aday": {
+        "kod": "18-1030 TCX",
+        "hex": "#936B4F",
+        "delta_e": 3.0908,
+        "ad": "Thrush"
+      },
+      "podyum_payi": 0.0009179214437293689,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 5,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 64.43550250856087,
+        "a": 15.92331602233517,
+        "b": 33.15695735673213
+      },
+      "hex": "#C99062",
+      "pantone": {
+        "kod": "16-1341 TCX",
+        "hex": "#C68F65",
+        "delta_e": 1.355,
+        "ad": "Butterum"
+      },
+      "ikinci_aday": {
+        "kod": "16-1342 TCX",
+        "hex": "#D18E54",
+        "delta_e": 2.9704,
+        "ad": "Buckskin"
+      },
+      "podyum_payi": 0.0009149121504324513,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 6,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 62.990728098798314,
+        "a": 6.969185735864926,
+        "b": 15.94238533772922
+      },
+      "hex": "#AF937D",
+      "pantone": {
+        "kod": "16-1310 TCX",
+        "hex": "#AA907D",
+        "delta_e": 1.8121,
+        "ad": "Natural"
+      },
+      "ikinci_aday": {
+        "kod": "16-1318 TCX",
+        "hex": "#AF9483",
+        "delta_e": 2.3826,
+        "ad": "Warm Taupe"
+      },
+      "podyum_payi": 0.0009111362493529487,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 9,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 36.051790146689946,
+        "a": -2.149821248532316,
+        "b": -25.359426750562516
+      },
+      "hex": "#2F587D",
+      "pantone": {
+        "kod": "19-4035 TCX",
+        "hex": "#305679",
+        "delta_e": 0.8672,
+        "ad": "Dark Blue"
+      },
+      "ikinci_aday": {
+        "kod": "19-4048 TCX",
+        "hex": "#155187",
+        "delta_e": 3.4803,
+        "ad": "Baleine Blue"
+      },
+      "podyum_payi": 0.0008775855812809653,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 6,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 57.49675957958527,
+        "a": 24.183307691733805,
+        "b": 52.04673902398452
+      },
+      "hex": "#C5782C",
+      "pantone": {
+        "kod": "16-1149 TCX",
+        "hex": "#C87629",
+        "delta_e": 1.1275,
+        "ad": "Desert Sun"
+      },
+      "ikinci_aday": {
+        "kod": "17-1046 TCX",
+        "hex": "#BE752D",
+        "delta_e": 1.6325,
+        "ad": "Golden Oak"
+      },
+      "podyum_payi": 0.0008598742272449025,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 8,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 39.27476251660996,
+        "a": -35.00061880319226,
+        "b": 15.04865090035608
+      },
+      "hex": "#116A43",
+      "pantone": {
+        "kod": "19-6026 TCX",
+        "hex": "#12674A",
+        "delta_e": 3.1281,
+        "ad": "Verdant Green"
+      },
+      "ikinci_aday": {
+        "kod": "18-6024 TCX",
+        "hex": "#1F7349",
+        "delta_e": 3.2189,
+        "ad": "Amazon"
+      },
+      "podyum_payi": 0.0008463506469379481,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 3,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 68.09731062932299,
+        "a": 3.184359720662514,
+        "b": 59.16153002737363
+      },
+      "hex": "#C8A134",
+      "pantone": {
+        "kod": "15-0751 TCX",
+        "hex": "#CDA323",
+        "delta_e": 1.9028,
+        "ad": "Lemon Curry"
+      },
+      "ikinci_aday": {
+        "kod": "15-0743 TCX",
+        "hex": "#C4A647",
+        "delta_e": 2.946,
+        "ad": "Oil Yellow"
+      },
+      "podyum_payi": 0.0008396068373890224,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 7,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 33.05014179309162,
+        "a": 42.43601187353674,
+        "b": 16.275196857629542
+      },
+      "hex": "#8D2A36",
+      "pantone": {
+        "kod": "19-1656 TCX",
+        "hex": "#8A2232",
+        "delta_e": 1.5361,
+        "ad": "Rio Red"
+      },
+      "ikinci_aday": {
+        "kod": "19-1863 TCX",
+        "hex": "#941E32",
+        "delta_e": 2.1921,
+        "ad": "Scooter"
+      },
+      "podyum_payi": 0.0008363197666712787,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 10,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 36.839757603232414,
+        "a": 10.80962270066453,
+        "b": -30.43278821971364
+      },
+      "hex": "#495388",
+      "pantone": {
+        "kod": "18-3932 TCX",
+        "hex": "#515B87",
+        "delta_e": 2.9808,
+        "ad": "Marlin"
+      },
+      "ikinci_aday": {
+        "kod": "19-4030 TCX",
+        "hex": "#3F5277",
+        "delta_e": 4.175,
+        "ad": "True Navy"
+      },
+      "podyum_payi": 0.0008333108864800815,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 5,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 69.87102558421442,
+        "a": -5.574237032739491,
+        "b": -6.574252130350005
+      },
+      "hex": "#99AEB6",
+      "pantone": {
+        "kod": "15-4309 TCX",
+        "hex": "#A2B9C2",
+        "delta_e": 2.9704,
+        "ad": "Sterling Blue"
+      },
+      "ikinci_aday": {
+        "kod": "14-4306 TCX",
+        "hex": "#A2B6B9",
+        "delta_e": 3.2164,
+        "ad": "Cloud Blue"
+      },
+      "podyum_payi": 0.0008250211197654387,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 5,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 48.53146633207575,
+        "a": 10.100193709642543,
+        "b": -4.050630843692618
+      },
+      "hex": "#826E7A",
+      "pantone": {
+        "kod": "18-2109 TCX",
+        "hex": "#886971",
+        "delta_e": 4.5338,
+        "ad": "Grape Shake"
+      },
+      "ikinci_aday": {
+        "kod": "18-3211 TCX",
+        "hex": "#85677B",
+        "delta_e": 4.6181,
+        "ad": "Grapeade"
+      },
+      "podyum_payi": 0.0008130680867227824,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 6,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 52.7880503541296,
+        "a": 5.765016220512848,
+        "b": -5.3570422601686
+      },
+      "hex": "#847B87",
+      "pantone": {
+        "kod": "18-3710 TCX",
+        "hex": "#847986",
+        "delta_e": 1.1916,
+        "ad": "Gray Ridge"
+      },
+      "ikinci_aday": {
+        "kod": "17-3907 TCX",
+        "hex": "#7E7D88",
+        "delta_e": 3.8653,
+        "ad": "Quicksilver"
+      },
+      "podyum_payi": 0.0008061447392985656,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 5,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 66.00965604602283,
+        "a": 31.10365905623368,
+        "b": 58.91056778108823
+      },
+      "hex": "#EA8833",
+      "pantone": {
+        "kod": "15-1153 TCX",
+        "hex": "#F19035",
+        "delta_e": 2.4315,
+        "ad": "Apricot"
+      },
+      "ikinci_aday": {
+        "kod": "15-1157 TCX",
+        "hex": "#FB8B23",
+        "delta_e": 3.3237,
+        "ad": "Flame Orange"
+      },
+      "podyum_payi": 0.0008033801192918687,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 3,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 75.68783201179248,
+        "a": -4.06209741338916,
+        "b": 33.40262265522383
+      },
+      "hex": "#C9BB7D",
+      "pantone": {
+        "kod": "14-0626 TCX",
+        "hex": "#CCB97E",
+        "delta_e": 1.8412,
+        "ad": "Dried Moss"
+      },
+      "ikinci_aday": {
+        "kod": "14-0826 TCX",
+        "hex": "#CFBB7B",
+        "delta_e": 1.8939,
+        "ad": "Pampas"
+      },
+      "podyum_payi": 0.0007548880996170943,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 6,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 38.96848352220863,
+        "a": -9.184260089472081,
+        "b": 0.6526210132417133
+      },
+      "hex": "#4B605A",
+      "pantone": {
+        "kod": "18-6011 TCX",
+        "hex": "#53665C",
+        "delta_e": 3.0192,
+        "ad": "Duck Green"
+      },
+      "ikinci_aday": {
+        "kod": "18-5611 TCX",
+        "hex": "#556962",
+        "delta_e": 3.3317,
+        "ad": "Dark Forest"
+      },
+      "podyum_payi": 0.0007454234025396564,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 2,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 38.122060033322185,
+        "a": 45.579573666848255,
+        "b": 38.48359472657705
+      },
+      "hex": "#A3321D",
+      "pantone": {
+        "kod": "18-1355 TCX",
+        "hex": "#A23C26",
+        "delta_e": 2.1038,
+        "ad": "Rooibos Tea"
+      },
+      "ikinci_aday": {
+        "kod": "18-1449 TCX",
+        "hex": "#9A382D",
+        "delta_e": 4.2546,
+        "ad": "Ketchup"
+      },
+      "podyum_payi": 0.0007406638445103424,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 5,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 20.11234901441363,
+        "a": 9.793433684550111,
+        "b": -13.117684332112473
+      },
+      "hex": "#352C44",
+      "pantone": {
+        "kod": "19-3810 TCX",
+        "hex": "#343148",
+        "delta_e": 2.8601,
+        "ad": "Eclipse"
+      },
+      "ikinci_aday": {
+        "kod": "19-3725 TCX",
+        "hex": "#41354D",
+        "delta_e": 3.1834,
+        "ad": "Purple Velvet"
+      },
+      "podyum_payi": 0.000724649316617379,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 3,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 83.65141358910017,
+        "a": 2.081421246138039,
+        "b": -8.756913448651444
+      },
+      "hex": "#CDD0E1",
+      "pantone": {
+        "kod": "13-4105 TCX",
+        "hex": "#D0D0DA",
+        "delta_e": 2.975,
+        "ad": "Lilac Hint"
+      },
+      "ikinci_aday": {
+        "kod": "13-4110 TCX",
+        "hex": "#BFC7D6",
+        "delta_e": 3.5608,
+        "ad": "Arctic Ice"
+      },
+      "podyum_payi": 0.0007127174482986911,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 5,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 45.73304811395886,
+        "a": 3.644945633207115,
+        "b": -8.976032287728216
+      },
+      "hex": "#6B6B7B",
+      "pantone": {
+        "kod": "18-3910 TCX",
+        "hex": "#626879",
+        "delta_e": 3.4756,
+        "ad": "Folkstone Gray"
+      },
+      "ikinci_aday": {
+        "kod": "18-3933 TCX",
+        "hex": "#717388",
+        "delta_e": 3.703,
+        "ad": "Blue Granite"
+      },
+      "podyum_payi": 0.0007118386277485684,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 3,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 13.272974326845594,
+        "a": -0.5307950038813004,
+        "b": 11.422239009944096
+      },
+      "hex": "#272212",
+      "pantone": {
+        "kod": "19-0509 TCX",
+        "hex": "#36362D",
+        "delta_e": 7.7614,
+        "ad": "Rosin"
+      },
+      "ikinci_aday": {
+        "kod": "19-0712 TCX",
+        "hex": "#40342B",
+        "delta_e": 9.1936,
+        "ad": "Demitasse"
+      },
+      "podyum_payi": 0.0006642876020537326,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 4,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 18.715822007503505,
+        "a": 26.909593852328797,
+        "b": -41.82679466156418
+      },
+      "hex": "#2A226B",
+      "pantone": {
+        "kod": "19-3847 TCX",
+        "hex": "#44377D",
+        "delta_e": 6.7847,
+        "ad": "Deep Blue"
+      },
+      "ikinci_aday": {
+        "kod": "19-3750 TCX",
+        "hex": "#3E285C",
+        "delta_e": 6.8158,
+        "ad": "Violet Indigo"
+      },
+      "podyum_payi": 0.0006523842088834151,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 5,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 71.92985942699467,
+        "a": -28.307031048378835,
+        "b": 2.7310766601743146
+      },
+      "hex": "#72BEAA",
+      "pantone": {
+        "kod": "14-5713 TCX",
+        "hex": "#76C1B2",
+        "delta_e": 2.0088,
+        "ad": "Cascade"
+      },
+      "ikinci_aday": {
+        "kod": "15-5819 TCX",
+        "hex": "#64BFA4",
+        "delta_e": 2.7265,
+        "ad": "Spearmint"
+      },
+      "podyum_payi": 0.0006510209781639559,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 57.638593885996464,
+        "a": 14.808549349316596,
+        "b": 24.56236943929321
+      },
+      "hex": "#B18060",
+      "pantone": {
+        "kod": "17-1224 TCX",
+        "hex": "#B0846A",
+        "delta_e": 2.2467,
+        "ad": "Camel"
+      },
+      "ikinci_aday": {
+        "kod": "17-1328 TCX",
+        "hex": "#AD8567",
+        "delta_e": 2.6461,
+        "ad": "Indian Tan"
+      },
+      "podyum_payi": 0.0006417359089952242,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 7,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 28.346674560143295,
+        "a": 48.773882032780385,
+        "b": -71.79405589324011
+      },
+      "hex": "#3328B5",
+      "pantone": {
+        "kod": "19-3955 TCX",
+        "hex": "#3D428B",
+        "delta_e": 10.0007,
+        "ad": "Royal Blue"
+      },
+      "ikinci_aday": {
+        "kod": "19-3847 TCX",
+        "hex": "#44377D",
+        "delta_e": 10.2409,
+        "ad": "Deep Blue"
+      },
+      "podyum_payi": 0.0006316751614835722,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 42.548926567988275,
+        "a": -2.7956447597507226,
+        "b": 29.538711076071955
+      },
+      "hex": "#706433",
+      "pantone": {
+        "kod": "18-0430 TCX",
+        "hex": "#676232",
+        "delta_e": 2.756,
+        "ad": "Avocado"
+      },
+      "ikinci_aday": {
+        "kod": "18-0629 TCX",
+        "hex": "#71643E",
+        "delta_e": 3.2573,
+        "ad": "Lizard"
+      },
+      "podyum_payi": 0.0006300172775668577,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 3,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 15.264736401987916,
+        "a": 13.396182966191278,
+        "b": -4.71975747680612
+      },
+      "hex": "#361F2D",
+      "pantone": {
+        "kod": "19-2520 TCX",
+        "hex": "#462639",
+        "delta_e": 4.6293,
+        "ad": "Potent Purple"
+      },
+      "ikinci_aday": {
+        "kod": "19-2118 TCX",
+        "hex": "#492A34",
+        "delta_e": 5.5168,
+        "ad": "Winetasting"
+      },
+      "podyum_payi": 0.0006260145889695783,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 3,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 65.98192602936504,
+        "a": -4.820550396010087,
+        "b": 25.968485096625106
+      },
+      "hex": "#A9A172",
+      "pantone": {
+        "kod": "15-0318 TCX",
+        "hex": "#B2AC88",
+        "delta_e": 4.5871,
+        "ad": "Sage Green"
+      },
+      "ikinci_aday": {
+        "kod": "15-0628 TCX",
+        "hex": "#B7B17A",
+        "delta_e": 4.629,
+        "ad": "Leek Green"
+      },
+      "podyum_payi": 0.0006240355194043363,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 4,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 54.850764771867084,
+        "a": 5.208393474331928,
+        "b": -19.50096356903213
+      },
+      "hex": "#7A82A5",
+      "pantone": {
+        "kod": "17-3924 TCX",
+        "hex": "#767BA5",
+        "delta_e": 3.0716,
+        "ad": "Lavender Violet"
+      },
+      "ikinci_aday": {
+        "kod": "17-3920 TCX",
+        "hex": "#7181A4",
+        "delta_e": 3.2231,
+        "ad": "English Manor"
+      },
+      "podyum_payi": 0.0006062614571378151,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 40.60869202916251,
+        "a": 2.5602086623978413,
+        "b": -14.656937104832569
+      },
+      "hex": "#575F78",
+      "pantone": {
+        "kod": "18-3912 TCX",
+        "hex": "#585E6F",
+        "delta_e": 2.845,
+        "ad": "Grisaille"
+      },
+      "ikinci_aday": {
+        "kod": "18-3920 TCX",
+        "hex": "#505D7E",
+        "delta_e": 3.2228,
+        "ad": "Coastal Fjord"
+      },
+      "podyum_payi": 0.0005945811872927322,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 6,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 12.996673200121458,
+        "a": 15.761347184605967,
+        "b": 5.47992485896449
+      },
+      "hex": "#37181B",
+      "pantone": {
+        "kod": "19-2118 TCX",
+        "hex": "#492A34",
+        "delta_e": 6.9292,
+        "ad": "Winetasting"
+      },
+      "ikinci_aday": {
+        "kod": "19-1627 TCX",
+        "hex": "#502B33",
+        "delta_e": 7.0989,
+        "ad": "Port Royale"
+      },
+      "podyum_payi": 0.0005785562641641356,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 6,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 30.588355057747375,
+        "a": 13.484209037542161,
+        "b": -16.6881538844883
+      },
+      "hex": "#504262",
+      "pantone": {
+        "kod": "19-3620 TCX",
+        "hex": "#56456B",
+        "delta_e": 2.3186,
+        "ad": "Purple Reign"
+      },
+      "ikinci_aday": {
+        "kod": "19-3622 TCX",
+        "hex": "#5A4769",
+        "delta_e": 2.5839,
+        "ad": "Loganberry"
+      },
+      "podyum_payi": 0.0005437834588310467,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 68.49679488051423,
+        "a": 16.90685393131951,
+        "b": 68.20675769895662
+      },
+      "hex": "#DF991C",
+      "pantone": {
+        "kod": "15-1051 TCX",
+        "hex": "#D7942D",
+        "delta_e": 2.7311,
+        "ad": "Golden Orange"
+      },
+      "ikinci_aday": {
+        "kod": "15-1050 TCX",
+        "hex": "#D99938",
+        "delta_e": 2.7787,
+        "ad": "Golden Glow"
+      },
+      "podyum_payi": 0.0005435859708708466,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 3,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 62.75546096185344,
+        "a": 3.7938062141150803,
+        "b": -13.950012746558073
+      },
+      "hex": "#9297B0",
+      "pantone": {
+        "kod": "16-3930 TCX",
+        "hex": "#9499BB",
+        "delta_e": 2.8449,
+        "ad": "Thistle Down"
+      },
+      "ikinci_aday": {
+        "kod": "15-3912 TCX",
+        "hex": "#9A9EB3",
+        "delta_e": 2.8522,
+        "ad": "Aleutian"
+      },
+      "podyum_payi": 0.0005213335050774133,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 5,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 79.64495829635018,
+        "a": -19.101859291103573,
+        "b": 20.531558217938663
+      },
+      "hex": "#B0CF9F",
+      "pantone": {
+        "kod": "14-0121 TCX",
+        "hex": "#A7C796",
+        "delta_e": 2.0151,
+        "ad": "Nile Green"
+      },
+      "ikinci_aday": {
+        "kod": "13-0221 TCX",
+        "hex": "#A9D39E",
+        "delta_e": 2.4139,
+        "ad": "Pistachio Green"
+      },
+      "podyum_payi": 0.0005139599809199739,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 2,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 40.03267358130558,
+        "a": 29.05972811911703,
+        "b": -5.578086452140349
+      },
+      "hex": "#874C68",
+      "pantone": {
+        "kod": "18-1716 TCX",
+        "hex": "#854C65",
+        "delta_e": 1.1021,
+        "ad": "Damson"
+      },
+      "ikinci_aday": {
+        "kod": "18-1720 TCX",
+        "hex": "#8B4963",
+        "delta_e": 2.0893,
+        "ad": "Violet Quartz"
+      },
+      "podyum_payi": 0.000503717295567264,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 4,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 31.573279467443705,
+        "a": 23.710549368342797,
+        "b": -51.357039214193286
+      },
+      "hex": "#2F429C",
+      "pantone": {
+        "kod": "19-3955 TCX",
+        "hex": "#3D428B",
+        "delta_e": 3.6703,
+        "ad": "Royal Blue"
+      },
+      "ikinci_aday": {
+        "kod": "18-3949 TCX",
+        "hex": "#3850A0",
+        "delta_e": 4.4535,
+        "ad": "Dazzling Blue"
+      },
+      "podyum_payi": 0.0004961882754729948,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 2,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 62.031582686322466,
+        "a": -12.0598716667924,
+        "b": 10.115172546780112
+      },
+      "hex": "#879C84",
+      "pantone": {
+        "kod": "16-6216 TCX",
+        "hex": "#879F84",
+        "delta_e": 1.5978,
+        "ad": "Basil"
+      },
+      "ikinci_aday": {
+        "kod": "16-0220 TCX",
+        "hex": "#8AA282",
+        "delta_e": 3.1515,
+        "ad": "Mistletoe"
+      },
+      "podyum_payi": 0.0004798890222573864,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 4,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 54.58554208401244,
+        "a": -7.486356500070163,
+        "b": 28.206586887205813
+      },
+      "hex": "#878551",
+      "pantone": {
+        "kod": "17-0535 TCX",
+        "hex": "#8D8B55",
+        "delta_e": 2.175,
+        "ad": "Green Olive"
+      },
+      "ikinci_aday": {
+        "kod": "18-0525 TCX",
+        "hex": "#818455",
+        "delta_e": 2.2767,
+        "ad": "Iguana"
+      },
+      "podyum_payi": 0.000456945063691553,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 5,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 78.85269033548786,
+        "a": 5.001779929107782,
+        "b": 16.717482649733384
+      },
+      "hex": "#D9BFA5",
+      "pantone": {
+        "kod": "13-1011 TCX",
+        "hex": "#DAC0A7",
+        "delta_e": 0.7426,
+        "ad": "Ivory Cream"
+      },
+      "ikinci_aday": {
+        "kod": "13-1015 TCX",
+        "hex": "#DCBD9E",
+        "delta_e": 1.9673,
+        "ad": "Honey Peach"
+      },
+      "podyum_payi": 0.0004554515757880663,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 5,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 33.058153195975585,
+        "a": 15.084237788409778,
+        "b": 12.202113894951925
+      },
+      "hex": "#6A443B",
+      "pantone": {
+        "kod": "19-1235 TCX",
+        "hex": "#664238",
+        "delta_e": 1.2273,
+        "ad": "Brunette"
+      },
+      "ikinci_aday": {
+        "kod": "19-1436 TCX",
+        "hex": "#6B4139",
+        "delta_e": 1.6283,
+        "ad": "Cinnamon"
+      },
+      "podyum_payi": 0.00043717140906020333,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 7,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 55.33034344386858,
+        "a": 12.471614767039604,
+        "b": -2.043100405016029
+      },
+      "hex": "#997D88",
+      "pantone": {
+        "kod": "17-2411 TCX",
+        "hex": "#988088",
+        "delta_e": 1.8606,
+        "ad": "Toadstool"
+      },
+      "ikinci_aday": {
+        "kod": "17-1605 TCX",
+        "hex": "#9D848E",
+        "delta_e": 2.3939,
+        "ad": "Elderberry"
+      },
+      "podyum_payi": 0.0004325878467603906,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 4,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 31.4483181436668,
+        "a": 46.70737565503348,
+        "b": -12.367691576309412
+      },
+      "hex": "#83225E",
+      "pantone": {
+        "kod": "19-2431 TCX",
+        "hex": "#85325C",
+        "delta_e": 3.8716,
+        "ad": "Boysenberry"
+      },
+      "ikinci_aday": {
+        "kod": "18-2320 TCX",
+        "hex": "#8A3371",
+        "delta_e": 4.4995,
+        "ad": "Clover"
+      },
+      "podyum_payi": 0.0004248004869780805,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 2,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 46.53145077526744,
+        "a": 5.616847088012524,
+        "b": -21.043350886365644
+      },
+      "hex": "#646D91",
+      "pantone": {
+        "kod": "18-3927 TCX",
+        "hex": "#60688D",
+        "delta_e": 1.8241,
+        "ad": "Velvet Morning"
+      },
+      "ikinci_aday": {
+        "kod": "18-3930 TCX",
+        "hex": "#646F9B",
+        "delta_e": 2.2391,
+        "ad": "Bleached Denim"
+      },
+      "podyum_payi": 0.0004114509612763807,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 5,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 62.37607949475771,
+        "a": 45.55883224990459,
+        "b": 30.107851030214213
+      },
+      "hex": "#EC7364",
+      "pantone": {
+        "kod": "16-1539 TCX",
+        "hex": "#ED7464",
+        "delta_e": 0.6014,
+        "ad": "Coral"
+      },
+      "ikinci_aday": {
+        "kod": "16-1545 TCX",
+        "hex": "#F77464",
+        "delta_e": 2.0667,
+        "ad": "Coral Quartz"
+      },
+      "podyum_payi": 0.0004103867467219853,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 3,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 50.76015007546455,
+        "a": -45.23211264671482,
+        "b": 25.296672822948583
+      },
+      "hex": "#188B4C",
+      "pantone": {
+        "kod": "17-6153 TCX",
+        "hex": "#008C45",
+        "delta_e": 1.5774,
+        "ad": "Fern Green"
+      },
+      "ikinci_aday": {
+        "kod": "17-6229 TCX",
+        "hex": "#3C824E",
+        "delta_e": 4.3287,
+        "ad": "Medium Green"
+      },
+      "podyum_payi": 0.00040527795603865195,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 2,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 59.25021244953714,
+        "a": -38.39379400034945,
+        "b": 5.94381913398222
+      },
+      "hex": "#2EA083",
+      "pantone": {
+        "kod": "17-5638 TCX",
+        "hex": "#009E82",
+        "delta_e": 1.8271,
+        "ad": "Vivid Green"
+      },
+      "ikinci_aday": {
+        "kod": "16-5533 TCX",
+        "hex": "#00A28A",
+        "delta_e": 2.504,
+        "ad": "Arcadia"
+      },
+      "podyum_payi": 0.00040519510047323803,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 2,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 66.13160453028117,
+        "a": 2.191797568221245,
+        "b": -20.770261385948228
+      },
+      "hex": "#90A1C6",
+      "pantone": {
+        "kod": "16-3920 TCX",
+        "hex": "#8C9CC1",
+        "delta_e": 1.5933,
+        "ad": "Lavender Lustre"
+      },
+      "ikinci_aday": {
+        "kod": "16-3921 TCX",
+        "hex": "#96A3C7",
+        "delta_e": 1.7692,
+        "ad": "Blue Heron"
+      },
+      "podyum_payi": 0.00039638825049047007,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 2,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 54.266257631522,
+        "a": 2.140941495984396,
+        "b": -37.45048213373827
+      },
+      "hex": "#5384C2",
+      "pantone": {
+        "kod": "17-4041 TCX",
+        "hex": "#4F84C4",
+        "delta_e": 0.6777,
+        "ad": "Marina"
+      },
+      "ikinci_aday": {
+        "kod": "16-4033 TCX",
+        "hex": "#5D81BB",
+        "delta_e": 2.5753,
+        "ad": "Granada Sky"
+      },
+      "podyum_payi": 0.0003942158018261795,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 2,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 42.833340901792404,
+        "a": -8.78672291338277,
+        "b": 9.278087754168974
+      },
+      "hex": "#5C6956",
+      "pantone": {
+        "kod": "18-0420 TCX",
+        "hex": "#616652",
+        "delta_e": 3.3436,
+        "ad": "Four Leaf Clover"
+      },
+      "ikinci_aday": {
+        "kod": "18-0316 TCX",
+        "hex": "#666B54",
+        "delta_e": 3.7494,
+        "ad": "Olivine"
+      },
+      "podyum_payi": 0.00038889562523084593,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 3,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 42.50119513057926,
+        "a": 3.9311330307031267,
+        "b": -42.648784281132734
+      },
+      "hex": "#2266AB",
+      "pantone": {
+        "kod": "18-4048 TCX",
+        "hex": "#2D62A3",
+        "delta_e": 2.1642,
+        "ad": "Nebulas Blue"
+      },
+      "ikinci_aday": {
+        "kod": "18-4043 TCX",
+        "hex": "#346CB0",
+        "delta_e": 2.5538,
+        "ad": "Palace Blue"
+      },
+      "podyum_payi": 0.00038536749674814637,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 3,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 73.54578833609833,
+        "a": 15.572283048936889,
+        "b": 12.680627214832631
+      },
+      "hex": "#D9AA9E",
+      "pantone": {
+        "kod": "14-1316 TCX",
+        "hex": "#DEAA9B",
+        "delta_e": 1.5812,
+        "ad": "Dusty Pink"
+      },
+      "ikinci_aday": {
+        "kod": "14-1313 TCX",
+        "hex": "#DBB0A2",
+        "delta_e": 2.151,
+        "ad": "Rose Cloud"
+      },
+      "podyum_payi": 0.00038137539888805083,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 2,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 53.09044705796213,
+        "a": -4.686679793165158,
+        "b": 46.23984882243218
+      },
+      "hex": "#8E7F2A",
+      "pantone": {
+        "kod": "17-0840 TCX",
+        "hex": "#9A803A",
+        "delta_e": 4.8879,
+        "ad": "Amber Green"
+      },
+      "ikinci_aday": {
+        "kod": "17-0836 TCX",
+        "hex": "#927B3C",
+        "delta_e": 4.9366,
+        "ad": "Ecru Olive"
+      },
+      "podyum_payi": 0.00037465080808909176,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 4,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 53.08088807853101,
+        "a": -13.13604845503385,
+        "b": 8.414041535073876
+      },
+      "hex": "#6D8570",
+      "pantone": {
+        "kod": "17-6323 TCX",
+        "hex": "#768A75",
+        "delta_e": 2.6494,
+        "ad": "Hedge Green"
+      },
+      "ikinci_aday": {
+        "kod": "17-0210 TCX",
+        "hex": "#788F74",
+        "delta_e": 4.2455,
+        "ad": "Loden Frost"
+      },
+      "podyum_payi": 0.000370610207824863,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 2,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 63.920718227138174,
+        "a": 36.05006370915608,
+        "b": 15.134682203240136
+      },
+      "hex": "#DE8182",
+      "pantone": {
+        "kod": "16-1626 TCX",
+        "hex": "#DE8286",
+        "delta_e": 1.1563,
+        "ad": "Peach Blossom"
+      },
+      "ikinci_aday": {
+        "kod": "16-1624 TCX",
+        "hex": "#DA7E7A",
+        "delta_e": 2.0896,
+        "ad": "Lantana"
+      },
+      "podyum_payi": 0.000342403746267414,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 5,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 34.5068837631714,
+        "a": -3.5439457170305904,
+        "b": 9.598621296133821
+      },
+      "hex": "#525242",
+      "pantone": {
+        "kod": "19-0515 TCX",
+        "hex": "#535040",
+        "delta_e": 2.2483,
+        "ad": "Olive Night"
+      },
+      "ikinci_aday": {
+        "kod": "19-0512 TCX",
+        "hex": "#585442",
+        "delta_e": 2.8104,
+        "ad": "Ivy Green"
+      },
+      "podyum_payi": 0.0003416799216846998,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 49.927748298275105,
+        "a": 22.731753992494365,
+        "b": 23.094501632338552
+      },
+      "hex": "#A66751",
+      "pantone": {
+        "kod": "17-1147 TCX",
+        "hex": "#A66646",
+        "delta_e": 3.3868,
+        "ad": "Amber Brown"
+      },
+      "ikinci_aday": {
+        "kod": "17-1347 TCX",
+        "hex": "#B56A4C",
+        "delta_e": 4.0462,
+        "ad": "Autumn Leaf"
+      },
+      "podyum_payi": 0.0003371879624499398,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 4,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 36.199052186695894,
+        "a": -16.752776024424357,
+        "b": 23.7080986148801
+      },
+      "hex": "#475C2E",
+      "pantone": {
+        "kod": "19-0230 TCX",
+        "hex": "#495E35",
+        "delta_e": 1.6344,
+        "ad": "Garden Green"
+      },
+      "ikinci_aday": {
+        "kod": "18-0330 TCX",
+        "hex": "#4E632C",
+        "delta_e": 3.2854,
+        "ad": "Twist Of Lime"
+      },
+      "podyum_payi": 0.00032957505433137396,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 3,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 29.506659266061824,
+        "a": 16.911320454742885,
+        "b": -27.46060411237857
+      },
+      "hex": "#483E70",
+      "pantone": {
+        "kod": "19-3842 TCX",
+        "hex": "#443F6F",
+        "delta_e": 1.2858,
+        "ad": "Deep Wisteria"
+      },
+      "ikinci_aday": {
+        "kod": "19-3832 TCX",
+        "hex": "#403F6F",
+        "delta_e": 2.392,
+        "ad": "Navy Blue"
+      },
+      "podyum_payi": 0.0003196311650787499,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 5,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 29.926561906019188,
+        "a": 28.534119116368743,
+        "b": -30.98343941551231
+      },
+      "hex": "#593777",
+      "pantone": {
+        "kod": "19-3638 TCX",
+        "hex": "#563474",
+        "delta_e": 0.9972,
+        "ad": "Tillandsia Purple"
+      },
+      "ikinci_aday": {
+        "kod": "19-3748 TCX",
+        "hex": "#53357D",
+        "delta_e": 2.52,
+        "ad": "Prism Violet"
+      },
+      "podyum_payi": 0.0003136225072237717,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 71.38849921135417,
+        "a": 14.165927472688962,
+        "b": -17.182417050666338
+      },
+      "hex": "#BAA7CE",
+      "pantone": {
+        "kod": "15-3620 TCX",
+        "hex": "#BCA4CB",
+        "delta_e": 1.6265,
+        "ad": "Lavendula"
+      },
+      "ikinci_aday": {
+        "kod": "15-3720 TCX",
+        "hex": "#B3A0C9",
+        "delta_e": 2.1969,
+        "ad": "Lilac Breeze"
+      },
+      "podyum_payi": 0.0003041375422295507,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 69.321458514254,
+        "a": -12.090851805455179,
+        "b": -4.016313425120495
+      },
+      "hex": "#8CB0B0",
+      "pantone": {
+        "kod": "15-5207 TCX",
+        "hex": "#89ACAC",
+        "delta_e": 1.1581,
+        "ad": "Aquifer"
+      },
+      "ikinci_aday": {
+        "kod": "15-5209 TCX",
+        "hex": "#87B9BC",
+        "delta_e": 3.6768,
+        "ad": "Aqua Haze"
+      },
+      "podyum_payi": 0.0003017970093669924,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 2,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 45.82498211064934,
+        "a": -23.908246796406594,
+        "b": 16.02793195677947
+      },
+      "hex": "#4A7751",
+      "pantone": {
+        "kod": "18-6320 TCX",
+        "hex": "#477050",
+        "delta_e": 2.7124,
+        "ad": "Fairway"
+      },
+      "ikinci_aday": {
+        "kod": "18-6330 TCX",
+        "hex": "#3D7245",
+        "delta_e": 3.2375,
+        "ad": "Juniper"
+      },
+      "podyum_payi": 0.0003005399977130176,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 61.73321105515756,
+        "a": 3.225915816906421,
+        "b": 32.17663157016804
+      },
+      "hex": "#AD915C",
+      "pantone": {
+        "kod": "16-1126 TCX",
+        "hex": "#B19664",
+        "delta_e": 1.6716,
+        "ad": "Antelope"
+      },
+      "ikinci_aday": {
+        "kod": "16-1133 TCX",
+        "hex": "#B08E51",
+        "delta_e": 2.3776,
+        "ad": "Mustard Gold"
+      },
+      "podyum_payi": 0.0002847424911836373,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 3,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 34.666395238438156,
+        "a": -18.579559375369666,
+        "b": -9.942077272635343
+      },
+      "hex": "#125A61",
+      "pantone": {
+        "kod": "19-4524 TCX",
+        "hex": "#00585E",
+        "delta_e": 1.2837,
+        "ad": "Shaded Spruce"
+      },
+      "ikinci_aday": {
+        "kod": "19-4916 TCX",
+        "hex": "#1F595C",
+        "delta_e": 1.7906,
+        "ad": "Pacific"
+      },
+      "podyum_payi": 0.0002737836518205051,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 2,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 70.96368504082403,
+        "a": -41.06347936350426,
+        "b": -7.278254612686567
+      },
+      "hex": "#0FC2BA",
+      "pantone": {
+        "kod": "15-5519 TCX",
+        "hex": "#45B5AA",
+        "delta_e": 4.1883,
+        "ad": "Turquoise"
+      },
+      "ikinci_aday": {
+        "kod": "14-5420 TCX",
+        "hex": "#58C8B6",
+        "delta_e": 4.9833,
+        "ad": "Cockatoo"
+      },
+      "podyum_payi": 0.00026312897387566187,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 50.695805981005485,
+        "a": -15.294520045853965,
+        "b": -28.78271092876131
+      },
+      "hex": "#0A82A9",
+      "pantone": {
+        "kod": "17-4432 TCX",
+        "hex": "#0088B0",
+        "delta_e": 2.0423,
+        "ad": "Vivid Blue"
+      },
+      "ikinci_aday": {
+        "kod": "17-4427 TCX",
+        "hex": "#157EA0",
+        "delta_e": 2.0587,
+        "ad": "Bluejay"
+      },
+      "podyum_payi": 0.0002623473181093999,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 20.912019553937487,
+        "a": -13.820161695836461,
+        "b": 3.3565291945181635
+      },
+      "hex": "#1B382D",
+      "pantone": {
+        "kod": "19-5406 TCX",
+        "hex": "#213631",
+        "delta_e": 3.906,
+        "ad": "Pine Grove"
+      },
+      "ikinci_aday": {
+        "kod": "19-5918 TCX",
+        "hex": "#2E3D30",
+        "delta_e": 5.123,
+        "ad": "Mountain View"
+      },
+      "podyum_payi": 0.00024190773893827334,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 2,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 56.2171740232419,
+        "a": -27.268158595084387,
+        "b": 12.835374358483847
+      },
+      "hex": "#599370",
+      "pantone": {
+        "kod": "17-0123 TCX",
+        "hex": "#658E67",
+        "delta_e": 3.8013,
+        "ad": "Stone Green"
+      },
+      "ikinci_aday": {
+        "kod": "16-5820 TCX",
+        "hex": "#589F7E",
+        "delta_e": 4.2703,
+        "ad": "Green Spruce"
+      },
+      "podyum_payi": 0.00024124619338653544,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 3,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 46.97852147194909,
+        "a": -4.843468651138183,
+        "b": 18.333831979042422
+      },
+      "hex": "#737150",
+      "pantone": {
+        "kod": "18-0422 TCX",
+        "hex": "#6E7153",
+        "delta_e": 2.4083,
+        "ad": "Loden Green"
+      },
+      "ikinci_aday": {
+        "kod": "18-0622 TCX",
+        "hex": "#756D47",
+        "delta_e": 3.3023,
+        "ad": "Olive Drab"
+      },
+      "podyum_payi": 0.00023802299216703975,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 3,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 45.68537336649654,
+        "a": 20.085597176798768,
+        "b": -22.50478311207066
+      },
+      "hex": "#7C6292",
+      "pantone": {
+        "kod": "18-3634 TCX",
+        "hex": "#7D5D99",
+        "delta_e": 3.024,
+        "ad": "Chive Blossom"
+      },
+      "ikinci_aday": {
+        "kod": "18-3520 TCX",
+        "hex": "#745587",
+        "delta_e": 4.4411,
+        "ad": "Purple Heart"
+      },
+      "podyum_payi": 0.00021435499320094379,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 2,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 86.70904162812784,
+        "a": -4.946093575846581,
+        "b": 32.548688973501555
+      },
+      "hex": "#E7DA9B",
+      "pantone": {
+        "kod": "13-0333 TCX",
+        "hex": "#E1D590",
+        "delta_e": 1.7911,
+        "ad": "Lima Bean"
+      },
+      "ikinci_aday": {
+        "kod": "12-0722 TCX",
+        "hex": "#EFE1A7",
+        "delta_e": 2.0965,
+        "ad": "French Vanilla"
+      },
+      "podyum_payi": 0.000212669336444405,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 58.94585472439985,
+        "a": -15.794575867044854,
+        "b": 46.13799737525951
+      },
+      "hex": "#8C9438",
+      "pantone": {
+        "kod": "16-0439 TCX",
+        "hex": "#909B4C",
+        "delta_e": 3.3643,
+        "ad": "Spinach Green"
+      },
+      "ikinci_aday": {
+        "kod": "16-0543 TCX",
+        "hex": "#9A9738",
+        "delta_e": 3.7109,
+        "ad": "Golden Lime"
+      },
+      "podyum_payi": 0.00021185737887862924,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 3,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 52.84862901881492,
+        "a": -4.861801656178986,
+        "b": -5.3197031314935606
+      },
+      "hex": "#708187",
+      "pantone": {
+        "kod": "18-4711 TCX",
+        "hex": "#6E8082",
+        "delta_e": 2.4009,
+        "ad": "Stormy Sea"
+      },
+      "ikinci_aday": {
+        "kod": "18-4510 TCX",
+        "hex": "#697A7E",
+        "delta_e": 3.0121,
+        "ad": "Trooper"
+      },
+      "podyum_payi": 0.000207925934795161,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 2,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 51.17118236474364,
+        "a": -35.45909243171497,
+        "b": 5.468531625144975
+      },
+      "hex": "#208970",
+      "pantone": {
+        "kod": "17-5734 TCX",
+        "hex": "#00846B",
+        "delta_e": 2.3355,
+        "ad": "Viridis"
+      },
+      "ikinci_aday": {
+        "kod": "17-5735 TCX",
+        "hex": "#008C69",
+        "delta_e": 2.991,
+        "ad": "Parakeet"
+      },
+      "podyum_payi": 0.00020744338903670937,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 2,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 58.554670169798605,
+        "a": 17.484608797152006,
+        "b": -27.86993778344452
+      },
+      "hex": "#9385BE",
+      "pantone": {
+        "kod": "17-3735 TCX",
+        "hex": "#9787BB",
+        "delta_e": 1.7471,
+        "ad": "Sunlit Allium"
+      },
+      "ikinci_aday": {
+        "kod": "17-3725 TCX",
+        "hex": "#9884B9",
+        "delta_e": 2.1878,
+        "ad": "Bougainvillea"
+      },
+      "podyum_payi": 0.00020646759487306796,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 2,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 43.51336373732989,
+        "a": 32.317707948315906,
+        "b": 28.54810729561356
+      },
+      "hex": "#A14F39",
+      "pantone": {
+        "kod": "18-1350 TCX",
+        "hex": "#A14D3A",
+        "delta_e": 1.0596,
+        "ad": "Burnt Brick"
+      },
+      "ikinci_aday": {
+        "kod": "18-1441 TCX",
+        "hex": "#9C5642",
+        "delta_e": 2.6285,
+        "ad": "Baked Clay"
+      },
+      "podyum_payi": 0.0002055197847908273,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 3,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 57.962135045534914,
+        "a": 62.80240288743665,
+        "b": -1.4396106750357298
+      },
+      "hex": "#EA5490",
+      "pantone": {
+        "kod": "17-2230 TCX",
+        "hex": "#E35B8F",
+        "delta_e": 1.4199,
+        "ad": "Carmine Rose"
+      },
+      "ikinci_aday": {
+        "kod": "17-2127 TCX",
+        "hex": "#DE5B8C",
+        "delta_e": 2.1589,
+        "ad": "Shocking Pink"
+      },
+      "podyum_payi": 0.00018805243155246276,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 2,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 44.414817596331915,
+        "a": 37.66088759363114,
+        "b": 39.77493833119158
+      },
+      "hex": "#AD4C28",
+      "pantone": {
+        "kod": "18-1250 TCX",
+        "hex": "#9F5130",
+        "delta_e": 3.4185,
+        "ad": "Bombay Brown"
+      },
+      "ikinci_aday": {
+        "kod": "18-1340 TCX",
+        "hex": "#9E4624",
+        "delta_e": 3.4851,
+        "ad": "Potters Clay"
+      },
+      "podyum_payi": 0.000184659619445271,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 5,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 58.90886686228306,
+        "a": -4.504856571036786,
+        "b": 17.3670449591072
+      },
+      "hex": "#928F6F",
+      "pantone": {
+        "kod": "16-0526 TCX",
+        "hex": "#928E64",
+        "delta_e": 2.986,
+        "ad": "Cedar"
+      },
+      "ikinci_aday": {
+        "kod": "16-0421 TCX",
+        "hex": "#91946E",
+        "delta_e": 3.1954,
+        "ad": "Sage"
+      },
+      "podyum_payi": 0.00018251096110169515,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 2,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 47.88091427779836,
+        "a": -2.4327607046949304,
+        "b": -10.507207733155543
+      },
+      "hex": "#637483",
+      "pantone": {
+        "kod": "18-4215 TCX",
+        "hex": "#5C6D7C",
+        "delta_e": 2.6405,
+        "ad": "Blue Mirage"
+      },
+      "ikinci_aday": {
+        "kod": "18-3916 TCX",
+        "hex": "#677283",
+        "delta_e": 2.8494,
+        "ad": "Flint Stone"
+      },
+      "podyum_payi": 0.0001768113054689091,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 2,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 46.99774073331942,
+        "a": -16.860408589171875,
+        "b": -13.167590849113239
+      },
+      "hex": "#377885",
+      "pantone": {
+        "kod": "18-4726 TCX",
+        "hex": "#097988",
+        "delta_e": 3.1588,
+        "ad": "Biscay Bay"
+      },
+      "ikinci_aday": {
+        "kod": "17-4421 TCX",
+        "hex": "#3C7D90",
+        "delta_e": 3.4265,
+        "ad": "Larkspur"
+      },
+      "podyum_payi": 0.00017405059052317672,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 81.56852045624508,
+        "a": -14.323650616156952,
+        "b": 62.2895203740093
+      },
+      "hex": "#D4D04F",
+      "pantone": {
+        "kod": "13-0648 TCX",
+        "hex": "#D9CE52",
+        "delta_e": 1.8017,
+        "ad": "Green Sheen"
+      },
+      "ikinci_aday": {
+        "kod": "13-0645 TCX",
+        "hex": "#D3D95F",
+        "delta_e": 3.2954,
+        "ad": "Limeade"
+      },
+      "podyum_payi": 0.0001691414698624288,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 73.1910089710491,
+        "a": -17.589112123062694,
+        "b": 9.081093016036261
+      },
+      "hex": "#98BDA3",
+      "pantone": {
+        "kod": "14-6011 TCX",
+        "hex": "#9BBEA9",
+        "delta_e": 1.8065,
+        "ad": "Grayed Jade"
+      },
+      "ikinci_aday": {
+        "kod": "15-6114 TCX",
+        "hex": "#97C1A1",
+        "delta_e": 2.2071,
+        "ad": "Hemlock"
+      },
+      "podyum_payi": 0.00016300842836681253,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 45.15912188042235,
+        "a": 23.27474457742332,
+        "b": 40.096648199479716
+      },
+      "hex": "#9D5A27",
+      "pantone": {
+        "kod": "18-1142 TCX",
+        "hex": "#97572B",
+        "delta_e": 2.1753,
+        "ad": "Leather Brown"
+      },
+      "ikinci_aday": {
+        "kod": "17-1052 TCX",
+        "hex": "#93592B",
+        "delta_e": 2.5001,
+        "ad": "Roasted Pecan"
+      },
+      "podyum_payi": 0.00015656898676155156,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 3,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 38.82963187870141,
+        "a": 28.385139149869545,
+        "b": -55.52446228428946
+      },
+      "hex": "#4850B7",
+      "pantone": {
+        "kod": "18-3949 TCX",
+        "hex": "#3850A0",
+        "delta_e": 4.6247,
+        "ad": "Dazzling Blue"
+      },
+      "ikinci_aday": {
+        "kod": "18-3945 TCX",
+        "hex": "#4960A8",
+        "delta_e": 6.2344,
+        "ad": "Amparo Blue"
+      },
+      "podyum_payi": 0.00015650902313439852,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 2,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 20.593756715848986,
+        "a": 35.280159869699794,
+        "b": -1.8156296148586935
+      },
+      "hex": "#5D1535",
+      "pantone": {
+        "kod": "19-2430 TCX",
+        "hex": "#692746",
+        "delta_e": 4.5542,
+        "ad": "Purple Potion"
+      },
+      "ikinci_aday": {
+        "kod": "19-2428 TCX",
+        "hex": "#6B264B",
+        "delta_e": 5.3773,
+        "ad": "Magenta Purple"
+      },
+      "podyum_payi": 0.00015151354221986193,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 2,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 63.683699977361016,
+        "a": -39.37788607867116,
+        "b": -3.26186292863477
+      },
+      "hex": "#11AD9F",
+      "pantone": {
+        "kod": "15-5425 TCX",
+        "hex": "#00AF9F",
+        "delta_e": 0.9599,
+        "ad": "Atlantis"
+      },
+      "ikinci_aday": {
+        "kod": "16-5425 TCX",
+        "hex": "#00AF9D",
+        "delta_e": 1.5228,
+        "ad": "Pool Green"
+      },
+      "podyum_payi": 0.0001503047776114382,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 58.11836046976232,
+        "a": 28.198512388747602,
+        "b": 34.399452108149
+      },
+      "hex": "#C87751",
+      "pantone": {
+        "kod": "16-1337 TCX",
+        "hex": "#D27D56",
+        "delta_e": 2.4432,
+        "ad": "Coral Gold"
+      },
+      "ikinci_aday": {
+        "kod": "16-1439 TCX",
+        "hex": "#C37C54",
+        "delta_e": 2.5236,
+        "ad": "Caramel"
+      },
+      "podyum_payi": 0.00014798856355966022,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 2,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 43.83283349943679,
+        "a": -20.661138151894033,
+        "b": -1.0262743721133334
+      },
+      "hex": "#397169",
+      "pantone": {
+        "kod": "18-5618 TCX",
+        "hex": "#36716F",
+        "delta_e": 2.8679,
+        "ad": "Deep Jungle"
+      },
+      "ikinci_aday": {
+        "kod": "18-5620 TCX",
+        "hex": "#226C63",
+        "delta_e": 3.3191,
+        "ad": "Ivy"
+      },
+      "podyum_payi": 0.00013012345769177988,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 2,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 74.07672403752187,
+        "a": 9.084026807625873,
+        "b": 30.949102848891158
+      },
+      "hex": "#D9AF7E",
+      "pantone": {
+        "kod": "14-1127 TCX",
+        "hex": "#E0B589",
+        "delta_e": 2.2935,
+        "ad": "Desert Mist"
+      },
+      "ikinci_aday": {
+        "kod": "14-1122 TCX",
+        "hex": "#DAB58F",
+        "delta_e": 3.2847,
+        "ad": "Sheepskin"
+      },
+      "podyum_payi": 0.00013006917716221656,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 78.25283772094782,
+        "a": -2.1773996285063473,
+        "b": -14.478651316457823
+      },
+      "hex": "#AEC4DC",
+      "pantone": {
+        "kod": "14-4112 TCX",
+        "hex": "#ADBED3",
+        "delta_e": 2.0256,
+        "ad": "Skyway"
+      },
+      "ikinci_aday": {
+        "kod": "15-4105 TCX",
+        "hex": "#A3BDD3",
+        "delta_e": 2.9226,
+        "ad": "Angel Falls"
+      },
+      "podyum_payi": 0.00012757118701069742,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 2,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 65.76238877964916,
+        "a": -29.353442869448994,
+        "b": -16.881557732376788
+      },
+      "hex": "#2DAFBD",
+      "pantone": {
+        "kod": "16-4725 TCX",
+        "hex": "#00ABC0",
+        "delta_e": 2.7566,
+        "ad": "Scuba Blue"
+      },
+      "ikinci_aday": {
+        "kod": "15-4722 TCX",
+        "hex": "#44BBCA",
+        "delta_e": 3.5901,
+        "ad": "Capri"
+      },
+      "podyum_payi": 0.00012079129049389274,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 83.51912433548144,
+        "a": -10.287881440663957,
+        "b": 14.413485089628827
+      },
+      "hex": "#C7D5B5",
+      "pantone": {
+        "kod": "12-0313 TCX",
+        "hex": "#CBD5B1",
+        "delta_e": 1.6628,
+        "ad": "Seafoam Green"
+      },
+      "ikinci_aday": {
+        "kod": "13-0111 TCX",
+        "hex": "#BFD1B3",
+        "delta_e": 1.9903,
+        "ad": "Seacrest"
+      },
+      "podyum_payi": 0.00011381331624151205,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 2,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 50.43345893307673,
+        "a": -10.989959676463622,
+        "b": -2.630409693158766
+      },
+      "hex": "#607E7C",
+      "pantone": {
+        "kod": "18-5612 TCX",
+        "hex": "#567572",
+        "delta_e": 3.663,
+        "ad": "Sagebrush Green"
+      },
+      "ikinci_aday": {
+        "kod": "17-4911 TCX",
+        "hex": "#648589",
+        "delta_e": 3.8943,
+        "ad": "Arctic"
+      },
+      "podyum_payi": 0.00011265554991775284,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 2,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 38.082475926037105,
+        "a": -16.116002512896618,
+        "b": 8.885962949114239
+      },
+      "hex": "#42604B",
+      "pantone": {
+        "kod": "18-6114 TCX",
+        "hex": "#4F6B58",
+        "delta_e": 4.1948,
+        "ad": "Myrtle"
+      },
+      "ikinci_aday": {
+        "kod": "18-5718 TCX",
+        "hex": "#3E6257",
+        "delta_e": 4.7066,
+        "ad": "Smoke Pine"
+      },
+      "podyum_payi": 0.0001093700345200633,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 2,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 64.89715658825031,
+        "a": -16.22647614254517,
+        "b": -31.510932914464806
+      },
+      "hex": "#3CA8D5",
+      "pantone": {
+        "kod": "16-4530 TCX",
+        "hex": "#3CADD4",
+        "delta_e": 2.3073,
+        "ad": "Aquarius"
+      },
+      "ikinci_aday": {
+        "kod": "15-4427 TCX",
+        "hex": "#4CA5C7",
+        "delta_e": 2.7677,
+        "ad": "Norse Blue"
+      },
+      "podyum_payi": 0.00010710988830048244,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 50.96170597384502,
+        "a": 18.514576440791522,
+        "b": 2.007991884497288
+      },
+      "hex": "#996E77",
+      "pantone": {
+        "kod": "17-1511 TCX",
+        "hex": "#946C74",
+        "delta_e": 1.4202,
+        "ad": "Wistful Mauve"
+      },
+      "ikinci_aday": {
+        "kod": "17-1609 TCX",
+        "hex": "#A66E7A",
+        "delta_e": 3.494,
+        "ad": "Mesa Rose"
+      },
+      "podyum_payi": 0.00010648960332047545,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 82.58811065575762,
+        "a": -13.055534534131,
+        "b": -8.111822420152427
+      },
+      "hex": "#A9D5DC",
+      "pantone": {
+        "kod": "12-4608 TCX",
+        "hex": "#AAD5DB",
+        "delta_e": 0.4278,
+        "ad": "Clearwater"
+      },
+      "ikinci_aday": {
+        "kod": "13-5410 TCX",
+        "hex": "#ABD3DB",
+        "delta_e": 1.5036,
+        "ad": "Iced Aqua"
+      },
+      "podyum_payi": 0.0001062725294072325,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 77.73725278549355,
+        "a": -8.854014204400112,
+        "b": 1.6755781157302396
+      },
+      "hex": "#B0C5BD",
+      "pantone": {
+        "kod": "14-4807 TCX",
+        "hex": "#B4C8C2",
+        "delta_e": 1.4685,
+        "ad": "Surf Spray"
+      },
+      "ikinci_aday": {
+        "kod": "14-4908 TCX",
+        "hex": "#A8C0BB",
+        "delta_e": 2.1181,
+        "ad": "Harbor Gray"
+      },
+      "podyum_payi": 0.00010426201483040455,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 2,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 74.80448268078011,
+        "a": -31.600846050733132,
+        "b": 41.73984853394586
+      },
+      "hex": "#97C668",
+      "pantone": {
+        "kod": "14-0244 TCX",
+        "hex": "#97BC62",
+        "delta_e": 2.8868,
+        "ad": "Bright Lime Green"
+      },
+      "ikinci_aday": {
+        "kod": "14-0232 TCX",
+        "hex": "#A1CA7B",
+        "delta_e": 2.8969,
+        "ad": "Jade Lime"
+      },
+      "podyum_payi": 0.00010278909475848915,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 41.29091725034761,
+        "a": 11.376908556125183,
+        "b": -17.095381938746474
+      },
+      "hex": "#665C7D",
+      "pantone": {
+        "kod": "18-3714 TCX",
+        "hex": "#675A74",
+        "delta_e": 2.8706,
+        "ad": "Mulled Grape"
+      },
+      "ikinci_aday": {
+        "kod": "18-3513 TCX",
+        "hex": "#6B5876",
+        "delta_e": 3.5204,
+        "ad": "Grape Compote"
+      },
+      "podyum_payi": 9.399214823128563e-5,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 66.49723423635882,
+        "a": -12.004962203902881,
+        "b": 20.819943548679234
+      },
+      "hex": "#9AA77C",
+      "pantone": {
+        "kod": "15-0326 TCX",
+        "hex": "#A4AE77",
+        "delta_e": 3.7431,
+        "ad": "Tarragon"
+      },
+      "ikinci_aday": {
+        "kod": "15-6423 TCX",
+        "hex": "#91AC80",
+        "delta_e": 4.0735,
+        "ad": "Forest Shade"
+      },
+      "podyum_payi": 9.245494036107885e-5,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 42.96950176214866,
+        "a": 4.515537802064366,
+        "b": 32.1850761050627
+      },
+      "hex": "#7C612F",
+      "pantone": {
+        "kod": "18-0832 TCX",
+        "hex": "#7A6332",
+        "delta_e": 1.3681,
+        "ad": "Plantation"
+      },
+      "ikinci_aday": {
+        "kod": "19-1034 TCX",
+        "hex": "#795D34",
+        "delta_e": 2.9644,
+        "ad": "Breen"
+      },
+      "podyum_payi": 8.754415287078687e-5,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 3,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 47.83284643405569,
+        "a": 49.65850283884871,
+        "b": -3.1262569598803225
+      },
+      "hex": "#BA4A78",
+      "pantone": {
+        "kod": "17-2227 TCX",
+        "hex": "#BD4275",
+        "delta_e": 1.5597,
+        "ad": "Lilac Rose"
+      },
+      "ikinci_aday": {
+        "kod": "17-2031 TCX",
+        "hex": "#C74375",
+        "delta_e": 2.8845,
+        "ad": "Fuchsia Rose"
+      },
+      "podyum_payi": 8.584034376344858e-5,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 3,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 66.4088295657701,
+        "a": 23.943812717602626,
+        "b": -4.534487324312558
+      },
+      "hex": "#C892AA",
+      "pantone": {
+        "kod": "15-2210 TCX",
+        "hex": "#D294AA",
+        "delta_e": 2.367,
+        "ad": "Orchid Smoke"
+      },
+      "ikinci_aday": {
+        "kod": "16-2614 TCX",
+        "hex": "#D28FB0",
+        "delta_e": 3.1319,
+        "ad": "Moonlite Mauve"
+      },
+      "podyum_payi": 8.221995459650233e-5,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 45.05610675076945,
+        "a": -34.12691484233412,
+        "b": 24.071836403189995
+      },
+      "hex": "#357841",
+      "pantone": {
+        "kod": "18-6330 TCX",
+        "hex": "#3D7245",
+        "delta_e": 3.1388,
+        "ad": "Juniper"
+      },
+      "ikinci_aday": {
+        "kod": "17-6333 TCX",
+        "hex": "#487D49",
+        "delta_e": 3.225,
+        "ad": "Mint Green"
+      },
+      "podyum_payi": 8.05242106524828e-5,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 2,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 15.132690062598236,
+        "a": -4.942386424000442,
+        "b": 4.74863965594706
+      },
+      "hex": "#21281F",
+      "pantone": {
+        "kod": "19-5708 TCX",
+        "hex": "#262C2A",
+        "delta_e": 4.4205,
+        "ad": "Jet Set"
+      },
+      "ikinci_aday": {
+        "kod": "19-5350 TCX",
+        "hex": "#23312D",
+        "delta_e": 4.9522,
+        "ad": "Scarab"
+      },
+      "podyum_payi": 7.992432949432339e-5,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 32.124550672251424,
+        "a": -3.6442374582551302,
+        "b": 33.76592873771857
+      },
+      "hex": "#554C12",
+      "pantone": {
+        "kod": "18-0627 TCX",
+        "hex": "#67592A",
+        "delta_e": 5.7572,
+        "ad": "Fir Green"
+      },
+      "ikinci_aday": {
+        "kod": "18-0430 TCX",
+        "hex": "#676232",
+        "delta_e": 8.047,
+        "ad": "Avocado"
+      },
+      "podyum_payi": 7.87932257041061e-5,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 43.191243386181064,
+        "a": 18.363709846232037,
+        "b": -11.664817566098067
+      },
+      "hex": "#7C5C7A",
+      "pantone": {
+        "kod": "18-3418 TCX",
+        "hex": "#835E81",
+        "delta_e": 2.3749,
+        "ad": "Chinese Violet"
+      },
+      "ikinci_aday": {
+        "kod": "18-3415 TCX",
+        "hex": "#725671",
+        "delta_e": 2.8444,
+        "ad": "Grape Jam"
+      },
+      "podyum_payi": 7.633425192254625e-5,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 77.24307411173929,
+        "a": -17.913621247551788,
+        "b": 34.69770462625625
+      },
+      "hex": "#B5C77D",
+      "pantone": {
+        "kod": "13-0331 TCX",
+        "hex": "#AFCB80",
+        "delta_e": 2.4069,
+        "ad": "Sap Green"
+      },
+      "ikinci_aday": {
+        "kod": "13-0324 TCX",
+        "hex": "#BED38E",
+        "delta_e": 3.3162,
+        "ad": "Lettuce Green"
+      },
+      "podyum_payi": 7.606677823127474e-5,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 75.66620849747454,
+        "a": 25.59168129839531,
+        "b": -3.9359116853353386
+      },
+      "hex": "#E6AAC2",
+      "pantone": {
+        "kod": "14-2710 TCX",
+        "hex": "#E9ADCA",
+        "delta_e": 1.6143,
+        "ad": "Lilac Sachet"
+      },
+      "ikinci_aday": {
+        "kod": "14-2808 TCX",
+        "hex": "#E8B5CE",
+        "delta_e": 3.0487,
+        "ad": "Sweet Lilac"
+      },
+      "podyum_payi": 7.57244387673257e-5,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 49.03559187822698,
+        "a": 19.52527123762106,
+        "b": -50.36598780492195
+      },
+      "hex": "#5A6ECA",
+      "pantone": {
+        "kod": "18-3946 TCX",
+        "hex": "#5F6DB0",
+        "delta_e": 4.1628,
+        "ad": "Baja Blue"
+      },
+      "ikinci_aday": {
+        "kod": "18-3935 TCX",
+        "hex": "#6479B3",
+        "delta_e": 5.2052,
+        "ad": "Wedgewood"
+      },
+      "podyum_payi": 7.415844079594512e-5,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 55.21899688058359,
+        "a": 49.15696345779062,
+        "b": 43.58528839319799
+      },
+      "hex": "#DD5B3B",
+      "pantone": {
+        "kod": "17-1456 TCX",
+        "hex": "#E2583E",
+        "delta_e": 1.7589,
+        "ad": "Tigerlily"
+      },
+      "ikinci_aday": {
+        "kod": "17-1461 TCX",
+        "hex": "#E2552C",
+        "delta_e": 2.5042,
+        "ad": "Orangeade"
+      },
+      "podyum_payi": 7.347010244214059e-5,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 2,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 30.9536190658307,
+        "a": -9.202466281187384,
+        "b": 11.865809603256526
+      },
+      "hex": "#414C36",
+      "pantone": {
+        "kod": "19-0315 TCX",
+        "hex": "#414F3C",
+        "delta_e": 1.9668,
+        "ad": "Black Forest"
+      },
+      "ikinci_aday": {
+        "kod": "19-0419 TCX",
+        "hex": "#414832",
+        "delta_e": 2.2028,
+        "ad": "Rifle Green"
+      },
+      "podyum_payi": 7.028528218293867e-5,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 59.92638547051812,
+        "a": -16.588192304441648,
+        "b": -9.242811536370318
+      },
+      "hex": "#6299A0",
+      "pantone": {
+        "kod": "16-4719 TCX",
+        "hex": "#5D9CA4",
+        "delta_e": 1.2708,
+        "ad": "Porcelain"
+      },
+      "ikinci_aday": {
+        "kod": "16-5114 TCX",
+        "hex": "#649B9E",
+        "delta_e": 1.6105,
+        "ad": "Dusty Turquoise"
+      },
+      "podyum_payi": 6.16108245171684e-5,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 25.677221367783964,
+        "a": -15.070326177504732,
+        "b": 13.389159502818641
+      },
+      "hex": "#2C4228",
+      "pantone": {
+        "kod": "19-6050 TCX",
+        "hex": "#264E36",
+        "delta_e": 5.5053,
+        "ad": "Eden"
+      },
+      "ikinci_aday": {
+        "kod": "19-6311 TCX",
+        "hex": "#37503D",
+        "delta_e": 5.5186,
+        "ad": "Greener Pastures"
+      },
+      "podyum_payi": 5.773165624466739e-5,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 52.092081224861246,
+        "a": -26.57156719004236,
+        "b": -11.315066561944885
+      },
+      "hex": "#1E898F",
+      "pantone": {
+        "kod": "17-4928 TCX",
+        "hex": "#008C96",
+        "delta_e": 1.9509,
+        "ad": "Lake Blue"
+      },
+      "ikinci_aday": {
+        "kod": "18-4930 TCX",
+        "hex": "#008786",
+        "delta_e": 3.2993,
+        "ad": "Tropical Green"
+      },
+      "podyum_payi": 4.167106041874326e-5,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 38.093611579470384,
+        "a": -24.87056984120882,
+        "b": 3.878312852807442
+      },
+      "hex": "#256453",
+      "pantone": {
+        "kod": "18-5418 TCX",
+        "hex": "#29675C",
+        "delta_e": 2.9429,
+        "ad": "Antique Green"
+      },
+      "ikinci_aday": {
+        "kod": "18-5424 TCX",
+        "hex": "#00675B",
+        "delta_e": 3.6038,
+        "ad": "Cadmium Green"
+      },
+      "podyum_payi": 4.0694823414987494e-5,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 53.64770821195306,
+        "a": -31.48296816858757,
+        "b": 29.00561179454023
+      },
+      "hex": "#568D4C",
+      "pantone": {
+        "kod": "17-0133 TCX",
+        "hex": "#699158",
+        "delta_e": 3.6115,
+        "ad": "Fluorite Green"
+      },
+      "ikinci_aday": {
+        "kod": "17-0145 TCX",
+        "hex": "#44883C",
+        "delta_e": 3.6925,
+        "ad": "Online Lime"
+      },
+      "podyum_payi": 3.760261299261044e-5,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 65.21322209441767,
+        "a": 22.373916612850298,
+        "b": 27.004366963614103
+      },
+      "hex": "#D28E6F",
+      "pantone": {
+        "kod": "16-1338 TCX",
+        "hex": "#DE8E65",
+        "delta_e": 3.2925,
+        "ad": "Copper Tan"
+      },
+      "ikinci_aday": {
+        "kod": "16-1328 TCX",
+        "hex": "#C48A69",
+        "delta_e": 3.4892,
+        "ad": "Sandstone"
+      },
+      "podyum_payi": 3.75717560585789e-5,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 60.728086922998784,
+        "a": -7.288755526058699,
+        "b": 52.72274607764804
+      },
+      "hex": "#A1942E",
+      "pantone": {
+        "kod": "16-0543 TCX",
+        "hex": "#9A9738",
+        "delta_e": 3.0991,
+        "ad": "Golden Lime"
+      },
+      "ikinci_aday": {
+        "kod": "16-0545 TCX",
+        "hex": "#9C9A40",
+        "delta_e": 3.9254,
+        "ad": "Split Pea"
+      },
+      "podyum_payi": 3.46965603877513e-5,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 2,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 71.5844417533375,
+        "a": -23.032538227738424,
+        "b": 51.2363023350934
+      },
+      "hex": "#A3B94D",
+      "pantone": {
+        "kod": "16-0230 TCX",
+        "hex": "#9BB53E",
+        "delta_e": 1.9982,
+        "ad": "Macaw Green"
+      },
+      "ikinci_aday": {
+        "kod": "14-0445 TCX",
+        "hex": "#B5BF50",
+        "delta_e": 3.6024,
+        "ad": "Bright Chartreuse"
+      },
+      "podyum_payi": 2.8093434022908674e-5,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 32.15731393768389,
+        "a": 14.760980895013246,
+        "b": 28.19498750718697
+      },
+      "hex": "#6C421F",
+      "pantone": {
+        "kod": "18-1048 TCX",
+        "hex": "#704822",
+        "delta_e": 2.3673,
+        "ad": "Monks Robe"
+      },
+      "ikinci_aday": {
+        "kod": "18-1028 TCX",
+        "hex": "#684832",
+        "delta_e": 4.9316,
+        "ad": "Emperador"
+      },
+      "podyum_payi": 2.7642060541688793e-5,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 73.09250513986098,
+        "a": -10.745837307742145,
+        "b": 47.70467652416976
+      },
+      "hex": "#BCB759",
+      "pantone": {
+        "kod": "15-0538 TCX",
+        "hex": "#B0B454",
+        "delta_e": 2.8422,
+        "ad": "Green Oasis"
+      },
+      "ikinci_aday": {
+        "kod": "15-0543 TCX",
+        "hex": "#B5B644",
+        "delta_e": 3.0486,
+        "ad": "Apple Green"
+      },
+      "podyum_payi": 2.5599532792889817e-5,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 54.10578624173927,
+        "a": -11.109248884240856,
+        "b": -12.45920240855348
+      },
+      "hex": "#5C8896",
+      "pantone": {
+        "kod": "17-4320 TCX",
+        "hex": "#5C899B",
+        "delta_e": 1.5212,
+        "ad": "Adriatic Blue"
+      },
+      "ikinci_aday": {
+        "kod": "17-4412 TCX",
+        "hex": "#6D8994",
+        "delta_e": 3.8605,
+        "ad": "Smoke Blue"
+      },
+      "podyum_payi": 2.32631581914521e-5,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 46.896516281042445,
+        "a": 24.055710104420335,
+        "b": -39.76280125250162
+      },
+      "hex": "#7264B2",
+      "pantone": {
+        "kod": "17-3834 TCX",
+        "hex": "#7E6EAC",
+        "delta_e": 4.9961,
+        "ad": "Dahlia Purple"
+      },
+      "ikinci_aday": {
+        "kod": "18-3833 TCX",
+        "hex": "#696BA0",
+        "delta_e": 5.3102,
+        "ad": "Dusted Peri"
+      },
+      "podyum_payi": 2.1442830911127327e-5,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 20.681226765242506,
+        "a": -4.3129483850499835,
+        "b": 19.97781208075536
+      },
+      "hex": "#353313",
+      "pantone": {
+        "kod": "19-0419 TCX",
+        "hex": "#414832",
+        "delta_e": 8.8959,
+        "ad": "Rifle Green"
+      },
+      "ikinci_aday": {
+        "kod": "19-0417 TCX",
+        "hex": "#3A4032",
+        "delta_e": 9.1047,
+        "ad": "Kombu Green"
+      },
+      "podyum_payi": 1.760444570935647e-5,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 39.90643430908338,
+        "a": 36.11290681937122,
+        "b": 10.950413318823871
+      },
+      "hex": "#97434E",
+      "pantone": {
+        "kod": "18-1631 TCX",
+        "hex": "#95424E",
+        "delta_e": 0.7918,
+        "ad": "Earth Red"
+      },
+      "ikinci_aday": {
+        "kod": "19-1840 TCX",
+        "hex": "#973443",
+        "delta_e": 3.6126,
+        "ad": "Deep Claret"
+      },
+      "podyum_payi": 1.5548041386402458e-5,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    },
+    {
+      "sezon": "SS27",
+      "kume_merkezi": {
+        "L": 75.62202065452233,
+        "a": 19.479820068190257,
+        "b": 38.837678876182395
+      },
+      "hex": "#F1AB73",
+      "pantone": {
+        "kod": "14-1133 TCX",
+        "hex": "#ECAA79",
+        "delta_e": 1.7228,
+        "ad": "Apricot Nectar"
+      },
+      "ikinci_aday": {
+        "kod": "14-1231 TCX",
+        "hex": "#FFB181",
+        "delta_e": 4.0031,
+        "ad": "Peach Cobbler"
+      },
+      "podyum_payi": 4.3396000240456525e-6,
+      "onceki_sezon_farki": 0.0,
+      "yon": "duz",
+      "marka_sayisi": 1,
+      "segment_raf_tahmini": {}
+    }
+  ]
+}
