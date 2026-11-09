@@ -1,0 +1,72 @@
+{
+ "not": "ISCTR olay çizelgesi (ajan araştırması, web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "ISCTR",
+   "sektor": null,
+   "baslangic": "2026-02-06",
+   "bitis": "2026-02-06",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "İş Bankası 2025 net kârı 67,87 milyar TL (2024: 45,54 milyar TL)",
+   "anlam": "4Ç25 sonuçları 6 Şubat 2026'da açıklandı; yıllık net kâr yaklaşık %49 arttı, özkaynak ~504,8 milyar TL. Beklenti verisi görülmedi; tek ikincil kaynak.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.45,
+   "etiketler": [
+    "bilanco",
+    "2025"
+   ],
+   "kaynaklar": [
+    "https://rotaborsa.com/turkiye-is-bankasinin-isctr-bedelsiz-sermaye-artirimi-potansiyeli-yukseldi/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 67870000000.0,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ISCTR",
+   "sektor": null,
+   "baslangic": "2026-07-16",
+   "bitis": "2026-07-16",
+   "kamuya_acilma": null,
+   "tur": "borclanma",
+   "baslik": "İş Bankası 500 milyon USD'lik 12 yıl vadeli Tier 2 eurobond ihraç etti (%8,40 kupon)",
+   "anlam": "16 Temmuz 2026'da başlatılan ihraç 7. yılda çağrı opsiyonlu; kupon başlangıç rehberinden 35 baz puan düşük %8,40'a bağlandı. Türk bankasının en uzun vadeli Tier 2'si olarak aktarıldı; son bir yılda toplam 1,5 milyar USD Tier 2.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.75,
+   "etiketler": [
+    "Tier2",
+    "eurobond"
+   ],
+   "kaynaklar": [
+    "https://www.isbank.com.tr/en/about-us/isbank-issues-usd-500-million-tier-2-eurobond",
+    "https://www.txfnews.com/news/74478/isbank-prices-longest-turkish-bank-tier-two-at-8-4"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 500000000.0,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": 144
+   }
+  }
+ ]
+}

@@ -1,0 +1,142 @@
+{
+ "not": "TKFEN olay çizelgesi (ajan araştırması, web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "TKFEN",
+   "sektor": null,
+   "baslangic": "2024-08-08",
+   "bitis": "2024-08-08",
+   "kamuya_acilma": "2024-08-08T19:10",
+   "tur": "yeni_is",
+   "baslik": "Tekfen İnşaat, Maaden Phosphate 3 Faz 1 projesini (Suudi Arabistan) yaklaşık 235 milyon USD'ye aldı",
+   "anlam": "KAP bildirimi 8 Ağustos 2024 19:10'da yayımlandı; proje maliyeti yaklaşık 235 milyon USD, süre 24 ay. Ocak 2025'te Maaden ile sözleşme ~234 milyon USD olarak imzalandı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.85,
+   "etiketler": [
+    "Maaden",
+    "Suudi_Arabistan",
+    "fosfat"
+   ],
+   "kaynaklar": [
+    "https://www.getmidas.com/midasin-kulaklari/tekfen-holding-suudi-arabistanda-ihale-aldi-p-44757",
+    "https://www.bloomberght.com/tekfen-suudi-arabistan-da-ihale-aldi-2358124"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 235000000.0,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": 24
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "TKFEN",
+   "sektor": null,
+   "baslangic": "2025-02-25",
+   "bitis": "2025-02-25",
+   "kamuya_acilma": null,
+   "tur": "dava_ceza",
+   "baslik": "Rusya'da Kharampurneftegaz davasında ilk derece mahkemesi Tekfen İnşaat'ın taleplerini reddetti (~111,5 milyon USD)",
+   "anlam": "25 Şubat 2025 duruşmasında mahkeme talepleri sözlü olarak reddetti; talep yaklaşık 9,95 milyar ruble (~111,5 milyon USD). Tekfen gerekçeli karardan sonra üst mahkemeye başvuracağını açıkladı. İstinaf sonucu bulunamadı.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.65,
+   "etiketler": [
+    "Rusya",
+    "dava",
+    "Kharampurneftegaz"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/tekfen-holding-tkfen-rusya-davasinin-kararini-acikladi/",
+    "https://www.ekonomist.com.tr/borsa/tekfen-holding-den-rusya-daki-davaya-iliskin-aciklama-57863"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 111500000.0,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "TKFEN",
+   "sektor": null,
+   "baslangic": "2025-06-17",
+   "bitis": "2025-06-17",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Tekfen genel kurulu brüt 0,3318530 TL/hisse nakit temettü kabul etti (dağıtım 31 Aralık 2025 / 5 Ocak 2026)",
+   "anlam": "17 Haziran 2025 genel kurulunda 2024 kârından net 0,282075 TL; toplam ~122,7 milyon TL dağıtılacak. Dağıtım tarihi 31 Aralık 2025'ten 5 Ocak 2026'ya alındığı bildirildi, bu doğrulanmalı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.5,
+   "etiketler": [
+    "temettu"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/hissesi-tavan-olan-tekfen-holdingden-temettu-duyurusu/",
+    "https://www.capital.com.tr/haberler/tum-haberler/tekfen-holding-temettu-kararini-duyurdu"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 0.331853,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "TKFEN",
+   "sektor": null,
+   "baslangic": "2026-08-03",
+   "bitis": "2026-08-03",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Tekfen yönetimi 2025 faaliyet yılı için kâr dağıtılmamasını önerdi (5,71 milyar TL zarar)",
+   "anlam": "KAP bildirimine göre karar 3 Ağustos 2026, genel kurul 3 Eylül 2026; dağıtılabilir kâr oluşmadığı için nakit/bedelsiz temettü yok. 2025 yıl sonu zararı 5.712.712.000 TL olarak aktarıldı.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.5,
+   "etiketler": [
+    "temettu",
+    "zarar",
+    "2025"
+   ],
+   "kaynaklar": [
+    "https://kap.org.tr/en/api/BildirimPdf/1658689"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": -5712712000.0,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

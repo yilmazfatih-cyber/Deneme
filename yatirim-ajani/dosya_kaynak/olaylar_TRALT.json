@@ -1,0 +1,175 @@
+{
+ "not": "TRALT olay çizelgesi (ajan araştırması, web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "TRALT",
+   "sektor": null,
+   "baslangic": "2025-11-24",
+   "bitis": "2025-11-24",
+   "kamuya_acilma": null,
+   "tur": "haber",
+   "baslik": "Koza Altın unvanı Türk Altın İşletmeleri oldu; işlem kodu KOZAL'dan TRALT'a geçti",
+   "anlam": "Borsa İstanbul duyurusuna göre şirketin unvanı Türk Altın İşletmeleri A.Ş. oldu ve KOZAL kodu 24 Kasım 2025'ten itibaren TRALT olarak değişti. Aynı gün KOZAA TRMET, IPEKE TRENJ oldu; vadeli işlem ve varant kodları da güncellendi. Operasyonel değil, teknik bir değişiklik.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.9,
+   "etiketler": [
+    "kod_degisikligi",
+    "KOZAL",
+    "TRALT",
+    "unvan"
+   ],
+   "kaynaklar": [
+    "https://www.ekonomim.com/ekonomi/borsa-istanbulda-uc-sirkette-isim-ve-kod-degisikligi-haberi-854286",
+    "https://www.cnbce.com/borsa/borsa-istanbulda-uc-sirketin-islem-kodlari-degisiyor-h19641"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "TRALT",
+   "sektor": null,
+   "baslangic": "2026-06-29",
+   "bitis": "2026-06-29",
+   "kamuya_acilma": null,
+   "tur": "geri_alim",
+   "baslik": "TRALT yönetim kurulu 3 yıllık pay geri alım programı onayladı",
+   "anlam": "Arama özetine göre yönetim kurulu 29 Haziran 2026'da 3 yıl süreli geri alım programı onayladı; temmuz ayında alımlar bildirildi. Program tutarı özetlerde görülmedi. 17 Eylül 2026 itibarıyla geri alınan pay yaklaşık %3,72 (1.135.952 TL nominal, ortalama 48,82 TL), 1 Ekim 2026'da %3,85 olarak aktarıldı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.5,
+   "etiketler": [
+    "geri_alim",
+    "TRALT"
+   ],
+   "kaynaklar": [
+    "https://rotaborsa.com/turk-altin-isletmelerinden-tralt-geri-alim-aciklamasi-22/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": 36
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "TRALT",
+   "sektor": null,
+   "baslangic": "2026-08-11",
+   "bitis": "2026-08-11",
+   "kamuya_acilma": null,
+   "tur": "regulasyon",
+   "baslik": "SPK, TRALT paylarında piyasa bozucu eylem şüphesiyle tedbir kararı aldı",
+   "anlam": "Arama özetine göre 11 Ağustos 2026 tarihli SPK bülteni TRALT ve GOZDE'yi listeleyerek TRALT işlemlerinde piyasa bozucu eylem şüphesi nedeniyle tedbir uyguladı. Tedbirin türü (brüt takas, tek fiyat vb.) özetlerde görülmedi; doğrulanmalı.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.45,
+   "etiketler": [
+    "SPK",
+    "tedbir",
+    "likidite"
+   ],
+   "kaynaklar": [
+    "https://rotaborsa.com/?p=481409"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "TRALT",
+   "sektor": null,
+   "baslangic": "2026-08-28",
+   "bitis": "2026-08-28",
+   "kamuya_acilma": null,
+   "tur": "is_iliskisi",
+   "baslik": "TRALT, AzerGold ile altın madenciliği işbirliği görüşmesi yürüttüğünü duyurdu",
+   "anlam": "Arama özetine göre 28 Ağustos 2026 tarihli açıklamada AzerGold Cjsc ile olası altın madenciliği işbirliği için görüşmeler bildirildi. Kesin anlaşma, tutar veya hisse payı yok; yalnızca niyet düzeyinde.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.4,
+   "etiketler": [
+    "AzerGold",
+    "isbirligi",
+    "maden"
+   ],
+   "kaynaklar": [
+    "https://rotaborsa.com/?p=485261"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "TRALT",
+   "sektor": null,
+   "baslangic": "2026-05-01",
+   "bitis": "2026-06-30",
+   "kamuya_acilma": null,
+   "tur": "haber",
+   "baslik": "TRALT kayıtlı sermaye tavanı 5 milyar TL'den 10 milyar TL'ye çıkarma süreci (2026-2030 geçerlilik)",
+   "anlam": "Arama özetine göre mayıs 2026 duyurusunda kayıtlı sermaye tavanının 5 milyardan 10 milyar TL'ye çıkarılması ve haziranda geçerlilik süresinin 2026-2030'a uzatılması yer aldı. Kesin gün doğrulanamadı (ayın 1'i yer tutucudur); bedelsiz/bedelli kararı değildir.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.3,
+   "etiketler": [
+    "kayitli_sermaye",
+    "bedelsiz_potansiyeli"
+   ],
+   "kaynaklar": [
+    "https://kap.org.tr/tr/api/BildirimPdf/1636618"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 10000000000.0,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

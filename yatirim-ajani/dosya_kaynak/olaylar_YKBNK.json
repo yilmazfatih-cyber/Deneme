@@ -1,0 +1,39 @@
+{
+ "not": "YKBNK olay çizelgesi (ajan araştırması, web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "YKBNK",
+   "sektor": null,
+   "baslangic": "2025-08-26",
+   "bitis": "2025-08-26",
+   "kamuya_acilma": null,
+   "tur": "borclanma",
+   "baslik": "Yapı Kredi yurt dışı ilave ana sermaye (AT1) ihracı için bankalara yetki verdi",
+   "anlam": "26 Ağustos 2025 KAP açıklaması: USD AT1 ihracı için uluslararası bankalar yetkilendirildi. Sonrasında tamamlanan ihraç 500 milyon USD (banka duyurusu) veya 600 milyon USD (CEO 9A25 sunumu) olarak farklı aktarıldı; tarih ve kesin tutar doğrulanamadı. Talep yaklaşık 3 katı, boyut ihraç sırasında artırıldı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.5,
+   "etiketler": [
+    "AT1",
+    "ilave_ana_sermaye"
+   ],
+   "kaynaklar": [
+    "https://www.finansopia.com/kap-bildirimleri/yapi-kredi-ykbnk-yabanci-bankalara-yetki-verdi/",
+    "https://www.yapikredi.com.tr/medium/file/yapi-kredi-500-milyon-dolarlik-ilave-ana-sermaye-tahvil-ihracini-basariyla-tamamladi_72516/download"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 500000000.0,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

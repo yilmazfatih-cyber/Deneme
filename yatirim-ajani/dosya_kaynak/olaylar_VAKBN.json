@@ -1,0 +1,103 @@
+{
+ "not": "VAKBN olay çizelgesi (ajan araştırması, web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "VAKBN",
+   "sektor": null,
+   "baslangic": "2025-09-30",
+   "bitis": "2025-09-30",
+   "kamuya_acilma": null,
+   "tur": "borclanma",
+   "baslik": "VakıfBank 500 milyon USD'lik ilave ana sermaye (AT1) ihracını tamamladı",
+   "anlam": "Capital haberi 30 Eylül 2025 tarihli; yurt dışı kurumsal yatırımcılara AT1 ihracı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.6,
+   "etiketler": [
+    "AT1",
+    "eurobond"
+   ],
+   "kaynaklar": [
+    "https://www.capital.com.tr/sirket-panosu/sirket-panosu-haberleri/vakifbank-500-milyon-dolarlik-ilave-ana-sermaye-ihraci-gerceklestirdi"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 500000000.0,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "VAKBN",
+   "sektor": null,
+   "baslangic": "2025-11-18",
+   "bitis": "2025-11-18",
+   "kamuya_acilma": null,
+   "tur": "derecelendirme",
+   "baslik": "Fitch, VakıfBank, Ziraat ve TSKB'nin uzun vadeli YP notunu B+'dan BB-'ye yükseltti",
+   "anlam": "18 Kasım 2025 tarihli aktarıma göre not artırımı, ülke notu artışının ardından geldi. Halkbank bu duyuruda yer almıyor.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.55,
+   "etiketler": [
+    "Fitch",
+    "not_artirimi"
+   ],
+   "kaynaklar": [
+    "https://www.forbes.com.tr/ekonomi/fitch-dort-turk-bankasinin-notunu-revize-etti"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "VAKBN",
+   "sektor": null,
+   "baslangic": "2026-03-01",
+   "bitis": "2026-03-01",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "VakıfBank 2025 kârından temettü dağıtmama kararı (genel kurul tablosu hisse başına ödeme içermiyor)",
+   "anlam": "Arama özetine göre 2025 kârından net hisse başı ödeme yok; 2025 net kârı yaklaşık 70 milyar TL aktarıldı. Karar günü doğrulanamadı (mart başı yer tutucu).",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.3,
+   "etiketler": [
+    "temettu_yok"
+   ],
+   "kaynaklar": [
+    "https://webserver.vakifbank.com.tr/en/investor-relations/press-release"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 70000000000.0,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

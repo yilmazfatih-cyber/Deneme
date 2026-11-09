@@ -1,0 +1,171 @@
+{
+ "not": "HALKB olay çizelgesi (ajan araştırması, web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "HALKB",
+   "sektor": null,
+   "baslangic": "2025-03-25",
+   "bitis": "2025-03-25",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Halkbank 2024 kârından temettü dağıtmama kararı aldı",
+   "anlam": "25 Mart 2025 KAP bildirimine göre kâr dağıtımı yapılmayacak; son nakit temettü 2018'de ödenmişti.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.6,
+   "etiketler": [
+    "temettu_yok"
+   ],
+   "kaynaklar": [
+    "https://fintables.com/sirketler/HALKB/sermaye-artirimlari-temettuler",
+    "https://rotaborsa.com/etiket/halkb/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "HALKB",
+   "sektor": null,
+   "baslangic": "2025-06-01",
+   "bitis": "2025-06-01",
+   "kamuya_acilma": null,
+   "tur": "borclanma",
+   "baslik": "Halkbank 700 milyon USD'lik AT1 eurobond ihraç etti (%9,30)",
+   "anlam": "Mart 2026 haberinde 'geçen yıl haziranda' 700 milyon USD, %9,30 kuponlu AT1 satıldığı belirtildi; gün doğrulanamadı (ayın 1'i yer tutucu). 2016'dan sonra eurobond piyasasına dönüşle ilişkili.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.4,
+   "etiketler": [
+    "AT1",
+    "eurobond"
+   ],
+   "kaynaklar": [
+    "https://www.intellinews.com/istanbul-listed-halkbank-sells-210mn-at1-eurobond-at-8-30-amid-iran-war-433395"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 700000000.0,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "HALKB",
+   "sektor": null,
+   "baslangic": "2025-12-15",
+   "bitis": "2025-12-15",
+   "kamuya_acilma": null,
+   "tur": "borclanma",
+   "baslik": "Halkbank 300 milyon USD'lik AT1 eurobond ihraç etti (%8,90)",
+   "anlam": "Aralık 2025 ihracı Clifford Chance haberiyle teyitli; kupon %8,90 intellinews'ten. Gün doğrulanamadı (15'i yer tutucu).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.4,
+   "etiketler": [
+    "AT1",
+    "eurobond"
+   ],
+   "kaynaklar": [
+    "https://www.cliffordchance.com/news/news/2025/12/clifford-chance-advises-citi-and-icbc-standard-bank-on-halkbanks-landmark-at1-issuance.html",
+    "https://www.intellinews.com/istanbul-listed-halkbank-sells-210mn-at1-eurobond-at-8-30-amid-iran-war-433395"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 300000000.0,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "HALKB",
+   "sektor": null,
+   "baslangic": "2026-03-23",
+   "bitis": "2026-03-23",
+   "kamuya_acilma": null,
+   "tur": "borclanma",
+   "baslik": "Halkbank 210 milyon USD'lik AT1 eurobond ihraç etti (%8,30)",
+   "anlam": "23 Mart 2026'da duyurulan, süresiz ve 5. yılda çağrılabilir AT1; ihraç İran savaşı ortamında yapıldı (kaynak başlığı).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.6,
+   "etiketler": [
+    "AT1",
+    "eurobond"
+   ],
+   "kaynaklar": [
+    "https://www.intellinews.com/istanbul-listed-halkbank-sells-210mn-at1-eurobond-at-8-30-amid-iran-war-433395"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 210000000.0,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "HALKB",
+   "sektor": null,
+   "baslangic": "2026-06-25",
+   "bitis": "2026-06-25",
+   "kamuya_acilma": null,
+   "tur": "borclanma",
+   "baslik": "Halkbank 11 milyar TL nominal TL cinsi AT1 (sermaye benzeri) tahvil ihracını tamamladı",
+   "anlam": "25 Haziran 2026'da tamamlanan ihraç TLREF + %2,90 getirili. Mayıs 2026'da 50 milyar TL'lik yurt içi ihraç tavanı SPK onayı da aldı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.6,
+   "etiketler": [
+    "AT1",
+    "TL_tahvil"
+   ],
+   "kaynaklar": [
+    "https://borsaatlas.com/2026/06/25/halkb-11-milyar-tl-sermaye-tahvili/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 11000000000.0,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

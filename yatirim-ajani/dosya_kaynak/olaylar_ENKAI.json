@@ -1,0 +1,176 @@
+{
+ "not": "ENKAI olay çizelgesi (ajan araştırması, web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "ENKAI",
+   "sektor": null,
+   "baslangic": "2025-05-26",
+   "bitis": "2025-05-26",
+   "kamuya_acilma": null,
+   "tur": "yeni_is",
+   "baslik": "Enka iştiraki Çimtaş, ABD'li havacılık şirketiyle 527,5 milyon USD'lik 2026-2033 parça üretim sözleşmesi imzaladı",
+   "anlam": "Rota Borsa KAP tarihini 26 Mayıs 2025 olarak verirken başka bir arama özeti Ekim 2025 diyor; tarih çelişkili. Çimtaş (Enka grubu) 2026-2033 arası bileşen üretimi için toplam 527,5 milyon dolarlık sözleşme aldı; inşaat dışı bir gelir kalemidir.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.4,
+   "etiketler": [
+    "Cimtas",
+    "havacilik",
+    "sozlesme"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/enka-insaat-istiraki-527-5-milyon-dolarlik-sozlesme-imzaladi/",
+    "https://rotaborsa.com/?p=323092"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 527500000.0,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": 96
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ENKAI",
+   "sektor": null,
+   "baslangic": "2025-09-14",
+   "bitis": "2025-09-14",
+   "kamuya_acilma": null,
+   "tur": "yeni_is",
+   "baslik": "Enka, Irak Basra'da TotalEnergies GGIP projesi için 1 milyar USD'yi aşan sözleşme imzaladı",
+   "anlam": "Arama özetine göre Basra bölgesindeki Gas Growth Integrated Project (TotalEnergies) için sözleşme değeri 1 milyar doları aştı, devreye alma 3 yıldan kısa. Tarih tek kaynaktan (14 Eylül 2025) ve tam tutar belirtilmedi.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.35,
+   "etiketler": [
+    "Irak",
+    "TotalEnergies",
+    "GGIP",
+    "enerji"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/enka-insaattan-1-milyar-dolarlik-irak-enerji-projesi-hamlesi/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 1000000000.0,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": 36
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ENKAI",
+   "sektor": null,
+   "baslangic": "2025-12-05",
+   "bitis": "2025-12-05",
+   "kamuya_acilma": null,
+   "tur": "yeni_is",
+   "baslik": "Enka, Mozambik Temane 456 MW santrali için 158,5 milyon USD'lik sözleşme imzaladı",
+   "anlam": "5 Aralık 2025 KAP açıklamasına göre Temane bağımsız enerji santralinin inşaat ve hizmetleri için sözleşme 158,5 milyon dolar, tamamlanma 23 ay. Bir başlık 158,8 milyon yazıyor; gövde metni 158,5.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.75,
+   "etiketler": [
+    "Mozambik",
+    "Temane",
+    "enerji_santrali"
+   ],
+   "kaynaklar": [
+    "https://www.hisse.net/haber/enka-enkai-dan-158-5-milyon-dolarlik-yeni-enerji-sozlesmesi-37957",
+    "https://www.getmidas.com/midasin-kulaklari/enka-insaat-1585-milyon-dolarlik-sozlesme-imzaladi-p-224994"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 158500000.0,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": 23
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ENKAI",
+   "sektor": null,
+   "baslangic": "2026-04-10",
+   "bitis": "2026-04-10",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Enka İnşaat 2025 kârından hisse başına brüt 2,10 TL temettü (ödeme 10 Nisan 2026)",
+   "anlam": "Mart 2026'da duyurulan öneri brüt 2,10 TL/hisse (%210); net 1,79 TL, hak tarihi 8 Nisan, ödeme 10 Nisan 2026 olarak aktarıldı. Karar günü özetlerde görülmedi.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.55,
+   "etiketler": [
+    "temettu",
+    "brut_2.10"
+   ],
+   "kaynaklar": [
+    "https://www.finansopia.com/kap-bildirimleri/enka-insaat-enkai-2026-yili-temettu-kararini-acikladi/",
+    "https://www.hisse.net/haber/enkai-yarin-yuzde-210-oraninda-temettu-verecek-72979"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 2.1,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ENKAI",
+   "sektor": null,
+   "baslangic": "2026-11-06",
+   "bitis": "2026-11-06",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Enka İnşaat KAP'ta temettü avansı kararı duyurdu (tutar görülmedi)",
+   "anlam": "Arama özetine göre 6 Kasım 2026'da temettü avansı kararı açıklandı; tutar ve koşullar doğrulanamadı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.3,
+   "etiketler": [
+    "temettu_avansi"
+   ],
+   "kaynaklar": [
+    "https://rotaborsa.com/?p=494243"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

@@ -1,0 +1,105 @@
+{
+ "not": "GARAN olay çizelgesi (ajan araştırması, web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "GARAN",
+   "sektor": null,
+   "baslangic": "2025-06-24",
+   "bitis": "2025-06-24",
+   "kamuya_acilma": null,
+   "tur": "borclanma",
+   "baslik": "Garanti BBVA yurt dışında sermaye benzeri (subordine) eurobond ihracı duyurdu",
+   "anlam": "Banka 24 Haziran 2025 tarihli bildirimle yurt dışı subordine eurobond ihracını açıkladı; tutar bu aramada görülmedi. Banka 2 yılda toplam 2,45 milyar USD sermaye benzeri tahvil ihraç ettiğini belirtti.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.4,
+   "etiketler": [
+    "Tier2",
+    "eurobond"
+   ],
+   "kaynaklar": [
+    "https://www.garantibbvainvestorrelations.com/en/images/pdf/20250624_Annoucement_about_the_issuance-of-subordinated-eurobond-abroad.pdf"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "GARAN",
+   "sektor": null,
+   "baslangic": "2025-10-15",
+   "bitis": "2025-10-15",
+   "kamuya_acilma": null,
+   "tur": "borclanma",
+   "baslik": "Garanti BBVA 700 milyon USD'lik Tier 2 tahvil ihraç etti (%7,625 getiri, ~1,8 milyar USD talep)",
+   "anlam": "10,5 yıl vadeli, 5,5 yıl sonra erken itfalı ihraç 15 Ekim 2025'te kapandı; talep yaklaşık 1,8 milyar USD. İki yılda toplam sermaye benzeri ihraç 2,45 milyar USD'ye ulaştı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.7,
+   "etiketler": [
+    "Tier2",
+    "sermaye_benzeri"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/borsa/garanti-bbva-tahvil-ihraciyla-700-milyon-dolar-borclandi-h18052",
+    "https://www.ekonomim.com/sirketler/garanti-bbvadan-2-yilda-245-milyar-dolarlik-sermaye-benzeri-tahvil-ihraci-haberi-848975"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 700000000.0,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": 126
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "GARAN",
+   "sektor": null,
+   "baslangic": "2026-03-31",
+   "bitis": "2026-03-31",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Garanti BBVA genel kurulu 2025 kârından 22,12 milyar TL brüt nakit temettü kararı aldı",
+   "anlam": "31 Mart 2026 genel kurulu; hisse başına net ~4,4769 TL (brüt ~5,27 TL, çıkarım). Bir kaynak net 4,67 TL yazıyor, tutarsızlık var.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.55,
+   "etiketler": [
+    "temettu",
+    "genel_kurul"
+   ],
+   "kaynaklar": [
+    "https://www.hisse.net/haber/garanti-bbva-garan-2026-hedef-fiyatlari-aciklandi-38014"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 22120000000.0,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": 5.27,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

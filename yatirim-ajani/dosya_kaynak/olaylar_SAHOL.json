@@ -1,0 +1,345 @@
+{
+ "not": "SAHOL olay çizelgesi (ajan araştırması, web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "SAHOL",
+   "sektor": null,
+   "baslangic": "2025-04-02",
+   "bitis": "2025-04-02",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Sabancı Holding 2024 kârından brüt 3,00 TL nakit temettü ödedi",
+   "anlam": "Arama özetine göre 2024 faaliyet yılı için hisse başına brüt 3,00 TL (net 2,55 TL) nakit temettü 2 Nisan 2025'te ödendi. Karar tarihi özetlerde görülmedi.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.55,
+   "etiketler": [
+    "temettu",
+    "brut_3.00"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/sabanci-holding-sahol-2025-icin-temettu-kararini-paylasti/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 3.0,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "SAHOL",
+   "sektor": null,
+   "baslangic": "2025-12-15",
+   "bitis": "2025-12-15",
+   "kamuya_acilma": null,
+   "tur": "haber",
+   "baslik": "Sabancı Holding, CarrefourSA satışı veya bölünmesi haberlerini yalanladı",
+   "anlam": "Daily Sabah'a göre 15 Aralık 2025'te holding gıda perakendecisi CarrefourSA'nın satışı/bölünmesi haberlerini yalanladı. Sonraki dönemde holding CarrefourSA'daki payını devretti (aşağıdaki not), bu yüzden yalanlama zamanlama açısından belirsizlik yarattı.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.5,
+   "etiketler": [
+    "CarrefourSA",
+    "yalanlama",
+    "iştirak"
+   ],
+   "kaynaklar": [
+    "https://www.dailysabah.com/business/economy/turkish-sabanci-holding-denies-sale-division-of-its-food-retailer",
+    "https://paratic.com/sabancidan-carrefoursa-satis-iddialarina-yalanlama/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "SAHOL",
+   "sektor": null,
+   "baslangic": "2025-12-18",
+   "bitis": "2025-12-18",
+   "kamuya_acilma": null,
+   "tur": "geri_alim",
+   "baslik": "Sabancı Holding geri alım programı azami süre dolduğu için sona erdi",
+   "anlam": "KAP özetine göre 18 Aralık 2025'te program kapandı: toplam yaklaşık 106,2 milyon TL nominal (~%5,06) pay alındı, maliyet ~2,8 milyar TL. Geri alınan payların satışından ~4,67 milyar TL gelir elde edildiği (ortalama 46,07 TL) ve portföyde ~4,85 milyon TL nominal kaldığı belirtildi; özetler arasında çelişki var.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.5,
+   "etiketler": [
+    "geri_alim",
+    "program_sonu"
+   ],
+   "kaynaklar": [
+    "https://rotaborsa.com/?p=392278"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 2800000000.0,
+    "para_birimi": "TRY",
+    "oran": 0.0506,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "SAHOL",
+   "sektor": null,
+   "baslangic": "2026-01-28",
+   "bitis": "2026-01-28",
+   "kamuya_acilma": null,
+   "tur": "birlesme_devralma",
+   "baslik": "Sabancı Holding, Akçansa'daki %39,72 payı için bağlayıcı teklif aldığını duyurdu (~1,1 milyar USD değerleme)",
+   "anlam": "28 Ocak 2026 tarihli KAP'a göre bağlayıcı teklif geldi (teklif sahibi özetlerde görülmedi); haberler 1,1 milyar dolar değerlemeden söz etti (net borç/nakit düzeltmeli). Heidelberg'in ön alım hakkı vardı. Holdingin portföy sadeleştirme stratejisinin büyük adımıdır.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.65,
+   "etiketler": [
+    "Akcansa",
+    "iştirak_satisi",
+    "portfoy"
+   ],
+   "kaynaklar": [
+    "https://www.ntv.com.tr/ntvpara/sabanci-holdingden-dev-satis-hisselerini-1-milyar-100-milyon-dolara-satisa-cikardi-1709358",
+    "https://hurriyetdailynews.com/sabanci-holding-receives-1-1-billion-offer-for-akcansa-stake-218337"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 1100000000.0,
+    "para_birimi": "USD",
+    "oran": 0.3972,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "SAHOL",
+   "sektor": null,
+   "baslangic": "2026-04-17",
+   "bitis": "2026-04-17",
+   "kamuya_acilma": null,
+   "tur": "birlesme_devralma",
+   "baslik": "Heidelberg Materials Akçansa payı için ön alım hakkını kullandı",
+   "anlam": "Haberlere göre Heidelberg 17 Nisan 2026'da ön alım hakkını kullanacağını bildirdi; borsa bildirimi 20 Nisan'a atfediliyor. Satış tarafı Heidelberg'e döndü.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.55,
+   "etiketler": [
+    "Akcansa",
+    "on_alim_hakki"
+   ],
+   "kaynaklar": [
+    "https://globalcement.com/news/20670-sabanci-holding-to-sell-akcansa-stake-to-heidelberg-materials",
+    "https://www.forbes.com.tr/para-yatirim/sabanci-holding-akcansa-hisselerini-heidelberg-materials-a-devrediyor"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "SAHOL",
+   "sektor": null,
+   "baslangic": "2026-05-21",
+   "bitis": "2026-05-21",
+   "kamuya_acilma": null,
+   "tur": "birlesme_devralma",
+   "baslik": "Rekabet Kurulu Akçansa pay devrine onay verdi",
+   "anlam": "Rekabet Kurulu, Sabancı Holding'in Akçansa'daki hissesinin Heidelberg Materials'a devrine 21 Mayıs 2026'da onay verdi (22 Mayıs'ta duyuruldu).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.65,
+   "etiketler": [
+    "Akcansa",
+    "Rekabet_Kurulu"
+   ],
+   "kaynaklar": [
+    "https://www.gzt.com/ekonomi/rekabet-kurulu-resmen-onayladi-sabanci-holdingin-akcansa-sirketi-satiliyor-4226335",
+    "https://www.bloomberght.com/rekabet-kurulu-ndan-sabanci-nin-akcansa-pay-satisina-onay-3778439"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "SAHOL",
+   "sektor": null,
+   "baslangic": "2026-06-18",
+   "bitis": "2026-06-18",
+   "kamuya_acilma": null,
+   "tur": "birlesme_devralma",
+   "baslik": "Sabancı Holding Akçansa'daki %39,72 payı 427,9 milyon USD'ye Heidelberg'e sattı",
+   "anlam": "Satış 18 Haziran 2026'da tamamlandı; bedel peşin tahsil edildi. Holding seviyesi net nakit 1Ç26 sonu 13,5 milyar TL'den 35,3 milyar TL'ye çıktı (haber özeti). Önceki 1,1 milyar USD rakamı değerleme/teklif, 427,9 milyon USD ise tamamlanan pay bedelidir; ikisi arasındaki ilişki doğrulanmalı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.7,
+   "etiketler": [
+    "Akcansa",
+    "Heidelberg",
+    "iştirak_satisi",
+    "nakit"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/borsa/sabanci-holding-kapa-duyurdu-428-milyon-dolarlik-satista-yeni-gelisme-h31812",
+    "https://bigpara.hurriyet.com.tr/haberler/genel-haberler/devir-islemleri-tamamlandi-sabancinin-akcansasi-resmen-almanlarin_ID102192957/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 427900000.0,
+    "para_birimi": "USD",
+    "oran": 0.3972,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "SAHOL",
+   "sektor": null,
+   "baslangic": "2026-04-01",
+   "bitis": "2026-04-01",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Sabancı Holding 2025 kârından hisse başına brüt ~1,41356 TL temettü (hak tarihi 1 Nisan 2026)",
+   "anlam": "Yönetim kurulu önerisi brüt 1,413560 TL/hisse; genel kurul 31 Mart 2026'da planlandı. Nihai genel kurul onayı özetlerde görülmedi; ödemenin hak tarihi 1 Nisan 2026 olarak aktarıldı. 2024 temettüsüne (3,00 TL) göre belirgin düşüş.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.5,
+   "etiketler": [
+    "temettu",
+    "dusuk_temettu"
+   ],
+   "kaynaklar": [
+    "https://www.finansopia.com/kap-bildirimleri/sabanci-holding-sahol-2026-yili-temettu-kararini-acikladi/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 1.41356,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "SAHOL",
+   "sektor": null,
+   "baslangic": "2026-10-16",
+   "bitis": "2026-10-16",
+   "kamuya_acilma": null,
+   "tur": "geri_alim",
+   "baslik": "Sabancı Holding yeni geri alım programı: 42 milyon TL nominal, 7 milyar TL fon sınırı, 3 yıl",
+   "anlam": "Haberlere göre yeni programda azami 42 milyon TL nominal pay alınabilecek, fon sınırı 7 milyar TL, süre 3 yıl; alınan paylar program sürerken satılmayacak. Foreks'e göre aynı gün 290.000 TL nominal alım 85,55-86,10 TL aralığında yapıldı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.55,
+   "etiketler": [
+    "geri_alim",
+    "yeni_program"
+   ],
+   "kaynaklar": [
+    "https://www.foreks.com/haber/detay/6ad24557422c786f3f7a489e/FRKS/tr/sabanci-holding-bugun-borsa-istanbul-da-290000-tl-nominal-degerli-pay-geri-alimi-gerceklestirdi-16-10-26/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 7000000000.0,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": 36
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "SAHOL",
+   "sektor": null,
+   "baslangic": "2026-11-05",
+   "bitis": "2026-11-05",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Sabancı Holding 9A26 konsolide net kâr 19,6 milyar TL",
+   "anlam": "5 Kasım 2026'da açıklanan 9 aylık sonuçta konsolide net kâr 19,6 milyar TL. GCM Yatırım aynı gün 132 TL hedef fiyat verdi. Beklenti verisi görülmedi; 3Ç net satışlarda yıllık düşüş (-%35) haberi ayrıca aktarıldı.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.6,
+   "etiketler": [
+    "bilanco",
+    "9ay"
+   ],
+   "kaynaklar": [
+    "https://www.foreks.com/haber/detay/6aec20f495131d72027d7219/FRKS/tr/sabanci-holding-2026-yilinin-ilk-9-ayi-icin-konsolide-net-kari-ise-19-6-milyar-tl-ye-ulasti-05-11-26/",
+    "https://www.capital.com.tr/sirket-panosu/sirket-panosu-haberleri/sabanci-holdingden-2026nin-9-ayinda-196-milyar-lira-konsolide-net-kar"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 19600000000.0,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}
