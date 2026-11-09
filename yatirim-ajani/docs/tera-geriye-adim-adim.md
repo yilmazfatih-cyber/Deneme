@@ -58,6 +58,9 @@ Okuma yönü sağdan sola: her adım, solundaki bir sonraki adımı mümkün kı
 Gedik'e göre tasfiyedeki varlıkların %76,5'i altı Tera fonundaydı; analiz edilen 48 fonun portföyünün %58,6'sı
 "likit olmayabilir"di, üç büyük Tera fonu çıkarıldığında bu oran %23,2'ye iniyordu.
 
+**Tera'nın kararı:** Varlık satıp fiyatları ve fon değerini çökertmek yerine kapıyı kapattı: iadeyi ayda bire
+çekti, krizi "spekülatif atak" diye tanımladı. Yönetimden iki isim bir gün arayla istifa etti.
+
 **O gün ne görülebilirdi?** İade şartı değişikliği: çıkış kapısının kapandığının resmi ilanıydı. Bir para piyasası
 fonunun (TP2) ödeme yapamaması: "risksiz" sanılan fonun da gerçekte likit olmadığı ya da başka bir yükü taşıdığı
 anlamına geliyordu. (TP2'nin neden ödeyemediği hâlâ açık soru; Takasbank fona borç vermediğini açıkladı.)
@@ -78,6 +81,10 @@ anlamına geliyordu. (TP2'nin neden ödeyemediği hâlâ açık soru; Takasbank 
 
 **Bunu ne mümkün kıldı?** TLY'nin ilk üç varlığı portföyün ~%60'ıydı. Yeni kurala uymak için bu pozisyonları
 eritmek gerekecekti, ama bu hisselerin alıcısı fonun kendisiydi. Kural, döngünün "hep alan" tarafını durdurdu.
+
+**Tera'nın kararı:** Pozisyonları eritmedi; Bloomberg'e göre düzenlemeye direnç gösterildi (iddia). Ağustos'ta TLY'deki
+OZATD ağırlığı %41,9'dan %19,8'e indi, aynı ay THF 62 milyar TL giriş aldı. Pozisyonların fonlar arasında dağıtılıp
+dağıtılmadığı açık soru.
 
 **O gün ne görülebilirdi?** Düzenleyicinin "temel verilerle açıklanamayan fiyat" demesi ve en büyük serbest fonun
 portföyünü kural dışı bırakan bir düzenleme. İkisi de kamuya açıktı.
@@ -102,6 +109,10 @@ portföyünü kural dışı bırakan bir düzenleme. İkisi de kamuya açıktı.
 fondan (TLY) grubun diğer fonlarına yaydı: THF'nin son ay girişleri ve TP2'nin büyümesi son yakıttı. Bir fon veri
 sitesine göre THF'nin en büyük varlığı grubun kendi hissesi TERA idi (%8,63; tarih belirsiz).
 
+**Tera'nın kararı:** Döngüyü yeni fonlara yaydı: hisse fonu THF ve para piyasası fonu TP2 yeni para topladı; TP2
+emsallerinin belirgin üstünde getiri gösterdi. Eylül'de Tera fonlarının grubun kendi şirketi TERA'daki toplam payı
+%10'u aştı (KAP).
+
 **O gün ne görülebilirdi?** Bir hisse fonunun bir ayda 77 kat büyümesi. Bir para piyasası fonunun ölçütünün ~12 puan
 üstünde getiri vermesi. Varlıkları ~600 milyon TL olan bir holdingin hissesinin 4.500 TL'yi görmesi. Hepsi TEFAS,
 KAP ve fon bültenlerinde açıktı.
@@ -125,6 +136,9 @@ uyarıdır.
 **Bunu ne mümkün kıldı?** OZATD'nin halka arzını Tera yapmamıştı (lider Vakıf Yatırım). Yani yöntem grubun kendi
 halka arzlarıyla sınırlı değildi: fiili dolaşımı düşük herhangi bir hisse toplanabilirdi (OZATD'de fiili dolaşım
 %16). Yeni para geldikçe yeni bir sığ hisse gerekiyordu; DSTKF ve grup hisseleri zaten çok büyümüştü.
+
+**Tera'nın kararı:** Mevcut hisseler doyunca yeni bir sığ hisse seçti (OZATD) ve kaynağı borçla büyüttü. İddia
+edilen alım kuralı: fiili dolaşımı düşük, fiyatı fon alımıyla taşınabilen hisse; fon tarafında satış yok.
 
 **O gün ne görülebilirdi?** KAP'taki aylık portföy raporunda TLY'nin tek hissede %42'ye çıkması. Hissenin fiili
 dolaşımının %16 olması. Fiyat 17 kat artarken şirketin zarar etmesi. Grup bankasının %42 faizle borçlanması.
@@ -154,6 +168,8 @@ taşımıyorsan o hissede kalma süren, büyük alıcının kalma süresiyle sı
 **Bunu ne mümkün kıldı?** Döngü artık dışarıdan görünüyordu. Tera eleştiriye hukuki yoldan karşılık verdi; iç ekipte
 çatlak oluştu. Ama fiyatlar ve girişler sürdü, çünkü yeni yatırımcı geçmiş getiriye bakıyordu.
 
+**Tera'nın kararı:** Eleştiriye hukuki yol ve kamuoyu açıklamasıyla karşılık verdi; iş modelini değiştirmedi.
+
 **O gün ne görülebilirdi?** Bir finans şirketinin eleştiriye şeffaflıkla değil davayla cevap vermesi. Düzenleyici
 cezası. Uluslararası bir ajansın "bu yükseliş nasıl?" sorusu. Yönetimde istifalar.
 
@@ -168,7 +184,7 @@ cezası. Uluslararası bir ajansın "bu yükseliş nasıl?" sorusu. Yönetimde i
   göre 6 ya da 12 Ağustos) yeniden açıldı. (Resmi: Takasbank açıklaması)
 - Aynı gün (7 Temmuz 2025): Pera Yatırım Holding'in unvanının Tera Yatırım Teknoloji Holding olduğu KAP'ta duyuruldu;
   1 Ağustos'tan itibaren kod TEHOL. 18 Ağustos'ta TEHOL, Barikat İnternet Güvenliği'nin %39,5'ini aldı. (KAP)
-- 28 Ağustos 2025: TLY'deki TERA (grubun kendi hissesi) payı %5,16'ya çıktı. (KAP)
+- 28 Ağustos 2025: TLY'nin, grubun kendi aracı kurumu TERA'nın sermayesindeki payı %5,16'ya çıktı. (KAP pay bildirimi)
 - ~Ağustos 2025: Habertürk, "Bu fonun değeri bir yılda yüzde 4.651 arttı ama nasıl?" başlığıyla fon değeri ve
   yatırımcı sayısı artarken pay adedinin 55 milyondan 18 milyona düştüğünü yazdı. Pay adedinin düşmesi, birilerinin
   yüksek fiyattan pay iade ettiği anlamına gelir; kimin olduğu KAP'ta doğrulanamadı. (Haber)
@@ -181,6 +197,9 @@ cezası. Uluslararası bir ajansın "bu yükseliş nasıl?" sorusu. Yönetimde i
 **Bunu ne mümkün kıldı?** Kapalı dönemde oluşan sicil artık pazarlanabilirdi. TEFAS geniş bir dağıtım kanalı sağladı;
 getiri sıralamaları ve sosyal medya ücretsiz reklam yaptı. Fonun açıldığı gün holding şirketinin yeni "teknoloji
 holding" unvanı da duyuruldu; vitrin ve hikâye birlikte kuruldu (yorum).
+
+**Tera'nın kararı:** Fonu hızla halka açmak (SPK onayı beklemeden, KAP bildirimiyle) ve getiri sıralamasını
+pazarlamak. Grubun kendi şirketi TERA'yı fonlara almak.
 
 **O gün ne görülebilirdi?** Fonun SPK onayı olmadan TEFAS'a açılması ve SPK'nın alımları durdurması: düzenleyiciyle
 ilk açık çatışma. Pay adedinin düşmesi. Grup hissesinin fonun portföyüne girmesi. Bir yılda 40 katı aşan getiri.
@@ -211,6 +230,9 @@ hisselere ihtiyaç vardı. Üç kaynaktan geldi: kendi halka arzı (DSTKF), devr
 TRHOL) ve grubun kendi hissesi (TERA). Bu hisseler aynı zamanda kredi teminatı oldu: fiyat yükseldikçe borçlanma
 kapasitesi de arttı.
 
+**Tera'nın kararı:** Fonun alacağı hisseleri grubun kontrolüne almak: kendi halka arzı (DSTKF), borsadaki
+şirketleri devralmak (PEHOL, TRHOL), kendi hissesi (TERA). Bu hisseleri kredi teminatı olarak da kullanmak.
+
 **O gün ne görülebilirdi?** Halka arzı yapan aracı kurumun fonlarının ilk büyük alıcı olması. Bir aracı kurumun
 borsadaki küçük holding şirketlerini devralıp adlarını değiştirmesi. Grup hisselerinin kredi teminatına verilmesi.
 
@@ -235,6 +257,8 @@ belirler. Bu hisselerde fiyat bir bilgi değil, bir karardır.
 **Bunu ne mümkün kıldı?** Dış yatırımcı yoktu. Fonun alımları fiyatı belirledi, fon değeri yükseldi; kaybedecek dış
 yatırımcı ve itiraz edecek kimse yoktu. Bu sicil sonraki aşamada pazarlama malzemesi oldu.
 
+**Tera'nın kararı:** Fonu kapalı tutup yalnız grubun parasıyla işletmek; sicili dış para gelmeden oluşturmak.
+
 **O gün ne görülebilirdi?** Az: kimin parasının içeride olduğunu MASAK sonradan ortaya çıkardı. Ama KAP'ta fon
 büyüklüğü, yatırımcı sayısı ve aylık portföy dağılımı açıktı. "Bu getiri kaç yatırımcıyla ve hangi hisselerle
 oluştu?" sorusu sorulabilirdi.
@@ -253,6 +277,9 @@ oluştu?" sorusu sorulabilirdi.
 
 **Bunu ne mümkün kıldı?** 1990'dan beri var olan, 2005'te devralınmış bir aracı kurum; borsada işlem gören bir
 şirket, bir portföy şirketi ve bir banka. Döngünün parçaları (hisse arzı, alıcı fon, fonlama) bu yıl tamamlandı.
+
+**Tera'nın kararı:** Aracı kurum, portföy şirketi, banka ve borsada işlem gören şirketi aynı çatı altında
+toplamak.
 
 **Ders:** Aracı kurum + portföy şirketi + banka aynı çatı altındaysa, aralarındaki işlemleri (halka arz tahsisi,
 fonun grup hissesi alımı, grup bankasına mevduat/repo) ayrıca izle.
@@ -279,6 +306,32 @@ milyarderleri arasında saymıştı.
 
 Her halka, bir öncekinin ürettiği fiyatı varsayıyordu. Fiyatı üreten tek şey ise bir sonraki halkanın getireceği
 yeni paraydı.
+
+## Alım-satım kararlarının mantığı (tersine okuma)
+
+- **Fon ne alıyordu?** Grubun halka arz ettiği, devraldığı ya da kendi hisseleri; sonra fiili dolaşımı düşük başka
+  hisseler. Ölçüt şirketin değeri değil, fiyatın fon alımıyla ne kadar kolay taşınabildiğiydi. (İddia + portföy raporları)
+- **Fon ne satıyordu?** Neredeyse hiçbir şey. Satış fiyatı ve fon değerini düşüreceği için pozisyonlar büyüdükçe
+  satılamaz hale geldi. Çıkış ancak yeni girişle ödenebiliyordu.
+- **Kim satıyordu?** Savcılığa göre fon sahiplerinin önceden aldığı hisseler sonra fonlara satıldı. OZATD'de bir ailenin
+  163 milyon TL ile girip 2,2 milyar TL ile çıktığı iddia edildi. TRHOL işlemleri için suç duyurusu yapılan 37 kişinin,
+  etkin pişmanlık süresinde toplam 18,34 milyar TL iade ettiği basına yansıdı. (İddia + haber)
+- **Sonuç:** Fonun alım kararı, bağlantılı kişiler için satış fırsatıydı (iddia). "Pompala ve boşalt"ta boşaltan taraf
+  fon değil fona satanlardır; zararı fonun yatırımcısı taşır.
+
+## Kaba hesaplar (bizim hesabımız; girdiler haberlerden)
+
+| Hesap | Sonuç |
+| --- | --- |
+| TLY'nin büyük pozisyonları (31 Ağustos ağırlıkları × ~240 milyar TL) | DSTKF ≈ 60, OZATD ≈ 48, TEHOL ≈ 35 milyar TL |
+| OZATD: halka arzda 13,35 milyon pay = %18,71 → ~71 milyon pay; ~4.500 TL'de | Piyasa değeri ≈ 320 milyar TL; fiili dolaşım (%16) ≈ 51 milyar TL. TLY'nin ~48 milyar TL'lik pozisyonu bunun ~%93'ü (FT'ye dayanan "%96" ile tutarlı). Şirket 9 ayda 574 milyon TL zarar etti. |
+| DSTKF: halka arzda 83,3 milyon pay = %25 → ~333 milyon pay | 2.000–2.500 TL'de ~660–840 milyar TL (bazı veri sitelerindeki değerlerle uyumlu); ~3.960 TL zirvede ~1,3 trilyon TL. Bir faktoring şirketi için. |
+| TRHOL: ödenmiş sermaye 30 milyon TL (pay başı 1 TL varsayımı) | 4.502,5 TL zirvede ~135 milyar TL; 2026 ilk çeyrek toplam varlıklar ~605 milyon TL (~220 kat) |
+| Grubun değeri (savcılık sorgusu) | Tera Yatırım bir yılda 1,4 → 280 milyar TL; Tezmen'in dört şirketi 9 → 620 milyar TL |
+
+Arada bedelsiz ya da bölünme olduysa pay adetleri ve sonuçlar değişir. Asıl ders yöntemde: KAP'taki fon büyüklüğü ve
+ağırlıkları hissenin fiili dolaşımıyla karşılaştırarak "fon bu hissenin ne kadarını tutuyor?" sorusunu herkes
+hesaplayabilirdi.
 
 ## Her adımda görülebilen işaret → ajan kuralı
 
