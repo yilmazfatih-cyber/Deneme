@@ -1,0 +1,44 @@
+{
+  "name": "kahya",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Kâhya — yapay zekâ destekli site ve apartman yönetimi (Türkiye)",
+  "type": "module",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "dev": "node scripts/dev.ts",
+    "dev:server": "node --watch --env-file-if-exists=.env --disable-warning=ExperimentalWarning server/index.ts",
+    "dev:web": "vite",
+    "build": "vite build",
+    "start": "node --env-file-if-exists=.env --disable-warning=ExperimentalWarning server/index.ts",
+    "demo": "vite build && node --disable-warning=ExperimentalWarning scripts/demo.ts",
+    "kurulum": "node --env-file-if-exists=.env --disable-warning=ExperimentalWarning scripts/kurulum.ts",
+    "seed": "node --env-file-if-exists=.env --disable-warning=ExperimentalWarning scripts/seed.ts",
+    "typecheck": "tsc -b",
+    "test": "vitest run",
+    "e2e": "vite build && playwright test tests/e2e/flows.spec.ts",
+    "shots": "vite build && SHOTS=1 playwright test tests/e2e/shots.spec.ts",
+    "check": "tsc -b && vitest run"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.6.0",
+    "@hono/node-server": "^2.1.6",
+    "hono": "^4.13.17",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-router-dom": "^7.18.5",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "@types/node": "^24.19.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.3.0",
+    "typescript": "~6.0.3",
+    "vite": "^8.3.7",
+    "vitest": "^5.1.0"
+  }
+}

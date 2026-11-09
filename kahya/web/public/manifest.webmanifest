@@ -1,0 +1,10 @@
+{
+  "name": "Kâhya — Site Yönetimi",
+  "short_name": "Kâhya",
+  "lang": "tr",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f6f7f5",
+  "theme_color": "#0f5e5c",
+  "icons": [{ "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}

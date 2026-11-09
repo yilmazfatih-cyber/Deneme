@@ -1,0 +1,15 @@
+# docker compose up -d   →   http://localhost:8787
+# İlk yönetici: docker compose run --rm kahya node --disable-warning=ExperimentalWarning scripts/kurulum.ts --sirket "…" --ad "…" --eposta … --parola "…"
+services:
+  kahya:
+    build: .
+    restart: unless-stopped
+    ports:
+      - '8787:8787'
+    env_file: .env
+    environment:
+      KAHYA_DB: /data/kahya.db
+    volumes:
+      - kahya-veri:/data
+volumes:
+  kahya-veri:

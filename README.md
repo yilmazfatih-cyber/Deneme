@@ -13,6 +13,10 @@ Kelime bulmakta zorlanan afazili yetişkinler için Türkçe bir web uygulaması
 > **Ayrıca:** aynı depoda [`bolus/`](bolus/README.md) altında Splitwise benzeri, ev içi ortak harcama uygulaması **Bölüş** var;
 > GitHub Pages'te `/bolus/` adresinde yayınlanır.
 >
+> **Ayrıca:** [`kahya/`](kahya/README.md) altında site ve apartman yönetim şirketleri için yapay zekâ destekli yönetim yazılımı
+> **Kâhya** var: WhatsApp/SMS/e-posta gelen kutusu, KMK’ya göre aidat ve gecikme tazminatı, banka dökümü eşleştirme, genel kurul,
+> sakin portalı (Node + SQLite + React, Claude).
+>
 > **Ayrıca:** [`moda-radar/`](moda-radar/README.md) altında defilelerden sezon rengi (Pantone TCX), kumaş ve desen tahmini yapan,
 > İstanbul'u beş sosyoekonomik segmente bölen ve ürün bazlı yatırım kararı üreten **Moda Radar** tasarımı var (Fable mimar, Opus ekip).
 

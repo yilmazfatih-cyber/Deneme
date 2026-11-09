@@ -1,0 +1,33 @@
+name: Kâhya
+
+# kahya/ alt projesi: tip denetimi, birim + API testleri ve Playwright uçtan uca akışları.
+# Biçim (Prettier) ve lint (ESLint) kök CI'da tüm depo için denetlenir.
+on:
+  push:
+    paths: ['kahya/**', '.github/workflows/kahya.yml']
+  pull_request:
+    paths: ['kahya/**', '.github/workflows/kahya.yml']
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: kahya
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: kahya/package-lock.json
+      - run: npm ci
+      - run: npm run check
+      - run: npx playwright install --with-deps chromium
+      - run: npm run e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: kahya-playwright
+          path: kahya/test-results
+          retention-days: 7
