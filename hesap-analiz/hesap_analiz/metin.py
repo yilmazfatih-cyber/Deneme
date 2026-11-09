@@ -58,3 +58,14 @@ def anlamli_kelimeler(metin: str) -> list[str]:
     """Gürültü ve rakamlar atıldıktan sonra kalan harf kelimeleri (sade biçimde)."""
     s = sade(gurultu_ayikla(metin))
     return [k for k in s.split() if k.isalpha() and len(k) > 1 and k not in GURULTU]
+
+
+def iban_bul(metin: str) -> str:
+    """Açıklamadaki ilk IBAN'ı boşluksuz büyük harfle döndürür; yoksa boş metin."""
+    m = _IBAN.search(metin or "")
+    return re.sub(r"\s+", "", m.group(0)).upper() if m else ""
+
+
+def iban_maskele(iban: str) -> str:
+    """Rapor ve dosyalarda IBAN'ın tamamı yerine TR12 **** 1234 biçimi."""
+    return f"{iban[:4]} **** {iban[-4:]}" if len(iban) >= 8 else iban

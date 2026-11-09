@@ -22,7 +22,7 @@ KOK = Path(__file__).resolve().parent.parent
 
 
 def calistir(girdi: Path, cikti: Path, bankalar: Path, kurallar: Path, kisiler: Path,
-             ag_kilidi: bool = True, sessiz: bool = False) -> dict[str, Path]:
+             ag_kilidi: bool = True, sessiz: bool = False) -> dict:
     if ag_kilidi:
         guvenlik.ag_kilidini_tak()
 
@@ -51,8 +51,8 @@ def calistir(girdi: Path, cikti: Path, bankalar: Path, kurallar: Path, kisiler: 
     bekleyen_kisi = int((bekleyen["tur"] == "kisi").sum())
     if bekleyen_kisi:
         uyarilar.append(
-            f"{bekleyen_kisi} kişi onay bekliyor. {kisiler.name} dosyasında kanonik_ad ve tur "
-            "sütunlarını düzeltip onay sütununa 'evet' yazın; bir sonraki çalıştırmada uygulanır."
+            f"{bekleyen_kisi} kişi onay bekliyor. Arayüzde Kişiler sayfasından ya da {kisiler.name} "
+            "dosyasından adı ve türü düzeltip onaylayın; bir sonraki analizde uygulanır."
         )
     if kart_var:
         uyarilar.append(
@@ -92,7 +92,11 @@ def calistir(girdi: Path, cikti: Path, bankalar: Path, kurallar: Path, kisiler: 
     for u in uyarilar:
         yaz(f"  ! {u}")
     yaz(f"\n  Excel : {excel_yolu}\n  HTML  : {html_yolu}\n  Kişiler: {kisiler}")
-    return {"excel": excel_yolu, "html": html_yolu, "kisiler": kisiler}
+    return {
+        "excel": excel_yolu, "html": html_yolu, "kisiler": kisiler,
+        "ozet": ozet, "uyarilar": uyarilar,
+        "okunan": [(o.dosya, o.banka, o.satir_sayisi) for o in okumalar],
+    }
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -107,7 +111,16 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--kisiler", default=str(KOK / "kisiler.csv"), help="Kişi eşleme/onay dosyası")
     p.add_argument("--ag-kilidi-yok", action="store_true",
                    help="Ağ kilidini takma (önerilmez; yalnızca hata ayıklama için)")
+    p.add_argument("--arayuz", action="store_true",
+                   help="Tarayıcı arayüzünü aç (yalnızca 127.0.0.1, internet kilitli)")
+    p.add_argument("--port", type=int, default=8765, help="Arayüz portu (varsayılan 8765)")
+    p.add_argument("--tarayici-acma", action="store_true", help="Arayüzde tarayıcıyı kendiliğinden açma")
     a = p.parse_args(argv)
+    if a.arayuz:
+        from .arayuz import Ayarlar, baslat
+        baslat(Ayarlar(Path(a.girdi), Path(a.cikti), Path(a.bankalar), Path(a.kurallar), Path(a.kisiler)),
+               port=a.port, tarayici_ac=not a.tarayici_acma)
+        return 0
     try:
         calistir(Path(a.girdi), Path(a.cikti), Path(a.bankalar), Path(a.kurallar), Path(a.kisiler),
                  ag_kilidi=not a.ag_kilidi_yok)

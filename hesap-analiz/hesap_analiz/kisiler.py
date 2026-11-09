@@ -15,9 +15,10 @@ from pathlib import Path
 import pandas as pd
 from rapidfuzz import fuzz, process
 
-from .metin import anlamli_kelimeler, buyuk, sade
+from .metin import anlamli_kelimeler, buyuk, iban_bul, iban_maskele, sade
 
-KISILER_SUTUNLAR = ["ham_ad", "kanonik_ad", "tur", "onay", "ornek_aciklama"]
+KISILER_SUTUNLAR = ["ham_ad", "kanonik_ad", "tur", "onay", "iban", "ornek_aciklama"]
+ONAY_DEGERLERI = {"evet", "e", "ok", "tamam"}
 
 # "GÖNDEREN: AHMET YILMAZ", "ALICI AD: ...", "AYŞE KAYA - KİRA" gibi kalıplar
 _ETIKETLI = re.compile(
@@ -114,6 +115,24 @@ def karsi_taraflari_bul(tablo: pd.DataFrame, kisiler_yolu: Path,
     sirali = [a for a in sayim.index if a]
     otomatik = _bulanik_birlestir(sirali)
 
+    # IBAN en güçlü işarettir: aynı IBAN'a giden farklı yazımlar tek kişidir
+    tablo["_iban"] = tablo["aciklama"].map(iban_bul)
+    ad_iban: dict[str, str] = {}
+    iban_li = tablo[(tablo["_iban"] != "") & (tablo["ham_ad"] != "")]
+    for iban, grup in iban_li.groupby("_iban"):
+        adlar = grup["ham_ad"].value_counts()
+        hedef = otomatik.get(adlar.index[0], adlar.index[0])
+        for ad in adlar.index:
+            ad_iban.setdefault(ad, iban)
+            if ad != hedef:
+                otomatik[ad] = hedef
+    # Bulanık birleştirmede zincirleri çöz (A→B, B→C ise A→C)
+    for ad in list(otomatik):
+        hedef, adim = otomatik[ad], 0
+        while otomatik.get(hedef, hedef) != hedef and adim < 10:
+            hedef, adim = otomatik[hedef], adim + 1
+        otomatik[ad] = hedef
+
     kisiler = _kisileri_yukle(kisiler_yolu)
     kullanici = {r.ham_ad: r for r in kisiler.itertuples(index=False) if r.ham_ad}
 
@@ -129,7 +148,7 @@ def karsi_taraflari_bul(tablo: pd.DataFrame, kisiler_yolu: Path,
             tur_list.append("")
             onay_list.append("")
             continue
-        if ham in kullanici and kullanici[ham].onay.strip().lower() in {"evet", "e", "ok", "tamam"}:
+        if ham in kullanici and kullanici[ham].onay.strip().lower() in ONAY_DEGERLERI:
             k = kullanici[ham]
             kanonik_list.append(buyuk(k.kanonik_ad or ham))
             tur_list.append(k.tur or "kisi")
@@ -137,7 +156,7 @@ def karsi_taraflari_bul(tablo: pd.DataFrame, kisiler_yolu: Path,
             continue
         kanonik = otomatik.get(ham, ham)
         # Kanonik ad kullanıcı tarafından onaylanmışsa onun adını ve türünü miras al
-        if kanonik in kullanici and kullanici[kanonik].onay.strip().lower() in {"evet", "e", "ok", "tamam"}:
+        if kanonik in kullanici and kullanici[kanonik].onay.strip().lower() in ONAY_DEGERLERI:
             k = kullanici[kanonik]
             kanonik_list.append(buyuk(k.kanonik_ad or kanonik))
             tur_list.append(k.tur or "kisi")
@@ -153,12 +172,14 @@ def karsi_taraflari_bul(tablo: pd.DataFrame, kisiler_yolu: Path,
                 "kanonik_ad": kanonik,
                 "tur": _tur_tahmin(ham, aciklama, ipucu),
                 "onay": "bekliyor",
+                "iban": iban_maskele(ad_iban.get(ham, "")),
                 "ornek_aciklama": str(ornekler.get(ham, ""))[:120],
             })
 
     tablo["karsi_taraf"] = kanonik_list
     tablo["karsi_taraf_turu"] = tur_list
     tablo["karsi_taraf_onay"] = onay_list
+    tablo = tablo.drop(columns=["_iban"])
 
     if yeni_kayitlar:
         kisiler = pd.concat([kisiler, pd.DataFrame(yeni_kayitlar)], ignore_index=True)

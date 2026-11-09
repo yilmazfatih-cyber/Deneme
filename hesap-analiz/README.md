@@ -7,6 +7,7 @@ Ne yapar:
 
 - Farklı bankaların Excel / CSV dökümlerini tek standart tabloya çevirir, örtüşen dönemleri ayıklar.
 - Açıklamalardan **kişi ve kurumları** çıkarır; "AYŞE KAYA" ile "AYSE KAYA" gibi yazımları birleştirir.
+  Aynı IBAN'a giden farklı yazımlar ("MEHMET DEMİR", "M DEMIR GAYRIMENKUL") tek kişiye bağlanır.
 - Her kişi için **gönderilen / alınan / net** dengesi ve ay ay zaman çizelgesi üretir.
 - Harcamaları kurallarla **kategorilere** ayırır (kira, fatura, market, abonelik ...).
 - Aylık gelen/giden, kategori dağılımı, **düzenli ödemeler** (abonelik, taksit) ve en büyük karşı tarafları çıkarır.
@@ -16,7 +17,9 @@ Ne yapar:
 
 | Katman | Ne yapıyor |
 | --- | --- |
-| Ağ kilidi | Araç çalışırken süreç genelinde soket açmak ve alan adı çözmek engellenir. Herhangi bir kütüphane ağa çıkmaya kalkarsa işlem hata vererek durur (`hesap_analiz/guvenlik.py`). |
+| Ağ kilidi | Komut satırında süreç genelinde soket açmak ve alan adı çözmek tamamen engellenir. Arayüz modunda yalnızca bu bilgisayarın kendi adresine (127.0.0.1) bağlanılabilir, internete çıkış yine kilitlidir. Bir kütüphane ağa çıkmaya kalkarsa işlem hata vererek durur (`hesap_analiz/guvenlik.py`). |
+| Arayüz | Yalnızca 127.0.0.1 dinlenir. Başka sitelerin sahte istek göndermesine ve DNS rebinding saldırısına karşı Host ve Origin denetlenir. Sayfalar hiçbir betik çalıştırmaz (sıkı Content-Security-Policy). Erişim günlüğü tutulmaz. |
+| IBAN | Kişi eşlemede kullanılır ama `kisiler.csv` dosyasına yalnızca maskeli hali (`TR12 **** 1234`) yazılır. |
 | Bağımlılıklar | Yalnızca pandas, openpyxl, pyyaml, rapidfuzz. Hiçbiri telemetri göndermez. |
 | Çıktılar | HTML raporu CSS dahil her şeyi kendi içinde taşır; `http://` veya `https://` içermez. |
 | Depo | `girdi/`, `rapor/` ve `kisiler.csv` `.gitignore` ile dışarıda tutulur; kişisel veri depoya giremez. |
@@ -34,6 +37,21 @@ pip install -r requirements.txt
 
 ## Kullanım
 
+### Tarayıcı arayüzü (önerilen)
+
+```bash
+python -m hesap_analiz --arayuz
+```
+
+Tarayıcıda `http://127.0.0.1:8765/` açılır. Ekstreleri sürükleyip ekle, **Analizi çalıştır**'a bas,
+**Kişiler** sayfasından adları düzeltip onayla, raporu aç ya da Excel olarak indir.
+Kaldırılan ekstreler silinmez, `girdi/.kaldirilanlar/` klasörüne taşınır.
+
+Arayüz yalnızca bu bilgisayardan erişilebilir. Aynı Wi-Fi'deki başka bir cihaz bile bağlanamaz.
+Sunucu Python'un kendi modülüyle çalışır, ek paket kurmaz.
+
+### Komut satırı
+
 1. Ekstreleri `girdi/` klasörüne kopyala (`.xlsx`, `.xls`, `.csv`).
 2. Çalıştır:
 
@@ -49,14 +67,14 @@ python -m hesap_analiz /yol/ekstreler --cikti /yol/rapor
 İlk çalıştırmada `kisiler.csv` oluşur. Kişiler üstte, `onay = bekliyor` olarak listelenir:
 
 ```
-ham_ad,kanonik_ad,tur,onay,ornek_aciklama
-AHMET YILMAZ,AHMET YILMAZ,kisi,bekliyor,FAST GIDEN - ALICI: AHMET YILMAZ ...
-MEHMET DEMIR,MEHMET DEMIR,kisi,bekliyor,EFT GIDEN - ALICI: MEHMET DEMİR ... KIRA
+ham_ad,kanonik_ad,tur,onay,iban,ornek_aciklama
+AHMET YILMAZ,AHMET YILMAZ,kisi,bekliyor,TR12 **** 1234,FAST GIDEN - ALICI: AHMET YILMAZ ...
+MEHMET DEMIR,MEHMET DEMIR,kisi,bekliyor,TR55 **** 3344,EFT GIDEN - ALICI: MEHMET DEMİR ... KIRA
 ```
 
 - `kanonik_ad` sütununa istediğin adı yaz (ör. `EV SAHİBİ`, `KARDEŞİM`).
 - `tur` sütununu `kisi` ya da `kurum` yap. Kurumlar kişi dengesinden çıkar.
-- `onay` sütununa `evet` yaz. Bir sonraki çalıştırmada uygulanır ve bir daha sorulmaz.
+- `onay` sütununa `evet` yaz. Arayüzde bunların hepsi Kişiler sayfasından yapılır. Bir sonraki çalıştırmada uygulanır ve bir daha sorulmaz.
 - Aynı kişiye ait iki farklı ham ad varsa ikisine de aynı `kanonik_ad` yaz; tek satırda birleşir.
 
 ### Yeni banka ekleme
@@ -120,5 +138,7 @@ python -m pytest -q
 ## Sınırlar
 
 - Çekim, taksit bölme veya döviz dönüşümü yapılmaz; tutarlar dökümde ne yazıyorsa odur.
+- PDF ekstre okunmaz. Bankanın internet şubesinden Excel ya da CSV olarak indirin.
+- Eski `.xls` dosyaları için `pip install xlrd` gerekir ya da dosyayı Excel'de `.xlsx` olarak kaydedin.
 - Kişi adı çıkarımı açıklama metnine dayanır. Banka adı maskeliyorsa (`A*** Y***`) eşleme yapılamaz; `kisiler.csv` ile elle düzeltilir.
 - "Net" bir kişiyle aranızdaki borç ilişkisini değil, hesaplar arasındaki para akışını gösterir. Yorum size aittir.

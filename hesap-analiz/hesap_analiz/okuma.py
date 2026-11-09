@@ -70,7 +70,13 @@ def _ham_oku(yol: Path) -> list[pd.DataFrame]:
     """Dosyadaki her sayfayı başlıksız ham tablo olarak döndürür."""
     uzanti = yol.suffix.lower()
     if uzanti in {".xlsx", ".xlsm", ".xls"}:
-        sayfalar = pd.read_excel(yol, sheet_name=None, header=None, dtype=object)
+        try:
+            sayfalar = pd.read_excel(yol, sheet_name=None, header=None, dtype=object)
+        except ImportError as e:
+            raise ValueError(
+                f"{yol.name}: eski .xls biçimi için 'pip install xlrd' gerekir "
+                "ya da dosyayı Excel'de .xlsx olarak kaydedin."
+            ) from e
         return [s for s in sayfalar.values() if not s.dropna(how="all").empty]
     if uzanti in {".csv", ".txt"}:
         for sep in (";", ",", "\t"):
