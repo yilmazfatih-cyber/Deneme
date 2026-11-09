@@ -1,11 +1,11 @@
 {
-  "surum": "0.1",
+  "surum": "0.2",
   "ulke": "TR",
-  "not": "Segment -> marka -> kategori listeleme URL'si + CSS seçicileri. URL'ler ve seçiciler bu oturumda ağ erişimi olmadan, sitelerin bilinen yapısına göre yazıldı: hepsi 'dogrulandi': false. İlk GitHub Actions çalışmasında 'bulunan: 0' veren hedeflerin URL'si ve seçicileri tarayıcı geliştirici araçlarıyla düzeltilip 'dogrulandi': true yapılır. Sayfa HTML'i saklanmaz; robots.txt ve saniyede <= 1 istek. Trendyol pazaryeridir: orta ve deger segmentlerinde fiyat bandı filtresiyle çapraz doğrulama içindir, çıpa değildir.",
+  "not": "Segment -> marka -> kategori listeleme URL'si + CSS seçicileri. 'dogrulandi': true olan hedeflerin seçicileri 'dogrulama_tarihi'nde gerçek sayfada urunleri_ayikla ile >= 20 ürün (başlık, fiyat, link, görsel) verdi. 'etkin': false hedefler taranmaz ('neden' alanı gerekçeyi yazar; alan content/tarama-yasak.json'dadır). Sayfa HTML'i saklanmaz; robots.txt ve saniyede <= 1 istek. GitHub Actions çalıştırıcı IP'leri farklıdır: ilk Actions çalışmasında 'bulunan' sayıları bu oturumun ölçümüyle karşılaştırılır.",
   "segmentler": {
     "luks": {
       "Beymen": {
-        "dogrulandi": false,
+        "dogrulandi": true,
         "js": false,
         "para": "TRY",
         "kategoriler": {
@@ -20,7 +20,8 @@
           "link": "a",
           "gorsel": "img",
           "gorsel_nitelik": ["data-src", "src"]
-        }
+        },
+        "dogrulama_tarihi": "2026-11-09"
       }
     },
     "premium": {
@@ -40,10 +41,70 @@
           "link": "a.product-link",
           "gorsel": "img.media-image__image",
           "gorsel_nitelik": ["src", "data-src"]
-        }
+        },
+        "etkin": false,
+        "neden": "www.zara.com otomatik erişime 403 veriyor (robots.txt dahil), 2026-11-09; tarama-yasak.json"
+      },
+      "Ipekyol": {
+        "dogrulandi": true,
+        "dogrulama_tarihi": "2026-11-09",
+        "js": false,
+        "para": "TRY",
+        "kategoriler": {
+          "kadin-ust": "https://www.ipekyol.com.tr/giyim/bluz-modelleri",
+          "kadin-elbise": "https://www.ipekyol.com.tr/giyim/elbise-modelleri"
+        },
+        "secici": {
+          "kart": "li[data-productid]",
+          "baslik": ".product-card-name",
+          "fiyat": ".sales-price",
+          "link": "a[href^='/urun/']",
+          "gorsel": "img",
+          "gorsel_nitelik": ["data-src", "src"]
+        },
+        "notlar": "Next.js; kartlar sunucu tarafında işleniyor (ilk sayfa 20 ürün). İndirimli fiyat sınıfı ölçüm günü görülmedi; eski_fiyat seçicisi yok."
       }
     },
     "orta": {
+      "Koton": {
+        "dogrulandi": true,
+        "dogrulama_tarihi": "2026-11-09",
+        "js": false,
+        "para": "TRY",
+        "kategoriler": {
+          "kadin-ust": "https://www.koton.com/kadin-bluz/",
+          "kadin-elbise": "https://www.koton.com/kadin-elbise/"
+        },
+        "secici": {
+          "kart": "div.product-item",
+          "baslik": ".product-item__info-name",
+          "fiyat": ".product-item__info-price pz-price",
+          "link": "a.product-link",
+          "gorsel": ".product-item__body-image img",
+          "gorsel_nitelik": ["data-src", "src"]
+        },
+        "notlar": "Sunucu tarafı işleme; sayfa başına 24 ürün. Fiyat '1299.99' biçiminde (nokta ondalık)."
+      },
+      "DeFacto": {
+        "dogrulandi": true,
+        "dogrulama_tarihi": "2026-11-09",
+        "js": false,
+        "para": "TRY",
+        "kategoriler": {
+          "kadin-ust": "https://www.defacto.com.tr/kadin-bluz",
+          "kadin-elbise": "https://www.defacto.com.tr/kadin-elbise"
+        },
+        "secici": {
+          "kart": "div.product-card",
+          "baslik": ".product-card__title--name",
+          "fiyat": ".product-catalog-price-area .first-line .base-price",
+          "eski_fiyat": ".product-catalog-price-area .second-line .lined-base-price",
+          "link": "a.product-card__title--name",
+          "gorsel": ".product-card__image--item img",
+          "gorsel_nitelik": ["data-src", "src"]
+        },
+        "notlar": "Sunucu tarafı işleme; sayfa başına 24 ürün. Kampanyalı kartta first-line indirimli, second-line üstü çizili fiyat."
+      },
       "LC Waikiki": {
         "dogrulandi": false,
         "js": true,
@@ -60,7 +121,9 @@
           "link": "a",
           "gorsel": "img",
           "gorsel_nitelik": ["data-src", "src"]
-        }
+        },
+        "etkin": false,
+        "neden": "www.lcw.com sayfa yerine captcha döndürüyor, 2026-11-09; tarama-yasak.json"
       },
       "Trendyol": {
         "dogrulandi": false,
@@ -78,13 +141,15 @@
           "link": "a",
           "gorsel": "img.p-card-img",
           "gorsel_nitelik": ["src", "data-src"]
-        }
+        },
+        "etkin": false,
+        "neden": "www.trendyol.com dürüst kullanıcı aracısına 403, 2026-11-09; tarama-yasak.json"
       }
     },
     "deger": {
       "Addax": {
         "dogrulandi": false,
-        "js": false,
+        "js": true,
         "para": "TRY",
         "kategoriler": {
           "kadin-ust": "https://www.addax.com.tr/bluz/",
@@ -98,7 +163,8 @@
           "link": "a",
           "gorsel": "img",
           "gorsel_nitelik": ["data-src", "src"]
-        }
+        },
+        "notlar": "Ürün listesi istemci tarafında farktorcdn.com betikleriyle dolduruluyor. 2026-11-09 ölçümünde bu oturumun ağı farktorcdn.com'a izin vermediği için Playwright ile de ürün görünmedi (site engeli değil, ortam kısıtı). Seçiciler ilk Actions çalışmasında doğrulanacak."
       },
       "Trendyol": {
         "dogrulandi": false,
@@ -116,7 +182,9 @@
           "link": "a",
           "gorsel": "img.p-card-img",
           "gorsel_nitelik": ["src", "data-src"]
-        }
+        },
+        "etkin": false,
+        "neden": "www.trendyol.com dürüst kullanıcı aracısına 403, 2026-11-09; tarama-yasak.json"
       }
     }
   }

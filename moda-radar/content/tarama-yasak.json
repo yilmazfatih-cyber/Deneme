@@ -1,1 +1,9 @@
-{ "not": "robots.txt veya kullanim sartlari geregi taranmayan alanlar; veri-muhendisi gunceller.", "alanlar": [] }
+{
+  "not": "robots.txt, kullanım şartları ya da bot engeli gereği taranmayan alanlar; veri-muhendisi günceller. Engel aşılmaz (kimlik taklidi, captcha çözme, proxy yok).",
+  "alanlar": [
+    { "alan": "www.zara.com", "neden": "403 Access Denied (robots.txt dahil), 2026-11-09", "kaynak": "dogrudan olcum" },
+    { "alan": "www.massimodutti.com", "neden": "403 bot engeli, 2026-11-09", "kaynak": "dogrudan olcum" },
+    { "alan": "www.trendyol.com", "neden": "dürüst kullanıcı aracısına 403, 2026-11-09", "kaynak": "dogrudan olcum" },
+    { "alan": "www.lcw.com", "neden": "sayfa yerine captcha, 2026-11-09", "kaynak": "dogrudan olcum" }
+  ]
+}

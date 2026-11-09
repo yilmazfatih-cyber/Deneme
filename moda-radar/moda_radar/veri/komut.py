@@ -11,6 +11,8 @@ from pathlib import Path
 
 from moda_radar.sema import DefileTanimi
 
+log = logging.getLogger(__name__)
+
 KOK = Path(__file__).resolve().parents[2]
 DEFILE_DOSYASI = KOK / "content" / "defileler.json"
 SINYAL_KLASORU = KOK / "content" / "sinyaller"
@@ -127,17 +129,22 @@ def _topla_perakende(args) -> int:
     if args.kuru:
         print(f"# Plan: perakende — {len(hedefler)} hedef (ağ yok)")
         for h in hedefler:
-            dog = "doğrulandı" if h.dogrulandi else "DOĞRULANMADI"
+            dog = f"doğrulandı {h.dogrulama_tarihi}" if h.dogrulandi else "DOĞRULANMADI"
             print(f"- {h.segment}/{h.marka}/{h.kategori} {'[js] ' if h.js else ''}{h.url} ({dog})")
         return 0
-    from moda_radar.veri.ag import Tarayici
+    from moda_radar.veri.ag import TaramaYasak, Tarayici
 
-    tarayici, basarili, hatali, urun = Tarayici(), 0, 0, 0
+    tarayici, basarili, hatali, urun, atlanan, renkli = Tarayici(), 0, 0, 0, 0, 0
     with _depo(args.db) as depo:
         for h in hedefler:
             ad = f"{h.segment}/{h.marka}/{h.kategori}"
             try:
                 s = perakende.kaynak_tara(depo, h, tarayici)
+            except TaramaYasak as e:  # robots.txt / tarama-yasak.json: kibar taraf atlar, hata saymaz
+                atlanan += 1
+                log.info("%s atlandı: %s", ad, e)
+                print(json.dumps({"hedef": ad, "bulunan": 0, "atlandi": str(e)}, ensure_ascii=False))
+                continue
             # Hedef başına yalıtım: Playwright'ın kendi Error sınıfı dahil hiçbir hata sonraki hedefleri durdurmaz.
             except Exception as e:  # noqa: BLE001
                 hatali += 1
@@ -146,9 +153,10 @@ def _topla_perakende(args) -> int:
             print(json.dumps(s, ensure_ascii=False))
             basarili += s["bulunan"] > 0
             urun += s["bulunan"]
+            renkli += s.get("renkli", 0)
     print(
-        f"perakende: {len(hedefler)} hedef, {urun} ürün, {hatali} hata"
-        f" · {basarili} hedef ürün verdi, {tarayici.istek_sayisi} istek"
+        f"perakende: {len(hedefler)} hedef, {urun} ürün, {hatali} hata, {atlanan} atlandı"
+        f" · {basarili} hedef ürün verdi, {renkli} renkli, {tarayici.istek_sayisi} istek"
     )
     return 0 if basarili > 0 else 1
 

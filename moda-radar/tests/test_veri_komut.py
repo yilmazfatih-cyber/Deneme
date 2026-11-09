@@ -35,7 +35,9 @@ def test_topla_kuru_podyum(capsys, tmp_path):
 def test_topla_kuru_perakende(capsys):
     assert main(["topla", "--kaynak", "perakende", "--segment", "orta", "--kuru"]) == 0
     cikti = capsys.readouterr().out
-    assert "LC Waikiki" in cikti and "DOĞRULANMADI" in cikti and "Beymen" not in cikti
+    assert "orta/Koton/kadin-ust" in cikti and "orta/DeFacto/kadin-elbise" in cikti
+    assert "doğrulandı 2026-11-09" in cikti and "Beymen" not in cikti
+    assert "LC Waikiki" not in cikti and "Trendyol" not in cikti  # bot engelli hedefler kapalı
 
 
 def test_sinyal_yukle_db_ozet_gecikme(capsys, tmp_path):
@@ -99,3 +101,18 @@ def test_kisa_hata_tek_satir_ve_sinirli():
     assert komut.kisa_hata(ValueError("a\nb")) == "ValueError: a"
     assert komut.kisa_hata(KeyError()) == "KeyError"
     assert len(komut.kisa_hata(OSError("x" * 500))) == 200
+
+
+def test_topla_perakende_yasak_alan_atlanir_hata_sayilmaz(monkeypatch, capsys, tmp_path):
+    from moda_radar.veri.ag import TaramaYasak
+
+    denenen = _sahte_perakende(
+        monkeypatch,
+        {"Zara": TaramaYasak("robots.txt / tarama-yasak.json izin vermiyor: https://Zara.invalid"), "Koton": 24},
+    )
+    assert main(["topla", "--kaynak", "perakende", "--db", str(tmp_path / "m.db")]) == 0
+    assert denenen == ["Zara", "Koton"]
+    satirlar = capsys.readouterr().out.strip().splitlines()
+    zara = json.loads(satirlar[0])
+    assert zara["bulunan"] == 0 and "hata" not in zara and "izin vermiyor" in zara["atlandi"]
+    assert satirlar[-1].startswith("perakende: 2 hedef, 24 ürün, 0 hata, 1 atlandı")

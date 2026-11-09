@@ -46,6 +46,18 @@ def test_yasak_dosyasi_okunur():
     assert isinstance(ag.yasak_alanlar(), set)
 
 
+def test_yasak_dosyasi_nesne_ve_duz_bicim(tmp_path):
+    yol = tmp_path / "yasak.json"
+    yol.write_text(
+        '{"alanlar": ["Eski.Invalid", {"alan": "www.engel.invalid", "neden": "403", "kaynak": "olcum"}, {"neden": "x"}]}',
+        "utf-8",
+    )
+    assert ag.yasak_alanlar(yol) == {"eski.invalid", "www.engel.invalid"}
+    t = ag.Tarayici(yasaklar=ag.yasak_alanlar(yol))
+    assert not t.izinli_mi("https://www.engel.invalid/kadin")  # robots.txt'e hiç gidilmez
+    assert t.istek_sayisi == 0 and not t._robots
+
+
 def test_lab_hex():
     assert renk_koprusu.lab_hex(Lab(L=100, a=0, b=0)) == "#FFFFFF"
     assert renk_koprusu.lab_hex(Lab(L=0, a=0, b=0)) == "#000000"
@@ -57,3 +69,21 @@ def test_renk_kayitlari_modul_yoksa_bos(monkeypatch):
     k = Kaynak(tur=KaynakTuru.PODYUM, url="https://a/1.jpg", tarama_tarihi=date(2026, 10, 1), sezon="SS27")
     assert renk_koprusu.renk_kayitlari(b"x", k, "p") == []
     assert renk_koprusu.renk_modulu_var() is False
+
+
+def test_yasak_nedeni_ayrimi(monkeypatch):
+    import urllib.error
+
+    def ag_hatasi(*a, **k):
+        raise urllib.error.URLError("Tunnel connection failed: 403 Forbidden")
+
+    monkeypatch.setattr(ag.urllib.request, "urlopen", ag_hatasi)
+    monkeypatch.setattr(ag.time, "sleep", lambda s: None)
+    t = ag.Tarayici(yasaklar={"engel.invalid"})
+    assert not t.izinli_mi("https://www.ulasilamaz.invalid/x")
+    with pytest.raises(ag.TaramaYasak, match=r"robots.txt alınamadı \(Tunnel connection failed"):
+        t.getir("https://www.ulasilamaz.invalid/x")
+    assert "tarama-yasak.json listesinde" in t.yasak_nedeni("https://www.engel.invalid/x")
+    t2 = _tarayici(["User-agent: *", "Disallow: /"])
+    assert not t2.izinli_mi("https://www.ornek.invalid/a")
+    assert t2.yasak_nedeni("https://www.ornek.invalid/a").startswith("robots.txt izin vermiyor")
