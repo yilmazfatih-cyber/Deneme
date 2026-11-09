@@ -293,7 +293,17 @@ def _tek_hisse(h: str, klasor: Path, bas: date, bit: date, kap: bool) -> dict[st
     return r
 
 
-def dosya_veri_cek(hisseler: list[str], klasor: str | Path, bas: date, bit: date | None = None, gosterge: tuple[str, ...] = ("XU100.IS", "USDTRY=X"),
+PIYASA_SERILERI = ("XU100.IS", "USDTRY=X", "EURTRY=X", "BZ=F", "GC=F", "^VIX", "^TNX", "DX-Y.NYB", "EEM", "^GSPC")
+
+
+def seri_dosya_adi(sembol: str) -> str:
+    """'USDTRY=X' → 'USDTRY_X', '^VIX' → 'VIX', 'DX-Y.NYB' → 'DX-Y.NYB' (dosya adı güvenli)."""
+    import re
+
+    return re.sub(r"[^A-Za-z0-9._-]", "_", sembol.lstrip("^"))
+
+
+def dosya_veri_cek(hisseler: list[str], klasor: str | Path, bas: date, bit: date | None = None, gosterge: tuple[str, ...] = PIYASA_SERILERI,
                    kap: bool = False, endeksler: tuple[str, ...] = (), paralel: int = 6, yedek_klasor: str | Path = "dosya_kaynak") -> dict[str, dict]:
     """Her hisse için ham dosyaları yazar ({hisse}_isy_gunluk.csv, _isy_mali.csv, _yahoo_1d.csv, _yahoo_temel.json; istenirse _kap.json).
     `hisseler` içinde 'XU100' gibi endeks simgeleri bileşenlere açılır. Hisseler `paralel` iş parçacığıyla çekilir.
@@ -313,7 +323,7 @@ def dosya_veri_cek(hisseler: list[str], klasor: str | Path, bas: date, bit: date
     for g in gosterge:
         try:
             df = yahoo_gunluk(g, bas)
-            df.to_csv(klasor / f"{g.replace('=', '_')}_yahoo_1d.csv", index=False)
+            df.to_csv(klasor / f"{seri_dosya_adi(g)}_yahoo_1d.csv", index=False)
             rapor[g] = {"yahoo_1d": len(df)}
         except Exception as e:  # noqa: BLE001
             rapor[g] = {"hata": str(e)[:200]}
