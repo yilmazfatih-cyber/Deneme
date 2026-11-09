@@ -40,8 +40,8 @@ def _eylem(actions: list | None, turler: tuple[str, ...]) -> int | None:
 class MetaBaglayici(Baglayici):
     platform_adi = "meta"
 
-    def __init__(self, kuru: bool = False, tohum: int = 7):
-        super().__init__(kuru, tohum)
+    def __init__(self, kuru: bool = False, tohum: int = 7, kiraci: str = "demo"):
+        super().__init__(kuru, tohum, kiraci)
         self._tur: dict[str, tuple[str, str]] = {}  # icerik_id → (nesne türü, platform kimliği)
         if not kuru:
             self.token = ortam("META_ACCESS_TOKEN")

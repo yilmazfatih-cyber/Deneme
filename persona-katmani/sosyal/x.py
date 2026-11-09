@@ -25,8 +25,8 @@ METRIK_GRUPLARI = "ENGAGEMENT,VIDEO,BILLING,WEB_CONVERSION"
 class XBaglayici(Baglayici):
     platform_adi = "x"
 
-    def __init__(self, kuru: bool = False, tohum: int = 7):
-        super().__init__(kuru, tohum)
+    def __init__(self, kuru: bool = False, tohum: int = 7, kiraci: str = "demo"):
+        super().__init__(kuru, tohum, kiraci)
         if not kuru:
             self.token = ortam("X_BEARER_TOKEN")
             self.hesap = ortam("X_ADS_ACCOUNT_ID", False)

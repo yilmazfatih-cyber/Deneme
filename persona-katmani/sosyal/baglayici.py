@@ -25,10 +25,13 @@ class BaglayiciHatasi(RuntimeError):
 
 
 def _gizle(metin: str, sirlar: list[str]) -> str:
+    """Bilinen sırları ve token biçimli değerleri '***' ile değiştirir."""
     for s in sirlar:
         if s:
             metin = metin.replace(s, "***")
-    return re.sub(r"(access_token|token|bearer|authorization)([=:\s\"']+)[A-Za-z0-9._\-|%]+", r"\1\2***", metin, flags=re.I)
+    metin = re.sub(r"(?i)\b(bearer|oauth)\s+[^\s\"',;&]+", r"\1 ***", metin)
+    return re.sub(r"(?i)\b(access_token|access-token|token|authorization)([\"']?\s*[=:]\s*[\"']?)(?!bearer|oauth|\*\*\*)[^\s\"',;&]+",
+                  r"\1\2***", metin)
 
 
 def http_json(url: str, *, params: dict | None = None, basliklar: dict | None = None, govde: dict | None = None,
@@ -76,15 +79,16 @@ class Baglayici(abc.ABC):
 
     platform_adi = ""
 
-    def __init__(self, kuru: bool = False, tohum: int = 7):
+    def __init__(self, kuru: bool = False, tohum: int = 7, kiraci: str = "demo"):
         self.kuru = kuru
         self.tohum = tohum
+        self.kiraci = kiraci  # yalnız kuru içerik kimliklerini kiracıya özgü kılmak için
         self._uretici: KuruUretici | None = None
 
     @property
     def uretici(self) -> "KuruUretici":
         if self._uretici is None:
-            self._uretici = KuruUretici(self.kuru_platformlari(), self.tohum)
+            self._uretici = KuruUretici(self.kuru_platformlari(), self.tohum, self.kiraci)
         return self._uretici
 
     def kuru_platformlari(self) -> tuple[str, ...]:
@@ -148,8 +152,9 @@ def _binom(rnd: random.Random, n: int, p: float) -> int:
 class KuruUretici:
     """Tohumlu sahte veri: ağ yok. Aynı tohum ve tarih aralığı → aynı veri (UNIQUE tekrarında güncelleme sınanabilir)."""
 
-    def __init__(self, platformlar: tuple[str, ...], tohum: int = 7):
+    def __init__(self, platformlar: tuple[str, ...], tohum: int = 7, kiraci: str = "demo"):
         self.platformlar = platformlar
+        self.kiraci = kiraci
         self.tohum = tohum
         self._icerik: dict[str, dict] = {}
 
@@ -186,7 +191,7 @@ class KuruUretici:
                     bicim = rnd.choice(["gorsel", "video", "carousel"])
                 sure = rnd.randint(10, 21) if reklam else rnd.randint(3, 7)
                 bas = b0 + timedelta(days=rnd.randint(0, max(0, gun - sure)))
-                iid = f"{p}:kuru-{i + 1:03d}"
+                iid = f"{p}:kuru-{self.kiraci}-{i + 1:03d}"
                 self._icerik[iid] = dict(p=p, tur=tur, bicim=bicim, reklam=reklam, bas=bas, bit=min(b1, bas + timedelta(days=sure - 1)))
                 out.append(IcerikKaydi(iid, p, f"kuru-{p}-{'reklam' if reklam else 'profil'}", "reklam" if reklam else "organik", bicim,
                                        yaratici_turu(baslik), bas.isoformat() + "T10:00:00", konu, baslik))

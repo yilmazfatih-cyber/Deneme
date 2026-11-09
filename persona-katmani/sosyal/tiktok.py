@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import json
 
-from .baglayici import Baglayici, http_json, ortam
+from .baglayici import Baglayici, BaglayiciHatasi, http_json, ortam
 from .ortak import DuyguOzeti, HesapKaydi, IcerikKaydi, KonuHacmi, MetrikKaydi, cinsiyet, duygu_ozetle, yas_bandi, yaratici_turu
 
 TIKTOK = "https://business-api.tiktok.com/open_api/v1.3"
@@ -24,8 +24,8 @@ SAYFA_BOYU = 1000
 class TikTokBaglayici(Baglayici):
     platform_adi = "tiktok"
 
-    def __init__(self, kuru: bool = False, tohum: int = 7):
-        super().__init__(kuru, tohum)
+    def __init__(self, kuru: bool = False, tohum: int = 7, kiraci: str = "demo"):
+        super().__init__(kuru, tohum, kiraci)
         if not kuru:
             self.token = ortam("TIKTOK_ACCESS_TOKEN")
             self.reklamveren = ortam("TIKTOK_ADVERTISER_ID")
@@ -34,7 +34,6 @@ class TikTokBaglayici(Baglayici):
         p = {k: (json.dumps(v) if isinstance(v, (list, dict)) else v) for k, v in params.items()}
         d = http_json(TIKTOK + yol, params=p, basliklar={"Access-Token": self.token}, sirlar=[self.token])
         if d.get("code", 0) != 0:  # TikTok hata kodunu 200 gövdesinde döndürür
-            from .baglayici import BaglayiciHatasi
             raise BaglayiciHatasi(f"TikTok {yol}: kod {d.get('code')} {str(d.get('message'))[:200]}")
         return d.get("data") or {}
 

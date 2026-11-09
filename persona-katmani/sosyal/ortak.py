@@ -55,6 +55,12 @@ def tr_kucuk(s: str) -> str:
     return s.replace("I", "ı").replace("İ", "i").lower()
 
 
+def kucuk_varyantlar(s: str) -> str:
+    """Türkçe ve İngilizce küçük harf biçimleri (\"Impressions\" → 'ımpressions' ve 'impressions'), satırla ayrılmış."""
+    a, b = tr_kucuk(s), s.lower()
+    return a if a == b else a + "\n" + b
+
+
 def yas_bandi(ham: str | None) -> str | None:
     """Platform yaş bandını ortak sözlüğe eşler; 18 altı, bilinmeyen veya eşlenemeyen → None (satır atlanır).
 
@@ -103,7 +109,7 @@ _BILGI = re.compile(r"(\?|\bnasıl\b|\bneden\b|\bözellik|\brehber|\bipucu|\bned
 
 def yaratici_turu(metin: str | None) -> str:
     """Başlık/metinden basit anahtar kelime sınıflandırması: indirim > kitlik > sosyal_kanit > bilgi > duygusal."""
-    s = tr_kucuk(metin or "")
+    s = kucuk_varyantlar(metin or "")
     if _INDIRIM.search(s):
         return "indirim"
     if _KITLIK.search(s):
@@ -143,8 +149,9 @@ KONU_SOZLUK = {
 def yorum_duygusu(metin: str) -> str:
     """Tek yorum → 'olumlu' | 'olumsuz' | 'notr'. Metin bellekte işlenir, saklanmaz."""
     kelimeler = re.findall(r"[\wçğıöşüâî']+", tr_kucuk(metin))
-    pos = sum(1 for k in kelimeler if k in OLUMLU or any(k.startswith(o) for o in ("beğen", "sevdi", "teşekkür")))
-    neg = sum(1 for k in kelimeler if k in OLUMSUZ)
+    ing = [k.replace("ı", "i") for k in kelimeler]  # İngilizce büyük I → ı dönüşümünü geri al
+    pos = sum(1 for k, e in zip(kelimeler, ing) if k in OLUMLU or e in OLUMLU or any(k.startswith(o) for o in ("beğen", "sevdi", "teşekkür")))
+    neg = sum(1 for k, e in zip(kelimeler, ing) if k in OLUMSUZ or e in OLUMSUZ)
     if pos > neg and any(k in _OLUMSUZLUK for k in kelimeler):
         pos, neg = neg, pos  # "güzel değil" → olumsuz
     return "olumlu" if pos > neg else "olumsuz" if neg > pos else "notr"
@@ -259,6 +266,9 @@ def kaydet_hesap(c: sqlite3.Connection, kiraci: str, h: HesapKaydi, son_cekim: s
 def kaydet_icerik(c: sqlite3.Connection, kiraci: str, ic: IcerikKaydi) -> None:
     """İçeriği yazar; yoksa hesabı oluşturur. kampanya_id yalnız kampanya tablosunda varsa bağlanır."""
     hid = hesap_id(kiraci, ic.platform, ic.hesap_kimligi)
+    var = c.execute("SELECT h.kiraci_id FROM sosyal_icerik i JOIN sosyal_hesap h ON h.id=i.hesap_id WHERE i.id=?", (ic.id,)).fetchone()
+    if var and var[0] != kiraci:
+        raise ValueError(f"{ic.id} başka bir kiracıya ait; kiracılar arası içerik paylaşılmaz.")
     if not c.execute("SELECT 1 FROM sosyal_hesap WHERE id=?", (hid,)).fetchone():
         kaydet_hesap(c, kiraci, HesapKaydi(ic.platform, ic.hesap_kimligi, None, "reklam_hesabi" if ic.tur == "reklam" else "sayfa"))
     kamp = None

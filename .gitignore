@@ -31,3 +31,6 @@ dev-dist
 persona-sim/node_modules
 persona-sim/dist
 persona-katmani/db/*.sqlite
+__pycache__/
+*.pyc
+persona-sim/public/ogrenilen/
