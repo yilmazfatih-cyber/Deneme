@@ -96,6 +96,23 @@ class Okunamayan:
     neden: str
 
 
+def urun_ilani_mi(url: str) -> bool:
+    """Alibaba ürün ilanı mı? (showroom, arama ve kategori sayfaları değil)"""
+    return any(parca in url for parca in ("/product-detail/", "/product-introduction/", "/product/"))
+
+
+def tr_urun_sayfasi_mi(url: str) -> bool:
+    """Türkiye ilanı ürün sayfası mı? Tanınmayan sitede işaretleme yapılmaz."""
+    u = url.lower()
+    if "trendyol.com" in u or "hepsiburada.com" in u:
+        return "-p-" in u  # ürün sayfası: …-p-<no>
+    if "akakce.com" in u or "cimri.com" in u:
+        return "/en-ucuz-" in u  # ürün fiyat sayfası: /en-ucuz-…
+    if "n11.com" in u:
+        return "/urun/" in u
+    return True
+
+
 def tr_fiyat(aday: Aday) -> TrFiyat:
     fiyatlar = [i.fiyat_tl for i in aday.tr_ilanlar]
     listeler = [i.liste_fiyat_tl if i.indirimde else i.fiyat_tl for i in aday.tr_ilanlar]
@@ -173,6 +190,11 @@ def degerlendir_aday(aday: Aday, tarife: Tarife, kur: float, ayarlar: Ayarlar) -
         )
     if aday.mense != "CN":
         s.dogrula.append(f"Menşe {aday.mense}: oranlar Çin varsayımıyla hesaplandı, müşavire sorun")
+    if "alibaba.com" in aday.url and not urun_ilani_mi(aday.url):
+        s.dogrula.append("Alibaba bağlantısı ürün ilanı değil (showroom/arama sayfası): fiyat ve MOQ ilanda doğrulanmalı")
+    kategori_sayfasi = sum(1 for i in aday.tr_ilanlar if i.url and not tr_urun_sayfasi_mi(i.url))
+    if kategori_sayfasi:
+        s.notlar.append(f"Türkiye ilanlarından {kategori_sayfasi} tanesi ürün değil liste/kategori sayfası")
     if aday.indirim:
         liste = birim_maliyet(_girdi(aday, aday.indirim.liste_fiyat_usd), kategori, kur, ayarlar)
         s.indirimsiz_kat = kat(tr.medyan, liste, kategori)

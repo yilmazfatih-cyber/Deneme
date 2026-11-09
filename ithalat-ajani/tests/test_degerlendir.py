@@ -162,3 +162,25 @@ def test_toplu_okunamayan_ve_tekrar_ve_siralama(tarife, ayarlar):
     assert [s.aday.urun for s in sonuclar] == ["İyi", "Pahalı"]
     assert sonuclar[0].durum == "UYGUN" and sonuclar[1].durum == "ELENDI"
     assert {o.urun for o in okunamayan} == {"Kopya", "Bozuk", "#5"}
+
+
+def test_baglanti_kalitesi_denetlenir(tarife, ayarlar):
+    from ithalat_ajani.degerlendir import tr_urun_sayfasi_mi, urun_ilani_mi
+
+    assert urun_ilani_mi("https://www.alibaba.com/product-detail/Scarf_1600.html")
+    assert urun_ilani_mi("https://www.alibaba.com/product-introduction/Scarf_1601.html")
+    assert not urun_ilani_mi("https://www.alibaba.com/showroom/steel-jewelry.html")
+    assert not urun_ilani_mi("https://www.alibaba.com/products/scarf.html")
+    assert tr_urun_sayfasi_mi("https://www.trendyol.com/marka/esarp-p-123456")
+    assert not tr_urun_sayfasi_mi("https://www.trendyol.com/90-x-90-giyim-x-c82-a92-v1576")
+    assert tr_urun_sayfasi_mi("https://www.akakce.com/esarp/en-ucuz-twill-esarp-fiyati,1.html")
+    assert not tr_urun_sayfasi_mi("https://www.akakce.com/esarp.html")
+    assert tr_urun_sayfasi_mi("https://example.com/tr/1")
+
+    s = _sonuc(
+        tarife, ayarlar,
+        alibaba={"url": "https://www.alibaba.com/showroom/scarf.html"},
+        turkiye={"fiyatlar": [{"fiyat_tl": f, "url": "https://www.trendyol.com/esarp-x-c32"} for f in (900, 1000, 1100)]},
+    )  # fmt: skip
+    assert s.durum == "UYGUN-DOGRULA" and any("showroom" in x for x in s.dogrula)
+    assert any("3 tanesi ürün değil" in x for x in s.notlar)

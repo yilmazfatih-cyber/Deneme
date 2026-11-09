@@ -114,8 +114,13 @@ def onceki_olcum(db: sqlite3.Connection, url: str, once: str) -> sqlite3.Row | N
     ).fetchone()
 
 
-def gecmis(db: sqlite3.Connection, gun: int | None = None, durumlar: Iterable[str] | None = None) -> list[sqlite3.Row]:
-    """Her ürünün son ölçümü; en yeni önce."""
+def gecmis(
+    db: sqlite3.Connection,
+    gun: int | None = None,
+    durumlar: Iterable[str] | None = None,
+    min_kat: float | None = None,
+) -> list[sqlite3.Row]:
+    """Her ürünün son ölçümü; en yeni önce. `min_kat`: takip listesi (indirime girerse eşiği geçebilecekler)."""
     sorgu = (
         "SELECT u.url, u.urun, u.kategori, u.tedarikci, u.ilk_gorulme, o.an, o.fiyat_usd, o.moq, o.tr_medyan_tl,"
         " o.tr_ilan, o.birim_maliyet_tl, o.kat, o.durum, o.birim_kar_tl"
@@ -130,6 +135,9 @@ def gecmis(db: sqlite3.Connection, gun: int | None = None, durumlar: Iterable[st
     if durumlar:
         kosullar.append(f"o.durum IN ({', '.join('?' * len(durumlar))})")
         degerler.extend(durumlar)
+    if min_kat is not None:
+        kosullar.append("o.kat >= ?")
+        degerler.append(min_kat)
     if kosullar:
         sorgu += " WHERE " + " AND ".join(kosullar)
     return db.execute(sorgu + " ORDER BY o.an DESC, o.kat DESC", degerler).fetchall()

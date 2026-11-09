@@ -19,9 +19,10 @@ Kargo kg başına 5 $; Çin malı hazır giyimde gümrük vergisi + ilave gümr�
 
 - Kategori anahtarı, adı, GTİP önekleri, örnek ağırlık (`python -m ithalat_ajani kategoriler` tablosundan).
 - Güncel kur (1 USD = ? TL).
-- Daha önce bakılmış Alibaba URL'leri: bunları yeniden aday yapma.
-- Takip listesi: bu kategoride daha önce iyi çıkmış ilanlar. Bunların fiyatını **yeniden ölç** ve adaylara ekle.
-  Böylece fiyatı düşenler ve indirime girenler raporda görünür.
+- Daha önce bakılmış Alibaba URL'leri: takip listesinde olmayanları yeniden aday yapma.
+- Takip listesi: bu kategoride son 30 günde katı 2 ve üstü çıkmış ilanlar. Bunların fiyatını, indirimini ve Türkiye
+  fiyatını **yeniden ölç**, aynı URL ile adaylara ekle (5 aday sınırına sayılmaz, en fazla 5 takip). Böylece
+  fiyatı düşenler ve indirime girenler raporda görünür.
 - Çıktı dosyası yolu ve en fazla aday sayısı (varsayılan 5).
 
 ## Nasıl ararsın
@@ -34,15 +35,26 @@ fiyat kademelerini çoğunlukla verir.
    Mevsime uy (Kasım–Şubat: şal, bere, eldiven, pijama, kazak; Kasım ayı indirim dönemidir).
    Tesettür, hediyelik ve günlük kullanım ürünleri Türkiye'de sürekli satar.
 2. **Alibaba:** `site:alibaba.com <ürünün İngilizce adı> wholesale`, `alibaba <ürün> price per piece MOQ`.
-   Yaygın ürünler için ilan sayfası (`alibaba.com/product-detail/...`) çıkana kadar aramayı daralt.
+   Bağlantı **ürün ilanı** olmalı (`alibaba.com/product-detail/…` ya da `/product-introduction/…`). Showroom,
+   arama ya da kategori sayfasındaki fiyat başka bir ilana ait olabilir; ilan çıkana kadar aramayı daralt.
+   Hesaplayıcı ilan olmayan bağlantıyı "doğrulanmalı" diye işaretler.
 3. **İndirimler:** `alibaba.com deals <ürün>`, `alibaba <ürün> limited time discount`. İlan kampanyadaysa
    (Deals, flash sale, "limited time", kupon), indirimsiz fiyatı ve biliniyorsa bitiş tarihini yaz.
-4. **Türkiye fiyatı:** `trendyol <ürünün Türkçe adı>`, `hepsiburada <ürün>`. Aynı tip, benzer malzeme ve boyutta,
-   **markasız ya da az bilinen markalı** en az 3, tercihen 5 ilan. Lüks marka ve çok ucuz döküntü ilanları alma.
-   Şu anki raf fiyatı `fiyat_tl`'dir. Üstü çizili fiyat varsa `liste_fiyat_tl`'ye yaz.
-5. **Kaba ön eleme:** Türkiye fiyatı (TL) aşağı yukarı **6 × Alibaba fiyatı × kur** değerine ulaşmıyorsa o ürünle
-   vakit kaybetme. Örnek: kur 50, Alibaba 2 $ ise Türkiye fiyatı en az ~600 TL olmalı. Vergi, kargo ve masraflar
-   maliyeti yaklaşık ikiye katlar; KDV ve 3 kat kuralı da üstüne biner.
+4. **Türkiye fiyatı:** `trendyol <ürünün Türkçe adı>`, `hepsiburada <ürün>`, `akakce <ürün>`, `cimri <ürün>`.
+   Aynı tip, benzer malzeme ve boyutta, **markasız ya da az bilinen markalı** en az 3, tercihen 5 ilan. Lüks marka ve
+   çok ucuz döküntü ilanları alma. Şu anki raf fiyatı `fiyat_tl`'dir. Üstü çizili fiyat varsa `liste_fiyat_tl`'ye
+   yaz. Bağlantı ürün sayfası olsun: Trendyol/Hepsiburada `…-p-<no>`, Akakçe/Cimri `/en-ucuz-…`. `kaynak` alanı
+   bağlantının sitesiyle aynı olmalı (akakce bağlantısına "trendyol" yazma).
+5. **Kaba ön eleme:** Vergi, kargo ve masraflar maliyeti aşağı yukarı ikiye katlar; KDV ve 3 kat kuralı da üstüne
+   biner. Bu yüzden oran = Türkiye fiyatı (TL) / (Alibaba fiyatı × kur):
+   - **6 ve üstü:** tam aday.
+   - **4–6:** **yakın aday** olarak yine yaz. Eşiği şimdi geçmez ama indirime girerse ya da fiyatı düşerse geçebilir;
+     takip listesine girer ve sonraki taramalarda yeniden ölçülür.
+   - **4'ün altı:** yazma.
+
+   Örnek: kur 50, Alibaba 2 $ → tam aday için Türkiye fiyatı ~600 TL, yakın aday için ~400 TL.
+
+6. **Hedef:** en az 3, en fazla 5 aday (tam + yakın). Tam aday yoksa en iyi yakın adayları yaz.
 
 ## Ne tür ürün
 

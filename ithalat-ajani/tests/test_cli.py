@@ -116,3 +116,12 @@ def test_zaman_turkiye_saatine_cevrilir(klasor, capsys):
     assert (klasor / "raporlar" / "tarama-20261109-1500.md").exists()
     db = baglan(klasor / "veri" / "ithalat.db")
     assert db.execute("SELECT an FROM taramalar").fetchone()["an"] == "2026-11-09T15:00:00+03:00"
+
+
+def test_takip_listesi_min_kat(klasor, capsys):
+    shutil.copy(ORNEK, klasor / "adaylar.json")
+    main(["degerlendir", "adaylar.json", "--kur", "50.18"])
+    capsys.readouterr()
+    assert main(["gecmis", "--json", "--min-kat", "2"]) == 0
+    takip = json.loads(capsys.readouterr().out)
+    assert {s["urun"] for s in takip} == {"Desenli twill eşarp 90x90", "Çelik zincir kolye (altın kaplama)"}

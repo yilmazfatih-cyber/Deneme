@@ -67,8 +67,9 @@ puanla sınanır; o senaryoda da 3 kat tutmazsa `UYGUN-DOGRULA` olur.
 - **Alibaba kampanyası:** İlan indirimdeyse (Deals, flash sale, kupon) avcı indirimsiz fiyatı ve bitiş tarihini yazar.
   Rapor indirimli katı ve indirim bitince katı gösterir. Eşiği yalnız indirimle geçen ürün **süreli fırsat** olarak
   işaretlenir: indirim bitmeden sipariş gerekir.
-- **Fiyatı düşenler:** Her tarama, önceki taramalarda iyi çıkan ilanların fiyatını yeniden ölçer. Önceki ölçüme göre
-  %3'ten fazla ucuzlayan ilan, eski → yeni fiyat ve kat değişimiyle listelenir.
+- **Fiyatı düşenler:** Her tarama, son 30 günde katı 2 ve üstü çıkan ilanların (takip listesi) fiyatını yeniden
+  ölçer. Önceki ölçüme göre %3'ten fazla ucuzlayan ilan, eski → yeni fiyat ve kat değişimiyle listelenir.
+  Takip listesi: `python -m ithalat_ajani gecmis --gun 30 --min-kat 2`.
 - **Türkiye indirimleri:** Karar şu anki raf fiyatıyla verilir. Türkiye ilanlarının bir kısmı indirimdeyse (Kasım
   indirim dönemi gibi), normal fiyatla hesaplanan kat rapora not edilir.
 

@@ -33,7 +33,7 @@ class Kur:
         if self.kaynak == "tcmb":
             return f"TCMB döviz satış, {self.bulten_tarihi}"
         if self.kaynak == "onbellek":
-            return f"TCMB döviz satış, {self.bulten_tarihi} (önbellek)"
+            return f"TCMB döviz satış, {self.bulten_tarihi}, önbellekten"
         if self.kaynak == "elle":
             return "elle girildi"
         return "ayarlardaki yedek değer (TCMB'ye ulaşılamadı)"

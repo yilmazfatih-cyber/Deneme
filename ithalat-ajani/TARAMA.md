@@ -34,7 +34,7 @@ Baş kendisi uzun arama yapmaz; en fazla 5 doğrulama araması yapar.
    python -m ithalat_ajani kategoriler --siradaki 3              # en uzun süredir bakılmayan, mevsime uygun 3 kategori
    python -m ithalat_ajani kategoriler                           # oranlar, örnek ağırlıklar
    python -m ithalat_ajani gecmis --gun 60 --json > /tmp/gorulen.json
-   python -m ithalat_ajani gecmis --gun 30 --durum UYGUN UYGUN-DOGRULA YAKIN --json > /tmp/takip.json
+   python -m ithalat_ajani gecmis --gun 30 --min-kat 2 --json > /tmp/takip.json   # yeniden ölçülecekler
    ```
 
    Kullanıcı belirli bir kategori ya da ürün fikri verdiyse onu kullan; fikri tablodaki en yakın kategoriye eşle.
@@ -42,7 +42,8 @@ Baş kendisi uzun arama yapmaz; en fazla 5 doğrulama araması yapar.
 3. **Avcıları dağıt.** Her kategori için bir `ithalat-avcisi` alt ajanı başlat (Agent aracı; bu tür yoksa
    `general-purpose`, `model: sonnet` ve `.claude/agents/ithalat-avcisi.md` içeriğini göreve ekle). Avcılar paralel
    çalışır. Göreve şunları yaz: kategori anahtarı, adı, GTİP önekleri, örnek ağırlık, kur, bu kategoride daha önce
-   bakılmış URL'ler (`/tmp/gorulen.json`), bu kategorinin takip listesi (`/tmp/takip.json`, fiyatı yeniden ölçülecek),
+   bakılmış URL'ler (`/tmp/gorulen.json`), bu kategorinin takip listesi (`/tmp/takip.json`: son 30 günde kat ≥ 2
+   çıkan ilanlar; fiyatı yeniden ölçülür, indirime giren ya da ucuzlayan böyle yakalanır),
    en fazla 5 aday, çıktı yolu `/tmp/ithalat/<kategori>.json`.
 
 4. **Birleştir ve dene.** Avcı dosyalarındaki `adaylar` listelerini tek dosyada birleştir:
@@ -63,8 +64,15 @@ Baş kendisi uzun arama yapmaz; en fazla 5 doğrulama araması yapar.
    python -m ithalat_ajani degerlendir raporlar/adaylar-YYYYMMDD-HHMM.json --ozet-dosyasi /tmp/ozet.txt
    ```
 
-7. **Yayınla.** `veri/ithalat.db` ile `raporlar/` klasörünü `/tmp/ithalat-cikti/` içine kopyala, yalnız
-   `ithalat-ciktilari` dalına commit et ve gönder (`git push origin ithalat-ciktilari`). Kod dallarına dokunma.
+7. **Yayınla.** Yalnız `ithalat-ciktilari` dalına yazılır; kod dallarına dokunma.
+
+   ```bash
+   mkdir -p /tmp/ithalat-cikti/veri /tmp/ithalat-cikti/raporlar
+   cp veri/ithalat.db /tmp/ithalat-cikti/veri/ && cp raporlar/* /tmp/ithalat-cikti/raporlar/
+   cd /tmp/ithalat-cikti && git add -A && git commit -q -m "ithalat taraması: $(TZ=Europe/Istanbul date '+%Y-%m-%d %H:%M')"
+   git push origin ithalat-ciktilari
+   ```
+
    Raporda **yeni** bir UYGUN ürün ya da **süreli fırsat** (yalnız Alibaba indirimiyle eşiği geçen) varsa GitHub
    Issue aç: başlık `İthalat fırsatları — YYYY-MM-DD`, etiket `ithalat`, gövde rapor dosyasının içeriği. Fırsat
    yoksa Issue açma.

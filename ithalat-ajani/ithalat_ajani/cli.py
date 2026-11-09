@@ -174,7 +174,7 @@ def komut_gecmis(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
     if not Path(ayarlar.veritabani).exists():
         print("Henüz tarama yok.")
         return 0
-    satirlar = gecmis(baglan(ayarlar.veritabani), gun=a.gun, durumlar=a.durum)
+    satirlar = gecmis(baglan(ayarlar.veritabani), gun=a.gun, durumlar=a.durum, min_kat=a.min_kat)
     if a.json:
         print(json.dumps([dict(s) for s in satirlar], ensure_ascii=False, indent=1))
         return 0
@@ -225,6 +225,7 @@ def ayristirici() -> argparse.ArgumentParser:
     sp = alt.add_parser("gecmis", help="Daha önce değerlendirilen ilanlar (son ölçüm)")
     sp.add_argument("--gun", type=int, help="son N gün")
     sp.add_argument("--durum", nargs="+", choices=DURUMLAR)
+    sp.add_argument("--min-kat", type=float, help="yalnız katı en az bu olanlar (takip listesi için ör. 2)")
     sp.add_argument("--json", action="store_true")
     sp.set_defaults(fonk=komut_gecmis)
     return p
