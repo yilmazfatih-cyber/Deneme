@@ -66,6 +66,31 @@ interface Kosu {
 
 let kosu: Kosu | null = null;
 
+/** Kaynak C (sosyal medya) öğrenimi: persona-katmani/sosyal `disa-aktar-sim` çıktısı. Yoksa S1 ile devam edilir. */
+interface Ogrenilen {
+  surum: string;
+  kaynak: string;
+  yasBandi: Record<string, Partial<Record<'dikkat_esigi' | 'tau_reklam_tolerans', number>>>;
+  yaratici: Record<string, { tiklamaCarpani?: number }>;
+  guven?: string;
+}
+let ogrenilen: Ogrenilen | null = null;
+fetch(`${import.meta.env.BASE_URL}ogrenilen/reklam.json`)
+  .then((r) => (r.ok ? r.json() : null))
+  .then((j: Ogrenilen | null) => { if (j && j.yasBandi) { ogrenilen = j; ciz(); } })
+  .catch(() => undefined);
+
+function segmentlerOgrenilenle() {
+  if (!ogrenilen || ogrenilen.guven === 'dusuk') return TURKIYE_SEGMENTLERI;
+  return TURKIYE_SEGMENTLERI.map((s) => {
+    const c = ogrenilen!.yasBandi[s.yas] ?? {};
+    const k = { ...s.kaydirmalar };
+    if (c.dikkat_esigi) k.dikkat_esigi = (k.dikkat_esigi ?? 1) * c.dikkat_esigi;
+    if (c.tau_reklam_tolerans) k.tau_reklam_tolerans = (k.tau_reklam_tolerans ?? 1) * c.tau_reklam_tolerans;
+    return { ...s, kaydirmalar: k };
+  });
+}
+
 // URL parametreleri (demo ve ekran görüntüsü için): ?seed=7&n=300&sure=900&hiz=120&sekme=eticaret&kampanya=1
 {
   const q = new URLSearchParams(location.search);
@@ -239,7 +264,7 @@ function baslat(ortamAdi: 'magaza' | 'eticaret'): void {
   durum.sekme = ortamAdi;
   const rng = new Rng(durum.seed);
   const oncul = onculSec(durum.seviye);
-  const musteriler = nufusUret(durum.musteriSayisi, oncul, TURKIYE_SEGMENTLERI, rng.fork(), durum.kaynak === 'A+B' && durum.kaynakB ? 'A+B' : 'A');
+  const musteriler = nufusUret(durum.musteriSayisi, oncul, segmentlerOgrenilenle(), rng.fork(), durum.kaynak === 'A+B' && durum.kaynakB ? 'A+B' : 'A');
   if (durum.kaynak === 'A+B' && durum.kaynakB) {
     if (durum.kumeler.length > 0) kumeAta(musteriler, durum.kumeler, rng.fork()); // küme çarpanları bütçeyi zaten ölçekler (ADR-006)
     else { const c = butceCarpani(oncul, durum.kaynakB); for (const m of musteriler) m.theta.butce *= c; }
@@ -251,6 +276,8 @@ function baslat(ortamAdi: 'magaza' | 'eticaret'): void {
   let girdiler: MusteriGirdisi[];
   let kampanyaOzeti: Kosu['kampanyaOzeti'] = null;
   if (durum.kampanyaAktif) {
+    const oc = ogrenilen && ogrenilen.guven !== 'dusuk' ? ogrenilen.yaratici[durum.kampanya.yaratici]?.tiklamaCarpani : undefined;
+    if (oc !== undefined) durum.kampanya.ogrenilenCarpan = oc; else delete durum.kampanya.ogrenilenCarpan;
     const s = kampanyaUygula(musteriler, durum.kampanya, rng.fork(), gunluk);
     girdiler = s.girdiler;
     kampanyaOzeti = { maruzKalan: s.maruzKalan, gosterim: s.gosterim, tiklama: s.tiklama, rahatsiz: s.rahatsiz, harcananTL: s.harcananTL };
@@ -485,7 +512,7 @@ function ciz(): void {
   sagPaneliCiz();
   cizSahne();
   altBar.replaceChildren(
-    el('span', { text: `Öncül: ${durum.seviye === 'S1' ? 'S1 Türkiye' : 'S0 Dünya'} · kaynak ${durum.kaynak}${durum.kaynak === 'A+B' && durum.kaynakB ? ` (B: ${bicimle(durum.kaynakB.n, 0)} fiş)` : ''} · tohum ${durum.seed}` }),
+    el('span', { text: `Öncül: ${durum.seviye === 'S1' ? 'S1 Türkiye' : 'S0 Dünya'} · kaynak ${durum.kaynak}${durum.kaynak === 'A+B' && durum.kaynakB ? ` (B: ${bicimle(durum.kaynakB.n, 0)} fiş)` : ''}${ogrenilen ? ` + sosyal (${ogrenilen.kaynak}, ${ogrenilen.surum}${ogrenilen.guven === 'dusuk' ? ', düşük güven: uygulanmadı' : ''})` : ''} · tohum ${durum.seed}` }),
     el('span', { text: kosu ? `Olay: ${bicimle(kosu.gunluk.liste().length, 0)}` : '' }),
     el('span', { text: 'Sonuçlar kalibrasyon geçmişiyle birlikte okunur (ADR-007).' }),
   );

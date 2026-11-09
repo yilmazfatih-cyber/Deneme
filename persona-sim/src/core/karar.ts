@@ -113,6 +113,8 @@ export interface Reklam {
   indirimOrani?: number;
   /** 0–1 kişiselleştirme derecesi (tepkisellik riski) */
   kisisellestirme?: number;
+  /** Kaynak C'den öğrenilmiş yaratıcı tür çarpanı (1 = yok); çekimi ölçekler (ADR-009) */
+  ogrenilenCarpan?: number;
 }
 
 export interface ReklamTepkisi {
@@ -137,6 +139,7 @@ export function reklamTepkisi(theta: Theta, r: Reklam): ReklamTepkisi {
   if (r.yaratici === 'kitlik') cekim += theta.theta_kitlik;
   if (r.yaratici === 'duygusal') cekim += 0.3;
   if (r.yaratici === 'bilgi') cekim += 0.25 * (theta.okuma_hizi / 200);
+  cekim *= r.ogrenilenCarpan ?? 1;
   const tepkisellik = (r.kisisellestirme ?? 0) * (1.2 - Math.min(1.2, theta.tau_reklam_tolerans)) * 0.4;
   const tolerans = Math.log(theta.tau_reklam_tolerans + 0.1) * 0.5;
   const tiklama = clamp(lojistik(-2.2 + cekim + tolerans - tepkisellik), 0, 1);

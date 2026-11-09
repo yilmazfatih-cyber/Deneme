@@ -301,3 +301,92 @@ CREATE TABLE IF NOT EXISTS denetim_kaydi (
   nesne     TEXT,
   ayrinti   TEXT                              -- JSON
 );
+
+-- ───────────────────────────── Kaynak C · Sosyal medya (ADR-009; yalnız resmî API, yalnız toplu) ─────────────────────────────
+CREATE TABLE IF NOT EXISTS sosyal_hesap (
+  id          TEXT PRIMARY KEY,               -- '<kiraci>:<platform>:<hesap_kimligi>'
+  kiraci_id   TEXT NOT NULL REFERENCES kiraci(id),
+  platform    TEXT NOT NULL,                  -- facebook | instagram | tiktok | x
+  hesap_adi   TEXT,
+  tur         TEXT NOT NULL,                  -- reklam_hesabi | sayfa | profil
+  son_cekim   TEXT
+);
+
+-- Reklam veya organik gönderi (şirketin kendi içeriği). Başkalarının gönderileri tutulmaz.
+CREATE TABLE IF NOT EXISTS sosyal_icerik (
+  id            TEXT PRIMARY KEY,             -- '<platform>:<icerik_kimligi>'
+  hesap_id      TEXT NOT NULL REFERENCES sosyal_hesap(id),
+  kampanya_id   TEXT REFERENCES kampanya(id),
+  tur           TEXT NOT NULL,                -- reklam | organik
+  bicim         TEXT,                         -- gorsel | video | carousel | story | reels | metin
+  yaratici_turu TEXT,                         -- indirim | duygusal | bilgi | sosyal_kanit | kitlik (simülasyonla aynı sözlük)
+  yayin_zamani  TEXT,
+  konu          TEXT,                         -- kategori/konu etiketi
+  metin_ozeti   TEXT                          -- kısa özet; tam metin saklanmaz
+);
+
+-- Toplu metrik: içerik × gün × kırılım. Kırılım platformun verdiği yaş bandı / cinsiyet / bölge; kişi yok.
+CREATE TABLE IF NOT EXISTS sosyal_metrik (
+  id            INTEGER PRIMARY KEY AUTOINCREMENT,
+  icerik_id     TEXT NOT NULL REFERENCES sosyal_icerik(id) ON DELETE CASCADE,
+  tarih         TEXT NOT NULL,
+  yas_bandi     TEXT,                         -- 18-24 | 25-34 | 35-44 | 45-54 | 55+ | hepsi
+  cinsiyet      TEXT,                         -- K | E | bilinmiyor | hepsi
+  bolge         TEXT,                         -- il/ülke veya hepsi
+  gosterim      INTEGER NOT NULL DEFAULT 0,
+  erisim        INTEGER,
+  tiklama       INTEGER NOT NULL DEFAULT 0,
+  etkilesim     INTEGER,                      -- beğeni+yorum+paylaşım+kaydetme
+  video_izlenme INTEGER,
+  video_3sn     INTEGER,                      -- 3 sn izleyen (dikkat vekili)
+  video_tam     INTEGER,                      -- sonuna kadar izleyen
+  donusum       INTEGER,                      -- platform/piksel dönüşümü
+  harcama_tl    REAL,
+  UNIQUE (icerik_id, tarih, yas_bandi, cinsiyet, bolge)
+);
+CREATE INDEX IF NOT EXISTS ix_sosyal_metrik_icerik ON sosyal_metrik(icerik_id, tarih);
+
+-- Yorumların toplu duygu özeti; yorum metni ve yazar kimliği saklanmaz.
+CREATE TABLE IF NOT EXISTS sosyal_duygu_ozeti (
+  icerik_id     TEXT NOT NULL REFERENCES sosyal_icerik(id) ON DELETE CASCADE,
+  tarih         TEXT NOT NULL,
+  yorum_sayisi  INTEGER NOT NULL,
+  olumlu        REAL NOT NULL,                -- oranlar, toplamı 1
+  notr          REAL NOT NULL,
+  olumsuz       REAL NOT NULL,
+  one_cikan_konular TEXT,                     -- JSON liste (fiyat, kargo, kalite, hizmet ...)
+  yontem        TEXT NOT NULL,                -- sozluk | llm | platform
+  PRIMARY KEY (icerik_id, tarih)
+);
+
+-- Konu / hashtag hacmi: kategori ilgisi zaman serisi (kamu toplu sinyali).
+CREATE TABLE IF NOT EXISTS sosyal_konu_hacmi (
+  platform   TEXT NOT NULL,
+  konu       TEXT NOT NULL,
+  tarih      TEXT NOT NULL,
+  hacim      INTEGER NOT NULL,                -- gönderi/mention sayısı veya platform indeksi
+  kaynak     TEXT NOT NULL,                   -- api | export | tahmini
+  PRIMARY KEY (platform, konu, tarih)
+);
+
+-- C1 çıktısı: reklam tepkisi öncülleri (yaş bandı × kanal × yaratıcı). oncul tablosuna da yazılır; bu tablo kanıt ve izlenebilirlik için.
+CREATE TABLE IF NOT EXISTS sosyal_ogrenim (
+  id           INTEGER PRIMARY KEY AUTOINCREMENT,
+  kiraci_id    TEXT NOT NULL REFERENCES kiraci(id),
+  platform     TEXT NOT NULL,
+  yas_bandi    TEXT NOT NULL,
+  yaratici_turu TEXT,
+  bicim        TEXT,
+  gosterim     INTEGER NOT NULL,
+  tiklama_orani REAL,                         -- CTR
+  dikkat_orani  REAL,                         -- video_3sn / gosterim
+  tamamlama_orani REAL,                       -- video_tam / video_3sn
+  etkilesim_orani REAL,
+  donusum_orani REAL,
+  ga_alt REAL, ga_ust REAL,                   -- CTR %95 GA
+  parametre    TEXT NOT NULL REFERENCES parametre(ad),
+  carpan       REAL NOT NULL,                 -- S1 medyanına uygulanacak çarpan (1 = fark yok)
+  guven        TEXT NOT NULL,
+  surum        TEXT NOT NULL,
+  olusturma    TEXT NOT NULL DEFAULT (datetime('now'))
+);

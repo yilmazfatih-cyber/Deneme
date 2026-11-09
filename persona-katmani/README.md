@@ -33,6 +33,7 @@ araştırma, rol tanımları, altı bölümlük mimari ve proje sahibine bırak�
 | `docs/mimari/05-icgoru-ve-urun.md` | Kullanım senaryoları, sektör şablonları, rapor biçimi, kullanım sınırları (İçgörü Mimarı) |
 | `docs/mimari/06-guven-gizlilik.md` | Veri sınıfları, KVKK/GDPR/SOC 2, kötüye kullanım, açıklama (Güven ve Gizlilik) |
 | `docs/mimari/07-dijital-ikiz-istatistik.md` | Genelden özele istatistiksel davranış profili: S0–S4 seviye zinciri, parametre vektörü, hiyerarşik Bayesçi model, seviye seçimi, hibrit karar, doğrulama (Araştırmacı) |
+| `docs/mimari/08-kaynak-c-sosyal.md` | Kaynak C: sosyal medyadan öğrenme (Meta, TikTok, X; resmî API, toplu veri; C1 reklam öncülü, C2 kalibrasyon, C3 sosyal sinyal) |
 | `docs/MIMARI.md` | Bütünleşik mimari: tek diyagram, bileşen sözleşmeleri, yol haritası |
 | `docs/FELSEFI-KARARLAR.md` | Proje sahibinin karar vereceği sorular; her biri seçenekler ve öneriyle |
 | `docs/decisions/ADR-001-dijital-ikiz.md` | Karar: gerçek müşteriler için istatistiksel profil (F-1) |
@@ -43,6 +44,8 @@ araştırma, rol tanımları, altı bölümlük mimari ve proje sahibine bırak�
 | `docs/decisions/ADR-006-hedefleme-birimi.md` | Karar: reklam hedefleme birimi segment + Kaynak B davranış kümeleri (≥ 50 kişi, nötr ad) |
 | `docs/decisions/ADR-007-acik-sorular-kapandi.md` | Kararlar: F-2 geçebilir, F-3 modellenmesin, F-4 tek skor, F-5 düzenlenebilir, F-6 müşteri, F-7 davranış, F-9 girsin, F-10 red yok, F-16 yazılsın |
 | `docs/decisions/ADR-008-persona-insanlik.md` | Karar F-8: numara, algı kusuru eklensin, sabır modeli ile müşteri kararı ayrı gösterilsin |
+| `docs/decisions/ADR-009-sosyal-medya.md` | Karar: sosyal medya üçüncü kaynak (Kaynak C); yalnız resmî API, yalnız toplu veri |
+| `sosyal/` | Kaynak C paketi: Meta/TikTok/X bağlayıcıları, CSV içe aktarım, öğrenme komutları |
 | `db/` | Veritabanı: `schema.sql`, `pk_db.py` (kur, yükle, Kaynak B, koşu içe aktarma), demo veri |
 | `../persona-sim/` | 2D simülasyon uygulaması (Vite + TypeScript): mağaza, e-ticaret hunisi, reklam hedefleme, kalibrasyon |
 | `data/davranis-etkileri.xlsx` | Literatür etki kitaplığı (S0 Dünya / S1 Türkiye öncülleri): 225 bulgu, 184 kaynak, 28 persona parametresi; sayfalar Özet · Etkiler · Moderatörler · Parametreler · Fark matrisi · Kaynaklar · Şema |

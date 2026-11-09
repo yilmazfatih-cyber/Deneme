@@ -23,6 +23,8 @@ export interface Kampanya {
   hedefBirimi?: 'segment' | 'kume';
   /** hedefBirimi 'kume' ise: küme kimlikleri; kümesi olmayan müşteri (Kaynak B yoksa) hedef dışıdır */
   hedefKumeler?: string[] | 'hepsi';
+  /** Kaynak C (sosyal medya) öğrenimi: bu yaratıcı türü için çekim çarpanı */
+  ogrenilenCarpan?: number;
   /** kişi başı ortalama gösterim (Poisson) */
   ortalamaMaruziyet: number;
   butceTL: number;
@@ -84,6 +86,7 @@ function reklamNesnesi(k: Kampanya, maruziyetSayisi: number): Reklam {
   const r: Reklam = { kanal: k.kanal, yaratici: k.yaratici, belirginlik: k.belirginlik, maruziyetSayisi };
   if (k.indirimOrani !== undefined) r.indirimOrani = k.indirimOrani;
   if (k.kisisellestirme !== undefined) r.kisisellestirme = k.kisisellestirme;
+  if (k.ogrenilenCarpan !== undefined) r.ogrenilenCarpan = k.ogrenilenCarpan;
   return r;
 }
 
