@@ -53,6 +53,8 @@ def egit(
     gercek_agirlik: int = 4,
     isci: int = 2,
     sentez_ust_sinir: int | None = None,
+    acik_ust_sinir: int | None = None,
+    ara_kayit_adim: int = 300,
     gunluk=print,
 ) -> Path:
     """Birden çok manifesti birleştirip eğitir. `kaynak == "etiket"` olan (gerçek) örnekler `gercek_agirlik` kat tekrarlanır."""
@@ -79,6 +81,10 @@ def egit(
     if sentez_ust_sinir is not None and len(sentez) > sentez_ust_sinir:
         random.Random(tohum).shuffle(sentez)
         sentez = sentez[:sentez_ust_sinir]
+        kayitlar = sentez + acik + gercek
+    if acik_ust_sinir is not None and len(acik) > acik_ust_sinir:
+        random.Random(tohum + 1).shuffle(acik)
+        acik = acik[:acik_ust_sinir]
         kayitlar = sentez + acik + gercek
     gunluk(f"örnek: {len(sentez)} sentetik + {len(acik)} açık veri + {len(gercek)} kendi etiketimiz (×{gercek_agirlik})")
 
@@ -136,6 +142,9 @@ def egit(
             sched.step()
             toplam += kayip.item()
             adet += 1
+            if ara_kayit_adim and adet % ara_kayit_adim == 0:
+                model_kaydet(cikti / "ara.pt", model, alfabe, {**meta, "donem": d, "adim": adet, "kayip": toplam / adet})
+                gunluk(f"  ara kayıt: dönem {d} adım {adet} kayıp {toplam / adet:.3f}")
         cer = _cer_hesapla(model, dl_d, alfabe, cihaz)
         gecmis.append({"donem": d, "kayip": toplam / max(1, adet), "cer": cer, "sure": time.time() - t0})
         gunluk(f"dönem {d:3d}/{donem}  kayıp {toplam / max(1, adet):.3f}  doğrulama CER {cer * 100:.2f}%  ({time.time() - t0:.0f} sn)")
