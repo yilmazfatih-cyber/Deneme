@@ -1,0 +1,749 @@
+[
+  {
+    "kod": "tavan_kovalama",
+    "ad": "Tavan kovalama (tavanda kapanan hisseye ertesi gün binme)",
+    "aile": "momentum",
+    "populerlik": "çok yüksek",
+    "populerlik_kaniti": "Midas, Rota Borsa, Halkarz, Borsa Atlas gibi perakende sitelerinde 'tavan serisi hesaplama', 'tavan yapan hisseler' günlük haber formatıdır; SPK Başkanı 2023'te 'tavan tavan gider umuduyla gelen yatırımcı' uyarısı yaptı. %10 limit BIST'e özgü en görünür mekaniktir.",
+    "ufuk": "1-3 gun",
+    "tetik": "tavan_kapanis(t) VE hacim_z_20 >= 1.0 VE (tavan_kapanis sayısı son 5 günde <= 2, yani seri yeni başlamış) VE son_olay_tur ∉ {vbts_tedbir}. Ek saatlik koşul: kapanis[17] == yuksek[17] (gün sonunda tavan kilitli).",
+    "giris": "t+1 günü 10:00 çubuğunun açılışı (açılış seansı fiyatı). Açılış = yeni tavan_fiyat ise işlem gerçekleşmez (tavanda alıcı kuyruğu); yalnız acilis[10] < tavan_fiyat(t+1) olan günler sayılır.",
+    "cikis": "t+1 kapanışında sat (1 gün); alternatif: t+1 günü herhangi bir saatte kapanis[h] < onceki_kapanis(t) ise o saatin kapanışında stop. Hedef: tavan_fiyat(t+1)'e dokunursa (yuksek[h] >= tavan_fiyat) %9-10 kâr al.",
+    "durumlar": "Takip edildiği durumlar: XU100 MA200 üstü ve xu100_getiri_20g > 0 (boğa), küçük/orta ölçekli, düşük fiyatlı hisse, KAP haberi veya bedelsiz/halka arz sonrası. Çalışmadığı durumlar: XU100 düşüş rejimi (gece gap'leri aşağı açılır), tedbir (brüt takas/tek fiyat) duyurusu gelen hisse, seri 3+ gün olup hacim şişmişse (dönüş riski), olay_sayi_1g == 0 ve hacim_z_20 < 1 ise (manipülatif tavan).",
+    "bist_ozel": "Doğrudan ±%10 fiyat marjına ve açılış seansına bağlı. Tavanda eşleşme önceliği zaman önceliğine göre: bireysel açılış seansında emir girerek sıraya girer. 1 ay süreli VBTS tedbirleri (açığa satış/kredili yasağı → brüt takas → emir paketi → tek fiyat) seriyi kırar. Baz fiyat önceki kapanıştır (2015 BISTECH sonrası AOF değil).",
+    "veri_gereksinimi": [
+      "saatlik_ohlcv",
+      "gunluk",
+      "kap_olay"
+    ],
+    "hesaplanabilir_mi": "evet",
+    "akademik_kanit": "Bildik & Gülay (2006, J. Financial Research): İMKB'de fiyat limitleri gecikmiş fiyat keşfi ve oynaklık yayılması yaratıyor, limit kilitleri daha güçlü kanıt. Aktaş, Kryzanowski & Zhang (2021, IMEFM): BIST-50 saniyelik veride mıknatıs etkisi destekleniyor. Danışoğlu (2018, Annals of OR): limit günleri sonrası oynaklık daha yüksek ve kalıcı.",
+    "kaynaklar": [
+      "https://www.getmidas.com/tavan-serisi-hesaplama/",
+      "https://www.getmidas.com/midasin-kulaklari/borsada-tavan-ve-taban-serisi-yapan-hisseler-hangileri-p-186102",
+      "https://borsaatlas.com/2025/08/08/qnbtr-tavan-avi/",
+      "https://rotaborsa.com/etiket/tavan-serisi-yapan-hisseler/",
+      "https://spk.gov.tr/duyurular/baskanin-konusmalari/2023/kurul-baskani-ibrahim-omer-gonulun-gazetecilere-verdigi-roportaj",
+      "https://ideas.repec.org/a/bla/jfnres/v29y2006i3p383-403.html",
+      "https://ideas.repec.org/a/eme/imefmp/imefm-04-2020-0151.html",
+      "https://link.springer.com/article/10.1007/s10479-016-2317-y"
+    ]
+  },
+  {
+    "kod": "tavan_serisi_devam",
+    "ad": "Tavan serisi devamı (2+ tavandan sonra açılışta tavan açılırsa binme)",
+    "aile": "momentum",
+    "populerlik": "yüksek",
+    "populerlik_kaniti": "'Tavan serisi' terimi haber etiketi hâline gelmiş durumda (Rota Borsa 'borsada en uzun tavan serisi', Midas haftalık tavan/taban serisi listeleri). Halka arz dalgasında (2023) ortalama ~10 gün süren seriler bu davranışı yaygınlaştırdı.",
+    "ufuk": "1-3 gun",
+    "tetik": "tavan_kapanis(t) VE tavan_kapanis(t-1) (ardışık >= 2 gün) VE serinin ilk gününden bu yana kümülatif getiri <= %50 VE son_olay_tur ∉ {vbts_tedbir}. Seri uzunluğu n = ardışık tavan_kapanis sayısı.",
+    "giris": "t+1 günü 10:00 çubuğunun açılışı, ancak yalnız acilis[10] < tavan_fiyat(t+1) ise (tavan 'açılmış'). Açılış tavansa işlem yok.",
+    "cikis": "Seri bozulduğu gün: kapanis_gun(t+k) < onceki_kapanis(t+k) olursa o günün kapanışında sat. Stop: herhangi bir saatte kapanis[h] <= onceki_kapanis*0.97. Azami 3 gün.",
+    "durumlar": "Takip: boğa rejimi, yüksek perakende katılımı, düşük fiyatlı ve küçük hisseler, halka arz sonrası ilk haftalar. Çalışmaz: n >= 4 ve hacim_z_20 artıyorsa (dağıtım), tedbir duyurusu gelmişse (VBTS 1 ay), XU100 günlük -%2'den sert düşerken.",
+    "bist_ozel": "±%10 limit, açılış seansı (09:40-09:55 emir toplama, 09:55-10:00 eşleşme), VBTS kademeleri. Seri sırasında brüt takas gelirse gün içi al-sat fiilen imkânsızlaşır (netleştirme yok).",
+    "veri_gereksinimi": [
+      "saatlik_ohlcv",
+      "gunluk",
+      "kap_olay"
+    ],
+    "hesaplanabilir_mi": "evet",
+    "akademik_kanit": "Doğrudan 'seri' çalışması yok. Bildik & Gülay (2006) limit kilitlerinin ertesi gün fiyat devamıyla ilişkili olduğunu bulur; Aktaş vd. (2021) mıknatıs etkisi. Halka arz tavan serileri: DergiPark (2023 halka arzları ilk gün/30 gün getirisi).",
+    "kaynaklar": [
+      "https://rotaborsa.com/etiket/borsada-en-uzun-tavan-serisi/",
+      "https://halkarz.com/tavan-serisi/",
+      "https://paratic.com/cilginlik-bitti-mi-yeni-halka-arzlar-tavanda-duramiyor",
+      "https://ideas.repec.org/a/bla/jfnres/v29y2006i3p383-403.html",
+      "https://dergipark.org.tr/en/download/article-file/3762102"
+    ]
+  },
+  {
+    "kod": "taban_donusu",
+    "ad": "Taban dönüşü (tabanda kapanan hissede ertesi gün taban açılınca alım)",
+    "aile": "ortalamaya_donus",
+    "populerlik": "yüksek",
+    "populerlik_kaniti": "Ekşi Sözlük 'taban yapan hisse nasıl satılır' başlığı, hisse.net 'X hisse 15 kez taban oldu' haberleri ve Bigpara 'taban çalışması' köşe yazıları; 'tabandan toplamak' perakende jargonu. Ancak kanıt daha çok anekdot, bu yüzden 'çok yüksek' değil.",
+    "ufuk": "1-3 gun",
+    "tetik": "taban_kapanis(t) VE t+1 günü: acilis[10] > taban_fiyat(t+1) VE kapanis[10] > acilis[10] VE dusuk[10] > taban_fiyat(t+1) VE hacim_oran_saat(10) >= 2.0. Filtre: son_olay_tur ∉ {vbts_tedbir, sermaye_azaltimi} ve ardışık taban sayısı <= 2.",
+    "giris": "t+1 günü 11:00 çubuğunun açılışı.",
+    "cikis": "Hedef +%5 (yuksek[h] >= giris*1.05 → o çubukta sat), stop kapanis[h] < dusuk[10] (10:00 çubuğunun dibi), en geç t+2 kapanışı.",
+    "durumlar": "Takip: XU100 pozitif gün, hisse bazlı (haber kaynaklı değil endeks kaynaklı) düşüş, tek seferlik taban. Çalışmaz: ardışık >= 3 taban (fon tasfiyesi/manipülasyon sonrası seriler 2024-25'te 14-15 tabana ulaştı), tedbir/soruşturma haberi, brüt takas (gün içi çıkamazsın), XU100 kendi -%2 altında.",
+    "bist_ozel": "±%10 taban, tabanda satıcı kuyruğu (zaman önceliği); taban açılması = kuyruğun erimesi. Açığa satış bireyde fiilen kısıtlı olduğundan karşıt strateji (tabana doğru satış) genelde uygulanamaz; bu yüzden yalnız uzun bacak.",
+    "veri_gereksinimi": [
+      "saatlik_ohlcv",
+      "gunluk",
+      "kap_olay"
+    ],
+    "hesaplanabilir_mi": "evet",
+    "akademik_kanit": "Danışoğlu (2018): limit sonrası oynaklık yüksek ve likidite düşük → dönüşler gürültülü. ODTÜ tezi (gün içi): aşırı tepki dakikalar içinde tersine döner. Doğrudan 'taban dönüşü' kârlılık çalışması yok.",
+    "kaynaklar": [
+      "https://eksisozluk.com/entry/156501540",
+      "https://www.hisse.net/haber/borsada-16-hisse-15-kez-taban-oldu-2-hissede-kayip-90i-asti-100625",
+      "https://bigpara.hurriyet.com.tr/bigpara-yazarlari/ergun-tekgul/taban-calismasinda-son-perde_ID741826/",
+      "https://link.springer.com/article/10.1007/s10479-016-2317-y",
+      "https://open.metu.edu.tr/handle/11511/89731"
+    ]
+  },
+  {
+    "kod": "acilis_ilk_saat_momentum",
+    "ad": "Açılış sonrası ilk saat momentumu",
+    "aile": "momentum",
+    "populerlik": "çok yüksek",
+    "populerlik_kaniti": "Günlük al-satçının doğal odağı: hacmin ve oynaklığın en yüksek olduğu dilim 10:00-11:00'dir (Kadıoğlu & Küçükkocaoğlu 2015: getiride çift U, oynaklıkta L şekli). Aracı kurum sabah bültenleri ve 'açılışta öne çıkan hisseler' içerikleri her gün yayımlanır.",
+    "ufuk": "gun_ici",
+    "tetik": "getiri_saat(10) >= +0.02 VE hacim_oran_saat(10) >= 1.5 VE kapanis[10] >= acilis[10] + 0.7*(yuksek[10]-dusuk[10]) (çubuğun üst %30'unda kapanış) VE XU100 10:00 getirisi > 0 VE gece_getiri <= +0.04 (gap çok büyük değil).",
+    "giris": "11:00 çubuğunun açılışı.",
+    "cikis": "17:00 çubuğunun kapanışında (18:00 kapanış seansı öncesi) düz kapat. Stop: kapanis[h] < dusuk[10]. Kâr al: +%3.",
+    "durumlar": "Takip: XU100 pozitif açılış, boğa rejimi, haber/bilanço günü, BIST-100 dışı yüksek beta hisseler. Çalışmaz: gap > %4 (ilk saat dönüşü sık; ODTÜ tezi: aşırı tepki ilk dakikalarda tersine döner), XU100 negatif, 12:00-14:00 düşük hacim döneminde başlayan hareketler, tek fiyat tedbirli hisseler.",
+    "bist_ozel": "Açılış seansı 09:40-09:55 emir toplama, 09:55-10:00 eşleşme → 10:00 çubuğunun açılışı tek fiyattır. Öğle arası yok (2019'dan beri kesintisiz). Kapanış seansı 18:00-18:10.",
+    "veri_gereksinimi": [
+      "saatlik_ohlcv",
+      "gunluk"
+    ],
+    "hesaplanabilir_mi": "evet",
+    "akademik_kanit": "Kadıoğlu & Küçükkocaoğlu (2015, BDDK Dergisi): 15 dk getiride çift U, oynaklıkta L; açılış seansı ilk seans açılış getirisini düşürüp oynaklığı artırdı. Inci (2016): Pazartesi sabahı oynaklığı en yüksek. ODTÜ tezi: gün içi aşırı tepki dakikalar sürüyor.",
+    "kaynaklar": [
+      "https://ideas.repec.org/a/bdd/journl/v9y2015i1p103-126.html",
+      "https://emerald.com/insight/content/doi/10.1108/978-1-78635-452-520161028",
+      "https://open.metu.edu.tr/handle/11511/89731",
+      "https://infoyatirim.com/sozluk/seans-nedir"
+    ]
+  },
+  {
+    "kod": "acilis_araligi_kirilimi",
+    "ad": "Açılış aralığı kırılımı (ORB: ilk saat yükseğinin kırılması)",
+    "aile": "momentum",
+    "populerlik": "orta",
+    "populerlik_kaniti": "Küresel gün içi literatürden ithal (opening range breakout); Türkçe eğitim içeriklerinde 'ilk saat aralığı' olarak geçer ancak tavan/AOF kadar yerleşik değil. TradingView Türkçe fikirlerinde sık görülür.",
+    "ufuk": "gun_ici",
+    "tetik": "h ∈ {11,12,13}: kapanis[h] > yuksek[10] VE hacim[h] > 1.5 * ort(hacim[h], 20 gün aynı saat) VE (yuksek[10]-dusuk[10])/kapanis[10] <= 0.04 (ilk saat aralığı dar) VE XU100 aynı saatte > 0.",
+    "giris": "Tetik çubuğundan sonraki saatin açılışı.",
+    "cikis": "Hedef = giris + (yuksek[10]-dusuk[10]) (aralık kadar), stop = dusuk[10]; her durumda 17:00 çubuğu kapanışında kapat.",
+    "durumlar": "Takip: trend günleri (XU100 günlük |getiri| > %1 ve yönlü), haber sonrası, orta likidite. Çalışmaz: yatay/düşük oynaklık günleri (atr_20g_oran düşük), ilk saat aralığı > %4 (tüm günlük hareket zaten yapılmış), gap > %5.",
+    "bist_ozel": "Açılış seansı tek fiyatından sonra ilk sürekli işlem saati aralık belirler. Fiyat adımı (ör. 20-50 TL arası 0,02) stop mesafesini belirler; düşük fiyatlı hisselerde adım/fiyat oranı yüksektir.",
+    "veri_gereksinimi": [
+      "saatlik_ohlcv",
+      "gunluk"
+    ],
+    "hesaplanabilir_mi": "evet",
+    "akademik_kanit": "BIST'e özgü ORB çalışması yok. Kadıoğlu & Küçükkocaoğlu (2015) gün içi getiri/oynaklık yapısı dolaylı kanıt.",
+    "kaynaklar": [
+      "https://ideas.repec.org/a/bdd/journl/v9y2015i1p103-126.html",
+      "https://borsaatlas.com/akademi/vwap-vs-moving-average-nedir/"
+    ]
+  },
+  {
+    "kod": "gap_kapatma",
+    "ad": "Gap kapatma (habersiz aşağı boşluğun gün içinde kapanması)",
+    "aile": "ortalamaya_donus",
+    "populerlik": "yüksek",
+    "populerlik_kaniti": "Borsa Atlas, hisse.net, Ekonomist sözlük, Rota Borsa ve Borsacoo'da 'gap kapatma' ayrı eğitim konusu; 'her gap kapanır' söylemi perakende arasında yaygın. Yukarı gap'te satış bacağı açığa satış kısıtı nedeniyle bireyde nadir; aşağı gap alımı uygulanabilir.",
+    "ufuk": "gun_ici",
+    "tetik": "gece_getiri <= -0.02 VE gece_getiri >= -0.06 VE olay_sayi_1g == 0 (habersiz) VE XU100 gece_getiri >= -0.01 (endeks kaynaklı değil) VE kapanis[10] > acilis[10] VE dusuk[10] > taban_fiyat.",
+    "giris": "11:00 çubuğunun açılışı.",
+    "cikis": "Hedef = onceki_kapanis (gap tam kapanış) → yuksek[h] >= onceki_kapanis olduğunda sat; stop = dusuk[10]; en geç 17:00 kapanışı.",
+    "durumlar": "Takip: habersiz, endeksten bağımsız açılış boşlukları; boğa rejimi; likit BIST-100 hisseleri. Çalışmaz: KAP haberi/bilanço kaynaklı gap (kaçış gap'i), gap > %6, XU100 de gap'li açılmışsa, tedbirli/düşük likit hisse (sürekli gap'li işlem).",
+    "bist_ozel": "Açılış seansı tek fiyatı gap'i belirler; baz fiyat önceki kapanış. Yukarı gap'te 'açığa sat-gap kapansın' bacağı: açığa satış 2025'te sadece BIST-50 ve dönem dönem tamamen yasak → bireysel için pratikte yok.",
+    "veri_gereksinimi": [
+      "saatlik_ohlcv",
+      "gunluk",
+      "kap_olay"
+    ],
+    "hesaplanabilir_mi": "evet",
+    "akademik_kanit": "BIST'e özgü gap çalışması yok. Gün içi ters dönüş: ODTÜ tezi (aşırı tepki dakikalar içinde tersine dönüyor); Kadıoğlu & Küçükkocaoğlu (2015) açılış getirisi düşük/oynaklık yüksek.",
+    "kaynaklar": [
+      "https://borsaatlas.com/akademi/borsada-fiyat-boslugu/",
+      "https://www.hisse.net/haber/gap-fiyat-boslugu-nedir-hisselerde-neden-olusur-10474",
+      "https://borsacoo.com/blog/borsada-gapler-fiyat-bosluklarinin-anlami-ve-stratejik-kullanimi",
+      "https://uzmanpara.milliyet.com.tr/uzmanpara/gap-nedir-borsada-gapli-acilis-nasil-olur-6384348",
+      "https://open.metu.edu.tr/handle/11511/89731"
+    ]
+  },
+  {
+    "kod": "hacim_patlamasi_kirilim",
+    "ad": "Hacim patlamasıyla direnç kırılımı",
+    "aile": "momentum",
+    "populerlik": "yüksek",
+    "populerlik_kaniti": "Aracı kurum tarama şablonlarının standart kriteri ('hacim artışıyla desteklenen', 'hacimli kırılım'); YatırımX RSI rehberi hacim teyidini BIST'te 'özellikle önemli' sayar; Borsagündem/Bigpara 'teknik sinyal listesi' hacim patlaması yapanları günlük listeler.",
+    "ufuk": "1-3 gun",
+    "tetik": "Saatlik: kapanis[h] > aralik_20g_yuksek VE hacim[h] >= 2.0 * ort(hacim[h], 20 gün aynı saat) VE h <= 16 (son saat hariç) VE getiri_saat(h) <= +0.07 (tavana yapışık değil) VE son_olay_tur ∉ {vbts_tedbir}. Günlük versiyon: kapanis_gun > aralik_20g_yuksek VE hacim_z_20 >= 2.",
+    "giris": "Tetik çubuğundan sonraki saatin açılışı (günlük versiyonda t+1 10:00 açılışı).",
+    "cikis": "Kâr al +%6, stop: kapanis[h] < aralik_20g_yuksek*0.98 (kırılım başarısız), en geç 3 gün. Alternatif izleyen stop: 2×ATR_20g.",
+    "durumlar": "Takip: XU100 MA200 üstü, sektör rotasyonu, bilanço/KAP haberi sonrası, oynaklik_20g düşükten yükselirken (sıkışma sonrası). Çalışmaz: 17:00 çubuğundaki kırılımlar (kapanış seansı manipülasyonu), ayı rejimi, zaten 52h zirvesinin %2 yakınındaysa ve hacim zirvedeyse (tükeniş), tek fiyat tedbirli hisse.",
+    "bist_ozel": "Tavan limiti kırılımın ulaşabileceği günlük tavanı sınırlar (+%10); brüt takas gelirse pozisyon T+2'ye kadar kilitlenir. Hacim verisi lot bazında; halka arz sonrası lot sayısı değişimi (bedelsiz) hacim ortalamasını bozar → bedelsiz günlerinde seriyi düzelt.",
+    "veri_gereksinimi": [
+      "saatlik_ohlcv",
+      "gunluk",
+      "kap_olay"
+    ],
+    "hesaplanabilir_mi": "evet",
+    "akademik_kanit": "Doğrudan kırılım çalışması yok. 52 haftalık zirve: MAKÜ İİBF (2007-2016) pozitif ama anlamsız getiri. Teknik gösterge testleri (Tarsus 2024, Alanya 2025) tek gösterge yerine hacim/çoklu teyit öneriyor.",
+    "kaynaklar": [
+      "https://www.yatirimx.com.tr/sirket-haberleri/rsi-ile-bist-hissesi-nasil-secilir-adim-adim-rehber/20037",
+      "https://www.borsagundem.com.tr/teknik-gostergelere-gore-one-cikan-hisseler-25-kasim",
+      "https://bigpara.hurriyet.com.tr/analiz/teknik-sinyal-listesi/?harf=M",
+      "https://dx.doi.org/10.30798/makuiibf.790900",
+      "https://acikerisim.alanya.edu.tr/items/1303d572-3607-4b0e-ab34-ca1f8464e333"
+    ]
+  },
+  {
+    "kod": "zirve_52h_kirilim",
+    "ad": "52 haftalık zirve kırılımı",
+    "aile": "trend",
+    "populerlik": "orta",
+    "populerlik_kaniti": "hisse.net 'BIST 100'de dip-zirve alarmı' gibi düzenli içerikler ve tarama şablonlarında '52 haftanın en yükseği' kriteri var; ancak perakende dilinde tavan/RSI kadar yaygın değil. Akademik olarak BIST'te test edilmiş az sayıda kuraldan biri.",
+    "ufuk": "1-4 hafta",
+    "tetik": "zirve_52h_yakinlik >= 1.0 (kapanis_gun >= önceki 252 günün maksimum yükseği) VE zirve_52h_yakinlik(t-1) < 1.0 (ilk kırılım) VE hacim_z_20 >= 1.0 VE endekse_gore_20g > 0.",
+    "giris": "t+1 günü 10:00 açılışı.",
+    "cikis": "İzleyen stop: kapanis_gun < ma20 (ma20_uzaklik < 0) → ertesi açılışta sat; sabit stop -%6; azami 20 işlem günü.",
+    "durumlar": "Takip: XU100 kendisi de MA200 üstünde ve 52h zirvesine yakın (2023-24 boğa), düşük oynaklık trend rejimi. Çalışmaz: xu100_getiri_20g < -5% (endeks düzeltmesi), yüksek oynaklik_20g, tavanla kırılan zirveler (ertesi gün gap riski), tedbirli hisse.",
+    "bist_ozel": "Tavan limiti nedeniyle kırılım günü getirisi +%10 ile kesilir; kırılım 'tavan kilidi' ile olduysa tavan_kovalama kurallarına döner. Bedelsiz sermaye artırımları fiyat serisini düzeltilmeli (zirve hesabı düzeltilmiş fiyatla).",
+    "veri_gereksinimi": [
+      "gunluk",
+      "saatlik_ohlcv"
+    ],
+    "hesaplanabilir_mi": "evet",
+    "akademik_kanit": "MAKÜ İİBF Dergisi (2007-2016 BIST): 52 haftalık yüksek fiyat portföyleri pozitif fakat istatistiksel olarak anlamsız; brüt kârlılıkla birleşince de anlamsız. ODTÜ tezi (2004-2014): BIST-100'de ortalamaya dönüş var, momentum yok.",
+    "kaynaklar": [
+      "https://dx.doi.org/10.30798/makuiibf.790900",
+      "https://search.trdizin.gov.tr/yayin/detay/465262",
+      "https://www.hisse.net/haber/bist-100de-dip-zirve-alarmi-hangi-hisse-nerede-duruyor-65770",
+      "https://acikbilim.yok.gov.tr/handle/20.500.12812/223672"
+    ]
+  },
+  {
+    "kod": "rsi_asiri_satim",
+    "ad": "RSI 30 altı aşırı satımdan dönüş",
+    "aile": "ortalamaya_donus",
+    "populerlik": "çok yüksek",
+    "populerlik_kaniti": "Midas 'Göstergeleri al sinyali veren BIST 100 hisseleri' serisi 170+ bölüm, YatırımX 'RSI ile BIST hissesi nasıl seçilir', Paratic 'MACD ve RSI uyumlu hisseler', Bigpara teknik sinyal listesi: RSI 30/70 eşiği perakende taramasının en yaygın kriteri. Matriks/İdeal hazır gösterge setinde varsayılan.",
+    "ufuk": "1-4 hafta",
+    "tetik": "rsi_14(t-1) < 30 VE rsi_14(t) >= 30 (yukarı kesiş) VE getiri_1g > 0 VE xu100_ma200_uzaklik > 0 VE son_olay_tur ∉ {vbts_tedbir, sermaye_azaltimi} VE taban_kapanis(t) değil.",
+    "giris": "t+1 günü 10:00 açılışı.",
+    "cikis": "rsi_14 >= 50 olduğu günün kapanışı veya +%6 kâr al; stop -%5 (günlük kapanış bazlı); azami 10 işlem günü.",
+    "durumlar": "Takip: XU100 MA200 üstü (boğa içi düzeltme), BIST-100 likit hisseler, endeks kaynaklı düşüşler (endekse_gore_20g > -5). Çalışmaz: ayı rejiminde (RSI uzun süre 30 altında kalır), şirkete özgü kötü haber/soruşturma, ardışık tabanlar, yüksek oynaklik_20g.",
+    "bist_ozel": "Taban limitleri RSI'ı yapay biçimde uzun süre düşük tutabilir (seri tabanlar); tabanda kilitli günleri hariç tut. Açığa satış kısıtı nedeniyle RSI 70 üstü 'sat' bacağı yalnız pozisyon kapatma olarak kullanılır.",
+    "veri_gereksinimi": [
+      "gunluk",
+      "saatlik_ohlcv",
+      "kap_olay"
+    ],
+    "hesaplanabilir_mi": "evet",
+    "akademik_kanit": "Tarsus Üniv. (2024, BIST-30, 18 hisse): al-tut en yüksek; MACD piyasaya yakın; RSI ve MOST piyasanın gerisinde. Core.ac.uk makalesi (BIST-30/100, 1997-2015): RSI+Bollinger veya CCI+MACD birlikte kullanımı öne çıkıyor. Alanya (2025): göstergeler birlikte kullanılmalı.",
+    "kaynaklar": [
+      "https://www.getmidas.com/midasin-kulaklari/gostergeleri-al-sinyali-veren-bist-100-hisseleri-hangileri-177-p-256597",
+      "https://www.yatirimx.com.tr/sirket-haberleri/rsi-ile-bist-hissesi-nasil-secilir-adim-adim-rehber/20037",
+      "https://paratic.com/macd-ve-rsi-uyumlu-3-potansiyelli-hisse/",
+      "https://acikerisim.tarsus.edu.tr/items/1b2dc725-419e-470f-a9d9-b5a6cabfc0e9",
+      "https://core.ac.uk/download/490776404.pdf",
+      "https://acikerisim.alanya.edu.tr/items/1303d572-3607-4b0e-ab34-ca1f8464e333"
+    ]
+  },
+  {
+    "kod": "macd_kesisimi",
+    "ad": "MACD sinyal kesişimi (günlük)",
+    "aile": "trend",
+    "populerlik": "yüksek",
+    "populerlik_kaniti": "Midas ve YatırımX tarama içeriklerinde 'MACD (12,26) pozitif bölge / sinyal kesişimi' RSI'dan sonraki ikinci kriter; akademik testlerde BIST'te en sık test edilen gösterge.",
+    "ufuk": "1-4 hafta",
+    "tetik": "MACD = ema_12 - ema_26 (günlük kapanış), sinyal = ema_9(MACD), hist = MACD - sinyal. Tetik: hist(t-1) < 0 VE hist(t) > 0 VE kapanis_gun > ma50 (ma50_uzaklik > 0) VE XU100 MACD hist > 0.",
+    "giris": "t+1 günü 10:00 açılışı.",
+    "cikis": "hist(t+k) < 0 olduğu günün kapanışında sat; stop -%7; azami 20 işlem günü.",
+    "durumlar": "Takip: trendli rejim (XU100 MA200 üstü, oynaklik_20g orta), BIST-50/100 likit hisseler. Çalışmaz: yatay piyasa (testere sinyalleri), yüksek oynaklık/tavan-taban hareketleri, düşük likidite.",
+    "bist_ozel": "Gün içi limitler trend göstergelerinin gecikmesini artırır (bir günde +%10 sonra sinyal). Bedelsiz düzeltmesi şart.",
+    "veri_gereksinimi": [
+      "gunluk"
+    ],
+    "hesaplanabilir_mi": "evet",
+    "akademik_kanit": "Tarsus (2024): MACD getirisi piyasa getirisine yakınsıyor, al-tut'u geçemiyor. DergiPark (Katılım 30): MACD hiçbir hissede en yüksek getiriyi sağlamıyor. Core.ac.uk (1997-2015): CCI+MACD kombinasyonu öneriliyor.",
+    "kaynaklar": [
+      "https://www.yatirimx.com.tr/piyasa/gostergeleri-al-veren-bist-hisseleri/20545",
+      "https://www.getmidas.com/midasin-kulaklari/gostergeleri-al-sinyali-veren-bist-100-hisseleri-hangileri-72-p-157878",
+      "https://acikerisim.tarsus.edu.tr/items/1b2dc725-419e-470f-a9d9-b5a6cabfc0e9",
+      "https://dergipark.org.tr/en/download/article-file/4258735",
+      "https://core.ac.uk/download/490776404.pdf"
+    ]
+  },
+  {
+    "kod": "ma_kesisimi_golden",
+    "ad": "Hareketli ortalama kesişimi (fiyat/EMA20 → EMA50 üstü, golden cross)",
+    "aile": "trend",
+    "populerlik": "yüksek",
+    "populerlik_kaniti": "Midas tarama yazıları 9-21-50-200 günlük üssel ortalamaları sıralar; Borsagündem 'hareketli ortalama kesişimleri trend dönüş sinyali' içerikleri; MA200 üstü/altı Türk finans basınında endeks için standart söylem.",
+    "ufuk": "1-4 hafta",
+    "tetik": "ema_20(t) > ema_50(t) VE ema_20(t-1) <= ema_50(t-1) (yukarı kesiş) VE kapanis_gun > ema_20 VE hacim_z_20 >= 0 VE xu100_ma200_uzaklik > 0. Uzun versiyon: ma50 > ma200 kesişi (golden cross).",
+    "giris": "t+1 günü 10:00 açılışı.",
+    "cikis": "ema_20 < ema_50 aşağı kesişinde kapanışta sat; stop -%8; azami 30 işlem günü.",
+    "durumlar": "Takip: trend rejimi, düşük-orta oynaklık, endeks kendisi de MA50>MA200. Çalışmaz: yatay/testere, gap'li tavan-taban hisseleri (ortalamalar gecikir), xu100_getiri_20g < -5.",
+    "bist_ozel": "Bedelsiz/temettü düzeltmesi yapılmazsa yapay kesişim. Tavan-taban limitleri hareketi günlere yaydığı için MA sinyalleri gelişmiş piyasalara göre daha geç gelir.",
+    "veri_gereksinimi": [
+      "gunluk"
+    ],
+    "hesaplanabilir_mi": "evet",
+    "akademik_kanit": "Alanya (2025): hareketli ortalamalar dahil göstergeler olay çalışmasıyla incelenmiş, birlikte kullanım öneriliyor. Tarsus (2024) benzer kuralların al-tut'u geçemediğini bulur. ODTÜ tezi: endeks düzeyinde momentum yok.",
+    "kaynaklar": [
+      "https://www.getmidas.com/midasin-kulaklari/gostergeleri-al-sinyali-veren-bist-100-hisseleri-hangileri-134-p-204544",
+      "https://www.borsagundem.com.tr/teknik-gostergelere-gore-dikkat-ceken-hisseler-23-nisan",
+      "https://acikerisim.alanya.edu.tr/items/1303d572-3607-4b0e-ab34-ca1f8464e333",
+      "https://acikbilim.yok.gov.tr/handle/20.500.12812/223672"
+    ]
+  },
+  {
+    "kod": "aof_ustu_kapanis",
+    "ad": "AOF üstü güçlü kapanış → ertesi gün devam",
+    "aile": "mikro_yapi",
+    "populerlik": "yüksek",
+    "populerlik_kaniti": "AOF (ağırlıklı ortalama fiyat) her Türk veri terminalinde (Matriks, İdeal, Midas) hisse yanında gösterilir; 'AOF üstünde kapattı/altına sarktı' günlük yorum kalıbıdır (Gedik, Piapiri, GCM, İnfo Yatırım sözlükleri). 2015 öncesi baz fiyat AOF'ydi; alışkanlık sürdü.",
+    "ufuk": "1-3 gun",
+    "tetik": "aof_1g_sapma >= +0.01 (kapanış AOF'un %1+ üstünde) VE kapanis_gun > acilis_gun VE kapanis[17] >= kapanis[16] (son saat düşmemiş) VE hacim_z_20 >= 0.5 VE getiri_1g < 0.09 (tavan değil).",
+    "giris": "t+1 günü 10:00 açılışı (alternatif: t günü 18:00 kapanış seansında al).",
+    "cikis": "t+1 kapanışında sat; stop: t+1 içinde kapanis[h] < AOF(t) (önceki günün AOF'u; AOF(t) = kapanis_gun/(1+aof_1g_sapma)).",
+    "durumlar": "Takip: boğa rejimi, hacimli günler, kurumsal alım söylentisi (AKD). Çalışmaz: XU100 negatif gece getirisi, son saat hacmi anormal (hacim_oran_saat(17) > 3: kapanış seansında 'çekme'), tedbirli hisse.",
+    "bist_ozel": "AOF Borsa İstanbul'un resmî günlük istatistiğidir; kapanış seansı (18:00-18:10) fiyatı AOF'tan belirgin sapabilir ve bireyseller bunu 'kurum alımı' diye okur. Gün içi AOF proxy'si saatlik çubuklardan vwap_saat ile hesaplanır.",
+    "veri_gereksinimi": [
+      "gunluk",
+      "saatlik_ohlcv"
+    ],
+    "hesaplanabilir_mi": "evet",
+    "akademik_kanit": "Doğrudan AOF stratejisi çalışması yok. Kapanış seansı: Kadıoğlu & Küçükkocaoğlu (2015) kapanış seansı kapanış getirisini düşürdü; Inci & Ozenbas (2017) kapanış öncesi oynaklık birikimini azalttı.",
+    "kaynaklar": [
+      "https://gedik.com/yatirimci-sozlugu/h/hacim-agirlikli-ortalama-fiyat",
+      "https://piapiri.com/blog/teknik-analiz/agirlikli-ortalama-nedir-nasil-hesaplanir",
+      "https://www.gcmyatirim.com.tr/egitim/makaleler/agirlikli-ortalama-nedir-ve-nasil-hesaplanir",
+      "https://uzmanpara.milliyet.com.tr/haber-detay/gundem2/borsa-istanbulda-yeni-donem/33000/33266",
+      "https://digitalcommons.montclair.edu/acctg-finance-facpubs/72"
+    ]
+  },
+  {
+    "kod": "vwap_geri_cekilme",
+    "ad": "Gün içi VWAP'a geri çekilmede alım",
+    "aile": "mikro_yapi",
+    "populerlik": "orta",
+    "populerlik_kaniti": "VWAP içerikleri (Borsa Atlas, Gedik sözlük) artıyor ve kurumsal algoritmaların referansı; ancak Türk perakendesinde AOF söylemi kadar yerleşik değil. TradingView Türkiye'de yaygın gösterge.",
+    "ufuk": "gun_ici",
+    "tetik": "h ∈ {12,13,14,15}: kapanis[h-1] > vwap_saat(h-1)*1.01 (fiyat VWAP üstünde) VE dusuk[h] <= vwap_saat(h)*1.003 (VWAP'a dokunuş) VE kapanis[h] > vwap_saat(h) VE getiri_saat(10) > 0 VE XU100 gün içi > 0.",
+    "giris": "h+1 çubuğunun açılışı.",
+    "cikis": "Hedef: günün yükseği (max yuksek[10..h]) → dokununca sat; stop: kapanis[h+k] < vwap_saat*0.99; 17:00 kapanışında kapat.",
+    "durumlar": "Takip: trend günleri, yüksek hacimli likit hisseler (BIST-30/50), XU100 yönlü. Çalışmaz: yatay günler (VWAP sürekli kesilir), düşük likidite (saatlik hacim azsa VWAP gürültülü), haber şoku anı.",
+    "bist_ozel": "Öğle arası yok, 10:00-18:00 kesintisiz → VWAP sürekli. Saatlik çubukla hesaplanan VWAP gerçek tick VWAP'tan sapar; günlük AOF ile gün sonu kalibre edilebilir.",
+    "veri_gereksinimi": [
+      "saatlik_ohlcv"
+    ],
+    "hesaplanabilir_mi": "evet",
+    "akademik_kanit": "yok",
+    "kaynaklar": [
+      "https://borsaatlas.com/akademi/vwap-nedir",
+      "https://gedik.com/yatirimci-sozlugu/h/hacim-agirlikli-ortalama-fiyat",
+      "https://borsaatlas.com/akademi/vwap-vs-moving-average-nedir/"
+    ]
+  },
+  {
+    "kod": "kapanista_al_acilista_sat",
+    "ad": "Kapanış seansında al, ertesi açılışta sat (gece getirisi)",
+    "aile": "mikro_yapi",
+    "populerlik": "yüksek",
+    "populerlik_kaniti": "Perakende arasında 'kapanışta tavana taşıma', 'kapanış seansı oyunu' söylemi ve kapanış seansının fiyat oluşumuna etkisi üzerine Marmara Üniv. tezi; ABD'deki 'overnight return' literatürü Türk eğitim içeriklerine girdi. Kanıt ağırlıklı olarak dolaylı.",
+    "ufuk": "1-3 gun",
+    "tetik": "getiri_saat(17) >= +0.01 VE gunici_getiri >= +0.03 VE hacim_oran_saat(17) >= 1.5 VE kapanis_gun >= yuksek_gun*0.99 (günün tepesinde kapanış) VE getiri_1g < 0.09 (tavan değil) VE XU100 günlük > 0.",
+    "giris": "t günü 18:00-18:10 kapanış seansı fiyatı (= kapanis_gun).",
+    "cikis": "t+1 günü 10:00 açılışı (acilis[10]); gece getirisi = acilis[10]/kapanis_gun - 1. Zarar durumunda t+1 10:00 kapanışına kadar bekle, sonra kesinlikle çık.",
+    "durumlar": "Takip: boğa rejimi, pozitif küresel kapanış beklentisi, haber beklentisi (bilanço akşamı). Çalışmaz: ayı rejiminde geceler negatif; yüksek oynaklik_20g; hafta sonu öncesi (Cuma) jeopolitik risk; tek fiyat tedbirli hisse (kapanış seansı yok).",
+    "bist_ozel": "Kapanış seansı 18:00-18:10 tek fiyat eşleşmesi; kapanış fiyatı ertesi günün baz fiyatı ve tavan/taban referansıdır. Bu nedenle kapanışı yukarı çekmek ertesi günün tavan seviyesini de yükseltir — bireysel 'kapanış oyunu' algısının kaynağı.",
+    "veri_gereksinimi": [
+      "saatlik_ohlcv",
+      "gunluk"
+    ],
+    "hesaplanabilir_mi": "evet",
+    "akademik_kanit": "Kadıoğlu & Küçükkocaoğlu (2015): kapanış seansı ikinci seans kapanış getirisini düşürdü. Inci & Ozenbas (2017, Emerging Markets Review): kapanış seansı kapanış öncesi oynaklık birikimini azalttı; gün içi oynaklık zamanla arttı. Marmara tezi: kapanış seansının fiyat oluşumuna etkisi.",
+    "kaynaklar": [
+      "https://ideas.repec.org/a/bdd/journl/v9y2015i1p103-126.html",
+      "https://digitalcommons.montclair.edu/acctg-finance-facpubs/72",
+      "https://openaccess.marmara.edu.tr/entities/publication/92b7da00-cb99-4433-b7cc-d485990abb64",
+      "https://www.akbank.com/duyurular/borsa-istanbul-islem-saati-degisikligi-hk"
+    ]
+  },
+  {
+    "kod": "bedelsiz_oncesi_alim",
+    "ad": "Bedelsiz sermaye artırımı öncesi/onayında alım",
+    "aile": "olay",
+    "populerlik": "çok yüksek",
+    "populerlik_kaniti": "'Bedelsiz potansiyeli yüksek hisseler' aracı kurum raporu türü (VKY Analiz), Halkarz/Midas bedelsiz takvimleri, forumlarda 'bedelsiz sonrası fiyat ucuzlar' inancı. Türk perakendesine özgü en yaygın olay stratejilerinden biri; akademik olay çalışmaları da çok sayıda.",
+    "ufuk": "1-3 gun",
+    "tetik": "son_olay_tur == 'bedelsiz' (KAP: yönetim kurulu kararı veya SPK onayı) VE olay t günü seans içinde/sonrasında VE bedelsiz oranı >= %50 (metinden çıkarılabiliyorsa) VE getiri_1g(t) < 0.09 (henüz tavan değil).",
+    "giris": "t+1 günü 10:00 açılışı (eğer acilis[10] < tavan_fiyat).",
+    "cikis": "t+1 kapanışında sat (akademik bulgu: +1 gün pozitif, +2..+5 gün negatif CAR). Stop: gün içi kapanis[h] < onceki_kapanis.",
+    "durumlar": "Takip: boğa rejimi, perakende ilgisi yüksek küçük/orta hisseler, bedelsiz oranı yüksek. Çalışmaz: ayı rejimi, bedelsizin bedelli ile birlikte yapılması (bedelli negatif algılanır), zaten haberden önce %20+ koşmuş hisse (sızıntı fiyatlanmış), tedbirli hisse.",
+    "bist_ozel": "Bedelsiz sonrası fiyat ve lot ayarlaması (baz fiyat düzeltmesi) tavan/taban hesabını ve hacim ortalamalarını bozar; seride düzeltme şart. Hak kullanım tarihi KAP'ta ayrı olaydır (sermaye artırımı işlem günü).",
+    "veri_gereksinimi": [
+      "kap_olay",
+      "gunluk",
+      "saatlik_ohlcv"
+    ],
+    "hesaplanabilir_mi": "evet",
+    "akademik_kanit": "Balıkesir Üniv. tezi (2016-2017): SPK onayından +1 gün anlamlı pozitif, +2 gün anlamlı negatif CAR; piyasa yarı-güçlü etkin değil. MAKÜ İİBF (BIST-100, 1996-2021, 1436 duyuru): endeks duyurulara tepki veriyor. ATÜ tezi (BIST-30/50, 2010-2022): duyurular fiyatı etkiliyor.",
+    "kaynaklar": [
+      "https://acikerisim.balikesir.edu.tr/items/fe556a2c-d31c-46fe-9ac8-656738f2019f",
+      "https://dergipark.org.tr/en/pub/makuiibf/issue/41626/439219",
+      "https://openaccess.atu.edu.tr/items/314e1781-230d-4bbc-bd11-049489660634",
+      "https://www.vkyanaliz.com/Files/docs/bedelsiz-sermaye-artirim-potansiyelleri-1608274956.pdf"
+    ]
+  },
+  {
+    "kod": "bilanco_oncesi_alim",
+    "ad": "Bilanço öncesi pozisyon alma",
+    "aile": "olay",
+    "populerlik": "yüksek",
+    "populerlik_kaniti": "Bilanço dönemlerinde (Şubat-Mart, Mayıs, Ağustos, Kasım) 'bilanço beklentisi yüksek hisseler' aracı kurum raporları ve Midas 'bilanço sonrası getiri karneleri' yazısı; forumlarda 'bilanço öncesi alınır haberle satılır'. Popülerlik yüksek ama sistematik kanıt sınırlı.",
+    "ufuk": "1-3 gun",
+    "tetik": "bilancodan_gun ∈ {-3,-2,-1} (beklenen KAP finansal rapor tarihine 1-3 gün; beklenen tarih = geçen yılın aynı çeyrek bildirim tarihi ± 3 gün veya KAP'ta açıklanan takvim) VE getiri_5g ∈ [-3%, +5%] (koşmamış) VE endekse_gore_20g > -10%.",
+    "giris": "bilancodan_gun == -1 günü 17:00 çubuğunun kapanışı (veya 18:00 kapanış seansı).",
+    "cikis": "Bilanço günü t+1 kapanışında sat (bilanço seans sonrası geldiyse t+2 10:00 açılışı). Stop yok (olay bahsi), pozisyon küçük.",
+    "durumlar": "Takip: güçlü sektör beklentisi (banka, havacılık vb.), önceki çeyrek pozitif sürpriz, boğa rejimi. Çalışmaz: beklenti zaten fiyatlanmış (getiri_20g > +20), yüksek belirsizlik dönemleri, küçük hisseler (bilanço yorumlanmaz).",
+    "bist_ozel": "Finansal raporlar KAP'ta çoğunlukla 18:10 sonrası yayımlanır → tepki ertesi günün açılış seansında (gap) oluşur; ±%10 limit tepkiyi günlere yayabilir. Bilanço tarihleri SPK son tarihlerine (konsolide: 10 hafta, yıl sonu 70 gün) yığılır.",
+    "veri_gereksinimi": [
+      "kap_olay",
+      "gunluk",
+      "saatlik_ohlcv"
+    ],
+    "hesaplanabilir_mi": "kısmen",
+    "akademik_kanit": "Doğrudan 'bilanço öncesi alım' BIST çalışması bulunamadı. Midas (2022 yıl sonu, BIST-100): bilanço sonrası 1 ayda 40 yükseliş/51 düşüş, ortalama +%4,23 ham getiri. DergiPark BIST-30 olay çalışmaları: finansal haberler olay günü anlamlı anormal getiri.",
+    "kaynaklar": [
+      "https://www.getmidas.com/midasin-kulaklari/hisselerin-bilanco-sonrasi-getiri-karneleri-gecmiste-nasildi-p-34351",
+      "https://dergipark.org.tr/download/article-file/202106",
+      "https://dergipark.org.tr/en/download/article-file/375301"
+    ]
+  },
+  {
+    "kod": "bilanco_sonrasi_surukleme",
+    "ad": "Bilanço sonrası sürüklenme (pozitif sürprize geç katılım)",
+    "aile": "olay",
+    "populerlik": "orta",
+    "populerlik_kaniti": "Kurumsal araştırma ağırlıklı (PEAD); perakende 'bilanço iyi geldi, tavan' takibini yapar ama çok günlük sürüklenme stratejisi daha az dillendirilir. Aracı kurum 'bilanço sonrası hedef fiyat revizyonu' notları dolaylı kanıt.",
+    "ufuk": "1-4 hafta",
+    "tetik": "son_olay_tur == 'finansal_rapor' (t-1 akşamı veya t günü) VE getiri_1g(t) >= +0.04 VE endekse_gore_1g >= +0.03 VE hacim_z_20 >= 1.5 VE getiri_1g(t) < 0.095 (tavanda kilitli değil; kilitliyse t+1'e ertele).",
+    "giris": "t+1 günü 10:00 açılışı.",
+    "cikis": "Azami 15 işlem günü; izleyen stop: kapanis_gun < ma20; sabit stop -%6. Kâr al yok.",
+    "durumlar": "Takip: BIST-100 likit hisseler (analist takibi var), boğa/yatay rejim, sektörel pozitif sürpriz dalgası. Çalışmaz: ayı rejimi (iyi bilanço satılır), küçük hisselerde tek günlük tavan sonra dönüş, endeks kaynaklı +%4.",
+    "bist_ozel": "±%10 limit tepkiyi günlere yayarak sürüklenmeyi mekanik olarak üretir (gecikmiş fiyat keşfi). Bilanço akşam gelir → ilk tepki açılış seansında.",
+    "veri_gereksinimi": [
+      "kap_olay",
+      "gunluk",
+      "saatlik_ohlcv"
+    ],
+    "hesaplanabilir_mi": "evet",
+    "akademik_kanit": "BIST'e özgü PEAD çalışması bu aramada bulunamadı ('yok'); dolaylı: Bildik & Gülay (2006) limitlerle gecikmiş fiyat keşfi; BIST-30 olay çalışmaları (DergiPark) olay sonrası anlamlı CAR.",
+    "kaynaklar": [
+      "https://dergipark.org.tr/download/article-file/202106",
+      "https://ideas.repec.org/a/bla/jfnres/v29y2006i3p383-403.html",
+      "https://www.getmidas.com/midasin-kulaklari/hisselerin-bilanco-sonrasi-getiri-karneleri-gecmiste-nasildi-p-34351"
+    ]
+  },
+  {
+    "kod": "temettu_yakalama",
+    "ad": "Temettü yakalama (ex-day öncesi alım)",
+    "aile": "takvim",
+    "populerlik": "yüksek",
+    "populerlik_kaniti": "Para Dergisi 'temettüsüyle öne çıkan 26/29 hisse' yıllık kapak konusu, VKY/GCM temettü takvimleri, BIST Temettü endeksi rehberleri; Mart-Mayıs döneminde temettü avcılığı perakendede yaygın. Akademik olarak BIST'te ölçülmüş strateji.",
+    "ufuk": "1-4 hafta",
+    "tetik": "KAP 'kar payı dağıtım' olayından ex-day (hak kullanım tarihi) bilinir. Tetik: ex_day - 10 işlem günü VE brüt temettü verimi >= %3 VE getiri_20g < +15% (koşmamış).",
+    "giris": "ex_day - 10 işlem günü 10:00 açılışı.",
+    "cikis": "Ex-day'den bir önceki günün (son temettülü gün) 18:00 kapanışında sat (temettüyü almadan fiyat artışını al); alternatif: ex-day kapanışında sat ve temettüyü al. Stop -%8.",
+    "durumlar": "Takip: temettü sezonu (Mart-Haziran), düşük faiz/yüksek enflasyon ortamında temettü arayışı, BIST Temettü 25 hisseleri. Çalışmaz: ayı rejimi, temettü verimi < %2 (işlem maliyeti yer), stopaj değişikliği dönemleri.",
+    "bist_ozel": "Ex-day'de baz fiyat brüt temettü kadar düşürülür (teorik fiyat) → tavan/taban yeni baza göre. Temettü stopajı (%10→%15 2024-25 değişiklikleri) net getiriyi etkiler. KAP'ta hak kullanım tarihi zorunlu bildirim.",
+    "veri_gereksinimi": [
+      "kap_olay",
+      "gunluk"
+    ],
+    "hesaplanabilir_mi": "kısmen",
+    "akademik_kanit": "Kadıoğlu, Bostancı & Öcal (2020): 1997-2018, 422 şirket, 2266 temettü; ex-day'e yakın fiyat tepe yapıyor; ex-day'den ~12 gün önce alıp ex-day sonunda satmak ortalama %2,96 anormal getiri; ex-day sonrası kısa 7 gün %1,51. Işıker (İZÜ): ex-day'de fiyat brüt temettü kadar düşüyor.",
+    "kaynaklar": [
+      "https://dergipark.org.tr/en/download/article-file/1253633",
+      "https://openaccess.izu.edu.tr/bitstreams/cdf70b66-54ea-43ba-b136-68392328ed74/download",
+      "https://www.paradergi.com.tr/finans/2025/03/27/temettusu-ile-on-plana-cikabilecek-29-hisse",
+      "https://www.vkyanaliz.com/Files/docs/temettu-odemeleri-1585143612.pdf",
+      "https://www.gcmyatirim.com.tr/egitim/makaleler/bist-temettu-endeksi-yatirim-rehberi"
+    ]
+  },
+  {
+    "kod": "geri_alim_duyurusu",
+    "ad": "Pay geri alım programı duyurusuna alım",
+    "aile": "olay",
+    "populerlik": "orta",
+    "populerlik_kaniti": "2025 Mart krizinde SPK geri alımları kolaylaştırdı ve haberler 'geri alım açıklayan şirketler' listeleri yayımladı; forumlarda 'şirket kendi hissesini alıyor' güçlü sinyal sayılır. Perakende sıklığı tavan/RSI kadar değil → orta.",
+    "ufuk": "1-3 gun",
+    "tetik": "son_olay_tur == 'geri_alim' (program başlangıcı veya ilk gerçekleşen alım bildirimi) VE olay t günü VE getiri_1g(t) < 0.09.",
+    "giris": "Olay seans içindeyse bir sonraki saatin açılışı; seans sonrasıysa t+1 10:00 açılışı.",
+    "cikis": "t+1 kapanışında sat (akademik: olay günü ve +1 gün pozitif AAR, sonrası eğilim yok); stop -%4.",
+    "durumlar": "Takip: sert düşüş sonrası (XU100 getiri_20g < -10) toplu geri alım dalgaları (Mart 2025, Şubat 2023), büyük şirketler. Çalışmaz: program rutin yenilemesi (haber değeri yok), zaten yükselen hisse, küçük tutarlı programlar.",
+    "bist_ozel": "SPK kriz dönemlerinde geri alım kurallarını gevşetir (2023 deprem, 2025 Mart) → duyurular kümelenir, endeks etkisiyle karışır; endekse_gore_1g ile ayrıştır. Geri alım işlemleri KAP'ta gün gün bildirilir.",
+    "veri_gereksinimi": [
+      "kap_olay",
+      "gunluk",
+      "saatlik_ohlcv"
+    ],
+    "hesaplanabilir_mi": "evet",
+    "akademik_kanit": "Karakuş, Zor & Yılmaz Küçük (2017; 2014-16, 100 bildirim): duyuru öncesi ve sonrası anlamlı CAR. Torun & Karan (2023; 2018-21, 74 duyuru): olay penceresinde pozitif AR. Taşdemir & Alsu (2019, BIST Sınai): duyuru günü ve +1 gün pozitif AAR, sonrası eğilim yok.",
+    "kaynaklar": [
+      "https://dergipark.org.tr/en/pub/iktisad/article/1459402",
+      "https://acikerisim.kku.edu.tr/items/d42b1eaf-d573-4c8b-afe9-5e96f07fbd92",
+      "https://dergipark.org.tr/en/pub/anadoluakademi/issue/69008/1091720",
+      "https://spk.gov.tr/duyurular/basin-duyurulari/2025/basin-duyurusu_23032025"
+    ]
+  },
+  {
+    "kod": "endekse_giris",
+    "ad": "BIST 100/30 endeksine dahil edilme (duyuru → yürürlük)",
+    "aile": "olay",
+    "populerlik": "orta",
+    "populerlik_kaniti": "Çeyreklik endeks revizyonları Bloomberg HT, CNBC-e, Midas'ta düzenli haber ('BIST 100'e girecek hisseler belli oldu'); pasif fon akımı argümanı yaygın. Perakende işlem sıklığı düşük (yılda 4 kez) → orta.",
+    "ufuk": "1-4 hafta",
+    "tetik": "Borsa İstanbul endeks değişikliği duyurusu (genelde çeyrek sonundan ~2 hafta önce): hisse BIST-100'e (veya BIST-30'a) dahil ediliyor. Olay tablosunda 'endeks_degisikligi' türü yoksa duyuru tarihleri elle eklenir.",
+    "giris": "Duyuru günü t+1 10:00 açılışı.",
+    "cikis": "Yürürlük gününden (çeyreğin ilk işlem günü) bir önceki gün 18:00 kapanışında sat. Stop -%7.",
+    "durumlar": "Takip: boğa rejimi, pasif fon payının arttığı dönem, BIST-30 girişleri (vadeli/ETF etkisi). Çalışmaz: ayı rejimi, zaten koşmuş hisseler. Çıkarılma tarafı (negatif anlamlı) bireyde açığa satış kısıtı nedeniyle sadece 'kaçınma' filtresi.",
+    "bist_ozel": "Revizyon piyasa değeri, fiili dolaşım ve hacim kriteriyle yapılır; BIST-50/100 açığa satış izni (Aralık 2024 kararı BIST-50'ye sınırlı) endeks üyeliğine bağlı olduğundan endekse giriş mikro yapıyı da değiştirir.",
+    "veri_gereksinimi": [
+      "kap_olay",
+      "gunluk"
+    ],
+    "hesaplanabilir_mi": "kısmen",
+    "akademik_kanit": "Boğaziçi tezi (2009-2017; 296 BIST-100, 96 BIST-30 olayı): dahil edilmede pozitif ama anlamsız AR; çıkarılmada anlamlı negatif AR; her ikisinde anormal hacim. DergiPark AÜ SBF: endeks etkisi var, fiyat baskısı hipotezi açıklıyor. Bildik & Gülay (2008, IRFA): İMKB endeks değişikliklerinin fiyat/hacim etkisi.",
+    "kaynaklar": [
+      "https://digitalarchive.library.bogazici.edu.tr/bitstreams/42e2a39c-33b0-491a-828d-16ca794c9447/download",
+      "https://dergipark.org.tr/en/pub/ausbf/issue/58271/571826",
+      "https://www.econbiz.de/Record/the-effects-of-changes-in-index-composition-on-stock-prices-and-volume-evidence-from-the-istanbul-stock-exchange-bildik-recep/10007896403",
+      "https://www.bloomberght.com/borsa-istanbul-ucuncu-ceyrek-endeks-degisikliklerini-acikladi-3780699",
+      "https://www.getmidas.com/midasin-kulaklari/bist-100-endeksine-dahil-edilecek-hisseler-belli-oldu-p-41170"
+    ]
+  },
+  {
+    "kod": "tedbir_bitisi_alim",
+    "ad": "VBTS tedbiri bitiminde alım (ve tedbir duyurusunda kaçış)",
+    "aile": "olay",
+    "populerlik": "yüksek",
+    "populerlik_kaniti": "Borsa Gündem 'tedbir kararı' etiketi her gün güncellenir; QNB/Fintables/Midas VBTS açıklayıcıları; forumlarda 'brüt takasa girince düşer, tedbir bitince uçar' inancı yaygın. Tedbirli hisse listeleri perakende tarafından yakından izlenir.",
+    "ufuk": "1-3 gun",
+    "tetik": "İki bacak. (A) Kaçış: son_olay_tur ∈ {vbts_brut_takas, vbts_tek_fiyat} t günü seans sonrası → t+1 açılışta mevcut pozisyon kapatılır (diğer stratejilere filtre). (B) Alım: tedbir bitiş günü B (duyurudaki bitiş tarihi, 1 ay) için B+1 günü: acilis[10] >= onceki_kapanis VE getiri_20g(B) <= -10% (tedbir döneminde düşmüş).",
+    "giris": "B+1 günü 11:00 çubuğunun açılışı (ilk saat yön teyidi sonrası).",
+    "cikis": "Kâr al +%6, stop -%4, azami 3 gün.",
+    "durumlar": "Takip: boğa rejimi, tedbir dönemi boyunca hacmi kurumuş ama taban yapmamış hisseler, tek fiyattan sürekli işleme dönüş günleri. Çalışmaz: tedbir dönemi içinde yeni soruşturma/SPK işlem yasağı, tedbir bitimine tedbir eklenmesi (üst kademe), ayı rejimi.",
+    "bist_ozel": "VBTS tamamen BIST'e özgü: SPK kararıyla, önceden tanımlı kriterlerle otomatik; kademeler 1) açığa satış+kredili yasağı, 2) brüt takas, 3) emir paketi (piyasa emri/iptal kısıtı), 4) tek fiyat, 5) internet emir kanalı kısıtı; her kademe 1 ay (eskiden 15 gün); KAP'ta seans sonrası duyurulur. Tek fiyatta günde 5 eşleşme (Yakın İzleme Pazarı ile aynı).",
+    "veri_gereksinimi": [
+      "kap_olay",
+      "gunluk",
+      "saatlik_ohlcv"
+    ],
+    "hesaplanabilir_mi": "kısmen",
+    "akademik_kanit": "Hisse bazlı tedbir olay çalışması bulunamadı. DergiPark EPFAD (2026): VBTS'nin devreye girmesi BIST-100 volatilitesinde yapısal kırılmayla çakışıyor, kriz rejimleri daha kalıcı (MS-GARCH, endeks düzeyi).",
+    "kaynaklar": [
+      "https://www.borsaningundemi.com/etiket/tedbir-karari",
+      "https://www.qnbinvest.com.tr/investodak/qnbarastirma/volatilite-bazli-tedbir-sistemi-vbts-nedir",
+      "https://fintables.com/arastirma/yazilar/yatirim-stratejileri/volatilite-bazli-tedbir-sistemi-nedir",
+      "https://kap.org.tr/tr/api/BildirimPdf/976897",
+      "https://www.ntv.com.tr/ntvpara/4-sirkete-tedbir-getirildi-iki-islem-yapilamayacak-1731884",
+      "https://dergipark.org.tr/en/pub/epfad/article/1836652"
+    ]
+  },
+  {
+    "kod": "kap_haber_momentum",
+    "ad": "KAP haberine saatlik tepki (sözleşme/ihale/yatırım haberi)",
+    "aile": "olay",
+    "populerlik": "çok yüksek",
+    "populerlik_kaniti": "KAP bildirim akışı Fintables, Midas, Hisse.net, Borsagündem'de anlık haber; Borsa İstanbul olağandışı fiyat hareketlerinde şirketten açıklama ister ve KAP'a zamanında bildirmeyen sıraları kapatır (ÖZBAL örneği). Türk perakendesinin en yaygın gün içi tetiği.",
+    "ufuk": "gun_ici",
+    "tetik": "olay_sayi_1g >= 1 VE son_olay_tur ∈ {sozlesme, ihale, yatirim, ortaklik, yeni_is_iliskisi} VE haber saati h0 seans içinde (10:00-17:00) VE getiri_saat(h0) >= +0.03 VE hacim_oran_saat(h0) >= 3.0 VE kapanis[h0] < tavan_fiyat (tavana kilitlenmemiş) VE son 20 günde aynı tür olay sayısı <= 2 (haber enflasyonu yok).",
+    "giris": "h0+1 çubuğunun açılışı.",
+    "cikis": "17:00 kapanışında kapat; kâr al: tavan_fiyat'a dokunursa; stop: kapanis[h] < acilis[h0] (haber öncesi fiyat).",
+    "durumlar": "Takip: küçük/orta ölçekli hisse (haber materyal), boğa rejimi, sabah saatleri (10:00-13:00 gelen haberler günün kalanında işlenir). Çalışmaz: 16:00 sonrası haberler (zaman yok), sürekli KAP haberi yapan 'haber fabrikası' şirketler, tedbirli hisse, bedelli/sermaye azaltımı gibi negatif türler, haber öncesi sızıntı (getiri_5g > +15).",
+    "bist_ozel": "KAP zorunlu bildirim; Borsa İstanbul 'olağandışı fiyat ve miktar hareketi' sorgusu ve geçici kapatma; ±%10 limit tepkiyi keser ve ertesi güne taşır. Brüt takasta aynı gün çıkış yok.",
+    "veri_gereksinimi": [
+      "kap_olay",
+      "saatlik_ohlcv",
+      "gunluk"
+    ],
+    "hesaplanabilir_mi": "evet",
+    "akademik_kanit": "DergiPark BIST-30 olay çalışmaları: operasyonel/finansal/yeniden yapılanma haberleri olay günü anlamlı anormal getiri, piyasa yarı-güçlü etkin değil (günlük veri). Saatlik tepki çalışması bulunamadı.",
+    "kaynaklar": [
+      "https://dergipark.org.tr/download/article-file/202106",
+      "https://dergipark.org.tr/en/download/article-file/375301",
+      "https://www.borsaningundemi.com/haber/ozbal-hissesinde-gecici-kapatma-1126267",
+      "https://fintables.com/borsa-haber-akisi/014eaf16-1831-4861-9e99-b54315a6d003/alklc-ozel-durum-aciklamasi-genel"
+    ]
+  },
+  {
+    "kod": "halka_arz_tavan_serisi",
+    "ad": "Halka arz sonrası tavan serisine katılım",
+    "aile": "momentum",
+    "populerlik": "çok yüksek",
+    "populerlik_kaniti": "2023'te 49-56 halka arz, 99 milyon katılım; 'ilk gün tüm halka arzlar tavan gördü' (EY/BirGün), ortalama ~10 günlük seriler (Paratic); SPK Başkanı 'tavan tavan gider garantisi yok' uyarısı; Halkarz.com takvimleri. 2024-25'te seriler zayıfladı (Borsamatik).",
+    "ufuk": "1-3 gun",
+    "tetik": "Hisse ilk işlem gününden itibaren <= 15 işlem günü VE ilk günden itibaren her gün tavan_kapanis (kesintisiz seri) VE t+1 açılışta acilis[10] < tavan_fiyat (ilk kez tavan açıldı).",
+    "giris": "Tavanın ilk açıldığı gün 10:00 çubuğunun açılışı — yalnızca kapanis[10] > acilis[10] ise 11:00 açılışında.",
+    "cikis": "Aynı gün 17:00 kapanışında veya kapanis[h] < acilis[10] stop; seri yeniden tavana kilitlenirse ertesi güne taşı (azami 3 gün).",
+    "durumlar": "Takip: halka arz dalgası dönemleri (2023), yüksek perakende katılımı, küçük halka arz büyüklüğü. Çalışmaz: 2024-25 gibi halka arz fiyatının altına inen dönemler, büyük halka arzlar, açılış öncesi tedbir, 'tavan açıldı' gün hacim rekor + kapanış düşükse (dağıtım).",
+    "bist_ozel": "Halka arz sonrası ilk günlerde fiyat marjı %10 (bazı dönemlerde ilk gün marj yok/değişken kurallar uygulandı — veri döneminde kontrol edilmeli); fiyat istikrarı işlemleri KAP'ta; evrende halka arz varsa uygulanabilir.",
+    "veri_gereksinimi": [
+      "gunluk",
+      "saatlik_ohlcv",
+      "kap_olay"
+    ],
+    "hesaplanabilir_mi": "kısmen",
+    "akademik_kanit": "DergiPark (2023 halka arzları, 54 şirket): ilk gün ve ilk 30 işlem günü getirileri ölçüldü. Bildik & Yılmaz (İMKB halka arz performansı). Tavan serisi süresi istatistiği akademik değil, basın derlemesi.",
+    "kaynaklar": [
+      "https://www.birgun.net/haber/borsada-tavan-cilginligi-uyarisi-465012",
+      "https://paratic.com/cilginlik-bitti-mi-yeni-halka-arzlar-tavanda-duramiyor",
+      "https://spk.gov.tr/duyurular/baskanin-konusmalari/2023/kurul-baskani-ibrahim-omer-gonulun-gazetecilere-verdigi-roportaj",
+      "https://dergipark.org.tr/en/download/article-file/3762102",
+      "https://www.borsamatik.com.tr/halka-arzlarda-tavan-serileri-geri-mi-dondu-haber-175248",
+      "https://tr.al-ain.com/article/halka-arzda-tavan-tavan-donemi-kapaniyor-mu"
+    ]
+  },
+  {
+    "kod": "akd_kagit_toplama",
+    "ad": "AKD/takas ile 'kağıt toplama' takibi (sessiz birikim)",
+    "aile": "likidite",
+    "populerlik": "çok yüksek",
+    "populerlik_kaniti": "Hisse.net günlük 'X kurumu Y milyon lot aldı, kim topladı kim sattı' haberleri, Rota Borsa 'aracı kurum dağılımı' etiketi, Fintables takas analizi yazıları; 'kağıt toplanıyor' Türk perakendesinin en yaygın söylemlerinden. Ancak veri (AKD) elimizde yok.",
+    "ufuk": "1-4 hafta",
+    "tetik": "Gerçek: aracı kurum dağılımında tek kurum net alım >= günlük hacmin %20'si, 3+ gün üst üste; takasta aynı kurumun payı artıyor. Vekil (OHLCV ile): 10 günlük fiyat aralığı (max yuksek - min dusuk)/kapanis <= 0.06 (yatay) VE ort(hacim, 10g)/ort(hacim, 60g) >= 1.5 (hacim artıyor) VE kapanis_gun > ma20 VE olay_sayi_10g == 0.",
+    "giris": "Vekil tetik gününün ertesi 10:00 açılışı.",
+    "cikis": "Kâr al +%10, stop: kapanis_gun < min(dusuk, son 10 gün) → ertesi açılış; azami 20 işlem günü.",
+    "durumlar": "Takip: küçük/orta hisseler, boğa rejimi, haber öncesi (bedelsiz/ortaklık söylentisi). Çalışmaz: 'virmanlı satış' yanıltması (AKD'de satıcı görünüp takasta payı olmayan kurum), AKD 2 gün gecikmeli, manipülatif toplama sonrası dağıtım, ayı rejimi.",
+    "bist_ozel": "AKD ve takas verisi Borsa İstanbul/MKK tarafından ücretli ve gecikmeli (AKD T+2 tanımlanır); Yakın İzleme/tek fiyat hisselerinde anlamlı değil. Brüt takas tedbiri toplama/dağıtma döngüsünü kesmek için kullanılır.",
+    "veri_gereksinimi": [
+      "akd",
+      "takas",
+      "gunluk",
+      "saatlik_ohlcv"
+    ],
+    "hesaplanabilir_mi": "kısmen",
+    "akademik_kanit": "yok (AKD bazlı akademik çalışma bulunamadı). Sürü davranışı: Elmas & Aydın (2024) anket; SÜ SBED (2023, 2013-2020): genel sürü kanıtı yok, yerli ağırlıklı hisselerde hafif eğilim.",
+    "kaynaklar": [
+      "https://www.hisse.net/haber/sasa-hissesinde-204-9-milyon-lotluk-net-alim-kim-topladi-kim-satti-86071",
+      "https://rotaborsa.com/etiket/hisse-araci-kurum-dagilimi/",
+      "https://fintables.com/arastirma/yazilar/takas-analizi/takas-ve-araci-kurum-dagilimi-nedir",
+      "https://dergipark.org.tr/en/pub/susbed/article/1345803",
+      "https://dergipark.org.tr/tr/pub/duiibfd/article/1494584"
+    ]
+  },
+  {
+    "kod": "yabanci_takas_artisi",
+    "ad": "Yabancı takas oranı artan hisseye alım",
+    "aile": "likidite",
+    "populerlik": "yüksek",
+    "populerlik_kaniti": "Phillip Capital aylık 'BIST-100 yabancı takas değişimi' raporları, Rota Borsa yabancı takas haberleri, 'yabancı aldı/sattı' günlük piyasa yorumlarının değişmez parçası; yabancı payı 2019 %66 → 2023 %27-32 düşüşü sürekli haber. Perakende 'yabancı girişi = güçlü hisse' varsayar.",
+    "ufuk": "1-4 hafta",
+    "tetik": "Hissede yabancı takas oranı 20 işlem gününde >= +2 puan arttı VE endekse_gore_20g > 0. (Takas verisi MKK; elimizde yok.)",
+    "giris": "Oran artışının görüldüğü günün ertesi 10:00 açılışı.",
+    "cikis": "Yabancı oranı 20 günlük ortalamanın altına inince veya 20 işlem günü sonunda; stop -%8.",
+    "durumlar": "Takip: yabancı girişi dönemleri (2024 ilk yarı, not artırımı beklentisi), BIST-30/50 büyük hisseler, USDTRY istikrarlı. Çalışmaz: kur şoku/CDS sıçraması dönemleri (yabancı toplu çıkar), küçük hisseler (yabancı payı anlamsız), swap/ADR kaynaklı yapay değişimler.",
+    "bist_ozel": "Yabancı takas oranı MKK'dan günlük yayımlanır; açığa satış kısıtları ve 2023 sonrası ortodoks politika yabancı akımını rejim değişkeni yapar.",
+    "veri_gereksinimi": [
+      "takas",
+      "gunluk"
+    ],
+    "hesaplanabilir_mi": "hayır",
+    "akademik_kanit": "DergiPark (BIST-100, 2015-2019 panel): yabancı payı ile getiri ilişkisi incelenmiş; yabancı lehine bilgi asimetrisi tartışılıyor, nihai bulgu özetten doğrulanamadı. SÜ SBED (2023): yabancı ağırlıklı hisselerde sürü eğilimi kayboluyor. Dindaroğlu: sürü davranışı yabancı hacmiyle artıyor.",
+    "kaynaklar": [
+      "https://dergipark.org.tr/tr/download/article-file/1082926",
+      "https://rotaborsa.com/?p=59882",
+      "https://www.phillipcapital.com.tr/Files/OtherReports/bacde7ae-486d-4296-8d06-7bbc5863f79e.pdf",
+      "https://dergipark.org.tr/en/pub/susbed/article/1345803"
+    ]
+  },
+  {
+    "kod": "goreli_guc_rotasyonu",
+    "ad": "Endekse göre güçlü hisse (göreli güç) takibi",
+    "aile": "trend",
+    "populerlik": "orta",
+    "populerlik_kaniti": "Aracı kurum 'endeksi yenen hisseler' ve 'göreli güç' tabloları; perakende arasında 'endeks düşerken düşmeyen hisse' söylemi var ama sistematik kullanım kurumsal ağırlıklı.",
+    "ufuk": "1-4 hafta",
+    "tetik": "endekse_gore_20g >= +10% VE endekse_gore_1g >= 0 VE xu100_ma200_uzaklik > 0 VE getiri_1g < 0.09 VE zirve_52h_yakinlik >= 0.90 VE son_olay_tur ∉ {vbts_tedbir}.",
+    "giris": "t+1 günü 10:00 açılışı.",
+    "cikis": "endekse_gore_20g < 0 olduğu gün kapanışında; stop -%8; azami 20 işlem günü.",
+    "durumlar": "Takip: sektör rotasyonlu boğa (2023-24 bankacılık/havacılık), düşük oynaklık trend. Çalışmaz: endeks sert düzeltmesinde 'güçlü' hisseler de satılır (likidite ihtiyacı), ayı rejimi, momentum zayıf bulunan dönemler.",
+    "bist_ozel": "Tavan limiti göreli gücü günlük +%10 ile keser; endeks hesabı XU100 (TL). Yabancı akımı sektör rotasyonunu belirler.",
+    "veri_gereksinimi": [
+      "gunluk"
+    ],
+    "hesaplanabilir_mi": "evet",
+    "akademik_kanit": "ODTÜ tezi (2004-2014, BIST-100): ortalamaya dönüş var, momentum yok (Bildik & Gülay 2007 ile tutarlı). Ozgul & Kahraman (2019): 2009-2018'de BIST endeksleri şoklara etkin tepki. Kesitsel hisse momentumu için doğrudan BIST bulgusu özetlerden teyit edilemedi.",
+    "kaynaklar": [
+      "https://acikbilim.yok.gov.tr/handle/20.500.12812/223672",
+      "https://www.ceeol.com/search/article-detail?id=742379",
+      "https://dx.doi.org/10.30798/makuiibf.790900"
+    ]
+  },
+  {
+    "kod": "kisa_vadeli_ters_donus",
+    "ad": "Kısa vadeli ters dönüş (5 günde -%10 sonrası alım, 'düşen bıçak')",
+    "aile": "ortalamaya_donus",
+    "populerlik": "orta",
+    "populerlik_kaniti": "'Dipten toplamak', 'düşüşte kademeli alım' perakende söylemi yaygın; sistematik -%10/5 gün kuralı ise daha çok akademik/kurumsal. Endeks düzeyinde ortalamaya dönüş BIST literatüründe tekrarlanan bulgu.",
+    "ufuk": "1-3 gun",
+    "tetik": "getiri_5g <= -0.10 VE endekse_gore_20g >= -0.20 (hisseye özgü çöküş değil) VE olay_sayi_5g == 0 (habersiz düşüş) VE taban_kapanis(t) değil VE xu100_ma200_uzaklik > 0 VE rsi_14 < 35.",
+    "giris": "t+1 günü 11:00 açılışı, ancak kapanis[10] > acilis[10] ise.",
+    "cikis": "Kâr al +%5, stop -%4, azami 5 işlem günü.",
+    "durumlar": "Takip: boğa içi sert endeks düzeltmeleri, BIST-100 likit hisseler. Çalışmaz: ayı rejimi (ters dönüş yok, trend sürer), SPK soruşturması/fon tasfiyesi kaynaklı düşüşler (2024 sonu fon hisseleri), ardışık tabanlar, bedelli/sermaye azaltımı haberi.",
+    "bist_ozel": "Taban limitleri 5 günlük düşüşü zorla yavaşlatır (günde azami -%10); seri tabanlar 'habersiz' görünse de genelde soruşturma kaynaklıdır → taban_kapanis dışlaması şart.",
+    "veri_gereksinimi": [
+      "gunluk",
+      "saatlik_ohlcv",
+      "kap_olay"
+    ],
+    "hesaplanabilir_mi": "evet",
+    "akademik_kanit": "ODTÜ tezi (BIST-100 2004-2014): ortalamaya dönüş etkisi var. Erol (2017): BIST-30 büyük dönüşleri günlük getirideki aşırı aykırı değerlerle tespit edilebilir. Ozgul & Kahraman (2019): 2000-2008 yetersiz tepki, 2009-2018 etkin.",
+    "kaynaklar": [
+      "https://acikbilim.yok.gov.tr/handle/20.500.12812/223672",
+      "https://acikerisim.bahcesehir.edu.tr/entities/publication/22faab65-2ebc-4faa-a135-fe248b1b8357",
+      "https://www.ceeol.com/search/article-detail?id=742379"
+    ]
+  },
+  {
+    "kod": "ay_sonu_etkisi",
+    "ad": "Ay sonu / ay başı etkisi",
+    "aile": "takvim",
+    "populerlik": "düşük",
+    "populerlik_kaniti": "Akademik anomali literatüründe sık test edilir (Bildik 2006, Gelişim Üniv. 2023, 2026 çalışması) ama Türk perakende söyleminde neredeyse yok; fon fiyatlama/'makyaj' söylemi sınırlı. Kanıt da zayıflamış.",
+    "ufuk": "1-3 gun",
+    "tetik": "t = ayın son işlem günü (takvimden). Koşulsuz; alternatif filtre: xu100_ma200_uzaklik > 0.",
+    "giris": "Ayın son işlem günü 18:00 kapanışı (kapanis_gun).",
+    "cikis": "Yeni ayın 3. işlem gününün kapanışı. Stop yok (takvim bahsi).",
+    "durumlar": "Takip: eskiden (1999-2003) güçlü; günümüzde fon akımlarının yoğun olduğu dönemlerde zayıf etki. Çalışmaz: 2010 sonrası anomali kaybolmuş görünüyor; maliyet sonrası muhtemelen sıfır.",
+    "bist_ozel": "Ay sonu kapanışları fon/portföy değerlemesine girer; kapanış seansı fiyatı referans olduğundan 'ay sonu kapanış makyajı' söylemi vardır.",
+    "veri_gereksinimi": [
+      "gunluk"
+    ],
+    "hesaplanabilir_mi": "evet",
+    "akademik_kanit": "DergiPark (2026; 1995-2024): ay sonu/ay başı etkileri zamanla zayıfladı ve kayboldu; etkinlik güçlendi. Gelişim Üniv. (2023): 1999-2003 yoğun, sonra belirgin azalma. Bildik (2006, Emerging Markets Finance & Trade): İMKB'de ay dönümü etkisi (eski dönem). GARCH (2005-2015): haftanın günü etkisi yok.",
+    "kaynaklar": [
+      "https://dergipark.org.tr/tr/download/article-file/5560232",
+      "https://acikerisim.gelisim.edu.tr/xmlui/handle/11363/4703",
+      "https://ideas.repec.org/a/sae/emffin/v5y2006i1p1-13.html",
+      "https://search.trdizin.gov.tr/yayin/detay/243852"
+    ]
+  },
+  {
+    "kod": "son_saat_momentum_devam",
+    "ad": "Son saat (17:00-18:00) momentumu ile kapanış seansına taşıma",
+    "aile": "mikro_yapi",
+    "populerlik": "orta",
+    "populerlik_kaniti": "Gün içi al-satçı 'kapanışa doğru hacim gelir' gözlemine dayanır; gün içi U şekli akademik olarak belgelenmiş. Ayrı bir perakende terimi yok → orta.",
+    "ufuk": "gun_ici",
+    "tetik": "h = 16: kapanis[16] > max(yuksek[10..15]) (günün yeni zirvesi) VE hacim_oran_saat(16) >= 1.5 VE getiri_saat(16) ∈ [+0.5%, +4%] VE XU100 16:00 getirisi > 0 VE kapanis[16] < tavan_fiyat*0.98.",
+    "giris": "17:00 çubuğunun açılışı.",
+    "cikis": "18:00-18:10 kapanış seansı fiyatında (kapanis_gun) sat; stop: 17:00 çubuğu içinde dusuk[17] < kapanis[15] ise çubuk kapanışında.",
+    "durumlar": "Takip: trend günleri, XU100 kapanışa güçlü, likit hisseler (kapanış seansı derinliği). Çalışmaz: tek fiyat tedbirli hisse (kapanış seansı yok), düşük likidite (kapanış fiyatı sapması), ayı günleri.",
+    "bist_ozel": "Kapanış seansı 18:00-18:10; kapanış fiyatından işlemler 18:10'a kadar; kapanış fiyatı ertesi günün baz fiyatı. Akademik: kapanış seansı getiriyi düşürüp oynaklık birikimini azalttı.",
+    "veri_gereksinimi": [
+      "saatlik_ohlcv",
+      "gunluk"
+    ],
+    "hesaplanabilir_mi": "evet",
+    "akademik_kanit": "Kadıoğlu & Küçükkocaoğlu (2015): çift U getiri yapısı; kapanış seansı kapanış getirisini düşürdü. Inci & Ozenbas (2017): kapanış oynaklığı zamanla arttı, kapanış seansı birikimi azalttı.",
+    "kaynaklar": [
+      "https://ideas.repec.org/a/bdd/journl/v9y2015i1p103-126.html",
+      "https://digitalcommons.montclair.edu/acctg-finance-facpubs/72",
+      "https://www.borsaistanbul.com/files/pay-piyasasi-islem-yontemleri-ve-seans-saatleri-cizelgeleri-4-Kasim-2019-tarihi-itibariyle.pdf"
+    ]
+  }
+]

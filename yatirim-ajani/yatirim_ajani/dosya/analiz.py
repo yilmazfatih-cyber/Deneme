@@ -138,7 +138,9 @@ def olay_etkisi(db_yolu: str | Path, hisse: str, G: pd.DataFrame) -> pd.DataFram
     try:
         if not db.execute("SELECT name FROM sqlite_master WHERE name='olaylar'").fetchone():
             return pd.DataFrame()
-        O = pd.read_sql_query("SELECT kamuya_acilma, tur, yon, hisse, kapsam, baslik FROM olaylar", db)
+        sutunlar = [r[1] for r in db.execute("PRAGMA table_info(olaylar)")]
+        sql = "SELECT kamuya_acilma, tur, yon, hisse, kapsam, baslik FROM olaylar" + (" WHERE dosya = ?" if "dosya" in sutunlar else "")
+        O = pd.read_sql_query(sql, db, params=(hisse,) if "dosya" in sutunlar else ())
     finally:
         db.close()
     if O.empty:

@@ -864,7 +864,7 @@ def komut_dosya_veri_cek(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
 def komut_dosya_kur(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
     from pathlib import Path as _P
 
-    from .dosya.kur import csv_gz_yaz, depoya_yaz, girdileri_yukle, mali_kalemler, olaylari_hazirla, omurga_kur
+    from .dosya.kur import aciklanma_anlari, csv_gz_yaz, depoya_yaz, girdileri_yukle, mali_kalemler, olaylari_hazirla, omurga_kur
 
     cikti = _P(a.cikti)
     grup = [h.strip().upper() for h in a.grup.split(",")] if a.grup else None
@@ -877,10 +877,16 @@ def komut_dosya_kur(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
         g = girdileri_yukle(hisse, a.saatlik, a.ham, olaylar)
         try:
             R = omurga_kur(hisse, g)
-        except ValueError as hata:
-            print(f"{hisse}: {hata}")
+        except Exception as hata:  # noqa: BLE001 — bir hissenin hatası diğerlerini durdurmaz
+            print(f"{hisse}: ATLANDI ({type(hata).__name__}: {str(hata)[:120]})")
             continue
-        depoya_yaz(cikti / "dosya.sqlite", hisse, R, olaylar, mali_kalemler(g.isy_mali), literatur_json=a.literatur)
+        kal = mali_kalemler(g.isy_mali)
+        if not kal.empty:
+            kal["aciklanma"] = aciklanma_anlari(kal, olaylar, hisse).astype(str)
+            for ad in ("satis", "net_kar", "favok"):
+                if f"{ad}_ceyrek" in kal.columns:
+                    kal[f"{ad}_ttm"] = kal[f"{ad}_ceyrek"].rolling(4).sum()
+        depoya_yaz(cikti / "dosya.sqlite", hisse, R, olaylar, kal, literatur_json=a.literatur)
         csv_gz_yaz(cikti / f"{hisse}_omurga.csv.gz", R)
         csv_gz_yaz(cikti / "gunluk" / f"{hisse}.csv.gz", R[R["gun_sonu"] == True])  # noqa: E712 — gün sonu satırları (kalıcı özet)
         saatlik = int((R["cozunurluk"] == "1h").sum())
@@ -917,6 +923,52 @@ def komut_dosya_kesit(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
     yol.write_text(metin, encoding="utf-8")
     (_P(a.cikti) / "kesit_analiz.json").write_text(json.dumps(sonuc, ensure_ascii=False, indent=1, default=str), encoding="utf-8")
     print(metin if a.yazdir else f"kesit: {sonuc['hisse_sayisi']} hisse · rapor {yol}")
+    return 0
+
+
+# --- strateji mimarisi: KAP hanesi → Py botu ------------------------------------------------------
+def komut_hane_oku(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
+    from .mimari.okuyucu import metinden_hane
+
+    metin = a.metin if a.metin else (open(a.metin_dosya, encoding="utf-8").read() if a.metin_dosya else "")
+    h = metinden_hane(metin, a.hisse, a.zaman, a.baslik or "", a.kaynak)
+    cikti = h.model_dump_json(indent=1)
+    if a.cikti:
+        from pathlib import Path as _P
+
+        _P(a.cikti).parent.mkdir(parents=True, exist_ok=True)
+        _P(a.cikti).write_text(cikti, encoding="utf-8")
+    print(cikti)
+    return 0
+
+
+def komut_bot_olay(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
+    from .mimari.bot import karar_metni, olay_isle
+    from .mimari.okuyucu import ajan_json_oku, metinden_hane
+
+    haneler = ajan_json_oku(a.hane) if a.hane else [metinden_hane(a.metin, a.hisse, a.zaman, a.baslik or "", a.kaynak)]
+    for h in haneler:
+        k = olay_isle(h, a.dosya_db, a.simdi, a.defter, yaz=a.yaz, kayit=a.kayit, istatistik_yolu=a.istatistik)
+        print(karar_metni(k))
+        print()
+    return 0
+
+
+def komut_bot_agac(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
+    from .mimari.dallar import agac_json, agac_metni, olay_agaci
+
+    if a.json:
+        print(json.dumps(agac_json(olay_agaci()), ensure_ascii=False, indent=1))
+    else:
+        print(agac_metni(olay_agaci()))
+    return 0
+
+
+def komut_strateji_istatistik(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
+    from .mimari.istatistik import calistir, rapor
+
+    ist = calistir(a.dosya_db, a.ham, a.cikti, a.rapor)
+    print(rapor(ist, ist.get("kayit")) if a.yazdir else f"{ist['kayit']} → {a.cikti}" + (f", rapor {a.rapor}" if a.rapor else ""))
     return 0
 
 
@@ -1146,6 +1198,45 @@ def ayristirici() -> argparse.ArgumentParser:
     sp.add_argument("--maliyet-bps", type=float, default=10.0)
     sp.add_argument("--yazdir", action="store_true")
     sp.set_defaults(islev=komut_dosya_kesit)
+
+
+    sp = alt.add_parser("hane-oku", help="KAP metnini hanelere oku (düzenli ifade okuyucusu): tür, tutar, para birimi, oran, pay başı, süre")
+    sp.add_argument("--hisse", required=True)
+    sp.add_argument("--zaman", required=True, help="Kamuya açılma anı, ör. 2026-11-09T14:12")
+    sp.add_argument("--metin")
+    sp.add_argument("--metin-dosya")
+    sp.add_argument("--baslik")
+    sp.add_argument("--kaynak")
+    sp.add_argument("--cikti", help="Hane JSON'unu buraya yaz")
+    sp.set_defaults(islev=komut_hane_oku)
+
+    sp = alt.add_parser("bot-olay", help="Py botu: hane(ler) → bağlam → dallanma ağacı → emir (deneme; --yaz ile deftere)")
+    sp.add_argument("--hane", help="Ajanın yazdığı hane JSON'u (tek nesne, liste ya da {haneler: [...]})")
+    sp.add_argument("--metin", help="Hane yerine ham metin (düzenli ifade okuyucusu)")
+    sp.add_argument("--hisse")
+    sp.add_argument("--zaman", help="Kamuya açılma anı (metin modunda)")
+    sp.add_argument("--baslik")
+    sp.add_argument("--kaynak")
+    sp.add_argument("--dosya-db", default="veri/dosya/dosya.sqlite")
+    sp.add_argument("--defter", help="Defter JSON yolu (portföy bağlamı; --yaz ile emir buraya yazılır)")
+    sp.add_argument("--simdi", help="Şimdiki an (test için), ör. 2026-11-09T15:20")
+    sp.add_argument("--yaz", action="store_true", help="Emri deftere yaz")
+    sp.add_argument("--kayit", default="veri/mimari/bot_kararlari.jsonl")
+    sp.add_argument("--istatistik", default="veri/mimari/strateji_istatistik.json", help="Dal istatistikleri (kapı)")
+    sp.set_defaults(islev=komut_bot_olay)
+
+    sp = alt.add_parser("bot-agac", help="Botun dallanma ağacını yazdır (--json ile dışa aktar)")
+    sp.add_argument("--json", action="store_true")
+    sp.set_defaults(islev=komut_bot_agac)
+
+
+    sp = alt.add_parser("strateji-istatistik", help="Saatlik strateji kütüphanesi: sıklık, isabet, maliyet sonrası getiri, durum haritası")
+    sp.add_argument("--dosya-db", default="veri/dosya/dosya.sqlite")
+    sp.add_argument("--ham", default="veri/dosya/ham", help="Temettü/bölünme günleri için Yahoo günlük dosyaları")
+    sp.add_argument("--cikti", default="veri/mimari/strateji_istatistik.json")
+    sp.add_argument("--rapor", help="Markdown rapor yolu")
+    sp.add_argument("--yazdir", action="store_true")
+    sp.set_defaults(islev=komut_strateji_istatistik)
 
     sp = alt.add_parser("yeniden-baslat", help="Düşüş sınırıyla durmuş sanal hesabı yeniden aç")
     sp.add_argument("--piyasa", choices=list(PIYASALAR), required=True)

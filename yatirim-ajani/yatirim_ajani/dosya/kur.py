@@ -64,7 +64,9 @@ FORMULLER: list[dict] = [
     {"sutun": "max_gunluk_20g", "baslik": "MAX: son 20 günün en yüksek günlük getirisi", "formul": "max(r_{d-20..d-1})", "pencere": "20g", "kaynak": "Bali-Cakici-Whitelaw (2011); BIST: Alkan-Güner (2018) negatif", "yon": "negatif"},
     {"sutun": "min_gunluk_20g", "baslik": "MIN: son 20 günün en düşük günlük getirisi", "formul": "min(r_{d-20..d-1})", "pencere": "20g", "kaynak": "kuyruk riski", "yon": "belirsiz"},
     {"sutun": "ivol_60g", "baslik": "İdiosenkratik oynaklık (60g, yıllık)", "formul": "std(r - β·r_XU100) · √252, d-60..d-1", "pencere": "60g", "kaynak": "Ang ve ark. (2006); BIST: Çam ve ark. (2024), Akarsu (2023) pozitif bulgu", "yon": "belirsiz"},
-    {"sutun": "temettu_verimi", "baslik": "Temettü verimi (vekil)", "formul": "son 4 çeyrek konsolide temettü ödemeleri / piyasa_degeri_mn", "pencere": "TTM", "kaynak": "temettü faktörü; vekil (azınlık payına ödemeler dahil)", "yon": "pozitif"},
+    {"sutun": "temettu_verimi", "baslik": "Temettü verimi (son 252 işlem günü)", "formul": "Σ pay başı temettü (hak kullanım günü ≤ d) / P_t; Yahoo yoksa nakit akış vekili", "pencere": "TTM", "kaynak": "temettü faktörü", "yon": "pozitif"},
+    {"sutun": "bedelsiz_gun", "baslik": "Son bölünme/bedelsizden bu yana işlem günü", "formul": "d - son bölünme günü (Yahoo 'Stock Splits')", "pencere": "-", "kaynak": "bedelsiz etkisi (BIST: önce aşırı tepki, sonra düzeltme)", "yon": "belirsiz"},
+    {"sutun": "bedelsiz_oran", "baslik": "Son bölünme oranı", "formul": "Yahoo bölünme çarpanı (2 = %100 bedelsiz)", "pencere": "-", "kaynak": "bedelsiz", "yon": "-"},
     {"sutun": "gece_ort_20g", "baslik": "Ortalama gece getirisi 20g", "formul": "mean(O_i/C_{i-1}-1), i=d-20..d-1", "pencere": "20g", "kaynak": "gece primi", "yon": "pozitif"},
     {"sutun": "gunici_ort_20g", "baslik": "Ortalama gün içi getiri 20g", "formul": "mean(C_i/O_i-1), i=d-20..d-1", "pencere": "20g", "kaynak": "gün içi eksi", "yon": "negatif"},
     {"sutun": "endekse_gore_1g", "baslik": "Endekse göre 1g", "formul": "getiri_1g - XU100 getiri_1g", "pencere": "1g", "kaynak": "göreli güç", "yon": "belirsiz"},
@@ -141,10 +143,18 @@ KALEM_KOD = {
 AKIS_KALEMLER = ("net_kar", "satis", "brut_kar", "faaliyet_kari", "amortisman", "serbest_nakit", "temettu_odeme")
 
 
-def _oku_csv(yol: Path, zaman_sutunu: str = "zaman") -> pd.DataFrame:
-    if not yol.exists():
+def _csv(yol: Path) -> pd.DataFrame:
+    """Yoksa ya da boşsa boş çerçeve."""
+    try:
+        return pd.read_csv(yol) if yol.exists() and yol.stat().st_size > 0 else pd.DataFrame()
+    except pd.errors.EmptyDataError:
         return pd.DataFrame()
-    df = pd.read_csv(yol)
+
+
+def _oku_csv(yol: Path, zaman_sutunu: str = "zaman") -> pd.DataFrame:
+    df = _csv(yol)
+    if df.empty:
+        return df
     if zaman_sutunu in df.columns:
         df[zaman_sutunu] = pd.to_datetime(df[zaman_sutunu], utc=True, errors="coerce").dt.tz_convert(TZ)
         df = df.dropna(subset=[zaman_sutunu])
@@ -197,19 +207,19 @@ def girdileri_yukle(hisse: str, saatlik_klasor: str | Path, ham_klasor: str | Pa
     sk, hk = Path(saatlik_klasor), Path(ham_klasor)
 
     def yahoo_1d(ad: str) -> pd.DataFrame:
-        df = pd.read_csv(hk / ad) if (hk / ad).exists() else pd.DataFrame()
+        df = _csv(hk / ad)
         if not df.empty and "tarih" in df.columns:
             df["tarih"] = pd.to_datetime(df["tarih"], errors="coerce", utc=True).dt.tz_convert(TZ)
             df = df.dropna(subset=["tarih"])
-            for c in ("acilis", "yuksek", "dusuk", "kapanis", "hacim"):
+            for c in ("acilis", "yuksek", "dusuk", "kapanis", "hacim", "temettu", "bolunme"):
                 if c in df.columns:
                     df[c] = pd.to_numeric(df[c], errors="coerce")
         return df
 
-    isy = pd.read_csv(hk / f"{hisse}_isy_gunluk.csv") if (hk / f"{hisse}_isy_gunluk.csv").exists() else pd.DataFrame()
+    isy = _csv(hk / f"{hisse}_isy_gunluk.csv")
     if not isy.empty and "tarih" in isy.columns:
         isy["tarih"] = pd.to_datetime(isy["tarih"], errors="coerce")
-    mali = pd.read_csv(hk / f"{hisse}_isy_mali.csv") if (hk / f"{hisse}_isy_mali.csv").exists() else pd.DataFrame()
+    mali = _csv(hk / f"{hisse}_isy_mali.csv")
     return Girdiler(
         saatlik=_oku_csv(sk / f"{hisse}.IS_1h.csv"),
         gunluk=yahoo_1d(f"{hisse}_yahoo_1d.csv"),
@@ -376,6 +386,19 @@ def omurga_kur(hisse: str, g: Girdiler) -> pd.DataFrame:
         G[f"C_ileri_{k}"] = C.shift(-k)
     G["min_ileri_20"] = C[::-1].rolling(20, min_periods=1).min()[::-1].shift(-1)
     G["max_ileri_20"] = C[::-1].rolling(20, min_periods=1).max()[::-1].shift(-1)
+    # temettü (Yahoo, pay başı TL, hak kullanım günü; önceden ilan edilir) ve bölünme/bedelsiz (oran ve geçen işlem günü)
+    if not g.gunluk.empty and "temettu" in g.gunluk.columns:
+        tg = g.gunluk.copy()
+        tg["gun"] = tg["tarih"].dt.tz_convert(TZ).dt.tz_localize(None).dt.normalize()
+        tem = tg.groupby("gun")["temettu"].sum().reindex(gunler, fill_value=0.0).fillna(0.0)
+        G["temettu_ttm_ps"] = tem.rolling(252, min_periods=1).sum()
+        if "bolunme" in tg.columns:
+            bol = tg.groupby("gun")["bolunme"].max().reindex(gunler, fill_value=0.0).fillna(0.0)
+            sira_b = np.arange(len(gunler), dtype=float)
+            son_b = pd.Series(np.where(bol.to_numpy() > 0, sira_b, np.nan), index=gunler).ffill()
+            G["bedelsiz_gun"] = sira_b - son_b.to_numpy()
+            G["bedelsiz_oran"] = pd.Series(np.where(bol.to_numpy() > 0, bol.to_numpy(), np.nan), index=gunler).ffill()
+
     # ay dönüşü ve bayram bayrakları TAKVİMDEN (Pzt–Cum iş günleri), veriden değil: gelecekteki işlem günlerine bakmaz
     def _ay_donusu(d: pd.Timestamp) -> int:
         ay = pd.bdate_range(d.replace(day=1), d.replace(day=1) + pd.offsets.MonthEnd(0))
@@ -486,6 +509,9 @@ def omurga_kur(hisse: str, g: Girdiler) -> pd.DataFrame:
             if "temettu_ttm" in R.columns:
                 R["temettu_verimi"] = R["temettu_ttm"] / R["piyasa_degeri_mn"]  # vekil: konsolide nakit akışındaki temettü ödemeleri (azınlık dahil)
         R = R.drop(columns=[c for c in ("ozkaynak_ana", "net_borc", "favok_ttm", "serbest_nakit_ttm", "temettu_ttm") if c in R.columns])
+    if "temettu_ttm_ps" in R.columns:
+        R["temettu_verimi"] = R["temettu_ttm_ps"] / P
+        R = R.drop(columns=["temettu_ttm_ps"])
     # 6) Olaylar
     if not g.olaylar.empty and "kamuya_acilma" in g.olaylar.columns:
         O = g.olaylar.dropna(subset=["kamuya_acilma"]).sort_values("kamuya_acilma")
@@ -527,6 +553,18 @@ def omurga_kur(hisse: str, g: Girdiler) -> pd.DataFrame:
 
 
 # --- depo ---------------------------------------------------------------------------------------
+def _tabloya_ekle(db: sqlite3.Connection, tablo: str, df: pd.DataFrame, sil_sql: str | None = None, sil_param: tuple = ()) -> None:
+    """Tabloya satır ekler; tabloda olmayan sütunlar ALTER TABLE ile eklenir (hisseler arasında sütun kümesi değişebilir)."""
+    mevcut = [r[1] for r in db.execute(f"PRAGMA table_info({tablo})")]
+    if mevcut:
+        for c in df.columns:
+            if c not in mevcut:
+                db.execute(f'ALTER TABLE {tablo} ADD COLUMN "{c}"')
+        if sil_sql:
+            db.execute(sil_sql, sil_param)
+    df.to_sql(tablo, db, if_exists="append", index=False)
+
+
 def depoya_yaz(db_yolu: str | Path, hisse: str, R: pd.DataFrame, olaylar: pd.DataFrame | None = None, kalemler: pd.DataFrame | None = None,
                literatur_json: str | Path | None = None) -> None:
     db_yolu = Path(db_yolu)
@@ -540,8 +578,7 @@ def depoya_yaz(db_yolu: str | Path, hisse: str, R: pd.DataFrame, olaylar: pd.Dat
             lit.to_sql("literatur", db, if_exists="replace", index=False)
         db.execute("CREATE TABLE IF NOT EXISTS formuller (sutun TEXT PRIMARY KEY, baslik TEXT, formul TEXT, pencere TEXT, kaynak TEXT, yon TEXT)")
         db.executemany("INSERT OR REPLACE INTO formuller VALUES (?,?,?,?,?,?)", [(f["sutun"], f["baslik"], f["formul"], f["pencere"], f["kaynak"], f["yon"]) for f in FORMULLER])
-        db.execute("DELETE FROM omurga WHERE hisse=?", (hisse,)) if db.execute("SELECT name FROM sqlite_master WHERE name='omurga'").fetchone() else None
-        R.to_sql("omurga", db, if_exists="append", index=False)
+        _tabloya_ekle(db, "omurga", R, "DELETE FROM omurga WHERE hisse = ?", (hisse,))
         db.execute("CREATE INDEX IF NOT EXISTS omurga_hz ON omurga (hisse, zaman)")
         if olaylar is not None and not olaylar.empty:
             o = olaylar.copy()
@@ -550,16 +587,13 @@ def depoya_yaz(db_yolu: str | Path, hisse: str, R: pd.DataFrame, olaylar: pd.Dat
                     o[c] = o[c].astype(str)
                 elif o[c].dtype == object:
                     o[c] = o[c].map(lambda v: json.dumps(v, ensure_ascii=False) if isinstance(v, (list, dict)) else v)
-            if db.execute("SELECT name FROM sqlite_master WHERE name='olaylar'").fetchone():
-                db.execute("DELETE FROM olaylar WHERE hisse=? OR hisse IS NULL", (hisse,))
-            o.to_sql("olaylar", db, if_exists="append", index=False)
+            o["dosya"] = hisse  # olayın ait olduğu hisse dosyası (makro olaylar her dosyada tekrarlanır)
+            _tabloya_ekle(db, "olaylar", o, "DELETE FROM olaylar WHERE dosya = ?", (hisse,))
         if kalemler is not None and not kalemler.empty:
             k = kalemler.reset_index()
             k["donem"] = k["donem"].astype(str)
             k["hisse"] = hisse
-            if db.execute("SELECT name FROM sqlite_master WHERE name='temel_ceyrek'").fetchone():
-                db.execute("DELETE FROM temel_ceyrek WHERE hisse=?", (hisse,))
-            k.to_sql("temel_ceyrek", db, if_exists="append", index=False)
+            _tabloya_ekle(db, "temel_ceyrek", k, "DELETE FROM temel_ceyrek WHERE hisse = ?", (hisse,))
         db.execute("CREATE TABLE IF NOT EXISTS meta (hisse TEXT PRIMARY KEY, satir INTEGER, ilk TEXT, son TEXT, guncelleme TEXT)")
         db.execute("INSERT OR REPLACE INTO meta VALUES (?,?,?,?,datetime('now'))", (hisse, len(R), R["zaman"].min(), R["zaman"].max()))
         db.commit()
@@ -605,6 +639,9 @@ def olaylari_hazirla(bilgi_db: str | Path | None, ek_json: list[str | Path] | No
     O["kamuya_acilma"] = ka.dt.tz_localize(TZ, ambiguous="NaT", nonexistent="shift_forward") if ka.dt.tz is None else ka.dt.tz_convert(TZ)
     O = O.dropna(subset=["kamuya_acilma"])
     if hisse:
+        from ..bilgi.sema import SEKTORLER
+
         ilgili = {hisse, *(grup or [])}
-        O = O[(O["hisse"].isin(ilgili)) | (O["kapsam"].isin(["sektor", "yerel_makro", "kuresel"]))]
+        sektorler = {SEKTORLER.get(h) for h in ilgili} - {None}
+        O = O[(O["hisse"].isin(ilgili)) | (O["kapsam"].isin(["yerel_makro", "kuresel"])) | ((O["kapsam"] == "sektor") & (O["sektor"].isin(sektorler)))]
     return O.drop_duplicates(subset=["hisse", "baslangic", "tur", "baslik"]).sort_values("kamuya_acilma").reset_index(drop=True)
