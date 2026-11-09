@@ -88,15 +88,82 @@ def _bantlar(profil: np.ndarray, en_kucuk: int, esik_orani: float = 0.08) -> lis
     return bantlar
 
 
+def _govde_yuksekligi(murekkep: np.ndarray) -> float | None:
+    """Bağlı bileşenlerin medyan yüksekliği ≈ harf gövdesi (x-yüksekliği) ölçeği."""
+    m = murekkep
+    olcek = 1
+    if m.shape[0] * m.shape[1] > 3_000_000:
+        olcek = 2
+        m = m[::2, ::2]
+    etiket, n = ndimage.label(m)
+    if n == 0:
+        return None
+    dilimler = ndimage.find_objects(etiket)
+    H = m.shape[0]
+    # Kelime benzeri bileşenler: genişlik ≥ 1.2 × yükseklik (mühür, imza, büyük lekeler ve noktalar dışarıda)
+    yuks = np.array([d[0].stop - d[0].start for d in dilimler if d is not None and (d[1].stop - d[1].start) >= 1.2 * (d[0].stop - d[0].start) and 3 <= (d[0].stop - d[0].start) <= H / 12])
+    if len(yuks) < 10:
+        yuks = np.array([d[0].stop - d[0].start for d in dilimler if d is not None])
+        yuks = yuks[(yuks >= 3) & (yuks <= H / 8)]
+    if len(yuks) < 10:
+        return None
+    # Noktalar ve küçük işaretler medyanı aşağı çeker; 75. yüzdelik harf gövdesine daha yakın
+    return float(np.percentile(yuks, 75)) * olcek
+
+
 def satirlari_bul(murekkep: np.ndarray) -> list[Kutu]:
-    """Yatay izdüşümle satır bantları. Satır yüksekliği kabaca tahmin edilip yakın bantlar birleştirilir."""
+    """Yatay izdüşümden satır bantları.
+
+    Ölçek, mürekkep bileşenlerinin medyan yüksekliğinden (h_b ≈ harf gövdesi) alınır.
+    1) Boşluklar belirginse eşikle bantlara ayır (temiz/büyük puntolu belgeler).
+    2) Satırlar sıkışıksa izdüşüm h_b ölçeğinde yumuşatılır; tepeler satır merkezi, aradaki en derin vadi sınır olur.
+    Gövde yüksekliği 6 px'in altındaysa sayfa okunamayacak kadar küçük sayılır ve boş liste döner.
+    """
+    from scipy.signal import find_peaks
+
     H, W = murekkep.shape
-    profil = ndimage.gaussian_filter1d(murekkep.sum(1).astype(np.float32), sigma=max(2, H / 400))
-    bantlar = _bantlar(profil, en_kucuk=max(6, H // 200))
-    if not bantlar:
+    ham = murekkep.sum(1).astype(np.float32)
+    if ham.sum() == 0:
         return []
+    hb = _govde_yuksekligi(murekkep)
+    if hb is not None and hb < 5:
+        return []
+    if hb is None:
+        hb = max(8.0, H / 60)
+    # 1) eşik yöntemi
+    profil_ince = ndimage.gaussian_filter1d(ham, sigma=max(1.5, hb / 4))
+    bantlar = _bantlar(profil_ince, en_kucuk=max(5, int(hb * 0.8)))
+    beklenen = H / (2.6 * hb)
+    if bantlar and len(bantlar) >= 0.8 * beklenen:
+        kutular = _bantlardan_kutular(bantlar, murekkep)
+        if kutular:
+            return kutular
+    # 2) tepe yöntemi
+    profil = ndimage.gaussian_filter1d(ham, sigma=max(2.0, hb * 0.8))
+    tepeler, _ = find_peaks(profil, distance=max(4, int(hb * 1.8)), prominence=profil.max() * 0.06)
+    if len(tepeler) == 0:
+        return _bantlardan_kutular(bantlar, murekkep) if bantlar else []
+    sinirlar = [0]
+    for t0, t1 in zip(tepeler[:-1], tepeler[1:]):
+        sinirlar.append(int(t0 + np.argmin(profil[t0:t1 + 1])))
+    sinirlar.append(H)
+    kutular = []
+    for i, t in enumerate(tepeler):
+        y0 = max(sinirlar[i], int(t - 1.4 * hb))
+        y1 = min(sinirlar[i + 1], int(t + 1.4 * hb) + 1)
+        if y1 - y0 < max(6, hb * 0.9):
+            continue
+        xs = np.where(murekkep[y0:y1].any(0))[0]
+        if len(xs) == 0:
+            continue
+        pay = int(hb * 0.3)
+        kutular.append(Kutu(int(max(0, xs.min() - pay)), int(y0), int(min(W, xs.max() + pay + 1)), int(y1)))
+    return kutular
+
+
+def _bantlardan_kutular(bantlar: list[tuple[int, int]], murekkep: np.ndarray) -> list[Kutu]:
+    H, W = murekkep.shape
     yuks = np.median([b - a for a, b in bantlar])
-    # Küçük bantları (nokta/uzantı) komşusuyla birleştir
     birlesik: list[list[int]] = []
     for a, b in bantlar:
         if birlesik and (a - birlesik[-1][1] < yuks * 0.35) and ((b - a) < yuks * 0.6 or (birlesik[-1][1] - birlesik[-1][0]) < yuks * 0.6):
