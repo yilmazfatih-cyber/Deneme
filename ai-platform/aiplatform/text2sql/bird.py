@@ -27,15 +27,25 @@ from typing import Any
 
 import httpx
 
-from .pipeline import Text2SQL, Text2SQLError, _signature
+from .grounding import GroundingError, ground
+from .pipeline import Text2SQL, Text2SQLError, _signature, parse_output
 from .schema import SchemaIndex
+
+
+class _RawDone(Exception):
+    """Ham modda tek üretim bitti (akış denetimi)."""
+
 
 READ_ONLY_HINT = "Bu araç yalnız SELECT gönderir; yine de veritabanı dosyasını salt-okunur açar."
 
 
 # ---------------------------------------------------------------------- veri
 def load_items(dev_path: Path, limit: int | None = None, db_ids: set[str] | None = None) -> list[dict]:
-    items = json.loads(dev_path.read_text(encoding="utf-8"))
+    text = dev_path.read_text(encoding="utf-8")
+    if dev_path.suffix == ".jsonl":  # BIRD mini-dev (2026) jsonl dağıtılıyor
+        items = [json.loads(line) for line in text.splitlines() if line.strip()]
+    else:
+        items = json.loads(text)
     out = []
     for i, it in enumerate(items):
         if db_ids and it.get("db_id") not in db_ids:
@@ -147,6 +157,64 @@ class OpenAICompatible:
         await self.client.aclose()
 
 
+class TransformersLocal:
+    """Sunucusuz yerel çıkarım (transformers, CPU/GPU). Ağırlık varyantlarını hızlı karşılaştırmak için.
+
+    Üretim sırayla yapılır (tek model örneği); `evaluate(..., concurrency=1)` ile kullanın.
+    """
+
+    def __init__(
+        self,
+        model_dir: str | Path,
+        max_new_tokens: int = 384,
+        dtype: str = "auto",
+        threads: int | None = None,
+    ):
+        import torch
+        from transformers import AutoModelForCausalLM, AutoTokenizer
+
+        if threads:
+            torch.set_num_threads(threads)
+        self.torch = torch
+        self.tok = AutoTokenizer.from_pretrained(str(model_dir))
+        if dtype == "auto":
+            dt = torch.bfloat16 if torch.cuda.is_available() else torch.float32
+        else:
+            dt = {"bf16": torch.bfloat16, "fp16": torch.float16, "fp32": torch.float32}[dtype]
+        self.model = AutoModelForCausalLM.from_pretrained(str(model_dir), torch_dtype=dt)
+        self.model.eval()
+        if torch.cuda.is_available():
+            self.model.to("cuda")
+        self.max_new_tokens = max_new_tokens
+        self.model_name = Path(model_dir).name
+        self.tokens_in = 0
+        self.tokens_out = 0
+        self._lock = asyncio.Lock()
+
+    def _generate(self, messages: list[dict], temperature: float) -> str:
+        torch = self.torch
+        text = self.tok.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+        enc = self.tok(text, return_tensors="pt").to(self.model.device)
+        kw: dict[str, Any] = {"max_new_tokens": self.max_new_tokens, "pad_token_id": self.tok.eos_token_id}
+        if temperature > 0:
+            kw.update(do_sample=True, temperature=temperature, top_p=0.95)
+        else:
+            kw.update(do_sample=False, temperature=None, top_p=None, top_k=None)
+        with torch.inference_mode():
+            out = self.model.generate(**enc, **kw)
+        new = out[0, enc["input_ids"].shape[1] :]
+        self.tokens_in += int(enc["input_ids"].shape[1])
+        self.tokens_out += int(new.shape[0])
+        return self.tok.decode(new, skip_special_tokens=True)
+
+    async def __call__(self, messages: list[dict], temperature: float) -> str:
+        async with self._lock:
+            return await asyncio.to_thread(self._generate, messages, temperature)
+
+    async def aclose(self) -> None:
+        return None
+
+
 # ---------------------------------------------------------------------- değerlendirme
 async def evaluate(
     items: list[dict],
@@ -160,7 +228,10 @@ async def evaluate(
     out_dir: Path | None = None,
     link: bool = True,
     verbose: bool = False,
+    raw: bool = False,
 ) -> dict:
+    """`raw=True`: denetimsiz tek üretim (şema bağlama/düzeltme/oylama yok); yalnız ölçüm için. Her ham sorgunun
+    şemaya bağlanıp bağlanmadığı yine kaydedilir → modelin kendi başına sütun uydurma oranı (`hallucinated`)."""
     indexes: dict[str, SchemaIndex] = {}
 
     def index_for(db_id: str) -> SchemaIndex:
@@ -191,13 +262,33 @@ async def evaluate(
         async with sem:
             t0 = time.monotonic()
             try:
+                if raw:
+                    raw_out = await generate(engine.messages_for(index, it["question"], it["evidence"]), 0.0)
+                    sql = parse_output(raw_out)[0]
+                    rec.update(sql=sql, selected_by="raw", turns=1, error=None if sql else "boş yanıt")
+                    try:
+                        ground(sql, index, "sqlite")
+                        rec["hallucinated"] = False
+                    except GroundingError as ge:
+                        rec["hallucinated"] = not ge.message.startswith("SQL ayrıştırılamadı")
+                        rec["unparsable"] = ge.message.startswith("SQL ayrıştırılamadı")
+                    try:
+                        pred_rows = await asyncio.to_thread(run_sqlite, path, sql) if sql else None
+                    except sqlite3.Error as e:
+                        rec["error"] = str(e)
+                        pred_rows = None
+                    attempts = []
+                    raise _RawDone
                 res = await engine.run(it["question"], index, it["evidence"])
                 rec.update(sql=res.sql, selected_by=res.selected_by, turns=len(res.attempts), error=None)
                 pred_rows = res.rows
                 attempts = res.attempts
+            except _RawDone:
+                pass
             except Text2SQLError as e:
                 rec.update(sql="", error=e.message, turns=len(e.attempts))
                 pred_rows, attempts = None, e.attempts
+                rec["gave_up_on"] = next((a.get("sql") for a in reversed(e.attempts) if a.get("sql")), "")
             except Exception as e:  # noqa: BLE001 - uç nokta/ağ hatası tek soruyu düşürür, koşuyu değil
                 rec.update(sql="", error=f"{type(e).__name__}: {e}", turns=0)
                 pred_rows, attempts = None, []
@@ -254,6 +345,8 @@ def summarize(results: list[dict]) -> dict:
             k: {"n": len(v), "ex": round(100 * sum(v) / len(v), 2)} for k, v in sorted(by_diff.items())
         },
         "no_valid_sql": sum(1 for r in results if not r.get("sql")),
+        "hallucinated_column_or_table": sum(1 for r in results if r.get("hallucinated")),
+        "repaired_then_correct": sum(1 for r in results if r.get("correct") and r.get("turns", 1) > 1),
         "selected_by": dict(Counter(r.get("selected_by") for r in results if r.get("selected_by"))),
         "repair_error_kinds": dict(kinds),
         "avg_turns": round(sum(r.get("turns", 0) for r in results) / len(results), 2) if results else 0,
@@ -276,29 +369,51 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--concurrency", type=int, default=4)
     ap.add_argument("--no-link", action="store_true", help="şema bağlamayı kapat (tüm şema isteme girer)")
     ap.add_argument("--out", type=Path, default=Path("out/bird"))
+    ap.add_argument(
+        "--hf-model", type=Path, default=None, help="sunucu yerine yerel transformers modeli (klasör)"
+    )
+    ap.add_argument("--max-new-tokens", type=int, default=384)
+    ap.add_argument("--raw", action="store_true", help="denetimsiz tek üretim (karşılaştırma tabanı)")
+    ap.add_argument("--offset", type=int, default=0, help="ilk N soruyu atla")
+    ap.add_argument("--stride", type=int, default=1, help="her k. soruyu al (dengeli alt küme)")
     ap.add_argument("-v", "--verbose", action="store_true")
     a = ap.parse_args(argv)
 
-    items = load_items(a.dev, a.limit, set(a.db) if a.db else None)
-    gen = OpenAICompatible(a.base_url, a.model, a.api_key)
+    items = load_items(a.dev, None, set(a.db) if a.db else None)[a.offset :: a.stride]
+    if a.limit:
+        items = items[: a.limit]
+    if a.hf_model:
+        gen = TransformersLocal(a.hf_model, max_new_tokens=a.max_new_tokens)
+        concurrency = 1
+    else:
+        gen = OpenAICompatible(a.base_url, a.model, a.api_key)
+        concurrency = a.concurrency
     a.out.mkdir(parents=True, exist_ok=True)
-    try:
-        report = asyncio.run(
-            evaluate(
+
+    async def _run() -> dict:
+        try:
+            return await evaluate(
                 items,
                 a.db_root,
                 gen,
                 candidates=a.candidates,
                 max_repairs=a.max_repairs,
                 lang=a.lang,
-                concurrency=a.concurrency,
+                concurrency=concurrency,
                 out_dir=a.out,
                 link=not a.no_link,
                 verbose=a.verbose,
+                raw=a.raw,
             )
-        )
-    finally:
-        asyncio.run(gen.aclose())
+        finally:
+            await gen.aclose()
+
+    report = asyncio.run(_run())
+    if isinstance(gen, TransformersLocal):
+        report["tokens_in"], report["tokens_out"] = gen.tokens_in, gen.tokens_out
+    report["model"] = str(a.hf_model or a.model)
+    report["mode"] = "raw" if a.raw else f"pipeline(c={a.candidates},r={a.max_repairs})"
+    (a.out / "report.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps(report, ensure_ascii=False, indent=2))
     return 0
 

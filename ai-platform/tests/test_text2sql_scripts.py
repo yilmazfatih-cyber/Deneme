@@ -137,6 +137,34 @@ def test_merge_ties_density_prunes_small_deltas(toy):
     assert thr >= np.quantile(np.abs(toy["delta"][up]), 0.75) - 1e-6  # yalnız en büyük %25 kaldı
 
 
+def test_merge_bf16_weights_numpy_backend(tmp_path, monkeypatch):
+    """Gerçek Qwen ağırlıkları bf16 dağıtılır; torch'suz (numpy) yolda da okunup yazılabilmeli."""
+    ml_dtypes = pytest.importorskip("ml_dtypes")
+    monkeypatch.setattr(merge_weights, "_TORCH", False)
+    rng = np.random.default_rng(1)
+    w = rng.normal(size=(4, 4)).astype(np.float32)
+    d = rng.normal(size=(4, 4)).astype(np.float32)
+    _write_model(
+        tmp_path / "b",
+        {"a.weight": w.astype(ml_dtypes.bfloat16), "n.weight": w.astype(ml_dtypes.bfloat16)},
+        shards=1,
+    )
+    _write_model(
+        tmp_path / "d",
+        {"a.weight": (w + d).astype(ml_dtypes.bfloat16), "n.weight": w.astype(ml_dtypes.bfloat16)},
+        shards=1,
+    )
+    report = merge_weights.merge(
+        tmp_path / "b", tmp_path / "o", donor_dir=tmp_path / "d", lam=1.0, log=lambda *_: None
+    )
+    out = _read_model(tmp_path / "o")
+    assert out["a.weight"].dtype == ml_dtypes.bfloat16
+    expected = (w.astype(ml_dtypes.bfloat16).astype(np.float32) + d).astype(ml_dtypes.bfloat16)
+    np.testing.assert_allclose(out["a.weight"].astype(np.float32), (w + d).astype(np.float32), atol=0.06)
+    assert np.abs(out["a.weight"].astype(np.float32) - expected.astype(np.float32)).max() <= 0.07
+    assert report["tensors_task_vector"] == 2 and report["tensors_nonzero_delta"] == 1
+
+
 def test_merge_only_filter_and_requires_source(toy):
     d = toy["dir"]
     with pytest.raises(SystemExit):

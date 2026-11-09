@@ -103,6 +103,14 @@ class Backend:
     def __init__(self, out_dtype: str):
         self.out_dtype = out_dtype
         self.framework = "pt" if _TORCH else "np"
+        if not _TORCH:
+            # safetensors'ın numpy okuyucusu bf16'yı ancak ml_dtypes bu tipi kaydettikten sonra tanır;
+            # Qwen/Llama ağırlıkları bf16 dağıtıldığı için torch'suz birleştirmede şart.
+            try:
+                import ml_dtypes  # type: ignore  # noqa: F401
+            except ImportError:
+                log_hint = "bf16 ağırlıklar için `pip install ml_dtypes` gerekir (veya torch kurun)"
+                self.bf16_hint = log_hint
 
     def load(self, fh, key: str):
         t = fh.get_tensor(key)
@@ -226,6 +234,7 @@ def merge(
         "dtype": out_dtype,
         "tensors_total": len(base_loc),
         "tensors_task_vector": 0,
+        "tensors_nonzero_delta": 0,  # donörün tabandan gerçekten ayrıştığı tensörler
         "tensors_lora": 0,
         "tensors_skipped_shape": 0,
         "params_total": 0,
@@ -259,6 +268,8 @@ def merge(
                             delta = backend.where_keep(delta, thr)
                         w = w + lam * delta
                         report["tensors_task_vector"] += 1
+                        if backend.count_changed(delta, delta * 0) > 0:
+                            report["tensors_nonzero_delta"] += 1
                 if selected and key in lora:
                     a, b = lora[key]
                     upd = backend.matmul(b, a) * lora_scale
@@ -295,7 +306,8 @@ def merge(
         json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8"
     )
     log(
-        f"bitti: {report['tensors_task_vector']} tensör görev vektörüyle, {report['tensors_lora']} tensör LoRA ile "
+        f"bitti: {report['tensors_nonzero_delta']}/{report['tensors_task_vector']} tensörde sıfırdan farklı görev vektörü, "
+        f"{report['tensors_lora']} tensör LoRA ile "
         f"güncellendi; parametrelerin %{report['params_changed_pct']} kadarı değişti"
     )
     return report
