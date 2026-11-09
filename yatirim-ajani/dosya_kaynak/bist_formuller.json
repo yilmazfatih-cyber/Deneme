@@ -1,0 +1,816 @@
+[
+ {
+  "ad": "momentum_12_1",
+  "baslik": "12-1 ay fiyat momentumu",
+  "formul": "P[t-21] / P[t-252] - 1 (son 1 ay hariç 11 aylık getiri); kesitsel sıralama, üst dilim al / alt dilim sat",
+  "pencere": "252 işlem günü",
+  "veri_gereksinimi": [
+   "kapanış (düzeltilmiş)"
+  ],
+  "beklenen_yon": "belirsiz",
+  "ufuk": "1a",
+  "bist_kaniti": "zayıf",
+  "kanit_ozeti": "BIST bulguları çelişkili. Dağlı & Arslantürk Çöllü (Fama-MacBeth) momentumu en güçlü anomali olarak bulurken, 2009-2015 dönemine ait bir doktora tezi momentumun olmadığını raporlar. Ünal (2021) 1997-2020 tüm BIST hisselerinde geçmiş kazananların (üst %20) 1-60 ay ufuklarda ortalamanın altında kaldığını (ters dönüş, %1 anlamlılık) bulur. Maliyet sonrası test eden güvenilir bir BIST çalışması bulunamadı.",
+  "kaynaklar": [
+   "https://www.sosyalarastirmalar.com/abstract/stock-return-anomalies-evidence-from-borsa-stanbul-73267.html",
+   "https://acikbilim.yok.gov.tr/handle/20.500.12812/489824",
+   "https://dergipark.org.tr/en/pub/ijmeb/article/832584"
+  ],
+  "uygulanabilir_mi": "evet",
+  "notlar": "Temettü/bedelsiz düzeltmeli fiyat şart (BIST'te bedelsiz çok sık). Sinyal tek başına zayıf; değer veya piyasa durumu filtresiyle birleştirilmesi daha mantıklı. Yüksek enflasyon döneminde nominal TL getirisi yerine endekse göre göreli getiri kullanılmalı."
+ },
+ {
+  "ad": "momentum_6_1",
+  "baslik": "6-1 ay fiyat momentumu",
+  "formul": "P[t-21] / P[t-126] - 1",
+  "pencere": "126 işlem günü",
+  "veri_gereksinimi": [
+   "kapanış (düzeltilmiş)"
+  ],
+  "beklenen_yon": "belirsiz",
+  "ufuk": "1a",
+  "bist_kaniti": "zayıf",
+  "kanit_ozeti": "Ünal (2022, Gazi İktisat ve İşletme Dergisi) güncel literatürün BIST'te momentum faktörünün geçerli olmadığını raporladığını belirtir; faktör-momentumu da yalnız piyasa değeri faktöründe görülmüştür. 20 gelişen piyasa çalışmasında BIST sonuçları anlamsız çıkmıştır (Kırklareli Ün. Dergisi 2017 özeti). Jegadeesh-Titman tipi 6 aylık sinyal BIST'te tutarlı kâr üretmiyor.",
+  "kaynaklar": [
+   "https://dergipark.org.tr/en/pub/gjeb/article/986837",
+   "https://dergipark.org.tr/en/pub/ijmeb/article/832584"
+  ],
+  "uygulanabilir_mi": "evet",
+  "notlar": "Genel literatürde (ABD) güçlü; BIST'te kanıt yok denecek kadar zayıf. Yalnız kombinasyon bileşeni olarak düşünülmeli."
+ },
+ {
+  "ad": "kisa_vade_ters_donus_1a",
+  "baslik": "1 aylık kısa vadeli ters dönüş (contrarian)",
+  "formul": "-(P[t] / P[t-21] - 1); geçen ayın kaybedenlerini al, kazananlarını sat",
+  "pencere": "21 işlem günü",
+  "veri_gereksinimi": [
+   "kapanış (düzeltilmiş)"
+  ],
+  "beklenen_yon": "negatif",
+  "ufuk": "1a",
+  "bist_kaniti": "orta",
+  "kanit_ozeti": "Demirer, Yüksel & Yüksel (2017, Research in International Business and Finance) BIST'te kısa vadeli ters dönüşlerin ve contrarian kazançların piyasa durumuyla öngörülebildiğini; negatif piyasa dönemlerinde yüksek kârlı, düşük çarpanlı hisselere 'kaliteye kaçış'la güçlendiğini, petrol getirisinin makro değişkenlerin öngörü gücünün çoğunu emdiğini bulur. Bildik & Gülay (2007, International Review of Finance) İMKB'de geçmiş getiri, büyüklük, fiyat, PD/DD ve E/P'ye dayalı contrarian stratejileri test eder (özetin bulgu kısmı aramada görülmedi). Maliyet sonrası kârlılık doğrulanamadı.",
+  "kaynaklar": [
+   "https://ideas.repec.org/a/eee/riibaf/v42y2017icp1445-1454.html",
+   "https://ideas.repec.org/a/bla/irvfin/v7y2007i1-2p61-87.html"
+  ],
+  "uygulanabilir_mi": "evet",
+  "notlar": "Aylık devir yüksek olduğu için komisyon + kayma maliyetini mutlaka modelleyin. Piyasa durumu (ör. BIST100 son 12 ay getirisi < 0) koşullu kullanım literatürle uyumlu."
+ },
+ {
+  "ad": "uzun_vade_ters_donus_3_5y",
+  "baslik": "Orta/uzun vadeli aşırı tepki ters dönüşü (DeBondt-Thaler)",
+  "formul": "-(P[t] / P[t-756] - 1) veya 12-36 aylık oluşum dönemi; kaybedenler portföyü - kazananlar portföyü",
+  "pencere": "756-1260 işlem günü",
+  "veri_gereksinimi": [
+   "kapanış (düzeltilmiş)"
+  ],
+  "beklenen_yon": "negatif",
+  "ufuk": "12a",
+  "bist_kaniti": "orta",
+  "kanit_ozeti": "Alper & Aydoğan (2017, Muhasebe ve Finansman Dergisi) 2001-2015 için 1-5 yıllık oluşum dönemlerinde contrarian stratejinin BIST'te kârlı olduğunu bulur. 2020 tarihli bir çalışma (Academic Review of Economics and Administrative Sciences özeti) orta vadede kaybedenlerin kazananları geçtiğini ve aşırı tepkinin asimetrik olduğunu raporlar. Ünal (2021) 1997-2020'de üst %20 kazananların 1-60 ayda ortalamanın altında kaldığını gösterir.",
+  "kaynaklar": [
+   "https://www.acarindex.com/muhasebe-ve-finansman-dergisi/the-profitability-of-contrarian-strategy-borsa-istanbul-case-58596",
+   "https://dergipark.org.tr/en/pub/ijmeb/article/832584"
+  ],
+  "uygulanabilir_mi": "evet",
+  "notlar": "BIST'te momentumdan daha tutarlı görünen tek fiyat-tabanlı kesitsel sinyal. Hayatta kalma yanlılığına dikkat (işlemden kaldırılan hisseler)."
+ },
+ {
+  "ad": "yakinlik_52h_zirve",
+  "baslik": "52 haftalık zirveye yakınlık (George-Hwang)",
+  "formul": "P[t] / max(P[t-251..t])",
+  "pencere": "252 işlem günü",
+  "veri_gereksinimi": [
+   "kapanış (düzeltilmiş)"
+  ],
+  "beklenen_yon": "belirsiz",
+  "ufuk": "1a",
+  "bist_kaniti": "zayıf",
+  "kanit_ozeti": "Mehmet Akif Ersoy Ün. İİBF Dergisi'nde (2021) 2007-2016 BIST verisiyle 52 haftalık zirve portföylerinin primi istatistiksel olarak anlamsız bulunmuş, buna karşılık brüt kârlılık primi anlamlı çıkmıştır. Orijinal George & Hwang (2004) etkisi ABD'ye aittir.",
+  "kaynaklar": [
+   "https://dx.doi.org/10.30798/makuiibf.790900",
+   "https://search.trdizin.gov.tr/yayin/detay/465262"
+  ],
+  "uygulanabilir_mi": "evet",
+  "notlar": "Hesaplaması kolay ama BIST'te tek başına prim kanıtı yok."
+ },
+ {
+  "ad": "brut_karlilik",
+  "baslik": "Brüt kârlılık (Novy-Marx kalite faktörü)",
+  "formul": "Brüt kâr / Toplam aktifler",
+  "pencere": "son 4 çeyrek bilanço",
+  "veri_gereksinimi": [
+   "brüt kâr",
+   "toplam aktif"
+  ],
+  "beklenen_yon": "pozitif",
+  "ufuk": "12a",
+  "bist_kaniti": "zayıf",
+  "kanit_ozeti": "Aynı 2021 MAKÜ İİBF çalışması 2007-2016 BIST'te kârlılık priminin anlamlı olduğunu bulmuştur. Dağlı & Arslantürk Çöllü ise kârlılık anomalisini genel örneklemde anlamsız, mikro/küçük hisselerde etkili bulmuştur.",
+  "kaynaklar": [
+   "https://dx.doi.org/10.30798/makuiibf.790900",
+   "https://www.sosyalarastirmalar.com/abstract/stock-return-anomalies-evidence-from-borsa-stanbul-73267.html"
+  ],
+  "uygulanabilir_mi": "hayır",
+  "notlar": "İş Yatırım günlük çarpan setinde brüt kâr/aktif yok; ayrı mali tablo verisi (KAP/İş Yatırım mali tablolar) gerekir."
+ },
+ {
+  "ad": "deger_pd_dd",
+  "baslik": "Değer: düşük PD/DD (yüksek DD/PD)",
+  "formul": "Defter değeri / Piyasa değeri (= 1 / (PD/DD)); kesitsel sıralama",
+  "pencere": "anlık + 12 ay tutma",
+  "veri_gereksinimi": [
+   "PD/DD",
+   "piyasa değeri"
+  ],
+  "beklenen_yon": "pozitif",
+  "ufuk": "12a",
+  "bist_kaniti": "orta",
+  "kanit_ozeti": "Yalçın (Ekonomi Politika & Finans Araştırmaları Dergisi, 2024) 12 sektörde F/K, FD/FAVÖK ve PD/DD ile kurulan portföylerin BIST 100'e göre daha düşük risk ve daha yüksek getiri verdiğini, en iyi sonucun F/K ve PD/DD'den geldiğini raporlar. Bir yüksek lisans tezi DD/PD'nin ucuz/pahalı hisseleri F/K'dan daha iyi ayırdığını bulur. Buna karşılık 2025 tarihli bir Fama-MacBeth çalışması ve bazı Fama-French testleri değer primini anlamsız veya ters bulmuştur. Maliyet sonrası analiz yok.",
+  "kaynaklar": [
+   "https://dergipark.org.tr/en/pub/epfad/article/1477190",
+   "https://acikbilim.yok.gov.tr/handle/20.500.12812/250367",
+   "https://dergipark.org.tr/en/download/article-file/4403620"
+  ],
+  "uygulanabilir_mi": "evet",
+  "notlar": "Yüksek enflasyonda (enflasyon muhasebesi TMS 29, 2023 sonrası) defter değerleri sıçradı; dönemler arası PD/DD karşılaştırması bozulabilir. Sektör-içi sıralama (banka ayrı) önerilir. Yıllık dengeleme maliyeti düşük."
+ },
+ {
+  "ad": "deger_fk_kazanc_verimi",
+  "baslik": "Değer: düşük F/K / yüksek kazanç verimi (E/P)",
+  "formul": "E/P = 1 / (F/K); negatif kârlılar ayrı grup; kesitsel sıralama",
+  "pencere": "son 12 ay kâr",
+  "veri_gereksinimi": [
+   "F/K",
+   "piyasa değeri"
+  ],
+  "beklenen_yon": "pozitif",
+  "ufuk": "12a",
+  "bist_kaniti": "orta",
+  "kanit_ozeti": "Yalçın (2024) F/K portföylerinin BIST 100'ü geçtiğini bulur. 1989-2003 finans dışı firmalar üzerine bir tez pozitif F/K oranı ve temettü veriminin getiriyi etkilediğini raporlar. Demirer vd. (2017) negatif piyasa dönemlerinde düşük çarpanlı/yüksek kârlı hisselere kaçışı ters dönüşün sürücüsü olarak gösterir. Sonuçlar dönem ve yönteme duyarlı.",
+  "kaynaklar": [
+   "https://dergipark.org.tr/en/pub/epfad/article/1477190",
+   "https://acikbilim.yok.gov.tr/handle/20.500.12812/94971",
+   "https://ideas.repec.org/a/eee/riibaf/v42y2017icp1445-1454.html"
+  ],
+  "uygulanabilir_mi": "evet",
+  "notlar": "Enflasyon muhasebesi ve tek seferlik kalemler (parasal kazanç/kayıp, değerleme) F/K'yı bozar; aşırı uçları kırpın (winsorize)."
+ },
+ {
+  "ad": "deger_fd_favok",
+  "baslik": "Değer: düşük FD/FAVÖK",
+  "formul": "FAVÖK / Firma Değeri (= 1 / (FD/FAVÖK)); finansallar hariç",
+  "pencere": "son 12 ay FAVÖK",
+  "veri_gereksinimi": [
+   "FD/FAVÖK"
+  ],
+  "beklenen_yon": "pozitif",
+  "ufuk": "12a",
+  "bist_kaniti": "zayıf",
+  "kanit_ozeti": "Yalçın (2024) FD/FAVÖK portföylerini de test eder ama en iyi sonuçlar F/K ve PD/DD'dendir. Midas'ın uygulamalı notu (hakemli değil) BIST100'de en düşük FD/FAVÖK'lü 10 hissenin belirli bir 1 yıllık dönemde endeksi geçtiğini hesaplar; tek dönemli ve seçim yanlılığına açık.",
+  "kaynaklar": [
+   "https://dergipark.org.tr/en/pub/epfad/article/1477190",
+   "https://www.getmidas.com/midasin-kulaklari/hisse-getirisinde-fd-favok-etkisi-p-40440"
+  ],
+  "uygulanabilir_mi": "evet",
+  "notlar": "Banka/sigorta/holding için anlamsız; bunları dışlayın."
+ },
+ {
+  "ad": "temettu_verimi",
+  "baslik": "Temettü verimi (Dogs of the Dow uyarlaması)",
+  "formul": "Son 12 ay nakit temettü / Fiyat; yıl sonunda en yüksek verimli 10 hisseyi al, 1 yıl tut",
+  "pencere": "12 ay",
+  "veri_gereksinimi": [
+   "kapanış",
+   "temettü geçmişi"
+  ],
+  "beklenen_yon": "pozitif",
+  "ufuk": "12a",
+  "bist_kaniti": "zayıf",
+  "kanit_ozeti": "İstanbul Bilgi Ün. yüksek lisans tezi (2019) 2010-2018'de 'Dogs of Dow' stratejisinin BIST'te iyi performans gösterdiğini, risk, işlem maliyeti ve vergi dikkate alınarak istatistiksel olarak desteklendiğini raporlar. Tek ve kısa dönemli çalışma.",
+  "kaynaklar": [
+   "https://openaccess.bilgi.edu.tr/items/83210a9e-fc36-47de-8c33-e15d4b328136"
+  ],
+  "uygulanabilir_mi": "kısmen",
+  "notlar": "İş Yatırım günlük setinde temettü verimi yoksa temettü geçmişi ayrı toplanmalı (KAP / İş Yatırım temettü tablosu). Temettü tuzağına (fiyat düşüşünden kaynaklı yüksek verim) dikkat."
+ },
+ {
+  "ad": "buyukluk_piyasa_degeri",
+  "baslik": "Büyüklük (küçük firma etkisi)",
+  "formul": "-log(Piyasa değeri); kesitsel sıralama",
+  "pencere": "anlık",
+  "veri_gereksinimi": [
+   "piyasa değeri"
+  ],
+  "beklenen_yon": "belirsiz",
+  "ufuk": "12a",
+  "bist_kaniti": "zayıf",
+  "kanit_ozeti": "Bulgular çelişkili: yabancı payı faktörlü bir 2015 çalışması (Economic Research) büyüklük ve DD/PD faktörlerinin anlamlı olduğunu, 2001-2013 çalışması piyasa değerinin getiriyi negatif etkilediğini bulur; buna karşılık 2025 Fama-MacBeth çalışması büyüklük primini anlamsız, başka çalışmalar ölçek etkisini yok bulur. Ünal (2022) yalnız piyasa değeri faktöründe faktör-momentumu gözlemler.",
+  "kaynaklar": [
+   "https://hrcak.srce.hr/file/253060",
+   "https://dergipark.org.tr/en/download/article-file/4403620",
+   "https://dergipark.org.tr/en/pub/gjeb/article/986837"
+  ],
+  "uygulanabilir_mi": "evet",
+  "notlar": "Küçük hisse primi, likidite primiyle iç içe; BIST'te küçük hisselerde manipülasyon/tavan-taban serileri ve yüksek kayma riski var. Uygulamada minimum günlük hacim filtresi zorunlu."
+ },
+ {
+  "ad": "halka_aciklik",
+  "baslik": "Halka açıklık (fiili dolaşım) oranı",
+  "formul": "Fiili dolaşımdaki pay / Toplam pay",
+  "pencere": "anlık",
+  "veri_gereksinimi": [
+   "halka açıklık oranı (MKK/BIST)"
+  ],
+  "beklenen_yon": "belirsiz",
+  "ufuk": "12a",
+  "bist_kaniti": "yok",
+  "kanit_ozeti": "Bostancı & Kılıç (2010, İMKB, 199 hisse) yüksek halka açıklığın daha yüksek işlem hacmi ve fiyat oynaklığıyla ilişkili olduğunu bulur; getiri öngörüsüne dair net kanıt yok. Diğer çalışmalar firma değeri/performansa etkiyi anlamsız bulur. Borsa İstanbul halka açıklık oranlarını endeks hesaplamasında kullanır.",
+  "kaynaklar": [
+   "https://search.trdizin.gov.tr/yayin/detay/106868",
+   "https://borsaistanbul.com/en/announcement/15479/announcement-about-free-float-ratios-used-both-determining-index-constituents-and-index-calculations"
+  ],
+  "uygulanabilir_mi": "kısmen",
+  "notlar": "Getiri faktörü olarak değil, likidite/manipülasyon riski filtresi olarak kullanın (ör. halka açık piyasa değeri < eşik ise evren dışı). Veri İş Yatırım setinde olmayabilir; KAP/MKK'dan çekilmeli."
+ },
+ {
+  "ad": "dusuk_beta",
+  "baslik": "Düşük beta anomalisi (betting-against-beta)",
+  "formul": "beta = cov(r_i, r_m) / var(r_m), 252 günlük (veya 60 aylık) pencere; düşük beta al",
+  "pencere": "252 işlem günü",
+  "veri_gereksinimi": [
+   "kapanış",
+   "BIST100 endeksi"
+  ],
+  "beklenen_yon": "negatif",
+  "ufuk": "12a",
+  "bist_kaniti": "zayıf",
+  "kanit_ozeti": "Özyeğin Ün. yüksek lisans tezi (2021, 80 BIST hissesi, 2010-2019) her dönemde belirli bir beta aralığında beta anomalisi bulur; çok düşük ve çok yüksek betaların uzun vadeli getiriyi düşürdüğünü raporlar. BIST 100 (2002-2013) üzerine daha eski bir çalışma düşük beta anomalisinin varlığını bildirir. 1989-2003 tezi beta ile getiri arasında pozitif ilişki bulamaz (CAPM ile tutarsızlık).",
+  "kaynaklar": [
+   "https://eresearch.ozyegin.edu.tr/handle/10679/7606",
+   "https://acikerisim.gtu.edu.tr/items/08469c3d-ac8e-479c-92f3-1a50cf6e6eb1"
+  ],
+  "uygulanabilir_mi": "evet",
+  "notlar": "İlişki doğrusal değil (tez bulgusu); uç dilimleri değil orta-düşük beta bandını hedeflemek daha uygun olabilir."
+ },
+ {
+  "ad": "dusuk_oynaklik_toplam",
+  "baslik": "Düşük toplam oynaklık",
+  "formul": "stdev(günlük log getiri, 60-252 gün) * sqrt(252); düşük oynaklık al",
+  "pencere": "60-252 işlem günü",
+  "veri_gereksinimi": [
+   "kapanış"
+  ],
+  "beklenen_yon": "belirsiz",
+  "ufuk": "3a",
+  "bist_kaniti": "zayıf",
+  "kanit_ozeti": "Genel literatürde düşük oynaklıklı hisseler çoğu piyasada daha yüksek risk-ayarlı getiri sağlar. BIST'e özgü doğrudan toplam-oynaklık sıralaması çalışması bulunamadı; Çam vd. (2024) piyasa oynaklığı ile getiri arasında negatif, idiosenkratik risk ile pozitif ilişki bulur, bu da klasik düşük-oynaklık anomalisini BIST'te belirsiz kılar.",
+  "kaynaklar": [
+   "https://EN.wikipedia.com/wiki/Low-volatility_anomaly",
+   "https://openaccess.osmaniye.edu.tr/items/5473cc82-39bb-4e7b-9de8-4368a050c5fa"
+  ],
+  "uygulanabilir_mi": "evet",
+  "notlar": "Risk yönetimi (pozisyon boyutu = hedef oynaklık / oynaklık) için doğrudan kullanılabilir; getiri sinyali olarak BIST kanıtı zayıf."
+ },
+ {
+  "ad": "idiosenkratik_oynaklik",
+  "baslik": "İdiosenkratik oynaklık (IVOL)",
+  "formul": "stdev(e_i), e_i = r_i - (a + b*r_m) günlük regresyon artığı, son 21-63 gün",
+  "pencere": "21-63 işlem günü",
+  "veri_gereksinimi": [
+   "kapanış",
+   "BIST100 endeksi"
+  ],
+  "beklenen_yon": "pozitif",
+  "ufuk": "1a",
+  "bist_kaniti": "orta",
+  "kanit_ozeti": "ABD'deki negatif IVOL bulmacasının aksine, BIST'te iki Borsa Istanbul Review makalesi pozitif ilişki bulur: Çam, Uzkaralar & Borak (2024) idiosenkratik risk ile getiri arasında pozitif, piyasa oynaklığı ile negatif ilişki; Akarsu (2023, cilt 23 sayı 5) bir ay gecikmeli IVOL ile getiri arasında, görünürlüğü düşük hisselerde daha güçlü pozitif ilişki raporlar.",
+  "kaynaklar": [
+   "https://openaccess.osmaniye.edu.tr/items/5473cc82-39bb-4e7b-9de8-4368a050c5fa",
+   "https://avesis.gsu.edu.tr/yayin/e6478b57-dc63-4309-ab45-a7170b18b420/idiosyncratic-volatility-network-centrality-and-stock-returns"
+  ],
+  "uygulanabilir_mi": "evet",
+  "notlar": "MAX etkisiyle (negatif) çakışır; ikisini birlikte kontrol edin. Pozitif ilişki likidite/küçüklük primini yansıtıyor olabilir."
+ },
+ {
+  "ad": "max_etkisi",
+  "baslik": "MAX etkisi (piyango hisseleri)",
+  "formul": "MAX = son 21 işlem günündeki en yüksek günlük getiri (veya en yüksek 5 günün ortalaması); yüksek MAX'ı sat/kaçın",
+  "pencere": "21 işlem günü",
+  "veri_gereksinimi": [
+   "kapanış"
+  ],
+  "beklenen_yon": "negatif",
+  "ufuk": "1a",
+  "bist_kaniti": "orta",
+  "kanit_ozeti": "Alkan & Güner (2018, Journal of International Financial Markets, Institutions and Money 55:211-223) yüksek MAX'lı BIST hisselerinin diğer özellikler kontrol edildikten sonra anlamlı biçimde daha düşük getiri verdiğini, etkinin bireysel yatırımcının tercih ettiği hisselerde ve yüksek duyarlılık dönemlerinde yoğunlaştığını, açığa satış yasağı döneminde MAX iskontosunun büyüdüğünü bulur (arbitraj sınırları). Başka bir Türk çalışması MAX anomalisini yok bulmuştur.",
+  "kaynaklar": [
+   "https://eresearch.ozyegin.edu.tr/handle/10679/6123",
+   "https://econpapers.repec.org/RePEc:eee:intfin:v:55:y:2018:i:c:p:211-223"
+  ],
+  "uygulanabilir_mi": "evet",
+  "notlar": "Açığa satış zor/pahalı olduğundan uzun-only uygulamada 'yüksek MAX hisselerini dışla' filtresi olarak kullanmak en gerçekçisi. Tavan serisi yapan hisseler doğal adaylar."
+ },
+ {
+  "ad": "amihud_illikidite",
+  "baslik": "Amihud illikidite oranı",
+  "formul": "ILLIQ = ortalama(|r_t| / TL_hacim_t) son 21-252 gün; yüksek ILLIQ al",
+  "pencere": "21-252 işlem günü",
+  "veri_gereksinimi": [
+   "kapanış",
+   "TL işlem hacmi"
+  ],
+  "beklenen_yon": "pozitif",
+  "ufuk": "1a",
+  "bist_kaniti": "güçlü",
+  "kanit_ozeti": "Atılgan, Demirtaş & Günaydın (2016, Applied Economics 48(52):5075-5092) kesitsel regresyonlarda illikidite ile 1-6 ay sonraki getiri arasında pozitif ilişki; en illikit beşte birlik dilimin risk-ayarlı yıllık %7,2-19,2 fazla getiri kazandığını, primin küçük ve oynak hisselerde ve aşırı zayıf piyasalarda büyüdüğünü bulur; beta, büyüklük, DD/PD, momentum kontrollerine dayanıklı. Günaydın (2020) illikidite şoklarına duyarlılığın fiyatlandığını gösterir. Kahraman & Bank (2020) sıfır-getiri ölçüsüyle anlamlı prim bulamaz.",
+  "kaynaklar": [
+   "https://econpapers.repec.org/RePEc:taf:applec:v:48:y:2016:i:52:p:5075-5092",
+   "https://research.sabanciuniv.edu/29780",
+   "https://dergipark.org.tr/tr/doi/10.17065/huniibf.656444"
+  ],
+  "uygulanabilir_mi": "evet",
+  "notlar": "Prim en illikit uçta; bu hisselerde alım-satım makası ve fiyat etkisi primi büyük ölçüde yiyebilir (makalede maliyet sonrası test yok). Uygulamada orta-illikit dilim + kapasite sınırı önerilir."
+ },
+ {
+  "ad": "devir_hizi",
+  "baslik": "İşlem hacmi devir hızı (turnover)",
+  "formul": "Turnover = ortalama(lot hacmi_t / halka açık pay adedi) veya TL hacim / piyasa değeri, son 21-63 gün",
+  "pencere": "21-63 işlem günü",
+  "veri_gereksinimi": [
+   "hacim",
+   "piyasa değeri",
+   "halka açıklık"
+  ],
+  "beklenen_yon": "belirsiz",
+  "ufuk": "1a",
+  "bist_kaniti": "zayıf",
+  "kanit_ozeti": "BIST'te fiyat-hacim çalışmaları nedenselliğin yönünde ayrışır (hacimden getiriye ve getiriden hacme bulgular var); devir hızı çoğunlukla likidite göstergesi olarak kullanılır. TSPB'ye göre BIST 2020'de %381 devir hızıyla dünyanın en likit piyasası olmuştur, bu da devir hızının kesitsel ayırt ediciliğini düşürür. Atılgan vd. (2016) çoklu illikidite ölçülerinde pozitif illikidite primi bulur.",
+  "kaynaklar": [
+   "https://tspb.org.tr/wp-content/uploads/2022/12/TSPB_BB_Turkiye_Sermaye_Piyasasi_2020_Raporu_Yayimlandi.pdf",
+   "https://research.sabanciuniv.edu/29780"
+  ],
+  "uygulanabilir_mi": "evet",
+  "notlar": "Anormal hacim (hacim / 63 günlük ortalama) olay/dikkat sinyali olarak denenebilir; BIST'e özgü getiri kanıtı yok."
+ },
+ {
+  "ad": "bid_ask_spread",
+  "baslik": "Alım-satım makası (bid-ask spread)",
+  "formul": "Oransal makas = (Ask - Bid) / ((Ask + Bid)/2); vekil: Corwin-Schultz yüksek-düşük tahmincisi veya Roll tahmincisi",
+  "pencere": "21 işlem günü",
+  "veri_gereksinimi": [
+   "en iyi alış/satış kotasyonu (veya gün içi yüksek/düşük)"
+  ],
+  "beklenen_yon": "pozitif",
+  "ufuk": "1a",
+  "bist_kaniti": "zayıf",
+  "kanit_ozeti": "Önder & Güner (1998, İMKB Review) 198 hisse için oransal makasın komisyona göre önemli bir işlem maliyeti olduğunu, hacimle negatif ilişkili olduğunu ve öğleden sonra seansında daha geniş olduğunu bulur; getiri öngörüsü test edilmemiştir. Su & Tokmakcıoğlu (2021, Borsa Istanbul Review) düşük frekanslı makas vekillerini karşılaştırır (tahvil piyasasında; 'Closing Percent Quoted Spread' en iyisi).",
+  "kaynaklar": [
+   "https://econpapers.repec.org/RePEc:bor:iserev:v:3:y:1998:i:8-7:p:1-20",
+   "https://research.itu.edu.tr/en/publications/a-comparison-of-bid-ask-spread-proxies-and-determinants-of-bond-b/"
+  ],
+  "uygulanabilir_mi": "kısmen",
+  "notlar": "Ücretsiz veride kotasyon yok; günlük yüksek/düşük ile Corwin-Schultz vekili hesaplanabilir. En değerli kullanımı getiri sinyali değil, işlem maliyeti modeli."
+ },
+ {
+  "ad": "yabanci_takas_degisimi",
+  "baslik": "Hisse bazında yabancı takas oranı değişimi",
+  "formul": "Δ yabancı payı = YabancıPay[t] - YabancıPay[t-63] (çeyreklik) veya haftalık değişim",
+  "pencere": "63 işlem günü",
+  "veri_gereksinimi": [
+   "yabancı takas oranı (MKK, hisse bazında)"
+  ],
+  "beklenen_yon": "belirsiz",
+  "ufuk": "3a",
+  "bist_kaniti": "zayıf",
+  "kanit_ozeti": "Ünal (Yönetim ve Ekonomi Araştırmaları Dergisi; BIST100, 2015-2019) yabancıların pozisyon değişimi sırasında fiyatı hareket ettirdiğini ama değişimi izleyen çeyrekte anormal getiri olmadığını bulur. Fama-French modeline yabancı payı faktörü ekleyen 2015 çalışması (Economic Research) yabancıların fazla payı ile getiri arasında negatif ilişki raporlar. GYO'larda (2010-2018) ani yabancı payı değişimleri 3 aya kadar getiri ile ilişkilidir. Basın Akademisi özetine göre yabancı pozisyonları geçmiş getiriyle pozitif ilişkili (momentumcu), yerliler contrarian.",
+  "kaynaklar": [
+   "https://dergipark.org.tr/tr/download/article-file/1082926",
+   "https://hrcak.srce.hr/171541"
+  ],
+  "uygulanabilir_mi": "hayır",
+  "notlar": "Hisse bazında MKK yabancı takas verisi istenen ücretsiz fiyat/çarpan setinde yok (bazı aracı kurumlar haftalık yayınlar). Kanıt, öngörücü değil eşzamanlı etki yönünde."
+ },
+ {
+  "ad": "yabanci_net_alim_piyasa",
+  "baslik": "Piyasa geneli haftalık yabancı net hisse alımı",
+  "formul": "Haftalık yurt dışı yerleşik net hisse alımı (USD) / BIST piyasa değeri; t haftası akımı ile t+1 endeks getirisi",
+  "pencere": "52 hafta",
+  "veri_gereksinimi": [
+   "TCMB haftalık menkul kıymet istatistikleri",
+   "BIST100 endeksi"
+  ],
+  "beklenen_yon": "pozitif",
+  "ufuk": "1h",
+  "bist_kaniti": "zayıf",
+  "kanit_ozeti": "Haftalık 2010-2018 verisiyle bir çalışma yabancı portföy yatırımlarından borsaya tek yönlü nedensellik bulur; 2002-2018 aylık veride Granger nedensellik bulunmaz; çeyreklik veride ters yön (getiriden yabancıya) bulunur. ARDL çalışması yabancı alımların endeksi kısa ve uzun dönemde artırdığını raporlar. Çoğu bulgu eşzamanlı ilişki; öngörü gücü belirsiz.",
+  "kaynaklar": [
+   "https://dergipark.org.tr/tr/download/article-file/760894",
+   "https://acikerisim.duzce.edu.tr/bitstreams/1dabe691-ebfa-4359-9cc7-9f7d9f1f1ccb/download"
+  ],
+  "uygulanabilir_mi": "kısmen",
+  "notlar": "TCMB verisi ücretsiz ama 1 hafta gecikmeli yayımlanır; endeks zamanlaması (risk açık/kapalı) için ancak yardımcı değişken."
+ },
+ {
+  "ad": "gece_gun_ici_ayrisma",
+  "baslik": "Gece (kapanış→açılış) ve gün içi (açılış→kapanış) getiri ayrışması",
+  "formul": "r_gece = O[t]/C[t-1] - 1; r_gun_ici = C[t]/O[t] - 1; sinyal: son 21 günün kümülatif gece getirisi",
+  "pencere": "21-252 işlem günü",
+  "veri_gereksinimi": [
+   "açılış",
+   "kapanış"
+  ],
+  "beklenen_yon": "belirsiz",
+  "ufuk": "1a",
+  "bist_kaniti": "yok",
+  "kanit_ozeti": "BIST getirilerini gece ve gün içi bileşene ayıran doğrudan bir çalışma bulunamadı. Mevcut BIST çalışmaları açılış/kapanış tek fiyat seanslarının (call auction) gün içi getiri ve oynaklık yapısına etkisini (102 hisse, 15 dakikalık veri, 2006-2012) ve hafta sonu/tatil çevresindeki gün içi getirileri inceler; gün içi oynaklıkta belirgin desen, getiride ise desen yok bulunur. Genel (ABD) literatürde gece getirisinin kalıcı ve kesitsel öngörücü olduğu bilinir.",
+  "kaynaklar": [
+   "https://ios.perpusnas.go.id/Record/IOS16997.4750868/TOC",
+   "https://openaccess.marmara.edu.tr/entities/publication/9e9b02f4-5a55-49b2-a87a-166e742447c2"
+  ],
+  "uygulanabilir_mi": "evet",
+  "notlar": "Açılış fiyatı açılış seansı (call auction) fiyatıdır; ücretsiz veride açılış fiyatının doğruluğunu kontrol edin. BIST'e özgü özgün test fırsatı."
+ },
+ {
+  "ad": "haftanin_gunu",
+  "baslik": "Haftanın günü etkisi (Pazartesi/Cuma)",
+  "formul": "Gün kuklası regresyonu: r_t = a + Σ b_d * D_d + e (GARCH/EGARCH ile)",
+  "pencere": "uzun dönem günlük seri",
+  "veri_gereksinimi": [
+   "kapanış (endeks veya hisse)"
+  ],
+  "beklenen_yon": "belirsiz",
+  "ufuk": "1g",
+  "bist_kaniti": "zayıf",
+  "kanit_ozeti": "2020 EGARCH çalışması BIST 100 getirisinde haftanın günü etkisi bulmaz; KAT 30'da Pazartesi ve Çarşamba negatif. Bir başka çalışma etkinin dünya örüntüsüne 'normalleştiğini' belirtir. 1988-2007 İMKB çalışması gün etkisini var bulur; yani etki zamanla zayıflamıştır.",
+  "kaynaklar": [
+   "https://app.trdizin.gov.tr/makale/TkRJd01Ua3pNdz09/haftanin-gunu-ve-ocak-ayi-anomalilerinin-bist-100-ile-kat-30-endekslerinde-tespiti",
+   "https://search.trdizin.gov.tr/yayin/detay/243852",
+   "https://gcris.khas.edu.tr/entities/publication/75500e78-3257-408d-adb9-a7f953b39c19"
+  ],
+  "uygulanabilir_mi": "evet",
+  "notlar": "Günlük işlem maliyeti etkinin büyüklüğünü aşar; yalnız emir zamanlaması (alımları hangi gün yapmalı) için kullanılabilir."
+ },
+ {
+  "ad": "ay_donumu",
+  "baslik": "Ay dönümü etkisi (turn-of-the-month)",
+  "formul": "Ayın son işlem günü ile sonraki ayın ilk 3 işlem günü kuklası; TOM penceresi ortalama getirisi - diğer günler",
+  "pencere": "uzun dönem günlük seri",
+  "veri_gereksinimi": [
+   "kapanış (endeks)"
+  ],
+  "beklenen_yon": "pozitif",
+  "ufuk": "1g",
+  "bist_kaniti": "orta",
+  "kanit_ozeti": "Bir BIST çalışması ay başı ve ay sonunda anormal pozitif getiri fırsatı (TOM etkisi) raporlar; başka bir İMKB çalışması getirilerin ayın ilk yarısında yoğunlaştığını, ikinci yarıda sıfırdan ayırt edilemediğini bulur. 1988-2007 İMKB çalışması ay dönümü ve ay-içi etkilerin varlığını raporlar. Güncel dönem için maliyet sonrası test bulunamadı.",
+  "kaynaklar": [
+   "https://gcris.khas.edu.tr/entities/publication/75500e78-3257-408d-adb9-a7f953b39c19",
+   "https://dergipark.org.tr/en/download/article-file/256746"
+  ],
+  "uygulanabilir_mi": "evet",
+  "notlar": "Endeks fonu/VİOP ile uygulanabilir; hisse bazında maliyet yüksek. Maaş/ödeme akışlarıyla açıklanır."
+ },
+ {
+  "ad": "ocak_etkisi",
+  "baslik": "Ocak etkisi / yılın ayı etkisi",
+  "formul": "Ocak kuklası: r_ay = a + b*D_ocak + e",
+  "pencere": "uzun dönem aylık seri",
+  "veri_gereksinimi": [
+   "kapanış (endeks)"
+  ],
+  "beklenen_yon": "belirsiz",
+  "ufuk": "1a",
+  "bist_kaniti": "zayıf",
+  "kanit_ozeti": "2020 EGARCH çalışması Ocak ayının hem BIST 100 hem KAT 30 getirisine negatif etkisini bulur; 1988-2007 İMKB çalışması ve bir başka çalışma anlamlı (pozitif) Ocak etkisi raporlar. Yön dönem ve yönteme göre değişiyor.",
+  "kaynaklar": [
+   "https://app.trdizin.gov.tr/makale/TkRJd01Ua3pNdz09/haftanin-gunu-ve-ocak-ayi-anomalilerinin-bist-100-ile-kat-30-endekslerinde-tespiti",
+   "https://gcris.khas.edu.tr/entities/publication/75500e78-3257-408d-adb9-a7f953b39c19"
+  ],
+  "uygulanabilir_mi": "evet",
+  "notlar": "Yılda tek gözlem; istatistiksel güç düşük. Strateji temeli olarak önerilmez."
+ },
+ {
+  "ad": "ramazan_bayram",
+  "baslik": "Ramazan ayı ve dini bayram etkisi",
+  "formul": "Ramazan kuklası ve bayram öncesi/sonrası k gün kuklası (Hicri takvime göre); ortalama ve GARCH varyans denklemi",
+  "pencere": "uzun dönem günlük seri",
+  "veri_gereksinimi": [
+   "kapanış (endeks)",
+   "Hicri takvim"
+  ],
+  "beklenen_yon": "belirsiz",
+  "ufuk": "1g",
+  "bist_kaniti": "zayıf",
+  "kanit_ozeti": "1988-1999 için ISE 100'ün Ramazan Bayramı'ndan iki gün önce yüksek getiri gösterdiği raporlanmıştır; Oran, Tan & Külah (1997-2015) bazı endekslerde en yüksek ortalama getiriyi bayram öncesi 2. günde bulur. Akbalık & Tunay (2016, GJR-GARCH) Ramazan'ın ortalama getiriyi artırmadığını ama oynaklığı düşürdüğünü; güncel bir BIST 100/50/30 çalışması Ramazan, Ramazan ve Kurban Bayramı'nın ortalama getiriye anlamlı etkisi olmadığını bulur. 22 hisselik çalışmada Ramazan etkisi yoktur.",
+  "kaynaklar": [
+   "https://openaccess.marmara.edu.tr/entities/publication/694f0b37-230a-4bdb-bff6-31b389d25d23/full",
+   "https://openaccess.marmara.edu.tr/entities/publication/6764b8c2-976e-4bca-89a4-6823a7212b6e/full",
+   "https://openaccess.bilgi.edu.tr/items/aa1d9b9d-1618-4f1f-8d3b-5d8c660eb6c7"
+  ],
+  "uygulanabilir_mi": "evet",
+  "notlar": "Getiri sinyali değil; Ramazan'da oynaklık düşüşü risk modeli için kullanılabilir. Ramazan'da açıklanan bilançolarda PEAD %16-25 daha zayıf (bkz. pead maddesi)."
+ },
+ {
+  "ad": "tatil_oncesi",
+  "baslik": "Resmi tatil öncesi etkisi",
+  "formul": "Tatil öncesi son 1-2 işlem günü kuklası; ortalama getiri farkı",
+  "pencere": "uzun dönem günlük seri",
+  "veri_gereksinimi": [
+   "kapanış (endeks)",
+   "tatil takvimi"
+  ],
+  "beklenen_yon": "pozitif",
+  "ufuk": "1g",
+  "bist_kaniti": "zayıf",
+  "kanit_ozeti": "Öztin (2007) İMKB'de tatil öncesi iki günün ortalama getirisinin diğer günlerin 5,5 katı olduğunu raporlar (arama özeti; tez/derleme kaynağı). 2010 tarihli makale İMKB'de takvim etkilerine dayalı stratejilerle piyasa üstü getiri elde edilebildiğini belirtir. Güncel veriyle kapsamlı bir çalışma bulunamadı; bazı çalışmalarda anlamlı fark yok.",
+  "kaynaklar": [
+   "https://search.trdizin.gov.tr/yayin/detay/106871",
+   "https://openaccess.bilgi.edu.tr/items/aa1d9b9d-1618-4f1f-8d3b-5d8c660eb6c7"
+  ],
+  "uygulanabilir_mi": "evet",
+  "notlar": "Yılda az gözlem; eski dönem bulguları. Yalnız endeks düzeyinde ve düşük ağırlıkla."
+ },
+ {
+  "ad": "usdtry_duyarlilik",
+  "baslik": "USD/TRY şoklarına duyarlılık (kur betası)",
+  "formul": "Hisse getirisi r_i = a + b_m*r_BIST + b_fx*Δln(USDTRY) + e, 252 günlük kayan pencere; b_fx yüksek = ihracatçı/döviz geliri",
+  "pencere": "252 işlem günü",
+  "veri_gereksinimi": [
+   "kapanış",
+   "USD/TRY",
+   "BIST100"
+  ],
+  "beklenen_yon": "belirsiz",
+  "ufuk": "1a",
+  "bist_kaniti": "orta",
+  "kanit_ozeti": "Ustaoğlu (2022) Covid döneminde CDS-BIST100 ve CDS-USD/TRY arasında çift yönlü nedensellik bulur. 2010-2022 günlük veriyle (2921 gözlem) bir çalışma CDS'teki %1 artışın USDTRY ve tahvil faizlerini artırıp BIST 100'ü düşürdüğünü raporlar. 1994-2020 reel kur ile reel BIST100 arasında güçlü ters ilişki bulunur; bazı panel çalışmalarda kur-BIST nedenselliği yoktur. Bulgular eşzamanlı ilişkiye dayanır, öngörü değil.",
+  "kaynaklar": [
+   "https://dergipark.org.tr/en/download/article-file/1105042",
+   "https://archive.conscientiabeam.com/index.php/88/article/view/3222",
+   "https://doaj.org/article/a87b20e15cb64ce9a59d9bfb6b1f26cc"
+  ],
+  "uygulanabilir_mi": "evet",
+  "notlar": "Kur betası rejim/sektör seçimi (kur şokunda ihracatçıya kayma) için kullanılabilir; endeks TL bazında nominal olarak kurla birlikte yükselebileceği için USD bazlı getiriyi ayrıca izleyin."
+ },
+ {
+  "ad": "cds_degisimi",
+  "baslik": "Türkiye 5 yıllık CDS değişimi",
+  "formul": "ΔCDS = CDS[t] - CDS[t-5]; endeks/hisse getirisinin CDS betası",
+  "pencere": "252 işlem günü",
+  "veri_gereksinimi": [
+   "Türkiye 5Y CDS",
+   "BIST100",
+   "kapanış"
+  ],
+  "beklenen_yon": "negatif",
+  "ufuk": "1h",
+  "bist_kaniti": "orta",
+  "kanit_ozeti": "CDS ile BIST 100 arasında ters yönlü ve çoğunlukla çift yönlü nedensellik birçok çalışmada (Ustaoğlu 2022; 2010-2022 günlük veri; 2012-2017 çalışması) bulunmuştur. CDS artışı BIST'i düşürür. Kanıt eşzamanlı/kısa gecikmeli; işlem maliyeti sonrası tahmin testi yok.",
+  "kaynaklar": [
+   "https://archive.conscientiabeam.com/index.php/88/article/view/3222",
+   "https://dergipark.org.tr/en/download/article-file/1105042"
+  ],
+  "uygulanabilir_mi": "kısmen",
+  "notlar": "CDS verisi ücretsiz kaynaklarda (investing vb.) günlük sınırlı/gecikmeli bulunur; veri seti dışında. Banka hisseleri en duyarlı grup."
+ },
+ {
+  "ad": "tcmb_faiz_karari",
+  "baslik": "TCMB PPK faiz kararı / sürprizi etkisi",
+  "formul": "Sürpriz = açıklanan politika faizi - beklenti anketi medyanı; olay penceresi [-1,+1] anormal getiri (piyasa modeli)",
+  "pencere": "olay başına 120 gün tahmin + 3 gün olay",
+  "veri_gereksinimi": [
+   "kapanış",
+   "PPK takvimi",
+   "beklenti anketi"
+  ],
+  "beklenen_yon": "negatif",
+  "ufuk": "1g",
+  "bist_kaniti": "orta",
+  "kanit_ozeti": "Banka hisseleri en duyarlı grup: SSRN çalışması (Türk bankaları) PPK kararlarının anormal getiri yarattığını, yarı-güçlü etkinliğin reddedildiğini bulur; heteroskedastisite tanımlamalı TEDÜ çalışması banka getirilerinin politika sürprizlerine anlamlı tepki verdiğini gösterir. 2010-2021 24 faiz indirimi üzerine çalışma: indirimlere BIST100'e göre pozitif tepki yok, artırımlara güçlü negatif tepki (asimetri). Turizm endeksinde 20 indirimin yalnız 3'ü anlamlı.",
+  "kaynaklar": [
+   "https://papers.ssrn.com/abstract=3392377",
+   "https://avesis.tedu.edu.tr/yayin/6105dc0d-eec5-4d00-904b-ed33d60e6d9f/how-do-banks-stock-returns-respond-to-monetary-policy-committee-announcements-in-turkey-evidence-from-traditional-versus-new-monetary-policy-episodes",
+   "https://dergipark.org.tr/tr/download/article-file/2682483"
+  ],
+  "uygulanabilir_mi": "kısmen",
+  "notlar": "PPK takvimi ve faiz kararı ücretsiz (tcmb.gov.tr); beklenti anketi (AA Finans/Bloomberg) her zaman ücretsiz değil. Sinyal olaydan sonra değil olay anında; öngörü değeri sınırlı, risk yönetimi için faydalı."
+ },
+ {
+  "ad": "enflasyon_surprizi",
+  "baslik": "TÜFE açıklama sürprizi",
+  "formul": "Sürpriz = açıklanan aylık TÜFE - beklenti; [-1,+1] anormal endeks getirisi",
+  "pencere": "olay başına",
+  "veri_gereksinimi": [
+   "kapanış (endeks)",
+   "TÜİK TÜFE",
+   "beklenti anketi"
+  ],
+  "beklenen_yon": "negatif",
+  "ufuk": "1g",
+  "bist_kaniti": "zayıf",
+  "kanit_ozeti": "İTOBİAD'da yayımlanan olay çalışması (2006/2000-2016 aylık TÜFE) anormal getirilerin sistematik olmadığını, olay gününde belirgin anlamlılık bulunmadığını ve beklenen/gerçekleşen/beklenmeyen enflasyonun anormal getiri değişimini açıklamadığını raporlar. Aracı kurum bültenleri beklenti üstü TÜFE sonrası satış baskısını not eder ama eşzamanlı başka haberlerle karışıktır.",
+  "kaynaklar": [
+   "https://dergipark.org.tr/en/pub/itobiad/issue/22154/237990",
+   "https://www.qnbinvest.com.tr/blog/beklentilerin-uzerinde-aciklanan-tufe-verileri-satis-baskisini-artirdi"
+  ],
+  "uygulanabilir_mi": "kısmen",
+  "notlar": "Akademik kanıt etkinin zayıf olduğunu söylüyor; strateji temeli olarak önerilmez."
+ },
+ {
+  "ad": "kuresel_risk_vix_petrol",
+  "baslik": "Küresel risk: VIX, petrol, dolar endeksi duyarlılığı",
+  "formul": "r_BIST[t+1] = a + b1*ΔVIX[t] + b2*r_Brent[t] + b3*r_DXY[t] + e; veya hisse bazında VIX betası",
+  "pencere": "252 işlem günü",
+  "veri_gereksinimi": [
+   "VIX",
+   "Brent",
+   "DXY",
+   "BIST100",
+   "kapanış"
+  ],
+  "beklenen_yon": "negatif",
+  "ufuk": "1h",
+  "bist_kaniti": "orta",
+  "kanit_ozeti": "Hatipoğlu & Tekin (2002-2016, kantil regresyon) BIST 100'ün tüm kantillerde VIX'ten anlamlı etkilendiğini; doların yalnız yüksek, petrolün orta kantillerde etkili olduğunu bulur. İlhan & Akdeniz (Covid dönemi) faiz, VIX ve petrolün belirli dönemlerde anlamlı olduğunu raporlar. Varol & Kıran Baygın (2026, Fourier ARDL, 2000-2025) VIX'in BIST 100 üzerinde negatif uzun dönem etkisini bulur. Demirer vd. (2017) petrol getirisinin BIST'te ters dönüş kazançlarını öngörmede makro değişkenlerin gücünü emdiğini gösterir. ABD faizlerine özgü BIST çalışması bulunamadı.",
+  "kaynaklar": [
+   "https://dergipark.org.tr/tr/download/article-file/371934",
+   "https://acikerisim.nku.edu.tr/xmlui/handle/20.500.11776/5519",
+   "https://dergipark.org.tr/tr/download/article-file/5952713"
+  ],
+  "uygulanabilir_mi": "kısmen",
+  "notlar": "VIX/Brent/DXY günlük kapanışları ücretsiz bulunabilir ama istenen veri setinde yok. Çoğu bulgu eşzamanlı; ertesi gün öngörüsü için ayrıca test gerekir (ABD kapanışı BIST açılışından sonra gelir, gece getirisi ile eşleştirin)."
+ },
+ {
+  "ad": "pead_kar_surprizi",
+  "baslik": "Kâr açıklaması sonrası sürüklenme (PEAD) / kâr sürprizi",
+  "formul": "SUE = (EPS_q - EPS_{q-4}) / stdev(son 8 çeyrek değişimleri) veya EAR = açıklama [-1,+1] kümülatif anormal getiri; yüksek SUE/EAR al, 60 gün tut",
+  "pencere": "8 çeyrek EPS + 60 gün tutma",
+  "veri_gereksinimi": [
+   "çeyreklik net kâr/EPS",
+   "bilanço açıklama tarihi (KAP)",
+   "kapanış"
+  ],
+  "beklenen_yon": "pozitif",
+  "ufuk": "3a",
+  "bist_kaniti": "güçlü",
+  "kanit_ozeti": "Ahlatcıoğlu & Okay (2021, Borsa Istanbul Review) Türkiye'de PEAD'in varlığını gösterir: kâr sürprizine göre sıralanan yüksek ve düşük sürprizli hisseler arasında 60 günde %2,9 kümülatif anormal getiri farkı; analist tahmini ve açıklama-getirisi sürprizleriyle hedge getirileri %2,9 ve %2,2; çok faktörlü modeller açıklamıyor, geniş kontrol setine dayanıklı. Açıkgöz & Karataş (2007-2018) Ramazan'da yapılan açıklamalarda sürüklenmenin %16-25 daha düşük olduğunu bulur. Maliyet sonrası net kazanç raporlanmamış; %2,9 brüt fark BIST maliyetleriyle daralır.",
+  "kaynaklar": [
+   "https://www.econbiz.de/Record/post-earnings-announcement-drift-evidence-from-turkey-ahlatc%C4%B1o%C4%9Flu-aykut/10012816435",
+   "https://digitalarchive.library.bogazici.edu.tr/handle/123456789/16829",
+   "https://link.springer.com/article/10.1007/s40822-020-00142-5"
+  ],
+  "uygulanabilir_mi": "kısmen",
+  "notlar": "EAR versiyonu yalnız fiyat + KAP açıklama tarihiyle hesaplanabilir (en uygulanabilir yol). SUE için çeyreklik EPS geçmişi gerekir; İş Yatırım F/K değişiminden kaba kâr değişimi çıkarılabilir ama gecikme/hata içerir. Analist tahmini ücretsiz değil."
+ },
+ {
+  "ad": "temettu_ilani",
+  "baslik": "Temettü ilanı (artış/azalış) olay etkisi",
+  "formul": "ΔDPS = DPS_t / DPS_{t-1} - 1; ilan günü [-1,+1] CAR; artış ilanlarını al",
+  "pencere": "olay başına",
+  "veri_gereksinimi": [
+   "KAP temettü ilanı",
+   "kapanış"
+  ],
+  "beklenen_yon": "pozitif",
+  "ufuk": "1h",
+  "bist_kaniti": "orta",
+  "kanit_ozeti": "Yolcu & Öztürk (2022; BIST 100, 2010-2019) temettü artışlarının pozitif, azalış ve sabit temettünün negatif anormal getiri ürettiğini bulur. İmalat ve finans sektöründe 1.307 ilan (2006-2018, 3 günlük pencere) artışlarda pozitif, azalışlarda negatif anormal getiri; yüksek verimli ilanlarda pozitif. Okuyan: etki büyük ve imalat firmalarında daha sağlam. Başdaş (2018): temettü verimi ile ilan günü ve sonrası anormal getiri pozitif ilişkili, öncesinde ilişki yok.",
+  "kaynaklar": [
+   "https://dergipark.org.tr/en/download/article-file/2718680",
+   "https://acikerisim.balikesir.edu.tr/items/38b06c72-3c58-4934-8727-b472a05eb31c/full"
+  ],
+  "uygulanabilir_mi": "kısmen",
+  "notlar": "KAP ilan verisi ücretsiz ama istenen veri setinde yok; ilan sonrası tepki çoğu 1-3 günde fiyatlanıyor, yakalanabilir kısım küçük."
+ },
+ {
+  "ad": "bedelsiz_sermaye_artirimi",
+  "baslik": "Bedelsiz sermaye artırımı (bonus issue) duyurusu",
+  "formul": "Olay: KAP yönetim kurulu kararı / SPK onayı; [-5,+5] CAR (CAPM veya piyasa modeli); oran ≥ %100 ayrı grup",
+  "pencere": "olay başına",
+  "veri_gereksinimi": [
+   "KAP bedelsiz duyurusu",
+   "SPK onay tarihi",
+   "kapanış"
+  ],
+  "beklenen_yon": "belirsiz",
+  "ufuk": "1h",
+  "bist_kaniti": "orta",
+  "kanit_ozeti": "2012-2014 çalışması (-5,+5) penceresinde çeşitli noktalarda anlamlı pozitif CAR, %100 ve üzeri oranlarda +4. günde anlamlı negatif AAR bulur. 2016-2017 SPK onay tarihli çalışmalar onaydan 1 gün sonra pozitif, 2, 3 ve 5 gün sonra negatif anlamlı CAR raporlar (aşırı tepki + düzeltme). 2015-2017 tezi yalnız duyuru gününde anlamlı AAR bulur. Covid dönemi (2019-2021) duyuru sonrası CAAR'ın duyuru öncesinden yüksek olduğunu bulur.",
+  "kaynaklar": [
+   "https://dergipark.org.tr/en/pub/makuiibf/article/439219",
+   "https://gcris.yasar.edu.tr/entities/publication/82677f9f-41fb-4c14-8173-bfd9f16175ea",
+   "https://polen.itu.edu.tr/entities/publication/98f9e84b-b925-4b09-a8b3-b3bafb44bc98/full"
+  ],
+  "uygulanabilir_mi": "kısmen",
+  "notlar": "BIST'e özgü ve bireysel yatırımcı yoğun bir olay; desen 'duyuruda yükseliş, onay/bölünme sonrası düzeltme'. Fiyat serisi bedelsize göre geriye dönük düzeltilmezse tüm fiyat sinyalleri bozulur."
+ },
+ {
+  "ad": "pay_geri_alim",
+  "baslik": "Pay geri alım programı duyurusu",
+  "formul": "Olay: KAP geri alım duyurusu; [-5,+10] CAR; küçük firmalarda ağırlık",
+  "pencere": "olay başına",
+  "veri_gereksinimi": [
+   "KAP geri alım bildirimi",
+   "kapanış",
+   "piyasa değeri"
+  ],
+  "beklenen_yon": "pozitif",
+  "ufuk": "1h",
+  "bist_kaniti": "orta",
+  "kanit_ozeti": "2018-2022 KAP'ta 72 şirketin 101 bildirimi üzerine 2023 çalışması paylar üzerinde istatistiksel olarak anlamlı pozitif etki bulur. 2014-2016 100 duyuruda raporlama tarihi civarında anlamlı CAR. Hacettepe/CEEOL 2023 çalışması (2018-2021) olay penceresinde pozitif anormal getiri, küçük firmalarda %5-10 düzeyinde anlamlı bulur. 2010-2015 ve 2016 SPK kararlı (17 karar) çalışmalarda anlamlı CAR yok.",
+  "kaynaklar": [
+   "https://isarder.org/index.php/isarder/article/view/1875",
+   "https://ceeol.com/search/article-detail?id=1135771",
+   "https://acikerisim.kku.edu.tr/items/d42b1eaf-d573-4c8b-afe9-5e96f07fbd92/full"
+  ],
+  "uygulanabilir_mi": "kısmen",
+  "notlar": "KAP verisi gerekir. Geri alım duyuruları genelde sert düşüşlerden sonra gelir; ters dönüş etkisinden ayırmak için kontrol grubu kullanın."
+ },
+ {
+  "ad": "holding_nad_iskontosu",
+  "baslik": "Holding NAD (net aktif değer) iskontosu ve ortalamaya dönüş",
+  "formul": "NAD = Σ(listeli iştirak piyasa değeri × pay oranı) + listesiz iştirak değeri - holding net borcu; İskonto = 1 - PiyasaDeğeri_holding / NAD; sinyal: İskonto - 3/5 yıllık ortalama İskonto",
+  "pencere": "756-1260 işlem günü (iskonto geçmişi)",
+  "veri_gereksinimi": [
+   "piyasa değeri (holding ve iştirakler)",
+   "iştirak pay oranları",
+   "holding solo net borç"
+  ],
+  "beklenen_yon": "pozitif",
+  "ufuk": "12a",
+  "bist_kaniti": "yok",
+  "kanit_ozeti": "Akademik kanıt çok sınırlı: Güven (yüksek lisans tezi, danışman Ekinci) BIST holdinglerinin iskontolu değerlenip değerlenmediğini göreceli değerleme ve parçaların toplamı ile inceler; literatürde Türkiye'de az çalışma olduğunu not eder. Aracı kurumlar iskontonun tarihsel ortalamaya dönüşünü kullanır: Ak Yatırım (2026 2Ç) KCHOL için %34 güncel vs %30,7 5 yıllık ortalama; PhillipCapital (Kasım 2026) KCHOL ~%37 (3y ort. %33), SAHOL %58 (3y ort. %49); Raiffeisen notları KCHOL/SAHOL iskontolarını 5 yıllık medyanla karşılaştırır. İskontonun ortalamaya dönüşünün getiri öngördüğüne dair sistematik test bulunamadı.",
+  "kaynaklar": [
+   "https://tezara.org/theses/786570",
+   "https://yatirim.akbank.com/_layouts/15/AkbankYatirimciPortali/Rapor/Download.aspx?ID=11203",
+   "https://www.phillipcapital.com.tr/Files/CompanyReport/3cfb5d1e-435a-4a4c-83d7-0d17c5362d8e.pdf",
+   "https://app.researchpool.com/provider/raiffeisen-bank-international-ag-institutional-equity/sahol-turkey-conglomerates-sabanci-holding-sahol-net-asset-value-discoun-80RwTLsetN"
+  ],
+  "uygulanabilir_mi": "kısmen",
+  "notlar": "Listeli iştiraklerin piyasa değerleri İş Yatırım verisinden günlük hesaplanabilir; pay oranları ve holding solo net borç çeyreklik raporlardan elle girilmeli. Listesiz iştirakler (ör. bankacılık dışı özel şirketler) için kurum tahmini gerekir. Ücretsiz veriyle 'listeli kısım NAD'ı' yaklaşık hesaplanabilir."
+ },
+ {
+  "ad": "endeks_dahil_cikis",
+  "baslik": "BIST 30/100 endeks dahil olma / çıkarılma etkisi",
+  "formul": "Olay: endeks dönem değişikliği duyurusu ve yürürlük günü; duyuru→yürürlük CAR; çıkarılacak adayları sat/kaçın",
+  "pencere": "olay başına (çeyreklik revizyon)",
+  "veri_gereksinimi": [
+   "endeks değişiklik duyuruları",
+   "kapanış",
+   "hacim",
+   "piyasa değeri",
+   "halka açıklık"
+  ],
+  "beklenen_yon": "belirsiz",
+  "ufuk": "1h",
+  "bist_kaniti": "orta",
+  "kanit_ozeti": "Epöz Aydıner & Altay (2020, Ankara Ün. SBF Dergisi) BIST 30, 50, 100 ve Temettü endekslerinde endeks etkisi bulur: çıkış duyurusu/çıkış negatif, dahil olma pozitif; fiyat baskısı hipoteziyle açıklanır. Boğaziçi tezi (2009-2017; 296 BIST 100 ve 96 BIST 30 değişikliği) eklenenlerde pozitif ama anlamsız, çıkarılanlarda anlamlı negatif anormal getiri ve her iki grupta anlamlı anormal hacim bulur. Katılım 30 endeksinde dahil olma öncesi ve sonrası CAR düşüşü (ters) bulunmuştur.",
+  "kaynaklar": [
+   "https://dergipark.org.tr/en/pub/ausbf/article/571826",
+   "https://digitalarchive.library.bogazici.edu.tr/items/56f8a94f-66bd-4cd6-a1e8-ba13f5278565/full"
+  ],
+  "uygulanabilir_mi": "kısmen",
+  "notlar": "Endeks kuralları (halka açık piyasa değeri ve işlem hacmi sıralaması) ücretsiz fiyat/hacim/piyasa değeri ile yaklaşık taklit edilip değişiklikler önceden tahmin edilebilir; resmi halka açıklık oranı ayrıca gerekir. Çıkarılma etkisi daha güvenilir."
+ },
+ {
+  "ad": "teknik_hareketli_ortalama",
+  "baslik": "Hareketli ortalama kesişimi ve kırılım kuralları",
+  "formul": "Sinyal = 1 eğer SMA(kısa)[t] > SMA(uzun)[t] (ör. 50/200, 5/20) değilse 0; trading range breakout",
+  "pencere": "200 işlem günü",
+  "veri_gereksinimi": [
+   "kapanış"
+  ],
+  "beklenen_yon": "belirsiz",
+  "ufuk": "1a",
+  "bist_kaniti": "zayıf",
+  "kanit_ozeti": "İMKB-100 üzerinde 223 alım-satım kuralını test eden çalışma maliyet hariç çoğu kuralın pozitif fazla getiri verdiğini, maliyetler eklendiğinde yalnız birkaçının 'göz ardı edilebilir' pozitif fazla getiri bıraktığını bulur (arama özeti). İMKB hareketli ortalama/kırılım kuralları tezinde 105 testin 17'si öngörü gücü gösterir ve kârlılık maliyete bağlıdır. 2001-2020 dönemine ait bir uygulama da test edilmiştir.",
+  "kaynaklar": [
+   "https://acikbilim.yok.gov.tr/handle/20.500.12812/325789",
+   "https://openaccess.tau.edu.tr/items/d4190258-550e-43b1-82dd-860bc9137812/full",
+   "https://core.ac.uk/download/230937742.pdf"
+  ],
+  "uygulanabilir_mi": "evet",
+  "notlar": "Maliyet sonrası büyük ölçüde ölüyor. Hisse seçimi değil, endeks düzeyinde rejim filtresi (ör. BIST100 > SMA200 iken risk açık) olarak düşük devirle kullanılabilir."
+ },
+ {
+  "ad": "teknik_rsi_macd",
+  "baslik": "RSI ve MACD osilatör kuralları",
+  "formul": "RSI(14) = 100 - 100/(1 + ortalama kazanç/ortalama kayıp); al: RSI<30, sat: RSI>70 (veya RSI(50) eşiği). MACD = EMA12 - EMA26; sinyal = EMA9(MACD); al: MACD sinyali yukarı keser",
+  "pencere": "26-50 işlem günü",
+  "veri_gereksinimi": [
+   "kapanış"
+  ],
+  "beklenen_yon": "belirsiz",
+  "ufuk": "1h",
+  "bist_kaniti": "zayıf",
+  "kanit_ozeti": "BIST 30 çalışması (Tarsus Ün.) al-tut stratejisinin en başarılı olduğunu, MACD'nin piyasa getirisine yakınsadığını, RSI ve MOST'un piyasanın gerisinde kaldığını bulur. 2025 çalışması 10 BIST100 hissesinde RSI'ın 3 hissede en yüksek getiriyi verdiğini, MACD'nin hiçbir hissede en iyi olmadığını raporlar (küçük örneklem). Turizm sektöründe RSI(50) MACD, Stokastik ve Bollinger'dan iyi. Çalışmaların çoğu maliyet varsayımını açıklamıyor veya içermiyor.",
+  "kaynaklar": [
+   "https://acikerisim.tarsus.edu.tr/items/1b2dc725-419e-470f-a9d9-b5a6cabfc0e9",
+   "https://dergipark.org.tr/tr/download/article-file/5543374",
+   "https://dergipark.org.tr/en/download/article-file/3118993"
+  ],
+  "uygulanabilir_mi": "evet",
+  "notlar": "Küçük örneklemli, veri madenciliğine açık çalışmalar; al-tut'u maliyet sonrası güvenilir biçimde yenen bir BIST kanıtı yok. RSI<30 aslında kısa vadeli ters dönüş sinyalinin bir varyantıdır."
+ }
+]

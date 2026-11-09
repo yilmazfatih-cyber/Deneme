@@ -90,7 +90,7 @@ jobs:
         if: steps.is.outputs.ad == 'dosya-veri'
         working-directory: yatirim-ajani
         run: |
-          python -m yatirim_ajani dosya-veri-cek --klasor veri/dosya/ham --baslangic "${{ inputs.baslangic }}" ${{ inputs.hisseler != '' && format('--hisseler "{0}"', inputs.hisseler) || '' }}
+          python -m yatirim_ajani dosya-veri-cek --klasor veri/dosya/ham --baslangic "${{ inputs.baslangic }}" --endeks XU100,XU030 ${{ inputs.hisseler != '' && format('--hisseler "{0}"', inputs.hisseler) || '' }}
           cat veri/dosya/ham/_cekim_raporu.json | head -c 3000
 
       - name: Çıktıları kaydet

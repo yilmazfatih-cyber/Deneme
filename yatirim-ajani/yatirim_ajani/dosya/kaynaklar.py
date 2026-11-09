@@ -95,23 +95,55 @@ def isy_mali_tablo(hisse: str, donemler: list[tuple[int, int]], grup: str = "XI_
     return out
 
 
-def isy_endeks_uyeleri(endeks: str = "XU100") -> list[str]:
-    """Endeks bileşenleri. Birkaç uç nokta denenir; hiçbiri çalışmazsa boş liste."""
-    adaylar = [
-        (f"{ISY}/EndeksHisseleri", {"endeks": endeks}),
-        (f"{ISY}/Endeks", {"endeks": endeks}),
-    ]
-    for url, p in adaylar:
+def endeks_uyeleri(endeks: str = "XU100") -> dict:
+    """Endeks bileşenleri; sırayla İş Yatırım uç noktaları, TradingView tarayıcı API'si, Vikipedi tablosu denenir.
+    Döner: {"endeks", "kodlar", "kaynak", "denemeler"}. Hiçbiri çalışmazsa kodlar boş."""
+    denemeler = []
+    # a) İş Yatırım (uç nokta adları tahmini; biri çalışırsa yeter)
+    for url, p in ((f"{ISY}/EndeksHisseleri", {"endeks": endeks}), (f"{ISY}/EndeksHisse", {"endeks": endeks}), (f"{ISY}/Endeks", {"endeks": endeks})):
         try:
             r = _get(url, p, deneme=1)
             veri = r.json().get("value", [])
-            kodlar = sorted({str(v.get("HISSE_KODU") or v.get("hisse") or v.get("KOD") or "").strip() for v in veri})
-            kodlar = [k for k in kodlar if k]
-            if kodlar:
-                return kodlar
-        except Exception:  # noqa: BLE001
-            continue
-    return []
+            kodlar = sorted({str(v.get("HISSE_KODU") or v.get("hisse") or v.get("KOD") or v.get("Kod") or "").strip() for v in veri} - {""})
+            denemeler.append({"kaynak": url, "sonuc": len(kodlar)})
+            if len(kodlar) >= 25:
+                return {"endeks": endeks, "kodlar": kodlar, "kaynak": url, "denemeler": denemeler}
+        except Exception as e:  # noqa: BLE001
+            denemeler.append({"kaynak": url, "hata": str(e)[:120]})
+    # b) TradingView tarayıcı
+    try:
+        govde = {"filter": [{"left": "index", "operation": "equal", "right": f"BIST:{endeks}"}], "options": {"lang": "tr"},
+                 "symbols": {"query": {"types": []}, "tickers": []}, "columns": ["name", "close", "market_cap_basic"], "sort": {"sortBy": "market_cap_basic", "sortOrder": "desc"}, "range": [0, 200]}  # fmt: skip
+        r = requests.post("https://scanner.tradingview.com/turkey/scan", json=govde, headers=BASLIK, timeout=30)
+        if r.status_code == 200:
+            kodlar = sorted({str(d["d"][0]).strip() for d in r.json().get("data", []) if d.get("d")} - {""})
+            denemeler.append({"kaynak": "tradingview-scanner", "sonuc": len(kodlar)})
+            if len(kodlar) >= 25:
+                return {"endeks": endeks, "kodlar": kodlar, "kaynak": "tradingview-scanner", "denemeler": denemeler}
+        else:
+            denemeler.append({"kaynak": "tradingview-scanner", "hata": f"HTTP {r.status_code}"})
+    except Exception as e:  # noqa: BLE001
+        denemeler.append({"kaynak": "tradingview-scanner", "hata": str(e)[:120]})
+    # c) Vikipedi (TR) tablosu — biraz eski olabilir
+    try:
+        r = _get(f"https://tr.wikipedia.org/wiki/BIST_{endeks[2:]}" if endeks.startswith("XU") else f"https://tr.wikipedia.org/wiki/{endeks}", deneme=1)
+        import io
+
+        tablolar = pd.read_html(io.StringIO(r.text))
+        kodlar: list[str] = []
+        for t in tablolar:
+            for c in t.columns:
+                if str(c).lower().startswith(("kod", "sembol", "hisse")):
+                    kodlar = sorted({str(v).strip().upper() for v in t[c].dropna() if 3 <= len(str(v).strip()) <= 6 and str(v).strip().isalpha()})
+                    break
+            if len(kodlar) >= 25:
+                break
+        denemeler.append({"kaynak": "wikipedia", "sonuc": len(kodlar)})
+        if len(kodlar) >= 25:
+            return {"endeks": endeks, "kodlar": kodlar, "kaynak": "wikipedia", "denemeler": denemeler}
+    except Exception as e:  # noqa: BLE001
+        denemeler.append({"kaynak": "wikipedia", "hata": str(e)[:120]})
+    return {"endeks": endeks, "kodlar": [], "kaynak": None, "denemeler": denemeler}
 
 
 # --- KAP -------------------------------------------------------------------------------------
@@ -186,12 +218,19 @@ def ceyrekler(bas: date, bit: date) -> list[tuple[int, int]]:
 
 
 def dosya_veri_cek(hisseler: list[str], klasor: str | Path, bas: date, bit: date | None = None, gosterge: tuple[str, ...] = ("XU100.IS", "USDTRY=X"),
-                   kap: bool = True) -> dict[str, dict]:
+                   kap: bool = True, endeksler: tuple[str, ...] = ()) -> dict[str, dict]:
     """Her hisse için ham dosyaları yazar: {hisse}_isy_gunluk.csv, {hisse}_isy_mali.csv, {hisse}_kap.json, {hisse}_yahoo_1d.csv, {hisse}_yahoo_temel.json."""
     bit = bit or date.today()
     klasor = Path(klasor)
     klasor.mkdir(parents=True, exist_ok=True)
     rapor: dict[str, dict] = {}
+    for e in endeksler:
+        try:
+            sonuc = endeks_uyeleri(e)
+            (klasor / f"endeks_{e}.json").write_text(json.dumps({**sonuc, "cekilme": datetime.now().isoformat(timespec="minutes")}, ensure_ascii=False, indent=1), encoding="utf-8")
+            rapor[f"endeks_{e}"] = {"kod": len(sonuc["kodlar"]), "kaynak": sonuc["kaynak"], "denemeler": sonuc["denemeler"]}
+        except Exception as ex:  # noqa: BLE001
+            rapor[f"endeks_{e}"] = {"hata": str(ex)}
     for g in gosterge:
         try:
             df = yahoo_gunluk(g, bas)

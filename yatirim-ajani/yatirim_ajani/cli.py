@@ -856,9 +856,54 @@ def komut_dosya_veri_cek(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
 
     hisseler = [h.strip().upper() for h in a.hisseler.split(",") if h.strip()] if a.hisseler else ayarlar.evren["bist"]
     bas = _date.fromisoformat(a.baslangic)
-    rapor = dosya_veri_cek(hisseler, a.klasor, bas, kap=not a.kap_yok)
+    endeksler = tuple(e.strip().upper() for e in a.endeks.split(",") if e.strip()) if a.endeks else ()
+    rapor = dosya_veri_cek(hisseler, a.klasor, bas, kap=not a.kap_yok, endeksler=endeksler)
     for h, r in rapor.items():
         print(h, json.dumps(r, ensure_ascii=False)[:300])
+    return 0
+
+
+def komut_dosya_kur(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
+    from pathlib import Path as _P
+
+    from .dosya.kur import csv_gz_yaz, depoya_yaz, girdileri_yukle, mali_kalemler, olaylari_hazirla, omurga_kur
+
+    cikti = _P(a.cikti)
+    grup = [h.strip().upper() for h in a.grup.split(",")] if a.grup else None
+    for hisse in [h.strip().upper() for h in a.hisseler.split(",") if h.strip()]:
+        olay_json = [j for j in (a.olay_json or []) if _P(j).exists()]
+        varsayilan = _P("dosya_kaynak") / f"olaylar_{hisse}.json"
+        if varsayilan.exists() and str(varsayilan) not in olay_json:
+            olay_json.append(str(varsayilan))
+        olaylar = olaylari_hazirla(a.bilgi_db, olay_json, hisse, grup)
+        g = girdileri_yukle(hisse, a.saatlik, a.ham, olaylar)
+        try:
+            R = omurga_kur(hisse, g)
+        except ValueError as hata:
+            print(f"{hisse}: {hata}")
+            continue
+        depoya_yaz(cikti / "dosya.sqlite", hisse, R, olaylar, mali_kalemler(g.isy_mali), literatur_json=a.literatur)
+        csv_gz_yaz(cikti / f"{hisse}_omurga.csv.gz", R)
+        csv_gz_yaz(cikti / "gunluk" / f"{hisse}.csv.gz", R[R["gun_sonu"] == True])  # noqa: E712 — gün sonu satırları (kalıcı özet)
+        saatlik = int((R["cozunurluk"] == "1h").sum())
+        print(f"{hisse}: {len(R)} satır ({saatlik} saatlik, {len(R) - saatlik} günlük) · {R['zaman'].min()} → {R['zaman'].max()} · "
+              f"{R.shape[1]} sütun · olay {len(olaylar)} · {cikti / f'{hisse}_omurga.csv.gz'}")
+    return 0
+
+
+def komut_dosya_analiz(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
+    from pathlib import Path as _P
+
+    from .dosya.analiz import analiz_et, rapor_metni
+
+    for hisse in [h.strip().upper() for h in a.hisseler.split(",") if h.strip()]:
+        sonuc = analiz_et(_P(a.cikti) / "dosya.sqlite", hisse)
+        metin = rapor_metni(sonuc)
+        yol = _P(a.rapor_klasoru) / f"dosya-{hisse}-{datetime.now():%Y%m%d}.md"
+        yol.parent.mkdir(parents=True, exist_ok=True)
+        yol.write_text(metin, encoding="utf-8")
+        (_P(a.cikti) / f"{hisse}_analiz.json").write_text(json.dumps(sonuc, ensure_ascii=False, indent=1, default=str), encoding="utf-8")
+        print(metin if a.yazdir else f"{hisse}: rapor {yol}")
     return 0
 
 
@@ -1057,7 +1102,27 @@ def ayristirici() -> argparse.ArgumentParser:
     sp.add_argument("--klasor", default="veri/dosya/ham")
     sp.add_argument("--baslangic", default="2024-01-01")
     sp.add_argument("--kap-yok", action="store_true")
+    sp.add_argument("--endeks", help="Bileşen listesi çekilecek endeksler, ör. XU100,XU030")
     sp.set_defaults(islev=komut_dosya_veri_cek)
+
+
+    sp = alt.add_parser("dosya-kur", help="Hisse dosyası omurgasını kur: gün-saat satırları + nokta-zamanlı sütunlar + olaylar + etiketler → SQLite ve csv.gz")
+    sp.add_argument("--hisseler", required=True, help="Virgülle ayrılmış")
+    sp.add_argument("--saatlik", default="veri/saatlik", help="1h/5m CSV klasörü")
+    sp.add_argument("--ham", default="veri/dosya/ham", help="dosya-veri-cek çıktısı")
+    sp.add_argument("--cikti", default="veri/dosya")
+    sp.add_argument("--bilgi-db", default="veri/ajan.db", help="Bilgi veritabanı (metin olaylar)")
+    sp.add_argument("--olay-json", action="append", help="Ek olay paketi JSON (tekrarlanabilir); dosya_kaynak/olaylar_<HİSSE>.json otomatik")
+    sp.add_argument("--grup", help="İştirak/ilgili kodlar (virgülle), ör. KCHOL için TUPRS,FROTO,TOASO,ARCLK,YKBNK")
+    sp.add_argument("--literatur", default="dosya_kaynak/bist_formuller.json")
+    sp.set_defaults(islev=komut_dosya_kur)
+
+    sp = alt.add_parser("dosya-analiz", help="Hisse dosyası analizi: koşullu istatistik, olay etkisi, sat sinyali öncesi değerler, kural taraması + DSR")
+    sp.add_argument("--hisseler", required=True)
+    sp.add_argument("--cikti", default="veri/dosya")
+    sp.add_argument("--rapor-klasoru", default="raporlar")
+    sp.add_argument("--yazdir", action="store_true")
+    sp.set_defaults(islev=komut_dosya_analiz)
 
     sp = alt.add_parser("yeniden-baslat", help="Düşüş sınırıyla durmuş sanal hesabı yeniden aç")
     sp.add_argument("--piyasa", choices=list(PIYASALAR), required=True)
