@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 import time
 from datetime import datetime
@@ -607,8 +608,9 @@ def komut_saglamlik(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
     for d in denemeler:
         rk = d["rejim"].set_index("rejim")["toplam"] if d["rejim"] is not None else pd.Series(dtype=float)
         isaret = " **(seçilen)**" if d is secilen else ""
+        sharpe_m = "-" if d["sharpe"] is None else f"{d['sharpe']:.2f}"
         R.append(f"| {d['tur']}{isaret} | {d['esik']:.2%} | {d['secim_odul']:+.3f} | {d['ileri'].bitis:,.0f} ({d['ileri'].getiri:+.1%}) | "
-                 f"{('-' if d['sharpe'] is None else f'{d["sharpe"]:.2f}')} | {d['ileri'].max_dusus:.1%} | {d['x2'].bitis:,.0f} "
+                 f"{sharpe_m} | {d['ileri'].max_dusus:.1%} | {d['x2'].bitis:,.0f} "
                  f"| {rk.get('boga', float('nan')):+.1%} | {rk.get('ayi', float('nan')):+.1%} | {rk.get('yatay', float('nan')):+.1%} |")  # fmt: skip
     R.append("")
     if secilen["sharpe"] is not None and len(secilen["ileri"].egri) > 10:
@@ -775,6 +777,91 @@ def komut_yeniden_baslat(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
     return 0
 
 
+# --- haftalık yönetim defteri -----------------------------------------------------------------
+def _defter_yolu(a: argparse.Namespace) -> str:
+    return a.defter or "veri/defter/hafta.json"
+
+
+def komut_defter_baslat(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
+    from .portfoy.defter import Defter
+
+    d = Defter.baslat(_defter_yolu(a), a.nakit, a.gun, a.maliyet_bps, a.not_ or "")
+    print(f"Defter açıldı: {d.yol} · {a.nakit:,.0f} TL · başlangıç {a.gun}")
+    return 0
+
+
+def komut_defter_emir(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
+    from .portfoy.defter import Defter
+
+    d = Defter.ac(_defter_yolu(a))
+    simdi = datetime.fromisoformat(a.simdi) if a.simdi else None
+    try:
+        e = d.emir_ver(a.hisse, a.yon, a.adet, a.limit, a.gun, a.pencere, a.neden or "", simdi)
+    except ValueError as hata:
+        print(f"Emir reddedildi: {hata}")
+        return 1
+    lim = "PİYASA" if e["limit"] is None else f"limit {e['limit']:.2f}"
+    print(f"#{e['id']} {e['gun']} {e['pencere']} {e['yon']} {e['hisse']} {e['adet']} adet · {lim}")
+    return 0
+
+
+def komut_defter_iptal(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
+    from .portfoy.defter import Defter
+
+    d = Defter.ac(_defter_yolu(a))
+    d.iptal(a.id)
+    print(f"#{a.id} iptal")
+    return 0
+
+
+def komut_defter_isle(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
+    from .portfoy.defter import Defter, csv_cubuk_getirici, gun_kapanislari
+
+    d = Defter.ac(_defter_yolu(a))
+    klasor = a.csv_klasoru or ayarlar.veri_klasoru
+    simdi = datetime.fromisoformat(a.simdi) if a.simdi else None
+    sonuc = d.isle(csv_cubuk_getirici(klasor), simdi)
+    for e in sonuc:
+        if e["durum"] == "doldu":
+            print(f"DOLDU  #{e['id']} {e['yon']} {e['hisse']} {e['adet']} × {e['dolum']['fiyat']:.2f} @ {e['dolum']['zaman'][:16]}")
+        elif e["durum"] == "dolmadi":
+            print(f"DOLMADI #{e['id']} {e['yon']} {e['hisse']} limit {e['limit']}: {e['dolum'].get('not')}")
+        else:
+            print(f"BEKLİYOR #{e['id']} {e['hisse']}: {e.get('not')}")
+    if a.degerle:
+        hisseler = list(d.veri["pozisyonlar"]) + ["XU100"]
+        kap = gun_kapanislari(klasor, a.degerle, hisseler)
+        satir = d.degerle(a.degerle, kap, kap.get("XU100"))
+        print(f"Değerleme {a.degerle}: toplam {satir['toplam']:,.0f} TL · nakit {satir['nakit']:,.0f} · hisse {satir['hisse']:,.0f}"
+              + (f" · eksik fiyat: {satir['eksik']}" if satir["eksik"] else ""))
+    return 0
+
+
+def komut_defter_rapor(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
+    from .portfoy.defter import Defter, gun_kapanislari
+
+    d = Defter.ac(_defter_yolu(a))
+    kap = {}
+    if a.gun:
+        kap = gun_kapanislari(a.csv_klasoru or ayarlar.veri_klasoru, a.gun, list(d.veri["pozisyonlar"]))
+    print(d.rapor(kap))
+    return 0
+
+
+# --- hisse dosyası -----------------------------------------------------------------------------
+def komut_dosya_veri_cek(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
+    from datetime import date as _date
+
+    from .dosya.kaynaklar import dosya_veri_cek
+
+    hisseler = [h.strip().upper() for h in a.hisseler.split(",") if h.strip()] if a.hisseler else ayarlar.evren["bist"]
+    bas = _date.fromisoformat(a.baslangic)
+    rapor = dosya_veri_cek(hisseler, a.klasor, bas, kap=not a.kap_yok)
+    for h, r in rapor.items():
+        print(h, json.dumps(r, ensure_ascii=False)[:300])
+    return 0
+
+
 def ayristirici() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="yatirim_ajani", description="Araştıran, öneren, sanal işlem yapan yatırım ajanı")
     p.add_argument("--ayarlar", help="ayarlar.toml yolu")
@@ -922,6 +1009,55 @@ def ayristirici() -> argparse.ArgumentParser:
     sp.add_argument("--tum-hisseler", action="store_true", help="Benzerliği yalnız aynı hissede değil tüm olaylarda ara")
     sp.add_argument("--kisa", action="store_true")
     sp.set_defaults(islev=komut_bilgi_benzer)
+
+
+    def defter_ortak(sp: argparse.ArgumentParser) -> None:
+        sp.add_argument("--defter", help="Defter JSON yolu (varsayılan veri/defter/hafta.json)")
+        sp.add_argument("--csv-klasoru", help="Saatlik/5dk CSV klasörü (varsayılan ayarlardaki)")
+
+    sp = alt.add_parser("defter-baslat", help="Haftalık yönetim defteri aç (sanal nakit, başlangıç günü)")
+    defter_ortak(sp)
+    sp.add_argument("--nakit", type=float, default=1_000_000)
+    sp.add_argument("--gun", required=True, help="YYYY-MM-DD")
+    sp.add_argument("--maliyet-bps", type=float, default=5.0)
+    sp.add_argument("--not", dest="not_")
+    sp.set_defaults(islev=komut_defter_baslat)
+
+    sp = alt.add_parser("defter-emir", help="İleriye dönük emir yaz: hisse, AL/SAT, adet, limit, gün, saat penceresi")
+    defter_ortak(sp)
+    sp.add_argument("--hisse", required=True)
+    sp.add_argument("--yon", required=True, choices=["AL", "SAT"])
+    sp.add_argument("--adet", type=int, required=True)
+    sp.add_argument("--limit", type=float, help="Verilmezse piyasa emri")
+    sp.add_argument("--gun", required=True)
+    sp.add_argument("--pencere", required=True, help="ör. 17:00-17:50")
+    sp.add_argument("--neden")
+    sp.add_argument("--simdi", help="Test için 'şimdi' (ISO)")
+    sp.set_defaults(islev=komut_defter_emir)
+
+    sp = alt.add_parser("defter-iptal", help="Bekleyen emri iptal et")
+    defter_ortak(sp)
+    sp.add_argument("--id", type=int, required=True)
+    sp.set_defaults(islev=komut_defter_iptal)
+
+    sp = alt.add_parser("defter-isle", help="Penceresi geçmiş emirleri gerçek çubuklarla doldur; istenirse günü değerle")
+    defter_ortak(sp)
+    sp.add_argument("--simdi", help="Test için 'şimdi' (ISO)")
+    sp.add_argument("--degerle", help="Bu günün kapanışıyla değerle (YYYY-MM-DD)")
+    sp.set_defaults(islev=komut_defter_isle)
+
+    sp = alt.add_parser("defter-rapor", help="Defter raporu (pozisyon, bekleyen emir, işlemler)")
+    defter_ortak(sp)
+    sp.add_argument("--gun", help="Bu günün kapanışıyla pozisyon kâr/zararı göster")
+    sp.set_defaults(islev=komut_defter_rapor)
+
+
+    sp = alt.add_parser("dosya-veri-cek", help="Hisse dosyası ham verisi: İş Yatırım günlük oranlar + mali tablo, KAP, Yahoo günlük (dış ağ gerekir)")
+    sp.add_argument("--hisseler", help="Virgülle ayrılmış; verilmezse BIST evreni")
+    sp.add_argument("--klasor", default="veri/dosya/ham")
+    sp.add_argument("--baslangic", default="2024-01-01")
+    sp.add_argument("--kap-yok", action="store_true")
+    sp.set_defaults(islev=komut_dosya_veri_cek)
 
     sp = alt.add_parser("yeniden-baslat", help="Düşüş sınırıyla durmuş sanal hesabı yeniden aç")
     sp.add_argument("--piyasa", choices=list(PIYASALAR), required=True)
