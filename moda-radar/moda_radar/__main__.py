@@ -9,7 +9,7 @@ import sys
 
 from moda_radar import dogrula
 
-MODULLER = ("veri", "renk", "tahmin", "yatirim")
+MODULLER = ("veri", "renk", "tahmin", "yatirim", "gorsel")
 
 
 def main(argv: list[str] | None = None) -> int:

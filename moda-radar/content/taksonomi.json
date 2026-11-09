@@ -1,5 +1,5 @@
 {
-  "surum": "0.1",
+  "surum": "0.2",
   "not": "Kapali sozluk. Model bu degerler disina cikamaz; 'bilinmiyor' secebilir. Eksen basina 5-15 deger (ADR-004).",
   "eksenler": {
     "kategori": [
@@ -16,7 +16,19 @@
     "parca_konumu": ["ust", "alt", "dis", "tam", "aksesuar"],
     "siluet": ["dar", "duz", "kutu", "oversize", "a-kesim", "bol", "yapili-omuz", "beli-vurgulu", "bilinmiyor"],
     "boy": ["crop", "bel", "kalca", "diz-ustu", "diz", "midi", "maksi", "bilinmiyor"],
-    "yaka": ["bisiklet", "v", "gomlek", "hakim", "kayik", "kalp", "balikci", "kapusonlu", "yakasiz", "bilinmiyor"],
+    "yaka": [
+      "bisiklet",
+      "v",
+      "gomlek",
+      "hakim",
+      "kayik",
+      "kalp",
+      "balikci",
+      "kapusonlu",
+      "yakasiz",
+      "ceket",
+      "bilinmiyor"
+    ],
     "kol": ["kolsuz", "kisa", "truvakar", "uzun", "balon", "dusuk-omuz", "bilinmiyor"],
     "kumas_gorunumu": [
       "pamuklu",
@@ -31,6 +43,7 @@
       "dantel",
       "kadife",
       "teknik",
+      "yunlu",
       "bilinmiyor"
     ],
     "desen": [

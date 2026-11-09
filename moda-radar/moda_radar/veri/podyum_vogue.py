@@ -16,6 +16,7 @@ import json
 import logging
 import re
 import unicodedata
+import urllib.error
 from collections.abc import Callable
 from datetime import date
 from html.parser import HTMLParser
@@ -52,6 +53,50 @@ def marka_slug(marka: str) -> str:
 
 def defile_url(d: DefileTanimi) -> str:
     return f"{TABAN}/{d.kaynak_kimligi}"
+
+
+# Marka adı → Vogue slug adayları (sırayla denenir; `content/defileler.json`'daki kimlik her zaman ilk adaydır).
+# Şema (`DefileTanimi`) alternatif alanı taşımadığı için burada tutulur. 2026-11-08 Actions çalışmasında 404 verenler.
+SLUG_ADAYLARI: dict[str, tuple[str, ...]] = {
+    "Versace": ("versace",),
+    "Ferragamo": ("ferragamo", "salvatore-ferragamo"),
+    "Burberry": ("burberry", "burberry-prorsum"),
+    "JW Anderson": ("jw-anderson", "j-w-anderson"),
+}
+
+
+class DefileBulunamadi(OSError):
+    """Tüm slug adayları 404 verdi; Vogue defileyi (henüz) yayımlamamış olabilir."""
+
+
+def kimlik_adaylari(d: DefileTanimi) -> list[str]:
+    """Denenecek `kaynak_kimligi` listesi: önce içerikteki, sonra `SLUG_ADAYLARI`'ndaki slug'lar (aynı sezon yolu)."""
+    sezon_yolu, _, _ = d.kaynak_kimligi.rpartition("/")
+    adaylar = [d.kaynak_kimligi]
+    for slug in SLUG_ADAYLARI.get(d.marka, ()):
+        k = f"{sezon_yolu}/{slug}" if sezon_yolu else slug
+        if k not in adaylar:
+            adaylar.append(k)
+    return adaylar
+
+
+def _404_mu(e: Exception) -> bool:
+    return isinstance(e, urllib.error.HTTPError) and e.code == 404
+
+
+def defile_sayfasi(d: DefileTanimi, tarayici) -> tuple[str, str]:
+    """(kullanılan kaynak_kimligi, HTML). 404'te sıradaki aday denenir; hepsi 404 ise `DefileBulunamadi`."""
+    denenen: list[str] = []
+    for kimlik in kimlik_adaylari(d):
+        try:
+            return kimlik, tarayici.metin(f"{TABAN}/{kimlik}")
+        except urllib.error.HTTPError as e:
+            if not _404_mu(e):
+                raise
+            denenen.append(kimlik.rsplit("/", 1)[-1])
+    raise DefileBulunamadi(
+        f"404 (denenen: {', '.join(denenen)}) — Vogue bu defileyi yayımlamamış olabilir; bu durumda hata normaldir"
+    )
 
 
 # --- saf ayrıştırıcı ---
@@ -206,26 +251,37 @@ def defile_tara(
 ) -> dict:
     """Tek defileyi tarar: sayfa → look URL'leri → `gorsel` tablosu; renk modülü varsa her görseli bellekte işler.
 
-    Sayfa HTML'i ve görsel baytı hiçbir yerde saklanmaz. Dönen sözlük: bulunan, kaydedilen, renkli, hata.
+    Sayfa HTML'i ve görsel baytı hiçbir yerde saklanmaz. Dönen sözlük: bulunan, kaydedilen, renkli, nitelikli, hata.
     """
-    from moda_radar.veri import renk_koprusu
+    from moda_radar.veri import nitelik_koprusu, renk_koprusu
 
     bugun = bugun or date.today()
     if d.kaynak != "vogue":
         return {"defile": d.kaynak_kimligi, "atlandi": f"kaynak {d.kaynak} için toplayıcı yok"}
+    kimlik, html = defile_sayfasi(d, tarayici)
+    if kimlik != d.kaynak_kimligi:
+        log.info("vogue: %s için alternatif slug kullanıldı: %s (içerikte: %s)", d.marka, kimlik, d.kaynak_kimligi)
+        d = d.model_copy(update={"kaynak_kimligi": kimlik})
     url = defile_url(d)
-    urller = look_urlleri(tarayici.metin(url))
+    urller = look_urlleri(html)
+    del html
     if not urller:  # galeri ayrı sayfada olabilir
-        urller = look_urlleri(tarayici.metin(url + "/slideshow/collection"))
+        try:
+            urller = look_urlleri(tarayici.metin(url + "/slideshow/collection"))
+        except urllib.error.HTTPError as e:
+            if not _404_mu(e):
+                raise
     if gorsel_siniri:
         urller = urller[:gorsel_siniri]
     defile_id = depo.ekle_defile(d)
     renk_var = renk_koprusu.renk_modulu_var()
+    nitelik_var = nitelik_koprusu.nitelik_acik()
     sonuc = {"defile": d.kaynak_kimligi, "bulunan": len(urller), "kaydedilen": 0, "renkli": 0, "hata": 0}
+    sonuc["nitelikli"] = 0
     for sira, gurl in enumerate(urller, start=1):
         gorsel_id = depo.ekle_gorsel(defile_id, gurl, bugun, sira)
         sonuc["kaydedilen"] += 1
-        if not renk_var:
+        if not (renk_var or nitelik_var):
             continue
         try:
             bayt = tarayici.getir(gurl, kabul="image/*")
@@ -234,7 +290,9 @@ def defile_tara(
             sonuc["hata"] += 1
             continue
         kaynak = Kaynak(tur=KaynakTuru.PODYUM, url=gurl, tarama_tarihi=bugun, sezon=d.sezon, marka=d.marka)
-        kayitlar = renk_koprusu.renk_kayitlari(bayt, kaynak, parca_id=f"{gorsel_id}-tam", k=renk_k)
+        kayitlar = renk_koprusu.renk_kayitlari(bayt, kaynak, parca_id=f"{gorsel_id}-tam", k=renk_k) if renk_var else []
+        if nitelik_var:  # renk köprüsüne paralel; görsel bu çağrıdan sonra düşer
+            sonuc["nitelikli"] += nitelik_koprusu.etiketle_ve_kaydet(depo, bayt, kaynak, gorsel_id, gorsel_id) > 0
         del bayt  # ADR-002: bayt atılır
         if kayitlar:
             depo.ekle_parca_renk(kayitlar, gorsel_id=gorsel_id)

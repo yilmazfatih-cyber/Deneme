@@ -33,7 +33,7 @@
           "kadin-elbise": "https://www.zara.com/tr/tr/kadin-elbiseler-l1066.html"
         },
         "secici": {
-          "kart": "li.product-grid-product",
+          "kart": "li.product-grid-product, .product-grid-product, article[data-productid], .product-grid__product",
           "baslik": ".product-grid-product-info__name, a.product-link h2",
           "fiyat": ".money-amount__main",
           "eski_fiyat": ".price-old__amount .money-amount__main",
@@ -53,7 +53,7 @@
           "kadin-elbise": "https://www.lcw.com/kadin-elbise-t-1022"
         },
         "secici": {
-          "kart": ".product-card",
+          "kart": ".product-card, [data-product-id], .product-item",
           "baslik": ".product-card__title",
           "fiyat": ".product-price__price, .price-in-cart",
           "eski_fiyat": ".product-price__old-price",

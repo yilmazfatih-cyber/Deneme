@@ -76,9 +76,11 @@ class SahteTarayici:
 
 
 def test_defile_tara_yalniz_url_kaydeder(tmp_path, monkeypatch):
-    from moda_radar.veri import renk_koprusu
+    from moda_radar.veri import nitelik_koprusu, renk_koprusu
 
     monkeypatch.setattr(renk_koprusu, "renk_modulu_var", lambda: False)
+    monkeypatch.setattr(nitelik_koprusu, "nitelik_acik", lambda: False)
+    monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
     d = DefileTanimi(
         sezon="SS27",
         marka="Ornek Ev",
@@ -123,3 +125,83 @@ def test_vogue_disi_kaynak_atlanir(tmp_path):
     d = DefileTanimi(sezon="SS27", marka="Gizia", sehir="Istanbul", kaynak="marka", kaynak_kimligi="mbfwi/x")
     with Depo(tmp_path / "m.db") as depo:
         assert "atlandi" in pv.defile_tara(depo, d, SahteTarayici({}))
+
+
+# --- slug adayları (sahte urlopen; ağ yok) ---
+
+
+class _SahteYanit:
+    def __init__(self, govde):
+        self.govde = govde
+
+    def read(self):
+        return self.govde
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *a):
+        return False
+
+
+def _sahte_urlopen(monkeypatch, sayfalar):
+    import urllib.error
+
+    from moda_radar.veri import ag
+
+    istenen = []
+
+    def urlopen(istek, timeout=None):
+        url = istek.full_url
+        if url.endswith("/robots.txt"):
+            raise urllib.error.HTTPError(url, 404, "Not Found", {}, None)  # robots yok → izinli
+        istenen.append(url)
+        if url in sayfalar:
+            return _SahteYanit(sayfalar[url].encode("utf-8"))
+        raise urllib.error.HTTPError(url, 404, "Not Found", {}, None)
+
+    monkeypatch.setattr(ag.urllib.request, "urlopen", urlopen)
+    monkeypatch.setattr(ag.time, "sleep", lambda s: None)
+    return ag.Tarayici(yasaklar=set()), istenen
+
+
+def test_kimlik_adaylari():
+    d = DefileTanimi(sezon="SS27", marka="Ferragamo", sehir="Milano", kaynak="vogue",
+                     kaynak_kimligi="spring-2027-ready-to-wear/ferragamo")  # fmt: skip
+    assert pv.kimlik_adaylari(d) == [
+        "spring-2027-ready-to-wear/ferragamo",
+        "spring-2027-ready-to-wear/salvatore-ferragamo",
+    ]
+    v = d.model_copy(update={"marka": "Versace", "kaynak_kimligi": "spring-2027-ready-to-wear/versace"})
+    assert pv.kimlik_adaylari(v) == ["spring-2027-ready-to-wear/versace"]
+
+
+def test_slug_adaylari_sirayla_denenir(tmp_path, monkeypatch):
+    from moda_radar.veri import nitelik_koprusu, renk_koprusu
+
+    monkeypatch.setattr(renk_koprusu, "renk_modulu_var", lambda: False)
+    monkeypatch.setattr(nitelik_koprusu, "nitelik_acik", lambda: False)
+    d = DefileTanimi(sezon="SS27", marka="JW Anderson", sehir="Londra", kaynak="vogue",
+                     kaynak_kimligi="spring-2027-ready-to-wear/jw-anderson")  # fmt: skip
+    dogru = f"{pv.TABAN}/spring-2027-ready-to-wear/j-w-anderson"
+    t, istenen = _sahte_urlopen(monkeypatch, {dogru: FIXTURE.read_text("utf-8")})
+    with Depo(tmp_path / "m.db") as depo:
+        s = pv.defile_tara(depo, d, t, bugun=date(2026, 11, 8))
+        assert s["defile"] == "spring-2027-ready-to-wear/j-w-anderson" and s["kaydedilen"] == 3
+        kimlik = depo.baglanti.execute("SELECT kaynak_kimligi FROM defile").fetchone()[0]
+    assert kimlik == "spring-2027-ready-to-wear/j-w-anderson"
+    assert istenen == [f"{pv.TABAN}/spring-2027-ready-to-wear/jw-anderson", dogru]
+
+
+def test_tum_adaylar_404_ise_denenenleri_soyler(tmp_path, monkeypatch, capsys):
+    from moda_radar.veri import komut
+
+    d = DefileTanimi(sezon="SS27", marka="Burberry", sehir="Londra", kaynak="vogue",
+                     kaynak_kimligi="spring-2027-ready-to-wear/burberry")  # fmt: skip
+    t, istenen = _sahte_urlopen(monkeypatch, {})
+    with Depo(tmp_path / "m.db") as depo, pytest.raises(pv.DefileBulunamadi) as e:
+        pv.defile_tara(depo, d, t)
+    assert str(e.value).startswith("404 (denenen: burberry, burberry-prorsum)")
+    assert "yayımlamamış olabilir" in str(e.value)
+    assert len(istenen) == 2
+    assert isinstance(e.value, komut.AG_HATALARI)  # _topla_podyum yakalar, ötekiler sürer

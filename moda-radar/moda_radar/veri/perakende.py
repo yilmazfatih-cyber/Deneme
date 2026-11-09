@@ -172,32 +172,105 @@ def urunleri_ayikla(html: str, secici: dict, taban_url: str = "") -> list[dict]:
 # --- ağ ---
 
 
-def sayfa_getir(hedef: PerakendeHedefi, tarayici) -> str:
-    """HTML'i bellekte getirir. JS gerektiren kaynakta Playwright kullanılır (robots/hız denetimi yine Tarayici'da)."""
-    if not hedef.js:
-        return tarayici.metin(hedef.url)
-    from moda_radar.veri.ag import KULLANICI_ARACISI, TaramaYasak
+# Playwright ayarları: `networkidle` reklam/analitik istekleri yüzünden çoğu zaman gelmez; DOM hazır olunca kart
+# seçicisi beklenir. Kullanıcı aracısı dürüst ModaRadar UA'sıdır (gizleme yok); yalnız dil ve pencere gerçekçidir.
+SAYFA_ZAMAN_ASIMI_MS = 60_000
+KART_BEKLEME_MS = 20_000
+CEREZ_BEKLEME_MS = 3_000
+KAYDIRMA_SAYISI = 2
+KAYDIRMA_PIKSEL = 2_500
+KAYDIRMA_BEKLEME_MS = 1_500
+PENCERE = {"width": 1280, "height": 900}
+# Çerez / ülke seçimi katmanlarının bilinen "kabul" düğmeleri (OneTrust, Zara). Varsa tıklanır.
+CEREZ_BUTONLARI = ("#onetrust-accept-btn-handler", 'button[data-qa-action="accept"]')
+# Chromium'un HTTP/2 kapatılarak bir kez daha denenmesini gerektiren ağ/protokol hataları.
+YENIDEN_DENENECEK_AG_HATALARI = (
+    "ERR_HTTP2_PROTOCOL_ERROR",
+    "ERR_SPDY_PROTOCOL_ERROR",
+    "ERR_QUIC_PROTOCOL_ERROR",
+    "ERR_CONNECTION_RESET",
+    "ERR_CONNECTION_CLOSED",
+    "ERR_EMPTY_RESPONSE",
+)
 
-    if not tarayici.izinli_mi(hedef.url):
-        raise TaramaYasak(f"robots.txt izin vermiyor: {hedef.url}")
-    tarayici._bekle()
+
+def _playwright():
+    """(sync_playwright, TimeoutError, Error) — testler bu işlevi sahte nesneyle değiştirir; gerçek tarayıcı açılmaz."""
+    from playwright.sync_api import Error as PlaywrightHatasi
     from playwright.sync_api import TimeoutError as PlaywrightZamanAsimi
     from playwright.sync_api import sync_playwright
 
-    with sync_playwright() as pw:
-        tarayici_pw = pw.chromium.launch()
+    return sync_playwright, PlaywrightZamanAsimi, PlaywrightHatasi
+
+
+def _yeniden_denenir_mi(hata: Exception) -> bool:
+    metin = str(hata)
+    return any(k in metin for k in YENIDEN_DENENECEK_AG_HATALARI)
+
+
+def _cerez_katmanini_kapat(sayfa, hedef: PerakendeHedefi, pw_hatasi: type[Exception]) -> None:
+    try:
+        dugme = sayfa.wait_for_selector(", ".join(CEREZ_BUTONLARI), timeout=CEREZ_BEKLEME_MS, state="visible")
+    except pw_hatasi:  # katman yok (zaman aşımı) — normal durum
+        return
+    try:
+        dugme.click(timeout=CEREZ_BEKLEME_MS)
+        log.info("%s/%s: çerez katmanı kapatıldı", hedef.marka, hedef.kategori)
+    except pw_hatasi as e:
+        log.info("%s/%s: çerez düğmesine tıklanamadı: %s", hedef.marka, hedef.kategori, str(e).splitlines()[0])
+
+
+def _playwright_deneme(pw, zaman_asimi, pw_hatasi, hedef: PerakendeHedefi, *, http2_kapali: bool) -> str:
+    from moda_radar.veri.ag import KULLANICI_ARACISI
+
+    tarayici_pw = pw.chromium.launch(args=["--disable-http2"] if http2_kapali else [])
+    try:
+        baglam = tarayici_pw.new_context(user_agent=KULLANICI_ARACISI, locale="tr-TR", viewport=dict(PENCERE))
+        sayfa = baglam.new_page()
+        sayfa.goto(hedef.url, wait_until="domcontentloaded", timeout=SAYFA_ZAMAN_ASIMI_MS)
+        _cerez_katmanini_kapat(sayfa, hedef, pw_hatasi)
         try:
-            sayfa = tarayici_pw.new_page(user_agent=KULLANICI_ARACISI, locale="tr-TR")
-            sayfa.goto(hedef.url, wait_until="networkidle", timeout=60_000)
+            sayfa.wait_for_selector(hedef.secici["kart"], timeout=KART_BEKLEME_MS)
+        except zaman_asimi:
+            log.warning("%s/%s: kart seçicisi bekleme süresinde görünmedi", hedef.marka, hedef.kategori)
+        for _ in range(KAYDIRMA_SAYISI):  # tembel yüklenen kartlar için
+            sayfa.mouse.wheel(0, KAYDIRMA_PIKSEL)
+            sayfa.wait_for_timeout(KAYDIRMA_BEKLEME_MS)
+        return sayfa.content()
+    finally:
+        tarayici_pw.close()
+
+
+def sayfa_getir(hedef: PerakendeHedefi, tarayici) -> str:
+    """HTML'i bellekte getirir. JS gerektiren kaynakta Playwright kullanılır (robots/hız denetimi yine Tarayici'da).
+
+    Playwright yolu: DOM hazır → çerez katmanı varsa kabul → kart seçicisi (20 sn) → 2 kez aşağı kaydırma. HTTP/2
+    protokol hatası gibi ağ hatasında Chromium `--disable-http2` ile yeniden başlatılıp bir kez daha denenir.
+    Hiçbir denemenin HTML'i saklanmaz; yalnız son başarılı içerik çağırana döner.
+    """
+    if not hedef.js:
+        return tarayici.metin(hedef.url)
+    from moda_radar.veri.ag import TaramaYasak
+
+    if not tarayici.izinli_mi(hedef.url):
+        raise TaramaYasak(f"robots.txt izin vermiyor: {hedef.url}")
+    sync_playwright, zaman_asimi, pw_hatasi = _playwright()
+    with sync_playwright() as pw:
+        for http2_kapali in (False, True):
+            tarayici._bekle()
+            tarayici.istek_sayisi += 1
             try:
-                sayfa.wait_for_selector(hedef.secici["kart"], timeout=15_000)
-            except PlaywrightZamanAsimi:
-                log.warning("%s/%s: kart seçicisi bekleme süresinde görünmedi", hedef.marka, hedef.kategori)
-            html = sayfa.content()
-        finally:
-            tarayici_pw.close()
-    tarayici.istek_sayisi += 1
-    return html
+                return _playwright_deneme(pw, zaman_asimi, pw_hatasi, hedef, http2_kapali=http2_kapali)
+            except Exception as e:
+                if http2_kapali or not _yeniden_denenir_mi(e):
+                    raise
+                log.warning(
+                    "%s/%s: %s — HTTP/2 kapatılarak yeniden deneniyor",
+                    hedef.marka,
+                    hedef.kategori,
+                    str(e).splitlines()[0],
+                )
+    raise AssertionError("erişilmez")  # pragma: no cover
 
 
 def kaynak_tara(depo, hedef: PerakendeHedefi, tarayici, *, bugun: date | None = None, renk: bool = True) -> dict:
