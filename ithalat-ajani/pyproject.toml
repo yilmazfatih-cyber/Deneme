@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ithalat-ajani"
+version = "0.1.0"
+description = "Alibaba'dan Türkiye'ye getirilip satılabilecek hazır giyim ve aksesuarı tüm masraflarıyla değerlendiren ajan"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+test = ["pytest>=8"]
+
+[tool.setuptools.packages.find]
+include = ["ithalat_ajani*"]
+
+[tool.setuptools.package-data]
+ithalat_ajani = ["*.toml"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

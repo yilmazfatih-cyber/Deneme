@@ -1,0 +1,324 @@
+# İthalat vergi tablosu: Çin menşeli eşya, ticari ithalat (normal gümrük beyannamesi).
+#
+# gv   = gümrük vergisi. Türkiye, Gümrük Birliği gereği üçüncü ülkelere AB Ortak Gümrük Tarifesi oranını uygular.
+# igv  = ilave gümrük vergisi (serbest ticaret anlaşması olmayan menşe, Çin dahil).
+# kdv  = ithalatta ödenen ve satışta indirilen KDV. Karşılaştırma KDV hariç yapılır, KDV nakit planı içindir.
+# Matrah gümrük kıymetidir (CIF = mal + kargo + sigorta).
+#
+# guven = "kaynakli": oran ikincil kaynakla doğrulandı.
+# guven = "tahmini": İGV doğrulanamadı; temkinli varsayım. Ajan bu ürünleri ayrıca +15 puan İGV ile sınar.
+# Kesin oran 12 haneli GTİP'e bağlıdır. Sipariş öncesi gümrük müşavirine teyit ettirin.
+#
+# Bu dosya veridir. Bir oranı doğruladığınızda değeri, `kaynak` alanını ve en üstteki `surum` tarihini güncelleyin.
+
+surum = "2026-11-09"
+
+[kaynaklar]
+gv = "GV: AB Ortak Gümrük Tarifesi (Türkiye Gümrük Birliği gereği üçüncü ülkelere aynı oranı uygular)."
+igv_giyim = "İGV 61-62. fasıl %39 (önce %30): 7709 sayılı CK, RG 16.10.2023; İHKİB duyurusu."
+igv_2025 = "İGV 2025: 64. fasıl ayakkabı %30→%40, 4202 çanta/valiz +9 puan → %39; TCS Global 2025 İGV çalışması."
+kdv = "KDV: tekstil, hazır giyim, ayakkabı ve tekstil/deri çanta %10; diğerleri genel oran %20 (10.07.2023'ten beri)."
+kargo_muafiyeti = "Posta/hızlı kargo 30 € muafiyeti 6 Şubat 2026'da kalktı (RG 07.01.2026). Bu rejim kişisel kullanım içindir; ticari satış için normal ithalat gerekir."
+
+# ---------------------------------------------------------------- hazır giyim (61-62. fasıl)
+
+[kategori.tisort]
+ad = "Tişört, atlet, crop"
+grup = "hazir-giyim"
+gtip = ["6109"]
+gv = 0.12
+igv = 0.39
+kdv = 0.10
+ornek_agirlik_kg = 0.18
+mevsim = "hepsi"
+guven = "kaynakli"
+kaynak = "GV %12 (AB OGT 6109); İGV 7709 sayılı CK"
+
+[kategori.sweatshirt-kazak]
+ad = "Sweatshirt, kazak, hırka"
+grup = "hazir-giyim"
+gtip = ["6110"]
+gv = 0.12
+igv = 0.39
+kdv = 0.10
+ornek_agirlik_kg = 0.45
+mevsim = "kis"
+guven = "kaynakli"
+kaynak = "GV %12 (AB OGT 6110); İGV 7709 sayılı CK"
+
+[kategori.elbise-etek]
+ad = "Elbise, etek, ferace"
+grup = "hazir-giyim"
+gtip = ["6104", "6204"]
+gv = 0.12
+igv = 0.39
+kdv = 0.10
+ornek_agirlik_kg = 0.30
+mevsim = "hepsi"
+guven = "kaynakli"
+kaynak = "GV %12 (AB OGT 6104/6204); İGV 7709 sayılı CK"
+
+[kategori.pantolon-tayt-sort]
+ad = "Pantolon, tayt, şort, eşofman altı"
+grup = "hazir-giyim"
+gtip = ["6103", "6104", "6203", "6204"]
+gv = 0.12
+igv = 0.39
+kdv = 0.10
+ornek_agirlik_kg = 0.40
+mevsim = "hepsi"
+guven = "kaynakli"
+kaynak = "GV %12 (AB OGT); İGV 7709 sayılı CK"
+
+[kategori.gomlek-bluz-tunik]
+ad = "Gömlek, bluz, tunik"
+grup = "hazir-giyim"
+gtip = ["6105", "6106", "6205", "6206"]
+gv = 0.12
+igv = 0.39
+kdv = 0.10
+ornek_agirlik_kg = 0.22
+mevsim = "hepsi"
+guven = "kaynakli"
+kaynak = "GV %12 (AB OGT); İGV 7709 sayılı CK"
+
+[kategori.mont-ceket-yelek]
+ad = "Mont, ceket, yelek"
+grup = "hazir-giyim"
+gtip = ["6101", "6102", "6201", "6202"]
+gv = 0.12
+igv = 0.39
+kdv = 0.10
+ornek_agirlik_kg = 0.80
+mevsim = "kis"
+guven = "kaynakli"
+kaynak = "GV %12 (AB OGT); İGV 7709 sayılı CK"
+notlar = "Ağır ve hacimli: kargo payı yüksek çıkar; ölçü verilirse hacimsel ağırlık hesaplanır."
+
+[kategori.ic-giyim-pijama]
+ad = "İç giyim, pijama, gecelik"
+grup = "hazir-giyim"
+gtip = ["6107", "6108", "6207", "6208"]
+gv = 0.12
+igv = 0.39
+kdv = 0.10
+ornek_agirlik_kg = 0.20
+mevsim = "hepsi"
+guven = "kaynakli"
+kaynak = "GV %12 (AB OGT); İGV 7709 sayılı CK"
+
+[kategori.sutyen-korse]
+ad = "Sütyen, korse, bralet"
+grup = "hazir-giyim"
+gtip = ["6212"]
+gv = 0.065
+igv = 0.39
+kdv = 0.10
+ornek_agirlik_kg = 0.08
+mevsim = "hepsi"
+guven = "kaynakli"
+kaynak = "GV %6,5 (AB OGT 6212); İGV 62. fasıl oranı (7709 sayılı CK)"
+
+[kategori.corap]
+ad = "Çorap, külotlu çorap (çift)"
+grup = "hazir-giyim"
+gtip = ["6115"]
+gv = 0.12
+igv = 0.39
+kdv = 0.10
+ornek_agirlik_kg = 0.05
+mevsim = "hepsi"
+guven = "kaynakli"
+kaynak = "GV %12 (AB OGT 6115); İGV 7709 sayılı CK"
+
+[kategori.mayo-bikini]
+ad = "Mayo, bikini, haşema"
+grup = "hazir-giyim"
+gtip = ["6112"]
+gv = 0.12
+igv = 0.39
+kdv = 0.10
+ornek_agirlik_kg = 0.15
+mevsim = "yaz"
+guven = "kaynakli"
+kaynak = "GV %12 (AB OGT 6112); İGV 7709 sayılı CK"
+
+# ---------------------------------------------------------------- tekstil aksesuar
+
+[kategori.esarp-sal]
+ad = "Eşarp, şal, fular (dokuma)"
+grup = "aksesuar"
+gtip = ["6214"]
+gv = 0.08
+igv = 0.39
+kdv = 0.10
+ornek_agirlik_kg = 0.08
+mevsim = "hepsi"
+guven = "kaynakli"
+kaynak = "GV %8 (AB OGT 6214); İGV 62. fasıl oranı varsayıldı (7709 sayılı CK)"
+
+[kategori.orme-atki-eldiven]
+ad = "Örme atkı, boyunluk, eldiven"
+grup = "aksesuar"
+gtip = ["6117", "6116"]
+gv = 0.12
+igv = 0.39
+kdv = 0.10
+ornek_agirlik_kg = 0.12
+mevsim = "kis"
+guven = "kaynakli"
+kaynak = "GV %12 (AB OGT 6117.10); İGV 61. fasıl oranı (7709 sayılı CK)"
+
+[kategori.sapka-bere]
+ad = "Şapka, kep, bere"
+grup = "aksesuar"
+gtip = ["6505"]
+gv = 0.027
+igv = 0.30
+kdv = 0.10
+ornek_agirlik_kg = 0.10
+mevsim = "hepsi"
+guven = "tahmini"
+kaynak = "GV %2,7 (AB OGT 6505); İGV doğrulanamadı, %30 varsayıldı"
+
+# ---------------------------------------------------------------- çanta, cüzdan, kemer
+
+[kategori.canta-suni-deri]
+ad = "Kol/omuz çantası, suni deri (PU)"
+grup = "aksesuar"
+gtip = ["4202.22.10"]
+gv = 0.097
+igv = 0.39
+kdv = 0.20
+ornek_agirlik_kg = 0.55
+mevsim = "hepsi"
+guven = "kaynakli"
+kaynak = "GV %9,7 (AB OGT 4202 22 10); İGV 4202 %39 (2025); KDV: plastik çanta genel oran (GİB özelgesi)"
+
+[kategori.canta-kumas]
+ad = "Kumaş çanta, tote"
+grup = "aksesuar"
+gtip = ["4202.22.90"]
+gv = 0.037
+igv = 0.39
+kdv = 0.10
+ornek_agirlik_kg = 0.30
+mevsim = "hepsi"
+guven = "kaynakli"
+kaynak = "GV %3,7 (AB OGT 4202 22 90); İGV 4202 %39 (2025)"
+
+[kategori.canta-deri]
+ad = "Hakiki deri çanta"
+grup = "aksesuar"
+gtip = ["4202.21"]
+gv = 0.03
+igv = 0.39
+kdv = 0.10
+ornek_agirlik_kg = 0.70
+mevsim = "hepsi"
+guven = "kaynakli"
+kaynak = "GV %3 (AB OGT 4202 21); İGV 4202 %39 (2025)"
+
+[kategori.sirt-cantasi]
+ad = "Sırt çantası, spor çanta (kumaş)"
+grup = "aksesuar"
+gtip = ["4202.92.91"]
+gv = 0.027
+igv = 0.39
+kdv = 0.10
+ornek_agirlik_kg = 0.50
+mevsim = "hepsi"
+guven = "kaynakli"
+kaynak = "GV %2,7 (AB OGT 4202 92 91); İGV 4202 %39 (2025)"
+
+[kategori.cuzdan-kartlik]
+ad = "Cüzdan, kartlık (PU)"
+grup = "aksesuar"
+gtip = ["4202.32.10", "4202.31"]
+gv = 0.097
+igv = 0.39
+kdv = 0.20
+ornek_agirlik_kg = 0.10
+mevsim = "hepsi"
+guven = "kaynakli"
+kaynak = "GV %9,7 (AB OGT 4202 32 10; deri 4202 31 %3); İGV 4202 %39 (2025)"
+
+[kategori.kemer]
+ad = "Kemer (deri veya PU)"
+grup = "aksesuar"
+gtip = ["4203.30", "3926.20"]
+gv = 0.05
+igv = 0.30
+kdv = 0.20
+ornek_agirlik_kg = 0.15
+mevsim = "hepsi"
+guven = "tahmini"
+kaynak = "GV %5 (AB OGT 4203 30); İGV doğrulanamadı, %30 varsayıldı; KDV temkinli genel oran"
+
+# ---------------------------------------------------------------- takı, gözlük, saat, saç
+
+[kategori.taki-bijuteri]
+ad = "İmitasyon takı (çelik, pirinç, alaşım)"
+grup = "aksesuar"
+gtip = ["7117.19", "7117.90"]
+gv = 0.04
+igv = 0.30
+kdv = 0.20
+ornek_agirlik_kg = 0.02
+mevsim = "hepsi"
+guven = "tahmini"
+kaynak = "GV %4 (AB OGT 7117); İGV doğrulanamadı, %30 varsayıldı"
+notlar = "Değerli maden (altın/gümüş) 7113'tür, kapsam dışı. Nikel salımı yönetmeliğine uygunluk sorulmalı."
+
+[kategori.gunes-gozlugu]
+ad = "Güneş gözlüğü"
+grup = "aksesuar"
+gtip = ["9004.10"]
+gv = 0.029
+igv = 0.30
+kdv = 0.20
+ornek_agirlik_kg = 0.06
+mevsim = "yaz"
+guven = "tahmini"
+kaynak = "GV %2,9 (AB OGT 9004 10); İGV doğrulanamadı (2017 haberinde ~%30), %30 varsayıldı"
+notlar = "UV koruma ve CE uygunluğu gerekir; ürün güvenliği denetimine takılabilir."
+
+[kategori.saat]
+ad = "Kol saati (moda, quartz)"
+grup = "aksesuar"
+gtip = ["9102"]
+gv = 0.045
+igv = 0.30
+kdv = 0.20
+ornek_agirlik_kg = 0.08
+mevsim = "hepsi"
+guven = "tahmini"
+kaynak = "GV %4,5 (AB OGT 9102); İGV doğrulanamadı, %30 varsayıldı"
+notlar = "Pilli ürün: hava kargo kısıtı olabilir. Akıllı saat bu kategori değildir (elektronik, ayrı rejim)."
+
+[kategori.sac-aksesuari]
+ad = "Toka, taç, mandal, klips"
+grup = "aksesuar"
+gtip = ["9615.11", "9615.19", "6117.80"]
+gv = 0.027
+igv = 0.30
+kdv = 0.20
+ornek_agirlik_kg = 0.02
+mevsim = "hepsi"
+guven = "tahmini"
+kaynak = "GV %2,7 (AB OGT 9615); İGV doğrulanamadı, %30 varsayıldı"
+
+# ---------------------------------------------------------------- ayakkabı
+
+[kategori.ayakkabi-terlik]
+ad = "Ayakkabı, terlik (tekstil/plastik)"
+grup = "ayakkabi"
+gtip = ["6402", "6404"]
+gv = 0.169
+igv = 0.40
+kdv = 0.10
+ornek_agirlik_kg = 0.60
+mevsim = "hepsi"
+guven = "kaynakli"
+kaynak = "GV %16,9 (AB OGT 6402 99/6404 19); İGV 64. fasıl %40 (2025)"
+notlar = "Vergi yükü çok yüksek; gözetim ve kıymet incelemesi riski var. 3 kat zor çıkar."

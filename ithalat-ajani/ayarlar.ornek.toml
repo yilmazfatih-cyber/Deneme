@@ -1,0 +1,37 @@
+# ayarlar.toml olarak kopyalayın. Yazmadığınız her ayar varsayılan değerinde kalır.
+
+veritabani = "veri/ithalat.db"
+rapor_klasoru = "raporlar"
+# tarife = "benim-tarifem.toml"   # boşsa paketteki ithalat_ajani/tarife.toml
+
+[kargo]
+usd_kg = 5.0          # Çin → Türkiye hava kargo, kg başına
+ambalaj_payi = 0.10   # koli/poşet için birim ağırlığa eklenen pay
+hacim_bolen = 5000    # ölçü verilen üründe hacimsel ağırlık = en×boy×yükseklik / bölen
+
+[gumruk]
+sigorta_orani = 0.005             # (mal + kargo) × oran
+sevkiyat_sabit_tl = 12000         # müşavir + beyanname + damga + ardiye + yurt içi teslim
+sevkiyat_mal_bedeli_usd = 3000    # bir sevkiyattaki toplam mal bedeli; sabit masraf buna göre dağıtılır
+odeme_orani = 0.03                # tedarikçiye ödeme komisyonu + kur farkı
+
+[satis]
+pazaryeri_komisyon = 0.215  # Trendyol giyim/aksesuar (KDV dahil fiyattan)
+siparis_gideri_tl = 90      # müşteriye kargo + hizmet bedeli (KDV hariç)
+iade_orani = 0.10
+
+[esikler]
+hedef_kat = 3.0              # Türkiye fiyatı (KDV hariç) ≥ 3 × birim maliyet (KDV hariç)
+yakin_kat = 2.5              # 2,5–3 arası "eşiğe yakın" listelenir
+min_tr_karsilastirma = 3     # Türkiye fiyatı için en az ilan
+urun_basina_butce_usd = 1500 # MOQ × fiyat bunu aşarsa uyarı
+tahmini_igv_stres = 0.15     # tahmini vergide İGV'ye eklenen kötü senaryo payı
+
+[kur]
+yedek_usd_tl = 50.18         # TCMB'ye ulaşılamazsa
+onbellek = "veri/kur.json"
+
+[tarama]
+kategori_sayisi = 3
+kategori_basina_aday = 5
+# odak = ["esarp-sal", "taki-bijuteri", "sac-aksesuari"]   # rotasyon sırası (varsayılan: hafif aksesuar önce)

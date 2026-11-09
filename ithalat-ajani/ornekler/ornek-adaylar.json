@@ -1,0 +1,85 @@
+{
+  "tarama": {
+    "an": "2026-11-09T15:00:00+03:00",
+    "kategoriler": ["esarp-sal", "taki-bijuteri", "tisort"],
+    "not": "ÖRNEK DOSYA: biçimi göstermek içindir; URL'ler ve fiyatlar gerçek ilan değildir."
+  },
+  "adaylar": [
+    {
+      "urun": "Desenli twill eşarp 90x90",
+      "kategori": "esarp-sal",
+      "gtip": "6214.30",
+      "alibaba": {
+        "url": "https://example.com/alibaba/twill-esarp",
+        "baslik": "Printed twill square scarf 90x90",
+        "tedarikci": "Örnek Tekstil Co., Ltd. (6 yıl, doğrulanmış)",
+        "fiyat_usd": 2.6,
+        "moq": 100,
+        "kademeler": [
+          { "min_adet": 2, "fiyat_usd": 3.4 },
+          { "min_adet": 100, "fiyat_usd": 2.6 },
+          { "min_adet": 1000, "fiyat_usd": 1.9 }
+        ],
+        "birim_agirlik_kg": 0.07,
+        "agirlik_kaynagi": "ilan",
+        "mense": "CN"
+      },
+      "turkiye": {
+        "fiyatlar": [
+          { "fiyat_tl": 899, "liste_fiyat_tl": 1199, "kaynak": "trendyol", "url": "https://example.com/tr/1", "baslik": "Twill eşarp 90x90" },
+          { "fiyat_tl": 950, "kaynak": "trendyol", "url": "https://example.com/tr/2", "baslik": "Desenli twill eşarp" },
+          { "fiyat_tl": 1100, "kaynak": "hepsiburada", "url": "https://example.com/tr/3", "baslik": "Twill eşarp" },
+          { "fiyat_tl": 799, "kaynak": "trendyol", "url": "https://example.com/tr/4", "baslik": "Twill fular" }
+        ],
+        "not": "Markasız ve az bilinen markalı twill eşarplar; ipek değil."
+      },
+      "gerekce": "Hafif, kargo payı düşük; tesettür ve kış kombinlerinde sürekli talep.",
+      "riskler": ["Desen telif hakkı: marka deseni olmamalı"],
+      "kaynaklar": ["https://example.com/alibaba/twill-esarp"]
+    },
+    {
+      "urun": "Çelik zincir kolye (altın kaplama)",
+      "kategori": "taki-bijuteri",
+      "gtip": "7117.19",
+      "alibaba": {
+        "url": "https://example.com/alibaba/celik-kolye",
+        "baslik": "18K gold plated stainless steel chain necklace",
+        "tedarikci": "Örnek Jewelry Co., Ltd.",
+        "fiyat_usd": 0.85,
+        "moq": 50,
+        "birim_agirlik_kg": 0.015,
+        "agirlik_kaynagi": "ilan",
+        "indirim": { "liste_fiyat_usd": 1.15, "bitis": "2026-11-15", "aciklama": "Alibaba Deals süreli indirim" }
+      },
+      "turkiye": {
+        "fiyatlar": [
+          { "fiyat_tl": 249, "kaynak": "trendyol", "url": "https://example.com/tr/5", "baslik": "Çelik kolye" },
+          { "fiyat_tl": 299, "kaynak": "trendyol", "url": "https://example.com/tr/6", "baslik": "Altın kaplama çelik zincir" },
+          { "fiyat_tl": 189, "kaynak": "hepsiburada", "url": "https://example.com/tr/7", "baslik": "Paslanmaz çelik kolye" }
+        ]
+      },
+      "gerekce": "Çok hafif; paslanmaz çelik kararmıyor, yorumlarda sık övülüyor."
+    },
+    {
+      "urun": "Basic pamuklu tişört",
+      "kategori": "tisort",
+      "gtip": "6109.10",
+      "alibaba": {
+        "url": "https://example.com/alibaba/basic-tisort",
+        "baslik": "Plain cotton t-shirt 180gsm",
+        "fiyat_usd": 2.9,
+        "moq": 200,
+        "birim_agirlik_kg": 0.19,
+        "agirlik_kaynagi": "ilan"
+      },
+      "turkiye": {
+        "fiyatlar": [
+          { "fiyat_tl": 299, "kaynak": "trendyol", "url": "https://example.com/tr/8" },
+          { "fiyat_tl": 349, "kaynak": "trendyol", "url": "https://example.com/tr/9" },
+          { "fiyat_tl": 399, "kaynak": "trendyol", "url": "https://example.com/tr/10" }
+        ]
+      },
+      "gerekce": "Karşılaştırma için: ağır ve yüksek vergili basic ürün."
+    }
+  ]
+}
