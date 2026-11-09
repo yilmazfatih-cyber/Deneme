@@ -1,0 +1,54 @@
+{
+ "zaman": "2026-11-09T14:13",
+ "bas": "2024-01-01",
+ "bit": "2026-11-09",
+ "rapor": {
+  "XU100.IS": {
+   "yahoo_1d": 712
+  },
+  "USDTRY=X": {
+   "yahoo_1d": 741
+  },
+  "KCHOL": {
+   "isy_gunluk": 713,
+   "isy_sutunlar": [
+    "HGDG_HS_KODU",
+    "HGDG_TARIH",
+    "HGDG_KAPANIS",
+    "HGDG_AOF",
+    "HGDG_MIN",
+    "HGDG_MAX",
+    "HGDG_HACIM",
+    "END_ENDEKS_KODU",
+    "END_TARIH",
+    "END_SEANS",
+    "END_DEGER",
+    "DD_DOVIZ_KODU",
+    "DD_DT_KODU",
+    "DD_TARIH",
+    "DD_DEGER",
+    "DOLAR_BAZLI_FIYAT",
+    "ENDEKS_BAZLI_FIYAT",
+    "DOLAR_HACIM",
+    "SERMAYE",
+    "HG_KAPANIS",
+    "HG_AOF",
+    "HG_MIN",
+    "HG_MAX",
+    "PD",
+    "PD_USD",
+    "HAO_PD",
+    "HAO_PD_USD",
+    "HG_HACIM",
+    "DOLAR_BAZLI_MIN",
+    "DOLAR_BAZLI_MAX",
+    "DOLAR_BAZLI_AOF",
+    "tarih"
+   ],
+   "isy_mali_kalem": 147,
+   "kap": 0,
+   "yahoo_1d": 713,
+   "yahoo_temel": true
+  }
+ }
+}
