@@ -12,6 +12,7 @@ import re
 import sys
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 from pathlib import Path
 
@@ -20,7 +21,7 @@ UA = "OsmanlicaHTR/0.1 (acik kaynak arastirma; github.com/yilmazfatih-cyber/Dene
 
 def indir(url: str, deneme: int = 6) -> bytes:
     for i in range(deneme):
-        time.sleep(4.0)
+        time.sleep(2.0)
         try:
             req = urllib.request.Request(url, headers={"User-Agent": UA})
             with urllib.request.urlopen(req, timeout=120) as r:
@@ -51,10 +52,12 @@ def main():
             k = json.loads(satir)
             if k["sayfa_url"] in mevcut:
                 continue
-            url = k["url"]
-            # 1920 px standart önizleme (orijinal 1920'den genişse) — Wikimedia'nın izin verdiği boyut
-            url = re.sub(r"/(\d+)px-", "/1920px-", url) if "px-" in url else url
-            uz = ".png" if url.lower().endswith(".png") else ".jpg"
+            # thumb.php (commons.wikimedia.org) upload sunucusunun hız sınırına takılmıyor; orijinalden dar bir genişlik iste
+            dosya_adi = k["baslik"][5:].replace(" ", "_")
+            w_orig = int(k.get("w") or 0)
+            w = min(1920, w_orig - 1) if w_orig > 400 else 400
+            url = "https://commons.wikimedia.org/w/thumb.php?" + urllib.parse.urlencode({"f": dosya_adi, "w": w})
+            uz = ".png" if dosya_adi.lower().endswith(".png") else ".jpg"
             ad = re.sub(r"[^\w\-]+", "_", k["ad"].rsplit(".", 1)[0])[:70]
             hedef = cikti / f"{k['n']:03d}_{ad}{uz}"
             try:
