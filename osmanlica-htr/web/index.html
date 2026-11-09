@@ -21,7 +21,7 @@ h1{font-size:19px;margin:0;letter-spacing:.01em}
 .ust{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
 .kucuk{color:var(--soluk);font-size:13px}
 .kart{background:var(--kart);border:1px solid var(--cizgi);border-radius:14px;padding:14px;box-shadow:var(--golge)}
-.satir-gor{background:#fff;border-radius:8px;display:block;width:100%;height:auto;max-height:180px;object-fit:contain}
+.satir-gor{background:#fff;border-radius:8px;display:block;max-width:100%;height:auto;max-height:200px;margin:0 auto}
 .secenekler{display:flex;flex-direction:column;gap:10px;margin-top:10px}
 button{font:inherit;min-height:60px;border-radius:12px;border:1px solid var(--cizgi);background:var(--kart);color:var(--murekkep);padding:8px 14px;text-align:left;cursor:pointer;display:flex;align-items:center;gap:12px;min-width:0}
 button:hover{border-color:var(--vurgu)} button:focus-visible{outline:3px solid var(--vurgu);outline-offset:2px}
@@ -69,7 +69,7 @@ ul.sayfalar li{display:flex;justify-content:space-between;gap:10px;font-size:14p
       <p>Kuyruk boş. Aşağıdan bir arşiv sayfası yükleyin; satırlara bölünüp buraya gelir.</p>
     </div>
     <div id="dolu" hidden>
-      <img id="satirGor" class="satir-gor" alt="etiketlenecek satır">
+      <canvas id="satirGor" class="satir-gor" width="10" height="10" role="img" aria-label="etiketlenecek satır"></canvas>
       <div class="kucuk" id="satirBilgi" style="margin-top:6px"></div>
       <div class="secenekler" id="secenekler"></div>
       <label class="d" for="d">D) Doğrusunu yazın (Arap harfli):</label>
@@ -271,65 +271,85 @@ async function sayfayiBol(file){
   return {satirlar,aci,W,H};
 }
 
-// ---------------------------------------------------------------- veritabanı
+// ---------------------------------------------------------------- veritabanı (sayfa belgeleri: sprite + satır listesi)
+// sayfalar/<id> = {ad, kaynak, lisans, sayfa_url, sprite(asset id), sprite_w, sprite_h, zaman, satir_sayisi, bekleyen, etiketli,
+//   satirlar:[{sira, y, h, w, durum:'bekliyor'|'etiketli'|'atla'|'bozuk', metin, secim, oneriler, oneri_surum, etiket_zaman}]}
+let sayfalar=new Map(); const spriteOnbellek=new Map(); let yaziKuyrugu=Promise.resolve();
+function sayac(){ let e=0,bk=0,at=0; for(const s of sayfalar.values()) for(const l of (s.satirlar||[])){ if(l.durum==='etiketli') e++; else if(l.durum==='bekliyor') bk++; else at++; }
+  $('nEtiketli').textContent=e; $('nBekleyen').textContent=bk; $('nAtlanan').textContent=at; }
+function bekleyenListesi(){ const out=[]; const sirali=[...sayfalar.values()].sort((a,b)=>(a.zaman||0)-(b.zaman||0));
+  for(const s of sirali) for(const l of (s.satirlar||[])) if(l.durum==='bekliyor') out.push({sayfa:s, satir:l}); return out; }
 async function depoBaslat(){
   db=await claude.use('db'); assets=await claude.use('assets');
   if(!db){ $('depoDurum').innerHTML='<span class="durum-rozet dikkat">kayıt kapalı: giriş yapın</span>'; $('btnYukle').disabled=true; return; }
   if(!assets){ $('depoDurum').innerHTML='<span class="durum-rozet dikkat">yükleme için düzenleme yetkisi gerekir</span>'; $('btnYukle').disabled=true; }
   let zamanlayici=setTimeout(()=>{ $('depoDurum').textContent='veritabanına henüz ulaşılamadı…'; },10000);
-  abone=db.collection('satirlar').where('durum','==','bekliyor').limit(400).onSnapshot(snap=>{
+  abone=db.collection('sayfalar').limit(1000).onSnapshot(snap=>{
     if(!snap.metadata.fromCache){ clearTimeout(zamanlayici); $('depoDurum').textContent=''; }
-    bekleyen=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(a.sayfa_zaman-b.sayfa_zaman)||(a.sira-b.sira));
-    $('nBekleyen').textContent=bekleyen.length;
-    if(!aktif || !bekleyen.some(b=>b.id===aktif.id)) sonrakiGoster();
+    sayfalar=new Map(snap.docs.map(d=>[d.id,{id:d.id,...d.data()}]));
+    sayac(); sayfalariGoster();
+    if(!aktif || !(sayfalar.get(aktif.sayfa.id)?.satirlar||[]).some(l=>l.sira===aktif.satir.sira && l.durum==='bekliyor')) sonrakiGoster();
   }, e=>{ clearTimeout(zamanlayici); $('depoDurum').textContent='veritabanı hatası: '+e.code; });
-  sayacGuncelle(); sayfalariGoster();
 }
-async function sayacGuncelle(){
-  if(!db) return;
-  try{ const e=await db.collection('satirlar').where('durum','==','etiketli').limit(1000).get(); $('nEtiketli').textContent=e.size>=1000?'1000+':e.size;
-    const a=await db.collection('satirlar').where('durum','in',['atla','bozuk']).limit(1000).get(); $('nAtlanan').textContent=a.size; }catch(e){ console.warn(e); }
+function sayfalariGoster(){
+  const ul=$('sayfaListesi'); ul.innerHTML='';
+  const sirali=[...sayfalar.values()].sort((a,b)=>(b.zaman||0)-(a.zaman||0));
+  if(!sirali.length){ ul.innerHTML='<li class="kucuk">Henüz sayfa yok.</li>'; return; }
+  for(const v of sirali.slice(0,80)){ const li=document.createElement('li'); const e=(v.satirlar||[]).filter(l=>l.durum==='etiketli').length;
+    const ad=document.createElement('span'); ad.textContent=v.ad||v.id; const sag=document.createElement('span'); sag.className='kucuk'; sag.textContent=`${e}/${v.satir_sayisi||(v.satirlar||[]).length} satır`;
+    li.append(ad,sag); ul.appendChild(li); }
 }
-async function sayfalariGoster(){
-  if(!db) return;
-  try{ const s=await db.collection('sayfalar').orderBy('zaman','desc').limit(50).get(); const ul=$('sayfaListesi'); ul.innerHTML='';
-    if(s.empty){ ul.innerHTML='<li class="kucuk">Henüz sayfa yok.</li>'; return; }
-    for(const d of s.docs){ const v=d.data(); const li=document.createElement('li'); li.innerHTML=`<span>${(v.ad||d.id).replace(/[<>&]/g,'')}</span><span class="kucuk">${v.satir_sayisi} satır · ${new Date(v.zaman).toLocaleDateString('tr-TR')}</span>`; ul.appendChild(li); } }catch(e){ console.warn(e); }
+function spriteYukle(id){
+  if(spriteOnbellek.has(id)) return spriteOnbellek.get(id);
+  const p=new Promise((res,rej)=>{ const im=new Image(); im.onload=()=>res(im); im.onerror=()=>rej(new Error('görüntü yok')); im.src='/_blob/'+id; });
+  spriteOnbellek.set(id,p); return p;
+}
+async function satirCiz(sayfa,satir){
+  const c=$('satirGor'); c.width=Math.max(1,satir.w); c.height=Math.max(1,satir.h); const ctx=c.getContext('2d'); ctx.fillStyle='#fff'; ctx.fillRect(0,0,c.width,c.height);
+  try{ const im=await spriteYukle(sayfa.sprite); ctx.drawImage(im,0,satir.y,satir.w,satir.h,0,0,satir.w,satir.h); return true; }catch(e){ ctx.fillStyle='#999'; ctx.fillText('görüntü yüklenemedi',10,20); return false; }
 }
 
 // ---------------------------------------------------------------- etiketleme akışı
 function sonrakiGoster(){
-  aktif=bekleyen[0]||null;
+  const liste=bekleyenListesi(); aktif=liste[0]||null;
   $('bos').hidden=!!aktif; $('dolu').hidden=!aktif;
   if(!aktif) return;
-  const img=$('satirGor'); img.src=aktif.asset?('/_blob/'+aktif.asset):'';
-  $('satirBilgi').textContent=`${aktif.sayfa_ad||aktif.sayfa} · satır ${aktif.sira}`;
+  const {sayfa,satir}=aktif;
+  $('satirBilgi').textContent=`${sayfa.ad||sayfa.id} · satır ${satir.sira}/${sayfa.satir_sayisi||(sayfa.satirlar||[]).length}` + (sayfa.kaynak==='commons'?' · Wikimedia Commons':'');
   $('secenekler').innerHTML='<div class="kucuk">tahmin hesaplanıyor…</div>'; $('d').value='';
   tahminGoster(aktif);
 }
 async function tahminGoster(oge){
+  const {sayfa,satir}=oge; const cizildi=await satirCiz(sayfa,satir);
+  if(aktif!==oge) return;
   let sec=[];
-  if(oge.oneriler && oge.oneri_surum===modelBilgi.surum) sec=oge.oneriler;
-  else if(ort_session){ const img=$('satirGor'); if(!img.complete||!img.naturalWidth){ await new Promise(r=>{ img.onload=r; img.onerror=r; }); }
-    if(img.naturalWidth){ sec=await tahminEt(img); if(db&&sec.length){ db.doc('satirlar/'+oge.id).update({oneriler:sec,oneri_surum:modelBilgi.surum}).catch(()=>{}); } } }
+  if(satir.oneriler && satir.oneriler.length && (!ort_session || satir.oneri_surum===modelBilgi.surum)) sec=satir.oneriler;
+  else if(ort_session && cizildi) sec=await tahminEt($('satirGor'));
   if(aktif!==oge) return;
   secenekler=sec; const kutu=$('secenekler'); kutu.innerHTML='';
   if(!sec.length){ kutu.innerHTML='<div class="kucuk">Öneri yok; doğrusunu D kutusuna yazın.</div>'; }
   sec.forEach(([m,p],i)=>{ const b=document.createElement('button'); b.innerHTML=`<span class="harf">${'ABC'[i]}</span><span class="osm"></span><span class="guven">%${Math.round(p*100)}</span>`; b.querySelector('.osm').textContent=m; b.onclick=()=>kaydet('ABC'[i],m); kutu.appendChild(b); });
   $('d').value=sec.length?sec[0][0]:'';
 }
-async function kaydet(secim,metin){
-  if(!aktif||!db) return; const oge=aktif; const m=secim==='atla'||secim==='bozuk'?'':normallestir(metin);
+function satirGuncelle(sayfaId, sira, degisiklik){
+  // Sayfa belgesinin satır listesini kopyalayıp güncelle; yazmaları sıraya koy (aynı belgeye tek yazma).
+  yaziKuyrugu=yaziKuyrugu.then(async()=>{
+    const s=sayfalar.get(sayfaId); if(!s||!db) return;
+    const satirlar=(s.satirlar||[]).map(l=>l.sira===sira?{...l,...degisiklik}:l);
+    const bekleyen=satirlar.filter(l=>l.durum==='bekliyor').length, etiketli=satirlar.filter(l=>l.durum==='etiketli').length;
+    sayfalar.set(sayfaId,{...s,satirlar,bekleyen,etiketli}); sayac();
+    try{ await db.doc('sayfalar/'+sayfaId).update({satirlar,bekleyen,etiketli}); }catch(e){ console.error(e); $('depoDurum').textContent='kayıt başarısız: '+e.code; }
+  });
+  return yaziKuyrugu;
+}
+function kaydet(secim,metin){
+  if(!aktif||!db) return; const {sayfa,satir}=aktif; const m=(secim==='atla'||secim==='bozuk')?'':normallestir(metin);
   const durum= m? 'etiketli' : (secim==='D'?'atla':secim);
-  const veri={durum, metin:m, secim: m?secim:durum, etiket_zaman:Date.now()};
-  bekleyen=bekleyen.filter(b=>b.id!==oge.id); geriYigin.push(oge.id); sonrakiGoster();
-  try{ await db.doc('satirlar/'+oge.id).update(veri); }catch(e){ console.error(e); $('depoDurum').textContent='kayıt başarısız: '+e.code; }
-  sayacGuncelle();
+  geriYigin.push({sayfaId:sayfa.id, sira:satir.sira});
+  satirGuncelle(sayfa.id, satir.sira, {durum, metin:m, secim: m?secim:durum, etiket_zaman:Date.now()});
+  sonrakiGoster();
 }
-async function geriAl(){
-  const id=geriYigin.pop(); if(!id||!db) return;
-  try{ await db.doc('satirlar/'+id).update({durum:'bekliyor',metin:'',secim:''}); }catch(e){ console.error(e); }
-}
+function geriAl(){ const g=geriYigin.pop(); if(!g) return; satirGuncelle(g.sayfaId, g.sira, {durum:'bekliyor', metin:'', secim:''}); }
 $('btnKaydet').onclick=()=>kaydet('D',$('d').value);
 $('btnAtla').onclick=()=>kaydet('atla','');
 $('btnBozuk').onclick=()=>kaydet('bozuk','');
@@ -344,7 +364,13 @@ document.addEventListener('keydown',e=>{
   else if(e.key==='z'||e.key==='Z'){ e.preventDefault(); geriAl(); }
 });
 
-// ---------------------------------------------------------------- yükleme akışı
+// ---------------------------------------------------------------- yükleme akışı (cihazdan sayfa → sprite + sayfa belgesi)
+function spriteOlustur(satirlar){
+  const W=Math.max(...satirlar.map(s=>s.canvas.width)), H=satirlar.reduce((a,s)=>a+s.canvas.height,0);
+  const c=document.createElement('canvas'); c.width=W; c.height=H; const ctx=c.getContext('2d'); ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,H);
+  let y=0; const konum=[]; for(const s of satirlar){ ctx.drawImage(s.canvas,0,y); konum.push({y, w:s.canvas.width, h:s.canvas.height}); y+=s.canvas.height; }
+  return {canvas:c, konum};
+}
 $('btnYukle').onclick=async()=>{
   const dosyalar=[...$('dosyalar').files]; if(!dosyalar.length||yukleniyor||!db||!assets) return;
   yukleniyor=true; $('btnYukle').disabled=true; const pr=$('ilerleme'); pr.hidden=false; pr.value=0; let toplamSatir=0;
@@ -352,24 +378,24 @@ $('btnYukle').onclick=async()=>{
     for(let fi=0;fi<dosyalar.length;fi++){
       const f=dosyalar[fi]; $('yukleDurum').textContent=`${f.name}: satırlara bölünüyor…`;
       const {satirlar,aci}=await sayfayiBol(f);
-      const sayfaId=kimlik(), zaman=Date.now();
-      for(let i=0;i<satirlar.length;i++){
-        $('yukleDurum').textContent=`${f.name}: satır ${i+1}/${satirlar.length} yükleniyor…`; pr.value=(fi+(i+1)/satirlar.length)/dosyalar.length;
-        const c=satirlar[i].canvas; const blob=await new Promise(r=>c.toBlob(r,'image/png'));
-        const oneriler=ort_session? await tahminEt(c):[];
-        const y=await assets.upload(blob,{type:'image/png'});
-        await db.doc('satirlar/'+kimlik()).set({sayfa:sayfaId,sayfa_ad:f.name,sayfa_zaman:zaman,sira:i+1,asset:y.id,kutu:satirlar[i].kutu,genislik:c.width,yukseklik:c.height,durum:'bekliyor',metin:'',secim:'',oneriler,oneri_surum:modelBilgi.surum,zaman});
-      }
-      await db.doc('sayfalar/'+sayfaId).set({ad:f.name,satir_sayisi:satirlar.length,aci,zaman});
-      toplamSatir+=satirlar.length;
+      if(!satirlar.length){ $('yukleDurum').textContent=`${f.name}: satır bulunamadı, atlandı.`; continue; }
+      const kayitlar=[];
+      for(let i=0;i<satirlar.length;i++){ $('yukleDurum').textContent=`${f.name}: satır ${i+1}/${satirlar.length} için tahmin…`; pr.value=(fi+(i+1)/satirlar.length/2)/dosyalar.length;
+        const oneriler=ort_session? await tahminEt(satirlar[i].canvas):[]; kayitlar.push({sira:i+1, durum:'bekliyor', metin:'', secim:'', oneriler, oneri_surum:modelBilgi.surum, kutu:satirlar[i].kutu}); }
+      const sp=spriteOlustur(satirlar); kayitlar.forEach((k,i)=>Object.assign(k,sp.konum[i]));
+      $('yukleDurum').textContent=`${f.name}: görüntü yükleniyor…`; pr.value=(fi+0.75)/dosyalar.length;
+      const blob=await new Promise(r=>sp.canvas.toBlob(r,'image/png')); const y=await assets.upload(blob,{type:'image/png'});
+      const zaman=Date.now();
+      await db.doc('sayfalar/'+kimlik()).set({ad:f.name, kaynak:'cihaz', lisans:'', sayfa_url:'', sprite:y.id, sprite_w:sp.canvas.width, sprite_h:sp.canvas.height, aci, zaman, satir_sayisi:satirlar.length, bekleyen:satirlar.length, etiketli:0, satirlar:kayitlar});
+      toplamSatir+=satirlar.length; pr.value=(fi+1)/dosyalar.length;
     }
     $('yukleDurum').textContent=`${dosyalar.length} sayfa, ${toplamSatir} satır kuyruğa eklendi.`; $('dosyalar').value='';
   }catch(e){ console.error(e); $('yukleDurum').textContent='Yükleme hatası: '+(e.code||e.message); }
-  finally{ yukleniyor=false; $('btnYukle').disabled=false; pr.hidden=true; sayfalariGoster(); }
+  finally{ yukleniyor=false; $('btnYukle').disabled=false; pr.hidden=true; }
 };
 
 modelYukle();
 if(window.claude && window.claude.use) depoBaslat(); else { $('depoDurum').innerHTML='<span class="durum-rozet dikkat">bu kopyada kayıt yok</span>'; }
-window.__osm={sayfayiBol,tahminEt,normallestir,griAl,sauvola,egimBul}; // yerel sınama için
+window.__osm={sayfayiBol,tahminEt,normallestir,griAl,sauvola,egimBul,spriteOlustur,isinArama,secenekUret}; // yerel sınama için
 })();
 </script>
