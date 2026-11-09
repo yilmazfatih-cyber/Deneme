@@ -4,10 +4,10 @@ Oluşturma: 2026-11-09 · şema sürümü 1
 
 | Tablo | Satır |
 | --- | ---: |
-| defile | 29 |
-| gorsel | 1703 |
+| defile | 32 |
+| gorsel | 1883 |
 | parca_nitelik | 0 |
-| parca_renk | 6812 |
+| parca_renk | 7532 |
 | perakende_urun | 96 |
 | perakende_gorulme | 96 |
 | perakende_nitelik | 0 |
@@ -19,10 +19,10 @@ Oluşturma: 2026-11-09 · şema sürümü 1
 
 ## Sezon dağılımı
 
-- **defile**: SS27: 29
-- **gorsel**: SS27: 1703
+- **defile**: SS27: 32
+- **gorsel**: SS27: 1883
 - **parca_nitelik**: —
-- **parca_renk**: SS27: 6812
+- **parca_renk**: SS27: 7532
 - **sinyal**: FW25: 24, FW26: 33, SS25: 26, SS26: 40, SS27: 48
 
 ## Segment dağılımı
