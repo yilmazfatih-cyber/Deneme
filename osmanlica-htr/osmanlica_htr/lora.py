@@ -7,6 +7,10 @@ Ne yapar:
 3. Dikkat katmanlarına LoRA takar; gömme ve lm_head tam eğitilir (modules_to_save), geri kalan donuk kalır.
 4. Bizim manifest biçimimizdeki satırlarla eğitir, CER ölçer, yalnızca LoRA ağırlıklarını (+ gömme) kaydeder.
 
+Doğrulanan: RayR1/trocr-base-arabic-handwritten (610 M) yüklendi, CAMeL sözlüğü پ چ ژ گ ڭ harflerini zaten
+içeriyor; LoRA takıldı, eğitilebilir pay %12 (gömme dahil), 4 adımlık CPU denemesi çalıştı ve adaptör kaydedildi.
+Not: Hugging Face indirmeleri bazı ağlarda xet sunucusuna takılır; `HF_HUB_DISABLE_XET=1` ortam değişkeni çözer.
+
 Kullanım (GPU önerilir; CPU'da yalnızca küçük denemeler):
     osm lora --taban RayR1/trocr-base-arabic-handwritten --manifest veri/veritabani.jsonl --cikti cikti/lora_ota \\
              --donem 3 --parti 8 --en-fazla 20000
@@ -31,7 +35,7 @@ from PIL import Image
 from .alfabe import TEMEL_ALFABE, normallestir
 from .veri import kec_cer, manifest_oku
 
-OSMANLI_EK_HARFLER = sorted(set(TEMEL_ALFABE) - {" "})
+OSMANLI_EK_HARFLER = sorted(set(TEMEL_ALFABE) - {" ", "ـ"})  # tatvil normalleştirmede zaten atılır
 
 
 def _yukle(taban: str, cihaz: str):
