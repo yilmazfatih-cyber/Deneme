@@ -13,3 +13,7 @@ Kaynak: Yahoo saatlik, son çubuk 15:30 (≈15 dk gecikmeli). XU100 11.730 (Cuma
 
 KCHOL 211,50 (+%2,7) ve BIMAS 379,75 (+%2,4): bilanço günü, alım Salı'ya ertelendi; sonuçlar 20:26 çalışmasında okunacak.
 Gün içi yeni KAP bildirimi taraması bu çalışmada yapılmadı (16:26 rutini bu oturumdaki uzun iş nedeniyle elle yürütüldü).
+
+## 16:38 rutin ek kontrolü
+Öğle raporu 16:22'de yazıldığı için limitler yeniden hesaplanmadı (rutin kuralı). Gün içi KAP taraması: TUPRS ve AHGAZ için
+9 Kasım 10:00'dan bu yana yeni bildirim bulunamadı (son TUPRS bildirimi 6 Kas 19:26, 3Ç finansal tablolar). Bot çalıştırılmadı (hane yok).
