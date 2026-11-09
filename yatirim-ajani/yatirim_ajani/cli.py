@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 import time
 from datetime import datetime
@@ -847,6 +848,20 @@ def komut_defter_rapor(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
     return 0
 
 
+# --- hisse dosyası -----------------------------------------------------------------------------
+def komut_dosya_veri_cek(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
+    from datetime import date as _date
+
+    from .dosya.kaynaklar import dosya_veri_cek
+
+    hisseler = [h.strip().upper() for h in a.hisseler.split(",") if h.strip()] if a.hisseler else ayarlar.evren["bist"]
+    bas = _date.fromisoformat(a.baslangic)
+    rapor = dosya_veri_cek(hisseler, a.klasor, bas, kap=not a.kap_yok)
+    for h, r in rapor.items():
+        print(h, json.dumps(r, ensure_ascii=False)[:300])
+    return 0
+
+
 def ayristirici() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="yatirim_ajani", description="Araştıran, öneren, sanal işlem yapan yatırım ajanı")
     p.add_argument("--ayarlar", help="ayarlar.toml yolu")
@@ -1035,6 +1050,14 @@ def ayristirici() -> argparse.ArgumentParser:
     defter_ortak(sp)
     sp.add_argument("--gun", help="Bu günün kapanışıyla pozisyon kâr/zararı göster")
     sp.set_defaults(islev=komut_defter_rapor)
+
+
+    sp = alt.add_parser("dosya-veri-cek", help="Hisse dosyası ham verisi: İş Yatırım günlük oranlar + mali tablo, KAP, Yahoo günlük (dış ağ gerekir)")
+    sp.add_argument("--hisseler", help="Virgülle ayrılmış; verilmezse BIST evreni")
+    sp.add_argument("--klasor", default="veri/dosya/ham")
+    sp.add_argument("--baslangic", default="2024-01-01")
+    sp.add_argument("--kap-yok", action="store_true")
+    sp.set_defaults(islev=komut_dosya_veri_cek)
 
     sp = alt.add_parser("yeniden-baslat", help="Düşüş sınırıyla durmuş sanal hesabı yeniden aç")
     sp.add_argument("--piyasa", choices=list(PIYASALAR), required=True)
