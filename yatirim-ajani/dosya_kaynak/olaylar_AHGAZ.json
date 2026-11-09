@@ -1,0 +1,38 @@
+{
+ "not": "AHGAZ olay çizelgesi (ajan araştırması, web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "AHGAZ",
+   "sektor": null,
+   "baslangic": "2026-08-26",
+   "bitis": "2026-08-26",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Ahlatcı Doğal Gaz 2025 karından net 0,04904 TL/pay nakit temettü, ödeme 26 Ağustos 2026",
+   "anlam": "Genel kurulda kâr payı dağıtımı oybirliğiyle kabul edildi; pay başı net 0,04904 TL (brüt rakam kaynakta yok), ödeme tarihi 26 Ağustos 2026. 2024 karı için temettü dağıtılmamıştı. Tarih ödeme tarihidir; karar günü teyit edilemedi.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.4,
+   "etiketler": [
+    "temettü"
+   ],
+   "kaynaklar": [
+    "https://www.borsagundem.com.tr/ahlatci-dogal-gazin-kar-payi-dagitim-karari-genel-kurulda-onaylandi",
+    "https://borsacoo.com/firma/AHGAZ/bildirimler"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 0.04904,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

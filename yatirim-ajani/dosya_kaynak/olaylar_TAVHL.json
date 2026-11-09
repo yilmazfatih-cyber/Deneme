@@ -1,0 +1,171 @@
+{
+ "not": "TAVHL olay çizelgesi (ajan araştırması, web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "TAVHL",
+   "sektor": null,
+   "baslangic": "2025-05-24",
+   "bitis": "2025-05-24",
+   "kamuya_acilma": null,
+   "tur": "ihale",
+   "baslik": "TAV Ankara Esenboğa 25 yıllık imtiyaz (24.05.2025-23.05.2050), 475 milyon euro + KDV",
+   "anlam": "DHMİ'ye 475 milyon euro + KDV imtiyaz kira bedeli; dış hat giden yolcudan 17, iç hattan 3 euro hizmet bedeli. Tarih imtiyaz başlangıcıdır.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.6,
+   "etiketler": [
+    "imtiyaz",
+    "Esenboğa"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/ankara-esenboga-havalimani-ihalesini-tav-holding-kazandi/",
+    "https://kap.org.tr/tr/api/file/download/4028328c950ba8c701954c3c19e137eb"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 475000000,
+    "para_birimi": "EUR",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": 300
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "TAVHL",
+   "sektor": null,
+   "baslangic": "2026-06-08",
+   "bitis": "2026-06-08",
+   "kamuya_acilma": null,
+   "tur": "ihale",
+   "baslik": "TAV Kuveyt Havalimanı Terminal 2 işletme ve bakım ihalesi KAP açıklaması",
+   "anlam": "8 Haziran 2026 KAP bildirimi; sonuç ve tutar özetlerde yok.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.35,
+   "etiketler": [
+    "ihale",
+    "Kuveyt"
+   ],
+   "kaynaklar": [
+    "https://www.foreks.com/haber/detay/6ad8e2e558b1b941c208e706/FRKS/tr/tav-havalimanlari-2026-yilina-iliskin-beklentilerini-guncelledi-21-10-26/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "TAVHL",
+   "sektor": null,
+   "baslangic": "2026-10-21",
+   "bitis": "2026-10-21",
+   "kamuya_acilma": null,
+   "tur": "haber",
+   "baslik": "TAV 2026 beklentilerini güncelledi: FAVÖK 590-650 → 590-630 milyon euro",
+   "anlam": "Ciro beklentisi 1,88-1,98 milyar euro sabit; Haziran'da savaş kaynaklı revizyon sonrası ikinci güncelleme.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.55,
+   "etiketler": [
+    "beklenti güncelleme"
+   ],
+   "kaynaklar": [
+    "https://www.foreks.com/haber/detay/6ad8e2e558b1b941c208e706/FRKS/tr/tav-havalimanlari-2026-yilina-iliskin-beklentilerini-guncelledi-21-10-26/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "TAVHL",
+   "sektor": null,
+   "baslangic": "2026-07-21",
+   "bitis": "2026-09-22",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "TAV 2026 temettü: pay başına brüt 3,61 TL, iki taksit (21 Tem ve 22 Eyl 2026)",
+   "anlam": "Net 3,07 TL; taksitler brüt ~1,805 TL.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.65,
+   "etiketler": [
+    "temettü"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/piyasalar/tav-havalimanlari-tavhl-2026-yili-temettu-kararini-acikladi-tavhl-temettu-2026-ne-kadar-ve-ne-zaman-dagitilacak-h25177",
+    "https://www.finansopia.com/kap-bildirimleri/tav-havalimanlari-tavhl-2026-yili-temettu-kararini-acikladi/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 3.61,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "TAVHL",
+   "sektor": null,
+   "baslangic": "2026-07-29",
+   "bitis": "2026-07-29",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "TAV 2Ç26 net kârı ~3,5 milyar TL (geçen yıl zarar); Garanti BBVA'ya göre beklentinin ~%103 üzerinde",
+   "anlam": "Zarardan kâra dönüş; Info Yatırım tablosunda farklı rakam (528 milyon TL) var, bu yüzden güven düşük. Gün tahmini.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.35,
+   "etiketler": [
+    "bilanço",
+    "zarardan kâra"
+   ],
+   "kaynaklar": [
+    "https://hedeffiyat.com.tr/dosyalar/rapor/garanti-bbva-yatirim-tavhl-hedef-fiyat-10062026-1781074155-7591.pdf",
+    "https://infoyatirim.com/blog/bilanco-analizleri/tav-havalimanlari-tavhl-20262-ceyrek-bilancosu"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 3500000000,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

@@ -1,0 +1,250 @@
+{
+ "not": "SASA olay çizelgesi (ajan araştırması, web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "SASA",
+   "sektor": null,
+   "baslangic": "2024-05-24",
+   "bitis": "2024-05-24",
+   "kamuya_acilma": null,
+   "tur": "bedelli",
+   "baslik": "Sasa nakdi tahsisli sermaye artırımı tamamlandı: 4,365 milyar TL, Erdemoğlu borcundan mahsup",
+   "anlam": "24 Mayıs 2024 KAP bildirimleriyle tahsisli artırımın tamamlandığı; 4.365.000.000 TL fonun Erdemoğlu Holding'in şirkete verdiği borçlardan mahsup edileceği açıklandı. Borç yükü yüksek şirkete hakim ortak desteği anlamına geliyor.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.6,
+   "etiketler": [
+    "tahsisli",
+    "Erdemoğlu",
+    "sermaye artırımı"
+   ],
+   "kaynaklar": [
+    "https://www.forbes.com.tr/haberler/sasa-kap-ta-duyurdu-spk-sarta-bagli-sermaye-artirimina-onay-verdi",
+    "https://rotaborsa.com/?p=173528"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 4365000000,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "SASA",
+   "sektor": null,
+   "baslangic": "2024-08-08",
+   "bitis": "2024-08-08",
+   "kamuya_acilma": null,
+   "tur": "bedelsiz",
+   "baslik": "Sasa %700 bedelsiz sermaye artırımına SPK onayı (sermaye 5,41 → 43,28 milyar TL)",
+   "anlam": "YK kararı 27 Mart 2024; SPK başvurusu 7 Haziran 2024; KAP'a göre onay 8 Ağustos 2024, bedelsiz hakların kullanımı 12 Ağustos 2024'te başladı. Sermaye 5.410.014.118,1 TL'den 43.280.112.944,8 TL'ye çıktı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.65,
+   "etiketler": [
+    "bedelsiz",
+    "SPK onayı"
+   ],
+   "kaynaklar": [
+    "https://www.cnnturk.com/ekonomi/sasa-bedelsiz-ne-zaman-spk-onayladi-2138676",
+    "https://www.ekonomist.com.tr/sirketler/sasa-ya-spk-dan-onay-geldi-49995",
+    "https://kap.org.tr/tr/api/BildirimPdf/1323378"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": 7.0,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "SASA",
+   "sektor": null,
+   "baslangic": "2024-11-28",
+   "bitis": "2024-11-28",
+   "kamuya_acilma": null,
+   "tur": "bedelli",
+   "baslik": "SPK, Sasa'nın Erdemoğlu Holding'e 535,5 milyon TL nominal tahsisli artırımını onayladı",
+   "anlam": "Başvuru 2 Eylül 2024'te yapılmıştı; 28 Kasım 2024 KAP'ta ortak Erdemoğlu Holding'e yaklaşık 535,5 milyon TL'lik tahsisli artırım onaylandı. Şartlı artırım ile çıkarılmış sermaye 46,25 milyar TL'ye yükseliyor.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.5,
+   "etiketler": [
+    "tahsisli",
+    "SPK onayı",
+    "Erdemoğlu"
+   ],
+   "kaynaklar": [
+    "https://www.capital.com.tr/haberler/tum-haberler/sasanin-sermaye-artirimina-onay-geldi",
+    "https://paratic.com/spkdan-sermaye-artirimi-onaylari-sasa-listede/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 535500000,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "SASA",
+   "sektor": null,
+   "baslangic": "2025-03-03",
+   "bitis": "2025-03-03",
+   "kamuya_acilma": null,
+   "tur": "yatirim",
+   "baslik": "Sasa Adana PTA tesisi (1,72 milyar USD) ticari üretime geçti",
+   "anlam": "Adana'daki yeni PTA tesisi 1 milyar 720 milyon USD yatırımla tamamlanarak 3 Mart 2025 itibarıyla ticari üretime geçti. Büyük yatırım döngüsünün önemli bir aşaması; ancak yüksek finansman yükü eşlik ediyor.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.65,
+   "etiketler": [
+    "yatırım",
+    "PTA",
+    "Adana"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/sasanin-230-milyon-dolarlik-tesisleri-ticari-uretime-basladi",
+    "https://www.borsaningundemi.com/haber/sasa-polyester-dev-elyaf-yatirimini-tamamladi-1867117"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 1720000000,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "SASA",
+   "sektor": null,
+   "baslangic": "2025-11-20",
+   "bitis": "2025-11-20",
+   "kamuya_acilma": null,
+   "tur": "yatirim",
+   "baslik": "Sasa yeni elyaf bölümü üretime başladı (140 milyon USD yatırım, 70 milyon USD ciro katkısı)",
+   "anlam": "20 Kasım 2025 tarihli KAP bildirimine göre yeni elyaf bölümü devreye girdi; güncel yatırım değeri 140 milyon USD, beklenen ciro katkısı 70 milyon USD. Başka bir özetteki 25 Eylül 2025 / 650 milyon USD rakamlarıyla çelişki var; kapsam netleştirilemedi.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.4,
+   "etiketler": [
+    "yatırım",
+    "elyaf"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/sasa-polyester-yeni-elyaf-bolumunde-uretime-basladi/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 140000000,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "SASA",
+   "sektor": null,
+   "baslangic": "2026-03-10",
+   "bitis": "2026-03-10",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Sasa 2025: yıllık net zarar 21,99 milyar TL (2024: 23,93 milyar TL kâr), 4Ç zarar 11,44 milyar TL",
+   "anlam": "2025 yılı net dönem zararı 21.985.556.000 TL; 2024'te 23,9 milyar TL kâr vardı (kârdan zarara dönüş). 4Ç25 zararı 11,44 milyar TL. Finansman giderleri parasal kazancı aştı; net borç 121,7 milyar TL, Net Borç/FAVÖK 18,6x. Konsensüs bulunamadı.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.75,
+   "etiketler": [
+    "bilanço",
+    "zarar",
+    "finansman gideri"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/borsa/finansman-giderleri-kari-sildi-zarar-geldi-sasa-2025-yili-bilancosunu-acikladi-sasa-bilanco-sasa-polyester-finansman-raporu-sasa-hisse-sasa-kar-h26448",
+    "https://www.forbes.com.tr/ekonomi/sasa-2025-te-zarara-dondu-finansman-giderleri-bilancoyu-baskiladi",
+    "https://www.finansopia.com/kap-bildirimleri/sasa-polyester-sasa-2025-yili-4-ceyrek-bilancosunu-acikladi/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": -21985556000,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "SASA",
+   "sektor": null,
+   "baslangic": "2026-08-17",
+   "bitis": "2026-08-17",
+   "kamuya_acilma": null,
+   "tur": "bedelli",
+   "baslik": "Sasa YK: Erdemoğlu Holding'e 7,185 milyar TL satış hasılalı nakdi tahsisli sermaye artırımı kararı",
+   "anlam": "17 Ağustos 2026 yönetim kurulu kararıyla ihraç edilecek payların tamamı hakim ortak Erdemoğlu Holding'e satılacak; hedef satış hasılatı 7,185 milyar TL, nominal tutar borsa fiyatına göre belirlenecek (bir kaynakta nominal 52,5 milyar TL anılıyor). Yüksek borç altında ortak desteği.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.6,
+   "etiketler": [
+    "tahsisli",
+    "Erdemoğlu",
+    "sermaye artırımı"
+   ],
+   "kaynaklar": [
+    "https://www.forbes.com.tr/para-yatirim/sasa-dan-7-milyar-185-milyon-liralik-tahsisli-sermaye-artirimi-karari",
+    "https://www.bloomberght.com/sasa-dan-sermaye-artirimi-karari-3785733",
+    "https://www.cnbce.com/borsa/sasadan-dev-sermaye-hamlesi-72-milyar-tllik-artirim-karari-h35218"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 7185000000,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

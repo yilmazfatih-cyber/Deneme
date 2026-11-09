@@ -1,0 +1,40 @@
+{
+ "not": "TTKOM olay çizelgesi (ajan araştırması, web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "TTKOM",
+   "sektor": null,
+   "baslangic": "2025-10-01",
+   "bitis": "2025-10-31",
+   "kamuya_acilma": null,
+   "tur": "ihale",
+   "baslik": "Türk Telekom 5G ihalesinde A3 700 MHz paketini 425 milyon dolara kazandı",
+   "anlam": "Üç operatörün teklifleri 2,945 milyar dolar; Turkcell 429, Vodafone 426, Türk Telekom 425 milyon dolar. Tam tarih doğrulanamadı (Ekim 2025 aralığı).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.35,
+   "etiketler": [
+    "5G",
+    "lisans",
+    "ihale"
+   ],
+   "kaynaklar": [
+    "https://www.dha.com.tr/gundem/5g-ihalesi-icin-teklifler-verildi-2739716",
+    "https://www.forbes.com.tr/ekonomi/ihale-tamamlandi-turkiye-5g-ye-2026-da-kavusacak"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 425000000,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

@@ -1,0 +1,377 @@
+{
+ "not": "BIMAS olay çizelgesi (ajan araştırması, web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "BIMAS",
+   "sektor": null,
+   "baslangic": "2025-02-01",
+   "bitis": "2025-02-28",
+   "kamuya_acilma": null,
+   "tur": "dava_ceza",
+   "baslik": "Rekabet Kurulu BİM'e yerinde inceleme veri silme nedeniyle 1,3 milyar TL idari para cezası",
+   "anlam": "BİM genel merkezindeki yerinde incelemede bir yöneticinin veri silmesi gerekçesiyle 1,3 milyar TL idari para cezası verildi; BİM itiraz etti. Gün bilgisi kaynakta yok (Şubat 2025).",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.4,
+   "etiketler": [
+    "rekabet",
+    "ceza"
+   ],
+   "kaynaklar": [
+    "https://www.hurriyet.com.tr/ekonomi/rekabeti-ihlal-etmedik-42183977",
+    "https://www.hisse.net/haber/bim-e-rekabet-kurumu-ndan-milyonluk-ceza-92840"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 1300000000,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "BIMAS",
+   "sektor": null,
+   "baslangic": "2025-03-10",
+   "bitis": "2025-03-10",
+   "kamuya_acilma": null,
+   "tur": "dava_ceza",
+   "baslik": "Rekabet Kurumu BİM, Migros, ŞOK dahil perakendecilere iki ayrı soruşturma açtı",
+   "anlam": "10 Mart 2025'te BİM, Migros ve ŞOK'un da aralarında olduğu perakende şirketleri ve tedarikçiler hakkında iki soruşturma açıldı (süt ürünlerinde bilgi değişimi dahil). Gıda enflasyonu baskısı altındaki sektör için regülasyon riski.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.7,
+   "etiketler": [
+    "rekabet",
+    "soruşturma",
+    "perakende"
+   ],
+   "kaynaklar": [
+    "https://medyascope.tv/2025/03/10/rekabet-kurumu-bim-sok-ve-migrosun-da-aralarinda-oldugu-perakende-sirketlerine-sorusturma-acti/",
+    "https://www.agbi.com/retail/2025/03/watchdog-investigates-four-of-turkeys-biggest-retailers/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "BIMAS",
+   "sektor": null,
+   "baslangic": "2026-09-04",
+   "bitis": "2026-09-04",
+   "kamuya_acilma": null,
+   "tur": "dava_ceza",
+   "baslik": "BİM Rekabet soruşturmasını 67,2 milyon TL uzlaşmayla kapattı",
+   "anlam": "Süt ürünlerinde hassas bilgi değişimi soruşturması uzlaşmayla kapandı; ödenecek tutar 67.217.829 TL (erken ödemede %25 indirim). Tarih Foreks URL'sine dayanıyor. Bir Midas başlığı '672 milyon' yazıyor, çelişki var.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.5,
+   "etiketler": [
+    "rekabet",
+    "uzlaşma"
+   ],
+   "kaynaklar": [
+    "https://www.foreks.com/haber/detay/6a9a463495016b5817e55d1a/PICNEWS/tr/bim-e-rekabet-sorusturmasinda-uzlasmaya-gitti-04-09-26/",
+    "https://www.getmidas.com/midasin-kulaklari/bim-rekabet-kurumu-sorusturmasini-672-milyon-tl-uzlasmayla-kapatti-p-732889"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 67217829,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "BIMAS",
+   "sektor": null,
+   "baslangic": "2025-06-24",
+   "bitis": "2025-07-01",
+   "kamuya_acilma": null,
+   "tur": "yonetim",
+   "baslik": "BİM CEO'su Haluk Dörtlüoğlu 1 Temmuz 2025'te ayrılıyor, Başkan Topbaş vekalet edecek",
+   "anlam": "24 Haziran 2025 KAP bildirimine göre Dörtlüoğlu FİLE'ye odaklanmak üzere 1 Temmuz'dan itibaren CEO görevinden ayrılıyor; yeni CEO atanana dek YK Başkanı Mahmud Muhammed Topbaş görevi yürütecek.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.7,
+   "etiketler": [
+    "yönetim",
+    "CEO"
+   ],
+   "kaynaklar": [
+    "https://www.capital.com.tr/haberler/tum-haberler/bimde-ust-duzey-yonetici-degisikligi"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "BIMAS",
+   "sektor": null,
+   "baslangic": "2026-02-19",
+   "bitis": "2026-02-19",
+   "kamuya_acilma": null,
+   "tur": "bedelsiz",
+   "baslik": "BİM yönetimi %100 bedelsiz sermaye artırımı kararı aldı (600 milyon TL → 1,2 milyar TL)",
+   "anlam": "YK kararı 19 Şubat 2026; SPK başvurusu 24 Şubat'ta. Artırım iç kaynaklardan, 600 milyon TL tutarında (%100).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.7,
+   "etiketler": [
+    "bedelsiz",
+    "sermaye artırımı"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/borsa/bim-yuzde-100-bedelsiz-sermaye-artirimi-icin-spkdan-onay-aldi-h29938",
+    "https://paratic.com/bimden-bedelsiz-sermaye-artirimi-icin-spk-basvurusu/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 600000000,
+    "para_birimi": "TRY",
+    "oran": 1.0,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "BIMAS",
+   "sektor": null,
+   "baslangic": "2026-05-07",
+   "bitis": "2026-05-18",
+   "kamuya_acilma": null,
+   "tur": "bedelsiz",
+   "baslik": "SPK BİM'in %100 bedelsiz sermaye artırımını onayladı (7 Mayıs 2026); paylar 18 Mayıs'ta hesaplara geçti",
+   "anlam": "SPK bülteni 7 Mayıs 2026'da 600 milyon TL'lik %100 bedelsizi onayladı; çıkarılmış sermaye 1,2 milyar TL oldu, paylar 18.05.2026'da hesaplara aktarıldı, esas sözleşme tescili 22.05.2026.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.8,
+   "etiketler": [
+    "bedelsiz",
+    "SPK onayı"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/borsa/bim-yuzde-100-bedelsiz-sermaye-artirimi-icin-spkdan-onay-aldi-h29938",
+    "https://www.hisse.net/haber/bimas-bedelsiz-tarihini-acikladi-lotlar-2-katina-cikacak-77821"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 600000000,
+    "para_birimi": "TRY",
+    "oran": 1.0,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "BIMAS",
+   "sektor": null,
+   "baslangic": "2025-06-18",
+   "bitis": "2025-12-17",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "BİM 2025 temettü: pay başına toplam brüt 13 TL, üç taksit (18 Haz, 17 Eyl, 17 Ara 2025)",
+   "anlam": "Taksitler brüt 4,00 + 4,00 + 5,00 TL (net toplam 11,05 TL).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.7,
+   "etiketler": [
+    "temettü",
+    "taksit"
+   ],
+   "kaynaklar": [
+    "https://www.ekonomist.com.tr/borsa/bim-bimas-temettu-miktari-ve-odeme-tarihi-belli-oldu-2025-59576",
+    "https://www.ekonomist.com.tr/borsa/bim-bimas-2-taksit-temettu-odeme-tarihi-ne-zaman--65208"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 13.0,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "BIMAS",
+   "sektor": null,
+   "baslangic": "2026-06-17",
+   "bitis": "2026-09-16",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "BİM 2026 temettü: ilk iki taksit brüt 2,00 TL (17 Haz) + 2,50 TL (16 Eyl)",
+   "anlam": "Bedelsiz sonrası pay sayısı iki katına çıktığı için tutarlar eski yıla doğrudan kıyaslanamaz; üçüncü taksit kaynaklarda yok.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.6,
+   "etiketler": [
+    "temettü",
+    "taksit"
+   ],
+   "kaynaklar": [
+    "https://www.hisse.net/haber/bim-temettusu-geliyor-2-taksit-odemeleri-yapilacak-95948",
+    "https://rotaborsa.com/?p=480381"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 4.5,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "BIMAS",
+   "sektor": null,
+   "baslangic": "2026-07-03",
+   "bitis": "2026-07-27",
+   "kamuya_acilma": null,
+   "tur": "geri_alim",
+   "baslik": "BİM pay geri alım programı: azami 2,5 milyon pay, azami 1 milyar TL (YK 3 Temmuz 2026)",
+   "anlam": "Fiyatın şirket performansını yansıtmaması gerekçesiyle başlatıldı; Temmuz alımları ~367-394 TL; elde tutulan pay 16.579.771 adet (%1,3816).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.65,
+   "etiketler": [
+    "geri alım"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/borsa/bimden-pay-geri-alim-aciklamasi-h32958",
+    "https://www.dunya.com/ekonomi/bim-dev-pay-geri-alim-programi-baslatti-haberi-793886"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 1000000000,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "BIMAS",
+   "sektor": null,
+   "baslangic": "2025-09-01",
+   "bitis": "2025-09-30",
+   "kamuya_acilma": null,
+   "tur": "geri_alim",
+   "baslik": "BİM geri alım programı: azami 2 milyon pay, 1,1 milyar TL iç kaynak (Eylül 2025)",
+   "anlam": "Pay geri alımı iç kaynaklardan azami 1,1 milyar TL; hedef paya ulaşılınca program biter. Gün doğrulanmadı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.4,
+   "etiketler": [
+    "geri alım"
+   ],
+   "kaynaklar": [
+    "https://www.gzt.com/ekonomi/bim-bimas-geri-alim-yapacak-mi-bim-ne-kadarlik-pay-geri-alimi-yapacak-ekonomi-haberleri-3805310",
+    "https://www.borsamatik.com.tr/bimden-pay-geri-alim-aciklamasi-haber-167070"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 1100000000,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "BIMAS",
+   "sektor": null,
+   "baslangic": "2026-08-17",
+   "bitis": "2026-08-17",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "BİM 2Ç26 net kârı ~8,02 milyar TL, Matriks ortalamasının (5,97 milyar TL) üzerinde",
+   "anlam": "KAP bildirimi 17.08.2026. Kaynaklarda net kâr ve artış oranı çelişiyor; beklenti aşımı yaklaşık %34 görünüyor.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.5,
+   "etiketler": [
+    "bilanço",
+    "beklenti üstü"
+   ],
+   "kaynaklar": [
+    "https://rotaborsa.com/bim-birlesik-magazalar-bimas-2026-yili-2-ceyrek-bilancosunu-acikladi-iste-detaylar/",
+    "https://www.gcmyatirim.com.tr/arastirma-analiz/ozel-raporlar/2026-08-18-bim-birlesik-magazalar-bimas-2026-2-ceyrek-bilanco-analizi"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 8020311000,
+    "beklenti": 5970500000,
+    "sure_ay": null
+   }
+  }
+ ]
+}

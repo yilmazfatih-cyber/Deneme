@@ -1,0 +1,138 @@
+{
+ "not": "ULKER olay çizelgesi (ajan araştırması, web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "ULKER",
+   "sektor": null,
+   "baslangic": "2026-04-01",
+   "bitis": "2026-04-01",
+   "kamuya_acilma": null,
+   "tur": "endeks",
+   "baslik": "Ülker Bisküvi BIST 30 endeksinden çıkarıldı (1 Nisan 2026'dan geçerli), yerine VakıfBank",
+   "anlam": "Borsa İstanbul endeks değişikliği 1 Nisan 2026'da yürürlüğe girdi; Ülker yedek paylar arasında da anılıyor. Endeks fonu talebinin azalması beklenir. Bir kaynak Haziran'da değişiklik olmadığını yazıyor.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.6,
+   "etiketler": [
+    "endeks",
+    "BIST30"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/borsa/borsada-endeksleri-degisecek-hisseler-belli-oldu-ulker-cikiyor-vakifbank-giriyor-h27000"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ULKER",
+   "sektor": null,
+   "baslangic": "2026-06-11",
+   "bitis": "2026-06-11",
+   "kamuya_acilma": null,
+   "tur": "pay_satisi",
+   "baslik": "Murat Ülker, Ülker Bisküvi'deki %3,06 payını 298,41 TL'den Kökler Yatırım Holding'e sattı",
+   "anlam": "11 Haziran 2026 KAP bildirimine göre yaklaşık 11,3 milyon pay borsa dışı satıldı; kaynaklar kalan payı ve adedi farklı veriyor.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.55,
+   "etiketler": [
+    "pay satışı",
+    "ortaklık"
+   ],
+   "kaynaklar": [
+    "https://rotaborsa.com/?p=450088",
+    "https://paratic.com/ulker-paylarinda-dikkat-ceken-islem-murat-ulker-hisse-satti/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": 0.0306,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ULKER",
+   "sektor": null,
+   "baslangic": "2026-06-19",
+   "bitis": "2026-06-19",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Ülker 2025 kârından pay başına net 4,87 TL (brüt ~5,73 TL) nakit temettü",
+   "anlam": "Net 4,87 TL, nominal paya %573,28 brüt oran; ödeme 19 Haziran, hesaplara geçiş 23 Haziran 2026. 2025'teki oran %806,98 idi.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.55,
+   "etiketler": [
+    "temettü"
+   ],
+   "kaynaklar": [
+    "https://www.hisse.net/haber/amp/ulker-yuzde-573-un-uzerinde-temettu-verecek-81565",
+    "https://www.finansopia.com/kap-bildirimleri/ulker-biskuvi-ulker-2026-yili-temettu-kararini-acikladi/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 5.7328,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ULKER",
+   "sektor": null,
+   "baslangic": "2026-11-05",
+   "bitis": "2026-11-05",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Ülker 3Ç26'da 546 milyon TL net zarar; beklenti ortalama 227 milyon TL kâr",
+   "anlam": "Kârdan zarara dönüş; beklentiden belirgin sapma. Açıklama günü doğrulanamadı (Kasım başı varsayımı).",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.3,
+   "etiketler": [
+    "bilanço",
+    "zarar"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/sirket-bilancolari/ulker-biskuvi-ulker-2026-3-ceyrek-bilancosunu-acikladi-h41221"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": -546000000,
+    "beklenti": 227000000,
+    "sure_ay": null
+   }
+  }
+ ]
+}

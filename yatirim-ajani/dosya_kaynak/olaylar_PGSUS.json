@@ -1,0 +1,140 @@
+{
+ "not": "PGSUS olay çizelgesi (ajan araştırması, web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "PGSUS",
+   "sektor": null,
+   "baslangic": "2024-12-19",
+   "bitis": "2024-12-19",
+   "kamuya_acilma": null,
+   "tur": "yatirim",
+   "baslik": "Pegasus Boeing'den 200 adet 737-10 siparişi (100 kesin + 100 opsiyon), liste değeri ~36 milyar dolar",
+   "anlam": "19 Aralık 2024 KAP açıklaması. Teslimatlar 2028'den itibaren. Filo büyümesi ve Airbus-only stratejisinin değişmesi anlamına geliyor.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.85,
+   "etiketler": [
+    "uçak siparişi",
+    "Boeing"
+   ],
+   "kaynaklar": [
+    "https://www.flypgs.com/basin-bultenleri/pegasus-hava-yollarindan-tarihi-ucak-siparisi-2024",
+    "https://www.forbes.com.tr/ekonomi/pegasus-tan-200-ucak-siparisi-boeing-ile-36-milyar-dolarlik-anlasma"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 36000000000,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "PGSUS",
+   "sektor": null,
+   "baslangic": "2024-11-20",
+   "bitis": "2024-11-20",
+   "kamuya_acilma": null,
+   "tur": "pay_satisi",
+   "baslik": "Esas Holding Pegasus'ta %3,85 pay (~19,2 milyon adet) sattı: 217,53 TL, %7 iskontolu",
+   "anlam": "Hızlandırılmış blok satış; Esas payı ~%56,7'den ~%52,8'e indi. Alıcılar uluslararası yatırımcılar.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.7,
+   "etiketler": [
+    "blok satış",
+    "Esas Holding"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/esas-holding-pegasusta-dev-pay-satisi-gerceklestirdi/",
+    "https://www.bloomberght.com/esas-holding-ten-pegasus-ta-hisse-satisi-3735001"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": 0.0385,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "PGSUS",
+   "sektor": null,
+   "baslangic": "2025-12-18",
+   "bitis": "2025-12-18",
+   "kamuya_acilma": null,
+   "tur": "is_iliskisi",
+   "baslik": "Pegasus 737-10 filosu için CFM motor tedarik ve bakım anlaşmaları",
+   "anlam": "18 Aralık 2025 KAP bildirimi; tutar açıklanmadı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.6,
+   "etiketler": [
+    "motor",
+    "CFM",
+    "Boeing"
+   ],
+   "kaynaklar": [
+    "https://www.bloomberght.com/pegasus-boeing-737leri-tutacak-2350142"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "PGSUS",
+   "sektor": null,
+   "baslangic": "2025-12-25",
+   "bitis": "2025-12-25",
+   "kamuya_acilma": null,
+   "tur": "borclanma",
+   "baslik": "Pegasus 8 adet A321neo teslimatını finansal kiralamayla finanse etme kararı",
+   "anlam": "Teslimatlar 2026 sonuna kadar; 2012 Airbus siparişi kapsamında. Tarih ch-aviation haberine dayanıyor.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.4,
+   "etiketler": [
+    "kiralama",
+    "Airbus"
+   ],
+   "kaynaklar": [
+    "https://www.ch-aviation.com/news/162413"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

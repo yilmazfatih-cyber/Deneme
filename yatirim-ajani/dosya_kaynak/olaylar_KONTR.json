@@ -1,0 +1,142 @@
+{
+ "not": "KONTR olay çizelgesi (ajan araştırması, web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "KONTR",
+   "sektor": null,
+   "baslangic": "2024-01-09",
+   "bitis": "2024-01-09",
+   "kamuya_acilma": null,
+   "tur": "is_iliskisi",
+   "baslik": "Kontrolmatik 10,9 milyon USD'lik sözleşme imzaladı (KAP 9 Ocak 2024)",
+   "anlam": "9 Ocak 2024'te KAP'a bildirilen sözleşme bedeli KDV hariç 10.905.825 USD. Pomega/enerji depolama ve elektrifikasyon iş kolundaki yeni iş akışı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.6,
+   "etiketler": [
+    "sözleşme"
+   ],
+   "kaynaklar": [
+    "https://borsacoo.com/firma/KONTR/bildirimler?page=7"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 10905825,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "KONTR",
+   "sektor": null,
+   "baslangic": "2025-12-04",
+   "bitis": "2025-12-23",
+   "kamuya_acilma": null,
+   "tur": "bedelli",
+   "baslik": "SPK Kontrolmatik'in %100 bedelli sermaye artırımını onayladı (650 milyon → 1,3 milyar TL)",
+   "anlam": "Başlangıçta %300 planlanan bedelli, YK'nın 27 Kasım 2025 kararıyla %100'e indirildi; SPK onayı 4 Aralık 2025 bülteninde yayımlandı, KAP bildirimi 5 Aralık. Yeni pay alma hakları 9-23 Aralık 2025'te kullanıldı. Yüksek net borç (~14,2 milyar TL) bağlamında finansman.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.8,
+   "etiketler": [
+    "bedelli",
+    "SPK onayı",
+    "rüçhan"
+   ],
+   "kaynaklar": [
+    "https://www.politikam.com/kontrolmatik-sermayesini-100-artiriyor-yeni-pay-alma-haklari-ne-zaman-yapilacak",
+    "https://www.cnbce.com/borsa/kontrolmatik-sermaye-artirimina-gitti-hak-kullanimi-bugun-basliyor-kontrolmatik-hisse-fiyati-ne-kadar-kontrolmatik-bedelli-sermaye-artirimi-ne-zaman-h20918"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 650000000,
+    "para_birimi": "TRY",
+    "oran": 1.0,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "KONTR",
+   "sektor": null,
+   "baslangic": "2026-02-11",
+   "bitis": "2026-02-11",
+   "kamuya_acilma": null,
+   "tur": "is_iliskisi",
+   "baslik": "Pomega 11 projede 62,3 milyon USD'lik enerji depolama sözleşmesi imzaladı",
+   "anlam": "11 Şubat 2026 KAP: yurt içi müşteriyle toplam 62.315.119 USD; Pomega mühendislik, tedarik, kurulum ve devreye alma üstleniyor (ör. Saruhanlı 34 MW/34 MWh, Zenkar-1/2, Batman-1). Hisse gün içinde %5'ten fazla yükseldi.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.85,
+   "etiketler": [
+    "depolama",
+    "Pomega",
+    "sözleşme"
+   ],
+   "kaynaklar": [
+    "https://www.finansopia.com/kap-bildirimleri/kontrolmatik-kontr-623-milyon-dolarlik-sozlesmeyi-acikladi/",
+    "https://paratic.com/kontrolmatik-istirakinden-62-3-milyon-dolarlik-anlasma/",
+    "https://kap.org.tr/en/api/BildirimPdf/1555850"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 62315119,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "KONTR",
+   "sektor": null,
+   "baslangic": "2026-04-01",
+   "bitis": "2026-04-01",
+   "kamuya_acilma": null,
+   "tur": "bedelli",
+   "baslik": "Kontrolmatik YK: %200 bedelli artırım kararı (1,3 → 3,9 milyar TL, ~2,6 milyar TL nakit hedefi)",
+   "anlam": "1 Nisan 2026 YK kararıyla çıkarılmış sermaye %200 bedelli artırılarak 3,9 milyar TL'ye çıkarılacak; ~2,6 milyar TL nakit girişi hedefleniyor. SPK onay durumu doğrulanamadı.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.55,
+   "etiketler": [
+    "bedelli",
+    "sermaye artırımı"
+   ],
+   "kaynaklar": [
+    "https://borsaatlas.com/2026/04/02/kontrolmatikten-26-milyar-tllik-nakit-girisi-hedefiyle-bedelli-sermaye-artirimi-karari/",
+    "https://www.cnbce.com/borsa/kontrolmatik-kontr-225-sermaye-artirimi-nasil-gerceklesecek-p-42677"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 2600000000,
+    "para_birimi": "TRY",
+    "oran": 2.0,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

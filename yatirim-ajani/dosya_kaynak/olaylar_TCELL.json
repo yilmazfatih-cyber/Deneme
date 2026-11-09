@@ -1,0 +1,40 @@
+{
+ "not": "TCELL olay çizelgesi (ajan araştırması, web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "TCELL",
+   "sektor": null,
+   "baslangic": "2025-10-01",
+   "bitis": "2025-10-31",
+   "kamuya_acilma": null,
+   "tur": "ihale",
+   "baslik": "Turkcell 5G ihalesinde 160 MHz ile 1,224 milyar dolarlık paket kazandı; lisanslar 2042'ye uzatıldı",
+   "anlam": "A1 700 MHz 429 + B1 214 + B4 187 + B5 186 + B6 208 milyon dolar. Bedel 2 Oca 2026, 25 Ara 2026, 2 May 2027'de üç taksit; 2G/3G/4.5G lisansları 2042'ye uzatıldı, 2029'dan itibaren gelirin %5'i ödenecek. Tam tarih doğrulanamadı (Ekim 2025 aralığı).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.4,
+   "etiketler": [
+    "5G",
+    "lisans",
+    "ihale"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/teknoloji/turkcell-kapa-bildirdi-12-milyar-dolarlik-lisans-2042ye-kadar-gecerli-h18430",
+    "https://www.forbes.com.tr/ekonomi/turkcell-5g-frekans-bedelini-uc-taksitte-odeyecek"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 1224000000,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

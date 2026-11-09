@@ -1,0 +1,242 @@
+{
+ "not": "ASTOR olay çizelgesi (ajan araştırması, web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "ASTOR",
+   "sektor": null,
+   "baslangic": "2025-08-15",
+   "bitis": "2025-08-15",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Astor Enerji Ağustos 2025 temettüsü: brüt 1,5120876 TL/pay (TARİH YAKLAŞIK)",
+   "anlam": "Ağustos 2025'te pay başına brüt 1,5120876 TL (%151,2), net 1,2852744 TL nakit temettü ödendi. Tam gün kaynakta belirtilmedi.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.35,
+   "etiketler": [
+    "temettü"
+   ],
+   "kaynaklar": [
+    "https://borsaatlas.com/2026/07/07/astor-sermaye-tavani-artirimi-spk/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 1.5120876,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ASTOR",
+   "sektor": null,
+   "baslangic": "2025-12-26",
+   "bitis": "2025-12-26",
+   "kamuya_acilma": null,
+   "tur": "is_iliskisi",
+   "baslik": "Astor Enerji ABD'li firmayla 82,1 milyon USD'lik iş sözleşmesi imzaladı",
+   "anlam": "26 Aralık 2025 KAP: 82.112.500 USD tutarında sözleşme, bedelin 2024 hasılatına oranı %13,24. ABD'deki transformatör talebinin ihracat siparişlerine dönüşmesi.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.8,
+   "etiketler": [
+    "sipariş",
+    "ABD",
+    "transformatör"
+   ],
+   "kaynaklar": [
+    "https://www.forbes.com.tr/para-yatirim/astor-enerji-den-82-1-milyon-dolarlik-yeni-is-sozlesmesi",
+    "https://www.hisse.net/haber/astor-enerji-den-tek-kalemde-ciroya-buyuk-katki-abd-ile-82-milyon-dolarlik-imza-atildi-43726"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 82112500,
+    "para_birimi": "USD",
+    "oran": 0.1324,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ASTOR",
+   "sektor": null,
+   "baslangic": "2026-03-25",
+   "bitis": "2026-03-25",
+   "kamuya_acilma": null,
+   "tur": "is_iliskisi",
+   "baslik": "Astor Enerji ABD'li firmalarla toplam 768,9 milyon USD'lik transformatör siparişi (2025 hasılatının %96,4'ü)",
+   "anlam": "YK 24 Mart 2026'da açıklama kararı aldı; 60-300 MVA transformatörler için 768.864.700 USD (~34,03 milyar TL), teslimat 2026'da başlayıp 2028 3Ç'de bitecek. Rakam 2025 yıl sonu hasılatının %96,4'ü. Hisse haberin ardından tavana yakın işlem gördü (~%9). KAP saati belirsiz.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.7,
+   "etiketler": [
+    "sipariş",
+    "ABD",
+    "dev sözleşme"
+   ],
+   "kaynaklar": [
+    "https://www.bloomberght.com/astor-enerji-abd-den-yuklu-siparis-aldi-3772711",
+    "https://www.forbes.com.tr/ekonomi/astor-enerji-abd-den-768-9-milyon-dolarlik-siparis-aldi",
+    "https://www.cnbce.com/borsa/astor-enerjiden-abd-hamlesi-769-milyon-dolarlik-siparis-aldi-h27244"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 768864700,
+    "para_birimi": "USD",
+    "oran": 0.964,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": 30
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ASTOR",
+   "sektor": null,
+   "baslangic": "2026-06-09",
+   "bitis": "2026-06-09",
+   "kamuya_acilma": "2026-06-09T09:48",
+   "tur": "is_iliskisi",
+   "baslik": "Astor Enerji 71,98 milyon USD'lik güç transformatörü sözleşmesi imzaladı (2025 hasılatının %9,39'u)",
+   "anlam": "08.06.2026'da imzalanan 132-220 MVA transformatör sözleşmesinin KAP bildirimi 9 Haziran 09:48'de yapıldı; teslimat 2027 2Ç-3Ç. Hisse.net'e göre haber sonrası satış baskısı arttı (BofA satıcı tarafta).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.85,
+   "etiketler": [
+    "sipariş",
+    "ABD",
+    "transformatör"
+   ],
+   "kaynaklar": [
+    "https://www.bloomberght.com/astor-enerji-abd-merkezli-sirketten-72-milyon-dolarlik-siparis-aldi-3779429",
+    "https://www.hisse.net/haber/amp/astor-71-9-milyon-dolarlik-dev-ihracati-duyurdu-bofa-satisa-gecti-80476"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 71982000,
+    "para_birimi": "USD",
+    "oran": 0.0939,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ASTOR",
+   "sektor": null,
+   "baslangic": "2026-06-02",
+   "bitis": "2026-06-02",
+   "kamuya_acilma": null,
+   "tur": "haber",
+   "baslik": "Astor kayıtlı sermaye tavanını 40 milyar TL'ye çıkarmak için başvurdu (10 kat artış, 2026-2030)",
+   "anlam": "KAP'ta 2 Haziran 2026 başvuru bildirimi; SPK uygun görüşü Temmuz 2026'da haberleştirildi. Bedelsiz artırım onayı değildir ancak sermaye artırımı için esneklik sağlar; şirket tarihinde bedelsiz yapmamış, özkaynaklar 29,3 milyar TL.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.5,
+   "etiketler": [
+    "kayıtlı sermaye",
+    "SPK"
+   ],
+   "kaynaklar": [
+    "https://borsaatlas.com/2026/06/02/astor-enerjide-stratejik-hamle-sermaye-tavani-40-milyar-tlye-cikiyor/",
+    "https://borsaatlas.com/2026/07/07/astor-sermaye-tavani-artirimi-spk/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ASTOR",
+   "sektor": null,
+   "baslangic": "2026-10-02",
+   "bitis": "2026-10-02",
+   "kamuya_acilma": null,
+   "tur": "is_iliskisi",
+   "baslik": "Astor ABD siparişi kapsamında 5 milyon USD ön ödeme aldı",
+   "anlam": "2 Ekim 2026 KAP bildirimi: ABD'de kurulacak tesisler için trafo siparişi kapsamında 5 milyon USD ön ödeme alındı (bir kaynak 90 milyon USD sipariş teyidinden söz ediyor, kaynaklar tam örtüşmüyor).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.55,
+   "etiketler": [
+    "ön ödeme",
+    "ABD"
+   ],
+   "kaynaklar": [
+    "https://www.foreks.com/haber/detay/6abfb52d95016b5817e642a4/FRKS/tr/astor-enerji-abd-siparisi-kapsaminda-5-milyon-dolar-tutarinda-on-odeme-aldi-02-10-26/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 5000000,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ASTOR",
+   "sektor": null,
+   "baslangic": "2026-10-15",
+   "bitis": "2026-10-15",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Astor 2025 karı temettü teklifi: brüt 2,1911 TL/pay, hak kullanım 15 Ekim 2026",
+   "anlam": "YK pay başına brüt 2,1911471 TL, net 1,8624750 TL nakit temettü önerdi; genel kurul onayı halinde hak kullanım 15 Ekim, kayıt 16 Ekim, ödeme 19 Ekim 2026. Teklifin açıklanma günü teyit edilemedi; tarih hak kullanım tarihidir.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.5,
+   "etiketler": [
+    "temettü"
+   ],
+   "kaynaklar": [
+    "https://www.dunya.com/sirketler/astor-enerji-temettu-teklifini-acikladi-haberi-831367"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 2.1911471,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

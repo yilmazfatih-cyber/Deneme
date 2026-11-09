@@ -1,0 +1,40 @@
+{
+ "not": "ODAS olay çizelgesi (ajan araştırması, web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "ODAS",
+   "sektor": null,
+   "baslangic": "2025-11-13",
+   "bitis": "2025-11-13",
+   "kamuya_acilma": null,
+   "tur": "yatirim",
+   "baslik": "OdaŞ, iştiraki Çan2 Termik'in bedelli artırımına 878,6 milyon TL sermaye avansıyla katıldı",
+   "anlam": "OdaŞ (%29,29 pay) 13 Kasım 2025 KAP'ta, Çan2 Termik'in 21 Ağustos 2025 tarihli bedelli artırım kararı (7 → 10 milyar TL) kapsamında 878,6 milyon TL avans aktardığını bildirdi. Bu OdaŞ'ın kendi artırımı değil; iştirak finansmanı için nakit çıkışıdır.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.55,
+   "etiketler": [
+    "iştirak",
+    "Çan2",
+    "sermaye avansı"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/odas-can2-termik-sermaye-artirimina-katildi/",
+    "https://www.yatirimx.com.tr/ekonomi/odastan-canteye-sermaye-taahhudu-8785-milyon-tl-avans-aktarimi/14803"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 878600000,
+    "para_birimi": "TRY",
+    "oran": 0.2929,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

@@ -1,0 +1,146 @@
+{
+ "not": "PETKM olay çizelgesi (ajan araştırması, web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "PETKM",
+   "sektor": null,
+   "baslangic": "2025-07-01",
+   "bitis": "2025-07-01",
+   "kamuya_acilma": null,
+   "tur": "pay_satisi",
+   "baslik": "Petkim, Petlim Limancılık'taki %93,47 payını SOCAR Aliağa Liman'a 160 milyon USD'ye devretti",
+   "anlam": "Yönetim kurulu 30 Haziran 2025'te kararlaştırdı, KAP'a 1 Temmuz 2025'te bildirildi. Pay satışıyla Petkim'in Petlim'deki payı %0'a indi; işlem grup içi (SOCAR) olup bilançoya nakit/varlık satışı etkisi taşıyor.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.65,
+   "etiketler": [
+    "pay satışı",
+    "SOCAR",
+    "liman"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/petkim-limanciliktan-cekildi-hisseler-socara-gecti/",
+    "https://www.forbes.com.tr/ekonomi/petkim-liman-sirketindeki-tum-hisselerini-socar-a-devretti"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 160000000,
+    "para_birimi": "USD",
+    "oran": 0.9347,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "PETKM",
+   "sektor": null,
+   "baslangic": "2025-11-05",
+   "bitis": "2025-11-05",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Petkim 3Ç25: net zarar 1,21 milyar TL, beklenti ~504 milyon TL zarar (TARİH YAKLAŞIK)",
+   "anlam": "3Ç25 net zararı 1.214 milyon TL ile konsensüs 504 milyon TL zararın çok üzerinde (beklenti dışı) geldi; 9 aylık net zarar 4,77 milyar TL. Maliyet baskısı ve finansman giderleri öne çıktı. Açıklama günü kaynaklarda net görünmediği için tarih yaklaşıktır.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.3,
+   "etiketler": [
+    "bilanço",
+    "beklenti altı",
+    "zarar"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/beklenti-ustu-net-zarar-aciklayan-petkmde-hedef-fiyat-korundu/",
+    "https://www.qnbinvest.com.tr/investodak/qnbarastirma/petkm-3c25-bilanco-sonuclari"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": -1214000000,
+    "beklenti": -504000000,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "PETKM",
+   "sektor": null,
+   "baslangic": "2026-03-05",
+   "bitis": "2026-03-05",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Petkim 2025 bilançosu: 4Ç net zarar 5,25 milyar TL (beklenti ~2,1 milyar), yıllık -10,23 milyar TL",
+   "anlam": "4Ç25 net zararı 5,25 milyar TL; 8 kurum anketinde ortalama beklenti ~2,09 milyar TL zarardı. Yıllık net zarar 10,23 milyar TL (2024: 8,30 mlr), FAVÖK -3,47 milyar TL, net borç 46,5 milyar TL. Temettü dağıtılmadı.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.75,
+   "etiketler": [
+    "bilanço",
+    "beklenti altı",
+    "zarar"
+   ],
+   "kaynaklar": [
+    "https://www.finansopia.com/kap-bildirimleri/petkim-petkm-2025-yili-4-ceyrek-bilancosunu-acikladi/",
+    "https://paratic.com/petkim-2025i-10-2-milyar-tl-net-zararla-kapatti/",
+    "https://www.qnbinvest.com.tr/investodak/qnbarastirma/4c25-bilanco-degerlendirmesi-petkim-petkm"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": -5250000000,
+    "beklenti": -2100000000,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "PETKM",
+   "sektor": null,
+   "baslangic": "2026-06-02",
+   "bitis": "2026-06-02",
+   "kamuya_acilma": null,
+   "tur": "birlesme_devralma",
+   "baslik": "SOCAR Türkiye Petrokimya'nın SOCAR Türkiye Enerji ile birleşmesi: Petkim'deki %51 pay sahibi değişti",
+   "anlam": "Grup içi yeniden yapılandırma kapsamında Petkim'in kontrolünü elinde tutan %51'lik pay, birleşme sonrası SOCAR Türkiye Enerji'ye geçti; şirket çoğunluk kontrolünün SOCAR'da kaldığını belirtti. Pay sahipliğinde fiilî kontrol değişikliği yok.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.5,
+   "etiketler": [
+    "ortaklık",
+    "SOCAR",
+    "birleşme"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/borsa/petkimden-petkm-socar-aciklamasi-petkimde-yuzde-51lik-payin-sahibi-degisti-h30956",
+    "https://paratic.com/petkimde-yuzde-51lik-payin-sahibi-degisti/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": 0.51,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

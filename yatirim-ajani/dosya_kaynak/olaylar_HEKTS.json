@@ -1,0 +1,111 @@
+{
+ "not": "HEKTS olay çizelgesi (ajan araştırması, web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "HEKTS",
+   "sektor": null,
+   "baslangic": "2024-09-12",
+   "bitis": "2024-09-18",
+   "kamuya_acilma": null,
+   "tur": "bedelli",
+   "baslik": "SPK Hektaş'ın %233,2 bedelli sermaye artırımını onayladı (2,53 → 8,43 milyar TL)",
+   "anlam": "12 Eylül 2024 SPK bülteniyle onaylandı; rüçhan hakkı kullanımı 18 Eylül 2024'te başladı. Sermaye 2,53 milyar TL'den 8,43 milyar TL'ye çıkacaktı. Kaynaklarda 2022 artırımıyla tarih karışıklığı var, oran/sermaye değerleri tutarlı.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.7,
+   "etiketler": [
+    "bedelli",
+    "rüçhan",
+    "SPK onayı"
+   ],
+   "kaynaklar": [
+    "https://www.getmidas.com/midasin-kulaklari/spk-hektasin-bedelli-sermaye-artirimini-onayladi-p-48180",
+    "https://www.ekonomist.com.tr/borsa/hektas-hekts-bedelli-tarihini-duyurdu-53241"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": 2.332,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "HEKTS",
+   "sektor": null,
+   "baslangic": "2026-06-25",
+   "bitis": "2026-06-29",
+   "kamuya_acilma": null,
+   "tur": "pay_satisi",
+   "baslik": "OYAK Hektaş'ta %7'lik payını (590,1 milyon adet) hızlandırılmış talep toplamayla satıyor",
+   "anlam": "OYAK kurumsal yatırımcılara 590,1 milyon adet (%7) pay için toptan satış başlattı; 25 Haziran'da satış, 29 Haziran'da takas bekleniyordu. OYAK payı %55,37'den %48,37'ye iniyor, en büyük ortak kalıyor. Fiyat teyit edilemedi (3,39 TL bir KAP özetinde anılıyor, belirsiz). Mayıs 2026'da ayrı bir %10'luk satış kararı haberi de var.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.6,
+   "etiketler": [
+    "blok satış",
+    "OYAK",
+    "pay satışı"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/borsa/oyaktan-hektas-hisselerinde-yuzde-7lik-satis-hamlesi-h32102",
+    "https://www.borsamatik.com.tr/oyak-hektastaki-yuzde-7-payini-satma-karari-aldi-haber-179252",
+    "https://www.bloomberght.com/oyak-tan-hektas-ta-hisse-satisi-karari-3777232"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": 0.07,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "HEKTS",
+   "sektor": null,
+   "baslangic": "2026-10-01",
+   "bitis": "2026-10-01",
+   "kamuya_acilma": null,
+   "tur": "bedelli",
+   "baslik": "SPK onayı: Hektaş OYAK'a 702,1 milyon TL nominal tahsisli artırım (3,39 TL/pay, ~2,38 milyar TL)",
+   "anlam": "Temmuz 2026'da OYAK 2,38 milyar TL sermaye avansı verdi; SPK tahsisli artırımı olumlu karşıladı (30 Eylül/1 Ekim 2026 kaynaklarda). 702,06 milyon TL nominal pay 3,39 TL'den OYAK'a satıldı (artış %8,33); sermaye 9,13 milyar TL. Gelir finansal borç ödemesinde kullanılacak; OYAK oy hakkı %46,87→%50,95.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.65,
+   "etiketler": [
+    "tahsisli",
+    "OYAK",
+    "borç ödeme"
+   ],
+   "kaynaklar": [
+    "https://www.foreks.com/haber/detay/6abdd76895016b5817e631fe/FRKS/tr/duzeltme-spk-hektas-in-tahsisli-sermaye-artirimi-talebini-olumlu-karsiladi-01-10-26/",
+    "https://www.cnbce.com/borsa/spkdan-hektasa-tahsisli-sermaye-onayi-h38452"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 2380000000,
+    "para_birimi": "TRY",
+    "oran": 0.0833,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

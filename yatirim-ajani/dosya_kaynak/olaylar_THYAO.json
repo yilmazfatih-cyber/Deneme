@@ -1,0 +1,207 @@
+{
+ "not": "THYAO olay çizelgesi (ajan araştırması, web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "THYAO",
+   "sektor": null,
+   "baslangic": "2025-09-26",
+   "bitis": "2025-09-26",
+   "kamuya_acilma": null,
+   "tur": "yatirim",
+   "baslik": "THY Boeing'den 225 uçak: 75 adet 787 (50 kesin+25 opsiyon) ve 150 adet 737 MAX (100 kesin+50 opsiyon)",
+   "anlam": "KAP açıklaması 26 Eylül 2025. 150 kesin, 75 opsiyonlu uçak; teslimatlar 2029-2034 civarı. 737 MAX kısmı CFM motor anlaşmasına bağlı. Resmi tutar açıklanmadı; basında liste fiyatlı ~18-20 milyar dolar tahmini var.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.8,
+   "etiketler": [
+    "uçak siparişi",
+    "Boeing"
+   ],
+   "kaynaklar": [
+    "https://medyascope.tv/2025/09/26/erdogan-trump-gorusmesinden-sonra-duyuruldu-thy-boeingden-225-ucak-aliyor/",
+    "https://www.ntv.com.tr/turkiye/reuters-thy-150-ucak-satin-almak-icin-boeingleanlasti,19J9iGdHnESb_8AVr_0I5g"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "THYAO",
+   "sektor": null,
+   "baslangic": "2025-05-07",
+   "bitis": "2025-05-07",
+   "kamuya_acilma": null,
+   "tur": "is_iliskisi",
+   "baslik": "THY Teknik-Rolls-Royce uzun vadeli motor bakım anlaşması",
+   "anlam": "7 Mayıs 2025 KAP açıklaması; 2033 stratejik vizyonuyla uyumlu. Tutar açıklanmadı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.6,
+   "etiketler": [
+    "motor bakım",
+    "Rolls-Royce"
+   ],
+   "kaynaklar": [
+    "https://www.forbes.com.tr/ekonomi/thy-ve-rolls-royce-ucak-motor-bakim-alaninda-is-birligi-yapti",
+    "https://www.borsaningundemi.com/haber/thyden-boeing-aciklamasi-iste-dev-anlasmada-son-durum-1870430"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "THYAO",
+   "sektor": null,
+   "baslangic": "2025-08-09",
+   "bitis": "2025-08-09",
+   "kamuya_acilma": null,
+   "tur": "birlesme_devralma",
+   "baslik": "THY, Air Europa'da yaklaşık %26 pay alıyor (~275 milyon euro, sonra ~300 milyon euro)",
+   "anlam": "Ağustos 2025'te bağlayıcı teklif kabul edildi; THY payı %25-27 olacak, tamamlanma 2026 hedefli. İspanya yabancı yatırım onayı verdi. Tarih bir haber tarihine dayanıyor.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.45,
+   "etiketler": [
+    "Air Europa",
+    "pay alımı"
+   ],
+   "kaynaklar": [
+    "https://www.abc.com.py/internacionales/2025/08/09/turkish-airlines-aportara-275-millones-a-air-europa-y-entrara-con-un-26-27-en-su-capital/",
+    "https://www.aviacionline.com/turkish-airlines-seals-deal-to-buy-26-of-air-europa"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 275000000,
+    "para_birimi": "EUR",
+    "oran": 0.26,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "THYAO",
+   "sektor": null,
+   "baslangic": "2025-06-16",
+   "bitis": "2025-09-02",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "THY 2024 kârından pay başına brüt ~6,88 TL temettü, iki taksit (16 Haz ve 2 Eyl 2025)",
+   "anlam": "Brüt 6,8840578 TL (net ~5,85 TL), iki taksit.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.55,
+   "etiketler": [
+    "temettü"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/thyao-2-taksitle-temettu-verecek-genel-kurul-onayladi/",
+    "https://bigpara.hurriyet.com.tr/borsa-haberleri/galeri-thy-thyao-temettu-odeme-takvimi-2025-turk-hava-yollari-temettu-odemesi-ne-zaman-yatacak-hisse-basi-kac-tl-verecek_ID1608313/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 6.8840578,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "THYAO",
+   "sektor": null,
+   "baslangic": "2026-04-09",
+   "bitis": "2026-04-09",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "THY 2025 kârından nakit temettü dağıtılmaması kararı (tek kaynak)",
+   "anlam": "Rota Borsa'ya göre 9 Nisan 2026'da oy çokluğuyla nakit temettü dağıtılmaması kabul edildi; analistler brüt 8,5-9,5 TL bekliyordu. Tek kaynak.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.4,
+   "etiketler": [
+    "temettü",
+    "dağıtmama"
+   ],
+   "kaynaklar": [
+    "https://rotaborsa.com/?p=399331"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "THYAO",
+   "sektor": null,
+   "baslangic": "2026-08-06",
+   "bitis": "2026-08-06",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "THY 2Ç26 net kârı 8,95 milyar TL, Matriks ortalamasının (11,92 milyar TL) yaklaşık %25 altında",
+   "anlam": "İlk 6 ay net kâr %25 düşüşle 18,86 milyar TL. Açıklama günü doğrulanamadı (Ağustos başı varsayımı).",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.35,
+   "etiketler": [
+    "bilanço",
+    "beklenti altı"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/borsa/yatirimcilarin-bekledigi-bilanco-geldi-thynin-kari-beklentiyi-karsilamadi-yuzde-25-dusus-h34421",
+    "https://www.yatirimx.com.tr/sirket-haberleri/thyaoden-895-milyar-tl-kr-bilanco-beklentiyi-asti-mi/22901"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 8949000000,
+    "beklenti": 11921000000,
+    "sure_ay": null
+   }
+  }
+ ]
+}

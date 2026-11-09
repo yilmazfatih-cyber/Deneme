@@ -1,0 +1,110 @@
+{
+ "not": "AKSEN olay çizelgesi (ajan araştırması, web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "AKSEN",
+   "sektor": null,
+   "baslangic": "2024-09-19",
+   "bitis": "2024-09-19",
+   "kamuya_acilma": null,
+   "tur": "yatirim",
+   "baslik": "Aksa Enerji Özbekistan Talimarjan 430 MW santrali devreye aldı (toplam Özbekistan 1.220 MW)",
+   "anlam": "19 Eylül 2024 KAP bildirimine göre 430 MW'lık doğalgaz kombine çevrim santrali işletmeye alındı; Özbekistan kurulu gücü 1.220 MW'a çıktı. Dolar bazlı garantili satış kontratı gelir görünürlüğü sağlıyor. Yatırım tutarı kaynakta yok.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.5,
+   "etiketler": [
+    "yatırım",
+    "Özbekistan",
+    "santral"
+   ],
+   "kaynaklar": [
+    "https://www.getmidas.com/midasin-kulaklari/aksa-enerji-ozbekistandaki-santralinin-ilk-unitelerini-devreye-aldi-p-49204",
+    "https://www.dunya.com/sirketler/aksa-enerji-ozbekistandaki-en-buyuk-turk-enerji-sirketi-oldu-haberi-784191"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AKSEN",
+   "sektor": null,
+   "baslangic": "2025-06-26",
+   "bitis": "2025-06-26",
+   "kamuya_acilma": null,
+   "tur": "borclanma",
+   "baslik": "Aksa Enerji AFC ile 150 milyon USD, 7 yıl vadeli kredi sözleşmesi imzaladı",
+   "anlam": "26 Haziran 2025 KAP bildirimi: Africa Finance Corporation ile Afrika'daki doğalgaz santral projelerinde kullanılacak 150 milyon USD'lik 7 yıl vadeli kredi. Afrika yatırım programının finansmanını güçlendiriyor.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.7,
+   "etiketler": [
+    "kredi",
+    "AFC",
+    "Afrika"
+   ],
+   "kaynaklar": [
+    "https://www.getmidas.com/midasin-kulaklari/aksa-enerji-150-milyon-dolarlik-kredi-sozlesmesi-imzaladi-p-149757",
+    "https://www.ekonomist.com.tr/enerji/afrika-nin-enerjisine-150-milyon-dolar-yatirim--61638"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 150000000,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": 84
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AKSEN",
+   "sektor": null,
+   "baslangic": "2026-04-13",
+   "bitis": "2026-04-13",
+   "kamuya_acilma": null,
+   "tur": "borclanma",
+   "baslik": "Aksa Enerji AFC ile 300 milyon USD, 2032 vadeli yeni kredi anlaşması",
+   "anlam": "13 Nisan 2026 KAP: Afrika santral projeleri için 300 milyon USD tutarında, 2032 vadeli kredi. Bir yıl içinde AFC'den toplam sağlanan finansman 450 milyon USD'ye ulaştı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.7,
+   "etiketler": [
+    "kredi",
+    "AFC",
+    "Afrika"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/borsa/bist-100-sirketinden-300-milyon-dolarlik-kredi-anlasmasi-duyurusu-h28375",
+    "https://www.yatirimx.com.tr/sirket-haberleri/aksa-enerji-ve-afc-arasinda-300-milyon-dolarlik-kredi-anlasmasi/19437"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 300000000,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

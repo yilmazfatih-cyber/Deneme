@@ -1,0 +1,107 @@
+{
+ "not": "GUBRF olay çizelgesi (ajan araştırması, web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "GUBRF",
+   "sektor": null,
+   "baslangic": "2025-11-10",
+   "bitis": "2025-11-10",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Gübretaş 9 aylık 2025: 4,04 milyar TL net kâr (2024 aynı dönem 2,23 milyar TL zarar) (TARİH YAKLAŞIK)",
+   "anlam": "2025 ilk 9 ay net kârı 4.037 milyon TL; 2024'ün ilk 9 ayında 2.232 milyon TL zarar vardı (zarardan kâra dönüş). Kesin açıklama tarihi kaynaklarda görülmedi, tarih yaklaşıktır.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.3,
+   "etiketler": [
+    "bilanço",
+    "zarardan kâra"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/gubretas-2025-ucuncu-ceyrekte-zarardan-buyuk-kara-gecti/",
+    "https://rotaborsa.com/?p=300837"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 4037000000,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "GUBRF",
+   "sektor": null,
+   "baslangic": "2026-03-10",
+   "bitis": "2026-03-10",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Gübretaş 2025: ~5 milyar TL net kâr (2024: 611 milyon TL zarar), net satış 52,5 milyar TL (TARİH YAKLAŞIK)",
+   "anlam": "2025 net dönem kârı ~4,96-5,2 milyar TL (UFRS dağıtılabilir 5,28 milyar TL); önceki yıl 611 milyon TL zarardı. Net satışlar %31 artışla 52,5 milyar TL. Açıklama tarihi doğrulanamadı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.3,
+   "etiketler": [
+    "bilanço",
+    "zarardan kâra"
+   ],
+   "kaynaklar": [
+    "https://www.ekofin.net/sirket/detay/GUBRF/faaliyet-raporlari",
+    "https://paratic.com/gubretas-5-2-milyar-tl-kardan-temettu-dagitacak-mi/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 4958955327,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "GUBRF",
+   "sektor": null,
+   "baslangic": "2026-10-07",
+   "bitis": "2026-10-16",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Gübretaş 2025 karından temettü: brüt 4,4910 TL/pay, hak kullanım 14 Ekim 2026",
+   "anlam": "Genel kurul temettüyü onayladı; YK 7 Ekim 2026'da hak kullanım 14 Ekim, kayıt 15 Ekim, ödeme 16 Ekim 2026 olarak belirledi. Pay başı net 3,8173652 TL, toplam net 1,275 milyar TL (3 Eylül 2026 düzeltmesiyle). Daha önce 'temettü yok' haberleri başka döneme ait olabilir.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.6,
+   "etiketler": [
+    "temettü"
+   ],
+   "kaynaklar": [
+    "https://www.hisse.net/haber/hisse-basina-4-lirayi-asan-odeme-gubrf-temettu-tarihi-belli-oldu-100736",
+    "https://www.uscmarkets.com/haberler/gubrf-2025-kar-payi-dagitimi",
+    "https://www.yatirimx.com.tr/sirket-haberleri/gubrf-temettu-dagitimi-onaylandi-hisse-basina-net-381-tl/25709"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 1275000000,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": 4.4910179,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

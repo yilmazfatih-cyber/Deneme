@@ -1,0 +1,176 @@
+{
+ "not": "TUPRS olay çizelgesi (ajan araştırması, web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "TUPRS",
+   "sektor": null,
+   "baslangic": "2024-03-04",
+   "bitis": "2024-03-04",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Tüpraş 2023 karından temettü önerisi (brüt ~10,38 TL, ilk taksit)",
+   "anlam": "Yönetim kurulu 4 Mart 2024 KAP bildirimiyle ilk taksit temettü önerisini açıkladı; kaynaklarda brüt 10,38 / net 9,34 TL rakamları geçiyor, ancak taksit ayrımı ve tutarlar kaynaklar arasında tutarsız. İkinci taksit için 27 Eylül 2024 hak kullanım tarihi anılıyor.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.4,
+   "etiketler": [
+    "temettü",
+    "Koç"
+   ],
+   "kaynaklar": [
+    "https://www.ekonomist.com.tr/borsa/tupras-tuprs-yonetim-kurulunun-temettu-kararini-acikladi-52048"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 10.38,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "TUPRS",
+   "sektor": null,
+   "baslangic": "2025-02-17",
+   "bitis": "2025-02-17",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Tüpraş 2024 bilançosu: 4Ç net kâr beklentinin altında, yıllık 18,3 milyar TL",
+   "anlam": "2024 yılı net kârı yaklaşık 18,3 milyar TL (2023'e göre belirgin düşüş). 4Ç24 net kârı piyasa beklentisi olan ~5,1 milyar TL'nin altında kaldı (kaynaklarda 3,9-4,7 milyar TL arası farklı rakamlar var; azınlık payı tanımı net değil). Tarih Paratic'e göre 17 Şubat.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.55,
+   "etiketler": [
+    "bilanço",
+    "beklenti altı"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/tupras-tuprs-2024-bilancosuyla-beklentileri-bosa-cikardi/",
+    "https://www.borsaningundemi.com/haber/tupras-2024-yili-bilancosunu-acikladi-1841704"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 18315157000,
+    "beklenti": 5100000000,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "TUPRS",
+   "sektor": null,
+   "baslangic": "2025-03-28",
+   "bitis": "2025-09-30",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Tüpraş 2024 karı temettüsü: toplam brüt 15,21 TL, ilk taksit hak kullanımı 28 Mart 2025",
+   "anlam": "2024 karından toplam brüt 15,2065948 TL/pay dağıtımı kararlaştırıldı. İlk taksit brüt 7,7849461 TL (hak kullanım 28 Mart 2025, ödeme 3 Nisan), ikinci taksit brüt 7,4216486 TL (hak kullanım 30 Eylül 2025, ödeme 2 Ekim).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.7,
+   "etiketler": [
+    "temettü",
+    "taksit"
+   ],
+   "kaynaklar": [
+    "https://www.capital.com.tr/haberler/tum-haberler/tupras-temettu-tarihini-duyurdu",
+    "https://www.yatirimx.com.tr/piyasa/mkkdan-tupras-tuprs-temettu-duyurusu-2025/7505"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 15.2065948,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "TUPRS",
+   "sektor": null,
+   "baslangic": "2026-02-06",
+   "bitis": "2026-02-06",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Tüpraş 4Ç25: net kâr 6,75 milyar TL, beklenti ~4,98 milyar TL'nin üzerinde",
+   "anlam": "2025 4. çeyrek net kârı 6,75 milyar TL ile piyasa beklentisinin (4,98 mlr; İş Yatırım 4,9 mlr) yaklaşık %35 üzerinde geldi. Yıllık net kâr ~29,5-29,9 milyar TL (yıllık %23 artış). 2026 için net rafineri marjı beklentisi 6-7 $/varil, kapasite kullanımı %95-100.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.7,
+   "etiketler": [
+    "bilanço",
+    "beklenti üstü",
+    "rafineri marjı"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/tupras-2025-bilancosunu-acikladi-net-kar-yuzde-23-artti/",
+    "https://www.cnbce.com/piyasalar/tupras-tuprs-2025-yili-4-ceyrek-bilancosunu-acikladi-h24551",
+    "https://www.forbes.com.tr/para-yatirim/tupras-2025-yilinda-29-9-milyar-tl-net-kar-elde-etti-33-milyar-tl-temettu-teklifi"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 6750000000,
+    "beklenti": 4980000000,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "TUPRS",
+   "sektor": null,
+   "baslangic": "2026-02-06",
+   "bitis": "2026-09-30",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Tüpraş 2025 karı için 2 taksit temettü önerisi: toplam brüt 17,13 TL/pay",
+   "anlam": "KAP'ta 6 Şubat 2026'da önerildi: 1. taksit brüt 10,3799282 TL (hak kullanım 16 Mart 2026), 2. taksit brüt 6,7469533 TL (hak kullanım 30 Eylül 2026); toplam brüt 17,1268815 TL. Öneri 11 Mart 2026 genel kurula sunuldu (forbes'ta ~33 mlr TL toplam dağıtım).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.75,
+   "etiketler": [
+    "temettü",
+    "taksit"
+   ],
+   "kaynaklar": [
+    "https://www.forbes.com.tr/para-yatirim/tupras-2025-yilinda-29-9-milyar-tl-net-kar-elde-etti-33-milyar-tl-temettu-teklifi",
+    "https://www.capital.com.tr/haberler/tum-haberler/tupras-temettu-tarihini-duyurdu"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 17.1268815,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

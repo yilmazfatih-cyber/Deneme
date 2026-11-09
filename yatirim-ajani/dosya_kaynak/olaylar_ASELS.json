@@ -1,0 +1,413 @@
+{
+ "not": "ASELS olay çizelgesi (ajan araştırması, web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "ASELS",
+   "sektor": null,
+   "baslangic": "2026-07-10",
+   "bitis": "2026-07-10",
+   "kamuya_acilma": null,
+   "tur": "is_iliskisi",
+   "baslik": "Aselsan-SSB hava savunma seri üretimine ilave 1,47 milyar euroluk sözleşme",
+   "anlam": "Aselsan, SSB ile devam eden hava savunma sistemleri seri üretim projelerine ilave, toplam bedeli 1.470.500.012,38 euro olan sözleşme imzaladı; Çelik Kubbe kapsamıyla ilişkilendiriliyor. Şirket tarihindeki en büyük sözleşmelerden biri. KAP tarihi 10.07.2026 olarak görünüyor ancak tutarın bu bildirimle eşleşmesi doğrulanamadı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.5,
+   "etiketler": [
+    "savunma",
+    "SSB",
+    "hava savunma",
+    "Çelik Kubbe"
+   ],
+   "kaynaklar": [
+    "https://www.bloomberght.com/aselsan-dan-1-47-milyar-euroluk-sozlesme-3782571",
+    "https://www.cnbce.com/haberler/aselsan-dev-sozlesmeyi-duyurdu-15-milyar-euro-hisseleri-boyle-hareketlendirdi-h32987"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 1470500012.38,
+    "para_birimi": "EUR",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ASELS",
+   "sektor": null,
+   "baslangic": "2026-06-01",
+   "bitis": "2026-06-01",
+   "kamuya_acilma": null,
+   "tur": "is_iliskisi",
+   "baslik": "Aselsan-SSB 780 milyon euroluk hava savunma sözleşmesi (teslimat 2028-2032)",
+   "anlam": "KAP'a göre SSB ile hava savunma sistemleri için toplam 780 milyon euro bedelli sözleşme imzalandı; teslimatlar 2028-2032. Tarih bir derleyici sayfasına dayanıyor (1 Haziran 2026).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.4,
+   "etiketler": [
+    "savunma",
+    "SSB",
+    "hava savunma"
+   ],
+   "kaynaklar": [
+    "https://www.dunya.com/sirketler/aselsan-ile-ssb-arasinda-780-milyon-euroluk-anlasma-haberi-828711",
+    "https://www.turkiyegazetesi.com.tr/ekonomi/aselsandan-780-milyon-euroluk-dev-sozlesme-1797336"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 780000000,
+    "para_birimi": "EUR",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ASELS",
+   "sektor": null,
+   "baslangic": "2026-06-04",
+   "bitis": "2026-06-04",
+   "kamuya_acilma": null,
+   "tur": "is_iliskisi",
+   "baslik": "Aselsan-SSB 271,5 milyon dolarlık radar ve kamu güvenliği haberleşme sözleşmesi",
+   "anlam": "Radar ve kamu güvenliği haberleşme sistemleri için toplam 271.454.294 ABD doları bedelli sözleşme; teslimatlar 2026-2033. Tarih kaynak URL'sindeki tarihe (2026/06/04) dayanıyor.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.5,
+   "etiketler": [
+    "savunma",
+    "SSB",
+    "radar"
+   ],
+   "kaynaklar": [
+    "https://www.alomaliye.com/2026/06/04/aselsan-ile-ssb-arasinda-271-5-milyon-dolarlik-sozlesme-imzalandi/amp/",
+    "https://www.paraninyonu.com.tr/haber/aselsandan-2715-milyon-dolarlik-yeni-sozlesme-80417"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 271454294,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ASELS",
+   "sektor": null,
+   "baslangic": "2026-10-01",
+   "bitis": "2026-10-01",
+   "kamuya_acilma": null,
+   "tur": "is_iliskisi",
+   "baslik": "Aselsan-SSB uzun menzilli hava savunma ilave sözleşmeleri (1,0085 milyar euro)",
+   "anlam": "1 Ekim 2026 tarihli KAP bildirimine göre uzun menzilli hava savunma sistemleri projelerine ilave sözleşmeler imzalandı; büyüklük 1.008.500.000 euro. Tek arama özetine dayanıyor, tutar-bildirim eşleşmesi kesin değil.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.4,
+   "etiketler": [
+    "savunma",
+    "SSB",
+    "hava savunma"
+   ],
+   "kaynaklar": [
+    "https://www.getmidas.com/midasin-kulaklari/aselsan-ssb-ile-165-milyar-avroluk-sozlesme-imzaladi-p-176465"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 1008500000,
+    "para_birimi": "EUR",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ASELS",
+   "sektor": null,
+   "baslangic": "2026-10-08",
+   "bitis": "2026-10-08",
+   "kamuya_acilma": null,
+   "tur": "is_iliskisi",
+   "baslik": "Aselsan 125 milyon dolarlık yurt dışı silah ve elektronik harp satışı",
+   "anlam": "Yurt dışındaki bir son kullanıcıya silah ve elektronik harp sistemleri ihracı için toplam 125 milyon ABD doları tutarında satış sözleşmesi KAP'a bildirildi (tarih Foreks haber URL'sinden: 08-10-26).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.6,
+   "etiketler": [
+    "savunma",
+    "ihracat",
+    "elektronik harp"
+   ],
+   "kaynaklar": [
+    "https://www.foreks.com/haber/detay/6ac737a995016b5817e675be/PICNEWS/tr/aselsan-dan-125-milyon-dolarlik-ihracat-sozlesmesi-08-10-26/",
+    "https://www.ekonomist.com.tr/borsa/kap-a-bildirdi-aselsan-dan-125-milyon-dolarlik-satis-sozlesmesi-79643"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 125000000,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ASELS",
+   "sektor": null,
+   "baslangic": "2026-10-06",
+   "bitis": "2026-10-06",
+   "kamuya_acilma": null,
+   "tur": "is_iliskisi",
+   "baslik": "Aselsan 157,9 milyon dolarlık yurt dışı satış sözleşmeleri",
+   "anlam": "Aselsan KAP'a toplam 157,9 milyon dolarlık yurt dışı satış sözleşmeleri imzaladığını bildirdi (tarih Foreks URL'sinden: 06-10-26); ayrıntı sınırlı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.5,
+   "etiketler": [
+    "savunma",
+    "ihracat"
+   ],
+   "kaynaklar": [
+    "https://www.foreks.com/haber/detay/6ac4926395016b5817e659cb/FRKS/tr/aselsan-157-9-milyon-dolarlik-yurt-disi-satis-sozlesmeleri-imzaladi-06-10-26/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 157900000,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ASELS",
+   "sektor": null,
+   "baslangic": "2025-05-01",
+   "bitis": "2025-05-31",
+   "kamuya_acilma": null,
+   "tur": "is_iliskisi",
+   "baslik": "Aselsan Orta Doğu ve Afrika müşterileriyle 82 milyon dolarlık ihracat sözleşmeleri",
+   "anlam": "Aselsan, Orta Doğu ve Afrika'daki uluslararası müşterilerle toplam 82 milyon ABD doları tutarında ihracat sözleşmeleri imzaladığını KAP'ta duyurdu. Gün belirtilmediği için tarih Mayıs 2025 aralığı olarak verildi.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.4,
+   "etiketler": [
+    "savunma",
+    "ihracat"
+   ],
+   "kaynaklar": [
+    "https://www.finansopia.com/kap-bildirimleri/aselsandan-asels-82-milyon-dolarlik-ihracat-sozlesmesi/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 82000000,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ASELS",
+   "sektor": null,
+   "baslangic": "2024-12-31",
+   "bitis": "2024-12-31",
+   "kamuya_acilma": null,
+   "tur": "is_iliskisi",
+   "baslik": "Aselsan-SSB 105,5 milyon dolarlık boru hattı güvenliği sözleşmesi",
+   "anlam": "SSB ile 105,5 milyon dolarlık sözleşme; teslimatlar 2025-2028. Tarih (31 Aralık 2024) arama özetinde geçen bir not; bildirim sayfası doğrulanmadı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.4,
+   "etiketler": [
+    "savunma",
+    "SSB"
+   ],
+   "kaynaklar": [
+    "https://www.getmidas.com/midasin-kulaklari/aselsan-ssb-ile-1055-milyon-dolarlik-sozlesme-imzaladi-p-78579"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 105500000,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ASELS",
+   "sektor": null,
+   "baslangic": "2026-10-27",
+   "bitis": "2026-10-27",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Aselsan 3Ç26 net kârı 11,23 milyar TL, Matriks beklentisinin (8,87 milyar TL) yaklaşık %27 üzerinde",
+   "anlam": "Aselsan 27 Ekim 2026'da 3Ç26 sonuçlarını açıkladı; çeyreklik net kâr 11,23 milyar TL ile ortalama beklentiyi aştı. 9 aylık net kâr 26,47 milyar TL.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.7,
+   "etiketler": [
+    "bilanço",
+    "beklenti üstü"
+   ],
+   "kaynaklar": [
+    "https://bloomberght.com/aselsan-in-ucuncu-ceyrek-net-kari-beklentileri-asti-3792704",
+    "https://www.cnbce.com/sirket-bilancolari/borsa-istanbulun-devi-aselsan-beklentileri-asti-kar-yuzde-75-firladi-h40458"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 11230000000,
+    "beklenti": 8870000000,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ASELS",
+   "sektor": null,
+   "baslangic": "2026-08-05",
+   "bitis": "2026-08-05",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Aselsan 2Ç26 net kârı ~8,5 milyar TL, beklentinin (6,89 milyar TL) yaklaşık %23 üzerinde",
+   "anlam": "2Ç26 net kâr yaklaşık 8,5 milyar TL; Matriks ortalaması 6,89 milyar TL. Sipariş defteri 23,2 milyar dolar. Açıklama günü kesin doğrulanmadı (aracı kurum notları 5 Ağustos 2026).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.4,
+   "etiketler": [
+    "bilanço",
+    "beklenti üstü",
+    "sipariş defteri"
+   ],
+   "kaynaklar": [
+    "https://www.bloomberght.com/aselsan-dan-ikinci-ceyrekte-8-5-milyar-tl-net-kr-3784724",
+    "https://cdn.gedik.com/cdn/bulletin/2026/08/05/2C26_Finansal_Degerlendirme_ASELS_20260805_7a3bd9da.pdf"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 8500000000,
+    "beklenti": 6890000000,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ASELS",
+   "sektor": null,
+   "baslangic": "2026-11-24",
+   "bitis": "2026-11-24",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Aselsan 2025 kârından pay başına brüt 0,4276315 TL temettü; hak kullanım 24 Kasım 2026",
+   "anlam": "Genel kurulda onaylanan karar uyarınca brüt 0,4276315 TL (net 0,3634867 TL) nakit temettü, toplam yaklaşık 1,95 milyar TL; ödeme 26 Kasım 2026. Kaynaklar genel kurul gününü farklı veriyor.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.65,
+   "etiketler": [
+    "temettü"
+   ],
+   "kaynaklar": [
+    "https://www.finansopia.com/kap-bildirimleri/aselsan-asels-2026-yili-temettu-kararini-acikladi/",
+    "https://paratic.com/aselsandan-19-milyar-tllik-temettu-karari/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 1950000000,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": 0.4276315,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ASELS",
+   "sektor": null,
+   "baslangic": "2025-11-25",
+   "bitis": "2025-11-25",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Aselsan 2024 kârından pay başına brüt 0,2346491 TL temettü; hak kullanım 25 Kasım 2025",
+   "anlam": "Bir kaynağa göre 2025'te dağıtılan temettü pay başına brüt 0,2346491 TL; hak kullanım 25 Kasım 2025, hesaba geçiş 27 Kasım 2025.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.5,
+   "etiketler": [
+    "temettü"
+   ],
+   "kaynaklar": [
+    "https://www.ekonomist.com.tr/borsa/aselsan-ne-zaman-temettu-verecek--76732"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 0.2346491,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

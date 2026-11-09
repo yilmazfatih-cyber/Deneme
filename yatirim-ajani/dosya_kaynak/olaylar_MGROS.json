@@ -1,0 +1,208 @@
+{
+ "not": "MGROS olay çizelgesi (ajan araştırması, web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "MGROS",
+   "sektor": null,
+   "baslangic": "2026-05-13",
+   "bitis": "2026-05-13",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Migros 2025 kârından pay başına brüt 4,5566457 TL temettü; hak kullanım 13 Mayıs 2026",
+   "anlam": "Nisan 2026 genel kurulunda onaylandı; net yaklaşık 3,87 TL; ödeme 15 Mayıs 2026.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.65,
+   "etiketler": [
+    "temettü"
+   ],
+   "kaynaklar": [
+    "https://rotaborsa.com/migros-mgros-temettu-kararini-acikladi-4/",
+    "https://www.capital.com.tr/haberler/tum-haberler/migrosun-temettu-tarihi-ne-zaman"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 4.5566457,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "MGROS",
+   "sektor": null,
+   "baslangic": "2026-11-05",
+   "bitis": "2026-11-11",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Migros 1,175 milyar TL kâr payı avansı: pay başına brüt ~6,49 TL; hak kullanım 11 Kasım 2026",
+   "anlam": "5 Kasım 2026'da duyurulan avans; hak kullanım 11 Kasım, kayıt 12 Kasım 2026; net ~5,52 TL.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.65,
+   "etiketler": [
+    "temettü",
+    "kâr payı avansı"
+   ],
+   "kaynaklar": [
+    "https://www.uscmarkets.com/haberler/mgros-2026-9-aylik-kar-payi-avansi"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 1175000000,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": 6.49,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "MGROS",
+   "sektor": null,
+   "baslangic": "2025-11-12",
+   "bitis": "2025-11-12",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Migros 2025 kâr payı avansı: pay başına brüt 3,5900845 TL; hak kullanım 12 Kasım 2025",
+   "anlam": "Bir önceki yılın avans uygulaması; hak kullanım 12 Kasım 2025.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.55,
+   "etiketler": [
+    "temettü",
+    "kâr payı avansı"
+   ],
+   "kaynaklar": [
+    "https://www.uscmarkets.com/haberler/mgros-2026-9-aylik-kar-payi-avansi",
+    "https://bigpara.hurriyet.com.tr/borsa-haberleri/galeri-migros-mgros-temettu-ne-zaman-yatacak-hangi-gun-hesaba-gecer-migros-temettu-odemesi-kasim-2025_ID1620565/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 3.5900845,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "MGROS",
+   "sektor": null,
+   "baslangic": "2025-03-10",
+   "bitis": "2025-03-10",
+   "kamuya_acilma": null,
+   "tur": "dava_ceza",
+   "baslik": "Rekabet Kurumu Migros'u da kapsayan iki perakende soruşturması açtı",
+   "anlam": "10 Mart 2025'te BİM, ŞOK ve Migros'un da aralarında olduğu şirketler hakkında soruşturma başlatıldı; sonuçta Migros'a 48.443.775,31 TL ceza tebliğ edildi (karar tarihi doğrulanamadı).",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.65,
+   "etiketler": [
+    "rekabet",
+    "soruşturma"
+   ],
+   "kaynaklar": [
+    "https://medyascope.tv/2025/03/10/rekabet-kurumu-bim-sok-ve-migrosun-da-aralarinda-oldugu-perakende-sirketlerine-sorusturma-acti/",
+    "https://www.internethaber.com/zincir-marketlere-acilan-sorusturmada-karar-iste-bim-migros-ve-soka-kesilen-cezalar-2457993h.htm"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "MGROS",
+   "sektor": null,
+   "baslangic": "2026-04-08",
+   "bitis": "2026-04-08",
+   "kamuya_acilma": null,
+   "tur": "haber",
+   "baslik": "SPK, Migros kayıtlı sermaye tavanını 500 milyon TL'den 2 milyar TL'ye çıkarma ve 2030'a uzatma değişikliğini onayladı",
+   "anlam": "8 Nisan 2026 SPK onayı esas sözleşme değişikliğine ilişkindir; sermaye artırımı değil kapasite artışıdır. Genel kurul onayı bekleniyor.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.55,
+   "etiketler": [
+    "kayıtlı sermaye",
+    "SPK"
+   ],
+   "kaynaklar": [
+    "https://borsacoo.com/firma/MGROS/bildirimler",
+    "https://fintables.com/sirketler/MGROS/sermaye-artirimlari-temettuler"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 2000000000,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "MGROS",
+   "sektor": null,
+   "baslangic": "2026-08-06",
+   "bitis": "2026-08-06",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Migros 2Ç26'da net zarar: beklenti ~409 milyon TL kâr, gerçekleşen zarar (409-699 milyon TL, kaynaklar çelişiyor)",
+   "anlam": "Kârdan zarara dönüş; ilk 6 ay net kâr 1,01 milyar TL. Açıklama günü ve zarar tutarı kesin doğrulanmadı.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.3,
+   "etiketler": [
+    "bilanço",
+    "zarar",
+    "beklenti altı"
+   ],
+   "kaynaklar": [
+    "https://www.bloomberght.com/migros-un-ikinci-ceyrek-kri-beklentilerin-altinda-kaldi-magaza-sayisi-3-bin-830-a-ulasti-3785229",
+    "https://www.cnbce.com/borsa/migros-mgros-2026-ikinci-ceyrek-bilancosunu-acikladi-net-kar-yuzde-42-dustu-h34835"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": -699000000,
+    "beklenti": 408840000,
+    "sure_ay": null
+   }
+  }
+ ]
+}
