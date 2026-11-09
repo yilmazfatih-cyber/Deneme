@@ -1,0 +1,28 @@
+{
+ "endeks": "XU030",
+ "kodlar": [],
+ "kaynak": null,
+ "denemeler": [
+  {
+   "kaynak": "https://www.isyatirim.com.tr/_layouts/15/IsYatirim.Website/Common/Data.aspx/EndeksHisseleri",
+   "hata": "İstek başarısız: https://www.isyatirim.com.tr/_layouts/15/IsYatirim.Website/Common/Data.aspx/EndeksHisseleri (HTTP 401: "
+  },
+  {
+   "kaynak": "https://www.isyatirim.com.tr/_layouts/15/IsYatirim.Website/Common/Data.aspx/EndeksHisse",
+   "hata": "İstek başarısız: https://www.isyatirim.com.tr/_layouts/15/IsYatirim.Website/Common/Data.aspx/EndeksHisse (HTTP 401: http"
+  },
+  {
+   "kaynak": "https://www.isyatirim.com.tr/_layouts/15/IsYatirim.Website/Common/Data.aspx/Endeks",
+   "hata": "İstek başarısız: https://www.isyatirim.com.tr/_layouts/15/IsYatirim.Website/Common/Data.aspx/Endeks (HTTP 401: https://w"
+  },
+  {
+   "kaynak": "tradingview-scanner",
+   "sonuc": 0
+  },
+  {
+   "kaynak": "wikipedia",
+   "hata": "İstek başarısız: https://tr.wikipedia.org/wiki/BIST_030 (HTTP 404: https://tr.wikipedia.org/wiki/BIST_030)"
+  }
+ ],
+ "cekilme": "2026-11-09T15:11"
+}

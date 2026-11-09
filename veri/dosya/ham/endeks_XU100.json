@@ -1,0 +1,92 @@
+{
+ "endeks": "XU100",
+ "kodlar": [
+  "ASELS",
+  "TUPRS",
+  "BIMAS",
+  "THYAO",
+  "AKBNK",
+  "YKBNK",
+  "KCHOL",
+  "EREGL",
+  "ISCTR",
+  "SAHOL",
+  "GARAN",
+  "TCELL",
+  "ASTOR",
+  "ENKAI",
+  "SISE",
+  "CCOLA",
+  "TAVHL",
+  "FROTO",
+  "MGROS",
+  "SASA",
+  "TRALT",
+  "EKGYO",
+  "RGYAS",
+  "TABGD",
+  "TKFEN",
+  "CIMSA",
+  "ALARK",
+  "AYGAZ",
+  "ULKER",
+  "AKSA",
+  "CVKMD",
+  "ISMEN",
+  "DOAS",
+  "TSKB",
+  "OTKAR",
+  "GLRMK",
+  "TTRAK",
+  "ARCLK",
+  "HEKTS",
+  "ALBRK",
+  "ISDMR",
+  "CWENE",
+  "ANHYT",
+  "CANTE",
+  "TRENJ",
+  "TCKRC",
+  "ECILC",
+  "GRSEL",
+  "BTCIM",
+  "AGHOL",
+  "AHGAZ",
+  "AKCNS",
+  "AKFYE",
+  "BINHO",
+  "ECZYT",
+  "EGEEN",
+  "GWIND",
+  "KARSN",
+  "KORDS",
+  "AKSEN",
+  "AEFES",
+  "TRMET",
+  "VAKBN"
+ ],
+ "kaynak": "yedek:dosya_kaynak/bist100.json",
+ "denemeler": [
+  {
+   "kaynak": "https://www.isyatirim.com.tr/_layouts/15/IsYatirim.Website/Common/Data.aspx/EndeksHisseleri",
+   "hata": "İstek başarısız: https://www.isyatirim.com.tr/_layouts/15/IsYatirim.Website/Common/Data.aspx/EndeksHisseleri (HTTP 401: "
+  },
+  {
+   "kaynak": "https://www.isyatirim.com.tr/_layouts/15/IsYatirim.Website/Common/Data.aspx/EndeksHisse",
+   "hata": "İstek başarısız: https://www.isyatirim.com.tr/_layouts/15/IsYatirim.Website/Common/Data.aspx/EndeksHisse (HTTP 401: http"
+  },
+  {
+   "kaynak": "https://www.isyatirim.com.tr/_layouts/15/IsYatirim.Website/Common/Data.aspx/Endeks",
+   "hata": "İstek başarısız: https://www.isyatirim.com.tr/_layouts/15/IsYatirim.Website/Common/Data.aspx/Endeks (HTTP 401: https://w"
+  },
+  {
+   "kaynak": "tradingview-scanner",
+   "sonuc": 0
+  },
+  {
+   "kaynak": "wikipedia",
+   "hata": "İstek başarısız: https://tr.wikipedia.org/wiki/BIST_100 (HTTP 404: https://tr.wikipedia.org/wiki/BIST_100)"
+  }
+ ],
+ "cekilme": "2026-11-09T15:11"
+}

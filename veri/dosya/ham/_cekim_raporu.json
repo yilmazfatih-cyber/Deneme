@@ -1,54 +1,595 @@
 {
- "zaman": "2026-11-09T14:13",
+ "zaman": "2026-11-09T15:15",
  "bas": "2024-01-01",
  "bit": "2026-11-09",
+ "ozet": {
+  "hisse": 75,
+  "tam": 74,
+  "sure_dk": 4.8
+ },
  "rapor": {
+  "endeks_XU100": {
+   "kod": 63,
+   "kaynak": "yedek:dosya_kaynak/bist100.json",
+   "denemeler": [
+    {
+     "kaynak": "https://www.isyatirim.com.tr/_layouts/15/IsYatirim.Website/Common/Data.aspx/EndeksHisseleri",
+     "hata": "İstek başarısız: https://www.isyatirim.com.tr/_layouts/15/IsYatirim.Website/Common/Data.aspx/EndeksHisseleri (HTTP 401: "
+    },
+    {
+     "kaynak": "https://www.isyatirim.com.tr/_layouts/15/IsYatirim.Website/Common/Data.aspx/EndeksHisse",
+     "hata": "İstek başarısız: https://www.isyatirim.com.tr/_layouts/15/IsYatirim.Website/Common/Data.aspx/EndeksHisse (HTTP 401: http"
+    },
+    {
+     "kaynak": "https://www.isyatirim.com.tr/_layouts/15/IsYatirim.Website/Common/Data.aspx/Endeks",
+     "hata": "İstek başarısız: https://www.isyatirim.com.tr/_layouts/15/IsYatirim.Website/Common/Data.aspx/Endeks (HTTP 401: https://w"
+    },
+    {
+     "kaynak": "tradingview-scanner",
+     "sonuc": 0
+    },
+    {
+     "kaynak": "wikipedia",
+     "hata": "İstek başarısız: https://tr.wikipedia.org/wiki/BIST_100 (HTTP 404: https://tr.wikipedia.org/wiki/BIST_100)"
+    }
+   ]
+  },
+  "endeks_XU030": {
+   "kod": 0,
+   "kaynak": null,
+   "denemeler": [
+    {
+     "kaynak": "https://www.isyatirim.com.tr/_layouts/15/IsYatirim.Website/Common/Data.aspx/EndeksHisseleri",
+     "hata": "İstek başarısız: https://www.isyatirim.com.tr/_layouts/15/IsYatirim.Website/Common/Data.aspx/EndeksHisseleri (HTTP 401: "
+    },
+    {
+     "kaynak": "https://www.isyatirim.com.tr/_layouts/15/IsYatirim.Website/Common/Data.aspx/EndeksHisse",
+     "hata": "İstek başarısız: https://www.isyatirim.com.tr/_layouts/15/IsYatirim.Website/Common/Data.aspx/EndeksHisse (HTTP 401: http"
+    },
+    {
+     "kaynak": "https://www.isyatirim.com.tr/_layouts/15/IsYatirim.Website/Common/Data.aspx/Endeks",
+     "hata": "İstek başarısız: https://www.isyatirim.com.tr/_layouts/15/IsYatirim.Website/Common/Data.aspx/Endeks (HTTP 401: https://w"
+    },
+    {
+     "kaynak": "tradingview-scanner",
+     "sonuc": 0
+    },
+    {
+     "kaynak": "wikipedia",
+     "hata": "İstek başarısız: https://tr.wikipedia.org/wiki/BIST_030 (HTTP 404: https://tr.wikipedia.org/wiki/BIST_030)"
+    }
+   ]
+  },
   "XU100.IS": {
    "yahoo_1d": 712
   },
   "USDTRY=X": {
    "yahoo_1d": 741
   },
+  "AKBNK": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 0,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 12.4
+  },
+  "THYAO": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 16.5
+  },
+  "TUPRS": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 17.2
+  },
+  "ASELS": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 18.5
+  },
+  "YKBNK": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 0,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 20.1
+  },
+  "BIMAS": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 20.7
+  },
   "KCHOL": {
    "isy_gunluk": 713,
-   "isy_sutunlar": [
-    "HGDG_HS_KODU",
-    "HGDG_TARIH",
-    "HGDG_KAPANIS",
-    "HGDG_AOF",
-    "HGDG_MIN",
-    "HGDG_MAX",
-    "HGDG_HACIM",
-    "END_ENDEKS_KODU",
-    "END_TARIH",
-    "END_SEANS",
-    "END_DEGER",
-    "DD_DOVIZ_KODU",
-    "DD_DT_KODU",
-    "DD_TARIH",
-    "DD_DEGER",
-    "DOLAR_BAZLI_FIYAT",
-    "ENDEKS_BAZLI_FIYAT",
-    "DOLAR_HACIM",
-    "SERMAYE",
-    "HG_KAPANIS",
-    "HG_AOF",
-    "HG_MIN",
-    "HG_MAX",
-    "PD",
-    "PD_USD",
-    "HAO_PD",
-    "HAO_PD_USD",
-    "HG_HACIM",
-    "DOLAR_BAZLI_MIN",
-    "DOLAR_BAZLI_MAX",
-    "DOLAR_BAZLI_AOF",
-    "tarih"
-   ],
    "isy_mali_kalem": 147,
-   "kap": 0,
    "yahoo_1d": 713,
-   "yahoo_temel": true
+   "yahoo_temel": true,
+   "sure_sn": 14.7
+  },
+  "GARAN": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 0,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 12.3
+  },
+  "ISCTR": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 0,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 15.8
+  },
+  "SAHOL": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 16.8
+  },
+  "TCELL": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 15.9
+  },
+  "EREGL": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 20.4
+  },
+  "ASTOR": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 20.1
+  },
+  "ENKAI": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 19.4
+  },
+  "SISE": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 19.4
+  },
+  "FROTO": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 15.6
+  },
+  "CCOLA": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 18.4
+  },
+  "TAVHL": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 20.7
+  },
+  "MGROS": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 15.0
+  },
+  "TRALT": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 15.2
+  },
+  "SASA": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 16.6
+  },
+  "TABGD": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 12.2
+  },
+  "EKGYO": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 17.3
+  },
+  "RGYAS": {
+   "isy_gunluk": 634,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 632,
+   "yahoo_temel": true,
+   "sure_sn": 18.0
+  },
+  "TKFEN": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 15.9
+  },
+  "ULKER": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 15.1
+  },
+  "AYGAZ": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 16.4
+  },
+  "ALARK": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 18.0
+  },
+  "CIMSA": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 19.0
+  },
+  "AKSA": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 19.7
+  },
+  "CVKMD": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 15.2
+  },
+  "TSKB": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 0,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 12.3
+  },
+  "DOAS": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 13.7
+  },
+  "OTKAR": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 711,
+   "yahoo_temel": true,
+   "sure_sn": 13.9
+  },
+  "ISMEN": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 15.8
+  },
+  "TTRAK": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 12.1
+  },
+  "GLRMK": {
+   "isy_gunluk": 452,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 453,
+   "yahoo_temel": true,
+   "sure_sn": 18.9
+  },
+  "ALBRK": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 0,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 11.2
+  },
+  "ARCLK": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 16.2
+  },
+  "ISDMR": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 14.4
+  },
+  "HEKTS": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 16.4
+  },
+  "CWENE": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 14.4
+  },
+  "TCKRC": {
+   "isy_gunluk": 556,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 554,
+   "yahoo_temel": true,
+   "sure_sn": 13.5
+  },
+  "ECILC": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 15.4
+  },
+  "CANTE": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 20.9
+  },
+  "GRSEL": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 17.0
+  },
+  "ANHYT": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 0,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 28.4
+  },
+  "TRENJ": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 24.0
+  },
+  "BTCIM": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 18.6
+  },
+  "AGHOL": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 20.2
+  },
+  "AHGAZ": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 24.5
+  },
+  "AKCNS": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 21.7
+  },
+  "BINHO": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 657,
+   "yahoo_temel": true,
+   "sure_sn": 19.6
+  },
+  "AKFYE": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 20.8
+  },
+  "ECZYT": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 21.7
+  },
+  "EGEEN": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 22.3
+  },
+  "AKSEN": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 20.1
+  },
+  "KARSN": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 21.0
+  },
+  "GWIND": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 26.9
+  },
+  "KORDS": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 27.0
+  },
+  "AEFES": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 17.5
+  },
+  "TRMET": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 16.3
+  },
+  "VAKBN": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 0,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 15.5
+  },
+  "HALKB": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 0,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 14.2
+  },
+  "PGSUS": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 13.7
+  },
+  "KOZAL": {
+   "isy_gunluk": 0,
+   "isy_mali_kalem": 0,
+   "yahoo_1d": 0,
+   "yahoo_temel": true,
+   "sure_sn": 16.2
+  },
+  "TOASO": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 25.2
+  },
+  "KONTR": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 17.9
+  },
+  "TTKOM": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 34.7
+  },
+  "ODAS": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 17.7
+  },
+  "PETKM": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 20.2
+  },
+  "GUBRF": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 29.6
+  },
+  "OYAKC": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 36.6
+  },
+  "KRDMD": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 45.6
+  },
+  "BRSAN": {
+   "isy_gunluk": 713,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 713,
+   "yahoo_temel": true,
+   "sure_sn": 52.2
   }
  }
 }
