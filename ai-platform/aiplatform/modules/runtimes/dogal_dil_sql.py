@@ -6,6 +6,10 @@ Güvenlik katmanları (hepsi zorunlu):
    hiçbir alt düğümde DDL/DML/komut yok, tüm tablolar beyaz listede, LIMIT yoksa eklenir (varsayılan 200).
    sqlglot kurulu değilse sorgu ÇALIŞTIRILMAZ (ModuleNotReady).
 3. Çalıştırma `erp.connector.run_readonly` ile salt-okunur bağlantıda (bağlayıcı kendi denetimini de yapar).
+
+Doğruluk katmanı (`aiplatform.text2sql`): şema dizini → ilgili tablo/sütun seçimi → üretim → **her sütunun şemaya
+bağlanması** (olmayan sütun = ret + yakın adaylar) → salt-okunur çalıştırma → hata geri bildirimiyle düzeltme turu →
+birden çok adayda sonuç kümesi oylaması. Gövde alanları: `evidence` (ipucu), `candidates` (1-8), `max_repairs` (0-4).
 """
 
 from __future__ import annotations
@@ -13,6 +17,8 @@ from __future__ import annotations
 import asyncio
 import re
 
+from ...text2sql import SchemaIndex, Text2SQL
+from ...text2sql.pipeline import Text2SQLError
 from ..base import register
 from ._common import BaseRuntime, ModuleError, RunContext, get_settings, has_package, not_ready, note, require
 
@@ -22,6 +28,8 @@ SCHEMA = {
     "properties": {"sql": {"type": "string"}, "explanation": {"type": "string"}},
 }
 DEFAULT_LIMIT = 200
+MAX_CANDIDATES = 8
+MAX_REPAIRS = 4
 _FORBIDDEN_NODES = (
     "Insert",
     "Update",
@@ -202,39 +210,69 @@ class DogalDilSql(BaseRuntime):
             raise not_ready("sqlglot", "dogal-dil-sql")
         schema_text, tables, dialect = await self._schema_and_tables(payload)
         limit = int(payload.get("limit") or DEFAULT_LIMIT)
-        extra = f"İzinli tablolar: {', '.join(tables)}." + (f" SQL lehçesi: {dialect}." if dialect else "")
-        user = f"ŞEMA:\n{schema_text}\n\nSORU: {payload['question']}"
-        res = await self.llm_prompt(
-            ctx, "dogal_dil_sql", user, schema=SCHEMA, system_extra=extra, temperature=0.0
-        )
-        try:
-            sql = validate_sql(str(res.parsed.get("sql", "")), tables, dialect, limit)
-        except ModuleError as first_error:  # bir kez düzeltme şansı
-            fix = await self.llm_prompt(
-                ctx,
-                "dogal_dil_sql",
-                f"{user}\n\nÖnceki sorgun reddedildi: {first_error}\nÖnceki sorgu: {res.parsed.get('sql')}\nKurallara uyan yeni sorgu yaz.",
-                schema=SCHEMA,
-                system_extra=extra,
-                temperature=0.0,
-            )
-            res = fix
-            sql = validate_sql(str(fix.parsed.get("sql", "")), tables, dialect, limit)
-        out = {"sql": sql, "explanation": res.parsed.get("explanation", ""), "columns": [], "rows": []}
+        candidates = max(1, min(MAX_CANDIDATES, int(payload.get("candidates") or 1)))
+        max_repairs = max(0, min(MAX_REPAIRS, int(payload.get("max_repairs", 2))))
+        evidence = str(payload.get("evidence") or "")
+        index = SchemaIndex.from_ddl(schema_text, dialect)
+        if not index.tables:
+            raise ModuleError("Şema ayrıştırılamadı: 'schema_ddl' içinde CREATE TABLE tanımı bulunamadı")
+        if tables:  # izinli olmayan tablolar modele hiç gösterilmez
+            index = index.subset(tables)
         cid = payload.get("connection_id")
-        if payload.get("dry_run") or not cid:
-            out["dry_run"] = True
-            return out
+        execute = bool(cid) and not payload.get("dry_run")
         try:
             from ...erp.connector import run_readonly
         except ImportError:
-            out["dry_run"] = True
+            run_readonly = None
+        if execute and run_readonly is None:
+            execute = False
             note(ctx, run="ERP bağlayıcısı kurulu değil; sorgu çalıştırılmadı")
-            return out
+
+        results: dict[str, dict] = {}
+
+        async def generate(messages: list[dict], temperature: float):
+            res = await self.llm(ctx, messages, json_schema=SCHEMA, temperature=temperature)
+            return res.parsed if isinstance(res.parsed, dict) else res.content
+
+        async def executor(sql: str) -> list:
+            try:
+                data = await asyncio.to_thread(run_readonly, cid, sql)
+            except Exception as e:
+                raise ModuleError(getattr(e, "message", None) or str(e)) from e
+            results[sql] = data
+            return data.get("rows", [])
+
+        engine = Text2SQL(
+            generate,
+            executor=executor if execute else None,
+            security=lambda sql: validate_sql(sql, tables, dialect, limit),
+            dialect=dialect,
+            lang=str(payload.get("lang") or "tr"),
+            max_repairs=max_repairs,
+            candidates=candidates,
+            system_extra=f"İzinli tablolar: {', '.join(tables)}." if tables else "",
+        )
         try:
-            data = await asyncio.to_thread(run_readonly, cid, sql)
-        except Exception as e:
-            raise ModuleError(getattr(e, "message", None) or str(e)) from e
+            res = await engine.run(str(payload["question"]), index, evidence)
+        except Text2SQLError as e:
+            note(ctx, attempts=e.attempts)
+            raise ModuleError(e.message) from e
+
+        note(ctx, candidates=candidates, selected_by=res.selected_by, turns=len(res.attempts))
+        out: dict = {
+            "sql": res.sql,
+            "explanation": res.explanation,
+            "tables": res.tables,
+            "used_columns": res.columns,
+            "attempts": res.attempts,
+            "selected_by": res.selected_by,
+            "columns": [],
+            "rows": [],
+        }
+        if not execute:
+            out["dry_run"] = True
+            return out
+        data = results.get(res.sql) or {}
         out.update(
             {
                 "columns": data.get("columns", []),

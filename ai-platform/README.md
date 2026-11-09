@@ -51,6 +51,7 @@ kurulu olmayan modülde Türkçe hata ve mağaza bağlantısı gösterir. Ayrın
 | [docs/ERP_ENTEGRASYON.md](docs/ERP_ENTEGRASYON.md) | SQL / REST / webhook, onay kuyruğu, örnek istekler |
 | [docs/KVKK.md](docs/KVKK.md) | maskeleme tasarımı, ilkeler, müşteri bazında doldurulacaklar |
 | [docs/MODUL_SEMASI.md](docs/MODUL_SEMASI.md) | katalog alanları, yeni modül ekleme |
+| [docs/TEXT2SQL.md](docs/TEXT2SQL.md) | SQL-only motor: şema bağlama, sütun doğrulama, düzeltme döngüsü, BIRD ölçümü, LoRA + ağırlık-uzayı birleştirme |
 | [docs/demo/DEMO.md](docs/demo/DEMO.md) | Demo ERP ekranları: kurulum, 15 dakikalık demo senaryosu, LLM yokken neler çalışır |
 | [docs/sunum/README.md](docs/sunum/README.md) | keşif toplantısı sunum şablonu (14 slayt) |
 

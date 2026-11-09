@@ -48,6 +48,8 @@ gorsel = ["transformers>=4.45", "torch>=2.2", "pillow>=10"]
 nesne = ["rfdetr>=1.0"]
 text2sql = ["sqlglot>=25"]
 erp-sql = ["sqlalchemy>=2.0", "sqlglot>=25", "psycopg[binary]>=3.1", "pymssql>=2.3", "pymysql>=1.1"]
+# Text2SQL ağırlık üretimi (GPU sunucuda): scripts/text2sql/{prepare_bird_sft,train_lora,merge_weights}.py
+text2sql-train = ["torch>=2.2", "transformers>=4.45", "peft>=0.13", "trl>=0.12", "datasets>=3.0", "accelerate>=1.0", "bitsandbytes>=0.44", "safetensors>=0.4"]
 dev = ["pytest>=8", "pytest-asyncio>=0.23", "ruff>=0.5"]
 
 [project.scripts]

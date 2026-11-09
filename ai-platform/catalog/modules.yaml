@@ -361,8 +361,9 @@
   tagline: "'Geçen çeyrek en çok düşen 10 müşteri' gibi soruları salt-okunur SQL'e çevirir ve çalıştırır."
   description: >
     ERP veritabanı şeması (yalnız izin verilen tablolar) modele açıklanır; üretilen SQL sqlglot ile ayrıştırılır,
-    yalnız SELECT'e izin verilir, LIMIT eklenir, zaman aşımıyla salt-okunur kullanıcıda çalışır. Sonuç tablo +
-    Türkçe açıklama olarak döner.
+    yalnız SELECT'e izin verilir, LIMIT eklenir, zaman aşımıyla salt-okunur kullanıcıda çalışır. Sütun bağlama:
+    sorgudaki her sütun şemaya bağlanır, olmayan sütun reddedilir ve model yakın adaylarla düzeltme turuna girer;
+    birden çok aday istenirse aynı sonucu veren adaylar oylanır. Sonuç tablo + Türkçe açıklama olarak döner.
   package: Veri & Raporlama
   roles: [Finans, Satış, Yönetim]
   tier: T1
@@ -383,13 +384,13 @@
       target: server
       shared: true
       optional: true
-      note: Yalnız Text2SQL için eğitilmiş alternatif (GPU + vLLM)
+      note: Yalnız Text2SQL için eğitilmiş alternatif (GPU + vLLM); scripts/text2sql/merge_weights.py için görev vektörü kaynağı
   actions:
     - id: ask
       name: Soru sor
       description: Türkçe soruyu SQL'e çevirir, doğrular, çalıştırır ve sonucu açıklar.
-      input_schema: {type: object, required: [question], properties: {question: {type: string}, connection_id: {type: string}, dry_run: {type: boolean}}}
-      output_schema: {type: object, properties: {sql: {type: string}, rows: {type: array}, columns: {type: array}, explanation: {type: string}}}
+      input_schema: {type: object, required: [question], properties: {question: {type: string}, connection_id: {type: string}, dry_run: {type: boolean}, evidence: {type: string, description: "ipucu / iş kuralı (ör. 'ödenmiş = durum odendi')"}, candidates: {type: integer, minimum: 1, maximum: 8}, max_repairs: {type: integer, minimum: 0, maximum: 4}, lang: {type: string, enum: [tr, en]}}}
+      output_schema: {type: object, properties: {sql: {type: string}, rows: {type: array}, columns: {type: array}, explanation: {type: string}, tables: {type: array}, used_columns: {type: array}, attempts: {type: array}, selected_by: {type: string}}}
     - id: schema
       name: Şema özeti
       description: Bağlantıdaki izinli tabloların ve sütunların özetini döner.
@@ -400,7 +401,7 @@
     purpose: Raporlama taleplerinin BT'ye gitmeden yanıtlanması
   depends_on: [kvkk-kalkani]
   erp_touchpoints: ["db.readonly (salt okunur kullanıcı, tablo beyaz listesi)"]
-  kpis: [Rapor talebi karşılama süresi, Doğru sorgu oranı]
+  kpis: [Rapor talebi karşılama süresi, Doğru sorgu oranı, Şemaya bağlanamayan sorgu oranı (hedef %0)]
 
 - id: kod-uretimi
   niche_code: N08

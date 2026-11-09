@@ -53,6 +53,11 @@ doğrulanır (bilinmeyen model, eksik bağımlılık, ticari kullanımı yasak m
 
 `shared: true` bileşenler kurulu başka modülde varsa yeniden indirilmez ve bellekte bir kez sayılır.
 
+## Modül gövdesinde ek alanlar (dogal-dil-sql)
+
+`ask` eylemi `evidence` (ipucu), `candidates` (1-8), `max_repairs` (0-4), `lang` (tr/en) alır; yanıt `tables`,
+`used_columns`, `attempts`, `selected_by` döner. Ayrıntı: `docs/TEXT2SQL.md`.
+
 ## Yeni modül ekleme
 
 1. `catalog/modules.yaml`'a kayıt ekleyin (gerekirse `models.yaml`'a model — önce HF'de doğrulayın:
