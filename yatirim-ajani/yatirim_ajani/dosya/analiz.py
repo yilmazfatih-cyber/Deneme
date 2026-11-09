@@ -24,10 +24,10 @@ from ..ogrenme.saglamlik import deflated_sharpe
 OZELLIKLER = [
     "getiri_1g", "getiri_5g", "getiri_20g", "getiri_60g", "getiri_120g", "mom_12_1", "zirve_52h_yakinlik", "zirveden_dusus",
     "oynaklik_20g", "oynaklik_60g", "atr_20g_oran", "rsi_14", "ma20_uzaklik", "ma50_uzaklik", "ma200_uzaklik",
-    "hacim_z_20", "amihud_20g", "devir_hizi_20g", "gece_ort_20g", "gunici_ort_20g", "aof_1g_sapma",
+    "hacim_z_20", "amihud_20g", "devir_hizi_20g", "gece_ort_20g", "gunici_ort_20g", "aof_1g_sapma", "max_gunluk_20g", "min_gunluk_20g", "ivol_60g",
     "endekse_gore_1g", "endekse_gore_20g", "endekse_gore_60g", "beta_60g", "xu100_getiri_20g", "xu100_ma200_uzaklik",
     "usdtry_getiri_20g", "dolar_getiri_60g", "piyasa_degeri_mn", "halka_aciklik",
-    "fk", "kazanc_verimi", "pd_dd", "fd_favok", "snak_verimi", "roe_ttm", "net_kar_marji", "kar_buyume_yillik",
+    "fk", "kazanc_verimi", "pd_dd", "fd_favok", "snak_verimi", "temettu_verimi", "roe_ttm", "net_kar_marji", "kar_buyume_yillik",
     "satis_buyume_yillik", "net_borc_ozkaynak", "bilancodan_gun", "olay_sayi_5g", "olay_yon_5g",
 ]  # fmt: skip
 TAKVIM = ["haftanin_gunu", "ay", "ay_donusu", "bayram_oncesi", "bayram_sonrasi", "bilanco_sezonu"]
@@ -35,7 +35,7 @@ TAKVIM = ["haftanin_gunu", "ay", "ay_donusu", "bayram_oncesi", "bayram_sonrasi",
 # ortalamaya dönüştür; kural taramasına alınmaz, koşullu tabloda işaretlenir.
 SEVIYE = {"piyasa_degeri_mn", "dolar_fiyat", "halka_aciklik", "bilancodan_gun"}
 # Çeyreklik adım fonksiyonları: n büyük görünse de bağımsız değer sayısı ≤ çeyrek sayısı
-CEYREKLIK = {"fk", "kazanc_verimi", "pd_dd", "fd_favok", "snak_verimi", "roe_ttm", "net_kar_marji", "kar_buyume_yillik", "satis_buyume_yillik", "net_borc_ozkaynak"}
+CEYREKLIK = {"fk", "kazanc_verimi", "pd_dd", "fd_favok", "snak_verimi", "temettu_verimi", "roe_ttm", "net_kar_marji", "kar_buyume_yillik", "satis_buyume_yillik", "net_borc_ozkaynak"}
 
 
 def _spearman(x: np.ndarray, y: np.ndarray) -> tuple[float, float]:

@@ -78,6 +78,11 @@ jobs:
           python -m yatirim_ajani bilgi-olaylar --piyasa bist
           for f in bilgi_kaynak/*.json; do [ -f "$f" ] && python -m yatirim_ajani bilgi-yukle "$f" || true; done
           python -m yatirim_ajani simule --piyasa bist > /dev/null
+          # Hisse dosyası ham verisi (kuyruk varsa onu, yoksa evreni çeker; hata işi durdurmaz)
+          if [ -f veri/dosya/kuyruk.json ]; then
+            HISSELER=$(python -c "import json;d=json.load(open('veri/dosya/kuyruk.json'));print(','.join(d.get('hisseler', [])))")
+          fi
+          python -m yatirim_ajani dosya-veri-cek --klasor veri/dosya/ham --baslangic 2024-01-01 --endeks XU100,XU030 ${HISSELER:+--hisseler "$HISSELER"} || echo "dosya-veri hata (devam)"
 
       - name: Saatlik tarama
         if: steps.is.outputs.ad == 'tara'

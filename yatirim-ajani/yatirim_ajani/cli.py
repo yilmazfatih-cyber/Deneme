@@ -907,6 +907,21 @@ def komut_dosya_analiz(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
     return 0
 
 
+def komut_dosya_kesit(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
+    from pathlib import Path as _P
+
+    from .dosya.kesit import kesit_analizi, kesit_raporu
+
+    sonuc = kesit_analizi(_P(a.cikti) / "dosya.sqlite", a.maliyet_bps)
+    metin = kesit_raporu(sonuc)
+    yol = _P(a.rapor_klasoru) / f"dosya-kesit-{datetime.now():%Y%m%d}.md"
+    yol.parent.mkdir(parents=True, exist_ok=True)
+    yol.write_text(metin, encoding="utf-8")
+    (_P(a.cikti) / "kesit_analiz.json").write_text(json.dumps(sonuc, ensure_ascii=False, indent=1, default=str), encoding="utf-8")
+    print(metin if a.yazdir else f"kesit: {sonuc['hisse_sayisi']} hisse · rapor {yol}")
+    return 0
+
+
 def ayristirici() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="yatirim_ajani", description="Araştıran, öneren, sanal işlem yapan yatırım ajanı")
     p.add_argument("--ayarlar", help="ayarlar.toml yolu")
@@ -1123,6 +1138,14 @@ def ayristirici() -> argparse.ArgumentParser:
     sp.add_argument("--rapor-klasoru", default="raporlar")
     sp.add_argument("--yazdir", action="store_true")
     sp.set_defaults(islev=komut_dosya_analiz)
+
+
+    sp = alt.add_parser("dosya-kesit", help="Kesit analizi: tüm hisselerde kesit kantilleri, faktör portföyleri (aylık), Deflated Sharpe")
+    sp.add_argument("--cikti", default="veri/dosya")
+    sp.add_argument("--rapor-klasoru", default="raporlar")
+    sp.add_argument("--maliyet-bps", type=float, default=10.0)
+    sp.add_argument("--yazdir", action="store_true")
+    sp.set_defaults(islev=komut_dosya_kesit)
 
     sp = alt.add_parser("yeniden-baslat", help="Düşüş sınırıyla durmuş sanal hesabı yeniden aç")
     sp.add_argument("--piyasa", choices=list(PIYASALAR), required=True)

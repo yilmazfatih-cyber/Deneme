@@ -61,6 +61,10 @@ FORMULLER: list[dict] = [
     {"sutun": "hacim_gunici_oran", "baslik": "Gün içi birikimli hacim / 20g ort.", "formul": "ΣV_d(≤t) / mean(V_{d-20..d-1})", "pencere": "20g", "kaynak": "hacim", "yon": "belirsiz"},
     {"sutun": "amihud_20g", "baslik": "Amihud likiditesizlik (×1e9)", "formul": "mean(|r_i| / (V_i·C_i))·1e9, i=d-20..d-1", "pencere": "20g", "kaynak": "Amihud (2002); BIST likidite primi", "yon": "pozitif (prim)"},
     {"sutun": "devir_hizi_20g", "baslik": "Devir hızı", "formul": "mean(V_{d-20..d-1}) / dolaşımdaki pay (halka açık)", "pencere": "20g", "kaynak": "likidite", "yon": "negatif"},
+    {"sutun": "max_gunluk_20g", "baslik": "MAX: son 20 günün en yüksek günlük getirisi", "formul": "max(r_{d-20..d-1})", "pencere": "20g", "kaynak": "Bali-Cakici-Whitelaw (2011); BIST: Alkan-Güner (2018) negatif", "yon": "negatif"},
+    {"sutun": "min_gunluk_20g", "baslik": "MIN: son 20 günün en düşük günlük getirisi", "formul": "min(r_{d-20..d-1})", "pencere": "20g", "kaynak": "kuyruk riski", "yon": "belirsiz"},
+    {"sutun": "ivol_60g", "baslik": "İdiosenkratik oynaklık (60g, yıllık)", "formul": "std(r - β·r_XU100) · √252, d-60..d-1", "pencere": "60g", "kaynak": "Ang ve ark. (2006); BIST: Çam ve ark. (2024), Akarsu (2023) pozitif bulgu", "yon": "belirsiz"},
+    {"sutun": "temettu_verimi", "baslik": "Temettü verimi (vekil)", "formul": "son 4 çeyrek konsolide temettü ödemeleri / piyasa_degeri_mn", "pencere": "TTM", "kaynak": "temettü faktörü; vekil (azınlık payına ödemeler dahil)", "yon": "pozitif"},
     {"sutun": "gece_ort_20g", "baslik": "Ortalama gece getirisi 20g", "formul": "mean(O_i/C_{i-1}-1), i=d-20..d-1", "pencere": "20g", "kaynak": "gece primi", "yon": "pozitif"},
     {"sutun": "gunici_ort_20g", "baslik": "Ortalama gün içi getiri 20g", "formul": "mean(C_i/O_i-1), i=d-20..d-1", "pencere": "20g", "kaynak": "gün içi eksi", "yon": "negatif"},
     {"sutun": "endekse_gore_1g", "baslik": "Endekse göre 1g", "formul": "getiri_1g - XU100 getiri_1g", "pencere": "1g", "kaynak": "göreli güç", "yon": "belirsiz"},
@@ -343,6 +347,8 @@ def omurga_kur(hisse: str, g: Girdiler) -> pd.DataFrame:
     G["hacim_z_20"] = (v1 - v1.rolling(20).mean().shift(1)) / v1.rolling(20).std().shift(1)
     G["hacim_ort_20"] = v1.rolling(20).mean()
     G["amihud_20g"] = ((r.abs() / tl_hacim.replace(0, np.nan)).shift(1).rolling(20).mean()) * 1e9
+    G["max_gunluk_20g"] = r.shift(1).rolling(20).max()  # MAX etkisi (Bali-Cakici-Whitelaw 2011; BIST: Alkan-Güner 2018)
+    G["min_gunluk_20g"] = r.shift(1).rolling(20).min()
     G["gece_ort_20g"] = gece.shift(1).rolling(20).mean()
     G["gunici_ort_20g"] = gunici.shift(1).rolling(20).mean()
     G["gece_getiri"] = gece
@@ -354,6 +360,9 @@ def omurga_kur(hisse: str, g: Girdiler) -> pd.DataFrame:
         cov = r.shift(1).rolling(60).cov(xr.shift(1))
         var = xr.shift(1).rolling(60).var()
         G["beta_60g"] = cov / var
+        # idiosenkratik oynaklık: piyasa regresyonu artıklarının std'si (60g), yıllık
+        artik = r.shift(1) - G["beta_60g"] * xr.shift(1)
+        G["ivol_60g"] = artik.rolling(60).std() * np.sqrt(252)
         # ileri (etiket) XU100
         for k in (1, 5, 20):
             G[f"xu100_ileri_{k}g"] = XC.shift(-k) / XC - 1
@@ -452,12 +461,14 @@ def omurga_kur(hisse: str, g: Girdiler) -> pd.DataFrame:
             T["favok_ttm"] = T["favok_ceyrek"].rolling(4).sum()
         if "serbest_nakit_ceyrek" in T.columns:
             T["serbest_nakit_ttm"] = T["serbest_nakit_ceyrek"].rolling(4).sum()
+        if "temettu_odeme_ceyrek" in T.columns:
+            T["temettu_ttm"] = T["temettu_odeme_ceyrek"].abs().rolling(4).sum()
         if "ozkaynak_ana" in T.columns and "net_kar_ttm" in T.columns:
             T["roe_ttm"] = T["net_kar_ttm"] / T["ozkaynak_ana"]
         if "net_borc" in T.columns and "ozkaynak_ana" in T.columns:
             T["net_borc_ozkaynak"] = T["net_borc"] / T["ozkaynak_ana"]
         sutunlar = [c for c in ("net_kar_ceyrek", "net_kar_ttm", "kar_buyume_yillik", "satis_buyume_yillik", "net_kar_marji", "roe_ttm",
-                                "favok_ttm", "serbest_nakit_ttm", "ozkaynak_ana", "net_borc", "net_borc_ozkaynak") if c in T.columns]  # fmt: skip
+                                "favok_ttm", "serbest_nakit_ttm", "temettu_ttm", "ozkaynak_ana", "net_borc", "net_borc_ozkaynak") if c in T.columns]  # fmt: skip
         Tm = T[["aciklanma", *sutunlar]].rename(columns={"aciklanma": "zaman"})
         R = pd.merge_asof(R.sort_values("zaman"), Tm.sort_values("zaman"), on="zaman", direction="backward")
         son_ac = pd.merge_asof(R[["zaman"]], Tm[["zaman"]].assign(son_aciklanma=Tm["zaman"]), on="zaman", direction="backward")["son_aciklanma"]
@@ -472,7 +483,9 @@ def omurga_kur(hisse: str, g: Girdiler) -> pd.DataFrame:
                 R["fd_favok"] = np.where(R["favok_ttm"] > 0, (R["piyasa_degeri_mn"] + R["net_borc"]) / R["favok_ttm"], np.nan)
             if "serbest_nakit_ttm" in R.columns:
                 R["snak_verimi"] = R["serbest_nakit_ttm"] / R["piyasa_degeri_mn"]
-        R = R.drop(columns=[c for c in ("ozkaynak_ana", "net_borc", "favok_ttm", "serbest_nakit_ttm") if c in R.columns])
+            if "temettu_ttm" in R.columns:
+                R["temettu_verimi"] = R["temettu_ttm"] / R["piyasa_degeri_mn"]  # vekil: konsolide nakit akışındaki temettü ödemeleri (azınlık dahil)
+        R = R.drop(columns=[c for c in ("ozkaynak_ana", "net_borc", "favok_ttm", "serbest_nakit_ttm", "temettu_ttm") if c in R.columns])
     # 6) Olaylar
     if not g.olaylar.empty and "kamuya_acilma" in g.olaylar.columns:
         O = g.olaylar.dropna(subset=["kamuya_acilma"]).sort_values("kamuya_acilma")
