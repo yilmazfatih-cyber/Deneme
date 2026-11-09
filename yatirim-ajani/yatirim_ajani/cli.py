@@ -857,9 +857,7 @@ def komut_dosya_veri_cek(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
     hisseler = [h.strip().upper() for h in a.hisseler.split(",") if h.strip()] if a.hisseler else ayarlar.evren["bist"]
     bas = _date.fromisoformat(a.baslangic)
     endeksler = tuple(e.strip().upper() for e in a.endeks.split(",") if e.strip()) if a.endeks else ()
-    rapor = dosya_veri_cek(hisseler, a.klasor, bas, kap=not a.kap_yok, endeksler=endeksler)
-    for h, r in rapor.items():
-        print(h, json.dumps(r, ensure_ascii=False)[:300])
+    dosya_veri_cek(hisseler, a.klasor, bas, kap=a.kap, endeksler=endeksler, paralel=a.paralel)
     return 0
 
 
@@ -1113,11 +1111,13 @@ def ayristirici() -> argparse.ArgumentParser:
 
 
     sp = alt.add_parser("dosya-veri-cek", help="Hisse dosyası ham verisi: İş Yatırım günlük oranlar + mali tablo, KAP, Yahoo günlük (dış ağ gerekir)")
-    sp.add_argument("--hisseler", help="Virgülle ayrılmış; verilmezse BIST evreni")
+    sp.add_argument("--hisseler", help="Virgülle ayrılmış; 'XU100' gibi endeks simgeleri bileşenlere açılır; verilmezse BIST evreni")
     sp.add_argument("--klasor", default="veri/dosya/ham")
     sp.add_argument("--baslangic", default="2024-01-01")
-    sp.add_argument("--kap-yok", action="store_true")
-    sp.add_argument("--endeks", help="Bileşen listesi çekilecek endeksler, ör. XU100,XU030")
+    sp.add_argument("--kap", action="store_true", help="KAP bildirim listesini de dene (çoğu ortamda kapalı, yavaş)")
+    sp.add_argument("--kap-yok", action="store_true", help="(eski bayrak; KAP artık varsayılan kapalı)")
+    sp.add_argument("--paralel", type=int, default=6, help="Aynı anda çekilen hisse sayısı")
+    sp.add_argument("--endeks", help="Bileşen listesi kaydedilecek endeksler, ör. XU100,XU030 (hisselere 'XU100' yazılırsa bileşenler çekilir)")
     sp.set_defaults(islev=komut_dosya_veri_cek)
 
 

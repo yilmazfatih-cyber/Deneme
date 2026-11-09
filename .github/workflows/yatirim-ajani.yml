@@ -96,7 +96,11 @@ jobs:
         working-directory: yatirim-ajani
         run: |
           python -m yatirim_ajani dosya-veri-cek --klasor veri/dosya/ham --baslangic "${{ inputs.baslangic }}" --endeks XU100,XU030 ${{ inputs.hisseler != '' && format('--hisseler "{0}"', inputs.hisseler) || '' }}
-          cat veri/dosya/ham/_cekim_raporu.json | head -c 3000
+          head -c 1500 veri/dosya/ham/_cekim_raporu.json
+          # Çözülen listenin saatlik çubukları (5 dk yok; Yahoo 730 gün sınırı)
+          if [ -s veri/dosya/ham/_hisseler.txt ]; then
+            python -m yatirim_ajani veri-cek --piyasa bist --hisseler "$(cat veri/dosya/ham/_hisseler.txt)" --bes-dakika-yok | tail -5 || echo "saatlik çekim hata (devam)"
+          fi
 
       - name: Çıktıları kaydet
         run: |

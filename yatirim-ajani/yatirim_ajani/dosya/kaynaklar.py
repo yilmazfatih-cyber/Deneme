@@ -113,10 +113,11 @@ def endeks_uyeleri(endeks: str = "XU100") -> dict:
     # b) TradingView tarayıcı
     try:
         govde = {"filter": [{"left": "index", "operation": "equal", "right": f"BIST:{endeks}"}], "options": {"lang": "tr"},
-                 "symbols": {"query": {"types": []}, "tickers": []}, "columns": ["name", "close", "market_cap_basic"], "sort": {"sortBy": "market_cap_basic", "sortOrder": "desc"}, "range": [0, 200]}  # fmt: skip
+                 "symbols": {"query": {"types": []}, "tickers": []}, "columns": ["name", "description", "close", "market_cap_basic"], "sort": {"sortBy": "market_cap_basic", "sortOrder": "desc"}, "range": [0, 200]}  # fmt: skip
         r = requests.post("https://scanner.tradingview.com/turkey/scan", json=govde, headers=BASLIK, timeout=30)
         if r.status_code == 200:
-            kodlar = sorted({str(d["d"][0]).strip() for d in r.json().get("data", []) if d.get("d")} - {""})
+            satirlar = [d["d"] for d in r.json().get("data", []) if d.get("d")]
+            kodlar = sorted({str(x[0]).strip() for x in satirlar if "TERA" not in str(x[1]).upper()} - {""})
             denemeler.append({"kaynak": "tradingview-scanner", "sonuc": len(kodlar)})
             if len(kodlar) >= 25:
                 return {"endeks": endeks, "kodlar": kodlar, "kaynak": "tradingview-scanner", "denemeler": denemeler}
@@ -156,7 +157,7 @@ def kap_bildirimler(hisse: str, bas: date, bit: date) -> list[dict]:
     ]  # fmt: skip
     for yontem, url, p in denemeler:
         try:
-            r = requests.get(url, params=p, headers=BASLIK, timeout=30) if yontem == "GET" else requests.post(url, json=p, headers=BASLIK, timeout=30)
+            r = requests.get(url, params=p, headers=BASLIK, timeout=10) if yontem == "GET" else requests.post(url, json=p, headers=BASLIK, timeout=10)
             if r.status_code == 200 and r.headers.get("content-type", "").startswith("application/json"):
                 veri = r.json()
                 if isinstance(veri, list) and veri:
@@ -170,16 +171,18 @@ def kap_bildirimler(hisse: str, bas: date, bit: date) -> list[dict]:
 
 # --- Yahoo ------------------------------------------------------------------------------------
 def yahoo_gunluk(sembol: str, bas: date) -> pd.DataFrame:
+    """Günlük çubuklar + temettü (hisse başı TL, hak kullanım günü) + bölünme/bedelsiz oranı.
+    `Ticker.history` kullanılır: `yf.download` paylaşılan global durum kullandığından paralel çağrıda karışabilir."""
     import yfinance as yf  # lokal içe aktarma: paket isteğe bağlı
 
-    df = yf.download(sembol, start=bas.isoformat(), interval="1d", progress=False, auto_adjust=False, threads=False)
+    df = yf.Ticker(sembol).history(start=bas.isoformat(), interval="1d", auto_adjust=False, actions=True)
     if df is None or df.empty:
         return pd.DataFrame()
-    if isinstance(df.columns, pd.MultiIndex):
-        df.columns = [c[0] for c in df.columns]
-    df = df.rename(columns={"Open": "acilis", "High": "yuksek", "Low": "dusuk", "Close": "kapanis", "Adj Close": "duz_kapanis", "Volume": "hacim"})
+    df = df.rename(columns={"Open": "acilis", "High": "yuksek", "Low": "dusuk", "Close": "kapanis", "Adj Close": "duz_kapanis",
+                            "Volume": "hacim", "Dividends": "temettu", "Stock Splits": "bolunme"})  # fmt: skip
     df.index.name = "tarih"
-    return df.reset_index()
+    sutunlar = [c for c in ("acilis", "yuksek", "dusuk", "kapanis", "duz_kapanis", "hacim", "temettu", "bolunme") if c in df.columns]
+    return df[sutunlar].reset_index()
 
 
 def yahoo_temel(sembol: str) -> dict:
@@ -217,62 +220,115 @@ def ceyrekler(bas: date, bit: date) -> list[tuple[int, int]]:
     return out
 
 
+HARIC = {"TERA", "TEHOL", "TRHOL"}  # Kullanıcı kuralı: Tera hisseleri hiç analiz edilmez
+ISY_SADE = ["HGDG_HS_KODU", "HGDG_TARIH", "HGDG_KAPANIS", "HGDG_AOF", "HGDG_MIN", "HGDG_MAX", "HGDG_HACIM", "END_DEGER", "DD_DEGER",
+            "DOLAR_BAZLI_FIYAT", "DOLAR_HACIM", "SERMAYE", "PD", "PD_USD", "HAO_PD", "HAO_PD_USD", "tarih"]  # fmt: skip
+
+
+def hisseleri_coz(simgeler: list[str], klasor: Path, yedek_klasor: str | Path = "dosya_kaynak") -> tuple[list[str], dict]:
+    """'XU100', 'XU030' gibi endeks simgelerini bileşenlere açar (canlı kaynak; olmazsa dosya_kaynak/bist100.json yedeği).
+    Tera hisseleri çıkarılır. Döner: (sıralı benzersiz hisse listesi, endeks raporu)."""
+    out: list[str] = []
+    rapor: dict = {}
+    for s in simgeler:
+        s = s.strip().upper()
+        if not s:
+            continue
+        if s.startswith("XU") and len(s) >= 4:
+            sonuc = endeks_uyeleri(s)
+            kodlar = sonuc["kodlar"]
+            kaynak = sonuc["kaynak"]
+            if len(kodlar) < 25:
+                yedek = Path(yedek_klasor) / ("bist100.json" if s == "XU100" else f"{s.lower()}.json")
+                if yedek.exists():
+                    d = json.loads(yedek.read_text(encoding="utf-8"))
+                    kodlar = d.get("bist100" if s == "XU100" else "kodlar", []) if s != "XU030" else d.get("bist30", [])
+                    kaynak = f"yedek:{yedek}"
+            (klasor / f"endeks_{s}.json").write_text(json.dumps({**sonuc, "kodlar": kodlar, "kaynak": kaynak, "cekilme": datetime.now().isoformat(timespec="minutes")},
+                                                                ensure_ascii=False, indent=1), encoding="utf-8")  # fmt: skip
+            rapor[f"endeks_{s}"] = {"kod": len(kodlar), "kaynak": kaynak, "denemeler": sonuc["denemeler"]}
+            out += kodlar
+        else:
+            out.append(s)
+    goruldu: set[str] = set()
+    sirali = [h for h in out if not (h in goruldu or goruldu.add(h)) and h not in HARIC]
+    return sirali, rapor
+
+
+def _tek_hisse(h: str, klasor: Path, bas: date, bit: date, kap: bool) -> dict[str, Any]:
+    t0 = time.time()
+    r: dict[str, Any] = {}
+    try:
+        df = isy_gunluk(h, bas, bit)
+        df = df[[c for c in ISY_SADE if c in df.columns]]
+        df.to_csv(klasor / f"{h}_isy_gunluk.csv", index=False)
+        r["isy_gunluk"] = len(df)
+    except Exception as e:  # noqa: BLE001
+        r["isy_gunluk_hata"] = str(e)[:200]
+    try:
+        mt = isy_mali_tablo(h, ceyrekler(date(bas.year - 1, 1, 1), bit))  # bir yıl öncesinden: yıllık büyüme için
+        mt.to_csv(klasor / f"{h}_isy_mali.csv", index=False)
+        r["isy_mali_kalem"] = len(mt)
+    except Exception as e:  # noqa: BLE001
+        r["isy_mali_hata"] = str(e)[:200]
+    if kap:
+        try:
+            b = kap_bildirimler(h, bas, bit)
+            (klasor / f"{h}_kap.json").write_text(json.dumps(b, ensure_ascii=False), encoding="utf-8")
+            r["kap"] = len(b)
+        except Exception as e:  # noqa: BLE001
+            r["kap_hata"] = str(e)[:200]
+    try:
+        df = yahoo_gunluk(f"{h}.IS", bas)
+        df.to_csv(klasor / f"{h}_yahoo_1d.csv", index=False)
+        r["yahoo_1d"] = len(df)
+    except Exception as e:  # noqa: BLE001
+        r["yahoo_1d_hata"] = str(e)[:200]
+    try:
+        (klasor / f"{h}_yahoo_temel.json").write_text(json.dumps(yahoo_temel(f"{h}.IS"), ensure_ascii=False, default=str), encoding="utf-8")
+        r["yahoo_temel"] = True
+    except Exception as e:  # noqa: BLE001
+        r["yahoo_temel_hata"] = str(e)[:200]
+    r["sure_sn"] = round(time.time() - t0, 1)
+    return r
+
+
 def dosya_veri_cek(hisseler: list[str], klasor: str | Path, bas: date, bit: date | None = None, gosterge: tuple[str, ...] = ("XU100.IS", "USDTRY=X"),
-                   kap: bool = True, endeksler: tuple[str, ...] = ()) -> dict[str, dict]:
-    """Her hisse için ham dosyaları yazar: {hisse}_isy_gunluk.csv, {hisse}_isy_mali.csv, {hisse}_kap.json, {hisse}_yahoo_1d.csv, {hisse}_yahoo_temel.json."""
+                   kap: bool = False, endeksler: tuple[str, ...] = (), paralel: int = 6, yedek_klasor: str | Path = "dosya_kaynak") -> dict[str, dict]:
+    """Her hisse için ham dosyaları yazar ({hisse}_isy_gunluk.csv, _isy_mali.csv, _yahoo_1d.csv, _yahoo_temel.json; istenirse _kap.json).
+    `hisseler` içinde 'XU100' gibi endeks simgeleri bileşenlere açılır. Hisseler `paralel` iş parçacığıyla çekilir.
+    Çözülen liste `_hisseler.txt`'ye yazılır (saatlik çekim adımı için)."""
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+
     bit = bit or date.today()
     klasor = Path(klasor)
     klasor.mkdir(parents=True, exist_ok=True)
-    rapor: dict[str, dict] = {}
-    for e in endeksler:
-        try:
-            sonuc = endeks_uyeleri(e)
-            (klasor / f"endeks_{e}.json").write_text(json.dumps({**sonuc, "cekilme": datetime.now().isoformat(timespec="minutes")}, ensure_ascii=False, indent=1), encoding="utf-8")
-            rapor[f"endeks_{e}"] = {"kod": len(sonuc["kodlar"]), "kaynak": sonuc["kaynak"], "denemeler": sonuc["denemeler"]}
-        except Exception as ex:  # noqa: BLE001
-            rapor[f"endeks_{e}"] = {"hata": str(ex)}
+    t0 = time.time()
+    liste, rapor = hisseleri_coz(list(hisseler), klasor, yedek_klasor)
+    for e in endeksler:  # yalnız liste kaydı (bileşenleri çekmeden)
+        if f"endeks_{e}" not in rapor:
+            _, r2 = hisseleri_coz([e], klasor, yedek_klasor)
+            rapor.update(r2)
+    (klasor / "_hisseler.txt").write_text(",".join(liste), encoding="utf-8")
     for g in gosterge:
         try:
             df = yahoo_gunluk(g, bas)
             df.to_csv(klasor / f"{g.replace('=', '_')}_yahoo_1d.csv", index=False)
             rapor[g] = {"yahoo_1d": len(df)}
         except Exception as e:  # noqa: BLE001
-            rapor[g] = {"hata": str(e)}
-    for h in hisseler:
-        r: dict[str, Any] = {}
-        try:
-            df = isy_gunluk(h, bas, bit)
-            df.to_csv(klasor / f"{h}_isy_gunluk.csv", index=False)
-            r["isy_gunluk"] = len(df)
-            r["isy_sutunlar"] = list(df.columns)[:40]
-        except Exception as e:  # noqa: BLE001
-            r["isy_gunluk_hata"] = str(e)
-        try:
-            mt = isy_mali_tablo(h, ceyrekler(date(bas.year - 1, 1, 1), bit))  # bir yıl öncesinden: yıllık büyüme için
-            mt.to_csv(klasor / f"{h}_isy_mali.csv", index=False)
-            r["isy_mali_kalem"] = len(mt)
-        except Exception as e:  # noqa: BLE001
-            r["isy_mali_hata"] = str(e)
-        if kap:
+            rapor[g] = {"hata": str(e)[:200]}
+    with ThreadPoolExecutor(max_workers=max(1, paralel)) as havuz:
+        isler = {havuz.submit(_tek_hisse, h, klasor, bas, bit, kap): h for h in liste}
+        for i, f in enumerate(as_completed(isler), start=1):
+            h = isler[f]
             try:
-                b = kap_bildirimler(h, bas, bit)
-                (klasor / f"{h}_kap.json").write_text(json.dumps(b, ensure_ascii=False), encoding="utf-8")
-                r["kap"] = len(b)
+                rapor[h] = f.result()
             except Exception as e:  # noqa: BLE001
-                r["kap_hata"] = str(e)
-        try:
-            df = yahoo_gunluk(f"{h}.IS", bas)
-            df.to_csv(klasor / f"{h}_yahoo_1d.csv", index=False)
-            r["yahoo_1d"] = len(df)
-        except Exception as e:  # noqa: BLE001
-            r["yahoo_1d_hata"] = str(e)
-        try:
-            (klasor / f"{h}_yahoo_temel.json").write_text(json.dumps(yahoo_temel(f"{h}.IS"), ensure_ascii=False), encoding="utf-8")
-            r["yahoo_temel"] = True
-        except Exception as e:  # noqa: BLE001
-            r["yahoo_temel_hata"] = str(e)
-        rapor[h] = r
-        time.sleep(0.5)
-    (klasor / "_cekim_raporu.json").write_text(json.dumps({"zaman": datetime.now().isoformat(timespec="minutes"), "bas": bas.isoformat(),
-                                                           "bit": bit.isoformat(), "rapor": rapor}, ensure_ascii=False, indent=1), encoding="utf-8")  # fmt: skip
+                rapor[h] = {"hata": str(e)[:200]}
+            print(f"[{i}/{len(liste)}] {h} {json.dumps(rapor[h], ensure_ascii=False)[:160]}", flush=True)
+    ozet = {"hisse": len(liste), "tam": sum(1 for h in liste if rapor.get(h, {}).get("isy_gunluk", 0) and rapor.get(h, {}).get("yahoo_1d", 0)),
+            "sure_dk": round((time.time() - t0) / 60, 1)}  # fmt: skip
+    (klasor / "_cekim_raporu.json").write_text(json.dumps({"zaman": datetime.now().isoformat(timespec="minutes"), "bas": bas.isoformat(), "bit": bit.isoformat(),
+                                                           "ozet": ozet, "rapor": rapor}, ensure_ascii=False, indent=1), encoding="utf-8")  # fmt: skip
+    print("ÖZET", json.dumps(ozet, ensure_ascii=False))
     return rapor
