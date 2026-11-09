@@ -1,0 +1,71 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aiplatform"
+version = "0.1.0"
+description = "ERP'ye eklenti olarak çalışan, modül modül kurulan, KVKK uyumlu yerel yapay zekâ platformu (kontrol düzlemi + modül çalışma zamanı)"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "Apache-2.0"
+dependencies = [
+  "fastapi>=0.115",
+  "uvicorn[standard]>=0.30",
+  "pydantic>=2.7",
+  "pydantic-settings>=2.3",
+  "pyyaml>=6",
+  "httpx>=0.27",
+  "psutil>=5.9",
+  "sqlalchemy>=2.0",
+  "python-multipart>=0.0.9",
+  "huggingface_hub>=0.25",
+  "rapidfuzz>=3.9",
+  "numpy>=1.26",
+  "numpy-financial>=1.0",
+  "packaging>=23",
+  "cryptography>=42",
+]
+
+[project.optional-dependencies]
+# ---- Sunucu tarafı model çalıştırma (biri seçilir; kurulum sihirbazı donanıma göre önerir)
+llamacpp = ["llama-cpp-python[server]>=0.3.0"]          # CPU veya tek GPU, GGUF
+# vLLM ve Ollama ayrı kurulur (docker/ veya sistem paketi); pip bağımlılığı yok.
+# ---- Modül grupları (katalogdaki `pip_extras` alanıyla eşleşir)
+kvkk = ["presidio-analyzer>=2.2", "presidio-anonymizer>=2.2", "gliner>=0.2.13"]
+belge = ["docling>=2.0", "pdfplumber>=0.11", "pypdfium2>=4.30", "pillow>=10"]
+ocr-tesseract = ["pytesseract>=0.3.10"]
+ocr-paddle = ["paddleocr>=3.0"]
+gomme = ["sentence-transformers>=3.0"]
+siniflandirma = ["transformers>=4.45", "torch>=2.2", "optimum[onnxruntime]>=1.21", "scikit-learn>=1.4", "sentence-transformers>=3.0"]
+ses = ["faster-whisper>=1.0"]
+tts = ["piper-tts>=1.2"]
+zaman-serisi = ["chronos-forecasting>=1.4", "pandas>=2.2"]
+tablo-ml = ["lightgbm>=4.3", "scikit-learn>=1.4", "pandas>=2.2"]
+eslestirme = ["splink>=4.0", "pandas>=2.2"]
+konu = ["bertopic>=0.16", "keybert>=0.8", "scikit-learn>=1.4"]
+gorsel = ["transformers>=4.45", "torch>=2.2", "pillow>=10"]
+nesne = ["rfdetr>=1.0"]
+text2sql = ["sqlglot>=25"]
+erp-sql = ["sqlalchemy>=2.0", "sqlglot>=25", "psycopg[binary]>=3.1", "pymssql>=2.3", "pymysql>=1.1"]
+dev = ["pytest>=8", "pytest-asyncio>=0.23", "ruff>=0.5"]
+
+[project.scripts]
+aiplatform = "aiplatform.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["aiplatform*"]
+
+[tool.setuptools.package-data]
+aiplatform = ["web/**/*", "catalog/*.yaml"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+markers = ["slow: model indiren veya ağır bağımlılık isteyen testler"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py311"

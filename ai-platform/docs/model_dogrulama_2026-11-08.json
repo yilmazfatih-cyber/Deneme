@@ -1,0 +1,326 @@
+[
+ {
+  "model_id": "qwen3.5-35b-a3b",
+  "repo": "Qwen/Qwen3.5-35B-A3B-FP8",
+  "checked": "2026-11-08",
+  "status": "OK",
+  "license": "apache-2.0",
+  "params": 35951822704,
+  "gated": false
+ },
+ {
+  "model_id": "qwen3.5-35b-a3b",
+  "repo": "unsloth/Qwen3.5-35B-A3B-GGUF",
+  "checked": "2026-11-08",
+  "status": "OK",
+  "license": "apache-2.0",
+  "params": null,
+  "gated": false
+ },
+ {
+  "model_id": "gemma-4-26b-a4b",
+  "repo": "unsloth/gemma-4-26b-a4b-it-GGUF",
+  "checked": "2026-11-08",
+  "status": "OK",
+  "license": "apache-2.0",
+  "params": null,
+  "gated": false
+ },
+ {
+  "model_id": "gpt-oss-20b",
+  "repo": "unsloth/gpt-oss-20b-GGUF",
+  "checked": "2026-11-08",
+  "status": "OK",
+  "license": "apache-2.0",
+  "params": null,
+  "gated": false
+ },
+ {
+  "model_id": "qwen3.5-9b",
+  "repo": "Qwen/Qwen3.5-9B",
+  "checked": "2026-11-08",
+  "status": "OK",
+  "license": "apache-2.0",
+  "params": 9653104368,
+  "gated": false
+ },
+ {
+  "model_id": "qwen3.5-9b",
+  "repo": "bartowski/Qwen_Qwen3.5-9B-GGUF",
+  "checked": "2026-11-08",
+  "status": "OK",
+  "license": "apache-2.0",
+  "params": null,
+  "gated": false
+ },
+ {
+  "model_id": "qwen3.5-4b",
+  "repo": "Qwen/Qwen3.5-4B",
+  "checked": "2026-11-08",
+  "status": "OK",
+  "license": "apache-2.0",
+  "params": 4659865088,
+  "gated": false
+ },
+ {
+  "model_id": "qwen3.5-4b",
+  "repo": "unsloth/Qwen3.5-4B-GGUF",
+  "checked": "2026-11-08",
+  "status": "OK",
+  "license": "apache-2.0",
+  "params": null,
+  "gated": false
+ },
+ {
+  "model_id": "qwen3.5-2b",
+  "repo": "unsloth/Qwen3.5-2B-GGUF",
+  "checked": "2026-11-08",
+  "status": "OK",
+  "license": "apache-2.0",
+  "params": null,
+  "gated": false
+ },
+ {
+  "model_id": "qwen3.5-0.8b",
+  "repo": "unsloth/Qwen3.5-0.8B-GGUF",
+  "checked": "2026-11-08",
+  "status": "OK",
+  "license": "apache-2.0",
+  "params": null,
+  "gated": false
+ },
+ {
+  "model_id": "gemma-4-e4b",
+  "repo": "unsloth/gemma-4-e4b-it-GGUF",
+  "checked": "2026-11-08",
+  "status": "OK",
+  "license": "apache-2.0",
+  "params": null,
+  "gated": false
+ },
+ {
+  "model_id": "kumru-2b",
+  "repo": "vngrs-ai/Kumru-2B",
+  "checked": "2026-11-08",
+  "status": "OK",
+  "license": "apache-2.0",
+  "params": 2375138304,
+  "gated": false
+ },
+ {
+  "model_id": "qwen2.5-coder-7b",
+  "repo": "Qwen/Qwen2.5-Coder-7B-Instruct",
+  "checked": "2026-11-08",
+  "status": "OK",
+  "license": "apache-2.0",
+  "params": 7615616512,
+  "gated": false
+ },
+ {
+  "model_id": "qwen2.5-coder-7b",
+  "repo": "unsloth/Qwen2.5-Coder-7B-Instruct-GGUF",
+  "checked": "2026-11-08",
+  "status": "OK",
+  "license": "apache-2.0",
+  "params": null,
+  "gated": false
+ },
+ {
+  "model_id": "arctic-text2sql-r1-7b",
+  "repo": "Snowflake/Arctic-Text2SQL-R1-7B",
+  "checked": "2026-11-08",
+  "status": "OK",
+  "license": "apache-2.0",
+  "params": 7615616512,
+  "gated": false
+ },
+ {
+  "model_id": "paddleocr-vl-1.6",
+  "repo": "PaddlePaddle/PaddleOCR-VL-1.6",
+  "checked": "2026-11-08",
+  "status": "OK",
+  "license": "apache-2.0",
+  "params": 958588736,
+  "gated": false
+ },
+ {
+  "model_id": "glm-ocr",
+  "repo": "zai-org/GLM-OCR",
+  "checked": "2026-11-08",
+  "status": "OK",
+  "license": "mit",
+  "params": 1325258240,
+  "gated": false
+ },
+ {
+  "model_id": "granite-docling-258m",
+  "repo": "ibm-granite/granite-docling-258M",
+  "checked": "2026-11-08",
+  "status": "OK",
+  "license": "apache-2.0",
+  "params": 257517120,
+  "gated": false
+ },
+ {
+  "model_id": "nuextract-2.0-4b",
+  "repo": "numind/NuExtract-2.0-4B",
+  "checked": "2026-11-08",
+  "status": "OK",
+  "license": "mit",
+  "params": 3754622976,
+  "gated": false
+ },
+ {
+  "model_id": "bge-m3",
+  "repo": "BAAI/bge-m3",
+  "checked": "2026-11-08",
+  "status": "OK",
+  "license": "mit",
+  "params": null,
+  "gated": false
+ },
+ {
+  "model_id": "multilingual-e5-small",
+  "repo": "intfloat/multilingual-e5-small",
+  "checked": "2026-11-08",
+  "status": "OK",
+  "license": "mit",
+  "params": 117654272,
+  "gated": false
+ },
+ {
+  "model_id": "turkish-e5-large",
+  "repo": "ytu-ce-cosmos/turkish-e5-large",
+  "checked": "2026-11-08",
+  "status": "OK",
+  "license": "mit",
+  "params": 559890432,
+  "gated": false
+ },
+ {
+  "model_id": "bge-reranker-v2-m3",
+  "repo": "BAAI/bge-reranker-v2-m3",
+  "checked": "2026-11-08",
+  "status": "OK",
+  "license": "apache-2.0",
+  "params": 567755777,
+  "gated": false
+ },
+ {
+  "model_id": "mdeberta-v3-xnli",
+  "repo": "MoritzLaurer/mDeBERTa-v3-base-xnli-multilingual-nli-2mil7",
+  "checked": "2026-11-08",
+  "status": "OK",
+  "license": "mit",
+  "params": 278812163,
+  "gated": false
+ },
+ {
+  "model_id": "berturk-base",
+  "repo": "dbmdz/bert-base-turkish-cased",
+  "checked": "2026-11-08",
+  "status": "OK",
+  "license": "mit",
+  "params": 111243010,
+  "gated": false
+ },
+ {
+  "model_id": "gliner-multi-pii-v1",
+  "repo": "urchade/gliner_multi_pii-v1",
+  "checked": "2026-11-08",
+  "status": "OK",
+  "license": "apache-2.0",
+  "params": null,
+  "gated": false
+ },
+ {
+  "model_id": "gliner-multi-v2.1",
+  "repo": "urchade/gliner_multi-v2.1",
+  "checked": "2026-11-08",
+  "status": "OK",
+  "license": "apache-2.0",
+  "params": 288949504,
+  "gated": false
+ },
+ {
+  "model_id": "madlad400-3b-mt",
+  "repo": "google/madlad400-3b-mt",
+  "checked": "2026-11-08",
+  "status": "OK",
+  "license": "apache-2.0",
+  "params": 2940374016,
+  "gated": false
+ },
+ {
+  "model_id": "opus-mt-tr-en",
+  "repo": "Helsinki-NLP/opus-mt-tr-en",
+  "checked": "2026-11-08",
+  "status": "OK",
+  "license": "apache-2.0",
+  "params": null,
+  "gated": false
+ },
+ {
+  "model_id": "opus-mt-en-tr",
+  "repo": "Helsinki-NLP/opus-mt-tc-big-en-tr",
+  "checked": "2026-11-08",
+  "status": "OK",
+  "license": "cc-by-4.0",
+  "params": null,
+  "gated": false
+ },
+ {
+  "model_id": "whisper-large-v3-turbo",
+  "repo": "deepdml/faster-whisper-large-v3-turbo-ct2",
+  "checked": "2026-11-08",
+  "status": "OK",
+  "license": "mit",
+  "params": null,
+  "gated": false
+ },
+ {
+  "model_id": "whisper-small",
+  "repo": "Systran/faster-whisper-small",
+  "checked": "2026-11-08",
+  "status": "OK",
+  "license": "mit",
+  "params": null,
+  "gated": false
+ },
+ {
+  "model_id": "piper-tr",
+  "repo": "rhasspy/piper-voices",
+  "checked": "2026-11-08",
+  "status": "OK",
+  "license": "mit",
+  "params": null,
+  "gated": false
+ },
+ {
+  "model_id": "chronos-bolt-small",
+  "repo": "amazon/chronos-bolt-small",
+  "checked": "2026-11-08",
+  "status": "OK",
+  "license": "apache-2.0",
+  "params": 47718016,
+  "gated": false
+ },
+ {
+  "model_id": "chronos-bolt-base",
+  "repo": "amazon/chronos-bolt-base",
+  "checked": "2026-11-08",
+  "status": "OK",
+  "license": "apache-2.0",
+  "params": 205292928,
+  "gated": false
+ },
+ {
+  "model_id": "granite-guardian-3.1-2b",
+  "repo": "ibm-granite/granite-guardian-3.1-2b",
+  "checked": "2026-11-08",
+  "status": "OK",
+  "license": "apache-2.0",
+  "params": 2533531648,
+  "gated": false
+ }
+]

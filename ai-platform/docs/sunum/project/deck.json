@@ -1,0 +1,19 @@
+{
+  "v": 4,
+  "createdOnFiles": {"v": 1, "at": "2026-11-08T17:10:00Z"},
+  "lists": "css",
+  "title": "Yerel AI Platformu Sunum Şablonu",
+  "order": ["kapak", "gundem", "sorun", "cozum", "magaza", "paket", "demo", "kpi", "donanim", "kvkk", "yol", "teklif", "adimlar", "ek-modeller"],
+  "sections": {
+    "acilis": {"description": "Kapak ve toplantı gündemi", "start": "kapak"},
+    "ihtiyac": {"description": "Müşterinin rollerinden acı noktalarına, oradan çözüm mimarisine", "start": "sorun"},
+    "ozellestirme": {"description": "Müşteriye özel modül paketi, demo planı ve ölçülecek değer", "start": "paket"},
+    "altyapi": {"description": "Donanım paketi ve KVKK güvencesi", "start": "donanim"},
+    "kapanis": {"description": "Yol haritası, teklif çerçevesi ve sonraki adımlar", "start": "yol"}
+  },
+  "faces": {
+    "space-grotesk": {"family": "Space Grotesk", "href": "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@400;600&display=swap"},
+    "inter": {"family": "Inter", "href": "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@400;600&display=swap"}
+  },
+  "designSystems": []
+}
