@@ -996,6 +996,51 @@ def komut_sektor_analiz(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
     return 0
 
 
+def komut_olay_dagit(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
+    """Ajan olay paketlerini doğrular ve hisse başına dosya_kaynak/olaylar_<HİSSE>.json'a (sektör/makro olaylarını ortak dosyalara) ekler."""
+    from pathlib import Path as _P
+
+    from .bilgi.sema import Olay
+
+    gecerli_tepki = {"panik_satisi", "kar_satisi", "fomo_alimi", "kademeli_birikim", "beklenti_alimi", "haber_sonrasi_duzeltme", "ilgisizlik", "rotasyon", "belirsiz"}
+    hedef = _P(a.klasor)
+    sayac: dict[str, int] = {}
+    hatali = []
+    for paket in a.paketler:
+        veri = json.loads(_P(paket).read_text(encoding="utf-8"))
+        for o in veri.get("olaylar", veri if isinstance(veri, list) else []):
+            o["kaynak_tipi"] = "metin"
+            o["tepki_aciklama"] = o.get("tepki_aciklama") or ""
+            if o.get("yatirimci_tepkisi") not in gecerli_tepki:
+                o["yatirimci_tepkisi"] = "belirsiz"
+            o["bitis"] = o.get("bitis") or o.get("baslangic")
+            if len(o.get("baslik") or "") > 158:
+                o["baslik"] = o["baslik"][:157] + "…"
+            try:
+                Olay(**{k: v for k, v in o.items() if k != "hane"})
+            except Exception as hata:  # noqa: BLE001
+                hatali.append(f"{o.get('hisse')}: {(o.get('baslik') or '')[:50]} ({str(hata)[:80]})")
+                continue
+            if o.get("kapsam") == "sirket" and o.get("hisse"):
+                ad = f"olaylar_{o['hisse'].upper()}.json"
+            elif o.get("kapsam") == "sektor":
+                ad = "olaylar_sektor.json"
+            else:
+                ad = "olaylar_makro.json"
+            yol = hedef / ad
+            mevcut = json.loads(yol.read_text(encoding="utf-8")) if yol.exists() else {"not": "ajan araştırması (web arama özetleri)", "olaylar": []}
+            anahtar = {(x.get("hisse"), x.get("sektor"), x.get("baslangic"), x.get("tur"), x.get("baslik")) for x in mevcut["olaylar"]}
+            if (o.get("hisse"), o.get("sektor"), o.get("baslangic"), o.get("tur"), o.get("baslik")) in anahtar:
+                continue
+            mevcut["olaylar"].append(o)
+            yol.write_text(json.dumps(mevcut, ensure_ascii=False, indent=1), encoding="utf-8")
+            sayac[ad] = sayac.get(ad, 0) + 1
+    print(f"eklenen {sum(sayac.values())}: {sayac}")
+    for h in hatali[:10]:
+        print("HATALI", h)
+    return 0
+
+
 def ayristirici() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="yatirim_ajani", description="Araştıran, öneren, sanal işlem yapan yatırım ajanı")
     p.add_argument("--ayarlar", help="ayarlar.toml yolu")
@@ -1289,6 +1334,12 @@ def ayristirici() -> argparse.ArgumentParser:
     sp.add_argument("--rapor", default="raporlar/sektor-analiz.md")
     sp.add_argument("--profil", action="append", help="Sektör profil JSON'u (tekrarlanabilir)")
     sp.set_defaults(islev=komut_sektor_analiz)
+
+
+    sp = alt.add_parser("olay-dagit", help="Ajan olay paketlerini doğrula ve hisse/sektör/makro olay dosyalarına ekle")
+    sp.add_argument("paketler", nargs="+")
+    sp.add_argument("--klasor", default="dosya_kaynak")
+    sp.set_defaults(islev=komut_olay_dagit)
 
     sp = alt.add_parser("yeniden-baslat", help="Düşüş sınırıyla durmuş sanal hesabı yeniden aç")
     sp.add_argument("--piyasa", choices=list(PIYASALAR), required=True)
