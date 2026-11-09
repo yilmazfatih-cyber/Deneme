@@ -18,7 +18,7 @@ from __future__ import annotations
 import gzip
 import json
 import sqlite3
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 import numpy as np
@@ -99,6 +99,24 @@ FORMULLER: list[dict] = [
     {"sutun": "olay_yon_5g", "baslik": "Son 5 gün olay yönü toplamı", "formul": "Σ(+1 olumlu, -1 olumsuz)", "pencere": "5g", "kaynak": "haber tonu", "yon": "pozitif"},
     {"sutun": "son_olay_tur", "baslik": "Son olayın türü", "formul": "metin", "pencere": "-", "kaynak": "olaylar tablosu", "yon": "-"},
     {"sutun": "son_olay_saat_fark", "baslik": "Son olaydan bu yana saat", "formul": "t - kamuya_acilma", "pencere": "-", "kaynak": "olaylar", "yon": "-"},
+    {"sutun": "politika_faizi", "baslik": "TCMB politika faizi (%)", "formul": "son PPK kararı, karar saati (14:00) ≤ t", "pencere": "-", "kaynak": "TCMB PPK; dosya_kaynak/makro_seriler.json", "yon": "negatif (hisse için)"},
+    {"sutun": "ppk_degisim_bp", "baslik": "Son PPK değişimi (bp)", "formul": "karar − önceki", "pencere": "-", "kaynak": "TCMB", "yon": "negatif"},
+    {"sutun": "ppk_surpriz_bp", "baslik": "Son PPK sürprizi (bp)", "formul": "karar − beklenti (AA anketi)", "pencere": "-", "kaynak": "TCMB, AA", "yon": "negatif"},
+    {"sutun": "ppk_gunden_gun", "baslik": "Son PPK'dan bu yana gün", "formul": "t − karar anı", "pencere": "-", "kaynak": "TCMB", "yon": "-"},
+    {"sutun": "ppk_gunu", "baslik": "PPK karar günü", "formul": "satır günü = son karar günü", "pencere": "-", "kaynak": "TCMB", "yon": "-"},
+    {"sutun": "tufe_yillik", "baslik": "Yıllık TÜFE (%)", "formul": "son TÜİK açıklaması, 10:00 ≤ t", "pencere": "-", "kaynak": "TÜİK", "yon": "negatif"},
+    {"sutun": "tufe_aylik", "baslik": "Aylık TÜFE (%)", "formul": "son açıklama", "pencere": "-", "kaynak": "TÜİK", "yon": "negatif"},
+    {"sutun": "tufe_surpriz_pp", "baslik": "Aylık TÜFE sürprizi (puan)", "formul": "gerçekleşen − beklenti", "pencere": "-", "kaynak": "TÜİK, AA", "yon": "negatif"},
+    {"sutun": "tufe_gunu", "baslik": "TÜFE açıklama günü", "formul": "satır günü = son açıklama günü", "pencere": "-", "kaynak": "TÜİK", "yon": "-"},
+    {"sutun": "reel_faiz", "baslik": "Reel politika faizi (puan)", "formul": "politika_faizi − tufe_yillik", "pencere": "-", "kaynak": "türetilmiş", "yon": "belirsiz"},
+    {"sutun": "brent_getiri_20g", "baslik": "Brent 20g değişim", "formul": "B_{d-1}/B_{d-21} − 1", "pencere": "20g", "kaynak": "Yahoo BZ=F", "yon": "sektöre göre"},
+    {"sutun": "altin_getiri_20g", "baslik": "Altın 20g değişim", "formul": "G_{d-1}/G_{d-21} − 1", "pencere": "20g", "kaynak": "Yahoo GC=F", "yon": "sektöre göre"},
+    {"sutun": "vix_seviye", "baslik": "VIX (d-1)", "formul": "VIX_{d-1}", "pencere": "-", "kaynak": "Yahoo ^VIX", "yon": "negatif"},
+    {"sutun": "abd10y_seviye", "baslik": "ABD 10y faiz (d-1)", "formul": "TNX_{d-1}", "pencere": "-", "kaynak": "Yahoo ^TNX", "yon": "negatif"},
+    {"sutun": "dxy_getiri_20g", "baslik": "Dolar endeksi 20g", "formul": "DXY_{d-1}/DXY_{d-21} − 1", "pencere": "20g", "kaynak": "Yahoo DX-Y.NYB", "yon": "negatif"},
+    {"sutun": "eem_getiri_20g", "baslik": "Gelişen piyasalar 20g", "formul": "EEM_{d-1}/EEM_{d-21} − 1", "pencere": "20g", "kaynak": "Yahoo EEM", "yon": "pozitif"},
+    {"sutun": "spx_getiri_20g", "baslik": "S&P 500 20g", "formul": "SPX_{d-1}/SPX_{d-21} − 1", "pencere": "20g", "kaynak": "Yahoo ^GSPC", "yon": "pozitif"},
+    {"sutun": "eurtry_getiri_20g", "baslik": "EUR/TRY 20g", "formul": "E_{d-1}/E_{d-21} − 1", "pencere": "20g", "kaynak": "Yahoo EURTRY=X", "yon": "sektöre göre"},
     {"sutun": "haftanin_gunu", "baslik": "Haftanın günü (0=Pzt)", "formul": "takvim", "pencere": "-", "kaynak": "haftanın günü etkisi (BIST: Pazartesi eksi bulguları)", "yon": "-"},
     {"sutun": "ay", "baslik": "Ay", "formul": "takvim", "pencere": "-", "kaynak": "Ocak etkisi", "yon": "-"},
     {"sutun": "ay_donusu", "baslik": "Ay dönüşü (son 3 / ilk 3 işlem günü)", "formul": "takvim", "pencere": "-", "kaynak": "ay dönüşü etkisi (Lakonishok-Smidt 1988)", "yon": "pozitif"},
@@ -201,9 +219,33 @@ class Girdiler:
     isy_gunluk: pd.DataFrame  # İş Yatırım günlük oranlar
     isy_mali: pd.DataFrame  # çeyreklik kalemler
     olaylar: pd.DataFrame  # kamuya_acilma, tur, yon, baslik, hisse, kapsam
+    piyasa: dict = field(default_factory=dict)  # seri adı → günlük kapanış (Brent, altın, VIX, ABD 10y, DXY, EEM, S&P 500, EURTRY)
+    makro: dict = field(default_factory=dict)  # dosya_kaynak/makro_seriler.json (PPK, TÜFE, not, CDS)
 
 
-def girdileri_yukle(hisse: str, saatlik_klasor: str | Path, ham_klasor: str | Path, olaylar: pd.DataFrame | None = None) -> Girdiler:
+PIYASA_DOSYALARI = {"brent": "BZ_F", "altin": "GC_F", "vix": "VIX", "abd10y": "TNX", "dxy": "DX-Y.NYB", "eem": "EEM", "spx": "GSPC", "eurtry": "EURTRY_X"}
+
+
+def piyasa_serileri(ham_klasor: str | Path) -> dict[str, pd.Series]:
+    out = {}
+    for ad, dosya in PIYASA_DOSYALARI.items():
+        df = _csv(Path(ham_klasor) / f"{dosya}_yahoo_1d.csv")
+        if df.empty or "tarih" not in df.columns:
+            continue
+        gun = pd.to_datetime(df["tarih"], utc=True, errors="coerce").dt.tz_convert(TZ).dt.tz_localize(None).dt.normalize()
+        seri = pd.Series(pd.to_numeric(df["kapanis"], errors="coerce").to_numpy(), index=gun).dropna()
+        out[ad] = seri[~seri.index.duplicated(keep="last")].sort_index()
+    return out
+
+
+def makro_yukle(yol: str | Path | None) -> dict:
+    if yol and Path(yol).exists():
+        return json.loads(Path(yol).read_text(encoding="utf-8"))
+    return {}
+
+
+def girdileri_yukle(hisse: str, saatlik_klasor: str | Path, ham_klasor: str | Path, olaylar: pd.DataFrame | None = None,
+                    makro_json: str | Path | None = "dosya_kaynak/makro_seriler.json") -> Girdiler:
     sk, hk = Path(saatlik_klasor), Path(ham_klasor)
 
     def yahoo_1d(ad: str) -> pd.DataFrame:
@@ -229,6 +271,8 @@ def girdileri_yukle(hisse: str, saatlik_klasor: str | Path, ham_klasor: str | Pa
         isy_gunluk=isy,
         isy_mali=mali,
         olaylar=olaylar if olaylar is not None else pd.DataFrame(),
+        piyasa=piyasa_serileri(hk),
+        makro=makro_yukle(makro_json),
     )
 
 
@@ -509,6 +553,44 @@ def omurga_kur(hisse: str, g: Girdiler) -> pd.DataFrame:
             if "temettu_ttm" in R.columns:
                 R["temettu_verimi"] = R["temettu_ttm"] / R["piyasa_degeri_mn"]  # vekil: konsolide nakit akışındaki temettü ödemeleri (azınlık dahil)
         R = R.drop(columns=[c for c in ("ozkaynak_ana", "net_borc", "favok_ttm", "serbest_nakit_ttm", "temettu_ttm") if c in R.columns])
+    # Küresel piyasa serileri: BIST günü d için yalnız d-1 kapanışı bilinir (ABD seansı BIST'ten sonra kapanır)
+    if g.piyasa:
+        K1 = pd.DataFrame(index=gunler)
+        for ad, seri in g.piyasa.items():
+            x = seri.reindex(seri.index.union(gunler)).ffill().reindex(gunler).shift(1)
+            if ad in ("vix", "abd10y"):
+                K1[f"{ad}_seviye"] = x
+                K1[f"{ad}_degisim_20g"] = x - x.shift(20)
+            else:
+                K1[f"{ad}_getiri_20g"] = x / x.shift(20) - 1
+        R = R.merge(K1, left_on="gun", right_index=True, how="left")
+    # Makro: PPK (karar saati) ve TÜFE (açıklama saati) — satır anında bilinen son değer
+    if g.makro:
+        def _seri(kayitlar: list[dict], saat_vars: str) -> pd.DataFrame:
+            df = pd.DataFrame(kayitlar)
+            if df.empty or "tarih" not in df.columns:
+                return pd.DataFrame()
+            saat = df["saat"].fillna(saat_vars) if "saat" in df.columns else saat_vars
+            df["zaman"] = pd.to_datetime(df["tarih"].astype(str) + " " + saat.astype(str), errors="coerce").dt.tz_localize(TZ)
+            return df.dropna(subset=["zaman"]).sort_values("zaman")
+
+        ppk = _seri(g.makro.get("politika_faizi", []), "14:00")
+        if not ppk.empty:
+            p = ppk[["zaman", "karar", "degisim_bp", "surpriz_bp"]].rename(columns={"karar": "politika_faizi", "degisim_bp": "ppk_degisim_bp", "surpriz_bp": "ppk_surpriz_bp"})
+            p["_ppk_an"] = p["zaman"]
+            R = pd.merge_asof(R.sort_values("zaman"), p, on="zaman", direction="backward")
+            R["ppk_gunden_gun"] = (R["zaman"] - R["_ppk_an"]).dt.total_seconds() / 86400
+            R["ppk_gunu"] = (R["zaman"].dt.normalize() == R["_ppk_an"].dt.normalize()).astype(int)
+            R = R.drop(columns=["_ppk_an"])
+        tufe = _seri(g.makro.get("tufe", []), "10:00")
+        if not tufe.empty:
+            t = tufe[["zaman", "yillik", "aylik", "surpriz_aylik_pp"]].rename(columns={"yillik": "tufe_yillik", "aylik": "tufe_aylik", "surpriz_aylik_pp": "tufe_surpriz_pp"})
+            t["_tufe_an"] = t["zaman"]
+            R = pd.merge_asof(R.sort_values("zaman"), t, on="zaman", direction="backward")
+            R["tufe_gunu"] = (R["zaman"].dt.normalize() == R["_tufe_an"].dt.normalize()).astype(int)
+            R = R.drop(columns=["_tufe_an"])
+        if "politika_faizi" in R.columns and "tufe_yillik" in R.columns:
+            R["reel_faiz"] = R["politika_faizi"] - R["tufe_yillik"]
     if "temettu_ttm_ps" in R.columns:
         R["temettu_verimi"] = R["temettu_ttm_ps"] / P
         R = R.drop(columns=["temettu_ttm_ps"])

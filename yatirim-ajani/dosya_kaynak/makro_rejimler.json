@@ -1,0 +1,102 @@
+[
+  {
+    "bas": "2024-01-01",
+    "bit": "2024-03-31",
+    "ad": "2024 Q1: sıkılaştırmanın son adımları ve yerel seçim belirsizliği",
+    "aciklama": "Politika faizi 42,5→45→50 (Mart sürprizi). Erkan istifası, Karahan ataması. Seçim öncesi TL baskısı, CDS ~300+. Yıllık TÜFE %65–68.",
+    "xu100_davranisi": "Yükseliş (~7.500→~9.000); enflasyon korunması temalı alımlar, seçim öncesi oynaklık.",
+    "baskin_tema": "Ortodoksiye dönüşün test edilmesi; negatif reel faizden pozitife geçiş.",
+    "hangi_sektorler_one_cikti": "Bankalar (faiz artışı beklentisi), holdingler, havacılık; GYO ve ihracatçılar görece zayıf.",
+    "guven": 0.7
+  },
+  {
+    "bas": "2024-04-01",
+    "bit": "2024-07-31",
+    "ad": "Seçim sonrası ortodoksi rallisi",
+    "aciklama": "Seçim belirsizliği bitti; Fitch/S&P/Moody's not artışları, CDS 260'ın altına. Mayıs'ta TÜFE %75,45 ile zirve, sonra baz etkisiyle hızlı düşüş. Yabancı girişleri.",
+    "xu100_davranisi": "Güçlü yükseliş, Temmuz 2024'te tarihi zirve (~11.250). Dolar bazında da ralli.",
+    "baskin_tema": "Kredibilite kazanımı, carry trade, not artış döngüsü.",
+    "hangi_sektorler_one_cikti": "Bankalar (öncü), holdingler, savunma, havacılık; Haziran vergi tartışmasında kısa sert düzeltme.",
+    "guven": 0.7
+  },
+  {
+    "bas": "2024-08-01",
+    "bit": "2024-12-25",
+    "ad": "Yüksek reel faiz, dezenflasyon, borsada ayı dönemi",
+    "aciklama": "%50 politika faizi ile mevduat/para piyasası fonları hisseye rakip; 5 Ağustos küresel şoku; şirket kârlarında enflasyon muhasebesi ve marj daralması. TÜFE %62→%47.",
+    "xu100_davranisi": "Düşüş ve yatay: ~11.250 → ~8.700 (Kasım dibi) → ~9.900 (Aralık). Dolar bazında yaklaşık −%25 tepe-dip.",
+    "baskin_tema": "Pozitif reel faiz, kâr daralması, yabancı çıkışı; indirim beklentisinin oluşması.",
+    "hangi_sektorler_one_cikti": "Savunma, bilişim, perakende görece dirençli; bankalar ve sanayi zayıf. Para piyasası fonlarına rekor akım.",
+    "guven": 0.65
+  },
+  {
+    "bas": "2024-12-26",
+    "bit": "2025-03-18",
+    "ad": "İndirim döngüsünün başlangıcı",
+    "aciklama": "PPK 250 bp sürpriz indirimle döngüyü başlattı; Ocak ve Mart'ta 250'şer bp. TÜFE %44→%39. CDS ~250.",
+    "xu100_davranisi": "Ralli: ~9.900 → ~10.900 (Mart 2025 ortası tarihi zirve).",
+    "baskin_tema": "Faiz indirimi, banka kârlılığında toparlanma beklentisi, yabancı dönüşü.",
+    "hangi_sektorler_one_cikti": "Bankalar açık ara öncü; holdingler, GYO; savunma.",
+    "guven": 0.75
+  },
+  {
+    "bas": "2025-03-19",
+    "bit": "2025-06-30",
+    "ad": "Mart 2025 siyasi şok, acil sıkılaştırma ve tarife şoku",
+    "aciklama": "İmamoğlu gözaltısı: XU100 −%8,7, TL −%10 gün içi, TCMB 9–12 mlr $ sattı, ara PPK (gecelik 46), SPK tedbirleri. 2 Nisan ABD tarifeleri, CDS 2025 zirvesi. 17 Nisan sürpriz 350 bp artış. Haziran İsrail–İran savaşı.",
+    "xu100_davranisi": "Çöküş ve dipten toparlanma: ~10.800 → ~8.900 (Nisan dibi) → ~9.500 (Haziran).",
+    "baskin_tema": "Siyasi risk primi, rezerv kaybı, sıkılaştırmaya geri dönüş; küresel risk-off.",
+    "hangi_sektorler_one_cikti": "Bankalar en sert satılan; savunma, ihracatçı ve altın/madencilik göreli dayanıklı. Açığa satış yasağı dönemi.",
+    "guven": 0.75
+  },
+  {
+    "bas": "2025-07-01",
+    "bit": "2025-12-31",
+    "ad": "İndirimlere dönüş, siyasi dava takvimi ve not artışı",
+    "aciklama": "Temmuz 300 bp, Eylül 250 bp, Ekim 100 bp (şahin), Aralık 150 bp indirim → %38. Moody's Ba3. CHP davaları: 2 Eylül kayyum şoku, 15 Eylül erteleme (+%4), 24 Ekim ret (+%4–5). Fed indirimleri. TÜFE %35→%30,9.",
+    "xu100_davranisi": "Dalgalı yükseliş; Ekim–Kasım 2025'te lira bazında yeni rekorlar (~11.000+). Siyasi haberlerle ±%4–5 günler.",
+    "baskin_tema": "Dezenflasyon + indirim döngüsü; siyasi dava başlıkları oynaklığın ana kaynağı.",
+    "hangi_sektorler_one_cikti": "Bankalar (indirim günleri ve dava günlerinde en yüksek beta), holdingler; savunma yapısal kazanan.",
+    "guven": 0.65
+  },
+  {
+    "bas": "2026-01-01",
+    "bit": "2026-02-27",
+    "ad": "2026 başı: 'Goldilocks' — düşük CDS, Fitch pozitif, kademeli indirim",
+    "aciklama": "Ocak 100 bp indirim (%37), Fitch görünüm pozitif, CDS 52 haftalık dip (~204 bp, 18 Şubat). TÜFE %30–31,5 bandında yapışkan (Ocak aylık 4,84).",
+    "xu100_davranisi": "Yükseliş eğilimi; rekor bölgeye yaklaşma (seviye teyit edilemedi).",
+    "baskin_tema": "Not artışı beklentisi, yabancı girişi, düşen risk primi.",
+    "hangi_sektorler_one_cikti": "Bankalar, holdingler, GYO; serbest fon akışıyla küçük/orta ölçekli hisselerde aşırı hareketler (fon krizinin kuluçkası).",
+    "guven": 0.5
+  },
+  {
+    "bas": "2026-02-28",
+    "bit": "2026-06-14",
+    "ad": "İran savaşı: petrol şoku, örtük sıkılaştırma ve 'mutlak butlan'",
+    "aciklama": "28 Şubat ABD/İsrail–İran savaşı; Brent 126 $+; CDS 327; TCMB 1 Mart repo ihalelerini durdurdu (fonlama %40); SPK açığa satış yasağı (2 Mart–26 Haziran); Fitch görünümü durağana. Nisan TÜFE aylık 4,18. Nisan ortası müzakere umudu → 5 Mayıs tarihi zirve 14.827; 21 Mayıs CHP mutlak butlan −%6,05.",
+    "xu100_davranisi": "Çok oynak: Mart satışı → Nisan–Mayıs ralli ve rekor (14.827) → 21 Mayıs çöküş (13.164) → kısmi toparlanma.",
+    "baskin_tema": "Enerji şoku + jeopolitik prim; iç siyasette kurumsal kırılma; TL'de kamu bankası savunması (~6 mlr $).",
+    "hangi_sektorler_one_cikti": "Petrol/rafineri, enerji, savunma ve madencilik kazanan; havacılık, otomotiv, bankalar (21 Mayıs −%8) kaybeden.",
+    "guven": 0.7
+  },
+  {
+    "bas": "2026-06-15",
+    "bit": "2026-09-14",
+    "ad": "Ateşkes ve normalleşme: repo dönüşü, CDS dipte",
+    "aciklama": "14 Haziran ABD–İran mutabakatı, CDS 217; açığa satış yasağı 29 Haziran'da kalktı; TÜFE %32 civarından Ağustos'ta %31,5'e; Fitch/Moody's teyit; 23 Ağustos repo ihaleleri yeniden (fonlama %37). Fed artış sinyali.",
+    "xu100_davranisi": "Yüksek platoda dalgalı (~14.000–14.500); Eylül başında ~13.900.",
+    "baskin_tema": "Jeopolitik primin çözülmesi; indirim beklentisinin yeniden fiyatlanması.",
+    "hangi_sektorler_one_cikti": "Havacılık, perakende, bankalar toparlandı; enerji/petrol kâr satışı.",
+    "guven": 0.55
+  },
+  {
+    "bas": "2026-09-15",
+    "bit": "2026-11-09",
+    "ad": "Fon krizi, MSCI uyarısı ve Fed artışı: güven kaybı, ardından ilk indirim",
+    "aciklama": "15–17 Eylül Pusula/Tera fon krizi (XU100 −%5,54, devre kesici, 131 fon tasfiye, manipülasyon soruşturması); 16 Eylül Fed 25 bp artırdı; 15 Ekim MSCI endeks değişikliklerini dondurdu ve statü uyarısı verdi; 22 Ekim PPK ilk indirim (%36); Ekim TÜFE beklenti üstü (%29,77). USD/TRY 50'yi aştı.",
+    "xu100_davranisi": "Sert düşüş: ~13.900 → 11.194 (Kasım başı dip, tepeden ~−%25) → 11.482 (6 Kasım, haftalık +%6,72 tepki).",
+    "baskin_tema": "Piyasa bütünlüğü/güven krizi, yabancı endeks riski, dolar baskısı; ucuzlayan değerlemeler.",
+    "hangi_sektorler_one_cikti": "Fonlarla ilişkili küçük/orta kâğıtlar çöktü; Kasım tepkisinde bankalar ve holdingler öncü; altın/madencilik (altın rekoru) kazanan.",
+    "guven": 0.7
+  }
+]

@@ -1,0 +1,1636 @@
+{
+ "not": "Olaylar piyasa düzeyinde (hisse/sektör alanları null). kamuya_acilma TSİ; PPK 14:00, TÜİK 10:00, Fed 21:00 (yaz saati 21:00 / kış 22:00), derecelendirme kararları ABD kapanışı sonrası (~20:00 TSİ, yaklaşık). 'yatirimci_tepkisi' yalnızca kaynaklı XU100 ilk gün tepkisi varsa dolduruldu; aksi 'belirsiz'. guven<0,6 olaylarda tarih/oran teyit edilemedi. Arama bütçesi ve ağ kısıtı nedeniyle tcmb.gov.tr/tuik.gov.tr/wikipedia doğrudan okunamadı. Yatırım tavsiyesi değildir.",
+ "olaylar": [
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2024-01-25",
+   "bitis": "2024-01-25",
+   "kamuya_acilma": "2024-01-25T14:00",
+   "tur": "faiz",
+   "baslik": "PPK: politika faizi %42,5→%45, sıkılaştırma döngüsü tamamlandı sinyali",
+   "anlam": "Beklenen son artış; 'gerekirse ek sıkılaştırma' notu. Dezenflasyon programına bağlılık.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.9,
+   "etiketler": [
+    "PPK",
+    "sıkılaştırma"
+   ],
+   "kaynaklar": [
+    "TCMB PPK basın duyurusu"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2024-02-02",
+   "bitis": "2024-02-03",
+   "kamuya_acilma": "2024-02-02T20:30",
+   "tur": "haber",
+   "baslik": "TCMB Başkanı Erkan istifa etti, Fatih Karahan atandı",
+   "anlam": "Program sürekliliği endişesi kısa sürdü; Karahan'ın atanması ortodoks çizginin korunacağı algısı yarattı.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "[notr] 5 Şubat'ta XU100 sınırlı tepki; TL stabil (bellek, teyit edilemedi).",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.6,
+   "etiketler": [
+    "TCMB",
+    "yönetim"
+   ],
+   "kaynaklar": [
+    "Resmî Gazete 3 Şubat 2024",
+    "Basın"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2024-03-08",
+   "bitis": "2024-03-08",
+   "kamuya_acilma": "2024-03-08T20:00",
+   "tur": "derecelendirme",
+   "baslik": "Fitch Türkiye'yi B+'ya yükseltti, görünüm pozitif",
+   "anlam": "Not artış döngüsünün ilk adımı; yabancı tahvil/hisse girişine zemin.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.9,
+   "etiketler": [
+    "Fitch",
+    "not artışı"
+   ],
+   "kaynaklar": [
+    "Fitch Ratings"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2024-03-21",
+   "bitis": "2024-03-21",
+   "kamuya_acilma": "2024-03-21T14:00",
+   "tur": "faiz",
+   "baslik": "PPK sürpriz 500 bp artış: %45→%50; koridor ±300 bp",
+   "anlam": "Seçim öncesi kur baskısına sert yanıt; kredibilite artışı. Bankalar için marj baskısı kısa vadede.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "XU100 ilk gün karışık; bankacılık dalgalı (teyit edilemedi).",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.9,
+   "etiketler": [
+    "PPK",
+    "sürpriz"
+   ],
+   "kaynaklar": [
+    "TCMB PPK basın duyurusu"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2024-03-31",
+   "bitis": "2024-04-01",
+   "kamuya_acilma": "2024-03-31T23:30",
+   "tur": "siyasi",
+   "baslik": "Yerel seçimler: muhalefet (CHP) büyükşehirlerde kazandı",
+   "anlam": "Seçim sonrası 'popülizm bitti, program devam' algısı; yabancı girişleri hızlandı, CDS geriledi.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "[olumlu] 1 Nisan 2024'te XU100 artı kapanış; banka hisseleri öncü (bellek, oran teyit edilemedi).",
+   "onden_gorulebilir": "evet",
+   "guven": 0.6,
+   "etiketler": [
+    "seçim",
+    "siyasi"
+   ],
+   "kaynaklar": [
+    "YSK",
+    "Basın"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2024-05-03",
+   "bitis": "2024-05-03",
+   "kamuya_acilma": "2024-05-03T20:00",
+   "tur": "derecelendirme",
+   "baslik": "S&P Türkiye'yi B+'ya yükseltti (pozitif görünüm)",
+   "anlam": "İkinci kuruluştan not artışı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.9,
+   "etiketler": [
+    "S&P"
+   ],
+   "kaynaklar": [
+    "S&P Global Ratings"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2024-06-12",
+   "bitis": "2024-06-27",
+   "kamuya_acilma": "2024-06-12T09:00",
+   "tur": "regulasyon",
+   "baslik": "Hisse senedi kazancı/işlem vergisi tartışması; Haziran sonunda rafa kaldırıldı",
+   "anlam": "Hazine'nin borsa işlemlerine vergi çalışması haberleri XU100'de satış getirdi; Şimşek'in 'gündemde değil/ertelendi' açıklaması ile toparlandı. Tarihler yaklaşık.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "[olumsuz] Haberin çıktığı günlerde XU100 ~%2–3 geriledi (yaklaşık).",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.4,
+   "etiketler": [
+    "vergi",
+    "stopaj",
+    "SPK"
+   ],
+   "kaynaklar": [
+    "Basın (Bloomberg HT, Reuters) Haziran 2024"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2024-07-19",
+   "bitis": "2024-07-19",
+   "kamuya_acilma": "2024-07-19T20:00",
+   "tur": "derecelendirme",
+   "baslik": "Moody's iki kademe artış: B3→B1 (pozitif)",
+   "anlam": "Beklentinin üzerinde artış; yabancı girişine destek.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "XU100 Temmuz 2024'te tarihi zirve bölgesinde (~11.250).",
+   "onden_gorulebilir": "evet",
+   "guven": 0.9,
+   "etiketler": [
+    "Moody's"
+   ],
+   "kaynaklar": [
+    "Moody's"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "kuresel",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2024-08-05",
+   "bitis": "2024-08-05",
+   "kamuya_acilma": "2024-08-05T03:00",
+   "tur": "jeopolitik",
+   "baslik": "Küresel satış dalgası (Japonya carry trade çözülmesi, ABD resesyon korkusu)",
+   "anlam": "Riskli varlıklardan kaçış; BIST'te devre kesici iki kez çalıştı.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "[olumsuz] XU100 güne %6,72 düşüşle başladı, kayıp %7'yi aşınca ikinci devre kesici; gün sonu ~%5,5 düşüş.",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.8,
+   "etiketler": [
+    "küresel risk",
+    "VIX",
+    "devre kesici"
+   ],
+   "kaynaklar": [
+    "Basın 05.08.2024 (arama özeti: 826 gün önceki haber)"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2024-09-06",
+   "bitis": "2024-09-06",
+   "kamuya_acilma": "2024-09-06T20:00",
+   "tur": "derecelendirme",
+   "baslik": "Fitch: BB- (durağan)",
+   "anlam": "Üçüncü not artışı; 'B' liginden çıkış.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.9,
+   "etiketler": [
+    "Fitch"
+   ],
+   "kaynaklar": [
+    "Fitch Ratings"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "kuresel",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2024-09-18",
+   "bitis": "2024-09-18",
+   "kamuya_acilma": "2024-09-18T21:00",
+   "tur": "kuresel_faiz",
+   "baslik": "Fed indirim döngüsüne 50 bp ile başladı",
+   "anlam": "GOÜ'lere fon akışı beklentisi; TL carry cazibesi arttı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.95,
+   "etiketler": [
+    "Fed"
+   ],
+   "kaynaklar": [
+    "FOMC"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2024-11-01",
+   "bitis": "2024-11-01",
+   "kamuya_acilma": "2024-11-01T20:00",
+   "tur": "derecelendirme",
+   "baslik": "S&P: BB- (durağan)",
+   "anlam": "Üç kuruluşta da BB-/Ba3 bandına yakınsama başladı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.95,
+   "etiketler": [
+    "S&P"
+   ],
+   "kaynaklar": [
+    "S&P"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "kuresel",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2024-11-05",
+   "bitis": "2024-11-06",
+   "kamuya_acilma": "2024-11-06T08:00",
+   "tur": "siyasi",
+   "baslik": "ABD başkanlık seçimi: Trump kazandı",
+   "anlam": "Güçlü dolar, tarife riski, GOÜ'lerde çıkış; Türkiye göreli olarak daha az etkilendi.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.95,
+   "etiketler": [
+    "ABD",
+    "seçim"
+   ],
+   "kaynaklar": [
+    "Basın"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2024-12-26",
+   "bitis": "2024-12-26",
+   "kamuya_acilma": "2024-12-26T14:00",
+   "tur": "faiz",
+   "baslik": "PPK indirim döngüsünü başlattı: 250 bp (beklenti ~150 bp)",
+   "anlam": "Beklenenden büyük indirim; bankalarda marj genişlemesi beklentisi.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "[olumlu] XU100 ve bankacılık endeksi artı; bankalar öncü (oran teyit edilemedi).",
+   "onden_gorulebilir": "evet",
+   "guven": 0.85,
+   "etiketler": [
+    "PPK",
+    "indirim"
+   ],
+   "kaynaklar": [
+    "TCMB PPK basın duyurusu"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2025-01-23",
+   "bitis": "2025-01-23",
+   "kamuya_acilma": "2025-01-23T14:00",
+   "tur": "faiz",
+   "baslik": "PPK: 250 bp indirim, %45",
+   "anlam": "Beklenen; döngü sürüyor.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.9,
+   "etiketler": [
+    "PPK"
+   ],
+   "kaynaklar": [
+    "TCMB PPK basın duyurusu"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2025-03-06",
+   "bitis": "2025-03-06",
+   "kamuya_acilma": "2025-03-06T14:00",
+   "tur": "faiz",
+   "baslik": "PPK: 250 bp indirim, %42,5",
+   "anlam": "Beklenen; XU100 Mart ortasında tarihi zirve (~10.900).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.9,
+   "etiketler": [
+    "PPK"
+   ],
+   "kaynaklar": [
+    "TCMB PPK basın duyurusu"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2025-03-19",
+   "bitis": "2025-03-23",
+   "kamuya_acilma": "2025-03-19T06:30",
+   "tur": "siyasi",
+   "baslik": "İBB Başkanı İmamoğlu gözaltına alındı; 23 Mart'ta tutuklandı",
+   "anlam": "Dönemin en büyük siyasi şoku. TL gün içinde ~%10 değer kaybetti, TCMB ~9–12 mlr $ döviz sattı; faiz/likidite acil sıkılaştırması izledi.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "[olumsuz] XU100 19 Mart'ta devre kesici iki kez; gün sonu ~%8,7 düşüş. Hafta kaybı ~%16.",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.85,
+   "etiketler": [
+    "siyasi şok",
+    "devre kesici",
+    "kur"
+   ],
+   "kaynaklar": [
+    "Basın 19–23.03.2025",
+    "TCMB duyuruları"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2025-03-20",
+   "bitis": "2025-03-20",
+   "kamuya_acilma": "2025-03-20T10:00",
+   "tur": "faiz",
+   "baslik": "TCMB ara PPK: gecelik borç verme %44→%46, haftalık repo ihaleleri askıya",
+   "anlam": "Politika faizi sabit; fiili fonlama %46'ya çıktı; TL savunması.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "XU100 20 Mart'ta toparlanma denemesi, 21 Mart'ta yeniden satış.",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.8,
+   "etiketler": [
+    "PPK",
+    "ara toplantı",
+    "sıkılaştırma"
+   ],
+   "kaynaklar": [
+    "TCMB PPK basın duyurusu"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2025-03-23",
+   "bitis": "2025-03-23",
+   "kamuya_acilma": "2025-03-23T20:00",
+   "tur": "regulasyon",
+   "baslik": "SPK piyasa tedbirleri: açığa satış yasağı, kredili işlemde özkaynak oranı esnetildi, geri alım kolaylığı",
+   "anlam": "Satış baskısını frenlemeye yönelik paket; birkaç kez uzatıldı (ör. 24 Nisan 2025'e). Kaldırılma tarihi teyit edilemedi.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "24 Mart'ta XU100 toparlandı (+~%3, yaklaşık).",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.6,
+   "etiketler": [
+    "SPK",
+    "açığa satış",
+    "geri alım"
+   ],
+   "kaynaklar": [
+    "SPK bülteni 23.03.2025",
+    "bigpara 'yasak 24 Nisan'a kadar uzatıldı'"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "kuresel",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2025-04-02",
+   "bitis": "2025-04-09",
+   "kamuya_acilma": "2025-04-02T23:00",
+   "tur": "ticaret",
+   "baslik": "ABD 'karşılıklı gümrük tarifeleri' (Liberation Day); 9 Nisan'da 90 gün erteleme",
+   "anlam": "Küresel risk-off; Türkiye'ye %10 taban tarife. BIST'te zaten kırılgan ortamda ek satış; CDS 2025 zirvesine çıktı.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "[olumsuz] XU100 3–7 Nisan'da kümülatif ~%5–6 düşüş (yaklaşık); 9 Nisan ertelemesi sonrası sert toparlanma.",
+   "onden_gorulebilir": "evet",
+   "guven": 0.7,
+   "etiketler": [
+    "tarife",
+    "Trump",
+    "küresel risk"
+   ],
+   "kaynaklar": [
+    "Beyaz Saray",
+    "Basın"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2025-04-17",
+   "bitis": "2025-04-17",
+   "kamuya_acilma": "2025-04-17T14:00",
+   "tur": "faiz",
+   "baslik": "PPK sürpriz 350 bp artış: %46",
+   "anlam": "Mart şokunun kalıcı etkilerine karşı; beklenti sabitti.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "XU100 ilk tepki negatif, sonra toparlanma (teyit edilemedi).",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.85,
+   "etiketler": [
+    "PPK",
+    "sürpriz artış"
+   ],
+   "kaynaklar": [
+    "TCMB PPK basın duyurusu"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "kuresel",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2025-06-13",
+   "bitis": "2025-06-24",
+   "kamuya_acilma": "2025-06-13T03:00",
+   "tur": "jeopolitik",
+   "baslik": "İsrail–İran 12 gün savaşı; 24 Haziran ateşkes",
+   "anlam": "Petrol sıçradı (Brent ~+7% ilk gün), bölgesel risk primi; ateşkesle hızla geri alındı.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "[olumsuz] XU100 13 Haziran'da ~%2 düşüş (yaklaşık).",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.7,
+   "etiketler": [
+    "jeopolitik",
+    "petrol",
+    "İran"
+   ],
+   "kaynaklar": [
+    "Basın Haziran 2025"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2025-07-24",
+   "bitis": "2025-07-24",
+   "kamuya_acilma": "2025-07-24T14:00",
+   "tur": "faiz",
+   "baslik": "PPK indirimlere döndü: 300 bp (beklenti 250), %43",
+   "anlam": "Beklentinin üzerinde indirim; bankacılık endeksi öncü.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "[olumlu] XU100 ve XBANK artı (oran teyit edilemedi).",
+   "onden_gorulebilir": "evet",
+   "guven": 0.85,
+   "etiketler": [
+    "PPK",
+    "indirim"
+   ],
+   "kaynaklar": [
+    "TCMB PPK basın duyurusu",
+    "tr.tradingeconomics.com"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2025-07-25",
+   "bitis": "2025-07-25",
+   "kamuya_acilma": "2025-07-25T20:00",
+   "tur": "derecelendirme",
+   "baslik": "Moody's: B1→Ba3 (durağan)",
+   "anlam": "2025'teki tek not artışı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.95,
+   "etiketler": [
+    "Moody's"
+   ],
+   "kaynaklar": [
+    "Moody's",
+    "Yapı Kredi IR"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2025-09-02",
+   "bitis": "2025-09-02",
+   "kamuya_acilma": "2025-09-02T15:00",
+   "tur": "siyasi",
+   "baslik": "CHP İstanbul il başkanlığına kayyum kararı",
+   "anlam": "Kurultay davası endişesini artırdı; bankacılık sert satıldı.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "[olumsuz] XU100 ~%5 düşüş, XBANK ~%8 (yaklaşık, teyit edilemedi).",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.5,
+   "etiketler": [
+    "siyasi",
+    "CHP",
+    "kayyum"
+   ],
+   "kaynaklar": [
+    "Basın 02.09.2025"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2025-09-11",
+   "bitis": "2025-09-11",
+   "kamuya_acilma": "2025-09-11T14:00",
+   "tur": "faiz",
+   "baslik": "PPK: 250 bp indirim (beklenti ~200), %40,5",
+   "anlam": "Güvercin sürpriz.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "[olumlu] XU100 artı kapanış (yaklaşık).",
+   "onden_gorulebilir": "evet",
+   "guven": 0.85,
+   "etiketler": [
+    "PPK"
+   ],
+   "kaynaklar": [
+    "TCMB PPK basın duyurusu"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2025-09-15",
+   "bitis": "2025-09-15",
+   "kamuya_acilma": "2025-09-15T11:00",
+   "tur": "siyasi",
+   "baslik": "CHP kurultay davası 24 Ekim'e ertelendi",
+   "anlam": "Kayyum/butlan riski ötelendi.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "[olumlu] XU100 yaklaşık %4 yükseldi.",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.7,
+   "etiketler": [
+    "siyasi",
+    "CHP",
+    "kurultay"
+   ],
+   "kaynaklar": [
+    "halktv.com.tr",
+    "tclira.com",
+    "ilkhaber-gazetesi.com"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "kuresel",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2025-09-17",
+   "bitis": "2025-09-17",
+   "kamuya_acilma": "2025-09-17T21:00",
+   "tur": "kuresel_faiz",
+   "baslik": "Fed 2025'in ilk indirimi (25 bp)",
+   "anlam": "GOÜ'lere destek.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.9,
+   "etiketler": [
+    "Fed"
+   ],
+   "kaynaklar": [
+    "FOMC"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2025-10-23",
+   "bitis": "2025-10-23",
+   "kamuya_acilma": "2025-10-23T14:00",
+   "tur": "faiz",
+   "baslik": "PPK: 100 bp indirim (beklenti 150), %39,5",
+   "anlam": "Şahin sürpriz; Eylül TÜFE sapması sonrası temkin.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "XU100 ilk tepki negatif (yaklaşık).",
+   "onden_gorulebilir": "evet",
+   "guven": 0.85,
+   "etiketler": [
+    "PPK",
+    "şahin"
+   ],
+   "kaynaklar": [
+    "TCMB PPK basın duyurusu",
+    "bigpara"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2025-10-24",
+   "bitis": "2025-10-24",
+   "kamuya_acilma": "2025-10-24T12:00",
+   "tur": "siyasi",
+   "baslik": "CHP kurultay davası reddedildi (iptal riski kalktı)",
+   "anlam": "Siyasi risk primi belirgin geriledi; yabancı girişi.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "[olumlu] XU100 gün içinde %5'i aştı, kapanış >%4; lira bazında yeni rekor.",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.8,
+   "etiketler": [
+    "siyasi",
+    "CHP",
+    "kurultay"
+   ],
+   "kaynaklar": [
+    "bursahakimiyet.com.tr",
+    "haber.doviz.com",
+    "samanyoluhaber.com"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "kuresel",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2025-12-10",
+   "bitis": "2025-12-10",
+   "kamuya_acilma": "2025-12-10T22:00",
+   "tur": "kuresel_faiz",
+   "baslik": "Fed yılın üçüncü indirimi; aralık 3,50–3,75",
+   "anlam": "Döngü sonu sinyali; 2026'da duraklama beklentisi.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.7,
+   "etiketler": [
+    "Fed"
+   ],
+   "kaynaklar": [
+    "FOMC"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2025-12-11",
+   "bitis": "2025-12-11",
+   "kamuya_acilma": "2025-12-11T14:00",
+   "tur": "faiz",
+   "baslik": "PPK: 150 bp indirim, %38",
+   "anlam": "Beklentiyle uyumlu.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.9,
+   "etiketler": [
+    "PPK"
+   ],
+   "kaynaklar": [
+    "TCMB PPK basın duyurusu",
+    "Türkiye Sigorta Makro Bakış 11.12.2025"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2026-01-05",
+   "bitis": "2026-01-05",
+   "kamuya_acilma": "2026-01-05T10:00",
+   "tur": "enflasyon",
+   "baslik": "2025 yıl sonu TÜFE %30,89 (aylık 0,89; 49 ayın en düşüğü)",
+   "anlam": "Dezenflasyon hikâyesi sürdü; Ocak zam etkisi önde.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.95,
+   "etiketler": [
+    "TÜFE"
+   ],
+   "kaynaklar": [
+    "TÜİK",
+    "euronews",
+    "bloomberght"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2026-01-22",
+   "bitis": "2026-01-22",
+   "kamuya_acilma": "2026-01-22T14:00",
+   "tur": "faiz",
+   "baslik": "PPK: 100 bp indirim, %37",
+   "anlam": "Kademeli indirim; koridor 35,5/40.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.8,
+   "etiketler": [
+    "PPK"
+   ],
+   "kaynaklar": [
+    "TCMB PPK basın duyurusu",
+    "tacirler.com.tr"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2026-01-23",
+   "bitis": "2026-01-23",
+   "kamuya_acilma": "2026-01-23T20:00",
+   "tur": "derecelendirme",
+   "baslik": "Fitch görünümü pozitife çevirdi (BB-)",
+   "anlam": "BB'ye yükseliş beklentisi; CDS Şubat'ta 52 haftalık dibe (~204 bp).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.85,
+   "etiketler": [
+    "Fitch",
+    "görünüm"
+   ],
+   "kaynaklar": [
+    "Yapı Kredi IR",
+    "tr.investing.com"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "kuresel",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2026-02-28",
+   "bitis": "2026-06-14",
+   "kamuya_acilma": "2026-02-28T06:00",
+   "tur": "jeopolitik",
+   "baslik": "ABD ve İsrail İran'a saldırdı; ABD/İsrail–İran savaşı başladı",
+   "anlam": "Dönemin en büyük küresel şoku: Brent 70 $'dan Nisan sonunda 126 $'ın üzerine; Türkiye CDS 235→327 bp; TL baskısı; enerji ithalatçısı Türkiye için enflasyon ve cari açık şoku.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "[olumsuz] 2 Mart 2026 (Pazartesi) BIST'te sert açılış satışı; SPK aynı gün açığa satış yasağı getirdi (XU100 oranı teyit edilemedi).",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.85,
+   "etiketler": [
+    "jeopolitik",
+    "İran",
+    "petrol",
+    "savaş"
+   ],
+   "kaynaklar": [
+    "aa.com.tr Enerji Terminali",
+    "rudaw.net 02.03.2026",
+    "sde.org.tr"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2026-03-01",
+   "bitis": "2026-08-23",
+   "kamuya_acilma": "2026-03-01T18:00",
+   "tur": "faiz",
+   "baslik": "TCMB haftalık repo ihalelerine ara verdi: fiili fonlama %37→%40 (gecelik)",
+   "anlam": "Savaş şokuna karşı örtük 300 bp sıkılaştırma; politika faizi değişmedi. 23 Ağustos 2026'da ihaleler yeniden başladı.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.9,
+   "etiketler": [
+    "TCMB",
+    "likidite",
+    "fonlama"
+   ],
+   "kaynaklar": [
+    "TCMB basın duyurusu 23.08.2026",
+    "bloomberght.com",
+    "dunya.com",
+    "mahfiegilmez.com"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2026-03-02",
+   "bitis": "2026-06-26",
+   "kamuya_acilma": "2026-03-02T09:00",
+   "tur": "regulasyon",
+   "baslik": "SPK: açığa satış yasağı + kredili işlemde özkaynak esnekliği (2 Mart–26 Haziran 2026); 29 Haziran'da kalktı",
+   "anlam": "Dokuz kez uzatıldı; emir/işlem oranı 29 Haziran'dan itibaren yeniden 5/1.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.9,
+   "etiketler": [
+    "SPK",
+    "açığa satış",
+    "kredili işlem"
+   ],
+   "kaynaklar": [
+    "sozcu.com.tr",
+    "qnbinvest.com.tr",
+    "ekonomigazetesi.com",
+    "KAP Borsa İstanbul duyurusu"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2026-03-12",
+   "bitis": "2026-03-12",
+   "kamuya_acilma": "2026-03-12T14:00",
+   "tur": "faiz",
+   "baslik": "PPK: %37 sabit; fonlama %40'tan sürüyor",
+   "anlam": "Savaş ortamında bekle-gör; likidite senedi ihraçları.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.85,
+   "etiketler": [
+    "PPK"
+   ],
+   "kaynaklar": [
+    "TCMB PPK basın duyurusu",
+    "Gedik Yatırım"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2026-03-16",
+   "bitis": "2026-03-16",
+   "kamuya_acilma": "2026-03-16T12:00",
+   "tur": "kur",
+   "baslik": "Türkiye 5Y CDS 327 bp ile zirve yaptı (gün yaklaşık)",
+   "anlam": "Savaş kaynaklı risk primi tepe noktası.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.6,
+   "etiketler": [
+    "CDS",
+    "risk primi"
+   ],
+   "kaynaklar": [
+    "aa.com.tr",
+    "dunya.com"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2026-03-27",
+   "bitis": "2026-05-01",
+   "kamuya_acilma": "2026-03-27T00:00",
+   "tur": "regulasyon",
+   "baslik": "Cumhurbaşkanı Kararı 11107: TEFAS dışı serbest hisse yoğun fonlarda stopaj %0→%17,5",
+   "anlam": "Serbest fon vergi avantajı kalktı; fon sektörü akışlarını etkiledi (Eylül fon krizinin öncülü). Yürürlük 27 Mart/1 Mayıs kaynaklara göre değişiyor.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.7,
+   "etiketler": [
+    "vergi",
+    "stopaj",
+    "fon"
+   ],
+   "kaynaklar": [
+    "Resmî Gazete 27.03.2026",
+    "pwc.com.tr",
+    "tr.investing.com"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2026-04-10",
+   "bitis": "2026-04-10",
+   "kamuya_acilma": "2026-04-10T20:00",
+   "tur": "derecelendirme",
+   "baslik": "Fitch görünümü pozitiften durağana çekti (BB-)",
+   "anlam": "Savaş/petrol şokunun dış dengeye etkisi.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.8,
+   "etiketler": [
+    "Fitch"
+   ],
+   "kaynaklar": [
+    "Yapı Kredi IR"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "kuresel",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2026-04-15",
+   "bitis": "2026-04-15",
+   "kamuya_acilma": "2026-04-15T10:00",
+   "tur": "jeopolitik",
+   "baslik": "ABD–İran görüşmeleri başladı; CDS 230,4 bp'ye (savaş öncesi) döndü",
+   "anlam": "Jeopolitik primin ilk çözülmesi.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "[olumlu] BIST'te toparlanma; Mayıs başında rekor.",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.8,
+   "etiketler": [
+    "İran",
+    "müzakere",
+    "CDS"
+   ],
+   "kaynaklar": [
+    "aa.com.tr 15.04.2026",
+    "apara.com.tr"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "kuresel",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2026-04-28",
+   "bitis": "2026-04-30",
+   "kamuya_acilma": "2026-04-28T12:00",
+   "tur": "emtia",
+   "baslik": "Brent 126 $/varil üzerine çıktı (savaş zirvesi)",
+   "anlam": "Enflasyon/cari açık şoku; Nisan TÜFE aylık %4,18.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.7,
+   "etiketler": [
+    "petrol",
+    "Brent"
+   ],
+   "kaynaklar": [
+    "aa.com.tr Enerji Terminali"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2026-05-05",
+   "bitis": "2026-05-05",
+   "kamuya_acilma": "2026-05-05T11:00",
+   "tur": "siyasi",
+   "baslik": "CHP kurultay davası 1 Temmuz'a ertelendi; XU100 tarihi zirve 14.827",
+   "anlam": "Siyasi risk ötelendi; endeks rekor. Gün yaklaşık.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "[olumlu] XU100 +%2'nin üzerinde, 14.827 (tüm zamanların zirvesi).",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.6,
+   "etiketler": [
+    "CHP",
+    "kurultay",
+    "rekor"
+   ],
+   "kaynaklar": [
+    "getmidas.com",
+    "eniyihaberler.com"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2026-05-21",
+   "bitis": "2026-05-22",
+   "kamuya_acilma": "2026-05-21T15:30",
+   "tur": "siyasi",
+   "baslik": "Ankara BAM 36. HD: CHP 38. Kurultayı için 'mutlak butlan'; Kılıçdaroğlu yönetimi tedbiren göreve iade",
+   "anlam": "Ana muhalefette yönetim değişikliği; siyasi belirsizlik ve kurumsal risk algısı. Kamu bankaları TL için ~6 mlr $ döviz sattı (Bloomberg).",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "[olumsuz] XU100 devre kesici; gün sonu −%6,05, 13.163,88. XBANK −%8+. 22 Mayıs'ta +%4 toparlanma.",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.9,
+   "etiketler": [
+    "siyasi",
+    "CHP",
+    "mutlak butlan",
+    "devre kesici"
+   ],
+   "kaynaklar": [
+    "t24.com.tr",
+    "bloomberght.com",
+    "sozcu.com.tr",
+    "diken.com.tr"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2026-06-11",
+   "bitis": "2026-06-11",
+   "kamuya_acilma": "2026-06-11T14:00",
+   "tur": "faiz",
+   "baslik": "PPK: %37 sabit",
+   "anlam": "Koridor 35,5/40 korundu.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.85,
+   "etiketler": [
+    "PPK"
+   ],
+   "kaynaklar": [
+    "TCMB PPK basın duyurusu",
+    "birgun.net"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "kuresel",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2026-06-14",
+   "bitis": "2026-06-25",
+   "kamuya_acilma": "2026-06-14T20:00",
+   "tur": "jeopolitik",
+   "baslik": "ABD–İran savaşı sona erdirme mutabakatı; ateşkes",
+   "anlam": "Petrol geriledi, CDS 217 bp (18 Şubat'tan beri en düşük).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "[olumlu] 25 Haziran'da XU100 güne +%0,83 ile 14.450 (ateşkes rüzgârı).",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.8,
+   "etiketler": [
+    "İran",
+    "ateşkes",
+    "petrol"
+   ],
+   "kaynaklar": [
+    "aa.com.tr",
+    "takvim.com.tr 25.06.2026",
+    "sde.org.tr CDS 217"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2026-06-29",
+   "bitis": "2026-06-29",
+   "kamuya_acilma": "2026-06-29T09:00",
+   "tur": "regulasyon",
+   "baslik": "Açığa satış yasağı kalktı; emir/işlem oranı 5/1'e döndü",
+   "anlam": "Normalleşme adımı.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.9,
+   "etiketler": [
+    "SPK",
+    "açığa satış"
+   ],
+   "kaynaklar": [
+    "KAP Borsa İstanbul",
+    "ekonomigazetesi.com",
+    "kulisborsa.com"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2026-07-17",
+   "bitis": "2026-07-17",
+   "kamuya_acilma": "2026-07-17T20:00",
+   "tur": "derecelendirme",
+   "baslik": "Fitch BB-/durağan teyit; 2026 büyüme %2,8, yıl sonu TÜFE %29,5",
+   "anlam": "Karar yok; izleme.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.9,
+   "etiketler": [
+    "Fitch"
+   ],
+   "kaynaklar": [
+    "aa.com.tr",
+    "bloomberght.com"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2026-07-24",
+   "bitis": "2026-07-24",
+   "kamuya_acilma": "2026-07-24T20:00",
+   "tur": "derecelendirme",
+   "baslik": "Moody's periyodik inceleme: Ba3/durağan, karar yok; artış sinyali",
+   "anlam": "2026 yıl sonu TÜFE %29, 2027 %24 tahmini.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.8,
+   "etiketler": [
+    "Moody's"
+   ],
+   "kaynaklar": [
+    "cumhuriyet.com.tr",
+    "sabah.com.tr"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2026-08-23",
+   "bitis": "2026-08-23",
+   "kamuya_acilma": "2026-08-23T18:00",
+   "tur": "faiz",
+   "baslik": "TCMB haftalık repo ihalelerine yeniden başladı (fonlama %40→%37'ye)",
+   "anlam": "Örtük gevşeme ~300 bp; indirim döngüsüne dönüş sinyali.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "[olumlu] 24 Ağustos'ta BIST'te iştah arttı (haber7).",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.85,
+   "etiketler": [
+    "TCMB",
+    "likidite"
+   ],
+   "kaynaklar": [
+    "bloomberght.com",
+    "dunya.com",
+    "ekonomi.haber7.com"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2026-09-10",
+   "bitis": "2026-09-10",
+   "kamuya_acilma": "2026-09-10T14:00",
+   "tur": "faiz",
+   "baslik": "PPK: %37 sabit (duyuru 2026-38)",
+   "anlam": "Beklenen; Ekim'de indirim sinyali.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.9,
+   "etiketler": [
+    "PPK"
+   ],
+   "kaynaklar": [
+    "TCMB PPK basın duyurusu",
+    "halilbakirci.av.tr"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2026-09-15",
+   "bitis": "2026-09-17",
+   "kamuya_acilma": "2026-09-15T18:30",
+   "tur": "haber",
+   "baslik": "Pusula Portföy fonları temerrüde düştü (KAP); Tera fonlarında çıkış kısıtı — 'fon krizi' başladı",
+   "anlam": "Serbest fonlarda likidite krizi; ~1 mlr $ fon çıkışı; piyasa bütünlüğü ve manipülasyon endişesi. Dönemin en büyük yerel güven şoku.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "[olumsuz] 16 Eylül 2026: XU100 gün içi −%8'e yakın, devre kesici 16:04; kapanış −%5,54, 13.122,58 (21 Mayıs'tan beri en sert).",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.9,
+   "etiketler": [
+    "fon krizi",
+    "Pusula",
+    "Tera",
+    "devre kesici"
+   ],
+   "kaynaklar": [
+    "t24.com.tr",
+    "tr.euronews.com 17.09.2026",
+    "paraanaliz.com",
+    "birgun.net",
+    "bloomberght.com"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "kuresel",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2026-09-16",
+   "bitis": "2026-09-16",
+   "kamuya_acilma": "2026-09-16T21:00",
+   "tur": "kuresel_faiz",
+   "baslik": "Fed 25 bp ARTIRDI: 3,75–4,00 (2023'ten beri ilk artış, oybirliği)",
+   "anlam": "Güçlü dolar/GOÜ çıkışı; fon kriziyle aynı güne denk geldi.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.85,
+   "etiketler": [
+    "Fed",
+    "artış"
+   ],
+   "kaynaklar": [
+    "uzmanpara.milliyet.com.tr",
+    "FOMC"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2026-09-17",
+   "bitis": "2026-09-17",
+   "kamuya_acilma": "2026-09-17T19:00",
+   "tur": "regulasyon",
+   "baslik": "SPK: Tera, Pusula, Hedef, Atlas, A1, Pardus, Bulls fonları işleme kapatıldı/tasfiye (≈131 fon); manipülasyon soruşturması, 38 kişiye suç duyurusu ve 2 yıl iş…",
+   "anlam": "Ziraat Bankası Pusula fonlarına tasfiye bankası; Katılımevim, Gündoğdu Gıda, Destek Finans Faktoring işlemleri incelendi.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "[olumsuz] Küçük/orta ölçekli hisselerde ve fon ağırlıklı kâğıtlarda satış sürdü.",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.85,
+   "etiketler": [
+    "SPK",
+    "tasfiye",
+    "manipülasyon"
+   ],
+   "kaynaklar": [
+    "tr.euronews.com",
+    "t24.com.tr",
+    "pegahukuk.com"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2026-09-28",
+   "bitis": "2026-09-28",
+   "kamuya_acilma": "2026-09-28T12:00",
+   "tur": "kur",
+   "baslik": "CDS 250 bp: mayıstan bu yana en yüksek",
+   "anlam": "Fon krizi ve gözaltılar risk primini yükseltti.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.7,
+   "etiketler": [
+    "CDS"
+   ],
+   "kaynaklar": [
+    "ekoturk.com 28.09.2026",
+    "cnbce.com"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2026-10-05",
+   "bitis": "2026-10-05",
+   "kamuya_acilma": "2026-10-05T10:00",
+   "tur": "enflasyon",
+   "baslik": "Eylül TÜFE aylık %1,84 (beklenti 2,18), yıllık %29,73 — 30'un altına indi",
+   "anlam": "Ekim indirimine kapı açtı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.9,
+   "etiketler": [
+    "TÜFE",
+    "beklenti altı"
+   ],
+   "kaynaklar": [
+    "TÜİK",
+    "ntv.com.tr",
+    "gazetevatan.com"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "kuresel",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2026-10-15",
+   "bitis": "2027-06-30",
+   "kamuya_acilma": "2026-10-15T23:30",
+   "tur": "endeks",
+   "baslik": "MSCI Türkiye endekslerinde FIF/pay sayısı artışlarını, yeni eklemeleri ve yukarı segment geçişlerini dondurdu; Haziran 2027'ye kadar ilerleme yoksa statü düş…",
+   "anlam": "Gerekçe: koordineli işlemler, fiilî dolaşım verisinin güvenilirliği, piyasa bütünlüğü. Pasif fon akışı riski; GOÜ'den sınır/bağımsız piyasa riski.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "[olumsuz] 16 Ekim 2026'da Borsa İstanbul'da sert satış (oran teyit edilemedi).",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.9,
+   "etiketler": [
+    "MSCI",
+    "endeks",
+    "yabancı"
+   ],
+   "kaynaklar": [
+    "tr.euronews.com 16.10.2026",
+    "forbes.com.tr",
+    "medyascope.tv",
+    "gazeteoksijen.com"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2026-10-16",
+   "bitis": "2026-10-16",
+   "kamuya_acilma": "2026-10-16T20:00",
+   "tur": "derecelendirme",
+   "baslik": "S&P takvim tarihini rapor yayımlamadan geçti (BB-/B durağan korundu)",
+   "anlam": "Beklenen; 18 analistin tamamı sabit bekliyordu.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.9,
+   "etiketler": [
+    "S&P"
+   ],
+   "kaynaklar": [
+    "foreks.com",
+    "ekonomim.com",
+    "Matriks Haber"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2026-10-22",
+   "bitis": "2026-10-22",
+   "kamuya_acilma": "2026-10-22T14:00",
+   "tur": "faiz",
+   "baslik": "PPK yılın ilk indirimi: 100 bp, %36; koridor 34,5/39",
+   "anlam": "Beklenen (19/20); dezenflasyon ana eğilimi teyit.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.95,
+   "etiketler": [
+    "PPK",
+    "indirim"
+   ],
+   "kaynaklar": [
+    "TCMB PPK basın duyurusu",
+    "haberturk.com",
+    "cnnturk.com"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "kuresel",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2026-10-28",
+   "bitis": "2026-10-28",
+   "kamuya_acilma": "2026-10-28T21:00",
+   "tur": "kuresel_faiz",
+   "baslik": "Fed sabit (3,75–4,00); 2 üye artış istedi (Cook, Hammack)",
+   "anlam": "Şahin eğilim sürüyor; GOÜ için dolar baskısı.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.9,
+   "etiketler": [
+    "Fed"
+   ],
+   "kaynaklar": [
+    "haberturk.com",
+    "cumhuriyet.com.tr"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2026-10-30",
+   "bitis": "2026-10-30",
+   "kamuya_acilma": "2026-10-30T09:00",
+   "tur": "haber",
+   "baslik": "Tera/Pusula/Atlas fonlarında ara ödemeler başladı (fon başına en fazla 1 mn TL)",
+   "anlam": "Yatırımcı mağduriyetinde ilk somut adım.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.6,
+   "etiketler": [
+    "fon krizi",
+    "tasfiye"
+   ],
+   "kaynaklar": [
+    "pegahukuk.com",
+    "hukukcularevi.com"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2026-11-03",
+   "bitis": "2026-11-03",
+   "kamuya_acilma": "2026-11-03T10:00",
+   "tur": "enflasyon",
+   "baslik": "Ekim TÜFE aylık %2,58 (beklenti 2,20), yıllık %29,77 — 4 aylık düşüş serisi bitti",
+   "anlam": "Aralık indirimi için soru işareti; gıda aylık %3,5.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.95,
+   "etiketler": [
+    "TÜFE",
+    "beklenti üstü"
+   ],
+   "kaynaklar": [
+    "TÜİK",
+    "capital.com.tr",
+    "cumhuriyet.com.tr",
+    "ensonhaber.com"
+   ],
+   "kaynak_tipi": "metin"
+  },
+  {
+   "kapsam": "yerel_makro",
+   "hisse": null,
+   "sektor": null,
+   "baslangic": "2026-11-02",
+   "bitis": "2026-11-06",
+   "kamuya_acilma": "2026-11-06T18:10",
+   "tur": "haber",
+   "baslik": "BIST 100 haftalık +%6,72 ile 11.482,60; altın yeni zirve; USD/TRY 50,18",
+   "anlam": "Fon krizi ve MSCI şoku sonrası aşırı satılmış seviyelerden tepki; bankacılık ve holdingler öncü. Katalizör teyit edilemedi.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "[olumlu] Hafta içi dip 11.194; zirve 11.617.",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.7,
+   "etiketler": [
+    "BIST",
+    "toparlanma",
+    "kur"
+   ],
+   "kaynaklar": [
+    "cumhuriyet.com.tr",
+    "orduulak.com",
+    "mansethaber.com 09.11.2026",
+    "ICBC Yatırım bülteni"
+   ],
+   "kaynak_tipi": "metin"
+  }
+ ]
+}

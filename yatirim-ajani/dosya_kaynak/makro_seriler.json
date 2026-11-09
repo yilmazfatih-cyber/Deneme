@@ -1,0 +1,1390 @@
+{
+  "politika_faizi": [
+    {
+      "tarih": "2024-01-25",
+      "saat": "14:00",
+      "onceki": 42.5,
+      "karar": 45.0,
+      "beklenti": 45.0,
+      "degisim_bp": 250,
+      "surpriz_bp": 0,
+      "not": "Son 250 bp artış; koridor 43,5/46,5. 'Sıkılaştırma tamamlandı' sinyali.",
+      "guven": 0.9,
+      "kaynaklar": [
+        "TCMB PPK basın duyuruları (tcmb.gov.tr > PPK Toplantı Kararları)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2024-02-22",
+      "saat": "14:00",
+      "onceki": 45.0,
+      "karar": 45.0,
+      "beklenti": 45.0,
+      "degisim_bp": 0,
+      "surpriz_bp": 0,
+      "not": "Sabit. Zorunlu karşılık ve makroihtiyati sıkılaştırma sürdü.",
+      "guven": 0.9,
+      "kaynaklar": [
+        "TCMB PPK basın duyuruları (tcmb.gov.tr > PPK Toplantı Kararları)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2024-03-21",
+      "saat": "14:00",
+      "onceki": 45.0,
+      "karar": 50.0,
+      "beklenti": 45.0,
+      "degisim_bp": 500,
+      "surpriz_bp": 500,
+      "not": "SÜRPRİZ 500 bp artış (seçim öncesi). Koridor ±300 bp: borçlanma 47, borç verme 53.",
+      "guven": 0.9,
+      "kaynaklar": [
+        "TCMB PPK basın duyuruları (tcmb.gov.tr > PPK Toplantı Kararları)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2024-04-25",
+      "saat": "14:00",
+      "onceki": 50.0,
+      "karar": 50.0,
+      "beklenti": 50.0,
+      "degisim_bp": 0,
+      "surpriz_bp": 0,
+      "not": "Sabit; 'ek sıkılaştırma yapılır' söylemi.",
+      "guven": 0.9,
+      "kaynaklar": [
+        "TCMB PPK basın duyuruları (tcmb.gov.tr > PPK Toplantı Kararları)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2024-05-23",
+      "saat": "14:00",
+      "onceki": 50.0,
+      "karar": 50.0,
+      "beklenti": 50.0,
+      "degisim_bp": 0,
+      "surpriz_bp": 0,
+      "not": "Sabit.",
+      "guven": 0.9,
+      "kaynaklar": [
+        "TCMB PPK basın duyuruları (tcmb.gov.tr > PPK Toplantı Kararları)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2024-06-27",
+      "saat": "14:00",
+      "onceki": 50.0,
+      "karar": 50.0,
+      "beklenti": 50.0,
+      "degisim_bp": 0,
+      "surpriz_bp": 0,
+      "not": "Sabit.",
+      "guven": 0.9,
+      "kaynaklar": [
+        "TCMB PPK basın duyuruları (tcmb.gov.tr > PPK Toplantı Kararları)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2024-07-23",
+      "saat": "14:00",
+      "onceki": 50.0,
+      "karar": 50.0,
+      "beklenti": 50.0,
+      "degisim_bp": 0,
+      "surpriz_bp": 0,
+      "not": "Sabit.",
+      "guven": 0.9,
+      "kaynaklar": [
+        "TCMB PPK basın duyuruları (tcmb.gov.tr > PPK Toplantı Kararları)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2024-08-20",
+      "saat": "14:00",
+      "onceki": 50.0,
+      "karar": 50.0,
+      "beklenti": 50.0,
+      "degisim_bp": 0,
+      "surpriz_bp": 0,
+      "not": "Sabit.",
+      "guven": 0.9,
+      "kaynaklar": [
+        "TCMB PPK basın duyuruları (tcmb.gov.tr > PPK Toplantı Kararları)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2024-09-19",
+      "saat": "14:00",
+      "onceki": 50.0,
+      "karar": 50.0,
+      "beklenti": 50.0,
+      "degisim_bp": 0,
+      "surpriz_bp": 0,
+      "not": "Sabit.",
+      "guven": 0.9,
+      "kaynaklar": [
+        "TCMB PPK basın duyuruları (tcmb.gov.tr > PPK Toplantı Kararları)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2024-10-17",
+      "saat": "14:00",
+      "onceki": 50.0,
+      "karar": 50.0,
+      "beklenti": 50.0,
+      "degisim_bp": 0,
+      "surpriz_bp": 0,
+      "not": "Sabit.",
+      "guven": 0.9,
+      "kaynaklar": [
+        "TCMB PPK basın duyuruları (tcmb.gov.tr > PPK Toplantı Kararları)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2024-11-21",
+      "saat": "14:00",
+      "onceki": 50.0,
+      "karar": 50.0,
+      "beklenti": 50.0,
+      "degisim_bp": 0,
+      "surpriz_bp": 0,
+      "not": "Sabit; metinde yumuşama (indirim kapısı aralandı).",
+      "guven": 0.9,
+      "kaynaklar": [
+        "TCMB PPK basın duyuruları (tcmb.gov.tr > PPK Toplantı Kararları)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2024-12-26",
+      "saat": "14:00",
+      "onceki": 50.0,
+      "karar": 47.5,
+      "beklenti": 48.5,
+      "degisim_bp": -250,
+      "surpriz_bp": -100,
+      "not": "İndirim döngüsü başladı: 250 bp (beklenti ~150 bp). Koridor ±150 bp: 46/49.",
+      "guven": 0.85,
+      "kaynaklar": [
+        "TCMB PPK basın duyuruları (tcmb.gov.tr > PPK Toplantı Kararları)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2025-01-23",
+      "saat": "14:00",
+      "onceki": 47.5,
+      "karar": 45.0,
+      "beklenti": 45.0,
+      "degisim_bp": -250,
+      "surpriz_bp": 0,
+      "not": "250 bp indirim; koridor 43,5/46,5.",
+      "guven": 0.9,
+      "kaynaklar": [
+        "TCMB PPK basın duyuruları (tcmb.gov.tr > PPK Toplantı Kararları)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2025-03-06",
+      "saat": "14:00",
+      "onceki": 45.0,
+      "karar": 42.5,
+      "beklenti": 42.5,
+      "degisim_bp": -250,
+      "surpriz_bp": 0,
+      "not": "250 bp indirim; koridor 41/44.",
+      "guven": 0.9,
+      "kaynaklar": [
+        "TCMB PPK basın duyuruları (tcmb.gov.tr > PPK Toplantı Kararları)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2025-03-20",
+      "saat": "10:00",
+      "onceki": 42.5,
+      "karar": 42.5,
+      "beklenti": null,
+      "degisim_bp": 0,
+      "surpriz_bp": null,
+      "not": "ARA TOPLANTI (19 Mart şoku sonrası): politika faizi sabit, gecelik borç verme 44→46; haftalık repo ihalelerine ara, fonlama gecelikten (fiili sıkılaştırma). Saat yaklaşık; sabah duyuruldu.",
+      "guven": 0.7,
+      "kaynaklar": [
+        "TCMB PPK basın duyuruları (tcmb.gov.tr > PPK Toplantı Kararları)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2025-04-17",
+      "saat": "14:00",
+      "onceki": 42.5,
+      "karar": 46.0,
+      "beklenti": 42.5,
+      "degisim_bp": 350,
+      "surpriz_bp": 350,
+      "not": "SÜRPRİZ 350 bp artış (siyasi şok + tarife oynaklığı). Koridor 44,5/49.",
+      "guven": 0.9,
+      "kaynaklar": [
+        "TCMB PPK basın duyuruları (tcmb.gov.tr > PPK Toplantı Kararları)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2025-06-19",
+      "saat": "14:00",
+      "onceki": 46.0,
+      "karar": 46.0,
+      "beklenti": 46.0,
+      "degisim_bp": 0,
+      "surpriz_bp": 0,
+      "not": "Sabit; fonlama kademeli olarak politika faizine yaklaştırıldı.",
+      "guven": 0.9,
+      "kaynaklar": [
+        "TCMB PPK basın duyuruları (tcmb.gov.tr > PPK Toplantı Kararları)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2025-07-24",
+      "saat": "14:00",
+      "onceki": 46.0,
+      "karar": 43.0,
+      "beklenti": 43.5,
+      "degisim_bp": -300,
+      "surpriz_bp": -50,
+      "not": "İndirimlere dönüş: 300 bp (beklenti 250 bp). Koridor 41,5/46.",
+      "guven": 0.85,
+      "kaynaklar": [
+        "TCMB PPK basın duyuruları (tcmb.gov.tr > PPK Toplantı Kararları)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2025-09-11",
+      "saat": "14:00",
+      "onceki": 43.0,
+      "karar": 40.5,
+      "beklenti": 41.0,
+      "degisim_bp": -250,
+      "surpriz_bp": -50,
+      "not": "250 bp indirim (beklenti ~200 bp). Koridor 39/43,5.",
+      "guven": 0.85,
+      "kaynaklar": [
+        "TCMB PPK basın duyuruları (tcmb.gov.tr > PPK Toplantı Kararları)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2025-10-23",
+      "saat": "14:00",
+      "onceki": 40.5,
+      "karar": 39.5,
+      "beklenti": 39.0,
+      "degisim_bp": -100,
+      "surpriz_bp": 50,
+      "not": "Şahin sürpriz: 100 bp (beklenti 150 bp). Koridor 38/42,5.",
+      "guven": 0.85,
+      "kaynaklar": [
+        "TCMB PPK basın duyuruları (tcmb.gov.tr > PPK Toplantı Kararları)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2025-12-11",
+      "saat": "14:00",
+      "onceki": 39.5,
+      "karar": 38.0,
+      "beklenti": 38.0,
+      "degisim_bp": -150,
+      "surpriz_bp": 0,
+      "not": "150 bp indirim; beklenti aralığı 37,5–38,5 (AA). Koridor 36,5/41.",
+      "guven": 0.9,
+      "kaynaklar": [
+        "TCMB PPK basın duyuruları (tcmb.gov.tr > PPK Toplantı Kararları)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2026-01-22",
+      "saat": "14:00",
+      "onceki": 38.0,
+      "karar": 37.0,
+      "beklenti": 37.0,
+      "degisim_bp": -100,
+      "surpriz_bp": 0,
+      "not": "100 bp indirim; koridor 35,5/40. Beklenti medyanı 100 bp (teyit düşük).",
+      "guven": 0.7,
+      "kaynaklar": [
+        "TCMB PPK basın duyuruları (tcmb.gov.tr > PPK Toplantı Kararları)",
+        "tacirler.com.tr PPK Ocak 2026",
+        "ekonomiajandasi.com"
+      ]
+    },
+    {
+      "tarih": "2026-03-12",
+      "saat": "14:00",
+      "onceki": 37.0,
+      "karar": 37.0,
+      "beklenti": 37.0,
+      "degisim_bp": 0,
+      "surpriz_bp": 0,
+      "not": "Sabit. 1 Mart 2026'da haftalık repo ihalelerine ara verildiği için fiili fonlama %40 (gecelik borç verme) — +300 bp örtük sıkılaştırma. Likidite senedi ihraçları.",
+      "guven": 0.85,
+      "kaynaklar": [
+        "TCMB PPK basın duyuruları (tcmb.gov.tr > PPK Toplantı Kararları)",
+        "Gedik Yatırım PPK Mart 2026 notu",
+        "prozon.net"
+      ]
+    },
+    {
+      "tarih": "2026-04-22",
+      "saat": "14:00",
+      "onceki": 37.0,
+      "karar": 37.0,
+      "beklenti": 37.0,
+      "degisim_bp": 0,
+      "surpriz_bp": 0,
+      "not": "Sabit; fonlama gecelikten (%40) sürdü.",
+      "guven": 0.7,
+      "kaynaklar": [
+        "TCMB PPK basın duyuruları (tcmb.gov.tr > PPK Toplantı Kararları)",
+        "gcmyatirim.com.tr 2026 takvimi"
+      ]
+    },
+    {
+      "tarih": "2026-06-11",
+      "saat": "14:00",
+      "onceki": 37.0,
+      "karar": 37.0,
+      "beklenti": 37.0,
+      "degisim_bp": 0,
+      "surpriz_bp": 0,
+      "not": "Sabit; koridor 35,5/40 korundu.",
+      "guven": 0.85,
+      "kaynaklar": [
+        "TCMB PPK basın duyuruları (tcmb.gov.tr > PPK Toplantı Kararları)",
+        "birgun.net Haziran 2026"
+      ]
+    },
+    {
+      "tarih": "2026-07-23",
+      "saat": "14:00",
+      "onceki": 37.0,
+      "karar": 37.0,
+      "beklenti": 37.0,
+      "degisim_bp": 0,
+      "surpriz_bp": 0,
+      "not": "Sabit.",
+      "guven": 0.7,
+      "kaynaklar": [
+        "TCMB PPK basın duyuruları (tcmb.gov.tr > PPK Toplantı Kararları)",
+        "gcmyatirim.com.tr 2026 takvimi"
+      ]
+    },
+    {
+      "tarih": "2026-09-10",
+      "saat": "14:00",
+      "onceki": 37.0,
+      "karar": 37.0,
+      "beklenti": 37.0,
+      "degisim_bp": 0,
+      "surpriz_bp": 0,
+      "not": "Sabit (duyuru 2026-38). 23 Ağustos'ta haftalık repo ihaleleri yeniden başlamıştı; fonlama %37'ye hizalandı.",
+      "guven": 0.9,
+      "kaynaklar": [
+        "TCMB PPK basın duyuruları (tcmb.gov.tr > PPK Toplantı Kararları)",
+        "halilbakirci.av.tr",
+        "parafomo.com"
+      ]
+    },
+    {
+      "tarih": "2026-10-22",
+      "saat": "14:00",
+      "onceki": 37.0,
+      "karar": 36.0,
+      "beklenti": 36.0,
+      "degisim_bp": -100,
+      "surpriz_bp": 0,
+      "not": "Yılın ilk indirimi: 100 bp. Koridor 34,5/39 (asimetrik yapı korundu). AA anketinde 20 ekonomistin 19'u indirim bekliyordu.",
+      "guven": 0.95,
+      "kaynaklar": [
+        "TCMB PPK basın duyuruları (tcmb.gov.tr > PPK Toplantı Kararları)",
+        "haberturk.com Ekim 2026",
+        "ensonhaber.com",
+        "cnnturk.com"
+      ]
+    }
+  ],
+  "tufe": [
+    {
+      "tarih": "2024-01-03",
+      "saat": "10:00",
+      "donem": "2023-12",
+      "yillik": 64.77,
+      "aylik": 2.93,
+      "beklenti_aylik": 3.0,
+      "surpriz_aylik_pp": -0.07,
+      "guven": 0.9,
+      "kaynaklar": [
+        "TÜİK TÜFE haber bülteni (data.tuik.gov.tr)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2024-02-05",
+      "saat": "10:00",
+      "donem": "2024-01",
+      "yillik": 64.86,
+      "aylik": 6.7,
+      "beklenti_aylik": 6.5,
+      "surpriz_aylik_pp": 0.2,
+      "guven": 0.9,
+      "kaynaklar": [
+        "TÜİK TÜFE haber bülteni (data.tuik.gov.tr)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2024-03-04",
+      "saat": "10:00",
+      "donem": "2024-02",
+      "yillik": 67.07,
+      "aylik": 4.53,
+      "beklenti_aylik": 3.7,
+      "surpriz_aylik_pp": 0.83,
+      "guven": 0.9,
+      "kaynaklar": [
+        "TÜİK TÜFE haber bülteni (data.tuik.gov.tr)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2024-04-03",
+      "saat": "10:00",
+      "donem": "2024-03",
+      "yillik": 68.5,
+      "aylik": 3.16,
+      "beklenti_aylik": 3.5,
+      "surpriz_aylik_pp": -0.34,
+      "guven": 0.9,
+      "kaynaklar": [
+        "TÜİK TÜFE haber bülteni (data.tuik.gov.tr)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2024-05-03",
+      "saat": "10:00",
+      "donem": "2024-04",
+      "yillik": 69.8,
+      "aylik": 3.18,
+      "beklenti_aylik": 3.4,
+      "surpriz_aylik_pp": -0.22,
+      "guven": 0.9,
+      "kaynaklar": [
+        "TÜİK TÜFE haber bülteni (data.tuik.gov.tr)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2024-06-03",
+      "saat": "10:00",
+      "donem": "2024-05",
+      "yillik": 75.45,
+      "aylik": 3.37,
+      "beklenti_aylik": 3.1,
+      "surpriz_aylik_pp": 0.27,
+      "guven": 0.9,
+      "kaynaklar": [
+        "TÜİK TÜFE haber bülteni (data.tuik.gov.tr)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ],
+      "not": "Yıllık zirve."
+    },
+    {
+      "tarih": "2024-07-03",
+      "saat": "10:00",
+      "donem": "2024-06",
+      "yillik": 71.6,
+      "aylik": 1.64,
+      "beklenti_aylik": 2.2,
+      "surpriz_aylik_pp": -0.56,
+      "guven": 0.9,
+      "kaynaklar": [
+        "TÜİK TÜFE haber bülteni (data.tuik.gov.tr)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2024-08-05",
+      "saat": "10:00",
+      "donem": "2024-07",
+      "yillik": 61.78,
+      "aylik": 3.23,
+      "beklenti_aylik": 3.4,
+      "surpriz_aylik_pp": -0.17,
+      "guven": 0.9,
+      "kaynaklar": [
+        "TÜİK TÜFE haber bülteni (data.tuik.gov.tr)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2024-09-03",
+      "saat": "10:00",
+      "donem": "2024-08",
+      "yillik": 51.97,
+      "aylik": 2.47,
+      "beklenti_aylik": 2.2,
+      "surpriz_aylik_pp": 0.27,
+      "guven": 0.9,
+      "kaynaklar": [
+        "TÜİK TÜFE haber bülteni (data.tuik.gov.tr)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2024-10-03",
+      "saat": "10:00",
+      "donem": "2024-09",
+      "yillik": 49.38,
+      "aylik": 2.97,
+      "beklenti_aylik": 2.2,
+      "surpriz_aylik_pp": 0.77,
+      "guven": 0.9,
+      "kaynaklar": [
+        "TÜİK TÜFE haber bülteni (data.tuik.gov.tr)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2024-11-04",
+      "saat": "10:00",
+      "donem": "2024-10",
+      "yillik": 48.58,
+      "aylik": 2.88,
+      "beklenti_aylik": 2.6,
+      "surpriz_aylik_pp": 0.28,
+      "guven": 0.9,
+      "kaynaklar": [
+        "TÜİK TÜFE haber bülteni (data.tuik.gov.tr)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2024-12-03",
+      "saat": "10:00",
+      "donem": "2024-11",
+      "yillik": 47.09,
+      "aylik": 2.24,
+      "beklenti_aylik": 1.9,
+      "surpriz_aylik_pp": 0.34,
+      "guven": 0.9,
+      "kaynaklar": [
+        "TÜİK TÜFE haber bülteni (data.tuik.gov.tr)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2025-01-03",
+      "saat": "10:00",
+      "donem": "2024-12",
+      "yillik": 44.38,
+      "aylik": 1.03,
+      "beklenti_aylik": 1.6,
+      "surpriz_aylik_pp": -0.57,
+      "guven": 0.9,
+      "kaynaklar": [
+        "TÜİK TÜFE haber bülteni (data.tuik.gov.tr)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2025-02-03",
+      "saat": "10:00",
+      "donem": "2025-01",
+      "yillik": 42.12,
+      "aylik": 5.03,
+      "beklenti_aylik": 4.3,
+      "surpriz_aylik_pp": 0.73,
+      "guven": 0.9,
+      "kaynaklar": [
+        "TÜİK TÜFE haber bülteni (data.tuik.gov.tr)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2025-03-03",
+      "saat": "10:00",
+      "donem": "2025-02",
+      "yillik": 39.05,
+      "aylik": 2.27,
+      "beklenti_aylik": 2.9,
+      "surpriz_aylik_pp": -0.63,
+      "guven": 0.9,
+      "kaynaklar": [
+        "TÜİK TÜFE haber bülteni (data.tuik.gov.tr)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2025-04-03",
+      "saat": "10:00",
+      "donem": "2025-03",
+      "yillik": 38.1,
+      "aylik": 2.46,
+      "beklenti_aylik": 2.9,
+      "surpriz_aylik_pp": -0.44,
+      "guven": 0.9,
+      "kaynaklar": [
+        "TÜİK TÜFE haber bülteni (data.tuik.gov.tr)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2025-05-05",
+      "saat": "10:00",
+      "donem": "2025-04",
+      "yillik": 37.86,
+      "aylik": 3.0,
+      "beklenti_aylik": 3.1,
+      "surpriz_aylik_pp": -0.1,
+      "guven": 0.9,
+      "kaynaklar": [
+        "TÜİK TÜFE haber bülteni (data.tuik.gov.tr)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2025-06-03",
+      "saat": "10:00",
+      "donem": "2025-05",
+      "yillik": 35.41,
+      "aylik": 1.53,
+      "beklenti_aylik": 2.0,
+      "surpriz_aylik_pp": -0.47,
+      "guven": 0.9,
+      "kaynaklar": [
+        "TÜİK TÜFE haber bülteni (data.tuik.gov.tr)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2025-07-03",
+      "saat": "10:00",
+      "donem": "2025-06",
+      "yillik": 35.05,
+      "aylik": 1.37,
+      "beklenti_aylik": 1.5,
+      "surpriz_aylik_pp": -0.13,
+      "guven": 0.9,
+      "kaynaklar": [
+        "TÜİK TÜFE haber bülteni (data.tuik.gov.tr)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2025-08-04",
+      "saat": "10:00",
+      "donem": "2025-07",
+      "yillik": 33.52,
+      "aylik": 2.06,
+      "beklenti_aylik": 2.3,
+      "surpriz_aylik_pp": -0.24,
+      "guven": 0.9,
+      "kaynaklar": [
+        "TÜİK TÜFE haber bülteni (data.tuik.gov.tr)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2025-09-03",
+      "saat": "10:00",
+      "donem": "2025-08",
+      "yillik": 32.95,
+      "aylik": 2.04,
+      "beklenti_aylik": 1.8,
+      "surpriz_aylik_pp": 0.24,
+      "guven": 0.9,
+      "kaynaklar": [
+        "TÜİK TÜFE haber bülteni (data.tuik.gov.tr)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2025-10-03",
+      "saat": "10:00",
+      "donem": "2025-09",
+      "yillik": 33.29,
+      "aylik": 3.23,
+      "beklenti_aylik": 2.4,
+      "surpriz_aylik_pp": 0.83,
+      "guven": 0.9,
+      "kaynaklar": [
+        "TÜİK TÜFE haber bülteni (data.tuik.gov.tr)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ],
+      "not": "Yıllıkta yükseliş; beklenti belirgin aşıldı."
+    },
+    {
+      "tarih": "2025-11-03",
+      "saat": "10:00",
+      "donem": "2025-10",
+      "yillik": 32.87,
+      "aylik": 2.55,
+      "beklenti_aylik": 2.7,
+      "surpriz_aylik_pp": -0.15,
+      "guven": 0.9,
+      "kaynaklar": [
+        "TÜİK TÜFE haber bülteni (data.tuik.gov.tr)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2025-12-03",
+      "saat": "10:00",
+      "donem": "2025-11",
+      "yillik": 31.07,
+      "aylik": 0.87,
+      "beklenti_aylik": 1.3,
+      "surpriz_aylik_pp": -0.43,
+      "guven": 0.9,
+      "kaynaklar": [
+        "TÜİK TÜFE haber bülteni (data.tuik.gov.tr)",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ]
+    },
+    {
+      "tarih": "2026-01-05",
+      "saat": "10:00",
+      "donem": "2025-12",
+      "yillik": 30.89,
+      "aylik": 0.89,
+      "beklenti_aylik": 1.1,
+      "surpriz_aylik_pp": -0.21,
+      "guven": 0.95,
+      "kaynaklar": [
+        "TÜİK",
+        "euronews.com 05.01.2026",
+        "bloomberght.com",
+        "sbb.gov.tr Aralık 2025"
+      ],
+      "not": "2025 yılı kapanışı; 49 ayın en düşüğü."
+    },
+    {
+      "tarih": "2026-02-03",
+      "saat": "10:00",
+      "donem": "2026-01",
+      "yillik": 30.65,
+      "aylik": 4.84,
+      "beklenti_aylik": null,
+      "surpriz_aylik_pp": null,
+      "guven": 0.8,
+      "kaynaklar": [
+        "TÜİK",
+        "legalbank.net tablo",
+        "yontemymm.com.tr"
+      ]
+    },
+    {
+      "tarih": "2026-03-03",
+      "saat": "10:00",
+      "donem": "2026-02",
+      "yillik": 31.53,
+      "aylik": 2.96,
+      "beklenti_aylik": null,
+      "surpriz_aylik_pp": null,
+      "guven": 0.8,
+      "kaynaklar": [
+        "TÜİK",
+        "legalbank.net tablo",
+        "yontemymm.com.tr"
+      ]
+    },
+    {
+      "tarih": "2026-04-03",
+      "saat": "10:00",
+      "donem": "2026-03",
+      "yillik": 30.87,
+      "aylik": 1.94,
+      "beklenti_aylik": null,
+      "surpriz_aylik_pp": null,
+      "guven": 0.8,
+      "kaynaklar": [
+        "TÜİK",
+        "legalbank.net tablo"
+      ]
+    },
+    {
+      "tarih": "2026-05-04",
+      "saat": "10:00",
+      "donem": "2026-04",
+      "yillik": 32.37,
+      "aylik": 4.18,
+      "beklenti_aylik": null,
+      "surpriz_aylik_pp": null,
+      "guven": 0.8,
+      "kaynaklar": [
+        "TÜİK",
+        "legalbank.net tablo"
+      ],
+      "not": "Savaş kaynaklı petrol şoku; aylık sıçrama."
+    },
+    {
+      "tarih": "2026-06-05",
+      "saat": "10:00",
+      "donem": "2026-05",
+      "yillik": 32.61,
+      "aylik": 1.71,
+      "beklenti_aylik": null,
+      "surpriz_aylik_pp": null,
+      "guven": 0.75,
+      "kaynaklar": [
+        "TÜİK",
+        "ASMMMO bildirisi 05.06.2026"
+      ],
+      "not": "Açıklama günü kaynakta 5 Haziran; 3 Haziran olmaması teyit edilmeli."
+    },
+    {
+      "tarih": "2026-07-03",
+      "saat": "10:00",
+      "donem": "2026-06",
+      "yillik": 32.11,
+      "aylik": 0.99,
+      "beklenti_aylik": null,
+      "surpriz_aylik_pp": null,
+      "guven": 0.8,
+      "kaynaklar": [
+        "TÜİK",
+        "legalbank.net tablo",
+        "Fitch Temmuz 2026 raporu (haziran %32)"
+      ]
+    },
+    {
+      "tarih": "2026-08-03",
+      "saat": "10:00",
+      "donem": "2026-07",
+      "yillik": 31.75,
+      "aylik": 1.78,
+      "beklenti_aylik": null,
+      "surpriz_aylik_pp": null,
+      "guven": 0.8,
+      "kaynaklar": [
+        "TÜİK",
+        "legalbank.net tablo"
+      ]
+    },
+    {
+      "tarih": "2026-09-03",
+      "saat": "10:00",
+      "donem": "2026-08",
+      "yillik": 31.51,
+      "aylik": 1.84,
+      "beklenti_aylik": 1.67,
+      "surpriz_aylik_pp": 0.17,
+      "guven": 0.75,
+      "kaynaklar": [
+        "TÜİK",
+        "uzmanpara.milliyet.com.tr",
+        "TCMB Piyasa Katılımcıları Anketi (1,67)"
+      ],
+      "not": "Bazı kaynaklarda aylık 1,85."
+    },
+    {
+      "tarih": "2026-10-05",
+      "saat": "10:00",
+      "donem": "2026-09",
+      "yillik": 29.73,
+      "aylik": 1.84,
+      "beklenti_aylik": 2.18,
+      "surpriz_aylik_pp": -0.34,
+      "guven": 0.9,
+      "kaynaklar": [
+        "TÜİK",
+        "ntv.com.tr",
+        "gazetevatan.com",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ],
+      "not": "Beklentinin belirgin altında; yıllık 30'un altına indi."
+    },
+    {
+      "tarih": "2026-11-03",
+      "saat": "10:00",
+      "donem": "2026-10",
+      "yillik": 29.77,
+      "aylik": 2.58,
+      "beklenti_aylik": 2.2,
+      "surpriz_aylik_pp": 0.38,
+      "guven": 0.95,
+      "kaynaklar": [
+        "TÜİK",
+        "capital.com.tr",
+        "ensonhaber.com",
+        "cumhuriyet.com.tr",
+        "AA Finans beklenti anketi / aa.com.tr"
+      ],
+      "not": "Beklentinin üstünde; 4 aylık düşüş serisi bitti."
+    }
+  ],
+  "kredi_notu": [
+    {
+      "tarih": "2024-01-12",
+      "kurum": "Moody's",
+      "eski": "B3 / Durağan",
+      "yeni": "B3 / Pozitif",
+      "gorunum": "Pozitif",
+      "not": "Görünüm pozitife çevrildi.",
+      "guven": 0.9,
+      "kaynaklar": [
+        "Kuruluş basın açıklaması",
+        "Hazine ve Maliye Bakanlığı kredi notu sayfası"
+      ]
+    },
+    {
+      "tarih": "2024-03-08",
+      "kurum": "Fitch",
+      "eski": "B / Durağan",
+      "yeni": "B+ / Pozitif",
+      "gorunum": "Pozitif",
+      "not": "Not artışı + pozitif görünüm.",
+      "guven": 0.9,
+      "kaynaklar": [
+        "Kuruluş basın açıklaması",
+        "Hazine ve Maliye Bakanlığı kredi notu sayfası"
+      ]
+    },
+    {
+      "tarih": "2024-05-03",
+      "kurum": "S&P",
+      "eski": "B / Pozitif",
+      "yeni": "B+ / Pozitif",
+      "gorunum": "Pozitif",
+      "not": "Not artışı.",
+      "guven": 0.9,
+      "kaynaklar": [
+        "Kuruluş basın açıklaması",
+        "Hazine ve Maliye Bakanlığı kredi notu sayfası"
+      ]
+    },
+    {
+      "tarih": "2024-07-19",
+      "kurum": "Moody's",
+      "eski": "B3 / Pozitif",
+      "yeni": "B1 / Pozitif",
+      "gorunum": "Pozitif",
+      "not": "İki kademe artış.",
+      "guven": 0.9,
+      "kaynaklar": [
+        "Kuruluş basın açıklaması",
+        "Hazine ve Maliye Bakanlığı kredi notu sayfası"
+      ]
+    },
+    {
+      "tarih": "2024-09-06",
+      "kurum": "Fitch",
+      "eski": "B+ / Pozitif",
+      "yeni": "BB- / Durağan",
+      "gorunum": "Durağan",
+      "not": "Not artışı.",
+      "guven": 0.9,
+      "kaynaklar": [
+        "Kuruluş basın açıklaması",
+        "Hazine ve Maliye Bakanlığı kredi notu sayfası"
+      ]
+    },
+    {
+      "tarih": "2024-11-01",
+      "kurum": "S&P",
+      "eski": "B+ / Pozitif",
+      "yeni": "BB- / Durağan",
+      "gorunum": "Durağan",
+      "not": "Not artışı (S&P'de son not değişikliği).",
+      "guven": 0.95,
+      "kaynaklar": [
+        "S&P",
+        "ekonomim.com 17.10.2026 ('son olarak 1 Kasım 2024')"
+      ]
+    },
+    {
+      "tarih": "2025-01-24",
+      "kurum": "Moody's",
+      "eski": "B1 / Pozitif",
+      "yeni": "B1 / Pozitif",
+      "gorunum": "Pozitif",
+      "not": "Teyit (karar yok).",
+      "guven": 0.6,
+      "kaynaklar": [
+        "Kuruluş basın açıklaması",
+        "Hazine ve Maliye Bakanlığı kredi notu sayfası"
+      ]
+    },
+    {
+      "tarih": "2025-01-31",
+      "kurum": "Fitch",
+      "eski": "BB- / Durağan",
+      "yeni": "BB- / Durağan",
+      "gorunum": "Durağan",
+      "not": "Teyit.",
+      "guven": 0.7,
+      "kaynaklar": [
+        "Kuruluş basın açıklaması",
+        "Hazine ve Maliye Bakanlığı kredi notu sayfası"
+      ]
+    },
+    {
+      "tarih": "2025-04-25",
+      "kurum": "S&P",
+      "eski": "BB- / Durağan",
+      "yeni": "BB- / Durağan",
+      "gorunum": "Durağan",
+      "not": "Mart şoku sonrası teyit. Gün teyit edilemedi.",
+      "guven": 0.4,
+      "kaynaklar": [
+        "Kuruluş basın açıklaması",
+        "Hazine ve Maliye Bakanlığı kredi notu sayfası"
+      ]
+    },
+    {
+      "tarih": "2025-07-25",
+      "kurum": "Moody's",
+      "eski": "B1 / Pozitif",
+      "yeni": "Ba3 / Durağan",
+      "gorunum": "Durağan",
+      "not": "Not artışı; görünüm durağana çekildi.",
+      "guven": 0.95,
+      "kaynaklar": [
+        "Moody's",
+        "Yapı Kredi IR kredi notları sayfası",
+        "ekoturk.com"
+      ]
+    },
+    {
+      "tarih": "2025-07-25",
+      "kurum": "Fitch",
+      "eski": "BB- / Durağan",
+      "yeni": "BB- / Durağan",
+      "gorunum": "Durağan",
+      "not": "Teyit. Gün teyit edilemedi.",
+      "guven": 0.5,
+      "kaynaklar": [
+        "Kuruluş basın açıklaması",
+        "Hazine ve Maliye Bakanlığı kredi notu sayfası"
+      ]
+    },
+    {
+      "tarih": "2025-10-17",
+      "kurum": "S&P",
+      "eski": "BB- / Durağan",
+      "yeni": "BB- / Durağan",
+      "gorunum": "Durağan",
+      "not": "Teyit. Gün teyit edilemedi.",
+      "guven": 0.5,
+      "kaynaklar": [
+        "Kuruluş basın açıklaması",
+        "Hazine ve Maliye Bakanlığı kredi notu sayfası"
+      ]
+    },
+    {
+      "tarih": "2026-01-23",
+      "kurum": "Fitch",
+      "eski": "BB- / Durağan",
+      "yeni": "BB- / Pozitif",
+      "gorunum": "Pozitif",
+      "not": "Görünüm pozitife çevrildi; Moody's aynı gün takvimi geçti.",
+      "guven": 0.9,
+      "kaynaklar": [
+        "Yapı Kredi IR",
+        "tr.investing.com",
+        "anlikdoviz.co"
+      ]
+    },
+    {
+      "tarih": "2026-04-10",
+      "kurum": "Fitch",
+      "eski": "BB- / Pozitif",
+      "yeni": "BB- / Durağan",
+      "gorunum": "Durağan",
+      "not": "Savaş/petrol şoku sonrası görünüm durağana geri çekildi.",
+      "guven": 0.8,
+      "kaynaklar": [
+        "Yapı Kredi IR"
+      ]
+    },
+    {
+      "tarih": "2026-04-17",
+      "kurum": "S&P",
+      "eski": "BB- / Durağan",
+      "yeni": "BB- / Durağan",
+      "gorunum": "Durağan",
+      "not": "Nisan 2026 teyidi (BB-/B, durağan). Gün tahmini; teyit edilemedi.",
+      "guven": 0.4,
+      "kaynaklar": [
+        "infoyatirim.com",
+        "uzmanpara.milliyet.com.tr",
+        "aa.com.tr (Vartapetov)"
+      ]
+    },
+    {
+      "tarih": "2026-07-17",
+      "kurum": "Fitch",
+      "eski": "BB- / Durağan",
+      "yeni": "BB- / Durağan",
+      "gorunum": "Durağan",
+      "not": "Teyit; 2026 büyüme %2,8, yıl sonu TÜFE %29,5 tahmini.",
+      "guven": 0.9,
+      "kaynaklar": [
+        "aa.com.tr",
+        "bloomberght.com",
+        "cnbce.com"
+      ]
+    },
+    {
+      "tarih": "2026-07-24",
+      "kurum": "Moody's",
+      "eski": "Ba3 / Durağan",
+      "yeni": "Ba3 / Durağan",
+      "gorunum": "Durağan",
+      "not": "Periyodik inceleme; karar yok (bazı kaynaklar 16 Temmuz).",
+      "guven": 0.8,
+      "kaynaklar": [
+        "cumhuriyet.com.tr",
+        "halktv.com.tr",
+        "sabah.com.tr"
+      ]
+    },
+    {
+      "tarih": "2026-10-16",
+      "kurum": "S&P",
+      "eski": "BB- / Durağan",
+      "yeni": "BB- / Durağan",
+      "gorunum": "Durağan",
+      "not": "Takvim tarihi rapor yayımlanmadan geçildi; not değişmedi.",
+      "guven": 0.9,
+      "kaynaklar": [
+        "foreks.com 17.10.2026",
+        "ekonomim.com",
+        "Matriks Haber"
+      ]
+    }
+  ],
+  "cds": [
+    {
+      "tarih": "2024-01-02",
+      "seviye_bp": 300,
+      "not": "Yıl başı ~300 bp.",
+      "guven": 0.5,
+      "kaynaklar": [
+        "Bloomberg/Refinitiv üzerinden haber aktarımı"
+      ]
+    },
+    {
+      "tarih": "2024-03-29",
+      "seviye_bp": 315,
+      "not": "Seçim öncesi yüksek seviye (yaklaşık).",
+      "guven": 0.4,
+      "kaynaklar": [
+        "Bloomberg/Refinitiv üzerinden haber aktarımı"
+      ]
+    },
+    {
+      "tarih": "2024-05-15",
+      "seviye_bp": 258,
+      "not": "Seçim sonrası ortodoksi rallisi; 2020'den beri en düşük bölge.",
+      "guven": 0.5,
+      "kaynaklar": [
+        "Bloomberg/Refinitiv üzerinden haber aktarımı"
+      ]
+    },
+    {
+      "tarih": "2024-08-05",
+      "seviye_bp": 300,
+      "not": "Küresel satış dalgasında sıçrama (yaklaşık).",
+      "guven": 0.5,
+      "kaynaklar": [
+        "Bloomberg/Refinitiv üzerinden haber aktarımı"
+      ]
+    },
+    {
+      "tarih": "2024-12-13",
+      "seviye_bp": 250,
+      "not": "Not artışları sonrası 2018'den beri en düşük bölge (yaklaşık).",
+      "guven": 0.5,
+      "kaynaklar": [
+        "Bloomberg/Refinitiv üzerinden haber aktarımı"
+      ]
+    },
+    {
+      "tarih": "2025-02-28",
+      "seviye_bp": 255,
+      "not": "Mart şoku öncesi.",
+      "guven": 0.5,
+      "kaynaklar": [
+        "Bloomberg/Refinitiv üzerinden haber aktarımı"
+      ]
+    },
+    {
+      "tarih": "2025-03-19",
+      "seviye_bp": 330,
+      "not": "İmamoğlu gözaltısı: tek günde ~+70 bp (yaklaşık).",
+      "guven": 0.6,
+      "kaynaklar": [
+        "Bloomberg/Refinitiv üzerinden haber aktarımı"
+      ]
+    },
+    {
+      "tarih": "2025-04-09",
+      "seviye_bp": 380,
+      "not": "Tarife şoku + siyasi risk; 2025 zirve bölgesi (yaklaşık).",
+      "guven": 0.4,
+      "kaynaklar": [
+        "Bloomberg/Refinitiv üzerinden haber aktarımı"
+      ]
+    },
+    {
+      "tarih": "2025-06-30",
+      "seviye_bp": 290,
+      "not": "Kısmi normalleşme (yaklaşık).",
+      "guven": 0.4,
+      "kaynaklar": [
+        "Bloomberg/Refinitiv üzerinden haber aktarımı"
+      ]
+    },
+    {
+      "tarih": "2025-10-24",
+      "seviye_bp": 245,
+      "not": "Kurultay davası reddi sonrası gevşeme (yaklaşık).",
+      "guven": 0.4,
+      "kaynaklar": [
+        "Bloomberg/Refinitiv üzerinden haber aktarımı"
+      ]
+    },
+    {
+      "tarih": "2025-12-31",
+      "seviye_bp": 240,
+      "not": "Yıl sonu (yaklaşık).",
+      "guven": 0.4,
+      "kaynaklar": [
+        "Bloomberg/Refinitiv üzerinden haber aktarımı"
+      ]
+    },
+    {
+      "tarih": "2026-02-18",
+      "seviye_bp": 204,
+      "not": "52 haftalık dip bölgesi (investing.com 52h aralığı 203,98–311,12).",
+      "guven": 0.5,
+      "kaynaklar": [
+        "investing.com Türkiye CDS 5Y sayfası",
+        "sde.org.tr '18 Şubat'tan bu yana en düşük'"
+      ]
+    },
+    {
+      "tarih": "2026-02-27",
+      "seviye_bp": 235,
+      "not": "Savaş öncesi seviye.",
+      "guven": 0.7,
+      "kaynaklar": [
+        "aa.com.tr 'savaş öncesi seviyelere indi'",
+        "dunya.com"
+      ]
+    },
+    {
+      "tarih": "2026-03-16",
+      "seviye_bp": 327,
+      "not": "ABD/İsrail–İran savaşı: Mart zirvesi 327 bp (gün yaklaşık).",
+      "guven": 0.7,
+      "kaynaklar": [
+        "aa.com.tr",
+        "dunya.com",
+        "apara.com.tr"
+      ]
+    },
+    {
+      "tarih": "2026-04-01",
+      "seviye_bp": 311,
+      "not": "Nisan başı 311,12 (bir kaynakta 52h zirvesi).",
+      "guven": 0.5,
+      "kaynaklar": [
+        "investing.com"
+      ]
+    },
+    {
+      "tarih": "2026-04-15",
+      "seviye_bp": 230,
+      "not": "ABD–İran görüşmeleri: 230,4 bp, 27 Şubat'tan beri en düşük.",
+      "guven": 0.8,
+      "kaynaklar": [
+        "aa.com.tr 15.04.2026",
+        "ekoturk.com"
+      ]
+    },
+    {
+      "tarih": "2026-05-21",
+      "seviye_bp": 268,
+      "not": "Mutlak butlan kararı günü sıçrama (seviye yaklaşık, teyit zayıf).",
+      "guven": 0.3,
+      "kaynaklar": [
+        "cnbce.com",
+        "borsatek.com"
+      ]
+    },
+    {
+      "tarih": "2026-06-16",
+      "seviye_bp": 217,
+      "not": "ABD–İran mutabakatı sonrası; 18 Şubat'tan beri en düşük (gün yaklaşık).",
+      "guven": 0.6,
+      "kaynaklar": [
+        "sde.org.tr",
+        "bloomberght.com",
+        "aa.com.tr '6,5 ayın en düşüğü'"
+      ]
+    },
+    {
+      "tarih": "2026-09-17",
+      "seviye_bp": 262,
+      "not": "Fon krizi: 4 ayın zirvesi (seviye yaklaşık).",
+      "guven": 0.5,
+      "kaynaklar": [
+        "cnbce.com",
+        "diken.com.tr",
+        "borsatek.com"
+      ]
+    },
+    {
+      "tarih": "2026-09-28",
+      "seviye_bp": 250,
+      "not": "250 bp; mayıstan bu yana en yüksek (Ekotürk).",
+      "guven": 0.7,
+      "kaynaklar": [
+        "ekoturk.com 28.09.2026",
+        "macromicro W39: 254,5"
+      ]
+    },
+    {
+      "tarih": "2026-11-02",
+      "seviye_bp": 257,
+      "not": "256,7 bp (investing.com, tarih 02/11 — yıl teyit edilemedi).",
+      "guven": 0.5,
+      "kaynaklar": [
+        "investing.com"
+      ]
+    }
+  ],
+  "kaynaklar": {
+    "politika_faizi": "TCMB PPK basın duyuruları; beklentiler AA Finans / Bloomberg HT anketleri. 2026 kararları: tacirler.com.tr, Gedik Yatırım, birgun.net, halilbakirci.av.tr, haberturk.com, ensonhaber.com, cnnturk.com, gcmyatirim.com.tr. Saat: tüm olağan PPK kararları 14:00 TSİ.",
+    "tufe": "TÜİK TÜFE bültenleri (saat 10:00). 2026: legalbank.net, yontemymm.com.tr, ASMMMO, gazetevatan, ntv, capital.com.tr, ensonhaber. Beklentiler: AA Finans anketi; 2024–2025 beklentileri bellekten (±0,2 pp hata payı).",
+    "kredi_notu": "Fitch/Moody's/S&P açıklamaları; Yapı Kredi IR kredi notları sayfası; aa.com.tr, bloomberght, cnbce, foreks, ekonomim.",
+    "cds": "5 yıllık USD CDS; aa.com.tr, dunya.com, ekoturk.com, cnbce.com, investing.com, macromicro.me. Seviyeler kapanış değil haber anlık değerleri; 2024–2025 seviyeleri yaklaşık.",
+    "erisim_notu": "Oturumda tcmb.gov.tr, tuik.gov.tr, tradingeconomics, wikipedia vb. WebFetch ile erişilemedi (ağ kısıtı) ve arama bütçesi doldu; satırların çoğu arama özetleri + analist bilgisiyle oluşturuldu. guven<0,6 satırlar resmi kaynakla teyit edilmeli."
+  }
+}

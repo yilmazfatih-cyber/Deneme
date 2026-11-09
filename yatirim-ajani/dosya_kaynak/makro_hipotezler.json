@@ -1,0 +1,195 @@
+[
+  {
+    "id": "H1",
+    "hipotez": "PPK'nın piyasa beklentisinden daha büyük indirim yaptığı günlerde (sürpriz ≤ −50 bp) XU100 kapanış getirisi +%1,5'in üzerindedir; XBANK XU100'ü aynı gün en az 1 pp geçer.",
+    "ornek_olaylar": [
+      "2024-12-26",
+      "2025-07-24",
+      "2025-09-11"
+    ],
+    "gerekli_seriler": [
+      "politika_faizi (karar, beklenti)",
+      "XU100 ve XBANK 14:00 öncesi/kapanış fiyatı"
+    ],
+    "olcum": "Olay günü 13:59 fiyatından kapanışa getiri; kontrol grubu: sürprizsiz PPK günleri. Wilcoxon / t-testi; n küçük (3–4), etki büyüklüğüne bak.",
+    "guc": "yüksek",
+    "not": "Nokta-zamanlılık: beklenti serisi karar gününden önce yayımlanmış anketten alınmalı."
+  },
+  {
+    "id": "H2",
+    "hipotez": "PPK şahin sürprizi (beklenenden az indirim veya sürpriz artış) günlerinde XU100 ilk gün negatif, ancak 10 iş günü sonra pozitif getiri verir (kredibilite primi).",
+    "ornek_olaylar": [
+      "2024-03-21",
+      "2025-04-17",
+      "2025-10-23"
+    ],
+    "gerekli_seriler": [
+      "politika_faizi",
+      "XU100 günlük",
+      "USD/TRY",
+      "CDS"
+    ],
+    "olcum": "t0 getirisi ve t0→t+10 kümülatif anormal getiri (piyasa modeli yerine MSCI EM ile düzeltme).",
+    "guc": "orta"
+  },
+  {
+    "id": "H3",
+    "hipotez": "Aylık TÜFE beklentinin ≥0,3 pp altında geldiğinde XBANK sonraki 5 iş gününde XU100'ü geçer; ≥0,3 pp üstünde geldiğinde tersi.",
+    "ornek_olaylar": [
+      "2024-07-03 (−0,56)",
+      "2025-12-03 (−0,43)",
+      "2026-10-05 (−0,34)",
+      "2025-10-03 (+0,83)",
+      "2026-11-03 (+0,38)"
+    ],
+    "gerekli_seriler": [
+      "tufe (aylik, beklenti_aylik)",
+      "XBANK/XU100 10:00 sonrası fiyatlar"
+    ],
+    "olcum": "Açıklama günü 10:00 sonrası ilk işlemden t+5 kapanışa göreli getiri; sapma büyüklüğüyle regresyon.",
+    "guc": "yüksek"
+  },
+  {
+    "id": "H4",
+    "hipotez": "Reel politika faizi (politika faizi − yıllık TÜFE) negatiften pozitife geçtikten sonraki 6 ayda XU100'ün dolar bazlı getirisi, para piyasası fonu getirisinin altında kalır (2024 H2 ayı dönemi).",
+    "gerekli_seriler": [
+      "politika_faizi",
+      "tufe yillik",
+      "XU100 USD",
+      "O/N repo getirisi"
+    ],
+    "olcum": "Reel faiz rejimine göre aylık getiri karşılaştırması; 2024-07→2024-12 ve 2025-05→2025-12 pencereleri.",
+    "guc": "orta"
+  },
+  {
+    "id": "H5",
+    "hipotez": "CDS 20 iş gününde ≥50 bp gerilediğinde, izleyen 20 iş gününde XU100 USD bazında pozitif getiri verir ve yabancı payı artar.",
+    "ornek_olaylar": [
+      "2024-04/05",
+      "2026-03-16→2026-04-15 (327→230)",
+      "2026-06"
+    ],
+    "gerekli_seriler": [
+      "cds günlük (eksik: yalnızca kilometre taşları var — günlük seri tamamlanmalı)",
+      "XU100 USD",
+      "MKK yabancı payı haftalık"
+    ],
+    "olcum": "Sinyal günü sonrası 20 günlük ileri getiri; bootstrap ile anlamlılık.",
+    "guc": "yüksek",
+    "not": "Günlük CDS serisi bu çıktıda yok; Bloomberg/Refinitiv veya investing.com geçmişinden tamamlanmalı."
+  },
+  {
+    "id": "H6",
+    "hipotez": "Siyasi şok günlerinde (gözaltı, kayyum, mutlak butlan) XU100 ≤ −%5 kapanır ve XBANK'ın düşüşü XU100'ün en az 1,3 katıdır; 2 iş günü içinde kaybın en az üçte biri geri alınır.",
+    "ornek_olaylar": [
+      "2025-03-19 (−8,7)",
+      "2025-09-02 (~−5)",
+      "2026-05-21 (−6,05; XBANK −8+; ertesi gün +4)"
+    ],
+    "gerekli_seriler": [
+      "olaylar (tur=siyasi)",
+      "XU100/XBANK günlük",
+      "devre kesici kayıtları"
+    ],
+    "olcum": "Olay günü ve t+2 getirileri; devre kesici tetiklenme saatleri ile gün içi dip.",
+    "guc": "yüksek"
+  },
+  {
+    "id": "H7",
+    "hipotez": "Siyasi riskin ortadan kalktığı günler (dava erteleme/ret) asimetrik olarak büyüktür: XU100 ≥ +%3,5 ve bankacılık öncüdür.",
+    "ornek_olaylar": [
+      "2025-09-15 (+~4)",
+      "2025-10-24 (+4–5)",
+      "2026-05-05 (+2, rekor)"
+    ],
+    "gerekli_seriler": [
+      "olaylar",
+      "XU100/XBANK"
+    ],
+    "olcum": "Olay günü getirisi; H6 ile birlikte 'olumsuz şok/olumlu çözülme' asimetri testi.",
+    "guc": "orta"
+  },
+  {
+    "id": "H8",
+    "hipotez": "Açığa satış yasağı dönemlerinde (2025-03-23→?, 2026-03-02→2026-06-26) XU100 gerçekleşen oynaklığı yasak öncesi 60 güne göre düşer, ancak düşüş günlerinin ortalama büyüklüğü değişmez.",
+    "gerekli_seriler": [
+      "olaylar (tur=regulasyon)",
+      "XU100 günlük/5 dk"
+    ],
+    "olcum": "Yasak içi/dışı 20 günlük gerçekleşen volatilite ve negatif getiri dağılımı karşılaştırması.",
+    "guc": "orta"
+  },
+  {
+    "id": "H9",
+    "hipotez": "Brent'in 20 günde ≥%15 yükseldiği dönemlerde (2026-03, 2026-04) XU100 içinde petrol/rafineri ve enerji endeksleri havacılık ve otomotivi ≥5 pp geçer; XU100'ün kendisi USD bazında negatiftir.",
+    "gerekli_seriler": [
+      "Brent günlük",
+      "sektör endeksleri (XUSIN alt, XULAS, XELKT)",
+      "XU100 USD"
+    ],
+    "olcum": "Sinyal pencerelerinde sektör göreli getirisi.",
+    "guc": "orta"
+  },
+  {
+    "id": "H10",
+    "hipotez": "Fed şahin sürprizi/artış günleri (2026-09-16) ve MSCI olumsuz kararları (2026-10-15) sonrası 5 günde yabancı payı düşer ve XU100 USD bazında MSCI EM'in en az 2 pp altında kalır.",
+    "gerekli_seriler": [
+      "olaylar (kuresel_faiz, endeks)",
+      "MKK yabancı payı",
+      "XU100 USD",
+      "MSCI EM"
+    ],
+    "olcum": "Olay sonrası 5 günlük göreli getiri ve yabancı payı değişimi.",
+    "guc": "orta"
+  },
+  {
+    "id": "H11",
+    "hipotez": "TCMB'nin politika faizi dışı likidite adımları (repo ihalesi durdurma 2026-03-01 = örtük +300 bp; yeniden başlatma 2026-08-23 = örtük −300 bp) piyasa tarafından PPK kararı gibi fiyatlanır: ilk işlem günü XBANK |getiri| ≥ %2.",
+    "gerekli_seriler": [
+      "olaylar (TCMB likidite)",
+      "XBANK günlük",
+      "gecelik repo faizi (BIST Repo-Ters Repo)"
+    ],
+    "olcum": "İlk işlem günü getirisi; fiili fonlama maliyeti serisiyle (ağırlıklı ortalama fonlama) birlikte.",
+    "guc": "orta"
+  },
+  {
+    "id": "H12",
+    "hipotez": "Karar günü bayrağı (PPK veya TÜFE günü) olan günlerde XU100 gün içi aralığı (yüksek−düşük)/açılış, bayraksız günlerin medyanından ≥%30 daha geniştir.",
+    "gerekli_seriler": [
+      "karar günü bayrakları (politika_faizi.tarih, tufe.tarih)",
+      "XU100 gün içi OHLC"
+    ],
+    "olcum": "Medyan aralık karşılaştırması; Mann–Whitney U.",
+    "guc": "yüksek"
+  },
+  {
+    "id": "H13",
+    "hipotez": "Not artışı/görünüm iyileşmesi (Cuma akşamı) sonraki Pazartesi XU100 getirisi pozitif, ancak etki küçüktür (<%1) çünkü büyük ölçüde CDS'te önceden fiyatlanır.",
+    "ornek_olaylar": [
+      "2024-03-08",
+      "2024-07-19",
+      "2024-09-06",
+      "2024-11-01",
+      "2025-07-25",
+      "2026-01-23"
+    ],
+    "gerekli_seriler": [
+      "kredi_notu",
+      "XU100",
+      "CDS"
+    ],
+    "olcum": "İlk işlem günü getirisi ve karar öncesi 20 günlük CDS değişimi ile ilişkisi.",
+    "guc": "düşük-orta"
+  },
+  {
+    "id": "H14",
+    "hipotez": "Fon krizi tipi güven şoklarında (2026-09-15→) küçük/orta ölçekli hisseler (XKOBI/XTUMY) XU100'den ≥10 pp daha fazla düşer ve 30 gün içinde toparlanmaz; bankalar ise 30 günde kaybı kapatır.",
+    "gerekli_seriler": [
+      "olaylar (fon krizi)",
+      "XU100, XBANK, XTUMY/XKOBI, fon büyüklükleri (TEFAS)"
+    ],
+    "olcum": "t0→t+30 göreli getiri; fon çıkış verisiyle (TEFAS günlük) regresyon.",
+    "guc": "orta"
+  }
+]

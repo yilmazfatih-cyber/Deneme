@@ -870,9 +870,9 @@ def komut_dosya_kur(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
     grup = [h.strip().upper() for h in a.grup.split(",")] if a.grup else None
     for hisse in [h.strip().upper() for h in a.hisseler.split(",") if h.strip()]:
         olay_json = [j for j in (a.olay_json or []) if _P(j).exists()]
-        varsayilan = _P("dosya_kaynak") / f"olaylar_{hisse}.json"
-        if varsayilan.exists() and str(varsayilan) not in olay_json:
-            olay_json.append(str(varsayilan))
+        for varsayilan in (_P("dosya_kaynak") / f"olaylar_{hisse}.json", _P("dosya_kaynak") / "olaylar_makro.json", _P("dosya_kaynak") / "olaylar_sektor.json"):
+            if varsayilan.exists() and str(varsayilan) not in olay_json:
+                olay_json.append(str(varsayilan))
         olaylar = olaylari_hazirla(a.bilgi_db, olay_json, hisse, grup)
         g = girdileri_yukle(hisse, a.saatlik, a.ham, olaylar)
         try:
