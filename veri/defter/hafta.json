@@ -15,9 +15,10 @@
    "limit": 208.0,
    "tip": "LIMIT",
    "pencere": "17:00-17:50",
-   "durum": "bekliyor",
+   "durum": "iptal",
    "neden": "Tez AL 0,56/30g; pay %10 (ATR %3,0); limit Cuma kapanış 205,90 +%1",
-   "dolum": null
+   "dolum": null,
+   "iptal_nedeni": "9 Kas bilanço günü (KAP takvimi) — olay riski, HAFTA.md 3.4; Salı 17:00-17:50'ye ertelendi"
   },
   {
    "id": 2,
@@ -29,9 +30,10 @@
    "limit": 374.5,
    "tip": "LIMIT",
    "pencere": "17:00-17:50",
-   "durum": "bekliyor",
+   "durum": "iptal",
    "neden": "Tez AL 0,56/30g; pay %10 (ATR %3,0); limit 370,75 +%1",
-   "dolum": null
+   "dolum": null,
+   "iptal_nedeni": "9 Kas bilanço günü (KAP takvimi) — olay riski, HAFTA.md 3.4; Salı 17:00-17:50'ye ertelendi"
   },
   {
    "id": 3,
@@ -65,7 +67,8 @@
  "islemler": [],
  "degerleme": [],
  "notlar": [
-  "Hafta 1 (9-13 Kasım 2026): yönetim kuralları yatirim-ajani/HAFTA.md. Sanal hesap; emirler kullanıcıya saat+fiyat+adetle sunulur, dolum gerçek 5dk çubuklarla."
+  "Hafta 1 (9-13 Kasım 2026): yönetim kuralları yatirim-ajani/HAFTA.md. Sanal hesap; emirler kullanıcıya saat+fiyat+adetle sunulur, dolum gerçek 5dk çubuklarla.",
+  "2026-11-09 09:40 sabah: KCHOL ve BIMAS 3Ç bilançoları bugün açıklanıyor; alımlar Salı'ya ertelendi. TUPRS (6 Kas, beklenti üstü) ve AHGAZ (9 aylık açıklandı) alımları duruyor."
  ],
  "sayac": 4
 }
