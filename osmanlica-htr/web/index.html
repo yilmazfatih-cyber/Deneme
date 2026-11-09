@@ -26,6 +26,7 @@ h1{font-size:19px;margin:0;letter-spacing:.01em}
 button{font:inherit;min-height:60px;border-radius:12px;border:1px solid var(--cizgi);background:var(--kart);color:var(--murekkep);padding:8px 14px;text-align:left;cursor:pointer;display:flex;align-items:center;gap:12px;min-width:0}
 button:hover{border-color:var(--vurgu)} button:focus-visible{outline:3px solid var(--vurgu);outline-offset:2px}
 button:disabled{opacity:.5;cursor:default}
+a{color:var(--vurgu)}
 .harf{flex:0 0 34px;height:34px;border-radius:50%;background:var(--vurgu);color:var(--vurgu-metin);font-weight:700;display:grid;place-items:center;font-size:15px}
 .osm{font-family:var(--arap);font-size:28px;line-height:1.3;direction:rtl;unicode-bidi:isolate;flex:1;min-width:0;overflow-wrap:anywhere;text-align:right}
 .guven{color:var(--soluk);font-size:13px;font-variant-numeric:tabular-nums}
@@ -271,14 +272,23 @@ async function sayfayiBol(file){
   return {satirlar,aci,W,H};
 }
 
-// ---------------------------------------------------------------- veritabanı (sayfa belgeleri: sprite + satır listesi)
-// sayfalar/<id> = {ad, kaynak, lisans, sayfa_url, sprite(asset id), sprite_w, sprite_h, zaman, satir_sayisi, bekleyen, etiketli,
-//   satirlar:[{sira, y, h, w, durum:'bekliyor'|'etiketli'|'atla'|'bozuk', metin, secim, oneriler, oneri_surum, etiket_zaman}]}
-let sayfalar=new Map(); const spriteOnbellek=new Map(); let yaziKuyrugu=Promise.resolve();
+// ---------------------------------------------------------------- veritabanı (sayfa belgeleri: satır görüntüsü + satır listesi)
+// sayfalar/<id> = {ad, kaynak, lisans, sayfa_url, sprite_yol (yayımlanan dosya) | sprite (asset id), sprite_w, sprite_h, zaman,
+//   satir_sayisi, bekleyen, etiketli, satirlar:[{sira, y, h, w, durum:'bekliyor'|'etiketli'|'atla'|'bozuk', metin, secim, oneriler, oneri_surum, etiket_zaman}]}
+// Yerel değişiklikler (bekleyenDeg) sunucu görüntüsünün üstüne bindirilir; her yazma "sunucu hali + o sayfanın bekleyen
+// değişiklikleri" ile yapılır, böylece art arda etiketlerde hiçbir değişiklik eski bir görüntüyle ezilmez.
+let sunucu=new Map(), sayfalar=new Map(); const spriteOnbellek=new Map(); const bekleyenDeg=new Map(); const yaziKuyruklari=new Map();
+function bindir(s){
+  let deg=false; const satirlar=(s.satirlar||[]).map(l=>{ const d=bekleyenDeg.get(s.id+'#'+l.sira); if(d){ deg=true; return {...l,...d}; } return l; });
+  if(!deg) return s;
+  return {...s, satirlar, bekleyen:satirlar.filter(l=>l.durum==='bekliyor').length, etiketli:satirlar.filter(l=>l.durum==='etiketli').length};
+}
+function gorunumuYenile(){ sayfalar=new Map([...sunucu.values()].map(s=>[s.id,bindir(s)])); sayac(); sayfalariGoster(); }
 function sayac(){ let e=0,bk=0,at=0; for(const s of sayfalar.values()) for(const l of (s.satirlar||[])){ if(l.durum==='etiketli') e++; else if(l.durum==='bekliyor') bk++; else at++; }
   $('nEtiketli').textContent=e; $('nBekleyen').textContent=bk; $('nAtlanan').textContent=at; }
 function bekleyenListesi(){ const out=[]; const sirali=[...sayfalar.values()].sort((a,b)=>(a.zaman||0)-(b.zaman||0));
   for(const s of sirali) for(const l of (s.satirlar||[])) if(l.durum==='bekliyor') out.push({sayfa:s, satir:l}); return out; }
+function aktifHalaBekliyor(){ return !!aktif && (sayfalar.get(aktif.sayfa.id)?.satirlar||[]).some(l=>l.sira===aktif.satir.sira && l.durum==='bekliyor'); }
 async function depoBaslat(){
   db=await claude.use('db'); assets=await claude.use('assets');
   if(!db){ $('depoDurum').innerHTML='<span class="durum-rozet dikkat">kayıt kapalı: giriş yapın</span>'; $('btnYukle').disabled=true; return; }
@@ -286,27 +296,30 @@ async function depoBaslat(){
   let zamanlayici=setTimeout(()=>{ $('depoDurum').textContent='veritabanına henüz ulaşılamadı…'; },10000);
   abone=db.collection('sayfalar').limit(1000).onSnapshot(snap=>{
     if(!snap.metadata.fromCache){ clearTimeout(zamanlayici); $('depoDurum').textContent=''; }
-    sayfalar=new Map(snap.docs.map(d=>[d.id,{id:d.id,...d.data()}]));
-    sayac(); sayfalariGoster();
-    if(!aktif || !(sayfalar.get(aktif.sayfa.id)?.satirlar||[]).some(l=>l.sira===aktif.satir.sira && l.durum==='bekliyor')) sonrakiGoster();
+    sunucu=new Map(snap.docs.map(d=>[d.id,{id:d.id,...d.data()}]));
+    gorunumuYenile();
+    if(!aktifHalaBekliyor()) sonrakiGoster();
   }, e=>{ clearTimeout(zamanlayici); $('depoDurum').textContent='veritabanı hatası: '+e.code; });
 }
 function sayfalariGoster(){
   const ul=$('sayfaListesi'); ul.innerHTML='';
-  const sirali=[...sayfalar.values()].sort((a,b)=>(b.zaman||0)-(a.zaman||0));
+  const sirali=[...sayfalar.values()].sort((a,b)=>(a.zaman||0)-(b.zaman||0));
   if(!sirali.length){ ul.innerHTML='<li class="kucuk">Henüz sayfa yok.</li>'; return; }
-  for(const v of sirali.slice(0,80)){ const li=document.createElement('li'); const e=(v.satirlar||[]).filter(l=>l.durum==='etiketli').length;
-    const ad=document.createElement('span'); ad.textContent=v.ad||v.id; const sag=document.createElement('span'); sag.className='kucuk'; sag.textContent=`${e}/${v.satir_sayisi||(v.satirlar||[]).length} satır`;
+  for(const v of sirali.slice(0,300)){ const li=document.createElement('li'); const e=(v.satirlar||[]).filter(l=>l.durum==='etiketli').length;
+    const ad=document.createElement('span'); ad.textContent=v.ad||v.id; ad.style.minWidth='0'; ad.style.overflowWrap='anywhere';
+    const sag=document.createElement('span'); sag.className='kucuk'; sag.style.whiteSpace='nowrap'; sag.textContent=`${e}/${v.satir_sayisi||(v.satirlar||[]).length} satır`;
     li.append(ad,sag); ul.appendChild(li); }
 }
-function spriteYukle(id){
-  if(spriteOnbellek.has(id)) return spriteOnbellek.get(id);
-  const p=new Promise((res,rej)=>{ const im=new Image(); im.onload=()=>res(im); im.onerror=()=>rej(new Error('görüntü yok')); im.src='/_blob/'+id; });
-  spriteOnbellek.set(id,p); return p;
+function spriteKaynak(sayfa){ return sayfa.sprite_yol || (sayfa.sprite ? '/_blob/'+sayfa.sprite : ''); }
+function spriteYukle(src){
+  if(!src) return Promise.reject(new Error('görüntü yok'));
+  if(spriteOnbellek.has(src)) return spriteOnbellek.get(src);
+  const p=new Promise((res,rej)=>{ const im=new Image(); im.onload=()=>res(im); im.onerror=()=>{ spriteOnbellek.delete(src); rej(new Error('görüntü yok')); }; im.src=src; });
+  spriteOnbellek.set(src,p); return p;
 }
 async function satirCiz(sayfa,satir){
   const c=$('satirGor'); c.width=Math.max(1,satir.w); c.height=Math.max(1,satir.h); const ctx=c.getContext('2d'); ctx.fillStyle='#fff'; ctx.fillRect(0,0,c.width,c.height);
-  try{ const im=await spriteYukle(sayfa.sprite); ctx.drawImage(im,0,satir.y,satir.w,satir.h,0,0,satir.w,satir.h); return true; }catch(e){ ctx.fillStyle='#999'; ctx.fillText('görüntü yüklenemedi',10,20); return false; }
+  try{ const im=await spriteYukle(spriteKaynak(sayfa)); ctx.drawImage(im,0,satir.y,satir.w,satir.h,0,0,satir.w,satir.h); return true; }catch(e){ ctx.fillStyle='#999'; ctx.fillText('görüntü yüklenemedi',10,20); return false; }
 }
 
 // ---------------------------------------------------------------- etiketleme akışı
@@ -315,9 +328,11 @@ function sonrakiGoster(){
   $('bos').hidden=!!aktif; $('dolu').hidden=!aktif;
   if(!aktif) return;
   const {sayfa,satir}=aktif;
-  $('satirBilgi').textContent=`${sayfa.ad||sayfa.id} · satır ${satir.sira}/${sayfa.satir_sayisi||(sayfa.satirlar||[]).length}` + (sayfa.kaynak==='commons'?' · Wikimedia Commons':'');
+  const bilgi=$('satirBilgi'); bilgi.textContent=`${sayfa.ad||sayfa.id} · satır ${satir.sira}/${sayfa.satir_sayisi||(sayfa.satirlar||[]).length}`;
+  if(sayfa.sayfa_url){ const a=document.createElement('a'); a.href=sayfa.sayfa_url; a.target='_blank'; a.rel='noopener'; a.textContent='kaynak'+(sayfa.lisans?' · '+sayfa.lisans:''); bilgi.append(' · ',a); }
   $('secenekler').innerHTML='<div class="kucuk">tahmin hesaplanıyor…</div>'; $('d').value='';
   tahminGoster(aktif);
+  const sonraki=liste.find(o=>o.sayfa.id!==sayfa.id); if(sonraki) spriteYukle(spriteKaynak(sonraki.sayfa)).catch(()=>{});
 }
 async function tahminGoster(oge){
   const {sayfa,satir}=oge; const cizildi=await satirCiz(sayfa,satir);
@@ -331,16 +346,31 @@ async function tahminGoster(oge){
   sec.forEach(([m,p],i)=>{ const b=document.createElement('button'); b.innerHTML=`<span class="harf">${'ABC'[i]}</span><span class="osm"></span><span class="guven">%${Math.round(p*100)}</span>`; b.querySelector('.osm').textContent=m; b.onclick=()=>kaydet('ABC'[i],m); kutu.appendChild(b); });
   $('d').value=sec.length?sec[0][0]:'';
 }
-function satirGuncelle(sayfaId, sira, degisiklik){
-  // Sayfa belgesinin satır listesini kopyalayıp güncelle; yazmaları sıraya koy (aynı belgeye tek yazma).
-  yaziKuyrugu=yaziKuyrugu.then(async()=>{
-    const s=sayfalar.get(sayfaId); if(!s||!db) return;
-    const satirlar=(s.satirlar||[]).map(l=>l.sira===sira?{...l,...degisiklik}:l);
-    const bekleyen=satirlar.filter(l=>l.durum==='bekliyor').length, etiketli=satirlar.filter(l=>l.durum==='etiketli').length;
-    sayfalar.set(sayfaId,{...s,satirlar,bekleyen,etiketli}); sayac();
-    try{ await db.doc('sayfalar/'+sayfaId).update({satirlar,bekleyen,etiketli}); }catch(e){ console.error(e); $('depoDurum').textContent='kayıt başarısız: '+e.code; }
+function sayfayiYaz(sayfaId, deneme=0){
+  const onceki=yaziKuyruklari.get(sayfaId)||Promise.resolve();
+  const p=onceki.then(async()=>{
+    const s=sunucu.get(sayfaId); if(!s||!db) return;
+    const gonderilen=[...bekleyenDeg].filter(([k])=>k.startsWith(sayfaId+'#'));
+    if(!gonderilen.length) return;
+    const yeni=bindir(s);
+    try{
+      await db.doc('sayfalar/'+sayfaId).update({satirlar:yeni.satirlar, bekleyen:yeni.bekleyen, etiketli:yeni.etiketli});
+      sunucu.set(sayfaId,{...s, satirlar:yeni.satirlar, bekleyen:yeni.bekleyen, etiketli:yeni.etiketli});
+      for(const [k,v] of gonderilen) if(bekleyenDeg.get(k)===v) bekleyenDeg.delete(k);
+      gorunumuYenile(); if($('depoDurum').dataset.hata){ $('depoDurum').textContent=''; delete $('depoDurum').dataset.hata; }
+    }catch(e){
+      console.error(e); $('depoDurum').textContent='Kayıt şu an yapılamadı; yeniden deneniyor.'; $('depoDurum').dataset.hata='1';
+      if(deneme<4) setTimeout(()=>sayfayiYaz(sayfaId, deneme+1), 3000*(deneme+1));
+      else $('depoDurum').textContent='Kayıt yapılamadı ('+(e.code||'hata')+'). Bağlantıyı kontrol edip sayfayı yenileyin.';
+    }
   });
-  return yaziKuyrugu;
+  yaziKuyruklari.set(sayfaId,p); return p;
+}
+function satirGuncelle(sayfaId, sira, degisiklik){
+  const anahtar=sayfaId+'#'+sira;
+  bekleyenDeg.set(anahtar, {...(bekleyenDeg.get(anahtar)||{}), ...degisiklik});
+  gorunumuYenile();
+  return sayfayiYaz(sayfaId);
 }
 function kaydet(secim,metin){
   if(!aktif||!db) return; const {sayfa,satir}=aktif; const m=(secim==='atla'||secim==='bozuk')?'':normallestir(metin);
@@ -349,7 +379,7 @@ function kaydet(secim,metin){
   satirGuncelle(sayfa.id, satir.sira, {durum, metin:m, secim: m?secim:durum, etiket_zaman:Date.now()});
   sonrakiGoster();
 }
-function geriAl(){ const g=geriYigin.pop(); if(!g) return; satirGuncelle(g.sayfaId, g.sira, {durum:'bekliyor', metin:'', secim:''}); }
+function geriAl(){ const g=geriYigin.pop(); if(!g) return; satirGuncelle(g.sayfaId, g.sira, {durum:'bekliyor', metin:'', secim:''}); sonrakiGoster(); }
 $('btnKaydet').onclick=()=>kaydet('D',$('d').value);
 $('btnAtla').onclick=()=>kaydet('atla','');
 $('btnBozuk').onclick=()=>kaydet('bozuk','');

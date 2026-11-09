@@ -142,6 +142,16 @@ Kendi verinizi elle hazırlayacaksanız yalnızca manifest biçimine uymanız ye
 satırlara bölme ve A/B/C tahmini telefonda (onnxruntime-web) yapılır, satır kırpımları ve etiketler artifact'ın
 veritabanında birikir. Yayımlı adres: <https://claude.ai/artifact/WfoJPfRokkckLaXtJYeha5> (özel; sahibinin paylaşması gerekir).
 
+### Hazır kuyruk: 123 sayfa, 1.607 satır
+
+Telefon sayfasında etiketlenmeyi bekleyen 123 gerçek sayfa var: 1841–1933 arası Osmanlı resmî yazışmaları (rik'a; çoğu Devlet
+Arşivleri kaynaklı Bulgaristan koleksiyonu), hatt-ı hümayunlar, bir ferman, Atatürk mektupları ve BnF'deki Türkçe-Farsça
+şiir mecmuasından nesih/talik sayfaları. Tümü Wikimedia Commons'tan; 122'si kamu malı, 1'i CC0. Kaynak listesi:
+[`docs/kuyruk_kaynaklar.md`](docs/kuyruk_kaynaklar.md). Sıra: önce rik'a belgeler, sonra mecmua.
+
+Etiketler artifact veritabanında (`sayfalar` koleksiyonu, satır başına `durum`/`metin`/`secim`) birikir; eğitime almak için
+ArtifactData ile okunup `etiket_manifest.jsonl` biçimine çevrilir.
+
 Yeniden yayımlamak için gereken dosyalar (`web/` içinde, git dışı): `ort.min.js`, `ort-wasm-simd-threaded.mjs`,
 `ort-wasm-simd-threaded.wasm` (npm `onnxruntime-web@1.20.1` dist), `model-agirlik.wasm` (= `osm disa` çıktısı
 `model.onnx`, servis edilebilir uzantıyla), `model.alfabe.json`, `model.json`. Etiketleri geri almak: `satirlar`

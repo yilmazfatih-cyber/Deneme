@@ -11,3 +11,4 @@ __pycache__/
 web/ort*
 web/*.wasm
 web/*.onnx
+web/kuyruk/
