@@ -22,24 +22,30 @@ UA = "OsmanlicaHTR/0.1 (acik kaynak arastirma; github.com/yilmazfatih-cyber/Dene
 ATLA = re.compile(r" by (century|decade|year|country|city|type|collection|language)$")
 
 
-def api(params: dict, bekle: float = 1.2, deneme: int = 8) -> dict:
-    url = "https://commons.wikimedia.org/w/api.php?" + urllib.parse.urlencode({**params, "format": "json", "maxlag": 5})
+def api(params: dict, bekle: float = 1.2, deneme: int = 6) -> dict:
+    """POST ile sorgu (uzun başlık listeleri için), 429/maxlag/Retry-After'a uyar."""
+    govde = urllib.parse.urlencode({**params, "format": "json", "maxlag": 5}).encode()
     for i in range(deneme):
         time.sleep(bekle)
         try:
-            req = urllib.request.Request(url, headers={"User-Agent": UA})
+            req = urllib.request.Request("https://commons.wikimedia.org/w/api.php", data=govde, headers={"User-Agent": UA, "Content-Type": "application/x-www-form-urlencoded"})
             with urllib.request.urlopen(req, timeout=60) as r:
                 j = json.loads(r.read())
                 ra = r.headers.get("Retry-After")
             if "error" in j:
+                print("  api hata:", j["error"].get("code"), file=sys.stderr)
                 time.sleep(float(ra or 5))
                 continue
             return j
         except urllib.error.HTTPError as e:
+            print("  http", e.code, file=sys.stderr)
+            if e.code in (400, 414):
+                raise
             time.sleep(float(e.headers.get("Retry-After") or 0) or 5 * (i + 1))
-        except Exception:  # noqa: BLE001
+        except Exception as e:  # noqa: BLE001
+            print("  ağ:", e, file=sys.stderr)
             time.sleep(5 * (i + 1))
-    raise RuntimeError(f"API başarısız: {params}")
+    raise RuntimeError(f"API başarısız: {str(params)[:200]}")
 
 
 def kategori_tara(kok: str, derinlik: int, dosyalar: dict, gorulen: set, gunluk=print):
@@ -62,10 +68,10 @@ def kategori_tara(kok: str, derinlik: int, dosyalar: dict, gorulen: set, gunluk=
             break
 
 
-def ustveri(basliklar: list[str], gunluk=print) -> dict:
+def ustveri(basliklar: list[str], gunluk=print, kaydet=None, grup: int = 20) -> dict:
     meta = {}
-    for i in range(0, len(basliklar), 50):
-        j = api({"action": "query", "prop": "imageinfo|categories", "titles": "|".join(basliklar[i : i + 50]), "iiprop": "url|mime|size|extmetadata", "iiurlwidth": 2000, "cllimit": 500})
+    for i in range(0, len(basliklar), grup):
+        j = api({"action": "query", "prop": "imageinfo|categories", "titles": "|".join(basliklar[i : i + grup]), "iiprop": "url|mime|size|extmetadata", "iiurlwidth": 1920, "cllimit": 500})
         for p in j.get("query", {}).get("pages", {}).values():
             ii = (p.get("imageinfo") or [{}])[0]
             em = ii.get("extmetadata", {})
@@ -76,7 +82,9 @@ def ustveri(basliklar: list[str], gunluk=print) -> dict:
                 "tarih": (em.get("DateTimeOriginal") or {}).get("value", "")[:60],
                 "kategoriler": [c["title"][9:] for c in p.get("categories", [])],
             }
-        gunluk(f"  üst veri {min(i + 50, len(basliklar))}/{len(basliklar)}")
+        gunluk(f"  üst veri {min(i + grup, len(basliklar))}/{len(basliklar)}")
+        if kaydet and (i // grup) % 5 == 4:
+            kaydet(meta)
     return meta
 
 
@@ -100,15 +108,22 @@ def main():
         print(f"  arama '{q}': {len(j.get('query', {}).get('search', []))}")
     yeni = [t for t in sorted(dosyalar) if t not in mevcut]
     print(f"aday {len(dosyalar)}, yeni {len(yeni)}")
-    meta = ustveri(yeni)
-    for t, m in meta.items():
-        m["kaynak_kat"] = sorted(dosyalar.get(t, []))
-        mevcut[t] = m
-    for t in dosyalar:
-        if t in mevcut:
-            mevcut[t]["kaynak_kat"] = sorted(set(mevcut[t].get("kaynak_kat", [])) | dosyalar[t])
     cikti.parent.mkdir(parents=True, exist_ok=True)
-    cikti.write_text(json.dumps(mevcut, ensure_ascii=False, indent=0), encoding="utf-8")
+
+    def birlestir_kaydet(meta):
+        for t, m in meta.items():
+            m["kaynak_kat"] = sorted(set(m.get("kaynak_kat", [])) | dosyalar.get(t, set()))
+            mevcut[t] = m
+        for t in dosyalar:
+            if t in mevcut:
+                mevcut[t]["kaynak_kat"] = sorted(set(mevcut[t].get("kaynak_kat", [])) | dosyalar[t])
+        cikti.write_text(json.dumps(mevcut, ensure_ascii=False, indent=0), encoding="utf-8")
+
+    try:
+        meta = ustveri(yeni, kaydet=birlestir_kaydet)
+    finally:
+        pass
+    birlestir_kaydet(meta)
     print(f"toplam {len(mevcut)} kayıt → {cikti}")
 
 

@@ -12,6 +12,7 @@ import argparse
 import json
 import re
 import time
+import urllib.error
 import urllib.request
 from pathlib import Path
 
@@ -22,11 +23,26 @@ ELYAZMASI_KITAP = re.compile(r"Mecmua|Bestiary|Zubdat|Zübdet|Iskender|Sindb|Şa
 OLUMSUZ = re.compile(r"\b(map|harita|sword|yatagan|shield|kalkan|carreau|céramique|ceramic|tile|coin|sikke|medal|photo|portrait|family|suffrage|naturalization|congress|Ruhland|Maine|Arizona|Kearney|screenshot|stamp|pul|banknote|bond|share|stock|flag|bayrak|seal|mühür|tughra|tuğra|mosque|cami|church|kilise|painting|miniature|minyatür|Louvre|museum|Encrier|inkwell)\b", re.I)
 OLUMLU = [
     (6, re.compile(r"Documents of the Ottoman Empire|Official documents|Vital records|Hatt-i humayun|Ottoman Turkish-language documents", re.I)),
-    (5, re.compile(r"mektup|letter|arzuhal|petition|tezkere|tezkire|telgraf|telegram|vesika|belge|document|yazışma|correspondence|ilmühaber|senet|senedi|tapu|nüfus|pasaport|passport|rapor|report|dilekçe|mazbata|irade|buyruldu|hüccet|vakfiye|defter", re.I)),
+    (5, re.compile(r"mektup|letter|arzuhal|petition|tezkere|tezkire|telgraf|telegram|vesika|belge|document|yazışma|correspondence|ilmühaber|senet|senedi|tapu|nüfus|pasaport|passport|rapor|report|dilekçe|mazbata|irade|buyruldu|hüccet|vakfiye|defter|Документ|Дефтер|писмо|заповед|разрешение|изграждане|строеж|тапия|удостоверение|молба", re.I)),
     (3, re.compile(r"ferman|firman|berat|ahidname|hatt", re.I)),
     (2, re.compile(r"Ottoman|Osmanl", re.I)),
     (1, re.compile(r"handwrit|el yazısı|manuscript|yazma", re.I)),
 ]
+
+
+def indir(url: str, deneme: int = 5) -> bytes:
+    for i in range(deneme):
+        time.sleep(1.5)
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": UA})
+            with urllib.request.urlopen(req, timeout=90) as r:
+                return r.read()
+        except urllib.error.HTTPError as e:
+            if e.code == 429:
+                time.sleep(float(e.headers.get("Retry-After") or 0) or 30 * (i + 1))
+                continue
+            raise
+    raise RuntimeError("indirilemedi: " + url)
 
 
 def puanla(baslik: str, m: dict) -> int:
@@ -83,13 +99,10 @@ def main():
         hedef = cikti / "kucuk" / f"{i:03d}.jpg"
         if not hedef.exists():
             url = (m.get("thumb") or m.get("url") or "")
-            url = re.sub(r"/(\d+)px-", "/400px-", url) if "px-" in url else url
+            # Wikimedia yalnızca önceden üretilmiş genişlikleri hızlı verir: 320, 640, 800, 1024, 1280, 1920, 2560
+            url = re.sub(r"/(\d+)px-", "/640px-", url) if "px-" in url else url
             try:
-                time.sleep(0.4)
-                req = urllib.request.Request(url, headers={"User-Agent": UA})
-                with urllib.request.urlopen(req, timeout=60) as r:
-                    b = r.read()
-                Image.open(__import__("io").BytesIO(b)).convert("RGB").thumbnail((400, 400)) or None
+                b = indir(url)
                 im = Image.open(__import__("io").BytesIO(b)).convert("RGB")
                 im.thumbnail((400, 400))
                 im.save(hedef, quality=80)
