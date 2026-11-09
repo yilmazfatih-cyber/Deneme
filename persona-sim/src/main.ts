@@ -73,11 +73,40 @@ interface Ogrenilen {
   yasBandi: Record<string, Partial<Record<'dikkat_esigi' | 'tau_reklam_tolerans', number>>>;
   yaratici: Record<string, { tiklamaCarpani?: number }>;
   guven?: string;
+  kuruVeri?: boolean;
 }
+/** Kamu verisi (ADR-010): kamu_cli `disa-aktar-sim` çıktısı. */
+interface Kamu {
+  surum: string;
+  kaynak: string;
+  kuruVeri?: boolean;
+  ilgi: { kategoriler: Record<string, { endeks?: number | null; egim_gunluk?: number; son7_ort?: number; not?: string }>; sesPayi: Record<string, number> };
+  duygu: { etiket: string; tur: string; n: number; olumlu: number; olumsuz: number; net: number; olumsuzGA: [number, number]; konular: Record<string, number>; olumsuzFarkMarkaya?: number; anlamli?: boolean }[];
+  yaratici: Record<string, { n: number; pay: number; uzunPayi: number; medyanGun: number; piyasaCarpani: number }>;
+  rakipYasErisim: Record<string, number>;
+  guven: string;
+  uyari?: string;
+}
+/** Sahte (kuru) öğrenim simülasyona yalnız ?kuru=1 ile uygulanır; müşteriye sahte öğrenim gerçek gibi gösterilmez. */
+const KURU_IZIN = new URLSearchParams(location.search).get('kuru') === '1';
 let ogrenilen: Ogrenilen | null = null;
+let kamu: Kamu | null = null;
+let kuruAtlandi: string[] = [];
 fetch(`${import.meta.env.BASE_URL}ogrenilen/reklam.json`)
   .then((r) => (r.ok ? r.json() : null))
-  .then((j: Ogrenilen | null) => { if (j && j.yasBandi) { ogrenilen = j; ciz(); } })
+  .then((j: Ogrenilen | null) => {
+    if (!j || !j.yasBandi) return;
+    if (j.kuruVeri && !KURU_IZIN) { kuruAtlandi.push('reklam.json'); ciz(); return; }
+    ogrenilen = j; ciz();
+  })
+  .catch(() => undefined);
+fetch(`${import.meta.env.BASE_URL}ogrenilen/kamu.json`)
+  .then((r) => (r.ok ? r.json() : null))
+  .then((j: Kamu | null) => {
+    if (!j || !j.yaratici) return;
+    if (j.kuruVeri && !KURU_IZIN) { kuruAtlandi.push('kamu.json'); ciz(); return; }
+    kamu = j; ciz();
+  })
   .catch(() => undefined);
 
 function segmentlerOgrenilenle() {
@@ -277,7 +306,8 @@ function baslat(ortamAdi: 'magaza' | 'eticaret'): void {
   let kampanyaOzeti: Kosu['kampanyaOzeti'] = null;
   if (durum.kampanyaAktif) {
     const oc = ogrenilen && ogrenilen.guven !== 'dusuk' ? ogrenilen.yaratici[durum.kampanya.yaratici]?.tiklamaCarpani : undefined;
-    if (oc !== undefined) durum.kampanya.ogrenilenCarpan = oc; else delete durum.kampanya.ogrenilenCarpan;
+    const pc = kamu && kamu.guven !== 'dusuk' ? kamu.yaratici[durum.kampanya.yaratici]?.piyasaCarpani : undefined; // ADR-010: yarım ağırlık
+    if (oc !== undefined || pc !== undefined) durum.kampanya.ogrenilenCarpan = (oc ?? 1) * Math.sqrt(pc ?? 1); else delete durum.kampanya.ogrenilenCarpan;
     const s = kampanyaUygula(musteriler, durum.kampanya, rng.fork(), gunluk);
     girdiler = s.girdiler;
     kampanyaOzeti = { maruzKalan: s.maruzKalan, gosterim: s.gosterim, tiklama: s.tiklama, rahatsiz: s.rahatsiz, harcananTL: s.harcananTL };
@@ -353,15 +383,39 @@ function cizSahne(): void {
 }
 
 // ───────────────────────────── sağ panel: KPI ve raporlar ─────────────────────────────
+function piyasaPaneli(): HTMLElement | null {
+  if (!kamu) {
+    if (kuruAtlandi.includes('kamu.json')) return el('p', { class: 'not', text: 'Piyasa sinyali sahte (kuru) veriyle üretilmiş; uygulanmadı. Demo için adrese ?kuru=1 ekleyin.' });
+    return null;
+  }
+  const f = el('fieldset', {}, el('legend', { text: `Piyasa sinyali · ${kamu.kaynak}${kamu.kuruVeri ? ' · SAHTE VERİ' : ''}` }));
+  const duygu = kamu.duygu.map((d) => [
+    d.etiket.replace('rakip:', ''),
+    yuzde(d.olumsuz, 0),
+    d.olumsuzFarkMarkaya === undefined ? '–' : `${d.olumsuzFarkMarkaya >= 0 ? '+' : ''}${bicimle(d.olumsuzFarkMarkaya * 100, 1)} p${d.anlamli ? '' : ' (belirsiz)'}`,
+    Object.entries(d.konular).slice(0, 2).map(([k, v]) => `${k} ${yuzde(v, 0)}`).join(', '),
+  ]);
+  if (duygu.length) f.append(el('div', { class: 'not', text: 'Kamu duygusu (X örneklemi, son 30 gün)' }), tablo(['', 'Olumsuz', 'Markaya göre', 'Öne çıkan'], duygu, [1, 2]));
+  const ses = Object.entries(kamu.ilgi.sesPayi).map(([k, v]) => [k.replace('rakip:', ''), yuzde(v, 0)]);
+  if (ses.length) f.append(el('div', { class: 'not', text: 'Ses payı (son 7 gün gönderi sayısı)' }), tablo(['', 'Pay'], ses, [1]));
+  const ilgi = Object.entries(kamu.ilgi.kategoriler).filter(([, v]) => v.endeks).map(([k, v]) => [k, `${bicimle(v.endeks ?? 0, 2)}×`, `${(v.egim_gunluk ?? 0) >= 0 ? '+' : ''}${bicimle((v.egim_gunluk ?? 0) * 100, 1)}%/gün`]);
+  if (ilgi.length) f.append(el('div', { class: 'not', text: 'Kategori ilgisi (son 7 gün / önceki 3 hafta)' }), tablo(['Kategori', 'Endeks', 'Eğim'], ilgi, [1, 2]));
+  const yar = Object.entries(kamu.yaratici).sort((a, b) => b[1].piyasaCarpani - a[1].piyasaCarpani).map(([k, v]) => [k, yuzde(v.pay, 0), `${v.medyanGun} gün`, `×${v.piyasaCarpani.toFixed(2)}`]);
+  if (yar.length) f.append(el('div', { class: 'not', text: `Rakip reklamların yaratıcı türü (Reklam Kütüphanesi; güven ${kamu.guven})` }), tablo(['Tür', 'Pay', 'Medyan yayın', 'Çarpan'], yar, [1, 2, 3]));
+  f.append(el('p', { class: 'not', text: `${kamu.uyari ?? ''} Çarpan kampanya yaratıcısına yarım ağırlıkla uygulanır.` }));
+  return f;
+}
+
 function sagPaneliCiz(): void {
   sagPanel.replaceChildren();
+  if (durum.sekme === 'reklam') { const p = piyasaPaneli(); if (p) sagPanel.append(p); }
   if (durum.sekme === 'kalibrasyon') {
     merkez.replaceChildren();
     kalibrasyonPaneli(merkez);
     sagPanel.append(el('p', { class: 'not', text: 'Kaynak B burada yalnız bütçe (sepet tutarı) parametresini kestirir. Diğer parametreler için fiş satırı, kampanya ve kanal verisi gerekir (07 §4.4).' }));
     return;
   }
-  if (!kosu) { sagPanel.append(el('p', { class: 'not', text: 'Henüz koşu yok.' })); return; }
+  if (!kosu) { if (durum.sekme !== 'reklam' || !kamu) sagPanel.append(el('p', { class: 'not', text: 'Henüz koşu yok.' })); return; }
   const k = kosu.ortam.kpi();
   const kart = el('div', { class: 'kpi' });
   const goster: [string, string][] = [
@@ -512,7 +566,7 @@ function ciz(): void {
   sagPaneliCiz();
   cizSahne();
   altBar.replaceChildren(
-    el('span', { text: `Öncül: ${durum.seviye === 'S1' ? 'S1 Türkiye' : 'S0 Dünya'} · kaynak ${durum.kaynak}${durum.kaynak === 'A+B' && durum.kaynakB ? ` (B: ${bicimle(durum.kaynakB.n, 0)} fiş)` : ''}${ogrenilen ? ` + sosyal (${ogrenilen.kaynak}, ${ogrenilen.surum}${ogrenilen.guven === 'dusuk' ? ', düşük güven: uygulanmadı' : ''})` : ''} · tohum ${durum.seed}` }),
+    el('span', { text: `Öncül: ${durum.seviye === 'S1' ? 'S1 Türkiye' : 'S0 Dünya'} · kaynak ${durum.kaynak}${durum.kaynak === 'A+B' && durum.kaynakB ? ` (B: ${bicimle(durum.kaynakB.n, 0)} fiş)` : ''}${ogrenilen ? ` + sosyal (${ogrenilen.kaynak}, ${ogrenilen.surum}${ogrenilen.guven === 'dusuk' ? ', düşük güven: uygulanmadı' : ''}${ogrenilen.kuruVeri ? ', SAHTE' : ''})` : ''}${kamu ? ` + piyasa${kamu.kuruVeri ? ' (SAHTE)' : ''}` : ''}${kuruAtlandi.length ? ` · sahte öğrenim atlandı: ${kuruAtlandi.join(', ')}` : ''} · tohum ${durum.seed}` }),
     el('span', { text: kosu ? `Olay: ${bicimle(kosu.gunluk.liste().length, 0)}` : '' }),
     el('span', { text: 'Sonuçlar kalibrasyon geçmişiyle birlikte okunur (ADR-007).' }),
   );

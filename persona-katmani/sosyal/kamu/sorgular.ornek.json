@@ -1,0 +1,19 @@
+{
+  "_not": "Kiracı başına izlenecek sorgular. 'sorgu' X arama sözdizimidir; lang:tr ve -is:retweet önerilir. Rakip adları gerçek marka adlarıyla değiştirilir.",
+  "kiraci": "demo",
+  "marka": "(\"demo market\" OR @demomarket) lang:tr -is:retweet",
+  "rakipler": {
+    "Örnek Market A": "(\"örnek market a\" OR @ornekmarketa) lang:tr -is:retweet",
+    "Örnek Market B": "(\"örnek market b\" OR @ornekmarketb) lang:tr -is:retweet"
+  },
+  "kategoriler": {
+    "kahve": "(kahve OR espresso OR \"filtre kahve\") lang:tr -is:retweet",
+    "kış modası": "(mont OR kaban OR \"kış modası\") lang:tr -is:retweet",
+    "elektronik": "(kulaklık OR \"akıllı saat\" OR telefon) (fiyat OR indirim) lang:tr -is:retweet"
+  },
+  "reklam_kutuphanesi": {
+    "ulkeler": ["DE", "NL", "AT", "BE", "FR"],
+    "marka_arama": "Demo Market",
+    "rakip_arama": {"Örnek Market A": "Örnek Market A", "Örnek Market B": "Örnek Market B"}
+  }
+}

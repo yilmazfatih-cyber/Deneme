@@ -43,6 +43,10 @@ await page.getByLabel('Hedef birimi').selectOption('kume');
 await page.getByRole('button', { name: 'E-ticarette koş' }).click();
 await bitmesiniBekle();
 await page.screenshot({ path: 'docs/shots/05-kume-hedefleme.png' });
+// Piyasa sinyali (ADR-010; demo için kuru veri izni)
+await page.goto(`${kok}?sekme=reklam&kuru=1`, { waitUntil: 'networkidle' });
+await page.waitForTimeout(600);
+await page.screenshot({ path: 'docs/shots/06-piyasa.png' });
 console.log(hatalar.length ? `HATALAR:\n${hatalar.join('\n')}` : 'konsol hatası yok');
 await browser.close();
 preview.kill();

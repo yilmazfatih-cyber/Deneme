@@ -390,3 +390,50 @@ CREATE TABLE IF NOT EXISTS sosyal_ogrenim (
   surum        TEXT NOT NULL,
   olusturma    TEXT NOT NULL DEFAULT (datetime('now'))
 );
+
+-- ───────────────────────────── Kaynak C · Kamu verisi (ADR-010; resmî API, kaydırma botu yok) ─────────────────────────────
+-- Kiracının izlediği sorgular: marka, rakip, kategori. X arama sözdizimiyle.
+CREATE TABLE IF NOT EXISTS kamu_sorgu (
+  id        TEXT PRIMARY KEY,                 -- '<kiraci>:<etiket>'
+  kiraci_id TEXT NOT NULL REFERENCES kiraci(id),
+  etiket    TEXT NOT NULL,                    -- 'marka', 'rakip:Örnek A.Ş.', 'kategori:kahve'
+  tur       TEXT NOT NULL,                    -- marka | rakip | kategori
+  sorgu     TEXT NOT NULL,                    -- ör. '("demo market" OR @demomarket) lang:tr -is:retweet'
+  aktif     INTEGER NOT NULL DEFAULT 1
+);
+
+-- Kamu gönderilerinden toplu duygu (örneklem). Gönderi metni, yazar, kullanıcı kimliği saklanmaz.
+CREATE TABLE IF NOT EXISTS kamu_duygu (
+  sorgu_id          TEXT NOT NULL REFERENCES kamu_sorgu(id),
+  platform          TEXT NOT NULL,            -- x | youtube | reddit
+  tarih             TEXT NOT NULL,
+  ornek_n           INTEGER NOT NULL,
+  olumlu REAL NOT NULL, notr REAL NOT NULL, olumsuz REAL NOT NULL,
+  one_cikan_konular TEXT,                     -- JSON {konu: oran}
+  ort_etkilesim     REAL,                     -- örneklem gönderisi başına beğeni+yanıt+paylaşım
+  yontem            TEXT NOT NULL,            -- sozluk | llm
+  PRIMARY KEY (sorgu_id, platform, tarih)
+);
+
+-- Rakip ve marka reklamları (Meta Reklam Kütüphanesi API veya analistin sitede gözlediği reklamların elle girişi).
+-- Reklamveren bir işletmedir; kişisel veri değildir.
+CREATE TABLE IF NOT EXISTS rakip_reklam (
+  id             TEXT PRIMARY KEY,            -- 'meta_adlib:<id>' | 'elle:<hash>'
+  kiraci_id      TEXT NOT NULL REFERENCES kiraci(id),
+  kaynak         TEXT NOT NULL,               -- meta_adlib | elle
+  reklamveren    TEXT NOT NULL,
+  reklamveren_id TEXT,
+  rol            TEXT NOT NULL,               -- marka | rakip | diger
+  ulkeler        TEXT,                        -- JSON
+  platformlar    TEXT,                        -- JSON (facebook, instagram, ...)
+  baslangic      TEXT,
+  bitis          TEXT,                        -- boşsa yayında
+  aktif_gun      INTEGER,
+  yaratici_turu  TEXT,
+  bicim          TEXT,
+  metin_ozeti    TEXT,
+  ab_erisim      INTEGER,                     -- yalnız AB/BK reklamlarında
+  yas_erisim     TEXT,                        -- JSON {yas_bandi: oran}, yalnız AB/BK
+  cekim          TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS ix_rakip_reklam_kiraci ON rakip_reklam(kiraci_id, rol);

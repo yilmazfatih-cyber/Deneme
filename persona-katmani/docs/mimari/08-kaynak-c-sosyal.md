@@ -68,3 +68,18 @@ yaratıcı tür çarpanlarını `reklamTepkisi`ne iletir. Arayüzde "Öncül: S1
    Öneri: sözlükle başla; LLM'e yalnız kimliksiz ve toplu, 06 §5 kurallarıyla.
 3. **Öğrenilen öncül kiracılar arası paylaşılsın mı?** F-9 "girsin" dedi; sosyal medya çarpanları da S1'e girsin mi, yoksa yalnız kiracının S3'ünde mi kalsın?
    Öneri: F-9 ile tutarlı olarak toplulaştırılmış hâliyle S1'e girsin.
+
+
+## 7. Kamu verisi (ADR-010)
+
+Kendi hesap verisinin yanına iki kamu kaynağı eklendi; **kaydırma botu kurulmaz** (platform koşulları, KVKK, ve botun gördüğü akışın
+gerçek müşteri akışı olmaması). Kod: `persona-katmani/sosyal/kamu/`.
+
+| Kaynak | Ne verir | Sınır | Öğrenilen |
+| --- | --- | --- | --- |
+| Meta Reklam Kütüphanesi API | Marka ve rakip reklamları: metin, yayın başlangıç/bitiş, platformlar; AB/BK'da erişim ve yaş kırılımı | Ticari reklamlar yalnız AB/BK için; Türkiye için elle giriş (analistin sitede gözlediği reklamlar, CSV) | Piyasada uzun yaşayan yaratıcı türü → yaratıcı çarpanı (0,7–1,4; yarım ağırlık); rakiplerin yaş erişimi |
+| X API v2 (kullandıkça öde) | Günlük gönderi sayısı (son 7 gün), son gönderilerden örneklem | Okuma ve sayım isteği başına yaklaşık 0,005 USD (doğrulanmalı); her çalıştırmada bütçe sınırı | Kategori ilgi endeksi ve eğimi; marka/rakip ses payı; marka ve rakip duygusu, şikâyet konuları (fiyat, kargo, kalite, hizmet) |
+
+Saklananlar toplu: sayım, duygu oranları, konu oranları; gönderi metni, yazar ve kullanıcı kimliği tutulmaz. Sayım geçmişi
+`counts/recent` 7 gün verdiği için günlük çalıştırmayla birikir. Sahte (kuru) veriyle üretilen öğrenim dosyaları simülasyona yalnız
+`?kuru=1` ile uygulanır; arayüz "SAHTE VERİ" etiketi gösterir.

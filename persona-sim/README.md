@@ -11,7 +11,7 @@ kontrol grubuyla ölçen tarayıcı uygulaması. Tasarımı `../persona-katmani/
 cd persona-sim
 npm install
 npm run dev        # http://localhost:5173/persona-sim/
-npm run check      # tip denetimi + 56 birim testi
+npm run check      # tip denetimi + 59 birim testi
 npm run build      # dist/
 PLAYWRIGHT_CHROMIUM_EXECUTABLE=/yol/chrome node scripts/goruntu.mjs   # 4 sekmenin ekran görüntüsü → docs/shots/
 ```
