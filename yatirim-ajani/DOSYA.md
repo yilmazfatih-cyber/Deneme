@@ -78,3 +78,21 @@ Kesit bulguları (74 hisse, 2024-01 → 2026-11; evren eşit ağırlık al-tut +
 pozitif, gün içi 71 hissede negatif. 6 aylık momentum uzun-kısa portföyü aylık +%2,0 (Sharpe 1,40, t 2,2) ama
 Deflated Sharpe 0,83 (58 deneme; 0,95 eşiğinin altında) ve kısa bacak bireyde fiilen uygulanamaz; yalnız uzun hali
 Sharpe 0,69. Değer (PD/DD, FD/FAVÖK) ve kâr büyümesi kesitte doğru yönde ama çeyreklik adım sütunları, bağımsız gözlem az.
+
+## 6. Araştırma katmanları (2026-11-09)
+
+| Katman | Kaynak                                                                                                                          | Veritabanına girişi                                                                                            | Analiz komutu                                                                                     |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| Hisse  | 4 Sonnet ajanı + KCHOL çizelgesi: 40 hisse, 233 olay (`dosya_kaynak/olaylar_<HİSSE>.json`, hane alanlarıyla)                    | olay sütunları, olaylar tablosu                                                                                | `olay-calismasi` (tüm hisselerde tür ve büyüklüğe göre tepki; bot dal istatistiklerini günceller) |
+| Sektör | 2 Opus ajanı: sektör olayları + sürücü profilleri (`dosya_kaynak/olaylar_sektor.json`, `sektor_profilleri.json`)                | sektör olayları kendi sektörünün hisselerine                                                                   | `sektor-analiz` (eşit ağırlıklı sektör endeksleri, rotasyon, sürücü duyarlılığı)                  |
+| Piyasa | Fable ajanı: 28 PPK, 35 TÜFE, 18 not, 21 CDS, 65 olay, 10 rejim, 14 hipotez (`dosya_kaynak/makro_*.json`, `olaylar_makro.json`) | `politika_faizi`, `ppk_*`, `tufe_*`, `reel_faiz`; Brent, altın, VIX, ABD 10y, DXY, EEM, S&P 500, EUR/TRY (d−1) | `piyasa-analiz` (PPK/TÜFE günleri, rejimlere göre endeks/sektör/strateji)                         |
+
+İlk bulgular (küçük örneklem, tanımlayıcı):
+
+- Pay satışı/blok satış sonrası 20 günde ortalama −%10,4 anormal getiri (n=6, t −4,0); bedelli ilk gün −%2,8 (t −4,1);
+  geri alım ilk gün +%2,1 (t 3,0); not kararları ilk gün −%1,0. Büyüme haberlerinde (sözleşme/yatırım) büyüklüğe göre
+  tutarlı bir desen yok; piyasa değerinin %10'undan büyük haberlerde 5 gün +%1,9 (n=13).
+- Temettü dalı geçmişte maliyet sonrası eksi (n=47) → bot temettü AL'ını artık İZLE'ye düşürür.
+- PPK: beklenen indirim günlerinde bankalar endeksin %1,1 altında; TÜFE beklentinin altında gelince XU100 aynı gün +%1,2.
+- Sektör rotasyonu (son 3 ayın en iyi 2 sektörü) 32 ayda +%104, eşit ağırlık +%29; fark anlamlı değil (t 1,3).
+- Rejimler: gün içi getiri 10 rejimin hepsinde eksi, gece getirisi 9'unda artı.
