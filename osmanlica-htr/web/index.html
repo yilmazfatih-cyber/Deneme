@@ -1,0 +1,375 @@
+<title>Osmanlıca Etiketleme</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Scheherazade+New:wght@400;700&display=swap">
+<style>
+/* Düzen: tek sütun, üstte durum şeridi, ortada tek iş (satır + seçenekler), altta yükleme. Kağıt ve mürekkep tonları. */
+:root{
+  --kagit:#f3eee4; --kart:#fbf8f1; --murekkep:#241c14; --soluk:#6d6153; --cizgi:#d9cfbf;
+  --vurgu:#8a4b1f; --vurgu-metin:#ffffff; --iyi:#3e6b3a; --dikkat:#9a6b12; --golge:0 1px 2px rgba(60,40,20,.08);
+  --arap:"Amiri","Scheherazade New",serif; --ui:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --kagit:#1b1814; --kart:#26211b; --murekkep:#efe7da; --soluk:#a79a88; --cizgi:#44392d;
+  --vurgu:#d99a5c; --vurgu-metin:#1b1410; --iyi:#8fc48a; --dikkat:#e0b85a; --golge:none; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --kagit:#1b1814; --kart:#26211b; --murekkep:#efe7da; --soluk:#a79a88; --cizgi:#44392d;
+  --vurgu:#d99a5c; --vurgu-metin:#1b1410; --iyi:#8fc48a; --dikkat:#e0b85a; --golge:none; color-scheme:dark}
+html,body{height:100%}
+body{margin:0;background:var(--kagit);color:var(--murekkep);font:16px/1.45 var(--ui)}
+main{max-width:760px;margin:0 auto;padding-block:12px 32px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:12px}
+h1{font-size:19px;margin:0;letter-spacing:.01em}
+.ust{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.kucuk{color:var(--soluk);font-size:13px}
+.kart{background:var(--kart);border:1px solid var(--cizgi);border-radius:14px;padding:14px;box-shadow:var(--golge)}
+.satir-gor{background:#fff;border-radius:8px;display:block;width:100%;height:auto;max-height:180px;object-fit:contain}
+.secenekler{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+button{font:inherit;min-height:60px;border-radius:12px;border:1px solid var(--cizgi);background:var(--kart);color:var(--murekkep);padding:8px 14px;text-align:left;cursor:pointer;display:flex;align-items:center;gap:12px;min-width:0}
+button:hover{border-color:var(--vurgu)} button:focus-visible{outline:3px solid var(--vurgu);outline-offset:2px}
+button:disabled{opacity:.5;cursor:default}
+.harf{flex:0 0 34px;height:34px;border-radius:50%;background:var(--vurgu);color:var(--vurgu-metin);font-weight:700;display:grid;place-items:center;font-size:15px}
+.osm{font-family:var(--arap);font-size:28px;line-height:1.3;direction:rtl;unicode-bidi:isolate;flex:1;min-width:0;overflow-wrap:anywhere;text-align:right}
+.guven{color:var(--soluk);font-size:13px;font-variant-numeric:tabular-nums}
+label.d{display:block;margin:12px 0 6px;font-size:14px;color:var(--soluk)}
+input[type=text]{font:inherit;width:100%;box-sizing:border-box;min-height:60px;padding:8px 14px;border-radius:12px;border:1px solid var(--cizgi);background:var(--kart);color:var(--murekkep)}
+input[type=text]:focus-visible{outline:3px solid var(--vurgu);outline-offset:1px}
+.sira{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.sira button{flex:1 1 140px;justify-content:center;text-align:center;min-height:56px}
+.sira .birincil{background:var(--vurgu);color:var(--vurgu-metin);border-color:var(--vurgu)}
+.bilgi{display:flex;gap:16px;flex-wrap:wrap;font-variant-numeric:tabular-nums}
+.bilgi b{font-weight:600}
+.bos{padding:28px 10px;text-align:center;color:var(--soluk)}
+.bos .osm{font-size:34px;color:var(--murekkep);text-align:center}
+input[type=file]{font:inherit;flex:1 1 220px;min-height:56px;padding:12px 0;min-width:0}
+progress{width:100%;height:10px;accent-color:var(--vurgu)}
+.durum-rozet{display:inline-block;padding:2px 10px;border-radius:999px;border:1px solid var(--cizgi);font-size:13px;color:var(--soluk)}
+.durum-rozet.hazir{color:var(--iyi);border-color:var(--iyi)} .durum-rozet.dikkat{color:var(--dikkat);border-color:var(--dikkat)}
+details summary{cursor:pointer;font-weight:600;min-height:44px;display:flex;align-items:center}
+ul.sayfalar{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:6px}
+ul.sayfalar li{display:flex;justify-content:space-between;gap:10px;font-size:14px;border-top:1px solid var(--cizgi);padding-top:6px}
+.ipucu kbd{border:1px solid var(--cizgi);border-radius:4px;padding:0 5px;font-size:12px}
+@media (prefers-reduced-motion:no-preference){button{transition:border-color .15s}}
+</style>
+
+<main>
+  <div class="ust">
+    <h1>Osmanlıca Etiketleme</h1>
+    <div class="kucuk" id="modelDurum"><span class="durum-rozet">model yükleniyor…</span></div>
+  </div>
+
+  <section class="kart bilgi kucuk" id="ozet">
+    <span>etiketli <b id="nEtiketli">0</b></span>
+    <span>bekleyen <b id="nBekleyen">0</b></span>
+    <span>atlanan <b id="nAtlanan">0</b></span>
+    <span id="depoDurum"></span>
+  </section>
+
+  <section class="kart" id="hedef">
+    <div id="bos" class="bos">
+      <div class="osm">دولت علیه</div>
+      <p>Kuyruk boş. Aşağıdan bir arşiv sayfası yükleyin; satırlara bölünüp buraya gelir.</p>
+    </div>
+    <div id="dolu" hidden>
+      <img id="satirGor" class="satir-gor" alt="etiketlenecek satır">
+      <div class="kucuk" id="satirBilgi" style="margin-top:6px"></div>
+      <div class="secenekler" id="secenekler"></div>
+      <label class="d" for="d">D) Doğrusunu yazın (Arap harfli):</label>
+      <input id="d" type="text" class="osm" dir="rtl" lang="ota" autocomplete="off" autocapitalize="off" spellcheck="false">
+      <div class="sira">
+        <button class="birincil" id="btnKaydet">Kaydet</button>
+        <button id="btnAtla">Atla</button>
+        <button id="btnBozuk">Kesim bozuk</button>
+        <button id="btnGeri">Geri al</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="kart">
+    <div style="font-weight:600;margin-bottom:6px">Sayfa yükle</div>
+    <div class="kucuk" style="margin-bottom:8px">Fotoğraf veya tarama (jpg, png). Telefonda çekilen fotoğraf da olur; sayfa düz ve tek sütun olsun.</div>
+    <div class="sira" style="margin-top:0">
+      <input id="dosyalar" type="file" accept="image/*" multiple>
+      <button class="birincil" id="btnYukle" style="flex:0 0 150px">Yükle ve böl</button>
+    </div>
+    <progress id="ilerleme" value="0" max="1" hidden></progress>
+    <div class="kucuk" id="yukleDurum" style="margin-top:6px"></div>
+  </section>
+
+  <section class="kart">
+    <details>
+      <summary>Yüklenen sayfalar</summary>
+      <ul class="sayfalar" id="sayfaListesi"><li class="kucuk">Henüz sayfa yok.</li></ul>
+    </details>
+  </section>
+
+  <section class="kart ipucu kucuk">
+    Klavye: <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> seçenek · <kbd>Enter</kbd> yazdığınızı kaydet · <kbd>S</kbd> atla · <kbd>X</kbd> bozuk · <kbd>Z</kbd> geri.
+    Tahminler telefonunuzda hesaplanır; etiketler bu sayfanın veritabanında birikir, oradan modeli eğitiyoruz.
+  </section>
+</main>
+
+<script src="ort.min.js"></script>
+<script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const durumEl=$('modelDurum');
+let db=null, assets=null, ort_session=null, alfabe=null, modelBilgi={surum:'?'};
+let bekleyen=[], aktif=null, geriYigin=[], secenekler=[];
+let abone=null, yukleniyor=false;
+
+// ---------------------------------------------------------------- yardımcılar
+function rozet(metin,sinif){durumEl.innerHTML=`<span class="durum-rozet ${sinif||''}">${metin}</span>`;}
+function normallestir(s){
+  if(!s) return '';
+  s=s.normalize('NFKC');
+  const esd={'ي':'ی','ى':'ی','ک':'ك','ۀ':'ه','ە':'ه','ٱ':'ا','۰':'٠','۱':'١','۲':'٢','۳':'٣','۴':'٤','۵':'٥','۶':'٦','۷':'٧','۸':'٨','۹':'٩','‌':'','‍':'','‎':'','‏':'','\t':' '};
+  let out='';
+  for(const ch of s){ out+= (ch in esd)? esd[ch] : ch; }
+  out=out.replace(/[ً-ْٓ-ٰٕ]/g,'').replace(/ـ/g,'').replace(/[{}\[\]*"●•|<>_]/g,'');
+  return out.split(/\s+/).filter(Boolean).join(' ');
+}
+function kimlik(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8);}
+
+// ---------------------------------------------------------------- model
+async function modelYukle(){
+  try{
+    if(typeof ort==='undefined') throw new Error('onnxruntime yüklenemedi');
+    ort.env.wasm.wasmPaths = new URL('./', location.href).href;
+    ort.env.wasm.numThreads = 1;
+    const [alf, bilgi, agirlik] = await Promise.all([
+      fetch('model.alfabe.json').then(r=>r.json()),
+      fetch('model.json').then(r=>r.ok?r.json():{surum:'?'}).catch(()=>({surum:'?'})),
+      fetch('model-agirlik.wasm').then(r=>r.arrayBuffer())
+    ]);
+    alfabe=['<b>'].concat(alf); modelBilgi=bilgi;
+    ort_session = await ort.InferenceSession.create(agirlik,{executionProviders:['wasm']});
+    rozet(`model ${bilgi.surum||''} hazır`,'hazir');
+    if(aktif) tahminGoster(aktif);
+  }catch(e){ console.error(e); rozet('model yüklenemedi; yalnızca D ile yazılır','dikkat'); }
+}
+
+// Satır görüntüsünü (canvas/img) 64 px yüksekliğe getirip modele ver → logp[T][C]
+function onIsle(kaynak){
+  const H=64; const w=kaynak.naturalWidth||kaynak.width, h=kaynak.naturalHeight||kaynak.height;
+  let W=Math.max(16,Math.min(1600,Math.round(w*H/Math.max(1,h)))); W=Math.ceil(W/4)*4;
+  const c=document.createElement('canvas'); c.width=W; c.height=H;
+  const ctx=c.getContext('2d',{willReadFrequently:true}); ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,H);
+  ctx.drawImage(kaynak,0,0,W,H);
+  const d=ctx.getImageData(0,0,W,H).data; const g=new Float32Array(W*H); let top=0;
+  for(let i=0;i<W*H;i++){ const v=(d[i*4]*299+d[i*4+1]*587+d[i*4+2]*114)/1000; g[i]=v; top+=v; }
+  if(top/(W*H)<110){ for(let i=0;i<g.length;i++) g[i]=255-g[i]; }
+  const sirali=Float32Array.from(g).sort(); const lo=sirali[Math.floor(0.02*(g.length-1))], hi=sirali[Math.floor(0.98*(g.length-1))];
+  const x=new Float32Array(W*H);
+  for(let i=0;i<g.length;i++){ let v=g[i]; if(hi-lo>0.5) v=Math.min(1,Math.max(0,(v-lo)/(hi-lo))); else v=v/255; x[i]=1-v; }
+  return {tensor:new ort.Tensor('float32',x,[1,1,H,W]),W};
+}
+async function logpHesapla(kaynak){
+  const {tensor}=onIsle(kaynak);
+  const out=await ort_session.run({goruntu:tensor});
+  const y=out.logp; const [T,,C]=y.dims; const v=y.data; const logp=[];
+  for(let t=0;t<T;t++){ logp.push(v.subarray(t*C,(t+1)*C)); }
+  return logp;
+}
+function lse(a,b){ if(a===-Infinity) return b; if(b===-Infinity) return a; const m=Math.max(a,b); return m+Math.log(Math.exp(a-m)+Math.exp(b-m)); }
+function isinArama(logp,isin,enFazla){
+  const C=logp[0].length; let isinlar=new Map([['',[0,-Infinity]]]);
+  for(let t=0;t<logp.length;t++){
+    const adim=logp[t];
+    const idx=Array.from({length:C},(_,i)=>i).sort((a,b)=>adim[b]-adim[a]).slice(0,Math.max(isin,6));
+    const yeni=new Map();
+    const al=k=>{ if(!yeni.has(k)) yeni.set(k,[-Infinity,-Infinity]); return yeni.get(k); };
+    for(const [onek,[pb,pnb]] of isinlar){
+      const ptop=lse(pb,pnb); const y0=al(onek); y0[0]=lse(y0[0],ptop+adim[0]);
+      const son=onek.length?onek.codePointAt(onek.length-1):-1;
+      for(const c of idx){ if(c===0) continue; const pc=adim[c]; const key=onek+String.fromCodePoint(c);
+        if(c===son){ y0[1]=lse(y0[1],pnb+pc); const y1=al(key); y1[1]=lse(y1[1],pb+pc); }
+        else { const y1=al(key); y1[1]=lse(y1[1],ptop+pc); } }
+    }
+    isinlar=new Map([...yeni.entries()].sort((a,b)=>lse(b[1][0],b[1][1])-lse(a[1][0],a[1][1])).slice(0,isin));
+  }
+  return [...isinlar.entries()].map(([k,[a,b]])=>[k,lse(a,b)]).sort((a,b)=>b[1]-a[1]).slice(0,enFazla);
+}
+function kodCoz(kodlar){ let s=''; for(const ch of kodlar){ const i=ch.codePointAt(0); if(i>0&&i<alfabe.length) s+=alfabe[i]; } return s; }
+function secenekUret(logp,adet){
+  const sonuc=isinArama(logp,10,10); const gorulen=new Set(); const out=[];
+  for(const [k,lp] of sonuc){ const m=kodCoz(k).trim(); if(!m||gorulen.has(m)) continue; gorulen.add(m); out.push([m,Math.exp(lp)]); if(out.length>=adet) break; }
+  const top=out.reduce((a,[,p])=>a+p,0)||1; return out.map(([m,p])=>[m,p/top]);
+}
+async function tahminEt(kaynak){ if(!ort_session) return []; try{ return secenekUret(await logpHesapla(kaynak),3); }catch(e){ console.error(e); return []; } }
+
+// ---------------------------------------------------------------- bölütleme (sayfa → satırlar)
+function griAl(img,enBuyuk){
+  const olcek=Math.min(1,enBuyuk/Math.max(img.naturalWidth,img.naturalHeight));
+  const W=Math.max(1,Math.round(img.naturalWidth*olcek)), H=Math.max(1,Math.round(img.naturalHeight*olcek));
+  const c=document.createElement('canvas'); c.width=W; c.height=H; const ctx=c.getContext('2d',{willReadFrequently:true});
+  ctx.drawImage(img,0,0,W,H); const d=ctx.getImageData(0,0,W,H).data; const g=new Uint8ClampedArray(W*H); let top=0;
+  for(let i=0;i<W*H;i++){ const v=(d[i*4]*299+d[i*4+1]*587+d[i*4+2]*114)/1000; g[i]=v; top+=v; }
+  if(top/(W*H)<110) for(let i=0;i<g.length;i++) g[i]=255-g[i];
+  return {g,W,H};
+}
+function sauvola(g,W,H,pencere,k){
+  const I=new Float64Array((W+1)*(H+1)), I2=new Float64Array((W+1)*(H+1));
+  for(let y=1;y<=H;y++){ let s=0,s2=0; for(let x=1;x<=W;x++){ const v=g[(y-1)*W+x-1]; s+=v; s2+=v*v; I[y*(W+1)+x]=I[(y-1)*(W+1)+x]+s; I2[y*(W+1)+x]=I2[(y-1)*(W+1)+x]+s2; } }
+  const r=pencere>>1; const m=new Uint8Array(W*H);
+  for(let y=0;y<H;y++){ const y0=Math.max(0,y-r), y1=Math.min(H,y+r+1);
+    for(let x=0;x<W;x++){ const x0=Math.max(0,x-r), x1=Math.min(W,x+r+1); const n=(x1-x0)*(y1-y0);
+      const s=I[y1*(W+1)+x1]-I[y0*(W+1)+x1]-I[y1*(W+1)+x0]+I[y0*(W+1)+x0];
+      const s2=I2[y1*(W+1)+x1]-I2[y0*(W+1)+x1]-I2[y1*(W+1)+x0]+I2[y0*(W+1)+x0];
+      const ort=s/n, std=Math.sqrt(Math.max(0,s2/n-ort*ort)); const esik=ort*(1+k*(std/128-1));
+      m[y*W+x]= g[y*W+x]<esik ?1:0; } }
+  return m;
+}
+function egimBul(m,W,H){
+  const adim=Math.max(1,Math.floor(Math.sqrt(W*H/60000))); const pts=[];
+  for(let y=0;y<H;y+=adim) for(let x=0;x<W;x+=adim) if(m[y*W+x]) pts.push(x,y);
+  let enIyi=-1, enIyiAci=0;
+  // Izgara örneklemesinin 0°'de yapay zirve vermemesi için satır kutuları örnekleme adımı genişliğinde
+  for(let a=-5;a<=5.001;a+=0.5){ const t=Math.tan(a*Math.PI/180); const hist=new Float64Array(Math.ceil((H+W)/adim)+4); const off=Math.ceil(W/adim)+1;
+    for(let i=0;i<pts.length;i+=2){ const r=Math.floor((pts[i+1]+pts[i]*t)/adim)+off; if(r>=0&&r<hist.length) hist[r]++; }
+    let ilk=-1,son=-1; for(let i=0;i<hist.length;i++){ if(hist[i]){ if(ilk<0) ilk=i; son=i; } } if(ilk<0) continue;
+    let s=0,s2=0; const n=son-ilk+1; for(let i=ilk;i<=son;i++){ s+=hist[i]; s2+=hist[i]*hist[i]; }
+    const varyans=s2/n-(s/n)*(s/n); if(varyans>enIyi){ enIyi=varyans; enIyiAci=a; } }
+  return Math.abs(enIyiAci)<0.25?0:enIyiAci;
+}
+function dondur(img,W,H,aci){
+  const c=document.createElement('canvas'); c.width=W; c.height=H; const ctx=c.getContext('2d',{willReadFrequently:true});
+  ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,H); ctx.translate(W/2,H/2); ctx.rotate(aci*Math.PI/180); ctx.drawImage(img,-W/2,-H/2,W,H);
+  return c;
+}
+function satirBantlari(m,W,H){
+  const prof=new Float32Array(H); for(let y=0;y<H;y++){ let s=0; for(let x=0;x<W;x++) s+=m[y*W+x]; prof[y]=s; }
+  const sigma=Math.max(2,H/400), r=Math.ceil(sigma*3), cek=[]; let tk=0; for(let i=-r;i<=r;i++){ const v=Math.exp(-i*i/(2*sigma*sigma)); cek.push(v); tk+=v; }
+  const p=new Float32Array(H); for(let y=0;y<H;y++){ let s=0; for(let i=-r;i<=r;i++){ const yy=Math.min(H-1,Math.max(0,y+i)); s+=prof[yy]*cek[i+r]; } p[y]=s/tk; }
+  let mx=0; for(const v of p) mx=Math.max(mx,v); const esik=mx*0.08, enKucuk=Math.max(6,Math.floor(H/200));
+  const bant=[]; let bas=null;
+  for(let y=0;y<H;y++){ const a=p[y]>esik; if(a&&bas===null) bas=y; else if(!a&&bas!==null){ if(y-bas>=enKucuk) bant.push([bas,y]); bas=null; } }
+  if(bas!==null&&H-bas>=enKucuk) bant.push([bas,H]);
+  if(!bant.length) return [];
+  const yuks=bant.map(b=>b[1]-b[0]).sort((a,b)=>a-b)[Math.floor(bant.length/2)];
+  const bir=[]; for(const [a,b] of bant){ const son=bir[bir.length-1];
+    if(son && (a-son[1]<yuks*0.35) && ((b-a)<yuks*0.6 || (son[1]-son[0])<yuks*0.6)) son[1]=b; else bir.push([a,b]); }
+  const kutular=[];
+  for(const [a,b] of bir){ const pay=Math.floor(yuks*0.25); const y0=Math.max(0,a-pay), y1=Math.min(H,b+pay); let x0=W,x1=0;
+    for(let y=y0;y<y1;y++) for(let x=0;x<W;x++) if(m[y*W+x]){ if(x<x0)x0=x; if(x>x1)x1=x; }
+    if(x1<=x0) continue; kutular.push([Math.max(0,x0-pay),y0,Math.min(W,x1+pay+1),y1]); }
+  return kutular;
+}
+async function sayfayiBol(file){
+  const img=await new Promise((res,rej)=>{ const i=new Image(); i.onload=()=>res(i); i.onerror=rej; i.src=URL.createObjectURL(file); });
+  const {g,W,H}=griAl(img,2200);
+  let m=sauvola(g,W,H,Math.max(15,(Math.floor(Math.min(W,H)/40))|1),0.2);
+  const aci=egimBul(m,W,H);
+  let kaynak=img, griC;
+  if(aci!==0){ griC=dondur(img,W,H,aci); const d=griC.getContext('2d').getImageData(0,0,W,H).data; const g2=new Uint8ClampedArray(W*H); let top=0;
+    for(let i=0;i<W*H;i++){ const v=(d[i*4]*299+d[i*4+1]*587+d[i*4+2]*114)/1000; g2[i]=v; top+=v; } if(top/(W*H)<110) for(let i=0;i<g2.length;i++) g2[i]=255-g2[i];
+    m=sauvola(g2,W,H,Math.max(15,(Math.floor(Math.min(W,H)/40))|1),0.2); kaynak=griC; }
+  else { griC=document.createElement('canvas'); griC.width=W; griC.height=H; griC.getContext('2d').drawImage(img,0,0,W,H); kaynak=griC; }
+  const kutular=satirBantlari(m,W,H); const satirlar=[];
+  for(const [x0,y0,x1,y1] of kutular){ const c=document.createElement('canvas'); c.width=x1-x0; c.height=y1-y0;
+    const ctx=c.getContext('2d'); ctx.filter='grayscale(1)'; ctx.drawImage(kaynak,x0,y0,x1-x0,y1-y0,0,0,x1-x0,y1-y0); satirlar.push({canvas:c,kutu:[x0,y0,x1,y1]}); }
+  URL.revokeObjectURL(img.src);
+  return {satirlar,aci,W,H};
+}
+
+// ---------------------------------------------------------------- veritabanı
+async function depoBaslat(){
+  db=await claude.use('db'); assets=await claude.use('assets');
+  if(!db){ $('depoDurum').innerHTML='<span class="durum-rozet dikkat">kayıt kapalı: giriş yapın</span>'; $('btnYukle').disabled=true; return; }
+  if(!assets){ $('depoDurum').innerHTML='<span class="durum-rozet dikkat">yükleme için düzenleme yetkisi gerekir</span>'; $('btnYukle').disabled=true; }
+  let zamanlayici=setTimeout(()=>{ $('depoDurum').textContent='veritabanına henüz ulaşılamadı…'; },10000);
+  abone=db.collection('satirlar').where('durum','==','bekliyor').limit(400).onSnapshot(snap=>{
+    if(!snap.metadata.fromCache){ clearTimeout(zamanlayici); $('depoDurum').textContent=''; }
+    bekleyen=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(a.sayfa_zaman-b.sayfa_zaman)||(a.sira-b.sira));
+    $('nBekleyen').textContent=bekleyen.length;
+    if(!aktif || !bekleyen.some(b=>b.id===aktif.id)) sonrakiGoster();
+  }, e=>{ clearTimeout(zamanlayici); $('depoDurum').textContent='veritabanı hatası: '+e.code; });
+  sayacGuncelle(); sayfalariGoster();
+}
+async function sayacGuncelle(){
+  if(!db) return;
+  try{ const e=await db.collection('satirlar').where('durum','==','etiketli').limit(1000).get(); $('nEtiketli').textContent=e.size>=1000?'1000+':e.size;
+    const a=await db.collection('satirlar').where('durum','in',['atla','bozuk']).limit(1000).get(); $('nAtlanan').textContent=a.size; }catch(e){ console.warn(e); }
+}
+async function sayfalariGoster(){
+  if(!db) return;
+  try{ const s=await db.collection('sayfalar').orderBy('zaman','desc').limit(50).get(); const ul=$('sayfaListesi'); ul.innerHTML='';
+    if(s.empty){ ul.innerHTML='<li class="kucuk">Henüz sayfa yok.</li>'; return; }
+    for(const d of s.docs){ const v=d.data(); const li=document.createElement('li'); li.innerHTML=`<span>${(v.ad||d.id).replace(/[<>&]/g,'')}</span><span class="kucuk">${v.satir_sayisi} satır · ${new Date(v.zaman).toLocaleDateString('tr-TR')}</span>`; ul.appendChild(li); } }catch(e){ console.warn(e); }
+}
+
+// ---------------------------------------------------------------- etiketleme akışı
+function sonrakiGoster(){
+  aktif=bekleyen[0]||null;
+  $('bos').hidden=!!aktif; $('dolu').hidden=!aktif;
+  if(!aktif) return;
+  const img=$('satirGor'); img.src=aktif.asset?('/_blob/'+aktif.asset):'';
+  $('satirBilgi').textContent=`${aktif.sayfa_ad||aktif.sayfa} · satır ${aktif.sira}`;
+  $('secenekler').innerHTML='<div class="kucuk">tahmin hesaplanıyor…</div>'; $('d').value='';
+  tahminGoster(aktif);
+}
+async function tahminGoster(oge){
+  let sec=[];
+  if(oge.oneriler && oge.oneri_surum===modelBilgi.surum) sec=oge.oneriler;
+  else if(ort_session){ const img=$('satirGor'); if(!img.complete||!img.naturalWidth){ await new Promise(r=>{ img.onload=r; img.onerror=r; }); }
+    if(img.naturalWidth){ sec=await tahminEt(img); if(db&&sec.length){ db.doc('satirlar/'+oge.id).update({oneriler:sec,oneri_surum:modelBilgi.surum}).catch(()=>{}); } } }
+  if(aktif!==oge) return;
+  secenekler=sec; const kutu=$('secenekler'); kutu.innerHTML='';
+  if(!sec.length){ kutu.innerHTML='<div class="kucuk">Öneri yok; doğrusunu D kutusuna yazın.</div>'; }
+  sec.forEach(([m,p],i)=>{ const b=document.createElement('button'); b.innerHTML=`<span class="harf">${'ABC'[i]}</span><span class="osm"></span><span class="guven">%${Math.round(p*100)}</span>`; b.querySelector('.osm').textContent=m; b.onclick=()=>kaydet('ABC'[i],m); kutu.appendChild(b); });
+  $('d').value=sec.length?sec[0][0]:'';
+}
+async function kaydet(secim,metin){
+  if(!aktif||!db) return; const oge=aktif; const m=secim==='atla'||secim==='bozuk'?'':normallestir(metin);
+  const durum= m? 'etiketli' : (secim==='D'?'atla':secim);
+  const veri={durum, metin:m, secim: m?secim:durum, etiket_zaman:Date.now()};
+  bekleyen=bekleyen.filter(b=>b.id!==oge.id); geriYigin.push(oge.id); sonrakiGoster();
+  try{ await db.doc('satirlar/'+oge.id).update(veri); }catch(e){ console.error(e); $('depoDurum').textContent='kayıt başarısız: '+e.code; }
+  sayacGuncelle();
+}
+async function geriAl(){
+  const id=geriYigin.pop(); if(!id||!db) return;
+  try{ await db.doc('satirlar/'+id).update({durum:'bekliyor',metin:'',secim:''}); }catch(e){ console.error(e); }
+}
+$('btnKaydet').onclick=()=>kaydet('D',$('d').value);
+$('btnAtla').onclick=()=>kaydet('atla','');
+$('btnBozuk').onclick=()=>kaydet('bozuk','');
+$('btnGeri').onclick=geriAl;
+document.addEventListener('keydown',e=>{
+  const d=$('d'); const yaziyor=document.activeElement===d;
+  if(e.key==='Enter'){ e.preventDefault(); kaydet('D',d.value); return; }
+  if(yaziyor && !['1','2','3'].includes(e.key)) return;
+  if(['1','2','3'].includes(e.key)){ const s=secenekler[+e.key-1]; if(s){ e.preventDefault(); kaydet('ABC'[+e.key-1],s[0]); } }
+  else if(e.key==='s'||e.key==='S'){ e.preventDefault(); kaydet('atla',''); }
+  else if(e.key==='x'||e.key==='X'){ e.preventDefault(); kaydet('bozuk',''); }
+  else if(e.key==='z'||e.key==='Z'){ e.preventDefault(); geriAl(); }
+});
+
+// ---------------------------------------------------------------- yükleme akışı
+$('btnYukle').onclick=async()=>{
+  const dosyalar=[...$('dosyalar').files]; if(!dosyalar.length||yukleniyor||!db||!assets) return;
+  yukleniyor=true; $('btnYukle').disabled=true; const pr=$('ilerleme'); pr.hidden=false; pr.value=0; let toplamSatir=0;
+  try{
+    for(let fi=0;fi<dosyalar.length;fi++){
+      const f=dosyalar[fi]; $('yukleDurum').textContent=`${f.name}: satırlara bölünüyor…`;
+      const {satirlar,aci}=await sayfayiBol(f);
+      const sayfaId=kimlik(), zaman=Date.now();
+      for(let i=0;i<satirlar.length;i++){
+        $('yukleDurum').textContent=`${f.name}: satır ${i+1}/${satirlar.length} yükleniyor…`; pr.value=(fi+(i+1)/satirlar.length)/dosyalar.length;
+        const c=satirlar[i].canvas; const blob=await new Promise(r=>c.toBlob(r,'image/png'));
+        const oneriler=ort_session? await tahminEt(c):[];
+        const y=await assets.upload(blob,{type:'image/png'});
+        await db.doc('satirlar/'+kimlik()).set({sayfa:sayfaId,sayfa_ad:f.name,sayfa_zaman:zaman,sira:i+1,asset:y.id,kutu:satirlar[i].kutu,genislik:c.width,yukseklik:c.height,durum:'bekliyor',metin:'',secim:'',oneriler,oneri_surum:modelBilgi.surum,zaman});
+      }
+      await db.doc('sayfalar/'+sayfaId).set({ad:f.name,satir_sayisi:satirlar.length,aci,zaman});
+      toplamSatir+=satirlar.length;
+    }
+    $('yukleDurum').textContent=`${dosyalar.length} sayfa, ${toplamSatir} satır kuyruğa eklendi.`; $('dosyalar').value='';
+  }catch(e){ console.error(e); $('yukleDurum').textContent='Yükleme hatası: '+(e.code||e.message); }
+  finally{ yukleniyor=false; $('btnYukle').disabled=false; pr.hidden=true; sayfalariGoster(); }
+};
+
+modelYukle();
+if(window.claude && window.claude.use) depoBaslat(); else { $('depoDurum').innerHTML='<span class="durum-rozet dikkat">bu kopyada kayıt yok</span>'; }
+window.__osm={sayfayiBol,tahminEt,normallestir,griAl,sauvola,egimBul}; // yerel sınama için
+})();
+</script>

@@ -135,3 +135,14 @@ Kendi verinizi elle hazırlayacaksanız yalnızca manifest biçimine uymanız ye
 2. Hafif bir karakter n-gram dil modeliyle ışın araması (A/B/C'nin daha anlamlı olması).
 3. Muharaf (CC BY-NC-SA, çoğunluk ruk'a) ve OpenITI Osmanlıca baskı satırlarıyla ek ön eğitim seçeneği.
 4. Tarayıcıda çalışan ONNX Runtime Web demo (Köprü PWA ile aynı çevrimdışı ilke).
+
+## Telefondan etiketleme (tarayıcı sürümü)
+
+`web/index.html`, aynı modeli tarayıcıda çalıştıran, kurulum gerektirmeyen sürümdür: sayfa fotoğrafı yüklenir,
+satırlara bölme ve A/B/C tahmini telefonda (onnxruntime-web) yapılır, satır kırpımları ve etiketler artifact'ın
+veritabanında birikir. Yayımlı adres: <https://claude.ai/artifact/WfoJPfRokkckLaXtJYeha5> (özel; sahibinin paylaşması gerekir).
+
+Yeniden yayımlamak için gereken dosyalar (`web/` içinde, git dışı): `ort.min.js`, `ort-wasm-simd-threaded.mjs`,
+`ort-wasm-simd-threaded.wasm` (npm `onnxruntime-web@1.20.1` dist), `model-agirlik.wasm` (= `osm disa` çıktısı
+`model.onnx`, servis edilebilir uzantıyla), `model.alfabe.json`, `model.json`. Etiketleri geri almak: `satirlar`
+koleksiyonu (durum, metin, secim, asset) + asset görüntüleri.

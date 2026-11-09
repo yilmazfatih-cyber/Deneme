@@ -8,3 +8,6 @@ __pycache__/
 
 !modeller/
 !modeller/*.pt
+web/ort*
+web/*.wasm
+web/*.onnx
