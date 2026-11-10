@@ -1,11 +1,11 @@
 {
- "zaman": "2026-11-09T16:03",
+ "zaman": "2026-11-10T23:06",
  "bas": "2024-01-01",
- "bit": "2026-11-09",
+ "bit": "2026-11-10",
  "ozet": {
-  "hisse": 3,
-  "tam": 3,
-  "sure_dk": 0.6
+  "hisse": 40,
+  "tam": 39,
+  "sure_dk": 1.6
  },
  "rapor": {
   "endeks_XU100": {
@@ -61,55 +61,314 @@
    ]
   },
   "XU100.IS": {
-   "yahoo_1d": 712
+   "yahoo_1d": 713
   },
   "USDTRY=X": {
-   "yahoo_1d": 741
+   "yahoo_1d": 742
   },
   "EURTRY=X": {
-   "yahoo_1d": 741
+   "yahoo_1d": 742
   },
   "BZ=F": {
-   "yahoo_1d": 719
+   "yahoo_1d": 720
   },
   "GC=F": {
-   "yahoo_1d": 719
+   "yahoo_1d": 720
   },
   "^VIX": {
-   "yahoo_1d": 719
+   "yahoo_1d": 720
   },
   "^TNX": {
-   "yahoo_1d": 716
+   "yahoo_1d": 718
   },
   "DX-Y.NYB": {
-   "yahoo_1d": 719
+   "yahoo_1d": 720
   },
   "EEM": {
-   "yahoo_1d": 716
+   "yahoo_1d": 718
   },
   "^GSPC": {
-   "yahoo_1d": 716
+   "yahoo_1d": 718
   },
-  "TRALT": {
-   "isy_gunluk": 713,
+  "ASELS": {
+   "isy_gunluk": 714,
    "isy_mali_kalem": 147,
-   "yahoo_1d": 713,
+   "yahoo_1d": 714,
    "yahoo_temel": true,
-   "sure_sn": 11.3
+   "sure_sn": 11.7
+  },
+  "TUPRS": {
+   "isy_gunluk": 715,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 11.7
+  },
+  "THYAO": {
+   "isy_gunluk": 715,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 12.0
+  },
+  "AHGAZ": {
+   "isy_gunluk": 715,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 12.3
   },
   "KCHOL": {
-   "isy_gunluk": 713,
+   "isy_gunluk": 715,
    "isy_mali_kalem": 147,
-   "yahoo_1d": 713,
+   "yahoo_1d": 714,
    "yahoo_temel": true,
-   "sure_sn": 13.1
+   "sure_sn": 13.4
   },
-  "TRMET": {
-   "isy_gunluk": 713,
+  "SAHOL": {
+   "isy_gunluk": 714,
    "isy_mali_kalem": 147,
-   "yahoo_1d": 713,
+   "yahoo_1d": 714,
    "yahoo_temel": true,
-   "sure_sn": 13.8
+   "sure_sn": 15.2
+  },
+  "EREGL": {
+   "isy_gunluk": 715,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 715,
+   "yahoo_temel": true,
+   "sure_sn": 10.3
+  },
+  "BIMAS": {
+   "isy_gunluk": 715,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 715,
+   "yahoo_temel": true,
+   "sure_sn": 10.4
+  },
+  "SISE": {
+   "isy_gunluk": 715,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 10.7
+  },
+  "TCELL": {
+   "isy_gunluk": 715,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 10.6
+  },
+  "TTKOM": {
+   "isy_gunluk": 715,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 10.4
+  },
+  "HALKB": {
+   "isy_gunluk": 715,
+   "isy_mali_kalem": 0,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 8.7
+  },
+  "ISCTR": {
+   "isy_gunluk": 715,
+   "isy_mali_kalem": 0,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 9.1
+  },
+  "VAKBN": {
+   "isy_gunluk": 715,
+   "isy_mali_kalem": 0,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 9.3
+  },
+  "FROTO": {
+   "isy_gunluk": 715,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 715,
+   "yahoo_temel": true,
+   "sure_sn": 10.5
+  },
+  "TOASO": {
+   "isy_gunluk": 714,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 10.6
+  },
+  "PGSUS": {
+   "isy_gunluk": 715,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 715,
+   "yahoo_temel": true,
+   "sure_sn": 10.4
+  },
+  "ENKAI": {
+   "isy_gunluk": 715,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 10.5
+  },
+  "KOZAL": {
+   "isy_gunluk": 0,
+   "isy_mali_kalem": 0,
+   "yahoo_1d": 0,
+   "yahoo_temel": true,
+   "sure_sn": 8.0
+  },
+  "YKBNK": {
+   "isy_gunluk": 715,
+   "isy_mali_kalem": 0,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 8.2
+  },
+  "AKBNK": {
+   "isy_gunluk": 715,
+   "isy_mali_kalem": 0,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 10.1
+  },
+  "GARAN": {
+   "isy_gunluk": 715,
+   "isy_mali_kalem": 0,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 8.7
+  },
+  "PETKM": {
+   "isy_gunluk": 715,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 10.2
+  },
+  "ARCLK": {
+   "isy_gunluk": 715,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 10.5
+  },
+  "TAVHL": {
+   "isy_gunluk": 715,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 11.4
+  },
+  "MGROS": {
+   "isy_gunluk": 715,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 10.6
+  },
+  "SASA": {
+   "isy_gunluk": 715,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 715,
+   "yahoo_temel": true,
+   "sure_sn": 10.7
+  },
+  "HEKTS": {
+   "isy_gunluk": 715,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 10.5
+  },
+  "OYAKC": {
+   "isy_gunluk": 715,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 715,
+   "yahoo_temel": true,
+   "sure_sn": 10.5
+  },
+  "GUBRF": {
+   "isy_gunluk": 715,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 10.6
+  },
+  "ASTOR": {
+   "isy_gunluk": 715,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 11.7
+  },
+  "AKSEN": {
+   "isy_gunluk": 715,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 10.1
+  },
+  "KONTR": {
+   "isy_gunluk": 715,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 715,
+   "yahoo_temel": true,
+   "sure_sn": 12.8
+  },
+  "CIMSA": {
+   "isy_gunluk": 715,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 12.7
+  },
+  "ODAS": {
+   "isy_gunluk": 715,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 12.5
+  },
+  "TKFEN": {
+   "isy_gunluk": 715,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 715,
+   "yahoo_temel": true,
+   "sure_sn": 12.4
+  },
+  "ULKER": {
+   "isy_gunluk": 715,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 10.3
+  },
+  "DOAS": {
+   "isy_gunluk": 715,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 10.3
+  },
+  "BRSAN": {
+   "isy_gunluk": 715,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 10.4
+  },
+  "KRDMD": {
+   "isy_gunluk": 715,
+   "isy_mali_kalem": 147,
+   "yahoo_1d": 714,
+   "yahoo_temel": true,
+   "sure_sn": 10.7
   }
  }
 }
