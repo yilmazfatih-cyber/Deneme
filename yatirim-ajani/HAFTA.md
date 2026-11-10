@@ -17,13 +17,13 @@ hiçbir model al-tutu sağlam biçimde geçmiyor. Bu yüzden:
   günü olan hisseler (9 Kas: AKSEN, TCELL) ve 5 günde +%20 koşmuş hisseler (THYAO, PGSUS) bu hafta alınmaz.
 - **Boyut:** pay = %0,35 / günlük ATR oranı, tavan %10 (`pay_hesapla`). Lot tam sayı. Başlangıç toplam ≈ %38 hisse,
   %62 nakit (ayı rejimi; tepki kırılırsa kayıp sınırlı).
-- **İkinci dilim (koşullu):** Çarşamba 12 Kas 16:26 çalışmasında XU100 > 11.470 (Cuma kapanışı) VE dört pozisyondan
+- **İkinci dilim (koşullu):** Çarşamba 11 Kas 16:26 çalışmasında XU100 > 11.470 (Cuma kapanışı) VE dört pozisyondan
   en az üçü maliyetin üstündeyse her pozisyona +%5 eklenir (17:00–17:50 alım, limit = o anki fiyat +%0,5); toplam ≈ %58.
 - **Çıkış kuralları (otomatik emir üretir):**
   - Zarar kes: gün kapanışı ≤ maliyet × 0,93 → ertesi gün 10:00–10:15 PİYASA SAT (tamamı).
   - Kâr al: gün kapanışı ≥ maliyet × 1,08 → ertesi gün 10:00–17:50 LİMİT SAT (yarısı, limit = maliyet × 1,08).
   - Portföy günlük −%2 → o gün yeni alım yok. Zirveden −%15 → tüm pozisyonlar ertesi açılış PİYASA SAT, hafta biter.
-  - Cuma 14 Kas 20:26: haftalık değerlendirme. Tez bozulmadıysa pozisyon haftaya taşınır (tezler 30 günlük, bitiş
+  - Cuma 13 Kas 20:26: haftalık değerlendirme. Tez bozulmadıysa pozisyon haftaya taşınır (tezler 30 günlük, bitiş
     9 Aralık); bozulduysa Pazartesi açılış SAT emri yazılır. Karar ve gerekçe raporda.
 - **Nakit:** defterde faiz işlemez (temkinli varsayım). Gerçekte boş nakit Midas'ta para piyasası fonunda
   bekletilebilir; bu getiri rapora yazılmaz, kıyas al-tut XU100 ve "hepsi nakit" (1.000.000) ile yapılır.
