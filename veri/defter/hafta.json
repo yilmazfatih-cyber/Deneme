@@ -108,7 +108,7 @@
    "limit": 214.6,
    "tip": "LIMIT",
    "pencere": "17:00-17:50",
-   "durum": "bekliyor",
+   "durum": "iptal",
    "neden": "Ertelenen tez alımı (bilanço günü 9 Kas): 3Ç26 net kâr 34,9 mlr TL, beklenti 25,0 → tez sağlam; limit 9 Kas kapanışı 212,50 +%1; pay %10",
    "dolum": null
   },
@@ -122,8 +122,36 @@
    "limit": 385.25,
    "tip": "LIMIT",
    "pencere": "17:00-17:50",
-   "durum": "bekliyor",
+   "durum": "iptal",
    "neden": "Ertelenen tez alımı: 3Ç26 net kâr 10,39 mlr TL, beklenti 8,78 (+%18) → tez sağlam; limit 381,50 +%1; pay %10",
+   "dolum": null
+  },
+  {
+   "id": 8,
+   "verildi": "2026-11-10T13:33:28.150804+03:00",
+   "gun": "2026-11-10",
+   "hisse": "KCHOL",
+   "yon": "AL",
+   "adet": 481,
+   "limit": 207.4,
+   "tip": "LIMIT",
+   "pencere": "17:00-17:50",
+   "durum": "bekliyor",
+   "neden": "16:33 yenileme: son 206,30 +%0,5 → 207,40 (sabah limiti 214,60 altında); aynı tutar ≈ 99.800 TL; tez alımı (3Ç26 beklenti üstü)",
+   "dolum": null
+  },
+  {
+   "id": 9,
+   "verildi": "2026-11-10T13:33:32.048142+03:00",
+   "gun": "2026-11-10",
+   "hisse": "BIMAS",
+   "yon": "AL",
+   "adet": 261,
+   "limit": 381.5,
+   "tip": "LIMIT",
+   "pencere": "17:00-17:50",
+   "durum": "bekliyor",
+   "neden": "16:33 yenileme: son 379,50 +%0,5 → 381,50 (sabah limiti 385,25 altında); aynı tutar ≈ 99.800 TL; tez alımı (3Ç26 beklenti üstü)",
    "dolum": null
   }
  ],
@@ -163,5 +191,5 @@
   "Hafta 1 (9-13 Kasım 2026): yönetim kuralları yatirim-ajani/HAFTA.md. Sanal hesap; emirler kullanıcıya saat+fiyat+adetle sunulur, dolum gerçek 5dk çubuklarla.",
   "2026-11-09 09:40 sabah: KCHOL ve BIMAS 3Ç bilançoları bugün açıklanıyor; alımlar Salı'ya ertelendi. TUPRS (6 Kas, beklenti üstü) ve AHGAZ (9 aylık açıklandı) alımları duruyor."
  ],
- "sayac": 7
+ "sayac": 9
 }
