@@ -1,0 +1,1766 @@
+[
+ {
+  "sektor": "banka",
+  "hisseler": [
+   "AKBNK",
+   "GARAN",
+   "YKBNK",
+   "ISCTR"
+  ],
+  "suruculer": [
+   {
+    "ad": "TCMB politika faizi ve fiili fonlama faizi",
+    "aciklama": "Mevduat kredilerden hızlı yeniden fiyatlandığı için artış kısa vadede net faiz marjını daraltır, indirim genişletir; repo ihalesine ara verip gecelik faizden fonlama 'gizli artırım' gibi çalışır.",
+    "yon": "olumsuz",
+    "seri": "politika_faizi (ve TCMB ağırlıklı ortalama fonlama maliyeti)",
+    "gecikme": "fiyat: aynı gün; marj: 1-2 çeyrek"
+   },
+   {
+    "ad": "Yıllık TÜFE ve dezenflasyon hızı",
+    "aciklama": "Yüksek enflasyon TÜFE'ye endeksli tahvil gelirini artırsa da faiz indirimini geciktirir ve enflasyon muhasebesinde parasal kayıp yaratır; beklenti altı TÜFE indirim beklentisini öne çeker.",
+    "yon": "olumsuz",
+    "seri": "tufe_yillik",
+    "gecikme": "açıklama günü-5 gün"
+   },
+   {
+    "ad": "Kur ve ülke risk primi",
+    "aciklama": "Kur sıçraması ve CDS artışı yabancı çıkışını ve fonlama maliyetini artırır; bankalar yabancının ilk sattığı sektördür.",
+    "yon": "olumsuz",
+    "seri": "USDTRY, CDS_5Y",
+    "gecikme": "aynı gün"
+   },
+   {
+    "ad": "Kredi büyüme sınırları / makroihtiyati tedbirler",
+    "aciklama": "TCMB'nin 8 haftalık büyüme sınırları ve zorunlu karşılık yaptırımları hacim büyümesini sınırlar; gevşeme kredi hacmi ve ücret gelirini destekler.",
+    "yon": "olumlu",
+    "seri": "kredi_buyumesi (BDDK haftalık TL kredi)",
+    "gecikme": "duyuru: 1-5 gün; bilanço: 1-2 çeyrek"
+   },
+   {
+    "ad": "Küresel risk iştahı ve dolar",
+    "aciklama": "VIX ve DXY artışı gelişen piyasa fonlarından çıkış yaratır; Türk bankaları yüksek betalı GOÜ varlığıdır.",
+    "yon": "olumsuz",
+    "seri": "^VIX, DX-Y.NYB, EEM, ^TNX",
+    "gecikme": "aynı gün-1 hafta"
+   },
+   {
+    "ad": "Petrol fiyatı",
+    "aciklama": "Petrol ithalatçısı Türkiye'de Brent artışı cari açık, enflasyon ve kur kanalıyla faiz indirim alanını daraltır.",
+    "yon": "olumsuz",
+    "seri": "BZ=F (Brent)",
+    "gecikme": "1-20 gün"
+   }
+  ],
+  "duyarlilik_hipotezleri": [
+   "TCMB'nin faiz indirdiği PPK günlerinde (14:00 sonrası kapanışa kadar) banka sepeti XU100'ü geçer; artırım veya repo ihalesine ara verme duyurusu günlerinde XU100'ün altında kalır.",
+   "USDTRY'nin günlük %2'den fazla yükseldiği günlerde banka sepeti XU100'den ortalama en az 2 puan daha fazla düşer.",
+   "Aylık TÜFE'nin piyasa beklentisinin altında geldiği günlerde banka sepetinin sonraki 5 günlük getirisi XU100'ü geçer.",
+   "Brent'in 5 günde %10'dan fazla yükseldiği dönemlerde banka sepetinin sonraki 20 günlük getirisi XU100'ün altında kalır.",
+   "TCMB kredi büyüme sınırlarını düşürdüğünde banka sepeti sonraki 5 günde XU100'ü geçemez; sınırları yükselttiğinde geçer."
+  ],
+  "takvim": [
+   "PPK karar günleri 14:00 (2026: 22 Oca, 12 Mar, 22 Nis, 11 Haz, 23 Tem, 10 Eyl, 22 Eki, 10 Ara)",
+   "TÜİK TÜFE: her ayın 3'ü 10:00 (hafta sonuna denk gelirse ilk iş günü)",
+   "BDDK haftalık bülten (Perşembe/Cuma) ve aylık sektör verisi",
+   "TCMB haftalık menkul kıymet istatistikleri (yabancı akımı, Perşembe 14:30)",
+   "Banka bilançoları: Şubat, Nisan sonu-Mayıs, Temmuz sonu-Ağustos, Ekim sonu-Kasım",
+   "Ülke notu takvimi (Fitch/S&P/Moody's, Cuma akşamları)"
+  ],
+  "tipik_tepkiler": [
+   "İndirim döngüsü başlamadan 3-6 hafta önce bankalar önden fiyatlar, karar günü 'haberi sat' görülür (Kasım-Aralık 2024, Haziran-Temmuz 2025).",
+   "Siyasi/jeopolitik şoklarda yabancı çıkışının ana kanalı bankalardır; düşüş XU100'ün 1,3-1,5 katı olur (19-21 Mart 2025, 2 Mart 2026).",
+   "Şok sonrası 1-5 gün içinde kısa pozisyon kapamayla sert V tepkisi gelir, kalıcılığı faiz patikasına bağlıdır (8 Nisan 2026, 17 Eylül 2026).",
+   "Likidite krizlerinde (fon krizi) bankalar ilk düşen ve ilk toparlanan gruptur."
+  ],
+  "kaynaklar": [
+   "https://www.tcmb.gov.tr/wps/wcm/connect/TR/TCMB+TR/Main+Menu/Temel+Faaliyetler/Para+Politikasi/Merkez+Bankasi+Faiz+Oranlari/1+Hafta+Repo",
+   "https://kureansiklopedi.com/tr/detay/turkiye-cumhuriyet-merkez-bankasi-20242025-faiz-ka",
+   "https://www.borsagundem.com.tr/tcmbnin-2025-yili-faiz-politikasi-faiz-kararlari-ve-gelismeler",
+   "https://www.gcmyatirim.com.tr/egitim/makaleler/tcmb-2026-faiz-karari-takvimi-toplanti-tarihleri-ve-faiz-oranlari",
+   "https://www.mahfiegilmez.com/2026/08/merkez-bankas-faiz-mi-indirdi.html",
+   "https://bankadunyasi.com/kredi-buyumesine-yeni-fren-geldi/",
+   "https://www.forbes.com.tr/ekonomi/tcmb-repo-ihalelerine-yeniden-basladi-faiz-yuzde-37",
+   "https://www.ensonhaber.com/son-dakika-tcmb-ekim-2026da-politika-faizini-yuzde-36ya-indirdi-h1575946",
+   "https://www.forbes.com.tr/para-yatirim/gun-icinde-iki-kez-devre-kesen-borsa-istanbul-gunu-10-binin-altinda-kapatti",
+   "https://www.forbes.com.tr/para-yatirim/iran-abd-ateskesiyle-petrol-fiyatlari-hizla-dustu-8-nisan-2026-brent-petrol-varil-fiyati"
+  ]
+ },
+ {
+  "sektor": "kamu_banka",
+  "hisseler": [
+   "HALKB",
+   "VAKBN"
+  ],
+  "suruculer": [
+   {
+    "ad": "TCMB fonlama faizi",
+    "aciklama": "Kısa vadeli TL mevduat ve TCMB fonlamasına bağımlılık özel bankalardan yüksek olduğundan faiz değişikliğine duyarlılık (beta) daha yüksektir.",
+    "yon": "olumsuz",
+    "seri": "politika_faizi, TCMB fonlama maliyeti",
+    "gecikme": "aynı gün; marj 1 çeyrek"
+   },
+   {
+    "ad": "Kur savunması ve rezerv",
+    "aciklama": "Kur baskısı dönemlerinde kamu bankalarının döviz piyasasındaki rolü bilanço ve algı riski yaratır; rezerv kaybı haftalarında grup ayrışarak düşer.",
+    "yon": "olumsuz",
+    "seri": "USDTRY, TCMB net rezerv (haftalık)",
+    "gecikme": "aynı gün-1 hafta"
+   },
+   {
+    "ad": "Kamu politikası ve görevlendirmeler",
+    "aciklama": "Tarım, KOBİ, ihracat ve kamu kredileri ile düşük faizli program kredileri hacmi destekler ama marjı baskılar; makroihtiyati istisnalar bu segmentlerdedir.",
+    "yon": "karisik",
+    "seri": "kredi_buyumesi (kamu bankaları), program kredisi duyuruları",
+    "gecikme": "1-2 çeyrek"
+   },
+   {
+    "ad": "Siyasi takvim ve yönetim değişiklikleri",
+    "aciklama": "Kamu bankaları siyasi risk primine ve üst yönetim atamalarına en duyarlı banka grubudur.",
+    "yon": "olumsuz",
+    "seri": "CDS_5Y (siyasi olay günleri)",
+    "gecikme": "aynı gün"
+   },
+   {
+    "ad": "Sermaye yeterliliği ve kâr dağıtımı",
+    "aciklama": "Hazine/TVF sermaye desteği veya sermaye artırımı ihtiyacı sulandırma riski; kâr dağıtımının sınırlı olması değerlemeyi baskılar.",
+    "yon": "olumsuz",
+    "seri": "sermaye yeterlilik oranı (çeyreklik)",
+    "gecikme": "bilanço dönemi"
+   }
+  ],
+  "duyarlilik_hipotezleri": [
+   "Faiz indirimi günlerinde HALKB+VAKBN sepetinin XU100'e göre getirisi özel banka sepetininkinden yüksektir (beta > özel bankalar).",
+   "TCMB net rezervinin haftalık 5 milyar dolardan fazla düştüğü haftalarda kamu bankası sepeti özel banka sepetinden daha kötü performans gösterir.",
+   "Kamu bankası sepetinin 20 günde %30'dan fazla yükseldiği dönemlerin ardından sonraki 20 günlük getiri XU100'ün altında kalır (ortalamaya dönüş).",
+   "Siyasi şok günlerinde (XU100 -%4'ten kötü) kamu bankası sepeti XU100'den daha fazla düşer."
+  ],
+  "takvim": [
+   "PPK karar günleri 14:00 (2026: 22 Oca, 12 Mar, 22 Nis, 11 Haz, 23 Tem, 10 Eyl, 22 Eki, 10 Ara)",
+   "TÜİK TÜFE: her ayın 3'ü 10:00 (hafta sonuna denk gelirse ilk iş günü)",
+   "TCMB analitik bilanço ve haftalık rezerv verisi (Perşembe)",
+   "BDDK aylık bülten (kamu/özel ayrımı)",
+   "Bilançolar: Şubat, Mayıs, Ağustos, Kasım",
+   "Hazine/TVF sermaye ve sübordine borç duyuruları (düzensiz)"
+  ],
+  "tipik_tepkiler": [
+   "Bireysel yatırımcı ağırlıklı, yüksek betalı rallilere (20 günde %40'ın üstü) dönüşür ve sert geri verilir (Kasım 2025, Ağustos-Eylül 2026).",
+   "İyi haber zirvesi: beklenen olumlu haberin gerçekleştiği gün sonrasında 'haberi sat' davranışı (Haziran 2026 sonrası -%19).",
+   "Kur şoku haftalarında kamu bankaları özel bankalardan ayrışarak düşer (4 Mart 2026: endeks yatayken -%8,2)."
+  ],
+  "kaynaklar": [
+   "https://www.ekonomigazetesi.com/finans/2025te-ppk-8-kere-toplanacak-kkm-de-sona-erdirilecek-47032",
+   "https://www.birgun.net/haber/savasin-turkiye-ye-maliyeti-belirlendi-tcmb-rezervlerinde-13-milyar-dolarlik-dusus-698488",
+   "https://www.cnbce.com/doviz/merkez-bankasi-acikladi-iran-savasinin-rezervlere-etkisi-belli-oldu-h26623",
+   "https://www.karar.com/ekonomi-haberleri/kamu-bankalarinda-ust-duzey-atama-halkbank-ve-vakifbankin-genel-2040934",
+   "https://www.forbes.com.tr/ekonomi/tcmb-repo-ihalelerine-yeniden-basladi-faiz-yuzde-37",
+   "https://www.borsamatik.com.tr/halkbank-hisselerinde-sert-yukselis-haber-180461",
+   "https://www.ensonhaber.com/son-dakika-tcmb-ekim-2026da-politika-faizini-yuzde-36ya-indirdi-h1575946",
+   "https://www.tcmb.gov.tr/wps/wcm/connect/TR/TCMB+TR/Main+Menu/Temel+Faaliyetler/Para+Politikasi/Merkez+Bankasi+Faiz+Oranlari/1+Hafta+Repo"
+  ]
+ },
+ {
+  "sektor": "holding",
+  "hisseler": [
+   "KCHOL",
+   "SAHOL"
+  ],
+  "suruculer": [
+   {
+    "ad": "Banka iştirakleri",
+    "aciklama": "Holding NAV'ının önemli kısmı büyük özel bankalardır; banka endeksi holdinglerin en güçlü tekil sürücüsüdür.",
+    "yon": "olumlu",
+    "seri": "XBANK (banka endeksi)",
+    "gecikme": "aynı gün"
+   },
+   {
+    "ad": "Yabancı akımı, MSCI ve ülke notu",
+    "aciklama": "Holdingler MSCI Türkiye'nin çekirdeğidir; not artırımı/pozitif görünüm girişi, MSCI dondurma ve risk-off çıkışı tetikler.",
+    "yon": "olumlu",
+    "seri": "EEM, yabancı payı (MKK/TCMB haftalık), CDS_5Y",
+    "gecikme": "aynı gün-1 ay"
+   },
+   {
+    "ad": "NAV iskontosu",
+    "aciklama": "Risk iştahı arttığında iskonto daralır, şoklarda açılır; iskonto tarihi ortalamadan sapınca ortalamaya dönüş beklenir.",
+    "yon": "olumsuz",
+    "seri": "holding NAV iskontosu (%)",
+    "gecikme": "haftalar"
+   },
+   {
+    "ad": "Kur",
+    "aciklama": "Döviz gelirli iştirakler (otomotiv ihracatı, rafineri, enerji) TL değer kaybından kısmen korur; ama kur şoku yabancı çıkışı yaratır.",
+    "yon": "karisik",
+    "seri": "USDTRY",
+    "gecikme": "aynı gün (akış) / çeyrek (kâr)"
+   },
+   {
+    "ad": "Petrol ve rafineri marjı",
+    "aciklama": "Rafineri iştiraki olan holdinglerde crack spread genişlemesi olumlu; diğer iştiraklerde (enerji dağıtım, çimento, otomotiv) maliyet ve talep olumsuz.",
+    "yon": "karisik",
+    "seri": "BZ=F, rafineri marjı (crack spread)",
+    "gecikme": "1 çeyrek"
+   },
+   {
+    "ad": "Politika faizi",
+    "aciklama": "İndirim iştiraklerin finansman maliyetini ve iskontoyu düşürür; holding nakit getirisi azalır ama net etki olumlu.",
+    "yon": "olumsuz",
+    "seri": "politika_faizi",
+    "gecikme": "aynı gün-1 çeyrek"
+   }
+  ],
+  "duyarlilik_hipotezleri": [
+   "KCHOL+SAHOL sepetinin günlük getirisinin XBANK ile korelasyonu 0,7'nin üstündedir; XBANK'ın %3'ten fazla hareket ettiği günlerde sepet aynı yönde XU100'den fazla hareket eder.",
+   "Ülke notu artırımı veya pozitif görünüm sonrası 20 iş gününde holding sepeti XU100'ü geçer.",
+   "MSCI veya likidite kaynaklı şok haftalarında holding sepeti XU100'den daha kötü performans gösterir.",
+   "Siyasi şok günlerinde holding sepetinin düşüşü XU100'ün 1,1 katından büyüktür; ertesi 5 günde tepki de daha güçlüdür."
+  ],
+  "takvim": [
+   "MSCI çeyreklik endeks gözden geçirmeleri (Şubat, Mayıs, Ağustos, Kasım)",
+   "Ülke notu takvimi (yıl başında açıklanır, kararlar Cuma akşamı; 2026'da Fitch 23 Ocak, S&P 17 Nisan)",
+   "Holding ve iştirak bilançoları (Şubat-Mart, Mayıs, Ağustos, Kasım)",
+   "Temettü ve genel kurul dönemi (Mart-Nisan)",
+   "PPK karar günleri 14:00 (2026: 22 Oca, 12 Mar, 22 Nis, 11 Haz, 23 Tem, 10 Eyl, 22 Eki, 10 Ara)",
+   "TCMB haftalık yabancı menkul kıymet akımı (Perşembe)"
+  ],
+  "tipik_tepkiler": [
+   "Yabancı girişinin olduğu rallilerde holdingler endeksin önünde gider (Ocak 2026: +%26'ya karşı +%22).",
+   "Siyasi şoklarda yabancı ağırlıklı likit hisse olarak ilk satılan gruptur (17 Mart-16 Nisan 2025: -%27).",
+   "Erteleme/rahatlama haberlerinde kısa kapama ile tek günde %7-9 yükseliş, ardından 20 günde kısmen geri verme."
+  ],
+  "kaynaklar": [
+   "https://www.qnbinvest.com.tr/investodak/qnbarastirma/turkiyenin-kredi-notu-gelisimi",
+   "https://www.cnbce.com/haberler/kritik-tarihler-netlesti-turkiyenin-kredi-notu-icin-takvim-belli-oldu-fitch-kredi-notu-sp-kredi-notu-moodys-kredi-notu-h21588",
+   "https://www.ntv.com.tr/ntvpara/fitch-turkiyenin-kredi-notu-gorunumunu-pozitife-cevirdi-1708762",
+   "https://www.qnbinvest.com.tr/investodak/qnbarastirma/yabanci-yatirimcilar-ocak-ayinda-1-milyar-abd-dolari-tutarinda-hisse-senedi-aldi",
+   "https://www.forbes.com.tr/para-yatirim/gun-icinde-iki-kez-devre-kesen-borsa-istanbul-gunu-10-binin-altinda-kapatti",
+   "https://www.bloomberght.com/chp-icin-mutlak-butlan-karari-cikti-3778249",
+   "https://www.cnbce.com/haberler/spkdan-7-portfoy-yonetim-sirketinin-fonlarina-tasfiye-karari-h37428",
+   "https://www.getmidas.com/midasin-kulaklari-ow/borsa-neden-dusuyor-bist-100de-dususun-nedenleri-16-ekim-2026-p-821874",
+   "https://www.resmigazete.gov.tr/"
+  ]
+ },
+ {
+  "sektor": "holding_insaat",
+  "hisseler": [
+   "ENKAI",
+   "TKFEN"
+  ],
+  "suruculer": [
+   {
+    "ad": "Orta Doğu ve Körfez jeopolitik riski",
+    "aciklama": "Irak, Körfez ve çevresindeki proje/enerji varlıkları için iş durması ve tahsilat riski; ateşkesler yeniden inşa ihalesi beklentisi yaratır.",
+    "yon": "olumsuz",
+    "seri": "olay (jeopolitik), BZ=F oynaklığı",
+    "gecikme": "aynı gün"
+   },
+   {
+    "ad": "Rusya-Ukrayna barış süreci ve yaptırımlar",
+    "aciklama": "Rusya/BDT'deki gayrimenkul, inşaat ve tahsilatlar yaptırım ve ödeme kanallarına bağlı; barış/yaptırım gevşemesi olumlu, yaptırım genişlemesi olumsuz.",
+    "yon": "olumlu",
+    "seri": "olay (müzakere), RUB/USD",
+    "gecikme": "aynı gün-1 ay"
+   },
+   {
+    "ad": "Dolar bazlı nakit ve gelir",
+    "aciklama": "Dövizli proje gelirleri ve büyük döviz nakit pozisyonu TL değer kaybında TL değerini artırır; ABD faizleri nakit getirisini belirler.",
+    "yon": "olumlu",
+    "seri": "USDTRY, ^TNX",
+    "gecikme": "aynı gün (değerleme), çeyrek (faiz geliri)"
+   },
+   {
+    "ad": "Yurt dışı müteahhitlik yeni iş hacmi",
+    "aciklama": "Yeni üstlenilen proje tutarı sipariş birikimi ve gelecek gelir görünürlüğüdür.",
+    "yon": "olumlu",
+    "seri": "yurt dışı müteahhitlik proje tutarı (TMB/Ticaret Bakanlığı, yıllık-çeyreklik)",
+    "gecikme": "1-4 çeyrek"
+   },
+   {
+    "ad": "Gübre fiyatı ve doğalgaz maliyeti",
+    "aciklama": "Tarım-kimya kolu için üre/amonyum nitrat fiyatı gelir, doğalgaz ve amonyak girdi maliyetidir; Körfez arz kesintileri fiyatı yükseltir.",
+    "yon": "karisik",
+    "seri": "üre fiyatı, TTF/Henry Hub doğalgaz, BOTAŞ sanayi tarifesi",
+    "gecikme": "1-2 çeyrek"
+   },
+   {
+    "ad": "Yerel risk primi",
+    "aciklama": "Grup yüksek betalı; siyasi şoklarda endeksten sert düşer.",
+    "yon": "olumsuz",
+    "seri": "CDS_5Y, XU100",
+    "gecikme": "aynı gün"
+   }
+  ],
+  "duyarlilik_hipotezleri": [
+   "Orta Doğu'da ateşkes açıklanan günlerde ENKAI+TKFEN sepeti XU100'ü geçer; çatışmanın başladığı/genişlediği günlerde XU100'ün altında kalır.",
+   "USDTRY'nin 20 günlük getirisi ile sepetin XU100'e göre 20 günlük getirisi arasında pozitif korelasyon vardır (dövizli nakit etkisi).",
+   "Rusya-Ukrayna barış müzakeresi haberlerinin geldiği günlerde sepetin XU100'e göre getirisi pozitiftir.",
+   "Siyasi şok günlerinde sepetin düşüşü XU100'ün 1,2 katından büyüktür."
+  ],
+  "takvim": [
+   "TMB/Ticaret Bakanlığı yurt dışı müteahhitlik verileri (yıllık Ocak-Şubat, ara dönem açıklamaları)",
+   "BOTAŞ aylık tarife açıklamaları (ayın 1'i)",
+   "Gübre sezonu: sonbahar ekimi (Eylül-Kasım) ve ilkbahar üst gübre (Şubat-Nisan)",
+   "OPEC+ toplantıları",
+   "Bilançolar: Mart, Mayıs, Ağustos, Kasım"
+  ],
+  "tipik_tepkiler": [
+   "Jeopolitik ateşkes/barış haberinde 'yeniden inşa' anlatısıyla hızlı prim; somut ihale gelmezse kazanç geri verilir.",
+   "Siyasi şoklarda yüksek beta ile endeksten sert düşüş (21 Mayıs 2026: -%7,7).",
+   "Kur sıçramalarında dövizli bilanço nedeniyle göreli koruma."
+  ],
+  "kaynaklar": [
+   "https://www.ntv.com.tr/ntvpara/abd-israilin-irana-saldirilari-irakin-petrol-uretimi-yuzde-60-dustu-1715081",
+   "https://kureansiklopedi.com/en/detay/abd-iran-israil-catismasi-2026-0c4b1",
+   "https://www.forbes.com.tr/para-yatirim/iran-abd-ateskesiyle-petrol-fiyatlari-hizla-dustu-8-nisan-2026-brent-petrol-varil-fiyati",
+   "https://www.aa.com.tr/tr/enerjiterminali/petrol/abd-israil-iran-savasinda-126-dolari-asan-brent-ilk-yariyi-zirvesinin-yuzde-42-altinda-kapatti/58076",
+   "https://www.bloomberght.com/petrol-israil-lubnan-ateskesi-sonrasi-geriledi-3778998",
+   "https://www.bloomberght.com/chp-icin-mutlak-butlan-karari-cikti-3778249",
+   "https://www.tmb.org.tr/",
+   "https://home.treasury.gov/"
+  ]
+ },
+ {
+  "sektor": "savunma",
+  "hisseler": [
+   "ASELS"
+  ],
+  "suruculer": [
+   {
+    "ad": "Ulusal programlar ve sözleşmeler",
+    "aciklama": "SSB sözleşmeleri (Çelik Kubbe, KAAN alt sistemleri, deniz platformları) çok yıllı sipariş birikimini belirler; büyük KAP sözleşme duyuruları kısa vadeli katalizördür.",
+    "yon": "olumlu",
+    "seri": "KAP sözleşme tutarı, sipariş birikimi (çeyreklik)",
+    "gecikme": "duyuru: aynı gün; gelir: 4-12 çeyrek"
+   },
+   {
+    "ad": "Savunma ihracatı",
+    "aciklama": "Döviz bazlı ihracat payı marj ve nakit akışını iyileştirir; aylık ihracat rekorları anlatıyı besler.",
+    "yon": "olumlu",
+    "seri": "savunma ve havacılık ihracatı (SSB/TİM aylık)",
+    "gecikme": "1-4 hafta"
+   },
+   {
+    "ad": "Küresel savunma harcaması (NATO/AB)",
+    "aciklama": "NATO %5 hedefi, ReArm Europe ve SAFE Avrupa talebini artırır; Avrupa savunma hisseleriyle ortak hareket yaratır.",
+    "yon": "olumlu",
+    "seri": "ITA (ABD savunma ETF), Avrupa savunma endeksi",
+    "gecikme": "aynı gün-1 hafta"
+   },
+   {
+    "ad": "Bölgesel jeopolitik tehdit",
+    "aciklama": "Füze/İHA tehdidinin arttığı çatışmalar hava savunma ve elektronik harp talebini öne çeker; piyasa geneli düşerken göreli güç sağlar.",
+    "yon": "olumlu",
+    "seri": "olay (jeopolitik), ^VIX",
+    "gecikme": "aynı gün"
+   },
+   {
+    "ad": "Politika faizi ve işletme sermayesi",
+    "aciklama": "Uzun teslim süreli projelerde yüksek TL faizi finansman giderini ve iskonto oranını artırır.",
+    "yon": "olumsuz",
+    "seri": "politika_faizi",
+    "gecikme": "1-2 çeyrek"
+   },
+   {
+    "ad": "Kur",
+    "aciklama": "Dolar bazlı sözleşmeler TL değer kaybında gelir artırır; TL maliyetler reel değerlenmede marjı sıkıştırır.",
+    "yon": "olumlu",
+    "seri": "USDTRY (reel kur)",
+    "gecikme": "1-2 çeyrek"
+   }
+  ],
+  "duyarlilik_hipotezleri": [
+   "XU100'ün %2'den fazla düştüğü jeopolitik şok günlerinde ASELS'in XU100'e göre getirisi pozitiftir.",
+   "Avrupa savunma endeksinin haftalık getirisi ile ASELS'in haftalık getirisi arasında pozitif korelasyon vardır (2025 sonrası).",
+   "Özkaynağın %5'inden büyük KAP sözleşme duyurularının ardından 5 günlük anormal getiri pozitiftir, 20 günde kısmen geri verilir.",
+   "Aylık savunma ihracatı rekor açıklanan günlerde ASELS XU100'ü geçer."
+  ],
+  "takvim": [
+   "SSB/TİM aylık ihracat açıklamaları (ayın ilk günleri)",
+   "IDEF (tek yıllar, Temmuz), SAHA Expo (çift yıllar, İstanbul) fuarları",
+   "NATO zirveleri (Haziran-Temmuz)",
+   "SSİK toplantıları (düzensiz)",
+   "Bilançolar: Mart, Mayıs, Ağustos, Ekim sonu-Kasım"
+  ],
+  "tipik_tepkiler": [
+   "Jeopolitik tırmanmada 'güvenli sektör' alımı: piyasa düşerken göreli yükseliş (2026 İran savaşı dönemi).",
+   "Büyük sözleşme haberinde bireysel yatırımcı kaynaklı tavan/sert yükseliş, ardından kâr satışı.",
+   "Avrupa savunma rallileriyle eşzamanlı yabancı alımı (Mart 2025)."
+  ],
+  "kaynaklar": [
+   "https://www.ssb.gov.tr/",
+   "https://www.nato.int/",
+   "https://commission.europa.eu/",
+   "https://www.consilium.europa.eu/",
+   "https://www.savunmaplus.com/aselsan-borsa-tarihine-gecti-2-trilyon-liralik-dev-rekor/",
+   "https://www.getmidas.com/midasin-kulaklari/aselsan-neden-yukseliyor-p-156152",
+   "https://kureansiklopedi.com/en/detay/abd-iran-israil-catismasi-2026-0c4b1"
+  ]
+ },
+ {
+  "sektor": "havacilik",
+  "hisseler": [
+   "THYAO",
+   "PGSUS"
+  ],
+  "suruculer": [
+   {
+    "ad": "Jet yakıtı / Brent",
+    "aciklama": "Yakıt giderin ~%30'u; Brent artışı hedge oranına göre gecikmeli olarak marjı daraltır, fiyat tepkisi ise aynı gün olur.",
+    "yon": "olumsuz",
+    "seri": "BZ=F (Brent), jet yakıtı (Platts/ IATA Jet Fuel Monitor)",
+    "gecikme": "fiyat: aynı gün; marj: 1-3 çeyrek"
+   },
+   {
+    "ad": "Orta Doğu hava sahası ve jeopolitik",
+    "aciklama": "Kapanışlar iptal, uzun rota ve talep kaybı yaratır; ateşkesler hızlı tersine dönüş getirir.",
+    "yon": "olumsuz",
+    "seri": "olay (hava sahası kapanışı)",
+    "gecikme": "aynı gün"
+   },
+   {
+    "ad": "Turizm ve yolcu talebi",
+    "aciklama": "Dış hat yolcu ve turist sayısı doluluk ve birim geliri belirler; TL reel değerlenmesi turizm fiyat rekabetini zayıflatır.",
+    "yon": "olumlu",
+    "seri": "turist sayısı (KTB aylık), DHMİ dış hat yolcu, şirket aylık trafik",
+    "gecikme": "1-4 hafta"
+   },
+   {
+    "ad": "Kur yapısı",
+    "aciklama": "Gelirin büyük kısmı döviz, giderlerin bir kısmı TL; TL değer kaybı (doğal hedge) olumlu, euro güçlenmesi olumlu.",
+    "yon": "olumlu",
+    "seri": "USDTRY, EURUSD",
+    "gecikme": "aynı gün-1 çeyrek"
+   },
+   {
+    "ad": "Küresel risk ve talep",
+    "aciklama": "Küresel resesyon/risk-off seyahat talebini ve kargo gelirini düşürür.",
+    "yon": "olumsuz",
+    "seri": "^VIX, EEM",
+    "gecikme": "1-4 hafta"
+   },
+   {
+    "ad": "Filo ve tedarik zinciri",
+    "aciklama": "Motor muayeneleri (GTF) ve teslimat gecikmeleri kapasite büyümesini kısar, kiralama maliyetini artırır.",
+    "yon": "olumsuz",
+    "seri": "uçak teslimat sayısı (Airbus/Boeing aylık)",
+    "gecikme": "1-4 çeyrek"
+   }
+  ],
+  "duyarlilik_hipotezleri": [
+   "Brent'in günlük %5'ten fazla düştüğü günlerde THYAO+PGSUS sepeti XU100'ü geçer; %5'ten fazla yükseldiği günlerde geride kalır.",
+   "Orta Doğu ateşkes haberinin geldiği gün havacılık sepeti XU100'ü en az 2 puan geçer (24 Haziran 2025: +%9,3; 8 Nisan 2026: +%8,2).",
+   "USDTRY'nin haftalık %2'den fazla yükseldiği haftalarda havacılık sepeti XU100'den daha iyi performans gösterir.",
+   "Brent'in 20 günlük getirisi ile havacılık sepetinin XU100'e göre 20 günlük getirisi negatif korelasyonludur."
+  ],
+  "takvim": [
+   "Yaz sezonu Haziran-Eylül (Temmuz-Ağustos zirve)",
+   "Şirket aylık trafik verileri (ayın ilk 10 günü)",
+   "DHMİ aylık istatistik (ayın ~10'u)",
+   "Kültür ve Turizm Bakanlığı aylık turist sayısı (ayın son haftası)",
+   "TÜİK çeyreklik turizm geliri (Ocak, Nisan, Temmuz, Ekim sonu)",
+   "OPEC+ toplantıları",
+   "Bilançolar: Mart, Mayıs, Ağustos, Kasım"
+  ],
+  "tipik_tepkiler": [
+   "Petrol/jeopolitik şokta ilk gün sert satış (2 Mart 2026: -%6,9), ateşkeste tek günde %8-9 geri alım.",
+   "Ralli geç evresinde bireysel katılım: yolcu rekorlarıyla yükseliş, ardından şokla tamamen geri verme (Şubat 2026).",
+   "Yaz sezonu öncesi yakıt zirvesinde pozisyon azaltma, petrol gerilediğinde hızlı toparlanma."
+  ],
+  "kaynaklar": [
+   "https://www.aa.com.tr/tr/enerjiterminali/petrol/abd-israil-iran-savasinda-126-dolari-asan-brent-ilk-yariyi-zirvesinin-yuzde-42-altinda-kapatti/58076",
+   "https://www.forbes.com.tr/para-yatirim/iran-abd-ateskesiyle-petrol-fiyatlari-hizla-dustu-8-nisan-2026-brent-petrol-varil-fiyati",
+   "https://www.ntv.com.tr/ntvpara/abd-israilin-irana-saldirilari-irakin-petrol-uretimi-yuzde-60-dustu-1715081",
+   "https://www.ntv.com.tr/ekonomi/petrol-yeniden-100-dolari-asti-1715576",
+   "https://www.apara.com.tr/gundem/2026/11/06/brent-petrolde-100-dolar-alarmi-hurmuz-bogazindaki-saldirilar-fiyatlari-yukseltti",
+   "https://paratic.com/thyaoda-jet-yakiti-fiyatlari-bilancoyu-etkileyecek/",
+   "https://api.report.az/en/business/pegasus-records-nearly-threefold-losses-in-1q2026",
+   "https://www.ktb.gov.tr/",
+   "https://www.dhmi.gov.tr/"
+  ]
+ },
+ {
+  "sektor": "havalimani",
+  "hisseler": [
+   "TAVHL"
+  ],
+  "suruculer": [
+   {
+    "ad": "Dış hat yolcu trafiği",
+    "aciklama": "Yolcu başı hizmet ücreti, duty-free ve yiyecek-içecek gelirleri dış hat yolcuya bağlıdır.",
+    "yon": "olumlu",
+    "seri": "DHMİ dış hat yolcu (aylık), şirket trafik verisi",
+    "gecikme": "1-4 hafta"
+   },
+   {
+    "ad": "Euro kuru",
+    "aciklama": "Hizmet ücretleri ve imtiyaz sözleşmeleri büyük ölçüde euro bazlı; euro güçlenmesi TL gelirini artırır.",
+    "yon": "olumlu",
+    "seri": "EURTRY, EURUSD",
+    "gecikme": "aynı gün (değerleme), çeyrek (gelir)"
+   },
+   {
+    "ad": "Turizm sezonu",
+    "aciklama": "Antalya ve kıyı havalimanları yaz sezonunda trafik zirvesine ulaşır.",
+    "yon": "olumlu",
+    "seri": "turist sayısı (KTB aylık)",
+    "gecikme": "1-3 ay"
+   },
+   {
+    "ad": "Bölgesel jeopolitik (Körfez, Suudi Arabistan, Orta Asya)",
+    "aciklama": "Yurt dışı havalimanı işletmeleri ve transfer trafiği bölgesel çatışmalara açıktır.",
+    "yon": "olumsuz",
+    "seri": "olay (hava sahası/ güvenlik)",
+    "gecikme": "aynı gün"
+   },
+   {
+    "ad": "Petrol (dolaylı)",
+    "aciklama": "Yakıt maliyeti havayolu kapasitesini ve bilet fiyatını etkileyerek trafiği dolaylı etkiler.",
+    "yon": "olumsuz",
+    "seri": "BZ=F",
+    "gecikme": "1-2 çeyrek"
+   },
+   {
+    "ad": "İmtiyaz ve düzenleme",
+    "aciklama": "DHMİ imtiyaz süreleri, uzatma bedelleri ve ücret tarifeleri uzun vadeli nakit akışını belirler.",
+    "yon": "karisik",
+    "seri": "DHMİ ihale/ imtiyaz duyuruları",
+    "gecikme": "duyuru günü"
+   }
+  ],
+  "duyarlilik_hipotezleri": [
+   "DHMİ aylık dış hat yolcu büyümesinin yıllık %10'u aştığı açıklamaların ardından TAVHL 5 günde XU100'ü geçer.",
+   "EURTRY'nin 20 günlük getirisi ile TAVHL'nin XU100'e göre 20 günlük getirisi pozitif korelasyonludur.",
+   "Körfez/Suudi Arabistan kaynaklı güvenlik olayı günlerinde TAVHL XU100'ün altında kalır."
+  ],
+  "takvim": [
+   "DHMİ aylık istatistik (ayın ~10'u)",
+   "Şirket aylık trafik açıklaması",
+   "Yaz sezonu Haziran-Eylül; Hac/Umre dönemleri",
+   "Kültür ve Turizm Bakanlığı aylık turist sayısı",
+   "Bilançolar: Nisan sonu, Temmuz sonu, Ekim sonu, Şubat-Mart"
+  ],
+  "tipik_tepkiler": [
+   "Jeopolitik şoklarda havayollarına göre daha sınırlı düşüş (euro bazlı, yakıt maliyeti yok).",
+   "Trafik rekorları ve euro güçlenmesinde kademeli kurumsal alım."
+  ],
+  "kaynaklar": [
+   "https://www.dhmi.gov.tr/",
+   "https://www.ktb.gov.tr/",
+   "https://arastirma.isyatirim.com.tr/wp-content/uploads/2026/07/TAVHL_2C26_Kar-Analizi_290726.pdf",
+   "https://hedeffiyat.com.tr/dosyalar/rapor/destekyatirimtavhlhedeffiyat21042026-1776766535-3134.pdf",
+   "https://kureansiklopedi.com/en/detay/abd-iran-israil-catismasi-2026-0c4b1",
+   "https://www.forbes.com.tr/para-yatirim/iran-abd-ateskesiyle-petrol-fiyatlari-hizla-dustu-8-nisan-2026-brent-petrol-varil-fiyati"
+  ]
+ },
+ {
+  "sektor": "telekom",
+  "hisseler": [
+   "TCELL",
+   "TTKOM"
+  ],
+  "suruculer": [
+   {
+    "ad": "Enflasyona endeksli fiyatlama gücü",
+    "aciklama": "Abonelik tarifelerinin enflasyonla güncellenebilmesi reel gelir büyümesini korur; dezenflasyonda nominal büyüme yavaşlar ama reel ARPU artabilir.",
+    "yon": "karisik",
+    "seri": "tufe_yillik, ARPU (BTK çeyreklik)",
+    "gecikme": "1-2 çeyrek"
+   },
+   {
+    "ad": "Kur ve dolar bazlı yatırım",
+    "aciklama": "Şebeke ve 5G ekipmanı ile frekans bedelleri dolar/euro bazlı; TL değer kaybı capex ve borç yükünü artırır.",
+    "yon": "olumsuz",
+    "seri": "USDTRY, EURTRY",
+    "gecikme": "aynı gün (borç), çeyrek (capex)"
+   },
+   {
+    "ad": "Faiz ve defansif rotasyon",
+    "aciklama": "Faiz artışı borç maliyetini yükseltir ama piyasa stres dönemlerinde telekom defansif rotasyonun hedefi olur.",
+    "yon": "karisik",
+    "seri": "politika_faizi, XBANK/XU100 göreli getirisi",
+    "gecikme": "aynı gün-1 ay"
+   },
+   {
+    "ad": "Düzenleme ve frekans",
+    "aciklama": "BTK tarife/erişim kararları, frekans ihaleleri ve imtiyaz koşulları nakit akışını ve rekabeti belirler.",
+    "yon": "olumsuz",
+    "seri": "BTK karar ve ihale duyuruları",
+    "gecikme": "duyuru günü"
+   },
+   {
+    "ad": "5G ve veri talebi",
+    "aciklama": "5G'nin ticari başlangıcı veri paketleri ve kurumsal çözümlerde gelir alanı açar.",
+    "yon": "olumlu",
+    "seri": "mobil veri kullanımı (BTK çeyreklik)",
+    "gecikme": "2-6 çeyrek"
+   }
+  ],
+  "duyarlilik_hipotezleri": [
+   "XU100'ün 20 günde %10'dan fazla düştüğü dönemlerde telekom sepetinin XU100'e göre getirisi pozitiftir (defansif); jeopolitik şok başlangıcında ise bu ilişki kırılır.",
+   "TCMB faiz artırım günlerinde telekom sepeti XBANK'ı geçer.",
+   "USDTRY'nin aylık %3'ten fazla yükseldiği aylarda telekom sepeti XU100'ün altında kalır.",
+   "5G ihale/lisans bedelinin açıklandığı gün telekom sepeti XU100'ün altında kalır."
+  ],
+  "takvim": [
+   "BTK çeyreklik pazar verileri (çeyrek sonundan ~3 ay sonra)",
+   "Bilançolar: Şubat-Mart, Mayıs, Ağustos, Kasım başı",
+   "TÜİK TÜFE: her ayın 3'ü 10:00 (hafta sonuna denk gelirse ilk iş günü)",
+   "PPK karar günleri 14:00 (2026: 22 Oca, 12 Mar, 22 Nis, 11 Haz, 23 Tem, 10 Eyl, 22 Eki, 10 Ara)",
+   "Yılbaşı harç/vergi güncellemeleri (yeniden değerleme oranı, Ocak)"
+  ],
+  "tipik_tepkiler": [
+   "Faiz artışı/iç talep stresinde defansif rotasyon: 16 Nisan-16 Mayıs 2025'te +%17 (endeksi ~12,6 puan geçti).",
+   "Ralliye geç ve zayıf katılım (Ocak 2026: endeksin ~2,5 puan altında).",
+   "Önceki ay en çok yükselen grup olduğunda jeopolitik şokta kâr realizasyonu hedefi olur (Şubat-Mart 2026: -%17)."
+  ],
+  "kaynaklar": [
+   "https://www.forbes.com.tr/ekonomi/bofa-turkcell-hedef-fiyatini-guncelledi",
+   "https://www.politikam.com/turkcell-tcell-hisse-analizi-14-ekim-2025",
+   "https://arastirma.isyatirim.com.tr/wp-content/uploads/2026/11/TTKOM_3C26_Kar_Analizi_051126.pdf",
+   "https://www.tcmb.gov.tr/wps/wcm/connect/TR/TCMB+TR/Main+Menu/Temel+Faaliyetler/Para+Politikasi/Merkez+Bankasi+Faiz+Oranlari/1+Hafta+Repo",
+   "https://www.borsagundem.com.tr/tcmbnin-2025-yili-faiz-politikasi-faiz-kararlari-ve-gelismeler",
+   "https://tr.euronews.com/2026/09/16/borsa-istanbulda-sert-dusus-devre-kesici-calisti",
+   "https://www.btk.gov.tr/"
+  ]
+ },
+ {
+  "sektor": "perakende",
+  "hisseler": [
+   "BIMAS",
+   "MGROS"
+  ],
+  "suruculer": [
+   {
+    "ad": "Asgari ücret",
+    "aciklama": "Personel gideri ve müşteri alım gücünü aynı anda artırır; enflasyonun altındaki artış marj için olumlu, talep için olumsuz.",
+    "yon": "karisik",
+    "seri": "asgari_ucret (net, yıllık)",
+    "gecikme": "açıklama günü; etki 1-2 çeyrek"
+   },
+   {
+    "ad": "Gıda enflasyonu",
+    "aciklama": "Nominal satış büyümesini ve enflasyon muhasebesi etkisini belirler; ani fiyat kontrolleri marj riski yaratır.",
+    "yon": "karisik",
+    "seri": "tufe_yillik, gıda TÜFE",
+    "gecikme": "açıklama günü-1 çeyrek"
+   },
+   {
+    "ad": "Politika faizi",
+    "aciklama": "İndirim iç talep ve değerleme çarpanı için olumlu; yüksek net nakit pozisyonunda faiz geliri azalır.",
+    "yon": "olumsuz",
+    "seri": "politika_faizi",
+    "gecikme": "beklenti: 2-6 hafta önce; karar günü sınırlı"
+   },
+   {
+    "ad": "Enerji ve lojistik maliyeti",
+    "aciklama": "Akaryakıt ve elektrik fiyatları dağıtım ve mağaza giderlerini belirler; ÖTV ayarlamaları şoku yumuşatabilir.",
+    "yon": "olumsuz",
+    "seri": "BZ=F, motorin pompa fiyatı, elektrik tarifesi",
+    "gecikme": "1 çeyrek"
+   },
+   {
+    "ad": "Reel ücret ve tüketici güveni",
+    "aciklama": "Reel gelir kaybında indirim marketlerine kayış olur; süpermarket sepeti küçülür.",
+    "yon": "olumlu",
+    "seri": "reel ücret endeksi, TÜİK tüketici güveni (aylık)",
+    "gecikme": "1-2 çeyrek"
+   },
+   {
+    "ad": "Düzenleyici risk",
+    "aciklama": "Ticaret Bakanlığı fiyat denetimleri, haksız fiyat cezaları ve rekabet soruşturmaları marjı ve büyümeyi kısıtlayabilir.",
+    "yon": "olumsuz",
+    "seri": "Rekabet Kurulu/ Ticaret Bakanlığı duyuruları",
+    "gecikme": "duyuru günü"
+   }
+  ],
+  "duyarlilik_hipotezleri": [
+   "Asgari ücret açıklama gününde BIMAS+MGROS sepetinin XU100'e göre anormal getirisi istatistiksel olarak sıfırdan farklı değildir (beklenti fiyatlı).",
+   "PPK'dan önceki 20 iş gününde faiz indirimi beklentisi güçlendiğinde (gösterge tahvil faizi düşerken) perakende sepeti XU100'ü geçer.",
+   "XU100'ün düştüğü günlerde perakende sepetinin betası 1'in altındadır; likidite kaynaklı (fon/MSCI) şoklarda bu ilişki zayıflar.",
+   "Brent'in 20 günde %20'den fazla yükseldiği dönemlerde perakende sepeti sonraki 20 günde XU100'ün altında kalır."
+  ],
+  "takvim": [
+   "Asgari ücret tespit komisyonu (Aralık; yürürlük 1 Ocak)",
+   "TÜİK TÜFE: her ayın 3'ü 10:00 (hafta sonuna denk gelirse ilk iş günü)",
+   "PPK karar günleri 14:00 (2026: 22 Oca, 12 Mar, 22 Nis, 11 Haz, 23 Tem, 10 Eyl, 22 Eki, 10 Ara)",
+   "TÜİK perakende satış endeksi (aylık)",
+   "Bilançolar: Mart, Mayıs, Ağustos, Kasım",
+   "Ramazan ve bayram dönemleri (sepet büyüklüğü)"
+  ],
+  "tipik_tepkiler": [
+   "Faiz indirimi döngüsü öncesi iç talep hisselerine kurumsal rotasyon (13 Kasım-11 Aralık 2024: +%15).",
+   "Asgari ücret açıklamalarına sınırlı tepki; rakam beklenti bandında kalır.",
+   "Likidite şoklarında defansif özellik kaybolur, endeksle birlikte satılır (Ekim 2026: -%16)."
+  ],
+  "kaynaklar": [
+   "https://www.finansopia.com/ekonomi/yillara-gore-asgari-ucret-miktarlari/",
+   "https://www.qnbinvest.com.tr/investodak/qnbarastirma/2026-asgari-ucret-aciklandi-net-28075-tl",
+   "https://www.ey.com/tr_tr/insights/tax/2026-asgari-ucret",
+   "https://www.tcmb.gov.tr/wps/wcm/connect/TR/TCMB+TR/Main+Menu/Temel+Faaliyetler/Para+Politikasi/Merkez+Bankasi+Faiz+Oranlari/1+Hafta+Repo",
+   "https://kpmgvergi.com/yayinlar/mali-bultenler/vergi/akaryakit-fiyat-artislarinin-75-inin-otv-den-karsilanmasina-iliskin-cumhurbaskani-karari-yayimlandi/4470",
+   "https://marbas.com.tr/assets/BIMAS-2026-2.CEYREK-BILANCO-DEGERLENDIRMESI.pdf",
+   "https://rotaborsa.com/migros-mgros-2026-2-ceyrek-bilancosu-beklentiyi-karsiladi-mi/",
+   "https://www.getmidas.com/midasin-kulaklari-ow/borsa-neden-dusuyor-bist-100de-dususun-nedenleri-16-ekim-2026-p-821874"
+  ]
+ },
+ {
+  "sektor": "gida",
+  "hisseler": [
+   "ULKER"
+  ],
+  "suruculer": [
+   {
+    "ad": "Kakao fiyatı",
+    "aciklama": "Çikolata ve kaplamalı ürünlerde ana hammadde; fiyat artışı hedge ve stok nedeniyle 2-3 çeyrek gecikmeyle brüt marjı daraltır.",
+    "yon": "olumsuz",
+    "seri": "CC=F (ICE kakao)",
+    "gecikme": "fiyat: 1-4 hafta; marj: 2-3 çeyrek"
+   },
+   {
+    "ad": "Buğday, şeker ve bitkisel yağ",
+    "aciklama": "Bisküvi ve unlu mamullerin temel girdileri; TMO alım fiyatı yurt içi buğday için çapa.",
+    "yon": "olumsuz",
+    "seri": "ZW=F (buğday), SB=F (şeker), palm yağı, TMO alım fiyatı",
+    "gecikme": "1-2 çeyrek"
+   },
+   {
+    "ad": "Asgari ücret ve işgücü maliyeti",
+    "aciklama": "Emek yoğun üretim ve dağıtım nedeniyle yılbaşı ücret artışı maliyet şokudur.",
+    "yon": "olumsuz",
+    "seri": "asgari_ucret",
+    "gecikme": "1 çeyrek"
+   },
+   {
+    "ad": "Kur",
+    "aciklama": "İthal girdiler (kakao, ambalaj) için olumsuz, ihracat ve yurt dışı gelirler için olumlu.",
+    "yon": "karisik",
+    "seri": "USDTRY, EURTRY",
+    "gecikme": "1-2 çeyrek"
+   },
+   {
+    "ad": "Orta Doğu/Körfez talebi ve lojistik",
+    "aciklama": "Bölgeye ihracat ve bölgedeki üretim jeopolitik şoklara açıktır.",
+    "yon": "olumsuz",
+    "seri": "olay (jeopolitik), BZ=F",
+    "gecikme": "aynı gün-1 çeyrek"
+   },
+   {
+    "ad": "Enerji ve ambalaj",
+    "aciklama": "Petrol ve doğalgaz fiyatları ambalaj ve üretim enerjisi maliyetini belirler.",
+    "yon": "olumsuz",
+    "seri": "BZ=F, TTF doğalgaz",
+    "gecikme": "1-2 çeyrek"
+   }
+  ],
+  "duyarlilik_hipotezleri": [
+   "Kakao vadelilerinin 60 günlük getirisi ile ULKER'in iki çeyrek sonraki brüt marj değişimi negatif korelasyonludur.",
+   "Kakao fiyatının 20 günde %20'den fazla düştüğü dönemlerin ardından ULKER sonraki 20 günde XU100'ü geçer.",
+   "Orta Doğu jeopolitik şok günlerinde ULKER XU100'ün altında kalır.",
+   "Asgari ücret artışının yıllık TÜFE'nin üstünde olduğu yıllarda ULKER'in 1. çeyrek FAVÖK marjı yıllık bazda daralır."
+  ],
+  "takvim": [
+   "Asgari ücret (Aralık)",
+   "TMO hububat alım fiyatı (Haziran başı)",
+   "ICCO çeyreklik kakao bülteni; Fildişi Sahili ana hasat Ekim-Mart, ara hasat Nisan-Eylül",
+   "TÜİK TÜFE: her ayın 3'ü 10:00 (hafta sonuna denk gelirse ilk iş günü)",
+   "Bilançolar: Mart, Mayıs, Ağustos, Kasım"
+  ],
+  "tipik_tepkiler": [
+   "Hammadde zirvesinde marj endişesiyle satış; fiyat artışları açıklandıkça kademeli toparlanma.",
+   "Defansif tüketim hissesi olarak endeks düşüşlerinde görece dayanıklı, rallilerde geride.",
+   "Bilanço günlerinde marj sürprizine güçlü tepki (hammadde gecikmesi beklentiyi bozar)."
+  ],
+  "kaynaklar": [
+   "https://www.ice.com/",
+   "https://www.icco.org/",
+   "https://www.tmo.gov.tr/",
+   "https://www.finansopia.com/ekonomi/yillara-gore-asgari-ucret-miktarlari/",
+   "https://www.hisse.net/haber/ulkerin-ulker-2026-2c-doneminde-net-kari-dustu-89227",
+   "https://hedeffiyat.com.tr/dosyalar/rapor/deniz-yatirim-ulker-hedef-fiyat-12052026-1778566753-5851.pdf",
+   "https://www.ntv.com.tr/ntvpara/abd-israilin-irana-saldirilari-irakin-petrol-uretimi-yuzde-60-dustu-1715081"
+  ]
+ },
+ {
+  "sektor": "enerji_uretim",
+  "hisseler": [
+   "AKSEN",
+   "ODAS"
+  ],
+  "suruculer": [
+   {
+    "ad": "PTF (gün öncesi piyasa takas fiyatı)",
+    "aciklama": "Üreticilerin serbest piyasa satış fiyatıdır; aylık ortalama PTF ve pik saat fiyatları gelir ve marjı doğrudan belirler.",
+    "yon": "+ ise olumlu",
+    "seri": "PTF günlük/aylık ortalama (EPİAŞ Şeffaflık), USD karşılığı",
+    "gecikme": "aynı ay gelir; çeyrek bilançoya 1–3 ay"
+   },
+   {
+    "ad": "EPDK azami fiyat limiti",
+    "aciklama": "Pik saatlerde PTF tavana dayandığı için limit artışı gelir tavanını yükseltir (3.000→3.400 TL Nisan 2025; 3.400→4.500 TL Nisan 2026).",
+    "yon": "+ ise olumlu",
+    "seri": "EPDK azami fiyat limiti (TL/MWh)",
+    "gecikme": "karar günü/ertesi gün beklenti; uygulama ertesi gün"
+   },
+   {
+    "ad": "Doğalgaz maliyeti (TTF, BOTAŞ santral tarifesi)",
+    "aciklama": "Gaz santralleri marjinal fiyatı belirler: gaz pahalandıkça PTF yükselir; gaz dışı üreticiye olumlu, gazlı üreticiye marj baskısı.",
+    "yon": "+ ise karışık (gaz dışı portföy için olumlu)",
+    "seri": "doğalgaz TTF (TTF=F), BOTAŞ elektrik üretim tarifesi",
+    "gecikme": "1–4 hafta"
+   },
+   {
+    "ad": "Hidroloji / yağış",
+    "aciklama": "Yüksek yağış hidro üretimini artırıp PTF'yi düşürür; kuraklık termik üreticileri destekler.",
+    "yon": "+ (yağış) hidro ağırlıklıya olumlu, termik ağırlıklıya olumsuz",
+    "seri": "baraj doluluk oranı (DSİ), hidro üretim payı (EPİAŞ)",
+    "gecikme": "mevsimsel; 1–3 ay"
+   },
+   {
+    "ad": "USDTRY",
+    "aciklama": "PTF TL bazlı ve tavanlıdır; kur artışı tavan sabitken USD bazlı fiyatı aşındırır ve döviz borcunu büyütür.",
+    "yon": "+ ise olumsuz",
+    "seri": "USDTRY",
+    "gecikme": "anında (değerleme), tavan güncellemesine kadar"
+   },
+   {
+    "ad": "Politika faizi",
+    "aciklama": "Sermaye yoğun ve borçlu yapı nedeniyle faiz artışı finansman maliyetini ve iskonto oranını yükseltir.",
+    "yon": "+ ise olumsuz",
+    "seri": "politika_faizi",
+    "gecikme": "0–5 gün (fiyatlama)"
+   },
+   {
+    "ad": "Karbon fiyatlaması (Türkiye ETS)",
+    "aciklama": "İklim Kanunu ile kurulan ETS kömür/linyit santrallerine maliyet getirir.",
+    "yon": "+ ise olumsuz (kömür ağırlıklıya)",
+    "seri": "Türkiye ETS fiyatı (pilot), AB ETS (EUA)",
+    "gecikme": "yıllar; düzenleme haberlerinde anlık"
+   }
+  ],
+  "duyarlilik_hipotezleri": [
+   "EPDK azami fiyat limiti artışının açıklandığı günden sonraki 3 işlem gününde AKSEN+ODAS eşit ağırlıklı sepeti XU100'ü geçer (hipotez; test edilmeli)",
+   "Aylık ortalama PTF'nin USD karşılığı önceki aya göre +%10 artarsa sektör sepeti sonraki 20 işlem gününde XU100'ü geçer (hipotez; test edilmeli)",
+   "TTF 20 günde +%20 → sektör sepetinin 20 günlük göreli getirisi pozitif; ilişki gaz santrali payı yüksek dönemlerde zayıflar (hipotez; test edilmeli)",
+   "Politika faizinde ≥250 bp sürpriz artış → sektör sepeti 5 günde XU100'ün en az %2 gerisinde kalır (hipotez; test edilmeli)"
+  ],
+  "takvim": [
+   "EPİAŞ gün öncesi piyasası sonuçları: her gün (ertesi gün teslim)",
+   "EPDK tarife güncellemeleri: çoğunlukla çeyrek başlarında (örnekler: 1 Temmuz 2024, 5 Nisan 2025, 4 Nisan 2026)",
+   "BOTAŞ tarife değişiklikleri: genellikle ayın 1'i (1 Ağustos 2024, 2 Temmuz 2025, 4 Nisan 2026)",
+   "EPDK azami fiyat limiti kararları: düzensiz (3 Nisan 2025, 2 Nisan 2026)",
+   "DSİ baraj doluluk ve yağış verileri: haftalık/aylık; kar erimesi Mart–Mayıs",
+   "TCMB PPK: yılda 8 toplantı"
+  ],
+  "tipik_tepkiler": [
+   "Tarife/tavan artışı haberlerinin haber günü toplu alımla fiyatlanması, birkaç gün içinde kısmi geri verilmesi (hipotez; test edilmeli)",
+   "Enerji krizi dönemlerinde gaz dışı üretim payı yüksek şirketlerin PTF beklentisiyle öne çıkması (hipotez; test edilmeli)",
+   "Kuraklık haberlerinde hidro ağırlıklı şirketlerin satılıp termik ağırlıklıların görece desteklenmesi (hipotez; test edilmeli)"
+  ],
+  "kaynaklar": [
+   "https://www.cnbce.com/enerji/elektrikte-gun-oncesi-ve-dengeleme-guc-piyasasinda-azami-fiyat-yuzde-13-artirildi-h11272",
+   "https://www.karar.com/ekonomi-haberleri/enerji-piyasasinda-savas-etkisi-tavan-fiyat-4-500-tlye-cikti-epiastan-2039815",
+   "https://www.karar.com/ekonomi-haberleri/enerji-piyasasinda-savas-etkisi-tavan-fiyat-4-500-tlye-cikti-epiastan-2039815",
+   "https://www.cnbce.com/enerji/elektrikte-fiyat-limitleri-yeniden-belirlendi-h27796",
+   "https://medyascope.tv/2026/04/03/dogalgaz-ve-elektrige-yuzde-25-zam-geldi/"
+  ]
+ },
+ {
+  "sektor": "enerji_dagitim",
+  "hisseler": [
+   "AHGAZ"
+  ],
+  "suruculer": [
+   {
+    "ad": "EPDK dağıtım/sistem kullanım bedeli ve getiri oranı",
+    "aciklama": "Düzenlenmiş gelir modeli: dağıtım bedeli ve izin verilen getiri oranı kârlılığın ana belirleyicisidir.",
+    "yon": "+ ise olumlu",
+    "seri": "EPDK doğal gaz dağıtım tarifesi kararları",
+    "gecikme": "tarife yılı başında; hisseye karar günü"
+   },
+   {
+    "ad": "Tüketim hacmi / hava sıcaklığı",
+    "aciklama": "Soğuk kış daha yüksek tüketim ve hacme bağlı gelir demektir.",
+    "yon": "+ (soğuk/HDD) ise olumlu",
+    "seri": "ısıtma derece-gün (HDD, MGM), EPDK doğal gaz piyasa raporu",
+    "gecikme": "aynı çeyrek"
+   },
+   {
+    "ad": "BOTAŞ perakende fiyat artışları",
+    "aciklama": "Gaz bedeli geçişlidir; zam doğrudan marjı değiştirmez ama tüketim, tahsilat ve işletme sermayesini etkiler.",
+    "yon": "+ ise nötr-olumsuz",
+    "seri": "BOTAŞ konut tarifesi",
+    "gecikme": "1–3 ay"
+   },
+   {
+    "ad": "Enflasyon",
+    "aciklama": "Tarifelerin enflasyonla güncellenmesi nominal geliri korur; güncelleme gecikmesi reel aşınma yaratır.",
+    "yon": "+ ise kısa vadede olumsuz, tarife güncellemesinde olumlu",
+    "seri": "tufe_yillik, ÜFE",
+    "gecikme": "6–12 ay"
+   },
+   {
+    "ad": "Politika faizi",
+    "aciklama": "Düşük betalı, temettü/regüle getiri profili faiz düşüşünde değer kazanır.",
+    "yon": "+ ise olumsuz",
+    "seri": "politika_faizi",
+    "gecikme": "0–20 gün"
+   },
+   {
+    "ad": "İthal gaz maliyeti (TTF/petrol endeksli kontratlar)",
+    "aciklama": "BOTAŞ görev zararını büyüterek ileriye dönük zam ve tahsilat riskini artırır.",
+    "yon": "+ ise olumsuz (dolaylı)",
+    "seri": "doğalgaz TTF, BZ=F (Brent)",
+    "gecikme": "1–6 ay"
+   }
+  ],
+  "duyarlilik_hipotezleri": [
+   "BOTAŞ konut zammı açıklandığında AHGAZ'ın 5 günlük getirisi XU100'den anlamlı farklı değildir (geçişli maliyet) (hipotez; test edilmeli)",
+   "Kış çeyreğinde HDD normalin %10 üzerindeyse dağıtım hacmi yıllık artar ve bilanço haftasında göreli getiri pozitiftir (hipotez; test edilmeli)",
+   "Politika faizinde 100 bp indirim → AHGAZ 20 günde XU100'ü geçer (hipotez; test edilmeli)"
+  ],
+  "takvim": [
+   "BOTAŞ tarife değişiklikleri: genellikle ayın 1'i",
+   "EPDK doğal gaz dağıtım tarifeleri ve bağlantı bedelleri: yıllık kararlar",
+   "EPDK aylık doğal gaz piyasası sektör raporu",
+   "MGM sıcaklık verileri: günlük; ısıtma sezonu Ekim–Nisan",
+   "TCMB PPK: yılda 8 toplantı"
+  ],
+  "tipik_tepkiler": [
+   "Regüle dağıtım hisselerinin piyasa düşüşlerinde savunmacı kabul edilmesi (hipotez; test edilmeli)",
+   "Zam haberlerine tepkinin sınırlı kalması (hipotez; test edilmeli)"
+  ],
+  "kaynaklar": [
+   "https://www.dunya.com/gundem/son-dakika-botas-duyurdu-dogal-gaza-yuzde-38-zam-haberi-739301",
+   "https://www.bloomberght.com/dogalgaza-zam-yapildi-2357541",
+   "https://t24.com.tr/haber/dogalgaz-dev-zam,1177092",
+   "https://www.bloomberght.com/dogalgaza-zam-yapildi-3751872",
+   "https://www.ntv.com.tr/ekonomi/dogalgaz-fiyatlarina-zam,e42p18YRTkOltwpToORm2Q",
+   "https://medyascope.tv/2026/04/03/dogalgaz-ve-elektrige-yuzde-25-zam-geldi/"
+  ]
+ },
+ {
+  "sektor": "enerji_ekipman",
+  "hisseler": [
+   "ASTOR",
+   "KONTR"
+  ],
+  "suruculer": [
+   {
+    "ad": "Şebeke ve yenilenebilir yatırımları",
+    "aciklama": "İletim/dağıtım şirketlerinin yatırım bütçeleri ve YEKA ihaleleri trafo, şalt ve depolama siparişlerini belirler.",
+    "yon": "+ ise olumlu",
+    "seri": "YEKA ihale kapasitesi (MW), EPDK dağıtım yatırım tavanları",
+    "gecikme": "sipariş 3–12 ay; gelir 6–18 ay"
+   },
+   {
+    "ad": "Bakır fiyatı",
+    "aciklama": "Trafo ve kablo maliyetinin ana girdisi; fiyat geçişkenliği sözleşmelere bağlı ve gecikmeli.",
+    "yon": "+ ise olumsuz",
+    "seri": "HG=F (COMEX bakır), LME bakır",
+    "gecikme": "1–2 çeyrek"
+   },
+   {
+    "ad": "Elektrik fiyat oynaklığı / pik-dip farkı",
+    "aciklama": "Akşam piklerinin tavana dayanması ve gündüz düşük fiyatlar batarya depolama getirisini artırır.",
+    "yon": "+ ise olumlu (depolama)",
+    "seri": "PTF pik-dip farkı (EPİAŞ), EPDK azami fiyat limiti",
+    "gecikme": "yatırım kararlarına 3–12 ay"
+   },
+   {
+    "ad": "Kur (USDTRY, EURTRY)",
+    "aciklama": "İhracat ve döviz bazlı fiyatlama nedeniyle kur artışı TL gelirini büyütür.",
+    "yon": "+ ise olumlu",
+    "seri": "USDTRY, EURTRY",
+    "gecikme": "aynı çeyrek"
+   },
+   {
+    "ad": "Küresel şebeke / veri merkezi talebi",
+    "aciklama": "ABD ve Avrupa'daki trafo açığı ihracat talebini destekler.",
+    "yon": "+ ise olumlu",
+    "seri": "ABD trafo ithalatı (US Census), AB şebeke yatırım planları",
+    "gecikme": "2–4 çeyrek"
+   },
+   {
+    "ad": "Politika faizi ve risk iştahı",
+    "aciklama": "Yüksek büyüme beklentili, yüksek betalı hisseler faiz ve risk iştahına duyarlıdır.",
+    "yon": "+ (faiz) ise olumsuz",
+    "seri": "politika_faizi, ^VIX, EEM",
+    "gecikme": "0–10 gün"
+   },
+   {
+    "ad": "ABD ticaret önlemleri",
+    "aciklama": "ABD tarifeleri ihracat rekabetçiliğini etkiler.",
+    "yon": "+ (tarife artışı) ise olumsuz",
+    "seri": "ABD tarife kararları (Federal Register)",
+    "gecikme": "anlık–1 çeyrek"
+   }
+  ],
+  "duyarlilik_hipotezleri": [
+   "HG=F 20 günde +%10 → ASTOR'un 20 günlük XU100'e göre getirisi negatif (hipotez; test edilmeli)",
+   "EPDK azami fiyat limiti artışı sonrası 5 işlem gününde KONTR XU100'ü geçer (hipotez; test edilmeli)",
+   "Politika faizinde sürpriz indirim → ASTOR ve KONTR 5 günde XU100'ü geçer (yüksek beta) (hipotez; test edilmeli)",
+   "EEM 20 günde −%10 → sektör sepeti XU100'ün gerisinde kalır (hipotez; test edilmeli)"
+  ],
+  "takvim": [
+   "YEKA ihale duyuruları: Enerji ve Tabii Kaynaklar Bakanlığı (düzensiz)",
+   "EPDK tarife dönemi ve dağıtım yatırım onayları: yıllık",
+   "LME/COMEX bakır: günlük",
+   "ABD tarife kararları (Section 232/IEEPA): düzensiz",
+   "Çeyrek bilançolarda sipariş defteri (backlog) açıklamaları"
+  ],
+  "tipik_tepkiler": [
+   "Risk iştahının arttığı dönemlerde BIST'i yukarı, düşüşlerde aşağı aşan yüksek beta hareketi (hipotez; test edilmeli)",
+   "Sipariş/ihale haberlerinin birkaç gün içinde fiyatlanması ve bireysel yatırımcı yoğunluğuyla aşırı tepki (hipotez; test edilmeli)"
+  ],
+  "kaynaklar": [
+   "https://www.cnbce.com/enerji/elektrikte-gun-oncesi-ve-dengeleme-guc-piyasasinda-azami-fiyat-yuzde-13-artirildi-h11272",
+   "https://www.karar.com/ekonomi-haberleri/enerji-piyasasinda-savas-etkisi-tavan-fiyat-4-500-tlye-cikti-epiastan-2039815",
+   "https://www.karar.com/ekonomi-haberleri/enerji-piyasasinda-savas-etkisi-tavan-fiyat-4-500-tlye-cikti-epiastan-2039815",
+   "https://www.cnbce.com/enerji/elektrikte-fiyat-limitleri-yeniden-belirlendi-h27796",
+   "https://www.endeks24.com/spot-elektrik-fiyati-aksam-saatleri-tavanda"
+  ]
+ },
+ {
+  "sektor": "rafineri_petrokimya",
+  "hisseler": [
+   "TUPRS",
+   "PETKM"
+  ],
+  "suruculer": [
+   {
+    "ad": "Akdeniz ürün marjları (crack spread)",
+    "aciklama": "Dizel, jet ve benzinin ham petrole göre primi rafineri kârlılığının ana belirleyicisidir.",
+    "yon": "+ ise olumlu (TUPRS)",
+    "seri": "crack spread (Akdeniz ULSD−Brent, 3-2-1)",
+    "gecikme": "aynı çeyrek; hisse fiyatlaması 0–2 hafta"
+   },
+   {
+    "ad": "Brent seviyesi ve değişimi",
+    "aciklama": "Hızlı yükselişte rafineriler stok kazancı yazar, petrokimya nafta maliyetiyle sıkışır; hızlı düşüşte tersi.",
+    "yon": "+ ise TUPRS için kısa vadede olumlu, PETKM için olumsuz",
+    "seri": "BZ=F (Brent)",
+    "gecikme": "0–1 ay; stok etkisi çeyrek bilançoda"
+   },
+   {
+    "ad": "Ham petrol iskontoları ve yaptırımlar",
+    "aciklama": "Urals gibi iskontolu ham petrole erişim marjı artırır; AB/ABD yaptırımları erişimi ve ihracat pazarlarını kısıtlar.",
+    "yon": "+ (iskonto genişlemesi) ise olumlu; yaptırım sıkılaşması olumsuz",
+    "seri": "Urals−Brent farkı",
+    "gecikme": "1–3 ay"
+   },
+   {
+    "ad": "USDTRY",
+    "aciklama": "Marjlar dolar bazlıdır; kur artışı TL kârı büyütür.",
+    "yon": "+ ise olumlu",
+    "seri": "USDTRY",
+    "gecikme": "aynı çeyrek"
+   },
+   {
+    "ad": "Petrokimya marjları ve Çin arzı",
+    "aciklama": "Etilen-nafta ve polimer-nafta farkı PETKM kârlılığını belirler; Çin kapasite artışı fiyatları baskılar.",
+    "yon": "+ (marj) ise olumlu",
+    "seri": "etilen−nafta farkı, PE/PP−nafta farkı",
+    "gecikme": "aynı çeyrek"
+   },
+   {
+    "ad": "Jeopolitik arz şokları ve navlun",
+    "aciklama": "Kızıldeniz/Hürmüz gibi aksamalar ürün marjlarını artırırken ham tedarik ve navlun riskini büyütür.",
+    "yon": "+ ise karışık",
+    "seri": "Brent volatilitesi (OVX), tanker navlun endeksleri",
+    "gecikme": "anlık–1 ay"
+   },
+   {
+    "ad": "Yurt içi akaryakıt talebi ve vergi",
+    "aciklama": "ÖTV artışları ve fiyat düzenlemeleri talebi ve fiyatlama esnekliğini etkiler.",
+    "yon": "+ (ÖTV artışı) ise nötr-olumsuz",
+    "seri": "EPDK akaryakıt satışları, ÖTV kararları",
+    "gecikme": "1–3 ay"
+   }
+  ],
+  "duyarlilik_hipotezleri": [
+   "Brent 20 işlem gününde +%10 → TUPRS 20 günlük getirisi XU100'ü geçer, PETKM geride kalır (hipotez; test edilmeli)",
+   "Akdeniz dizel crack 4 haftada +5 $/varil → TUPRS sonraki 20 günde XU100'ü geçer (hipotez; test edilmeli)",
+   "Brent tek günde %10'dan fazla düştüğünde (ör. 8 Nisan 2026) TUPRS aynı gün XU100'ün gerisinde kalır (hipotez; test edilmeli)",
+   "USDTRY 1 ayda beklenti üstü +%3 → TUPRS göreli pozitif (hipotez; test edilmeli)"
+  ],
+  "takvim": [
+   "OPEC+ toplantıları: genellikle aylık",
+   "ABD EIA haftalık petrol stokları: Çarşamba",
+   "AB yaptırım paketleri; Rus hamından üretilmiş ürün yasağı 21 Ocak 2026'dan itibaren",
+   "EPDK aylık petrol piyasası sektör raporu",
+   "Çeyrek bilançolar: stok kazancı/zararı ayrıştırılmalı"
+  ],
+  "tipik_tepkiler": [
+   "Petrol sıçramalarında TUPRS'e hızlı alım, PETKM'de satış; ateşkes/gerilim azalması haberlerinde tersine dönüş (Nisan ve Kasım 2026 örnekleri) (hipotez; test edilmeli)",
+   "Temettü beklentisiyle TUPRS'te bilanço ve genel kurul öncesi pozisyonlanma (hipotez; test edilmeli)"
+  ],
+  "kaynaklar": [
+   "https://www.cnbce.com/enerji/enerjiye-savas-darbesi-petrol-yuzde-51-dogalgaz-yuzde-59-yukseldi-h27876",
+   "https://gulfnews.com/business/energy/brent-crude-oil-price-spikes-to-1071-amid-iran-us-israel-war-1.500467933",
+   "https://www.forbes.com.tr/para-yatirim/iran-abd-ateskesiyle-petrol-fiyatlari-hizla-dustu-8-nisan-2026-brent-petrol-varil-fiyati",
+   "https://www.nationthailand.com/news/40072956",
+   "https://www.oilmonster.com/article/brent-heads-for-16-weekly-drop-as-hormuz-risk-caps-losses/8765"
+  ]
+ },
+ {
+  "sektor": "kimya",
+  "hisseler": [
+   "SASA"
+  ],
+  "suruculer": [
+   {
+    "ad": "Polyester zinciri marjları",
+    "aciklama": "Paraksilen-PTA ve PTA-polyester (elyaf/cips) farkları kârlılığı belirler.",
+    "yon": "+ ise olumlu",
+    "seri": "PX−PTA farkı, PTA−PSF/POY farkı (Asya)",
+    "gecikme": "aynı çeyrek"
+   },
+   {
+    "ad": "Petrol ve türev hammaddeler",
+    "aciklama": "Paraksilen, MEG ve nafta maliyeti petrolle hareket eder; hızlı yükselişte stok kazancı, sürekli yükselişte marj baskısı.",
+    "yon": "+ ise karışık (genelde olumsuz)",
+    "seri": "BZ=F (Brent), paraksilen (Asya CFR)",
+    "gecikme": "0–2 ay"
+   },
+   {
+    "ad": "Çin kapasitesi ve ticaret savunma önlemleri",
+    "aciklama": "Çin ihracatındaki artış fiyatları baskılar; Türkiye'nin antidamping önlemleri iç pazarı korur.",
+    "yon": "+ (Çin ihracatı) ise olumsuz",
+    "seri": "Çin polyester ihracatı (GACC), Resmi Gazete ticaret savunma kararları",
+    "gecikme": "1–3 ay"
+   },
+   {
+    "ad": "Enerji maliyeti",
+    "aciklama": "Doğalgaz ve elektrik enerji yoğun üretimde önemli maliyet kalemidir.",
+    "yon": "+ ise olumsuz",
+    "seri": "BOTAŞ sanayi tarifesi, doğalgaz TTF, PTF",
+    "gecikme": "aynı ay"
+   },
+   {
+    "ad": "Yurt içi tekstil talebi",
+    "aciklama": "Polyester elyaf ve iplik talebi Türk tekstil ve hazır giyim üretimine bağlıdır.",
+    "yon": "+ ise olumlu",
+    "seri": "TÜİK sanayi üretimi (tekstil), TİM tekstil ihracatı",
+    "gecikme": "1–2 ay"
+   },
+   {
+    "ad": "Kur ve faiz",
+    "aciklama": "Döviz bazlı fiyatlama kur artışında geliri destekler; yüksek borçluluk faiz artışında olumsuzdur.",
+    "yon": "USDTRY + ise olumlu; politika_faizi + ise olumsuz",
+    "seri": "USDTRY, politika_faizi",
+    "gecikme": "0–20 gün"
+   }
+  ],
+  "duyarlilik_hipotezleri": [
+   "BOTAŞ sanayi gazına ≥%15 zam açıklandığında SASA 5 işlem gününde XU100'ün gerisinde kalır (hipotez; test edilmeli)",
+   "Brent 20 günde −%10 → SASA'nın 20 günlük göreli getirisi pozitif (maliyet rahatlaması); işaret test edilmeli (hipotez; test edilmeli)",
+   "Politika faizinde 100 bp indirim → SASA 20 günde XU100'ü geçer (yüksek kaldıraç) (hipotez; test edilmeli)"
+  ],
+  "takvim": [
+   "BOTAŞ tarife değişiklikleri: genellikle ayın 1'i",
+   "TÜİK sanayi üretimi: aylık",
+   "Çin gümrük verileri: aylık",
+   "Resmi Gazete ticaret politikası savunma önlemleri: düzensiz"
+  ],
+  "tipik_tepkiler": [
+   "Yüksek bireysel yatırımcı payı nedeniyle kapasite/yatırım haberlerine aşırı tepki ve geri dönüş (hipotez; test edilmeli)"
+  ],
+  "kaynaklar": [
+   "https://medyascope.tv/2026/04/03/dogalgaz-ve-elektrige-yuzde-25-zam-geldi/",
+   "https://www.bloomberght.com/dogalgaza-zam-yapildi-3751872",
+   "https://www.cnbce.com/enerji/enerjiye-savas-darbesi-petrol-yuzde-51-dogalgaz-yuzde-59-yukseldi-h27876"
+  ]
+ },
+ {
+  "sektor": "kimya_gubre",
+  "hisseler": [
+   "GUBRF"
+  ],
+  "suruculer": [
+   {
+    "ad": "Uluslararası gübre fiyatları",
+    "aciklama": "Üre, amonyak ve DAP fiyatları satış fiyatlarını belirler; Mart 2026'da üre 482,5'ten 720 $/t'ye çıktı.",
+    "yon": "+ ise olumlu",
+    "seri": "üre (Orta Doğu granül FOB), DAP",
+    "gecikme": "1–2 ay (stok ve sezon)"
+   },
+   {
+    "ad": "Doğalgaz maliyeti",
+    "aciklama": "Gaz azotlu gübrede hem hammadde hem enerjidir.",
+    "yon": "+ ise olumsuz",
+    "seri": "BOTAŞ sanayi tarifesi, doğalgaz TTF",
+    "gecikme": "aynı ay"
+   },
+   {
+    "ad": "Üre/gaz marjı",
+    "aciklama": "Üre fiyatı ile gaz maliyeti arasındaki fark kârlılığın özetidir.",
+    "yon": "+ ise olumlu",
+    "seri": "üre fiyatı / TTF oranı",
+    "gecikme": "aynı çeyrek"
+   },
+   {
+    "ad": "Çiftçi alım gücü ve destekler",
+    "aciklama": "Ürün fiyatları, gübre destekleri ve kredi koşulları talebi belirler.",
+    "yon": "+ ise olumlu",
+    "seri": "TMO alım fiyatları, tarım ÜFE, gübre destek ödemeleri",
+    "gecikme": "sezonluk"
+   },
+   {
+    "ad": "Jeopolitik arz şokları",
+    "aciklama": "Hürmüz/Körfez aksamaları ve ihracat kısıtları fiyatları sıçratır.",
+    "yon": "+ (arz şoku) ise olumlu",
+    "seri": "Brent ve üre volatilitesi",
+    "gecikme": "anlık–1 ay"
+   },
+   {
+    "ad": "USDTRY",
+    "aciklama": "Gübre fiyatları dolar bazlıdır.",
+    "yon": "+ ise olumlu",
+    "seri": "USDTRY",
+    "gecikme": "aynı çeyrek"
+   }
+  ],
+  "duyarlilik_hipotezleri": [
+   "Üre fiyatı 4 haftada +%20 → GUBRF sonraki 20 günde XU100'ü geçer (ör. Mart 2026) (hipotez; test edilmeli)",
+   "BOTAŞ sanayi gazına ≥%15 zam → GUBRF 5 günde XU100'ün gerisinde kalır (Nisan 2026 testi) (hipotez; test edilmeli)",
+   "Hürmüz/Körfez gerilimi artan günlerde GUBRF günlük getirisi Brent getirisiyle pozitif korelasyon gösterir (hipotez; test edilmeli)",
+   "Ateşkes/barış haberlerinde GUBRF aynı gün XU100'ün gerisinde kalır (hipotez; test edilmeli)"
+  ],
+  "takvim": [
+   "BOTAŞ tarife değişiklikleri: genellikle ayın 1'i",
+   "Gübreleme sezonları: ilkbahar (Şubat–Nisan) ve sonbahar (Eylül–Kasım)",
+   "Hindistan üre ithalat ihaleleri: düzensiz",
+   "Tarım ve Orman Bakanlığı destek ödemeleri: dönemsel"
+  ],
+  "tipik_tepkiler": [
+   "Jeopolitik arz şoklarında 'savaş hissesi' olarak hızlı ve aşırı fiyatlama, ateşkeste sert geri çekilme (hipotez; test edilmeli)"
+  ],
+  "kaynaklar": [
+   "https://www.milliyet.com.tr/7559989",
+   "https://www.bloomberght.com/hurmuz-krizi-gubre-fiyatlarini-sicratti-3789963",
+   "https://www.takvim.com.tr/ekonomi/2026/03/07/gubre-fiyatlari-artiyor-savas-gida-krizini-tetikler-mi",
+   "https://www.ekonomigazetesi.com/kuresel-ekonomi/dtoden-gubre-ham-maddesi-uyarisi-83061"
+  ]
+ },
+ {
+  "sektor": "kimya_tarim",
+  "hisseler": [
+   "HEKTS"
+  ],
+  "suruculer": [
+   {
+    "ad": "Çiftçi gelirleri ve ürün fiyatları",
+    "aciklama": "Yüksek ürün fiyatı ve gelir bitki koruma ürünlerine harcamayı artırır.",
+    "yon": "+ ise olumlu",
+    "seri": "TMO alım fiyatları, tarım ÜFE (TÜİK)",
+    "gecikme": "sezonluk; 1–2 çeyrek"
+   },
+   {
+    "ad": "İklim olayları",
+    "aciklama": "Kuraklık ve zirai don rekolteyi ve ilaçlama ihtiyacını azaltır.",
+    "yon": "+ (olumsuz iklim olayı) ise olumsuz",
+    "seri": "MGM yağış anomalisi, TÜİK bitkisel üretim tahminleri",
+    "gecikme": "aynı sezon"
+   },
+   {
+    "ad": "Faiz ve tarımsal kredi",
+    "aciklama": "Vadeli satış ve bayi finansmanı nedeniyle faiz ve kredi koşulları tahsilatı belirler.",
+    "yon": "+ (faiz) ise olumsuz",
+    "seri": "politika_faizi, sübvansiyonlu tarım kredisi koşulları",
+    "gecikme": "0–1 çeyrek"
+   },
+   {
+    "ad": "Çin jenerik etken madde fiyatları",
+    "aciklama": "Çin fiyatlarının düşmesi satış fiyatlarını ve stok değerini baskılar.",
+    "yon": "+ (fiyat düşüşü) ise olumsuz",
+    "seri": "Çin agrokimyasal etken madde fiyatları",
+    "gecikme": "1–2 çeyrek"
+   },
+   {
+    "ad": "Girdi maliyetleri (gübre, mazot, sulama elektriği)",
+    "aciklama": "Çiftçi bütçesini daraltır; gübre faaliyeti olan şirketlerde kısmi fiyat avantajı yaratır.",
+    "yon": "+ ise karışık (çoğunlukla olumsuz)",
+    "seri": "üre fiyatı, BZ=F, EPDK tarımsal tarife",
+    "gecikme": "aynı sezon"
+   },
+   {
+    "ad": "USDTRY",
+    "aciklama": "İthal etken madde maliyeti ile TL fiyatlama arasındaki zamanlama farkı marjı etkiler.",
+    "yon": "+ ise karışık",
+    "seri": "USDTRY",
+    "gecikme": "1–2 çeyrek"
+   }
+  ],
+  "duyarlilik_hipotezleri": [
+   "Politika faizinde ≥250 bp artış → HEKTS 20 günde XU100'ün gerisinde kalır (hipotez; test edilmeli)",
+   "Zirai don/kuraklık kaynaklı resmi üretim tahmini revizyonu (−%10'dan fazla) → HEKTS 20 günde XU100'ün gerisinde (hipotez; test edilmeli)",
+   "Mart–Haziran ilaçlama sezonunda HEKTS'in XU100'e göre getirisi yılın kalanından yüksektir (mevsimsellik) (hipotez; test edilmeli)"
+  ],
+  "takvim": [
+   "TÜİK bitkisel üretim tahminleri: yılda birkaç kez",
+   "MGM aylık yağış/kuraklık değerlendirmeleri",
+   "TMO hububat alım fiyatı açıklaması: genellikle hasat öncesi",
+   "TCMB PPK: yılda 8 toplantı"
+  ],
+  "tipik_tepkiler": [
+   "Uzun süreli düşüş trendinde olumlu haberlere kısa süreli tepki yükselişleri (hipotez; test edilmeli)"
+  ],
+  "kaynaklar": [
+   "https://www.cnbce.com/haberler/epdk-duyurdu-elektrige-yuzde-25-zam-h11266",
+   "https://www.milliyet.com.tr/7559989",
+   "https://www.ekonomigazetesi.com/kuresel-ekonomi/dtoden-gubre-ham-maddesi-uyarisi-83061"
+  ]
+ },
+ {
+  "sektor": "demir_celik",
+  "hisseler": [
+   "EREGL",
+   "KRDMD",
+   "BRSAN"
+  ],
+  "suruculer": [
+   {
+    "ad": "Küresel çelik fiyatı",
+    "aciklama": "Yassı (HRC) ve uzun ürün fiyatları satış fiyatlarını belirler.",
+    "yon": "+ ise olumlu",
+    "seri": "çelik HRC (HRC=F ABD; Kuzey Avrupa HRC), Türkiye inşaat demiri ihracat fiyatı",
+    "gecikme": "0–1 ay"
+   },
+   {
+    "ad": "Hammadde maliyeti ve spread",
+    "aciklama": "Demir cevheri, koklaşabilir kömür ve hurda maliyeti; asıl belirleyici ürün-hammadde farkıdır.",
+    "yon": "+ (hammadde) ise olumsuz",
+    "seri": "demir cevheri 62% CFR Çin, hurda HMS 1&2 CFR Türkiye",
+    "gecikme": "0–2 ay"
+   },
+   {
+    "ad": "Çin çelik ihracatı",
+    "aciklama": "Çin'in ihracat fazlası küresel fiyatları ve Türkiye'nin ihracat pazarlarını baskılar.",
+    "yon": "+ ise olumsuz",
+    "seri": "Çin aylık çelik ihracatı (GACC)",
+    "gecikme": "1–2 ay"
+   },
+   {
+    "ad": "Ticaret korumaları",
+    "aciklama": "AB kotaları/SKDM, ABD Section 232 ihracatı kısıtlar; Türkiye'nin ithalat önlemleri iç pazarı korur.",
+    "yon": "dış pazar engeli + ise olumsuz; iç pazar koruması + ise olumlu",
+    "seri": "AB safeguard/yeni rejim kotaları, ABD tarife oranları",
+    "gecikme": "karar günü; hacim etkisi 1–2 çeyrek"
+   },
+   {
+    "ad": "Enerji maliyeti",
+    "aciklama": "Elektrik ark ocaklı üreticilerde elektrik, entegre tesislerde gaz ve kömür önemli maliyet kalemidir.",
+    "yon": "+ ise olumsuz",
+    "seri": "PTF, BOTAŞ sanayi tarifesi",
+    "gecikme": "aynı ay"
+   },
+   {
+    "ad": "İnşaat talebi",
+    "aciklama": "Deprem bölgesi, kamu konut programları ve Suriye yeniden inşası uzun ürün talebini belirler.",
+    "yon": "+ ise olumlu",
+    "seri": "inşaat izinleri (TÜİK yapı ruhsatı), inşaat demiri tüketimi",
+    "gecikme": "1–2 çeyrek"
+   },
+   {
+    "ad": "Kur",
+    "aciklama": "Dolar bazlı fiyatlama ve ihracat nedeniyle kur artışı TL geliri artırır.",
+    "yon": "+ ise olumlu",
+    "seri": "USDTRY, EURTRY",
+    "gecikme": "aynı çeyrek"
+   }
+  ],
+  "duyarlilik_hipotezleri": [
+   "HRC 20 günde +%5 → EREGL'nin 20 günlük XU100'e göre getirisi pozitif (hipotez; test edilmeli)",
+   "ABD veya AB'den yeni ticaret kısıtlaması haberi → BRSAN ve EREGL 3 günde XU100'ün gerisinde (hipotez; test edilmeli)",
+   "Çin aylık çelik ihracatı yıllık +%20 → sonraki 20 günde sektör sepeti XU100'ün gerisinde (hipotez; test edilmeli)",
+   "Suriye/yeniden yapılanma haberlerinde KRDMD 5 günde XU100'ü geçer (hipotez; test edilmeli)"
+  ],
+  "takvim": [
+   "worldsteel aylık üretim verisi: ay sonuna doğru",
+   "Çin gümrük (GACC) ihracat verisi: ayın ilk yarısı",
+   "AB çelik önlemi: mevcut safeguard 30 Haziran 2026'da sona eriyor; yeni rejim teklifi 7 Ekim 2025 (doğrulanmadı)",
+   "AB SKDM: kesin dönem 1 Ocak 2026; sertifika yükümlülükleri sonraki yıllarda",
+   "TÜİK yapı izin istatistikleri: çeyreklik"
+  ],
+  "tipik_tepkiler": [
+   "Talep hikâyelerinde (Suriye, deprem) hızlı tematik ralli ve ardından geri çekilme (hipotez; test edilmeli)",
+   "Ticaret engeli haberlerinde ihracatçılarda ani satış (hipotez; test edilmeli)"
+  ],
+  "kaynaklar": [
+   "https://ec.europa.eu/commission/presscorner/home/en",
+   "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism_en",
+   "https://medyascope.tv/2026/04/03/dogalgaz-ve-elektrige-yuzde-25-zam-geldi/"
+  ]
+ },
+ {
+  "sektor": "cimento",
+  "hisseler": [
+   "CIMSA",
+   "OYAKC"
+  ],
+  "suruculer": [
+   {
+    "ad": "İnşaat faaliyeti",
+    "aciklama": "Konut ve altyapı inşaatı çimento talebinin ana kaynağıdır.",
+    "yon": "+ ise olumlu",
+    "seri": "inşaat izinleri (TÜİK yapı ruhsatı m²), konut satışları (TÜİK)",
+    "gecikme": "1–2 çeyrek"
+   },
+   {
+    "ad": "Deprem bölgesi ve kamu konut programları",
+    "aciklama": "Kamu kaynaklı yeniden inşa ve sosyal konut talebi hacmi destekler.",
+    "yon": "+ ise olumlu",
+    "seri": "teslim edilen konut sayısı (Çevre, Şehircilik Bakanlığı/TOKİ)",
+    "gecikme": "1–4 çeyrek"
+   },
+   {
+    "ad": "Enerji maliyeti",
+    "aciklama": "Petrokok/kömür ve elektrik toplam maliyetin büyük bölümüdür.",
+    "yon": "+ ise olumsuz",
+    "seri": "API2 kömür, petrokok fiyatı, PTF",
+    "gecikme": "1–2 ay"
+   },
+   {
+    "ad": "İhracat pazarları ve navlun",
+    "aciklama": "ABD, Orta Doğu, Afrika ve Suriye ihracatı kapasite kullanımını belirler.",
+    "yon": "+ ise olumlu",
+    "seri": "çimento ihracatı (TÇMB), USDTRY, kuru yük navlunu",
+    "gecikme": "1–2 çeyrek"
+   },
+   {
+    "ad": "Politika faizi ve konut kredisi",
+    "aciklama": "Faiz artışı konut talebini ve özel inşaatı yavaşlatır.",
+    "yon": "+ ise olumsuz",
+    "seri": "politika_faizi, konut kredisi faizi",
+    "gecikme": "1–3 ay"
+   },
+   {
+    "ad": "Karbon maliyeti",
+    "aciklama": "SKDM ve Türkiye ETS klinker üretimine maliyet getirir.",
+    "yon": "+ ise olumsuz",
+    "seri": "AB ETS (EUA), Türkiye ETS",
+    "gecikme": "yıllar"
+   },
+   {
+    "ad": "Enflasyon ve fiyatlama gücü",
+    "aciklama": "Bölgesel pazarlarda fiyat ayarlaması maliyet artışlarını geçirebilir.",
+    "yon": "+ ise kısa vadede nötr-olumlu",
+    "seri": "tufe_yillik, yurt içi çimento fiyat endeksi",
+    "gecikme": "1–2 çeyrek"
+   }
+  ],
+  "duyarlilik_hipotezleri": [
+   "Suriye/yeniden yapılanma veya kamu konut programı haberi → CIMSA ve OYAKC 5 günde XU100'ü geçer (hipotez; test edilmeli)",
+   "Yapı ruhsatı (m²) yıllık +%20 → sonraki çeyrekte çimento sepeti XU100'ü geçer (hipotez; test edilmeli)",
+   "Politika faizinde sürpriz indirim → çimento sepeti 5 günde XU100'ü geçer (hipotez; test edilmeli)"
+  ],
+  "takvim": [
+   "TÜİK yapı izin istatistikleri: çeyreklik",
+   "TÜİK konut satış istatistikleri: aylık",
+   "TÇMB aylık üretim/satış/ihracat verileri",
+   "TCMB PPK: yılda 8 toplantı",
+   "AB SKDM kesin dönemi: 1 Ocak 2026"
+  ],
+  "tipik_tepkiler": [
+   "Tematik haberlere (deprem, Suriye) hızlı alım (hipotez; test edilmeli)",
+   "Enerji zammı haberlerine sınırlı tepki (fiyat geçişkenliği yüksek) (hipotez; test edilmeli)"
+  ],
+  "kaynaklar": [
+   "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism_en",
+   "https://medyascope.tv/2026/04/03/dogalgaz-ve-elektrige-yuzde-25-zam-geldi/"
+  ]
+ },
+ {
+  "sektor": "cam",
+  "hisseler": [
+   "SISE"
+  ],
+  "suruculer": [
+   {
+    "ad": "Doğalgaz maliyeti",
+    "aciklama": "Cam ergitme fırınları gaz yoğundur; tarife artışları marjı doğrudan etkiler.",
+    "yon": "+ ise olumsuz",
+    "seri": "doğalgaz TTF (TTF=F), BOTAŞ sanayi tarifesi",
+    "gecikme": "aynı çeyrek"
+   },
+   {
+    "ad": "Avrupa talebi",
+    "aciklama": "Düzcam, otomotiv camı ve ambalaj camı talebi Avrupa inşaat ve sanayi döngüsüne bağlıdır.",
+    "yon": "+ ise olumlu",
+    "seri": "Euro Bölgesi imalat PMI, AB inşaat üretimi",
+    "gecikme": "1–2 çeyrek"
+   },
+   {
+    "ad": "Soda külü fiyatı",
+    "aciklama": "Kimyasallar segmentinin kârlılığını belirler; Çin kapasitesi fiyatları baskılar.",
+    "yon": "+ ise olumlu",
+    "seri": "soda külü fiyatı (Çin/ABD ihracat)",
+    "gecikme": "1–2 çeyrek"
+   },
+   {
+    "ad": "EURTRY ve reel kur",
+    "aciklama": "Avro bazlı gelirler ve TL maliyetler nedeniyle TL'nin reel değer kaybı rekabetçiliği artırır.",
+    "yon": "+ (EURTRY reel artış) ise olumlu",
+    "seri": "EURTRY, reel efektif kur (TCMB)",
+    "gecikme": "1–2 çeyrek"
+   },
+   {
+    "ad": "Politika faizi ve risk iştahı",
+    "aciklama": "Yüksek endeks ağırlığı nedeniyle yabancı akımlarına ve faize duyarlıdır.",
+    "yon": "+ (faiz) ise olumsuz",
+    "seri": "politika_faizi, EEM",
+    "gecikme": "0–20 gün"
+   },
+   {
+    "ad": "Ticaret politikası",
+    "aciklama": "ABD tarifeleri ve AB ticaret önlemleri ihracatı etkiler.",
+    "yon": "+ (engeller) ise olumsuz",
+    "seri": "ABD/AB tarife kararları",
+    "gecikme": "anlık–1 çeyrek"
+   }
+  ],
+  "duyarlilik_hipotezleri": [
+   "TTF 20 günde +%20 → SISE 20 günde XU100'ün gerisinde kalır (hipotez; test edilmeli)",
+   "EURTRY 1 ayda TÜFE farkını aşan +%3 → SISE göreli pozitif (hipotez; test edilmeli)",
+   "Euro Bölgesi imalat PMI 50'nin üzerine çıktığında SISE sonraki 20 günde XU100'ü geçer (hipotez; test edilmeli)",
+   "Enerji fiyatlarında ateşkes kaynaklı sert düşüş günü (ör. 8 Nisan 2026) SISE XU100'ü geçer (hipotez; test edilmeli)"
+  ],
+  "takvim": [
+   "BOTAŞ tarife değişiklikleri: genellikle ayın 1'i",
+   "Euro Bölgesi PMI: ayın ilk iş günleri",
+   "ECB para politikası toplantıları",
+   "Soda külü fiyat raporları: haftalık/aylık"
+  ],
+  "tipik_tepkiler": [
+   "Holding iskontosu ve endeks ağırlığı nedeniyle yabancı akımlarına duyarlılık; enerji fiyatı düşüşlerinde toparlanma (hipotez; test edilmeli)"
+  ],
+  "kaynaklar": [
+   "https://www.bloomberght.com/dogalgaza-zam-yapildi-3751872",
+   "https://medyascope.tv/2026/04/03/dogalgaz-ve-elektrige-yuzde-25-zam-geldi/",
+   "https://www.cnbce.com/enerji/enerjiye-savas-darbesi-petrol-yuzde-51-dogalgaz-yuzde-59-yukseldi-h27876"
+  ]
+ },
+ {
+  "sektor": "otomotiv",
+  "hisseler": [
+   "FROTO",
+   "TOASO",
+   "DOAS"
+  ],
+  "suruculer": [
+   {
+    "ad": "AB talebi",
+    "aciklama": "Hafif ticari ve binek araç ihracatı AB pazarına bağlıdır (FROTO, TOASO).",
+    "yon": "+ ise olumlu",
+    "seri": "ACEA AB tescilleri (binek, hafif ticari, ağır ticari)",
+    "gecikme": "0–1 çeyrek"
+   },
+   {
+    "ad": "Yurt içi satışlar",
+    "aciklama": "İç pazar hacmi TOASO ve DOAS için belirleyicidir.",
+    "yon": "+ ise olumlu",
+    "seri": "otomotiv satışları (ODMD aylık)",
+    "gecikme": "0–1 ay"
+   },
+   {
+    "ad": "Taşıt kredisi faizi ve BDDK sınırları",
+    "aciklama": "Kredili alımların payı nedeniyle faiz ve kredi sınırları talebi belirler.",
+    "yon": "+ (faiz/sıkılaşma) ise olumsuz",
+    "seri": "politika_faizi, taşıt kredisi faizi (TCMB), BDDK kararları",
+    "gecikme": "1–3 ay"
+   },
+   {
+    "ad": "ÖTV matrah ve oranları",
+    "aciklama": "Matrah dilimlerinin güncellenmemesi veya oran artışı fiyatları yükselterek talebi baskılar.",
+    "yon": "+ (ÖTV yükü) ise olumsuz",
+    "seri": "Resmi Gazete ÖTV kararları",
+    "gecikme": "karar günü; satışa 0–2 ay"
+   },
+   {
+    "ad": "EURTRY",
+    "aciklama": "Avro bazlı ihracat gelirleri kur artışında büyür; ithalatçı distribütörde maliyet artar.",
+    "yon": "+ ise FROTO/TOASO için olumlu, DOAS için olumsuz",
+    "seri": "EURTRY",
+    "gecikme": "aynı çeyrek"
+   },
+   {
+    "ad": "Çin rekabeti ve ithalat vergileri",
+    "aciklama": "Çin menşeli araçlara ek vergiler yerli üretici ve AB menşeli ürün satanlara alan açar.",
+    "yon": "+ (koruma) ise olumlu",
+    "seri": "Çin menşeli araç ithalatı, ek gümrük vergisi kararları",
+    "gecikme": "1–2 çeyrek"
+   },
+   {
+    "ad": "Akaryakıt fiyatları ve tüketici güveni",
+    "aciklama": "Yakıt pahalılığı ve belirsizlik talebi erteletir.",
+    "yon": "+ ise olumsuz",
+    "seri": "BZ=F (Brent), TÜİK tüketici güven endeksi",
+    "gecikme": "1–2 ay"
+   }
+  ],
+  "duyarlilik_hipotezleri": [
+   "ODMD aylık satışları yıllık +%15'i aştığında DOAS ve TOASO sonraki 10 günde XU100'ü geçer (hipotez; test edilmeli)",
+   "ACEA AB hafif ticari tescilleri yıllık −%10 → FROTO 10 günde XU100'ün gerisinde (hipotez; test edilmeli)",
+   "EURTRY 1 ayda +%3 → FROTO göreli pozitif, DOAS göreli negatif (hipotez; test edilmeli)",
+   "Politika faizinde ≥250 bp artış → otomotiv sepeti 5 günde XU100'ün gerisinde (hipotez; test edilmeli)"
+  ],
+  "takvim": [
+   "ODMD aylık pazar verileri: ayın ilk günleri",
+   "OSD üretim/ihracat verileri: aylık",
+   "ACEA AB tescil verileri: aylık",
+   "TCMB PPK: yılda 8 toplantı",
+   "ÖTV matrah düzenlemeleri: Resmi Gazete, düzensiz"
+  ],
+  "tipik_tepkiler": [
+   "Temettü odaklı yatırımcı tabanında temettü tarihleri öncesi alım (hipotez; test edilmeli)",
+   "Faiz indirimi beklentisinde iç pazara bağlı hisselere rotasyon (hipotez; test edilmeli)"
+  ],
+  "kaynaklar": [
+   "https://www.odmd.org.tr/",
+   "https://www.osd.org.tr/",
+   "https://www.acea.auto/",
+   "https://www.tcmb.gov.tr/"
+  ]
+ },
+ {
+  "sektor": "dayanikli_tuketim",
+  "hisseler": [
+   "ARCLK"
+  ],
+  "suruculer": [
+   {
+    "ad": "Avrupa beyaz eşya talebi",
+    "aciklama": "Gelirin büyük kısmı Avrupa'dan gelir; konut piyasası ve tüketici güveni talebi belirler.",
+    "yon": "+ ise olumlu",
+    "seri": "Euro Bölgesi perakende satışlar, AB tüketici güveni, APPLiA verileri",
+    "gecikme": "0–2 çeyrek"
+   },
+   {
+    "ad": "Yurt içi satışlar",
+    "aciklama": "İç pazar hacmi ve fiyatlama gücü kârlılığı etkiler.",
+    "yon": "+ ise olumlu",
+    "seri": "TÜRKBESD aylık yurt içi satış ve ihracat",
+    "gecikme": "0–1 ay"
+   },
+   {
+    "ad": "EURTRY ve TL reel kur",
+    "aciklama": "TL'nin reel değer kazanması Türkiye'deki üretim maliyetini avro bazında artırır.",
+    "yon": "+ (EURTRY reel artış) ise olumlu",
+    "seri": "EURTRY, reel efektif kur (TCMB)",
+    "gecikme": "1–2 çeyrek"
+   },
+   {
+    "ad": "Hammadde maliyetleri",
+    "aciklama": "Çelik sac, plastik ve bakır fiyatları brüt marjı etkiler.",
+    "yon": "+ ise olumsuz",
+    "seri": "çelik HRC, HG=F (bakır), Brent bazlı polimer fiyatları",
+    "gecikme": "1–2 çeyrek"
+   },
+   {
+    "ad": "Tüketici kredisi ve faiz",
+    "aciklama": "Taksitli satış ve kredi koşulları iç talebi belirler; yüksek borçluluk faiz giderini artırır.",
+    "yon": "+ (faiz) ise olumsuz",
+    "seri": "politika_faizi, tüketici kredisi faizi",
+    "gecikme": "1–3 ay"
+   },
+   {
+    "ad": "Asya rekabeti ve ticaret politikası",
+    "aciklama": "Çin ve Asya üreticilerinin fiyat baskısı ile ABD tarifeleri pazar paylarını etkiler.",
+    "yon": "+ (rekabet) ise olumsuz",
+    "seri": "Çin beyaz eşya ihracatı, ABD tarife kararları",
+    "gecikme": "1–2 çeyrek"
+   }
+  ],
+  "duyarlilik_hipotezleri": [
+   "TÜRKBESD yurt içi satışları yıllık +%10 → ARCLK sonraki 10 günde XU100'ü geçer (hipotez; test edilmeli)",
+   "EURTRY 1 ayda +%3 → ARCLK göreli pozitif (hipotez; test edilmeli)",
+   "Politika faizinde sürpriz indirim → ARCLK 5 günde XU100'ü geçer (hipotez; test edilmeli)",
+   "HRC 20 günde +%10 → ARCLK 20 günde XU100'ün gerisinde (hipotez; test edilmeli)"
+  ],
+  "takvim": [
+   "TÜRKBESD aylık satış verileri",
+   "Euro Bölgesi perakende satış ve tüketici güveni: aylık",
+   "TCMB PPK: yılda 8 toplantı",
+   "ABD tarife kararları: düzensiz"
+  ],
+  "tipik_tepkiler": [
+   "Kur şoklarında ihracatçı olarak görece savunmacı algılanma (hipotez; test edilmeli)",
+   "Faiz döngüsüne yüksek duyarlılık (hipotez; test edilmeli)"
+  ],
+  "kaynaklar": [
+   "https://www.tcmb.gov.tr/",
+   "https://www.applia-europe.eu/",
+   "https://medyascope.tv/2026/04/03/dogalgaz-ve-elektrige-yuzde-25-zam-geldi/"
+  ]
+ },
+ {
+  "sektor": "madencilik_altin",
+  "hisseler": [
+   "TRALT"
+  ],
+  "suruculer": [
+   {
+    "ad": "Ons altın fiyatı",
+    "aciklama": "Gelirin tamamına yakını altın satışından gelir; maliyetler büyük ölçüde sabit olduğundan fiyata kaldıraçlı duyarlılık vardır.",
+    "yon": "+ ise olumlu",
+    "seri": "GC=F (altın vadeli), LBMA altın",
+    "gecikme": "anlık; bilançoya 0–3 ay"
+   },
+   {
+    "ad": "USDTRY",
+    "aciklama": "Dolar bazlı gelir, büyük ölçüde TL maliyet yapısı nedeniyle kur artışı marjı genişletir.",
+    "yon": "+ ise olumlu",
+    "seri": "USDTRY",
+    "gecikme": "aynı çeyrek"
+   },
+   {
+    "ad": "Dolar endeksi ve ABD reel faizleri",
+    "aciklama": "Güçlü dolar ve yüksek reel faiz altını baskılar.",
+    "yon": "+ ise olumsuz",
+    "seri": "DX-Y.NYB, ABD 10 yıllık reel faiz",
+    "gecikme": "0–20 gün"
+   },
+   {
+    "ad": "Jeopolitik risk ve piyasa stresi",
+    "aciklama": "Savaş ve stres dönemlerinde güvenli liman talebi altını destekler.",
+    "yon": "+ ise olumlu",
+    "seri": "^VIX, jeopolitik risk endeksi",
+    "gecikme": "anlık"
+   },
+   {
+    "ad": "Ruhsat, ÇED ve çevre düzenlemeleri",
+    "aciklama": "İzin süreçleri, siyanür/yığın liçi denetimleri ve kaza sonrası sıkılaşma üretim ve kapasite genişlemesini etkiler.",
+    "yon": "+ (sıkılaşma) ise olumsuz",
+    "seri": "MAPEG/ÇED kararları, maden mevzuatı değişiklikleri",
+    "gecikme": "karar günü; üretime 1–4 çeyrek"
+   },
+   {
+    "ad": "Devlet hakkı ve maliyetler",
+    "aciklama": "Royalty oranları, enerji ve siyanür maliyetleri marjı belirler.",
+    "yon": "+ ise olumsuz",
+    "seri": "devlet hakkı oranları, PTF, tufe_yillik",
+    "gecikme": "1–2 çeyrek"
+   }
+  ],
+  "duyarlilik_hipotezleri": [
+   "GC=F 20 günde +%5 → TRALT 20 günde XU100'ü geçer (hipotez; test edilmeli)",
+   "GC=F tek günde −%4 veya daha fazla düştüğünde TRALT aynı gün XU100'ün gerisinde kalır (ör. 21 Ekim 2025) (hipotez; test edilmeli)",
+   "^VIX 30'un üzerine çıktığı günlerde TRALT'ın XU100'e göre getirisi pozitif (hipotez; test edilmeli)",
+   "USDTRY ve GC=F aynı ayda birlikte +%3'ten fazla yükselirse TRALT o ay XU100'ü geçer (hipotez; test edilmeli)"
+  ],
+  "takvim": [
+   "FOMC kararları: yılda 8 toplantı",
+   "ABD TÜFE: aylık",
+   "WGC Gold Demand Trends: çeyreklik",
+   "MAPEG ve çevre izin kararları: düzensiz"
+  ],
+  "tipik_tepkiler": [
+   "Altın rekorlarında bireysel yatırımcı ilgisinin artması (hipotez; test edilmeli)",
+   "Şirkete özgü yönetim/kayyum haberlerinin fiyatı altından ayrıştırabilmesi (şirket olayları ayrı izlenmeli) (hipotez; test edilmeli)"
+  ],
+  "kaynaklar": [
+   "https://www.lbma.org.uk/prices-and-data/precious-metal-prices",
+   "https://www.gold.org/goldhub",
+   "https://www.mapeg.gov.tr/"
+  ]
+ }
+]
