@@ -1,0 +1,10 @@
+{"haneler": [
+ {"hisse": "KCHOL", "kamuya_acilma": "2026-11-09T18:30:00+03:00", "tur": "finansal_rapor", "baslik": "Koç Holding 3Ç26: ana ortaklık net kârı 34,9 mlr TL (beklenti ort. 24,99 mlr TL)",
+  "metin": "3. çeyrek ana ortaklık net kârı 34,9 milyar TL (3Ç25: 9,9 milyar TL). Matriks anketi ortalama 24,99, medyan 24,4 milyar TL; İş Yatırım piyasa beklentisi 26,1 milyar TL. 9 aylık net kâr 56,37 milyar TL (+%202,8). Enerji segmenti (Tüpraş) sürükleyici.",
+  "kaynak": "https://www.cnbce.com/sirket-bilancolari/koc-holding-kchol-3-ceyrekte-beklentileri-asti-iste-dev-holdingin-3-ceyrek-bilancosu-h41391",
+  "net_kar": 34900000000, "beklenti": 24990000000, "yon": "olumlu", "guven": 0.85, "okuyan": "ajan:claude-opus-5-5"},
+ {"hisse": "BIMAS", "kamuya_acilma": "2026-11-09T18:30:00+03:00", "tur": "finansal_rapor", "baslik": "BİM 3Ç26: net kâr 10,39 mlr TL (beklenti ort. 8,78 mlr TL)",
+  "metin": "Temmuz–Eylül net kârı 10,385 milyar TL; Matriks anketi (15 kurum) ortalama 8,78, medyan 8,77 milyar TL; beklenti %18,3 aşıldı. Hasılat 245,74 milyar TL; FAVÖK marjı %7,4'ten %7,2'ye; net nakit 42,7 milyar TL.",
+  "kaynak": "https://www.bloomberght.com/bim-den-ucuncu-ceyrekte-beklentileri-asan-net-kr-3794012",
+  "net_kar": 10385000000, "beklenti": 8780000000, "yon": "olumlu", "guven": 0.85, "okuyan": "ajan:claude-opus-5-5"}
+]}

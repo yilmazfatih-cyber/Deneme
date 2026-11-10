@@ -2,8 +2,19 @@
  "baslangic_nakit": 1000000.0,
  "baslangic_gun": "2026-11-09",
  "maliyet_bps": 5.0,
- "nakit": 1000000.0,
- "pozisyonlar": {},
+ "nakit": 816399.2484769516,
+ "pozisyonlar": {
+  "AHGAZ": {
+   "adet": 1950,
+   "maliyet": 47.09999847412109,
+   "giris": "2026-11-09"
+  },
+  "TUPRS": {
+   "adet": 272,
+   "maliyet": 337.0,
+   "giris": "2026-11-09"
+  }
+ },
  "emirler": [
   {
    "id": 1,
@@ -59,9 +70,14 @@
    "limit": 47.22,
    "tip": "LIMIT",
    "pencere": "17:00-17:50",
-   "durum": "bekliyor",
+   "durum": "doldu",
    "neden": "Trend: MA50 ve MA200 üstünde tek çekirdek hisse (60g +%38); kullanıcı tezi (yönetim); pay %9,2 (ATR %3,8); limit 46,74 +%1",
-   "dolum": null
+   "dolum": {
+    "fiyat": 47.1,
+    "zaman": "2026-11-09 17:00:00+03:00",
+    "tutar": 91845.0,
+    "masraf": 45.92
+   }
   },
   {
    "id": 5,
@@ -73,16 +89,79 @@
    "limit": 337.75,
    "tip": "LIMIT",
    "pencere": "17:00-17:50",
-   "durum": "bekliyor",
+   "durum": "doldu",
    "neden": "16:22 yenileme: son 336,00 +%0,5 → 337,75 (sabah limiti 343,25 altında); aynı tutar ≈ 91.900 TL",
+   "dolum": {
+    "fiyat": 337.0,
+    "zaman": "2026-11-09 17:00:00+03:00",
+    "tutar": 91664.0,
+    "masraf": 45.83
+   }
+  },
+  {
+   "id": 6,
+   "verildi": "2026-11-10T09:42:00+03:00",
+   "gun": "2026-11-10",
+   "hisse": "KCHOL",
+   "yon": "AL",
+   "adet": 465,
+   "limit": 214.6,
+   "tip": "LIMIT",
+   "pencere": "17:00-17:50",
+   "durum": "bekliyor",
+   "neden": "Ertelenen tez alımı (bilanço günü 9 Kas): 3Ç26 net kâr 34,9 mlr TL, beklenti 25,0 → tez sağlam; limit 9 Kas kapanışı 212,50 +%1; pay %10",
+   "dolum": null
+  },
+  {
+   "id": 7,
+   "verildi": "2026-11-10T09:42:00+03:00",
+   "gun": "2026-11-10",
+   "hisse": "BIMAS",
+   "yon": "AL",
+   "adet": 259,
+   "limit": 385.25,
+   "tip": "LIMIT",
+   "pencere": "17:00-17:50",
+   "durum": "bekliyor",
+   "neden": "Ertelenen tez alımı: 3Ç26 net kâr 10,39 mlr TL, beklenti 8,78 (+%18) → tez sağlam; limit 381,50 +%1; pay %10",
    "dolum": null
   }
  ],
- "islemler": [],
- "degerleme": [],
+ "islemler": [
+  {
+   "emir": 4,
+   "gun": "2026-11-09",
+   "hisse": "AHGAZ",
+   "yon": "AL",
+   "adet": 1950,
+   "fiyat": 47.1,
+   "masraf": 45.92,
+   "zaman": "2026-11-09 17:00:00+03:00"
+  },
+  {
+   "emir": 5,
+   "gun": "2026-11-09",
+   "hisse": "TUPRS",
+   "yon": "AL",
+   "adet": 272,
+   "fiyat": 337.0,
+   "masraf": 45.83,
+   "zaman": "2026-11-09 17:00:00+03:00"
+  }
+ ],
+ "degerleme": [
+  {
+   "gun": "2026-11-09",
+   "nakit": 816399.25,
+   "hisse": 182119.0,
+   "toplam": 998518.25,
+   "xu100": 11710.0400390625,
+   "eksik": []
+  }
+ ],
  "notlar": [
   "Hafta 1 (9-13 Kasım 2026): yönetim kuralları yatirim-ajani/HAFTA.md. Sanal hesap; emirler kullanıcıya saat+fiyat+adetle sunulur, dolum gerçek 5dk çubuklarla.",
   "2026-11-09 09:40 sabah: KCHOL ve BIMAS 3Ç bilançoları bugün açıklanıyor; alımlar Salı'ya ertelendi. TUPRS (6 Kas, beklenti üstü) ve AHGAZ (9 aylık açıklandı) alımları duruyor."
  ],
- "sayac": 5
+ "sayac": 7
 }
