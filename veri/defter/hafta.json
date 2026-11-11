@@ -2,7 +2,7 @@
  "baslangic_nakit": 1000000.0,
  "baslangic_gun": "2026-11-09",
  "maliyet_bps": 5.0,
- "nakit": 816399.2484769516,
+ "nakit": 618549.6745955811,
  "pozisyonlar": {
   "AHGAZ": {
    "adet": 1950,
@@ -13,6 +13,16 @@
    "adet": 272,
    "maliyet": 337.0,
    "giris": "2026-11-09"
+  },
+  "KCHOL": {
+   "adet": 481,
+   "maliyet": 205.1999969482422,
+   "giris": "2026-11-10"
+  },
+  "BIMAS": {
+   "adet": 261,
+   "maliyet": 379.5,
+   "giris": "2026-11-10"
   }
  },
  "emirler": [
@@ -136,9 +146,14 @@
    "limit": 207.4,
    "tip": "LIMIT",
    "pencere": "17:00-17:50",
-   "durum": "bekliyor",
+   "durum": "doldu",
    "neden": "16:33 yenileme: son 206,30 +%0,5 → 207,40 (sabah limiti 214,60 altında); aynı tutar ≈ 99.800 TL; tez alımı (3Ç26 beklenti üstü)",
-   "dolum": null
+   "dolum": {
+    "fiyat": 205.2,
+    "zaman": "2026-11-10 17:00:00+03:00",
+    "tutar": 98701.2,
+    "masraf": 49.35
+   }
   },
   {
    "id": 9,
@@ -150,9 +165,14 @@
    "limit": 381.5,
    "tip": "LIMIT",
    "pencere": "17:00-17:50",
-   "durum": "bekliyor",
+   "durum": "doldu",
    "neden": "16:33 yenileme: son 379,50 +%0,5 → 381,50 (sabah limiti 385,25 altında); aynı tutar ≈ 99.800 TL; tez alımı (3Ç26 beklenti üstü)",
-   "dolum": null
+   "dolum": {
+    "fiyat": 379.5,
+    "zaman": "2026-11-10 17:00:00+03:00",
+    "tutar": 99049.5,
+    "masraf": 49.52
+   }
   }
  ],
  "islemler": [
@@ -175,6 +195,26 @@
    "fiyat": 337.0,
    "masraf": 45.83,
    "zaman": "2026-11-09 17:00:00+03:00"
+  },
+  {
+   "emir": 8,
+   "gun": "2026-11-10",
+   "hisse": "KCHOL",
+   "yon": "AL",
+   "adet": 481,
+   "fiyat": 205.2,
+   "masraf": 49.35,
+   "zaman": "2026-11-10 17:00:00+03:00"
+  },
+  {
+   "emir": 9,
+   "gun": "2026-11-10",
+   "hisse": "BIMAS",
+   "yon": "AL",
+   "adet": 261,
+   "fiyat": 379.5,
+   "masraf": 49.52,
+   "zaman": "2026-11-10 17:00:00+03:00"
   }
  ],
  "degerleme": [
@@ -184,6 +224,14 @@
    "hisse": 182119.0,
    "toplam": 998518.25,
    "xu100": 11710.0400390625,
+   "eksik": []
+  },
+  {
+   "gun": "2026-11-10",
+   "nakit": 618549.67,
+   "hisse": 377221.39,
+   "toplam": 995771.07,
+   "xu100": 11653.240234375,
    "eksik": []
   }
  ],
