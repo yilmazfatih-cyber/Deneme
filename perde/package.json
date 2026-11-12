@@ -1,0 +1,23 @@
+{
+  "name": "perde",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Perde — Türkçe öncelikli, yapay zekâ destekli senaryo editörü",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node server.mjs",
+    "typecheck": "tsc --noEmit --allowJs --checkJs -p tsconfig.json",
+    "test": "node --test \"test/*.test.mjs\"",
+    "e2e": "node e2e/run.mjs",
+    "check": "npm run typecheck && npm test"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.8.0"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2"
+  }
+}

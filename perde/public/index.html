@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Perde — senaryo editörü</title>
+    <meta name="description" content="Perde: Türkçe öncelikli, yapay zekâ destekli senaryo editörü." />
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="style.css" />
+    <script type="module" src="app.mjs"></script>
+  </head>
+  <body>
+    <header class="ust">
+      <span class="marka" aria-label="Perde">Perde</span>
+      <label class="baslik-kap">
+        <span class="gizli">Proje başlığı</span>
+        <input id="baslik" type="text" autocomplete="off" maxlength="120" placeholder="Senaryo başlığı" />
+      </label>
+      <span id="kipEtiket" class="etiket" hidden>Örnek kip</span>
+      <button id="btnSol" type="button" class="mobil" aria-expanded="false" aria-controls="sol">Sahneler</button>
+      <button id="btnSag" type="button" class="mobil" aria-expanded="false" aria-controls="sag">Yapay zekâ</button>
+    </header>
+
+    <div class="duzen">
+      <aside id="sol" class="panel sol" aria-label="Gezinti">
+        <section class="grup" aria-labelledby="hProje">
+          <h2 id="hProje">Proje</h2>
+          <label class="gizli" for="projeSec">Proje seç</label>
+          <select id="projeSec"></select>
+          <div class="satir">
+            <button id="projeYeni" type="button">Yeni</button>
+            <button id="projeIce" type="button">İçe aktar</button>
+            <button id="projeSil" type="button" class="tehlike">Sil…</button>
+          </div>
+          <input id="dosya" type="file" accept=".fountain,.txt,text/plain" hidden />
+        </section>
+        <section class="grup" aria-labelledby="hSahne">
+          <h2 id="hSahne">Sahneler</h2>
+          <ol id="sahneListe" class="liste"></ol>
+        </section>
+        <section class="grup" aria-labelledby="hKarakter">
+          <h2 id="hKarakter">Karakterler</h2>
+          <ul id="karakterListe" class="liste"></ul>
+        </section>
+        <p id="istatistik" class="istatistik" aria-live="polite"></p>
+      </aside>
+
+      <main class="orta">
+        <div class="arac" role="toolbar" aria-label="Editör araçları">
+          <label class="tip-kap">
+            <span>Öğe türü</span>
+            <select id="tip"></select>
+          </label>
+          <button id="geriAl" type="button" title="Geri al (Ctrl+Z)">Geri al</button>
+          <button id="yinele" type="button" title="Yinele (Ctrl+Shift+Z)">Yinele</button>
+          <button id="surumKaydet" type="button">Sürüm kaydet</button>
+          <button id="surumler" type="button">Sürümler</button>
+          <button id="disaAktar" type="button">.fountain indir</button>
+          <button id="yazdir" type="button">Yazdır / PDF</button>
+          <span id="durum" class="durum" role="status" aria-live="polite"></span>
+        </div>
+        <p class="ipucu">Enter: sonraki öğe · Tab / Shift+Tab: öğe türünü değiştir</p>
+        <div class="kagit-kap">
+          <div class="kagit">
+            <div id="baskiBaslik" class="baski-baslik" aria-hidden="true"></div>
+            <div
+              id="sayfa"
+              class="sayfa"
+              contenteditable="true"
+              role="textbox"
+              aria-multiline="true"
+              aria-label="Senaryo sayfası"
+              lang="tr"
+              spellcheck="true"
+            ></div>
+          </div>
+        </div>
+      </main>
+
+      <aside id="sag" class="panel sag" aria-label="Yapay zekâ paneli">
+        <h2>Yapay zekâ</h2>
+        <p id="yzBaglam" class="ipucu"></p>
+        <div class="yz-eylemler">
+          <button type="button" data-eylem="continue" class="birincil">Devam ettir</button>
+          <button type="button" data-eylem="rewrite">Yeniden yaz</button>
+          <button type="button" data-eylem="analyze">Analiz et</button>
+          <button type="button" data-eylem="shots">Çekim listesi</button>
+        </div>
+        <label class="alan">
+          <span>Talimat (Yeniden yaz için; diğerlerinde isteğe bağlı not)</span>
+          <textarea
+            id="yonerge"
+            rows="3"
+            maxlength="2000"
+            placeholder="Örn. Daha az açıklayıcı, daha gergin olsun."
+          ></textarea>
+        </label>
+        <div class="oneriler" aria-label="Hazır talimatlar">
+          <button type="button" data-hazir="Daha kısa ve sade yaz.">Kısalt</button>
+          <button type="button" data-hazir="Daha gergin ve baskılı bir tonda yaz.">Gerginleştir</button>
+          <button type="button" data-hazir="Konuşma dilini daha doğal ve gündelik yap.">Doğal konuşma</button>
+          <button type="button" data-hazir="Duyguları açıkça söylemek yerine alt metne yedir.">Alt metin</button>
+          <button type="button" data-hazir="Aksiyon satırlarını daha görsel ve somut yaz.">Daha görsel</button>
+        </div>
+        <div class="yz-durum">
+          <span id="yzDurum" role="status" aria-live="polite"></span>
+          <button id="yzDur" type="button" class="tehlike" hidden>Durdur</button>
+        </div>
+        <div id="yzSonuc" class="yz-sonuc" aria-live="off"></div>
+        <div id="yzKarar" class="yz-karar" hidden>
+          <button id="yzEkle" type="button" class="birincil">Ekle</button>
+          <button id="yzDegistir" type="button">Değiştir</button>
+          <button id="yzKopyala" type="button">Kopyala</button>
+          <button id="yzVazgec" type="button">Vazgeç</button>
+        </div>
+      </aside>
+    </div>
+    <div id="perdeKapat" class="perde-kapat" hidden></div>
+
+    <dialog id="onay" aria-labelledby="onayBaslik">
+      <form method="dialog">
+        <h2 id="onayBaslik"></h2>
+        <p id="onayMetin"></p>
+        <label id="onayGirdiKap" class="alan" hidden>
+          <span id="onayGirdiEtiket"></span>
+          <input id="onayGirdi" type="text" maxlength="80" autocomplete="off" />
+        </label>
+        <div class="satir sag-hiza">
+          <button value="tamam" id="onayTamam" class="birincil"></button>
+          <button value="iptal" id="onayIptal">Vazgeç</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="surumDlg" aria-labelledby="surumBaslik">
+      <h2 id="surumBaslik">Sürümler</h2>
+      <p class="ipucu">Geri yüklemeden önce mevcut hâl otomatik olarak kaydedilir.</p>
+      <ul id="surumListe" class="surum-liste"></ul>
+      <div class="satir sag-hiza"><button id="surumKapat" type="button">Kapat</button></div>
+    </dialog>
+
+    <div id="bildirim" class="bildirim" role="status" aria-live="polite" hidden></div>
+  </body>
+</html>
