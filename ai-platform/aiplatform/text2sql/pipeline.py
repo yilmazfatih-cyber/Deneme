@@ -243,6 +243,22 @@ class Text2SQL:
             return f"```sql\n{sql}\n```"
         return json.dumps({"sql": sql, "explanation": explanation}, ensure_ascii=False)
 
+    def format_error_message(self) -> str:
+        """Yanıtta SQL bulunamadığında (çoğunlukla akıl yürütme token sınırında kesildiğinde) modele giden metin."""
+        en = self.lang == "en"
+        if self.style == "cot":
+            return (
+                "Your answer did not contain a final ```sql code block. Reply with only the final SQL query in a "
+                "```sql code block, without further explanation."
+                if en
+                else "Yanıtında son ```sql bloğu yok. Açıklama yazmadan yalnız son SQL sorgusunu ```sql bloğunda ver."
+            )
+        return (
+            'Your answer was not valid JSON. Reply with only {"sql": "...", "explanation": "..."}.'
+            if en
+            else 'Yanıtın geçerli JSON değildi. Yalnız {"sql": "...", "explanation": "..."} döndür.'
+        )
+
     @staticmethod
     def repair_message(error: str, lang: str = "tr", style: str = "json") -> str:
         """Düzeltme turunda modele giden metin; eğitim verisi (prepare_bird_sft.py) aynı metni kullanır."""
@@ -287,10 +303,11 @@ class Text2SQL:
             error = None
             grounded: Grounded | None = None
             rows = None
+            model_error = None  # modele gidecek metin (istem dilinde); `error` kayıt için Türkçe
             if not sql:
-                error = (
-                    'Boş veya ayrıştırılamayan yanıt; yalnız {"sql": ..., "explanation": ...} JSON\'u döndür.'
-                )
+                error = "Boş veya ayrıştırılamayan yanıt (SQL bulunamadı)"
+                model_error = self.format_error_message()
+                rec["error_kind"] = "format"
             else:
                 try:
                     if self.security is not None:
@@ -308,7 +325,9 @@ class Text2SQL:
                             )
                 except GroundingError as e:
                     error = e.message
+                    model_error = e.render(self.lang)
                     rec["error_kind"] = "grounding"
+                    rec["grounding_kind"] = e.kind
                 except Exception as e:  # noqa: BLE001 - güvenlik denetimi / veritabanı hatası
                     error = getattr(e, "message", None) or str(e)
                     rec["error_kind"] = rec.get("error_kind") or (
@@ -327,12 +346,15 @@ class Text2SQL:
             rec["error"] = error
             last_error = error
             if turn < self.max_repairs:
+                if sql:
+                    echo = self.assistant_echo(sql, explanation)
+                    follow = self.repair_message(model_error or error, self.lang, self.style)
+                else:  # akıl yürütme sınırda kesildi / biçim tutmadı: son kısmı göster, yalnız SQL iste
+                    echo = str(raw or "")[-800:]
+                    follow = model_error
                 messages = messages + [
-                    {
-                        "role": "assistant",
-                        "content": self.assistant_echo(sql, explanation),
-                    },
-                    {"role": "user", "content": self.repair_message(error, self.lang, self.style)},
+                    {"role": "assistant", "content": echo},
+                    {"role": "user", "content": follow},
                 ]
         attempts.append({"candidate": cand_no, "gave_up": True, "error": last_error})
         return None

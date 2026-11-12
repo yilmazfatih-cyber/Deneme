@@ -225,12 +225,48 @@ def test_ground_handles_quoted_bird_identifiers(bird_db):
     assert g.columns == ["frpm.County Name", "frpm.Enrollment (K-12)", "frpm.Free Meal Count (K-12)"]
     with pytest.raises(GroundingError) as ei:
         ground("SELECT `Free Meal Rate` FROM frpm", idx)
-    assert "frpm.Free Meal Count (K-12)" in ei.value.suggestions
+    assert "frpm.`Free Meal Count (K-12)`" in ei.value.suggestions  # tırnaklı: SQL'e aynen yapıştırılabilir
 
 
 def test_ground_star_expands_to_real_columns(erp_index):
     g = ground("SELECT * FROM satis_aylik WHERE ay LIKE '2026%'", erp_index)
     assert g.columns == ["satis_aylik.adet", "satis_aylik.ay", "satis_aylik.tutar"]
+
+
+def test_ground_wrong_table_names_real_owner(bird_db):
+    """BIRD'de 1.5B modelin gerçek hatası: frpm takma adıyla schools sütunu (f.City)."""
+    idx = SchemaIndex.from_sqlite(bird.db_path(bird_db, "california_schools"))
+    with pytest.raises(GroundingError) as ei:
+        ground("SELECT f.`County Name`, f.City FROM frpm f JOIN schools s ON s.CDSCode = f.CDSCode", idx)
+    e = ei.value
+    assert e.kind == "wrong_table" and e.column == "City" and e.suggestions == ["schools.City"]
+    assert "frpm (alias f)" in e.table
+    en = e.render("en")
+    assert en.startswith("Column City does not exist in table frpm (alias f). It exists in: schools.City")
+    assert "tablosunda yok" in e.message  # platform/kullanıcı için Türkçe
+
+
+def test_ground_nearest_ignores_case_and_separators(bird_db):
+    idx = SchemaIndex.from_sqlite(bird.db_path(bird_db, "california_schools"))
+    with pytest.raises(GroundingError) as ei:
+        ground("SELECT county_name FROM frpm", idx)
+    assert ei.value.kind == "unknown_column" and ei.value.column == "county_name"
+    assert ei.value.suggestions[0] == "frpm.`County Name`"
+    assert "closest matches: frpm.`County Name`" in ei.value.render("en")
+
+
+def test_ground_unqualified_error_keeps_original_spelling(erp_index):
+    with pytest.raises(GroundingError) as ei:
+        ground("SELECT MusteriAdi FROM cari", erp_index)
+    assert ei.value.column == "MusteriAdi"
+
+
+def test_ground_alias_reused_in_subquery_is_not_false_positive(erp_index):
+    g = ground(
+        "SELECT t.unvan FROM cari t WHERE t.id IN (SELECT t.cari_id FROM fatura t WHERE t.durum = 'odendi')",
+        erp_index,
+    )
+    assert g.tables == ["cari", "fatura"]
 
 
 # ----------------------------------------------------------------------------- çıktı ayrıştırma
@@ -565,3 +601,26 @@ async def test_bird_evaluate_counts_pipeline_fix_against_first_turn(bird_db, tmp
     assert report["execution_accuracy"] == 100.0 and report["first_turn_ex"] == 0.0
     assert report["fixed_by_pipeline"] == 1 and report["hallucinated_column_or_table"] == 1
     assert report["repaired_then_correct"] == 1
+
+
+async def test_pipeline_format_error_asks_for_sql_only_and_echoes_tail(erp_index):
+    long_reasoning = "Step " * 400  # sınırda kesilmiş akıl yürütme, SQL bloğu yok
+    gen = _gen_from([long_reasoning, "```sql\nSELECT COUNT(*) FROM cari\n```"])
+    engine = Text2SQL(gen, dialect="sqlite", lang="en", style="cot")
+    res = await engine.run("how many", erp_index)
+    assert res.sql == "SELECT COUNT(*) FROM cari" and res.attempts[0]["error_kind"] == "format"
+    second = gen.calls[1]
+    assert len(second[-2]["content"]) <= 800 and second[-2]["content"].endswith("Step ")
+    assert second[-1]["content"].startswith("Your answer did not contain a final ```sql code block")
+
+
+async def test_pipeline_sends_english_grounding_error_to_english_model(erp_index):
+    gen = _gen_from([{"sql": "SELECT f.unvan FROM fatura f"}, {"sql": "SELECT unvan FROM cari"}])
+    engine = Text2SQL(gen, dialect="sqlite", lang="en")
+    res = await engine.run("names", erp_index)
+    assert res.attempts[0]["grounding_kind"] == "wrong_table"
+    assert "tablosunda yok" in res.attempts[0]["error"]  # kayıt Türkçe
+    assert (
+        "Column unvan does not exist in table fatura (alias f). It exists in: cari.unvan"
+        in gen.calls[1][-1]["content"]
+    )
