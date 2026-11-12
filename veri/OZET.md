@@ -1,12 +1,12 @@
 # Moda Radar veritabanı özeti
 
-Oluşturma: 2026-11-09 · şema sürümü 1
+Oluşturma: 2026-11-12 · şema sürümü 1
 
 | Tablo | Satır |
 | --- | ---: |
 | defile | 32 |
 | gorsel | 1883 |
-| parca_nitelik | 0 |
+| parca_nitelik | 277 |
 | parca_renk | 7532 |
 | perakende_urun | 231 |
 | perakende_gorulme | 231 |
@@ -21,7 +21,7 @@ Oluşturma: 2026-11-09 · şema sürümü 1
 
 - **defile**: SS27: 32
 - **gorsel**: SS27: 1883
-- **parca_nitelik**: —
+- **parca_nitelik**: SS27: 277
 - **parca_renk**: SS27: 7532
 - **sinyal**: FW25: 24, FW26: 33, SS25: 26, SS26: 40, SS27: 48
 
