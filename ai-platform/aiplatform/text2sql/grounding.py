@@ -52,8 +52,44 @@ class GroundingError(ValueError):
         self.table = table
         self.owners = owners or []
         self.detail = detail
+        self.join_hint: str | None = None  # önerilen tablo sorguda yoksa: "frpm.CDSCode = schools.CDSCode"
+        self.issues: list[GroundingError] = [self]
+
+    @classmethod
+    def aggregate(cls, issues: list[GroundingError]) -> GroundingError:
+        """Birden çok sorunu tek hatada toplar: model hepsini tek düzeltme turunda görür."""
+        if len(issues) == 1:
+            return issues[0]
+        first = issues[0]
+        agg = cls(
+            "\n".join(f"- {i.message}" for i in issues),
+            column=first.column,
+            suggestions=first.suggestions,
+            kind=first.kind,
+            table=first.table,
+            owners=first.owners,
+        )
+        agg.issues = list(issues)
+        return agg
 
     def render(self, lang: str = "tr") -> str:
+        if len(self.issues) > 1:
+            head = (
+                f"{len(self.issues)} problems in the query:"
+                if lang == "en"
+                else f"Sorguda {len(self.issues)} sorun var:"
+            )
+            return head + "\n" + "\n".join(f"- {i.render(lang)}" for i in self.issues)
+        text = self._render_one(lang)
+        if self.join_hint:
+            text += (
+                f" That table is not in the query yet; join it with {self.join_hint}."
+                if lang == "en"
+                else f" Bu tablo sorguda yok; {self.join_hint} koşuluyla JOIN et."
+            )
+        return text
+
+    def _render_one(self, lang: str) -> str:
         if lang != "en":
             return self.message
         c, s = self.column, ", ".join(self.suggestions)
@@ -115,9 +151,41 @@ def _owners(index: SchemaIndex, column: str) -> list[str]:
     return [t.name for t in index.tables.values() if t.column(column)]
 
 
+def join_hint(index: SchemaIndex, target: str, present: set[str]) -> str | None:
+    """`target` tablosunu sorgudaki tablolardan birine bağlayan yabancı anahtar koşulu (iki yönde de bakılır)."""
+    t = index.table(target)
+    if t is None or not present:
+        return None
+    for p_name in sorted(present):
+        p = index.table(p_name)
+        if p is None:
+            continue
+        for c in t.columns:
+            if c.references and c.references[0].lower() == p.name.lower():
+                return f"{_ref(index, t.name, c.name)} = {_ref(index, p.name, c.references[1])}"
+        for c in p.columns:
+            if c.references and c.references[0].lower() == t.name.lower():
+                return f"{_ref(index, p.name, c.name)} = {_ref(index, t.name, c.references[1])}"
+    return None
+
+
+def _with_join_hint(err: GroundingError, index: SchemaIndex, present: set[str]) -> GroundingError:
+    owner = err.suggestions[0].split(".", 1)[0] if err.suggestions else None
+    if owner and owner.lower() not in {x.lower() for x in present}:
+        err.join_hint = join_hint(index, owner, present)
+        if err.join_hint:
+            err.message += f" Bu tablo sorguda yok; {err.join_hint} koşuluyla JOIN et."
+    return err
+
+
 def _check_qualified_columns(tree, index: SchemaIndex) -> None:
-    """`alias.sütun` biçimindeki her sütunu takma adın gerçek tablosuna karşı denetler (qualify'dan önce, özgün yazımla)."""
+    """`alias.sütun` biçimindeki her sütunu takma adın gerçek tablosuna karşı denetler (qualify'dan önce, özgün yazımla).
+    Bütün sorunlar toplanır ve tek hata olarak fırlatılır."""
     from sqlglot import exp
+
+    issues: list[GroundingError] = []
+    seen: set[tuple[str, str]] = set()
+    present = {index.table(t.name).name for t in tree.find_all(exp.Table) if t.name and index.table(t.name)}
 
     alias_tables: dict[str, set[str]] = {}
     for t in tree.find_all(exp.Table):
@@ -135,15 +203,16 @@ def _check_qualified_columns(tree, index: SchemaIndex) -> None:
         if key in derived or key not in alias_tables:
             continue
         tables = alias_tables[key]
-        if any(index.table(tn).column(c.name) for tn in tables):
+        if any(index.table(tn).column(c.name) for tn in tables) or (key, c.name.lower()) in seen:
             continue
+        seen.add((key, c.name.lower()))
         shown_table = " / ".join(sorted(tables)) + (
             f" (alias {c.table})" if key not in {x.lower() for x in tables} else ""
         )
         owners = _owners(index, c.name)
         if owners:
             refs = [_ref(index, o, index.table(o).column(c.name).name) for o in owners]
-            raise GroundingError(
+            err = GroundingError(
                 f"'{c.name}' sütunu {shown_table} tablosunda yok; şu tablolarda var: {', '.join(refs)}. "
                 "Doğru tabloyu JOIN et ve sütunu o tablonun takma adıyla nitele.",
                 column=c.name,
@@ -152,15 +221,52 @@ def _check_qualified_columns(tree, index: SchemaIndex) -> None:
                 table=shown_table,
                 owners=owners,
             )
+        else:
+            near = nearest_columns(index, c.name)
+            err = GroundingError(
+                f"Şemada olmayan sütun: '{c.name}'."
+                + (f" Yalnız şemadaki sütunları kullan; yakın adaylar: {', '.join(near)}." if near else ""),
+                column=c.name,
+                suggestions=near,
+                kind="unknown_column",
+                table=shown_table,
+            )
+        issues.append(_with_join_hint(err, index, present))
+    issues += _unknown_bare_columns(tree, index, present)
+    if issues:
+        raise GroundingError.aggregate(issues)
+
+
+def _unknown_bare_columns(tree, index: SchemaIndex, present: set[str]) -> list[GroundingError]:
+    """Niteliksiz ve HİÇBİR tabloda, CTE/alt sorgu çıktısında veya SELECT takma adında olmayan sütunlar."""
+    from sqlglot import exp
+
+    known = {_fold(c) for _t, c in index.all_columns()}
+    produced: set[str] = set()
+    for sel in tree.find_all(exp.Select):
+        produced |= {_fold(n) for n in sel.named_selects}
+    for cte in tree.find_all(exp.CTE):
+        produced |= (
+            {_fold(col.name) for col in cte.args.get("alias").columns} if cte.args.get("alias") else set()
+        )
+    out, seen = [], set()
+    for c in tree.find_all(exp.Column):
+        if c.table or not c.name or isinstance(c.this, exp.Star):
+            continue
+        f = _fold(c.name)
+        if f in known or f in produced or f in seen:
+            continue
+        seen.add(f)
         near = nearest_columns(index, c.name)
-        raise GroundingError(
+        err = GroundingError(
             f"Şemada olmayan sütun: '{c.name}'."
             + (f" Yalnız şemadaki sütunları kullan; yakın adaylar: {', '.join(near)}." if near else ""),
             column=c.name,
             suggestions=near,
             kind="unknown_column",
-            table=shown_table,
         )
+        out.append(_with_join_hint(err, index, present))
+    return out
 
 
 def ground(sql: str, index: SchemaIndex, dialect: str | None = None) -> Grounded:
@@ -195,6 +301,7 @@ def ground(sql: str, index: SchemaIndex, dialect: str | None = None) -> Grounded
             )
 
     _check_qualified_columns(tree, index)
+    present = {index.table(t.name).name for t in tree.find_all(exp.Table) if t.name and index.table(t.name)}
     original_names = {c.name.lower(): c.name for c in tree.find_all(exp.Column) if c.name}
 
     try:
@@ -205,14 +312,14 @@ def ground(sql: str, index: SchemaIndex, dialect: str | None = None) -> Grounded
             validate_qualify_columns=True,
         )
     except OptimizeError as e:
-        raise _explain(e, index, original_names) from e
+        raise _explain(e, index, original_names, present) from e
 
     # qualify bazı yerlerde (ör. HAVING) bilinmeyen adı sessizce bırakır; niteliksiz kalan her sütun ya bir
     # SELECT takma adıdır ya da uydurmadır.
     aliases = {a.lower() for sel in q.find_all(exp.Select) for a in sel.named_selects}
     for c in q.find_all(exp.Column):
         if not c.table and c.name and c.name.lower() not in aliases:
-            raise _explain(OptimizeError(f"Unknown column: {c.name}"), index, original_names)
+            raise _explain(OptimizeError(f"Unknown column: {c.name}"), index, original_names, present)
 
     tables = sorted(
         {index.table(t.name).name for t in q.find_all(exp.Table) if t.name and index.table(t.name)}
@@ -249,7 +356,10 @@ def _nearest_tables(index: SchemaIndex, name: str, limit: int = 3) -> list[str]:
 
 
 def _explain(
-    err: Exception, index: SchemaIndex, original_names: dict[str, str] | None = None
+    err: Exception,
+    index: SchemaIndex,
+    original_names: dict[str, str] | None = None,
+    present: set[str] | None = None,
 ) -> GroundingError:
     msg = str(err)
     col = None
@@ -278,4 +388,5 @@ def _explain(
     text = f"Şemada olmayan sütun: '{bare}'."
     if near:
         text += f" Yalnız şemadaki sütunları kullan; yakın adaylar: {', '.join(near)}."
-    return GroundingError(text, column=bare, suggestions=near, kind="unknown_column")
+    err = GroundingError(text, column=bare, suggestions=near, kind="unknown_column")
+    return _with_join_hint(err, index, present or set())

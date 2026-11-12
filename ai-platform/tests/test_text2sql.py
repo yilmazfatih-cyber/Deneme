@@ -246,6 +246,33 @@ def test_ground_wrong_table_names_real_owner(bird_db):
     assert "tablosunda yok" in e.message  # platform/kullanıcı için Türkçe
 
 
+def test_ground_reports_all_issues_at_once_with_join_hints(bird_db):
+    """Gerçek BIRD hatası: üç yanlış-tablo sütunu; model hepsini tek turda görmeli, eksik tablo için JOIN koşulu."""
+    idx = SchemaIndex.from_sqlite(bird.db_path(bird_db, "california_schools"))
+    sql = (
+        "SELECT f.City, s.AvgScrMath, f.Virtual FROM frpm f JOIN schools s ON s.CDSCode = f.CDSCode "
+        "WHERE s.AvgScrMath > 500"
+    )
+    with pytest.raises(GroundingError) as ei:
+        ground(sql, idx)
+    e = ei.value
+    assert [i.column for i in e.issues] == ["City", "AvgScrMath", "Virtual"]
+    en = e.render("en")
+    assert en.startswith("3 problems in the query:")
+    assert "It exists in: satscores.AvgScrMath" in en and "join it with satscores.cds = schools.CDSCode" in en
+    assert en.count("join it with") == 1  # schools zaten sorguda; yalnız satscores eksik
+
+
+def test_ground_unknown_bare_column_gets_join_hint(bird_db):
+    idx = SchemaIndex.from_sqlite(bird.db_path(bird_db, "california_schools"))
+    with pytest.raises(GroundingError) as ei:
+        ground("SELECT School, county_name FROM schools", idx)
+    e = ei.value
+    assert e.kind == "unknown_column" and e.suggestions == ["frpm.`County Name`"]
+    assert e.join_hint == "frpm.CDSCode = schools.CDSCode"
+    assert "JOIN et" in e.message and "join it with frpm.CDSCode = schools.CDSCode" in e.render("en")
+
+
 def test_ground_nearest_ignores_case_and_separators(bird_db):
     idx = SchemaIndex.from_sqlite(bird.db_path(bird_db, "california_schools"))
     with pytest.raises(GroundingError) as ei:
