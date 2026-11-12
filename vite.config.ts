@@ -43,8 +43,8 @@ export default defineConfig(({ mode }) => ({
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,woff2,txt,mp3,m4a}'],
         navigateFallback: 'index.html',
-        // Bölüş (/bolus/) ayrı bir uygulama; Köprü'nün çevrimdışı yedeği oraya karışmasın.
-        navigateFallbackDenylist: [/\/bolus\//],
+        // Bölüş (/bolus/) ve Sadaka Taşı (/sadaka-tasi/) ayrı uygulamalar; Köprü'nün çevrimdışı yedeği oraya karışmasın.
+        navigateFallbackDenylist: [/\/bolus\//, /\/sadaka-tasi\//],
         cleanupOutdatedCaches: true,
         maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
       },

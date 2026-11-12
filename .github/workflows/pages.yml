@@ -2,6 +2,7 @@ name: Yayınla (GitHub Pages)
 
 # Her güncellemede uygulamayı derler ve https://<kullanıcı>.github.io/<depo>/ adresinde yayınlar.
 # Bölüş (ortak harcama uygulaması) derleme gerektirmez; bolus/ klasörü olduğu gibi /bolus/ altında yayınlanır.
+# Sadaka Taşı (dayanışma sandığı demosu) da derlemesizdir; /sadaka-tasi/ altında yayınlanır.
 on:
   push:
     branches: [main, claude/merhaba-f982gj, claude/hopeful-johnson-m02kmc]
@@ -29,6 +30,11 @@ jobs:
       - run: npm run build
       - name: Bölüş uygulamasını ekle
         run: cp -r bolus dist/bolus
+      - name: Sadaka Taşı demosunu ekle
+        run: |
+          mkdir -p dist/sadaka-tasi
+          cp sadaka-tasi/*.html sadaka-tasi/*.mjs sadaka-tasi/*.css sadaka-tasi/*.svg sadaka-tasi/*.webmanifest dist/sadaka-tasi/
+          rm -f dist/sadaka-tasi/*.test.mjs
       - uses: actions/configure-pages@v5
         with:
           enablement: true

@@ -13,6 +13,10 @@ Kelime bulmakta zorlanan afazili yetişkinler için Türkçe bir web uygulaması
 > **Ayrıca:** aynı depoda [`bolus/`](bolus/README.md) altında Splitwise benzeri, ev içi ortak harcama uygulaması **Bölüş** var;
 > GitHub Pages'te `/bolus/` adresinde yayınlanır.
 >
+> **Ayrıca:** [`sadaka-tasi/`](sadaka-tasi/README.md) altında **Sadaka Taşı** var: aidatın bir kısmı aynı ay sadaka olan,
+> kalanıyla kara günü gelen üyeye kurul kararıyla destek olunan bir dayanışma sandığının iş planı
+> ([`IS-PLANI.md`](sadaka-tasi/IS-PLANI.md)) ve derlemesiz demo sitesi; GitHub Pages'te `/sadaka-tasi/` adresinde yayınlanır.
+>
 > **Ayrıca:** [`moda-radar/`](moda-radar/README.md) altında defilelerden sezon rengi (Pantone TCX), kumaş ve desen tahmini yapan,
 > İstanbul'u beş sosyoekonomik segmente bölen ve ürün bazlı yatırım kararı üreten **Moda Radar** tasarımı var (Fable mimar, Opus ekip).
 

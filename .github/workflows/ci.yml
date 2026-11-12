@@ -15,6 +15,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check
+      - name: Sadaka Taşı kural testleri
+        run: node --test sadaka-tasi/*.test.mjs
       - run: npx playwright install --with-deps chromium
       - run: npm run e2e
       - uses: actions/upload-artifact@v4

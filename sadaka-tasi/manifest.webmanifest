@@ -1,0 +1,15 @@
+{
+  "name": "Sadaka Taşı — dayanışma sandığı",
+  "short_name": "Sadaka Taşı",
+  "description": "Aidatın bir kısmı aynı ay sadaka olur, kalanı kara günü gelen üyeye kurul kararıyla destek olur.",
+  "lang": "tr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#edf0ec",
+  "theme_color": "#2f63c8",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}
