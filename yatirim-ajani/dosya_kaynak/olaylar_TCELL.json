@@ -35,6 +35,311 @@
     "beklenti": null,
     "sure_ay": null
    }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "TCELL",
+   "sektor": null,
+   "baslangic": "2025-03-26",
+   "bitis": "2025-03-26",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Turkcell 2024 kârından 8 mlr TL (brüt 3,64 TL) temettü önerdi",
+   "anlam": "Yönetim kurulu KAP'ta (26.03.2025) 2024 kârından toplam brüt 8,0 mlr TL (pay başına brüt 3,6363636 TL, net 3,0909090 TL) nakit temettüyü iki eşit taksitle (20 Haziran ve 26 Aralık 2025) önerdi. Genel kurul 15 Mayıs 2025'te onayladı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.75,
+   "etiketler": [
+    "temettü",
+    "brüt_3.64"
+   ],
+   "kaynaklar": [
+    "https://www.capital.com.tr/haberler/tum-haberler/turkcell-temettu-kararini-duyurdu",
+    "https://www.ekonomist.com.tr/borsa/turkcell-temettu-kararini-duyurdu-58650"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 8000000000,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": 3.6363636,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "TCELL",
+   "sektor": null,
+   "baslangic": "2025-03-26",
+   "bitis": "2025-03-26",
+   "kamuya_acilma": null,
+   "tur": "geri_alim",
+   "baslik": "Turkcell hisse geri alım programı bütçesini yükseltti",
+   "anlam": "Ak Yatırım'a göre 2024 sonuç döneminde geri alım bütçesi 1,25 mlr TL'den 2,5 mlr TL'ye yükseltildi ve program genel kurulda onaylandı; başka bir kaynakta program 25 Mart 2025 kararına ve 8,5 mlr TL fona bağlanıyor. Tutar ve tam gün çelişkili olduğundan tutar alanı boş.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.35,
+   "etiketler": [
+    "geri alım"
+   ],
+   "kaynaklar": [
+    "https://www.capital.com.tr/haberler/tum-haberler/turkcell-temettu-kararini-duyurdu",
+    "https://www.cnbce.com/piyasalar/turkcell-2093944-adet-hisse-geri-alim-islemi-gerceklestirdi-h19634"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "TCELL",
+   "sektor": null,
+   "baslangic": "2025-05-09",
+   "bitis": "2025-05-09",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Turkcell 1Ç25 net kârı 3,08 mlr TL, yıllık %15 düştü",
+   "anlam": "Turkcell 9 Mayıs 2025'te 1Ç25 net kârını 3.082.110.000 TL açıkladı (1Ç24: 3.638.431.000 TL). Bazı kaynaklar beklentinin altında buldu; Akbank'a göre sonuç yaklaşık 3,2 mlr TL'lik beklentiye yakındı. FAVÖK marjı %43,7 ile 10 yılın en yüksek 1Ç seviyesi.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.8,
+   "etiketler": [
+    "bilanço",
+    "1Ç25"
+   ],
+   "kaynaklar": [
+    "https://www.benguturk.com/ekonomi/turkcellin-2025-ilk-ceyrek-net-kari-31-milyar-lira-oldu-201976h",
+    "https://www.cnbce.com/borsa/turkcell-beklentilerin-altinda-kaldi-kari-yuzde-15-dustu-turkcell-bilanco-turkcell-bilanco-2025-turkcell-hisse-turkcell-kar-turkcell-zarar-turkcell-gelir-h12599"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 3082110000,
+    "beklenti": 3200000000,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "TCELL",
+   "sektor": null,
+   "baslangic": "2025-08-13",
+   "bitis": "2025-08-13",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Turkcell 2Ç25 net kârı 4,2 mlr TL; beklenti 3,3 mlr TL idi",
+   "anlam": "Turkcell 2Ç25 net kârını 4.200.509.000 TL açıkladı (6 ay 7.467.754.000 TL); ForInvest anketindeki 3,3 mlr TL beklentinin üzerinde. FAVÖK 23,1 mlr TL (+%14,8). Analiz raporları 14 Ağustos sabahı yayımlandığından bildirim 13 Ağustos akşamı olabilir; gün kesin değil.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.4,
+   "etiketler": [
+    "bilanço",
+    "2Ç25"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/turkcell-2c25-bilancosu-aciklandi-net-karda-surpriz-var-mi/",
+    "https://www.gcmyatirim.com.tr/arastirma-analiz/ozel-raporlar/2025-08-14-turkcell-tcell-2025-2-ceyrek-bilanco-analizi"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 4200509000,
+    "beklenti": 3300000000,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "TCELL",
+   "sektor": null,
+   "baslangic": "2025-11-06",
+   "bitis": "2025-11-06",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Turkcell 3Ç25 net kârı 5,40 mlr TL; beklentinin yaklaşık %7 üzerinde",
+   "anlam": "Turkcell 6 Kasım 2025'te KAP'ta 3Ç25 net kârını 5.397.501.000 TL açıkladı; Akbank Yatırım'a göre piyasa beklentisinin yaklaşık %7 üzerinde. Enflasyon muhasebesi nedeniyle yıllık karşılaştırmalar yeniden düzenlenmiş (9 ay kâr 13,43 mlr TL).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.85,
+   "etiketler": [
+    "bilanço",
+    "3Ç25"
+   ],
+   "kaynaklar": [
+    "https://www.capital.com.tr/piyasalar/borsa/turkcell-3-ceyrek-bilancosunu-acikladi",
+    "https://www.forbes.com.tr/para-yatirim/turkcell-den-ucuncu-ceyrekte-5-4-milyar-tl-net-kar"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 5397501000,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "TCELL",
+   "sektor": null,
+   "baslangic": "2026-03-05",
+   "bitis": "2026-03-05",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Turkcell 4Ç25 net kârı 3,59 mlr TL, beklentiye paralel",
+   "anlam": "Turkcell 4Ç25 bilançosunu 5 Mart 2026'da KAP'ta yayımladı: net kâr 3.593.624.000 TL (beklenti yaklaşık 3,7 mlr TL), FAVÖK 25,8 mlr TL (beklenti 24,5 mlr TL); net borç 20,7 mlr TL'den 14,9 mlr TL'ye geriledi. 2025 yıllık net kâr 17,6 mlr TL (2024: 30,8 mlr TL).",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.75,
+   "etiketler": [
+    "bilanço",
+    "4Ç25"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/piyasalar/turkcell-tcell-2025-yili-4-ceyrek-bilancosunu-acikladi-h26239",
+    "https://www.bloomberght.com/turkcell-den-beklentilere-paralel-net-kr-3771096"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 3593624000,
+    "beklenti": 3700000000,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "TCELL",
+   "sektor": null,
+   "baslangic": "2026-03-05",
+   "bitis": "2026-03-05",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Turkcell 2025 kârından brüt 4,00 TL temettü kararı (hak kullanım 9 Aralık 2026)",
+   "anlam": "Turkcell 2025 kârı için pay başına brüt 4,00 TL (net 3,40 TL) nakit temettü dağıtılmasını öneriyor; 7 Mayıs 2026 genel kurul kararları 14 Mayıs'ta tescil edildi, ödeme 9 Aralık 2026. Önerinin ilk duyuru günü doğrulanamadı; sonuç günü varsayıldı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.35,
+   "etiketler": [
+    "temettü",
+    "brüt_4.00"
+   ],
+   "kaynaklar": [
+    "https://www.capital.com.tr/haberler/tum-haberler/turkcell-temettu-kararini-duyurdu",
+    "https://borsacoo.com/firma/TCELL/bildirimler"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 4.0,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "TCELL",
+   "sektor": null,
+   "baslangic": "2026-08-31",
+   "bitis": "2026-08-31",
+   "kamuya_acilma": null,
+   "tur": "birlesme_devralma",
+   "baslik": "Turkcell, TOGG hissesi alımı için Türkiye Varlık Fonu ile görüşmeleri doğruladı",
+   "anlam": "Basında çıkan haberler üzerine Turkcell 31 Ağustos 2026'da KAP'ta TOGG'daki bazı payların alımı için Türkiye Varlık Fonu ile görüşmeler yürüttüğünü, nihai karar alınmadığını açıkladı. AGHOL ve Vestel de kendi TOGG payları için görüşmeleri doğruladı.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.6,
+   "etiketler": [
+    "TOGG",
+    "görüşme"
+   ],
+   "kaynaklar": [
+    "https://www.getmidas.com/midasin-kulaklari/turkcell-togg-hissesi-alimina-yonelik-gorusmelerin-surdugunu-acikladi-p-723991",
+    "https://www.cnbce.com/otomotiv/toggun-ortaklik-yapisi-degisebilir-vestel-turkcell-ve-anadolu-grubundan-kap-aciklamasi-h36216"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "TCELL",
+   "sektor": null,
+   "baslangic": "2026-11-02",
+   "bitis": "2026-11-02",
+   "kamuya_acilma": null,
+   "tur": "birlesme_devralma",
+   "baslik": "Turkcell, TOGG'un %11'ini AG Anadolu Grubu'ndan 88 milyon euroya alıyor",
+   "anlam": "Turkcell 2 Kasım 2026'da Anadolu Grubu'ndan TOGG sermayesinin %11'ini 88 milyon EUR bedelle (nakit, kapanışta) satın almak için bağlayıcı sözleşme imzaladı; Turkcell'in TOGG payı yaklaşık %34'e çıkacak. Haberler 3 Kasım'da yayımlandı, KAP gün/saati doğrulanamadı.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.6,
+   "etiketler": [
+    "TOGG",
+    "satın alma"
+   ],
+   "kaynaklar": [
+    "https://www.foreks.com/haber/detay/6ae9017558b1b941c2096a2e/PICNEWS/tr/turkcell-togg-daki-payini-yuzde-34-e-cikariyor-03-11-26/",
+    "https://www.foreks.com/haber/detay/6ae9513c58b1b941c2096bc5/AA/tr/togg-da-anadolu-grubu-ve-vestel-in-paylari-tvf-ve-turkcell-e-geciyor-03-11-26/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 88000000,
+    "para_birimi": "EUR",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
   }
  ]
 }

@@ -35,6 +35,279 @@
     "beklenti": null,
     "sure_ay": null
    }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "TTKOM",
+   "sektor": null,
+   "baslangic": "2025-03-10",
+   "bitis": "2025-03-10",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "TTKOM 4Ç24 net kârı 4,29 mlr TL, beklentinin (1,99 mlr) çok üzerinde",
+   "anlam": "GCM'e göre Türk Telekom 4Ç24'te net kârı 4.289 mn TL açıkladı; beklenti 1.991 mn TL idi. İş Yatırım artışı amortisman düzeltmesindeki tek seferlik kaleme bağladı. Bildirim günü doğrulanamadı (GCM raporu 11 Mart 2025).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.3,
+   "etiketler": [
+    "bilanço",
+    "4Ç24"
+   ],
+   "kaynaklar": [
+    "https://www.gcmyatirim.com.tr/arastirma-analiz/ozel-raporlar/2025-03-11-turk-telekom-ttkom-2024-4-ceyrek-bilanco-analizi"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 4289000000,
+    "beklenti": 1991000000,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "TTKOM",
+   "sektor": null,
+   "baslangic": "2025-08-13",
+   "bitis": "2025-08-13",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "TTKOM 2Ç25 net kârı 4,87 mlr TL; aracı kurum yorumları ayrıştı",
+   "anlam": "Türk Telekom 13 Ağustos 2025'te 2Ç25 net kârını 4.873.229.000 TL açıkladı (6 ay 10,3 mlr TL; gelir %13,2 artışla 50,4 mlr TL). Deniz Yatırım beklentilerin üzerinde, Halk Yatırım beklentinin altında buldu; ertelenmiş vergi gideri arındırılınca net kâr 5,30 mlr TL.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.75,
+   "etiketler": [
+    "bilanço",
+    "2Ç25"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/ttkom-bilanco-net-kar-yillik-bazda-yuzde-29-artti/",
+    "https://paratic.com/turk-telekom-ttkom-2c25-bilanco-tarihi-aciklandi/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 4873229000,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "TTKOM",
+   "sektor": null,
+   "baslangic": "2025-08-27",
+   "bitis": "2025-08-27",
+   "kamuya_acilma": null,
+   "tur": "regulasyon",
+   "baslik": "Türk Telekom sabit hizmet imtiyaz sözleşmesi 28 Şubat 2050'ye uzatıldı",
+   "anlam": "27 Ağustos 2025 KAP bildirimiyle BTK ile sabit hizmetler imtiyaz sözleşmesi 28.02.2050'ye kadar uzatıldı (önceki süre 28.02.2026). Kaynaklar yükümlülükleri farklı aktarıyor: yaklaşık 17 mlr USD'lik 10 yıllık yatırım taahhüdü ve ~3 mlr USD tutarlı bir imtiyaz bedeli; bu nedenle tutar alanı boş bırakıldı. Belirsizlik ortadan kalkması hisse için olumlu okundu.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.8,
+   "etiketler": [
+    "imtiyaz",
+    "2050",
+    "BTK"
+   ],
+   "kaynaklar": [
+    "https://www.cnnturk.com/ekonomi/turk-telekomun-sabit-hizmetler-imtiyaz-sozlesmesi-2050ye-kadar-uzatildi-2328851",
+    "https://www.bloomberght.com/turk-telekom-un-imtiyaz-sozlesmesi-25-yil-uzatildi-3755808"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "TTKOM",
+   "sektor": null,
+   "baslangic": "2025-09-24",
+   "bitis": "2025-09-24",
+   "kamuya_acilma": null,
+   "tur": "regulasyon",
+   "baslik": "TT Mobil GSM imtiyazı 30 Nisan 2029'a uzatıldı; bedel 67,2 mn euro",
+   "anlam": "24 Eylül 2025'te TT Mobil'in GSM imtiyaz süresi 30 Nisan 2029'a uzatıldı; 900 ve 1800 MHz bantlarının kullanımı sürüyor. Uzatma bedeli 67,2 milyon EUR (bir kısmı peşin, kalanı taksitle).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.65,
+   "etiketler": [
+    "GSM",
+    "imtiyaz",
+    "TT Mobil"
+   ],
+   "kaynaklar": [
+    "https://www.getmidas.com/midasin-kulaklari/turk-telekom-btk-ile-imtiyaz-sozlesmesini-2050ye-kadar-uzatti-p-173155",
+    "https://www.finansopia.com/kap-bildirimleri/turk-telekomdan-ttkom-3-milyar-dolarlik-imtiyaz-anlasmasi/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 67200000,
+    "para_birimi": "EUR",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "TTKOM",
+   "sektor": null,
+   "baslangic": "2025-11-04",
+   "bitis": "2025-11-04",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "TTKOM 3Ç25 net kârı 10,24 mlr TL ile beklentiyi aştı; hisse tavan",
+   "anlam": "Türk Telekom 3Ç25 net kârını yaklaşık 10,24 mlr TL açıkladı (9 aylık 21,33 mlr TL, yıllık %69 artış); Midas ve Paratic beklenti üzeri sonuç ve tavan fiyatı bildirdi. Bildirim günü tek kaynağa (4 Kasım 2025) dayanıyor; net kâr yuvarlanmış rakamdır.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "fomo_alimi",
+   "tepki_aciklama": "Hisseler tavan oldu.",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.55,
+   "etiketler": [
+    "bilanço",
+    "3Ç25",
+    "tavan"
+   ],
+   "kaynaklar": [
+    "https://www.getmidas.com/midasin-kulaklari/ttkom-3-ceyrekte-1024-milyar-tllik-net-kar-ile-beklentileri-asti-p-197342",
+    "https://paratic.com/ttkomda-bilanco-coskusu-hisseler-tavan-oldu/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 10240000000,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "TTKOM",
+   "sektor": null,
+   "baslangic": "2026-03-04",
+   "bitis": "2026-03-04",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "TTKOM 4Ç25 net kârı 719 mn TL ile beklentilerin çok altında kaldı",
+   "anlam": "Türk Telekom 4 Mart 2026'da 4Ç25 net kârını 718.835.000 TL açıkladı (4Ç24: 2.075 mn TL zarar; 2025 yıllık net kâr 22,98 mlr TL, FAVÖK 99,4 mlr TL). Matriks anketinde ortalama beklenti 3.527,5 mn TL, medyan 4.428,2 mn TL idi.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.85,
+   "etiketler": [
+    "bilanço",
+    "4Ç25"
+   ],
+   "kaynaklar": [
+    "https://www.finansopia.com/kap-bildirimleri/turk-telekom-ttkom-2025-yili-4-ceyrek-bilancosunu-acikladi/",
+    "https://www.getmidas.com/midasin-kulaklari/turk-telekom-4-ceyrekte-71883-milyon-tl-net-kar-acikladi-p-339619"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 718835000,
+    "beklenti": 3527500000,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "TTKOM",
+   "sektor": null,
+   "baslangic": "2026-03-13",
+   "bitis": "2026-03-13",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Türk Telekom 2025 kârından temettü dağıtılmamasını önerdi",
+   "anlam": "13 Mart 2026 KAP bildirimiyle yönetim kurulu, genel kurula 2025 kârından kâr payı dağıtılmamasını önerdi; öneri genel kurulda kabul edildi. Analistler kısa vadede olumsuz, altyapı/dijital yatırım öncelikli uzun vade stratejisi açısından anlaşılır buldu.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.75,
+   "etiketler": [
+    "temettü yok"
+   ],
+   "kaynaklar": [
+    "https://a1capital.com.tr/ttkom-degerleme/",
+    "https://paratic.com/turk-telekomdan-2026ya-guclu-baslangic-net-kar-yuzde-55-artti/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 0.0,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "TTKOM",
+   "sektor": null,
+   "baslangic": "2026-05-07",
+   "bitis": "2026-05-07",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "TTKOM 1Ç26 net kârı yıllık %55 arttı",
+   "anlam": "Paratic'e göre Türk Telekom 1Ç26'da net kârı yıllık %55 artırdı (İş Yatırım kâr analizi 7 Mayıs 2026 tarihli). Mutlak rakam ve beklenti kaynak özetinde yok; bildirim günü 6-7 Mayıs olabilir.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.35,
+   "etiketler": [
+    "bilanço",
+    "1Ç26"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/turk-telekomdan-2026ya-guclu-baslangic-net-kar-yuzde-55-artti/",
+    "https://arastirma.isyatirim.com.tr/wp-content/uploads/2026/05/TTKOM_1C26_Kar-Analizi_070526.pdf"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
   }
  ]
 }

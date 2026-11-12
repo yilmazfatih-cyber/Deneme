@@ -1,0 +1,246 @@
+{
+ "not": "ajan araştırması (web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "AGHOL",
+   "sektor": null,
+   "baslangic": "2025-04-21",
+   "bitis": "2025-04-21",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Anadolu Grubu Holding genel kurulu brüt 5,1327 TL temettüyü onayladı",
+   "anlam": "21 Nisan 2025 genel kurulunda 2024 kârından pay başına brüt 5,1327426 TL (net 4,3628312 TL) nakit temettü onaylandı; toplam yaklaşık 1,25 mlr TL, ödeme 28 Mayıs 2025. Yönetim kurulu önerisinin ilk duyuru günü bulunamadı; tarih genel kurul/onay günüdür.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.45,
+   "etiketler": [
+    "temettü",
+    "brüt_5.13"
+   ],
+   "kaynaklar": [
+    "https://www.ekonomist.com.tr/borsa/anadolu-grubu-holding-aghol-temettu-kararini-duyurdu-58714",
+    "https://www.finansopia.com/ekonomi/borsa-istanbulda-6-sirket-temettu-karari-22-nisan-2025/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 5.1327426,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AGHOL",
+   "sektor": null,
+   "baslangic": "2025-05-09",
+   "bitis": "2025-05-09",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "AGHOL 1Ç25 net kârı yıllık %80 geriledi",
+   "anlam": "Anadolu Grubu Holding 9 Mayıs 2025'te 1Ç25 bilançosunu KAP'ta paylaştı; net kâr önceki yılın aynı dönemine göre yaklaşık %80 azaldı. Mutlak net kâr rakamı kaynak özetlerinde bulunamadı.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.55,
+   "etiketler": [
+    "bilanço",
+    "1Ç25"
+   ],
+   "kaynaklar": [
+    "https://marbas.com.tr/assets/AGHOL-2025-1.CEYREK-BILANCO-DEGERLENDIRMESI.pdf",
+    "https://rotaborsa.com/?p=311800"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AGHOL",
+   "sektor": null,
+   "baslangic": "2026-03-06",
+   "bitis": "2026-03-06",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "AGHOL 4Ç25'te 2,26 mlr TL net zarar açıkladı; beklenti kâr yönündeydi",
+   "anlam": "Holding 6 Mart 2026'da 2025 bilançosunu KAP'ta paylaştı: 4Ç25 ana ortaklık net zararı yaklaşık 2,26 mlr TL (Rota Borsa: -2.258.674.000 TL), yıllık net kâr 2,5 mlr TL'ye geriledi. Matriks anketinde ortalama çeyreklik kâr beklentisi 551,6 mn TL idi. Bira ve diğer zayıf segmentler sonucu baskıladı.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.7,
+   "etiketler": [
+    "bilanço",
+    "4Ç25",
+    "zarar"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/aghol-bilanco-4c25te-2-2-milyar-tl-zarar-etti/",
+    "https://www.gcmyatirim.com.tr/arastirma-analiz/ozel-raporlar/2026-03-09-anadolu-grubu-holding-aghol-2025-4-ceyrek-bilanco-analizi"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": -2258674000,
+    "beklenti": 551600000,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AGHOL",
+   "sektor": null,
+   "baslangic": "2026-04-02",
+   "bitis": "2026-04-02",
+   "kamuya_acilma": null,
+   "tur": "birlesme_devralma",
+   "baslik": "Anadolu Grubu, Tariş Üzüm'ün %60'ını 26 milyon USD'ye almak için sözleşme imzaladı",
+   "anlam": "2 Nisan 2026'da Anadolu Grubu (Anadolu Etap Dış Ticaret üzerinden; Efes %50,10, grup %49,90) Tariş Üzüm'ün %60 payı için pay devir sözleşmesini imzaladı; bedel 26 milyon USD.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.6,
+   "etiketler": [
+    "Tariş Üzüm",
+    "satın alma"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/borsa/anadolu-efes-aefes-ve-anadolu-grubu-holdingden-aghol-yeni-satin-alma-h27786",
+    "https://borsacoo.com/firma/AGHOL/bildirimler?page=2"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 26000000,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AGHOL",
+   "sektor": null,
+   "baslangic": "2026-04-17",
+   "bitis": "2026-04-17",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "AGHOL 2025 kârından brüt 0,698 TL temettü dağıtacak",
+   "anlam": "17 Nisan 2026 genel kurulu ve KAP kâr payı bildirimi: 2025 kârından pay başına brüt yaklaşık 0,6980529 TL (net 0,5933449 TL) nakit temettü; ödeme başlangıcı 20 Mayıs 2026. Pay grubu ayrımı kaynaklarda tutarsız. Genel kurul kararlarına bir pay sahibi dava açtı (ilk duruşma 16 Eylül 2026).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.5,
+   "etiketler": [
+    "temettü",
+    "brüt_0.698"
+   ],
+   "kaynaklar": [
+    "https://www.finansopia.com/kap-bildirimleri/anadolu-grubu-holding-aghol-temettu-kararini-verdi-anadolu-grubu-holding-temettu-verecek-mi/",
+    "https://rotaborsa.com/anadolu-grubu-holding-aghol-temettu-kararini-acikladi/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 0.6980529,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AGHOL",
+   "sektor": null,
+   "baslangic": "2026-07-20",
+   "bitis": "2026-07-20",
+   "kamuya_acilma": null,
+   "tur": "borclanma",
+   "baslik": "AGHOL yönetimi 4,5 mlr TL'ye kadar borçlanma aracı ihracına yetkilendirildi",
+   "anlam": "20 Temmuz 2026 tarihli kararla yönetim kurulu 4,5 milyar TL'ye kadar borçlanma aracı ihracı için yetkilendirildi ve aynı gün SPK'ya başvuruldu; tavanın geçerliliği 13.08.2027. Önceki dönemde 1,55 mlr TL'lik tahvilin ilk kuponu 17 Temmuz'da ödendi.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.5,
+   "etiketler": [
+    "tahvil",
+    "borçlanma aracı"
+   ],
+   "kaynaklar": [
+    "https://borsacoo.com/firma/AGHOL/bildirimler?page=2",
+    "https://www.uscmarkets.com/borsa-istanbul/aghol/haberler"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 4500000000,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AGHOL",
+   "sektor": null,
+   "baslangic": "2026-11-02",
+   "bitis": "2026-11-02",
+   "kamuya_acilma": null,
+   "tur": "birlesme_devralma",
+   "baslik": "Anadolu Grubu TOGG payını (%12 TVF'ye, %11 Turkcell'e) 184 milyon euroya satıyor",
+   "anlam": "Foreks/AA haberlerine göre 2 Kasım 2026'da Anadolu Grubu TOGG'daki payını devretmek üzere sözleşme imzaladı: %11'i Turkcell'e 88 milyon EUR, %12'si Türkiye Varlık Fonu'na 96 milyon EUR (toplam 184 milyon EUR). Vestel de %23 payını TVF'ye 184 milyon EUR'ya satıyor. Euro/lira ayrımı kaynaklarda tam tutarlı değil.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.6,
+   "etiketler": [
+    "TOGG",
+    "pay satışı",
+    "TVF",
+    "Turkcell"
+   ],
+   "kaynaklar": [
+    "https://www.foreks.com/haber/detay/6ae9513c58b1b941c2096bc5/AA/tr/togg-da-anadolu-grubu-ve-vestel-in-paylari-tvf-ve-turkcell-e-geciyor-03-11-26/",
+    "https://www.ekonomigazetesi.com/sirket-haberleri/anadolu-grubu-ve-vestel-toggdaki-paylarini-devrediyor-91183"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 184000000,
+    "para_birimi": "EUR",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

@@ -1,0 +1,349 @@
+{
+ "not": "ajan araştırması (web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "AEFES",
+   "sektor": null,
+   "baslangic": "2024-12-30",
+   "bitis": "2024-12-30",
+   "kamuya_acilma": null,
+   "tur": "haber",
+   "baslik": "Rusya, AB InBev Efes ortak girişimine geçici yönetim atadı; AEFES hisse taban oldu",
+   "anlam": "30 Aralık 2024'te Rusya'da AB InBev Efes (Anadolu Efes'in AB InBev ile ortak girişimi) şirketine geçici yönetim atanmasına ilişkin kararname çıktı. Şirket KAP'ta durumu ortağıyla değerlendireceğini duyurdu; Rusya operasyonu sonraki dönemde finansal yatırım olarak sınıflandı. Kaynaklar KAP bildirim gününü 30 veya 31 Aralık olarak veriyor.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "panik_satisi",
+   "tepki_aciklama": "Haberlere göre hisse taban gördü.",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.55,
+   "etiketler": [
+    "Rusya",
+    "geçici yönetim",
+    "AB InBev Efes"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/sirket-haberleri/anadolu-efesten-rusya-aciklamasi-hisseler-tabani-gordu-h8133",
+    "https://www.yatirimx.com.tr/ekonomi/rusyada-ab-inbev-efes-firmasina-gecici-kayyum-atandi/1674"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AEFES",
+   "sektor": null,
+   "baslangic": "2025-03-05",
+   "bitis": "2025-03-05",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Anadolu Efes yönetimi 2024 kârından brüt 1,274 TL nakit temettü önerdi",
+   "anlam": "Yönetim Kurulu'nun 5 Mart 2025 tarihli (682 sayılı) kararıyla 2024 kârından pay başına brüt 1,274 TL (net 1,0829 TL) nakit temettü genel kurula önerildi. Genel kurul 14 Nisan 2025'te teklifi değiştirmeden kabul etti; ödeme 27 Mayıs 2025'te yapıldı (hak kullanım 26 Mayıs).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.7,
+   "etiketler": [
+    "temettü",
+    "brüt_1.274"
+   ],
+   "kaynaklar": [
+    "https://www.ekonomist.com.tr/borsa/anadolu-efes-temettu-kararini-duyurdu-58098",
+    "https://www.borsagundem.com.tr/anadolu-efesten-temettu-aciklamasi"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 1.274,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AEFES",
+   "sektor": null,
+   "baslangic": "2025-05-07",
+   "bitis": "2025-05-07",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "AEFES 1Ç25 net kârı 1,73 mlr TL, yıllık %60 düştü ama beklentiyi aştı",
+   "anlam": "Anadolu Efes 7 Mayıs 2025'te KAP'ta 1Ç25 net kârını 1.725.155.000 TL açıkladı (1Ç24: 4.337.204.000 TL, yıllık yaklaşık %60 düşüş). İş Yatırım'ın tahmini 1,6 mlr TL idi; Rota Borsa ortalama beklentinin üzerinde değerlendirdi. Beklenti alanındaki rakam tek kurum tahminidir.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.75,
+   "etiketler": [
+    "bilanço",
+    "1Ç25"
+   ],
+   "kaynaklar": [
+    "https://www.borsamatik.com.tr/aefes-2025-yili-1-ceyrek-bilancosunu-acikladi-haber-171391",
+    "https://paratic.com/anadolu-efes-aefes-1c25-tahmini-16-milyar-tl-net-kar/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 1725155000,
+    "beklenti": 1600000000,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AEFES",
+   "sektor": null,
+   "baslangic": "2025-06-20",
+   "bitis": "2025-06-20",
+   "kamuya_acilma": null,
+   "tur": "birlesme_devralma",
+   "baslik": "Rusya, Efes'in AB InBev Efes azınlık paylarını alma başvurusunu reddetti",
+   "anlam": "Anadolu Efes 20 Haziran 2025'te KAP'ta, Rus makamlarının EBI'nin AB InBev'in AB InBev Efes BV'deki azınlık paylarını satın alma başvurusunu reddettiğini bildirdi. Şirket AB InBev ile bundan sonraki adımları gözden geçirdiğini açıkladı. Haber Rusya operasyonunun akıbetine dair belirsizliği artırdı.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.65,
+   "etiketler": [
+    "Rusya",
+    "ret",
+    "AB InBev"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/borsa/anadolu-efesten-rusya-aciklamasi-satin-alma-basvurusu-reddedildi-h14085",
+    "https://www.borsamatik.com.tr/anadolu-efesin-pay-alimina-rusyadan-ret-haber-172275"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AEFES",
+   "sektor": null,
+   "baslangic": "2025-08-12",
+   "bitis": "2025-08-12",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "AEFES 2Ç25 net kârı 4,07 mlr TL ile beklentilerin üzerinde geldi",
+   "anlam": "Anadolu Efes 12 Ağustos 2025'te KAP'ta 2Ç25 net kârını 4.065.146.000 TL açıkladı (6 aylık toplam 5.893.931.000 TL). Aracı kurum değerlendirmeleri net kârı beklentinin üzerinde buldu; sayısal beklenti kaynakta yer almadı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.75,
+   "etiketler": [
+    "bilanço",
+    "2Ç25"
+   ],
+   "kaynaklar": [
+    "https://www.borsamatik.com.tr/aefes-2025-yili-2-ceyrek-bilancosunu-acikladi-haber-173289",
+    "https://www.finansopia.com/kap-bildirimleri/anadolu-efes-aefes-2025-yili-2-ceyrek-bilancosunu-acikladi/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 4065146000,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AEFES",
+   "sektor": null,
+   "baslangic": "2025-08-29",
+   "bitis": "2025-08-29",
+   "kamuya_acilma": null,
+   "tur": "birlesme_devralma",
+   "baslik": "Anadolu Efes, Tariş Üzüm'ün %60'ı için 26 milyon dolarlık ön protokol imzaladı",
+   "anlam": "Anadolu Efes 29 Ağustos 2025'te S.S. Tariş Üzüm kooperatifiyle Tariş Üzüm'ün %60 payı için bağlayıcı olmayan ön protokol imzaladığını duyurdu; bedel 26 milyon USD (işletme sermayesi düzeltmesine tabi). Hamle, şirketin distile alkol/içecek portföyünü genişletme stratejisinin parçası.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.65,
+   "etiketler": [
+    "Tariş Üzüm",
+    "satın alma"
+   ],
+   "kaynaklar": [
+    "https://www.forbes.com.tr/ekonomi/anadolu-efes-taris-uzum-hisselerini-aliyor",
+    "https://paratic.com/anadolu-efesten-taris-uzum-icin-pay-devri-anlasmasi/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 26000000,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AEFES",
+   "sektor": null,
+   "baslangic": "2025-11-05",
+   "bitis": "2025-11-05",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "AEFES 3Ç25 net kârı 5,25 mlr TL; 9 aylık kâr 11,59 mlr TL",
+   "anlam": "Şirket 31 Ekim 2025 KAP bildiriminde sonuçları 5 Kasım 2025'te açıklayacağını duyurdu; 3Ç25 net kârı 5.252.637.000 TL (9 ay: 11.588.849.000 TL) oldu. Akbank Yatırım'a göre 3Ç24 proforma 4.370 mn TL'ye kıyasla yaklaşık %20 artış; kâr parasal kazançla desteklendi. Beklenti rakamı kaynaklar arasında tutarsız olduğundan yazılmadı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.6,
+   "etiketler": [
+    "bilanço",
+    "3Ç25"
+   ],
+   "kaynaklar": [
+    "https://www.capital.com.tr/piyasalar/borsa/anadolu-efes-aefes-bilanco-tarihi-aciklandi",
+    "https://www.cnbce.com/piyasalar/anadolu-efes-ucuncu-ceyrek-bilancosunu-acikladi-aefes-h19312"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 5252637000,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AEFES",
+   "sektor": null,
+   "baslangic": "2026-03-05",
+   "bitis": "2026-03-05",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "AEFES 4Ç25'te 3,14 mlr TL net zarar yazdı; beklenti kâr yönündeydi",
+   "anlam": "Anadolu Efes 4Ç25'te -3.136.713.000 TL net zarar açıkladı (12 aylık kâr 8.956.856.000 TL). Matriks anketinde ortalama beklenti 543,8 mn TL kârdı. Zarar; CCI'ın Özbekistan operasyonları için ayrılan 1 mlr TL karşılık, düşük parasal kazanç ve ertelenmiş vergi giderinden kaynaklandı. Bildirim günü kesin doğrulanamadı (Quartr kaydı 6 Mart 2026, 5 Mart olması olası).",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.35,
+   "etiketler": [
+    "bilanço",
+    "4Ç25",
+    "zarar",
+    "Özbekistan"
+   ],
+   "kaynaklar": [
+    "https://paraajansi.com.tr/sirket-haberleri/aefes-zarar-etmesine-ragmen-6874-kazandirmasi-bekleniyor-22225983h",
+    "https://arastirma.isyatirim.com.tr/tag/aefes-hedef-fiyat-degisikligi/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": -3136713000,
+    "beklenti": 543800000,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AEFES",
+   "sektor": null,
+   "baslangic": "2026-03-05",
+   "bitis": "2026-03-05",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Anadolu Efes 2025 kârından brüt 0,3395 TL temettü önerdi (iki taksit)",
+   "anlam": "2025 faaliyet yılı için pay başına brüt 0,3395 TL (net 0,288575 TL) nakit temettü, iki eşit taksitle (hak kullanım 13 Mayıs ve 5 Ekim 2026) dağıtılacak; toplam yaklaşık 2,01 mlr TL. Önerinin açıklandığı gün sonuç bildirimiyle aynı döneme denk geliyor ancak tam gün doğrulanamadı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.35,
+   "etiketler": [
+    "temettü",
+    "brüt_0.3395"
+   ],
+   "kaynaklar": [
+    "https://yatirim.akbank.com/_layouts/15/AkbankYatirimciPortali/Rapor/Download.aspx?ID=10802",
+    "https://www.yatirimx.com.tr/sirket-haberleri/aefesten-iki-taksitli-temettu-mujdesi-tarihler-netlesti/19426"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 0.3395,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AEFES",
+   "sektor": null,
+   "baslangic": "2026-04-02",
+   "bitis": "2026-04-02",
+   "kamuya_acilma": null,
+   "tur": "birlesme_devralma",
+   "baslik": "Anadolu Efes, Tariş Üzüm'ün %60'ı için pay devir sözleşmesi imzaladı (26 milyon USD)",
+   "anlam": "2 Nisan 2026'da Tariş Üzüm'ün %60 payının Anadolu Etap Dış Ticaret (Efes %50,10, Anadolu Grubu %49,90) aracılığıyla devralınmasına ilişkin pay devir sözleşmesi imzalandı; bedel 26 milyon USD. Kapanışta işletme sermayesi ve borç düzeltmeleriyle fiyat 25,4 milyon USD'ye indi (kapanış 30 Temmuz 2026 bildirimi).",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.7,
+   "etiketler": [
+    "Tariş Üzüm",
+    "satın alma"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/borsa/anadolu-efes-aefes-ve-anadolu-grubu-holdingden-aghol-yeni-satin-alma-h27786",
+    "https://anadoluefes.com/Upload/Docs/2026/announcements/Announcement-Regarding-the-Signing-of-Share-Purchase-Agreement-for-the-Acquisition-of-60-of-the-Share-of-Taris-Uzum.pdf"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 26000000,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

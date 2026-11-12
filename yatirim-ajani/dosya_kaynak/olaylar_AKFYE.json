@@ -1,0 +1,242 @@
+{
+ "not": "ajan araştırması (web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "AKFYE",
+   "sektor": null,
+   "baslangic": "2024-11-20",
+   "bitis": "2024-11-20",
+   "kamuya_acilma": null,
+   "tur": "borclanma",
+   "baslik": "Akfen Yenilenebilir Enerji iki bankayla 215 milyon USD'lik 72 ay vadeli kredi imzaladı",
+   "anlam": "20 Kasım 2024 KAP bildirimiyle iki kreditör bankayla 215 milyon USD tutarlı, 72 ay vadeli kredi sözleşmesi imzalandı; kaynak mevcut kredilerin refinansmanı ve yeni yatırım projelerinin finansmanı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.75,
+   "etiketler": [
+    "kredi",
+    "refinansman"
+   ],
+   "kaynaklar": [
+    "https://www.finansopia.com/kap-bildirimleri/akfen-yenilenebilir-enerji-akfye-kredi-sozlesmesi-imzaladi/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 215000000,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": 72
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AKFYE",
+   "sektor": null,
+   "baslangic": "2024-11-22",
+   "bitis": "2024-11-22",
+   "kamuya_acilma": null,
+   "tur": "haber",
+   "baslik": "AKFYE 3,15 mlr TL tutarlı tahsisli sermaye artırımına SPK onayı; baz fiyat 17,41 TL",
+   "anlam": "22 Kasım 2024'te SPK onayı ve Borsa'dan satış fiyatı tespiti başvurusu duyuruldu: 20 mlr TL kayıtlı sermaye tavanı içinde 180.930.499 TL nominal pay (çıkarılmış sermaye 1,016 mlr TL'den 1,197 mlr TL'ye), 17,41 TL fiyattan Akfen International Holding'e, 3,15 mlr TL'lik nakit alacağına mahsupla ihraç edilecek (tutar 9 Ekim 2024 kararıyla 1,75 mlr'dan yükseltilmişti).",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.65,
+   "etiketler": [
+    "tahsisli sermaye artırımı",
+    "Akfen International"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/akfen-yenilenebilir-enerjinin-tahsisli-sermaye-artirimina-onay/",
+    "https://www.finansopia.com/?p=175365"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 3150000000,
+    "para_birimi": "TRY",
+    "oran": 0.178,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AKFYE",
+   "sektor": null,
+   "baslangic": "2025-08-25",
+   "bitis": "2025-08-25",
+   "kamuya_acilma": null,
+   "tur": "yatirim",
+   "baslik": "Akfen Yenilenebilir Enerji toplam kurulu gücünü 802 MW'a çıkardı",
+   "anlam": "25 Ağustos 2025 tarihli bildirimle toplam kurulu güç 802 MW'a yükseldi (Denizli RES kapasite artışının ilk 19,2 MW'lık kısmı 22 Ağustos 2025'te ticari üretime geçti; toplam RES kapasite artış yatırımı 102 MW). Şirket yıl sonu için yaklaşık 887 MW hedefliyor.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.55,
+   "etiketler": [
+    "kurulu güç",
+    "RES",
+    "Denizli"
+   ],
+   "kaynaklar": [
+    "https://www.akfen.com.tr/wp-content/uploads/2025/09/25.08.2025-Akfen-Yenilenebilir-Enerji-Toplam-Kurulu-Gucunu-802-MWa-Yukseltti.pdf",
+    "https://www.getmidas.com/midasin-kulaklari/akfyenin-denizlideki-res-projesinde-192-mwlik-kisim-devreye-alindi-p-171656"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AKFYE",
+   "sektor": null,
+   "baslangic": "2026-03-10",
+   "bitis": "2026-03-10",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "AKFYE 2025 net kârı yaklaşık 1,95 mlr TL'ye yükseldi (2024: 222 mn TL)",
+   "anlam": "Akfen Yenilenebilir Enerji 2025 yıllık ana ortaklık net kârını 1.949.771.000 TL açıkladı (2024: yaklaşık 222 mn TL; kaynaklarda 157 mn TL de geçiyor); satışlar 5,8 mlr TL, FAVÖK 3,2 mlr TL. KAP bildirim günü doğrulanamadı; tarih Mart 2026 başı tahminidir.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.3,
+   "etiketler": [
+    "bilanço",
+    "2025 yıllık"
+   ],
+   "kaynaklar": [
+    "https://www.hisse.net/haber/akfen-akfye-temettu-dagitacak-mi-karar-aciklandi-75988",
+    "https://www.vkyanaliz.com/Files/docs/aciklanan-k-rlar-4c25-1773121089.pdf"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 1949771000,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AKFYE",
+   "sektor": null,
+   "baslangic": "2026-04-28",
+   "bitis": "2026-04-28",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "AKFYE genel kurulu 2025 için kâr dağıtılmamasını onayladı",
+   "anlam": "28 Nisan 2026 genel kurulunda TFRS kârına rağmen yasal kayıtlardaki zarar nedeniyle 2025 yılı için kâr dağıtılmaması onaylandı (pay başına temettü 0).",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.5,
+   "etiketler": [
+    "temettü yok"
+   ],
+   "kaynaklar": [
+    "https://www.hisse.net/haber/akfen-akfye-temettu-dagitacak-mi-karar-aciklandi-75988",
+    "https://fintables.com/sirketler/AKFYE"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 0.0,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AKFYE",
+   "sektor": null,
+   "baslangic": "2026-07-13",
+   "bitis": "2026-07-13",
+   "kamuya_acilma": null,
+   "tur": "bedelsiz",
+   "baslik": "AKFYE %500 bedelsiz sermaye artırımı için SPK'ya başvurdu",
+   "anlam": "13 Temmuz 2026'da yönetim kurulu, çıkarılmış sermayeyi 1,196 mlr TL'den 7,182 mlr TL'ye (5.984.812.230 TL, tamamı emisyon priminden) çıkarmak üzere %500 bedelsiz artırım için SPK'ya başvurdu; her 100 lot 600 lota dönüşecek.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.8,
+   "etiketler": [
+    "bedelsiz",
+    "%500"
+   ],
+   "kaynaklar": [
+    "https://www.borsagundem.com.tr/5-sirket-spk-basvurusunda-bulundu",
+    "https://www.getmidas.com/midasin-kulaklari/akfen-yenilenebilir-enerji-a-s-akfye-500-bedelsiz-sermaye-artirimi-nasil-gerceklesecek-p-761695"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": 5.0,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AKFYE",
+   "sektor": null,
+   "baslangic": "2026-09-16",
+   "bitis": "2026-09-16",
+   "kamuya_acilma": null,
+   "tur": "bedelsiz",
+   "baslik": "SPK AKFYE'nin %500 bedelsiz artırımını onayladı; hak kullanım 21 Eylül",
+   "anlam": "SPK 16 Eylül 2026'da %500 bedelsiz sermaye artırımını onayladı; bedelsiz pay alma hakkı 21 Eylül 2026'da başlıyor. Son kapanış 22 TL iken teorik fiyat yaklaşık 3,67 TL.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.7,
+   "etiketler": [
+    "bedelsiz",
+    "SPK onayı"
+   ],
+   "kaynaklar": [
+    "https://www.hisse.net/haber/amp/spk-dan-akfye-ye-500-bedelsiz-onayi-lotlar-6-ya-katlanacak-96536",
+    "https://www.getmidas.com/midasin-kulaklari/akfen-yenilenebilir-enerji-a-s-akfye-500-bedelsiz-sermaye-artirimi-nasil-gerceklesecek-p-761695"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": 5.0,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

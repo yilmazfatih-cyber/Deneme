@@ -1,0 +1,280 @@
+{
+ "not": "ajan araştırması (web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "AKCNS",
+   "sektor": null,
+   "baslangic": "2025-02-14",
+   "bitis": "2025-02-14",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Akçansa 4Ç24 net kârı 353,7 mn TL ile beklentinin altında kaldı",
+   "anlam": "Akçansa 14 Şubat (2025) tarihinde finansallarını KAP'ta paylaştı; 4Ç24 net kârı 353,7 mn TL, Foreks anketindeki 657,6 mn TL (medyan) beklentinin belirgin altında. 2024 yıllık net kâr %51 düşüşle yaklaşık 1,6 mlr TL, satışlar %20 düşüşle 21,6 mlr TL. Yıl bilgisi bağlamdan çıkarıldı.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.55,
+   "etiketler": [
+    "bilanço",
+    "4Ç24"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/akcansa-cimentodan-akcns-4c24te-beklenti-alti-net-kar/",
+    "https://rotaborsa.com/?p=283675"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 353700000,
+    "beklenti": 657600000,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AKCNS",
+   "sektor": null,
+   "baslangic": "2025-02-20",
+   "bitis": "2025-02-20",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Akçansa 2024 kârından brüt 6,268 TL temettü kararı",
+   "anlam": "Yönetim Kurulu 20 Şubat 2025 toplantısında genel kurulu 18 Mart 2025'e çağırdı; 2024 kârından pay başına brüt 6,2680510 TL (net 5,3278433 TL), toplam brüt 1,2 mlr TL temettü teklif edildi ve genel kurulda onaylandı, ödeme 24 Mart 2025. Önerinin tam duyuru günü doğrulanamadı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.4,
+   "etiketler": [
+    "temettü",
+    "brüt_6.268"
+   ],
+   "kaynaklar": [
+    "https://www.ekonomist.com.tr/sirketler/akcansa-nin-temettu-karari-belli-oldu-48380",
+    "https://www.yatirimx.com.tr/piyasa/akcansa-akcns-temettu-karari/6481"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 6.268051,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AKCNS",
+   "sektor": null,
+   "baslangic": "2025-08-06",
+   "bitis": "2025-08-06",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Akçansa 2Ç25 net kârı 258,6 mn TL; ilk yarı kârı %92 geriledi",
+   "anlam": "Akçansa 2Ç25 net kârını 258.640.000 TL açıkladı (6 aylık 69,5 mn TL; 1Ç25 -176,9 mn TL zarar). Anket ortalama beklentisi 212,1 mn TL, medyan 223,8 mn TL idi. Bildirim günü kesin doğrulanamadı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.35,
+   "etiketler": [
+    "bilanço",
+    "2Ç25"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/akcansanin-2025in-ilk-yarisinda-net-kari-yuzde-92-azaldi/",
+    "https://rotaborsa.com/?p=343739"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 258640000,
+    "beklenti": 212100000,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AKCNS",
+   "sektor": null,
+   "baslangic": "2025-10-30",
+   "bitis": "2025-10-30",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Akçansa 9 aylık net kârı 487 mn TL; 3Ç25 kârı yaklaşık 418 mn TL",
+   "anlam": "Akçansa 30 Ekim 2025'te 3Ç25 bilançosunu KAP'ta paylaştı; 9 aylık net kâr 487.432.000 TL (2024 aynı dönem 1.654.126.000 TL). Tek çeyrek kâr (yaklaşık 417,9 mn TL) kaynakta verilmeyip 9 ay - 6 ay farkından türetildi.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.55,
+   "etiketler": [
+    "bilanço",
+    "3Ç25"
+   ],
+   "kaynaklar": [
+    "https://rotaborsa.com/?p=372651",
+    "https://infoyatirim.com/blog/bilanco-analizleri/akcansa-akcns-2025-4-ceyrek-finansal-sonuclari-aciklandi"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 417941000,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AKCNS",
+   "sektor": null,
+   "baslangic": "2026-01-28",
+   "bitis": "2026-01-28",
+   "kamuya_acilma": "2026-01-28T08:30:39+03:00",
+   "tur": "pay_satisi",
+   "baslik": "Sabancı Holding Akçansa'daki %39,72 payı için 1,1 mlr USD değerleme üzerinden bağlayıcı teklif aldı",
+   "anlam": "Sabancı Holding 28 Ocak 2026 sabahı KAP'ta, Akçansa'daki %39,72'lik payı (76,04 mn TL nominal) için ilişkisiz üçüncü taraftan 1,1 mlr USD şirket değeri üzerinden (borç/nakit düzeltmeli) bağlayıcı teklif aldığını duyurdu. Haber üzerine AKCNS hisseleri tavan oldu; ortak Heidelberg'in ön alım hakkı gündeme geldi.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "fomo_alimi",
+   "tepki_aciklama": "Hisse tavan oldu.",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.9,
+   "etiketler": [
+    "Sabancı",
+    "Heidelberg",
+    "pay satışı",
+    "tavan"
+   ],
+   "kaynaklar": [
+    "https://www.ekonomigazetesi.com/kose-yazisi/heidelberg-akcansanin-3972sini-11-milyar-dolarlik-deger-uzerinden-almaya-variz-75506",
+    "https://www.cnbce.com/borsa/sabancinin-o-sirketi-satis-sonrasi-borsada-tavan-oldu-h32371"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 1100000000,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AKCNS",
+   "sektor": null,
+   "baslangic": "2026-04-17",
+   "bitis": "2026-04-17",
+   "kamuya_acilma": null,
+   "tur": "pay_satisi",
+   "baslik": "Heidelberg Materials, Sabancı'nın Akçansa payı için ön alım hakkını kullandı",
+   "anlam": "Heidelberg Materials AG 17 Nisan 2026'da, Sabancı Holding'e %39,72'lik pay için 1,1 mlr USD değerleme üzerinden ön alım hakkını kullanacağını bildirdi. İşlem sonrası Heidelberg'in payı %79,44'e çıkacak ve zorunlu pay alım teklifi gerekecek.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.75,
+   "etiketler": [
+    "Heidelberg",
+    "ön alım hakkı"
+   ],
+   "kaynaklar": [
+    "https://www.forbes.com.tr/para-yatirim/sabanci-holding-akcansa-hisselerini-heidelberg-materials-a-devrediyor",
+    "https://www.spglobal.com/energy/en/news-research/latest-news/metals/042226-heidelberg-materials-doubles-stake-in-turkish-cement-producer-gains-majority-control"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 1100000000,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AKCNS",
+   "sektor": null,
+   "baslangic": "2026-04-23",
+   "bitis": "2026-04-23",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Akçansa 2025 kârından brüt 1,8804 TL temettü kararı",
+   "anlam": "Yönetim kurulu (23 Nisan 2026 tarihli karar) 2025 kârından pay başına brüt 1,8804153 TL (net 1,5983530 TL), toplam brüt 360 mn TL temettü önerdi; 20 Mayıs 2026 genel kurulunda onaylandı (KAP bildirimi 20.05.2026 19:18), hak kullanım 1 Haziran 2026. Önerinin ilk duyuru günü belirsiz.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.4,
+   "etiketler": [
+    "temettü",
+    "brüt_1.88"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/akcansadan-yatirimciya-360-milyon-tllik-temettu/",
+    "https://borsaatlas.com/2026/05/20/akcansa-akcns-2026-yili-nakit-kar-payi-dagitim-karari-bilanco-ve-hisse-uzerindeki-olasi-etkiler/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 1.8804153,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AKCNS",
+   "sektor": null,
+   "baslangic": "2026-06-18",
+   "bitis": "2026-06-18",
+   "kamuya_acilma": null,
+   "tur": "pay_satisi",
+   "baslik": "Sabancı Holding Akçansa payını 427,9 mn USD'ye Heidelberg'e devretti; pay %79,44'e çıktı",
+   "anlam": "18 Haziran 2026'da Sabancı Holding'in Akçansa'daki %39,72 payının Heidelberg Materials AG'ye devri 427,88 mn USD bedelle tamamlandı (Rekabet Kurumu onayı 21 Mayıs). Heidelberg'in payı %79,44'e yükseldi; ardından SPK'ya zorunlu pay alım teklifi başvurusu yapıldı (bildirilen teklif fiyatı 260,25 TL/pay; teklif 23 Eylül-6 Ekim 2026).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "Zorunlu pay alım teklifi fiyatı piyasa fiyatının yaklaşık %38 üzerinde bildirildi.",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.65,
+   "etiketler": [
+    "Heidelberg",
+    "devir tamamlandı",
+    "zorunlu pay alım teklifi"
+   ],
+   "kaynaklar": [
+    "https://yatirimciiliskileri.sabanci.com/en/news/detail/Completion-of-the-Sale-of-Shares-of-Akcansa-Cimento-Sanayi-ve-Ticaret-A-S-/161/3395/0",
+    "https://chemxplore.com/news/heidelberg-materials-akcansa-majority-stake-turkey"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 427880000,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}
