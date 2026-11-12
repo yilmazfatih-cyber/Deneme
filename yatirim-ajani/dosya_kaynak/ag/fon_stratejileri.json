@@ -1,0 +1,223 @@
+{
+ "not": "Kaynak: yalnız WebSearch özetleri (sayfa açılamadı); fvt.com.tr, fintables, borsagundem, milliyet, bloomberght, cnbce, KAP/SPK bülten bağlantıları arama sonucu olarak görüldü, içerikleri özetten alındı. Pozisyon ağırlıkları 3. taraf (fvt/fintables) anlık görüntüleri, çoğu 2026 Eylül-Ekim tarihli; KAP aylık portföy dağılım raporları doğrulanmadı. Fon yöneticisi adları doğrulanamadı (yalnız AKU için KAP'ta Emre Tayfur). Tera grubu kapsam dışı bırakıldı (SPK tasfiye listesindeki bir yan bilgi dışında yazılmadı). Eksik: Phillip, Inveo, Tacirler, Gedik, Ünlü, Global MD, Aura, Neo, Allbatross, Trive, Ata, Oyak, Nurol, Fiba, Meksa, Osmanlı, Perform portföy şirketleri için aramada veri çıkmadı ve uydurulmadı; Deniz ve Albaraka için yalnız KAP kayıt adı. Hedef, Atlas, Bulls, A1 için strateji beyanı bulunamadı; yalnız SPK tasfiye kararı olgusu var. BES şirket bazında hisse fonu büyüklüğü bulunamadı. Hisse fonu getirileri için tek kaynaktan gelen oranlar tarih belirsizliği taşıyor (guven düşük). 2026 Eylül tasfiye/soruşturma konusunda yalnız SPK kararı ve basında aktarılan resmi açıklamalar yazıldı, bireylere ilişkin itham yazılmadı.",
+ "sirketler": [
+  {"ad": "Pardus Portföy", "tur": "bagimsiz", "yonetilen_buyukluk": null,
+   "one_cikan_fonlar": [
+    {"kod": "BIH", "ad": "Pardus Portföy Birinci Hisse Senedi (TL) Fonu (Hisse Senedi Yoğun Fon)", "tur": "hisse_yogun", "buyukluk": null,
+     "strateji_beyani": "Fon değerinin en az %80'i sürekli hisse senedinde; Eylül 2026 itibarıyla %86,86 hisse, 53 hisse.",
+     "bilinen_agir_pozisyonlar": ["TUPRS", "A1YEN", "AP7", "SASA", "GLRYH"],
+     "getiri_notu": "2024: %176,66 (Midas, serbest fonlar hariç liste başı); 2025: %105'i aşan getiriyle yıl sonu hisse yoğun fonlar listesinde ilk (Milliyet, 4 Ocak 2026). Pozisyonlar: 21 Eylül 2026 (fvt)",
+     "kaynak": ["https://fvt.com.tr/fonlar/yatirim-fonlari/BIH?tab=benzer", "https://www.getmidas.com/midasin-kulaklari/2024un-kazandiran-hisse-ve-fonlari-p-78505", "https://www.milliyet.com.tr/yazarlar/zeynep-aktas/fonlarda-getiri-ikiye-katlandi-7514975"]},
+    {"kod": "BDS", "ad": "Pardus Portföy BIST 30 Dışı Şirketler Hisse Senedi (TL) Fonu (Hisse Senedi Yoğun Fon)", "tur": "hisse_yogun", "buyukluk": null,
+     "strateji_beyani": "Değerinin en az %80'i BIST 30 dışındaki ortaklık paylarına (MKYO hariç) yatırılır.",
+     "bilinen_agir_pozisyonlar": ["EGEGY", "ONCSM", "PBI", "VESTL", "CIMSA"],
+     "getiri_notu": "2025 yılbaşından ara tarihe %91,61 (borsamatik; tarih belirsiz); Haziran 2025'te yılbaşından %48 ile ilk (haber). Pozisyonlar: 22 Eylül 2026, 28 hisse, ilk 5 = %36,21 (fvt)",
+     "kaynak": ["https://fvt.com.tr/fonlar/yatirim-fonlari/BDS?tab=benzer", "https://www.borsamatik.com.tr/yilbasindan-bu-yana-en-cok-kazandiran-5-hisse-senedi-fonu-haber-174992"]}
+   ],
+   "karar_olcutleri": ["BIST 30 dışı küçük/orta ölçek ağırlığı (BDS)", "az sayıda hissede yoğun ağırlık (BDS ilk 5 ≈ %36)", "sektör çeşitliliği: enerji, rafineri, kimya, sağlık"],
+   "oruntu": "buyume_kucuk_orta_olcek",
+   "kanit": "BDS'nin yazılı stratejisi BIST 30 dışı şirketler; Eylül 2026 anlık görüntüsünde ilk 5 pozisyon %36. BIH 2024 ve 2025'te hisse yoğun fonlar arasında liste başı olarak aktarıldı. Pardus fonları SPK'nın 17 Eylül 2026 tasfiye kararı kapsamındaki yedi şirketten biri (hangi fonların kapsandığı fon bazında doğrulanmadı).",
+   "kaynaklar": ["https://www.cnbce.com/haberler/spkdan-7-portfoy-yonetim-sirketinin-fonlarina-tasfiye-karari-h37428", "https://spk.gov.tr/data/6aac56ff8f95db07100fd82d/2026-61.pdf"], "guven": 0.55},
+
+  {"ad": "Pusula Portföy", "tur": "bagimsiz", "yonetilen_buyukluk": null,
+   "one_cikan_fonlar": [
+    {"kod": "PHE", "ad": "Pusula Portföy Hisse Senedi Fonu (Hisse Senedi Yoğun Fon)", "tur": "hisse_yogun", "buyukluk": "yaklaşık 40,4 mlr TL (haber, tarih belirsiz)",
+     "strateji_beyani": "Hisse Senedi Şemsiye Fonu altında, hisse yoğun fon; halka arz 28.03.2024; yıllık yönetim ücreti %2,50.",
+     "bilinen_agir_pozisyonlar": ["KTLEV", "ODINE", "GUNDG"],
+     "getiri_notu": "Ağustos (2025) itibarıyla son 1 yıl %230,68, yılbaşından %175,65 (borsagundem/borsamatik özeti; yıl belirsiz, guven düşük). Pozisyon: Fintables anlık görüntüsü, tarih belirsiz",
+     "kaynak": ["https://www.bloomberght.com/yatirim-fonlari/pusula-portfoy-hisse-senedi-fonu-hsyf-phe", "https://fintables.com/fon-karsilastirma?funds=PHE", "https://www.borsagundem.com.tr/bir-yilda-en-cok-kazandiran-fonlar-kac-yatirimcisi-var-buyuklukleri-ne-kadar"]}
+   ],
+   "karar_olcutleri": ["bilinmiyor; kamuya açık strateji metni ayrıntı vermiyor"],
+   "oruntu": "diger",
+   "kanit": "PHE'nin üç ağır pozisyonu tek bir 3. taraf anlık görüntüsüne dayanıyor. SPK 17 Eylül 2026'da Pusula dahil yedi portföy şirketinin fonlarına tasfiye kararı verdi; Adalet Bakanı SPK'nın bir kısım fon ve pay piyasasında manipülatif işlem iddiasıyla suç duyurusunda bulunduğunu açıkladı (basın aktarımı; iddia düzeyindedir, bu çalışmada hüküm olarak yazılmaz).",
+   "kaynaklar": ["https://www.cnbce.com/haberler/spkdan-7-portfoy-yonetim-sirketinin-fonlarina-tasfiye-karari-h37428", "https://www.ntv.com.tr/ntvpara/akin-gurlekten-borsa-ve-fon-aciklamasi-1742353"], "guven": 0.35},
+
+  {"ad": "Marmara Capital Portföy", "tur": "bagimsiz", "yonetilen_buyukluk": null,
+   "one_cikan_fonlar": [
+    {"kod": "MAC", "ad": "Marmara Capital Portföy Hisse Senedi (TL) Fonu (Hisse Senedi Yoğun Fon)", "tur": "hisse_yogun", "buyukluk": null,
+     "strateji_beyani": "Değerinin en az %80'i sürekli yerli ortaklık paylarına; yönetim ücreti yaklaşık %2,68.",
+     "bilinen_agir_pozisyonlar": ["TABGD", "AEFES"],
+     "getiri_notu": null,
+     "kaynak": ["https://fvt.com.tr/fonlar/yatirim-fonlari/MAC?tab=benzer", "https://www.getmidas.com/midasin-kulaklari/mac-fonu-portfoy-analizi-hangi-hisseleri-tutuyor-hangilerini-artiriyor-p-40357"]}
+   ],
+   "karar_olcutleri": ["ağırlıklı olarak bilinen, nakit üreten gıda/içecek hisseleri (TABGD %9,45, AEFES %8,47; tarih belirsiz)"],
+   "oruntu": "yogun_portfoy",
+   "kanit": "Hisse oranı yaklaşık %97; ilk iki pozisyon yaklaşık %18. Daha fazla sayıda pozisyon ve getiri verisi bulunamadı.",
+   "kaynaklar": ["https://fvt.com.tr/fonlar/yatirim-fonlari/MAC?tab=benzer"], "guven": 0.35},
+
+  {"ad": "Ak Portföy", "tur": "banka_bagli", "yonetilen_buyukluk": "yaklaşık 30 mlr USD (şirket genel müdürü beyanı, tarih belirsiz)",
+   "one_cikan_fonlar": [
+    {"kod": "AFT", "ad": "Ak Portföy Yeni Teknolojiler Yabancı Hisse Senedi Fonu", "tur": "hisse_yogun", "buyukluk": "yaklaşık 16,5 mlr TL (Ekim 2026'ya yakın haber; TEFAS hisse fonları arasında en büyük)",
+     "strateji_beyani": "Ağırlıklı olarak depo sertifikaları yoluyla yabancı teknoloji hisseleri.",
+     "bilinen_agir_pozisyonlar": [],
+     "getiri_notu": "Ağır pozisyonlar yabancı (MSFT, NVDA, MU; ilk üç %28,71, Eylül 2026) - BIST kodu değil",
+     "kaynak": ["https://www.borsagundem.com.tr/tefasin-en-buyuk-hisse-fonlarinda-yabanci-hisse-ve-teknoloji-agirligi-one-cikiyor", "https://fvt.com.tr/fonlar/yatirim-fonlari/AFT?tab=benzer"]},
+    {"kod": "AKU", "ad": "Ak Portföy BIST 30 Endeksi Hisse Senedi (TL) Fonu (Hisse Senedi Yoğun Fon)", "tur": "endeks", "buyukluk": null,
+     "strateji_beyani": "BIST 30 endeksini izleyen hisse yoğun fon; KAP'ta portföy yöneticisi Emre Tayfur (10.11.2025'ten).",
+     "bilinen_agir_pozisyonlar": [], "getiri_notu": null,
+     "kaynak": ["https://kap.org.tr/tr/fon-bilgileri/genel/aku-ak-portfoy-bist-30-endeksi-hisse-senedi-tl-fonu-hisse-senedi-yogun-fon"]}
+   ],
+   "karar_olcutleri": ["endeks ağırlığı (AKU)", "yabancı teknoloji teması (AFT)"],
+   "oruntu": "endeks_izleme",
+   "kanit": "Hisse tarafında en büyük fon yabancı teknoloji fonu; BIST'e dönük kanal endeks fonu. BIST ağır pozisyon verisi bulunamadı.",
+   "kaynaklar": ["https://www.borsagundem.com.tr/tefasin-en-buyuk-hisse-fonlarinda-yabanci-hisse-ve-teknoloji-agirligi-one-cikiyor"], "guven": 0.5},
+
+  {"ad": "İş Portföy", "tur": "banka_bagli", "yonetilen_buyukluk": null,
+   "one_cikan_fonlar": [
+    {"kod": "TI2", "ad": "İş Portföy Hisse Senedi (TL) Fonu (Hisse Senedi Yoğun Fon)", "tur": "hisse_yogun", "buyukluk": null,
+     "strateji_beyani": "Değerinin en az %80'i sürekli yerli ortaklık paylarına.",
+     "bilinen_agir_pozisyonlar": [], "getiri_notu": "Bloomberg HT sayfasında 1 yıl yaklaşık %18,9, 21.063 yatırımcı (tarih belirsiz)",
+     "kaynak": ["https://www.bloomberght.com/yatirim-fonlari/is-portfoy-hisse-senedi-tl-fonu-hsyf-ti2"]},
+    {"kod": "TAU", "ad": "İş Portföy BIST Banka Endeksi Hisse Senedi Fonu", "tur": "endeks", "buyukluk": null,
+     "strateji_beyani": "BIST banka endeksini izler.", "bilinen_agir_pozisyonlar": [],
+     "getiri_notu": "Paratic: 'son bir yıl' %269 (dönem belirsiz)", "kaynak": ["https://paratic.com/fon-yatirimcisinin-gozdesi-teknoloji-grubu-oldu/"]},
+    {"kod": "IJC", "ad": "İş Portföy Yarı İletken Teknolojileri Değişken Fon", "tur": "degisken", "buyukluk": null,
+     "strateji_beyani": "Yarı iletken teknolojisi teması.", "bilinen_agir_pozisyonlar": [],
+     "getiri_notu": "yılbaşından %64,53 (yıl belirsiz)", "kaynak": ["https://www.isportfoy.com.tr/getiri-ve-fiyatlar"]}
+   ],
+   "karar_olcutleri": ["sektör ve hisse seçimi (hisse yönetimi başkanı Nuri Oğuz Ayhan, Ocak 2025 Ekonomist röportajı: üstün getiri doğru sektör ve hisse seçiminden)", "faiz indirimi döngüsü beklentisi"],
+   "oruntu": "tematik_sektor",
+   "kanit": "Fon yelpazesi endeks (banka, BIST 30), tema (yarı iletken, kadın, sürdürülebilirlik) ve BIST 100 dışı fonlardan oluşuyor. Ağır pozisyon verisi bulunamadı.",
+   "kaynaklar": ["https://www.isportfoy.com.tr/medya-ve-blog/sampiyon-fon-yoneticilerinden-yatirim-stratejileri"], "guven": 0.3},
+
+  {"ad": "Yapı Kredi Portföy", "tur": "banka_bagli", "yonetilen_buyukluk": null,
+   "one_cikan_fonlar": [
+    {"kod": "YHZ", "ad": "Yapı Kredi Portföy BIST Teknoloji Ağırlık Sınırlamalı Endeksi Hisse Senedi Fonu", "tur": "endeks", "buyukluk": null,
+     "strateji_beyani": "BIST Teknoloji ağırlık sınırlamalı endeksini izler.",
+     "bilinen_agir_pozisyonlar": ["ASELS", "ARDYZ", "INDES", "LOGO", "PATEK"],
+     "getiri_notu": "ASELS yaklaşık %28,3, 46 hisse (23 Ekim 2026); kaynaklar ilk beşte uyuşmuyor",
+     "kaynak": ["https://fintables.com/fonlar/YHZ/portfoy", "https://fvt.com.tr/fonlar/yatirim-fonlari/YHZ?tab=benzer"]},
+    {"kod": "YAY", "ad": "Yapı Kredi Portföy Yabancı Teknoloji Sektörü Hisse Senedi Fonu", "tur": "hisse_yogun", "buyukluk": "yaklaşık 12,4 mlr TL (Ekim 2026'ya yakın haber)",
+     "strateji_beyani": "Yabancı teknoloji hisseleri.", "bilinen_agir_pozisyonlar": [], "getiri_notu": "Micron, Microsoft, NVIDIA ilk üçte (Eylül 2026)",
+     "kaynak": ["https://fvt.com.tr/fonlar/yatirim-fonlari/YAY?tab=benzer", "https://www.borsagundem.com.tr/tefasin-en-buyuk-hisse-fonlarinda-yabanci-hisse-ve-teknoloji-agirligi-one-cikiyor"]}
+   ],
+   "karar_olcutleri": ["endeks kuralı", "teknoloji teması"],
+   "oruntu": "tematik_sektor",
+   "kanit": "Öne çıkan fonlar teknoloji temalı; YHZ tek hissede (ASELS) yaklaşık %28 yoğunlaşan endeks kuralı taşıyor. YHZ 2025'te getiri listelerinde anıldı (rakam alınamadı).",
+   "kaynaklar": ["https://fintables.com/fonlar/YHZ/portfoy"], "guven": 0.5},
+
+  {"ad": "Garanti BBVA Portföy", "tur": "banka_bagli", "yonetilen_buyukluk": "1 trilyon TL'yi aştı (15 Ocak 2026, tüm fonlar)",
+   "one_cikan_fonlar": [
+    {"kod": "GIE", "ad": "Garanti BBVA İklim Endeksi Hisse Senedi (TL) Fonu (Hisse Senedi Yoğun Fon)", "tur": "endeks", "buyukluk": null,
+     "strateji_beyani": "İklim endeksi izleyen hisse yoğun fon.", "bilinen_agir_pozisyonlar": ["ASELS"], "getiri_notu": "ASELS yaklaşık %9,96 (3. taraf, tarih belirsiz)",
+     "kaynak": ["https://borsaatlas.com/fonlar/gie-fonu/", "https://kap.org.tr/tr/fon-bilgileri/ozet/gie-garanti-portfoy-garanti-bbva-iklim-endeksi-hisse-senedi-tl-fonu-hisse-senedi-yogun-fon"]},
+    {"kod": "GUH", "ad": "Garanti Teknoloji Hisse Senedi Fonu", "tur": "hisse_yogun", "buyukluk": "4,8 mlr TL (Ağustos haberi, yıl belirsiz)", "strateji_beyani": "Teknoloji teması.", "bilinen_agir_pozisyonlar": [], "getiri_notu": null,
+     "kaynak": ["https://www.borsagundem.com.tr/temmuzda-hangi-hisse-fonlari-buyudu-iste-ilk-10-fon"]}
+   ],
+   "karar_olcutleri": ["endeks ve tema fonları; BIST 100 dışı şirketler fonu (GOH) ve holdingler fonu da var"],
+   "oruntu": "endeks_izleme",
+   "kanit": "Fon yelpazesi endeks/tema ağırlıklı; ağır pozisyon verisi parçalı.",
+   "kaynaklar": ["https://garantibbvaportfoy.com.tr/assets/09072025-fon-brosuru-bist-100-disi-sirketler-hisse-senedi-tl-fonu-goh.pdf"], "guven": 0.3},
+
+  {"ad": "QNB Portföy", "tur": "banka_bagli", "yonetilen_buyukluk": null,
+   "one_cikan_fonlar": [
+    {"kod": "FYD", "ad": "QNB Portföy Birinci Hisse Senedi Fonu (Hisse Senedi Yoğun Fon)", "tur": "hisse_yogun", "buyukluk": "2,84-3,32 mlr TL (iki kaynak, tarih farklı)",
+     "strateji_beyani": "Hisse yoğun fon; yıllık yönetim ücreti yaklaşık %2,74.",
+     "bilinen_agir_pozisyonlar": ["BIMAS", "YKBNK", "ASELS", "AKBNK", "TAVHL"], "getiri_notu": "Tarihsiz Fintables anlık görüntüsü; hisse oranı yaklaşık %96",
+     "kaynak": ["https://fintables.com/fon-karsilastirma?funds=FYD", "https://yatirimdirekt.com/fonlar/detay/FYD"]}
+   ],
+   "karar_olcutleri": ["büyük ölçekli likit hisseler"], "oruntu": "diger",
+   "kanit": "İlk beş pozisyon BIST 30 ağırlıklı, toplamı yaklaşık %34; endeks yakın aktif portföy görünümü (yorum).",
+   "kaynaklar": ["https://fintables.com/fon-karsilastirma?funds=FYD"], "guven": 0.4},
+
+  {"ad": "TEB Portföy", "tur": "banka_bagli", "yonetilen_buyukluk": null,
+   "one_cikan_fonlar": [{"kod": "TYH", "ad": "TEB Portföy Hisse Senedi Fonu (Hisse Senedi Yoğun Fon)", "tur": "hisse_yogun", "buyukluk": null,
+     "strateji_beyani": "Hisse yoğun fon; KAP'ta Aralık 2025 portföy dağılım raporu mevcut, içeriği alınamadı.", "bilinen_agir_pozisyonlar": [], "getiri_notu": null,
+     "kaynak": ["https://fvt.com.tr/fonlar/yatirim-fonlari/TYH?tab=benzer"]}],
+   "karar_olcutleri": [], "oruntu": "diger", "kanit": "Yalnız fon varlığı doğrulandı; strateji ve pozisyon verisi bulunamadı.", "kaynaklar": ["https://fvt.com.tr/fonlar/yatirim-fonlari/TYH?tab=benzer"], "guven": 0.1},
+
+  {"ad": "Ziraat Portföy", "tur": "banka_bagli", "yonetilen_buyukluk": null,
+   "one_cikan_fonlar": [
+    {"kod": "TZD", "ad": "Ziraat Portföy Hisse Senedi Fonu (Hisse Senedi Yoğun Fon)", "tur": "hisse_yogun", "buyukluk": null, "strateji_beyani": "Hisse yoğun fon.", "bilinen_agir_pozisyonlar": [], "getiri_notu": null, "kaynak": ["https://kap.org.tr/tr/fon-bilgileri/ozet/tzd-ziraat-portfoy-hisse-senedi-fonu-hisse-senedi-yogun-fon"]},
+    {"kod": "ZPE", "ad": "Ziraat Portföy Katılım Hisse Senedi Fonu (Hisse Senedi Yoğun Fon)", "tur": "hisse_yogun", "buyukluk": null, "strateji_beyani": "Katılım hisse fonu; KAP belgesinde %81,15 ortaklık payı, %15,50 hisse BYF.", "bilinen_agir_pozisyonlar": [], "getiri_notu": null, "kaynak": ["https://kap.org.tr/tr/fon-bilgileri/ozet/zpe-ziraat-portfoy-katilim-hisse-senedi-fonu-hisse-senedi-yogun-fon"]}
+   ],
+   "karar_olcutleri": [], "oruntu": "diger", "kanit": "Ziraat Portföy ayrıca bir Türkiye Varlık Fonu iştirakleri hisse fonu taşıyor (portföyü henüz oluşmadı; satışlar 19.08.2026'da başladı, KAP). Tasfiye edilen fonların işlemlerini İş Bankası ve Ziraat Bankası yürütüyor (basın).", "kaynaklar": ["https://kap.org.tr/tr/fon-bilgileri/ozet/zxq-ziraat-portfoy-turkiye-varlik-fonu-istirakleri-hisse-senedi-fonu-hisse-senedi-yogun-fon"], "guven": 0.2},
+
+  {"ad": "Kuveyt Türk Portföy", "tur": "katilim", "yonetilen_buyukluk": null,
+   "one_cikan_fonlar": [
+    {"kod": "KPC", "ad": "Kuveyt Türk Portföy Katılım Hisse Senedi (TL) Fonu (Hisse Senedi Yoğun Fon)", "tur": "hisse_yogun", "buyukluk": null,
+     "strateji_beyani": "Katılım ilkelerine uygun yerli hisse; 2024 raporunda hisse oranı yaklaşık %93,4, en büyük sektör bankacılık (~%6; katılım bankası olması muhtemel, doğrulanmadı).", "bilinen_agir_pozisyonlar": [], "getiri_notu": null,
+     "kaynak": ["https://www.kuveytturkportfoy.com.tr/media/1qwlhasw/kpc.pdf"]},
+    {"kod": "KPU", "ad": "Kuveyt Türk Portföy İkinci Katılım Hisse Senedi (TL) Fonu", "tur": "hisse_yogun", "buyukluk": null, "strateji_beyani": "Katılım hisse; 31.12.2025 denetim raporu var.", "bilinen_agir_pozisyonlar": [], "getiri_notu": null, "kaynak": ["https://www.kuveytturkportfoy.com.tr/media/vyoh1yoe/kpu-fonu-31122025.pdf"]}
+   ],
+   "karar_olcutleri": ["katılım uygunluğu filtresi"], "oruntu": "diger", "kanit": "Katılım filtresi evreni belirliyor; ağır pozisyonlar bulunamadı.", "kaynaklar": ["https://www.kuveytturkportfoy.com.tr/media/1qwlhasw/kpc.pdf"], "guven": 0.25},
+
+  {"ad": "Albaraka Portföy", "tur": "katilim", "yonetilen_buyukluk": null,
+   "one_cikan_fonlar": [{"kod": "RBH", "ad": "Albaraka Portföy Katılım Hisse Senedi Fonu (Hisse Senedi Yoğun Fon)", "tur": "hisse_yogun", "buyukluk": null, "strateji_beyani": "Katılım hisse fonu; yalnız KAP kaydı.", "bilinen_agir_pozisyonlar": [], "getiri_notu": null, "kaynak": ["https://kap.org.tr/tr/fon-bilgileri/genel/rbh-albaraka-portfoy-katilim-hisse-senedi-fonu-hisse-senedi-yogun-fon"]}],
+   "karar_olcutleri": [], "oruntu": "diger", "kanit": "Yalnız fon varlığı doğrulandı.", "kaynaklar": ["https://kap.org.tr/tr/fon-bilgileri/genel/rbh-albaraka-portfoy-katilim-hisse-senedi-fonu-hisse-senedi-yogun-fon"], "guven": 0.1},
+
+  {"ad": "Deniz Portföy", "tur": "banka_bagli", "yonetilen_buyukluk": null, "one_cikan_fonlar": [], "karar_olcutleri": [], "oruntu": "diger",
+   "kanit": "Aramada yalnız bir KAP komisyon/işlem raporu çıktı (Q3 2025); strateji ve pozisyon verisi yok.", "kaynaklar": [], "guven": 0.05},
+
+  {"ad": "İstanbul Portföy", "tur": "bagimsiz", "yonetilen_buyukluk": null,
+   "one_cikan_fonlar": [
+    {"kod": null, "ad": "İstanbul Portföy GMS Hisse Senedi Serbest Özel Fonu (Hisse Senedi Yoğun Fon)", "tur": "serbest", "buyukluk": null, "strateji_beyani": "1 Ocak - 31 Aralık 2025 denetim raporu KAP'ta; strateji metni alınamadı.", "bilinen_agir_pozisyonlar": [], "getiri_notu": null, "kaynak": ["https://kap.org.tr/tr/api/file/download/4028328c9aaa2bf9019aed54c434399d"]},
+    {"kod": null, "ad": "İstanbul Portföy İstatistiksel Arbitraj Hisse Senedi Serbest Fon", "tur": "serbest", "buyukluk": null, "strateji_beyani": "İstatistiksel arbitraj; halka arz tarihi 15.12.2025.", "bilinen_agir_pozisyonlar": [], "getiri_notu": null, "kaynak": ["https://kap.org.tr/tr/api/file/download/4028328d998eebe8019a59230dfa5b27"]}
+   ],
+   "karar_olcutleri": ["istatistiksel arbitraj (bir fon)"], "oruntu": "diger", "kanit": "Fon adları KAP kayıtlarından; getiri/pozisyon yok. Not: IJC İş Portföy fonudur, İstanbul Portföy ile ilişkisi yoktur.", "kaynaklar": ["https://kap.org.tr/tr/api/file/download/4028328d998eebe8019a59230dfa5b27"], "guven": 0.15},
+
+  {"ad": "Azimut Portföy", "tur": "bagimsiz", "yonetilen_buyukluk": null,
+   "one_cikan_fonlar": [
+    {"kod": null, "ad": "Azimut Portföy BIST 100 Dışı Şirketler Hisse Senedi Fonu (Hisse Senedi Yoğun Fon)", "tur": "hisse_yogun", "buyukluk": null, "strateji_beyani": "BIST 100 dışı şirketler.", "bilinen_agir_pozisyonlar": [], "getiri_notu": null, "kaynak": ["https://kap.org.tr/tr/api/BildirimPdf/1539287"]},
+    {"kod": null, "ad": "Azimut Portföy İstatistiksel Arbitraj Hisse Senedi Serbest Fon", "tur": "serbest", "buyukluk": null, "strateji_beyani": "İstatistiksel arbitraj.", "bilinen_agir_pozisyonlar": [], "getiri_notu": null, "kaynak": ["https://kap.org.tr/tr/api/BildirimPdf/1539287"]}
+   ],
+   "karar_olcutleri": ["BIST 100 dışı evren"], "oruntu": "buyume_kucuk_orta_olcek", "kanit": "Yalnız fon adından çıkarım; ağır pozisyon yok (guven düşük).", "kaynaklar": ["https://kap.org.tr/tr/api/BildirimPdf/1539287"], "guven": 0.15},
+
+  {"ad": "RE-PIE Portföy", "tur": "araci_kurum_bagli", "yonetilen_buyukluk": null,
+   "one_cikan_fonlar": [
+    {"kod": null, "ad": "RE-PIE Portföy Birinci Hisse Senedi (TL) Fonu (Hisse Senedi Yoğun Fon)", "tur": "hisse_yogun", "buyukluk": null, "strateji_beyani": "Aralık 2025 portföy dağılım raporu KAP'ta; içerik alınamadı.", "bilinen_agir_pozisyonlar": [], "getiri_notu": null, "kaynak": ["https://kap.org.tr/tr/api/BildirimPdf/1510457"]},
+    {"kod": null, "ad": "RE-PIE Portföy İstatistiksel Arbitraj Hisse Senedi Serbest Fon", "tur": "serbest", "buyukluk": null, "strateji_beyani": "İstatistiksel arbitraj; ayrıca ikinci/beşinci hisse serbest fonları var.", "bilinen_agir_pozisyonlar": [], "getiri_notu": null, "kaynak": ["https://kap.org.tr/tr/api/BildirimPdf/1510457"]}
+   ],
+   "karar_olcutleri": [], "oruntu": "diger", "kanit": "Yalnız fon adları.", "kaynaklar": ["https://kap.org.tr/tr/api/BildirimPdf/1510457"], "guven": 0.1},
+
+  {"ad": "Hedef Portföy", "tur": "bagimsiz", "yonetilen_buyukluk": null,
+   "one_cikan_fonlar": [{"kod": null, "ad": "Hedef Portföy Model / Ufuk / Doruk serbest hisse fonları (basında adı geçen)", "tur": "serbest", "buyukluk": null, "strateji_beyani": "Strateji metni alınamadı.", "bilinen_agir_pozisyonlar": [], "getiri_notu": null, "kaynak": ["https://www.forbes.com.tr/para-yatirim/spk-dan-7-portfoy-yonetim-sirketinin-fonlarina-tasfiye-ve-islem-yasagi-karari"]}],
+   "karar_olcutleri": [], "oruntu": "diger",
+   "kanit": "SPK'nın 17 Eylül 2026 kararında tasfiye edilen fonlar arasında (haberlerde şirket başına yaklaşık 31 fon; sayılar kaynaklar arasında farklı).", "kaynaklar": ["https://www.cnbce.com/haberler/spkdan-7-portfoy-yonetim-sirketinin-fonlarina-tasfiye-karari-h37428"], "guven": 0.2},
+
+  {"ad": "Atlas Portföy", "tur": "bagimsiz", "yonetilen_buyukluk": null,
+   "one_cikan_fonlar": [{"kod": null, "ad": "Atlas Portföy Algo Toros serbest fonu (basında adı geçen)", "tur": "serbest", "buyukluk": null, "strateji_beyani": "Algoritmik; metin alınamadı.", "bilinen_agir_pozisyonlar": [], "getiri_notu": null, "kaynak": ["https://www.forbes.com.tr/para-yatirim/spk-dan-7-portfoy-yonetim-sirketinin-fonlarina-tasfiye-ve-islem-yasagi-karari"]}],
+   "karar_olcutleri": [], "oruntu": "diger", "kanit": "SPK tasfiye kararı kapsamında (haberlerde 16 fon).", "kaynaklar": ["https://www.cnbce.com/haberler/spkdan-7-portfoy-yonetim-sirketinin-fonlarina-tasfiye-karari-h37428"], "guven": 0.15},
+
+  {"ad": "Bulls Portföy", "tur": "bagimsiz", "yonetilen_buyukluk": null, "one_cikan_fonlar": [], "karar_olcutleri": [], "oruntu": "diger",
+   "kanit": "SPK tasfiye kararı kapsamında (haberlerde 15-16 fon); strateji verisi yok.", "kaynaklar": ["https://www.cnbce.com/haberler/spkdan-7-portfoy-yonetim-sirketinin-fonlarina-tasfiye-karari-h37428"], "guven": 0.1},
+
+  {"ad": "A1 Capital Portföy", "tur": "holding_bagli", "yonetilen_buyukluk": null, "one_cikan_fonlar": [], "karar_olcutleri": [], "oruntu": "grup_hissesi",
+   "kanit": "SPK tasfiye kararı kapsamında (9 fon). Pardus BIH ağır pozisyonlarında A1YEN görülüyor (grup ilişkisi doğrulanmadı; etiket spekülatif).", "kaynaklar": ["https://www.cnbce.com/haberler/spkdan-7-portfoy-yonetim-sirketinin-fonlarina-tasfiye-karari-h37428"], "guven": 0.1},
+
+  {"ad": "Strateji Portföy", "tur": "araci_kurum_bagli", "yonetilen_buyukluk": null,
+   "one_cikan_fonlar": [{"kod": null, "ad": "Strateji Portföy Hisse Senedi Serbest Fon (Hisse Senedi Yoğun Fon)", "tur": "serbest", "buyukluk": null,
+     "strateji_beyani": "En az %80 BIST hissesi; hisse seçimi temel analize dayanır; orta-uzun vadede yüksek fiyat artışı sağlayacak şirketler.", "bilinen_agir_pozisyonlar": [], "getiri_notu": null, "kaynak": ["https://kap.org.tr/tr/api/BildirimPdf/1497224"]}],
+   "karar_olcutleri": ["temel analiz", "orta-uzun vade fiyat artışı potansiyeli"], "oruntu": "diger", "kanit": "İzahname özetine göre beyan; uygulama gözlemi yok.", "kaynaklar": ["https://kap.org.tr/tr/api/BildirimPdf/1497224"], "guven": 0.3},
+
+  {"ad": "Rota Portföy", "tur": "bagimsiz", "yonetilen_buyukluk": null,
+   "one_cikan_fonlar": [{"kod": null, "ad": "Rota Portföy Hisse Senedi (TL) Fonu ve On Beşinci/Onuncu Hisse Senedi Serbest Fonlar", "tur": "hisse_yogun", "buyukluk": null,
+     "strateji_beyani": "Hisse yoğun fon; bir izahnamede portföyün en az %51'i BIST hissesi (diğer fonlar %80).", "bilinen_agir_pozisyonlar": [], "getiri_notu": null, "kaynak": ["https://kap.org.tr/tr/fon-bilgileri/genel/rvs-rota-portfoy-onbesinci-hisse-senedi-serbest-fon-hisse-senedi-yogun-fon"]}],
+   "karar_olcutleri": [], "oruntu": "diger", "kanit": "Yalnız fon yapısı; çok sayıda serbest hisse fonu var.", "kaynaklar": ["https://kap.org.tr/tr/fon-bilgileri/ozet/rof-rota-portfoy-onuncu-hisse-senedi-serbest-fon-hisse-senedi-yogun-fon"], "guven": 0.15}
+ ],
+ "genel": [
+  {"soru": "a) Hisse yoğun fonlarda stopaj avantajı ve %80 hisse zorunluluğu davranışı",
+   "yanit": "Unvanında (Hisse Senedi Yoğun Fon) geçen, portföyün en az %80'i BIST hissesi olan fonlarda stopaj %0 kaldı; diğer fonlarda oran 1 Şubat 2025'te %10'dan %15'e, 9 Temmuz 2025'te %17,5'e çıktı. 27 Mart 2026 tarihli 11107 sayılı karar TEFAS'ta işlem görmeyen serbest hisse yoğun fonları %0 uygulamasından çıkardı (%17,5). Sonuç (yorum, kaynaksız çıkarım): %80 eşiğini koruma ve TEFAS'ta kalma teşviki; fonların fiilen hep %80'in üzerinde hisse tutması beklenir ve nakit/BYF payı sınırlıdır. Bazı fonlarda fon payı (BYF/fon) ağırlığı %17-18 görüldü (PHE, YHZ), bu da eşik hesabına hisse BYF'nin girmesiyle uyumlu olabilir. Yürürlük tarihi kaynaklarda çelişiyor.",
+   "kaynaklar": ["https://fintables.com/akademi/ekonomi-analizi-101/fonlarda-vergi-duzenlemesi", "https://www.alomaliye.com/2026/03/27/gvk-gecici-67-nci-maddesinde-yer-alan-tevkifat-oranlari-karar-sayisi-11107/", "https://www.pwc.com.tr/tr/sektorler/bankacilik-sermaye-piyasalari/bultenler/2026/gvk-gecici-67nci-madde-uyarinca-uygulanan-stopaj-oranlarinda-degisiklikler.html"], "guven": 0.6},
+  {"soru": "b) Serbest fonların halka arzdaki rolü ve SPK düzenlemeleri 2024-2026",
+   "yanit": "SPK 19.09.2024 ilke kararı: piyasa değeri 750 mn TL ve altı halka arzlarda borsada satış zorunlu; üstünde yüksek talepli yatırımcı grubuna toplamın %10'una kadar tahsisat; içsel bilgiye erişimi olanlara kısıtlama; 2023 ilke kararı (128.23) 90 gün kısıtlama içeriyor. Bir haberde tek kurumsal yatırımcıya %1, aynı yönetici fonlarına toplam %3 sınırı aktarılıyor (doğrulanamadı, ikincil). 2026'da önceliklendirme: 15 mlr TL üstü arzlarda yurt dışına en az %50 tahsisat. 28 Ağustos 2026 fon rehberi: serbest fon, şirketin fiili dolaşımının halka açıklığa bağlı %2-8'ini (yönetici toplamı %4-16) aşamaz; haftalık portföy açıklaması; geçiş 31.12.2026. Serbest fonların halka arzlarda yüklü pay alıp tavan sonrası sattığı iddiası piyasa uzmanı yorumu olarak basında; doğrulanmış SPK bulgusu bulunamadı. 17 Eylül 2026'da SPK yedi şirketin 130-131 fonuna tasfiye kararı verdi. Not: SPK'nın doğrudan 'satmama taahhüdü' düzenlemesi 2024-2026 için doğrulanamadı.",
+   "kaynaklar": ["https://www.bloomberght.com/spk-belirli-sartlari-saglayan-halka-arzlara-oncelik-verebilecek-3786639", "https://hukukcularevi.com/halka-arzdan-neden-pay-alamadim-esit-dagitim-yatirimci-gruplari-90-gun-kurali-ii-5-2-spk-ilke-karari-128-23/", "https://hukukcularevi.com/halka-arzda-kurumsal-yatirimci-payini-fonlar-mi-aldi-dagitim-sonuclari-inceleme-bireysel-yatirimci-haklari-ii-5-2-m18-m19-m24-i-spk-128-23-spkn-21-107/", "https://www.bloomberght.com/spkdan-serbest-fonlara-sert-fren-3786791", "https://www.foreks.com/haber/detay/6a927b243defa45fccd7cefc/PICNEWS/tr/spk-yatirim-fonu-rehberini-guncelledi-serbest-fonlara-yeni-sinirlar-murabaha-islemine-olanak-ve-para-piyasasina-yeni-kurallar-29-08-26/", "https://www.cnbce.com/haberler/spkdan-7-portfoy-yonetim-sirketinin-fonlarina-tasfiye-karari-h37428", "https://www.foreks.com/haber/detay/6a910f4c9bc2263791e8281b/PICNEWS/tr/spk-halka-arz-basvurularinda-oncelik-kriterlerini-belirledi-15-milyar-tl-uzeri-arzlara-ozel-duzenleme-28-08-26/"], "guven": 0.55},
+  {"soru": "c) Ay sonu / çeyrek sonu vitrin süslemesi ve fiyat etkisi iddiaları",
+   "yanit": "Basın: kapanışa yakın yoğun emirlerle fonun günlük NAV'ının etkilenebileceği anlatılıyor (genel mekanizma anlatımı). SPK (23 Temmuz, 2026) GYF/GSYF paylarının değerlemesinde borsa fiyatı yerine kurucunun ay sonu açıkladığı birim pay değerinin kullanılmasını istedi (31 Temmuz'dan geçerli); amaç borsadaki yapay fiyat farkının fon değerlemesine yansımasını önlemek. Adalet Bakanı, SPK'nın 6362 s. Kanun 107. madde kapsamında suç duyurusu yaptığını açıkladı; soruşturma sürüyor, hüküm yok. Belirli bir fon veya yöneticiye ilişkin 'vitrin süslemesi' kanıtı bu çalışmada yazılmadı. Tek başına düşük dolaşımlı hisse almak manipülasyon sayılmıyor (haberde hatırlatma).",
+   "kaynaklar": ["https://www.ekonomim.com/gundem/turkiyede-fon-krizi-borsa-manipulasyonu-nasil-isliyor-haberi-920998", "https://www.borsamatik.com.tr/yatirim-fonlarinda-manipulasyon-nasil-yapiliyor-haber-174909", "https://www.ntv.com.tr/ntvpara/akin-gurlekten-borsa-ve-fon-aciklamasi-1742353", "https://www.ekonomim.com/ekonomi/portfoylerdeki-fiyat-farki-spkya-onlem-aldirdi-haberi-908334"], "guven": 0.45},
+  {"soru": "d) Fon sayısı, hisse fonu büyüklüğü ve yatırımcı sayısı 2023→2026",
+   "yanit": "Toplam fon portföyü MKK: Ocak 2026'da 9,36 trilyon TL zirve, 9 Şubat 2026'da 9,17 trilyon TL; yatırımcı 2025 başı 5,58 mn, 9 Şubat 2026 5,82 mn. TSPB 2025 sonu fon varlığı 7,471 trilyon TL (ölçü farkı, açıklanmadı); pay senedi varlıkları 2025 sonu 2,710 trilyon TL (+%28,6, TSPB). TEFAS hisse şemsiye fonu toplamı: 166 fon ~223 mlr TL (tarih belirsiz) ve 191 fon ~145,1 mlr TL (2026 Ekim). Not: 2023 başlangıç değeri ve fon sayısı bulunamadı. BES: toplam yaklaşık 2 trilyon TL (başlık, doğrulanmadı).",
+   "kaynaklar": ["https://www.bloomberght.com/yatirim-fonlarinda-portfoy-buyuklugu-9-trilyon-tl-barajini-asti-3768720", "https://www.bloomberght.com/2025-yilinda-yatirimci-portfoyleri-cesitlendi-3766570", "https://tspb.org.tr/wp-content/uploads/2026/01/TSPB_AylikVeriler_BasinBulteni_12012026.pdf", "https://www.borsagundem.com.tr/tefasin-en-buyuk-hisse-fonlarinda-yabanci-hisse-ve-teknoloji-agirligi-one-cikiyor"], "guven": 0.45},
+  {"soru": "BES hisse tarafı: devlet katkısı fonlarının hisse zorunluluğu, BES'in BIST'teki payı",
+   "yanit": "Devlet katkısı fonlarında Borsa İstanbul hissesi asgari oranı önce %10, SEDDK kararıyla (Şubat 2023) %30'a çıkarıldı; tek hisse sınırı %1'den %5'e. QNB Invest: fiili oran yaklaşık %35, BES+devlet katkısı hisse pozisyonu yaklaşık 9,3 mlr USD (BIST halka açık değerinin %8,1'i; tarih belirsiz). 2026 başında devlet katkısı oranı %30'dan %20'ye indirildi. Şirket bazında hisse fonu büyüklüğü ve OKS ayrıntısı bulunamadı.",
+   "kaynaklar": ["https://www.ekonomist.com.tr/bes/bes-te-devlet-katkisi-fonlarinin-asgari-hisse-senedi-bulundurma-orani-artirildi-38764", "https://www.qnbinvest.com.tr/investodak/qnbarastirma/beste-devlet-katkisi-20ye-dusuruldu-piyasalar-icin-anlami-ne", "https://www.borsagundem.com.tr/2-trilyon-tllik-bes-pastasi-borsada-nerede-iste-fonlarin-gozdesi-hisseler"], "guven": 0.4}
+ ],
+ "en_buyuk_hisse_fonlari": [
+  {"yil": 2024, "kod": "BIH", "ad": "Pardus Portföy Birinci Hisse Senedi (TL) Fonu", "sirket": "Pardus Portföy", "olcu": "getiri", "deger": "%176,66 (serbest fonlar hariç liste başı)", "kaynak": "https://www.getmidas.com/midasin-kulaklari/2024un-kazandiran-hisse-ve-fonlari-p-78505"},
+  {"yil": 2025, "kod": "BIH", "ad": "Pardus Portföy Birinci Hisse Senedi (TL) Fonu", "sirket": "Pardus Portföy", "olcu": "getiri", "deger": "%105'i aşan; hisse yoğun fon getirileri %30-%105 arası (BIST 100 %14,55)", "kaynak": "https://www.milliyet.com.tr/yazarlar/zeynep-aktas/fonlarda-getiri-ikiye-katlandi-7514975"},
+  {"yil": 2025, "kod": "PHE", "ad": "Pusula Portföy Hisse Senedi Fonu", "sirket": "Pusula Portföy", "olcu": "getiri", "deger": "son 1 yıl %230,68 (Ağustos, yıl belirsiz; güven düşük)", "kaynak": "https://www.borsagundem.com.tr/bir-yilda-en-cok-kazandiran-fonlar-kac-yatirimcisi-var-buyuklukleri-ne-kadar"},
+  {"yil": 2026, "kod": "AFT", "ad": "Ak Portföy Yeni Teknolojiler Yabancı Hisse Senedi Fonu", "sirket": "Ak Portföy", "olcu": "buyukluk", "deger": "yaklaşık 16,5 mlr TL (TEFAS hisse şemsiye fonlarında en büyük; Ekim 2026'ya yakın)", "kaynak": "https://www.borsagundem.com.tr/tefasin-en-buyuk-hisse-fonlarinda-yabanci-hisse-ve-teknoloji-agirligi-one-cikiyor"},
+  {"yil": 2026, "kod": "YAY", "ad": "Yapı Kredi Portföy Yabancı Teknoloji Sektörü Hisse Senedi Fonu", "sirket": "Yapı Kredi Portföy", "olcu": "buyukluk", "deger": "yaklaşık 12,4 mlr TL (ikinci)", "kaynak": "https://www.borsagundem.com.tr/tefasin-en-buyuk-hisse-fonlarinda-yabanci-hisse-ve-teknoloji-agirligi-one-cikiyor"},
+  {"yil": 2025, "kod": "BDS", "ad": "Pardus Portföy BIST 30 Dışı Şirketler Hisse Senedi Fonu", "sirket": "Pardus Portföy", "olcu": "getiri", "deger": "yılbaşından ara tarihte %91,61 (tarih belirsiz)", "kaynak": "https://www.borsamatik.com.tr/yilbasindan-bu-yana-en-cok-kazandiran-5-hisse-senedi-fonu-haber-174992"}
+ ]
+}

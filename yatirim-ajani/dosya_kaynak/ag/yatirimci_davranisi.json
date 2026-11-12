@@ -1,0 +1,1028 @@
+{
+ "not": "Kaynak: yalnız WebSearch özetleri (sayfa açılmadı). Rakamların çoğu haber/aracı kurum özetlerine dayanır ve MKK/TSPB/TCMB/BIST birincil sayfalarıyla doğrulanmadı. guven alanı: 0,8 iki sorguda tutarlı resmi kaynak atıflı; 0,5-0,7 tek ikincil kaynak veya tanım belirsiz; ≤0,4 çelişkili/tanımsız. Yabancı payı için en az üç farklı tanım var (TSPB toplam portföy %36-37, MKK halka açık kısım saklama, 'takas adedi' %16,74) - birbirine karıştırma. EKSİKLER: MKK portföy dilimi tam tablosu, yerli bireysel/kurumsal ayrımı (güvenilir tarih), bireysel hacim payı, VİOP bireysel payı, 2020-2022 yıl sonu yatırımcı sayıları (arama bulmadı), MKK ortalama elde tutma süresi, BES hisse yüzdesi, TEFAS hisse ve para piyasası yatırımcı sayısı, halka arz tavan serisi uzunlukları. Akademik bulgular: BIST için fon akışı, bedelsiz yanılsaması, Telegram, VBTS etkisi, yabancı fiyat etkisi kalıcılığı konularında hakemli kaynak bulunamadı; yerine uluslararası referanslar 'BIST'e ait değil' notuyla ve boş URL ile eklendi (künye doğrulanamadı, bellekten). Tera grubu (TERA, TEHOL, TRHOL) kapsam dışı. Yatırım tavsiyesi değildir.",
+ "istatistikler": [
+  {
+   "olcu": "MKK kayıtlı yatırımcı sayısı (tüm sermaye piyasası araçları)",
+   "deger": "37,94 milyon",
+   "sayi": 37940000,
+   "tarih": "2025-12",
+   "kaynak": "https://www.bloomberght.com/mkk-yatirimci-sayisi-2025-sonunda-37-94-milyona-cikti-3766558",
+   "guven": 0.8,
+   "not": "2024 sonu 36,21 milyon. Pay senedi yatırımcısı değil; tüm araçlar."
+  },
+  {
+   "olcu": "MKK bakiyeli yatırımcı sayısı (tüm araçlar)",
+   "deger": "10,64 milyon",
+   "sayi": 10640000,
+   "tarih": "2025-12",
+   "kaynak": "https://www.bloomberght.com/mkk-yatirimci-sayisi-2025-sonunda-37-94-milyona-cikti-3766558",
+   "guven": 0.7,
+   "not": "MKK yetkilisi bandı 10,5-11 milyon dedi."
+  },
+  {
+   "olcu": "2025'te yeni MKK sicil numarası alan yatırımcı",
+   "deger": "1.848.783",
+   "sayi": 1848783,
+   "tarih": "2025-12",
+   "kaynak": "https://www.bloomberght.com/mkk-yatirimci-sayisi-2025-sonunda-37-94-milyona-cikti-3766558",
+   "guven": 0.6,
+   "not": "Arama özetinden; yeni kayıt, pay senedi yatırımcısı olmayabilir."
+  },
+  {
+   "olcu": "Pay senedi bakiyeli yatırımcı sayısı - 2023 zirvesi (Ekim sonu)",
+   "deger": "8 milyon 556 bin",
+   "sayi": 8556000,
+   "tarih": "2023-10",
+   "kaynak": "https://paratic.com/mkk-acikladi-borsada-yatirimci-sayisi-8-milyona-dayandi/",
+   "guven": 0.55,
+   "not": "TSPB'ye atfedilen rekor; URL eşlemesi tam doğrulanamadı."
+  },
+  {
+   "olcu": "Pay senedi yatırımcı sayısı (MKK, 15 Aralık 2023)",
+   "deger": "8.573.476",
+   "sayi": 8573476,
+   "tarih": "2023-12-15",
+   "kaynak": "https://www.borsagundem.com.tr/sermaye-piyasalarinda-yatirimci-sayisi-37-milyona-yaklasti",
+   "guven": 0.5,
+   "not": "Bakiyeli sayıdan hafif farklı tanım; URL eşlemesi tam doğrulanamadı."
+  },
+  {
+   "olcu": "Pay senedi bakiyeli yatırımcı - 2024 Ocak sonu",
+   "deger": "7 milyon 267 bin",
+   "sayi": 7267000,
+   "tarih": "2024-01",
+   "kaynak": "https://www.foreks.com/haber/detay/65e410d1c9e77c00019a33b3/PICNEWS/tr/pay-senedi-yatirimci-sayisi-son-10-haftanin-en-yuksek-seviyesine-cikti",
+   "guven": 0.45,
+   "not": "Halka arz dalgasıyla Mart 2024'te ~8,216 milyon; Mayıs 2024 MKK 8.570.847 (bu iki değer ikincil haber özeti, guven ≤0,5)."
+  },
+  {
+   "olcu": "Pay senedi bakiyeli yatırımcı - 2024 yıl sonu",
+   "deger": "6 milyon 840 bin",
+   "sayi": 6840000,
+   "tarih": "2024-12",
+   "kaynak": "https://tspb.org.tr/wp-content/uploads/2025/01/TSPB_AylikVeriler_BasinBulteni_29_01_2025.pdf",
+   "guven": 0.8,
+   "not": "Sekiz yıllık yükselişin ardından 2024'te düşüş; yerli bireysel azalışı."
+  },
+  {
+   "olcu": "Pay senedi bakiyeli yatırımcı - Kasım 2025",
+   "deger": "6.431.980 (yıl başına göre -%6,4)",
+   "sayi": 6431980,
+   "tarih": "2025-11",
+   "kaynak": "https://www.bloomberght.com/borsada-toplam-yatirimci-azaldi-milyoner-yatirimci-artti-3763616",
+   "guven": 0.8,
+   "not": ""
+  },
+  {
+   "olcu": "Pay senedi yatırımcı sayısı - 2025 yıl sonu",
+   "deger": "6,503-6,51 milyon",
+   "sayi": 6503000,
+   "tarih": "2025-12",
+   "kaynak": "https://tspb.org.tr/wp-content/uploads/2026/01/TSPB_AylikVeriler_BasinBulteni_12012026.pdf",
+   "guven": 0.7,
+   "not": "TSPB 6,503; MKK haberi 6,51 milyon."
+  },
+  {
+   "olcu": "Pay senedi yatırımcı sayısı - Ekim 2026 sonu",
+   "deger": "6,55 milyon",
+   "sayi": 6550000,
+   "tarih": "2026-10",
+   "kaynak": "https://www.borsagundem.com.tr/pay-senedi-yatirimci-sayisi-655-milyon-aciklandi",
+   "guven": 0.55,
+   "not": "Tarih/ay eşlemesi özetten; 2023 zirvesine göre ~%24 altı."
+  },
+  {
+   "olcu": "Pay senedi portföy değeri (MKK, toplam kayıt) - 2025 sonu",
+   "deger": "17,33 trilyon TL (yatırımcı 6,51 milyon)",
+   "sayi": 17330000000000,
+   "tarih": "2025-12",
+   "kaynak": "https://www.bloomberght.com/mkk-yatirimci-sayisi-2025-sonunda-37-94-milyona-cikti-3766558",
+   "guven": 0.5,
+   "not": "TSPB'nin 'fiili dolaşımda olmayan paylar dahil' 7,47 trilyon TL değeriyle uyuşmuyor: tanım/kapsam farkı (halka açık olmayan paylar, piyasa değeri vs. nominal). Kullanmadan önce MKK bülteninden doğrula."
+  },
+  {
+   "olcu": "Pay senedi portföy değeri (TSPB, MKK+TCMB) - 2025 sonu",
+   "deger": "~7,47 trilyon TL",
+   "sayi": 7470000000000,
+   "tarih": "2025-12",
+   "kaynak": "https://tspb.org.tr/wp-content/uploads/2026/01/TSPB_AylikVeriler_BasinBulteni_12012026.pdf",
+   "guven": 0.7,
+   "not": "Yabancı %36,3 + yerli %63,7; yerli 4,762 + yabancı 2,710 trilyon TL."
+  },
+  {
+   "olcu": "Pay senedi portföy değeri - 2024 sonu",
+   "deger": "5,712 trilyon TL",
+   "sayi": 5712000000000,
+   "tarih": "2024-12",
+   "kaynak": "https://tspb.org.tr/wp-content/uploads/2025/01/TSPB_AylikVeriler_BasinBulteni_29_01_2025.pdf",
+   "guven": 0.8,
+   "not": "Yabancı %37 / yerli %63."
+  },
+  {
+   "olcu": "Yabancıların pay senedi varlığı - 2023 sonu",
+   "deger": "1,557 trilyon TL",
+   "sayi": 1557000000000,
+   "tarih": "2023-12",
+   "kaynak": "https://tspb.org.tr/wp-content/uploads/2025/01/TSPB_AylikVeriler_BasinBulteni_29_01_2025.pdf",
+   "guven": 0.75,
+   "not": "2024 sonu 2,106 trilyon TL (+%35,3)."
+  },
+  {
+   "olcu": "Yabancıların pay senedi varlığı - 2024 sonu → 2025 sonu",
+   "deger": "2,106 → 2,710 trilyon TL",
+   "sayi": 2710000000000,
+   "tarih": "2025-12",
+   "kaynak": "https://www.ekonomigazetesi.com/ekonomi/yerli-yatirimcinin-pay-senedi-varligi-2025te-yuzde-321-buyudu-69663",
+   "guven": 0.75,
+   "not": ""
+  },
+  {
+   "olcu": "Yerli yatırımcıların pay senedi varlığı - 2024 sonu → 2025 sonu",
+   "deger": "3,606 → 4,762 trilyon TL (+%32,1)",
+   "sayi": 4762000000000,
+   "tarih": "2025-12",
+   "kaynak": "https://www.ekonomigazetesi.com/ekonomi/yerli-yatirimcinin-pay-senedi-varligi-2025te-yuzde-321-buyudu-69663",
+   "guven": 0.75,
+   "not": ""
+  },
+  {
+   "olcu": "Yabancı payı (portföy değeri) - 2024 sonu",
+   "deger": "%37 (MKK günlük ~%36,28-36,78)",
+   "sayi": 37.0,
+   "tarih": "2024-12",
+   "kaynak": "https://tspb.org.tr/wp-content/uploads/2025/01/TSPB_AylikVeriler_BasinBulteni_29_01_2025.pdf",
+   "guven": 0.75,
+   "not": "Fiili dolaşımda olmayan paylar dahil."
+  },
+  {
+   "olcu": "Yabancı payı (portföy değeri) - 2025 sonu",
+   "deger": "%36,3",
+   "sayi": 36.3,
+   "tarih": "2025-12",
+   "kaynak": "https://tspb.org.tr/wp-content/uploads/2026/01/TSPB_AylikVeriler_BasinBulteni_12012026.pdf",
+   "guven": 0.8,
+   "not": "Yerli %63,7."
+  },
+  {
+   "olcu": "Yabancı payı - 26 Ocak 2026",
+   "deger": "%36,86",
+   "sayi": 36.86,
+   "tarih": "2026-01-26",
+   "kaynak": "https://www.hisse.net/haber/amp/yabancilarin-en-cok-alip-sattigi-hisseler-10-nisan-2026-73762",
+   "guven": 0.5,
+   "not": "İş Yatırım raporuna atfedilmiş; Mart başı %36,4; 6 Nisan %35,65; 10 Nisan %35,71."
+  },
+  {
+   "olcu": "Yabancı payı (MKK, halka açık piyasa değeri) - Mayıs 2026",
+   "deger": "%34,86",
+   "sayi": 34.86,
+   "tarih": "2026-05",
+   "kaynak": "https://rotaborsa.com/?p=293050",
+   "guven": 0.4,
+   "not": "Rota Borsa URL eşlemesi belirsiz; ikincil."
+  },
+  {
+   "olcu": "Yabancı saklama oranı (halka açık kısmın piyasa değerine göre) - Eylül 2026",
+   "deger": "%36,93 (Ağustos'a göre yükseliş)",
+   "sayi": 36.93,
+   "tarih": "2026-09",
+   "kaynak": "https://www.foreks.com/haber/detay/6ac0ae5395016b5817e648d3/PICNEWS/tr/mkk-verileri-yabancilarin-pay-saklama-orani-eylulde-yuzde-36-93-e-yukseldi-03-10-26/",
+   "guven": 0.7,
+   "not": "Başka bir haberde Ağustos %32,59 → Eylül %36,92; ay bazında 4 puanlık sıçrama tanım farkı olabilir (guven 0,4 o kısım için)."
+  },
+  {
+   "olcu": "Yabancı payı - Ağustos 2026 (MKK pay senedi sahiplik, 14 Ağustos)",
+   "deger": "%32,38 (yerli %67,62)",
+   "sayi": 32.38,
+   "tarih": "2026-08-14",
+   "kaynak": "https://www.hisse.net/haber/amp/borsada-yatirimci-sayisi-geriledi-yabancilarin-payi-yukseldi-99959",
+   "guven": 0.4,
+   "not": "Tanım farklı (toplam portföy); Eylül %36,92 ile süreksizlik; Ekim sonu %37,37 haberi doğrulanamadı."
+  },
+  {
+   "olcu": "Yabancı takas oranı (BIST, tüm zamanların dibi) - 25 Mayıs 2023",
+   "deger": "%27,85",
+   "sayi": 27.85,
+   "tarih": "2023-05-25",
+   "kaynak": "https://www.bloomberght.com/borsada-yabanci-takas-orani-tum-zamanlarin-en-dusugunde-2332045",
+   "guven": 0.55,
+   "not": "Aynı kaynak: 2012 sonu ~%67, 2020 sonu %49, 2021 sonu %40, 2022 sonu %29 (ikincil özet, guven 0,5). Bu seri halka açık piyasa değeri bazlı; MKK/TSPB toplam portföy payıyla birebir kıyaslanamaz."
+  },
+  {
+   "olcu": "Yabancı takas oranı - 17 Ekim 2024 'tarihi dip' iddiası",
+   "deger": "%16,74",
+   "sayi": 16.74,
+   "tarih": "2024-10-17",
+   "kaynak": "https://www.borsaningundemi.com/haber/bistte-yabanci-yatirimcinin-radarindaki-hisseler-1904077",
+   "guven": 0.3,
+   "not": "Başlık kaynakta 'takas adedi içindeki oran' diye; 2025 başında MKK %36-37 ile uyumsuz, farklı payda. Yalnız uyarı olarak kullan; guven düşük."
+  },
+  {
+   "olcu": "Yabancı elde tutma süresi (TÜYİD verisi, ikincil) 2012 → 2020 → 2022 sonu",
+   "deger": "389 → 74 → 29 gün",
+   "sayi": 29,
+   "tarih": "2022-12",
+   "kaynak": "https://www.steelradar.com/haber/yabanci-takas-oranlari-dip-seviyesinde/",
+   "guven": 0.4,
+   "not": "Yöntemi doğrulanamadı (TÜYİD verisi, haber özeti). MKK'nın resmi 'ortalama elde tutma' serisi bulunamadı."
+  },
+  {
+   "olcu": "Yerli elde tutma süresi (TÜYİD, ikincil) 2012 → 2022 sonu",
+   "deger": "46 → 27 gün",
+   "sayi": 27,
+   "tarih": "2022-12",
+   "kaynak": "https://www.steelradar.com/haber/yabanci-takas-oranlari-dip-seviyesinde/",
+   "guven": 0.4,
+   "not": "Aynı kaynak; BIST-TİCARET için yabancı 89 gün."
+  },
+  {
+   "olcu": "Yabancı net hisse işlemi (BIST verisi) - 2024",
+   "deger": "~ -3 milyar $ (net satış); alternatif kaynak -2,696 milyar $",
+   "sayi": -3000000000,
+   "tarih": "2024",
+   "kaynak": "https://www.cnbce.com/borsa/yabancilar-2024te-3-milyar-dolarlik-hisse-satti-h8522",
+   "guven": 0.65,
+   "not": "2018-2024 arası yabancı net satıcı."
+  },
+  {
+   "olcu": "Yabancı net hisse işlemi - 2022",
+   "deger": "~ -4,5 milyar $",
+   "sayi": -4500000000,
+   "tarih": "2022",
+   "kaynak": "https://infoyatirim.com/blog/borsanin-gozunden/aralik-2025te-yabanci-yatirimci-1-milyar-dolara-yakin-hisse-senedi-alim-islemi-gerceklestirdi",
+   "guven": 0.5,
+   "not": ""
+  },
+  {
+   "olcu": "Yabancı net hisse işlemi - 2025 (BIST verisi)",
+   "deger": "+3,94 milyar $ (alış 358,3 / satış 354,4 milyar $); 2017'den sonra ilk net alım",
+   "sayi": 3940000000,
+   "tarih": "2025",
+   "kaynak": "https://www.dunya.com/foto-galeri/ekonomi/7-yil-sonra-ilk-yasandi-yabancilarin-aralikta-en-cok-aldigi-ve-sattigi-hisseler-belli-oldu-galeri-810488",
+   "guven": 0.65,
+   "not": "Sözcü: 3.942.735.000 $. Yıl ortası haberi 2,947 milyar $ idi (kısmi dönem)."
+  },
+  {
+   "olcu": "Yabancı net hisse alımı - Aralık 2025",
+   "deger": "+996,1 milyon $ (alış 35,2 / satış 34,2 milyar $)",
+   "sayi": 996100000,
+   "tarih": "2025-12",
+   "kaynak": "https://infoyatirim.com/blog/borsanin-gozunden/aralik-2025te-yabanci-yatirimci-1-milyar-dolara-yakin-hisse-senedi-alim-islemi-gerceklestirdi",
+   "guven": 0.7,
+   "not": ""
+  },
+  {
+   "olcu": "Yabancı 2025 en çok net alınan / satılan hisse",
+   "deger": "ASELS +817,5 milyon $; SASA -248,4 milyon $ (diğer alımlar TCELL, TUPRS, ASTOR; satış AEFES, KCHOL, PGSUS, MPARK)",
+   "sayi": 817480000,
+   "tarih": "2025",
+   "kaynak": "https://www.sozcu.com.tr/yabancilar-7-yil-sonra-geri-dondu-bir-hisseye-akin-ettiler-p282549",
+   "guven": 0.6,
+   "not": ""
+  },
+  {
+   "olcu": "TCMB haftalık: yabancı net hisse - hafta 17 Nisan 2026",
+   "deger": "+579,4 milyon $ (Kasım 2020'den beri en güçlü alım)",
+   "sayi": 579400000,
+   "tarih": "2026-04-17",
+   "kaynak": "https://www.cnbce.com/borsa/yabancilardan-55-yilin-en-guclu-hisse-alimi-h28931",
+   "guven": 0.55,
+   "not": "Haftanın tarihi başlıktan çıkarıldı; doğrula."
+  },
+  {
+   "olcu": "TCMB haftalık: yabancı net hisse - hafta 6 Mart 2026",
+   "deger": "yaklaşık -755,5 milyon $ (2026'da bulunan en büyük satış)",
+   "sayi": -755500000,
+   "tarih": "2026-03-06",
+   "kaynak": "https://www.ahlatciyatirim.com.tr/arastirma/makro-ekonomik-raporlar/34756/tcmb-haftalik-menkul-kiymet-istatistikleri-202_PuiFJ2Z.pdf",
+   "guven": 0.45,
+   "not": "Özetten; PDF eşlemesi doğrulanamadı."
+  },
+  {
+   "olcu": "TCMB haftalık: yabancı net hisse - hafta 24 Temmuz 2026",
+   "deger": "+38,9 milyon $ (6 hafta üst üste net alım)",
+   "sayi": 38900000,
+   "tarih": "2026-07-24",
+   "kaynak": "https://www.bursahakimiyet.com.tr/amp/ekonomi/yabanci-yatirimci-alti-haftadir-hisse-aliyor-1680134",
+   "guven": 0.5,
+   "not": "Aynı haftada stok 41,1 → 41,4 milyar $ (hisse.net/ekonomigazetesi özetleri)."
+  },
+  {
+   "olcu": "TCMB haftalık: yabancı net hisse - 24 ve 30 Ekim 2026 haftaları",
+   "deger": "-100 milyon $ ve -66,3 milyon $; aynı hafta yabancı tahvil çıkışı 749 milyon $",
+   "sayi": -66300000,
+   "tarih": "2026-10-30",
+   "kaynak": "https://www.hisse.net/haber/amp/yabanci-yatirimcidan-7-ayin-en-buyuk-tahvil-satisi-105595",
+   "guven": 0.5,
+   "not": ""
+  },
+  {
+   "olcu": "Yabancıların BIST hisse portföyünün piyasa değeri",
+   "deger": "41,1 milyar $",
+   "sayi": 41100000000,
+   "tarih": "2026-07-10",
+   "kaynak": "https://www.gcmyatirim.com.tr/arastirma-analiz/ozel-raporlar/2026-07-23-13-17-temmuz-haftalik-menkul-kiymet-istatistikleri",
+   "guven": 0.55,
+   "not": "TCMB haftalık menkul kıymet istatistiği; GCM özet raporu."
+  },
+  {
+   "olcu": "Yabancı pay senedi bakiyeli yatırımcı sayısı (MKK)",
+   "deger": "33.401 (Ağustos 33.273)",
+   "sayi": 33401,
+   "tarih": "2026-09",
+   "kaynak": "https://www.foreks.com/haber/detay/6ac0ae5395016b5817e648d3/PICNEWS/tr/mkk-verileri-yabancilarin-pay-saklama-orani-eylulde-yuzde-36-93-e-yukseldi-03-10-26/",
+   "guven": 0.55,
+   "not": "Yabancı sayısı küçük, değer payı büyük: konsantrasyon."
+  },
+  {
+   "olcu": "Yabancıların pay senedi işlem hacmi payı",
+   "deger": "~%33 (2024'e göre +7 puan)",
+   "sayi": 33.0,
+   "tarih": "2025",
+   "kaynak": "https://tspb.org.tr/wp-content/uploads/2026/07/1-AK_202512-FINAL.pdf",
+   "guven": 0.6,
+   "not": "TSPB raporu özeti; bireysel hacim payı yüzdesi bulunamadı (guven yok)."
+  },
+  {
+   "olcu": "BIST pay senedi işlem hacmi",
+   "deger": "86 trilyon TL (+%26); ilk 4 aracı kurumun payı %44",
+   "sayi": 86000000000000,
+   "tarih": "2025",
+   "kaynak": "https://tspb.org.tr/wp-content/uploads/2026/07/1-AK_202512-FINAL.pdf",
+   "guven": 0.6,
+   "not": ""
+  },
+  {
+   "olcu": "Yabancı aylık işlem hacmi - Eylül 2026",
+   "deger": "alış ~46,96 / satış ~46,60 milyar $",
+   "sayi": 46960000000,
+   "tarih": "2026-09",
+   "kaynak": "https://www.forbes.com.tr/para-yatirim/yabancilarin-nisan-ayi-borsa-istanbul-islem-hacmi-91-milyar-dolari-asti",
+   "guven": 0.4,
+   "not": "URL eşlemesi (Forbes) tam doğrulanamadı; Temmuz 2026 alış 19,10/satış 19,99 milyar $ da aynı özette (tutarsız ölçek, guven düşük)."
+  },
+  {
+   "olcu": "Milyoner (≥1 milyon TL) pay senedi yatırımcısı sayısı",
+   "deger": "239.742 (yıl başı) → 295.343 (Kasım 2025), +%23",
+   "sayi": 295343,
+   "tarih": "2025-11",
+   "kaynak": "https://finans.cnnturk.com/finans-haberler/borsa/borsada-milyoner-pay-senedi-yatirimci-sayisi-11-ayda-55-binden-fazla-artti-2370921",
+   "guven": 0.8,
+   "not": ""
+  },
+  {
+   "olcu": "Milyonerlerin pay senedi portföy değeri payı",
+   "deger": "~%94,1 (yatırımcıların ~%4,6'sı)",
+   "sayi": 94.1,
+   "tarih": "2025-11",
+   "kaynak": "https://www.sozcu.com.tr/borsada-milyoner-yatirimci-sayisi-artti-295-bini-asarak-piyasadaki-payin-yuzde-94-unu-topladi-p270192",
+   "guven": 0.75,
+   "not": "Yıl sonu: sayı payı %3,49 → %4,58; değer payı %94,34 (Ekonomist, guven 0,65)."
+  },
+  {
+   "olcu": "≥10 milyon TL portföylü pay senedi yatırımcısı",
+   "deger": "25.628 (+%27,3)",
+   "sayi": 25628,
+   "tarih": "2025-11",
+   "kaynak": "https://www.haberturk.com/milyoner-yatirimci-sayisinda-artis-3844675-ekonomi",
+   "guven": 0.55,
+   "not": "1-5 milyon TL diliminin değer payı '%84,6' ifadesi tanımı belirsiz (guven 0,4)."
+  },
+  {
+   "olcu": "Yerli bireyin yerli portföy değerindeki payı",
+   "deger": "~%50 (bireyler yerli yatırımcıların %99,8'i)",
+   "sayi": 50.0,
+   "tarih": "2025-09",
+   "kaynak": "https://www.borsagundem.com.tr/borsa-istanbulda-yerli-ve-yabanci-dagilimi",
+   "guven": 0.4,
+   "not": "Tarih belirtilmemiş (Eylül 2025 olabilir); kurumsal ayrımı doğrula."
+  },
+  {
+   "olcu": "Pay senedi portföy değerine göre en büyük yaş grubu / en çok yatırımcı yaş grubu",
+   "deger": "45-49 yaş: 373,9 milyar TL; en çok yatırımcı 35-39 yaş",
+   "sayi": 373900000000,
+   "tarih": "2025-09",
+   "kaynak": "https://www.capital.com.tr/piyasalar/borsa/borsada-en-fazla-yatirim-hangi-yas-araliginda",
+   "guven": 0.5,
+   "not": ""
+  },
+  {
+   "olcu": "Bakiyeli kadın yatırımcı oranı",
+   "deger": "~%35 (3,79 milyon kişi, 2,17 trilyon TL)",
+   "sayi": 3790000,
+   "tarih": "2026-02",
+   "kaynak": "https://www.ekonomim.com/finans/haberler/borsada-erkekler-hakim-olsa-da-kadin-yatirimcilar-daha-gorunur-hale-geliyor-haberi-893123",
+   "guven": 0.45,
+   "not": "Pay senedi mi tüm araçlar mı belirsiz."
+  },
+  {
+   "olcu": "2025'te yeni yatırımcı (21-40 yaş): erkek / kadın",
+   "deger": "614.197 / 255.750",
+   "sayi": 614197,
+   "tarih": "2025",
+   "kaynak": "https://www.gzt.com/ekonomi/genclerin-borsa-istahi-suruyor-115-bin-yeni-yatirimci-piyasaya-girdi-halka-arzlar-hiz-kesmedi-ekonomi-haberleri-4207072",
+   "guven": 0.4,
+   "not": "Dönem (yıl/çeyrek) belirsiz."
+  },
+  {
+   "olcu": "Pay senedi yatırımcısı şehir dağılımı (MKK VAP)",
+   "deger": "İstanbul 1,69 milyon; Ankara 702 bin; İzmir 464 bin",
+   "sayi": 1690000,
+   "tarih": "2025",
+   "kaynak": "https://www.bloomberght.com/borsada-agirlik-istanbullu-yatirimcida-3772369",
+   "guven": 0.5,
+   "not": ""
+  },
+  {
+   "olcu": "Halka arz sayısı ve büyüklüğü - 2023",
+   "deger": "54 şirket, 79,9 milyar TL (alternatif: 56 şirket, 79,7 milyar TL)",
+   "sayi": 54,
+   "tarih": "2023",
+   "kaynak": "https://www.ekonomist.com.tr/borsa/yeni-halka-arzlarda-yon-nereye--50669",
+   "guven": 0.55,
+   "not": "Katılımcı: 42 milyondan fazla (Ekonomist) mi 124 milyon (Finansopia) mı - çelişki; katılım sayısı 'katılım adedi' (aynı kişi çoklu) olmalı, guven 0,3."
+  },
+  {
+   "olcu": "Halka arz sayısı ve büyüklüğü - 2024",
+   "deger": "34 şirket, 59,5 milyar TL; yurt içi bireyin payı %86,1",
+   "sayi": 34,
+   "tarih": "2024",
+   "kaynak": "https://www.forbes.com.tr/ekonomi/turkiye-de-halka-arz-hacmi-dustu-yatirimci-ilgisi-suruyor",
+   "guven": 0.65,
+   "not": "Ocak-Mayıs 2024 toplam katılım 52,6 milyon (guven 0,4)."
+  },
+  {
+   "olcu": "Halka arz sayısı - 2025",
+   "deger": "18 şirket (H1: 13; H2: 5); toplam ~43,9-45 milyar TL; en büyüğü Pasifik Holding 6 milyar TL",
+   "sayi": 18,
+   "tarih": "2025",
+   "kaynak": "https://www.cnbce.com/halka-arz/ilk-ceyrek-sonuclari-belli-oldu-2026-halka-arzlarinin-sampiyon-sirketi-yazilim-alanindan-h27674",
+   "guven": 0.55,
+   "not": "Şubat 2025'te 8 halka arz."
+  },
+  {
+   "olcu": "Halka arz sayısı ve katılım - 2026 ilk yarı",
+   "deger": "16 şirket, 24,6 milyar TL, toplam 12,38 milyon katılım; 21 Temmuz'da 2025'i (18) geçti",
+   "sayi": 16,
+   "tarih": "2026-06",
+   "kaynak": "https://www.bloomberght.com/bist-te-ilk-yarida-16-halka-arz-3782635",
+   "guven": 0.6,
+   "not": "30 Haziran'da 14/16 arz fiyatı üstünde. Halka arz endeksi ilk 5 ayda ~%128, yıllık ~%213 (guven 0,45). Q1 2026: 14 şirket, en iyi +%185."
+  },
+  {
+   "olcu": "TEFAS hisse senedi şemsiye fonları büyüklüğü (2026)",
+   "deger": "145,1 milyar TL (191 fon) vs 223 milyar TL (186 fon)",
+   "sayi": null,
+   "tarih": "2026",
+   "kaynak": "https://www.borsagundem.com.tr/bir-yilda-en-cok-kazandiran-fonlar-kac-yatirimcisi-var-buyuklukleri-ne-kadar",
+   "guven": 0.35,
+   "not": "İki kaynak çelişkili; tarihler farklı. Kullanmadan önce TEFAS'tan çek."
+  },
+  {
+   "olcu": "Yatırım fonu yatırımcısı / portföy (2026 ortası)",
+   "deger": "~5,89 milyon yatırımcı, ~10 trilyon TL; ≥10 milyon TL olanlar 95.210",
+   "sayi": 5890000,
+   "tarih": "2026-07",
+   "kaynak": "https://www.endeks24.com/fon-servetinin-yuzde-80i-kac-kisinin-elinde",
+   "guven": 0.4,
+   "not": "Getiri: serbest fon %69,09, para piyasası %48,68, hisse fonları %42,06 (dönem belirsiz)."
+  },
+  {
+   "olcu": "BES toplam fon büyüklüğü (devlet katkısı dahil)",
+   "deger": "2,163 trilyon TL (2025 sonu); 28 Kasım 2025'te 1,673 trilyon TL",
+   "sayi": 2163000000000,
+   "tarih": "2025-12",
+   "kaynak": "https://www.yeniasir.com.tr/ekonomi/2026/01/12/beste-fon-buyuklugu-2025te-22-trilyon-liraya-ulasti",
+   "guven": 0.6,
+   "not": "İki rakam farklı kapsam (devlet katkısı). BES'in hisse payı % olarak bulunamadı."
+  },
+  {
+   "olcu": "Emeklilik fonlarının en büyük hisse pozisyonu",
+   "deger": "ASELS ~28,47 milyar TL (ardından BIMAS, TUPRS)",
+   "sayi": 28470000000,
+   "tarih": "2025",
+   "kaynak": "https://www.borsagundem.com.tr/2-trilyon-tllik-bes-pastasi-borsada-nerede-iste-fonlarin-gozdesi-hisseler",
+   "guven": 0.5,
+   "not": ""
+  },
+  {
+   "olcu": "VİOP toplam işlem hacmi (11 ay 2025)",
+   "deger": "21,92 trilyon TL; BIST30 kontratları ortalama ~%30",
+   "sayi": 21920000000000,
+   "tarih": "2025-11",
+   "kaynak": "https://www.gcmyatirim.com.tr/arastirma-analiz/uzman-gorusleri/2026-01-02-2025-yilinda-viop-piyasa-derinligi-zamanlama-ve-yatirimci-davranisi",
+   "guven": 0.6,
+   "not": "VİOP bireysel payı bulunamadı (borsaistanbul.com/en VİOP aylık bülten gerekir)."
+  },
+  {
+   "olcu": "Açığa satış kuralı (SPK 5 Aralık 2024 kararı)",
+   "deger": "Açığa satış yalnız BIST 50 paylarında",
+   "sayi": null,
+   "tarih": "2024-12-05",
+   "kaynak": "https://www.cnbce.com/borsa/borsa-istanbulda-2-hisseye-kredili-islem-yasagi-dstkf-ve-pekgy-paylarina-aciga-satis-ve-kredili-islem-tedbiri-h36299",
+   "guven": 0.55,
+   "not": ""
+  },
+  {
+   "olcu": "SPK genel açığa satış yasağı / kredili işlem öz kaynak esnekliği (2026)",
+   "deger": "Orta Doğu gerilimi gerekçesiyle defalarca uzatıldı; bulunan son: 26 Mayıs 2026 seans sonu",
+   "sayi": null,
+   "tarih": "2026-05-26",
+   "kaynak": "https://www.alomaliye.com/2026/05/09/spkdan-aciga-satis-yasagi-ve-kredili-islemlere-iliskin-yeni-karar/",
+   "guven": 0.55,
+   "not": "Başlangıç tarihi ve sonrası doğrulanamadı; haber başlıkları: 8 Mayıs → 26 Mayıs uzatma."
+  },
+  {
+   "olcu": "VBTS kademeleri",
+   "deger": "1. kademe: açığa satış+kredili işlem yasağı (15 gün); 2. kademe: brüt takas (15 gün); 3. kademe: tek fiyat",
+   "sayi": null,
+   "tarih": "2026",
+   "kaynak": "https://fintables.com/arastirma/yazilar/yatirim-stratejileri/volatilite-bazli-tedbir-sistemi-nedir/pdf",
+   "guven": 0.65,
+   "not": "Süre/kademe ayrıntıları Borsa İstanbul duyurusundan teyit edilmeli."
+  }
+ ],
+ "bulgular": [
+  {
+   "baslik": "BIST'te MAX (piyango) etkisi: en yüksek günlük getirili hisseler sonraki ay geride kalıyor",
+   "yatirimci_tipi": "bireysel",
+   "ozet": "Yüksek-MAX hisseler düşük-MAX hisselerin anlamlı biçimde altında getiri sağlıyor. Etki bireysel yatırımcıların yoğun tercih ettiği hisselerde güçlü ve yüksek yatırımcı duyarlılığı sonrası artıyor. Geçici açığa satış kısıtı döneminde MAX iskontosu büyümüş: arbitraj sınırı açıklaması.",
+   "kanit_gucu": "guclu",
+   "kunye": "Alkan ve Güner (2018), Journal of International Financial Markets, Institutions and Money 55:211-223",
+   "kaynak": "https://ideas.repec.org/a/eee/intfin/v55y2018icp211-223.html",
+   "test": "Her ay sonu, son 21 işlem gününün en yüksek günlük getirisiyle (MAX1 veya ortalama en yüksek 3) hisseleri 5 gruba ayır; ardından 1-21 gün ileri getiri (piyasa değeri ve endeks ayarlı) düşük-MAX'tan düşük olmalı. Etki küçük piyasa değeri ve düşük halka açık oranında güçlenmeli; 2025-2026 açığa satış yasağı dönemlerinde (SPK) daha büyük olmalı.",
+   "strateji_fikri": "Tavan/uçan hisselerin ertesi aylarını fazla ağırlıklandırmamak; düşük-MAX kalite hisseleri tercih etmek."
+  },
+  {
+   "baslik": "MAX etkisi 448 BIST şirketi ve 2013-2023 örnekleminde yeniden doğrulandı",
+   "yatirimci_tipi": "bireysel",
+   "ozet": "448 BIST şirketi, Aralık 2013 - Kasım 2023 verisiyle MAX etkisinin BIST'te geçerli olduğu ve fiyat hareketlerini anlamlı biçimde etkileyebildiği bildirilmiş. Yorum: piyango tipi hisse talebi. (Yazar adı arama özetinde yoktu.)",
+   "kanit_gucu": "orta",
+   "kunye": "International Journal of Financial Studies (MDPI) 2025, 13(3), 128; yazar doğrulanamadı",
+   "kaynak": "https://ideas.repec.org/a/gam/jijfss/v13y2025i3p128-d1696759.html",
+   "test": "Alkan-Güner testini 2024-01→2026-11 örnekleminde dışarıda-örnek olarak tekrarla: MAX deciles zaman serisi alfası. Hacim şokuyla (hacim/20g ort) etkileşimini ekle.",
+   "strateji_fikri": null
+  },
+  {
+   "baslik": "Bireysel elden çıkarma etkisi: kazanan hisseyi satma, kaybedeni tutma eğilimi",
+   "yatirimci_tipi": "bireysel",
+   "ozet": "Yerli bireylerin gerçekleşmemiş kazançlı hisseyi satma ve gerçekleşmemiş zararlıda pozisyonu artırma eğilimi bulunmuş; yalnız disposition ile açıklanamıyor. Referans noktalarına göre: maliyet için disposition, azami/asgari fiyat referansında ters disposition birlikte var (Çevikel 2023). Turna (2014) 2008-2012 günlük bireysel işlemlerde güçlü disposition bulmuş.",
+   "kanit_gucu": "orta",
+   "kunye": "Şahin (2025), Investment Analysts Journal; Çevikel (2023), Boğaziçi Üniv. doktora; Turna (2014), İstanbul Bilgi Üniv. tez",
+   "kaynak": "https://digitalarchive.library.bogazici.edu.tr/items/2b5cc03a-4f24-4ba3-a0bf-0cc3296e04f0/full",
+   "test": "Hesap verisi yok; vekil: son 60 günlük zirveye göre -%20 olan hisselerde (zarar bölgesi) hacim/halka açık piyasa değeri oranı, +%30 olanlara göre daha az mı düşüyor? Zirveden uzaklık x ertesi 5-20 gün hacim ve getiri. Yabancı payı değişimi karşıt yönde olmalı.",
+   "strateji_fikri": "Zirveden sert düşen ve hacmi kuruyan hisselerde bireysel satış baskısının tükenmesi; karşı yönlü giriş."
+  },
+  {
+   "baslik": "Kâr/zarar durumuna göre elden çıkarma: yatırımcı kategorilerine göre disposition ölçümü",
+   "yatirimci_tipi": "genel",
+   "ozet": "İTÜ doktora çalışması Borsa İstanbul'da yatırımcı alt gruplarında kâğıt kâr ve zararın hem değer hem adet bazında disposition önyargısını ölçüyor. Tekçe ve ark. (2016) kadın, yaşlı ve yüksek portföylü yatırımcıların temsiliyet ve disposition eğilimine daha açık olduğunu raporluyor (tez ile makale bulguları arasında tutarsızlık olabilir; tam metinden doğrula).",
+   "kanit_gucu": "zayif",
+   "kunye": "Kahya (2022), İTÜ doktora; Tekçe, Yılmaz ve Bildik (2016), Research in International Business and Finance 37:515-526",
+   "kaynak": "https://econpapers.repec.org/RePEc:eee:riibaf:v:37:y:2016:i:c:p:515-526",
+   "test": "Hisse düzeyi bireysel sahiplik vekili (düşük yabancı payı + yüksek hacim devri) yüksek olanlarda, +%20 sonrası 'zirveden gerileme' süresi daha mı kısa? Basitçe ardışık yükseliş sonrası kâr realizasyonu hacmi.",
+   "strateji_fikri": null
+  },
+  {
+   "baslik": "Herding: tüm yatırımcı tipleri düşen piyasada günlük sürü davranışı gösteriyor; kurumsal olmayanlar büyük hissede",
+   "yatirimci_tipi": "genel",
+   "ozet": "Yatırımcı tipine göre günlük ve gün içi herding çalışmasında, profesyonel olmayan yatırımcılar (aracı kurum ve yerli fon grubu olarak sınıflanmış) büyük (küçük) hisselerde sürü davranışı gösteriyor; tüm tipler düşen piyasada günlük bazda sürüleniyor ve etki gün içinde azalıyor. Yıl bilgisi özetten doğrulanamadı.",
+   "kanit_gucu": "orta",
+   "kunye": "Dalgıç, Ekinci ve Ersan, 'Daily and Intraday Herding within Different Types of Investors in Borsa Istanbul' (yıl ve dergi doğrulanamadı)",
+   "kaynak": "https://academicrepository.khas.edu.tr/handle/20.500.12469/3547",
+   "test": "CSAD (cross-sectional absolute deviation) ve getiri karesi regresyonu: BIST100 günlük getirisi < -%1 günlerde CSAD'in doğrusal olmayan düşüşü; 74 hisselik saatlik çubuklarla gün içi saatlere bölünmüş hali.",
+   "strateji_fikri": "Düşüş günlerinin son saatindeki ortak satışın ertesi sabah toparlanma payına bakmak."
+  },
+  {
+   "baslik": "Yabancı artışı sonrası sürü artar, toplam hacim yükselince azalır (2001-2016)",
+   "yatirimci_tipi": "yabanci",
+   "ozet": "Yabancı yatırımcı işlemleri arttıktan sonra herding artıyor, piyasa toplam hacmi arttıkça azalıyor; herding oynaklığa yol açmaktan çok oynaklığa tepki olarak artıyor; ekonomik krizlerde değil, siyasi gerilim yaratan olaylar sonrası görülüyor.",
+   "kanit_gucu": "orta",
+   "kunye": "Uluslararası Ekonomi ve Yenilik Dergisi (2020), 'International Investors, Volatility, and Herd Behavior: Borsa İstanbul, 2001-2016'",
+   "kaynak": "https://gcris.ieu.edu.tr/handle/20.500.14365/4192",
+   "test": "Haftalık yabancı payı değişimi (takas) ile ertesi hafta CSAD/dağılım ölçüsünün ilişkisi; büyük yabancı payı artış haftalarını (üst %10) sonrası kesit korelasyon ve sektör içi getiri dağılımı.",
+   "strateji_fikri": null
+  },
+  {
+   "baslik": "Yabancı: geçmiş getiriyi izleyen (momentum) pozisyon; yerli ise karşıt",
+   "yatirimci_tipi": "yabanci",
+   "ozet": "PressAcademia Procedia çalışması yabancı sahipliğin geçmiş getirilerle pozitif ilişkili olduğunu (momentum) ve yerli yatırımcının karşıt (contrarian) davrandığını raporluyor. Farklı yatırımcı segmentlerinde momentum işlemi ayrıştıran uluslararası bir çalışma da var; Türkiye için tam bağı doğrulanamadı.",
+   "kanit_gucu": "zayif",
+   "kunye": "PressAcademia Procedia (2023); yazar ve cilt doğrulanamadı",
+   "kaynak": "https://dergipark.org.tr/en/download/article-file/3727429",
+   "test": "Haftalık yabancı payı değişimi Δ(t) ile önceki 4-13 hafta hisse getirisi arasında kesitsel regresyon (piyasa değeri, likidite kontrollü). Pozitif katsayı = momentum izleme. Sonra Δ(t) ile gelecek 4-13 hafta getiri (bilgi mi, fiyat baskısı mı).",
+   "strateji_fikri": "Yabancı payı artışı + olumlu 3 aylık momentum birleşimi için ileri getiriye bak (ile birlikte konumlanma)."
+  },
+  {
+   "baslik": "Pozitif geri bildirim işlemi: yerliler sürekli, yabancılar yalnız 2013 ve 2018 şoklarında",
+   "yatirimci_tipi": "genel",
+   "ozet": "2013-2018 verisinde Mayıs-Haziran 2013 ve Ağustos 2018 dışında yabancıların pozitif geri bildirim işlemi yapmadığı, yerlilerin ise tüm dönemde yaptığı bildirilmiş; yabancıların herding etkisi yerlilerden güçlü.",
+   "kanit_gucu": "zayif",
+   "kunye": "İşletme Araştırmaları Dergisi (2021); yazar doğrulanamadı",
+   "kaynak": "https://dergipark.org.tr/en/download/article-file/2196817",
+   "test": "Yabancı payı değişimi ile aynı haftanın BIST getirisi (eşzamanlı) ve gecikmeli getiri: dolar/TL şok haftalarında (örn. Mart 2025) işaret değişimi var mı.",
+   "strateji_fikri": null
+  },
+  {
+   "baslik": "Yabancı sahiplik oranı kur, CDS ve endeksle birlikte hareket ediyor; küçük şirketlerde makro riske duyarlılık fazla",
+   "yatirimci_tipi": "yabanci",
+   "ozet": "BIST30/50/100 firmalarında 2009-2024 yabancı sahiplik oranı için VAR: BIST30 ve 50 oranları döviz kuru, CDS primi ve endekse tepki veriyor; BIST100 (küçük şirket) grubunda yabancı Türkiye'nin makro-finansal riskine daha duyarlı. Varyans ayrıştırmasında hisse performansı ve kur her grupta etkili.",
+   "kanit_gucu": "orta",
+   "kunye": "Ahi Evran Üniversitesi İİBF Dergisi (DergiPark) 2025, yazar doğrulanamadı",
+   "kaynak": "https://dergipark.org.tr/tr/pub/ahbvuibfd/article/1686420",
+   "test": "Haftalık yabancı payı Δ ~ Δlog(USDTRY) + Δlog(altın) + sektör endeksi getirisi; büyük/küçük piyasa değeri grupları için ayrı betalar. Beklenti: küçük gruplarda kur duyarlılığı yüksek.",
+   "strateji_fikri": "USDTRY sıçrama haftalarında küçük şirket yabancı çıkışı büyük olabilir; büyüklere kayma."
+  },
+  {
+   "baslik": "Yabancı büyük, likit, endeksli hisseleri tercih eder (uluslararası bulgu; BIST'te yabancı payı yapısı da bunu gösteriyor",
+   "yatirimci_tipi": "yabanci",
+   "ozet": "Gelişen piyasalarda yabancılar büyük, likit ve ihraç/endeks üyesi hisseleri tercih ediyor (Kang ve Stulz 1997 Japonya; Dahlquist ve Robertsson 2001 İsveç). BIST'te en yüksek yabancı payı hisselerinden biri Coca-Cola İçecek (%74,87, 2026 özet). Doğrudan BIST makalesi bu aramada bulunamadı; bulgu BIST için dolaylı.",
+   "kanit_gucu": "orta",
+   "kunye": "Kang ve Stulz (1997), Journal of Financial Economics 46; Dahlquist ve Robertsson (2001), Journal of Financial Economics 59 (BIST'e ait değil)",
+   "kaynak": "",
+   "test": "Yabancı payı kesiti ~ log(piyasa değeri) + log(halka açık değer) + işlem hacmi + BIST30 üyeliği + temettü verimi + sektör kuklası; değişim denklemi (ΔFP) için de aynısı.",
+   "strateji_fikri": null
+  },
+  {
+   "baslik": "Yabancı girişi ve fiyat etkisi: kısa vade pozitif etki, kalıcılık tartışmalı (kanıt tam doğrulanmadı)",
+   "yatirimci_tipi": "yabanci",
+   "ozet": "Yabancı girişlerinin fiyat etkisi ve kalıcılığına dair BIST'e özgü hakemli kanıt bu aramada bulunamadı. Halk Yatırım benzeri aracı kurum raporları (2022) yabancı kurum işlemlerini betimsel izliyor. Bu bir veri boşluğudur; hipotez olarak test edilebilir.",
+   "kanit_gucu": "zayif",
+   "kunye": "Halk Yatırım, Yabancı Kurum İşlemleri Analizi (2022, betimsel); akademik kaynak bulunamadı",
+   "kaynak": "https://www.halkyatirim.com.tr//pdf/2022/11/8917_YabancıKurumİşlemleriAnalizi16112022.pdf",
+   "test": "Olay çalışması: yabancı payı haftalık artışı üst %5 olan hisse-haftalar için t+1..t+13 haftalık ileri getiri (BIST100 ve sektör ayarlı); kalıcılık: t+26 hafta CAR.",
+   "strateji_fikri": "Yabancı payı sürekli artan hisselerde (≥4 hafta üst üste) kısa vade trend takibi."
+  },
+  {
+   "baslik": "Yabancı değer payı ile yatırımcı sayısı zıt gidiyor: yerli bireysel çıkıyor, yabancı oranı yükseliyor",
+   "yatirimci_tipi": "genel",
+   "ozet": "2024'te pay senedi yatırımcı sayısı 6,84 milyona (2023 Ekim zirvesi 8,556 milyon), 2025 sonunda 6,50 milyona geriledi; aynı dönemde yabancı payı %36-37 bandında, 2025'te ilk kez 2017'den beri net yabancı alımı (+3,94 milyar $). Yabancıların hacim payı ~%33'e (2024'e göre +7 puan) çıkmış.",
+   "kanit_gucu": "orta",
+   "kunye": "TSPB Aylık Veriler Basın Bülteni (12 Ocak 2026), MKK ve TCMB verileriyle; TSPB Türkiye Sermaye Piyasaları 2025",
+   "kaynak": "https://tspb.org.tr/wp-content/uploads/2026/01/TSPB_AylikVeriler_BasinBulteni_12012026.pdf",
+   "test": "Haftalık yabancı payı ile hisse düzeyi hacim/halka açık değer oranı: yabancı payı yükselen haftada küçük hacimli (bireysel) hisselerde hacim düşüyor mu? Yabancı payı değişiminin dolar bazlı BIST100 getirisiyle ilişkisi.",
+   "strateji_fikri": null
+  },
+  {
+   "baslik": "Zenginlik konsantrasyonu: pay senedi yatırımcılarının %4,6'sı portföy değerinin %94'ünü tutuyor",
+   "yatirimci_tipi": "genel",
+   "ozet": "MKK verileriyle Kasım 2025'te 1 milyon TL üstü 295.343 yatırımcı (yıl başı 239.742) pay senedi portföy değerinin ~%94,1'ini tutuyor; 10 milyon TL üstü 25.628 kişi. Toplam yatırımcı sayısı düşerken milyoner sayısı artıyor: 'küçük yatırımcı çekiliyor'. Piyasa fiyatı etkisi bu büyük hesapların kararına bağlı.",
+   "kanit_gucu": "guclu",
+   "kunye": "MKK verileri; Bloomberg HT, CNN Türk, Sözcü haber derlemeleri (2025)",
+   "kaynak": "https://www.bloomberght.com/borsada-toplam-yatirimci-azaldi-milyoner-yatirimci-artti-3763616",
+   "test": "Fiyat/hacim verisinden: hacim konsantrasyonunun (ilk 10 işlem günü payı, tek günde hacim sıçraması) piyasa değeri sınıflarına göre dağılımı; 'büyük sahip' vekili olarak halka açık oranı düşük hisselerde fiyat gecikme/otokorelasyonu yüksek mi.",
+   "strateji_fikri": "Halka açık oranı çok düşük hisselerde tek büyük alıcıya bağımlı fiyatlardan kaçınmak."
+  },
+  {
+   "baslik": "Halka arzda düşük fiyatlama BIST'te kalıcı: ilk gün getirisi pozitif (2005-2020)",
+   "yatirimci_tipi": "bireysel",
+   "ozet": "2005-2020 halka arzlarında piyasa ayarlı anormal getiri ve SVFM ile iki modelde de düşük fiyatlama bulunmuş; 2010-2019'da firma fiyatlarının çoğunlukla ilk işlem gününde yükseldiği raporlanmış. 2021-2023 halka arzlarında 5, 15, 30 ve 60 günlük performans ISARDER'de incelenmiş.",
+   "kanit_gucu": "guclu",
+   "kunye": "Yılmaz ve Abdioğlu (2023); Avcı, Akdoğu ve Şimşir (2020); Sönmezer (ISARDER, 2021-2023 örneği)",
+   "kaynak": "https://research.sabanciuniv.edu/id/eprint/41701/1/borsa-istanbul-ilk-halka-arz-piyasa-dinamikleri-ve-dusuk-fiyatlama.pdf",
+   "test": "74 saatlik hisse ve günlük veriden halka arz sonrası: ilk gün, ilk hafta, ilk ay getirisi ve tavan serisi uzunluğu; halka arz büyüklüğü ve katılım ile ilişki. Çıkış anı: tavan serisi bittikten sonraki 5/20 günlük getiri (negatif beklenir).",
+   "strateji_fikri": "Halka arza katılım, tavan serisi bittiği gün çıkış kuralı (yatırım tavsiyesi değil)."
+  },
+  {
+   "baslik": "Halka arzlarda eline az pay geçen bireyler satmayınca tavan serisi uzuyor",
+   "yatirimci_tipi": "bireysel",
+   "ozet": "Eşit dağıtım: yurt içi bireylere ayrılan payın başvuran sayısına bölünmesi; talep arttıkça eline az lot geçiyor ve bu yatırımcılar satmayınca sert yükseliş oluşuyor (ISARDER derlemesi). Haberler tavan serisinin şirketler için düşmeden önce en az 5 gün sürmesini anlatıyor. Katılım: 2026 H1 12,38 milyon, 16 halka arz.",
+   "kanit_gucu": "orta",
+   "kunye": "ISARDER makaleleri (Sönmezer vd.); BirGün (2021-2023 haberi); derleme",
+   "kaynak": "https://isarder.org/index.php/isarder/article/download/2463/2440/2390",
+   "test": "Halka arz sonrası tavan serisi uzunluğu ~ log(halka arz büyüklüğü), halka açık oran, katılımcı sayısı. Seri sonu gününde hacim patlaması ve ertesi 10 gün getiri. Veri: günlük fiyat+hacim+halka açık piyasa değeri.",
+   "strateji_fikri": "Seri sonu hacim patlamasında çıkış sinyali."
+  },
+  {
+   "baslik": "Halka arz çevirme (flipping) için uluslararası bulgu: kurumsallar hemen satar, bireyler tutar",
+   "yatirimci_tipi": "bireysel",
+   "ozet": "Uluslararası literatür: Aggarwal (2003) halka arz tahsis ve çevirme faaliyetini inceliyor; kurumlar sıcak halka arzlarda daha çok çeviriyor. BIST'te yatırımcı tipine göre çevirme verisi bu aramada bulunmadı; BIST halka arzları ağırlıkla yurt içi bireye gidiyor (2024'te %86,1).",
+   "kanit_gucu": "zayif",
+   "kunye": "Aggarwal (2003), Journal of Financial Economics 68 (BIST'e ait değil); Forbes Türkiye 2024 TSPB özeti",
+   "kaynak": "",
+   "test": "Halka arz ilk 5 gün hacim/halka açık değer devir hızı ile ilk ay getirisi; devir hızı çok yüksek ise (çevirme) sonraki getiri daha mı düşük.",
+   "strateji_fikri": null
+  },
+  {
+   "baslik": "Aşırı güven ve aşırı işlem: uluslararası temel bulgu (Barber-Odean)",
+   "yatirimci_tipi": "bireysel",
+   "ozet": "Çok işlem yapan bireyler net getiride düşüyor (Barber ve Odean 2000). BIST'te hesap düzeyinde veri bu aramada yok; vekil olarak yatırımcı sayısı düşerken devrin yüksek kalması ve 2025 hacminin 86 trilyon TL (+%26) olması. İlk 4 aracı kurum payı %44.",
+   "kanit_gucu": "zayif",
+   "kunye": "Barber ve Odean (2000), Journal of Finance 55(2); BIST doğrulaması bulunamadı",
+   "kaynak": "",
+   "test": "Hisse düzeyi devir hızı (hacim/halka açık değer) yüksek tercile'in ileri 1-3 ay getirisi düşük tercile'e göre düşük mü.",
+   "strateji_fikri": null
+  },
+  {
+   "baslik": "Dikkat çeken hisseyi alma: haber, hacim patlaması ve aşırı getiri sonrası bireysel talebi (uluslararası)",
+   "yatirimci_tipi": "bireysel",
+   "ozet": "Barber ve Odean (2008): bireyler dikkat çekici hisseleri (haber, aşırı hacim, aşırı getiri) satın alıyor, satmada ise seçici dikkat yok. BIST doğrulaması bu aramada çıkmadı; MAX bulgusu (Alkan-Güner) dolaylı destek.",
+   "kanit_gucu": "zayif",
+   "kunye": "Barber ve Odean (2008), Review of Financial Studies 21(2) (BIST'e ait değil)",
+   "kaynak": "",
+   "test": "Anormal hacim (hacim/60g ortalama ≥3) ve KAP olay günleri sonrası 1-10 gün getiri; bu günlerde fiyat aşırı tepkisi sonra tersine dönüyor mu.",
+   "strateji_fikri": "Aşırı hacim günlerinde zirve alıcı olmamak; ertesi gün karşıt."
+  },
+  {
+   "baslik": "Telegram/WhatsApp 'birlik' grupları ve SPK manipülasyon soruşturmaları (hakemli kanıt yok)",
+   "yatirimci_tipi": "bireysel",
+   "ozet": "SPK sosyal medya gruplarında hisse pazarlandığını tespit ettiğini duyurdu; 2020'de bir Telegram grubunda 6 hisseye al-tut önerip satan kişiye 1,2 milyon TL ceza kesildi. Ocak 2026'da manipülasyon soruşturmasında 17 gözaltı haberi. Akademik çalışma bulunamadı.",
+   "kanit_gucu": "zayif",
+   "kunye": "SPK/basın: Euronews Türkçe (7 Ocak 2026), Gazete Vatan; hakemli kaynak yok",
+   "kaynak": "https://tr.euronews.com/2026/01/07/borsa-istanbulda-manipulasyon-sorusturmasinda-17-kisi-gozaltina-alindi",
+   "test": "SPK işlem yasağı/suç duyurusu hisselerinde olay öncesi 10 gün hacim ve getiri, olay sonrası 20 gün çöküş. Etiket listesi dışarıdan (KAP/SPK bülteni) elle derlenmeli.",
+   "strateji_fikri": "SPK bülteni sonrası ilgili hissede düşüş yönlü olay çalışması."
+  },
+  {
+   "baslik": "Açığa satış yasağı BIST'te MAX iskontosunu artırıyor (arbitraj sınırı)",
+   "yatirimci_tipi": "genel",
+   "ozet": "Alkan-Güner doğal deney: geçici açığa satış kısıtında MAX iskontosu büyüdü. 2024 Aralık'tan beri açığa satış yalnız BIST 50 payları için; 2026'da genel yasak ve kredili işlem esnekliği Orta Doğu gerilimi gerekçesiyle uzatıldı. Fiyat etkisini ölçen ayrı BIST çalışması aramada çıkmadı.",
+   "kanit_gucu": "orta",
+   "kunye": "Alkan ve Güner (2018), JIFMIM; SPK kararları 2024-2026 (haber derlemesi)",
+   "kaynak": "https://ideas.repec.org/a/eee/intfin/v55y2018icp211-223.html",
+   "test": "BIST50 içi ve dışı hisselerde 5 Aralık 2024 öncesi/sonrası: fark-içinde-fark ile getiri, oynaklık, açık-alış fiyat farkı (saatlik veriyle) ve aşırı pozitif getiri sonrası ters dönüş.",
+   "strateji_fikri": null
+  },
+  {
+   "baslik": "VBTS tedbirleri (açığa satış/kredili yasağı, brüt takas, tek fiyat) hisse getirisine etkisi: ampirik kanıt yok",
+   "yatirimci_tipi": "bireysel",
+   "ozet": "Aramada tedbirlerin fiyat etkisini ölçen BIST çalışması bulunamadı. VBTS kademeli: 15 gün açığa satış+kredili yasağı, 15 gün brüt takas, sonra tek fiyat. Brüt takas gün içi al-sat'ı zorlaştırır ve kredili işleme kapatır; tek fiyat gün içi oynaklığı kısıtlar.",
+   "kanit_gucu": "zayif",
+   "kunye": "Borsa İstanbul VBTS duyuruları; Fintables VBTS yazısı; akademik kaynak yok",
+   "kaynak": "https://fintables.com/arastirma/yazilar/yatirim-stratejileri/volatilite-bazli-tedbir-sistemi-nedir/pdf",
+   "test": "Tedbir listesi (KAP/Borsa duyurusu) elle derlenip olay çalışması: tedbir günü t=0, -10..+30 gün CAR, hacim ve (saatlik varsa) gün içi oynaklık. Beklenti: tedbir sonrası hacim düşer, getiri tersine döner.",
+   "strateji_fikri": "Tedbir listesine girmiş hisselerde çıkış tarihi çevresi için olay çalışması."
+  },
+  {
+   "baslik": "Bedelsiz/bedelli duyurusu BIST'te fiyat tepkisi doğuruyor",
+   "yatirimci_tipi": "genel",
+   "ozet": "2010-2019 bedelli sermaye artırımı duyurularına piyasa tepkisi incelenmiş; bedelsiz sermaye artırımının bedelli ile birlikte yapılması piyasa tepkisini olumlu etkiliyor. Bireysel 'bedelsiz yanılsaması' ya da düşük nominal fiyat tercihine dair BIST kanıtı aramada çıkmadı (uluslararası: Birru ve Wang 2016, nominal fiyat yanılsaması).",
+   "kanit_gucu": "zayif",
+   "kunye": "DergiPark makalesi (bedelli artırım tepkisi, 2010-2019; yazar doğrulanamadı); Birru ve Wang (2016), Journal of Financial Economics 119 (BIST'e ait değil)",
+   "kaynak": "https://dergipark.org.tr/en/download/article-file/1821813",
+   "test": "KAP bedelsiz olay tarihi çevresinde (-20..+60 gün) düzeltilmiş fiyat CAR; teorik fiyat düşüşü sonrası düşük fiyatlı hisse (nominal fiyat < 10 TL) vs yüksek fiyatlı: bölünme sonrası hacim artışı ve getiri.",
+   "strateji_fikri": "Bedelsiz duyurusu sonrası kısa vade tepkisi (varsa) için olay çalışması."
+  },
+  {
+   "baslik": "Temettü: hisse getirisi ile ilişkisi 2007-2024 BIST örnekleminde inceleniyor; bireysel temettü tercihi için doğrudan kan",
+   "yatirimci_tipi": "bireysel",
+   "ozet": "Ünal'ın çalışması kâr payı dağıtımı, temettü verimi ve sürekliliğinin hisse getirisiyle ilişkisini 2007-2024 verisiyle analiz ediyor. Üç temettü endeksi var. 'Türkiye Borsa Yatırımcısının Temettü Refleksi' (2012) bireysel temettü tepkisini inceliyor. Yabancı sahipliğin temettüyle ilişkisi için kaynak bulunamadı.",
+   "kanit_gucu": "zayif",
+   "kunye": "Ünal (DergiPark, 2007-2024 örneği; tam künye doğrulanamadı); ideas.repec (2012) 'Türkiye Borsa Yatırımcısının Temettü Refleksi' (künye doğrulanamadı)",
+   "kaynak": "https://ideas.repec.org/a/eyd/eyjrnl/v23y2012i1p1-12.html",
+   "test": "KAP temettü tarihleri çevresinde: ex-date öncesi 20 günde hacim/getiri (temettü yakalama), ex-date sonrası düşüş/temettü oranı. Temettü verimi yüksek hisselerde bireysel/yerli ağırlığı artıyor mu (yabancı payı değişimi).",
+   "strateji_fikri": "Temettü tarihi öncesi birikim kalıbı için olay çalışması."
+  },
+  {
+   "baslik": "Yerli fonlarda performans kalıcılığı yok: yatırımcı geçen yılın kazananına koşmanın faydası yok",
+   "yatirimci_tipi": "fon",
+   "ozet": "310 yatırım ve 259 emeklilik fonu (2010-2019): fonların yalnızca %2'si %50 üzeri kalıcılık gösteriyor; 20 fon kategorisinin 15'inde 10 yıl boyunca kalıcı fon yok; kalıcı fonlar daha yüksek risk-ayarlı getiri vermiyor. Önceki çalışmalar: hisse fonlarında genel kalıcılık yok; hisse seçme yeteneği var, zamanlama yok.",
+   "kanit_gucu": "orta",
+   "kunye": "Investment Management and Financial Innovations (2021), 'Does performance persistence exist in mutual and pension funds? Evidence from Turkey'; yazar doğrulanamadı",
+   "kaynak": "https://www.businessperspectives.org/index.php/journals/investment-management-and-financial-innovations/issue-393/does-performance-persistence-exist-in-mutual-and-pension-funds-evidence-from-turkey",
+   "test": "Fon verisi yok (TEFAS gerekir); elimdeki veriyle: yerli kurumsalın tuttuğu hisselerde geçmiş 12 ay getirisi ile sonraki 3 ay getirisi (momentum devamı) kesit testi.",
+   "strateji_fikri": null
+  },
+  {
+   "baslik": "Emeklilik fonu yöneticilerinde sürü davranışı; aktif fonlar kıyaslamayı yalnızca 26 baz puan geçiyor",
+   "yatirimci_tipi": "fon",
+   "ozet": "Özel emeklilik fonlarında ortalama fon benchmark'ını vergi ve ücret öncesi sadece 26 baz puan geçiyor; yöneticilerin varlık dağılımı kararlarında sürü davranışı gözleniyor.",
+   "kanit_gucu": "orta",
+   "kunye": "Özyeğin Üniversitesi, 'The case against active pension funds: evidence from the Turkish private pension system' (yıl ~2015; yazar doğrulanamadı)",
+   "kaynak": "https://eresearch.ozyegin.edu.tr/handle/10679/944",
+   "test": "Çeyrek sonu: BIST'te ay/çeyrek son 3 işlem günü getiri ve hacim (pencere giydirme); çeyrek sonrası ilk 5 gün ters dönüş: kuruma ait sektörlerde (ASELS, BIMAS, TUPRS) test.",
+   "strateji_fikri": "Çeyrek sonu rallisinden sonraki ilk haftada karşıt konum."
+  },
+  {
+   "baslik": "Fon akışı getiriyi kovalıyor mu: BIST'e özgü doğrudan kanıt bulunamadı",
+   "yatirimci_tipi": "fon",
+   "ozet": "TEFAS verilerinde hisse fonlarında yatırımcı çıkışları görülüyor (Ekim 2026'da hisse şemsiye fonları ortalama -%8,95 ile son sırada; haftalık yatırımcı kaybı AFT fonunda 1.753 kişi). Akış-performans ilişkisi için uluslararası referans: Frazzini ve Lamont (2008) fon akışı 'dumb money'. Türkiye'de doğrulanmış çalışma bulunamadı.",
+   "kanit_gucu": "zayif",
+   "kunye": "borsagundem TEFAS haftalık özeti (Ekim 2026); Frazzini ve Lamont (2008), Journal of Financial Economics 88(2) (BIST'e ait değil)",
+   "kaynak": "https://www.borsagundem.com.tr/gectigimiz-hafta-en-cok-kazandiran-hisse-senedi-fonlari-1",
+   "test": "Elimdeki veride fon akışı yok. Vekil: BIST100 4 haftalık getirisi sonrası bireysel yatırımcı sayısı (MKK haftalık) değişimi; yatırımcı sayısının getiriyi izlediği gecikme.",
+   "strateji_fikri": null
+  },
+  {
+   "baslik": "Tatil öncesi/sonrası getiriler: BIST iki oturumlu yapıda tatil etkisi",
+   "yatirimci_tipi": "genel",
+   "ozet": "İstanbul Menkul Kıymetler Borsası'nda iki oturum yapısıyla tatil ve hafta sonu çevresi gün içi getiriler: işlem yapılmayan dönem uzadıkça tatil öncesi sabah seansı getirisi daha pozitif, tatil sonrası sabah seansı daha az pozitif. Eski veri (2011 yayını).",
+   "kanit_gucu": "zayif",
+   "kunye": "Applied Financial Economics 21(20):1549-1560 (2011); yazar doğrulanamadı",
+   "kaynak": "https://ideas.repec.org/a/taf/apfiec/v21y2011i20p1549-1560.html",
+   "test": "74 saatlik hissede resmi tatil/köprü öncesi son 2 saat ve sonrası ilk 2 saat getirisi, hacim; BIST100'e göre ortalama fark.",
+   "strateji_fikri": "Uzun tatil öncesi kısa vade pozitif eğilim için saatlik test."
+  },
+  {
+   "baslik": "Gece/gün içi ayrışma: uluslararası bulgu - gecelik getiri ve gün içi getiri ters yönde kalıcı (Lou-Polk-Skouras)",
+   "yatirimci_tipi": "genel",
+   "ozet": "Lou, Polk ve Skouras (2019): bir ay yüksek gecelik getirili hisseler sonraki aylarda yüksek gecelik ve düşük gün içi getiri veriyor; kurumsal ve bireysel işlem zamanlaması ayrışıyor. BIST'te gece/gün içi ayrışmasını bireysel/kurumsal ile ilişkilendiren çalışma aramada çıkmadı.",
+   "kanit_gucu": "orta",
+   "kunye": "Lou, Polk ve Skouras (2019), Journal of Financial Economics 134(1) (BIST'e ait değil)",
+   "kaynak": "",
+   "test": "Günlük veride gecelik getiri = açılış/önceki kapanış, gün içi = kapanış/açılış (açılış fiyatı varsa); 74 hissenin saatlik çubuklarıyla ilk ve son saat getirisi. Kesit: önceki ay ortalama gecelik getirisi ile sonraki ay gecelik/gün içi getiri.",
+   "strateji_fikri": "Gecelik getiri yüksek hisselerde gün içi satış / gecelik tutma."
+  },
+  {
+   "baslik": "Hafta sonu ve ay etkileri BIST'te sürü davranışı ile birlikte incelendi",
+   "yatirimci_tipi": "genel",
+   "ozet": "Cilingirturk, Polat ve Gogus (2020) BIST ana ve sektör endekslerinde herding ile takvim anomalilerini birlikte inceliyor; literatürde birleşik çalışma boşluğu olduğunu belirtiyor. Aramada sonuç rakamı çıkmadı.",
+   "kanit_gucu": "zayif",
+   "kunye": "Cilingirturk, Polat ve Gogus (2020); dergi doğrulanamadı",
+   "kaynak": "https://dergipark.org.tr/en/download/article-file/3976029",
+   "test": "Haftanın günü ve ay-sonu/ay-başı kuklaları ile hisse getirisi ve hacim; sektör endekslerinde ayrı. Beklenti: Pazartesi/Cuma ve ay-sonu hacim sıçraması; maaş/temettü dönemi etkisi.",
+   "strateji_fikri": null
+  },
+  {
+   "baslik": "COVID dönemi BIST'te herding (Christie-Huang, Chang-Cheng-Khorana ölçüleri)",
+   "yatirimci_tipi": "genel",
+   "ozet": "Yalçın (2022, Marmara İİBF Dergisi) pandemi dönemi herding'i iki ölçüyle test ediyor; Yıldırım ve Eren (2023) 1993-2019 herding bulgularında BIST'in yarısından fazlasının yabancı sahipli olduğunu not ediyor. Sayısal sonuç özetlerde çıkmadı.",
+   "kanit_gucu": "zayif",
+   "kunye": "Yalçın (2022), Marmara Üniv. İİBD 44(1); Yıldırım ve Eren (2023), Ekonomika (Vilnius)",
+   "kaynak": "https://ikf.marmara.edu.tr/dosya/ikf/iib-dergi/2022%20-1/IIBD%2044-1%20(03-YAL%C3%87IN%20AYBARS).pdf",
+   "test": "Aynı CSAD testi 2024-2026'daki şok dönemlerinde (Mart 2025 siyasi şok gibi) yeniden: sürü derecesi dönem içinde artıyor mu.",
+   "strateji_fikri": null
+  },
+  {
+   "baslik": "Bireysel yatırımcı öğrenme isteği ve özgüveni sürü yanlılığını etkiliyor (anket)",
+   "yatirimci_tipi": "bireysel",
+   "ozet": "Dicle Üniversitesi dergisinde bireysel yatırımcı anketi: öz güven davranışı ve öğrenme isteğinin herding yanlılığı üzerinde etkisi var. Örneklem ve etki büyüklüğü özetten doğrulanamadı.",
+   "kanit_gucu": "zayif",
+   "kunye": "Dicle Üniversitesi dergisi (yıl/yazar doğrulanamadı)",
+   "kaynak": "https://dergipark.org.tr/tr/download/article-file/1037753",
+   "test": "Doğrudan test edilemez (anket). Vekil: sosyal medya duyarlılığı yok; yalnız hacim dikkat ölçüleri.",
+   "strateji_fikri": null
+  },
+  {
+   "baslik": "2025'te yabancı hacim payı arttı, yerli bireyin elden çıkması sürüyor: ASELS tek hissede yabancı +817 milyon $",
+   "yatirimci_tipi": "yabanci",
+   "ozet": "2025 yabancı net alımı +3,94 milyar $; ASELS +817,5 milyon $, SASA -248,4 milyon $. Emeklilik fonlarının en büyük hisse pozisyonu da ASELS (~28,5 milyar TL). Yani yabancı ve BES fonları aynı büyük, savunma hissesinde yoğunlaşmış.",
+   "kanit_gucu": "orta",
+   "kunye": "Sözcü (2025 yabancı alım-satım derlemesi); Borsagündem BES hisse dağılımı",
+   "kaynak": "https://www.sozcu.com.tr/yabancilar-7-yil-sonra-geri-dondu-bir-hisseye-akin-ettiler-p282549",
+   "test": "Yabancı payı artışı en büyük 20 hisse (2025) vs diğerleri: ileri 3/6 ay getirisi; sektör içi (savunma, enerji) yoğunlaşma: yabancı payı değişimi sektör içi korelasyon.",
+   "strateji_fikri": null
+  },
+  {
+   "baslik": "Yabancı takas payı seviyeleri çok farklı tanımlarla ölçülüyor: seri sürekliliği tehlikesi",
+   "yatirimci_tipi": "yabanci",
+   "ozet": "Yabancı payı 2012 sonu ~%67 → 2022 sonu ~%29 (takas/halka açık değer serisi), MKK/TSPB toplam portföy payı 2024-2025'te %36-37, hisse haberlerinde ayrıca 'takas adedi' oranı %16,74 (guven 0,3). Ay içi %32,59 → %36,92 sıçraması tanım değişikliği izlenimi veriyor. Haftalık takas verisi kullanılacaksa tanım bir kez sabitlenmeli.",
+   "kanit_gucu": "zayif",
+   "kunye": "MKK/TSPB karşılaştırma notu (haber derlemesi): Bloomberg HT 2023, Foreks 2026",
+   "kaynak": "https://www.bloomberght.com/borsada-yabanci-takas-orani-tum-zamanlarin-en-dusugunde-2332045",
+   "test": "Elimdeki haftalık yabancı payı serisinde bu tür süreksizlik testi: hisse düzeyinde haftalık Δ'nın aşırı değerleri (>10 puan) tek seferlik mi, tanım kırığı mı.",
+   "strateji_fikri": null
+  },
+  {
+   "baslik": "Elde tutma süresi: yabancı ve yerli kısalıyor (TÜYİD, ikincil haber): yabancı 389 → 29 gün (2012-2022)",
+   "yatirimci_tipi": "genel",
+   "ozet": "Haber özetine göre TÜYİD verisinde yabancı elde tutma süresi 2012 sonu 389 gün, 2020 sonu 74 gün, 2022 sonu 29 gün; yerli 46 → 27 gün. Yöntem doğrulanamadı; MKK'nın resmi serisi bulunamadı.",
+   "kanit_gucu": "zayif",
+   "kunye": "TÜYİD verileri (Steelradar haberi); doğrulanamadı",
+   "kaynak": "https://www.steelradar.com/haber/yabanci-takas-oranlari-dip-seviyesinde/",
+   "test": "Hisse düzeyi devir hızı = günlük hacim / halka açık piyasa değeri; yabancı payının yüksek olduğu hisselerde devir hızı düşük mü (uzun vadeli yabancı).",
+   "strateji_fikri": null
+  },
+  {
+   "baslik": "Milyoner yatırımcı artışı bu yatırımcıların bakiyesinin yüksek hisselerde fiyat belirleyici olduğunu düşündürüyor",
+   "yatirimci_tipi": "genel",
+   "ozet": "Yıl sonu 2025: 1 milyon TL üstü yatırımcıların sayı payı %3,49 → %4,58, değer payı %94,34 (Ekonomist, MKK). 1-5 milyon dilimi en çok yeni katılım alan grup.",
+   "kanit_gucu": "orta",
+   "kunye": "Ekonomist (2025), MKK verileri",
+   "kaynak": "https://www.ekonomist.com.tr/borsa/borsa-istanbul-da-milyoner-yatirimci-sayisi-ne-kadar--68664",
+   "test": "Büyük bakiye vekilleri: BIST30 vs diğer ayrımında hacim payı, tek günde açılış/kapanış fiyat sıçramaları (saatlik); küçük sahiplerin davranışı için halka arz hisse katılımı.",
+   "strateji_fikri": null
+  },
+  {
+   "baslik": "Yaş ve cinsiyet: yeni yatırımcıların çoğu 21-40 yaş erkek; kadın bakiyeli oranı ~%35",
+   "yatirimci_tipi": "bireysel",
+   "ozet": "2025'te 21-40 yaş yeni bireysel erkek yatırımcı 614.197, kadın 255.750 (dönem belirsiz). Bakiyeli kadın oranı Şubat 2026'da ~%35 (3,79 milyon kişi, 2,17 trilyon TL). Eylül 2025'te 45-49 yaş grubu en büyük portföye (373,9 milyar TL), 35-39 yaş en çok kişiye sahip. Kadınların riskten kaçınma/disposition farkı Tekçe ve ark. (2016) ile ilgili.",
+   "kanit_gucu": "orta",
+   "kunye": "MKK aylık bültenleri; Ekonomim, Capital, GZT haber derlemeleri (2025-2026)",
+   "kaynak": "https://www.ekonomim.com/finans/haberler/borsada-erkekler-hakim-olsa-da-kadin-yatirimcilar-daha-gorunur-hale-geliyor-haberi-893123",
+   "test": "Doğrudan test edilemez (demografi yok).",
+   "strateji_fikri": null
+  },
+  {
+   "baslik": "Yabancı hisse alım-satım listeleri aracı kurum bazında gün sonunda yayımlanıyor: yabancı kurum işlemleri izlenebilir",
+   "yatirimci_tipi": "yabanci",
+   "ozet": "Halk Yatırım ve benzeri kurumlar yabancı kurum (aracı kurum) net alış-satış analizini yayımlıyor; BIST yabancı işlemleri aylık, tutarları hisse bazında veriliyor (Eylül 2026: alış 46,96 milyar $). Betimsel, hakemli değil.",
+   "kanit_gucu": "zayif",
+   "kunye": "Halk Yatırım Yabancı Kurum İşlemleri Analizi (2022); GCM/Ahlatcı aylık yabancı işlemleri (2025-2026)",
+   "kaynak": "https://www.gcmyatirim.com.tr/arastirma-analiz/ozel-raporlar/2026-03-09-borsa-istanbul-pay-piyasasinda-subat-2026-yabanci-islemleri",
+   "test": "Aylık yabancı net alım listesi (en çok alınan 10) ile ertesi ay getiri; elimdeki haftalık takas verisi buna vekil olabilir.",
+   "strateji_fikri": null
+  },
+  {
+   "baslik": "Yabancı girişi 2026 Nisan'da 5,5 yılın en güçlü haftalık alımı, Mart'ta 755 milyon $ satış: oynak yabancı akışı",
+   "yatirimci_tipi": "yabanci",
+   "ozet": "TCMB haftalık verisi: 6 Mart 2026 haftasında ~-755,5 milyon $, 17 Nisan 2026 haftasında +579,4 milyon $ (Kasım 2020'den beri en güçlü); Temmuz 2026'da altı hafta üst üste net alım, Ekim sonunda -100 ve -66 milyon $.",
+   "kanit_gucu": "orta",
+   "kunye": "TCMB Haftalık Menkul Kıymet İstatistikleri; CNBC-e, Ahlatcı Yatırım, hisse.net özetleri",
+   "kaynak": "https://www.cnbce.com/borsa/yabancilardan-55-yilin-en-guclu-hisse-alimi-h28931",
+   "test": "Bu büyük yabancı alım/satım haftalarında BIST100, sektör ve USDTRY getirisi: haftalık akış-getiri korelasyonu; akış sonrası 4 hafta getirisi.",
+   "strateji_fikri": "Yabancı akış tersine döndüğünde (dönüş haftası) ileri getiri olay çalışması."
+  }
+ ],
+ "veri_kaynaklari": [
+  {
+   "ad": "MKK Veri Analiz Platformu (VAP)",
+   "ne_verir": "Pay senedi bakiyeli yatırımcı sayısı ve portföy değeri; yabancı/yerli ayrımı, yabancı saklama oranı (halka açık piyasa değerine göre), şehir/yaş/cinsiyet kırılımı, yabancı yatırımcı uyruğu (10 iş günü gecikmeli); yalnız 'Pay Senedi' kıymet sınıfı. Pay bazında yatırımcı sayısı kapsamı doğrulanamadı.",
+   "siklik": "günlük|haftalık|aylık",
+   "bicim": "html",
+   "ucretsiz": true,
+   "url": "https://www.mkk.com.tr",
+   "not": "Dışa aktarma biçimi (Excel/CSV) ve API durumu arama özetlerinde doğrulanamadı; arayüzde indirme olup olmadığını elle kontrol et. Aylık bülten PDF: mkk.com.tr/sites/default/files/..., ör. MKK-Aylik-Piyasa-Bulteni-Temmuz-2025-1.pdf"
+  },
+  {
+   "ad": "MKK Aylık Piyasa Bülteni (PDF)",
+   "ne_verir": "Aylık pay senedi yatırımcı sayısı, portföy değeri, yabancı payı, yaş/cinsiyet/şehir tabloları.",
+   "siklik": "aylık",
+   "bicim": "html",
+   "ucretsiz": true,
+   "url": "https://www.mkk.com.tr/sites/default/files/2026-08/MKK-Aylik-Piyasa-Bulteni-Temmuz-2026.pdf",
+   "not": "PDF; tablo ayrıştırma gerekir. Arama sonucunda görülen dosyalar: Ocak 2025, Temmuz 2025, Ekim 2025, Mayıs 2026, Temmuz 2026."
+  },
+  {
+   "ad": "TSPB Aylık Veriler Basın Bülteni / Türkiye Sermaye Piyasaları (TSPB Veri Bankası)",
+   "ne_verir": "MKK ve TCMB verilerinden derlenmiş yatırımcı sayısı, yabancı/yerli portföy payı, işlem hacmi payları, aracı kurum payları, halka arz özeti, fonlar.",
+   "siklik": "aylık",
+   "bicim": "html",
+   "ucretsiz": true,
+   "url": "https://tspb.org.tr/wp-content/uploads/2026/01/TSPB_AylikVeriler_BasinBulteni_12012026.pdf",
+   "not": "PDF bülten ve 'Turkish_Capital_Markets-YYYYMM-TR.pdf' serisi (tspb.org.tr/wp-content/uploads/...). Veri Bankası'nın indirilebilir Excel olup olmadığı doğrulanamadı."
+  },
+  {
+   "ad": "TCMB Haftalık Menkul Kıymet İstatistikleri / EVDS",
+   "ne_verir": "Yurt dışı yerleşiklerin hisse senedi ve DİBS stoku ve haftalık net alım-satımı (milyon $). Yayın zaman serisi olarak EVDS'de, TCMB sayfası bunu söylüyor.",
+   "siklik": "haftalık",
+   "bicim": "api",
+   "ucretsiz": true,
+   "url": "https://tcmb.gov.tr/wps/wcm/connect/TR/TCMB+TR/Main+Menu/Istatistikler/Parasal+ve+Finansal+Istatistikler/Menkul+Kiymet+Istatistikleri",
+   "not": "EVDS API anahtarı ücretsiz üyelikle alınır (evds2.tcmb.gov.tr); seri kodu bu aramada doğrulanamadı - EVDS'de 'Menkul Kıymet İstatistikleri' veri grubundan seç. Perşembe 14:30 yayın (haber özetlerinden)."
+  },
+  {
+   "ad": "Borsa İstanbul Yabancı İşlemleri (aylık)",
+   "ne_verir": "Yurt dışı banka/aracı kurum/bireysel hesaplarla yapılan işlem hacmi, alış ve satış (dolar), hisse bazında net alım-satım; aylık yayın.",
+   "siklik": "aylık",
+   "bicim": "xls",
+   "ucretsiz": true,
+   "url": "https://www.borsaistanbul.com",
+   "not": "Resmi dosya konumu arama özetlerinde doğrulanamadı; GCM (gcmyatirim.com.tr/arastirma-analiz/ozel-raporlar/...) ve Ahlatcı aylık raporları ikincil kaynak. Biçim 'xls' varsayımdır, doğrulanmadı."
+  },
+  {
+   "ad": "Borsa İstanbul VİOP aylık istatistik / Bilgilendirme kitapçıkları",
+   "ne_verir": "VİOP işlem hacmi; yatırımcı türüne göre dağılım olup olmadığı doğrulanamadı.",
+   "siklik": "aylık",
+   "bicim": "html",
+   "ucretsiz": true,
+   "url": "https://borsaistanbul.com/piyasalar/viop/egitim/bilgilendirme-kitapciklari",
+   "not": "VİOP'ta bireysel payı bu aramada bulunamadı."
+  },
+  {
+   "ad": "TEFAS (Takasbank) fon verileri",
+   "ne_verir": "Fon bazında yatırımcı sayısı, portföy büyüklüğü, fiyat, günlük pay sayısı (akış çıkarılabilir); hisse/para piyasası ayrımı.",
+   "siklik": "günlük",
+   "bicim": "html",
+   "ucretsiz": true,
+   "url": "https://www.tefas.gov.tr",
+   "not": "Arama özetlerinde biçim/API doğrulanamadı; araştırma amaçlı programatik çekme koşulları kontrol edilmeli."
+  },
+  {
+   "ad": "EGM Emeklilik Gözetim Merkezi (BES)",
+   "ne_verir": "BES toplam fon büyüklüğü, fon dağılımı (hisse payı), katılımcı sayısı.",
+   "siklik": "aylık",
+   "bicim": "html",
+   "ucretsiz": true,
+   "url": "https://www.egm.org.tr",
+   "not": "BES hisse % payı bu aramada bulunamadı; EGM sektör bülteni/fon dağılımı tablosuna bak."
+  },
+  {
+   "ad": "KAP (Kamuyu Aydınlatma Platformu) bildirimleri ve SPK bülteni",
+   "ne_verir": "Bedelsiz, bedelli, temettü, halka arz sonuçları (katılımcı ve dağıtım tablosu), tedbir ve işlem yasağı kararları.",
+   "siklik": "günlük",
+   "bicim": "html",
+   "ucretsiz": true,
+   "url": "https://www.kap.org.tr",
+   "not": "Halka arz sonuç bildirimleri eşit dağıtım yatırımcı sayısı için kullanışlı; programatik erişim koşulları doğrulanmadı."
+  },
+  {
+   "ad": "Halk Yatırım Yabancı Kurum İşlemleri Analizi",
+   "ne_verir": "Yabancı kurumların (aracı kurum) hisse bazında net alış-satışı, günlük PDF.",
+   "siklik": "günlük",
+   "bicim": "html",
+   "ucretsiz": true,
+   "url": "https://www.halkyatirim.com.tr/pdf/2022/11/8917_YabancıKurumİşlemleriAnalizi16112022.pdf",
+   "not": "2022 örnekleri görüldü; güncel yayın sürdürülüyor mu belirsiz. PDF ayrıştırma gerekir."
+  },
+  {
+   "ad": "İş Yatırım, Fintables, Matriks, Ahlatcı, GCM, Info Yatırım araştırma sayfaları",
+   "ne_verir": "Aylık yabancı işlemleri, yabancı payı değişimi, halka arz listeleri, TCMB haftalık yorum; ikincil özetler.",
+   "siklik": "aylık",
+   "bicim": "html",
+   "ucretsiz": true,
+   "url": "https://fintables.com/arastirma/yazilar/sirket-analizleri/yabanci-akimi-biste-nereden-giriyor-nasil-yayiliyor/pdf",
+   "not": "Programatik çekim için kullanım koşulları belirsiz; ikincil kaynak, birincil MKK/TCMB ile çapraz kontrol et."
+  }
+ ]
+}

@@ -1,0 +1,2010 @@
+{
+ "not": "Kaynaklar yalnız WebSearch özetleri (KAP özetleri, ekonomist, borsacoo, fintables, rotaborsa, foreks, borsagundem, hisse.net, cnbce, endeks24). Sayfa açılamadı; çoğu kayıt tek-iki özetten, oranlar özetlerde tutarsız olabilir. Neredeyse tüm bulunanlar 2025 sonu-2026; 2024 ve 2025 ilk yarısı bildirimi neredeyse bulunamadı. Tera grubu (TERA/TEHOL/TRHOL) bilerek dışarıda. Tarih bazı kayıtlarda KAP günü yerine işlem gününden/ertesi günden varsayım. SPK'nın 2026'da Tera, Pusula, Hedef, Atlas, A1, Pardus, Bulls fonlarını tasfiye/işleme kapattığı haberi (tarih doğrulanamadı) örüntü yorumunu etkiler.",
+ "kayitlar": [
+  {
+   "fon_sirketi": "Pusula Portföy Yönetimi",
+   "fonlar": [
+    "PBR",
+    "PDC",
+    "PDE",
+    "PHE",
+    "PUK"
+   ],
+   "hisse": "IZFAS",
+   "tarih": "2026-08-04",
+   "islem_tarihi": "2026-07-31",
+   "saat": null,
+   "yon": "alim",
+   "oran_once": 32.7229,
+   "oran_sonra": 33.2873,
+   "esik": 33,
+   "islem_fiyati": 65.0,
+   "islem_adedi": 1000000,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://kap.org.tr/tr/Bildirim/1642588"
+   ],
+   "guven": 0.6,
+   "not": "Fonların toplam payı sermaye/oy üzerinden; 33 eşiği üstünde kademeli artış. Fiyat 65 TL."
+  },
+  {
+   "fon_sirketi": "Pusula Portföy Yönetimi",
+   "fonlar": [
+    "PHE",
+    "PCS",
+    "PBR",
+    "PGH"
+   ],
+   "hisse": "HEDEF",
+   "tarih": "2026-06-04",
+   "islem_tarihi": null,
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": null,
+   "esik": null,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.ekonomist.com.tr/kap-haberleri/pay-alim-satim-bildirimi/251306"
+   ],
+   "guven": 0.25,
+   "not": "Yalnız bildirimin varlığı görüldü (Hedef Holding); oran/adet özetlerde yok."
+  },
+  {
+   "fon_sirketi": "Hedef Portföy Yönetimi",
+   "fonlar": [
+    "DUH",
+    "NNF"
+   ],
+   "hisse": "METEN",
+   "tarih": "2026-09-15",
+   "islem_tarihi": "2026-09-14",
+   "saat": "18:18",
+   "yon": "alim",
+   "oran_once": 4.78,
+   "oran_sonra": 5.24,
+   "esik": 5,
+   "islem_fiyati": null,
+   "islem_adedi": 581000,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://kap.org.tr/tr/Bildirim/1663190"
+   ],
+   "guven": 0.6,
+   "not": "Oranlar fiili dolaşımdaki paya göre. Hedef Birinci Hisse Senedi (TL) Fonu 581.000 adet aldı."
+  },
+  {
+   "fon_sirketi": "Hedef Portföy Yönetimi",
+   "fonlar": [
+    "NFK",
+    "HVB",
+    "HPZ",
+    "HPF",
+    "HDH",
+    "HMK",
+    "NNF"
+   ],
+   "hisse": "INFO",
+   "tarih": "2026-06-25",
+   "islem_tarihi": "2026-06-23",
+   "saat": "18:25",
+   "yon": "satim",
+   "oran_once": 27.411,
+   "oran_sonra": 21.163,
+   "esik": 25,
+   "islem_fiyati": null,
+   "islem_adedi": 60000000,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://kap.org.tr/tr/Bildirim/1620748"
+   ],
+   "guven": 0.6,
+   "not": "60 milyon nominal satış; %25 eşiğinin altına iniş. Hedef Portföy fonları."
+  },
+  {
+   "fon_sirketi": "Bulls Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "ONCSM",
+   "tarih": "2026-07-21",
+   "islem_tarihi": "2026-07-21",
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": 5.14,
+   "esik": 5,
+   "islem_fiyati": null,
+   "islem_adedi": 75000,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://rotaborsa.com/bulls-portfoy-halka-acik-bir-sirkette-yuzde-5-sinirini-asti-3/",
+    "https://www.borsamatik.com.tr/bulls-portfoy-oncsmde-yuzde-5i-asti-haber-180380"
+   ],
+   "guven": 0.55,
+   "not": "75.000 lot alım sonrası %5 aşıldı; KAP günü tam doğrulanmadı (islem günü ile aynı varsayıldı)."
+  },
+  {
+   "fon_sirketi": "Bulls Portföy Yönetimi",
+   "fonlar": [
+    "BMU"
+   ],
+   "hisse": "ONCSM",
+   "tarih": "2026-07-22",
+   "islem_tarihi": "2026-07-22",
+   "saat": null,
+   "yon": "satim",
+   "oran_once": 5.14,
+   "oran_sonra": 4.72,
+   "esik": 5,
+   "islem_fiyati": null,
+   "islem_adedi": 75000,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.ekonomist.com.tr/kap-haberleri/pay-alim-satim-bildirimi/245022",
+    "https://www.ekonomist.com.tr/kap-haberleri/pay-alim-satim-bildirimi/245044"
+   ],
+   "guven": 0.5,
+   "not": "BMU fonu 75.000 lot sattı; iki kaynakta %4,72 ve %4,82 görünüyor (tutarsız). KAP günü varsayım."
+  },
+  {
+   "fon_sirketi": "Bulls Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "ONCSM",
+   "tarih": "2026-08-21",
+   "islem_tarihi": "2026-08-20",
+   "saat": null,
+   "yon": "alim",
+   "oran_once": 4.72,
+   "oran_sonra": 5.75,
+   "esik": 5,
+   "islem_fiyati": null,
+   "islem_adedi": 305492,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.borsamatik.com.tr/bulls-portfoy-oncsmde-yuzde-5i-asti-haber-180380",
+    "https://rotaborsa.com/bulls-portfoy-halka-acik-bir-sirkette-yuzde-5-sinirini-asti-3/"
+   ],
+   "guven": 0.6,
+   "not": "305.492 nominal alım; payın %5 üstüne dönüşü."
+  },
+  {
+   "fon_sirketi": "Bulls Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "ONCSM",
+   "tarih": "2026-08-31",
+   "islem_tarihi": null,
+   "saat": null,
+   "yon": "satim",
+   "oran_once": null,
+   "oran_sonra": 4.47,
+   "esik": 5,
+   "islem_fiyati": null,
+   "islem_adedi": 800711,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.ekonomist.com.tr/kap-haberleri/pay-alim-satim-bildirimi/267780"
+   ],
+   "guven": 0.45,
+   "not": "Bulls Üçüncü Hisse Senedi Serbest Fon 800.711 adet sattı; %4,47. Tarih özetten."
+  },
+  {
+   "fon_sirketi": "Bulls Portföy Yönetimi",
+   "fonlar": [
+    "BOS"
+   ],
+   "hisse": "ONCSM",
+   "tarih": "2026-09-04",
+   "islem_tarihi": "2026-09-03",
+   "saat": null,
+   "yon": "satim",
+   "oran_once": null,
+   "oran_sonra": 0.0,
+   "esik": 5,
+   "islem_fiyati": null,
+   "islem_adedi": 1065000,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.ekonomist.com.tr/kap-haberleri/pay-alim-satim-bildirimi/267780"
+   ],
+   "guven": 0.5,
+   "not": "BOS fonu 1.065.000 nominal sattı; fiili dolaşım oranı 0. KAP günü varsayım."
+  },
+  {
+   "fon_sirketi": "Bulls Portföy Yönetimi",
+   "fonlar": [
+    "BOS",
+    "IIE",
+    "YLZ"
+   ],
+   "hisse": "DITAS",
+   "tarih": "2026-06-05",
+   "islem_tarihi": "2026-06-04",
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": 6.13,
+   "esik": 5,
+   "islem_fiyati": null,
+   "islem_adedi": 10415000,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.dunya.com/finans/haberler/bulls-portfoy-ditas-hisselerinde-payini-artirdi-haberi-827531",
+    "https://kap.org.tr/tr/api/BildirimPdf/1613995"
+   ],
+   "guven": 0.6,
+   "not": "3 fon toplam 10,415 milyon nominal aldı (BOS 5,415M, IIE 2M, YLZ 3M). KAP günü varsayım (islem ertesi)."
+  },
+  {
+   "fon_sirketi": "Bulls Portföy Yönetimi",
+   "fonlar": [
+    "YLZ",
+    "BOS"
+   ],
+   "hisse": "DITAS",
+   "tarih": "2026-07-23",
+   "islem_tarihi": "2026-07-22",
+   "saat": null,
+   "yon": "alim",
+   "oran_once": 7.43,
+   "oran_sonra": 10.1,
+   "esik": 10,
+   "islem_fiyati": null,
+   "islem_adedi": 4540000,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.dunya.com/finans/haberler/bulls-portfoy-ditas-hisselerinde-payini-artirdi-haberi-827531",
+    "https://kap.org.tr/en/Bildirim/1659705"
+   ],
+   "guven": 0.65,
+   "not": "YLZ ve BOS ~4,54M pay aldı; %10 eşiği aşıldı."
+  },
+  {
+   "fon_sirketi": "Bulls Portföy Yönetimi",
+   "fonlar": [
+    "YLZ",
+    "BOS"
+   ],
+   "hisse": "DITAS",
+   "tarih": "2026-09-07",
+   "islem_tarihi": "2026-09-04",
+   "saat": null,
+   "yon": "satim",
+   "oran_once": 32.44,
+   "oran_sonra": 0.0,
+   "esik": null,
+   "islem_fiyati": null,
+   "islem_adedi": 17966527,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.foreks.com/haber/detay/6a9ed86e24008d7d4372dc48/PICNEWS/tr/bulls-portfoy-fonlari-ditas-hisselerinden-tamamen-cikti-07-09-26/",
+    "https://www.cnbce.com/borsa/bulls-portfoyden-ditasta-dikkat-ceken-satis-hisselerin-tamamindan-cikti-ditasta-buyuk-cikis-18-milyon-pay-el-degistirdi-h36710"
+   ],
+   "guven": 0.65,
+   "not": "Tam çıkış: 17.966.527 nominal; oran_once fiili dolaşım içindeki pay (%32,44), sermaye payı değil."
+  },
+  {
+   "fon_sirketi": "Bulls Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "DITAS",
+   "tarih": "2026-07-27",
+   "islem_tarihi": null,
+   "saat": null,
+   "yon": "alim",
+   "oran_once": 3.84,
+   "oran_sonra": 6.3,
+   "esik": 5,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "diger",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.borsagundem.com.tr/tly-fonu-halka-acik-sirkette-yuzde-5-esigini-asti"
+   ],
+   "guven": 0.35,
+   "not": "MKK pay sahipliği bildirimi (fon düzeyi) olarak aktarıldı; diğer DITAS kayıtlarıyla çakışabilir, aynı olay olmayabilir."
+  },
+  {
+   "fon_sirketi": "Bulls Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "BURVA",
+   "tarih": "2026-09-08",
+   "islem_tarihi": "2026-09-07",
+   "saat": null,
+   "yon": "satim",
+   "oran_once": null,
+   "oran_sonra": 3.26,
+   "esik": null,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.ekonomist.com.tr/kap-haberleri/pay-alim-satim-bildirimi/268353"
+   ],
+   "guven": 0.4,
+   "not": "07.09.2026 satışı sonrası fiili dolaşım içindeki pay %3,26."
+  },
+  {
+   "fon_sirketi": "Bulls Portföy Yönetimi",
+   "fonlar": [
+    "YLZ"
+   ],
+   "hisse": "BSOKE",
+   "tarih": "2026-09-04",
+   "islem_tarihi": "2026-09-03",
+   "saat": null,
+   "yon": "satim",
+   "oran_once": null,
+   "oran_sonra": 0.0,
+   "esik": null,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.ekonomist.com.tr/kap-haberleri/pay-alim-satim-bildirimi/269029"
+   ],
+   "guven": 0.35,
+   "not": "03.09.2026 satışları sonrası sıfır; YLZ fonu 58,6M adet sattı (özet)."
+  },
+  {
+   "fon_sirketi": "Bulls Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "BIGTK",
+   "tarih": "2026-09-07",
+   "islem_tarihi": "2026-09-04",
+   "saat": null,
+   "yon": "satim",
+   "oran_once": null,
+   "oran_sonra": 0.0,
+   "esik": null,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.borsagundem.com.tr/pardus-portfoy-pekgy-paylarinda-gerceklestirdigi-alimlarla-birlikte-5-esigini-asti"
+   ],
+   "guven": 0.4,
+   "not": "Bulls fonlarının BIGTK serbest dolaşım payı 04.09.2026 satışlarıyla 0; tarih yaklaşık."
+  },
+  {
+   "fon_sirketi": "Pardus Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "PEKGY",
+   "tarih": "2025-12-29",
+   "islem_tarihi": null,
+   "saat": null,
+   "yon": "alim",
+   "oran_once": 4.6,
+   "oran_sonra": 7.78,
+   "esik": 5,
+   "islem_fiyati": null,
+   "islem_adedi": 159000000,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.borsagundem.com.tr/pardus-portfoy-pekgy-paylarinda-gerceklestirdigi-alimlarla-birlikte-5-esigini-asti",
+    "https://www.cnbce.com/borsa/pardus-portfoy-duyurdu-borsadaki-gayrimenkul-yatirim-ortakliginda-yuzde-10u-asan-hisse-alimi-h32070"
+   ],
+   "guven": 0.65,
+   "not": "159.000.000 adet alım; %5 aşıldı."
+  },
+  {
+   "fon_sirketi": "Pardus Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "PEKGY",
+   "tarih": "2026-06-23",
+   "islem_tarihi": "2026-06-22",
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": 10.078,
+   "esik": 10,
+   "islem_fiyati": null,
+   "islem_adedi": 103820532,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.cnbce.com/borsa/pardus-portfoy-duyurdu-borsadaki-gayrimenkul-yatirim-ortakliginda-yuzde-10u-asan-hisse-alimi-h32070",
+    "https://rotaborsa.com/pardus-portfoyden-peker-gyoda-pekgy-hisse-alis-aciklamasi-6/"
+   ],
+   "guven": 0.65,
+   "not": "22.06'da 103.820.532 alım, 91.000.000 satım; %10 üstüne çıkış."
+  },
+  {
+   "fon_sirketi": "Pardus Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "PEKGY",
+   "tarih": "2026-06-24",
+   "islem_tarihi": "2026-06-23",
+   "saat": null,
+   "yon": "satim",
+   "oran_once": 10.078,
+   "oran_sonra": 9.305,
+   "esik": 10,
+   "islem_fiyati": null,
+   "islem_adedi": 38625000,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.cnbce.com/borsa/pardus-portfoyden-borsadaki-gyoda-iki-gun-icinde-karsilikli-yonlu-islem-trafigi-h32134"
+   ],
+   "guven": 0.6,
+   "not": "38.625.000 adet satış; %10 altına iniş (iki günde karşılıklı işlem)."
+  },
+  {
+   "fon_sirketi": "Pardus Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "PEKGY",
+   "tarih": "2026-07-03",
+   "islem_tarihi": null,
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": 10.913,
+   "esik": 10,
+   "islem_fiyati": null,
+   "islem_adedi": 100000000,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.cnbce.com/borsa/pardus-portfoy-duyurdu-borsadaki-gayrimenkul-yatirim-ortakliginda-yuzde-10u-asan-hisse-alimi-h32070"
+   ],
+   "guven": 0.3,
+   "not": "100.000.000 adet alım; yıl ve tarih kesin değil (muhtemelen 2026)."
+  },
+  {
+   "fon_sirketi": "Pardus Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "LIDER",
+   "tarih": "2025-11-12",
+   "islem_tarihi": "2025-11-12",
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": 5.053,
+   "esik": 5,
+   "islem_fiyati": null,
+   "islem_adedi": 497939,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.endeks24.com/pardus-fonu-ldr-turizmdeki-yuzde-599luk-payindan-cikti",
+    "https://borsacoo.com/bildirim/46713"
+   ],
+   "guven": 0.65,
+   "not": "497.939 adet alım; %5 aşıldı."
+  },
+  {
+   "fon_sirketi": "Pardus Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "LIDER",
+   "tarih": "2026-10-12",
+   "islem_tarihi": "2026-10-12",
+   "saat": null,
+   "yon": "satim",
+   "oran_once": 5.99,
+   "oran_sonra": 0.0,
+   "esik": 5,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.endeks24.com/pardus-fonu-ldr-turizmdeki-yuzde-599luk-payindan-cikti"
+   ],
+   "guven": 0.5,
+   "not": "Mutlak Getiri Hedefli Hisse Senedi Serbest Fon'un %5,99'luk payı 12.10.2026'da sıfırlandı (MKK özeti)."
+  },
+  {
+   "fon_sirketi": "Pardus Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "MARTI",
+   "tarih": null,
+   "islem_tarihi": null,
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": 5.0,
+   "esik": 5,
+   "islem_fiyati": null,
+   "islem_adedi": 1000000,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://borsacoo.com/bildirim/33180"
+   ],
+   "guven": 0.3,
+   "not": "1 milyon adet alım ile %5'e ulaşıldı; tarih özetlerde yok."
+  },
+  {
+   "fon_sirketi": "Pardus Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "MARTI",
+   "tarih": "2025-10-31",
+   "islem_tarihi": null,
+   "saat": null,
+   "yon": "satim",
+   "oran_once": null,
+   "oran_sonra": 9.625,
+   "esik": 10,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://borsacoo.com/bildirim/40725"
+   ],
+   "guven": 0.35,
+   "not": "350 bin alım / 5,55 milyon satım sonrası %10 altı; gün tahmini (2025 Ekim)."
+  },
+  {
+   "fon_sirketi": "Pardus Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "KOPOL",
+   "tarih": "2024-12-24",
+   "islem_tarihi": "2024-12-24",
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": 9.0,
+   "esik": 5,
+   "islem_fiyati": null,
+   "islem_adedi": 116726400,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://rotaborsa.com/?p=358823",
+    "https://www.dunya.com/finans/borsa/sirket-bilgileri/kopol-koza-polyester-sanayi-ve-ticaret-as"
+   ],
+   "guven": 0.5,
+   "not": "116.726.400 adet (Dördüncü Girişim Sermayesi Fonu) alım; %5 aşılıp ~%9. Yalnız tek yön teyit."
+  },
+  {
+   "fon_sirketi": "Pardus Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "KOPOL",
+   "tarih": "2025-09-12",
+   "islem_tarihi": null,
+   "saat": null,
+   "yon": "alim",
+   "oran_once": 9.0,
+   "oran_sonra": 18.085,
+   "esik": 15,
+   "islem_fiyati": null,
+   "islem_adedi": 116726400,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.hisse.net/haber/pardus-portfoy-den-kopol-hissesi-alimi-17509",
+    "https://borsacoo.com/bildirim/38545"
+   ],
+   "guven": 0.45,
+   "not": "Lot sayısı özetlerde tutarsız (16,7M vs 116,7M); %15 üstü %18,085."
+  },
+  {
+   "fon_sirketi": "Pardus Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "A1YEN",
+   "tarih": "2026-09-17",
+   "islem_tarihi": "2026-09-16",
+   "saat": null,
+   "yon": "satim",
+   "oran_once": null,
+   "oran_sonra": 9.25,
+   "esik": 10,
+   "islem_fiyati": null,
+   "islem_adedi": 5400000,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.hisse.net/haber/pardus-portfoy-2-hissede-satisa-gecti-96569"
+   ],
+   "guven": 0.4,
+   "not": "16.09.2026'da 5,4M lot satış; 10 altına iniş. Güler Yatırım ile karışıklık var."
+  },
+  {
+   "fon_sirketi": "Pardus Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "GLRYH",
+   "tarih": "2026-09-17",
+   "islem_tarihi": "2026-09-16",
+   "saat": null,
+   "yon": "satim",
+   "oran_once": null,
+   "oran_sonra": 3.09,
+   "esik": 5,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.hisse.net/haber/pardus-portfoy-2-hissede-satisa-gecti-96569"
+   ],
+   "guven": 0.4,
+   "not": "Güler Yatırım Holding'de %5 altına iniş; hisse eşlemesi tek kaynaktan."
+  },
+  {
+   "fon_sirketi": "Pardus Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "IZMDC",
+   "tarih": "2026-09-12",
+   "islem_tarihi": "2026-09-11",
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": 4.43,
+   "esik": null,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.foreks.com/haber/detay/6aa4e6fb95016b5817e59a01/PICNEWS/tr/pardus-portfoy-fonlarinin-sahip-oldugu-paylar-8-sirkette-yuzde-3-u-asti-12-09-26/",
+    "https://rotaborsa.com/pardus-portfoy-halka-acik-8-sirkette-yuzde-3-sinirinin-uzerinde-oldugunu-acikladi/?islem=bildirimler"
+   ],
+   "guven": 0.45,
+   "not": "İzmir Demir Çelik: %3 bildirim eşiği aşıldı (11.09.2026 itibarıyla). Hisse eşlemesi/oran özetten; ECILC/LYDHO/QUAGR kodları tahmin."
+  },
+  {
+   "fon_sirketi": "Pardus Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "ODINE",
+   "tarih": "2026-09-12",
+   "islem_tarihi": "2026-09-11",
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": 3.81,
+   "esik": null,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.foreks.com/haber/detay/6aa4e6fb95016b5817e59a01/PICNEWS/tr/pardus-portfoy-fonlarinin-sahip-oldugu-paylar-8-sirkette-yuzde-3-u-asti-12-09-26/",
+    "https://rotaborsa.com/pardus-portfoy-halka-acik-8-sirkette-yuzde-3-sinirinin-uzerinde-oldugunu-acikladi/?islem=bildirimler"
+   ],
+   "guven": 0.45,
+   "not": "Odine Solutions: %3 bildirim eşiği aşıldı (11.09.2026 itibarıyla). Hisse eşlemesi/oran özetten; ECILC/LYDHO/QUAGR kodları tahmin."
+  },
+  {
+   "fon_sirketi": "Pardus Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "LYDHO",
+   "tarih": "2026-09-12",
+   "islem_tarihi": "2026-09-11",
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": 4.24,
+   "esik": null,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.foreks.com/haber/detay/6aa4e6fb95016b5817e59a01/PICNEWS/tr/pardus-portfoy-fonlarinin-sahip-oldugu-paylar-8-sirkette-yuzde-3-u-asti-12-09-26/",
+    "https://rotaborsa.com/pardus-portfoy-halka-acik-8-sirkette-yuzde-3-sinirinin-uzerinde-oldugunu-acikladi/?islem=bildirimler"
+   ],
+   "guven": 0.45,
+   "not": "Lydia Holding: %3 bildirim eşiği aşıldı (11.09.2026 itibarıyla). Hisse eşlemesi/oran özetten; ECILC/LYDHO/QUAGR kodları tahmin."
+  },
+  {
+   "fon_sirketi": "Pardus Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "QUAGR",
+   "tarih": "2026-09-12",
+   "islem_tarihi": "2026-09-11",
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": 3.85,
+   "esik": null,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.foreks.com/haber/detay/6aa4e6fb95016b5817e59a01/PICNEWS/tr/pardus-portfoy-fonlarinin-sahip-oldugu-paylar-8-sirkette-yuzde-3-u-asti-12-09-26/",
+    "https://rotaborsa.com/pardus-portfoy-halka-acik-8-sirkette-yuzde-3-sinirinin-uzerinde-oldugunu-acikladi/?islem=bildirimler"
+   ],
+   "guven": 0.45,
+   "not": "Qua Granite: %3 bildirim eşiği aşıldı (11.09.2026 itibarıyla). Hisse eşlemesi/oran özetten; ECILC/LYDHO/QUAGR kodları tahmin."
+  },
+  {
+   "fon_sirketi": "Pardus Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "RALYH",
+   "tarih": "2026-09-12",
+   "islem_tarihi": "2026-09-11",
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": 3.04,
+   "esik": null,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.foreks.com/haber/detay/6aa4e6fb95016b5817e59a01/PICNEWS/tr/pardus-portfoy-fonlarinin-sahip-oldugu-paylar-8-sirkette-yuzde-3-u-asti-12-09-26/",
+    "https://rotaborsa.com/pardus-portfoy-halka-acik-8-sirkette-yuzde-3-sinirinin-uzerinde-oldugunu-acikladi/?islem=bildirimler"
+   ],
+   "guven": 0.45,
+   "not": "Ral Yatırım Holding: %3 bildirim eşiği aşıldı (11.09.2026 itibarıyla). Hisse eşlemesi/oran özetten; ECILC/LYDHO/QUAGR kodları tahmin."
+  },
+  {
+   "fon_sirketi": "Pardus Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "DCTTR",
+   "tarih": "2026-09-12",
+   "islem_tarihi": "2026-09-11",
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": 3.01,
+   "esik": null,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.foreks.com/haber/detay/6aa4e6fb95016b5817e59a01/PICNEWS/tr/pardus-portfoy-fonlarinin-sahip-oldugu-paylar-8-sirkette-yuzde-3-u-asti-12-09-26/",
+    "https://rotaborsa.com/pardus-portfoy-halka-acik-8-sirkette-yuzde-3-sinirinin-uzerinde-oldugunu-acikladi/?islem=bildirimler"
+   ],
+   "guven": 0.45,
+   "not": "DCT Trading: %3 bildirim eşiği aşıldı (11.09.2026 itibarıyla). Hisse eşlemesi/oran özetten; ECILC/LYDHO/QUAGR kodları tahmin."
+  },
+  {
+   "fon_sirketi": "Pardus Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "ECILC",
+   "tarih": "2026-09-12",
+   "islem_tarihi": "2026-09-11",
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": 3.2,
+   "esik": null,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.foreks.com/haber/detay/6aa4e6fb95016b5817e59a01/PICNEWS/tr/pardus-portfoy-fonlarinin-sahip-oldugu-paylar-8-sirkette-yuzde-3-u-asti-12-09-26/",
+    "https://rotaborsa.com/pardus-portfoy-halka-acik-8-sirkette-yuzde-3-sinirinin-uzerinde-oldugunu-acikladi/?islem=bildirimler"
+   ],
+   "guven": 0.45,
+   "not": "Eczacıbaşı İlaç: %3 bildirim eşiği aşıldı (11.09.2026 itibarıyla). Hisse eşlemesi/oran özetten; ECILC/LYDHO/QUAGR kodları tahmin."
+  },
+  {
+   "fon_sirketi": "Nurol Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "OSTIM",
+   "tarih": "2026-09-15",
+   "islem_tarihi": "2026-09-14",
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": 4.95,
+   "esik": 3,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://kap.org.tr/tr/Bildirim/1662314"
+   ],
+   "guven": 0.5,
+   "not": "14.09.2026'da %3 üstü; 4,95 fiili dolaşım içindeki pay."
+  },
+  {
+   "fon_sirketi": "Nurol Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "OSTIM",
+   "tarih": "2026-10-07",
+   "islem_tarihi": null,
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": 5.58274,
+   "esik": 5,
+   "islem_fiyati": 1.18,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://borsacoo.com/bildirim/98266",
+    "https://fintables.com/borsa-haber-akisi/1b5fe3de-93bb-4334-b192-35c7611b2970/nrl-pay-alim-satim-bildirimi"
+   ],
+   "guven": 0.5,
+   "not": "Fintables 5.000.000 adet @1,18 TL der; Borsacoo '5 bin nominal' der (tutarsız); adet doğrulanamadı."
+  },
+  {
+   "fon_sirketi": "Nurol Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "OSTIM",
+   "tarih": "2026-10-08",
+   "islem_tarihi": null,
+   "saat": null,
+   "yon": "satim",
+   "oran_once": 5.58274,
+   "oran_sonra": null,
+   "esik": 5,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://rotaborsa.com/?p=486778"
+   ],
+   "guven": 0.3,
+   "not": "8 Ekim 2026 pay satışı bildirimi; detay özette yok."
+  },
+  {
+   "fon_sirketi": "İş Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "TSKB",
+   "tarih": "2026-10-30",
+   "islem_tarihi": "2026-10-27",
+   "saat": "16:08",
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": 5.0,
+   "esik": 5,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://rotaborsa.com/?p=492137",
+    "https://borsacoo.com/bildirim/104349"
+   ],
+   "guven": 0.65,
+   "not": "27.10.2026'da %5 aşıldı (öncesinde 23.10'da %3). Aggregatör: 3,64M nominal alım/75 bin satım; oran tam değeri yok."
+  },
+  {
+   "fon_sirketi": "İş Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "TSKB",
+   "tarih": "2026-11-02",
+   "islem_tarihi": "2026-10-30",
+   "saat": null,
+   "yon": "satim",
+   "oran_once": 5.0,
+   "oran_sonra": null,
+   "esik": 5,
+   "islem_fiyati": null,
+   "islem_adedi": 10854439,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://rotaborsa.com/?p=492137"
+   ],
+   "guven": 0.5,
+   "not": "30.10.2026'da 10.854.439 nominal satış; aggregatör payın %5 altına indiğini söylüyor (tek kaynak)."
+  },
+  {
+   "fon_sirketi": "Azimut Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "TRCAS",
+   "tarih": "2026-10-01",
+   "islem_tarihi": "2026-09-30",
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": 5.03,
+   "esik": 5,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://borsacoo.com/firma/TRCAS/bildirimler?kaynak=diger",
+    "https://rotaborsa.com/azimut-portfoy-halka-acik-bir-sirkette-yuzde-5-sinirini-asti/"
+   ],
+   "guven": 0.5,
+   "not": "30.09.2026 itibarıyla fiili dolaşım içi %5,03."
+  },
+  {
+   "fon_sirketi": "Azimut Portföy Yönetimi",
+   "fonlar": [
+    "GMA",
+    "GSP"
+   ],
+   "hisse": "TRCAS",
+   "tarih": "2026-10-23",
+   "islem_tarihi": null,
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": null,
+   "esik": null,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://fintables.com/borsa-haber-akisi/620d6e9d-9951-42a2-a771-0043a253cf7e/gpo-pay-alim-satim-bildirimi"
+   ],
+   "guven": 0.3,
+   "not": "23 Ekim 2026 bildirimi; oran özette yok."
+  },
+  {
+   "fon_sirketi": "Azimut Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "KRDMA",
+   "tarih": "2026-08-26",
+   "islem_tarihi": null,
+   "saat": null,
+   "yon": "satim",
+   "oran_once": null,
+   "oran_sonra": 4.83,
+   "esik": 5,
+   "islem_fiyati": 58.95,
+   "islem_adedi": 2350000,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://rotaborsa.com/azimut-portfoy-halka-acik-bir-sirkette-yuzde-5-sinirinin-altina-dustu/"
+   ],
+   "guven": 0.55,
+   "not": "2.350.000 lot ~58,95 TL; %5 altına iniş."
+  },
+  {
+   "fon_sirketi": "Azimut Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "KRDMA",
+   "tarih": "2026-09-11",
+   "islem_tarihi": null,
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": 3.44,
+   "esik": null,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.foreks.com/haber/detay/6aa420c295016b5817e5961c/PICNEWS/tr/azimut-portfoy-fonlari-dort-hissede-yuzde-3-esigini-asti-11-09-26/"
+   ],
+   "guven": 0.5,
+   "not": "%3 bildirim eşiği aşıldı (foreks 11.09.26: Turcas, Adra GYO, Kardemir, Altınay); oran fiili dolaşım payı olabilir (KRDMA A grubu)."
+  },
+  {
+   "fon_sirketi": "Azimut Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "ADGYO",
+   "tarih": "2026-09-11",
+   "islem_tarihi": null,
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": 4.58,
+   "esik": null,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.foreks.com/haber/detay/6aa420c295016b5817e5961c/PICNEWS/tr/azimut-portfoy-fonlari-dort-hissede-yuzde-3-esigini-asti-11-09-26/"
+   ],
+   "guven": 0.5,
+   "not": "%3 bildirim eşiği aşıldı (foreks 11.09.26: Turcas, Adra GYO, Kardemir, Altınay); oran fiili dolaşım payı olabilir (KRDMA A grubu)."
+  },
+  {
+   "fon_sirketi": "Azimut Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "ALTNY",
+   "tarih": "2026-09-11",
+   "islem_tarihi": null,
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": 3.33,
+   "esik": null,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.foreks.com/haber/detay/6aa420c295016b5817e5961c/PICNEWS/tr/azimut-portfoy-fonlari-dort-hissede-yuzde-3-esigini-asti-11-09-26/"
+   ],
+   "guven": 0.5,
+   "not": "%3 bildirim eşiği aşıldı (foreks 11.09.26: Turcas, Adra GYO, Kardemir, Altınay); oran fiili dolaşım payı olabilir (KRDMA A grubu)."
+  },
+  {
+   "fon_sirketi": "Azimut Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "TRCAS",
+   "tarih": "2026-09-11",
+   "islem_tarihi": null,
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": 4.2,
+   "esik": null,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.foreks.com/haber/detay/6aa420c295016b5817e5961c/PICNEWS/tr/azimut-portfoy-fonlari-dort-hissede-yuzde-3-esigini-asti-11-09-26/"
+   ],
+   "guven": 0.5,
+   "not": "%3 bildirim eşiği aşıldı (foreks 11.09.26: Turcas, Adra GYO, Kardemir, Altınay); oran fiili dolaşım payı olabilir (KRDMA A grubu)."
+  },
+  {
+   "fon_sirketi": "Marmara Capital Portföy Yönetimi",
+   "fonlar": [
+    "MAC",
+    "MAS"
+   ],
+   "hisse": "GMTAS",
+   "tarih": "2026-10-07",
+   "islem_tarihi": "2026-10-06",
+   "saat": null,
+   "yon": "alim",
+   "oran_once": 4.66,
+   "oran_sonra": 5.1,
+   "esik": 5,
+   "islem_fiyati": 44.39,
+   "islem_adedi": 1338141,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.endeks24.com/marmara-capital-ve-haydar-acunun-gimat-payi-yuzde-5i-asti",
+    "https://rotaborsa.com/?p=486628"
+   ],
+   "guven": 0.6,
+   "not": "Fonlar+Haydar Acun toplamı; 5-6 Ekim'de 1.338.141 adet, 43,06-45,72 TL. Fonların tek başına payı %1,76->%2,20. KAP günü varsayım."
+  },
+  {
+   "fon_sirketi": "Marmara Capital Portföy Yönetimi",
+   "fonlar": [
+    "MAC",
+    "MAS"
+   ],
+   "hisse": "GMTAS",
+   "tarih": "2026-11-03",
+   "islem_tarihi": null,
+   "saat": null,
+   "yon": "satim",
+   "oran_once": 5.01,
+   "oran_sonra": 4.98,
+   "esik": 5,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://kap.org.tr/en/Bildirim/1691925"
+   ],
+   "guven": 0.5,
+   "not": "Toplam pay 5,01->4,98; fiili dolaşım 6,69->6,65."
+  },
+  {
+   "fon_sirketi": "Marmara Capital Portföy Yönetimi",
+   "fonlar": [
+    "MAC",
+    "MAS"
+   ],
+   "hisse": "GSDHO",
+   "tarih": "2026-10-09",
+   "islem_tarihi": null,
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": null,
+   "esik": null,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.ekonomist.com.tr/kap-haberleri/fon-kurucusu-tarafindan-yapilan-pay-alim-satim-bildirimi/298701"
+   ],
+   "guven": 0.25,
+   "not": "GSD Holding işlemi; yön/oran özette yok (yön varsayım)."
+  },
+  {
+   "fon_sirketi": "RE-PIE Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "BRMEN",
+   "tarih": "2026-06-25",
+   "islem_tarihi": null,
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": 19.0,
+   "esik": 15,
+   "islem_fiyati": 9.65,
+   "islem_adedi": 16954957,
+   "bildirim_turu": "diger",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://borsacoo.com/bildirim/96152"
+   ],
+   "guven": 0.45,
+   "not": "Pay devri: sermayenin %35,09'u 9,65 TL/pay; RE-PIE %19 (16.954.957 nominal). Fon değil şirket/holding devri olabilir."
+  },
+  {
+   "fon_sirketi": "RE-PIE Portföy Yönetimi",
+   "fonlar": [
+    "RTP"
+   ],
+   "hisse": "BIGTK",
+   "tarih": "2026-09-24",
+   "islem_tarihi": "2026-09-23",
+   "saat": null,
+   "yon": "alim",
+   "oran_once": 0.0,
+   "oran_sonra": 3.35,
+   "esik": null,
+   "islem_fiyati": null,
+   "islem_adedi": 257992,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://borsacoo.com/bildirim/95426",
+    "https://rotaborsa.com/?p=492661"
+   ],
+   "guven": 0.5,
+   "not": "RTP fonu 257.992 adet; %3 eşiği."
+  },
+  {
+   "fon_sirketi": "RE-PIE Portföy Yönetimi",
+   "fonlar": [
+    "RTP"
+   ],
+   "hisse": "BIGTK",
+   "tarih": "2026-09-26",
+   "islem_tarihi": "2026-09-25",
+   "saat": null,
+   "yon": "satim",
+   "oran_once": 3.35,
+   "oran_sonra": 1.61,
+   "esik": null,
+   "islem_fiyati": null,
+   "islem_adedi": 134051,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://borsacoo.com/bildirim/95426"
+   ],
+   "guven": 0.5,
+   "not": "134.051 nominal satış; %1,61."
+  },
+  {
+   "fon_sirketi": "Ak Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "FONET",
+   "tarih": "2026-10-02",
+   "islem_tarihi": "2026-10-02",
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": 5.0,
+   "esik": 5,
+   "islem_fiyati": 4.5,
+   "islem_adedi": 3023532,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.yatirimx.com.tr/piyasa/ak-portfoy-fonet-hisselerinde-yuzde-5-sinirini-asti/26069",
+    "https://rotaborsa.com/bulls-portfoy-halka-acik-bir-sirkette-yuzde-5-sinirini-asti-3/"
+   ],
+   "guven": 0.7,
+   "not": "3.023.532 nominal alım @4,50 TL; 02.10.2026'da %5 aşıldı; tam oran yok. KAP günü varsayım."
+  },
+  {
+   "fon_sirketi": "İstanbul Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "PCILT",
+   "tarih": "2026-09-15",
+   "islem_tarihi": "2026-09-14",
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": null,
+   "esik": 3,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://rotaborsa.com/?p=492661"
+   ],
+   "guven": 0.3,
+   "not": "14.09.2026 sonrası İstanbul Portföy fonları PC İletişim'de bildirim; oran/eşik özette görünmüyor."
+  },
+  {
+   "fon_sirketi": "Marmara Capital Portföy Yönetimi",
+   "fonlar": [
+    "MAC",
+    "MAS"
+   ],
+   "hisse": "ALGYO",
+   "tarih": "2026-09-14",
+   "islem_tarihi": "2026-09-11",
+   "saat": null,
+   "yon": "alim",
+   "oran_once": 4.75,
+   "oran_sonra": 5.06,
+   "esik": 5,
+   "islem_fiyati": 3.7777,
+   "islem_adedi": 2238200,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://kap.org.tr/tr/Bildirim/1662604",
+    "https://www.foreks.com/haber/detay/6aa8186295016b5817e5a34f/PICNEWS/tr/marmara-capital-in-fonlari-alarko-gyo-da-payini-artirdi-oran-yuzde-5-i-gecti-14-09-26/"
+   ],
+   "guven": 0.8,
+   "not": "Oran fiili dolaşımdaki paya göre (iki fon toplamı). 3,74-3,79 TL aralığı, ağırlıklı ort. 3,777743."
+  },
+  {
+   "fon_sirketi": "Azimut Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "KRDMA",
+   "tarih": "2026-07-14",
+   "islem_tarihi": "2026-07-13",
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": 5.08,
+   "esik": 5,
+   "islem_fiyati": 40.51296,
+   "islem_adedi": 390105,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://rotaborsa.com/azimut-portfoy-halka-acik-bir-sirkette-yuzde-5-sinirini-asti/",
+    "https://rotaborsa.com/?p=485302"
+   ],
+   "guven": 0.65,
+   "not": "A grubu 390.105 lot @40,51296; fonların toplam payı %5,08."
+  },
+  {
+   "fon_sirketi": "Pardus Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "IEYHO",
+   "tarih": "2025-05-06",
+   "islem_tarihi": "2025-05-05",
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": 5.081,
+   "esik": 5,
+   "islem_fiyati": null,
+   "islem_adedi": 1372447,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://rotaborsa.com/?p=473614"
+   ],
+   "guven": 0.55,
+   "not": "05.05.2025'te 1.372.447 lot alım; %5 aşıldı (KAP günü varsayım)."
+  },
+  {
+   "fon_sirketi": "Pardus Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "A1YEN",
+   "tarih": null,
+   "islem_tarihi": null,
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": 10.06,
+   "esik": 10,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://rotaborsa.com/pardus-portfoy-halka-acik-bir-sirkette-yuzde-10-sinirini-asti/"
+   ],
+   "guven": 0.4,
+   "not": "%10 aşımı; tarih görünmüyor (2026-09-16 satışından önce)."
+  },
+  {
+   "fon_sirketi": "Pardus Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "GLRYH",
+   "tarih": null,
+   "islem_tarihi": null,
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": 5.294,
+   "esik": 5,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://rotaborsa.com/pardus-portfoy-halka-acik-bir-sirkette-yuzde-5-sinirini-asti/"
+   ],
+   "guven": 0.4,
+   "not": "Güler Yatırım Holding %5 aşımı; tarih görünmüyor (2026-09-16 öncesi)."
+  },
+  {
+   "fon_sirketi": "Hedef Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "METEN",
+   "tarih": "2026-08-06",
+   "islem_tarihi": "2026-08-05",
+   "saat": null,
+   "yon": "alim",
+   "oran_once": 4.895,
+   "oran_sonra": 5.021,
+   "esik": 5,
+   "islem_fiyati": null,
+   "islem_adedi": 802609,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://rotaborsa.com/?p=480348"
+   ],
+   "guven": 0.55,
+   "not": "05.08.2026'da 802.609 nominal alım (sermaye oranı)."
+  },
+  {
+   "fon_sirketi": "Hedef Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "METEN",
+   "tarih": "2026-09-17",
+   "islem_tarihi": null,
+   "saat": null,
+   "yon": "satim",
+   "oran_once": 5.24,
+   "oran_sonra": 4.82,
+   "esik": 5,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://rotaborsa.com/hedef-portfoy-halka-acik-bir-sirkette-yuzde-5-sinirinin-altina-dustu/"
+   ],
+   "guven": 0.4,
+   "not": "Fiili dolaşım %5,24 -> %4,82; tarih yaklaşık."
+  },
+  {
+   "fon_sirketi": "Hedef Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "BIGCH",
+   "tarih": "2026-08-15",
+   "islem_tarihi": null,
+   "saat": null,
+   "yon": "satim",
+   "oran_once": 5.193,
+   "oran_sonra": 4.736,
+   "esik": 5,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://rotaborsa.com/?p=468533"
+   ],
+   "guven": 0.4,
+   "not": "Ağustos 2026; gün yaklaşık."
+  },
+  {
+   "fon_sirketi": "Hedef Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "KGYO",
+   "tarih": "2025-01-23",
+   "islem_tarihi": "2025-01-22",
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": 5.86,
+   "esik": 5,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://borsacoo.com/bildirim/32772",
+    "https://rotaborsa.com/?p=279660"
+   ],
+   "guven": 0.5,
+   "not": "22.01.2025 alımı; %5 aşıldı (KAP günü varsayım)."
+  },
+  {
+   "fon_sirketi": "Hedef Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "MOPAS",
+   "tarih": "2025-02-03",
+   "islem_tarihi": "2025-01-31",
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": 5.37,
+   "esik": 5,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://paratic.com/hedef-portfoy-mopas-paylarindaki-agirligini-artirdi/",
+    "https://rotaborsa.com/?p=292567"
+   ],
+   "guven": 0.5,
+   "not": "31.01.2025 alımı; %5 aşıldı (KAP günü varsayım)."
+  },
+  {
+   "fon_sirketi": "Hedef Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "MOPAS",
+   "tarih": "2025-07-31",
+   "islem_tarihi": "2025-07-30",
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": 6.24,
+   "esik": null,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://paratic.com/hedef-portfoy-mopas-paylarindaki-agirligini-artirdi/"
+   ],
+   "guven": 0.45,
+   "not": "30.07.2025 alımı; %6,24."
+  },
+  {
+   "fon_sirketi": "Hedef Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "MOPAS",
+   "tarih": null,
+   "islem_tarihi": null,
+   "saat": null,
+   "yon": "satim",
+   "oran_once": 5.0,
+   "oran_sonra": 4.4,
+   "esik": 5,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://paratic.com/hedef-portfoy-mopas-paylarindaki-agirligini-artirdi/"
+   ],
+   "guven": 0.35,
+   "not": "%5 altına iniş; tarih belirsiz."
+  },
+  {
+   "fon_sirketi": "Hedef Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "BALSU",
+   "tarih": "2025-03-06",
+   "islem_tarihi": "2025-03-05",
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": 5.22,
+   "esik": 5,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://rotaborsa.com/?p=275902"
+   ],
+   "guven": 0.4,
+   "not": "05.03.2025; özette 'satışla' denmiş ama oran yukarı; yön belirsiz. BALSU halka arz yakınlığı olabilir."
+  },
+  {
+   "fon_sirketi": "Hedef Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "BALSU",
+   "tarih": "2026-07-01",
+   "islem_tarihi": "2026-06-30",
+   "saat": null,
+   "yon": "alim",
+   "oran_once": 6.975,
+   "oran_sonra": 11.648,
+   "esik": 10,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.borsamatik.com.tr/hedef-portfoy-fonlari-balsuda-pozisyonunu-artirdi-haber-179427",
+    "https://www.borsamatik.com.tr/borsa-istanbulda-bazi-hisselerde-yuzde-5-esigi-asildi-haber-179787"
+   ],
+   "guven": 0.5,
+   "not": "30.06.2026 alımı; %10 aşıldı."
+  },
+  {
+   "fon_sirketi": "Hedef Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "BALSU",
+   "tarih": "2026-08-07",
+   "islem_tarihi": "2026-08-06",
+   "saat": null,
+   "yon": "satim",
+   "oran_once": 10.884,
+   "oran_sonra": 7.49,
+   "esik": 10,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.borsamatik.com.tr/hedef-portfoy-fonlari-balsuda-pozisyonunu-artirdi-haber-179427"
+   ],
+   "guven": 0.45,
+   "not": "06.08.2026 satışı."
+  },
+  {
+   "fon_sirketi": "Hedef Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "BALSU",
+   "tarih": "2026-08-18",
+   "islem_tarihi": "2026-08-17",
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": 12.885,
+   "esik": 10,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.borsamatik.com.tr/hedef-portfoy-fonlari-balsuda-pozisyonunu-artirdi-haber-179427"
+   ],
+   "guven": 0.45,
+   "not": "17.08.2026 alımı; %12,885."
+  },
+  {
+   "fon_sirketi": "Pusula Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "BALSU",
+   "tarih": "2026-08-11",
+   "islem_tarihi": "2026-08-10",
+   "saat": null,
+   "yon": "satim",
+   "oran_once": 19.2363,
+   "oran_sonra": 10.6568,
+   "esik": 10,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://kap.org.tr/tr/api/BildirimPdf/1647698",
+    "https://www.hisse.net/haber/balsu-gidada-249-milyon-lotluk-satis-pay-orani-sert-geriledi-88345"
+   ],
+   "guven": 0.65,
+   "not": "Sermaye payı oranı; oy hakkı 11,1876->6,1979. 10.08.2026 satışı."
+  },
+  {
+   "fon_sirketi": "Pusula Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "BALSU",
+   "tarih": "2026-08-13",
+   "islem_tarihi": "2026-08-12",
+   "saat": null,
+   "yon": "satim",
+   "oran_once": 6.1979,
+   "oran_sonra": 5.2161,
+   "esik": 5,
+   "islem_fiyati": 11.68,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://kap.org.tr/tr/api/BildirimPdf/1649025",
+    "https://www.hisse.net/haber/pusula-portfoyden-balsu-gidada-dev-satis-88183"
+   ],
+   "guven": 0.65,
+   "not": "Oy hakkı oranı; fiyat aralığı 11,03-12,33 TL (ortası kullanıldı). 12.08.2026 satışı."
+  },
+  {
+   "fon_sirketi": "Pusula Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "BALSU",
+   "tarih": "2026-08-14",
+   "islem_tarihi": "2026-08-14",
+   "saat": null,
+   "yon": "satim",
+   "oran_once": 5.2118,
+   "oran_sonra": 4.9973,
+   "esik": 5,
+   "islem_fiyati": null,
+   "islem_adedi": 4102410,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://kap.org.tr/tr/api/BildirimPdf/1651871",
+    "https://www.yatirimx.com.tr/piyasa/pusula-portfoyun-balsuda-oy-hakki-yuzde-5in-altina-dustu/23710"
+   ],
+   "guven": 0.7,
+   "not": "Oy hakkı oranı; 4.102.410 nominal; sermaye payı 8,9613->8,5924. Bildirim ve satış günü 14.08 olarak raporlanmış."
+  },
+  {
+   "fon_sirketi": "Pusula Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "BORLS",
+   "tarih": "2026-09-04",
+   "islem_tarihi": "2026-09-03",
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": 7.5875,
+   "esik": 5,
+   "islem_fiyati": 3.81,
+   "islem_adedi": 53112748,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://fintables.com/borsa-haber-akisi/54f062cf-7988-42e6-a821-4c9716ab3c84/psp-pay-alim-satim-bildirimi",
+    "https://www.cnbce.com/borsa/hedef-portfoyden-borleasete-dev-satis-borls-payi-yuzde-kac-oldu-h36709"
+   ],
+   "guven": 0.5,
+   "not": "3,81 TL'den 53.112.748 adet; sermaye payı %7,5875 (oy hakkı %4,14). Hedef'in aynı adetlik satışıyla eşleşiyor olabilir (grup içi devir?). Şirket finansal sıkıntıda."
+  },
+  {
+   "fon_sirketi": "Pusula Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "BORLS",
+   "tarih": "2026-09-08",
+   "islem_tarihi": "2026-09-07",
+   "saat": null,
+   "yon": "satim",
+   "oran_once": 7.5875,
+   "oran_sonra": 4.8643,
+   "esik": 5,
+   "islem_fiyati": 3.7,
+   "islem_adedi": 19062748,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://fintables.com/borsa-haber-akisi/d7d5f484-dde2-4f06-985a-d80bb6a2dc30/psp-pay-alim-satim-bildirimi"
+   ],
+   "guven": 0.5,
+   "not": "19.062.748 adet, 3,33-4,07 TL aralığı (orta 3,70); sermaye payı 7,5875->4,8643."
+  },
+  {
+   "fon_sirketi": "Hedef Portföy Yönetimi",
+   "fonlar": [
+    "HUS",
+    "HGJ"
+   ],
+   "hisse": "BORLS",
+   "tarih": "2026-09-07",
+   "islem_tarihi": "2026-09-03",
+   "saat": null,
+   "yon": "satim",
+   "oran_once": 7.588,
+   "oran_sonra": 0.0,
+   "esik": 5,
+   "islem_fiyati": null,
+   "islem_adedi": 53112748,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.foreks.com/haber/detay/6a9ed91524008d7d4372dc67/PICNEWS/tr/hedef-portfoy-fonlari-borlease-paylarinin-neredeyse-tamamini-satti-07-09-26/",
+    "https://www.cnbce.com/borsa/hedef-portfoyden-borleasete-dev-satis-borls-payi-yuzde-kac-oldu-h36709"
+   ],
+   "guven": 0.65,
+   "not": "HUS ve HGJ fonları 03.09.2026'da 53.112.748 nominal sattı; pay ~0. Pusula alımıyla aynı adet (grup içi devir olabilir). KAP günü foreks tarihinden."
+  },
+  {
+   "fon_sirketi": "Atlas Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "IEYHO",
+   "tarih": "2025-09-24",
+   "islem_tarihi": "2025-09-23",
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": null,
+   "esik": 10,
+   "islem_fiyati": null,
+   "islem_adedi": 4150856,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://borsacoo.com/bildirim/39992",
+    "https://rotaborsa.com/?p=362352"
+   ],
+   "guven": 0.55,
+   "not": "23.09.2025 4.150.856 nominal alım; oy hakkı %10 aşıldı."
+  },
+  {
+   "fon_sirketi": "Atlas Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "IEYHO",
+   "tarih": "2025-09-26",
+   "islem_tarihi": "2025-09-25",
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": 11.29,
+   "esik": 10,
+   "islem_fiyati": null,
+   "islem_adedi": 4162283,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://borsacoo.com/bildirim/39996",
+    "https://kap.org.tr/tr/api/BildirimPdf/1493485"
+   ],
+   "guven": 0.6,
+   "not": "25.09.2025 4.162.283 nominal alım; oy hakkı %11,29 (sermaye %12,04). Fiyat ~27,18 şüpheli."
+  },
+  {
+   "fon_sirketi": "Atlas Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "IEYHO",
+   "tarih": "2025-10-07",
+   "islem_tarihi": "2025-10-06",
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": null,
+   "esik": 15,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://rotaborsa.com/?p=362122"
+   ],
+   "guven": 0.45,
+   "not": "06.10.2025'te oy hakkı %15 aşıldı; oran/adet doğrulanmadı."
+  },
+  {
+   "fon_sirketi": "Atlas Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "IEYHO",
+   "tarih": "2025-11-11",
+   "islem_tarihi": "2025-11-10",
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": null,
+   "esik": 25,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://rotaborsa.com/?p=363344"
+   ],
+   "guven": 0.45,
+   "not": "10.11.2025'te %25 aşıldı (tek özet); oran/adet doğrulanmadı."
+  },
+  {
+   "fon_sirketi": "Pusula Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "IZFAS",
+   "tarih": "2026-08-21",
+   "islem_tarihi": "2026-08-20",
+   "saat": null,
+   "yon": "satim",
+   "oran_once": 33.2873,
+   "oran_sonra": null,
+   "esik": 33,
+   "islem_fiyati": 54.35,
+   "islem_adedi": 327000,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://rotaborsa.com/pusula-portfoy-halka-acik-bir-sirkette-yuzde-33-sinirinin-altina-dustu/",
+    "https://bigpara.hurriyet.com.tr/haberler/kap-haberleri/psp-pusula-portfoy-yonetimi-a-s-pay-ali_ID102236501/"
+   ],
+   "guven": 0.5,
+   "not": "20.08.2026'da 327.000 nominal satış (52,55-56,15 TL, orta 54,35); başlık %33 altına inişi söylüyor, yeni oran özette yok."
+  },
+  {
+   "fon_sirketi": "Pardus Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "PATEK",
+   "tarih": "2025-05-28",
+   "islem_tarihi": null,
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": 11.296,
+   "esik": 10,
+   "islem_fiyati": null,
+   "islem_adedi": 7568333,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://borsacoo.com/bildirim/35954",
+    "https://rotaborsa.com/?p=324305"
+   ],
+   "guven": 0.45,
+   "not": "%10 aşıldı; 7.568.333 lot alım (islem 30.05.2025 mi KAP 28.05 mi tutarsız). Sonra %11,75."
+  },
+  {
+   "fon_sirketi": "Pardus Portföy Yönetimi",
+   "fonlar": [],
+   "hisse": "PATEK",
+   "tarih": null,
+   "islem_tarihi": null,
+   "saat": null,
+   "yon": "satim",
+   "oran_once": 9.223,
+   "oran_sonra": 1.223,
+   "esik": 5,
+   "islem_fiyati": null,
+   "islem_adedi": 48000000,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://borsacoo.com/bildirim/35954"
+   ],
+   "guven": 0.4,
+   "not": "48 milyon adet satış; %5 altı. Tarih görünmüyor (2025 ikinci yarı olabilir). KAP no 1482492 (özette)."
+  },
+  {
+   "fon_sirketi": "Marmara Capital Portföy Yönetimi",
+   "fonlar": [
+    "MAC",
+    "MAS"
+   ],
+   "hisse": "GOLTS",
+   "tarih": "2026-09-14",
+   "islem_tarihi": null,
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": 3.79,
+   "esik": null,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://www.foreks.com/haber/detay/6aa813e595016b5817e5a319/PICNEWS/tr/marmara-capital-fonlarinin-goltas-sermayesindeki-payi-yuzde-3-79-oldu-14-09-26/"
+   ],
+   "guven": 0.4,
+   "not": "%3 eşiği; fonların sermaye payı %3,79 (foreks)."
+  },
+  {
+   "fon_sirketi": "Global MD Portföy Yönetimi",
+   "fonlar": [
+    "BGE",
+    "GJM",
+    "GZN",
+    "NLL"
+   ],
+   "hisse": "ARMGD",
+   "tarih": "2026-09-14",
+   "islem_tarihi": "2026-09-11",
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": null,
+   "esik": null,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://kap.org.tr/tr/api/BildirimPdf/1662161"
+   ],
+   "guven": 0.5,
+   "not": "11.09.2026 itibarıyla %3 üstü; oran özette yok."
+  },
+  {
+   "fon_sirketi": "Global MD Portföy Yönetimi",
+   "fonlar": [
+    "BGE",
+    "GJM",
+    "GZN",
+    "NLL"
+   ],
+   "hisse": "OYLUM",
+   "tarih": "2026-09-14",
+   "islem_tarihi": "2026-09-11",
+   "saat": null,
+   "yon": "alim",
+   "oran_once": null,
+   "oran_sonra": null,
+   "esik": null,
+   "islem_fiyati": null,
+   "islem_adedi": null,
+   "bildirim_turu": "pay_alim_satim",
+   "halka_arz_iliskisi": null,
+   "kaynak": [
+    "https://kap.org.tr/tr/api/BildirimPdf/1662161"
+   ],
+   "guven": 0.5,
+   "not": "11.09.2026 itibarıyla %3 üstü; oran özette yok."
+  }
+ ],
+ "sirket_ozet": [
+  {
+   "fon_sirketi": "Pardus Portföy Yönetimi",
+   "kayit_sayisi": 24,
+   "gozlenen_oruntu": "Girişim/GYO/küçük sanayi-holding hisselerinde (PEKGY, KOPOL, IEYHO, PATEK, LIDER) kademeli birikim, %10-%18 bölgesine çıkış; 2026'da %10 çevresinde sık gidip gelme ve Eylül 2026'da satış ağırlığı."
+  },
+  {
+   "fon_sirketi": "Hedef Portföy Yönetimi",
+   "kayit_sayisi": 14,
+   "gozlenen_oruntu": "%5 civarı eşikte kademeli artış (KGYO, MOPAS, METEN) ve BALSU/INFO gibi büyük paylarda 2026 yazında hızlı azaltma; Eylül 2026'da BORLS'tan tam çıkış."
+  },
+  {
+   "fon_sirketi": "Bulls Portföy Yönetimi",
+   "kayit_sayisi": 12,
+   "gozlenen_oruntu": "Küçük/orta ölçekli, düşük serbest dolaşımlı hisselerde (DITAS, ONCSM) hızlı alım-satım; %5-%10 eşiği etrafında gidip gelme ve Eylül 2026 başında topluca tam çıkış."
+  },
+  {
+   "fon_sirketi": "Pusula Portföy Yönetimi",
+   "kayit_sayisi": 8,
+   "gozlenen_oruntu": "Çok büyük paylar (IZFAS %33, BALSU sermaye %19) ve Ağustos-Eylül 2026'da hızlı azaltma; BORLS gibi sıkıntılı şirketlerde blok işlem."
+  },
+  {
+   "fon_sirketi": "Azimut Portföy Yönetimi",
+   "kayit_sayisi": 8,
+   "gozlenen_oruntu": "Daha çok orta ölçekli sanayi/enerji hisselerinde (KRDMA, TRCAS) %3-%5 bandında alım; eşik civarında alım-satım."
+  },
+  {
+   "fon_sirketi": "Marmara Capital Portföy Yönetimi",
+   "kayit_sayisi": 5,
+   "gozlenen_oruntu": "Düşük fiyatlı/orta ölçekli hisselerde (ALGYO, GMTAS, GOLTS) %3-%5 bandında alım; GMTAS'ta Haydar Acun ile birlikte raporlama."
+  },
+  {
+   "fon_sirketi": "Atlas Portföy Yönetimi",
+   "kayit_sayisi": 4,
+   "gozlenen_oruntu": "IEYHO'da 2025 Eylül-Kasım'da hızlı birikim (%10 -> %15 -> %25 oy hakkı eşikleri)."
+  },
+  {
+   "fon_sirketi": "Nurol Portföy Yönetimi",
+   "kayit_sayisi": 3,
+   "gozlenen_oruntu": "OSTIM'de %3-%5 bandında alım, ardından satış."
+  },
+  {
+   "fon_sirketi": "RE-PIE Portföy Yönetimi",
+   "kayit_sayisi": 3,
+   "gozlenen_oruntu": "BIGTK'de kısa sürede %0 -> %3,35 alım ve kısmi satış; BRMEN'de blok pay devri."
+  },
+  {
+   "fon_sirketi": "İş Portföy Yönetimi",
+   "kayit_sayisi": 2,
+   "gozlenen_oruntu": "TSKB'de kısa sürede %3 -> %5 aşım, hemen ardından satış; banka iştirak hissesi."
+  },
+  {
+   "fon_sirketi": "Global MD Portföy Yönetimi",
+   "kayit_sayisi": 2,
+   "gozlenen_oruntu": "Yetersiz veri; örüntü çıkarılamadı."
+  },
+  {
+   "fon_sirketi": "Ak Portföy Yönetimi",
+   "kayit_sayisi": 1,
+   "gozlenen_oruntu": "FONET'te %5 aşımı (tek kayıt)."
+  },
+  {
+   "fon_sirketi": "İstanbul Portföy Yönetimi",
+   "kayit_sayisi": 1,
+   "gozlenen_oruntu": "Yetersiz veri; örüntü çıkarılamadı."
+  }
+ ]
+}
