@@ -1,0 +1,56 @@
+# Yemekhane kasa — örnek ayarlar. Kopyalayıp düzenleyin:  cp ayarlar.ornek.yaml ayarlar.yaml
+# Göreli yollar bu dosyanın klasörüne göredir. ${DEGISKEN} ortam değişkeniyle değişir (parola dosyaya yazılmasın).
+
+# Günün menüsü. {tarih} bugünün tarihiyle değişir: menuler/{tarih}.yaml → menuler/2026-11-12.yaml
+# Dosya servis çalışırken düzenlenebilir; kaydedince bir sonraki çekimde geçerli olur.
+menu: menuler/ornek-menu.yaml
+
+kamera:
+  # 0, 1 ...           : USB kamera sırası
+  # rtsp://...         : IP kamera, ör. rtsp://admin:${KAMERA_PAROLA}@192.168.1.20:554/stream1
+  # bir klasör         : içindeki fotoğraflar sırayla "kamera" olur (deneme)
+  kaynak: 0
+  # Fiyatlandırma çekimi aralığı (sn). Tepsi durdukça bu aralıkla bakılır; yeni tepsi boşluktan sonra hemen tanınır.
+  cekim_araligi_sn: 3.5
+  # Tepsi alanı: [x, y, genişlik, yükseklik], karenin oranı (0–1). 'kalibre' komutunun ürettiği
+  # kalibrasyon/tam_kare.jpg üzerinde kırmızı çerçeveye bakarak ayarlayın. Boş bırakılırsa karenin tamamı.
+  bolge: [0.15, 0.10, 0.70, 0.80]
+  # İsteğe bağlı kamera çözünürlüğü:
+  # genislik: 1280
+  # yukseklik: 720
+
+tanima:
+  # claude: Claude ile tanıma (ANTHROPIC_API_KEY gerekir) · sahte: fotoğrafın yanındaki .json (demo/test)
+  tur: claude
+  # Varsayılan Claude Opus 5.5. Daha hızlı ve ~40 kat ucuz seçenek: claude-haiku-5-5 (doğruluğu kendi
+  # tepsilerinizle 'dene' komutuyla karşılaştırın).
+  model: claude-opus-5-5
+  efor: low
+  # Bu güvenin altındaki kalem adisyonda kalır ama kasiyerden kontrol istenir.
+  en_dusuk_guven: 0.6
+  zaman_asimi_sn: 10
+
+pos:
+  # konsol: fişi ekrana yazar · http: JSON POST · klasor: her mesaj bir JSON dosyası
+  tur: konsol
+  # adres: http://192.168.1.50:8099/siparis
+  # basliklar:
+  #   Authorization: Bearer ${POS_ANAHTARI}
+  kasa_adi: kasa-1
+  # Tepsi durdukça son sipariş her çekimde aynı numarayla yeniden gönderilsin mi (POS "güncel sepet" istiyorsa).
+  surekli_gonder: false
+  # Tepsi ayrılınca "kapandi" mesajı gönderilsin mi (müşteri ekranını temizlemek için).
+  kapanis_bildir: false
+
+kayit:
+  klasor: kayitlar
+  # Gönderilen her siparişin tepsi görüntüsü (yalnız tepsi bölgesi) itiraz için saklanır.
+  gorsel_sakla: true
+  saklama_gun: 30
+
+# Değişim eşikleri. Varsayılanlar çoğu kurulumda uygundur; 'kalibre' çıktısındaki gürültüye göre ayarlayın.
+# esikler:
+#   bos: 0.02          # boş tezgâhtan farkı bu paydan azsa tezgâh boş (tek küçük ürün kaçıyorsa düşürün)
+#   ayni_tepsi: 0.03   # son tanınan kareden farkı bu paydan azsa aynı tepsi (yapay zekâ çağrılmaz)
+#   hareket: 0.05      # bir önceki yoklamadan farkı bu paydan azsa görüntü sabit
+#   yeni_tepsi: 0.5    # boşluk görülmeden görüntünün bu kadarı değişip yemekler de değiştiyse yeni müşteri

@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "yemekhane-kasa"
+version = "0.1.0"
+description = "Kasadaki tepsiyi kamerayla tanıyıp günün menüsüyle eşleyen, fiyatlandıran ve POS'a gönderen servis"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["pydantic>=2.7", "pyyaml>=6", "pillow>=10", "numpy>=1.26"]
+
+[project.optional-dependencies]
+# USB kamera, RTSP/HTTP akışı ya da video dosyası için. Klasördeki fotoğraflarla deneme için gerekmez.
+kamera = ["opencv-python-headless>=4.9"]
+# Tanıma Claude ile yapılır (tanima.tur: claude). Demo ve testler için gerekmez.
+claude = ["anthropic>=2.6"]
+test = ["pytest>=8", "ruff>=0.5"]
+
+[project.scripts]
+yemekhane-kasa = "yemekhane_kasa.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["yemekhane_kasa*"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

@@ -1,0 +1,115 @@
+# Örnek günün menüsü. Fiyatlar örnektir ve KDV dahildir; KDV oranlarını mali müşavirinizle doğrulayın.
+# Her gün için ayrı dosya kullanmak isterseniz ayarlarda: menu: menuler/{tarih}.yaml  (ör. menuler/2026-11-12.yaml)
+#
+# id        : POS'a giden kimlik (küçük harf, rakam, _). Gün içinde değiştirmeyin.
+# fiyat     : tam porsiyon (TL). yarim_fiyat varsa yarım porsiyon satılır.
+# kategori  : fiks menü kuralları için (corba, ana_yemek, yardimci ...).
+# plu       : POS'taki ürün kodu (varsa).
+# tarif     : görünüşü. Tanımanın en büyük yardımcısıdır: renk, kap, üstündeki süs.
+# gorsel    : (isteğe bağlı) bu menü dosyasının klasörüne göre referans fotoğraf, ör. referans/kuru_fasulye.jpg
+
+ad: Öğle yemeği
+kdv: 10
+
+yemekler:
+  - id: mercimek_corbasi
+    ad: Mercimek çorbası
+    fiyat: 60
+    yarim_fiyat: 40
+    kategori: corba
+    plu: '1001'
+    tarif: turuncu-sarı, pürüzsüz çorba; derin kasede, üstünde kırmızı pul biber yağı ve limon dilimi olabilir
+
+  - id: ezogelin_corbasi
+    ad: Ezogelin çorbası
+    fiyat: 60
+    kategori: corba
+    plu: '1002'
+    tarif: kırmızımsı turuncu, içinde bulgur ve pirinç taneleri görünen çorba; derin kasede
+
+  - id: kuru_fasulye
+    ad: Kuru fasulye
+    fiyat: 120
+    yarim_fiyat: 75
+    kategori: ana_yemek
+    plu: '2001'
+    tarif: kırmızı salçalı suda beyaz fasulye taneleri; çukur tabakta
+
+  - id: tavuk_sote
+    ad: Tavuk sote
+    fiyat: 150
+    yarim_fiyat: 95
+    kategori: ana_yemek
+    plu: '2002'
+    tarif: küçük doğranmış tavuk, yeşil ve kırmızı biber, domates soslu; düz tabakta
+
+  - id: izmir_kofte
+    ad: İzmir köfte
+    fiyat: 165
+    kategori: ana_yemek
+    plu: '2003'
+    tarif: uzun köfteler, patates dilimleri ve biber; domates soslu, fırın kabında ya da düz tabakta
+
+  - id: pirinc_pilavi
+    ad: Pirinç pilavı
+    fiyat: 55
+    yarim_fiyat: 35
+    kategori: yardimci
+    plu: '3001'
+    tarif: beyaz, taneli pirinç; tepecik şeklinde, arpa şehriye görünebilir
+
+  - id: bulgur_pilavi
+    ad: Bulgur pilavı
+    fiyat: 50
+    yarim_fiyat: 30
+    kategori: yardimci
+    plu: '3002'
+    tarif: açık kahverengi-turuncu bulgur taneleri, domates salçalı
+
+  - id: mevsim_salata
+    ad: Mevsim salata
+    fiyat: 45
+    kategori: salata
+    plu: '4001'
+    tarif: marul, domates, salatalık, havuç; küçük kâsede ya da tabakta
+
+  - id: cacik
+    ad: Cacık
+    fiyat: 40
+    kategori: salata
+    plu: '4002'
+    tarif: beyaz yoğurtlu, sulu, içinde rendelenmiş salatalık; küçük kâsede, üstünde nane
+
+  - id: sutlac
+    ad: Fırın sütlaç
+    fiyat: 55
+    kategori: tatli
+    plu: '5001'
+    tarif: krem rengi, üstü kahverengi kızarmış sütlü tatlı; toprak ya da cam kâsede
+
+  - id: revani
+    ad: Revani
+    fiyat: 50
+    kategori: tatli
+    plu: '5002'
+    tarif: sarı, şerbetli irmik tatlısı; kare dilim, üstünde hindistan cevizi olabilir
+
+  - id: ayran
+    ad: Ayran
+    fiyat: 25
+    kategori: icecek
+    plu: '6001'
+    tarif: beyaz içecek; şişede, kapalı plastik bardakta ya da cam bardakta
+
+fiks_menuler:
+  - ad: Öğle menüsü (çorba + ana yemek + pilav)
+    kategoriler: [corba, ana_yemek, yardimci]
+    fiyat: 210
+
+# Bunlar tepside görülse de satılmaz; tanıyıcı yok sayar.
+yok_say:
+  - ekmek
+  - peçete
+  - çatal, kaşık, bıçak
+  - boş tabak ve bardak
+  - tuz, baharat ve sos paketleri

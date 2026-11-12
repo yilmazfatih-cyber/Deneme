@@ -1,0 +1,12 @@
+# Kuruluma özel dosyalar: ayarlar, kalibrasyon, denetim kayıtları, POS klasör çıktısı
+ayarlar.yaml
+kalibrasyon/
+kayitlar/
+pos-cikis/
+
+# Python
+__pycache__/
+*.egg-info/
+.venv/
+.pytest_cache/
+.ruff_cache/
