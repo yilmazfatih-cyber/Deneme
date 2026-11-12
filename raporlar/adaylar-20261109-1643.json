@@ -1,0 +1,433 @@
+{
+ "tarama": {
+  "an": "2026-11-09T16:43:00+03:00",
+  "kategoriler": [
+   "esarp-sal",
+   "taki-bijuteri",
+   "elbise-etek"
+  ],
+  "not": "İlk pilot tarama: 3 avcı (Sonnet) WebSearch ile. Alibaba ve Trendyol sayfaları bu ortamda doğrudan açılamadı; fiyatlar arama sonuçlarından."
+ },
+ "adaylar": [
+  {
+   "urun": "Desenli 90x90 twill görünümlü polyester eşarp",
+   "kategori": "esarp-sal",
+   "gtip": "6214.30",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Spring-Summer-High-Quality-90x90cm-Animal_1601174536158.html",
+    "baslik": "Spring Summer High Quality 90x90cm Animal Print Silk Scarf",
+    "tedarikci": "bilinmiyor (arama özetinde görünmedi)",
+    "fiyat_usd": 1.43,
+    "moq": 2,
+    "kademeler": [
+     {
+      "min_adet": 2,
+      "fiyat_usd": 1.43
+     },
+     {
+      "min_adet": 100,
+      "fiyat_usd": 1.39
+     },
+     {
+      "min_adet": 500,
+      "fiyat_usd": 1.28
+     }
+    ],
+    "birim_agirlik_kg": 0.08,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 199.9,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/90-x-90-giyim-x-c82-a92-v1576",
+      "baslik": "Madame Polo 90x90 eşarp"
+     },
+     {
+      "fiyat_tl": 299.9,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/90-x-90-giyim-x-c82-a92-v1576",
+      "baslik": "InStyle 90x90 soft eşarp"
+     },
+     {
+      "fiyat_tl": 333.14,
+      "kaynak": "trendyol",
+      "url": "https://www.akakce.com/esarp.html",
+      "baslik": "Levidor Trend Twill Eşarp"
+     },
+     {
+      "fiyat_tl": 403.8,
+      "kaynak": "trendyol",
+      "url": "https://www.akakce.com/esarp.html",
+      "baslik": "Levidor Trend Twill Eşarp (diğer model)"
+     },
+     {
+      "fiyat_tl": 425,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/90-x-90-giyim-x-c82-a92-v1576",
+      "baslik": "JAWEL dijital baskılı 90x90 soft eşarp"
+     },
+     {
+      "fiyat_tl": 599,
+      "kaynak": "trendyol",
+      "url": "https://www.akakce.com/esarp/armine.html",
+      "baslik": "Armine düz twill eşarp"
+     }
+    ],
+    "not": "Az bilinen/markasız polyester-twill ve soft 90x90 eşarplar; ipek değil. Fiyatlar arama özetinden, sayfa açılmadan."
+   },
+   "taklit_riski": false,
+   "gerekce": "Tesettür ve günlük kombinlerde sürekli satan, hafif ve katlanır 90x90 twill eşarp.",
+   "riskler": [
+    "İlan özeti 'silk-polyester blend' diyor; ipek oranı varsa GTİP 6214.10 ve vergi değişir, numune ile lif içeriği doğrulanmalı",
+    "MOQ 2 yalnız kademe alt sınırından okundu; ilanda açık MOQ yazısı görülmedi",
+    "Ağırlık ilandan alınamadı, tahmin",
+    "Desen telif/marka deseni olmamalı"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Spring-Summer-High-Quality-90x90cm-Animal_1601174536158.html",
+    "https://www.akakce.com/esarp.html",
+    "https://www.trendyol.com/90-x-90-giyim-x-c82-a92-v1576"
+   ]
+  },
+  {
+   "urun": "3 mm halat zincir kolye (316L paslanmaz çelik)",
+   "kategori": "taki-bijuteri",
+   "gtip": "7117.19",
+   "alibaba": {
+    "url": "https://www.alibaba.com/showroom/316l-stainless-steel-jewelry-wholesale.html",
+    "baslik": "3mm 316L Stainless Steel Rope Chain Necklace",
+    "tedarikci": "Yiwu Renqing Ornament Co., Ltd. (17 yıl, üretici, puan 4.4/5, 202 yorum, 20.119 satış)",
+    "fiyat_usd": 0.5,
+    "moq": 20,
+    "kademeler": [
+     {
+      "min_adet": 20,
+      "fiyat_usd": 0.5
+     }
+    ],
+    "birim_agirlik_kg": 0.02,
+    "agirlik_kaynagi": "tahmin",
+    "mense": "CN"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 199.1,
+      "liste_fiyat_tl": 299.9,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/the-collection-gumus-celik-kolye-x-b148507-r5-c106322",
+      "baslik": "Siya Silver Kararmaz Çelik İtalyan Zincir Kolye 60 cm/3mm"
+     },
+     {
+      "fiyat_tl": 199,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/paslanmaz-celik-altin-c-kolye-x-r1-c102-a14-v688",
+      "baslik": "TREND COLLECTİON Kadın Paslanmaz Çelik Gold Zincir Yıldız Kolye"
+     },
+     {
+      "fiyat_tl": 199.86,
+      "liste_fiyat_tl": 289.9,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/the-collection-gumus-celik-kolye-x-b148507-r5-c106322",
+      "baslik": "The Collection Kararmaz Çelik Yılan Kolye Bileklik Set"
+     },
+     {
+      "fiyat_tl": 199.99,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/paslanmaz-celik-erkek-celik-kolye-x-g2-c106322-a14-v688",
+      "baslik": "GLANZEND Erkek Kararmaz Çelik Tilki Kuyruğu Kolye Bileklik Set"
+     }
+    ],
+    "not": "Kategori sayfası arama özetlerinden. Birebir halat zincir ilanı özetlerde görünmedi; Siya Silver 3 mm İtalyan zincir en yakını. Diğer ikisi kolye+bileklik seti ve pendantlı kolye (tam eşdeğer değil)."
+   },
+   "taklit_riski": false,
+   "gerekce": "Kararmaz çelik zincir kolye Trendyol'da sürekli çok satan; yılbaşı hediyesi sezonunda talep artar.",
+   "riskler": [
+    "Alibaba URL'si ilan değil showroom sayfası; fiyat/MOQ arama özetinden, ilan sayfasında doğrulanmadı",
+    "Ağırlık tahmin (0,02 kg); gümrük GV/İGV oranları doğrulanmadı",
+    "Ucuz takıda Trendyol komisyonu ve kargo kârı silebilir",
+    "316L iddiası sertifikasız; cilt alerjisi/iade riski"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/showroom/316l-stainless-steel-jewelry-wholesale.html",
+    "https://www.trendyol.com/the-collection-gumus-celik-kolye-x-b148507-r5-c106322",
+    "https://www.trendyol.com/paslanmaz-celik-altin-c-kolye-x-r1-c102-a14-v688"
+   ]
+  },
+  {
+   "urun": "Saten uzun abiye/gece elbisesi",
+   "kategori": "elbise-etek",
+   "gtip": "6204.43",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Custom-Design-Summer-Long-Evening-Silk_1601124604816.html",
+    "baslik": "Custom Design Summer Long Evening Silk Satin Dress Prom Bodycon Casual Long Club Party Slip Sexy Dresses for Women",
+    "fiyat_usd": 14,
+    "moq": 51,
+    "kademeler": [
+     {
+      "min_adet": 51,
+      "fiyat_usd": 14
+     },
+     {
+      "min_adet": 201,
+      "fiyat_usd": 12.2
+     },
+     {
+      "min_adet": 801,
+      "fiyat_usd": 10.66
+     },
+     {
+      "min_adet": 2001,
+      "fiyat_usd": 8.78
+     }
+    ],
+    "birim_agirlik_kg": 0.3,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 1451.47,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/saten-elbise-x-c56-a14-v675",
+      "baslik": "Abiyeniall kloş etekli saten uzun abiye"
+     },
+     {
+      "fiyat_tl": 1516.65,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/uzun-mezuniyet-elbiseleri-x-c1117-a48-v997252",
+      "baslik": "Drapeli uzun abiye (mezuniyet kategorisi)"
+     },
+     {
+      "fiyat_tl": 1700,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/uzun-abiye-elbise-x-c55-a48-v997252",
+      "baslik": "buqre's boyundan bağlamalı saten slim uzun elbise"
+     },
+     {
+      "fiyat_tl": 2069.99,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/uzun-gece-elbisesi-y-s281477",
+      "baslik": "Lafaba lacivert askılı saten uzun abiye"
+     },
+     {
+      "fiyat_tl": 2184.71,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/uzun-gece-elbisesi-y-s281477",
+      "baslik": "Lafaba bordo fular yakalı yırtmaçlı saten abiye"
+     }
+    ],
+    "not": "Az bilinen markalı saten uzun abiyeler; 12.000 TL üstü pahalı markalar alınmadı. URL'ler kategori sayfası."
+   },
+   "taklit_riski": false,
+   "gerekce": "Kasım-Aralık davet, nikah ve yılbaşı sezonunda abiye talebi yüksek.",
+   "riskler": [
+    "Ağırlık ve tedarikçi bilgisi doğrulanamadı",
+    "Beden/kalıp farkı ve iade riski",
+    "İlan sayfası aracıyla teyit edilmedi (WebSearch özeti)"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Custom-Design-Summer-Long-Evening-Silk_1601124604816.html",
+    "https://www.trendyol.com/uzun-gece-elbisesi-y-s281477"
+   ]
+  },
+  {
+   "urun": "Payetli yırtmaçlı abiye elbise",
+   "kategori": "elbise-etek",
+   "gtip": "6204.43",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Oem-Custom-womans-Evening-Dresses-Sequin_1600318244858.html",
+    "baslik": "Oem Custom Womans Evening Dresses Sequin Waist High Low...",
+    "fiyat_usd": 15.8,
+    "moq": 50,
+    "kademeler": [
+     {
+      "min_adet": 50,
+      "fiyat_usd": 15.8
+     },
+     {
+      "min_adet": 200,
+      "fiyat_usd": 14.7
+     },
+     {
+      "min_adet": 1000,
+      "fiyat_usd": 12.5
+     }
+    ],
+    "birim_agirlik_kg": 0.35,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 896.92,
+      "liste_fiyat_tl": 1625,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/payet-abiye-elbise-x-c55-a635-v197147",
+      "baslik": "Sindimoda Jules straplez yırtmaçlı payet abiye (uzun değil)"
+     },
+     {
+      "fiyat_tl": 999,
+      "liste_fiyat_tl": 1399,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/payet-abiye-elbise-x-c55-a635-v197147",
+      "baslik": "HOX'S Afrodit pul payetli yırtmaçlı maxi balık abiye"
+     },
+     {
+      "fiyat_tl": 1249.9,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/payet-abiye-elbise-x-c55-a635-v197147",
+      "baslik": "HOX'S Afrodit lacivert"
+     },
+     {
+      "fiyat_tl": 4599.99,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/payet-abiye-elbise-x-c55-a635-v197147",
+      "baslik": "PATEVA pul payet straplez yırtmaçlı uzun abiye"
+     }
+    ],
+    "not": "Payetli abiye bandı 900-4.600 TL; 29.000 TL'lik ALFABETA hariç tutuldu. İlan sayfası kategori URL'si."
+   },
+   "taklit_riski": false,
+   "gerekce": "Yılbaşı ve davet sezonunda payetli abiye çok satar; indirimde bile 900 TL üstü.",
+   "riskler": [
+    "Ağırlık/tedarikçi doğrulanamadı",
+    "Payet dökülme ve kalite şikayeti",
+    "Yüksek bedenli iade riski"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Oem-Custom-womans-Evening-Dresses-Sequin_1600318244858.html",
+    "https://www.trendyol.com/payet-abiye-elbise-x-c55-a635-v197147"
+   ]
+  },
+  {
+   "urun": "Çift katlı tül fiyonklu midi etek",
+   "kategori": "elbise-etek",
+   "gtip": "6204.59",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Double-Layer-Mesh-Bow-High-Waisted_1601162207695.html",
+    "baslik": "Double Layer Mesh Bow High Waisted Midi Skirts for Women (pleated)",
+    "fiyat_usd": 7.6,
+    "moq": 1,
+    "kademeler": [
+     {
+      "min_adet": 1,
+      "fiyat_usd": 7.6
+     },
+     {
+      "min_adet": 20,
+      "fiyat_usd": 7.4
+     },
+     {
+      "min_adet": 100,
+      "fiyat_usd": 7
+     },
+     {
+      "min_adet": 1000,
+      "fiyat_usd": 6
+     }
+    ],
+    "birim_agirlik_kg": 0.25,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 449.99,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/midi-kadin-etek-x-g1-c69-a48-v1282",
+      "baslik": "Koton midi tül kalem etek"
+     },
+     {
+      "fiyat_tl": 772.99,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/midi-kadin-etek-x-g1-c69-a48-v1282",
+      "baslik": "Koton asimetrik ekose tül midi etek"
+     },
+     {
+      "fiyat_tl": 1519,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/etek-x-c69?pi=4",
+      "baslik": "Zula Moda tesettür asimetrik flok baskılı tül etek"
+     }
+    ],
+    "not": "Birebir kalıp eşleşmesi zayıf; tül midi etek bandı. Koton marka olduğu için tabanı düşük gösterebilir."
+   },
+   "taklit_riski": false,
+   "gerekce": "Tül/plise midi etek kış-yılbaşı kombinlerinde ve tesettürde talep görür; çok hafif.",
+   "riskler": [
+    "Türkiye karşılaştırması zayıf",
+    "Ağırlık/tedarikçi doğrulanamadı",
+    "MOQ 1 olduğundan adet bazlı tedarikçi güvenilirliği belirsiz"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Double-Layer-Mesh-Bow-High-Waisted_1601162207695.html",
+    "https://www.trendyol.com/midi-kadin-etek-x-g1-c69-a48-v1282"
+   ]
+  },
+  {
+   "urun": "Kışlık düz renk abaya/ferace",
+   "kategori": "elbise-etek",
+   "gtip": "6204.43",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Winter-Modest-Muslim-Solid-Abaya-Islamic_1601252884885.html",
+    "baslik": "Winter Modest Muslim Solid Abaya Islamic ...",
+    "fiyat_usd": 17.8,
+    "moq": 2,
+    "kademeler": [
+     {
+      "min_adet": 2,
+      "fiyat_usd": 17.8
+     },
+     {
+      "min_adet": 20,
+      "fiyat_usd": 17.5
+     },
+     {
+      "min_adet": 100,
+      "fiyat_usd": 17
+     }
+    ],
+    "birim_agirlik_kg": 0.5,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 708,
+      "kaynak": "trendyol",
+      "url": "https://www.cimri.com/tesettur-tunik/en-ucuz-ferace-kadin-buyuk-beden-iki-iplik-penye-indigo-uzun-tesettur-tunik-fiyatlari,2098608197",
+      "baslik": "Büyük beden uzun tunik ferace (Cimri üzerinden Trendyol satıcısı)"
+     },
+     {
+      "fiyat_tl": 1949.99,
+      "liste_fiyat_tl": 3899.99,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/ferace-x-c1051",
+      "baslik": "Kadeem yarım Mevlana yazlık ferace"
+     },
+     {
+      "fiyat_tl": 1980,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/ferace-x-c1051",
+      "baslik": "Ferace (kampanya fiyatı olabilir)"
+     }
+    ],
+    "not": "Trendyol ferace bandı ~570-2.300 TL; kışlık özel fiyat net değil, örnekler yazlık/karışık."
+   },
+   "taklit_riski": false,
+   "gerekce": "Tesettür ferace/abaya kışın da sürekli satar.",
+   "riskler": [
+    "Ağırlık (0,5 kg) tahmin; kışlık kumaş daha ağır olabilir",
+    "Türkiye kıyası kışlık modele birebir değil",
+    "Tedarikçi bilgisi görünmedi"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Winter-Modest-Muslim-Solid-Abaya-Islamic_1601252884885.html",
+    "https://www.trendyol.com/ferace-x-c1051"
+   ]
+  }
+ ]
+}
