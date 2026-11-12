@@ -152,7 +152,19 @@ Arşivleri kaynaklı Bulgaristan koleksiyonu), hatt-ı hümayunlar, bir ferman, 
 Etiketler artifact veritabanında (`sayfalar` koleksiyonu, satır başına `durum`/`metin`/`secim`) birikir; eğitime almak için
 ArtifactData ile okunup `etiket_manifest.jsonl` biçimine çevrilir.
 
+### Risale-i Nur el yazmaları (bilinen metin): 185 sayfa, 3.177 satır
+
+Kuyruk seçicinin varsayılanı. Milli Kütüphane arşivinden iki el yazması (archive.org): **22. ve 23. Sözler** (120 sayfa,
+1.657 satır) ve **Asâ-yı Mûsâ**'nın ilk 65 sayfası (1.520 satır). Metin bilindiği için satırı yazmazsınız. Satırın
+bittiği kelimeye dokunursunuz ya da metinden çıkarılan A/B/C aralıklarından birini seçersiniz. Sonraki satır kaldığınız
+kelimeden devam eder. Model gerekmez.
+
+Etiketler Latin harfli çeviriyazıdır; Arapça ibareler Arap harfiyle kalır. Eserler 2030 sonuna kadar telif
+korumasındadır, bu yüzden veri yalnızca kişisel araştırma içindir. Ayrıntılar, eşleme notları ve yeniden üretme komutları:
+[`docs/risale_kaynak.md`](docs/risale_kaynak.md).
+
 Yeniden yayımlamak için gereken dosyalar (`web/` içinde, git dışı): `ort.min.js`, `ort-wasm-simd-threaded.mjs`,
 `ort-wasm-simd-threaded.wasm` (npm `onnxruntime-web@1.20.1` dist), `model-agirlik.wasm` (= `osm disa` çıktısı
-`model.onnx`, servis edilebilir uzantıyla), `model.alfabe.json`, `model.json`. Etiketleri geri almak: `satirlar`
-koleksiyonu (durum, metin, secim, asset) + asset görüntüleri.
+`model.onnx`, servis edilebilir uzantıyla), `model.alfabe.json`, `model.json`, ayrıca `kuyruk/` altındaki sprite'lar ve
+`kuyruk/metin/*.json`. Etiketleri geri almak: `sayfalar` koleksiyonu (satır başına durum, metin, secim; Risale
+satırlarında bas/son) + sprite görüntüleri (`sprite_yol` yayımlanmış dosya ya da `sprite` asset kimliği).
