@@ -20,6 +20,15 @@ def test_yumusama_bicimleri():
     assert "mağ" not in genislet("mAk")
 
 
+def test_olmayan_bicimler_uretilmez_eksik_ekler_var():
+    env = ek_envanteri()
+    for olmayan in ("nta", "ntan", "ytı", "yti", "layın"):  # n/y'den sonra D hep d; -leyin uyuma girmez
+        assert olmayan not in env, olmayan
+    for var in ("nda", "ndan", "ydı", "leyin", "elim", "alım", "cil", "cak", "cağ", "ığ", "ağ"):
+        assert var in env, var  # istek -(y)AlIm, -CIl, -CAk ve iki harfli eklerin yumuşaması
+    assert "k" in env and "ğ" not in env  # tek başına k yumuşamaz
+
+
 def test_asil_bicim_baglari():
     env = ek_envanteri()
     assert env["ler"].ana == "lar"

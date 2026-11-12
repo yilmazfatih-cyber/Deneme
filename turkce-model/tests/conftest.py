@@ -11,6 +11,8 @@ KELIME_LISTESI = [
     "kitap", "ev", "okul", "masa", "masal", "göz", "gözlemek", "gelmek", "gitmek", "okumak", "ağız", "renk",
     "hak", "bir", "ve", "bu", "de", "çocuk", "beklemek", "anlamak", "an", "ara", "yazmak", "öğretmen",
     "söylemek", "doğru", "güzel", "büyük", "deniz", "kalem", "yol", "su", "gün", "iş", "söz", "sabah",
+    "ad", "adamak", "gelme", "olmak", "olma", "istemek", "kolay", "çıkmak", "bakmak", "dönmek",
+    "getirmek", "sormak", "belli", "kendi", "yüzmek", "unutmak", "görmek",
 ]
 
 # Sentetik "madde" kayıtları (TDK JSON biçiminde, içerik uydurmadır).
@@ -59,6 +61,9 @@ CUMLELER = [
     "İstanbul'a gittik. İstanbul güzel. TDK sözlüğü büyük.",
     "Denizde yüzdük, sabahları yola çıktık. Kalemlerimizi unuttuk.",
     "(kitap) \"Evler\" güzeldi. 1923'te 3,14 ₺ değil.",
+    "Adı belliydi, adını sordum. Kendini işine adıyor. Eve gelmek istedi, olmak istedi.",
+    "\"Kitaplarını getirdi.\" Gelmek ve olmak zor. Bunu söylemek kolay.",
+    "Okula gittik, sonra yola çıktık, denize baktık, eve döndük, masaya oturduk.",
 ]
 
 

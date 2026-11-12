@@ -79,25 +79,43 @@ _DEGISIM = str.maketrans(
 )
 
 
+_VEKIL = re.compile("[\ud800-\udfff]")  # tek başına UTF-16 vekil karakteri: UTF-8'e yazılamaz
+
+
 def normallestir(metin: str) -> str:
     """Tokenizer'dan önce uygulanan normalleştirme.
 
     NFC, tipografik tırnak ve tireleri sadeleştirir, boşlukları toparlar. Şapkalı harfler (â, î, û)
-    korunur; anlam ayırt ederler (kar / kâr, hala / hâlâ).
+    korunur; anlam ayırt ederler (kar / kâr, hala / hâlâ). İki kez uygulamak sonucu değiştirmez.
     """
-    m = unicodedata.normalize("NFC", metin)
+    m = _VEKIL.sub("�", metin)
+    m = unicodedata.normalize("NFC", m)
     m = m.replace("\r\n", "\n").replace("\r", "\n")
+    m = m.replace(" ", "\n").replace(" ", "\n").replace("\u0085", "\n")  # satır/paragraf ayırıcıları
     m = m.replace("i̇", "i")  # yanlış küçültmeden kalan "i + üst nokta"
     m = m.replace("…", "...")
     m = m.translate(_DEGISIM)
     m = re.sub(r" {2,}", " ", m)
     m = re.sub(r" *\n *", "\n", m)
     m = re.sub(r"\n{3,}", "\n\n", m)
-    return m.strip()
+    # Sıfır genişlikli karakter ya da yumuşak tire silinince bir harf ile birleşen işaret yan yana gelebilir.
+    return unicodedata.normalize("NFC", m.strip())
 
+
+# Kelime karakteri: Unicode harf-rakam (\w) ama ondalık rakam ve alt çizgi değil. ², ₂, ½, Ⅻ gibi
+# karakterler de kelimeye dahildir. Tokenizer'ın çözücüsü de aynı sınıfı kullanır (kayıpsızlık).
+KELIME_KARAKTERI = r"[^\W\d_]"
+KELIME_DIZISI = re.compile(KELIME_KARAKTERI + "+")
 
 # Ön bölütleme birimleri: harf dizisi | tek rakam | satır sonu | boşluk | diğer tek karakter
-_BIRIM = re.compile(r"(?P<kelime>[^\W\d_]+)|(?P<rakam>\d)|(?P<satir>\n)|(?P<bosluk> )|(?P<diger>.)", re.DOTALL)
+_BIRIM = re.compile(
+    rf"(?P<kelime>{KELIME_KARAKTERI}+)|(?P<rakam>\d)|(?P<satir>\n)|(?P<bosluk> )|(?P<diger>.)", re.DOTALL
+)
+
+
+def kelime_mi(s: str) -> bool:
+    """``s`` tamamen kelime karakterlerinden mi oluşuyor (ön bölütlemenin kelime birimi gibi)?"""
+    return bool(KELIME_DIZISI.fullmatch(s))
 
 KELIME, RAKAM, SATIR, DIGER, BOSLUK = "kelime", "rakam", "satir", "diger", "bosluk"
 

@@ -87,6 +87,51 @@ def test_kaydet_yukle(tok, tmp_path):
     assert yeni.analar == tok.analar and yeni.bicimler == tok.bicimler
 
 
+def test_kelime_icindeki_ust_alt_simge_ve_romen_rakamlari_kayipsiz(tok):
+    # ², ₂, Ⅻ ön bölütlemede kelime karakteridir; çözücü de öyle saymalı (yoksa <BB> yarıda kalır).
+    for m in ["H₂O", "H₂SO₄", "C₆H₁₂O₆", "KM²DE", "X²Y", "Ⅻ kitap", "Ⅳ. Murat", "20 M²LİK"]:
+        assert tok.decode(tok.encode(m)) == m, m
+    # Büyük harf işareti belgeden belgeye taşmaz.
+    ids = tok.encode("Ⅻ", bos=True, eos=True) + tok.encode("kitap", bos=True, eos=True)
+    assert tok.decode(ids) == "Ⅻkitap"
+
+
+def test_metindeki_bosluk_isareti_bosluk_tokeniyle_karismaz(tok):
+    assert tok.encode("a▁é") != tok.encode("a é")
+    for m in ["a▁b", "▁kitap", "kitap▁", "x ▁ y"]:
+        assert tok.decode(tok.encode(m, normalle=False)) == m
+
+
+def test_satir_ayirici_iceren_parca_kaydedilip_yuklenir(tok, tmp_path):
+    # normallestir U+2028'i satır sonuna çevirir; yine de elle eklenmiş böyle bir parça dosyayı bozmamalı.
+    yeni = TurkceTokenizer(
+        tok.parcalar + [" "], tok.kategoriler + [KAT["noktalama"]], tok.maliyetler + [20.0],
+        tok.analar + [len(tok.parcalar)], tok.bicimler + [0], tok.sayilar + [0], dict(tok.bilgi),
+    )
+    yeni.kaydet(tmp_path)
+    assert TurkceTokenizer.yukle(tmp_path).parcalar == yeni.parcalar
+
+
+def test_daralmis_govde_yalniz_yor_onunde(tok):
+    # "adı" (ad + ı) ile "adı-yor" (adamak) ayrı: daralmış gövde yalnız -yor önünde kullanılır.
+    assert parcalar(tok, "adı") == ["▁ad", "ı"]
+    assert parcalar(tok, "adıyor") == ["▁adı", "yor"]
+    assert tok.bilgi["yor_once"] and "adı" in tok.bilgi["yor_once"]
+
+
+def test_mastar_govde_arti_mek(tok):
+    # "gelme" ve "olma" TDK'de ayrı madde başı olsa da mastar "▁gelme·k" değil "▁gel·mek" bölünür.
+    assert parcalar(tok, "gelmek") == ["▁gel", "mek"]
+    assert parcalar(tok, "olmak") == ["▁ol", "mak"]
+
+
+def test_acilis_isaretinden_sonra_kok_ek_bolunmesi(tok):
+    ids = tok.encode('"Kitaplarını getirdi."')
+    assert [tok.parcalar[i] for i in ids[:3]] == ['▁"', "<B>", "▁kitap"]  # tırnaktan sonra da ▁'lı kök
+    for m in ['"Kitaplarını getirdi."', "( kitap)", "x(kitap)", '"a" "b"', '("kitap")']:
+        assert tok.decode(tok.encode(m, normalle=False)) == m, m
+
+
 def test_morfolojik_parca_filtresi():
     kokler, ekler = {"ağz", "masa"}, {"lar", "da", "ın", "ı", "a", "n", "k", "r"}
     assert morfolojik_mi("larda", kokler, ekler)

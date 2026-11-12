@@ -27,7 +27,7 @@ dropout = 0.0
 [model]
 katman = 1
 bas_boyutu = 16
-baglam = 32
+baglam = 16
 dropout = 0.0
 
 [tokenizer]
@@ -104,8 +104,14 @@ def test_tum_boru_hatti(tmp_path, monkeypatch, capsys):
     assert main(["veri-hazirla"]) == 0
     assert main(["hesapla"]) == 0
     assert main(["egit", "--asama", "tdk", "--cihaz", "cpu"]) == 0
-    deney = tmp_path / "ciktilar" / "deneyler" / "g32-alibi-ayri-f16-kat-bicim-rmsnorm-k1"
+    deneyler = list((tmp_path / "ciktilar" / "deneyler").iterdir())
+    assert len(deneyler) == 1 and deneyler[0].name.startswith("g32-alibi-ayri-f16-kat-bicim-rmsnorm-soto-d0-k1-m")
+    deney = deneyler[0]
     assert (deney / "tdk" / "en_iyi.pt").exists()
+    # Aynı deneye ikinci kez sıfırdan eğitim, açıkça istenmedikçe eskisini ezmez.
+    assert main(["egit", "--asama", "tdk", "--cihaz", "cpu"]) == 2
+    # Ayarı değişmiş bir --devam reddedilir.
+    assert main(["egit", "--asama", "tdk", "--devam", "--deney", deney.name, "--ayar", "model.dropout=0.2"]) == 2
 
     (tmp_path / "veri" / "meb").mkdir(parents=True)
     meb.soru_yaz(_sentetik_sorular(60), tmp_path / "veri" / "meb" / "meb_pdf.jsonl")
@@ -116,7 +122,7 @@ def test_tum_boru_hatti(tmp_path, monkeypatch, capsys):
     assert main(["tanimla", "kitap", "--uzunluk", "5", "--tohum", "0", "--cihaz", "cpu"]) == 0
 
     ilerleme = (tmp_path / "ciktilar" / "ilerleme.md").read_text(encoding="utf-8")
-    assert ilerleme.count("g32-alibi-ayri") == 2  # iki aşama, iki satır
+    assert ilerleme.count(deney.name) == 2  # iki aşama, iki satır
     cikti = capsys.readouterr().out
     assert "MEB test" in cikti and "rastgele" in cikti
 

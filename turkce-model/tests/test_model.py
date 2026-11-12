@@ -54,6 +54,18 @@ def test_bicim_paylasimi_lar_ler_ayni_satir(tok):
     assert model.gomme.tablo.weight.shape[0] < model.gomme.V
 
 
+def test_bicim_paylasiminda_olu_satir_yok(tok):
+    model = TurkceGPT.tokenizer_ile(gomme(bicim_paylasimi=True, cikis_baglama=False), M, tok)
+    assert model.gomme.tablo.weight.shape[0] == len(set(tok.analar))
+
+
+def test_ayristirilmis_gomme_karisik_hassasiyette_fp32_dondurur(tok):
+    model = TurkceGPT.tokenizer_ile(gomme(faktor_boyutu=16, konum="rope"), M, tok)
+    x = torch.randint(0, tok.boyut, (1, 8))
+    with torch.autocast(device_type="cpu", dtype=torch.bfloat16):
+        assert model.gomme(x).dtype == torch.float32
+
+
 def test_baglama_ayri_cikis_katmani_olusturmaz(tok):
     bagli = TurkceGPT.tokenizer_ile(gomme(cikis_baglama=True), M, tok)
     ayri = TurkceGPT.tokenizer_ile(gomme(cikis_baglama=False), M, tok)

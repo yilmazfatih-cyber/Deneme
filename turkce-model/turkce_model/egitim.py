@@ -13,13 +13,23 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from .ayarlar import Ayarlar, AyarHatasi, EgitimAyarlari, GommeAyarlari, ModelAyarlari, gommeyi_dogrula
+from .ayarlar import (
+    HASSASIYETLER,
+    Ayarlar,
+    AyarHatasi,
+    EgitimAyarlari,
+    GommeAyarlari,
+    ModelAyarlari,
+    egitimi_dogrula,
+    gommeyi_dogrula,
+)
 from .degerlendirme import akis_kaybi, bpc, coktan_secmeli, ilerleme_ekle
 from .model import TurkceGPT
 from .tokenizer import TurkceTokenizer
-from .veri import AkisVeri, SoruVeri, meta_oku, tokenizer_imzasi
+from .veri import AkisVeri, SoruVeri, meta_oku, tokenizer_gomme_imzasi, tokenizer_imzasi
 
 ASAMALAR = ("tdk", "meb")
+_AUTOCAST_TURLERI = {"bf16": torch.bfloat16, "fp16": torch.float16}
 
 
 def cihaz_sec() -> str:
@@ -31,6 +41,8 @@ def cihaz_sec() -> str:
 
 
 def hassasiyet_sec(istenen: str, cihaz: str) -> str:
+    if istenen not in HASSASIYETLER:
+        raise AyarHatasi(f"hassasiyet şunlardan biri olmalı: {', '.join(HASSASIYETLER)} (şu an: {istenen!r})")
     if istenen != "otomatik":
         return istenen
     if cihaz == "cuda":
@@ -41,8 +53,9 @@ def hassasiyet_sec(istenen: str, cihaz: str) -> str:
 def baglam_yoneticisi(cihaz: str, hassasiyet: str):
     if hassasiyet == "fp32":
         return contextlib.nullcontext
-    tur = torch.bfloat16 if hassasiyet == "bf16" else torch.float16
-    return partial(torch.autocast, device_type=cihaz, dtype=tur)
+    if hassasiyet not in _AUTOCAST_TURLERI:
+        raise AyarHatasi(f"Bilinmeyen hassasiyet: {hassasiyet!r} (fp32 | bf16 | fp16)")
+    return partial(torch.autocast, device_type=cihaz, dtype=_AUTOCAST_TURLERI[hassasiyet])
 
 
 def ogrenme_orani(adim: int, toplam: int, ea: EgitimAyarlari) -> float:
@@ -93,15 +106,51 @@ def kontrol_noktasi_yukle(yol: Path, cihaz: str = "cpu") -> dict:
     return torch.load(yol, map_location=cihaz, weights_only=False)
 
 
+def tokenizer_uyumu(kn: dict, tok: TurkceTokenizer, yol: Path) -> None:
+    """Kontrol noktası bu tokenizer'la kullanılabilir mi? Parçalar aynı olmalı; model biçim paylaşımı ya da
+    kategori gömmesi kullanıyorsa ana/biçim/kategori bağları da aynı olmalı (bunlar yüklenirken yeniden kurulur)."""
+    if kn.get("tokenizer") != tokenizer_imzasi(tok):
+        raise AyarHatasi(f"{yol} başka bir tokenizer'la eğitilmiş; bu tokenizer'la kullanılamaz.")
+    g = kn.get("ayarlar", {}).get("gomme", {})
+    kayitli = kn.get("tokenizer_gomme")
+    if (g.get("bicim_paylasimi") or g.get("kategori_gommesi")) and kayitli and kayitli != tokenizer_gomme_imzasi(tok):
+        raise AyarHatasi(
+            f"{yol}: tokenizer'ın parçaları aynı ama ana/biçim/kategori bağları değişmiş (tokenizer yeniden eğitilmiş). "
+            "Bu model biçim paylaşımı ya da kategori gömmesi kullandığı için yeniden eğitilmeli."
+        )
+
+
+def ayar_farklari(kayitli: dict, ayarlar: Ayarlar, devam: bool) -> list[str]:
+    """Kontrol noktasının mimari ayarlarıyla şimdiki ayarlar arasındaki farklar.
+
+    ``--devam`` için her şey aynı olmalı. MEB aşaması TDK modelinden başlarken dropout ve başlatma std'si
+    farklı olabilir (ağırlıkların biçimini değiştirmezler).
+    """
+    serbest = set() if devam else {("gomme", "dropout"), ("gomme", "baslatma_std"), ("model", "dropout")}
+    farklar = []
+    for bolum in ("gomme", "model"):
+        eski, yeni = kayitli.get(bolum, {}), asdict(getattr(ayarlar, bolum))
+        for alan in sorted(set(eski) | set(yeni)):
+            if (bolum, alan) not in serbest and eski.get(alan) != yeni.get(alan):
+                farklar.append(f"{bolum}.{alan}: kayıtlı {eski.get(alan)!r}, şimdi {yeni.get(alan)!r}")
+    return farklar
+
+
+def durumu_yukle(model: TurkceGPT, kn: dict, yol: Path) -> None:
+    try:
+        model.load_state_dict(kn["model"])
+    except RuntimeError as e:
+        raise AyarHatasi(f"{yol} bu modele yüklenemedi (mimari ya da tokenizer farklı): {str(e)[:300]}") from e
+
+
 def modeli_yukle(yol: Path, tok: TurkceTokenizer, cihaz: str) -> tuple[TurkceGPT, dict]:
     """Kaydedilmiş modeli, kendi ayarlarıyla kurar (ayarlar.toml sonradan değişmiş olabilir)."""
     kn = kontrol_noktasi_yukle(yol, cihaz)
-    if kn.get("tokenizer") != tokenizer_imzasi(tok):
-        raise AyarHatasi(f"{yol} başka bir tokenizer'la eğitilmiş; bu tokenizer'la kullanılamaz.")
+    tokenizer_uyumu(kn, tok, yol)
     g = GommeAyarlari(**kn["ayarlar"]["gomme"])
     m = ModelAyarlari(**kn["ayarlar"]["model"])
     model = model_kur(g, m, tok)
-    model.load_state_dict(kn["model"])
+    durumu_yukle(model, kn, yol)
     return model.to(cihaz), kn
 
 
@@ -117,11 +166,12 @@ def egit(
     sifirdan: bool = False,
     cihaz: str | None = None,
     yaz=print,
+    uzerine_yaz: bool = False,
 ) -> dict:
     if asama not in ASAMALAR:
         raise AyarHatasi(f"Aşama {asama!r} değil; şunlardan biri: {', '.join(ASAMALAR)}")
     gommeyi_dogrula(ayarlar.gomme, ayarlar.model)
-    ea: EgitimAyarlari = getattr(ayarlar, asama)
+    ea: EgitimAyarlari = egitimi_dogrula(getattr(ayarlar, asama), asama)
     cihaz = cihaz or cihaz_sec()
     hassasiyet = hassasiyet_sec(ea.hassasiyet, cihaz)
     ctx = baglam_yoneticisi(cihaz, hassasiyet)
@@ -151,15 +201,30 @@ def egit(
         dogrulama_sorulari = [s for s in soru_oku(vk / "meb_sorular.jsonl") if s.bolum == "dogrulama"]
 
     klasor = ayarlar.deney_klasoru / asama
-    klasor.mkdir(parents=True, exist_ok=True)
     son_yol, en_iyi_yol = klasor / "son.pt", klasor / "en_iyi.pt"
+    if son_yol.exists() and not devam:
+        if not uzerine_yaz:
+            raise AyarHatasi(
+                f"{klasor} içinde zaten bir eğitim var. Sürdürmek için --devam, silip baştan başlamak için "
+                "--uzerine-yaz, ayrı tutmak için --deney <ad> kullan."
+            )
+        for eski in (son_yol, en_iyi_yol, klasor / "gunluk.jsonl"):
+            eski.unlink(missing_ok=True)
+    klasor.mkdir(parents=True, exist_ok=True)
 
     model = model_kur(ayarlar.gomme, ayarlar.model, tok).to(cihaz)
     baslangic_adim, en_iyi, sabir, gorulen = 0, math.inf, 0, 0
     kn = None
     if devam and son_yol.exists():
         kn = kontrol_noktasi_yukle(son_yol, cihaz)
-        model.load_state_dict(kn["model"])
+        tokenizer_uyumu(kn, tok, son_yol)
+        farklar = ayar_farklari(kn["ayarlar"], ayarlar, devam=True)
+        if farklar:
+            raise AyarHatasi(
+                "--devam için ayarlar kaydedilen eğitimle aynı olmalı. Farklar:\n  • " + "\n  • ".join(farklar)
+                + "\nYeni ayarlarla ayrı bir deney için --deney <ad> kullan."
+            )
+        durumu_yukle(model, kn, son_yol)
         baslangic_adim, en_iyi, gorulen = kn["adim"], kn["en_iyi"], kn.get("gorulen_token", 0)
         yaz(f"Kaldığı yerden devam: adım {baslangic_adim}")
     elif asama == "meb" and not sifirdan:
@@ -169,7 +234,12 @@ def egit(
                 f"MEB aşaması TDK modelinden başlar ama {kaynak} yok. Önce 'egit --asama tdk' çalıştır "
                 "ya da bilerek sıfırdan başlamak için --sifirdan ekle."
             )
-        model.load_state_dict(kontrol_noktasi_yukle(kaynak, cihaz)["model"])
+        tdk_kn = kontrol_noktasi_yukle(kaynak, cihaz)
+        tokenizer_uyumu(tdk_kn, tok, kaynak)
+        farklar = ayar_farklari(tdk_kn["ayarlar"], ayarlar, devam=False)
+        if farklar:
+            raise AyarHatasi("TDK modelinin mimarisi şimdiki ayarlardan farklı:\n  • " + "\n  • ".join(farklar))
+        durumu_yukle(model, tdk_kn, kaynak)
         yaz(f"TDK modelinden başlanıyor: {kaynak}")
 
     dokum = model.parametre_dokumu()
@@ -200,7 +270,7 @@ def egit(
     iyilestirici = model.iyilestirici(ea.ogrenme_orani, ea.agirlik_azaltma, cihaz)
     if kn is not None and "iyilestirici" in kn:
         iyilestirici.load_state_dict(kn["iyilestirici"])
-    olcekleyici = torch.amp.GradScaler(enabled=(hassasiyet == "fp16" and cihaz == "cuda"))
+    olcekleyici = torch.amp.GradScaler(cihaz, enabled=(hassasiyet == "fp16"))  # fp16'da kayıp ölçekleme şart
     calisan = torch.compile(model) if ea.derle and cihaz == "cuda" else model
 
     sabit_dogrulama = [tdk_dogrulama.yigin(ea.yigin, baglam_uzunlugu, np.random.default_rng(0)) for _ in range(ea.degerlendirme_yigini)]
@@ -246,6 +316,7 @@ def egit(
                 "asama": asama,
                 "ayarlar": ayarlar.sozluk(),
                 "tokenizer": tokenizer_imzasi(tok),
+                "tokenizer_gomme": tokenizer_gomme_imzasi(tok),
             },
             yol,
         )

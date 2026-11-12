@@ -18,6 +18,13 @@ def test_taki_bicimi():
         ("hâk", "ki"): None,
         ("masa", "sı"): None,
         ("kitap", None): None,
+        # ünlü düşmesi ya da ikizleşme + yumuşama birlikte
+        ("ahit", "hdi"): "ahd",
+        ("nesiç", "sci"): "nesc",
+        ("kayıp", "ybı"): "kayb",
+        ("kayıt", "ydı"): "kayd",
+        ("ret", "ddi"): "redd",
+        ("zıt", "ddı"): "zıdd",
     }
     for (kok, taki), beklenen in ornekler.items():
         assert tdk.taki_bicimi(kok, taki) == beklenen, (kok, taki)
@@ -38,6 +45,30 @@ def test_kokleri_cikar():
     assert kokler["bekli"] == ("bekle", "daralma")
     assert "gitmek" not in kokler  # mastarın kendisi kök değil: git + mek
     assert kokler["çocuğ"] == ("çocuk", "kural")  # TDK verisi yokken kurala göre tahmin
+
+
+def test_madde_basi_daralmis_govdeye_yenilmez_ve_sira_onemsiz():
+    maddeler = [
+        {"madde": "doğramak", "anlamlarListe": [{"fiil": "1"}]},
+        {"madde": "doğru", "anlamlarListe": [{"fiil": "0"}]},
+    ]
+    ileri = tdk.kokleri_cikar(["doğramak", "doğru"], maddeler)
+    geri = tdk.kokleri_cikar(["doğru", "doğramak"], maddeler)
+    assert sorted(ileri) == sorted(geri)
+    assert dict((k, (a, t)) for k, a, t in ileri)["doğru"] == ("doğru", "kok")
+
+
+def test_es_sesli_isim_ve_fiil_ayri_islenir():
+    # "artmak" hem isim (takisi -ğı) hem fiil: isim kökü kalır, isim takisi fiil gövdesine uygulanmaz.
+    maddeler = [
+        {"madde": "artmak", "taki": "ğı", "anlamlarListe": [{"fiil": "0"}]},
+        {"madde": "artmak", "taki": "ar", "anlamlarListe": [{"fiil": "1"}]},
+    ]
+    kokler = {k: (a, t) for k, a, t in tdk.kokleri_cikar(["artmak"], maddeler)}
+    assert kokler["art"] == ("art", "fiil")
+    assert kokler["artmak"] == ("artmak", "kok")
+    assert kokler["artmağ"] == ("artmak", "ses")
+    assert "arğ" not in kokler
 
 
 def test_madde_metni():

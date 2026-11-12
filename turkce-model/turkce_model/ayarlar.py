@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import sys
 from dataclasses import asdict, dataclass, field, fields, replace
 from pathlib import Path
@@ -24,6 +25,10 @@ KARAR_VER = "KARAR_VER"
 
 KONUMLAR = ("rope", "ogrenilen", "sinus", "alibi", "yok")
 GOMME_NORMLARI = ("yok", "layernorm", "rmsnorm")
+MODEL_NORMLARI = ("rmsnorm", "layernorm")
+MLP_TURLERI = ("swiglu", "gelu")
+HASSASIYETLER = ("otomatik", "fp32", "bf16", "fp16")
+KAYIP_TURLERI = ("tum", "cevap")
 
 # Her gömme kararı: (alan, kısa açıklama, olası değerler)
 GOMME_KARARLARI: list[tuple[str, str, str]] = [
@@ -66,7 +71,7 @@ class GommeAyarlari:
         return float(self.baslatma_std)
 
     def ozet(self) -> str:
-        """Kısa, dosya adına uygun özet: ``g384-rope-bagli-kat``."""
+        """Dosya adına uygun, on kararın hepsini taşıyan özet: ``g384-rope-bagli-kat-s0.02-d0.1``."""
         if self.eksikler():
             return "gomme-eksik"
         parcalar = [f"g{self.boyut}", self.konum, "bagli" if self.cikis_baglama else "ayri"]
@@ -80,6 +85,8 @@ class GommeAyarlari:
             parcalar.append("olcek")
         if self.norm != "yok":
             parcalar.append(self.norm)
+        parcalar.append("soto" if self.baslatma_std == "otomatik" else f"s{float(self.baslatma_std):g}")
+        parcalar.append(f"d{float(self.dropout):g}")
         return "-".join(parcalar)
 
 
@@ -160,7 +167,11 @@ class Ayarlar:
 
     @property
     def deney_adi(self) -> str:
-        return self.deney or f"{self.gomme.ozet()}-k{self.model.katman}"
+        """Boşsa kararlardan türetilir: on gömme kararı + katman + diğer model ayarlarının kısa özeti.
+
+        Bir kararı değiştirmek yeni bir klasör açar; böylece eski deney ezilmez.
+        """
+        return self.deney or f"{self.gomme.ozet()}-k{self.model.katman}-m{ayar_imzasi(asdict(self.model))[:4]}"
 
     @property
     def deney_klasoru(self) -> Path:
@@ -262,22 +273,46 @@ def _bool(ad: str, deger: Any) -> bool:
     raise AyarHatasi(f"gomme.{ad} true ya da false olmalı (şu an: {deger!r})")
 
 
+def _pozitif_tamsayi(x: Any) -> bool:
+    return isinstance(x, int) and not isinstance(x, bool) and x > 0
+
+
+def _sayi(x: Any) -> bool:
+    return isinstance(x, (int, float)) and not isinstance(x, bool) and math.isfinite(float(x))
+
+
+def modeli_dogrula(m: ModelAyarlari) -> list[str]:
+    hatalar: list[str] = []
+    for ad in ("katman", "bas_boyutu", "baglam"):
+        if not _pozitif_tamsayi(getattr(m, ad)):
+            hatalar.append(f"model.{ad} pozitif bir tam sayı olmalı (şu an: {getattr(m, ad)!r})")
+    if m.mlp not in MLP_TURLERI:
+        hatalar.append(f"model.mlp şunlardan biri olmalı: {', '.join(MLP_TURLERI)} (şu an: {m.mlp!r})")
+    if m.norm not in MODEL_NORMLARI:
+        hatalar.append(f"model.norm şunlardan biri olmalı: {', '.join(MODEL_NORMLARI)} (şu an: {m.norm!r})")
+    if not _sayi(m.dropout) or not 0 <= float(m.dropout) < 1:
+        hatalar.append(f"model.dropout 0 ile 1 arasında olmalı (şu an: {m.dropout!r})")
+    return hatalar
+
+
 def gommeyi_dogrula(g: GommeAyarlari, m: ModelAyarlari) -> GommeAyarlari:
-    """Tüm kararlar verilmiş ve tutarlı mı? Değilse açıklamalı ``AyarHatasi``."""
+    """Tüm kararlar verilmiş ve tutarlı mı (model ayarları dahil)? Değilse açıklamalı ``AyarHatasi``."""
     eksikler = g.eksikler()
     if eksikler:
         raise AyarHatasi(eksik_karar_mesaji(eksikler))
-    hatalar: list[str] = []
-    if not isinstance(g.boyut, int) or isinstance(g.boyut, bool) or g.boyut <= 0:
+    hatalar: list[str] = modeli_dogrula(m)
+    bas_gecerli = _pozitif_tamsayi(m.bas_boyutu)
+    if not _pozitif_tamsayi(g.boyut):
         hatalar.append(f"gomme.boyut pozitif bir tam sayı olmalı (şu an: {g.boyut!r})")
-    elif g.boyut % m.bas_boyutu:
+    elif bas_gecerli and g.boyut % m.bas_boyutu:
+        alt = g.boyut - g.boyut % m.bas_boyutu
+        oneriler = f"{alt} ya da {alt + m.bas_boyutu}" if alt else f"{m.bas_boyutu}"
         hatalar.append(
-            f"gomme.boyut ({g.boyut}) model.bas_boyutu ({m.bas_boyutu}) değerinin katı olmalı; "
-            f"örn. {g.boyut - g.boyut % m.bas_boyutu or m.bas_boyutu} ya da {g.boyut - g.boyut % m.bas_boyutu + m.bas_boyutu}"
+            f"gomme.boyut ({g.boyut}) model.bas_boyutu ({m.bas_boyutu}) değerinin katı olmalı; örn. {oneriler}"
         )
     if g.konum not in KONUMLAR:
         hatalar.append(f"gomme.konum şunlardan biri olmalı: {', '.join(KONUMLAR)} (şu an: {g.konum!r})")
-    if g.konum == "rope" and m.bas_boyutu % 2:
+    if g.konum == "rope" and bas_gecerli and m.bas_boyutu % 2:
         hatalar.append("RoPE çift bas_boyutu ister (model.bas_boyutu)")
     if g.norm not in GOMME_NORMLARI:
         hatalar.append(f"gomme.norm şunlardan biri olmalı: {', '.join(GOMME_NORMLARI)} (şu an: {g.norm!r})")
@@ -292,10 +327,10 @@ def gommeyi_dogrula(g: GommeAyarlari, m: ModelAyarlari) -> GommeAyarlari:
     elif isinstance(g.boyut, int) and f and f >= g.boyut:
         hatalar.append(f"gomme.faktor_boyutu ({f}) gomme.boyut'tan ({g.boyut}) küçük olmalı; 0 yazarsan kapanır")
     s = g.baslatma_std
-    if s != "otomatik" and (isinstance(s, bool) or not isinstance(s, (int, float)) or not 0 < float(s) < 1):
+    if s != "otomatik" and (not _sayi(s) or not 0 < float(s) < 1):
         hatalar.append(f'gomme.baslatma_std 0 ile 1 arasında bir sayı ya da "otomatik" olmalı (şu an: {s!r})')
     d = g.dropout
-    if isinstance(d, bool) or not isinstance(d, (int, float)) or not 0 <= float(d) < 0.9:
+    if not _sayi(d) or not 0 <= float(d) < 0.9:
         hatalar.append(f"gomme.dropout 0 ile 0.9 arasında olmalı (şu an: {d!r})")
     if g.bicim_paylasimi is True and g.cikis_baglama is True:
         hatalar.append(
@@ -307,21 +342,68 @@ def gommeyi_dogrula(g: GommeAyarlari, m: ModelAyarlari) -> GommeAyarlari:
     return g
 
 
+def egitimi_dogrula(ea: EgitimAyarlari, asama: str) -> EgitimAyarlari:
+    """``egitim.<aşama>`` ayarlarını denetler; yanlış yazılmış bir hassasiyet sessizce fp16'ya dönmesin."""
+    ad = f"egitim.{asama}"
+    hatalar: list[str] = []
+    for alan in ("yigin", "birikim", "degerlendirme_her", "degerlendirme_yigini"):
+        if not _pozitif_tamsayi(getattr(ea, alan)):
+            hatalar.append(f"{ad}.{alan} pozitif bir tam sayı olmalı (şu an: {getattr(ea, alan)!r})")
+    for alan in ("en_fazla_adim", "isinma_adimi", "erken_durdurma"):
+        x = getattr(ea, alan)
+        if not (isinstance(x, int) and not isinstance(x, bool) and x >= 0):
+            hatalar.append(f"{ad}.{alan} 0 ya da pozitif tam sayı olmalı (şu an: {x!r})")
+    for alan in ("donem", "ogrenme_orani"):
+        x = getattr(ea, alan)
+        if not _sayi(x) or float(x) <= 0:
+            hatalar.append(f"{ad}.{alan} pozitif bir sayı olmalı (şu an: {x!r})")
+    for alan, ust in (("min_oran", 1.0), ("tdk_karisim", 1.0)):
+        x = getattr(ea, alan)
+        if not _sayi(x) or not 0 <= float(x) < ust + (1e-9 if alan == "min_oran" else 0):
+            hatalar.append(f"{ad}.{alan} 0 ile {ust:g} arasında olmalı (şu an: {x!r})")
+    for alan in ("agirlik_azaltma", "gradyan_kirpma"):
+        x = getattr(ea, alan)
+        if not _sayi(x) or float(x) < 0:
+            hatalar.append(f"{ad}.{alan} 0 ya da pozitif bir sayı olmalı (şu an: {x!r})")
+    if ea.hassasiyet not in HASSASIYETLER:
+        hatalar.append(f"{ad}.hassasiyet şunlardan biri olmalı: {', '.join(HASSASIYETLER)} (şu an: {ea.hassasiyet!r})")
+    if ea.kayip not in KAYIP_TURLERI:
+        hatalar.append(f"{ad}.kayip şunlardan biri olmalı: {', '.join(KAYIP_TURLERI)} (şu an: {ea.kayip!r})")
+    if not isinstance(ea.derle, bool):
+        hatalar.append(f"{ad}.derle true ya da false olmalı (şu an: {ea.derle!r})")
+    if hatalar:
+        raise AyarHatasi("Eğitim ayarlarında sorun var:\n  • " + "\n  • ".join(hatalar))
+    return ea
+
+
 def gomme_uyarilari(g: GommeAyarlari) -> list[str]:
-    """Hata olmayan ama sonucu etkileyen etkileşimler (kararı yine sen verirsin)."""
+    """Hata olmayan ama sonucu etkileyen etkileşimler (kararı yine sen verirsin). Geçersiz ayarlarda boş döner;
+    hatayı ``gommeyi_dogrula`` açıklar."""
     if g.eksikler():
+        return []
+    try:
+        gommeyi_dogrula(g, ModelAyarlari())
+    except AyarHatasi:
         return []
     uyari: list[str] = []
     std = g.std()
     if g.konum == "sinus" and not g.olcek:
         uyari.append(
-            f"Sinüs konum vektörlerinin genliği ~1, token gömmeleri ~{std:g}: başlangıçta konum sinyali token "
-            f"sinyalinden ~{1 / std:.0f} kat güçlü. İlk Transformer bu yüzden gömmeleri √boyut ile çarpar (olcek=true)."
+            f"Sinüs konum vektörlerinin bileşenlerinin RMS'i ~0,71, token gömmeleri ~{std:g}: başlangıçta konum sinyali "
+            f"token sinyalinden ~{1 / (std * math.sqrt(2)):.0f} kat güçlü. İlk Transformer bu yüzden gömmeleri √boyut ile "
+            "çarpar (olcek=true)."
         )
     if g.olcek and g.norm != "yok":
-        uyari.append(
-            "olcek=true iken gömme normu açık: norm, vektörü yeniden ölçeklediği için √boyut çarpanı büyük ölçüde etkisiz kalır."
-        )
+        if g.konum in ("rope", "alibi", "yok") and not g.kategori_gommesi:
+            uyari.append(
+                "olcek=true iken gömme normu açık ve aradaki toplama yok: norm vektörü yeniden ölçeklediği için "
+                "√boyut çarpanı neredeyse etkisiz kalır."
+            )
+        else:
+            uyari.append(
+                "olcek=true ve gömme normu birlikte: norm genel ölçeği siler, ama √boyut çarpanı token vektörünün "
+                "konum/kategori vektörüne oranını belirlemeye devam eder."
+            )
     if g.konum in ("ogrenilen", "sinus"):
         uyari.append(f"konum={g.konum}: model.baglam eğitimden sonra büyütülemez (konum tablosu bu uzunlukta sabittir).")
     if g.olcek and g.cikis_baglama and g.norm == "yok":

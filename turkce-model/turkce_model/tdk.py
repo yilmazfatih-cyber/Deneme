@@ -337,10 +337,11 @@ def taki_bicimi(kok: str, taki: str | None) -> str | None:
             return None
         return kok[:-1] + govde  # yumuşama: kitap → kitab, renk → reng
     if len(govde) == 2:
-        if govde[0] == govde[1] == kok[-1]:
-            return kok + govde[1]  # ikizleşme: hak → hakk
-        if len(kok) >= 3 and kok[-3] == govde[0] and kok[-1] == govde[1] and kok[-2] in UNLULER:
-            return kok[:-3] + govde  # ünlü düşmesi: ağız → ağz, burun → burn
+        son = (kok[-1], _SERT_YUMUSAK.get(kok[-1], kok[-1]), "g" if kok[-1] == "k" else kok[-1])
+        if govde[0] == govde[1] and govde[1] in son:
+            return kok[:-1] + govde  # ikizleşme: hak → hakk, ret → redd (yumuşamayla)
+        if len(kok) >= 3 and kok[-3] == govde[0] and govde[1] in son and kok[-2] in UNLULER:
+            return kok[:-3] + govde  # ünlü düşmesi: ağız → ağz, burun → burn, ahit → ahd, kayıp → kayb
     return None
 
 
@@ -373,54 +374,59 @@ def _fiil_mi(madde: dict) -> bool:
 def kokleri_cikar(kelimeler: Iterable[str], maddeler: Iterable[dict] = ()) -> list[tuple[str, str, str]]:
     """Tek kelimelik madde başlarından ``(kök, ana_kök, tür)`` listesi çıkarır.
 
-    Türler: ``kok`` (madde başı), ``fiil`` (``-mek/-mak`` atılmış gövde), ``ses`` (ses değişimli biçim,
+    Türler: ``fiil`` (``-mek/-mak`` atılmış gövde), ``kok`` (madde başı), ``ses`` (ses değişimli biçim,
     TDK ``taki`` alanından), ``kural`` (TDK verisi olmayan kelimeler için kuralla tahmin edilen biçim),
     ``daralma`` (``bekli-yor``).
+
+    Aynı dize birden çok yoldan gelirse öncelik: fiil gövdesi > madde başı > türetilmiş biçim. Böylece sonuç
+    listenin sırasına bağlı değildir ve ``doğru`` gibi bir madde başı, ``doğramak``ın daralmış gövdesi
+    sayılmaz. Her madde (eş sesli kayıtlar dahil) ayrı işlenir: isim olan "artmak"ın takisi fiil gövdesine
+    uygulanmaz.
+
+    TDK verisi indirilmemiş kelimelerde ``-mek/-mak`` ile biten her kelime fiil sayılır (``parmak`` gibi
+    isimler için yanlış; tam indirmede bu tahmin kullanılmaz).
     """
-    bilgi: dict[str, dict] = {}
+    kayitlar: dict[str, list[tuple[bool, str | None]]] = {}
     for madde in maddeler:
         bas = kucuk(str(madde.get("madde", "")).strip())
-        if not _kok_mu(bas):
-            continue
-        b = bilgi.setdefault(bas, {"fiil": False, "taki": set()})
-        b["fiil"] |= _fiil_mi(madde)
-        if madde.get("taki"):
-            b["taki"].add(madde["taki"])
+        if _kok_mu(bas):
+            kayitlar.setdefault(bas, []).append((_fiil_mi(madde), madde.get("taki")))
 
-    sonuc: dict[str, tuple[str, str]] = {}
-
-    def ekle(kok: str, ana: str, tur: str) -> None:
-        if kok and _kok_mu(kok) and kok not in sonuc:
-            sonuc[kok] = (ana, tur)
-
+    fiiller: list[tuple[str, str, str]] = []
+    basliklar: list[tuple[str, str, str]] = []
+    turetilen: list[tuple[str, str, str]] = []
     for ham in kelimeler:
         kelime = kucuk(ham.strip())
         if not _kok_mu(kelime):
             continue
-        b = bilgi.get(kelime)
         mek = len(kelime) > 3 and kelime.endswith(("mek", "mak"))
-        fiil = b["fiil"] if b is not None else mek
-        if fiil and mek:
-            govde = kelime[:-3]
-            ekle(govde, govde, "fiil")
-            for taki in b["taki"] if b else ():
-                t = kucuk(taki.replace("-", "").strip())
-                if t and t[0] not in UNLULER and govde[-1] not in UNLULER and t[0] != govde[-1]:
-                    ekle(govde[:-1] + t[0], govde, "ses")  # git-mek: gid-er
-            daralmis = daralma_bicimi(govde)
-            if daralmis:
-                ekle(daralmis, govde, "daralma")
-            continue
-        ekle(kelime, kelime, "kok")
-        if b is not None:
-            for taki in b["taki"]:
-                bicim = taki_bicimi(kelime, taki)
+        girdiler = kayitlar.get(kelime)
+        veri_yok = girdiler is None
+        for fiil, taki in girdiler or [(mek, None)]:
+            if fiil and mek:
+                govde = kelime[:-3]
+                fiiller.append((govde, govde, "fiil"))
+                if taki:
+                    t = kucuk(taki.replace("-", "").replace("'", "").strip())
+                    if t and t[0] not in UNLULER and govde[-1] not in UNLULER and t[0] != govde[-1]:
+                        turetilen.append((govde[:-1] + t[0], govde, "ses"))  # git-mek: gid-er
+                daralmis = daralma_bicimi(govde)
+                if daralmis:
+                    turetilen.append((daralmis, govde, "daralma"))
+            else:
+                basliklar.append((kelime, kelime, "kok"))
+                bicim = taki_bicimi(kelime, taki) if taki else None
                 if bicim:
-                    ekle(bicim, kelime, "ses")
-        else:
-            bicim = _kural_yumusama(kelime)
-            if bicim:
-                ekle(bicim, kelime, "kural")
+                    turetilen.append((bicim, kelime, "ses"))
+                elif veri_yok:
+                    bicim = _kural_yumusama(kelime)
+                    if bicim:
+                        turetilen.append((bicim, kelime, "kural"))
+
+    sonuc: dict[str, tuple[str, str]] = {}
+    for kok, ana, tur in fiiller + basliklar + turetilen:
+        if kok and _kok_mu(kok) and kok not in sonuc:
+            sonuc[kok] = (ana, tur)
     return [(k, ana, tur) for k, (ana, tur) in sonuc.items()]
 
 

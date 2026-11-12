@@ -65,9 +65,10 @@ Literatürde ALiBi ve NoPE eğitimden uzun dizilere daha iyi genellenir. Bu kodd
 çalışır; üretim her adımda son `baglam` token'ı kullanır. `ogrenilen` ve `sinus` ile eğitilmiş bir modelin bağlamı
 sonradan büyütülemez.
 
-**Etkileşimler.** `sinus` ile `ogrenilen` vektörü gömmeye *eklenir*. Sinüs genliği ~1, gömmeler ise `baslatma_std` kadar
-(ör. 0,02) olduğunda konum sinyali başta token sinyalini ~50 kat bastırır. İlk Transformer bu yüzden gömmeyi √boyut ile
-çarpar (`olcek`). `hesapla` bu durumda uyarır. `rope`, `alibi` ve `yok` gömmeye dokunmaz, dikkatin içinde çalışır.
+**Etkileşimler.** `sinus` ile `ogrenilen` vektörü gömmeye *eklenir*. Sinüs bileşenlerinin RMS'i ~0,71, gömmeler ise
+`baslatma_std` kadardır (ör. 0,02). Bu durumda konum sinyali başta token sinyalini ~35 kat bastırır. İlk Transformer bu
+yüzden gömmeyi √boyut ile çarpar (`olcek`). `hesapla` bu durumda uyarır. `rope`, `alibi` ve `yok` gömmeye dokunmaz,
+dikkatin içinde çalışır.
 
 **Türkçe açısından.** Sondan eklemeli bir dilde bir kelime birkaç token'dır (`▁kitap·lar·ımız·dan`). Göreli konum
 (`rope`, `alibi`), "bu ek kökten kaç adım sonra geliyor" bilgisini mutlak konumdan bağımsız taşır.
@@ -123,11 +124,15 @@ bir deneydir.
 Açıksa, bu token'lar gömme tablosunda **aynı satırı** kullanır. Üstüne 4 biçim vektöründen biri eklenir: asıl,
 boşluksuz kök, ses değişimli kök ya da ek uyum biçimi. Sonuç: `lar` için öğrenilen her şey `ler`e de geçer.
 
-**Neye mal olur.** Tablo küçülür (3 bin maddelik örneklemde 6 802 token → 6 328 satır). Tek koşul: `cikis_baglama =
-false`, yukarıda açıklanan nedenle.
+**Neye mal olur.** Tablo küçülür: 3 bin maddelik örneklemle eğitilen 8 000'lik tokenizer'da 7 862 token 7 529 satıra
+iner. Tek koşul: `cikis_baglama = false`, yukarıda açıklanan nedenle.
 
 **Dilbilimsel gerekçe.** `ev-ler` ile `kitap-lar` arasındaki fark ekin anlamında değil, kökün ünlüsündedir. Girişte bu
 fark zaten kökten bellidir. Çıkışta ise ayrı satırlar kalır, model doğru biçimi yazmayı öğrenir.
+
+**Sınır.** Biçim sınıfları birbirini dışlar: hem boşluksuz hem ses değişimli bir kök (örneğin "(" işaretinden sonraki
+`kitab`), girişte `▁kitab` ile aynı vektörü alır. Bu durum çok seyrektir. Daralmış gövdeler (`▁bekli`) yalnız `-yor`
+önünde kullanıldığı için fiile bağlanmaları güvenlidir.
 
 ## 7. `olcek` — gömmeyi √boyut ile çarpmak
 
@@ -136,9 +141,13 @@ fark zaten kökten bellidir. Çıkışta ise ayrı satırlar kalır, model doğr
 **Neden var.** İlk Transformer bağlı ağırlık + sinüs konum kullanırken gömme genliğini konum vektörlerine yaklaştırmak
 için. Gemma da kullanır.
 
-**Etkileşimler.** Gömmenin hemen ardından `norm` geliyorsa çarpan büyük ölçüde etkisizleşir, çünkü norm vektörü
-yeniden ölçekler. `cikis_baglama` ile birlikte girişte büyüyen tablo çıkışta ölçeksiz kullanılır; `baslatma_std`'yi
-buna göre seç.
+**Etkileşimler.**
+
+- **`norm` ile.** Gömmenin ardından `norm` geliyorsa norm vektörü yeniden ölçekler. Ölçek ile norm arasında hiçbir şey
+  eklenmiyorsa (`rope`, `alibi` ya da `yok` ve `kategori_gommesi = false`) çarpan neredeyse etkisiz kalır. `sinus`,
+  `ogrenilen` ya da kategori vektörleri eklendiğinde ise çarpan, norm sonrasında da token vektörünün eklenen vektöre
+  oranını belirler.
+- **`cikis_baglama` ile.** Girişte büyüyen tablo çıkışta ölçeksiz kullanılır; `baslatma_std`'yi buna göre seç.
 
 ## 8. `norm` — gömmeden hemen sonra normalleştirme
 
@@ -176,14 +185,15 @@ modelde öğrenme oranı toleransını artırabilir. Karşılığında gömme ge
   geçen neredeyse her kelimeyi ayrı token yapar ama nadir token'ların gömmeleri az veriyle zayıf öğrenilir.
   Değiştirirsen tokenizer'ı ve tüm modelleri yeniden eğitmen gerekir.
 - `model.baglam`: `ogrenilen` konumda tablo `baglam × boyut` olur.
-- `egitim.*.agirlik_azaltma`: şu an tüm 2 boyutlu matrislere, gömme tabloları dahil, uygulanır. Normlara ve vektörlere
-  uygulanmaz.
+- `egitim.*.agirlik_azaltma`: tüm 2 boyutlu ağırlıklara uygulanır. Buna gömme tablosu, kategori ve biçim vektör tabloları,
+  izdüşüm ve öğrenilen konum tablosu da dahildir. Yalnız 1 boyutlu norm ağırlıklarına uygulanmaz.
 
 ## Kararlarını nasıl sınarsın?
 
 1. Bir başlangıç noktası seç ve `ayarlar.toml`'u doldur.
-2. `python -m turkce_model egit --asama tdk`. Deney klasörü kararlarından adlandırılır (`g384-rope-bagli-kat-k6`
-   gibi), böylece deneyler birbirinin üstüne yazmaz.
+2. `python -m turkce_model egit --asama tdk`. Deney klasörü on kararın hepsinden ve model ayarlarından adlandırılır
+   (`g384-rope-bagli-kat-s0.02-d0.1-k6-m3f2a` gibi; sondaki kısa kod diğer model ayarlarının özetidir). Böylece
+   deneyler birbirinin üstüne yazmaz. Aynı deneyi baştan eğitmek için `--uzerine-yaz`, sürdürmek için `--devam` gerekir.
 3. **Bir seferde tek bir kararı** değiştirip tekrar eğit:
 
    ```bash

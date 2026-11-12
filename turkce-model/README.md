@@ -104,9 +104,12 @@ bu araç MEB sitelerinden hiçbir şey indirmez; yalnız senin indirdiğin yerel
 - Nereye: `veri/meb/pdf/` (alt klasör olabilir).
 
 ```bash
+python -m turkce_model meb-mmlu     # isteğe bağlı ama önce: TurkishMMLU'nun açık soruları
 python -m turkce_model meb-pdf      # → veri/meb/meb_pdf.jsonl (+ .rapor.json)
-python -m turkce_model meb-mmlu     # isteğe bağlı: TurkishMMLU'nun açık 945 sorusu
 ```
+
+`meb-mmlu`'yu önce çalıştırırsan `meb-pdf`, TurkishMMLU'daki bir soruyla aynı kökteki PDF sorularını eğitimden çıkarır.
+Böylece değerlendirme sınavı eğitime sızmaz.
 
 `meb-pdf` şunları yapar:
 
@@ -117,8 +120,20 @@ python -m turkce_model meb-mmlu     # isteğe bağlı: TurkishMMLU'nun açık 94
   bölüme düşer, kopyalar atılır.
 
 **TurkishMMLU** (Yüksel vd., EMNLP 2024 Findings) lise müfredatından, MEB'in EBA platformundaki sorulardan derlenmiş bir
-ölçüttür. Açık kısmı 945 soru, 9 ders ve 5 şıktan oluşur. Lisansı belirtilmemiştir; burada **yalnız değerlendirmede**
-kullanılır, eğitime hiç girmez. Böylece modelin hiç görmediği bir sınav olarak kalır.
+ölçüttür. Açık kısmı 945 soru, 9 ders ve 5 şıktan oluşur; bir tekrar atılınca 944 soru kalır. Sabit bir sürümü indirilir,
+böylece sonuçlar karşılaştırılabilir kalır. Lisansı belirtilmemiştir; burada **yalnız değerlendirmede** kullanılır,
+eğitime hiç girmez. Böylece modelin hiç görmediği bir sınav olarak kalır.
+
+Gerçek bir AÖL kitapçığında (2025-26, 1. dönem, 1. oturum) ölçülen sonuç:
+
+- **Bulunan:** 48 ders × 10 = 480 soru; 48 cevap anahtarı bölümünün hepsi eşleşti.
+- **Tutulan:** 308 soru.
+- **Elenen:**
+  - 100'ü yabancı dil derslerinden,
+  - 52'si şekil ya da tablo gerektirdiği için,
+  - 20'si düzeni bozuk çıktığı için.
+
+Bir kitapçık yaklaşık 250 eğitim sorusu verir; birkaç dönemin kitapçıklarını indirmek aşama 2'yi anlamlı kılar.
 
 ### 4. Tokenizer
 
@@ -145,6 +160,11 @@ Nasıl çalışır:
   vardır ve Türkçe `İ/ı` kuralları korunur.
 - **Önce morfoloji.** Kelime, en olası *kök + ek* bölünmesine ayrılır (Unigram LM + Viterbi, yumuşak EM ile eğitilir).
   Kök ve ek kullanmak ucuz, tek harf ve öğrenilmiş parça kullanmak cezalıdır.
+- **Türkçe ayrıntılar.**
+  - Kök yalnız kelime başında olur; `masalardaydı` hiçbir zaman `masal·arda` diye bölünmez.
+  - `-yor` önündeki daralmış gövde (`bekli`) yalnız `-yor` önünde kullanılır; `adı` → `▁ad ı`, `adıyor` → `▁adı yor`.
+  - Düzenli isim-fiiller (`gelme`) kök sayılmaz; mastar `▁gel mek` olur.
+  - Satır başındaki ve `( [ { "` işaretlerinden sonraki kelimeler de `▁kitap` gibi kodlanır, ayrı biçim gerekmez.
 - **Kalanlar.** Kök + ekle açıklanamayan kelimeler (özel adlar, yabancı sözcükler) BPE parçalarına, sözlükte olmayan
   karakterler UTF-8 baytlarına düşer. Hiçbir metin kaybolmaz: `decode(encode(x)) == x`.
 - **Kimlikler Türkçeye göre dizilir.** Özel → bayt → harf (Türk alfabesi sırasıyla) → rakam → noktalama → **ek** →
@@ -167,14 +187,16 @@ python -m turkce_model egit --asama tdk      # aşama 1: sözlük
 python -m turkce_model egit --asama meb      # aşama 2: TDK modelinden devam, soru çözerek
 ```
 
-- **Kaldığı yerden sürer.** `--devam` son kontrol noktasından devam eder. Ctrl+C güvenle durdurur.
+- **Kaldığı yerden sürer.** `--devam` son kontrol noktasından devam eder; ayarlar kayıttakiyle aynı olmalıdır.
+  Ctrl+C güvenle durdurur. Aynı deneyi baştan eğitmek için `--uzerine-yaz` gerekir; yoksa eski eğitim korunur.
 - **Erken durdurma açık.** Doğrulama kaybı iyileşmeyi bırakınca eğitim durur; küçük veride ezberlemeye karşı ilk
   savunma budur.
 - **Aşama 2'nin ayarları:**
   - `kayip = "cevap"` yalnız cevap token'larından öğrenir; varsayılan `"tum"` soruyu da dil olarak öğrenir.
   - `tdk_karisim` yığınların bir kısmını TDK'den çekerek dil bilgisinin unutulmasını azaltır.
-- **Deneyler ayrı klasörlere yazılır.** Her deney, gömme kararlarından adlandırılan bir klasöre yazılır
-  (`ciktilar/deneyler/g384-rope-bagli-k6/`). Bir kararı değiştirip yeniden eğittiğinde eski deney kalır.
+- **Deneyler ayrı klasörlere yazılır.** Her deney, on gömme kararından ve model ayarlarından adlandırılan bir klasöre
+  yazılır (`ciktilar/deneyler/g384-rope-bagli-s0.02-d0.1-k6-m3f2a/`). Bir kararı değiştirip yeniden eğittiğinde eski
+  deney kalır.
 
 ### 7. Nereye kadar gittin?
 

@@ -90,9 +90,10 @@ class Gomme(nn.Module):
         if g.bicim_paylasimi:
             if analar is None or bicimler is None:
                 raise ValueError("bicim_paylasimi için tokenizer'ın ana/biçim bilgisi gerekir")
-            ana = list(analar) + dolgu
-            sira = {a: i for i, a in enumerate(sorted(set(ana)))}  # aynı anaya bağlı token'lar aynı satır
-            self.register_buffer("satir_ids", torch.tensor([sira[a] for a in ana]), persistent=False)
+            sira = {a: i for i, a in enumerate(sorted(set(analar)))}  # aynı anaya bağlı token'lar aynı satır
+            # Dolgu kimlikleri hiç girdi olmaz (çıkış da bu modda ayrı): satır 0'a bağlanır, ölü satır açılmaz.
+            satir = [sira[a] for a in analar] + [0] * len(dolgu)
+            self.register_buffer("satir_ids", torch.tensor(satir), persistent=False)
             self.register_buffer("bicim_ids", torch.tensor(list(bicimler) + [0] * len(dolgu)), persistent=False)
             self.tablo = nn.Embedding(len(sira), e)
             self.bicim = nn.Embedding(len(BICIM_ADLARI), e)
@@ -131,7 +132,9 @@ class Gomme(nn.Module):
         else:
             x = self.tablo(idx)
         if self.izdusum is not None:
-            x = self.izdusum(x)
+            # Karışık hassasiyette Linear çıktısı bf16/fp16 kalır; gömme seçimi artık yolun hassasiyetini
+            # değiştirmesin diye parametre tipine (fp32) döndürülür.
+            x = self.izdusum(x).to(self.tablo.weight.dtype)
         if self.olcek != 1.0:
             x = x * self.olcek
         if self.kategori is not None:

@@ -28,6 +28,7 @@ from pathlib import Path
 
 from .metin import (
     BOSLUK,
+    DIGER,
     EK_HARFLER,
     KELIME,
     SATIR,
@@ -35,6 +36,7 @@ from .metin import (
     bas_buyuk,
     buyuk,
     harf_durumu,
+    kelime_mi,
     kucuk,
     normallestir,
     on_bolutle,
@@ -64,29 +66,39 @@ AYRI_BOSLUK_CEZASI = 4.0
 """Kelimeyi ayrı bir ``▁`` + boşluksuz parçalarla başlatmanın ek maliyeti: yalnızca ▁'lı biçim
 yoksa seçilsin (``▁r`` yerine ``▁`` + ``r`` gibi kaçamaklar olmasın)."""
 _SON = "\0"
+ACICILAR = frozenset('([{"')
+"""Bu işaretlerden sonra gelen kelime de satır başındaki gibi ``▁`` ile kodlanır (``"Kitabı`` → ``▁" ▁kitab ı``)."""
 
 
 def birimler(metin: str) -> Iterable[tuple[str, str, bool, bool]]:
-    """``on_bolutle`` + satır başı kuralı: ``(tür, parça, boşluk, örtük)``.
+    """``on_bolutle`` + örtük boşluk kuralı: ``(tür, parça, boşluk, örtük)``.
 
-    Satır başındaki ilk birim, önünde boşluk varmış gibi (``▁kitap``) kodlanır; çözülürken bu örtük
-    boşluk yazılmaz. Böylece satır başındaki kelimeler için ayrı ``kitap`` biçimine gerek kalmaz.
-    Satır başında gerçekten boşluk varsa ayrı bir ``▁`` token'ıyla korunur (kayıpsızlık).
+    Satır başındaki ilk birim ve boşluktan (ya da satır başından) sonra gelen bir açılış işaretinin
+    (``( [ { "``) hemen ardındaki birim, önünde boşluk varmış gibi (``▁kitap``) kodlanır; çözülürken bu
+    örtük boşluk yazılmaz. Böylece bu konumlardaki kelimeler için ayrı ``kitap`` biçimine gerek kalmaz ve
+    TDK örnek cümlelerinin ilk kelimesi de kök + ek olarak bölünür. Kesme işaretinden sonra kural
+    uygulanmaz: orada ek gelir (``İstanbul'a``). Gerçek bir boşluk varsa ayrı bir ``▁`` token'ıyla korunur.
     """
     satir_basi = True
     for tur, s, bosluk in on_bolutle(metin):
         if tur == SATIR:
             satir_basi = True
             yield tur, s, False, False
-        elif tur == BOSLUK:
+            continue
+        if tur == BOSLUK:
             yield tur, s, False, False
-        elif satir_basi:
+            continue
+        if satir_basi:
             satir_basi = False
             if bosluk:
                 yield BOSLUK, " ", False, False
             yield tur, s, True, True
+            once_bosluk = True
         else:
             yield tur, s, bosluk, False
+            once_bosluk = bosluk
+        if tur == DIGER and s in ACICILAR and once_bosluk:
+            satir_basi = True
 
 
 @dataclass
@@ -124,8 +136,9 @@ class TurkceTokenizer:
         self.bilgi = bilgi or {}
         if self.parcalar[: len(OZEL_TOKENLAR)] != OZEL_TOKENLAR:
             raise ValueError("İlk 16 kimlik özel token'lara ayrılmıştır.")
+        # Metindeki gerçek bir "▁" karakteri boşluk token'ına eşlenmez (bayta düşer); yoksa "a▁é" ile
+        # "a é" aynı kodlanırdı.
         self.kimlik = {p: i for i, p in enumerate(self.parcalar) if self.kategoriler[i] not in (KAT["ozel"], KAT["bayt"])}
-        self.kimlik[ISARET] = BOSLUK_ID
         # Üç önek ağacı: ▁'lı parçalar (boşluktan sonra kelime başı), boşluksuz kelime başı (tüm
         # boşluksuz parçalar) ve kelime içi (kök hariç). Kelime ortasında kök kullanılmaz; yoksa
         # "masalardaydı" → masal·arda·ydı gibi sahte bileşik bölünmeler çıkar.
@@ -143,9 +156,17 @@ class TurkceTokenizer:
                     self._trie_ekle(self._trie_ic, p, i)
         self._bosluklu = [p.startswith(ISARET) and len(p) > 1 for p in self.parcalar]
         self._govde = [p[1:] if b else p for p, b in zip(self.parcalar, self._bosluklu, strict=True)]
+        # "Kelime parçası" ön bölütlemenin kelime sınıfıyla aynı ölçütle belirlenir (² ₂ Ⅻ de dahil);
+        # aksi hâlde <BB> ile işaretli "H₂O" gibi kelimelerde büyük harf kaybolurdu.
         self._harfli = [
-            self.kategoriler[i] not in (KAT["ozel"], KAT["bayt"]) and g.isalpha() for i, g in enumerate(self._govde)
+            self.kategoriler[i] not in (KAT["ozel"], KAT["bayt"]) and kelime_mi(g) for i, g in enumerate(self._govde)
         ]
+        # -yor önündeki daralmış gövdeler (bekli-, anlı-) yalnız "yor" ile devam eden kelimelerde kullanılabilir;
+        # yoksa "işi" (işemek → işi-yor) gibi biçimler "iş·i"yi gasp ederdi.
+        yor_once = self.bilgi.get("yor_once") or []
+        self._yor_once = frozenset(
+            self.kimlik[p] for k in yor_once for p in (ISARET + k, k) if p in self.kimlik
+        )
         self._onbellek: dict[tuple[str, bool], tuple[int, ...]] = {}
 
     # ----------------------------------------------------------------------------------------
@@ -187,6 +208,7 @@ class TurkceTokenizer:
         en_iyi = [sonsuz] * (n + 1)
         geri: list[tuple[int, tuple[int, ...]] | None] = [None] * (n + 1)
         maliyet = self.maliyetler
+        yor = self._yor_once
         if bosluk:
             dugum = self._trie_bas
             for j in range(n):
@@ -195,6 +217,8 @@ class TurkceTokenizer:
                     break
                 t = dugum.get(_SON)
                 if t is not None and maliyet[t] < en_iyi[j + 1]:
+                    if yor and t in yor and not w.startswith("yor", j + 1):
+                        continue
                     en_iyi[j + 1] = maliyet[t]
                     geri[j + 1] = (0, (t,))
         for i in range(n):
@@ -216,6 +240,8 @@ class TurkceTokenizer:
                 if t is not None:
                     if j == i:
                         tek_harf_var = True
+                    if i == 0 and yor and t in yor and not w.startswith("yor", j + 1):
+                        continue
                     m = taban + maliyet[t]
                     if m < en_iyi[j + 1]:
                         en_iyi[j + 1] = m
@@ -240,6 +266,7 @@ class TurkceTokenizer:
         n = len(w)
         kenarlar: list[tuple[int, int, tuple[int, ...], float]] = []
         maliyet = self.maliyetler
+        yor = self._yor_once
         if bosluk:
             dugum = self._trie_bas
             for j in range(n):
@@ -247,7 +274,7 @@ class TurkceTokenizer:
                 if dugum is None:
                     break
                 t = dugum.get(_SON)
-                if t is not None:
+                if t is not None and not (yor and t in yor and not w.startswith("yor", j + 1)):
                     kenarlar.append((0, j + 1, (t,), maliyet[t]))
         for i in range(n):
             onek: tuple[int, ...] = (BOSLUK_ID,) if (i == 0 and bosluk) else ()
@@ -261,6 +288,8 @@ class TurkceTokenizer:
                 t = dugum.get(_SON)
                 if t is not None:
                     tek_harf_var |= j == i
+                    if i == 0 and yor and t in yor and not w.startswith("yor", j + 1):
+                        continue
                     kenarlar.append((i, j + 1, onek + (t,), taban + maliyet[t]))
             if not tek_harf_var:
                 baytlar = tuple(BAYT0 + b for b in w[i].encode("utf-8"))
@@ -328,7 +357,7 @@ class TurkceTokenizer:
             metin = baytlar.decode("utf-8", errors="replace")
             baytlar.clear()
             for ch in metin:
-                if ch.isalpha():
+                if kelime_mi(ch):
                     if kelime:
                         kelime.append(ch)
                     else:
@@ -374,6 +403,7 @@ class TurkceTokenizer:
             if t == BOS or t == EOS:
                 kelime_bitir()
                 satir_basi = True  # her belge ayrı kodlanır
+                bekleyen_mod = None  # büyük harf işareti belgeden belgeye taşınmaz
                 if ozel_goster:
                     cikti.append(self.parcalar[t])
                 continue
@@ -381,6 +411,7 @@ class TurkceTokenizer:
                 kelime_bitir()
                 cikti.append("\n")
                 satir_basi = True
+                bekleyen_mod = None
                 continue
             if t == BOSLUK_ID:
                 kelime_bitir()
@@ -401,6 +432,7 @@ class TurkceTokenizer:
                     kelime_baslat(govde)
                 else:
                     cikti.append(govde)
+                    satir_basi = govde in ACICILAR  # "▁(" ardından gelen ▁'lı parçanın boşluğu örtüktür
                 continue
             satir_basi = False
             if self._harfli[t]:
@@ -460,9 +492,13 @@ class TurkceTokenizer:
 
     @classmethod
     def yukle(cls, klasor: Path) -> TurkceTokenizer:
-        satirlar = (Path(klasor) / "sozcukler.tsv").read_text(encoding="utf-8").splitlines()[1:]
+        # Yalnız "\n"'de bölünür: splitlines() U+2028/U+2029/U+0085'te de böler ve bunlar bir parçanın
+        # içinde (json.dumps ensure_ascii=False ile ham yazılmış) olabilir.
+        satirlar = (Path(klasor) / "sozcukler.tsv").read_text(encoding="utf-8").split("\n")[1:]
         parcalar, kategoriler, analar, bicimler, maliyetler, sayilar = [], [], [], [], [], []
         for satir in satirlar:
+            if not satir:
+                continue
             i, p, kat, ana, bicim, maliyet, sayi = satir.split("\t")
             assert int(i) == len(parcalar), "sozcukler.tsv sırası bozuk"
             parcalar.append(json.loads(p))
@@ -524,11 +560,13 @@ def _taban_parcalar(karakter_sayilari: Counter, harf_sayilari: Counter, en_az: i
     return sonuc
 
 
-def _sayim_tokenizer(adaylar: list[tuple[str, int]], maliyet: dict[str, float]) -> TurkceTokenizer:
+def _sayim_tokenizer(
+    adaylar: list[tuple[str, int]], maliyet: dict[str, float], bilgi: dict | None = None
+) -> TurkceTokenizer:
     parcalar = [p for p, _ in adaylar]
     kategoriler = [k for _, k in adaylar]
     maliyetler = [maliyet.get(p, 1.0) for p in parcalar]
-    return TurkceTokenizer(parcalar, kategoriler, maliyetler)
+    return TurkceTokenizer(parcalar, kategoriler, maliyetler, bilgi=bilgi)
 
 
 TEK_HARFLI_EKLER = frozenset(b for b in ek_envanteri() if len(b) == 1)
@@ -670,7 +708,7 @@ def _bpe(diziler: Counter, hedef: int, en_az: int) -> list[tuple[str, int]]:
     while len(yeni) < hedef and yigin:
         eksi, cift = heapq.heappop(yigin)
         c = cift_sayi.get(cift, 0)
-        if c != -eksi:
+        if c != -eksi:  # bayat kayıt: güncel sayıyla geri koy (azalan sayılar tembel düzeltilir)
             if c > 0:
                 heapq.heappush(yigin, (-c, cift))
             continue
@@ -680,10 +718,11 @@ def _bpe(diziler: Counter, hedef: int, en_az: int) -> list[tuple[str, int]]:
         if sembol not in gorulen:
             gorulen.add(sembol)
             yeni.append((sembol, c))
-        for i in list(nerede.get(cift, ())):
+        for i in nerede.pop(cift, ()):
             w, f = kelimeler[i], frek[i]
-            for a, b in zip(w, w[1:], strict=False):
-                cift_sayi[(a, b)] -= f
+            eski = Counter(zip(w, w[1:], strict=False))
+            if not eski.get(cift):
+                continue  # bu kelimede çift artık yok (bayat dizin)
             yeni_w: list[str] = []
             j = 0
             while j < len(w):
@@ -694,12 +733,19 @@ def _bpe(diziler: Counter, hedef: int, en_az: int) -> list[tuple[str, int]]:
                     yeni_w.append(w[j])
                     j += 1
             kelimeler[i] = yeni_w
-            for a, b in zip(yeni_w, yeni_w[1:], strict=False):
-                cift_sayi[(a, b)] += f
-                nerede[(a, b)].add(i)
-                heapq.heappush(yigin, (-cift_sayi[(a, b)], (a, b)))
+            yeni_ciftler = Counter(zip(yeni_w, yeni_w[1:], strict=False))
+            # Yalnız sayısı değişen çiftler güncellenir; yığına yalnız artanlar konur.
+            for p in eski.keys() | yeni_ciftler.keys():
+                fark = yeni_ciftler.get(p, 0) - eski.get(p, 0)
+                if fark:
+                    cift_sayi[p] += fark * f
+                    if fark > 0:
+                        heapq.heappush(yigin, (-cift_sayi[p], p))
+                if yeni_ciftler.get(p, 0):
+                    nerede[p].add(i)
+                elif p != cift and p in nerede:
+                    nerede[p].discard(i)
         cift_sayi.pop(cift, None)
-        nerede.pop(cift, None)
     return yeni
 
 
@@ -743,13 +789,27 @@ def egit(
     for kok, ana, tur in kokler:
         if len(kok) > 1:
             kok_bilgi.setdefault(kok, (ana, tur))
+    # Düzenli isim-fiiller (gelme, olma, bulunma: fiil gövdesi + -mA) kök adayı olmaz: gövde + ek olarak
+    # bölünürler. Aday kalsalar mastar "▁gelme·k" diye bölünürdü (doğrusu "▁gel·mek").
+    isim_fiil = {
+        k
+        for k, (_, tur) in kok_bilgi.items()
+        if tur == "kok" and len(k) > 3 and k.endswith(("ma", "me")) and kok_bilgi.get(k[:-2], ("", ""))[1] == "fiil"
+    }
+    yor_once = sorted(k for k, (_, tur) in kok_bilgi.items() if tur == "daralma")
+    bilgi = {"yor_once": yor_once}
     kok_adaylari: list[tuple[str, int]] = []
     for kok in kok_bilgi:
+        if kok in isim_fiil:
+            continue
         if ISARET + kok not in taban_kume:
             kok_adaylari.append((ISARET + kok, KAT["kok"]))
         if kok not in taban_kume and kok not in ek_kume:
             kok_adaylari.append((kok, KAT["kok"]))
-    yaz(f"Adaylar: {len(taban)} taban, {len(ek_adaylari)} ek biçimi, {len(kok_adaylari)} kök biçimi (▁'lı ve ▁'sız)")
+    yaz(
+        f"Adaylar: {len(taban)} taban, {len(ek_adaylari)} ek biçimi, {len(kok_adaylari)} kök biçimi (▁'lı ve ▁'sız; "
+        f"{len(isim_fiil)} düzenli isim-fiil gövde + -mA olarak bırakıldı)"
+    )
 
     tek_harfli_ekler = TEK_HARFLI_EKLER
     taban_kategorileri = (KAT["ozel"], KAT["bayt"], KAT["harf"], KAT["rakam"], KAT["noktalama"])
@@ -759,7 +819,7 @@ def egit(
     maliyet = {p: 1.0 + _ceza(p, k, ayar) for p, k in adaylar}
     sayilar: Counter = Counter()
     for tur_no in range(ayar.em_turu):
-        tok = _sayim_tokenizer(adaylar, maliyet)
+        tok = _sayim_tokenizer(adaylar, maliyet, bilgi)
         sayilar = _beklenen_say(tok, kelimeler)
         maliyet = _maliyetler(adaylar, sayilar, ayar)
         kullanilan = sum(1 for p, _ in kok_adaylari if sayilar.get(p, 0) >= esik)
@@ -774,7 +834,7 @@ def egit(
     )
     kok_secilen = kok_sirali[:kok_butcesi]
     adaylar = taban + ek_kullanilan + kok_secilen
-    tok = _sayim_tokenizer(adaylar, _maliyetler(adaylar, sayilar, ayar))
+    tok = _sayim_tokenizer(adaylar, _maliyetler(adaylar, sayilar, ayar), bilgi)
     _, aciklanamayan = _kelimeleri_say(tok, kelimeler, tek_harfli_ekler)
     oran = sum(aciklanamayan.values()) / max(sum(kelimeler.values()), 1)
     yaz(f"  Kök + ek ile açıklanamayan kelime oranı: %{100 * oran:.1f} ({len(aciklanamayan)} tür) → BPE'ye")
@@ -787,13 +847,21 @@ def egit(
     bpe = [(p, c) for p, c in ham_bpe if not morfolojik_mi(p, kok_dizeleri, ek_dizeleri)]
     yaz(f"  BPE: {len(ham_bpe)} aday, kök+ek ile çözülebilen {len(ham_bpe) - len(bpe)} parça elendi")
     bpe = bpe[:parca_butcesi]
-    yaz(f"Seçim: {len(ek_kullanilan)} ek, {len(kok_secilen)} kök, {len(bpe)} öğrenilmiş parça (BPE)")
+    # BPE payını dolduramadıysa boş kalan yerler sıradaki köklere verilir (sözlük boşa küçülmesin).
+    kalan = ayar.boyut - len(adaylar) - len(bpe)
+    ek_kok = kok_sirali[kok_butcesi : kok_butcesi + max(kalan, 0)]
+    kok_secilen = kok_secilen + ek_kok
+    adaylar = taban + ek_kullanilan + kok_secilen
+    yaz(
+        f"Seçim: {len(ek_kullanilan)} ek, {len(kok_secilen)} kök ({len(ek_kok)} tanesi BPE'nin boş payından), "
+        f"{len(bpe)} öğrenilmiş parça (BPE)"
+    )
     adaylar = adaylar + [(p, KAT["parca"]) for p, _ in bpe]
     on_sayi = Counter(sayilar)
     for p, c in bpe:
         on_sayi[p] = c
     for _ in range(2):
-        tok = _sayim_tokenizer(adaylar, _maliyetler(adaylar, on_sayi, ayar))
+        tok = _sayim_tokenizer(adaylar, _maliyetler(adaylar, on_sayi, ayar), bilgi)
         on_sayi = _beklenen_say(tok, kelimeler)
 
     # Kullanılmayan ek/kök/parçaları at, bütçeyi aşarsa en seyrekleri çıkar.
@@ -808,7 +876,7 @@ def egit(
     for p, c in karakterler.items():
         on_sayi[(ISARET + p[0]) if p[1] else p[0]] += c
 
-    tok = _sirali_tokenizer(tutulan, on_sayi, kok_bilgi, ekler, ayar)
+    tok = _sirali_tokenizer(tutulan, on_sayi, kok_bilgi, ekler, ayar, bilgi)
     tok.bilgi["egitim"] = {
         "belge": belge,
         "kelime": sum(kelimeler.values()),
@@ -825,6 +893,7 @@ def _sirali_tokenizer(
     kok_bilgi: dict[str, tuple[str, str]],
     ekler: dict,
     ayar: TokenizerAyarlari,
+    bilgi: dict | None = None,
 ) -> TurkceTokenizer:
     """Kimlikleri Türkçeye göre dizer, ana/biçim bağlarını kurar."""
     bloklar: dict[int, list[str]] = defaultdict(list)
@@ -880,4 +949,5 @@ def _sirali_tokenizer(
         analar,
         bicimler,
         [int(round(sayilar.get(p, 0))) for p in parcalar],
+        dict(bilgi or {}),
     )

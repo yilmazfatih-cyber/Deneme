@@ -46,6 +46,15 @@ def test_normallestir():
     assert normallestir("kâr hâlâ") == "kâr hâlâ"  # şapka anlam ayırt eder, korunur
 
 
+def test_normallestir_iki_kez_uygulanınca_degismez():
+    for m in ["U​̈", "a­̄", "kitap defter", "x\u0085y", "a\ud800b", "  Ev  \n\n\n\n iş "]:
+        bir = normallestir(m)
+        assert normallestir(bir) == bir, repr(m)
+    assert normallestir("U​̈") == "Ü"
+    assert normallestir("kitap defter kalem") == "kitap\ndefter\nkalem"
+    assert normallestir("a\ud800b") == "a�b"  # tek başına vekil karakter UTF-8'e yazılamaz
+
+
 def test_on_bolutle_bosluk_bayragi():
     birimler = on_bolutle("Ev 12, (iyi)\nson")
     assert birimler == [

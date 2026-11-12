@@ -55,17 +55,50 @@ def test_deney_adi_kararlardan_turetilir():
             "gomme.baslatma_std=otomatik", "gomme.dropout=0.1", "model.katman=4",
         ],
     )
-    assert ayarlar.deney_adi == "g256-alibi-ayri-f64-kat-bicim-k4"
+    assert ayarlar.deney_adi.startswith("g256-alibi-ayri-f64-kat-bicim-soto-d0.1-k4-m")
     assert ayarlar.gomme.std() == pytest.approx(256**-0.5)
 
 
+TAM = [
+    "gomme.boyut=256", "gomme.konum=sinus", "gomme.cikis_baglama=true", "gomme.faktor_boyutu=0",
+    "gomme.kategori_gommesi=false", "gomme.bicim_paylasimi=false", "gomme.olcek=false", "gomme.norm=yok",
+    "gomme.baslatma_std=0.02", "gomme.dropout=0.0",
+]
+
+
+def test_her_karar_ve_model_ayari_deney_adini_degistirir():
+    temel = ayarlari_yukle(None, TAM).deney_adi
+    for degisim in ("gomme.baslatma_std=0.01", "gomme.dropout=0.1", "model.dropout=0.2", "model.baglam=256", "model.mlp=gelu"):
+        assert ayarlari_yukle(None, [*TAM, degisim]).deney_adi != temel, degisim
+
+
 def test_uyarilar():
-    ayarlar = ayarlari_yukle(
-        None,
-        [
-            "gomme.boyut=256", "gomme.konum=sinus", "gomme.cikis_baglama=true", "gomme.faktor_boyutu=0",
-            "gomme.kategori_gommesi=false", "gomme.bicim_paylasimi=false", "gomme.olcek=false", "gomme.norm=yok",
-            "gomme.baslatma_std=0.02", "gomme.dropout=0.0",
-        ],
-    )
-    assert any("Sinüs" in u for u in gomme_uyarilari(ayarlar.gomme))
+    uyarilar = gomme_uyarilari(ayarlari_yukle(None, TAM).gomme)
+    assert any("Sinüs" in u and "~35 kat" in u for u in uyarilar)  # 1 / (0,02 · √2) ≈ 35
+    # Konum ya da kategori eklenirken √d, norm sonrasında da token/konum oranını belirler: "etkisiz" denmemeli.
+    sinus = gomme_uyarilari(ayarlari_yukle(None, [*TAM, "gomme.olcek=true", "gomme.norm=layernorm"]).gomme)
+    assert not any("etkisiz" in u for u in sinus) and any("oranını" in u for u in sinus)
+    rope = gomme_uyarilari(ayarlari_yukle(None, [*TAM, "gomme.konum=rope", "gomme.olcek=true", "gomme.norm=layernorm"]).gomme)
+    assert any("etkisiz" in u for u in rope)
+    assert gomme_uyarilari(ayarlari_yukle(None, [*TAM, "gomme.dropout=yuksek"]).gomme) == []  # geçersizse uyarı yok
+
+
+def test_model_ve_egitim_ayarlari_dogrulanir():
+    from turkce_model.ayarlar import egitimi_dogrula, gommeyi_dogrula
+
+    for degisim, parca in (
+        ("model.bas_boyutu=0", "model.bas_boyutu"),
+        ("model.katman=0", "model.katman"),
+        ("model.norm=rms", "model.norm"),
+        ("model.mlp=relu", "model.mlp"),
+        ("model.bas_boyutu=32.0", "model.bas_boyutu"),
+    ):
+        ayarlar = ayarlari_yukle(None, [*TAM, degisim])
+        with pytest.raises(AyarHatasi, match=parca):
+            gommeyi_dogrula(ayarlar.gomme, ayarlar.model)
+    ayarlar = ayarlari_yukle(None, [*TAM, "gomme.boyut=32"])
+    with pytest.raises(AyarHatasi, match="örn. 64"):  # boyut < bas_boyutu: aynı değeri iki kez önermesin
+        gommeyi_dogrula(ayarlar.gomme, ayarlar.model)
+    for degisim in ("egitim.tdk.hassasiyet=float32", "egitim.tdk.kayip=hepsi", "egitim.tdk.yigin=0"):
+        with pytest.raises(AyarHatasi):
+            egitimi_dogrula(ayarlari_yukle(None, [degisim]).tdk, "tdk")

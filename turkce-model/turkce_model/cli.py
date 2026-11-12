@@ -264,9 +264,10 @@ def komut_hesapla(arg, ayarlar: Ayarlar) -> None:
 def komut_egit(arg, ayarlar: Ayarlar) -> None:
     from .egitim import egit
 
+    gommeyi_dogrula(ayarlar.gomme, ayarlar.model)  # uyarılardan önce: geçersiz değerde açıklamalı hata
     for uyari in gomme_uyarilari(ayarlar.gomme):
         print(f"! {uyari}")
-    egit(ayarlar, arg.asama, devam=arg.devam, sifirdan=arg.sifirdan, cihaz=arg.cihaz)
+    egit(ayarlar, arg.asama, devam=arg.devam, sifirdan=arg.sifirdan, cihaz=arg.cihaz, uzerine_yaz=arg.uzerine_yaz)
 
 
 def komut_degerlendir(arg, ayarlar: Ayarlar) -> None:
@@ -391,7 +392,7 @@ def ayristirici() -> argparse.ArgumentParser:
     p.add_argument("--liste-yenile", action="store_true", help="Kelime listesini yeniden indir")
     p = ekle("tdk-derlem", komut_tdk_derlem, "İndirilen maddelerden derlem ve kök sözlüğü üret")
     p.add_argument("--yazar", action="store_true", help="Örnek cümlelerin yazar adlarını da ekle")
-    ekle("meb-mmlu", komut_meb_mmlu, "TurkishMMLU'nun açık 945 sorusunu indir (yalnız değerlendirme)")
+    ekle("meb-mmlu", komut_meb_mmlu, "TurkishMMLU'nun açık sorularını indir (944 soru; yalnız değerlendirme)")
     p = ekle("meb-pdf", komut_meb_pdf, "Elle indirilmiş MEB kitapçıklarını (PDF) ayrıştır")
     p.add_argument("--klasor", help="PDF klasörü (varsayılan: veri/meb/pdf)")
     ekle("tokenizer-egit", komut_tokenizer_egit, "Türkçe kök + ek tokenizer'ını eğit")
@@ -403,6 +404,7 @@ def ayristirici() -> argparse.ArgumentParser:
     p = ekle("egit", komut_egit, "Modeli eğit")
     p.add_argument("--asama", choices=("tdk", "meb"), required=True)
     p.add_argument("--devam", action="store_true", help="Son kontrol noktasından sürdür")
+    p.add_argument("--uzerine-yaz", action="store_true", help="Bu deneyin bu aşamadaki eski eğitimini silip baştan başla")
     p.add_argument("--sifirdan", action="store_true", help="MEB aşamasını TDK modeli olmadan başlat")
     p = ekle("degerlendir", komut_degerlendir, "En iyi modeli değerlendir, ilerleme tablosuna ekle")
     p.add_argument("--asama", choices=("tdk", "meb"), default="tdk")

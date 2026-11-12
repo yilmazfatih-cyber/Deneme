@@ -34,8 +34,8 @@ SABLONLAR: list[tuple[str, str, str]] = [
     ("ilgi", "(n)In", "cekim"),
     ("vasıta", "(y)lA", "cekim"),
     ("zamir n'li yönelme", "nA", "cekim"),
-    ("zamir n'li bulunma", "nDA", "cekim"),
-    ("zamir n'li ayrılma", "nDAn", "cekim"),
+    ("zamir n'li bulunma", "ndA", "cekim"),  # n'den sonra D hep d: "nta" yok
+    ("zamir n'li ayrılma", "ndAn", "cekim"),
     ("zamir n'li belirtme", "nI", "cekim"),
     ("aitlik", "ki", "cekim"),
     ("eşitlik / zarf", "CA", "cekim"),
@@ -47,7 +47,7 @@ SABLONLAR: list[tuple[str, str, str]] = [
     ("2. çoğul kişi", "sInIz", "cekim"),
     ("geçmiş 2. çoğul kişi", "nIz", "cekim"),
     ("bildirme", "DIr", "cekim"),
-    ("hikâye", "(y)DI", "cekim"),
+    ("hikâye", "ydI", "cekim"),  # y'den sonra D hep d; yalın dı/tı "DI"dan gelir
     ("rivayet", "(y)mIş", "cekim"),
     ("şart (ek-fiil)", "(y)sA", "cekim"),
     ("zarf-fiil -ken", "(y)ken", "cekim"),
@@ -77,6 +77,7 @@ SABLONLAR: list[tuple[str, str, str]] = [
     ("emir 2. kişi", "(y)In", "cekim"),
     ("emir 2. çoğul", "(y)InIz", "cekim"),
     ("emir 3. çoğul", "sInlAr", "cekim"),
+    ("istek 1. çoğul", "(y)AlIm", "cekim"),
     # --- çatı ---
     ("edilgen -Il", "(I)l", "cati"),
     ("dönüşlü / edilgen -In", "(I)n", "cati"),
@@ -124,10 +125,12 @@ SABLONLAR: list[tuple[str, str, str]] = [
     ("-Ak", "Ak", "yapim"),
     ("-Aç", "Aç", "yapim"),
     ("-gil", "gil", "yapim"),
-    ("-lAyIn", "lAyIn", "yapim"),
+    ("-leyin", "leyin", "yapim"),  # uyuma girmez: sabahleyin, akşamleyin
     ("-(ş)Ar (üleştirme)", "(ş)Ar", "yapim"),
     ("-(I)ncI (sıra)", "(I)ncI", "yapim"),
     ("-CAsInA", "CAsInA", "yapim"),
+    ("-CIl", "CIl", "yapim"),
+    ("-CAk", "CAk", "yapim"),
     ("-sAr", "sAr", "yapim"),
     ("-sA (fiil yapma)", "sA", "yapim"),
 ]
@@ -200,8 +203,8 @@ def _unsuz_ac(s: str) -> list[str]:
 
 
 def _yumusat(s: str) -> str | None:
-    """Sonu k ile biten çok harfli eklerin ünlüden önceki biçimi: lık → lığ, acak → acağ."""
-    if len(s) >= 3 and s.endswith("k") and s not in ("mak", "mek"):
+    """Sonu k ile biten (en az iki harfli) eklerin ünlüden önceki biçimi: lık → lığ, acak → acağ, ık → ığ."""
+    if len(s) >= 2 and s.endswith("k") and s not in ("mak", "mek"):  # ık → ığ, ak → ağ da
         return s[:-1] + "ğ"
     return None
 

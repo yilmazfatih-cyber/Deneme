@@ -25,6 +25,13 @@ def tokenizer_imzasi(tok: TurkceTokenizer) -> str:
     return hashlib.sha256("\x1f".join(tok.parcalar).encode("utf-8")).hexdigest()[:16]
 
 
+def tokenizer_gomme_imzasi(tok: TurkceTokenizer) -> str:
+    """Parçalar + kategori/ana/biçim bağlarının parmak izi. Biçim paylaşımı ve kategori gömmesi bu bağlardan
+    yüklenirken yeniden kurulur; parçalar aynı kalıp bağlar değişirse model sessizce farklı çalışırdı."""
+    veri = json.dumps([tok.parcalar, tok.kategoriler, tok.analar, tok.bicimler], ensure_ascii=False)
+    return hashlib.sha256(veri.encode("utf-8")).hexdigest()[:16]
+
+
 class AkisYazici:
     """Belgeleri ``<bos> … <eos>`` ile kodlayıp diske parça parça yazar (bellek dostu)."""
 
