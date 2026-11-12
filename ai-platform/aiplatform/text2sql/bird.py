@@ -257,6 +257,8 @@ async def evaluate(
 
     sem = asyncio.Semaphore(concurrency)
     results: list[dict] = []
+    if out_dir:
+        out_dir.mkdir(parents=True, exist_ok=True)
     attempts_fh = (out_dir / "attempts.jsonl").open("w", encoding="utf-8") if out_dir else None
 
     async def one(it: dict) -> dict:

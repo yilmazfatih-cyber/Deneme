@@ -559,7 +559,9 @@ async def test_bird_evaluate_counts_pipeline_fix_against_first_turn(bird_db, tmp
     async def gen(messages, temperature):
         return json.dumps(next(answers))
 
-    report = await bird.evaluate([item], bird_db, gen, out_dir=tmp_path, lang="en")
+    out = tmp_path / "yeni" / "alt"  # henüz yok: evaluate kendisi oluşturmalı
+    report = await bird.evaluate([item], bird_db, gen, out_dir=out, lang="en")
+    assert (out / "attempts.jsonl").exists() and (out / "predict_dev.json").exists()
     assert report["execution_accuracy"] == 100.0 and report["first_turn_ex"] == 0.0
     assert report["fixed_by_pipeline"] == 1 and report["hallucinated_column_or_table"] == 1
     assert report["repaired_then_correct"] == 1
