@@ -25,7 +25,7 @@ Klasik anlamda bir al-sat stratejisi yoktu: şirket seçip ucuzken almak, pahal�
 | --- | --- | --- |
 | Grubun halka arz ettiği hisse | DSTKF (Destek Finans Faktoring) | Halka arzı Tera yönetti; fona tahsis de Tera'nın elindeydi |
 | Grubun kendi şirketleri | TERA (aracı kurum), TEHOL (eski Pera Yatırım Holding), TRHOL (Tera Finansal Yatırımlar Holding) | Fiyat yükseldikçe grubun değeri ve kredi teminatı da yükselir |
-| Dışarıdan sığ hisseler | OZATD (Özata Denizcilik), VSNMD (Vişne Madencilik), BLUME | Fiili dolaşımı düşük; küçük alım büyük fiyat etkisi yapar |
+| Dışarıdan sığ hisseler | OZATD (Özata Denizcilik), VSNMD (Vişne Madencilik) | Fiili dolaşımı düşük; küçük alım büyük fiyat etkisi yapar |
 
 Ortak ölçüt şirketin değeri değil, **fiyatın fon alımıyla ne kadar kolay taşınabildiğiydi.** OZATD'de fiili dolaşım
 %16'ydı; şirket 2026'nın ilk 9 ayında 574 milyon TL zarar etti.
@@ -39,8 +39,8 @@ Ortak ölçüt şirketin değeri değil, **fiyatın fon alımıyla ne kadar kola
   göre bu, dolaşımdaki payın yarısından fazlası demek.
 - **Kademeli toplama:** FT'ye göre Tera fonları OZATD'yi Nisan 2026'da ~281 TL'den almaya başladı; Ağustos sonunda
   dolaşımdaki payın ~%96'sı bu fonlardaydı.
-- **Düşüşte alım (fiyat savunması):** Ağustos 2025'te VSNMD sert düşerken "fonlar alıma geçti" diye yazıldı; takas
-  kayıtlarında Tera'nın iki fonu görünüyordu. Ağın bir hissesi düştüğünde fon alıcı olarak devreye giriyordu.
+- **Düşüşte alım (fiyat savunması):** Ağustos 2025'te VSNMD sert düşerken bir analiz "fonlar alıma geçti" diye
+  yazdı; takas kayıtlarında Tera'nın iki fonu görünüyordu. Ağın bir hissesi düştüğünde fon alıcı olarak devreye giriyordu.
 - **Borçla büyütme:** Bloomberg'e göre (Nisan 2026) fon borç para kullanarak daha fazla hisse aldı. Grup hisseleri
   Takasbank kredisi için teminata verildi; grubun bankası %42 faizle 5 milyar TL borçlandı.
 
