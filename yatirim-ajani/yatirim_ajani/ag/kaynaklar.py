@@ -502,6 +502,196 @@ def kesif() -> dict:
     return out
 
 
+# --- KAP bildirim sorgusu ----------------------------------------------------------------------
+KAP_API = "https://www.kap.org.tr/tr/api"
+KAP_KONU_DESEN = r"pay al[ıi]m sat[ıi]m|geri al[ıi]n|sermaye art[ıi]r[ıi]m|bedelsiz|bedelli|k[aâ]r pay[ıi]|halka arz|yeni i[sş] ili[sş]kisi|finansal rapor|birle[sş]me|tedbir|i[sş]lem yasa"
+
+
+def _kap_oturum() -> requests.Session:
+    o = requests.Session()
+    o.headers.update({"User-Agent": TARAYICI, "Accept": "application/json, text/plain, */*", "Accept-Language": "tr-TR,tr;q=0.9",
+                      "Content-Type": "application/json", "Origin": "https://www.kap.org.tr", "Referer": "https://www.kap.org.tr/tr/bildirim-sorgu"})  # fmt: skip
+    try:
+        o.get("https://www.kap.org.tr/tr/bildirim-sorgu", timeout=40)
+    except Exception:  # noqa: BLE001
+        pass
+    return o
+
+
+def _kap_govde(bas: date, bit: date, fmt: str, uye_tipi: str = "IGS", sinif: str = "", konular: list[str] | None = None) -> dict:
+    return {"fromDate": bas.strftime(fmt), "toDate": bit.strftime(fmt), "memberType": uye_tipi, "mkkMemberOidList": [], "inactiveMkkMemberOidList": [],
+            "disclosureClass": sinif, "subjectList": konular or [], "isLate": "", "mainSector": "", "sector": "", "subSector": "", "marketOid": "", "index": "",
+            "bdkReview": "", "bdkMemberOidList": [], "year": "", "term": "", "ruleType": "", "period": "", "fromSrc": False, "srcCategory": "", "disclosureIndexList": []}  # fmt: skip
+
+
+def _metin(html: str) -> str:
+    """HTML'den düz metin (betik/stil atılır, etiketler boşluk olur)."""
+    import html as _html
+
+    t = re.sub(r"(?is)<(script|style)[^>]*>.*?</\1>", " ", html)
+    t = re.sub(r"(?s)<[^>]+>", " ", t)
+    return re.sub(r"\s+", " ", _html.unescape(t)).strip()
+
+
+def kap_bildirim(bas: date, bit: date, detay_sinir: int = 2500) -> tuple[dict[str, pd.DataFrame], dict]:
+    """KAP bildirim sorgusu (şirket bildirimleri): seçili konularda 2024→bugün liste + portföy yönetim şirketlerinin
+    pay alım satım bildirimlerinin metni. Uç nokta ve gövde sitenin kendi sorgu sayfasından alınmıştır; biçim sondayla doğrulanır."""
+    rapor: dict[str, Any] = {"sonda": []}
+    o = _kap_oturum()
+    tablolar: dict[str, pd.DataFrame] = {}
+    # 1) konu listesi
+    konular: list[dict] = []
+    for yol in ("disclosure/subjects", "disclosure/subjects/IGS", "disclosure/subjects/ODA", "disclosure/subjects?disclosureClass=ODA", "disclosure/filter/FILTERYFBF", "params"):
+        try:
+            r = o.get(f"{KAP_API}/{yol}", timeout=60)
+            ornek = r.text[:300].replace("\n", " ")
+            rapor["sonda"].append({"yol": yol, "durum": r.status_code, "uzunluk": len(r.content), "ornek": ornek})
+            if r.status_code == 200 and "subject" in r.text[:5000] and not konular:
+                j = r.json()
+                liste = j if isinstance(j, list) else next((v for v in j.values() if isinstance(v, list)), []) if isinstance(j, dict) else []
+                konular = [x for x in liste if isinstance(x, dict)]
+        except Exception as e:  # noqa: BLE001
+            rapor["sonda"].append({"yol": yol, "hata": str(e)[:160]})
+    rapor["konu_sayisi"] = len(konular)
+    if konular:
+        tablolar["kap_konular"] = pd.DataFrame(konular)
+    secili = [k for k in konular if re.search(KAP_KONU_DESEN, json.dumps(k, ensure_ascii=False).lower())]
+    oidler = [str(k.get("subjectOid") or k.get("oid") or k.get("value") or "") for k in secili]
+    oidler = [x for x in oidler if x]
+    rapor["secili_konu"] = [str(k.get("subject") or k.get("text") or k.get("name") or k)[:80] for k in secili][:60]
+    # 2) tarih biçimi ve üye tipi sondası (son 3 gün)
+    b0, s0 = bit - timedelta(days=3), bit
+    secim = None
+    for fmt in ("%Y-%m-%d", "%d.%m.%Y", "%Y%m%d", "%d-%m-%Y"):
+        for uye in ("IGS", ""):
+            try:
+                r = o.post(f"{KAP_API}/disclosure/members/byCriteria", data=json.dumps(_kap_govde(b0, s0, fmt, uye)), timeout=90)
+                n = len(r.json()) if r.status_code == 200 and r.text[:1] == "[" else -1
+                rapor["sonda"].append({"post": f"{fmt}|{uye}", "durum": r.status_code, "satir": n, "ornek": r.text[:400].replace("\n", " ")})
+                if n > 0 and secim is None:
+                    secim = (fmt, uye)
+            except Exception as e:  # noqa: BLE001
+                rapor["sonda"].append({"post": f"{fmt}|{uye}", "hata": str(e)[:160]})
+        if secim:
+            break
+    if not secim:
+        return tablolar, rapor
+    fmt, uye = secim
+    rapor["secim"] = {"fmt": fmt, "uye": uye, "konu_suzgeci": bool(oidler)}
+    # 3) pencereler: konu süzgeci varsa aylık, yoksa günlük (istemci tarafında konu süzülür)
+    parcalar: list[pd.DataFrame] = []
+    sayim: dict[str, int] = {}
+    hata = 0
+    adim = 31 if oidler else 1
+    d = bas
+    while d <= bit:
+        s = min(d + timedelta(days=adim - 1), bit)
+        for uye_tipi in ((uye, "PYS") if uye else (uye,)):
+            try:
+                r = o.post(f"{KAP_API}/disclosure/members/byCriteria", data=json.dumps(_kap_govde(d, s, fmt, uye_tipi, konular=oidler)), timeout=120)
+                v = r.json() if r.status_code == 200 and r.text[:1] == "[" else []
+            except Exception:  # noqa: BLE001
+                v, hata = [], hata + 1
+            if v:
+                df = pd.DataFrame(v)
+                if not oidler and "subject" in df.columns:
+                    df = df[df["subject"].astype(str).str.lower().str.contains(KAP_KONU_DESEN, regex=True)]
+                df.insert(0, "uye_tipi", uye_tipi)
+                parcalar.append(df)
+                sayim[f"{d.isoformat()}|{uye_tipi}"] = len(v)
+        d = s + timedelta(days=1)
+        time.sleep(0.25)
+        if hata > 25:
+            break
+    if not parcalar:
+        rapor["liste"] = {"satir": 0, "hata": hata}
+        return tablolar, rapor
+    L = pd.concat(parcalar, ignore_index=True)
+    for c in L.columns:
+        if L[c].map(lambda v: isinstance(v, (list, dict))).any():
+            L[c] = L[c].map(lambda v: json.dumps(v, ensure_ascii=False) if isinstance(v, (list, dict)) else v)
+    if "disclosureIndex" in L.columns:
+        L = L.drop_duplicates("disclosureIndex")
+    tablolar["kap_bildirimler"] = L
+    enb = sorted(sayim.items(), key=lambda kv: -kv[1])[:5]
+    rapor["liste"] = {"satir": int(len(L)), "hata": hata, "pencere": len(sayim), "en_buyuk_pencere": enb, "sutun": list(L.columns),
+                      "konu": L["subject"].astype(str).value_counts().head(25).to_dict() if "subject" in L.columns else {}}  # fmt: skip
+    # 4) portföy yönetim şirketlerinin pay alım satım bildirimleri: metin
+    if {"subject", "kapTitle", "disclosureIndex"} <= set(L.columns):
+        m = L[L["subject"].astype(str).str.lower().str.contains(r"pay al[ıi]m sat[ıi]m", regex=True)
+              & L["kapTitle"].astype(str).str.upper().str.contains(r"PORTF|FON|YATIRIM ORTAKLI", regex=True)]
+        rapor["pay_alim_satim"] = {"toplam": int(L["subject"].astype(str).str.lower().str.contains(r"pay al[ıi]m sat[ıi]m", regex=True).sum()), "fon_sirketi": int(len(m))}
+        satir = []
+        for i, idx in enumerate(m["disclosureIndex"].astype(str).head(detay_sinir)):
+            try:
+                r = o.get(f"https://www.kap.org.tr/tr/Bildirim/{idx}", headers={"Accept": "text/html"}, timeout=40)
+                satir.append({"disclosureIndex": idx, "durum": r.status_code, "metin": _metin(r.text)[:9000] if r.status_code == 200 else ""})
+            except Exception as e:  # noqa: BLE001, PERF203
+                satir.append({"disclosureIndex": idx, "durum": -1, "metin": str(e)[:100]})
+            time.sleep(0.2)
+            if i % 100 == 0:
+                print(f"[kap-detay] {i}/{min(len(m), detay_sinir)}", flush=True)
+        if satir:
+            tablolar["kap_pay_detay"] = pd.DataFrame(satir)
+            rapor["detay"] = {"satir": len(satir), "tamam": sum(1 for x in satir if x["durum"] == 200), "ornek": satir[0]["metin"][:600]}
+    return tablolar, rapor
+
+
+def kesif2() -> dict:
+    """İkinci keşif: TEFAS'ın yeni API yolları ve İş Yatırım'da yabancı payı sayfasının adresi."""
+    out: dict[str, Any] = {}
+    h = {"User-Agent": TARAYICI, "Accept-Language": "tr-TR,tr;q=0.9"}
+    try:
+        yollar: set[str] = set()
+        ornek = {}
+        for sayfa in ("https://www.tefas.gov.tr/", "https://www.tefas.gov.tr/TarihselVeriler.aspx", "https://www.tefas.gov.tr/FonKarsilastirma.aspx", "https://fundturkey.com.tr/"):
+            try:
+                r = requests.get(sayfa, headers=h, timeout=40)
+            except Exception as e:  # noqa: BLE001
+                ornek[sayfa] = f"hata {str(e)[:80]}"
+                continue
+            ornek[sayfa] = f"{r.status_code} {len(r.text)} {r.url}"
+            metinler = [r.text]
+            taban = "/".join(r.url.split("/")[:3])
+            for src in re.findall(r'<script[^>]+src="([^"]+)"', r.text)[:50]:
+                u = src if src.startswith("http") else taban + ("" if src.startswith("/") else "/") + src
+                if taban.split("//")[1] not in u:
+                    continue
+                try:
+                    metinler.append(requests.get(u, headers=h, timeout=30).text)
+                except Exception:  # noqa: BLE001, PERF203
+                    continue
+            for m in metinler:
+                yollar |= set(re.findall(r'["\'`]((?:https?://[a-z0-9.\-]+)?/?api/[A-Za-z0-9_\-/${}.?=&]+)', m))
+                for e in re.finditer(r"BindHistory\w+|fonkod|bastarih", m):
+                    if len(out.setdefault("tefas_baglam", [])) < 5:
+                        out["tefas_baglam"].append(m[max(0, e.start() - 400) : e.end() + 700].replace("\n", " "))
+        out["tefas_sayfalar"] = ornek
+        out["tefas_api"] = sorted(yollar)[:300]
+    except Exception as e:  # noqa: BLE001
+        out["tefas_hata"] = str(e)[:200]
+    try:
+        baglanti: set[str] = set()
+        for sayfa in ("https://www.isyatirim.com.tr/tr-tr/analiz/hisse/Sayfalar/default.aspx", "https://www.isyatirim.com.tr/tr-tr/analiz/Sayfalar/default.aspx",
+                      "https://www.isyatirim.com.tr/tr-tr/analiz/hisse/Sayfalar/Temel-Degerler-Ve-Oranlar.aspx"):  # fmt: skip
+            try:
+                r = requests.get(sayfa, headers=h, timeout=40)
+            except Exception as e:  # noqa: BLE001
+                out.setdefault("isy_sayfalar", {})[sayfa[-50:]] = f"hata {str(e)[:60]}"
+                continue
+            out.setdefault("isy_sayfalar", {})[sayfa[-50:]] = f"{r.status_code} {len(r.text)}"
+            for b in re.findall(r'href="([^"]+)"', r.text):
+                if re.search(r"(?i)abanc|takas|yatirimci|oran", b):
+                    baglanti.add(b[:160])
+            for e in re.finditer(r"(?i)yabanc[ıi]\s*oran", r.text):
+                if len(out.setdefault("isy_baglam", [])) < 4:
+                    out["isy_baglam"].append(r.text[max(0, e.start() - 300) : e.end() + 300].replace("\n", " "))
+        out["isy_baglanti"] = sorted(baglanti)[:80]
+    except Exception as e:  # noqa: BLE001
+        out["isy_hata"] = str(e)[:200]
+    return out
+
+
 def hisse_saatlik(hisseler: list[str], gun: int = 725, paralel: int = 4) -> tuple[pd.DataFrame, dict]:
     """Payların ham saatlik çubukları (Yahoo'nun kendi ızgarası: 09:30, 10:30 ... 17:30; ilk çubuk açılış seansını ve
     10:00–10:30'u içerir). `veri/saatlik` dosyaları seans süzgeci yüzünden 09:30 çubuğunu içermez; saat-içi analiz bunu kullanır."""
@@ -523,7 +713,7 @@ def saatlik_hisse_sec(tv: pd.DataFrame, adet: int = 250, ek: list[str] | None = 
 
 
 # --- toplu -------------------------------------------------------------------------------------
-TUM_KAYNAKLAR = ("tv", "yahoo", "isy", "mali", "seri", "saatlik", "hisse_saatlik", "yabanci", "tefas", "kap", "kesif")
+TUM_KAYNAKLAR = ("tv", "yahoo", "isy", "mali", "seri", "saatlik", "hisse_saatlik", "yabanci", "tefas", "kap", "kesif", "kesif2", "kap_bildirim")
 
 
 def ag_veri_cek(klasor: str | Path, bas: date, bit: date | None = None, kaynaklar: tuple[str, ...] = TUM_KAYNAKLAR, paralel: int = 6,
@@ -622,7 +812,13 @@ def ag_veri_cek(klasor: str | Path, bas: date, bit: date | None = None, kaynakla
         r["hata"] = dict(list(r.get("hata", {}).items())[:10])
         return r
 
-    for ad, islev in (("kesif", kesif), ("seri", _seri), ("saatlik", _saatlik), ("yabanci", _yabanci), ("kap", kap_sonda), ("tefas", _tefas),
+    def _kap_bildirim() -> dict:
+        tablolar, r = kap_bildirim(bas, bit)
+        for ad2, df in tablolar.items():
+            _yaz(df, klasor / f"{ad2}.csv.gz")
+        return r
+
+    for ad, islev in (("kesif", kesif), ("kesif2", kesif2), ("kap_bildirim", _kap_bildirim), ("seri", _seri), ("saatlik", _saatlik), ("yabanci", _yabanci), ("kap", kap_sonda), ("tefas", _tefas),
                       ("yahoo", _yahoo), ("hisse_saatlik", _hisse_saatlik), ("isy", _isy), ("mali", _mali)):  # fmt: skip
         if ad in kaynaklar:
             if ad in ("yahoo", "isy", "mali") and not liste:
