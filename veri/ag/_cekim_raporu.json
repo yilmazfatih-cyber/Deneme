@@ -1,5 +1,5 @@
 {
- "zaman": "2026-11-12T21:24",
+ "zaman": "2026-11-12T23:02",
  "rapor": {
   "tv": {
    "satir": 649,
@@ -156,7 +156,7 @@
    "zaman": "2026-11-12T11:18"
   },
   "_toplam": {
-   "sure_dk": 28.5,
+   "sure_dk": 24.1,
    "hisse": 623
   },
   "kesif": {
@@ -295,6 +295,188 @@
    "hata_sayisi": 38,
    "sure_sn": 518.1,
    "zaman": "2026-11-12T21:24"
+  },
+  "kesif2": {
+   "tefas_sayfalar": {
+    "https://www.tefas.gov.tr/": "200 6268 https://www.tefas.gov.tr/",
+    "https://www.tefas.gov.tr/TarihselVeriler.aspx": "200 6268 https://www.tefas.gov.tr/TarihselVeriler.aspx",
+    "https://www.tefas.gov.tr/FonKarsilastirma.aspx": "200 6268 https://www.tefas.gov.tr/FonKarsilastirma.aspx",
+    "https://fundturkey.com.tr/": "200 6268 https://fundturkey.com.tr/en"
+   },
+   "tefas_api": [],
+   "isy_sayfalar": {
+    "im.com.tr/tr-tr/analiz/hisse/Sayfalar/default.aspx": "200 747931",
+    "syatirim.com.tr/tr-tr/analiz/Sayfalar/default.aspx": "200 428363",
+    "aliz/hisse/Sayfalar/Temel-Degerler-Ve-Oranlar.aspx": "200 1667364"
+   },
+   "isy_baglam": [
+    "               </table>\r                                         </div>\r                                     </div>\r \r                                 </div>\r                             </div>\r                         </div>\r                     </div>\r                 </div>\r                 <!-- Yabancı Oranlar UC -->\r                 <div class=\"tab-item\">\r                     \r \r \r <script type=\"text/javascript\">\r \r     var pageType = \"TemelDegerlerVeOranlar\";\r \r     function getUrlVars() {\r         var vars = [], hash;\r         var hashes = window.location.href.slice(window.location.href.indexOf('?'",
+    "      <div class=\"form-group col-md-4\">\r \t\t\t\t                    <input type=\"search\" class=\"tableSearch i-search\" placeholder=\"Arama\">\r \t\t\t                    </div>\r \t\t                    </div>\r \t                    </div>\r                     </div>\r             <div class=\"table-wrap-data\" id=\"yabanciOranlarUC\">\r                 <div class=\"table-container\">\r                     <table data-sector=\"\" data-start=\"11-11-2026\" data-end=\"12-11-2026\" cellspacing=\"0\" width=\"100%\" class=\"dataTable hover nowrap  excelexport\" data-csvname=\"temelyabancioran\">\r                         <thead>\r                 ",
+    "</div>\r             <div class=\"table-wrap-data\" id=\"yabanciOranlarUC\">\r                 <div class=\"table-container\">\r                     <table data-sector=\"\" data-start=\"11-11-2026\" data-end=\"12-11-2026\" cellspacing=\"0\" width=\"100%\" class=\"dataTable hover nowrap  excelexport\" data-csvname=\"temelyabancioran\">\r                         <thead>\r                             <tr>\r                                 <th>Kod</th>\r                                 <th class=\"text-right\">Kapanış (TL)</th>\r \r                                 <th id=\"thDegisim\" class=\"text-right\">\r                                    ",
+    "                      <th>Kod</th>\r                                 <th class=\"text-right\">Kapanış (TL)</th>\r \r                                 <th id=\"thDegisim\" class=\"text-right\">\r                                     <div class=\"form-group\">\r                                         <select name=\"yabanciOranBaslangic\" id=\"yabanciOranBaslangic\" class=\"select\">\r                                             <option  value=\"12-11-2026\">12 Kasım 2026</option><option  selected  value=\"11-11-2026\">11 Kasım 2026</option><option  value=\"10-11-2026\">10 Kasım 2026</option><option  value=\"09-11-2026\">9 Kasım 2026</"
+   ],
+   "isy_baglanti": [
+    "/tr-tr/analiz/hisse/Sayfalar/Temel-Degerler-Ve-Oranlar.aspx ",
+    "/tr-tr/bizi-taniyin/yatirimci-iliskileri/Sayfalar/finansal-raporlar.aspx ",
+    "/tr-tr/bizi-taniyin/yatirimci-iliskileri/Sayfalar/ismen.aspx",
+    "/tr-tr/bizi-taniyin/yatirimci-iliskileri/Sayfalar/ismen.aspx ",
+    "/tr-tr/bizi-taniyin/yatirimci-iliskileri/Sayfalar/ismen.aspx#page-1 ",
+    "/tr-tr/bizi-taniyin/yatirimci-iliskileri/Sayfalar/ismen.aspx#page-2 ",
+    "/tr-tr/bizi-taniyin/yatirimci-iliskileri/Sayfalar/ismen.aspx#page-3 ",
+    "/tr-tr/bizi-taniyin/yatirimci-iliskileri/Sayfalar/ismen.aspx#page-4 ",
+    "/tr-tr/bizi-taniyin/yatirimci-iliskileri/Sayfalar/ismen.aspx#page-5 ",
+    "/tr-tr/bizi-taniyin/yatirimci-iliskileri/Sayfalar/ismen.aspx#page-6 ",
+    "/tr-tr/bizi-taniyin/yatirimci-iliskileri/Sayfalar/kurumsal-yonetim.aspx ",
+    "/tr-tr/bizi-taniyin/yatirimci-iliskileri/Sayfalar/yatirimci-iliskileri-iletisim.aspx",
+    "/tr-tr/bizi-taniyin/yatirimci-iliskileri/Sayfalar/yatirimci-sunumlari.aspx ",
+    "/tr-tr/bizi-taniyin/yatirimci-iliskileri/Yatirimci_Iliskileri_Belgeler/kurumsal-yonetim/kurumsal-bilgiler/organizasyon_semasi_final.pdf ",
+    "/tr-tr/bizi-taniyin/yatirimci-iliskileri/Yatirimci_Iliskileri_Belgeler/kurumsal-yonetim/yonetim-ve-icra-kurulu/yonetim_kurulu_final.pdf ",
+    "/tr-tr/bizi-taniyin/yatirimci-iliskileri/Yatirimci_Iliskileri_Belgeler/kurumsal-yonetim/yonetim-ve-icra-kurulu/yurutme_kurulu_final.pdf ",
+    "/tr-tr/urunler/Sayfalar/takasbank-merkezi-karsi-taraf-hizmeti.aspx",
+    "https://www.isyatirim.com.tr/tr-tr/analiz/hisse/Sayfalar/Temel-Degerler-Ve-Oranlar.aspx",
+    "https://www.isyatirim.com.tr:80/tr-tr/analiz/hisse/Sayfalar/Temel-Degerler-Ve-Oranlar.aspx"
+   ],
+   "sure_sn": 47.9,
+   "zaman": "2026-11-12T22:38"
+  },
+  "kap_bildirim": {
+   "sonda": [
+    {
+     "yol": "disclosure/subjects",
+     "durum": 404,
+     "uzunluk": 12812,
+     "ornek": "<!DOCTYPE html><html id=\"__next_error__\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"preload\" as=\"script\" fetchPriority=\"low\" href=\"/_next/static/chunks/1zgmbervt4bfj.js\"/><script src=\"/_next/static/chunks/1gkur241q1z2p.js\" async=\"\"></"
+    },
+    {
+     "yol": "disclosure/subjects/IGS",
+     "durum": 404,
+     "uzunluk": 12824,
+     "ornek": "<!DOCTYPE html><html id=\"__next_error__\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"preload\" as=\"script\" fetchPriority=\"low\" href=\"/_next/static/chunks/1zgmbervt4bfj.js\"/><script src=\"/_next/static/chunks/1gkur241q1z2p.js\" async=\"\"></"
+    },
+    {
+     "yol": "disclosure/subjects/ODA",
+     "durum": 404,
+     "uzunluk": 12824,
+     "ornek": "<!DOCTYPE html><html id=\"__next_error__\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"preload\" as=\"script\" fetchPriority=\"low\" href=\"/_next/static/chunks/1zgmbervt4bfj.js\"/><script src=\"/_next/static/chunks/1gkur241q1z2p.js\" async=\"\"></"
+    },
+    {
+     "yol": "disclosure/subjects?disclosureClass=ODA",
+     "durum": 404,
+     "uzunluk": 12852,
+     "ornek": "<!DOCTYPE html><html id=\"__next_error__\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"preload\" as=\"script\" fetchPriority=\"low\" href=\"/_next/static/chunks/1zgmbervt4bfj.js\"/><script src=\"/_next/static/chunks/1gkur241q1z2p.js\" async=\"\"></"
+    },
+    {
+     "yol": "disclosure/filter/FILTERYFBF",
+     "durum": 404,
+     "uzunluk": 12834,
+     "ornek": "<!DOCTYPE html><html id=\"__next_error__\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"preload\" as=\"script\" fetchPriority=\"low\" href=\"/_next/static/chunks/1zgmbervt4bfj.js\"/><script src=\"/_next/static/chunks/1gkur241q1z2p.js\" async=\"\"></"
+    },
+    {
+     "yol": "params",
+     "durum": 404,
+     "uzunluk": 12782,
+     "ornek": "<!DOCTYPE html><html id=\"__next_error__\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"preload\" as=\"script\" fetchPriority=\"low\" href=\"/_next/static/chunks/1zgmbervt4bfj.js\"/><script src=\"/_next/static/chunks/1gkur241q1z2p.js\" async=\"\"></"
+    },
+    {
+     "post": "%Y-%m-%d|IGS",
+     "durum": 200,
+     "satir": 1845,
+     "ornek": "[{\"publishDate\":\"12.11.2026 22:28:58\",\"fundCode\":null,\"kapTitle\":\"AKFEN GAYRİMENKUL YATIRIM ORTAKLIĞI A.Ş.\",\"isOldKap\":false,\"disclosureClass\":\"ODA\",\"disclosureType\":\"CA\",\"disclosureCategory\":\"STT\",\"summary\":\"MKK talebi ile KAP İşleminin Kapatılması için Kolaylaştırılmış Usulde Bölünmeye İlişkin Tescil Tarihinin Eklenmesi\",\"subject\":\"Bölünme İşlemlerine İlişkin Bildirim\",\"relatedStocks\":null,\"year"
+    },
+    {
+     "post": "%Y-%m-%d|",
+     "durum": 200,
+     "satir": 1976,
+     "ornek": "[{\"publishDate\":\"12.11.2026 22:28:58\",\"fundCode\":null,\"kapTitle\":\"AKFEN GAYRİMENKUL YATIRIM ORTAKLIĞI A.Ş.\",\"isOldKap\":false,\"disclosureClass\":\"ODA\",\"disclosureType\":\"CA\",\"disclosureCategory\":\"STT\",\"summary\":\"MKK talebi ile KAP İşleminin Kapatılması için Kolaylaştırılmış Usulde Bölünmeye İlişkin Tescil Tarihinin Eklenmesi\",\"subject\":\"Bölünme İşlemlerine İlişkin Bildirim\",\"relatedStocks\":null,\"year"
+    }
+   ],
+   "konu_sayisi": 0,
+   "secili_konu": [],
+   "secim": {
+    "fmt": "%Y-%m-%d",
+    "uye": "IGS",
+    "konu_suzgeci": false
+   },
+   "liste": {
+    "satir": 2141,
+    "hata": 0,
+    "pencere": 129,
+    "en_buyuk_pencere": [
+     [
+      "2025-04-30|IGS",
+      802
+     ],
+     [
+      "2025-05-09|IGS",
+      560
+     ],
+     [
+      "2025-04-29|IGS",
+      457
+     ],
+     [
+      "2025-04-28|IGS",
+      431
+     ],
+     [
+      "2025-04-25|IGS",
+      391
+     ]
+    ],
+    "sutun": [
+     "uye_tipi",
+     "publishDate",
+     "fundCode",
+     "kapTitle",
+     "isOldKap",
+     "disclosureClass",
+     "disclosureType",
+     "disclosureCategory",
+     "summary",
+     "subject",
+     "relatedStocks",
+     "year",
+     "ruleType",
+     "period",
+     "disclosureIndex",
+     "isLate",
+     "stockCodes",
+     "hasMultiLanguageSupport",
+     "attachmentCount",
+     "modifyStatus"
+    ],
+    "konu": {
+     "Payların Geri Alınmasına İlişkin Bildirim": 596,
+     "Finansal Rapor": 547,
+     "Kar Payı Dağıtım İşlemlerine İlişkin Bildirim": 322,
+     "Pay Alım Satım Bildirimi": 266,
+     "Sermaye Artırımı - Azaltımı İşlemlerine İlişkin Bildirim": 211,
+     "Sermaye Artırımından Elde Edilecek - Edilen Fonun Kullanımına İlişkin Rapor": 46,
+     "Fiyat Tespit Raporuna İlişkin Analist Raporu (Halka Arza Aracılık Eden Kuruluş Dışında Farklı bir Kuruluş Tarafından Hazırlanan)": 39,
+     "Halka Arz Fiyatının Belirlenmesinde Esas Alınan Varsayımlara İlişkin Değerlendirme Raporu": 31,
+     "Birleşme İşlemlerine İlişkin Bildirim": 19,
+     "Fiyat Tespit Raporuna İlişkin Analist Raporu (Halka Arza Aracılık Eden Kuruluş Tarafından Hazırlanan)": 18,
+     "Halka Arz İşlemlerinde Sermaye Piyasası Aracının % 5 inden Fazlasını Satın Alanlara İlişkin Bildirim": 15,
+     "Sermaye Piyasası Kurulu Tedbir Kararı": 10,
+     "Geri Alınan Payların Elden Çıkarılması": 9,
+     "Sermaye Artırımı veya Azaltımı Bildirimi": 6,
+     "Kar Payı Avansı Ödemesi İşlemlerine İlişkin Bildirim": 2,
+     "Kar Payı Bildirimi": 2,
+     "Finansal Rapor Bildirimi": 1,
+     "Finansal Rapor Ek Süre Taleplerine İlişkin SPK Değerlendirmesi": 1
+    }
+   },
+   "pay_alim_satim": {
+    "toplam": 266,
+    "fon_sirketi": 51
+   },
+   "detay": {
+    "satir": 51,
+    "tamam": 0,
+    "ornek": ""
+   },
+   "sure_sn": 1397.8,
+   "zaman": "2026-11-12T23:02"
   }
  }
 }
