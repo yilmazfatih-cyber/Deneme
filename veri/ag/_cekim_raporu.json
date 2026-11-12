@@ -1,0 +1,163 @@
+{
+ "zaman": "2026-11-12T11:18",
+ "rapor": {
+  "tv": {
+   "satir": 649,
+   "tipler": {
+    "stock": 625,
+    "fund": 24
+   },
+   "gecerli_ek": [
+    "float_shares_outstanding",
+    "total_shares_outstanding",
+    "float_shares_percent_current",
+    "average_volume_30d_calc",
+    "average_volume_90d_calc",
+    "Value.Traded",
+    "price_earnings_ttm",
+    "price_book_fq",
+    "dividends_yield",
+    "dividends_yield_current",
+    "Perf.W",
+    "Perf.1M",
+    "Perf.3M",
+    "Perf.6M",
+    "Perf.YTD",
+    "Perf.Y",
+    "Perf.5Y",
+    "Perf.All",
+    "Volatility.D",
+    "Volatility.M",
+    "beta_1_year",
+    "relative_volume_10d_calc",
+    "High.All",
+    "Low.All",
+    "price_52_week_high",
+    "price_52_week_low",
+    "ipo_offer_date",
+    "ipo_offer_price_usd",
+    "ipo_deal_amount_usd",
+    "number_of_shareholders",
+    "number_of_employees",
+    "exchange",
+    "typespecs",
+    "indexes"
+   ],
+   "gecersiz_ek": [],
+   "hisse_listesi": 623,
+   "sure_sn": 12.6,
+   "zaman": "2026-11-12T11:17"
+  },
+  "seri": {
+   "sembol": 81,
+   "satir": 143208,
+   "hata": {
+    "ALTINS1.IS": "boş",
+    "DJIST.IS": "boş"
+   },
+   "sure_sn": 7.6,
+   "zaman": "2026-11-12T11:17"
+  },
+  "saatlik": {
+   "sembol": 34,
+   "satir": 220856,
+   "hata": {
+    "ALTINS1.IS": "boş"
+   },
+   "sure_sn": 5.0,
+   "zaman": "2026-11-12T11:17"
+  },
+  "yabanci": {
+   "denemeler": [
+    {
+     "fmt": "%d-%m-%Y",
+     "endeks": "09",
+     "hata": "HTTP 500: {\"Message\":\"There was an error processing the request.\",\"StackTrace\":\"\",\"ExceptionType\":\"\"}"
+    },
+    {
+     "fmt": "%d-%m-%Y",
+     "endeks": "",
+     "hata": "HTTP 500: {\"Message\":\"There was an error processing the request.\",\"StackTrace\":\"\",\"ExceptionType\":\"\"}"
+    },
+    {
+     "fmt": "%d-%m-%Y",
+     "endeks": "01",
+     "hata": "HTTP 500: {\"Message\":\"There was an error processing the request.\",\"StackTrace\":\"\",\"ExceptionType\":\"\"}"
+    },
+    {
+     "fmt": "%Y-%m-%d",
+     "endeks": "09",
+     "hata": "HTTP 500: {\"Message\":\"There was an error processing the request.\",\"StackTrace\":\"\",\"ExceptionType\":\"\"}"
+    },
+    {
+     "fmt": "%Y-%m-%d",
+     "endeks": "",
+     "hata": "HTTP 500: {\"Message\":\"There was an error processing the request.\",\"StackTrace\":\"\",\"ExceptionType\":\"\"}"
+    },
+    {
+     "fmt": "%Y-%m-%d",
+     "endeks": "01",
+     "hata": "HTTP 500: {\"Message\":\"There was an error processing the request.\",\"StackTrace\":\"\",\"ExceptionType\":\"\"}"
+    },
+    {
+     "fmt": "%d.%m.%Y",
+     "endeks": "09",
+     "hata": "HTTP 500: {\"Message\":\"There was an error processing the request.\",\"StackTrace\":\"\",\"ExceptionType\":\"\"}"
+    },
+    {
+     "fmt": "%d.%m.%Y",
+     "endeks": "",
+     "hata": "HTTP 500: {\"Message\":\"There was an error processing the request.\",\"StackTrace\":\"\",\"ExceptionType\":\"\"}"
+    },
+    {
+     "fmt": "%d.%m.%Y",
+     "endeks": "01",
+     "hata": "HTTP 500: {\"Message\":\"There was an error processing the request.\",\"StackTrace\":\"\",\"ExceptionType\":\"\"}"
+    },
+    {
+     "fmt": "%d/%m/%Y",
+     "endeks": "09",
+     "hata": "HTTP 500: {\"Message\":\"There was an error processing the request.\",\"StackTrace\":\"\",\"ExceptionType\":\"\"}"
+    },
+    {
+     "fmt": "%d/%m/%Y",
+     "endeks": "",
+     "hata": "HTTP 500: {\"Message\":\"There was an error processing the request.\",\"StackTrace\":\"\",\"ExceptionType\":\"\"}"
+    },
+    {
+     "fmt": "%d/%m/%Y",
+     "endeks": "01",
+     "hata": "HTTP 500: {\"Message\":\"There was an error processing the request.\",\"StackTrace\":\"\",\"ExceptionType\":\"\"}"
+    }
+   ],
+   "sure_sn": 5.8,
+   "zaman": "2026-11-12T11:17"
+  },
+  "kap": {
+   "ana": {
+    "durum": 200,
+    "tip": "text/html; charset=utf-8",
+    "uzunluk": 158477,
+    "ornek": "<!DOCTYPE html><html lang=\"tr\" class=\"overflow-x-hidden scroll-smooth show:overflow-y-hidden show:pr-1.5\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" con"
+   },
+   "bist-sirketler": {
+    "durum": 200,
+    "tip": "text/html; charset=utf-8",
+    "uzunluk": 1540569,
+    "ornek": "<!DOCTYPE html><html lang=\"tr\" class=\"overflow-x-hidden scroll-smooth show:overflow-y-hidden show:pr-1.5\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" con"
+   },
+   "api-sorgu": {
+    "hata": "HTTPSConnectionPool(host='www.kap.org.tr', port=443): Read timed out. (read timeout=15)"
+   },
+   "api-liste": {
+    "hata": "HTTPSConnectionPool(host='www.kap.org.tr', port=443): Read timed out. (read timeout=15)"
+   },
+   "sure_sn": 34.1,
+   "zaman": "2026-11-12T11:18"
+  },
+  "_toplam": {
+   "sure_dk": 1.1,
+   "hisse": 623
+  }
+ }
+}
