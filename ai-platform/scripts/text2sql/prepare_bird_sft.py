@@ -95,11 +95,12 @@ def build_examples(
     repair_ratio: float = 0.3,
     max_tables: int = 6,
     seed: int = 7,
+    style: str = "json",
     log=print,
 ) -> tuple[list[dict], dict]:
     rng = random.Random(seed)
     engine = Text2SQL(
-        lambda m, t: None, dialect="sqlite", lang=lang, max_tables=max_tables
+        lambda m, t: None, dialect="sqlite", lang=lang, max_tables=max_tables, style=style
     )  # yalnız istem için
     indexes: dict[str, SchemaIndex] = {}
     stats = {"total": len(items), "kept": 0, "repair": 0, "gold_fails": 0, "gold_ungrounded": 0, "no_db": 0}
@@ -130,7 +131,7 @@ def build_examples(
             continue
         messages = engine.messages_for(index, it["question"], it["evidence"])
         explanation = ("Tables: " if lang == "en" else "Tablolar: ") + ", ".join(g.tables)
-        answer = json.dumps({"sql": gold, "explanation": explanation}, ensure_ascii=False)
+        answer = engine.assistant_echo(gold, explanation)
         out.append(
             {
                 "messages": [*messages, {"role": "assistant", "content": answer}],
@@ -152,17 +153,12 @@ def build_examples(
                 error = e.message
             except Exception:  # noqa: BLE001, S112 - ayrıştırılamayan bozulma; örnek üretilmez
                 continue
-            repair_user = Text2SQL.repair_message(error, lang)
+            repair_user = Text2SQL.repair_message(error, lang, style)
             out.append(
                 {
                     "messages": [
                         *messages,
-                        {
-                            "role": "assistant",
-                            "content": json.dumps(
-                                {"sql": bad_sql, "explanation": explanation}, ensure_ascii=False
-                            ),
-                        },
+                        {"role": "assistant", "content": engine.assistant_echo(bad_sql, explanation)},
                         {"role": "user", "content": repair_user},
                         {"role": "assistant", "content": answer},
                     ],
@@ -180,6 +176,12 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--db-root", required=True, type=Path)
     ap.add_argument("--out", required=True, type=Path)
     ap.add_argument("--lang", default="en", choices=["en", "tr"])
+    ap.add_argument(
+        "--style",
+        default="json",
+        choices=["json", "cot"],
+        help="çıkarımda kullanılacak istem stiliyle aynı olmalı",
+    )
     ap.add_argument("--repair-ratio", type=float, default=0.3)
     ap.add_argument("--max-tables", type=int, default=6)
     ap.add_argument("--limit", type=int, default=None)
@@ -190,7 +192,13 @@ def main(argv: list[str] | None = None) -> int:
     if a.limit:
         items = items[: a.limit]
     examples, stats = build_examples(
-        items, a.db_root, lang=a.lang, repair_ratio=a.repair_ratio, max_tables=a.max_tables, seed=a.seed
+        items,
+        a.db_root,
+        lang=a.lang,
+        repair_ratio=a.repair_ratio,
+        max_tables=a.max_tables,
+        seed=a.seed,
+        style=a.style,
     )
     a.out.parent.mkdir(parents=True, exist_ok=True)
     with a.out.open("w", encoding="utf-8") as fh:

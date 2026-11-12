@@ -244,6 +244,46 @@ def test_parse_output_accepts_json_fence_and_plain_sql():
     assert parse_output("Bilmiyorum.") == ("", "")
 
 
+def test_parse_output_takes_last_sql_block_from_reasoning():
+    text = (
+        "First count rows:\n```sql\nSELECT COUNT(*) FROM t\n```\nThen filter.\n"
+        "```python\ncur.execute('SELECT x FROM y')\n```\nFinal:\n```sql\n-- final\nSELECT a FROM t WHERE b = 1;\n```"
+    )
+    assert parse_output(text) == ("SELECT a FROM t WHERE b = 1", "")
+    assert parse_output("```\nWITH q AS (SELECT 1) SELECT * FROM q\n```")[0].startswith("WITH q")
+    assert parse_output("```python\nprint(1)\n```") == ("", "")
+
+
+def test_messages_cot_style_single_user_turn(erp_index):
+    engine = Text2SQL(_gen_from([]), dialect="sqlite", lang="en", style="cot")
+    msgs = engine.messages_for(erp_index, "how many invoices", "invoice = fatura")
+    assert len(msgs) == 1 and msgs[0]["role"] == "user"
+    body = msgs[0]["content"]
+    assert "Database Engine:\nSQLite" in body and "CREATE TABLE fatura" in body
+    assert (
+        "External knowledge: invoice = fatura\nhow many invoices" in body
+        and "{" not in body.split("```sql")[0][-5:]
+    )
+    assert engine.assistant_echo("SELECT 1") == "```sql\nSELECT 1\n```"
+    with pytest.raises(ValueError):
+        Text2SQL(_gen_from([]), style="xml")
+
+
+async def test_pipeline_cot_style_repairs_with_fenced_answers(erp_index):
+    gen = _gen_from(
+        [
+            "Reasoning...\n```sql\nSELECT bakiye FROM cari\n```",
+            "Fixed:\n```sql\nSELECT unvan FROM cari\n```",
+        ]
+    )
+    engine = Text2SQL(gen, dialect="sqlite", lang="en", style="cot")
+    res = await engine.run("customer names", erp_index)
+    assert res.sql == "SELECT unvan FROM cari" and res.attempts[0]["error_kind"] == "grounding"
+    second = gen.calls[1]
+    assert second[-2] == {"role": "assistant", "content": "```sql\nSELECT bakiye FROM cari\n```"}
+    assert "```sql code block" in second[-1]["content"]
+
+
 # ----------------------------------------------------------------------------- hat (pipeline)
 
 
@@ -352,7 +392,7 @@ async def test_pipeline_links_large_schema_but_grounds_against_full(bird_db):
     assert res.linked_tables and len(res.linked_tables) <= 2
     assert res.tables == ["satscores", "schools"]
     system = gen.calls[0][0]["content"]
-    assert "SQL-only engine" in system and "SQL lehçesi: sqlite" in system
+    assert "SQL-only engine" in system and "SQL dialect: sqlite" in system and "<!--" not in system
 
 
 def test_messages_for_includes_evidence_and_schema(erp_index):
@@ -465,6 +505,11 @@ async def test_bird_evaluate_scores_execution_accuracy(bird_db, tmp_path):
     report = await bird.evaluate(items, bird_db, gen, out_dir=tmp_path, lang="en")
     assert report["n"] == 2 and report["execution_accuracy"] == 50.0
     assert (
+        report["first_turn_ex"] == 50.0
+        and report["fixed_by_pipeline"] == 0
+        and report["broken_by_pipeline"] == 0
+    )
+    assert (
         report["by_difficulty"]["simple"]["ex"] == 100.0 and report["by_difficulty"]["moderate"]["ex"] == 0.0
     )
     pred = json.loads((tmp_path / "predict_dev.json").read_text(encoding="utf-8"))
@@ -496,3 +541,25 @@ def test_bird_load_items_and_exec_match(tmp_path):
     ]
     assert bird.exec_match([(1, 2.0000001), (3, 4)], [(3, 4), (1, 2.0)])
     assert not bird.exec_match([(1,)], [(2,)]) and not bird.exec_match(None, [(1,)])
+
+
+async def test_bird_evaluate_counts_pipeline_fix_against_first_turn(bird_db, tmp_path):
+    item = {
+        "idx": 9,
+        "db_id": "california_schools",
+        "question": "How many schools?",
+        "evidence": "",
+        "gold": "SELECT COUNT(*) FROM schools",
+        "difficulty": "simple",
+    }
+    answers = iter(
+        [{"sql": "SELECT COUNT(SchoolName) FROM schools"}, {"sql": "SELECT COUNT(*) FROM schools"}]
+    )
+
+    async def gen(messages, temperature):
+        return json.dumps(next(answers))
+
+    report = await bird.evaluate([item], bird_db, gen, out_dir=tmp_path, lang="en")
+    assert report["execution_accuracy"] == 100.0 and report["first_turn_ex"] == 0.0
+    assert report["fixed_by_pipeline"] == 1 and report["hallucinated_column_or_table"] == 1
+    assert report["repaired_then_correct"] == 1

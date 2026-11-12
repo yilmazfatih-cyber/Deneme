@@ -34,6 +34,24 @@ Security = Callable[[str], str]
 
 _SQL_FENCE_RE = re.compile(r"```(?:sql)?\s*(.*?)```", re.DOTALL | re.IGNORECASE)
 _THINK_RE = re.compile(r"<think>.*?</think>\s*", re.DOTALL)
+_FENCE_RE = re.compile(r"```([a-zA-Z]*)[ \t]*\n?(.*?)```", re.DOTALL)
+_SQL_START_RE = re.compile(r"^\s*(?:--[^\n]*\n\s*)*(with|select)\b", re.IGNORECASE)
+
+
+def _last_sql_block(text: str) -> str:
+    """Akıl yürüten modeller ara sorgular da yazar; son ```sql``` bloğu nihai yanıttır. Etiketsiz blok ancak
+    SELECT/WITH ile başlıyorsa kabul edilir (```python``` içindeki SQL alınmaz)."""
+    blocks = _FENCE_RE.findall(text)
+    tagged = [b.strip() for tag, b in blocks if tag.lower() == "sql" and b.strip()]
+    if tagged:
+        return _strip_sql(tagged[-1])
+    plain = [b.strip() for tag, b in blocks if not tag and _SQL_START_RE.match(b)]
+    return _strip_sql(plain[-1]) if plain else ""
+
+
+def _strip_sql(sql: str) -> str:
+    lines = [ln for ln in sql.strip().splitlines() if not ln.strip().startswith("--")]
+    return "\n".join(lines).strip().rstrip(";").strip()
 
 
 class Text2SQLError(Exception):
@@ -72,12 +90,21 @@ class Text2SQLResult:
         return d
 
 
-def load_prompt(lang: str = "tr") -> str:
-    name = "text2sql.md" if lang == "tr" else f"text2sql_{lang}.md"
+STYLES = ("json", "cot")
+
+
+def load_prompt(lang: str = "tr", style: str = "json") -> str:
+    """`json`: sistem istemi + JSON çıktı. `cot`: tek kullanıcı mesajı şablonu, önce düşün sonra ```sql``` bloğu
+    (OmniSQL/SynSQL türü veriyle eğitilmiş modeller bu biçimde çok daha iyi çalışır)."""
+    stem = "text2sql_cot" if style == "cot" else "text2sql"
+    name = f"{stem}.md" if lang == "tr" else f"{stem}_{lang}.md"
     p = PROMPTS_DIR / name
     if not p.exists():
-        p = PROMPTS_DIR / "text2sql.md"
-    return p.read_text(encoding="utf-8").strip()
+        p = PROMPTS_DIR / f"{stem}.md"
+    text = p.read_text(encoding="utf-8")
+    return re.sub(
+        r"^\s*<!--.*?-->\s*", "", text, flags=re.DOTALL
+    ).strip()  # dosya başı açıklaması modele gitmez
 
 
 def parse_output(raw: Any) -> tuple[str, str]:
@@ -95,9 +122,9 @@ def parse_output(raw: Any) -> tuple[str, str]:
         obj = None
     if isinstance(obj, dict) and obj.get("sql"):
         return str(obj["sql"]).strip(), str(obj.get("explanation") or "").strip()
-    m = _SQL_FENCE_RE.search(text)
-    if m:
-        return m.group(1).strip(), ""
+    sql = _last_sql_block(text)
+    if sql:
+        return sql, ""
     if re.match(r"^\s*(with|select)\b", text, re.IGNORECASE):
         return text.strip().rstrip(";"), ""
     return "", ""
@@ -140,7 +167,11 @@ class Text2SQL:
         max_columns_per_table: int = 12,
         empty_result_is_error: bool = False,
         system_extra: str = "",
+        style: str = "json",
     ) -> None:
+        if style not in STYLES:
+            raise ValueError(f"style {STYLES} içinden olmalı: {style}")
+        self.style = style
         self.generate = generate
         self.executor = executor
         self.security = security
@@ -174,20 +205,58 @@ class Text2SQL:
         """Eğitim verisi hazırlayan betik de aynı biçimi kullanır (eğitim = çıkarım istemi)."""
         schema_idx, _ = self.prompt_schema(index, question, evidence)
         d = self.dialect or index.dialect
+        schema_text = schema_idx.to_prompt(dialect=d)
+        en = self.lang == "en"
+        if self.style == "cot":
+            label = "External knowledge" if en else "İpucu"
+            q = f"{label}: {evidence}\n{question}" if evidence else question
+            engine = {
+                "sqlite": "SQLite",
+                "postgres": "PostgreSQL",
+                "mysql": "MySQL",
+                "tsql": "SQL Server",
+            }.get(d or "", d or "SQL")
+            body = load_prompt(self.lang, "cot").format(engine=engine, schema=schema_text, question=q)
+            if self.system_extra:
+                body += "\n\n" + self.system_extra
+            return [{"role": "user", "content": body}]
         system = load_prompt(self.lang)
         if d:
-            system += f"\n\nSQL lehçesi: {d}."
+            system += f"\n\n{'SQL dialect' if en else 'SQL lehçesi'}: {d}."
         if self.system_extra:
             system += "\n\n" + self.system_extra
-        user = f"ŞEMA:\n{schema_idx.to_prompt(dialect=d)}\n"
-        if evidence:
-            user += f"\nİPUCU (doğru kabul et, aynen uygula): {evidence}\n"
-        user += f"\nSORU: {question}"
+        if en:
+            user = f"SCHEMA:\n{schema_text}\n"
+            if evidence:
+                user += f"\nEVIDENCE (treat as true, apply literally): {evidence}\n"
+            user += f"\nQUESTION: {question}"
+        else:
+            user = f"ŞEMA:\n{schema_text}\n"
+            if evidence:
+                user += f"\nİPUCU (doğru kabul et, aynen uygula): {evidence}\n"
+            user += f"\nSORU: {question}"
         return [{"role": "system", "content": system}, {"role": "user", "content": user}]
 
+    def assistant_echo(self, sql: str, explanation: str = "") -> str:
+        """Düzeltme turunda modelin önceki yanıtı (uzun akıl yürütme yerine yalnız sorgusu)."""
+        if self.style == "cot":
+            return f"```sql\n{sql}\n```"
+        return json.dumps({"sql": sql, "explanation": explanation}, ensure_ascii=False)
+
     @staticmethod
-    def repair_message(error: str, lang: str = "tr") -> str:
+    def repair_message(error: str, lang: str = "tr", style: str = "json") -> str:
         """Düzeltme turunda modele giden metin; eğitim verisi (prepare_bird_sft.py) aynı metni kullanır."""
+        if style == "cot":
+            if lang == "en":
+                return (
+                    f"The previous query was rejected: {error}\n"
+                    "Fix it using only tables and columns from the schema. Think briefly, then give the corrected "
+                    "query in a ```sql code block."
+                )
+            return (
+                f"Önceki sorgu reddedildi: {error}\n"
+                "Yalnız şemadaki tablo ve sütunlarla düzelt. Kısaca düşün, düzeltilmiş sorguyu ```sql bloğunda ver."
+            )
         if lang == "en":
             return (
                 f"The previous query was rejected: {error}\n"
@@ -261,9 +330,9 @@ class Text2SQL:
                 messages = messages + [
                     {
                         "role": "assistant",
-                        "content": json.dumps({"sql": sql, "explanation": explanation}, ensure_ascii=False),
+                        "content": self.assistant_echo(sql, explanation),
                     },
-                    {"role": "user", "content": self.repair_message(error, self.lang)},
+                    {"role": "user", "content": self.repair_message(error, self.lang, self.style)},
                 ]
         attempts.append({"candidate": cand_no, "gave_up": True, "error": last_error})
         return None

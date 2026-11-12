@@ -157,6 +157,15 @@ class OpenAICompatible:
         await self.client.aclose()
 
 
+def _cpu_has_bf16() -> bool:
+    """AVX512-BF16 / AMX varsa CPU'da bf16 matris çarpımı fp32'den ~3 kat hızlı (ölçüldü: 1.5B, 4 çekirdek)."""
+    try:
+        flags = Path("/proc/cpuinfo").read_text(encoding="utf-8", errors="ignore")
+    except OSError:
+        return False
+    return "avx512_bf16" in flags or "amx_bf16" in flags
+
+
 class TransformersLocal:
     """Sunucusuz yerel çıkarım (transformers, CPU/GPU). Ağırlık varyantlarını hızlı karşılaştırmak için.
 
@@ -178,10 +187,14 @@ class TransformersLocal:
         self.torch = torch
         self.tok = AutoTokenizer.from_pretrained(str(model_dir))
         if dtype == "auto":
-            dt = torch.bfloat16 if torch.cuda.is_available() else torch.float32
+            dt = torch.bfloat16 if (torch.cuda.is_available() or _cpu_has_bf16()) else torch.float32
         else:
             dt = {"bf16": torch.bfloat16, "fp16": torch.float16, "fp32": torch.float32}[dtype]
-        self.model = AutoModelForCausalLM.from_pretrained(str(model_dir), torch_dtype=dt)
+        self.dtype = str(dt).replace("torch.", "")
+        try:  # transformers ≥ 5: `dtype`; eski sürümler: `torch_dtype`
+            self.model = AutoModelForCausalLM.from_pretrained(str(model_dir), dtype=dt)
+        except TypeError:
+            self.model = AutoModelForCausalLM.from_pretrained(str(model_dir), torch_dtype=dt)
         self.model.eval()
         if torch.cuda.is_available():
             self.model.to("cuda")
@@ -229,6 +242,7 @@ async def evaluate(
     link: bool = True,
     verbose: bool = False,
     raw: bool = False,
+    style: str = "json",
 ) -> dict:
     """`raw=True`: denetimsiz tek üretim (şema bağlama/düzeltme/oylama yok); yalnız ölçüm için. Her ham sorgunun
     şemaya bağlanıp bağlanmadığı yine kaydedilir → modelin kendi başına sütun uydurma oranı (`hallucinated`)."""
@@ -257,6 +271,7 @@ async def evaluate(
             candidates=candidates,
             link=link,
             empty_result_is_error=False,
+            style=style,
         )
         rec: dict[str, Any] = {"idx": it["idx"], "db_id": it["db_id"], "difficulty": it["difficulty"]}
         async with sem:
@@ -265,6 +280,7 @@ async def evaluate(
                 if raw:
                     raw_out = await generate(engine.messages_for(index, it["question"], it["evidence"]), 0.0)
                     sql = parse_output(raw_out)[0]
+                    rec["raw_tail"] = str(raw_out)[-300:]
                     rec.update(sql=sql, selected_by="raw", turns=1, error=None if sql else "boş yanıt")
                     try:
                         ground(sql, index, "sqlite")
@@ -296,6 +312,25 @@ async def evaluate(
         try:
             gold_rows = await asyncio.to_thread(run_sqlite, path, it["gold"]) if it["gold"] else []
             rec["correct"] = exec_match(pred_rows, gold_rows) if it["gold"] else None
+            # Hattın ilk adayının ilk turu (sıcaklık 0) = denetimsiz ham üretim. Aynı koşudan eşleştirilmiş
+            # "ham" doğruluğu ve uydurma oranı çıkar; ayrıca --raw koşusu gerekmez.
+            first = next((a for a in attempts if a.get("candidate") == 0 and a.get("turn") == 0), None)
+            if first is not None and it["gold"]:
+                rec["hallucinated"] = first.get("error_kind") == "grounding"
+                if first.get("ok"):
+                    rec["first_turn_correct"] = rec["correct"] if rec.get("turns") == 1 else None
+                if rec.get("first_turn_correct") is None:
+                    try:
+                        rows0 = (
+                            await asyncio.to_thread(run_sqlite, path, first["sql"])
+                            if first.get("sql")
+                            else None
+                        )
+                    except sqlite3.Error:
+                        rows0 = None
+                    rec["first_turn_correct"] = exec_match(rows0, gold_rows)
+            elif raw and it["gold"]:
+                rec["first_turn_correct"] = rec["correct"]
         except sqlite3.Error as e:
             rec["correct"] = None
             rec["gold_error"] = str(e)
@@ -347,6 +382,13 @@ def summarize(results: list[dict]) -> dict:
         "no_valid_sql": sum(1 for r in results if not r.get("sql")),
         "hallucinated_column_or_table": sum(1 for r in results if r.get("hallucinated")),
         "repaired_then_correct": sum(1 for r in results if r.get("correct") and r.get("turns", 1) > 1),
+        "first_turn_ex": (
+            round(100 * sum(1 for r in scored if r.get("first_turn_correct")) / len(scored), 2)
+            if scored
+            else None
+        ),
+        "fixed_by_pipeline": sum(1 for r in scored if r["correct"] and not r.get("first_turn_correct")),
+        "broken_by_pipeline": sum(1 for r in scored if r.get("first_turn_correct") and not r["correct"]),
         "selected_by": dict(Counter(r.get("selected_by") for r in results if r.get("selected_by"))),
         "repair_error_kinds": dict(kinds),
         "avg_turns": round(sum(r.get("turns", 0) for r in results) / len(results), 2) if results else 0,
@@ -373,6 +415,10 @@ def main(argv: list[str] | None = None) -> int:
         "--hf-model", type=Path, default=None, help="sunucu yerine yerel transformers modeli (klasör)"
     )
     ap.add_argument("--max-new-tokens", type=int, default=384)
+    ap.add_argument("--dtype", default="auto", choices=["auto", "bf16", "fp16", "fp32"])
+    ap.add_argument(
+        "--style", default="json", choices=["json", "cot"], help="istem stili (cot: düşün + ```sql```)"
+    )
     ap.add_argument("--raw", action="store_true", help="denetimsiz tek üretim (karşılaştırma tabanı)")
     ap.add_argument("--offset", type=int, default=0, help="ilk N soruyu atla")
     ap.add_argument("--stride", type=int, default=1, help="her k. soruyu al (dengeli alt küme)")
@@ -383,7 +429,7 @@ def main(argv: list[str] | None = None) -> int:
     if a.limit:
         items = items[: a.limit]
     if a.hf_model:
-        gen = TransformersLocal(a.hf_model, max_new_tokens=a.max_new_tokens)
+        gen = TransformersLocal(a.hf_model, max_new_tokens=a.max_new_tokens, dtype=a.dtype)
         concurrency = 1
     else:
         gen = OpenAICompatible(a.base_url, a.model, a.api_key)
@@ -404,6 +450,7 @@ def main(argv: list[str] | None = None) -> int:
                 link=not a.no_link,
                 verbose=a.verbose,
                 raw=a.raw,
+                style=a.style,
             )
         finally:
             await gen.aclose()
@@ -411,8 +458,11 @@ def main(argv: list[str] | None = None) -> int:
     report = asyncio.run(_run())
     if isinstance(gen, TransformersLocal):
         report["tokens_in"], report["tokens_out"] = gen.tokens_in, gen.tokens_out
+        report["dtype"] = gen.dtype
     report["model"] = str(a.hf_model or a.model)
-    report["mode"] = "raw" if a.raw else f"pipeline(c={a.candidates},r={a.max_repairs})"
+    report["mode"] = (
+        "raw" if a.raw else f"pipeline(c={a.candidates},r={a.max_repairs})"
+    ) + f",style={a.style}"
     (a.out / "report.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps(report, ensure_ascii=False, indent=2))
     return 0

@@ -221,7 +221,9 @@ def test_prepare_builds_direct_and_repair_examples(bird_train):
     m = direct[0]["messages"]
     assert [x["role"] for x in m] == ["system", "user", "assistant"]
     assert "SQL-only engine" in m[0]["content"] and "CREATE TABLE orders" in m[1]["content"]
-    assert "EVIDENCE" not in m[1]["content"] and "İPUCU" in m[1]["content"]  # istem gövdesi platformla aynı
+    assert (
+        "EVIDENCE" in m[1]["content"] and "QUESTION:" in m[1]["content"]
+    )  # İngilizce istemde İngilizce etiket
     ans = json.loads(m[2]["content"])
     assert ans["sql"] == items[0]["gold"] and ans["explanation"] == "Tables: customers, orders"
     r = repair[0]["messages"]
@@ -279,3 +281,15 @@ def test_train_lora_dry_run_validates_data(tmp_path, bird_train):
     cfg = json.loads((out / "train_config.json").read_text())
     assert cfg["data_info"] == {"examples": 4, "kinds": {"direct": 2, "repair": 2}, "max_turns": 5}
     assert cfg["target_modules"] == train_lora.TARGET_MODULES and cfg["r"] == 64
+
+
+def test_prepare_cot_style_uses_sql_fences(bird_train):
+    root, items = bird_train
+    examples, _ = prepare.build_examples(
+        items[:1], root, lang="en", repair_ratio=1.0, seed=1, style="cot", log=lambda *_: None
+    )
+    direct, repair = examples
+    assert [x["role"] for x in direct["messages"]] == ["user", "assistant"]
+    assert "Take a deep breath" in direct["messages"][0]["content"]
+    assert direct["messages"][-1]["content"] == f"```sql\n{items[0]['gold']}\n```"
+    assert "```sql code block" in repair["messages"][2]["content"]
