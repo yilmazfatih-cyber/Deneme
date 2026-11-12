@@ -848,6 +848,18 @@ def komut_defter_rapor(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
     return 0
 
 
+# --- ağ katmanı --------------------------------------------------------------------------------
+def komut_ag_veri_cek(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
+    from datetime import date as _date
+
+    from .ag.kaynaklar import TUM_KAYNAKLAR, ag_veri_cek
+
+    kaynaklar = tuple(k.strip() for k in a.kaynak.split(",") if k.strip()) if a.kaynak else TUM_KAYNAKLAR
+    hisseler = [h.strip().upper() for h in a.hisseler.split(",") if h.strip()] if a.hisseler else None
+    ag_veri_cek(a.klasor, _date.fromisoformat(a.baslangic), kaynaklar=kaynaklar, paralel=a.paralel, hisseler=hisseler)
+    return 0
+
+
 # --- hisse dosyası -----------------------------------------------------------------------------
 def komut_dosya_veri_cek(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
     from datetime import date as _date
@@ -1340,6 +1352,14 @@ def ayristirici() -> argparse.ArgumentParser:
     sp.add_argument("paketler", nargs="+")
     sp.add_argument("--klasor", default="dosya_kaynak")
     sp.set_defaults(islev=komut_olay_dagit)
+
+    sp = alt.add_parser("ag-veri-cek", help="Ağ katmanı ham verisi: tüm BIST paneli, sektör endeksleri, madenler, yabancı payı, TEFAS (dış ağ gerekir)")
+    sp.add_argument("--klasor", default="veri/ag")
+    sp.add_argument("--baslangic", default="2024-01-01")
+    sp.add_argument("--kaynak", help="Virgülle: tv,yahoo,isy,mali,seri,saatlik,yabanci,tefas,kap (verilmezse hepsi)")
+    sp.add_argument("--hisseler", help="Virgülle ayrılmış hisse listesi (verilmezse TradingView taraması)")
+    sp.add_argument("--paralel", type=int, default=6)
+    sp.set_defaults(islev=komut_ag_veri_cek)
 
     sp = alt.add_parser("yeniden-baslat", help="Düşüş sınırıyla durmuş sanal hesabı yeniden aç")
     sp.add_argument("--piyasa", choices=list(PIYASALAR), required=True)
