@@ -1,0 +1,41 @@
+diff --git a/fatura/kdv.py b/fatura/kdv.py
+--- a/fatura/kdv.py
++++ b/fatura/kdv.py
+@@ -1,13 +1,23 @@
+ """KDV yardımcıları."""
+ 
+-ORAN = 0.20
++ORAN = 0.20  
+ 
+ 
+-def kdv_hesapla(tutar):
+-    # Tutar metin olarak gelebilir
+-    deger = float(tutar)
++class KdvHesaplayici:
++    """KDV hesaplarını tek yerde toplar."""
++
++    def __init__(self, oran=ORAN):
++        self.oran = oran
++
++    def hesapla(self, miktar):
++        return round(float(miktar or 0) * self.oran, 2)
++
++
++def kdv_hesapla(miktar):
++    """Verilen miktarın KDV'sini döndürür."""
++    deger = float(miktar) if miktar else 0.0
+     return round(deger * ORAN, 2)
+ 
+ 
+ def toplam(tutarlar):
+-    return sum(float(t) for t in tutarlar)
++    return sum(float(t) for t in tutarlar)  # toplamı döndür
+diff --git a/fatura/ayarlar.py b/fatura/ayarlar.py
+--- a/fatura/ayarlar.py
++++ b/fatura/ayarlar.py
+@@ -1,3 +1,3 @@
+-PARA_BIRIMI = 'TRY'
+-YUVARLAMA = 2
++PARA_BIRIMI = "TRY"
++YUVARLAMA   = 2
+ VARSAYILAN_DIL = 'tr'

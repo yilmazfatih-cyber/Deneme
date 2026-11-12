@@ -1,0 +1,5 @@
+interface:
+  display_name: 'Yol Göster'
+  short_description: 'Durumuna uyan beceriyi öner'
+policy:
+  allow_implicit_invocation: false

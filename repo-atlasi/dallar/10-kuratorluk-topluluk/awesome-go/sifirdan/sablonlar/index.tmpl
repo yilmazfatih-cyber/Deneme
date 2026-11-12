@@ -1,0 +1,8 @@
+{{define "index"}}{{template "bas" .}}<h1>{{.SiteTitle}}</h1>
+<p>{{.Description}}</p>
+<ul class="kategoriler">
+{{- range .Categories}}
+<li class="duzey-{{.Level}}"><a href="{{.Slug}}/index.html">{{.Title}}</a> ({{len .Links}})</li>
+{{- end}}
+</ul>
+{{template "son" .}}{{end}}

@@ -1,0 +1,119 @@
+{
+  "name": "Sipariş kargo akışı",
+  "id": "ornek-siparis",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "1",
+      "name": "Elle başlat",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [0, 300]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "return [\n  { json: { id: 1, musteri: 'Ayşe', tutar: 250, sehir: 'İzmir' } },\n  { json: { id: 2, musteri: 'Mehmet', tutar: 80, sehir: 'Ankara' } },\n  { json: { id: 3, musteri: 'Zeynep', tutar: 120, sehir: 'İstanbul' } },\n  { json: { id: 4, musteri: 'ılgaz', tutar: 40, sehir: 'Iğdır' } },\n];"
+      },
+      "id": "2",
+      "name": "Örnek siparişler",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [220, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "typeValidation": "strict" },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.tutar }}",
+              "rightValue": 100,
+              "operator": { "type": "number", "operation": "gt" }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "3",
+      "name": "Tutar 100'den büyük mü?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [440, 300]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            { "id": "a1", "name": "kargo", "type": "number", "value": 0 },
+            {
+              "id": "a2",
+              "name": "etiket",
+              "type": "string",
+              "value": "={{ $json.musteri.toLocaleUpperCase('tr-TR') }} - öncelikli"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "4",
+      "name": "Kargo ücretsiz",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [660, 200]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            { "id": "b1", "name": "kargo", "type": "number", "value": 30 },
+            { "id": "b2", "name": "toplam", "type": "number", "value": "={{ $json.tutar + 30 }}" }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "5",
+      "name": "Kargo ücretli",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [660, 420]
+    },
+    {
+      "parameters": { "mode": "append" },
+      "id": "6",
+      "name": "Birleştir",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [880, 300]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const tumu = $input.all();\nconst toplam = tumu.reduce((t, o) => t + o.json.tutar + o.json.kargo, 0);\nconsole.log('sipariş sayısı', tumu.length);\nreturn [{ json: { siparisSayisi: tumu.length, toplamTahsilat: toplam } }];"
+      },
+      "id": "7",
+      "name": "Özet",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1100, 300]
+    }
+  ],
+  "connections": {
+    "Elle başlat": { "main": [[{ "node": "Örnek siparişler", "type": "main", "index": 0 }]] },
+    "Örnek siparişler": { "main": [[{ "node": "Tutar 100'den büyük mü?", "type": "main", "index": 0 }]] },
+    "Tutar 100'den büyük mü?": {
+      "main": [
+        [{ "node": "Kargo ücretsiz", "type": "main", "index": 0 }],
+        [{ "node": "Kargo ücretli", "type": "main", "index": 0 }]
+      ]
+    },
+    "Kargo ücretsiz": { "main": [[{ "node": "Birleştir", "type": "main", "index": 0 }]] },
+    "Kargo ücretli": { "main": [[{ "node": "Birleştir", "type": "main", "index": 1 }]] },
+    "Birleştir": { "main": [[{ "node": "Özet", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" },
+  "pinData": {}
+}

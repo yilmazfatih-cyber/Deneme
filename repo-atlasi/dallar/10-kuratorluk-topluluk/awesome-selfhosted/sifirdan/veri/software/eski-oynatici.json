@@ -1,0 +1,12 @@
+{
+  "name": "Eski Oynatıcı",
+  "website_url": "https://eskioynatici.example",
+  "source_code_url": "https://git.example/eski-oynatici/eski-oynatici",
+  "description": "Web tabanlı basit müzik çalar.",
+  "licenses": ["GPL-3.0"],
+  "platforms": ["PHP"],
+  "tags": ["Medya Akışı"],
+  "stargazers_count": 150,
+  "updated_at": "2025-06-01",
+  "archived": false
+}

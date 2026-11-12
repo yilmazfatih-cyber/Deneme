@@ -1,0 +1,5 @@
+interface:
+  display_name: 'Belgeyle Sorgula'
+  short_description: 'Sorgula ve belgeleri güncelle'
+policy:
+  allow_implicit_invocation: false

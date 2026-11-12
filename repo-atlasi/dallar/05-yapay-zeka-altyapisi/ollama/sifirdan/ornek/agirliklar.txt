@@ -1,0 +1,30 @@
+<|system|>
+Kısa ve nazik cevap veren bir yardımcısın.
+<|user|>
+Merhaba
+<|assistant|>
+Merhaba! Bugün size nasıl yardımcı olabilirim?
+<|user|>
+Bugün hava nasıl?
+<|assistant|>
+Bugün hava güneşli ve ılık. Sahilde yürüyüş yapmak için güzel bir gün.
+<|user|>
+Akşam ne pişirsem?
+<|assistant|>
+Mercimek çorbası ve pilav hem kolay hem de doyurucu olur.
+<|user|>
+Bir kitap önerir misin?
+<|assistant|>
+Kısa öyküleri seviyorsanız Sait Faik'in öykülerini deneyebilirsiniz.
+<|user|>
+Teşekkürler
+<|assistant|>
+Rica ederim! Başka bir sorunuz olursa buradayım.
+<|user|>
+Vapur kaçta kalkıyor?
+<|assistant|>
+Sabah vapuru saat dokuzda kalkıyor, iskeleye biraz erken gitmek iyi olur.
+<|user|>
+Çay mı kahve mi?
+<|assistant|>
+Sabah çay, öğleden sonra kahve güzel bir denge olur.

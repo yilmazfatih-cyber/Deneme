@@ -1,0 +1,32 @@
+{
+  "sayi": 2,
+  "tarih": "2026-10-28",
+  "projeler": [
+    {
+      "url": "https://github.com/TheAlgorithms/Python",
+      "kategori": "Python",
+      "baslik": "Algoritmaların Python ile uygulamaları",
+      "aciklama": "Sıralamadan graflara yüzlerce algoritmayı Python ile uygulayan, öğrenme amaçlı topluluk deposu.",
+      "oneren": "ornek-ayse"
+    },
+    {
+      "url": "https://github.com/trekhleb/javascript-algorithms",
+      "kategori": "JavaScript",
+      "baslik": "Açıklamalı JavaScript algoritmaları",
+      "aciklama": "Veri yapılarını ve algoritmaları JavaScript ile uygulayan, her birini açıklama ve ek okumalarla anlatan depo."
+    },
+    {
+      "url": "https://github.com/ohmyzsh/ohmyzsh",
+      "kategori": "Diğer",
+      "baslik": "zsh yapılandırmasını yönetme çatısı",
+      "aciklama": "Eklenti ve temalarla zsh kabuğunun yapılandırmasını yönetmeyi kolaylaştıran, topluluk tarafından geliştirilen çatı.",
+      "oneren": "ornek-zeynep"
+    },
+    {
+      "url": "https://github.com/donnemartin/system-design-primer",
+      "kategori": "Kitap",
+      "baslik": "Büyük ölçekli sistem tasarımı rehberi",
+      "aciklama": "Büyük ölçekli sistemlerin nasıl tasarlandığını anlatan, mülakat hazırlığı için Anki kartları da içeren açık rehber."
+    }
+  ]
+}

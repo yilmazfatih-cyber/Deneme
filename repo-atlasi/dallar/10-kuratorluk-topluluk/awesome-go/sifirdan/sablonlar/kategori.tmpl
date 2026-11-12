@@ -1,0 +1,8 @@
+{{define "kategori"}}{{template "bas" .}}<h1>{{.Category.Title}}</h1>
+{{with .Category.Desc}}<p>{{inline .}}</p>{{end}}
+<ul class="girdiler">
+{{- range .Entries}}
+<li><a href="{{.URL}}">{{.Name}}</a>{{with .Desc}} - {{inline .}}{{end}}{{with .ProjectPath}} <a class="proje" href="{{.}}">ayrıntı</a>{{end}}</li>
+{{- end}}
+</ul>
+{{template "son" .}}{{end}}

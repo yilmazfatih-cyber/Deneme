@@ -253,7 +253,7 @@
       "url": "https://github.com/nilbuild/developer-roadmap",
       "dal": "02-uygulama-platformlari",
       "kisa_ad": "developer-roadmap",
-      "tur": "kod",
+      "tur": "egitim",
       "klasor": "dallar/02-uygulama-platformlari/developer-roadmap/",
       "aciklama_en": "Interactive roadmaps, guides and other educational content to help developers grow in their careers.",
       "dil": "TypeScript",
@@ -285,7 +285,8 @@
       ],
       "ana_sayfa": "https://roadmap.sh",
       "incelenen_commit": "f590626",
-      "commit_tarihi": "2026-11-09"
+      "commit_tarihi": "2026-11-09",
+      "not": "İncelenen commit'te 11.337 dosyanın 11.305'i Markdown içerik; lisans yalnızca kişisel kullanıma izin veriyor."
     },
     {
       "depo": "torvalds/linux",

@@ -1,0 +1,4 @@
+# Ek Python paketi gerekmez: yalnızca standart kütüphane (urllib, sqlite3, http.server, zoneinfo).
+# tzdata yoksa Europe/Istanbul için sabit UTC+3 kullanılır (Türkiye 2016'dan beri yaz saati uygulamıyor).
+# Firecrawl REST API ile (bulut ya da kendi sunucunuz) konuşulur; Python SDK'sı gerekmez.
+# n8n isteğe bağlıdır ve lisansı gereği müşteri tarafından kendi iç işi için kurulur (Docker ya da npm).

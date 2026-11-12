@@ -1,0 +1,14 @@
+# ~/.zshrc örneği (gerçek karşılığı: templates/zshrc.zsh-template)
+export MINI_OMZ="$HOME/.mini-omz"   # mini-omz klasörünü buraya kopyala ya da yolu değiştir
+
+ZSH_THEME="sade"
+plugins=(git-kisa selam)
+
+# Güncelleme davranışı: disabled | reminder | auto  (varsayılan: reminder, 13 günde bir)
+zstyle ':mini-omz:update' mode reminder
+zstyle ':mini-omz:update' frequency 13
+
+# Bir eklentinin takma adlarını kapatmak için:
+# zstyle ':mini-omz:plugins:git-kisa' aliases no
+
+source "$MINI_OMZ/mini-omz.sh"

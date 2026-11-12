@@ -1,0 +1,10 @@
+{
+  "name": "aylik-bulten-sifirdan",
+  "private": true,
+  "type": "module",
+  "description": "HelloGitHub benzeri aylık açık kaynak bülteni üretici (eğitim amaçlı, bağımlılıksız)",
+  "scripts": {
+    "test": "node --test",
+    "uret": "node cli.js veri cikti --site https://bulten.example"
+  }
+}

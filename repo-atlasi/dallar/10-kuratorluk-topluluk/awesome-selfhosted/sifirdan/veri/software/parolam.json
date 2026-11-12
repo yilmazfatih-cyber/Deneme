@@ -1,0 +1,12 @@
+{
+  "name": "Parolam",
+  "website_url": "https://parolam.example",
+  "source_code_url": "https://git.example/parolam/parolam",
+  "description": "Aile içinde paylaşılan parola kasası.",
+  "licenses": ["BSD-3-Clause"],
+  "platforms": ["Go"],
+  "tags": ["Parola Yöneticileri"],
+  "stargazers_count": 1200,
+  "updated_at": "2026-10-10",
+  "archived": false
+}

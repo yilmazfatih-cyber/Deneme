@@ -1,0 +1,25 @@
+[
+  {
+    "identifier": "AGPL-3.0",
+    "name": "GNU Affero General Public License 3.0",
+    "url": "https://spdx.org/licenses/AGPL-3.0.html"
+  },
+  { "identifier": "Apache-2.0", "name": "Apache, Version 2.0", "url": "https://spdx.org/licenses/Apache-2.0.html" },
+  {
+    "identifier": "BSD-3-Clause",
+    "name": "BSD 3-clause \"New\" or \"Revised\"",
+    "url": "https://spdx.org/licenses/BSD-3-Clause.html"
+  },
+  {
+    "identifier": "GPL-2.0",
+    "name": "GNU General Public License 2.0",
+    "url": "https://spdx.org/licenses/GPL-2.0.html"
+  },
+  {
+    "identifier": "GPL-3.0",
+    "name": "GNU General Public License 3.0",
+    "url": "https://spdx.org/licenses/GPL-3.0.html"
+  },
+  { "identifier": "MIT", "name": "MIT License", "url": "https://spdx.org/licenses/MIT.html" },
+  { "identifier": "MPL-2.0", "name": "Mozilla Public License 2.0", "url": "https://spdx.org/licenses/MPL-2.0.html" }
+]

@@ -1,0 +1,33 @@
+{
+  "name": "buyuk-harf",
+  "publisher": "atlas",
+  "version": "0.1.0",
+  "description": "Belgeyi Türkçe kurallarıyla büyük harfe çevirir (i → İ).",
+  "main": "./extension.js",
+  "activationEvents": [],
+  "contributes": {
+    "commands": [
+      {
+        "command": "metin.buyukHarf",
+        "title": "Belgeyi Büyük Harfe Çevir",
+        "category": "Metin"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "metin.buyukHarf",
+        "key": "ctrl+k ctrl+u",
+        "when": "editorTextFocus && !editorReadonly"
+      }
+    ],
+    "configuration": {
+      "properties": {
+        "buyukHarf.yerel": {
+          "type": "string",
+          "default": "tr-TR",
+          "description": "Büyük harfe çevirirken kullanılacak yerel ayar."
+        }
+      }
+    }
+  }
+}

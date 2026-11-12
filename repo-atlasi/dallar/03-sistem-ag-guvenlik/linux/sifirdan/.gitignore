@@ -1,0 +1,6 @@
+# Derleme çıktıları depoya girmez
+*.o
+cekirdek/cekirdek.elf
+cekirdek/birim_testleri
+kabuk/kabuk
+__pycache__/

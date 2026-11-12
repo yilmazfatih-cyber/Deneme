@@ -1,0 +1,315 @@
+{
+  "baslik": "OSSU Computer Science: Intro CS + Core CS",
+  "kaynak": "https://github.com/ossu/computer-science/blob/8f8272b1d378d31494240aa1d667aa6b045c6552/README.md",
+  "not": "Süre ve efor değerleri README tablolarından (8f8272b, 2026-11-08). Saat = hafta x ortalama efor. Ders dışı önkoşullar (lise matematiği vb.) onkosul_metni alanında.",
+  "dersler": [
+    {
+      "kimlik": "intro-cs",
+      "ad": "Introduction to Computer Science and Programming using Python (MIT 6.100L)",
+      "bolum": "Intro CS",
+      "hafta": 14,
+      "saat_min": 6,
+      "saat_max": 10,
+      "onkosul_metni": "lise cebiri",
+      "kaynak": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/",
+      "aciklama": "Zorlanırsan önce CS50P (coursepages/intro-programming)."
+    },
+    {
+      "kimlik": "missing-semester",
+      "ad": "The Missing Semester of Your CS Education",
+      "bolum": "CS Tools",
+      "hafta": 2,
+      "saat_min": 12,
+      "saat_max": 12,
+      "kaynak": "https://missing.csail.mit.edu/"
+    },
+    {
+      "kimlik": "spd",
+      "ad": "Systematic Program Design",
+      "bolum": "Core programming",
+      "hafta": 13,
+      "saat_min": 8,
+      "saat_max": 10,
+      "kaynak": "coursepages/spd/README.md"
+    },
+    {
+      "kimlik": "class-based",
+      "ad": "Class-based Program Design",
+      "bolum": "Core programming",
+      "hafta": 13,
+      "saat_min": 5,
+      "saat_max": 10,
+      "onkosullar": ["spd"],
+      "onkosul_metni": "lise matematiği",
+      "kaynak": "coursepages/class-based/README.md"
+    },
+    {
+      "kimlik": "programming-languages",
+      "ad": "Programming Languages (UW CSE341)",
+      "bolum": "Core programming",
+      "hafta": 11,
+      "saat_min": 4,
+      "saat_max": 8,
+      "onkosullar": ["spd"],
+      "kaynak": "https://courses.cs.washington.edu/courses/cse341/19sp/"
+    },
+    {
+      "kimlik": "ood",
+      "ad": "Object-Oriented Design (NEU CS3500)",
+      "bolum": "Core programming",
+      "hafta": 13,
+      "saat_min": 5,
+      "saat_max": 10,
+      "onkosullar": ["class-based"],
+      "kaynak": "https://course.ccs.neu.edu/cs3500f19/"
+    },
+    {
+      "kimlik": "software-architecture",
+      "ad": "Software Architecture",
+      "bolum": "Core programming",
+      "hafta": 4,
+      "saat_min": 2,
+      "saat_max": 5,
+      "onkosullar": ["ood"],
+      "kaynak": "https://www.coursera.org/learn/software-architecture",
+      "aciklama": "Coursera dersi: Temmuz 2025'ten beri ücretsiz izleme (audit) büyük ölçüde kalktı; OSSU FAQ'e bak."
+    },
+    {
+      "kimlik": "calc-1a",
+      "ad": "Calculus 1A: Differentiation",
+      "bolum": "Core math",
+      "hafta": 13,
+      "saat_min": 6,
+      "saat_max": 10,
+      "onkosul_metni": "lise matematiği",
+      "kaynak": "https://openlearninglibrary.mit.edu/courses/course-v1:MITx+18.01.1x+2T2019/about"
+    },
+    {
+      "kimlik": "calc-1b",
+      "ad": "Calculus 1B: Integration",
+      "bolum": "Core math",
+      "hafta": 13,
+      "saat_min": 5,
+      "saat_max": 10,
+      "onkosullar": ["calc-1a"],
+      "kaynak": "https://openlearninglibrary.mit.edu/courses/course-v1:MITx+18.01.2x+3T2019/about"
+    },
+    {
+      "kimlik": "calc-1c",
+      "ad": "Calculus 1C: Coordinate Systems & Infinite Series",
+      "bolum": "Core math",
+      "hafta": 6,
+      "saat_min": 5,
+      "saat_max": 10,
+      "onkosullar": ["calc-1b"],
+      "kaynak": "https://openlearninglibrary.mit.edu/courses/course-v1:MITx+18.01.3x+1T2020/about"
+    },
+    {
+      "kimlik": "math-for-cs",
+      "ad": "Mathematics for Computer Science (MIT 6.042J)",
+      "bolum": "Core math",
+      "hafta": 13,
+      "saat_min": 5,
+      "saat_max": 5,
+      "onkosullar": ["calc-1c"],
+      "kaynak": "https://openlearninglibrary.mit.edu/courses/course-v1:OCW+6.042J+2T2019/about"
+    },
+    {
+      "kimlik": "nand2tetris-1",
+      "ad": "Nand to Tetris Part I",
+      "bolum": "Core systems",
+      "hafta": 6,
+      "saat_min": 7,
+      "saat_max": 13,
+      "onkosul_metni": "C benzeri bir dil",
+      "kaynak": "https://www.nand2tetris.org/",
+      "aciklama": "Coursera bağlantısının alternatifi nand2tetris.org."
+    },
+    {
+      "kimlik": "nand2tetris-2",
+      "ad": "Nand to Tetris Part II",
+      "bolum": "Core systems",
+      "hafta": 6,
+      "saat_min": 12,
+      "saat_max": 18,
+      "onkosullar": ["nand2tetris-1"],
+      "kaynak": "https://www.coursera.org/learn/nand2tetris2",
+      "aciklama": "Coursera dersi: Temmuz 2025'ten beri ücretsiz izleme (audit) büyük ölçüde kalktı; OSSU FAQ'e bak."
+    },
+    {
+      "kimlik": "ostep",
+      "ad": "Operating Systems: Three Easy Pieces",
+      "bolum": "Core systems",
+      "hafta": 11,
+      "saat_min": 6,
+      "saat_max": 10,
+      "onkosullar": ["nand2tetris-2"],
+      "kaynak": "coursepages/ostep/README.md",
+      "aciklama": "README: 10-12 hafta (burada 11). Kurs sayfasındaki temel yaklaşım ~80 saat."
+    },
+    {
+      "kimlik": "networking",
+      "ad": "Computer Networking: a Top-Down Approach",
+      "bolum": "Core systems",
+      "hafta": 8,
+      "saat_min": 4,
+      "saat_max": 12,
+      "onkosul_metni": "cebir, olasılık, temel CS",
+      "kaynak": "https://gaia.cs.umass.edu/kurose_ross/online_lectures.htm"
+    },
+    {
+      "kimlik": "algo-1",
+      "ad": "Algorithms: Design and Analysis, Part 1",
+      "bolum": "Core theory",
+      "hafta": 8,
+      "saat_min": 4,
+      "saat_max": 8,
+      "onkosullar": ["math-for-cs"],
+      "onkosul_metni": "herhangi bir programlama dili",
+      "kaynak": "https://www.edx.org/learn/algorithms/stanford-university-algorithms-design-and-analysis-part-1"
+    },
+    {
+      "kimlik": "algo-2",
+      "ad": "Algorithms: Design and Analysis, Part 2",
+      "bolum": "Core theory",
+      "hafta": 8,
+      "saat_min": 4,
+      "saat_max": 8,
+      "onkosullar": ["algo-1"],
+      "kaynak": "https://www.edx.org/learn/algorithms/stanford-university-algorithms-design-and-analysis-part-2"
+    },
+    {
+      "kimlik": "cybersecurity",
+      "ad": "Cybersecurity Fundamentals",
+      "bolum": "Core security",
+      "hafta": 8,
+      "saat_min": 10,
+      "saat_max": 12,
+      "kaynak": "https://www.edx.org/learn/cybersecurity/rochester-institute-of-technology-cybersecurity-fundamentals"
+    },
+    {
+      "kimlik": "secure-coding",
+      "ad": "Principles of Secure Coding",
+      "bolum": "Core security",
+      "hafta": 4,
+      "saat_min": 4,
+      "saat_max": 4,
+      "kaynak": "https://www.coursera.org/learn/secure-coding-principles",
+      "aciklama": "Coursera dersi: Temmuz 2025'ten beri ücretsiz izleme (audit) büyük ölçüde kalktı; OSSU FAQ'e bak."
+    },
+    {
+      "kimlik": "identifying-vulns",
+      "ad": "Identifying Security Vulnerabilities",
+      "bolum": "Core security",
+      "hafta": 4,
+      "saat_min": 4,
+      "saat_max": 4,
+      "kaynak": "https://www.coursera.org/learn/identifying-security-vulnerabilities",
+      "aciklama": "Coursera dersi: Temmuz 2025'ten beri ücretsiz izleme (audit) büyük ölçüde kalktı; OSSU FAQ'e bak."
+    },
+    {
+      "kimlik": "vulns-c-cpp",
+      "ad": "Identifying Security Vulnerabilities in C/C++ Programming",
+      "bolum": "Core security",
+      "hafta": 4,
+      "saat_min": 5,
+      "saat_max": 5,
+      "kaynak": "https://www.coursera.org/learn/identifying-security-vulnerabilities-c-programming",
+      "aciklama": "OSSU'da 'birini seç': ya bu ya Java sürümü. Coursera dersi: Temmuz 2025'ten beri ücretsiz izleme (audit) büyük ölçüde kalktı; OSSU FAQ'e bak."
+    },
+    {
+      "kimlik": "db-modeling",
+      "ad": "Databases: Modeling and Theory",
+      "bolum": "Core applications",
+      "hafta": 2,
+      "saat_min": 10,
+      "saat_max": 10,
+      "onkosullar": ["programming-languages", "software-architecture"],
+      "onkosul_metni": "core programming",
+      "kaynak": "https://www.edx.org/learn/databases/stanford-university-databases-modeling-and-theory"
+    },
+    {
+      "kimlik": "db-sql",
+      "ad": "Databases: Relational Databases and SQL",
+      "bolum": "Core applications",
+      "hafta": 2,
+      "saat_min": 10,
+      "saat_max": 10,
+      "onkosullar": ["programming-languages", "software-architecture"],
+      "onkosul_metni": "core programming",
+      "kaynak": "https://www.edx.org/learn/relational-databases/stanford-university-databases-relational-databases-and-sql"
+    },
+    {
+      "kimlik": "db-semistructured",
+      "ad": "Databases: Semistructured Data",
+      "bolum": "Core applications",
+      "hafta": 2,
+      "saat_min": 10,
+      "saat_max": 10,
+      "onkosullar": ["programming-languages", "software-architecture"],
+      "onkosul_metni": "core programming",
+      "kaynak": "https://www.edx.org/learn/relational-databases/stanford-university-databases-semistructured-data"
+    },
+    {
+      "kimlik": "machine-learning",
+      "ad": "Machine Learning (Specialization)",
+      "bolum": "Core applications",
+      "hafta": 11,
+      "saat_min": 9,
+      "saat_max": 9,
+      "onkosul_metni": "temel kodlama",
+      "kaynak": "https://www.deeplearning.ai/courses/machine-learning-specialization/"
+    },
+    {
+      "kimlik": "computer-graphics",
+      "ad": "Computer Graphics",
+      "bolum": "Core applications",
+      "hafta": 6,
+      "saat_min": 12,
+      "saat_max": 12,
+      "onkosul_metni": "C++ ya da Java, temel lineer cebir",
+      "kaynak": "https://www.edx.org/learn/computer-graphics/the-university-of-california-san-diego-computer-graphics"
+    },
+    {
+      "kimlik": "software-engineering",
+      "ad": "Software Engineering: Introduction",
+      "bolum": "Core applications",
+      "hafta": 6,
+      "saat_min": 8,
+      "saat_max": 10,
+      "onkosullar": ["programming-languages", "software-architecture"],
+      "onkosul_metni": "core programming + büyükçe bir proje",
+      "kaynak": "https://www.edx.org/learn/software-engineering/university-of-british-columbia-software-engineering-introduction"
+    },
+    {
+      "kimlik": "ethics",
+      "ad": "Ethics, Technology and Engineering",
+      "bolum": "Core ethics",
+      "hafta": 9,
+      "saat_min": 2,
+      "saat_max": 2,
+      "kaynak": "https://www.coursera.org/learn/ethics-technology-engineering",
+      "aciklama": "Coursera dersi: Temmuz 2025'ten beri ücretsiz izleme (audit) büyük ölçüde kalktı; OSSU FAQ'e bak."
+    },
+    {
+      "kimlik": "intro-ip",
+      "ad": "Introduction to Intellectual Property",
+      "bolum": "Core ethics",
+      "hafta": 4,
+      "saat_min": 2,
+      "saat_max": 2,
+      "kaynak": "https://www.coursera.org/learn/introduction-intellectual-property",
+      "aciklama": "Coursera dersi: Temmuz 2025'ten beri ücretsiz izleme (audit) büyük ölçüde kalktı; OSSU FAQ'e bak."
+    },
+    {
+      "kimlik": "data-privacy",
+      "ad": "Data Privacy Fundamentals",
+      "bolum": "Core ethics",
+      "hafta": 3,
+      "saat_min": 3,
+      "saat_max": 3,
+      "kaynak": "https://www.coursera.org/learn/northeastern-data-privacy",
+      "aciklama": "Coursera dersi: Temmuz 2025'ten beri ücretsiz izleme (audit) büyük ölçüde kalktı; OSSU FAQ'e bak."
+    }
+  ]
+}

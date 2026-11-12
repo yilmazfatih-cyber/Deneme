@@ -1,0 +1,12 @@
+{
+  "name": "Şifrelik",
+  "website_url": "https://sifrelik.example",
+  "source_code_url": "https://git.example/sifrelik/sifrelik",
+  "description": "Ekipler için parola kasası; tarayıcı eklentisi ve mobil istemcilerle.",
+  "licenses": ["AGPL-3.0"],
+  "platforms": ["Rust", "Docker"],
+  "tags": ["Parola Yöneticileri"],
+  "stargazers_count": 3900,
+  "updated_at": "2026-11-05",
+  "archived": false
+}

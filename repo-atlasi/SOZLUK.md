@@ -1,0 +1,128 @@
+# Terim sözlüğü
+
+Atlasta sık geçen teknik terimlerin Türkçe karşılıkları ve kısa açıklamaları. Parantez içinde İngilizce asıl terim var;
+gerçek depolarda, belgelerde ve hata mesajlarında bu adla karşılaşırsın. "Nerede" sütunu terimin en iyi öğretildiği
+dalı ya da depo dosyasını gösterir.
+
+## Genel yazılım ve açık kaynak
+
+| Terim                                 | Açıklama                                                                                                   | Nerede                                                                                                                       |
+| ------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| Monorepo                              | Birçok paketin tek depoda, ortak araçlarla yönetilmesi (React, Vue 3, n8n, opencode)                       | [D01](dallar/01-web-arayuzu/README.md), [D04](dallar/04-veri-araclari-otomasyon/README.md)                                   |
+| Sığ / kısmi / seyrek klon             | `--depth 1` / `--filter=blob:none` / `sparse-checkout`: büyük depoyu yalnızca gereken kadar indirmek       | [G2](govde/README.md#g2)                                                                                                     |
+| Giriş noktası (entry point)           | Programın çalışmaya başladığı dosya ya da fonksiyon; kod okumanın ilk durağı                               | [G8](govde/README.md#g8)                                                                                                     |
+| Lint / biçimleyici (linter/formatter) | Kod ya da metin kurallarını otomatik denetleyen (ESLint, ruff, awesome-lint) ve biçimleyen (Prettier) araç | [G7](govde/README.md#g7), [D10](dallar/10-kuratorluk-topluluk/README.md)                                                     |
+| CI (sürekli bütünleştirme)            | Her değişiklikte testleri ve denetimleri otomatik çalıştıran düzen (GitHub Actions)                        | [G7](govde/README.md#g7)                                                                                                     |
+| Doctest                               | Fonksiyonun belgesindeki örneklerin test olarak çalıştırılması                                             | [TheAlgorithms/Python](dallar/09-bilgisayar-bilimi/thealgorithms-python/README.md)                                           |
+| İzin verici lisans (permissive)       | MIT, BSD, Apache gibi; atıf koşuluyla kapalı üründe kullanılabilir                                         | [G9](govde/README.md#g9)                                                                                                     |
+| Copyleft / AGPL                       | Değiştirip dağıtırsan (AGPL'de ağ üzerinden sunarsan) kaynağı aynı lisansla açma yükümlülüğü               | [G9](govde/README.md#g9), [iş fikirleri](is-fikirleri/README.md)                                                             |
+| Fair-code / kaynak açık lisans        | Kaynak görünür ama ticari kullanım kısıtlı (n8n Sustainable Use License, PolyForm Shield)                  | [n8n](dallar/04-veri-araclari-otomasyon/n8n/README.md), [AutoGPT](dallar/06-ajan-platformlari/autogpt/README.md)             |
+| CC0 / CC BY                           | İçerik lisansları: CC0 tüm hakları bırakır, CC BY atıf ister                                               | [D10](dallar/10-kuratorluk-topluluk/README.md)                                                                               |
+| Satıcı kopyası (vendoring)            | Bağımlılığın kaynak kodunu depoya kopyalayıp sürümüyle birlikte taşımak                                    | [ollama](dallar/05-yapay-zeka-altyapisi/ollama/README.md), [TensorFlow](dallar/05-yapay-zeka-altyapisi/tensorflow/README.md) |
+
+## Web arayüzü ve JavaScript
+
+| Terim                            | Açıklama                                                                                 | Nerede                                                                                             |
+| -------------------------------- | ---------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| Kapanış (closure)                | Fonksiyonun tanımlandığı kapsamdaki değişkenleri hatırlaması                             | [You Don't Know JS](dallar/01-web-arayuzu/you-dont-know-js/README.md)                              |
+| Olay döngüsü (event loop)        | JS'in tek iş parçacığında görevleri ve mikro görevleri (Promise) sırayla yürütme düzeni  | [You Don't Know JS](dallar/01-web-arayuzu/you-dont-know-js/README.md)                              |
+| Sanal DOM (virtual DOM)          | Arayüzün bellekte tutulan hafif kopyası; değişiklik önce burada hesaplanır               | [React](dallar/01-web-arayuzu/react/README.md), [Vue 3](dallar/01-web-arayuzu/vue3-core/README.md) |
+| Uzlaştırma (reconciliation)      | Eski ve yeni arayüz ağacını karşılaştırıp yalnızca gereken DOM değişikliğini bulma       | [React](dallar/01-web-arayuzu/react/README.md)                                                     |
+| Fiber                            | React'te bölünebilir iş birimi; render işini kesip sonra sürdürmeyi sağlar               | [React](dallar/01-web-arayuzu/react/README.md)                                                     |
+| Hook                             | Fonksiyon bileşenine durum ve yan etki ekleyen `useState`, `useEffect` gibi fonksiyonlar | [React](dallar/01-web-arayuzu/react/README.md)                                                     |
+| Reaktivite (reactivity)          | Veri değişince ona bağlı hesapların ve görünümün kendiliğinden güncellenmesi             | [Vue 3](dallar/01-web-arayuzu/vue3-core/README.md), [Vue 2](dallar/01-web-arayuzu/vue2/README.md)  |
+| Proxy / `Object.defineProperty`  | Vue 3 ve Vue 2'nin nesne erişimini yakalamak için kullandığı iki dil özelliği            | [Vue 2](dallar/01-web-arayuzu/vue2/README.md)                                                      |
+| En uzun artan alt dizi (LIS)     | Vue 3'ün anahtarlı liste farkında en az taşımayı bulmak için kullandığı algoritma        | [Vue 3](dallar/01-web-arayuzu/vue3-core/README.md)                                                 |
+| Şablon derleyicisi (compiler)    | HTML benzeri şablonu render fonksiyonuna çeviren kod: ayrıştır → dönüştür → üret         | [Vue 3](dallar/01-web-arayuzu/vue3-core/README.md)                                                 |
+| Tasarım değişkeni (design token) | Renk, boşluk, kırılım noktası gibi tasarım kararlarının tek yerde tutulan değerleri      | [Bootstrap](dallar/01-web-arayuzu/bootstrap/README.md)                                             |
+| Data-API                         | JS bileşenlerinin HTML'deki `data-bs-*` nitelikleriyle, kod yazmadan çalıştırılması      | [Bootstrap](dallar/01-web-arayuzu/bootstrap/README.md)                                             |
+| SRI (Subresource Integrity)      | CDN'den yüklenen dosyanın değiştirilmediğini özet değeriyle doğrulama                    | [MVP 06](is-fikirleri/06-mesai-hesap/README.md)                                                    |
+
+## Uygulama platformları
+
+| Terim                                          | Açıklama                                                                      | Nerede                                                         |
+| ---------------------------------------------- | ----------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| Parça tablosu / parça ağacı (piece table/tree) | Büyük metni kopyalamadan düzenlemeye yarayan metin tamponu yapısı             | [VS Code](dallar/02-uygulama-platformlari/vscode/README.md)    |
+| Eklenti sunucusu (extension host)              | Eklentileri editörden ayrı bir süreçte ya da iş parçacığında çalıştıran yapı  | [VS Code](dallar/02-uygulama-platformlari/vscode/README.md)    |
+| Katkı noktası (contribution point)             | Eklentinin manifestinde bildirdiği komut, menü, ayar gibi uzantı yerleri      | [VS Code](dallar/02-uygulama-platformlari/vscode/README.md)    |
+| Widget / Element / RenderObject                | Flutter'ın üç ağacı: tarif, örnek ve yerleşim/çizim nesnesi                   | [Flutter](dallar/02-uygulama-platformlari/flutter/README.md)   |
+| Kısıt (constraints)                            | Flutter yerleşiminde ebeveynin çocuğa verdiği en küçük/en büyük boyut aralığı | [Flutter](dallar/02-uygulama-platformlari/flutter/README.md)   |
+| Kabuk başlangıç dosyası                        | `.zshrc`, `.bashrc`: kabuk açılırken okunan yapılandırma                      | [Oh My Zsh](dallar/02-uygulama-platformlari/ohmyzsh/README.md) |
+
+## Sistem, ağ ve güvenlik
+
+| Terim                                               | Açıklama                                                                                        | Nerede                                                                                    |
+| --------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| Sistem çağrısı (system call)                        | Kullanıcı programının çekirdekten hizmet istemesi: `read`, `write`, `fork`, `execve`…           | [Linux](dallar/03-sistem-ag-guvenlik/linux/README.md)                                     |
+| VFS (sanal dosya sistemi)                           | Linux'ta farklı dosya sistemlerini ortak bir arayüzün arkasında birleştiren katman              | [Linux](dallar/03-sistem-ag-guvenlik/linux/README.md)                                     |
+| Multiboot                                           | Önyükleyicinin (GRUB) çekirdeği tanıyıp yüklemesini sağlayan standart başlık                    | [Linux](dallar/03-sistem-ag-guvenlik/linux/README.md)                                     |
+| Kesme (interrupt), GDT/IDT                          | Donanım olaylarının işlenmesi ve x86'da bellek kesimi/kesme tabloları                           | [Linux](dallar/03-sistem-ag-guvenlik/linux/README.md)                                     |
+| ELF                                                 | Linux'ta çalıştırılabilir dosya biçimi: başlık, bölümler, semboller                             | [REA](dallar/03-sistem-ag-guvenlik/rea/README.md)                                         |
+| Yetkili DNS sunucusu (authoritative)                | Bir alanın kayıtlarını (A, NS, MX, TXT…) asıl kaynağından yanıtlayan sunucu                     | [FreeDomain](dallar/03-sistem-ag-guvenlik/freedomain/README.md)                           |
+| Kayıt kuruluşu / kayıt şirketi (registry/registrar) | Alan adı uzantısını işleten kurum ve alan adını satan şirket                                    | [FreeDomain](dallar/03-sistem-ag-guvenlik/freedomain/README.md)                           |
+| EPP / RDAP                                          | Kayıt şirketlerinin kayıt kuruluşuyla konuştuğu protokol / WHOIS'in yerini alan sorgu protokolü | [FreeDomain](dallar/03-sistem-ag-guvenlik/freedomain/README.md)                           |
+| Tersine mühendislik                                 | Kaynağı olmayan bir programın nasıl çalıştığını ikili dosyasından ve davranışından çıkarmak     | [REA](dallar/03-sistem-ag-guvenlik/rea/README.md)                                         |
+| Yazılım varlık yönetimi (SAM)                       | Şirketteki yazılımların ve lisanslarının envanteri ve uyum denetimi                             | [MAS vaka çalışması](dallar/03-sistem-ag-guvenlik/microsoft-activation-scripts/README.md) |
+
+## Veri toplama, dönüştürme ve otomasyon
+
+| Terim                                  | Açıklama                                                                                       | Nerede                                                               |
+| -------------------------------------- | ---------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| Çıkarıcı (extractor)                   | Bir siteye özgü sayfayı çözüp video bilgisini (başlık, formatlar, URL'ler) çıkaran sınıf       | [yt-dlp](dallar/04-veri-araclari-otomasyon/yt-dlp/README.md)         |
+| Son işlemci (postprocessor)            | İndirmeden sonra çalışan adım: ses çıkarma, biçim değiştirme, altyazı gömme                    | [yt-dlp](dallar/04-veri-araclari-otomasyon/yt-dlp/README.md)         |
+| Dönüştürücü kaydı (converter registry) | Dosya türüne göre doğru dönüştürücüyü öncelik sırasıyla seçen yapı                             | [MarkItDown](dallar/04-veri-araclari-otomasyon/markitdown/README.md) |
+| Tarama ve kazıma (crawling/scraping)   | Bağlantıları izleyerek sayfaları dolaşmak / sayfadan veri çekmek                               | [Firecrawl](dallar/04-veri-araclari-otomasyon/firecrawl/README.md)   |
+| Keşif kuyruğu (frontier)               | Tarayıcının sıradaki ziyaret edeceği URL'lerin kuyruğu                                         | [Firecrawl](dallar/04-veri-araclari-otomasyon/firecrawl/README.md)   |
+| `robots.txt`                           | Sitenin hangi yolların taranabileceğini bildirdiği dosya                                       | [Firecrawl](dallar/04-veri-araclari-otomasyon/firecrawl/README.md)   |
+| İş akışı (workflow), düğüm (node)      | Birbirine bağlı adımlardan oluşan otomasyon; her adım bir düğüm                                | [n8n](dallar/04-veri-araclari-otomasyon/n8n/README.md)               |
+| İfade (expression)                     | Düğüm parametresinde `{{ $json.alan }}` gibi önceki adımın verisine başvuran küçük kod parçası | [n8n](dallar/04-veri-araclari-otomasyon/n8n/README.md)               |
+| Webhook                                | Bir olay olunca başka bir sistemin senin adresine HTTP isteği göndermesi                       | [n8n](dallar/04-veri-araclari-otomasyon/n8n/README.md)               |
+
+## Yapay zekâ altyapısı
+
+| Terim                                   | Açıklama                                                                                             | Nerede                                                                              |
+| --------------------------------------- | ---------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| Tensör                                  | Çok boyutlu sayı dizisi; makine öğrenmesinin temel veri tipi                                         | [TensorFlow](dallar/05-yapay-zeka-altyapisi/tensorflow/README.md)                   |
+| Otomatik türev (autodiff), teyp (tape)  | İşlemleri kaydedip zincir kuralıyla geriye doğru türev hesaplama                                     | [TensorFlow](dallar/05-yapay-zeka-altyapisi/tensorflow/README.md)                   |
+| Grafik modu / izleme (tracing)          | Python fonksiyonunu bir kez çalıştırıp işlem grafiğine çevirme ve grafiği iyileştirme                | [TensorFlow](dallar/05-yapay-zeka-altyapisi/tensorflow/README.md)                   |
+| Tokenizer, BPE                          | Metni modelin anlayacağı parçalara (token) bölen araç; BPE en sık geçen parça çiftlerini birleştirir | [Transformers](dallar/05-yapay-zeka-altyapisi/transformers/README.md)               |
+| Dikkat (attention)                      | Her token'ın diğer token'lara ne kadar "bakacağını" hesaplayan mekanizma                             | [Transformers](dallar/05-yapay-zeka-altyapisi/transformers/README.md)               |
+| KV önbelleği (KV cache)                 | Üretim sırasında önceki token'ların anahtar/değer vektörlerini saklayıp tekrar hesaplamamak          | [Transformers](dallar/05-yapay-zeka-altyapisi/transformers/README.md)               |
+| GGUF, nicemleme (quantization)          | Yerel modeller için dosya biçimi / ağırlıkları daha az bitle saklayıp küçültme                       | [ollama](dallar/05-yapay-zeka-altyapisi/ollama/README.md)                           |
+| Modelfile                               | Ollama'da model, sistem istemi ve parametreleri tanımlayan tarif dosyası                             | [ollama](dallar/05-yapay-zeka-altyapisi/ollama/README.md)                           |
+| İçerik adresli depo (content-addressed) | Dosyaların içeriklerinin özetiyle (sha256) adlandırılıp saklanması                                   | [ollama](dallar/05-yapay-zeka-altyapisi/ollama/README.md)                           |
+| NDJSON / SSE                            | Akışlı yanıt biçimleri: satır başına bir JSON / sunucudan gönderilen olaylar                         | [G6](govde/README.md#g6), [ollama](dallar/05-yapay-zeka-altyapisi/ollama/README.md) |
+| Gömme (embedding), RAG                  | Metni anlamını taşıyan vektöre çevirme / soruya benzer belgeleri bulup modele bağlam olarak verme    | [G11](govde/README.md#g11)                                                          |
+| Çok ajanlı simülasyon, persona          | Kişilik tanımlı çok sayıda LLM ajanının etkileşimini taklit etme                                     | [MiroFish](dallar/05-yapay-zeka-altyapisi/mirofish/README.md)                       |
+
+## Ajanlar, beceriler ve harness'lar
+
+| Terim                                     | Açıklama                                                                                                            | Nerede                                                                                                         |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| Ajan döngüsü (agent loop)                 | Model araç ister → kod çalıştırır → sonucu modele verir → model bitirene kadar tekrar                               | [G11](govde/README.md#g11), [opencode](dallar/07-kodlama-ajanlari/opencode/README.md)                          |
+| Araç çağırma (tool calling)               | Modelin yapılandırılmış biçimde bir fonksiyonun çalıştırılmasını istemesi                                           | [G11](govde/README.md#g11)                                                                                     |
+| Harness                                   | Modeli araçlar, izinler, bağlam ve arayüzle saran çalışma çerçevesi (opencode, claw-code, dsh)                      | [D07](dallar/07-kodlama-ajanlari/README.md)                                                                    |
+| Sağlayıcı (provider)                      | Harness'ın bağlandığı model servisi (Anthropic, OpenAI uyumlu API, Ollama…)                                         | [opencode](dallar/07-kodlama-ajanlari/opencode/README.md)                                                      |
+| İzin sistemi (permissions)                | Araç çağrılarını kurala göre izin ver / sor / reddet diye süzme                                                     | [opencode](dallar/07-kodlama-ajanlari/opencode/README.md)                                                      |
+| Bağlam penceresi, sıkıştırma (compaction) | Modelin bir seferde görebildiği token sınırı / sınır dolunca geçmişi özetleyip yer açma                             | [opencode](dallar/07-kodlama-ajanlari/opencode/README.md)                                                      |
+| Kum havuzu (sandbox)                      | Ajanın çalıştırdığı komutları sınırlı izinlerle yalıtılmış ortamda koşturma                                         | [D06](dallar/06-ajan-platformlari/README.md), [D07](dallar/07-kodlama-ajanlari/README.md)                      |
+| Eklenti, bağımlılık enjeksiyonu (DI)      | İşlevi çekirdeğe gömmek yerine takılıp çıkarılabilir parçalar ve onların ihtiyaç duyduğu servisleri dışarıdan verme | [DeepSeek Harness](dallar/07-kodlama-ajanlari/deepseek-harness/README.md)                                      |
+| Ağ geçidi (gateway), kanal (channel)      | Mesajlaşma uygulamalarından (Telegram, WhatsApp…) gelen iletileri doğru ajana yönlendiren katman                    | [OpenClaw](dallar/06-ajan-platformlari/openclaw/README.md)                                                     |
+| Blok, graf yürütücü                       | Girdi/çıktı şemalı adımları graf hâlinde birbirine bağlayıp sırayla çalıştırma                                      | [AutoGPT](dallar/06-ajan-platformlari/autogpt/README.md)                                                       |
+| Beceri (skill), SKILL.md                  | Ajanın gerektiğinde yüklediği talimat + kaynak paketi; ön bilgisinde ad ve açıklama bulunur                         | [anthropics/skills](dallar/08-ajan-becerileri/anthropic-skills/README.md)                                      |
+| Ön bilgi (frontmatter)                    | Markdown dosyasının başında `---` arasındaki YAML üst veri bloğu                                                    | [anthropics/skills](dallar/08-ajan-becerileri/anthropic-skills/README.md)                                      |
+| Kademeli yükleme (progressive disclosure) | Önce yalnızca ad+açıklamayı, gerekirse gövdeyi, en son ek dosyaları bağlama yükleme                                 | [anthropics/skills](dallar/08-ajan-becerileri/anthropic-skills/README.md)                                      |
+| Kanca (hook)                              | Harness'ın belirli anlarda (araç öncesi/sonrası, oturum başı) çalıştırdığı betik                                    | [ECC](dallar/08-ajan-becerileri/ecc/README.md), [superpowers](dallar/08-ajan-becerileri/superpowers/README.md) |
+| İstem enjeksiyonu (prompt injection)      | Modelin okuduğu veriye gizlenmiş talimatlarla ajanı yönlendirme saldırısı                                           | [D08](dallar/08-ajan-becerileri/README.md)                                                                     |
+| MCP (Model Context Protocol)              | Araçları ve verileri ajanlara standart biçimde sunan protokol                                                       | [REA](dallar/03-sistem-ag-guvenlik/rea/README.md), [G11](govde/README.md#g11)                                  |
+
+## Algoritmalar ve sistem tasarımı
+
+| Terim                               | Açıklama                                                                                 | Nerede                                                                                                                                                    |
+| ----------------------------------- | ---------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Büyük-O (Big-O)                     | Girdi büyüdükçe çalışma süresinin ya da belleğin nasıl büyüdüğünün gösterimi             | [G5](govde/README.md#g5)                                                                                                                                  |
+| Topolojik sıralama                  | Yönlü grafta her düğümü bağımlı olduklarından sonra gelecek biçimde sıralama             | [javascript-algorithms](dallar/09-bilgisayar-bilimi/javascript-algorithms/README.md), [OSSU](dallar/09-bilgisayar-bilimi/ossu-computer-science/README.md) |
+| LRU önbelleği                       | Dolunca en uzun süredir kullanılmayan öğeyi atan önbellek                                | [system-design-primer](dallar/09-bilgisayar-bilimi/system-design-primer/README.md)                                                                        |
+| Tutarlı karma (consistent hashing)  | Sunucu eklenip çıkınca anahtarların yalnızca küçük bir kısmının yer değiştirdiği dağıtım | [system-design-primer](dallar/09-bilgisayar-bilimi/system-design-primer/README.md)                                                                        |
+| Hız sınırlayıcı (rate limiter)      | Belirli sürede izin verilen istek sayısını sınırlama (jeton kovası, kayan pencere)       | [system-design-primer](dallar/09-bilgisayar-bilimi/system-design-primer/README.md)                                                                        |
+| Aralıklı tekrar (spaced repetition) | Öğrenilenleri artan aralıklarla tekrar etme yöntemi (Anki kartları)                      | [system-design-primer](dallar/09-bilgisayar-bilimi/system-design-primer/README.md)                                                                        |

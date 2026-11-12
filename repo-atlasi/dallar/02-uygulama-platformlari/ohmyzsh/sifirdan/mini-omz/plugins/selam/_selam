@@ -1,0 +1,19 @@
+#compdef selam
+# Tamamlama fonksiyonu. Dosya fpath'te olduğu ve ilk satırı "#compdef selam" olduğu için compinit
+# onu `selam` komutuna bağlar. Dosyanın gövdesi _selam fonksiyonunun gövdesidir.
+
+local context state state_descr line
+typeset -A opt_args
+local -a altkomutlar
+altkomutlar=(
+  'sabah:sabah selamı'
+  'aksam:akşam selamı'
+  'surum:sürümü yazdır'
+)
+
+_arguments '1:alt komut:->altkomut' '2:isim:->isim'
+
+case $state in
+  altkomut) _describe -t altkomutlar 'alt komut' altkomutlar ;;
+  isim) _message 'selamlanacak kişi' ;;
+esac

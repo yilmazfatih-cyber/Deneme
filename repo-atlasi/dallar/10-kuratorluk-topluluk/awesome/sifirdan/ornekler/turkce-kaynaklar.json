@@ -1,0 +1,101 @@
+{
+  "baslik": "Awesome Türkçe Kaynaklar",
+  "aciklama": "Türkçe yazılmış ya da Türkçeye çevrilmiş ücretsiz yazılım öğrenme kaynakları.",
+  "rozet": true,
+  "yerel": "tr",
+  "icindekiler_basligi": "Contents",
+  "katki_dosyasi": "contributing.md",
+  "kategoriler": [
+    {
+      "ad": "Topluluklar",
+      "aciklama": "Türkiye'deki yazılım toplulukları ve buluşmaları.",
+      "girdiler": [
+        {
+          "ad": "Istanbul Golang",
+          "url": "https://www.meetup.com/Istanbul-Golang/",
+          "aciklama": "İstanbul'daki Go buluşmaları."
+        },
+        {
+          "ad": "Golang Turkey",
+          "url": "https://kommunity.com/goturkiye",
+          "aciklama": "Go geliştiricilerinin Türkiye topluluğu."
+        }
+      ]
+    },
+    {
+      "ad": "Kitaplar",
+      "aciklama": "Ücretsiz okunabilen Türkçe kitaplar ve çeviriler.",
+      "girdiler": [
+        {
+          "ad": "Pro Git",
+          "url": "https://git-scm.com/book/tr/v2",
+          "aciklama": "Git'in resmî kitabının Türkçe çevirisi."
+        },
+        {
+          "ad": "D Programlama Dili",
+          "url": "https://www.ddili.org/ders/d/D_Programlama_Dili.pdf",
+          "aciklama": "Ali Çehreli'nin D dilini baştan anlatan kitabı (PDF)."
+        },
+        {
+          "ad": "Zor Yoldan Haskell",
+          "url": "https://github.com/joom/zor-yoldan-haskell",
+          "aciklama": "Yann Esposito'nun Haskell yazısının Joomy Korkut çevirisi."
+        },
+        {
+          "ad": "Go El Kitabı",
+          "url": "https://github.com/umutphp/the-little-go-book",
+          "aciklama": "The Little Go Book kitabının Umut Işık çevirisi."
+        },
+        {
+          "ad": "Derin Öğrenmeye Dalış",
+          "url": "https://tr.d2l.ai/d2l-tr-pytorch.pdf",
+          "aciklama": "Dive into Deep Learning kitabının Türkçe çevirisi (PDF)."
+        }
+      ]
+    },
+    {
+      "ad": "Podcastler",
+      "aciklama": "Türkçe yazılım podcast'leri ve ekran kaydı serileri.",
+      "girdiler": [
+        { "ad": "kodpod", "url": "https://kodpod.live", "aciklama": "Yazılım ve teknoloji üzerine Türkçe podcast." },
+        {
+          "ad": "codefiction",
+          "url": "https://codefiction.tech",
+          "aciklama": "Yazılım geliştirme üzerine Türkçe podcast."
+        },
+        {
+          "ad": "Trendyol Tech Podcasts",
+          "url": "https://trendyol.simplecast.com",
+          "aciklama": "Trendyol mühendislik ekibinin Türkçe podcast'i."
+        },
+        { "ad": "devPod", "url": "https://devpod.org", "aciklama": "Türkçe yazılım ekran kaydı serisi." }
+      ]
+    },
+    {
+      "ad": "Öğreticiler",
+      "aciklama": "Bir konuyu adım adım anlatan rehberler.",
+      "girdiler": [
+        {
+          "ad": "Türkçe Go Eğitimi",
+          "url": "https://github.com/Furkan-Gulsen/turkce-go-egitimi",
+          "aciklama": "Go dilini örneklerle anlatan Türkçe eğitim deposu."
+        },
+        {
+          "ad": "git - basit rehber",
+          "url": "https://rogerdudler.github.io/git-guide/index.tr.html",
+          "aciklama": "Git'e tek sayfalık hızlı başlangıç."
+        },
+        {
+          "ad": "Rust ile CHIP-8 Emülatörü Geliştirme",
+          "url": "https://onur.github.io/chip8",
+          "aciklama": "Rust ile adım adım bir CHIP-8 emülatörü yazdıran rehber."
+        },
+        {
+          "ad": "Özgür Yazılım Derneği Güvenlik Rehberi",
+          "url": "https://guvenlik.oyd.org.tr",
+          "aciklama": "Dijital güvenlik ve gizlilik üzerine Türkçe rehber."
+        }
+      ]
+    }
+  ]
+}

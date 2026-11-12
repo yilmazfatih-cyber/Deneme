@@ -1,0 +1,5 @@
+# Yerel çalıştırma çıktıları (depoya girmez)
+__pycache__/
+*.db
+/isletme.json
+/cikti/

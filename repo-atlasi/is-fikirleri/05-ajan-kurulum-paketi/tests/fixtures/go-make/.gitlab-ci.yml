@@ -1,0 +1,5 @@
+test:
+  image: golang:1.24
+  script:
+    - make test
+    - make lint

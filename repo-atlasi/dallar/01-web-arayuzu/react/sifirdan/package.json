@@ -1,0 +1,12 @@
+{
+  "name": "mini-react-sifirdan",
+  "private": true,
+  "type": "module",
+  "description": "Repo Atlası D01: sıfırdan mini React (host config, uzlaştırma, fiber iş döngüsü, hook'lar)",
+  "scripts": {
+    "test": "node --test \"test/**/*.test.js\""
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

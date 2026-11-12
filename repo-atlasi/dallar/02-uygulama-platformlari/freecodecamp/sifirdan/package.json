@@ -1,0 +1,10 @@
+{
+  "name": "mini-freecodecamp",
+  "private": true,
+  "type": "module",
+  "description": "freeCodeCamp'in meydan okuma biçimi, test çalıştırıcısı ve sertifika modelinin öğretim amaçlı kopyası",
+  "scripts": {
+    "test": "node --test",
+    "dene": "node cli.js ornek-mufredat/challenges/blocks/lab-palindrom-denetleyici/6a7b8c9d0e1f2a3b4c5d6e04.md"
+  }
+}

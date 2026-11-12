@@ -1,0 +1,18 @@
+# Ağırlık dosyası: karakter düzeyinde Markov modeli bu metinden "yüklenir".
+FROM ./agirliklar.txt
+
+PARAMETER temperature 0.3
+PARAMETER num_predict 120
+PARAMETER seed 7
+PARAMETER stop "\n<|"
+
+SYSTEM """Kısa ve nazik cevap veren bir yardımcısın."""
+
+TEMPLATE """{{ if .System }}<|system|>
+{{ .System }}
+{{ end }}{{ range .Messages }}<|{{ .Role }}|>
+{{ .Content }}
+{{ end }}<|assistant|>
+"""
+
+LICENSE """Eğitim amaçlı örnek; serbestçe kullanılabilir."""

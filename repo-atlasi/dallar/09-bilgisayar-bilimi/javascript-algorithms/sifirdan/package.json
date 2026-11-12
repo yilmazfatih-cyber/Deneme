@@ -1,0 +1,9 @@
+{
+  "name": "js-algoritmalar-sifirdan",
+  "private": true,
+  "description": "Repo Atlası D09: temel veri yapıları ve algoritmalar, bağımlılıksız (node:test).",
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  }
+}

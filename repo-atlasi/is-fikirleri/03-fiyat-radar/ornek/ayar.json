@@ -1,0 +1,32 @@
+{
+  "kullanici_ajani": "FiyatRadar/0.1 (+mailto:iletisim@ornek-magaza.example)",
+  "istekler_arasi_sn": 5,
+  "esik_yuzde": 1,
+  "saat_dilimi": "Europe/Istanbul",
+  "tur_butcesi_sn": 600,
+  "saklama_gun": 400,
+  "firecrawl": {
+    "api_url": "https://api.firecrawl.dev",
+    "api_anahtari_ortam": "FIRECRAWL_API_KEY",
+    "urun_bicimi": false
+  },
+  "telegram": {
+    "sohbet_kimligi": "-1001234567890",
+    "belirtec_ortam": "TELEGRAM_BOT_TOKEN"
+  },
+  "urunler": [
+    {
+      "ad": "Filtre kahve makinesi X100",
+      "kendi_fiyatim": "2.499,90 TL",
+      "rakipler": [
+        { "magaza": "Rakip A", "url": "https://rakip-a.example/kahve-makinesi-x100" },
+        { "magaza": "Rakip B", "url": "https://rakip-b.example/urun/x100" }
+      ]
+    },
+    {
+      "ad": "Çelik termos 750 ml",
+      "kendi_fiyatim": "649,90 TL",
+      "rakipler": [{ "magaza": "Rakip A", "url": "https://rakip-a.example/termos-750" }]
+    }
+  ]
+}

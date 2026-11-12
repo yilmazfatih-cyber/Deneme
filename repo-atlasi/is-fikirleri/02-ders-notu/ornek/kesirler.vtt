@@ -1,0 +1,41 @@
+WEBVTT
+Kind: captions
+Language: tr
+
+NOTE Eğitim amaçlı, bu depo için yazılmış özgün örnek ders metni.
+
+00:00:00.000 --> 00:00:04.000
+Merhaba, bugünkü dersimizde kesirleri öğreneceğiz.
+
+00:00:04.000 --> 00:00:09.000
+Bir bütünü eş parçalara böldüğümüzde her parçayı bir kesirle gösteririz.
+
+00:00:09.000 --> 00:00:14.000 align:start position:0%
+Kesir çizgisinin altındaki sayıya <c>payda</c> denir.
+
+00:00:14.000 --> 00:00:19.500
+Payda, bütünün kaç eş parçaya bölündüğünü gösterir.
+
+00:00:19.500 --> 00:00:25.000
+Pay, bütünden kaç parça aldığımızı gösteren sayı demektir.
+
+00:00:25.000 --> 00:00:31.000
+Payı paydasından küçük olan kesirlere basit kesir denir.
+
+00:00:31.000 --> 00:00:37.000
+Payı paydasına eşit ya da paydasından büyük olan kesirlere bileşik kesir denir.
+
+00:00:37.000 --> 00:00:43.000
+Bir tam sayı ve bir basit kesirden oluşan kesirlere tam sayılı kesir denir.
+
+00:00:43.000 --> 00:00:49.000
+Örneğin üç bölü dört bir basit kesirdir, çünkü pay paydadan küçüktür.
+
+00:00:49.000 --> 00:00:55.000
+Kesirleri karşılaştırırken paydaları eşitlemek işimizi kolaylaştırır.
+
+00:00:55.000 --> 00:01:01.000
+Paydaları eşit kesirlerde payı büyük olan kesir daha büyüktür.
+
+00:01:01.000 --> 00:01:06.000
+Bir sonraki derste kesirlerle toplama işlemini göreceğiz.

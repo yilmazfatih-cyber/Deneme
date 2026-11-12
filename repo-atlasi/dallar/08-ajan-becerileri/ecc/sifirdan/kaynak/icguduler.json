@@ -1,0 +1,52 @@
+[
+  {
+    "id": "kisa-commit-basligi",
+    "tetik": "commit başlığı yazarken",
+    "eylem": "Başlığı 72 karakterin altında tut.",
+    "guven": 0.9,
+    "alan": "git",
+    "kapsam": "genel"
+  },
+  {
+    "id": "pytest-fixture",
+    "tetik": "python testi yazarken",
+    "eylem": "Ortak kurulumu fixture olarak yaz.",
+    "guven": 0.72,
+    "alan": "python",
+    "kapsam": "genel"
+  },
+  {
+    "id": "ornek-proje-db",
+    "tetik": "veritabanı göçü eklerken",
+    "eylem": "Göçleri migrations/ altında, tarih önekiyle adlandır.",
+    "guven": 0.74,
+    "alan": "veritabani",
+    "kapsam": "proje",
+    "proje": "ornek-proje"
+  },
+  {
+    "id": "react-key",
+    "tetik": "react listesi çizerken",
+    "eylem": "Liste öğelerine kararlı key ver.",
+    "guven": 0.95,
+    "alan": "react",
+    "kapsam": "genel"
+  },
+  {
+    "id": "zayif-sezgi",
+    "tetik": "her zaman",
+    "eylem": "Tek bir oturumdan çıkarılmış, henüz kanıtı zayıf bir alışkanlık.",
+    "guven": 0.4,
+    "alan": "genel",
+    "kapsam": "genel"
+  },
+  {
+    "id": "baska-proje-kurali",
+    "tetik": "api uç noktası eklerken",
+    "eylem": "Başka bir projeye ait kural; burada enjekte edilmemeli.",
+    "guven": 0.99,
+    "alan": "api",
+    "kapsam": "proje",
+    "proje": "baska-proje"
+  }
+]

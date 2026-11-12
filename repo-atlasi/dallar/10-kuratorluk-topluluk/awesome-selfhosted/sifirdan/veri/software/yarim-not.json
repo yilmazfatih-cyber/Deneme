@@ -1,0 +1,12 @@
+{
+  "name": "Yarım Not",
+  "website_url": "https://yarimnot.example",
+  "source_code_url": "https://git.example/yarim-not/yarim-not",
+  "description": "Kısa notlar ve yapılacaklar için hafif uygulama.",
+  "licenses": ["Apache-2.0"],
+  "platforms": ["Python"],
+  "tags": ["Not Alma"],
+  "stargazers_count": 95,
+  "updated_at": "2026-04-01",
+  "archived": false
+}

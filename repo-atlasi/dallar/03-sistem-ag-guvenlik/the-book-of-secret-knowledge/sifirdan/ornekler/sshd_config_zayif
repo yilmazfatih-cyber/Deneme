@@ -1,0 +1,18 @@
+# sshd_config_zayif — EĞİTİM AMAÇLI: bilerek zayıf ayarlar içerir, kullanmayın.
+Include /etc/ssh/sshd_config.d/*.conf
+Port 22
+PermitRootLogin yes
+PasswordAuthentication yes
+PermitEmptyPasswords no
+MaxAuthTries 10
+X11Forwarding yes
+Ciphers aes256-ctr,aes128-cbc,3des-cbc
+MACs hmac-sha2-256,hmac-md5
+KexAlgorithms curve25519-sha256,diffie-hellman-group1-sha1
+# Aşağıdaki satır ETKİSİZDİR: ilk değer (yes) kazanır.
+PermitRootLogin no
+Subsystem sftp /usr/lib/openssh/sftp-server
+
+Match User yedek
+    PasswordAuthentication yes
+    PermitEmptyPasswords yes

@@ -1,0 +1,10 @@
+{
+  "name": "mini-vscode-cekirdegi",
+  "private": true,
+  "type": "module",
+  "description": "VS Code çekirdeğinin dört fikrinin öğretim amaçlı küçük kopyası",
+  "scripts": {
+    "test": "node --test",
+    "demo": "node demo.js"
+  }
+}

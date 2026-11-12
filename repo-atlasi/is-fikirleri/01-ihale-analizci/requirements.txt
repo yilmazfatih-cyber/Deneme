@@ -1,0 +1,3 @@
+# İsteğe bağlı: gerçek PDF/DOCX/XLSX/XLS dönüştürme. Birim testler bunlarsız da geçer.
+# PPTX için "pptx" extra'sını ekleyin: markitdown[pdf,docx,xlsx,xls,pptx]==0.1.9
+markitdown[pdf,docx,xlsx,xls]==0.1.9

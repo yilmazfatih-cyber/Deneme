@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mini Bootstrap demosu</title>
+    <!-- Grid ve yardımcı sınıflar tarayıcıda, belirteçlerden canlı üretilir. -->
+    <style id="uretilen"></style>
+    <style>
+      /* Bileşenlerin en küçük görünüm kuralları (gerçek Bootstrap'te scss/_menu.scss, _transitions.scss) */
+      body {
+        font-family: system-ui, sans-serif;
+        line-height: 1.5;
+        margin: 0;
+      }
+      .collapse:not(.show) {
+        display: none;
+      }
+      .menu {
+        display: none;
+        list-style: none;
+        margin: 0.25rem 0 0;
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 0.5rem;
+      }
+      .menu.show {
+        display: block;
+      }
+      .kutu {
+        background: #e7f0ff;
+        border: 1px solid #9ec5fe;
+        border-radius: 0.375rem;
+        padding: 0.75rem;
+      }
+      pre {
+        max-height: 20rem;
+        overflow: auto;
+        background: #f6f8fa;
+        padding: 0.75rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <h1>Mini Bootstrap</h1>
+      <p>Belirteçleri değiştir; CSS yeniden üretilir ve ızgara anında değişir.</p>
+      <p>
+        <label
+          >Lehçe
+          <select id="lehce">
+            <option value="v6">v6 (md:col-6, @layer)</option>
+            <option value="v5">v5 (col-md-6, !important)</option>
+          </select></label
+        >
+        <label>Sütun sayısı <input id="sutun" type="number" min="1" max="24" value="12" /></label>
+      </p>
+      <div class="row g-3" id="izgara"></div>
+
+      <h2>Data API</h2>
+      <button data-bs-toggle="collapse" data-bs-target="#ayrinti" aria-expanded="false">
+        <span>Ayrıntıları göster/gizle</span>
+      </button>
+      <div id="ayrinti" class="collapse">
+        <p>Bu panel tek satır JavaScript yazmadan, yalnızca data-bs-* nitelikleriyle açılıp kapanır.</p>
+      </div>
+      <div>
+        <button data-bs-toggle="menu" aria-expanded="false">Hesap menüsü</button>
+        <ul class="menu">
+          <li>Profil</li>
+          <li>Ayarlar</li>
+          <li>Çıkış</li>
+        </ul>
+      </div>
+
+      <details>
+        <summary>Üretilen CSS</summary>
+        <pre id="css"></pre>
+      </details>
+    </main>
+    <script type="module">
+      import { v5Tokenlar, v6Tokenlar, yardimciHaritasi } from '../src/tokenlar.js'
+      import { cssUret, sinifAdi } from '../src/uretec.js'
+      import { baslat } from '../src/veri_api.js'
+
+      const lehceSec = document.querySelector('#lehce')
+      const sutunGir = document.querySelector('#sutun')
+
+      function ciz() {
+        const temel = lehceSec.value === 'v5' ? v5Tokenlar : v6Tokenlar
+        const t = { ...temel, gridSutun: Math.max(1, Math.min(24, Number(sutunGir.value) || 12)) }
+        const css = cssUret(t, yardimciHaritasi(t))
+        document.querySelector('#uretilen').textContent = css
+        document.querySelector('#css').textContent = css
+        const izgara = document.querySelector('#izgara')
+        izgara.replaceChildren()
+        for (let i = 1; i <= 6; i++) {
+          const kutu = document.createElement('div')
+          // xs'te tam genişlik, md'de yarım, lg'de üçte bir (12 sütunluk sistemde)
+          kutu.className = [
+            sinifAdi(t, 'xs', 'col', 12),
+            sinifAdi(t, 'md', 'col', 6),
+            sinifAdi(t, 'lg', 'col', 4),
+          ].join(' ')
+          kutu.innerHTML = `<div class="kutu">${i}. kutu<br><code>${kutu.className}</code></div>`
+          izgara.append(kutu)
+        }
+      }
+      lehceSec.addEventListener('change', ciz)
+      sutunGir.addEventListener('input', ciz)
+      ciz()
+      baslat(document)
+    </script>
+  </body>
+</html>

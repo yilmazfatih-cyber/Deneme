@@ -1,0 +1,226 @@
+{
+  "baslik": "Coding Interview University: Topics of Study (konu grafı)",
+  "kaynak": "https://github.com/jwasham/coding-interview-university/blob/2399df2f688ba9fafe11c399cc067d7270921bb1/README.md",
+  "not": "Konu adları CIU 'Topics of Study' listesinin Türkçe karşılığıdır; saatler ve önkoşullar öğretmen tahminidir (CIU'da yalnızca sıra vardır). ossu-computer-science/sifirdan/plan_yaz.py ile planlanabilir.",
+  "dersler": [
+    {
+      "kimlik": "buyuk-o",
+      "ad": "Algoritma karmaşıklığı / Büyük-O / asimptotik analiz",
+      "saat": 8,
+      "onkosullar": [],
+      "bolum": "CIU"
+    },
+    {
+      "kimlik": "diziler",
+      "ad": "Diziler: otomatik büyüyen dizi (vektör) yaz",
+      "saat": 10,
+      "onkosullar": ["buyuk-o"],
+      "bolum": "CIU"
+    },
+    {
+      "kimlik": "bagli-listeler",
+      "ad": "Bağlı listeler (tek ve çift yönlü)",
+      "saat": 10,
+      "onkosullar": ["diziler"],
+      "bolum": "CIU"
+    },
+    {
+      "kimlik": "yigin",
+      "ad": "Yığın (stack)",
+      "saat": 4,
+      "onkosullar": ["bagli-listeler"],
+      "bolum": "CIU"
+    },
+    {
+      "kimlik": "kuyruk",
+      "ad": "Kuyruk: bağlı listeyle ve dairesel diziyle",
+      "saat": 6,
+      "onkosullar": ["bagli-listeler"],
+      "bolum": "CIU"
+    },
+    {
+      "kimlik": "hash-tablosu",
+      "ad": "Hash tablosu: doğrusal yoklama ile",
+      "saat": 10,
+      "onkosullar": ["diziler", "bagli-listeler"],
+      "bolum": "CIU"
+    },
+    {
+      "kimlik": "ikili-arama",
+      "ad": "İkili arama",
+      "saat": 4,
+      "onkosullar": ["diziler"],
+      "bolum": "CIU"
+    },
+    {
+      "kimlik": "bit-islemleri",
+      "ad": "Bit işlemleri",
+      "saat": 6,
+      "onkosullar": ["buyuk-o"],
+      "bolum": "CIU"
+    },
+    {
+      "kimlik": "agac-giris",
+      "ad": "Ağaçlar giriş: gezinmeler (BFS, DFS; pre/in/post-order)",
+      "saat": 8,
+      "onkosullar": ["kuyruk", "yigin"],
+      "bolum": "CIU"
+    },
+    {
+      "kimlik": "ikili-arama-agaci",
+      "ad": "İkili arama ağacı (BST)",
+      "saat": 10,
+      "onkosullar": ["agac-giris", "ikili-arama"],
+      "bolum": "CIU"
+    },
+    {
+      "kimlik": "heap",
+      "ad": "Heap / öncelik kuyruğu / ikili heap",
+      "saat": 8,
+      "onkosullar": ["agac-giris", "diziler"],
+      "bolum": "CIU"
+    },
+    {
+      "kimlik": "siralama",
+      "ad": "Sıralama: seçme, ekleme, heap, hızlı, birleştirme",
+      "saat": 16,
+      "onkosullar": ["heap"],
+      "bolum": "CIU"
+    },
+    {
+      "kimlik": "graflar",
+      "ad": "Graflar: yönlü/yönsüz, matris/liste temsili, BFS, DFS",
+      "saat": 16,
+      "onkosullar": ["kuyruk", "yigin", "hash-tablosu"],
+      "bolum": "CIU"
+    },
+    {
+      "kimlik": "ozyineleme",
+      "ad": "Özyineleme ve geri izleme (backtracking)",
+      "saat": 6,
+      "onkosullar": ["yigin"],
+      "bolum": "CIU"
+    },
+    {
+      "kimlik": "dinamik-programlama",
+      "ad": "Dinamik programlama",
+      "saat": 16,
+      "onkosullar": ["ozyineleme"],
+      "bolum": "CIU"
+    },
+    {
+      "kimlik": "tasarim-desenleri",
+      "ad": "Tasarım desenleri",
+      "saat": 6,
+      "onkosullar": ["bagli-listeler"],
+      "bolum": "CIU"
+    },
+    {
+      "kimlik": "kombinatorik",
+      "ad": "Kombinatorik (n choose k) ve olasılık",
+      "saat": 6,
+      "onkosullar": ["ozyineleme"],
+      "bolum": "CIU"
+    },
+    {
+      "kimlik": "np",
+      "ad": "NP, NP-tam ve yaklaşık algoritmalar",
+      "saat": 6,
+      "onkosullar": ["graflar", "dinamik-programlama"],
+      "bolum": "CIU"
+    },
+    {
+      "kimlik": "program-isleme",
+      "ad": "Bilgisayar bir programı nasıl işler",
+      "saat": 4,
+      "onkosullar": [],
+      "bolum": "CIU"
+    },
+    {
+      "kimlik": "onbellekler",
+      "ad": "Önbellekler: LRU ve CPU önbelleği",
+      "saat": 6,
+      "onkosullar": ["hash-tablosu", "bagli-listeler"],
+      "bolum": "CIU"
+    },
+    {
+      "kimlik": "surec-is-parcacigi",
+      "ad": "Süreçler ve iş parçacıkları (thread)",
+      "saat": 8,
+      "onkosullar": ["program-isleme"],
+      "bolum": "CIU"
+    },
+    {
+      "kimlik": "test",
+      "ad": "Test",
+      "saat": 4,
+      "onkosullar": [],
+      "bolum": "CIU"
+    },
+    {
+      "kimlik": "dize-arama",
+      "ad": "Dize arama ve işleme (Rabin-Karp, KMP)",
+      "saat": 8,
+      "onkosullar": ["hash-tablosu"],
+      "bolum": "CIU"
+    },
+    {
+      "kimlik": "trie",
+      "ad": "Trie (önek ağacı)",
+      "saat": 4,
+      "onkosullar": ["agac-giris"],
+      "bolum": "CIU"
+    },
+    {
+      "kimlik": "kayan-nokta",
+      "ad": "Kayan noktalı sayılar",
+      "saat": 2,
+      "onkosullar": ["bit-islemleri"],
+      "bolum": "CIU"
+    },
+    {
+      "kimlik": "unicode",
+      "ad": "Unicode",
+      "saat": 2,
+      "onkosullar": [],
+      "bolum": "CIU"
+    },
+    {
+      "kimlik": "endianness",
+      "ad": "Endianness (bayt sırası)",
+      "saat": 1,
+      "onkosullar": ["bit-islemleri"],
+      "bolum": "CIU"
+    },
+    {
+      "kimlik": "ag",
+      "ad": "Ağ temelleri",
+      "saat": 8,
+      "onkosullar": [],
+      "bolum": "CIU"
+    },
+    {
+      "kimlik": "son-tekrar",
+      "ad": "Son tekrar",
+      "saat": 10,
+      "onkosullar": ["siralama", "graflar", "dinamik-programlama", "trie", "onbellekler"],
+      "bolum": "CIU"
+    },
+    {
+      "kimlik": "kodlama-sorulari",
+      "ad": "Kodlama sorusu pratiği (öğrenirken başla, burada yoğunlaş)",
+      "saat": 40,
+      "onkosullar": ["son-tekrar"],
+      "bolum": "CIU"
+    },
+    {
+      "kimlik": "sistem-tasarimi",
+      "ad": "Sistem tasarımı, ölçeklenebilirlik (4+ yıl deneyim için)",
+      "saat": 30,
+      "onkosullar": ["ag", "onbellekler"],
+      "bolum": "CIU",
+      "secmeli": true,
+      "aciklama": "CIU'da isteğe bağlı bölüm; system-design-primer dosyasına bak."
+    }
+  ]
+}

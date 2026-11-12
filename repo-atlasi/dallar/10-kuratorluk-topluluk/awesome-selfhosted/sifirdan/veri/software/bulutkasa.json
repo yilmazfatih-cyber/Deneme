@@ -1,0 +1,14 @@
+{
+  "name": "Bulutkasa",
+  "website_url": "https://bulutkasa.example",
+  "source_code_url": "https://git.example/bulutkasa/bulutkasa",
+  "description": "Dosyalarına, takvimine ve kişilerine her cihazdan eriş ve paylaş.",
+  "licenses": ["AGPL-3.0"],
+  "platforms": ["PHP", "Docker"],
+  "tags": ["Dosya Eşitleme", "Not Alma"],
+  "demo_url": "https://demo.bulutkasa.example",
+  "related_software_url": "https://bulutkasa.example/istemciler",
+  "stargazers_count": 4200,
+  "updated_at": "2026-11-01",
+  "archived": false
+}

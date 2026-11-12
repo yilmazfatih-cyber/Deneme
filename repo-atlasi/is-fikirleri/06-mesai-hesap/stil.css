@@ -1,0 +1,17 @@
+/* Vue bağlanana kadar ham şablonu gizle */
+[v-cloak] {
+  display: none;
+}
+
+/* Çizelge dar ekranda da okunur kalsın */
+.table input[type='time'] {
+  min-width: 6.5rem;
+}
+
+.table input.mola {
+  max-width: 5.5rem;
+}
+
+.table select.ubgt {
+  min-width: 7rem;
+}

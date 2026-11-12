@@ -1,0 +1,12 @@
+{
+  "name": "Anahtarlık",
+  "website_url": "https://anahtarlik.example",
+  "source_code_url": "https://git.example/anahtarlik/anahtarlik",
+  "description": "Komut satırından da kullanılabilen kişisel parola deposu.",
+  "licenses": ["GPL-3.0"],
+  "platforms": ["Python"],
+  "tags": ["Parola Yöneticileri"],
+  "stargazers_count": 410,
+  "updated_at": "2026-08-01",
+  "archived": false
+}

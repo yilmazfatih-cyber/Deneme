@@ -14,6 +14,7 @@ zekâ, ajanlar…) → **51 yaprak** (her depo) → **meyve** (bu depolarla kuru
 | Temellerim eksik mi, görmek           | [govde/README.md](govde/README.md): 11 temel düğüm, her biri için görev ve kaynak    |
 | Belirli bir depoyu merak ediyorum     | [ENVANTER.md](ENVANTER.md): 51 depo, dal, lisans, yıldız; oradan depo dosyasına      |
 | İş fikri arıyorum                     | [is-fikirleri/README.md](is-fikirleri/README.md): her depo için fikir, kime, MVP'ler |
+| Bir terimi anlamadım                  | [SOZLUK.md](SOZLUK.md): harness, fiber, KV önbelleği, SKILL.md… Türkçe açıklamalar   |
 
 ## Klasörler
 
@@ -22,6 +23,8 @@ repo-atlasi/
 ├── README.md              ← bu dosya
 ├── AGAC.md                ← dallanan öğrenme yolu (gövde → dallar → yapraklar → meyve)
 ├── ENVANTER.md            ← 51 deponun tablosu
+├── SOZLUK.md              ← terim sözlüğü
+├── testleri-calistir.sh   ← tüm mini uygulama ve MVP testlerini tek komutla çalıştırır
 ├── govde/                 ← G1–G11 ortak temeller
 ├── dallar/
 │   ├── 01-web-arayuzu/            React, Vue 2, Vue 3, Bootstrap, You Don't Know JS
@@ -55,23 +58,39 @@ repo-atlasi/
 
 ## Mini uygulamaları çalıştırmak
 
-Her `sifirdan/` ve her MVP klasörünün kendi `README.md`'sinde çalıştırma ve test komutu yazar. Genel kural:
+Hepsini tek komutla çalıştırmak için (depo kökünden):
 
-| Dil        | Test komutu (ilgili klasörde)                         |
-| ---------- | ----------------------------------------------------- |
-| JavaScript | `node --test`                                         |
-| Python     | `python3 -m unittest discover` (klasörde yazana göre) |
-| Go         | `go test ./...`                                       |
-| Rust       | `cargo test --offline`                                |
-| C          | `make test`                                           |
+```bash
+bash repo-atlasi/testleri-calistir.sh
+```
+
+Yalnızca bazılarını çalıştırmak için klasör adından bir parça ver: `bash repo-atlasi/testleri-calistir.sh react n8n`.
+Betik her mini uygulamanın ve MVP'nin testini kendi klasöründe çalıştırır, geçici dosyaları depo dışına yazar ve
+sonunda "N geçti, M kaldı" özeti verir. Bir araç (ör. Go) kurulu değilse o testleri "ATLANDI" diye geçer.
+
+Tek bir klasörde elle çalıştırmak istersen her `sifirdan/` ve MVP klasörünün `README.md`'sinde komut yazar. Genel kural:
+
+| Dil        | Test komutu (ilgili klasörün içinde)                                            |
+| ---------- | ------------------------------------------------------------------------------- |
+| JavaScript | `npm test` (`package.json` varsa) ya da `node --test`                           |
+| Python     | `python3 -m unittest discover -s tests -t .` (klasör adı `testler` de olabilir) |
+| Go         | `go test ./...`                                                                 |
+| Rust       | `cargo test --offline`                                                          |
+| C          | `make test`                                                                     |
+| Bash/zsh   | `bash test.sh`                                                                  |
+
+Node 22'de `node --test <klasör>` biçimi klasörü taramaz; komutu klasörün içinden argümansız ya da bir glob ile çalıştır.
 
 Mini uygulamalar dış bağımlılık kullanmaz (Python'da yalnızca standart kütüphane ve gerektiğinde numpy, Node'da
-yalnızca yerleşik modüller). Testler internetsiz çalışır.
+yalnızca yerleşik modüller). Testler internetsiz çalışır. MVP'lerden bazıları gerçek kütüphaneleri (markitdown,
+yt-dlp) isteğe bağlı kullanır; o kütüphaneler kurulu değilse ilgili entegrasyon testleri atlanır, birim testleri yine
+çalışır.
 
 ## Etik ve hukuk notları
 
 - `massgravel/Microsoft-Activation-Scripts` yalnızca hukuk ve etik vaka çalışması olarak incelendi; lisans atlatma
-  yöntemleri anlatılmaz ve sıfırdan yol verilmez.
+  yöntemleri anlatılmaz ve aracın sıfırdan yolu verilmez. Mini'si yasal karşılığıdır: kurulu yazılımı satın alınan
+  lisanslarla karşılaştıran bir uyum raporu.
 - İndirme ve tarama araçları (yt-dlp, Firecrawl) mini uygulamalarda yalnızca yerel test sunucularına karşı çalışır.
   Gerçek kullanımda telif hakkı, site kullanım koşulları, `robots.txt` ve KVKK'ya uymak senin sorumluluğunda.
 - Tersine mühendislik (REA) yalnızca meşru amaçlarla anlatılır: kendi yazılımın, birlikte çalışabilirlik, güvenlik
@@ -86,5 +105,16 @@ yalnızca yerleşik modüller). Testler internetsiz çalışır.
 - **Öğretmen ajanları:** Her dal için ayrı bir ajan depoları inceledi, dosyaları yazdı ve mini uygulamaları kodlayıp
   test etti.
 - **İş fikri ajanları:** İki ajan fikir kataloğunu çıkardı ve 6 MVP'yi kodlayıp test etti.
+- **Doğrulama ve onarım:** Sonra her dal ve her MVP ayrı bir denetimden geçti. Denetçiler iddiaları klondaki
+  dosyalarla yeniden karşılaştırdı ve kodu ayrıca sınadı. Dallarda toplanan 158 bulgu düzeltildi, 13'ü klonda çürütülüp
+  reddedildi; denetim sırasında bulunan 123 yeni sorun da düzeltildi. MVP'lerde 120 düzeltme yapıldı; her hata
+  düzeltmesi bir gerileme testiyle korunuyor. Süreler tek kurala (1 gün ≈ 5 saat, 1 hafta ≈ 10 saat), önkoşullar
+  yaprakların birleşimine bağlandı.
+- **Son otomatik denetim:** 50 test takımı (44 mini uygulama, 6 MVP) geçiyor; Markdown dosyalarında kırık bağlantı ya
+  da çapa yok; 131 mermaid diyagramı iki sürümde (11.4.1 ve 11.17.2) hatasız çiziliyor; Prettier ve ESLint temiz;
+  görünmez karakter yok.
+- **Açık kalanlar:** Mevzuat ayrıntıları ve bazı platform kuralları `(doğrulanmadı)` diye işaretli; bir iş fikrini
+  satışa çıkarmadan önce bir hukukçuya doğrulatmalısın. MVP'ler gerçek bir yerel modelle (Ollama, Whisper) uçtan uca
+  denenmedi; testleri sahte sunucularla çalışır.
 - Mini uygulamalar ve MVP'ler özgün koddur; orijinal depolardan kod kopyalanmadı, yalnızca karşılaştırma için dosya
   yollarına atıf yapıldı.

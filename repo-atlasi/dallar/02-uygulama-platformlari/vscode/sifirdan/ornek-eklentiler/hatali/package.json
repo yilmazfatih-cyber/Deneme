@@ -1,0 +1,16 @@
+{
+  "name": "hatali",
+  "publisher": "atlas",
+  "version": "0.1.0",
+  "description": "Etkinleşirken hata fırlatan eklenti: hata yalıtımını göstermek için.",
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "hatali.calis",
+        "title": "Bozuk Eklentiyi Çalıştır",
+        "category": "Deneme"
+      }
+    ]
+  }
+}

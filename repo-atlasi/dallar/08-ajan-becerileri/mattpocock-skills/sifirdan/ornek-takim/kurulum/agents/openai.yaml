@@ -1,0 +1,5 @@
+interface:
+  display_name: 'Kurulum'
+  short_description: 'Depoyu beceriler için bir kez hazırla'
+policy:
+  allow_implicit_invocation: false

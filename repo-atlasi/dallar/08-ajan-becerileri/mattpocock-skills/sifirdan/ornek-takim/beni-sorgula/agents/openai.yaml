@@ -1,0 +1,5 @@
+interface:
+  display_name: 'Beni Sorgula'
+  short_description: 'Planını sorularla keskinleştir'
+policy:
+  allow_implicit_invocation: false

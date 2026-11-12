@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+rapor/
+*.sqlite
+# Yerel dosyalar: gerçek rakip listesi, üretilen iş akışı ve sır içeren ortam dosyası depoya girmez
+/ayar.json
+/is-akisi.json
+/ortam.env

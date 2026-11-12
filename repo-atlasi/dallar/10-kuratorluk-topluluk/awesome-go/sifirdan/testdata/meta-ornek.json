@@ -1,0 +1,10 @@
+{
+  "charmbracelet/bubbletea": {
+    "stars": 1234,
+    "last_push": "2026-11-01",
+    "archived": false,
+    "fetched_at": "2026-11-08"
+  },
+  "jroimartin/gocui": { "stars": 567, "last_push": "2021-06-01", "archived": true, "fetched_at": "2026-11-05" },
+  "rivo/tview": { "stars": 890, "last_push": "2026-10-20", "archived": false, "fetched_at": "2026-10-01" }
+}

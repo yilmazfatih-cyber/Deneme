@@ -1,0 +1,15 @@
+{{define "proje"}}{{template "bas" .}}<h1>{{.Project.Name}}</h1>
+<p>{{inline .Project.Desc}}</p>
+<p><a href="{{.Project.URL}}">{{.Project.Owner}}/{{.Project.Repo}}</a> · <a href="../index.html">{{.Project.Category.Title}}</a></p>
+{{with .Project.Meta}}<dl>
+<dt>Yıldız</dt><dd>{{.Stars}}</dd>
+<dt>Son itme</dt><dd>{{.LastPush}}</dd>
+{{if .Archived}}<dt>Durum</dt><dd class="arsiv">Arşivlenmiş: artık bakımı yapılmıyor</dd>{{end}}
+</dl>{{else}}<p class="veri-yok">Güncel depo verisi yok.</p>{{end}}
+{{with .Project.Related}}<h2>Aynı kategoriden</h2>
+<ul>
+{{- range .}}
+<li><a href="{{.URL}}">{{.Name}}</a></li>
+{{- end}}
+</ul>{{end}}
+{{template "son" .}}{{end}}

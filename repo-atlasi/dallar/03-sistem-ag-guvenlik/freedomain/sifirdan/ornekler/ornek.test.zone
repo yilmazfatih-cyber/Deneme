@@ -1,0 +1,31 @@
+; ornek.test bölgesi — dnsmini için örnek. Adresler belgeleme aralıklarındandır
+; (IPv4: RFC 5737 192.0.2.0/24, 198.51.100.0/24 · IPv6: RFC 3849 2001:db8::/32).
+$ORIGIN ornek.test.
+$TTL 1h
+@       IN SOA  ns1 hostmaster (
+                2026110901 ; seri: YYYYAAGGnn
+                2h         ; yenile (ikincil sunucu ne sıklıkla baksın)
+                15m        ; tekrar (başarısız yenilemeden sonra)
+                2w         ; sona erme (birincile ulaşılamazsa)
+                5m )       ; asgari: olumsuz yanıtların önbellek süresi
+        IN NS   ns1
+        IN NS   ns2.baska-saglayici.test.
+        IN MX   10 posta
+        IN TXT  "v=spf1 mx -all"
+ns1     IN A    192.0.2.53
+posta   IN A    192.0.2.25
+www     300 IN A 192.0.2.80
+        IN AAAA 2001:db8::80
+blog    IN CNAME www
+eski    IN CNAME blog                     ; iki halkalı zincir: eski → blog → www
+disari  IN CNAME www.baska-saglayici.test. ; hedef başka bölgede: çözücü izler
+a.b     IN A    192.0.2.99                ; b.ornek.test kayıtsız ama VAR (boş ara düğüm)
+uzun    IN TXT  (
+                "parca-1: Bu TXT kaydi kasitli olarak uzun tutuldu; amac UDP yanitinin 512 bayt sinirini asmasi ve sunucunun TC bitini koymasidir."
+                "parca-2: TC=1 goren istemci ayni soruyu TCP uzerinden, iki baytlik uzunluk on ekiyle yeniden sorar (RFC 7766, RFC 1035 4.2.2)."
+                "parca-3: EDNS(0) destekleyen gercek sunucular daha buyuk UDP yanitlari gonderebilir; dnsmini bunu bilerek desteklemez (bkz. README)."
+                "parca-4: Bir TXT parcasi en fazla 255 bayttir; daha uzun degerler birden cok tirnakli parcaya bolunur, SPF ve DKIM kayitlarinda oldugu gibi." )
+; alt bölge delegasyonu (yetki kesimi) ve yapıştırıcı (glue) kaydı
+lab     IN NS   ns.lab
+lab     IN NS   ns.baska-saglayici.test.
+ns.lab  IN A    198.51.100.7

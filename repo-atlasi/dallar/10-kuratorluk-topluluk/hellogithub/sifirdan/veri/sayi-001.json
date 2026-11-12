@@ -1,0 +1,39 @@
+{
+  "sayi": 1,
+  "tarih": "2026-09-28",
+  "projeler": [
+    {
+      "url": "https://github.com/microsoft/markitdown",
+      "kategori": "Python",
+      "baslik": "Ofis belgelerini Markdown'a çevir",
+      "aciklama": "PDF, Word, Excel ve PowerPoint gibi dosyaları Markdown metnine dönüştüren Python aracı. Belgeleri dil modellerine vermeden önce sadeleştirmek için kullanışlıdır.",
+      "oneren": "ornek-ayse"
+    },
+    {
+      "url": "https://github.com/ollama/ollama",
+      "kategori": "Go",
+      "baslik": "Açık modelleri kendi bilgisayarında çalıştır",
+      "aciklama": "Açık ağırlıklı dil modellerini yerel makinede indirip çalıştıran Go aracı. Komut satırı ve yerel bir HTTP API'si sunar."
+    },
+    {
+      "url": "https://github.com/yt-dlp/yt-dlp",
+      "kategori": "Python",
+      "baslik": "Komut satırından ses ve video indirici",
+      "aciklama": "Çok sayıda siteden ses ve video indirebilen komut satırı aracı. Telif hakkına ve site kullanım koşullarına uymak kullanıcının sorumluluğundadır."
+    },
+    {
+      "url": "https://github.com/getify/You-Dont-Know-JS",
+      "kategori": "Kitap",
+      "baslik": "JavaScript'i derinlemesine anlatan kitap serisi",
+      "aciklama": "JavaScript'in kapsam, kapanış ve tip sistemi gibi temel mekanizmalarını derinlemesine anlatan, GitHub'da okunabilen kitap serisi.",
+      "oneren": "ornek-mehmet"
+    },
+    {
+      "url": "https://github.com/public-apis/public-apis",
+      "kategori": "Diğer",
+      "baslik": "Ücretsiz API'lerin ortak listesi",
+      "aciklama": "Hava durumundan finansa pek çok alanda ücretsiz kullanılabilen API'leri kategorilere ayıran topluluk listesi.",
+      "oneren": "ornek-ayse"
+    }
+  ]
+}

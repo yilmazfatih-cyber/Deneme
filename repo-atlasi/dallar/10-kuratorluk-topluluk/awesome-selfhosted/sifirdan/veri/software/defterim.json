@@ -1,0 +1,12 @@
+{
+  "name": "Defterim",
+  "website_url": "https://defterim.example",
+  "source_code_url": "https://git.example/defterim/defterim",
+  "description": "Notları düz Markdown dosyaları olarak saklayan not defteri.",
+  "licenses": ["MIT"],
+  "platforms": ["Go", "Docker"],
+  "tags": ["Not Alma"],
+  "stargazers_count": 2300,
+  "updated_at": "2026-11-02",
+  "archived": false
+}

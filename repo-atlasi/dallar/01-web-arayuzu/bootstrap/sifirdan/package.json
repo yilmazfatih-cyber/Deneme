@@ -1,0 +1,14 @@
+{
+  "name": "mini-bootstrap-sifirdan",
+  "private": true,
+  "type": "module",
+  "description": "Repo Atlası D01: belirteçlerden grid + yardımcı sınıf üreteci ve data-bs-toggle eklentisi",
+  "scripts": {
+    "test": "node --test \"test/**/*.test.js\"",
+    "uret": "node scripts/uret.js",
+    "demo": "node scripts/sunucu.js"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

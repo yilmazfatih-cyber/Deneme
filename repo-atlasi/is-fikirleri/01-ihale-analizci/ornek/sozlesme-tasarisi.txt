@@ -1,0 +1,14 @@
+SÖZLEŞME TASARISI (KURGUSAL ÖRNEK)
+
+Bu metin eğitim amaçlı kurgusaldır.
+
+Madde 12 - Ödeme yeri ve şartları
+12.1. Sözleşme bedeli, muayene ve kabul işlemlerinin tamamlanmasını izleyen 30 (otuz) gün içinde yükleniciye ödenir.
+12.2. Ödeme, e-fatura karşılığında idarenin banka hesabından yapılır.
+
+Madde 25 - Gecikme halinde alınacak cezalar
+25.1. Yüklenicinin işi sözleşmede belirtilen sürede bitirmemesi halinde, gecikilen her takvim günü için sözleşme bedelinin binde 1 (bir) oranında gecikme cezası uygulanır.
+25.2. Gecikme 20 (yirmi) günü geçerse idare sözleşmeyi feshederek kesin teminatı gelir kaydeder.
+
+Madde 30 - Muayene ve kabul
+30.1. Teslim edilen mallar, teslimden itibaren 5 (beş) iş günü içinde muayene ve kabul komisyonunca incelenir.

@@ -1,0 +1,18 @@
+{{define "bas"}}<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{.Title}}</title>
+<meta name="description" content="{{.Description}}">
+<link rel="canonical" href="{{.Canonical}}">
+</head>
+<body>
+<header><a href="{{.Root}}index.html">{{.SiteTitle}}</a></header>
+<main>
+{{end}}
+{{define "son"}}</main>
+<footer>Bu sayfa README.md dosyasından üretildi. Kaynağı düzeltmek için README'ye PR aç.</footer>
+</body>
+</html>
+{{end}}

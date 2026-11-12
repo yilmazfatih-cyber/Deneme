@@ -1,0 +1,12 @@
+{
+  "name": "Karalama",
+  "website_url": "https://karalama.example",
+  "source_code_url": "https://git.example/karalama/karalama",
+  "description": "Gerçek zamanlı ortak not ve taslak düzenleyici.",
+  "licenses": ["AGPL-3.0"],
+  "platforms": ["Nodejs", "Docker"],
+  "tags": ["Not Alma"],
+  "stargazers_count": 1700,
+  "updated_at": "2026-07-20",
+  "archived": false
+}

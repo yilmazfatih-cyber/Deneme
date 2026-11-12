@@ -1,0 +1,29 @@
+# Awesome Örnek
+
+> Denetleyicinin yakaladığı hataları gösteren, bilerek bozulmuş bir liste.
+
+## Contents
+
+- [Araçlar](#araçlar)
+- [Kütüphaneler](#kutuphaneler)
+- [Yok Olan](#yok-olan)
+
+## Araçlar
+
+- [zeta](https://example.com/zeta) - Son harf olduğu hâlde başta.
+- [alfa](https://example.com/alfa) - açıklama küçük harfle başlıyor.  
+- [beta](http://example.com/beta) - Nokta ile bitmiyor
+- [çevik](https://example.com/cevik) – En tire kullanılmış.
+* [delta](https://example.com/delta) - Yanlış madde işareti.
+- [kısa](https://bit.ly/abc) - Kısaltılmış adres.
+- [tehlike](javascript:alert(1)) - Güvensiz şema.
+- [alfa kopya](https://www.example.com/alfa/) - Aynı adres, farklı yazım.
+- [süper](https://example.com/super) - Dünyanın en iyi aracı.
+- [Yeni Girdi] (https://example.com/yeni) - Köşeli parantezden sonra boşluk.
+
+## Kütüphaneler
+
+## İş Akışı
+
+- [ırmak](https://example.com/irmak) - Türkçe sırada ı, i harfinden önce gelir.
+- [incir](https://example.com/incir) - Bu yüzden ikinci sırada.

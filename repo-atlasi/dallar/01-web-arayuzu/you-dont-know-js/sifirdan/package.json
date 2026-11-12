@@ -1,0 +1,14 @@
+{
+  "name": "ydkjs-koanlar",
+  "private": true,
+  "type": "module",
+  "description": "Repo Atlası D01: You Don't Know JS bölümlerine bağlı çalıştırılabilir koanlar (node:test)",
+  "scripts": {
+    "test": "node --test \"koanlar/**/*.test.js\" \"araclar/**/*.test.js\"",
+    "bosalt": "node araclar/bosalt.js",
+    "calis": "node --test \"calisma/**/*.test.js\""
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

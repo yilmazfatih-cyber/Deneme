@@ -1,0 +1,36 @@
+{
+  "id": "siparis-siniflandir",
+  "name": "Sipariş tutarlarını eşiğe göre ayır",
+  "version": 1,
+  "nodes": [
+    { "id": "giris", "block_id": "0a133f2e-46a3-495b-a269-5a92d387360a", "input_default": { "name": "tutarlar" } },
+    { "id": "esik", "block_id": "f2ce89e8-0ebc-4f4b-92fe-c0beb6a41051", "input_default": { "data": 100 } },
+    { "id": "gez", "block_id": "0df93f28-a283-43e1-b433-d64d54354c1c", "input_default": {} },
+    { "id": "kosul", "block_id": "96b6b614-2fac-4a94-9fd6-a5946eeda3c6", "input_default": { "operator": ">" } },
+    {
+      "id": "buyuk_metin",
+      "block_id": "88dbc891-7552-4a07-8511-e47ab9ae1efb",
+      "input_default": { "format": "Büyük sipariş: {tutar} TL" }
+    },
+    {
+      "id": "kucuk_metin",
+      "block_id": "88dbc891-7552-4a07-8511-e47ab9ae1efb",
+      "input_default": { "format": "Küçük sipariş: {tutar} TL" }
+    },
+    {
+      "id": "cikis_buyuk",
+      "block_id": "3f772001-c5d4-4ebe-9c75-e85b3faef1c4",
+      "input_default": { "name": "buyukler" }
+    },
+    { "id": "cikis_kucuk", "block_id": "3f772001-c5d4-4ebe-9c75-e85b3faef1c4", "input_default": { "name": "kucukler" } }
+  ],
+  "links": [
+    { "source_id": "giris", "source_name": "result", "sink_id": "gez", "sink_name": "items" },
+    { "source_id": "gez", "source_name": "item", "sink_id": "kosul", "sink_name": "value1" },
+    { "source_id": "esik", "source_name": "output", "sink_id": "kosul", "sink_name": "value2" },
+    { "source_id": "kosul", "source_name": "yes_output", "sink_id": "buyuk_metin", "sink_name": "values_#_tutar" },
+    { "source_id": "kosul", "source_name": "no_output", "sink_id": "kucuk_metin", "sink_name": "values_#_tutar" },
+    { "source_id": "buyuk_metin", "source_name": "output", "sink_id": "cikis_buyuk", "sink_name": "value" },
+    { "source_id": "kucuk_metin", "source_name": "output", "sink_id": "cikis_kucuk", "sink_name": "value" }
+  ]
+}

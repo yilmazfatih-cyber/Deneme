@@ -1,0 +1,12 @@
+[
+  { "query": "fatura modülündeki düzeltmeyi hazırladım, bunun için commit mesajı yazar mısın", "should_trigger": true },
+  { "query": "staged değişikliklere bakıp conventional commits biçiminde mesaj öner", "should_trigger": true },
+  { "query": "bunu commitle ama mesajı türkçe olsun, feat mi fix mi sen karar ver", "should_trigger": true },
+  { "query": "git diff --staged çıktısına göre kısa bir commit açıklaması lazım", "should_trigger": true },
+  { "query": "test dosyalarını ekledim, uygun commit mesajı yazar mısın", "should_trigger": true },
+  { "query": "dün attığım son commiti geri almam gerekiyor, nasıl yaparım", "should_trigger": false },
+  { "query": "bu dalın commit geçmişini tek commite indirmek için rebase adımlarını anlat", "should_trigger": false },
+  { "query": "sürüm için değişiklik günlüğü (changelog) dosyasını güncelle", "should_trigger": false },
+  { "query": "pull request açıklamasına ekran görüntüsü ve test adımları ekle", "should_trigger": false },
+  { "query": "toplantı dökümünden yapılacaklar listesi çıkar", "should_trigger": false }
+]

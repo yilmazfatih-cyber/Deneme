@@ -1,0 +1,128 @@
+{
+  "name": "Fiyat radarı — günlük özet",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "days",
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "id": "0287193e-8905-59d7-927e-9e7635591917",
+      "name": "Her sabah",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8765/calistir",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "timeout": 900000
+        }
+      },
+      "id": "e48e28d8-51c5-5b96-91f2-f0a9d5b59ad9",
+      "name": "Radarı çalıştır",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [220, 0]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "4775660e-49d3-5b4b-b00d-00643701dcf8",
+              "leftValue": "={{ $json.bildirim_gerekli }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "81197de3-dc51-505c-904d-9eecfd85a159",
+      "name": "Bildirim gerekli mi?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [440, 0]
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "sendMessage",
+        "chatId": "TELEGRAM_SOHBET_KIMLIGI",
+        "text": "={{ $json.telegram_html }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "id": "010a2185-9da2-57fa-b83d-94fd99da3889",
+      "name": "Telegram'a gönder",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [660, -100]
+    }
+  ],
+  "connections": {
+    "Her sabah": {
+      "main": [
+        [
+          {
+            "node": "Radarı çalıştır",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Radarı çalıştır": {
+      "main": [
+        [
+          {
+            "node": "Bildirim gerekli mi?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Bildirim gerekli mi?": {
+      "main": [
+        [
+          {
+            "node": "Telegram'a gönder",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Europe/Istanbul"
+  },
+  "pinData": {}
+}

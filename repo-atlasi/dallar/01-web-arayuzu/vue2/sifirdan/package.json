@@ -1,0 +1,12 @@
+{
+  "name": "mini-vue2-karsilastirma",
+  "private": true,
+  "type": "module",
+  "description": "Repo Atlası D01: Vue 2 defineProperty reaktivitesi ve Vue 3 Proxy karşılaştırması",
+  "scripts": {
+    "test": "node --test \"test/**/*.test.js\""
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

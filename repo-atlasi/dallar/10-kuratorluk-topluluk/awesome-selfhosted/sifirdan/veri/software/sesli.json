@@ -1,0 +1,13 @@
+{
+  "name": "Sesli",
+  "website_url": "https://sesli.example",
+  "source_code_url": "https://git.example/sesli/sesli",
+  "description": "Müzik akışı sunucusu; şarkı sözlerini harici bir hizmetten çeker.",
+  "licenses": ["MIT"],
+  "platforms": ["Go", "Docker"],
+  "tags": ["Medya Akışı"],
+  "depends_3rdparty": true,
+  "stargazers_count": 640,
+  "updated_at": "2026-10-01",
+  "archived": false
+}

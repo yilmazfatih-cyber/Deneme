@@ -1,0 +1,10 @@
+{
+  "name": "mini-flutter",
+  "private": true,
+  "type": "module",
+  "description": "Flutter'ın Widget → Element → RenderObject çekirdeğinin öğretim amaçlı JS kopyası",
+  "scripts": {
+    "test": "node --test",
+    "demo": "node ornek_sayac.js"
+  }
+}

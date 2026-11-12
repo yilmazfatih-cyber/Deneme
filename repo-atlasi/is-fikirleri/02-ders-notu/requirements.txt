@@ -1,0 +1,6 @@
+# İsteğe bağlı bağımlılıklar. Birim testler bunlarsız da geçer.
+# Kendi sitenizdeki ders sayfasından altyazı ya da ses indirmek için (entegrasyon testleri bu sürümle koştu):
+yt-dlp==2026.10.26
+# Altyazısız videoları yazıya dökmek (--asr) için; torch büyük bir indirmedir, ayrıca kurun.
+# API transformers 5.23.0.dev0 (b255688) kaynağında doğrulandı; gerçek modelle bu ortamda denenmedi:
+#   pip install "transformers>=5,<6" torch

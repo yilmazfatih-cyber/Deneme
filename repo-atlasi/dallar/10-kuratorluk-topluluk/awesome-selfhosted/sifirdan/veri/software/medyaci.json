@@ -1,0 +1,13 @@
+{
+  "name": "Medyacı",
+  "website_url": "https://medyaci.example",
+  "source_code_url": "https://git.example/medyaci/medyaci",
+  "description": "Film, dizi ve müzik arşivini ağ üzerinden yayınlayan medya sunucusu.",
+  "licenses": ["GPL-2.0"],
+  "platforms": ["C#", "deb", "Docker"],
+  "tags": ["Medya Akışı"],
+  "demo_url": "https://demo.medyaci.example",
+  "stargazers_count": 9800,
+  "updated_at": "2026-11-06",
+  "archived": false
+}

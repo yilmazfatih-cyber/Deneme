@@ -1,0 +1,12 @@
+{
+  "name": "mini-vue3-sifirdan",
+  "private": true,
+  "type": "module",
+  "description": "Repo Atlası D01: sıfırdan mini Vue 3 (Proxy reaktivite, vnode + LIS fark, şablon derleyici, bileşen + nextTick)",
+  "scripts": {
+    "test": "node --test \"test/**/*.test.js\""
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

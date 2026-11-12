@@ -1,0 +1,5 @@
+interface:
+  display_name: 'Uygula'
+  short_description: 'Planı küçük adımlarla koda dök'
+policy:
+  allow_implicit_invocation: false

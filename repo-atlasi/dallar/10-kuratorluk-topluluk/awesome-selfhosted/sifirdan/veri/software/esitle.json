@@ -1,0 +1,12 @@
+{
+  "name": "Esitle",
+  "website_url": "https://git.example/esitle/esitle",
+  "source_code_url": "https://git.example/esitle/esitle",
+  "description": "Cihazlar arasında merkezsiz ve sürekli dosya eşitleme.",
+  "licenses": ["MPL-2.0"],
+  "platforms": ["Go", "deb"],
+  "tags": ["Dosya Eşitleme"],
+  "stargazers_count": 6100,
+  "updated_at": "2026-10-20",
+  "archived": false
+}

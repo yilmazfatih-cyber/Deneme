@@ -1,0 +1,3 @@
+# Python önbellekleri depoya girmez
+__pycache__/
+*.pyc

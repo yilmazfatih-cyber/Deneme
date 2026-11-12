@@ -1,0 +1,23 @@
+diff --git a/fatura/kdv.py b/fatura/kdv.py
+--- a/fatura/kdv.py
++++ b/fatura/kdv.py
+@@ -5,7 +5,7 @@
+ 
+ def kdv_hesapla(tutar):
+     # Tutar metin olarak gelebilir
+-    deger = float(tutar)
++    deger = float(tutar) if tutar else 0.0
+     return round(deger * ORAN, 2)
+ 
+ 
+diff --git a/tests/test_kdv.py b/tests/test_kdv.py
+--- a/tests/test_kdv.py
++++ b/tests/test_kdv.py
+@@ -3,3 +3,7 @@
+ 
+ def test_kdv_hesapla():
+     assert kdv_hesapla('100') == 20.0
++
++
++def test_bos_tutar_cokmez():
++    assert kdv_hesapla('') == 0.0

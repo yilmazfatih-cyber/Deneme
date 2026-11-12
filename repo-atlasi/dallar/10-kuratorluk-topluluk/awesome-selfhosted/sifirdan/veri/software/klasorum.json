@@ -1,0 +1,12 @@
+{
+  "name": "Klasörüm",
+  "website_url": "https://klasorum.example",
+  "source_code_url": "https://git.example/klasorum/klasorum",
+  "description": "Tarayıcıdan sürükle-bırak dosya yükleme ve bağlantıyla paylaşma.",
+  "licenses": ["MIT"],
+  "platforms": ["Nodejs", "Docker"],
+  "tags": ["Dosya Eşitleme"],
+  "stargazers_count": 850,
+  "updated_at": "2026-09-15",
+  "archived": false
+}

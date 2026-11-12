@@ -1,0 +1,38 @@
+{
+  "proje": "ornek-proje",
+  "surum": "1.2.0",
+  "sahip": "Örnek Ekip",
+  "aciklama": "Örnek projenin ajan kuralları ve becerileri",
+  "kurallar": [
+    { "baslik": "Önce plan", "metin": "Birden çok dosyaya dokunan bir işe başlamadan önce kısa bir plan yaz." },
+    { "baslik": "Test önce", "metin": "Her hata düzeltmesine hatayı gösteren başarısız bir testle başla." },
+    {
+      "baslik": "Cerrahi değişiklik",
+      "metin": "Yalnızca görevin gerektirdiği satırlara dokun; yan kodu düzeltme, not et."
+    },
+    { "baslik": "Kanıtla bitir", "metin": "\"Bitti\" demeden önce testleri çalıştır ve çıktıyı göster." }
+  ],
+  "beceriler": [
+    {
+      "ad": "commit-mesaji",
+      "gorunen_ad": "Commit Mesajı",
+      "aciklama": "Hazırlanmış değişikliklerden Türkçe Conventional Commits mesajı yazar. Kullanıcı commit mesajı istediğinde kullan.",
+      "govde": "kaynak/beceriler/commit-mesaji.md"
+    },
+    {
+      "ad": "gelistirme-sunucusu",
+      "gorunen_ad": "Geliştirme Sunucusu",
+      "aciklama": "Geliştirme sunucusunu proje kökünden başlatır ve günlüğünü izler. Kullanıcı sunucuyu çalıştırmak istediğinde kullan.",
+      "govde": "kaynak/beceriler/gelistirme-sunucusu.md"
+    },
+    {
+      "ad": "surum-notu",
+      "gorunen_ad": "Sürüm Notu",
+      "aciklama": "Son etiketten bu yana yapılan değişikliklerden sürüm notu taslağı çıkarır.",
+      "govde": "kaynak/beceriler/surum-notu.md",
+      "kullanici_cagirir": true,
+      "arguman_ipucu": "Sürüm etiketi, ör. v1.3.0"
+    }
+  ],
+  "hedefler": ["claude", "claude-eklenti", "codex", "cursor", "gemini"]
+}

@@ -1,0 +1,10 @@
+{
+  "name": "mini-roadmap",
+  "private": true,
+  "type": "module",
+  "description": "roadmap.sh tarzı yol haritası: JSON → SVG/HTML, konu metinleri ve ilerleme durumu (öğretim amaçlı)",
+  "scripts": {
+    "test": "node --test",
+    "olustur": "node olustur.js"
+  }
+}

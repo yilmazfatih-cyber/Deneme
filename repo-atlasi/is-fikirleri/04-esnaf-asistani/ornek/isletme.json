@@ -1,0 +1,79 @@
+{
+  "ad": "Makas Berber",
+  "tur": "berber",
+  "adres": "Caferağa Mah. Moda Cad. No 10, Kadıköy/İstanbul",
+  "telefon": "+90 216 000 00 00",
+  "harita": "https://www.openstreetmap.org/search?query=Moda%20Caddesi%20Kad%C4%B1k%C3%B6y",
+  "kaynaklar": ["Murat", "Can"],
+  "adim_dk": 15,
+  "en_erken_dk": 60,
+  "en_gec_gun": 14,
+  "saklama_gun": 180,
+  "devir_saklama_gun": 30,
+  "musteri_basina_azami": 2,
+  "saat_dilimi": "Europe/Istanbul",
+  "hassas_veri": false,
+  "kvkk_url": "https://ornek-berber.com.tr/kvkk",
+  "sahip_sohbet_id": null,
+  "calisma_saatleri": {
+    "pazartesi": ["10:00-13:00", "14:00-20:00"],
+    "salı": ["10:00-13:00", "14:00-20:00"],
+    "çarşamba": ["10:00-13:00", "14:00-20:00"],
+    "perşembe": ["10:00-13:00", "14:00-20:00"],
+    "cuma": ["10:00-13:00", "14:00-20:00"],
+    "cumartesi": ["09:00-18:00"],
+    "pazar": []
+  },
+  "tatiller": ["2026-12-31", "2027-01-01"],
+  "hizmetler": [
+    {
+      "kod": "sac-kesimi",
+      "ad": "Saç kesimi",
+      "sure_dk": 30,
+      "fiyat_tl": 400,
+      "anahtarlar": ["saç", "kesim", "tıraş"]
+    },
+    {
+      "kod": "sakal",
+      "ad": "Sakal tıraşı",
+      "sure_dk": 20,
+      "fiyat_tl": 250,
+      "anahtarlar": ["sakal"]
+    },
+    {
+      "kod": "sac-sakal",
+      "ad": "Saç ve sakal",
+      "sure_dk": 45,
+      "fiyat_tl": 600,
+      "anahtarlar": ["saç sakal", "ikisi birden"]
+    },
+    {
+      "kod": "cocuk",
+      "ad": "Çocuk saç kesimi (12 yaş altı)",
+      "sure_dk": 25,
+      "fiyat_tl": 300,
+      "anahtarlar": ["çocuk", "oğlum", "kızım"]
+    }
+  ],
+  "sss": [
+    {
+      "soru": "Kartla ödeme alıyor musunuz?",
+      "cevap": "Evet, kredi kartı, banka kartı ve temassız ödeme alıyoruz.",
+      "anahtarlar": ["kart", "kredi", "pos", "temassız", "nakit", "ödeme"]
+    },
+    {
+      "soru": "Otopark var mı?",
+      "cevap": "Dükkânın önünde park yeri yok; 200 metre ilerideki Moda otoparkını öneriyoruz.",
+      "anahtarlar": ["otopark", "park", "araba", "araç"]
+    },
+    {
+      "soru": "Randevusuz gelebilir miyim?",
+      "cevap": "Gelebilirsiniz; randevulu müşteriler önceliklidir, bu yüzden beklemeniz gerekebilir.",
+      "anahtarlar": ["randevusuz", "sırasız", "beklemeden"]
+    }
+  ],
+  "politikalar": [
+    "İptal ve değişiklikleri en az 2 saat önce bildirin.",
+    "15 dakikadan fazla gecikmede randevu iptal edilebilir."
+  ]
+}

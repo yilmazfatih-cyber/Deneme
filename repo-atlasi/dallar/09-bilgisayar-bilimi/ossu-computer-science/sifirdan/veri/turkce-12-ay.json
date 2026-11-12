@@ -1,0 +1,203 @@
+{
+  "baslik": "D09: 12 ayda bilgisayar bilimi derinleşmesi",
+  "not": "Saatler tahminidir: OSSU dersleri README'deki hafta x ortalama efor, CIU konuları ve miniler öğretmen tahmini. İki kulvar: 'algoritma' (veri yapıları, algoritmalar, pratik) ve 'matematik-sistem' (matematik ve sistem dersleri paralel; OSSU matematiği giriş dersleriyle paralel almayı popüler bir seçenek olarak anar).",
+  "dersler": [
+    {
+      "kimlik": "missing-semester",
+      "ad": "The Missing Semester: kabuk, Git, betik, hata ayıklama (OSSU CS Tools)",
+      "saat": 24,
+      "onkosullar": [],
+      "dugumler": ["G1", "G2"],
+      "kaynak": "https://missing.csail.mit.edu/",
+      "kulvar": "matematik-sistem"
+    },
+    {
+      "kimlik": "python-tekrar",
+      "ad": "Python tekrarı: G3 kontrol listesi + Python-100-Days 1-20. gün seçmeleri",
+      "saat": 24,
+      "onkosullar": [],
+      "dugumler": ["G3"],
+      "kaynak": "../../python-100-days/README.md",
+      "aciklama": "Python'u yeni bitirdiysen atla; hiç bilmiyorsan yerine OSSU Intro CS (112 saat) koy.",
+      "kulvar": "algoritma"
+    },
+    {
+      "kimlik": "buyuk-o",
+      "ad": "Büyük-O ve asimptotik analiz (CIU)",
+      "saat": 12,
+      "onkosullar": ["python-tekrar"],
+      "dugumler": ["G5"],
+      "kaynak": "../../coding-interview-university/README.md",
+      "kulvar": "algoritma"
+    },
+    {
+      "kimlik": "dogrusal-yapilar",
+      "ad": "Dizi, bağlı liste, yığın, kuyruk, hash tablosu (CIU) + JS minisi",
+      "saat": 40,
+      "onkosullar": ["buyuk-o"],
+      "dugumler": ["G5", "G4"],
+      "kaynak": "../../javascript-algorithms/sifirdan/README.md",
+      "kulvar": "algoritma"
+    },
+    {
+      "kimlik": "algoritma-deposu",
+      "ad": "Algoritma deposu iskeleti: doctest, DIRECTORY.md, kural denetimi",
+      "saat": 16,
+      "onkosullar": ["python-tekrar"],
+      "dugumler": ["G3", "G7"],
+      "kaynak": "../../thealgorithms-python/sifirdan/README.md",
+      "kulvar": "algoritma"
+    },
+    {
+      "kimlik": "siralama-arama",
+      "ad": "Sıralama, ikili arama, bit işlemleri (CIU)",
+      "saat": 24,
+      "onkosullar": ["dogrusal-yapilar"],
+      "dugumler": ["G5"],
+      "kaynak": "../../coding-interview-university/README.md",
+      "kulvar": "algoritma"
+    },
+    {
+      "kimlik": "agaclar",
+      "ad": "Ağaçlar: ikili arama ağacı, heap ve öncelik kuyruğu, trie (CIU)",
+      "saat": 30,
+      "onkosullar": ["dogrusal-yapilar"],
+      "dugumler": ["G5"],
+      "kaynak": "../../coding-interview-university/README.md",
+      "kulvar": "algoritma"
+    },
+    {
+      "kimlik": "graflar",
+      "ad": "Graflar: BFS, DFS, topolojik sıralama, Dijkstra (CIU)",
+      "saat": 30,
+      "onkosullar": ["agaclar"],
+      "dugumler": ["G5"],
+      "kaynak": "../../coding-interview-university/README.md",
+      "kulvar": "algoritma"
+    },
+    {
+      "kimlik": "ozyineleme-dp",
+      "ad": "Özyineleme ve dinamik programlama (CIU)",
+      "saat": 30,
+      "onkosullar": ["siralama-arama"],
+      "dugumler": ["G5"],
+      "kaynak": "../../coding-interview-university/README.md",
+      "kulvar": "algoritma"
+    },
+    {
+      "kimlik": "math-for-cs",
+      "ad": "Mathematics for Computer Science (OSSU, MIT 6.042J)",
+      "saat": 65,
+      "onkosullar": ["python-tekrar"],
+      "dugumler": ["G5"],
+      "kaynak": "https://openlearninglibrary.mit.edu/courses/course-v1:OCW+6.042J+2T2019/about",
+      "aciklama": "OSSU'da önkoşulu Calculus 1C; burada bilerek gevşetildi (ayrık matematik için lise matematiği yeterli başlangıç).",
+      "kulvar": "matematik-sistem"
+    },
+    {
+      "kimlik": "algo-1",
+      "ad": "Algorithms: Design and Analysis, Part 1 (OSSU)",
+      "saat": 48,
+      "onkosullar": ["math-for-cs", "siralama-arama"],
+      "dugumler": ["G5"],
+      "kaynak": "https://www.edx.org/learn/algorithms/stanford-university-algorithms-design-and-analysis-part-1",
+      "kulvar": "algoritma"
+    },
+    {
+      "kimlik": "algo-2",
+      "ad": "Algorithms: Design and Analysis, Part 2 (OSSU)",
+      "saat": 48,
+      "onkosullar": ["algo-1", "graflar"],
+      "dugumler": ["G5"],
+      "kaynak": "https://www.edx.org/learn/algorithms/stanford-university-algorithms-design-and-analysis-part-2",
+      "kulvar": "algoritma"
+    },
+    {
+      "kimlik": "soru-pratigi",
+      "ad": "Kodlama sorusu pratiği: konu başına 2-3 soru, önce kâğıtta (CIU)",
+      "saat": 60,
+      "onkosullar": ["graflar", "ozyineleme-dp"],
+      "dugumler": ["G5"],
+      "kaynak": "../../coding-interview-university/README.md",
+      "kulvar": "algoritma"
+    },
+    {
+      "kimlik": "ag",
+      "ad": "Computer Networking: a Top-Down Approach + Wireshark lab'leri (OSSU)",
+      "saat": 64,
+      "onkosullar": ["missing-semester"],
+      "dugumler": ["G6"],
+      "kaynak": "https://gaia.cs.umass.edu/kurose_ross/online_lectures.htm",
+      "kulvar": "matematik-sistem"
+    },
+    {
+      "kimlik": "nand2tetris-1",
+      "ad": "Nand to Tetris Part I (OSSU)",
+      "saat": 60,
+      "onkosullar": ["python-tekrar"],
+      "dugumler": ["G10"],
+      "kaynak": "https://www.nand2tetris.org/",
+      "aciklama": "OSSU'daki önkoşul 'C benzeri bir dil'; projeleri Python ile yazmak yeterli.",
+      "kulvar": "matematik-sistem"
+    },
+    {
+      "kimlik": "ostep",
+      "ad": "OSTEP temel yaklaşım: kitap + bölüm sonu ödevleri (OSSU, ~80 saat)",
+      "saat": 80,
+      "onkosullar": ["nand2tetris-1"],
+      "dugumler": ["G10"],
+      "kaynak": "https://pages.cs.wisc.edu/~remzi/OSTEP/",
+      "aciklama": "OSSU'da önkoşulu Nand2Tetris Part II; zaman kazanmak için Part I ile yetiniliyor.",
+      "kulvar": "matematik-sistem"
+    },
+    {
+      "kimlik": "sistem-tasarimi",
+      "ad": "System Design Primer + yapı taşı minileri + Anki",
+      "saat": 60,
+      "onkosullar": ["ag", "dogrusal-yapilar"],
+      "dugumler": ["G6"],
+      "kaynak": "../../system-design-primer/nasil-calisilir.md",
+      "kulvar": "matematik-sistem"
+    },
+    {
+      "kimlik": "bitirme",
+      "ad": "Bitirme: testli kısa link servisi (base62, hız sınırlama, LRU, tutarlı hash)",
+      "saat": 40,
+      "onkosullar": ["sistem-tasarimi", "soru-pratigi"],
+      "dugumler": ["G7"],
+      "kaynak": "../../system-design-primer/sifirdan/README.md",
+      "kulvar": "algoritma"
+    },
+    {
+      "kimlik": "cs-notes-secmeler",
+      "ad": "CS-Notes seçmeleri (Çince, çeviri iş akışıyla): önbellek, dağıtık sistemler",
+      "saat": 20,
+      "onkosullar": ["sistem-tasarimi"],
+      "dugumler": ["G6"],
+      "kaynak": "../../cs-notes/README.md",
+      "secmeli": true,
+      "kulvar": "matematik-sistem"
+    },
+    {
+      "kimlik": "veritabanlari",
+      "ad": "Databases: Modeling, SQL, Semistructured (OSSU, 3 x 2 hafta)",
+      "saat": 60,
+      "onkosullar": ["python-tekrar"],
+      "dugumler": ["G6"],
+      "kaynak": "https://www.edx.org/learn/relational-databases/stanford-university-databases-relational-databases-and-sql",
+      "secmeli": true,
+      "kulvar": "matematik-sistem"
+    },
+    {
+      "kimlik": "nand2tetris-2",
+      "ad": "Nand to Tetris Part II (OSSU)",
+      "saat": 90,
+      "onkosullar": ["nand2tetris-1"],
+      "dugumler": ["G10"],
+      "kaynak": "https://www.coursera.org/learn/nand2tetris2",
+      "aciklama": "Coursera: Temmuz 2025'ten beri ücretsiz izleme büyük ölçüde kalktı (OSSU FAQ).",
+      "secmeli": true,
+      "kulvar": "matematik-sistem"
+    }
+  ]
+}

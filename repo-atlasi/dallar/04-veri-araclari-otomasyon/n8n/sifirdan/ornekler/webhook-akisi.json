@@ -1,0 +1,82 @@
+{
+  "name": "Sipariş webhook'u",
+  "id": "ornek-webhook",
+  "active": true,
+  "nodes": [
+    {
+      "parameters": { "httpMethod": "POST", "path": "siparis", "responseMode": "lastNode", "options": {} },
+      "id": "1",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 300],
+      "webhookId": "ornek-webhook-1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "typeValidation": "loose" },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.body.tutar }}",
+              "rightValue": 0,
+              "operator": { "type": "number", "operation": "gt" }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "2",
+      "name": "Tutar geçerli mi?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [220, 300]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            { "id": "c1", "name": "musteri", "type": "string", "value": "={{ $json.body.musteri ?? 'misafir' }}" },
+            { "id": "c2", "name": "tutar", "type": "number", "value": "={{ $json.body.tutar }}" },
+            {
+              "id": "c3",
+              "name": "kdv",
+              "type": "number",
+              "value": "={{ Math.round(Number($json.body.tutar) * 20) / 100 }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3",
+      "name": "KDV hesapla",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [440, 200]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [{ "id": "d1", "name": "hata", "type": "string", "value": "Geçersiz tutar" }]
+        },
+        "options": {}
+      },
+      "id": "4",
+      "name": "Hata yanıtı",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [440, 420]
+    }
+  ],
+  "connections": {
+    "Webhook": { "main": [[{ "node": "Tutar geçerli mi?", "type": "main", "index": 0 }]] },
+    "Tutar geçerli mi?": {
+      "main": [
+        [{ "node": "KDV hesapla", "type": "main", "index": 0 }],
+        [{ "node": "Hata yanıtı", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": { "executionOrder": "v1" }
+}

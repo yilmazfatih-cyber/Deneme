@@ -15,6 +15,9 @@ Kelime bulmakta zorlanan afazili yetişkinler için Türkçe bir web uygulaması
 >
 > **Ayrıca:** [`moda-radar/`](moda-radar/README.md) altında defilelerden sezon rengi (Pantone TCX), kumaş ve desen tahmini yapan,
 > İstanbul'u beş sosyoekonomik segmente bölen ve ürün bazlı yatırım kararı üreten **Moda Radar** tasarımı var (Fable mimar, Opus ekip).
+>
+> **Ayrıca:** [`repo-atlasi/`](repo-atlasi/README.md) altında GitHub'ın en popüler 51 deposunu sıfırdan yazmayı öğreten,
+> dallanan bir öğrenme ağacı (testli mini uygulamalarla) ve bu depolardan çıkan iş fikirleri ile 6 MVP var.
 
 Ürün planı: [`docs/PLAN.md`](docs/PLAN.md) · Yol haritası: [`docs/ROADMAP.md`](docs/ROADMAP.md) ·
 Ekip anayasası: [`CLAUDE.md`](CLAUDE.md) · Son demo: [`docs/sprints/S01/demo.md`](docs/sprints/S01/demo.md)

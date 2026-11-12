@@ -1,0 +1,9 @@
+{
+  "name": "ecc-sifirdan",
+  "private": true,
+  "description": "D08 öğretim örneği: tek kaynaktan çok harness'e yapılandırma üreten küçük bir üretici",
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  }
+}

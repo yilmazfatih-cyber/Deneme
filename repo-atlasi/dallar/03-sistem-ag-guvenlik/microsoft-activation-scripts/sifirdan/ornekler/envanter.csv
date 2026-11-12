@@ -1,0 +1,17 @@
+cihaz,kullanici,yazilim,surum,yayinci,kurulum_tarihi
+PC-001,ayse,Windows 11 Pro,23H2,Microsoft,2025-01-10
+PC-002,mehmet,Windows 11 Pro,23H2,Microsoft,2025-01-10
+PC-003,zeynep,Windows 11 Pro,23H2,Microsoft,2025-02-01
+LAPTOP-07,ayse,Windows 11 Pro,23H2,Microsoft,2025-03-01
+PC-001,ayse,Microsoft 365 Apps for enterprise,2410,Microsoft,2025-01-12
+PC-002,mehmet,Microsoft 365 Apps for enterprise,2410,Microsoft,2025-01-12
+PC-003,zeynep,Microsoft 365 Apps for enterprise,2410,Microsoft,2025-02-02
+LAPTOP-07,ayse,Microsoft 365 Apps for enterprise,2410,Microsoft,2025-03-02
+PC-001,ayse,CAD Studio 2025,25.1,Örnek Yazılım A.Ş.,2025-04-01
+PC-003,zeynep,CAD Studio 2025,25.1,Örnek Yazılım A.Ş.,2025-04-03
+LAPTOP-07,ayse,CAD Studio 2025,25.1,Örnek Yazılım A.Ş.,2025-05-10
+PC-002,mehmet,Muhasebe Plus 7.4.2,7.4.2,Defter Bilişim,2024-11-20
+PC-001,ayse,Grafik Pro 2023,2023,Pikselci Ltd.,2023-06-15
+PC-002,mehmet,PDF Düzenleyici X,12.0,Belgeci Ltd.,2026-10-30
+PC-002,mehmet,VLC media player 3.0.20,3.0.20,VideoLAN,2024-09-01
+PC-003,zeynep,7-Zip 24.08,24.08,Igor Pavlov,2024-10-01

@@ -1,0 +1,12 @@
+[package]
+name = "claw-mini"
+version = "0.1.0"
+edition = "2021"
+description = "claw-code'un harness çekirdeğini öğretmek için yazılmış küçük, bağımlılıksız Rust örneği"
+license = "MIT"
+publish = false
+
+[dependencies]
+
+[lints.rust]
+unsafe_code = "forbid"
