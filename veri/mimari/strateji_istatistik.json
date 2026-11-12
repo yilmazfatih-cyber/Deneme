@@ -6849,27 +6849,27 @@
    "kaynak": "havuzlanmış olay çalışması"
   },
   "satin_alma": {
-   "n": 16,
-   "ort_net": 0.00037229716671574164,
-   "ort_anormal": -0.0010387282799926706,
+   "n": 22,
+   "ort_net": 0.011628952877004082,
+   "ort_anormal": -2.202910710104942e-05,
    "kaynak": "havuzlanmış olay çalışması"
   },
   "pead": {
-   "n": 9,
-   "ort_net": 0.001482932406040585,
-   "ort_anormal": 0.034093071332468666,
+   "n": 15,
+   "ort_net": -0.005735206098786768,
+   "ort_anormal": 0.01664710213905855,
    "kaynak": "havuzlanmış olay çalışması"
   },
   "temettu_yakalama": {
-   "n": 47,
-   "ort_net": -0.0048619142649530276,
-   "ort_anormal": -0.000982327515849933,
+   "n": 55,
+   "ort_net": -0.005732420662993087,
+   "ort_anormal": -0.0024759988838593365,
    "kaynak": "havuzlanmış olay çalışması"
   },
   "bedelsiz_beklenti": {
-   "n": 5,
-   "ort_net": -0.030395111727992714,
-   "ort_anormal": -0.030180658552939145,
+   "n": 7,
+   "ort_net": -0.014693315821607107,
+   "ort_anormal": 0.0016294078529736236,
    "kaynak": "havuzlanmış olay çalışması"
   },
   "geri_alim": {
@@ -6890,9 +6890,9 @@
    "vekil": "haber_momentum"
   },
   "arz_baskisi": {
-   "n": 14,
-   "ort_net": 0.0022126606010829013,
-   "ort_anormal": -0.011693542686011289,
+   "n": 17,
+   "ort_net": -0.0017812488161466835,
+   "ort_anormal": -0.00976334651770545,
    "kaynak": "havuzlanmış olay çalışması"
   }
  },
