@@ -37,7 +37,8 @@ def _g(deger, ilk, segment="orta"):
 
 
 def _veri(n, gecikme):
-    s, g = [], []
+    # markanın ilk tarama kaydı: sol sansür bu günü "zaten raftaydı" sayar, ölçüme girmez
+    s, g = [], [_g("ilk-tarama", date(2020, 1, 1))]
     for i in range(n):
         sezon = ("SS24", "FW24")[i % 2]
         s.append(_s(sezon, f"d{i}"))
@@ -83,3 +84,14 @@ def test_sentetik_gecikme_geri_bulunur():
         deger, kaynak, ayr = gk.olc(s, g, segment, {"alt": 0, "ust": 6, "mod": 4.5})
         assert kaynak == "olculen" and ayr["n"] >= 8
         assert abs(deger - bilinen) <= 0.5
+
+
+def test_ilk_taramada_rafta_olan_sol_sansurlu():
+    s = [_s("SS24", "a"), _s("SS24", "b")]
+    ilk = sz.raf_tarihi("SS24", 2.0)
+    g = [_g("a", ilk), _g("b", ilk + timedelta(days=30))]
+    e = gk.eslesmeler(s, g, "orta")
+    assert [x["deger"] for x in e] == ["b"]  # a ilk tarama gününde zaten raftaydı
+    rapor = GozlemKaydi(**{**g[0].model_dump(), "kaynak_turu": "rapor"})
+    taban = _g("ilk-tarama", date(2020, 1, 1))
+    assert {x["deger"] for x in gk.eslesmeler(s, [taban, rapor, g[1]], "orta")} == {"a", "b"}  # rapor sansürlenmez
