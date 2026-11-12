@@ -1,0 +1,26 @@
+[project]
+name = "turkce-model"
+version = "0.1.0"
+description = "Sıfırdan Türkçe dil modeli: TDK kökleri ve Türkçe eklerle tokenizer, TDK sözlüğüyle ön eğitim, MEB sorularıyla ince ayar"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "numpy>=1.24",
+  "requests>=2.28",
+  "torch>=2.4",          # nn.RMSNorm 2.4 ile geldi. NVIDIA ekran kartı için pytorch.org'daki CUDA kurulumunu kullan.
+  "tomli>=2; python_version < '3.11'",
+]
+
+[project.optional-dependencies]
+pdf = ["pymupdf>=1.24"]  # MEB kitapçıklarını ayrıştırmak için (meb-pdf)
+dev = ["pytest>=8", "pymupdf>=1.24"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["turkce_model*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

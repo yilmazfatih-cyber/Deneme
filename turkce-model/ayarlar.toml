@@ -1,0 +1,84 @@
+# Sıfırdan Türkçe dil modeli — ayarlar
+#
+# Komutlar bu dosyayı bulunduğu klasörden okur. Bir ayarı dosyayı değiştirmeden denemek için:
+#   python -m turkce_model hesapla --ayar gomme.boyut=384 --ayar model.katman=8
+# Farklı deneyleri yan yana tutmak için bu dosyanın kopyasını kullan: --ayarlar deney2.toml
+
+# =============================================================================================
+# GÖMME (EMBEDDING) KARARLARI — SENİN
+# Hepsi bilerek "KARAR_VER" bırakıldı; eğitim bunlar dolmadan başlamaz. Her birinin ne yaptığı,
+# neyi değiştirdiği ve birbirleriyle etkileşimleri: GOMME_KARARLARI.md
+# Kararının etkisini görmek için: python -m turkce_model hesapla   (parametre sayısı, bellek, uyarılar)
+# =============================================================================================
+[gomme]
+boyut = "KARAR_VER"             # d_model, 64'ün katı: 128 | 256 | 384 | 512 | 768 …
+konum = "KARAR_VER"             # "rope" | "ogrenilen" | "sinus" | "alibi" | "yok"
+cikis_baglama = "KARAR_VER"     # true | false   (giriş ve çıkış aynı tabloyu kullansın mı)
+faktor_boyutu = "KARAR_VER"     # 0 = kapalı | boyut'tan küçük bir sayı (ALBERT tarzı ayrıştırma)
+kategori_gommesi = "KARAR_VER"  # true | false   (kök / ek / harf / noktalama … kategorisi vektörü)
+bicim_paylasimi = "KARAR_VER"   # true | false   (lar/ler, kitap/kitab aynı satırı paylaşır; bağlamayla birlikte olmaz)
+olcek = "KARAR_VER"             # true | false   (gömmeyi √boyut ile çarp)
+norm = "KARAR_VER"              # "yok" | "layernorm" | "rmsnorm"
+baslatma_std = "KARAR_VER"      # 0.02 gibi bir sayı | "otomatik" (= 1/√boyut)
+dropout = "KARAR_VER"           # 0.0 – 0.3
+
+# =============================================================================================
+# MODEL (gömme dışındaki mimari) — makul varsayılanlar; istediğin gibi değiştir
+# =============================================================================================
+[model]
+katman = 6            # Transformer blok sayısı
+bas_boyutu = 64       # dikkat başı boyutu; baş sayısı = gomme.boyut / bas_boyutu
+baglam = 512          # bir seferde görülen en fazla token
+mlp = "swiglu"        # "swiglu" | "gelu"
+norm = "rmsnorm"      # bloklardaki normalleştirme: "rmsnorm" | "layernorm"
+dropout = 0.1         # küçük veride ezberlemeyi azaltır
+
+# =============================================================================================
+# TOKENIZER — Türkçe kök + ek tokenizer'ı
+# boyut, gömme tablosunun satır sayısıdır (parametre = boyut × gomme.boyut). TDK'nin neredeyse tüm
+# kelimelerini ayrı token yapmak istersen ~80000 dene; küçük derlemde nadir token'lar zayıf öğrenilir.
+# =============================================================================================
+[tokenizer]
+boyut = 32000
+parca_orani = 0.25    # kök + parça bütçesinin kök/ek ile açıklanamayan kelimelere (BPE) ayrılan payı
+en_az_sayi = 3
+harf_cezasi = 3.0     # tek harf kullanmanın ek maliyeti (nat); yüksek → kök + ek zorlanır
+parca_cezasi = 1.0
+em_turu = 2
+
+[yollar]
+veri = "veri"           # indirilen ham veri (TDK, MEB) — depoya girmez
+ciktilar = "ciktilar"   # tokenizer, hazır veri, modeller, ilerleme tablosu — depoya girmez
+
+# =============================================================================================
+# EĞİTİM — aşama 1: TDK derlemi üzerinde dil modelleme
+# =============================================================================================
+[egitim.tdk]
+donem = 10              # derlemin üzerinden kaç kez geçilecek (adım sayısı veriden hesaplanır)
+en_fazla_adim = 0       # 0 = sınırsız
+yigin = 32              # her adımda kaç dizi (bellek yetmezse düşür, birikim'i artır)
+birikim = 1             # gradyan biriktirme
+ogrenme_orani = 6e-4
+min_oran = 0.1
+isinma_adimi = 200
+agirlik_azaltma = 0.1
+gradyan_kirpma = 1.0
+degerlendirme_her = 100
+degerlendirme_yigini = 20
+erken_durdurma = 8      # doğrulama kaybı bu kadar değerlendirme iyileşmezse dur (0 = kapalı)
+hassasiyet = "otomatik" # "otomatik" | "fp32" | "bf16" | "fp16"
+derle = false           # torch.compile (yalnız CUDA)
+tohum = 1337
+
+# =============================================================================================
+# EĞİTİM — aşama 2: MEB soruları (TDK modelinden devam eder)
+# =============================================================================================
+[egitim.meb]
+donem = 4
+yigin = 16
+ogrenme_orani = 2e-4
+isinma_adimi = 50
+degerlendirme_her = 100
+erken_durdurma = 6
+kayip = "tum"           # "tum" (soru + cevap) | "cevap" (yalnız cevap token'ları)
+tdk_karisim = 0.25      # yığınların bu oranı TDK'den: dil bilgisini unutmayı azaltır
