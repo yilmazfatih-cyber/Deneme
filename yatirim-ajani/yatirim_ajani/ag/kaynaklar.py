@@ -184,6 +184,19 @@ def mali_panel(hisseler: list[str], bas: date, bit: date, paralel: int = 6) -> t
 def seri_gunluk(semboller: list[str], bas: date, paralel: int = 4) -> tuple[pd.DataFrame, dict]:
     def tek(s: str) -> pd.DataFrame:
         df = yahoo_gunluk(s, bas)
+        if len(df) < 10:  # bazı endekslerde erken başlangıç tek satır döndürüyor: tüm geçmişi dönem parametresiyle iste
+            import yfinance as yf
+
+            for donem in ("max", "10y", "5y", "2y"):
+                try:
+                    d2 = yf.Ticker(s).history(period=donem, interval="1d", auto_adjust=False)
+                except Exception:  # noqa: BLE001
+                    continue
+                if d2 is not None and len(d2) >= 10:
+                    d2 = d2.rename(columns={"Open": "acilis", "High": "yuksek", "Low": "dusuk", "Close": "kapanis", "Volume": "hacim"})
+                    d2.index.name = "tarih"
+                    df = d2[["acilis", "yuksek", "dusuk", "kapanis", "hacim"]].reset_index()
+                    break
         if df.empty:
             return df
         df["tarih"] = pd.to_datetime(df["tarih"]).dt.strftime("%Y-%m-%d")
@@ -424,8 +437,93 @@ def kap_sonda() -> dict:
     return out
 
 
+def kesif() -> dict:
+    """Uç nokta keşfi: İş Yatırım yabancı oranları sayfasındaki çağrı ve KAP sitesinin API yolları (betiklerden)."""
+    out: dict[str, Any] = {}
+    h = {"User-Agent": TARAYICI, "Accept-Language": "tr-TR,tr;q=0.9"}
+    try:
+        r = requests.get(YAB_SAYFA, headers=h, timeout=40)
+        html = r.text
+        out["isy_sayfa"] = {"durum": r.status_code, "uzunluk": len(html)}
+        metinler = [("sayfa", html)]
+        for src in re.findall(r'<script[^>]+src="([^"]+)"', html)[:60]:
+            u = src if src.startswith("http") else "https://www.isyatirim.com.tr" + src
+            if "isyatirim" not in u:
+                continue
+            try:
+                metinler.append((src[-60:], requests.get(u, headers=h, timeout=30).text))
+            except Exception:  # noqa: BLE001, PERF203
+                continue
+        baglam = []
+        for ad, m in metinler:
+            for e in re.finditer(r"GetYabanci\w*|YabanciOran\w*XHR|yabanciOran\w*", m):
+                baglam.append({"kaynak": ad, "metin": m[max(0, e.start() - 500) : e.end() + 900].replace("\n", " ")})
+                if len(baglam) >= 8:
+                    break
+        out["isy_baglam"] = baglam
+        out["isy_betik_sayisi"] = len(metinler) - 1
+    except Exception as e:  # noqa: BLE001
+        out["isy_hata"] = str(e)[:200]
+    try:
+        yollar: set[str] = set()
+        betikler: set[str] = set()
+        ornek: dict[str, str] = {}
+        for sayfa in ("/tr", "/tr/bildirim-sorgu", "/tr/bist-sirketler", "/tr/yatirim-fonlari", "/tr/portfoy-yonetim-sirketleri"):
+            try:
+                r = requests.get("https://www.kap.org.tr" + sayfa, headers=h, timeout=30)
+            except Exception as e:  # noqa: BLE001
+                ornek[sayfa] = f"hata {str(e)[:80]}"
+                continue
+            ornek[sayfa] = f"{r.status_code} {len(r.text)}"
+            betikler |= set(re.findall(r'(/_next/static/[^"\\ ]+?\.js)', r.text))
+            yollar |= set(re.findall(r'["\'`](/?(?:tr/)?api/[A-Za-z0-9_\-/${}.?=&]+)', r.text))
+            if sayfa == "/tr/bist-sirketler":
+                i = r.text.find("THYAO")
+                out["kap_sirket_ornek"] = r.text[max(0, i - 700) : i + 500] if i >= 0 else "THYAO yok"
+        toplam = 0
+        for src in sorted(betikler)[:220]:
+            try:
+                js = requests.get("https://www.kap.org.tr" + src, headers=h, timeout=30).text
+            except Exception:  # noqa: BLE001, PERF203
+                continue
+            toplam += len(js)
+            for e in re.finditer(r'["\'`](/?(?:tr/)?api/[A-Za-z0-9_\-/${}.?=&]+)', js):
+                yollar.add(e.group(1))
+            for e in re.finditer(r"byCriteria|memberDisclosureQuery|disclosureClass", js):
+                if len(out.setdefault("kap_baglam", [])) < 6:
+                    out["kap_baglam"].append(js[max(0, e.start() - 500) : e.end() + 900])
+            if toplam > 40_000_000:
+                break
+        out["kap_sayfalar"] = ornek
+        out["kap_betik"] = {"sayi": len(betikler), "bayt": toplam}
+        out["kap_api"] = sorted(yollar)[:500]
+    except Exception as e:  # noqa: BLE001
+        out["kap_hata"] = str(e)[:200]
+    return out
+
+
+def hisse_saatlik(hisseler: list[str], gun: int = 725, paralel: int = 4) -> tuple[pd.DataFrame, dict]:
+    """Payların ham saatlik çubukları (Yahoo'nun kendi ızgarası: 09:30, 10:30 ... 17:30; ilk çubuk açılış seansını ve
+    10:00–10:30'u içerir). `veri/saatlik` dosyaları seans süzgeci yüzünden 09:30 çubuğunu içermez; saat-içi analiz bunu kullanır."""
+    df, r = seri_saatlik([f"{h}.IS" for h in hisseler], gun=gun, paralel=paralel)
+    if not df.empty:
+        df["sembol"] = df["sembol"].str.replace(".IS", "", regex=False)
+        df = df.rename(columns={"sembol": "hisse"})
+    return df, r
+
+
+def saatlik_hisse_sec(tv: pd.DataFrame, adet: int = 250, ek: list[str] | None = None) -> list[str]:
+    """Saatlik çekilecek paylar: piyasa değerine göre ilk `adet` + verilen ek liste (ör. mevcut saatlik evren)."""
+    if tv.empty:
+        return sorted(set(ek or []))
+    d = tv[tv["type"].astype(str).str.lower() == "stock"].copy()
+    d["pd"] = pd.to_numeric(d["market_cap_basic"], errors="coerce")
+    ust = [str(h).upper() for h in d.sort_values("pd", ascending=False)["hisse"].head(adet)]
+    return sorted({h for h in ust + [e.upper() for e in (ek or [])] if h not in HARIC})
+
+
 # --- toplu -------------------------------------------------------------------------------------
-TUM_KAYNAKLAR = ("tv", "yahoo", "isy", "mali", "seri", "saatlik", "yabanci", "tefas", "kap")
+TUM_KAYNAKLAR = ("tv", "yahoo", "isy", "mali", "seri", "saatlik", "hisse_saatlik", "yabanci", "tefas", "kap", "kesif")
 
 
 def ag_veri_cek(klasor: str | Path, bas: date, bit: date | None = None, kaynaklar: tuple[str, ...] = TUM_KAYNAKLAR, paralel: int = 6,
@@ -513,8 +611,19 @@ def ag_veri_cek(klasor: str | Path, bas: date, bit: date | None = None, kaynakla
             _yaz(df, klasor / f"{ad}.csv.gz")
         return r
 
-    for ad, islev in (("seri", _seri), ("saatlik", _saatlik), ("yabanci", _yabanci), ("kap", kap_sonda), ("tefas", _tefas),
-                      ("yahoo", _yahoo), ("isy", _isy), ("mali", _mali)):  # fmt: skip
+    def _hisse_saatlik() -> dict:
+        tv = pd.read_csv(klasor / "tv_tarama.csv") if (klasor / "tv_tarama.csv").exists() else pd.DataFrame()
+        mevcut = sorted({p.name.split(".")[0] for p in (klasor.parent / "saatlik").glob("*.IS_1h.csv")} - {"XU100"})
+        secim = saatlik_hisse_sec(tv, 250, mevcut) if not tv.empty else (mevcut or liste[:250])
+        df, r = hisse_saatlik(secim)
+        if not df.empty:
+            _yaz(df, klasor / "hisse_saatlik.csv.gz")
+        r["secilen"] = len(secim)
+        r["hata"] = dict(list(r.get("hata", {}).items())[:10])
+        return r
+
+    for ad, islev in (("kesif", kesif), ("seri", _seri), ("saatlik", _saatlik), ("yabanci", _yabanci), ("kap", kap_sonda), ("tefas", _tefas),
+                      ("yahoo", _yahoo), ("hisse_saatlik", _hisse_saatlik), ("isy", _isy), ("mali", _mali)):  # fmt: skip
         if ad in kaynaklar:
             if ad in ("yahoo", "isy", "mali") and not liste:
                 rapor[ad] = {"hata": "hisse listesi boş"}
