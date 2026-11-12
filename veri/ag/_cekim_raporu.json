@@ -1,5 +1,5 @@
 {
- "zaman": "2026-11-12T11:18",
+ "zaman": "2026-11-12T21:24",
  "rapor": {
   "tv": {
    "satir": 649,
@@ -50,13 +50,13 @@
   },
   "seri": {
    "sembol": 81,
-   "satir": 143208,
+   "satir": 143220,
    "hata": {
     "ALTINS1.IS": "boş",
     "DJIST.IS": "boş"
    },
-   "sure_sn": 7.6,
-   "zaman": "2026-11-12T11:17"
+   "sure_sn": 7.5,
+   "zaman": "2026-11-12T20:56"
   },
   "saatlik": {
    "sembol": 34,
@@ -156,8 +156,145 @@
    "zaman": "2026-11-12T11:18"
   },
   "_toplam": {
-   "sure_dk": 1.1,
+   "sure_dk": 28.5,
    "hisse": 623
+  },
+  "kesif": {
+   "isy_sayfa": {
+    "durum": 404,
+    "uzunluk": 720
+   },
+   "isy_baglam": [],
+   "isy_betik_sayisi": 0,
+   "kap_sirket_ornek": "EBECİ MALİ MÜŞAVİRLİK A.Ş.\\\",\\\"stockCode\\\":\\\"TUPRS\\\",\\\"cityName\\\":\\\"İSTANBUL\\\",\\\"relatedMemberOid\\\":\\\"33E5FED7245700EAE0530A4A622B2AEA\\\",\\\"kapMemberType\\\":\\\"IGS\\\"},{\\\"mkkMemberOid\\\":\\\"4028e4a2422d9a6e0142bd91d3687a69\\\",\\\"kapMemberTitle\\\":\\\"TÜRK ALTIN İŞLETMELERİ A.Ş.\\\",\\\"relatedMemberTitle\\\":\\\"PwC BAĞIMSIZ DENETİM VE SERBEST MUHASEBECİ MALİ MÜŞAVİRLİK A.Ş\\\",\\\"stockCode\\\":\\\"TRALT\\\",\\\"cityName\\\":\\\"ANKARA\\\",\\\"relatedMemberOid\\\":\\\"33E5FED7242300EAE0530A4A622B2AEA\\\",\\\"kapMemberType\\\":\\\"IGS\\\"},{\\\"mkkMemberOid\\\":\\\"4028e4a140f2ed720140f376bebb01a7\\\",\\\"kapMemberTitle\\\":\\\"TÜRK HAVA YOLLARI A.O.\\\",\\\"relatedMemberTitle\\\":\\\"PwC BAĞIMSIZ DENETİM VE SERBEST MUHASEBECİ MALİ MÜŞAVİRLİK A.Ş\\\",\\\"stockCode\\\":\\\"THYAO\\\",\\\"cityName\\\":\\\"İSTANBUL\\\",\\\"relatedMemberOid\\\":\\\"33E5FED7242300EAE0530A4A622B2AEA\\\",\\\"kapMemberType\\\":\\\"IGS\\\"},{\\\"mkkMemberOid\\\":\\\"4028e4a240f2ef470141167b777b0437\\\",\\\"kapMemberTitle\\\":\\\"TÜRK PRYSMİAN KABLO VE SİSTEMLERİ A.Ş.\\\",\\\"relatedMemberTitle\\\":\\\"PwC BAĞIMSIZ DENETİM VE SERBEST MUHASEBECİ MALİ MÜŞAVİRLİK A.Ş\\\",\\\"stockCode\\\":\\\"PRKAB\\\",\\\"cityName\\\":\\\"BURSA\\\",\\\"relatedMemberOid\\\":\\\"33E5FED7242300EAE0530A4A622B2AEA\\\",\\\"kapMemberType\\\":\\\"IGS\\\"},{\\\"mkkMemberOid\\\":\\\"4028e4a241e538ab0141ea",
+   "kap_baglam": [
+    "eRef)(null);(0,c.f)(tq,()=>tD(!1));let tF=(0,a.useRef)(null);(0,c.f)(tF,()=>tj(!1));let tR=(0,a.useRef)(null);(0,c.f)(tR,()=>tg(!1));let t$=(0,a.useRef)(null);(0,c.f)(t$,()=>tu(!1));let tA=(0,a.useRef)(null);(0,c.f)(tA,()=>eE(!1));let tP=(0,a.useRef)(null);(0,c.f)(tP,()=>eG(!1));let tz=(0,a.useRef)(null);(0,c.f)(tz,()=>eQ(!1));let tW={fromDate:_(eB)||\"\",toDate:_(eF)||\"\",memberType:Y.value||\"\",mkkMemberOidList:ex?.map(e=>e.mkkMemberOid)||[],inactiveMkkMemberOidList:ey?.map(e=>e.mkkMemberOid)||[],disclosureClass:e3&&e3?.value!==\"ALL\"?e3?.value:\"\",subjectList:tC&&tC?.map(e=>e?.subjectOid)||[],isLate:e3?.value===\"FR\"&&tN?.value?\"Y\":\"\",mainSector:eU&&null==eU.sectorOid?eU.mainSectorOid:\"\",sector:eU&&eU?.sectorOid!==\"\"?eU?.sectorOid:\"\",subSector:\"\",marketOid:eH&&eH?.marketOid?eH.marketOid:\"\",index:eX&&eX?.indicesOid?eX.indicesOid:\"\",bdkReview:tm&&tm?.value?tm.value:\"\",bdkMemberOidList:tf&&tf?.mkkMemberOid?[tf.mkkMemberOid]:[],year:\"\",term:\"\",ruleType:\"\",period:\"\",fromSrc:!1,srcCategory:\"\",disclosureIndexList:[]},tI=()=>{eh([]),eS([]),eK(null),eZ(null),e0(null),e5(v[0]),ty({text:d?.companyNotificationsTab?.no,value:!1}),tp(null),tx(null),tT([]),eq(new Date),eR(new Date),eO(g[0])},[tY,tE]=(0,a.useState)(null),tU=(0,a.useRef)(null),[tK,tV]=(0,a.useState)(),tG=async t=>{tE(null),tV({[d.companyNotificationsTab.companyGroup]:Y?.text,[d.companyNotificationsTab.companies]:ex.map(e=>e?.kapMemberTitle),[d.co",
+    ".subject),[d?.companyNotificationsTab?.delayedNotifications]:\"FR\"===e3.value&&tN?.value===!0?tN?.text:null,[d?.companyNotificationsTab?.independentAuditOpinion]:tm?.text,[d?.companyNotificationsTab?.independentAuditCompany]:tf?.kapMemberTitle});let a=(await (0,r.H)(e,tW,O)).map(e=>({publishDate:e.publishDate,disclosureIndex:e.disclosureIndex,stockCode:e.stockCodes,hasMultiLanguageSupport:!0===e.hasMultiLanguageSupport?\"Y\":\"N\",companyTitle:e.kapTitle,title:e.subject,relatedStocks:e.relatedStocks,disclosureClass:e.disclosureClass,summary:e.summary,year:e.year,period:e.period,isChanged:e.modifyStatus,isLate:e.isLate,donem:e.ruleType,attachmentCount:e.attachmentCount}));tE(a?.map(e=>({disclosureBasic:e}))),tU.current&&tU.current.scrollIntoView({behavior:\"smooth\",block:\"start\"}),P(!1)};return(0,t.jsxs)(t.Fragment,{children:[(0,t.jsx)(\"div\",{className:\"bg-light-gray pt-2\",children:(0,t.jsxs)(\"div\",{className:\"xs:mx-5 sm:container sm:mx-auto\",children:[(0,t.jsxs)(\"form\",{children:[(0,t.jsxs)(\"div\",{className:\"flex flex-col gap-3 pt-3\",children:[(0,t.jsx)(C.f,{title:d?.companyNotificationsTab?.companySectorMarketIndexCriterias,defaultOpen:!0,children:(0,t.jsxs)(\"div\",{className:\"pb-8 px-6 bg-white rounded-b-2xl\",children:[(0,t.jsxs)(\"div\",{ref:tL,className:\"form__single-select\",children:[(0,t.jsx)(\"label\",{htmlFor:\"sirket-grubu\",className:\"block text-sm font-medium text-text-color pb-3\",children:d?.c",
+    "anyNotificationsTab?.delayedNotifications]:\"FR\"===e3.value&&tN?.value===!0?tN?.text:null,[d?.companyNotificationsTab?.independentAuditOpinion]:tm?.text,[d?.companyNotificationsTab?.independentAuditCompany]:tf?.kapMemberTitle});let a=(await (0,r.H)(e,tW,O)).map(e=>({publishDate:e.publishDate,disclosureIndex:e.disclosureIndex,stockCode:e.stockCodes,hasMultiLanguageSupport:!0===e.hasMultiLanguageSupport?\"Y\":\"N\",companyTitle:e.kapTitle,title:e.subject,relatedStocks:e.relatedStocks,disclosureClass:e.disclosureClass,summary:e.summary,year:e.year,period:e.period,isChanged:e.modifyStatus,isLate:e.isLate,donem:e.ruleType,attachmentCount:e.attachmentCount}));tE(a?.map(e=>({disclosureBasic:e}))),tU.current&&tU.current.scrollIntoView({behavior:\"smooth\",block:\"start\"}),P(!1)};return(0,t.jsxs)(t.Fragment,{children:[(0,t.jsx)(\"div\",{className:\"bg-light-gray pt-2\",children:(0,t.jsxs)(\"div\",{className:\"xs:mx-5 sm:container sm:mx-auto\",children:[(0,t.jsxs)(\"form\",{children:[(0,t.jsxs)(\"div\",{className:\"flex flex-col gap-3 pt-3\",children:[(0,t.jsx)(C.f,{title:d?.companyNotificationsTab?.companySectorMarketIndexCriterias,defaultOpen:!0,children:(0,t.jsxs)(\"div\",{className:\"pb-8 px-6 bg-white rounded-b-2xl\",children:[(0,t.jsxs)(\"div\",{ref:tL,className:\"form__single-select\",children:[(0,t.jsx)(\"label\",{htmlFor:\"sirket-grubu\",className:\"block text-sm font-medium text-text-color pb-3\",children:d?.companyNotification",
+    "));let to=(0,a.useRef)(null);(0,c.f)(to,()=>U(!1));let ti=(0,a.useRef)(null);(0,c.f)(ti,()=>J(!1));let tn=(0,a.useRef)(null);(0,c.f)(tn,()=>eC(!1));let tc=(0,a.useRef)(null);(0,c.f)(tc,()=>eP(!1));let td=(0,a.useRef)(null);(0,c.f)(td,()=>e1(!1));let tu=(0,a.useRef)(null);(0,c.f)(tu,()=>e4(!1));let tm={fromDate:B(eT)||\"\",toDate:B(e_)||\"\",fundTypeList:R?.value?[R?.value]:[],mkkMemberOidList:z.map(e=>e.mkkMemberOid)||[],fundOidList:K.map(e=>e.fundOid)||[],passiveFundOidList:Q.map(e=>e.fundOid)||[],disclosureClass:ez?.value?ez?.value===\"ALL\"?\"\":ez?.value:\"\",isLate:ez?.value===\"FR\"&&e7.value?\"Y\":\"\",subjectList:e2.map(e=>e.subjectOid)||[],discIndex:[],fromSrc:!1,srcCategory:\"\"},tx=()=>{W([]),V([]),X([]),eS(x[0]||{text:\"\",value:\"0\"}),eL(new Date),eM(new Date),eW(_[4][0]),e3([]),e9({text:m?.companyNotificationsTab?.no,value:!1})},[th,tg]=(0,a.useState)(null),tf=(0,a.useRef)(null),[tp,tb]=(0,a.useState)(),tv=async e=>{tg(null),tb({[m?.fundNotificationTab?.fundGroup]:R.text,[m?.fundNotificationTab?.founder]:z.map(e=>e?.title),[m?.fundNotificationTab?.funds]:K.map(e=>e?.fundName),[m?.fundNotificationTab?.liquidatedFunds]:Q.map(e=>e?.fundName),[m?.startDate]:q(eT),[m?.endDate]:q(e_),[m?.fundNotificationTab?.notificationType]:ez.text,[m?.fundNotificationTab?.subject]:e2.map(e=>e.subject),[m?.fundNotificationTab?.delayedNotification]:\"FR\"===ez.value&&e7?.value===!0?e7?.text:null});let t=(await (0,r.j)(s,tm",
+    "e),[m?.startDate]:q(eT),[m?.endDate]:q(e_),[m?.fundNotificationTab?.notificationType]:ez.text,[m?.fundNotificationTab?.subject]:e2.map(e=>e.subject),[m?.fundNotificationTab?.delayedNotification]:\"FR\"===ez.value&&e7?.value===!0?e7?.text:null});let t=(await (0,r.j)(s,tm,h)).map(e=>({publishDate:e.publishDate,disclosureIndex:e.disclosureIndex,stockCode:e.fundCode||\"\",hasMultiLanguageSupport:!0===e.hasMultiLanguageSupport?\"Y\":\"N\",companyTitle:e.kapTitle,title:e.subject,relatedStocks:e.relatedStocks,disclosureClass:e.disclosureClass,summary:e.summary,year:e.year,period:e.period,isChanged:e.modifyStatus,isLate:e.isLate,donem:e.ruleType,attachmentCount:e.attachmentCount,fundCode:e.fundCode}));tg(t?.map(e=>({disclosureBasic:e}))),tf.current&&tf.current.scrollIntoView({behavior:\"smooth\"}),k(!1)};return(0,t.jsxs)(t.Fragment,{children:[(0,t.jsx)(\"div\",{className:\"bg-light-gray pt-2\",children:(0,t.jsxs)(\"div\",{className:\"xs:mx-5 sm:container sm:mx-auto\",children:[(0,t.jsxs)(\"form\",{children:[(0,t.jsxs)(\"div\",{className:\"flex flex-col gap-3 pt-3\",children:[(0,t.jsx)(C.f,{title:m?.fundNotificationTab?.fundCriterias,defaultOpen:!0,children:(0,t.jsxs)(\"div\",{className:\"pb-8 px-6 bg-white rounded-b-2xl\",children:[(0,t.jsxs)(\"div\",{className:\"grid grid-cols-1 md:grid-cols-2 gap-6\",children:[(0,t.jsxs)(\"div\",{ref:tr,className:\"form__single-select\",children:[(0,t.jsx)(\"label\",{htmlFor:\"sirket-grubu\",className:\"b",
+    "q(eT),[m?.endDate]:q(e_),[m?.fundNotificationTab?.notificationType]:ez.text,[m?.fundNotificationTab?.subject]:e2.map(e=>e.subject),[m?.fundNotificationTab?.delayedNotification]:\"FR\"===ez.value&&e7?.value===!0?e7?.text:null});let t=(await (0,r.j)(s,tm,h)).map(e=>({publishDate:e.publishDate,disclosureIndex:e.disclosureIndex,stockCode:e.fundCode||\"\",hasMultiLanguageSupport:!0===e.hasMultiLanguageSupport?\"Y\":\"N\",companyTitle:e.kapTitle,title:e.subject,relatedStocks:e.relatedStocks,disclosureClass:e.disclosureClass,summary:e.summary,year:e.year,period:e.period,isChanged:e.modifyStatus,isLate:e.isLate,donem:e.ruleType,attachmentCount:e.attachmentCount,fundCode:e.fundCode}));tg(t?.map(e=>({disclosureBasic:e}))),tf.current&&tf.current.scrollIntoView({behavior:\"smooth\"}),k(!1)};return(0,t.jsxs)(t.Fragment,{children:[(0,t.jsx)(\"div\",{className:\"bg-light-gray pt-2\",children:(0,t.jsxs)(\"div\",{className:\"xs:mx-5 sm:container sm:mx-auto\",children:[(0,t.jsxs)(\"form\",{children:[(0,t.jsxs)(\"div\",{className:\"flex flex-col gap-3 pt-3\",children:[(0,t.jsx)(C.f,{title:m?.fundNotificationTab?.fundCriterias,defaultOpen:!0,children:(0,t.jsxs)(\"div\",{className:\"pb-8 px-6 bg-white rounded-b-2xl\",children:[(0,t.jsxs)(\"div\",{className:\"grid grid-cols-1 md:grid-cols-2 gap-6\",children:[(0,t.jsxs)(\"div\",{ref:tr,className:\"form__single-select\",children:[(0,t.jsx)(\"label\",{htmlFor:\"sirket-grubu\",className:\"block text-sm font-"
+   ],
+   "kap_sayfalar": {
+    "/tr": "200 157643",
+    "/tr/bildirim-sorgu": "200 1148009",
+    "/tr/bist-sirketler": "200 1511012",
+    "/tr/yatirim-fonlari": "404 12709",
+    "/tr/portfoy-yonetim-sirketleri": "404 12731"
+   },
+   "kap_betik": {
+    "sayi": 29,
+    "bayt": 1665049
+   },
+   "kap_api": [
+    "/tr/api/about/content-file/402881cf91d6efd60191d6f04e530000",
+    "/tr/api/about/content-file/402881cf91d6efd60191d6f08e900001",
+    "api/BildirimPdf",
+    "api/about/content-file",
+    "api/analysis/companies-by-sector",
+    "api/analysis/compare-items-by-sector",
+    "api/analysis/funds-by-sector",
+    "api/ca/allCa",
+    "api/ca/filteredCa",
+    "api/cgif/get-history",
+    "api/cgif/get-history/cgif-table",
+    "api/company-detail/disclosures",
+    "api/company-detail/sgbf-data",
+    "api/company/items",
+    "api/disclosure/filter/FILTERYFBF",
+    "api/disclosure/funds/byCriteria",
+    "api/disclosure/list/light",
+    "api/disclosure/list/main",
+    "api/disclosure/members/byCriteria",
+    "api/disclosure/subjects",
+    "api/expected-disclosure-inquiry/company",
+    "api/expected-disclosure-inquiry/fund",
+    "api/export/compareItems",
+    "api/file/download",
+    "api/financialTable/checkFileExist",
+    "api/financialTable/download",
+    "api/financialTable/listCompanyExcelMembers",
+    "api/fund/criteria",
+    "api/fund/founder",
+    "api/home-data/announcements",
+    "api/home-data/banners",
+    "api/home-data/guidelines",
+    "api/home-financial/download-file",
+    "api/member/filter",
+    "api/member/logo",
+    "api/menu/about-pdp",
+    "api/menu/footer",
+    "api/notification/attachment-detail",
+    "api/notification/export/excel",
+    "api/notification/export/word",
+    "api/params",
+    "api/search/combined",
+    "api/search/market",
+    "api/search/smart",
+    "api/sustainability/get-history",
+    "api/yfbf/get-old-history"
+   ],
+   "sure_sn": 36.0,
+   "zaman": "2026-11-12T20:56"
+  },
+  "tefas": {
+   "dagilim_hata": [
+    "YAT 2024-01: HTTP 404 application/json;charset=utf-8: {\n  \"fault\" :{ \n    \"correlationId\":\"50e94f7b-922f-490a-9d8e-b35b88495fbd\",\n    \"faultCode\":\"ERR-00",
+    "YAT 2024-02: HTTP 404 application/json;charset=utf-8: {\n  \"fault\" :{ \n    \"correlationId\":\"09721f48-dfb0-4d8e-a12a-26b6e386cfae\",\n    \"faultCode\":\"ERR-00",
+    "YAT 2024-03: HTTP 404 application/json;charset=utf-8: {\n  \"fault\" :{ \n    \"correlationId\":\"a34dc4ee-e208-467b-a223-fad74e139a89\",\n    \"faultCode\":\"ERR-00",
+    "YAT 2024-04: HTTP 404 application/json;charset=utf-8: {\n  \"fault\" :{ \n    \"correlationId\":\"994b21bb-7a4b-4c36-ac13-bcae8aa8d297\",\n    \"faultCode\":\"ERR-00",
+    "EMK 2024-01: HTTP 404 application/json;charset=utf-8: {\n  \"fault\" :{ \n    \"correlationId\":\"a76b444f-fee3-4ae9-b477-183d53801527\",\n    \"faultCode\":\"ERR-00",
+    "BYF 2024-01: HTTP 404 application/json;charset=utf-8: {\n  \"fault\" :{ \n    \"correlationId\":\"1dfa1472-c5f7-4119-a0dd-19d4bab61354\",\n    \"faultCode\":\"ERR-00"
+   ],
+   "bilgi_hata": [
+    "YAT 2024-01-01: HTTP 404 application/json;charset=utf-8: {\n  \"fault\" :{ \n    \"correlationId\":\"2957eea1-6e3d-4d03-af23-57d676fe0f1b\",\n    \"faultCode\":\"ERR-00",
+    "YAT 2024-01-29: HTTP 404 application/json;charset=utf-8: {\n  \"fault\" :{ \n    \"correlationId\":\"0216d126-3266-49bc-91ba-ccefde37658e\",\n    \"faultCode\":\"ERR-00",
+    "YAT 2024-02-26: HTTP 404 application/json;charset=utf-8: {\n  \"fault\" :{ \n    \"correlationId\":\"6cf2ce39-7310-4768-8598-bcc8606a3da7\",\n    \"faultCode\":\"ERR-00",
+    "YAT 2024-03-25: HTTP 404 application/json;charset=utf-8: {\n  \"fault\" :{ \n    \"correlationId\":\"200bfc37-f14a-424d-b993-8dc37e2a4d86\",\n    \"faultCode\":\"ERR-00",
+    "EMK 2024-01-01: HTTP 404 application/json;charset=utf-8: {\n  \"fault\" :{ \n    \"correlationId\":\"a5173f53-fcc5-4cab-a8b6-c07210fc9558\",\n    \"faultCode\":\"ERR-00",
+    "BYF 2024-01-01: HTTP 404 application/json;charset=utf-8: {\n  \"fault\" :{ \n    \"correlationId\":\"36d42aa5-cbbe-48e8-8945-6fa6229892ee\",\n    \"faultCode\":\"ERR-00"
+   ],
+   "sure_sn": 248.3,
+   "zaman": "2026-11-12T21:00"
+  },
+  "yahoo": {
+   "hisse": 621,
+   "satir": 411198,
+   "hata": {
+    "ALTIN": "boş",
+    "DMLKT": "boş"
+   },
+   "sure_sn": 46.3,
+   "zaman": "2026-11-12T21:01"
+  },
+  "hisse_saatlik": {
+   "sembol": 251,
+   "satir": 967220,
+   "hata": {
+    "DMLKT.IS": "boş"
+   },
+   "secilen": 252,
+   "sure_sn": 24.7,
+   "zaman": "2026-11-12T21:01"
+  },
+  "isy": {
+   "hisse": 620,
+   "satir": 413255,
+   "hata_sayisi": 3,
+   "hata_ornek": {
+    "ALTIN": "boş",
+    "CITAS": "boş",
+    "DMLKT": "boş"
+   },
+   "sure_sn": 827.4,
+   "zaman": "2026-11-12T21:15"
+  },
+  "mali": {
+   "hisse": 585,
+   "satir": 109001,
+   "hata_sayisi": 38,
+   "sure_sn": 518.1,
+   "zaman": "2026-11-12T21:24"
   }
  }
 }
