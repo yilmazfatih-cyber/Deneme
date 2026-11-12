@@ -155,6 +155,9 @@ flowchart TD
 | 4     | `lib/kancalar.zsh`             | `add-zsh-hook`, `EPOCHREALTIME`                                            | Uzun komutun süresi `RPROMPT`'ta                                  | 1–2 saat       |
 | 5     | `tools/guncelleme-kontrol.zsh` | Damga dosyası, `mkdir` kilidi, `git ls-remote`, `merge-base --is-ancestor` | 9 güncelleme senaryosu geçiyor                                    | 3–4 saat       |
 
+Aşamaların toplamı **10–15 saat**; okuma rotası ve alıştırmalarla birlikte **25–36 saat** (hesap kuralı:
+[dal README'si](../README.md#yapraklar)).
+
 **Mini uygulama:** [sifirdan/](sifirdan/README.md) — zsh ile yazılmış `mini-omz` ve 40 doğrulamalı `test.sh`
 (geçici HOME, yerel yalın git deposu, ağ yok). Her aşamanın gerçek dosya karşılığı mini'nin README'sindeki eşleme
 tablosunda; ayrıca "bash ile yazsaydın ne değişirdi" tablosu var.
@@ -185,13 +188,14 @@ tablosunda; ayrıca "bash ile yazsaydın ne değişirdi" tablosu var.
 
 **Alıştırmalar (kolaydan zora):**
 
-1. `mini-omz`'a `hava` adında bir eklenti ekle: `hava <şehir>` yerel bir JSON dosyasından sıcaklık yazsın; tamamlama
-   şehir adlarını önersin.
-2. `sade` temasına son komutun çıkış kodunu (`%?`) yalnızca sıfır değilken gösteren bir parça ekle.
-3. `mini_omz eklenti ac <ad>` komutunu yaz: `.zshrc`'deki `plugins=(...)` satırını güvenle düzenlesin (önce yedek!).
-4. `git_prompt_info`'yu eşzamansız yap: `precmd`'de arka planda hesapla, sonuç gelince `zle reset-prompt`.
-5. Açılış süresini ölç (`zmodload zsh/zprof`); `compinit`'i günde bir kez tam denetim yapacak şekilde hızlandır.
-6. Güncelleme denetimine gerçekteki gibi "prompt" modunu ekle: kullanıcıya sor, `n` derse damgayı güncelle.
+1. (Kolay) `mini-omz`'a `hava` adında bir eklenti ekle: `hava <şehir>` yerel bir JSON dosyasından sıcaklık yazsın;
+   tamamlama şehir adlarını önersin.
+2. (Kolay) `sade` temasına son komutun çıkış kodunu (`%?`) yalnızca sıfır değilken gösteren bir parça ekle.
+3. (Orta) Güncelleme denetimine gerçekteki gibi "prompt" modunu ekle: kullanıcıya sor, `n` derse damgayı güncelle.
+4. (Orta) `mini_omz eklenti ac <ad>` komutunu yaz: `.zshrc`'deki `plugins=(...)` satırını güvenle düzenlesin (önce
+   yedek!).
+5. (Zor) `git_prompt_info`'yu eşzamansız yap: `precmd`'de arka planda hesapla, sonuç gelince `zle reset-prompt`.
+6. (Zor) Açılış süresini ölç (`zmodload zsh/zprof`); `compinit`'i günde bir kez tam denetim yapacak şekilde hızlandır.
 
 **Öz değerlendirme:**
 

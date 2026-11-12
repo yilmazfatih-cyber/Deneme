@@ -2,12 +2,12 @@
 
 Bu dosya atlasın haritasıdır. Yol bir ağaç gibi dallanır:
 
-| Katman     | Ne                                                 | Nerede                                           |
-| ---------- | -------------------------------------------------- | ------------------------------------------------ |
-| **Gövde**  | 11 ortak temel (G1–G11): terminal, Git, dil, ağ…   | [govde/README.md](govde/README.md)               |
-| **Dallar** | 10 alan (D01–D10); her biri birkaç depoyu toplar   | `dallar/NN-…/README.md`                          |
-| **Yaprak** | 51 deponun her biri: mimari + sıfırdan yol + mini  | `dallar/NN-…/<depo>/README.md` ve `sifirdan/`    |
-| **Meyve**  | Bu depolarla kurulabilecek iş fikirleri ve MVP'ler | [is-fikirleri/README.md](is-fikirleri/README.md) |
+| Katman     | Ne                                                       | Nerede                                                      |
+| ---------- | -------------------------------------------------------- | ----------------------------------------------------------- |
+| **Gövde**  | 11 ortak temel (G1–G11): terminal, Git, dil, ağ…         | [govde/README.md](govde/README.md)                          |
+| **Dallar** | 10 alan (D01–D10); her biri birkaç depoyu toplar         | `dallar/NN-…/README.md`                                     |
+| **Yaprak** | 51 deponun her biri: mimari + sıfırdan yol; 49'unda mini | `dallar/NN-…/<depo>/README.md` ve (44 yaprakta) `sifirdan/` |
+| **Meyve**  | Bu depolarla kurulabilecek iş fikirleri ve MVP'ler       | [is-fikirleri/README.md](is-fikirleri/README.md)            |
 
 ## "Sıfırdan yazmak" burada ne demek?
 
@@ -16,8 +16,10 @@ kişinin yıllarca biriktirdiği işler (Linux'un incelenen commit'inde 97.362 d
 somut beceri anlamına gelir:
 
 1. **Çekirdek mekanizmayı küçük ölçekte kurabilmek.** React'in uzlaştırma algoritmasını, Vue'nun reaktivitesini,
-   yt-dlp'nin çıkarıcı mimarisini, bir kodlama ajanının araç döngüsünü birkaç yüz satırda yazmak. Her yaprağın
-   `sifirdan/` klasöründe bunun testli, aşamalı bir örneği var.
+   yt-dlp'nin çıkarıcı mimarisini, bir kodlama ajanının araç döngüsünü birkaç yüz satırda yazmak. 44 yaprağın
+   `sifirdan/` klasöründe bunun testli, aşamalı bir örneği var. D10'un beş yaprağı (project-based-learning,
+   free-programming-books, awesome-python, build-your-own-x, 996.ICU) ortak araç kutusunu (`awesome/sifirdan`)
+   kullanır; D09'un iki Çince yaprağında (CS-Notes, Python-100-Days) mini yerine çeviri iş akışı var.
 2. **Gerçek kodu okuyabilmek.** Mini sürümü yazdıktan sonra gerçek depoda aynı parçayı bulup farkları anlamak
    (her dosyadaki "Gerçek depoda okuma rotası").
 3. **Gerçek depoya katkı verebilmek.** Küçük bir hata düzeltmesiyle ilk PR'ını açmak.
@@ -46,27 +48,35 @@ flowchart LR
   D09 --> D03["D03 Sistem, ağ, güvenlik · 5"]
   D09 --> D05["D05 Yapay zekâ altyapısı · 4"]
   D04 -.-> D05
-  D05 --> D07["D07 Kodlama ajanları · 3"]
-  D08 --> D07
+  D05 -- "ollama" --> D07["D07 Kodlama ajanları · 3"]
+  D08 -- "anthropic-skills" --> D07
   D08 -.-> D06
   D05 -.-> D06
   D04 -.-> D06
   D02 -. "VS Code eklentisi" .-> D07
   D03 -. "rea · MCP" .-> D07
+  D07 -. "rea" .-> D03
+  D08 -. "rea" .-> D03
+  D07 -. "opencode" .-> D06
+  D10 -. "build-your-own-x" .-> D06
+  D09 -.-> D01
+  D10 -.-> D01
   D01 --> M["MEYVE<br/>iş fikirleri ve MVP'ler"]
   D04 --> M
+  D05 --> M
   D06 --> M
   D07 --> M
   D08 --> M
   D10 --> M
 ```
 
-Düz oklar "önce bunu bil" (önerilen önceki dal), kesikli oklar "faydalı ya da isteğe bağlı bağlantı" anlamına
-gelir. Örneğin D07'deki kodlama ajanlarına çıkmadan önce D05'ten yerel model sunucusunu (ollama) ve D08'den beceri
-biçimini tanımalısın. D06 ise yalnızca gövde düğümlerini ister; D08, D05 ve D04 orada işini kolaylaştırır. Gövdeden
-doğrudan çıkan altı dal var (D10, D09, D01, D04, D08, D06); başlangıç için en uygunları D10, D01 ve D04. Hangi gövde
-düğümünden sonra hangi dala başlayabileceğin, gövdedeki
-[tırmanış tablosunda](govde/README.md#önerilen-tırmanış-sırası).
+Düz oklar "önce bunu bil" (önerilen önceki dal ya da yaprak), kesikli oklar "faydalı ya da isteğe bağlı bağlantı"
+anlamına gelir. Okun üstündeki ad, bağlantının hangi yapraktan geçtiğini söyler. Örneğin D07'deki kodlama ajanlarına
+çıkmadan önce D05'in tamamını değil, yalnızca ollama yaprağını (yerel model sunucusu) ve D08'in anthropic-skills
+yaprağını (beceri biçimi) bitirmen yeter. D06 ise yalnızca gövde düğümlerini ister; D08, D05, D04, D07'nin opencode
+yaprağı ve D10'un build-your-own-x yaprağı orada işini kolaylaştırır. Gövdeden doğrudan çıkan altı dal var (D10, D09,
+D01, D04, D08, D06); başlangıç için en uygunları D10, D01 ve D04. Hangi gövde düğümünden sonra hangi dala
+başlayabileceğin, gövdedeki [tırmanış tablosunda](govde/README.md#önerilen-tırmanış-sırası).
 
 ## Tam ağaç
 
@@ -79,7 +89,7 @@ dalın toplamıdır (ayrıntı: [Gerçekçi takvim](#gerçekçi-takvim)).
   [G6 Ağ ve web](govde/README.md#g6) · [G7 Test ve CI](govde/README.md#g7) · [G8 Kod okuma](govde/README.md#g8) ·
   [G9 Açık kaynak](govde/README.md#g9) · [G10 C ve bellek](govde/README.md#g10) · [G11 LLM API](govde/README.md#g11)
 - **[D01 Web arayüzü ve JavaScript](dallar/01-web-arayuzu/README.md)** — önkoşul: G1 G2 G4 G7 + HTML, CSS, DOM
-  (dal içinde); faydalı: G5 G6 G8 · 208–232 saat
+  (dal içinde); faydalı: G5 G6 G8; yardımcı dallar: D09, D10 · 208–232 saat
   - [getify/You-Dont-Know-JS](dallar/01-web-arayuzu/you-dont-know-js/README.md) — dilin kendisi: kapsam, closure,
     `this`, prototip, tipler, async
   - [vuejs/core](dallar/01-web-arayuzu/vue3-core/README.md) — Proxy tabanlı reaktivite, şablon derleyicisi, sanal DOM yaması
@@ -98,7 +108,7 @@ dalın toplamıdır (ayrıntı: [Gerçekçi takvim](#gerçekçi-takvim)).
   - [flutter/flutter](dallar/02-uygulama-platformlari/flutter/README.md) — Widget → Element → RenderObject ağaçları,
     kısıt tabanlı yerleşim
 - **[D03 Sistem, ağ ve güvenlik](dallar/03-sistem-ag-guvenlik/README.md)** — önkoşul: G1 G2 G3 G5 G6 G8 G9 G10,
-  D09 (önce ya da birlikte); faydalı: G4 G7 G11 · 370–380 saat
+  D09 (önce ya da birlikte), REA için D07 ve D08 (paralel); faydalı: G4 G7 G11 · 370–380 saat
   - [trimstray/the-book-of-secret-knowledge](dallar/03-sistem-ag-guvenlik/the-book-of-secret-knowledge/README.md) —
     sistem yönetimi araç kutusu, savunma odaklı denetimler
   - [DigitalPlatDev/FreeDomain](dallar/03-sistem-ag-guvenlik/freedomain/README.md) — DNS protokolü, yetkili sunucu,
@@ -125,14 +135,14 @@ dalın toplamıdır (ayrıntı: [Gerçekçi takvim](#gerçekçi-takvim)).
     çıkarım motorunu sarmalamak
   - [666ghj/MiroFish](dallar/05-yapay-zeka-altyapisi/mirofish/README.md) — persona üretimi, sosyal graf, çok ajanlı simülasyon
 - **[D06 Kişisel ve otonom ajan platformları](dallar/06-ajan-platformlari/README.md)** — önkoşul: G1 G2 G3 G4 G6 G7
-  G8 G11; faydalı: G5 G9, D08; isteğe bağlı: D05, D04 · 188 saat
+  G8 G11; faydalı: G5 G9, D08, D10; isteğe bağlı: D05, D04, D07 · 188 saat
   - [Significant-Gravitas/AutoGPT](dallar/06-ajan-platformlari/autogpt/README.md) — blok ve graf yürütücü
   - [NousResearch/hermes-agent](dallar/06-ajan-platformlari/hermes-agent/README.md) — öğrenen ajan döngüsü, hafıza,
     kendi becerisini yazan ajan
   - [openclaw/openclaw](dallar/06-ajan-platformlari/openclaw/README.md) — çok kanallı ağ geçidi, oturum yönlendirme,
     beceriler, zamanlanmış işler
 - **[D07 Kodlama ajanları ve harness'lar](dallar/07-kodlama-ajanlari/README.md)** — önkoşul: G1 G2 G4 G6 G7 G8 G11,
-  D08, D05 (claw-code için ayrıca Rust temelleri); faydalı: G10 · 139–163 saat
+  D08 → anthropic-skills, D05 → ollama (claw-code için ayrıca Rust temelleri); faydalı: G10 · 139–163 saat
   - [anomalyco/opencode](dallar/07-kodlama-ajanlari/opencode/README.md) — ajan döngüsü, araçlar, izin sistemi, bağlam yönetimi
   - [deepseek-ai/deepseek-harness](dallar/07-kodlama-ajanlari/deepseek-harness/README.md) — "her şey bir eklenti":
     bağlam, servis, bağımlılık enjeksiyonu, yaşam döngüsü
@@ -158,7 +168,7 @@ dalın toplamıdır (ayrıntı: [Gerçekçi takvim](#gerçekçi-takvim)).
   - [jackfrued/Python-100-Days](dallar/09-bilgisayar-bilimi/python-100-days/README.md) — 100 günlük Python müfredatı
     (Çince; sıra dışı, isteğe bağlı)
 - **[D10 Küratörlük, listeler ve topluluk](dallar/10-kuratorluk-topluluk/README.md)** — önkoşul: G2 G3 G7 G9 (ilk PR
-  için G2 yeter); faydalı: G1 G4 G5 G6 · 283 saat
+  için G1 + G2 yeter); faydalı: G1 G4 G5 G6 · 283 saat
   - [sindresorhus/awesome](dallar/10-kuratorluk-topluluk/awesome/README.md) — awesome biçimi ve lint kuralları
   - [practical-tutorials/project-based-learning](dallar/10-kuratorluk-topluluk/project-based-learning/README.md) — proje listesi
   - [EbookFoundation/free-programming-books](dallar/10-kuratorluk-topluluk/free-programming-books/README.md) — çok dilli
@@ -199,17 +209,18 @@ flowchart LR
 
 Ağacın tamamını sırayla gezmek zorunda değilsin. Hedefine göre bir rota seç:
 
-| Rota                                | Gövde                        | Dallar ve yapraklar (sırayla)                                                                                                                     | Süre, gövde dahil: yalnızca mini'ler · tam | Meyve (MVP)    |
-| ----------------------------------- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ | -------------- |
-| **A. Yapay zekâ ürünü geliştirici** | G1 G2 G3 G4 G5 G6 G7 G11     | D04 markitdown → firecrawl → D05 transformers (önce lineer cebir ve türev) → ollama → D08 anthropic-skills → D07 opencode → D06 hermes-agent      | 11–15 ay · 15–19 ay                        | 01, 02, 04, 05 |
-| **B. Web ürünü / ön yüz**           | G1 G2 G4 G7                  | D01 You-Dont-Know-JS → Vue 3 → React → Bootstrap → D02 developer-roadmap → freeCodeCamp → VS Code → D10 HelloGitHub                               | 6–8 ay · 9,5–12,5 ay                       | 06             |
-| **C. Sistem ve altyapı**            | G1 G2 G3 G5 G6 G7 G9 G10 G11 | D09 OSSU (işletim sistemi ve ağ dersleri) → D03 the-book-of-secret-knowledge → FreeDomain → Linux (kabuk → çekirdek) → D05 ollama                 | 12–15 ay · 15,5–19 ay                      | —              |
-| **D. Mülakat ve kariyer**           | G1 G2 G3 (ya da G4) G5 G6 G7 | D09 coding-interview-university → TheAlgorithms (G4 seçtiysen javascript-algorithms) → system-design-primer → D10 awesome → bir portfolyo yaprağı | 7–9,5 ay · 9,5–12 ay (portfolyo hariç)     | —              |
-| **E. Otomasyon girişimcisi**        | G1 G2 G3 G4 G5 G6 G7 G11     | D04 public-apis → firecrawl → n8n → D06 AutoGPT → openclaw                                                                                        | 10–13 ay · 13–16 ay                        | 03, 04         |
+| Rota                                | Gövde                        | Dallar ve yapraklar (sırayla)                                                                                                                                                          | Süre, gövde dahil: yalnızca mini'ler · tam | Meyve (MVP)    |
+| ----------------------------------- | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ | -------------- |
+| **A. Yapay zekâ ürünü geliştirici** | G1 G2 G3 G4 G5 G6 G7 G11     | D04 markitdown → firecrawl → D05 (önce lineer cebir, türev ve olasılık) tensorflow → transformers → ollama → D08 anthropic-skills → D07 opencode → D06 hermes-agent                    | 11,5–15 ay · 16–20 ay                      | 01, 02, 04, 05 |
+| **B. Web ürünü / ön yüz**           | G1 G2 G4 G7 G9               | D01 You-Dont-Know-JS → (G5'ten ağaç dolaşımı, bağlı liste, ikili arama) → Vue 3 → React → Bootstrap → D02 developer-roadmap → freeCodeCamp → VS Code → D10 HelloGitHub                 | 6–8,5 ay · 9,5–12,5 ay                     | 06             |
+| **C. Sistem ve altyapı**            | G1 G2 G3 G5 G6 G7 G9 G10 G11 | D09 OSSU (işletim sistemi ve ağ dersleri, G6 ve G10 haftalarında) → D03 the-book-of-secret-knowledge → FreeDomain → Linux (kabuk → çekirdek) → D05 ollama                              | 12–15 ay · 15,5–19 ay                      | —              |
+| **D. Mülakat ve kariyer**           | G1 G2 G3 G5 G6 G7 G9         | D09 coding-interview-university → TheAlgorithms (JavaScript biliyorsan yerine javascript-algorithms; G4 yoksa +4–6 hafta) → system-design-primer → D10 awesome → bir portfolyo yaprağı | 7–9,5 ay · 9,5–12,5 ay (portfolyo hariç)   | —              |
+| **E. Otomasyon girişimcisi**        | G1 G2 G3 G4 G5 G6 G7 G11     | D04 public-apis → firecrawl → n8n → D06 AutoGPT → openclaw                                                                                                                             | 10–13 ay · 13–16 ay                        | 03, 04         |
 
 MVP numaraları [iş fikirleri kataloğundaki](is-fikirleri/README.md) kodlanmış örneklere karşılık gelir. Rota
 süreleri, rotanın gövde düğümleriyle yapraklarının saatlerinin toplamıdır. Gövde düğümlerini yalnızca rotanın
-istediği kadar öğrenirsen ("tam zamanında öğrenme") alt sınıra yaklaşırsın.
+istediği kadar öğrenirsen ("tam zamanında öğrenme") alt sınıra yaklaşırsın. G8 (büyük kod tabanı okuma) her rotada
+sürekli uygulanır; süreye ayrıca eklenmez.
 
 ## Gerçekçi takvim
 
@@ -217,10 +228,10 @@ Haftada yaklaşık 10 saat ayırdığını varsayarsak:
 
 | Parça                              | Yalnızca mini'lerle      | Mini + okuma rotası + alıştırmalar |
 | ---------------------------------- | ------------------------ | ---------------------------------- |
-| Asgari gövde (G1, G2, bir dil, G7) | 11–16 hafta (3–4 ay)     | 11–16 hafta (3–4 ay)               |
+| Asgari gövde (G1, G2, bir dil, G7) | 11–16 hafta (2,5–4 ay)   | 11–16 hafta (2,5–4 ay)             |
 | Tam gövde (G1–G11)                 | 37–53 hafta (9–12 ay)    | 37–53 hafta (9–12 ay)              |
 | Bir dal (dala göre değişir)        | 70–220 saat (7–22 hafta) | 139–380 saat (14–38 hafta)         |
-| Bir rota (A–E, gövde dahil)        | 6–15 ay                  | 9,5–19 ay                          |
+| Bir rota (A–E, gövde dahil)        | 6–15 ay                  | 9,5–20 ay                          |
 | Ağacın tamamı (gövde + 51 yaprak)  | ~3–3,5 yıl               | ~5–5,5 yıl                         |
 
 "Yalnızca mini'lerle" hızlı geçiştir: her yaprağın mini'sini yazarsın, gerçek kodu okumayı ve alıştırmaları sonraya

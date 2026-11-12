@@ -4,7 +4,7 @@
 > **Dil:** TypeScript (+ Python, Java, Swift, C++ köprüleri) · **Lisans:** MIT · **Yıldız:** 445.426 (9 Kasım 2026) · **İncelenen commit:** `dda2d40` (2026-11-09)
 
 > **Etik çerçeve.** Bu dosya REA'nın mimarisini ve **meşru** tersine mühendisliği öğretir: kendi ikililerini anlamak,
-> birlikte çalışabilirlik, yazılım koruma (preservation), zararlı yazılım ve güvenlik analizi, CTF. DRM, lisans
+> birlikte çalışabilirlik, yazılımın arşivlenip yaşatılması (software preservation), zararlı yazılım ve güvenlik analizi, CTF. DRM, lisans
 > denetimi, hile önleme ya da erişim denetimini aşmaya dair yönlendirme içermez — REA'nın kendi `DISCLAIMER.md` ve
 > `CONTRIBUTING.md` kapsam sınırı da bunları açıkça dışarıda bırakır. Hukuki tavsiye değildir.
 

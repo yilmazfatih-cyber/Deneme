@@ -285,7 +285,13 @@ export function yeniVue(secenekler) {
   const data = (vm._data = secenekler.data ? secenekler.data() : {})
   for (const key of Object.keys(data)) {
     // vm.ad → vm._data.ad vekâleti (instance/state.ts → proxy)
-    Object.defineProperty(vm, key, { get: () => data[key], set: (v) => (data[key] = v), enumerable: true })
+    Object.defineProperty(vm, key, {
+      get: () => data[key],
+      set: (v) => {
+        data[key] = v
+      },
+      enumerable: true,
+    })
   }
   const ob = observe(data)
   ob.vmCount++

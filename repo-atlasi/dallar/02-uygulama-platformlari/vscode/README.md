@@ -201,6 +201,9 @@ flowchart TD
 | 4     | Bildirim okuma, katkı noktaları                    | Bildirim tabanlı genişletilebilirlik, örtük etkinleştirme olayı          | Palet eklenti yüklenmeden doluyor; komut ilk kullanımda yükleniyor                 | 3–4 saat       |
 | Yan   | Dengeli ağaç, geri al, ayrı süreç, DOM görünümü    | O(log n) sorgu, komut deseni, süreç yönetimi                             | Mini'nin testleri yeni yapıyla da geçiyor                                          | 10–30 saat     |
 
+Aşamaların toplamı **18–25 saat**; okuma rotası ve alıştırmalarla birlikte **35–49 saat** (hesap kuralı:
+[dal README'si](../README.md#yapraklar)).
+
 **Mini uygulama:** [sifirdan/](sifirdan/README.md) — dört aşama, 25 test, `node demo.js` ile uçtan uca gösteri.
 Aşama 1 `pieceTreeBase.ts`'in, aşama 2 `commands.ts` + `contextkey.ts` + `keybindingResolver.ts`'in, aşama 3
 `rpcProtocol.ts` + `extHostCommands.ts` + `mainThreadCommands.ts`'in, aşama 4 `extensionsRegistry.ts` +
@@ -245,16 +248,17 @@ Aşama 1 `pieceTreeBase.ts`'in, aşama 2 `commands.ts` + `contextkey.ts` + `keyb
 
 **Alıştırmalar (kolaydan zora):**
 
-1. Mini'ye `ctrl+k ctrl+l` ile "satırı küçük harfe çevir" komutunu ekleyen ikinci bir eklenti yaz (Türkçe kurallarla:
-   `I → ı`).
-2. `when` ayrıştırıcısına `config.x` anahtarlarının `ayarlar` nesnesinden okunmasını ekle (gerçekte `config.` öneki
-   ayarları bağlam anahtarı yapar).
-3. `CommandService`'e `onWillExecuteCommand` olayı ekle ve bir "son kullanılan komutlar" listesi tut.
-4. Parça tablosuna geri al/yinele yığını ekle; model tabanlı teste `undo` işlemini kat.
-5. RPC'ye zaman aşımı ve iptal ekle: 2 saniyede yanıt gelmezse çağrı reddedilsin, eklenti tarafına "iptal" mesajı gitsin.
-6. Eklenti sunucusu çökünce otomatik yeniden başlat; etkin olan eklentileri yeniden etkinleştir.
-7. Parça listesini treap'e (rastgele öncelikli dengeli ağaç) çevir; her düğümde sol alt ağacın uzunluk ve satır sonu
-   toplamını tut. 100.000 satırlık dosyada eski ve yeni sürümü ölç.
+1. (Kolay) Mini'ye `ctrl+k ctrl+l` ile "satırı küçük harfe çevir" komutunu ekleyen ikinci bir eklenti yaz (Türkçe
+   kurallarla: `I → ı`).
+2. (Kolay) `when` ayrıştırıcısına `config.x` anahtarlarının `ayarlar` nesnesinden okunmasını ekle (gerçekte `config.`
+   öneki ayarları bağlam anahtarı yapar).
+3. (Orta) `CommandService`'e `onWillExecuteCommand` olayı ekle ve bir "son kullanılan komutlar" listesi tut.
+4. (Orta) Parça tablosuna geri al/yinele yığını ekle; model tabanlı teste `undo` işlemini kat.
+5. (Orta) RPC'ye zaman aşımı ve iptal ekle: 2 saniyede yanıt gelmezse çağrı reddedilsin, eklenti tarafına "iptal" mesajı
+   gitsin.
+6. (Zor) Eklenti sunucusu çökünce otomatik yeniden başlat; etkin olan eklentileri yeniden etkinleştir.
+7. (Zor) Parça listesini treap'e (rastgele öncelikli dengeli ağaç) çevir; her düğümde sol alt ağacın uzunluk ve satır
+   sonu toplamını tut. 100.000 satırlık dosyada eski ve yeni sürümü ölç.
 
 **Öz değerlendirme:**
 

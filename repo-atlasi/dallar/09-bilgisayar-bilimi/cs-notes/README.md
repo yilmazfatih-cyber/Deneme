@@ -106,7 +106,8 @@ dışarıdan gelen PR'larda bu kısım derlenmez (iş akışındaki yorum).
 
 ## 4. Sıfırdan yol (dallanma)
 
-Bu yaprak için ayrı bir mini yok. Burada "sıfırdan yol", Çince bir kaynağı **Türkçe çalışma notuna** dönüştürme iş
+Bu yaprak için ayrı bir mini yok: depo bir kod tabanı değil, Çince mülakat notları derlemesi (`website/` altındaki site
+üreticisi bu notları yayımlar). Burada "sıfırdan yol", Çince bir kaynağı **Türkçe çalışma notuna** dönüştürme iş
 akışıdır:
 
 ```mermaid

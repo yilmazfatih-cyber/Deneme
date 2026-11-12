@@ -187,6 +187,9 @@ flowchart TD
 | 3     | Günlük, model, araç hattı, izin, onay, UI, döngü    | "Her şey eklenti", günlükten türetilen geçmiş   | Model servisi değiştirilirken döngü kodu hiç değişmiyor               | 6–8 saat       |
 | 4     | Katman uygulama ve kompozisyon                      | Yapılandırma olarak mimari                      | Başsız paket onay servisini kapatıp "ask"ı "deny"a çeviriyor          | 2–3 saat       |
 
+Aşamaların toplamı **17–23 saat**; okuma rotası ve alıştırmalarla birlikte **40–46 saat** (hesap kuralı:
+[dal README'si](../README.md#yapraklar)).
+
 **Mini uygulama:** [`sifirdan/`](sifirdan/README.md) — `asama1_olaylar.js` → `asama4_profil.js`, 17 test
 (`node --test`), `node ornek.js`. Eşleme örnekleri: `asama2_baglam.js` → `vendor/cordis/src/context.ts` + `fiber.ts`;
 `ToolsService.execute` → `packages/core/tools/src/pipeline.ts`; `AgentLoop` → `packages/core/agent-loop/src/index.ts`.

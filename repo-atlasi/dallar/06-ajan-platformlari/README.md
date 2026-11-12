@@ -29,8 +29,10 @@ da karşılaştırma için gereken bilgidir.
 | [G5 Veri yapıları ve algoritmalar](../../govde/README.md#g5)                           | faydalı      | AutoGPT          | Graf doğrulama: topolojik sıra (Kahn), döngü tespiti, veri akışı                                           |
 | [G9 Açık kaynak: lisans](../../govde/README.md#g9)                                     | faydalı      | AutoGPT          | PolyForm Shield + MIT: hangi klasörden kod alınamaz, "rekabet yasağı" neyi kapsar                          |
 | [D08 Ajan becerileri](../08-ajan-becerileri/README.md)                                 | faydalı      | Hermes, OpenClaw | SKILL.md biçimi ve kademeli açılım; önce becerinin ne olduğunu orada öğren                                 |
+| [D10 → build-your-own-x](../10-kuratorluk-topluluk/build-your-own-x/README.md)         | faydalı      | OpenClaw         | Bot yazma temelleri: "Build your own Bot" (Node.js ile Telegram botu örneği)                               |
 | [D05 Yapay zekâ altyapısı → ollama](../05-yapay-zeka-altyapisi/ollama/README.md)       | isteğe bağlı | Hermes, OpenClaw | Mini'ler sahte modelle çalışır; gerçek ama ücretsiz, yerel bir modelle denemek isteyen alıştırmalar için   |
 | [D04 → n8n](../04-veri-araclari-otomasyon/n8n/README.md)                               | isteğe bağlı | AutoGPT          | Graf fikrinin genel amaçlı akrabası; LLM'in grafın neresinde durduğunu karşılaştırmak için                 |
+| [D07 → opencode](../07-kodlama-ajanlari/opencode/README.md)                            | isteğe bağlı | OpenClaw         | Aynı araç döngüsünün tek kullanıcılı, terminal odaklı hâli; izin sistemi karşılaştırması için              |
 
 ## Dalın ağacı
 

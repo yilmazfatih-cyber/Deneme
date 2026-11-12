@@ -15,7 +15,7 @@ AGPL-3.0 lisanslıdır; buradaki kod ondan kopyalanmadı, aynı davranışlar s�
 ```bash
 cd sifirdan
 node cli.js tara http://127.0.0.1:4000/ --yerel --limit 10 --gecikme 1   # yerel siteni tara
-node cli.js kazi http://127.0.0.1:4000/hakkinda                          # tek sayfa -> Markdown
+node cli.js kazi http://127.0.0.1:4000/hakkinda --yerel                  # tek sayfa -> Markdown
 node cli.js sunucu --port 3002 --yerel                                   # iş API'si
 curl -s -X POST localhost:3002/v2/crawl -H 'content-type: application/json' \
   -d '{"url":"http://127.0.0.1:4000/","limit":5}'
@@ -24,12 +24,18 @@ curl -s localhost:3002/v2/crawl/<id>/errors                               # hata
 ```
 
 `--yerel` bayrağı özel ağ adreslerine (127.0.0.1, 10.x, 192.168.x, 169.254.x ...) izin verir. Bayrak
-yoksa bu adresler SSRF koruması nedeniyle reddedilir; API'yi internete açacaksan bayrağı kullanma.
+yoksa bu adresler SSRF koruması nedeniyle reddedilir (`kazi` ve `tara` hata yazıp 1 koduyla çıkar).
+Yönlendirmeler elle izlenir (`guvenliGetir`); her hedef, istek atılmadan önce aynı denetimden geçer. Böylece
+herkese açık bir sayfa seni doğrudan yazılmış bir özel IP'ye ya da `localhost`'a yönlendiremez. İç IP'ye çözülen
+alan adları (DNS rebinding) kapsam dışıdır. API'yi internete açacaksan bayrağı kullanma.
+
+`kazi` ile `POST /v2/scrape` aynı işlevi (`tekSayfaKazi`) kullanır ve robots.txt'ye bakmaz. robots.txt'ye ve
+`Crawl-delay`'e tarayıcı uyar: `tara` her zaman, `POST /v2/crawl` ise `ignoreRobotsTxt: true` verilmedikçe.
 
 ## Test
 
 ```bash
-cd sifirdan && node --test                       # 22 test (otomatik keşif: test/*.test.js)
+cd sifirdan && node --test                       # 28 test (otomatik keşif: test/*.test.js)
 node --test 'firecrawl/sifirdan/test/*.test.js'  # ya da dal klasöründen glob ile
 ```
 
@@ -64,7 +70,7 @@ başlangıç yoluna göre), `maxDiscoveryDepth` ise başlangıçtan kaç **bağl
 | `siraBekle()` (nezaket)       | `delay` seçeneği: `lib/concurrency-limit.ts`, `services/worker/nuq-fdb/ops.ts`                     | Biz tek süreçte zaman rezervasyonu yaparız ve robots `Crawl-delay`'i de uygularız; asıl sürüm onu `scraper/WebScraper/crawler.ts`'te okur ama bu commit'te uygulamaz (`controllers/v2/crawl.ts`'teki ilgili satırlar yorum satırı) |
 | `IsKuyrugu`                   | `services/worker/nuq.ts` (Postgres `FOR UPDATE SKIP LOCKED` + RabbitMQ), BullMQ yan kuyrukları     | Kalıcılık, yeniden deneme, dağıtık işçi yok                                                                                                                                                                                        |
 | `apiSunucusu()`               | `routes/v2.ts`, `controllers/v2/crawl.ts`, `crawl-status.ts`, `crawl-cancel.ts`, `crawl-errors.ts` | Kimlik doğrulama, kredi, hız sınırı, WebSocket durum akışı yok                                                                                                                                                                     |
-| `ozelAdresMi()`               | Asıl üründe engelleme listeleri ve "threat protection" katmanı                                     | Yalnızca IP/localhost denetimi (DNS rebinding'e karşı korumaz)                                                                                                                                                                     |
+| `ozelAdresMi()`               | Asıl üründe engelleme listeleri ve "threat protection" katmanı                                     | Yalnızca IP/localhost denetimi; her yönlendirme adımına da uygulanır (DNS rebinding'e karşı korumaz)                                                                                                                               |
 
 ## Etik not
 

@@ -93,7 +93,7 @@ graf/yığın bilgisi (G5) ister. Bu yüzden G4 ve G5'i 4. yaprağa gelene kadar
 | [public-apis/public-apis](public-apis/README.md) | liste      | 1            | [liste doğrulayıcı, link denetleyici, JSON](public-apis/sifirdan/README.md) (Python, 23 test)          | 10          | 26            |
 | [microsoft/markitdown](markitdown/README.md)     | kod tabanı | 2            | [öncelikli dönüştürücü kaydı, HTML/CSV/JSON/DOCX/ZIP](markitdown/sifirdan/README.md) (Python, 28 test) | 19          | 44            |
 | [yt-dlp/yt-dlp](yt-dlp/README.md)                | kod tabanı | 4            | [çıkarıcı, format dili, indirici, şablon, son işlem](yt-dlp/sifirdan/README.md) (Python, 30 test)      | 25          | 50            |
-| [firecrawl/firecrawl](firecrawl/README.md)       | kod tabanı | 4            | [URL, robots, HTML→MD, tarayıcı, iş API'si](firecrawl/sifirdan/README.md) (Node, 22 test)              | 23          | 48            |
+| [firecrawl/firecrawl](firecrawl/README.md)       | kod tabanı | 4            | [URL, robots, HTML→MD, tarayıcı, iş API'si](firecrawl/sifirdan/README.md) (Node, 28 test)              | 23          | 48            |
 | [n8n-io/n8n](n8n/README.md)                      | kod tabanı | 5            | [ifade dili, düğümler, motor, webhook](n8n/sifirdan/README.md) (Node, 22 test)                         | 24          | 49            |
 | **Dal toplamı**                                  |            |              |                                                                                                        | **101**     | **217**       |
 
@@ -145,10 +145,12 @@ Bu dalda ilginç bir karşıtlık var: yt-dlp, katkılarda yapay zekâ ve LLM ku
 İndirme ve kazıma araçları hukuken tarafsız değildir. Telif hakkıyla korunan içeriği izinsiz indirmek
 (Türkiye'de 5846 sayılı FSEK), sitelerin kullanım koşullarını çiğnemek ve kişisel verileri toplamak (KVKK)
 sorumluluk doğurur. Bu daldaki mini'lerin testleri yalnızca `127.0.0.1` üzerindeki yerel sunuculara bağlanır.
-Araçların kendisinde: yt-dlp mini'si varsayılan olarak yalnızca `127.0.0.1`/`localhost`'a izin verir;
-firecrawl mini'si robots.txt'ye ve `Crawl-delay`'e uyar, özel ağ adreslerini (SSRF) reddeder; tarayıcı ve
-link denetleyici dürüst bir User-Agent kullanır, hız ve eş zamanlılık sınırı sunar. Bu varsayılanları
-gevşetmeden önce izin aldığından emin ol.
+Araçların kendisinde: yt-dlp mini'si varsayılan olarak yalnızca `127.0.0.1`/`localhost`'a izin verir. Firecrawl
+mini'si doğrudan yazılmış özel ağ adreslerini ve oraya giden yönlendirmeleri (SSRF) reddeder; `--yerel` bu engeli
+kaldırır. İç IP'ye çözülen alan adları (DNS rebinding) kapsam dışıdır. Tarayıcısı (`tara`) ayrıca robots.txt'ye ve
+`Crawl-delay`'e uyar. Tek sayfa kazıma (`kazi`, `/v2/scrape`) robots.txt'ye bakmaz. Firecrawl tarayıcısı ve
+public-apis mini'sinin bağlantı denetleyicisi dürüst bir User-Agent kullanır, hız ve eş zamanlılık sınırı sunar. Bu
+varsayılanları gevşetmeden önce izin aldığından emin ol.
 
 ## Bu dalı bitirdiğinde ne yapabilirsin
 

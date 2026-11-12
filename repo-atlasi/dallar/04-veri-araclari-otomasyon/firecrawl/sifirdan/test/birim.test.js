@@ -41,16 +41,20 @@ describe('URL', () => {
   test('ozelAdresMi (SSRF)', () => {
     for (const host of [
       'localhost',
+      'localhost.', // sondaki nokta: yine localhost
       '127.0.0.1',
       '10.1.2.3',
       '172.20.0.1',
       '192.168.1.1',
       '169.254.169.254',
       '[::1]',
+      new URL('http://[::ffff:127.0.0.1]/').hostname, // IPv6'ya gömülü IPv4, URL'de [::ffff:7f00:1]
     ]) {
       assert.ok(ozelAdresMi(host), host)
     }
-    for (const host of ['8.8.8.8', '172.32.0.1', 'example.com']) assert.ok(!ozelAdresMi(host), host)
+    for (const host of ['8.8.8.8', '172.32.0.1', 'example.com', new URL('http://[::ffff:8.8.8.8]/').hostname]) {
+      assert.ok(!ozelAdresMi(host), host)
+    }
   })
 })
 

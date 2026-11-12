@@ -58,6 +58,10 @@ export function yerelSiteBaslat(ayar = {}) {
       return gonder(200, 'application/xml', `<urlset><url><loc>${taban}/harita-sayfasi</loc></url></urlset>`)
     }
     if (yol === '/dosya.pdf') return gonder(200, 'application/pdf', '%PDF-1.4')
+    if (yol === '/eski-hakkinda') {
+      yanit.writeHead(301, { location: '/hakkinda' }) // taşınmış sayfa: kalıcı yönlendirme
+      return yanit.end()
+    }
     const html = sayfalar[yol] ?? sayfalar[yol.replace(/\/$/, '')]
     const yaz = () =>
       html

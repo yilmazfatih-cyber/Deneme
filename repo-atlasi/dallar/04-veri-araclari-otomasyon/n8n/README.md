@@ -1,7 +1,7 @@
 # n8n-io/n8n — görsel iş akışı otomasyonu ve yapay zekâ ajanları platformu
 
 > **Dal:** [D04 Veri araçları ve otomasyon](../README.md) · **Tür:** kod tabanı
-> **Dil:** TypeScript (+ Vue, Python) · **Lisans:** Sustainable Use License (fair-code) + `.ee.` dosyaları için n8n Enterprise License · **Yıldız:** 209.893 (9 Kasım 2026) · **İncelenen commit:** `5ee06d3` (2026-11-09)
+> **Dil:** TypeScript (+ Vue, Python) · **Lisans:** Sustainable Use License (fair-code) + dosya adında `.ee.`, klasör adında `.ee` geçen kod için n8n Enterprise License · **Yıldız:** 209.893 (9 Kasım 2026) · **İncelenen commit:** `5ee06d3` (2026-11-09)
 
 ## 1. Bir bakışta
 
@@ -149,7 +149,7 @@ döngü:
   uçtan uca testler Playwright paketiyle (`pnpm dev:e2e` → `n8n-playwright`).
 - **CI:** `.github/workflows/` altında 109 dosya: `ci-pull-requests.yml`, `ci-master.yml`, `ci-python.yml`,
   `ci-cla-check.yml` (katkı sözleşmesi imzası zorunlu), sahiplik/inceleme kuralları, sürüm iş akışları.
-- **Lisans ayrımı:** dosya ya da klasör adında `.ee.` geçen kod (ör. `multi-main-setup.ee.ts`) yalnızca
+- **Lisans ayrımı:** dosya adında `.ee.` ya da klasör adında `.ee` geçen kod (ör. `multi-main-setup.ee.ts`) yalnızca
   kurumsal lisansla kullanılabilir; geri kalanı Sustainable Use License.
 
 ### Tasarım kararları ve ödünleşimler
@@ -184,7 +184,7 @@ döngü:
 | Ayrıştırıcı/yorumlayıcı                                            | İfade dili kendi başına küçük bir dildir                                                                 | [build-your-own-x: Template Engine](https://github.com/codecrafters-io/build-your-own-x#build-your-own-template-engine) ([dossier](../../10-kuratorluk-topluluk/build-your-own-x/README.md)) |
 | Sandbox ve izolasyon                                               | `node:vm` neden güvenlik sınırı değil; süreç/isolate ayrımı                                              | [Node vm belgeleri](https://nodejs.org/api/vm.html)                                                                                                                                          |
 | [G8 Büyük kod tabanı okuma](../../../govde/README.md#g8)           | 33.318 dosyalık monorepoda okuma rotasının dosyalarını bulmak, bir yürütmeyi uçtan uca izlemek           | [The Architecture of Open Source Applications](https://aosabook.org/en/)                                                                                                                     |
-| [G9 Açık kaynak lisansları](../../../govde/README.md#g9)           | Fair-code, CLA, `.ee.` dosyaları                                                                         | [faircode.io](https://faircode.io)                                                                                                                                                           |
+| [G9 Açık kaynak lisansları](../../../govde/README.md#g9)           | Fair-code, CLA, `.ee.`/`.ee` ayrımı                                                                      | [faircode.io](https://faircode.io)                                                                                                                                                           |
 | [D06 Ajan platformları](../../06-ajan-platformlari/README.md)      | İsteğe bağlı, bu daldan sonra: n8n'in AI ajan düğümleri ve MCP, ajan platformlarıyla aynı soruları çözer | [autogpt dossier'i](../../06-ajan-platformlari/autogpt/README.md)                                                                                                                            |
 
 ## 4. Sıfırdan yol (dallanma)

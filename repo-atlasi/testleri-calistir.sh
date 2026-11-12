@@ -5,8 +5,10 @@
 #   bash repo-atlasi/testleri-calistir.sh            # hepsi
 #   bash repo-atlasi/testleri-calistir.sh react n8n  # yalnızca yolunda bu sözcükler geçenler
 #
-# Gerekenler: Python 3.11+ (numpy yalnızca D05 minileri için), Node.js 22+, Go 1.22+, Rust/cargo, gcc + nasm + make,
-# bash. Bir araç yoksa ilgili test "ATLANDI" olarak raporlanır. Testler internete çıkmaz.
+# Gerekenler: Python 3.11+ (numpy yalnızca tensorflow ve transformers minileri için), Node.js 22+, Go 1.24+,
+# Rust/cargo, gcc + nasm + ld + make (linux mini'si), zsh 5.x + git (ohmyzsh mini'si), bash. Bir satırın üçüncü
+# sütunundaki araçlardan ya da Python modüllerinden (py:ad) biri yoksa o test "ATLANDI" olarak raporlanır.
+# Testler internete çıkmaz; Go'nun araç zinciri indirmesi de GOTOOLCHAIN=local ile kapalıdır.
 set -u
 cd "$(dirname "$0")" || exit 2
 
@@ -14,22 +16,23 @@ GECICI="$(mktemp -d)"
 trap 'rm -rf "$GECICI"' EXIT
 export PYTHONDONTWRITEBYTECODE=1
 export CARGO_TARGET_DIR="$GECICI/cargo-target"
+export GOTOOLCHAIN=local
 
-# klasör | komut | gereken araç
+# klasör | komut | gereken araçlar (+ ile ayrılır; py:ad bir Python modülüdür)
 LISTE='
 dallar/01-web-arayuzu/you-dont-know-js/sifirdan|npm test --silent|node
 dallar/01-web-arayuzu/vue3-core/sifirdan|npm test --silent|node
 dallar/01-web-arayuzu/vue2/sifirdan|npm test --silent|node
 dallar/01-web-arayuzu/react/sifirdan|npm test --silent|node
 dallar/01-web-arayuzu/bootstrap/sifirdan|npm test --silent|node
-dallar/02-uygulama-platformlari/ohmyzsh/sifirdan|bash test.sh|bash
+dallar/02-uygulama-platformlari/ohmyzsh/sifirdan|bash test.sh|bash+zsh+git
 dallar/02-uygulama-platformlari/developer-roadmap/sifirdan|npm test --silent|node
 dallar/02-uygulama-platformlari/freecodecamp/sifirdan|npm test --silent|node
 dallar/02-uygulama-platformlari/vscode/sifirdan|npm test --silent|node
 dallar/02-uygulama-platformlari/flutter/sifirdan|npm test --silent|node
 dallar/03-sistem-ag-guvenlik/the-book-of-secret-knowledge/sifirdan|python3 -m unittest discover -s tests -t .|python3
 dallar/03-sistem-ag-guvenlik/freedomain/sifirdan|python3 -m unittest discover -s tests -t .|python3
-dallar/03-sistem-ag-guvenlik/linux/sifirdan|make test && make clean|make
+dallar/03-sistem-ag-guvenlik/linux/sifirdan|make test && make clean|make+gcc+nasm+ld+python3
 dallar/03-sistem-ag-guvenlik/rea/sifirdan|python3 -m unittest discover -s tests -t .|python3
 dallar/03-sistem-ag-guvenlik/microsoft-activation-scripts/sifirdan|python3 -m unittest discover -s tests -t .|python3
 dallar/04-veri-araclari-otomasyon/public-apis/sifirdan|python3 -m unittest discover -s tests -t .|python3
@@ -37,8 +40,8 @@ dallar/04-veri-araclari-otomasyon/markitdown/sifirdan|python3 -m unittest discov
 dallar/04-veri-araclari-otomasyon/yt-dlp/sifirdan|python3 -m unittest discover -s tests -t .|python3
 dallar/04-veri-araclari-otomasyon/firecrawl/sifirdan|node --test|node
 dallar/04-veri-araclari-otomasyon/n8n/sifirdan|node --test|node
-dallar/05-yapay-zeka-altyapisi/tensorflow/sifirdan|python3 -m unittest discover -s tests -t .|python3
-dallar/05-yapay-zeka-altyapisi/transformers/sifirdan|python3 -m unittest discover -s tests -t .|python3
+dallar/05-yapay-zeka-altyapisi/tensorflow/sifirdan|python3 -m unittest discover -s tests -t .|python3+py:numpy
+dallar/05-yapay-zeka-altyapisi/transformers/sifirdan|python3 -m unittest discover -s tests -t .|python3+py:numpy
 dallar/05-yapay-zeka-altyapisi/ollama/sifirdan|go test ./...|go
 dallar/05-yapay-zeka-altyapisi/mirofish/sifirdan|python3 -m unittest discover -s tests -t .|python3
 dallar/06-ajan-platformlari/autogpt/sifirdan|python3 -m unittest discover -s tests -t .|python3
@@ -78,8 +81,16 @@ while IFS='|' read -r klasor komut arac; do
     for s in "$@"; do case "$klasor" in *"$s"*) eslesti=1 ;; esac; done
     [ "$eslesti" -eq 0 ] && continue
   fi
-  if ! command -v "$arac" >/dev/null 2>&1; then
-    printf 'ATLANDI  %-62s (%s yok)\n' "$klasor" "$arac"
+  eksik=''
+  IFS='+' read -r -a gerekler <<<"$arac"
+  for g in "${gerekler[@]}"; do
+    case "$g" in
+      py:*) python3 -c "import ${g#py:}" >/dev/null 2>&1 || eksik="$eksik ${g#py:}" ;;
+      *) command -v "$g" >/dev/null 2>&1 || eksik="$eksik $g" ;;
+    esac
+  done
+  if [ -n "$eksik" ]; then
+    printf 'ATLANDI  %-62s (%s yok)\n' "$klasor" "${eksik# }"
     atlanan=$((atlanan + 1))
     continue
   fi

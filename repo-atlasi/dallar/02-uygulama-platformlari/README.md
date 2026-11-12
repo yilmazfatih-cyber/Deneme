@@ -68,6 +68,7 @@ flowchart TB
   (Dart'ta yeniden yazma: 4–6 saat) `sifirdan/` kodunun dışındadır. Yalnızca mini'nin kodu freeCodeCamp'te 10–13,
   Flutter'da 17–23 saat sürer.
 - **Toplam (saat):** Mini + okuma rotası (adım başına ~1 saat) + alıştırmaların hepsi (her biri ~1–2 saat).
+  (Etiketler zorluk sırasını gösterir; süre hesabında her alıştırma ~1–2 saat sayılır.)
 - **Dal toplamı:** Mini 88–135 saat; Toplam 163–242 saat. Haftada ~10 saatle yaklaşık 16–24 hafta.
 
 ## Önerilen sıra ve gerekçesi

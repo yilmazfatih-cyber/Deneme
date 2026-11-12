@@ -350,6 +350,8 @@ eğitimlerinde (6331 sayılı Kanun) üretilen sorular mevzuatın istediği öl�
    yapmayan konuşmacı ayrımı.
 5. Konuşma dilindeki tanım kalıpları ("... diyoruz", "... deriz") ve öğrenci adlarını nottan ayıklayan bir süzgeç.
 6. Toplu işleme: [03-fiyat-radar](../03-fiyat-radar/README.md)'daki gibi bir n8n akışıyla "yeni ders yüklenince not
-   üret".
+   üret". Bu akış, n8n'den yazılı teyit ya da ticari lisans alınmadıkça yalnızca kurum içi kurulumda kullanılır;
+   n8n'in lisans sahibi ve kullanıcısı kurumdur ve n8n'i kendi iç işi için kullanır. Videoyu bizim işlediğimiz hizmet
+   modelinde aynı iş cron ve kendi kodumuzla yapılır ([n8n notu](../README.md#n8n-lisansi)).
 
 Diğer fikirler ve tüm katalog: [is-fikirleri/README.md](../README.md).

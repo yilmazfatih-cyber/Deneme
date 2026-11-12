@@ -166,6 +166,7 @@ Model araç istemeye devam ettikçe yeni adım başlar. AGENTS.md bunu kural ola
 | [G11 LLM API temelleri](../../../govde/README.md#g11)                                        | Araç çağırma, akış, token sayımı, önbellek: döngünün dili                                                        | OpenAI ve Anthropic API belgelerinin "tool use" bölümleri                                              |
 | [G6 Ağ ve web temelleri](../../../govde/README.md#g6)                                        | HTTP API, SSE olay akışı, OAuth (MCP sunucuları için)                                                            | MDN: "Using server-sent events"                                                                        |
 | [G1 Terminal ve kabuk](../../../govde/README.md#g1)                                          | `shell` aracı, süreç grupları, PTY, TUI                                                                          | [free-programming-books Türkçe listesi](../../10-kuratorluk-topluluk/free-programming-books/README.md) |
+| [G2 Git ve GitHub iş akışı](../../../govde/README.md#g2)                                     | Geri alma anlık görüntüleri ayrı bir git deposunda tutulur (`packages/core/src/snapshot.ts`)                     | [Pro Git (Türkçe)](https://git-scm.com/book/tr/v2)                                                     |
 | [G7 Test, CI ve kod kalitesi](../../../govde/README.md#g7)                                   | Kayıt/oynatma testleri, Windows matrisi, sürüm güvenliği                                                         | `.opencode/skills/unit-tests/` (deponun kendi test rehberi)                                            |
 | [G8 Büyük kod tabanı okuma](../../../govde/README.md#g8)                                     | 35 paket ve Effect katmanları arasında yol bulmak                                                                | [ossu-computer-science](../../09-bilgisayar-bilimi/ossu-computer-science/README.md)                    |
 | Effect (TypeScript)                                                                          | Servisler, `Layer`, fiber, `Schema`: `packages/core/src` altındaki 475 `.ts` dosyasının 375'i Effect içe aktarır | effect.website belgeleri                                                                               |
@@ -202,6 +203,9 @@ flowchart TD
 | 5     | Dosya tabanlı oturum deposu                       | Atomik yazma, yeniden yükleme                                      | Her adım geçmişi diskten okur                                                                                      | 2–3 saat       |
 | 6     | Sıkıştırma                                        | Token bütçesi, güvenli bölme, özet şablonu                         | Kuyruk asla araç sonucuyla başlamıyor                                                                              | 3–4 saat       |
 | 7     | HTTP sunucu + SSE + istemci                       | Olay akışı, izin sorusunu olayla yayınlama                         | İstemci izin olayını alıp yanıtlıyor, tur bitiyor                                                                  | 5–7 saat       |
+
+Aşamaların toplamı **30–41 saat**; okuma rotası ve alıştırmalarla birlikte **54–65 saat** (hesap kuralı:
+[dal README'si](../README.md#yapraklar)).
 
 **Mini uygulama:** [`sifirdan/`](sifirdan/README.md) bu yedi aşamayı ayrı dosyalarda uygular (`asama1_saglayici.js` …
 `asama7_sunucu.js`), 44 testle (`node --test`). Her aşamanın gerçek depodaki karşılığı mini README'deki eşleme

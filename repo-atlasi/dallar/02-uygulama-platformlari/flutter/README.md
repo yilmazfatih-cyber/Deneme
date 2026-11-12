@@ -193,6 +193,9 @@ flowchart TD
 | 4     | `BuildOwner`, `Binding.drawFrame`, `pumpWidget` | Kirli liste, derinlik sırası, `finalizeTree`, golden test             | Sayaç demosu ve altın görüntü testi geçiyor                                      | 3–4 saat       |
 | 5     | Aynı uygulamayı Dart/Flutter'da                 | Gerçek API, `const`, `flutter_test`                                   | `flutter test` ile aynı senaryo geçiyor                                          | 4–6 saat       |
 
+Aşamaların toplamı **21–29 saat**; okuma rotası ve alıştırmalarla birlikte **37–52 saat** (hesap kuralı:
+[dal README'si](../README.md#yapraklar)).
+
 **Mini uygulama:** [sifirdan/](sifirdan/README.md) — 4 aşama, 15 test, `node ornek_sayac.js` ile ASCII sayaç.
 Aşama 1–2 `rendering/box.dart`, `object.dart`, `flex.dart`, `shifted_box.dart`, `proxy_box.dart`'ın; aşama 3
 `widgets/framework.dart` ve `basic.dart`'ın; aşama 4 `BuildOwner`, `widgets/binding.dart` ve `flutter_test`'in
@@ -232,14 +235,15 @@ küçük karşılığıdır. Ayrıntılı eşleme ve Dart karşılıkları mini'
 
 **Alıştırmalar (kolaydan zora):**
 
-1. Mini'ye `Align` widget'ı ekle (`Center`'ın genellemesi: sol-üst, sağ-alt vb.).
-2. `Row`'a `mainAxisSize: 'min'` seçeneğini ekle; ana eksende yalnızca çocuklar kadar yer kaplasın.
-3. `Flexible(fit: 'loose')` ekle: çocuk payı kadar büyüyebilsin ama zorunda olmasın.
-4. `InheritedWidget` üstüne küçük bir "Provider": `ChangeNotifier` değiştiğinde yalnızca dinleyenleri yeniden build et.
-5. Sahte saat + `Ticker` ekle; bir yükleme çubuğu karakterlerini her karede ilerlet (`pump(saniye)`).
-6. `RepaintBoundary` ekle: boyamayı tüm ağaç yerine yalnızca kirli sınırın alt ağacı için yap ve kaç düğümün
+1. (Kolay) Mini'ye `Align` widget'ı ekle (`Center`'ın genellemesi: sol-üst, sağ-alt vb.).
+2. (Kolay) `Row`'a `mainAxisSize: 'min'` seçeneğini ekle; ana eksende yalnızca çocuklar kadar yer kaplasın.
+3. (Orta) `Flexible(fit: 'loose')` ekle: çocuk payı kadar büyüyebilsin ama zorunda olmasın.
+4. (Orta) `InheritedWidget` üstüne küçük bir "Provider": `ChangeNotifier` değiştiğinde yalnızca dinleyenleri yeniden
+   build et.
+5. (Orta) Sahte saat + `Ticker` ekle; bir yükleme çubuğu karakterlerini her karede ilerlet (`pump(saniye)`).
+6. (Zor) `RepaintBoundary` ekle: boyamayı tüm ağaç yerine yalnızca kirli sınırın alt ağacı için yap ve kaç düğümün
    boyandığını say.
-7. Sayaç uygulamasını gerçek Flutter'da yaz ve mini'deki testlerin `flutter_test` karşılıklarını yaz.
+7. (Zor) Sayaç uygulamasını gerçek Flutter'da yaz ve mini'deki testlerin `flutter_test` karşılıklarını yaz.
 
 **Öz değerlendirme:**
 

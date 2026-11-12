@@ -45,7 +45,7 @@ flowchart TD
     HK --> M4
 
     M1 --> R1[anthropics/skills]
-    M5 --> R5[andrej-karpathy-skills]
+    M5 --> R5[multica-ai/andrej-karpathy-skills]
     M3 --> R3[mattpocock/skills]
     M2 --> R2[obra/superpowers]
     M4 --> R4[affaan-m/ECC]
@@ -81,14 +81,14 @@ Sıra, yaprakların kendi ön koşul tablolarına uyar: her yaprak yalnızca ken
 toplamı. **Toplam (saat)** = mini + okuma rotası (adım başına 0,5 saat) + alıştırmalar (kolay 1, orta 2, zor 4 saat).
 Hafta hesabı haftada ~10 saat odaklı çalışma varsayar.
 
-| Sıra | Depo                                                | Tür                              | Zorluk (1–5) | Mini                                                                 | Mini (saat) | Toplam (saat) |
-| ---- | --------------------------------------------------- | -------------------------------- | ------------ | -------------------------------------------------------------------- | ----------- | ------------- |
-| 1    | [anthropics/skills](anthropic-skills/README.md)     | ajan yapılandırması              | 2            | [beceri_kiti: 7 aşama, 86 test](anthropic-skills/sifirdan/README.md) | 25          | 46            |
-| 2    | [andrej-karpathy-skills](karpathy-skills/README.md) | ajan yapılandırması              | 1            | [cerrahi puanlayıcı, 13 test](karpathy-skills/sifirdan/README.md)    | 11          | 23            |
-| 3    | [obra/superpowers](superpowers/README.md)           | ajan yapılandırması              | 3            | [değerlendirme düzeneği, 17 test](superpowers/sifirdan/README.md)    | 17,5        | 38,5          |
-| 4    | [mattpocock/skills](mattpocock-skills/README.md)    | ajan yapılandırması              | 2            | [bileşim denetçisi, 11 test](mattpocock-skills/sifirdan/README.md)   | 15          | 32            |
-| 5    | [affaan-m/ECC](ecc/README.md)                       | ajan yapılandırması + kod tabanı | 4            | [çok harness'li üretici (Node), 24 test](ecc/sifirdan/README.md)     | 22,5        | 45,5          |
-|      | **Dal toplamı**                                     |                                  |              |                                                                      | **91**      | **185**       |
+| Sıra | Depo                                                           | Tür                              | Zorluk (1–5) | Mini                                                                 | Mini (saat) | Toplam (saat) |
+| ---- | -------------------------------------------------------------- | -------------------------------- | ------------ | -------------------------------------------------------------------- | ----------- | ------------- |
+| 1    | [anthropics/skills](anthropic-skills/README.md)                | ajan yapılandırması              | 2            | [beceri_kiti: 7 aşama, 86 test](anthropic-skills/sifirdan/README.md) | 25          | 46            |
+| 2    | [multica-ai/andrej-karpathy-skills](karpathy-skills/README.md) | ajan yapılandırması              | 1            | [cerrahi puanlayıcı, 13 test](karpathy-skills/sifirdan/README.md)    | 11          | 23            |
+| 3    | [obra/superpowers](superpowers/README.md)                      | ajan yapılandırması              | 3            | [değerlendirme düzeneği, 17 test](superpowers/sifirdan/README.md)    | 17,5        | 38,5          |
+| 4    | [mattpocock/skills](mattpocock-skills/README.md)               | ajan yapılandırması              | 2            | [bileşim denetçisi, 11 test](mattpocock-skills/sifirdan/README.md)   | 15          | 32            |
+| 5    | [affaan-m/ECC](ecc/README.md)                                  | ajan yapılandırması + kod tabanı | 4            | [çok harness'li üretici (Node), 24 test](ecc/sifirdan/README.md)     | 22,5        | 45,5          |
+|      | **Dal toplamı**                                                |                                  |              |                                                                      | **91**      | **185**       |
 
 **Toplam:** 185 saat; haftada ~10 saatle yaklaşık 18,5 hafta (yalnızca minilerle 91 saat, ~9 hafta). Aşağıdaki
 rehberli alıştırma bu hesaba dahil değil; ona ayrıca ~8 saat ayır. Minilerin hepsi çevrimdışı test edilir; gerçek bir

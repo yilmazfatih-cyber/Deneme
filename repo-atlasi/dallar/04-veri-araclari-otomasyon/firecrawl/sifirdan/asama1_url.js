@@ -83,14 +83,24 @@ export function dosyaMi(url) {
 
 /**
  * SSRF koruması: kullanıcının verdiği URL ile sunucunun KENDİ iç ağına istek atmasını engelle.
- * Yalnızca doğrudan yazılmış IP'leri ve 'localhost'u yakalar; DNS ile iç IP'ye çözülen
- * adlar (DNS rebinding) için bağlantı anında IP denetimi gerekir.
+ * Yalnızca doğrudan yazılmış IP'leri (IPv6'ya gömülü IPv4 dahil) ve 'localhost'u yakalar; DNS ile
+ * iç IP'ye çözülen adlar (DNS rebinding) için bağlantı anında IP denetimi gerekir.
  * @param {string} hostname
  */
 export function ozelAdresMi(hostname) {
-  const host = hostname.replace(/^\[|\]$/g, '').toLowerCase()
+  // Sondaki nokta kök alan adıdır: 'localhost.' de localhost'tur.
+  const host = hostname
+    .replace(/^\[|\]$/g, '')
+    .replace(/\.$/, '')
+    .toLowerCase()
   if (host === 'localhost' || host.endsWith('.localhost')) return true
   if (host === '::1' || host === '::' || /^f[cd][0-9a-f]{2}:/.test(host) || /^fe[89ab][0-9a-f]:/.test(host)) return true
+  // IPv6'ya gömülü IPv4: URL sınıfı [::ffff:127.0.0.1] adresini [::ffff:7f00:1] diye yazar; içteki IPv4 denetlenir.
+  const gomulu = /^::ffff:([0-9a-f]{1,4}):([0-9a-f]{1,4})$/.exec(host)
+  if (gomulu) {
+    const [ust, alt] = [parseInt(gomulu[1], 16), parseInt(gomulu[2], 16)]
+    return ozelAdresMi(`${ust >> 8}.${ust & 255}.${alt >> 8}.${alt & 255}`)
+  }
   const ipv4 = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/.exec(host)
   if (!ipv4) return false
   const [a, b] = [Number(ipv4[1]), Number(ipv4[2])]

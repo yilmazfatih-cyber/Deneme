@@ -406,9 +406,11 @@ hukuk). Depo adları o deponun atlas dosyasına (`dallar/…/README.md`) bağlan
 - **Çözüm:** Yazılı izinle analiz → dosya ve veritabanı biçimlerinin belgelenmesi → davranış testleri → dışa aktarma
   aracı.
 - **Kullanılan depolar:** [morluto/rea](../dallar/03-sistem-ag-guvenlik/rea/README.md) (ajanın MCP üzerinden hedefi
-  inceleyip kanıtıyla bulgu döndürdüğü iş akışı; `DISCLAIMER.md`'deki meşru kullanım çerçevesi: kendi yazılımın,
-  birlikte çalışabilirlik, yazılım koruma), [anomalyco/opencode](../dallar/07-kodlama-ajanlari/opencode/README.md)
-  (ajan), [ollama/ollama](../dallar/05-yapay-zeka-altyapisi/ollama/README.md) (kod dışarı çıkmadan yerel model).
+  inceleyip kanıtıyla bulgu döndürdüğü iş akışı; `DISCLAIMER.md`'deki meşru kullanım çerçevesi: sahip olunan ya da
+  incelemeye yetkili olunan yazılımın hata ayıklaması ve denetimi, birlikte çalışabilirlik, yazılımın arşivlenip
+  yaşatılması, özgün adıyla "software preservation"),
+  [anomalyco/opencode](../dallar/07-kodlama-ajanlari/opencode/README.md) (ajan),
+  [ollama/ollama](../dallar/05-yapay-zeka-altyapisi/ollama/README.md) (kod dışarı çıkmadan yerel model).
 - **Gelir modeli:** Keşif 40.000 TL; belgeleme + köprü 150.000–400.000 TL.
 - **İlk 10 müşteri:** ERP göç projelerinde tıkanan danışmanlar; sistem entegratörleri; OSB'ler.
 - **Riskler:** Yalnızca müşterinin hakkı olan yazılım; lisans sözleşmesindeki tersine mühendislik yasakları ve FSEK'teki
@@ -516,9 +518,9 @@ hukuk). Depo adları o deponun atlas dosyasına (`dallar/…/README.md`) bağlan
 - **Riskler:** Sitelerin kullanım koşulları ve bot korumaları (robots.txt'e uyulur, engelleyen site zorlanmaz,
   "okunamadı" diye raporlanır); pazaryeri ilan sayfaları taranmaz; açıklama ve fotoğraf saklanmaz, yalnızca fiyat
   alanları (FSEK); Firecrawl çekirdeği AGPL-3.0: MVP yalnızca REST API'sini çağırır, Firecrawl değiştirilip ağ
-  üzerinden sunulursa değiştirilmiş kaynak kod kullanıcılara açılır (AGPL md. 13); n8n'i müşteri kendi sunucusuna
-  kendisi kurar, barındırılan paketler n8n'siz (cron ile) çalışır ([n8n notu](#n8n-lisansi)); kolay taklit; rekabet
-  hukuku (izleme bilgi içindir; fiyat koordinasyonu ve bayi fiyatı denetimi için satılmaz).
+  üzerinden sunulursa değiştirilmiş kaynak kod kullanıcılara açılır (AGPL md. 13); n8n müşterinin sunucusunda, lisans
+  sahibi müşterinin adına kurulur; barındırılan paketler n8n'siz (cron ile) çalışır ([n8n notu](#n8n-lisansi)); kolay
+  taklit; rekabet hukuku (izleme bilgi içindir; fiyat koordinasyonu ve bayi fiyatı denetimi için satılmaz).
 - **MVP:** [03-fiyat-radar](03-fiyat-radar/README.md) · **Puan:** 5 · 5 · 5 · 4 · 2 · 3 = **24**
 
 <a id="f19"></a>
@@ -538,9 +540,9 @@ hukuk). Depo adları o deponun atlas dosyasına (`dallar/…/README.md`) bağlan
   araçlar).
 - **Gelir modeli:** Kurulum 25.000 TL + iş akışı başına 5.000–15.000 TL + bakım 3.500 TL/ay.
 - **İlk 10 müşteri:** Mali müşavir odalarının etkinlikleri; e-ticaret toplulukları; [MVP 03](#f18) müşterileri.
-- **Riskler:** n8n açık kaynak değil "fair-code"dur; Sustainable Use License yalnızca kendi iç iş amaçları için
-  kullanıma izin verir: n8n'i müşteri kendisi indirip lisansı kabul eder, ajans danışmanlık, iş akışı yazma ve bakım
-  hizmeti satar, n8n'i kendi sunucusunda barındırıp erişimini ücretle satmaz ([n8n notu](#n8n-lisansi); danışmanlığın
+- **Riskler:** n8n açık kaynak değil "fair-code"dur; Sustainable Use License ticari kullanımda yalnızca kendi iç iş
+  amaçlarına izin verir: n8n'in lisans sahibi müşteridir ve lisansı müşteri kabul eder; ajans kurulumu müşterinin adına
+  yapar, danışmanlık, iş akışı yazma ve bakım hizmeti satar, n8n'i kendi sunucusunda barındırıp erişimini ücretle satmaz ([n8n notu](#n8n-lisansi); danışmanlığın
   uygunluğu n8n'in lisans SSS'siyle doğrulanmalı); Execute Command düğümü güvenlik gereği varsayılan olarak kapalıdır
   (`NODES_EXCLUDE`); klinik müşterilerinde iş akışları sağlık verisine dokunabilir (KVKK md. 6).
 - **MVP:** iş akışı örneği [03-fiyat-radar](03-fiyat-radar/README.md)'da · **Puan:** 5 · 4 · 5 · 4 · 3 · 3 = **24**
@@ -1135,8 +1137,10 @@ hukuk). Depo adları o deponun atlas dosyasına (`dallar/…/README.md`) bağlan
 - **Çözüm:** Nextcloud (dosya, takvim), Vaultwarden (parola), Paperless-ngx (belge arşivi), yedekleme, tek oturum açma;
   aylık bakım ve güvenlik güncellemeleri; [F23](#f23) yerel yapay zekâ kutusuyla birleştirilebilir.
 - **Kullanılan depolar:** [awesome-selfhosted/awesome-selfhosted](../dallar/10-kuratorluk-topluluk/awesome-selfhosted/README.md)
-  (lisans ve dil bilgisiyle seçim havuzu; üç yazılım da ana listede: Nextcloud AGPL-3.0, Vaultwarden ve Paperless-ngx
-  GPL-3.0; liste CC BY-SA 3.0), [linux](../dallar/03-sistem-ag-guvenlik/linux/README.md) (sunucu).
+  (lisans ve dil bilgisiyle seçim havuzu; üç yazılım da ana listede; listedeki etiketlere göre Nextcloud AGPL-3.0,
+  Vaultwarden ve Paperless-ngx GPL-3.0; bu etiketler projelerin kendi LICENSE dosyalarından doğrulanmadı, Riskler'deki
+  AGPL yükümlülüğü kurulumdan önce her bileşen için kontrol edilir; liste CC BY-SA 3.0),
+  [linux](../dallar/03-sistem-ag-guvenlik/linux/README.md) (sunucu).
 - **Gelir modeli:** Kurulum 40.000 TL; kullanıcı başına 300 TL/ay yönetilen hizmet.
 - **İlk 10 müşteri:** Mali müşavir ve baro etkinlikleri; büro yazılımı satıcıları; [F23](#f23) müşterileri.
 - **Riskler:** Güvenlik ve yedekleme sorumluluğu (hizmet seviyesi sözleşmesi); AGPL lisanslı bileşenleri değiştirip
@@ -1300,20 +1304,27 @@ Bir fikir birden çok segmente satılıyorsa her ilgili satırda yer alır.
 - **Lisans bilgileri** depoların incelenen commit'indeki (9 Kasım 2026 anlık görüntüsü) lisans dosyalarından ve
   README'lerinden alındı (bkz. [ENVANTER.md](../ENVANTER.md)); lisanslar değişebilir. Lisans dosyası olmayan ama
   README'de lisans beyan eden depolar beyana göre değerlendirildi: build-your-own-x (CC0 feragati; ticari kullanım
-  serbest), andrej-karpathy-skills (MIT; yine de metin kopyalanmaz), CS-Notes (CC BY-NC-SA 4.0) ve HelloGitHub (CC
+  serbest), andrej-karpathy-skills (MIT; yine de metin kopyalanmaz), anthropics/skills (kökte lisans dosyası yok;
+  README birçok beceriyi Apache 2.0 diye tanıtır; beceri klasörlerindeki `LICENSE.txt` dosyaları Apache-2.0,
+  `doc-coauthoring`'de lisans dosyası yok; [F31](#f31)), CS-Notes (CC BY-NC-SA 4.0) ve HelloGitHub (CC
   BY-NC-ND 4.0). "Yalnızca kişisel kullanım" (developer-roadmap), CC BY-NC(-ND/-SA) (You-Dont-Know-JS, CS-Notes,
   HelloGitHub) ve hiçbir lisans beyanı olmayan Python-100-Days **ticari ürünün içeriği olamaz**; bu kartlarda yalnızca
   bağlantı verilir ya da özgün içerik üretilir. Kaynağı açık ama ticari kullanımı kısıtlı iki lisans ayrıca dikkat
-  ister: AutoGPT'nin `autogpt_platform/` klasöründeki PolyForm Shield (lisans verenle ve onun bu yazılımla sunduğu
-  ürünlerle rekabet eden ürün yasak; [F27](#f27)) ve n8n'in Sustainable Use License'ı (aşağıda).
+  ister: AutoGPT'nin `autogpt_platform/` klasöründeki PolyForm Shield (yazılımın kendisiyle ya da lisans verenin bu
+  yazılımla sunduğu ürünlerle rekabet eden ürün yasak; ücretsiz ya da başka bir arayüzle sunulan ürün de rekabet
+  sayılır; [F27](#f27)) ve n8n'in Sustainable Use License'ı (aşağıda).
 - <a id="n8n-lisansi"></a>**n8n lisansı.** n8n açık kaynak değil "fair-code"dur (README'nin "License" bölümü). `LICENSE.md`
-  (`5ee06d3`) "Limitations" bölümü yazılımı yalnızca kendi iç iş amaçları ya da ticari olmayan ve kişisel kullanım için
-  kullanmaya izin verir; başkasına ancak ücretsiz ve ticari olmayan amaçla dağıtılabilir; adında `.ee.` geçen dosyalar
-  ayrı Enterprise lisansındadır. Katalogda üç kural uygulanır:
-  1. **Müşterinin kendi kurulumu** ([F18](#f18)'in "kendi sunucunda" paketi, [F19](#f19), [F22](#f22), [F26](#f26),
-     [F27](#f27), [F41](#f41)): n8n'i müşteri kendi sunucusuna kendisi kurar ve kendi iç işi için kullanır; biz iş
-     akışı dosyası, kurulum, eğitim ve bakım danışmanlığı satarız. Danışmanlığın bu lisansla uyumlu olduğu, README'nin
-     bağlantı verdiği lisans sayfasında (`docs.n8n.io/sustainable-use-license`) yazar (doğrulanmadı: internet yok).
+  (`5ee06d3`) "Limitations" bölümü yazılımı yalnızca kendi iç iş amaçları için ya da ticari olmayan veya kişisel
+  kullanım için kullanmaya ve değiştirmeye izin verir; yazılım başkalarına ancak ücretsiz ve ticari olmayan amaçla
+  dağıtılabilir ya da sağlanabilir ("provide it to others"). Dosyanın baş bölümüne göre dosya adında `.ee.` ya da
+  klasör adında `.ee` geçen dosyalar bu lisansın dışındadır ve n8n Enterprise lisansı (`LICENSE_EE.md`) ister.
+  Katalogda üç kural uygulanır:
+  1. **Müşterinin sunucusunda, müşterinin lisansıyla** ([F18](#f18)'in "kendi sunucunda" paketi, [F19](#f19), [F22](#f22), [F26](#f26),
+     [F27](#f27), [F41](#f41)): n8n'in lisans sahibi ve kullanıcısı müşteridir; lisansı müşteri kabul eder ve n8n'i
+     kendi sunucusunda kendi iç işi için kullanır. Kurulumu onun sunucusunda ve onun adına biz yapabiliriz; ayrıca iş
+     akışı dosyası, eğitim ve bakım danışmanlığı satarız. Bu kurulum ve danışmanlık hizmetinin lisansla uyumu,
+     README'nin bağlantı verdiği lisans sayfasından (`docs.n8n.io/sustainable-use-license`) doğrulanmalıdır
+     (doğrulanmadı: internet yok).
   2. **Bizim sunucumuzda, ücretli hizmetin parçası** ([F03](#f03), [F04](#f04), [F07](#f07), [F12](#f12),
      [F20](#f20), [F44](#f44)): müşteri verisi ya da kimlik bilgileriyle çalışan ya da ürünün çekirdeği olan bir akış
      "kendi iç iş amacı" sayılmayabilir. n8n'den yazılı teyit ya da ticari lisans alınmadan barındırılan sürümde n8n
@@ -1323,9 +1334,9 @@ Bir fikir birden çok segmente satılıyorsa her ilgili satırda yer alır.
      yüzden n8n içermez.
 - **Etik çizgi.** Microsoft-Activation-Scripts ve REA kartları yalnızca yasal hizmetler önerir (lisans uyumu; sahibi
   olunan yazılımın belgelenmesi); hiçbir kart koruma aşmayı içermez. Tarama yapan MVP 03 robots.txt'e ve hız sınırına
-  uyar, pazaryeri ilan sayfalarını taramaz; indirme yapan MVP 02 yalnızca müşterinin izin verdiği kendi alan adındaki
-  sayfayı okur ve platform videolarını indirmez. Sentetik panel (F24) tahmin vaadi vermez ve kamuoyu yönlendirme
-  işlerini reddeder.
+  uyar; pazaryeri ilan sayfaları için satılmaz (satış kuralı; kodda alan adı engeli yoktur, bkz. MVP 03 §9); indirme
+  yapan MVP 02 yalnızca müşterinin izin verdiği kendi alan adındaki sayfayı okur ve platform videolarını indirmez.
+  Sentetik panel (F24) tahmin vaadi vermez ve kamuoyu yönlendirme işlerini reddeder.
 - **MVP'ler prototiptir.** Testler birim ve entegrasyon düzeyindedir; bağımsız güvenlik denetimi (sızma testi), yük
   testi ve kullanıcı araştırması yapılmadı. Gerçek müşteri verisiyle çalıştırmadan önce KVKK değerlendirmesi ve
   güvenlik gözden geçirmesi gerekir.

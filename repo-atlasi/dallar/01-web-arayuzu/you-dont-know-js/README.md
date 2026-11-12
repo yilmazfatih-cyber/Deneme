@@ -87,7 +87,7 @@ kabul edilmez.
 | Programlama temeli                                      | Önsöz 6–9 ay JS deneyimi varsayar                                 | [free-programming-books](../../10-kuratorluk-topluluk/free-programming-books/README.md) Türkçe listesi (JavaScript başlığı) |
 
 Bu dalın diğer depoları için YDKJS önkoşul niteliğindedir: React hook'ları kapanış ve olay döngüsüne, Vue
-reaktivitesi Proxy, `WeakMap` ve mikro görevlere, Bootstrap eklentileri olay kabarcıklanması ve `this`'e dayanır.
+reaktivitesi Proxy, `WeakMap` ve mikro görevlere, Bootstrap eklentileri `this`'e ve sınıflara dayanır (olay kabarcıklanması ise DOM konusudur; YDKJS'de yok).
 
 ## 4. Sıfırdan yol (dallanma)
 

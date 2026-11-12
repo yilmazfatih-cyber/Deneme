@@ -169,16 +169,17 @@ istek için geçerli kalsın. Oturum bir kez sıkıştırıldıysa sonraki her t
 
 ## 3. Öğrenmen gerekenler
 
-| Önkoşul                                                                                      | Bu depo için neden gerekli                                                 | Ücretsiz kaynak                                                                                        |
-| -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| [G1 Terminal ve kabuk](../../../govde/README.md#g1)                                          | REPL, alt süreçler, süreç grupları, `unshare`                              | [free-programming-books Türkçe listesi](../../10-kuratorluk-topluluk/free-programming-books/README.md) |
-| [G11 LLM API temelleri](../../../govde/README.md#g11)                                        | Anthropic Messages biçimi, `tool_use` / `tool_result`, SSE akışı, önbellek | Anthropic "Tool use" belgesi                                                                           |
-| [G7 Test, CI ve kod kalitesi](../../../govde/README.md#g7)                                   | Sahte servis, entegrasyon testi, clippy/fmt kapıları                       | The Rust Book, "Writing Automated Tests" bölümü                                                        |
-| [G8 Büyük kod tabanı okuma](../../../govde/README.md#g8)                                     | 21 bin satırlık tek dosyada yol bulmak                                     | [build-your-own-x](../../10-kuratorluk-topluluk/build-your-own-x/README.md)                            |
-| [G10 C ve bellek modeli](../../../govde/README.md#g10) (faydalı)                             | Sahiplik/ödünç alma (ownership/borrowing) sezgisi                          | [ossu-computer-science](../../09-bilgisayar-bilimi/ossu-computer-science/README.md)                    |
-| Rust temelleri                                                                               | trait, generic, `Result`, `Box<dyn Trait>`, yaşam süreleri                 | The Rust Programming Language (doc.rust-lang.org/book)                                                 |
-| [opencode dosyası](../opencode/README.md)                                                    | Aynı kavramların (döngü, izin, sıkıştırma) TypeScript karşılığıyla kıyas   | bu dalın ilk yaprağı                                                                                   |
-| [D08 Ajan becerileri: anthropic-skills](../../08-ajan-becerileri/anthropic-skills/README.md) | `claw` `SKILL.md` becerilerini ve `.claude-plugin` eklentilerini yükler    | anthropics/skills deposu                                                                               |
+| Önkoşul                                                                                      | Bu depo için neden gerekli                                                                                     | Ücretsiz kaynak                                                                                        |
+| -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| [G1 Terminal ve kabuk](../../../govde/README.md#g1)                                          | REPL, alt süreçler, süreç grupları, `unshare`                                                                  | [free-programming-books Türkçe listesi](../../10-kuratorluk-topluluk/free-programming-books/README.md) |
+| [G2 Git ve GitHub iş akışı](../../../govde/README.md#g2)                                     | Sistem istemine dal, son commit'ler ve hazırlanmış dosyalar eklenir (`rust/crates/runtime/src/git_context.rs`) | [Pro Git (Türkçe)](https://git-scm.com/book/tr/v2)                                                     |
+| [G11 LLM API temelleri](../../../govde/README.md#g11)                                        | Anthropic Messages biçimi, `tool_use` / `tool_result`, SSE akışı, önbellek                                     | Anthropic "Tool use" belgesi                                                                           |
+| [G7 Test, CI ve kod kalitesi](../../../govde/README.md#g7)                                   | Sahte servis, entegrasyon testi, clippy/fmt kapıları                                                           | The Rust Book, "Writing Automated Tests" bölümü                                                        |
+| [G8 Büyük kod tabanı okuma](../../../govde/README.md#g8)                                     | 21 bin satırlık tek dosyada yol bulmak                                                                         | [build-your-own-x](../../10-kuratorluk-topluluk/build-your-own-x/README.md)                            |
+| [G10 C ve bellek modeli](../../../govde/README.md#g10) (faydalı)                             | Sahiplik/ödünç alma (ownership/borrowing) sezgisi                                                              | [ossu-computer-science](../../09-bilgisayar-bilimi/ossu-computer-science/README.md)                    |
+| Rust temelleri                                                                               | trait, generic, `Result`, `Box<dyn Trait>`, yaşam süreleri                                                     | The Rust Programming Language (doc.rust-lang.org/book)                                                 |
+| [opencode dosyası](../opencode/README.md)                                                    | Aynı kavramların (döngü, izin, sıkıştırma) TypeScript karşılığıyla kıyas                                       | bu dalın ilk yaprağı                                                                                   |
+| [D08 Ajan becerileri: anthropic-skills](../../08-ajan-becerileri/anthropic-skills/README.md) | `claw` `SKILL.md` becerilerini ve `.claude-plugin` eklentilerini yükler                                        | anthropics/skills deposu                                                                               |
 
 Dal içi kavramlar: **izin kipi merdiveni**, **kanca ile izin geçersiz kılma**, **JSONL oturum**, **deterministik sahte
 servis**, **ajan iş defteri (PRD/progress/ledger)**, **belge kayması**.
@@ -209,6 +210,9 @@ flowchart TD
 | 5     | JSONL kaydet/ekle/yükle            | Ekleme dostu biçim, atomik yazma                   | Yüklenen oturum bellektekiyle birebir aynı            | 2–3 saat       |
 | 6     | `ModelClient`, `ScriptedModel`     | Trait ile test edilebilirlik, satır protokolü      | Senaryo dosyası kod yazmadan model davranışı tanımlar | 2 saat         |
 | 7     | `Runtime::run_turn`                | Döngü, kanca → izin → çalıştırma, yerel sıkıştırma | 9 uçtan uca test geçer                                | 5–6 saat       |
+
+Aşamaların toplamı **23–30 saat**; okuma rotası ve alıştırmalarla birlikte **45–52 saat** (hesap kuralı:
+[dal README'si](../README.md#yapraklar)).
 
 **Mini uygulama:** [`sifirdan/`](sifirdan/README.md) — yalnızca std kullanan `claw-mini` crate'i; 13 birim + 9
 entegrasyon testi (`cargo test --offline`) ve `cargo run --example demo`. Eşleme: `src/dongu.rs` →

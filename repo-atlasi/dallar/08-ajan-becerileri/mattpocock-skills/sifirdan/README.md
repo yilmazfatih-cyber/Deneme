@@ -5,6 +5,12 @@ bedeli, becerilerin birbirini doğru çağırmasını sağlayan kuralların insa
 `CLAUDE.md` ve `.agents/invocation.md` içinde yazıya döker (commit `4ae2317`). Bu mini, o kuralları **denetlenebilir**
 hâle getirir: bir beceri klasörünü okur, çağrı grafiğini çıkarır ve değişmezleri (invariant) doğrular.
 
+## Gereksinimler
+
+- Python 3.10+; dış paket yok.
+- Ortak çekirdek [anthropic-skills/sifirdan](../../anthropic-skills/sifirdan/README.md) yerinde olmalı: `_cekirdek.py`
+  onu yola ekler, kopyalamaz. Bu klasörü tek başına kopyalarsan testler `beceri_kiti` bulunamadı hatası verir.
+
 ## Denetlenen kurallar
 
 | Kod                           | Düzey        | Kural (kaynak)                                                                                                                                                              |

@@ -88,10 +88,10 @@ yapıları ancak 15. haftada başlayabildi. Kulvar kavramı bu gözlemden doğdu
 
 ## Eşleme tablosu
 
-| Mini'deki parça             | OSSU'daki karşılığı                                         | Fark                                                                  |
-| --------------------------- | ----------------------------------------------------------- | --------------------------------------------------------------------- |
-| `veri/ossu.json`            | README ders tabloları (Duration, Effort, Prerequisites)     | Metin önkoşullar ders kimliklerine çevrildi; saat = hafta × ort. efor |
-| `mufredat.topolojik_sira`   | FAQ: "progress linearly" ya da "use the prerequisites"      | Sıra programla üretiliyor, döngü denetleniyor                         |
-| `takvim.haftalik_plan`      | README'de bağlantısı verilen tahmin tablosu (Google Sheets) | Önkoşul ve kulvar farkında; tablo yalnızca toplam süreyi tahmin eder  |
-| Markdown onay kutuları      | "How to show your progress": fork + ✅                      | Haftalık kutular; `ilerleme.py` ile sayılabilir                       |
-| `onkosul_metni`, `aciklama` | Tablolardaki serbest metin önkoşullar, FAQ notları          | Graf dışı bilgi kaybolmuyor                                           |
+| Mini'deki parça             | OSSU'daki karşılığı                                                                                                       | Fark                                                                  |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| `veri/ossu.json`            | README ders tabloları (Duration, Effort, Prerequisites)                                                                   | Metin önkoşullar ders kimliklerine çevrildi; saat = hafta × ort. efor |
+| `mufredat.topolojik_sira`   | `FAQ.md` > "In what order should I take the courses?" ("progress linearly" ya da "using the pre-requisites to guide you") | Sıra programla üretiliyor, döngü denetleniyor                         |
+| `takvim.haftalik_plan`      | README'de bağlantısı verilen tahmin tablosu (Google Sheets)                                                               | Önkoşul ve kulvar farkında; tablo yalnızca toplam süreyi tahmin eder  |
+| Markdown onay kutuları      | "How to show your progress": fork + ✅                                                                                    | Haftalık kutular; `ilerleme.py` ile sayılabilir                       |
+| `onkosul_metni`, `aciklama` | Tablolardaki serbest metin önkoşullar, FAQ notları                                                                        | Graf dışı bilgi kaybolmuyor                                           |

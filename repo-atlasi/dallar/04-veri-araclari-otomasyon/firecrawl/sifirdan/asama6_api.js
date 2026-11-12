@@ -11,7 +11,7 @@ import { randomUUID } from 'node:crypto'
 import { createServer } from 'node:http'
 import { ozelAdresMi } from './asama1_url.js'
 import { sayfayiIsle } from './asama4_markdown.js'
-import { KULLANICI_AJANI, Tarayici } from './asama5_tarayici.js'
+import { guvenliGetir, KULLANICI_AJANI, Tarayici } from './asama5_tarayici.js'
 
 /** @typedef {'scraping' | 'completed' | 'failed' | 'cancelled'} IsDurumu */
 
@@ -125,6 +125,23 @@ function urlDogrula(url, yerelAgIzni) {
   return u.href
 }
 
+/**
+ * Tek sayfa kazıma: `POST /v2/scrape` ve `node cli.js kazi` bu işlevi paylaşır. Adres de yönlendirme hedefleri de
+ * `urlDogrula`dan geçer. robots.txt'ye bakılmaz; ona tarayıcı (`Tarayici`) bakar.
+ * @param {unknown} url
+ * @param {{ yerelAgIzni?: boolean, onlyMainContent?: boolean, fetch?: typeof fetch }} [secenekler]
+ */
+export async function tekSayfaKazi(url, { yerelAgIzni = false, onlyMainContent = true, fetch } = {}) {
+  const kaynak = urlDogrula(url, yerelAgIzni)
+  const cevap = await guvenliGetir(kaynak, (adres) => urlDogrula(adres.href, yerelAgIzni), {
+    fetch,
+    headers: { 'user-agent': KULLANICI_AJANI },
+    signal: AbortSignal.timeout(15000),
+  })
+  const sayfa = sayfayiIsle(await cevap.text(), cevap.url || kaynak, { onlyMainContent })
+  return { url: kaynak, statusCode: cevap.status, sayfa }
+}
+
 /** @param {Record<string, unknown>} govde */
 function taramaSecenekleri(govde) {
   const sayi = (/** @type {string} */ ad, /** @type {number} */ en, /** @type {number} */ varsayilan) => {
@@ -186,18 +203,11 @@ export function apiSunucusu(ayarlar = {}) {
 
       if (istek.method === 'POST' && kaynak === 'scrape' && !id) {
         const govde = await govdeOku(istek, govdeSiniri)
-        const url = urlDogrula(govde.url, yerelAgIzni)
-        const cevap = await fetch(url, {
-          headers: { 'user-agent': KULLANICI_AJANI },
-          signal: AbortSignal.timeout(15000),
-        })
-        const sayfa = sayfayiIsle(await cevap.text(), cevap.url || url, {
+        const { url, statusCode, sayfa } = await tekSayfaKazi(govde.url, {
+          yerelAgIzni,
           onlyMainContent: govde.onlyMainContent !== false,
         })
-        const veri = {
-          markdown: sayfa.markdown,
-          metadata: { ...sayfa.metadata, sourceURL: url, statusCode: cevap.status },
-        }
+        const veri = { markdown: sayfa.markdown, metadata: { ...sayfa.metadata, sourceURL: url, statusCode } }
         return json(yanit, 200, {
           success: true,
           data:

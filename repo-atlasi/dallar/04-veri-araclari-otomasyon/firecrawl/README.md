@@ -199,8 +199,8 @@ flowchart TD
 **Süre toplamı:** mini ~23 saat; okuma rotası (9 adım × 1 saat) ve alıştırmalarla (2 kolay + 3 orta + 2 zor =
 2 + 6 + 8 saat) toplam ~48 saat ([dal README'sindeki kural](../README.md#yapraklar)).
 
-**Mini uygulama:** [`sifirdan/`](sifirdan/README.md) — altı aşama dosyası, CLI ve 22 test (yerel test
-sitesiyle robots, tekrar, derinlik, nezaket, iptal ve API akışı). Firecrawl'un v2 yanıt şekillerini
+**Mini uygulama:** [`sifirdan/`](sifirdan/README.md) — altı aşama dosyası, CLI ve 28 test (yerel test
+sitesiyle robots, tekrar, derinlik, nezaket, iptal, SSRF ve API akışı). Firecrawl'un v2 yanıt şekillerini
 (`{success, id, url}`, `{status, total, completed, data}`, `{errors, robotsBlocked}`, `{status: "cancelled"}`)
 taklit eder.
 

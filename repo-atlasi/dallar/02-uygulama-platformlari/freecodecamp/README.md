@@ -166,6 +166,9 @@ flowchart TD
 | 4     | Tarayıcı arayüzü                                        | Editör, Web Worker, iframe yalıtımı                                     | Kod tarayıcıda çalışıyor, sonuçlar ipucu listesinde                        | 10–20 saat     |
 | 5     | API + DB                                                | Kimlik doğrulama, ilerleme kaydı, sertifika sayfası                     | Oturum açan kullanıcı ilerlemesini kaybetmiyor                             | 10–20 saat     |
 
+Aşamaların toplamı **30–53 saat**; okuma rotası ve alıştırmalarla birlikte **44–73 saat** (hesap kuralı:
+[dal README'si](../README.md#yapraklar)).
+
 **Mini uygulama:** [sifirdan/](sifirdan/README.md) — üç aşama, 18 test, Türkçe örnek müfredat (4 meydan okuma,
 1 sertifika) ve `node cli.js` ile komut satırından deneme. Aşama 1 `tools/challenge-parser`'ın, aşama 2
 `execute-challenge-saga.js` + curriculum-helpers çalıştırıcısının, aşama 3 `curriculum/src/build-curriculum.ts` ve
@@ -198,12 +201,14 @@ flowchart TD
 
 **Alıştırmalar (kolaydan zora):**
 
-1. Örnek müfredata "dizi metotları" bloğu ekle (2 meydan okuma); `node --test` tutarlılık denetiminden geçsin.
-2. Ayrıştırıcıya `# --notes--` bölümünü markdown'dan basit HTML'e çeviren bir adım ekle (yalnızca başlık, paragraf, kod).
-3. `assert`'e `assert.approximately(gercek, beklenen, tolerans)` ekle ve KDV laboratuvarında kullan.
-4. Çalıştırıcıya "yazdırma testi" ekle: test, öğrencinin `console.log` çıktısını `__konsol` dizisinden okuyabilsin.
-5. `node:vm` yerine her çalıştırmayı `worker_threads` içinde yap; zaman aşımında iş parçacığını `terminate()` et.
-6. Basit bir HTML arayüzü yaz: sol tarafta yönerge, ortada `<textarea>`, sağda ipucu listesi; çalıştırıcıyı Web
+1. (Kolay) Örnek müfredata "dizi metotları" bloğu ekle (2 meydan okuma); `node --test` tutarlılık denetiminden geçsin.
+2. (Kolay) Ayrıştırıcıya `# --notes--` bölümünü markdown'dan basit HTML'e çeviren bir adım ekle (yalnızca başlık,
+   paragraf, kod).
+3. (Orta) `assert`'e `assert.approximately(gercek, beklenen, tolerans)` ekle ve KDV laboratuvarında kullan.
+4. (Orta) Çalıştırıcıya "yazdırma testi" ekle: test, öğrencinin `console.log` çıktısını `__konsol` dizisinden
+   okuyabilsin.
+5. (Zor) `node:vm` yerine her çalıştırmayı `worker_threads` içinde yap; zaman aşımında iş parçacığını `terminate()` et.
+6. (Zor) Basit bir HTML arayüzü yaz: sol tarafta yönerge, ortada `<textarea>`, sağda ipucu listesi; çalıştırıcıyı Web
    Worker'da koş.
 
 **Öz değerlendirme:**

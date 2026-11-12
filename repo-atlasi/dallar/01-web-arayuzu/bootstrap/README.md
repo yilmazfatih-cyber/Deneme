@@ -134,15 +134,15 @@ delegasyonlu dinleyici kaydeder. Kullanıcı yalnızca HTML nitelikleri yazar; b
 
 ## 3. Öğrenmen gerekenler
 
-| Ön koşul                                                | Bu depo için neden                                                  | Ücretsiz kaynak                                                     |
-| ------------------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| HTML, CSS ve DOM temelleri (dal içi kavram)             | HTML, CSS kutu modeli, flexbox, medya sorguları, özgüllük, `@layer` | MDN Web Docs (developer.mozilla.org) (doğrulanmadı)                 |
-| [G4 JavaScript/TypeScript](../../../govde/README.md#g4) | DOM olayları, kabarcıklanma, `this`, sınıflar, ES modülleri         | [You-Dont-Know-JS koanları](../you-dont-know-js/sifirdan/README.md) |
-| [G6 Web temelleri](../../../govde/README.md#g6)         | Faydalı: demo sayfası küçük bir HTTP sunucusuyla açılır             | MDN — HTTP (developer.mozilla.org)                                  |
-| [G7 Test ve CI](../../../govde/README.md#g7)            | Görsel olmayan davranışı (aria, olay sırası) test etmek             | `js/tests/unit/collapse.spec.js`                                    |
-| [G2 Git ve GitHub](../../../govde/README.md#g2)         | Uzun ömürlü sürüm dalları (`main` v6, `v5-dev`), etiketler          | —                                                                   |
-| Sass temelleri (dal içi kavram)                         | Değişken, harita, `@each`, `@mixin`, `@use/@forward`                | sass-lang.com belgeleri (doğrulanmadı)                              |
-| Erişilebilirlik (dal içi kavram)                        | `aria-expanded`, odak yönetimi, `Escape` ile kapatma                | WAI-ARIA Authoring Practices (doğrulanmadı)                         |
+| Ön koşul                                                | Bu depo için neden                                                                                 | Ücretsiz kaynak                                                     |
+| ------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| HTML, CSS ve DOM temelleri (dal içi kavram)             | HTML, CSS kutu modeli, flexbox, medya sorguları, özgüllük, `@layer`; DOM olayları ve kabarcıklanma | MDN Web Docs (developer.mozilla.org) (doğrulanmadı)                 |
+| [G4 JavaScript/TypeScript](../../../govde/README.md#g4) | `this`, sınıflar, ES modülleri                                                                     | [You-Dont-Know-JS koanları](../you-dont-know-js/sifirdan/README.md) |
+| [G6 Web temelleri](../../../govde/README.md#g6)         | Faydalı: demo sayfası küçük bir HTTP sunucusuyla açılır                                            | MDN — HTTP (developer.mozilla.org)                                  |
+| [G7 Test ve CI](../../../govde/README.md#g7)            | Görsel olmayan davranışı (aria, olay sırası) test etmek                                            | `js/tests/unit/collapse.spec.js`                                    |
+| [G2 Git ve GitHub](../../../govde/README.md#g2)         | Uzun ömürlü sürüm dalları (`main` v6, `v5-dev`), etiketler                                         | —                                                                   |
+| Sass temelleri (dal içi kavram)                         | Değişken, harita, `@each`, `@mixin`, `@use/@forward`                                               | sass-lang.com belgeleri (doğrulanmadı)                              |
+| Erişilebilirlik (dal içi kavram)                        | `aria-expanded`, odak yönetimi, `Escape` ile kapatma                                               | WAI-ARIA Authoring Practices (doğrulanmadı)                         |
 
 Türkçe video seriler: [free-programming-books](../../10-kuratorluk-topluluk/free-programming-books/README.md) →
 `courses/free-courses-tr.md`, "HTML and CSS" başlığında "Bootstrap Eğitim Serisi" (Kodluyoruz).

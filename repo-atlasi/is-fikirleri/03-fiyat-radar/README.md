@@ -3,7 +3,8 @@
 > **Kullandığı depolar:** [firecrawl/firecrawl](../../dallar/04-veri-araclari-otomasyon/firecrawl/README.md) (REST API ile
 > sayfa getirme, isteğe bağlı ürün profili) · [n8n-io/n8n](../../dallar/04-veri-araclari-otomasyon/n8n/README.md)
 > (içe aktarılabilir iş akışı: zamanlama → HTTP → koşul → Telegram) · **Dil:** Python, yalnızca standart kütüphane
-> (3.13 ile sınandı; tür ipuçları yüzünden 3.10 ve üstü gerekir) · **Durum:** çalışan MVP, 56 test, internetsiz
+> (3.13 ile sınandı; tür ipuçları yüzünden 3.10 ve üstü gerekir) · **Durum:** çalışan MVP; 56 test internetsiz
+> koşar, radarın kendisi rakip sayfalarına erişmek için internet ister
 
 **Kime:** Kendi e-ticaret sitesinde 50–500 ürün satan ve fiyatını 3–10 rakibin kendi sitelerine bakarak her gün elle
 ayarlayan KOBİ'ler (ilk odak: ev aletleri ve ev tekstili) ile bu firmalara hizmet veren dijital ajanslar.
@@ -55,6 +56,9 @@ python3 -m fiyat_radar calistir --ayar ornek/ayar.json --db radar.sqlite --cikti
 → rapor/rapor.html   e-posta gövdesi olarak gönderilebilir HTML
 → rapor/telegram.txt 4.000 karakteri aşmayan düz metin özet
 ```
+
+`ornek/ayar.json`'daki adresler `.example` yer tutucularıdır; kendi rakip adreslerinizi yazmadan komut yalnızca
+"Okunamadı" satırları üretir. Aşağıdaki özet `tests/test_radar_n8n.py`'deki yerel sunucuyla üretilmiştir.
 
 Örnek özet (testteki ikinci tur):
 
@@ -287,12 +291,12 @@ Hataların her biri için bir gerileme testi vardır; testler gerçek siteye, Fi
 Fiyatlar 2026 sonu için **varsayımdır**, KDV hariçtir ve ilk 10 müşteriyle doğrulanmalıdır. Piyasa büyüklüğü ve rakip
 araçların fiyatları burada ölçülmedi.
 
-| Paket           | İçerik                                                                                                        | Örnek fiyat            |
-| --------------- | ------------------------------------------------------------------------------------------------------------- | ---------------------- |
-| Başlangıç       | 50 rakip URL, günde 1 tarama, Telegram özeti                                                                  | 750 TL / ay            |
-| Büyüme          | 500 URL, günde 3 tarama (cron kipinde), Telegram; e-posta özeti ve fiyat geçmişi grafiği sonraki adımda (§11) | 2.500 TL / ay          |
-| Ajans           | 2.000 URL, müşteri başına ayrı rapor, beyaz etiket                                                            | 7.500 TL / ay          |
-| Kendi sunucunda | Müşterinin sunucusuna kurulum + n8n akışı + 1 saat eğitim (n8n'i müşteri kurar)                               | 10.000 TL tek seferlik |
+| Paket           | İçerik                                                                                                                 | Örnek fiyat            |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------- | ---------------------- |
+| Başlangıç       | 50 rakip URL, günde 1 tarama, Telegram özeti                                                                           | 750 TL / ay            |
+| Büyüme          | 500 URL, günde 3 tarama (cron kipinde), Telegram; e-posta özeti ve fiyat geçmişi grafiği sonraki adımda (§11)          | 2.500 TL / ay          |
+| Ajans           | 2.000 URL, müşteri başına ayrı rapor, beyaz etiket                                                                     | 7.500 TL / ay          |
+| Kendi sunucunda | Müşterinin sunucusuna kurulum + n8n akışı + 1 saat eğitim (n8n müşterinin adına kurulur; lisans sahibi müşteridir, §9) | 10.000 TL tek seferlik |
 
 **Maliyet modeli (doğrulanacak):** aylık sayfa = URL × günlük tarama × 30. Başlangıç 1.500, Büyüme 45.000, Ajans
 60.000 sayfa eder. Yerleşik getiricinin sayfa başına maliyeti yalnızca sunucu ve bant genişliğidir. Firecrawl bulutta
@@ -364,13 +368,15 @@ gözden geçirilmelidir.
     kaynak kodu o kullanıcılara sunulmalıdır; en basiti Firecrawl'ı değiştirmeden çalıştırmaktır. Bulut kullanımı
     Firecrawl'ın hizmet koşullarına tabidir (doğrulanmadı).
   - _n8n:_ "Sustainable Use License" (`LICENSE.md` → "Limitations") kullanımı kendi iç iş amaçlarına ya da ticari
-    olmayan kullanıma sınırlar. Başkalarına dağıtım ancak ücretsiz ve ticari olmayan amaçla yapılabilir. Adında `.ee.`
-    geçen dosyalar ayrı Enterprise lisansındadır (`LICENSE_EE.md`). Bu yüzden n8n'i biz barındırıp erişimini satmayız.
-    "Kendi sunucunda" paketinde n8n'i müşteri kendisi kurar ve kendi iç işi için kullanır; biz kendi yazdığımız iş akışı
-    dosyasını ve kurulum hizmetini veririz. Kurulum danışmanlığının bu lisansla uyumlu olduğu n8n'in lisans SSS'sinde
-    yazar (doğrulanmadı). Barındırılan paketler n8n'e dayanmaz: cron ve `--telegram` ile çalışır. n8n'i kendi
-    sunucumuzda yalnızca iç zamanlayıcı olarak kullanmanın "internal business purposes" kapsamına girip girmediği net
-    değildir; bunun için n8n'den yazılı teyit ya da ticari lisans gerekir (doğrulanmadı).
+    olmayan veya kişisel kullanıma sınırlar. Yazılım başkalarına ancak ücretsiz ve ticari olmayan amaçla dağıtılabilir
+    ya da sağlanabilir ("provide it to others"). Dosya adında `.ee.` ya da klasör adında `.ee` geçen dosyalar ayrı
+    Enterprise lisansındadır (`LICENSE_EE.md`). Bu yüzden n8n'i biz barındırıp erişimini satmayız. "Kendi sunucunda"
+    paketinde n8n'in lisans sahibi ve kullanıcısı müşteridir ve n8n'i kendi iç işi için kullanır; kurulumu onun
+    sunucusunda, onun adına biz yapabiliriz ve kendi yazdığımız iş akışı dosyasını veririz. Bu kurulum ve danışmanlık
+    hizmetinin lisansla uyumu, n8n README'sinin bağlantı verdiği lisans sayfasından doğrulanmalıdır (doğrulanmadı).
+    Barındırılan paketler n8n'e dayanmaz: cron ve `--telegram` ile çalışır. n8n'i kendi sunucumuzda yalnızca iç zamanlayıcı olarak kullanmanın "internal business
+    purposes" kapsamına girip girmediği net değildir; bunun için n8n'den yazılı teyit ya da ticari lisans gerekir
+    (doğrulanmadı).
   - _Bu MVP:_ Kod özgündür ve yalnızca Python standart kütüphanesini kullanır; iki depodan kod kopyalanmadı.
   - _Telegram:_ Bot kullanım koşulları geçerlidir; bot kullanıcı önce yazmadan sohbet başlatamaz (doğrulanmadı).
 

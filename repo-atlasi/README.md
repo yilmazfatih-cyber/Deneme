@@ -1,6 +1,6 @@
 # Repo Atlası
 
-GitHub'ın en çok yıldız alan 51 deposunu **nasıl yapıldıklarını anlayıp sıfırdan yazabilecek** şekilde öğrenmek ve
+GitHub'da çok yıldız almış, seçilmiş 51 depoyu **nasıl yapıldıklarını anlayıp sıfırdan yazabilecek** şekilde öğrenmek ve
 bu depolardan **iş fikirleri** çıkarmak için hazırlanmış Türkçe bir çalışma atlası.
 
 Yol bir ağaç gibi dallanır: **gövde** (herkesin ihtiyaç duyduğu 11 temel) → **10 dal** (web arayüzü, sistem, yapay
@@ -39,7 +39,7 @@ repo-atlasi/
 │   └── 10-kuratorluk-topluluk/    awesome, awesome-python, awesome-go, awesome-selfhosted, free-programming-books, build-your-own-x, project-based-learning, HelloGitHub, 996.ICU
 │       └── <depo>/
 │           ├── README.md          ← depo dosyası: mimari, öğrenmen gerekenler, sıfırdan yol, okuma rotası, alıştırmalar
-│           └── sifirdan/          ← çekirdek mekanizmanın aşamalı, testli mini uygulaması
+│           └── sifirdan/          ← (44 depoda) çekirdek mekanizmanın aşamalı, testli mini uygulaması
 ├── is-fikirleri/          ← fikir kataloğu + kodlanmış MVP'ler
 └── veri/depolar.json      ← 51 deponun makine tarafından okunabilir verisi
 ```
@@ -66,7 +66,7 @@ bash repo-atlasi/testleri-calistir.sh
 
 Yalnızca bazılarını çalıştırmak için klasör adından bir parça ver: `bash repo-atlasi/testleri-calistir.sh react n8n`.
 Betik her mini uygulamanın ve MVP'nin testini kendi klasöründe çalıştırır, geçici dosyaları depo dışına yazar ve
-sonunda "N geçti, M kaldı" özeti verir. Bir araç (ör. Go) kurulu değilse o testleri "ATLANDI" diye geçer.
+sonunda "N geçti, M kaldı" özeti verir. Gereken bir araç ya da Python modülü (ör. Go, zsh, numpy) kurulu değilse o testleri "ATLANDI" diye geçer.
 
 Tek bir klasörde elle çalıştırmak istersen her `sifirdan/` ve MVP klasörünün `README.md`'sinde komut yazar. Genel kural:
 
@@ -91,8 +91,12 @@ yt-dlp) isteğe bağlı kullanır; o kütüphaneler kurulu değilse ilgili enteg
 - `massgravel/Microsoft-Activation-Scripts` yalnızca hukuk ve etik vaka çalışması olarak incelendi; lisans atlatma
   yöntemleri anlatılmaz ve aracın sıfırdan yolu verilmez. Mini'si yasal karşılığıdır: kurulu yazılımı satın alınan
   lisanslarla karşılaştıran bir uyum raporu.
-- İndirme ve tarama araçları (yt-dlp, Firecrawl) mini uygulamalarda yalnızca yerel test sunucularına karşı çalışır.
-  Gerçek kullanımda telif hakkı, site kullanım koşulları, `robots.txt` ve KVKK'ya uymak senin sorumluluğunda.
+- Mini uygulamaların testleri internetsiz çalışır; ağ testleri yalnızca `127.0.0.1`'deki yerel sunuculara bağlanır.
+  yt-dlp mini'si varsayılan olarak yalnızca `127.0.0.1` ve `localhost`'a bağlanır. Firecrawl mini'si gerçek sitelere
+  de çıkabilir: doğrudan yazılmış özel ağ adreslerini ve oraya giden yönlendirmeleri reddeder (`--yerel` ile açılır;
+  iç IP'ye çözülen alan adları kapsam dışı). Tarayıcısı (`tara`) ayrıca `robots.txt`'ye ve `Crawl-delay`'e uyar; tek
+  sayfa kazıma (`kazi`, `/v2/scrape`) `robots.txt`'ye bakmaz. Gerçek kullanımda telif hakkı, site kullanım koşulları,
+  `robots.txt` ve KVKK'ya uymak senin sorumluluğunda.
 - Tersine mühendislik (REA) yalnızca meşru amaçlarla anlatılır: kendi yazılımın, birlikte çalışabilirlik, güvenlik
   araştırması.
 - Lisans ve mevzuatla ilgili bölümler hukuki tavsiye değildir.
@@ -110,9 +114,13 @@ yt-dlp) isteğe bağlı kullanır; o kütüphaneler kurulu değilse ilgili enteg
   reddedildi; denetim sırasında bulunan 123 yeni sorun da düzeltildi. MVP'lerde 120 düzeltme yapıldı; her hata
   düzeltmesi bir gerileme testiyle korunuyor. Süreler tek kurala (1 gün ≈ 5 saat, 1 hafta ≈ 10 saat), önkoşullar
   yaprakların birleşimine bağlandı.
+- **Son bağımsız denetim:** Atlas commit edildikten sonra üç ayrı denetçi onu bir kez daha taradı; her bulguyu başka
+  bir ajan yeniden üretmeye çalıştı. Engel çıkmadı. Doğrulanan 20 Önemli bulgu ve 16 Öneri düzeltildi; düzeltmeler de
+  ayrıca diff üzerinden incelendi.
 - **Son otomatik denetim:** 50 test takımı (44 mini uygulama, 6 MVP) geçiyor; Markdown dosyalarında kırık bağlantı ya
-  da çapa yok; 131 mermaid diyagramı iki sürümde (11.4.1 ve 11.17.2) hatasız çiziliyor; Prettier ve ESLint temiz;
-  görünmez karakter yok.
+  da çapa yok; 131 mermaid diyagramı iki sürümde (11.4.1 ve 11.17.2) hatasız çiziliyor; Prettier temiz; görünmez
+  karakter yok. Atlasın JS dosyaları ESLint'in önerilen kurallarıyla da tarandı; kalan uyarılar kasıtlı (YDKJS
+  koanlarındaki dil tuhaflıkları, alt çizgiyle başlayan kullanılmayan parametreler, tarayıcı kodundaki `document`).
 - **Açık kalanlar:** Mevzuat ayrıntıları ve bazı platform kuralları `(doğrulanmadı)` diye işaretli; bir iş fikrini
   satışa çıkarmadan önce bir hukukçuya doğrulatmalısın. MVP'ler gerçek bir yerel modelle (Ollama, Whisper) uçtan uca
   denenmedi; testleri sahte sunucularla çalışır.

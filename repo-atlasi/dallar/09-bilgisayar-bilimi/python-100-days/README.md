@@ -107,7 +107,8 @@ dosyasındaki kod bloklarındadır.
 
 ## 4. Sıfırdan yol (dallanma)
 
-Bu yaprak için ayrı bir mini yok. Sıfırdan yol, Çince ders dosyasını **çalıştırılabilir Türkçe notlara** çevirmektir:
+Bu yaprak için ayrı bir mini yok: depo tek bir program değil, günlük Çince derslerden oluşan bir eğitim dizisi. Sıfırdan
+yol, Çince ders dosyasını **çalıştırılabilir Türkçe notlara** çevirmektir:
 
 ```mermaid
 flowchart TD
@@ -167,17 +168,17 @@ hedefinle ilgili bölümleri seç (veri: 66–90, web: 46–60 ve 91–100). Not
 
 ### Bölümlerin gövde ve dallarla eşleşmesi
 
-| Python-100-Days bölümü                      | Gövde düğümü                                                                                            | İlgili dal / dosya                                                                                                             |
-| ------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| Gün 1–20 dil temelleri                      | [G3](../../../govde/README.md#g3)                                                                       | —                                                                                                                              |
-| Gün 21–30 dosya, Excel, PDF, e-posta, regex | [G3](../../../govde/README.md#g3)                                                                       | [markitdown (belge dönüştürme)](../../04-veri-araclari-otomasyon/markitdown/README.md)                                         |
-| Gün 31–35 ileri Python, web, Linux          | [G3](../../../govde/README.md#g3), [G4](../../../govde/README.md#g4), [G1](../../../govde/README.md#g1) | —                                                                                                                              |
-| Gün 36–45 MySQL                             | [G5](../../../govde/README.md#g5) (indeks = B+ ağacı)                                                   | [system-design-primer](../system-design-primer/README.md) "Database"                                                           |
-| Gün 46–60 Django, REST, önbellek, test      | [G6](../../../govde/README.md#g6), [G7](../../../govde/README.md#g7)                                    | [system-design-primer](../system-design-primer/README.md) "Cache", "REST"                                                      |
-| Gün 61–65 kazıma, eşzamanlılık              | [G6](../../../govde/README.md#g6)                                                                       | [firecrawl](../../04-veri-araclari-otomasyon/firecrawl/README.md), [yt-dlp](../../04-veri-araclari-otomasyon/yt-dlp/README.md) |
-| Gün 66–90 NumPy, pandas, makine öğrenmesi   | [G3](../../../govde/README.md#g3)                                                                       | [D05 Yapay zekâ altyapısı](../../05-yapay-zeka-altyapisi/README.md)                                                            |
-| Gün 91–100 Docker, API, test, dağıtım       | [G1](../../../govde/README.md#g1), [G6](../../../govde/README.md#g6), [G7](../../../govde/README.md#g7) | [D04](../../04-veri-araclari-otomasyon/README.md)                                                                              |
-| 公开课 algoritma sunumları                  | [G5](../../../govde/README.md#g5)                                                                       | [thealgorithms-python](../thealgorithms-python/README.md)                                                                      |
+| Python-100-Days bölümü                      | Gövde düğümü                                                                                                 | İlgili dal / dosya                                                                                                             |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
+| Gün 1–20 dil temelleri                      | [G3](../../../govde/README.md#g3)                                                                            | —                                                                                                                              |
+| Gün 21–30 dosya, Excel, PDF, e-posta, regex | [G3](../../../govde/README.md#g3)                                                                            | [markitdown (belge dönüştürme)](../../04-veri-araclari-otomasyon/markitdown/README.md)                                         |
+| Gün 31–35 ileri Python, web, Linux          | [G3](../../../govde/README.md#g3), [G4](../../../govde/README.md#g4) (JS), [G1](../../../govde/README.md#g1) | [D01 Web arayüzü](../../01-web-arayuzu/README.md) (HTML, CSS, DOM; gövdede düğümü yok)                                         |
+| Gün 36–45 MySQL                             | [G5](../../../govde/README.md#g5) (indeks = B+ ağacı)                                                        | [system-design-primer](../system-design-primer/README.md) "Database"                                                           |
+| Gün 46–60 Django, REST, önbellek, test      | [G6](../../../govde/README.md#g6), [G7](../../../govde/README.md#g7)                                         | [system-design-primer](../system-design-primer/README.md) "Cache", "REST"                                                      |
+| Gün 61–65 kazıma, eşzamanlılık              | [G6](../../../govde/README.md#g6)                                                                            | [firecrawl](../../04-veri-araclari-otomasyon/firecrawl/README.md), [yt-dlp](../../04-veri-araclari-otomasyon/yt-dlp/README.md) |
+| Gün 66–90 NumPy, pandas, makine öğrenmesi   | [G3](../../../govde/README.md#g3)                                                                            | [D05 Yapay zekâ altyapısı](../../05-yapay-zeka-altyapisi/README.md)                                                            |
+| Gün 91–100 Docker, API, test, dağıtım       | [G1](../../../govde/README.md#g1), [G6](../../../govde/README.md#g6), [G7](../../../govde/README.md#g7)      | [D04](../../04-veri-araclari-otomasyon/README.md)                                                                              |
+| 公开课 algoritma sunumları                  | [G5](../../../govde/README.md#g5)                                                                            | [thealgorithms-python](../thealgorithms-python/README.md)                                                                      |
 
 ## 6. Alıştırmalar ve öz değerlendirme
 

@@ -137,6 +137,9 @@ flowchart TD
 | 4     | `asama4_ilerleme.js`                    | Saf indirgeyici, silme işareti, son yazan kazanır             | İki cihaz birleştirmesi sıradan bağımsız                    | 2–3 saat       |
 | Yan   | Düzenleyici, hesap sistemi, içerik CI'ı | Arayüz, kimlik doğrulama, otomasyon                           | —                                                           | 10–30 saat     |
 
+Aşamaların toplamı **9–13 saat**; okuma rotası ve alıştırmalarla birlikte **22–32 saat** (hesap kuralı:
+[dal README'si](../README.md#yapraklar)).
+
 **Mini uygulama:** [sifirdan/](sifirdan/README.md) — dört aşama + `olustur.js` statik site üretici, 15 test, Türkçe
 "Terminal ve Kabuk" yol haritası (11 konu). Aşama 1 ve 3 bu depodaki `scripts/` dosyalarının; aşama 2 ve 4 sitenin
 (bu depoda olmayan) görünür davranışının karşılığıdır.
@@ -162,13 +165,13 @@ etiketleme).
 
 **Alıştırmalar (kolaydan zora):**
 
-1. Örnek yol haritasına "SSH ve Uzak Sunucu" konusunu ekle; `node --test` ve `node olustur.js` geçsin.
-2. `konuDogrula`'ya "açıklama tek paragraf olmalı" kuralını ekle.
-3. Bir içerik denetimi betiği yaz: `roadmaps/*/content/*.md` biçimindeki bir klasörü tarasın, bütün kural ihlallerini
-   raporlasın; GitHub Actions'ta PR'da çalışacak bir iş akışı taslağı yaz.
-4. `svgCiz`'e kenarları düz çizgi yerine dirsekli (ortogonal) yol olarak çizme seçeneği ekle.
-5. `siradakiler`'e "öğreniyorum" durumundaki konuları öne alan bir sıralama ekle.
-6. Tarayıcıda sürükle-bırak ile düğüm konumunu değiştirip JSON'u indiren küçük bir düzenleyici yaz.
+1. (Kolay) Örnek yol haritasına "SSH ve Uzak Sunucu" konusunu ekle; `node --test` ve `node olustur.js` geçsin.
+2. (Kolay) `konuDogrula`'ya "açıklama tek paragraf olmalı" kuralını ekle.
+3. (Orta) Bir içerik denetimi betiği yaz: `roadmaps/*/content/*.md` biçimindeki bir klasörü tarasın, bütün kural
+   ihlallerini raporlasın; GitHub Actions'ta PR'da çalışacak bir iş akışı taslağı yaz.
+4. (Orta) `siradakiler`'e "öğreniyorum" durumundaki konuları öne alan bir sıralama ekle.
+5. (Zor) `svgCiz`'e kenarları düz çizgi yerine dirsekli (ortogonal) yol olarak çizme seçeneği ekle.
+6. (Zor) Tarayıcıda sürükle-bırak ile düğüm konumunu değiştirip JSON'u indiren küçük bir düzenleyici yaz.
 
 **Öz değerlendirme:**
 

@@ -111,6 +111,7 @@ test('kapanış: yanıtlanmamış izin sorusu reddedilir, close() takılmaz', as
   const client = createClient(await app.listen(0))
   const abort = new AbortController()
   let sessionID
+  let kapanisHatasi
   try {
     // Ajan verilmezse "build" denenir; tanımlı değilse süreç çökmez, 400 döner.
     await assert.rejects(client.createSession({}), /400/)
@@ -121,13 +122,14 @@ test('kapanış: yanıtlanmamış izin sorusu reddedilir, close() takılmaz', as
     await within(asked, 2000, 'izin sorusu') // soru yayınlandı ve kimse yanıtlamıyor
   } finally {
     abort.abort()
-    try {
-      await within(app.close(), 2000, 'close()')
-    } catch (error) {
-      await cleanup() // test düşse de geçici klasörler kalmasın
-      throw error
-    }
+    // finally içinde throw, try'daki asıl hatayı gizler; kapanış hatası try başarılıysa aşağıda fırlatılır.
+    kapanisHatasi = await within(app.close(), 2000, 'close()').then(
+      () => null,
+      (error) => error,
+    )
+    if (kapanisHatasi) await cleanup() // test düşse de geçici klasörler kalmasın
   }
+  if (kapanisHatasi) throw kapanisHatasi
   try {
     const stored = await store.get(sessionID)
     assert.match(stored.messages.at(-1).parts[0].output, /reddetti/)

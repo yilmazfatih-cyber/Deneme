@@ -29,38 +29,39 @@ flowchart TB
 
 ● zorunlu · ○ faydalı · boş: gerekmez
 
-Tablo, her dal dosyasının "Ön koşullar" bölümüyle aynıdır; o bölüm de dalın yapraklarının "Öğrenmen gerekenler"
-listelerinin birleşimidir. "Zorunlu", dalın **sonuna kadar** gerekir demek; bazı düğümler yalnızca birkaç yaprak için
-gerekir (ör. D04'te G4 ve G5 yalnızca son iki yaprak için). Hangi yaprağın neyi istediği dal dosyasında yazar.
+Tablo, her dal dosyasının "Ön koşullar" bölümüyle aynıdır. O bölüm de dalın yapraklarının "Öğrenmen gerekenler"
+listelerinin birleşimine dayanır; zorunlu/faydalı ayrımı dal dosyasının kararıdır (ör. D01'de G5). "Zorunlu", dalın
+**sonuna kadar** gerekir demek; bazı düğümler yalnızca birkaç yaprak için gerekir (ör. D04'te G4 ve G5 yalnızca son
+iki yaprak için). Hangi yaprağın neyi istediği dal dosyasında yazar.
 
-| Dal                                                                       | G1  | G2  | G3  | G4  | G5  | G6  | G7  | G8  | G9  | G10 | G11 | Önceki dal                             |
-| ------------------------------------------------------------------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | -------------------------------------- |
-| [D01 Web arayüzü](../dallar/01-web-arayuzu/README.md)                     | ●   | ●   |     | ●   | ○   | ○   | ●   | ○   |     |     |     | — (HTML, CSS, DOM dal içinde)          |
-| [D02 Uygulama platformları](../dallar/02-uygulama-platformlari/README.md) | ●   | ●   |     | ●   | ○   | ○   | ●   | ●   | ○   | ○   |     | D01 önerilir                           |
-| [D03 Sistem, ağ, güvenlik](../dallar/03-sistem-ag-guvenlik/README.md)     | ●   | ●   | ●   | ○   | ●   | ●   | ○   | ●   | ●   | ●   | ○   | D09 (önce ya da birlikte)              |
-| [D04 Veri araçları](../dallar/04-veri-araclari-otomasyon/README.md)       | ●   | ●   | ●   | ●   | ●   | ●   | ●   | ○   | ○   |     |     | —                                      |
-| [D05 Yapay zekâ altyapısı](../dallar/05-yapay-zeka-altyapisi/README.md)   | ●   | ●   | ●   |     | ●   | ●   | ●   | ○   | ○   | ○   | ●   | D09 (+ dal içi matematik M1–M3)        |
-| [D06 Ajan platformları](../dallar/06-ajan-platformlari/README.md)         | ●   | ●   | ●   | ●   | ○   | ●   | ●   | ●   | ○   |     | ●   | — (D08 faydalı; D05, D04 isteğe bağlı) |
-| [D07 Kodlama ajanları](../dallar/07-kodlama-ajanlari/README.md)           | ●   | ●   |     | ●   |     | ●   | ●   | ●   |     | ○   | ●   | D08, D05 (+ claw-code için Rust)       |
-| [D08 Ajan becerileri](../dallar/08-ajan-becerileri/README.md)             | ●   | ●   | ●   | ●   |     |     | ●   | ○   | ○   |     | ●   | —                                      |
-| [D09 Bilgisayar bilimi](../dallar/09-bilgisayar-bilimi/README.md)         | ●   | ●   | ●   | ○   | ●   | ○   | ●   |     | ○   | ○   |     | —                                      |
-| [D10 Küratörlük, topluluk](../dallar/10-kuratorluk-topluluk/README.md)    | ○   | ●   | ●   | ○   | ○   | ○   | ●   |     | ●   |     |     | — (ilk PR için G2 yeter)               |
+| Dal                                                                       | G1  | G2  | G3  | G4  | G5  | G6  | G7  | G8  | G9  | G10 | G11 | Önceki ve yardımcı dallar                                    |
+| ------------------------------------------------------------------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ------------------------------------------------------------ |
+| [D01 Web arayüzü](../dallar/01-web-arayuzu/README.md)                     | ●   | ●   |     | ●   | ○   | ○   | ●   | ○   |     |     |     | — (HTML, CSS, DOM dal içinde; D09, D10 yardımcı)             |
+| [D02 Uygulama platformları](../dallar/02-uygulama-platformlari/README.md) | ●   | ●   |     | ●   | ○   | ○   | ●   | ●   | ○   | ○   |     | D01 önerilir                                                 |
+| [D03 Sistem, ağ, güvenlik](../dallar/03-sistem-ag-guvenlik/README.md)     | ●   | ●   | ●   | ○   | ●   | ●   | ○   | ●   | ●   | ●   | ○   | D09 (önce ya da birlikte); REA için D07, D08 (paralel)       |
+| [D04 Veri araçları](../dallar/04-veri-araclari-otomasyon/README.md)       | ●   | ●   | ●   | ●   | ●   | ●   | ●   | ○   | ○   |     |     | —                                                            |
+| [D05 Yapay zekâ altyapısı](../dallar/05-yapay-zeka-altyapisi/README.md)   | ●   | ●   | ●   |     | ●   | ●   | ●   | ○   | ○   | ○   | ●   | D09 (+ dal içi matematik M1–M3)                              |
+| [D06 Ajan platformları](../dallar/06-ajan-platformlari/README.md)         | ●   | ●   | ●   | ●   | ○   | ●   | ●   | ●   | ○   |     | ●   | — (D08, D10 faydalı; D05, D04, D07 isteğe bağlı)             |
+| [D07 Kodlama ajanları](../dallar/07-kodlama-ajanlari/README.md)           | ●   | ●   |     | ●   |     | ●   | ●   | ●   |     | ○   | ●   | D08 → anthropic-skills, D05 → ollama (+ claw-code için Rust) |
+| [D08 Ajan becerileri](../dallar/08-ajan-becerileri/README.md)             | ●   | ●   | ●   | ●   |     |     | ●   | ○   | ○   |     | ●   | —                                                            |
+| [D09 Bilgisayar bilimi](../dallar/09-bilgisayar-bilimi/README.md)         | ●   | ●   | ●   | ○   | ●   | ○   | ●   |     | ○   | ○   |     | —                                                            |
+| [D10 Küratörlük, topluluk](../dallar/10-kuratorluk-topluluk/README.md)    | ○   | ●   | ●   | ○   | ○   | ○   | ●   |     | ●   |     |     | — (ilk PR için G1 + G2 yeter)                                |
 
 ## Önerilen tırmanış sırası
 
 Süreler aşağıdaki düğüm bölümlerindeki sürelerin toplamıdır. İkinci dil, kavramlar aktarıldığı için ilkinden kısa
 sürer.
 
-| Adım | Düğümler                          | Süre (haftada ~10 saat)   | Bu adımdan sonra başlayabileceğin dallar                                         |
-| ---- | --------------------------------- | ------------------------- | -------------------------------------------------------------------------------- |
-| 1    | G1 + G2                           | 3–5 hafta                 | D10'da ilk PR'ın (listeye katkı)                                                 |
-| 2    | G3 (Python) **veya** G4 (JS/TS)   | 6–8 hafta                 | —                                                                                |
-| 3    | G7 + G6                           | 6–9 hafta                 | D10 mini'leri (G3 ile), D01 (G4 seçtiysen), D04'ün ilk üç yaprağı (G3 seçtiysen) |
-| 4    | İkinci dil (G3 ya da G4)          | 4–6 hafta                 | D01, D02 (önce D01 önerilir)                                                     |
-| 5    | G5 (D09 ile birlikte derinleşir)  | 8–12 hafta                | D09, D04'ün son iki yaprağı (firecrawl, n8n)                                     |
-| 6    | G11                               | 3–4 hafta                 | D08, D06, D05 (D09'dan sonra), D07 (D08 ve D05'ten sonra)                        |
-| 7    | G10                               | 6–8 hafta                 | D03 (D09 ile birlikte)                                                           |
-| her  | G8 ve G9 (her yaprakta uygulanır) | G9 1 hafta, sonra sürekli | —                                                                                |
+| Adım | Düğümler                          | Süre (haftada ~10 saat)   | Bu adımdan sonra başlayabileceğin dallar                                                        |
+| ---- | --------------------------------- | ------------------------- | ----------------------------------------------------------------------------------------------- |
+| 1    | G1 + G2                           | 3–5 hafta                 | D10'da ilk PR'ın (listeye katkı)                                                                |
+| 2    | G3 (Python) **veya** G4 (JS/TS)   | 6–8 hafta                 | —                                                                                               |
+| 3    | G7 + G6                           | 6–9 hafta                 | D10 mini'leri (G3 ile), D01 (G4 seçtiysen), D04'ün ilk üç yaprağı (G3 seçtiysen)                |
+| 4    | İkinci dil (G3 ya da G4)          | 4–6 hafta                 | D01, D02 (önce D01 önerilir); G4 ile başladıysan D10 mini'leri ve D04'ün ilk üç yaprağı         |
+| 5    | G5 (D09 ile birlikte derinleşir)  | 8–12 hafta                | D09, D04'ün son iki yaprağı (firecrawl, n8n)                                                    |
+| 6    | G11                               | 3–4 hafta                 | D08, D06, D05 (D09'dan sonra), D07 (D08'in anthropic-skills ve D05'in ollama yaprağından sonra) |
+| 7    | G10                               | 6–8 hafta                 | D03 (D09 ile birlikte)                                                                          |
+| her  | G8 ve G9 (her yaprakta uygulanır) | G9 1 hafta, sonra sürekli | —                                                                                               |
 
 Toplam: tam gövde yaklaşık 37–53 hafta (9–12 ay).
 
@@ -438,7 +439,7 @@ ya da [D03'teki mini kabuğu](../dallar/03-sistem-ag-guvenlik/linux/README.md) b
 
 ## G11 LLM API temelleri (istem, token, araç çağırma, akış)
 
-**Neden:** Listenin dörtte biri son 18 ayda açıldı ve bu 12 deponun hepsi yapay zekâ ajanlarıyla ilgili: opencode,
+**Neden:** Listenin dörtte biri 2025–2026'da açıldı ve bu 12 deponun hepsi yapay zekâ ajanlarıyla ilgili: opencode,
 hermes-agent, anthropics/skills, superpowers, openclaw, MiroFish, ECC, andrej-karpathy-skills, mattpocock/skills,
 claw-code, rea ve deepseek-harness. D05–D08 dallarının ortak dili budur; firecrawl ve markitdown da "LLM'e veri
 hazırlamak" için yapılmıştır.

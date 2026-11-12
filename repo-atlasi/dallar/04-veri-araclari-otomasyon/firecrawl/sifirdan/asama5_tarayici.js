@@ -55,6 +55,30 @@ const VARSAYILAN = {
   userAgent: KULLANICI_AJANI,
 }
 
+const YONLENDIRME_KODLARI = new Set([301, 302, 303, 307, 308])
+const AZAMI_YONLENDIRME = 20 // fetch'in kendi sınırı
+
+/**
+ * Yönlendirmeleri elle izleyen fetch. `redirect: 'follow'` her hedefe sorgusuz gider: herkese açık bir sayfa
+ * 302 ile 127.0.0.1'e ya da bulut meta veri adresine (169.254.169.254) yönlendirebilir (SSRF). Burada her
+ * hedef, istek atılmadan önce `denetle`den geçer; `denetle` reddetmek için hata fırlatır.
+ * @param {string} url
+ * @param {(adres: URL) => unknown} denetle
+ * @param {RequestInit & { fetch?: typeof fetch }} [secenekler]
+ */
+export async function guvenliGetir(url, denetle, { fetch = globalThis.fetch, ...istek } = {}) {
+  let adres = new URL(url)
+  for (let adim = 0; ; adim++) {
+    denetle(adres)
+    const yanit = await fetch(adres.href, { ...istek, redirect: 'manual' })
+    const konum = YONLENDIRME_KODLARI.has(yanit.status) ? yanit.headers.get('location') : null
+    if (!konum) return yanit
+    await yanit.body?.cancel()
+    if (adim === AZAMI_YONLENDIRME) throw new Error(`${AZAMI_YONLENDIRME} yönlendirmeden fazlası izlenmez`)
+    adres = new URL(konum, adres)
+  }
+}
+
 export class Tarayici {
   /** @param {string} baslangicUrl @param {Partial<typeof VARSAYILAN> & { fetch?: typeof fetch, signal?: AbortSignal }} [secenekler] */
   constructor(baslangicUrl, secenekler = {}) {
@@ -234,13 +258,19 @@ export class Tarayici {
     return urller
   }
 
+  /** Yönlendirme hedefleri de başlangıç adresi gibi denetlenir. @param {URL} adres */
+  hedefDenetle(adres) {
+    if (adres.protocol !== 'http:' && adres.protocol !== 'https:') throw new Error(`Yalnızca http/https: ${adres.href}`)
+    if (!this.s.allowPrivateNetwork && ozelAdresMi(adres.hostname)) throw new Error(RED.OZEL_AG)
+  }
+
   /** @param {string} url */
   async getir(url) {
     const sinyaller = [AbortSignal.timeout(this.s.timeoutMs)]
     if (this.s.signal) sinyaller.push(this.s.signal)
-    return this.fetch(url, {
+    return guvenliGetir(url, (adres) => this.hedefDenetle(adres), {
+      fetch: this.fetch,
       headers: { 'user-agent': this.s.userAgent, accept: 'text/html,application/xhtml+xml;q=0.9,*/*;q=0.5' },
-      redirect: 'follow',
       signal: AbortSignal.any(sinyaller),
     })
   }
