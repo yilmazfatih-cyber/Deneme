@@ -94,3 +94,15 @@ def test_ozet_bos(depo):
         "q1": None,
         "q3": None,
     }
+
+
+def test_ilk_taramada_rafta_olan_sayilmaz(tmp_path):
+    """Sol sansür: markanın ilk tarama gününde zaten rafta olan değer gecikme üretmez; sonra gelen üretir."""
+    with Depo(tmp_path / "s.db") as d:
+        d.ekle_sinyaller([_sinyal("SS26", "A"), _sinyal("SS26", "B")])
+        d.ekle_gozlemler([_gozlem("A", date(2026, 3, 1)), _gozlem("B", date(2026, 3, 22))])
+        satirlar = gecikme_olc.olc(d, "orta", "kadin-ust")
+        assert [r["deger"] for r in satirlar] == ["B"]
+        # eski (sansürlü) ölçümler yeniden ölçümde temizlenir
+        d.ekle_gozlemler([_gozlem("C", date(2026, 3, 1))])
+        assert gecikme_olc.ozet_gecikme(d, "orta", "kadin-ust")["n"] == 1
