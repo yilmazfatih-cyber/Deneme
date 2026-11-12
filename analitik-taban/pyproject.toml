@@ -1,0 +1,19 @@
+# Kurulum gerektirmez (yalnız Python standart kütüphanesi). Bu dosya geliştirme araçları içindir.
+[project]
+name = "analitik-taban"
+version = "1.0.0"
+description = "Mixpanel ve Hotjar analizini az token harcayarak yapan Claude Code çalışma alanı"
+requires-python = ">=3.9"
+dependencies = []
+
+[tool.ruff]
+line-length = 120
+target-version = "py39"
+src = ["kit"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "BLE"]
+ignore = ["E731", "B008", "UP006", "UP007", "UP035", "UP045"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["analitik", "mp", "hj", "ozet", "kurulum"]

@@ -1,0 +1,9 @@
+# Şirkete özel her şey burada kalır; asla depoya girmez
+/yerel/
+CLAUDE.local.md
+.claude/settings.local.json
+
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/

@@ -1,0 +1,29 @@
+{
+  "_aciklama": "yerel/ayarlar.json — şirkete özel, git'e girmez. Alanların anlamı: docs/KURULUM.md bölüm 4.",
+  "proje_adi": "Uygulamam",
+  "demo": false,
+  "utc_ofset_saat": 3,
+  "mixpanel": {
+    "kaynak": "api",
+    "bolge": "eu",
+    "proje_id": null
+  },
+  "hotjar": {
+    "kaynak": "csv",
+    "site_id": null
+  },
+  "boyutlar": ["$os", "$app_version_string", "mp_country_code", "utm_source"],
+  "kpiler": [
+    { "ad": "Aktif kullanıcı", "olay": "App Open", "tip": "unique" },
+    { "ad": "Yeni kayıt", "olay": "Sign Up", "tip": "unique" },
+    { "ad": "Satın alma", "olay": "Purchase", "tip": "general" },
+    { "ad": "Kayıt oranı", "pay": "Sign Up", "payda": "App Open", "tip": "unique" }
+  ],
+  "huniler": {},
+  "deney": {
+    "maruz_olay": "$experiment_started",
+    "deney_ozelligi": "Experiment name",
+    "grup_ozelligi": "Variant name"
+  },
+  "esikler": { "degisim": 0.1, "z": 3 }
+}

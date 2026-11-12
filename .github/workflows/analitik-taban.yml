@@ -1,0 +1,35 @@
+name: Analitik taban
+
+# analitik-taban/ (Mixpanel + Hotjar çalışma alanı): birim, sahte HTTP sunucusu ve demo uçtan uca testleri.
+# Yalnız standart kütüphane kullanır; kurulum adımı yoktur. En eski desteklenen (3.9) ve güncel Python'da çalışır.
+
+on:
+  push:
+    paths:
+      - 'analitik-taban/**'
+      - '.github/workflows/analitik-taban.yml'
+  pull_request:
+    paths:
+      - 'analitik-taban/**'
+      - '.github/workflows/analitik-taban.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ['3.9', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Testler
+        working-directory: analitik-taban
+        run: python -m unittest discover -s kit/tests -t kit
+      - name: Lint ve biçim
+        if: matrix.python == '3.13'
+        working-directory: analitik-taban
+        run: |
+          pipx run ruff check kit
+          pipx run ruff format --check kit

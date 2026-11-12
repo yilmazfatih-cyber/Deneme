@@ -1,0 +1,14 @@
+{
+  "_aciklama": "Tema kuralları. 'ödem*' kök eşleşmesi, 'kart bilgisi' öbek, 'kargo' tam kelime. Model örneklemden temaları çıkarır, bu dosyayı günceller; hj.py tema tüm yanıtlara uygular.",
+  "temalar": [
+    { "ad": "Ödeme / kart", "kelimeler": ["ödem*", "kart*", "taksit*", "3d", "fatura*"] },
+    {
+      "ad": "Yavaşlık / çökme",
+      "kelimeler": ["yavaş*", "donuyor", "dondu", "kasıyor", "çök*", "açılmıyor", "kapanıyor"]
+    },
+    { "ad": "Giriş / hesap", "kelimeler": ["giriş*", "şifre*", "hesab*", "hesap", "doğrulama*", "sms"] },
+    { "ad": "Kargo / teslimat", "kelimeler": ["kargo*", "teslim*", "gecik*"], "haric": ["kargo ücretsiz"] },
+    { "ad": "Fiyat", "kelimeler": ["fiyat*", "pahalı", "ücret*", "indirim*"] },
+    { "ad": "Övgü", "kelimeler": ["harika", "süper", "kullanışlı", "beğendim", "memnun*"] }
+  ]
+}

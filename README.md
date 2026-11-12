@@ -15,6 +15,9 @@ Kelime bulmakta zorlanan afazili yetişkinler için Türkçe bir web uygulaması
 >
 > **Ayrıca:** [`moda-radar/`](moda-radar/README.md) altında defilelerden sezon rengi (Pantone TCX), kumaş ve desen tahmini yapan,
 > İstanbul'u beş sosyoekonomik segmente bölen ve ürün bazlı yatırım kararı üreten **Moda Radar** tasarımı var (Fable mimar, Opus ekip).
+>
+> **Ayrıca:** [`analitik-taban/`](analitik-taban/README.md) altında Mixpanel ve Hotjar analizlerini Claude Code'da az tokenla
+> yapmak için hazır çalışma alanı **Analitik Taban** var; şirket verisi olmadan burada geliştirilir, şirkette yalnız `yerel/` eklenir.
 
 Ürün planı: [`docs/PLAN.md`](docs/PLAN.md) · Yol haritası: [`docs/ROADMAP.md`](docs/ROADMAP.md) ·
 Ekip anayasası: [`CLAUDE.md`](CLAUDE.md) · Son demo: [`docs/sprints/S01/demo.md`](docs/sprints/S01/demo.md)

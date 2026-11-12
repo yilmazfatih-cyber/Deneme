@@ -1,0 +1,31 @@
+{
+  "model": "sonnet",
+  "permissions": {
+    "allow": [
+      "Bash(python3 kit/mp.py *)",
+      "Bash(python3 kit/hj.py *)",
+      "Bash(python3 kit/ozet.py *)",
+      "Bash(python3 kit/kurulum.py *)",
+      "Bash(python kit/mp.py *)",
+      "Bash(python kit/hj.py *)",
+      "Bash(python kit/ozet.py *)",
+      "Bash(python kit/kurulum.py *)",
+      "Bash(py -3 kit/mp.py *)",
+      "Bash(py -3 kit/hj.py *)",
+      "Bash(py -3 kit/ozet.py *)",
+      "Bash(py -3 kit/kurulum.py *)",
+      "Edit(./yerel/raporlar/**)",
+      "Edit(./yerel/temalar.json)",
+      "Edit(./yerel/notlar.md)",
+      "Edit(./yerel/metrikler.md)"
+    ],
+    "deny": [
+      "Read(./yerel/.env)",
+      "Read(./yerel/veri/**)",
+      "Read(./yerel/onbellek/**)",
+      "Bash(cat yerel/.env)",
+      "Bash(cat ./yerel/.env)",
+      "Bash(git push *)"
+    ]
+  }
+}
