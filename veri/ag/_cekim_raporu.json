@@ -1,5 +1,5 @@
 {
- "zaman": "2026-11-13T16:12",
+ "zaman": "2026-11-13T16:17",
  "rapor": {
   "tv": {
    "satir": 649,
@@ -156,7 +156,7 @@
    "zaman": "2026-11-12T11:18"
   },
   "_toplam": {
-   "sure_dk": 150.0,
+   "sure_dk": 3.9,
    "hisse": 623
   },
   "kesif": {
@@ -1162,6 +1162,98 @@
    "sure_dk": 150.0,
    "sure_sn": 9002.4,
    "zaman": "2026-11-13T16:12"
+  },
+  "yabanci_gecmis": {
+   "secenek": {
+    "adet": 3826,
+    "ilk": "2004-01-02",
+    "son": "2026-11-12"
+   },
+   "betik_izleri": [
+    "SiteAssets/js/main.min.js?v2 :: n.length==1?\"0\"+n:n}function EpocToDate(n){if(n&&n>0){var t=new Date(0);return t.setUTCMilliseconds(n),t}return null}function ConsoleLog(n,t){window.console&&window.console.log&&(typeof t!=\"undefined\"?window.console.log(n,t):window.console.log(n))}function GetYabanciOranlar(){$data={baslangicTarih:GetVal(\"#yabanciOranBaslangic\"),bitisTarihi:GetVal(\"#yabanciOranBitis\"),sektor:getUrlVars().sektor||null,endeks:getUrlVars().endeks||\"09\",hisse:getUrlVars().hisse||null};(pageType==\"SirketKarti\"||$(\"table.hover:visible tbody tr\").length<2)&&($(\"table.hover\").DataTable().destroy(),$(\".table-wrap-data\").removeClass(\"table-wrap-data\").addClass(\"table-wrap\"),$(\".table-container\").removeClass(\"table-container\").addClass(\"table\").addClass(\"horizontal\"),$(\".table.horizontal .form-gro",
+    "SiteAssets/js/main.min.js?v2 :: &n>0){var t=new Date(0);return t.setUTCMilliseconds(n),t}return null}function ConsoleLog(n,t){window.console&&window.console.log&&(typeof t!=\"undefined\"?window.console.log(n,t):window.console.log(n))}function GetYabanciOranlar(){$data={baslangicTarih:GetVal(\"#yabanciOranBaslangic\"),bitisTarihi:GetVal(\"#yabanciOranBitis\"),sektor:getUrlVars().sektor||null,endeks:getUrlVars().endeks||\"09\",hisse:getUrlVars().hisse||null};(pageType==\"SirketKarti\"||$(\"table.hover:visible tbody tr\").length<2)&&($(\"table.hover\").DataTable().destroy(),$(\".table-wrap-data\").removeClass(\"table-wrap-data\").addClass(\"table-wrap\"),$(\".table-container\").removeClass(\"table-container\").addClass(\"table\").addClass(\"horizontal\"),$(\".table.horizontal .form-group\").css(\"margin-bottom\",0));site.components.loa",
+    "SiteAssets/js/main.min.js?v2 :: seconds(n),t}return null}function ConsoleLog(n,t){window.console&&window.console.log&&(typeof t!=\"undefined\"?window.console.log(n,t):window.console.log(n))}function GetYabanciOranlar(){$data={baslangicTarih:GetVal(\"#yabanciOranBaslangic\"),bitisTarihi:GetVal(\"#yabanciOranBitis\"),sektor:getUrlVars().sektor||null,endeks:getUrlVars().endeks||\"09\",hisse:getUrlVars().hisse||null};(pageType==\"SirketKarti\"||$(\"table.hover:visible tbody tr\").length<2)&&($(\"table.hover\").DataTable().destroy(),$(\".table-wrap-data\").removeClass(\"table-wrap-data\").addClass(\"table-wrap\"),$(\".table-container\").removeClass(\"table-container\").addClass(\"table\").addClass(\"horizontal\"),$(\".table.horizontal .form-group\").css(\"margin-bottom\",0));site.components.loading.show(\".table-wrap-data\");$.ajax({dataTy",
+    "SiteAssets/js/main.min.js?v2 :: ontal .form-group\").css(\"margin-bottom\",0));site.components.loading.show(\".table-wrap-data\");$.ajax({dataType:\"json\",data:JSON.stringify($data),contentType:\"application/json; charset=utf-8\",url:\"/_layouts/15/IsYatirim.Website/StockInfo/CompanyInfoAjax.aspx/GetYabanciOranlarXHR\",type:\"POST\",success:function(n){if($(\"#yabanciOranlarUC table\").DataTable().destroy(),$(\"tbody#yabanciOranlarTbody\").empty(),$(\"table[data-sector] tbody\").empty(),$(\".dataTable:visible\").DataTable().destroy(),$(\".hover.nowrap:visible tbody\").empty(),!n.d){console.log(\"hata\");return}$(n.d).each(function(n,t){$(\"table[data-sector] tbody\").append($(\"<tr>\").append($(\"<td>\").attr(\"title\",t.HISSE_TANIM).append($(\"<a>\").attr(\"href\",site.info.sirketKartiLinkQS()+t.HISSE_KODU).text(t.HISSE_KODU))).append(",
+    "SiteAssets/js/main.min.js?v2 :: s.loading.show(\".table-wrap-data\");$.ajax({dataType:\"json\",data:JSON.stringify($data),contentType:\"application/json; charset=utf-8\",url:\"/_layouts/15/IsYatirim.Website/StockInfo/CompanyInfoAjax.aspx/GetYabanciOranlarXHR\",type:\"POST\",success:function(n){if($(\"#yabanciOranlarUC table\").DataTable().destroy(),$(\"tbody#yabanciOranlarTbody\").empty(),$(\"table[data-sector] tbody\").empty(),$(\".dataTable:visible\").DataTable().destroy(),$(\".hover.nowrap:visible tbody\").empty(),!n.d){console.log(\"hata\");return}$(n.d).each(function(n,t){$(\"table[data-sector] tbody\").append($(\"<tr>\").append($(\"<td>\").attr(\"title\",t.HISSE_TANIM).append($(\"<a>\").attr(\"href\",site.info.sirketKartiLinkQS()+t.HISSE_KODU).text(t.HISSE_KODU))).append($('<td class=\"text-right\">').text(t.PRICE_TL.toFixed(2).to",
+    "SiteAssets/js/main.min.js?v2 :: n\",data:JSON.stringify($data),contentType:\"application/json; charset=utf-8\",url:\"/_layouts/15/IsYatirim.Website/StockInfo/CompanyInfoAjax.aspx/GetYabanciOranlarXHR\",type:\"POST\",success:function(n){if($(\"#yabanciOranlarUC table\").DataTable().destroy(),$(\"tbody#yabanciOranlarTbody\").empty(),$(\"table[data-sector] tbody\").empty(),$(\".dataTable:visible\").DataTable().destroy(),$(\".hover.nowrap:visible tbody\").empty(),!n.d){console.log(\"hata\");return}$(n.d).each(function(n,t){$(\"table[data-sector] tbody\").append($(\"<tr>\").append($(\"<td>\").attr(\"title\",t.HISSE_TANIM).append($(\"<a>\").attr(\"href\",site.info.sirketKartiLinkQS()+t.HISSE_KODU).text(t.HISSE_KODU))).append($('<td class=\"text-right\">').text(t.PRICE_TL.toFixed(2).toString().replace(\".\",_spPageContextInfo.currentLanguage=",
+    "SiteAssets/js/main.min.js?v2 :: le\").DataTable().destroy(),$(\".table-wrap-data\").removeClass(\"table-wrap-data\").addClass(\"table-wrap\"),$(\".table-container\").removeClass(\"table-container\").addClass(\"table\").addClass(\"horizontal\"),$(\".table.horizontal .form-group\").css(\"margin-bottom\",0));$(\"#yabanciOranlarUC table\").DataTable({paging:!1,info:!1,bPaginate:!1,searching:!0,scrollX:!0,scrollY:\"500px\",scrollCollapse:!0,aaSorting:[0,\"asc\"]});site.components.loading.hide(\".table-wrap-data\")}})}function finansalOranlarTahmin(n){var t=$(\".ddlSektor\").val(),n=n||$(\".ddlFinansalYil\").val();site.components.loading.show(\".table-wrap-data\");$.getJSON(\"/_layouts/15/IsYatirim.Website/Common/Data.aspx/SirketBilgileriBySektor?sektor=\"+t+\"&takip=Yes&yil=\"+n,function(n){var n,r,e,u,o,i,f;$(\"#finansalOranlarTahmin .dataTab",
+    "SiteAssets/js/main.min.js?v2 :: parents(\"div.pager\").first().attr(\"data-event-target\"),t=0;t=n.hasClass(\"next\")?parseInt(n.parent().parent().find(\"a.selected\").text(),10)+1:n.hasClass(\"prev\")?parseInt(n.parent().parent().find(\"a.selected\").text(),10)-1:n.text();doPostbackPaging(t,i)})});var yabanciOranBaslangicTemp=$(\"#yabanciOranBaslangic option\"),yabanciOranBitisTemp=$(\"#yabanciOranBitis option\"),yabanciOranBaslangicTempSelected=null,yabanciOranBitisTempSelected=null,yabanciBaslangicSelected=null,yabanciBitisSelected=null;$(\"#yabanciOranBaslangic\").on(\"select2:select\",function(){yabanciBaslangicSelected=$(\"#yabanciOranBaslangic option:selected\").val();yabanciBitisSelected=$(\"#yabanciOranBitis option:selected\").val();$(\"#yabanciOranBitis\").select2(\"destroy\");$(\"#yabanciOranBitis option\").removeAttr(\"",
+    "SiteAssets/js/main.min.js?v2 :: attr(\"data-event-target\"),t=0;t=n.hasClass(\"next\")?parseInt(n.parent().parent().find(\"a.selected\").text(),10)+1:n.hasClass(\"prev\")?parseInt(n.parent().parent().find(\"a.selected\").text(),10)-1:n.text();doPostbackPaging(t,i)})});var yabanciOranBaslangicTemp=$(\"#yabanciOranBaslangic option\"),yabanciOranBitisTemp=$(\"#yabanciOranBitis option\"),yabanciOranBaslangicTempSelected=null,yabanciOranBitisTempSelected=null,yabanciBaslangicSelected=null,yabanciBitisSelected=null;$(\"#yabanciOranBaslangic\").on(\"select2:select\",function(){yabanciBaslangicSelected=$(\"#yabanciOranBaslangic option:selected\").val();yabanciBitisSelected=$(\"#yabanciOranBitis option:selected\").val();$(\"#yabanciOranBitis\").select2(\"destroy\");$(\"#yabanciOranBitis option\").removeAttr(\"selected\");$(\"#yabanciOranBit",
+    "SiteAssets/js/main.min.js?v2 :: t=n.hasClass(\"next\")?parseInt(n.parent().parent().find(\"a.selected\").text(),10)+1:n.hasClass(\"prev\")?parseInt(n.parent().parent().find(\"a.selected\").text(),10)-1:n.text();doPostbackPaging(t,i)})});var yabanciOranBaslangicTemp=$(\"#yabanciOranBaslangic option\"),yabanciOranBitisTemp=$(\"#yabanciOranBitis option\"),yabanciOranBaslangicTempSelected=null,yabanciOranBitisTempSelected=null,yabanciBaslangicSelected=null,yabanciBitisSelected=null;$(\"#yabanciOranBaslangic\").on(\"select2:select\",function(){yabanciBaslangicSelected=$(\"#yabanciOranBaslangic option:selected\").val();yabanciBitisSelected=$(\"#yabanciOranBitis option:selected\").val();$(\"#yabanciOranBitis\").select2(\"destroy\");$(\"#yabanciOranBitis option\").removeAttr(\"selected\");$(\"#yabanciOranBitis\").empty().append(yabanciOra",
+    "SiteAssets/js/main.min.js?v2 :: eInt(n.parent().parent().find(\"a.selected\").text(),10)+1:n.hasClass(\"prev\")?parseInt(n.parent().parent().find(\"a.selected\").text(),10)-1:n.text();doPostbackPaging(t,i)})});var yabanciOranBaslangicTemp=$(\"#yabanciOranBaslangic option\"),yabanciOranBitisTemp=$(\"#yabanciOranBitis option\"),yabanciOranBaslangicTempSelected=null,yabanciOranBitisTempSelected=null,yabanciBaslangicSelected=null,yabanciBitisSelected=null;$(\"#yabanciOranBaslangic\").on(\"select2:select\",function(){yabanciBaslangicSelected=$(\"#yabanciOranBaslangic option:selected\").val();yabanciBitisSelected=$(\"#yabanciOranBitis option:selected\").val();$(\"#yabanciOranBitis\").select2(\"destroy\");$(\"#yabanciOranBitis option\").removeAttr(\"selected\");$(\"#yabanciOranBitis\").empty().append(yabanciOranBitisTemp);yabanciOranBi",
+    "SiteAssets/js/main.min.js?v2 :: ind(\"a.selected\").text(),10)+1:n.hasClass(\"prev\")?parseInt(n.parent().parent().find(\"a.selected\").text(),10)-1:n.text();doPostbackPaging(t,i)})});var yabanciOranBaslangicTemp=$(\"#yabanciOranBaslangic option\"),yabanciOranBitisTemp=$(\"#yabanciOranBitis option\"),yabanciOranBaslangicTempSelected=null,yabanciOranBitisTempSelected=null,yabanciBaslangicSelected=null,yabanciBitisSelected=null;$(\"#yabanciOranBaslangic\").on(\"select2:select\",function(){yabanciBaslangicSelected=$(\"#yabanciOranBaslangic option:selected\").val();yabanciBitisSelected=$(\"#yabanciOranBitis option:selected\").val();$(\"#yabanciOranBitis\").select2(\"destroy\");$(\"#yabanciOranBitis option\").removeAttr(\"selected\");$(\"#yabanciOranBitis\").empty().append(yabanciOranBitisTemp);yabanciOranBitisTempSelected=$(\"#yabanc",
+    "SiteAssets/js/main.min.js?v2 :: ass(\"prev\")?parseInt(n.parent().parent().find(\"a.selected\").text(),10)-1:n.text();doPostbackPaging(t,i)})});var yabanciOranBaslangicTemp=$(\"#yabanciOranBaslangic option\"),yabanciOranBitisTemp=$(\"#yabanciOranBitis option\"),yabanciOranBaslangicTempSelected=null,yabanciOranBitisTempSelected=null,yabanciBaslangicSelected=null,yabanciBitisSelected=null;$(\"#yabanciOranBaslangic\").on(\"select2:select\",function(){yabanciBaslangicSelected=$(\"#yabanciOranBaslangic option:selected\").val();yabanciBitisSelected=$(\"#yabanciOranBitis option:selected\").val();$(\"#yabanciOranBitis\").select2(\"destroy\");$(\"#yabanciOranBitis option\").removeAttr(\"selected\");$(\"#yabanciOranBitis\").empty().append(yabanciOranBitisTemp);yabanciOranBitisTempSelected=$(\"#yabanciOranBitis option[value='\"+yabanciBasl",
+    "SiteAssets/js/main.min.js?v2 :: ging(t,i)})});var yabanciOranBaslangicTemp=$(\"#yabanciOranBaslangic option\"),yabanciOranBitisTemp=$(\"#yabanciOranBitis option\"),yabanciOranBaslangicTempSelected=null,yabanciOranBitisTempSelected=null,yabanciBaslangicSelected=null,yabanciBitisSelected=null;$(\"#yabanciOranBaslangic\").on(\"select2:select\",function(){yabanciBaslangicSelected=$(\"#yabanciOranBaslangic option:selected\").val();yabanciBitisSelected=$(\"#yabanciOranBitis option:selected\").val();$(\"#yabanciOranBitis\").select2(\"destroy\");$(\"#yabanciOranBitis option\").removeAttr(\"selected\");$(\"#yabanciOranBitis\").empty().append(yabanciOranBitisTemp);yabanciOranBitisTempSelected=$(\"#yabanciOranBitis option[value='\"+yabanciBaslangicSelected+\"']\").prev().nextAll().remove();$(\"#yabanciOranBitis\").val(yabanciBitisSelected)"
+   ],
+   "alanlar": [
+    "__type",
+    "HISSE_KODU",
+    "PRICE_TL",
+    "YAB_ORAN_START",
+    "YAB_ORAN_END",
+    "DEGISIM",
+    "ETKI",
+    "HISSE_TANIM",
+    "HISSE_TANIM_YD"
+   ],
+   "ornek_satir": {
+    "__type": "IsYatirim.Website.StockInfo.Model.YabanciOranItem",
+    "HISSE_KODU": "A1CAP",
+    "PRICE_TL": 3.17,
+    "YAB_ORAN_START": 7.418448014773777,
+    "YAB_ORAN_END": 7.197705632502308,
+    "DEGISIM": -0.22074238227146825,
+    "ETKI": -0.002979213467963855,
+    "HISSE_TANIM": "A1 Capital ",
+    "HISSE_TANIM_YD": "A1 Capital "
+   },
+   "denemeler": [
+    {
+     "govde": {
+      "baslangicTarih": "11-11-2026",
+      "bitisTarihi": "12-11-2026",
+      "sektor": null,
+      "endeks": "09",
+      "hisse": null
+     },
+     "durum": 200,
+     "ornek": "{\"d\":[{\"__type\":\"IsYatirim.Website.StockInfo.Model.YabanciOranItem\",\"HISSE_KODU\":\"A1CAP\",\"PRICE_TL\":3.17,\"YAB_ORAN_START\":7.4184480147737766,\"YAB_ORAN_END\":7.1977056325023083,\"DEGISIM\":-0.22074238227146825,\"ETKI\":-0.0029"
+    }
+   ],
+   "calisan": {
+    "bicim": "%d-%m-%Y",
+    "anahtar": [
+     "baslangicTarih",
+     "bitisTarihi"
+    ],
+    "ek": {
+     "sektor": null,
+     "endeks": "09",
+     "hisse": null
+    }
+   },
+   "cekim": {
+    "hafta": 144,
+    "istek": 72,
+    "hata": 0,
+    "sure_dk": 3.9,
+    "satir": 40520,
+    "sutun": [
+     "baslangic",
+     "bitis",
+     "__type",
+     "HISSE_KODU",
+     "PRICE_TL",
+     "YAB_ORAN_START",
+     "YAB_ORAN_END",
+     "DEGISIM",
+     "ETKI",
+     "HISSE_TANIM",
+     "HISSE_TANIM_YD"
+    ]
+   },
+   "sure_sn": 234.7,
+   "zaman": "2026-11-13T16:17"
   }
  }
 }
