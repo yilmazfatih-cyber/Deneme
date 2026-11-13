@@ -33,16 +33,22 @@ query SearchPageQueryResults($searchTerm: String!, $options: SearchOptionsInput!
         }
         video {
           ...CardVideo
+          genreTags {
+            genreId
+            name
+          }
         }
         channel {
           ...ChannelCard
         }
         airing {
           ...AiringBrief
+          synopsis
           channel {
             channelId
             name
             number
+            isSampleSchedule
             logo(params: { width: 96 }) {
               ...ArtworkFields
             }
@@ -59,6 +65,9 @@ query SearchPageQueryResults($searchTerm: String!, $options: SearchOptionsInput!
           collectionId
           name
           description
+          artwork(params: { width: 600 }) {
+            ...ArtworkFields
+          }
         }
         genre {
           genreId

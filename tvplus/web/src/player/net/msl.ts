@@ -108,16 +108,16 @@ export class MslClient {
     this.session = null
   }
 
-  private async provision(): Promise<MslSession> {
+  private async provision(previous: MslSession | null = null): Promise<MslSession> {
     if (this.provisioning) return this.provisioning
-    const p = this.doProvision().finally(() => {
+    const p = this.doProvision(previous).finally(() => {
       this.provisioning = null
     })
     this.provisioning = p
     return p
   }
 
-  private async doProvision(): Promise<MslSession> {
+  private async doProvision(previous: MslSession | null): Promise<MslSession> {
     const t0 = performance.now()
     const esn = await esnNow()
     const subtle = subtleOrNull()
@@ -127,6 +127,8 @@ export class MslClient {
       entityauthdata: { scheme: 'NONE', authdata: { identity: esn } },
       keyrequestdata: { scheme, keydata: {} },
     }
+    // Yenilemede eski belirteç gönderilir: sunucu serialnumber'ı korur, sequencenumber'ı artırır
+    if (previous && previous.esn === esn) req.mastertoken = previous.mastertoken
     if (subtle) {
       pair = await generateEcdhKeyPair(subtle)
       req.keyrequestdata.keydata.publickey = await exportPublicKey(subtle, pair.publicKey)
@@ -165,7 +167,8 @@ export class MslClient {
       keys,
       mastertoken: resp.mastertoken,
       tokendata,
-      messageid: 0,
+      // Aynı seri sürüyorsa messageid artmaya devam eder (sunucu eski kimliği reddeder)
+      messageid: previous && previous.tokendata.serialnumber === tokendata.serialnumber ? previous.messageid : 0,
       mustRenew: false,
     }
     this.session = session
@@ -178,6 +181,7 @@ export class MslClient {
         sequencenumber: tokendata.sequencenumber,
         renewalwindow: tokendata.renewalwindow,
         expiration: tokendata.expiration,
+        renewed: !!req.mastertoken,
         esn,
         bytes: text.length,
       },
@@ -188,6 +192,12 @@ export class MslClient {
 
   private async ensureSession(): Promise<MslSession> {
     const s = this.session
+    const esn = peekBoot()?.esn
+    if (s && esn && s.esn !== esn) {
+      // Cihaz kimliği değişti (çıkış/giriş): eski oturum kullanılamaz
+      this.session = null
+      return this.provision(null)
+    }
     if (s && !s.mustRenew && nowSec() <= s.tokendata.renewalwindow) return s
     if (s) {
       devbus.emit('msl', 'yenileme', {
@@ -198,7 +208,7 @@ export class MslClient {
       })
     }
     this.session = null
-    return this.provision()
+    return this.provision(s)
   }
 
   /**
@@ -262,6 +272,8 @@ export class MslClient {
       throw new MslError(e?.code ?? 'BAD_RESPONSE', e?.message ?? `MSL yanıtı geçersiz (${res.status})`, res.status, json)
     }
     const opened = await openEnvelope<T>(subtle, s.keys, json)
+    // Yanıt kimliği = istek + 1; sonraki istek ondan büyük olmalı
+    if (opened.header.messageid > s.messageid) s.messageid = opened.header.messageid
     if (opened.header.renewable) s.mustRenew = true
     devbus.emit(
       'msl',

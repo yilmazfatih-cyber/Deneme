@@ -1,0 +1,31 @@
+/* Yayın / yetki alt sayfası (Canlı TV, Rehber, Arama ortak). Yalnız tokenlar. */
+.lv-airsheet__channel {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.lv-airsheet__chtext {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+.lv-airsheet__progress {
+  margin-top: 12px;
+}
+.lv-airsheet__synopsis {
+  margin: 16px 0 0;
+}
+.lv-airsheet__line {
+  margin: 16px 0 0;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  color: var(--t1);
+}
+.lv-airsheet__note {
+  margin: 12px 0 0;
+  white-space: normal;
+}

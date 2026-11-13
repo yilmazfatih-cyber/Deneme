@@ -71,11 +71,42 @@ export function isAbortError(err: unknown): boolean {
   return (err as { name?: string } | null)?.name === 'AbortError'
 }
 
+/** İmzalı adres reddedildi (403 SIGNATURE_INVALID / URL_EXPIRED, 410 OBJECT_VERSION_STALE): manifest yenilenmeli. */
+export class StaleUrlError extends Error {
+  readonly status: number
+  readonly code: string
+  constructor(status: number, code: string) {
+    super(`İmzalı adres geçersiz (${status} ${code})`)
+    this.name = 'StaleUrlError'
+    this.status = status
+    this.code = code
+  }
+}
+
+/** Başka düğümde de değişmeyecek istek hatası (400, 416): yük devri yapılmaz. */
+export class RangeRequestError extends Error {
+  readonly status: number
+  constructor(status: number, code: string) {
+    super(`Aralık isteği reddedildi (${status} ${code})`)
+    this.name = 'RangeRequestError'
+    this.status = status
+  }
+}
+
 class AttemptError extends Error {
   readonly quarantine: boolean
   constructor(message: string, quarantine: boolean) {
     super(message)
     this.quarantine = quarantine
+  }
+}
+
+async function errorCode(res: Response): Promise<string> {
+  try {
+    const j = (await res.json()) as { error?: { code?: string } }
+    return j.error?.code ?? ''
+  } catch {
+    return ''
   }
 }
 
@@ -99,8 +130,11 @@ async function attempt(url: string, signal: AbortSignal, timeoutMs: number): Pro
     }
     const ttfbMs = performance.now() - t0
     if (!res.ok) {
-      void res.body?.cancel().catch(() => undefined)
-      throw new AttemptError(`HTTP ${res.status}`, res.status >= 500)
+      // Sözleşme (shared/playback.ts §4): 403/410 → manifesti yenile · 5xx → sıradaki CDN · 400/416 → hata
+      if (res.status === 403 || res.status === 410) throw new StaleUrlError(res.status, await errorCode(res))
+      if (res.status === 400 || res.status === 416) throw new RangeRequestError(res.status, await errorCode(res))
+      const code = await errorCode(res)
+      throw new AttemptError(`HTTP ${res.status}${code ? ` ${code}` : ''}`, res.status >= 500)
     }
     const expected = res.headers.get('content-encoding') ? 0 : Number(res.headers.get('content-length') ?? '0')
     const chunks: Uint8Array[] = []
@@ -157,7 +191,7 @@ export async function fetchRange(urls: StreamUrl[], start: number, end: number, 
       if (r.bytes.length !== end - start + 1) throw new AttemptError(`beklenmeyen uzunluk ${r.bytes.length}`, false)
       return { ...r, cdnId: u.cdnId }
     } catch (err) {
-      if (isAbortError(err)) throw err
+      if (isAbortError(err) || err instanceof StaleUrlError || err instanceof RangeRequestError) throw err
       const reason = (err as Error).message
       attempts.push({ cdnId: u.cdnId, reason })
       if (!(err instanceof AttemptError) || err.quarantine) health.quarantine(u.cdnId)
@@ -182,7 +216,7 @@ export async function fetchDocument(
       const r = await attempt(u.url, o.signal, o.timeoutMs ?? CDN_TIMEOUT_MS)
       return { text: new TextDecoder().decode(r.bytes), cdnId: u.cdnId, ms: r.totalMs }
     } catch (err) {
-      if (isAbortError(err)) throw err
+      if (isAbortError(err) || err instanceof StaleUrlError || err instanceof RangeRequestError) throw err
       const reason = (err as Error).message
       attempts.push({ cdnId: u.cdnId, reason })
       if (!(err instanceof AttemptError) || err.quarantine) health.quarantine(u.cdnId)

@@ -20,6 +20,12 @@ query LivePage($capabilities: PageCapabilitiesInput!) {
           ... on Channel {
             ...ChannelCard
             description
+            now {
+              synopsis
+              art: artwork(params: { width: 1280 }) {
+                ...ArtworkFields
+              }
+            }
           }
           ... on ProgramAiring {
             ...AiringBrief
@@ -29,6 +35,7 @@ query LivePage($capabilities: PageCapabilitiesInput!) {
               name
               number
               sourceKind
+              isSampleSchedule
               logo(params: { width: 96 }) {
                 ...ArtworkFields
               }

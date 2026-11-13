@@ -62,7 +62,7 @@ export function loadYouTubeApi(): Promise<YTNamespace> {
     window.onYouTubeIframeAPIReady = () => {
       clearTimeout(timer)
       prev?.()
-      devbus.emit('embed', 'YouTube API yüklendi', { url: API_URL }, { ms: performance.now() - t0 })
+      devbus.emit('embed', 'YouTube API yüklendi', { url: API_URL, videoId: null, state: 'UNSTARTED', error: null }, { ms: performance.now() - t0 })
       if (window.YT) resolve(window.YT)
       else reject(new Error('YouTube API eksik'))
     }
@@ -111,6 +111,10 @@ export class YouTubeAdapter implements PlayerAdapter {
   private knownDuration = 0
   private destroyed = false
   private durationPoll: number | null = null
+  private yt: YTNamespace | null = null
+  private mode: 'live' | 'video' = 'video'
+  /** Son bilinen oynatıcı durumu (devbus `embed.state`: UNSTARTED|BUFFERING|PLAYING|PAUSED|ENDED|CUED) */
+  private lastState = 'UNSTARTED'
 
   constructor(manifest: EmbedManifest, opts: AdapterOptions) {
     this.manifest = manifest
@@ -119,6 +123,7 @@ export class YouTubeAdapter implements PlayerAdapter {
 
   /** "YouTube'da aç" bağlantısı */
   externalUrl(): string {
+    if (this.mode === 'live' && this.manifest.liveChannelId) return `https://www.youtube.com/channel/${encodeURIComponent(this.manifest.liveChannelId)}/live`
     if (this.manifest.videoId) return `https://www.youtube.com/watch?v=${encodeURIComponent(this.manifest.videoId)}`
     if (this.manifest.liveChannelId) return `https://www.youtube.com/channel/${encodeURIComponent(this.manifest.liveChannelId)}/live`
     return 'https://www.youtube.com/'
@@ -140,10 +145,10 @@ export class YouTubeAdapter implements PlayerAdapter {
     this.emit({ type: 'state', state: s })
   }
 
-  private embedEvent(state: string, error: number | null = null): void {
+  private embedEvent(state: string, error: number | string | null = null): void {
     devbus.emit(
       'embed',
-      `YouTube: ${state}`,
+      error === null ? `YouTube: ${state}` : `YouTube: hata ${error}`,
       { videoId: this.manifest.videoId, liveChannelId: this.manifest.liveChannelId, state, error },
       { ok: error === null },
     )
@@ -164,26 +169,50 @@ export class YouTubeAdapter implements PlayerAdapter {
       YT = await loadYouTubeApi()
     } catch (err) {
       if (this.destroyed) return
-      this.embedEvent('API_LOAD_FAILED')
+      this.embedEvent(this.lastState, 'API_LOAD_FAILED')
       this.failWith('API_LOAD', (err as Error).message)
       return
     }
     if (this.destroyed) return
+    this.yt = YT
+    // Canlı kanal gömmesi önce denenir; hata verirse ve manifestte videoId varsa ona düşülür
+    if (this.manifest.liveChannelId) this.createPlayer('live')
+    else if (this.manifest.videoId) this.createPlayer('video')
+    else this.failWith('NO_VIDEO', 'Bu gömme için video bilgisi yok.')
+  }
+
+  private createPlayer(mode: 'live' | 'video'): void {
+    const YT = this.yt
+    const host = this.host
+    if (!YT || !host) return
+    this.mode = mode
+    host.replaceChildren()
     const origin = window.location.origin
     const events: YTPlayerOptions['events'] = {
       onReady: (e) => this.onReady(e.target),
       onStateChange: (e) => this.onStateChange(e.data),
       onError: (e) => {
-        this.embedEvent('ERROR', e.data)
+        this.embedEvent(this.lastState, e.data)
+        if (this.mode === 'live' && this.manifest.videoId) {
+          devbus.emit('embed', 'YouTube: canlı gömme hata verdi, videoya düşülüyor', { videoId: this.manifest.videoId, state: this.lastState, error: e.data }, { ok: false })
+          try {
+            this.player?.destroy()
+          } catch {
+            /* yok say */
+          }
+          this.player = null
+          this.createPlayer('video')
+          return
+        }
         this.failWith(`YT_${e.data}`, youTubeErrorMessage(e.data))
       },
     }
-    if (this.manifest.videoId) {
+    if (mode === 'video') {
       const target = document.createElement('div')
       host.append(target)
       const startSec = Math.floor(this.opts.startSec || this.manifest.startSec || 0)
       this.player = new YT.Player(target, {
-        videoId: this.manifest.videoId,
+        videoId: this.manifest.videoId ?? '',
         width: '100%',
         height: '100%',
         playerVars: {
@@ -200,10 +229,10 @@ export class YouTubeAdapter implements PlayerAdapter {
         },
         events,
       })
-    } else if (this.manifest.liveChannelId) {
+    } else {
       const iframe = document.createElement('iframe')
       const q = new URLSearchParams({
-        channel: this.manifest.liveChannelId,
+        channel: this.manifest.liveChannelId ?? '',
         autoplay: '1',
         enablejsapi: '1',
         playsinline: '1',
@@ -218,9 +247,6 @@ export class YouTubeAdapter implements PlayerAdapter {
       iframe.style.cssText = 'width:100%;height:100%;border:0;display:block'
       host.append(iframe)
       this.player = new YT.Player(iframe, { events })
-    } else {
-      this.failWith('NO_VIDEO', 'Bu gömme için video bilgisi yok.')
-      return
     }
     const ifr = host.querySelector('iframe')
     if (ifr) {
@@ -232,7 +258,7 @@ export class YouTubeAdapter implements PlayerAdapter {
 
   private onReady(p: YTPlayer): void {
     if (this.destroyed) return
-    this.embedEvent('READY')
+    this.embedEvent(this.lastState)
     if (this.opts.muted) p.mute()
     if (this.opts.autoplay) p.playVideo()
     else this.setState('paused')
@@ -254,7 +280,8 @@ export class YouTubeAdapter implements PlayerAdapter {
   }
 
   private onStateChange(code: number): void {
-    this.embedEvent(STATE_NAMES[code] ?? String(code))
+    this.lastState = STATE_NAMES[code] ?? this.lastState
+    this.embedEvent(this.lastState)
     switch (code) {
       case 1:
         if (!this.started) {

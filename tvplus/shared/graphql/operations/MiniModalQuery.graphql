@@ -7,6 +7,11 @@ query MiniModalQuery($videoIds: [Int!]!, $uiContext: TextEvidenceUiContext = BOB
     thumbRating
     playbackBadges
     runtimeSec
+    contentAdvisory {
+      certificationValue
+      maturityLevel
+      reasons
+    }
     textEvidence(uiContext: $uiContext) {
       key
       text

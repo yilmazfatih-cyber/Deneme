@@ -28,7 +28,7 @@ export function Scrubber(props: {
   return (
     <div
       ref={ref}
-      className="kp-scrub"
+      className="kb-scrub"
       role="slider"
       tabIndex={disabled ? -1 : 0}
       aria-label="Oynatma konumu"
@@ -52,20 +52,20 @@ export function Scrubber(props: {
       }}
       onPointerCancel={() => setDrag(null)}
     >
-      <div className="kp-rail">
+      <div className="kb-rail">
         {buffered.map((b, i) => (
-          <span key={i} className="kp-buf" style={{ left: `${pct(b.start)}%`, width: `${Math.max(0, pct(b.end) - pct(b.start))}%` }} />
+          <span key={i} className="kb-buf" style={{ left: `${pct(b.start)}%`, width: `${Math.max(0, pct(b.end) - pct(b.start))}%` }} />
         ))}
-        <span className="kp-fill" style={{ width: `${pct(shown)}%` }} />
+        <span className="kb-fill" style={{ width: `${pct(shown)}%` }} />
       </div>
-      {!disabled && <span className="kp-thumb" style={{ left: `${pct(shown)}%` }} />}
+      {!disabled && <span className="kb-thumb" style={{ left: `${pct(shown)}%` }} />}
     </div>
   )
 }
 
 export function Times({ position, duration }: { position: number; duration: number }): ReactElement {
   return (
-    <div className="kp-times" aria-hidden="true">
+    <div className="kb-times" aria-hidden="true">
       <span>{formatClock(position)}</span>
       <span>{duration > 0 ? `-${formatClock(Math.max(0, duration - position))}` : ''}</span>
     </div>
@@ -89,7 +89,7 @@ export function Menu(props: { title: string; options: MenuOption[]; selected: st
   return (
     <div
       ref={ref}
-      className="kp-menu"
+      className="kb-menu"
       role="menu"
       aria-label={props.title}
       onKeyDown={(e) => {
@@ -106,10 +106,10 @@ export function Menu(props: { title: string; options: MenuOption[]; selected: st
           type="button"
           role="menuitemradio"
           aria-checked={o.id === props.selected}
-          className="kp-opt"
+          className="kb-opt"
           onClick={() => props.onSelect(o.id)}
         >
-          <span className="kp-check">{o.id === props.selected ? <IconCheck size={20} /> : null}</span>
+          <span className="kb-check">{o.id === props.selected ? <IconCheck size={20} /> : null}</span>
           <span>
             {o.label}
             {o.hint ? <small>{o.hint}</small> : null}
@@ -148,11 +148,16 @@ export function SubtitleOverlay({ controller, adapter, raised }: { controller: T
   }, [controller, adapter])
   if (!cues.length) return null
   return (
-    <div className="kp-subs" data-raised={raised ? 'true' : 'false'} aria-live="off">
+    <div className="kb-subs" data-raised={raised ? 'true' : 'false'} aria-live="off">
       {cues.map((c) =>
         c.lines.map((line, li) => (
           <div key={`${c.start}-${li}`}>
-            <span className="kp-cue">{line.map((s, si) => (s.italic ? <em key={si}>{s.text}</em> : <span key={si}>{s.text}</span>))}</span>
+            <span className="kb-cue">
+              {line.map((s, si) => {
+                const inner = s.italic ? <em>{s.text}</em> : s.text
+                return s.bold ? <strong key={si}>{inner}</strong> : <span key={si}>{inner}</span>
+              })}
+            </span>
           </div>
         )),
       )}
@@ -171,7 +176,7 @@ export function StatsOverlay({ adapter, onClose }: { adapter: PlayerAdapter; onC
     </>
   )
   return (
-    <section className="kp-stats" aria-label="Oynatma istatistikleri" onClick={onClose}>
+    <section className="kb-stats" aria-label="Oynatma istatistikleri" onClick={onClose}>
       <h2>İstatistik</h2>
       <dl>
         {row('Kaynak', adapter.kind)}
@@ -192,8 +197,8 @@ export function StatsOverlay({ adapter, onClose }: { adapter: PlayerAdapter; onC
 
 export function LiveTag(): ReactElement {
   return (
-    <span className="kp-live-tag">
-      <span className="kp-live-dot" aria-hidden="true" />
+    <span className="kb-live-tag">
+      <span className="kb-live-dot" aria-hidden="true" />
       CANLI
     </span>
   )
@@ -202,13 +207,13 @@ export function LiveTag(): ReactElement {
 export function LiveProgramme({ airing }: { airing: AiringBrief }): ReactElement {
   const p = airingProgress(airing.startAt, airing.endAt)
   return (
-    <div className="kp-live">
-      <span className="kp-card-title">{airing.title}</span>
-      <span className="kp-live-meta">
+    <div className="kb-live">
+      <span className="kb-card-title">{airing.title}</span>
+      <span className="kb-live-meta">
         {formatSpan(airing.startAt, airing.endAt)} · {remainingLabel(airing.endAt)}
       </span>
       <div
-        className="kp-live-bar"
+        className="kb-live-bar"
         role="progressbar"
         aria-label="Program ilerlemesi"
         aria-valuemin={0}

@@ -132,6 +132,8 @@ export class PlaybackSession {
   end(reason: 'ended' | 'exit' | 'zap' | 'source'): void {
     if (this.ended) return
     this.ended = true
+    // Hiç bağdaştırıcı bağlanmadıysa (yükleme yarıda kaldı / StrictMode'un ikinci kurulumu) oynatma sonu yoktur
+    if (!this.manifest) return
     this.saveBookmark(reason === 'ended' ? 'bitti' : 'çıkış')
     logEvent('playback.end', { ...this.base(), reason, durationSec: Math.round(this.durationSec), rebuffers: this.rebuffers }, this.tctx)
   }

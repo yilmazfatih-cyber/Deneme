@@ -65,6 +65,8 @@ export interface AdapterOptions {
   maxHeight?: number | null
   /** Önizleme: kendi denetimleri olmayan sade gömme */
   preview?: boolean
+  /** İmzalı adresler reddedilince (403/410) taze manifest ister; verilmezse hata gösterilir */
+  refreshManifest?: () => Promise<LicensedManifest>
 }
 
 export interface PlayerAdapter {

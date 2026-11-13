@@ -25,6 +25,11 @@ export interface AppConfig {
   /** true → dış ağa çıkılmaz (testler); uzak kaynak gerektiren işler hızlıca yedeğe düşer. */
   offline: boolean
   logLevel: 'silent' | 'error' | 'warn' | 'info' | 'debug'
+  /**
+   * /api/debug/* uçlarına erişim: 'member' (varsayılan) giriş yapmış üye ister, 'open' herkese açık (yalnız testler),
+   * 'off' uçları kapatır. Bu uçlar CDN düğümlerini yavaşlatıp kapatabildiği için oturumsuz açık bırakılmaz.
+   */
+  debugAccess: 'open' | 'member' | 'off'
 }
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..', '..')
@@ -44,7 +49,8 @@ export function loadConfig(overrides: Partial<AppConfig> = {}): AppConfig {
   const dataDir = overrides.dataDir ?? process.env.TVP_DATA_DIR ?? join(ROOT, '.data')
   mkdirSync(dataDir, { recursive: true })
   return {
-    host: process.env.HOST ?? '0.0.0.0',
+    // Varsayılan yalnız bu makine; telefondan denemek için HOST=0.0.0.0 verin.
+    host: process.env.HOST ?? '127.0.0.1',
     port: Number(process.env.PORT ?? 8787),
     rootDir: ROOT,
     contentDir: process.env.TVP_CONTENT_DIR ?? join(ROOT, 'content'),
@@ -57,6 +63,7 @@ export function loadConfig(overrides: Partial<AppConfig> = {}): AppConfig {
     isTest: false,
     offline: process.env.TVP_OFFLINE === '1',
     logLevel: (process.env.TVP_LOG_LEVEL as AppConfig['logLevel']) ?? 'info',
+    debugAccess: process.env.TVP_DEBUG === 'off' ? 'off' : process.env.TVP_DEBUG === 'open' ? 'open' : 'member',
     ...overrides,
     dataDir,
   }

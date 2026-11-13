@@ -11,6 +11,7 @@ import errorsPlugin from './gateway/errors'
 import shellPlugin from './gateway/shell'
 import tracingPlugin from './gateway/tracing'
 import graphqlPlugin from './graphql/plugin'
+import { ROUTES } from '../../shared/constants'
 import { loadConfig, type AppConfig } from './kernel/config'
 import type { Services } from './kernel/services'
 import catalogPlugin from './services/catalog/plugin'
@@ -46,6 +47,19 @@ export async function buildApp(overrides: Partial<AppConfig> = {}): Promise<Fast
   await app.register(formbody)
 
   await identityPlugin(app)
+
+  // Hata ayıklama uçları (düğüm yavaşlatma/kapama, olay dökümü) oturumsuz kullanılamaz; pasaport kancasından sonra çalışır.
+  app.addHook('onRequest', async (req, reply) => {
+    if (!req.url.startsWith(`${ROUTES.DEBUG_PREFIX}/`) || config.debugAccess === 'open') return
+    const traceId = req.trace?.traceId
+    if (config.debugAccess === 'off') {
+      return reply.code(404).send({ error: { code: 'NOT_FOUND', message: 'Hata ayıklama uçları kapalı.', traceId } })
+    }
+    if (req.passport?.membershipStatus !== 'CURRENT_MEMBER') {
+      return reply.code(401).send({ error: { code: 'UNAUTHENTICATED', message: 'Önce giriş yapmalısınız.', traceId } })
+    }
+  })
+
   await eventsPlugin(app)
   await notificationsPlugin(app)
 

@@ -26,6 +26,12 @@ function setBoot(b: BootContext): BootContext {
   return b
 }
 
+/** Giriş / çıkış / profil değişimi uçlarının yanıtında dönen bağlamı doğrudan uygular (ek GET /api/boot gerekmez). */
+export function applyBoot(b: BootContext): BootContext {
+  devbus.emit('session', 'açılış bağlamı (POST yanıtından)', { esn: b.esn, membershipStatus: b.membershipStatus, profile: b.activeProfile?.guid ?? null })
+  return setBoot(b)
+}
+
 /** İlk yükleme: gömülü bağlam varsa onu kullanır, yoksa sunucudan ister. */
 export async function loadBoot(): Promise<BootContext> {
   const el = document.getElementById('tvp-boot')

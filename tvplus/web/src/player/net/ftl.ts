@@ -32,6 +32,10 @@ export function ftlSnapshot(): ReturnType<FtlRanking['snapshot']> {
   return ranking.snapshot()
 }
 
+function isAnycast(name: string): boolean {
+  return /anycast/i.test(name)
+}
+
 async function measure(target: FtlProbeTarget): Promise<FtlResult> {
   const t0 = performance.now()
   const ctrl = new AbortController()
@@ -64,7 +68,8 @@ async function runPulse(probe: FtlProbeResponse, it: number, pulse: number, gen:
   const t0 = performance.now()
   const results = await Promise.all(probe.urls.map(measure))
   if (gen !== generation) return
-  ranking.record(results)
+  // anycast bir manifest CDN'i değildir: ölçülür ve raporlanır ama sıralamaya (cdnHints) girmez
+  ranking.record(results.filter((r) => !isAnycast(r.name)))
   const winner = pulseWinner(results)
   devbus.emit(
     'ftl',

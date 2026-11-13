@@ -206,6 +206,28 @@ export class MseEngine implements PipelineHost {
     this.objectUrl = null
   }
 
+  /**
+   * Yeni manifestin imzalı adreslerini (akış kimliğine göre) mevcut akışlara aktarır ve kaldığı yerden sürdürür.
+   * 403/410 sonrası çağrılır; MediaSource ve tampon korunur.
+   */
+  refreshUrls(fresh: StreamsManifest): number {
+    const byId = new Map<string, ManifestStream>()
+    for (const t of fresh.videoTracks) for (const s of t.streams) byId.set(s.streamId, s)
+    for (const t of fresh.audioTracks) for (const s of t.streams) byId.set(s.streamId, s)
+    let n = 0
+    const all = [...this.videoStreams, ...this.manifest.audioTracks.flatMap((t) => t.streams)]
+    for (const s of all) {
+      const f = byId.get(s.streamId)
+      if (f) {
+        s.urls = f.urls
+        n++
+      }
+    }
+    devbus.emit('manifest', `${this.manifest.viewableId}: adresler yenilendi`, { streams: n, expiration: fresh.expiration })
+    this.retry()
+    return n
+  }
+
   /** Tüm CDN'ler başarısız olduktan sonra kullanıcı "Tekrar dene" dediğinde. */
   retry(): void {
     cdnHealth.clear()
@@ -299,8 +321,9 @@ export class MseEngine implements PipelineHost {
     devbus.emit('abr', `${arrow} ${to.bitrateKbps} kbps`, {
       from: from?.bitrateKbps ?? null,
       to: to.bitrateKbps,
+      fromStreamId: from?.streamId ?? null,
+      toStreamId: to.streamId,
       height: to.height ?? null,
-      streamId: to.streamId,
       reason,
       estimateKbps,
       bufferSec: round1(bufferSec),

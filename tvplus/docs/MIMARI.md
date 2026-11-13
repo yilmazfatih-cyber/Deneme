@@ -111,10 +111,10 @@ lolomos[guid].summary                   → atom { length, trackId, expires }
 lolomos[guid][{0..n}]                   → ref ["lists", listId]
 lists[listId].summary                   → atom { id, context, displayName, length, trackId, genreId?, collectionId? }
                                            context: billboard | continueWatching | queue | top10 | becauseYouWatched |
-                                                    gems | newReleases | genre | collection | exclusive | leaving | bridge
+                                                    gems | newReleases | genre | collection | curated | exclusive | leaving | bridge
 lists[listId][{0..m}]                   → ref ["videos", videoId]
 lists[listId].itemTctx[{0..m}]          → atom "<tctx>"
-videos[id].summary                      → atom { id, type: 'movie'|'show', isPlayable, isKids, unifiedEntityId }
+videos[id].summary                      → atom { id, type: 'movie'|'show'|'episode'|'supplemental', isPlayable, isKids, unifiedEntityId }
 videos[id].title | shortSynopsis | synopsis | releaseYear | displayRuntime | runtime | seasonCount
 videos[id].boxart | storyArt | billboardArt | titleLogo   → atom { url, width, height, key }
 videos[id].badge                        → atom { kind, text } | boş atom
@@ -126,6 +126,10 @@ videos[id].promoVideo                   → atom { viewableId, computeId, offset
 videos[id].current                      → ref ["videos", <devam edilecek bölüm>]   (diziler)
 usp.features[<bayrak>]                  → atom boolean      (ör. liveTv, kidsMode, top10)
 ```
+
+`$expires`: negatif değer alındığı andan itibaren göreli milisaniye, pozitif değer mutlak epoch ms; `0` hemen bayat, `1` hiç
+bayatlamaz. `lolomos[guid].summary.expires` ISO tarihidir. Liste kimlikleri profile özeldir; başka profilin listesi `FORBIDDEN`
+hata atomu döner.
 
 Motor ref'leri izler: `lolomo[0][3].title` → `lolomos[g][0]` → `lists[L][3]` → `videos[V].title`; yanıt grafiğinde
 ara ref'ler de yer alır. `isTop10Supported=false` gelirse Top 10 satırı hiç üretilmez (eski usul yetenek pazarlığı).
@@ -140,15 +144,17 @@ Her istemci katmanı `devbus.emit(cat, label, detail, { ms, ok })` çağırır (
 | `falcor`   | `3 yol`                       | `paths, flags, status, traceId, fromCache, missing`                                     |
 | `cache`    | `arama: isabet`               | `key, expires, ageMs`                                                                   |
 | `prefetch` | `MiniModal satır` / `manifest`| `rowId, videoIds` / `viewableId`                                                        |
-| `ftl`      | `darbe 1`                     | `iter, pulse, results[{name,cdnId,ok,ttfbMs,totalMs,kbps}], winner`                     |
-| `msl`      | `aleProvision` / `zarf`       | `scheme, serialnumber, renewalwindow, expiration, messageid, bytes`                     |
-| `manifest` | `Video:80010001`              | `kind, prefetch, video[{bitrateKbps,height,profile}], audio, text, cdns, expiration`    |
+| `ftl`      | `darbe 1`                     | `iter, pulse (0 tabanlı), results[{name,cdnId,ok,ttfbMs,totalMs,kbps}], winner (cdnId)` |
+| `msl`      | `aleProvision` / `zarf`       | `scheme, serialnumber, renewalwindow, expiration (epoch sn), messageid, bytes`          |
+| `manifest` | `Video:80010001`              | `kind, prefetch, video[{streamId,bitrateKbps,width,height,profile}], audio[{trackId,language,channels}], text[{trackId,language}], cdns[{id,rank}], expiration (epoch ms)` |
 | `range`    | `video 1543-675647`           | `type:'video'\|'audio'\|'header', cdnId, start, end, bytes, ttfbMs, kbps, streamId, segment` |
-| `abr`      | `↑ 1127 kbps`                 | `from, to, reason, estimateKbps, bufferSec`                                             |
+| `abr`      | `↑ 1127 kbps`                 | `from, to (kbps), fromStreamId, toStreamId, reason, estimateKbps, bufferSec`            |
 | `buffer`   | `tampon`                      | `videoSec, audioSec, state`                                                             |
 | `cdn`      | `yük devri c101→c102`         | `from, to, reason`                                                                      |
 | `ttml`     | `tr yüklendi`                 | `language, cues, tickRate`                                                              |
-| `embed`    | `YouTube: PLAYING`            | `videoId, state, error`                                                                 |
+| `embed`    | `YouTube: PLAYING`            | `videoId, state (UNSTARTED\|BUFFERING\|PLAYING\|PAUSED\|ENDED\|CUED), error`              |
+| `event-log`| `12 olay`                     | `count, names[], status, rate`                                                          |
+| `push`     | `yoklama` / `3 bildirim`      | `cursor, wait` · `count, cursor, waitMs, initial` · `error, retryInMs`                  |
 | `player`   | `durum: oynuyor`              | `viewableId, state, positionSec`                                                        |
 
 ## 8. Bitti tanımı (her ajan teslim etmeden önce)

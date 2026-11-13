@@ -7,6 +7,7 @@
 export interface CueSpan {
   text: string
   italic: boolean
+  bold?: boolean
 }
 export interface TtmlCue {
   start: number
@@ -155,13 +156,23 @@ function isItalicStyle(n: XmlNode, italicStyles: Set<string>): boolean | null {
   return null
 }
 
-function collectLines(p: XmlNode, italicStyles: Set<string>, inheritedItalic: boolean): CueSpan[][] {
+function isBoldStyle(n: XmlNode, boldStyles: Set<string>): boolean | null {
+  const fw = attr(n, 'fontWeight')
+  if (fw) return fw === 'bold'
+  const style = attr(n, 'style')
+  if (style) {
+    for (const id of style.split(/\s+/)) if (boldStyles.has(id)) return true
+  }
+  return null
+}
+
+function collectLines(p: XmlNode, italicStyles: Set<string>, inheritedItalic: boolean, boldStyles: Set<string> = new Set(), inheritedBold = false): CueSpan[][] {
   const lines: CueSpan[][] = [[]]
-  const walk = (n: XmlNode, italic: boolean) => {
+  const walk = (n: XmlNode, italic: boolean, bold: boolean) => {
     for (const c of n.children) {
       if (typeof c === 'string') {
         const text = c.replace(/\s+/g, ' ')
-        if (text) lines[lines.length - 1]!.push({ text, italic })
+        if (text) lines[lines.length - 1]!.push(bold ? { text, italic, bold } : { text, italic })
         continue
       }
       const name = local(c.name)
@@ -170,17 +181,18 @@ function collectLines(p: XmlNode, italicStyles: Set<string>, inheritedItalic: bo
         continue
       }
       const own = isItalicStyle(c, italicStyles)
-      walk(c, name === 'i' ? true : own ?? italic)
+      const ownBold = isBoldStyle(c, boldStyles)
+      walk(c, name === 'i' ? true : (own ?? italic), name === 'b' ? true : (ownBold ?? bold))
     }
   }
-  walk(p, inheritedItalic)
+  walk(p, inheritedItalic, inheritedBold)
   // satır başı/sonu boşluklarını kırp, boş parçaları at, bitişik aynı biçimli parçaları birleştir
   const out: CueSpan[][] = []
   for (const line of lines) {
     const merged: CueSpan[] = []
     for (const s of line) {
       const prev = merged[merged.length - 1]
-      if (prev && prev.italic === s.italic) prev.text += s.text
+      if (prev && prev.italic === s.italic && !!prev.bold === !!s.bold) prev.text += s.text
       else merged.push({ ...s })
     }
     if (merged.length) {
@@ -207,6 +219,7 @@ export function parseTtml(xml: string): TtmlDocument {
   const language = tt.attrs['xml:lang'] ?? null
 
   const italicStyles = new Set<string>()
+  const boldStyles = new Set<string>()
   const head = find(tt, 'head')
   if (head) {
     const walkStyles = (n: XmlNode) => {
@@ -216,6 +229,7 @@ export function parseTtml(xml: string): TtmlDocument {
           const id = c.attrs['xml:id'] ?? attr(c, 'id')
           const fs = attr(c, 'fontStyle')
           if (id && (fs === 'italic' || fs === 'oblique')) italicStyles.add(id)
+          if (id && attr(c, 'fontWeight') === 'bold') boldStyles.add(id)
         }
         walkStyles(c)
       }
@@ -225,11 +239,12 @@ export function parseTtml(xml: string): TtmlDocument {
 
   const cues: TtmlCue[] = []
   const body = find(tt, 'body')
-  const visit = (n: XmlNode, parentBegin: number, parentItalic: boolean) => {
+  const visit = (n: XmlNode, parentBegin: number, parentItalic: boolean, parentBold = false) => {
     const begin = attr(n, 'begin')
     const offset = begin !== undefined ? (parseTimeExpression(begin, ctx) ?? 0) : 0
     const myBegin = parentBegin + offset
     const italic = isItalicStyle(n, italicStyles) ?? parentItalic
+    const bold = isBoldStyle(n, boldStyles) ?? parentBold
     if (local(n.name) === 'p') {
       const endAttr = attr(n, 'end')
       const durAttr = attr(n, 'dur')
@@ -242,11 +257,11 @@ export function parseTtml(xml: string): TtmlDocument {
         if (d !== null) end = myBegin + d
       }
       if (begin === undefined || end === null || end <= myBegin) return
-      const lines = collectLines(n, italicStyles, italic)
+      const lines = collectLines(n, italicStyles, italic, boldStyles, bold)
       if (lines.length) cues.push({ start: myBegin, end, lines })
       return
     }
-    for (const c of n.children) if (typeof c !== 'string') visit(c, myBegin, italic)
+    for (const c of n.children) if (typeof c !== 'string') visit(c, myBegin, italic, bold)
   }
   if (body) visit(body, 0, false)
   cues.sort((a, b) => a.start - b.start || a.end - b.end)

@@ -1,0 +1,161 @@
+/* Önizleme kartı (mini modal). Ölçü ve renkler tokens.css'ten; sarı yalnız birincil "oynat". */
+
+.pv-target {
+  display: contents;
+}
+
+.pv-card {
+  position: fixed;
+  z-index: 80; /* satırların ve okların üstünde, üst çubuğun (50) üstünde ama alt sayfaların (100) altında */
+  width: 360px;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--r-card);
+  background: var(--s2);
+  border: 1px solid var(--line);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6);
+  animation: pv-in 160ms ease-out;
+}
+@keyframes pv-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.pv-media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: var(--s1);
+  overflow: hidden;
+}
+.pv-media__still {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+}
+.pv-media__empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  color: var(--t2);
+  font-weight: 600;
+  text-align: center;
+}
+.pv-media__clip {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+.pv-media__clip--on {
+  opacity: 1;
+}
+
+.pv-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 16px 16px;
+  min-width: 0;
+}
+.pv-title {
+  margin: 0;
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pv-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.pv-spacer {
+  flex: 1;
+}
+.pv-play {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--r-pill);
+  background: var(--yellow);
+  color: var(--on-yellow);
+}
+.pv-play:focus-visible {
+  outline: 2px solid var(--t1);
+  outline-offset: 2px;
+}
+/* Basılı (Listemde / Beğenildi): seçili durum BEYAZ (çiplerdeki gibi) */
+.pv-card .cn-iconbtn[aria-pressed='true'],
+.pv-pressable[aria-pressed='true'] {
+  background: var(--t1);
+  color: var(--bg);
+}
+.pv-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.pv-meta .cn-advisory {
+  max-width: 100%;
+}
+.pv-meta__text {
+  color: var(--t2);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+}
+.pv-tag {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 6px;
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  color: var(--t2);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 700;
+}
+.pv-line {
+  white-space: normal;
+}
+.pv-evidence {
+  margin: 0;
+  color: var(--t2);
+  font-size: 13px;
+  line-height: 18px;
+}
+.pv-skel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.pv-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(13, 14, 18, 0.72);
+}

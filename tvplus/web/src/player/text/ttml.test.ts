@@ -44,6 +44,14 @@ describe('TTML ayrıştırıcı', () => {
     expect(c!.lines).toEqual([[{ text: 'Fısıltı', italic: true }, { text: ' ve normal', italic: false }]])
   })
 
+  it('kalın (tts:fontWeight) ve italik parçalar', () => {
+    const xml = `<tt xmlns="http://www.w3.org/ns/ttml" xmlns:tts="http://www.w3.org/ns/ttml#styling" xmlns:ttp="http://www.w3.org/ns/ttml#parameter" ttp:tickRate="10000000">
+      <body><div><p begin="0t" end="10000000t"><span tts:fontWeight="bold">KADIN:</span> Gel <span tts:fontStyle="italic">buraya</span></p></div></body></tt>`
+    expect(parseTtml(xml).cues[0]!.lines).toEqual([
+      [{ text: 'KADIN:', italic: false, bold: true }, { text: ' Gel ', italic: false }, { text: 'buraya', italic: true }],
+    ])
+  })
+
   it('dur özniteliği ve ad alanı önekli öğeler; tickRate yoksa 1', () => {
     const xml = `<tt:tt xmlns:tt="http://www.w3.org/ns/ttml"><tt:body><tt:div begin="10s">
       <tt:p begin="1s" dur="2s">Önekli<tt:br/>öğe</tt:p></tt:div></tt:body></tt:tt>`

@@ -53,14 +53,24 @@ function describe(m: LicensedManifest): Record<string, unknown> {
   if (m.kind === 'STREAMS') {
     return {
       ...base,
-      video: m.videoTracks.flatMap((t) => t.streams.map((s) => ({ bitrateKbps: s.bitrateKbps, height: s.height, profile: s.profile }))),
-      audio: m.audioTracks.map((t) => ({ language: t.language, channels: t.channels, profiles: t.streams.map((s) => s.profile) })),
-      text: m.timedTextTracks.map((t) => t.language),
-      cdns: m.cdns.map((c) => c.id),
+      video: m.videoTracks.flatMap((t) =>
+        t.streams.map((s) => ({ streamId: s.streamId, bitrateKbps: s.bitrateKbps, width: s.width ?? null, height: s.height ?? null, profile: s.profile })),
+      ),
+      audio: m.audioTracks.map((t) => ({ trackId: t.trackId, language: t.language, channels: t.channels })),
+      text: m.timedTextTracks.map((t) => ({ trackId: t.trackId, language: t.language })),
+      cdns: m.cdns.map((c) => ({ id: c.id, rank: c.rank })),
     }
   }
-  if (m.kind === 'PROGRESSIVE') return { ...base, mimeType: m.mimeType, text: m.timedTextTracks.map((t) => t.language), cdns: m.cdns.map((c) => c.id) }
-  return { ...base, provider: m.provider, videoId: m.videoId, liveChannelId: m.liveChannelId }
+  if (m.kind === 'PROGRESSIVE')
+    return {
+      ...base,
+      mimeType: m.mimeType,
+      video: [],
+      audio: [],
+      text: m.timedTextTracks.map((t) => ({ trackId: t.trackId, language: t.language })),
+      cdns: m.cdns.map((c) => ({ id: c.id, rank: c.rank })),
+    }
+  return { ...base, provider: m.provider, videoId: m.videoId, liveChannelId: m.liveChannelId, video: [], audio: [], text: [], cdns: [] }
 }
 
 async function fetchManifest(viewableId: string, o: ManifestOptions): Promise<LicensedManifest> {
@@ -125,10 +135,10 @@ export async function requestManifest(viewableId: string, opts: ManifestOptions 
     const pending = cache.pending(key)
     if (pending) {
       if (opts.prefetch) return pending
-      // Uçuştaki ön hazırlığı bekle; uygunsa onu kullan
+      // Uçuştaki isteği (ön hazırlık ya da eşzamanlı oynatma isteği) bekle; uygunsa onu kullan
       const m = await pending.catch(() => null)
       if (m && canReuseForPlay(m, !!opts.needBookmark)) {
-        devbus.emit('cache', 'manifest: uçuştaki ön hazırlık', { key, expires: m.expiration })
+        devbus.emit('cache', 'manifest: uçuştaki istek paylaşıldı', { key, expires: m.expiration })
         return m
       }
     }

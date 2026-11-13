@@ -5,6 +5,19 @@ query Library {
     }
     continueWatching {
       ...CardVideo
+      ... on Show {
+        currentEpisode {
+          videoId
+          numberLabel
+          title
+          runtimeSec
+          bookmark {
+            positionSec
+            runtimeSec
+            progress
+          }
+        }
+      }
     }
     liked {
       ...CardVideo

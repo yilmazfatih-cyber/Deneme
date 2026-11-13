@@ -1,7 +1,8 @@
 /** STREAMS bağdaştırıcısı: kendi MSE motorumuz (ayrı ses/video, bayt aralığı, ABR, CDN yük devri). */
 import type { StreamsManifest } from '../../../../shared/playback'
 import { EngineError, MseEngine } from '../engine/engine'
-import { AllCdnsFailedError } from '../engine/fetcher'
+import { AllCdnsFailedError, RangeRequestError, StaleUrlError } from '../engine/fetcher'
+import { devbus } from '../../lib/devbus'
 import { MediaElementAdapter } from './mediaElement'
 import type { AdapterOptions, AudioOption, PlayerStats, QualityOption } from './types'
 
@@ -24,7 +25,9 @@ export class StreamsAdapter extends MediaElementAdapter {
       } else if (e.type === 'cdn') {
         this.emit({ type: 'cdnSwitch', from: e.from, to: e.to, reason: e.reason })
       } else if (e.type === 'fatal') {
-        if (e.error instanceof AllCdnsFailedError) this.fail('ALL_CDNS_FAILED', 'Yayın sunucularına ulaşılamıyor', true)
+        if (e.error instanceof StaleUrlError) void this.refreshAfterStale(e.error)
+        else if (e.error instanceof RangeRequestError) this.fail('RANGE', 'Video verisi alınamadı', true)
+        else if (e.error instanceof AllCdnsFailedError) this.fail('ALL_CDNS_FAILED', 'Yayın sunucularına ulaşılamıyor', true)
         else this.fail('MEDIA', 'Video oynatılamadı', true)
       } else if (e.type === 'ready') {
         this.emit({ type: 'duration', durationSec: e.durationSec })
@@ -43,6 +46,28 @@ export class StreamsAdapter extends MediaElementAdapter {
     }
     if (this.destroyed) return
     await this.autoplay()
+  }
+
+  private staleRefreshes: number[] = []
+
+  /** 403/410: taze manifest iste, adresleri değiştir, kaldığın yerden sürdür (en çok 3 kez / dk). */
+  private async refreshAfterStale(err: StaleUrlError): Promise<void> {
+    const now = Date.now()
+    this.staleRefreshes = this.staleRefreshes.filter((t) => now - t < 60_000)
+    if (!this.opts.refreshManifest || this.staleRefreshes.length >= 3) {
+      this.fail('URL_EXPIRED', 'Yayın adresi yenilenemedi', true)
+      return
+    }
+    this.staleRefreshes.push(now)
+    devbus.emit('player', 'imzalı adres reddedildi: manifest yenileniyor', { viewableId: this.viewableId, state: 'buffering', positionSec: Math.round(this.media.currentTime), status: err.status, code: err.code })
+    try {
+      const m = await this.opts.refreshManifest()
+      if (this.destroyed) return
+      if (m.kind !== 'STREAMS') throw new Error('kaynak türü değişti')
+      this.engine?.refreshUrls(m)
+    } catch {
+      if (!this.destroyed) this.fail('URL_EXPIRED', 'Yayın adresi yenilenemedi', true)
+    }
   }
 
   override audioOptions(): AudioOption[] {

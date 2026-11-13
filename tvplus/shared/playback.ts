@@ -42,6 +42,14 @@ export interface FtlReport {
  * Tekrar koruması: header.messageid her iletide artar; sunucu aynı mastertoken serisinde eski kimliği reddeder.
  * Yenileme: now > renewalwindow ise istemci yeniden sağlama (provision) yapar; now > expiration ise sunucu reddeder.
  * WebCrypto yoksa (güvensiz bağlam) şema 'PLAINTEXT_DEV' olur: headerdata/payload base64(utf8(JSON)), imza boş.
+ *
+ * Yanıt başlığı: messageid = istek messageid + 1; `renewable` her zaman boolean.
+ * Hataların taşınması:
+ *   - MSL katmanı hataları şifresiz MslErrorBody: 400 (BAD_REQUEST, DECRYPT_FAILED) · 401 (TOKEN_*, REPLAYED)
+ *   - Oturum/profil yoksa düz REST hatası: 401 UNAUTHENTICATED / PROFILE_REQUIRED
+ *   - Manifest hataları (ManifestError) zarfın İÇİNDE, HTTP 200 ile gelir: istemci `'error' in payload` diye bakar
+ * Yenileme: sağlama isteğine eski `mastertoken` eklenirse (geçerli ya da 24 saatten kısa süre önce dolmuş, aynı ESN)
+ *   sunucu serialnumber'ı korur, sequencenumber'ı 1 artırır; istemci messageid'yi artırmayı sürdürür.
  */
 export const MSL_VERSION = 'v1'
 export const MSL_HKDF_SALT = 'tvplus-msl-v1'
@@ -70,6 +78,8 @@ export interface MslTokenData {
 export interface MslProvisionRequest {
   entityauthdata: { scheme: 'NONE'; authdata: { identity: string /* esn */ } }
   keyrequestdata: { scheme: MslScheme; keydata: { publickey?: string } }
+  /** Yenileme için eski belirteç (isteğe bağlı) */
+  mastertoken?: MslMasterToken
 }
 export interface MslProvisionResponse {
   keyresponsedata: { scheme: MslScheme; keydata: { publickey?: string } }
@@ -145,7 +155,7 @@ export interface MediaStream {
   /** video için */
   width?: number
   height?: number
-  /** tam codec dizgesi, ör. 'vp09.00.10.08' | 'avc1.4d401f' | 'opus' | 'mp4a.40.2' */
+  /** MSE'nin kabul ettiği codec dizgesi, ör. 'vp9' | 'vp09.00.10.08' | 'avc1.4d401f' | 'opus' | 'mp4a.40.2' */
   codecs: string
   /** MSE addSourceBuffer için: 'video/webm' | 'video/mp4' | 'audio/webm' | 'audio/mp4' */
   mimeType: string
@@ -242,7 +252,13 @@ export interface ManifestError {
  *   GET /oca/:node/timedtext/:trackId?o=…&v=…&e=…&t=…   → application/ttml+xml
  *   GET /oca/:node/ftl/probe?data=5120              → 5120 bayt
  * İmza:  t = base64url(HMAC-SHA256(urlKey, `${node}|${o}|${v}|${e}`))   — aralık imzalanmaz (Netflix'teki gibi yol parçası değişir).
- * Yanıt başlıkları: x-tvplus-oca: <node>, x-tcp-info: addr=…;port=…;rtt=…, Server: freenginx-benzeri etiket.
+ * Yanıt başlıkları: x-tvplus-oca: <node>, x-tcp-info: addr=…;port=…;rtt=…, server: tvplus-oca.
+ * Hata kodları ve oynatıcının tepkisi:
+ *   403 SIGNATURE_INVALID | URL_EXPIRED · 410 OBJECT_VERSION_STALE   → manifesti yenile
+ *   502 ORIGIN_UNREACHABLE | ORIGIN_ERROR · 503 NODE_DOWN | NODE_ERROR → sıradaki CDN'e geç
+ *   400 BAD_SIGNATURE_PARAMS · 404 NODE_NOT_FOUND | OBJECT_NOT_FOUND · 416 (content-range: bytes *\/boyut) → hata
+ * Kimlikler: parça `V-main`, `A-<dil>-20|51`, `T-<dil>[-cc]`; akış `v-<yükseklik>p-<kbps>k-<o6>` / `a-<dil>-<kbps>k-<o6>`.
+ * FTL hedeflerinden `anycast` bir manifest CDN'i değildir; sıralamaya ve cdnHints'e girmez.
  */
 export const RANGE_PLACEHOLDER = '{range}'
 export function rangeUrl(template: string, start: number, end: number): string {
@@ -253,5 +269,7 @@ export function rangeUrl(template: string, start: number, end: number): string {
  * Kök: <tt xmlns="http://www.w3.org/ns/ttml" xmlns:ttp="http://www.w3.org/ns/ttml#parameter"
  *          xmlns:tvpm="urn:tvplus:ttml#metadata" ttp:tickRate="10000000" xml:lang="tr">
  * Satırlar: <p begin="14612515t" end="32565033t"><span>Metin</span><br/><span>ikinci satır</span></p>
+ * İtalik/kalın: <span tts:fontStyle="italic">, <span tts:fontWeight="bold"> (xmlns:tts="http://www.w3.org/ns/ttml#styling").
+ * <head><metadata> içinde <tvpm:source> ve <tvpm:cueCount> bulunur.
  */
 export const TTML_TICK_RATE = 10_000_000
