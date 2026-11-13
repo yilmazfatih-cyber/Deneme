@@ -327,7 +327,7 @@ def kuresel_zincir(SS: pd.DataFrame, P: Panel, anahtar: str = "sektor", min_hiss
         p = _p_normal(np.array([x["t"] for x in out["sektor"]]))
         esik = bh_esik(p, 0.10)
         for x, pv in zip(out["sektor"], p):
-            x["anlamli"] = bool(esik > 0 and pv <= esik)
+            x["anlamli"] = bool(pv <= esik)
             x["tutarli"] = bool(np.sign(x["yari1"]) == np.sign(x["yari2"]) == np.sign(x["kor"]))
         out["sektor_test"] = {"test": len(p), "anlamli": int(sum(x["anlamli"] for x in out["sektor"])), "anlamli_tutarli": int(sum(x["anlamli"] and x["tutarli"] for x in out["sektor"]))}
         out["sektor"] = sorted(out["sektor"], key=lambda x: -abs(x["t"]))

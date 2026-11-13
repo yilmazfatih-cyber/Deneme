@@ -164,12 +164,12 @@ def _t(r: float, n: int) -> float:
 
 
 def bh_esik(p: np.ndarray, q: float = 0.10) -> float:
-    """Benjamini–Hochberg: yanlış keşif oranı q için p eşiği (hiçbiri geçmezse 0)."""
+    """Benjamini–Hochberg: yanlış keşif oranı q için p eşiği (hiçbiri geçmezse −1; p = 0 olan testler de geçebilsin diye)."""
     p = np.sort(p[~np.isnan(p)])
     if not len(p):
-        return 0.0
+        return -1.0
     k = np.nonzero(p <= q * (np.arange(1, len(p) + 1) / len(p)))[0]
-    return float(p[k[-1]]) if len(k) else 0.0
+    return float(p[k[-1]]) if len(k) else -1.0
 
 
 def _p_normal(t: np.ndarray) -> np.ndarray:
@@ -369,7 +369,7 @@ def oncu_takipci_grup(P: Panel, anahtar: str = "grup", artik: bool = False, geci
         for j in range(len(ad)):
             if np.isnan(Rm[i, j]):
                 continue
-            kenar.append({"oncu": ad[i], "takipci": ad[j], "kor": float(Rm[i, j]), "t": float(T[i, j]), "anlamli": bool(esik > 0 and p[i, j] <= esik),
+            kenar.append({"oncu": ad[i], "takipci": ad[j], "kor": float(Rm[i, j]), "t": float(T[i, j]), "anlamli": bool(p[i, j] <= esik),
                           "yari1": float(R1[i, j]) if not np.isnan(R1[i, j]) else None, "yari2": float(R2[i, j]) if not np.isnan(R2[i, j]) else None,
                           "tutarli": bool(np.sign(R1[i, j]) == np.sign(R2[i, j]) == np.sign(Rm[i, j]))})  # fmt: skip
     kendi = {ad[i]: float(Rm[i, i]) for i in range(len(ad)) if not np.isnan(Rm[i, i])}
