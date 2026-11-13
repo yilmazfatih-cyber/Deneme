@@ -14,7 +14,8 @@ import type {
   ContentTimedText,
   ContentTitle,
 } from '../../../shared/content-schema'
-import type { EventBatch, OcaNodeState, PushEvent } from '../../../shared/types'
+import type { FastifyReply, FastifyRequest } from 'fastify'
+import type { BootContext, EventBatch, OcaNodeState, PushEvent } from '../../../shared/types'
 import type { AccountRecord, Passport, ProfileRecord } from './context'
 import type { ArtworkTypeName } from './imageUrls'
 
@@ -23,6 +24,17 @@ export interface IdentityService {
   getAccount(accountId: string): AccountRecord | null
   getProfile(guid: string): ProfileRecord | null
   listProfiles(accountId: string): ProfileRecord[]
+  /**
+   * İsteği yapan tarayıcıda (çerez zinciri; sanal cihaz adı dahil) verilen hesap adına oturum açar ve yeni açılış
+   * bağlamını döndürür. TV'de kodla giriş onaylandığında TV'nin yoklama yanıtında çağrılır.
+   */
+  loginDevice(
+    req: FastifyRequest,
+    reply: FastifyReply,
+    opts: { accountId: string; profileGuid?: string | null },
+  ): Promise<BootContext>
+  /** O cihazın (tvpvdid) mevcut oturumlarını geçersiz kılar (cihazı uzaktan çıkış yaptırma). */
+  revokeDevice(deviceId: string): void
 }
 
 /* ───────────── Olaylar (sahibi: çekirdek API) ───────────── */

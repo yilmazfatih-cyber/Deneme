@@ -62,6 +62,10 @@ export const fakeIdentity: IdentityService = {
   getAccount: (id) => (id === ACCOUNT.accountId ? ACCOUNT : null),
   getProfile: (guid) => [ADULT, TEEN, KID].find((p) => p.guid === guid) ?? null,
   listProfiles: (id) => (id === ACCOUNT.accountId ? [ADULT, TEEN, KID] : []),
+  loginDevice: async () => {
+    throw new Error('sahte kimlik servisi: loginDevice yok')
+  },
+  revokeDevice: () => {},
 }
 
 export function setClock(app: FastifyInstance, at: Date): void {

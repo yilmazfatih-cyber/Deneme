@@ -82,6 +82,11 @@ export default async function plugin(app: FastifyInstance): Promise<void> {
     getAccount: (accountId) => store.get().accounts.find((a) => a.accountId === accountId) ?? null,
     getProfile: (guid) => store.get().profiles.find((p) => p.guid === guid) ?? null,
     listProfiles: (accountId) => store.get().profiles.filter((p) => p.accountId === accountId),
+    // İSKELET — sunucu ekleri ajanı yazacak (TV'de kodla giriş ve cihazı uzaktan çıkış yaptırma).
+    loginDevice: async () => {
+      throw new Error('loginDevice henüz yazılmadı')
+    },
+    revokeDevice: () => {},
   }
   app.services.identity = service
 
