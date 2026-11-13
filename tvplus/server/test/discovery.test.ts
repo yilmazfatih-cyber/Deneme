@@ -107,7 +107,7 @@ describe('Film & Dizi lolomo', () => {
     expect(byCtx.queue!.videoIds).toEqual([ID.metropolis])
     expect(byCtx.becauseYouWatched!.displayName).toBe('Sintel izlediğin için')
     expect(byCtx.becauseYouWatched!.videoIds).not.toContain(ID.sintel)
-    expect(byCtx.gems!.displayName).toBe('Sana özel')
+    expect(byCtx.gems!.displayName).toBe('Deniz için En İyi Seçimler')
     expect(byCtx.gems!.videoIds.length).toBeGreaterThanOrEqual(3)
     // genç profilde 18+ izleme geçmişi görünmez
     p.setBookmark(TEEN.guid, ID.nosferatu, 600)

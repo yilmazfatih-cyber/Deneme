@@ -30,6 +30,33 @@ export interface AppConfig {
    * 'off' uçları kapatır. Bu uçlar CDN düğümlerini yavaşlatıp kapatabildiği için oturumsuz açık bırakılmaz.
    */
   debugAccess: 'open' | 'member' | 'off'
+  /**
+   * /api/studio/* (içerik zekâsı arka ofisi) erişimi: 'member' (varsayılan) üye oturumu ya da stüdyo anahtarı ister,
+   * 'open' herkese açık (yalnız testler), 'off' uçları kapatır.
+   */
+  studioAccess: 'open' | 'member' | 'off'
+  /** Ayarlıysa `x-tvplus-studio-key` başlığında bu değeri taşıyan istekler oturumsuz kabul edilir (TVP_STUDIO_KEY). */
+  studioKey: string | null
+  /** İzleme deposu boşsa açılışta SENTETİK örnek veri üretilsin mi (geliştirmede açık; TVP_SAMPLE_VIEWING=0 kapatır). */
+  sampleViewing: boolean
+  /** Zevk topluluğu sayısının üst sınırı (TVP_MAX_COMMUNITIES). */
+  maxCommunities: number
+  /**
+   * Mixpanel dışa aktarım API'si için servis hesabı. Yalnız ortam değişkenlerinden okunur
+   * (MIXPANEL_SERVICE_ACCOUNT_USERNAME / _SECRET, MIXPANEL_PROJECT_ID, MIXPANEL_REGION=us|eu|in);
+   * hiçbir yanıta ya da günlüğe yazılmaz.
+   */
+  mixpanel: {
+    serviceAccountUsername: string | null
+    serviceAccountSecret: string | null
+    projectId: string | null
+    region: 'us' | 'eu' | 'in'
+  }
+  /**
+   * Gömme sağlayıcısı: 'taban' yerleşik temel (eğitilmemiş, deterministik), 'http' dış model sunucusu (TVP_EMBEDDING_URL),
+   * 'dosya' çevrimdışı üretilmiş vektörler (dataDir/embeddings/import/*.jsonl). TVP_EMBEDDING_PROVIDER ile seçilir.
+   */
+  embedding: { provider: 'taban' | 'http' | 'dosya'; url: string | null }
 }
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..', '..')
@@ -64,6 +91,25 @@ export function loadConfig(overrides: Partial<AppConfig> = {}): AppConfig {
     offline: process.env.TVP_OFFLINE === '1',
     logLevel: (process.env.TVP_LOG_LEVEL as AppConfig['logLevel']) ?? 'info',
     debugAccess: process.env.TVP_DEBUG === 'off' ? 'off' : process.env.TVP_DEBUG === 'open' ? 'open' : 'member',
+    studioAccess: process.env.TVP_STUDIO === 'off' ? 'off' : process.env.TVP_STUDIO === 'open' ? 'open' : 'member',
+    studioKey: process.env.TVP_STUDIO_KEY || null,
+    sampleViewing: process.env.TVP_SAMPLE_VIEWING !== '0',
+    maxCommunities: Math.max(2, Math.min(2000, Number(process.env.TVP_MAX_COMMUNITIES ?? 12) || 12)),
+    mixpanel: {
+      serviceAccountUsername: process.env.MIXPANEL_SERVICE_ACCOUNT_USERNAME || null,
+      serviceAccountSecret: process.env.MIXPANEL_SERVICE_ACCOUNT_SECRET || null,
+      projectId: process.env.MIXPANEL_PROJECT_ID || null,
+      region: process.env.MIXPANEL_REGION === 'eu' ? 'eu' : process.env.MIXPANEL_REGION === 'in' ? 'in' : 'us',
+    },
+    embedding: {
+      provider:
+        process.env.TVP_EMBEDDING_PROVIDER === 'http'
+          ? 'http'
+          : process.env.TVP_EMBEDDING_PROVIDER === 'dosya'
+            ? 'dosya'
+            : 'taban',
+      url: process.env.TVP_EMBEDDING_URL || null,
+    },
     ...overrides,
     dataDir,
   }

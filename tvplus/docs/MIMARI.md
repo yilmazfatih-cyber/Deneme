@@ -232,3 +232,22 @@ videos[id].tags                                  → atom string[]   (önizleme 
 
 Eski `web/src/design/**` (v1) geçiş boyunca derlenir halde kalır; hiçbir yeni kod onu içe aktarmaz, ikinci turun
 sonunda silinir.
+
+## 10. İçerik zekâsı arka ucu
+
+Etiketleme → mikro türler → izleme verisi (uygulama + Mixpanel) → zevk toplulukları → içgörüler ve planlayıcı; ayrıca
+çekim düzeyi gömme. Tam şartname: **`docs/ICERIK_ZEKASI.md`** · tel sözleşmesi `shared/intelligence.ts` · içerik
+şemaları `shared/tagging-schema.ts` · servis arayüzleri `server/src/kernel/intelligence.ts` · uçlar `/api/studio/*`
+(erişim: `TVP_STUDIO`, `TVP_STUDIO_KEY`; yazma uçlarında `assertStudioWrite`).
+
+| Servis (`app.services.*`) | Klasör | Ne yapar |
+| --- | --- | --- |
+| `tagging` | `services/tagging` | Kılavuz sözlüğü, etiket fişleri, uzlaşı → geçerli etiketler |
+| `microgenres` | `services/microgenres` | Etiketleri birleştirip dar kategoriler üretir; görünen / görünmeyen katman |
+| `viewing` | `services/viewing` (+ `services/mixpanel`, `services/events` köprüsü) | Kanonik izleme olayları ve izleyici × başlık özetleri |
+| `audience` | `services/audience` | İzleyicileri davranışa göre zevk topluluklarına ayırır |
+| `insights` | `services/insights` | Katalog payı ↔ izlenme payı, verim, zaman çizelgesi, içerik karması önerisi |
+| `embeddings` | `services/embeddings` | Çekim düzeyi vektörler; etiket ve özet genel bağlam girdisidir; sağlayıcı takılabilir |
+
+Sahiplik tablosu `docs/ICERIK_ZEKASI.md` §11'dedir. Başlık şemasına üç isteğe bağlı alan eklendi: `origin`,
+`acquisition`, `externalIds` (`shared/content-schema.ts`).

@@ -6,6 +6,7 @@ import sharp from 'sharp'
 import type { ArtworkSource } from '../../kernel/services'
 import type { ArtworkTypeName } from '../../kernel/imageUrls'
 import { BG, TEXT_1, TEXT_2, generatedBackgroundSvg, hsl, initialsOf, paletteFromSeed } from './generated'
+import { faceAvatarSvg, faceIndexOf } from './avatarFace'
 import { fitText, textBlockSvg, upperTr, type TextStyle } from './text'
 
 export interface RenderInput {
@@ -502,9 +503,18 @@ export async function renderArtwork(input: RenderInput): Promise<{ body: Buffer;
       case 'CHANNEL_LOGO':
         png = await channelTile(input)
         break
-      case 'AVATAR':
-        png = await avatarDisc(input)
+      case 'AVATAR': {
+        // Üretilen yüz avatarları (`Avatar:yuz-NN` tohumu); diğer kaynaksız avatarlar baş harfli disk
+        const face = faceIndexOf(input.source.seed)
+        png =
+          face !== null
+            ? await sharp(Buffer.from(faceAvatarSvg(face, w)))
+                .resize(w, h)
+                .png()
+                .toBuffer()
+            : await avatarDisc(input)
         break
+      }
       default:
         png = await generatedCover(input)
     }

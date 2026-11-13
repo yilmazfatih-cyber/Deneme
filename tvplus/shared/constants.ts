@@ -46,6 +46,8 @@ export const HEADERS = {
   IMAGE_DEBUG: 'x-tvplus-img',
   /** Sanal cihaz adı (cihaz vitrini): çerez adlarına `__<ad>` eklenir. Başlık taşıyamayan isteklerde `?vd=<ad>`. */
   VIRTUAL_DEVICE: 'x-tvplus-vd',
+  /** Stüdyo (arka ofis) uçlarına oturumsuz erişim anahtarı: betikler ve zamanlanmış içe aktarma (bkz. shared/intelligence.ts). */
+  STUDIO_KEY: 'x-tvplus-studio-key',
 } as const
 
 export const COOKIES = {
@@ -88,6 +90,8 @@ export const ROUTES = {
   DEVICE_STREAM: '/api/devices/stream',
   TV_LOGIN: '/api/tv/login',
   PROFILES: '/api/profiles',
+  /** İçerik zekâsı arka ofisi: etiketleme, mikro türler, veri kaynakları, topluluklar, içgörüler, gömme */
+  STUDIO: '/api/studio',
 } as const
 
 /** Kalıcı sorgu kayıt defteri sürümü (istemci her istekte yollar). */

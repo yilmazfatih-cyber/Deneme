@@ -38,9 +38,10 @@ describe('Falcor rotaları', () => {
       g,
     )
 
-  it('MIMARI §6 yol aileleri tanımlı', () => {
+  it('MIMARI §6 + §9.4 yol aileleri tanımlı', () => {
     expect(routes.map((r) => r.route.join('.'))).toEqual([
       'lolomo',
+      'lolomoByCategory.KEYS',
       'lolomos.KEYS.summary',
       'lolomos.KEYS.INTEGERS',
       'lists.KEYS.summary',

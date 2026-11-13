@@ -5,6 +5,10 @@
     "type": "SHOW",
     "title": "Tuhafiye",
     "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": ["tr"]
+    },
     "synopsis": "TRT Çocuk'un Tuhafiye adlı çocuk dizisinden bölümler. Bölümler TRT Çocuk'un resmi YouTube kanalında yayımlanmaktadır.",
     "shortSynopsis": "TRT Çocuk'un Tuhafiye adlı çocuk dizisinden bölümler.",
     "genres": ["cocuk-aile"],
@@ -13,7 +17,10 @@
     "directors": [],
     "creators": [],
     "keywords": ["çocuk dizisi", "TRT Çocuk", "aile", "bölüm dizisi"],
-    "maturity": { "rating": "GENEL", "reasons": [] },
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
     "kids": true,
     "runtimeSec": null,
     "sources": [],
@@ -27,7 +34,12 @@
             "title": "3. Bölüm",
             "synopsis": "Tuhafiye dizisinin 3. bölümü.",
             "runtimeSec": 497,
-            "sources": [{ "type": "YOUTUBE", "videoId": "u7VvbDkM10I" }],
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "u7VvbDkM10I"
+              }
+            ],
             "artwork": {
               "boxart": null,
               "storyArt": "https://i.ytimg.com/vi/u7VvbDkM10I/maxresdefault.jpg",
@@ -40,7 +52,12 @@
             "title": "4. Bölüm",
             "synopsis": "Tuhafiye dizisinin 4. bölümü.",
             "runtimeSec": 538,
-            "sources": [{ "type": "YOUTUBE", "videoId": "132DZiWlSdA" }],
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "132DZiWlSdA"
+              }
+            ],
             "artwork": {
               "boxart": null,
               "storyArt": "https://i.ytimg.com/vi/132DZiWlSdA/maxresdefault.jpg",
@@ -53,7 +70,12 @@
             "title": "5. Bölüm",
             "synopsis": "Tuhafiye dizisinin 5. bölümü.",
             "runtimeSec": 501,
-            "sources": [{ "type": "YOUTUBE", "videoId": "EDt7VvmPjSM" }],
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "EDt7VvmPjSM"
+              }
+            ],
             "artwork": {
               "boxart": null,
               "storyArt": "https://i.ytimg.com/vi/EDt7VvmPjSM/maxresdefault.jpg",
@@ -66,7 +88,12 @@
             "title": "6. Bölüm",
             "synopsis": "Tuhafiye dizisinin 6. bölümü.",
             "runtimeSec": 532,
-            "sources": [{ "type": "YOUTUBE", "videoId": "axKezovDtw4" }],
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "axKezovDtw4"
+              }
+            ],
             "artwork": {
               "boxart": null,
               "storyArt": "https://i.ytimg.com/vi/axKezovDtw4/maxresdefault.jpg",
@@ -79,7 +106,12 @@
             "title": "7. Bölüm",
             "synopsis": "Tuhafiye dizisinin 7. bölümü.",
             "runtimeSec": 504,
-            "sources": [{ "type": "YOUTUBE", "videoId": "mz0MOfxs7PI" }],
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "mz0MOfxs7PI"
+              }
+            ],
             "artwork": {
               "boxart": null,
               "storyArt": "https://i.ytimg.com/vi/mz0MOfxs7PI/maxresdefault.jpg",
@@ -92,7 +124,12 @@
             "title": "8. Bölüm",
             "synopsis": "Tuhafiye dizisinin 8. bölümü.",
             "runtimeSec": 543,
-            "sources": [{ "type": "YOUTUBE", "videoId": "jb1MQNYdPfE" }],
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "jb1MQNYdPfE"
+              }
+            ],
             "artwork": {
               "boxart": null,
               "storyArt": "https://i.ytimg.com/vi/jb1MQNYdPfE/maxresdefault.jpg",
@@ -105,7 +142,12 @@
             "title": "9. Bölüm",
             "synopsis": "Tuhafiye dizisinin 9. bölümü.",
             "runtimeSec": 516,
-            "sources": [{ "type": "YOUTUBE", "videoId": "fZwuzDcB-Gg" }],
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "fZwuzDcB-Gg"
+              }
+            ],
             "artwork": {
               "boxart": null,
               "storyArt": "https://i.ytimg.com/vi/fZwuzDcB-Gg/maxresdefault.jpg",
@@ -118,7 +160,12 @@
             "title": "10. Bölüm",
             "synopsis": "Tuhafiye dizisinin 10. bölümü.",
             "runtimeSec": 514,
-            "sources": [{ "type": "YOUTUBE", "videoId": "zp7df7lz6co" }],
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "zp7df7lz6co"
+              }
+            ],
             "artwork": {
               "boxart": null,
               "storyArt": "https://i.ytimg.com/vi/zp7df7lz6co/maxresdefault.jpg",
@@ -131,7 +178,12 @@
             "title": "11. Bölüm",
             "synopsis": "Tuhafiye dizisinin 11. bölümü.",
             "runtimeSec": 500,
-            "sources": [{ "type": "YOUTUBE", "videoId": "5QCZfaPHUpI" }],
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "5QCZfaPHUpI"
+              }
+            ],
             "artwork": {
               "boxart": null,
               "storyArt": "https://i.ytimg.com/vi/5QCZfaPHUpI/maxresdefault.jpg",
@@ -144,7 +196,12 @@
             "title": "12. Bölüm",
             "synopsis": "Tuhafiye dizisinin 12. bölümü.",
             "runtimeSec": 530,
-            "sources": [{ "type": "YOUTUBE", "videoId": "Ywk8xKVHymA" }],
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "Ywk8xKVHymA"
+              }
+            ],
             "artwork": {
               "boxart": null,
               "storyArt": "https://i.ytimg.com/vi/Ywk8xKVHymA/maxresdefault.jpg",
@@ -157,7 +214,12 @@
             "title": "13. Bölüm",
             "synopsis": "Tuhafiye dizisinin 13. bölümü.",
             "runtimeSec": 501,
-            "sources": [{ "type": "YOUTUBE", "videoId": "AyeIEmEreuc" }],
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "AyeIEmEreuc"
+              }
+            ],
             "artwork": {
               "boxart": null,
               "storyArt": "https://i.ytimg.com/vi/AyeIEmEreuc/maxresdefault.jpg",
@@ -170,7 +232,12 @@
             "title": "14. Bölüm",
             "synopsis": "Tuhafiye dizisinin 14. bölümü.",
             "runtimeSec": 518,
-            "sources": [{ "type": "YOUTUBE", "videoId": "hdTj_6C1jPw" }],
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "hdTj_6C1jPw"
+              }
+            ],
             "artwork": {
               "boxart": null,
               "storyArt": "https://i.ytimg.com/vi/hdTj_6C1jPw/maxresdefault.jpg",
@@ -192,7 +259,12 @@
       "attribution": "TRT Çocuk · YouTube",
       "url": "https://www.youtube.com/channel/UCrFf5dtMe6M1XJHqbKJ4X6Q"
     },
-    "availability": { "addedAt": "2026-11-09", "leavingAt": null, "exclusive": false, "requiredProduct": null },
+    "availability": {
+      "addedAt": "2026-11-09",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
     "popularity": 60
   },
   {
@@ -201,6 +273,10 @@
     "type": "SHOW",
     "title": "Kertenkele",
     "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": ["tr"]
+    },
     "synopsis": "TRT Çocuk'un Kertenkele adlı çocuk dizisinden bölümler. Bölümler TRT Çocuk'un resmi YouTube kanalında yayımlanmaktadır.",
     "shortSynopsis": "TRT Çocuk'un Kertenkele adlı çocuk dizisinden bölümler.",
     "genres": ["cocuk-aile"],
@@ -209,7 +285,10 @@
     "directors": [],
     "creators": [],
     "keywords": ["çocuk dizisi", "TRT Çocuk", "aile", "bölüm dizisi"],
-    "maturity": { "rating": "GENEL", "reasons": [] },
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
     "kids": true,
     "runtimeSec": null,
     "sources": [],
@@ -223,7 +302,12 @@
             "title": "2. Bölüm",
             "synopsis": "Kertenkele dizisinin 2. bölümü.",
             "runtimeSec": 708,
-            "sources": [{ "type": "YOUTUBE", "videoId": "FhRchmVtw7Q" }],
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "FhRchmVtw7Q"
+              }
+            ],
             "artwork": {
               "boxart": null,
               "storyArt": "https://i.ytimg.com/vi/FhRchmVtw7Q/maxresdefault.jpg",
@@ -236,7 +320,12 @@
             "title": "3. Bölüm",
             "synopsis": "Kertenkele dizisinin 3. bölümü.",
             "runtimeSec": 709,
-            "sources": [{ "type": "YOUTUBE", "videoId": "1JftIHk5dSQ" }],
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "1JftIHk5dSQ"
+              }
+            ],
             "artwork": {
               "boxart": null,
               "storyArt": "https://i.ytimg.com/vi/1JftIHk5dSQ/maxresdefault.jpg",
@@ -249,7 +338,12 @@
             "title": "4. Bölüm",
             "synopsis": "Kertenkele dizisinin 4. bölümü.",
             "runtimeSec": 723,
-            "sources": [{ "type": "YOUTUBE", "videoId": "_fWPV7MEvuw" }],
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "_fWPV7MEvuw"
+              }
+            ],
             "artwork": {
               "boxart": null,
               "storyArt": "https://i.ytimg.com/vi/_fWPV7MEvuw/maxresdefault.jpg",
@@ -262,7 +356,12 @@
             "title": "5. Bölüm",
             "synopsis": "Kertenkele dizisinin 5. bölümü.",
             "runtimeSec": 699,
-            "sources": [{ "type": "YOUTUBE", "videoId": "Dlj39VGEKTs" }],
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "Dlj39VGEKTs"
+              }
+            ],
             "artwork": {
               "boxart": null,
               "storyArt": "https://i.ytimg.com/vi/Dlj39VGEKTs/maxresdefault.jpg",
@@ -275,7 +374,12 @@
             "title": "6. Bölüm",
             "synopsis": "Kertenkele dizisinin 6. bölümü.",
             "runtimeSec": 707,
-            "sources": [{ "type": "YOUTUBE", "videoId": "fG3gwoDr3Pk" }],
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "fG3gwoDr3Pk"
+              }
+            ],
             "artwork": {
               "boxart": null,
               "storyArt": "https://i.ytimg.com/vi/fG3gwoDr3Pk/maxresdefault.jpg",
@@ -297,7 +401,12 @@
       "attribution": "TRT Çocuk · YouTube",
       "url": "https://www.youtube.com/channel/UCrFf5dtMe6M1XJHqbKJ4X6Q"
     },
-    "availability": { "addedAt": "2026-11-05", "leavingAt": null, "exclusive": false, "requiredProduct": null },
+    "availability": {
+      "addedAt": "2026-11-05",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
     "popularity": 55
   },
   {
@@ -306,6 +415,10 @@
     "type": "SHOW",
     "title": "O İş Bende",
     "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": ["tr"]
+    },
     "synopsis": "TRT Çocuk'un O İş Bende adlı çocuk dizisinden bölümler. Dizide üç arkadaş kendi sosyal medya kanallarını yönetir ve çocuklara güvenli bir sosyal medya deneyimi sunulur.",
     "shortSynopsis": "Üç arkadaş kendi sosyal medya kanallarını yönetir; çocuklara güvenli bir deneyim sunulur.",
     "genres": ["cocuk-aile"],
@@ -314,7 +427,10 @@
     "directors": [],
     "creators": [],
     "keywords": ["çocuk dizisi", "TRT Çocuk", "sosyal medya", "arkadaşlık"],
-    "maturity": { "rating": "GENEL", "reasons": [] },
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
     "kids": true,
     "runtimeSec": null,
     "sources": [],
@@ -328,7 +444,12 @@
             "title": "Taş Dostu ve Sahur Davulu",
             "synopsis": "Bu bölümde Taş Dostu ve sahur davulu konu edilir.",
             "runtimeSec": 668,
-            "sources": [{ "type": "YOUTUBE", "videoId": "RmIWH3rRdbU" }],
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "RmIWH3rRdbU"
+              }
+            ],
             "artwork": {
               "boxart": null,
               "storyArt": "https://i.ytimg.com/vi/RmIWH3rRdbU/maxresdefault.jpg",
@@ -341,7 +462,12 @@
             "title": "Balina Şarkıları ve Serbest'in Sırrı",
             "synopsis": "Balina şarkıları ve Serbest'in sırrı bu bölümde anlatılır.",
             "runtimeSec": 703,
-            "sources": [{ "type": "YOUTUBE", "videoId": "7bvr8J8E2TY" }],
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "7bvr8J8E2TY"
+              }
+            ],
             "artwork": {
               "boxart": null,
               "storyArt": "https://i.ytimg.com/vi/7bvr8J8E2TY/maxresdefault.jpg",
@@ -354,7 +480,12 @@
             "title": "Kayıp Şarkı ve Konfeti-Matik",
             "synopsis": "Bu bölümde kayıp bir şarkı ve Konfeti-Matik konu edilir.",
             "runtimeSec": 742,
-            "sources": [{ "type": "YOUTUBE", "videoId": "_OcASDqDCMM" }],
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "_OcASDqDCMM"
+              }
+            ],
             "artwork": {
               "boxart": null,
               "storyArt": "https://i.ytimg.com/vi/_OcASDqDCMM/maxresdefault.jpg",
@@ -367,7 +498,12 @@
             "title": "Bengü Taşlar ve Konuşan Ataş",
             "synopsis": "Bu bölümde Bengü Taşlar ve konuşan bir ataş konu edilir.",
             "runtimeSec": 686,
-            "sources": [{ "type": "YOUTUBE", "videoId": "s_385Ca1OnU" }],
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "s_385Ca1OnU"
+              }
+            ],
             "artwork": {
               "boxart": null,
               "storyArt": "https://i.ytimg.com/vi/s_385Ca1OnU/maxresdefault.jpg",
@@ -380,7 +516,12 @@
             "title": "İlk Gün Raporu ve O Piti Piti",
             "synopsis": "Bölümde ilk gün raporu ve O Piti Piti konu edilir.",
             "runtimeSec": 740,
-            "sources": [{ "type": "YOUTUBE", "videoId": "C1xjbzUDhOU" }],
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "C1xjbzUDhOU"
+              }
+            ],
             "artwork": {
               "boxart": null,
               "storyArt": "https://i.ytimg.com/vi/C1xjbzUDhOU/maxresdefault.jpg",
@@ -402,7 +543,12 @@
       "attribution": "TRT Çocuk · YouTube",
       "url": "https://www.youtube.com/channel/UCrFf5dtMe6M1XJHqbKJ4X6Q"
     },
-    "availability": { "addedAt": "2026-11-11", "leavingAt": null, "exclusive": false, "requiredProduct": null },
+    "availability": {
+      "addedAt": "2026-11-11",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
     "popularity": 65
   }
 ]

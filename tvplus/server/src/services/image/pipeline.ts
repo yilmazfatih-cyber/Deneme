@@ -11,7 +11,7 @@ import { renderArtwork } from './render'
 import { createRemoteLoader, resolveLocalFile } from './source'
 
 /** Çizim mantığı değişince artırılır; tüm disk önbelleği kendiliğinden geçersiz olur. */
-export const RENDER_VERSION = 6
+export const RENDER_VERSION = 7
 
 export type ImageOrigin = 'remote' | 'source-cache' | 'local' | 'generated' | 'fallback'
 

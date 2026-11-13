@@ -65,3 +65,38 @@ export function top10Rank(
   const i = list.indexOf(videoId)
   return i >= 0 ? i + 1 : null
 }
+
+export type TitleType = 'MOVIE' | 'SHOW'
+
+/** Bu profilin göreceği türe özel Top 10 (dizi listesi / film listesi) */
+export function top10ForType(
+  services: Partial<Services>,
+  profile: ProfileRecord | null,
+  now: Date,
+  type: TitleType,
+): number[] {
+  const catalog = services.catalog
+  if (!catalog) return []
+  return top10Scores(services, now)
+    .filter((x) => catalog.getTitle(x.titleId)?.type === type && catalog.isVisibleTo(profile, x.titleId))
+    .slice(0, TOP10_SIZE)
+    .map((x) => x.titleId)
+}
+
+/**
+ * Başlığın KENDİ türünün listesindeki sırası ("Bugün Dizilerde 3 Numara"): dizi → dizi listesi, film → film listesi.
+ * `cached` tür → liste önbelleği (istek ömürlü) verilebilir.
+ */
+export function top10RankByType(
+  services: Partial<Services>,
+  videoId: number,
+  profile: ProfileRecord | null,
+  now: Date,
+  cached?: (type: TitleType) => number[],
+): number | null {
+  const type = services.catalog?.getTitle(videoId)?.type
+  if (type !== 'MOVIE' && type !== 'SHOW') return null
+  const list = cached ? cached(type) : top10ForType(services, profile, now, type)
+  const i = list.indexOf(videoId)
+  return i >= 0 ? i + 1 : null
+}

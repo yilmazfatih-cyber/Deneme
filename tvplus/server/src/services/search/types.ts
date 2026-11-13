@@ -19,7 +19,7 @@ export type TreatmentName =
   | 'standardSuggestion'
 
 /** CapabilitiesBySectionInput alanları. */
-export type SectionCapabilityName = 'searchList' | 'searchGallery' | 'searchLive'
+export type SectionCapabilityName = 'searchList' | 'searchGallery' | 'searchLive' | 'searchPredicted'
 
 export interface PersonEntry {
   personId: number
@@ -68,7 +68,8 @@ export interface SearchOptionsInput {
 
 /* ───────────── Çıktı ───────────── */
 
-export type SearchSectionType = 'SearchLiveSection' | 'SearchListSection' | 'SearchGallerySection'
+export type SearchSectionType =
+  'SearchLiveSection' | 'SearchListSection' | 'SearchGallerySection' | 'SearchPredictedSection'
 
 export interface SearchTrack {
   row: number
@@ -98,7 +99,32 @@ export interface SearchEntityResult {
   ref: SearchEntityRef
   /** Bağlama göre görsel tipi; çözümleyici imzalı adresi buildArtwork ile üretir. Video dışı varlıklarda null. */
   artworkType: ArtworkTypeName | null
-  /** Tanılama için: eşleşme puanı (GraphQL'de yok) */
+  /** Tanılama için: metin eşleşme puanı 0–100 (GraphQL'de yok; GraphQL `score` → modelScore) */
+  score: number
+  /** true → metin eşleşmesiyle değil, tahmin modeliyle geldi */
+  predicted: boolean
+  /** Modelin tıklanma olasılığı (0–1); modelle puanlanmadıysa null (canlı, kişi, tür…) */
+  modelScore: number | null
+  /** Kısa gerekçe: 'Sana özel' · 'Sintel ile ilgili' · 'Çok arananlar' · 'Bu aramadan sonra izlenenler' */
+  reason: string | null
+  /** Puanın bileşenleri */
+  explain: SearchFeatureResult[] | null
+}
+
+/** SearchFeature karşılığı */
+export interface SearchFeatureResult {
+  name: string
+  value: number
+  weight: number
+  contribution: number
+}
+
+/** SearchPrediction karşılığı */
+export interface SearchPredictionResult {
+  text: string
+  /** TITLE | PERSON | GENRE | COLLECTION | CHANNEL | QUERY */
+  kind: string
+  unifiedEntityId: string | null
   score: number
 }
 
@@ -128,4 +154,8 @@ export interface SearchPageResult {
   sections: SearchSectionResult[]
   isFallback: boolean
   recentSearches: string[]
+  /** Yazılan metnin model tahmini tamamlamaları */
+  predictions: SearchPredictionResult[]
+  /** ör. 'lr-1 · 42 güncelleme' */
+  modelVersion: string
 }

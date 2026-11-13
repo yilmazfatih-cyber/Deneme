@@ -111,6 +111,10 @@ export const liveResolvers: ResolverMap = {
     artwork: (a: AiringRecord, x: { params?: ArtworkParams }, ctx: GqlContext) =>
       buildArtwork(ctx.config, 'STORY_ART', airingEntityId(a.airingId), x.params),
     access: (a: AiringRecord, _x: unknown, ctx: GqlContext) => airingAccess(ctx, a),
+    hasReminder: (a: AiringRecord, _x: unknown, ctx: GqlContext) => {
+      const guid = ctx.passport.profile?.guid
+      return guid ? (ctx.services.progress.hasReminder?.(guid, a.airingId) ?? false) : false
+    },
   },
 
   Collection: {
@@ -185,6 +189,33 @@ export const liveResolvers: ResolverMap = {
     genre: (_p: unknown, a: { genreId: number }, ctx: GqlContext) => {
       requireProfile(ctx)
       return Object.values(GENRES).some((g) => g.genreId === a.genreId) ? { genreId: a.genreId } : null
+    },
+    /** Hatırlatmalar: henüz başlamamışlar önce (en yakın başta), sonra yayında olanlar; bitenler düşer */
+    reminders: (_p: unknown, _a: unknown, ctx: GqlContext) => {
+      const profile = requireProfile(ctx)
+      const now = nowOf(ctx).getTime()
+      return ctx.services.progress
+        .reminders(profile.guid)
+        .map((id) => ctx.services.epg.getAiring(id))
+        .filter((a): a is AiringRecord => !!a && endOf(a).getTime() > now && channelVisible(ctx, a.channelId))
+        .sort((x, y) => {
+          const ux = startOf(x).getTime() > now ? 0 : 1
+          const uy = startOf(y).getTime() > now ? 0 : 1
+          return ux - uy || startOf(x).getTime() - startOf(y).getTime() || x.channelId - y.channelId
+        })
+    },
+  },
+
+  Mutation: {
+    /** Yalnız henüz başlamamış yayına kurulur; kaldırmak her zaman serbest. Yayını döndürür. */
+    setReminder: (_p: unknown, a: { airingId: string; enabled: boolean }, ctx: GqlContext) => {
+      const profile = requireProfile(ctx)
+      const rec = ctx.services.epg.getAiring(a.airingId)
+      if (!rec || !channelVisible(ctx, rec.channelId)) throw gqlError(`Yayın bulunamadı: ${a.airingId}`, 'NOT_FOUND')
+      if (a.enabled && startOf(rec).getTime() <= nowOf(ctx).getTime())
+        throw gqlError('Bu yayın başladı; hatırlatma kurulamaz', 'BAD_USER_INPUT')
+      ctx.services.progress.setReminder(profile.guid, rec.airingId, a.enabled)
+      return rec
     },
   },
 }

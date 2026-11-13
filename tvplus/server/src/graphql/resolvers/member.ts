@@ -2,10 +2,10 @@
  * Üyelik, kitaplık, duyuru, bildirim sorguları ve tüm mutasyonlar.
  * Mutasyonların CSRF (x-tvplus-authurl) denetimi motordadır; burada üyelik/profil kapısı uygulanır.
  */
-import { buildArtwork } from '../../kernel/imageUrls'
 import type { AccountRecord, GqlContext, ProfileRecord, ResolverMap } from '../../kernel/context'
 import type { ThumbRatingValue } from '../../kernel/services'
 import { bookmarkOf } from '../../services/catalog/present'
+import { avatarKeyOf, profileAvatarArtwork } from '../../services/identity/avatars'
 import { channelVisible } from './live'
 import { gqlError, guidOf, requireProfile, videoRefs, visible } from './util'
 
@@ -31,7 +31,10 @@ export function parseViewable(viewableId: string): { kind: string; id: string } 
 export const memberResolvers: ResolverMap = {
   Profile: {
     avatar: (p: ProfileRecord, a: { params?: ArtworkParams }, ctx: GqlContext) =>
-      buildArtwork(ctx.config, 'AVATAR', `Profile:${p.guid}`, a.params),
+      profileAvatarArtwork(ctx.config, p, a.params),
+    avatarKey: (p: ProfileRecord) => avatarKeyOf(p.avatar),
+    isLocked: (p: ProfileRecord, _a: unknown, ctx: GqlContext) =>
+      ctx.services.identity?.isProfileLocked?.(p.guid) ?? false,
     isActive: (p: ProfileRecord, _a: unknown, ctx: GqlContext) => ctx.passport.profile?.guid === p.guid,
   },
   Account: {

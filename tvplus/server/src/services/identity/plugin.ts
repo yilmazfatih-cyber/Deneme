@@ -1,11 +1,12 @@
 /**
  * Kimlik servisi: hesap/profil kayıtları, çerez zinciri, pasaport kancası ve açılış/giriş uçları.
  * Bu ürün gerçek kimlik bilgisi toplamaz: "giriş" demo hesabına kimlik bilgisi istemeden oturum açar.
+ * Sanal cihaz (`x-tvplus-vd` / `?vd=`) her yerde geçerlidir: çerez adlarını passport.ts `cookieNames` belirler.
  */
 import { randomBytes } from 'node:crypto'
-import type { FastifyInstance } from 'fastify'
-import { z } from 'zod'
+import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 import { HEADERS, ROUTES } from '../../../../shared/constants'
+import type { BootContext } from '../../../../shared/types'
 import { httpError } from '../../gateway/errors'
 import { deriveKey } from '../../kernel/config'
 import type { AccountRecord, ProfileRecord } from '../../kernel/context'
@@ -18,18 +19,18 @@ import {
   checkAuthURL,
   clearSessionCookies,
   resolvePassport,
-  sessionOf,
   setProfileGate,
   writeSessionCookies,
   type IdentityKeys,
 } from './passport'
+import { createPinGuard } from './pin'
+import { registerProfileRoutes } from './profiles'
+import { publicProfile, type IdentityState } from './records'
+import type { SessionClaims } from './session'
+
+export { publicProfile, type IdentityState, type StoredProfile } from './records'
 
 export const DEMO_ACCOUNT_ID = 'acc_demo'
-
-interface IdentityState {
-  accounts: AccountRecord[]
-  profiles: ProfileRecord[]
-}
 
 /** Demo hesabı ve profilleri. GUID'ler addan türetilir: yeniden başlatmada (ve veri klasörü silinse de) aynı kalır. */
 export function seedIdentity(): IdentityState {
@@ -55,10 +56,9 @@ export function seedIdentity(): IdentityState {
         language: 'tr',
       },
     ],
+    revokedDevices: {},
   }
 }
-
-const zSwitchBody = z.object({ guid: z.string().min(1).max(64) })
 
 export default async function plugin(app: FastifyInstance): Promise<void> {
   const config = app.config
@@ -77,22 +77,73 @@ export default async function plugin(app: FastifyInstance): Promise<void> {
       s.profiles = [...(s.profiles ?? []).filter((p) => p.accountId !== DEMO_ACCOUNT_ID), ...seed.profiles]
     })
   }
+  app.addHook('onClose', async () => {
+    if (!config.isTest) store.flush()
+  })
+
+  const stored = (guid: string) => store.get().profiles.find((p) => p.guid === guid) ?? null
+  const revokedAt = (deviceId: string) => store.get().revokedDevices?.[deviceId] ?? null
+
+  /** Yeni oturum iddiaları; uzaktan kapatılmış cihazda iat kapanış anından sonraya alınır. */
+  const newClaims = (accountId: string, deviceId: string): SessionClaims => {
+    const revoked = revokedAt(deviceId)
+    const now = Date.now()
+    return {
+      aid: accountId,
+      sid: randomBytes(16).toString('base64url'),
+      iat: revoked !== null && now <= revoked ? revoked + 1 : now,
+    }
+  }
+
+  /** İsteğin tarayıcısında (sanal cihaz dahil) hesaba oturum açar; pasaportu da günceller. */
+  function signIn(req: FastifyRequest, reply: FastifyReply, account: AccountRecord, profile: ProfileRecord | null) {
+    const claims = newClaims(account.accountId, req.passport.deviceId)
+    writeSessionCookies(req, reply, keys, claims, profile?.guid ?? null)
+    setProfileGate(req, reply, !!profile)
+    req.passport = {
+      ...req.passport,
+      membershipStatus: 'CURRENT_MEMBER',
+      account,
+      profile,
+      authURLVerified: false,
+    }
+    if (profile) reply.header(HEADERS.PASSPORT_PROFILE, profile.guid)
+    else reply.removeHeader(HEADERS.PASSPORT_PROFILE)
+    reply.header('cache-control', 'no-store')
+  }
 
   const service: IdentityService = {
     getAccount: (accountId) => store.get().accounts.find((a) => a.accountId === accountId) ?? null,
-    getProfile: (guid) => store.get().profiles.find((p) => p.guid === guid) ?? null,
-    listProfiles: (accountId) => store.get().profiles.filter((p) => p.accountId === accountId),
-    // İSKELET — sunucu ekleri ajanı yazacak (TV'de kodla giriş ve cihazı uzaktan çıkış yaptırma).
-    loginDevice: async () => {
-      throw new Error('loginDevice henüz yazılmadı')
+    getProfile: (guid) => {
+      const p = stored(guid)
+      return p ? publicProfile(p) : null
     },
-    revokeDevice: () => {},
+    listProfiles: (accountId) =>
+      store
+        .get()
+        .profiles.filter((p) => p.accountId === accountId)
+        .map(publicProfile),
+    isProfileLocked: (guid) => !!stored(guid)?.pin,
+    async loginDevice(req, reply, opts): Promise<BootContext> {
+      const account = service.getAccount(opts.accountId)
+      if (!account) throw httpError(404, 'ACCOUNT_NOT_FOUND', 'Hesap bulunamadı.')
+      const p = opts.profileGuid ? stored(opts.profileGuid) : null
+      // Kilitli profil başka cihazda PIN'siz açılmaz: o cihaz profil kapısında PIN sorar.
+      const profile = p && p.accountId === account.accountId && !p.pin ? publicProfile(p) : null
+      signIn(req, reply, account, profile)
+      return buildBootContext(app, req)
+    },
+    revokeDevice(deviceId) {
+      store.update((s) => {
+        s.revokedDevices = { ...(s.revokedDevices ?? {}), [deviceId]: Date.now() }
+      })
+    },
   }
   app.services.identity = service
 
   // Pasaport: çerez ayrıştırmasından sonra, her istekte.
   app.addHook('onRequest', async (req, reply) => {
-    req.passport = resolvePassport(req, reply, keys, service)
+    req.passport = resolvePassport(req, reply, keys, { ...service, revokedAt })
   })
 
   // Form gövdesindeki authURL (Falcor `authURL=`) gövde ayrıştırıldıktan sonra doğrulanır.
@@ -115,43 +166,17 @@ export default async function plugin(app: FastifyInstance): Promise<void> {
     // Gövde yok sayılır: kimlik bilgisi toplanmaz.
     const account = service.getAccount(DEMO_ACCOUNT_ID)
     if (!account) throw httpError(500, 'INTERNAL', 'Demo hesabı bulunamadı.')
-    const claims = { aid: account.accountId, sid: randomBytes(16).toString('base64url'), iat: Date.now() }
-    writeSessionCookies(req, reply, keys, claims, null)
-    setProfileGate(req, reply, false)
-    req.passport = {
-      ...req.passport,
-      membershipStatus: 'CURRENT_MEMBER',
-      account,
-      profile: null,
-      authURLVerified: false,
-    }
-    reply.header('cache-control', 'no-store')
+    signIn(req, reply, account, null)
     return buildBootContext(app, req)
   })
 
   app.post(ROUTES.LOGOUT, async (req, reply) => {
-    clearSessionCookies(reply)
+    clearSessionCookies(req, reply)
     req.passport = anonymousPassport(req.passport.deviceId, req.passport.esn)
     reply.removeHeader(HEADERS.PASSPORT_PROFILE)
     reply.header('cache-control', 'no-store')
     return buildBootContext(app, req)
   })
 
-  app.post(ROUTES.PROFILE_SWITCH, async (req, reply) => {
-    const account = req.passport.account
-    const session = sessionOf(req)
-    if (!account || !session) throw httpError(401, 'UNAUTHENTICATED', 'Profil seçmek için önce giriş yapın.')
-    const parsed = zSwitchBody.safeParse(req.body)
-    if (!parsed.success) throw httpError(400, 'VALIDATION_FAILED', 'Profil kimliği eksik ya da geçersiz.')
-    const profile = service.getProfile(parsed.data.guid)
-    if (!profile || profile.accountId !== account.accountId) {
-      throw httpError(404, 'PROFILE_NOT_FOUND', 'Bu profil bu hesapta bulunamadı.')
-    }
-    writeSessionCookies(req, reply, keys, session, profile.guid)
-    setProfileGate(req, reply, true)
-    req.passport = { ...req.passport, profile }
-    reply.header(HEADERS.PASSPORT_PROFILE, profile.guid)
-    reply.header('cache-control', 'no-store')
-    return buildBootContext(app, req)
-  })
+  registerProfileRoutes(app, { store, keys, stored, guard: createPinGuard() })
 }

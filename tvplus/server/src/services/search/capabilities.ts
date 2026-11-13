@@ -16,7 +16,7 @@ export const TREATMENT_KIND: Record<TreatmentName, SearchEntityKind> = {
 }
 
 const TREATMENTS = Object.keys(TREATMENT_KIND) as TreatmentName[]
-const SECTIONS: SectionCapabilityName[] = ['searchList', 'searchGallery', 'searchLive']
+const SECTIONS: SectionCapabilityName[] = ['searchList', 'searchGallery', 'searchLive', 'searchPredicted']
 
 /** Bölüm adı → istemcinin o bölümde kullanabileceği çizim biçimleri. Bildirilmeyen bölüm haritada yoktur. */
 export type NegotiatedCapabilities = Map<SectionCapabilityName, Set<TreatmentName>>

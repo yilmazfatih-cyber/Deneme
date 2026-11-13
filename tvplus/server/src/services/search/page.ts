@@ -17,7 +17,9 @@ import {
   type NegotiatedCapabilities,
 } from './capabilities'
 import { correctQuery, WEAK_SCORE } from './fuzzy'
-import { compareMatches, matchAll, tokenize, type DocMatch } from './match'
+import { compareMatches, matchAll, SCORE, tokenize, type DocMatch } from './match'
+import { MODEL_ID, REASONS } from './model/model'
+import type { Scored, SearchRanker } from './model/ranker'
 import type { SearchDoc, SearchIndex } from './searchIndex'
 import type {
   SearchCorrectionResult,
@@ -26,6 +28,7 @@ import type {
   SearchFiltersInput,
   SearchOptionsInput,
   SearchPageResult,
+  SearchPredictionResult,
   SearchSectionResult,
   SearchSectionType,
   SectionCapabilityName,
@@ -41,13 +44,32 @@ export const FALLBACK_LIVE_LIMIT = 8
 /** "Şu an canlı" bölümü: canlı olanlar ve bu kadar saat içinde başlayacaklar */
 export const UPCOMING_WINDOW_HOURS = 24
 
-export const SECTION_IDS = { live: 'canli', list: 'oneriler', gallery: 'galeri', popular: 'populer' } as const
+export const SECTION_IDS = {
+  live: 'canli',
+  list: 'oneriler',
+  gallery: 'galeri',
+  popular: 'populer',
+  related: 'ilgili',
+  predicted: 'tahmin',
+  personal: 'sana-ozel',
+} as const
 export const SECTION_TITLES = {
   live: 'Şu an canlı',
   list: 'Keşfetmeye devam et',
   gallery: 'Film ve Diziler',
   popular: 'Popüler',
+  predicted: 'Bunlar ilgini çekebilir',
+  personal: 'Sana özel öneriler',
+  related: (name: string) => `${name} ile ilgili`,
 } as const
+/** Tahmini bölümde en çok kaç başlık */
+export const PREDICTED_LIMIT = 12
+/** "‹X› ile ilgili": modelin sıralayacağı en benzer aday sayısı (benzerlik süzer, model sıralar) */
+export const RELATED_CANDIDATES = 18
+/** Doğrudan video eşleşmesi bundan azsa "Bunlar ilgini çekebilir" eklenir */
+export const FEW_RESULTS = 6
+/** Model kapalıyken (saf testler) sürüm metni */
+export const MODEL_OFF_VERSION = `${MODEL_ID} · kapalı`
 
 export interface SearchRequestContext {
   term: string
@@ -61,6 +83,10 @@ export interface SearchRequestContext {
   /** Yetki durumu PLAYABLE mı ("Yalnızca paketimdekiler" süzgeci) */
   isEntitled: (videoId: number) => boolean
   recentSearches: string[]
+  /** Tahmin modeli (engine.ts kurar). Yoksa sıralama eski kurallarla yapılır ve tahmini bölüm üretilmez. */
+  ranker?: SearchRanker | null
+  /** Yazılan metnin tamamlama tahminleri (engine.ts hesaplar) */
+  predictions?: SearchPredictionResult[]
 }
 
 interface Hit extends DocMatch {
@@ -72,6 +98,8 @@ const PLACEMENTS: Record<SearchDoc['type'], [SectionCapabilityName, TreatmentNam
   video: [
     ['searchGallery', 'standardBoxshot'],
     ['searchList', 'standardSuggestion'],
+    ['searchPredicted', 'standardBoxshot'],
+    ['searchPredicted', 'standardSuggestion'],
   ],
   channel: [['searchLive', 'standardChannelTile']],
   airing: [['searchLive', 'standardAiringRow']],
@@ -90,7 +118,9 @@ function isAiringInWindow(doc: SearchDoc, now: Date): boolean {
   return a.endAt.getTime() > now.getTime() && a.startAt.getTime() < now.getTime() + UPCOMING_WINDOW_HOURS * 3600_000
 }
 
-function isDocVisible(doc: SearchDoc, ctx: SearchRequestContext): boolean {
+export type VisibilityContext = Pick<SearchRequestContext, 'kids' | 'isTitleVisible' | 'now'>
+
+export function isDocVisible(doc: SearchDoc, ctx: VisibilityContext): boolean {
   switch (doc.type) {
     case 'video':
       return ctx.isTitleVisible(doc.videoId ?? 0)
@@ -137,6 +167,10 @@ interface PendingEntity {
   hit: Hit
   treatment: TreatmentName
   artworkType: ArtworkTypeName | null
+  /** Modelin puanı (varsa) */
+  pred?: Scored
+  predicted?: boolean
+  reason?: string | null
 }
 interface PendingSection {
   sectionType: SearchSectionType
@@ -174,6 +208,10 @@ function finalizeSections(pending: PendingSection[], trackId: number, now: Date)
           ref: refOf(e.hit.doc),
           artworkType: e.artworkType,
           score: e.hit.score,
+          predicted: e.predicted ?? false,
+          modelScore: e.pred ? Math.round(e.pred.score * 10_000) / 10_000 : null,
+          reason: e.reason ?? null,
+          explain: e.pred ? e.pred.explain : null,
           track: {
             row,
             pos,
@@ -244,6 +282,15 @@ function pageSizeOf(options: SearchOptionsInput | null | undefined): number {
   return Math.min(MAX_PAGE_SIZE, Math.floor(n))
 }
 
+/**
+ * Model sıralaması (alaka sırası): doğrudan eşleşmeler yine yazım düzeltmesiyle bulunanlardan önce; içeride modelin
+ * tıklanma olasılığı; eşitlikte eski kural (puan, popülerlik, ad).
+ */
+export function sortByModel(hits: Hit[], scores: ReadonlyMap<string, Scored>): Hit[] {
+  const p = (h: Hit) => scores.get(h.doc.key)?.score ?? 0
+  return [...hits].sort((a, b) => Number(a.fuzzy) - Number(b.fuzzy) || p(b) - p(a) || compareMatches(a, b))
+}
+
 function gallerySection(
   id: string,
   displayString: string,
@@ -251,20 +298,160 @@ function gallerySection(
   ctx: SearchRequestContext,
   artwork: (h: Hit) => ArtworkTypeName,
 ): PendingSection {
-  const filtered = sortGallery(
-    applyGalleryFilters(hits, ctx.options?.filters, ctx.isEntitled),
-    ctx.options?.filters?.sort,
-  )
+  const filteredHits = applyGalleryFilters(hits, ctx.options?.filters, ctx.isEntitled)
+  const sort = ctx.options?.filters?.sort
+  const ranker = ctx.ranker
+  const scores = new Map<string, Scored>()
+  if (ranker) for (const h of filteredHits) scores.set(h.doc.key, ranker.scoreVideo(h.doc, h.score))
+  const filtered =
+    ranker && (!sort || sort === 'rel') ? sortByModel(filteredHits, scores) : sortGallery(filteredHits, sort)
   return {
     sectionType: 'SearchGallerySection',
     id,
     displayString,
     ttlSec: SEARCH_TTL_SEC,
     totalCount: filtered.length,
-    entities: filtered
-      .slice(0, pageSizeOf(ctx.options))
-      .map((hit) => ({ hit, treatment: 'standardBoxshot', artworkType: artwork(hit) })),
+    entities: filtered.slice(0, pageSizeOf(ctx.options)).map((hit): PendingEntity => {
+      const pred = scores.get(hit.doc.key)
+      return {
+        hit,
+        treatment: 'standardBoxshot',
+        artworkType: artwork(hit),
+        pred,
+        predicted: false,
+        reason: pred && ranker ? ranker.galleryReason(pred) : null,
+      }
+    }),
   }
+}
+
+/* ───────────── Tahmini sonuçlar (SearchPredictedSection) ───────────── */
+
+/** İstemcinin tahmini bölümde çizebildiği video biçimi (afiş önce). */
+function predictedTreatment(caps: NegotiatedCapabilities): TreatmentName | null {
+  if (canRender(caps, 'searchPredicted', 'standardBoxshot')) return 'standardBoxshot'
+  if (canRender(caps, 'searchPredicted', 'standardSuggestion')) return 'standardSuggestion'
+  return null
+}
+
+/** Sorgu tek ve açık bir varlığa mı çözülüyor (başlık/kişi/tür/koleksiyon adı önek ya da tam eşleşme, rakipsiz)? */
+export function clearSubject(direct: readonly Hit[]): Hit | null {
+  const subjects = direct.filter(
+    (h) =>
+      !h.fuzzy &&
+      (h.doc.type === 'video' || h.doc.type === 'person' || h.doc.type === 'genre' || h.doc.type === 'collection'),
+  )
+  const top = subjects[0]
+  if (!top || !top.onTitle || top.score < SCORE.PREFIX) return null
+  const second = subjects[1]
+  if (second && second.score >= top.score) return null
+  return top
+}
+
+interface PredictedPlan {
+  id: string
+  displayString: string
+  /** Aday belgeler (yalnız video) */
+  candidates: SearchDoc[]
+  /** Sabit gerekçe ("Sintel ile ilgili"); yoksa modelin gerekçesi */
+  reason: string | null
+  /** "‹X› ile ilgili": begeni bu tohum başlıklara odaklanır */
+  seeds?: number[]
+}
+
+function predictedSection(
+  plan: PredictedPlan,
+  caps: NegotiatedCapabilities,
+  ranker: SearchRanker,
+): PendingSection | null {
+  const treatment = predictedTreatment(caps)
+  if (!treatment) return null
+  const r = plan.seeds && plan.seeds.length > 0 ? ranker.focus(plan.seeds) : ranker
+  const scored = plan.candidates
+    .filter((d) => !ranker.isDisliked(d.videoId ?? 0))
+    .map((doc) => ({ doc, pred: r.scoreVideo(doc, 0) }))
+    .sort(
+      (a, b) =>
+        b.pred.score - a.pred.score ||
+        b.doc.popularity - a.doc.popularity ||
+        (a.doc.videoId ?? 0) - (b.doc.videoId ?? 0),
+    )
+    .slice(0, PREDICTED_LIMIT)
+  if (scored.length === 0) return null
+  return {
+    sectionType: 'SearchPredictedSection',
+    id: plan.id,
+    displayString: plan.displayString,
+    ttlSec: SEARCH_TTL_SEC,
+    totalCount: scored.length,
+    entities: scored.map(({ doc, pred }) => ({
+      hit: { doc, score: 0, onTitle: false, fuzzy: false },
+      treatment,
+      artworkType: treatment === 'standardBoxshot' ? 'BOXART' : 'STORY_ART',
+      pred,
+      predicted: true,
+      reason: plan.reason ?? r.predictedReason(pred),
+    })),
+  }
+}
+
+/** Konu varlığının "tohum" başlıkları: başlığın kendisi, kişinin/türün/koleksiyonun en popüler başlıkları. */
+function seedTitles(subject: Hit, pool: readonly SearchDoc[]): number[] {
+  if (subject.doc.type === 'video') return [subject.doc.videoId ?? 0]
+  const pop = new Map(pool.filter((d) => d.type === 'video').map((d) => [d.videoId ?? 0, d.popularity]))
+  return subject.doc.titleIds
+    .filter((id) => pop.has(id))
+    .sort((a, b) => (pop.get(b) ?? 0) - (pop.get(a) ?? 0) || a - b)
+    .slice(0, 3)
+}
+
+/**
+ * Tahmini bölüm planı:
+ *  - sorgu tek ve açık bir varlığa çözülüyorsa → "‹X› ile ilgili" (benzer başlıklar, model sıralar);
+ *  - doğrudan video eşleşmesi azsa (< 6) ya da hiç yoksa → "Bunlar ilgini çekebilir";
+ *  - boş sorgu → "Sana özel öneriler".
+ * Doğrudan eşleşen hiçbir başlık tekrar edilmez.
+ */
+function planPredicted(
+  pool: readonly SearchDoc[],
+  hits: readonly Hit[],
+  ranker: SearchRanker,
+  emptyTerm: boolean,
+): PredictedPlan | null {
+  const videos = pool.filter((d) => d.type === 'video')
+  if (emptyTerm)
+    return { id: SECTION_IDS.personal, displayString: SECTION_TITLES.personal, candidates: videos, reason: null }
+  const shown = new Set(hits.filter((h) => h.doc.type === 'video').map((h) => h.doc.key))
+  const rest = videos.filter((d) => !shown.has(d.key))
+  const subject = clearSubject(hits)
+  if (subject) {
+    const byId = new Map(rest.map((d) => [d.videoId ?? 0, d]))
+    const related: SearchDoc[] = []
+    const seen = new Set<number>()
+    const seeds = seedTitles(subject, pool)
+    for (const seed of seeds) {
+      for (const id of ranker.similarTo(seed, RELATED_CANDIDATES)) {
+        const d = byId.get(id)
+        if (d && !seen.has(id)) {
+          seen.add(id)
+          related.push(d)
+        }
+      }
+    }
+    if (related.length > 0) {
+      const name = subject.doc.displayString
+      return {
+        id: SECTION_IDS.related,
+        displayString: SECTION_TITLES.related(name),
+        candidates: related.slice(0, RELATED_CANDIDATES),
+        reason: REASONS.related(name),
+        seeds,
+      }
+    }
+  }
+  if (shown.size < FEW_RESULTS)
+    return { id: SECTION_IDS.predicted, displayString: SECTION_TITLES.predicted, candidates: rest, reason: null }
+  return null
 }
 
 /* ───────────── Sonuç sayfası ───────────── */
@@ -372,6 +559,8 @@ function fallbackSections(
   pool: SearchDoc[],
   caps: NegotiatedCapabilities,
   ctx: SearchRequestContext,
+  /** Tahmin modeli bölümü varsa "Popüler" yerine o gösterilir (aynı amaç, modelle sıralı) */
+  predicted: PendingSection | null = null,
 ): PendingSection[] {
   const pending: PendingSection[] = []
   const asHit = (doc: SearchDoc): Hit => ({ doc, score: 0, onTitle: true, fuzzy: false })
@@ -415,8 +604,9 @@ function fallbackSections(
     })
   }
 
-  if (canRender(caps, 'searchGallery', 'standardBoxshot')) {
-    // Popülerlik sırası: tüm "puanlar" 0 olduğundan compareMatches popülerliğe düşer.
+  if (predicted) pending.push(predicted)
+  else if (canRender(caps, 'searchGallery', 'standardBoxshot')) {
+    // Popülerlik sırası: tüm "puanlar" 0 olduğundan compareMatches popülerliğe düşer (model varsa model sırası).
     const videos = pool.filter((d) => d.type === 'video').map(asHit)
     pending.push(gallerySection(SECTION_IDS.popular, SECTION_TITLES.popular, videos, ctx, () => 'BOXART'))
   }
@@ -445,8 +635,17 @@ export function buildSearchPage(index: SearchIndex, ctx: SearchRequestContext): 
     sections,
     isFallback,
     recentSearches: ctx.recentSearches,
+    predictions: ctx.predictions ?? [],
+    modelVersion: ctx.ranker?.modelVersion ?? MODEL_OFF_VERSION,
   })
-  const fallback = () => page(finalizeSections(fallbackSections(pool, caps, ctx), trackId, ctx.now), null, true)
+  const predictedFor = (hits: readonly Hit[]): PendingSection | null => {
+    const ranker = ctx.ranker
+    if (!ranker || !hasSection(caps, 'searchPredicted')) return null
+    const plan = planPredicted(pool, hits, ranker, tokens.length === 0)
+    return plan ? predictedSection(plan, caps, ranker) : null
+  }
+  const fallback = () =>
+    page(finalizeSections(fallbackSections(pool, caps, ctx, predictedFor([])), trackId, ctx.now), null, true)
 
   if (tokens.length === 0) return fallback()
 
@@ -475,7 +674,10 @@ export function buildSearchPage(index: SearchIndex, ctx: SearchRequestContext): 
   }
 
   if (hits.length === 0) return fallback()
-  const sections = finalizeSections(resultSections(hits, caps, ctx), trackId, ctx.now)
+  const pendingSections = resultSections(hits, caps, ctx)
+  const predicted = predictedFor(hits)
+  if (predicted) pendingSections.push(predicted)
+  const sections = finalizeSections(pendingSections, trackId, ctx.now)
   if (sections.length === 0) return fallback()
   return page(sections, correction, false)
 }

@@ -18,6 +18,14 @@ import type { FastifyReply, FastifyRequest } from 'fastify'
 import type { BootContext, EventBatch, OcaNodeState, PushEvent } from '../../../shared/types'
 import type { AccountRecord, Passport, ProfileRecord } from './context'
 import type { ArtworkTypeName } from './imageUrls'
+import type {
+  AudienceService,
+  EmbeddingService,
+  InsightsService,
+  MicrogenreService,
+  TaggingService,
+  ViewingService,
+} from './intelligence'
 
 /* ───────────── Kimlik (sahibi: çekirdek API) ───────────── */
 export interface IdentityService {
@@ -35,6 +43,8 @@ export interface IdentityService {
   ): Promise<BootContext>
   /** O cihazın (tvpvdid) mevcut oturumlarını geçersiz kılar (cihazı uzaktan çıkış yaptırma). */
   revokeDevice(deviceId: string): void
+  /** Profil 4 haneli PIN ile kilitli mi (sunucu ekleri; sahte servislerde olmayabilir → false say) */
+  isProfileLocked?(guid: string): boolean
 }
 
 /* ───────────── Olaylar (sahibi: çekirdek API) ───────────── */
@@ -47,6 +57,11 @@ export interface EventsService {
     profileGuid: string | null,
   ): { accepted: number; dropped: number; rateLimitRemaining: number }
   stats(): { total: number; lastBatchAt: string | null; byName: Record<string, number> }
+  /**
+   * Kabul edilen her olay paketi için çağrılır (izleme verisi köprüsü). Dinleyici fırlatırsa yutulur.
+   * Dönen işlev aboneliği kaldırır. (İzleme verisi ajanı ekler; sahte servislerde olmayabilir.)
+   */
+  subscribe?(listener: (batch: EventBatch, profileGuid: string | null) => void): () => void
 }
 
 /* ───────────── Bildirimler (sahibi: çekirdek API) ───────────── */
@@ -232,6 +247,16 @@ export interface ProgressService {
   toggleFavoriteChannel(profileGuid: string, channelId: number): boolean
   dismissedInterstitials(profileGuid: string): string[]
   dismissInterstitial(profileGuid: string, id: string): void
+  /* Yayın hatırlatmaları (sunucu ekleri) */
+  /** Profilin hatırlatma kurduğu yayın kimlikleri (kurulma sırasıyla; bildirilmiş olanlar dahil) */
+  reminders(profileGuid: string): string[]
+  hasReminder(profileGuid: string, airingId: string): boolean
+  setReminder(profileGuid: string, airingId: string, enabled: boolean): void
+  /** Tüm profillerde henüz bildirilmemiş hatırlatmalar (zamanlayıcı için) */
+  pendingReminders(): { profileGuid: string; airingId: string }[]
+  markReminderFired(profileGuid: string, airingId: string): void
+  /** Profil silinince o profilin üye durumunu bırakır */
+  forgetProfile?(profileGuid: string): void
 }
 export type WatchStatusValue = 'NEVER_WATCHED' | 'STARTED' | 'WATCHED'
 export type ThumbRatingValue = 'THUMBS_UNRATED' | 'THUMBS_DOWN' | 'THUMBS_UP' | 'THUMBS_WAY_UP'
@@ -268,4 +293,11 @@ export interface Services {
   progress: ProgressService
   playback: PlaybackService
   oca: OcaService
+  /* İçerik zekâsı (sözleşme: ./intelligence.ts) */
+  tagging: TaggingService
+  microgenres: MicrogenreService
+  viewing: ViewingService
+  audience: AudienceService
+  insights: InsightsService
+  embeddings: EmbeddingService
 }

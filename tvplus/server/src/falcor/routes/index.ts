@@ -1,6 +1,7 @@
 /**
- * Falcor (eski sistem) JSON Graph yolları — Film & Dizi ana sayfası (lolomo). Bkz. docs/MIMARI.md §6.
+ * Falcor (eski sistem) JSON Graph yolları — Film & Dizi ana sayfası (lolomo). Bkz. docs/MIMARI.md §6 ve §9.4.
  *   lolomo → ref lolomos[guid] → ref lists[listId] → ref videos[id]
+ *   lolomoByCategory[home|shows|movies|newPopular] → ref lolomos["<guid>:<kategori>"] (home → lolomos[guid], aynı nesne)
  * Motor ref'leri izler; bu dosya yalnızca yaprakları ve ref'leri üretir.
  */
 import type { FalcorKey } from '../../../../shared/types'
@@ -23,10 +24,19 @@ import {
   promoVideoOf,
   runtimeOf,
   sourceKindsOfVideo,
+  textEvidenceOf,
 } from '../../services/catalog/present'
-import { buildLolomo, profileHash, type Lolomo } from '../../services/discovery/lolomo'
+import {
+  buildLolomo,
+  categoryOfListId,
+  isLolomoCategory,
+  lolomoKeyOf,
+  profileHash,
+  type Lolomo,
+  type LolomoCategory,
+} from '../../services/discovery/lolomo'
 import { memo, requestCache } from '../../services/discovery/memo'
-import { top10ForProfile, top10Rank } from '../../services/discovery/top10'
+import { top10ForType, top10RankByType, type TitleType } from '../../services/discovery/top10'
 
 /** Kişisel ve sık değişen atomların ömrü (Falcor göreli $expires) */
 export const MEMBER_ATOM_EXPIRES_MS = 30_000
@@ -35,11 +45,11 @@ const nowOf = (ctx: FalcorRouteContext) =>
   memo(requestCache(ctx.req), 'now', () => ctx.services.epg?.now() ?? new Date())
 const top10Supported = (ctx: FalcorRouteContext) => ctx.flags.isTop10Supported !== 'false'
 
-function lolomoOf(ctx: FalcorRouteContext): Lolomo | null {
+function lolomoOf(ctx: FalcorRouteContext, category: LolomoCategory = 'home'): Lolomo | null {
   const profile = ctx.passport.profile
   if (!profile) return null
-  return memo(requestCache(ctx.req), `lolomo:${profile.guid}:${top10Supported(ctx)}`, () =>
-    buildLolomo(ctx.services, profile, { top10Supported: top10Supported(ctx), now: nowOf(ctx) }),
+  return memo(requestCache(ctx.req), `lolomo:${profile.guid}:${category}:${top10Supported(ctx)}`, () =>
+    buildLolomo(ctx.services, profile, { top10Supported: top10Supported(ctx), now: nowOf(ctx), category }),
   )
 }
 
@@ -137,14 +147,18 @@ export const VIDEO_FIELDS: Record<string, VideoField> = {
     const g = guid(ctx)
     return atom(g ? ctx.services.progress.thumbRating(g, id) : 'THUMBS_UNRATED')
   },
+  /** Başlığın kendi türünün (dizi / film) Top 10 listesindeki sırası */
   top10Rank: (ctx, id) => {
     const kind = ctx.services.catalog.videoInfo(id)!.kind
     if (kind !== 'MOVIE' && kind !== 'SHOW') return atom(null)
-    const list = memo(requestCache(ctx.req), 'top10', () =>
-      top10ForProfile(ctx.services, ctx.passport.profile, nowOf(ctx)),
-    )
-    return atom(top10Rank(ctx.services, id, ctx.passport.profile, nowOf(ctx), list))
+    const listOf = (type: TitleType) =>
+      memo(requestCache(ctx.req), `top10:${type}`, () =>
+        top10ForType(ctx.services, ctx.passport.profile, nowOf(ctx), type),
+      )
+    return atom(top10RankByType(ctx.services, id, ctx.passport.profile, nowOf(ctx), listOf))
   },
+  /** Önizleme kartındaki üç kısa etiket (GraphQL textEvidence BOB ile aynı) */
+  tags: (ctx, id) => atom(textEvidenceOf(ctx.services.catalog.videoInfo(id)!.title, 'BOB').map((t) => t.text)),
   sourceKinds: (ctx, id) => atom(sourceKindsOfVideo(ctx.services, id)),
   promoVideo: (ctx, id) => {
     const p = promoVideoOf(ctx.services, id, access(ctx, id))
@@ -192,12 +206,30 @@ const lolomoRoute: FalcorRoute = {
   },
 }
 
-/** lolomos[guid]: yalnız etkin profilin kendi lolomosu */
+/** lolomoByCategory[kategori] → ref lolomos[...] (home → eski `lolomo` ile aynı nesne) */
+const lolomoByCategoryRoute: FalcorRoute = {
+  route: ['lolomoByCategory', 'KEYS'],
+  get(ctx, match) {
+    const profile = ctx.passport.profile
+    return (match[1] ?? []).map((cat) => ({
+      path: ['lolomoByCategory', cat],
+      value: !profile
+        ? noProfile()
+        : isLolomoCategory(String(cat))
+          ? ref(['lolomos', lolomoKeyOf(profile.guid, String(cat) as LolomoCategory)])
+          : undefined,
+    }))
+  },
+}
+
+/** lolomos[guid] ya da lolomos["guid:kategori"]: yalnız etkin profilin kendi lolomoları */
 function lolomoFor(ctx: FalcorRouteContext, key: FalcorKey): Lolomo | PathValue['value'] {
-  const l = lolomoOf(ctx)
-  if (!l) return noProfile()
-  if (String(key) !== l.profileGuid) return falcorError('Bu lolomo etkin profile ait değil', 'FORBIDDEN')
-  return l
+  const profile = ctx.passport.profile
+  if (!profile) return noProfile()
+  const [guidPart, cat = 'home', ...rest] = String(key).split(':')
+  if (guidPart !== profile.guid) return falcorError('Bu lolomo etkin profile ait değil', 'FORBIDDEN')
+  if (rest.length || !isLolomoCategory(cat)) return undefined
+  return lolomoOf(ctx, cat)
 }
 const isLolomo = (x: unknown): x is Lolomo => typeof x === 'object' && x !== null && 'lists' in x && 'profileGuid' in x
 
@@ -232,13 +264,15 @@ const lolomoIndexRoute: FalcorRoute = {
   },
 }
 
-/** lists[listId]: etkin profilin lolomosunda aranır (listId profil özetiyle başlar) */
+/** lists[listId]: etkin profilin (kimlikteki kategoriye ait) lolomosunda aranır (listId profil özetiyle başlar) */
 function listFor(ctx: FalcorRouteContext, listId: FalcorKey) {
-  const l = lolomoOf(ctx)
-  if (!l) return { error: noProfile() }
+  const profile = ctx.passport.profile
+  if (!profile) return { error: noProfile() }
   const id = String(listId)
-  if (!id.startsWith(`${profileHash(l.profileGuid)}_`))
+  if (!id.startsWith(`${profileHash(profile.guid)}_`))
     return { error: falcorError('Bu liste etkin profile ait değil', 'FORBIDDEN') }
+  const l = lolomoOf(ctx, categoryOfListId(id))
+  if (!l) return { error: noProfile() }
   const row = l.lists.findIndex((x) => x.listId === id)
   return { list: row >= 0 ? l.lists[row]! : null, row }
 }
@@ -341,6 +375,7 @@ const uspRoute: FalcorRoute = {
 
 export const routes: FalcorRoute[] = [
   lolomoRoute,
+  lolomoByCategoryRoute,
   lolomoSummaryRoute,
   lolomoIndexRoute,
   listSummaryRoute,

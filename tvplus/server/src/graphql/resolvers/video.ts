@@ -24,8 +24,8 @@ import {
 } from '../../services/catalog/present'
 import { memo } from '../../services/discovery/memo'
 import { similarTitles } from '../../services/discovery/similarity'
-import { top10Rank } from '../../services/discovery/top10'
-import { accessForVideo, findContext, gqlError, guidOf, nowOf, top10List, videoRefs, visible } from './util'
+import { top10RankByType } from '../../services/discovery/top10'
+import { accessForVideo, findContext, gqlError, guidOf, nowOf, top10TypeList, videoRefs, visible } from './util'
 
 export interface VideoRef {
   videoId: number
@@ -114,10 +114,13 @@ const videoFields: Record<string, ResolverFn> = {
     return { name: l.name, attribution: l.attribution, url: l.url ?? null }
   },
   isKids: (p: VideoRef, _a: unknown, ctx: GqlContext) => infoOf(ctx, p.videoId).title.kids,
+  /** Kendi türünün (dizi / film) Top 10 listesindeki sıra — Falcor `top10Rank` ile aynı */
   top10Rank: (p: VideoRef, _a: unknown, ctx: GqlContext) => {
     const vi = infoOf(ctx, p.videoId)
     if (vi.kind !== 'MOVIE' && vi.kind !== 'SHOW') return null
-    return top10Rank(ctx.services, p.videoId, ctx.passport.profile, nowOf(ctx), top10List(ctx))
+    return top10RankByType(ctx.services, p.videoId, ctx.passport.profile, nowOf(ctx), (type) =>
+      top10TypeList(ctx, type),
+    )
   },
 }
 

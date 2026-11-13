@@ -3,7 +3,7 @@ import { GraphQLError } from 'graphql'
 import type { GqlContext, ProfileRecord } from '../../kernel/context'
 import type { AccessDecision } from '../../kernel/services'
 import { memo } from '../../services/discovery/memo'
-import { top10ForProfile } from '../../services/discovery/top10'
+import { top10ForProfile, top10ForType, type TitleType } from '../../services/discovery/top10'
 
 export const gqlError = (message: string, code: string) => new GraphQLError(message, { extensions: { code } })
 
@@ -50,6 +50,10 @@ export function accessForChannel(ctx: GqlContext, channelId: number): AccessDeci
 }
 export function top10List(ctx: GqlContext): number[] {
   return memo(ctx.cache, 'top10', () => top10ForProfile(ctx.services, ctx.passport.profile, nowOf(ctx)))
+}
+
+export function top10TypeList(ctx: GqlContext, type: TitleType): number[] {
+  return memo(ctx.cache, `top10:${type}`, () => top10ForType(ctx.services, ctx.passport.profile, nowOf(ctx), type))
 }
 
 /** Profil bu başlığı görebilir mi (bölüm/ek video üst başlığa göre) */

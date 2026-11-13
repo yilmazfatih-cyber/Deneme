@@ -5,6 +5,10 @@
     "type": "MOVIE",
     "title": "Sintel",
     "year": 2010,
+    "origin": {
+      "countries": ["NL"],
+      "languages": ["en"]
+    },
     "synopsis": "Sintel, yalnız yaşayan genç bir kadındır. Bir gün küçük bir ejderha yavrusunu kurtarır, ona Scales adını verir ve bakmaya başlar. Ejderha büyüyüp ondan ayrılınca Sintel onu bulmak için tehlikeli bir yolculuğa çıkar.",
     "shortSynopsis": "Yalnız yaşayan Sintel, kurtardığı ejderha yavrusu Scales'i bulmak için tehlikeli bir yolculuğa çıkar.",
     "genres": ["animasyon", "fantastik", "macera", "kisa-film"],
@@ -90,6 +94,10 @@
     "type": "MOVIE",
     "title": "Tears of Steel",
     "year": 2012,
+    "origin": {
+      "countries": ["NL"],
+      "languages": ["en"]
+    },
     "synopsis": "Gelecekte Amsterdam'da bir grup asker ve bilim insanı, yıkıcı robotları durdurmak amacıyla geçmişteki kritik bir anı yeniden canlandırmak için Oude Kerk'te bir araya gelir. Film, canlı çekimi ve görsel efektleri bir arada kullanan bir bilim kurgu kısa filmidir.",
     "shortSynopsis": "Gelecekte Amsterdam'da, yıkıcı robotları durdurmak isteyen asker ve bilim insanlarının hikâyesi.",
     "genres": ["bilim-kurgu", "kisa-film"],

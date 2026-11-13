@@ -164,6 +164,26 @@ export const zTitle = z
       .prefault({ addedAt: '2026-01-01' }),
     /** 0–100 başlangıç popülerliği (Top 10 için olay sayılarıyla harmanlanır). */
     popularity: z.number().min(0).max(100).default(50),
+    /* ── İçerik zekâsı alanları (hepsi isteğe bağlı; bkz. docs/ICERIK_ZEKASI.md) ── */
+    /** Yapımın kökeni: ülke ve özgün dil. İçgörülerdeki "dil ve ülke" kırılımı ile mikro türlerin bölge yuvası bunu kullanır. */
+    origin: z
+      .object({
+        /** ISO 3166-1 alpha-2, ilk sıradaki ana yapım ülkesi, ör. ['TR'] */
+        countries: z.array(z.string().regex(/^[A-Z]{2}$/)).default([]),
+        /** ISO 639 özgün dil(ler), ör. ['tr']; sözsüz/sessiz yapımlar için 'zxx' */
+        languages: z.array(z.string().regex(/^[a-z]{2,3}$/)).default([]),
+      })
+      .optional(),
+    /**
+     * Edinim türü: ORIGINAL kendi yapımı · LICENSED lisanslı kütüphane içeriği · OPEN açık lisans/kamu malı ·
+     * EMBED üçüncü taraf gömme. Verilmezse lisans ve kaynak türünden türetilir.
+     */
+    acquisition: z.enum(['ORIGINAL', 'LICENSED', 'OPEN', 'EMBED']).optional(),
+    /**
+     * Başka sistemlerdeki kimlikler: ad alanı → kimlik, ör. { "mixpanel": "cnt_48213" }.
+     * Mixpanel içe aktarımı izleme olaylarını katalogla bununla eşler.
+     */
+    externalIds: z.record(z.string(), z.string()).optional(),
   })
   .superRefine((t, ctx) => {
     if (t.type === 'MOVIE' && t.sources.length === 0)

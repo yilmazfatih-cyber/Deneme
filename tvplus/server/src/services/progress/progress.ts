@@ -22,6 +22,8 @@ export interface ProfileState {
   favoriteChannels: number[] | null
   recentSearches: string[]
   dismissed: string[]
+  /** airingId → kurulma anı ve bildirim anı (henüz bildirilmediyse null). Eski kayıtlarda alan yok. */
+  reminders?: Record<string, { createdAt: string; firedAt: string | null }>
 }
 export interface MemberState {
   profiles: Record<string, ProfileState>
@@ -44,6 +46,7 @@ const emptyProfile = (): ProfileState => ({
   favoriteChannels: null,
   recentSearches: [],
   dismissed: [],
+  reminders: {},
 })
 
 export function isWatched(positionSec: number, runtimeSec: number | null): boolean {
@@ -244,6 +247,38 @@ export function createProgressService(
         p.favoriteChannels = next
       })
       return next.includes(channelId)
+    },
+
+    reminders: (guid) =>
+      Object.entries(read(guid).reminders ?? {})
+        .sort((a, b) => (a[1].createdAt < b[1].createdAt ? -1 : a[1].createdAt > b[1].createdAt ? 1 : 0))
+        .map(([id]) => id),
+    hasReminder: (guid, airingId) => !!read(guid).reminders?.[airingId],
+    setReminder(guid, airingId, enabled) {
+      if (!enabled && !read(guid).reminders?.[airingId]) return
+      write(guid, (p) => {
+        const r = (p.reminders ??= {})
+        if (!enabled) delete r[airingId]
+        else if (!r[airingId]) r[airingId] = { createdAt: stamp(), firedAt: null }
+      })
+    },
+    pendingReminders: () =>
+      Object.entries(store.get().profiles).flatMap(([profileGuid, p]) =>
+        Object.entries(p.reminders ?? {})
+          .filter(([, r]) => r.firedAt === null)
+          .map(([airingId]) => ({ profileGuid, airingId })),
+      ),
+    markReminderFired(guid, airingId) {
+      write(guid, (p) => {
+        const r = p.reminders?.[airingId]
+        if (r && r.firedAt === null) r.firedAt = now().toISOString()
+      })
+    },
+    forgetProfile(guid) {
+      if (!store.get().profiles[guid]) return
+      store.update((s) => {
+        delete s.profiles[guid]
+      })
     },
 
     dismissedInterstitials: (guid) => [...read(guid).dismissed],

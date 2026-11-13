@@ -7,8 +7,8 @@ import { PERSISTED_QUERY_VERSION } from '../../../../shared/constants'
 import type { BootContext, FalcorPath, JsonGraph, ProfileSummary } from '../../../../shared/types'
 import { evaluatePaths, hasRoutes } from '../../falcor/engine'
 import type { ProfileRecord } from '../../kernel/context'
-import { buildArtwork } from '../../kernel/imageUrls'
 import { deriveKey } from '../../kernel/config'
+import { avatarKeyOf, profileAvatarArtwork } from './avatars'
 import { sessionOf } from './passport'
 import { issueAuthURL } from './session'
 
@@ -23,8 +23,8 @@ export const BOOT_ITEMS = 10
  * HERO_LEAVES, CURRENT_LEAVES). İstemci ilk boyamada bunları `lists[listId]` üzerinden sorar; burada eksik kalan her yaprak
  * açılışta bir pathEvaluator isteği demektir. Vitrine ayrıntı modalının ilk görünümü için birkaç yaprak eklenir.
  */
-const POSTER_LEAVES = ['summary', 'title', 'boxart', 'badge', 'access', 'top10Rank']
-const LANDSCAPE_LEAVES = ['summary', 'title', 'storyArt', 'access', 'displayRuntime', 'bookmark', 'watchStatus']
+const POSTER_LEAVES = ['summary', 'title', 'boxart', 'badge', 'access', 'top10Rank', 'tags']
+const LANDSCAPE_LEAVES = ['summary', 'title', 'storyArt', 'access', 'displayRuntime', 'bookmark', 'watchStatus', 'tags']
 const HERO_LEAVES = [
   'summary',
   'title',
@@ -41,13 +41,18 @@ const HERO_LEAVES = [
   'synopsis',
   'releaseYear',
   'runtime',
+  'tags',
 ]
 const CURRENT_LEAVES = ['summary', 'displayRuntime', 'bookmark']
 const HERO_CURRENT_LEAVES = [...CURRENT_LEAVES, 'title', 'watchStatus']
 
-/** 1. aşama: lolomo ve ilk satırların özetleri (bağlam + uzunluk). */
+/**
+ * 1. aşama: lolomo ve ilk satırların özetleri (bağlam + uzunluk). `lolomoByCategory.home` yalnız ref'tir ve
+ * `lolomo` ile aynı nesneyi gösterir: istemci ana sayfayı hangisiyle sorarsa sorsun ilk boyama ağ beklemez.
+ */
 export const BOOT_SUMMARY_PATHS: FalcorPath[] = [
   ['lolomo', 'summary'],
+  ['lolomoByCategory', 'home'],
   ['lolomo', { from: 0, to: BOOT_ROWS - 1 }, 'summary'],
 ]
 
@@ -128,9 +133,11 @@ export function profileSummary(app: FastifyInstance, p: ProfileRecord): ProfileS
   return {
     guid: p.guid,
     name: p.name,
-    avatarUrl: buildArtwork(app.config, 'AVATAR', `Profile:${p.guid}`, { width: 160 }).url,
+    avatarUrl: profileAvatarArtwork(app.config, p, { width: 160 }).url,
     isKids: p.isKids,
     maturityLevel: p.maturityLevel,
+    isLocked: app.services.identity?.isProfileLocked?.(p.guid) ?? false,
+    avatarKey: avatarKeyOf(p.avatar),
   }
 }
 

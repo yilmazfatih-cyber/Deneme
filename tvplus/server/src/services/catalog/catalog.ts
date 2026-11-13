@@ -17,6 +17,7 @@ import type {
   Services,
   VideoInfo,
 } from '../../kernel/services'
+import { avatarKeyOf, avatarSourceOf, isAvatarKey } from '../identity/avatars'
 import type { ContentBundle, ContentLog } from './load'
 
 export const maturityLevelOf = (t: ContentTitle): number => MATURITY[t.maturity.rating].maturityLevel
@@ -263,16 +264,23 @@ export function createCatalog(bundle: ContentBundle, deps: CatalogDeps): Catalog
           }
         }
         case 'Profile': {
+          // Profil görseli avatar anahtarından çözülür (üretilen yüzlerde tohum `Avatar:yuz-NN`)
           const p = deps.services().identity?.getProfile(parsed.id) ?? null
           if (!p) return null
+          const a = avatarSourceOf(avatarKeyOf(p.avatar))
           return {
             sourceUrl: null,
-            localFile: `brand/${p.avatar}`,
+            localFile: a.localFile,
             title: p.name,
             subtitle: null,
-            seed: entityId,
+            seed: a.seed,
             focal: '50% 50%',
           }
+        }
+        case 'Avatar': {
+          if (!isAvatarKey(parsed.id)) return null
+          const a = avatarSourceOf(parsed.id)
+          return { sourceUrl: null, localFile: a.localFile, title: '', subtitle: null, seed: a.seed, focal: '50% 50%' }
         }
         case 'Collection': {
           const c = collections.get(num)

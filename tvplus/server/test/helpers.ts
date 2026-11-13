@@ -17,6 +17,8 @@ export async function createTestApp(overrides: Partial<AppConfig> = {}): Promise
     offline: true,
     logLevel: 'silent',
     debugAccess: 'open',
+    studioAccess: 'open',
+    sampleViewing: false,
     ...overrides,
   })
   await app.ready()

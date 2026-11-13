@@ -224,3 +224,15 @@ export const NO_LIVE_CAPS: SearchPageCapabilitiesInput = {
     searchGallery: FULL_CAPS.capabilitiesBySection?.searchGallery,
   },
 }
+
+/** Yeni istemci: tahmini bölümü (SearchPredictedSection) de çizebilir. */
+export const PREDICTED_CAPS: SearchPageCapabilitiesInput = {
+  capabilitiesBySection: {
+    ...FULL_CAPS.capabilitiesBySection,
+    searchPredicted: {
+      capabilitiesBySectionTreatment: {
+        standard: { capabilitiesByEntityTreatment: { standardBoxshot: kinds('VIDEO') } },
+      },
+    },
+  },
+}
