@@ -56,6 +56,22 @@ Bu kipte her şey `http://<bilgisayarın-ip-adresi>:8787` üzerindedir. TV'deki 
 açabileceği adresi taşır. (Düz `http://<ip>` adresinde oynatma hattı şifresiz geliştirme şemasına düşer; şifreli zarf
 güvenli bağlam ister.)
 
+### Telefonda açılacak bağlantı
+
+GitHub Pages yalnız durağan dosya sunar; TV+'ın sunucusu olduğu için orada çalışmaz. Depo kökündeki `render.yaml`,
+uygulamayı Render'ın ücretsiz katmanına tek tıkla kurar ve `https://…onrender.com` biçiminde kalıcı bir adres verir:
+
+1. [Render'da kur](https://render.com/deploy?repo=https://github.com/yilmazfatih-cyber/Deneme/tree/claude/cool-ride-ns0h7v)
+   bağlantısını açın, GitHub hesabınızla girin ve depoya erişim verin. (Bağlantı dalı bulamazsa: **New → Blueprint**,
+   depo `Deneme`, dal `claude/cool-ride-ns0h7v`.)
+2. **Deploy**'a basın; ilk kurulum birkaç dakika sürer.
+3. Verilen adresi telefonda açın. Telefon mobil görünümü kendiliğinden alır; TV görünümü için adresin sonuna
+   `?cihaz=tv#/tv` ekleyin. TV'deki QR kodu bu adresi taşıdığı için gerçek telefonla okutulabilir.
+
+Bilinmesi gerekenler: adres herkese açıktır (yalnız demo hesabı vardır; Stüdyo da bu hesapla açılır). Ücretsiz katman
+15 dakika kullanılmayınca uyur; sonraki ilk açılış yaklaşık bir dakika sürer ve profiller, yer imleri ile eğitilmiş
+tahmin modeli sıfırdan kurulur. Bellek ayarları (`MALLOC_ARENA_MAX`, `NODE_OPTIONS`) dar belleğe göre seçilmiştir.
+
 ### Açılmazsa
 
 Uygulama başlayamazsa boş ekran yerine **"TV+ açılamadı"** sayfası çıkar ve nedeni yazar; o metin çoğu zaman sorunu
