@@ -8,7 +8,13 @@
  *   değer  = base64(iv(12) || şifreli || etiket(16)),  aad = utf8(mastertoken.tokendata)
  *   imza   = base64(HMAC(hmacKey, utf8(headerdata + '.' + payload)))
  */
-import { MSL_HKDF_INFO_PREFIX, MSL_HKDF_SALT, type MslEnvelope, type MslHeader, type MslMasterToken } from '../../../../shared/playback'
+import {
+  MSL_HKDF_INFO_PREFIX,
+  MSL_HKDF_SALT,
+  type MslEnvelope,
+  type MslHeader,
+  type MslMasterToken,
+} from '../../../../shared/playback'
 import { b64decode, b64encode, b64json, concatBytes, fromUtf8, parseB64json, utf8 } from './bytes'
 
 export interface MslSessionKeys {
@@ -50,21 +56,38 @@ export async function deriveSessionKeys(
     ),
   )
   const encKey = await subtle.importKey('raw', okm.slice(0, 32), { name: 'AES-GCM' }, false, ['encrypt', 'decrypt'])
-  const hmacKey = await subtle.importKey('raw', okm.slice(32, 64), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign', 'verify'])
+  const hmacKey = await subtle.importKey('raw', okm.slice(32, 64), { name: 'HMAC', hash: 'SHA-256' }, false, [
+    'sign',
+    'verify',
+  ])
   return { encKey, hmacKey }
 }
 
 /** JSON değerini şifreler: base64(iv || ct || tag), aad = utf8(tokendata). */
-export async function sealValue(subtle: SubtleCrypto, keys: MslSessionKeys, value: unknown, aad: string): Promise<string> {
+export async function sealValue(
+  subtle: SubtleCrypto,
+  keys: MslSessionKeys,
+  value: unknown,
+  aad: string,
+): Promise<string> {
   const iv = new Uint8Array(12)
   globalThis.crypto.getRandomValues(iv)
   const ct = new Uint8Array(
-    await subtle.encrypt({ name: 'AES-GCM', iv, additionalData: utf8(aad), tagLength: 128 }, keys.encKey, utf8(JSON.stringify(value))),
+    await subtle.encrypt(
+      { name: 'AES-GCM', iv, additionalData: utf8(aad), tagLength: 128 },
+      keys.encKey,
+      utf8(JSON.stringify(value)),
+    ),
   )
   return b64encode(concatBytes(iv, ct))
 }
 
-export async function openValue<T>(subtle: SubtleCrypto, keys: MslSessionKeys, sealed: string, aad: string): Promise<T> {
+export async function openValue<T>(
+  subtle: SubtleCrypto,
+  keys: MslSessionKeys,
+  sealed: string,
+  aad: string,
+): Promise<T> {
   const all = b64decode(sealed)
   if (all.length < 12 + 16) throw new MslCryptoError('DECRYPT_FAILED', 'Şifreli değer çok kısa')
   const iv = all.slice(0, 12)
@@ -78,7 +101,12 @@ export async function openValue<T>(subtle: SubtleCrypto, keys: MslSessionKeys, s
   return JSON.parse(fromUtf8(new Uint8Array(plain))) as T
 }
 
-export async function signEnvelope(subtle: SubtleCrypto, keys: MslSessionKeys, headerdata: string, payload: string): Promise<string> {
+export async function signEnvelope(
+  subtle: SubtleCrypto,
+  keys: MslSessionKeys,
+  headerdata: string,
+  payload: string,
+): Promise<string> {
   const sig = new Uint8Array(await subtle.sign('HMAC', keys.hmacKey, utf8(`${headerdata}.${payload}`)))
   return b64encode(sig)
 }

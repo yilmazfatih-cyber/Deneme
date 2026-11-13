@@ -1,8 +1,24 @@
 import { describe, expect, it } from 'vitest'
-import { airingAction, catchupHint, catchupOpen, liveWatchPath, locativeSuffix, packageLock, timeStateOf, upcomingNote, type AiringLike } from './airing'
+import {
+  airingAction,
+  catchupHint,
+  catchupOpen,
+  liveWatchPath,
+  locativeSuffix,
+  packageLock,
+  timeStateOf,
+  upcomingNote,
+  type AiringLike,
+} from './airing'
 import type { AccessData } from './types'
 
-const PLAYABLE: AccessData = { state: 'PLAYABLE', reasonText: null, requiredProduct: null, requiredProductName: null, cta: null }
+const PLAYABLE: AccessData = {
+  state: 'PLAYABLE',
+  reasonText: null,
+  requiredProduct: null,
+  requiredProductName: null,
+  cta: null,
+}
 const H = 3_600_000
 // 13 Kasım 2026 12:00 Türkiye saati (UTC+3)
 const NOW = Date.parse('2026-11-13T09:00:00Z')
@@ -33,7 +49,10 @@ describe('airingAction', () => {
     const r = airingAction(airing(), 1, NOW, '0,1,x,2,,,,,,,Channel:1,')
     expect(r.kind).toBe('live')
     if (r.kind !== 'live') return
-    expect(r.primary).toEqual({ label: 'Canlı izle', to: '/izle/Channel:1?tctx=0%2C1%2Cx%2C2%2C%2C%2C%2C%2C%2C%2CChannel%3A1%2C' })
+    expect(r.primary).toEqual({
+      label: 'Canlı izle',
+      to: '/izle/Channel:1?tctx=0%2C1%2Cx%2C2%2C%2C%2C%2C%2C%2C%2CChannel%3A1%2C',
+    })
     expect(r.secondary?.label).toBe('Baştan başlat')
     expect(r.secondary?.to).toContain('baslat=bastan')
   })
@@ -50,7 +69,11 @@ describe('airingAction', () => {
   })
 
   it('ENDED + pencere 24 saatten az → ipucu', () => {
-    const a = airing({ startAt: new Date(NOW - 3 * H).toISOString(), endAt: new Date(NOW - H).toISOString(), catchup: { available: true, until: new Date(NOW + 5 * H + 1000).toISOString() } })
+    const a = airing({
+      startAt: new Date(NOW - 3 * H).toISOString(),
+      endAt: new Date(NOW - H).toISOString(),
+      catchup: { available: true, until: new Date(NOW + 5 * H + 1000).toISOString() },
+    })
     const r = airingAction(a, 1, NOW)
     expect(r.kind === 'catchup' && r.hint).toBe('Son 5 saat')
   })
@@ -105,7 +128,10 @@ describe('yardımcılar', () => {
   })
 
   it('geri al penceresi: bitmiş ve until geçmemiş', () => {
-    const a = { endAt: new Date(NOW - H).toISOString(), catchup: { available: true, until: new Date(NOW + H).toISOString() } }
+    const a = {
+      endAt: new Date(NOW - H).toISOString(),
+      catchup: { available: true, until: new Date(NOW + H).toISOString() },
+    }
     expect(catchupOpen(a, NOW)).toBe(true)
     expect(catchupOpen(a, NOW + 2 * H)).toBe(false)
     expect(catchupOpen({ ...a, catchup: { available: false, until: null } }, NOW)).toBe(false)

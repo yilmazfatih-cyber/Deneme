@@ -59,7 +59,8 @@ function flagsOf(req: FastifyRequest): Record<string, string> {
 export default async function plugin(app: FastifyInstance): Promise<void> {
   app.post(ROUTES.PATH_EVALUATOR, async (req, reply) => {
     const passport = req.passport
-    if (passport.membershipStatus !== 'CURRENT_MEMBER') throw httpError(401, 'UNAUTHENTICATED', 'Önce giriş yapmalısınız.')
+    if (passport.membershipStatus !== 'CURRENT_MEMBER')
+      throw httpError(401, 'UNAUTHENTICATED', 'Önce giriş yapmalısınız.')
     if (!passport.profile) throw httpError(403, 'PROFILE_REQUIRED', 'Önce bir profil seçin.')
     if (!passport.authURLVerified) throw httpError(403, 'CSRF_FAILED', 'Oturum belirteci geçersiz; sayfayı yenileyin.')
 

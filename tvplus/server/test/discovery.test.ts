@@ -31,11 +31,20 @@ describe('Film & Dizi lolomo', () => {
   afterEach(async () => {
     await app.close()
   })
-  const lolomo = (profile = ADULT, top10Supported = true, now = TEST_NOW) => buildLolomo(app.services, profile, { top10Supported, now })
+  const lolomo = (profile = ADULT, top10Supported = true, now = TEST_NOW) =>
+    buildLolomo(app.services, profile, { top10Supported, now })
 
   it('yeni profil: satır sırası ve varlık kuralları', () => {
     const l = lolomo()
-    expect(l.lists.map((x) => x.context)).toEqual(['billboard', 'top10', 'newReleases', 'genre', 'collection', 'bridge', 'curated'])
+    expect(l.lists.map((x) => x.context)).toEqual([
+      'billboard',
+      'top10',
+      'newReleases',
+      'genre',
+      'collection',
+      'bridge',
+      'curated',
+    ])
     const byCtx = Object.fromEntries(l.lists.map((x) => [x.context, x]))
     expect(byCtx.top10!.videoIds.length).toBe(9)
     expect(byCtx.newReleases!.videoIds.slice(0, 3)).toEqual([ID.anadolu, ID.nosferatu, ID.spring]) // eklenme tarihi azalan
@@ -46,7 +55,8 @@ describe('Film & Dizi lolomo', () => {
     expect(byCtx.curated).toMatchObject({ displayName: 'Editörün seçimi' })
     expect(byCtx.bridge).toMatchObject({ displayName: 'Canlı TV', videoIds: [] })
     // 3'ten az öğeli satırlar düşer: exclusive (2), korku (1), leaving (1)
-    for (const x of l.lists) if (!['billboard', 'bridge'].includes(x.context)) expect(x.videoIds.length).toBeGreaterThanOrEqual(MIN_ROW_ITEMS)
+    for (const x of l.lists)
+      if (!['billboard', 'bridge'].includes(x.context)) expect(x.videoIds.length).toBeGreaterThanOrEqual(MIN_ROW_ITEMS)
     // kararlı kimlikler
     expect(lolomo().lists.map((x) => [x.listId, x.trackId])).toEqual(l.lists.map((x) => [x.listId, x.trackId]))
     expect(new Set(l.lists.map((x) => x.listId)).size).toBe(l.lists.length)
@@ -86,7 +96,13 @@ describe('Film & Dizi lolomo', () => {
     p.setThumbRating(ADULT.guid, ID.spring, 'THUMBS_UP')
     const l = lolomo()
     const byCtx = Object.fromEntries(l.lists.map((x) => [x.context, x]))
-    expect(l.lists.map((x) => x.context).slice(0, 5)).toEqual(['billboard', 'continueWatching', 'top10', 'becauseYouWatched', 'queue'])
+    expect(l.lists.map((x) => x.context).slice(0, 5)).toEqual([
+      'billboard',
+      'continueWatching',
+      'top10',
+      'becauseYouWatched',
+      'queue',
+    ])
     expect(byCtx.continueWatching!.videoIds).toEqual([ID.sintel, ID.nosferatu])
     expect(byCtx.queue!.videoIds).toEqual([ID.metropolis])
     expect(byCtx.becauseYouWatched!.displayName).toBe('Sintel izlediğin için')
@@ -104,7 +120,10 @@ describe('Film & Dizi lolomo', () => {
     const dir = mkdtempSync(join(tmpdir(), 'tvplus-alan-'))
     cpSync(FIXTURE_CONTENT_DIR, dir, { recursive: true })
     const file = join(dir, 'titles', 'blender.json')
-    const titles = JSON.parse(readFileSync(file, 'utf8')) as { videoId: number; availability: Record<string, unknown> }[]
+    const titles = JSON.parse(readFileSync(file, 'utf8')) as {
+      videoId: number
+      availability: Record<string, unknown>
+    }[]
     for (const t of titles) {
       if (t.videoId === ID.spring) t.availability.leavingAt = '2026-12-01'
       if (t.videoId === ID.bbb) t.availability.leavingAt = '2026-11-25'
@@ -113,7 +132,11 @@ describe('Film & Dizi lolomo', () => {
     writeFileSync(file, JSON.stringify(titles))
     const other = await createAlanApp({ contentDir: dir })
     const l = buildLolomo(other.services, ADULT, { top10Supported: true, now: TEST_NOW })
-    expect(l.lists.at(-1)).toMatchObject({ context: 'leaving', displayName: 'Kalkmadan izle', videoIds: [ID.cosmos, ID.bbb, ID.spring] })
+    expect(l.lists.at(-1)).toMatchObject({
+      context: 'leaving',
+      displayName: 'Kalkmadan izle',
+      videoIds: [ID.cosmos, ID.bbb, ID.spring],
+    })
     await other.close()
   })
 
@@ -182,7 +205,9 @@ describe('Canlı TV sayfası', () => {
     for (const a of tonight) expect(a.startAt.getTime() >= from && a.startAt.getTime() < to).toBe(true)
     expect(tonight.map((a) => a.airingId)).toContain('1-20261113-1900')
 
-    for (const a of p.rows[4]!.items.map((i) => i.entity as { endAt: Date; videoId: number | null; channelId: number })) {
+    for (const a of p.rows[4]!.items.map(
+      (i) => i.entity as { endAt: Date; videoId: number | null; channelId: number },
+    )) {
       expect(a.endAt.getTime()).toBeLessThanOrEqual(TEST_NOW.getTime())
       expect(a.videoId !== null || a.channelId === 3).toBe(true)
     }
@@ -190,7 +215,13 @@ describe('Canlı TV sayfası', () => {
     p.rows.forEach((r, row) =>
       r.items.forEach((it, pos) => {
         expect(it.track).toMatchObject({ row, pos, rowId: r.rowId, trackId: r.trackId })
-        expect(parseTctx(it.track.tctx)).toEqual({ row, rank: pos, rowId: r.rowId, trackId: r.trackId, entityId: it.track.entityId })
+        expect(parseTctx(it.track.tctx)).toEqual({
+          row,
+          rank: pos,
+          rowId: r.rowId,
+          trackId: r.trackId,
+          entityId: it.track.entityId,
+        })
       }),
     )
   })

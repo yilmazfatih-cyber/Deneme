@@ -104,4 +104,7 @@ export interface FalcorRoute {
 export const ref = (path: FalcorKey[]): JsonGraphLeaf => ({ $type: 'ref', value: path })
 export const atom = <T>(value: T, expiresMs?: number): JsonGraphLeaf =>
   expiresMs ? { $type: 'atom', value, $expires: -Math.abs(expiresMs) } : { $type: 'atom', value }
-export const falcorError = (message: string, code?: string): JsonGraphLeaf => ({ $type: 'error', value: { message, code } })
+export const falcorError = (message: string, code?: string): JsonGraphLeaf => ({
+  $type: 'error',
+  value: { message, code },
+})

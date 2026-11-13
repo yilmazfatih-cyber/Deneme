@@ -70,7 +70,10 @@ export function buildDeclaration(enabled: ReadonlySet<EntityKindName>): SearchPa
       const kinds = (t.kinds as readonly EntityKindName[]).filter((k) => enabled.has(k))
       if (kinds.length) byTreatment[name] = { canHandleEntityKinds: kinds }
     }
-    if (Object.keys(byTreatment).length) bySection[section] = { capabilitiesBySectionTreatment: { standard: { capabilitiesByEntityTreatment: byTreatment } } }
+    if (Object.keys(byTreatment).length)
+      bySection[section] = {
+        capabilitiesBySectionTreatment: { standard: { capabilitiesByEntityTreatment: byTreatment } },
+      }
   }
   return { capabilitiesBySection: bySection }
 }
@@ -89,12 +92,19 @@ export function declarationSignature(d: SearchPageCapabilities): string {
  * Çizici araması: yanıt bu bölümde bu biçimi verdiyse çizebilir miyiz?
  * Bilinmeyen biçim, bilinmeyen bölüm ya da bildirmediğimiz bir biçim → null (sessizce atlanır).
  */
-export function lookupTreatment(sectionTypename: string, treatment: string, declaration: SearchPageCapabilities): TreatmentName | null {
+export function lookupTreatment(
+  sectionTypename: string,
+  treatment: string,
+  declaration: SearchPageCapabilities,
+): TreatmentName | null {
   const section = SECTION_BY_TYPENAME[sectionTypename]
   if (!section) return null
   if (!Object.prototype.hasOwnProperty.call(TREATMENTS, treatment)) return null
   const name = treatment as TreatmentName
-  const declared = declaration.capabilitiesBySection[section]?.capabilitiesBySectionTreatment.standard.capabilitiesByEntityTreatment[name]
+  const declared =
+    declaration.capabilitiesBySection[section]?.capabilitiesBySectionTreatment.standard.capabilitiesByEntityTreatment[
+      name
+    ]
   return declared ? name : null
 }
 

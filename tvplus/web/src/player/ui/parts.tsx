@@ -54,7 +54,11 @@ export function Scrubber(props: {
     >
       <div className="kb-rail">
         {buffered.map((b, i) => (
-          <span key={i} className="kb-buf" style={{ left: `${pct(b.start)}%`, width: `${Math.max(0, pct(b.end) - pct(b.start))}%` }} />
+          <span
+            key={i}
+            className="kb-buf"
+            style={{ left: `${pct(b.start)}%`, width: `${Math.max(0, pct(b.end) - pct(b.start))}%` }}
+          />
         ))}
         <span className="kb-fill" style={{ width: `${pct(shown)}%` }} />
       </div>
@@ -80,10 +84,18 @@ export interface MenuOption {
   hint?: string
 }
 
-export function Menu(props: { title: string; options: MenuOption[]; selected: string | null; onSelect: (id: string) => void; onClose: () => void }): ReactElement {
+export function Menu(props: {
+  title: string
+  options: MenuOption[]
+  selected: string | null
+  onSelect: (id: string) => void
+  onClose: () => void
+}): ReactElement {
   const ref = useRef<HTMLDivElement>(null)
   useEffect(() => {
-    const first = ref.current?.querySelector<HTMLButtonElement>('[aria-checked="true"]') ?? ref.current?.querySelector<HTMLButtonElement>('button')
+    const first =
+      ref.current?.querySelector<HTMLButtonElement>('[aria-checked="true"]') ??
+      ref.current?.querySelector<HTMLButtonElement>('button')
     first?.focus()
   }, [])
   return (
@@ -122,7 +134,15 @@ export function Menu(props: { title: string; options: MenuOption[]; selected: st
 
 /* ───────────── altyazı katmanı (medya saatine eşzamanlı) ───────────── */
 
-export function SubtitleOverlay({ controller, adapter, raised }: { controller: TextTrackController; adapter: PlayerAdapter; raised: boolean }): ReactElement | null {
+export function SubtitleOverlay({
+  controller,
+  adapter,
+  raised,
+}: {
+  controller: TextTrackController
+  adapter: PlayerAdapter
+  raised: boolean
+}): ReactElement | null {
   const [cues, setCues] = useState<TtmlCue[]>([])
   useEffect(() => {
     let raf = 0

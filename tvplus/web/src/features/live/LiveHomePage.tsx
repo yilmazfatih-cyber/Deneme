@@ -69,14 +69,26 @@ function useImpressions(pageId: string | undefined) {
       const k = `${row.rowId}|${it.track.entityId}`
       if (seen.current.has(k)) continue
       seen.current.add(k)
-      logEvent('impression', { surface: 'canli', rowType: row.type, rowId: row.rowId, entityId: it.track.entityId }, it.track.tctx)
+      logEvent(
+        'impression',
+        { surface: 'canli', rowType: row.type, rowId: row.rowId, entityId: it.track.entityId },
+        it.track.tctx,
+      )
     }
   }, [])
 }
 
 /* ───────────── Kahraman ───────────── */
 
-function LiveHero({ channel, item, onLocked }: { channel: ChannelData; item: RowItemData; onLocked: (t: LockTarget) => void }): ReactElement {
+function LiveHero({
+  channel,
+  item,
+  onLocked,
+}: {
+  channel: ChannelData
+  item: RowItemData
+  onLocked: (t: LockTarget) => void
+}): ReactElement {
   const now = useNow()
   const wide = useWide()
   const [preview, setPreview] = useState<'idle' | 'trying' | 'playing' | 'failed'>('idle')
@@ -93,17 +105,30 @@ function LiveHero({ channel, item, onLocked }: { channel: ChannelData; item: Row
     return () => window.clearTimeout(t)
   }, [channel.channelId, wide, lock])
 
-  const click = (action: string) => logEvent('click', { surface: 'canli', rowType: 'LIVE_HERO', action, entityId: item.track.entityId }, tctx)
+  const click = (action: string) =>
+    logEvent('click', { surface: 'canli', rowType: 'LIVE_HERO', action, entityId: item.track.entityId }, tctx)
   const status = air ? liveStatus(air.startAt, air.endAt, now) : null
   const art = air?.art?.url
 
   return (
     <section className="lv-hero" aria-label={`Şimdi ${channel.name} kanalında`}>
       <div className="lv-hero__media">
-        {art ? <img className="lv-hero__img" src={art} alt="" /> : <span className="lv-hero__img lv-hero__img--empty" />}
+        {art ? (
+          <img className="lv-hero__img" src={art} alt="" />
+        ) : (
+          <span className="lv-hero__img lv-hero__img--empty" />
+        )}
         {(preview === 'trying' || preview === 'playing') && (
-          <div className={preview === 'playing' ? 'lv-hero__preview lv-hero__preview--on' : 'lv-hero__preview'} aria-hidden="true">
-            <PreviewPlayer viewableId={`Channel:${channel.channelId}`} offsetSec={0} onPlaying={() => setPreview('playing')} onError={() => setPreview('failed')} />
+          <div
+            className={preview === 'playing' ? 'lv-hero__preview lv-hero__preview--on' : 'lv-hero__preview'}
+            aria-hidden="true"
+          >
+            <PreviewPlayer
+              viewableId={`Channel:${channel.channelId}`}
+              offsetSec={0}
+              onPlaying={() => setPreview('playing')}
+              onError={() => setPreview('failed')}
+            />
           </div>
         )}
         <span className="lv-hero__scrim" aria-hidden="true" />
@@ -140,7 +165,13 @@ function LiveHero({ channel, item, onLocked }: { channel: ChannelData; item: Row
             </Button>
           )}
           {!lock && air?.startOver ? (
-            <Button variant="secondary" icon="restart" overImage to={liveWatchPath(channel.channelId, tctx, true)} onClick={() => click('bastan')}>
+            <Button
+              variant="secondary"
+              icon="restart"
+              overImage
+              to={liveWatchPath(channel.channelId, tctx, true)}
+              onClick={() => click('bastan')}
+            >
               Baştan başlat
             </Button>
           ) : (
@@ -172,7 +203,12 @@ function ChannelCardItem({
 }): ReactElement {
   const lock = lockText(channel.access)
   const air = channel.now
-  const click = () => logEvent('click', { surface: 'canli', rowType: 'CHANNEL_ROW', action: lock ? 'kilit' : 'canli', entityId: item.track.entityId }, item.track.tctx)
+  const click = () =>
+    logEvent(
+      'click',
+      { surface: 'canli', rowType: 'CHANNEL_ROW', action: lock ? 'kilit' : 'canli', entityId: item.track.entityId },
+      item.track.tctx,
+    )
   return (
     <div className="lv-chcard">
       {air ? (
@@ -216,7 +252,15 @@ function ChannelCardItem({
   )
 }
 
-function TonightCard({ airing, item, onOpen }: { airing: AiringData; item: RowItemData; onOpen: (t: AiringSheetTarget) => void }): ReactElement {
+function TonightCard({
+  airing,
+  item,
+  onOpen,
+}: {
+  airing: AiringData
+  item: RowItemData
+  onOpen: (t: AiringSheetTarget) => void
+}): ReactElement {
   const now = useNow()
   const state = timeStateOf(airing.startAt, airing.endAt, now)
   const lock = lockText(airing.access)
@@ -233,7 +277,16 @@ function TonightCard({ airing, item, onOpen }: { airing: AiringData; item: RowIt
         ariaLabel={label}
         to={live ? liveWatchPath(airing.channel.channelId, item.track.tctx) : undefined}
         onClick={(e) => {
-          logEvent('click', { surface: 'canli', rowType: 'TONIGHT_ROW', action: live ? 'canli' : 'ayrinti', entityId: item.track.entityId }, item.track.tctx)
+          logEvent(
+            'click',
+            {
+              surface: 'canli',
+              rowType: 'TONIGHT_ROW',
+              action: live ? 'canli' : 'ayrinti',
+              entityId: item.track.entityId,
+            },
+            item.track.tctx,
+          )
           if (live) return
           e.preventDefault()
           onOpen({ airing, channel: airing.channel, tctx: item.track.tctx, surface: 'canli' })
@@ -244,7 +297,15 @@ function TonightCard({ airing, item, onOpen }: { airing: AiringData; item: RowIt
   )
 }
 
-function CatchupCard({ airing, item, onOpen }: { airing: AiringData; item: RowItemData; onOpen: (t: AiringSheetTarget) => void }): ReactElement {
+function CatchupCard({
+  airing,
+  item,
+  onOpen,
+}: {
+  airing: AiringData
+  item: RowItemData
+  onOpen: (t: AiringSheetTarget) => void
+}): ReactElement {
   const now = useNow()
   const action = airingAction(airing, airing.channel.channelId, now, item.track.tctx)
   const playable = action.kind === 'catchup'
@@ -259,7 +320,16 @@ function CatchupCard({ airing, item, onOpen }: { airing: AiringData; item: RowIt
         ariaLabel={`${airing.channel.name}, ${airing.title}, ${meta}${playable ? ', baştan izle' : ''}`}
         to={playable ? action.primary.to : undefined}
         onClick={(e) => {
-          logEvent('click', { surface: 'canli', rowType: 'CATCHUP_ROW', action: playable ? 'geri-al' : 'ayrinti', entityId: item.track.entityId }, item.track.tctx)
+          logEvent(
+            'click',
+            {
+              surface: 'canli',
+              rowType: 'CATCHUP_ROW',
+              action: playable ? 'geri-al' : 'ayrinti',
+              entityId: item.track.entityId,
+            },
+            item.track.tctx,
+          )
           if (playable) return
           e.preventDefault()
           onOpen({ airing, channel: airing.channel, tctx: item.track.tctx, surface: 'canli' })
@@ -292,7 +362,15 @@ function Bridge({ row }: { row: RenderableRow }): ReactElement {
 
 /* ───────────── Satır ───────────── */
 
-function LiveRow({ row, onVisible, children }: { row: RenderableRow; onVisible: (row: RenderableRow, items: RowItemData[]) => void; children: ReactElement[] }): ReactElement {
+function LiveRow({
+  row,
+  onVisible,
+  children,
+}: {
+  row: RenderableRow
+  onVisible: (row: RenderableRow, items: RowItemData[]) => void
+  children: ReactElement[]
+}): ReactElement {
   const id = `lv-row-${row.rowId}`
   const onRange = (r: VisibleRange) => {
     if (r.first < 0) return
@@ -300,8 +378,15 @@ function LiveRow({ row, onVisible, children }: { row: RenderableRow; onVisible: 
   }
   return (
     <section className="cn-row lv-row" aria-labelledby={id}>
-      <RowHeader title={row.title ?? ''} id={id} to={row.type === 'CHANNEL_ROW' || row.type === 'TONIGHT_ROW' ? '/rehber' : undefined} actionLabel="Rehber" />
-      {rowHasSampleSchedule(row) && <p className="cn-meta cn-gutter-x lv-row__note">Bazı kanallarda örnek yayın akışı</p>}
+      <RowHeader
+        title={row.title ?? ''}
+        id={id}
+        to={row.type === 'CHANNEL_ROW' || row.type === 'TONIGHT_ROW' ? '/rehber' : undefined}
+        actionLabel="Rehber"
+      />
+      {rowHasSampleSchedule(row) && (
+        <p className="cn-meta cn-gutter-x lv-row__note">Bazı kanallarda örnek yayın akışı</p>
+      )}
       <HScroll labelledBy={id} scrollKey={`canli:${row.rowId}`} onVisibleRangeChange={onRange}>
         {children}
       </HScroll>
@@ -324,7 +409,9 @@ function LiveSkeleton(): ReactElement {
 }
 
 export function LiveHomePage(): ReactElement {
-  const { data, error, loading, refetch } = useGql<LivePageData, typeof VARIABLES>('LivePage', VARIABLES, { ttlMs: 60_000 })
+  const { data, error, loading, refetch } = useGql<LivePageData, typeof VARIABLES>('LivePage', VARIABLES, {
+    ttlMs: 60_000,
+  })
   const now = useNow()
   const page = data?.livePage
   const rows = useMemo(() => renderableRows(page?.rows ?? []), [page])
@@ -349,10 +436,17 @@ export function LiveHomePage(): ReactElement {
     if (!page) return
     const at = nextRefetchAt(page.rows, fetchedAt)
     if (at === null) return
-    const t = window.setTimeout(() => {
-      devbus.emit('cache', 'Canlı TV: yeniden çek', { key: 'LivePage', rows: rowsNeedingRefetch(page.rows, fetchedAt, Date.now()), ageMs: Date.now() - fetchedAt })
-      refetch()
-    }, Math.max(1000, at - Date.now() + 500))
+    const t = window.setTimeout(
+      () => {
+        devbus.emit('cache', 'Canlı TV: yeniden çek', {
+          key: 'LivePage',
+          rows: rowsNeedingRefetch(page.rows, fetchedAt, Date.now()),
+          ageMs: Date.now() - fetchedAt,
+        })
+        refetch()
+      },
+      Math.max(1000, at - Date.now() + 500),
+    )
     return () => window.clearTimeout(t)
   }, [page, fetchedAt, refetch])
 
@@ -374,7 +468,14 @@ export function LiveHomePage(): ReactElement {
 
   // Komşu kanal ön hazırlığı: kahraman + kanal sırasındaki sonraki iki kanal.
   const channelOrder = useMemo(() => {
-    const lists = rows.filter((r) => r.type === 'CHANNEL_ROW').map((r) => r.items.map(asChannel).filter((c): c is ChannelData => !!c).map((c) => c.channelId))
+    const lists = rows
+      .filter((r) => r.type === 'CHANNEL_ROW')
+      .map((r) =>
+        r.items
+          .map(asChannel)
+          .filter((c): c is ChannelData => !!c)
+          .map((c) => c.channelId),
+      )
     return lists.sort((a, b) => b.length - a.length)[0] ?? []
   }, [rows])
   const heroId = heroChannel?.channelId
@@ -395,8 +496,15 @@ export function LiveHomePage(): ReactElement {
   const toggleFavorite = (ch: ChannelData) => {
     const next = !isFavorite(ch)
     setFavOverride((m) => new Map(m).set(ch.channelId, next))
-    logEvent('click', { surface: 'canli', action: next ? 'kanal-ekle' : 'kanal-cikar', entityId: ch.unifiedEntityId }, null)
-    gql<{ toggleFavoriteChannel: { channelId: number; isFavorite: boolean } }, { channelId: number }>('ToggleFavoriteChannel', { channelId: ch.channelId }).then(
+    logEvent(
+      'click',
+      { surface: 'canli', action: next ? 'kanal-ekle' : 'kanal-cikar', entityId: ch.unifiedEntityId },
+      null,
+    )
+    gql<{ toggleFavoriteChannel: { channelId: number; isFavorite: boolean } }, { channelId: number }>(
+      'ToggleFavoriteChannel',
+      { channelId: ch.channelId },
+    ).then(
       (res) => {
         const fav = res.toggleFavoriteChannel.isFavorite
         setFavOverride((m) => new Map(m).set(ch.channelId, fav))
@@ -430,13 +538,26 @@ export function LiveHomePage(): ReactElement {
       {rows.map((row) => {
         switch (row.type) {
           case 'LIVE_HERO':
-            return heroChannel && heroItem ? <LiveHero key={row.rowId} channel={heroChannel} item={heroItem} onLocked={setLocked} /> : null
+            return heroChannel && heroItem ? (
+              <LiveHero key={row.rowId} channel={heroChannel} item={heroItem} onLocked={setLocked} />
+            ) : null
           case 'CHANNEL_ROW':
             return (
               <LiveRow key={row.rowId} row={row} onVisible={onVisible}>
                 {row.items.flatMap((it) => {
                   const ch = asChannel(it)
-                  return ch ? [<ChannelCardItem key={it.track.entityId} channel={ch} item={it} favorite={isFavorite(ch)} onToggleFavorite={toggleFavorite} onLocked={setLocked} />] : []
+                  return ch
+                    ? [
+                        <ChannelCardItem
+                          key={it.track.entityId}
+                          channel={ch}
+                          item={it}
+                          favorite={isFavorite(ch)}
+                          onToggleFavorite={toggleFavorite}
+                          onLocked={setLocked}
+                        />,
+                      ]
+                    : []
                 })}
               </LiveRow>
             )

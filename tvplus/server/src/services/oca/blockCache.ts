@@ -32,7 +32,14 @@ export interface EnsureResult {
 export interface BlockCache {
   readonly blockSize: number
   /** [first, last] bloklarını getirir; eksikleri `fetcher` ile tamamlar (fetcher null ise eksik → hata). */
-  ensure(o: string, v: number, size: number, first: number, last: number, fetcher: RangeFetcher | null): Promise<EnsureResult>
+  ensure(
+    o: string,
+    v: number,
+    size: number,
+    first: number,
+    last: number,
+    fetcher: RangeFetcher | null,
+  ): Promise<EnsureResult>
   /** Bloklar önbellekte mi (çevrimdışı karar için)? */
   has(o: string, v: number, first: number, last: number): boolean
   stats(): { bytes: number; blocks: number; capBytes: number }

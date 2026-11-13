@@ -7,30 +7,13 @@
     "year": 2010,
     "synopsis": "Sintel, yalnız yaşayan genç bir kadındır. Bir gün küçük bir ejderha yavrusunu kurtarır, ona Scales adını verir ve bakmaya başlar. Ejderha büyüyüp ondan ayrılınca Sintel onu bulmak için tehlikeli bir yolculuğa çıkar.",
     "shortSynopsis": "Yalnız yaşayan Sintel, kurtardığı ejderha yavrusu Scales'i bulmak için tehlikeli bir yolculuğa çıkar.",
-    "genres": [
-      "animasyon",
-      "fantastik",
-      "macera",
-      "kisa-film"
-    ],
-    "moods": [
-      "duygusal",
-      "heyecanli",
-      "acik-kaynak",
-      "goz-alici"
-    ],
-    "cast": [
-      "Halina Reijn",
-      "Thom Hoffman"
-    ],
-    "directors": [
-      "Colin Levy"
-    ],
+    "genres": ["animasyon", "fantastik", "macera", "kisa-film"],
+    "moods": ["duygusal", "heyecanli", "acik-kaynak", "goz-alici"],
+    "cast": ["Halina Reijn", "Thom Hoffman"],
+    "directors": ["Colin Levy"],
     "maturity": {
       "rating": "13+",
-      "reasons": [
-        "siddet-korku"
-      ]
+      "reasons": ["siddet-korku"]
     },
     "kids": false,
     "runtimeSec": 888,
@@ -109,14 +92,8 @@
     "year": 2012,
     "synopsis": "Gelecekte Amsterdam'da bir grup asker ve bilim insanı, yıkıcı robotları durdurmak amacıyla geçmişteki kritik bir anı yeniden canlandırmak için Oude Kerk'te bir araya gelir. Film, canlı çekimi ve görsel efektleri bir arada kullanan bir bilim kurgu kısa filmidir.",
     "shortSynopsis": "Gelecekte Amsterdam'da, yıkıcı robotları durdurmak isteyen asker ve bilim insanlarının hikâyesi.",
-    "genres": [
-      "bilim-kurgu",
-      "kisa-film"
-    ],
-    "moods": [
-      "dusundurucu",
-      "gerilimli"
-    ],
+    "genres": ["bilim-kurgu", "kisa-film"],
+    "moods": ["dusundurucu", "gerilimli"],
     "cast": [
       "Derek de Lint",
       "Sergio Hasselbaink",
@@ -126,14 +103,10 @@
       "Jody Bhe",
       "Chris Haley"
     ],
-    "directors": [
-      "Ian Hubert"
-    ],
+    "directors": ["Ian Hubert"],
     "maturity": {
       "rating": "13+",
-      "reasons": [
-        "siddet-korku"
-      ]
+      "reasons": ["siddet-korku"]
     },
     "kids": false,
     "runtimeSec": 734,

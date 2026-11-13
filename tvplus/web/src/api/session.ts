@@ -28,7 +28,11 @@ function setBoot(b: BootContext): BootContext {
 
 /** Giriş / çıkış / profil değişimi uçlarının yanıtında dönen bağlamı doğrudan uygular (ek GET /api/boot gerekmez). */
 export function applyBoot(b: BootContext): BootContext {
-  devbus.emit('session', 'açılış bağlamı (POST yanıtından)', { esn: b.esn, membershipStatus: b.membershipStatus, profile: b.activeProfile?.guid ?? null })
+  devbus.emit('session', 'açılış bağlamı (POST yanıtından)', {
+    esn: b.esn,
+    membershipStatus: b.membershipStatus,
+    profile: b.activeProfile?.guid ?? null,
+  })
   return setBoot(b)
 }
 
@@ -38,7 +42,11 @@ export async function loadBoot(): Promise<BootContext> {
   if (el?.textContent) {
     try {
       const b = JSON.parse(el.textContent) as BootContext
-      devbus.emit('session', 'açılış bağlamı (HTML içinden)', { esn: b.esn, membershipStatus: b.membershipStatus, falcorCache: !!b.falcorCache })
+      devbus.emit('session', 'açılış bağlamı (HTML içinden)', {
+        esn: b.esn,
+        membershipStatus: b.membershipStatus,
+        falcorCache: !!b.falcorCache,
+      })
       return setBoot(b)
     } catch {
       /* bozuksa sunucudan al */
@@ -53,7 +61,12 @@ export async function refreshBoot(): Promise<BootContext> {
   const res = await fetch(ROUTES.BOOT, { credentials: 'same-origin', headers: { accept: 'application/json' } })
   if (!res.ok) throw new Error(`Açılış bağlamı alınamadı (${res.status})`)
   const b = (await res.json()) as BootContext
-  devbus.emit('session', 'açılış bağlamı (GET /api/boot)', { esn: b.esn, membershipStatus: b.membershipStatus, traceId: res.headers.get(HEADERS.TRACE_ID) }, { ms: performance.now() - t0 })
+  devbus.emit(
+    'session',
+    'açılış bağlamı (GET /api/boot)',
+    { esn: b.esn, membershipStatus: b.membershipStatus, traceId: res.headers.get(HEADERS.TRACE_ID) },
+    { ms: performance.now() - t0 },
+  )
   return setBoot(b)
 }
 

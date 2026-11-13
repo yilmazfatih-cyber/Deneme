@@ -113,7 +113,13 @@ export default async function plugin(app: FastifyInstance): Promise<void> {
     const claims = { aid: account.accountId, sid: randomBytes(16).toString('base64url'), iat: Date.now() }
     writeSessionCookies(req, reply, keys, claims, null)
     setProfileGate(req, reply, false)
-    req.passport = { ...req.passport, membershipStatus: 'CURRENT_MEMBER', account, profile: null, authURLVerified: false }
+    req.passport = {
+      ...req.passport,
+      membershipStatus: 'CURRENT_MEMBER',
+      account,
+      profile: null,
+      authURLVerified: false,
+    }
     reply.header('cache-control', 'no-store')
     return buildBootContext(app, req)
   })

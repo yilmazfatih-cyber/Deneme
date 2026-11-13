@@ -5,7 +5,15 @@
  */
 import type { FalcorKey } from '../../../../shared/types'
 import { videoEntityId, formatTctx } from '../../../../shared/tctx'
-import { atom, falcorError, ref, type FalcorMatch, type FalcorRoute, type FalcorRouteContext, type PathValue } from '../../kernel/context'
+import {
+  atom,
+  falcorError,
+  ref,
+  type FalcorMatch,
+  type FalcorRoute,
+  type FalcorRouteContext,
+  type PathValue,
+} from '../../kernel/context'
 import { buildArtwork, type ArtworkTypeName } from '../../kernel/imageUrls'
 import {
   badgeOf,
@@ -23,7 +31,8 @@ import { top10ForProfile, top10Rank } from '../../services/discovery/top10'
 /** Kişisel ve sık değişen atomların ömrü (Falcor göreli $expires) */
 export const MEMBER_ATOM_EXPIRES_MS = 30_000
 
-const nowOf = (ctx: FalcorRouteContext) => memo(requestCache(ctx.req), 'now', () => ctx.services.epg?.now() ?? new Date())
+const nowOf = (ctx: FalcorRouteContext) =>
+  memo(requestCache(ctx.req), 'now', () => ctx.services.epg?.now() ?? new Date())
 const top10Supported = (ctx: FalcorRouteContext) => ctx.flags.isTop10Supported !== 'false'
 
 function lolomoOf(ctx: FalcorRouteContext): Lolomo | null {
@@ -35,7 +44,8 @@ function lolomoOf(ctx: FalcorRouteContext): Lolomo | null {
 }
 
 const noProfile = () => falcorError('Önce bir profil seç', 'PROFILE_REQUIRED')
-const ints = (keys: FalcorKey[] | undefined) => (keys ?? []).map((k) => ({ key: k, n: Number(k) })).filter((x) => Number.isInteger(x.n) && x.n >= 0)
+const ints = (keys: FalcorKey[] | undefined) =>
+  (keys ?? []).map((k) => ({ key: k, n: Number(k) })).filter((x) => Number.isInteger(x.n) && x.n >= 0)
 
 /** Görsel atomu boyutları (MIMARI §6) */
 const ARTWORK_KEYS: Record<string, { type: ArtworkTypeName; width: number }> = {
@@ -49,14 +59,23 @@ type VideoField = (ctx: FalcorRouteContext, videoId: number) => PathValue['value
 
 const guid = (ctx: FalcorRouteContext) => ctx.passport.profile?.guid ?? null
 const access = (ctx: FalcorRouteContext, videoId: number) =>
-  memo(requestCache(ctx.req), `access:v:${videoId}`, () => ctx.services.entitlement.accessForVideo(ctx.passport, videoId))
+  memo(requestCache(ctx.req), `access:v:${videoId}`, () =>
+    ctx.services.entitlement.accessForVideo(ctx.passport, videoId),
+  )
 
-const typeOf = (kind: string) => (kind === 'MOVIE' ? 'movie' : kind === 'SHOW' ? 'show' : kind === 'EPISODE' ? 'episode' : 'supplemental')
+const typeOf = (kind: string) =>
+  kind === 'MOVIE' ? 'movie' : kind === 'SHOW' ? 'show' : kind === 'EPISODE' ? 'episode' : 'supplemental'
 
 export const VIDEO_FIELDS: Record<string, VideoField> = {
   summary(ctx, id) {
     const vi = ctx.services.catalog.videoInfo(id)!
-    return atom({ id, type: typeOf(vi.kind), isPlayable: access(ctx, id).state === 'PLAYABLE', isKids: vi.title.kids, unifiedEntityId: videoEntityId(id) })
+    return atom({
+      id,
+      type: typeOf(vi.kind),
+      isPlayable: access(ctx, id).state === 'PLAYABLE',
+      isKids: vi.title.kids,
+      unifiedEntityId: videoEntityId(id),
+    })
   },
   title(ctx, id) {
     const vi = ctx.services.catalog.videoInfo(id)!
@@ -64,7 +83,11 @@ export const VIDEO_FIELDS: Record<string, VideoField> = {
   },
   shortSynopsis: (ctx, id) => {
     const vi = ctx.services.catalog.videoInfo(id)!
-    return atom(vi.kind === 'MOVIE' || vi.kind === 'SHOW' ? vi.title.shortSynopsis : (vi.episode?.data.synopsis ?? vi.supplemental?.synopsis ?? ''))
+    return atom(
+      vi.kind === 'MOVIE' || vi.kind === 'SHOW'
+        ? vi.title.shortSynopsis
+        : (vi.episode?.data.synopsis ?? vi.supplemental?.synopsis ?? ''),
+    )
   },
   synopsis: (ctx, id) => {
     const vi = ctx.services.catalog.videoInfo(id)!
@@ -87,11 +110,20 @@ export const VIDEO_FIELDS: Record<string, VideoField> = {
   },
   access: (ctx, id) => {
     const a = access(ctx, id)
-    return atom({ state: a.state, reasonText: a.reasonText, requiredProduct: a.requiredProduct, requiredProductName: a.requiredProductName, cta: a.cta })
+    return atom({
+      state: a.state,
+      reasonText: a.reasonText,
+      requiredProduct: a.requiredProduct,
+      requiredProductName: a.requiredProductName,
+      cta: a.cta,
+    })
   },
   bookmark: (ctx, id) => {
     const b = bookmarkOf(ctx.services, guid(ctx), id)
-    return atom(b ? { positionSec: b.positionSec, runtimeSec: b.runtimeSec, progress: b.progress } : undefined, MEMBER_ATOM_EXPIRES_MS)
+    return atom(
+      b ? { positionSec: b.positionSec, runtimeSec: b.runtimeSec, progress: b.progress } : undefined,
+      MEMBER_ATOM_EXPIRES_MS,
+    )
   },
   watchStatus: (ctx, id) => {
     const g = guid(ctx)
@@ -108,7 +140,9 @@ export const VIDEO_FIELDS: Record<string, VideoField> = {
   top10Rank: (ctx, id) => {
     const kind = ctx.services.catalog.videoInfo(id)!.kind
     if (kind !== 'MOVIE' && kind !== 'SHOW') return atom(null)
-    const list = memo(requestCache(ctx.req), 'top10', () => top10ForProfile(ctx.services, ctx.passport.profile, nowOf(ctx)))
+    const list = memo(requestCache(ctx.req), 'top10', () =>
+      top10ForProfile(ctx.services, ctx.passport.profile, nowOf(ctx)),
+    )
     return atom(top10Rank(ctx.services, id, ctx.passport.profile, nowOf(ctx), list))
   },
   sourceKinds: (ctx, id) => atom(sourceKindsOfVideo(ctx.services, id)),
@@ -125,7 +159,10 @@ export const VIDEO_FIELDS: Record<string, VideoField> = {
 }
 for (const [key, spec] of Object.entries(ARTWORK_KEYS)) {
   VIDEO_FIELDS[key] = (ctx, id) => {
-    const a = buildArtwork(ctx.config, spec.type, videoEntityId(id), { width: spec.width, format: ctx.flags.webp === 'false' ? 'jpg' : 'webp' })
+    const a = buildArtwork(ctx.config, spec.type, videoEntityId(id), {
+      width: spec.width,
+      format: ctx.flags.webp === 'false' ? 'jpg' : 'webp',
+    })
     return atom({ url: a.url, width: a.width, height: a.height, key: a.key })
   }
 }
@@ -185,7 +222,10 @@ const lolomoIndexRoute: FalcorRoute = {
       const l = lolomoFor(ctx, key)
       for (const { key: k, n } of ints(match[2])) {
         const list = isLolomo(l) ? l.lists[n] : undefined
-        out.push({ path: ['lolomos', key, k], value: isLolomo(l) ? (list ? ref(['lists', list.listId]) : undefined) : l })
+        out.push({
+          path: ['lolomos', key, k],
+          value: isLolomo(l) ? (list ? ref(['lists', list.listId]) : undefined) : l,
+        })
       }
     }
     return out
@@ -197,7 +237,8 @@ function listFor(ctx: FalcorRouteContext, listId: FalcorKey) {
   const l = lolomoOf(ctx)
   if (!l) return { error: noProfile() }
   const id = String(listId)
-  if (!id.startsWith(`${profileHash(l.profileGuid)}_`)) return { error: falcorError('Bu liste etkin profile ait değil', 'FORBIDDEN') }
+  if (!id.startsWith(`${profileHash(l.profileGuid)}_`))
+    return { error: falcorError('Bu liste etkin profile ait değil', 'FORBIDDEN') }
   const row = l.lists.findIndex((x) => x.listId === id)
   return { list: row >= 0 ? l.lists[row]! : null, row }
 }
@@ -235,7 +276,10 @@ const listItemsRoute: FalcorRoute = {
       const r = listFor(ctx, listId)
       for (const { key, n } of ints(match[2])) {
         const id = 'error' in r ? null : r.list?.videoIds[n]
-        out.push({ path: ['lists', listId, key], value: 'error' in r ? r.error : id !== undefined && id !== null ? ref(['videos', id]) : undefined })
+        out.push({
+          path: ['lists', listId, key],
+          value: 'error' in r ? r.error : id !== undefined && id !== null ? ref(['videos', id]) : undefined,
+        })
       }
     }
     return out
@@ -253,7 +297,15 @@ const listTctxRoute: FalcorRoute = {
         if ('error' in r) value = r.error
         else if (r.list && r.list.videoIds[n] !== undefined) {
           const L = r.list
-          value = atom(formatTctx({ row: r.row, rank: n, rowId: L.listId, trackId: L.trackId, entityId: videoEntityId(L.videoIds[n]!) }))
+          value = atom(
+            formatTctx({
+              row: r.row,
+              rank: n,
+              rowId: L.listId,
+              trackId: L.trackId,
+              entityId: videoEntityId(L.videoIds[n]!),
+            }),
+          )
         }
         out.push({ path: ['lists', listId, 'itemTctx', key], value })
       }
@@ -280,7 +332,10 @@ const videosRoute: FalcorRoute = {
 const uspRoute: FalcorRoute = {
   route: ['usp', 'features', 'KEYS'],
   get(ctx, match) {
-    return (match[2] ?? []).map((flag) => ({ path: ['usp', 'features', flag], value: atom(featureFlag(ctx, String(flag))) }))
+    return (match[2] ?? []).map((flag) => ({
+      path: ['usp', 'features', flag],
+      value: atom(featureFlag(ctx, String(flag))),
+    }))
   },
 }
 

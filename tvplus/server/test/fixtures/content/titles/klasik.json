@@ -8,27 +8,13 @@
     "year": 1922,
     "synopsis": "Emlakçı Hutter, Transilvanya'daki gizemli Kont Orlok'a ev satmaya gider. Kontun gerçek yüzü ortaya çıktığında kasabayı veba sarar.",
     "shortSynopsis": "Sessiz sinemanın en ürkütücü vampiri.",
-    "genres": [
-      "korku",
-      "klasik",
-      "sessiz-sinema"
-    ],
-    "moods": [
-      "karanlik",
-      "kult-klasik"
-    ],
-    "cast": [
-      "Max Schreck",
-      "Gustav von Wangenheim"
-    ],
-    "directors": [
-      "F. W. Murnau"
-    ],
+    "genres": ["korku", "klasik", "sessiz-sinema"],
+    "moods": ["karanlik", "kult-klasik"],
+    "cast": ["Max Schreck", "Gustav von Wangenheim"],
+    "directors": ["F. W. Murnau"],
     "maturity": {
       "rating": "18+",
-      "reasons": [
-        "siddet-korku"
-      ]
+      "reasons": ["siddet-korku"]
     },
     "runtimeSec": 5640,
     "sources": [
@@ -58,22 +44,10 @@
     "year": 1927,
     "synopsis": "Geleceğin kentinde zenginler göklerde, işçiler yerin altında yaşar. Kentin efendisinin oğlu, iki dünyayı birleştirmeye çalışır.",
     "shortSynopsis": "İkiye bölünmüş bir gelecek kentinde umut arayışı.",
-    "genres": [
-      "bilim-kurgu",
-      "klasik",
-      "sessiz-sinema"
-    ],
-    "moods": [
-      "dusundurucu",
-      "kult-klasik"
-    ],
-    "cast": [
-      "Brigitte Helm",
-      "Gustav Fröhlich"
-    ],
-    "directors": [
-      "Fritz Lang"
-    ],
+    "genres": ["bilim-kurgu", "klasik", "sessiz-sinema"],
+    "moods": ["dusundurucu", "kult-klasik"],
+    "cast": ["Brigitte Helm", "Gustav Fröhlich"],
+    "directors": ["Fritz Lang"],
     "maturity": {
       "rating": "7+"
     },

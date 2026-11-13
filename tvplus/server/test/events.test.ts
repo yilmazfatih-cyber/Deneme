@@ -12,8 +12,17 @@ afterAll(async () => {
   await app.close()
 })
 
-const ev = (name: ClientEvent['name'], data: Record<string, unknown> = {}, seq = 1): ClientEvent => ({ name, ts: Date.now(), seq, data })
-const batch = (events: unknown[]): EventBatch => ({ sessionId: 's1', sentAt: Date.now(), events: events as ClientEvent[] })
+const ev = (name: ClientEvent['name'], data: Record<string, unknown> = {}, seq = 1): ClientEvent => ({
+  name,
+  ts: Date.now(),
+  seq,
+  data,
+})
+const batch = (events: unknown[]): EventBatch => ({
+  sessionId: 's1',
+  sentAt: Date.now(),
+  events: events as ClientEvent[],
+})
 const DEVICE = { tvpvdid: '0123456789abcdef0123456789abcdef' }
 
 describe('POST /log/web/cl/1', () => {
@@ -22,12 +31,19 @@ describe('POST /log/web/cl/1', () => {
       method: 'POST',
       url: '/log/web/cl/1',
       cookies: DEVICE,
-      payload: batch([ev('navigate', { to: '#/' }), { name: 'uydurma', ts: 1, seq: 1, data: {} }, { name: 'click' }, ev('click', {}, 2)]),
+      payload: batch([
+        ev('navigate', { to: '#/' }),
+        { name: 'uydurma', ts: 1, seq: 1, data: {} },
+        { name: 'click' },
+        ev('click', {}, 2),
+      ]),
     })
     expect(res.statusCode).toBe(200)
     expect(res.json<EventBatchResponse>()).toMatchObject({ accepted: 2, dropped: 2 })
     expect(res.headers['x-tvplus-izci']).toMatch(/^~0=true~RL=\d+$/)
-    expect(res.json<EventBatchResponse>().rateLimitRemaining).toBe(Number(String(res.headers['x-tvplus-izci']).split('RL=')[1]))
+    expect(res.json<EventBatchResponse>().rateLimitRemaining).toBe(
+      Number(String(res.headers['x-tvplus-izci']).split('RL=')[1]),
+    )
   })
 
   it('text/plain (sendBeacon) gövdesini de okur', async () => {
@@ -42,10 +58,20 @@ describe('POST /log/web/cl/1', () => {
   })
 
   it('bozuk gövde 400 döner, 500 değil; başlık yine vardır', async () => {
-    const plain = await app.inject({ method: 'POST', url: '/log/web/cl/1', headers: { 'content-type': 'text/plain' }, payload: '{bozuk' })
+    const plain = await app.inject({
+      method: 'POST',
+      url: '/log/web/cl/1',
+      headers: { 'content-type': 'text/plain' },
+      payload: '{bozuk',
+    })
     expect(plain.statusCode).toBe(400)
     expect(plain.headers['x-tvplus-izci']).toMatch(/^~0=true~RL=\d+$/)
-    const json = await app.inject({ method: 'POST', url: '/log/web/cl/1', headers: { 'content-type': 'application/json' }, payload: '{bozuk' })
+    const json = await app.inject({
+      method: 'POST',
+      url: '/log/web/cl/1',
+      headers: { 'content-type': 'application/json' },
+      payload: '{bozuk',
+    })
     expect(json.statusCode).toBe(400)
     expect(json.json().error.code).toBeTypeOf('string')
     expect(json.headers['x-tvplus-izci']).toMatch(/^~0=true~RL=\d+$/)
@@ -69,7 +95,12 @@ describe('POST /log/web/cl/1', () => {
     expect(over.headers['x-tvplus-izci']).toMatch(/^~0=true~RL=\d+$/)
     expect(over.json<EventBatchResponse>()).toMatchObject({ accepted: 0, dropped: 500 })
     // Başka cihaz etkilenmez
-    const other = await app.inject({ method: 'POST', url: '/log/web/cl/1', cookies: DEVICE, payload: batch([ev('click')]) })
+    const other = await app.inject({
+      method: 'POST',
+      url: '/log/web/cl/1',
+      cookies: DEVICE,
+      payload: batch([ev('click')]),
+    })
     expect(other.statusCode).toBe(200)
   })
 
@@ -130,7 +161,10 @@ describe('POST /log/web/cl/1', () => {
     const dataDir = mkdtempSync(join(tmpdir(), 'tvplus-test-events-'))
     // isTest iken depo diske yazmaz; kalıcılığı sınamak için isTest=false (günlük kapalı) ile kurulur.
     const a = await createTestApp({ dataDir, isTest: false })
-    a.services.events.ingest({ sessionId: 's', sentAt: Date.now(), events: [ev('playback.start', { videoId: 7 })] }, null)
+    a.services.events.ingest(
+      { sessionId: 's', sentAt: Date.now(), events: [ev('playback.start', { videoId: 7 })] },
+      null,
+    )
     await a.close()
     const b = await createTestApp({ dataDir, isTest: false })
     try {

@@ -124,7 +124,11 @@ describe('yayın akışı (EPG)', () => {
     const old = epg.getAiring('1-20261106-0030')!
     expect(catchupOf(old, TEST_NOW, false).available).toBe(false)
     // LINEAR yayınlar her zaman geri alınabilir (bitmişse)
-    const linearPast = epg.airings(3, new Date(TEST_NOW.getTime() - 2 * D), new Date(TEST_NOW.getTime() - 2 * D + 1))[0]!
+    const linearPast = epg.airings(
+      3,
+      new Date(TEST_NOW.getTime() - 2 * D),
+      new Date(TEST_NOW.getTime() - 2 * D + 1),
+    )[0]!
     expect(catchupOf(linearPast, TEST_NOW, true).available).toBe(true)
   })
 })

@@ -20,7 +20,15 @@ import {
 
 const art = (k: string) => ({ url: `/img/${k}.webp`, width: 1, height: 1, key: k })
 
-const summary = (over: Partial<ListSummary> = {}): ListSummary => ({ id: 'abc_genre_7424', context: 'genre', displayName: 'Animasyon', length: 13, trackId: 71486492, genreId: 7424, ...over })
+const summary = (over: Partial<ListSummary> = {}): ListSummary => ({
+  id: 'abc_genre_7424',
+  context: 'genre',
+  displayName: 'Animasyon',
+  length: 13,
+  trackId: 71486492,
+  genreId: 7424,
+  ...over,
+})
 
 function movie(id: number, over: Record<string, unknown> = {}) {
   return {
@@ -38,7 +46,19 @@ describe('rowKindOf', () => {
     expect(rowKindOf('billboard')).toBe('hero')
     expect(rowKindOf('continueWatching')).toBe('landscape')
     expect(rowKindOf('bridge')).toBe('bridge')
-    for (const c of ['top10', 'queue', 'becauseYouWatched', 'gems', 'newReleases', 'genre', 'collection', 'curated', 'exclusive', 'leaving']) expect(rowKindOf(c)).toBe('poster')
+    for (const c of [
+      'top10',
+      'queue',
+      'becauseYouWatched',
+      'gems',
+      'newReleases',
+      'genre',
+      'collection',
+      'curated',
+      'exclusive',
+      'leaving',
+    ])
+      expect(rowKindOf(c)).toBe('poster')
     expect(rowKindOf('games')).toBeNull()
     expect(rowKindOf(undefined)).toBeNull()
   })
@@ -95,17 +115,31 @@ describe('yol planlayıcı', () => {
 
 describe('görünüm modeli', () => {
   it('sunucu tctx varsa onu, yoksa aynı biçimde istemcide kurar', () => {
-    const list: ListNode = { summary: summary(), '0': movie(80010001), '1': movie(80010002), itemTctx: { '0': '4,0,abc_genre_7424,71486492,,,,,,,Video:80010001,' } }
+    const list: ListNode = {
+      summary: summary(),
+      '0': movie(80010001),
+      '1': movie(80010002),
+      itemTctx: { '0': '4,0,abc_genre_7424,71486492,,,,,,,Video:80010001,' },
+    }
     const a = mapCard(list, summary(), 4, 0)!
     expect(a.tctxFromServer).toBe(true)
     expect(a.detailTo).toBe(`/detay/80010001?tctx=${encodeURIComponent(a.tctx)}`)
     const b = mapCard(list, summary(), 4, 1)!
     expect(b.tctxFromServer).toBe(false)
-    expect(parseTctx(b.tctx)).toEqual({ row: 4, rank: 1, rowId: 'abc_genre_7424', trackId: 71486492, entityId: 'Video:80010002' })
+    expect(parseTctx(b.tctx)).toEqual({
+      row: 4,
+      rank: 1,
+      rowId: 'abc_genre_7424',
+      trackId: 71486492,
+      entityId: 'Video:80010002',
+    })
   })
 
   it('kilitli öğede rozet yok, tek satır yetki metni var', () => {
-    const node = movie(80020003, { access: { state: 'UPSELL', reasonText: 'Sinema Paketi ile izlenir', requiredProduct: 'sinema-paketi' }, badge: { kind: 'LOCKED', text: 'Sinema Paketi' } })
+    const node = movie(80020003, {
+      access: { state: 'UPSELL', reasonText: 'Sinema Paketi ile izlenir', requiredProduct: 'sinema-paketi' },
+      badge: { kind: 'LOCKED', text: 'Sinema Paketi' },
+    })
     const c = mapCard({ summary: summary(), '0': node }, summary(), 0, 0)!
     expect(c.badge).toBeNull()
     expect(c.lockedText).toBe('Sinema Paketi ile izlenir')
@@ -114,7 +148,12 @@ describe('görünüm modeli', () => {
 
   it('yeni rozet kart başına tek; Top 10 sırası', () => {
     const top = summary({ context: 'top10', id: 'abc_top10', genreId: undefined })
-    const c = mapCard({ summary: top, '0': movie(1, { badge: { kind: 'NEW', text: 'Yeni' }, top10Rank: 3 }) }, top, 1, 0)!
+    const c = mapCard(
+      { summary: top, '0': movie(1, { badge: { kind: 'NEW', text: 'Yeni' }, top10Rank: 3 }) },
+      top,
+      1,
+      0,
+    )!
     expect(c.badge).toBe('Yeni')
     expect(c.rank).toBe(3)
     expect(mapCard({ summary: summary(), '0': movie(1, { top10Rank: 3 }) }, summary(), 1, 0)!.rank).toBeNull()
@@ -124,14 +163,23 @@ describe('görünüm modeli', () => {
     const cw = summary({ context: 'continueWatching', id: 'abc_continueWatching', genreId: undefined })
     const show = movie(80047000, {
       summary: { id: 80047000, type: 'show', isPlayable: true, isKids: false, unifiedEntityId: 'Video:80047000' },
-      current: { summary: { id: 80047103, type: 'episode', isPlayable: true, isKids: false, unifiedEntityId: 'Video:80047103' }, displayRuntime: 'S1 B3 · 1 sa 10 dk', bookmark: { positionSec: 2820, runtimeSec: 4200, progress: 0.67 } },
+      current: {
+        summary: { id: 80047103, type: 'episode', isPlayable: true, isKids: false, unifiedEntityId: 'Video:80047103' },
+        displayRuntime: 'S1 B3 · 1 sa 10 dk',
+        bookmark: { positionSec: 2820, runtimeSec: 4200, progress: 0.67 },
+      },
     })
     const c = mapCard({ summary: cw, '0': show, itemTctx: { '0': 't' } }, cw, 1, 0)!
     expect(c.playVideoId).toBe(80047103)
     expect(c.playTo).toBe('/izle/Video:80047103?tctx=t')
     expect(c.meta).toBe('S1 B3 · 23 dk kaldı')
     expect(c.progress).toBeCloseTo(0.67)
-    const m = mapCard({ summary: cw, '0': movie(5, { bookmark: { positionSec: 60, runtimeSec: 600, progress: 0.1 } }) }, cw, 1, 0)!
+    const m = mapCard(
+      { summary: cw, '0': movie(5, { bookmark: { positionSec: 60, runtimeSec: 600, progress: 0.1 } }) },
+      cw,
+      1,
+      0,
+    )!
     expect(m.meta).toBe('9 dk kaldı')
   })
 
@@ -149,14 +197,35 @@ describe('görünüm modeli', () => {
 
   it('vitrin: yarım kaldıysa "Devam et", manifest ön hazırlığı oynatılabilir kimlikle', () => {
     const bb = summary({ context: 'billboard', id: 'abc_billboard', length: 1, genreId: undefined })
-    const fresh = mapHero({ summary: bb, '0': movie(80010001, { billboardArt: art('bb'), promoVideo: { viewableId: 'Video:80010001', computeId: 'c', offset: 105, sourceKind: 'OWN_CDN' } }) }, 0)!
+    const fresh = mapHero(
+      {
+        summary: bb,
+        '0': movie(80010001, {
+          billboardArt: art('bb'),
+          promoVideo: { viewableId: 'Video:80010001', computeId: 'c', offset: 105, sourceKind: 'OWN_CDN' },
+        }),
+      },
+      0,
+    )!
     expect(fresh.primaryLabel).toBe('İzle')
     expect(fresh.artUrl).toBe('/img/bb.webp')
     expect(fresh.promo).toEqual({ viewableId: 'Video:80010001', offset: 105 })
     expect(fresh.prefetchViewableId).toBe('Video:80010001')
-    const started = mapHero({ summary: bb, '0': movie(80010001, { watchStatus: 'STARTED', bookmark: { positionSec: 100, runtimeSec: 888, progress: 0.11 } }) }, 0)!
+    const started = mapHero(
+      {
+        summary: bb,
+        '0': movie(80010001, {
+          watchStatus: 'STARTED',
+          bookmark: { positionSec: 100, runtimeSec: 888, progress: 0.11 },
+        }),
+      },
+      0,
+    )!
     expect(started.primaryLabel).toBe('Devam et')
-    const locked = mapHero({ summary: bb, '0': movie(9, { access: { state: 'UPSELL', reasonText: 'Paket', requiredProduct: 'p' } }) }, 0)!
+    const locked = mapHero(
+      { summary: bb, '0': movie(9, { access: { state: 'UPSELL', reasonText: 'Paket', requiredProduct: 'p' } }) },
+      0,
+    )!
     expect(locked.playable).toBe(false)
     expect(locked.promo).toBeNull()
     expect(locked.prefetchViewableId).toBeNull()

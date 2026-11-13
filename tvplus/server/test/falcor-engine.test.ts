@@ -3,7 +3,14 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import type { BootContext, FalcorPath, JsonGraph } from '../../shared/types'
 import { createFalcorEngine } from '../src/falcor/engine-core'
 import { FalcorPathError, expandPathSets, normalizePathSet } from '../src/falcor/paths'
-import { atom, falcorError, ref, type FalcorMatch, type FalcorRoute, type FalcorRouteContext } from '../src/kernel/context'
+import {
+  atom,
+  falcorError,
+  ref,
+  type FalcorMatch,
+  type FalcorRoute,
+  type FalcorRouteContext,
+} from '../src/kernel/context'
 import { createTestApp } from './helpers'
 
 const ctx = (flags: Record<string, string> = {}) => ({ flags }) as unknown as FalcorRouteContext
@@ -31,7 +38,9 @@ function fakeRoutes() {
       route: ['lolomos', 'KEYS', 'INTEGERS'],
       get(_c, m) {
         log(this, m)
-        return m[1]!.flatMap((g) => (m[2] as number[]).map((i) => ({ path: ['lolomos', g, i], value: ref(['lists', `L${i}`]) })))
+        return m[1]!.flatMap((g) =>
+          (m[2] as number[]).map((i) => ({ path: ['lolomos', g, i], value: ref(['lists', `L${i}`]) })),
+        )
       },
     },
     {
@@ -39,7 +48,10 @@ function fakeRoutes() {
       get(_c, m) {
         log(this, m)
         return m[1]!.flatMap((l) =>
-          (m[2] as number[]).map((i) => ({ path: ['lists', l, i], value: ref(['videos', 100 + Number(String(l).slice(1)) * 10 + i]) })),
+          (m[2] as number[]).map((i) => ({
+            path: ['lists', l, i],
+            value: ref(['videos', 100 + Number(String(l).slice(1)) * 10 + i]),
+          })),
         )
       },
     },
@@ -82,7 +94,10 @@ function fakeRoutes() {
 }
 
 const at = (g: JsonGraph, ...keys: (string | number)[]): unknown =>
-  keys.reduce<unknown>((n, k) => (n && typeof n === 'object' ? (n as Record<string, unknown>)[String(k)] : undefined), g)
+  keys.reduce<unknown>(
+    (n, k) => (n && typeof n === 'object' ? (n as Record<string, unknown>)[String(k)] : undefined),
+    g,
+  )
 
 describe('yol kümeleri', () => {
   it('aralıkları ve anahtar dizilerini açar', () => {
@@ -109,7 +124,9 @@ describe('Falcor motoru', () => {
   it('anahtar kümeleri ve {from,length}; nesneler atom olur, sayı dizgesi tamsayıya çevrilir', async () => {
     const { routes, calls } = fakeRoutes()
     const engine = createFalcorEngine({ routes })
-    const res = await engine.evaluate(ctx(), [['videos', [{ from: 5, length: 1 }, '7'], ['title', 'boxart', 'tags', 'isKids']] as unknown as FalcorPath])
+    const res = await engine.evaluate(ctx(), [
+      ['videos', [{ from: 5, length: 1 }, '7'], ['title', 'boxart', 'tags', 'isKids']] as unknown as FalcorPath,
+    ])
     expect(at(res.jsonGraph, 'videos', 7, 'title')).toBe('Video 7')
     expect(at(res.jsonGraph, 'videos', 5, 'boxart')).toEqual({ $type: 'atom', value: { url: '/b/5.webp', width: 368 } })
     expect(at(res.jsonGraph, 'videos', 5, 'tags')).toEqual({ $type: 'atom', value: ['a', 'b'] })
@@ -120,7 +137,10 @@ describe('Falcor motoru', () => {
   it('ref izler: lolomo[0][3].title zinciri ve ara ref’ler grafikte', async () => {
     const { routes } = fakeRoutes()
     const engine = createFalcorEngine({ routes })
-    const res = await engine.evaluate(ctx(), [['lolomo', { from: 0, to: 1 }, 3, 'title'], ['lolomo', 'summary']])
+    const res = await engine.evaluate(ctx(), [
+      ['lolomo', { from: 0, to: 1 }, 3, 'title'],
+      ['lolomo', 'summary'],
+    ])
     const g = res.jsonGraph
     expect(at(g, 'lolomo')).toEqual({ $type: 'ref', value: ['lolomos', 'G'] })
     expect(at(g, 'lolomos', 'G', 0)).toEqual({ $type: 'ref', value: ['lists', 'L0'] })
@@ -151,10 +171,17 @@ describe('Falcor motoru', () => {
   it('materialize: eksik değer ve rotası olmayan yol boş atom olur', async () => {
     const { routes } = fakeRoutes()
     const engine = createFalcorEngine({ routes })
-    const off = await engine.evaluate(ctx(), [['videos', 1, 'nothing'], ['yok', 'hiç']])
+    const off = await engine.evaluate(ctx(), [
+      ['videos', 1, 'nothing'],
+      ['yok', 'hiç'],
+    ])
     expect(at(off.jsonGraph, 'videos', 1, 'nothing')).toBeUndefined()
     expect(at(off.jsonGraph, 'yok')).toBeUndefined()
-    const on = await engine.evaluate(ctx({ materialize: 'true' }), [['videos', 1, 'nothing'], ['yok', 'hiç'], ['videos', 1, 'unknownKey']])
+    const on = await engine.evaluate(ctx({ materialize: 'true' }), [
+      ['videos', 1, 'nothing'],
+      ['yok', 'hiç'],
+      ['videos', 1, 'unknownKey'],
+    ])
     expect(at(on.jsonGraph, 'videos', 1, 'nothing')).toEqual({ $type: 'atom' })
     expect(at(on.jsonGraph, 'yok', 'hiç')).toEqual({ $type: 'atom' })
     expect(at(on.jsonGraph, 'videos', 1, 'unknownKey')).toEqual({ $type: 'atom' })
@@ -175,8 +202,16 @@ describe('Falcor motoru', () => {
     const { routes } = fakeRoutes()
     const seen: unknown[] = []
     const engine = createFalcorEngine({ routes, onRouteError: (e) => seen.push(e) })
-    const res = await engine.evaluate(ctx({ materialize: 'true' }), [['broken', ['a', 'b']], ['coded', 'derin'], ['err'], ['videos', 1, 'title']])
-    expect(at(res.jsonGraph, 'broken', 'a')).toEqual({ $type: 'error', value: { message: 'Bu değer şu anda alınamadı.', code: 'INTERNAL' } })
+    const res = await engine.evaluate(ctx({ materialize: 'true' }), [
+      ['broken', ['a', 'b']],
+      ['coded', 'derin'],
+      ['err'],
+      ['videos', 1, 'title'],
+    ])
+    expect(at(res.jsonGraph, 'broken', 'a')).toEqual({
+      $type: 'error',
+      value: { message: 'Bu değer şu anda alınamadı.', code: 'INTERNAL' },
+    })
     expect(JSON.stringify(res.jsonGraph)).not.toContain('gizli')
     expect(at(res.jsonGraph, 'coded')).toEqual({ $type: 'error', value: { message: 'Pakette yok', code: 'UPSELL' } })
     expect(at(res.jsonGraph, 'err')).toEqual({ $type: 'error', value: { message: 'bilerek', code: 'TEST' } })
@@ -197,7 +232,10 @@ describe('Falcor motoru', () => {
   it('rota çağrıları istenenden fazlasını kapsamaz (yaprak kümesine göre bölünür)', async () => {
     const { routes, calls } = fakeRoutes()
     const engine = createFalcorEngine({ routes })
-    const res = await engine.evaluate(ctx(), [['videos', [1, 2], ['title', 'isKids']], ['videos', 3, 'boxart']])
+    const res = await engine.evaluate(ctx(), [
+      ['videos', [1, 2], ['title', 'isKids']],
+      ['videos', 3, 'boxart'],
+    ])
     expect(at(res.jsonGraph, 'videos', 3, 'title')).toBeUndefined()
     expect(at(res.jsonGraph, 'videos', 1, 'boxart')).toBeUndefined()
     expect(calls.map((c) => c.match).sort((a, b) => a[1]!.length - b[1]!.length)).toEqual([
@@ -239,20 +277,40 @@ describe('POST /api/member/pathEvaluator', () => {
   })
 
   const form = (paths: FalcorPath[], authURL?: string) =>
-    [...paths.map((p) => `path=${encodeURIComponent(JSON.stringify(p))}`), ...(authURL ? [`authURL=${encodeURIComponent(authURL)}`] : [])].join('&')
+    [
+      ...paths.map((p) => `path=${encodeURIComponent(JSON.stringify(p))}`),
+      ...(authURL ? [`authURL=${encodeURIComponent(authURL)}`] : []),
+    ].join('&')
 
   it('anonim 401, profilsiz 403, authURL’siz 403', async () => {
-    const anon = await app.inject({ method: 'POST', url: '/api/member/pathEvaluator', headers: { 'content-type': 'application/x-www-form-urlencoded' }, payload: form([['lolomo']]) })
+    const anon = await app.inject({
+      method: 'POST',
+      url: '/api/member/pathEvaluator',
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      payload: form([['lolomo']]),
+    })
     expect(anon.statusCode).toBe(401)
     expect(anon.json().error.code).toBe('UNAUTHENTICATED')
 
     const noProfile: Record<string, string> = {}
     take(await app.inject({ method: 'POST', url: '/api/login' }), noProfile)
-    const np = await app.inject({ method: 'POST', url: '/api/member/pathEvaluator', cookies: noProfile, headers: { 'content-type': 'application/x-www-form-urlencoded' }, payload: form([['lolomo']]) })
+    const np = await app.inject({
+      method: 'POST',
+      url: '/api/member/pathEvaluator',
+      cookies: noProfile,
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      payload: form([['lolomo']]),
+    })
     expect(np.statusCode).toBe(403)
     expect(np.json().error.code).toBe('PROFILE_REQUIRED')
 
-    const csrf = await app.inject({ method: 'POST', url: '/api/member/pathEvaluator', cookies, headers: { 'content-type': 'application/x-www-form-urlencoded' }, payload: form([['lolomo']], 'c1.1.yanlis') })
+    const csrf = await app.inject({
+      method: 'POST',
+      url: '/api/member/pathEvaluator',
+      cookies,
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      payload: form([['lolomo']], 'c1.1.yanlis'),
+    })
     expect(csrf.statusCode).toBe(403)
     expect(csrf.json().error.code).toBe('CSRF_FAILED')
   })
@@ -263,11 +321,20 @@ describe('POST /api/member/pathEvaluator', () => {
       url: '/api/member/pathEvaluator?materialize=true&withSize=true',
       cookies,
       headers: { 'content-type': 'application/x-www-form-urlencoded' },
-      payload: form([['usp', 'features', 'liveTv'], ['lolomo', 'summary']], boot.authURL!),
+      payload: form(
+        [
+          ['usp', 'features', 'liveTv'],
+          ['lolomo', 'summary'],
+        ],
+        boot.authURL!,
+      ),
     })
     expect(res.statusCode).toBe(200)
     const body = res.json<{ paths: FalcorPath[]; jsonGraph: JsonGraph }>()
-    expect(body.paths).toEqual([['usp', 'features', 'liveTv'], ['lolomo', 'summary']])
+    expect(body.paths).toEqual([
+      ['usp', 'features', 'liveTv'],
+      ['lolomo', 'summary'],
+    ])
     expect(body.jsonGraph).toBeTypeOf('object')
     expect(res.headers['x-b3-traceid']).toMatch(/^[0-9a-f]{32}$/)
 

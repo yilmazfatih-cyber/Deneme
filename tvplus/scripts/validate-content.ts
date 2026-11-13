@@ -62,7 +62,10 @@ type Interstitial = z.infer<typeof zInterstitialsFile>[number]
 const zLooseArray = z.array(z.unknown())
 
 const fmtPath = (p: readonly PropertyKey[]) =>
-  p.map((k) => (typeof k === 'number' ? `[${k}]` : `.${String(k)}`)).join('').replace(/^\./, '') || '(kök)'
+  p
+    .map((k) => (typeof k === 'number' ? `[${k}]` : `.${String(k)}`))
+    .join('')
+    .replace(/^\./, '') || '(kök)'
 
 export function validateContent(dir: string): ContentReport {
   const errors: ContentIssue[] = []
@@ -85,7 +88,10 @@ export function validateContent(dir: string): ContentReport {
     bySourceKind: {},
   }
 
-  if (!existsSync(dir) || (statSync(dir).isDirectory() && readdirSync(dir).filter((f) => !f.startsWith('.')).length === 0)) {
+  if (
+    !existsSync(dir) ||
+    (statSync(dir).isDirectory() && readdirSync(dir).filter((f) => !f.startsWith('.')).length === 0)
+  ) {
     warn('', '', `İçerik klasörü boş ya da yok: ${dir}`)
     return { errors, warnings, stats }
   }
@@ -143,7 +149,12 @@ export function validateContent(dir: string): ContentReport {
       if (res.success) titles.push({ file: rel, path: `[${i}]`, value: res.data })
       else {
         collectIds(item)
-        for (const issue of res.error.issues.slice(0, 20)) err(rel, `[${i}]${fmtPath(issue.path) === '(kök)' ? '' : fmtPath(issue.path).replace(/^(?!\[)/, '.')}`, issue.message)
+        for (const issue of res.error.issues.slice(0, 20))
+          err(
+            rel,
+            `[${i}]${fmtPath(issue.path) === '(kök)' ? '' : fmtPath(issue.path).replace(/^(?!\[)/, '.')}`,
+            issue.message,
+          )
       }
     })
   }
@@ -182,7 +193,8 @@ export function validateContent(dir: string): ContentReport {
       if (t.seasons.length > 0) warn(file, `${path}.seasons`, 'Filmde sezon tanımlı; yok sayılır')
     } else {
       if (t.seasons.length === 0) err(file, `${path}.seasons`, 'Dizide en az bir sezon olmalı')
-      if (t.sources.length > 0) warn(file, `${path}.sources`, 'Dizinin kaynağı bölümlerdedir; üst düzey kaynak yok sayılır')
+      if (t.sources.length > 0)
+        warn(file, `${path}.sources`, 'Dizinin kaynağı bölümlerdedir; üst düzey kaynak yok sayılır')
       const seasonNos = new Set<number>()
       t.seasons.forEach((s, si) => {
         stats.seasons++
@@ -198,7 +210,9 @@ export function validateContent(dir: string): ContentReport {
           if (epNos.has(e.number)) warn(file, `${ep}.number`, `Bölüm numarası ${e.number} yinelenmiş`)
           epNos.add(e.number)
           if (e.sources.length === 0) err(file, `${ep}.sources`, 'Bölümde oynatma kaynağı yok')
-          e.sources.forEach((src, i) => allSources.push({ file, path: `${ep}.sources[${i}]`, source: src, countStat: true }))
+          e.sources.forEach((src, i) =>
+            allSources.push({ file, path: `${ep}.sources[${i}]`, source: src, countStat: true }),
+          )
         })
       })
     }
@@ -206,7 +220,9 @@ export function validateContent(dir: string): ContentReport {
       stats.supplementals++
       const sp = `${path}.supplementals[${si}]`
       registerVideo(s.videoId, 'SUPPLEMENTAL', file, sp, t.kids)
-      s.sources.forEach((src, i) => allSources.push({ file, path: `${sp}.sources[${i}]`, source: src, countStat: true }))
+      s.sources.forEach((src, i) =>
+        allSources.push({ file, path: `${sp}.sources[${i}]`, source: src, countStat: true }),
+      )
     })
   }
 
@@ -232,14 +248,24 @@ export function validateContent(dir: string): ContentReport {
       c.source.playlist.forEach((vid, vi) => {
         const v = videos.get(vid)
         if (!v) {
-          if (!brokenIds.has(vid)) err(f, `${p}.source.playlist[${vi}]`, `Çalma listesindeki videoId ${vid} katalogda yok`)
-        } else if (v.kind === 'SHOW') warn(f, `${p}.source.playlist[${vi}]`, `videoId ${vid} bir dizi; doğrusal kanalda bölüm kimlikleri tercih edilmeli`)
-        else if (c.kids && !v.kids) warn(f, `${p}.source.playlist[${vi}]`, `Çocuk kanalında çocuk içeriği olmayan video (${vid})`)
+          if (!brokenIds.has(vid))
+            err(f, `${p}.source.playlist[${vi}]`, `Çalma listesindeki videoId ${vid} katalogda yok`)
+        } else if (v.kind === 'SHOW')
+          warn(
+            f,
+            `${p}.source.playlist[${vi}]`,
+            `videoId ${vid} bir dizi; doğrusal kanalda bölüm kimlikleri tercih edilmeli`,
+          )
+        else if (c.kids && !v.kids)
+          warn(f, `${p}.source.playlist[${vi}]`, `Çocuk kanalında çocuk içeriği olmayan video (${vid})`)
       })
     if (c.logo && !/^https?:/.test(c.logo)) {
       const pub = join(dir, '..', 'web', 'public')
-      const found = [join(pub, c.logo), join(pub, 'brand', 'channels', c.logo), join(pub, 'brand', c.logo)].some((x) => existsSync(x))
-      if (existsSync(pub) && !found) warn(f, `${p}.logo`, `Logo dosyası bulunamadı: ${c.logo} (baş harflerden logo üretilecek)`)
+      const found = [join(pub, c.logo), join(pub, 'brand', 'channels', c.logo), join(pub, 'brand', c.logo)].some((x) =>
+        existsSync(x),
+      )
+      if (existsSync(pub) && !found)
+        warn(f, `${p}.logo`, `Logo dosyası bulunamadı: ${c.logo} (baş harflerden logo üretilecek)`)
     }
   })
 
@@ -253,10 +279,12 @@ export function validateContent(dir: string): ContentReport {
         if (!tt.url && !tt.file) err(file, tp, 'Altyazıda "url" ya da "file" olmalı')
         if (tt.file) {
           if (tt.file.includes('..')) err(file, `${tp}.file`, 'Altyazı dosya adı klasör dışına çıkamaz')
-          else if (!existsSync(join(subsDir, tt.file))) err(file, `${tp}.file`, `Altyazı dosyası yok: ${CONTENT_FILES.subtitlesDir}/${tt.file}`)
+          else if (!existsSync(join(subsDir, tt.file)))
+            err(file, `${tp}.file`, `Altyazı dosyası yok: ${CONTENT_FILES.subtitlesDir}/${tt.file}`)
         }
       })
-    if (source.type === 'LINEAR' && !file.startsWith(CONTENT_FILES.channels)) warn(file, path, 'LINEAR kaynak yalnızca kanallarda anlamlıdır')
+    if (source.type === 'LINEAR' && !file.startsWith(CONTENT_FILES.channels))
+      warn(file, path, 'LINEAR kaynak yalnızca kanallarda anlamlıdır')
   }
 
   /* ───────── Yayın akışı ───────── */
@@ -266,7 +294,8 @@ export function validateContent(dir: string): ContentReport {
     stats.epgTemplates++
     const f = CONTENT_FILES.epg
     if (!channelIds.has(tpl.channelId)) err(f, `[${i}].channelId`, `Kanal ${tpl.channelId} channels.json'da yok`)
-    if (epgChannels.has(tpl.channelId)) warn(f, `[${i}].channelId`, `Kanal ${tpl.channelId} için birden çok akış şablonu`)
+    if (epgChannels.has(tpl.channelId))
+      warn(f, `[${i}].channelId`, `Kanal ${tpl.channelId} için birden çok akış şablonu`)
     epgChannels.add(tpl.channelId)
     tpl.programs.forEach((pr, pi) => {
       if (pr.videoId !== undefined && !videos.has(pr.videoId) && !brokenIds.has(pr.videoId))
@@ -279,7 +308,12 @@ export function validateContent(dir: string): ContentReport {
   const checkTitleRef = (f: string, p: string, id: number) => {
     if (titleIds.has(id) || brokenIds.has(id)) return
     const v = videos.get(id)
-    if (v) err(f, p, `videoId ${id} bir üst başlık değil (${v.kind === 'EPISODE' ? 'bölüm' : 'ek video'}); film/dizi kimliği gerekir`)
+    if (v)
+      err(
+        f,
+        p,
+        `videoId ${id} bir üst başlık değil (${v.kind === 'EPISODE' ? 'bölüm' : 'ek video'}); film/dizi kimliği gerekir`,
+      )
     else err(f, p, `videoId ${id} katalogda yok`)
   }
   const collections = load<ContentCollection[]>(CONTENT_FILES.collections, zCollectionsFile) ?? []
@@ -288,7 +322,8 @@ export function validateContent(dir: string): ContentReport {
   collections.forEach((c, i) => {
     stats.collections++
     const f = CONTENT_FILES.collections
-    if (collectionIds.has(c.collectionId)) err(f, `[${i}].collectionId`, `Koleksiyon kimliği ${c.collectionId} yinelenmiş`)
+    if (collectionIds.has(c.collectionId))
+      err(f, `[${i}].collectionId`, `Koleksiyon kimliği ${c.collectionId} yinelenmiş`)
     collectionIds.add(c.collectionId)
     if (collectionSlugs.has(c.slug)) err(f, `[${i}].slug`, `Koleksiyon slug "${c.slug}" yinelenmiş`)
     collectionSlugs.add(c.slug)
@@ -318,8 +353,10 @@ export function validateContent(dir: string): ContentReport {
     const f = CONTENT_FILES.notifications
     if (nIds.has(n.id)) err(f, `[${i}].id`, `Bildirim kimliği "${n.id}" yinelenmiş`)
     nIds.add(n.id)
-    if (n.videoId !== undefined && !videos.has(n.videoId) && !brokenIds.has(n.videoId)) err(f, `[${i}].videoId`, `videoId ${n.videoId} katalogda yok`)
-    if (n.channelId !== undefined && !channelIds.has(n.channelId)) err(f, `[${i}].channelId`, `Kanal ${n.channelId} channels.json'da yok`)
+    if (n.videoId !== undefined && !videos.has(n.videoId) && !brokenIds.has(n.videoId))
+      err(f, `[${i}].videoId`, `videoId ${n.videoId} katalogda yok`)
+    if (n.channelId !== undefined && !channelIds.has(n.channelId))
+      err(f, `[${i}].channelId`, `Kanal ${n.channelId} channels.json'da yok`)
   })
   const interstitials = load<Interstitial[]>(CONTENT_FILES.interstitials, zInterstitialsFile) ?? []
   const iIds = new Set<string>()

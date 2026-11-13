@@ -18,4 +18,10 @@ export function mergeResolvers(...maps: ResolverMap[]): ResolverMap {
   return out
 }
 
-export const resolvers: ResolverMap = mergeResolvers(videoResolvers, liveResolvers, memberResolvers, playbackResolvers, searchResolvers)
+export const resolvers: ResolverMap = mergeResolvers(
+  videoResolvers,
+  liveResolvers,
+  memberResolvers,
+  playbackResolvers,
+  searchResolvers,
+)

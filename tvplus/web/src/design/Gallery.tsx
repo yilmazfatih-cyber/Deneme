@@ -163,7 +163,13 @@ export function DesignGallery(): ReactElement {
             <Button disabled variant="secondary">
               Pasif
             </Button>
-            <Button variant="secondary" icon={listed ? 'check' : 'plus'} aria-pressed={listed} title="Listeme ekle / çıkar" onClick={() => setListed((v) => !v)}>
+            <Button
+              variant="secondary"
+              icon={listed ? 'check' : 'plus'}
+              aria-pressed={listed}
+              title="Listeme ekle / çıkar"
+              onClick={() => setListed((v) => !v)}
+            >
               {listed ? 'Listende' : 'Listeme ekle'}
             </Button>
             <Button to="/_tasarim" variant="secondary" icon="chevronRight">
@@ -206,14 +212,28 @@ export function DesignGallery(): ReactElement {
           <div style={posterW(112)}>
             <Row title="Top 10 · 112 px afiş">
               {[1, 2, 7, 9, 10].map((r) => (
-                <PosterCard key={r} title={`Film ${r}`} rank={r} imageUrl={r === 2 ? '/brand/avatar-2.png' : null} to="/_tasarim" />
+                <PosterCard
+                  key={r}
+                  title={`Film ${r}`}
+                  rank={r}
+                  imageUrl={r === 2 ? '/brand/avatar-2.png' : null}
+                  to="/_tasarim"
+                />
               ))}
             </Row>
           </div>
           <div style={posterW(184)}>
             <Row title="Top 10 · 184 px afiş">
               {[1, 4, 8, 10].map((r) => (
-                <PosterCard key={r} title={`Film ${r}`} rank={r} showTitle={r === 4} meta={r === 4 ? '2024 · Dram' : null} imageUrl={r === 1 ? '/brand/avatar-1.png' : null} to="/_tasarim" />
+                <PosterCard
+                  key={r}
+                  title={`Film ${r}`}
+                  rank={r}
+                  showTitle={r === 4}
+                  meta={r === 4 ? '2024 · Dram' : null}
+                  imageUrl={r === 1 ? '/brand/avatar-1.png' : null}
+                  to="/_tasarim"
+                />
               ))}
             </Row>
           </div>
@@ -232,7 +252,13 @@ export function DesignGallery(): ReactElement {
         <Section title="Yatay kartlar (16:9)">
           <HScroll label="Yatay kartlar">
             <LandscapeCard title="Kuzgun" meta="S1 B4 · 23 dk kaldı" progress={0.62} to="/_tasarim" />
-            <LandscapeCard title="Ana Haber" live={ending} channelLogoUrl={logo('trt-haber')} channelName="TRT Haber" to="/_tasarim" />
+            <LandscapeCard
+              title="Ana Haber"
+              live={ending}
+              channelLogoUrl={logo('trt-haber')}
+              channelName="TRT Haber"
+              to="/_tasarim"
+            />
             <LandscapeCard title="Gece Bülteni" live={long} channelLogoUrl={logo('ntv')} channelName="NTV" />
             <LandscapeCard title="Yeni bölüm geldi" badge="Yeni bölüm" meta="S2 B1" />
             <LandscapeCard title="Pakette yok" lockedText="Sinema Paketi ile" progress={0.2} />
@@ -240,7 +266,10 @@ export function DesignGallery(): ReactElement {
           </HScroll>
         </Section>
 
-        <Section title="Kanal karoları ve canlı kanal kartı" note="Canlı öğe her zaman ilerleme + bitiş/kalan süre taşır">
+        <Section
+          title="Kanal karoları ve canlı kanal kartı"
+          note="Canlı öğe her zaman ilerleme + bitiş/kalan süre taşır"
+        >
           <HScroll label="Kanallar">
             {CHANNELS.map(([slug, name], i) => (
               <ChannelTile key={slug} name={name} logoUrl={logo(slug)} to="/_tasarim" selected={i === 0} />
@@ -248,9 +277,27 @@ export function DesignGallery(): ReactElement {
             <ChannelTile name="Logosuz" />
           </HScroll>
           <HScroll label="Kanallarım">
-            <LiveChannelCard channelName="TRT Haber" channelLogoUrl={logo('trt-haber')} programmeTitle="Ana Haber Bülteni" {...ending} to="/_tasarim" />
-            <LiveChannelCard channelName="CNN Türk" channelLogoUrl={logo('cnn-turk')} programmeTitle="Akşam Haberleri ve Uzun Bir Program Adı" {...long} to="/_tasarim" />
-            <LiveChannelCard channelName="TRT Çocuk" channelLogoUrl={logo('trt-cocuk')} programmeTitle="Çizgi Film Kuşağı" {...long} lockedText="Çocuk Paketi ile" />
+            <LiveChannelCard
+              channelName="TRT Haber"
+              channelLogoUrl={logo('trt-haber')}
+              programmeTitle="Ana Haber Bülteni"
+              {...ending}
+              to="/_tasarim"
+            />
+            <LiveChannelCard
+              channelName="CNN Türk"
+              channelLogoUrl={logo('cnn-turk')}
+              programmeTitle="Akşam Haberleri ve Uzun Bir Program Adı"
+              {...long}
+              to="/_tasarim"
+            />
+            <LiveChannelCard
+              channelName="TRT Çocuk"
+              channelLogoUrl={logo('trt-cocuk')}
+              programmeTitle="Çizgi Film Kuşağı"
+              {...long}
+              lockedText="Çocuk Paketi ile"
+            />
           </HScroll>
         </Section>
 
@@ -275,7 +322,10 @@ export function DesignGallery(): ReactElement {
           <div className="tvp-gal__stack cn-pad-x">
             <AdvisoryBadge certification="Genel İzleyici" />
             <AdvisoryBadge certification="7+" reasons={['Şiddet ve Korku']} />
-            <AdvisoryBadge certification="13+" reasons={['Şiddet ve Korku', 'Olumsuz Örnek Oluşturabilecek Davranışlar']} />
+            <AdvisoryBadge
+              certification="13+"
+              reasons={['Şiddet ve Korku', 'Olumsuz Örnek Oluşturabilecek Davranışlar']}
+            />
             <AdvisoryBadge certification="18+" reasons={['Cinsellik', 'Şiddet ve Korku']} />
           </div>
           <div className="tvp-gal__wrap cn-pad-x">
@@ -302,7 +352,12 @@ export function DesignGallery(): ReactElement {
         <Section title="Boş durum, hata, katmanlar">
           <EmptyHint action={<TextButton to="/_tasarim">Keşfet</TextButton>}>Listende henüz bir şey yok.</EmptyHint>
           <ErrorState onRetry={() => toast('Yeniden deneniyor')} />
-          <ErrorState size="page" title="Bu sayfa açılamadı" message="Biraz sonra yeniden dene." onRetry={() => toast('Yeniden deneniyor')} />
+          <ErrorState
+            size="page"
+            title="Bu sayfa açılamadı"
+            message="Biraz sonra yeniden dene."
+            onRetry={() => toast('Yeniden deneniyor')}
+          />
           <div className="tvp-gal__wrap cn-pad-x">
             <Button variant="secondary" onClick={() => setSheet(true)}>
               Alt sayfayı aç
@@ -327,7 +382,9 @@ export function DesignGallery(): ReactElement {
               </>
             }
           >
-            <p className="cn-body">Paketi ekleyince bu film ve 300'den fazla başlık hemen açılır. İstediğin zaman çıkarabilirsin.</p>
+            <p className="cn-body">
+              Paketi ekleyince bu film ve 300'den fazla başlık hemen açılır. İstediğin zaman çıkarabilirsin.
+            </p>
           </Sheet>
         </Section>
 
@@ -344,9 +401,7 @@ export function DesignGallery(): ReactElement {
             <dt>formatLiveLine</dt>
             <dd>{formatLiveLine(ending.start, ending.end, now)}</dd>
             <dt>formatDayTime</dt>
-            <dd>
-              {[-1, 0, 1, 3, 10].map((d) => formatDayTime(now + d * 86_400_000, now)).join(' · ')}
-            </dd>
+            <dd>{[-1, 0, 1, 3, 10].map((d) => formatDayTime(now + d * 86_400_000, now)).join(' · ')}</dd>
             <dt>weekdayShort</dt>
             <dd>{Array.from({ length: 7 }, (_, d) => weekdayShort(now + d * 86_400_000)).join(' ')}</dd>
           </dl>

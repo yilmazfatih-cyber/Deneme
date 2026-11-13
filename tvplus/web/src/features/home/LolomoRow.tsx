@@ -28,7 +28,16 @@ export function prefetchOnce(viewableId: string | null): void {
   void prefetchManifest(viewableId)
 }
 
-export function LolomoRow({ list, rowIndex, loaded, onNeedMore, loading, error, onRetry, tracker }: LolomoRowProps): ReactElement | null {
+export function LolomoRow({
+  list,
+  rowIndex,
+  loaded,
+  onNeedMore,
+  loading,
+  error,
+  onRetry,
+  tracker,
+}: LolomoRowProps): ReactElement | null {
   const row = mapRow(list, rowIndex, loaded)
   const sectionRef = useRef<HTMLElement>(null)
   const rangeRef = useRef<{ first: number; last: number }>({ first: -1, last: -1 })
@@ -111,7 +120,12 @@ export function LolomoRow({ list, rowIndex, loaded, onNeedMore, loading, error, 
   const getRowVideoIds = () => (rowRef.current?.items ?? []).filter((c): c is CardVM => !!c).map((c) => c.videoId)
 
   return (
-    <section ref={sectionRef} className="cn-row hm-row" aria-labelledby={`hm-row-${row.listId}`} data-context={row.context}>
+    <section
+      ref={sectionRef}
+      className="cn-row hm-row"
+      aria-labelledby={`hm-row-${row.listId}`}
+      data-context={row.context}
+    >
       <RowHeader title={row.title} to={row.seeAllTo ?? undefined} id={`hm-row-${row.listId}`} />
       <HScroll labelledBy={`hm-row-${row.listId}`} scrollKey={`lolomo:${row.listId}`} onVisibleRangeChange={onRange}>
         {row.items.map((c, i) =>
@@ -129,7 +143,14 @@ export function LolomoRow({ list, rowIndex, loaded, onNeedMore, loading, error, 
 }
 
 function previewInfo(rowId: string, c: CardVM, getRowVideoIds: () => number[]): PreviewTargetInfo {
-  return { rowId, videoId: c.videoId, getRowVideoIds, tctx: c.tctx, title: c.title, imageUrl: c.landscapeUrl ?? c.posterUrl }
+  return {
+    rowId,
+    videoId: c.videoId,
+    getRowVideoIds,
+    tctx: c.tctx,
+    title: c.title,
+    imageUrl: c.landscapeUrl ?? c.posterUrl,
+  }
 }
 
 function PosterItem({ card }: { card: CardVM }): ReactElement {
@@ -159,7 +180,11 @@ function ContinueCard({ card }: { card: CardVM }): ReactElement {
       ariaLabel={card.playTo ? `${card.title}: Devam et${card.meta ? `, ${card.meta}` : ''}` : undefined}
       onClick={() => {
         if (card.playVideoId !== null) notePlaybackIntent(card.playVideoId, card.videoId)
-        logEvent('click', { videoId: card.videoId, action: card.playTo ? 'resume' : 'detail', from: 'lolomo' }, card.tctx)
+        logEvent(
+          'click',
+          { videoId: card.videoId, action: card.playTo ? 'resume' : 'detail', from: 'lolomo' },
+          card.tctx,
+        )
       }}
     />
   )

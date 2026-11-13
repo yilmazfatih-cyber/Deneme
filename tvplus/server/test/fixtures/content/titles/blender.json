@@ -7,35 +7,15 @@
     "year": 2010,
     "synopsis": "Yalnız bir kız, yaralı bir yavru ejderhayı iyileştirir ve ona Scales adını verir. Ejderha kaçırılınca Sintel onu bulmak için tehlikeli bir yolculuğa çıkar.",
     "shortSynopsis": "Kayıp ejderhasını arayan genç bir kadının hüzünlü yolculuğu.",
-    "genres": [
-      "animasyon",
-      "fantastik",
-      "macera"
-    ],
-    "moods": [
-      "duygusal",
-      "goz-alici",
-      "acik-kaynak"
-    ],
-    "cast": [
-      "Halina Reijn",
-      "Thom Hoffman"
-    ],
-    "directors": [
-      "Colin Levy"
-    ],
-    "creators": [
-      "Ton Roosendaal"
-    ],
-    "keywords": [
-      "ejderha",
-      "yolculuk"
-    ],
+    "genres": ["animasyon", "fantastik", "macera"],
+    "moods": ["duygusal", "goz-alici", "acik-kaynak"],
+    "cast": ["Halina Reijn", "Thom Hoffman"],
+    "directors": ["Colin Levy"],
+    "creators": ["Ton Roosendaal"],
+    "keywords": ["ejderha", "yolculuk"],
     "maturity": {
       "rating": "13+",
-      "reasons": [
-        "siddet-korku"
-      ]
+      "reasons": ["siddet-korku"]
     },
     "runtimeSec": 888,
     "sources": [
@@ -106,26 +86,11 @@
     "year": 2008,
     "synopsis": "Koca yürekli bir tavşan, ormanın üç haylaz kemirgenine karşı sabrını yitirir. Sonunda onlara unutamayacakları bir ders vermeye karar verir.",
     "shortSynopsis": "Koca yürekli tavşan, haylaz kemirgenlere ders veriyor.",
-    "genres": [
-      "animasyon",
-      "komedi",
-      "cocuk-aile"
-    ],
-    "moods": [
-      "eglenceli",
-      "aile-boyu",
-      "acik-kaynak"
-    ],
-    "directors": [
-      "Sacha Goedegebure"
-    ],
-    "creators": [
-      "Ton Roosendaal"
-    ],
-    "keywords": [
-      "tavşan",
-      "orman"
-    ],
+    "genres": ["animasyon", "komedi", "cocuk-aile"],
+    "moods": ["eglenceli", "aile-boyu", "acik-kaynak"],
+    "directors": ["Sacha Goedegebure"],
+    "creators": ["Ton Roosendaal"],
+    "keywords": ["tavşan", "orman"],
     "maturity": {
       "rating": "GENEL"
     },
@@ -168,30 +133,14 @@
     "year": 2012,
     "synopsis": "Yakın gelecekte Amsterdam'da bir grup bilim insanı, dünyayı robotlardan kurtarmak için geçmişteki bir kırgınlığı onarmak zorundadır.",
     "shortSynopsis": "Amsterdam'da robotlara karşı son direniş.",
-    "genres": [
-      "bilim-kurgu",
-      "aksiyon"
-    ],
-    "moods": [
-      "heyecanli",
-      "goz-alici",
-      "acik-kaynak"
-    ],
-    "cast": [
-      "Derek de Lint",
-      "Sergio Hasselbaink"
-    ],
-    "directors": [
-      "Ian Hubert"
-    ],
-    "creators": [
-      "Ton Roosendaal"
-    ],
+    "genres": ["bilim-kurgu", "aksiyon"],
+    "moods": ["heyecanli", "goz-alici", "acik-kaynak"],
+    "cast": ["Derek de Lint", "Sergio Hasselbaink"],
+    "directors": ["Ian Hubert"],
+    "creators": ["Ton Roosendaal"],
     "maturity": {
       "rating": "13+",
-      "reasons": [
-        "siddet-korku"
-      ]
+      "reasons": ["siddet-korku"]
     },
     "runtimeSec": 734,
     "sources": [
@@ -231,22 +180,10 @@
     "year": 2015,
     "synopsis": "Issız bir adada yaşamaktan bıkmış bir koyun, ona hayatı boyunca istediği her şeyi vaat eden gizemli bir satıcıyla karşılaşır.",
     "shortSynopsis": "Bıkkın bir koyun ve her şeyi vaat eden gizemli bir satıcı.",
-    "genres": [
-      "fantastik",
-      "komedi",
-      "dram"
-    ],
-    "moods": [
-      "absurt",
-      "dusundurucu",
-      "acik-kaynak"
-    ],
-    "directors": [
-      "Mathieu Auvray"
-    ],
-    "creators": [
-      "Ton Roosendaal"
-    ],
+    "genres": ["fantastik", "komedi", "dram"],
+    "moods": ["absurt", "dusundurucu", "acik-kaynak"],
+    "directors": ["Mathieu Auvray"],
+    "creators": ["Ton Roosendaal"],
     "maturity": {
       "rating": "13+"
     },
@@ -288,21 +225,10 @@
     "year": 2019,
     "synopsis": "Bir çoban kız ve köpeği, kışı sona erdirmek için eski ruhlarla yüzleşir. Doğanın döngüsüne dair sözsüz bir masal.",
     "shortSynopsis": "Çoban kız ve köpeği, baharı getirmek için ruhlarla yüzleşiyor.",
-    "genres": [
-      "animasyon",
-      "fantastik"
-    ],
-    "moods": [
-      "sakin",
-      "sozsuz",
-      "acik-kaynak"
-    ],
-    "directors": [
-      "Andy Goralczyk"
-    ],
-    "creators": [
-      "Ton Roosendaal"
-    ],
+    "genres": ["animasyon", "fantastik"],
+    "moods": ["sakin", "sozsuz", "acik-kaynak"],
+    "directors": ["Andy Goralczyk"],
+    "creators": ["Ton Roosendaal"],
     "maturity": {
       "rating": "7+"
     },

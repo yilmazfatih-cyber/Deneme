@@ -26,7 +26,8 @@ function normalizeRange(o: Record<string, unknown>): FalcorRange {
     }
     to = from + o.length - 1
   }
-  if (typeof to !== 'number' || !Number.isInteger(to)) throw new FalcorPathError('INVALID_PATH', 'Aralığın sonu geçersiz.')
+  if (typeof to !== 'number' || !Number.isInteger(to))
+    throw new FalcorPathError('INVALID_PATH', 'Aralığın sonu geçersiz.')
   if (to - from > MAX_RANGE) throw new FalcorPathError('PATH_EXPANSION_LIMIT', 'Aralık çok geniş.')
   return { from, to }
 }
@@ -55,7 +56,8 @@ function normalizeKeySet(ks: unknown): FalcorKeySet {
 
 /** Ham değeri (JSON'dan gelen) doğrulayıp normalleştirilmiş yol kümesine çevirir. */
 export function normalizePathSet(raw: unknown): FalcorPath {
-  if (!Array.isArray(raw) || raw.length === 0) throw new FalcorPathError('INVALID_PATH', 'Yol boş olmayan bir dizi olmalı.')
+  if (!Array.isArray(raw) || raw.length === 0)
+    throw new FalcorPathError('INVALID_PATH', 'Yol boş olmayan bir dizi olmalı.')
   if (raw.length > 32) throw new FalcorPathError('INVALID_PATH', 'Yol çok uzun.')
   return raw.map(normalizeKeySet)
 }

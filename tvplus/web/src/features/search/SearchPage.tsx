@@ -33,7 +33,16 @@ import {
 import { logEvent } from '../../telemetry/logger'
 import { airingAction, liveWatchPath, lockText } from '../live/airing'
 import { AccessSheet, AiringSheet, type AiringSheetTarget } from '../live/shared'
-import { declarationSignature, KIND_SWITCHES, loadEnabledKinds, lookupTreatment, saveEnabledKinds, type EntityKindName, type SearchPageCapabilities, type TreatmentName } from './capabilities'
+import {
+  declarationSignature,
+  KIND_SWITCHES,
+  loadEnabledKinds,
+  lookupTreatment,
+  saveEnabledKinds,
+  type EntityKindName,
+  type SearchPageCapabilities,
+  type TreatmentName,
+} from './capabilities'
 import {
   activeFilterCount,
   DEFAULT_FILTERS,
@@ -76,7 +85,15 @@ const ChannelTiles: GroupRenderer = ({ entities, section, ctx }) => (
       if (!ch) return []
       const lock = lockText(ch.access)
       if (!ch.now) {
-        return [<ChannelTile key={e.unifiedEntityId} name={ch.name} logoUrl={ch.logo.url} to={lock ? undefined : liveWatchPath(ch.channelId, e.track.tctx)} onClick={() => ctx.opened(e, 'canli')} />]
+        return [
+          <ChannelTile
+            key={e.unifiedEntityId}
+            name={ch.name}
+            logoUrl={ch.logo.url}
+            to={lock ? undefined : liveWatchPath(ch.channelId, e.track.tctx)}
+            onClick={() => ctx.opened(e, 'canli')}
+          />,
+        ]
       }
       return [
         <LiveChannelCard
@@ -103,7 +120,8 @@ function AiringRow({ e, ctx }: { e: SearchEntity; ctx: RenderCtx }): ReactElemen
   const a = e.airing
   if (!a) return null
   const action = airingAction(a, a.channel.channelId, now, e.track.tctx)
-  const live = action.kind === 'live' || (action.kind === 'locked' && Date.parse(a.startAt) <= now && now < Date.parse(a.endAt))
+  const live =
+    action.kind === 'live' || (action.kind === 'locked' && Date.parse(a.startAt) <= now && now < Date.parse(a.endAt))
   const when = live ? formatLiveLine(a.startAt, a.endAt, now) : formatDayTime(a.startAt, now)
   return (
     <li className="sr-airing">
@@ -124,16 +142,34 @@ function AiringRow({ e, ctx }: { e: SearchEntity; ctx: RenderCtx }): ReactElemen
           </span>
           <span className="cn-card-title">{a.title}</span>
           <span className="cn-meta">{a.channel.name}</span>
-          {live && <ProgressBar value={liveProgress(a.startAt, a.endAt, now)} label="Yayın ilerlemesi" className="sr-airing__progress" />}
+          {live && (
+            <ProgressBar
+              value={liveProgress(a.startAt, a.endAt, now)}
+              label="Yayın ilerlemesi"
+              className="sr-airing__progress"
+            />
+          )}
         </span>
       </button>
       <span className="sr-airing__action">
         {action.kind === 'live' ? (
-          <Button variant="secondary" size="sm" icon="play" to={action.primary.to} onClick={() => ctx.opened(e, 'canli')}>
+          <Button
+            variant="secondary"
+            size="sm"
+            icon="play"
+            to={action.primary.to}
+            onClick={() => ctx.opened(e, 'canli')}
+          >
             {action.primary.label}
           </Button>
         ) : action.kind === 'catchup' ? (
-          <Button variant="secondary" size="sm" icon="play" to={action.primary.to} onClick={() => ctx.opened(e, 'geri-al')}>
+          <Button
+            variant="secondary"
+            size="sm"
+            icon="play"
+            to={action.primary.to}
+            onClick={() => ctx.opened(e, 'geri-al')}
+          >
             {action.primary.label}
           </Button>
         ) : action.kind === 'locked' ? (
@@ -193,7 +229,11 @@ const PersonChips: GroupRenderer = ({ entities, ctx }) => (
     {entities.flatMap((e) =>
       e.person
         ? [
-            <Chip key={e.unifiedEntityId} to={`/kisi/${e.person.personId}?tctx=${encodeURIComponent(e.track.tctx)}`} onClick={() => ctx.opened(e, 'kisi')}>
+            <Chip
+              key={e.unifiedEntityId}
+              to={`/kisi/${e.person.personId}?tctx=${encodeURIComponent(e.track.tctx)}`}
+              onClick={() => ctx.opened(e, 'kisi')}
+            >
               {e.person.name}
             </Chip>,
           ]
@@ -218,7 +258,15 @@ const Destinations: GroupRenderer = ({ entities, section, ctx }) => (
           />,
         ]
       if (e.genre)
-        return [<LandscapeCard key={e.unifiedEntityId} title={e.genre.name} meta="Tür" to={`/tur/${e.genre.genreId}?tctx=${tctx}`} onClick={() => ctx.opened(e, 'tur')} />]
+        return [
+          <LandscapeCard
+            key={e.unifiedEntityId}
+            title={e.genre.name}
+            meta="Tür"
+            to={`/tur/${e.genre.genreId}?tctx=${tctx}`}
+            onClick={() => ctx.opened(e, 'tur')}
+          />,
+        ]
       return []
     })}
   </HScroll>
@@ -260,7 +308,10 @@ const RENDERERS: Record<TreatmentName, GroupRenderer> = {
 }
 
 /** Ardışık aynı biçimli varlıkları gruplar; tanımadığımız ya da bildirmediğimiz biçim sessizce atlanır. */
-function groupEntities(section: SearchSection, declaration: SearchPageCapabilities): { treatment: TreatmentName; entities: SearchEntity[] }[] {
+function groupEntities(
+  section: SearchSection,
+  declaration: SearchPageCapabilities,
+): { treatment: TreatmentName; entities: SearchEntity[] }[] {
   const groups: { treatment: TreatmentName; entities: SearchEntity[] }[] = []
   for (const e of section.entities) {
     const t = lookupTreatment(section.__typename, e.treatment, declaration)
@@ -272,7 +323,15 @@ function groupEntities(section: SearchSection, declaration: SearchPageCapabiliti
   return groups
 }
 
-function SectionView({ section, declaration, ctx }: { section: SearchSection; declaration: SearchPageCapabilities; ctx: RenderCtx }): ReactElement | null {
+function SectionView({
+  section,
+  declaration,
+  ctx,
+}: {
+  section: SearchSection
+  declaration: SearchPageCapabilities
+  ctx: RenderCtx
+}): ReactElement | null {
   const groups = groupEntities(section, declaration)
   if (!groups.length) return null
   const id = `sr-sec-${section.id}`
@@ -282,7 +341,9 @@ function SectionView({ section, declaration, ctx }: { section: SearchSection; de
         <h2 className="cn-row-title" id={id}>
           {section.displayString}
         </h2>
-        {section.__typename === 'SearchGallerySection' && section.totalCount !== undefined && <span className="cn-meta">{section.totalCount} sonuç</span>}
+        {section.__typename === 'SearchGallerySection' && section.totalCount !== undefined && (
+          <span className="cn-meta">{section.totalCount} sonuç</span>
+        )}
       </div>
       {groups.map((g, i) => {
         const Render = RENDERERS[g.treatment]
@@ -294,7 +355,15 @@ function SectionView({ section, declaration, ctx }: { section: SearchSection; de
 
 /* ───────────── Anahtar (switch) ───────────── */
 
-function Switch({ checked, onChange, children }: { checked: boolean; onChange: (v: boolean) => void; children: ReactNode }): ReactElement {
+function Switch({
+  checked,
+  onChange,
+  children,
+}: {
+  checked: boolean
+  onChange: (v: boolean) => void
+  children: ReactNode
+}): ReactElement {
   return (
     <button type="button" role="switch" aria-checked={checked} className="sr-switch" onClick={() => onChange(!checked)}>
       <span className="sr-switch__label">{children}</span>
@@ -307,7 +376,17 @@ function Switch({ checked, onChange, children }: { checked: boolean; onChange: (
 
 /* ───────────── Süzgeç alt sayfası ───────────── */
 
-function ChoiceGroup<T extends string>({ label, value, options, onChange }: { label: string; value: T; options: [T, string][]; onChange: (v: T) => void }): ReactElement {
+function ChoiceGroup<T extends string>({
+  label,
+  value,
+  options,
+  onChange,
+}: {
+  label: string
+  value: T
+  options: [T, string][]
+  onChange: (v: T) => void
+}): ReactElement {
   return (
     <fieldset className="sr-fgroup">
       <legend className="sr-fgroup__title">{label}</legend>
@@ -337,7 +416,11 @@ function FilterSheet({
   genres: { genreId: number; name: string }[]
   total: number | null
 }): ReactElement {
-  const toggleGenre = (id: number) => setFilters({ ...filters, genreIds: filters.genreIds.includes(id) ? filters.genreIds.filter((g) => g !== id) : [...filters.genreIds, id] })
+  const toggleGenre = (id: number) =>
+    setFilters({
+      ...filters,
+      genreIds: filters.genreIds.includes(id) ? filters.genreIds.filter((g) => g !== id) : [...filters.genreIds, id],
+    })
   const isDefault = activeFilterCount(filters) === 0 && filters.sort === 'rel'
   return (
     <Sheet
@@ -360,7 +443,11 @@ function FilterSheet({
             <legend className="sr-fgroup__title">Tür</legend>
             <div className="sr-fgroup__chips">
               {genres.map((g) => (
-                <Chip key={g.genreId} selected={filters.genreIds.includes(g.genreId)} onClick={() => toggleGenre(g.genreId)}>
+                <Chip
+                  key={g.genreId}
+                  selected={filters.genreIds.includes(g.genreId)}
+                  onClick={() => toggleGenre(g.genreId)}
+                >
                   {g.name}
                 </Chip>
               ))}
@@ -425,7 +512,8 @@ function CapabilitySheet({
   return (
     <Sheet open={open} onClose={onClose} title="Yetenek bildirimi" className="sr-sidesheet">
       <p className="cn-body sr-cap__intro">
-        İstemci çizebildiği varlık türlerini bildirir; sunucu yalnızca bunları döndürür. Böylece yeni bir tür eklendiğinde eski istemciler bozulmadan çalışır.
+        İstemci çizebildiği varlık türlerini bildirir; sunucu yalnızca bunları döndürür. Böylece yeni bir tür
+        eklendiğinde eski istemciler bozulmadan çalışır.
       </p>
       <div className="sr-cap__list">
         {KIND_SWITCHES.map((s) => (
@@ -453,7 +541,13 @@ function CapabilitySheet({
 
 /* ───────────── Şeritler ───────────── */
 
-function Banner({ data, onSearch }: { data: Parameters<typeof selectBanner>[0]; onSearch: (q: string, exactTerm?: boolean) => void }): ReactElement | null {
+function Banner({
+  data,
+  onSearch,
+}: {
+  data: Parameters<typeof selectBanner>[0]
+  onSearch: (q: string, exactTerm?: boolean) => void
+}): ReactElement | null {
   const b = selectBanner(data)
   if (!b) return null
   if (b.kind === 'fallback') return <p className="sr-banner cn-gutter-x">“{b.term}” için sonuç yok</p>
@@ -496,7 +590,10 @@ export default function SearchPage(): ReactElement {
   const [airing, setAiring] = useState<AiringSheetTarget | null>(null)
   const [locked, setLocked] = useState<{ title: string; reason: string } | null>(null)
   const [recentCleared, setRecentCleared] = useState(false)
-  const [genreMemo, setGenreMemo] = useState<{ term: string; genres: Map<number, string> }>({ term: '', genres: new Map() })
+  const [genreMemo, setGenreMemo] = useState<{ term: string; genres: Map<number, string> }>({
+    term: '',
+    genres: new Map(),
+  })
 
   // Terim değişince türe özgü süzgeç sıfırlanır (önceki aramanın türü yeni aramada olmayabilir).
   const normTerm = normalizeTerm(term)
@@ -524,15 +621,23 @@ export default function SearchPage(): ReactElement {
     })
   }, [data, normTerm])
   const genres = useMemo(
-    () => [...(genreMemo.term === normTerm ? genreMemo.genres : new Map<number, string>())].map(([genreId, name]) => ({ genreId, name })).sort((a, b) => a.name.localeCompare(b.name, 'tr')),
+    () =>
+      [...(genreMemo.term === normTerm ? genreMemo.genres : new Map<number, string>())]
+        .map(([genreId, name]) => ({ genreId, name }))
+        .sort((a, b) => a.name.localeCompare(b.name, 'tr')),
     [genreMemo, normTerm],
   )
 
-  const goSearch = (next: string, exactTerm = false) => navigate(`/ara?q=${encodeURIComponent(next)}${exactTerm ? '&tam=1' : ''}`)
+  const goSearch = (next: string, exactTerm = false) =>
+    navigate(`/ara?q=${encodeURIComponent(next)}${exactTerm ? '&tam=1' : ''}`)
   const ctx: RenderCtx = {
     term,
     opened: (e, action) => {
-      logEvent('click', { surface: 'arama', treatment: e.treatment, kind: e.kind, action, entityId: e.unifiedEntityId, fuzzy: e.fuzzy }, e.track.tctx)
+      logEvent(
+        'click',
+        { surface: 'arama', treatment: e.treatment, kind: e.kind, action, entityId: e.unifiedEntityId, fuzzy: e.fuzzy },
+        e.track.tctx,
+      )
       recordSearch(term)
     },
     openAiring: setAiring,
@@ -554,7 +659,12 @@ export default function SearchPage(): ReactElement {
       </div>
 
       <div className="sr-toolbar cn-gutter-x">
-        <button type="button" className={cx('sr-filterbtn', count > 0 && 'sr-filterbtn--on')} onClick={() => setFilterOpen(true)} aria-haspopup="dialog">
+        <button
+          type="button"
+          className={cx('sr-filterbtn', count > 0 && 'sr-filterbtn--on')}
+          onClick={() => setFilterOpen(true)}
+          aria-haspopup="dialog"
+        >
           <Icon name="settings" size={18} />
           Filtrele
           {count > 0 && (
@@ -627,12 +737,27 @@ export default function SearchPage(): ReactElement {
               </button>
             </div>
           )}
-          {data.sections.length === 0 && <p className="sr-banner cn-gutter-x">Bu bildirimle gösterilecek sonuç yok. Yetenek bildirimini aç.</p>}
+          {data.sections.length === 0 && (
+            <p className="sr-banner cn-gutter-x">Bu bildirimle gösterilecek sonuç yok. Yetenek bildirimini aç.</p>
+          )}
         </div>
       )}
 
-      <FilterSheet open={filterOpen} onClose={() => setFilterOpen(false)} filters={filters} setFilters={setFilters} genres={genres} total={gallery?.totalCount ?? null} />
-      <CapabilitySheet open={capOpen} onClose={() => setCapOpen(false)} enabled={enabled} setEnabled={setEnabled} declaration={declaration} />
+      <FilterSheet
+        open={filterOpen}
+        onClose={() => setFilterOpen(false)}
+        filters={filters}
+        setFilters={setFilters}
+        genres={genres}
+        total={gallery?.totalCount ?? null}
+      />
+      <CapabilitySheet
+        open={capOpen}
+        onClose={() => setCapOpen(false)}
+        enabled={enabled}
+        setEnabled={setEnabled}
+        declaration={declaration}
+      />
       <AiringSheet target={airing} onClose={() => setAiring(null)} />
       <AccessSheet title={locked?.title ?? null} reason={locked?.reason ?? ''} onClose={() => setLocked(null)} />
     </Page>

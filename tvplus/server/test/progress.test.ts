@@ -150,7 +150,8 @@ describe('üye durumu (progress)', () => {
 
   it('son aramalar: en çok 8, norm() ile tekil, en yeni önce; duyuru kapatma', () => {
     const p = app.services.progress
-    for (const term of ['sintel', 'SİNTEL', 'Çizgi', 'cizgi film', 'a', 'b', 'c', 'd', 'e', 'f']) p.recordSearch(g, term)
+    for (const term of ['sintel', 'SİNTEL', 'Çizgi', 'cizgi film', 'a', 'b', 'c', 'd', 'e', 'f'])
+      p.recordSearch(g, term)
     p.recordSearch(g, '   ')
     expect(p.recentSearches(g)).toEqual(['f', 'e', 'd', 'c', 'b', 'a', 'cizgi film', 'Çizgi'])
     p.recordSearch(g, 'çizgi')

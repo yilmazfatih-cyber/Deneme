@@ -12,30 +12,30 @@ Gerçek TV+ değildir: gerçek hesap/ödeme/kimlik bilgisi toplamaz, TV+'ın yay
 
 ## 1. Netflix → TV+ mekanik eşlemesi
 
-| Netflix (gözlenen)                                         | TV+ (bu depo)                                                              | Kod                                                    |
-| ---------------------------------------------------------- | -------------------------------------------------------------------------- | ------------------------------------------------------ |
-| Akira SPA · Hawkins tasarım sistemi                        | `anka` SPA · `cini` tasarım sistemi (DESIGN_SPEC tokenları)                | `web/src/app`, `web/src/design`                        |
-| Envoy kapısı, B3 izleme (`x-b3-traceid`)                   | Tek kapı (Fastify), her yanıtta B3 başlıkları                              | `server/src/gateway`                                   |
-| GraphQL, **kalıcı sorgular** (kimlik + sürüm)              | `POST /graphql`, ham sorgu reddedilir                                      | `server/src/graphql`, `shared/graphql`                 |
-| Shakti / **Falcor** `pathEvaluator` (JSON Graph)           | `POST /api/member/pathEvaluator` — Film & Dizi ana sayfa satırları (lolomo) | `server/src/falcor`, `web/src/api/falcor.ts`           |
-| İki API yan yana (geçiş hâli)                              | Eski: lolomo satırları (Falcor) · Yeni: detay, önizleme, arama, canlı (GraphQL) | —                                                  |
-| Pinot arama, **yetenek pazarlığı**, `expires`              | `searchPage` — istemci çizebildiği varlık türlerini bildirir; bölüm bazında TTL | `server/src/services/search`                       |
-| `MiniModalQuery` — satırın tamamını ön yükler              | Aynı ad; karta gelince tüm satır tek istekte                               | `web/src/features/preview`                             |
-| `DetailModal` veri modeli                                  | Aynı alanlar + `access` (yetki) + RTÜK akıllı işaretleri                   | `shared/graphql/schema.graphql`                        |
-| FTL yoklaması: 4 uç yarışır, darbeler `[0,2000,70000]`     | `GET /api/ftl/probe` → 4 CDN düğümü yarışır, sonuç manifest sıralamasına gider | `server/src/services/ftl`, `web/src/player/net/ftl.ts` |
-| MSL / ALE anahtar sağlama, şifreli zarf                    | ECDH P-256 + AES-GCM zarf, mastertoken, tekrar koruması                    | `server/src/services/playback/msl.ts`                  |
-| `licensedManifest` + **vitrin ön hazırlığı** (prefetch)    | `POST /msl/v1/playapi/licensedManifest?reqName=prefetch/licensedManifest`  | `server/src/services/playback`                         |
-| Open Connect: imzalı adres, **bayt-aralığı**, ayrı ses/video | `/oca/:node/range/:a-:b?o=&v=&e=&t=` — 4 sanal düğüm, yük devri           | `server/src/services/oca`                              |
-| Cadmium oynatıcı: MSE, ABR, ses parçası, TTML              | `kehribar` oynatıcı: kendi MSE motoru + YouTube adaptörü                   | `web/src/player`                                       |
-| TTML altyazı, `tickRate=10000000`                          | Altyazı servisi VTT/TTML kaynağını tik tabanlı TTML'e çevirir              | `server/src/services/subtitles`                        |
-| Ichnaea olay günlüğü, hız sınırı başlığı                   | `POST /log/web/cl/1`, `x-tvplus-izci: ~0=true~RL=<kalan>`                  | `server/src/services/events`, `web/src/telemetry`      |
-| `notifications.netflix.com/push` uzun yoklama              | `GET /push?cursor=&wait=`                                                  | `server/src/services/notifications`                    |
-| Çerez zinciri (`NetflixId`, `SecureNetflixId`, `nfvdid`)   | `TvpId`, `SecureTvpId`, `tvpvdid`, `tvpProfilesNewSession`                 | `server/src/services/identity`                         |
-| Passport (profil GUID her istekte çözülür)                 | `req.passport`; yanıtta `x-tvplus-passport-profileguid`                    | `server/src/services/identity`                         |
-| ESN `NFCDCH-MC-…`                                          | `TVPWCH-MC-…` (TV+ Web · tarayıcı · platform · cihaz özeti)                | `server/src/services/identity/esn.ts`                  |
-| Görsel API `/dnm/api/v6/`, imzalı `r=`                     | `/img/v1/<tip>/<en>x<boy>/<varlık>.webp?r=`                                | `server/src/services/image`, `kernel/imageUrls.ts`     |
-| Lolomo + `tctx` konum izleme                               | Aynı; `shared/tctx.ts`                                                     | `server/src/services/discovery`                        |
-| `reactContext` (sunucunun HTML'e gömdüğü bağlam)           | `<script id="tvp-boot">` + `GET /api/boot`                                 | `server/src/gateway/shell.ts`                          |
+| Netflix (gözlenen)                                           | TV+ (bu depo)                                                                   | Kod                                                    |
+| ------------------------------------------------------------ | ------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| Akira SPA · Hawkins tasarım sistemi                          | `anka` SPA · `cini` tasarım sistemi (DESIGN_SPEC tokenları)                     | `web/src/app`, `web/src/design`                        |
+| Envoy kapısı, B3 izleme (`x-b3-traceid`)                     | Tek kapı (Fastify), her yanıtta B3 başlıkları                                   | `server/src/gateway`                                   |
+| GraphQL, **kalıcı sorgular** (kimlik + sürüm)                | `POST /graphql`, ham sorgu reddedilir                                           | `server/src/graphql`, `shared/graphql`                 |
+| Shakti / **Falcor** `pathEvaluator` (JSON Graph)             | `POST /api/member/pathEvaluator` — Film & Dizi ana sayfa satırları (lolomo)     | `server/src/falcor`, `web/src/api/falcor.ts`           |
+| İki API yan yana (geçiş hâli)                                | Eski: lolomo satırları (Falcor) · Yeni: detay, önizleme, arama, canlı (GraphQL) | —                                                      |
+| Pinot arama, **yetenek pazarlığı**, `expires`                | `searchPage` — istemci çizebildiği varlık türlerini bildirir; bölüm bazında TTL | `server/src/services/search`                           |
+| `MiniModalQuery` — satırın tamamını ön yükler                | Aynı ad; karta gelince tüm satır tek istekte                                    | `web/src/features/preview`                             |
+| `DetailModal` veri modeli                                    | Aynı alanlar + `access` (yetki) + RTÜK akıllı işaretleri                        | `shared/graphql/schema.graphql`                        |
+| FTL yoklaması: 4 uç yarışır, darbeler `[0,2000,70000]`       | `GET /api/ftl/probe` → 4 CDN düğümü yarışır, sonuç manifest sıralamasına gider  | `server/src/services/ftl`, `web/src/player/net/ftl.ts` |
+| MSL / ALE anahtar sağlama, şifreli zarf                      | ECDH P-256 + AES-GCM zarf, mastertoken, tekrar koruması                         | `server/src/services/playback/msl.ts`                  |
+| `licensedManifest` + **vitrin ön hazırlığı** (prefetch)      | `POST /msl/v1/playapi/licensedManifest?reqName=prefetch/licensedManifest`       | `server/src/services/playback`                         |
+| Open Connect: imzalı adres, **bayt-aralığı**, ayrı ses/video | `/oca/:node/range/:a-:b?o=&v=&e=&t=` — 4 sanal düğüm, yük devri                 | `server/src/services/oca`                              |
+| Cadmium oynatıcı: MSE, ABR, ses parçası, TTML                | `kehribar` oynatıcı: kendi MSE motoru + YouTube adaptörü                        | `web/src/player`                                       |
+| TTML altyazı, `tickRate=10000000`                            | Altyazı servisi VTT/TTML kaynağını tik tabanlı TTML'e çevirir                   | `server/src/services/subtitles`                        |
+| Ichnaea olay günlüğü, hız sınırı başlığı                     | `POST /log/web/cl/1`, `x-tvplus-izci: ~0=true~RL=<kalan>`                       | `server/src/services/events`, `web/src/telemetry`      |
+| `notifications.netflix.com/push` uzun yoklama                | `GET /push?cursor=&wait=`                                                       | `server/src/services/notifications`                    |
+| Çerez zinciri (`NetflixId`, `SecureNetflixId`, `nfvdid`)     | `TvpId`, `SecureTvpId`, `tvpvdid`, `tvpProfilesNewSession`                      | `server/src/services/identity`                         |
+| Passport (profil GUID her istekte çözülür)                   | `req.passport`; yanıtta `x-tvplus-passport-profileguid`                         | `server/src/services/identity`                         |
+| ESN `NFCDCH-MC-…`                                            | `TVPWCH-MC-…` (TV+ Web · tarayıcı · platform · cihaz özeti)                     | `server/src/services/identity/esn.ts`                  |
+| Görsel API `/dnm/api/v6/`, imzalı `r=`                       | `/img/v1/<tip>/<en>x<boy>/<varlık>.webp?r=`                                     | `server/src/services/image`, `kernel/imageUrls.ts`     |
+| Lolomo + `tctx` konum izleme                                 | Aynı; `shared/tctx.ts`                                                          | `server/src/services/discovery`                        |
+| `reactContext` (sunucunun HTML'e gömdüğü bağlam)             | `<script id="tvp-boot">` + `GET /api/boot`                                      | `server/src/gateway/shell.ts`                          |
 
 TV+'a özgü ekler (netflix_patterns.md §2): **Geçiş** (Canlı TV / Film & Dizi), `Channel` + `ProgramAiring`
 (şimdi/sonraki, baştan başlat, geri al), `access` (yetki; "pakette yok" tam ekran hata değildir), çocuk profili.
@@ -51,19 +51,19 @@ TV+'a özgü ekler (netflix_patterns.md §2): **Geçiş** (Canlı TV / Film & Di
 
 ## 3. Klasörler ve sahiplik (her yolun tek yazarı var; başkasının dosyasına dokunulmaz)
 
-| Yol                                                                                                             | Sahibi              |
-| --------------------------------------------------------------------------------------------------------------- | ------------------- |
-| `shared/**` (sözleşme), `server/src/kernel/**`, `server/src/app.ts`, kök yapılandırma, `docs/**`               | mimar (ana oturum)  |
-| `server/src/gateway/**`, `services/{identity,events,notifications,debug}/**`, `graphql/{plugin,engine}*.ts`, `falcor/{plugin,engine}*.ts` | **çekirdek API**    |
-| `services/{catalog,entitlement,epg,progress,discovery,search}/**`, `graphql/resolvers/**`, `falcor/routes/**`   | **alan servisleri** |
-| `services/{playback,oca,ftl,subtitles}/**`, `scripts/package-title.ts`                                          | **oynatma düzlemi** |
-| `services/image/**`, `scripts/{validate-content,ingest-youtube,ingest-archive}.ts`                              | **içerik hattı**    |
-| `web/src/{app,design,features/{welcome,profiles,home,detail,preview,library,browse}}/**`, `web/src/api/falcor.ts` | **web temel + keşif** |
-| `web/src/player/**`                                                                                             | **oynatıcı**        |
-| `web/src/features/{live,guide,search}/**`                                                                       | **canlı + arama**   |
-| `web/src/devtools/**`, `web/src/features/notifications/**`                                                      | **kaputun altı**    |
-| `content/**`                                                                                                    | içerik ekibi (Haiku) |
-| `server/test/<alan>*.test.ts`, `web/src/**/*.test.ts`                                                           | ilgili alanın sahibi |
+| Yol                                                                                                                                       | Sahibi                |
+| ----------------------------------------------------------------------------------------------------------------------------------------- | --------------------- |
+| `shared/**` (sözleşme), `server/src/kernel/**`, `server/src/app.ts`, kök yapılandırma, `docs/**`                                          | mimar (ana oturum)    |
+| `server/src/gateway/**`, `services/{identity,events,notifications,debug}/**`, `graphql/{plugin,engine}*.ts`, `falcor/{plugin,engine}*.ts` | **çekirdek API**      |
+| `services/{catalog,entitlement,epg,progress,discovery,search}/**`, `graphql/resolvers/**`, `falcor/routes/**`                             | **alan servisleri**   |
+| `services/{playback,oca,ftl,subtitles}/**`, `scripts/package-title.ts`                                                                    | **oynatma düzlemi**   |
+| `services/image/**`, `scripts/{validate-content,ingest-youtube,ingest-archive}.ts`                                                        | **içerik hattı**      |
+| `web/src/{app,design,features/{welcome,profiles,home,detail,preview,library,browse}}/**`, `web/src/api/falcor.ts`                         | **web temel + keşif** |
+| `web/src/player/**`                                                                                                                       | **oynatıcı**          |
+| `web/src/features/{live,guide,search}/**`                                                                                                 | **canlı + arama**     |
+| `web/src/devtools/**`, `web/src/features/notifications/**`                                                                                | **kaputun altı**      |
+| `content/**`                                                                                                                              | içerik ekibi (Haiku)  |
+| `server/test/<alan>*.test.ts`, `web/src/**/*.test.ts`                                                                                     | ilgili alanın sahibi  |
 
 Sözleşmede (`shared/`, `kernel/`) eksik/yanlış bulan ajan dosyayı değiştirmez; raporunda **"SÖZLEŞME:"** başlığıyla
 somut öneri yazar ve kendi tarafında en makul varsayımla ilerler. Tek istisna: `kernel/services.ts` içinde her ajan
@@ -141,24 +141,24 @@ ara ref'ler de yer alır. `isTop10Supported=false` gelirse Top 10 satırı hiç 
 
 Her istemci katmanı `devbus.emit(cat, label, detail, { ms, ok })` çağırır (`web/src/lib/devbus.ts`). `detail` alanları:
 
-| cat        | label örneği                  | detail                                                                                  |
-| ---------- | ----------------------------- | --------------------------------------------------------------------------------------- |
-| `graphql`  | `DetailModal`                 | `id, version, variables, status, traceId, bytes`                                        |
-| `falcor`   | `3 yol`                       | `paths, flags, status, traceId, fromCache, missing`                                     |
-| `cache`    | `arama: isabet`               | `key, expires, ageMs`                                                                   |
-| `prefetch` | `MiniModal satır` / `manifest`| `rowId, videoIds` / `viewableId`                                                        |
-| `ftl`      | `darbe 1`                     | `iter, pulse (0 tabanlı), results[{name,cdnId,ok,ttfbMs,totalMs,kbps}], winner (cdnId)` |
-| `msl`      | `aleProvision` / `zarf`       | `scheme, serialnumber, renewalwindow, expiration (epoch sn), messageid, bytes`          |
-| `manifest` | `Video:80010001`              | `kind, prefetch, video[{streamId,bitrateKbps,width,height,profile}], audio[{trackId,language,channels}], text[{trackId,language}], cdns[{id,rank}], expiration (epoch ms)` |
-| `range`    | `video 1543-675647`           | `type:'video'\|'audio'\|'header', cdnId, start, end, bytes, ttfbMs, kbps, streamId, segment` |
-| `abr`      | `↑ 1127 kbps`                 | `from, to (kbps), fromStreamId, toStreamId, reason, estimateKbps, bufferSec`            |
-| `buffer`   | `tampon`                      | `videoSec, audioSec, state`                                                             |
-| `cdn`      | `yük devri c101→c102`         | `from, to, reason`                                                                      |
-| `ttml`     | `tr yüklendi`                 | `language, cues, tickRate`                                                              |
-| `embed`    | `YouTube: PLAYING`            | `videoId, state (UNSTARTED\|BUFFERING\|PLAYING\|PAUSED\|ENDED\|CUED), error`              |
-| `event-log`| `12 olay`                     | `count, names[], status, rate`                                                          |
-| `push`     | `yoklama` / `3 bildirim`      | `cursor, wait` · `count, cursor, waitMs, initial` · `error, retryInMs`                  |
-| `player`   | `durum: oynuyor`              | `viewableId, state, positionSec`                                                        |
+| cat         | label örneği                   | detail                                                                                                                                                                     |
+| ----------- | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `graphql`   | `DetailModal`                  | `id, version, variables, status, traceId, bytes`                                                                                                                           |
+| `falcor`    | `3 yol`                        | `paths, flags, status, traceId, fromCache, missing`                                                                                                                        |
+| `cache`     | `arama: isabet`                | `key, expires, ageMs`                                                                                                                                                      |
+| `prefetch`  | `MiniModal satır` / `manifest` | `rowId, videoIds` / `viewableId`                                                                                                                                           |
+| `ftl`       | `darbe 1`                      | `iter, pulse (0 tabanlı), results[{name,cdnId,ok,ttfbMs,totalMs,kbps}], winner (cdnId)`                                                                                    |
+| `msl`       | `aleProvision` / `zarf`        | `scheme, serialnumber, renewalwindow, expiration (epoch sn), messageid, bytes`                                                                                             |
+| `manifest`  | `Video:80010001`               | `kind, prefetch, video[{streamId,bitrateKbps,width,height,profile}], audio[{trackId,language,channels}], text[{trackId,language}], cdns[{id,rank}], expiration (epoch ms)` |
+| `range`     | `video 1543-675647`            | `type:'video'\|'audio'\|'header', cdnId, start, end, bytes, ttfbMs, kbps, streamId, segment`                                                                               |
+| `abr`       | `↑ 1127 kbps`                  | `from, to (kbps), fromStreamId, toStreamId, reason, estimateKbps, bufferSec`                                                                                               |
+| `buffer`    | `tampon`                       | `videoSec, audioSec, state`                                                                                                                                                |
+| `cdn`       | `yük devri c101→c102`          | `from, to, reason`                                                                                                                                                         |
+| `ttml`      | `tr yüklendi`                  | `language, cues, tickRate`                                                                                                                                                 |
+| `embed`     | `YouTube: PLAYING`             | `videoId, state (UNSTARTED\|BUFFERING\|PLAYING\|PAUSED\|ENDED\|CUED), error`                                                                                               |
+| `event-log` | `12 olay`                      | `count, names[], status, rate`                                                                                                                                             |
+| `push`      | `yoklama` / `3 bildirim`       | `cursor, wait` · `count, cursor, waitMs, initial` · `error, retryInMs`                                                                                                     |
+| `player`    | `durum: oynuyor`               | `viewableId, state, positionSec`                                                                                                                                           |
 
 ## 8. Bitti tanımı (her ajan teslim etmeden önce)
 

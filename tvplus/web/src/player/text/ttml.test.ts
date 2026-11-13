@@ -37,18 +37,30 @@ describe('TTML ayrıştırıcı', () => {
     const [a, b, c] = doc.cues
     expect(a!.start).toBeCloseTo(1.4612515)
     expect(a!.end).toBeCloseTo(3.2565033)
-    expect(a!.lines).toEqual([[{ text: 'Bir şey mi arıyorsun?', italic: false }], [{ text: 'İkinci satır', italic: true }]])
+    expect(a!.lines).toEqual([
+      [{ text: 'Bir şey mi arıyorsun?', italic: false }],
+      [{ text: 'İkinci satır', italic: true }],
+    ])
     expect(b!.lines).toEqual([[{ text: 'Çağrı & yanıt — "ılık"', italic: false }]])
     expect(c!.start).toBe(6)
     expect(c!.end).toBe(7.25)
-    expect(c!.lines).toEqual([[{ text: 'Fısıltı', italic: true }, { text: ' ve normal', italic: false }]])
+    expect(c!.lines).toEqual([
+      [
+        { text: 'Fısıltı', italic: true },
+        { text: ' ve normal', italic: false },
+      ],
+    ])
   })
 
   it('kalın (tts:fontWeight) ve italik parçalar', () => {
     const xml = `<tt xmlns="http://www.w3.org/ns/ttml" xmlns:tts="http://www.w3.org/ns/ttml#styling" xmlns:ttp="http://www.w3.org/ns/ttml#parameter" ttp:tickRate="10000000">
       <body><div><p begin="0t" end="10000000t"><span tts:fontWeight="bold">KADIN:</span> Gel <span tts:fontStyle="italic">buraya</span></p></div></body></tt>`
     expect(parseTtml(xml).cues[0]!.lines).toEqual([
-      [{ text: 'KADIN:', italic: false, bold: true }, { text: ' Gel ', italic: false }, { text: 'buraya', italic: true }],
+      [
+        { text: 'KADIN:', italic: false, bold: true },
+        { text: ' Gel ', italic: false },
+        { text: 'buraya', italic: true },
+      ],
     ])
   })
 
@@ -57,7 +69,9 @@ describe('TTML ayrıştırıcı', () => {
       <tt:p begin="1s" dur="2s">Önekli<tt:br/>öğe</tt:p></tt:div></tt:body></tt:tt>`
     const doc = parseTtml(xml)
     expect(doc.tickRate).toBe(1)
-    expect(doc.cues).toEqual([{ start: 11, end: 13, lines: [[{ text: 'Önekli', italic: false }], [{ text: 'öğe', italic: false }]] }])
+    expect(doc.cues).toEqual([
+      { start: 11, end: 13, lines: [[{ text: 'Önekli', italic: false }], [{ text: 'öğe', italic: false }]] },
+    ])
   })
 
   it('etkin ipuçlarını zamana göre seçer, sıralar', () => {

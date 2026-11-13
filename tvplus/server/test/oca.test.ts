@@ -24,7 +24,15 @@ beforeAll(async () => {
   work = mkdtempSync(join(tmpdir(), 'tvplus-oca-'))
   mediaDir = join(work, 'media')
   const clip = await generateClip(work)
-  const index = await packageTitle({ input: clip, id: 'oca-klip', mediaDir, ladder: [144], bitrates: { 144: 120 }, codecs: ['vp9'], speed: 'fast' })
+  const index = await packageTitle({
+    input: clip,
+    id: 'oca-klip',
+    mediaDir,
+    ladder: [144],
+    bitrates: { 144: 120 },
+    codecs: ['vp9'],
+    speed: 'fast',
+  })
   video = index.streams.find((s) => s.type === 'video')!
   videoBytes = readFileSync(join(packagedDir(mediaDir, 'oca-klip'), video.file))
   app = await createTestApp({ mediaDir })
@@ -37,12 +45,18 @@ beforeEach(() => planeOf(app).nodes.reset())
 
 function localObject() {
   const plane = planeOf(app)
-  return plane.objects.register({ kind: 'local', path: join(packagedDir(mediaDir, 'oca-klip'), video.file), mime: video.mimeType, size: video.sizeBytes })
+  return plane.objects.register({
+    kind: 'local',
+    path: join(packagedDir(mediaDir, 'oca-klip'), video.file),
+    mime: video.mimeType,
+    size: video.sizeBytes,
+  })
 }
 function rangeUrl(node: string, start: number, end: number, rec = localObject(), e?: number) {
   return `/oca/${node}/range/${start}-${end}?${planeOf(app).signer.query(node, rec.o, rec.v, e)}`
 }
-const nodeState = async (id: string) => ((await app.inject({ method: 'GET', url: '/api/debug/oca' })).json() as OcaNodeState[]).find((n) => n.id === id)!
+const nodeState = async (id: string) =>
+  ((await app.inject({ method: 'GET', url: '/api/debug/oca' })).json() as OcaNodeState[]).find((n) => n.id === id)!
 
 describe('OCA bayt aralığı (yerel paketlenmiş nesne)', () => {
   it('206 + başlıklar + doğru baytlar', async () => {
@@ -84,7 +98,9 @@ describe('OCA bayt aralığı (yerel paketlenmiş nesne)', () => {
     expect(expired.json().error.code).toBe('URL_EXPIRED')
     const wrongNode = good.replace(`/oca/${NODE}/`, '/oca/c102-ist001-ix/')
     expect((await app.inject({ method: 'GET', url: wrongNode })).statusCode).toBe(403)
-    expect((await app.inject({ method: 'GET', url: good.replace(`/oca/${NODE}/`, '/oca/yok-boyle/') })).statusCode).toBe(404)
+    expect(
+      (await app.inject({ method: 'GET', url: good.replace(`/oca/${NODE}/`, '/oca/yok-boyle/') })).statusCode,
+    ).toBe(404)
     expect((await app.inject({ method: 'GET', url: `/oca/${NODE}/range/0-9` })).statusCode).toBe(400)
   })
 
@@ -145,7 +161,11 @@ describe('yapay koşullar ve hata ayıklama uçları', () => {
     const r1 = await app.inject({ method: 'GET', url: rangeUrl(NODE, 0, 9) })
     expect(r1.statusCode).toBe(503)
     expect(r1.json().error.code).toBe('NODE_ERROR')
-    await app.inject({ method: 'POST', url: `/api/debug/oca/${NODE}`, payload: { errorRate: 0, down: true, latencyMs: 1000 } })
+    await app.inject({
+      method: 'POST',
+      url: `/api/debug/oca/${NODE}`,
+      payload: { errorRate: 0, down: true, latencyMs: 1000 },
+    })
     const t0 = Date.now()
     const r2 = await app.inject({ method: 'GET', url: rangeUrl(NODE, 0, 9) })
     expect(r2.statusCode).toBe(503)
@@ -161,9 +181,15 @@ describe('yapay koşullar ve hata ayıklama uçları', () => {
     expect(list.map((n) => n.id)).toEqual(['c101-ist001-ix', 'c102-ist001-ix', 'c201-ank001-isp', 'cloud-ist-origin'])
     expect(list.find((n) => n.id === 'cloud-ist-origin')!.throughputKbps).toBe(6000)
     expect(app.services.oca.nodes()).toHaveLength(4)
-    expect((await app.inject({ method: 'POST', url: `/api/debug/oca/${NODE}`, payload: { errorRate: 2 } })).statusCode).toBe(400)
-    expect((await app.inject({ method: 'POST', url: `/api/debug/oca/${NODE}`, payload: { bilinmeyen: 1 } })).statusCode).toBe(400)
-    expect((await app.inject({ method: 'POST', url: '/api/debug/oca/yok', payload: { down: true } })).statusCode).toBe(404)
+    expect(
+      (await app.inject({ method: 'POST', url: `/api/debug/oca/${NODE}`, payload: { errorRate: 2 } })).statusCode,
+    ).toBe(400)
+    expect(
+      (await app.inject({ method: 'POST', url: `/api/debug/oca/${NODE}`, payload: { bilinmeyen: 1 } })).statusCode,
+    ).toBe(400)
+    expect((await app.inject({ method: 'POST', url: '/api/debug/oca/yok', payload: { down: true } })).statusCode).toBe(
+      404,
+    )
   })
 
   it('FTL yoklama ucu: N bayt, no-store; anycast en iyi sağlıklı düğüme gider', async () => {
@@ -205,7 +231,10 @@ describe('uzak nesne: disk önbelleği (yerel köken sunucusuyla)', () => {
     originUrl = `http://127.0.0.1:${(origin.address() as AddressInfo).port}/v.webm`
     // Yalnızca yerel köken: dış ağa çıkılmaz, ama çevrimiçi kod yolu sınanır.
     remoteApp = await createTestApp({ offline: false })
-    replaceCache(remoteApp, createBlockCache({ dir: join(remoteApp.config.dataDir, 'oca-cache'), blockSize: 16 * 1024, capBytes: 64 * 1024 }))
+    replaceCache(
+      remoteApp,
+      createBlockCache({ dir: join(remoteApp.config.dataDir, 'oca-cache'), blockSize: 16 * 1024, capBytes: 64 * 1024 }),
+    )
   })
   afterAll(async () => {
     await remoteApp.close()
@@ -251,8 +280,16 @@ describe('uzak nesne: disk önbelleği (yerel köken sunucusuyla)', () => {
 
   it('çevrimdışı uygulamada önbellekte olmayan uzak nesne → 502', async () => {
     const plane = planeOf(app)
-    const rec = plane.objects.register({ kind: 'remote', url: 'https://example.invalid/yok.webm', mime: 'video/webm', size: 1000 })
-    const r = await app.inject({ method: 'GET', url: `/oca/${NODE}/range/0-9?${plane.signer.query(NODE, rec.o, rec.v)}` })
+    const rec = plane.objects.register({
+      kind: 'remote',
+      url: 'https://example.invalid/yok.webm',
+      mime: 'video/webm',
+      size: 1000,
+    })
+    const r = await app.inject({
+      method: 'GET',
+      url: `/oca/${NODE}/range/0-9?${plane.signer.query(NODE, rec.o, rec.v)}`,
+    })
     expect(r.statusCode).toBe(502)
   })
 })

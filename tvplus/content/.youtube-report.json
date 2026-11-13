@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-11-13T08:45:43.262Z",
+  "checkedAt": "2026-11-13T09:41:51.855Z",
   "videos": {
     "eRsGyueVLvQ": {
       "ok": true,
@@ -881,26 +881,6 @@
         "titles/youtube-cocuk.json [2].seasons[0].episodes[4].sources[0]"
       ]
     },
-    "iwTrNHvVcL0": {
-      "ok": true,
-      "status": 200,
-      "state": "ok",
-      "title": "Haluk Bilginer İngiliz mi İngiltereli mi? - Yılmaz Özdil",
-      "author": "Yılmaz Özdil",
-      "usedBy": [
-        "channels.json [1].source"
-      ]
-    },
-    "OPPTyKgnHWk": {
-      "ok": true,
-      "status": 200,
-      "state": "ok",
-      "title": "Güldür Güldür Show - Eşofmanlı Şevket Hoca Skeci",
-      "author": "Beşiktaş Kültür Merkezi (BKM)",
-      "usedBy": [
-        "channels.json [2].source"
-      ]
-    },
     "ztmY_cCtUl0": {
       "ok": true,
       "status": 200,
@@ -921,16 +901,6 @@
         "channels.json [9].source"
       ]
     },
-    "RTgmjLhrXVM": {
-      "ok": true,
-      "status": 200,
-      "state": "ok",
-      "title": "PBS News Hour full episode, Nov. 12, 2026",
-      "author": "PBS NewsHour",
-      "usedBy": [
-        "channels.json [10].source"
-      ]
-    },
     "-umyX-Oxjzk": {
       "ok": true,
       "status": 200,
@@ -947,7 +917,7 @@
       "ok": true,
       "status": 200,
       "title": "TRT Haber",
-      "latestVideoId": "K53Ddz8BrpI",
+      "latestVideoId": "RIppR4tigCM",
       "via": "feed",
       "usedBy": [
         "channels.json [1].source"
@@ -957,7 +927,7 @@
       "ok": true,
       "status": 200,
       "title": "NTV",
-      "latestVideoId": "MAS8_AJNask",
+      "latestVideoId": "x3cnMNZvw1A",
       "via": "feed",
       "usedBy": [
         "channels.json [2].source"
@@ -967,7 +937,7 @@
       "ok": true,
       "status": 200,
       "title": "Habertürk TV",
-      "latestVideoId": "G9sMaWt1YiE",
+      "latestVideoId": "uxqo0ck-q20",
       "via": "feed",
       "usedBy": [
         "channels.json [3].source"
@@ -987,7 +957,7 @@
       "ok": true,
       "status": 200,
       "title": "Haber Global",
-      "latestVideoId": "hCyubAVbXyI",
+      "latestVideoId": "yidtVEv1LU0",
       "via": "feed",
       "usedBy": [
         "channels.json [5].source"
@@ -1017,7 +987,7 @@
       "ok": true,
       "status": 200,
       "title": "A Haber",
-      "latestVideoId": "ENdJ6Acd4HQ",
+      "latestVideoId": "_3SX91B1fYo",
       "via": "feed",
       "usedBy": [
         "channels.json [8].source"
@@ -1027,7 +997,7 @@
       "ok": true,
       "status": 200,
       "title": "TGRT Haber TV",
-      "latestVideoId": "tYpXozU6hPY",
+      "latestVideoId": "2Jp0hL08_DM",
       "via": "feed",
       "usedBy": [
         "channels.json [9].source"

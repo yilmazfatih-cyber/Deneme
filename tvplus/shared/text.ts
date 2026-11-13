@@ -1,6 +1,22 @@
 /** Türkçe duyarlı metin yardımcıları (arama ve gösterim). */
 
-const FOLD: Record<string, string> = { ı: 'i', İ: 'i', ş: 's', Ş: 's', ğ: 'g', Ğ: 'g', ü: 'u', Ü: 'u', ö: 'o', Ö: 'o', ç: 'c', Ç: 'c', â: 'a', î: 'i', û: 'u' }
+const FOLD: Record<string, string> = {
+  ı: 'i',
+  İ: 'i',
+  ş: 's',
+  Ş: 's',
+  ğ: 'g',
+  Ğ: 'g',
+  ü: 'u',
+  Ü: 'u',
+  ö: 'o',
+  Ö: 'o',
+  ç: 'c',
+  Ç: 'c',
+  â: 'a',
+  î: 'i',
+  û: 'u',
+}
 
 /** Arama için düzleştirme: küçük harf + Türkçe harflerin ASCII karşılığı + noktalama → boşluk. */
 export function norm(s: string): string {

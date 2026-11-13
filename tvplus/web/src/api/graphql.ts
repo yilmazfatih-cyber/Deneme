@@ -18,7 +18,13 @@ export class GraphQLRequestError extends Error {
   readonly errors: GraphQLErrorItem[]
   readonly status: number
   readonly traceId: string | null
-  constructor(message: string, operationName: string, errors: GraphQLErrorItem[], status: number, traceId: string | null) {
+  constructor(
+    message: string,
+    operationName: string,
+    errors: GraphQLErrorItem[],
+    status: number,
+    traceId: string | null,
+  ) {
     super(message)
     this.name = 'GraphQLRequestError'
     this.operationName = operationName
@@ -49,7 +55,11 @@ export async function gql<TData, TVars extends object = Record<string, never>>(
       credentials: 'same-origin',
       signal: opts?.signal,
       headers: { 'content-type': 'application/json', accept: 'application/json', ...sessionHeaders() },
-      body: JSON.stringify({ operationName, variables: variables ?? {}, extensions: { persistedQuery: { id, version: registry.version } } }),
+      body: JSON.stringify({
+        operationName,
+        variables: variables ?? {},
+        extensions: { persistedQuery: { id, version: registry.version } },
+      }),
     })
     status = res.status
     traceId = res.headers.get(HEADERS.TRACE_ID)
@@ -57,20 +67,38 @@ export async function gql<TData, TVars extends object = Record<string, never>>(
     const body = JSON.parse(text) as { data?: TData | null; errors?: GraphQLErrorItem[] }
     const ms = performance.now() - t0
     if (body.errors?.length && !body.data) {
-      devbus.emit('graphql', operationName, { id, version: registry.version, variables, status, traceId, errors: body.errors }, { ms, ok: false })
+      devbus.emit(
+        'graphql',
+        operationName,
+        { id, version: registry.version, variables, status, traceId, errors: body.errors },
+        { ms, ok: false },
+      )
       throw new GraphQLRequestError(body.errors[0]!.message, operationName, body.errors, status, traceId)
     }
     devbus.emit(
       'graphql',
       operationName,
-      { id, version: registry.version, variables, status, traceId, bytes: text.length, partialErrors: body.errors?.length ?? 0 },
+      {
+        id,
+        version: registry.version,
+        variables,
+        status,
+        traceId,
+        bytes: text.length,
+        partialErrors: body.errors?.length ?? 0,
+      },
       { ms, ok: true },
     )
     return body.data as TData
   } catch (err) {
     if (err instanceof GraphQLRequestError) throw err
     if ((err as Error).name !== 'AbortError') {
-      devbus.emit('graphql', operationName, { id, variables, status, traceId, error: String(err) }, { ms: performance.now() - t0, ok: false })
+      devbus.emit(
+        'graphql',
+        operationName,
+        { id, variables, status, traceId, error: String(err) },
+        { ms: performance.now() - t0, ok: false },
+      )
     }
     throw err
   }

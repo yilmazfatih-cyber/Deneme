@@ -119,7 +119,10 @@ interface TimeCtx {
   subFrameRate: number
 }
 
-export function ttmlTimeToTicks(s: string, ctx: TimeCtx = { tickRate: 1, frameRate: 30, subFrameRate: 1 }): number | null {
+export function ttmlTimeToTicks(
+  s: string,
+  ctx: TimeCtx = { tickRate: 1, frameRate: 30, subFrameRate: 1 },
+): number | null {
   const v = s.trim()
   let m = /^(\d+):(\d{2}):(\d{2})(?:\.(\d+))?$/.exec(v)
   if (m) return (Number(m[1]) * 3600 + Number(m[2]) * 60 + Number(m[3])) * TICKS + fractionTicks(m[4])
@@ -203,7 +206,8 @@ export function parseTtml(xml: string): Cue[] {
   const ttAttrs = attrsOf(tt)
   const ctx: TimeCtx = {
     tickRate: Number(attr(ttAttrs, 'tickRate') ?? 0) || 1,
-    frameRate: (Number(attr(ttAttrs, 'frameRate') ?? 30) || 30) * frameRateMultiplier(attr(ttAttrs, 'frameRateMultiplier')),
+    frameRate:
+      (Number(attr(ttAttrs, 'frameRate') ?? 30) || 30) * frameRateMultiplier(attr(ttAttrs, 'frameRateMultiplier')),
     subFrameRate: Number(attr(ttAttrs, 'subFrameRate') ?? 1) || 1,
   }
 
@@ -302,7 +306,8 @@ function ttmlInline(p: XNode, base: Style, styles: Map<string, Style>): CueRun[]
       return
     }
     const a = attrsOf(n)
-    const s = name === 'span' ? { ...style, ...resolveStyleRefs(attr(a, 'style'), styles), ...styleFromAttrs(a) } : style
+    const s =
+      name === 'span' ? { ...style, ...resolveStyleRefs(attr(a, 'style'), styles), ...styleFromAttrs(a) } : style
     for (const c of childrenOf(n)) visit(c, s)
   }
   for (const c of childrenOf(p)) visit(c, base)
@@ -378,7 +383,11 @@ export function cuesToTtml(cues: Cue[], meta: TtmlMeta): string {
 }
 
 /** Kaynağı biçimine göre çözer ve TTML üretir. */
-export function convertToTtml(source: string, format: 'vtt' | 'ttml', meta: Omit<TtmlMeta, 'sourceFormat'>): { ttml: string; cues: number } {
+export function convertToTtml(
+  source: string,
+  format: 'vtt' | 'ttml',
+  meta: Omit<TtmlMeta, 'sourceFormat'>,
+): { ttml: string; cues: number } {
   const cues = format === 'vtt' ? parseVtt(source) : parseTtml(source)
   return { ttml: cuesToTtml(cues, { ...meta, sourceFormat: format }), cues: cues.length }
 }

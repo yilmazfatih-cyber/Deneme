@@ -28,7 +28,13 @@ import type { AccessDecision, PlayableVideo } from '../../kernel/services'
 import { DEFAULT_NODE_ORDER } from '../oca/nodes'
 import type { Plane } from './plane'
 import { languageName, normalizeLang } from './sources/languages'
-import { SourceUnavailableError, type Deliverable, type ResolveContext, type StreamRep, type TextRef } from './sources/registry'
+import {
+  SourceUnavailableError,
+  type Deliverable,
+  type ResolveContext,
+  type StreamRep,
+  type TextRef,
+} from './sources/registry'
 
 const VIDEO_PROFILES: readonly CodecProfile[] = ['vp9-webm', 'h264-mp4']
 const AUDIO_PROFILES: readonly CodecProfile[] = ['opus-webm', 'aac-mp4']
@@ -47,16 +53,30 @@ export const zManifestRequest = z.object({
   uiLanguage: z.string().max(16).default('tr'),
 })
 
-export type ManifestResult = { ok: true; manifest: LicensedManifest } | { ok: false; status: number; body: ManifestError }
+export type ManifestResult =
+  { ok: true; manifest: LicensedManifest } | { ok: false; status: number; body: ManifestError }
 
-const err = (status: number, code: ManifestError['error']['code'], message: string, access?: AccessDecision): ManifestResult => ({
+const err = (
+  status: number,
+  code: ManifestError['error']['code'],
+  message: string,
+  access?: AccessDecision,
+): ManifestResult => ({
   ok: false,
   status,
   body: {
     error: {
       code,
       message,
-      ...(access ? { access: { state: access.state, reasonText: access.reasonText ?? '', requiredProduct: access.requiredProduct } } : {}),
+      ...(access
+        ? {
+            access: {
+              state: access.state,
+              reasonText: access.reasonText ?? '',
+              requiredProduct: access.requiredProduct,
+            },
+          }
+        : {}),
     },
   },
 })
@@ -105,7 +125,11 @@ interface Target {
 const attributionOf = (p: PlayableVideo | null): ManifestBase['attribution'] =>
   p ? { license: p.license.name, text: p.license.attribution, ...(p.license.url ? { url: p.license.url } : {}) } : null
 
-function resolveTarget(app: FastifyInstance, passport: Passport, req: z.infer<typeof zManifestRequest>): Target | ManifestResult {
+function resolveTarget(
+  app: FastifyInstance,
+  passport: Passport,
+  req: z.infer<typeof zManifestRequest>,
+): Target | ManifestResult {
   const m = /^(Video|Channel|Airing):(.+)$/.exec(req.viewableId)
   if (!m) return err(400, 'BAD_REQUEST', 'viewableId biçimi tanınmadı.')
   const [, kind, rawId] = m
@@ -217,10 +241,17 @@ function resolveTarget(app: FastifyInstance, passport: Passport, req: z.infer<ty
  * ilk profil (MSE'de ses SourceBuffer'ı videodan farklı kapta olabilir; parça değişimi changeType ile yapılır).
  * Hiçbir ses parçası sunulamıyorsa (başlıkta ses varken) kaynak uyumsuzdur.
  */
-export function negotiate(d: Extract<Deliverable, { kind: 'STREAMS' }>, profiles: string[]): { video: CodecProfile; audio: CodecProfile[] } | null {
-  const video = profiles.find((p): p is CodecProfile => VIDEO_PROFILES.includes(p as CodecProfile) && d.video.some((v) => v.profile === p))
+export function negotiate(
+  d: Extract<Deliverable, { kind: 'STREAMS' }>,
+  profiles: string[],
+): { video: CodecProfile; audio: CodecProfile[] } | null {
+  const video = profiles.find(
+    (p): p is CodecProfile => VIDEO_PROFILES.includes(p as CodecProfile) && d.video.some((v) => v.profile === p),
+  )
   if (!video) return null
-  const audio = profiles.filter((p, i): p is CodecProfile => AUDIO_PROFILES.includes(p as CodecProfile) && profiles.indexOf(p) === i)
+  const audio = profiles.filter(
+    (p, i): p is CodecProfile => AUDIO_PROFILES.includes(p as CodecProfile) && profiles.indexOf(p) === i,
+  )
   if (d.audio.length === 0) return { video, audio }
   if (!d.audio.some((a) => audio.includes(a.profile))) return null
   return { video, audio }
@@ -273,7 +304,12 @@ export async function buildManifest(
     expiration: e * 1000,
     isPrefetch: input.prefetch,
     title: target.title,
-    durationMs: durationSec !== null ? Math.round(durationSec * 1000) : target.playable?.runtimeSec ? target.playable.runtimeSec * 1000 : null,
+    durationMs:
+      durationSec !== null
+        ? Math.round(durationSec * 1000)
+        : target.playable?.runtimeSec
+          ? target.playable.runtimeSec * 1000
+          : null,
     live: target.live,
     bookmark,
     alternatives: target.alternatives,
@@ -342,17 +378,26 @@ export async function buildManifest(
   return err(422, 'NO_COMPATIBLE_SOURCE', 'Bu cihazın oynatabileceği bir kaynak yok.')
 }
 
-function streamUrls(plane: Plane, rep: StreamRep, cdns: CdnInfo[], e: number): { rec: { o: string; v: number }; urls: MediaStream['urls'] } {
+function streamUrls(
+  plane: Plane,
+  rep: StreamRep,
+  cdns: CdnInfo[],
+  e: number,
+): { rec: { o: string; v: number }; urls: MediaStream['urls'] } {
   const rec = plane.objects.register(rep.loc)
   return {
     rec,
-    urls: cdns.map((c) => ({ cdnId: c.id, url: `/oca/${c.id}/range/{range}?${plane.signer.query(c.id, rec.o, rec.v, e)}` })),
+    urls: cdns.map((c) => ({
+      cdnId: c.id,
+      url: `/oca/${c.id}/range/{range}?${plane.signer.query(c.id, rec.o, rec.v, e)}`,
+    })),
   }
 }
 
 function toStream(plane: Plane, rep: StreamRep, cdns: CdnInfo[], e: number): MediaStream {
   const { rec, urls } = streamUrls(plane, rep, cdns, e)
-  const label = rep.type === 'video' ? `v-${rep.height ?? 0}p-${rep.bitrateKbps}k` : `a-${rep.lang ?? 'und'}-${rep.bitrateKbps}k`
+  const label =
+    rep.type === 'video' ? `v-${rep.height ?? 0}p-${rep.bitrateKbps}k` : `a-${rep.lang ?? 'und'}-${rep.bitrateKbps}k`
   return {
     streamId: `${label}-${rec.o.slice(0, 6)}`,
     bitrateKbps: rep.bitrateKbps,
@@ -369,7 +414,14 @@ function toStream(plane: Plane, rep: StreamRep, cdns: CdnInfo[], e: number): Med
   }
 }
 
-function videoStreams(plane: Plane, d: Extract<Deliverable, { kind: 'STREAMS' }>, profile: CodecProfile, cdns: CdnInfo[], e: number, promo: boolean): MediaStream[] {
+function videoStreams(
+  plane: Plane,
+  d: Extract<Deliverable, { kind: 'STREAMS' }>,
+  profile: CodecProfile,
+  cdns: CdnInfo[],
+  e: number,
+  promo: boolean,
+): MediaStream[] {
   let reps = d.video.filter((v) => v.profile === profile).sort((a, b) => a.bitrateKbps - b.bitrateKbps)
   if (promo) {
     const capped = reps.filter((r) => (r.height ?? 0) <= PROMO_MAX_HEIGHT)
@@ -378,7 +430,14 @@ function videoStreams(plane: Plane, d: Extract<Deliverable, { kind: 'STREAMS' }>
   return reps.map((r) => toStream(plane, r, cdns, e))
 }
 
-function audioTracks(plane: Plane, d: Extract<Deliverable, { kind: 'STREAMS' }>, allowed: CodecProfile[], cdns: CdnInfo[], e: number, uiLanguage: string): AudioTrack[] {
+function audioTracks(
+  plane: Plane,
+  d: Extract<Deliverable, { kind: 'STREAMS' }>,
+  allowed: CodecProfile[],
+  cdns: CdnInfo[],
+  e: number,
+  uiLanguage: string,
+): AudioTrack[] {
   // Önce dil + kanal düzenine göre parçalar (tüm profiller), sonra her parçada istemcinin tercih ettiği ilk profil.
   const all = new Map<string, StreamRep[]>()
   for (const a of d.audio) {
@@ -390,7 +449,11 @@ function audioTracks(plane: Plane, d: Extract<Deliverable, { kind: 'STREAMS' }>,
   const groups = new Map<string, StreamRep[]>()
   for (const [key, reps] of all) {
     const profile = allowed.find((p) => reps.some((r) => r.profile === p))
-    if (profile) groups.set(key, reps.filter((r) => r.profile === profile))
+    if (profile)
+      groups.set(
+        key,
+        reps.filter((r) => r.profile === profile),
+      )
   }
   // Özgün dil: ana (Role=main) temsillerin dili, yoksa ilk grubun dili. Aynı dilin 5.1 sürümü de özgündür.
   const entries = [...groups.entries()]
@@ -428,7 +491,10 @@ function textTracks(plane: Plane, refs: TextRef[], cdns: CdnInfo[], e: number, u
       languageDescription: t.label ?? `${languageName(t.lang)}${t.kind === 'CC' ? ' [CC]' : ''}`,
       type: t.kind,
       format: 'ttml',
-      urls: cdns.map((c) => ({ cdnId: c.id, url: `/oca/${c.id}/timedtext/${trackId}?${plane.signer.query(c.id, rec.o, rec.v, e)}` })),
+      urls: cdns.map((c) => ({
+        cdnId: c.id,
+        url: `/oca/${c.id}/timedtext/${trackId}?${plane.signer.query(c.id, rec.o, rec.v, e)}`,
+      })),
     })
   }
   const ui = normalizeLang(uiLanguage)

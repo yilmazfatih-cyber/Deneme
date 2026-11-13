@@ -8,7 +8,12 @@ import { useActiveProfile } from '../../app'
 import { gql } from '../../api/graphql'
 import { devbus } from '../../lib/devbus'
 import { logEvent } from '../../telemetry/logger'
-import { buildDeclaration, declarationSignature, type EntityKindName, type SearchPageCapabilities } from './capabilities'
+import {
+  buildDeclaration,
+  declarationSignature,
+  type EntityKindName,
+  type SearchPageCapabilities,
+} from './capabilities'
 import { filtersInput, sectionCounts, type Filters, type SearchPageData, type SearchResponse } from './searchModel'
 import { searchCache } from './searchStore'
 import { searchCacheKey } from './ttlCache'
@@ -44,7 +49,12 @@ function logSearch(page: SearchPageData, fromCache: boolean): void {
   )
 }
 
-export function useSearch(term: string, filters: Filters, enabledKinds: ReadonlySet<EntityKindName>, exactTerm = false): SearchState {
+export function useSearch(
+  term: string,
+  filters: Filters,
+  enabledKinds: ReadonlySet<EntityKindName>,
+  exactTerm = false,
+): SearchState {
   const profile = useActiveProfile()?.guid ?? ''
   const kindsKey = [...enabledKinds].sort().join(',')
   const declaration = useMemo(() => buildDeclaration(enabledKinds), [kindsKey])
@@ -52,7 +62,13 @@ export function useSearch(term: string, filters: Filters, enabledKinds: Readonly
   const fInput = filtersInput(filters)
   const key = searchCacheKey({ profile, term, filters: fInput ?? null, capabilities: signature, exact: exactTerm })
 
-  const [state, setState] = useState<{ data?: SearchPageData; dataKey: string | null; loading: boolean; error: Error | null; fromCache: boolean }>({
+  const [state, setState] = useState<{
+    data?: SearchPageData
+    dataKey: string | null
+    loading: boolean
+    error: Error | null
+    fromCache: boolean
+  }>({
     dataKey: null,
     loading: true,
     error: null,
@@ -79,14 +95,26 @@ export function useSearch(term: string, filters: Filters, enabledKinds: Readonly
       () => {
         devbus.emit('cache', 'arama: ıska', { key, expires: null, ageMs: null })
         const t0 = Date.now()
-        gql<SearchResponse, object>('SearchPageQueryResults', { searchTerm: t.trim(), options: { pageCapabilities: d, filters: f, pageSize: PAGE_SIZE, ...(x ? { exactTerm: true } : {}) } }, { signal: ctrl.signal }).then(
+        gql<SearchResponse, object>(
+          'SearchPageQueryResults',
+          {
+            searchTerm: t.trim(),
+            options: { pageCapabilities: d, filters: f, pageSize: PAGE_SIZE, ...(x ? { exactTerm: true } : {}) },
+          },
+          { signal: ctrl.signal },
+        ).then(
           (res) => {
             if (ctrl.signal.aborted) return
             searchCache.set(key, res, Date.parse(res.searchPage.expires), Date.now())
             setState({ data: res.searchPage, dataKey: key, loading: false, error: null, fromCache: false })
             hasData.current = true
             logSearch(res.searchPage, false)
-            devbus.emit('cache', 'arama: saklandı', { key, expires: Date.parse(res.searchPage.expires), ageMs: 0, ms: Date.now() - t0 })
+            devbus.emit('cache', 'arama: saklandı', {
+              key,
+              expires: Date.parse(res.searchPage.expires),
+              ageMs: 0,
+              ms: Date.now() - t0,
+            })
           },
           (err: unknown) => {
             if (ctrl.signal.aborted) return

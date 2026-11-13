@@ -11,7 +11,10 @@ let app: FastifyInstance
 let distDir: string
 beforeAll(async () => {
   distDir = mkdtempSync(join(tmpdir(), 'tvplus-test-dist-'))
-  writeFileSync(join(distDir, 'index.html'), '<!doctype html><html><head><title>TV+</title><!--TVP_BOOT--></head><body><div id="root"></div></body></html>')
+  writeFileSync(
+    join(distDir, 'index.html'),
+    '<!doctype html><html><head><title>TV+</title><!--TVP_BOOT--></head><body><div id="root"></div></body></html>',
+  )
   mkdirSync(join(distDir, 'assets'))
   writeFileSync(join(distDir, 'assets', 'index-abc123.js'), 'console.log(1)')
   writeFileSync(join(distDir, 'robots.txt'), 'User-agent: *')
@@ -63,7 +66,12 @@ describe('hata biçimi', () => {
   })
 
   it('bozuk JSON 400, yığın izi sızmaz', async () => {
-    const res = await app.inject({ method: 'POST', url: '/api/profiles/switch', headers: { 'content-type': 'application/json' }, payload: '{x' })
+    const res = await app.inject({
+      method: 'POST',
+      url: '/api/profiles/switch',
+      headers: { 'content-type': 'application/json' },
+      payload: '{x',
+    })
     expect(res.statusCode).toBe(400)
     const body = res.json()
     expect(body.error.code).toBe('INVALID_BODY')

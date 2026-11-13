@@ -21,7 +21,16 @@ export {
   type TextButtonProps,
 } from './Button'
 export { Chip, ModeSwitch, type AppMode, type ChipProps, type ModeSwitchProps } from './Chip'
-export { HScroll, Page, Row, RowHeader, type HScrollProps, type RowHeaderProps, type RowProps, type VisibleRange } from './Row'
+export {
+  HScroll,
+  Page,
+  Row,
+  RowHeader,
+  type HScrollProps,
+  type RowHeaderProps,
+  type RowProps,
+  type VisibleRange,
+} from './Row'
 export {
   ChannelTile,
   LandscapeCard,

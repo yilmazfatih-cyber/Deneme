@@ -24,7 +24,13 @@ export interface PipelineHost {
   backBufferSec(): number
   chooseStream(p: MediaPipeline, bufferSec: number): ManifestStream
   loadHeader(stream: ManifestStream, kind: MediaKind, signal: AbortSignal): Promise<StreamHeader>
-  fetchSegment(stream: ManifestStream, kind: MediaKind, seg: SegmentRef, segIndex: number, signal: AbortSignal): Promise<RangeResult>
+  fetchSegment(
+    stream: ManifestStream,
+    kind: MediaKind,
+    seg: SegmentRef,
+    segIndex: number,
+    signal: AbortSignal,
+  ): Promise<RangeResult>
   onAppended(p: MediaPipeline, stream: ManifestStream, seg: SegmentRef): void
   onDone(p: MediaPipeline): void
   onFatal(p: MediaPipeline, err: Error): void

@@ -91,7 +91,18 @@ export function locativeSuffix(clock: string): string {
   const [h = '0', m = '0'] = clock.split(':')
   const minutes = Number(m)
   const n = minutes !== 0 ? minutes : Number(h)
-  const units: Record<number, string> = { 0: 'da', 1: 'de', 2: 'de', 3: 'te', 4: 'te', 5: 'te', 6: 'da', 7: 'de', 8: 'de', 9: 'da' }
+  const units: Record<number, string> = {
+    0: 'da',
+    1: 'de',
+    2: 'de',
+    3: 'te',
+    4: 'te',
+    5: 'te',
+    6: 'da',
+    7: 'de',
+    8: 'de',
+    9: 'da',
+  }
   const tens: Record<number, string> = { 1: 'da', 2: 'de', 3: 'da', 4: 'ta', 5: 'de' }
   if (n === 0) return 'da'
   if (n % 10 !== 0) return units[n % 10] ?? 'de'
@@ -120,5 +131,9 @@ export function airingAction(a: AiringLike, channelId: number, now: number, tctx
   if (!catchupOpen(a, now)) return { kind: 'ended', note: 'Tekrar izlenemiyor' }
   // Sunucu biten ve penceresi kapalı yayına OUT_OF_WINDOW der; pencere açıkken başka bir kilit gerçek bir kilittir.
   if (lock && a.access.state !== 'OUT_OF_WINDOW') return { kind: 'locked', reason: lock }
-  return { kind: 'catchup', primary: { label: 'İzle', to: airingWatchPath(a.airingId, tctx) }, hint: catchupHint(a.catchup.until, now) }
+  return {
+    kind: 'catchup',
+    primary: { label: 'İzle', to: airingWatchPath(a.airingId, tctx) },
+    hint: catchupHint(a.catchup.until, now),
+  }
 }

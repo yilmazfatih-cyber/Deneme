@@ -79,7 +79,11 @@ export function parseSidx(buf: Buffer, box: Mp4Box): SidxInfo {
     const duration = buf.readUInt32BE(p + 4)
     p += 12
     const size = sizeWord & 0x7fffffff
-    references.push({ range: { start: offset, end: offset + size - 1 }, startSec: t / timescale, durationSec: duration / timescale })
+    references.push({
+      range: { start: offset, end: offset + size - 1 },
+      startSec: t / timescale,
+      durationSec: duration / timescale,
+    })
     offset += size
     t += duration
   }
@@ -138,7 +142,11 @@ export interface EbmlElement {
   end: number
 }
 
-function readVint(buf: Buffer, off: number, keepMarker: boolean): { value: number; length: number; allOnes: boolean } | null {
+function readVint(
+  buf: Buffer,
+  off: number,
+  keepMarker: boolean,
+): { value: number; length: number; allOnes: boolean } | null {
   if (off >= buf.length) return null
   const first = buf.readUInt8(off)
   let length = 1
@@ -207,7 +215,11 @@ export function webmLayout(head: Buffer): WebmLayout {
   const segment = top[1]
   if (!ebml || ebml.id !== EBML_IDS.EBML) throw new Error('WebM: EBML başlığı yok')
   if (!segment || segment.id !== EBML_IDS.Segment) throw new Error('WebM: Segment öğesi yok')
-  const children = ebmlChildren(head, segment.dataStart, segment.size === null ? head.length : segment.dataStart + segment.size)
+  const children = ebmlChildren(
+    head,
+    segment.dataStart,
+    segment.size === null ? head.length : segment.dataStart + segment.size,
+  )
   const info = children.find((c) => c.id === EBML_IDS.Info)
   const tracks = children.find((c) => c.id === EBML_IDS.Tracks)
   const cues = children.find((c) => c.id === EBML_IDS.Cues)

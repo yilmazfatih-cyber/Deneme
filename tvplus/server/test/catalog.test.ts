@@ -92,7 +92,12 @@ describe('katalog servisi', () => {
 
   it('oynatılabilir yaprakları çözer (film, bölüm, ek video; dizi değil)', () => {
     const cat = app.services.catalog
-    expect(cat.getPlayable(ID.sintel)).toMatchObject({ kind: 'MOVIE', displayTitle: 'Sintel', titleId: ID.sintel, runtimeSec: 888 })
+    expect(cat.getPlayable(ID.sintel)).toMatchObject({
+      kind: 'MOVIE',
+      displayTitle: 'Sintel',
+      titleId: ID.sintel,
+      runtimeSec: 888,
+    })
     expect(cat.getPlayable(ID.cam_s1e2)).toMatchObject({
       kind: 'EPISODE',
       displayTitle: 'Caminandes · S1 B2 · Gran Dillama',
@@ -100,11 +105,20 @@ describe('katalog servisi', () => {
       kids: true,
     })
     expect(cat.getPlayable(ID.cam_s1e2)?.promo).toBeNull()
-    expect(cat.getPlayable(ID.sintelTrailer)).toMatchObject({ kind: 'SUPPLEMENTAL', titleId: ID.sintel, displayTitle: 'Sintel · Sintel fragmanı' })
+    expect(cat.getPlayable(ID.sintelTrailer)).toMatchObject({
+      kind: 'SUPPLEMENTAL',
+      titleId: ID.sintel,
+      displayTitle: 'Sintel · Sintel fragmanı',
+    })
     expect(cat.getPlayable(ID.tears)?.requiredProduct).toBe('sinema-paketi')
     expect(cat.getPlayable(ID.caminandes)).toBeNull()
     expect(cat.getPlayable(1)).toBeNull()
-    expect(cat.listPlayables(ID.caminandes).map((p) => p.videoId)).toEqual([ID.cam_s1e1, ID.cam_s1e2, ID.cam_s2e1, ID.cam_s2e2])
+    expect(cat.listPlayables(ID.caminandes).map((p) => p.videoId)).toEqual([
+      ID.cam_s1e1,
+      ID.cam_s1e2,
+      ID.cam_s2e1,
+      ID.cam_s2e2,
+    ])
     expect(cat.listPlayables(ID.sintel).map((p) => p.videoId)).toEqual([ID.sintel, ID.sintelTrailer])
     expect(cat.titleOf(ID.cam_s2e1)?.videoId).toBe(ID.caminandes)
     expect(cat.titleOf(ID.sintelTrailer)?.videoId).toBe(ID.sintel)
@@ -137,21 +151,45 @@ describe('katalog servisi', () => {
       subtitle: '2010',
       seed: `Video:${ID.sintel}`,
     })
-    expect(cat.getArtworkSource(`Video:${ID.sintel}`, 'STORY_ART')?.sourceUrl).toBe('https://img.example.org/sintel/story.jpg')
-    expect(cat.getArtworkSource(`Video:${ID.sintel}`, 'BILLBOARD')?.sourceUrl).toBe('https://img.example.org/sintel/story.jpg')
+    expect(cat.getArtworkSource(`Video:${ID.sintel}`, 'STORY_ART')?.sourceUrl).toBe(
+      'https://img.example.org/sintel/story.jpg',
+    )
+    expect(cat.getArtworkSource(`Video:${ID.sintel}`, 'BILLBOARD')?.sourceUrl).toBe(
+      'https://img.example.org/sintel/story.jpg',
+    )
     // boxart yok → storyArt
-    expect(cat.getArtworkSource(`Video:${ID.spring}`, 'BOXART')?.sourceUrl).toBe('https://img.example.org/spring/story.jpg')
+    expect(cat.getArtworkSource(`Video:${ID.spring}`, 'BOXART')?.sourceUrl).toBe(
+      'https://img.example.org/spring/story.jpg',
+    )
     // görsel hiç yok → üretilen kapak
-    expect(cat.getArtworkSource(`Video:${ID.anadolu}`, 'BOXART')).toMatchObject({ sourceUrl: null, localFile: null, title: "Anadolu'nun Sesleri" })
-    expect(cat.getArtworkSource(`Video:${ID.sintel}`, 'TITLE_LOGO')).toMatchObject({ sourceUrl: null, localFile: null, title: 'Sintel' })
+    expect(cat.getArtworkSource(`Video:${ID.anadolu}`, 'BOXART')).toMatchObject({
+      sourceUrl: null,
+      localFile: null,
+      title: "Anadolu'nun Sesleri",
+    })
+    expect(cat.getArtworkSource(`Video:${ID.sintel}`, 'TITLE_LOGO')).toMatchObject({
+      sourceUrl: null,
+      localFile: null,
+      title: 'Sintel',
+    })
     // bölüm → üst başlığın görseli
     expect(cat.getArtworkSource(`Video:${ID.cam_s1e2}`, 'EPISODE_STILL')).toMatchObject({
       sourceUrl: 'https://img.example.org/caminandes/story.jpg',
       subtitle: 'S1 B2 · Gran Dillama',
     })
-    expect(cat.getArtworkSource('Channel:1', 'CHANNEL_LOGO')).toMatchObject({ localFile: 'brand/channels/trt-1.png', title: 'TRT 1' })
-    expect(cat.getArtworkSource('Channel:2', 'CHANNEL_LOGO')).toMatchObject({ localFile: null, sourceUrl: null, title: 'Haber Kanalı' })
-    expect(cat.getArtworkSource(`Profile:${KID.guid}`, 'AVATAR')).toMatchObject({ localFile: 'brand/avatar-1.png', title: 'Can' })
+    expect(cat.getArtworkSource('Channel:1', 'CHANNEL_LOGO')).toMatchObject({
+      localFile: 'brand/channels/trt-1.png',
+      title: 'TRT 1',
+    })
+    expect(cat.getArtworkSource('Channel:2', 'CHANNEL_LOGO')).toMatchObject({
+      localFile: null,
+      sourceUrl: null,
+      title: 'Haber Kanalı',
+    })
+    expect(cat.getArtworkSource(`Profile:${KID.guid}`, 'AVATAR')).toMatchObject({
+      localFile: 'brand/avatar-1.png',
+      title: 'Can',
+    })
     expect(cat.getArtworkSource('Collection:9002', 'STORY_ART')).toMatchObject({
       sourceUrl: 'https://img.example.org/nosferatu/story.jpg',
       title: 'Sessiz sinema klasikleri',
@@ -169,9 +207,14 @@ describe('katalog servisi', () => {
     expect(cat.getArtworkSource('Airing:2-20261113-1900', 'STORY_ART')!.seed).not.toBe(news.seed) // başka kanal
     expect(cat.getArtworkSource('Airing:1-20261113-0900', 'STORY_ART')!.seed).not.toBe(news.seed) // başka program
     expect(cat.getArtworkSource('Airing:1-20261113-1900', 'BOXART')).toMatchObject({ sourceUrl: null, localFile: null })
-    expect(cat.getArtworkSource('Airing:1-20261113-1900', 'CHANNEL_LOGO')).toMatchObject({ localFile: 'brand/channels/trt-1.png' })
+    expect(cat.getArtworkSource('Airing:1-20261113-1900', 'CHANNEL_LOGO')).toMatchObject({
+      localFile: 'brand/channels/trt-1.png',
+    })
     // videolu yayın (görselsiz video) da logo değil, videonun kapağı
-    expect(cat.getArtworkSource('Airing:4-20261113-0700', 'STORY_ART')).toMatchObject({ localFile: null, title: 'Çizgi Film Kuşağı' })
+    expect(cat.getArtworkSource('Airing:4-20261113-0700', 'STORY_ART')).toMatchObject({
+      localFile: null,
+      title: 'Çizgi Film Kuşağı',
+    })
     expect(cat.getArtworkSource('Video:1', 'BOXART')).toBeNull()
     expect(cat.getArtworkSource('Channel:99', 'CHANNEL_LOGO')).toBeNull()
     expect(cat.getArtworkSource('bozuk', 'BOXART')).toBeNull()
@@ -184,8 +227,14 @@ describe('katalog servisi', () => {
     }
     expect(cat.getArtworkSource(`Video:${ID.bbb}`, 'BOXART')?.posterFit).toBe('contain') // varsayılan
     expect(cat.getArtworkSource(`Video:${ID.caminandes}`, 'BOXART')?.posterFit).toBe('crop')
-    expect(cat.getArtworkSource(`Video:${ID.cam_s1e1}`, 'BOXART')).toMatchObject({ posterFit: 'crop', sourceUrl: 'https://img.example.org/caminandes/boxart.jpg' })
-    expect(cat.getArtworkSource(`Video:${ID.cam_s2e1}`, 'BOXART')).toMatchObject({ posterFit: 'contain', sourceUrl: 'https://img.example.org/caminandes/s2e1.jpg' })
+    expect(cat.getArtworkSource(`Video:${ID.cam_s1e1}`, 'BOXART')).toMatchObject({
+      posterFit: 'crop',
+      sourceUrl: 'https://img.example.org/caminandes/boxart.jpg',
+    })
+    expect(cat.getArtworkSource(`Video:${ID.cam_s2e1}`, 'BOXART')).toMatchObject({
+      posterFit: 'contain',
+      sourceUrl: 'https://img.example.org/caminandes/s2e1.jpg',
+    })
     expect(cat.getArtworkSource('Collection:9001', 'BOXART')?.posterFit).toBe('crop') // ilk video Sintel
     expect(cat.getArtworkSource('Collection:9002', 'BOXART')?.posterFit).toBe('contain')
   })

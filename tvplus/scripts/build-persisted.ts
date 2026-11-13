@@ -9,7 +9,16 @@ import { createHash } from 'node:crypto'
 import { readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { buildSchema, Kind, parse, print, validate, visit, type DocumentNode, type FragmentDefinitionNode } from 'graphql'
+import {
+  buildSchema,
+  Kind,
+  parse,
+  print,
+  validate,
+  visit,
+  type DocumentNode,
+  type FragmentDefinitionNode,
+} from 'graphql'
 import { PERSISTED_QUERY_VERSION } from '../shared/constants'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..', 'shared', 'graphql')
@@ -80,6 +89,12 @@ for (const file of readdirSync(opsDir).sort()) {
 }
 
 if (failed) process.exit(1)
-writeFileSync(join(root, 'persisted.server.json'), JSON.stringify({ version: PERSISTED_QUERY_VERSION, operations: server }, null, 2) + '\n')
-writeFileSync(join(root, 'persisted.client.json'), JSON.stringify({ version: PERSISTED_QUERY_VERSION, operations: client }, null, 2) + '\n')
+writeFileSync(
+  join(root, 'persisted.server.json'),
+  JSON.stringify({ version: PERSISTED_QUERY_VERSION, operations: server }, null, 2) + '\n',
+)
+writeFileSync(
+  join(root, 'persisted.client.json'),
+  JSON.stringify({ version: PERSISTED_QUERY_VERSION, operations: client }, null, 2) + '\n',
+)
 console.log(`✓ ${Object.keys(client).length} kalıcı sorgu kaydedildi (sürüm ${PERSISTED_QUERY_VERSION})`)

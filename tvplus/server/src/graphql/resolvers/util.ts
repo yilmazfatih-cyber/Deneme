@@ -44,14 +44,17 @@ export function accessForVideo(ctx: GqlContext, videoId: number): AccessDecision
   return memo(ctx.cache, `access:v:${videoId}`, () => ctx.services.entitlement.accessForVideo(ctx.passport, videoId))
 }
 export function accessForChannel(ctx: GqlContext, channelId: number): AccessDecision {
-  return memo(ctx.cache, `access:c:${channelId}`, () => ctx.services.entitlement.accessForChannel(ctx.passport, channelId))
+  return memo(ctx.cache, `access:c:${channelId}`, () =>
+    ctx.services.entitlement.accessForChannel(ctx.passport, channelId),
+  )
 }
 export function top10List(ctx: GqlContext): number[] {
   return memo(ctx.cache, 'top10', () => top10ForProfile(ctx.services, ctx.passport.profile, nowOf(ctx)))
 }
 
 /** Profil bu başlığı görebilir mi (bölüm/ek video üst başlığa göre) */
-export const visible = (ctx: GqlContext, videoId: number): boolean => ctx.services.catalog.isVisibleTo(ctx.passport.profile, videoId)
+export const visible = (ctx: GqlContext, videoId: number): boolean =>
+  ctx.services.catalog.isVisibleTo(ctx.passport.profile, videoId)
 /** Görünür olanlardan başvuru listesi (üst nesne kuralı) */
 export const videoRefs = (ctx: GqlContext, ids: number[]): { videoId: number }[] =>
   ids.filter((id) => ctx.services.catalog.videoInfo(id) && visible(ctx, id)).map((videoId) => ({ videoId }))

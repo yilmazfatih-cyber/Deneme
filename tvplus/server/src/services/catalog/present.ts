@@ -3,7 +3,14 @@
  * rozet, kart altı süre metni, önizleme klibi, oynatma rozetleri, etiketler, RTÜK işaretleri, yer imi görünümü.
  */
 import type { ContentTitle } from '../../../../shared/content-schema'
-import { GENRES, MATURITY, MATURITY_REASONS, MOODS, PLAYBACK_BADGES, type PlaybackBadge } from '../../../../shared/taxonomy'
+import {
+  GENRES,
+  MATURITY,
+  MATURITY_REASONS,
+  MOODS,
+  PLAYBACK_BADGES,
+  type PlaybackBadge,
+} from '../../../../shared/taxonomy'
 import { formatRuntime, stableId } from '../../../../shared/text'
 import type { Passport } from '../../kernel/context'
 import type { AccessDecision, Services } from '../../kernel/services'
@@ -81,7 +88,10 @@ export function sourceKindsOfVideo(services: Svc, videoId: number): SourceKindNa
   const catalog = services.catalog
   const vi = catalog?.videoInfo(videoId)
   if (!catalog || !vi) return []
-  const leaves = vi.kind === 'SHOW' || vi.kind === 'MOVIE' ? catalog.listPlayables(videoId).filter((p) => p.kind !== 'SUPPLEMENTAL') : [catalog.getPlayable(videoId)]
+  const leaves =
+    vi.kind === 'SHOW' || vi.kind === 'MOVIE'
+      ? catalog.listPlayables(videoId).filter((p) => p.kind !== 'SUPPLEMENTAL')
+      : [catalog.getPlayable(videoId)]
   return sourceKindsOf(leaves.flatMap((p) => p?.sources ?? []))
 }
 
@@ -144,7 +154,10 @@ export function promoVideoOf(services: Svc, videoId: number, access: AccessDecis
   const catalog = services.catalog
   const vi = catalog?.videoInfo(videoId)
   if (!catalog || !vi) return null
-  const first = vi.kind === 'MOVIE' || vi.kind === 'SHOW' ? catalog.listPlayables(videoId).find((p) => p.kind !== 'SUPPLEMENTAL') : catalog.getPlayable(videoId)
+  const first =
+    vi.kind === 'MOVIE' || vi.kind === 'SHOW'
+      ? catalog.listPlayables(videoId).find((p) => p.kind !== 'SUPPLEMENTAL')
+      : catalog.getPlayable(videoId)
   if (!first || first.sources.length === 0) return null
   const kinds = sourceKindsOfVideo(services, videoId)
   const youtubeOnly = kinds.length > 0 && kinds.every((k) => k === 'YOUTUBE')
@@ -159,7 +172,13 @@ export function promoVideoOf(services: Svc, videoId: number, access: AccessDecis
 }
 
 /** Kartın tek rozeti. Öncelik: LOCKED > LEAVING_SOON > NEW_EPISODE > NEW > EXCLUSIVE */
-export function badgeOf(services: Svc, passport: Passport, videoId: number, access: AccessDecision, now: Date): BadgeView | null {
+export function badgeOf(
+  services: Svc,
+  passport: Passport,
+  videoId: number,
+  access: AccessDecision,
+  now: Date,
+): BadgeView | null {
   if (access.state === 'UPSELL') return { kind: 'LOCKED', text: access.requiredProductName ?? 'Paket' }
   const vi = services.catalog?.videoInfo(videoId)
   if (!vi || (vi.kind !== 'MOVIE' && vi.kind !== 'SHOW')) return null
@@ -170,11 +189,17 @@ export function badgeOf(services: Svc, passport: Passport, videoId: number, acce
     if (days <= LEAVING_BADGE_DAYS) return { kind: 'LEAVING_SOON', text: `Son ${days} gün` }
   }
   const added = parseLocalDate(t.availability.addedAt)
-  const isNew = !!added && added.getTime() <= now.getTime() && now.getTime() - added.getTime() <= NEW_WINDOW_DAYS * DAY_MS
+  const isNew =
+    !!added && added.getTime() <= now.getTime() && now.getTime() - added.getTime() <= NEW_WINDOW_DAYS * DAY_MS
   if (isNew) {
     const guid = passport.profile?.guid
     // Yaklaşım: bölüm düzeyinde eklenme tarihi yok; izlemeye başlanmış dizi yakında güncellendiyse "Yeni bölüm"
-    if (vi.kind === 'SHOW' && guid && services.progress && services.progress.watchStatus(guid, videoId) !== 'NEVER_WATCHED') {
+    if (
+      vi.kind === 'SHOW' &&
+      guid &&
+      services.progress &&
+      services.progress.watchStatus(guid, videoId) !== 'NEVER_WATCHED'
+    ) {
       return { kind: 'NEW_EPISODE', text: 'Yeni bölüm' }
     }
     return { kind: 'NEW', text: 'Yeni' }

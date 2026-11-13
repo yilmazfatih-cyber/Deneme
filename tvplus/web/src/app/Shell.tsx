@@ -210,10 +210,14 @@ export function Shell(): ReactElement {
   const onModePage = modeOfPath(pathname) !== null
   return (
     <div className="tvp-shell">
-      <a className="tvp-skip" href="#icerik" onClick={(e) => {
-        e.preventDefault()
-        document.getElementById('icerik')?.focus()
-      }}>
+      <a
+        className="tvp-skip"
+        href="#icerik"
+        onClick={(e) => {
+          e.preventDefault()
+          document.getElementById('icerik')?.focus()
+        }}
+      >
         İçeriğe geç
       </a>
       <TopBar />

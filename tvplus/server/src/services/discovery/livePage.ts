@@ -11,7 +11,8 @@ import { catchupOf, CATCHUP_DAYS } from '../epg/epg'
 import { DAY_MS, dayKey, localDayNumber, localMidnight } from '../epg/time'
 import { trackIdOf } from './lolomo'
 
-export type RowTypeName = 'LIVE_HERO' | 'CHANNEL_ROW' | 'TONIGHT_ROW' | 'CATCHUP_ROW' | 'POSTER_ROW' | 'CONTINUE_ROW' | 'BRIDGE'
+export type RowTypeName =
+  'LIVE_HERO' | 'CHANNEL_ROW' | 'TONIGHT_ROW' | 'CATCHUP_ROW' | 'POSTER_ROW' | 'CONTINUE_ROW' | 'BRIDGE'
 export type EntityKindName = 'VIDEO' | 'CHANNEL' | 'PROGRAM_AIRING' | 'PERSON' | 'GENERIC_CONTAINER'
 
 export interface TrackResult {
@@ -78,22 +79,45 @@ export function visibleChannels(services: Partial<Services>, passport: Passport)
   return passport.profile?.isKids ? all.filter((c) => c.kids) : all
 }
 
-export function buildLivePage(services: Partial<Services>, passport: Passport, caps: PageCapabilities, now: Date): PageResult {
+export function buildLivePage(
+  services: Partial<Services>,
+  passport: Passport,
+  caps: PageCapabilities,
+  now: Date,
+): PageResult {
   const epg = services.epg
   const progress = services.progress
   const guid = passport.profile?.guid ?? null
   const channels = visibleChannels(services, passport)
   const byId = new Map(channels.map((c) => [c.channelId, c]))
-  const favorites = guid && progress ? progress.favoriteChannels(guid).filter((id) => byId.has(id)) : channels.filter((c) => c.favorite).map((c) => c.channelId)
+  const favorites =
+    guid && progress
+      ? progress.favoriteChannels(guid).filter((id) => byId.has(id))
+      : channels.filter((c) => c.favorite).map((c) => c.channelId)
   const drafts: DraftRow[] = []
   const channelItem = (channelId: number) => ({ kind: 'CHANNEL' as const, channelId })
 
   // Kahraman: son izlenen kanal, yoksa ilk favori
   const last = guid ? progress?.lastChannel(guid) : null
   const heroId = last && byId.has(last) ? last : (favorites[0] ?? channels[0]?.channelId)
-  if (heroId !== undefined) drafts.push({ rowId: 'live-hero', type: 'LIVE_HERO', title: null, ttlSec: LIVE_TTL_SEC, bridgeTo: null, entities: [channelItem(heroId)] })
+  if (heroId !== undefined)
+    drafts.push({
+      rowId: 'live-hero',
+      type: 'LIVE_HERO',
+      title: null,
+      ttlSec: LIVE_TTL_SEC,
+      bridgeTo: null,
+      entities: [channelItem(heroId)],
+    })
 
-  drafts.push({ rowId: 'live-favorites', type: 'CHANNEL_ROW', title: TEXT.favorites, ttlSec: LIVE_TTL_SEC, bridgeTo: null, entities: favorites.map(channelItem) })
+  drafts.push({
+    rowId: 'live-favorites',
+    type: 'CHANNEL_ROW',
+    title: TEXT.favorites,
+    ttlSec: LIVE_TTL_SEC,
+    bridgeTo: null,
+    entities: favorites.map(channelItem),
+  })
   drafts.push({
     rowId: 'live-all',
     type: 'CHANNEL_ROW',
@@ -111,7 +135,11 @@ export function buildLivePage(services: Partial<Services>, passport: Passport, c
     const tonight = channels
       .flatMap((c) => epg.airings(c.channelId, from, to))
       .filter((a) => a.startAt >= from && a.startAt < to && a.endAt > now)
-      .sort((a, b) => a.startAt.getTime() - b.startAt.getTime() || (byId.get(a.channelId)?.number ?? 0) - (byId.get(b.channelId)?.number ?? 0))
+      .sort(
+        (a, b) =>
+          a.startAt.getTime() - b.startAt.getTime() ||
+          (byId.get(a.channelId)?.number ?? 0) - (byId.get(b.channelId)?.number ?? 0),
+      )
       .slice(0, MAX_AIRING_ITEMS)
     drafts.push({
       rowId: 'live-tonight',
@@ -144,7 +172,14 @@ export function buildLivePage(services: Partial<Services>, passport: Passport, c
     })
   }
 
-  drafts.push({ rowId: 'live-bridge', type: 'BRIDGE', title: TEXT.bridge, ttlSec: BRIDGE_TTL_SEC, bridgeTo: 'film-dizi', entities: [] })
+  drafts.push({
+    rowId: 'live-bridge',
+    type: 'BRIDGE',
+    title: TEXT.bridge,
+    ttlSec: BRIDGE_TTL_SEC,
+    bridgeTo: 'film-dizi',
+    entities: [],
+  })
 
   // Yetenek pazarlığı + tctx
   const rowTypes = new Set(caps.rowTypes)
@@ -167,7 +202,14 @@ export function buildLivePage(services: Partial<Services>, passport: Passport, c
         const entityId = e.kind === 'CHANNEL' ? channelEntityId(e.channelId) : airingEntityId(e.airing.airingId)
         return {
           kind: e.kind,
-          track: { row, pos, rowId: d.rowId, trackId, entityId, tctx: formatTctx({ row, rank: pos, rowId: d.rowId, trackId, entityId }) },
+          track: {
+            row,
+            pos,
+            rowId: d.rowId,
+            trackId,
+            entityId,
+            tctx: formatTctx({ row, rank: pos, rowId: d.rowId, trackId, entityId }),
+          },
           entity: e.kind === 'CHANNEL' ? { channelId: e.channelId } : e.airing,
         }
       }),

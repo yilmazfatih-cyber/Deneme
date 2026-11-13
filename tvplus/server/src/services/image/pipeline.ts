@@ -41,14 +41,26 @@ export function createImagePipeline(opts: ImagePipelineOptions) {
 
   const contentTypeOf = (f: ImageRequest['format']) => (f === 'jpg' ? 'image/jpeg' : 'image/webp')
 
-  async function produce(req: ImageRequest, src: ArtworkSource, variantKey: string, local: { path: string } | null): Promise<ImageResult> {
+  async function produce(
+    req: ImageRequest,
+    src: ArtworkSource,
+    variantKey: string,
+    local: { path: string } | null,
+  ): Promise<ImageResult> {
     const etagOf = (k: string) => `"${k.slice(0, 24)}"`
     const file = join(cacheDir, variantKey.slice(0, 2), `${variantKey}.${req.format}`)
     try {
       const body = await readFile(file)
       stats.diskHits++
       const origin: ImageOrigin = local ? 'local' : src.sourceUrl ? 'source-cache' : 'generated'
-      return { body, contentType: contentTypeOf(req.format), etag: etagOf(variantKey), origin, cache: 'hit', cacheable: true }
+      return {
+        body,
+        contentType: contentTypeOf(req.format),
+        etag: etagOf(variantKey),
+        origin,
+        cache: 'hit',
+        cacheable: true,
+      }
     } catch {
       /* önbellekte yok → çiz */
     }
@@ -74,7 +86,14 @@ export function createImagePipeline(opts: ImagePipelineOptions) {
     const cacheable = origin !== 'fallback'
     if (!cacheable) {
       stats.fallbacks++
-      return { body: out.body, contentType: contentTypeOf(req.format), etag: etagOf(sha(`${variantKey}|fallback`)), origin, cache: 'miss', cacheable }
+      return {
+        body: out.body,
+        contentType: contentTypeOf(req.format),
+        etag: etagOf(sha(`${variantKey}|fallback`)),
+        origin,
+        cache: 'miss',
+        cacheable,
+      }
     }
     try {
       await mkdir(join(cacheDir, variantKey.slice(0, 2)), { recursive: true })
@@ -84,7 +103,14 @@ export function createImagePipeline(opts: ImagePipelineOptions) {
     } catch {
       /* disk önbelleği yazılamadı: yanıt yine verilir */
     }
-    return { body: out.body, contentType: contentTypeOf(req.format), etag: etagOf(variantKey), origin, cache: 'miss', cacheable }
+    return {
+      body: out.body,
+      contentType: contentTypeOf(req.format),
+      etag: etagOf(variantKey),
+      origin,
+      cache: 'miss',
+      cacheable,
+    }
   }
 
   return {

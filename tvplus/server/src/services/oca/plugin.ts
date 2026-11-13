@@ -32,7 +32,11 @@ function errorBody(req: FastifyRequest, code: string, message: string) {
   return { error: { code, message, traceId: req.trace?.traceId } }
 }
 function sendError(req: FastifyRequest, reply: FastifyReply, status: number, code: string, message: string) {
-  return reply.code(status).header('cache-control', 'no-store').type('application/json; charset=utf-8').send(errorBody(req, code, message))
+  return reply
+    .code(status)
+    .header('cache-control', 'no-store')
+    .type('application/json; charset=utf-8')
+    .send(errorBody(req, code, message))
 }
 
 function baseHeaders(req: FastifyRequest, reply: FastifyReply, node: OcaNodeState) {
@@ -103,7 +107,13 @@ async function resolveSigned(
     return null
   }
   if (rec.v !== v.v) {
-    await sendError(req, reply, 410, 'OBJECT_VERSION_STALE', 'Nesnenin bu sürümü artık sunulmuyor; manifesti yenileyin.')
+    await sendError(
+      req,
+      reply,
+      410,
+      'OBJECT_VERSION_STALE',
+      'Nesnenin bu sürümü artık sunulmuyor; manifesti yenileyin.',
+    )
     return null
   }
   return { node, rec }
@@ -121,7 +131,14 @@ async function sizeOf(plane: Plane, rec: ObjectRecord): Promise<number> {
 }
 
 /** [start, end] baytlarını üreten kaynak; ilk koşu yanıt başlıklarından önce hazırlanır (hata → 502). */
-async function bytesSource(plane: Plane, rec: ObjectRecord, node: OcaNodeState, size: number, start: number, end: number): Promise<AsyncIterable<Buffer>> {
+async function bytesSource(
+  plane: Plane,
+  rec: ObjectRecord,
+  node: OcaNodeState,
+  size: number,
+  start: number,
+  end: number,
+): Promise<AsyncIterable<Buffer>> {
   const loc = rec.loc
   if (loc.kind === 'local') {
     node.cacheHits++
@@ -194,7 +211,8 @@ async function serveBytes(
   range: { start: number; end: number | null } | null,
 ): Promise<FastifyReply> {
   const { node, rec } = r
-  if (rec.loc.kind === 'text') return sendError(req, reply, 404, 'OBJECT_NOT_FOUND', 'Bu nesne bayt aralığıyla sunulmaz.')
+  if (rec.loc.kind === 'text')
+    return sendError(req, reply, 404, 'OBJECT_NOT_FOUND', 'Bu nesne bayt aralığıyla sunulmaz.')
   let size: number
   try {
     size = await sizeOf(plane, rec)
@@ -228,7 +246,10 @@ async function serveBytes(
 }
 
 /** "bytes=a-b" | "bytes=a-" | "bytes=-n" (tek aralık). Geçersiz/çoklu → null (tam dosya). */
-export function parseRangeHeader(h: string | undefined, sizeHint: number | null): { start: number; end: number | null } | null | 'invalid' {
+export function parseRangeHeader(
+  h: string | undefined,
+  sizeHint: number | null,
+): { start: number; end: number | null } | null | 'invalid' {
   if (!h) return null
   const m = /^bytes=(\d*)-(\d*)$/.exec(h.trim())
   if (!m) return null
@@ -256,7 +277,10 @@ export default async function plugin(app: FastifyInstance): Promise<void> {
   const plane = planeOf(app)
   app.services.oca = { nodes: () => plane.nodes.list() }
 
-  type SignedReq = FastifyRequest<{ Params: { node: string; range?: string; trackId?: string }; Querystring: Record<string, string> }>
+  type SignedReq = FastifyRequest<{
+    Params: { node: string; range?: string; trackId?: string }
+    Querystring: Record<string, string>
+  }>
 
   app.get(`${P}/:node/range/:range`, async (req: SignedReq, reply) => {
     const m = /^(\d+)-(\d+)$/.exec(req.params.range ?? '')
@@ -317,21 +341,25 @@ export default async function plugin(app: FastifyInstance): Promise<void> {
       .send(Readable.from(paced([body], r.node)))
   })
 
-  app.get(`${P}/:node/ftl/probe`, async (req: FastifyRequest<{ Params: { node: string }; Querystring: { data?: string } }>, reply) => {
-    const node = plane.nodes.resolve(req.params.node)
-    if (!node) {
-      if (req.params.node === ANYCAST_ALIAS) return sendError(req, reply, 503, 'NODE_DOWN', 'Sağlıklı OCA düğümü yok.')
-      return sendError(req, reply, 404, 'NODE_NOT_FOUND', 'Böyle bir OCA düğümü yok.')
-    }
-    if (!(await gate(req, reply, node))) return reply
-    const n = Math.min(MAX_PROBE_BYTES, Math.max(0, Number.parseInt(req.query.data ?? '5120', 10) || 0))
-    return reply
-      .code(200)
-      .header('content-type', 'application/octet-stream')
-      .header('content-length', String(n))
-      .header('cache-control', 'no-store')
-      .send(Readable.from(paced([randomBytes(n)], node)))
-  })
+  app.get(
+    `${P}/:node/ftl/probe`,
+    async (req: FastifyRequest<{ Params: { node: string }; Querystring: { data?: string } }>, reply) => {
+      const node = plane.nodes.resolve(req.params.node)
+      if (!node) {
+        if (req.params.node === ANYCAST_ALIAS)
+          return sendError(req, reply, 503, 'NODE_DOWN', 'Sağlıklı OCA düğümü yok.')
+        return sendError(req, reply, 404, 'NODE_NOT_FOUND', 'Böyle bir OCA düğümü yok.')
+      }
+      if (!(await gate(req, reply, node))) return reply
+      const n = Math.min(MAX_PROBE_BYTES, Math.max(0, Number.parseInt(req.query.data ?? '5120', 10) || 0))
+      return reply
+        .code(200)
+        .header('content-type', 'application/octet-stream')
+        .header('content-length', String(n))
+        .header('cache-control', 'no-store')
+        .send(Readable.from(paced([randomBytes(n)], node)))
+    },
+  )
 
   /* ───────────── Hata ayıklama ───────────── */
   const D = `${ROUTES.DEBUG_PREFIX}/oca`
@@ -342,7 +370,14 @@ export default async function plugin(app: FastifyInstance): Promise<void> {
   })
   app.post(`${D}/:node`, async (req: FastifyRequest<{ Params: { node: string } }>, reply) => {
     const parsed = zConditions.safeParse(req.body ?? {})
-    if (!parsed.success) return sendError(req, reply, 400, 'VALIDATION_FAILED', 'Geçersiz koşul: latencyMs, throughputKbps, errorRate, down.')
+    if (!parsed.success)
+      return sendError(
+        req,
+        reply,
+        400,
+        'VALIDATION_FAILED',
+        'Geçersiz koşul: latencyMs, throughputKbps, errorRate, down.',
+      )
     const updated = plane.nodes.setConditions(req.params.node, parsed.data)
     if (!updated) return sendError(req, reply, 404, 'NODE_NOT_FOUND', 'Böyle bir OCA düğümü yok.')
     return reply.header('cache-control', 'no-store').send(updated)

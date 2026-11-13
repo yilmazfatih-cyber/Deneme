@@ -20,7 +20,16 @@ function neighbours(ctx: GqlContext, channelId: number) {
   return { previousChannel: { channelId: prev.channelId }, nextChannel: { channelId: next.channelId } }
 }
 
-const empty = { video: null, channel: null, airing: null, nextEpisode: null, creditsOffsetSec: null, bookmark: null, previousChannel: null, nextChannel: null }
+const empty = {
+  video: null,
+  channel: null,
+  airing: null,
+  nextEpisode: null,
+  creditsOffsetSec: null,
+  bookmark: null,
+  previousChannel: null,
+  nextChannel: null,
+}
 
 export const playbackResolvers: ResolverMap = {
   Query: {
@@ -35,7 +44,10 @@ export const playbackResolvers: ResolverMap = {
         const vi = Number.isInteger(id) ? catalog.videoInfo(id) : null
         if (!vi || !visible(ctx, id)) return null
         const guid = guidOf(ctx)
-        const leaf = vi.kind === 'SHOW' ? ((guid ? ctx.services.progress.currentEpisode(guid, id) : null) ?? catalog.episodeIds(id)[0] ?? id) : id
+        const leaf =
+          vi.kind === 'SHOW'
+            ? ((guid ? ctx.services.progress.currentEpisode(guid, id) : null) ?? catalog.episodeIds(id)[0] ?? id)
+            : id
         const lv = catalog.videoInfo(leaf) ?? vi
         const next = nextEpisodeOf(ctx.services, leaf)
         const subtitle = lv.episode

@@ -41,8 +41,10 @@ export function renderableRows(rows: readonly PageRowData[]): RenderableRow[] {
   return out
 }
 
-export const asChannel = (it: RowItemData): ChannelData | null => (it.entity.__typename === 'Channel' ? (it.entity as unknown as ChannelData) : null)
-export const asAiring = (it: RowItemData): AiringData | null => (it.entity.__typename === 'ProgramAiring' ? (it.entity as unknown as AiringData) : null)
+export const asChannel = (it: RowItemData): ChannelData | null =>
+  it.entity.__typename === 'Channel' ? (it.entity as unknown as ChannelData) : null
+export const asAiring = (it: RowItemData): AiringData | null =>
+  it.entity.__typename === 'ProgramAiring' ? (it.entity as unknown as AiringData) : null
 
 /* ───────────── İlerleme ve kalan süre ───────────── */
 

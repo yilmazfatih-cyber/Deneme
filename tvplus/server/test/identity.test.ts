@@ -36,7 +36,12 @@ afterAll(async () => {
 })
 
 async function login(jar = new Jar()): Promise<{ jar: Jar; boot: BootContext }> {
-  const res = await app.inject({ method: 'POST', url: '/api/login', cookies: jar.cookies, headers: { 'user-agent': CHROME_MAC } })
+  const res = await app.inject({
+    method: 'POST',
+    url: '/api/login',
+    cookies: jar.cookies,
+    headers: { 'user-agent': CHROME_MAC },
+  })
   expect(res.statusCode).toBe(200)
   jar.take(res)
   return { jar, boot: res.json<BootContext>() }
@@ -61,7 +66,8 @@ describe('ESN', () => {
   it('tarayıcı ve platformu User-Agent dizgesinden çıkarır', () => {
     expect(browserFromUserAgent(CHROME_MAC)).toBe('CH')
     expect(osFromUserAgent(CHROME_MAC)).toBe('MC')
-    const edge = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36 Edg/130.0'
+    const edge =
+      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36 Edg/130.0'
     expect(browserFromUserAgent(edge)).toBe('ED')
     expect(osFromUserAgent(edge)).toBe('WN')
     expect(browserFromUserAgent('Mozilla/5.0 (X11; Linux x86_64; rv:131.0) Gecko/20100101 Firefox/131.0')).toBe('FF')
@@ -103,7 +109,14 @@ describe('authURL', () => {
     expect(verifyAuthURL(key, 'sid1', t, now + 1000)).toBe(true)
     expect(verifyAuthURL(key, 'sid2', t, now)).toBe(false)
     expect(verifyAuthURL(key, 'sid1', t, now + 25 * 60 * 60 * 1000)).toBe(false)
-    expect(verifyAuthURL(key, 'sid1', t.replace(/.$/, (c) => (c === 'A' ? 'B' : 'A')), now)).toBe(false)
+    expect(
+      verifyAuthURL(
+        key,
+        'sid1',
+        t.replace(/.$/, (c) => (c === 'A' ? 'B' : 'A')),
+        now,
+      ),
+    ).toBe(false)
     expect(verifyAuthURL(key, 'sid1', null, now)).toBe(false)
   })
 })
@@ -113,7 +126,10 @@ describe('çerez zinciri', () => {
     const key = deriveKey(loadConfig({ secret: 'x', dataDir: process.env.TMPDIR ?? '/tmp' }), 'cookie')
     const v = encodeTvpId(key, { aid: 'acc_demo', sid: 's', iat: 1 }, 'ABCDEFGHIJKLMNOPQRSTUVWX')
     expect(v).toContain('v=1&ct=')
-    expect(decodeTvpId(key, v)).toEqual({ claims: { aid: 'acc_demo', sid: 's', iat: 1 }, pg: 'ABCDEFGHIJKLMNOPQRSTUVWX' })
+    expect(decodeTvpId(key, v)).toEqual({
+      claims: { aid: 'acc_demo', sid: 's', iat: 1 },
+      pg: 'ABCDEFGHIJKLMNOPQRSTUVWX',
+    })
     expect(decodeTvpId(key, v.replace('pg=ABCD', 'pg=ZBCD'))).toBeNull()
     expect(decodeTvpId(Buffer.from('başka'), v)).toBeNull()
   })
@@ -254,7 +270,17 @@ describe('açılış bağlamı ve oturum akışı', () => {
     const follow = (ref: { value: (string | number)[] }) => ref.value.reduce<any>((n, k) => n?.[k], g) // eslint-disable-line @typescript-eslint/no-explicit-any
     const lolomo = follow(g.lolomo)
     const need: Record<string, string[]> = {
-      billboard: ['summary', 'title', 'billboardArt', 'titleLogo', 'promoVideo', 'synopsis', 'releaseYear', 'runtime', 'bookmark'],
+      billboard: [
+        'summary',
+        'title',
+        'billboardArt',
+        'titleLogo',
+        'promoVideo',
+        'synopsis',
+        'releaseYear',
+        'runtime',
+        'bookmark',
+      ],
       continueWatching: ['summary', 'title', 'storyArt', 'displayRuntime', 'bookmark', 'watchStatus'],
       top10: ['summary', 'title', 'boxart', 'badge', 'access', 'top10Rank'],
     }
@@ -268,8 +294,10 @@ describe('açılış bağlamı ve oturum akışı', () => {
       for (let j = 0; j < n; j++) {
         expect(list.itemTctx?.[j], `${ctxName} itemTctx ${j}`).toBeDefined()
         const video = follow(list[j])
-        for (const leaf of need[ctxName] ?? ['summary', 'title', 'boxart']) expect(video[leaf], `${ctxName}[${j}].${leaf}`).toBeDefined()
-        if (ctxName === 'billboard' || ctxName === 'continueWatching') expect(video.current, `${ctxName}[${j}].current`).toBeDefined()
+        for (const leaf of need[ctxName] ?? ['summary', 'title', 'boxart'])
+          expect(video[leaf], `${ctxName}[${j}].${leaf}`).toBeDefined()
+        if (ctxName === 'billboard' || ctxName === 'continueWatching')
+          expect(video.current, `${ctxName}[${j}].current`).toBeDefined()
       }
     }
     expect(seen.has('billboard')).toBe(true)

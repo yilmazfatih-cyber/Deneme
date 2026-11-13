@@ -60,7 +60,11 @@ describe('FTL yoklaması', () => {
     await app.inject({
       method: 'POST',
       url: '/api/ftl/report',
-      payload: { iter: 1, pulse: 1, results: [{ name: 'cloud', cdnId: 'cloud-ist-origin', ok: true, ttfbMs: 1, totalMs: 2, bytes: 1, kbps: 1 }] },
+      payload: {
+        iter: 1,
+        pulse: 1,
+        results: [{ name: 'cloud', cdnId: 'cloud-ist-origin', ok: true, ttfbMs: 1, totalMs: 2, bytes: 1, kbps: 1 }],
+      },
     })
     expect(planeOf(app).ftl.get('ip:127.0.0.1')).toEqual(['cloud-ist-origin'])
     const bad = await app.inject({ method: 'POST', url: '/api/ftl/report', payload: { iter: 'x' } })

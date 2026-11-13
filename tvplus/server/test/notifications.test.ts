@@ -68,7 +68,12 @@ describe('GET /push', () => {
   it('imleç anlamı: yalnız imleçten sonrakiler, profil başına kuyruk', async () => {
     const start = (await poll(deniz, 0)).json<PushResponse>()
     const base = start.cursor
-    app.services.notifications.push(deniz.guid, { kind: 'REMINDER', title: 'Hatırlatma', body: 'Dizin seni bekliyor', href: '#/detay/1' })
+    app.services.notifications.push(deniz.guid, {
+      kind: 'REMINDER',
+      title: 'Hatırlatma',
+      body: 'Dizin seni bekliyor',
+      href: '#/detay/1',
+    })
     app.services.notifications.push(deniz.guid, { kind: 'NEW_CONTENT', title: 'Yeni', body: 'Yeni bölüm', href: null })
     const res = (await poll(deniz, base)).json<PushResponse>()
     expect(res.events.map((e) => e.title)).toEqual(['Hatırlatma', 'Yeni'])

@@ -63,7 +63,11 @@ export function encodeSecure(key: Buffer, tvpIdValue: string, now = Date.now()):
   return new URLSearchParams({ v: '1', mac: hmacB64(key, tvpIdValue), dt: String(now) }).toString()
 }
 
-export function verifySecure(key: Buffer, tvpIdValue: string | undefined | null, secureValue: string | undefined | null): boolean {
+export function verifySecure(
+  key: Buffer,
+  tvpIdValue: string | undefined | null,
+  secureValue: string | undefined | null,
+): boolean {
   if (!tvpIdValue || !secureValue || secureValue.length > 1024) return false
   const params = new URLSearchParams(secureValue)
   const mac = params.get('mac')

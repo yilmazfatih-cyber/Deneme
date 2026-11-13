@@ -26,7 +26,8 @@ function channelOf(ctx: GqlContext, channelId: number) {
 }
 
 /** Profilin görebileceği kanal mı (çocuk profili → yalnız çocuk kanalları) */
-export const channelVisible = (ctx: GqlContext, channelId: number) => visibleChannels(ctx.services, ctx.passport).some((c) => c.channelId === channelId)
+export const channelVisible = (ctx: GqlContext, channelId: number) =>
+  visibleChannels(ctx.services, ctx.passport).some((c) => c.channelId === channelId)
 
 const startOf = (a: AiringRecord) => toDate(a.startAt) ?? new Date(0)
 const endOf = (a: AiringRecord) => toDate(a.endAt) ?? new Date(0)
@@ -38,7 +39,8 @@ export function airingAccess(ctx: GqlContext, a: AiringRecord): AccessDecision {
   const now = nowOf(ctx)
   const linear = ctx.services.epg.isLinear(a.channelId)
   if (liveStateOf(norm(a), now) !== 'ENDED') return base
-  if (!catchupOf(norm(a), now, linear).available) return { ...base, state: 'OUT_OF_WINDOW', reasonText: 'Tekrar izlenemiyor', cta: null }
+  if (!catchupOf(norm(a), now, linear).available)
+    return { ...base, state: 'OUT_OF_WINDOW', reasonText: 'Tekrar izlenemiyor', cta: null }
   // Geri al katalog videosunu oynatır: videonun olgunluk süzgeci de geçerli
   if (a.videoId !== null && !ctx.services.catalog.isVisibleTo(ctx.passport.profile, a.videoId)) {
     return { ...base, state: 'BLOCKED', reasonText: 'Bu profil için uygun değil', cta: null }
@@ -53,14 +55,17 @@ export const liveResolvers: ResolverMap = {
     name: (p: ChannelRef, _a: unknown, ctx: GqlContext) => channelOf(ctx, p.channelId).name,
     number: (p: ChannelRef, _a: unknown, ctx: GqlContext) => channelOf(ctx, p.channelId).number,
     category: (p: ChannelRef, _a: unknown, ctx: GqlContext) => channelOf(ctx, p.channelId).category,
-    categoryName: (p: ChannelRef, _a: unknown, ctx: GqlContext) => CHANNEL_CATEGORIES[channelOf(ctx, p.channelId).category],
+    categoryName: (p: ChannelRef, _a: unknown, ctx: GqlContext) =>
+      CHANNEL_CATEGORIES[channelOf(ctx, p.channelId).category],
     description: (p: ChannelRef, _a: unknown, ctx: GqlContext) => channelOf(ctx, p.channelId).description,
     logo: (p: ChannelRef, a: { params?: ArtworkParams }, ctx: GqlContext) =>
       buildArtwork(ctx.config, 'CHANNEL_LOGO', channelEntityId(p.channelId), a.params),
     isHd: (p: ChannelRef, _a: unknown, ctx: GqlContext) => channelOf(ctx, p.channelId).isHd,
     isFavorite: (p: ChannelRef, _a: unknown, ctx: GqlContext) => {
       const guid = ctx.passport.profile?.guid
-      return guid ? ctx.services.progress.favoriteChannels(guid).includes(p.channelId) : channelOf(ctx, p.channelId).favorite
+      return guid
+        ? ctx.services.progress.favoriteChannels(guid).includes(p.channelId)
+        : channelOf(ctx, p.channelId).favorite
     },
     isKids: (p: ChannelRef, _a: unknown, ctx: GqlContext) => channelOf(ctx, p.channelId).kids,
     access: (p: ChannelRef, _a: unknown, ctx: GqlContext) => accessForChannel(ctx, p.channelId),
@@ -72,7 +77,11 @@ export const liveResolvers: ResolverMap = {
     now: (p: ChannelRef, _a: unknown, ctx: GqlContext) => ctx.services.epg.currentAiring(p.channelId, nowOf(ctx)),
     next: (p: ChannelRef, _a: unknown, ctx: GqlContext) => {
       const now = nowOf(ctx)
-      return ctx.services.epg.airings(p.channelId, now, new Date(now.getTime() + 2 * DAY_MS)).find((a) => a.startAt.getTime() > now.getTime()) ?? null
+      return (
+        ctx.services.epg
+          .airings(p.channelId, now, new Date(now.getTime() + 2 * DAY_MS))
+          .find((a) => a.startAt.getTime() > now.getTime()) ?? null
+      )
     },
     airings: (p: ChannelRef, a: { from: unknown; to: unknown }, ctx: GqlContext) => {
       const from = toDate(a.from)
@@ -107,9 +116,12 @@ export const liveResolvers: ResolverMap = {
   Collection: {
     collectionId: (p: { collectionId: number }) => p.collectionId,
     unifiedEntityId: (p: { collectionId: number }) => collectionEntityId(p.collectionId),
-    name: (p: { collectionId: number }, _a: unknown, ctx: GqlContext) => ctx.services.catalog.getCollection(p.collectionId)?.name ?? '',
-    description: (p: { collectionId: number }, _a: unknown, ctx: GqlContext) => ctx.services.catalog.getCollection(p.collectionId)?.description ?? '',
-    videos: (p: { collectionId: number }, _a: unknown, ctx: GqlContext) => videoRefs(ctx, ctx.services.catalog.getCollection(p.collectionId)?.videoIds ?? []),
+    name: (p: { collectionId: number }, _a: unknown, ctx: GqlContext) =>
+      ctx.services.catalog.getCollection(p.collectionId)?.name ?? '',
+    description: (p: { collectionId: number }, _a: unknown, ctx: GqlContext) =>
+      ctx.services.catalog.getCollection(p.collectionId)?.description ?? '',
+    videos: (p: { collectionId: number }, _a: unknown, ctx: GqlContext) =>
+      videoRefs(ctx, ctx.services.catalog.getCollection(p.collectionId)?.videoIds ?? []),
     artwork: (p: { collectionId: number }, a: { params?: ArtworkParams }, ctx: GqlContext) =>
       buildArtwork(ctx.config, 'STORY_ART', collectionEntityId(p.collectionId), a.params),
   },
@@ -143,7 +155,9 @@ export const liveResolvers: ResolverMap = {
   Query: {
     channel: (_p: unknown, a: { channelId: number }, ctx: GqlContext) => {
       requireProfile(ctx)
-      return ctx.services.catalog.getChannel(a.channelId) && channelVisible(ctx, a.channelId) ? { channelId: a.channelId } : null
+      return ctx.services.catalog.getChannel(a.channelId) && channelVisible(ctx, a.channelId)
+        ? { channelId: a.channelId }
+        : null
     },
     channels: (_p: unknown, a: { category?: string | null; favoritesOnly?: boolean | null }, ctx: GqlContext) => {
       const profile = requireProfile(ctx)

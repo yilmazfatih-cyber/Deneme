@@ -41,7 +41,8 @@ export function decodeEntities(s: string): string {
   })
 }
 
-const TOKEN = /<!--[\s\S]*?-->|<\?[\s\S]*?\?>|<!\[CDATA\[([\s\S]*?)\]\]>|<!DOCTYPE[^>]*>|<(\/?)([A-Za-z_][\w:.-]*)((?:\s+[^\s=/>]+\s*=\s*(?:"[^"]*"|'[^']*'))*)\s*(\/?)>/g
+const TOKEN =
+  /<!--[\s\S]*?-->|<\?[\s\S]*?\?>|<!\[CDATA\[([\s\S]*?)\]\]>|<!DOCTYPE[^>]*>|<(\/?)([A-Za-z_][\w:.-]*)((?:\s+[^\s=/>]+\s*=\s*(?:"[^"]*"|'[^']*'))*)\s*(\/?)>/g
 const ATTR = /([^\s=/>]+)\s*=\s*(?:"([^"]*)"|'([^']*)')/g
 
 export function parseXml(xml: string): XmlNode {
@@ -166,7 +167,13 @@ function isBoldStyle(n: XmlNode, boldStyles: Set<string>): boolean | null {
   return null
 }
 
-function collectLines(p: XmlNode, italicStyles: Set<string>, inheritedItalic: boolean, boldStyles: Set<string> = new Set(), inheritedBold = false): CueSpan[][] {
+function collectLines(
+  p: XmlNode,
+  italicStyles: Set<string>,
+  inheritedItalic: boolean,
+  boldStyles: Set<string> = new Set(),
+  inheritedBold = false,
+): CueSpan[][] {
   const lines: CueSpan[][] = [[]]
   const walk = (n: XmlNode, italic: boolean, bold: boolean) => {
     for (const c of n.children) {

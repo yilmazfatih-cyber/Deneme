@@ -94,7 +94,8 @@ const BOOT_FLAGS: Record<string, string> = {
 }
 
 type Node = Record<string, unknown>
-const child = (n: unknown, k: string | number): unknown => (n && typeof n === 'object' ? (n as Node)[String(k)] : undefined)
+const child = (n: unknown, k: string | number): unknown =>
+  n && typeof n === 'object' ? (n as Node)[String(k)] : undefined
 const refTarget = (n: unknown): (string | number)[] | null =>
   n && typeof n === 'object' && (n as Node).$type === 'ref' && Array.isArray((n as Node).value)
     ? ((n as Node).value as (string | number)[])
@@ -154,13 +155,17 @@ export async function buildBootContext(app: FastifyInstance, req: FastifyRequest
   const passport = req.passport
   const account = passport.account
   const session = sessionOf(req)
-  const profiles = account ? app.services.identity.listProfiles(account.accountId).map((p) => profileSummary(app, p)) : []
+  const profiles = account
+    ? app.services.identity.listProfiles(account.accountId).map((p) => profileSummary(app, p))
+    : []
   return {
     buildId: app.config.buildId,
     region: app.config.region,
     serverTime: new Date().toISOString(),
     membershipStatus: passport.membershipStatus,
-    account: account ? { accountId: account.accountId, planName: account.planName, products: [...account.products] } : null,
+    account: account
+      ? { accountId: account.accountId, planName: account.planName, products: [...account.products] }
+      : null,
     profiles,
     activeProfile: passport.profile ? profileSummary(app, passport.profile) : null,
     esn: passport.esn,

@@ -45,7 +45,8 @@ afterEach(async () => {
   app = null
 })
 
-const get = (a: FastifyInstance, url: string, headers: Record<string, string> = {}) => a.inject({ method: 'GET', url, headers })
+const get = (a: FastifyInstance, url: string, headers: Record<string, string> = {}) =>
+  a.inject({ method: 'GET', url, headers })
 
 describe('görsel API: doğrulama', () => {
   it('yol ayrıştırma', () => {
@@ -85,7 +86,11 @@ describe('görsel API: doğrulama', () => {
     // İmzayı üretmek için kernel'in imzalayıcısını kullan: normalleştirilmemiş boyutla aynı biçimi elle kur
     const { createHmac } = await import('node:crypto')
     const { deriveKey } = await import('../src/kernel/config')
-    const r = createHmac('sha256', deriveKey(app.config, 'image-url')).update('BOXART|300x450|Video:1|webp').digest().subarray(0, 6).toString('base64url')
+    const r = createHmac('sha256', deriveKey(app.config, 'image-url'))
+      .update('BOXART|300x450|Video:1|webp')
+      .digest()
+      .subarray(0, 6)
+      .toString('base64url')
     const res = await get(app, `/img/v1/boxart/300x450/${encodeURIComponent('Video:1')}.webp?r=${r}`)
     expect(res.statusCode).toBe(400)
     expect(res.json().error.code).toBe('IMAGE_SIZE_INVALID')
@@ -101,7 +106,8 @@ describe('görsel API: doğrulama', () => {
 
 describe('görsel API: çizim', () => {
   const types = Object.keys(ARTWORK_SPECS) as ArtworkTypeName[]
-  const entityFor = (t: ArtworkTypeName) => (t === 'CHANNEL_LOGO' ? 'Channel:2' : t === 'AVATAR' ? 'Profile:b' : 'Video:1')
+  const entityFor = (t: ArtworkTypeName) =>
+    t === 'CHANNEL_LOGO' ? 'Channel:2' : t === 'AVATAR' ? 'Profile:b' : 'Video:1'
 
   for (const type of types)
     for (const format of ['webp', 'jpg'] as const)
@@ -204,7 +210,9 @@ describe('görsel API: çizim', () => {
     const all = await Promise.all([1, 2, 3, 4, 5].map(() => get(app, url)))
     expect(all.every((r) => r.statusCode === 200)).toBe(true)
     expect(new Set(all.map((r) => r.headers.etag)).size).toBe(1)
-    const files = readdirSync(join(dataDir, 'img-cache'), { recursive: true }).filter((f) => String(f).endsWith('.webp'))
+    const files = readdirSync(join(dataDir, 'img-cache'), { recursive: true }).filter((f) =>
+      String(f).endsWith('.webp'),
+    )
     expect(files).toHaveLength(1)
   })
 
@@ -248,7 +256,9 @@ describe('görsel API: çizim', () => {
         if (x < W / 2) raw[o] = 220
         else raw[o + 2] = 220
       }
-    const png = await sharp(raw, { raw: { width: W, height: H, channels: 3 } }).png().toBuffer()
+    const png = await sharp(raw, { raw: { width: W, height: H, channels: 3 } })
+      .png()
+      .toBuffer()
     vi.spyOn(imageFetcher, 'fetch').mockResolvedValue({ status: 200, contentType: 'image/png', body: png })
     const url = 'https://ornek.test/kare.png'
     sources['Video:20'] = gen('Afiş Testi', 'x', { sourceUrl: url, posterFit: 'contain' })
@@ -273,7 +283,9 @@ describe('görsel API: çizim', () => {
       }
       // 'contain' kaynağın tamamını gösterir: görsel bandında hem kırmızı hem mavi yarı görünür.
       // 'crop' ortadan 2:3 pencere alır; aynı satırda iki rengi de taşır ama sol kenar kırmızı, sağ kenar mavidir.
-      const { data, info } = await sharp((await get(app, buildArtwork(app.config, 'BOXART', 'Video:20').url)).rawPayload)
+      const { data, info } = await sharp(
+        (await get(app, buildArtwork(app.config, 'BOXART', 'Video:20').url)).rawPayload,
+      )
         .raw()
         .toBuffer({ resolveWithObject: true })
       const px = (x: number, y: number) => {
@@ -292,7 +304,7 @@ describe('görsel API: çizim', () => {
     }
   })
 
-  it("afiş düzeni disk önbelleği anahtarının parçası", async () => {
+  it('afiş düzeni disk önbelleği anahtarının parçası', async () => {
     const png = await sharp({ create: { width: 640, height: 360, channels: 3, background: { r: 30, g: 120, b: 200 } } })
       .png()
       .toBuffer()

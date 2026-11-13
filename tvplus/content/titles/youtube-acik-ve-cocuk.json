@@ -20,8 +20,16 @@
     "seasons": [],
     "promo": null,
     "supplementals": [],
-    "artwork": { "boxart": null, "storyArt": "https://i.ytimg.com/vi/aqz-KE-bpKQ/maxresdefault.jpg", "focal": "50% 40%" },
-    "license": { "name": "CC BY 3.0", "attribution": "© Blender Foundation", "url": "https://studio.blender.org/films/" },
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/aqz-KE-bpKQ/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "CC BY 3.0",
+      "attribution": "© Blender Foundation",
+      "url": "https://studio.blender.org/films/"
+    },
     "availability": { "addedAt": "2026-07-01", "leavingAt": null, "exclusive": false, "requiredProduct": null },
     "popularity": 95
   },
@@ -46,8 +54,16 @@
     "seasons": [],
     "promo": null,
     "supplementals": [],
-    "artwork": { "boxart": null, "storyArt": "https://i.ytimg.com/vi/TLkA0RELQ1g/maxresdefault.jpg", "focal": "50% 40%" },
-    "license": { "name": "CC BY 2.5", "attribution": "© Blender Foundation", "url": "https://studio.blender.org/films/" },
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/TLkA0RELQ1g/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "CC BY 2.5",
+      "attribution": "© Blender Foundation",
+      "url": "https://studio.blender.org/films/"
+    },
     "availability": { "addedAt": "2026-07-08", "leavingAt": null, "exclusive": false, "requiredProduct": null },
     "popularity": 62
   },
@@ -72,8 +88,16 @@
     "seasons": [],
     "promo": null,
     "supplementals": [],
-    "artwork": { "boxart": null, "storyArt": "https://i.ytimg.com/vi/Y-rmzh0PI3c/maxresdefault.jpg", "focal": "50% 40%" },
-    "license": { "name": "CC BY 3.0", "attribution": "Blender Studio · YouTube", "url": "https://studio.blender.org/films/" },
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/Y-rmzh0PI3c/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "CC BY 3.0",
+      "attribution": "Blender Studio · YouTube",
+      "url": "https://studio.blender.org/films/"
+    },
     "availability": { "addedAt": "2026-07-15", "leavingAt": null, "exclusive": false, "requiredProduct": null },
     "popularity": 58
   },
@@ -98,8 +122,16 @@
     "seasons": [],
     "promo": null,
     "supplementals": [],
-    "artwork": { "boxart": null, "storyArt": "https://i.ytimg.com/vi/lqiN98z6Dak/maxresdefault.jpg", "focal": "50% 40%" },
-    "license": { "name": "CC BY 4.0", "attribution": "Blender Studio · YouTube", "url": "https://studio.blender.org/films/" },
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/lqiN98z6Dak/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "CC BY 4.0",
+      "attribution": "Blender Studio · YouTube",
+      "url": "https://studio.blender.org/films/"
+    },
     "availability": { "addedAt": "2026-07-22", "leavingAt": null, "exclusive": false, "requiredProduct": null },
     "popularity": 55
   },
@@ -124,8 +156,16 @@
     "seasons": [],
     "promo": null,
     "supplementals": [],
-    "artwork": { "boxart": null, "storyArt": "https://i.ytimg.com/vi/mN0zPOpADL4/maxresdefault.jpg", "focal": "50% 40%" },
-    "license": { "name": "CC BY 4.0", "attribution": "Blender Studio · YouTube", "url": "https://studio.blender.org/films/" },
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/mN0zPOpADL4/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "CC BY 4.0",
+      "attribution": "Blender Studio · YouTube",
+      "url": "https://studio.blender.org/films/"
+    },
     "availability": { "addedAt": "2026-08-02", "leavingAt": null, "exclusive": false, "requiredProduct": null },
     "popularity": 66
   },
@@ -150,8 +190,16 @@
     "seasons": [],
     "promo": null,
     "supplementals": [],
-    "artwork": { "boxart": null, "storyArt": "https://i.ytimg.com/vi/RJnKaAtBPhA/maxresdefault.jpg", "focal": "50% 40%" },
-    "license": { "name": "CC BY 4.0", "attribution": "Blender Studio · YouTube", "url": "https://studio.blender.org/films/" },
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/RJnKaAtBPhA/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "CC BY 4.0",
+      "attribution": "Blender Studio · YouTube",
+      "url": "https://studio.blender.org/films/"
+    },
     "availability": { "addedAt": "2026-08-09", "leavingAt": null, "exclusive": false, "requiredProduct": null },
     "popularity": 60
   },
@@ -176,8 +224,16 @@
     "seasons": [],
     "promo": null,
     "supplementals": [],
-    "artwork": { "boxart": null, "storyArt": "https://i.ytimg.com/vi/WhWc3b3KhnY/maxresdefault.jpg", "focal": "50% 40%" },
-    "license": { "name": "CC BY 4.0", "attribution": "Blender Studio · YouTube", "url": "https://studio.blender.org/films/" },
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/WhWc3b3KhnY/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "CC BY 4.0",
+      "attribution": "Blender Studio · YouTube",
+      "url": "https://studio.blender.org/films/"
+    },
     "availability": { "addedAt": "2026-08-16", "leavingAt": null, "exclusive": false, "requiredProduct": null },
     "popularity": 90
   },
@@ -202,8 +258,16 @@
     "seasons": [],
     "promo": null,
     "supplementals": [],
-    "artwork": { "boxart": null, "storyArt": "https://i.ytimg.com/vi/PVGeM40dABA/maxresdefault.jpg", "focal": "50% 40%" },
-    "license": { "name": "CC BY 4.0", "attribution": "Blender Studio · YouTube", "url": "https://studio.blender.org/films/" },
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/PVGeM40dABA/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "CC BY 4.0",
+      "attribution": "Blender Studio · YouTube",
+      "url": "https://studio.blender.org/films/"
+    },
     "availability": { "addedAt": "2026-08-23", "leavingAt": null, "exclusive": false, "requiredProduct": null },
     "popularity": 60
   },
@@ -228,8 +292,16 @@
     "seasons": [],
     "promo": null,
     "supplementals": [],
-    "artwork": { "boxart": null, "storyArt": "https://i.ytimg.com/vi/_cMxraX_5RE/maxresdefault.jpg", "focal": "50% 40%" },
-    "license": { "name": "CC BY 4.0", "attribution": "Blender Studio · YouTube", "url": "https://studio.blender.org/films/" },
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/_cMxraX_5RE/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "CC BY 4.0",
+      "attribution": "Blender Studio · YouTube",
+      "url": "https://studio.blender.org/films/"
+    },
     "availability": { "addedAt": "2026-09-03", "leavingAt": null, "exclusive": false, "requiredProduct": null },
     "popularity": 70
   },
@@ -254,8 +326,16 @@
     "seasons": [],
     "promo": null,
     "supplementals": [],
-    "artwork": { "boxart": null, "storyArt": "https://i.ytimg.com/vi/UXqq0ZvbOnk/maxresdefault.jpg", "focal": "50% 40%" },
-    "license": { "name": "CC BY 4.0", "attribution": "Blender Studio · YouTube", "url": "https://studio.blender.org/films/" },
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/UXqq0ZvbOnk/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "CC BY 4.0",
+      "attribution": "Blender Studio · YouTube",
+      "url": "https://studio.blender.org/films/"
+    },
     "availability": { "addedAt": "2026-10-30", "leavingAt": null, "exclusive": false, "requiredProduct": null },
     "popularity": 72
   },
@@ -280,8 +360,16 @@
     "seasons": [],
     "promo": null,
     "supplementals": [],
-    "artwork": { "boxart": null, "storyArt": "https://i.ytimg.com/vi/u9lj-c29dxI/maxresdefault.jpg", "focal": "50% 40%" },
-    "license": { "name": "CC BY 4.0", "attribution": "Blender Studio · YouTube", "url": "https://studio.blender.org/films/" },
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/u9lj-c29dxI/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "CC BY 4.0",
+      "attribution": "Blender Studio · YouTube",
+      "url": "https://studio.blender.org/films/"
+    },
     "availability": { "addedAt": "2026-11-05", "leavingAt": null, "exclusive": false, "requiredProduct": null },
     "popularity": 64
   },
@@ -314,7 +402,11 @@
             "synopsis": "Lama Koro, Patagonya'da yolu geçmeye çalışır.",
             "runtimeSec": null,
             "sources": [{ "type": "YOUTUBE", "videoId": "JOhiWY7XmoY" }],
-            "artwork": { "boxart": null, "storyArt": "https://i.ytimg.com/vi/JOhiWY7XmoY/maxresdefault.jpg", "focal": "50% 40%" }
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/JOhiWY7XmoY/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
           },
           {
             "number": 2,
@@ -323,7 +415,11 @@
             "synopsis": "Koro, çitin öbür tarafındaki yiyeceğe ulaşmaya çalışır. İlk bölümde gördüğü armadillonun hareketi ona yeniden ilham verir ve bu kez beklenmedik bir sonuç doğurur.",
             "runtimeSec": null,
             "sources": [{ "type": "YOUTUBE", "videoId": "Z4C82eyhwgU" }],
-            "artwork": { "boxart": null, "storyArt": "https://i.ytimg.com/vi/Z4C82eyhwgU/maxresdefault.jpg", "focal": "50% 40%" }
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/Z4C82eyhwgU/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
           },
           {
             "number": 3,
@@ -332,15 +428,27 @@
             "synopsis": "Kışın yiyecek kıtlığında Koro, son lezzetli meyve için penguen Oti ile karşı karşıya gelir.",
             "runtimeSec": null,
             "sources": [{ "type": "YOUTUBE", "videoId": "SkVqJ1SGeL0" }],
-            "artwork": { "boxart": null, "storyArt": "https://i.ytimg.com/vi/SkVqJ1SGeL0/maxresdefault.jpg", "focal": "50% 40%" }
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/SkVqJ1SGeL0/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
           }
         ]
       }
     ],
     "promo": null,
     "supplementals": [],
-    "artwork": { "boxart": null, "storyArt": "https://i.ytimg.com/vi/SkVqJ1SGeL0/maxresdefault.jpg", "focal": "50% 40%" },
-    "license": { "name": "CC BY", "attribution": "Blender Foundation · YouTube", "url": "https://studio.blender.org/films/" },
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/SkVqJ1SGeL0/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "CC BY",
+      "attribution": "Blender Foundation · YouTube",
+      "url": "https://studio.blender.org/films/"
+    },
     "availability": { "addedAt": "2026-07-01", "leavingAt": null, "exclusive": false, "requiredProduct": null },
     "popularity": 80
   }

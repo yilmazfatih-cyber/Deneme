@@ -55,7 +55,10 @@ export function useFalcorView<T>(paths: FalcorPath[], opts: { fetch?: boolean } 
   const key = JSON.stringify(paths)
   const ver = useSyncExternalStore(subscribe, getVersion, getVersion)
 
-  const view = useMemo(() => (paths.length ? falcor.peek<Json>(...paths) : { json: {} as Json, missing: [] as FalcorPath[] }), [key, ver])
+  const view = useMemo(
+    () => (paths.length ? falcor.peek<Json>(...paths) : { json: {} as Json, missing: [] as FalcorPath[] }),
+    [key, ver],
+  )
   const missingKey = view.missing.length ? JSON.stringify(view.missing) : ''
 
   const [failure, setFailure] = useState<{ key: string; error: Error } | null>(null)
@@ -102,5 +105,11 @@ export function useFalcorView<T>(paths: FalcorPath[], opts: { fetch?: boolean } 
   }, [])
 
   const error = failure && failure.key === missingKey ? failure.error : null
-  return { json: shown as T, missing: view.missing.length, loading: !!missingKey && !error && (inflight || fetch), error, retry }
+  return {
+    json: shown as T,
+    missing: view.missing.length,
+    loading: !!missingKey && !error && (inflight || fetch),
+    error,
+    retry,
+  }
 }

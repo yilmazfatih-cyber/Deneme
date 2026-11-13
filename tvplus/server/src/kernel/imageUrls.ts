@@ -8,7 +8,8 @@ import { createHmac, timingSafeEqual } from 'node:crypto'
 import { ROUTES } from '../../../shared/constants'
 import { deriveKey, type AppConfig } from './config'
 
-export type ArtworkTypeName = 'BOXART' | 'STORY_ART' | 'BILLBOARD' | 'TITLE_LOGO' | 'EPISODE_STILL' | 'CHANNEL_LOGO' | 'AVATAR'
+export type ArtworkTypeName =
+  'BOXART' | 'STORY_ART' | 'BILLBOARD' | 'TITLE_LOGO' | 'EPISODE_STILL' | 'CHANNEL_LOGO' | 'AVATAR'
 
 /** Tip başına en-boy oranı (genişlik / yükseklik) ve varsayılan genişlik. */
 export const ARTWORK_SPECS: Record<ArtworkTypeName, { ratio: number; defaultWidth: number; maxWidth: number }> = {
@@ -44,7 +45,11 @@ const sign = (config: AppConfig, r: ImageRequest) =>
     .toString('base64url')
 
 /** İstenen genişlik/yükseklikten (biri verilse yeter) tip oranına uygun boyut çıkarır; genişlik 16'nın katına yuvarlanır. */
-export function normalizeSize(type: ArtworkTypeName, width?: number | null, height?: number | null): { width: number; height: number } {
+export function normalizeSize(
+  type: ArtworkTypeName,
+  width?: number | null,
+  height?: number | null,
+): { width: number; height: number } {
   const spec = ARTWORK_SPECS[type]
   let w = width ?? (height ? Math.round(height * spec.ratio) : spec.defaultWidth)
   w = Math.min(spec.maxWidth, Math.max(32, Math.ceil(w / 16) * 16))

@@ -55,13 +55,30 @@ function contentDir(): string {
   const dir = mkdtempSync(join(tmpdir(), 'tvplus-yt-'))
   mkdirSync(join(dir, 'titles'))
   const titles = [
-    { videoId: 80030001, slug: 'iyi', title: 'İyi', sources: [{ type: 'YOUTUBE', videoId: GOOD }], artwork: { storyArt: null, focal: '50% 50%' } },
+    {
+      videoId: 80030001,
+      slug: 'iyi',
+      title: 'İyi',
+      sources: [{ type: 'YOUTUBE', videoId: GOOD }],
+      artwork: { storyArt: null, focal: '50% 50%' },
+    },
     { videoId: 80030002, slug: 'kotu', title: 'Kötü', sources: [{ type: 'YOUTUBE', videoId: BAD }] },
     {
       videoId: 80030003,
       slug: 'dizi',
       type: 'SHOW',
-      seasons: [{ number: 1, episodes: [{ videoId: 80030103, sources: [{ type: 'YOUTUBE', videoId: NOEMBED }], artwork: { storyArt: 'https://x/y.jpg' } }] }],
+      seasons: [
+        {
+          number: 1,
+          episodes: [
+            {
+              videoId: 80030103,
+              sources: [{ type: 'YOUTUBE', videoId: NOEMBED }],
+              artwork: { storyArt: 'https://x/y.jpg' },
+            },
+          ],
+        },
+      ],
     },
     { videoId: 80010001, slug: 'dash', sources: [{ type: 'DASH', manifest: 'https://x/m.mpd' }] },
   ]
@@ -83,25 +100,43 @@ function fakeDeps(): YoutubeDeps & { calls: string[]; sleeps: number[] } {
   const res = (status: number, text = ''): HttpResponse => ({ status, contentType: null, text })
   const get = vi.fn(async (url: string) => {
     calls.push(url)
-    if (url === oembedUrl(GOOD)) return res(200, JSON.stringify({ title: 'Big Buck Bunny 60fps 4K', author_name: 'Blender' }))
+    if (url === oembedUrl(GOOD))
+      return res(200, JSON.stringify({ title: 'Big Buck Bunny 60fps 4K', author_name: 'Blender' }))
     if (url === oembedUrl(BAD)) return res(404, 'Not Found')
     if (url === oembedUrl(NOEMBED)) return res(401, 'Unauthorized')
     if (url === feedUrl(CH_OK)) return res(200, FEED)
     if (url === feedUrl(CH_BAD)) return res(404)
     if (url === feedUrl(CH_PAGE)) return res(404)
-    if (url === channelPageUrl(CH_PAGE)) return res(200, `<link rel="canonical" href="https://www.youtube.com/channel/${CH_PAGE}"><meta property="og:title" content="S&#39;ayfa &amp; Kanal">"externalId":"${CH_PAGE}"`)
+    if (url === channelPageUrl(CH_PAGE))
+      return res(
+        200,
+        `<link rel="canonical" href="https://www.youtube.com/channel/${CH_PAGE}"><meta property="og:title" content="S&#39;ayfa &amp; Kanal">"externalId":"${CH_PAGE}"`,
+      )
     if (url === channelPageUrl(CH_BAD)) return res(200, '<html><title>YouTube</title></html>')
     if (url.includes(`/vi/${GOOD}/maxresdefault.jpg`)) return res(200)
     if (url.includes('maxresdefault')) return res(404)
     if (url.includes('hqdefault')) return res(200)
     throw new Error(`beklenmeyen adres ${url}`)
   })
-  return { get, sleep: async (ms) => void sleeps.push(ms), now: () => new Date('2026-11-13T10:00:00Z'), log: () => {}, calls, sleeps }
+  return {
+    get,
+    sleep: async (ms) => void sleeps.push(ms),
+    now: () => new Date('2026-11-13T10:00:00Z'),
+    log: () => {},
+    calls,
+    sleeps,
+  }
 }
 
 describe('ingest-youtube', () => {
   it('oEmbed sınıflandırma', () => {
-    expect(classifyOembed(200, '{"title":"T","author_name":"A"}')).toEqual({ ok: true, status: 200, state: 'ok', title: 'T', author: 'A' })
+    expect(classifyOembed(200, '{"title":"T","author_name":"A"}')).toEqual({
+      ok: true,
+      status: 200,
+      state: 'ok',
+      title: 'T',
+      author: 'A',
+    })
     expect(classifyOembed(401, '').state).toBe('embed-disabled')
     expect(classifyOembed(403, '').state).toBe('embed-disabled')
     expect(classifyOembed(404, '').state).toBe('missing')
@@ -180,7 +215,10 @@ describe('ingest-youtube', () => {
   })
 
   it('kanal akışından içerik iskeleti', () => {
-    const sk = feedToSkeletons(parseChannelFeed(FEED), { usedIds: new Set([80030001]), today: '2026-11-13' }) as Record<string, unknown>[]
+    const sk = feedToSkeletons(parseChannelFeed(FEED), { usedIds: new Set([80030001]), today: '2026-11-13' }) as Record<
+      string,
+      unknown
+    >[]
     expect(sk).toHaveLength(2)
     expect(sk[0]).toMatchObject({
       videoId: 80030002,
@@ -206,7 +244,11 @@ describe('ingest-youtube', () => {
             metadata: {
               lockupMetadataViewModel: {
                 title: { content: title },
-                metadata: { contentMetadataViewModel: { metadataRows: [{ metadataParts: [{ text: { content: '253 B' } }, { text: { content: when } }] }] } },
+                metadata: {
+                  contentMetadataViewModel: {
+                    metadataRows: [{ metadataParts: [{ text: { content: '253 B' } }, { text: { content: when } }] }],
+                  },
+                },
               },
             },
           },
@@ -215,7 +257,11 @@ describe('ingest-youtube', () => {
     })
     const data = {
       metadata: { channelMetadataRenderer: { title: 'Blender' } },
-      contents: [lockup(GOOD, 'Yeni Sürüm', '2 gün önce'), lockup('pvUy69I_Xuk', 'Eski', '3 yıl önce'), lockup(GOOD, 'Yinelenen', '1 gün önce')],
+      contents: [
+        lockup(GOOD, 'Yeni Sürüm', '2 gün önce'),
+        lockup('pvUy69I_Xuk', 'Eski', '3 yıl önce'),
+        lockup(GOOD, 'Yinelenen', '1 gün önce'),
+      ],
     }
     const html = `<html><script>var ytInitialData = ${JSON.stringify(data)};</script></html>`
     const now = new Date('2026-11-13T10:00:00Z')

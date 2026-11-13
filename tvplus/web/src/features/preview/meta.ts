@@ -32,7 +32,10 @@ export function sourceLabels(kinds: readonly string[]): string[] {
 }
 
 /** Kalan süre: "23 dk kaldı" / "1 sa 5 dk kaldı"; bilinmiyorsa null. */
-export function remainingText(positionSec: number | null | undefined, runtimeSec: number | null | undefined): string | null {
+export function remainingText(
+  positionSec: number | null | undefined,
+  runtimeSec: number | null | undefined,
+): string | null {
   if (!runtimeSec || runtimeSec <= 0 || positionSec == null) return null
   const m = Math.max(1, Math.round((runtimeSec - positionSec) / 60))
   if (runtimeSec - positionSec <= 0) return null
@@ -48,7 +51,10 @@ export function isInProgress(bookmark: Pick<BookmarkData, 'positionSec' | 'progr
 }
 
 /** Pakette yoksa karttaki tek satır ("Sinema Paketi ile"); oynatılabiliyorsa null. */
-export function lockedTextOf(access: { state: string; reasonText: string | null } | null | undefined, fallback?: string | null): string | null {
+export function lockedTextOf(
+  access: { state: string; reasonText: string | null } | null | undefined,
+  fallback?: string | null,
+): string | null {
   if (!access || access.state === 'PLAYABLE') return null
   return access.reasonText ?? fallback ?? 'Paketinde yok'
 }

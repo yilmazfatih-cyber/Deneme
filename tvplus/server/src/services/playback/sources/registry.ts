@@ -91,7 +91,12 @@ function fromDashRep(r: DashRep): StreamRep {
 export function timedTextRefs(list: ContentTimedText[] | undefined, subtitlesDir: string | null): TextRef[] {
   const out: TextRef[] = []
   for (const t of list ?? []) {
-    const base = { lang: normalizeLang(t.lang), label: t.label || null, kind: t.kind ?? 'SUBTITLES', format: t.format } as const
+    const base = {
+      lang: normalizeLang(t.lang),
+      label: t.label || null,
+      kind: t.kind ?? 'SUBTITLES',
+      format: t.format,
+    } as const
     if (t.url) out.push({ ...base, url: t.url })
     else if (t.file && subtitlesDir) {
       const root = resolve(subtitlesDir)

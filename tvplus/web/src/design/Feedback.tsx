@@ -15,7 +15,13 @@ import './feedback.css'
 export type BadgeText = 'Yeni bölüm' | 'Yeni' | "Sadece TV+'ta" | 'Son 3 gün'
 
 /** Sarı rozet. Kart başına EN FAZLA bir tane (kartlar bunu tek `badge` alanıyla zorlar). */
-export function Badge({ children, className }: { children: BadgeText | (string & {}); className?: string }): ReactElement {
+export function Badge({
+  children,
+  className,
+}: {
+  children: BadgeText | (string & {})
+  className?: string
+}): ReactElement {
   return <span className={cx('cn-badge', className)}>{children}</span>
 }
 
@@ -43,7 +49,14 @@ export interface ProgressBarProps {
 export function ProgressBar({ value, label = 'İlerleme', className }: ProgressBarProps): ReactElement {
   const pct = Math.round(Math.min(1, Math.max(0, value)) * 100)
   return (
-    <span className={cx('cn-progress', className)} role="progressbar" aria-label={label} aria-valuemin={0} aria-valuemax={100} aria-valuenow={pct}>
+    <span
+      className={cx('cn-progress', className)}
+      role="progressbar"
+      aria-label={label}
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={pct}
+    >
       <span className="cn-progress__fill" style={{ width: `${pct}%` }} />
     </span>
   )
@@ -54,12 +67,34 @@ export function ProgressBar({ value, label = 'İlerleme', className }: ProgressB
 export type SkeletonVariant = 'poster' | 'landscape' | 'tile' | 'text' | 'title'
 
 /** Tek iskelet parçası. `text` için `width` (ör. "60%") verilebilir. */
-export function Skeleton({ variant = 'text', width, className }: { variant?: SkeletonVariant; width?: string | number; className?: string }): ReactElement {
-  return <span className={cx('cn-skel', `cn-skel--${variant}`, className)} style={width !== undefined ? { width } : undefined} aria-hidden="true" />
+export function Skeleton({
+  variant = 'text',
+  width,
+  className,
+}: {
+  variant?: SkeletonVariant
+  width?: string | number
+  className?: string
+}): ReactElement {
+  return (
+    <span
+      className={cx('cn-skel', `cn-skel--${variant}`, className)}
+      style={width !== undefined ? { width } : undefined}
+      aria-hidden="true"
+    />
+  )
 }
 
 /** Yükleniyor satırı: başlık + yatay kart dizisi. */
-export function SkeletonRow({ variant = 'poster', count = 8, className }: { variant?: 'poster' | 'landscape' | 'tile'; count?: number; className?: string }): ReactElement {
+export function SkeletonRow({
+  variant = 'poster',
+  count = 8,
+  className,
+}: {
+  variant?: 'poster' | 'landscape' | 'tile'
+  count?: number
+  className?: string
+}): ReactElement {
   return (
     <div className={cx('cn-skelrow', className)} role="status" aria-label="Yükleniyor">
       <span className="cn-skel cn-skel--title cn-gutter-x" aria-hidden="true" />
@@ -123,7 +158,8 @@ export interface AvatarProps {
 
 export function Avatar({ src, name, size = 40, className }: AvatarProps): ReactElement {
   const style = { width: size, height: size, fontSize: Math.round(size * 0.42) }
-  if (src) return <img className={cx('cn-avatar', className)} src={src} alt="" width={size} height={size} style={style} />
+  if (src)
+    return <img className={cx('cn-avatar', className)} src={src} alt="" width={size} height={size} style={style} />
   return (
     <span className={cx('cn-avatar', 'cn-avatar--letter', className)} style={style} aria-hidden="true">
       {upperTr(name.trim().charAt(0) || '?')}
@@ -134,7 +170,15 @@ export function Avatar({ src, name, size = 40, className }: AvatarProps): ReactE
 /* ───────────── Boş durum / hata ───────────── */
 
 /** Tek satır yardım metni (yalnız Kitaplığım gibi kişisel alanlarda; ana sayfada boş kart YOK). */
-export function EmptyHint({ children, action, className }: { children: ReactNode; action?: ReactNode; className?: string }): ReactElement {
+export function EmptyHint({
+  children,
+  action,
+  className,
+}: {
+  children: ReactNode
+  action?: ReactNode
+  className?: string
+}): ReactElement {
   return (
     <div className={cx('cn-empty', className)}>
       <p className="cn-empty__text">{children}</p>
@@ -156,7 +200,13 @@ export interface ErrorStateProps {
 }
 
 /** Hata durumu: sayfanın geri kalanını kilitlemez, her zaman "Tekrar dene" içerir. */
-export function ErrorState({ title = 'Bu bölüm yüklenemedi', message = 'Bağlantını kontrol et ve tekrar dene.', onRetry, size = 'inline', className }: ErrorStateProps): ReactElement {
+export function ErrorState({
+  title = 'Bu bölüm yüklenemedi',
+  message = 'Bağlantını kontrol et ve tekrar dene.',
+  onRetry,
+  size = 'inline',
+  className,
+}: ErrorStateProps): ReactElement {
   return (
     <div className={cx('cn-error', `cn-error--${size}`, className)} role="alert">
       <Icon name="info" size={size === 'page' ? 32 : 24} className="cn-error__icon" />

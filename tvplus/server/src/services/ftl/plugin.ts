@@ -55,21 +55,24 @@ export function rankingFromReport(plane: Plane, report: FtlReport): string[] {
 export default async function plugin(app: FastifyInstance): Promise<void> {
   const plane = planeOf(app)
 
-  app.get(ROUTES.FTL_PROBE, async (req: FastifyRequest<{ Querystring: { device?: string; iter?: string; monotonic?: string } }>, reply) => {
-    const device = (req.query.device ?? 'web').slice(0, 32)
-    const body: FtlProbeResponse = {
-      urls: FTL_TARGETS.map((t) => ({
-        name: t.name,
-        url: `${ROUTES.OCA_PREFIX}/${t.cdnId}/ftl/probe?data=${FTL_PROBE_BYTES}`,
-        cdnId: t.cdnId,
-      })),
-      pulse_delays: [...FTL_PULSE_DELAYS_MS],
-      pulses: FTL_PULSE_DELAYS_MS.length,
-      ctx: { ip: req.ip, region: app.config.region, device },
-      report: ROUTES.FTL_REPORT,
-    }
-    return reply.header('cache-control', 'no-store').send(body)
-  })
+  app.get(
+    ROUTES.FTL_PROBE,
+    async (req: FastifyRequest<{ Querystring: { device?: string; iter?: string; monotonic?: string } }>, reply) => {
+      const device = (req.query.device ?? 'web').slice(0, 32)
+      const body: FtlProbeResponse = {
+        urls: FTL_TARGETS.map((t) => ({
+          name: t.name,
+          url: `${ROUTES.OCA_PREFIX}/${t.cdnId}/ftl/probe?data=${FTL_PROBE_BYTES}`,
+          cdnId: t.cdnId,
+        })),
+        pulse_delays: [...FTL_PULSE_DELAYS_MS],
+        pulses: FTL_PULSE_DELAYS_MS.length,
+        ctx: { ip: req.ip, region: app.config.region, device },
+        report: ROUTES.FTL_REPORT,
+      }
+      return reply.header('cache-control', 'no-store').send(body)
+    },
+  )
 
   app.post(ROUTES.FTL_REPORT, async (req, reply) => {
     let input: unknown = req.body
@@ -82,9 +85,9 @@ export default async function plugin(app: FastifyInstance): Promise<void> {
     }
     const parsed = zReport.safeParse(input)
     if (!parsed.success) {
-      return reply
-        .code(400)
-        .send({ error: { code: 'VALIDATION_FAILED', message: 'FTL raporu biçimi hatalı.', traceId: req.trace?.traceId } })
+      return reply.code(400).send({
+        error: { code: 'VALIDATION_FAILED', message: 'FTL raporu biçimi hatalı.', traceId: req.trace?.traceId },
+      })
     }
     const ranking = rankingFromReport(plane, parsed.data)
     if (ranking.length > 0) plane.ftl.set(ftlKey(plane, req), ranking)

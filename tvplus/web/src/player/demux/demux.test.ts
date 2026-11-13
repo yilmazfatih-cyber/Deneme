@@ -17,10 +17,20 @@ function be16(n: number): number[] {
   return [(n >>> 8) & 0xff, n & 0xff]
 }
 function box(type: string, body: Uint8Array): Uint8Array {
-  return bytes(be32(8 + body.length), [...type].map((c) => c.charCodeAt(0)), body)
+  return bytes(
+    be32(8 + body.length),
+    [...type].map((c) => c.charCodeAt(0)),
+    body,
+  )
 }
 
-function sidxBox(opts: { version: 0 | 1; timescale: number; ept: number; firstOffset: number; refs: [number, number][] }): Uint8Array {
+function sidxBox(opts: {
+  version: 0 | 1
+  timescale: number
+  ept: number
+  firstOffset: number
+  refs: [number, number][]
+}): Uint8Array {
   const body: number[] = [opts.version, 0, 0, 0, ...be32(1), ...be32(opts.timescale)]
   if (opts.version === 0) body.push(...be32(opts.ept), ...be32(opts.firstOffset))
   else body.push(...be32(0), ...be32(opts.ept), ...be32(0), ...be32(opts.firstOffset))
@@ -52,8 +62,17 @@ function f64(n: number): number[] {
   return [...new Uint8Array(dv.buffer)]
 }
 
-function webmHeader(cues: [number, number][], opts: { scale?: number; durationTicks?: number } = {}): { data: Uint8Array; segData: number } {
-  const ebmlHeader = el([0x1a, 0x45, 0xdf, 0xa3], el([0x42, 0x82], [...'webm'].map((c) => c.charCodeAt(0))))
+function webmHeader(
+  cues: [number, number][],
+  opts: { scale?: number; durationTicks?: number } = {},
+): { data: Uint8Array; segData: number } {
+  const ebmlHeader = el(
+    [0x1a, 0x45, 0xdf, 0xa3],
+    el(
+      [0x42, 0x82],
+      [...'webm'].map((c) => c.charCodeAt(0)),
+    ),
+  )
   const infoChildren: Uint8Array[] = []
   if (opts.scale !== undefined) infoChildren.push(el([0x2a, 0xd7, 0xb1], uint(opts.scale, 3)))
   if (opts.durationTicks !== undefined) infoChildren.push(el([0x44, 0x89], f64(opts.durationTicks)))
@@ -75,7 +94,17 @@ describe('sidx', () => {
   it('v0 kutusundan mutlak bayt aralıklarını ve zamanları çıkarır', () => {
     const ftyp = box('ftyp', new Uint8Array(16))
     const moov = box('moov', new Uint8Array(40))
-    const sidx = sidxBox({ version: 0, timescale: 1000, ept: 0, firstOffset: 0, refs: [[100, 2000], [200, 2000], [300, 1500]] })
+    const sidx = sidxBox({
+      version: 0,
+      timescale: 1000,
+      ept: 0,
+      firstOffset: 0,
+      refs: [
+        [100, 2000],
+        [200, 2000],
+        [300, 1500],
+      ],
+    })
     const data = bytes(ftyp, moov, sidx)
     const ix = parseSidx(data)
     const anchor = ftyp.length + moov.length + sidx.length
@@ -110,7 +139,11 @@ describe('sidx', () => {
 
 describe('WebM Cues', () => {
   it('EBML vint okur (kimlikte işaret biti kalır, boyda atılır, hepsi 1 → bilinmeyen)', () => {
-    expect(readElementId(new Uint8Array([0x1a, 0x45, 0xdf, 0xa3]), 0)).toEqual({ value: 0x1a45dfa3, length: 4, unknown: false })
+    expect(readElementId(new Uint8Array([0x1a, 0x45, 0xdf, 0xa3]), 0)).toEqual({
+      value: 0x1a45dfa3,
+      length: 4,
+      unknown: false,
+    })
     expect(readElementSize(new Uint8Array([0x81]), 0)).toEqual({ value: 1, length: 1, unknown: false })
     expect(readElementSize(new Uint8Array([0x40, 0x02]), 0)).toEqual({ value: 2, length: 2, unknown: false })
     expect(readElementSize(new Uint8Array([0xff]), 0).unknown).toBe(true)

@@ -44,17 +44,39 @@ interface CardLinkProps extends CardEventProps {
 }
 
 /** Kartın dış kabı: bağlantı, buton ya da düz öğe. Olaylar ve ref köke gider. */
-function CardShell({ to, onClick, ariaLabel, className, children, ref, ...events }: CardLinkProps & { className: string; children: ReactNode }): ReactElement {
+function CardShell({
+  to,
+  onClick,
+  ariaLabel,
+  className,
+  children,
+  ref,
+  ...events
+}: CardLinkProps & { className: string; children: ReactNode }): ReactElement {
   if (to) {
     return (
-      <Link ref={ref as Ref<HTMLAnchorElement>} to={to} className={className} onClick={onClick} aria-label={ariaLabel} {...events}>
+      <Link
+        ref={ref as Ref<HTMLAnchorElement>}
+        to={to}
+        className={className}
+        onClick={onClick}
+        aria-label={ariaLabel}
+        {...events}
+      >
         {children}
       </Link>
     )
   }
   if (onClick) {
     return (
-      <button ref={ref as Ref<HTMLButtonElement>} type="button" className={className} onClick={onClick} aria-label={ariaLabel} {...events}>
+      <button
+        ref={ref as Ref<HTMLButtonElement>}
+        type="button"
+        className={className}
+        onClick={onClick}
+        aria-label={ariaLabel}
+        {...events}
+      >
         {children}
       </button>
     )
@@ -96,25 +118,43 @@ export interface PosterCardProps extends CardLinkProps {
   className?: string
 }
 
-export function PosterCard({ title, imageUrl, badge, lockedText, rank, showTitle, meta, size = 'row', className, ariaLabel, ...link }: PosterCardProps): ReactElement {
+export function PosterCard({
+  title,
+  imageUrl,
+  badge,
+  lockedText,
+  rank,
+  showTitle,
+  meta,
+  size = 'row',
+  className,
+  ariaLabel,
+  ...link
+}: PosterCardProps): ReactElement {
   const label = ariaLabel ?? [rank ? `${rank}. sıra` : null, title, lockedText].filter(Boolean).join(', ')
   const media = (
     <span className="cn-card__media cn-poster__media">
-        <Img src={imageUrl} alt={`${title} afişi`} fallback={title} />
-        {lockedText ? (
-          <span className="cn-card__badge cn-card__lockchip" aria-hidden="true">
-            <Icon name="lock" size={14} />
-          </span>
-        ) : badge ? (
-          <Badge className="cn-card__badge">{badge}</Badge>
-        ) : null}
+      <Img src={imageUrl} alt={`${title} afişi`} fallback={title} />
+      {lockedText ? (
+        <span className="cn-card__badge cn-card__lockchip" aria-hidden="true">
+          <Icon name="lock" size={14} />
+        </span>
+      ) : badge ? (
+        <Badge className="cn-card__badge">{badge}</Badge>
+      ) : null}
     </span>
   )
   return (
     <CardShell
       {...link}
       ariaLabel={link.to || link.onClick ? label : undefined}
-      className={cx('cn-card', 'cn-poster', size === 'fill' && 'cn-card--fill', rank ? (rank >= 10 ? 'cn-poster--ranked cn-poster--ranked2' : 'cn-poster--ranked') : null, className)}
+      className={cx(
+        'cn-card',
+        'cn-poster',
+        size === 'fill' && 'cn-card--fill',
+        rank ? (rank >= 10 ? 'cn-poster--ranked cn-poster--ranked2' : 'cn-poster--ranked') : null,
+        className,
+      )}
     >
       {rank ? (
         <span className="cn-poster__frame">
@@ -162,13 +202,31 @@ export interface LandscapeCardProps extends CardLinkProps {
   className?: string
 }
 
-export function LandscapeCard({ title, imageUrl, progress, meta, badge, lockedText, live, channelLogoUrl, channelName, size = 'row', className, ariaLabel, ...link }: LandscapeCardProps): ReactElement {
+export function LandscapeCard({
+  title,
+  imageUrl,
+  progress,
+  meta,
+  badge,
+  lockedText,
+  live,
+  channelLogoUrl,
+  channelName,
+  size = 'row',
+  className,
+  ariaLabel,
+  ...link
+}: LandscapeCardProps): ReactElement {
   const now = useNow()
   const p = live ? liveProgress(live.start, live.end, now) : progress
   const line = live ? formatLiveLine(live.start, live.end, now) : meta
   const label = ariaLabel ?? [live ? 'Canlı' : null, channelName, title, line, lockedText].filter(Boolean).join(', ')
   return (
-    <CardShell {...link} ariaLabel={link.to || link.onClick ? label : undefined} className={cx('cn-card', 'cn-land', size === 'fill' && 'cn-card--fill', className)}>
+    <CardShell
+      {...link}
+      ariaLabel={link.to || link.onClick ? label : undefined}
+      className={cx('cn-card', 'cn-land', size === 'fill' && 'cn-card--fill', className)}
+    >
       <span className="cn-card__media cn-land__media">
         <Img src={imageUrl} alt="" fallback={title} />
         {live ? (
@@ -185,7 +243,13 @@ export function LandscapeCard({ title, imageUrl, progress, meta, badge, lockedTe
             <img src={channelLogoUrl} alt={channelName ?? ''} loading="lazy" decoding="async" />
           </span>
         )}
-        {p != null && <ProgressBar value={p} label={live ? 'Yayın ilerlemesi' : 'İzleme ilerlemesi'} className="cn-card__progress" />}
+        {p != null && (
+          <ProgressBar
+            value={p}
+            label={live ? 'Yayın ilerlemesi' : 'İzleme ilerlemesi'}
+            className="cn-card__progress"
+          />
+        )}
       </span>
       <span className="cn-card__text">
         <span className="cn-card-title">{title}</span>
@@ -207,12 +271,28 @@ export interface ChannelTileProps extends CardLinkProps {
 }
 
 /** Kare kanal karosu: surface-2 zemin, köşe 14, logo `contain`. */
-export function ChannelTile({ name, logoUrl, size, selected, className, ariaLabel, ...link }: ChannelTileProps): ReactElement {
+export function ChannelTile({
+  name,
+  logoUrl,
+  size,
+  selected,
+  className,
+  ariaLabel,
+  ...link
+}: ChannelTileProps): ReactElement {
   const interactive = !!(link.to || link.onClick)
   return (
-    <CardShell {...link} ariaLabel={interactive ? (ariaLabel ?? name) : undefined} className={cx('cn-tile', selected && 'cn-tile--selected', className)}>
+    <CardShell
+      {...link}
+      ariaLabel={interactive ? (ariaLabel ?? name) : undefined}
+      className={cx('cn-tile', selected && 'cn-tile--selected', className)}
+    >
       <span className="cn-tile__box" style={size ? { width: size, height: size } : undefined}>
-        {logoUrl ? <img src={logoUrl} alt={interactive ? '' : name} loading="lazy" decoding="async" /> : <span className="cn-tile__name">{name}</span>}
+        {logoUrl ? (
+          <img src={logoUrl} alt={interactive ? '' : name} loading="lazy" decoding="async" />
+        ) : (
+          <span className="cn-tile__name">{name}</span>
+        )}
       </span>
     </CardShell>
   )
@@ -233,12 +313,27 @@ export interface LiveChannelCardProps extends CardLinkProps {
 }
 
 /** Kanal karosu + program adı + "20:00–23:15 · 42 dk kaldı" + ilerleme çubuğu. */
-export function LiveChannelCard({ channelName, channelLogoUrl, programmeTitle, start, end, lockedText, size = 'row', className, ariaLabel, ...link }: LiveChannelCardProps): ReactElement {
+export function LiveChannelCard({
+  channelName,
+  channelLogoUrl,
+  programmeTitle,
+  start,
+  end,
+  lockedText,
+  size = 'row',
+  className,
+  ariaLabel,
+  ...link
+}: LiveChannelCardProps): ReactElement {
   const now = useNow()
   const line = formatLiveLine(start, end, now)
   const label = ariaLabel ?? `${channelName}, şimdi: ${programmeTitle}, ${line}${lockedText ? `, ${lockedText}` : ''}`
   return (
-    <CardShell {...link} ariaLabel={link.to || link.onClick ? label : undefined} className={cx('cn-card', 'cn-livecard', size === 'fill' && 'cn-card--fill', className)}>
+    <CardShell
+      {...link}
+      ariaLabel={link.to || link.onClick ? label : undefined}
+      className={cx('cn-card', 'cn-livecard', size === 'fill' && 'cn-card--fill', className)}
+    >
       <span className="cn-livecard__top">
         <ChannelTile name={channelName} logoUrl={channelLogoUrl} />
         <span className="cn-livecard__text">

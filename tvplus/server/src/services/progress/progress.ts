@@ -4,7 +4,13 @@
  */
 import { norm } from '../../../../shared/text'
 import type { Store } from '../../kernel/store'
-import type { BookmarkRecord, ProgressService, Services, ThumbRatingValue, WatchStatusValue } from '../../kernel/services'
+import type {
+  BookmarkRecord,
+  ProgressService,
+  Services,
+  ThumbRatingValue,
+  WatchStatusValue,
+} from '../../kernel/services'
 
 export interface ProfileState {
   bookmarks: Record<string, BookmarkRecord>
@@ -135,7 +141,10 @@ export function createProgressService(
       }
       const rec: BookmarkRecord = {
         positionSec: Math.max(0, Math.round(positionSec)),
-        runtimeSec: contentRuntime ?? learnedRuntime(videoId) ?? (durationSec && durationSec > 0 ? Math.round(durationSec) : null),
+        runtimeSec:
+          contentRuntime ??
+          learnedRuntime(videoId) ??
+          (durationSec && durationSec > 0 ? Math.round(durationSec) : null),
         lastModified: stamp(),
       }
       write(guid, (p) => {

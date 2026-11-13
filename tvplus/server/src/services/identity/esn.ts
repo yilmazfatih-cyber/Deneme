@@ -61,5 +61,9 @@ export function parseEsn(esn: string): EsnParts | null {
 
 /** Sunucunun bu istek için türettiği ESN. */
 export function deriveEsn(key: Buffer, deviceId: string, userAgent: string | null | undefined): string {
-  return formatEsn({ browser: browserFromUserAgent(userAgent), os: osFromUserAgent(userAgent), deviceHash: deviceHash(key, deviceId) })
+  return formatEsn({
+    browser: browserFromUserAgent(userAgent),
+    os: osFromUserAgent(userAgent),
+    deviceHash: deviceHash(key, deviceId),
+  })
 }

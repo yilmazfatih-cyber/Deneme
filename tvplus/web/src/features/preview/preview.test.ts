@@ -13,7 +13,16 @@ describe('PreviewCache — satır ön yüklemesi', () => {
     c.begin(plan.fetch)
     // İstek yoldayken aynı satırda başka karta geçmek yeni istek doğurmaz
     expect(c.planRow('L', [1, 2, 3, 4], 2, 10)).toEqual({ hit: false, fetch: [], waiting: true })
-    c.settle(plan.fetch, new Map([[1, 'a'], [2, 'b'], [3, 'c'], [4, 'd']]), 100)
+    c.settle(
+      plan.fetch,
+      new Map([
+        [1, 'a'],
+        [2, 'b'],
+        [3, 'c'],
+        [4, 'd'],
+      ]),
+      100,
+    )
     expect(c.planRow('L', [1, 2, 3, 4], 4, 200)).toEqual({ hit: true, fetch: [], waiting: false })
     expect(c.get(4, 200)).toEqual({ value: 'd', ageMs: 100 })
     expect(c.requestedForRow('L')).toEqual([3, 1, 2, 4])
@@ -21,7 +30,14 @@ describe('PreviewCache — satır ön yüklemesi', () => {
 
   it('satıra sonradan yüklenen kartlar bir sonraki ıskada istenir; süresi dolan yeniden', () => {
     const c = new PreviewCache<string>(1000)
-    c.settle([1, 2], new Map([[1, 'a'], [2, 'b']]), 0)
+    c.settle(
+      [1, 2],
+      new Map([
+        [1, 'a'],
+        [2, 'b'],
+      ]),
+      0,
+    )
     expect(c.planRow('L', [1, 2, 3, 4], 3, 10).fetch).toEqual([3, 4])
     expect(c.planRow('L', [1, 2], 1, 2000).fetch).toEqual([1, 2])
   })
@@ -62,7 +78,9 @@ describe('bağlantılar ve tctx', () => {
 
 describe('meta yardımcıları', () => {
   it('oynatma rozetleri ve kaynaklar', () => {
-    expect(playbackBadgeLabels(['VIDEO_HD', 'VIDEO_ULTRA_HD', 'AUDIO_FIVE_DOT_ONE', 'TEXT_SUBTITLES', 'SOURCE_OWN_CDN'])).toEqual(['4K', '5.1', 'Altyazı'])
+    expect(
+      playbackBadgeLabels(['VIDEO_HD', 'VIDEO_ULTRA_HD', 'AUDIO_FIVE_DOT_ONE', 'TEXT_SUBTITLES', 'SOURCE_OWN_CDN']),
+    ).toEqual(['4K', '5.1', 'Altyazı'])
     expect(playbackBadgeLabels(['VIDEO_HD', 'TEXT_CLOSED_CAPTIONS'])).toEqual(['HD', 'Altyazı'])
     expect(sourceLabels(['OWN_CDN', 'YOUTUBE'])).toEqual(["Kendi CDN'imiz", 'YouTube'])
     expect(sourceLabels(['SOURCE_PROGRESSIVE', 'VIDEO_HD', 'PROGRESSIVE'])).toEqual(['Tek dosya'])

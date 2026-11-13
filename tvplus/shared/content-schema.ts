@@ -10,7 +10,8 @@
 import { z } from 'zod'
 import { CHANNEL_CATEGORIES, GENRES, MATURITY, MATURITY_REASONS, MOODS, PRODUCTS } from './taxonomy'
 
-const keysOf = <T extends Record<string, unknown>>(o: T) => Object.keys(o) as [keyof T & string, ...(keyof T & string)[]]
+const keysOf = <T extends Record<string, unknown>>(o: T) =>
+  Object.keys(o) as [keyof T & string, ...(keyof T & string)[]]
 
 export const zTimedText = z.object({
   lang: z.string().min(2), // 'tr', 'en'
@@ -43,13 +44,20 @@ export const zSource = z.discriminatedUnion('type', [
     timedText: z.array(zTimedText).default([]),
   }),
   /** YouTube resmî gömme (IFrame Player API). */
-  z.object({ type: z.literal('YOUTUBE'), videoId: z.string().regex(/^[\w-]{11}$/), startSec: z.number().int().min(0).optional() }),
+  z.object({
+    type: z.literal('YOUTUBE'),
+    videoId: z.string().regex(/^[\w-]{11}$/),
+    startSec: z.number().int().min(0).optional(),
+  }),
   /** Bir YouTube kanalının canlı yayını. */
   z.object({
     type: z.literal('YOUTUBE_LIVE'),
     channelId: z.string().regex(/^UC[\w-]{22}$/),
     /** Biliniyorsa sabit canlı yayın videosu. */
-    videoId: z.string().regex(/^[\w-]{11}$/).optional(),
+    videoId: z
+      .string()
+      .regex(/^[\w-]{11}$/)
+      .optional(),
   }),
   /** Katalogdaki videolardan döngüyle kurulan doğrusal kanal (duvar saatine göre konumlanır). */
   z.object({ type: z.literal('LINEAR'), playlist: z.array(z.number().int()).min(1) }),
@@ -119,8 +127,14 @@ export const zTitle = z
     synopsis: z.string().min(20),
     /** Kart/önizleme özeti (en çok 140 karakter). */
     shortSynopsis: z.string().max(140),
-    genres: z.array(z.enum(keysOf(GENRES))).min(1).max(4),
-    moods: z.array(z.enum(keysOf(MOODS))).max(5).default([]),
+    genres: z
+      .array(z.enum(keysOf(GENRES)))
+      .min(1)
+      .max(4),
+    moods: z
+      .array(z.enum(keysOf(MOODS)))
+      .max(5)
+      .default([]),
     cast: z.array(z.string()).default([]),
     directors: z.array(z.string()).default([]),
     creators: z.array(z.string()).default([]),
@@ -133,7 +147,10 @@ export const zTitle = z
     sources: z.array(zSource).default([]),
     seasons: z.array(zSeason).default([]),
     /** Üzerine gelince oynayan kısa önizleme: hangi kaynağın kaçıncı saniyesinden. */
-    promo: z.object({ source: zSource, offsetSec: z.number().int().min(0).default(0) }).nullable().default(null),
+    promo: z
+      .object({ source: zSource, offsetSec: z.number().int().min(0).default(0) })
+      .nullable()
+      .default(null),
     supplementals: z.array(zSupplemental).default([]),
     artwork: zArtwork,
     license: zLicense,
@@ -149,8 +166,10 @@ export const zTitle = z
     popularity: z.number().min(0).max(100).default(50),
   })
   .superRefine((t, ctx) => {
-    if (t.type === 'MOVIE' && t.sources.length === 0) ctx.addIssue({ code: 'custom', message: 'Filmde en az bir kaynak olmalı' })
-    if (t.type === 'SHOW' && t.seasons.length === 0) ctx.addIssue({ code: 'custom', message: 'Dizide en az bir sezon olmalı' })
+    if (t.type === 'MOVIE' && t.sources.length === 0)
+      ctx.addIssue({ code: 'custom', message: 'Filmde en az bir kaynak olmalı' })
+    if (t.type === 'SHOW' && t.seasons.length === 0)
+      ctx.addIssue({ code: 'custom', message: 'Dizide en az bir sezon olmalı' })
   })
 export type ContentTitle = z.infer<typeof zTitle>
 export type ContentEpisode = z.infer<typeof zEpisode>
@@ -211,7 +230,12 @@ export const zHomeLayout = z.object({
     z.discriminatedUnion('kind', [
       z.object({ kind: z.literal('genre'), genre: z.enum(keysOf(GENRES)), title: z.string().optional() }),
       z.object({ kind: z.literal('collection'), collectionId: z.number().int() }),
-      z.object({ kind: z.literal('curated'), id: z.string(), title: z.string(), videoIds: z.array(z.number().int()).min(3) }),
+      z.object({
+        kind: z.literal('curated'),
+        id: z.string(),
+        title: z.string(),
+        videoIds: z.array(z.number().int()).min(3),
+      }),
     ]),
   ),
 })

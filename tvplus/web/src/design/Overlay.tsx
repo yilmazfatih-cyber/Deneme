@@ -9,7 +9,8 @@ import { cx } from './cx'
 import { Icon } from './Icon'
 import './overlay.css'
 
-const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+const FOCUSABLE =
+  'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
 
 export interface SheetProps {
   open: boolean
@@ -74,7 +75,14 @@ export function Sheet({ open, onClose, title, children, actions, className }: Sh
   return createPortal(
     <div className="cn-sheet-root">
       <div className="cn-scrim" onClick={onClose} aria-hidden="true" />
-      <div ref={panelRef} className={cx('cn-sheet', className)} role="dialog" aria-modal="true" aria-labelledby={titleId} tabIndex={-1}>
+      <div
+        ref={panelRef}
+        className={cx('cn-sheet', className)}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        tabIndex={-1}
+      >
         <span className="cn-sheet__grip" aria-hidden="true" />
         <div className="cn-sheet__head">
           <h2 className="cn-sheet__title" id={titleId}>
@@ -137,7 +145,12 @@ export function ToastHost(): ReactElement {
         <div key={t.id} className="cn-toast">
           {t.kind === 'ok' && <Icon name="check" size={20} className="cn-toast__ok" />}
           <span className="cn-toast__msg">{t.message}</span>
-          <button type="button" className="cn-toast__close" aria-label="Bildirimi kapat" onClick={() => dismissToast(t.id)}>
+          <button
+            type="button"
+            className="cn-toast__close"
+            aria-label="Bildirimi kapat"
+            onClick={() => dismissToast(t.id)}
+          >
             <Icon name="close" size={16} />
           </button>
         </div>

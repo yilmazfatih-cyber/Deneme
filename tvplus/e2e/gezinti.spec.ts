@@ -6,7 +6,11 @@ function countOperation(page: Page, operationName: string) {
   const state = { count: 0, rawQuerySeen: false }
   page.on('request', (req) => {
     if (!req.url().endsWith('/graphql') || req.method() !== 'POST') return
-    const body = req.postDataJSON() as { operationName?: string; query?: string; extensions?: { persistedQuery?: { id?: string } } }
+    const body = req.postDataJSON() as {
+      operationName?: string
+      query?: string
+      extensions?: { persistedQuery?: { id?: string } }
+    }
     if (body.query) state.rawQuerySeen = true
     if (body.operationName === operationName && body.extensions?.persistedQuery?.id) state.count++
   })
@@ -83,7 +87,12 @@ test.describe('web önizleme kartı', () => {
     const links = page.locator('a[href*="/detay/"]')
     await expect(links.nth(3)).toBeVisible()
     const boxes = await links.evaluateAll((els) =>
-      els.map((el, i) => ({ i, y: Math.round(el.getBoundingClientRect().top), x: el.getBoundingClientRect().left, w: el.getBoundingClientRect().width })),
+      els.map((el, i) => ({
+        i,
+        y: Math.round(el.getBoundingClientRect().top),
+        x: el.getBoundingClientRect().left,
+        w: el.getBoundingClientRect().width,
+      })),
     )
     const viewport = page.viewportSize()!
     const byRow = new Map<number, number[]>()
@@ -134,7 +143,8 @@ test.describe('Arama', () => {
     await expect(page.getByRole('heading', { name: 'Şu an canlı' })).toBeVisible()
     const bodies: string[] = []
     page.on('request', (req) => {
-      if (req.url().endsWith('/graphql') && (req.postData() ?? '').includes('SearchPageQueryResults')) bodies.push(req.postData() ?? '')
+      if (req.url().endsWith('/graphql') && (req.postData() ?? '').includes('SearchPageQueryResults'))
+        bodies.push(req.postData() ?? '')
     })
     await page.getByRole('button', { name: 'Yetenek bildirimi' }).click()
     await page.getByRole('switch', { name: /Kanal/ }).or(page.getByLabel(/Kanal/)).first().click()
@@ -166,10 +176,18 @@ test.describe('Kaputun altı', () => {
   test('oynatma sırasında hattın adımları panelde görünür', async ({ page }) => {
     await signIn(page)
     await page.goto('/#/izle/Video:80010001')
-    await expect.poll(async () => page.evaluate(() => document.querySelector('video')?.currentTime ?? 0), { timeout: 60_000 }).toBeGreaterThan(2)
+    await expect
+      .poll(async () => page.evaluate(() => document.querySelector('video')?.currentTime ?? 0), { timeout: 60_000 })
+      .toBeGreaterThan(2)
     await page.keyboard.press('Control+.')
     await page.getByRole('tab', { name: 'Oynatma hattı' }).click()
-    for (const step of ['FTL yoklaması', 'MSL anahtar sağlama', 'Lisanslı manifest', 'Bayt-aralığı akışı', 'TTML altyazı']) {
+    for (const step of [
+      'FTL yoklaması',
+      'MSL anahtar sağlama',
+      'Lisanslı manifest',
+      'Bayt-aralığı akışı',
+      'TTML altyazı',
+    ]) {
       await expect(page.getByText(step, { exact: false }).first()).toBeVisible()
     }
   })

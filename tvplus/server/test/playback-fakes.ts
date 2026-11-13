@@ -21,7 +21,15 @@ export function fakePassport(overrides: Partial<Passport> = {}): Passport {
   return {
     membershipStatus: 'CURRENT_MEMBER',
     account: { accountId: 'acc-1', planName: 'Standart', products: ['temel'] },
-    profile: { guid: 'PROFIL1', accountId: 'acc-1', name: 'Ayşe', avatar: 'avatar-1.png', isKids: false, maturityLevel: 100, language: 'tr' },
+    profile: {
+      guid: 'PROFIL1',
+      accountId: 'acc-1',
+      name: 'Ayşe',
+      avatar: 'avatar-1.png',
+      isKids: false,
+      maturityLevel: 100,
+      language: 'tr',
+    },
     esn: 'TVPWCH-MC-TEST-0001',
     deviceId: 'cihaz-1',
     authURLVerified: true,
@@ -29,7 +37,13 @@ export function fakePassport(overrides: Partial<Passport> = {}): Passport {
   }
 }
 
-export const PLAYABLE_ACCESS: AccessDecision = { state: 'PLAYABLE', reasonText: null, requiredProduct: null, requiredProductName: null, cta: null }
+export const PLAYABLE_ACCESS: AccessDecision = {
+  state: 'PLAYABLE',
+  reasonText: null,
+  requiredProduct: null,
+  requiredProductName: null,
+  cta: null,
+}
 
 export function playable(p: Partial<PlayableVideo> & Pick<PlayableVideo, 'videoId' | 'sources'>): PlayableVideo {
   return {
@@ -104,10 +118,28 @@ export async function generateClip(dir: string, seconds = 6): Promise<string> {
   const { join } = await import('node:path')
   const out = join(dir, 'kaynak.mp4')
   await promisify(execFile)('ffmpeg', [
-    '-hide_banner', '-loglevel', 'error', '-y',
-    '-f', 'lavfi', '-i', `testsrc2=size=256x144:rate=24:duration=${seconds}`,
-    '-f', 'lavfi', '-i', `sine=frequency=440:sample_rate=48000:duration=${seconds}`,
-    '-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '28', '-c:a', 'aac', '-shortest', out,
+    '-hide_banner',
+    '-loglevel',
+    'error',
+    '-y',
+    '-f',
+    'lavfi',
+    '-i',
+    `testsrc2=size=256x144:rate=24:duration=${seconds}`,
+    '-f',
+    'lavfi',
+    '-i',
+    `sine=frequency=440:sample_rate=48000:duration=${seconds}`,
+    '-c:v',
+    'libx264',
+    '-preset',
+    'ultrafast',
+    '-crf',
+    '28',
+    '-c:a',
+    'aac',
+    '-shortest',
+    out,
   ])
   return out
 }

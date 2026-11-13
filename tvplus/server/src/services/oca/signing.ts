@@ -15,7 +15,12 @@ export interface SignedParams {
 }
 export type VerifyResult =
   | { ok: true; o: string; v: number; e: number }
-  | { ok: false; status: 400 | 403; code: 'BAD_SIGNATURE_PARAMS' | 'SIGNATURE_INVALID' | 'URL_EXPIRED'; message: string }
+  | {
+      ok: false
+      status: 400 | 403
+      code: 'BAD_SIGNATURE_PARAMS' | 'SIGNATURE_INVALID' | 'URL_EXPIRED'
+      message: string
+    }
 
 export interface UrlSigner {
   sign(node: string, o: string, v: number, e: number): string
@@ -42,7 +47,12 @@ export function createSigner(config: AppConfig): UrlSigner {
       const eRaw = typeof q.e === 'string' ? q.e : ''
       const t = typeof q.t === 'string' ? q.t : ''
       if (!o || !/^\d+$/.test(vRaw) || !/^\d+$/.test(eRaw) || !t) {
-        return { ok: false, status: 400, code: 'BAD_SIGNATURE_PARAMS', message: 'Adreste o, v, e ve t parametreleri olmalı.' }
+        return {
+          ok: false,
+          status: 400,
+          code: 'BAD_SIGNATURE_PARAMS',
+          message: 'Adreste o, v, e ve t parametreleri olmalı.',
+        }
       }
       const v = Number(vRaw)
       const e = Number(eRaw)

@@ -4,22 +4,13 @@
     "slug": "blender-acik-filmleri",
     "name": "Blender açık filmleri",
     "description": "Blender Vakfı'nın açık lisanslı kısa filmleri.",
-    "videoIds": [
-      80010001,
-      80010002,
-      80010003,
-      80010004,
-      80010005
-    ]
+    "videoIds": [80010001, 80010002, 80010003, 80010004, 80010005]
   },
   {
     "collectionId": 9002,
     "slug": "sessiz-sinema",
     "name": "Sessiz sinema klasikleri",
     "description": "Sinemanın ilk ustalarından iki başyapıt.",
-    "videoIds": [
-      80020001,
-      80020002
-    ]
+    "videoIds": [80020001, 80020002]
   }
 ]

@@ -59,7 +59,15 @@ function place(el: HTMLDivElement, anchor: HTMLElement): void {
   el.style.top = `${Math.round(top)}px`
 }
 
-export function PreviewCard({ ref, info, anchor, onPointerEnter, onPointerLeave, onBlurOut, onClose }: PreviewCardProps): ReactElement {
+export function PreviewCard({
+  ref,
+  info,
+  anchor,
+  onPointerEnter,
+  onPointerLeave,
+  onBlurOut,
+  onClose,
+}: PreviewCardProps): ReactElement {
   const boxRef = useRef<HTMLDivElement | null>(null)
   const { video, failed } = usePreviewVideo(info.videoId)
 
@@ -133,17 +141,35 @@ function PreviewMedia({ info, video }: { info: PreviewTargetInfo; video: MiniMod
 
   return (
     <div className="pv-media">
-      {still ? <img className="pv-media__still" src={still} alt="" /> : <span className="pv-media__empty">{info.title}</span>}
+      {still ? (
+        <img className="pv-media__still" src={still} alt="" />
+      ) : (
+        <span className="pv-media__empty">{info.title}</span>
+      )}
       {promo && armed && !broken && (
         <div className={playing ? 'pv-media__clip pv-media__clip--on' : 'pv-media__clip'}>
-          <PreviewPlayer viewableId={promo.viewableId} offsetSec={promo.offset} muted onPlaying={() => setPlaying(true)} onError={() => setBroken(true)} />
+          <PreviewPlayer
+            viewableId={promo.viewableId}
+            offsetSec={promo.offset}
+            muted
+            onPlaying={() => setPlaying(true)}
+            onError={() => setBroken(true)}
+          />
         </div>
       )}
     </div>
   )
 }
 
-function PreviewBody({ video, info, onClose }: { video: MiniModalVideo; info: PreviewTargetInfo; onClose: () => void }): ReactElement {
+function PreviewBody({
+  video,
+  info,
+  onClose,
+}: {
+  video: MiniModalVideo
+  info: PreviewTargetInfo
+  onClose: () => void
+}): ReactElement {
   const list = usePlaylistToggle(video.videoId, video.isInPlaylist, info.tctx)
   const thumb = useThumbToggle(video.videoId, video.thumbRating, info.tctx)
   const playable = video.access.state === 'PLAYABLE'
@@ -156,8 +182,13 @@ function PreviewBody({ video, info, onClose }: { video: MiniModalVideo; info: Pr
   const badges = playbackBadgeLabels(video.playbackBadges)
   const sources = sourceLabels(video.sourceKinds.length ? video.sourceKinds : video.playbackBadges)
   const tags = video.textEvidence.map((t) => t.text).filter(Boolean)
-  const epLine = ep ? joinMeta([ep.numberLabel, ep.title, resume ? remainingText(ep.bookmark?.positionSec, ep.runtimeSec) : null]) : null
-  const movieLeft = !isShow && resume ? remainingText(video.bookmark?.positionSec, video.bookmark?.runtimeSec ?? video.runtimeSec) : null
+  const epLine = ep
+    ? joinMeta([ep.numberLabel, ep.title, resume ? remainingText(ep.bookmark?.positionSec, ep.runtimeSec) : null])
+    : null
+  const movieLeft =
+    !isShow && resume
+      ? remainingText(video.bookmark?.positionSec, video.bookmark?.runtimeSec ?? video.runtimeSec)
+      : null
 
   return (
     <div className="pv-body">
@@ -177,12 +208,28 @@ function PreviewBody({ video, info, onClose }: { video: MiniModalVideo; info: Pr
             <Icon name="play" size={24} />
           </Link>
         ) : (
-          <Button size="md" to={detail} icon="info" onClick={() => logEvent('click', { videoId: video.videoId, action: 'detail', from: 'preview' }, info.tctx)}>
+          <Button
+            size="md"
+            to={detail}
+            icon="info"
+            onClick={() => logEvent('click', { videoId: video.videoId, action: 'detail', from: 'preview' }, info.tctx)}
+          >
             Detay
           </Button>
         )}
-        <IconButton icon={list.on ? 'check' : 'plus'} label={list.on ? 'Listemde' : 'Listeme ekle'} pressed={list.on} onClick={list.toggle} />
-        <IconButton icon="like" label="Beğen" pressed={thumb.on} onClick={thumb.toggle} className={thumb.on ? 'pv-on' : undefined} />
+        <IconButton
+          icon={list.on ? 'check' : 'plus'}
+          label={list.on ? 'Listemde' : 'Listeme ekle'}
+          pressed={list.on}
+          onClick={list.toggle}
+        />
+        <IconButton
+          icon="like"
+          label="Beğen"
+          pressed={thumb.on}
+          onClick={thumb.toggle}
+          className={thumb.on ? 'pv-on' : undefined}
+        />
         <span className="pv-spacer" />
         {playable && (
           <IconButton
@@ -200,7 +247,10 @@ function PreviewBody({ video, info, onClose }: { video: MiniModalVideo; info: Pr
       {epLine && <p className="cn-meta pv-line">{epLine}</p>}
       {movieLeft && <p className="cn-meta pv-line">{movieLeft}</p>}
       <div className="pv-meta">
-        <AdvisoryBadge certification={video.contentAdvisory.certificationValue} reasons={video.contentAdvisory.reasons ?? []} />
+        <AdvisoryBadge
+          certification={video.contentAdvisory.certificationValue}
+          reasons={video.contentAdvisory.reasons ?? []}
+        />
         {video.displayRuntime && <span className="pv-meta__text">{video.displayRuntime}</span>}
         {badges.map((b) => (
           <span key={b} className="pv-tag">

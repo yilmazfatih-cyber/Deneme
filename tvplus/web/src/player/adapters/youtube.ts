@@ -5,7 +5,15 @@
  */
 import type { EmbedManifest } from '../../../../shared/playback'
 import { devbus } from '../../lib/devbus'
-import type { AdapterEvent, AdapterOptions, AudioOption, PlaybackState, PlayerAdapter, PlayerStats, QualityOption } from './types'
+import type {
+  AdapterEvent,
+  AdapterOptions,
+  AudioOption,
+  PlaybackState,
+  PlayerAdapter,
+  PlayerStats,
+  QualityOption,
+} from './types'
 
 /* ───────────── IFrame API türleri (yalnız kullandıklarımız) ───────────── */
 interface YTPlayer {
@@ -62,7 +70,12 @@ export function loadYouTubeApi(): Promise<YTNamespace> {
     window.onYouTubeIframeAPIReady = () => {
       clearTimeout(timer)
       prev?.()
-      devbus.emit('embed', 'YouTube API yüklendi', { url: API_URL, videoId: null, state: 'UNSTARTED', error: null }, { ms: performance.now() - t0 })
+      devbus.emit(
+        'embed',
+        'YouTube API yüklendi',
+        { url: API_URL, videoId: null, state: 'UNSTARTED', error: null },
+        { ms: performance.now() - t0 },
+      )
       if (window.YT) resolve(window.YT)
       else reject(new Error('YouTube API eksik'))
     }
@@ -79,7 +92,14 @@ export function loadYouTubeApi(): Promise<YTNamespace> {
   return apiPromise
 }
 
-const STATE_NAMES: Record<number, string> = { [-1]: 'UNSTARTED', 0: 'ENDED', 1: 'PLAYING', 2: 'PAUSED', 3: 'BUFFERING', 5: 'CUED' }
+const STATE_NAMES: Record<number, string> = {
+  [-1]: 'UNSTARTED',
+  0: 'ENDED',
+  1: 'PLAYING',
+  2: 'PAUSED',
+  3: 'BUFFERING',
+  5: 'CUED',
+}
 
 /** YouTube hata kodları → Türkçe ileti. */
 export function youTubeErrorMessage(code: number): string {
@@ -123,9 +143,11 @@ export class YouTubeAdapter implements PlayerAdapter {
 
   /** "YouTube'da aç" bağlantısı */
   externalUrl(): string {
-    if (this.mode === 'live' && this.manifest.liveChannelId) return `https://www.youtube.com/channel/${encodeURIComponent(this.manifest.liveChannelId)}/live`
+    if (this.mode === 'live' && this.manifest.liveChannelId)
+      return `https://www.youtube.com/channel/${encodeURIComponent(this.manifest.liveChannelId)}/live`
     if (this.manifest.videoId) return `https://www.youtube.com/watch?v=${encodeURIComponent(this.manifest.videoId)}`
-    if (this.manifest.liveChannelId) return `https://www.youtube.com/channel/${encodeURIComponent(this.manifest.liveChannelId)}/live`
+    if (this.manifest.liveChannelId)
+      return `https://www.youtube.com/channel/${encodeURIComponent(this.manifest.liveChannelId)}/live`
     return 'https://www.youtube.com/'
   }
 
@@ -156,7 +178,10 @@ export class YouTubeAdapter implements PlayerAdapter {
 
   private failWith(code: string, message: string): void {
     this.setState('error')
-    this.emit({ type: 'error', error: { code, message, retryable: code === 'API_LOAD', externalUrl: this.externalUrl() } })
+    this.emit({
+      type: 'error',
+      error: { code, message, retryable: code === 'API_LOAD', externalUrl: this.externalUrl() },
+    })
   }
 
   async mount(container: HTMLElement): Promise<void> {
@@ -194,7 +219,12 @@ export class YouTubeAdapter implements PlayerAdapter {
       onError: (e) => {
         this.embedEvent(this.lastState, e.data)
         if (this.mode === 'live' && this.manifest.videoId) {
-          devbus.emit('embed', 'YouTube: canlı gömme hata verdi, videoya düşülüyor', { videoId: this.manifest.videoId, state: this.lastState, error: e.data }, { ok: false })
+          devbus.emit(
+            'embed',
+            'YouTube: canlı gömme hata verdi, videoya düşülüyor',
+            { videoId: this.manifest.videoId, state: this.lastState, error: e.data },
+            { ok: false },
+          )
           try {
             this.player?.destroy()
           } catch {

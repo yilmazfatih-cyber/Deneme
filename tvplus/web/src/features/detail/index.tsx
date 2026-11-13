@@ -112,13 +112,25 @@ export function DetailPage(): ReactElement {
   const tctx = sp.get('tctx')
   const videoId = Number(params.videoId)
   const valid = Number.isInteger(videoId) && videoId > 0
-  const { data, error, loading, refetch } = useGql<DetailData, { videoId: number }>('DetailModal', { videoId }, { enabled: valid, ttlMs: 30_000 })
+  const { data, error, loading, refetch } = useGql<DetailData, { videoId: number }>(
+    'DetailModal',
+    { videoId },
+    { enabled: valid, ttlMs: 30_000 },
+  )
   const video = data?.video ?? null
   useDocumentTitle(video?.title)
 
   if (!valid || (data && !video)) return <NotFound />
   if (!video) {
-    if (error && !loading) return <ErrorState size="page" title="Bu sayfa yüklenemedi" message="Bağlantını kontrol et ve tekrar dene." onRetry={refetch} />
+    if (error && !loading)
+      return (
+        <ErrorState
+          size="page"
+          title="Bu sayfa yüklenemedi"
+          message="Bağlantını kontrol et ve tekrar dene."
+          onRetry={refetch}
+        />
+      )
     return <DetailSkeleton />
   }
   return (
@@ -164,7 +176,12 @@ function DetailBody({ video, tctx }: { video: DetailVideo; tctx: string | null }
     bookmark: video.bookmark,
     runtimeSec: video.runtimeSec,
     currentEpisode: video.currentEpisode
-      ? { videoId: video.currentEpisode.videoId, numberLabel: video.currentEpisode.numberLabel, runtimeSec: video.currentEpisode.runtimeSec, bookmark: video.currentEpisode.bookmark }
+      ? {
+          videoId: video.currentEpisode.videoId,
+          numberLabel: video.currentEpisode.numberLabel,
+          runtimeSec: video.currentEpisode.runtimeSec,
+          bookmark: video.currentEpisode.bookmark,
+        }
       : null,
     tctx,
   })
@@ -179,12 +196,19 @@ function DetailBody({ video, tctx }: { video: DetailVideo; tctx: string | null }
   }
 
   useEffect(() => {
-    if (video.access.state !== 'PLAYABLE') logEvent('impression', { videoId: video.videoId, context: 'detail', access: video.access.state }, tctx)
+    if (video.access.state !== 'PLAYABLE')
+      logEvent('impression', { videoId: video.videoId, context: 'detail', access: video.access.state }, tctx)
   }, [video.videoId, video.access.state, tctx])
 
   return (
     <article className="cn-page dt-page" aria-labelledby="dt-title">
-      <Hero video={video} action={action} tctx={tctx} onUpsell={() => setSheet(true)} onSimilars={() => goSimilars(false)} />
+      <Hero
+        video={video}
+        action={action}
+        tctx={tctx}
+        onUpsell={() => setSheet(true)}
+        onSimilars={() => goSimilars(false)}
+      />
       <Info video={video} />
       {video.__typename === 'Show' && video.seasons && <Episodes video={video} tctx={tctx} />}
       <Extras video={video} tctx={tctx} />
@@ -230,7 +254,19 @@ function DetailBody({ video, tctx }: { video: DetailVideo; tctx: string | null }
 
 /* ───────────── Üst bölüm ───────────── */
 
-function Hero({ video, action, tctx, onUpsell, onSimilars }: { video: DetailVideo; action: PrimaryAction; tctx: string | null; onUpsell: () => void; onSimilars: () => void }): ReactElement {
+function Hero({
+  video,
+  action,
+  tctx,
+  onUpsell,
+  onSimilars,
+}: {
+  video: DetailVideo
+  action: PrimaryAction
+  tctx: string | null
+  onUpsell: () => void
+  onSimilars: () => void
+}): ReactElement {
   const list = usePlaylistToggle(video.videoId, video.isInPlaylist, tctx)
   const thumb = useThumbToggle(video.videoId, video.thumbRating, tctx)
   const art = video.billboard?.url ?? video.storyArt?.url ?? null
@@ -282,27 +318,44 @@ function Hero({ video, action, tctx, onUpsell, onSimilars }: { video: DetailVide
         {video.originalTitle && video.originalTitle !== video.title && <p className="cn-meta">{video.originalTitle}</p>}
         <div className="dt-meta">
           {meta && <span className="dt-meta__text">{meta}</span>}
-          <AdvisoryBadge certification={video.contentAdvisory.certificationValue} reasons={video.contentAdvisory.reasons ?? []} />
+          <AdvisoryBadge
+            certification={video.contentAdvisory.certificationValue}
+            reasons={video.contentAdvisory.reasons ?? []}
+          />
           {badges.map((b) => (
             <span key={b} className="dt-tag">
               {b}
             </span>
           ))}
         </div>
-        {(action.kind === 'upsell' || action.kind === 'unavailable') && action.reasonText && <AccessLock text={action.reasonText} />}
+        {(action.kind === 'upsell' || action.kind === 'unavailable') && action.reasonText && (
+          <AccessLock text={action.reasonText} />
+        )}
         <div className="dt-actions">
           {primary}
           {action.kind === 'resume' && (
-            <Button variant="secondary" icon="restart" to={action.restartTo} onClick={() => playClick(action.playVideoId, 'restart')}>
+            <Button
+              variant="secondary"
+              icon="restart"
+              to={action.restartTo}
+              onClick={() => playClick(action.playVideoId, 'restart')}
+            >
               Baştan başlat
             </Button>
           )}
-          <Button variant="secondary" icon={list.on ? 'check' : 'plus'} onClick={list.toggle} aria-label={list.on ? 'Listemde, listeden çıkar' : 'Listeme ekle'}>
+          <Button
+            variant="secondary"
+            icon={list.on ? 'check' : 'plus'}
+            onClick={list.toggle}
+            aria-label={list.on ? 'Listemde, listeden çıkar' : 'Listeme ekle'}
+          >
             {list.on ? 'Listemde' : 'Listeme ekle'}
           </Button>
           <IconButton icon="like" label="Beğen" pressed={thumb.on} onClick={thumb.toggle} className="pv-pressable" />
         </div>
-        {(action.kind === 'play' || action.kind === 'resume') && action.hint && <p className="cn-meta dt-hint">{action.kind === 'play' ? `Sıradaki bölüm: ${action.hint}` : action.hint}</p>}
+        {(action.kind === 'play' || action.kind === 'resume') && action.hint && (
+          <p className="cn-meta dt-hint">{action.kind === 'play' ? `Sıradaki bölüm: ${action.hint}` : action.hint}</p>
+        )}
       </div>
     </header>
   )
@@ -401,29 +454,54 @@ function Episodes({ video, tctx }: { video: DetailVideo; tctx: string | null }):
       </div>
       <ol className="cn-gutter-x dt-eps">
         {shown.episodes.map((ep) => (
-          <EpisodeItem key={ep.videoId} ep={ep} current={ep.videoId === current?.videoId} tctx={tctx} parentId={video.videoId} />
+          <EpisodeItem
+            key={ep.videoId}
+            ep={ep}
+            current={ep.videoId === current?.videoId}
+            tctx={tctx}
+            parentId={video.videoId}
+          />
         ))}
       </ol>
     </section>
   )
 }
 
-function EpisodeItem({ ep, current, tctx, parentId }: { ep: EpisodeData; current: boolean; tctx: string | null; parentId: number }): ReactElement {
+function EpisodeItem({
+  ep,
+  current,
+  tctx,
+  parentId,
+}: {
+  ep: EpisodeData
+  current: boolean
+  tctx: string | null
+  parentId: number
+}): ReactElement {
   const playable = ep.access.state === 'PLAYABLE'
   const locked = lockedTextOf(ep.access)
   const runtime = formatRuntime(ep.runtimeSec)
-  const left = ep.bookmark && ep.bookmark.progress > 0 && ep.bookmark.progress < 0.95 ? remainingText(ep.bookmark.positionSec, ep.runtimeSec) : null
+  const left =
+    ep.bookmark && ep.bookmark.progress > 0 && ep.bookmark.progress < 0.95
+      ? remainingText(ep.bookmark.positionSec, ep.runtimeSec)
+      : null
   const label = ep.numberLabel ?? `B${ep.number}`
   const content = (
     <>
       <span className="dt-ep__media">
-        {ep.still?.url ? <img src={ep.still.url} alt="" loading="lazy" /> : <span className="dt-ep__noimg">{label}</span>}
+        {ep.still?.url ? (
+          <img src={ep.still.url} alt="" loading="lazy" />
+        ) : (
+          <span className="dt-ep__noimg">{label}</span>
+        )}
         {playable && (
           <span className="dt-ep__play" aria-hidden="true">
             <Icon name="play" size={20} />
           </span>
         )}
-        {ep.bookmark && ep.bookmark.progress > 0 && <ProgressBar value={ep.bookmark.progress} label="İzleme ilerlemesi" className="dt-ep__progress" />}
+        {ep.bookmark && ep.bookmark.progress > 0 && (
+          <ProgressBar value={ep.bookmark.progress} label="İzleme ilerlemesi" className="dt-ep__progress" />
+        )}
       </span>
       <span className="dt-ep__text">
         <span className="dt-ep__top">
@@ -445,7 +523,11 @@ function EpisodeItem({ ep, current, tctx, parentId }: { ep: EpisodeData; current
           aria-label={`${label}, ${ep.title}, oynat${left ? `, ${left}` : ''}`}
           onClick={() => {
             notePlaybackIntent(ep.videoId, parentId)
-            logEvent('click', { videoId: parentId, playVideoId: ep.videoId, action: 'play-episode', from: 'detail' }, tctx)
+            logEvent(
+              'click',
+              { videoId: parentId, playVideoId: ep.videoId, action: 'play-episode', from: 'detail' },
+              tctx,
+            )
           }}
         >
           {content}
@@ -471,10 +553,19 @@ function Extras({ video, tctx }: { video: DetailVideo; tctx: string | null }): R
             key={s.videoId}
             title={s.title}
             imageUrl={s.storyArt?.url}
-            meta={joinMeta([s.subType === 'TRAILER' ? 'Fragman' : s.subType === 'TEASER' ? 'Tanıtım' : 'Kamera arkası', s.displayRuntime])}
+            meta={joinMeta([
+              s.subType === 'TRAILER' ? 'Fragman' : s.subType === 'TEASER' ? 'Tanıtım' : 'Kamera arkası',
+              s.displayRuntime,
+            ])}
             lockedText={lockedTextOf(s.access)}
             to={s.access.state === 'PLAYABLE' ? playPath(s.videoId, tctx) : undefined}
-            onClick={() => logEvent('click', { videoId: video.videoId, playVideoId: s.videoId, action: 'play-extra', from: 'detail' }, tctx)}
+            onClick={() =>
+              logEvent(
+                'click',
+                { videoId: video.videoId, playVideoId: s.videoId, action: 'play-extra', from: 'detail' },
+                tctx,
+              )
+            }
           />
         ))}
       </HScroll>
@@ -484,7 +575,17 @@ function Extras({ video, tctx }: { video: DetailVideo; tctx: string | null }): R
 
 /* ───────────── Benzerleri ───────────── */
 
-function Similars({ ref, video, onlyMine, onToggleMine }: { ref: Ref<HTMLElement>; video: DetailVideo; onlyMine: boolean; onToggleMine: () => void }): ReactElement | null {
+function Similars({
+  ref,
+  video,
+  onlyMine,
+  onToggleMine,
+}: {
+  ref: Ref<HTMLElement>
+  video: DetailVideo
+  onlyMine: boolean
+  onToggleMine: () => void
+}): ReactElement | null {
   const all = video.similars ?? []
   const items = useMemo(() => (onlyMine ? all.filter((s) => s.access.state === 'PLAYABLE') : all), [all, onlyMine])
   if (!all.length) return null
@@ -506,7 +607,16 @@ function Similars({ ref, video, onlyMine, onToggleMine }: { ref: Ref<HTMLElement
           const locked = lockedTextOf(s.access)
           return (
             <li key={s.videoId}>
-              <PreviewTarget info={{ rowId, videoId: s.videoId, getRowVideoIds: ids, tctx: t, title: s.title, imageUrl: s.storyArt?.url ?? s.boxart?.url }}>
+              <PreviewTarget
+                info={{
+                  rowId,
+                  videoId: s.videoId,
+                  getRowVideoIds: ids,
+                  tctx: t,
+                  title: s.title,
+                  imageUrl: s.storyArt?.url ?? s.boxart?.url,
+                }}
+              >
                 <PosterCard
                   size="fill"
                   showTitle

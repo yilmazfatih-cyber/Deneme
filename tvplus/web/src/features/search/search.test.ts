@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest'
-import { ALL_KINDS, buildDeclaration, declarationSignature, lookupTreatment, TREATMENT_NAMES, type EntityKindName } from './capabilities'
+import {
+  ALL_KINDS,
+  buildDeclaration,
+  declarationSignature,
+  lookupTreatment,
+  TREATMENT_NAMES,
+  type EntityKindName,
+} from './capabilities'
 import { activeFilterCount, DEFAULT_FILTERS, filtersInput, posterArtwork, selectBanner } from './searchModel'
 import { normalizeTerm, searchCacheKey, TtlCache } from './ttlCache'
 
@@ -11,7 +18,12 @@ describe('yetenek tablosu → bildirim → çizici', () => {
       capabilitiesBySection: {
         searchLive: {
           capabilitiesBySectionTreatment: {
-            standard: { capabilitiesByEntityTreatment: { standardChannelTile: { canHandleEntityKinds: ['CHANNEL'] }, standardAiringRow: { canHandleEntityKinds: ['PROGRAM_AIRING'] } } },
+            standard: {
+              capabilitiesByEntityTreatment: {
+                standardChannelTile: { canHandleEntityKinds: ['CHANNEL'] },
+                standardAiringRow: { canHandleEntityKinds: ['PROGRAM_AIRING'] },
+              },
+            },
           },
         },
         searchList: {
@@ -25,19 +37,28 @@ describe('yetenek tablosu → bildirim → çizici', () => {
             },
           },
         },
-        searchGallery: { capabilitiesBySectionTreatment: { standard: { capabilitiesByEntityTreatment: { standardBoxshot: { canHandleEntityKinds: ['VIDEO'] } } } } },
+        searchGallery: {
+          capabilitiesBySectionTreatment: {
+            standard: { capabilitiesByEntityTreatment: { standardBoxshot: { canHandleEntityKinds: ['VIDEO'] } } },
+          },
+        },
       },
     })
   })
 
   it('tablodaki her biçim bildirimde bir kez yer alır', () => {
-    const declared = Object.values(all.capabilitiesBySection).flatMap((s) => Object.keys(s!.capabilitiesBySectionTreatment.standard.capabilitiesByEntityTreatment))
+    const declared = Object.values(all.capabilitiesBySection).flatMap((s) =>
+      Object.keys(s!.capabilitiesBySectionTreatment.standard.capabilitiesByEntityTreatment),
+    )
     expect([...declared].sort()).toEqual([...TREATMENT_NAMES].sort())
   })
 
   it('bir tür kapanınca biçimi ve boş kalan bölüm bildirimden çıkar', () => {
     const noChannel = buildDeclaration(new Set<EntityKindName>(ALL_KINDS.filter((k) => k !== 'CHANNEL')))
-    expect(noChannel.capabilitiesBySection.searchLive?.capabilitiesBySectionTreatment.standard.capabilitiesByEntityTreatment.standardChannelTile).toBeUndefined()
+    expect(
+      noChannel.capabilitiesBySection.searchLive?.capabilitiesBySectionTreatment.standard.capabilitiesByEntityTreatment
+        .standardChannelTile,
+    ).toBeUndefined()
     const onlyVideo = buildDeclaration(new Set<EntityKindName>(['VIDEO']))
     expect(Object.keys(onlyVideo.capabilitiesBySection)).toEqual(['searchList', 'searchGallery'])
     expect(declarationSignature(onlyVideo)).toBe('searchList:standardSuggestion|searchGallery:standardBoxshot')
@@ -108,17 +129,32 @@ describe('TTL önbelleği', () => {
 
 describe('düzeltme şeridi', () => {
   it('CORRECTED', () => {
-    expect(selectBanner({ searchTerm: 'sitnel', isFallback: false, correction: { mode: 'CORRECTED', originalTerm: 'sitnel', correctedTerm: 'sintel' } })).toEqual({
+    expect(
+      selectBanner({
+        searchTerm: 'sitnel',
+        isFallback: false,
+        correction: { mode: 'CORRECTED', originalTerm: 'sitnel', correctedTerm: 'sintel' },
+      }),
+    ).toEqual({
       kind: 'corrected',
       corrected: 'sintel',
       original: 'sitnel',
     })
   })
   it('MIXED', () => {
-    expect(selectBanner({ searchTerm: 'kuzgn', isFallback: false, correction: { mode: 'MIXED', originalTerm: 'kuzgn', correctedTerm: 'kuzgun' } })).toEqual({ kind: 'mixed', corrected: 'kuzgun' })
+    expect(
+      selectBanner({
+        searchTerm: 'kuzgn',
+        isFallback: false,
+        correction: { mode: 'MIXED', originalTerm: 'kuzgn', correctedTerm: 'kuzgun' },
+      }),
+    ).toEqual({ kind: 'mixed', corrected: 'kuzgun' })
   })
   it('yedek sayfa: terim varsa "sonuç yok", boş terimde şerit yok', () => {
-    expect(selectBanner({ searchTerm: 'xqzzv', isFallback: true, correction: null })).toEqual({ kind: 'fallback', term: 'xqzzv' })
+    expect(selectBanner({ searchTerm: 'xqzzv', isFallback: true, correction: null })).toEqual({
+      kind: 'fallback',
+      term: 'xqzzv',
+    })
     expect(selectBanner({ searchTerm: '  ', isFallback: true, correction: null })).toBe(null)
     expect(selectBanner({ searchTerm: 'sintel', isFallback: false, correction: null })).toBe(null)
   })
@@ -135,6 +171,8 @@ describe('süzgeçler ve görsel', () => {
     const boxart = { key: 'b', type: 'BOXART', url: '/b', width: 368, height: 552 }
     const video = { boxart } as never
     expect(posterArtwork({ contextualArtwork: { ...boxart, url: '/c' }, video })).toBe('/c')
-    expect(posterArtwork({ contextualArtwork: { key: 's', type: 'STORY_ART', url: '/s', width: 608, height: 342 }, video })).toBe('/b')
+    expect(
+      posterArtwork({ contextualArtwork: { key: 's', type: 'STORY_ART', url: '/s', width: 608, height: 342 }, video }),
+    ).toBe('/b')
   })
 })

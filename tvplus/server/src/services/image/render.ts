@@ -52,7 +52,10 @@ interface RawImage {
 
 /** Kaynağı çözer (EXIF yönü uygulanır) ve ham piksele çevirir. */
 async function decode(buf: Buffer): Promise<RawImage & { hasAlpha: boolean }> {
-  const { data, info } = await sharp(buf, { failOn: 'error', limitInputPixels: 50_000_000 }).rotate().raw().toBuffer({ resolveWithObject: true })
+  const { data, info } = await sharp(buf, { failOn: 'error', limitInputPixels: 50_000_000 })
+    .rotate()
+    .raw()
+    .toBuffer({ resolveWithObject: true })
   let hasAlpha = false
   if (info.channels === 4 || info.channels === 2) {
     // Gerçekten saydam piksel var mı (saydamlık kanalı olup hepsi opak olan PNG'ler de vardır)
@@ -65,7 +68,8 @@ async function decode(buf: Buffer): Promise<RawImage & { hasAlpha: boolean }> {
   return { data, width: info.width, height: info.height, channels: info.channels, hasAlpha }
 }
 
-const rawSharp = (img: RawImage) => sharp(img.data, { raw: { width: img.width, height: img.height, channels: img.channels } })
+const rawSharp = (img: RawImage) =>
+  sharp(img.data, { raw: { width: img.width, height: img.height, channels: img.channels } })
 
 /**
  * Siyah şerit (letterbox/pillarbox) ayıklama: YouTube hqdefault 4:3 küçük resimlerinde 16:9 videonun üstünde ve
@@ -137,7 +141,9 @@ async function containPadded(img: RawImage, w: number, h: number, padRatio: numb
     .png()
     .toBuffer({ resolveWithObject: true })
   return sharp({ create: { width: w, height: h, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } } })
-    .composite([{ input: inner.data, left: Math.round((w - inner.info.width) / 2), top: Math.round((h - inner.info.height) / 2) }])
+    .composite([
+      { input: inner.data, left: Math.round((w - inner.info.width) / 2), top: Math.round((h - inner.info.height) / 2) },
+    ])
     .png()
     .toBuffer()
 }
@@ -146,18 +152,46 @@ const svgDoc = (w: number, h: number, body: string) =>
   `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">${body}</svg>`
 
 /** Dikey afişte başlık bloğu (+ isteğe bağlı alt başlık), alta ortalı. `bottom` bloğun alt kenarı. */
-async function posterTitleSvg(w: number, h: number, title: string, subtitle: string | null, bottom: number): Promise<string> {
+async function posterTitleSvg(
+  w: number,
+  h: number,
+  title: string,
+  subtitle: string | null,
+  bottom: number,
+): Promise<string> {
   const padX = w * 0.08
   const maxWidth = w - 2 * padX
   let sub = ''
   let subH = 0
   if (subtitle) {
-    const s = await fitText(subtitle, { style: SUB_STYLE, maxWidth, maxHeight: h * 0.08, maxLines: 1, maxSize: w * 0.052, minSize: w * 0.036, lineHeight: 1.2 })
+    const s = await fitText(subtitle, {
+      style: SUB_STYLE,
+      maxWidth,
+      maxHeight: h * 0.08,
+      maxLines: 1,
+      maxSize: w * 0.052,
+      minSize: w * 0.036,
+      lineHeight: 1.2,
+    })
     subH = s.blockHeight + h * 0.012
     sub = textBlockSvg(s, SUB_STYLE, { align: 'middle', x: w / 2, top: bottom - s.blockHeight, fill: TEXT_2 })
   }
-  const t = await fitText(title, { style: TITLE_STYLE, maxWidth, maxHeight: h * 0.36, maxLines: 3, maxSize: w * 0.145, minSize: w * 0.06, lineHeight: 1.04 })
-  const titleSvg = textBlockSvg(t, TITLE_STYLE, { align: 'middle', x: w / 2, top: bottom - subH - t.blockHeight, fill: TEXT_1, filter: 'url(#tshadow)' })
+  const t = await fitText(title, {
+    style: TITLE_STYLE,
+    maxWidth,
+    maxHeight: h * 0.36,
+    maxLines: 3,
+    maxSize: w * 0.145,
+    minSize: w * 0.06,
+    lineHeight: 1.04,
+  })
+  const titleSvg = textBlockSvg(t, TITLE_STYLE, {
+    align: 'middle',
+    x: w / 2,
+    top: bottom - subH - t.blockHeight,
+    fill: TEXT_1,
+    filter: 'url(#tshadow)',
+  })
   return titleSvg + sub
 }
 
@@ -169,12 +203,36 @@ async function landscapeTitleSvg(w: number, h: number, title: string, subtitle: 
   let sub = ''
   let subH = 0
   if (subtitle) {
-    const s = await fitText(subtitle, { style: SUB_STYLE, maxWidth, maxHeight: h * 0.12, maxLines: 1, maxSize: h * 0.065, minSize: h * 0.042, lineHeight: 1.2 })
+    const s = await fitText(subtitle, {
+      style: SUB_STYLE,
+      maxWidth,
+      maxHeight: h * 0.12,
+      maxLines: 1,
+      maxSize: h * 0.065,
+      minSize: h * 0.042,
+      lineHeight: 1.2,
+    })
     subH = s.blockHeight + h * 0.02
     sub = textBlockSvg(s, SUB_STYLE, { align: 'start', x: padX, top: bottom - s.blockHeight, fill: TEXT_2 })
   }
-  const t = await fitText(title, { style: TITLE_STYLE, maxWidth, maxHeight: h * 0.5, maxLines: 3, maxSize: h * 0.17, minSize: h * 0.075, lineHeight: 1.04 })
-  return textBlockSvg(t, TITLE_STYLE, { align: 'start', x: padX, top: bottom - subH - t.blockHeight, fill: TEXT_1, filter: 'url(#tshadow)' }) + sub
+  const t = await fitText(title, {
+    style: TITLE_STYLE,
+    maxWidth,
+    maxHeight: h * 0.5,
+    maxLines: 3,
+    maxSize: h * 0.17,
+    minSize: h * 0.075,
+    lineHeight: 1.04,
+  })
+  return (
+    textBlockSvg(t, TITLE_STYLE, {
+      align: 'start',
+      x: padX,
+      top: bottom - subH - t.blockHeight,
+      fill: TEXT_1,
+      filter: 'url(#tshadow)',
+    }) + sub
+  )
 }
 
 const shadowFilter = (h: number) =>
@@ -187,7 +245,8 @@ async function generatedCover(input: RenderInput): Promise<Buffer> {
   const p = paletteFromSeed(source.seed || source.title)
   let text = ''
   if (type === 'BOXART') text = await posterTitleSvg(w, h, source.title, source.subtitle, h * 0.92)
-  else if (type === 'STORY_ART' || type === 'EPISODE_STILL') text = await landscapeTitleSvg(w, h, source.title, source.subtitle)
+  else if (type === 'STORY_ART' || type === 'EPISODE_STILL')
+    text = await landscapeTitleSvg(w, h, source.title, source.subtitle)
   // BILLBOARD yazısız: vitrinde başlık logosu (TITLE_LOGO) ve metinler arayüzce üstüne yerleştirilir.
   const shade = type === 'BILLBOARD' ? 'left' : 'bottom'
   const svg = svgDoc(w, h, `<defs>${shadowFilter(h)}</defs>` + generatedBackgroundSvg(w, h, p, { shade }) + text)
@@ -212,7 +271,12 @@ async function titleLogo(input: RenderInput): Promise<Buffer> {
     `<filter id="ds" x="-10%" y="-30%" width="120%" height="160%">` +
     `<feDropShadow dx="0" dy="${(h * 0.012).toFixed(2)}" stdDeviation="${(h * 0.022).toFixed(2)}" flood-color="#000" flood-opacity="0.55"/></filter>`
   const top = (h - t.blockHeight) / 2
-  const svg = svgDoc(w, h, `<defs>${filter}</defs>` + textBlockSvg(t, LOGO_STYLE, { align: 'start', x: padX, top, fill: TEXT_1, filter: 'url(#ds)' }))
+  const svg = svgDoc(
+    w,
+    h,
+    `<defs>${filter}</defs>` +
+      textBlockSvg(t, LOGO_STYLE, { align: 'start', x: padX, top, fill: TEXT_1, filter: 'url(#ds)' }),
+  )
   return sharp(Buffer.from(svg)).png().toBuffer()
 }
 
@@ -222,13 +286,23 @@ async function channelTile(input: RenderInput): Promise<Buffer> {
   const p = paletteFromSeed(source.seed || source.title)
   const r = w * 0.22
   const ini = initialsOf(source.title)
-  const t = await fitText(ini, { style: TITLE_STYLE, maxWidth: w * 0.7, maxHeight: h * 0.42, maxLines: 1, maxSize: h * 0.42, minSize: h * 0.12, lineHeight: 1 })
+  const t = await fitText(ini, {
+    style: TITLE_STYLE,
+    maxWidth: w * 0.7,
+    maxHeight: h * 0.42,
+    maxLines: 1,
+    maxSize: h * 0.42,
+    minSize: h * 0.12,
+    lineHeight: 1,
+  })
   const body =
     `<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${hsl(p.hue1, p.sat - 12, 24)}"/>` +
     `<stop offset="1" stop-color="${hsl(p.hue2, p.sat - 18, 13)}"/></linearGradient></defs>` +
     `<rect x="0.5" y="0.5" width="${w - 1}" height="${h - 1}" rx="${r}" fill="url(#g)" stroke="#fff" stroke-opacity="0.1"/>` +
     textBlockSvg(t, TITLE_STYLE, { align: 'middle', x: w / 2, top: (h - t.blockHeight) / 2, fill: TEXT_1 })
-  return sharp(Buffer.from(svgDoc(w, h, body))).png().toBuffer()
+  return sharp(Buffer.from(svgDoc(w, h, body)))
+    .png()
+    .toBuffer()
 }
 
 /** Görseli olmayan profil: tohum renginde daire + ilk harf. */
@@ -236,13 +310,23 @@ async function avatarDisc(input: RenderInput): Promise<Buffer> {
   const { width: w, height: h, source } = input
   const p = paletteFromSeed(source.seed || source.title)
   const initial = upperTr([...source.title.trim()][0] ?? '?')
-  const t = await fitText(initial, { style: TITLE_STYLE, maxWidth: w * 0.6, maxHeight: h * 0.5, maxLines: 1, maxSize: h * 0.5, minSize: h * 0.2, lineHeight: 1 })
+  const t = await fitText(initial, {
+    style: TITLE_STYLE,
+    maxWidth: w * 0.6,
+    maxHeight: h * 0.5,
+    maxLines: 1,
+    maxSize: h * 0.5,
+    minSize: h * 0.2,
+    lineHeight: 1,
+  })
   const body =
     `<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${hsl(p.hue1, p.sat + 5, 46)}"/>` +
     `<stop offset="1" stop-color="${hsl(p.hue2, p.sat, 30)}"/></linearGradient></defs>` +
     `<circle cx="${w / 2}" cy="${h / 2}" r="${w / 2}" fill="url(#g)"/>` +
     textBlockSvg(t, TITLE_STYLE, { align: 'middle', x: w / 2, top: (h - t.blockHeight) / 2, fill: TEXT_1 })
-  return sharp(Buffer.from(svgDoc(w, h, body))).png().toBuffer()
+  return sharp(Buffer.from(svgDoc(w, h, body)))
+    .png()
+    .toBuffer()
 }
 
 /** Kaynağın siyah şeritlerden arındırılmış en-boy oranı (genişlik / yükseklik). */
@@ -263,8 +347,15 @@ async function posterCrop(img: RawImage, input: RenderInput): Promise<Buffer> {
     `<stop offset="0.38" stop-color="${BG}" stop-opacity="0"/><stop offset="0.68" stop-color="${BG}" stop-opacity="0.6"/>` +
     `<stop offset="1" stop-color="${BG}" stop-opacity="0.94"/></linearGradient>`
   const text = await posterTitleSvg(w, h, source.title, null, h * 0.93)
-  const overlay = svgDoc(w, h, `<defs>${shade}${shadowFilter(h)}</defs><rect width="${w}" height="${h}" fill="url(#shade)"/>${text}`)
-  return sharp(cropped).composite([{ input: Buffer.from(overlay) }]).png().toBuffer()
+  const overlay = svgDoc(
+    w,
+    h,
+    `<defs>${shade}${shadowFilter(h)}</defs><rect width="${w}" height="${h}" fill="url(#shade)"/>${text}`,
+  )
+  return sharp(cropped)
+    .composite([{ input: Buffer.from(overlay) }])
+    .png()
+    .toBuffer()
 }
 
 /**
@@ -301,7 +392,15 @@ async function posterContain(img: RawImage, input: RenderInput): Promise<Buffer>
   const padX = w * 0.08
   const maxWidth = w - 2 * padX
   const sub = source.subtitle
-    ? await fitText(source.subtitle, { style: SUB_STYLE, maxWidth, maxHeight: h * 0.07, maxLines: 1, maxSize: w * 0.05, minSize: w * 0.036, lineHeight: 1.2 })
+    ? await fitText(source.subtitle, {
+        style: SUB_STYLE,
+        maxWidth,
+        maxHeight: h * 0.07,
+        maxLines: 1,
+        maxSize: w * 0.05,
+        minSize: w * 0.036,
+        lineHeight: 1.2,
+      })
     : null
   const subGap = sub ? h * 0.018 : 0
   const t = await fitText(source.title, {
@@ -316,7 +415,14 @@ async function posterContain(img: RawImage, input: RenderInput): Promise<Buffer>
   const blockTop = areaTop
   const text =
     textBlockSvg(t, TITLE_STYLE, { align: 'middle', x: w / 2, top: blockTop, fill: TEXT_1, filter: 'url(#tshadow)' }) +
-    (sub ? textBlockSvg(sub, SUB_STYLE, { align: 'middle', x: w / 2, top: blockTop + t.blockHeight + subGap, fill: TEXT_2 }) : '')
+    (sub
+      ? textBlockSvg(sub, SUB_STYLE, {
+          align: 'middle',
+          x: w / 2,
+          top: blockTop + t.blockHeight + subGap,
+          fill: TEXT_2,
+        })
+      : '')
 
   const defs =
     `<linearGradient id="shade" x1="0" y1="0" x2="0" y2="1">` +
@@ -346,7 +452,8 @@ async function posterFromSource(img: RawImage, input: RenderInput): Promise<Buff
 }
 
 /** Bu tip saydamlık taşır mı (jpg istenirse zemin rengine düzleştirilir). */
-export const isTransparentType = (type: ArtworkTypeName) => type === 'TITLE_LOGO' || type === 'CHANNEL_LOGO' || type === 'AVATAR'
+export const isTransparentType = (type: ArtworkTypeName) =>
+  type === 'TITLE_LOGO' || type === 'CHANNEL_LOGO' || type === 'AVATAR'
 
 async function encode(png: Buffer, format: 'webp' | 'jpg'): Promise<Buffer> {
   const s = sharp(png)

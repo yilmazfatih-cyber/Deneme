@@ -75,7 +75,8 @@ export interface FittedText {
 /** Aksanlı büyük harf (İ, Ü, Ğ) için üst pay ve alt uzantı payı, em cinsinden. */
 const ASCENT = 0.96
 const DESCENT = 0.26
-const blockHeightFor = (lines: number, size: number, lineHeight: number) => (lines - 1) * size * lineHeight + size * (ASCENT + DESCENT)
+const blockHeightFor = (lines: number, size: number, lineHeight: number) =>
+  (lines - 1) * size * lineHeight + size * (ASCENT + DESCENT)
 
 /**
  * Sözcükleri en çok `maxLines` satıra, satırların en uzununu en kısa tutacak biçimde böler (dengeli kırma).
@@ -120,7 +121,8 @@ function balancedBreak(n: number, lines: number, widthOf: (i: number, j: number)
  */
 export async function fitText(text: string, o: FitOptions): Promise<FittedText> {
   const words = text.replace(/\s+/g, ' ').trim().split(' ').filter(Boolean)
-  if (words.length === 0) return { lines: [], size: o.maxSize, lineGap: o.maxSize * o.lineHeight, blockHeight: 0, widths: [] }
+  if (words.length === 0)
+    return { lines: [], size: o.maxSize, lineGap: o.maxSize * o.lineHeight, blockHeight: 0, widths: [] }
 
   const wordW = await Promise.all(words.map((w) => measureAtRef(w, o.style)))
   // Boşluk genişliği: "H H" ile "HH" farkı
@@ -159,7 +161,10 @@ export async function fitText(text: string, o: FitOptions): Promise<FittedText> 
   } else {
     // En küçük boyutta da sığmadı: önce tek sözcüğün sığacağı kadar küçült, sonra fazla satırı "…" ile kısalt.
     size = Math.max(6, Math.min(o.minSize, (o.maxWidth / longestWord) * REF_SIZE))
-    const fitLines = Math.max(1, Math.min(o.maxLines, Math.floor((o.maxHeight - size * (ASCENT + DESCENT)) / (size * o.lineHeight)) + 1))
+    const fitLines = Math.max(
+      1,
+      Math.min(o.maxLines, Math.floor((o.maxHeight - size * (ASCENT + DESCENT)) / (size * o.lineHeight)) + 1),
+    )
     const limit = o.maxWidth / (size / REF_SIZE)
     lines = []
     let i = 0
@@ -171,7 +176,8 @@ export async function fitText(text: string, o: FitOptions): Promise<FittedText> 
     }
     if (i < words.length) {
       let last = `${lines.pop() ?? ''} ${words.slice(i).join(' ')}`.trim()
-      while (last.length > 1 && (await measureAtRef(`${last}…`, o.style)) * SAFETY > limit) last = last.slice(0, -1).trimEnd()
+      while (last.length > 1 && (await measureAtRef(`${last}…`, o.style)) * SAFETY > limit)
+        last = last.slice(0, -1).trimEnd()
       lines.push(`${last}…`)
     }
   }
@@ -185,7 +191,13 @@ export async function fitText(text: string, o: FitOptions): Promise<FittedText> 
     size *= shrink
     widths = widths.map((w) => w * shrink)
   }
-  return { lines, size, lineGap: size * o.lineHeight, blockHeight: blockHeightFor(lines.length, size, o.lineHeight), widths }
+  return {
+    lines,
+    size,
+    lineGap: size * o.lineHeight,
+    blockHeight: blockHeightFor(lines.length, size, o.lineHeight),
+    widths,
+  }
 }
 
 export interface TextBlockPlacement {

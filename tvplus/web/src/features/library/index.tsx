@@ -6,7 +6,17 @@
 import { useRef, type KeyboardEvent, type ReactElement } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useGql } from '../../api/hooks'
-import { ChannelTile, cx, EmptyHint, ErrorState, LandscapeCard, LiveChannelCard, Page, PosterCard, Skeleton } from '../../design'
+import {
+  ChannelTile,
+  cx,
+  EmptyHint,
+  ErrorState,
+  LandscapeCard,
+  LiveChannelCard,
+  Page,
+  PosterCard,
+  Skeleton,
+} from '../../design'
 import { logEvent } from '../../telemetry/logger'
 import {
   channelPlayPath,
@@ -102,13 +112,29 @@ export function LibraryPage(): ReactElement {
         </div>
       )
   } else if (tab === 'listem') {
-    body = lib.myList.length ? <PosterGrid rowId="kitaplik_listem" items={lib.myList} /> : <EmptyHint>{current.empty}</EmptyHint>
+    body = lib.myList.length ? (
+      <PosterGrid rowId="kitaplik_listem" items={lib.myList} />
+    ) : (
+      <EmptyHint>{current.empty}</EmptyHint>
+    )
   } else if (tab === 'begendiklerim') {
-    body = lib.liked.length ? <PosterGrid rowId="kitaplik_begenilen" items={lib.liked} /> : <EmptyHint>{current.empty}</EmptyHint>
+    body = lib.liked.length ? (
+      <PosterGrid rowId="kitaplik_begenilen" items={lib.liked} />
+    ) : (
+      <EmptyHint>{current.empty}</EmptyHint>
+    )
   } else if (tab === 'devam') {
-    body = lib.continueWatching.length ? <ContinueGrid items={lib.continueWatching} /> : <EmptyHint>{current.empty}</EmptyHint>
+    body = lib.continueWatching.length ? (
+      <ContinueGrid items={lib.continueWatching} />
+    ) : (
+      <EmptyHint>{current.empty}</EmptyHint>
+    )
   } else {
-    body = lib.favoriteChannels.length ? <ChannelGrid items={lib.favoriteChannels} /> : <EmptyHint>{current.empty}</EmptyHint>
+    body = lib.favoriteChannels.length ? (
+      <ChannelGrid items={lib.favoriteChannels} />
+    ) : (
+      <EmptyHint>{current.empty}</EmptyHint>
+    )
   }
 
   return (
@@ -153,7 +179,16 @@ function PosterGrid({ rowId, items }: { rowId: string; items: CardVideoData[] })
         const t = localTctx(rowId, i, v.videoId)
         return (
           <li key={v.videoId}>
-            <PreviewTarget info={{ rowId, videoId: v.videoId, getRowVideoIds: ids, tctx: t, title: v.title, imageUrl: v.storyArt?.url ?? v.boxart?.url }}>
+            <PreviewTarget
+              info={{
+                rowId,
+                videoId: v.videoId,
+                getRowVideoIds: ids,
+                tctx: t,
+                title: v.title,
+                imageUrl: v.storyArt?.url ?? v.boxart?.url,
+              }}
+            >
               <PosterCard
                 size="fill"
                 showTitle
@@ -189,7 +224,16 @@ function ContinueGrid({ items }: { items: ContinueVideo[] }): ReactElement {
         const playable = v.access.state === 'PLAYABLE' && playId !== null
         return (
           <li key={v.videoId}>
-            <PreviewTarget info={{ rowId, videoId: v.videoId, getRowVideoIds: ids, tctx: t, title: v.title, imageUrl: v.storyArt?.url }}>
+            <PreviewTarget
+              info={{
+                rowId,
+                videoId: v.videoId,
+                getRowVideoIds: ids,
+                tctx: t,
+                title: v.title,
+                imageUrl: v.storyArt?.url,
+              }}
+            >
               <LandscapeCard
                 size="fill"
                 title={v.__typename === 'Episode' && v.parentShow ? v.parentShow.title : v.title}

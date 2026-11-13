@@ -27,7 +27,10 @@ export const defaultFetcher: SourceFetcher = async (url, timeoutMs) => {
   const res = await fetch(url, {
     dispatcher: getAgent(),
     signal: AbortSignal.timeout(timeoutMs),
-    headers: { accept: 'image/avif,image/webp,image/png,image/jpeg,image/*;q=0.8', 'user-agent': 'TVplus-ImageService/1.0' },
+    headers: {
+      accept: 'image/avif,image/webp,image/png,image/jpeg,image/*;q=0.8',
+      'user-agent': 'TVplus-ImageService/1.0',
+    },
   })
   const len = Number(res.headers.get('content-length') ?? 0)
   if (len > MAX_SOURCE_BYTES) {
@@ -96,7 +99,11 @@ export function createRemoteLoader(opts: { dataDir: string; offline: boolean; fa
  * Yerel dosya yolunu çözer: önce web/public'e göre, bulunamazsa kanal logosu için brand/channels/, avatar için brand/
  * altına bakılır. web/public dışına çıkan yol reddedilir.
  */
-export function resolveLocalFile(publicDir: string, localFile: string, type: ArtworkTypeName): { path: string; mtimeMs: number } | null {
+export function resolveLocalFile(
+  publicDir: string,
+  localFile: string,
+  type: ArtworkTypeName,
+): { path: string; mtimeMs: number } | null {
   const root = resolve(publicDir)
   const name = localFile.replace(/^\/+/, '')
   const candidates = [isAbsolute(localFile) ? resolve(localFile) : resolve(root, name)]

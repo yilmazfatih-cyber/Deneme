@@ -30,7 +30,17 @@ import { logEvent } from '../../telemetry/logger'
 import { catchupOpen, packageLock, timeStateOf } from '../live/airing'
 import { AiringSheet, useWide, type AiringSheetTarget } from '../live/shared'
 import type { AiringBriefData, ChannelData } from '../live/types'
-import { dayWindow, groupForList, initialScrollLeft, layoutBlocks, nowPx, ticks, windowWidth, type DayOffset, type GuideWindow } from './guideMath'
+import {
+  dayWindow,
+  groupForList,
+  initialScrollLeft,
+  layoutBlocks,
+  nowPx,
+  ticks,
+  windowWidth,
+  type DayOffset,
+  type GuideWindow,
+} from './guideMath'
 import './guide.css'
 
 type GuideAiring = AiringBriefData & { synopsis: string; video: { videoId: number } | null }
@@ -45,11 +55,26 @@ const DAYS: { day: DayOffset; label: string }[] = [
   { day: 1, label: 'Yarın' },
 ]
 
-const channelRef = (c: GuideChannel) => ({ channelId: c.channelId, name: c.name, number: c.number, logo: c.logo, isSampleSchedule: c.isSampleSchedule, sourceKind: c.sourceKind })
+const channelRef = (c: GuideChannel) => ({
+  channelId: c.channelId,
+  name: c.name,
+  number: c.number,
+  logo: c.logo,
+  isSampleSchedule: c.isSampleSchedule,
+  sourceKind: c.sourceKind,
+})
 
 /* ───────────── Web ızgarası ───────────── */
 
-function GuideGrid({ channels, win, onOpen }: { channels: GuideChannel[]; win: GuideWindow; onOpen: (c: GuideChannel, a: GuideAiring) => void }): ReactElement {
+function GuideGrid({
+  channels,
+  win,
+  onOpen,
+}: {
+  channels: GuideChannel[]
+  win: GuideWindow
+  onOpen: (c: GuideChannel, a: GuideAiring) => void
+}): ReactElement {
   const now = useNow()
   const scrollRef = useRef<HTMLDivElement>(null)
   const width = windowWidth(win)
@@ -116,14 +141,22 @@ function GuideGrid({ channels, win, onOpen }: { channels: GuideChannel[]; win: G
                       </span>
                       <span className="gd-block__meta">{formatClock(a.startAt)}</span>
                     </span>
-                    {state === 'LIVE' && <ProgressBar value={liveProgress(a.startAt, a.endAt, now)} label="Yayın ilerlemesi" className="gd-block__progress" />}
+                    {state === 'LIVE' && (
+                      <ProgressBar
+                        value={liveProgress(a.startAt, a.endAt, now)}
+                        label="Yayın ilerlemesi"
+                        className="gd-block__progress"
+                      />
+                    )}
                   </button>
                 )
               })}
             </div>
           </div>
         ))}
-        {linePx !== null && <span className="gd-now" style={{ left: `calc(var(--gd-col) + ${linePx}px)` }} aria-hidden="true" />}
+        {linePx !== null && (
+          <span className="gd-now" style={{ left: `calc(var(--gd-col) + ${linePx}px)` }} aria-hidden="true" />
+        )}
       </div>
     </div>
   )
@@ -131,28 +164,68 @@ function GuideGrid({ channels, win, onOpen }: { channels: GuideChannel[]; win: G
 
 /* ───────────── Mobil liste ───────────── */
 
-function ListRow({ channel, airing, onOpen }: { channel: GuideChannel; airing: GuideAiring; onOpen: () => void }): ReactElement {
+function ListRow({
+  channel,
+  airing,
+  onOpen,
+}: {
+  channel: GuideChannel
+  airing: GuideAiring
+  onOpen: () => void
+}): ReactElement {
   const now = useNow()
   const state = timeStateOf(airing.startAt, airing.endAt, now)
   const replay = state === 'ENDED' && catchupOpen(airing, now)
   const lock = packageLock(airing.access)
-  const meta = state === 'LIVE' ? formatLiveLine(airing.startAt, airing.endAt, now) : replay ? `${formatTimeRange(airing.startAt, airing.endAt)} · Tekrar izle` : formatTimeRange(airing.startAt, airing.endAt)
+  const meta =
+    state === 'LIVE'
+      ? formatLiveLine(airing.startAt, airing.endAt, now)
+      : replay
+        ? `${formatTimeRange(airing.startAt, airing.endAt)} · Tekrar izle`
+        : formatTimeRange(airing.startAt, airing.endAt)
   return (
     <li>
-      <button type="button" className={cx('gd-item', state === 'ENDED' && !replay && 'gd-item--ended')} onClick={onOpen} aria-label={`${channel.name}, ${airing.title}, ${meta}`}>
+      <button
+        type="button"
+        className={cx('gd-item', state === 'ENDED' && !replay && 'gd-item--ended')}
+        onClick={onOpen}
+        aria-label={`${channel.name}, ${airing.title}, ${meta}`}
+      >
         <span className="gd-item__time">{formatClock(airing.startAt)}</span>
         <span className="gd-item__text">
           <span className="cn-card-title">{airing.title}</span>
           <span className="cn-meta">{meta}</span>
-          {state === 'LIVE' && <ProgressBar value={liveProgress(airing.startAt, airing.endAt, now)} label="Yayın ilerlemesi" className="gd-item__progress" />}
+          {state === 'LIVE' && (
+            <ProgressBar
+              value={liveProgress(airing.startAt, airing.endAt, now)}
+              label="Yayın ilerlemesi"
+              className="gd-item__progress"
+            />
+          )}
         </span>
-        {state === 'LIVE' ? <LiveTag /> : lock ? <Icon name="lock" size={16} /> : <Icon name="chevronRight" size={20} />}
+        {state === 'LIVE' ? (
+          <LiveTag />
+        ) : lock ? (
+          <Icon name="lock" size={16} />
+        ) : (
+          <Icon name="chevronRight" size={20} />
+        )}
       </button>
     </li>
   )
 }
 
-function ListGroup({ title, channel, items, onOpen }: { title: string; channel: GuideChannel; items: GuideAiring[]; onOpen: (a: GuideAiring) => void }): ReactElement | null {
+function ListGroup({
+  title,
+  channel,
+  items,
+  onOpen,
+}: {
+  title: string
+  channel: GuideChannel
+  items: GuideAiring[]
+  onOpen: (a: GuideAiring) => void
+}): ReactElement | null {
   if (!items.length) return null
   return (
     <section className="gd-group" aria-label={title}>
@@ -166,7 +239,15 @@ function ListGroup({ title, channel, items, onOpen }: { title: string; channel: 
   )
 }
 
-function GuideList({ channels, day, onOpen }: { channels: GuideChannel[]; day: DayOffset; onOpen: (c: GuideChannel, a: GuideAiring) => void }): ReactElement {
+function GuideList({
+  channels,
+  day,
+  onOpen,
+}: {
+  channels: GuideChannel[]
+  day: DayOffset
+  onOpen: (c: GuideChannel, a: GuideAiring) => void
+}): ReactElement {
   const now = useNow()
   const [selected, setSelected] = useState<number | null>(null)
   const channel = channels.find((c) => c.channelId === selected) ?? channels[0]
@@ -180,7 +261,13 @@ function GuideList({ channels, day, onOpen }: { channels: GuideChannel[]; day: D
         {channels.map((c) => {
           const on = c.channelId === channel.channelId
           return (
-            <button key={c.channelId} type="button" className={cx('gd-pick', on && 'gd-pick--on')} aria-pressed={on} onClick={() => setSelected(c.channelId)}>
+            <button
+              key={c.channelId}
+              type="button"
+              className={cx('gd-pick', on && 'gd-pick--on')}
+              aria-pressed={on}
+              onClick={() => setSelected(c.channelId)}
+            >
               <ChannelTile name={c.name} logoUrl={c.logo.url} selected={on} />
               <span className="gd-pick__name">{c.name}</span>
             </button>
@@ -203,7 +290,12 @@ function GuideList({ channels, day, onOpen }: { channels: GuideChannel[]; day: D
             <ListGroup title="Daha önce" channel={channel} items={g.earlier} onOpen={open} />
           </>
         ) : (
-          <ListGroup title={day < 0 ? 'Dünün yayın akışı' : 'Yarının yayın akışı'} channel={channel} items={sorted} onOpen={open} />
+          <ListGroup
+            title={day < 0 ? 'Dünün yayın akışı' : 'Yarının yayın akışı'}
+            channel={channel}
+            items={sorted}
+            onOpen={open}
+          />
         )}
         {channel.airings.length === 0 && <p className="cn-body">Bu gün için yayın bilgisi yok.</p>}
       </div>
@@ -239,7 +331,10 @@ export function GuidePage(): ReactElement {
     if (day === 0 && now > dayWindow(0, base).to) setBase(Date.now())
   }, [now, day, base])
 
-  const vars = useMemo(() => ({ from: new Date(win.from).toISOString(), to: new Date(win.to).toISOString(), category }), [win, category])
+  const vars = useMemo(
+    () => ({ from: new Date(win.from).toISOString(), to: new Date(win.to).toISOString(), category }),
+    [win, category],
+  )
   const { data, error, loading, refetch } = useGql<GuideData, typeof vars>('Guide', vars, { ttlMs: 120_000 })
 
   // Kategori çipleri: görülen kanalların kategorileri (süzgeç seçilince liste daralmasın diye birikir).
@@ -291,7 +386,11 @@ export function GuidePage(): ReactElement {
         <GuideSkeleton wide={wide} />
       ) : (
         <div className={cx('gd-body', loading && 'gd-body--loading')} aria-busy={loading || undefined}>
-          {wide ? <GuideGrid channels={data.channels} win={win} onOpen={open} /> : <GuideList channels={data.channels} day={day} onOpen={open} />}
+          {wide ? (
+            <GuideGrid channels={data.channels} win={win} onOpen={open} />
+          ) : (
+            <GuideList channels={data.channels} day={day} onOpen={open} />
+          )}
         </div>
       )}
       <AiringSheet target={sheet} onClose={() => setSheet(null)} />

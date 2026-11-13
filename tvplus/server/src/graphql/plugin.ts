@@ -18,7 +18,8 @@ function loadRegistry(app: FastifyInstance, file: string): PersistedRegistry | n
   }
   try {
     const raw = JSON.parse(readFileSync(file, 'utf8')) as PersistedRegistry
-    if (typeof raw.version !== 'number' || !raw.operations || typeof raw.operations !== 'object') throw new Error('biçim')
+    if (typeof raw.version !== 'number' || !raw.operations || typeof raw.operations !== 'object')
+      throw new Error('biçim')
     return raw
   } catch (err) {
     app.log.error({ err }, `Kalıcı sorgu kayıt defteri okunamadı (${file}). \`npm run persisted\` ile yeniden üretin.`)

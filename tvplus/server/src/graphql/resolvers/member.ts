@@ -13,10 +13,12 @@ type ArtworkParams = { width?: number | null; height?: number | null; format?: s
 const THUMBS: ThumbRatingValue[] = ['THUMBS_UNRATED', 'THUMBS_DOWN', 'THUMBS_UP', 'THUMBS_WAY_UP']
 
 function requireVideo(ctx: GqlContext, videoId: number): void {
-  if (!ctx.services.catalog.videoInfo(videoId) || !visible(ctx, videoId)) throw gqlError(`Video bulunamadı: ${videoId}`, 'NOT_FOUND')
+  if (!ctx.services.catalog.videoInfo(videoId) || !visible(ctx, videoId))
+    throw gqlError(`Video bulunamadı: ${videoId}`, 'NOT_FOUND')
 }
 function requireChannel(ctx: GqlContext, channelId: number): void {
-  if (!ctx.services.catalog.getChannel(channelId) || !channelVisible(ctx, channelId)) throw gqlError(`Kanal bulunamadı: ${channelId}`, 'NOT_FOUND')
+  if (!ctx.services.catalog.getChannel(channelId) || !channelVisible(ctx, channelId))
+    throw gqlError(`Kanal bulunamadı: ${channelId}`, 'NOT_FOUND')
 }
 
 /** 'Video:123' → 123 (yalnız Video önekli kimlikler) */
@@ -28,7 +30,8 @@ export function parseViewable(viewableId: string): { kind: string; id: string } 
 
 export const memberResolvers: ResolverMap = {
   Profile: {
-    avatar: (p: ProfileRecord, a: { params?: ArtworkParams }, ctx: GqlContext) => buildArtwork(ctx.config, 'AVATAR', `Profile:${p.guid}`, a.params),
+    avatar: (p: ProfileRecord, a: { params?: ArtworkParams }, ctx: GqlContext) =>
+      buildArtwork(ctx.config, 'AVATAR', `Profile:${p.guid}`, a.params),
     isActive: (p: ProfileRecord, _a: unknown, ctx: GqlContext) => ctx.passport.profile?.guid === p.guid,
   },
   Account: {
@@ -39,13 +42,15 @@ export const memberResolvers: ResolverMap = {
     },
   },
   Library: {
-    myList: (_p: unknown, _a: unknown, ctx: GqlContext) => videoRefs(ctx, ctx.services.progress.myList(requireProfile(ctx).guid)),
+    myList: (_p: unknown, _a: unknown, ctx: GqlContext) =>
+      videoRefs(ctx, ctx.services.progress.myList(requireProfile(ctx).guid)),
     continueWatching: (_p: unknown, _a: unknown, ctx: GqlContext) =>
       ctx.services.progress
         .continueWatching(requireProfile(ctx).guid)
         .filter((c) => visible(ctx, c.titleId))
         .map((c) => ({ videoId: c.videoId })),
-    liked: (_p: unknown, _a: unknown, ctx: GqlContext) => videoRefs(ctx, ctx.services.progress.liked(requireProfile(ctx).guid)),
+    liked: (_p: unknown, _a: unknown, ctx: GqlContext) =>
+      videoRefs(ctx, ctx.services.progress.liked(requireProfile(ctx).guid)),
     favoriteChannels: (_p: unknown, _a: unknown, ctx: GqlContext) =>
       ctx.services.progress
         .favoriteChannels(requireProfile(ctx).guid)
@@ -65,7 +70,9 @@ export const memberResolvers: ResolverMap = {
     },
     videos: (_p: unknown, a: { videoIds: number[] }, ctx: GqlContext) => {
       requireProfile(ctx)
-      return a.videoIds.map((videoId) => (ctx.services.catalog.videoInfo(videoId) && visible(ctx, videoId) ? { videoId } : null))
+      return a.videoIds.map((videoId) =>
+        ctx.services.catalog.videoInfo(videoId) && visible(ctx, videoId) ? { videoId } : null,
+      )
     },
     person: (_p: unknown, a: { personId: number }, ctx: GqlContext) => {
       requireProfile(ctx)
@@ -107,7 +114,11 @@ export const memberResolvers: ResolverMap = {
       ctx.services.progress.setThumbRating(profile.guid, a.videoId, a.rating)
       return { video: { videoId: a.videoId }, thumbRating: ctx.services.progress.thumbRating(profile.guid, a.videoId) }
     },
-    setBookmark: (_p: unknown, a: { viewableId: string; positionSec: number; durationSec?: number | null }, ctx: GqlContext) => {
+    setBookmark: (
+      _p: unknown,
+      a: { viewableId: string; positionSec: number; durationSec?: number | null },
+      ctx: GqlContext,
+    ) => {
       const profile = requireProfile(ctx)
       const v = parseViewable(a.viewableId)
       let videoId: number | null = null
@@ -119,11 +130,13 @@ export const memberResolvers: ResolverMap = {
         ctx.services.progress.setLastChannel(profile.guid, channelId)
         return { viewableId: a.viewableId, bookmark: null, watchStatus: 'NEVER_WATCHED' }
       }
-      if (videoId === null || !Number.isInteger(videoId)) throw gqlError(`Bilinmeyen izlenebilir: ${a.viewableId}`, 'NOT_FOUND')
+      if (videoId === null || !Number.isInteger(videoId))
+        throw gqlError(`Bilinmeyen izlenebilir: ${a.viewableId}`, 'NOT_FOUND')
       const vi = ctx.services.catalog.videoInfo(videoId)
       if (!vi || !visible(ctx, videoId)) throw gqlError(`Video bulunamadı: ${videoId}`, 'NOT_FOUND')
       // Dizi kimliği gelirse devam edilecek bölüme yazılır
-      const leaf = vi.kind === 'SHOW' ? (ctx.services.progress.currentEpisode(profile.guid, videoId) ?? videoId) : videoId
+      const leaf =
+        vi.kind === 'SHOW' ? (ctx.services.progress.currentEpisode(profile.guid, videoId) ?? videoId) : videoId
       ctx.services.progress.setBookmark(profile.guid, leaf, a.positionSec, a.durationSec ?? null)
       return {
         viewableId: a.viewableId,

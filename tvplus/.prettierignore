@@ -1,0 +1,11 @@
+node_modules
+web/dist
+.data
+media
+test-results
+playwright-report
+package-lock.json
+shared/graphql/persisted.server.json
+shared/graphql/persisted.client.json
+content/.youtube-report.json
+docs/referans

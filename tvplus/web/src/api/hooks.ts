@@ -44,7 +44,9 @@ export function useFalcor<T = FalcorJson>(pathSets: FalcorPath[], deps: Dependen
   const key = JSON.stringify(paths)
   const [state, setState] = useState<FalcorState<T>>(() => {
     const p = falcor.peek<T>(...paths)
-    return p.missing.length ? { data: undefined, error: null, loading: true } : { data: p.json, error: null, loading: false }
+    return p.missing.length
+      ? { data: undefined, error: null, loading: true }
+      : { data: p.json, error: null, loading: false }
   })
   const [nonce, setNonce] = useState(0)
   const busy = useRef(false)
@@ -54,7 +56,8 @@ export function useFalcor<T = FalcorJson>(pathSets: FalcorPath[], deps: Dependen
   useEffect(() => {
     let alive = true
     busy.current = true
-    if (falcor.peek(...paths).missing.length) setState((s) => (s.loading && !s.error ? s : { ...s, loading: true, error: null }))
+    if (falcor.peek(...paths).missing.length)
+      setState((s) => (s.loading && !s.error ? s : { ...s, loading: true, error: null }))
     falcor.get<T>(...paths).then(
       (data) => {
         if (!alive) return
@@ -82,7 +85,11 @@ export function useFalcor<T = FalcorJson>(pathSets: FalcorPath[], deps: Dependen
           setNonce((n) => n + 1)
           return
         }
-        setState((s) => (s.error === null && JSON.stringify(s.data) === JSON.stringify(p.json) ? s : { data: p.json, error: null, loading: false }))
+        setState((s) =>
+          s.error === null && JSON.stringify(s.data) === JSON.stringify(p.json)
+            ? s
+            : { data: p.json, error: null, loading: false },
+        )
       }),
     [key],
   )
@@ -179,7 +186,11 @@ export interface GqlOptions {
  *   const { data, loading, error, refetch } = useGql<DetailModalData, { videoId: number }>('DetailModal', { videoId })
  * Önbellek anahtarı: işlem adı + değişkenler + etkin profil (profil değişince kendiliğinden yeniden çekilir).
  */
-export function useGql<TData, TVars extends object = Record<string, never>>(operationName: string, variables?: TVars, opts: GqlOptions = {}): QueryResult<TData> {
+export function useGql<TData, TVars extends object = Record<string, never>>(
+  operationName: string,
+  variables?: TVars,
+  opts: GqlOptions = {},
+): QueryResult<TData> {
   const ttl = opts.ttlMs ?? 60_000
   const enabled = opts.enabled ?? true
   const profile = useSyncExternalStore(subscribeBoot, activeProfileGuid, activeProfileGuid)
@@ -200,7 +211,8 @@ export function useGql<TData, TVars extends object = Record<string, never>>(oper
     const age = entry ? Date.now() - entry.at : Infinity
     if (entry && entry.error === undefined && entry.data !== undefined && age < ttl) {
       // Önbellekten sunuldu (bu kancanın kendi isteğinin hemen dönüşü sayılmaz).
-      if (fetchedKey.current !== key) devbus.emit('cache', `${operationName}: isabet`, { key, expires: entry.at + ttl, ageMs: age })
+      if (fetchedKey.current !== key)
+        devbus.emit('cache', `${operationName}: isabet`, { key, expires: entry.at + ttl, ageMs: age })
       fetchedKey.current = key
       return
     }

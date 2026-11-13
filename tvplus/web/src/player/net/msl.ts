@@ -77,7 +77,8 @@ function errorCodeOf(body: unknown): { code: string; message: string } | null {
   if (!body || typeof body !== 'object') return null
   const b = body as Partial<MslErrorBody> & { error?: { code?: string; message?: string } }
   if (typeof b.errorcode === 'string') return { code: b.errorcode, message: b.message ?? b.errorcode }
-  if (b.error && typeof b.error.code === 'string') return { code: b.error.code, message: b.error.message ?? b.error.code }
+  if (b.error && typeof b.error.code === 'string')
+    return { code: b.error.code, message: b.error.message ?? b.error.code }
   return null
 }
 
@@ -91,7 +92,13 @@ export class MslClient {
   private chain: Promise<unknown> = Promise.resolve()
 
   /** Oturumun özeti (Kaputun altı paneli ve testler için). */
-  describe(): { scheme: MslScheme; serialnumber: number; renewalwindow: number; expiration: number; messageid: number } | null {
+  describe(): {
+    scheme: MslScheme
+    serialnumber: number
+    renewalwindow: number
+    expiration: number
+    messageid: number
+  } | null {
     const s = this.session
     if (!s) return null
     return {
@@ -137,7 +144,12 @@ export class MslClient {
     const res = await fetch(`${ROUTES.MSL_PROVISION}?reqName=aleProvision`, {
       method: 'POST',
       credentials: 'same-origin',
-      headers: { 'content-type': 'application/json', accept: 'application/json', [HEADERS.MSL]: 'v1', ...sessionHeaders() },
+      headers: {
+        'content-type': 'application/json',
+        accept: 'application/json',
+        [HEADERS.MSL]: 'v1',
+        ...sessionHeaders(),
+      },
       body,
     })
     const text = await res.text()
@@ -149,8 +161,18 @@ export class MslClient {
     }
     if (!res.ok) {
       const e = errorCodeOf(json)
-      devbus.emit('msl', 'aleProvision', { scheme, status: res.status, error: e?.code ?? text.slice(0, 200) }, { ms: performance.now() - t0, ok: false })
-      throw new MslError(e?.code ?? 'PROVISION_FAILED', e?.message ?? `Anahtar sağlanamadı (${res.status})`, res.status, json)
+      devbus.emit(
+        'msl',
+        'aleProvision',
+        { scheme, status: res.status, error: e?.code ?? text.slice(0, 200) },
+        { ms: performance.now() - t0, ok: false },
+      )
+      throw new MslError(
+        e?.code ?? 'PROVISION_FAILED',
+        e?.message ?? `Anahtar sağlanamadı (${res.status})`,
+        res.status,
+        json,
+      )
     }
     const resp = json as MslProvisionResponse
     const tokendata = parseB64json<MslTokenData>(resp.mastertoken.tokendata)
@@ -215,7 +237,13 @@ export class MslClient {
    * Şifreli istek gönderir ve çözülmüş yükü döndürür. `path` köke göreli uç, `query` sorgu dizgesi.
    * İletiler sıraya alınır; messageid her iletide artar.
    */
-  send<T>(path: string, query: Record<string, string>, payload: unknown, label: string, signal?: AbortSignal): Promise<T> {
+  send<T>(
+    path: string,
+    query: Record<string, string>,
+    payload: unknown,
+    label: string,
+    signal?: AbortSignal,
+  ): Promise<T> {
     const run = this.chain.then(
       () => this.sendWithRetry<T>(path, query, payload, label, signal),
       () => this.sendWithRetry<T>(path, query, payload, label, signal),
@@ -224,7 +252,13 @@ export class MslClient {
     return run
   }
 
-  private async sendWithRetry<T>(path: string, query: Record<string, string>, payload: unknown, label: string, signal?: AbortSignal): Promise<T> {
+  private async sendWithRetry<T>(
+    path: string,
+    query: Record<string, string>,
+    payload: unknown,
+    label: string,
+    signal?: AbortSignal,
+  ): Promise<T> {
     try {
       return await this.sendOnce<T>(path, query, payload, label, signal)
     } catch (err) {
@@ -238,7 +272,13 @@ export class MslClient {
     }
   }
 
-  private async sendOnce<T>(path: string, query: Record<string, string>, payload: unknown, label: string, signal?: AbortSignal): Promise<T> {
+  private async sendOnce<T>(
+    path: string,
+    query: Record<string, string>,
+    payload: unknown,
+    label: string,
+    signal?: AbortSignal,
+  ): Promise<T> {
     const s = await this.ensureSession()
     const subtle = s.keys ? subtleOrNull() : null
     s.messageid += 1
@@ -251,7 +291,12 @@ export class MslClient {
       method: 'POST',
       credentials: 'same-origin',
       signal,
-      headers: { 'content-type': 'application/json', accept: 'application/json', [HEADERS.MSL]: 'v1', ...sessionHeaders() },
+      headers: {
+        'content-type': 'application/json',
+        accept: 'application/json',
+        [HEADERS.MSL]: 'v1',
+        ...sessionHeaders(),
+      },
       body,
     })
     const text = await res.text()
@@ -266,10 +311,21 @@ export class MslClient {
       devbus.emit(
         'msl',
         'zarf',
-        { scheme: s.scheme, messageid: s.messageid, status: res.status, error: e?.code ?? 'BAD_RESPONSE', bytes: body.length },
+        {
+          scheme: s.scheme,
+          messageid: s.messageid,
+          status: res.status,
+          error: e?.code ?? 'BAD_RESPONSE',
+          bytes: body.length,
+        },
         { ms: performance.now() - t0, ok: false },
       )
-      throw new MslError(e?.code ?? 'BAD_RESPONSE', e?.message ?? `MSL yanıtı geçersiz (${res.status})`, res.status, json)
+      throw new MslError(
+        e?.code ?? 'BAD_RESPONSE',
+        e?.message ?? `MSL yanıtı geçersiz (${res.status})`,
+        res.status,
+        json,
+      )
     }
     const opened = await openEnvelope<T>(subtle, s.keys, json)
     // Yanıt kimliği = istek + 1; sonraki istek ondan büyük olmalı

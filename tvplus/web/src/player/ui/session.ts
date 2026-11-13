@@ -72,10 +72,21 @@ export class PlaybackSession {
         const ent = parseEntityId(this.viewableId)
         logEvent(
           'playback.start',
-          { ...this.base(), startupMs, videoId: ent?.kind === 'Video' ? Number(ent.id) : null, entity: ent?.kind ?? null, kind: this.manifest?.kind },
+          {
+            ...this.base(),
+            startupMs,
+            videoId: ent?.kind === 'Video' ? Number(ent.id) : null,
+            entity: ent?.kind ?? null,
+            kind: this.manifest?.kind,
+          },
           this.tctx,
         )
-        devbus.emit('player', 'ilk kare', { viewableId: this.viewableId, state: 'playing', startupMs }, { ms: startupMs })
+        devbus.emit(
+          'player',
+          'ilk kare',
+          { viewableId: this.viewableId, state: 'playing', startupMs },
+          { ms: startupMs },
+        )
         break
       }
       case 'duration':
@@ -90,7 +101,11 @@ export class PlaybackSession {
         logEvent('playback.rebuffer', { ...this.base(), durationMs: e.durationMs }, this.tctx)
         break
       case 'bitrateSwitch':
-        logEvent('playback.bitrateSwitch', { ...this.base(), fromKbps: e.fromKbps, toKbps: e.toKbps, reason: e.reason, height: e.height }, this.tctx)
+        logEvent(
+          'playback.bitrateSwitch',
+          { ...this.base(), fromKbps: e.fromKbps, toKbps: e.toKbps, reason: e.reason, height: e.height },
+          this.tctx,
+        )
         break
       case 'cdnSwitch':
         logEvent('playback.cdnSwitch', { ...this.base(), from: e.from, to: e.to, reason: e.reason }, this.tctx)
@@ -109,7 +124,13 @@ export class PlaybackSession {
     const s = a.stats()
     logEvent(
       'playback.heartbeat',
-      { ...this.base(), bitrateKbps: s?.bitrateKbps ?? null, bufferSec: s?.bufferSec ?? null, cdnId: s?.cdnId ?? null, rebuffers: this.rebuffers },
+      {
+        ...this.base(),
+        bitrateKbps: s?.bitrateKbps ?? null,
+        bufferSec: s?.bufferSec ?? null,
+        cdnId: s?.cdnId ?? null,
+        rebuffers: this.rebuffers,
+      },
       this.tctx,
     )
     this.saveBookmark('kalp atışı')
@@ -135,7 +156,11 @@ export class PlaybackSession {
     // Hiç bağdaştırıcı bağlanmadıysa (yükleme yarıda kaldı / StrictMode'un ikinci kurulumu) oynatma sonu yoktur
     if (!this.manifest) return
     this.saveBookmark(reason === 'ended' ? 'bitti' : 'çıkış')
-    logEvent('playback.end', { ...this.base(), reason, durationSec: Math.round(this.durationSec), rebuffers: this.rebuffers }, this.tctx)
+    logEvent(
+      'playback.end',
+      { ...this.base(), reason, durationSec: Math.round(this.durationSec), rebuffers: this.rebuffers },
+      this.tctx,
+    )
   }
 
   dispose(reason: 'exit' | 'zap' = 'exit'): void {

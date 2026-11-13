@@ -76,8 +76,10 @@ const videoFields: Record<string, ResolverFn> = {
   isAvailable: (p: VideoRef, _a: unknown, ctx: GqlContext) => accessForVideo(ctx, p.videoId).state !== 'OUT_OF_WINDOW',
   isPlayable: (p: VideoRef, _a: unknown, ctx: GqlContext) => accessForVideo(ctx, p.videoId).state === 'PLAYABLE',
   access: (p: VideoRef, _a: unknown, ctx: GqlContext) => accessForVideo(ctx, p.videoId),
-  artwork: (p: VideoRef, a: ArtworkArgs, ctx: GqlContext) => buildArtwork(ctx.config, a.type, videoEntityId(p.videoId), a.params),
-  genreTags: (p: VideoRef, _a: unknown, ctx: GqlContext) => infoOf(ctx, p.videoId).title.genres.map((g) => ({ genreId: GENRES[g].genreId })),
+  artwork: (p: VideoRef, a: ArtworkArgs, ctx: GqlContext) =>
+    buildArtwork(ctx.config, a.type, videoEntityId(p.videoId), a.params),
+  genreTags: (p: VideoRef, _a: unknown, ctx: GqlContext) =>
+    infoOf(ctx, p.videoId).title.genres.map((g) => ({ genreId: GENRES[g].genreId })),
   moodTags: (p: VideoRef, _a: unknown, ctx: GqlContext) => moodTagsOf(infoOf(ctx, p.videoId).title),
   contentAdvisory: (p: VideoRef, _a: unknown, ctx: GqlContext) => contentAdvisoryOf(infoOf(ctx, p.videoId).title),
   playbackBadges: (p: VideoRef, _a: unknown, ctx: GqlContext) => playbackBadgesOf(ctx.services, p.videoId),
@@ -101,8 +103,10 @@ const videoFields: Record<string, ResolverFn> = {
   },
   textEvidence: (p: VideoRef, a: { uiContext?: 'BOB' | 'ODP' | null }, ctx: GqlContext) =>
     textEvidenceOf(infoOf(ctx, p.videoId).title, a.uiContext === 'ODP' ? 'ODP' : 'BOB'),
-  promoVideo: (p: VideoRef, _a: unknown, ctx: GqlContext) => promoVideoOf(ctx.services, p.videoId, accessForVideo(ctx, p.videoId)),
-  badge: (p: VideoRef, _a: unknown, ctx: GqlContext) => badgeOf(ctx.services, ctx.passport, p.videoId, accessForVideo(ctx, p.videoId), nowOf(ctx)),
+  promoVideo: (p: VideoRef, _a: unknown, ctx: GqlContext) =>
+    promoVideoOf(ctx.services, p.videoId, accessForVideo(ctx, p.videoId)),
+  badge: (p: VideoRef, _a: unknown, ctx: GqlContext) =>
+    badgeOf(ctx.services, ctx.passport, p.videoId, accessForVideo(ctx, p.videoId), nowOf(ctx)),
   runtimeSec: (p: VideoRef, _a: unknown, ctx: GqlContext) => runtimeOf(ctx.services, p.videoId),
   displayRuntime: (p: VideoRef, _a: unknown, ctx: GqlContext) => displayRuntimeOf(ctx.services, p.videoId),
   license: (p: VideoRef, _a: unknown, ctx: GqlContext) => {
@@ -126,7 +130,9 @@ const titleFields: Record<string, ResolverFn> = {
   similars: (p: VideoRef, a: { first?: number | null }, ctx: GqlContext) => {
     const first = Math.max(0, Math.min(a.first ?? 12, 48))
     const ids = memo(ctx.cache, `similars:${p.videoId}`, () =>
-      similarTitles(ctx.services.catalog, p.videoId, (t: ContentTitle) => visible(ctx, t.videoId)).map((t) => t.videoId),
+      similarTitles(ctx.services.catalog, p.videoId, (t: ContentTitle) => visible(ctx, t.videoId)).map(
+        (t) => t.videoId,
+      ),
     )
     return ids.slice(0, first).map((videoId) => ({ videoId }))
   },
@@ -149,7 +155,9 @@ const showFields: Record<string, ResolverFn> = {
   episodeCount: (p: VideoRef, _a: unknown, ctx: GqlContext) => ctx.services.catalog.episodeIds(p.videoId).length,
   currentEpisode: (p: VideoRef, _a: unknown, ctx: GqlContext) => {
     const guid = guidOf(ctx)
-    const cur = (guid ? ctx.services.progress.currentEpisode(guid, p.videoId) : null) ?? ctx.services.catalog.episodeIds(p.videoId)[0]
+    const cur =
+      (guid ? ctx.services.progress.currentEpisode(guid, p.videoId) : null) ??
+      ctx.services.catalog.episodeIds(p.videoId)[0]
     if (cur === undefined) throw gqlError('Dizide bölüm yok', 'NOT_FOUND')
     return { videoId: cur }
   },
@@ -198,7 +206,9 @@ export const videoResolvers: ResolverMap = {
   Person: {
     personId: (p: { personId: number }) => p.personId,
     unifiedEntityId: (p: { personId: number }) => personEntityId(p.personId),
-    name: (p: { personId: number; name?: string }, _a: unknown, ctx: GqlContext) => p.name ?? ctx.services.catalog.getPerson(p.personId)?.name ?? '',
-    videos: (p: { personId: number }, _a: unknown, ctx: GqlContext) => videoRefs(ctx, ctx.services.catalog.getPerson(p.personId)?.videoIds ?? []),
+    name: (p: { personId: number; name?: string }, _a: unknown, ctx: GqlContext) =>
+      p.name ?? ctx.services.catalog.getPerson(p.personId)?.name ?? '',
+    videos: (p: { personId: number }, _a: unknown, ctx: GqlContext) =>
+      videoRefs(ctx, ctx.services.catalog.getPerson(p.personId)?.videoIds ?? []),
   },
 }

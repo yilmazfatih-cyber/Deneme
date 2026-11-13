@@ -57,12 +57,25 @@ const ops: Record<string, { name: string; type: string; document: string }> = {
     document:
       'query VideoQ($id: Int!) { video(videoId: $id) { __typename videoId title ... on Movie { runtimeSec } ... on Show { seasonCount } } }',
   },
-  q3: { name: 'EntityQ', type: 'query', document: 'query EntityQ($id: Int!) { entity(id: $id) { __typename ... on Channel { channelId } ... on Movie { videoId } } }' },
+  q3: {
+    name: 'EntityQ',
+    type: 'query',
+    document:
+      'query EntityQ($id: Int!) { entity(id: $id) { __typename ... on Channel { channelId } ... on Movie { videoId } } }',
+  },
   q4: { name: 'Dates', type: 'query', document: 'query Dates($at: DateTime!) { now echoDate(at: $at) }' },
   q5: { name: 'Errors', type: 'query', document: 'query Errors { failing coded membershipStatus { status } }' },
   q6: { name: 'Rate', type: 'mutation', document: 'mutation Rate { rate(videoId: 1) }' },
-  q7: { name: 'Mixed', type: 'query', document: 'query Mixed { membershipStatus { status } interstitial(location: "HOME") }' },
-  q8: { name: 'Frag', type: 'query', document: 'query Frag { ...Root } fragment Root on Query { video(videoId: 1) { videoId } }' },
+  q7: {
+    name: 'Mixed',
+    type: 'query',
+    document: 'query Mixed { membershipStatus { status } interstitial(location: "HOME") }',
+  },
+  q8: {
+    name: 'Frag',
+    type: 'query',
+    document: 'query Frag { ...Root } fragment Root on Query { video(videoId: 1) { videoId } }',
+  },
   q9: { name: 'Partial', type: 'query', document: 'query Partial { partial { videoId title } }' },
 }
 const registry: PersistedRegistry = { version: 7, operations: ops }
@@ -72,7 +85,8 @@ const resolvers: ResolverMap = {
     membershipStatus: (_p, _a, ctx: GqlContext) => ({ status: ctx.passport.membershipStatus }),
     interstitial: () => 'duyuru',
     video: (_p, args: { videoId: number }) => ({ videoId: args.videoId }),
-    entity: (_p, args: { id: number }) => (args.id > 100 ? { channelId: args.id } : { __typename: 'Movie', videoId: args.id }),
+    entity: (_p, args: { id: number }) =>
+      args.id > 100 ? { channelId: args.id } : { __typename: 'Movie', videoId: args.id },
     now: () => new Date(Date.UTC(2026, 0, 2, 3, 4, 5)),
     echoDate: (_p, args: { at: Date }) => {
       if (!(args.at instanceof Date)) throw new Error('Date bekleniyordu')
@@ -104,7 +118,15 @@ const resolvers: ResolverMap = {
 const passport = (over: Partial<Passport> = {}): Passport => ({
   membershipStatus: 'CURRENT_MEMBER',
   account: { accountId: 'acc', planName: 'p', products: [] },
-  profile: { guid: 'G', accountId: 'acc', name: 'Deniz', avatar: 'a', isKids: false, maturityLevel: 110, language: 'tr' },
+  profile: {
+    guid: 'G',
+    accountId: 'acc',
+    name: 'Deniz',
+    avatar: 'a',
+    isKids: false,
+    maturityLevel: 110,
+    language: 'tr',
+  },
   esn: 'e',
   deviceId: 'd',
   authURLVerified: true,
@@ -113,8 +135,18 @@ const passport = (over: Partial<Passport> = {}): Passport => ({
 const ANON = passport({ membershipStatus: 'ANONYMOUS', account: null, profile: null, authURLVerified: false })
 
 const logs: { level: string; msg: string; detail?: unknown }[] = []
-const engine = createGraphQLEngine({ typeDefs, resolvers, persisted: registry, log: (level, msg, detail) => logs.push({ level, msg, detail }) })
-const run = (id: string, p: Passport = passport(), variables?: Record<string, unknown>, extra: Record<string, unknown> = {}) =>
+const engine = createGraphQLEngine({
+  typeDefs,
+  resolvers,
+  persisted: registry,
+  log: (level, msg, detail) => logs.push({ level, msg, detail }),
+})
+const run = (
+  id: string,
+  p: Passport = passport(),
+  variables?: Record<string, unknown>,
+  extra: Record<string, unknown> = {},
+) =>
   engine.handle({
     body: { operationName: 'x', variables, extensions: { persistedQuery: { id, version: 7 } }, ...extra },
     passport: p,
@@ -123,7 +155,11 @@ const run = (id: string, p: Passport = passport(), variables?: Record<string, un
 
 describe('GraphQL motoru (fabrika, küçük şema)', () => {
   it('ham sorgu, bilinmeyen kimlik, sürüm uyuşmazlığı reddedilir', async () => {
-    const raw = await engine.handle({ body: { query: '{ now }' }, passport: passport(), makeContext: () => ({}) as GqlContext })
+    const raw = await engine.handle({
+      body: { query: '{ now }' },
+      passport: passport(),
+      makeContext: () => ({}) as GqlContext,
+    })
     expect(raw.statusCode).toBe(400)
     expect(raw.body.errors?.[0]?.extensions.code).toBe('RAW_QUERY_NOT_ALLOWED')
 
@@ -143,7 +179,11 @@ describe('GraphQL motoru (fabrika, küçük şema)', () => {
     expect(mismatch.body.errors?.[0]?.extensions.code).toBe('PERSISTED_QUERY_VERSION_MISMATCH')
 
     const noRegistry = createGraphQLEngine({ typeDefs, resolvers, persisted: null })
-    const nr = await noRegistry.handle({ body: { extensions: { persistedQuery: { id: 'q1', version: 7 } } }, passport: passport(), makeContext: () => ({}) as GqlContext })
+    const nr = await noRegistry.handle({
+      body: { extensions: { persistedQuery: { id: 'q1', version: 7 } } },
+      passport: passport(),
+      makeContext: () => ({}) as GqlContext,
+    })
     expect(nr.body.errors?.[0]?.extensions.code).toBe('PERSISTED_QUERY_NOT_FOUND')
   })
 
@@ -202,14 +242,27 @@ describe('GraphQL motoru (fabrika, küçük şema)', () => {
     expect(res.statusCode).toBe(200)
     expect(res.body.data).toEqual({ failing: null, coded: null, membershipStatus: { status: 'CURRENT_MEMBER' } })
     const byPath = Object.fromEntries((res.body.errors ?? []).map((e) => [e.path?.join('.'), e]))
-    expect(byPath.coded).toEqual({ message: 'Bu içerik paketinizde yok.', path: ['coded'], extensions: { code: 'UPSELL' } })
-    expect(byPath.failing).toEqual({ message: 'Beklenmeyen bir hata oluştu.', path: ['failing'], extensions: { code: 'INTERNAL' } })
+    expect(byPath.coded).toEqual({
+      message: 'Bu içerik paketinizde yok.',
+      path: ['coded'],
+      extensions: { code: 'UPSELL' },
+    })
+    expect(byPath.failing).toEqual({
+      message: 'Beklenmeyen bir hata oluştu.',
+      path: ['failing'],
+      extensions: { code: 'INTERNAL' },
+    })
     expect(JSON.stringify(res.body)).not.toContain('hunter2')
     expect(logs.some((l) => l.level === 'error' && String((l.detail as Error)?.message).includes('hunter2'))).toBe(true)
 
     const partial = await run('q9')
     expect(partial.statusCode).toBe(200)
-    expect(partial.body.data).toEqual({ partial: [{ videoId: 1, title: 'Film 1' }, { videoId: -1, title: null }] })
+    expect(partial.body.data).toEqual({
+      partial: [
+        { videoId: 1, title: 'Film 1' },
+        { videoId: -1, title: null },
+      ],
+    })
     expect(partial.body.errors?.[0]?.path).toEqual(['partial', 1, 'title'])
   })
 
@@ -243,7 +296,11 @@ describe('POST /graphql (gerçek şema ve kayıt defteri)', () => {
   })
 
   it('ham sorgu reddedilir', async () => {
-    const res = await app.inject({ method: 'POST', url: '/graphql', payload: { query: '{ membershipStatus { status } }' } })
+    const res = await app.inject({
+      method: 'POST',
+      url: '/graphql',
+      payload: { query: '{ membershipStatus { status } }' },
+    })
     expect(res.statusCode).toBe(400)
     expect(res.json().errors[0].extensions.code).toBe('RAW_QUERY_NOT_ALLOWED')
   })

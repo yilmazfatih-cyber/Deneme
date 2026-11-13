@@ -69,7 +69,10 @@ describe('yetki kararları', () => {
       cta: 'Paketi incele',
     })
     expect(app.services.entitlement.accessForChannel(passport(ADULT, ACCOUNT_SINEMA), 5).state).toBe('PLAYABLE')
-    expect(app.services.entitlement.accessForChannel(passport(KID), 1)).toMatchObject({ state: 'BLOCKED', reasonText: 'Bu profil için uygun değil' })
+    expect(app.services.entitlement.accessForChannel(passport(KID), 1)).toMatchObject({
+      state: 'BLOCKED',
+      reasonText: 'Bu profil için uygun değil',
+    })
     expect(app.services.entitlement.accessForChannel(passport(KID), 4).state).toBe('PLAYABLE')
     expect(app.services.entitlement.accessForChannel(passport(ADULT), 404).state).toBe('BLOCKED')
   })

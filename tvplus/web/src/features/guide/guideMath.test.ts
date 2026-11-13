@@ -1,5 +1,16 @@
 import { describe, expect, it } from 'vitest'
-import { dayWindow, groupForList, initialScrollLeft, layoutBlocks, nowPx, PX_PER_MIN, ticks, timeToPx, windowWidth, zonedTime } from './guideMath'
+import {
+  dayWindow,
+  groupForList,
+  initialScrollLeft,
+  layoutBlocks,
+  nowPx,
+  PX_PER_MIN,
+  ticks,
+  timeToPx,
+  windowWidth,
+  zonedTime,
+} from './guideMath'
 
 const iso = (s: string) => new Date(s).toISOString()
 const NOW = Date.parse('2026-11-13T09:10:00Z') // 12:10 TSİ
@@ -67,7 +78,12 @@ describe('blok yerleşimi', () => {
   })
   it('kenarda kırpılır', () => {
     expect(b[0]).toMatchObject({ left: 0, width: 60 * PX_PER_MIN, clippedStart: true, clippedEnd: false })
-    expect(b[1]).toMatchObject({ left: 6 * 60 * PX_PER_MIN, width: 60 * PX_PER_MIN, clippedStart: false, clippedEnd: false })
+    expect(b[1]).toMatchObject({
+      left: 6 * 60 * PX_PER_MIN,
+      width: 60 * PX_PER_MIN,
+      clippedStart: false,
+      clippedEnd: false,
+    })
     expect(b[2]).toMatchObject({ width: 30 * PX_PER_MIN, clippedEnd: true })
   })
 })

@@ -55,21 +55,26 @@ export function pickBestMp4(files: ArchiveFile[]): ArchiveFile | null {
     const hScore = h === 0 ? 0 : h <= 1080 ? h : Math.max(1, 2160 - h) // 1080 üstü (4K) tarayıcıda gereksiz ağır: en sona
     return [formatRank(f.format ?? ''), f.source === 'derivative' ? 1 : 0, hScore, Number(f.size ?? 0)]
   }
-  return [...cands].sort((a, b) => {
-    const sa = score(a)
-    const sb = score(b)
-    for (let i = 0; i < sa.length; i++) if ((sa[i] ?? 0) !== (sb[i] ?? 0)) return (sb[i] ?? 0) - (sa[i] ?? 0)
-    return 0
-  })[0] ?? null
+  return (
+    [...cands].sort((a, b) => {
+      const sa = score(a)
+      const sb = score(b)
+      for (let i = 0; i < sa.length; i++) if ((sa[i] ?? 0) !== (sb[i] ?? 0)) return (sb[i] ?? 0) - (sa[i] ?? 0)
+      return 0
+    })[0] ?? null
+  )
 }
 
 /** En büyük özgün JPEG/PNG (afiş/kare adayı). */
 export function pickArtwork(files: ArchiveFile[]): ArchiveFile | null {
-  const imgs = files.filter((f) => f.source === 'original' && /\.(jpe?g|png)$/i.test(f.name) && !/thumb|__ia_thumb/i.test(f.name))
+  const imgs = files.filter(
+    (f) => f.source === 'original' && /\.(jpe?g|png)$/i.test(f.name) && !/thumb|__ia_thumb/i.test(f.name),
+  )
   return imgs.sort((a, b) => Number(b.size ?? 0) - Number(a.size ?? 0))[0] ?? null
 }
 
-const first = (v: unknown): string => (Array.isArray(v) ? first(v[0]) : typeof v === 'string' ? v : typeof v === 'number' ? String(v) : '')
+const first = (v: unknown): string =>
+  Array.isArray(v) ? first(v[0]) : typeof v === 'string' ? v : typeof v === 'number' ? String(v) : ''
 const stripHtml = (s: string) =>
   s
     .replace(/<br\s*\/?>/gi, ' ')
@@ -85,7 +90,8 @@ const cut = (s: string, n: number) => (s.length > n ? `${s.slice(0, n - 1)}…` 
 /** Lisans adresinden kısa ad: publicdomain → "Kamu malı", creativecommons by-sa/4.0 → "CC BY-SA 4.0". */
 export function licenseName(url: string, rights: string): string {
   const u = url.toLowerCase()
-  if (u.includes('publicdomain/mark') || u.includes('publicdomain/zero')) return u.includes('zero') ? 'CC0 1.0' : 'Kamu malı'
+  if (u.includes('publicdomain/mark') || u.includes('publicdomain/zero'))
+    return u.includes('zero') ? 'CC0 1.0' : 'Kamu malı'
   const m = /creativecommons\.org\/licenses\/([a-z-]+)\/(\d\.\d)/.exec(u)
   if (m && m[1] && m[2]) return `CC ${m[1].toUpperCase()} ${m[2]}`
   if (/public domain|kamu mal/i.test(rights)) return 'Kamu malı'
@@ -164,7 +170,9 @@ async function main() {
   const mp4 = pickBestMp4(meta.files ?? [])
   const [videoId] = allocateIds(usedVideoIds(dir), 80020001, 80029999, 1)
   const skeleton = archiveSkeleton(id, meta, { videoId: videoId ?? 0, today: new Date().toISOString().slice(0, 10) })
-  console.error(`Seçilen dosya: ${mp4?.name} (${mp4?.format}, ${mp4?.height ?? '?'}p, ${((Number(mp4?.size ?? 0) / 1048576) | 0)} MB)`)
+  console.error(
+    `Seçilen dosya: ${mp4?.name} (${mp4?.format}, ${mp4?.height ?? '?'}p, ${(Number(mp4?.size ?? 0) / 1048576) | 0} MB)`,
+  )
   console.error('İskelet (stdout): tür, olgunluk işareti ve özeti gözden geçirip content/titles/ altına ekleyin.')
   console.log(JSON.stringify(skeleton, null, 2))
 }

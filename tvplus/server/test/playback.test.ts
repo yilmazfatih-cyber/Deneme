@@ -70,7 +70,16 @@ function seedMpd(dataDir: string, url: string, xml: string) {
   const dir = join(dataDir, 'mpd-cache')
   mkdirSync(dir, { recursive: true })
   const file = join(dir, `${createHash('sha1').update(url).digest('hex')}.json`)
-  writeFileSync(file, JSON.stringify({ version: 1, fetchedAt: Date.now(), ...parsed, video: parsed.video.map(withSize), audio: parsed.audio.map(withSize) }))
+  writeFileSync(
+    file,
+    JSON.stringify({
+      version: 1,
+      fetchedAt: Date.now(),
+      ...parsed,
+      video: parsed.video.map(withSize),
+      audio: parsed.audio.map(withSize),
+    }),
+  )
 }
 
 let work: string
@@ -81,8 +90,19 @@ let vp9File: Buffer
 
 const ALL_PROFILES = ['vp9-webm', 'h264-mp4', 'opus-webm', 'aac-mp4']
 async function manifest<T = LicensedManifest>(req: Partial<ManifestRequest>, reqName = 'licensedManifest'): Promise<T> {
-  const body: ManifestRequest = { viewableId: 'Video:1001', prefetch: false, profiles: ALL_PROFILES as ManifestRequest['profiles'], supportsMse: true, uiLanguage: 'tr', ...req }
-  const res = await app.inject({ method: 'POST', url: `/msl/v1/playapi/licensedManifest?reqName=${reqName}&clienttype=anka`, payload: await sealRequest(client, body) })
+  const body: ManifestRequest = {
+    viewableId: 'Video:1001',
+    prefetch: false,
+    profiles: ALL_PROFILES as ManifestRequest['profiles'],
+    supportsMse: true,
+    uiLanguage: 'tr',
+    ...req,
+  }
+  const res = await app.inject({
+    method: 'POST',
+    url: `/msl/v1/playapi/licensedManifest?reqName=${reqName}&clienttype=anka`,
+    payload: await sealRequest(client, body),
+  })
   if (res.statusCode !== 200) throw new Error(`HTTP ${res.statusCode}: ${res.body}`)
   return (await openResponse<T>(client, res.json() as MslEnvelope)).payload
 }
@@ -94,7 +114,16 @@ beforeAll(async () => {
   mkdirSync(subtitlesDir)
   writeFileSync(join(subtitlesDir, 'klip.tr.vtt'), 'WEBVTT\n\n00:01.000 --> 00:02.500\nMerhaba <i>dünya</i>\n')
   const clip = await generateClip(work)
-  await packageTitle({ input: clip, id: 'klip', mediaDir, ladder: [90, 144], bitrates: { 90: 60, 144: 110 }, codecs: ['vp9', 'h264'], speed: 'fast', lang: 'tr' })
+  await packageTitle({
+    input: clip,
+    id: 'klip',
+    mediaDir,
+    ladder: [90, 144],
+    bitrates: { 90: 60, 144: 110 },
+    codecs: ['vp9', 'h264'],
+    speed: 'fast',
+    lang: 'tr',
+  })
   vp9File = readFileSync(join(packagedDir(mediaDir, 'klip'), 'v-144p-110k-vp9.webm'))
 
   app = await createTestApp({ mediaDir })
@@ -110,25 +139,97 @@ beforeAll(async () => {
     playable({
       videoId: 1001,
       displayTitle: 'Deneme Klibi',
-      sources: [{ type: 'PACKAGED', id: 'klip', timedText: [{ lang: 'tr', label: 'Türkçe', format: 'vtt', file: 'klip.tr.vtt', kind: 'SUBTITLES' }] }, yt],
+      sources: [
+        {
+          type: 'PACKAGED',
+          id: 'klip',
+          timedText: [{ lang: 'tr', label: 'Türkçe', format: 'vtt', file: 'klip.tr.vtt', kind: 'SUBTITLES' }],
+        },
+        yt,
+      ],
     }),
   )
-  const dash = { type: 'DASH' as const, manifest: MPD_URL, extraAudioManifest: EXTRA_MPD_URL, timedText: [{ lang: 'tr', label: 'Türkçe (içerik)', format: 'vtt' as const, url: 'https://ornek-koken.invalid/tr.vtt', kind: 'SUBTITLES' as const }] }
-  fakes.playables.set(1002, playable({ videoId: 1002, displayTitle: 'Sintel', runtimeSec: 888, sources: [dash], promo: { source: dash, offsetSec: 95 } }))
-  fakes.playables.set(1003, playable({ videoId: 1003, sources: [{ type: 'PROGRESSIVE', url: 'https://archive.invalid/film.mp4', mimeType: 'video/mp4', sizeBytes: 123456789, timedText: [] }] }))
+  const dash = {
+    type: 'DASH' as const,
+    manifest: MPD_URL,
+    extraAudioManifest: EXTRA_MPD_URL,
+    timedText: [
+      {
+        lang: 'tr',
+        label: 'Türkçe (içerik)',
+        format: 'vtt' as const,
+        url: 'https://ornek-koken.invalid/tr.vtt',
+        kind: 'SUBTITLES' as const,
+      },
+    ],
+  }
+  fakes.playables.set(
+    1002,
+    playable({
+      videoId: 1002,
+      displayTitle: 'Sintel',
+      runtimeSec: 888,
+      sources: [dash],
+      promo: { source: dash, offsetSec: 95 },
+    }),
+  )
+  fakes.playables.set(
+    1003,
+    playable({
+      videoId: 1003,
+      sources: [
+        {
+          type: 'PROGRESSIVE',
+          url: 'https://archive.invalid/film.mp4',
+          mimeType: 'video/mp4',
+          sizeBytes: 123456789,
+          timedText: [],
+        },
+      ],
+    }),
+  )
   fakes.playables.set(1004, playable({ videoId: 1004, runtimeSec: null, sources: [{ ...yt, startSec: 12 }] }))
   fakes.playables.set(1005, playable({ videoId: 1005, sources: [dash] }))
-  fakes.access.set(1005, { state: 'UPSELL', reasonText: 'Bu film Sinema paketinde.', requiredProduct: 'sinema', requiredProductName: 'Sinema', cta: 'Paketi incele' })
-  fakes.playables.set(1006, playable({ videoId: 1006, sources: [{ type: 'DASH', manifest: MISSING_MPD_URL, timedText: [] }] }))
+  fakes.access.set(1005, {
+    state: 'UPSELL',
+    reasonText: 'Bu film Sinema paketinde.',
+    requiredProduct: 'sinema',
+    requiredProductName: 'Sinema',
+    cta: 'Paketi incele',
+  })
+  fakes.playables.set(
+    1006,
+    playable({ videoId: 1006, sources: [{ type: 'DASH', manifest: MISSING_MPD_URL, timedText: [] }] }),
+  )
   fakes.bookmarks.set('PROFIL1:1001', { positionSec: 42, runtimeSec: 6, lastModified: new Date().toISOString() })
 
   const channel = (channelId: number, source: ContentChannel['source']): ContentChannel => ({
-    channelId, slug: `kanal-${channelId}`, name: `Kanal ${channelId}`, number: channelId, category: 'haber' as ContentChannel['category'],
-    description: 'deneme', logo: null, isHd: true, favorite: false, kids: false, source, requiredProduct: null,
+    channelId,
+    slug: `kanal-${channelId}`,
+    name: `Kanal ${channelId}`,
+    number: channelId,
+    category: 'haber' as ContentChannel['category'],
+    description: 'deneme',
+    logo: null,
+    isHd: true,
+    favorite: false,
+    kids: false,
+    source,
+    requiredProduct: null,
   })
   fakes.channels.set(1, channel(1, { type: 'YOUTUBE_LIVE', channelId: 'UC' + 'a'.repeat(22) }))
   fakes.channels.set(2, channel(2, { type: 'LINEAR', playlist: [1001] }))
-  const airing = { airingId: 'A1', channelId: 2, title: 'Gece Filmi', synopsis: '', kind: 'film', startAt: new Date(Date.now() - 125_500), endAt: new Date(Date.now() + 3_600_000), videoId: 1001, isSample: true }
+  const airing = {
+    airingId: 'A1',
+    channelId: 2,
+    title: 'Gece Filmi',
+    synopsis: '',
+    kind: 'film',
+    startAt: new Date(Date.now() - 125_500),
+    endAt: new Date(Date.now() + 3_600_000),
+    videoId: 1001,
+    isSample: true,
+  }
   fakes.airings.set('A1', airing)
   fakes.linear.set(2, { airing, videoId: 1001, offsetSec: 125.5 })
 }, 60_000)
@@ -149,7 +250,9 @@ describe('lisanslı manifest: STREAMS (paketlenmiş)', () => {
     expect(m.audioTracks).toHaveLength(1)
     expect(m.audioTracks[0]!.streams.map((s) => s.profile)).toEqual(['aac-mp4'])
     const m2 = await manifest<StreamsManifest>({ profiles: ['vp9-webm', 'opus-webm', 'aac-mp4'] })
-    expect(m2.videoTracks[0]!.streams.every((s) => s.profile === 'vp9-webm' && s.container === 'webm' && s.codecs === 'vp9')).toBe(true)
+    expect(
+      m2.videoTracks[0]!.streams.every((s) => s.profile === 'vp9-webm' && s.container === 'webm' && s.codecs === 'vp9'),
+    ).toBe(true)
     expect(m2.audioTracks[0]!.streams[0]!.codecs).toBe('opus')
   })
 
@@ -164,7 +267,11 @@ describe('lisanslı manifest: STREAMS (paketlenmiş)', () => {
     expect(m.live).toBeNull()
     expect(m.bookmark).toEqual({ positionMs: 42_000 })
     expect(m.alternatives).toEqual(['OWN_CDN', 'YOUTUBE'])
-    expect(m.attribution).toEqual({ license: 'CC BY 3.0', text: '© Blender Foundation', url: 'https://www.blender.org' })
+    expect(m.attribution).toEqual({
+      license: 'CC BY 3.0',
+      text: '© Blender Foundation',
+      url: 'https://www.blender.org',
+    })
     expect(m.license.type).toBe('ACCESS_GRANT')
     expect(Math.abs(m.expiration - (Date.now() + 12 * 3600 * 1000))).toBeLessThan(5000)
     expect(m.cdns.map((c) => [c.id, c.rank, c.type])).toEqual([
@@ -175,7 +282,8 @@ describe('lisanslı manifest: STREAMS (paketlenmiş)', () => {
     ])
     const s = m.videoTracks[0]!.streams[1]!
     expect(s.urls.map((u) => u.cdnId)).toEqual(m.cdns.map((c) => c.id))
-    for (const u of s.urls) expect(u.url).toMatch(new RegExp(`^/oca/${u.cdnId}/range/\\{range\\}\\?o=[0-9a-f]+&v=\\d+&e=\\d+&t=[\\w-]+$`))
+    for (const u of s.urls)
+      expect(u.url).toMatch(new RegExp(`^/oca/${u.cdnId}/range/\\{range\\}\\?o=[0-9a-f]+&v=\\d+&e=\\d+&t=[\\w-]+$`))
     // gerçek yol bilgisi istemciye gitmez
     expect(JSON.stringify(m)).not.toContain(work)
     // şablon, başlatma aralığıyla gerçek baytları verir — her düğümden
@@ -189,12 +297,26 @@ describe('lisanslı manifest: STREAMS (paketlenmiş)', () => {
     // altyazı: içerikteki Türkçe dosya, TTML olarak
     expect(m.timedTextTracks).toHaveLength(1)
     const t = m.timedTextTracks[0]!
-    expect([t.trackId, t.language, t.languageDescription, t.type, t.format]).toEqual(['T-tr', 'tr', 'Türkçe', 'SUBTITLES', 'ttml'])
+    expect([t.trackId, t.language, t.languageDescription, t.type, t.format]).toEqual([
+      'T-tr',
+      'tr',
+      'Türkçe',
+      'SUBTITLES',
+      'ttml',
+    ])
     const ttml = await app.inject({ method: 'GET', url: t.urls[1]!.url })
     expect(ttml.statusCode).toBe(200)
-    expect(ttml.body).toContain('<p begin="10000000t" end="25000000t"><span>Merhaba </span><span tts:fontStyle="italic">dünya</span></p>')
+    expect(ttml.body).toContain(
+      '<p begin="10000000t" end="25000000t"><span>Merhaba </span><span tts:fontStyle="italic">dünya</span></p>',
+    )
     // ses parçası
-    expect(m.audioTracks[0]).toMatchObject({ trackId: 'A-tr-20', language: 'tr', languageDescription: 'Türkçe [Özgün]', channels: '2.0', isNative: true })
+    expect(m.audioTracks[0]).toMatchObject({
+      trackId: 'A-tr-20',
+      language: 'tr',
+      languageDescription: 'Türkçe [Özgün]',
+      channels: '2.0',
+      isNative: true,
+    })
   })
 
   it('MSE yoksa ya da ortak profil yoksa sıradaki kaynağa (YouTube gömmesi) geçer', async () => {
@@ -232,7 +354,10 @@ describe('lisanslı manifest: DASH (önbellekteki MPD)', () => {
   })
 
   it('ses profili parça başına seçilir: VP9 + Opus stereo + yalnız AAC olan 5.1', async () => {
-    const m = await manifest<StreamsManifest>({ viewableId: 'Video:1002', profiles: ['vp9-webm', 'opus-webm', 'aac-mp4'] })
+    const m = await manifest<StreamsManifest>({
+      viewableId: 'Video:1002',
+      profiles: ['vp9-webm', 'opus-webm', 'aac-mp4'],
+    })
     expect(m.videoTracks[0]!.streams.every((s) => s.profile === 'vp9-webm')).toBe(true)
     expect(m.audioTracks.map((a) => [a.trackId, a.isNative, [...new Set(a.streams.map((s) => s.profile))]])).toEqual([
       ['A-en-20', true, ['opus-webm']],
@@ -244,12 +369,20 @@ describe('lisanslı manifest: DASH (önbellekteki MPD)', () => {
     expect(opusOnly.audioTracks.map((a) => a.trackId)).toEqual(['A-en-20'])
     expect(opusOnly.audioTracks[0]!.streams.map((s) => s.profile)).toEqual(['opus-webm'])
     // AAC'yi önce sayan istemci: stereo da AAC olur
-    const aacFirst = await manifest<StreamsManifest>({ viewableId: 'Video:1002', profiles: ['vp9-webm', 'aac-mp4', 'opus-webm'] })
+    const aacFirst = await manifest<StreamsManifest>({
+      viewableId: 'Video:1002',
+      profiles: ['vp9-webm', 'aac-mp4', 'opus-webm'],
+    })
     expect(aacFirst.audioTracks.map((a) => a.streams[0]!.profile)).toEqual(['aac-mp4', 'aac-mp4'])
   })
 
   it('promo: true → en çok 480p, tanıtım ofseti konum olarak', async () => {
-    const m = await manifest<StreamsManifest>({ viewableId: 'Video:1002', promo: true, prefetch: true, profiles: ['vp9-webm', 'opus-webm'] })
+    const m = await manifest<StreamsManifest>({
+      viewableId: 'Video:1002',
+      promo: true,
+      prefetch: true,
+      profiles: ['vp9-webm', 'opus-webm'],
+    })
     expect(m.videoTracks[0]!.streams.map((s) => s.height)).toEqual([182, 364])
     expect(m.bookmark).toEqual({ positionMs: 95_000 })
     expect(m.isPrefetch).toBe(true)
@@ -262,7 +395,13 @@ describe('lisanslı manifest: DASH (önbellekteki MPD)', () => {
 
   it('cachedStreamInfo eş zamanlı yanıt verir', () => {
     const info = app.services.playback.cachedStreamInfo(1002)
-    expect(info).toEqual({ maxHeight: 818, has51: true, textLanguages: ['tr', 'en', 'de'], audioLanguages: ['en'], durationSec: 888.053 })
+    expect(info).toEqual({
+      maxHeight: 818,
+      has51: true,
+      textLanguages: ['tr', 'en', 'de'],
+      audioLanguages: ['en'],
+      durationSec: 888.053,
+    })
     expect(app.services.playback.cachedStreamInfo(1001)?.maxHeight).toBe(144)
     expect(app.services.playback.cachedStreamInfo(1006)).toBeNull()
     expect(app.services.playback.cachedStreamInfo(999)).toBeNull()
@@ -281,7 +420,14 @@ describe('lisanslı manifest: diğer türler', () => {
 
   it('YouTube gömmesi', async () => {
     const m = await manifest<EmbedManifest>({ viewableId: 'Video:1004' })
-    expect(m).toMatchObject({ kind: 'EXTERNAL_EMBED', provider: 'YOUTUBE', videoId: 'aqz-KE-bpKQ', liveChannelId: null, startSec: 12, durationMs: null })
+    expect(m).toMatchObject({
+      kind: 'EXTERNAL_EMBED',
+      provider: 'YOUTUBE',
+      videoId: 'aqz-KE-bpKQ',
+      liveChannelId: null,
+      startSec: 12,
+      durationMs: null,
+    })
     expect(m.alternatives).toEqual(['YOUTUBE'])
   })
 
@@ -341,10 +487,16 @@ describe('ön hazırlık, sayaçlar ve CDN sıralaması', () => {
 
   it('cdnHints sırası uygulanır; kapalı düğüm listeden çıkar', async () => {
     await app.inject({ method: 'POST', url: '/api/debug/oca/c102-ist001-ix', payload: { down: true } })
-    const m = await manifest<StreamsManifest>({ cdnHints: ['cloud-ist-origin', 'c201-ank001-isp', 'bilinmeyen', 'anycast'] })
+    const m = await manifest<StreamsManifest>({
+      cdnHints: ['cloud-ist-origin', 'c201-ank001-isp', 'bilinmeyen', 'anycast'],
+    })
     expect(m.cdns.map((c) => c.id)).toEqual(['cloud-ist-origin', 'c201-ank001-isp', 'c101-ist001-ix'])
     expect(m.cdns.map((c) => c.rank)).toEqual([1, 2, 3])
-    expect(m.videoTracks[0]!.streams[0]!.urls.map((u) => u.cdnId)).toEqual(['cloud-ist-origin', 'c201-ank001-isp', 'c101-ist001-ix'])
+    expect(m.videoTracks[0]!.streams[0]!.urls.map((u) => u.cdnId)).toEqual([
+      'cloud-ist-origin',
+      'c201-ank001-isp',
+      'c101-ist001-ix',
+    ])
   })
 
   it('ipucu yoksa cihazın son FTL sıralaması kullanılır', async () => {

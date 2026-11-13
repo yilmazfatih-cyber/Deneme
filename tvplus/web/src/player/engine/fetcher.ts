@@ -179,7 +179,12 @@ async function attempt(url: string, signal: AbortSignal, timeoutMs: number): Pro
 }
 
 /** [start, end] aralığını (dahil) indirir; gerekirse sıradaki CDN'e geçer. */
-export async function fetchRange(urls: StreamUrl[], start: number, end: number, o: FetchRangeOptions): Promise<RangeResult> {
+export async function fetchRange(
+  urls: StreamUrl[],
+  start: number,
+  end: number,
+  o: FetchRangeOptions,
+): Promise<RangeResult> {
   const health = o.health ?? cdnHealth
   const order = health.order(urls)
   const attempts: { cdnId: string; reason: string }[] = []

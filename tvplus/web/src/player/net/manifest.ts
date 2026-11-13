@@ -52,7 +52,13 @@ function describe(m: LicensedManifest): Record<string, unknown> {
     return {
       ...base,
       video: m.videoTracks.flatMap((t) =>
-        t.streams.map((s) => ({ streamId: s.streamId, bitrateKbps: s.bitrateKbps, width: s.width ?? null, height: s.height ?? null, profile: s.profile })),
+        t.streams.map((s) => ({
+          streamId: s.streamId,
+          bitrateKbps: s.bitrateKbps,
+          width: s.width ?? null,
+          height: s.height ?? null,
+          profile: s.profile,
+        })),
       ),
       audio: m.audioTracks.map((t) => ({ trackId: t.trackId, language: t.language, channels: t.channels })),
       text: m.timedTextTracks.map((t) => ({ trackId: t.trackId, language: t.language })),
@@ -68,7 +74,16 @@ function describe(m: LicensedManifest): Record<string, unknown> {
       text: m.timedTextTracks.map((t) => ({ trackId: t.trackId, language: t.language })),
       cdns: m.cdns.map((c) => ({ id: c.id, rank: c.rank })),
     }
-  return { ...base, provider: m.provider, videoId: m.videoId, liveChannelId: m.liveChannelId, video: [], audio: [], text: [], cdns: [] }
+  return {
+    ...base,
+    provider: m.provider,
+    videoId: m.videoId,
+    liveChannelId: m.liveChannelId,
+    video: [],
+    audio: [],
+    text: [],
+    cdns: [],
+  }
 }
 
 async function fetchManifest(viewableId: string, o: ManifestOptions): Promise<LicensedManifest> {
@@ -91,7 +106,13 @@ async function fetchManifest(viewableId: string, o: ManifestOptions): Promise<Li
   try {
     payload = await msl.send<LicensedManifest | ManifestError>(
       ROUTES.MSL_MANIFEST,
-      { reqName, mainContentViewableId: viewableId, clienttype: CLIENT.TYPE, browsername: b.name, browserversion: b.version },
+      {
+        reqName,
+        mainContentViewableId: viewableId,
+        clienttype: CLIENT.TYPE,
+        browsername: b.name,
+        browserversion: b.version,
+      },
       req,
       reqName,
       o.signal,
@@ -106,14 +127,29 @@ async function fetchManifest(viewableId: string, o: ManifestOptions): Promise<Li
     } else {
       mapped = new ManifestRequestError('NETWORK', 'Bağlantı kurulamadı')
     }
-    devbus.emit('manifest', viewableId, { prefetch, error: mapped.code, message: mapped.message }, { ms: performance.now() - t0, ok: false })
+    devbus.emit(
+      'manifest',
+      viewableId,
+      { prefetch, error: mapped.code, message: mapped.message },
+      { ms: performance.now() - t0, ok: false },
+    )
     throw mapped
   }
   if (isManifestError(payload)) {
-    devbus.emit('manifest', viewableId, { prefetch, error: payload.error.code, message: payload.error.message }, { ms: performance.now() - t0, ok: false })
+    devbus.emit(
+      'manifest',
+      viewableId,
+      { prefetch, error: payload.error.code, message: payload.error.message },
+      { ms: performance.now() - t0, ok: false },
+    )
     throw new ManifestRequestError(payload.error.code, payload.error.message, payload.error.access)
   }
-  devbus.emit('manifest', viewableId, { ...describe(payload), request: { profiles: req.profiles, cdnHints: req.cdnHints, promo: !!req.promo } }, { ms: performance.now() - t0 })
+  devbus.emit(
+    'manifest',
+    viewableId,
+    { ...describe(payload), request: { profiles: req.profiles, cdnHints: req.cdnHints, promo: !!req.promo } },
+    { ms: performance.now() - t0 },
+  )
   return payload
 }
 
@@ -128,7 +164,12 @@ export async function requestManifest(viewableId: string, opts: ManifestOptions 
     const hit = cache.get(key, now)
     if (hit && canReuseForPlay(hit.manifest, now)) {
       const label = !opts.prefetch && hit.manifest.isPrefetch ? 'manifest: ön hazırlıktan' : 'manifest: isabet'
-      devbus.emit('cache', label, { key, expires: hit.manifest.expiration, ageMs: hit.ageMs, prefetched: hit.manifest.isPrefetch })
+      devbus.emit('cache', label, {
+        key,
+        expires: hit.manifest.expiration,
+        ageMs: hit.ageMs,
+        prefetched: hit.manifest.isPrefetch,
+      })
       return hit.manifest
     }
     const pending = cache.pending(key)
@@ -137,7 +178,12 @@ export async function requestManifest(viewableId: string, opts: ManifestOptions 
       // Uçuştaki isteği (ön hazırlık ya da eşzamanlı oynatma isteği) bekle; uygunsa onu kullan
       const m = await pending.catch(() => null)
       if (m && canReuseForPlay(m, Date.now())) {
-        devbus.emit('cache', m.isPrefetch ? 'manifest: ön hazırlıktan' : 'manifest: uçuştaki istek paylaşıldı', { key, expires: m.expiration, prefetched: m.isPrefetch, inflight: true })
+        devbus.emit('cache', m.isPrefetch ? 'manifest: ön hazırlıktan' : 'manifest: uçuştaki istek paylaşıldı', {
+          key,
+          expires: m.expiration,
+          prefetched: m.isPrefetch,
+          inflight: true,
+        })
         return m
       }
     }

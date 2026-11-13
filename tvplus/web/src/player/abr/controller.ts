@@ -26,7 +26,8 @@ export interface AbrInput {
   maxHeight: number | null
 }
 
-export type AbrReason = 'başlangıç' | 'elle' | 'bant genişliği arttı' | 'bant genişliği düştü' | 'tampon azaldı' | 'sınır' | 'aynı'
+export type AbrReason =
+  'başlangıç' | 'elle' | 'bant genişliği arttı' | 'bant genişliği düştü' | 'tampon azaldı' | 'sınır' | 'aynı'
 
 export interface AbrDecision {
   index: number
@@ -45,7 +46,8 @@ export function maxAllowedIndex(streams: AbrStream[], maxHeight: number | null):
 
 export function targetIndex(streams: AbrStream[], estimateKbps: number, cap: number): number {
   let best = 0
-  for (let i = 0; i <= cap && i < streams.length; i++) if (streams[i]!.bitrateKbps <= ABR_SAFETY * estimateKbps) best = i
+  for (let i = 0; i <= cap && i < streams.length; i++)
+    if (streams[i]!.bitrateKbps <= ABR_SAFETY * estimateKbps) best = i
   return best
 }
 
@@ -61,7 +63,9 @@ export function decide(input: AbrInput): AbrDecision {
   if (currentIndex === null) return { index: target, reason: 'başlangıç' }
   if (currentIndex > cap) return { index: cap, reason: 'sınır' }
   if (target > currentIndex) {
-    return bufferSec >= ABR_UP_MIN_BUFFER_SEC ? { index: target, reason: 'bant genişliği arttı' } : { index: currentIndex, reason: 'aynı' }
+    return bufferSec >= ABR_UP_MIN_BUFFER_SEC
+      ? { index: target, reason: 'bant genişliği arttı' }
+      : { index: currentIndex, reason: 'aynı' }
   }
   if (target < currentIndex) {
     if (bufferSec < ABR_PANIC_BUFFER_SEC) return { index: target, reason: 'tampon azaldı' }

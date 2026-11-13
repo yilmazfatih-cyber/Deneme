@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { MSL_HKDF_INFO_PREFIX, MSL_HKDF_SALT, type LicensedManifest, type MslHeader, type MslMasterToken } from '../../../../shared/playback'
+import {
+  MSL_HKDF_INFO_PREFIX,
+  MSL_HKDF_SALT,
+  type LicensedManifest,
+  type MslHeader,
+  type MslMasterToken,
+} from '../../../../shared/playback'
 import { b64decode, b64encode, b64json, parseB64json, utf8 } from './bytes'
 import { FtlRanking, pulseWinner } from './ftlRanking'
 import { canReuseForPlay, EXPIRY_MARGIN_MS, ManifestCache, manifestKey } from './manifestCache'
@@ -20,11 +26,21 @@ const ESN = 'TVPWCH-MC-TEST-0001'
 
 /** Sunucu tarafını sözleşmeden bağımsız olarak, doğrudan WebCrypto ile kurar (shared/playback.ts §2). */
 async function serverKeysFrom(serverPriv: CryptoKey, clientPubB64: string) {
-  const clientPub = await subtle.importKey('raw', b64decode(clientPubB64), { name: 'ECDH', namedCurve: 'P-256' }, false, [])
+  const clientPub = await subtle.importKey(
+    'raw',
+    b64decode(clientPubB64),
+    { name: 'ECDH', namedCurve: 'P-256' },
+    false,
+    [],
+  )
   const shared = await subtle.deriveBits({ name: 'ECDH', public: clientPub }, serverPriv, 256)
   const ikm = await subtle.importKey('raw', shared, 'HKDF', false, ['deriveBits'])
   const okm = new Uint8Array(
-    await subtle.deriveBits({ name: 'HKDF', hash: 'SHA-256', salt: utf8(MSL_HKDF_SALT), info: utf8(MSL_HKDF_INFO_PREFIX + ESN) }, ikm, 512),
+    await subtle.deriveBits(
+      { name: 'HKDF', hash: 'SHA-256', salt: utf8(MSL_HKDF_SALT), info: utf8(MSL_HKDF_INFO_PREFIX + ESN) },
+      ikm,
+      512,
+    ),
   )
   return {
     encKey: await subtle.importKey('raw', okm.slice(0, 32), 'AES-GCM', false, ['encrypt', 'decrypt']),
@@ -35,7 +51,15 @@ async function serverKeysFrom(serverPriv: CryptoKey, clientPubB64: string) {
 function token(): MslMasterToken {
   const now = Math.floor(Date.now() / 1000)
   return {
-    tokendata: b64json({ renewalwindow: now + 600, expiration: now + 3600, sequencenumber: 1, serialnumber: 42, esn: ESN, scheme: 'ECDH_P256_AESGCM', sessiondata: 'eA==' }),
+    tokendata: b64json({
+      renewalwindow: now + 600,
+      expiration: now + 3600,
+      sequencenumber: 1,
+      serialnumber: 42,
+      esn: ESN,
+      scheme: 'ECDH_P256_AESGCM',
+      sessiondata: 'eA==',
+    }),
     signature: 'c2ln',
   }
 }
@@ -57,15 +81,30 @@ describe('MSL kriptografisi (iki taraf)', () => {
     const env = await sealEnvelope(subtle, clientKeys, mt, header, payload)
 
     // sunucu: imzayı doğrula, AAD = tokendata ile çöz; biçim base64(iv || ct || tag)
-    const sig = await subtle.verify('HMAC', serverKeys.hmacKey, b64decode(env.signature), utf8(`${env.headerdata}.${env.payload}`))
+    const sig = await subtle.verify(
+      'HMAC',
+      serverKeys.hmacKey,
+      b64decode(env.signature),
+      utf8(`${env.headerdata}.${env.payload}`),
+    )
     expect(sig).toBe(true)
     const raw = b64decode(env.payload)
-    const plain = await subtle.decrypt({ name: 'AES-GCM', iv: raw.slice(0, 12), additionalData: utf8(mt.tokendata) }, serverKeys.encKey, raw.slice(12))
+    const plain = await subtle.decrypt(
+      { name: 'AES-GCM', iv: raw.slice(0, 12), additionalData: utf8(mt.tokendata) },
+      serverKeys.encKey,
+      raw.slice(12),
+    )
     expect(JSON.parse(new TextDecoder().decode(plain))).toEqual(payload)
     expect(raw.length).toBe(12 + JSON.stringify(payload).length + 16)
 
     // sunucu yanıtı → istemci açar
-    const reply = await sealEnvelope(subtle, serverKeys, mt, { messageid: 7, sender: 'tvplus-playapi', timestamp: 2, renewable: true }, { ok: 1 })
+    const reply = await sealEnvelope(
+      subtle,
+      serverKeys,
+      mt,
+      { messageid: 7, sender: 'tvplus-playapi', timestamp: 2, renewable: true },
+      { ok: 1 },
+    )
     const opened = await openEnvelope<{ ok: number }>(subtle, clientKeys, reply)
     expect(opened.header.renewable).toBe(true)
     expect(opened.payload).toEqual({ ok: 1 })
@@ -118,7 +157,9 @@ function manifest(expiration: number, extra: Partial<LicensedManifest> = {}): Li
 describe('manifest önbelleği', () => {
   it('anahtar seçenekleri ayırt eder', () => {
     expect(manifestKey('Video:1', {})).not.toBe(manifestKey('Video:1', { promo: true }))
-    expect(manifestKey('Video:1', { preferredSource: 'YOUTUBE' })).not.toBe(manifestKey('Video:1', { preferredSource: 'OWN_CDN' }))
+    expect(manifestKey('Video:1', { preferredSource: 'YOUTUBE' })).not.toBe(
+      manifestKey('Video:1', { preferredSource: 'OWN_CDN' }),
+    )
   })
 
   it('expiration − güvenlik payı geçince kaydı düşürür', () => {
@@ -150,7 +191,15 @@ describe('manifest önbelleği', () => {
 
 /* ───────────── FTL sıralaması ───────────── */
 
-const r = (cdnId: string, ok: boolean, totalMs: number, kbps = 1000) => ({ name: cdnId, cdnId, ok, ttfbMs: totalMs / 2, totalMs, bytes: 5120, kbps })
+const r = (cdnId: string, ok: boolean, totalMs: number, kbps = 1000) => ({
+  name: cdnId,
+  cdnId,
+  ok,
+  ttfbMs: totalMs / 2,
+  totalMs,
+  bytes: 5120,
+  kbps,
+})
 
 describe('FTL sıralaması', () => {
   it('en hızlı başta, başarısızlar sonda', () => {

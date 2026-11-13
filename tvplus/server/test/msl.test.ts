@@ -1,6 +1,12 @@
 import type { FastifyInstance } from 'fastify'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
-import type { ManifestError, MslEnvelope, MslErrorBody, MslProvisionResponse, MslTokenData } from '../../shared/playback'
+import type {
+  ManifestError,
+  MslEnvelope,
+  MslErrorBody,
+  MslProvisionResponse,
+  MslTokenData,
+} from '../../shared/playback'
 import { loadConfig } from '../src/kernel/config'
 import { createMsl, MSL_EXPIRATION_SEC, MSL_RENEWAL_SEC } from '../src/services/playback/msl'
 import { createTestApp } from './helpers'
@@ -8,8 +14,15 @@ import { openResponse, provisionClient, sealRequest, startProvision } from './ms
 import { fakePassport, installFakes, usePassport } from './playback-fakes'
 
 const MANIFEST_URL = '/msl/v1/playapi/licensedManifest?reqName=licensedManifest'
-const tokenOf = (t: { tokendata: string }) => JSON.parse(Buffer.from(t.tokendata, 'base64').toString('utf8')) as MslTokenData
-const manifestReq = (viewableId = 'Video:404') => ({ viewableId, prefetch: false, profiles: ['vp9-webm', 'opus-webm'], supportsMse: true, uiLanguage: 'tr' })
+const tokenOf = (t: { tokendata: string }) =>
+  JSON.parse(Buffer.from(t.tokendata, 'base64').toString('utf8')) as MslTokenData
+const manifestReq = (viewableId = 'Video:404') => ({
+  viewableId,
+  prefetch: false,
+  profiles: ['vp9-webm', 'opus-webm'],
+  supportsMse: true,
+  uiLanguage: 'tr',
+})
 
 let app: FastifyInstance
 beforeAll(async () => {
@@ -49,7 +62,10 @@ describe('MSL sağlama (aleProvision)', () => {
     const res = await app.inject({
       method: 'POST',
       url: '/msl/v1/provision',
-      payload: { entityauthdata: { scheme: 'NONE', authdata: { identity: 'x' } }, keyrequestdata: { scheme: 'ECDH_P256_AESGCM', keydata: { publickey: 'AAAA' } } },
+      payload: {
+        entityauthdata: { scheme: 'NONE', authdata: { identity: 'x' } },
+        keyrequestdata: { scheme: 'ECDH_P256_AESGCM', keydata: { publickey: 'AAAA' } },
+      },
     })
     expect(res.statusCode).toBe(400)
     expect((res.json() as MslErrorBody).errorcode).toBe('BAD_REQUEST')
@@ -61,7 +77,10 @@ describe('MSL sağlama (aleProvision)', () => {
     const res = await app.inject({
       method: 'POST',
       url: '/msl/v1/provision',
-      payload: { entityauthdata: { scheme: 'NONE', authdata: { identity: 'x' } }, keyrequestdata: { scheme: 'ECDH_P256_AESGCM', keydata: { publickey: bogus.toString('base64') } } },
+      payload: {
+        entityauthdata: { scheme: 'NONE', authdata: { identity: 'x' } },
+        keyrequestdata: { scheme: 'ECDH_P256_AESGCM', keydata: { publickey: bogus.toString('base64') } },
+      },
     })
     expect(res.statusCode).toBe(400)
   })
@@ -69,14 +88,22 @@ describe('MSL sağlama (aleProvision)', () => {
   it('eski belirteçle yenileme aynı seriyi sürdürür, sequencenumber bir artar', async () => {
     const first = await provisionClient(app, 'TVPWCH-MC-R')
     const p = await startProvision('TVPWCH-MC-R')
-    const res = await app.inject({ method: 'POST', url: '/msl/v1/provision', payload: { ...p.request, mastertoken: first.provision.mastertoken } })
+    const res = await app.inject({
+      method: 'POST',
+      url: '/msl/v1/provision',
+      payload: { ...p.request, mastertoken: first.provision.mastertoken },
+    })
     const t1 = tokenOf(first.provision.mastertoken)
     const t2 = tokenOf((res.json() as MslProvisionResponse).mastertoken)
     expect(t2.serialnumber).toBe(t1.serialnumber)
     expect(t2.sequencenumber).toBe(t1.sequencenumber + 1)
     // başka cihazın belirteci seriyi taşımaz
     const p3 = await startProvision('BASKA-CIHAZ')
-    const r3 = await app.inject({ method: 'POST', url: '/msl/v1/provision', payload: { ...p3.request, mastertoken: first.provision.mastertoken } })
+    const r3 = await app.inject({
+      method: 'POST',
+      url: '/msl/v1/provision',
+      payload: { ...p3.request, mastertoken: first.provision.mastertoken },
+    })
     expect(tokenOf((r3.json() as MslProvisionResponse).mastertoken).serialnumber).not.toBe(t1.serialnumber)
   })
 })
@@ -102,19 +129,31 @@ describe('MSL zarfı (WebCrypto istemcisi ↔ Node sunucusu)', () => {
     const env = await sealRequest(c, manifestReq())
     const raw = Buffer.from(env.payload, 'base64')
     raw[20] = raw[20]! ^ 0xff
-    const r1 = await app.inject({ method: 'POST', url: MANIFEST_URL, payload: { ...env, payload: raw.toString('base64') } })
+    const r1 = await app.inject({
+      method: 'POST',
+      url: MANIFEST_URL,
+      payload: { ...env, payload: raw.toString('base64') },
+    })
     expect(r1.statusCode).toBe(400)
     expect((r1.json() as MslErrorBody).errorcode).toBe('DECRYPT_FAILED')
 
     const env2 = await sealRequest(c, manifestReq())
     const td = tokenOf(env2.mastertoken)
     const forged = Buffer.from(JSON.stringify({ ...td, expiration: td.expiration + 99999 })).toString('base64')
-    const r2 = await app.inject({ method: 'POST', url: MANIFEST_URL, payload: { ...env2, mastertoken: { ...env2.mastertoken, tokendata: forged } } })
+    const r2 = await app.inject({
+      method: 'POST',
+      url: MANIFEST_URL,
+      payload: { ...env2, mastertoken: { ...env2.mastertoken, tokendata: forged } },
+    })
     expect(r2.statusCode).toBe(401)
     expect((r2.json() as MslErrorBody).errorcode).toBe('TOKEN_INVALID')
 
     const env3 = await sealRequest(c, manifestReq())
-    const r3 = await app.inject({ method: 'POST', url: MANIFEST_URL, payload: { ...env3, mastertoken: { ...env3.mastertoken, signature: Buffer.alloc(32).toString('base64') } } })
+    const r3 = await app.inject({
+      method: 'POST',
+      url: MANIFEST_URL,
+      payload: { ...env3, mastertoken: { ...env3.mastertoken, signature: Buffer.alloc(32).toString('base64') } },
+    })
     expect((r3.json() as MslErrorBody).errorcode).toBe('TOKEN_INVALID')
   })
 
@@ -122,7 +161,11 @@ describe('MSL zarfı (WebCrypto istemcisi ↔ Node sunucusu)', () => {
     const a = await provisionClient(app, 'TVPWCH-MC-D')
     const b = await provisionClient(app, 'TVPWCH-MC-D')
     const env = await sealRequest(b, manifestReq())
-    const res = await app.inject({ method: 'POST', url: MANIFEST_URL, payload: { ...env, mastertoken: a.provision.mastertoken } })
+    const res = await app.inject({
+      method: 'POST',
+      url: MANIFEST_URL,
+      payload: { ...env, mastertoken: a.provision.mastertoken },
+    })
     expect(res.statusCode).toBe(400)
     expect((res.json() as MslErrorBody).errorcode).toBe('DECRYPT_FAILED')
   })
@@ -135,7 +178,10 @@ describe('MSL zarfı (WebCrypto istemcisi ↔ Node sunucusu)', () => {
     expect(again.statusCode).toBe(401)
     expect((again.json() as MslErrorBody).errorcode).toBe('REPLAYED')
     c.nextMessageId = 5
-    expect((await app.inject({ method: 'POST', url: MANIFEST_URL, payload: await sealRequest(c, manifestReq()) })).statusCode).toBe(200)
+    expect(
+      (await app.inject({ method: 'POST', url: MANIFEST_URL, payload: await sealRequest(c, manifestReq()) }))
+        .statusCode,
+    ).toBe(200)
     c.nextMessageId = 3
     const older = await app.inject({ method: 'POST', url: MANIFEST_URL, payload: await sealRequest(c, manifestReq()) })
     expect((older.json() as MslErrorBody).errorcode).toBe('REPLAYED')

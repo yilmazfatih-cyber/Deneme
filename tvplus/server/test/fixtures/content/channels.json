@@ -39,11 +39,7 @@
     "favorite": true,
     "source": {
       "type": "LINEAR",
-      "playlist": [
-        80010001,
-        80010002,
-        80010005
-      ]
+      "playlist": [80010001, 80010002, 80010005]
     }
   },
   {

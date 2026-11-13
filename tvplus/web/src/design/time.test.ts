@@ -1,5 +1,13 @@
 import { describe, expect, it } from 'vitest'
-import { formatClock, formatDayTime, formatLiveLine, formatRemaining, formatTimeRange, liveProgress, weekdayShort } from './time'
+import {
+  formatClock,
+  formatDayTime,
+  formatLiveLine,
+  formatRemaining,
+  formatTimeRange,
+  liveProgress,
+  weekdayShort,
+} from './time'
 
 // 2026-11-13 Cuma, 20:00 Türkiye saati (UTC+3) = 17:00 UTC
 const at = (iso: string) => new Date(iso).getTime()

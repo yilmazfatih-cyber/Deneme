@@ -11,7 +11,13 @@ const TEN = (
 )
 
 const PATHS = {
-  play: <path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z" fill="currentColor" stroke="none" />,
+  play: (
+    <path
+      d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"
+      fill="currentColor"
+      stroke="none"
+    />
+  ),
   pause: <path d="M8 5v14M16 5v14" />,
   restart: (
     <>
@@ -156,7 +162,9 @@ export interface IconProps {
 }
 
 export function Icon({ name, size = 24, title, className }: IconProps): ReactElement {
-  const a11y = title ? { role: 'img', 'aria-label': title } : { 'aria-hidden': true as const, focusable: 'false' as const }
+  const a11y = title
+    ? { role: 'img', 'aria-label': title }
+    : { 'aria-hidden': true as const, focusable: 'false' as const }
   return (
     <svg
       className={className ? `cn-icon ${className}` : 'cn-icon'}

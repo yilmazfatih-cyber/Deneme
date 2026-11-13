@@ -39,7 +39,14 @@ export interface ZonedParts {
 export function zonedParts(t: number): ZonedParts & { second: number } {
   const p: Record<string, number> = {}
   for (const part of partsFmt.formatToParts(new Date(t))) if (part.type !== 'literal') p[part.type] = Number(part.value)
-  return { year: p.year ?? 1970, month: p.month ?? 1, day: p.day ?? 1, hour: p.hour ?? 0, minute: p.minute ?? 0, second: p.second ?? 0 }
+  return {
+    year: p.year ?? 1970,
+    month: p.month ?? 1,
+    day: p.day ?? 1,
+    hour: p.hour ?? 0,
+    minute: p.minute ?? 0,
+    second: p.second ?? 0,
+  }
 }
 
 /** Türkiye saatindeki duvar saati → epoch ms (gün taşmaları Date.UTC ile düzelir). */
@@ -88,7 +95,12 @@ export function ticks(w: GuideWindow, pxPerMin = PX_PER_MIN): Tick[] {
   const slot = SLOT_MIN * MIN_MS
   for (let t = ceilTo(w.from, slot); t < w.to; t += slot) {
     const p = zonedParts(t)
-    out.push({ t, px: timeToPx(t, w, pxPerMin), label: `${String(p.hour).padStart(2, '0')}:${String(p.minute).padStart(2, '0')}`, major: p.minute === 0 })
+    out.push({
+      t,
+      px: timeToPx(t, w, pxPerMin),
+      label: `${String(p.hour).padStart(2, '0')}:${String(p.minute).padStart(2, '0')}`,
+      major: p.minute === 0,
+    })
   }
   return out
 }
@@ -104,7 +116,11 @@ export interface BlockLayout<T> {
 }
 
 /** Programları pencereye yerleştirir: dışarıda kalanlar atlanır, taşanlar kenarda kırpılır. */
-export function layoutBlocks<T extends { startAt: string; endAt: string }>(items: readonly T[], w: GuideWindow, pxPerMin = PX_PER_MIN): BlockLayout<T>[] {
+export function layoutBlocks<T extends { startAt: string; endAt: string }>(
+  items: readonly T[],
+  w: GuideWindow,
+  pxPerMin = PX_PER_MIN,
+): BlockLayout<T>[] {
   const out: BlockLayout<T>[] = []
   for (const item of items) {
     const s = Date.parse(item.startAt)
@@ -112,7 +128,13 @@ export function layoutBlocks<T extends { startAt: string; endAt: string }>(items
     const a = Math.max(s, w.from)
     const b = Math.min(e, w.to)
     if (!(b > a)) continue
-    out.push({ item, left: timeToPx(a, w, pxPerMin), width: timeToPx(b, w, pxPerMin) - timeToPx(a, w, pxPerMin), clippedStart: s < w.from, clippedEnd: e > w.to })
+    out.push({
+      item,
+      left: timeToPx(a, w, pxPerMin),
+      width: timeToPx(b, w, pxPerMin) - timeToPx(a, w, pxPerMin),
+      clippedStart: s < w.from,
+      clippedEnd: e > w.to,
+    })
   }
   return out.sort((x, y) => x.left - y.left)
 }
@@ -138,7 +160,10 @@ export interface ListGroups<T> {
   earlier: T[]
 }
 
-export function groupForList<T extends { startAt: string; endAt: string }>(items: readonly T[], now: number): ListGroups<T> {
+export function groupForList<T extends { startAt: string; endAt: string }>(
+  items: readonly T[],
+  now: number,
+): ListGroups<T> {
   const sorted = [...items].sort((a, b) => Date.parse(a.startAt) - Date.parse(b.startAt))
   const live = sorted.find((a) => Date.parse(a.startAt) <= now && now < Date.parse(a.endAt)) ?? null
   const upcoming = sorted.filter((a) => Date.parse(a.startAt) > now)

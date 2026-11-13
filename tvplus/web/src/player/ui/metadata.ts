@@ -48,7 +48,12 @@ export interface PlaybackMetadata {
   creditsOffsetSec: number | null
   access: AccessInfo
   bookmark: { positionSec: number; runtimeSec: number | null; progress: number } | null
-  video: (CardVideo & { runtimeSec?: number | null; license?: { name: string; attribution: string; url: string | null } | null }) | null
+  video:
+    | (CardVideo & {
+        runtimeSec?: number | null
+        license?: { name: string; attribution: string; url: string | null } | null
+      })
+    | null
   channel: ChannelBrief | null
   airing: AiringBrief | null
   nextEpisode: (CardVideo & { number: number; seasonNumber: number; runtimeSec: number | null }) | null
@@ -57,7 +62,11 @@ export interface PlaybackMetadata {
 }
 
 export async function loadPlaybackMetadata(viewableId: string, signal?: AbortSignal): Promise<PlaybackMetadata | null> {
-  const d = await gql<{ playbackMetadata: PlaybackMetadata | null }, { viewableId: string }>('PlaybackMetadata', { viewableId }, { signal })
+  const d = await gql<{ playbackMetadata: PlaybackMetadata | null }, { viewableId: string }>(
+    'PlaybackMetadata',
+    { viewableId },
+    { signal },
+  )
   return d.playbackMetadata
 }
 

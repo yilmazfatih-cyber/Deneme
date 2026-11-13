@@ -66,7 +66,11 @@ describe('WebVTT → TTML', () => {
   const cues = parseVtt(VTT)
   it('cue sayısı, zamanlar ve satırlar', () => {
     expect(cues).toHaveLength(3)
-    expect(cues[0]).toEqual({ begin: 1_072_500_000, end: 1_105_000_000, lines: [[{ text: 'Bu bıçağın karanlık bir geçmişi var.', italic: false, bold: false }]] })
+    expect(cues[0]).toEqual({
+      begin: 1_072_500_000,
+      end: 1_105_000_000,
+      lines: [[{ text: 'Bu bıçağın karanlık bir geçmişi var.', italic: false, bold: false }]],
+    })
     expect(cues[1]!.lines).toHaveLength(2)
     expect(cues[1]!.lines[0]![0]!.text).toBe('Bu kadar hazırlıksız ve yalnız başına') // sondaki boşluk kırpıldı
     expect(cues[1]!.lines[1]).toEqual([
@@ -83,7 +87,9 @@ describe('WebVTT → TTML', () => {
     expect(ttml).toContain('xmlns:tvpm="urn:tvplus:ttml#metadata"')
     expect(ttml).toContain('ttp:tickRate="10000000"')
     expect(ttml).toContain('xml:lang="tr"')
-    expect(ttml).toContain('<p begin="1072500000t" end="1105000000t"><span>Bu bıçağın karanlık bir geçmişi var.</span></p>')
+    expect(ttml).toContain(
+      '<p begin="1072500000t" end="1105000000t"><span>Bu bıçağın karanlık bir geçmişi var.</span></p>',
+    )
     expect(ttml).toContain(
       '<p begin="1180000000t" end="1214500000t"><span>Bu kadar hazırlıksız ve yalnız başına</span><br/><span tts:fontStyle="italic">seyahat</span><span> etmekle &amp; aptallık ediyorsun.</span></p>',
     )
@@ -101,17 +107,30 @@ describe('saat-zamanlı TTML → tik TTML', () => {
   it('br, italik biçem, dur ve ofsetler korunur', () => {
     const cues = parseTtml(TTML_CLOCK)
     expect(cues).toHaveLength(4)
-    expect(cues[0]).toEqual({ begin: 230_000_000, end: 245_000_000, lines: [[{ text: "You're a jerk, Thom.", italic: false, bold: false }]] })
-    expect(cues[1]!.lines.map((l) => l[0]!.text)).toEqual(['...you have your robotics, and', 'I just want to be awesome in space.'])
+    expect(cues[0]).toEqual({
+      begin: 230_000_000,
+      end: 245_000_000,
+      lines: [[{ text: "You're a jerk, Thom.", italic: false, bold: false }]],
+    })
+    expect(cues[1]!.lines.map((l) => l[0]!.text)).toEqual([
+      '...you have your robotics, and',
+      'I just want to be awesome in space.',
+    ])
     expect(cues[2]!.begin).toBe(308_000_000)
     expect(cues[2]!.end).toBe(340_000_001)
     expect(cues[2]!.lines[0]).toEqual([
       { text: 'italik', italic: true, bold: false },
       { text: ' ve düz & işaret', italic: false, bold: false },
     ])
-    expect(cues[3]).toEqual({ begin: 410_350_000, end: 420_000_000, lines: [[{ text: 'ofset zamanı', italic: true, bold: false }]] })
+    expect(cues[3]).toEqual({
+      begin: 410_350_000,
+      end: 420_000_000,
+      lines: [[{ text: 'ofset zamanı', italic: true, bold: false }]],
+    })
     const { ttml } = convertToTtml(TTML_CLOCK, 'ttml', { lang: 'en' })
-    expect(ttml).toContain('<p begin="270000000t" end="305000000t"><span>...you have your robotics, and</span><br/><span>I just want to be awesome in space.</span></p>')
+    expect(ttml).toContain(
+      '<p begin="270000000t" end="305000000t"><span>...you have your robotics, and</span><br/><span>I just want to be awesome in space.</span></p>',
+    )
     expect(ttml).toContain('<tvpm:source>ttml</tvpm:source>')
   })
   it('çıktı yeniden okunduğunda aynı zamanlar (gidiş-dönüş)', () => {
@@ -142,8 +161,16 @@ describe('OCA altyazı ucu', () => {
       const bad = await app.inject({ method: 'GET', url: `/oca/c101-ist001-ix/timedtext/T-tr?${q}` })
       expect(bad.statusCode).toBe(403)
       // uzak kaynak çevrimdışıyken önbellekte değilse 502
-      const remote = plane.objects.register({ kind: 'text', url: 'https://example.invalid/x.vtt', format: 'vtt', lang: 'en' })
-      const r2 = await app.inject({ method: 'GET', url: `/oca/c101-ist001-ix/timedtext/T-en?${plane.signer.query('c101-ist001-ix', remote.o, remote.v)}` })
+      const remote = plane.objects.register({
+        kind: 'text',
+        url: 'https://example.invalid/x.vtt',
+        format: 'vtt',
+        lang: 'en',
+      })
+      const r2 = await app.inject({
+        method: 'GET',
+        url: `/oca/c101-ist001-ix/timedtext/T-en?${plane.signer.query('c101-ist001-ix', remote.o, remote.v)}`,
+      })
       expect(r2.statusCode).toBe(502)
     } finally {
       await app.close()

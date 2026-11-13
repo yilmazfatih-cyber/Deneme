@@ -57,7 +57,15 @@ async function measure(target: FtlProbeTarget): Promise<FtlResult> {
     }
   } catch {
     const totalMs = performance.now() - t0
-    return { name: target.name, cdnId: target.cdnId, ok: false, ttfbMs: 0, totalMs: Math.round(totalMs), bytes: 0, kbps: 0 }
+    return {
+      name: target.name,
+      cdnId: target.cdnId,
+      ok: false,
+      ttfbMs: 0,
+      totalMs: Math.round(totalMs),
+      bytes: 0,
+      kbps: 0,
+    }
   } finally {
     clearTimeout(timer)
   }
@@ -77,7 +85,14 @@ async function runPulse(probe: FtlProbeResponse, it: number, pulse: number, gen:
     {
       iter: it,
       pulse,
-      results: results.map((r) => ({ name: r.name, cdnId: r.cdnId, ok: r.ok, ttfbMs: r.ttfbMs, totalMs: r.totalMs, kbps: r.kbps })),
+      results: results.map((r) => ({
+        name: r.name,
+        cdnId: r.cdnId,
+        ok: r.ok,
+        ttfbMs: r.ttfbMs,
+        totalMs: r.totalMs,
+        kbps: r.kbps,
+      })),
       winner: winner?.cdnId ?? null,
       ranking: ranking.ranking(),
     },
@@ -118,7 +133,12 @@ async function probeOnce(): Promise<void> {
     return
   }
   if (gen !== generation) return
-  devbus.emit('ftl', 'yoklama', { iter: it, targets: probe.urls.map((u) => u.name), pulse_delays: probe.pulse_delays, ctx: probe.ctx }, { ms: performance.now() - t0 })
+  devbus.emit(
+    'ftl',
+    'yoklama',
+    { iter: it, targets: probe.urls.map((u) => u.name), pulse_delays: probe.pulse_delays, ctx: probe.ctx },
+    { ms: performance.now() - t0 },
+  )
   const delays = probe.pulse_delays.slice(0, probe.pulses || probe.pulse_delays.length)
   delays.forEach((delay, pulse) => {
     // Gecikmeler yoklamanın başından itibaren ölçülür: [0, 2000, 70000]

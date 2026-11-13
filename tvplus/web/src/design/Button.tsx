@@ -44,7 +44,9 @@ export interface ButtonProps extends CommonProps {
 }
 
 /** Ortak çizim: button / Link / a arasında seçim yapar. */
-function Pressable(props: CommonProps & { cls: string; disabled?: boolean; busy?: boolean; type?: ButtonProps['type'] }): ReactElement {
+function Pressable(
+  props: CommonProps & { cls: string; disabled?: boolean; busy?: boolean; type?: ButtonProps['type'] },
+): ReactElement {
   const { cls, to, href, onClick, children, disabled, busy, type, title } = props
   const label = props['aria-label']
   const pressed = props['aria-pressed']
@@ -63,14 +65,39 @@ function Pressable(props: CommonProps & { cls: string; disabled?: boolean; busy?
     )
   }
   return (
-    <button className={cls} type={type ?? 'button'} onClick={onClick} disabled={disabled || busy} aria-busy={busy || undefined} aria-pressed={pressed} aria-label={label} title={title}>
+    <button
+      className={cls}
+      type={type ?? 'button'}
+      onClick={onClick}
+      disabled={disabled || busy}
+      aria-busy={busy || undefined}
+      aria-pressed={pressed}
+      aria-label={label}
+      title={title}
+    >
       {children}
     </button>
   )
 }
 
-export function Button({ variant = 'primary', size = 'lg', icon, overImage, block, className, children, ...rest }: ButtonProps): ReactElement {
-  const cls = cx('cn-btn', `cn-btn--${variant}`, `cn-btn--${size}`, overImage && 'cn-btn--over', block && 'cn-btn--block', className)
+export function Button({
+  variant = 'primary',
+  size = 'lg',
+  icon,
+  overImage,
+  block,
+  className,
+  children,
+  ...rest
+}: ButtonProps): ReactElement {
+  const cls = cx(
+    'cn-btn',
+    `cn-btn--${variant}`,
+    `cn-btn--${size}`,
+    overImage && 'cn-btn--over',
+    block && 'cn-btn--block',
+    className,
+  )
   return (
     <Pressable cls={cls} {...rest}>
       {icon && <Icon name={icon} size={size === 'lg' ? 20 : 18} />}
@@ -94,7 +121,17 @@ export interface IconButtonProps extends Omit<CommonProps, 'children' | 'aria-la
   pressed?: boolean
 }
 
-export function IconButton({ icon, label, size = 44, variant = 'tertiary', overImage, className, expanded, pressed, ...rest }: IconButtonProps): ReactElement {
+export function IconButton({
+  icon,
+  label,
+  size = 44,
+  variant = 'tertiary',
+  overImage,
+  className,
+  expanded,
+  pressed,
+  ...rest
+}: IconButtonProps): ReactElement {
   const cls = cx('cn-iconbtn', `cn-iconbtn--${variant}`, `cn-iconbtn--${size}`, overImage && 'cn-btn--over', className)
   if (expanded !== undefined || pressed !== undefined) {
     return (

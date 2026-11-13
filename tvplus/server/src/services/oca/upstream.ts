@@ -41,7 +41,11 @@ export interface UpstreamOptions {
   maxBytes?: number
 }
 
-export async function upstreamGet(config: AppConfig, url: string, opts: UpstreamOptions = {}): Promise<UpstreamResponse> {
+export async function upstreamGet(
+  config: AppConfig,
+  url: string,
+  opts: UpstreamOptions = {},
+): Promise<UpstreamResponse> {
   if (config.offline) throw new OfflineError(url)
   const headers: Record<string, string> = { 'user-agent': 'tvplus-oca/1.0', accept: '*/*' }
   if (opts.range) headers.range = `bytes=${opts.range.start}-${opts.range.end}`
@@ -64,12 +68,19 @@ export async function upstreamGet(config: AppConfig, url: string, opts: Upstream
     throw new UpstreamError(`Köken gövdesi okunamadı: ${(err as Error).message}`)
   })
   const body = Buffer.from(ab)
-  if (opts.maxBytes !== undefined && body.length > opts.maxBytes) throw new UpstreamError('Köken beklenenden büyük yanıt döndü')
+  if (opts.maxBytes !== undefined && body.length > opts.maxBytes)
+    throw new UpstreamError('Köken beklenenden büyük yanıt döndü')
   return { status: res.status, headers: res.headers as unknown as Headers, body }
 }
 
 /** Bir bayt aralığını getirir; köken 206 vermezse (tam gövde) aralığı kendisi keser. */
-export async function upstreamRange(config: AppConfig, url: string, start: number, end: number, timeoutMs = 15_000): Promise<Buffer> {
+export async function upstreamRange(
+  config: AppConfig,
+  url: string,
+  start: number,
+  end: number,
+  timeoutMs = 15_000,
+): Promise<Buffer> {
   const res = await upstreamGet(config, url, { range: { start, end }, timeoutMs })
   const want = end - start + 1
   if (res.status === 206) {

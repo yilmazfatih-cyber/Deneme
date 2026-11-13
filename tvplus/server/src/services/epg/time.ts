@@ -10,7 +10,13 @@ const pad = (n: number, w = 2) => String(n).padStart(w, '0')
 /** Yerel (İstanbul) takvim parçaları */
 export function localParts(d: Date): { y: number; m: number; d: number; hh: number; mm: number } {
   const l = new Date(d.getTime() + TZ_OFFSET_MS)
-  return { y: l.getUTCFullYear(), m: l.getUTCMonth() + 1, d: l.getUTCDate(), hh: l.getUTCHours(), mm: l.getUTCMinutes() }
+  return {
+    y: l.getUTCFullYear(),
+    m: l.getUTCMonth() + 1,
+    d: l.getUTCDate(),
+    hh: l.getUTCHours(),
+    mm: l.getUTCMinutes(),
+  }
 }
 
 /** 1970-01-01'den bu yana yerel gün sayısı */

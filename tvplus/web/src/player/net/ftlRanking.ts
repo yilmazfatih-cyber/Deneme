@@ -24,7 +24,14 @@ export class FtlRanking {
   /** Bir darbenin sonuçlarını işler. Aynı düğümü temsil eden birden çok hedef varsa hepsi ayrı örnektir. */
   record(results: FtlResult[]): void {
     for (const r of results) {
-      const e = this.entries.get(r.cdnId) ?? { cdnId: r.cdnId, scoreMs: 0, kbps: 0, failures: 0, samples: 0, lastOk: true }
+      const e = this.entries.get(r.cdnId) ?? {
+        cdnId: r.cdnId,
+        scoreMs: 0,
+        kbps: 0,
+        failures: 0,
+        samples: 0,
+        lastOk: true,
+      }
       const value = r.ok ? r.totalMs : FAIL_PENALTY_MS
       e.scoreMs = e.samples === 0 ? value : ALPHA * value + (1 - ALPHA) * e.scoreMs
       if (r.ok) e.kbps = e.samples === 0 || e.kbps === 0 ? r.kbps : ALPHA * r.kbps + (1 - ALPHA) * e.kbps

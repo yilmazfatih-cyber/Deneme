@@ -18,10 +18,38 @@ interface NodeDefaults {
 }
 
 export const NODE_DEFAULTS: readonly NodeDefaults[] = [
-  { id: 'c101-ist001-ix', name: 'İstanbul IX · c101', type: 'IX', location: 'İstanbul', latencyMs: 12, throughputKbps: null },
-  { id: 'c102-ist001-ix', name: 'İstanbul IX · c102', type: 'IX', location: 'İstanbul', latencyMs: 18, throughputKbps: null },
-  { id: 'c201-ank001-isp', name: 'Ankara ISP · c201', type: 'ISP', location: 'Ankara', latencyMs: 35, throughputKbps: null },
-  { id: 'cloud-ist-origin', name: 'Bulut kökeni', type: 'CLOUD', location: 'İstanbul (bulut)', latencyMs: 90, throughputKbps: 6000 },
+  {
+    id: 'c101-ist001-ix',
+    name: 'İstanbul IX · c101',
+    type: 'IX',
+    location: 'İstanbul',
+    latencyMs: 12,
+    throughputKbps: null,
+  },
+  {
+    id: 'c102-ist001-ix',
+    name: 'İstanbul IX · c102',
+    type: 'IX',
+    location: 'İstanbul',
+    latencyMs: 18,
+    throughputKbps: null,
+  },
+  {
+    id: 'c201-ank001-isp',
+    name: 'Ankara ISP · c201',
+    type: 'ISP',
+    location: 'Ankara',
+    latencyMs: 35,
+    throughputKbps: null,
+  },
+  {
+    id: 'cloud-ist-origin',
+    name: 'Bulut kökeni',
+    type: 'CLOUD',
+    location: 'İstanbul (bulut)',
+    latencyMs: 90,
+    throughputKbps: 6000,
+  },
 ]
 export const DEFAULT_NODE_ORDER: readonly string[] = NODE_DEFAULTS.map((n) => n.id)
 

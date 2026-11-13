@@ -57,22 +57,52 @@ function failureFromError(err: unknown): LoadFailure {
   if (err instanceof ManifestRequestError) {
     switch (err.code) {
       case 'ACCESS_DENIED':
-        return { kind: 'access', title: 'Bu içerik paketinde yok', text: err.access?.reasonText ?? 'Bu içeriği izleme yetkin yok.', retryable: false }
+        return {
+          kind: 'access',
+          title: 'Bu içerik paketinde yok',
+          text: err.access?.reasonText ?? 'Bu içeriği izleme yetkin yok.',
+          retryable: false,
+        }
       case 'NOT_FOUND':
-        return { kind: 'error', title: 'İçerik bulunamadı', text: 'Bu içerik artık yayında olmayabilir.', retryable: false }
+        return {
+          kind: 'error',
+          title: 'İçerik bulunamadı',
+          text: 'Bu içerik artık yayında olmayabilir.',
+          retryable: false,
+        }
       case 'NO_COMPATIBLE_SOURCE':
-        return { kind: 'error', title: 'Bu cihazda oynatılamıyor', text: 'Tarayıcın bu yayının biçimini desteklemiyor.', retryable: false }
+        return {
+          kind: 'error',
+          title: 'Bu cihazda oynatılamıyor',
+          text: 'Tarayıcın bu yayının biçimini desteklemiyor.',
+          retryable: false,
+        }
       case 'SOURCE_UNAVAILABLE':
         return { kind: 'error', title: 'Yayın şu an hazır değil', text: 'Biraz sonra yeniden dene.', retryable: true }
       default:
-        return { kind: 'error', title: 'Oynatma başlatılamadı', text: 'Bağlantını kontrol edip yeniden dene.', retryable: true }
+        return {
+          kind: 'error',
+          title: 'Oynatma başlatılamadı',
+          text: 'Bağlantını kontrol edip yeniden dene.',
+          retryable: true,
+        }
     }
   }
-  return { kind: 'error', title: 'Oynatma başlatılamadı', text: 'Bağlantını kontrol edip yeniden dene.', retryable: true }
+  return {
+    kind: 'error',
+    title: 'Oynatma başlatılamadı',
+    text: 'Bağlantını kontrol edip yeniden dene.',
+    retryable: true,
+  }
 }
 
 /** Başlangıç konumu: kaynak değişimi → canlıda katılma noktası → yer imi (baştan başlat istenmediyse). */
-function startPosition(manifest: LicensedManifest, meta: PlaybackMetadata | null, fromStart: boolean, hintSec: number | null): { sec: number; resumed: boolean } {
+function startPosition(
+  manifest: LicensedManifest,
+  meta: PlaybackMetadata | null,
+  fromStart: boolean,
+  hintSec: number | null,
+): { sec: number; resumed: boolean } {
   if (hintSec !== null) return { sec: hintSec, resumed: false }
   if (manifest.live) return { sec: manifest.live.joinOffsetMs / 1000, resumed: false }
   if (fromStart) return { sec: 0, resumed: false }
@@ -128,7 +158,8 @@ export default function WatchPageImpl(): ReactElement {
       if (isChannel && fromStart) {
         // Canlı kanalda "Baştan başlat": yayındaki programın kaydını iste
         const m = await metaP.catch(() => null)
-        if (m?.airing?.startOver) return requestManifest(m.airing.unifiedEntityId, { startOver: true, fresh: reloadKey > 0 })
+        if (m?.airing?.startOver)
+          return requestManifest(m.airing.unifiedEntityId, { startOver: true, fresh: reloadKey > 0 })
       }
       return requestManifest(viewableId, {
         preferredSource: kaynak ?? undefined,
@@ -140,7 +171,12 @@ export default function WatchPageImpl(): ReactElement {
       const m = mr.status === 'fulfilled' ? mr.value : null
       setMeta(m)
       if (m && m.access.state !== 'PLAYABLE') {
-        setFailure({ kind: 'access', title: m.title, text: m.access.reasonText ?? 'Bu içerik paketinde yok.', retryable: false })
+        setFailure({
+          kind: 'access',
+          title: m.title,
+          text: m.access.reasonText ?? 'Bu içerik paketinde yok.',
+          retryable: false,
+        })
         return
       }
       if (nr.status === 'rejected') {
@@ -271,33 +307,61 @@ function useChannelEffects(meta: PlaybackMetadata | null, manifest: LicensedMani
     if (ms <= 0 || ms > 24 * 3600_000) return
     // Program bitince yeni programın manifestini iste
     const t = window.setTimeout(() => {
-      devbus.emit('player', 'program bitti: manifest yenileniyor', { viewableId: manifest.viewableId, state: 'loading', endAt })
+      devbus.emit('player', 'program bitti: manifest yenileniyor', {
+        viewableId: manifest.viewableId,
+        state: 'loading',
+        endAt,
+      })
       onReload()
     }, ms)
     return () => clearTimeout(t)
   }, [endAt, manifest.viewableId, onReload])
 }
 
-function ZapButtons({ meta, onGoTo }: { meta: PlaybackMetadata | null; onGoTo: ViewProps['onGoTo'] }): ReactElement | null {
+function ZapButtons({
+  meta,
+  onGoTo,
+}: {
+  meta: PlaybackMetadata | null
+  onGoTo: ViewProps['onGoTo']
+}): ReactElement | null {
   const prev = meta?.previousChannel
   const next = meta?.nextChannel
   if (!prev && !next) return null
   return (
     <span className="kb-zap">
-      <button type="button" className="kb-ibtn" aria-label={prev ? `Önceki kanal: ${prev.name}` : 'Önceki kanal yok'} disabled={!prev} onClick={() => prev && onGoTo(`Channel:${prev.channelId}`)}>
+      <button
+        type="button"
+        className="kb-ibtn"
+        aria-label={prev ? `Önceki kanal: ${prev.name}` : 'Önceki kanal yok'}
+        disabled={!prev}
+        onClick={() => prev && onGoTo(`Channel:${prev.channelId}`)}
+      >
         <IconChevronLeft />
       </button>
-      <button type="button" className="kb-ibtn" aria-label={next ? `Sonraki kanal: ${next.name}` : 'Sonraki kanal yok'} disabled={!next} onClick={() => next && onGoTo(`Channel:${next.channelId}`)}>
+      <button
+        type="button"
+        className="kb-ibtn"
+        aria-label={next ? `Sonraki kanal: ${next.name}` : 'Sonraki kanal yok'}
+        disabled={!next}
+        onClick={() => next && onGoTo(`Channel:${next.channelId}`)}
+      >
         <IconChevronRight />
       </button>
-      {next ? <span className="kb-zap-label kb-wide-only">{next.number}. {next.name}</span> : null}
+      {next ? (
+        <span className="kb-zap-label kb-wide-only">
+          {next.number}. {next.name}
+        </span>
+      ) : null}
     </span>
   )
 }
 
 /* ───────────── kendi akışlarımız (STREAMS / PROGRESSIVE) ───────────── */
 
-function VideoView(props: ViewProps & { manifest: Exclude<LicensedManifest, EmbedManifest>; resumed: boolean }): ReactElement {
+function VideoView(
+  props: ViewProps & { manifest: Exclude<LicensedManifest, EmbedManifest>; resumed: boolean },
+): ReactElement {
   const { manifest, meta, session, startSec, onBack, onChangeSource, onGoTo, onReload, onFromStart, fromStart } = props
   const rootRef = useRef<HTMLDivElement>(null)
   const stageRef = useRef<HTMLDivElement>(null)
@@ -491,7 +555,14 @@ function VideoView(props: ViewProps & { manifest: Exclude<LicensedManifest, Embe
     if (!menu || !adapter) return null
     const close = () => setMenu(null)
     if (menu === 'subs') {
-      const opts: MenuOption[] = [{ id: 'off', label: 'Kapalı' }, ...text.tracks.map((t) => ({ id: t.trackId, label: t.languageDescription, hint: t.type === 'CC' ? 'İşitme engelliler için' : undefined }))]
+      const opts: MenuOption[] = [
+        { id: 'off', label: 'Kapalı' },
+        ...text.tracks.map((t) => ({
+          id: t.trackId,
+          label: t.languageDescription,
+          hint: t.type === 'CC' ? 'İşitme engelliler için' : undefined,
+        })),
+      ]
       return (
         <Menu
           title="Altyazı"
@@ -585,7 +656,9 @@ function VideoView(props: ViewProps & { manifest: Exclude<LicensedManifest, Embe
         onDoubleClick={toggleFullscreen}
       />
       <SubtitleOverlayGate adapter={adapter} controller={text} raised={!hidden} />
-      {(state === 'buffering' || state === 'loading') && !error ? <div className="kb-spinner" role="status" aria-label="Yükleniyor" /> : null}
+      {(state === 'buffering' || state === 'loading') && !error ? (
+        <div className="kb-spinner" role="status" aria-label="Yükleniyor" />
+      ) : null}
 
       <div className="kb-chrome" data-hidden={hidden ? 'true' : 'false'}>
         <div className="kb-top">
@@ -621,16 +694,32 @@ function VideoView(props: ViewProps & { manifest: Exclude<LicensedManifest, Embe
           {isLive && airing ? <LiveProgramme airing={airing} /> : null}
           {seekable ? (
             <>
-              <Scrubber position={pos} duration={dur} buffered={adapter?.buffered() ?? []} onSeek={(t) => adapter?.seek(t)} />
+              <Scrubber
+                position={pos}
+                duration={dur}
+                buffered={adapter?.buffered() ?? []}
+                onSeek={(t) => adapter?.seek(t)}
+              />
               <Times position={pos} duration={dur} />
             </>
           ) : null}
           <div className="kb-row" style={{ flexWrap: 'wrap' }}>
-            <button type="button" className="kb-ibtn kb-wide-only" aria-label={playing ? 'Duraklat' : 'Oynat'} onClick={togglePlay}>
+            <button
+              type="button"
+              className="kb-ibtn kb-wide-only"
+              aria-label={playing ? 'Duraklat' : 'Oynat'}
+              onClick={togglePlay}
+            >
               {playing ? <IconPause /> : <IconPlay />}
             </button>
             <span className="kb-volume kb-wide-only">
-              <button type="button" className="kb-ibtn" aria-label={muted ? 'Sesi aç' : 'Sesi kapat'} aria-pressed={muted} onClick={() => adapter?.setMuted(!muted)}>
+              <button
+                type="button"
+                className="kb-ibtn"
+                aria-label={muted ? 'Sesi aç' : 'Sesi kapat'}
+                aria-pressed={muted}
+                onClick={() => adapter?.setMuted(!muted)}
+              >
                 {muted ? <IconMuted /> : <IconVolume />}
               </button>
               <input
@@ -654,7 +743,12 @@ function VideoView(props: ViewProps & { manifest: Exclude<LicensedManifest, Embe
               </button>
             ) : null}
             {isLive && fromStart ? (
-              <button type="button" className="kb-btn kb-btn-secondary" style={{ height: 44 }} onClick={() => onFromStart(false)}>
+              <button
+                type="button"
+                className="kb-btn kb-btn-secondary"
+                style={{ height: 44 }}
+                onClick={() => onFromStart(false)}
+              >
                 Canlıya dön
               </button>
             ) : null}
@@ -720,7 +814,11 @@ function VideoView(props: ViewProps & { manifest: Exclude<LicensedManifest, Embe
       {error ? (
         <section className="kb-panel" role="alert">
           <h2>{error.message}</h2>
-          <p>{error.code === 'ALL_CDNS_FAILED' ? 'Bağlantı düzelince kaldığın yerden devam eder.' : 'Yeniden denemek çoğu zaman yeterli olur.'}</p>
+          <p>
+            {error.code === 'ALL_CDNS_FAILED'
+              ? 'Bağlantı düzelince kaldığın yerden devam eder.'
+              : 'Yeniden denemek çoğu zaman yeterli olur.'}
+          </p>
           <div className="kb-actions">
             {error.retryable ? (
               <button
@@ -744,7 +842,15 @@ function VideoView(props: ViewProps & { manifest: Exclude<LicensedManifest, Embe
   )
 }
 
-function SubtitleOverlayGate({ adapter, controller, raised }: { adapter: PlayerAdapter | null; controller: TextTrackController; raised: boolean }): ReactElement | null {
+function SubtitleOverlayGate({
+  adapter,
+  controller,
+  raised,
+}: {
+  adapter: PlayerAdapter | null
+  controller: TextTrackController
+  raised: boolean
+}): ReactElement | null {
   if (!adapter || !controller.selectedId()) return null
   return <SubtitleOverlay adapter={adapter} controller={controller} raised={raised} />
 }
@@ -800,7 +906,9 @@ function EmbedView(props: ViewProps & { manifest: EmbedManifest }): ReactElement
   const channelName = meta?.channel?.name ?? adapterRef.current?.author() ?? manifest.attribution?.text ?? null
   const isLive = !!manifest.live || !!manifest.liveChannelId || !!meta?.live
   const airing = meta?.airing ?? null
-  const external = adapterRef.current?.externalUrl() ?? (manifest.videoId ? `https://www.youtube.com/watch?v=${manifest.videoId}` : 'https://www.youtube.com/')
+  const external =
+    adapterRef.current?.externalUrl() ??
+    (manifest.videoId ? `https://www.youtube.com/watch?v=${manifest.videoId}` : 'https://www.youtube.com/')
 
   return (
     <div className="kb-embed" role="region" aria-label={`Oynatıcı: ${meta?.title ?? manifest.title}`}>
@@ -837,7 +945,13 @@ function EmbedView(props: ViewProps & { manifest: EmbedManifest }): ReactElement
           </button>
         ) : null}
         {showSourceMenu ? (
-          <button type="button" className="kb-btn kb-btn-secondary" aria-haspopup="menu" aria-expanded={menu} onClick={() => setMenu((m) => !m)}>
+          <button
+            type="button"
+            className="kb-btn kb-btn-secondary"
+            aria-haspopup="menu"
+            aria-expanded={menu}
+            onClick={() => setMenu((m) => !m)}
+          >
             <IconSource size={20} />
             Kaynak: YouTube
           </button>
@@ -861,7 +975,17 @@ function EmbedView(props: ViewProps & { manifest: EmbedManifest }): ReactElement
 
 /* ───────────── oynatılamıyor: sakin alt sayfa (tam ekran hata değil) ───────────── */
 
-function NotPlayableSheet({ failure, meta, onBack, onRetry }: { failure: LoadFailure; meta: PlaybackMetadata | null; onBack: () => void; onRetry: (() => void) | null }): ReactElement {
+function NotPlayableSheet({
+  failure,
+  meta,
+  onBack,
+  onRetry,
+}: {
+  failure: LoadFailure
+  meta: PlaybackMetadata | null
+  onBack: () => void
+  onRetry: (() => void) | null
+}): ReactElement {
   const art = meta?.video?.storyArt?.url
   const ref = useRef<HTMLButtonElement>(null)
   useEffect(() => ref.current?.focus(), [])
@@ -870,7 +994,13 @@ function NotPlayableSheet({ failure, meta, onBack, onRetry }: { failure: LoadFai
       {art ? <div className="kb-sheet-art" style={{ backgroundImage: `url("${art}")` }} aria-hidden="true" /> : null}
       <section className="kb-sheet" role="dialog" aria-modal="true" aria-labelledby="kb-sheet-title">
         {failure.kind === 'access' && meta?.title ? <span className="kb-sheet-label">{meta.title}</span> : null}
-        <h2 id="kb-sheet-title">{failure.kind === 'access' ? (meta?.access.requiredProductName ? `${meta.access.requiredProductName} paketiyle` : 'Paketinde yok') : failure.title}</h2>
+        <h2 id="kb-sheet-title">
+          {failure.kind === 'access'
+            ? meta?.access.requiredProductName
+              ? `${meta.access.requiredProductName} paketiyle`
+              : 'Paketinde yok'
+            : failure.title}
+        </h2>
         <p>{failure.text}</p>
         <div className="kb-actions">
           {onRetry ? (

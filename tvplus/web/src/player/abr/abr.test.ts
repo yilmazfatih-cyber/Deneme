@@ -11,7 +11,15 @@ const ladder = [
 ]
 
 function input(p: Partial<AbrInput>): AbrInput {
-  return { streams: ladder, currentIndex: 1, estimateKbps: 500, bufferSec: 20, lockedIndex: null, maxHeight: null, ...p }
+  return {
+    streams: ladder,
+    currentIndex: 1,
+    estimateKbps: 500,
+    bufferSec: 20,
+    lockedIndex: null,
+    maxHeight: null,
+    ...p,
+  }
 }
 
 describe('ThroughputEstimator', () => {
@@ -51,16 +59,25 @@ describe('ABR denetleyicisi', () => {
 
   it('yukarı geçiş yalnızca tampon ≥ 10 sn iken', () => {
     expect(decide(input({ currentIndex: 1, estimateKbps: 3000, bufferSec: 9.9 })).index).toBe(1)
-    expect(decide(input({ currentIndex: 1, estimateKbps: 3000, bufferSec: 10 }))).toEqual({ index: 4, reason: 'bant genişliği arttı' })
+    expect(decide(input({ currentIndex: 1, estimateKbps: 3000, bufferSec: 10 }))).toEqual({
+      index: 4,
+      reason: 'bant genişliği arttı',
+    })
   })
 
   it('tampon < 5 sn ise hemen aşağı iner', () => {
-    expect(decide(input({ currentIndex: 3, estimateKbps: 800, bufferSec: 4 }))).toEqual({ index: 2, reason: 'tampon azaldı' })
+    expect(decide(input({ currentIndex: 3, estimateKbps: 800, bufferSec: 4 }))).toEqual({
+      index: 2,
+      reason: 'tampon azaldı',
+    })
   })
 
   it('tampon yeterliyken mevcut hız tahmini aşmıyorsa yerinde kalır, aşıyorsa iner', () => {
     expect(decide(input({ currentIndex: 3, estimateKbps: 800, bufferSec: 20 })).index).toBe(3) // 750 ≤ 800
-    expect(decide(input({ currentIndex: 3, estimateKbps: 400, bufferSec: 20 }))).toEqual({ index: 1, reason: 'bant genişliği düştü' })
+    expect(decide(input({ currentIndex: 3, estimateKbps: 400, bufferSec: 20 }))).toEqual({
+      index: 1,
+      reason: 'bant genişliği düştü',
+    })
   })
 
   it('elle kilit her şeyin önündedir', () => {
@@ -71,6 +88,9 @@ describe('ABR denetleyicisi', () => {
   it('önizleme yükseklik sınırı', () => {
     expect(maxAllowedIndex(ladder, 360)).toBe(2)
     expect(decide(input({ currentIndex: null, estimateKbps: 10_000, maxHeight: 360 })).index).toBe(2)
-    expect(decide(input({ currentIndex: 4, estimateKbps: 10_000, maxHeight: 360 }))).toEqual({ index: 2, reason: 'sınır' })
+    expect(decide(input({ currentIndex: 4, estimateKbps: 10_000, maxHeight: 360 }))).toEqual({
+      index: 2,
+      reason: 'sınır',
+    })
   })
 })

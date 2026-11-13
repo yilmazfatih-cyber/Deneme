@@ -14,7 +14,12 @@ const LazyPreviewPlayer = lazy(() => import('./ui/PreviewPlayer'))
 export function WatchPage(): ReactElement {
   return createElement(
     Suspense,
-    { fallback: createElement('div', { style: { position: 'fixed', inset: 0, background: '#000' }, 'aria-busy': 'true' }) },
+    {
+      fallback: createElement('div', {
+        style: { position: 'fixed', inset: 0, background: '#000' },
+        'aria-busy': 'true',
+      }),
+    },
     createElement(LazyWatchPage),
   )
 }

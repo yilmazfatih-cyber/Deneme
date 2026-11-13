@@ -63,7 +63,8 @@ export function HomePage(): ReactElement {
         requested.current.add(b.from)
         started.push(b.from)
         for (let i = b.from; i <= b.to; i++) {
-          const s = falcor.peek<{ lolomo?: Record<string, { summary?: ListSummary }> }>(['lolomo', i, 'summary']).json.lolomo?.[String(i)]?.summary
+          const s = falcor.peek<{ lolomo?: Record<string, { summary?: ListSummary }> }>(['lolomo', i, 'summary']).json
+            .lolomo?.[String(i)]?.summary
           const kind = s ? rowKindOf(s.context) : null
           if (s && kind) paths.push(...planRowItems(s.id, kind, 0, initialItemCount(kind, s.length) - 1))
           else if (!s) paths.push(...planRowBatch(i, i))
@@ -71,7 +72,8 @@ export function HomePage(): ReactElement {
       }
       if (!started.length) return
       setBatches((st) => ({ ...st, ...Object.fromEntries(started.map((f) => [f, 'loading' as const])) }))
-      const done = () => setBatches((st) => ({ ...st, ...Object.fromEntries(started.map((f) => [f, 'settled' as const])) }))
+      const done = () =>
+        setBatches((st) => ({ ...st, ...Object.fromEntries(started.map((f) => [f, 'settled' as const])) }))
       // Hata olursa satırlar kendi yollarını tek tek ister (biri bozuksa diğerleri etkilenmez).
       const missing = paths.length ? falcor.peek(...paths).missing : []
       if (!missing.length) done()
@@ -120,7 +122,12 @@ export function HomePage(): ReactElement {
     if (top.error) {
       return (
         <div className="cn-page">
-          <ErrorState size="page" title="Film ve diziler yüklenemedi" message="Bağlantını kontrol et ve tekrar dene." onRetry={top.retry} />
+          <ErrorState
+            size="page"
+            title="Film ve diziler yüklenemedi"
+            message="Bağlantını kontrol et ve tekrar dene."
+            onRetry={top.retry}
+          />
         </div>
       )
     }
@@ -136,7 +143,9 @@ export function HomePage(): ReactElement {
   const slots: ReactElement[] = []
   for (let i = 0; i < rowCount; i++) {
     const b = rowBatchOf(i, rowCount)
-    slots.push(<RowSlot key={i} index={i} settled={batches[b.from] === 'settled'} observe={observe} tracker={tracker.current} />)
+    slots.push(
+      <RowSlot key={i} index={i} settled={batches[b.from] === 'settled'} observe={observe} tracker={tracker.current} />,
+    )
   }
 
   return (
@@ -167,12 +176,16 @@ function RowSlot({ index, settled, observe, tracker }: SlotProps): ReactElement 
   }, [index, observe])
 
   const fetchOk = settled
-  const view = useFalcorView<{ lolomo?: Record<string, { summary?: ListSummary }> }>([['lolomo', index, 'summary']], { fetch: fetchOk })
+  const view = useFalcorView<{ lolomo?: Record<string, { summary?: ListSummary }> }>([['lolomo', index, 'summary']], {
+    fetch: fetchOk,
+  })
   const summary = view.json.lolomo?.[String(index)]?.summary
 
   let body: ReactElement | null
   if (summary) {
-    body = rowKindOf(summary.context) ? <RowContent key={summary.id} summary={summary} rowIndex={index} fetchOk={fetchOk} tracker={tracker} /> : null
+    body = rowKindOf(summary.context) ? (
+      <RowContent key={summary.id} summary={summary} rowIndex={index} fetchOk={fetchOk} tracker={tracker} />
+    ) : null
   } else if (view.error) {
     body = <ErrorState title="Bu satır yüklenemedi" onRetry={view.retry} />
   } else {
@@ -198,11 +211,23 @@ function RowContent({ summary, rowIndex, fetchOk, tracker }: RowContentProps): R
   const kind = rowKindOf(summary.context)!
   const [loaded, setLoaded] = useState(() => initialItemCount(kind, summary.length))
   const count = Math.min(loaded, summary.length)
-  const view = useFalcorView<{ lists?: Record<string, ListNode> }>(planRowItems(summary.id, kind, 0, count - 1), { fetch: fetchOk })
+  const view = useFalcorView<{ lists?: Record<string, ListNode> }>(planRowItems(summary.id, kind, 0, count - 1), {
+    fetch: fetchOk,
+  })
   const list: ListNode = { ...(view.json.lists?.[summary.id] ?? {}), summary }
 
   if (kind === 'bridge') return <BridgeStrip summary={summary} rowIndex={rowIndex} />
-  if (kind === 'hero') return <Billboard list={list} rowIndex={rowIndex} loading={view.loading} error={view.error} onRetry={view.retry} tracker={tracker} />
+  if (kind === 'hero')
+    return (
+      <Billboard
+        list={list}
+        rowIndex={rowIndex}
+        loading={view.loading}
+        error={view.error}
+        onRetry={view.retry}
+        tracker={tracker}
+      />
+    )
   return (
     <LolomoRow
       list={list}

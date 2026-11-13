@@ -71,7 +71,8 @@ function validateList<S extends z.ZodType>(file: string, raw: unknown, item: S, 
     const r = item.safeParse(entry)
     if (r.success) out.push(r.data)
     else {
-      const label = typeof entry === 'object' && entry && 'videoId' in entry ? ` (videoId ${String(entry.videoId)})` : ''
+      const label =
+        typeof entry === 'object' && entry && 'videoId' in entry ? ` (videoId ${String(entry.videoId)})` : ''
       log('error', `Geçersiz içerik kaydı atlandı: ${file} [${i}]${label} — ${formatIssues(r.error)}`)
     }
   })
@@ -79,7 +80,14 @@ function validateList<S extends z.ZodType>(file: string, raw: unknown, item: S, 
 }
 
 export function loadContent(contentDir: string, log: ContentLog): ContentBundle {
-  const bundle: ContentBundle = { titles: [], channels: [], epg: [], collections: [], homeLayout: null, interstitials: [] }
+  const bundle: ContentBundle = {
+    titles: [],
+    channels: [],
+    epg: [],
+    collections: [],
+    homeLayout: null,
+    interstitials: [],
+  }
   if (!existsSync(contentDir)) {
     log('warn', `İçerik klasörü yok, katalog boş: ${contentDir}`)
     return bundle
@@ -92,14 +100,25 @@ export function loadContent(contentDir: string, log: ContentLog): ContentBundle 
       .sort()
     for (const f of files) {
       const path = join(titlesDir, f)
-      for (const title of validateList(path, readJson(path, log, true), zTitle, log)) bundle.titles.push({ title, file: f })
+      for (const title of validateList(path, readJson(path, log, true), zTitle, log))
+        bundle.titles.push({ title, file: f })
     }
   } else log('warn', `Başlık klasörü yok: ${titlesDir}`)
 
   const at = (name: string) => join(contentDir, name)
-  bundle.channels = validateList(at(CONTENT_FILES.channels), readJson(at(CONTENT_FILES.channels), log, true), zChannel, log)
+  bundle.channels = validateList(
+    at(CONTENT_FILES.channels),
+    readJson(at(CONTENT_FILES.channels), log, true),
+    zChannel,
+    log,
+  )
   bundle.epg = validateList(at(CONTENT_FILES.epg), readJson(at(CONTENT_FILES.epg), log, false), zEpgTemplate, log)
-  bundle.collections = validateList(at(CONTENT_FILES.collections), readJson(at(CONTENT_FILES.collections), log, false), zCollection, log)
+  bundle.collections = validateList(
+    at(CONTENT_FILES.collections),
+    readJson(at(CONTENT_FILES.collections), log, false),
+    zCollection,
+    log,
+  )
   bundle.interstitials = validateList(
     at(CONTENT_FILES.interstitials),
     readJson(at(CONTENT_FILES.interstitials), log, false),
@@ -111,7 +130,8 @@ export function loadContent(contentDir: string, log: ContentLog): ContentBundle 
   if (layoutRaw !== null) {
     const r = zHomeLayout.safeParse(layoutRaw)
     if (r.success) bundle.homeLayout = r.data
-    else log('error', `Ana sayfa düzeni geçersiz, atlanıyor: ${at(CONTENT_FILES.homeLayout)} — ${formatIssues(r.error)}`)
+    else
+      log('error', `Ana sayfa düzeni geçersiz, atlanıyor: ${at(CONTENT_FILES.homeLayout)} — ${formatIssues(r.error)}`)
   }
   return bundle
 }

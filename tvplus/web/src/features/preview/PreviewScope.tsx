@@ -250,7 +250,8 @@ export interface PreviewTargetProps {
 }
 
 /** Sarmalayıcı `display: contents`: kutusu yok, konum ve kapsama kartın kendisinden alınır. */
-const anchorOf = (el: HTMLElement): HTMLElement => (el.firstElementChild instanceof HTMLElement ? el.firstElementChild : el)
+const anchorOf = (el: HTMLElement): HTMLElement =>
+  el.firstElementChild instanceof HTMLElement ? el.firstElementChild : el
 
 /** Olay sahibi (wrapper) öğeye yayılacak dinleyiciler. Kapsam yoksa boş nesne. */
 export function usePreviewTarget(info: PreviewTargetInfo | null) {

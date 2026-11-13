@@ -42,7 +42,13 @@ export interface ArtAtom {
 }
 
 export interface VideoNode {
-  summary?: { id: number; type: 'movie' | 'show' | 'episode' | 'supplemental'; isPlayable: boolean; isKids: boolean; unifiedEntityId: string }
+  summary?: {
+    id: number
+    type: 'movie' | 'show' | 'episode' | 'supplemental'
+    isPlayable: boolean
+    isKids: boolean
+    unifiedEntityId: string
+  }
   title?: string
   shortSynopsis?: string
   boxart?: ArtAtom
@@ -72,7 +78,18 @@ export interface ListNode {
 
 export type RowKind = 'hero' | 'landscape' | 'poster' | 'bridge'
 
-const POSTER_CONTEXTS = ['top10', 'queue', 'becauseYouWatched', 'gems', 'newReleases', 'genre', 'collection', 'curated', 'exclusive', 'leaving']
+const POSTER_CONTEXTS = [
+  'top10',
+  'queue',
+  'becauseYouWatched',
+  'gems',
+  'newReleases',
+  'genre',
+  'collection',
+  'curated',
+  'exclusive',
+  'leaving',
+]
 
 /** Bağlam → çizim biçimi; bilinmeyen bağlam null (sessizce atlanır). */
 export function rowKindOf(context: string | undefined): RowKind | null {
@@ -86,7 +103,15 @@ export function rowKindOf(context: string | undefined): RowKind | null {
 /** Afiş kartının yaprakları (toplu satır isteğinde tüm satırlar için istenir) */
 export const POSTER_LEAVES = ['summary', 'title', 'boxart', 'badge', 'access', 'top10Rank'] as const
 /** Devam et kartı: 16:9 görsel + ilerleme + kalan süre */
-export const LANDSCAPE_LEAVES = ['summary', 'title', 'storyArt', 'access', 'displayRuntime', 'bookmark', 'watchStatus'] as const
+export const LANDSCAPE_LEAVES = [
+  'summary',
+  'title',
+  'storyArt',
+  'access',
+  'displayRuntime',
+  'bookmark',
+  'watchStatus',
+] as const
 /** Vitrin */
 export const HERO_LEAVES = [
   'summary',
@@ -156,7 +181,13 @@ export function initialItemCount(kind: RowKind, length: number): number {
 }
 
 /** Yatay kaydırma sona yaklaştıysa yeni yüklü öğe sayısı; gerek yoksa null. */
-export function nextItemCount(loaded: number, length: number, lastVisible: number, page = ITEM_PAGE, gap = ITEM_PREFETCH_GAP): number | null {
+export function nextItemCount(
+  loaded: number,
+  length: number,
+  lastVisible: number,
+  page = ITEM_PAGE,
+  gap = ITEM_PREFETCH_GAP,
+): number | null {
   if (loaded >= length || lastVisible < 0) return null
   if (lastVisible < loaded - gap) return null
   return Math.min(length, loaded + page)
@@ -234,12 +265,16 @@ export function mapCard(list: ListNode, summary: ListSummary, rowIndex: number, 
   if (!node || !s || !node.title) return null
   const entityId = videoEntityId(s.id)
   const serverTctx = list.itemTctx?.[String(index)]
-  const tctx = serverTctx ?? formatTctx({ row: rowIndex, rank: index, rowId: summary.id, trackId: summary.trackId, entityId })
+  const tctx =
+    serverTctx ?? formatTctx({ row: rowIndex, rank: index, rowId: summary.id, trackId: summary.trackId, entityId })
   const isShow = s.type === 'show'
   const playable = (node.access?.state ?? (s.isPlayable ? 'PLAYABLE' : 'BLOCKED')) === 'PLAYABLE'
   const cur = isShow ? node.current : undefined
   const playVideoId = playable ? (isShow ? (cur?.summary?.id ?? null) : s.id) : null
-  const locked = lockedTextOf(node.access ? { state: node.access.state, reasonText: node.access.reasonText } : null, node.badge?.kind === 'LOCKED' ? `${node.badge.text} ile` : null)
+  const locked = lockedTextOf(
+    node.access ? { state: node.access.state, reasonText: node.access.reasonText } : null,
+    node.badge?.kind === 'LOCKED' ? `${node.badge.text} ile` : null,
+  )
   const bm = isShow ? cur?.bookmark : node.bookmark
   const label = isShow ? episodeLabelOf(cur?.displayRuntime) : null
   const left = bm ? remainingText(bm.positionSec, bm.runtimeSec) : null
@@ -300,12 +335,15 @@ export function mapHero(list: ListNode | undefined, rowIndex: number): HeroVM | 
     synopsis: node.shortSynopsis ?? '',
     artUrl: node.billboardArt?.url ?? node.storyArt?.url ?? null,
     logoUrl: node.titleLogo?.url ?? null,
-    maturity: node.maturity ? { certificationValue: node.maturity.certificationValue, reasons: node.maturity.reasons ?? [] } : null,
+    maturity: node.maturity
+      ? { certificationValue: node.maturity.certificationValue, reasons: node.maturity.reasons ?? [] }
+      : null,
     playable,
     accessText: card.lockedText,
     resume,
     primaryLabel: resume ? 'Devam et' : 'İzle',
-    promo: playable && node.promoVideo ? { viewableId: node.promoVideo.viewableId, offset: node.promoVideo.offset } : null,
+    promo:
+      playable && node.promoVideo ? { viewableId: node.promoVideo.viewableId, offset: node.promoVideo.offset } : null,
     prefetchViewableId: card.playVideoId !== null ? videoEntityId(card.playVideoId) : null,
   }
 }
@@ -340,7 +378,7 @@ export class ImpressionTracker {
 export function rangeLabel(ranks: readonly number[]): string {
   const s = [...ranks].sort((a, b) => a - b)
   const parts: string[] = []
-  for (let i = 0; i < s.length; ) {
+  for (let i = 0; i < s.length;) {
     let j = i
     while (j + 1 < s.length && s[j + 1] === s[j]! + 1) j++
     parts.push(j > i ? `${s[i]}-${s[j]}` : `${s[i]}`)

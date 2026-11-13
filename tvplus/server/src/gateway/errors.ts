@@ -26,7 +26,10 @@ export function apiErrorBody(req: FastifyRequest, code: string, message: string)
 
 /** Kısayol: hata gövdesini durum koduyla yollar. */
 export function sendApiError(req: FastifyRequest, reply: FastifyReply, status: number, code: string, message: string) {
-  return reply.code(status).type('application/json; charset=utf-8').send(apiErrorBody(req, code, message))
+  return reply
+    .code(status)
+    .type('application/json; charset=utf-8')
+    .send(apiErrorBody(req, code, message))
 }
 
 /** Bulunamayan adres için ek işleyici (SPA kabuğu). true dönerse yanıtı kendisi vermiştir. */
@@ -65,7 +68,8 @@ export default async function plugin(app: FastifyInstance): Promise<void> {
     if (err.validation) {
       return sendApiError(req, reply, 400, 'VALIDATION_FAILED', 'İstek geçersiz: alanları denetleyin.')
     }
-    const status = typeof err.statusCode === 'number' && err.statusCode >= 400 && err.statusCode < 600 ? err.statusCode : 500
+    const status =
+      typeof err.statusCode === 'number' && err.statusCode >= 400 && err.statusCode < 600 ? err.statusCode : 500
     if (status >= 500) {
       req.log.error({ err, traceId: req.trace?.traceId }, 'beklenmeyen sunucu hatası')
       return sendApiError(req, reply, 500, 'INTERNAL', 'Beklenmeyen bir sunucu hatası oluştu.')

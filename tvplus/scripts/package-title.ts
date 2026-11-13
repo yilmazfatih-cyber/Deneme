@@ -12,13 +12,28 @@
  * (biçim: server/src/services/playback/sources/packaged.ts).
  */
 import { execFile } from 'node:child_process'
-import { existsSync, mkdirSync, openSync, readSync, closeSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs'
+import {
+  existsSync,
+  mkdirSync,
+  openSync,
+  readSync,
+  closeSync,
+  renameSync,
+  rmSync,
+  statSync,
+  writeFileSync,
+} from 'node:fs'
 import { basename, join, resolve } from 'node:path'
 import { promisify } from 'node:util'
 import { pathToFileURL } from 'node:url'
 import { loadConfig } from '../server/src/kernel/config'
 import { mp4Layout, mp4TopLevelBoxes, webmLayout } from '../server/src/services/playback/sources/containers'
-import { packagedDir, zPackagedIndex, type PackagedIndex, type PackagedStream } from '../server/src/services/playback/sources/packaged'
+import {
+  packagedDir,
+  zPackagedIndex,
+  type PackagedIndex,
+  type PackagedStream,
+} from '../server/src/services/playback/sources/packaged'
 
 const run = promisify(execFile)
 
@@ -44,10 +59,21 @@ export interface PackageOptions {
 }
 
 /** VP9 için yükseklik → hedef bit hızı (kbit/sn). H.264 aynı kalite için ≈ 1,4 katı ister. */
-const VP9_KBPS: Record<number, number> = { 144: 120, 180: 160, 240: 300, 360: 550, 480: 900, 576: 1200, 720: 1800, 1080: 3300 }
+const VP9_KBPS: Record<number, number> = {
+  144: 120,
+  180: 160,
+  240: 300,
+  360: 550,
+  480: 900,
+  576: 1200,
+  720: 1800,
+  1080: 3300,
+}
 const nearestKbps = (h: number, table: Record<number, number>) => {
   if (table[h]) return table[h]
-  const keys = Object.keys(table).map(Number).sort((a, b) => a - b)
+  const keys = Object.keys(table)
+    .map(Number)
+    .sort((a, b) => a - b)
   const k = keys.find((x) => x >= h) ?? keys[keys.length - 1]!
   return Math.round((table[k]! * h) / k)
 }
@@ -145,9 +171,17 @@ export function inspectOutput(file: string, container: 'mp4' | 'webm'): Layout {
       }
       const l = webmLayout(head)
       if (l.cues.length === 0) throw new Error('Cues boş')
-      if (l.firstClusterOffset !== null && l.cues[0]!.clusterOffset !== l.firstClusterOffset) throw new Error('ilk Cue ilk kümeyi göstermiyor')
+      if (l.firstClusterOffset !== null && l.cues[0]!.clusterOffset !== l.firstClusterOffset)
+        throw new Error('ilk Cue ilk kümeyi göstermiyor')
       for (const c of l.cues) if (c.clusterOffset >= size) throw new Error('Cue dosya sonunun ötesini gösteriyor')
-      return { init: l.init, index: l.index, segments: l.cues.length, durationSec: l.durationSec ?? 0, codecs: null, lastEnd: size - 1 }
+      return {
+        init: l.init,
+        index: l.index,
+        segments: l.cues.length,
+        durationSec: l.durationSec ?? 0,
+        codecs: null,
+        lastEnd: size - 1,
+      }
     } catch (err) {
       if (headBytes < size && /okunan bölümün dışında/.test((err as Error).message)) {
         headBytes *= 4
@@ -192,7 +226,14 @@ export async function packageTitle(opts: PackageOptions): Promise<PackagedIndex>
   rmSync(stage, { recursive: true, force: true })
   mkdirSync(stage, { recursive: true })
 
-  const keyframes = ['-force_key_frames', `expr:gte(t,n_forced*${gopSec})`, '-g', String(gop), '-keyint_min', String(gop)]
+  const keyframes = [
+    '-force_key_frames',
+    `expr:gte(t,n_forced*${gopSec})`,
+    '-g',
+    String(gop),
+    '-keyint_min',
+    String(gop),
+  ]
   const jobs: Job[] = []
   for (const codec of codecs) {
     for (const h of ladder) {
@@ -202,7 +243,8 @@ export async function packageTitle(opts: PackageOptions): Promise<PackagedIndex>
       const scale = ['-vf', `scale=${w}:${h}`, '-pix_fmt', 'yuv420p']
       const rate = ['-b:v', `${kbps}k`, '-maxrate', `${Math.round(kbps * 1.5)}k`, '-bufsize', `${kbps * 2}k`]
       if (codec === 'vp9') {
-        const spd = speed === 'fast' ? ['-deadline', 'realtime', '-cpu-used', '8'] : ['-deadline', 'good', '-cpu-used', '2']
+        const spd =
+          speed === 'fast' ? ['-deadline', 'realtime', '-cpu-used', '8'] : ['-deadline', 'good', '-cpu-used', '2']
         jobs.push({
           file: `v-${h}p-${kbps}k-vp9.webm`,
           type: 'video',
@@ -210,7 +252,25 @@ export async function packageTitle(opts: PackageOptions): Promise<PackagedIndex>
           height: h,
           width: w,
           kbps,
-          args: ['-map', '0:v:0', '-an', '-c:v', 'libvpx-vp9', ...rate, ...scale, ...keyframes, ...spd, '-row-mt', '1', '-f', 'webm', '-dash', '1', '-cues_to_front', '1'],
+          args: [
+            '-map',
+            '0:v:0',
+            '-an',
+            '-c:v',
+            'libvpx-vp9',
+            ...rate,
+            ...scale,
+            ...keyframes,
+            ...spd,
+            '-row-mt',
+            '1',
+            '-f',
+            'webm',
+            '-dash',
+            '1',
+            '-cues_to_front',
+            '1',
+          ],
         })
       } else {
         jobs.push({
@@ -221,9 +281,24 @@ export async function packageTitle(opts: PackageOptions): Promise<PackagedIndex>
           width: w,
           kbps,
           args: [
-            '-map', '0:v:0', '-an', '-c:v', 'libx264', '-preset', speed === 'fast' ? 'veryfast' : 'medium',
-            '-profile:v', h >= 720 ? 'high' : 'main', ...rate, ...scale, ...keyframes, '-sc_threshold', '0',
-            '-movflags', '+frag_keyframe+empty_moov+default_base_moof+global_sidx+skip_trailer', '-f', 'mp4',
+            '-map',
+            '0:v:0',
+            '-an',
+            '-c:v',
+            'libx264',
+            '-preset',
+            speed === 'fast' ? 'veryfast' : 'medium',
+            '-profile:v',
+            h >= 720 ? 'high' : 'main',
+            ...rate,
+            ...scale,
+            ...keyframes,
+            '-sc_threshold',
+            '0',
+            '-movflags',
+            '+frag_keyframe+empty_moov+default_base_moof+global_sidx+skip_trailer',
+            '-f',
+            'mp4',
           ],
         })
       }
@@ -235,7 +310,25 @@ export async function packageTitle(opts: PackageOptions): Promise<PackagedIndex>
           type: 'audio',
           codec: 'opus',
           kbps: audioKbps,
-          args: ['-map', '0:a:0', '-vn', '-c:a', 'libopus', '-b:a', `${audioKbps}k`, '-ac', '2', '-f', 'webm', '-dash', '1', '-cues_to_front', '1', '-cluster_time_limit', String(gopSec * 1000)],
+          args: [
+            '-map',
+            '0:a:0',
+            '-vn',
+            '-c:a',
+            'libopus',
+            '-b:a',
+            `${audioKbps}k`,
+            '-ac',
+            '2',
+            '-f',
+            'webm',
+            '-dash',
+            '1',
+            '-cues_to_front',
+            '1',
+            '-cluster_time_limit',
+            String(gopSec * 1000),
+          ],
         })
       } else {
         const aac = Math.max(audioKbps, 128)
@@ -244,7 +337,23 @@ export async function packageTitle(opts: PackageOptions): Promise<PackagedIndex>
           type: 'audio',
           codec: 'aac',
           kbps: aac,
-          args: ['-map', '0:a:0', '-vn', '-c:a', 'aac', '-b:a', `${aac}k`, '-ac', '2', '-frag_duration', String(gopSec * 1_000_000), '-movflags', '+empty_moov+default_base_moof+global_sidx+skip_trailer', '-f', 'mp4'],
+          args: [
+            '-map',
+            '0:a:0',
+            '-vn',
+            '-c:a',
+            'aac',
+            '-b:a',
+            `${aac}k`,
+            '-ac',
+            '2',
+            '-frag_duration',
+            String(gopSec * 1_000_000),
+            '-movflags',
+            '+empty_moov+default_base_moof+global_sidx+skip_trailer',
+            '-f',
+            'mp4',
+          ],
         })
       }
     }
@@ -255,18 +364,34 @@ export async function packageTitle(opts: PackageOptions): Promise<PackagedIndex>
     for (const job of jobs) {
       const out = join(stage, job.file)
       log(`kodlanıyor: ${job.file}`)
-      await run('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-y', '-i', input, ...job.args, out], { maxBuffer: 16 * 1024 * 1024 })
+      await run('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-y', '-i', input, ...job.args, out], {
+        maxBuffer: 16 * 1024 * 1024,
+      })
       const container = job.file.endsWith('.webm') ? 'webm' : 'mp4'
       const layout = inspectOutput(out, container)
       const sizeBytes = statSync(out).size
       const durationSec = layout.durationSec || info.durationSec
-      const codecString = job.codec === 'vp9' ? 'vp9' : job.codec === 'opus' ? 'opus' : job.codec === 'aac' ? 'mp4a.40.2' : (layout.codecs ?? 'avc1.4d401f')
+      const codecString =
+        job.codec === 'vp9'
+          ? 'vp9'
+          : job.codec === 'opus'
+            ? 'opus'
+            : job.codec === 'aac'
+              ? 'mp4a.40.2'
+              : (layout.codecs ?? 'avc1.4d401f')
       streams.push({
         file: job.file,
         type: job.type,
         mimeType: `${job.type}/${container}` as PackagedStream['mimeType'],
         codecs: codecString,
-        profile: job.codec === 'vp9' ? 'vp9-webm' : job.codec === 'h264' ? 'h264-mp4' : job.codec === 'opus' ? 'opus-webm' : 'aac-mp4',
+        profile:
+          job.codec === 'vp9'
+            ? 'vp9-webm'
+            : job.codec === 'h264'
+              ? 'h264-mp4'
+              : job.codec === 'opus'
+                ? 'opus-webm'
+                : 'aac-mp4',
         bitrateKbps: Math.max(1, Math.round((sizeBytes * 8) / Math.max(0.001, durationSec) / 1000)),
         sizeBytes,
         ...(job.type === 'video' ? { width: job.width!, height: job.height! } : { language: lang, channels: 2 }),
@@ -275,7 +400,9 @@ export async function packageTitle(opts: PackageOptions): Promise<PackagedIndex>
         durationSec: Math.round(durationSec * 1000) / 1000,
         segments: layout.segments,
       })
-      log(`  ✓ başlatma ${layout.init.start}-${layout.init.end}, dizin ${layout.index.start}-${layout.index.end}, ${layout.segments} parça, ${sizeBytes} bayt`)
+      log(
+        `  ✓ başlatma ${layout.init.start}-${layout.init.end}, dizin ${layout.index.start}-${layout.index.end}, ${layout.segments} parça, ${sizeBytes} bayt`,
+      )
     }
     const index: PackagedIndex = zPackagedIndex.parse({
       version: 1,
@@ -314,7 +441,9 @@ function parseArgs(argv: string[]): Record<string, string> {
 async function main() {
   const args = parseArgs(process.argv.slice(2))
   if (!args.input || !args.id) {
-    console.error('Kullanım: npm run package:title -- --input <video> --id <slug> [--ladder 240,360,480] [--codecs vp9,h264] [--lang tr]')
+    console.error(
+      'Kullanım: npm run package:title -- --input <video> --id <slug> [--ladder 240,360,480] [--codecs vp9,h264] [--lang tr]',
+    )
     process.exit(2)
   }
   const codecs = (args.codecs ?? 'vp9').split(',').map((s) => s.trim()) as VideoCodec[]
@@ -325,14 +454,21 @@ async function main() {
     input: args.input,
     id: args.id,
     mediaDir,
-    ladder: args.ladder ? args.ladder.split(',').map(Number).filter((n) => n > 0) : undefined,
+    ladder: args.ladder
+      ? args.ladder
+          .split(',')
+          .map(Number)
+          .filter((n) => n > 0)
+      : undefined,
     codecs,
     lang: args.lang,
     gopSec: args.gop ? Number(args.gop) : undefined,
     speed: args.speed === 'fast' ? 'fast' : 'good',
     log: (m) => console.log(m),
   })
-  console.log(`Paketlendi: ${packagedDir(mediaDir, index.id)}/index.json — ${index.streams.length} akış, ${((Date.now() - t0) / 1000).toFixed(1)} sn`)
+  console.log(
+    `Paketlendi: ${packagedDir(mediaDir, index.id)}/index.json — ${index.streams.length} akış, ${((Date.now() - t0) / 1000).toFixed(1)} sn`,
+  )
   console.log(`İçerikte kullanmak için: { "type": "PACKAGED", "id": "${index.id}" }`)
 }
 

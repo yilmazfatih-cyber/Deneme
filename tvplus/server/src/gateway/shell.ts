@@ -26,7 +26,10 @@ export function isApiPath(url: string): boolean {
 
 /** Açılış bağlamını HTML'e güvenle gömülecek biçime çevirir. */
 export function bootScript(boot: BootContext): string {
-  const json = JSON.stringify(boot).replace(/</g, '\\u003c').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029')
+  const json = JSON.stringify(boot)
+    .replace(/</g, '\\u003c')
+    .replace(/\u2028/g, '\\u2028')
+    .replace(/\u2029/g, '\\u2029')
   return `<script id="tvp-boot" type="application/json">${json}</script>`
 }
 
@@ -93,7 +96,8 @@ export default async function plugin(app: FastifyInstance): Promise<void> {
   const readIndex = (): string | null => {
     try {
       const st = statSync(indexFile)
-      if (!cached || cached.mtimeMs !== st.mtimeMs) cached = { mtimeMs: st.mtimeMs, html: readFileSync(indexFile, 'utf8') }
+      if (!cached || cached.mtimeMs !== st.mtimeMs)
+        cached = { mtimeMs: st.mtimeMs, html: readFileSync(indexFile, 'utf8') }
       return cached.html
     } catch {
       cached = null

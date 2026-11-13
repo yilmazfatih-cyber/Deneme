@@ -5,7 +5,15 @@
 import type { LicensedManifest } from '../../../../shared/playback'
 import { devbus } from '../../lib/devbus'
 import { toRanges } from '../engine/buffered'
-import type { AdapterEvent, AdapterOptions, AudioOption, PlaybackState, PlayerAdapter, PlayerStats, QualityOption } from './types'
+import type {
+  AdapterEvent,
+  AdapterOptions,
+  AudioOption,
+  PlaybackState,
+  PlayerAdapter,
+  PlayerStats,
+  QualityOption,
+} from './types'
 import { STATE_LABEL } from './types'
 
 export abstract class MediaElementAdapter implements PlayerAdapter {
@@ -48,11 +56,19 @@ export abstract class MediaElementAdapter implements PlayerAdapter {
   protected setState(s: PlaybackState): void {
     if (s === this.st) return
     this.st = s
-    devbus.emit('player', `durum: ${STATE_LABEL[s]}`, { viewableId: this.viewableId, state: s, positionSec: Math.round(this.media.currentTime * 10) / 10, kind: this.kind })
+    devbus.emit('player', `durum: ${STATE_LABEL[s]}`, {
+      viewableId: this.viewableId,
+      state: s,
+      positionSec: Math.round(this.media.currentTime * 10) / 10,
+      kind: this.kind,
+    })
     this.emit({ type: 'state', state: s })
   }
 
-  private listen<K extends keyof HTMLMediaElementEventMap>(name: K, fn: (ev: HTMLMediaElementEventMap[K]) => void): void {
+  private listen<K extends keyof HTMLMediaElementEventMap>(
+    name: K,
+    fn: (ev: HTMLMediaElementEventMap[K]) => void,
+  ): void {
     this.media.addEventListener(name, fn)
     this.disposers.push(() => this.media.removeEventListener(name, fn))
   }
@@ -63,7 +79,8 @@ export abstract class MediaElementAdapter implements PlayerAdapter {
       if (!this.started) {
         this.started = true
         const fire = () => this.emit({ type: 'firstFrame' })
-        const rvfc = (v as HTMLVideoElement & { requestVideoFrameCallback?: (cb: () => void) => number }).requestVideoFrameCallback
+        const rvfc = (v as HTMLVideoElement & { requestVideoFrameCallback?: (cb: () => void) => number })
+          .requestVideoFrameCallback
         if (typeof rvfc === 'function') rvfc.call(v, fire)
         else fire()
       }
@@ -92,7 +109,12 @@ export abstract class MediaElementAdapter implements PlayerAdapter {
     if (this.rebufferAt === null) return
     const durationMs = Math.round(performance.now() - this.rebufferAt)
     this.rebufferAt = null
-    devbus.emit('buffer', 'yeniden tamponlama', { durationMs, positionSec: Math.round(this.media.currentTime) }, { ok: false, ms: durationMs })
+    devbus.emit(
+      'buffer',
+      'yeniden tamponlama',
+      { durationMs, positionSec: Math.round(this.media.currentTime) },
+      { ok: false, ms: durationMs },
+    )
     this.emit({ type: 'rebuffer', durationMs, positionSec: this.media.currentTime })
   }
 

@@ -24,14 +24,21 @@ export class RouteErrorBoundary extends Component<BoundaryProps, BoundaryState> 
   }
 
   componentDidCatch(error: Error, info: ErrorInfo): void {
-    devbus.emit('rest', `sayfa hatası: ${this.props.name}`, { error: String(error), stack: info.componentStack?.slice(0, 600) }, { ok: false })
+    devbus.emit(
+      'rest',
+      `sayfa hatası: ${this.props.name}`,
+      { error: String(error), stack: info.componentStack?.slice(0, 600) },
+      { ok: false },
+    )
   }
 
   private retry = () => this.setState({ error: null })
 
   render(): ReactNode {
     if (this.state.error) {
-      return <ErrorState size="page" title="Bu sayfa açılamadı" message="Biraz sonra yeniden dene." onRetry={this.retry} />
+      return (
+        <ErrorState size="page" title="Bu sayfa açılamadı" message="Biraz sonra yeniden dene." onRetry={this.retry} />
+      )
     }
     return this.props.children
   }

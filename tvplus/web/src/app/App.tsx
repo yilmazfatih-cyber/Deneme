@@ -74,7 +74,8 @@ function RequireMember({ children }: { children: ReactNode }): ReactElement {
 /** Üye zaten girişliyse karşılamayı atlar. */
 function AnonymousOnly({ children }: { children: ReactNode }): ReactElement {
   const boot = useSession((s) => s.boot)
-  if (boot?.membershipStatus === 'CURRENT_MEMBER') return <Navigate to={boot.activeProfile ? lastModePath() : '/profiller'} replace />
+  if (boot?.membershipStatus === 'CURRENT_MEMBER')
+    return <Navigate to={boot.activeProfile ? lastModePath() : '/profiller'} replace />
   return <>{children}</>
 }
 
@@ -175,7 +176,12 @@ export function App(): ReactElement {
   if (status === 'error') {
     return (
       <div className="tvp-splash">
-        <ErrorState size="page" title="TV+ açılamadı" message="Sunucuya ulaşılamadı. Bağlantını kontrol et." onRetry={() => void init()} />
+        <ErrorState
+          size="page"
+          title="TV+ açılamadı"
+          message="Sunucuya ulaşılamadı. Bağlantını kontrol et."
+          onRetry={() => void init()}
+        />
       </div>
     )
   }

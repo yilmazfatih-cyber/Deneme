@@ -53,7 +53,10 @@ export function createCatalog(bundle: ContentBundle, deps: CatalogDeps): Catalog
     if (!claim(raw.videoId, `"${raw.title}"`, file)) continue
     // Yinelenen bölüm / ek videoları ayıklanmış kopya
     const seasons = raw.seasons
-      .map((s) => ({ ...s, episodes: s.episodes.filter((e) => claim(e.videoId, `${raw.title} bölüm "${e.title}"`, file)) }))
+      .map((s) => ({
+        ...s,
+        episodes: s.episodes.filter((e) => claim(e.videoId, `${raw.title} bölüm "${e.title}"`, file)),
+      }))
       .filter((s) => s.episodes.length > 0)
       .sort((a, b) => a.number - b.number)
     if (raw.type === 'SHOW' && seasons.length === 0) {
@@ -146,7 +149,8 @@ export function createCatalog(bundle: ContentBundle, deps: CatalogDeps): Catalog
       continue
     }
     const missing = c.videoIds.filter((v) => !titles.has(v))
-    if (missing.length) deps.log('warn', `Koleksiyon ${c.collectionId} bilinmeyen başlıkları atladı: ${missing.join(', ')}`)
+    if (missing.length)
+      deps.log('warn', `Koleksiyon ${c.collectionId} bilinmeyen başlıkları atladı: ${missing.join(', ')}`)
     collections.set(c.collectionId, { ...c, videoIds: c.videoIds.filter((v) => titles.has(v)) })
   }
   const collectionsByTitle = new Map<number, ContentCollection[]>()
@@ -261,7 +265,14 @@ export function createCatalog(bundle: ContentBundle, deps: CatalogDeps): Catalog
         case 'Profile': {
           const p = deps.services().identity?.getProfile(parsed.id) ?? null
           if (!p) return null
-          return { sourceUrl: null, localFile: `brand/${p.avatar}`, title: p.name, subtitle: null, seed: entityId, focal: '50% 50%' }
+          return {
+            sourceUrl: null,
+            localFile: `brand/${p.avatar}`,
+            title: p.name,
+            subtitle: null,
+            seed: entityId,
+            focal: '50% 50%',
+          }
         }
         case 'Collection': {
           const c = collections.get(num)

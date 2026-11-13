@@ -12,7 +12,9 @@ const asQuery = (q: string) => Object.fromEntries(new URLSearchParams(q))
 describe('OCA adres imzası', () => {
   it('sözleşmedeki formül: base64url(HMAC(urlKey, node|o|v|e))', () => {
     const e = 1_900_000_000
-    const expected = createHmac('sha256', deriveKey(config, 'oca-url')).update(`${NODE}|abc123|3|${e}`).digest('base64url')
+    const expected = createHmac('sha256', deriveKey(config, 'oca-url'))
+      .update(`${NODE}|abc123|3|${e}`)
+      .digest('base64url')
     expect(signer.sign(NODE, 'abc123', 3, e)).toBe(expected)
     expect(signer.query(NODE, 'abc123', 3, e)).toBe(`o=abc123&v=3&e=${e}&t=${expected}`)
   })

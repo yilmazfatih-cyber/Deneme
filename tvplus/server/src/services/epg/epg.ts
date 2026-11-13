@@ -8,7 +8,15 @@
  */
 import type { ContentChannel } from '../../../../shared/content-schema'
 import type { AiringRecord, EpgService, Services } from '../../kernel/services'
-import { compactDate, compactTime, DAY_MS, dayNumberFromCompact, localDayNumber, localMidnight, parseLocalDate } from './time'
+import {
+  compactDate,
+  compactTime,
+  DAY_MS,
+  dayNumberFromCompact,
+  localDayNumber,
+  localMidnight,
+  parseLocalDate,
+} from './time'
 
 /** Geri al penceresi ve akış aralığı */
 export const CATCHUP_DAYS = 7
@@ -31,7 +39,10 @@ interface LinearItem {
   synopsis: string
 }
 
-export function createEpgService(services: () => Partial<Services>, initialClock: () => Date = () => new Date()): EpgServiceImpl {
+export function createEpgService(
+  services: () => Partial<Services>,
+  initialClock: () => Date = () => new Date(),
+): EpgServiceImpl {
   let clock = initialClock
   /** gün önbelleği: `${channelId}:${dayNumber}:${imza}` → o gün BAŞLAYAN yayınlar */
   const dayCache = new Map<string, AiringRecord[]>()

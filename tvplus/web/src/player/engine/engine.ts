@@ -34,7 +34,14 @@ export interface EngineOptions {
 }
 
 export type EngineEvent =
-  | { type: 'abr'; from: ManifestStream | null; to: ManifestStream; reason: AbrReason; estimateKbps: number; bufferSec: number }
+  | {
+      type: 'abr'
+      from: ManifestStream | null
+      to: ManifestStream
+      reason: AbrReason
+      estimateKbps: number
+      bufferSec: number
+    }
   | { type: 'cdn'; from: string; to: string; reason: string }
   | { type: 'fatal'; error: Error }
   | { type: 'ready'; durationSec: number }
@@ -70,7 +77,8 @@ function pickVideoStreams(m: StreamsManifest): ManifestStream[] {
   const track = m.videoTracks[0]
   if (!track) return []
   const playable = track.streams.filter(isStreamPlayable)
-  const profile = (['vp9-webm', 'h264-mp4'] as const).find((p) => playable.some((s) => s.profile === p)) ?? playable[0]?.profile
+  const profile =
+    (['vp9-webm', 'h264-mp4'] as const).find((p) => playable.some((s) => s.profile === p)) ?? playable[0]?.profile
   return playable.filter((s) => s.profile === profile).sort((a, b) => a.bitrateKbps - b.bitrateKbps)
 }
 
@@ -107,7 +115,12 @@ export class MseEngine implements PipelineHost {
   private fatal: Error | null = null
   private readonly onSeeking = () => this.handleSeeking()
 
-  constructor(media: HTMLVideoElement, manifest: StreamsManifest, opts: EngineOptions, onEvent: (e: EngineEvent) => void) {
+  constructor(
+    media: HTMLVideoElement,
+    manifest: StreamsManifest,
+    opts: EngineOptions,
+    onEvent: (e: EngineEvent) => void,
+  ) {
     const MS = mediaSourceCtor()
     if (!MS) throw new EngineError('NO_MSE', 'Bu tarayıcı Media Source Extensions desteklemiyor')
     this.media = media
@@ -124,7 +137,8 @@ export class MseEngine implements PipelineHost {
   /* ───────────── yaşam döngüsü ───────────── */
 
   async start(): Promise<void> {
-    if (!this.videoStreams.length) throw new EngineError('NO_COMPATIBLE_SOURCE', 'Bu tarayıcı bu yayının görüntü biçimini çözemiyor')
+    if (!this.videoStreams.length)
+      throw new EngineError('NO_COMPATIBLE_SOURCE', 'Bu tarayıcı bu yayının görüntü biçimini çözemiyor')
     const ms = this.mediaSource
     const media = this.media
     // ManagedMediaSource (Safari) için uzak oynatma kapatılmalı
@@ -163,7 +177,9 @@ export class MseEngine implements PipelineHost {
       const asb = ms.addSourceBuffer(aMime)
       this.audio = new MediaPipeline('audio', asb, aMime, this.opts.startSec, this)
     }
-    const durationSec = this.manifest.durationMs ? this.manifest.durationMs / 1000 : Math.max(vh.index.durationSec, ah?.index.durationSec ?? 0)
+    const durationSec = this.manifest.durationMs
+      ? this.manifest.durationMs / 1000
+      : Math.max(vh.index.durationSec, ah?.index.durationSec ?? 0)
     try {
       ms.duration = durationSec
     } catch {
@@ -217,7 +233,10 @@ export class MseEngine implements PipelineHost {
         n++
       }
     }
-    devbus.emit('manifest', `${this.manifest.viewableId}: adresler yenilendi`, { streams: n, expiration: fresh.expiration })
+    devbus.emit('manifest', `${this.manifest.viewableId}: adresler yenilendi`, {
+      streams: n,
+      expiration: fresh.expiration,
+    })
     this.retry()
     return n
   }
@@ -258,7 +277,11 @@ export class MseEngine implements PipelineHost {
     if (pipes.some((p) => p.isUpdating())) return
     try {
       this.mediaSource.endOfStream()
-      devbus.emit('player', 'akış sonu', { viewableId: this.manifest.viewableId, state: 'endOfStream', positionSec: round1(this.media.currentTime) })
+      devbus.emit('player', 'akış sonu', {
+        viewableId: this.manifest.viewableId,
+        state: 'endOfStream',
+        positionSec: round1(this.media.currentTime),
+      })
     } catch {
       /* yok say */
     }
@@ -348,20 +371,46 @@ export class MseEngine implements PipelineHost {
     return p
   }
 
-  async fetchSegment(stream: ManifestStream, kind: MediaKind, seg: SegmentRef, segIndex: number, signal: AbortSignal): Promise<RangeResult> {
-    const r = await fetchRange(stream.urls, seg.start, seg.end, { signal, onFailover: (a, b, why) => this.failover(a, b, why) })
+  async fetchSegment(
+    stream: ManifestStream,
+    kind: MediaKind,
+    seg: SegmentRef,
+    segIndex: number,
+    signal: AbortSignal,
+  ): Promise<RangeResult> {
+    const r = await fetchRange(stream.urls, seg.start, seg.end, {
+      signal,
+      onFailover: (a, b, why) => this.failover(a, b, why),
+    })
     this.estimator.sample(r.bytes.length, r.totalMs)
     this.emitRange(kind, stream, seg.start, seg.end, r, segIndex)
     return r
   }
 
-  private emitRange(type: 'video' | 'audio' | 'header', stream: ManifestStream, start: number, end: number, r: RangeResult, segment: number | null): void {
+  private emitRange(
+    type: 'video' | 'audio' | 'header',
+    stream: ManifestStream,
+    start: number,
+    end: number,
+    r: RangeResult,
+    segment: number | null,
+  ): void {
     this.lastCdnId = r.cdnId
     const kbps = r.totalMs > 0 ? Math.round((r.bytes.length * 8) / r.totalMs) : 0
     devbus.emit(
       'range',
       `${type} ${start}-${end}`,
-      { type, cdnId: r.cdnId, start, end, bytes: r.bytes.length, ttfbMs: Math.round(r.ttfbMs), kbps, streamId: stream.streamId, segment },
+      {
+        type,
+        cdnId: r.cdnId,
+        start,
+        end,
+        bytes: r.bytes.length,
+        ttfbMs: Math.round(r.ttfbMs),
+        kbps,
+        streamId: stream.streamId,
+        segment,
+      },
       { ms: Math.round(r.totalMs) },
     )
   }
@@ -375,7 +424,8 @@ export class MseEngine implements PipelineHost {
     if (p.kind !== 'video') return
     this.appendedVideo.push({ startTime: seg.startTime, endTime: seg.endTime, stream })
     const t = this.media.currentTime
-    if (this.appendedVideo.length > 64) this.appendedVideo = this.appendedVideo.filter((a) => a.endTime > t - BACK_BUFFER_SEC)
+    if (this.appendedVideo.length > 64)
+      this.appendedVideo = this.appendedVideo.filter((a) => a.endTime > t - BACK_BUFFER_SEC)
   }
 
   onDone(p: MediaPipeline): void {
@@ -390,7 +440,12 @@ export class MseEngine implements PipelineHost {
   }
 
   onQuota(p: MediaPipeline): void {
-    devbus.emit('buffer', 'tampon kotası doldu', { kind: p.kind, videoSec: round1(this.video?.bufferedAheadSec() ?? 0) }, { ok: false })
+    devbus.emit(
+      'buffer',
+      'tampon kotası doldu',
+      { kind: p.kind, videoSec: round1(this.video?.bufferedAheadSec() ?? 0) },
+      { ok: false },
+    )
   }
 
   /* ───────────── dış denetim ───────────── */

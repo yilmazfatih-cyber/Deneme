@@ -47,22 +47,43 @@ function setup(graph: JsonGraph, opts: { status?: number; clock?: { t: number } 
     const form = new URLSearchParams(String(init.body))
     const paths = form.getAll('path').map((p) => JSON.parse(p) as FalcorPath)
     calls.push({ url, headers: init.headers as Record<string, string>, paths, authURL: form.get('authURL') })
-    if (opts.status && opts.status !== 200) return new Response('{"error":{"code":"X","message":"x"}}', { status: opts.status, headers: { 'x-b3-traceid': 'abc' } })
-    return new Response(JSON.stringify({ paths, jsonGraph: evaluate(graph, paths) }), { status: 200, headers: { 'x-b3-traceid': 'trace-1' } })
+    if (opts.status && opts.status !== 200)
+      return new Response('{"error":{"code":"X","message":"x"}}', {
+        status: opts.status,
+        headers: { 'x-b3-traceid': 'abc' },
+      })
+    return new Response(JSON.stringify({ paths, jsonGraph: evaluate(graph, paths) }), {
+      status: 200,
+      headers: { 'x-b3-traceid': 'trace-1' },
+    })
   }
-  const model = new FalcorModel({ fetch: fetchImpl, now: () => clock.t, getHeaders: () => ({ 'x-tvplus-esn': 'TVPWCH-TEST' }), getAuthURL: () => 'auth-123' })
+  const model = new FalcorModel({
+    fetch: fetchImpl,
+    now: () => clock.t,
+    getHeaders: () => ({ 'x-tvplus-esn': 'TVPWCH-TEST' }),
+    getAuthURL: () => 'auth-123',
+  })
   return { model, calls, clock }
 }
 
 const ref = (...value: FalcorKey[]): JsonGraphLeaf => ({ $type: 'ref', value })
-const atom = (value: unknown, extra: Partial<{ $expires: number }> = {}): JsonGraphLeaf => ({ $type: 'atom', value, ...extra })
+const atom = (value: unknown, extra: Partial<{ $expires: number }> = {}): JsonGraphLeaf => ({
+  $type: 'atom',
+  value,
+  ...extra,
+})
 
 function catalog(): JsonGraph {
   return {
     lolomo: ref('lolomos', 'G1'),
     lolomos: { G1: { 0: ref('lists', 'L1'), 1: ref('lists', 'L2'), summary: atom({ length: 2 }) } },
     lists: {
-      L1: { 0: ref('videos', 10), 1: ref('videos', 11), 2: ref('videos', 12), summary: atom({ displayName: 'İzlemeye devam et' }) },
+      L1: {
+        0: ref('videos', 10),
+        1: ref('videos', 11),
+        2: ref('videos', 12),
+        summary: atom({ displayName: 'İzlemeye devam et' }),
+      },
       L2: { 0: ref('videos', 12), summary: atom({ displayName: 'Yeni gelenler' }) },
     },
     videos: {
@@ -110,7 +131,9 @@ describe('FalcorModel', () => {
     await model.get(['videos', 10, 'title'])
     expect(calls).toHaveLength(1)
     const c = calls[0]!
-    expect(c.url).toBe('/api/member/pathEvaluator?webp=true&isTop10Supported=true&hasVideoMerchInBob=true&falcor_server=0.1.0&withSize=true&materialize=true')
+    expect(c.url).toBe(
+      '/api/member/pathEvaluator?webp=true&isTop10Supported=true&hasVideoMerchInBob=true&falcor_server=0.1.0&withSize=true&materialize=true',
+    )
     expect(c.headers['content-type']).toBe('application/x-www-form-urlencoded')
     expect(c.headers['x-tvplus-esn']).toBe('TVPWCH-TEST')
     expect(c.authURL).toBe('auth-123')
@@ -176,7 +199,12 @@ describe('FalcorModel', () => {
       expect(calls).toHaveLength(1)
       expect(calls[0]!.paths).toEqual([['videos', 11, 'title']])
       expect(cap.events[0]!.detail).toMatchObject({ fromCache: true })
-      expect(cap.events[1]!.detail).toMatchObject({ fromCache: false, status: 200, traceId: 'trace-1', paths: [['videos', 11, 'title']] })
+      expect(cap.events[1]!.detail).toMatchObject({
+        fromCache: false,
+        status: 200,
+        traceId: 'trace-1',
+        paths: [['videos', 11, 'title']],
+      })
     } finally {
       cap.stop()
     }
@@ -191,7 +219,12 @@ describe('FalcorModel', () => {
 
   it('$expires: negatif göreli, pozitif mutlak; bayat yaprak yeniden istenir', async () => {
     const clock = { t: 1_000_000 }
-    const graph: JsonGraph = { videos: { 1: { bookmark: atom({ positionSec: 5 }, { $expires: -1000 }) }, 2: { bookmark: atom({ positionSec: 9 }, { $expires: 1_002_000 }) } } }
+    const graph: JsonGraph = {
+      videos: {
+        1: { bookmark: atom({ positionSec: 5 }, { $expires: -1000 }) },
+        2: { bookmark: atom({ positionSec: 9 }, { $expires: 1_002_000 }) },
+      },
+    }
     const { model, calls } = setup(graph, { clock })
     await model.get(['videos', [1, 2], 'bookmark'])
     expect(calls).toHaveLength(1)
@@ -231,14 +264,18 @@ describe('FalcorModel', () => {
 
   it('hata atomu yalnız o yolu isteyen çağrıyı düşürür', async () => {
     const graph = catalog()
-    ;(graph.videos as JsonGraph)['13'] = { title: { $type: 'error', value: { message: 'Bu başlık yok', code: 'NOT_FOUND' } } }
+    ;(graph.videos as JsonGraph)['13'] = {
+      title: { $type: 'error', value: { message: 'Bu başlık yok', code: 'NOT_FOUND' } },
+    }
     const { model, calls } = setup(graph)
     const good = model.get(['videos', 10, 'title'])
     const bad = model.get(['videos', [12, 13], 'title'])
     await expect(good).resolves.toEqual({ videos: { 10: { title: 'Kuzgun' } } })
     const err = await bad.catch((e: unknown) => e)
     expect(err).toBeInstanceOf(FalcorPathError)
-    expect((err as FalcorPathError).errors).toEqual([{ path: ['videos', 13, 'title'], message: 'Bu başlık yok', code: 'NOT_FOUND' }])
+    expect((err as FalcorPathError).errors).toEqual([
+      { path: ['videos', 13, 'title'], message: 'Bu başlık yok', code: 'NOT_FOUND' },
+    ])
     expect((err as FalcorPathError).json).toEqual({ videos: { 12: { title: 'Sahil' } } })
     expect(calls).toHaveLength(1)
     // Hata önbellekten sunulmaz: yeniden sorulur.

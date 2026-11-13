@@ -32,7 +32,10 @@ export function isMain(metaUrl: string): boolean {
   const arg = process.argv[1]
   if (!arg) return false
   try {
-    return new URL(metaUrl).pathname.replace(/\.[cm]?[jt]s$/, '') === new URL(`file://${arg}`).pathname.replace(/\.[cm]?[jt]s$/, '')
+    return (
+      new URL(metaUrl).pathname.replace(/\.[cm]?[jt]s$/, '') ===
+      new URL(`file://${arg}`).pathname.replace(/\.[cm]?[jt]s$/, '')
+    )
   } catch {
     return false
   }

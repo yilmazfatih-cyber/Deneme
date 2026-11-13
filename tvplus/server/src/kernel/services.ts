@@ -30,14 +30,20 @@ export interface EventsService {
   /** Son `windowHours` saatteki oynatma başlangıç sayıları (Top 10 için). Anahtar: üst başlığın videoId'si değil, olaydaki videoId. */
   playCounts(windowHours: number): Map<number, number>
   /** Sunucu içinden olay kaydı (ör. manifest verildi). */
-  ingest(batch: EventBatch, profileGuid: string | null): { accepted: number; dropped: number; rateLimitRemaining: number }
+  ingest(
+    batch: EventBatch,
+    profileGuid: string | null,
+  ): { accepted: number; dropped: number; rateLimitRemaining: number }
   stats(): { total: number; lastBatchAt: string | null; byName: Record<string, number> }
 }
 
 /* ───────────── Bildirimler (sahibi: çekirdek API) ───────────── */
 export interface NotificationsService {
   /** profileGuid null → tüm profillere */
-  push(profileGuid: string | null, n: { kind: PushEvent['kind']; title: string; body: string; href: string | null }): void
+  push(
+    profileGuid: string | null,
+    n: { kind: PushEvent['kind']; title: string; body: string; href: string | null },
+  ): void
   list(profileGuid: string): PushEvent[]
   markRead(profileGuid: string, ids?: string[] | null): void
 }

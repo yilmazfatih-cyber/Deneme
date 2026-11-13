@@ -12,10 +12,7 @@
     "kids": false,
     "source": {
       "type": "LINEAR",
-      "playlist": [
-        80010001,
-        80010002
-      ]
+      "playlist": [80010001, 80010002]
     },
     "requiredProduct": null
   },

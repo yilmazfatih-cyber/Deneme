@@ -33,9 +33,7 @@ export function usePlaylistToggle(videoId: number, initial: boolean, tctx?: stri
     setBusy(true)
     setOn(next)
     updatePreview(videoId, (v) => ({ ...v, isInPlaylist: next }))
-    const op = next
-      ? gql('AddToPlaylist', { videoId, tctx: tctx ?? null })
-      : gql('RemoveFromPlaylist', { videoId })
+    const op = next ? gql('AddToPlaylist', { videoId, tctx: tctx ?? null }) : gql('RemoveFromPlaylist', { videoId })
     op.then(
       () => {
         logEvent('playlist', { videoId, action: next ? 'ADD_TO_PLAYLIST' : 'DELETE_FROM_PLAYLIST' }, tctx)

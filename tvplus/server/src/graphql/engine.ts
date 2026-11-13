@@ -80,7 +80,8 @@ const GENERIC_MESSAGE = 'Beklenmeyen bir hata oluştu.'
 /* ───────────── DateTime skaleri ───────────── */
 
 function toIso(value: unknown): string {
-  const d = value instanceof Date ? value : typeof value === 'string' || typeof value === 'number' ? new Date(value) : null
+  const d =
+    value instanceof Date ? value : typeof value === 'string' || typeof value === 'number' ? new Date(value) : null
   if (!d || Number.isNaN(d.getTime())) throw new TypeError('DateTime değeri geçersiz')
   return d.toISOString()
 }
@@ -204,7 +205,11 @@ export function createGraphQLEngine(options: GraphQLEngineOptions): GraphQLEngin
     const document = parse(entry.document)
     const errors = validate(schema, document)
     if (errors.length) {
-      log?.('error', `Kalıcı sorgu şemayla uyuşmuyor: ${entry.name}`, errors.map((e) => e.message))
+      log?.(
+        'error',
+        `Kalıcı sorgu şemayla uyuşmuyor: ${entry.name}`,
+        errors.map((e) => e.message),
+      )
       throw new RequestError(500, 'INTERNAL', GENERIC_MESSAGE)
     }
     const fragments = new Map<string, FragmentDefinitionNode>()
@@ -262,7 +267,8 @@ export function createGraphQLEngine(options: GraphQLEngineOptions): GraphQLEngin
     try {
       op = prepare(id, entry)
     } catch (err) {
-      if (err instanceof RequestError) return { ...fail(err.statusCode, err.code, err.message), operationName: entry.name }
+      if (err instanceof RequestError)
+        return { ...fail(err.statusCode, err.code, err.message), operationName: entry.name }
       log?.('error', `Kalıcı sorgu ayrıştırılamadı: ${entry.name}`, err)
       return { ...fail(500, 'INTERNAL', GENERIC_MESSAGE), operationName: entry.name }
     }
@@ -298,7 +304,11 @@ export function createGraphQLEngine(options: GraphQLEngineOptions): GraphQLEngin
 
     if (result.data === undefined) {
       // İstek düzeyi hata (ör. değişken türü uymuyor): yürütme hiç başlamadı.
-      log?.('warn', `GraphQL istek hatası: ${op.name}`, result.errors?.map((e) => e.message))
+      log?.(
+        'warn',
+        `GraphQL istek hatası: ${op.name}`,
+        result.errors?.map((e) => e.message),
+      )
       return named(fail(400, 'BAD_USER_INPUT', 'Sorgu değişkenleri geçersiz.'))
     }
     const out: GqlResponseBody = { data: result.data }

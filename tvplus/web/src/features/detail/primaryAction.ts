@@ -11,7 +11,12 @@ import { isInProgress, joinMeta, playPath, remainingText } from '../preview'
 export interface DetailActionInput {
   typename: 'Movie' | 'Show' | 'Episode' | 'Supplemental'
   videoId: number
-  access: { state: string; reasonText: string | null; requiredProductName?: string | null; requiredProduct?: string | null }
+  access: {
+    state: string
+    reasonText: string | null
+    requiredProductName?: string | null
+    requiredProduct?: string | null
+  }
   bookmark: { positionSec: number; runtimeSec?: number | null; progress: number } | null
   runtimeSec: number | null
   currentEpisode?: {
@@ -32,13 +37,20 @@ export type PrimaryAction =
 export function primaryActionOf(input: DetailActionInput): PrimaryAction {
   const { access } = input
   if (access.state === 'UPSELL') {
-    return { kind: 'upsell', label: 'Paketi incele', productName: access.requiredProductName ?? access.requiredProduct ?? null, reasonText: access.reasonText }
+    return {
+      kind: 'upsell',
+      label: 'Paketi incele',
+      productName: access.requiredProductName ?? access.requiredProduct ?? null,
+      reasonText: access.reasonText,
+    }
   }
-  if (access.state !== 'PLAYABLE') return { kind: 'unavailable', label: 'Benzerlerini gör', reasonText: access.reasonText }
+  if (access.state !== 'PLAYABLE')
+    return { kind: 'unavailable', label: 'Benzerlerini gör', reasonText: access.reasonText }
 
   const isShow = input.typename === 'Show'
   const ep = isShow ? (input.currentEpisode ?? null) : null
-  if (isShow && !ep) return { kind: 'unavailable', label: 'Benzerlerini gör', reasonText: 'Bu dizinin bölümü henüz yok' }
+  if (isShow && !ep)
+    return { kind: 'unavailable', label: 'Benzerlerini gör', reasonText: 'Bu dizinin bölümü henüz yok' }
   const playVideoId = ep ? ep.videoId : input.videoId
   const bm = ep ? ep.bookmark : input.bookmark
   const runtime = ep ? (ep.runtimeSec ?? bm?.runtimeSec ?? null) : (input.runtimeSec ?? bm?.runtimeSec ?? null)
@@ -54,5 +66,12 @@ export function primaryActionOf(input: DetailActionInput): PrimaryAction {
       restartTo: playPath(playVideoId, input.tctx, { fromStart: true }),
     }
   }
-  return { kind: 'play', label: 'İzle', to: playPath(playVideoId, input.tctx), playVideoId, hint: label, restartTo: null }
+  return {
+    kind: 'play',
+    label: 'İzle',
+    to: playPath(playVideoId, input.tctx),
+    playVideoId,
+    hint: label,
+    restartTo: null,
+  }
 }

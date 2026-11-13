@@ -47,7 +47,12 @@ export function loadSeeds(contentDir: string, warn: (msg: string, err?: unknown)
       kind: 'NEW_CONTENT' as const,
       title: s.title,
       body: s.body,
-      href: s.videoId !== undefined ? `#/detay/${s.videoId}` : s.channelId !== undefined ? `#/izle/Channel:${s.channelId}` : null,
+      href:
+        s.videoId !== undefined
+          ? `#/detay/${s.videoId}`
+          : s.channelId !== undefined
+            ? `#/izle/Channel:${s.channelId}`
+            : null,
       createdAt,
     }))
   } catch (err) {
@@ -66,7 +71,11 @@ export interface NotificationsServiceInternal extends NotificationsService {
 export default async function plugin(app: FastifyInstance): Promise<void> {
   const config = app.config
   const seeds = loadSeeds(config.contentDir, (msg, err) => app.log.warn({ err }, msg))
-  const store = createStore<NotificationsState>(config, 'notifications', () => ({ cursor: 0, queues: {}, broadcasts: [] }))
+  const store = createStore<NotificationsState>(config, 'notifications', () => ({
+    cursor: 0,
+    queues: {},
+    broadcasts: [],
+  }))
   const waiters = new Map<string, Set<() => void>>()
   const demoScheduled = new Set<string>()
   const timers = new Set<NodeJS.Timeout>()
@@ -163,7 +172,12 @@ export default async function plugin(app: FastifyInstance): Promise<void> {
     demoScheduled.add(guid)
     const t = setTimeout(() => {
       timers.delete(t)
-      service.push(guid, { kind: 'SYSTEM', title: 'Canlı TV hazır', body: 'Kanallar ve yayın akışı artık burada.', href: '#/canli' })
+      service.push(guid, {
+        kind: 'SYSTEM',
+        title: 'Canlı TV hazır',
+        body: 'Kanallar ve yayın akışı artık burada.',
+        href: '#/canli',
+      })
     }, DEMO_DELAY_MS)
     t.unref()
     timers.add(t)

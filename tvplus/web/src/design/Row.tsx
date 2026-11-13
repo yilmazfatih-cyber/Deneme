@@ -68,7 +68,14 @@ export interface HScrollProps {
 
 const savedScroll = new Map<string, number>()
 
-export function HScroll({ children, label, labelledBy, scrollKey, onVisibleRangeChange, className }: HScrollProps): ReactElement {
+export function HScroll({
+  children,
+  label,
+  labelledBy,
+  scrollKey,
+  onVisibleRangeChange,
+  className,
+}: HScrollProps): ReactElement {
   const listRef = useRef<HTMLUListElement>(null)
   const rangeRef = useRef<VisibleRange>({ first: -1, last: -1 })
   const cbRef = useRef(onVisibleRangeChange)
@@ -153,7 +160,9 @@ export function HScroll({ children, label, labelledBy, scrollKey, onVisibleRange
     const idx = lis.findIndex((li) => li.contains(document.activeElement))
     if (idx < 0) return
     const target = lis[idx + (e.key === 'ArrowRight' ? 1 : -1)]
-    const focusable = target?.querySelector<HTMLElement>('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')
+    const focusable = target?.querySelector<HTMLElement>(
+      'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+    )
     if (focusable) {
       e.preventDefault()
       focusable.focus()
@@ -162,17 +171,35 @@ export function HScroll({ children, label, labelledBy, scrollKey, onVisibleRange
 
   return (
     <div className={cx('cn-hscroll', className)}>
-      <ul ref={listRef} className="cn-hscroll__list" aria-label={labelledBy ? undefined : label} aria-labelledby={labelledBy} onKeyDown={onKeyDown}>
+      <ul
+        ref={listRef}
+        className="cn-hscroll__list"
+        aria-label={labelledBy ? undefined : label}
+        aria-labelledby={labelledBy}
+        onKeyDown={onKeyDown}
+      >
         {items.map((child, i) => (
           <li key={(child as { key?: string | null }).key ?? i} className="cn-hscroll__item">
             {child}
           </li>
         ))}
       </ul>
-      <button type="button" className="cn-hscroll__arrow cn-hscroll__arrow--prev" aria-label="Önceki" hidden={!edges.prev} onClick={() => page(-1)}>
+      <button
+        type="button"
+        className="cn-hscroll__arrow cn-hscroll__arrow--prev"
+        aria-label="Önceki"
+        hidden={!edges.prev}
+        onClick={() => page(-1)}
+      >
         <Icon name="chevronLeft" />
       </button>
-      <button type="button" className="cn-hscroll__arrow cn-hscroll__arrow--next" aria-label="Sonraki" hidden={!edges.next} onClick={() => page(1)}>
+      <button
+        type="button"
+        className="cn-hscroll__arrow cn-hscroll__arrow--next"
+        aria-label="Sonraki"
+        hidden={!edges.next}
+        onClick={() => page(1)}
+      >
         <Icon name="chevronRight" />
       </button>
     </div>
@@ -200,7 +227,15 @@ export function Row({ title, to, className, children, ...scroll }: RowProps): Re
 }
 
 /** Sayfa kabı: dikey satır ritmi + isteğe bağlı ekran başlığı. */
-export function Page({ title, children, className }: { title?: string; children: ReactNode; className?: string }): ReactElement {
+export function Page({
+  title,
+  children,
+  className,
+}: {
+  title?: string
+  children: ReactNode
+  className?: string
+}): ReactElement {
   return (
     <div className={cx('cn-page', className)}>
       {title && <h1 className="cn-screen-title cn-gutter-x">{title}</h1>}

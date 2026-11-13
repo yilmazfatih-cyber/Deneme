@@ -54,7 +54,13 @@ export function top10ForProfile(services: Partial<Services>, profile: ProfileRec
 }
 
 /** 1–10 ya da null (yalnız film/dizi kimlikleri sıralanır) */
-export function top10Rank(services: Partial<Services>, videoId: number, profile: ProfileRecord | null, now: Date, cached?: number[]): number | null {
+export function top10Rank(
+  services: Partial<Services>,
+  videoId: number,
+  profile: ProfileRecord | null,
+  now: Date,
+  cached?: number[],
+): number | null {
   const list = cached ?? top10ForProfile(services, profile, now)
   const i = list.indexOf(videoId)
   return i >= 0 ? i + 1 : null

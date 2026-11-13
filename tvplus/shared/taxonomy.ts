@@ -50,7 +50,7 @@ export const MOODS = {
   'elestirmen-begenisi': { id: 100103, displayName: 'Eleştirmen Beğenisi', isMood: false },
   'acik-kaynak': { id: 100104, displayName: 'Açık Kaynak Film', isMood: false },
   'kult-klasik': { id: 100105, displayName: 'Kült Klasik', isMood: false },
-  'sozsuz': { id: 100106, displayName: 'Sözsüz Anlatım', isMood: false },
+  sozsuz: { id: 100106, displayName: 'Sözsüz Anlatım', isMood: false },
   'gercek-hikaye': { id: 100107, displayName: 'Gerçek Hikâye', isMood: false },
   'kisa-ve-oz': { id: 100108, displayName: 'Kısa ve Öz', isMood: false },
   'aile-boyu': { id: 100109, displayName: 'Ailece İzlenir', isMood: false },

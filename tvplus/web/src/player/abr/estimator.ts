@@ -76,7 +76,14 @@ export class ThroughputEstimator {
     this.defaultKbps = kbps
   }
 
-  stats(): { estimateKbps: number; fastKbps: number; slowKbps: number; samples: number; lastKbps: number | null; good: boolean } {
+  stats(): {
+    estimateKbps: number
+    fastKbps: number
+    slowKbps: number
+    samples: number
+    lastKbps: number | null
+    good: boolean
+  } {
     return {
       estimateKbps: Math.round(this.estimateKbps()),
       fastKbps: Math.round(this.fast.value()),

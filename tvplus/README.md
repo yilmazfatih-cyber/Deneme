@@ -39,38 +39,38 @@ adresinde otomatik olarak şifresiz geliştirme şemasına düşer).
 
 Sağ alttaki **Kaputun altı** düğmesi (ya da `Ctrl+.`) her adımı canlı gösterir.
 
-| Ne yapın                                                                    | Ne görürsünüz                                                                                             |
-| --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| Film & Dizi ana sayfasını açın, satırları kaydırın                          | **API** sekmesi: satırlar eski sistemden (Falcor yolları, toplu istek, önbellek) gelir                    |
-| Bir afişin üzerinde bekleyin                                                | Satırın **tamamı** için tek `MiniModalQuery`; yandaki karta geçince yeni istek yok                        |
-| Bir başlığın detayını açın                                                  | Yeni sistem: kalıcı sorgu — sorgu metni hiç gitmez, yalnız kimlik + sürüm                                 |
-| **Sintel** ya da **Tears of Steel** oynatın                                 | **Oynatma hattı**: ağ yoklaması → anahtar sağlama → lisanslı manifest → ayrı ses/video bayt aralıkları → TTML |
-| Oynarken **CDN** sekmesinde bant genişliğini kısın                          | Bit hızı kademe kademe düşer (uyarlamalı akış)                                                            |
-| Oynarken etkin düğümü kapatın                                               | Oynatıcı diğer düğüme geçer, yayın kesilmez                                                               |
-| Oynatıcıda **Kaynak** menüsünden YouTube'u seçin                            | Aynı başlık bu kez YouTube'un kendi oynatıcısıyla; bizim bayt-aralığı trafiğimiz yok                      |
-| Canlı TV → **TV+ Sinema** → Baştan başlat                                   | Katalog videolarından kurulan doğrusal kanal: yayına katılma konumu, baştan başlatma, geri alma           |
-| Arama: `sintel`, `sitnel`, `trt`; sonra **Yetenek bildirimi**nden Kanal'ı kapatın | Yazım düzeltmesi; istemci çizemediğini söylediği türü sunucu hiç yollamaz; aynı aramaya dönüş istek atmaz |
-| Avatar menüsünden **Çocuk** profiline geçin                                 | Kimlik her istekte çerezden çözülür; satırlar, kanallar ve arama yaşa göre süzülür                        |
+| Ne yapın                                                                          | Ne görürsünüz                                                                                                 |
+| --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Film & Dizi ana sayfasını açın, satırları kaydırın                                | **API** sekmesi: satırlar eski sistemden (Falcor yolları, toplu istek, önbellek) gelir                        |
+| Bir afişin üzerinde bekleyin                                                      | Satırın **tamamı** için tek `MiniModalQuery`; yandaki karta geçince yeni istek yok                            |
+| Bir başlığın detayını açın                                                        | Yeni sistem: kalıcı sorgu — sorgu metni hiç gitmez, yalnız kimlik + sürüm                                     |
+| **Sintel** ya da **Tears of Steel** oynatın                                       | **Oynatma hattı**: ağ yoklaması → anahtar sağlama → lisanslı manifest → ayrı ses/video bayt aralıkları → TTML |
+| Oynarken **CDN** sekmesinde bant genişliğini kısın                                | Bit hızı kademe kademe düşer (uyarlamalı akış)                                                                |
+| Oynarken etkin düğümü kapatın                                                     | Oynatıcı diğer düğüme geçer, yayın kesilmez                                                                   |
+| Oynatıcıda **Kaynak** menüsünden YouTube'u seçin                                  | Aynı başlık bu kez YouTube'un kendi oynatıcısıyla; bizim bayt-aralığı trafiğimiz yok                          |
+| Canlı TV → **TV+ Sinema** → Baştan başlat                                         | Katalog videolarından kurulan doğrusal kanal: yayına katılma konumu, baştan başlatma, geri alma               |
+| Arama: `sintel`, `sitnel`, `trt`; sonra **Yetenek bildirimi**nden Kanal'ı kapatın | Yazım düzeltmesi; istemci çizemediğini söylediği türü sunucu hiç yollamaz; aynı aramaya dönüş istek atmaz     |
+| Avatar menüsünden **Çocuk** profiline geçin                                       | Kimlik her istekte çerezden çözülür; satırlar, kanallar ve arama yaşa göre süzülür                            |
 
 ## Netflix → TV+ eşlemesi (özet)
 
-| Netflix                                        | Burada                                                                 |
-| ---------------------------------------------- | ---------------------------------------------------------------------- |
-| GraphQL, kalıcı sorgular                       | `POST /graphql` — ham sorgu reddedilir                                 |
-| Shakti / Falcor `pathEvaluator`                | `POST /api/member/pathEvaluator` — ana sayfa satırları (JSON Graph)    |
-| Arama, yetenek pazarlığı, `expires`            | `searchPage` — bölüm bazında yaşam süresi                              |
-| `MiniModalQuery` satır ön yüklemesi            | Önizleme kartı                                                         |
-| FTL yoklaması (4 uç, 3 darbe)                  | `GET /api/ftl/probe` + 4 sanal CDN düğümü                              |
-| MSL / ALE                                      | ECDH P-256 + AES-GCM zarf, mastertoken, tekrar koruması                |
-| `licensedManifest` + vitrin ön hazırlığı       | `POST /msl/v1/playapi/licensedManifest`                                |
-| Open Connect, imzalı bayt-aralığı adresleri    | `/oca/:düğüm/range/:a-:b?o=&v=&e=&t=`                                  |
-| Cadmium oynatıcı (MSE, ABR, TTML)              | `web/src/player` — kendi MSE motoru + YouTube adaptörü                 |
-| Ichnaea olay günlüğü                           | `POST /log/web/cl/1`                                                   |
-| Uzun yoklamalı bildirim                        | `GET /push`                                                            |
-| Çerez zinciri, Passport, ESN                   | `TvpId` / `SecureTvpId` / `tvpvdid`, `req.passport`, `TVPW…` cihaz no. |
-| Görsel API, imzalı adres                       | `/img/v1/<tip>/<en>x<boy>/<varlık>.webp?r=`                            |
-| Lolomo + `tctx`                                | Aynı                                                                   |
-| Envoy + B3 izleme                              | Her yanıtta `x-b3-traceid`                                             |
+| Netflix                                     | Burada                                                                 |
+| ------------------------------------------- | ---------------------------------------------------------------------- |
+| GraphQL, kalıcı sorgular                    | `POST /graphql` — ham sorgu reddedilir                                 |
+| Shakti / Falcor `pathEvaluator`             | `POST /api/member/pathEvaluator` — ana sayfa satırları (JSON Graph)    |
+| Arama, yetenek pazarlığı, `expires`         | `searchPage` — bölüm bazında yaşam süresi                              |
+| `MiniModalQuery` satır ön yüklemesi         | Önizleme kartı                                                         |
+| FTL yoklaması (4 uç, 3 darbe)               | `GET /api/ftl/probe` + 4 sanal CDN düğümü                              |
+| MSL / ALE                                   | ECDH P-256 + AES-GCM zarf, mastertoken, tekrar koruması                |
+| `licensedManifest` + vitrin ön hazırlığı    | `POST /msl/v1/playapi/licensedManifest`                                |
+| Open Connect, imzalı bayt-aralığı adresleri | `/oca/:düğüm/range/:a-:b?o=&v=&e=&t=`                                  |
+| Cadmium oynatıcı (MSE, ABR, TTML)           | `web/src/player` — kendi MSE motoru + YouTube adaptörü                 |
+| Ichnaea olay günlüğü                        | `POST /log/web/cl/1`                                                   |
+| Uzun yoklamalı bildirim                     | `GET /push`                                                            |
+| Çerez zinciri, Passport, ESN                | `TvpId` / `SecureTvpId` / `tvpvdid`, `req.passport`, `TVPW…` cihaz no. |
+| Görsel API, imzalı adres                    | `/img/v1/<tip>/<en>x<boy>/<varlık>.webp?r=`                            |
+| Lolomo + `tctx`                             | Aynı                                                                   |
+| Envoy + B3 izleme                           | Her yanıtta `x-b3-traceid`                                             |
 
 Ayrıntı, sözleşmeler ve klasör sahipliği: [`docs/MIMARI.md`](docs/MIMARI.md).
 
@@ -79,14 +79,14 @@ Ayrıntı, sözleşmeler ve klasör sahipliği: [`docs/MIMARI.md`](docs/MIMARI.m
 İçerik koddan ayrıdır: `content/` altındaki JSON dosyaları. Şema: [`shared/content-schema.ts`](shared/content-schema.ts).
 Bir başlığın bir ya da birden çok **kaynağı** olur; oynatma servisi istemcinin yeteneklerine göre birini seçer.
 
-| Kaynak türü    | Nasıl taşınır                                                                                         | Örnek                                |
-| -------------- | ----------------------------------------------------------------------------------------------------- | ------------------------------------ |
-| `DASH`         | Kendi CDN hattımız: uzak açık kökenden bayt aralığıyla, çok bit hızlı, ayrı ses/video, TTML altyazı   | Sintel, Tears of Steel (CC BY)       |
-| `PACKAGED`     | Kendi CDN hattımız: yerelde `ffmpeg` ile paketlenmiş dosyalar                                         | kendi videonuz                       |
-| `PROGRESSIVE`  | Tek dosya; tarayıcının kendi aralık istekleri, yine imzalı adres üzerinden                            | archive.org kamu malı klasikler      |
-| `YOUTUBE`      | YouTube resmî gömme oynatıcısı (IFrame Player API)                                                    | Blender filmleri, belgeseller        |
-| `YOUTUBE_LIVE` | Bir YouTube kanalının canlı yayını                                                                    | haber kanalları                      |
-| `LINEAR`       | Katalog videolarından döngüyle kurulan doğrusal kanal                                                 | TV+ Sinema                           |
+| Kaynak türü    | Nasıl taşınır                                                                                       | Örnek                           |
+| -------------- | --------------------------------------------------------------------------------------------------- | ------------------------------- |
+| `DASH`         | Kendi CDN hattımız: uzak açık kökenden bayt aralığıyla, çok bit hızlı, ayrı ses/video, TTML altyazı | Sintel, Tears of Steel (CC BY)  |
+| `PACKAGED`     | Kendi CDN hattımız: yerelde `ffmpeg` ile paketlenmiş dosyalar                                       | kendi videonuz                  |
+| `PROGRESSIVE`  | Tek dosya; tarayıcının kendi aralık istekleri, yine imzalı adres üzerinden                          | archive.org kamu malı klasikler |
+| `YOUTUBE`      | YouTube resmî gömme oynatıcısı (IFrame Player API)                                                  | Blender filmleri, belgeseller   |
+| `YOUTUBE_LIVE` | Bir YouTube kanalının canlı yayını                                                                  | haber kanalları                 |
+| `LINEAR`       | Katalog videolarından döngüyle kurulan doğrusal kanal                                               | TV+ Sinema                      |
 
 Yeni içerik eklemenin üç yolu:
 
@@ -127,18 +127,18 @@ abonelikle başka bir uygulamaya çekilmez. Resmî TV+ oynatma API'sine erişim 
 
 ## Komutlar
 
-| Komut                      | Ne yapar                                                                    |
-| -------------------------- | --------------------------------------------------------------------------- |
-| `npm run dev`              | Vite (5173) + API/CDN sunucusu (8787)                                       |
-| `npm run build`            | Kalıcı sorgu kayıt defteri + web derlemesi                                  |
-| `npm start`                | Tek kapı sunucusu (8787); `web/dist` varsa onu sunar                        |
+| Komut                      | Ne yapar                                                                     |
+| -------------------------- | ---------------------------------------------------------------------------- |
+| `npm run dev`              | Vite (5173) + API/CDN sunucusu (8787)                                        |
+| `npm run build`            | Kalıcı sorgu kayıt defteri + web derlemesi                                   |
+| `npm start`                | Tek kapı sunucusu (8787); `web/dist` varsa onu sunar                         |
 | `npm run check`            | Kalıcı sorgular + tip denetimi + içerik doğrulama + birim/bütünleşik testler |
-| `npm run e2e`              | Derler; Playwright ile gerçek tarayıcıda uçtan uca tur (ağ gerekir)         |
-| `npm run persisted`        | `shared/graphql/operations` → kimlikli kayıt defteri; şemaya karşı doğrular |
-| `npm run validate:content` | `content/` şema ve çapraz başvuru denetimi                                  |
-| `npm run ingest:youtube`   | YouTube doğrulama / iskelet üretimi                                         |
-| `npm run package:title`    | Yerel videoyu CDN hattı için paketler (ffmpeg gerekir)                      |
-| `npm run format`           | Prettier                                                                    |
+| `npm run e2e`              | Derler; Playwright ile gerçek tarayıcıda uçtan uca tur (ağ gerekir)          |
+| `npm run persisted`        | `shared/graphql/operations` → kimlikli kayıt defteri; şemaya karşı doğrular  |
+| `npm run validate:content` | `content/` şema ve çapraz başvuru denetimi                                   |
+| `npm run ingest:youtube`   | YouTube doğrulama / iskelet üretimi                                          |
+| `npm run package:title`    | Yerel videoyu CDN hattı için paketler (ffmpeg gerekir)                       |
+| `npm run format`           | Prettier                                                                     |
 
 Ortam değişkenleri: `PORT`, `HOST` (varsayılan `127.0.0.1`), `TVP_DATA_DIR` (durum ve önbellekler; varsayılan `.data/`),
 `TVP_MEDIA_DIR`, `TVP_SECRET`, `TVP_OFFLINE=1` (dış ağa çıkma), `TVP_DEBUG=member|open|off` (hata ayıklama uçları;

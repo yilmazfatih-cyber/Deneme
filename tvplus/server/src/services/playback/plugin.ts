@@ -36,7 +36,10 @@ function parseBody(body: unknown): unknown {
 }
 
 function restError(req: FastifyRequest, reply: FastifyReply, status: number, code: string, message: string) {
-  return reply.code(status).type('application/json; charset=utf-8').send({ error: { code, message, traceId: req.trace?.traceId } })
+  return reply
+    .code(status)
+    .type('application/json; charset=utf-8')
+    .send({ error: { code, message, traceId: req.trace?.traceId } })
 }
 
 function subtitlesDirOf(app: FastifyInstance): string | null {
@@ -47,7 +50,8 @@ function subtitlesDirOf(app: FastifyInstance): string | null {
   }
 }
 
-const streamSourceOf = (sources: ContentSource[]) => sources.find((s) => s.type === 'DASH' || s.type === 'PACKAGED') ?? null
+const streamSourceOf = (sources: ContentSource[]) =>
+  sources.find((s) => s.type === 'DASH' || s.type === 'PACKAGED') ?? null
 
 function createPlaybackService(app: FastifyInstance, plane: Plane): PlaybackService {
   return {
@@ -136,7 +140,10 @@ export default async function plugin(app: FastifyInstance): Promise<void> {
       const body = { error: { code: 'BAD_REQUEST', message: 'Manifest isteği biçimi hatalı.' } }
       return reply.send(plane.msl.seal(opened.session, body, opened.header))
     }
-    const input = { ...parsed.data, prefetch: parsed.data.prefetch || req.query.reqName === 'prefetch/licensedManifest' }
+    const input = {
+      ...parsed.data,
+      prefetch: parsed.data.prefetch || req.query.reqName === 'prefetch/licensedManifest',
+    }
     const result = await buildManifest(app, plane, passport, input, plane.ftl.get(ftlKey(plane, req)))
     if (result.ok) {
       if (input.prefetch) plane.counters.prefetchIssued++

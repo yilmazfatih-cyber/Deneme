@@ -149,7 +149,11 @@ export default async function plugin(app: FastifyInstance): Promise<void> {
   }
 
   /** Doğrulama + kayıt; hız sınırını çağıran uygular. */
-  function accept(batch: { sessionId?: string; sentAt?: number; events: unknown[] }, profileGuid: string | null, deviceId: string | null) {
+  function accept(
+    batch: { sessionId?: string; sentAt?: number; events: unknown[] },
+    profileGuid: string | null,
+    deviceId: string | null,
+  ) {
     const now = Date.now()
     const skew = typeof batch.sentAt === 'number' ? now - batch.sentAt : 0
     const receivedAt = new Date(now).toISOString()

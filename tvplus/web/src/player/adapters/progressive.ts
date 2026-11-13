@@ -43,7 +43,12 @@ export class ProgressiveAdapter extends MediaElementAdapter {
   private load(atSec: number, playAfter: boolean): void {
     const u = this.order[this.cursor]!
     const frag = atSec > 0 ? `#t=${atSec.toFixed(1)}` : ''
-    devbus.emit('range', `progressive ${u.cdnId}`, { type: 'video', cdnId: u.cdnId, url: u.url.split('?')[0], startSec: atSec })
+    devbus.emit('range', `progressive ${u.cdnId}`, {
+      type: 'video',
+      cdnId: u.cdnId,
+      url: u.url.split('?')[0],
+      startSec: atSec,
+    })
     this.media.src = u.url + frag
     if (atSec > 0) {
       const restore = () => {
@@ -82,7 +87,12 @@ export class ProgressiveAdapter extends MediaElementAdapter {
       this.fail('ALL_CDNS_FAILED', 'Yayın sunucularına ulaşılamıyor', true)
       return
     }
-    devbus.emit('cdn', `yük devri ${failed.cdnId}→${next.cdnId}`, { from: failed.cdnId, to: next.cdnId, reason }, { ok: false })
+    devbus.emit(
+      'cdn',
+      `yük devri ${failed.cdnId}→${next.cdnId}`,
+      { from: failed.cdnId, to: next.cdnId, reason },
+      { ok: false },
+    )
     this.emit({ type: 'cdnSwitch', from: failed.cdnId, to: next.cdnId, reason })
     this.load(pos, wasPlaying)
   }
@@ -93,7 +103,10 @@ export class ProgressiveAdapter extends MediaElementAdapter {
     return {
       streamId: 'tek dosya',
       resolution: v.videoWidth ? `${v.videoWidth}×${v.videoHeight}` : null,
-      bitrateKbps: this.manifest.sizeBytes && this.duration() ? Math.round((this.manifest.sizeBytes * 8) / this.duration() / 1000) : null,
+      bitrateKbps:
+        this.manifest.sizeBytes && this.duration()
+          ? Math.round((this.manifest.sizeBytes * 8) / this.duration() / 1000)
+          : null,
       estimateKbps: null,
       bufferSec: ahead ? Math.round((ahead.end - v.currentTime) * 10) / 10 : 0,
       cdnId: this.order[this.cursor]?.cdnId ?? null,

@@ -13,7 +13,8 @@ export { FalcorPathError } from './paths'
 const engine = createFalcorEngine({
   routes: () => routes,
   // Ayrıntı yalnız sunucu günlüğüne; istemci genel bir hata atomu görür.
-  onRouteError: (err, route, ctx) => ctx.req.log.error({ err, route: route.route.join('.') }, 'Falcor rotası hata verdi'),
+  onRouteError: (err, route, ctx) =>
+    ctx.req.log.error({ err, route: route.route.join('.') }, 'Falcor rotası hata verdi'),
 })
 
 /** Kayıtlı rota var mı (yoksa açılış önbelleği hiç denenmez). */

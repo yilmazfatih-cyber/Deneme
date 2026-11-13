@@ -17,7 +17,9 @@ const PROMO_DELAY_MS = 2000
 
 function canAutoplayPromo(): boolean {
   try {
-    return window.matchMedia('(min-width: 900px)').matches && !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    return (
+      window.matchMedia('(min-width: 900px)').matches && !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    )
   } catch {
     return false
   }
@@ -50,7 +52,9 @@ export function Billboard({ list, rowIndex, loading, error, onRetry, tracker }: 
   useEffect(() => {
     const el = rootRef.current
     if (!el || typeof IntersectionObserver === 'undefined') return
-    const io = new IntersectionObserver((entries) => setVisible(entries.some((e) => e.isIntersecting)), { threshold: 0.5 })
+    const io = new IntersectionObserver((entries) => setVisible(entries.some((e) => e.isIntersecting)), {
+      threshold: 0.5,
+    })
     io.observe(el)
     return () => io.disconnect()
   }, [videoId])
@@ -61,7 +65,14 @@ export function Billboard({ list, rowIndex, loading, error, onRetry, tracker }: 
   useEffect(() => {
     if (!entityId || !visible) return
     if (tracker.record(listId, 0, 0).length) {
-      logEvent('impression', { listId, context: 'billboard', row: rowIndex, trackId, ranks: '0', entityIds: [entityId] })
+      logEvent('impression', {
+        listId,
+        context: 'billboard',
+        row: rowIndex,
+        trackId,
+        ranks: '0',
+        entityIds: [entityId],
+      })
     }
   }, [entityId, visible, listId, trackId, rowIndex, tracker])
 
@@ -88,7 +99,13 @@ export function Billboard({ list, rowIndex, loading, error, onRetry, tracker }: 
         {hero.artUrl && <img className="hm-hero__art" src={hero.artUrl} alt="" />}
         {promo && armed && !broken && (
           <div className={playing ? 'hm-hero__clip hm-hero__clip--on' : 'hm-hero__clip'}>
-            <PreviewPlayer viewableId={promo.viewableId} offsetSec={promo.offset} muted onPlaying={() => setPlaying(true)} onError={() => setBroken(true)} />
+            <PreviewPlayer
+              viewableId={promo.viewableId}
+              offsetSec={promo.offset}
+              muted
+              onPlaying={() => setPlaying(true)}
+              onError={() => setBroken(true)}
+            />
           </div>
         )}
         <span className="hm-hero__shade" aria-hidden="true" />
@@ -105,7 +122,9 @@ export function Billboard({ list, rowIndex, loading, error, onRetry, tracker }: 
         )}
         {hero.synopsis && <p className="cn-body hm-hero__synopsis">{hero.synopsis}</p>}
         <div className="hm-hero__meta">
-          {hero.maturity && <AdvisoryBadge certification={hero.maturity.certificationValue} reasons={hero.maturity.reasons} />}
+          {hero.maturity && (
+            <AdvisoryBadge certification={hero.maturity.certificationValue} reasons={hero.maturity.reasons} />
+          )}
           {hero.accessText && <AccessLock text={hero.accessText} />}
         </div>
         <div className="hm-hero__actions">
@@ -115,13 +134,23 @@ export function Billboard({ list, rowIndex, loading, error, onRetry, tracker }: 
               to={hero.playTo}
               onClick={() => {
                 if (hero.playVideoId !== null) notePlaybackIntent(hero.playVideoId, hero.videoId)
-                logEvent('click', { videoId: hero.videoId, action: hero.resume ? 'resume' : 'play', from: 'billboard' }, hero.tctx)
+                logEvent(
+                  'click',
+                  { videoId: hero.videoId, action: hero.resume ? 'resume' : 'play', from: 'billboard' },
+                  hero.tctx,
+                )
               }}
             >
               {hero.primaryLabel}
             </Button>
           ) : (
-            <Button icon="info" to={hero.detailTo} onClick={() => logEvent('click', { videoId: hero.videoId, action: 'detail', from: 'billboard' }, hero.tctx)}>
+            <Button
+              icon="info"
+              to={hero.detailTo}
+              onClick={() =>
+                logEvent('click', { videoId: hero.videoId, action: 'detail', from: 'billboard' }, hero.tctx)
+              }
+            >
               Detay
             </Button>
           )}
@@ -131,7 +160,9 @@ export function Billboard({ list, rowIndex, loading, error, onRetry, tracker }: 
               overImage
               icon="info"
               to={hero.detailTo}
-              onClick={() => logEvent('click', { videoId: hero.videoId, action: 'detail', from: 'billboard' }, hero.tctx)}
+              onClick={() =>
+                logEvent('click', { videoId: hero.videoId, action: 'detail', from: 'billboard' }, hero.tctx)
+              }
             >
               Detay
             </Button>

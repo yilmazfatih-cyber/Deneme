@@ -37,7 +37,12 @@ export type AudioSwitchPlan = 'same-stream' | 'same-codec' | 'change-type' | 're
  *  same-stream → yalnız etiket değişir (aynı akış) · same-codec → temizle + yeniden doldur ·
  *  change-type → SourceBuffer.changeType(yeniMime) · rebuild → ses SourceBuffer'ını kaldır, yenisini kur
  */
-export function planAudioSwitch(currentMime: string | null, current: ManifestStream | null, next: ManifestStream, hasChangeType: boolean): AudioSwitchPlan {
+export function planAudioSwitch(
+  currentMime: string | null,
+  current: ManifestStream | null,
+  next: ManifestStream,
+  hasChangeType: boolean,
+): AudioSwitchPlan {
   if (current && current.streamId === next.streamId) return 'same-stream'
   if (currentMime === null || currentMime === audioMime(next)) return 'same-codec'
   return hasChangeType ? 'change-type' : 'rebuild'

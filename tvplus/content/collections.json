@@ -4,7 +4,10 @@
     "slug": "blender-acik-filmler",
     "name": "Blender Açık Filmleri",
     "description": "Blender Foundation ve Blender Studio'nun açık kaynakla üretilmiş kısa ve uzun filmleri.",
-    "videoIds": [80010001, 80010002, 80030001, 80030002, 80030003, 80030004, 80030005, 80030006, 80030007, 80030008, 80030009, 80030010, 80030011, 80031000]
+    "videoIds": [
+      80010001, 80010002, 80030001, 80030002, 80030003, 80030004, 80030005, 80030006, 80030007, 80030008, 80030009,
+      80030010, 80030011, 80031000
+    ]
   },
   {
     "collectionId": 9002,

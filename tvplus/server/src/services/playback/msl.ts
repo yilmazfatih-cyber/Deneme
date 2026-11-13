@@ -7,7 +7,16 @@
  * Sunucu durumsuzdur: oturum anahtarları sunucu ana anahtarıyla `sessiondata` içine mühürlenir.
  * Tek bellek durumu tekrar korumasıdır (seri numarası başına görülen en büyük messageid).
  */
-import { createCipheriv, createDecipheriv, createECDH, createHmac, hkdfSync, randomBytes, randomInt, timingSafeEqual } from 'node:crypto'
+import {
+  createCipheriv,
+  createDecipheriv,
+  createECDH,
+  createHmac,
+  hkdfSync,
+  randomBytes,
+  randomInt,
+  timingSafeEqual,
+} from 'node:crypto'
 import { z } from 'zod'
 import {
   MSL_HKDF_INFO_PREFIX,
@@ -65,7 +74,10 @@ const zProvision = z.object({
 })
 const zEnvelope = z.object({
   mastertoken: zMasterToken,
-  headerdata: z.string().min(1).max(64 * 1024),
+  headerdata: z
+    .string()
+    .min(1)
+    .max(64 * 1024),
   payload: z.string().max(2 * 1024 * 1024),
   signature: z.string().max(256),
 })
@@ -78,7 +90,9 @@ const zHeader = z.object({
 
 /** HKDF ile oturum anahtarları (istemcideki WebCrypto deriveBits ile aynı). */
 export function deriveSessionKeys(shared: Buffer, esn: string): { encKey: Buffer; hmacKey: Buffer } {
-  const okm = Buffer.from(hkdfSync('sha256', shared, Buffer.from(MSL_HKDF_SALT, 'utf8'), Buffer.from(MSL_HKDF_INFO_PREFIX + esn, 'utf8'), 64))
+  const okm = Buffer.from(
+    hkdfSync('sha256', shared, Buffer.from(MSL_HKDF_SALT, 'utf8'), Buffer.from(MSL_HKDF_INFO_PREFIX + esn, 'utf8'), 64),
+  )
   return { encKey: okm.subarray(0, 32), hmacKey: okm.subarray(32, 64) }
 }
 
@@ -116,11 +130,20 @@ export function createMsl(config: AppConfig, clock: () => number = () => Math.fl
     for (const [k, v] of seen) if (v.expiration + MSL_RENEW_GRACE_SEC < now) seen.delete(k)
   }
 
-  function issueToken(esn: string, scheme: MslScheme, keys: { encKey: Buffer; hmacKey: Buffer } | null, serial: number, sequence: number): MslMasterToken {
+  function issueToken(
+    esn: string,
+    scheme: MslScheme,
+    keys: { encKey: Buffer; hmacKey: Buffer } | null,
+    serial: number,
+    sequence: number,
+  ): MslMasterToken {
     const now = clock()
     const sessiondata = aesGcmEncrypt(
       sealKey,
-      Buffer.from(JSON.stringify(keys ? { e: keys.encKey.toString('base64'), h: keys.hmacKey.toString('base64') } : {}), 'utf8'),
+      Buffer.from(
+        JSON.stringify(keys ? { e: keys.encKey.toString('base64'), h: keys.hmacKey.toString('base64') } : {}),
+        'utf8',
+      ),
       SESSION_AAD,
     )
     const data: MslTokenData = {
@@ -145,9 +168,13 @@ export function createMsl(config: AppConfig, clock: () => number = () => Math.fl
     } catch {
       return null
     }
-    if (typeof token.expiration !== 'number' || typeof token.serialnumber !== 'number' || typeof token.esn !== 'string') return null
+    if (typeof token.expiration !== 'number' || typeof token.serialnumber !== 'number' || typeof token.esn !== 'string')
+      return null
     try {
-      const sess = JSON.parse(aesGcmDecrypt(sealKey, token.sessiondata, SESSION_AAD).toString('utf8')) as { e?: string; h?: string }
+      const sess = JSON.parse(aesGcmDecrypt(sealKey, token.sessiondata, SESSION_AAD).toString('utf8')) as {
+        e?: string
+        h?: string
+      }
       const encKey = sess.e ? Buffer.from(sess.e, 'base64') : null
       const hmacKey = sess.h ? Buffer.from(sess.h, 'base64') : null
       if (token.scheme === 'ECDH_P256_AESGCM' && (!encKey || !hmacKey)) return null
@@ -179,7 +206,8 @@ export function createMsl(config: AppConfig, clock: () => number = () => Math.fl
       let serverPublic: string | undefined
       if (scheme === 'ECDH_P256_AESGCM') {
         const pub = Buffer.from(req.keyrequestdata.keydata.publickey ?? '', 'base64')
-        if (pub.length !== 65 || pub[0] !== 0x04) return fail(400, 'BAD_REQUEST', 'Açık anahtar 65 baytlık ham P-256 noktası olmalı.')
+        if (pub.length !== 65 || pub[0] !== 0x04)
+          return fail(400, 'BAD_REQUEST', 'Açık anahtar 65 baytlık ham P-256 noktası olmalı.')
         const ecdh = createECDH('prime256v1')
         ecdh.generateKeys()
         let shared: Buffer
@@ -204,7 +232,10 @@ export function createMsl(config: AppConfig, clock: () => number = () => Math.fl
       const mastertoken = issueToken(esn, scheme, keys, serial, sequence)
       return {
         ok: true,
-        response: { keyresponsedata: { scheme, keydata: serverPublic ? { publickey: serverPublic } : {} }, mastertoken },
+        response: {
+          keyresponsedata: { scheme, keydata: serverPublic ? { publickey: serverPublic } : {} },
+          mastertoken,
+        },
       }
     },
 
@@ -223,11 +254,13 @@ export function createMsl(config: AppConfig, clock: () => number = () => Math.fl
       const session = readToken(env.mastertoken)
       if (!session) return fail(401, 'TOKEN_INVALID', 'Ana belirteç geçersiz.')
       const now = clock()
-      if (now > session.token.expiration) return fail(401, 'TOKEN_EXPIRED', 'Ana belirtecin süresi dolmuş; yeniden sağlama yapın.')
+      if (now > session.token.expiration)
+        return fail(401, 'TOKEN_EXPIRED', 'Ana belirtecin süresi dolmuş; yeniden sağlama yapın.')
 
       if (session.token.scheme === 'ECDH_P256_AESGCM') {
         const expected = hmac(session.hmacKey!, `${env.headerdata}.${env.payload}`)
-        if (!safeEqual(expected, Buffer.from(env.signature, 'base64'))) return fail(400, 'DECRYPT_FAILED', 'Zarf imzası tutmuyor.')
+        if (!safeEqual(expected, Buffer.from(env.signature, 'base64')))
+          return fail(400, 'DECRYPT_FAILED', 'Zarf imzası tutmuyor.')
       }
       let header: MslHeader
       let payload: unknown
@@ -239,7 +272,8 @@ export function createMsl(config: AppConfig, clock: () => number = () => Math.fl
       } catch {
         return fail(400, 'DECRYPT_FAILED', 'Zarf çözülemedi.')
       }
-      if (header.sender !== session.token.esn) return fail(401, 'TOKEN_INVALID', 'Gönderen, belirtecin cihazıyla eşleşmiyor.')
+      if (header.sender !== session.token.esn)
+        return fail(401, 'TOKEN_INVALID', 'Gönderen, belirtecin cihazıyla eşleşmiyor.')
 
       const serial = session.token.serialnumber
       const prev = seen.get(serial)
@@ -259,8 +293,16 @@ export function createMsl(config: AppConfig, clock: () => number = () => Math.fl
       }
       const headerdata = encodeValue(session, header)
       const body = encodeValue(session, payload)
-      const signature = session.token.scheme === 'PLAINTEXT_DEV' ? '' : hmac(session.hmacKey!, `${headerdata}.${body}`).toString('base64')
-      return { mastertoken: { tokendata: session.tokendata, signature: hmacTokenSig(session) }, headerdata, payload: body, signature }
+      const signature =
+        session.token.scheme === 'PLAINTEXT_DEV'
+          ? ''
+          : hmac(session.hmacKey!, `${headerdata}.${body}`).toString('base64')
+      return {
+        mastertoken: { tokendata: session.tokendata, signature: hmacTokenSig(session) },
+        headerdata,
+        payload: body,
+        signature,
+      }
     },
   }
 

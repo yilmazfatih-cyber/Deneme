@@ -1,5 +1,14 @@
 import { describe, expect, it } from 'vitest'
-import { catchupMeta, liveStatus, neighbourChannelIds, nextRefetchAt, renderableRows, rowHasSampleSchedule, rowsNeedingRefetch, tonightMeta } from './liveLogic'
+import {
+  catchupMeta,
+  liveStatus,
+  neighbourChannelIds,
+  nextRefetchAt,
+  renderableRows,
+  rowHasSampleSchedule,
+  rowsNeedingRefetch,
+  tonightMeta,
+} from './liveLogic'
 import type { PageRowData, RowItemData } from './types'
 
 const NOW = Date.parse('2026-11-13T09:00:00Z') // 12:00 TSİ
@@ -29,7 +38,11 @@ describe('tanınmayanı atlama', () => {
   it('bilinmeyen satır tipi, varlık türü ve __typename sessizce atlanır', () => {
     const rows = renderableRows([
       row('a', 'MATCH_ROW', [channelItem('a', 0, NOW)]),
-      row('b', 'CHANNEL_ROW', [channelItem('b', 0, NOW), { kind: 'SPORT_EVENT', track: track('b', 1), entity: { __typename: 'SportEvent' } }, { kind: 'CHANNEL', track: track('b', 2), entity: { __typename: 'Hologram' } }]),
+      row('b', 'CHANNEL_ROW', [
+        channelItem('b', 0, NOW),
+        { kind: 'SPORT_EVENT', track: track('b', 1), entity: { __typename: 'SportEvent' } },
+        { kind: 'CHANNEL', track: track('b', 2), entity: { __typename: 'Hologram' } },
+      ]),
       row('c', 'TONIGHT_ROW', [{ kind: 'SPORT_EVENT', track: track('c', 0), entity: { __typename: 'SportEvent' } }]),
       row('d', 'BRIDGE', []),
     ])
@@ -93,11 +106,23 @@ describe('komşu kanallar ve metinler', () => {
   })
   it('Bu akşam / Kaçırdıkların etiketleri', () => {
     expect(tonightMeta({ startAt: '2026-11-13T18:00:00Z' }, NOW)).toBe('Bugün 21:00')
-    expect(catchupMeta({ startAt: '2026-11-12T17:00:00Z', catchup: { available: true, until: '2026-11-19T18:00:00Z' } }, NOW)).toBe('Dün 20:00')
-    expect(catchupMeta({ startAt: '2026-11-07T17:00:00Z', catchup: { available: true, until: '2026-11-13T15:00:00Z' } }, NOW)).toBe('Cmt 20:00 · Son 6 saat')
+    expect(
+      catchupMeta(
+        { startAt: '2026-11-12T17:00:00Z', catchup: { available: true, until: '2026-11-19T18:00:00Z' } },
+        NOW,
+      ),
+    ).toBe('Dün 20:00')
+    expect(
+      catchupMeta(
+        { startAt: '2026-11-07T17:00:00Z', catchup: { available: true, until: '2026-11-13T15:00:00Z' } },
+        NOW,
+      ),
+    ).toBe('Cmt 20:00 · Son 6 saat')
   })
   it('örnek akış notu satır başına bir kez karar verilir', () => {
-    expect(rowHasSampleSchedule(row('x', 'CHANNEL_ROW', [channelItem('x', 0, NOW), channelItem('x', 1, NOW, true)]))).toBe(true)
+    expect(
+      rowHasSampleSchedule(row('x', 'CHANNEL_ROW', [channelItem('x', 0, NOW), channelItem('x', 1, NOW, true)])),
+    ).toBe(true)
     expect(rowHasSampleSchedule(row('x', 'CHANNEL_ROW', [channelItem('x', 0, NOW)]))).toBe(false)
   })
 })

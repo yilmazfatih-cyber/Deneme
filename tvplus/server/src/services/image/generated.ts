@@ -53,7 +53,12 @@ export const hsl = (h: number, s: number, l: number) => `hsl(${Math.round(h)}, $
  * Arka plan: koyu yumuşak çapraz degrade + tek yumuşak ışık + ince geometrik doku + okunabilirlik için alta doğru
  * zemine kararan perde. `shade` alt perdenin gücüdür (yazının oturacağı kısım).
  */
-export function generatedBackgroundSvg(w: number, h: number, p: Palette, opts: { shade: 'bottom' | 'left' | 'none' }): string {
+export function generatedBackgroundSvg(
+  w: number,
+  h: number,
+  p: Palette,
+  opts: { shade: 'bottom' | 'left' | 'none' },
+): string {
   const minSide = Math.min(w, h)
   const [x1, y1, x2, y2] = p.diagonalDown ? [0, 0, 1, 1] : [1, 0, 0, 1]
   const c1 = hsl(p.hue1, p.sat, 22)
@@ -75,8 +80,7 @@ export function generatedBackgroundSvg(w: number, h: number, p: Palette, opts: {
     shadeGradient(opts.shade)
 
   const texture = textureSvg(w, h, p, minSide)
-  const shade =
-    opts.shade === 'none' ? '' : `<rect width="${w}" height="${h}" fill="url(#shade)"/>`
+  const shade = opts.shade === 'none' ? '' : `<rect width="${w}" height="${h}" fill="url(#shade)"/>`
   return (
     `<defs>${defs}</defs>` +
     `<rect width="${w}" height="${h}" fill="${BG}"/>` +
@@ -118,7 +122,9 @@ function textureSvg(w: number, h: number, p: Palette, minSide: number): string {
       for (let i = 1; i <= count; i++) {
         const op = Math.max(0, 0.15 - i * 0.008)
         if (op <= 0) break
-        parts.push(`<circle cx="${gx.toFixed(1)}" cy="${gy.toFixed(1)}" r="${(i * step).toFixed(1)}" fill="none" stroke="#fff" stroke-opacity="${op.toFixed(3)}" stroke-width="${stroke.toFixed(2)}"/>`)
+        parts.push(
+          `<circle cx="${gx.toFixed(1)}" cy="${gy.toFixed(1)}" r="${(i * step).toFixed(1)}" fill="none" stroke="#fff" stroke-opacity="${op.toFixed(3)}" stroke-width="${stroke.toFixed(2)}"/>`,
+        )
       }
       break
     }
@@ -133,7 +139,9 @@ function textureSvg(w: number, h: number, p: Palette, minSide: number): string {
         const mid = (xA + xB) / 2
         const near = 1 - Math.min(1, Math.abs(mid - gx) / w)
         const op = 0.035 + near * 0.08
-        parts.push(`<line x1="${xA.toFixed(1)}" y1="0" x2="${xB.toFixed(1)}" y2="${h}" stroke="#fff" stroke-opacity="${op.toFixed(3)}" stroke-width="${stroke.toFixed(2)}"/>`)
+        parts.push(
+          `<line x1="${xA.toFixed(1)}" y1="0" x2="${xB.toFixed(1)}" y2="${h}" stroke="#fff" stroke-opacity="${op.toFixed(3)}" stroke-width="${stroke.toFixed(2)}"/>`,
+        )
       }
       break
     }
@@ -146,7 +154,10 @@ function textureSvg(w: number, h: number, p: Palette, minSide: number): string {
         for (let x = step / 2; x < w; x += step) {
           const d = Math.hypot(x - gx, y - gy) / reach
           const op = 0.24 * Math.max(0, 1 - d)
-          if (op > 0.01) parts.push(`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(2)}" fill="#fff" fill-opacity="${op.toFixed(3)}"/>`)
+          if (op > 0.01)
+            parts.push(
+              `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(2)}" fill="#fff" fill-opacity="${op.toFixed(3)}"/>`,
+            )
         }
       break
     }
@@ -170,10 +181,14 @@ function textureSvg(w: number, h: number, p: Palette, minSide: number): string {
 
 /** Kanal adından baş harfler: "TRT Haber" → "TRT", "TRT 1" → "TRT 1", "Kanal D" → "KD", "Show TV" → "ST". */
 export function initialsOf(name: string): string {
-  const words = name.replace(/[^\p{L}\p{N}\s+]/gu, ' ').split(/\s+/).filter(Boolean)
+  const words = name
+    .replace(/[^\p{L}\p{N}\s+]/gu, ' ')
+    .split(/\s+/)
+    .filter(Boolean)
   const first = words[0]
   if (!first) return '?'
-  const isAcronym = (w: string) => w.length >= 2 && w.length <= 4 && w === w.toLocaleUpperCase('tr-TR') && /\p{L}/u.test(w)
+  const isAcronym = (w: string) =>
+    w.length >= 2 && w.length <= 4 && w === w.toLocaleUpperCase('tr-TR') && /\p{L}/u.test(w)
   if (isAcronym(first)) {
     const second = words[1]
     return second && /^[\p{N}+]{1,3}$/u.test(second) ? `${first} ${second}` : first

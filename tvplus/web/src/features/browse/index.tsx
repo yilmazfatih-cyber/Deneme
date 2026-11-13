@@ -9,7 +9,16 @@ import { useDocumentTitle } from '../../app'
 import { useGql } from '../../api/hooks'
 import { Button, EmptyHint, ErrorState, Page, PosterCard, Skeleton } from '../../design'
 import { logEvent } from '../../telemetry/logger'
-import { detailPath, joinMeta, localTctx, lockedTextOf, PreviewScope, PreviewTarget, useFreshAfterPlayback, type CardVideoData } from '../preview'
+import {
+  detailPath,
+  joinMeta,
+  localTctx,
+  lockedTextOf,
+  PreviewScope,
+  PreviewTarget,
+  useFreshAfterPlayback,
+  type CardVideoData,
+} from '../preview'
 import './browse.css'
 
 interface CollectionData {
@@ -30,7 +39,11 @@ const idParam = (raw: string | undefined): number | null => {
 /** #/koleksiyon/:collectionId */
 export function CollectionPage(): ReactElement {
   const id = idParam(useParams().collectionId)
-  const q = useGql<CollectionData, { collectionId: number }>('CollectionPage', { collectionId: id ?? 0 }, { enabled: id !== null, ttlMs: 5 * 60_000 })
+  const q = useGql<CollectionData, { collectionId: number }>(
+    'CollectionPage',
+    { collectionId: id ?? 0 },
+    { enabled: id !== null, ttlMs: 5 * 60_000 },
+  )
   const c = q.data?.collection
   return (
     <BrowseView
@@ -50,7 +63,11 @@ export function CollectionPage(): ReactElement {
 /** #/kisi/:personId */
 export function PersonPage(): ReactElement {
   const id = idParam(useParams().personId)
-  const q = useGql<PersonData, { personId: number }>('PersonPage', { personId: id ?? 0 }, { enabled: id !== null, ttlMs: 5 * 60_000 })
+  const q = useGql<PersonData, { personId: number }>(
+    'PersonPage',
+    { personId: id ?? 0 },
+    { enabled: id !== null, ttlMs: 5 * 60_000 },
+  )
   const p = q.data?.person
   return (
     <BrowseView
@@ -70,7 +87,11 @@ export function PersonPage(): ReactElement {
 /** #/tur/:genreId ("Çocuk" bağlantısı #/tur/783) */
 export function GenrePage(): ReactElement {
   const id = idParam(useParams().genreId)
-  const q = useGql<GenreData, { genreId: number }>('GenrePage', { genreId: id ?? 0 }, { enabled: id !== null, ttlMs: 5 * 60_000 })
+  const q = useGql<GenreData, { genreId: number }>(
+    'GenrePage',
+    { genreId: id ?? 0 },
+    { enabled: id !== null, ttlMs: 5 * 60_000 },
+  )
   const g = q.data?.genre
   return (
     <BrowseView
@@ -98,7 +119,17 @@ interface BrowseViewProps {
   onRetry: () => void
 }
 
-function BrowseView({ kind, id, title, description, videos, notFound, loading, error, onRetry }: BrowseViewProps): ReactElement {
+function BrowseView({
+  kind,
+  id,
+  title,
+  description,
+  videos,
+  notFound,
+  loading,
+  error,
+  onRetry,
+}: BrowseViewProps): ReactElement {
   useFreshAfterPlayback()
   useDocumentTitle(title)
   if (notFound) {
@@ -114,7 +145,15 @@ function BrowseView({ kind, id, title, description, videos, notFound, loading, e
     )
   }
   if (!videos) {
-    if (error && !loading) return <ErrorState size="page" title="Bu sayfa yüklenemedi" message="Bağlantını kontrol et ve tekrar dene." onRetry={onRetry} />
+    if (error && !loading)
+      return (
+        <ErrorState
+          size="page"
+          title="Bu sayfa yüklenemedi"
+          message="Bağlantını kontrol et ve tekrar dene."
+          onRetry={onRetry}
+        />
+      )
     return (
       <div className="cn-page" aria-busy="true">
         <span className="cn-gutter-x">
@@ -143,7 +182,16 @@ function BrowseView({ kind, id, title, description, videos, notFound, loading, e
               const locked = lockedTextOf(v.access)
               return (
                 <li key={v.videoId}>
-                  <PreviewTarget info={{ rowId, videoId: v.videoId, getRowVideoIds: ids, tctx: t, title: v.title, imageUrl: v.storyArt?.url ?? v.boxart?.url }}>
+                  <PreviewTarget
+                    info={{
+                      rowId,
+                      videoId: v.videoId,
+                      getRowVideoIds: ids,
+                      tctx: t,
+                      title: v.title,
+                      imageUrl: v.storyArt?.url ?? v.boxart?.url,
+                    }}
+                  >
                     <PosterCard
                       size="fill"
                       showTitle

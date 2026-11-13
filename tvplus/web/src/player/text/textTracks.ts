@@ -24,13 +24,21 @@ function load(t: TimedTextTrack): Promise<TtmlDocument> {
   const t0 = performance.now()
   const p = fetchDocument(t.urls, {
     signal: new AbortController().signal,
-    onFailover: (from, to, reason) => devbus.emit('cdn', `yük devri ${from}→${to}`, { from, to, reason, type: 'ttml' }, { ok: false }),
+    onFailover: (from, to, reason) =>
+      devbus.emit('cdn', `yük devri ${from}→${to}`, { from, to, reason, type: 'ttml' }, { ok: false }),
   }).then(({ text, cdnId }) => {
     const doc = parseTtml(text)
     devbus.emit(
       'ttml',
       `${t.language} yüklendi`,
-      { language: t.language, cues: doc.cues.length, tickRate: doc.tickRate, cdnId, trackId: t.trackId, bytes: text.length },
+      {
+        language: t.language,
+        cues: doc.cues.length,
+        tickRate: doc.tickRate,
+        cdnId,
+        trackId: t.trackId,
+        bytes: text.length,
+      },
       { ms: performance.now() - t0 },
     )
     return doc
@@ -44,7 +52,11 @@ function load(t: TimedTextTrack): Promise<TtmlDocument> {
 }
 
 export function defaultTextTrackId(tracks: TimedTextTrack[]): string | null {
-  return tracks.find((t) => t.language.toLowerCase().startsWith('tr') && t.type === 'SUBTITLES')?.trackId ?? tracks.find((t) => t.language.toLowerCase().startsWith('tr'))?.trackId ?? null
+  return (
+    tracks.find((t) => t.language.toLowerCase().startsWith('tr') && t.type === 'SUBTITLES')?.trackId ??
+    tracks.find((t) => t.language.toLowerCase().startsWith('tr'))?.trackId ??
+    null
+  )
 }
 
 export class TextTrackController {

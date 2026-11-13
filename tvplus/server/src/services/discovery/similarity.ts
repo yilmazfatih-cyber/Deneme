@@ -47,7 +47,11 @@ export function similarity(catalog: CatalogService, a: ContentTitle, b: ContentT
 }
 
 /** Benzer başlıklar (kendisi hariç), puan sırasıyla; eşitlikte popülerlik */
-export function similarTitles(catalog: CatalogService, titleId: number, filter: (t: ContentTitle) => boolean = () => true): ContentTitle[] {
+export function similarTitles(
+  catalog: CatalogService,
+  titleId: number,
+  filter: (t: ContentTitle) => boolean = () => true,
+): ContentTitle[] {
   const base = catalog.getTitle(titleId)
   if (!base) return []
   return catalog
@@ -63,7 +67,10 @@ export function similarTitles(catalog: CatalogService, titleId: number, filter: 
  * Zevk vektörü: izlenen (+1, en yeni daha ağır), Listem (+1), beğenilen (+2), beğenilmeyen (−2) başlıkların
  * özellik ağırlıklarının toplamı.
  */
-export function tasteVector(catalog: CatalogService, signals: { titleId: number; weight: number }[]): Map<string, number> {
+export function tasteVector(
+  catalog: CatalogService,
+  signals: { titleId: number; weight: number }[],
+): Map<string, number> {
   const v = new Map<string, number>()
   for (const { titleId, weight } of signals) {
     const t = catalog.getTitle(titleId)

@@ -50,7 +50,12 @@ export function requestRowPreview(rowId: string, rowVideoIds: readonly number[],
   const plan = previewCache.planRow(rowId, rowVideoIds, videoId, now)
   if (plan.hit) {
     const hit = previewCache.get(videoId, now)
-    devbus.emit('cache', 'MiniModal: isabet', { key: `MiniModal|${videoId}`, rowId, expires: now - (hit?.ageMs ?? 0) + 5 * 60_000, ageMs: hit?.ageMs ?? 0 })
+    devbus.emit('cache', 'MiniModal: isabet', {
+      key: `MiniModal|${videoId}`,
+      rowId,
+      expires: now - (hit?.ageMs ?? 0) + 5 * 60_000,
+      ageMs: hit?.ageMs ?? 0,
+    })
     return
   }
   if (!plan.fetch.length) return // yolda; sonuç gelince çizilir
@@ -59,7 +64,10 @@ export function requestRowPreview(rowId: string, rowVideoIds: readonly number[],
   failed.delete(videoId)
   devbus.emit('prefetch', 'MiniModal satır', { rowId, videoIds: ids })
   notify()
-  gql<MiniModalData, { videoIds: number[]; uiContext: 'BOB' }>('MiniModalQuery', { videoIds: ids, uiContext: 'BOB' }).then(
+  gql<MiniModalData, { videoIds: number[]; uiContext: 'BOB' }>('MiniModalQuery', {
+    videoIds: ids,
+    uiContext: 'BOB',
+  }).then(
     (data) => {
       const values = new Map<number, MiniModalVideo>()
       for (const v of data.videos ?? []) if (v) values.set(v.videoId, v)
@@ -90,5 +98,9 @@ export function usePreviewVideo(videoId: number | null): PreviewVideoState {
   useSyncExternalStore(subscribe, getVersion, getVersion)
   if (videoId === null) return { video: null, loading: false, failed: false }
   const hit = previewCache.get(videoId, Date.now())
-  return { video: hit?.value ?? null, loading: !hit && previewCache.isInflight(videoId), failed: !hit && failed.has(videoId) }
+  return {
+    video: hit?.value ?? null,
+    loading: !hit && previewCache.isInflight(videoId),
+    failed: !hit && failed.has(videoId),
+  }
 }

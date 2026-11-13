@@ -82,7 +82,13 @@ export function buildLolomo(services: Partial<Services>, profile: ProfileRecord,
   const usedIds = new Set<string>()
 
   const visible = (id: number) => !!catalog?.getTitle(id) && catalog.isVisibleTo(profile, id)
-  const push = (context: ListContext, displayName: string, ids: number[], key?: string | number, extra?: Partial<LolomoList>) => {
+  const push = (
+    context: ListContext,
+    displayName: string,
+    ids: number[],
+    key?: string | number,
+    extra?: Partial<LolomoList>,
+  ) => {
     const videoIds = [...new Set(ids)].filter(visible).slice(0, MAX_ROW_ITEMS)
     if (context !== 'bridge' && videoIds.length === 0) return
     if (!EXEMPT.includes(context) && videoIds.length < MIN_ROW_ITEMS) return

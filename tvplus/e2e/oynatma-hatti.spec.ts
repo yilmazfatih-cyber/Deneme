@@ -43,7 +43,9 @@ test.describe('oynatma hattı', () => {
   test('doğrusal kanal yayına duvar saatindeki konumdan katılır', async ({ page }) => {
     await signIn(page)
     await page.goto('/#/izle/Channel:1')
-    await expect.poll(async () => (await videoState(page))?.readyState ?? 0, { timeout: 60_000 }).toBeGreaterThanOrEqual(3)
+    await expect
+      .poll(async () => (await videoState(page))?.readyState ?? 0, { timeout: 60_000 })
+      .toBeGreaterThanOrEqual(3)
     const t1 = (await videoState(page))!.currentTime
     await expect.poll(async () => (await videoState(page))!.currentTime, { timeout: 30_000 }).toBeGreaterThan(t1 + 2)
     await expect(page.getByText('CANLI').first()).toBeVisible()

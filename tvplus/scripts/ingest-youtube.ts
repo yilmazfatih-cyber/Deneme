@@ -10,7 +10,18 @@
  */
 import { join } from 'node:path'
 import { XMLParser } from 'fast-xml-parser'
-import { allocateIds, collectSources, defaultContentDir, isObj, readJson, slugify, titleFiles, usedVideoIds, writeJson, type Json } from './lib/content'
+import {
+  allocateIds,
+  collectSources,
+  defaultContentDir,
+  isObj,
+  readJson,
+  slugify,
+  titleFiles,
+  usedVideoIds,
+  writeJson,
+  type Json,
+} from './lib/content'
 import { httpGet, isMain, sleep, type HttpGet } from './lib/net'
 
 export interface YoutubeDeps {
@@ -79,11 +90,23 @@ export interface ParsedFeed {
 }
 
 const asArray = <T>(v: T | T[] | undefined): T[] => (v === undefined ? [] : Array.isArray(v) ? v : [v])
-const str = (v: unknown): string => (typeof v === 'string' ? v : typeof v === 'number' ? String(v) : isObj(v) && typeof v['#text'] === 'string' ? v['#text'] : '')
+const str = (v: unknown): string =>
+  typeof v === 'string'
+    ? v
+    : typeof v === 'number'
+      ? String(v)
+      : isObj(v) && typeof v['#text'] === 'string'
+        ? v['#text']
+        : ''
 
 /** YouTube kanal akışını (Atom) ayrıştırır. */
 export function parseChannelFeed(xml: string): ParsedFeed {
-  const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: '@_', parseTagValue: false, parseAttributeValue: false })
+  const parser = new XMLParser({
+    ignoreAttributes: false,
+    attributeNamePrefix: '@_',
+    parseTagValue: false,
+    parseAttributeValue: false,
+  })
   const doc = parser.parse(xml) as Record<string, unknown>
   const feed = doc.feed
   if (!isObj(feed)) return { channelTitle: null, entries: [] }
@@ -109,7 +132,10 @@ export function parseChannelFeed(xml: string): ParsedFeed {
 
 /** "2 gün önce" / "3 years ago" gibi göreli tarihten yaklaşık ISO tarih (bilinmiyorsa bugün). */
 export function approximateDate(text: string, now: Date): string {
-  const m = /(\d+)\s*(saniye|sn\.|dakika|dk\.|saat|sa\.|gün|hafta|hf\.|ay|yıl|second|minute|hour|day|week|month|year)/i.exec(text)
+  const m =
+    /(\d+)\s*(saniye|sn\.|dakika|dk\.|saat|sa\.|gün|hafta|hf\.|ay|yıl|second|minute|hour|day|week|month|year)/i.exec(
+      text,
+    )
   const d = new Date(now)
   if (m && m[1] && m[2]) {
     const n = Number(m[1])
@@ -144,9 +170,15 @@ export function parseChannelVideosPage(html: string, now: Date): ParsedFeed {
       const cmr = v.channelMetadataRenderer
       if (isObj(cmr) && typeof cmr.title === 'string') channelTitle = cmr.title
       const l = v.lockupViewModel
-      if (isObj(l) && l.contentType === 'LOCKUP_CONTENT_TYPE_VIDEO' && typeof l.contentId === 'string' && !seen.has(l.contentId)) {
+      if (
+        isObj(l) &&
+        l.contentType === 'LOCKUP_CONTENT_TYPE_VIDEO' &&
+        typeof l.contentId === 'string' &&
+        !seen.has(l.contentId)
+      ) {
         seen.add(l.contentId)
-        const meta = isObj(l.metadata) && isObj(l.metadata.lockupMetadataViewModel) ? l.metadata.lockupMetadataViewModel : {}
+        const meta =
+          isObj(l.metadata) && isObj(l.metadata.lockupMetadataViewModel) ? l.metadata.lockupMetadataViewModel : {}
         const title = isObj(meta.title) ? str(meta.title.content) : ''
         // Satırlardaki son parça genellikle "2 gün önce"
         const texts: string[] = []
@@ -215,8 +247,10 @@ export function sameChannelName(author: string | null, channelTitle: string | nu
   return a.length > 0 && c.length > 0 && (a.includes(c) || c.includes(a))
 }
 
-export const oembedUrl = (id: string) => `https://www.youtube.com/oembed?url=${encodeURIComponent(`https://www.youtube.com/watch?v=${id}`)}&format=json`
-export const feedUrl = (channelId: string) => `https://www.youtube.com/feeds/videos.xml?channel_id=${encodeURIComponent(channelId)}`
+export const oembedUrl = (id: string) =>
+  `https://www.youtube.com/oembed?url=${encodeURIComponent(`https://www.youtube.com/watch?v=${id}`)}&format=json`
+export const feedUrl = (channelId: string) =>
+  `https://www.youtube.com/feeds/videos.xml?channel_id=${encodeURIComponent(channelId)}`
 
 export async function checkVideo(id: string, deps: Pick<YoutubeDeps, 'get'>): Promise<VideoCheck> {
   try {
@@ -242,7 +276,9 @@ const decodeEntities = (s: string) =>
  * kimliği (`"externalId":"<id>"` ya da canonical bağlantı) aranır.
  */
 export function parseChannelPage(html: string, channelId: string): { exists: boolean; title: string | null } {
-  const exists = html.includes(`"externalId":"${channelId}"`) || html.includes(`<link rel="canonical" href="https://www.youtube.com/channel/${channelId}"`)
+  const exists =
+    html.includes(`"externalId":"${channelId}"`) ||
+    html.includes(`<link rel="canonical" href="https://www.youtube.com/channel/${channelId}"`)
   const og = /<meta property="og:title" content="([^"]*)"/.exec(html)?.[1]
   return { exists, title: exists && og ? decodeEntities(og) : null }
 }
@@ -251,14 +287,23 @@ export function parseChannelPage(html: string, channelId: string): { exists: boo
  * Kanal denetimi: önce Atom akışı (200 → var). Akış başka bir durum dönerse (bu uç zaman zaman var olan kanallar için
  * de 404 veriyor) kanal sayfasına düşülür.
  */
-export async function checkChannel(id: string, deps: Pick<YoutubeDeps, 'get'> & Partial<Pick<YoutubeDeps, 'sleep'>>): Promise<ChannelCheck> {
+export async function checkChannel(
+  id: string,
+  deps: Pick<YoutubeDeps, 'get'> & Partial<Pick<YoutubeDeps, 'sleep'>>,
+): Promise<ChannelCheck> {
   let feedStatus = 0
   try {
     const res = await deps.get(feedUrl(id), { timeoutMs: 8000 })
     feedStatus = res.status
     if (res.status === 200) {
       const feed = parseChannelFeed(res.text)
-      return { ok: true, status: 200, title: feed.channelTitle, latestVideoId: feed.entries[0]?.videoId ?? null, via: 'feed' }
+      return {
+        ok: true,
+        status: 200,
+        title: feed.channelTitle,
+        latestVideoId: feed.entries[0]?.videoId ?? null,
+        via: 'feed',
+      }
     }
   } catch {
     /* sayfaya düş */
@@ -270,7 +315,13 @@ export async function checkChannel(id: string, deps: Pick<YoutubeDeps, 'get'> & 
       const p = parseChannelPage(page.text, id)
       if (p.exists) return { ok: true, status: 200, title: p.title, latestVideoId: null, via: 'page' }
     }
-    return { ok: false, status: page.status === 200 ? 404 : page.status || feedStatus, title: null, latestVideoId: null, via: null }
+    return {
+      ok: false,
+      status: page.status === 200 ? 404 : page.status || feedStatus,
+      title: null,
+      latestVideoId: null,
+      via: null,
+    }
   } catch {
     return { ok: false, status: feedStatus, title: null, latestVideoId: null, via: null }
   }
@@ -305,7 +356,8 @@ export async function runCheck(contentDir: string, deps: YoutubeDeps): Promise<Y
   for (const [videoId, channelId] of refs.liveVideos) {
     const v = report.videos[videoId]
     const c = report.channels[channelId]
-    if (v?.ok && c?.ok && !sameChannelName(v.author, c.title)) report.videos[videoId] = { ...v, ok: false, state: 'wrong-channel' }
+    if (v?.ok && c?.ok && !sameChannelName(v.author, c.title))
+      report.videos[videoId] = { ...v, ok: false, state: 'wrong-channel' }
   }
   return report
 }
@@ -324,7 +376,9 @@ export function formatReportTable(r: YoutubeReport): string {
   lines.push(`Videolar (${vids.length}):`)
   lines.push(`  ${pad('Kimlik', 13)}${pad('Durum', 15)}${pad('HTTP', 6)}Başlık — Yükleyen`)
   for (const [id, v] of vids)
-    lines.push(`  ${pad(id, 13)}${pad(`${v.ok ? '✓' : '✗'} ${STATE_TEXT[v.state]}`, 15)}${pad(String(v.status || '—'), 6)}${v.title ? cut(`${v.title} — ${v.author ?? '?'}`, 70) : cut(v.usedBy[0] ?? '', 70)}`)
+    lines.push(
+      `  ${pad(id, 13)}${pad(`${v.ok ? '✓' : '✗'} ${STATE_TEXT[v.state]}`, 15)}${pad(String(v.status || '—'), 6)}${v.title ? cut(`${v.title} — ${v.author ?? '?'}`, 70) : cut(v.usedBy[0] ?? '', 70)}`,
+    )
   lines.push(`Kanallar (${chans.length}):`)
   lines.push(`  ${pad('Kimlik', 26)}${pad('Durum', 10)}${pad('Uç', 7)}Kanal adı`)
   for (const [id, c] of chans)
@@ -333,7 +387,9 @@ export function formatReportTable(r: YoutubeReport): string {
     )
   const badV = vids.filter(([, v]) => !v.ok).length
   const badC = chans.filter(([, c]) => !c.ok).length
-  lines.push(badV + badC === 0 ? 'Sonuç: tüm YouTube kaynakları erişilebilir.' : `Sonuç: ${badV} video, ${badC} kanal sorunlu.`)
+  lines.push(
+    badV + badC === 0 ? 'Sonuç: tüm YouTube kaynakları erişilebilir.' : `Sonuç: ${badV} video, ${badC} kanal sorunlu.`,
+  )
   return lines.join('\n')
 }
 
@@ -398,7 +454,8 @@ export async function fixArt(contentDir: string, deps: YoutubeDeps): Promise<Art
         for (let si = 0; si < t.seasons.length; si++) {
           const season = t.seasons[si]
           if (!isObj(season) || !Array.isArray(season.episodes)) continue
-          for (let ei = 0; ei < season.episodes.length; ei++) await visit(season.episodes[ei] ?? null, `[${ti}].seasons[${si}].episodes[${ei}]`)
+          for (let ei = 0; ei < season.episodes.length; ei++)
+            await visit(season.episodes[ei] ?? null, `[${ti}].seasons[${si}].episodes[${ei}]`)
         }
     }
     if (changed) writeJson(file, data)
@@ -407,13 +464,17 @@ export async function fixArt(contentDir: string, deps: YoutubeDeps): Promise<Art
 }
 
 /** Kanal akışı girdilerinden düzenlemeye hazır ContentTitle iskeletleri (8003xxxx–8006xxxx aralığında boş kimliklerle). */
-export function feedToSkeletons(feed: ParsedFeed, opts: { usedIds: Set<number>; today: string; limit?: number }): Json[] {
+export function feedToSkeletons(
+  feed: ParsedFeed,
+  opts: { usedIds: Set<number>; today: string; limit?: number },
+): Json[] {
   const entries = feed.entries.slice(0, opts.limit ?? 15)
   const ids = allocateIds(opts.usedIds, 80030001, 80069999, entries.length)
   return entries.map((e, i) => {
     const desc = e.description.replace(/\s+/g, ' ').trim()
     const year = Number(e.published.slice(0, 4)) || Number(opts.today.slice(0, 4))
-    const synopsis = desc.length >= 20 ? cut(desc, 400) : `${e.title} — ${e.author ?? 'YouTube'} kanalından. (Özet yazılacak.)`
+    const synopsis =
+      desc.length >= 20 ? cut(desc, 400) : `${e.title} — ${e.author ?? 'YouTube'} kanalından. (Özet yazılacak.)`
     return {
       videoId: ids[i] ?? 0,
       slug: slugify(e.title) || e.videoId.toLowerCase(),
@@ -427,14 +488,26 @@ export function feedToSkeletons(feed: ParsedFeed, opts: { usedIds: Set<number>; 
       maturity: { rating: 'GENEL', reasons: [] },
       runtimeSec: null,
       sources: [{ type: 'YOUTUBE', videoId: e.videoId }],
-      artwork: { boxart: null, storyArt: e.thumbnail ?? `https://i.ytimg.com/vi/${e.videoId}/hqdefault.jpg`, focal: '50% 35%' },
-      license: { name: 'YouTube standart lisansı', attribution: `© ${e.author ?? 'YouTube'} · yayın tarihi ${e.published.slice(0, 10)}`, url: `https://www.youtube.com/watch?v=${e.videoId}` },
+      artwork: {
+        boxart: null,
+        storyArt: e.thumbnail ?? `https://i.ytimg.com/vi/${e.videoId}/hqdefault.jpg`,
+        focal: '50% 35%',
+      },
+      license: {
+        name: 'YouTube standart lisansı',
+        attribution: `© ${e.author ?? 'YouTube'} · yayın tarihi ${e.published.slice(0, 10)}`,
+        url: `https://www.youtube.com/watch?v=${e.videoId}`,
+      },
       availability: { addedAt: opts.today },
     } satisfies Json
   })
 }
 
-function parseArgs(argv: string[]): { mode: 'report' | 'check' | 'fix-art' | 'channel'; channelId: string | null; dir: string } {
+function parseArgs(argv: string[]): {
+  mode: 'report' | 'check' | 'fix-art' | 'channel'
+  channelId: string | null
+  dir: string
+} {
   let mode: 'report' | 'check' | 'fix-art' | 'channel' = 'report'
   let channelId: string | null = null
   let dir = defaultContentDir()
@@ -476,14 +549,20 @@ async function main() {
     }
     console.error(`Kanal: ${feed.channelTitle ?? '?'} · ${feed.entries.length} video`)
     for (const e of feed.entries) console.error(`  ${e.published.slice(0, 10)}  ${e.videoId}  ${cut(e.title, 70)}`)
-    const skeletons = feedToSkeletons(feed, { usedIds: usedVideoIds(args.dir), today: new Date().toISOString().slice(0, 10) })
-    console.error('İskeletler (stdout): türleri, özeti ve olgunluk işaretini düzenleyip content/titles/ altına ekleyin.')
+    const skeletons = feedToSkeletons(feed, {
+      usedIds: usedVideoIds(args.dir),
+      today: new Date().toISOString().slice(0, 10),
+    })
+    console.error(
+      'İskeletler (stdout): türleri, özeti ve olgunluk işaretini düzenleyip content/titles/ altına ekleyin.',
+    )
     console.log(JSON.stringify(skeletons, null, 2))
     return
   }
   if (args.mode === 'fix-art') {
     const fixes = await fixArt(args.dir, deps)
-    for (const f of fixes) console.log(`  ${f.file} ${f.path}  ${f.videoId} → ${f.storyArt.replace(/^.*\/vi\/[^/]+\//, '')}`)
+    for (const f of fixes)
+      console.log(`  ${f.file} ${f.path}  ${f.videoId} → ${f.storyArt.replace(/^.*\/vi\/[^/]+\//, '')}`)
     console.log(fixes.length ? `${fixes.length} görsel adresi yazıldı.` : 'Düzeltilecek storyArt yok.')
     return
   }

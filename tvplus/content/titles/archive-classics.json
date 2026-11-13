@@ -7,21 +7,10 @@
     "year": 1902,
     "synopsis": "Bir grup astronom, bir topun ucundaki mermi biçimli kapsülle Ay'a fırlatılır. Kapsül Ay'ın yüzüne çarpar ve astronomlar Ay sakinleriyle karşılaşır. Kaçıp dünyaya dönerken kapsül denize düşer.",
     "shortSynopsis": "Astronomlar mermi biçimli bir kapsülle Ay'a gider ve Ay sakinleriyle karşılaşır.",
-    "genres": [
-      "bilim-kurgu",
-      "klasik",
-      "sessiz-sinema",
-      "kisa-film"
-    ],
-    "moods": [
-      "sozsuz",
-      "kult-klasik",
-      "absurt"
-    ],
+    "genres": ["bilim-kurgu", "klasik", "sessiz-sinema", "kisa-film"],
+    "moods": ["sozsuz", "kult-klasik", "absurt"],
     "cast": [],
-    "directors": [
-      "Georges Méliès"
-    ],
+    "directors": ["Georges Méliès"],
     "maturity": {
       "rating": "GENEL",
       "reasons": []
@@ -65,30 +54,13 @@
     "year": 1920,
     "synopsis": "Bir panayır kasabasında Dr. Caligari, uyurgezer Cesare'yi gezici bir gösteride sergiler. Cesare insanların ölüm saatini söylemeye başlar ve ardından cinayetler işlenir. Anlatıcı Francis, Caligari'nin bu olaylarla bağlantılı olduğundan şüphelenir.",
     "shortSynopsis": "Uyurgezer Cesare'yi gezici bir gösteride sergileyen Dr. Caligari'nin peşinden gelen cinayetler.",
-    "genres": [
-      "korku",
-      "gerilim",
-      "klasik",
-      "sessiz-sinema"
-    ],
-    "moods": [
-      "karanlik",
-      "kult-klasik",
-      "sozsuz"
-    ],
-    "cast": [
-      "Werner Krauss",
-      "Conrad Veidt",
-      "Lil Dagover"
-    ],
-    "directors": [
-      "Robert Wiene"
-    ],
+    "genres": ["korku", "gerilim", "klasik", "sessiz-sinema"],
+    "moods": ["karanlik", "kult-klasik", "sozsuz"],
+    "cast": ["Werner Krauss", "Conrad Veidt", "Lil Dagover"],
+    "directors": ["Robert Wiene"],
     "maturity": {
       "rating": "13+",
-      "reasons": [
-        "siddet-korku"
-      ]
+      "reasons": ["siddet-korku"]
     },
     "kids": false,
     "runtimeSec": 4463,
@@ -129,29 +101,13 @@
     "year": 1922,
     "synopsis": "Emlakçı Hutter, Transilvanya'da yaşayan Kont Orlok ile bir ev satışını görüşmek için yola çıkar. Kontun bir vampir olduğu ortaya çıktığında, Hutter'in eşi Ellen için tehlike büyür. Kontun getirdiği veba salgını kasabayı sarar.",
     "shortSynopsis": "Emlakçı Hutter bir ev satışı için Kont Orlok'un kalesine gider; kasabaya veba ve vampir gelir.",
-    "genres": [
-      "korku",
-      "klasik",
-      "sessiz-sinema"
-    ],
-    "moods": [
-      "karanlik",
-      "kult-klasik",
-      "sozsuz"
-    ],
-    "cast": [
-      "Max Schreck",
-      "Gustav von Wangenheim",
-      "Greta Schröder"
-    ],
-    "directors": [
-      "F. W. Murnau"
-    ],
+    "genres": ["korku", "klasik", "sessiz-sinema"],
+    "moods": ["karanlik", "kult-klasik", "sozsuz"],
+    "cast": ["Max Schreck", "Gustav von Wangenheim", "Greta Schröder"],
+    "directors": ["F. W. Murnau"],
     "maturity": {
       "rating": "13+",
-      "reasons": [
-        "siddet-korku"
-      ]
+      "reasons": ["siddet-korku"]
     },
     "kids": false,
     "runtimeSec": 5514,
@@ -192,23 +148,10 @@
     "year": 1924,
     "synopsis": "Bir sinema operatörü, kız arkadaşının babasına ait bir saatin çalınmasıyla suçlanır. Gerçek hırsızı bulmaya çalışırken yorulup uyur ve kendini rüyasında bir dedektif filminin içinde bulur. Filmdeki maceraları, gerçek dünyadaki sorununu çözmesine yardım eder.",
     "shortSynopsis": "Sinema operatörü bir saat hırsızlığıyla suçlanınca rüyasında dedektif olup film dünyasına girer.",
-    "genres": [
-      "komedi",
-      "klasik",
-      "sessiz-sinema"
-    ],
-    "moods": [
-      "esprili",
-      "sozsuz",
-      "kult-klasik"
-    ],
-    "cast": [
-      "Buster Keaton",
-      "Kathryn McGuire"
-    ],
-    "directors": [
-      "Buster Keaton"
-    ],
+    "genres": ["komedi", "klasik", "sessiz-sinema"],
+    "moods": ["esprili", "sozsuz", "kult-klasik"],
+    "cast": ["Buster Keaton", "Kathryn McGuire"],
+    "directors": ["Buster Keaton"],
     "maturity": {
       "rating": "GENEL",
       "reasons": []
@@ -251,30 +194,13 @@
     "year": 1927,
     "synopsis": "Yeraltında çalışan işçilerin yaşadığı devasa bir kentte, kentin patronunun oğlu Freder, işçiler arasında vaaz veren Maria'ya âşık olur. Bilgin Rotwang'ın yaptığı bir robot, Maria'nın kılığına girip işçileri isyana kışkırtır. Film sınıf farkını ve emeği temel alır.",
     "shortSynopsis": "Yeraltı işçileri ile kentin patronunun oğlu arasında geçen, robotun isyanı kışkırttığı bir bilim kurgu.",
-    "genres": [
-      "bilim-kurgu",
-      "dram",
-      "klasik",
-      "sessiz-sinema"
-    ],
-    "moods": [
-      "dusundurucu",
-      "kult-klasik",
-      "sozsuz"
-    ],
-    "cast": [
-      "Brigitte Helm",
-      "Alfred Abel",
-      "Gustav Fröhlich"
-    ],
-    "directors": [
-      "Fritz Lang"
-    ],
+    "genres": ["bilim-kurgu", "dram", "klasik", "sessiz-sinema"],
+    "moods": ["dusundurucu", "kult-klasik", "sozsuz"],
+    "cast": ["Brigitte Helm", "Alfred Abel", "Gustav Fröhlich"],
+    "directors": ["Fritz Lang"],
     "maturity": {
       "rating": "13+",
-      "reasons": [
-        "siddet-korku"
-      ]
+      "reasons": ["siddet-korku"]
     },
     "kids": false,
     "runtimeSec": 7118,
@@ -314,25 +240,10 @@
     "year": 1926,
     "synopsis": "İç Savaş sırasında makinist Johnnie Gray, sevdiği Annabelle'in gözünde kendini kanıtlamak ister. Ordu onu kabul etmez; ama trenini kuzeyli casuslar kaçırınca Johnnie, lokomotifinin ve Annabelle'in peşine düşer. Yakalama ve kurtarma sahneleri filmin ana gerilimini oluşturur.",
     "shortSynopsis": "Trenini kuzeyli casuslar kaçıran bir makinistin, lokomotifi ve sevdiği kadını kurtarma yarışı.",
-    "genres": [
-      "komedi",
-      "macera",
-      "klasik",
-      "sessiz-sinema"
-    ],
-    "moods": [
-      "esprili",
-      "kult-klasik",
-      "sozsuz"
-    ],
-    "cast": [
-      "Buster Keaton",
-      "Marion Mack"
-    ],
-    "directors": [
-      "Buster Keaton",
-      "Clyde Bruckman"
-    ],
+    "genres": ["komedi", "macera", "klasik", "sessiz-sinema"],
+    "moods": ["esprili", "kult-klasik", "sozsuz"],
+    "cast": ["Buster Keaton", "Marion Mack"],
+    "directors": ["Buster Keaton", "Clyde Bruckman"],
     "maturity": {
       "rating": "7+",
       "reasons": []
@@ -375,23 +286,10 @@
     "year": 1928,
     "synopsis": "Üniversiteden dönen genç William, nehir kıyısındaki kasabaya gelir ve babası Steamboat Bill'in eski, gösterişsiz teknesiyle tanışır. Rakip bir tekne sahibinin kızı Kitty'ye âşık olan William, babasının işine yardım etmeye çalışır. Kasırga kasabayı vurduğunda baba ve oğul birbirini daha iyi anlar.",
     "shortSynopsis": "Üniversiteden dönen genç William, babasının eski teknesinde rakip bir kızla tanışır ve kasırgaya girer.",
-    "genres": [
-      "komedi",
-      "klasik",
-      "sessiz-sinema"
-    ],
-    "moods": [
-      "esprili",
-      "sozsuz"
-    ],
-    "cast": [
-      "Buster Keaton",
-      "Ernest Torrence",
-      "Marion Byron"
-    ],
-    "directors": [
-      "Charles Reisner"
-    ],
+    "genres": ["komedi", "klasik", "sessiz-sinema"],
+    "moods": ["esprili", "sozsuz"],
+    "cast": ["Buster Keaton", "Ernest Torrence", "Marion Byron"],
+    "directors": ["Charles Reisner"],
     "maturity": {
       "rating": "GENEL",
       "reasons": []
@@ -434,24 +332,10 @@
     "year": 1923,
     "synopsis": "Kasabadan büyük şehre gelen genç Harold, sevdiği Mildred'a gelecek vaat etmek için bir mağazada çalışır. İşinde yükselmek için kurduğu plan, bir binanın dış cephesine tırmanmasıyla sonuçlanır. Filmin en ünlü sahnesi, Harold'ın bir saatin kadranına tutunduğu andır.",
     "shortSynopsis": "Sevdiği kıza gelecek vaat etmek isteyen genç Harold, bir binanın cephesine tırmanmak zorunda kalır.",
-    "genres": [
-      "komedi",
-      "klasik",
-      "sessiz-sinema"
-    ],
-    "moods": [
-      "esprili",
-      "sozsuz",
-      "kult-klasik"
-    ],
-    "cast": [
-      "Harold Lloyd",
-      "Mildred Davis"
-    ],
-    "directors": [
-      "Fred C. Newmeyer",
-      "Sam Taylor"
-    ],
+    "genres": ["komedi", "klasik", "sessiz-sinema"],
+    "moods": ["esprili", "sozsuz", "kult-klasik"],
+    "cast": ["Harold Lloyd", "Mildred Davis"],
+    "directors": ["Fred C. Newmeyer", "Sam Taylor"],
     "maturity": {
       "rating": "GENEL",
       "reasons": []

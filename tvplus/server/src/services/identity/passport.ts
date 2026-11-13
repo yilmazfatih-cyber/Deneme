@@ -61,7 +61,14 @@ export function writeSessionCookies(
   const tvpId = encodeTvpId(keys.cookie, claims, profileGuid ?? '')
   // Netflix NetflixId gibi değer URL kodlanır (v%3D1%26ct%3D…); okurken @fastify/cookie çözer.
   const encode = encodeURIComponent
-  reply.setCookie(COOKIES.SESSION, tvpId, { path: '/', httpOnly: true, sameSite: 'lax', secure, maxAge: ONE_YEAR_SEC, encode })
+  reply.setCookie(COOKIES.SESSION, tvpId, {
+    path: '/',
+    httpOnly: true,
+    sameSite: 'lax',
+    secure,
+    maxAge: ONE_YEAR_SEC,
+    encode,
+  })
   reply.setCookie(COOKIES.SECURE, encodeSecure(keys.cookie, tvpId), {
     encode,
     path: '/',
@@ -87,7 +94,12 @@ export function checkAuthURL(req: FastifyRequest, keys: IdentityKeys, token: str
 }
 
 /** onRequest kancası: pasaportu çözer ve gerekiyorsa çerezleri düzeltir. */
-export function resolvePassport(req: FastifyRequest, reply: FastifyReply, keys: IdentityKeys, lookup: IdentityLookup): Passport {
+export function resolvePassport(
+  req: FastifyRequest,
+  reply: FastifyReply,
+  keys: IdentityKeys,
+  lookup: IdentityLookup,
+): Passport {
   const cookies = req.cookies ?? {}
 
   // 1) Cihaz kimliği

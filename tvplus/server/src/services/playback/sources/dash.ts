@@ -58,7 +58,9 @@ export class SourceUnavailableError extends Error {
 /** ISO 8601 süre: PT888.053S, PT1H2M3.5S */
 export function parseIsoDuration(s: string | undefined): number | null {
   if (!s) return null
-  const m = /^P(?:(\d+(?:\.\d+)?)D)?(?:T(?:(\d+(?:\.\d+)?)H)?(?:(\d+(?:\.\d+)?)M)?(?:(\d+(?:\.\d+)?)S)?)?$/.exec(s.trim())
+  const m = /^P(?:(\d+(?:\.\d+)?)D)?(?:T(?:(\d+(?:\.\d+)?)H)?(?:(\d+(?:\.\d+)?)M)?(?:(\d+(?:\.\d+)?)S)?)?$/.exec(
+    s.trim(),
+  )
   if (!m) return null
   return Number(m[1] ?? 0) * 86400 + Number(m[2] ?? 0) * 3600 + Number(m[3] ?? 0) * 60 + Number(m[4] ?? 0)
 }
@@ -85,7 +87,7 @@ const str = (el: XEl | undefined, name: string): string | undefined => {
   return v === undefined || v === null ? undefined : String(v)
 }
 const baseUrlOf = (el: XEl | undefined): string | undefined => {
-  const b = el ? arr(el.BaseURL)[0] ?? (typeof el.BaseURL === 'string' ? el.BaseURL : undefined) : undefined
+  const b = el ? (arr(el.BaseURL)[0] ?? (typeof el.BaseURL === 'string' ? el.BaseURL : undefined)) : undefined
   if (typeof b === 'string') return b.trim()
   if (b && typeof b === 'object' && '#text' in b) return String((b as XEl)['#text']).trim()
   return undefined
@@ -134,7 +136,12 @@ export function parseMpd(xml: string, mpdUrl: string): Omit<ParsedDash, 'fetched
       const url = new URL(baseUrlOf(rep) ?? '', setBase).toString()
       const kind = contentType ?? mimeType.split('/')[0]
       if (kind === 'text' || mimeType.startsWith('text/') || mimeType === 'application/ttml+xml') {
-        const format = mimeType === 'text/vtt' || /\.(webvtt|vtt)$/i.test(url) ? 'vtt' : mimeType === 'application/ttml+xml' || /\.(ttml|xml|dfxp)$/i.test(url) ? 'ttml' : null
+        const format =
+          mimeType === 'text/vtt' || /\.(webvtt|vtt)$/i.test(url)
+            ? 'vtt'
+            : mimeType === 'application/ttml+xml' || /\.(ttml|xml|dfxp)$/i.test(url)
+              ? 'ttml'
+              : null
         if (!format) continue
         const cc = roles.includes('caption') || access.some((a) => a.includes('caption') || a === '2')
         text.push({ url, lang: normalizeLang(lang), format, kind: cc ? 'CC' : 'SUBTITLES' })
@@ -143,7 +150,7 @@ export function parseMpd(xml: string, mpdUrl: string): Omit<ParsedDash, 'fetched
       const codecs = str(rep, 'codecs') ?? str(set, 'codecs') ?? ''
       const profile = profileOf(mimeType, codecs)
       if (!profile) continue
-      const seg = (arr(rep.SegmentBase)[0] ?? (rep.SegmentBase as XEl | undefined)) ?? setSegBase
+      const seg = arr(rep.SegmentBase)[0] ?? (rep.SegmentBase as XEl | undefined) ?? setSegBase
       const index = parseRange(str(seg, 'indexRange'))
       const initEl = seg ? (arr(seg.Initialization)[0] ?? (seg.Initialization as XEl | undefined)) : undefined
       const init = parseRange(str(initEl, 'range'))

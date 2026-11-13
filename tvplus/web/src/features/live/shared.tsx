@@ -4,7 +4,18 @@
  */
 import { useSyncExternalStore, type ReactElement } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { AccessLock, Button, ChannelTile, formatTimeRange, LiveTag, ProgressBar, Sheet, useNow, liveProgress, formatLiveLine } from '../../design'
+import {
+  AccessLock,
+  Button,
+  ChannelTile,
+  formatTimeRange,
+  LiveTag,
+  ProgressBar,
+  Sheet,
+  useNow,
+  liveProgress,
+  formatLiveLine,
+} from '../../design'
 import { logEvent } from '../../telemetry/logger'
 import { airingAction } from './airing'
 import type { AiringBriefData, AiringChannelData } from './types'
@@ -35,7 +46,13 @@ export interface AiringSheetTarget {
 }
 
 /** Yayın alt sayfası: başlık, kanal, saat aralığı, özet; duruma göre TEK birincil eylem. */
-export function AiringSheet({ target, onClose }: { target: AiringSheetTarget | null; onClose: () => void }): ReactElement | null {
+export function AiringSheet({
+  target,
+  onClose,
+}: {
+  target: AiringSheetTarget | null
+  onClose: () => void
+}): ReactElement | null {
   const now = useNow()
   const navigate = useNavigate()
   if (!target) return null
@@ -71,14 +88,24 @@ export function AiringSheet({ target, onClose }: { target: AiringSheetTarget | n
         <span className="lv-airsheet__chtext">
           <span className="cn-card-title">{channel.name}</span>
           <span className="cn-meta">
-            {action.kind === 'live' ? formatLiveLine(airing.startAt, airing.endAt, now) : formatTimeRange(airing.startAt, airing.endAt)}
+            {action.kind === 'live'
+              ? formatLiveLine(airing.startAt, airing.endAt, now)
+              : formatTimeRange(airing.startAt, airing.endAt)}
           </span>
         </span>
         {action.kind === 'live' && <LiveTag />}
       </div>
-      {action.kind === 'live' && <ProgressBar value={liveProgress(airing.startAt, airing.endAt, now)} label="Yayın ilerlemesi" className="lv-airsheet__progress" />}
+      {action.kind === 'live' && (
+        <ProgressBar
+          value={liveProgress(airing.startAt, airing.endAt, now)}
+          label="Yayın ilerlemesi"
+          className="lv-airsheet__progress"
+        />
+      )}
       {airing.synopsis && <p className="cn-body lv-airsheet__synopsis">{airing.synopsis}</p>}
-      {action.kind === 'catchup' && action.hint && <p className="cn-meta lv-airsheet__note">Geri izleme: {action.hint}</p>}
+      {action.kind === 'catchup' && action.hint && (
+        <p className="cn-meta lv-airsheet__note">Geri izleme: {action.hint}</p>
+      )}
       {action.kind === 'ended' && <p className="lv-airsheet__line">{action.note}</p>}
       {action.kind === 'upcoming' && <p className="lv-airsheet__line">{action.note}</p>}
       {action.kind === 'upcoming' && action.lockReason && <AccessLock text={action.lockReason} />}
@@ -89,7 +116,15 @@ export function AiringSheet({ target, onClose }: { target: AiringSheetTarget | n
 }
 
 /** Yetki alt sayfası: kilitli kanal/yayına dokununca gerekçe (hata sayfası yok). */
-export function AccessSheet({ title, reason, onClose }: { title: string | null; reason: string; onClose: () => void }): ReactElement | null {
+export function AccessSheet({
+  title,
+  reason,
+  onClose,
+}: {
+  title: string | null
+  reason: string
+  onClose: () => void
+}): ReactElement | null {
   if (!title) return null
   return (
     <Sheet open onClose={onClose} title={title}>

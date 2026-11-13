@@ -25,14 +25,22 @@ export function cachedListIds(graph: JsonGraph, contexts: readonly string[]): st
   for (const [listId, node] of Object.entries(lists)) {
     if (isLeaf(node)) continue
     const summary = node.summary
-    const ctx = isLeaf(summary) && summary.$type === 'atom' ? (summary.value as { context?: string } | undefined)?.context : undefined
+    const ctx =
+      isLeaf(summary) && summary.$type === 'atom'
+        ? (summary.value as { context?: string } | undefined)?.context
+        : undefined
     if (ctx && contexts.includes(ctx)) out.push(listId)
   }
   return out
 }
 
 /** Geçersiz kılınacak yol kümeleri (saf; test edilir). */
-export function invalidationPaths(graph: JsonGraph, guid: string | null, contexts: readonly string[], videoIds: readonly number[]): FalcorPath[] {
+export function invalidationPaths(
+  graph: JsonGraph,
+  guid: string | null,
+  contexts: readonly string[],
+  videoIds: readonly number[],
+): FalcorPath[] {
   const paths: FalcorPath[] = []
   if (guid) paths.push(['lolomos', guid])
   for (const id of cachedListIds(graph, contexts)) paths.push(['lists', id])

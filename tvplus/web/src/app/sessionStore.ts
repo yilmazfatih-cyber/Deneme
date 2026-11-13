@@ -48,7 +48,10 @@ function resetClientCaches(boot: BootContext): void {
 }
 
 const isBoot = (b: unknown): b is BootContext =>
-  typeof b === 'object' && b !== null && typeof (b as BootContext).membershipStatus === 'string' && Array.isArray((b as BootContext).profiles)
+  typeof b === 'object' &&
+  b !== null &&
+  typeof (b as BootContext).membershipStatus === 'string' &&
+  Array.isArray((b as BootContext).profiles)
 
 /** POST; yanıt gövdesi yeni BootContext'tir (değilse null). */
 async function post(path: string, body: object): Promise<BootContext | null> {
@@ -80,7 +83,13 @@ export const useSession = create<SessionState>()((set, get) => {
    * Eylem iskeleti: POST → yanıttaki BootContext'i uygula (applyBoot; oturum başlıkları da güncellenir)
    * → önbellekleri boşalt → yönlendir. Yanıt beklenen biçimde değilse yedek olarak GET /api/boot.
    */
-  const act = async (label: string, path: string, body: object, failText: string, target: (b: BootContext) => string): Promise<BootContext | null> => {
+  const act = async (
+    label: string,
+    path: string,
+    body: object,
+    failText: string,
+    target: (b: BootContext) => string,
+  ): Promise<BootContext | null> => {
     if (get().busy) return null
     set({ busy: true })
     const t0 = performance.now()
@@ -89,7 +98,12 @@ export const useSession = create<SessionState>()((set, get) => {
       const boot = fromPost ? applyBoot(fromPost) : await refreshBoot()
       resetClientCaches(boot)
       set({ boot, busy: false, status: 'ready', error: null })
-      devbus.emit('session', label, { membershipStatus: boot.membershipStatus, profile: boot.activeProfile?.guid ?? null }, { ms: performance.now() - t0 })
+      devbus.emit(
+        'session',
+        label,
+        { membershipStatus: boot.membershipStatus, profile: boot.activeProfile?.guid ?? null },
+        { ms: performance.now() - t0 },
+      )
       navigate?.(target(boot), { replace: true })
       return boot
     } catch (err) {
@@ -122,11 +136,17 @@ export const useSession = create<SessionState>()((set, get) => {
       return initPromise
     },
 
-    login: () => act('giriş', ROUTES.LOGIN, {}, 'Giriş yapılamadı. Tekrar dene.', (b) => (b.activeProfile ? lastModePath() : '/profiller')),
+    login: () =>
+      act('giriş', ROUTES.LOGIN, {}, 'Giriş yapılamadı. Tekrar dene.', (b) =>
+        b.activeProfile ? lastModePath() : '/profiller',
+      ),
 
     logout: () => act('çıkış', ROUTES.LOGOUT, {}, 'Çıkış yapılamadı. Tekrar dene.', () => '/karsilama'),
 
-    switchProfile: (guid) => act('profil değişimi', ROUTES.PROFILE_SWITCH, { guid }, 'Profil değiştirilemedi. Tekrar dene.', () => lastModePath()),
+    switchProfile: (guid) =>
+      act('profil değişimi', ROUTES.PROFILE_SWITCH, { guid }, 'Profil değiştirilemedi. Tekrar dene.', () =>
+        lastModePath(),
+      ),
   }
 })
 

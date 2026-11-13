@@ -24,7 +24,13 @@ export interface PreviewPlayerProps {
   onError?: () => void
 }
 
-export default function PreviewPlayerImpl({ viewableId, offsetSec, muted = true, onPlaying, onError }: PreviewPlayerProps): ReactElement {
+export default function PreviewPlayerImpl({
+  viewableId,
+  offsetSec,
+  muted = true,
+  onPlaying,
+  onError,
+}: PreviewPlayerProps): ReactElement {
   const ref = useRef<HTMLDivElement>(null)
   const adapterRef = useRef<PlayerAdapter | null>(null)
   const cbs = useRef({ onPlaying, onError })
@@ -60,7 +66,14 @@ export default function PreviewPlayerImpl({ viewableId, offsetSec, muted = true,
           return
         }
       }
-      const a = createAdapter(m, { startSec: offsetSec, autoplay: true, muted: mutedRef.current, maxHeight: PREVIEW_MAX_HEIGHT, preview: true, refreshManifest: () => requestManifest(viewableId, { promo: true, prefetch: true, fresh: true }) })
+      const a = createAdapter(m, {
+        startSec: offsetSec,
+        autoplay: true,
+        muted: mutedRef.current,
+        maxHeight: PREVIEW_MAX_HEIGHT,
+        preview: true,
+        refreshManifest: () => requestManifest(viewableId, { promo: true, prefetch: true, fresh: true }),
+      })
       adapterRef.current = a
       a.on((e) => {
         if (e.type === 'firstFrame') {
@@ -68,7 +81,11 @@ export default function PreviewPlayerImpl({ viewableId, offsetSec, muted = true,
           cbs.current.onPlaying?.()
           stopTimer = window.setTimeout(() => {
             a.pause()
-            devbus.emit('player', 'önizleme durdu (30 sn)', { viewableId, state: 'paused', positionSec: Math.round(a.position()) })
+            devbus.emit('player', 'önizleme durdu (30 sn)', {
+              viewableId,
+              state: 'paused',
+              positionSec: Math.round(a.position()),
+            })
           }, PREVIEW_MAX_SEC * 1000)
         } else if (e.type === 'error') {
           fail(e.error.message)

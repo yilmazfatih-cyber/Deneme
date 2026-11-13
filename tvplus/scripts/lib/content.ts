@@ -48,7 +48,8 @@ export interface SourceRef {
  */
 export function collectSources(contentDir: string): SourceRef[] {
   const out: SourceRef[] = []
-  const asSource = (v: Json | undefined): ContentSource | null => (isObj(v) && typeof v.type === 'string' ? (v as unknown as ContentSource) : null)
+  const asSource = (v: Json | undefined): ContentSource | null =>
+    isObj(v) && typeof v.type === 'string' ? (v as unknown as ContentSource) : null
   const num = (v: Json | undefined) => (typeof v === 'number' ? v : 0)
   const rel = (f: string) => f.slice(contentDir.length + 1)
   for (const file of titleFiles(contentDir)) {
@@ -72,13 +73,15 @@ export function collectSources(contentDir: string): SourceRef[] {
       push(t.sources, `[${ti}].sources`, 'title', tid)
       if (isObj(t.promo)) {
         const src = asSource(t.promo.source)
-        if (src) out.push({ file: rel(file), path: `[${ti}].promo.source`, ownerKind: 'promo', ownerId: tid, source: src })
+        if (src)
+          out.push({ file: rel(file), path: `[${ti}].promo.source`, ownerKind: 'promo', ownerId: tid, source: src })
       }
       if (Array.isArray(t.seasons))
         t.seasons.forEach((season, si) => {
           if (!isObj(season) || !Array.isArray(season.episodes)) return
           season.episodes.forEach((ep, ei) => {
-            if (isObj(ep)) push(ep.sources, `[${ti}].seasons[${si}].episodes[${ei}].sources`, 'episode', num(ep.videoId))
+            if (isObj(ep))
+              push(ep.sources, `[${ti}].seasons[${si}].episodes[${ei}].sources`, 'episode', num(ep.videoId))
           })
         })
       if (Array.isArray(t.supplementals))
@@ -95,7 +98,14 @@ export function collectSources(contentDir: string): SourceRef[] {
         data.forEach((c, ci) => {
           if (!isObj(c)) return
           const src = asSource(c.source)
-          if (src) out.push({ file: CONTENT_FILES.channels, path: `[${ci}].source`, ownerKind: 'channel', ownerId: num(c.channelId), source: src })
+          if (src)
+            out.push({
+              file: CONTENT_FILES.channels,
+              path: `[${ci}].source`,
+              ownerKind: 'channel',
+              ownerId: num(c.channelId),
+              source: src,
+            })
         })
     } catch {
       /* bozuk dosya: doğrulayıcı raporlar */

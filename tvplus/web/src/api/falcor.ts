@@ -17,7 +17,15 @@
  * aynı toplu istekteki diğer çağrılar etkilenmez ve hata önbellekten sunulmaz (sonraki istekte yeniden sorulur).
  */
 import { HEADERS, ROUTES } from '../../../shared/constants'
-import type { FalcorKey, FalcorKeySet, FalcorPath, FalcorRange, JsonGraph, JsonGraphLeaf, PathEvaluatorResponse } from '../../../shared/types'
+import type {
+  FalcorKey,
+  FalcorKeySet,
+  FalcorPath,
+  FalcorRange,
+  JsonGraph,
+  JsonGraphLeaf,
+  PathEvaluatorResponse,
+} from '../../../shared/types'
 import { devbus } from '../lib/devbus'
 import { peekBoot, sessionHeaders } from './session'
 
@@ -106,7 +114,7 @@ function compactKeys(keys: FalcorKey[]): FalcorKeySet {
   const nums = [...new Set(keys.filter((k): k is number => typeof k === 'number'))].sort((a, b) => a - b)
   const strs = [...new Set(keys.filter((k): k is string => typeof k === 'string'))]
   const parts: (FalcorKey | FalcorRange)[] = []
-  for (let i = 0; i < nums.length; ) {
+  for (let i = 0; i < nums.length;) {
     let j = i
     while (j + 1 < nums.length && nums[j + 1] === nums[j]! + 1) j++
     parts.push(j > i ? { from: nums[i]!, to: nums[j]! } : nums[i]!)
@@ -135,7 +143,8 @@ export function collapsePaths(paths: FalcorPath[]): FalcorPath[] {
     for (let i = 0; i < maxLen; i++) {
       const groups = new Map<string, { base: FalcorPath; keys: FalcorKey[] }>()
       for (const p of cur) {
-        const sig = i < p.length ? `${p.length}|${JSON.stringify(p.map((k, j) => (j === i ? null : k)))}` : `=${pathKey(p)}`
+        const sig =
+          i < p.length ? `${p.length}|${JSON.stringify(p.map((k, j) => (j === i ? null : k)))}` : `=${pathKey(p)}`
         let g = groups.get(sig)
         if (!g) {
           g = { base: p, keys: [] }
@@ -210,7 +219,12 @@ export class FalcorModel {
     const t0 = performance.now()
     const first = this.walk(pathSets, true)
     if (!first.missing.length) {
-      devbus.emit('falcor', `${pathSets.length} yol (önbellek)`, { paths: pathSets, fromCache: true, missing: 0 }, { ms: performance.now() - t0 })
+      devbus.emit(
+        'falcor',
+        `${pathSets.length} yol (önbellek)`,
+        { paths: pathSets, fromCache: true, missing: 0 },
+        { ms: performance.now() - t0 },
+      )
       return Promise.resolve(first.json as T)
     }
     return this.resolveMissing(pathSets, first.missing) as Promise<T>
@@ -335,17 +349,42 @@ export class FalcorModel {
       res = await this.fetchImpl(url, {
         method: 'POST',
         credentials: 'same-origin',
-        headers: { ...this.getHeaders(), 'content-type': 'application/x-www-form-urlencoded', accept: 'application/json' },
+        headers: {
+          ...this.getHeaders(),
+          'content-type': 'application/x-www-form-urlencoded',
+          accept: 'application/json',
+        },
         body: body.toString(),
       })
     } catch (err) {
-      devbus.emit('falcor', label, { paths, flags: FALCOR_FLAGS, status: 0, traceId: null, fromCache: false, missing: paths.length, error: String(err) }, { ms: performance.now() - t0, ok: false })
+      devbus.emit(
+        'falcor',
+        label,
+        {
+          paths,
+          flags: FALCOR_FLAGS,
+          status: 0,
+          traceId: null,
+          fromCache: false,
+          missing: paths.length,
+          error: String(err),
+        },
+        { ms: performance.now() - t0, ok: false },
+      )
       throw new FalcorRequestError('Sunucuya ulaşılamadı', 0, null)
     }
     const traceId = res.headers.get(HEADERS.TRACE_ID)
     const text = await res.text()
     const ms = performance.now() - t0
-    const detail = { paths, flags: FALCOR_FLAGS, status: res.status, traceId, fromCache: false, missing: paths.length, bytes: text.length }
+    const detail = {
+      paths,
+      flags: FALCOR_FLAGS,
+      status: res.status,
+      traceId,
+      fromCache: false,
+      missing: paths.length,
+      bytes: text.length,
+    }
     if (!res.ok) {
       devbus.emit('falcor', label, detail, { ms, ok: false })
       throw new FalcorRequestError(`pathEvaluator yanıtı ${res.status}`, res.status, traceId)
@@ -419,7 +458,8 @@ export class FalcorModel {
         node = node === undefined || isLeaf(node) ? undefined : node[String(k)]
         at.push(k)
       }
-      if (node !== undefined && isLeaf(node) && node.$type === 'ref' && !stale(node)) return follow(node.value, hops + 1)
+      if (node !== undefined && isLeaf(node) && node.$type === 'ref' && !stale(node))
+        return follow(node.value, hops + 1)
       return { node, at }
     }
 

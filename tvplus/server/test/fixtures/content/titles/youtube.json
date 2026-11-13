@@ -7,23 +7,10 @@
     "year": 2013,
     "synopsis": "Patagonya'da yaşayan inatçı lama Koba, çitin öte yanındaki her şeye ulaşmak ister. Kısa ve komik bölümlerle bir lamanın macerası.",
     "shortSynopsis": "İnatçı lama Koba, Patagonya'da başına iş açıyor.",
-    "genres": [
-      "animasyon",
-      "komedi",
-      "cocuk-aile"
-    ],
-    "moods": [
-      "eglenceli",
-      "esprili",
-      "aile-boyu"
-    ],
-    "directors": [
-      "Pablo Vazquez"
-    ],
-    "creators": [
-      "Pablo Vazquez",
-      "Ton Roosendaal"
-    ],
+    "genres": ["animasyon", "komedi", "cocuk-aile"],
+    "moods": ["eglenceli", "esprili", "aile-boyu"],
+    "directors": ["Pablo Vazquez"],
+    "creators": ["Pablo Vazquez", "Ton Roosendaal"],
     "maturity": {
       "rating": "GENEL"
     },
@@ -121,19 +108,9 @@
     "year": 2024,
     "synopsis": "Karadeniz'den Hakkari'ye, Anadolu'nun yaşayan müzik geleneklerini ustalarının sesinden dinleyen bir belgesel.",
     "shortSynopsis": "Anadolu'nun yaşayan müzik geleneklerine bir yolculuk.",
-    "genres": [
-      "belgesel",
-      "muzik",
-      "yerli"
-    ],
-    "moods": [
-      "ilham",
-      "nostaljik"
-    ],
-    "keywords": [
-      "türkü",
-      "bağlama"
-    ],
+    "genres": ["belgesel", "muzik", "yerli"],
+    "moods": ["ilham", "nostaljik"],
+    "keywords": ["türkü", "bağlama"],
     "maturity": {
       "rating": "7+"
     },

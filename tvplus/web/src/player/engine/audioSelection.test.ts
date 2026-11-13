@@ -17,8 +17,22 @@ function stream(id: string, profile: 'opus-webm' | 'aac-mp4', kbps: number): Man
     urls: [],
   }
 }
-const stereo: AudioTrack = { trackId: 'A-en-20', language: 'en', languageDescription: 'İngilizce [Özgün]', channels: '2.0', isNative: true, streams: [stream('a-en-128k-opus', 'opus-webm', 128)] }
-const surround: AudioTrack = { trackId: 'A-en-51', language: 'en', languageDescription: 'İngilizce [Özgün]', channels: '5.1', isNative: true, streams: [stream('a-en-384k-aac', 'aac-mp4', 384)] }
+const stereo: AudioTrack = {
+  trackId: 'A-en-20',
+  language: 'en',
+  languageDescription: 'İngilizce [Özgün]',
+  channels: '2.0',
+  isNative: true,
+  streams: [stream('a-en-128k-opus', 'opus-webm', 128)],
+}
+const surround: AudioTrack = {
+  trackId: 'A-en-51',
+  language: 'en',
+  languageDescription: 'İngilizce [Özgün]',
+  channels: '5.1',
+  isNative: true,
+  streams: [stream('a-en-384k-aac', 'aac-mp4', 384)],
+}
 const all = () => true
 const noAac = (s: { mimeType: string }) => s.mimeType !== 'audio/mp4'
 

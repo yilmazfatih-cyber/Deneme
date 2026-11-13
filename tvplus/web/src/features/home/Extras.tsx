@@ -14,7 +14,14 @@ import type { ListSummary } from './lolomo'
 /** Diğer dünyaya küçük köprü (DESIGN_SPEC §0): Canlı TV'ye götüren ince şerit. */
 export function BridgeStrip({ summary, rowIndex }: { summary: ListSummary; rowIndex: number }): ReactElement {
   useEffect(() => {
-    logEvent('impression', { listId: summary.id, context: 'bridge', row: rowIndex, trackId: summary.trackId, ranks: '', entityIds: [] })
+    logEvent('impression', {
+      listId: summary.id,
+      context: 'bridge',
+      row: rowIndex,
+      trackId: summary.trackId,
+      ranks: '',
+      entityIds: [],
+    })
   }, [summary.id, summary.trackId, rowIndex])
   return (
     <Link
@@ -39,7 +46,11 @@ interface InterstitialData {
 }
 
 export function InterstitialBanner(): ReactElement | null {
-  const { data } = useGql<InterstitialData, { location: string }>('InterstitialHome', { location: 'HOME' }, { ttlMs: 5 * 60_000 })
+  const { data } = useGql<InterstitialData, { location: string }>(
+    'InterstitialHome',
+    { location: 'HOME' },
+    { ttlMs: 5 * 60_000 },
+  )
   const [hidden, setHidden] = useState<string | null>(null)
   const item = data?.interstitial ?? null
   if (!item || hidden === item.id) return null
@@ -66,7 +77,12 @@ export function InterstitialBanner(): ReactElement | null {
       </div>
       <div className="hm-banner__actions">
         {to ? (
-          <Button variant="secondary" size="md" to={to} onClick={() => logEvent('click', { interstitialId: item.id, action: 'cta' })}>
+          <Button
+            variant="secondary"
+            size="md"
+            to={to}
+            onClick={() => logEvent('click', { interstitialId: item.id, action: 'cta' })}
+          >
             {item.cta}
           </Button>
         ) : (

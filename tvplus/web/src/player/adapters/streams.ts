@@ -19,22 +19,34 @@ export class StreamsAdapter extends MediaElementAdapter {
 
   async mount(container: HTMLElement): Promise<void> {
     container.append(this.media)
-    const engine = new MseEngine(this.media, this.manifest, { startSec: this.opts.startSec, maxHeight: this.opts.maxHeight ?? null }, (e) => {
-      if (e.type === 'abr') {
-        if (e.from === null) return
-        this.emit({ type: 'bitrateSwitch', fromKbps: e.from.bitrateKbps, toKbps: e.to.bitrateKbps, reason: e.reason, height: e.to.height ?? null })
-      } else if (e.type === 'cdn') {
-        this.emit({ type: 'cdnSwitch', from: e.from, to: e.to, reason: e.reason })
-      } else if (e.type === 'fatal') {
-        if (e.error instanceof StaleUrlError) void this.refreshAfterStale(e.error)
-        else if (e.error instanceof RangeRequestError) this.fail('RANGE', 'Video verisi alınamadı', true)
-        else if (e.error instanceof AllCdnsFailedError) this.fail('ALL_CDNS_FAILED', 'Yayın sunucularına ulaşılamıyor', true)
-        else this.fail('MEDIA', 'Video oynatılamadı', true)
-      } else if (e.type === 'ready') {
-        this.emit({ type: 'duration', durationSec: e.durationSec })
-        this.emit({ type: 'tracks' })
-      }
-    })
+    const engine = new MseEngine(
+      this.media,
+      this.manifest,
+      { startSec: this.opts.startSec, maxHeight: this.opts.maxHeight ?? null },
+      (e) => {
+        if (e.type === 'abr') {
+          if (e.from === null) return
+          this.emit({
+            type: 'bitrateSwitch',
+            fromKbps: e.from.bitrateKbps,
+            toKbps: e.to.bitrateKbps,
+            reason: e.reason,
+            height: e.to.height ?? null,
+          })
+        } else if (e.type === 'cdn') {
+          this.emit({ type: 'cdnSwitch', from: e.from, to: e.to, reason: e.reason })
+        } else if (e.type === 'fatal') {
+          if (e.error instanceof StaleUrlError) void this.refreshAfterStale(e.error)
+          else if (e.error instanceof RangeRequestError) this.fail('RANGE', 'Video verisi alınamadı', true)
+          else if (e.error instanceof AllCdnsFailedError)
+            this.fail('ALL_CDNS_FAILED', 'Yayın sunucularına ulaşılamıyor', true)
+          else this.fail('MEDIA', 'Video oynatılamadı', true)
+        } else if (e.type === 'ready') {
+          this.emit({ type: 'duration', durationSec: e.durationSec })
+          this.emit({ type: 'tracks' })
+        }
+      },
+    )
     this.engine = engine
     try {
       await engine.start()
@@ -60,7 +72,13 @@ export class StreamsAdapter extends MediaElementAdapter {
       return
     }
     this.staleRefreshes.push(now)
-    devbus.emit('player', 'imzalı adres reddedildi: manifest yenileniyor', { viewableId: this.viewableId, state: 'buffering', positionSec: Math.round(this.media.currentTime), status: err.status, code: err.code })
+    devbus.emit('player', 'imzalı adres reddedildi: manifest yenileniyor', {
+      viewableId: this.viewableId,
+      state: 'buffering',
+      positionSec: Math.round(this.media.currentTime),
+      status: err.status,
+      code: err.code,
+    })
     try {
       const m = await this.opts.refreshManifest()
       if (this.destroyed) return
@@ -72,7 +90,11 @@ export class StreamsAdapter extends MediaElementAdapter {
   }
 
   override audioOptions(): AudioOption[] {
-    return (this.engine?.audioTracks() ?? []).map((t) => ({ id: t.trackId, label: audioTrackLabel(t), language: t.language }))
+    return (this.engine?.audioTracks() ?? []).map((t) => ({
+      id: t.trackId,
+      label: audioTrackLabel(t),
+      language: t.language,
+    }))
   }
   override currentAudio(): string | null {
     return this.engine?.currentAudioTrack()?.trackId ?? null
@@ -90,7 +112,10 @@ export class StreamsAdapter extends MediaElementAdapter {
     }))
   }
   override currentQuality(): { lockedId: string | null; activeId: string | null } {
-    return { lockedId: this.engine?.lockedStreamId() ?? null, activeId: this.engine?.playingVideoStream()?.streamId ?? null }
+    return {
+      lockedId: this.engine?.lockedStreamId() ?? null,
+      activeId: this.engine?.playingVideoStream()?.streamId ?? null,
+    }
   }
   override selectQuality(id: string | null): void {
     this.engine?.setQualityLock(id)
