@@ -12,9 +12,9 @@
 Hukuki not: ``odsgm.meb.gov.tr`` ve ``www.meb.gov.tr`` robots.txt dosyaları yapay zekâ tarayıcılarını (GPTBot,
 ClaudeBot, ChatGPT-User, Google-Extended, CCBot…) yasaklar; ``cdn.eba.gov.tr`` bütün botları yasaklar.
 Bu yüzden bu modülde MEB ya da EBA sitelerinden indirme yapan hiçbir kod yoktur ve eklenmemelidir:
-kitapçıkları tarayıcınızla elle indirip bir klasöre koyun, modül yalnızca yerel PDF dosyalarını okur.
-Kitapçıkların her hakkı MEB'e aittir: çıkarılan soruları yalnızca kişisel araştırmada kullanın; depoya
-koymayın, paylaşmayın.
+kitapçıkları tarayıcınla elle indirip bir klasöre koy, modül yalnızca yerel PDF dosyalarını okur.
+Kitapçıkların her hakkı MEB'e aittir: çıkarılan soruları yalnızca kişisel araştırmada kullan; depoya
+koyma, paylaşma.
 """
 
 from __future__ import annotations
@@ -354,8 +354,8 @@ def _json_indir(requests, url: str, ad: str) -> list:
             )
         return veri
     raise RuntimeError(
-        f"TurkishMMLU indirilemedi ({ad}): {son_hata}. İnternet bağlantınızı ve huggingface.co erişimini "
-        "denetleyip yeniden deneyin."
+        f"TurkishMMLU indirilemedi ({ad}): {son_hata}. İnternet bağlantını ve huggingface.co erişimini "
+        "denetleyip yeniden dene."
     ) from son_hata
 
 
@@ -1399,7 +1399,7 @@ def _pymupdf():
     try:
         import pymupdf
     except ImportError as e:
-        raise RuntimeError("PDF okumak için pymupdf gerekli: pip install -e '.[pdf]'") from e
+        raise RuntimeError("PDF okumak için pymupdf gerekli: pip install -e \".[pdf]\"") from e
     return pymupdf
 
 
@@ -1681,7 +1681,7 @@ def pdf_klasoru_ayristir(
     dosyalar = pdf_dosyalari(klasor)
     if not dosyalar:
         raise FileNotFoundError(
-            f"{klasor} içinde PDF bulunamadı. Kitapçıkları tarayıcınızla indirip bu klasöre koyun."
+            f"{klasor} içinde PDF bulunamadı. Kitapçıkları tarayıcınla indirip bu klasöre koy."
         )
     _pymupdf()  # kurulu değilse her dosya için ayrı ayrı "okunamadı" demek yerine hemen dur
     haric = tuple(haric_dersler)

@@ -55,6 +55,14 @@ def test_normallestir_iki_kez_uygulanınca_degismez():
     assert normallestir("a\ud800b") == "a�b"  # tek başına vekil karakter UTF-8'e yazılamaz
 
 
+def test_normallestir_noktali_i_kalintisini_tek_seferde_temizler():
+    # "İ".lower() → "i" + U+0307; birden çok nokta ya da arada sıfır genişlikli karakter / yumuşak tire olabilir.
+    for m in ["i\u0307\u0307", "i\u200b\u0307", "i\u00ad\u0307", "\u0130stanbul".lower(), "i\ufeff\u0307\u200d\u0307"]:
+        bir = normallestir(m)
+        assert "\u0307" not in bir and bir.startswith("i"), repr(m)
+        assert normallestir(bir) == bir, repr(m)
+
+
 def test_on_bolutle_bosluk_bayragi():
     birimler = on_bolutle("Ev 12, (iyi)\nson")
     assert birimler == [

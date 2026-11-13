@@ -110,8 +110,10 @@ class EgitimAyarlari:
     """Verinin üzerinden kaç kez geçileceği (epoch). Adım sayısı veriden hesaplanır."""
     en_fazla_adim: int = 0
     """0 değilse ``donem``den önce bu adımda durur."""
-    yigin: int = 32
-    birikim: int = 1
+    yigin: int = 8
+    """Bir seferde işlenen dizi sayısı; bellek bununla ölçeklenir."""
+    birikim: int = 4
+    """Gradyan biriktirme: adım başına ``yigin × birikim`` dizi."""
     ogrenme_orani: float = 6e-4
     min_oran: float = 0.1
     """Kosinüs düşüşünün sonunda öğrenme oranı = ogrenme_orani × min_oran."""
@@ -147,7 +149,7 @@ class Ayarlar:
     tdk: EgitimAyarlari = field(default_factory=EgitimAyarlari)
     meb: EgitimAyarlari = field(
         default_factory=lambda: EgitimAyarlari(
-            donem=4.0, yigin=16, ogrenme_orani=2e-4, isinma_adimi=50, degerlendirme_her=100, erken_durdurma=6
+            donem=4.0, yigin=16, birikim=1, ogrenme_orani=2e-4, isinma_adimi=50, degerlendirme_her=100, erken_durdurma=6
         )
     )
     yollar: Yollar = field(default_factory=Yollar)
@@ -203,7 +205,9 @@ def _deger_coz(ham: str) -> Any:
         return ham
 
 
-def _bolum_uygula(nesne: Any, veriler: dict, yol: str) -> Any:
+def _bolum_uygula(nesne: Any, veriler: Any, yol: str) -> Any:
+    if not isinstance(veriler, dict):
+        raise AyarHatasi(f"{yol} bir bölümdür, tek bir değer olamaz; bir alanı değiştirmek için: --ayar {yol}.<alan>=<değer>")
     gecerli = {f.name: f for f in fields(nesne)}
     degisim = {}
     for anahtar, deger in veriler.items():
@@ -213,14 +217,38 @@ def _bolum_uygula(nesne: Any, veriler: dict, yol: str) -> Any:
     return replace(nesne, **degisim)
 
 
+TOML_IPUCLARI = (
+    "İpuçları: metin değerleri tırnak içinde yazılır (konum = \"rope\"); true ve false küçük harfle yazılır; "
+    "ondalık ayırıcı noktadır (0.1, 0,1 değil); dosyayı UTF-8 olarak kaydet."
+)
+
+
+def toml_oku(yol: Path) -> dict:
+    """TOML dosyasını okur; yazım ve kodlama hatalarını açıklamalı ``AyarHatasi``ya çevirir.
+
+    ``utf-8-sig``: Not Defteri'nin "BOM'lu UTF-8" kaydı da okunur.
+    """
+    try:
+        metin = yol.read_text(encoding="utf-8-sig")
+    except UnicodeDecodeError as e:
+        raise AyarHatasi(
+            f"{yol} UTF-8 değil (bayt {e.start}). Dosyayı UTF-8 olarak kaydet (Not Defteri: Farklı Kaydet → "
+            "Kodlama: UTF-8)."
+        ) from e
+    try:
+        return tomllib.loads(metin)
+    except tomllib.TOMLDecodeError as e:
+        raise AyarHatasi(f"{yol} okunamadı: {e}\n{TOML_IPUCLARI}") from e
+
+
 def ayarlari_yukle(yol: Path | None = None, gecersiz_kilma: list[str] | None = None) -> Ayarlar:
     ayarlar = Ayarlar()
     ham: dict = {}
     if yol is not None:
         yol = Path(yol)
-        if not yol.exists():
+        if not yol.is_file():
             raise AyarHatasi(f"Ayar dosyası bulunamadı: {yol}")
-        ham = tomllib.loads(yol.read_text(encoding="utf-8"))
+        ham = toml_oku(yol)
         ayarlar.kok = yol.resolve().parent
     for k in gecersiz_kilma or []:
         if "=" not in k:
@@ -238,6 +266,8 @@ def ayarlari_yukle(yol: Path | None = None, gecersiz_kilma: list[str] | None = N
         if ad in ham:
             setattr(ayarlar, ad, _bolum_uygula(getattr(ayarlar, ad) if hasattr(ayarlar, ad) else sinif(), ham.pop(ad), ad))
     egitim = ham.pop("egitim", {})
+    if not isinstance(egitim, dict):
+        raise AyarHatasi("egitim bir bölümdür, tek bir değer olamaz; örneğin: --ayar egitim.tdk.yigin=8")
     for asama in ("tdk", "meb"):
         if asama in egitim:
             setattr(ayarlar, asama, _bolum_uygula(getattr(ayarlar, asama), egitim.pop(asama), f"egitim.{asama}"))
@@ -258,7 +288,8 @@ def ayarlari_yukle(yol: Path | None = None, gecersiz_kilma: list[str] | None = N
 def eksik_karar_mesaji(eksikler: list[str]) -> str:
     satirlar = [
         "Gömme kararları henüz verilmedi. Bu kararlar sana bırakıldı; ayarlar.toml dosyasının [gomme] bölümünü",
-        "doldur (ya da deneme için --ayar gomme.<alan>=<değer> kullan). Ayrıntılar: GOMME_KARARLARI.md",
+        "doldur (ya da deneme için --ayar gomme.<alan>=<değer> kullan). Eğitim de hesapla da on kararın hepsini",
+        "ister. Ayrıntılar: GOMME_KARARLARI.md",
         "",
     ]
     for ad, aciklama, secenek in GOMME_KARARLARI:

@@ -1,101 +1,19 @@
 """Komut satırının tamamı: tdk-derlem → tokenizer → veri → aşama 1 → MEB soruları → aşama 2 → değerlendirme.
 
-Tüm veri sentetiktir. Aşağıdaki gömme değerleri yalnız testin çalışması içindir, bir öneri değildir.
+Tüm veri sentetiktir. Gömme değerleri (conftest.TEST_AYARLARI) yalnız testin çalışması içindir, bir öneri değildir.
 """
 
 import json
-import random
 
-from conftest import CUMLELER, KELIME_LISTESI, SENTETIK_MADDELER
+from conftest import calisma_kur, sentetik_sorular
 
 from turkce_model import meb
 from turkce_model.cli import main
 
-TEST_AYARLARI = """
-[gomme]
-boyut = 32
-konum = "alibi"
-cikis_baglama = false
-faktor_boyutu = 16
-kategori_gommesi = true
-bicim_paylasimi = true
-olcek = false
-norm = "rmsnorm"
-baslatma_std = "otomatik"
-dropout = 0.0
-
-[model]
-katman = 1
-bas_boyutu = 16
-baglam = 16
-dropout = 0.0
-
-[tokenizer]
-boyut = 700
-en_az_sayi = 2
-
-[egitim.tdk]
-donem = 1
-en_fazla_adim = 12
-yigin = 4
-isinma_adimi = 2
-degerlendirme_her = 6
-degerlendirme_yigini = 2
-
-[egitim.meb]
-donem = 1
-en_fazla_adim = 8
-yigin = 4
-isinma_adimi = 2
-degerlendirme_her = 4
-degerlendirme_yigini = 2
-kayip = "cevap"
-"""
-
-
-def _sentetik_maddeler(n: int) -> list[dict]:
-    rnd = random.Random(0)
-    maddeler = list(SENTETIK_MADDELER)
-    for i in range(n):
-        kelime = rnd.choice(KELIME_LISTESI)
-        maddeler.append(
-            {
-                "madde_id": f"s{i}",
-                "madde": kelime,
-                "anlamlarListe": [{"anlam": rnd.choice(CUMLELER), "fiil": "0", "ozelliklerListe": [{"tam_adi": "isim"}]}],
-            }
-        )
-    return maddeler
-
-
-def _sentetik_sorular(n: int) -> list[meb.Soru]:
-    rnd = random.Random(1)
-    dersler = ["Biyoloji", "Tarih", "Türk Dili ve Edebiyatı"]
-    sorular = []
-    for i in range(n):
-        secenekler = [f"{rnd.choice(KELIME_LISTESI)} {rnd.choice(KELIME_LISTESI)}" for _ in range(4)]
-        sorular.append(
-            meb.Soru(
-                kimlik=f"test:{i}",
-                kaynak="meb-pdf",
-                ders=rnd.choice(dersler),
-                soru=f"Aşağıdakilerden hangisi {i}. soruda doğrudur?",
-                secenekler=secenekler,
-                cevap=rnd.randrange(4),
-            )
-        )
-    return meb.bol(sorular)
-
 
 def test_tum_boru_hatti(tmp_path, monkeypatch, capsys):
     monkeypatch.chdir(tmp_path)
-    (tmp_path / "ayarlar.toml").write_text(TEST_AYARLARI, encoding="utf-8")
-    tdk = tmp_path / "veri" / "tdk"
-    tdk.mkdir(parents=True)
-    (tdk / "kelimeler.txt").write_text("\n".join(KELIME_LISTESI), encoding="utf-8")
-    with (tdk / "maddeler.jsonl").open("w", encoding="utf-8") as f:
-        for m in _sentetik_maddeler(300):
-            f.write(json.dumps({"ara": m["madde"], "durum": "tamam", "sonuc": [m]}, ensure_ascii=False) + "\n")
+    calisma_kur(tmp_path)
 
     assert main(["durum"]) == 0
     assert main(["tdk-derlem"]) == 0
@@ -114,15 +32,18 @@ def test_tum_boru_hatti(tmp_path, monkeypatch, capsys):
     assert main(["egit", "--asama", "tdk", "--devam", "--deney", deney.name, "--ayar", "model.dropout=0.2"]) == 2
 
     (tmp_path / "veri" / "meb").mkdir(parents=True)
-    meb.soru_yaz(_sentetik_sorular(60), tmp_path / "veri" / "meb" / "meb_pdf.jsonl")
+    meb.soru_yaz(sentetik_sorular(60), tmp_path / "veri" / "meb" / "meb_pdf.jsonl")
     assert main(["veri-hazirla"]) == 0
     assert main(["egit", "--asama", "meb", "--cihaz", "cpu"]) == 0
     assert (deney / "meb" / "en_iyi.pt").exists()
     assert main(["sor", "--adet", "1", "--cihaz", "cpu"]) == 0
     assert main(["tanimla", "kitap", "--uzunluk", "5", "--tohum", "0", "--cihaz", "cpu"]) == 0
 
+    assert main(["degerlendir", "--cihaz", "cpu"]) == 0  # --asama verilmezse MEB modeli değerlendirilir
+    kayitlar = [json.loads(s) for s in (tmp_path / "ciktilar" / "ilerleme.jsonl").read_text(encoding="utf-8").splitlines()]
+    assert [k["asama"] for k in kayitlar] == ["tdk", "meb", "meb"]
     ilerleme = (tmp_path / "ciktilar" / "ilerleme.md").read_text(encoding="utf-8")
-    assert ilerleme.count(deney.name) == 2  # iki aşama, iki satır
+    assert ilerleme.count(deney.name) == 3  # iki aşama + elle değerlendirme
     cikti = capsys.readouterr().out
     assert "MEB test" in cikti and "rastgele" in cikti
 

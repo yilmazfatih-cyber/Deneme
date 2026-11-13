@@ -602,7 +602,7 @@ def test_pymupdf_yoksa_anlasilir_hata_ve_hedef_ezilmez(tmp_path, monkeypatch):
     hedef = tmp_path / "meb.jsonl"
     once = _onceki_cikti(hedef)
     monkeypatch.setitem(sys.modules, "pymupdf", None)  # "import pymupdf" → ImportError
-    with pytest.raises(RuntimeError, match=r"pip install -e '\.\[pdf\]'"):
+    with pytest.raises(RuntimeError, match=r'pip install -e "\.\[pdf\]"'):
         meb.pdf_klasoru_ayristir(klasor, hedef, yaz=lambda m: None)
     with pytest.raises(RuntimeError, match="pymupdf"):
         meb.pdf_ayristir(klasor / "kitapcik.pdf", yaz=lambda m: None)

@@ -97,16 +97,30 @@ class AkisVeri:
         return torch.from_numpy(x), torch.from_numpy(y)
 
     def pencereler(self, t: int, b: int, en_fazla: int | None = None) -> Iterator[tuple[torch.Tensor, torch.Tensor]]:
-        """Akışı baştan sona örtüşmeyen pencerelerle tarar (tam değerlendirme için)."""
-        n = len(self.veri) - 1
-        baslar = list(range(0, max(n - t, 0) + 1, t)) or [0]
+        """Akışın her hedef token'ını tam bir kez puanlayan pencereler (tam değerlendirme için).
+
+        Pencereler örtüşmez; artan kuyruk için akışın sonuna hizalı son bir pencere eklenir ve onun zaten
+        puanlanmış hedefleri ``-100`` ile maskelenir. Böylece BPC, bağlam uzunluğundan bağımsız olarak akışın
+        tamamını kapsar.
+        """
+        n = len(self.veri) - 1  # hedef sayısı
+        if n <= 0:
+            return
+        uz = min(t, n)
+        baslar = list(range(0, n - uz + 1, uz))
+        if baslar[-1] + uz < n:
+            baslar.append(n - uz)  # kuyruk: akış sonuna hizalı son pencere
         if en_fazla is not None:
             baslar = baslar[:en_fazla]
+        puanli = 0  # bu konuma kadarki hedefler puanlandı
         for k in range(0, len(baslar), b):
             grup = baslar[k : k + b]
-            uz = min(t, n)
             x = np.stack([self.veri[i : i + uz] for i in grup]).astype(np.int64)
             y = np.stack([self.veri[i + 1 : i + 1 + uz] for i in grup]).astype(np.int64)
+            for r, i in enumerate(grup):
+                if i < puanli:
+                    y[r, : puanli - i] = -100
+                puanli = i + uz
             yield torch.from_numpy(x), torch.from_numpy(y)
 
 

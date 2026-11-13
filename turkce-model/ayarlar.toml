@@ -1,14 +1,17 @@
 # Sıfırdan Türkçe dil modeli — ayarlar
 #
-# Komutlar bu dosyayı bulunduğu klasörden okur. Bir ayarı dosyayı değiştirmeden denemek için:
+# Komutları bu dosyanın bulunduğu klasörde çalıştır; veri/ ve ciktilar/ bu klasöre göredir.
+# Gömme kararları dolduktan sonra bir ayarı dosyayı değiştirmeden denemek için:
 #   python -m turkce_model hesapla --ayar gomme.boyut=384 --ayar model.katman=8
-# Farklı deneyleri yan yana tutmak için bu dosyanın kopyasını kullan: --ayarlar deney2.toml
+# Gömme ve model ayarı farklı deneyler kendiliğinden ayrı klasörlere yazılır. Yalnız eğitim ayarı farklıysa
+# --deney <ad> ver. Tokenizer ayarı farklı bir kopyada (--ayarlar deney2.toml) [yollar] ciktilar'ı da değiştir:
+# tokenizer, hazır veri ve ilerleme tablosu o klasördedir.
 
 # =============================================================================================
 # GÖMME (EMBEDDING) KARARLARI — SENİN
 # Hepsi bilerek "KARAR_VER" bırakıldı; eğitim bunlar dolmadan başlamaz. Her birinin ne yaptığı,
 # neyi değiştirdiği ve birbirleriyle etkileşimleri: GOMME_KARARLARI.md
-# Kararının etkisini görmek için: python -m turkce_model hesapla   (parametre sayısı, bellek, uyarılar)
+# On karar dolunca etkisini görmek için: python -m turkce_model hesapla   (parametre, bellek, uyarılar)
 # =============================================================================================
 [gomme]
 boyut = "KARAR_VER"             # d_model, 64'ün katı: 128 | 256 | 384 | 512 | 768 …
@@ -56,14 +59,15 @@ ciktilar = "ciktilar"   # tokenizer, hazır veri, modeller, ilerleme tablosu —
 [egitim.tdk]
 donem = 10              # derlemin üzerinden kaç kez geçilecek (adım sayısı veriden hesaplanır)
 en_fazla_adim = 0       # 0 = sınırsız
-yigin = 32              # her adımda kaç dizi (bellek yetmezse düşür, birikim'i artır)
-birikim = 1             # gradyan biriktirme
+yigin = 8               # bir seferde kaç dizi; bellek bununla ölçeklenir (sözlük 32000, bağlam 512: dizi başına ~0,5 GB)
+birikim = 4             # gradyan biriktirme: adım başına yigin × birikim = 32 dizi. Bellek yetmezse yigin'i
+                        # küçült, birikim'i aynı oranda büyüt (sonuç değişmez); ekran kartında tersini yap
 ogrenme_orani = 6e-4
 min_oran = 0.1
-isinma_adimi = 200
+isinma_adimi = 200      # kısa eğitimde en fazla toplam adımın beşte birine iner
 agirlik_azaltma = 0.1
 gradyan_kirpma = 1.0
-degerlendirme_her = 100
+degerlendirme_her = 100 # kısa eğitimde sıklaşır: en az ~10 değerlendirme olsun diye
 degerlendirme_yigini = 20
 erken_durdurma = 8      # doğrulama kaybı bu kadar değerlendirme iyileşmezse dur (0 = kapalı)
 hassasiyet = "otomatik" # "otomatik" | "fp32" | "bf16" | "fp16"
@@ -75,7 +79,8 @@ tohum = 1337
 # =============================================================================================
 [egitim.meb]
 donem = 4
-yigin = 16
+yigin = 16              # sorular kısa: bellek aşama 1'den azdır
+birikim = 1
 ogrenme_orani = 2e-4
 isinma_adimi = 50
 degerlendirme_her = 100

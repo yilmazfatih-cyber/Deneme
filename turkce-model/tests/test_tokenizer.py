@@ -1,6 +1,8 @@
 import random
 
-from conftest import CUMLELER
+from conftest import CUMLELER, KELIME_LISTESI, SENTETIK_MADDELER
+
+from turkce_model.tdk import kokleri_cikar
 
 from turkce_model.tokenizer import (
     BOSLUK_ID,
@@ -10,7 +12,9 @@ from turkce_model.tokenizer import (
     KATEGORILER,
     OZEL_TOKENLAR,
     TUM_BUYUK,
+    TokenizerAyarlari,
     TurkceTokenizer,
+    egit,
     morfolojik_mi,
 )
 
@@ -117,6 +121,18 @@ def test_daralmis_govde_yalniz_yor_onunde(tok):
     assert parcalar(tok, "adı") == ["▁ad", "ı"]
     assert parcalar(tok, "adıyor") == ["▁adı", "yor"]
     assert tok.bilgi["yor_once"] and "adı" in tok.bilgi["yor_once"]
+
+
+def test_daralma_kisiti_yalniz_kokleri_kapsar():
+    # "yemek"/"demek" gövdelerinin daralmış biçimleri (yi, di) ek olarak da yazılır (Türkiye'yi, 1990'dı).
+    # -yor kısıtı yalnız kök token'larına uygulanmalı; yoksa kesme işaretinden sonraki ek harf harf bölünür.
+    kokler = kokleri_cikar(KELIME_LISTESI + ["yemek", "demek", "ankara", "türkiye"], SENTETIK_MADDELER)
+    cumleler = CUMLELER + ["Ankara'yı ve Türkiye'yi gördü; 1990'dı. Biri yiyor, biri diyor. Ankara'ya gitti."] * 3
+    tok = egit(cumleler * 30, kokler, TokenizerAyarlari(boyut=900, en_az_sayi=2), yaz=lambda *a: None)
+    assert {"di", "yi"} <= set(tok.bilgi["yor_once"])
+    assert all(tok.kategoriler[i] == KAT["kok"] for i in tok._yor_once)
+    assert parcalar(tok, "Ankara'yı")[-2:] == ["'", "yı"]
+    assert parcalar(tok, "Türkiye'yi")[-2:] == ["'", "yi"]
 
 
 def test_mastar_govde_arti_mek(tok):

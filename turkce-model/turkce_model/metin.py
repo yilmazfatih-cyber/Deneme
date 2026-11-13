@@ -92,9 +92,11 @@ def normallestir(metin: str) -> str:
     m = unicodedata.normalize("NFC", m)
     m = m.replace("\r\n", "\n").replace("\r", "\n")
     m = m.replace(" ", "\n").replace(" ", "\n").replace("\u0085", "\n")  # satır/paragraf ayırıcıları
-    m = m.replace("i̇", "i")  # yanlış küçültmeden kalan "i + üst nokta"
     m = m.replace("…", "...")
     m = m.translate(_DEGISIM)
+    # Yanlış küçültmeden kalan "i + üst nokta" (birden çok nokta olabilir). Sıfır genişlikli karakterler
+    # silindikten sonra yapılır; yoksa ikinci bir normalleştirme sonucu değiştirirdi.
+    m = re.sub("i̇+", "i", m)
     m = re.sub(r" {2,}", " ", m)
     m = re.sub(r" *\n *", "\n", m)
     m = re.sub(r"\n{3,}", "\n\n", m)
@@ -174,6 +176,11 @@ def unlu_uyumu(son_unlu: str) -> tuple[str, str]:
     else:
         i = "ü" if yuvarlak else "i"
     return a, i
+
+
+def binlik(n: int | float) -> str:
+    """Binlik ayırıcılı tam sayı, Türkçe yazımla: ``1234567 → "1.234.567"``."""
+    return f"{round(n):,}".replace(",", ".")
 
 
 def son_unlu(kelime: str) -> str | None:

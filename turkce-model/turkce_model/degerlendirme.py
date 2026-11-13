@@ -16,6 +16,7 @@ from pathlib import Path
 import torch
 import torch.nn.functional as F
 
+from .metin import binlik
 from .tokenizer import TurkceTokenizer
 from .veri import AkisVeri
 
@@ -47,9 +48,11 @@ def akis_kaybi(
         x, y = x.to(cihaz), y.to(cihaz)
         with baglam_yoneticisi():
             logit, _ = model(x)
-        nll = F.cross_entropy(logit.float().reshape(-1, logit.size(-1)), y.reshape(-1), reduction="sum")
+        nll = F.cross_entropy(
+            logit.float().reshape(-1, logit.size(-1)), y.reshape(-1), reduction="sum", ignore_index=-100
+        )
         toplam += float(nll)
-        sayi += y.numel()
+        sayi += int((y != -100).sum())
     ortalama = toplam / max(sayi, 1)
     return {"kayip": ortalama, "sasirma": math.exp(min(ortalama, 50)), "toplam_nll": toplam, "token": sayi}
 
@@ -74,7 +77,8 @@ def secenek_puanlari(
 ) -> dict[str, list[float]]:
     """Her seçenek için iki puan:
 
-    * ``metin``: " C) seçenek metni" devamının token başına ortalama log-olasılığı,
+    * ``metin``: " C)" verildikten sonra şık metninin token başına ortalama log-olasılığı (harf etiketi hariç;
+      yoksa yalnız A–D ile eğitilmiş bir modelin harf önyargısı 5 şıklı sınavda E'yi bastırırdı),
     * ``harf``: yalnız " C)" kısmının log-olasılığı (şıklar istemde listelidir).
     """
     from .meb import HARFLER, cevap_metni, istem
@@ -106,7 +110,8 @@ def secenek_puanlari(
         hedef = torch.tensor(d[1:])
         tok_logp = logp[r, torch.arange(n), hedef]
         dv = tok_logp[n - devam_uzunluk[r] :]
-        metin.append(float(dv.mean()) if len(dv) else float("-inf"))
+        metin_kismi = dv[harf_uzunluk[r] :]
+        metin.append(float(metin_kismi.mean()) if len(metin_kismi) else float("-inf"))
         harf.append(float(dv[: harf_uzunluk[r]].sum()) if len(dv) else float("-inf"))
     return {"metin": metin, "harf": harf}
 
@@ -170,7 +175,17 @@ def _sayi(x: float | None, basamak: int = 3) -> str:
 
 
 def _milyon(x: float | None) -> str:
-    return "—" if x is None else f"{x / 1e6:.2f} M"
+    """Büyük sayılar milyon (M) olarak, bir milyonun altındakiler binlik ayırıcıyla."""
+    if x is None:
+        return "—"
+    return f"{x / 1e6:.2f} M" if x >= 1e6 else binlik(x)
+
+
+def _dogruluk(d: dict) -> str:
+    """"metin / harf (taban)" — her doğruluk kendi rastgele tahmin tabanıyla (4 şıkta %25, 5 şıkta %20)."""
+    if not d or not d.get("n"):
+        return "—"
+    return f"{_yuzde(d.get('dogruluk_metin'))} / {_yuzde(d.get('dogruluk_harf'))} (taban {_yuzde(d.get('rastgele'))}, n={d['n']})"
 
 
 def ilerleme_ekle(cikti_klasoru: Path, kayit: dict) -> Path:
@@ -184,23 +199,30 @@ def ilerleme_ekle(cikti_klasoru: Path, kayit: dict) -> Path:
     satirlar = [
         "# İlerleme",
         "",
-        "Her eğitim ya da değerlendirme sonunda bir satır eklenir. BPC (karakter başına bit) düştükçe model Türkçeyi",
-        "daha iyi tahmin ediyor demektir; farklı tokenizer'lar arasında da karşılaştırılabilir. Doğruluklar her zaman",
-        "rastgele tahmin tabanıyla birlikte okunmalı.",
+        "Her eğitim ya da değerlendirme sonunda bir satır eklenir. BPC (karakter başına bit), TDK doğrulama",
+        "maddelerinin tamamı üzerinden hesaplanır; düştükçe model Türkçeyi daha iyi tahmin ediyor demektir ve aynı",
+        "doğrulama metni üzerinde farklı tokenizer'lar arasında da karşılaştırılabilir. Doğruluklar \"metin / harf\"",
+        "yöntemleriyle ve her biri kendi rastgele tahmin tabanıyla verilir (4 şıkta %25, 5 şıkta %20); n küçükken",
+        "birkaç puanlık fark gürültüdür. MEB ince ayarı yalnız A–D şıklı sorularla yapılır.",
         "",
-        "| Zaman | Deney | Aşama | Adım | Parametre (gömme dışı) | Görülen token | Doğr. kaybı | BPC | MEB doğr. (metin / harf) | MEB test | TurkishMMLU (metin / harf) | Rastgele |",
-        "| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+        "| Zaman | Deney | Aşama | Adım | Sözlük | Parametre (gömme dışı) | Görülen token | Doğr. kaybı | BPC (TDK) "
+        "| BPC (ek metin) | MEB doğrulama | MEB test | TurkishMMLU | Not |",
+        "| --- | --- | --- | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |",
     ]
     for k in kayitlar:
-        meb_d, meb_t, mmlu = k.get("meb_dogrulama") or {}, k.get("meb_test") or {}, k.get("mmlu") or {}
+        sozluk = k.get("sozluk") or {}
+        sozluk_metni = f"{sozluk.get('boyut', '—')} ({sozluk.get('imza', '')[:6]})" if sozluk else "—"
+        notlar = []
+        if k.get("durduruldu"):
+            notlar.append("durduruldu")
+        if k.get("ek_paragraf"):
+            notlar.append(f"+{k['ek_paragraf']} ek paragraf")
         satirlar.append(
-            f"| {k.get('zaman', '')} | {k.get('deney', '')} | {k.get('asama', '')} | {k.get('adim', '—')} | "
+            f"| {k.get('zaman', '')} | {k.get('deney', '')} | {k.get('asama', '')} | {k.get('adim', '—')} | {sozluk_metni} | "
             f"{_milyon(k.get('parametre'))} ({_milyon(k.get('parametre_gomme_disi'))}) | {_milyon(k.get('gorulen_token'))} | "
-            f"{_sayi(k.get('dogrulama_kaybi'))} | {_sayi(k.get('bpc'))} | "
-            f"{_yuzde(meb_d.get('dogruluk_metin'))} / {_yuzde(meb_d.get('dogruluk_harf'))} | "
-            f"{_yuzde(meb_t.get('dogruluk_metin'))} | "
-            f"{_yuzde(mmlu.get('dogruluk_metin'))} / {_yuzde(mmlu.get('dogruluk_harf'))} | "
-            f"{_yuzde(mmlu.get('rastgele') or meb_t.get('rastgele') or meb_d.get('rastgele'))} |"
+            f"{_sayi(k.get('dogrulama_kaybi'))} | {_sayi(k.get('bpc'))} | {_sayi(k.get('bpc_ek'))} | "
+            f"{_dogruluk(k.get('meb_dogrulama') or {})} | {_dogruluk(k.get('meb_test') or {})} | "
+            f"{_dogruluk(k.get('mmlu') or {})} | {', '.join(notlar)} |"
         )
     satirlar += [
         "",

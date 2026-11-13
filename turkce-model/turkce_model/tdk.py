@@ -94,6 +94,39 @@ def _tamamlananlar(cikti: Path) -> set[str]:
     return tamam
 
 
+_ARA_DURUM = re.compile(r'^\{"ara": ("(?:[^"\\]|\\.)*"), "durum": "(\w+)"')
+
+
+def indirilen_sayisi(cikti: Path) -> int:
+    """``maddeler.jsonl``'de tamamlanmış (``tamam`` ya da ``yok``) farklı kelime sayısı.
+
+    Satırın yalnız başı okunur (``{"ara": …, "durum": …``); büyük dosyada her satırı JSON olarak çözmekten hızlıdır.
+    """
+    if not cikti.exists():
+        return 0
+    tamam: set[str] = set()
+    with cikti.open(encoding="utf-8", errors="replace") as f:
+        for satir in f:
+            m = _ARA_DURUM.match(satir)
+            if m is None:
+                try:
+                    kayit = json.loads(satir)
+                except json.JSONDecodeError:
+                    continue
+                ara, durum = kayit.get("ara"), kayit.get("durum")
+            else:
+                ara, durum = json.loads(m.group(1)), m.group(2)
+            if durum in ("tamam", "yok"):
+                tamam.add(ara)
+    return len(tamam)
+
+
+def sayac_metni(sayac: dict[str, int]) -> str:
+    """İndirme sayacını okunur Türkçe metne çevirir."""
+    adlar = {"tamam": "indirildi", "yok": "TDK'da yok", "hata": "hata", "atlanan": "zaten vardı"}
+    return ", ".join(f"{adlar.get(k, k)} {v}" for k, v in sayac.items())
+
+
 def maddeleri_indir(
     kelimeler: list[str],
     cikti: Path,
@@ -135,7 +168,7 @@ def maddeleri_indir(
     yaz(
         f"{len(hedefler)} madde indirilecek ({sayac['atlanan']} zaten var). "
         f"Bekleme {bekleme} sn → tahmini süre ~{_sure(len(hedefler) * (bekleme + 0.15))}. "
-        "Ctrl+C ile durdurup aynı komutla devam edebilirsiniz."
+        "Ctrl+C ile durdurup aynı komutla devam edebilirsin."
     )
     basla = time.time()
     try:
@@ -148,7 +181,7 @@ def maddeleri_indir(
                 if i % ilerleme_her == 0 or i == len(hedefler):
                     hiz = i / max(time.time() - basla, 1e-9)
                     kalan = (len(hedefler) - i) / max(hiz, 1e-9)
-                    yaz(f"  {i}/{len(hedefler)}  {hiz:.1f} madde/sn  kalan ~{_sure(kalan)}  {sayac}")
+                    yaz(f"  {i}/{len(hedefler)}  {hiz:.1f} madde/sn  kalan ~{_sure(kalan)}  ({sayac_metni(sayac)})")
                 time.sleep(bekleme)
     except KeyboardInterrupt:
         yaz("\nDurduruldu. Aynı komutu yeniden çalıştırınca kaldığı yerden devam eder.")

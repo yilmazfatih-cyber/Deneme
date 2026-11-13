@@ -163,9 +163,14 @@ class TurkceTokenizer:
         ]
         # -yor önündeki daralmış gövdeler (bekli-, anlı-) yalnız "yor" ile devam eden kelimelerde kullanılabilir;
         # yoksa "işi" (işemek → işi-yor) gibi biçimler "iş·i"yi gasp ederdi.
+        # Yalnız kök token'ları kısıtlanır: aynı yazılışlı ek ("yı" belirtme, "dı" geçmiş) ya da BPE parçası
+        # ("▁mı") etkilenmesin; yoksa "Ankara'yı" → ' y ı olurdu.
         yor_once = self.bilgi.get("yor_once") or []
         self._yor_once = frozenset(
-            self.kimlik[p] for k in yor_once for p in (ISARET + k, k) if p in self.kimlik
+            self.kimlik[p]
+            for k in yor_once
+            for p in (ISARET + k, k)
+            if p in self.kimlik and self.kategoriler[self.kimlik[p]] == KAT["kok"]
         )
         self._onbellek: dict[tuple[str, bool], tuple[int, ...]] = {}
 
