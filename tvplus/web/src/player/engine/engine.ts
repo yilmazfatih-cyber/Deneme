@@ -10,11 +10,12 @@ import { parseSidx } from '../demux/sidx'
 import type { SegmentRef } from '../demux/types'
 import { parseWebmIndex } from '../demux/webmCues'
 import { devbus } from '../../lib/devbus'
-import { isStreamPlayable, mediaSourceCtor, streamMime } from '../net/capabilities'
+import { isStreamPlayable, mediaSourceCtor, streamMime, usesManagedMediaSource } from '../net/capabilities'
 import { nextRangeStart, toRanges } from './buffered'
 import { audioMime, defaultAudioTrackOf, pickAudioStreamOf, planAudioSwitch } from './audioSelection'
 import { cdnHealth, fetchRange, type RangeResult } from './fetcher'
 import { MediaPipeline, type MediaKind, type PipelineHost, type StreamHeader } from './pipeline'
+import { StreamingGate } from './streamingGate'
 
 export const BUFFER_GOAL_SEC = 30
 export const BACK_BUFFER_SEC = 30
@@ -114,6 +115,8 @@ export class MseEngine implements PipelineHost {
   private destroyed = false
   private fatal: Error | null = null
   private readonly onSeeking = () => this.handleSeeking()
+  /** ManagedMediaSource (iPhone): tarayıcı veri istemiyorsa yeni parça indirilmez. Klasik MSE'de hep açık. */
+  private readonly gate: StreamingGate
 
   constructor(
     media: HTMLVideoElement,
@@ -129,6 +132,10 @@ export class MseEngine implements PipelineHost {
     this.onEvent = onEvent
     this.estimator = opts.estimator ?? sharedEstimator
     this.mediaSource = new MS()
+    this.gate = new StreamingGate(this.mediaSource, usesManagedMediaSource(), (open) => {
+      devbus.emit('buffer', open ? 'akış sürüyor (startstreaming)' : 'akış durdu (endstreaming)', { managed: true })
+      if (open) this.tick()
+    })
     this.videoStreams = pickVideoStreams(manifest)
     const wanted = opts.audioTrackId ? manifest.audioTracks.find((t) => t.trackId === opts.audioTrackId) : null
     this.audioTrack = wanted ?? defaultAudioTrack(manifest.audioTracks)
@@ -197,6 +204,7 @@ export class MseEngine implements PipelineHost {
     this.destroyed = true
     if (this.timer !== null) clearInterval(this.timer)
     this.media.removeEventListener('seeking', this.onSeeking)
+    this.gate.dispose()
     this.video?.destroy()
     this.audio?.destroy()
     try {
@@ -254,8 +262,10 @@ export class MseEngine implements PipelineHost {
 
   private tick(): void {
     if (this.destroyed || this.fatal) return
-    this.video?.tick()
-    this.audio?.tick()
+    if (this.gate.allowed()) {
+      this.video?.tick()
+      this.audio?.tick()
+    }
     this.maybeEndOfStream()
     this.jumpGaps()
     const now = performance.now()

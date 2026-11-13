@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import type { ManagedProfile } from '../../../../shared/devices'
 import type { BootContext } from '../../../../shared/types'
 import { deviceClient } from '../../devices/client'
+import { assetUrl } from '../../lib/assetBase'
 import { FocusScope, useFocusable } from '../focus'
 import { adoptBoot, useTvBoot } from '../shell/session'
 import { TvAvatar, TvDialog, TvIcon, TvKeypad, TvScreen, tvToast } from '../ui'
@@ -193,7 +194,7 @@ export function TvProfiles(): ReactElement {
   return (
     <TvScreen id="profiller" title="Kim izliyor?" defaultFocus={defaultFocus}>
       <div className="tv-profiles">
-        <img className="tv-profiles__logo" src="/brand/logo.png" alt="TV+" />
+        <img className="tv-profiles__logo" src={assetUrl('/brand/logo.png')} alt="TV+" />
         <h1 className="tv-profiles__title">Kim izliyor?</h1>
         <FocusScope id="profil-listesi" orientation="horizontal" defaultFocus={defaultFocus}>
           <div className="tv-profiles__row" role="list">

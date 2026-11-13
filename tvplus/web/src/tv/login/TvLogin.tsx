@@ -8,6 +8,7 @@ import { Navigate, useNavigate } from 'react-router-dom'
 import type { BootContext } from '../../../../shared/types'
 import { apiUrl, peekBoot } from '../../api/session'
 import { deviceClient } from '../../devices/client'
+import { assetUrl } from '../../lib/assetBase'
 import { TV_PATHS } from '../shell/routes'
 import { adoptApprovedLogin, loginDemo, useTvBoot } from '../shell/session'
 import { displayAddress, formatCountdown, formatUserCode, TvButton, TvScreen, tvToast, useNow } from '../ui'
@@ -100,7 +101,7 @@ export function TvLogin(): ReactElement {
   return (
     <TvScreen id="giris" title="Giriş" defaultFocus={DEMO_ID}>
       <div className="tv-login">
-        <img className="tv-login__logo" src="/brand/logo.png" alt="TV+" />
+        <img className="tv-login__logo" src={assetUrl('/brand/logo.png')} alt="TV+" />
         <div className="tv-login__halves">
           <section className="tv-login__half tv-login__half--phone" aria-labelledby="giris-telefon">
             <h1 className="tv-login__title" id="giris-telefon">
@@ -167,7 +168,7 @@ export function TvLogin(): ReactElement {
       {welcome && (
         // Giriş ekranının üstünde opak katman; odak alttaki düğmede kalır (odak hiçbir an kaybolmaz).
         <div className="tv-login-welcome" role="status">
-          <img className="tv-login__logo" src="/brand/logo.png" alt="" />
+          <img className="tv-login__logo" src={assetUrl('/brand/logo.png')} alt="" />
           <h1 className="tv-login-welcome__title">Hoş geldin</h1>
           <p className="tv-subtle">Profiller açılıyor…</p>
         </div>

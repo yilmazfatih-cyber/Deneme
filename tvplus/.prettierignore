@@ -14,3 +14,5 @@ ml/.cache
 ml/.pytest_cache
 content/models
 content/shots
+dist-pages
+pages-assets

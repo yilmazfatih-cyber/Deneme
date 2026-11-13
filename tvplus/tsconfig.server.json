@@ -4,5 +4,5 @@
     "lib": ["ES2023"],
     "types": ["node"]
   },
-  "include": ["server", "shared", "scripts", "vite.config.ts", "vitest.config.ts"]
+  "include": ["server", "shared", "scripts", "vite.config.ts", "vitest.config.ts", "vite.pages.config.ts", "static-host/build"]
 }

@@ -27,6 +27,16 @@ export function isLocalHostname(hostname: string): boolean {
   return LOCAL_HOSTS.has(hostname) || hostname.endsWith('.localhost') || /^127\./.test(hostname)
 }
 
+/**
+ * Uygulamanın kökün altındaki yolu (ör. GitHub Pages proje sitesinde `/Deneme`); kökteyse boş dize.
+ * Tarayıcı kipinde (static-host) worker TVP_BASE_PATH'i sayfanın adresinden doldurur.
+ */
+export function publicBasePath(): string {
+  const raw = process.env.TVP_BASE_PATH?.trim() ?? ''
+  const clean = raw.replace(/\/+$/, '')
+  return clean && /^\/[A-Za-z0-9._~\/-]*$/.test(clean) ? clean : ''
+}
+
 /** İsteğin kendi kökü (x-forwarded-proto/host'a uyar; trustProxy açık), localhost ise ağ adresiyle değiştirilmiş. */
 export function publicOrigin(req: FastifyRequest, resolveLan: AddressResolver): string {
   const env = process.env.TVP_PUBLIC_ORIGIN?.trim()

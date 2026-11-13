@@ -194,7 +194,8 @@ export async function buildBootContext(app: FastifyInstance, req: FastifyRequest
     esn: passport.esn,
     authURL: account && session ? issueAuthURL(deriveKey(app.config, 'authurl'), session.sid) : null,
     persistedQueryVersion: PERSISTED_QUERY_VERSION,
-    featureFlags: { ...FEATURE_FLAGS },
+    // Durağan barındırma (GitHub Pages): istemci vekil/CDN yollarını kullanmaz (bkz. web/src/lib/assetBase.ts)
+    featureFlags: { ...FEATURE_FLAGS, ...(app.config.staticHost ? { staticHost: true } : {}) },
     falcorCache: await bootFalcorCache(app, req),
   }
 }

@@ -12,6 +12,7 @@ import type {
   ShotSummary,
 } from '../../../../shared/intelligence'
 import { apiUrl } from '../../api/session'
+import { assetUrl } from '../../lib/assetBase'
 import { Button, toast } from '../../ui'
 import { studioSend, useAction, useStudio } from './api'
 import { ScatterPlot, type ScatterPoint } from './charts'
@@ -183,7 +184,7 @@ function ShotStrip({ videoId }: { videoId: number }): ReactElement {
                       onClick={() => setShot(shot === s.index ? null : s.index)}
                     >
                       {s.keyframeUrl ? (
-                        <img src={apiUrl(s.keyframeUrl)} alt="" loading="lazy" decoding="async" />
+                        <img src={assetUrl(apiUrl(s.keyframeUrl))} alt="" loading="lazy" decoding="async" />
                       ) : (
                         <span className="st-shot__noimg">kare yok</span>
                       )}
@@ -220,7 +221,7 @@ function ShotNeighbors({ videoId, index }: { videoId: number; index: number }): 
               {list.map((n) => (
                 <li key={`${n.videoId}-${n.index}`} className="st-shot st-shot--static">
                   {n.keyframeUrl ? (
-                    <img src={apiUrl(n.keyframeUrl)} alt="" loading="lazy" decoding="async" />
+                    <img src={assetUrl(apiUrl(n.keyframeUrl))} alt="" loading="lazy" decoding="async" />
                   ) : (
                     <span className="st-shot__noimg">kare yok</span>
                   )}

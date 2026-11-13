@@ -11,6 +11,7 @@
 import { useEffect, useLayoutEffect, useState, type ReactElement, type ReactNode } from 'react'
 import { Navigate, Outlet, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import { deviceClient } from '../../devices/client'
+import { assetUrl } from '../../lib/assetBase'
 import { TvDetail, TvEpisodes } from '../detail'
 import { FocusRoot, useFocusEngine, useKeyInterceptor } from '../focus'
 import { TvCategory, TvHome } from '../home'
@@ -276,13 +277,13 @@ function BootGate({ children }: { children: ReactNode }): ReactElement {
   if (!failed)
     return (
       <div className="tv-splash" role="status" aria-label="TV+ açılıyor">
-        <img src="/brand/logo.png" alt="" />
+        <img src={assetUrl('/brand/logo.png')} alt="" />
       </div>
     )
   return (
     <TvScreen id="acilis-hata" title="TV+ açılamadı">
       <div className="tv-splash tv-splash--error">
-        <img src="/brand/logo.png" alt="" />
+        <img src={assetUrl('/brand/logo.png')} alt="" />
         <h1 className="tv-heading">TV+ açılamadı</h1>
         <p className="tv-subtle">Sunucuya ulaşılamadı. Bağlantını kontrol et.</p>
         <TvButton id="acilis-hata:tekrar" label="Tekrar dene" onPress={() => setAttempt((n) => n + 1)} />

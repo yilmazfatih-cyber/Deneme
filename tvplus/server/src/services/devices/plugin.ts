@@ -28,7 +28,7 @@ import { createStore } from '../../kernel/store'
 import { createHub } from './hub'
 import { createFailureGuard, createTokenBuckets } from './limits'
 import { defaultDeviceName, uniqueName } from './naming'
-import { firstLanIPv4, publicOrigin, type AddressResolver } from './origin'
+import { firstLanIPv4, publicBasePath, publicOrigin, type AddressResolver } from './origin'
 import { DEVICE_ID_RE, zApprove, zCommand, zPoll, zRegister, zRename, zState, zTvStart, zUserCodeBody } from './schemas'
 import { createTvLoginStore, formatUserCode, normalizeUserCode, type TvLoginEntry } from './tvlogin'
 
@@ -403,7 +403,7 @@ export default async function plugin(app: FastifyInstance): Promise<void> {
       deviceName: body?.name ?? defaultDeviceName('TV', userAgent(req), null),
       deviceKind: 'TV',
       ttlMs: TV_LOGIN_TTL_SEC * 1000,
-      verificationUrl: (code) => `${origin}/#/bagla?kod=${code}`,
+      verificationUrl: (code) => `${origin}${publicBasePath()}/#/bagla?kod=${code}`,
     })
     reply.header('cache-control', 'no-store')
     return {

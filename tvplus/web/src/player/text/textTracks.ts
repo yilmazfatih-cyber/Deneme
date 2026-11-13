@@ -6,6 +6,7 @@ import type { TimedTextTrack } from '../../../../shared/playback'
 import { devbus } from '../../lib/devbus'
 import { fetchDocument } from '../engine/fetcher'
 import { activeCues, parseTtml, type TtmlCue, type TtmlDocument } from './ttml'
+import { isVtt, parseVtt } from './vtt'
 
 const docs = new Map<string, Promise<TtmlDocument>>()
 
@@ -27,7 +28,8 @@ function load(t: TimedTextTrack): Promise<TtmlDocument> {
     onFailover: (from, to, reason) =>
       devbus.emit('cdn', `yük devri ${from}→${to}`, { from, to, reason, type: 'ttml' }, { ok: false }),
   }).then(({ text, cdnId }) => {
-    const doc = parseTtml(text)
+    // Durağan kipte belge kaynağın kendi VTT'si olabilir (OCA'nın TTML çevirisi yok)
+    const doc = isVtt(text) ? parseVtt(text) : parseTtml(text)
     devbus.emit(
       'ttml',
       `${t.language} yüklendi`,

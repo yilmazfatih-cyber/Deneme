@@ -7,3 +7,5 @@ playwright-report
 *.log
 .env
 .env.*
+dist-pages
+pages-assets

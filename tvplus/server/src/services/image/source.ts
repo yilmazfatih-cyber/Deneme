@@ -6,7 +6,7 @@ import { createHash } from 'node:crypto'
 import { existsSync, statSync } from 'node:fs'
 import { mkdir, readFile, rename, writeFile } from 'node:fs/promises'
 import { isAbsolute, join, relative, resolve, sep } from 'node:path'
-import { EnvHttpProxyAgent, fetch } from 'undici'
+import type { EnvHttpProxyAgent } from 'undici'
 import type { ArtworkTypeName } from '../../kernel/imageUrls'
 
 export interface FetchedSource {
@@ -20,12 +20,13 @@ export const SOURCE_TIMEOUT_MS = 6000
 const MAX_SOURCE_BYTES = 20 * 1024 * 1024
 
 let agent: EnvHttpProxyAgent | null = null
-const getAgent = () => (agent ??= new EnvHttpProxyAgent())
 
-/** Varsayılan uzak okuyucu: undici + HTTPS_PROXY'ye uyan ajan. */
+/** Varsayılan uzak okuyucu: undici + HTTPS_PROXY'ye uyan ajan (undici yalnız gerektiğinde yüklenir). */
 export const defaultFetcher: SourceFetcher = async (url, timeoutMs) => {
-  const res = await fetch(url, {
-    dispatcher: getAgent(),
+  const undici = await import('undici')
+  agent ??= new undici.EnvHttpProxyAgent()
+  const res = await undici.fetch(url, {
+    dispatcher: agent,
     signal: AbortSignal.timeout(timeoutMs),
     headers: {
       accept: 'image/avif,image/webp,image/png,image/jpeg,image/*;q=0.8',

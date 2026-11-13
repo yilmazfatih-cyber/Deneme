@@ -4,8 +4,14 @@
  *   Channel:<id> → kanalın kaynağı (YOUTUBE_LIVE → gömme; LINEAR → yayındaki videonun akışları + katılma konumu)
  *   Airing:<id>  → yayının videosu, baştan (geri al / baştan başlat)
  * Kaynak seçimi içerikteki sırayla yürür; preferredSource, supportsMse ve profil pazarlığına uyar.
+ *
+ * Durağan kip (`config.staticHost`, GitHub Pages): OCA vekili yoktur. Akış ve tek dosya adresleri doğrudan açık
+ * kaynağın adresidir (tek sözde CDN: STATIC_ORIGIN_CDN; istemci bayt aralığını `Range` başlığıyla ister), altyazılar
+ * kaynağın kendi VTT/TTML belgesi ya da önceden kopyalanmış yerel dosyadır (istemci biçimi içerikten tanır).
+ * Yerel paketlenmiş içerik (PACKAGED) sunulamaz; sıradaki kaynağa geçilir.
  */
 import { randomBytes } from 'node:crypto'
+import { relative, sep } from 'node:path'
 import type { FastifyInstance } from 'fastify'
 import { z } from 'zod'
 import type { ContentSource } from '../../../../shared/content-schema'
@@ -25,6 +31,7 @@ import type {
 } from '../../../../shared/playback'
 import type { Passport } from '../../kernel/context'
 import type { AccessDecision, PlayableVideo } from '../../kernel/services'
+import { staticSubtitlePath } from '../image/staticAssets'
 import { DEFAULT_NODE_ORDER } from '../oca/nodes'
 import type { Plane } from './plane'
 import { languageName, normalizeLang } from './sources/languages'
@@ -39,6 +46,15 @@ import {
 const VIDEO_PROFILES: readonly CodecProfile[] = ['vp9-webm', 'h264-mp4']
 const AUDIO_PROFILES: readonly CodecProfile[] = ['opus-webm', 'aac-mp4']
 export const PROMO_MAX_HEIGHT = 480
+
+/** Durağan kipte tek "CDN": içeriğin açık kaynağı (istemci doğrudan oradan okur). */
+export const STATIC_ORIGIN_CDN: CdnInfo = {
+  id: 'kaynak',
+  name: 'Açık kaynak (doğrudan)',
+  rank: 1,
+  type: 'CLOUD',
+  location: 'Kaynağın kendi sunucusu',
+}
 
 export const zManifestRequest = z.object({
   viewableId: z.string().min(3).max(100),
@@ -271,7 +287,8 @@ export async function buildManifest(
 
   const nowSec = Math.floor(Date.now() / 1000)
   const e = plane.signer.expiry(nowSec)
-  const cdns = rankCdns(plane, input.cdnHints, storedRanking)
+  const staticHost = app.config.staticHost
+  const cdns = staticHost ? [STATIC_ORIGIN_CDN] : rankCdns(plane, input.cdnHints, storedRanking)
   let subtitlesDir: string | null = null
   try {
     subtitlesDir = app.services.catalog?.subtitlesDir() ?? null
@@ -332,6 +349,8 @@ export async function buildManifest(
       return { ok: true, manifest: m }
     }
     if ((src.type === 'DASH' || src.type === 'PACKAGED') && !input.supportsMse) continue
+    // Durağan kipte yerel paket dosyaları yayımlanmaz (media/ git'e girmez): sıradaki kaynak denenir
+    if (staticHost && src.type === 'PACKAGED') continue
     anyCdnNeeded = true
     if (cdns.length === 0) {
       unavailable = true
@@ -353,21 +372,26 @@ export async function buildManifest(
         kind: 'STREAMS',
         videoTracks: [{ trackId: 'V-main', streams: videoStreams(plane, d, pick.video, cdns, e, target.promo) }],
         audioTracks: audioTracks(plane, d, pick.audio, cdns, e, input.uiLanguage),
-        timedTextTracks: textTracks(plane, d.text, cdns, e, input.uiLanguage),
+        timedTextTracks: textTracks(plane, d.text, cdns, e, input.uiLanguage, subtitlesDir),
         cdns,
         license: { type: 'ACCESS_GRANT', grantId: newId('G') },
       }
       return { ok: true, manifest: m }
     }
     if (d.kind === 'PROGRESSIVE') {
-      const rec = plane.objects.register({ kind: 'remote', url: d.url, mime: d.mimeType, size: d.size })
+      let urls: ProgressiveManifest['urls']
+      if (staticHost) urls = [{ cdnId: STATIC_ORIGIN_CDN.id, url: d.url }]
+      else {
+        const rec = plane.objects.register({ kind: 'remote', url: d.url, mime: d.mimeType, size: d.size })
+        urls = cdns.map((c) => ({ cdnId: c.id, url: `/oca/${c.id}/file?${plane.signer.query(c.id, rec.o, rec.v, e)}` }))
+      }
       const m: ProgressiveManifest = {
         ...base(null),
         kind: 'PROGRESSIVE',
         mimeType: d.mimeType,
         sizeBytes: d.size,
-        urls: cdns.map((c) => ({ cdnId: c.id, url: `/oca/${c.id}/file?${plane.signer.query(c.id, rec.o, rec.v, e)}` })),
-        timedTextTracks: textTracks(plane, d.text, cdns, e, input.uiLanguage),
+        urls,
+        timedTextTracks: textTracks(plane, d.text, cdns, e, input.uiLanguage, subtitlesDir),
         cdns,
       }
       return { ok: true, manifest: m }
@@ -384,6 +408,13 @@ function streamUrls(
   cdns: CdnInfo[],
   e: number,
 ): { rec: { o: string; v: number }; urls: MediaStream['urls'] } {
+  if (plane.config.staticHost) {
+    // Doğrudan kaynak: yer tutucusuz adres; istemci aralığı Range başlığıyla ister. Yerel dosya burada olmaz (PACKAGED atlanır).
+    const url = rep.loc.kind === 'remote' ? rep.loc.url : ''
+    let h = 0
+    for (const ch of url) h = (h * 31 + ch.charCodeAt(0)) >>> 0
+    return { rec: { o: h.toString(36).padStart(6, '0'), v: 1 }, urls: [{ cdnId: STATIC_ORIGIN_CDN.id, url }] }
+  }
   const rec = plane.objects.register(rep.loc)
   return {
     rec,
@@ -477,24 +508,49 @@ function audioTracks(
   return tracks.sort((a, b) => score(a) - score(b))
 }
 
-function textTracks(plane: Plane, refs: TextRef[], cdns: CdnInfo[], e: number, uiLanguage: string): TimedTextTrack[] {
+/** Durağan kipte altyazının doğrudan adresi: uzak belge ya da pages-assets'e kopyalanmış yerel dosya (göreli yol). */
+function staticTextUrl(t: TextRef, subtitlesDir: string | null): string | null {
+  if (t.url) return t.url
+  if (!t.path || !subtitlesDir) return null
+  const rel = relative(subtitlesDir, t.path)
+  if (!rel || rel.startsWith('..')) return null
+  return staticSubtitlePath(rel.split(sep).join('/'))
+}
+
+function textTracks(
+  plane: Plane,
+  refs: TextRef[],
+  cdns: CdnInfo[],
+  e: number,
+  uiLanguage: string,
+  subtitlesDir: string | null = null,
+): TimedTextTrack[] {
   const seen = new Set<string>()
   const tracks: TimedTextTrack[] = []
   for (const t of refs) {
     const trackId = `T-${t.lang}${t.kind === 'CC' ? '-cc' : ''}`
     if (seen.has(trackId)) continue
+    let urls: TimedTextTrack['urls']
+    if (plane.config.staticHost) {
+      // Belge VTT ya da TTML olabilir; istemci içerikten tanır (format alanı sözleşme gereği 'ttml' kalır)
+      const url = staticTextUrl(t, subtitlesDir)
+      if (!url) continue
+      urls = [{ cdnId: STATIC_ORIGIN_CDN.id, url }]
+    } else {
+      const rec = plane.objects.register({ kind: 'text', url: t.url, path: t.path, format: t.format, lang: t.lang })
+      urls = cdns.map((c) => ({
+        cdnId: c.id,
+        url: `/oca/${c.id}/timedtext/${trackId}?${plane.signer.query(c.id, rec.o, rec.v, e)}`,
+      }))
+    }
     seen.add(trackId)
-    const rec = plane.objects.register({ kind: 'text', url: t.url, path: t.path, format: t.format, lang: t.lang })
     tracks.push({
       trackId,
       language: t.lang,
       languageDescription: t.label ?? `${languageName(t.lang)}${t.kind === 'CC' ? ' [CC]' : ''}`,
       type: t.kind,
       format: 'ttml',
-      urls: cdns.map((c) => ({
-        cdnId: c.id,
-        url: `/oca/${c.id}/timedtext/${trackId}?${plane.signer.query(c.id, rec.o, rec.v, e)}`,
-      })),
+      urls,
     })
   }
   const ui = normalizeLang(uiLanguage)

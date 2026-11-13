@@ -9,11 +9,12 @@ import { ROUTES } from '../../../../shared/constants'
 import {
   ARTWORK_SPECS,
   normalizeSize,
+  setStaticArtworkAlias,
   verifyImageSignature,
   type ArtworkTypeName,
   type ImageRequest,
 } from '../../kernel/imageUrls'
-import { createImagePipeline } from './pipeline'
+import { serveStaticAssetsForTesting, staticAliasOf } from './staticAssets'
 
 interface ImageParams {
   type: string
@@ -48,7 +49,23 @@ export function parseImagePath(p: ImageParams): ImageRequest | null {
   return { type, entityId, width: Number(size[1]), height: Number(size[2]), format: m[2] === 'jpg' ? 'jpg' : 'webp' }
 }
 
+/**
+ * Durağan kip (GitHub Pages): görsel adresleri önceden üretilmiş dosyaları gösterir (kernel/imageUrls.ts); burada yalnız
+ * sayılamayan varlıkların eşleyicisi kaydedilir. sharp yüklenmez. Tarayıcıdaki sunucu bu işlevi doğrudan çağırabilir.
+ */
+export function registerStaticImages(app: FastifyInstance): void {
+  setStaticArtworkAlias(app.config, staticAliasOf(app))
+}
+
 export default async function plugin(app: FastifyInstance): Promise<void> {
+  if (app.config.staticHost) {
+    registerStaticImages(app)
+    // Yalnız Node'da sınama kolaylığı: pages-assets/img ve pages-assets/subtitles bu sunucudan verilir
+    if (typeof process !== 'undefined' && process.versions?.node) await serveStaticAssetsForTesting(app)
+    return
+  }
+  // sharp yalnız sunucu kipinde yüklenir (durağan kipte gerekmez, tarayıcıda yoktur)
+  const { createImagePipeline } = await import('./pipeline')
   const pipeline = createImagePipeline({
     dataDir: app.config.dataDir,
     publicDir: app.config.publicDir,

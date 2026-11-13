@@ -1,6 +1,7 @@
 /** TV+ logosu (/brand/logo.png, 136×88). Netflix logosu hiçbir yerde kullanılmaz (UX_SPEC kural 1). */
 import type { ReactElement } from 'react'
 import { cx } from './cx'
+import { assetUrl } from '../lib/assetBase'
 
 export function Logo({
   height = 26,
@@ -16,7 +17,7 @@ export function Logo({
   return (
     <img
       className={cx('ui-logo', className)}
-      src="/brand/logo.png"
+      src={assetUrl('/brand/logo.png')}
       alt={decorative ? '' : 'TV+'}
       height={height}
       style={{ height, width: 'auto' }}

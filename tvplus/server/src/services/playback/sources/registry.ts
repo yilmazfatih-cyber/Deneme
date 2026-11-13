@@ -207,7 +207,8 @@ export function createSourceRegistry(config: AppConfig): SourceRegistry {
       }
       if (source.type === 'LINEAR') throw new SourceUnavailableError('Doğrusal kaynak doğrudan çözülemez')
       const d = sync(source, ctx, false)!
-      if (d.kind === 'PROGRESSIVE' && d.size === null && !config.offline) {
+      // Durağan kipte boy sorulmaz: tarayıcı <video src> ile kendisi öğrenir (köken yönlendirmeli olabilir)
+      if (d.kind === 'PROGRESSIVE' && d.size === null && !config.offline && !config.staticHost) {
         try {
           const size = await upstreamSize(config, d.url, 4000)
           sizeCache.set(d.url, size)

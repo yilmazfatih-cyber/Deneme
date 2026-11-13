@@ -19,6 +19,7 @@ import type {
   MslTokenData,
 } from '../../../../shared/playback'
 import { loadBoot, peekBoot, sessionHeaders } from '../../api/session'
+import { isStaticHost } from '../../lib/assetBase'
 import { devbus } from '../../lib/devbus'
 import { parseB64json } from './bytes'
 import {
@@ -127,7 +128,8 @@ export class MslClient {
   private async doProvision(previous: MslSession | null): Promise<MslSession> {
     const t0 = performance.now()
     const esn = await esnNow()
-    const subtle = subtleOrNull()
+    // Durağan kipte "sunucu" aynı tarayıcıdadır: zarfı şifrelemek bir şey korumaz, şifresiz geliştirme şeması kullanılır
+    const subtle = isStaticHost() ? null : subtleOrNull()
     const scheme: MslScheme = subtle ? 'ECDH_P256_AESGCM' : 'PLAINTEXT_DEV'
     let pair: CryptoKeyPair | null = null
     const req: MslProvisionRequest = {

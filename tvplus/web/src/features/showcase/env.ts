@@ -12,11 +12,14 @@ export const HOME_ROUTE: Record<FrameId, string> = { tv: '/tv', web: '/', telefo
 
 let reloads = 0
 
-/** Çerçeve adresi: ?vd=<ad>&cihaz=<biçim>[&y=<n>]#<yol> — `fresh` yeniden yüklemeyi zorlar. */
+/**
+ * Çerçeve adresi: ?vd=<ad>&cihaz=<biçim>[&y=<n>]#<yol> — `fresh` yeniden yüklemeyi zorlar. Yol sayfanın kendi
+ * yoludur (kökte `/`, GitHub Pages proje sitesinde `/Deneme/`).
+ */
 export function frameUrl(id: FrameId, route: string, fresh = false): string {
   const q = new URLSearchParams({ vd: id, cihaz: FORM[id] })
   if (fresh) q.set('y', String(++reloads))
-  return `/?${q.toString()}#${route}`
+  return `${window.location.pathname}?${q.toString()}#${route}`
 }
 
 async function api<T>(vd: FrameId, method: string, path: string, body?: unknown, authURL?: string | null): Promise<T> {

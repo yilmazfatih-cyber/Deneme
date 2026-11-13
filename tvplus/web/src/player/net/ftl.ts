@@ -6,6 +6,7 @@
 import { ROUTES } from '../../../../shared/constants'
 import type { FtlProbeResponse, FtlProbeTarget, FtlReport } from '../../../../shared/playback'
 import { sessionHeaders } from '../../api/session'
+import { isStaticHost } from '../../lib/assetBase'
 import { devbus } from '../../lib/devbus'
 import { logEvent } from '../../telemetry/logger'
 import { FtlRanking, pulseWinner, type FtlResult } from './ftlRanking'
@@ -163,6 +164,11 @@ interface NetworkInformationLike extends EventTarget {
 /** Yoklamayı başlatır; tekrar çağrılırsa bir şey yapmaz. Bağlantı değişince / çevrimiçi olunca yeniden yoklar. */
 export function startNetworkProbing(): void {
   if (started || typeof window === 'undefined') return
+  // Durağan kipte (GitHub Pages) CDN düğümü yoktur: video doğrudan açık kaynaktan gelir, yoklanacak hedef yok
+  if (isStaticHost()) {
+    devbus.emit('ftl', 'yoklama yok (durağan kip: video doğrudan kaynaktan)', {})
+    return
+  }
   started = true
   void probeOnce()
   window.addEventListener('online', () => scheduleReprobe('çevrimiçi oldu'))

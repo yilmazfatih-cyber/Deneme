@@ -11,10 +11,23 @@ const PROBES: [CodecProfile, string][] = [
   ['aac-mp4', 'audio/mp4; codecs="mp4a.40.2"'],
 ]
 
+type ManagedWindow = Window & { ManagedMediaSource?: typeof MediaSource }
+
+/**
+ * MSE sınıfı. Klasik `MediaSource` varsa o (Chromium, Firefox, masaüstü Safari — davranış değişmez); yoksa iOS 17.1+
+ * Safari'nin `ManagedMediaSource`'u yedek olarak kullanılır (iPhone'da klasik MSE yoktur). `isTypeSupported` de bu
+ * sınıftan sorulur.
+ */
 export function mediaSourceCtor(): typeof MediaSource | null {
   if (typeof window === 'undefined') return null
-  const w = window as Window & { ManagedMediaSource?: typeof MediaSource }
-  return window.MediaSource ?? w.ManagedMediaSource ?? null
+  return window.MediaSource ?? (window as ManagedWindow).ManagedMediaSource ?? null
+}
+
+/** Kullanılan sınıf ManagedMediaSource mı (tarayıcı akışı startstreaming/endstreaming ile yönetir, tamponu kendisi boşaltabilir). */
+export function usesManagedMediaSource(): boolean {
+  if (typeof window === 'undefined') return false
+  const managed = (window as ManagedWindow).ManagedMediaSource
+  return !window.MediaSource && !!managed
 }
 
 export function supportsMse(): boolean {
@@ -22,6 +35,11 @@ export function supportsMse(): boolean {
 }
 
 let cached: CodecProfile[] | null = null
+
+/** Yalnız testler: profil önbelleğini sıfırlar. */
+export function resetCapabilitiesCache(): void {
+  cached = null
+}
 
 /** Çözülebilen profiller. MSE yoksa <video>.canPlayType ile (tek dosya oynatımı için) bakılır. */
 export function supportedProfiles(): CodecProfile[] {

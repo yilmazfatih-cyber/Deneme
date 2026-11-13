@@ -40,3 +40,13 @@ export function nextRangeStart(ranges: Range[], t: number, maxGap = 1): number |
   for (const r of ranges) if (r.start > t && r.start - t <= maxGap) return r.start
   return null
 }
+
+/**
+ * Tarayıcı tamponu kendiliğinden boşalttıysa (ManagedSourceBuffer `bufferedchange`) ekleme imlecini geri çeker:
+ * `t` anından itibaren kesintisiz tamponun sonu `nextTime`'ın gerisinde kaldıysa (aradaki veri silinmiş) yeni imleç
+ * o son (tampon yoksa `t`) olur. Değişiklik gerekmiyorsa null.
+ */
+export function resyncAppendCursor(ranges: Range[], t: number, nextTime: number, tol = GAP_TOLERANCE): number | null {
+  const covered = t + bufferedAhead(ranges, t, tol)
+  return nextTime > covered + tol ? covered : null
+}

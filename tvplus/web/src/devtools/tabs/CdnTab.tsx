@@ -3,6 +3,7 @@ import { ROUTES } from '../../../../shared/constants'
 import type { OcaNodeState } from '../../../../shared/types'
 import { fmtBytes, fmtClock, fmtInt, fmtKbps } from '../model/format'
 import { onBootChange, sessionHeaders } from '../../api/session'
+import { isStaticHost } from '../../lib/assetBase'
 import { Explainer, LoginNote, needsLogin, useSignedIn, usePoll } from '../ui'
 
 const OCA_URL = `${ROUTES.DEBUG_PREFIX}/oca`
@@ -37,6 +38,25 @@ function stepIndex(kbps: number | null): number {
 }
 
 export function CdnTab(): ReactNode {
+  // Durağan kipte (GitHub Pages) OCA düğümü yoktur: denetimler yerine kısa bir açıklama gösterilir
+  if (isStaticHost()) return <StaticCdnNote />
+  return <OcaNodesTab />
+}
+
+function StaticCdnNote(): ReactNode {
+  return (
+    <div className="kp-tab">
+      <Explainer netflix="Open Connect (OCA) düğümleri">
+        Bu sürüm sunucusuz yayında. Video doğrudan açık kaynağından gelir.
+      </Explainer>
+      <p className="kp-calm" role="status">
+        Düğüm kapatma ve yavaşlatma burada yok. Bit hızını oynatıcı panelinden izleyebilirsin.
+      </p>
+    </div>
+  )
+}
+
+function OcaNodesTab(): ReactNode {
   const signedIn = useSignedIn()
   const poll = usePoll<unknown>(OCA_URL, 2000, 10_000, sessionHeaders, signedIn)
   /** Anonimken uç 401 döner: hiç sorulmaz, tek sakin satır gösterilir. */

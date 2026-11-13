@@ -6,7 +6,7 @@
 import type { MediaStream as ManifestStream } from '../../../../shared/playback'
 import { streamMime } from '../net/capabilities'
 import { locateSegment, type SegmentIndex, type SegmentRef } from '../demux/types'
-import { bufferedAhead, rangeAt, toRanges, type Range } from './buffered'
+import { bufferedAhead, rangeAt, resyncAppendCursor, toRanges, type Range } from './buffered'
 import { isAbortError, type RangeResult } from './fetcher'
 
 export type MediaKind = 'video' | 'audio'
@@ -61,6 +61,11 @@ export class MediaPipeline {
   private goalCap: number | null = null
   /** Temizlik sürerken yeni adım başlamaz */
   private flushing = false
+  /** Tarayıcı tamponu kendisi boşalttı (ManagedSourceBuffer `bufferedchange`; klasik MSE'de hiç tetiklenmez) */
+  private uaEvicted = false
+  private readonly onBufferedChange = () => {
+    this.uaEvicted = true
+  }
 
   constructor(kind: MediaKind, sb: SourceBuffer, mime: string, startTime: number, host: PipelineHost) {
     this.kind = kind
@@ -68,6 +73,17 @@ export class MediaPipeline {
     this.mime = mime
     this.nextTime = startTime
     this.host = host
+    sb.addEventListener('bufferedchange', this.onBufferedChange)
+  }
+
+  /** Tarayıcının sildiği veriyi yeniden indirmek için ekleme imlecini tampona göre düzeltir. */
+  private resyncAfterUaEviction(): void {
+    if (!this.uaEvicted) return
+    this.uaEvicted = false
+    const next = resyncAppendCursor(this.bufferedRanges(), this.host.media.currentTime, this.nextTime)
+    if (next === null) return
+    this.nextTime = next
+    if (this.done) this.done = false
   }
 
   get sourceBuffer(): SourceBuffer {
@@ -96,6 +112,7 @@ export class MediaPipeline {
 
   /** Zamanlayıcıdan çağrılır; bir adım sürerken yeni adım başlamaz. */
   tick(): void {
+    if (!this.busy && !this.flushing) this.resyncAfterUaEviction()
     if (this.busy || this.flushing || this.done || this.failed) return
     this.busy = true
     this.step()
@@ -326,5 +343,6 @@ export class MediaPipeline {
     this.gen++
     this.ctrl.abort()
     this.failed = new Error('kapandı')
+    this.sb.removeEventListener('bufferedchange', this.onBufferedChange)
   }
 }

@@ -2,8 +2,12 @@
  * Köken (upstream) erişimi: uzak açık kaynaklara giden her istek buradan geçer.
  * HTTPS_PROXY'ye uyan undici EnvHttpProxyAgent kullanılır, her isteğe zaman aşımı konur,
  * `config.offline` iken ağa hiç çıkılmaz (OfflineError).
+ *
+ * Durağan kip (`config.staticHost`, GitHub Pages): sunucu tarayıcıdaki bir worker'da çalışır; undici yoktur, istekler
+ * ortamın kendi `fetch`'iyle (CORS kurallarıyla) yapılır. Tarayıcıda `content-range` çoğu kökende açığa çıkarılmadığından
+ * dosya boyu `HEAD` isteğinin `content-length` başlığından okunur. undici yalnız sunucu kipinde, gerektiğinde yüklenir.
  */
-import { EnvHttpProxyAgent, fetch } from 'undici'
+import type { EnvHttpProxyAgent } from 'undici'
 import type { AppConfig } from '../../kernel/config'
 
 export class OfflineError extends Error {
@@ -22,9 +26,31 @@ export class UpstreamError extends Error {
 }
 
 let agent: EnvHttpProxyAgent | null = null
-function dispatcher(): EnvHttpProxyAgent {
-  agent ??= new EnvHttpProxyAgent({ connectTimeout: 5000, keepAliveTimeout: 10_000 })
-  return agent
+let undiciMod: typeof import('undici') | null = null
+
+/** Sunucu kipi: undici + vekile uyan ajan. Durağan kip: ortamın fetch'i (tarayıcı worker'ı ya da Node). */
+async function transport(
+  config: AppConfig,
+  url: string,
+  init: { method: 'GET' | 'HEAD'; headers: Record<string, string>; timeoutMs: number },
+): Promise<Response> {
+  const signal = AbortSignal.timeout(init.timeoutMs)
+  if (config.staticHost) {
+    // Tarayıcı user-agent başlığını yok sayar; yalnız gerekli başlıklar gider (Range CORS'ta izinli)
+    const headers: Record<string, string> = {}
+    if (init.headers.range) headers.range = init.headers.range
+    return globalThis.fetch(url, { method: init.method, headers, signal, redirect: 'follow', credentials: 'omit' })
+  }
+  undiciMod ??= await import('undici')
+  agent ??= new undiciMod.EnvHttpProxyAgent({ connectTimeout: 5000, keepAliveTimeout: 10_000 })
+  const res = await undiciMod.fetch(url, {
+    method: init.method,
+    headers: init.headers,
+    dispatcher: agent,
+    signal,
+    redirect: 'follow',
+  })
+  return res as unknown as Response
 }
 
 export interface UpstreamResponse {
@@ -49,14 +75,9 @@ export async function upstreamGet(
   if (config.offline) throw new OfflineError(url)
   const headers: Record<string, string> = { 'user-agent': 'tvplus-oca/1.0', accept: '*/*' }
   if (opts.range) headers.range = `bytes=${opts.range.start}-${opts.range.end}`
-  let res
+  let res: Response
   try {
-    res = await fetch(url, {
-      headers,
-      dispatcher: dispatcher(),
-      signal: AbortSignal.timeout(opts.timeoutMs ?? 8000),
-      redirect: 'follow',
-    })
+    res = await transport(config, url, { method: 'GET', headers, timeoutMs: opts.timeoutMs ?? 8000 })
   } catch (err) {
     throw new UpstreamError(`Kökene ulaşılamadı: ${(err as Error).message}`)
   }
@@ -70,7 +91,7 @@ export async function upstreamGet(
   const body = Buffer.from(ab)
   if (opts.maxBytes !== undefined && body.length > opts.maxBytes)
     throw new UpstreamError('Köken beklenenden büyük yanıt döndü')
-  return { status: res.status, headers: res.headers as unknown as Headers, body }
+  return { status: res.status, headers: res.headers, body }
 }
 
 /** Bir bayt aralığını getirir; köken 206 vermezse (tam gövde) aralığı kendisi keser. */
@@ -94,6 +115,7 @@ export async function upstreamRange(
 
 /** Dosya boyu: `Range: bytes=0-0` isteğinin content-range başlığından. */
 export async function upstreamSize(config: AppConfig, url: string, timeoutMs = 6000): Promise<number> {
+  if (config.staticHost) return upstreamHeadSize(config, url, timeoutMs)
   const res = await upstreamGet(config, url, { range: { start: 0, end: 0 }, timeoutMs, maxBytes: 64 * 1024 * 1024 })
   const cr = res.headers.get('content-range')
   const m = cr ? /\/(\d+)\s*$/.exec(cr) : null
@@ -106,4 +128,19 @@ export async function upstreamSize(config: AppConfig, url: string, timeoutMs = 6
 export async function upstreamText(config: AppConfig, url: string, timeoutMs = 8000): Promise<string> {
   const res = await upstreamGet(config, url, { timeoutMs, maxBytes: 8 * 1024 * 1024 })
   return res.body.toString('utf8')
+}
+
+/** Durağan kip: dosya boyu HEAD isteğinin content-length başlığından (CORS'ta açığa çıkarılan başlık). */
+async function upstreamHeadSize(config: AppConfig, url: string, timeoutMs: number): Promise<number> {
+  if (config.offline) throw new OfflineError(url)
+  let res: Response
+  try {
+    res = await transport(config, url, { method: 'HEAD', headers: {}, timeoutMs })
+  } catch (err) {
+    throw new UpstreamError(`Kökene ulaşılamadı: ${(err as Error).message}`)
+  }
+  if (res.status >= 400) throw new UpstreamError(`Köken ${res.status} döndü`, res.status)
+  const len = Number(res.headers.get('content-length') ?? '')
+  if (Number.isFinite(len) && len > 0) return len
+  throw new UpstreamError('Köken boyut bildirmedi')
 }

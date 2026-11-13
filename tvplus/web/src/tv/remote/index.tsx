@@ -55,7 +55,8 @@ let resolved: Promise<PhoneAddress> | null = null
 
 function resolveAddress(): Promise<PhoneAddress> {
   if (resolved) return resolved
-  const here = window.location.origin
+  // Kök + uygulamanın yolu (GitHub Pages proje sitesinde /Deneme); kökteyse yalnız kök.
+  const here = `${window.location.origin}${window.location.pathname.replace(/\/+$/, '')}`
   if (!isLocalHostname(window.location.hostname)) {
     resolved = Promise.resolve({ url: phoneRemoteUrl(here), source: 'page', reachable: true })
     return resolved

@@ -2,8 +2,10 @@
  * Bayt-aralığı indirici + CDN yük devri. Her akışın CDN başına bir imzalı adresi vardır (sıralama sırasıyla).
  * Ağ hatası / 5xx / zaman aşımı (ilk bayt 8 sn, ya da 8 sn veri gelmemesi) → aynı aralık sıradaki CDN'den denenir,
  * başarısız düğüm 60 sn karantinaya alınır. Hepsi başarısız → AllCdnsFailedError.
+ * Durağan kipte (GitHub Pages) adres açık kaynağın kendisidir ve `{range}` yer tutucusu taşımaz: aralık `Range`
+ * başlığıyla istenir (köken CORS'ta Range'e izin vermelidir; ör. storage.googleapis.com).
  */
-import { rangeUrl, type StreamUrl } from '../../../../shared/playback'
+import { RANGE_PLACEHOLDER, rangeUrl, type StreamUrl } from '../../../../shared/playback'
 
 export const CDN_TIMEOUT_MS = 8000
 export const CDN_QUARANTINE_MS = 60_000
@@ -110,7 +112,12 @@ async function errorCode(res: Response): Promise<string> {
   }
 }
 
-async function attempt(url: string, signal: AbortSignal, timeoutMs: number): Promise<Omit<RangeResult, 'cdnId'>> {
+async function attempt(
+  url: string,
+  signal: AbortSignal,
+  timeoutMs: number,
+  range?: { start: number; end: number },
+): Promise<Omit<RangeResult, 'cdnId'>> {
   const ctrl = new AbortController()
   let timedOut = false
   let timer = setTimeout(() => {
@@ -123,7 +130,11 @@ async function attempt(url: string, signal: AbortSignal, timeoutMs: number): Pro
   try {
     let res: Response
     try {
-      res = await fetch(url, { signal: ctrl.signal, credentials: 'same-origin' })
+      res = await fetch(url, {
+        signal: ctrl.signal,
+        credentials: 'same-origin',
+        ...(range ? { headers: { range: `bytes=${range.start}-${range.end}` } } : {}),
+      })
     } catch (err) {
       if (signal.aborted) throw abortError()
       throw new AttemptError(timedOut ? 'zaman aşımı (ilk bayt)' : `ağ hatası (${(err as Error).message})`, true)
@@ -192,7 +203,14 @@ export async function fetchRange(
     const u = order[i]!
     if (o.signal.aborted) throw abortError()
     try {
-      const r = await attempt(rangeUrl(u.url, start, end), o.signal, o.timeoutMs ?? CDN_TIMEOUT_MS)
+      // İmzalı OCA adresi aralığı yolda taşır; doğrudan kaynak adresi (durağan kip) Range başlığıyla ister
+      const templated = u.url.includes(RANGE_PLACEHOLDER)
+      const r = await attempt(
+        templated ? rangeUrl(u.url, start, end) : u.url,
+        o.signal,
+        o.timeoutMs ?? CDN_TIMEOUT_MS,
+        templated ? undefined : { start, end },
+      )
       if (r.bytes.length !== end - start + 1) throw new AttemptError(`beklenmeyen uzunluk ${r.bytes.length}`, false)
       return { ...r, cdnId: u.cdnId }
     } catch (err) {

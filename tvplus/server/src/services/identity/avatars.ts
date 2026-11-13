@@ -51,6 +51,8 @@ export function profileAvatarArtwork(
   p: Pick<ProfileRecord, 'guid' | 'avatar'>,
   params?: { width?: number | null; height?: number | null; format?: string | null } | null,
 ): ArtworkDescriptor {
+  // Durağan kipte (GitHub Pages) profil görseli doğrudan avatar anahtarının önceden üretilmiş dosyasıdır
+  if (config.staticHost) return buildArtwork(config, 'AVATAR', `Avatar:${avatarKeyOf(p.avatar)}`, params)
   const a = buildArtwork(config, 'AVATAR', `Profile:${p.guid}`, params)
   return { ...a, url: `${a.url}&v=${avatarKeyOf(p.avatar)}` }
 }
