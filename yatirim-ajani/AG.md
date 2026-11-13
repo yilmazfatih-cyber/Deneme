@@ -19,16 +19,19 @@ Dış ağ bu ortamda kapalıdır; veri GitHub Actions "Yatırım ajanı" iş ak�
 | `mali_panel.csv.gz`       | İş Yatırım `MaliTablo`     | 585 pay, seçili kalemler (özkaynak, net kâr, satış …), çeyreklik                                |
 | `seriler_gunluk.csv.gz`   | Yahoo                      | XU100, XU030, XBANK, XUSIN, madenler (altın, gümüş, bakır, platin …), petrol, kur, 2010→ günlük |
 | `seriler_saatlik.csv.gz`  | Yahoo                      | Aynı seriler + sektör endeksleri + ABD'deki Türkiye fonu (TUR), son 2 yıl saatlik               |
-| `kap_bildirimler.csv.gz`  | KAP bildirim sorgusu       | Seçili konularda şirket bildirimleri (pay alım satım, geri alım, kâr payı, sermaye artırımı …)  |
-| `kap_pay_detay.csv.gz`    | KAP bildirim sayfaları     | Pay alım satım ve halka arzda %5 üstü alım bildirimlerinin metni                                |
+| `kap_bildirimler.csv.gz`  | KAP bildirim sorgusu       | 2024-01→: 20.558 bildirim, yayım saatiyle (geri alım, pay alım satım, kâr payı, sermaye …)      |
+| `kap_pay_detay.csv.gz`    | KAP bildirim sayfaları     | Pay alım satım ve halka arzda %5 üstü alım bildirimlerinin metni (öncelik sırasıyla, artımlı)   |
+| `yabanci_oran_guncel.csv.gz` | İş Yatırım (sayfa tablosu) | 610 pay: halka açık paylar içinde yabancı payı, son iki işlem günü                            |
+| `yabanci_gecmis.csv.gz`   | İş Yatırım (tablo isteği)  | Yabancı payının haftalık kesitleri (istek gövdesi keşifle bulunur; çekilemezse rapora yazılır)  |
+| `endeks_gunluk.csv.gz`    | İş Yatırım `IndexHistoricalAll` | 44 endeks, 2010→ günlük kapanış (sektör mevsimselliği ve süreklilik)                       |
 | `_cekim_raporu.json`      | —                          | Her kaynağın durumu, hata örnekleri, uç nokta keşfi sonuçları                                   |
 | `analiz/*.json`           | `ag-analiz`                | Ağaç, öncü-takipçi, akış, yatırımcı tipleri, kural testleri                                     |
 
 Araştırma ajanı çıktıları kod dalında: `dosya_kaynak/ag/fon_bildirimleri.json` (87 pay bildirimi), `fon_stratejileri.json`
 (22 şirket), `yatirimci_davranisi.json` (istatistikler, bulgular, veri kaynakları). Hepsi arama özetlerinden; güven alanına bakın.
 
-Çekilemeyenler (rapora yazılır): TEFAS (robot engeli), İş Yatırım yabancı payı geçmişi (uç nokta gövdesi bulunamadı; güncel
-kesit tablosu sayfadan okunabiliyor), MKK yatırımcı sayıları, aracı kurum dağılımı.
+Çekilemeyenler (rapora yazılır): TEFAS (robot engeli), MKK yatırımcı sayıları, aracı kurum dağılımı. Borsada işlem gören altın
+ve gümüş fonlarının fiyat geçmişi Yahoo'da yok; madenler ons fiyatı × dolar/TL üzerinden izlenir.
 
 ## 2. Modüller (`yatirim_ajani/ag/`)
 
@@ -40,6 +43,7 @@ kesit tablosu sayfadan okunabiliyor), MKK yatırımcı sayıları, aracı kurum 
 | `akis.py`      | Saat profili, işaretli hacim ve dürüstlük testleri, işlem ilgisi, sektör rotasyonu, mevsimsellik, varlık rotasyonu, küresel zincir, maden → sektör   |
 | `yatirimci.py` | Tavan/taban dizileri, tabandan alım simülasyonu (kilit), halka arzlar, faktör primleri (BIST 100 içi/dışı), fon bildirimleri olay çalışması          |
 | `strateji.py`  | Kural testleri: gece taşıma, lider-takipçi, dönemsel portföy, olay kuralları; maliyet senaryoları, Deflated Sharpe                                   |
+| `kap.py`       | KAP bildirimleri: sınıflama, olay günü, katmana göre anormal getiri, ilk bildirim süzgeci, takvim zamanlı olay sepeti, portföy şirketi profilleri ve ortak hisse ağı, bildirim metninden yön; yabancı oranı kesiti ve geçmişi; sektör endekslerinde ay etkisi ve süreklilik |
 | `calistir.py`  | Hepsini çalıştırır, JSON çıktıları ve raporu yazar                                                                                                   |
 | `rapor.py`     | Türkçe rapor; kayıtlı JSON'lardan yeniden üretilebilir                                                                                               |
 | `sayfa.py`     | Etkileşimli sayfa: analiz JSON'larını tek veri nesnesine indirger, ağaç yerleşimini hesaplar, `sayfa/` şablon parçalarıyla tek dosyalık HTML yazar    |
@@ -47,7 +51,9 @@ kesit tablosu sayfadan okunabiliyor), MKK yatırımcı sayıları, aracı kurum 
 ## 3. Komutlar
 
 ```bash
-# Veri (Actions): is=ag-veri, kaynak=tv,yahoo,isy,mali,seri,saatlik,hisse_saatlik  (≈ 30 dk; KAP ayrı: kaynak=kap_liste ≈ 50 dk, sonra kaynak=kap_detay ≈ 150 dk, kaldığı yerden sürer)
+# Veri (Actions): is=ag-veri, kaynak=tv,yahoo,isy,mali,seri,saatlik,hisse_saatlik  (≈ 30 dk)
+#   KAP ayrı: kaynak=kap_liste (≈ 50 dk), sonra kaynak=kap_detay (≈ 150 dk; kaldığı yerden sürer)
+#   İş Yatırım ek: kaynak=isy_ek (yabancı kesiti + endeks geçmişi, ≈ 2 dk), kaynak=yabanci_gecmis (haftalık kesitler)
 python -m yatirim_ajani ag-veri-cek --klasor veri/ag --kaynak tv,yahoo,isy
 
 # Analiz + rapor (yerel, ≈ 2 dk)
@@ -76,6 +82,13 @@ sektör × seri ısı haritası), saat-mevsim-yıl, yatırımcı izleri, fonlar,
   (deneme sayısı raporda).
 - **Maliyet:** gece taşımada gidiş-dönüş 10 ve 30 bp; dönemsel portföyde devir × 30 ve 60 bp.
 - **İşlem hacmi payı para girişi değildir.** "İlgi" ölçer; net akış yalnız yatırımcı tipi verisiyle ölçülür.
+- **Olay ortalaması karar ölçütü değildir.** Anormal getiri, hissenin getirisinin pazar katmanı ortalamasına oranıdır
+  (log getirilerin ortalamasını çıkarmak rastgele olayda bile 20 günde ≈ +%1 sapma verir; testi var). Olay ortalamaları birkaç
+  hisseye ve bildirimlerin yığıldığı günlere fazla ağırlık verir; kurallar **takvim zamanlı sepet** testine göre sınıflanır
+  (her gün bir gözlem, tavanda alınmaz, tabanda satılamaz, maliyet düşülür). Bu ayrım üç sahte alım işaretini eledi: kâr payı
+  kararı, şirketin başka şirkette pay alımı ve her geri alım bildirimi (olay ortalamasında artı, sepette sıfır ya da eksi).
+- **Bildirim saati:** 18:00'den sonra ya da işlem günü dışında yayımlanan bildirimin olay günü sonraki ilk işlem günüdür.
+- **Çift seçimi örneklem dışı:** komşu geçişi testinde çiftler kesim gününe kadarki veriyle seçilir, sonrası test edilir.
 
 ## 5. Başlıca bulgular (ayrıntı ve sayılar raporda)
 
@@ -89,21 +102,36 @@ sektör × seri ısı haritası), saat-mevsim-yıl, yatırımcı izleri, fonlar,
 5. Tavan serisi bozulunca, hacim patlamasından sonra, halka arzda seri bittikten sonra ve tabanda alım zarar ettiriyor.
 6. Yoğun pozisyon alan fonların hisseleri 2025'te çok kazandırdı, SPK'nın 17 Eylül 2026 kararıyla çöktü; fon satış bildirimi
    güçlü bir çıkış işareti.
-7. Sınanan alım kurallarından Deflated Sharpe eşiğini (0,95) net geçen yok. Adaylar: BIST 100 gece taşıma (maliyete bağlı) ve
-   BIST 100 dışında bileşik puan (kıyası geçiyor, mutlak getirisi rejime bağlı).
+7. Sınanan alım kurallarından Deflated Sharpe eşiğini (0,95) net geçen yok. Adaylar: BIST 100 gece taşıma (maliyete bağlı),
+   BIST 100 dışında bileşik puan (kıyası geçiyor, mutlak getirisi rejime bağlı) ve ilk geri alım bildirimi (ertesi açılışta
+   al, 5 gün tut: günde +13 bp fazla, t 2,0, iki yarıda da aynı).
+8. KAP bildirimleri (19.803 bildirim): bedelsiz ve bedelli haberinden sonra almak düzenli kaybettiriyor (20 gün tutan sepet günde
+   −30 ve −26 bp); ortaklık payı eşik bildirimi alım işareti değil (−9 bp/gün). Bildirimlerin %55'i seans kapandıktan sonra
+   geliyor, tepki ertesi açılışta fiyatlanıyor.
+9. Portföy şirketlerinin 741 pay bildirimi: hedefler %91 BIST 100 dışı, oynak (70. yüzdelik), çok el değiştiren, yükselmiş,
+   defter değerine göre pahalı (32. yüzdelik). Şirketler ortak hisselerde buluşuyor (merkezde Pardus). Bildirim 28 Ağustos 2026'ya
+   kadar yükselişin ortasında geliyordu; sonrasında öncesi de sonrası da eksi.
+10. Yabancı payı (596 hisse): büyüklük ve derinlikle 0,5; BIST 100 içinde momentum +0,45, özkaynak kârlılığı +0,39, oynaklık −0,43.
+    Hisselerin %76'sında yabancı payı %10'un altında.
+11. Sektör endeksleri 2010–2026: güvenilir bir ay takvimi yok (276 çiftten 17'si |t| ≥ 2, şansla beklenen 13); 12 aylık
+    süreklilik zayıf ama anlamlı (en kötü üç sektör ertesi ay −0,7 puan, t −2,1).
+12. Altın, gümüş ve doların TL getirisi BIST kapalıyken oluşuyor (altın: gece +15 bp, seans +2 bp). Ağdaki en yakın komşu
+    sıçradığında geride kalan hisse ertesi gün izlemiyor (örneklem dışı %0,0).
 
 ## 6. Haftalık yönetime aktarım (öneri; HAFTA.md'ye ancak kullanıcı onayıyla girer)
 
 - Alım 17:00–17:50, satış açılış: korunur (gece primi ve son yarım saat bulgusuyla uyumlu).
 - Yeni kaçınma kuralları: tavan serisi bozulan, hacmi 3 katına çıkan (BIST 100 dışı), tabanda olan, halka arzı yeni biten ve yoğun
-  fon payı ya da fon satış bildirimi olan hisseye alım yazılmaz.
+  fon payı ya da fon satış bildirimi olan hisseye alım yazılmaz. KAP'tan: bedelsiz ya da bedelli sermaye artırımı bildirimi son
+  20 işlem gününde çıkmış hisseye ve ortaklık payı eşik bildirimi gelmiş hisseye alım yazılmaz.
+- Aday (küçük tutarla, ayrı izlenerek): akşam ilk geri alım bildirimi gelen hisse ertesi açılışta alınır, 5 işlem günü tutulur.
 - S&P vadelisi gece %0,5'ten fazla düştüyse o gün alım 17:00'ye bırakılır (zaten öyle), satış açılışta yapılır.
 - BIST 100 dışına çıkılacaksa: bileşik puan + küçük hisse etkeni süzgeci; tez listesi kuralı (ekip oturumu) geçerli kalır.
 
 ## 7. Kuyruk
 
-1. KAP bildirim listesinin tamamı (hız sınırı yüzünden parça parça) → fon bildirimleri olay çalışmasını arama özetleri yerine KAP
-   kayıtlarıyla yinele; geri alım, bedelsiz, kâr payı olaylarını tüm BIST için tam saatleriyle ekle.
-2. Yabancı payı geçmişi: sayfanın tarih parametresi çözülürse haftalık panel → "yabancı neye göre alıyor" doğrudan ölçülür.
-3. Sektör endekslerinin uzun dönem geçmişi (İş Yatırım `IndexHistoricalAll`) → sektör mevsimselliği 2010'dan.
+1. Bildirim metinleri (`kap_detay`) tamamlandıkça: yön (alım/satım) ve oranlarla portföy şirketi kurallarını ayrıştır; halka arzda
+   %5 üstü alanların kimliği.
+2. Yabancı payının haftalık geçmişi: pay değişimi ile önceki özellikler ve sonraki getiri (kod hazır: `kap.yabanci_gecmis`).
+3. KAP listesini günlük artımlı çek (yalnız son 3 gün) → akşam taramasında kaçınma ve aday listeleri otomatik üretilsin.
 4. TEFAS fon fiyatları erişilebilir olursa getiri-tabanlı stil analizi (fonların sektör ve stil yükleri).
