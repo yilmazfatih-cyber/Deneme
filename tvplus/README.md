@@ -56,6 +56,20 @@ Bu kipte her şey `http://<bilgisayarın-ip-adresi>:8787` üzerindedir. TV'deki 
 açabileceği adresi taşır. (Düz `http://<ip>` adresinde oynatma hattı şifresiz geliştirme şemasına düşer; şifreli zarf
 güvenli bağlam ister.)
 
+### Açılmazsa
+
+Uygulama başlayamazsa boş ekran yerine **"TV+ açılamadı"** sayfası çıkar ve nedeni yazar; o metin çoğu zaman sorunu
+tek başına anlatır. Sayfa hiç gelmiyorsa (tarayıcının kendi "bağlanılamadı" ekranı) sunucu çalışmıyordur.
+
+| Belirti                                     | Olası neden                                     | Ne yapmalı                                                                        |
+| ------------------------------------------- | ----------------------------------------------- | --------------------------------------------------------------------------------- |
+| Tarayıcı "bağlanılamadı" diyor              | Sunucu çalışmıyor ya da adres yanlış            | `npm run dev` çalışan terminal açık mı; adres `5173` (geliştirme) / `8787` mi     |
+| "TV+ açılamadı — Betik yüklenemedi"         | Eski derleme ya da yarım kalmış kurulum         | `npm install`, ardından `npm run build`; sayfayı yenileyin                        |
+| Kurulum ya da başlatma hata veriyor         | Node sürümü eski                                | `node -v` 22.12 ya da üstünü göstermeli                                           |
+| "adres kullanımda" (`EADDRINUSE`)           | Kapıyı önceki bir çalıştırma tutuyor            | Öteki terminali kapatın ya da başka kapı verin: `PORT=8788 npm start`             |
+| Sayfalar geliyor, video oynamıyor           | Açık kaynak videolar internetten gelir          | Bağlantıyı denetleyin; oynatıcıda **Kaynak** düğmesinden öteki kaynağı seçin      |
+| Girişten sonra tutarsız durum, eski görünüm | Önceki sürümden kalan çerez ya da sunucu verisi | Tarayıcıda site verisini silin; sunucu durumu `.data/` klasöründedir, silinebilir |
+
 ## Üç ekran ve cihazlar arası
 
 | Özellik                | Nerede                                      | Ne olur                                                                                             |

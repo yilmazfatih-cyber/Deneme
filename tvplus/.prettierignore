@@ -11,5 +11,6 @@ content/.youtube-report.json
 docs/referans
 ml/.venv
 ml/.cache
+ml/.pytest_cache
 content/models
 content/shots

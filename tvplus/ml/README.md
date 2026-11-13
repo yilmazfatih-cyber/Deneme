@@ -56,11 +56,11 @@ girmez), sinüs konum kodlaması, 64 çekimlik eğitim penceresi, 3 katman.
 
 ### Kip kodlayıcıları ve neden bunlar
 
-| kip | model | lisans | neden |
-|---|---|---|---|
-| görüntü | [openai/clip-vit-base-patch32](https://huggingface.co/openai/clip-vit-base-patch32) (ONNX: Xenova/clip-vit-base-patch32 `onnx/vision_model.onnx`, 352 MB) | MIT | küçük, CPU'da hızlı, genel amaçlı; metinle ortak uzay |
-| metin | [sentence-transformers/clip-ViT-B-32-multilingual-v1](https://huggingface.co/sentence-transformers/clip-ViT-B-32-multilingual-v1) (`onnx/model.onnx` 539 MB + `2_Dense`) | Apache-2.0 | Türkçe dahil 50+ dil; çıktısı CLIP ViT-B/32 görüntü uzayına hizalı → "Türkçe ifadeyle çekim arama" |
-| ses | [laion/clap-htsat-unfused](https://huggingface.co/laion/clap-htsat-unfused) (ONNX: Xenova/clap-htsat-unfused `onnx/audio_model.onnx`, 118 MB) | Apache-2.0 | genel ses (müzik, ortam, konuşma) için eğitilmiş; konuşmaya özel wav2vec'ten film sesine daha uygun |
+| kip     | model                                                                                                                                                                    | lisans     | neden                                                                                               |
+| ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | --------------------------------------------------------------------------------------------------- |
+| görüntü | [openai/clip-vit-base-patch32](https://huggingface.co/openai/clip-vit-base-patch32) (ONNX: Xenova/clip-vit-base-patch32 `onnx/vision_model.onnx`, 352 MB)                | MIT        | küçük, CPU'da hızlı, genel amaçlı; metinle ortak uzay                                               |
+| metin   | [sentence-transformers/clip-ViT-B-32-multilingual-v1](https://huggingface.co/sentence-transformers/clip-ViT-B-32-multilingual-v1) (`onnx/model.onnx` 539 MB + `2_Dense`) | Apache-2.0 | Türkçe dahil 50+ dil; çıktısı CLIP ViT-B/32 görüntü uzayına hizalı → "Türkçe ifadeyle çekim arama"  |
+| ses     | [laion/clap-htsat-unfused](https://huggingface.co/laion/clap-htsat-unfused) (ONNX: Xenova/clap-htsat-unfused `onnx/audio_model.onnx`, 118 MB)                            | Apache-2.0 | genel ses (müzik, ortam, konuşma) için eğitilmiş; konuşmaya özel wav2vec'ten film sesine daha uygun |
 
 Toplam indirme ≈ 1,0 GB. Ön işlemeler Hugging Face'teki `preprocessor_config.json` / `sentence_bert_config.json` /
 `1_Pooling` / `2_Dense` yapılandırmalarından okunarak `mediafm_mini/encoders.py` içinde yazıldı (CLAP'ta özgün
@@ -83,17 +83,17 @@ erişilebiliyorsa `--index-url https://download.pytorch.org/whl/cpu` ile daha k�
 
 ## Adım adım (hepsi `ml/` içinden; yeniden çalıştırmak önbellektekini yeniden hesaplamaz)
 
-| adım | komut | ne yapar | süre (4 çekirdek paylaşımlı) |
-|---|---|---|---|
-| 1. medya | `.venv/bin/python -m data.fetch_media` | açık filmleri indirir (`mediafm_mini/sources.py` kaydı; sırayla, ≈ 1 istek/sn, 429'da bekler; Commons 360p VP9) | ~10 dk (Wikimedia kısıtlamasıyla) |
-| 2. çekimler | `.venv/bin/python -m data.analyze_all` | her Commons filmi için **uygulamanın** çözümleyicisini çalıştırır: `npm run analyze:shots -- <id> --media <dosya> --note "<kaynak · lisans>"` → `content/shots/<id>.json` | ~5 dk |
-| 3. girdiler | `cd .. && npx tsx ml/tools/dump-inputs.ts --out ml/.cache/inputs.json` | sunucunun sağlayıcıya göndereceği `EmbeddingInput`'ları (çekimler + özet + GEÇERLİ etiketler) aynen döker | 2 sn |
-| 4. öznitelikler | `.venv/bin/python -m data.build_features` | kodlayıcıları ilk kullanımda indirir (≈ 1 GB, 40 sn); çekim başına 3 kip vektörü + özet vektörleri → `.cache/features/` (KEYFRAMES kareleri i.ytimg.com'dan bir kez; 424 istek) | 35 dk ilk sefer (yüklü makinede), sonra saniyeler |
-| 5. çapraz doğrulama | `.venv/bin/python train.py --cv 5` | başlığa göre 5 kat × (tam model, `[GLOBAL]`'sız ablasyon) | ~5 dk |
-| 6. değerlendirme | `.venv/bin/python evaluate.py` | ayrılmış başlıklarda maskeli çekim bulma + temeller + ablasyonlar + bağlam eşleştirme → `.cache/runs/cv/metrics.json` | ~25 sn |
-| 7. son model | `.venv/bin/python train.py --final` | tüm açık filmlerle; dönem sayısı CV'deki en iyi dönemlerin ortancası (43) | ~30 sn |
-| 8. dışa aktarma | `.venv/bin/python export.py` | tüm katalog (129 yaprak) → `content/models/mediafm-mini/` (≈ 6,3 MB) | ~30 sn |
-| 9. sınamalar | `.venv/bin/python -m pytest` | saf parçaların birim sınamaları (ağsız, saniyeler) | 3 sn |
+| adım                | komut                                                                  | ne yapar                                                                                                                                                                        | süre (4 çekirdek paylaşımlı)                      |
+| ------------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- |
+| 1. medya            | `.venv/bin/python -m data.fetch_media`                                 | açık filmleri indirir (`mediafm_mini/sources.py` kaydı; sırayla, ≈ 1 istek/sn, 429'da bekler; Commons 360p VP9)                                                                 | ~10 dk (Wikimedia kısıtlamasıyla)                 |
+| 2. çekimler         | `.venv/bin/python -m data.analyze_all`                                 | her Commons filmi için **uygulamanın** çözümleyicisini çalıştırır: `npm run analyze:shots -- <id> --media <dosya> --note "<kaynak · lisans>"` → `content/shots/<id>.json`       | ~5 dk                                             |
+| 3. girdiler         | `cd .. && npx tsx ml/tools/dump-inputs.ts --out ml/.cache/inputs.json` | sunucunun sağlayıcıya göndereceği `EmbeddingInput`'ları (çekimler + özet + GEÇERLİ etiketler) aynen döker                                                                       | 2 sn                                              |
+| 4. öznitelikler     | `.venv/bin/python -m data.build_features`                              | kodlayıcıları ilk kullanımda indirir (≈ 1 GB, 40 sn); çekim başına 3 kip vektörü + özet vektörleri → `.cache/features/` (KEYFRAMES kareleri i.ytimg.com'dan bir kez; 424 istek) | 35 dk ilk sefer (yüklü makinede), sonra saniyeler |
+| 5. çapraz doğrulama | `.venv/bin/python train.py --cv 5`                                     | başlığa göre 5 kat × (tam model, `[GLOBAL]`'sız ablasyon)                                                                                                                       | ~5 dk                                             |
+| 6. değerlendirme    | `.venv/bin/python evaluate.py`                                         | ayrılmış başlıklarda maskeli çekim bulma + temeller + ablasyonlar + bağlam eşleştirme → `.cache/runs/cv/metrics.json`                                                           | ~25 sn                                            |
+| 7. son model        | `.venv/bin/python train.py --final`                                    | tüm açık filmlerle; dönem sayısı CV'deki en iyi dönemlerin ortancası (43)                                                                                                       | ~30 sn                                            |
+| 8. dışa aktarma     | `.venv/bin/python export.py`                                           | tüm katalog (129 yaprak) → `content/models/mediafm-mini/` (≈ 6,3 MB)                                                                                                            | ~30 sn                                            |
+| 9. sınamalar        | `.venv/bin/python -m pytest`                                           | saf parçaların birim sınamaları (ağsız, saniyeler)                                                                                                                              | 3 sn                                              |
 
 Tohumlar sabittir (eğitim 7, katlar 7, değerlendirme maskeleri 2026). Aynı önbellek + aynı tohum aynı ağırlıkları
 verir (CPU'da `torch.set_num_threads(2)`).
@@ -102,10 +102,10 @@ verir (CPU'da `torch.set_num_threads(2)`).
 
 1. **Depoda gelen vektörler (varsayılan):** `content/models/mediafm-mini/` — `manifest.json` (biçim
    `tvplus-embedding/1`, `id` = klasör adı), `vectors.jsonl` (ilk satır model satırı, sonra yaprak başına çekim vektörleri
-   + havuz vektörü), ayrıca bilgi için `title-vectors.json`, ağırlıklar (`model.safetensors` + `config.json`),
-   `metrics.json`, `model-card.md`. `TVP_EMBEDDING_PROVIDER` verilmemişse sunucu açılışta bu klasörü okur
-   (`server/src/services/embeddings/models.ts`); çekim sayısı güncel çözümlemeyle uyuşmayan yapraklar taban
-   sağlayıcıya düşer. `GET /api/studio/embeddings` → `provider: "dosya"`, `modelVersion: "mediafm-mini@<sürüm>"`.
+   - havuz vektörü), ayrıca bilgi için `title-vectors.json`, ağırlıklar (`model.safetensors` + `config.json`),
+     `metrics.json`, `model-card.md`. `TVP_EMBEDDING_PROVIDER` verilmemişse sunucu açılışta bu klasörü okur
+     (`server/src/services/embeddings/models.ts`); çekim sayısı güncel çözümlemeyle uyuşmayan yapraklar taban
+     sağlayıcıya düşer. `GET /api/studio/embeddings` → `provider: "dosya"`, `modelVersion: "mediafm-mini@<sürüm>"`.
 2. **Canlı model sunucusu:** `.venv/bin/python serve.py --port 9100`, sonra depo kökünde
    `TVP_EMBEDDING_PROVIDER=http TVP_EMBEDDING_URL=http://127.0.0.1:9100/tvplus npm start`. Sunucu her yaprak için
    `{protocol, input}` gönderir; model sunucusu önbellekteki tek kipli öznitelikleri bulur (yoksa yerel medyadan
@@ -121,14 +121,14 @@ yaprağı, 1 184 gerçek çekim (eğitim); dışa aktarma 129 yaprak, 1 619 çek
 **Maskeli çekim bulma** — çekimlerin %20'si gizlenir (yaprak başına 10 tohumlu tekrar), her gizli çekimin tahmini aynı
 maskedeki gizli çekimler (ort. 21,5 aday; rastgele R@1 0,064) arasında sıralanır. Tüm sorgular (mikro, 2 360 sorgu):
 
-| yöntem | R@1 | R@5 | ort. sıra | MRR |
-|---|---:|---:|---:|---:|
-| mediafm-mini (özet + geçerli etiketler) | 0,325 | 0,758 | 4,33 | 0,511 |
-| aynı model, bağlam başka başlıktan | 0,325 | 0,758 | 4,33 | 0,511 |
-| aynı model, bağlam boş | 0,325 | 0,758 | 4,33 | 0,511 |
-| `[GLOBAL]`'sız eğitilmiş model | 0,327 | 0,764 | 4,28 | 0,514 |
-| temel: en yakın görünür komşu | 0,281 | 0,698 | 5,11 | 0,465 |
-| temel: iki komşunun ortalaması | 0,326 | 0,753 | 4,34 | 0,511 |
+| yöntem                                  |   R@1 |   R@5 | ort. sıra |   MRR |
+| --------------------------------------- | ----: | ----: | --------: | ----: |
+| mediafm-mini (özet + geçerli etiketler) | 0,325 | 0,758 |      4,33 | 0,511 |
+| aynı model, bağlam başka başlıktan      | 0,325 | 0,758 |      4,33 | 0,511 |
+| aynı model, bağlam boş                  | 0,325 | 0,758 |      4,33 | 0,511 |
+| `[GLOBAL]`'sız eğitilmiş model          | 0,327 | 0,764 |      4,28 | 0,514 |
+| temel: en yakın görünür komşu           | 0,281 | 0,698 |      5,11 | 0,465 |
+| temel: iki komşunun ortalaması          | 0,326 | 0,753 |      4,34 | 0,511 |
 
 **Bağlam eşleştirme** — ayrılmış yaprağın çekimleri 13 başlığın bağlamıyla ayrı ayrı modele verilir: model R@1 0,000,
 R@5 0,267, ortalama sıra 6,87 (rastgele 7); eğitimsiz CLIP temeli (film görüntü ortalaması · özet metni) R@1 0,400,

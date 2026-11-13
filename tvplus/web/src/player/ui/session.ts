@@ -6,6 +6,7 @@
 import type { LicensedManifest } from '../../../../shared/playback'
 import { parseEntityId } from '../../../../shared/tctx'
 import { devbus } from '../../lib/devbus'
+import { notePlayback, trackBookmarkSave } from '../../lib/playbackNotes'
 import { logEvent } from '../../telemetry/logger'
 import { sourceKindOf } from '../adapters'
 import type { AdapterEvent, PlayerAdapter } from '../adapters/types'
@@ -27,6 +28,7 @@ export class PlaybackSession {
   private lastSavedPos = -1
   private live: boolean
   private rebuffers = 0
+  private parentVideoId: number | null = null
 
   constructor(viewableId: string, tctx: string | null, live: boolean) {
     this.viewableId = viewableId
@@ -41,6 +43,11 @@ export class PlaybackSession {
 
   setLive(live: boolean): void {
     this.live = live
+  }
+
+  /** Bölüm oynuyorsa üst dizisi: yer imi değişince dizinin "kaldığın bölüm" bilgisi de tazelenir. */
+  setParent(videoId: number | null): void {
+    this.parentVideoId = videoId
   }
 
   /** Yeni bağdaştırıcıyı izlemeye başlar (kaynak değişiminde öncekinin yerine geçer). */
@@ -146,7 +153,10 @@ export class PlaybackSession {
     this.lastSavedPos = p
     const dur = this.adapter.duration() || this.durationSec || null
     devbus.emit('player', `yer imi: ${p} sn`, { viewableId: this.viewableId, positionSec: p, durationSec: dur, reason })
-    saveBookmark(this.viewableId, p, dur).catch(() => undefined)
+    // Oynatma hangi yoldan başlamış olursa olsun (arama, yansıtma, paylaşılan bağlantı) dönüşte satırlar tazelensin
+    const ent = parseEntityId(this.viewableId)
+    if (ent?.kind === 'Video') notePlayback(Number(ent.id), this.parentVideoId)
+    trackBookmarkSave(saveBookmark(this.viewableId, p, dur).catch(() => undefined))
   }
 
   /** Oynatma sonu: bitti ya da sayfadan çıkıldı. */

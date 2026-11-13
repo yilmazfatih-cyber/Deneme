@@ -163,6 +163,7 @@ export default function WatchPageImpl(props: WatchPageProps): ReactElement {
       if (ctrl.signal.aborted) return
       const m = mr.status === 'fulfilled' ? mr.value : null
       setMeta(m)
+      s.setParent(m?.video?.parentShow?.videoId ?? null)
       if (m && m.access.state !== 'PLAYABLE') {
         setFailure({
           kind: 'access',

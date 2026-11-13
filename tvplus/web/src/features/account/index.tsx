@@ -8,7 +8,6 @@
 import { useMemo, useState, type ReactElement, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { toggleDevtoolsPanel, useActiveProfile, useDocumentTitle, useSession, useTitleHref } from '../../app'
-import { gql } from '../../api/graphql'
 import { useGql } from '../../api/hooks'
 import { logEvent } from '../../telemetry/logger'
 import {
@@ -27,6 +26,7 @@ import {
 import { localTctx, playPath } from '../detail/links'
 import { isInProgress, lockedTextOf, remainingOf } from '../detail/model'
 import { notePlaybackIntent, useFreshAfterPlayback } from '../detail/sync'
+import { applyReminder } from '../live/actions'
 import type { ArtworkData, CardVideoData, ContinueVideoData, LibraryData } from '../detail/types'
 import { relativeTime } from '../notifications/time'
 import './account.css'
@@ -315,7 +315,8 @@ function Reminders(): ReactElement {
 
   const remove = (r: ReminderItem) => {
     setHiddenFor(r.airingId, true)
-    gql('SetReminder', { airingId: r.airingId, enabled: false }).then(
+    // Rehber ve Canlı TV ile aynı depo: kaldırılan hatırlatma orada da hemen kalkar
+    applyReminder(r.airingId, false).then(
       () => {
         logEvent('click', { airingId: r.airingId, action: 'reminder-off', from: 'tvplusim' })
         const upcoming = Date.parse(r.startAt) > Date.now()
@@ -324,7 +325,7 @@ function Reminders(): ReactElement {
             ? {
                 label: 'Geri al',
                 onClick: () => {
-                  gql('SetReminder', { airingId: r.airingId, enabled: true }).then(
+                  applyReminder(r.airingId, true).then(
                     () => setHiddenFor(r.airingId, false),
                     () => toast('Hatırlatma yeniden kurulamadı'),
                   )

@@ -150,12 +150,10 @@ test.describe('oynatma hattı', () => {
     await waitPlaying(page, 8)
   })
 
-  // UYGULAMA HATASI: oynatıcı "oynatma niyeti" not edilmeden açılınca (mobil aramadaki "‹Ad› oynat" bağlantısı,
-  // "Bu Cihazda Devam Et", gelen yansıtma, paylaşılan /izle bağlantısı) ana sayfaya uygulama içinde dönüldüğünde
-  // "İzlemeye Devam Et" bayat kalır; ancak sayfa yenilenince düzelir. Ana sayfa (LolomoPage) yalnız
-  // web/src/features/preview/sync.ts `notePlaybackIntent` kaydı varsa Falcor önbelleğini tazeler; detay
-  // penceresi de ayrı bir kümeye (web/src/features/detail/sync.ts) yazar. Oynatıcı oynatmayı kendisi not etmeli.
-  test.fixme(`aramadan oynatıp dönünce "İzlemeye Devam Et" tazelenir ${NET}`, async ({ page }) => {
+  // Oynatma hangi yoldan başlarsa başlasın (mobil aramadaki "‹Ad› oynat", "Bu Cihazda Devam Et", gelen yansıtma,
+  // paylaşılan /izle bağlantısı) oynatıcı yer imini kaydederken videoyu not eder (web/src/lib/playbackNotes.ts);
+  // ana sayfa uygulama içinde yeniden açılınca "İzlemeye Devam Et" tazelenir.
+  test(`aramadan oynatıp dönünce "İzlemeye Devam Et" tazelenir ${NET}`, async ({ page }) => {
     test.skip(!isMobile(page), 'mobil aramanın oynat bağlantısı')
     await signIn(page)
     await page.goto('/#/goz-at')
@@ -170,7 +168,7 @@ test.describe('oynatma hattı', () => {
     await page.goBack()
     await page.getByRole('link', { name: 'Ana Sayfa' }).click()
     await expect(
-      page.getByRole('region', { name: 'İzlemeye Devam Et' }).getByRole('link', { name: /^Tears of Steel/ }),
+      page.getByRole('region', { name: 'İzlemeye Devam Et' }).getByRole('link', { name: /^Tears of Steel: Devam Et/ }),
     ).toBeVisible()
   })
 })

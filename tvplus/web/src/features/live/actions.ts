@@ -141,6 +141,31 @@ export function setReminder(a: ReminderTarget, surface: string, tctx?: string | 
   )
 }
 
+/**
+ * Hatırlatmayı başka bir ekrandan (TV+'ım) kurar ya da kaldırır. Aynı iyimser depoya yazar; böylece Rehber ve
+ * Canlı TV aynı oturumda doğru durumu gösterir (sorgu önbellekleri dolmadan). Bildirim ve olay günlüğü çağırana aittir.
+ * Sonuç: sunucunun onayladığı değer; hata olursa depo önceki değerine döner ve hata çağırana iletilir.
+ */
+export async function applyReminder(airingId: string, enabled: boolean): Promise<boolean> {
+  const key = airingId
+  const previous = effectiveValue(reminderStore.get(), key, !enabled)
+  reminderStore.dispatch({ type: 'request', key, value: enabled })
+  try {
+    const res = await gql<
+      { setReminder: { airingId: string; hasReminder: boolean } | null },
+      { airingId: string; enabled: boolean }
+    >('SetReminder', { airingId, enabled })
+    const on = res.setReminder?.hasReminder ?? enabled
+    reminderStore.dispatch({ type: 'confirm', key, value: on })
+    devbus.emit('cache', `Hatırlatma ${on ? 'kuruldu' : 'kaldırıldı'}`, { airingId, surface: 'tvplusim' })
+    notifyChanged()
+    return on
+  } catch (err) {
+    reminderStore.dispatch({ type: 'fail', key, previous })
+    throw err
+  }
+}
+
 /* ───────────── Son kanal ───────────── */
 
 /** İzlemeye başlanan kanal profilin "son kanalı" olur (Canlı TV vitrini ona açılır). Sessizce dener. */

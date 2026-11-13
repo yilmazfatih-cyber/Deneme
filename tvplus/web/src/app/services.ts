@@ -47,7 +47,11 @@ export function useProfileServices(formFactor: FormFactor): void {
         try {
           deviceClient.start({ kind: deviceKindOf(formFactor) })
           // Yansıtma seçicisi ve gelen yansıtmalar hangi sayfadan girilirse girilsin hazır olsun (ör. doğrudan /izle).
-          if (formFactor !== 'tv') void import('../devices/runtime').then((m) => m.installDeviceUi()).catch(() => {})
+          // Seçicinin yuvası devices/ui'de kaydolur; o yüklenmeden "TV'de İzle" birden çok TV varken hiçbir şey çizemez.
+          if (formFactor !== 'tv')
+            void Promise.all([import('../devices/runtime'), import('../devices/ui')])
+              .then(([m]) => m.installDeviceUi())
+              .catch(() => {})
         } catch (err) {
           devbus.emit('device', 'kayıt başlatılamadı', { error: String(err) }, { ok: false })
         }

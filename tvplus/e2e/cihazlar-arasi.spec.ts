@@ -227,11 +227,9 @@ test.describe('yansıtma', () => {
 })
 
 test.describe('yansıtma (doğrudan açılan oynatıcı)', () => {
-  // UYGULAMA HATASI: oynatıcı ilk açılan sayfaysa (paylaşılan bağlantı / yenileme) ve birden çok TV çevrimiçiyse
-  // "TV'de İzle" hiçbir şey yapmaz. Yansıtma işleyicisi web/src/app/services.ts'te kuruluyor, ama seçicinin yuvası
-  // (registerPickerHost, web/src/devices/ui.tsx) yalnız features/remote yüklenince — kabuksuz /izle'de hiç — kaydoluyor;
-  // openCastPicker (web/src/devices/runtime.tsx) yuva yokken sessizce hiçbir şey çizmiyor.
-  test.fixme(`/izle yenilenince iki TV varken "TV'de İzle" seçiciyi açar ${NET}`, async ({ context, page }) => {
+  // Oynatıcı ilk açılan sayfaysa (paylaşılan bağlantı / yenileme) seçicinin yuvası da hazır olmalı:
+  // web/src/app/services.ts oturum açılınca devices/runtime ile birlikte devices/ui'yi (registerPickerHost) yükler.
+  test(`/izle yenilenince iki TV varken "TV'de İzle" seçiciyi açar ${NET}`, async ({ context, page }) => {
     const { name } = await signedInTv(context)
     await signedInTv(context)
     await signIn(page, 'Deniz', { vd: uniq('web'), cihaz: 'web' })

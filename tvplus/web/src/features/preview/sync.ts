@@ -4,13 +4,15 @@
  *   - lolomos[guid(:kategori)] → satır sayısı + sıra (Listem satırı ilk eklemede ortaya çıkar, son çıkarmada kaybolur)
  *   - lists[<bağlam>]         → yalnız etkilenen listeler (queue / continueWatching)
  *   - videos[id].{queue,…}    → değişen videonun kişisel yaprakları
- * Oynatıcıdan dönüş: oynat bağlantısına basılınca video not edilir; keşif sayfası yeniden açılınca geçersiz kılınır.
+ * Oynatıcıdan dönüş: oynat bağlantısı ve oynatıcının kendisi videoyu not eder (lib/playbackNotes); keşif sayfası
+ * yeniden açılınca geçersiz kılınır.
  */
 import { useEffect } from 'react'
 import type { FalcorPath, JsonGraph, JsonGraphLeaf } from '../../../../shared/types'
 import { falcor } from '../../api/falcor'
 import { queryCache } from '../../api/hooks'
 import { peekBoot } from '../../api/session'
+import { afterBookmarkSaves, notePlayback, playbackSince } from '../../lib/playbackNotes'
 import { clearPreviews } from './store'
 
 const LOLOMO_CATEGORY_KEYS = ['shows', 'movies', 'newPopular'] as const
@@ -71,23 +73,28 @@ export function onRatingChanged(videoId: number): void {
 
 /* ───────────── Oynatıcıdan dönüş ───────────── */
 
-const played = new Set<number>()
+/** Bu modülün okuduğu son oynatma notu (bkz. lib/playbackNotes: notlar detay ekranlarıyla ortaktır). */
+let seen = 0
 
 /** Oynat bağlantısına basıldı: dönüşte yer imi/devam et satırı tazelenecek. */
 export function notePlaybackIntent(videoId: number, parentId?: number | null): void {
-  played.add(videoId)
-  if (parentId) played.add(parentId)
+  notePlayback(videoId, parentId)
 }
 
-/** Bekleyen oynatma varsa yolları geçersiz kılar; döndürdüğü değer: bir şey yapıldı mı. */
+/**
+ * Bekleyen oynatma varsa yolları geçersiz kılar; döndürdüğü değer: tazeleme gerekti mi.
+ * Oynatıcının son yer imi kaydı yoldaysa tazeleme onun bitmesini bekler (yoksa eski veri yeniden çekilir).
+ */
 export function flushPlaybackChanges(): boolean {
-  if (!played.size) return false
-  const ids = [...played]
-  played.clear()
-  invalidate(['continueWatching'], ids)
-  queryCache.invalidate('Library')
-  queryCache.invalidate('DetailModal')
-  clearPreviews()
+  const { ids, cursor } = playbackSince(seen)
+  if (!ids.length) return false
+  seen = cursor
+  afterBookmarkSaves(() => {
+    invalidate(['continueWatching'], ids)
+    queryCache.invalidate('Library')
+    queryCache.invalidate('DetailModal')
+    clearPreviews()
+  })
   return true
 }
 

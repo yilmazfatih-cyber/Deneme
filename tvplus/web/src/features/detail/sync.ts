@@ -10,6 +10,7 @@ import type { FalcorPath, JsonGraph, JsonGraphLeaf } from '../../../../shared/ty
 import { falcor } from '../../api/falcor'
 import { queryCache } from '../../api/hooks'
 import { peekBoot } from '../../api/session'
+import { afterBookmarkSaves, notePlayback, playbackSince } from '../../lib/playbackNotes'
 
 const PERSONAL_LEAVES = ['queue', 'bookmark', 'watchStatus', 'userRating', 'current']
 
@@ -73,22 +74,27 @@ export function afterRatingChange(videoId: number): void {
 
 /* ───────────── Oynatıcıdan dönüş ───────────── */
 
-const played = new Set<number>()
+/** Bu modülün okuduğu son oynatma notu (bkz. lib/playbackNotes: notlar keşif ekranlarıyla ortaktır). */
+let seen = 0
 
 /** Oynat bağlantısına basıldı: dönüşte yer imi ve "İzlemeye Devam Et" tazelenir. */
 export function notePlaybackIntent(videoId: number, parentId?: number | null): void {
-  played.add(videoId)
-  if (parentId) played.add(parentId)
+  notePlayback(videoId, parentId)
 }
 
-/** Bekleyen oynatma varsa önbellekleri geçersiz kılar. */
+/**
+ * Bekleyen oynatma varsa önbellekleri geçersiz kılar; döndürdüğü değer: tazeleme gerekti mi.
+ * Oynatıcının son yer imi kaydı yoldaysa tazeleme onun bitmesini bekler.
+ */
 export function flushPlaybackChanges(): boolean {
-  if (!played.size) return false
-  const ids = [...played]
-  played.clear()
-  invalidateFalcor(['continueWatching'], ids)
-  queryCache.invalidate('Library')
-  queryCache.invalidate('DetailModal')
+  const { ids, cursor } = playbackSince(seen)
+  if (!ids.length) return false
+  seen = cursor
+  afterBookmarkSaves(() => {
+    invalidateFalcor(['continueWatching'], ids)
+    queryCache.invalidate('Library')
+    queryCache.invalidate('DetailModal')
+  })
   return true
 }
 

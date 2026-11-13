@@ -8,7 +8,8 @@ import { FORM_FACTOR_PARAM } from '../../../shared/constants'
 export type FormFactor = 'tv' | 'mobile' | 'desktop'
 
 const MOBILE_MAX = 899
-const TV_UA = /SmartTV|SMART-TV|Tizen|Web0S|webOS|NetCast|HbbTV|GoogleTV|Android TV|AFT[A-Z]|BRAVIA|VIDAA|Roku|CrKey|PlayStation|Xbox/i
+const TV_UA =
+  /SmartTV|SMART-TV|Tizen|Web0S|webOS|NetCast|HbbTV|GoogleTV|Android TV|AFT[A-Z]|BRAVIA|VIDAA|Roku|CrKey|PlayStation|Xbox/i
 
 function forced(): FormFactor | null {
   try {
