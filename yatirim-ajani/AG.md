@@ -42,6 +42,7 @@ kesit tablosu sayfadan okunabiliyor), MKK yatırımcı sayıları, aracı kurum 
 | `strateji.py`  | Kural testleri: gece taşıma, lider-takipçi, dönemsel portföy, olay kuralları; maliyet senaryoları, Deflated Sharpe                                   |
 | `calistir.py`  | Hepsini çalıştırır, JSON çıktıları ve raporu yazar                                                                                                   |
 | `rapor.py`     | Türkçe rapor; kayıtlı JSON'lardan yeniden üretilebilir                                                                                               |
+| `sayfa.py`     | Etkileşimli sayfa: analiz JSON'larını tek veri nesnesine indirger, ağaç yerleşimini hesaplar, `sayfa/` şablon parçalarıyla tek dosyalık HTML yazar    |
 
 ## 3. Komutlar
 
@@ -54,7 +55,14 @@ python -m yatirim_ajani ag-analiz --klasor cikti/veri/ag --rapor cikti/raporlar/
 
 # Yalnız raporu yeniden üret
 python -m yatirim_ajani ag-analiz --yalniz-rapor --klasor cikti/veri/ag --rapor cikti/raporlar/ag-analiz-YYYYMMDD.md
+
+# Etkileşimli sayfa ("BIST Ağacı"): tek dosyalık HTML; tarayıcıda açılır ya da Artifact olarak yayınlanır
+python -m yatirim_ajani ag-sayfa --klasor cikti/veri/ag --html cikti/raporlar/bist-agaci.html
 ```
+
+Sayfanın altı bölümü: ağaç (gez, yakınlaş, hisse ara, sektör vurgula; iki ağaç türü), yayılım (küresel seri → açılış → küçük hisseler;
+sektör × seri ısı haritası), saat-mevsim-yıl, yatırımcı izleri, fonlar, günlük kurallar. Şablon `yatirim_ajani/ag/sayfa/` altında:
+`stil.css`, `govde.html` ve bölüm başına bir betik. Sayılar şablona yazılmaz; her cümle veriden doldurulur.
 
 ## 4. Dürüstlük kuralları (her testte)
 

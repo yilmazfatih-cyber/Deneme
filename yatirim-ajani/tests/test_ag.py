@@ -230,3 +230,53 @@ def test_rapor_bicimleri_ve_bos_sonuc():
     assert baslik_tr("YEŞİL YATIRIM HOLDİNG A.Ş.") == "Yeşil Yatırım Holding A.Ş."
     metin = rapor_yaz({"veri": {"donem": ["2024-01-02", "2026-11-12"], "gun": 717, "hisse": 614}, "hata": {}}, None)
     assert metin.startswith("# BIST ağ analizi") and "## 7. Sınırlar" in metin
+
+
+# --- etkileşimli sayfa ---------------------------------------------------------------------------
+def test_radyal_yerlesim_kok_merkezde_derinlik_disa():
+    import math
+
+    from yatirim_ajani.ag.sayfa import radyal_yerlesim
+
+    eb = {"K": None, "A": "K", "B": "K", "C": "A", "D": "A", "E": "C"}
+    k = radyal_yerlesim(eb)
+    assert set(k) == set(eb)
+    assert k["K"] == (0.0, 0.0)
+    assert all(-1.0001 <= x <= 1.0001 and -1.0001 <= y <= 1.0001 for x, y in k.values())
+    r = {d: math.hypot(*k[d]) for d in k}
+    assert r["A"] < r["C"] < r["E"]  # derinlik arttıkça merkezden uzaklaşır
+    assert abs(r["E"] - 1.0) < 1e-3  # en derin düğüm sınırda
+    # Ebeveyni olmayan iki düğüm sanal bir köke bağlanır: ikisi de merkezde durmaz
+    k2 = radyal_yerlesim({"X": None, "Y": None, "Z": "X"})
+    assert k2["X"] != (0.0, 0.0) and k2["Y"] != (0.0, 0.0)
+    assert radyal_yerlesim({}) == {}
+
+
+def test_sayfa_yaz_tek_dosya_ve_guvenli_veri(tmp_path):
+    import json
+    import re
+
+    from yatirim_ajani.ag.sayfa import sayfa_yaz
+
+    analiz = tmp_path / "ag" / "analiz"
+    analiz.mkdir(parents=True)
+    dugum = [
+        {"hisse": "AAA", "sektor": "banka", "grup": "bist30", "pd": 5e10, "beta": 1.1, "derece": 2, "ebeveyn": None, "tema_ebeveyn": "BBB", "kucuk_yuk": -0.2},
+        {"hisse": "BBB", "sektor": "banka", "grup": "bist100_30", "pd": 8e9, "beta": 0.9, "derece": 1, "ebeveyn": "AAA", "tema_ebeveyn": None, "kucuk_yuk": 0.4},
+        {"hisse": "CCC", "sektor": "gida", "grup": "ana_pazar", "pd": 7e8, "beta": 0.6, "derece": 1, "ebeveyn": "AAA", "tema_ebeveyn": "BBB", "kucuk_yuk": 1.2},
+    ]
+    agac = {"dugumler": dugum, "kok": "AAA", "kenarlar": [{"a": "AAA", "b": "BBB", "kor": 0.61}, {"a": "AAA", "b": "CCC", "kor": float("nan")}],
+            "tema_agaci": {"kok": "BBB", "kenarlar": [{"a": "BBB", "b": "AAA", "kor": 0.4}, {"a": "BBB", "b": "CCC", "kor": 0.2}]}}  # fmt: skip
+    (analiz / "agac.json").write_text(json.dumps(agac), encoding="utf-8")
+    (analiz / "ozet.json").write_text(json.dumps({"zaman": "2026-11-13", "veri": {"hisse": 3, "gun": 10, "donem": ["2026-01-02", "2026-01-15"]}}), encoding="utf-8")
+    (tmp_path / "ag" / "tv_tarama.csv").write_text('sembol,name,description\nBIST:AAA,AAA,"A </script><b>BANKASI"\n', encoding="utf-8")
+    yol = sayfa_yaz(analiz, tmp_path / "sayfa.html")
+    html = yol.read_text(encoding="utf-8")
+    assert "<title>BIST Ağacı</title>" in html[:200]
+    assert "/*__VERI__*/" not in html and "/*__STIL__*/" not in html and "/*__BETIK__*/" not in html
+    ham = re.search(r'<script type="application/json" id="veri">(.*?)</script>', html, re.S).group(1)
+    veri = json.loads(ham.replace("<\\/", "</"))  # şirket adındaki </script> veri bloğunu kapatmadı
+    assert veri["agac"]["dugum"][0][0] == "AAA" and veri["agac"]["dugum"][0][12].startswith("A </script>")
+    assert veri["agac"]["kenar"][1][2] is None  # NaN geçerli JSON değildir; null olur
+    assert len(veri["agac"]["dugum"]) == 3 and veri["agac"]["tkok"] == "BBB"
+    assert "NaN" not in ham

@@ -16,6 +16,9 @@ test = ["pytest>=8"]
 [tool.setuptools.packages.find]
 include = ["yatirim_ajani*"]
 
+[tool.setuptools.package-data]
+yatirim_ajani = ["ag/sayfa/*"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]

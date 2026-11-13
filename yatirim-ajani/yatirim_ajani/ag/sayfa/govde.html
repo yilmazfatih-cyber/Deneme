@@ -1,0 +1,48 @@
+<title>BIST Ağacı</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600&display=swap">
+<style>
+/*__STIL__*/
+</style>
+
+<div class="wrap" lang="tr">
+  <header class="mast">
+    <div class="eyebrow" id="kunye-ust">Borsa İstanbul</div>
+    <h1>BIST Ağacı</h1>
+    <p class="ozet">Borsa İstanbul'daki hisselerin birbirine nasıl bağlandığı, bilginin ve ilginin hisseden hisseye nasıl yayıldığı,
+      büyük ve küçük yatırımcının geride bıraktığı izler ve bunlardan çıkan günlük kurallar.</p>
+    <p class="uyari">Yatırım tavsiyesi değildir. Sayılar geçmiş veriden hesaplanmıştır; gelecekte aynı sonucu vermeyebilir.</p>
+  </header>
+
+  <div class="tabs-kap">
+    <nav class="tabs" role="tablist" aria-label="Bölümler">
+      <button role="tab" id="t-agac" data-g="agac" aria-controls="v-agac">Ağaç</button>
+      <button role="tab" id="t-yayilim" data-g="yayilim" aria-controls="v-yayilim">Yayılım</button>
+      <button role="tab" id="t-zaman" data-g="zaman" aria-controls="v-zaman">Saat, mevsim, yıl</button>
+      <button role="tab" id="t-yatirimci" data-g="yatirimci" aria-controls="v-yatirimci">Yatırımcı izleri</button>
+      <button role="tab" id="t-fonlar" data-g="fonlar" aria-controls="v-fonlar">Fonlar</button>
+      <button role="tab" id="t-kurallar" data-g="kurallar" aria-controls="v-kurallar">Günlük kurallar</button>
+    </nav>
+  </div>
+
+  <main>
+    <section class="view" id="v-agac" role="tabpanel" aria-labelledby="t-agac"></section>
+    <section class="view" id="v-yayilim" role="tabpanel" aria-labelledby="t-yayilim" hidden></section>
+    <section class="view" id="v-zaman" role="tabpanel" aria-labelledby="t-zaman" hidden></section>
+    <section class="view" id="v-yatirimci" role="tabpanel" aria-labelledby="t-yatirimci" hidden></section>
+    <section class="view" id="v-fonlar" role="tabpanel" aria-labelledby="t-fonlar" hidden></section>
+    <section class="view" id="v-kurallar" role="tabpanel" aria-labelledby="t-kurallar" hidden></section>
+  </main>
+
+  <footer class="alt">
+    <p id="alt-veri"></p>
+    <p>Tera grubu hisseleri (TERA, TEHOL, TRHOL) hiçbir hesapta yer almaz. Tavanda kapanan hisse o fiyattan alınamaz, tabanda kapanan satılamaz;
+      testler bu kilidi hesaba katar. İşlem hacmi payı para girişi değildir, yalnız ilgiyi ölçer.</p>
+  </footer>
+</div>
+
+<div class="tip" id="tip" lang="tr" hidden></div>
+<script type="application/json" id="veri">/*__VERI__*/</script>
+<script>
+/*__BETIK__*/
+</script>

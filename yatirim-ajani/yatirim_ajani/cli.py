@@ -860,6 +860,15 @@ def komut_ag_veri_cek(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
     return 0
 
 
+def komut_ag_sayfa(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
+    from .ag.sayfa import sayfa_yaz
+
+    cikti = Path(a.cikti) if a.cikti else Path(a.klasor) / "analiz"
+    yol = sayfa_yaz(cikti, a.html, a.arastirma)
+    print(f"Sayfa yazıldı: {yol} ({yol.stat().st_size // 1024} KB)")
+    return 0
+
+
 def komut_ag_analiz(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
     from datetime import date as _date
     from pathlib import Path as _Path
@@ -1384,6 +1393,13 @@ def ayristirici() -> argparse.ArgumentParser:
     sp.add_argument("--arastirma", default="dosya_kaynak/ag", help="Araştırma ajanı JSON'ları")
     sp.add_argument("--yalniz-rapor", action="store_true", help="Analizi yeniden çalıştırma; kaydedilmiş JSON'lardan raporu yeniden üret")
     sp.set_defaults(islev=komut_ag_analiz)
+
+    sp = alt.add_parser("ag-sayfa", help="Ağ analizinin etkileşimli sayfası: analiz JSON'larından tek dosyalık HTML")
+    sp.add_argument("--klasor", default="veri/ag")
+    sp.add_argument("--cikti", help="Analiz JSON klasörü (varsayılan: <klasor>/analiz)")
+    sp.add_argument("--arastirma", default="dosya_kaynak/ag", help="Araştırma ajanı JSON'ları")
+    sp.add_argument("--html", default="raporlar/bist-agaci.html", help="Yazılacak HTML dosyası")
+    sp.set_defaults(islev=komut_ag_sayfa)
 
     sp = alt.add_parser("yeniden-baslat", help="Düşüş sınırıyla durmuş sanal hesabı yeniden aç")
     sp.add_argument("--piyasa", choices=list(PIYASALAR), required=True)
