@@ -98,6 +98,7 @@ def calistir(klasor: str | Path = "veri/ag", cikti: str | Path | None = None, ra
                                  "kucuk_once": float(F["kucuk"].shift(1).corr(F["piyasa"])), "xu100_oz_iliski": float(P.xu100.autocorr(1))}}  # fmt: skip
 
     adim("gecikme", _gecikme)
+    adim("komsu", lambda: agac.komsu_gecisi(P))
 
     # --- saat ve akış
     H = SG = None
@@ -207,7 +208,7 @@ def calistir(klasor: str | Path = "veri/ag", cikti: str | Path | None = None, ra
                                        "kenarlar", "tema_agaci")} if A else {}  # fmt: skip
     _yaz(cikti / "agac.json", {**agac_json, "en_guclu_baglar": S.get("baglar")})
     _yaz(cikti / "zaman.json", S.get("zaman"))
-    _yaz(cikti / "oncu.json", {k: S.get(k) for k in ("oncu_grup", "oncu_sektor", "gecikme", "oncu_saatlik")})
+    _yaz(cikti / "oncu.json", {k: S.get(k) for k in ("oncu_grup", "oncu_sektor", "gecikme", "oncu_saatlik", "komsu")})
     _yaz(cikti / "akis.json", {k: S.get(k) for k in ("saat_profili", "saat_takvim", "isaretli_akis", "ilgi_sektor", "ilgi_grup", "rotasyon", "mevsimsellik", "varlik", "kuresel", "maden_saat")})
     _yaz(cikti / "yatirimci.json", {k: S.get(k) for k in ("tavan", "taban_alimi", "halka_arz", "faktor", "kisa_vade", "fm", "fon", "tasfiye")})
     _yaz(cikti / "strateji.json", S.get("strateji"))

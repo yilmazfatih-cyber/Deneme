@@ -75,6 +75,8 @@ function gorunumKurallar(kok) {
         `${tam(ig.gun)} günde açılıştan kapanışa ortalama ${yz(al(ig, 'brut', 'ort'), 2)}: iyi haber açılış fiyatında, sonrası yok.`, 'ret', 'Reddedildi'),
       kural('Alım baskısını izlemek', 'Saatlik çubuklardan alım baskısı yüksek hisseyi kapanışta al.',
         `Tavan ve taban günleri çıkarılınca ertesi gece farkı ${bpz(ak.ust_alt)} (t ${sy(ak.t, 1)}).`, 'ret', 'Reddedildi'),
+      al(V, 'yayilim', 'komsu', 'test', 'yukari', 'ertesi') ? kural('Kardeş hisse sıçradı, sıra bunda', 'Ağda en sıkı bağlı komşusu sıçrayan ama kendisi kıpırdamamış hisseyi kapanışta al.',
+        `Örneklem dışında ertesi gün ${yz(al(V, 'yayilim', 'komsu', 'test', 'yukari', 'ertesi', 'ort'), 2)} (t ${sy(al(V, 'yayilim', 'komsu', 'test', 'yukari', 'ertesi', 't'), 1)}, ${tam(al(V, 'yayilim', 'komsu', 'test', 'yukari', 'olay'))} olay): bağlar aynı gün fiyatlanıyor.`, 'ret', 'Reddedildi') : null,
       kural('Günlük sektör rotasyonu', 'Dün yükselen sektörün ardından bugün başka bir sektörü al.',
         `${tam(os.test)} sektör çiftinden ${tam((os.kenar || []).length)} tanesi anlamlı; ${tam((os.kenar || []).filter(e => e[0] === e[1]).length)} tanesi sektörün kendi sürekliliği, kalanların korelasyonu 0,15'in altında.`, 'ret', 'Reddedildi'),
       kural('Varlık momentumu', 'BIST, altın, gümüş ve dolardan son 6 ayın en iyisini tut.',

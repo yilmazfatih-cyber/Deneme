@@ -165,6 +165,7 @@ def _yayilim(K: dict, O: dict) -> dict:
         "gecikme": (O.get("gecikme") or {}).get("grup", {}), "en_gecikmeli": (O.get("gecikme") or {}).get("en_gecikmeli", []),
         "kucuk_faktor": (O.get("gecikme") or {}).get("kucuk_faktor", {}),
         "saatlik": {"liderlik": (O.get("oncu_saatlik") or {}).get("liderlik", {}), "saat_cifti": (O.get("oncu_saatlik") or {}).get("saat_cifti")},
+        "komsu": O.get("komsu") or {},
     }  # fmt: skip
 
 

@@ -104,6 +104,19 @@ function gorunumYayilim(kok) {
         'günlük işlem maliyetini karşılayacak büyüklükte değil. "Bankalar gitti, sırada sanayi var" türü günlük rotasyon veride yok.', 'okuma'),
       tablo([{ ad: 'Dün' }, { ad: 'Bugün' }, { ad: 'Korelasyon', n: 1 }, { ad: 't', n: 1 }], (os.kenar || []).map(e => [sekAd(e[0]), sekAd(e[1]), sy(e[2], 2), sy(e[3], 1)])),
       p('İki ortak dalga ayıklanmadan aynı test yapıldığında 676 çiftin 317\'si "anlamlı" çıkıyordu: hepsi küçük hisse dalgasının kendi sürekliliğiydi.', 'alt'))));
+  // 5) Komşudan komşuya geçiş
+  const KG = Y.komsu || {};
+  if (al(KG, 'test', 'yukari', 'ertesi')) {
+    const satir = [['Örneklem dışı · komşu sıçradı', al(KG, 'test', 'yukari')], ['Örneklem dışı · komşu düştü', al(KG, 'test', 'asagi')],
+      ['Çiftlerin seçildiği dönem · komşu sıçradı', al(KG, 'olusum', 'yukari')], ['Çiftlerin seçildiği dönem · komşu düştü', al(KG, 'olusum', 'asagi')]].filter(x => x[1] && x[1].ertesi);
+    const hc = (o, k) => `${yz(al(o, k, 'ort'), 2)} (${sy(al(o, k, 't'), 1)})`;
+    kok.append(h('div', { class: 'grid' },
+      sekil({ baslik: 'Komşu sıçrayınca sıra bu hissede mi?', alt: `Ağaçta birbirine en sıkı bağlı ${tam(KG.cift)} çift ${KG.kesim} öncesinin verisiyle seçildi; sonrası test edildi. Olay: komşu pazar katmanına göre ${yzp(KG.sok)} ve üstü hareket ederken hissenin kendisi kıpırdamamış. Fazla getiri, parantez içinde t.` },
+        tablo([{ ad: 'Durum' }, { ad: 'Olay', n: 1 }, { ad: 'Ertesi gün', n: 1 }, { ad: 'Ertesi gece', n: 1 }, { ad: 'Sonraki 5 gün', n: 1 }, { ad: 'Artı kapanan', n: 1 }],
+          satir.map(([ad, o]) => [ad, tam(o.olay), hc(o, 'ertesi'), hc(o, 'ertesi_gece'), hc(o, 'sonraki5'), yzp(o.pozitif)]), { genis: true }),
+        p(`Aynı gruptan kardeş hisse sıçradığında geride kalan hisse ertesi gün onu izlemiyor: örneklem dışında ertesi gün ${yz(al(KG, 'test', 'yukari', 'ertesi', 'ort'), 2)} (t ${sy(al(KG, 'test', 'yukari', 'ertesi', 't'), 1)}). ` +
+          `Düşüşte küçük bir gecikmeli geçiş var (${yz(al(KG, 'test', 'asagi', 'ertesi', 'ort'), 2)}, t ${sy(al(KG, 'test', 'asagi', 'ertesi', 't'), 1)}) ama işlem maliyetinin altında. **Ağdaki bağlar aynı gün fiyatlanıyor; "kardeşi gitti, sıra bunda" diye alım yapmanın karşılığı yok.**`, 'okuma'))));
+  }
   isi(mEl, { satir: AD.grup_sira.map(g => GRUP_KISA[g]), sutun: AD.grup_sira.map(g => GRUP_KISA[g]), vmax: 0.25, rbGen: '5.5em', hucreMin: 44, odak: true,
     hucre: (r, c) => {
       const e = og.get(AD.grup_sira[r] + '>' + AD.grup_sira[c]);

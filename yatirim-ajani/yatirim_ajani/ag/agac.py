@@ -444,3 +444,54 @@ def oncu_takipci_saatlik(SG: pd.DataFrame, P: Panel, anahtar: str = "grup") -> d
         lider = (dis.groupby("oncu")["kor"].mean() - dis.groupby("takipci")["kor"].mean()).sort_values(ascending=False).to_dict()
     return {"anahtar": anahtar, "gruplar": ad, "saat_cifti": int(len(A)), "liderlik": {str(k): float(v) for k, v in lider.items()},
             "kenarlar": sorted(kenar, key=lambda k: -abs(k["t"]))}  # fmt: skip
+
+
+def komsu_gecisi(P: Panel, kesim: str = "2025-06-30", esik_kor: float = 0.35, sok: float = 0.04) -> dict:
+    """Ağdaki en yakın komşu sıçradığında (ya da düştüğünde) hareketsiz kalan hisse ertesi gün onu izliyor mu?
+    Çiftler `kesim` gününe kadarki veriyle seçilir (iki etken ayıklanmış getiride en yüksek korelasyonlu eş, korelasyon ≥ `esik_kor`);
+    test `kesim` sonrasında yapılır. Olay: eşin o günkü fazla getirisi (pazar katmanına göre) ≥ `sok`, hissenin kendisi sok/3'ün
+    altında ve tavan/taban değil. Ölçülen: hissenin ertesi günkü ve sonraki 5 günkü fazla getirisi; t değerleri gün kümelenmiş."""
+    R = P.R
+    E, _ = cok_faktor_artik(R, faktorler(P))
+    E1 = E.loc[:kesim]
+    ok = E1.notna().sum() >= 200
+    C = E1.loc[:, ok].corr(min_periods=200)
+    C = C.where(~np.eye(len(C), dtype=bool))
+    cift = pd.DataFrame({"es": C.idxmax(), "kor": C.max()}).dropna()
+    cift = cift[cift["kor"] >= esik_kor]
+    grup = P.evren["grup"].reindex(R.columns)
+    A = R.copy()
+    GE = P.GECE.reindex(index=R.index, columns=R.columns).copy()
+    for g in grup.dropna().unique():
+        c = grup.index[grup == g]
+        A[c] = R[c].sub(R[c].mean(axis=1), axis=0)
+        GE[c] = GE[c].sub(GE[c].mean(axis=1), axis=0)
+    tavan = 0.095
+
+    def sina(donem: pd.DatetimeIndex, yon: int) -> dict:
+        satir = []
+        Ad, Rd, Gd = A.reindex(donem), R.reindex(donem), GE.reindex(donem)
+        for b, (a, _k) in cift.iterrows():
+            if a not in Ad or b not in Ad:
+                continue
+            xa, xb, rb = Ad[a].to_numpy(), Ad[b].to_numpy(), Rd[b].to_numpy()
+            olay = ((xa >= sok) & (xb < sok / 3)) if yon > 0 else ((xa <= -sok) & (xb > -sok / 3))
+            olay &= np.abs(rb) < tavan
+            for i in np.where(olay)[0]:
+                if i + 1 < len(donem):
+                    satir.append((donem[i], b, xb[i + 1], Gd[b].iat[i + 1], np.nansum(xb[i + 1 : i + 6])))
+        D = pd.DataFrame(satir, columns=["gun", "hisse", "ertesi", "ertesi_gece", "sonraki5"])
+        if len(D) < 20:
+            return {"olay": int(len(D))}
+
+        def oz(c: str) -> dict:
+            g = D.groupby("gun")[c].mean()
+            return {"ort": float(D[c].mean()), "t": float(g.mean() / (g.std() / np.sqrt(len(g)))) if g.std() > 0 else None}
+
+        return {"olay": int(len(D)), "gun": int(D["gun"].nunique()), "hisse": int(D["hisse"].nunique()), "pozitif": float((D["ertesi"] > 0).mean()),
+                "ertesi": oz("ertesi"), "ertesi_gece": oz("ertesi_gece"), "sonraki5": oz("sonraki5")}  # fmt: skip
+
+    test, olusum = R.index[R.index > kesim], R.index[R.index <= kesim]
+    return {"kesim": kesim, "esik_kor": esik_kor, "sok": sok, "cift": int(len(cift)),
+            "ornek_cift": [(h, r["es"], round(float(r["kor"]), 2)) for h, r in cift.sort_values("kor", ascending=False).head(12).iterrows()],
+            "test": {"yukari": sina(test, 1), "asagi": sina(test, -1)}, "olusum": {"yukari": sina(olusum, 1), "asagi": sina(olusum, -1)}}  # fmt: skip

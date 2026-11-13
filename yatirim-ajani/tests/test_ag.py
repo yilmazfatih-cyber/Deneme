@@ -380,3 +380,33 @@ def test_kap_detay_ayristir_yon_ve_oran():
     s = kap.detay_ayristir("Şirket sermayesindeki payımız %5 sınırının altına düşmüştür. Satış işlemleri sonrası payımız %4,10 olmuştur.")
     assert s["yon"] == "satim" and s["oran_sonra"] == pytest.approx(4.10)
     assert kap.detay_ayristir("Bilgilendirme amaçlıdır.")["yon"] is None
+
+
+def test_komsu_gecisi_gecikmeli_izlemeyi_yakalar():
+    """Eşi dün sıçrayan hisse bugün onu izliyorsa ölçüm artı ve anlamlı çıkar; izlemiyorsa sıfıra yakın kalır."""
+    from yatirim_ajani.ag import agac
+    from yatirim_ajani.ag.panel import Panel
+
+    rng = np.random.default_rng(4)
+    n, cift = 420, 12
+    gun = pd.bdate_range("2024-01-02", periods=n)
+    kod, veri = [], {}
+    for k in range(cift):
+        ortak = rng.normal(0, 0.02, n)
+        a = ortak + rng.normal(0, 0.012, n)
+        b = ortak + rng.normal(0, 0.012, n)
+        sok = np.zeros(n)
+        sok[rng.choice(np.arange(210, n - 2), 14, replace=False)] = 0.07  # a sıçrar
+        a = a + sok
+        b = b + np.roll(sok, 1) * 0.5 - sok * ortak  # b ertesi gün yarısını izler; sıçrama günü kıpırdamaz
+        b[sok > 0] = rng.normal(0, 0.004, int((sok > 0).sum()))
+        veri[f"A{k}"], veri[f"B{k}"] = a, b
+        kod += [f"A{k}", f"B{k}"]
+    R = pd.DataFrame(veri, index=gun)[kod]
+    ev = pd.DataFrame({"grup": "ana_pazar", "bist100": 0, "sektor": "gida"}, index=kod)
+    bos = pd.DataFrame(1e9, index=gun, columns=kod)
+    P = Panel(K=(1 + R).cumprod(), R=R, GI=R * 0.6, GECE=R * 0.4, HTL=bos * 0.01, PD=bos, HAO=bos * 0.4, AOF=bos, DOLAR=bos, xu100=pd.Series(rng.normal(0, 0.01, n), index=gun), evren=ev)
+    r = agac.komsu_gecisi(P, kesim=str(gun[205].date()), esik_kor=0.3, sok=0.04)
+    assert r["cift"] >= cift  # her hissenin eşi bulundu
+    yukari = r["test"]["yukari"]
+    assert yukari["olay"] >= 60 and yukari["ertesi"]["ort"] > 0.02 and yukari["ertesi"]["t"] > 4
