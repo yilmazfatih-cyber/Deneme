@@ -46,7 +46,7 @@ kesit tablosu sayfadan okunabiliyor), MKK yatırımcı sayıları, aracı kurum 
 ## 3. Komutlar
 
 ```bash
-# Veri (Actions): is=ag-veri, kaynak=tv,yahoo,isy,mali,seri,saatlik,hisse_saatlik  (≈ 30 dk; KAP ayrı: kaynak=kap_bildirim, ≈ 75 dk)
+# Veri (Actions): is=ag-veri, kaynak=tv,yahoo,isy,mali,seri,saatlik,hisse_saatlik  (≈ 30 dk; KAP ayrı: kaynak=kap_liste ≈ 50 dk, sonra kaynak=kap_detay ≈ 150 dk, kaldığı yerden sürer)
 python -m yatirim_ajani ag-veri-cek --klasor veri/ag --kaynak tv,yahoo,isy
 
 # Analiz + rapor (yerel, ≈ 2 dk)

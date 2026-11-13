@@ -562,15 +562,16 @@ def kap_liste(bas: date, bit: date, pencere_gun: int = 2, sure_siniri_dk: float 
     o = _kap_oturum()
     tablolar: dict[str, pd.DataFrame] = {}
     parcalar: list[pd.DataFrame] = []
-    ham_satir = en_buyuk = bos_pencere = 0
-    d = bit
-    while d >= bas and (time.time() - t0) / 60 < sure_siniri_dk:
-        b = max(bas, d - timedelta(days=pencere_gun - 1))
-        r = _kap_iste(o, "POST", f"{KAP_API}/disclosure/members/byCriteria", sayac, _kap_govde(b, d, "%Y-%m-%d", "IGS", "ODA"))
+    ham_satir = en_buyuk = 0
+    yanitsiz: list[tuple[date, date]] = []
+
+    def _pencere(b: date, d: date, bekle: float = 1.2, deneme: int = 4) -> bool:
+        nonlocal ham_satir, en_buyuk
+        r = _kap_iste(o, "POST", f"{KAP_API}/disclosure/members/byCriteria", sayac, _kap_govde(b, d, "%Y-%m-%d", "IGS", "ODA"), bekle=bekle, deneme=deneme)
         v = r.json() if r is not None and r.text[:1] == "[" else None
         if v is None:
-            bos_pencere += 1
-        elif v:
+            return False
+        if v:
             ham_satir += len(v)
             en_buyuk = max(en_buyuk, len(v))
             df = pd.DataFrame(v)
@@ -578,8 +579,21 @@ def kap_liste(bas: date, bit: date, pencere_gun: int = 2, sure_siniri_dk: float 
                 df = df[df["subject"].astype(str).str.lower().str.contains(KAP_KONU_DESEN, regex=True)]
             if len(df):
                 parcalar.append(df)
+        return True
+
+    d = bit
+    while d >= bas and (time.time() - t0) / 60 < sure_siniri_dk:
+        b = max(bas, d - timedelta(days=pencere_gun - 1))
+        if not _pencere(b, d):
+            yanitsiz.append((b, d))
         d = b - timedelta(days=1)
-    rapor["liste"] = {"ham_satir": ham_satir, "en_buyuk_pencere": en_buyuk, "yanitsiz_pencere": bos_pencere, "en_eski_gun": (d + timedelta(days=1)).isoformat(),
+    en_eski = d + timedelta(days=1)
+    # Yanıt alınamayan pencereler: daha yavaş ikinci tur (süre sınırına 15 dk ek pay)
+    kalan = []
+    for b, d2 in yanitsiz:
+        if (time.time() - t0) / 60 > sure_siniri_dk + 15 or not _pencere(b, d2, bekle=3.0, deneme=5):
+            kalan.append(f"{b.isoformat()}…{d2.isoformat()}")
+    rapor["liste"] = {"ham_satir": ham_satir, "en_buyuk_pencere": en_buyuk, "yanitsiz_ilk_tur": len(yanitsiz), "yanitsiz_pencere": kalan, "en_eski_gun": en_eski.isoformat(),
                       "durum": dict(sayac), "sure_dk": round((time.time() - t0) / 60, 1)}  # fmt: skip
     if not parcalar:
         return tablolar, rapor
