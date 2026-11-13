@@ -196,7 +196,7 @@ export function TvUiDemo(): ReactElement {
         </p>
         <p className="tv-demo-hero__synopsis">{hero?.synopsis || 'Satırlar yükleniyor.'}</p>
         <div className="tv-demo-hero__buttons">
-          <TvButton id="demo:oynat" label="Oynat" icon="play" variant="primary" onPress={() => tvToast('Oynat')} />
+          <TvButton id="demo:oynat" label="Oynat" icon="play" variant="play" onPress={() => tvToast('Oynat')} />
           <TvButton id="demo:pencere" label="Pencere" icon="info" onPress={() => setDialog(true)} />
           <TvButton
             id="demo:bildirim"

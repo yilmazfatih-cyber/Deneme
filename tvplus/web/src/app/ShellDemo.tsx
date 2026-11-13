@@ -4,7 +4,7 @@
  * `titleHref()` ile detaya gider (masaüstünde ?jbv= penceresi, mobilde /baslik/:id). Gerçek görseller ana sayfa
  * lolomo'sundan gelir (ui/gallery/sampleData).
  */
-import { useState, type ReactElement } from 'react'
+import { useEffect, useState, type ReactElement } from 'react'
 import { useFormFactor } from '../lib/formFactor'
 import {
   Badge,
@@ -27,8 +27,22 @@ import {
   TopTenLine,
 } from '../ui'
 import { uniqueTitles, useSampleRows } from '../ui/gallery/sampleData'
+import { useDetailModal } from './detailModal'
 import { useTitleHref } from './links'
 import { ShellPills, useShellOptions } from './shellContext'
+
+/** Görsel QA: tarayıcı testlerinin pencere içi başlık geçişini (switchTo) denemesi için `window.__tvpDetailSwitch`. */
+function DetailSwitchProbe(): null {
+  const { switchTo } = useDetailModal()
+  useEffect(() => {
+    const w = window as unknown as Record<string, unknown>
+    w.__tvpDetailSwitch = switchTo
+    return () => {
+      delete w.__tvpDetailSwitch
+    }
+  }, [switchTo])
+  return null
+}
 
 export function ShellDemoPage(): ReactElement {
   useShellOptions({ fullBleed: true })
@@ -42,6 +56,7 @@ export function ShellDemoPage(): ReactElement {
 
   return (
     <div className="app-demo">
+      <DetailSwitchProbe />
       <ShellPills>
         {category && <PillClear onClick={() => setCategory(null)} />}
         {(category ? [category] : ['Diziler', 'Filmler', 'Canlı TV']).map((c) => (

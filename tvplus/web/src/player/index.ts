@@ -40,6 +40,12 @@ export function PreviewPlayer(props: {
   muted?: boolean
   onPlaying?: () => void
   onError?: () => void
+  /** En uzun oynatma (sn); varsayılan 30, null → söküline dek (canlı kanal önizlemesi) */
+  maxSec?: number | null
+  /** Kendiliğinden durunca ya da yayın bitince */
+  onEnded?: () => void
+  /** 'contain' (varsayılan) | 'cover' */
+  fit?: 'contain' | 'cover'
 }): ReactElement | null {
   return createElement(Suspense, { fallback: null }, createElement(LazyPreviewPlayer, props))
 }

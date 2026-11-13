@@ -3,16 +3,17 @@
  *   Oturum      useSession / useBoot / useActiveProfile (giriş, çıkış, switchProfile(guid, pin?), reloadBoot)
  *   Bağlantı    titleHref(videoId, tctx?) / useTitleHref() — masaüstünde `?jbv=` penceresi, mobilde /baslik/:id
  *               closeTitleHref, DETAIL_PARAM ('jbv'), TCTX_PARAM
- *   Detay       useDetailModal() — açık başlık (videoId, tctx) ve close() (features/detail DetailModalOutlet için)
- *   Kabuk       useShellOptions({ fullBleed, mobileTitle, topBar }) · <ShellPills> (mobil hap sırası)
+ *   Detay       useDetailModal() — açık başlık (videoId, tctx), close(), switchTo(videoId, tctx?) (pencerede geçiş)
+ *   Kabuk       useShellOptions({ fullBleed, mobileTitle, topBar, keepScroll }) · <ShellPills> (mobil hap sırası)
  *               useShellFormFactor() · DESKTOP_NAV · MOBILE_TABS
  *   Sayfa       useDocumentTitle("Sintel") → "Sintel · TV+" · PagePlaceholder · PageSkeleton · RouteErrorBoundary
- *   Diğer       toggleDevtoolsPanel() — "Kaputun altı" panelini aç/kapat
+ *   Kaputun altı toggleDevtoolsPanel() · isDevtoolsOpen() · subscribeDevtools(fn) · useDevtoolsOpen()
  */
 export { App } from './App'
 export { toggleDevtoolsPanel } from './AvatarMenu'
-export { DESKTOP_NAV, type NavEntry } from './DesktopShell'
-export { useDetailModal, type DetailModalState } from './detailModal'
+export { activeDesktopNav, DESKTOP_NAV, type NavEntry } from './nav'
+export { switchTitleHref, useDetailModal, type DetailModalState } from './detailModal'
+export { isDevtoolsOpen, subscribeDevtools, useDevtoolsOpen } from './devtoolsState'
 export { accessOf, decideAccess, type Access, type GuardDecision } from './guards'
 export {
   buildTitleHref,

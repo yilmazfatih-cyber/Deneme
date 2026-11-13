@@ -1,8 +1,10 @@
 /** Üç kabuğun ortak parçaları: ortadaki geri bildirim simgesi, hata paneli, sonraki bölüm kartı, boşta gizlenme. */
 import { useCallback, useEffect, useRef, useState, type ReactElement } from 'react'
+import type { RemoteKey } from '../../../../shared/devices'
 import type { PlayerModel } from './core'
 import { IconBack10, IconClose, IconFwd10, IconMuted, IconPause, IconPlay, IconVolume } from './icons'
 import { StatsOverlay, SubtitleOverlay } from './parts'
+import { remoteKeyFromKeyboard } from './tvKeys'
 
 /* ───────────── ortadaki geri bildirim simgesi ───────────── */
 
@@ -96,7 +98,21 @@ export function Stats({ m }: { m: PlayerModel }): ReactElement | null {
 
 /* ───────────── hata ───────────── */
 
-export function ErrorPanel({ m, tv = false }: { m: PlayerModel; tv?: boolean }): ReactElement | null {
+/** TV hata panelinin düğmeleri (soldan sağa): yeniden denenebilirse [Tekrar dene, Geri dön], değilse [Geri dön]. */
+export function errorButtons(retryable: boolean): ('retry' | 'back')[] {
+  return retryable ? ['retry', 'back'] : ['back']
+}
+
+export function ErrorPanel({
+  m,
+  tv = false,
+  focus = 0,
+}: {
+  m: PlayerModel
+  tv?: boolean
+  /** TV: odaktaki düğme sırası */
+  focus?: number
+}): ReactElement | null {
   const e = m.error
   if (!e) return null
   return (
@@ -109,20 +125,25 @@ export function ErrorPanel({ m, tv = false }: { m: PlayerModel; tv?: boolean }):
       </p>
       <div className="kb-actions">
         {e.retryable ? (
-          <button type="button" className="kb-btn kb-btn-primary" data-focus={tv} onClick={() => m.act.retry()}>
+          <button
+            type="button"
+            className="kb-btn kb-btn-primary"
+            data-focus={tv && focus === 0}
+            onClick={() => m.act.retry()}
+          >
             Tekrar dene
           </button>
         ) : null}
         <button
           type="button"
           className="kb-btn kb-btn-secondary"
-          data-focus={tv && !e.retryable}
+          data-focus={tv && focus === (e.retryable ? 1 : 0)}
           onClick={() => m.act.back()}
         >
           Geri dön
         </button>
       </div>
-      {tv ? <p className="kb-hint-line">{e.retryable ? 'OK Tekrar dene · Geri Çık' : 'OK ya da Geri: Çık'}</p> : null}
+      {tv ? <p className="kb-hint-line">◀ ▶ Seç · OK Onayla · Geri Çık</p> : null}
     </section>
   )
 }
@@ -189,4 +210,64 @@ export function TitleLine({ m }: { m: PlayerModel }): ReactElement {
       ) : null}
     </h1>
   )
+}
+
+/* ───────────── TV: düğme satırı (oynatıcı takılı değilken: yükleniyor / oynatılamıyor) ───────────── */
+
+/** Düğme satırında bir tuşun sonucu (saf): ◀/▶ odak, OK etkinleştir, Geri çık. */
+export function tvButtonStep(
+  key: RemoteKey,
+  focus: number,
+  count: number,
+): { focus: number; action: 'activate' | 'back' | null; handled: boolean } {
+  switch (key) {
+    case 'LEFT':
+    case 'UP':
+      return { focus: Math.max(0, focus - 1), action: null, handled: true }
+    case 'RIGHT':
+    case 'DOWN':
+      return { focus: Math.min(Math.max(0, count - 1), focus + 1), action: null, handled: true }
+    case 'OK':
+      return { focus, action: count > 0 ? 'activate' : null, handled: true }
+    case 'BACK':
+    case 'HOME':
+      return { focus, action: 'back', handled: true }
+    default:
+      return { focus, action: null, handled: false }
+  }
+}
+
+/**
+ * TV'de oynatıcı dışı ekranların (yükleniyor, oynatılamıyor) kumanda tuşları. Yakalama aşamasında dinler ve işlediği
+ * tuşu TV kabuğunun odak motoruna geçirmez. Dönen değer odaktaki düğmedir.
+ */
+export function useTvButtons(opts: {
+  enabled: boolean
+  count: number
+  initial: number
+  onActivate: (i: number) => void
+  onBack: () => void
+}): number {
+  const [focus, setFocus] = useState(opts.initial)
+  const ref = useRef({ opts, focus })
+  ref.current = { opts, focus }
+  useEffect(() => {
+    if (!opts.enabled) return
+    const on = (e: KeyboardEvent) => {
+      if (e.ctrlKey || e.metaKey || e.altKey) return
+      const k = remoteKeyFromKeyboard(e)
+      if (!k) return
+      const { opts: o, focus: f } = ref.current
+      const step = tvButtonStep(k, f, o.count)
+      if (!step.handled) return
+      e.preventDefault()
+      e.stopPropagation()
+      setFocus(step.focus)
+      if (step.action === 'activate') o.onActivate(step.focus)
+      else if (step.action === 'back') o.onBack()
+    }
+    window.addEventListener('keydown', on, true)
+    return () => window.removeEventListener('keydown', on, true)
+  }, [opts.enabled])
+  return focus
 }

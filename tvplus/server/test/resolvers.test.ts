@@ -162,7 +162,7 @@ describe('GraphQL çözümleyicileri (kalıcı belgelerle)', () => {
         state: 'UPSELL',
         reasonText: 'Sinema Paketi ile izlenir',
         requiredProductName: 'Sinema Paketi',
-        cta: 'Paketi incele',
+        cta: 'Paketi İncele',
       },
     })
     const { video: owned } = await ok('DetailModal', { videoId: ID.tears }, passport(ADULT, ACCOUNT_SINEMA))
@@ -334,7 +334,7 @@ describe('GraphQL çözümleyicileri (kalıcı belgelerle)', () => {
 
     const narrow = (await ok('LivePage', { capabilities: { rowTypes: ['CHANNEL_ROW'], entityKinds: ['CHANNEL'] } }))
       .livePage
-    expect(narrow.rows.map((r: Data) => r.title)).toEqual(['Kanallarım', 'Tüm kanallar'])
+    expect(narrow.rows.map((r: Data) => r.title)).toEqual(['Kanallarım', 'Şu An Yayında'])
     // ADULT önceki testte kanal 4'ü son kanal yaptı → kahraman o
     const adult = (await ok('LivePage', { capabilities: { rowTypes: ['LIVE_HERO'], entityKinds: ['CHANNEL'] } }))
       .livePage

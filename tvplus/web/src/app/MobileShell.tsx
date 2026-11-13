@@ -6,6 +6,8 @@
  *   Alt sekmeler 56 px + güvenli alan: Ana Sayfa · Canlı TV · Yeni ve Popüler · TV+'ım (profil avatarı); üstünde
  *   "Şu an TV'de" çubuğu yuvası (features/remote NowOnTvBar).
  *   Detay mobilde tam sayfadır: `?jbv=` gelirse /baslik/:id'ye çevrilir; /baslik sayfasında üst çubuk gizlidir.
+ *   "Kaputun altı" yüzen başlatıcısı mobilde yalnız TV+'ım'da görünür (başka yerde içeriği örtmez); panel açıkken
+ *   her yerde kalır. Diğer giriş: TV+'ım sayfası app `toggleDevtoolsPanel()` çağırabilir.
  */
 import { lazy, Suspense, useEffect, useLayoutEffect, useRef, useState, type ReactElement } from 'react'
 import { Link, Navigate, Outlet, useLocation } from 'react-router-dom'
@@ -117,6 +119,15 @@ export function MobileShell(): ReactElement {
   const topRef = useHeightVar('--app-top')
   const bottomRef = useHeightVar('--app-bottom')
   const mainRef = useRef<HTMLElement>(null)
+
+  // "Kaputun altı" başlatıcısı mobilde içeriği örtmesin: yalnız TV+'ım sayfasında görünür (shell.css).
+  useEffect(() => {
+    const root = document.documentElement
+    root.dataset.kaput = pathname.startsWith('/tvplusim') ? 'goster' : 'gizle'
+    return () => {
+      delete root.dataset.kaput
+    }
+  }, [pathname])
 
   // Masaüstü detay adresi mobilde tam sayfaya çevrilir.
   const params = new URLSearchParams(location.search)

@@ -117,6 +117,18 @@ const PATHS = {
     </>
   ),
   close: <path d="M6 6l12 12M18 6 6 18" />,
+  /** Kanallarım / favori: çizgi yıldız (dolu hali `starFilled`) */
+  star: <path d="M12 3.6l2.6 5.3 5.8.8-4.2 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.2-4.1 5.8-.8z" />,
+  starFilled: (
+    <path d="M12 3.6l2.6 5.3 5.8.8-4.2 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.2-4.1 5.8-.8z" fill="currentColor" />
+  ),
+  /** Ekran klavyesi "sil" */
+  backspace: (
+    <>
+      <path d="M21 5H9l-6 7 6 7h12a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1z" />
+      <path d="m12 9 6 6M18 9l-6 6" />
+    </>
+  ),
   search: (
     <>
       <circle cx="10.5" cy="10.5" r="6.5" />
@@ -197,6 +209,20 @@ const PATHS = {
     <>
       <rect x="3" y="4" width="18" height="16" rx="2" />
       <path d="M3 9h18M8 4v16" />
+    </>
+  ),
+  /** Diziler: eski tip TV */
+  shows: (
+    <>
+      <rect x="3" y="8" width="18" height="12" rx="2" />
+      <path d="M6 5h12M8.5 2h7" />
+    </>
+  ),
+  /** Filmler: film şeridi */
+  movies: (
+    <>
+      <rect x="3" y="3" width="18" height="18" rx="2" />
+      <path d="M7 3v18M17 3v18M3 8h4M3 12h4M3 16h4M17 8h4M17 12h4M17 16h4" />
     </>
   ),
   list: <path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01" />,

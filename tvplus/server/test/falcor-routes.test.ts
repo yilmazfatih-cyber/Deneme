@@ -203,7 +203,7 @@ describe('Falcor rotaları', () => {
         reasonText: 'Sinema Paketi ile izlenir',
         requiredProduct: 'sinema-paketi',
         requiredProductName: 'Sinema Paketi',
-        cta: 'Paketi incele',
+        cta: 'Paketi İncele',
       },
       { kind: 'LOCKED', text: 'Sinema Paketi' },
       undefined,

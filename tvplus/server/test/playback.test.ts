@@ -195,7 +195,7 @@ beforeAll(async () => {
     reasonText: 'Bu film Sinema paketinde.',
     requiredProduct: 'sinema',
     requiredProductName: 'Sinema',
-    cta: 'Paketi incele',
+    cta: 'Paketi İncele',
   })
   fakes.playables.set(
     1006,

@@ -126,7 +126,7 @@ export function ButtonLink({
 export type RoundButtonVariant = 'play' | 'outline' | 'solid'
 export type RoundButtonSize = 'sm' | 'md' | 'lg'
 
-export interface RoundButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
+interface RoundLookProps {
   icon: IconName
   /** Ekran okuyucu adı (zorunlu: yalnız ikon görünür) */
   label: string
@@ -134,29 +134,80 @@ export interface RoundButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonEl
   variant?: RoundButtonVariant
   /** sm 32 · md 40 (varsayılan) · lg 48 px; masaüstünde genişlikle hafifçe büyür */
   size?: RoundButtonSize
+}
+
+export interface RoundButtonProps extends RoundLookProps, Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
+  /** Verilirse gerçek bağlantı olarak çizilir (orta tıklama / yeni sekme çalışır): uygulama içi yol */
+  to?: undefined
+  href?: undefined
   ref?: Ref<HTMLButtonElement>
 }
 
-export function RoundButton({
-  icon,
-  label,
-  variant = 'outline',
-  size = 'md',
-  className,
-  type = 'button',
-  title,
-  ...rest
-}: RoundButtonProps): ReactElement {
+export interface RoundButtonLinkProps
+  extends RoundLookProps, Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'children' | 'href'> {
+  /** Uygulama içi yol (react-router Link): ▶ → /izle/…, ⌄ → titleHref(…) */
+  to?: string
+  /** Tam adres (<a href>) */
+  href?: string
+  replace?: boolean
+  ref?: Ref<HTMLAnchorElement>
+}
+
+function roundParts(icon: IconName, variant: RoundButtonVariant, size: RoundButtonSize, className?: string) {
   const iconSize = size === 'sm' ? 16 : size === 'md' ? 20 : 24
+  return {
+    cls: cx('ui-round', `ui-round--${variant}`, `ui-round--${size}`, className),
+    glyph: <Icon name={icon} size={iconSize} strokeWidth={variant === 'play' ? 2 : 2.2} />,
+  }
+}
+
+/**
+ * Yuvarlak simge düğmesi. `to` ya da `href` verilirse aynı görünümde bağlantı çizer
+ * (bkz. RoundButtonLinkProps); verilmezse <button>.
+ */
+export function RoundButton(props: RoundButtonProps | RoundButtonLinkProps): ReactElement {
+  if (props.to !== undefined || props.href !== undefined) {
+    const {
+      icon,
+      label,
+      variant = 'outline',
+      size = 'md',
+      className,
+      title,
+      to,
+      href,
+      replace,
+      ...rest
+    } = props as RoundButtonLinkProps
+    const { cls, glyph } = roundParts(icon, variant, size, className)
+    if (to !== undefined)
+      return (
+        <Link to={to} replace={replace} className={cls} aria-label={label} title={title ?? label} {...rest}>
+          {glyph}
+        </Link>
+      )
+    return (
+      <a href={href} className={cls} aria-label={label} title={title ?? label} {...rest}>
+        {glyph}
+      </a>
+    )
+  }
+  const {
+    icon,
+    label,
+    variant = 'outline',
+    size = 'md',
+    className,
+    type = 'button',
+    title,
+    to: _to,
+    href: _href,
+    ...rest
+  } = props as RoundButtonProps
+  const { cls, glyph } = roundParts(icon, variant, size, className)
   return (
-    <button
-      type={type}
-      className={cx('ui-round', `ui-round--${variant}`, `ui-round--${size}`, className)}
-      aria-label={label}
-      title={title ?? label}
-      {...rest}
-    >
-      <Icon name={icon} size={iconSize} strokeWidth={variant === 'play' ? 2 : 2.2} />
+    <button type={type} className={cls} aria-label={label} title={title ?? label} {...rest}>
+      {glyph}
     </button>
   )
 }

@@ -57,7 +57,10 @@ export function PairPage(): ReactElement {
       // Sınır kısa sürede kalkar: düğme yarım dakika sonra yeniden açılır (metin yerinde kalır).
       if (problem === 'throttled')
         window.setTimeout(
-          () => setView((v) => (v.kind === 'enter' && v.problem === 'throttled' ? { kind: 'enter', problem: 'unknown' } : v)),
+          () =>
+            setView((v) =>
+              v.kind === 'enter' && v.problem === 'throttled' ? { kind: 'enter', problem: 'unknown' } : v,
+            ),
           30_000,
         )
     }

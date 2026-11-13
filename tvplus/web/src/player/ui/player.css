@@ -4,7 +4,7 @@
 .kb-root {
   position: fixed;
   inset: 0;
-  z-index: 100;
+  z-index: var(--kb-z, 350);
   background: #000;
   color: var(--t1);
   font-family: var(--font);
@@ -494,7 +494,7 @@
 .kb-sheet-wrap {
   position: fixed;
   inset: 0;
-  z-index: 100;
+  z-index: var(--kb-z, 350);
   background: var(--bg);
   display: flex;
   align-items: flex-end;
@@ -581,7 +581,7 @@
 .kb-embed {
   position: fixed;
   inset: 0;
-  z-index: 100;
+  z-index: var(--kb-z, 350);
   background: var(--bg);
   display: flex;
   flex-direction: column;
@@ -2145,4 +2145,112 @@
     width: 32px;
     height: 32px;
   }
+}
+
+/* ═════════════════════ katman sırası ═════════════════════
+ * Tam ekran oynatıcı uygulama bildirimlerinin ALTINDA durur. Varsayılanlar:
+ *   web  : 350 — üst menü (100), açılır menü (120), önizleme (200), pencere (300) üstünde; --z-toast (400) altında
+ *   TV   : 50  — TvToastHost (.tv-toasts, 60) altında
+ * Kabuk farklı bir değer isterse `--kb-z` değişkenini tanımlar (ör. `.tv-route { --kb-z: 40 }`). */
+.kb-root[data-chrome='tv'],
+.kb-sheet-wrap[data-chrome='tv'] {
+  z-index: var(--kb-z, 50);
+}
+
+/* ═════════════════════ TV: oynatılamıyor / hata / yükleniyor — 10-foot ═════════════════════ */
+.kb-sheet-wrap[data-chrome='tv'] {
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 6rem;
+  cursor: none;
+}
+.kb-sheet-wrap[data-chrome='tv'] .kb-sheet-art {
+  opacity: 0.45;
+}
+.kb-sheet-wrap[data-chrome='tv'] .kb-sheet-art::after {
+  background: linear-gradient(to right, var(--bg) 35%, rgba(20, 20, 20, 0.2));
+}
+.kb-sheet-wrap[data-chrome='tv'] .kb-sheet,
+.kb-root[data-chrome='tv'] .kb-panel {
+  width: min(64rem, calc(100vw - 12rem));
+  padding: 3.5rem 4rem;
+  gap: 1.8rem;
+  border-radius: 0.75rem;
+  background: rgba(24, 24, 24, 0.96);
+  border: 0.1rem solid var(--line);
+}
+.kb-root[data-chrome='tv'] .kb-panel {
+  z-index: 8;
+}
+.kb-sheet-wrap[data-chrome='tv'] .kb-sheet-label {
+  font-size: 1.8rem;
+  line-height: 2.4rem;
+}
+.kb-sheet-wrap[data-chrome='tv'] .kb-sheet h2,
+.kb-root[data-chrome='tv'] .kb-panel h2 {
+  font-size: 3.2rem;
+  line-height: 3.9rem;
+  font-weight: 800;
+}
+.kb-sheet-wrap[data-chrome='tv'] .kb-sheet p,
+.kb-root[data-chrome='tv'] .kb-panel p {
+  font-size: 1.9rem;
+  line-height: 2.6rem;
+}
+.kb-sheet-wrap[data-chrome='tv'] .kb-actions,
+.kb-root[data-chrome='tv'] .kb-panel .kb-actions {
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+}
+.kb-sheet-wrap[data-chrome='tv'] .kb-btn,
+.kb-root[data-chrome='tv'] .kb-panel .kb-btn {
+  height: 4.2rem;
+  min-width: 14rem;
+  padding: 0 2.4rem;
+  font-size: 1.9rem;
+  border-radius: 0.4rem;
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--t1);
+  cursor: none;
+  transition:
+    background 0.15s ease,
+    transform 0.15s ease;
+}
+.kb-sheet-wrap[data-chrome='tv'] .kb-btn[data-focus='true'],
+.kb-root[data-chrome='tv'] .kb-panel .kb-btn[data-focus='true'] {
+  background: var(--t1);
+  color: #000;
+  transform: scale(1.05);
+}
+.kb-sheet-wrap[data-chrome='tv'] .kb-btn:focus,
+.kb-root[data-chrome='tv'] .kb-btn:focus {
+  outline: none;
+}
+.kb-sheet-wrap[data-chrome='tv'] .kb-hint-line,
+.kb-root[data-chrome='tv'] .kb-panel .kb-hint-line {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  color: var(--t2);
+}
+.kb-tv-frame-area[data-error='true'] .kb-frame {
+  visibility: hidden;
+}
+.kb-root[data-chrome='tv'] .kb-top .kb-title {
+  font-size: 3rem;
+  line-height: 3.6rem;
+}
+.kb-root[data-chrome='tv'] .kb-top .kb-sub {
+  font-size: 1.8rem;
+  line-height: 2.4rem;
+}
+.kb-tv-loadhint {
+  position: absolute;
+  left: 6rem;
+  bottom: 4rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.6rem;
+  color: var(--t2);
 }

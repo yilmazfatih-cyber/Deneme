@@ -418,3 +418,11 @@
   flex-direction: column;
   gap: var(--row-gap);
 }
+
+/* "Kaputun altı" başlatıcısı (devtools/launcher.css) mobilde içerik üstünde durmaz: yalnız TV+'ım'da görünür.
+   Panelin kendisi açıkken etkilenmez. */
+@media (max-width: 899px) {
+  html[data-kaput='gizle'] .kp-launcher {
+    display: none;
+  }
+}

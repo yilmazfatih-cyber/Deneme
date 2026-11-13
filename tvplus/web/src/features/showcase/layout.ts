@@ -73,7 +73,8 @@ export function layoutFrames(width: number, height: number): Layout {
   // Alt alta: TV ve web tam genişlik (en çok 760), telefon en çok 600 yüksek.
   const wide = Math.min(W, 760)
   const tvH = (wide - CHROME.tv.x) * (spec('tv').vh / spec('tv').vw)
-  const webH = (wide - CHROME.web.x) * (spec('web').vh / spec('web').vw)
+  // Dizüstü gövdesi ekranın iki yanından %6 taşar (CSS): genişlik buna göre daraltılır.
+  const webH = (wide / 1.12 - CHROME.web.x) * (spec('web').vh / spec('web').vw)
   const phoneH = Math.min(600, ((W - CHROME.telefon.x) * spec('telefon').vh) / spec('telefon').vw)
   return {
     mode: 'stack',

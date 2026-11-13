@@ -69,6 +69,7 @@ export function TvSettings(): ReactElement {
         <div className="tv-settings__cols">
           <TvActionList
             id="ayarlar-eylemler"
+            playFirst={false}
             actions={[
               {
                 id: 'ayarlar:profil',

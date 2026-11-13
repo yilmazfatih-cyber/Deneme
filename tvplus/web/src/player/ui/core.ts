@@ -38,6 +38,7 @@ import {
   type SeasonBrief,
 } from './metadata'
 import type { Source } from './options'
+import { readAdapter } from './readout'
 import { episodeCode, type Choice } from './panels'
 import type { PlaybackSession } from './session'
 
@@ -280,9 +281,11 @@ export function usePlayerCore(props: CoreProps, mountRef: RefObject<HTMLDivEleme
   }, [resumeChip])
 
   /* ───── türetilmiş değerler ───── */
-  const state: PlaybackState = adapter?.state() ?? 'loading'
-  const position = adapter?.position() ?? startSec
-  const duration = adapter?.duration() || (manifest.durationMs ? manifest.durationMs / 1000 : 0)
+  // Okumalar fırlatmaz (YouTube oynatıcısı hazır olmadan yöntemsizdir): bkz. readout.ts
+  const rd = readAdapter(adapter, startSec, manifest.durationMs ? manifest.durationMs / 1000 : 0)
+  const state: PlaybackState = rd.state
+  const position = rd.position
+  const duration = rd.duration
   const isLive = !!manifest.live || (embed && (!!manifest.liveChannelId || !!meta?.live))
   const seekable = embed ? !manifest.liveChannelId : !manifest.live || manifest.live.seekable !== false
   const linearChannel = props.viewableId.startsWith('Channel:') && !props.fromStart
@@ -291,7 +294,7 @@ export function usePlayerCore(props: CoreProps, mountRef: RefObject<HTMLDivEleme
   const showNext = !!next && !nextDismissed && ((credits !== null && position >= credits) || state === 'ended')
   const seasons = meta?.video?.parentShow?.seasons ?? null
   const currentEpisodeId = meta?.video?.parentShow ? meta.video.unifiedEntityId : null
-  const audioOpts: AudioOption[] = adapter?.audioOptions() ?? []
+  const audioOpts: AudioOption[] = rd.audio
   const audio: Choice[] = audioOpts.map((o) => ({ id: o.id, label: o.label }))
   const subs: Choice[] = text
     ? [
@@ -547,8 +550,8 @@ export function usePlayerCore(props: CoreProps, mountRef: RefObject<HTMLDivEleme
   }, [adapter])
 
   const artUrl = meta?.video?.storyArt?.url ?? meta?.channel?.logo?.url ?? null
-  const volume = adapter?.volume() ?? 1
-  const muted = adapter?.muted() ?? false
+  const volume = rd.volume
+  const muted = rd.muted
   useEffect(() => {
     if (!adapter) return
     publishSnapshot(
@@ -581,7 +584,7 @@ export function usePlayerCore(props: CoreProps, mountRef: RefObject<HTMLDivEleme
     error,
     position,
     duration,
-    buffered: adapter?.buffered() ?? [],
+    buffered: rd.buffered,
     playing,
     muted,
     volume,
@@ -594,7 +597,7 @@ export function usePlayerCore(props: CoreProps, mountRef: RefObject<HTMLDivEleme
     seasons,
     currentEpisodeId,
     audio,
-    audioSelected: adapter?.currentAudio() ?? null,
+    audioSelected: rd.currentAudio,
     subs,
     subsSelected,
     sources,

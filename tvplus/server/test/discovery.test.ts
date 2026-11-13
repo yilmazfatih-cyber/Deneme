@@ -5,7 +5,7 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import type { FastifyInstance } from 'fastify'
 import { parseTctx } from '../../shared/tctx'
 import type { EventsService } from '../src/kernel/services'
-import { buildLivePage } from '../src/services/discovery/livePage'
+import { buildLivePage, FEATURED_CHANNEL_ID } from '../src/services/discovery/livePage'
 import { buildLolomo, MIN_ROW_ITEMS } from '../src/services/discovery/lolomo'
 import { similarity, similarTitles } from '../src/services/discovery/similarity'
 import { top10ForProfile, top10Rank } from '../src/services/discovery/top10'
@@ -188,9 +188,9 @@ describe('Canlı TV sayfası', () => {
     expect(p.rows.map((r) => [r.rowId, r.type, r.title])).toEqual([
       ['live-hero', 'LIVE_HERO', null],
       ['live-favorites', 'CHANNEL_ROW', 'Kanallarım'],
-      ['live-all', 'CHANNEL_ROW', 'Tüm kanallar'],
-      ['live-tonight', 'TONIGHT_ROW', 'Bu akşam'],
-      ['live-catchup', 'CATCHUP_ROW', 'Kaçırdıkların · son 7 gün'],
+      ['live-all', 'CHANNEL_ROW', 'Şu An Yayında'],
+      ['live-tonight', 'TONIGHT_ROW', 'Bu Akşam'],
+      ['live-catchup', 'CATCHUP_ROW', 'Kaçırdıkların'],
       ['live-bridge', 'BRIDGE', 'Film & Dizi'],
     ])
     expect(p.rows[0]!.items.map((i) => i.entity)).toEqual([{ channelId: 1 }])
@@ -236,6 +236,17 @@ describe('Canlı TV sayfası', () => {
     const channelIds = kid.rows.flatMap((r) => r.items.map((i) => ('channelId' in i.entity ? i.entity.channelId : -1)))
     expect(new Set(channelIds)).toEqual(new Set([4]))
     expect(kid.rows.map((r) => r.rowId)).toEqual(['live-hero', 'live-all', 'live-catchup', 'live-bridge'])
+  })
+
+  it('son kanal ve favori yoksa vitrinde kanal 1 (oynayan doğrusal kanal); görünmüyorsa ilk doğrusal kanal', () => {
+    for (const id of app.services.progress.favoriteChannels(ADULT.guid))
+      app.services.progress.toggleFavoriteChannel(ADULT.guid, id)
+    expect(app.services.progress.favoriteChannels(ADULT.guid)).toEqual([])
+    const p = page()
+    expect(p.rows[0]!.items.map((i) => i.entity)).toEqual([{ channelId: FEATURED_CHANNEL_ID }])
+    // favori varsa favori önce gelir
+    app.services.progress.toggleFavoriteChannel(ADULT.guid, 3)
+    expect(page().rows[0]!.items[0]!.entity).toEqual({ channelId: 3 })
   })
 
   it('yetenek pazarlığı: bilinmeyen satır tipi ve varlık türü yollanmaz', () => {

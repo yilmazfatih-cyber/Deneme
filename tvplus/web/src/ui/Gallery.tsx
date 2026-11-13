@@ -240,6 +240,9 @@ export function UiGallery(): ReactElement {
           </Tooltip>
           <RoundButton icon="chevronDown" label="Daha fazla bilgi" />
           <RoundButton icon="close" label="Kapat" variant="solid" />
+          <RoundButton icon="play" label="Oynat (bağlantı)" variant="play" to="/_ui/kabuk" />
+          <RoundButton icon="star" label="Kanallarıma ekle" />
+          <RoundButton icon="starFilled" label="Kanallarımda" aria-pressed />
           <RoundButton icon="cast" label="TV'de İzle" size="sm" />
           <RoundButton icon="volume" label="Sesi kapat" size="lg" />
         </Row>
@@ -604,7 +607,19 @@ export function UiGallery(): ReactElement {
           <SkeletonText lines={8} />
         </div>
       </Modal>
-      <Sheet open={sheet} onClose={() => setSheet(false)} title="Sezon seç">
+      <Sheet
+        open={sheet}
+        onClose={() => setSheet(false)}
+        title="Sezon seç"
+        actions={
+          <>
+            <Button variant="play" onClick={() => setSheet(false)}>
+              Tamam
+            </Button>
+            <Button onClick={() => setSheet(false)}>Vazgeç</Button>
+          </>
+        }
+      >
         <ul className="gl-sheet-list">
           {['Sezon 1', 'Sezon 2', 'Sezon 3'].map((s, i) => (
             <li key={s}>

@@ -121,10 +121,12 @@ export interface SheetProps {
   title?: string
   label?: string
   children: ReactNode
+  /** Altta sabit düğme şeridi (ör. <Button variant="play" block>Kaydet</Button>); içerik kayarken yerinde kalır */
+  actions?: ReactNode
   className?: string
 }
 
-export function Sheet({ open, onClose, title, label, children, className }: SheetProps): ReactElement | null {
+export function Sheet({ open, onClose, title, label, children, actions, className }: SheetProps): ReactElement | null {
   const state = usePresence(open, 250)
   const visible = state !== 'closed'
   const panelRef = useRef<HTMLDivElement>(null)
@@ -163,6 +165,7 @@ export function Sheet({ open, onClose, title, label, children, className }: Shee
           />
         </div>
         <div className="ui-sheet__body">{children}</div>
+        {actions && <div className="ui-sheet__actions">{actions}</div>}
       </div>
     </div>,
     document.body,

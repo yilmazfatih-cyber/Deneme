@@ -31,6 +31,7 @@ export {
   type ButtonSize,
   type ButtonVariant,
   type IconButtonProps,
+  type RoundButtonLinkProps,
   type RoundButtonProps,
   type RoundButtonSize,
   type RoundButtonVariant,

@@ -13,8 +13,11 @@ export interface TvButtonProps {
   onPress?: () => void
   /** Sabit odak kimliği (varsayılan odak / focusManager.focus için) */
   id?: string
-  /** 'primary' Oynat gibi birincil (odaksızken de açık), 'secondary' yarı saydam, 'quiet' yalnız yazı */
-  variant?: 'primary' | 'secondary' | 'quiet'
+  /**
+   * 'play' "Oynat": odaksızken de beyaz zemin + siyah yazı, odakta büyür ve beyaz halka alır ·
+   * 'primary' biraz daha belirgin yarı saydam · 'secondary' yarı saydam · 'quiet' yalnız yazı
+   */
+  variant?: 'play' | 'primary' | 'secondary' | 'quiet'
   size?: 'md' | 'lg'
   disabled?: boolean
   autoFocus?: boolean
@@ -70,10 +73,13 @@ export interface TvAction {
 export function TvActionList({
   id,
   actions,
+  playFirst = true,
   className,
 }: {
   id?: string
   actions: readonly TvAction[]
+  /** İlk eylem beyaz "Oynat" biçiminde (varsayılan true); oynatma dışı listelerde false */
+  playFirst?: boolean
   className?: string
 }): ReactElement {
   return (
@@ -88,7 +94,7 @@ export function TvActionList({
             onPress={a.onPress}
             disabled={a.disabled}
             description={a.description}
-            variant={i === 0 ? 'primary' : 'secondary'}
+            variant={i === 0 && playFirst ? 'play' : 'secondary'}
             size="lg"
             className="tv-actions__item"
           />

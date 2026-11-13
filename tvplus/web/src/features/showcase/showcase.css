@@ -208,6 +208,8 @@ html.sc-root body {
 /* ───────────── sahne ───────────── */
 .sc-stage {
   margin-block: auto;
+  overflow-x: clip;
+  overflow-y: visible;
   display: flex;
   justify-content: center;
   gap: 28px;

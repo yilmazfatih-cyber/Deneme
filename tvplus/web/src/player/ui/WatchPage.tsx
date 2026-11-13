@@ -11,7 +11,7 @@ import { useFormFactor } from '../../lib/formFactor'
 import { ManifestRequestError, requestManifest } from '../net/manifest'
 import { startNetworkProbing } from '../net/ftl'
 import { makeSnapshot, publishSnapshot, type PlayerChrome } from '../remote'
-import { NextCard } from './common'
+import { NextCard, useTvButtons } from './common'
 import { SOURCE_LABEL, usePlayerCore, type CoreProps, type PlayerModel } from './core'
 import { DesktopChrome, ZapButtons } from './DesktopChrome'
 import { IconArrowLeft, IconCast, IconEpisodes, IconNextEpisode, IconSource } from './icons'
@@ -106,9 +106,21 @@ export default function WatchPageImpl(props: WatchPageProps): ReactElement {
   konumRef.current = konumSec
 
   const goBack = useCallback(() => {
-    if (exitTo) navigate(exitTo)
-    else if (window.history.length > 1) navigate(-1)
-    else navigate('/')
+    if (exitTo) {
+      navigate(exitTo)
+      return
+    }
+    if (window.history.length <= 1) {
+      navigate('/', { replace: true })
+      return
+    }
+    // Geçmişte geri; geri gidilecek yer yoksa (ya da yine izleme sayfasıysa) ana sayfaya çık — izleyici hiç kapanmaz
+    const before = window.location.href
+    navigate(-1)
+    window.setTimeout(() => {
+      if (window.location.href === before || /#\/(tv\/)?izle\//.test(window.location.hash))
+        navigate('/', { replace: true })
+    }, 400)
   }, [navigate, exitTo])
 
   useEffect(() => {
@@ -189,6 +201,26 @@ export default function WatchPageImpl(props: WatchPageProps): ReactElement {
   // Yüklenirken de dışarıya "yükleniyor" durumu görünsün (oynatıcı takılınca kendi görüntüsünü yayınlar)
   const loadingTitle = meta?.title ?? ''
   const waiting = !manifest || !session
+  useEffect(() => {
+    if (!failure) return
+    // Oynatılamıyor: dışarıya artık "çalışan oynatıcı" denmez (TV kabuğu kendi tuşlarını buna göre açar)
+    publishSnapshot(
+      makeSnapshot({
+        viewableId,
+        title: meta?.title ?? failure.title,
+        subtitle: null,
+        artUrl: null,
+        live: false,
+        positionSec: 0,
+        durationSec: null,
+        state: 'error',
+        volume: 1,
+        muted: false,
+        sourceKind: null,
+        chrome,
+      }),
+    )
+  }, [failure, viewableId, meta, chrome])
   useEffect(() => {
     if (!waiting || failure) return
     publishSnapshot(
@@ -274,7 +306,14 @@ export default function WatchPageImpl(props: WatchPageProps): ReactElement {
           </div>
         </div>
         <div className="kb-spinner" role="status" aria-label="Yükleniyor" />
-        {chrome === 'tv' ? <LoadingBackKey onBack={goBack} /> : null}
+        {chrome === 'tv' ? (
+          <>
+            <LoadingBackKey onBack={goBack} />
+            <p className="kb-tv-loadhint">
+              <kbd className="kb-key">Geri</kbd> Çık
+            </p>
+          </>
+        ) : null}
       </div>
     )
   }
@@ -299,18 +338,9 @@ export default function WatchPageImpl(props: WatchPageProps): ReactElement {
   return <VideoView key={manifest.manifestId} {...common} />
 }
 
-/** TV'de yüklenirken Geri tuşu çıkar. */
+/** TV'de yüklenirken tek Geri basışı çıkar (diğer tuşlar yutulur). */
 function LoadingBackKey({ onBack }: { onBack: () => void }): null {
-  useEffect(() => {
-    const on = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' || e.key === 'Backspace' || e.keyCode === 461 || e.keyCode === 10009) {
-        e.preventDefault()
-        onBack()
-      }
-    }
-    window.addEventListener('keydown', on)
-    return () => window.removeEventListener('keydown', on)
-  }, [onBack])
+  useTvButtons({ enabled: true, count: 0, initial: 0, onActivate: () => undefined, onBack })
   return null
 }
 
@@ -497,18 +527,15 @@ function NotPlayableSheet({
   const art = meta?.video?.storyArt?.url
   const ref = useRef<HTMLButtonElement>(null)
   useEffect(() => ref.current?.focus(), [])
-  useEffect(() => {
-    if (!tv) return
-    // TV: Geri tuşu çıkar (Enter odaktaki düğmeye gider)
-    const on = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' || e.key === 'Backspace' || e.keyCode === 461 || e.keyCode === 10009) {
-        e.preventDefault()
-        onBack()
-      }
-    }
-    window.addEventListener('keydown', on)
-    return () => window.removeEventListener('keydown', on)
-  }, [tv, onBack])
+  // TV: ◀/▶ düğmeler arasında, OK etkinleştirir, Geri çıkar (odak: Geri dön)
+  const actions = onRetry ? [onRetry, onBack] : [onBack]
+  const focus = useTvButtons({
+    enabled: tv,
+    count: actions.length,
+    initial: actions.length - 1,
+    onActivate: (i) => actions[i]?.(),
+    onBack,
+  })
   return (
     <div className="kb-sheet-wrap" data-chrome={tv ? 'tv' : undefined}>
       {art ? <div className="kb-sheet-art" style={{ backgroundImage: `url("${art}")` }} aria-hidden="true" /> : null}
@@ -524,14 +551,21 @@ function NotPlayableSheet({
         <p>{failure.text}</p>
         <div className="kb-actions">
           {onRetry ? (
-            <button type="button" className="kb-btn kb-btn-primary" onClick={onRetry}>
+            <button type="button" className="kb-btn kb-btn-primary" data-focus={tv && focus === 0} onClick={onRetry}>
               Tekrar dene
             </button>
           ) : null}
-          <button ref={ref} type="button" className="kb-btn kb-btn-secondary" onClick={onBack}>
+          <button
+            ref={ref}
+            type="button"
+            className="kb-btn kb-btn-secondary"
+            data-focus={tv && focus === actions.length - 1}
+            onClick={onBack}
+          >
             Geri dön
           </button>
         </div>
+        {tv ? <p className="kb-hint-line">◀ ▶ Seç · OK Onayla · Geri Çık</p> : null}
       </section>
     </div>
   )

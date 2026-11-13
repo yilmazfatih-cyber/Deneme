@@ -30,7 +30,7 @@ describe('yetki kararları', () => {
       reasonText: 'Sinema Paketi ile izlenir',
       requiredProduct: 'sinema-paketi',
       requiredProductName: 'Sinema Paketi',
-      cta: 'Paketi incele',
+      cta: 'Paketi İncele',
     })
     expect(app.services.entitlement.accessForVideo(passport(null, null), ID.tears).state).toBe('UPSELL')
     expect(app.services.entitlement.accessForVideo(passport(ADULT, ACCOUNT_SINEMA), ID.tears)).toMatchObject({
@@ -66,7 +66,7 @@ describe('yetki kararları', () => {
     expect(app.services.entitlement.accessForChannel(passport(ADULT), 5)).toMatchObject({
       state: 'UPSELL',
       reasonText: 'Sinema Paketi ile izlenir',
-      cta: 'Paketi incele',
+      cta: 'Paketi İncele',
     })
     expect(app.services.entitlement.accessForChannel(passport(ADULT, ACCOUNT_SINEMA), 5).state).toBe('PLAYABLE')
     expect(app.services.entitlement.accessForChannel(passport(KID), 1)).toMatchObject({

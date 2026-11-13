@@ -5,11 +5,13 @@
 import type { ReactElement } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Avatar, cx, Icon, Menu, MenuItem, MenuSeparator } from '../ui'
+import { recheckDevtools } from './devtoolsState'
 import { useSession } from './sessionStore'
 
 /** "Kaputun altı" panelini aç/kapat: panelin kendi Ctrl+. kısayolunu tetikler (devtools/index.tsx). */
 export function toggleDevtoolsPanel(): void {
   window.dispatchEvent(new KeyboardEvent('keydown', { key: '.', ctrlKey: true, bubbles: true }))
+  recheckDevtools()
 }
 
 export function AvatarMenu(): ReactElement | null {

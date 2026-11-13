@@ -19,12 +19,24 @@ export const BOOT_ROWS = 6
 export const BOOT_ITEMS = 10
 
 /**
- * Satır bağlamına göre yapraklar — web/src/features/home/lolomo.ts ile aynı kümeler (POSTER_LEAVES, LANDSCAPE_LEAVES,
- * HERO_LEAVES, CURRENT_LEAVES). İstemci ilk boyamada bunları `lists[listId]` üzerinden sorar; burada eksik kalan her yaprak
- * açılışta bir pathEvaluator isteği demektir. Vitrine ayrıntı modalının ilk görünümü için birkaç yaprak eklenir.
+ * Satır bağlamına göre yapraklar — web/src/features/home/lolomo.ts `leavesFor(kind, screen)` ve
+ * `heroDeferredLeaves(screen)` kümelerinin MASAÜSTÜ + MOBİL birleşimi (kart görseli masaüstünde 16:9 `storyArt`, mobilde
+ * 2:3 `boxart`). İstemci ilk boyamada ve ilk etkileşime kadar bunları `lists[listId]` üzerinden sorar; burada eksik
+ * kalan her yaprak açılışta bir pathEvaluator isteği demektir (server/test/discovery-boot-seed.test.ts denetler).
+ * Vitrine ayrıntı modalının ilk görünümü için birkaç yaprak eklenir (synopsis, releaseYear, runtime).
  */
-const POSTER_LEAVES = ['summary', 'title', 'boxart', 'badge', 'access', 'top10Rank', 'tags']
-const LANDSCAPE_LEAVES = ['summary', 'title', 'storyArt', 'access', 'displayRuntime', 'bookmark', 'watchStatus', 'tags']
+const POSTER_LEAVES = ['summary', 'title', 'boxart', 'storyArt', 'badge', 'access', 'top10Rank', 'tags']
+const LANDSCAPE_LEAVES = [
+  'summary',
+  'title',
+  'storyArt',
+  'boxart',
+  'access',
+  'displayRuntime',
+  'bookmark',
+  'watchStatus',
+  'tags',
+]
 const HERO_LEAVES = [
   'summary',
   'title',
@@ -32,6 +44,7 @@ const HERO_LEAVES = [
   'billboardArt',
   'titleLogo',
   'storyArt',
+  'boxart',
   'maturity',
   'access',
   'displayRuntime',
@@ -42,6 +55,9 @@ const HERO_LEAVES = [
   'releaseYear',
   'runtime',
   'tags',
+  // heroDeferredLeaves: masaüstünde Top 10 satırı, mobilde Listem düğmesi
+  'top10Rank',
+  'queue',
 ]
 const CURRENT_LEAVES = ['summary', 'displayRuntime', 'bookmark']
 const HERO_CURRENT_LEAVES = [...CURRENT_LEAVES, 'title', 'watchStatus']

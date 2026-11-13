@@ -122,6 +122,17 @@
   transform: scale(1.04);
   box-shadow: 0 0.6rem 1.6rem rgba(0, 0, 0, 0.45);
 }
+/* "Oynat": odaksızken de beyaz (UX_SPEC); odakta büyür ve dışına beyaz halka alır. */
+.tv-btn--play {
+  background: #fff;
+  color: #000;
+}
+.tv-btn--play.is-focused {
+  box-shadow:
+    0 0 0 0.22rem var(--tv-bg),
+    0 0 0 0.5rem #fff,
+    0 0.6rem 1.6rem rgba(0, 0, 0, 0.45);
+}
 .tv-btn.is-disabled {
   opacity: 0.45;
 }
@@ -345,6 +356,16 @@
   font-weight: 700;
   color: var(--tv-text-2);
 }
+.tv-row__aside {
+  margin-left: 1rem;
+  color: var(--tv-text-4);
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+.tv-no-anim,
+.tv-no-anim * {
+  transition: none !important;
+}
 .tv-row__viewport {
   position: relative;
   /* Solda yalnız odak çerçevesine yer; sağ, üst ve alt taşabilir (büyüme, alt yazı). */
@@ -385,11 +406,14 @@
 
 /* ───────────── Liste ve ızgara ───────────── */
 
+/* Kenardaki kartın 1.08× büyümesi + 0.25 rem halkası + gölgesi kırpılmasın diye iç pay (dış payla dengelenir). */
 .tv-list,
 .tv-grid {
+  --tv-list-pad: 2rem;
   overflow: hidden;
-  padding: 1rem;
-  margin: -1rem;
+  padding: var(--tv-list-pad);
+  margin: calc(-1 * var(--tv-list-pad));
+  scroll-padding: var(--tv-list-pad);
 }
 .tv-list {
   display: flex;
@@ -548,7 +572,8 @@
   position: absolute;
   right: var(--tv-safe);
   bottom: var(--tv-safe-y);
-  z-index: 60;
+  /* Tam ekran oynatıcının (z-index 100) ve pencerelerin (50) üstünde */
+  z-index: 1000;
   display: flex;
   flex-direction: column;
   align-items: flex-end;

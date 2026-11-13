@@ -8,7 +8,18 @@
  */
 import { useEffect, useRef, useState, type ReactElement, type ReactNode, type RefObject } from 'react'
 import type { RemoteKey } from '../../../../shared/devices'
-import { Busy, ErrorPanel, Glyph, NextCard, Stats, Subtitles, TitleLine, useGlyph } from './common'
+import {
+  Busy,
+  ErrorPanel,
+  errorButtons,
+  Glyph,
+  NextCard,
+  Stats,
+  Subtitles,
+  TitleLine,
+  tvButtonStep,
+  useGlyph,
+} from './common'
 import type { PlayerModel } from './core'
 import { airingProgress, formatClock, formatSpan, remainingLabel } from './format'
 import { loadChannels, type ChannelBrief } from './metadata'
@@ -217,20 +228,28 @@ export function TvChrome({
     return step.handled
   }
 
+  const [errFocus, setErrFocus] = useState(0)
+  const errFocusRef = useRef(0)
+  const hasError = !!m.error
+  useEffect(() => {
+    errFocusRef.current = 0
+    setErrFocus(0)
+  }, [hasError])
+
   const handleKey = (k: RemoteKey): boolean => {
     const { m: mm } = live.current
     // Hata paneli ve sonraki bölüm kartı odağı alır
     if (mm.error) {
-      if (k === 'OK') {
-        if (mm.error.retryable) mm.act.retry()
+      const btns = errorButtons(mm.error.retryable)
+      const step = tvButtonStep(k, errFocusRef.current, btns.length)
+      errFocusRef.current = step.focus
+      setErrFocus(step.focus)
+      if (step.action === 'back') mm.act.back()
+      else if (step.action === 'activate') {
+        if (btns[step.focus] === 'retry') mm.act.retry()
         else mm.act.back()
-        return true
       }
-      if (k === 'BACK' || k === 'HOME') {
-        mm.act.back()
-        return true
-      }
-      return false
+      return step.handled
     }
     if (mm.showNext && !tvRef.current.panel) {
       if (k === 'OK') {
@@ -480,7 +499,7 @@ export function TvChrome({
         aria-label={`Oynatıcı: ${m.title.main}`}
       >
         <div className="kb-tv-embed">
-          <div className="kb-tv-frame-area" data-panel={p ? p.kind : 'none'}>
+          <div className="kb-tv-frame-area" data-panel={p ? p.kind : 'none'} data-error={m.error ? 'true' : 'false'}>
             {frame}
           </div>
           {panelEl ? (
@@ -493,9 +512,10 @@ export function TvChrome({
         <div className="kb-tv-slot">
           {band}
           {digits}
-          {m.error ? <ErrorPanel m={m} tv /> : null}
           <NextCard m={m} tv />
         </div>
+        {/* Gömme hata verince çerçeve gizlenir; panel onun yerine çizilir (çalışan bir oynatıcının üstüne değil) */}
+        <ErrorPanel m={m} tv focus={errFocus} />
       </div>
     )
   }
@@ -517,7 +537,7 @@ export function TvChrome({
       {digits}
       <NextCard m={m} tv />
       <Stats m={m} />
-      <ErrorPanel m={m} tv />
+      <ErrorPanel m={m} tv focus={errFocus} />
     </div>
   )
 }

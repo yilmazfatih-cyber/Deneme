@@ -5,6 +5,7 @@
  *                                          (içerik menünün altından başlamaz), mobilde üst çubuk en üstte saydamdır.
  *   useShellOptions({ mobileTitle: 'Yeni ve Popüler' })   Mobil üst çubuğun başlığı (varsayılan yola göre).
  *   useShellOptions({ topBar: false })     Mobil üst çubuğu gizle (sayfa kendi ✕ / geri düğmesini çiziyor).
+ *   useShellOptions({ keepScroll: true })  Yol değişiminde en üste kaydırılmaz (sayfa kendi kaydırır).
  *   <ShellPills>…</ShellPills>             Mobil üst çubuğun altındaki hap sırası (masaüstünde hiçbir şey çizmez):
  *                                          <ShellPills><Pill to="/goz-at/diziler">Diziler</Pill>…</ShellPills>
  *
@@ -14,15 +15,19 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useLayoutEffect,
   useMemo,
+  useRef,
   useState,
   type ReactElement,
   type ReactNode,
 } from 'react'
 import { createPortal } from 'react-dom'
+import { useLocation } from 'react-router-dom'
 import type { FormFactor } from '../lib/formFactor'
 import { PillBar } from '../ui'
+import { markKeepScroll, unmarkKeepScroll } from './scrollPolicy'
 
 export interface ShellOptions {
   /** Vitrinle başlayan sayfa (üst menü içeriğin üstüne biner); varsayılan false */
@@ -31,6 +36,8 @@ export interface ShellOptions {
   mobileTitle?: string | null
   /** Mobil üst çubuk görünsün mü; varsayılan true */
   topBar?: boolean
+  /** Yol değişiminde en üste kaydırma YAPILMASIN (sayfa kendi kaydırır, ör. rehber "şimdi"ye) */
+  keepScroll?: boolean
 }
 
 export interface ShellContextValue {
@@ -72,6 +79,24 @@ export function useShellController(formFactor: FormFactor): {
 export function useShellOptions(options: ShellOptions): void {
   const ctx = useContext(ShellContext)
   const setOptions = ctx?.setOptions
+  const { pathname } = useLocation()
+  // keepScroll çizim sırasında kaydedilir (bkz. scrollPolicy.ts); kayıt bir kez, sayfa kapanınca silinir.
+  const kept = useRef<string | null>(null)
+  if (options.keepScroll && kept.current !== pathname) {
+    if (kept.current) unmarkKeepScroll(kept.current)
+    markKeepScroll(pathname)
+    kept.current = pathname
+  } else if (!options.keepScroll && kept.current) {
+    unmarkKeepScroll(kept.current)
+    kept.current = null
+  }
+  useEffect(
+    () => () => {
+      if (kept.current) unmarkKeepScroll(kept.current)
+      kept.current = null
+    },
+    [],
+  )
   const key = JSON.stringify(options)
   useLayoutEffect(() => {
     if (!setOptions) return

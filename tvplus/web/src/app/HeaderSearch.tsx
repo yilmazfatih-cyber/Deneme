@@ -1,7 +1,8 @@
 /**
  * Masaüstü üst menüde arama (UX_SPEC §2): büyüteç simgesi → tıklayınca sola doğru açılan kutu (siyah zemin,
  * 1 px beyaz çerçeve). Kutunun kendisi features/search `SearchBox`'tır (yazınca #/ara?q=…); burada yalnız aç/kapa
- * ve çerçeve var. Arama sayfasındayken kutu hep açıktır; boşken odak giderse kapanır.
+ * ve çerçeve var. Arama sayfasındayken kutu hep açıktır; boşken odak giderse ya da yol /ara dışına değişirse
+ * (kutuda yazılmıyorken) kapanır.
  */
 import { useEffect, useRef, useState, type ReactElement } from 'react'
 import { useLocation } from 'react-router-dom'
@@ -15,9 +16,15 @@ export function HeaderSearch(): ReactElement {
   const boxRef = useRef<HTMLDivElement>(null)
   const expanded = open || onSearchPage
 
+  // Yol değişince: arama sayfasına girildiyse açık kalır; başka bir sayfaya gidildiyse (bağlantı, geri tuşu,
+  // menü) kutu kapanır — yalnız kullanıcı o an kutuda yazıyorsa odak ve kutu korunur.
   useEffect(() => {
-    if (onSearchPage) setOpen(true)
-  }, [onSearchPage])
+    if (onSearchPage) {
+      setOpen(true)
+      return
+    }
+    if (!boxRef.current?.contains(document.activeElement)) setOpen(false)
+  }, [pathname, onSearchPage])
 
   const input = () => boxRef.current?.querySelector('input') ?? null
 

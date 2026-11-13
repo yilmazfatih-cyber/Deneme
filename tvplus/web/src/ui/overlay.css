@@ -125,6 +125,16 @@
   overscroll-behavior: contain;
   padding: 4px var(--gutter) 20px;
 }
+.ui-sheet__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 12px var(--gutter) 16px;
+  border-top: 1px solid var(--line);
+}
+.ui-sheet__actions > * {
+  flex: 1 1 0;
+}
 @media (min-width: 900px) {
   /* Masaüstünde alt sayfa ortada küçük pencere olur */
   .ui-sheet-layer {

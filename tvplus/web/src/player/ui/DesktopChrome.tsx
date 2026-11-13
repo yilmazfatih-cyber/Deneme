@@ -5,6 +5,7 @@
  * tam ekran. 3 sn hareketsizlikte gizlenir.
  */
 import { useEffect, useRef, useState, type ReactElement, type ReactNode, type RefObject } from 'react'
+import type { QualityOption } from '../adapters/types'
 import type { PlayerModel } from './core'
 import { SOURCE_LABEL } from './core'
 import {
@@ -224,8 +225,14 @@ export function DesktopChrome({
   const remaining = Math.max(0, m.duration - m.position)
   const showSource = m.sources.includes('OWN_CDN') && m.sources.includes('YOUTUBE')
   const n = m.next
-  const qualityOpts = m.adapter?.qualityOptions() ?? []
-  const q = m.adapter?.currentQuality() ?? { lockedId: null, activeId: null }
+  let qualityOpts: QualityOption[] = []
+  let q: { lockedId: string | null; activeId: string | null } = { lockedId: null, activeId: null }
+  try {
+    qualityOpts = m.adapter?.qualityOptions() ?? []
+    q = m.adapter?.currentQuality() ?? q
+  } catch {
+    /* motor hazır değil: kalite menüsü gösterilmez */
+  }
   const activeQ = qualityOpts.find((o) => o.id === q.activeId)
 
   return (

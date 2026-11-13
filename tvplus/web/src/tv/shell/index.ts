@@ -6,6 +6,7 @@
  *   createCommandRouter       kumanda komutu yönlendirici (test ve özel kullanım)
  *   useTvBoot, adoptBoot, loginDemo, logout   oturum
  *   useDeviceState, getPlayerRemote           cihaz istemcisi ve oynatıcı köprüsü
+ *   canGoBack, previousPath, useTvBack        uygulama içi geçmiş (önceki TV yolu)
  *   TvPlaceholderScreen       yer tutucu ekran
  */
 export { TvApp } from './TvApp'
@@ -33,4 +34,5 @@ export {
 } from './commands'
 export { adoptBoot, ensureBoot, loginDemo, logout, useTvBoot } from './session'
 export { getPlayerRemote, useDeviceState } from './device'
+export { canGoBack, previousPath, TvHistoryStack, tvHistory, useTvBack } from './history'
 export { TvPlaceholderScreen } from './Placeholder'

@@ -3,9 +3,9 @@
  *
  *   <TvScreen id="ayarlar" title="Ayarlar" defaultFocus="ayarlar:profil">…</TvScreen>
  *
- * Açılınca motorun "ekranı" olur ve odağı kendi kapsamına alır: hafıza (geri dönülen ekran) → `defaultFocus` →
- * ilk odaklanabilir. Odak böyle kendiliğinden kurulduysa, sonradan yüklenen `autoFocus` öğesi (ör. ilk kart)
- * odağı devralır. Yan menülü düzende ← kenarı yan menüyü açar (TvScreenEdgeProvider).
+ * Açılınca motorun "ekranı" olur ve odağı talep eder (`engine.claimScope`): hafıza (geri dönülen ekran) →
+ * `defaultFocus` → ilk odaklanabilir. İçerik geç gelirse (yan menüden geçiş, veri yükleniyor) odak içerik geldiği
+ * anda ekrana iner; hatırlanan kart sonradan çizilirse ona geçer — izleyici bu arada tuşa basmadıysa. Yan menülü düzende ← kenarı yan menüyü açar (TvScreenEdgeProvider).
  */
 import { createContext, useContext, useLayoutEffect, type ReactElement, type ReactNode } from 'react'
 import { FocusScope, useFocusEngine, type Direction } from '../focus'
@@ -51,8 +51,9 @@ export function TvScreen({
 
   useLayoutEffect(() => {
     engine.setScreen(scopeId)
-    // Açılır pencere ya da yan menü odaktaysa dokunma; değilse ekrana gir.
-    if (!engine.isWithin(scopeId)) engine.focusScope(scopeId, 'auto')
+    // Odak talebi: içerik hazırsa hemen, geç gelirse geldiği anda ekrana (hafıza → varsayılan → ilk öğe) iner;
+    // izleyici bu arada tuşa basarsa talep düşer. Kapsam dışındaki açık pencereye dokunulmaz.
+    engine.claimScope(scopeId)
     return () => {
       if (engine.screen() === scopeId) engine.setScreen(null)
     }

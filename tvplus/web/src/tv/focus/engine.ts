@@ -121,6 +121,10 @@ export class FocusEngine {
   private lost: LostFocus | null = null
   private upgradeTo: string | null = null
   private repairQueued = false
+  /** Ekranın odak talebi (TvScreen): içerik geç gelse de, izleyici tuşa basmadıysa odak ekrana iner. */
+  private claim: { scopeId: string; keys: number; want: string | null } | null = null
+  /** Kullanıcı eylemi sayacı (tuş, tıklama); talep bu sayı değişince düşer. */
+  private userActions = 0
 
   constructor(opts: FocusEngineOptions = {}) {
     this.schedule =
@@ -187,6 +191,7 @@ export class FocusEngine {
       this.upgradeTo = cfg.id
       this.queueRepair()
     }
+    if (this.claim) this.queueRepair()
     return () => this.unregisterNode(cfg.id, rec)
   }
 
@@ -268,7 +273,10 @@ export class FocusEngine {
     const next = this.nodes.get(id)
     if (!next || next.disabled) return false
     this.autoPlaced = reason === 'auto'
-    if (reason === 'user') this.upgradeTo = null
+    if (reason === 'user') {
+      this.upgradeTo = null
+      this.userActions++
+    }
     if (this.currentId === id) return true
     const prevId = this.currentId
     const prev = prevId ? this.nodes.get(prevId) : undefined
@@ -407,6 +415,7 @@ export class FocusEngine {
 
   /** Tek giriş noktası: klavye dinleyicisi ve telefon kumandası. İşlendiyse true. */
   dispatchKey(key: RemoteKey): boolean {
+    this.userActions++
     for (const rec of [...this.interceptors]) {
       if (rec.fn(key) === true) return true
     }
@@ -432,6 +441,11 @@ export class FocusEngine {
   }
 
   private repairNow(): void {
+    this.repairBody()
+    this.applyClaim()
+  }
+
+  private repairBody(): void {
     this.repairQueued = false
     const cur = this.currentId ? this.nodes.get(this.currentId) : undefined
     const upgrade = this.upgradeTo
@@ -456,6 +470,48 @@ export class FocusEngine {
     const target = this.fallbackTarget(upgrade)
     if (target) this.focus(target, 'auto')
     else this.notify()
+  }
+
+  /**
+   * Ekran odak talebi: ekran açılınca (TvScreen) çağrılır. Odak ekranın kapsamına — hafıza → varsayılan → ilk öğe —
+   * hemen, içerik henüz yoksa içerik geldiği anda iner. İzleyici bu arada bir tuşa basarsa (ya da tıklarsa) talep
+   * düşer. Odak ekranda genel bir öğeye (ör. Geri) indiyse, hatırlanan / varsayılan öğe sonradan gelince ona geçer.
+   * Kapsam dışındaki modal pencereye dokunulmaz.
+   */
+  claimScope(scopeId: string): void {
+    // Hedef talep anında sabitlenir: odak geçici olarak genel bir öğeye inse de hafıza kaybolmaz.
+    const s = this.scopes.get(scopeId)
+    this.claim = { scopeId, keys: this.userActions, want: s?.lastFocusedId ?? null }
+    this.applyClaim()
+  }
+
+  /** Bekleyen ekran talebi (testler ve tanılama için) */
+  pendingClaim(): string | null {
+    return this.claim?.scopeId ?? null
+  }
+
+  private applyClaim(): void {
+    const c = this.claim
+    if (!c) return
+    const s = this.scopes.get(c.scopeId)
+    if (!s || this.userActions !== c.keys) {
+      this.claim = null
+      return
+    }
+    const ok = (id: string | null | undefined): id is string =>
+      !!id && this.available(id) && this.isWithin(c.scopeId, id)
+    const preferred = ok(c.want) ? c.want : ok(s.defaultFocusId) ? s.defaultFocusId : null
+    const cur = this.currentId
+    if (cur && this.isWithin(c.scopeId, cur)) {
+      if (preferred && preferred !== cur) this.focus(preferred, 'auto')
+      if (preferred) this.claim = null
+      return
+    }
+    if (cur) for (const sid of this.chainOf(cur)) if (this.scopes.get(sid)?.modal) return
+    const target = preferred ?? this.entryOf(c.scopeId, null, null, null)
+    if (!target) return
+    this.focus(target, 'auto')
+    if (target === preferred) this.claim = null
   }
 
   private fallbackTarget(upgrade: string | null): string | null {

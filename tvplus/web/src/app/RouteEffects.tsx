@@ -5,6 +5,7 @@
 import { useEffect, useLayoutEffect, useRef } from 'react'
 import { useLocation, useNavigationType } from 'react-router-dom'
 import { logEvent } from '../telemetry/logger'
+import { shouldKeepScroll } from './scrollPolicy'
 
 const SUFFIX = ' · TV+'
 
@@ -92,6 +93,7 @@ export function RouteEffects(): null {
     entryRef.current = id
     prev.current = { entry: id, pathname: location.pathname }
     if (before && before.pathname === location.pathname && navType !== 'POP') return // yalnız sorgu değişti (ör. arama yazımı)
+    if (shouldKeepScroll(location.pathname)) return // sayfa kendi kaydırmasını yönetiyor (useShellOptions keepScroll)
     const saved = positions.get(id)
     if (!fresh && navType === 'POP' && saved !== undefined) {
       // Tembel sayfa yüklenip yükseklik oluşana dek birkaç kare dene (en çok ~1 sn).

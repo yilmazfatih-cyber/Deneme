@@ -28,5 +28,8 @@ describe('vitrin yerleşimi', () => {
     const l = layoutFrames(360, 700)
     expect(l.mode).toBe('stack')
     for (const f of l.frames) expect(f.width + CHROME[f.id].x).toBeLessThanOrEqual(360 + 1)
+    const web = l.frames.find((f) => f.id === 'web')!
+    // gövde iki yandan %6 taşar
+    expect((web.width + CHROME.web.x) * 1.12).toBeLessThanOrEqual(361)
   })
 })

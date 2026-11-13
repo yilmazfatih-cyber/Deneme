@@ -25,7 +25,7 @@ const decision = (
 
 export const TEXT = {
   upsell: (name: string) => `${name} ile izlenir`,
-  upsellCta: 'Paketi incele',
+  upsellCta: 'Paketi İncele',
   blockedProfile: 'Bu profil için uygun değil',
   outOfWindow: 'Yayından kalktı',
   noSource: 'Şu an izlenemiyor',

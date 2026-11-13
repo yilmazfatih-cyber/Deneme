@@ -360,6 +360,94 @@ describe('FocusEngine — yedeğe geçiş', () => {
   })
 })
 
+describe('FocusEngine — ekran odak talebi (geç gelen içerik)', () => {
+  /** Yan menü + boş ekran: menüde OK'a basılmış, ekran veri bekliyor. */
+  function railAndEmptyScreen() {
+    const s = setup()
+    s.engine.registerScope({ id: 'menu', trap: true })
+    s.node('menu-profil', 'menu', r(0, 0, 50, 50))
+    s.node('menu-diziler', 'menu', r(0, 100, 50, 50))
+    s.engine.focus('menu-diziler')
+    s.engine.dispatchKey('OK') // yan menüden seçim (yol değişir)
+    s.engine.registerScope({ id: 'ekran', trap: true })
+    s.engine.setScreen('ekran')
+    s.engine.claimScope('ekran')
+    return s
+  }
+
+  it('içerik tuşa basıldıktan sonra gelse de odak ilk karta iner', () => {
+    const s = railAndEmptyScreen()
+    expect(s.engine.current()).toBe('menu-diziler')
+    s.node('kart-0', 'ekran', r(200, 300))
+    s.node('kart-1', 'ekran', r(310, 300))
+    s.tick()
+    expect(s.engine.current()).toBe('kart-0')
+  })
+
+  it('izleyici bu arada tuşa bastıysa talep düşer', () => {
+    const s = railAndEmptyScreen()
+    s.engine.dispatchKey('UP')
+    expect(s.engine.current()).toBe('menu-profil')
+    s.node('kart-0', 'ekran', r(200, 300))
+    s.tick()
+    expect(s.engine.current()).toBe('menu-profil')
+  })
+
+  it('odak yedeğe (menünün profil öğesine) düştüyse içerik gelince ekrana döner', () => {
+    const s = setup()
+    s.engine.registerScope({ id: 'menu', trap: true })
+    s.node('menu-profil', 'menu', r(0, 0, 50, 50))
+    const off = s.engine.registerScope({ id: 'ekran', trap: true })
+    s.engine.setScreen('ekran')
+    s.node('eski', 'ekran', r(200, 300))
+    s.engine.claimScope('ekran')
+    expect(s.engine.current()).toBe('eski')
+    // aynı adreste yeniden bağlanma: eski içerik kalkar, yenisi henüz yok
+    s.unregs.get('eski')!()
+    off()
+    s.tick()
+    expect(s.engine.current()).toBe('menu-profil')
+    s.engine.registerScope({ id: 'ekran', trap: true })
+    s.engine.setScreen('ekran')
+    s.engine.claimScope('ekran')
+    s.node('yeni', 'ekran', r(200, 300))
+    s.tick()
+    expect(s.engine.current()).toBe('yeni')
+  })
+
+  it('hatırlanan kart geç çizilirse genel öğeden ona geçilir', () => {
+    const s = setup()
+    const off = s.engine.registerScope({ id: 'ekran', trap: true })
+    s.node('geri', 'ekran', r(0, 0))
+    s.node('kart-7', 'ekran', r(200, 300))
+    s.engine.focus('kart-7')
+    s.unregs.get('geri')!()
+    s.unregs.get('kart-7')!()
+    off()
+    // ekrana dönüş: önce yalnız Geri düğmesi, kart veri gelince
+    s.engine.registerScope({ id: 'ekran', trap: true })
+    s.node('geri', 'ekran', r(0, 0))
+    s.engine.claimScope('ekran')
+    expect(s.engine.current()).toBe('geri')
+    s.node('kart-7', 'ekran', r(200, 300))
+    s.tick()
+    expect(s.engine.current()).toBe('kart-7')
+    expect(s.engine.pendingClaim()).toBeNull()
+  })
+
+  it('kapsam dışındaki modal pencereye dokunmaz', () => {
+    const s = setup()
+    s.engine.registerScope({ id: 'pencere', trap: true, modal: true })
+    s.node('tamam', 'pencere', r(500, 500))
+    s.engine.focus('tamam', 'auto')
+    s.engine.registerScope({ id: 'ekran', trap: true })
+    s.engine.claimScope('ekran')
+    s.node('kart', 'ekran', r(0, 0))
+    s.tick()
+    expect(s.engine.current()).toBe('tamam')
+  })
+})
+
 describe('FocusEngine — tuş kesiciler', () => {
   it('öncelik sırası, eşitlikte son eklenen önce; true tüketir', () => {
     const s = setup()

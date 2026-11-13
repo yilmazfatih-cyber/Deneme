@@ -14,36 +14,16 @@ import { AvatarMenu, toggleDevtoolsPanel } from './AvatarMenu'
 import { DETAIL_PARAM } from './links'
 import { markDetailOpenedInApp } from './detailModal'
 import { HeaderSearch } from './HeaderSearch'
+import { activeDesktopNav, DESKTOP_NAV } from './nav'
 import { RouteFrame } from './RouteFrame'
 import { ShellContextProvider, useShellController } from './shellContext'
 
 const CastButton = lazy(() => import('../features/remote').then((m) => ({ default: m.CastButton })))
 const DetailModalOutlet = lazy(() => import('../features/detail').then((m) => ({ default: m.DetailModalOutlet })))
 
-export interface NavEntry {
-  label: string
-  to: string
-  /** Etkin sayılır mı (alt yollar dahil) */
-  match: (pathname: string) => boolean
-}
-
-/** Üst menü bağlantıları (sıra UX_SPEC §2). */
-export const DESKTOP_NAV: readonly NavEntry[] = [
-  {
-    label: 'Ana Sayfa',
-    to: '/goz-at',
-    match: (p) => p === '/goz-at' || /^\/(tur|koleksiyon|kisi|baslik)\//.test(p),
-  },
-  { label: 'Canlı TV', to: '/canli', match: (p) => p.startsWith('/canli') || p.startsWith('/rehber') },
-  { label: 'Diziler', to: '/goz-at/diziler', match: (p) => p.startsWith('/goz-at/diziler') },
-  { label: 'Filmler', to: '/goz-at/filmler', match: (p) => p.startsWith('/goz-at/filmler') },
-  { label: 'Yeni ve Popüler', to: '/yeni-ve-populer', match: (p) => p.startsWith('/yeni-ve-populer') },
-  { label: 'Listem', to: '/listem', match: (p) => p.startsWith('/listem') },
-]
-
 function PrimaryNav(): ReactElement {
   const { pathname } = useLocation()
-  const current = DESKTOP_NAV.find((n) => n.match(pathname))
+  const current = activeDesktopNav(pathname)
   return (
     <>
       <nav className="app-nav" aria-label="Bölümler">

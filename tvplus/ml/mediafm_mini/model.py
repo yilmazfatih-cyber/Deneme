@@ -36,7 +36,11 @@ class ModelConfig:
     use_global: bool = True
     # ALiBi tarzı yerellik önyargısı: çekimler arası dikkat puanından −eğim·|i−j| düşülür (baş başına farklı eğim);
     # küçük veride "yakın çekime bak" bilgisinin sıfırdan öğrenilmesi gerekmez. Özel belirteçlere uzaklık cezası yok.
-    alibi: bool = True
+    alibi: bool = False
+    # Kopya başlığı: tahmin = Σ_j a_ij · (görünür j çekiminin özgün kip vektörü) + başlık(h_i). Dikkat ağırlıkları a
+    # bağlamsal vektörlerden (h) öğrenilir; anahtarlar yalnız GÖRÜNÜR ve o kipi taşıyan çekimlerdir (sızıntı yok).
+    # Tahmin 512 boyutlu özgün uzayda kalır; 128 boyutlu darboğazdan geçen salt başlık yeni filmlere genelleyemiyordu.
+    copy_head: bool = True
     max_len: int = 64  # eğitim penceresi; daha uzun yapraklar örtüşen pencerelerle kodlanır
 
     def to_dict(self) -> dict:
@@ -73,6 +77,11 @@ class MediaFMMini(nn.Module):
         self.encoder = nn.TransformerEncoder(layer, cfg.layers, enable_nested_tensor=False)
         self.out_norm = nn.LayerNorm(d)
         self.heads = nn.ModuleList([nn.Linear(d, cfg.in_dim) for _ in range(N_MODS)])
+        self.copy_q = nn.Linear(d, d)
+        self.copy_k = nn.Linear(d, d)
+        # öğrenilmiş uzaklık cezası (softplus ≥ 0) ve başlık katkısının ölçeği (exp; başta 0,1)
+        self.copy_dist = nn.Parameter(torch.tensor(0.5))
+        self.head_scale = nn.Parameter(torch.tensor(math.log(0.1)))
         # Kip başına eğitim derlemi ortalaması: CLIP/CLAP vektörleri yönsüz değildir (rastgele iki çekimin kosinüsü
         # ≈ 0,8); ortalama çıkarılıp yeniden birim uzunluğa getirilince hem girdi hem hedef ayırt edici olur ve
         # "ortalamayı tahmin et" kestirmesi ödüllendirilmez. Ağırlıklarla birlikte saklanır.
@@ -128,7 +137,27 @@ class MediaFMMini(nn.Module):
         h = self.encoder(self.in_drop(seq), mask=self.attn_bias(pad, k))
         h = self.out_norm(h[:, k:])
         pred = torch.stack([self.heads[m](h) for m in range(N_MODS)], dim=2)
+        if self.cfg.copy_head:
+            # İki terim de birim uzunlukta: başlığın ölçeği serbest kalırsa (kosinüs kaybı ölçeğe bakmaz) kopyayı
+            # bastırıyordu; katkısı öğrenilmiş tek bir ölçekle sınırlanır.
+            pred = F.normalize(self.copy(h, feats, b), dim=-1) + self.head_scale.exp() * F.normalize(pred, dim=-1)
         return h, pred
+
+    def copy(self, h: torch.Tensor, feats: torch.Tensor, b: Batch) -> torch.Tensor:
+        """(B, L, 3, in_dim): görünür çekimlerin kip vektörlerinin dikkat ağırlıklı toplamı (kip başına ayrı maske)."""
+        L = h.shape[1]
+        pos = torch.arange(L, device=h.device, dtype=torch.float32)
+        dist = (pos[:, None] - pos[None, :]).abs()
+        sc = self.copy_q(h) @ self.copy_k(h).transpose(1, 2) / math.sqrt(self.cfg.d)  # (B, L, L)
+        sc = sc - F.softplus(self.copy_dist) * dist
+        out = []
+        for m in range(N_MODS):
+            key_ok = b.ok[:, :, m] & ~b.hide_mod[:, :, m] & ~b.hide_shot & ~b.pad  # (B, L)
+            s_m = sc.masked_fill(~key_ok[:, None, :], float("-inf"))
+            a = torch.softmax(s_m, dim=-1)
+            a = torch.nan_to_num(a, nan=0.0)  # o kipte hiç görünür çekim yoksa kopya 0
+            out.append(a @ feats[:, :, m])
+        return torch.stack(out, dim=2)
 
 
 def msm_loss(pred: torch.Tensor, b: Batch, mod_weight: float = 0.5,

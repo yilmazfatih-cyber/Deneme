@@ -22,6 +22,12 @@ export interface PreviewPlayerProps {
   muted?: boolean
   onPlaying?: () => void
   onError?: () => void
+  /** En uzun oynatma (sn); varsayılan 30. null → söküline dek oynar (canlı kanal önizlemesi) */
+  maxSec?: number | null
+  /** Önizleme kendiliğinden durunca (maxSec doldu) ya da yayın bitince bir kez */
+  onEnded?: () => void
+  /** Görüntünün kutuya yerleşimi; varsayılan 'contain' (bugünkü gibi). YouTube çerçevesinde etkisizdir. */
+  fit?: 'contain' | 'cover'
 }
 
 export default function PreviewPlayerImpl({
@@ -30,11 +36,16 @@ export default function PreviewPlayerImpl({
   muted = true,
   onPlaying,
   onError,
+  maxSec = PREVIEW_MAX_SEC,
+  onEnded,
+  fit = 'contain',
 }: PreviewPlayerProps): ReactElement {
   const ref = useRef<HTMLDivElement>(null)
   const adapterRef = useRef<PlayerAdapter | null>(null)
-  const cbs = useRef({ onPlaying, onError })
-  cbs.current = { onPlaying, onError }
+  const cbs = useRef({ onPlaying, onError, onEnded })
+  cbs.current = { onPlaying, onError, onEnded }
+  const fitRef = useRef(fit)
+  fitRef.current = fit
   const mutedRef = useRef(muted)
   mutedRef.current = muted
 
@@ -42,6 +53,12 @@ export default function PreviewPlayerImpl({
     let cancelled = false
     let stopTimer: number | null = null
     let failed = false
+    let ended = false
+    const end = () => {
+      if (cancelled || ended) return
+      ended = true
+      cbs.current.onEnded?.()
+    }
     const fail = (why: string) => {
       if (cancelled || failed) return
       failed = true
@@ -79,18 +96,24 @@ export default function PreviewPlayerImpl({
         if (e.type === 'firstFrame') {
           logEvent('preview.start', { viewableId, kind: m.kind, offsetSec })
           cbs.current.onPlaying?.()
-          stopTimer = window.setTimeout(() => {
-            a.pause()
-            devbus.emit('player', 'önizleme durdu (30 sn)', {
-              viewableId,
-              state: 'paused',
-              positionSec: Math.round(a.position()),
-            })
-          }, PREVIEW_MAX_SEC * 1000)
+          if (maxSec !== null && maxSec > 0 && stopTimer === null) {
+            stopTimer = window.setTimeout(() => {
+              a.pause()
+              devbus.emit('player', `önizleme durdu (${maxSec} sn)`, {
+                viewableId,
+                state: 'paused',
+                positionSec: Math.round(a.position()),
+              })
+              end()
+            }, maxSec * 1000)
+          }
+        } else if (e.type === 'state' && e.state === 'ended') {
+          end()
         } else if (e.type === 'error') {
           fail(e.error.message)
         }
       })
+      if (a.media) a.media.style.objectFit = fitRef.current
       await a.mount(host)
     })()
     return () => {
@@ -99,7 +122,13 @@ export default function PreviewPlayerImpl({
       adapterRef.current?.destroy()
       adapterRef.current = null
     }
-  }, [viewableId, offsetSec])
+    // maxSec yalnız kurulumda okunur (değişirse önizleme yeniden kurulur)
+  }, [viewableId, offsetSec, maxSec])
+
+  useEffect(() => {
+    const v = adapterRef.current?.media
+    if (v) v.style.objectFit = fit
+  }, [fit])
 
   useEffect(() => {
     adapterRef.current?.setMuted(muted)

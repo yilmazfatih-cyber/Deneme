@@ -18,7 +18,15 @@ export {
   type TvCardProps,
   type TvPosterCardProps,
 } from './cards'
-export { TvRow, TvRowsViewport, useFocusedIndexWithin, type TvRowProps, type TvRowsViewportProps } from './rows'
+export {
+  clampIndex,
+  rowWindow,
+  TvRow,
+  TvRowsViewport,
+  useFocusedIndexWithin,
+  type TvRowProps,
+  type TvRowsViewportProps,
+} from './rows'
 export { TvGrid, TvList, useScrollFocusedIntoView, type TvGridProps, type TvListProps } from './lists'
 export {
   openRail,

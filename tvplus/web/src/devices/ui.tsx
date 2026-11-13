@@ -6,7 +6,7 @@ import type { DeviceInfo, DeviceKind, NowPlaying } from '../../../shared/devices
 import { detectFormFactor } from '../lib/formFactor'
 import { cx, Icon, LiveTag, Modal, Sheet, type IconName } from '../ui'
 import { closeCastPicker, choosePickerDevice, navigateTo, registerPickerHost, usePicker } from './runtime'
-import { useDevices } from './state'
+import { useDeviceState } from './state'
 import { formatClockSec, pickerDevices, positionAt, progressAt } from './progress'
 import './devices.css'
 
@@ -122,7 +122,7 @@ export function DeviceChoice({
 /* ───────────── Seçici ───────────── */
 
 function PickerBody(): ReactElement {
-  const devices = useDevices()
+  const { devices, targetDeviceId } = useDeviceState()
   const { req } = usePicker()
   const list = pickerDevices(devices)
   return (
@@ -136,6 +136,7 @@ function PickerBody(): ReactElement {
             <DeviceChoice
               key={d.deviceId}
               device={d}
+              selected={d.deviceId === targetDeviceId}
               disabled={!d.online}
               onSelect={() => void choosePickerDevice(d)}
             />

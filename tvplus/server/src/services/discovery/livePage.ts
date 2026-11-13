@@ -56,13 +56,17 @@ const TONIGHT_FROM_HOUR = 19
 const MAX_AIRING_ITEMS = 30
 const CATCHUP_PER_CHANNEL = 5
 
+/** Satır adları — sözlükteki başlık yazımıyla (her sözcük büyük harfle) */
 export const TEXT = {
   favorites: 'Kanallarım',
-  all: 'Tüm kanallar',
-  tonight: 'Bu akşam',
-  catchup: 'Kaçırdıkların · son 7 gün',
+  all: 'Şu An Yayında',
+  tonight: 'Bu Akşam',
+  catchup: 'Kaçırdıkların',
   bridge: 'Film & Dizi',
 } as const
+
+/** Son kanal ve favori yoksa vitrindeki kanal: gerçekten oynayan doğrusal kanal (TV+ Sinema / örnekte kanal 1) */
+export const FEATURED_CHANNEL_ID = 1
 
 interface DraftRow {
   rowId: string
@@ -97,9 +101,12 @@ export function buildLivePage(
   const drafts: DraftRow[] = []
   const channelItem = (channelId: number) => ({ kind: 'CHANNEL' as const, channelId })
 
-  // Kahraman: son izlenen kanal, yoksa ilk favori
+  // Kahraman: son izlenen kanal → ilk favori → kanal 1 (görünürse) → ilk doğrusal kanal → ilk kanal
   const last = guid ? progress?.lastChannel(guid) : null
-  const heroId = last && byId.has(last) ? last : (favorites[0] ?? channels[0]?.channelId)
+  const featured = byId.has(FEATURED_CHANNEL_ID)
+    ? FEATURED_CHANNEL_ID
+    : channels.find((c) => epg?.isLinear(c.channelId))?.channelId
+  const heroId = last && byId.has(last) ? last : (favorites[0] ?? featured ?? channels[0]?.channelId)
   if (heroId !== undefined)
     drafts.push({
       rowId: 'live-hero',
