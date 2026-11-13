@@ -1,6 +1,6 @@
 // Başlatma: künye, sekmeler, adres çubuğundaki bölüm adı, bölümlerin ilk gösterimde kurulması.
 (function () {
-  const G = { agac: gorunumAgac, yayilim: gorunumYayilim, zaman: gorunumZaman, yatirimci: gorunumYatirimci, fonlar: gorunumFonlar, kurallar: gorunumKurallar };
+  const G = { agac: gorunumAgac, yayilim: gorunumYayilim, zaman: gorunumZaman, yatirimci: gorunumYatirimci, fonlar: gorunumFonlar, bildirim: gorunumBildirim, kurallar: gorunumKurallar };
   const kuruldu = new Set();
   document.documentElement.lang = 'tr';
   const veri = V.veri || {};

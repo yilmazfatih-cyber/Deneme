@@ -37,7 +37,7 @@ function gorunumFonlar(kok) {
           'Halka açık payın büyük bölümü birkaç fonda toplandığında fiyatı fon girişi taşır; giriş durduğunda alıcı kalmaz.', 'okuma'),
         tabloAc([{ ad: 'Dönem' }, { ad: 'Fon hisseleri ort.', n: 1 }, { ad: 'medyan', n: 1 }, { ad: 'Diğerleri ort.', n: 1 }, { ad: 'medyan', n: 1 }, { ad: 'Günlük fark t', n: 1 }],
           () => dn.map(d => [d, yz(T.donem[d].kume_ort, 0), yz(T.donem[d].kume_medyan, 0), yz(T.donem[d].kiyas_ort, 0), yz(T.donem[d].kiyas_medyan, 0), sy(T.donem[d].gunluk_fark_t, 1)]))) : null,
-      O.alim ? sekil({ baslik: 'Bildirimin öncesi ve sonrası', cls: 'y5', alt: `${tam(O.olay)} fon bildirimi, ${tam(O.hisse)} hisse (arama özetlerinden derlendi). Bildirim gününe göre ortalama getiri.` },
+      O.alim ? sekil({ baslik: 'Alım ve satım bildiriminin öncesi ve sonrası', cls: 'y5', alt: `Yönü basına yansımış ${tam(O.olay)} fon bildirimi, ${tam(O.hisse)} hisse (arama özetlerinden derlendi; küçük örneklem). Bildirim gününe göre ortalama getiri.` },
         gosterge(OS), oEl,
         p(`Alım bildirimi yükselişin ardından geliyor: önceki 20 gün ${yz(al(O, 'alim', 'once_20g', 'ort'), 1)}, sonraki 20 gün ${yz(al(O, 'alim', 'sonra_20g', 'ort'), 1)}. ` +
           `**Satım bildiriminden sonraki 20 gün ${yz(al(O, 'satim', 'sonra_20g', 'ort'), 1)}** (t ${sy(al(O, 'satim', 'sonra_20g', 't'), 1)}): fon çıkıyorsa beklemek pahalı.`, 'okuma')) : null));
@@ -53,7 +53,7 @@ function gorunumFonlar(kok) {
   const HO = O.hedef_ozellikleri_yuzdelik || {};
   const hoEl = cizimKutusu();
   const sirketler = Object.entries(O.sirket || {}).sort((a, b) => b[1].olay - a[1].olay);
-  if (Object.keys(HO).length) {
+  if (Object.keys(HO).length && !(K && K.fon && K.fon.hepsi)) {
     const sirali = Object.entries(HO).sort((a, b) => b[1].medyan - a[1].medyan);
     const sadeAd = k => ozAd(k).replace(/\s*\(.*\)$/, '').toLocaleLowerCase('tr-TR');
     kok.append(h('div', { class: 'grid' },

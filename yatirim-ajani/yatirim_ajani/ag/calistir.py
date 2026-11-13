@@ -18,6 +18,7 @@ from . import agac, akis, strateji, yatirimci
 from .panel import panel_yukle, saat_getirileri, saatlik_yukle, seriler_yukle
 
 BILESIK = {"zirveye_yakinlik": 1, "gunici_20g": 1, "devir_hizi_20g": -1, "max_20g": -1, "oynaklik_20g": -1, "hacim_soku": -1, "kazanc_verimi": 1}
+DENEME = 75  # sınanan kural sayısı (60 fiyat ve akış kuralı + 15 bildirim kuralı); Deflated Sharpe bu sayıyla hesaplanır
 TASFIYE = ("Pardus", "Hedef", "Bulls", "Pusula", "Atlas", "A1")  # SPK 17.09.2026 kararı (Tera kullanıcı kuralı gereği kapsam dışı)
 
 
@@ -144,21 +145,21 @@ def calistir(klasor: str | Path = "veri/ag", cikti: str | Path | None = None, ra
 
     # --- kural testleri
     def _strateji():
-        out: dict = {"deneme_sayisi": 60}
+        out: dict = {"deneme_sayisi": DENEME}
         s1 = strateji.gece_tasima(P, None, "bist100", 0.2, 5e7)
         s1g = strateji.gece_tasima(P, X["gece_20g"], "bist100", 0.2, 5e7)
         s1k = strateji.gece_tasima(P, X["gece_20g"], "bist100_disi", 0.2, 2e7)
         for ad, o in (("gece_bist100", s1), ("gece_bist100_gece20", s1g), ("gece_kucuk_gece20", s1k)):
             seri = o["seri"]
             out[ad] = {**{k: v for k, v in o.items() if k != "seri"}, "yil": {str(y): float(seri[seri.index.year == y].mean()) for y in sorted(set(seri.index.year))},
-                       "basabas_maliyet": float(seri.mean()), "dsr_10bp": strateji.deflated_sharpe(seri - 0.001, 60), "dsr_brut": strateji.deflated_sharpe(seri, 60)}  # fmt: skip
+                       "basabas_maliyet": float(seri.mean()), "dsr_10bp": strateji.deflated_sharpe(seri - 0.001, DENEME), "dsr_brut": strateji.deflated_sharpe(seri, DENEME)}  # fmt: skip
         out["lider_takipci"] = {g: strateji.lider_takipci(P, 0.01, g, 2e7) for g in ("bist100", "bist100_disi")}
         dis = P.R.columns[(ev["bist100"].reindex(P.R.columns) != 1).to_numpy()]
         agirlik = {k: v for k, v in BILESIK.items() if k in X}
         puan = strateji.bilesik_puan({k: v[dis] for k, v in X.items()}, agirlik).reindex(columns=P.R.columns)
         o = strateji.donemsel_portfoy(P, puan, "bist100_disi", 0.2, 20, 5e6, (0.003, 0.006))
         g, k = o["seri"] - o["ort_devir"] * 0.003, o["kiyas_seri"]
-        out["bilesik"] = {**{a: b for a, b in o.items() if a not in ("seri", "kiyas_seri")}, "agirlik": agirlik, "dsr_fazla": strateji.deflated_sharpe(g - k, 60), "dsr_mutlak": strateji.deflated_sharpe(g, 60)}
+        out["bilesik"] = {**{a: b for a, b in o.items() if a not in ("seri", "kiyas_seri")}, "agirlik": agirlik, "dsr_fazla": strateji.deflated_sharpe(g - k, DENEME), "dsr_mutlak": strateji.deflated_sharpe(g, DENEME)}
         out["bilesik"]["ikinci_yari"] = {a: b for a, b in strateji.donemsel_portfoy(P, puan, "bist100_disi", 0.2, 20, 5e6, (0.003, 0.006), "2025-09-01", None).items() if a not in ("seri", "kiyas_seri")}
         kf = (1 + agac.faktorler(P)["kucuk"].fillna(0)).cumprod()
         acik = pd.Series({t: kf.loc[:t].iloc[-2] / kf.loc[:t].iloc[-22] - 1 > 0 for t in g.index})
@@ -181,6 +182,24 @@ def calistir(klasor: str | Path = "veri/ag", cikti: str | Path | None = None, ra
 
     adim("strateji", _strateji)
 
+    # --- KAP bildirimleri, yabancı oranı, sektör endeksleri
+    from . import kap
+
+    try:
+        K = kap.kap_yukle(klasor, set(P.R.columns))
+        detay = kap.detay_yukle(klasor) if not K.empty else pd.DataFrame()
+    except Exception as e:  # noqa: BLE001
+        S["hata"]["kap_yukle"] = f"{type(e).__name__}: {str(e)[:200]}"
+        K, detay = pd.DataFrame(), pd.DataFrame()
+    if not K.empty:
+        S["kap_veri"] = {"bildirim": int(len(K)), "metin": int(len(detay)), "yon_bulunan": int(detay["yon"].notna().sum()) if not detay.empty else 0}
+        adim("kap_olay", lambda: kap.kap_olaylari(P, K))
+        adim("kap_fon", lambda: kap.portfoy_profilleri(P, K, X, detay))
+        adim("kap_kural", lambda: kap.kap_kurallari(P, K, DENEME, detay))
+    adim("yabanci_kesit", lambda: kap.yabanci_kesit(P, klasor, X))
+    adim("yabanci_gecmis", lambda: kap.yabanci_gecmis(P, klasor, X))
+    adim("sektor_mevsim", lambda: kap.sektor_mevsim(klasor))
+
     # --- çıktı dosyaları
     agac_json = {k: A.get(k) for k in ("donem", "gun", "hisse", "ort_kor_ham", "ort_kor_piyasa_artik", "ort_kor_artik", "ort_kor_ayni_sektor_artik", "ort_kor_farkli_sektor_artik", "kok",
                                        "kenar_ayni_sektor_orani", "rastgele_ayni_sektor_orani", "en_merkezi", "en_bagli", "dallar", "kumeler", "kume_safligi", "sektor_butunlugu", "dugumler",
@@ -191,6 +210,12 @@ def calistir(klasor: str | Path = "veri/ag", cikti: str | Path | None = None, ra
     _yaz(cikti / "akis.json", {k: S.get(k) for k in ("saat_profili", "saat_takvim", "isaretli_akis", "ilgi_sektor", "ilgi_grup", "rotasyon", "mevsimsellik", "varlik", "kuresel")})
     _yaz(cikti / "yatirimci.json", {k: S.get(k) for k in ("tavan", "taban_alimi", "halka_arz", "faktor", "kisa_vade", "fm", "fon", "tasfiye")})
     _yaz(cikti / "strateji.json", S.get("strateji"))
+    if S.get("kap_olay"):
+        _yaz(cikti / "kap.json", {"veri": S.get("kap_veri"), "olay": S.get("kap_olay"), "fon": S.get("kap_fon"), "kural": S.get("kap_kural")})
+    if S.get("yabanci_kesit") or S.get("yabanci_gecmis"):
+        _yaz(cikti / "yabanci.json", {"kesit": S.get("yabanci_kesit"), "gecmis": S.get("yabanci_gecmis")})
+    if S.get("sektor_mevsim"):
+        _yaz(cikti / "sektor_mevsim.json", S.get("sektor_mevsim"))
     _yaz(cikti / "ozet.json", {"veri": S["veri"], "hata": S["hata"], "sure": S["sure"], "zaman": date.today().isoformat()})
     from .rapor import rapor_yaz
 

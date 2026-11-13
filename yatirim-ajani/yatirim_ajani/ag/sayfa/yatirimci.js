@@ -28,6 +28,9 @@ function gorunumYatirimci(kok) {
         h('li', null, metin(`Dün hacmi patlayan hisse bugün gün içinde ${bpz(kv('hacim_soku', 'bist100_disi', 'ertesi_gunici', 'ust_alt'))} (t ${sy(kv('hacim_soku', 'bist100_disi', 'ertesi_gunici', 't'), 1)}): ilgi geldiğinde fiyat çoktan gitmiş oluyor.`))))),
     p('Sonuç: büyük hisselerde "ucuz olanı al" dışında bir üstünlük ölçülemiyor. Küçük hisselerde kazanç, kalabalığın peşinden gitmemekten geliyor: herkesin konuştuğu, hacmi ve oynaklığı artmış hisse sonraki haftalarda geride kalıyor.', 'okuma'))));
 
+  const yb = yabanciSekli();
+  if (yb) kok.append(yb);
+
   // 2) Faktör primleri + dilimler
   const ozler = Object.keys(F);
   const SER = [{ ad: 'BIST 100', renk: 'var(--s1)' }, { ad: 'BIST 100 dışı', renk: 'var(--s2)' }];

@@ -16,7 +16,7 @@ from .rapor import AYLAR, GRUP_AD, MEVSIM_AD, OZELLIK_AD, SEKTOR_AD, SERI_AD
 
 GRUP_SIRA = ["bist30", "bist100_30", "yildiz_diger", "ana_pazar", "alt_pazar"]
 SABLON = Path(__file__).parent / "sayfa"
-BETIKLER = ("cekirdek.js", "agac.js", "yayilim.js", "zaman.js", "yatirimci.js", "fonlar.js", "kurallar.js", "baslat.js")
+BETIKLER = ("cekirdek.js", "agac.js", "yayilim.js", "zaman.js", "yatirimci.js", "bildirim.js", "fonlar.js", "kurallar.js", "baslat.js")
 AY_UZUN = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"]
 
 
@@ -225,6 +225,8 @@ def sayfa_verisi(cikti: str | Path, arastirma: str | Path | None = None) -> dict
     cikti = Path(cikti)
     A, Z, O, K, Y, S, OZ = (_oku(cikti / f"{ad}.json") for ad in ("agac", "zaman", "oncu", "akis", "yatirimci", "strateji", "ozet"))
     ek = {ad: _oku(cikti / f"{ad}.json") for ad in ("kap", "yabanci", "sektor_mevsim") if (cikti / f"{ad}.json").exists()}
+    if isinstance(al := (ek.get("kap") or {}).get("fon"), dict):
+        al.pop("olaylar", None)  # tek tek bildirimler sayfada kullanılmaz
     veri = {
         "uretim": OZ.get("zaman"), "veri": OZ.get("veri", {}),
         "ad": {"grup": GRUP_AD, "grup_sira": GRUP_SIRA, "ozellik": OZELLIK_AD, "sektor": SEKTOR_AD, "seri": SERI_AD, "ay": AYLAR, "ay_uzun": AY_UZUN, "mevsim": MEVSIM_AD},

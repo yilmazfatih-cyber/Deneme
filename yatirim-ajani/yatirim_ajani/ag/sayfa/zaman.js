@@ -104,7 +104,7 @@ function gorunumZaman(kok) {
     AD.grup_sira.map((g, i) => { const v = al(IL, 'grup_yil', y, g) || 0; const e = h('div', { class: 'pc p' + (i + 1), style: `flex:${v} 1 0` }, v >= 0.09 ? yzp(v) : ''); tipBaglan(e, () => [tipBaslik(`${grupAd(g)} · ${y}`), tipSatir('İşlem hacmindeki pay', yzp(v, 1))]); return e; }));
   const kal = RO.kalicilik || {};
   kok.append(h('div', { class: 'grid' },
-    sekil({ baslik: 'Sektör liderliği bir yıldan ötekine taşınmıyor', cls: 'y7', alt: 'Sektörlerin eşit ağırlıklı yıllık getirisi; her yılın en iyi ve en kötü dördü.' },
+    sekil({ baslik: 'Son üç yılda sektör liderliği taşınmadı', cls: 'y7', alt: 'Sektörlerin eşit ağırlıklı yıllık getirisi (hisse ortalaması); her yılın en iyi ve en kötü dördü.' },
       tablo([{ ad: 'Yıl' }, { ad: 'En iyi dört' }, { ad: 'En kötü dört' }, { ad: 'Ortalama', n: 1 }],
         ry.map(y => [y, RO.yil[y].en_iyi.map(x => `${sekAd(x[0])} ${yz(x[1], 0)}`).join(' · '), RO.yil[y].en_kotu.map(x => `${sekAd(x[0])} ${yz(x[1], 0)}`).join(' · '), yz(RO.yil[y].ortalama, 0)]), { genis: true }),
       p(`Bir yılın sektör sıralaması ertesi yılı öngörmüyor: sıra korelasyonu ${Object.entries(RO.yildan_yila || {}).map(([k, v]) => `${k} **${sy(v, 2)}**`).join(', ')}. ` +
@@ -116,6 +116,9 @@ function gorunumZaman(kok) {
       p(`İlgi ile getiri arasındaki bağ iki yönde de zayıf: iyi getiriden sonraki ay sektörün hacim payı hafif artıyor (sıra korelasyonu ${sy(al(IL, 'getiri_sonra_ilgi', 'sira_kor'), 2)}, t ${sy(al(IL, 'getiri_sonra_ilgi', 't'), 1)}), ` +
         `payı artan sektörün sonraki ay getirisi farklılaşmıyor (${sy(al(IL, 'ilgi_sonra_getiri', 'sira_kor'), 2)}, t ${sy(al(IL, 'ilgi_sonra_getiri', 't'), 1)}). Hacim payına bakarak sektör seçmek için kanıt yok.`, 'okuma'))));
   cubukYatay(dEl, { baslik: 'Sektör hacim payı değişimi', seri: [{ ad: 'Pay değişimi' }], isaretRenk: true, bicim: v => sy(v * 100, 1), etiketGen: 170, satir: uclar.map(([k, v]) => ({ ad: sekAd(k), v: [v] })) });
+
+  const sm = sektorMevsimSekli();
+  if (sm) kok.append(sm);
 
   // 6) Mevsimlere göre ağ
   const AM = al(V, 'agac', 'mevsim') || {};

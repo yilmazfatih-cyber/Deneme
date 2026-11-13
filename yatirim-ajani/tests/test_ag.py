@@ -280,3 +280,103 @@ def test_sayfa_yaz_tek_dosya_ve_guvenli_veri(tmp_path):
     assert veri["agac"]["kenar"][1][2] is None  # NaN geçerli JSON değildir; null olur
     assert len(veri["agac"]["dugum"]) == 3 and veri["agac"]["tkok"] == "BBB"
     assert "NaN" not in ham
+
+
+# --- KAP katmanı ---------------------------------------------------------------------------------
+def _kap_paneli(n_gun: int = 260, n_hisse: int = 40, tohum: int = 3):
+    """Rastgele yürüyüşlü küçük bir panel: iki pazar katmanı, getiriler bağımsız."""
+    from yatirim_ajani.ag.panel import Panel
+
+    rng = np.random.default_rng(tohum)
+    gun = pd.bdate_range("2025-01-02", periods=n_gun)
+    kod = [f"H{i:02d}" for i in range(n_hisse)]
+    R = pd.DataFrame(rng.normal(0.0005, 0.03, (n_gun, n_hisse)), index=gun, columns=kod)
+    GECE = R * 0.4
+    GI = (1 + R) / (1 + GECE) - 1
+    K = 10 * (1 + R).cumprod()
+    ev = pd.DataFrame({"grup": ["bist30" if i < n_hisse // 2 else "ana_pazar" for i in range(n_hisse)], "bist100": [1 if i < n_hisse // 2 else 0 for i in range(n_hisse)],
+                       "sektor": "banka", "halka_arz": "2020-01-02", "ilk_gun": "2025-01-02", "pd_son": 1e9}, index=kod)  # fmt: skip
+    bos = pd.DataFrame(1e9, index=gun, columns=kod)
+    return Panel(K=K, R=R, GI=GI, GECE=GECE, HTL=bos * 0.01, PD=bos, HAO=bos * 0.4, AOF=K, DOLAR=K, xu100=R.mean(axis=1), evren=ev)
+
+
+def test_kap_konu_ve_bildiren_siniflari():
+    from yatirim_ajani.ag import kap
+
+    assert kap.konu_turu("Payların Geri Alınmasına İlişkin Bildirim") == "geri_alim"
+    assert kap.konu_turu("Geri Alınan Payların Elden Çıkarılması") == "geri_alinan_satis"
+    assert kap.konu_turu("Halka Arz İşlemlerinde Sermaye Piyasası Aracının % 5 inden Fazlasını Satın Alanlara İlişkin Bildirim") == "halka_arz_5"
+    assert kap.konu_turu("Sermaye Artırımı - Azaltımı İşlemlerine İlişkin Bildirim") == "sermaye"
+    assert kap.konu_turu("Kar Payı Dağıtım İşlemlerine İlişkin Bildirim") == "kar_payi"
+    assert kap.bildiren_turu("KAMUYU AYDINLATMA PLATFORMU", False) == "kap"
+    assert kap.bildiren_turu("PARDUS PORTFÖY YÖNETİMİ A.Ş.", False) == "portfoy"
+    assert kap.bildiren_turu("EURO TREND YATIRIM ORTAKLIĞI A.Ş.", True) == "yatirim_ortakligi"
+    assert kap.bildiren_turu("KOZA ALTIN İŞLETMELERİ A.Ş.", True) == "sirket"
+    assert kap.alt_tur("sermaye", "Bedelsiz Sermaye Artırımına İlişkin Yönetim Kurulu Kararı") == "bedelsiz_karar"
+    assert kap.alt_tur("sermaye", "Bedelli Sermaye Artırımına İlişkin SPK Onayı") == "bedelli_onay"
+    assert kap.alt_tur("kar_payi", "Kâr Payı Dağıtımına İlişkin Genel Kurul Kararı") == "genel_kurul"
+    assert kap._baslik("ZİRAAT") == "Ziraat" and kap._baslik("MARMARA CAPİTAL") == "Marmara Capital" and kap._baslik("RE-PIE") == "RE-PIE"
+
+
+def test_kap_olay_gunu_seans_disi_ertesi_gune_kayar():
+    from yatirim_ajani.ag import kap
+
+    gunler = pd.bdate_range("2026-11-09", periods=5)  # Pzt … Cum
+    z = pd.Series(pd.to_datetime(["2026-11-10 09:30:00", "2026-11-10 14:00:00", "2026-11-10 18:05:00", "2026-11-14 12:00:00", "2026-11-13 19:00:00"]))
+    i, an = kap.olay_gunu(z, gunler)
+    assert list(i[:3]) == [1, 1, 2]  # sabah ve seans içi aynı gün; kapanıştan sonra ertesi gün
+    assert list(an[:3]) == ["oncesi", "seans", "sonrasi"]
+    assert i[3] == 5 and i[4] == 5  # cumartesi ve cuma akşamı: verinin son gününden sonrası
+    assert an[3] == "sonrasi" and an[4] == "sonrasi"
+
+
+def test_kap_pencereler_rastgele_olayda_sapmasiz():
+    """Anormal getiri katman ortalamasına oranla hesaplanır; rastgele seçilmiş olaylarda ortalaması sıfıra yakın olmalı.
+    (Log getirilerin ortalamasını çıkaran hesap burada %1'e yakın artı sapma verir.)"""
+    from yatirim_ajani.ag import kap
+
+    P = _kap_paneli(400, 60)
+    W = kap.Pencereler(P)
+    rng = np.random.default_rng(11)
+    D = pd.DataFrame({"hisse": rng.choice(P.R.columns, 6000), "i": rng.integers(25, 370, 6000)})
+    T = W.tablo(D)
+    assert abs(T["sonra_20g"].mean()) < 0.004
+    assert abs(T["gun_0"].mean()) < 0.002
+    assert T["sonra_20g"].notna().all()
+    # Pencere tanımı: gün 0 getirisi, hissenin o günkü getirisinin katman ortalamasına oranı
+    h, i = D["hisse"].iloc[0], int(D["i"].iloc[0])
+    katman = P.R.loc[:, P.evren["grup"] == P.evren.at[h, "grup"]].iloc[i].mean()
+    assert T["gun_0"].iloc[0] == pytest.approx((1 + P.R[h].iloc[i]) / (1 + katman) - 1, abs=1e-9)
+
+
+def test_kap_olay_portfoyu_tavani_atlar_ve_olayi_yakalar():
+    from yatirim_ajani.ag import kap
+
+    P = _kap_paneli(300, 40, tohum=5)
+    rng = np.random.default_rng(1)
+    olay = pd.DataFrame({"hisse": rng.choice(P.R.columns, 120), "i": rng.integers(30, 270, 120)})
+    # Olaydan sonraki 5 günün her birine +%1 ekle: sepet kıyasın belirgin üstünde olmalı
+    for h, i in zip(olay["hisse"], olay["i"]):
+        P.R.loc[P.R.index[i + 1 : i + 6], h] += 0.01
+    # Bir olayı tavan gününe denk getir: o hisse alınmaz
+    h0, i0 = olay["hisse"].iloc[0], int(olay["i"].iloc[0])
+    P.R.loc[P.R.index[i0], h0] = 0.0999
+    r = kap.olay_portfoyu(P, olay, tutma=5, maliyet=0.0, min_pozisyon=1)
+    assert r["tavanda_atlanan"] >= 1 and r["alinan"] <= 119
+    assert r["net"]["fazla_ort"] > 0.005 and r["net"]["fazla_t"] > 5
+    # Maliyet tutma süresine yayılır: 50 bp gidiş-dönüş, 5 günde günlük 10 bp düşürür
+    r2 = kap.olay_portfoyu(P, olay, tutma=5, maliyet=0.005, min_pozisyon=1)
+    assert r2["net"]["ort"] == pytest.approx(r["net"]["ort"] - 0.001, abs=1e-9)
+    # Açılışta alım: olay gününün gün içi getirisi de sepete girer
+    r3 = kap.olay_portfoyu(P, olay, tutma=5, maliyet=0.0, min_pozisyon=1, acilista=True)
+    assert r3["acilista"] and r3["alinan"] >= r["alinan"] - 5
+
+
+def test_kap_detay_ayristir_yon_ve_oran():
+    from yatirim_ajani.ag import kap
+
+    a = kap.detay_ayristir("Fonların toplam payı işlem öncesi % 4,85 iken işlem sonrası % 5,12 olmuştur. Alış işlemi ortalama 12,40 TL fiyattan gerçekleşmiştir.")
+    assert a["yon"] == "alim" and a["oran_once"] == pytest.approx(4.85) and a["oran_sonra"] == pytest.approx(5.12)
+    s = kap.detay_ayristir("Şirket sermayesindeki payımız %5 sınırının altına düşmüştür. Satış işlemleri sonrası payımız %4,10 olmuştur.")
+    assert s["yon"] == "satim" and s["oran_sonra"] == pytest.approx(4.10)
+    assert kap.detay_ayristir("Bilgilendirme amaçlıdır.")["yon"] is None
