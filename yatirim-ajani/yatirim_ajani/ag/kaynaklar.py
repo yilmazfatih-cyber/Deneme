@@ -533,107 +533,182 @@ def _metin(html: str) -> str:
     return re.sub(r"\s+", " ", _html.unescape(t)).strip()
 
 
-def kap_bildirim(bas: date, bit: date, detay_sinir: int = 2500) -> tuple[dict[str, pd.DataFrame], dict]:
-    """KAP bildirim sorgusu (şirket bildirimleri): seçili konularda 2024→bugün liste + portföy yönetim şirketlerinin
-    pay alım satım bildirimlerinin metni. Uç nokta ve gövde sitenin kendi sorgu sayfasından alınmıştır; biçim sondayla doğrulanır."""
-    rapor: dict[str, Any] = {"sonda": []}
+def _kap_iste(o: requests.Session, yontem: str, url: str, sayac: dict, govde: dict | None = None, bekle: float = 1.2, deneme: int = 4) -> requests.Response | None:
+    """KAP isteği: istekler arası bekleme, 200 dışı yanıtta artan beklemeyle yeniden deneme; durum kodları `sayac`ta sayılır."""
+    for i in range(deneme):
+        try:
+            r = o.post(url, data=json.dumps(govde), timeout=120) if yontem == "POST" else o.get(url, timeout=60)
+        except Exception as e:  # noqa: BLE001
+            sayac["hata"] = sayac.get("hata", 0) + 1
+            sayac.setdefault("hata_ornek", str(e)[:120])
+            time.sleep(15 * (i + 1))
+            continue
+        sayac[str(r.status_code)] = sayac.get(str(r.status_code), 0) + 1
+        if r.status_code == 200:
+            time.sleep(bekle)
+            return r
+        sayac.setdefault(f"ornek_{r.status_code}", r.text[:160].replace("\n", " "))
+        time.sleep(20 * (i + 1))
+    return None
+
+
+def kap_bildirim(bas: date, bit: date, pencere_gun: int = 2, detay_sinir: int = 1800, sure_siniri_dk: float = 75) -> tuple[dict[str, pd.DataFrame], dict]:
+    """KAP bildirim sorgusu (işlem gören şirketlerin özel durum açıklamaları): seçili konularda 2024→bugün liste ve
+    pay alım satım / halka arzda %5 üstü alım bildirimlerinin metni. Gövde biçimi sitenin kendi sorgu sayfasından alınmıştır.
+    Site hız sınırı uyguladığı için istekler yavaş ve yeniden denemeli gider; süre sınırı dolarsa eldeki kısım yazılır."""
+    t0 = time.time()
+    rapor: dict[str, Any] = {}
+    sayac: dict[str, Any] = {}
     o = _kap_oturum()
     tablolar: dict[str, pd.DataFrame] = {}
-    # 1) konu listesi
-    konular: list[dict] = []
-    for yol in ("disclosure/subjects", "disclosure/subjects/IGS", "disclosure/subjects/ODA", "disclosure/subjects?disclosureClass=ODA", "disclosure/filter/FILTERYFBF", "params"):
-        try:
-            r = o.get(f"{KAP_API}/{yol}", timeout=60)
-            ornek = r.text[:300].replace("\n", " ")
-            rapor["sonda"].append({"yol": yol, "durum": r.status_code, "uzunluk": len(r.content), "ornek": ornek})
-            if r.status_code == 200 and "subject" in r.text[:5000] and not konular:
-                j = r.json()
-                liste = j if isinstance(j, list) else next((v for v in j.values() if isinstance(v, list)), []) if isinstance(j, dict) else []
-                konular = [x for x in liste if isinstance(x, dict)]
-        except Exception as e:  # noqa: BLE001
-            rapor["sonda"].append({"yol": yol, "hata": str(e)[:160]})
-    rapor["konu_sayisi"] = len(konular)
-    if konular:
-        tablolar["kap_konular"] = pd.DataFrame(konular)
-    secili = [k for k in konular if re.search(KAP_KONU_DESEN, json.dumps(k, ensure_ascii=False).lower())]
-    oidler = [str(k.get("subjectOid") or k.get("oid") or k.get("value") or "") for k in secili]
-    oidler = [x for x in oidler if x]
-    rapor["secili_konu"] = [str(k.get("subject") or k.get("text") or k.get("name") or k)[:80] for k in secili][:60]
-    # 2) tarih biçimi ve üye tipi sondası (son 3 gün)
-    b0, s0 = bit - timedelta(days=3), bit
-    secim = None
-    for fmt in ("%Y-%m-%d", "%d.%m.%Y", "%Y%m%d", "%d-%m-%Y"):
-        for uye in ("IGS", ""):
-            try:
-                r = o.post(f"{KAP_API}/disclosure/members/byCriteria", data=json.dumps(_kap_govde(b0, s0, fmt, uye)), timeout=90)
-                n = len(r.json()) if r.status_code == 200 and r.text[:1] == "[" else -1
-                rapor["sonda"].append({"post": f"{fmt}|{uye}", "durum": r.status_code, "satir": n, "ornek": r.text[:400].replace("\n", " ")})
-                if n > 0 and secim is None:
-                    secim = (fmt, uye)
-            except Exception as e:  # noqa: BLE001
-                rapor["sonda"].append({"post": f"{fmt}|{uye}", "hata": str(e)[:160]})
-        if secim:
-            break
-    if not secim:
-        return tablolar, rapor
-    fmt, uye = secim
-    rapor["secim"] = {"fmt": fmt, "uye": uye, "konu_suzgeci": bool(oidler)}
-    # 3) pencereler: konu süzgeci varsa aylık, yoksa günlük (istemci tarafında konu süzülür)
     parcalar: list[pd.DataFrame] = []
-    sayim: dict[str, int] = {}
-    hata = 0
-    adim = 31 if oidler else 1
-    d = bas
-    while d <= bit:
-        s = min(d + timedelta(days=adim - 1), bit)
-        for uye_tipi in ((uye, "PYS") if uye else (uye,)):
-            try:
-                r = o.post(f"{KAP_API}/disclosure/members/byCriteria", data=json.dumps(_kap_govde(d, s, fmt, uye_tipi, konular=oidler)), timeout=120)
-                v = r.json() if r.status_code == 200 and r.text[:1] == "[" else []
-            except Exception:  # noqa: BLE001
-                v, hata = [], hata + 1
-            if v:
-                df = pd.DataFrame(v)
-                if not oidler and "subject" in df.columns:
-                    df = df[df["subject"].astype(str).str.lower().str.contains(KAP_KONU_DESEN, regex=True)]
-                df.insert(0, "uye_tipi", uye_tipi)
+    ham_satir = 0
+    en_buyuk = 0
+    bos_pencere = 0
+    d = bit  # yeniden eskiye: süre biterse en güncel dönem elde kalsın
+    while d >= bas and (time.time() - t0) / 60 < sure_siniri_dk * 0.6:
+        b = max(bas, d - timedelta(days=pencere_gun - 1))
+        r = _kap_iste(o, "POST", f"{KAP_API}/disclosure/members/byCriteria", sayac, _kap_govde(b, d, "%Y-%m-%d", "IGS", "ODA"))
+        v = r.json() if r is not None and r.text[:1] == "[" else None
+        if v is None:
+            bos_pencere += 1
+        elif v:
+            ham_satir += len(v)
+            en_buyuk = max(en_buyuk, len(v))
+            df = pd.DataFrame(v)
+            if "subject" in df.columns:
+                df = df[df["subject"].astype(str).str.lower().str.contains(KAP_KONU_DESEN, regex=True)]
+            if len(df):
                 parcalar.append(df)
-                sayim[f"{d.isoformat()}|{uye_tipi}"] = len(v)
-        d = s + timedelta(days=1)
-        time.sleep(0.25)
-        if hata > 25:
-            break
+        d = b - timedelta(days=1)
+    rapor["liste"] = {"ham_satir": ham_satir, "en_buyuk_pencere": en_buyuk, "yanitsiz_pencere": bos_pencere, "en_eski_gun": (d + timedelta(days=1)).isoformat(),
+                      "durum": dict(sayac), "sure_dk": round((time.time() - t0) / 60, 1)}  # fmt: skip
     if not parcalar:
-        rapor["liste"] = {"satir": 0, "hata": hata}
         return tablolar, rapor
     L = pd.concat(parcalar, ignore_index=True)
     for c in L.columns:
         if L[c].map(lambda v: isinstance(v, (list, dict))).any():
             L[c] = L[c].map(lambda v: json.dumps(v, ensure_ascii=False) if isinstance(v, (list, dict)) else v)
-    if "disclosureIndex" in L.columns:
-        L = L.drop_duplicates("disclosureIndex")
+    L = L.drop_duplicates("disclosureIndex") if "disclosureIndex" in L.columns else L
     tablolar["kap_bildirimler"] = L
-    enb = sorted(sayim.items(), key=lambda kv: -kv[1])[:5]
-    rapor["liste"] = {"satir": int(len(L)), "hata": hata, "pencere": len(sayim), "en_buyuk_pencere": enb, "sutun": list(L.columns),
-                      "konu": L["subject"].astype(str).value_counts().head(25).to_dict() if "subject" in L.columns else {}}  # fmt: skip
-    # 4) portföy yönetim şirketlerinin pay alım satım bildirimleri: metin
-    if {"subject", "kapTitle", "disclosureIndex"} <= set(L.columns):
-        m = L[L["subject"].astype(str).str.lower().str.contains(r"pay al[ıi]m sat[ıi]m", regex=True)
-              & L["kapTitle"].astype(str).str.upper().str.contains(r"PORTF|FON|YATIRIM ORTAKLI", regex=True)]
-        rapor["pay_alim_satim"] = {"toplam": int(L["subject"].astype(str).str.lower().str.contains(r"pay al[ıi]m sat[ıi]m", regex=True).sum()), "fon_sirketi": int(len(m))}
-        satir = []
-        for i, idx in enumerate(m["disclosureIndex"].astype(str).head(detay_sinir)):
+    rapor["liste"].update({"satir": int(len(L)), "konu": L["subject"].astype(str).value_counts().head(25).to_dict()})
+    # ayrıntı metni: önce halka arzda %5 üstü alanlar ve fon/portföy şirketlerinin pay alım satımları, sonra diğer pay alım satımlar
+    konu = L["subject"].astype(str).str.lower()
+    unvan = L["kapTitle"].astype(str).str.upper()
+    oncelik = pd.Series(9, index=L.index)
+    oncelik[konu.str.contains(r"pay al[ıi]m sat[ıi]m", regex=True)] = 2
+    oncelik[konu.str.contains(r"pay al[ıi]m sat[ıi]m", regex=True) & unvan.str.contains(r"PORTF|FON|YATIRIM ORTAKLI|G[İI]R[İI][ŞS][İI]M", regex=True)] = 1
+    oncelik[konu.str.contains(r"% ?5", regex=True)] = 0
+    secim = L[oncelik < 9].assign(_o=oncelik[oncelik < 9]).sort_values(["_o", "disclosureIndex"], ascending=[True, False])
+    rapor["detay_aday"] = {str(k): int(v) for k, v in secim["_o"].value_counts().sort_index().items()}
+    sayac2: dict[str, Any] = {}
+    satir = []
+    o.headers.update({"Accept": "text/html,application/xhtml+xml"})
+    o.headers.pop("Content-Type", None)
+    for i, (idx, onc) in enumerate(zip(secim["disclosureIndex"].astype(str), secim["_o"])):
+        if i >= detay_sinir or (time.time() - t0) / 60 > sure_siniri_dk:
+            break
+        r = _kap_iste(o, "GET", f"https://www.kap.org.tr/tr/Bildirim/{idx}", sayac2, bekle=0.9, deneme=2)
+        satir.append({"disclosureIndex": idx, "oncelik": int(onc), "durum": r.status_code if r is not None else -1, "metin": _metin(r.text)[:12000] if r is not None else ""})
+        if i % 100 == 0:
+            print(f"[kap-detay] {i}/{min(len(secim), detay_sinir)} {sayac2}", flush=True)
+    if satir:
+        tablolar["kap_pay_detay"] = pd.DataFrame(satir)
+        rapor["detay"] = {"satir": len(satir), "tamam": sum(1 for x in satir if x["durum"] == 200), "durum": dict(sayac2),
+                          "ornek": next((x["metin"][:700] for x in satir if x["durum"] == 200), "")}  # fmt: skip
+    rapor["toplam_sure_dk"] = round((time.time() - t0) / 60, 1)
+    return tablolar, rapor
+
+
+def _html_tablo(html: str) -> pd.DataFrame:
+    """Tek bir <table> parçasından satırlar (başlık + gövde); hücreler düz metin."""
+    satirlar = []
+    for tr in re.findall(r"(?is)<tr[^>]*>(.*?)</tr>", html):
+        h = [_metin(c) for c in re.findall(r"(?is)<t[hd][^>]*>(.*?)</t[hd]>", tr)]
+        if h:
+            satirlar.append(h)
+    if len(satirlar) < 2:
+        return pd.DataFrame()
+    bas = satirlar[0]
+    govde = [s for s in satirlar[1:] if len(s) == len(bas)]
+    return pd.DataFrame(govde, columns=bas)
+
+
+def isy_ek() -> tuple[dict[str, pd.DataFrame], dict]:
+    """İş Yatırım ek kaynakları: (a) Temel Değerler sayfasındaki yabancı oranları tablosu (güncel kesit) ve sayfanın tarih
+    parametresi mantığı (betik bağlamı rapora), (b) sektör endekslerinin uzun dönem günlük geçmişi (IndexHistoricalAll)."""
+    rapor: dict[str, Any] = {}
+    tablolar: dict[str, pd.DataFrame] = {}
+    h = {"User-Agent": TARAYICI, "Accept-Language": "tr-TR,tr;q=0.9"}
+    sayfa = "https://www.isyatirim.com.tr/tr-tr/analiz/hisse/Sayfalar/Temel-Degerler-Ve-Oranlar.aspx"
+    try:
+        r = requests.get(sayfa, headers=h, timeout=60)
+        html = r.text
+        i = html.find('id="yabanciOranlarUC"')
+        if i >= 0:
+            j = html.find("</table>", i)
+            T = _html_tablo(html[i:j])
+            if not T.empty:
+                T.insert(0, "cekilme", date.today().isoformat())
+                tablolar["yabanci_oran_guncel"] = T
+                rapor["yabanci_tablo"] = {"satir": int(len(T)), "sutun": list(T.columns), "ornek": T.head(2).to_dict(orient="records"),
+                                          "tarih_ozniteligi": re.findall(r'data-start="([^"]*)" data-end="([^"]*)"', html[i : i + 600])}  # fmt: skip
+        betik = []
+        for m in re.finditer(r"(?is)<script[^>]*>(.*?)</script>", html):
+            govde = m.group(1)
+            if re.search(r"(?i)yabanc|getUrlVars|data-start|XHR", govde):
+                betik.append(re.sub(r"\s+", " ", govde)[:5000])
+        rapor["yabanci_betik"] = betik[:6]
+        rapor["betik_kaynak"] = [x for x in re.findall(r'<script[^>]+src="([^"]+)"', html) if "isyatirim" in x or x.startswith("/")][:40]
+    except Exception as e:  # noqa: BLE001
+        rapor["yabanci_hata"] = str(e)[:200]
+    # tarih parametresi denemeleri: sayfa ve bilinen XHR uç noktası
+    try:
+        denemeler = []
+        for u in (sayfa + "?startdate=02-01-2026&enddate=30-01-2026", sayfa + "?baslangic=02-01-2026&bitis=30-01-2026", sayfa + "?start=02-01-2026&end=30-01-2026"):
+            r = requests.get(u, headers=h, timeout=60)
+            denemeler.append({"url": u[-60:], "durum": r.status_code, "tarih": re.findall(r'data-start="([^"]*)" data-end="([^"]*)"', r.text)[:3]})
+        o = requests.Session()
+        o.headers.update({**h, "Accept": "application/json, text/javascript, */*; q=0.01", "X-Requested-With": "XMLHttpRequest", "Content-Type": "application/json; charset=UTF-8", "Referer": sayfa})
+        for yol in ("StockInfo/CompanyInfoAjax.aspx/GetYabanciOranlarXHR", "Common/Data.aspx/YabanciOranlarXHR", "StockInfo/CompanyInfoAjax.aspx/GetYabanciOranlar"):
+            for govde in ({"baslangicTarih": "02-01-2026", "bitisTarih": "30-01-2026", "sektor": "", "endeks": "", "hisse": ""},
+                          {"startDate": "02-01-2026", "endDate": "30-01-2026", "sector": ""},
+                          {"baslangicTarihi": "02-01-2026", "bitisTarihi": "30-01-2026", "sektor": None, "endeks": "09", "hisse": None}):
+                r = o.post(f"https://www.isyatirim.com.tr/_layouts/15/IsYatirim.Website/{yol}", data=json.dumps(govde), timeout=40)
+                denemeler.append({"yol": yol[-34:], "govde": list(govde)[:2], "durum": r.status_code, "ornek": r.text[:200].replace("\n", " ")})
+        rapor["tarih_denemeleri"] = denemeler
+    except Exception as e:  # noqa: BLE001
+        rapor["deneme_hata"] = str(e)[:200]
+    # sektör endeksleri uzun dönem
+    try:
+        parcalar = []
+        hatalar = {}
+        for e in ENDEKSLER:
             try:
-                r = o.get(f"https://www.kap.org.tr/tr/Bildirim/{idx}", headers={"Accept": "text/html"}, timeout=40)
-                satir.append({"disclosureIndex": idx, "durum": r.status_code, "metin": _metin(r.text)[:9000] if r.status_code == 200 else ""})
-            except Exception as e:  # noqa: BLE001, PERF203
-                satir.append({"disclosureIndex": idx, "durum": -1, "metin": str(e)[:100]})
-            time.sleep(0.2)
-            if i % 100 == 0:
-                print(f"[kap-detay] {i}/{min(len(m), detay_sinir)}", flush=True)
-        if satir:
-            tablolar["kap_pay_detay"] = pd.DataFrame(satir)
-            rapor["detay"] = {"satir": len(satir), "tamam": sum(1 for x in satir if x["durum"] == 200), "ornek": satir[0]["metin"][:600]}
+                r = requests.get("https://www.isyatirim.com.tr/_Layouts/15/IsYatirim.Website/Common/ChartData.aspx/IndexHistoricalAll",
+                                 params={"period": "1440", "from": "20100101000000", "to": date.today().strftime("%Y%m%d") + "235959", "endeks": e}, headers=h, timeout=60)  # fmt: skip
+                veri = r.json().get("data", []) if r.status_code == 200 else []
+                if veri:
+                    df = pd.DataFrame(veri, columns=["zaman", "kapanis"][: len(veri[0])] if len(veri[0]) == 2 else None)
+                    df = df.iloc[:, :2]
+                    df.columns = ["zaman", "kapanis"]
+                    df["tarih"] = pd.to_datetime(pd.to_numeric(df["zaman"], errors="coerce"), unit="ms").dt.strftime("%Y-%m-%d")
+                    df.insert(0, "endeks", e)
+                    parcalar.append(df[["endeks", "tarih", "kapanis"]].drop_duplicates(["endeks", "tarih"], keep="last"))
+                else:
+                    hatalar[e] = f"HTTP {r.status_code} {r.text[:60]}"
+            except Exception as ex:  # noqa: BLE001
+                hatalar[e] = str(ex)[:80]
+            time.sleep(0.3)
+        if parcalar:
+            E = pd.concat(parcalar, ignore_index=True)
+            tablolar["endeks_gunluk"] = E
+            o2 = E.groupby("endeks")["tarih"].agg(["min", "max", "count"])
+            rapor["endeks"] = {"endeks": int(E["endeks"].nunique()), "satir": int(len(E)), "ornek": o2.head(8).reset_index().to_dict(orient="records"), "hata": dict(list(hatalar.items())[:10])}
+        else:
+            rapor["endeks"] = {"hata": dict(list(hatalar.items())[:6])}
+    except Exception as e:  # noqa: BLE001
+        rapor["endeks_hata"] = str(e)[:200]
     return tablolar, rapor
 
 
@@ -713,7 +788,7 @@ def saatlik_hisse_sec(tv: pd.DataFrame, adet: int = 250, ek: list[str] | None = 
 
 
 # --- toplu -------------------------------------------------------------------------------------
-TUM_KAYNAKLAR = ("tv", "yahoo", "isy", "mali", "seri", "saatlik", "hisse_saatlik", "yabanci", "tefas", "kap", "kesif", "kesif2", "kap_bildirim")
+TUM_KAYNAKLAR = ("tv", "yahoo", "isy", "mali", "seri", "saatlik", "hisse_saatlik", "yabanci", "tefas", "kap", "kesif", "kesif2", "kap_bildirim", "isy_ek")
 
 
 def ag_veri_cek(klasor: str | Path, bas: date, bit: date | None = None, kaynaklar: tuple[str, ...] = TUM_KAYNAKLAR, paralel: int = 6,
@@ -818,7 +893,13 @@ def ag_veri_cek(klasor: str | Path, bas: date, bit: date | None = None, kaynakla
             _yaz(df, klasor / f"{ad2}.csv.gz")
         return r
 
-    for ad, islev in (("kesif", kesif), ("kesif2", kesif2), ("kap_bildirim", _kap_bildirim), ("seri", _seri), ("saatlik", _saatlik), ("yabanci", _yabanci), ("kap", kap_sonda), ("tefas", _tefas),
+    def _isy_ek() -> dict:
+        tablolar, r = isy_ek()
+        for ad2, df in tablolar.items():
+            _yaz(df, klasor / f"{ad2}.csv.gz")
+        return r
+
+    for ad, islev in (("kesif", kesif), ("kesif2", kesif2), ("isy_ek", _isy_ek), ("kap_bildirim", _kap_bildirim), ("seri", _seri), ("saatlik", _saatlik), ("yabanci", _yabanci), ("kap", kap_sonda), ("tefas", _tefas),
                       ("yahoo", _yahoo), ("hisse_saatlik", _hisse_saatlik), ("isy", _isy), ("mali", _mali)):  # fmt: skip
         if ad in kaynaklar:
             if ad in ("yahoo", "isy", "mali") and not liste:
