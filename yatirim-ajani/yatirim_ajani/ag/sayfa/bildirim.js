@@ -69,6 +69,26 @@ function gorunumBildirim(kok) {
         tipSatir('İki yarı', (n.fazla_yari || []).map(x => sy(x * 1e4, 1)).join(' / ') + ' bp'), tipSatir('Deflated Sharpe (fazla)', sy(r.dsr_fazla, 2))] }; })
       .sort((a, b) => (b.v[0] || 0) - (a.v[0] || 0)) });
 
+  // 2b) Geri alım kuralının sağlamlığı
+  const GD = R.geri_alim_duyarlilik || {};
+  const GQ = R.geri_alim_ceyrek || {};
+  if (Object.keys(GD).length) {
+    const cq = Object.keys(GQ).sort();
+    const qEl = cizimKutusu();
+    const artiCeyrek = cq.filter(k => GQ[k].ort > 0).length;
+    const o3 = R.geri_alim_olay3 || {};
+    kok.append(h('div', { class: 'grid' },
+      sekil({ baslik: 'İlk geri alım kuralı ne kadar sağlam?', cls: 'y7', alt: 'Aynı kural farklı tutma süresi, maliyet ve hisse süzgeçleriyle. Günlük fazla getiri pazar katmanına göre, maliyet sonrası.' },
+        tablo([{ ad: 'Durum' }, { ad: 'Alınan', n: 1 }, { ad: 'Net yıllık', n: 1 }, { ad: 'Fazla (bp/gün)', n: 1 }, { ad: 't', n: 1 }, { ad: 'İlk yarı', n: 1 }, { ad: 'İkinci yarı', n: 1 }],
+          Object.entries(GD).map(([ad, r]) => { const n = r.net || {}; return [ad, tam(r.alinan), yz(n.yillik, 0), sy((n.fazla_ort || 0) * 1e4, 1), sy(n.fazla_t, 1), sy(((n.fazla_yari || [])[0] || 0) * 1e4, 1), sy(((n.fazla_yari || [])[1] || 0) * 1e4, 1)]; }), { genis: true }),
+        p('Etki ilk üç günde yoğunlaşıyor; on güne uzatınca kayboluyor. Maliyet iki katına çıkınca yarıya iniyor ama artıda kalıyor. Asıl ayrım bildirimin geldiği anda: **hisse son 20 günde zaten katmanının üstündeyse** geri alım güçlü bir devam işareti; ' +
+          'düşen hisseyi desteklemek için yapılan geri alımda etki yok. Bu son ayrım veriye bakıldıktan sonra yapıldı; bağımsız bir dönemde doğrulanmadan kural sayılmaz.', 'okuma')),
+      sekil({ baslik: 'Çeyrek çeyrek', cls: 'y5', alt: 'İlk geri alım bildiriminin ertesi açılışından üç gün sonrasına ortalama fazla getiri.' },
+        qEl, p(`${cq.length} çeyreğin ${artiCeyrek} tanesinde ortalama artı. ${tam(o3.olay)} olayın ortalaması ${yz(o3.ort, 2)}, medyanı ${yz(o3.medyan, 2)}; en iyi 10 olay çıkarılınca ${yz(o3.en_iyi_10_haric, 2)}. Sonuç birkaç uç olaya dayanmıyor.`, 'okuma'))));
+    cubukDikey(qEl, { baslik: 'Çeyreklere göre üç günlük fazla getiri', kat: cq.map(k => k.replace('Q', ' Ç')), isaretRenk: true, bicim: v => yz(v, 2), eksenBicim: v => yz(v, 1), yukseklik: 210,
+      seri: [{ ad: 'Ortalama fazla getiri', v: cq.map(k => GQ[k].ort) }], ipucu: i => [tipBaslik(cq[i].replace('Q', ' Ç')), tipSatir('Ortalama', yz(GQ[cq[i]].ort, 2)), tipSatir('Medyan', yz(GQ[cq[i]].medyan, 2)), tipSatir('Olay', tam(GQ[cq[i]].olay))] });
+  }
+
   // 3) Yayım anı
   const aEl = cizimKutusu();
   const AN = [['oncesi', 'Açılıştan önce'], ['seans', 'Seans içinde'], ['sonrasi', 'Kapanıştan sonra ya da tatilde']];

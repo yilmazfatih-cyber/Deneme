@@ -20,7 +20,7 @@ from .yatirimci import TAVAN, _gun_kumeli
 
 KAPANIS_SAATI = 18  # sürekli işlem 18:00'de biter; sonrası bildirimler ertesi güne aittir
 ACILIS_DAKIKA = 9 * 60 + 55
-PENCERE = {"once_20g": (-20, -1), "once_5g": (-5, -1), "gun_0": (0, 0), "sonra_1g": (1, 1), "sonra_5g": (1, 5), "sonra_20g": (1, 20), "sonra_60g": (1, 60)}
+PENCERE = {"once_20g": (-20, -1), "once_5g": (-5, -1), "gun_0": (0, 0), "sonra_1g": (1, 1), "sonra_3g": (1, 3), "sonra_5g": (1, 5), "sonra_20g": (1, 20), "sonra_60g": (1, 60)}
 OZELLIK = ("buyukluk", "halka_acik_deger", "halka_aciklik", "devir_hizi_20g", "oynaklik_20g", "getiri_20g", "momentum_120_20", "zirveye_yakinlik", "defter_piyasa", "kazanc_verimi")
 
 
@@ -279,7 +279,7 @@ def olay_portfoyu(P: Panel, D: pd.DataFrame, tutma: int = 20, maliyet: float = 0
     return out
 
 
-def kap_kurallari(P: Panel, K: pd.DataFrame, deneme: int = 75, detay: pd.DataFrame | None = None) -> dict:
+def kap_kurallari(P: Panel, K: pd.DataFrame, deneme: int = 95, detay: pd.DataFrame | None = None) -> dict:
     """Bildirimlerden türetilen kuralların takvim zamanlı sepet testi (maliyet gidiş-dönüş 30 bp, kıyas = pazar katmanı).
     Olay ortalamaları birkaç hisseye ve kümelenmiş günlere fazla ağırlık verir; karar bu testin fazla getirisine ve t değerine göre verilir."""
     if K.empty:
@@ -297,7 +297,25 @@ def kap_kurallari(P: Panel, K: pd.DataFrame, deneme: int = 75, detay: pd.DataFra
     ps = _ilkler(T[(T["tur"] == "pay_alim_satim") & (T["bildiren_tur"] == "sirket")], ["bildiren", "hisse"], 20)
     kp = _ilkler(T[(T["tur"] == "kar_payi") & (T["alt"] == "yk_karari")], ["hisse"], 60)
     out: dict = {"deneme_sayisi": deneme, "maliyet": 0.003}
-    out["geri_alim_acilis_5g"] = olay_portfoyu(P, ga[ga["an"] != "seans"], 5, 0.003, deneme, acilista=True)
+    gad = ga[ga["an"] != "seans"]  # seans dışında yayımlanan ilk bildirimler: ertesi açılışta alınabilir
+    out["geri_alim_acilis_5g"] = olay_portfoyu(P, gad, 5, 0.003, deneme, acilista=True)
+    # Sağlamlık: tutma süresi, maliyet, işlem hacmi, bildirim öncesi güç, çeyrekler
+    guclu = gad["once_20g"] >= 0
+    hacim = P.evren["hacim_60g"].reindex(gad["hisse"]).to_numpy(float) if "hacim_60g" in P.evren else np.full(len(gad), np.nan)
+    out["geri_alim_duyarlilik"] = {
+        "3 gün tut": olay_portfoyu(P, gad, 3, 0.003, deneme, acilista=True),
+        "5 gün tut (temel kural)": out["geri_alim_acilis_5g"],
+        "10 gün tut": olay_portfoyu(P, gad, 10, 0.003, deneme, acilista=True),
+        "5 gün, maliyet 60 bp": olay_portfoyu(P, gad, 5, 0.006, deneme, acilista=True),
+        "5 gün, günlük hacmi 20 mn TL üstü": olay_portfoyu(P, gad[hacim >= 2e7], 5, 0.003, deneme, acilista=True),
+        "5 gün, bildirim öncesi 20 günde katmanının üstünde": olay_portfoyu(P, gad[guclu], 5, 0.003, deneme, acilista=True, min_pozisyon=2),
+        "5 gün, bildirim öncesi 20 günde katmanının altında": olay_portfoyu(P, gad[~guclu & gad["once_20g"].notna()], 5, 0.003, deneme, acilista=True, min_pozisyon=2),
+    }
+    uc = ((1 + gad["gunici_0"]) * (1 + gad["sonra_3g"]) - 1).rename("uc")
+    q = pd.concat([uc, gad["gun"]], axis=1).dropna()
+    out["geri_alim_ceyrek"] = {str(k): {"olay": int(len(v)), "ort": float(v["uc"].mean()), "medyan": float(v["uc"].median())} for k, v in q.groupby(q["gun"].dt.to_period("Q"))}
+    out["geri_alim_olay3"] = {"olay": int(len(q)), "ort": float(q["uc"].mean()), "medyan": float(q["uc"].median()), "pozitif": float((q["uc"] > 0).mean()),
+                              "en_iyi_10_haric": float(q["uc"].sort_values().iloc[:-10].mean()) if len(q) > 30 else None}  # fmt: skip
     for tut in (5, 20, 60):
         out[f"geri_alim_kapanis_{tut}g"] = olay_portfoyu(P, ga, tut, 0.003, deneme)
         out[f"bedelsiz_{tut}g"] = olay_portfoyu(P, bz, tut, 0.003, deneme)

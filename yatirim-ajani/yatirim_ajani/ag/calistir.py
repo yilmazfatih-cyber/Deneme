@@ -18,7 +18,7 @@ from . import agac, akis, strateji, yatirimci
 from .panel import panel_yukle, saat_getirileri, saatlik_yukle, seriler_yukle
 
 BILESIK = {"zirveye_yakinlik": 1, "gunici_20g": 1, "devir_hizi_20g": -1, "max_20g": -1, "oynaklik_20g": -1, "hacim_soku": -1, "kazanc_verimi": 1}
-DENEME = 75  # sınanan kural sayısı (60 fiyat ve akış kuralı + 15 bildirim kuralı); Deflated Sharpe bu sayıyla hesaplanır
+DENEME = 95  # sınanan kural sayısı (60 fiyat ve akış kuralı + 15 bildirim kuralı + 20 duyarlılık ve komşu geçişi denemesi); Deflated Sharpe bu sayıyla hesaplanır
 TASFIYE = ("Pardus", "Hedef", "Bulls", "Pusula", "Atlas", "A1")  # SPK 17.09.2026 kararı (Tera kullanıcı kuralı gereği kapsam dışı)
 
 
