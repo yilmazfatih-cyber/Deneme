@@ -27,9 +27,12 @@ export function taggingCore(app: FastifyInstance): TaggingCore {
 
 /** İstanbul saatine göre bugün, 'YYYY-MM-DD' */
 const todayIstanbul = (): string =>
-  new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Istanbul', year: 'numeric', month: '2-digit', day: '2-digit' }).format(
-    new Date(),
-  )
+  new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Europe/Istanbul',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).format(new Date())
 
 function issueMessage(err: z.ZodError): string {
   const i = err.issues[0]

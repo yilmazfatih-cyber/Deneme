@@ -139,6 +139,7 @@ export function createAppEventsBridge(deps: BridgeDeps) {
           const vid = videoIdOf(data)
           if (vid === null) break
           const r = data.rating
+          // THUMBS_UNRATED (ya da tanınmayan değer) → `rating` alanı olmayan RATING olayı = değerlendirme temizlendi
           const rating = r === 'THUMBS_WAY_UP' ? 2 : r === 'THUMBS_UP' ? 1 : r === 'THUMBS_DOWN' ? -1 : null
           make(e, 'RATING', vid, 0, rating !== null ? { rating } : {})
           break

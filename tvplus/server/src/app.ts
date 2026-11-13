@@ -33,6 +33,7 @@ import mixpanelPlugin from './services/mixpanel/plugin'
 import notificationsPlugin from './services/notifications/plugin'
 import ocaPlugin from './services/oca/plugin'
 import playbackPlugin from './services/playback/plugin'
+import predictionsPlugin from './services/predictions/plugin'
 import progressPlugin from './services/progress/plugin'
 import searchPlugin from './services/search/plugin'
 import subtitlesPlugin from './services/subtitles/plugin'
@@ -115,6 +116,7 @@ export async function buildApp(overrides: Partial<AppConfig> = {}): Promise<Fast
   await audiencePlugin(app)
   await insightsPlugin(app)
   await embeddingsPlugin(app)
+  await predictionsPlugin(app)
 
   await playbackPlugin(app)
   await ocaPlugin(app)

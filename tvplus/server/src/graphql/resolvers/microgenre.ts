@@ -1,14 +1,15 @@
 /**
- * Görünmeyen katmanın GraphQL yüzü: `Movie/Show.similarsWithReason`, `Movie/Show.microgenres`, `Query.microgenre`,
+ * Görünmeyen katmanın GraphQL yüzü: `Movie/Show.similarsWithReason`, `Movie/Show.microgenres`, `Movie/Show.matchScore`,
+ * `Query.microgenre`,
  * `Microgenre`, `SimilarVideo`. Üst nesne kuralı: Microgenre → { microgenreId } · Video → { videoId }.
  * Mikro tür servisleri boşken listeler boş, `Query.microgenre` null döner.
  */
 import type { ContentTitle } from '../../../../shared/content-schema'
 import type { GqlContext, ResolverFn, ResolverMap } from '../../kernel/context'
 import { blendedSimilars, type BlendedSimilar } from '../../services/discovery/blend'
-import { microgenreById, microgenresOfTitle } from '../../services/discovery/intel'
+import { matchScoreOf, microgenreById, microgenresOfTitle } from '../../services/discovery/intel'
 import { memo } from '../../services/discovery/memo'
-import { requireProfile, visible } from './util'
+import { guidOf, requireProfile, visible } from './util'
 import type { VideoRef } from './video'
 
 export interface MicrogenreRef {
@@ -22,9 +23,7 @@ const clampFirst = (first: number | null | undefined, dflt: number, max: number)
 
 /** İstek ömürlü: başlığın görünür benzerleri (harman sırasıyla) */
 export function similarsOf(ctx: GqlContext, videoId: number): BlendedSimilar[] {
-  return memo(ctx.cache, `similars:${videoId}`, () =>
-    blendedSimilars(ctx.services, videoId, (id) => visible(ctx, id)),
-  )
+  return memo(ctx.cache, `similars:${videoId}`, () => blendedSimilars(ctx.services, videoId, (id) => visible(ctx, id)))
 }
 
 /** Mikro türün profilin görebildiği başlıkları: popülerlik sırasıyla */
@@ -45,6 +44,11 @@ const round4 = (x: number) => Math.round(x * 10_000) / 10_000
 
 /** Film ve dizide ortak yeni alanlar (video.ts'teki titleFields'a eklenir) */
 export const microgenreTitleFields: Record<string, ResolverFn> = {
+  /** Tahmin modelinin 0–100 eşleşme yüzdesi; profil yoksa, model hazır değilse ya da hata olursa null */
+  matchScore: (p: VideoRef, _a: unknown, ctx: GqlContext) => {
+    const guid = guidOf(ctx)
+    return guid ? matchScoreOf(ctx.services, guid, p.videoId) : null
+  },
   similars: (p: VideoRef, a: { first?: number | null }, ctx: GqlContext) =>
     similarsOf(ctx, p.videoId)
       .slice(0, clampFirst(a.first, 12, 48))

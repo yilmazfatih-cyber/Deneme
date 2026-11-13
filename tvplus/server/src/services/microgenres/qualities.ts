@@ -26,13 +26,15 @@ export interface Quality {
   rank: number
   /** Ad karşılaştırmaları için düzleştirilmiş ifade */
   folded: string
+  /** Türün tamlama biçimini ister (kişi adı, "Kore", "Amerikan" …) */
+  compound: boolean
 }
 
 export interface QualityRegistry {
   list: Quality[]
   get(id: number): Quality
   find(slot: MicrogenreSlot, key: string): Quality | undefined
-  add(slot: MicrogenreSlot, key: string, phrase: string, rank: number): Quality
+  add(slot: MicrogenreSlot, key: string, phrase: string, rank: number, compound?: boolean): Quality
 }
 
 export function createRegistry(index: VocabIndex): QualityRegistry {
@@ -42,11 +44,19 @@ export function createRegistry(index: VocabIndex): QualityRegistry {
     list,
     get: (id) => list[id - 1]!,
     find: (slot, key) => byRef.get(`${slot}|${key}`),
-    add(slot, key, phrase, rank) {
+    add(slot, key, phrase, rank, compound) {
       const ref = `${slot}|${key}`
       const hit = byRef.get(ref)
       if (hit) return hit
-      const q: Quality = { id: list.length + 1, slot, key, phrase, rank, folded: norm(phrase) }
+      const q: Quality = {
+        id: list.length + 1,
+        slot,
+        key,
+        phrase,
+        rank,
+        folded: norm(phrase),
+        compound: compound ?? slot === 'PERSON',
+      }
       list.push(q)
       byRef.set(ref, q)
       return q
@@ -61,7 +71,7 @@ export function createRegistry(index: VocabIndex): QualityRegistry {
   }
   let d = 0
   for (const s of v.scales) for (const desc of s.descriptors) reg.add('ADJECTIVE', desc.key, desc.adjective, 1000 + d++)
-  v.naming.regions.forEach((r, i) => reg.add('REGION', r.key, r.adjective, i))
+  v.naming.regions.forEach((r, i) => reg.add('REGION', r.key, r.adjective, i, r.compound ?? false))
   v.naming.eras.forEach((e, i) => reg.add('ERA', e.key, e.phrase, i))
   return reg
 }

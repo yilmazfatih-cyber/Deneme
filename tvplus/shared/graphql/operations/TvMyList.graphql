@@ -1,0 +1,8 @@
+# TV Listem ızgarası.
+query TvMyList {
+  library {
+    myList {
+      ...CardVideo
+    }
+  }
+}

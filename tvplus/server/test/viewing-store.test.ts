@@ -28,8 +28,8 @@ function tmp(): string {
   dirs.push(d)
   return d
 }
-async function open(dir: string, delay = 0): Promise<ViewingStore> {
-  const s = await openViewingStore({ dir, viewerKey: KEY, snapshotDelayMs: delay })
+async function open(dir: string, delay = 0, realDataMinViewers?: number): Promise<ViewingStore> {
+  const s = await openViewingStore({ dir, viewerKey: KEY, snapshotDelayMs: delay, realDataMinViewers })
   s.setReference(() => 1000)
   stores.push(s)
   return s
@@ -284,8 +284,8 @@ describe('kalıcılık', () => {
 })
 
 describe('kaynaklar', () => {
-  it('activeSources: gerçek veri (MIXPANEL ya da TVPLUS) varsa SENTETİK dışarıda', async () => {
-    const s = await open(tmp())
+  it('activeSources: eşiğin altında SENTETİK gerçek kaynaklarla birlikte etkin kalır', async () => {
+    const s = await open(tmp(), 0, 3)
     expect(s.activeSources()).toEqual([])
     expect(s.isEmpty()).toBe(true)
     s.append([ev({ type: 'PLAY_START', source: 'SYNTHETIC' })])
@@ -294,13 +294,50 @@ describe('kaynaklar', () => {
     const r0 = s.revision()
     s.append([ev({ type: 'PLAY_START', source: 'TVPLUS', viewerId: 'v_profil01' })])
     expect(s.revision()).toBeGreaterThan(r0)
-    expect(s.activeSources()).toEqual(['TVPLUS'])
-    expect(s.facts().map((f) => f.source)).toEqual(['TVPLUS'])
-    expect(s.facts({ sources: ['SYNTHETIC'] })).toHaveLength(1)
-    s.append([ev({ type: 'PLAY_START', source: 'MIXPANEL' })])
+    // 1 gerçek izleyici < 3 → örnek açık kalır; profilin kendi TVPLUS özeti de sayılır
+    expect(s.activeSources()).toEqual(['TVPLUS', 'SYNTHETIC'])
+    expect(
+      s
+        .facts()
+        .map((f) => f.source)
+        .sort(),
+    ).toEqual(['SYNTHETIC', 'TVPLUS'])
+    // Özetsiz izleyiciler (yalnız gösterim) eşiğe sayılmaz
+    s.append([
+      ev({ type: 'IMPRESSION', source: 'MIXPANEL', viewerId: 'v_gosterim1' }),
+      ev({ type: 'IMPRESSION', source: 'MIXPANEL', viewerId: 'v_gosterim2' }),
+    ])
+    expect(s.activeSources()).toEqual(['TVPLUS', 'MIXPANEL', 'SYNTHETIC'])
+    expect(Object.fromEntries(s.sources().map((x) => [x.source, x.active]))).toEqual({
+      TVPLUS: true,
+      MIXPANEL: true,
+      SYNTHETIC: true,
+    })
+  })
+
+  it('activeSources: gerçek kaynaklarda (MIXPANEL + TVPLUS birlikte) eşik kadar izleyici olunca SENTETİK dışarıda', async () => {
+    const s = await open(tmp(), 0, 3)
+    s.append([ev({ type: 'PLAY_START', source: 'SYNTHETIC' })])
+    s.append([
+      ev({ type: 'PLAY_START', source: 'TVPLUS', viewerId: 'v_profil01' }),
+      ev({ type: 'ADD_TO_LIST', source: 'MIXPANEL', viewerId: 'v_mixpnl01' }),
+    ])
+    expect(s.activeSources()).toEqual(['TVPLUS', 'MIXPANEL', 'SYNTHETIC'])
+    s.append([ev({ type: 'RATING', source: 'MIXPANEL', viewerId: 'v_mixpnl02', rating: 1 })])
     expect(s.activeSources()).toEqual(['TVPLUS', 'MIXPANEL'])
+    expect(s.facts().every((f) => f.source !== 'SYNTHETIC')).toBe(true)
+    expect(s.facts({ sources: ['SYNTHETIC'] })).toHaveLength(1)
     const status = Object.fromEntries(s.sources().map((x) => [x.source, x.active]))
     expect(status).toEqual({ TVPLUS: true, MIXPANEL: true, SYNTHETIC: false })
+    // Gerçek kaynak silinip eşiğin altına düşülürse örnek yeniden etkin
+    s.clear('MIXPANEL')
+    expect(s.activeSources()).toEqual(['TVPLUS', 'SYNTHETIC'])
+  })
+
+  it('activeSources: sentetik veri yoksa yalnız gerçek kaynaklar (eşikten bağımsız)', async () => {
+    const s = await open(tmp())
+    s.append([ev({ type: 'PLAY_START', source: 'TVPLUS', viewerId: 'v_profil01' })])
+    expect(s.activeSources()).toEqual(['TVPLUS'])
   })
 
   it('clear: kaynağın günlüğü ve özetleri silinir, diğerleri kalır; yeniden açılışta da', async () => {

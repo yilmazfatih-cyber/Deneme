@@ -1,20 +1,33 @@
 /**
- * Film & Dizi ana sayfası (lolomo) — saf mantık: Falcor yol planlayıcısı ve JSON Graph → satır görünüm modeli.
- * Yollar docs/MIMARI.md §6. DOM yok; birim testi lolomo.test.ts.
+ * Göz atma sayfaları (Ana Sayfa, Diziler, Filmler, Yeni ve Popüler) — saf mantık: Falcor yol planlayıcısı ve
+ * JSON Graph → satır görünüm modeli. Yollar docs/MIMARI.md §6 ve §9.4. DOM yok; birim testi lolomo.test.ts.
  *
  * Yükleme planı (eski sistemin amaçladığı gibi yol yol):
- *   1. ['lolomo','summary']                              → satır sayısı
- *   2. satırlar görünüme yaklaştıkça 3'lü gruplar:      ['lolomo',{a..b},'summary'] + ilk 10 öğenin afiş yaprakları + itemTctx
+ *   1. [kök,'summary']                                  → satır sayısı
+ *   2. satırlar görünüme yaklaştıkça 3'lü gruplar:      [kök,{a..b},'summary'] + ilk 10 öğenin kart yaprakları + itemTctx
  *   3. satırın bağlamına özel ek yapraklar (vitrin, devam et) ve yatay kaydırmayla sonraki 10'luk aralıklar: ['lists',id,…]
+ * Kök: ana sayfa `lolomo` (açılış tohumu bu yolla gelir), diğerleri `lolomoByCategory[kategori]`.
+ * Kart yaprakları ekran biçimine göre değişir: masaüstünde 16:9 `storyArt`, mobilde 2:3 `boxart` (UX_SPEC §7 kural 2).
  */
 import type { FalcorPath } from '../../../../shared/types'
 import { formatTctx, videoEntityId } from '../../../../shared/tctx'
-import { badgeTextOf, detailPath, isInProgress, joinMeta, lockedTextOf, playPath, remainingText } from '../preview'
+import { formatEpisodeCode, formatTimeLeft, joinDot } from '../../ui/format'
+import { playPath } from '../preview/links'
+import { isInProgress, lockedTextOf } from '../preview/meta'
 
 export const ITEM_PAGE = 10
 export const ROW_BATCH = 3
 /** Yatay kaydırmada son görünen kart, yüklü sonun bu kadar yakınına gelince sonraki aralık istenir */
 export const ITEM_PREFETCH_GAP = 3
+
+export type LolomoCategory = 'home' | 'shows' | 'movies' | 'newPopular'
+/** Kartların çizildiği ekran: masaüstü 16:9, mobil 2:3 */
+export type Screen = 'desktop' | 'mobile'
+
+/** Lolomo'nun kök yolu. Ana sayfa eski `lolomo` yolunu kullanır: açılış tohumu (boot.falcorCache) bu yolla gelir. */
+export function lolomoRoot(category: LolomoCategory): FalcorPath {
+  return category === 'home' ? ['lolomo'] : ['lolomoByCategory', category]
+}
 
 /* ───────────── Tel biçimleri (Falcor atomları) ───────────── */
 
@@ -32,6 +45,12 @@ export interface ListSummary {
   trackId: number
   genreId?: number
   collectionId?: number
+  /** becauseYouWatched: ortak mikro tür adı */
+  reason?: string
+  /** microgenre satırı: mg_… */
+  microgenreId?: string
+  /** tasteCommunity satırı: tc_… */
+  communityId?: string
 }
 
 export interface ArtAtom {
@@ -62,7 +81,9 @@ export interface VideoNode {
   watchStatus?: string
   bookmark?: { positionSec: number; runtimeSec: number | null; progress: number }
   top10Rank?: number | null
-  sourceKinds?: string[]
+  tags?: string[]
+  queue?: boolean
+  matchScore?: number | null
   promoVideo?: { viewableId: string; computeId: string; offset: number; sourceKind: string }
   current?: VideoNode
 }
@@ -76,41 +97,37 @@ export interface ListNode {
 
 /* ───────────── Bağlamlar ───────────── */
 
-export type RowKind = 'hero' | 'landscape' | 'poster' | 'bridge'
+/**
+ * Satırın çizim biçimi:
+ *   hero      vitrin (billboard)                     · continue  İzlemeye Devam Et (ilerleme + kalan süre)
+ *   top10     dikey afiş + dış hat rakam              · standard  16:9 kart (mobilde afiş), en çok bir rozet
+ *   bridge    Canlı TV köprüsü (kanal kartları; öğeler GraphQL'den)
+ */
+export type RowKind = 'hero' | 'continue' | 'top10' | 'standard' | 'bridge'
 
-const POSTER_CONTEXTS = [
-  'top10',
-  'queue',
-  'becauseYouWatched',
-  'gems',
-  'newReleases',
-  'genre',
-  'collection',
-  'curated',
-  'exclusive',
-  'leaving',
-]
+const TOP10_CONTEXTS = ['top10', 'top10Shows', 'top10Movies']
 
-/** Bağlam → çizim biçimi; bilinmeyen bağlam null (sessizce atlanır). */
+/** Bağlam → çizim biçimi. Bilinmeyen (yeni) bağlamlar standart satır olarak çizilir; bağlamı olmayan satır atlanır. */
 export function rowKindOf(context: string | undefined): RowKind | null {
   if (!context) return null
   if (context === 'billboard') return 'hero'
-  if (context === 'continueWatching') return 'landscape'
+  if (context === 'continueWatching') return 'continue'
   if (context === 'bridge') return 'bridge'
-  return POSTER_CONTEXTS.includes(context) ? 'poster' : null
+  if (TOP10_CONTEXTS.includes(context)) return 'top10'
+  return 'standard'
 }
 
-/** Afiş kartının yaprakları (toplu satır isteğinde tüm satırlar için istenir) */
-export const POSTER_LEAVES = ['summary', 'title', 'boxart', 'badge', 'access', 'top10Rank'] as const
-/** Devam et kartı: 16:9 görsel + ilerleme + kalan süre */
-export const LANDSCAPE_LEAVES = [
+/** Her kartın ortak yaprakları (açılış tohumunun afiş kümesiyle aynı + görsel) */
+export const CARD_LEAVES = ['summary', 'title', 'badge', 'access', 'top10Rank', 'tags'] as const
+/** Devam et kartı: ilerleme + kalan süre */
+export const CONTINUE_LEAVES = [
   'summary',
   'title',
-  'storyArt',
   'access',
   'displayRuntime',
   'bookmark',
   'watchStatus',
+  'tags',
 ] as const
 /** Vitrin */
 export const HERO_LEAVES = [
@@ -126,20 +143,38 @@ export const HERO_LEAVES = [
   'watchStatus',
   'bookmark',
   'promoVideo',
+  'tags',
 ] as const
+/**
+ * Vitrinin açılış tohumunda olmayan, ilk boyamayı beklememesi gereken yaprakları: masaüstünde Top 10 satırı,
+ * mobilde Listem düğmesinin durumu. Ana sayfada ilk etkileşimde (kaydırma, dokunma, tuş) istenir; diğer
+ * sayfalarda satırla birlikte.
+ */
+export function heroDeferredLeaves(screen: Screen): string[] {
+  return screen === 'mobile' ? ['queue'] : ['top10Rank']
+}
 /** Dizilerde devam edilecek bölüm (videos[id].current → ref) */
 export const CURRENT_LEAVES = ['summary', 'displayRuntime', 'bookmark'] as const
 
-export function leavesFor(kind: RowKind): readonly string[] {
-  if (kind === 'hero') return HERO_LEAVES
-  if (kind === 'landscape') return LANDSCAPE_LEAVES
-  if (kind === 'poster') return POSTER_LEAVES
-  return []
+/** Kart görseli: masaüstünde 16:9, mobilde 2:3 (Top 10 her yerde dikey). */
+export function artLeafOf(kind: RowKind, screen: Screen): 'storyArt' | 'boxart' {
+  if (kind === 'top10') return 'boxart'
+  return screen === 'mobile' ? 'boxart' : 'storyArt'
+}
+
+export function leavesFor(kind: RowKind, screen: Screen): string[] {
+  if (kind === 'bridge') return []
+  // Mobil vitrin kartı 2:3 afiş (Listem / Top 10 durumu: heroDeferredLeaves)
+  if (kind === 'hero') return screen === 'mobile' ? [...HERO_LEAVES, 'boxart'] : [...HERO_LEAVES]
+  if (kind === 'continue') return [...CONTINUE_LEAVES, artLeafOf(kind, screen)]
+  return [...CARD_LEAVES, artLeafOf(kind, screen)]
 }
 
 /* ───────────── Yol planlayıcı ───────────── */
 
-export const LOLOMO_SUMMARY_PATH: FalcorPath = ['lolomo', 'summary']
+export function summaryPath(root: FalcorPath): FalcorPath {
+  return [...root, 'summary']
+}
 
 /** i. satırın grubu: [başlangıç, bitiş] (dahil; satır sayısına kıstırılır) */
 export function rowBatchOf(index: number, rowCount: number, size = ROW_BATCH): { from: number; to: number } {
@@ -148,28 +183,34 @@ export function rowBatchOf(index: number, rowCount: number, size = ROW_BATCH): {
 }
 
 /**
- * Satır grubu isteği: özetler + ilk 10 öğenin afiş yaprakları + konum bağlamları — tek POST.
- * Bağlam henüz bilinmediği için ortak (afiş) yapraklar istenir; vitrin/devam et ek yaprakları satırın kendi planında.
+ * Bağlamı henüz bilinmeyen satırlar için grup isteği: özetler + ilk 10 öğenin standart kart yaprakları + konum
+ * bağlamları — tek POST. Vitrin / devam et ek yaprakları satırın kendi planında istenir.
  */
-export function planRowBatch(from: number, to: number, items = ITEM_PAGE): FalcorPath[] {
+export function planRowBatch(
+  root: FalcorPath,
+  from: number,
+  to: number,
+  screen: Screen,
+  items = ITEM_PAGE,
+): FalcorPath[] {
   if (to < from) return []
   const rows = from === to ? from : { from, to }
   return [
-    ['lolomo', rows, 'summary'],
-    ['lolomo', rows, { from: 0, to: items - 1 }, [...POSTER_LEAVES]],
-    ['lolomo', rows, 'itemTctx', { from: 0, to: items - 1 }],
+    [...root, rows, 'summary'],
+    [...root, rows, { from: 0, to: items - 1 }, leavesFor('standard', screen)],
+    [...root, rows, 'itemTctx', { from: 0, to: items - 1 }],
   ]
 }
 
 /** Bir satırın [from..to] öğeleri için gereken yollar (lists[listId] üzerinden: sıra kaysa da kararlı). */
-export function planRowItems(listId: string, kind: RowKind, from: number, to: number): FalcorPath[] {
+export function planRowItems(listId: string, kind: RowKind, screen: Screen, from: number, to: number): FalcorPath[] {
   if (to < from || kind === 'bridge') return []
   const range = from === to ? from : { from, to }
   const paths: FalcorPath[] = [
-    ['lists', listId, range, [...leavesFor(kind)]],
+    ['lists', listId, range, leavesFor(kind, screen)],
     ['lists', listId, 'itemTctx', range],
   ]
-  if (kind === 'hero' || kind === 'landscape') paths.push(['lists', listId, range, 'current', [...CURRENT_LEAVES]])
+  if (kind === 'hero' || kind === 'continue') paths.push(['lists', listId, range, 'current', [...CURRENT_LEAVES]])
   return paths
 }
 
@@ -195,6 +236,12 @@ export function nextItemCount(
 
 /* ───────────── Görünüm modeli ───────────── */
 
+export interface CardBadge {
+  /** 'new' | 'episode' | 'leaving' | 'lock' */
+  tone: 'accent' | 'lock'
+  text: string
+}
+
 export interface CardVM {
   index: number
   videoId: number
@@ -204,17 +251,20 @@ export interface CardVM {
   tctx: string
   /** tctx sunucudan mı (itemTctx) yoksa istemcide mi kuruldu */
   tctxFromServer: boolean
-  detailTo: string
   /** Oynatılabilirse oynatıcı yolu (dizide devam edilecek bölüm) */
   playTo: string | null
   playVideoId: number | null
   posterUrl: string | null
   landscapeUrl: string | null
-  badge: string | null
+  /** Kart başına en çok bir rozet (kilit diğerlerini bastırır) */
+  badge: CardBadge | null
   lockedText: string | null
+  /** Top 10 satırındaki rakam (1–10) */
   rank: number | null
   progress: number | null
-  meta: string | null
+  /** İzlemeye Devam Et altyazısı: "S1:B3 · 23 dk kaldı" */
+  caption: string | null
+  tags: string[]
 }
 
 export interface RowVM {
@@ -225,7 +275,7 @@ export interface RowVM {
   title: string
   length: number
   trackId: number
-  /** "Tümü" hedefi */
+  /** "Tümünü Gör" hedefi */
   seeAllTo: string | null
   /** 0..loaded-1; henüz gelmemiş öğe null (iskelet) */
   items: (CardVM | null)[]
@@ -237,25 +287,55 @@ export interface HeroVM extends CardVM {
   logoUrl: string | null
   maturity: { certificationValue: string; reasons: string[] } | null
   playable: boolean
-  accessText: string | null
   resume: boolean
-  primaryLabel: 'İzle' | 'Devam et'
+  primaryLabel: 'Oynat' | 'Devam Et'
   promo: { viewableId: string; offset: number } | null
   /** Manifest ön hazırlığı için oynatılabilir kimlik */
   prefetchViewableId: string | null
+  /** Kendi türünün Top 10'undaki sırası (vitrinin "Bugün Dizilerde 3 Numara" satırı) */
+  top10Rank: number | null
+  inMyList: boolean
 }
 
-export function seeAllPath(summary: Pick<ListSummary, 'genreId' | 'collectionId'>): string | null {
+/** "Tümünü Gör" hedefi: tür, mikro tür, koleksiyon, Listem, Yeni Gelenler. Yoksa null. */
+export function seeAllPath(summary: Partial<ListSummary>, category: LolomoCategory = 'home'): string | null {
   if (summary.genreId !== undefined) return `/tur/${summary.genreId}`
+  if (summary.microgenreId !== undefined) return `/tur/${encodeURIComponent(summary.microgenreId)}`
   if (summary.collectionId !== undefined) return `/koleksiyon/${summary.collectionId}`
+  if (summary.context === 'queue') return '/listem'
+  if (summary.context === 'newReleases' && category !== 'newPopular') return '/yeni-ve-populer'
   return null
 }
 
-/** "S1 B3 · 22 dk" → "S1 B3" */
-function episodeLabelOf(displayRuntime: string | undefined): string | null {
+/** "S1 B3 · 22 dk" → "S1:B3" */
+export function episodeCodeOf(displayRuntime: string | undefined): string | null {
   if (!displayRuntime) return null
-  const first = displayRuntime.split(' · ')[0] ?? ''
-  return /^S\d+ B\d+$/.test(first) ? first : null
+  const m = /^S(\d+) B(\d+)$/.exec(displayRuntime.split(' · ')[0] ?? '')
+  return m ? formatEpisodeCode(Number(m[1]), Number(m[2])) : null
+}
+
+/** Sunucu rozeti → kart rozeti (kart başına bir; kilit önce). Top 10 rozet değildir (rakam ya da vitrin satırı). */
+export function cardBadgeOf(
+  badge: { kind: string; text: string } | null | undefined,
+  locked: boolean,
+): CardBadge | null {
+  if (locked) return { tone: 'lock', text: 'Kilitli' }
+  if (!badge) return null
+  switch (badge.kind) {
+    case 'NEW':
+      return { tone: 'accent', text: 'Yeni' }
+    case 'NEW_EPISODE':
+      return { tone: 'accent', text: 'Yeni Bölüm' }
+    case 'LEAVING_SOON': {
+      const days = /(\d+)/.exec(badge.text)?.[1]
+      return { tone: 'accent', text: days ? `Son ${days} Gün` : badge.text }
+    }
+    case 'LOCKED':
+    case 'TOP10':
+      return null
+    default:
+      return badge.text ? { tone: 'accent', text: badge.text } : null
+  }
 }
 
 /** Tek öğe → kart görünüm modeli; video düğümü yoksa (henüz gelmedi / görünmez) null. */
@@ -276,8 +356,13 @@ export function mapCard(list: ListNode, summary: ListSummary, rowIndex: number, 
     node.badge?.kind === 'LOCKED' ? `${node.badge.text} ile` : null,
   )
   const bm = isShow ? cur?.bookmark : node.bookmark
-  const label = isShow ? episodeLabelOf(cur?.displayRuntime) : null
-  const left = bm ? remainingText(bm.positionSec, bm.runtimeSec) : null
+  const kind = rowKindOf(summary.context)
+  let caption: string | null = null
+  if (kind === 'continue') {
+    const code = isShow ? episodeCodeOf(cur?.displayRuntime) : null
+    const left = bm && bm.runtimeSec ? formatTimeLeft(bm.runtimeSec - bm.positionSec) : ''
+    caption = joinDot([code, left || (code ? null : (node.displayRuntime ?? null))]) || null
+  }
   return {
     index,
     videoId: s.id,
@@ -286,21 +371,30 @@ export function mapCard(list: ListNode, summary: ListSummary, rowIndex: number, 
     isShow,
     tctx,
     tctxFromServer: serverTctx !== undefined,
-    detailTo: detailPath(s.id, tctx),
     playTo: playVideoId !== null ? playPath(playVideoId, tctx) : null,
     playVideoId,
     posterUrl: node.boxart?.url ?? null,
     landscapeUrl: node.storyArt?.url ?? null,
-    badge: badgeTextOf(node.badge, !!locked),
+    // Top 10'da rakam, "Yeni Gelenler"de satırın kendisi zaten "yeni" der: o satırlarda "Yeni" rozeti tekrarlanmaz.
+    badge:
+      !locked && (kind === 'top10' || (summary.context === 'newReleases' && node.badge?.kind === 'NEW'))
+        ? null
+        : cardBadgeOf(node.badge, !!locked),
     lockedText: locked,
-    rank: summary.context === 'top10' ? (node.top10Rank ?? index + 1) : null,
-    progress: bm ? bm.progress : null,
-    meta: joinMeta([label, left ?? (label ? null : (node.displayRuntime ?? null))]) || null,
+    rank: kind === 'top10' ? index + 1 : null,
+    progress: kind === 'continue' && bm ? bm.progress : null,
+    caption,
+    tags: Array.isArray(node.tags) ? node.tags.slice(0, 3) : [],
   }
 }
 
-/** lists[listId] → satır görünüm modeli (yalnız bilinen bağlamlar; bilinmeyen null). */
-export function mapRow(list: ListNode | undefined, rowIndex: number, loaded: number): RowVM | null {
+/** lists[listId] → satır görünüm modeli (bağlamı olmayan satır null). */
+export function mapRow(
+  list: ListNode | undefined,
+  rowIndex: number,
+  loaded: number,
+  category: LolomoCategory = 'home',
+): RowVM | null {
   const summary = list?.summary
   const kind = rowKindOf(summary?.context)
   if (!list || !summary || !kind) return null
@@ -315,7 +409,7 @@ export function mapRow(list: ListNode | undefined, rowIndex: number, loaded: num
     title: summary.displayName,
     length: summary.length,
     trackId: summary.trackId,
-    seeAllTo: seeAllPath(summary),
+    seeAllTo: seeAllPath(summary, category),
     items,
   }
 }
@@ -329,7 +423,8 @@ export function mapHero(list: ListNode | undefined, rowIndex: number): HeroVM | 
   if (!card || !node) return null
   const playable = card.playVideoId !== null
   const bm = card.isShow ? node.current?.bookmark : node.bookmark
-  const resume = playable && (isInProgress(bm) || (node.watchStatus === 'STARTED' && !!bm))
+  const resume = playable && isInProgress(bm)
+  const rank = typeof node.top10Rank === 'number' && node.top10Rank > 0 && node.top10Rank <= 10 ? node.top10Rank : null
   return {
     ...card,
     synopsis: node.shortSynopsis ?? '',
@@ -339,13 +434,28 @@ export function mapHero(list: ListNode | undefined, rowIndex: number): HeroVM | 
       ? { certificationValue: node.maturity.certificationValue, reasons: node.maturity.reasons ?? [] }
       : null,
     playable,
-    accessText: card.lockedText,
     resume,
-    primaryLabel: resume ? 'Devam et' : 'İzle',
+    primaryLabel: resume ? 'Devam Et' : 'Oynat',
     promo:
       playable && node.promoVideo ? { viewableId: node.promoVideo.viewableId, offset: node.promoVideo.offset } : null,
     prefetchViewableId: card.playVideoId !== null ? videoEntityId(card.playVideoId) : null,
+    top10Rank: rank,
+    inMyList: node.queue === true,
   }
+}
+
+/** Genre satırları (Türler ▾ listesi): özetlerden genreId taşıyanlar, sıra korunur, tekrarsız. */
+export function genreLinksOf(summaries: readonly (Partial<ListSummary> | undefined)[]): { to: string; name: string }[] {
+  const out: { to: string; name: string }[] = []
+  const seen = new Set<string>()
+  for (const s of summaries) {
+    if (!s || s.context !== 'genre' || s.genreId === undefined || !s.displayName) continue
+    const to = `/tur/${s.genreId}`
+    if (seen.has(to)) continue
+    seen.add(to)
+    out.push({ to, name: s.displayName })
+  }
+  return out
 }
 
 /* ───────────── Gösterim izleme ───────────── */

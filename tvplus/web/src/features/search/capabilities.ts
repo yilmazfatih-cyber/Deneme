@@ -1,23 +1,29 @@
 /**
  * Arama yetenek bildirimi (Netflix Pinot `capabilitiesBySection`). TEK tablo hem sunucuya ne bildirdiğimizi
- * hem de neyi çizebildiğimizi belirler: bildirim bu tablodan kurulur, çizici de bu tablodaki adlarla aranır.
- * Çizici haritası (SearchPage.tsx) `Record<TreatmentName, …>` tipindedir: tabloya biçim eklenip çizici
- * yazılmazsa derleme kırılır — "bildirdiğim" ile "çizebildiğim" ayrışamaz.
+ * hem de neyi çizebildiğimizi belirler: bildirim bu tablodan kurulur, sayfa da yalnız bu tablodaki biçimleri çizer
+ * (`lookupTreatment` bildirmediğimiz biçimi atlar).
+ *
+ * Tahmin modelinin bölümü (`searchPredicted`) ayrı bir anahtardır: kapalıyken sunucu tahmini bölüm üretmez —
+ * eski istemciler ("tahmin" bilmeyenler) bozulmadan çalışır.
  */
 
 export type EntityKindName = 'VIDEO' | 'CHANNEL' | 'PROGRAM_AIRING' | 'PERSON' | 'GENERIC_CONTAINER'
-export type SectionName = 'searchLive' | 'searchList' | 'searchGallery'
+export type SectionName = 'searchLive' | 'searchList' | 'searchGallery' | 'searchPredicted'
 
 /** Bölüm tipi (__typename) → bildirimdeki bölüm adı */
 export const SECTION_BY_TYPENAME: Record<string, SectionName> = {
   SearchLiveSection: 'searchLive',
   SearchListSection: 'searchList',
   SearchGallerySection: 'searchGallery',
+  SearchPredictedSection: 'searchPredicted',
 }
 
+/**
+ * Çizebildiğimiz biçimler. Başlık öneri listesi (`standardSuggestion`) bildirilmez: Netflix'teki gibi başlıklar
+ * yalnız ızgarada görünür, yazarken öneri işini modelin tamamlamaları yapar.
+ */
 export const TREATMENTS = {
-  standardBoxshot: { kinds: ['VIDEO'], sections: ['searchGallery'] },
-  standardSuggestion: { kinds: ['VIDEO'], sections: ['searchList'] },
+  standardBoxshot: { kinds: ['VIDEO'], sections: ['searchGallery', 'searchPredicted'] },
   standardChannelTile: { kinds: ['CHANNEL'], sections: ['searchLive'] },
   standardAiringRow: { kinds: ['PROGRAM_AIRING'], sections: ['searchLive'] },
   standardPersonChip: { kinds: ['PERSON'], sections: ['searchList'] },
@@ -38,6 +44,12 @@ export const KIND_SWITCHES: readonly { kind: EntityKindName; label: string }[] =
 
 export const ALL_KINDS: readonly EntityKindName[] = KIND_SWITCHES.map((s) => s.kind)
 
+export interface CapabilityChoice {
+  kinds: ReadonlySet<EntityKindName>
+  /** Tahmin modelinin bölümü (`searchPredicted`) */
+  predicted: boolean
+}
+
 export interface EntityTreatmentCapability {
   canHandleEntityKinds: EntityKindName[]
 }
@@ -54,20 +66,21 @@ export type SearchPageCapabilities = {
   >
 }
 
-const SECTION_ORDER: readonly SectionName[] = ['searchLive', 'searchList', 'searchGallery']
+const SECTION_ORDER: readonly SectionName[] = ['searchLive', 'searchList', 'searchGallery', 'searchPredicted']
 
 /**
  * Bildirimi kurar: yalnız açık türleri kapsayan biçimler, yalnız en az bir biçimi kalan bölümler.
  * Anahtar sırası sabittir (önbellek anahtarı bu nesneden türetilir).
  */
-export function buildDeclaration(enabled: ReadonlySet<EntityKindName>): SearchPageCapabilities {
+export function buildDeclaration(choice: CapabilityChoice): SearchPageCapabilities {
   const bySection: SearchPageCapabilities['capabilitiesBySection'] = {}
   for (const section of SECTION_ORDER) {
+    if (section === 'searchPredicted' && !choice.predicted) continue
     const byTreatment: Partial<Record<TreatmentName, EntityTreatmentCapability>> = {}
     for (const name of TREATMENT_NAMES) {
       const t = TREATMENTS[name]
       if (!(t.sections as readonly SectionName[]).includes(section)) continue
-      const kinds = (t.kinds as readonly EntityKindName[]).filter((k) => enabled.has(k))
+      const kinds = (t.kinds as readonly EntityKindName[]).filter((k) => choice.kinds.has(k))
       if (kinds.length) byTreatment[name] = { canHandleEntityKinds: kinds }
     }
     if (Object.keys(byTreatment).length)
@@ -110,24 +123,33 @@ export function lookupTreatment(
 
 /* ───────────── Anahtar durumu (sessionStorage) ───────────── */
 
-const STORAGE_KEY = 'tvp.search.kinds'
+const STORAGE_KEY = 'tvp.search.caps.v2'
 
-export function loadEnabledKinds(): Set<EntityKindName> {
+export const DEFAULT_CHOICE: CapabilityChoice = { kinds: new Set(ALL_KINDS), predicted: true }
+
+export function loadChoice(): CapabilityChoice {
   try {
     const raw = sessionStorage.getItem(STORAGE_KEY)
     if (raw) {
-      const list = JSON.parse(raw) as unknown
-      if (Array.isArray(list)) return new Set(ALL_KINDS.filter((k) => list.includes(k)))
+      const v = JSON.parse(raw) as { kinds?: unknown; predicted?: unknown }
+      if (Array.isArray(v.kinds))
+        return {
+          kinds: new Set(ALL_KINDS.filter((k) => (v.kinds as unknown[]).includes(k))),
+          predicted: v.predicted !== false,
+        }
     }
   } catch {
     /* depolama yok ya da bozuk: varsayılan */
   }
-  return new Set(ALL_KINDS)
+  return DEFAULT_CHOICE
 }
 
-export function saveEnabledKinds(kinds: ReadonlySet<EntityKindName>): void {
+export function saveChoice(c: CapabilityChoice): void {
   try {
-    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(ALL_KINDS.filter((k) => kinds.has(k))))
+    sessionStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ kinds: ALL_KINDS.filter((k) => c.kinds.has(k)), predicted: c.predicted }),
+    )
   } catch {
     /* depolama yok: yalnız bu sayfa ömrü boyunca geçerli */
   }

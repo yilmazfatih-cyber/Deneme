@@ -281,6 +281,8 @@ type Movie implements Video {
   similarsWithReason(first: Int = 12): [SimilarVideo!]!
   "Bu başlığın girdiği mikro türler: önce görünen katman, en dar olan önce"
   microgenres(first: Int = 4): [Microgenre!]!
+  "Tahmin modelinin bu profil için eşleşme yüzdesi (0–100); model hazır değilse ya da profil hakkında işaret yoksa null"
+  matchScore: Int
   supplementalVideos: [Supplemental!]!
   collections: [Collection!]!
 }
@@ -325,6 +327,8 @@ type Show implements Video {
   similarsWithReason(first: Int = 12): [SimilarVideo!]!
   "Bu başlığın girdiği mikro türler: önce görünen katman, en dar olan önce"
   microgenres(first: Int = 4): [Microgenre!]!
+  "Tahmin modelinin bu profil için eşleşme yüzdesi (0–100); model hazır değilse ya da profil hakkında işaret yoksa null"
+  matchScore: Int
   supplementalVideos: [Supplemental!]!
   collections: [Collection!]!
   seasons: [Season!]!

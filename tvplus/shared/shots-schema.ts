@@ -144,6 +144,19 @@ export const zSceneDetectFile = z.object({
     audio: z.string().nullable(),
     /** Çekim metinlerinin dili ve kaynağı */
     textLang: z.string().nullable(),
+    /**
+     * Medyanın nereden geldiği: CATALOG başlığın kendi kaynağı (DASH) · LOCAL `--media` ile verilen yerel dosya
+     * (ör. YouTube'dan gömülen bir açık filmin başka yerden indirilmiş CC-BY kopyası).
+     */
+    source: z.enum(['CATALOG', 'LOCAL']).default('CATALOG'),
+    /** Serbest metin: kaynak adresi, lisans, sürüm vb. (`--note`; LOCAL'da yoksa dosya adı yazılır) */
+    note: z.string().max(500).nullable().default(null),
+    /** LOCAL: çözümlenen dosyanın SHA-256 özeti (aynı medyayla yeniden üretilebilirlik için) */
+    sha256: z
+      .string()
+      .regex(/^[0-9a-f]{64}$/)
+      .nullable()
+      .default(null),
   }),
   sprite: zSprite.nullable(),
   flags: z.array(z.enum(SHOT_FLAGS)).default([]),

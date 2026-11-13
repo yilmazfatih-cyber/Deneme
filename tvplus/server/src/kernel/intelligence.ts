@@ -16,6 +16,8 @@ import type {
   NeighborTitle,
   PlanInput,
   PlanResult,
+  PredictionExplanation,
+  PredictionModelInfo,
   TasteCommunity,
   Timeline,
   TitleTotals,
@@ -82,7 +84,10 @@ export interface ViewingService {
   /** Uygulama profilinin takma izleyici kimliği (kaynak TVPLUS) */
   viewerIdOfProfile(profileGuid: string): string
   sources(): DataSourceStatus[]
-  /** Analizde kullanılan kaynaklar: gerçek veri (MIXPANEL ya da TVPLUS) varsa SYNTHETIC dışarıda kalır */
+  /**
+   * Analizde kullanılan kaynaklar. Gerçek veri (MIXPANEL + TVPLUS) `config.realDataMinViewers` izleyiciye ulaşınca
+   * SYNTHETIC dışarıda kalır; o eşiğin altında sentetik örnek gerçek kaynaklarla BİRLİKTE etkindir.
+   */
   activeSources(): ViewingSource[]
   clear(source: ViewingSource): void
   revision(): number
@@ -115,6 +120,25 @@ export interface EmbeddingService {
   ready(): boolean
   titleVector(titleId: number): Float32Array | null
   similarTitles(titleId: number, limit: number): NeighborTitle[]
+  revision(): number
+}
+
+/* ───────────── Tahmin modeli ───────────── */
+export interface PredictionService {
+  /** Eğitilmiş bir model yüklü mü */
+  ready(): boolean
+  info(): PredictionModelInfo
+  /** Profil için eşleşme yüzdesi (0–100); model hazır değilse ya da profil hakkında hiçbir işaret yoksa null */
+  match(profileGuid: string, titleId: number): number | null
+  /** Sıralama için ham puanlar (büyük daha iyi); puanlanamayan başlık haritada yer almaz */
+  scores(profileGuid: string, titleIds: number[]): Map<number, number>
+  /** Profil için en yüksek tahminli başlıklar; model hazır değilse [] */
+  topPicks(
+    profileGuid: string,
+    limit: number,
+    opts?: { type?: 'MOVIE' | 'SHOW'; excludeWatched?: boolean },
+  ): { titleId: number; score: number; match: number }[]
+  explain(profileGuid: string, titleId: number): PredictionExplanation | null
   revision(): number
 }
 

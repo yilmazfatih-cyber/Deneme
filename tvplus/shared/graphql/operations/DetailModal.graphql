@@ -12,6 +12,9 @@ query DetailModal($videoId: Int!) {
     billboard: artwork(type: BILLBOARD, params: { width: 1280 }) {
       ...ArtworkFields
     }
+    titleLogo: artwork(type: TITLE_LOGO, params: { width: 600 }) {
+      ...ArtworkFields
+    }
     genreTags {
       genreId
       name
@@ -58,6 +61,7 @@ query DetailModal($videoId: Int!) {
       }
       similars(first: 12) {
         ...CardVideo
+        isInPlaylist
       }
       supplementalVideos {
         ...CardVideo
@@ -89,6 +93,7 @@ query DetailModal($videoId: Int!) {
         number
         seasonNumber
         runtimeSec
+        synopsis
       }
       seasons {
         seasonId
@@ -108,6 +113,7 @@ query DetailModal($videoId: Int!) {
       }
       similars(first: 12) {
         ...CardVideo
+        isInPlaylist
       }
       supplementalVideos {
         ...CardVideo

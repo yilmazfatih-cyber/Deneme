@@ -2,13 +2,13 @@
  * Canlı TV ana sayfasının saf mantığı: yetenek bildirimi, tanınmayanı atlama (netflix_patterns §4.2),
  * istemcide ilerleme / kalan süre, "hangi satırın yeniden çekilmesi gerekiyor" kararı ve kart metinleri.
  */
-import { formatDayTime, formatLiveLine, liveProgress, minutesLeft } from '../../design/time'
+import { formatDayTime, formatLiveLine, liveProgress, minutesLeft } from '../../ui'
 import { catchupHint } from './airing'
 import type { AiringData, ChannelData, PageRowData, RowItemData } from './types'
 
 /** İstemcinin çizebildiği satır tipleri ve varlık türleri (LivePage `capabilities` değişkeni). */
-export const LIVE_ROW_TYPES = ['LIVE_HERO', 'CHANNEL_ROW', 'TONIGHT_ROW', 'CATCHUP_ROW', 'BRIDGE'] as const
-export const LIVE_ENTITY_KINDS = ['CHANNEL', 'PROGRAM_AIRING', 'VIDEO'] as const
+export const LIVE_ROW_TYPES = ['LIVE_HERO', 'CHANNEL_ROW', 'TONIGHT_ROW', 'CATCHUP_ROW'] as const
+export const LIVE_ENTITY_KINDS = ['CHANNEL', 'PROGRAM_AIRING'] as const
 export type LiveRowType = (typeof LIVE_ROW_TYPES)[number]
 
 export const LIVE_CAPABILITIES = {
@@ -20,7 +20,6 @@ export const LIVE_CAPABILITIES = {
 const TYPENAMES_BY_KIND: Record<string, readonly string[]> = {
   CHANNEL: ['Channel'],
   PROGRAM_AIRING: ['ProgramAiring'],
-  VIDEO: ['Movie', 'Show', 'Episode'],
 }
 
 export interface RenderableRow extends Omit<PageRowData, 'type'> {
@@ -29,13 +28,13 @@ export interface RenderableRow extends Omit<PageRowData, 'type'> {
 
 const isKnownRowType = (t: string): t is LiveRowType => (LIVE_ROW_TYPES as readonly string[]).includes(t)
 
-/** Tanımadığımız satır tipi, varlık türü ya da __typename sessizce atlanır; köprü dışında boş kalan satır çizilmez. */
+/** Tanımadığımız satır tipi, varlık türü ya da __typename sessizce atlanır; boş kalan satır çizilmez. */
 export function renderableRows(rows: readonly PageRowData[]): RenderableRow[] {
   const out: RenderableRow[] = []
   for (const r of rows) {
     if (!isKnownRowType(r.type)) continue
     const items = r.items.filter((it) => TYPENAMES_BY_KIND[it.kind]?.includes(it.entity.__typename) ?? false)
-    if (items.length === 0 && r.type !== 'BRIDGE') continue
+    if (items.length === 0) continue
     out.push({ ...r, type: r.type, items })
   }
   return out
@@ -53,7 +52,7 @@ export interface LiveStatus {
   progress: number
   /** yukarı yuvarlanmış kalan dakika */
   remainingMin: number
-  /** "20:00–23:15 · 42 dk kaldı" (geri sayım yalnız son 60 dk) */
+  /** "20:00–23:15 · 42 dk kaldı" */
   line: string
   ended: boolean
 }

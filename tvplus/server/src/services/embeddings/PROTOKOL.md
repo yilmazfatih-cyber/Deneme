@@ -23,9 +23,7 @@ Gerçek bir çok kipli model TV+'a iki yoldan takılır: **`http`** (canlı mode
       "endSec": 6.25,
       "visual": {
         // null olabilir (görseli olmayan yapım)
-        "hist": [
-          /* 16 sayı: 12 ton + 4 açıklık, shared/shots-schema.ts */
-        ],
+        "hist": [/* 16 sayı: 12 ton + 4 açıklık, shared/shots-schema.ts */],
         "bright": 0.62,
         "contrast": 0.18,
         "sat": 0.21,
@@ -72,10 +70,10 @@ ortalamasıdır (sunucuda hesaplanır).
 `TVP_EMBEDDING_PROVIDER=http` · `TVP_EMBEDDING_URL=http://model-sunucusu:9000/tvplus` (vekil ayarlarına —
 `HTTPS_PROXY`, `NO_PROXY` — uyar).
 
-| İstek             | Gövde                                              | Yanıt (200, JSON)                                                                           |
-| ----------------- | -------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| `GET <url>`       | —                                                  | `{ "protocol": "tvplus-embedding/1", "model": { "id": "…", "version": "…", "dims": 768 } }` |
-| `POST <url>`      | `{ "protocol": "tvplus-embedding/1", "input": EmbeddingInput }` | `{ "videoId": 80010001, "shots": [[…], …], "pooled": […] }`                  |
+| İstek        | Gövde                                                           | Yanıt (200, JSON)                                                                           |
+| ------------ | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `GET <url>`  | —                                                               | `{ "protocol": "tvplus-embedding/1", "model": { "id": "…", "version": "…", "dims": 768 } }` |
+| `POST <url>` | `{ "protocol": "tvplus-embedding/1", "input": EmbeddingInput }` | `{ "videoId": 80010001, "shots": [[…], …], "pooled": […] }`                                 |
 
 Denetimler (biri tutmazsa yaprak atlanır, `POST /api/studio/embeddings/rebuild` yanıtında `x-tvplus-embed-failed`
 artar, sunucu günlüğüne yazılır): `protocol` eşleşir · `2 ≤ dims ≤ 4096` · `videoId` istekle aynı ·
@@ -103,3 +101,59 @@ tüm yapraklar yeniden kodlanır; aynı sürümde yalnız girdisi (çekim dosyas
 
 `npm run embed:catalog -- --out vectors.jsonl` yapılandırılmış sağlayıcının vektörlerini bu biçimde dışa aktarır
 (taban çıktısını gerçek bir modelinkiyle karşılaştırmak ya da bir modelin çıktısını içe almadan önce biçimi görmek için).
+
+## Depoda gelen eğitilmiş vektörler (`content/models/<model-id>/`)
+
+Bir model başka yerde (ör. `ml/` altında Python ile) eğitildiyse çıktısı depoya konabilir; sunucu açılışta okur.
+
+```
+content/models/<model-id>/
+  manifest.json
+  vectors.jsonl        (bir ya da birkaç .jsonl; yukarıdaki `dosya` biçimiyle aynı satırlar)
+```
+
+`manifest.json` (şema: `server/src/services/embeddings/models.ts` → `zModelManifest`):
+
+```jsonc
+{
+  "format": "tvplus-embedding/1", // zorunlu, aynen
+  "id": "mediafm-tr-v0", // zorunlu; klasör adıyla AYNI; [a-z0-9][a-z0-9._-]{0,63}
+  "version": "2026-11-20", // zorunlu; 1–64 karakter
+  "dims": 256, // zorunlu; 2–4096; JSONL'deki model satırıyla aynı
+  "builtAt": "2026-11-20T10:00:00Z", // zorunlu; ISO 8601 (birden çok model varsa en yenisi seçilir)
+  "modalities": ["VISUAL", "AUDIO", "TEXT", "CONTEXT"], // isteğe bağlı, bilgi için
+  "files": ["vectors.jsonl"], // isteğe bağlı; verilmezse klasördeki tüm .jsonl (ada göre sıralı)
+  "description": "eğitim verisi, kod sürümü…", // isteğe bağlı, ≤ 2000 karakter
+}
+```
+
+JSONL: ilk satır `{"kind":"model","id":"<id>","version":"<version>","dims":<dims>}` — manifestle birebir aynı; sonra yaprak
+başına `{"kind":"video","videoId":…,"titleId":…,"shots":[[…],…],"pooled":[…]}`. Her yaprakta `shots` sayısı ve sırası
+`content/shots/<videoId>.json` (SCENE_DETECT) ya da `content/shots/keyframes.json` içindeki o yaprağın `shots` dizisiyle
+aynı olmalıdır; `pooled` isteğe bağlıdır (yoksa çekim ortalaması). Vektörler sunucuda birim uzunluğa getirilir.
+
+**Seçim kuralı** (`plugin.ts` → `providerFor`):
+
+1. `TVP_EMBEDDING_PROVIDER=taban|http|dosya` verilmişse her zaman o kullanılır (depodaki model yok sayılır).
+2. Verilmemişse ve `content/models/*/manifest.json` geçerliyse (şema, id = klasör adı, JSONL model satırı manifestle
+   aynı, en az bir geçerli yaprak) o model kullanılır: `EmbeddingInfo.provider = "dosya"`,
+   `modelVersion = "<id>@<version>"`. Geçersiz klasörler sunucu günlüğüne nedeniyle yazılır ve atlanır.
+3. Modelin kapsamadığı yapraklar — dosyada olmayan ya da çekim sayısı güncel çözümlemeyle artık uyuşmayan — `taban`
+   ile kodlanır. İki aile aynı matriste ayrık alt uzaylardadır: vektör = `[model (dims) | taban (192)]`, `info.dims =
+dims + 192`. Model vektörleri yalnız birbiriyle, taban vektörleri yalnız birbiriyle benzeşir; aralarındaki kosinüs 0.
+   Kapsama `GET /api/studio/embeddings` yanıtının `x-tvplus-embed-model-videos` ve `x-tvplus-embed-fallback-videos`
+   başlıklarındadır (EmbeddingInfo'da alan yok). Bölümlerinin bir kısmı kapsanan dizinin vektörü iki ailenin
+   ortalamasıdır.
+
+## Çekim dizini olarak `content/shots` (model eğitimi için)
+
+Model, çekim sınırlarını `content/shots/*.json` dosyalarından okur (şema: `shared/shots-schema.ts`). Uygulamada
+YouTube'dan gömülen ama medyası başka yerde bulunan bir yapım için gerçek çekim çözümlemesi şöyle üretilir:
+
+```
+npm run analyze:shots -- <videoId> --media /yol/film.webm [--subs /yol/film.tr.srt] [--note "kaynak adresi, lisans"]
+```
+
+Sonuç normal bir `SCENE_DETECT` dosyasıdır (`media.source = "LOCAL"`, `media.note`, `media.sha256`); yaprak
+`keyframes.json` içinden çıkarılır ve sonraki `all` çalıştırmaları onu geri eklemez. Altyazı dili dosya adından okunur
+(`film.tr.srt` → `tr`; yoksa `und`).

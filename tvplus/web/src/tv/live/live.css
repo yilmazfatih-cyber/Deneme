@@ -1,0 +1,738 @@
+/* TV Canlı TV (/tv/canli) ve Rehber (/tv/rehber). Ölçüler rem (1 rem = ekran genişliği / 120). */
+
+/* ───────────── Canlı TV ───────────── */
+
+.tvl {
+  display: flex;
+  flex-direction: column;
+}
+.tvl-head {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 3rem;
+  height: 4.4rem;
+  margin-bottom: 1.8rem;
+  /* sağ üstteki saatle çakışmasın */
+  padding-right: 9rem;
+}
+.tvl-head__title {
+  flex: none;
+  font-size: 2.4rem;
+  font-weight: 800;
+}
+.tvl-chips {
+  display: flex;
+  gap: 0.8rem;
+}
+.tvl-chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 3.4rem;
+  padding: 0 1.6rem;
+  border-radius: 1.7rem;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--tv-text-2);
+  font-size: 1.4rem;
+  font-weight: 700;
+  white-space: nowrap;
+  transition:
+    transform var(--tv-dur) var(--tv-ease),
+    background-color 150ms linear,
+    color 150ms linear;
+}
+.tvl-chip.is-active {
+  box-shadow: inset 0 0 0 0.15rem var(--tv-accent);
+  color: var(--tv-text-1);
+}
+.tvl-chip.is-focused {
+  background: #fff;
+  color: #000;
+  transform: scale(1.06);
+}
+.tvl-chip.is-active.is-focused {
+  box-shadow: inset 0 0 0 0.2rem var(--tv-accent);
+}
+
+.tvl-body {
+  display: grid;
+  flex: 1;
+  grid-template-columns: 40rem minmax(0, 1fr);
+  gap: 3rem;
+  min-height: 0;
+}
+
+/* Kanal listesi */
+.tvl-list {
+  min-height: 0;
+  margin: -0.6rem;
+  padding: 0.6rem;
+  overflow: hidden;
+}
+.tvl-list__rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.tvl-row {
+  display: grid;
+  flex: none;
+  grid-template-columns: 3.2rem 7.2rem minmax(0, 1fr);
+  align-items: center;
+  gap: 1.2rem;
+  height: 6.6rem;
+  padding: 0 1.2rem;
+  border-radius: 0.4rem;
+  transition:
+    transform var(--tv-dur) var(--tv-ease),
+    background-color 150ms linear,
+    color 150ms linear;
+}
+.tvl-row.is-selected {
+  background: var(--tv-surface-2);
+}
+.tvl-row.is-focused {
+  background: #fff;
+  color: #000;
+  transform: scale(1.03);
+  box-shadow: 0 0.8rem 2rem rgba(0, 0, 0, 0.5);
+}
+.tvl-row__num {
+  color: var(--tv-text-3);
+  font-size: 1.7rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.tvl-row.is-focused .tvl-row__num {
+  color: #000;
+}
+.tvl-row__logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 7.2rem;
+  height: 4.4rem;
+  border-radius: 0.3rem;
+  background: rgba(255, 255, 255, 0.08);
+}
+.tvl-row.is-focused .tvl-row__logo {
+  background: #1d1d1d;
+}
+.tvl-row__logo img {
+  max-width: 82%;
+  max-height: 78%;
+  object-fit: contain;
+}
+.tvl-row__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.tvl-row__name {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--tv-text-3);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+.tvl-row.is-focused .tvl-row__name {
+  color: #333;
+}
+.tvl-row__fav {
+  color: var(--tv-accent);
+}
+.tvl-row.is-focused .tvl-row__fav {
+  color: #000;
+}
+.tvl-row__title {
+  overflow: hidden;
+  font-size: 1.55rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tvl-row__progress {
+  height: 0.25rem;
+  margin-top: 0.45rem;
+}
+.tvl-row.is-focused .tvl-row__progress {
+  background: rgba(0, 0, 0, 0.18);
+}
+.tvl-row.is-focused .tvl-row__progress .tv-progress__fill {
+  background: #000;
+}
+
+.tvl-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.4rem;
+  padding: 1.2rem;
+  color: var(--tv-text-3);
+  font-size: 1.6rem;
+}
+.tvl-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.tvl-skeleton__row {
+  height: 6.6rem;
+}
+
+/* Sahne */
+.tvl-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 24rem;
+  grid-template-rows: 31rem minmax(0, 1fr);
+  gap: 1.6rem 2.4rem;
+  min-height: 0;
+}
+.tvl-stage--loading {
+  display: flex;
+  flex-direction: column;
+}
+.tvl-media {
+  position: relative;
+  grid-column: 1 / -1;
+  height: 31rem;
+  overflow: hidden;
+  border-radius: 0.4rem;
+  background: var(--tv-surface-1);
+}
+.tvl-media__art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: tv-fade-in 300ms linear;
+}
+.tvl-media__art--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--tv-surface-2);
+}
+.tvl-media__art--empty img {
+  max-width: 30%;
+  max-height: 40%;
+  object-fit: contain;
+}
+.tvl-media__preview {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 500ms linear;
+}
+.tvl-media__preview.is-on {
+  opacity: 1;
+}
+.tvl-media__preview video {
+  object-fit: cover;
+}
+.tvl-media__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0) 30%);
+  pointer-events: none;
+}
+.tvl-media__badges {
+  position: absolute;
+  top: 1.2rem;
+  left: 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.tvl-media__badges .tv-live {
+  font-size: 1.1rem;
+}
+.tvl-media__logo {
+  display: flex;
+  align-items: center;
+  height: 2.4rem;
+}
+.tvl-media__logo img {
+  max-height: 100%;
+  max-width: 8rem;
+  object-fit: contain;
+  filter: drop-shadow(0 0.1rem 0.4rem rgba(0, 0, 0, 0.7));
+}
+
+.tvl-stage__body {
+  display: contents;
+}
+.tvl-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+.tvl-info__channel {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: var(--tv-text-3);
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+.tvl-hd {
+  padding: 0 0.4rem;
+  border: 0.1rem solid var(--tv-text-4);
+  border-radius: 0.2rem;
+  font-size: 0.95rem;
+}
+.tvl-info__title {
+  overflow: hidden;
+  font-size: 2.6rem;
+  font-weight: 800;
+  line-height: 1.15;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tvl-info__time {
+  color: var(--tv-text-2);
+  font-size: 1.45rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.tvl-info__progress {
+  width: 24rem;
+}
+.tvl-info__lock {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--tv-text-2);
+  font-size: 1.35rem;
+}
+.tvl-info__synopsis {
+  display: -webkit-box;
+  overflow: hidden;
+  margin-top: 0.3rem;
+  color: var(--tv-text-3);
+  font-size: 1.4rem;
+  line-height: 1.4;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.tvl-next {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin: 0.4rem 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 1.35rem;
+}
+.tvl-next li {
+  display: flex;
+  gap: 1rem;
+  min-width: 0;
+}
+.tvl-next__time {
+  flex: none;
+  width: 4.4rem;
+  color: var(--tv-text-3);
+  font-variant-numeric: tabular-nums;
+}
+.tvl-next__title {
+  overflow: hidden;
+  color: var(--tv-text-2);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tvl-sample {
+  color: var(--tv-text-4);
+  font-size: 1.15rem;
+}
+.tvl-actions.tv-actions {
+  width: 24rem;
+}
+.tvl-actions .tv-btn--lg {
+  height: 3.6rem;
+  font-size: 1.45rem;
+}
+
+/* Kanal numarası */
+.tvl-number {
+  position: absolute;
+  top: 7rem;
+  right: var(--tv-safe);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  min-width: 12rem;
+  padding: 1.2rem 1.8rem;
+  border-left: 0.3rem solid var(--tv-accent);
+  border-radius: 0.4rem;
+  background: rgba(24, 24, 24, 0.96);
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.6);
+  animation: tv-rise 200ms var(--tv-ease);
+}
+.tvl-number__label {
+  color: var(--tv-text-3);
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+.tvl-number__digits {
+  color: var(--tv-accent);
+  font-size: 4.4rem;
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.tvl-number__msg {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+/* ───────────── Rehber ───────────── */
+
+.tvg {
+  display: flex;
+  flex-direction: column;
+}
+.tvg-head {
+  margin-bottom: 1.2rem;
+}
+.tvg-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-left: auto;
+  color: var(--tv-text-3);
+  font-size: 1.2rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.tvg-hint__sep {
+  width: 1.2rem;
+}
+.tvg-hint__key {
+  padding: 0.05rem 0.45rem;
+  border: 0.1rem solid var(--tv-text-4);
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+/* Ayrıntı şeridi */
+.tvg-strip {
+  display: flex;
+  flex: none;
+  gap: 2rem;
+  height: 12.4rem;
+  margin-bottom: 1.4rem;
+}
+.tvg-strip__art {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 22rem;
+  height: 12.4rem;
+  overflow: hidden;
+  border-radius: 0.4rem;
+  background: var(--tv-surface-2);
+}
+.tvg-strip__art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: tv-fade-in 250ms linear;
+}
+.tvg-strip__art .tvg-strip__logo {
+  width: 40%;
+  height: 40%;
+  object-fit: contain;
+}
+.tvg-strip__text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+.tvg-strip__channel {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: var(--tv-text-3);
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+.tvg-strip__reminder {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--tv-accent);
+}
+.tvg-strip__title {
+  overflow: hidden;
+  font-size: 2.4rem;
+  font-weight: 800;
+  line-height: 1.15;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tvg-strip__time {
+  color: var(--tv-text-2);
+  font-size: 1.4rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.tvg-strip__synopsis {
+  display: -webkit-box;
+  overflow: hidden;
+  max-width: 70rem;
+  color: var(--tv-text-3);
+  font-size: 1.35rem;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+/* Izgara: köşe | saatler / kanallar | görünüm */
+.tvg-grid {
+  display: grid;
+  flex: 1;
+  grid-template-columns: 17rem minmax(0, 1fr);
+  grid-template-rows: 3rem minmax(0, 1fr);
+  min-height: 0;
+  /* sağ güvenli alanın ötesine taşmasın, odak çerçevesi kırpılmasın */
+  margin: 0 -0.4rem 0 0;
+}
+.tvg-corner {
+  display: flex;
+  align-items: center;
+  color: var(--tv-text-2);
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+.tvg-times {
+  position: relative;
+  overflow: hidden;
+  border-bottom: 0.1rem solid var(--tv-line);
+}
+.tvg-times__track,
+.tvg-channels__track,
+.tvg-canvas {
+  position: relative;
+  transition: transform 220ms var(--tv-ease);
+}
+.tvg-times__track {
+  height: 100%;
+}
+.tvg-tick {
+  position: absolute;
+  top: 0.6rem;
+  padding-left: 0.5rem;
+  border-left: 0.1rem solid var(--tv-line);
+  color: var(--tv-text-3);
+  font-size: 1.2rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.6rem;
+}
+.tvg-tick.is-major {
+  color: var(--tv-text-1);
+  font-weight: 800;
+}
+.tvg-now-head {
+  position: absolute;
+  top: 0.4rem;
+  z-index: 2;
+  padding: 0.1rem 0.4rem;
+  border-radius: 0.2rem;
+  background: var(--tv-live);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 800;
+  transform: translateX(-50%);
+}
+.tvg-channels {
+  position: relative;
+  overflow: hidden;
+}
+.tvg-ch {
+  position: absolute;
+  left: 0;
+  right: 0.8rem;
+  display: grid;
+  grid-template-columns: 2.6rem 5.4rem minmax(0, 1fr);
+  align-items: center;
+  gap: 0.8rem;
+  height: 6rem;
+  margin-top: 0.4rem;
+  padding: 0 0.6rem;
+  border-radius: 0.3rem;
+  background: var(--tv-surface-1);
+}
+.tvg-ch.is-current {
+  background: var(--tv-surface-3);
+  box-shadow: inset 0.3rem 0 0 var(--tv-accent);
+}
+.tvg-ch__num {
+  color: var(--tv-text-3);
+  font-size: 1.3rem;
+  font-weight: 800;
+  text-align: right;
+}
+.tvg-ch__logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 3.6rem;
+}
+.tvg-ch__logo img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+.tvg-ch__name {
+  overflow: hidden;
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tvg-view {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+}
+.tvg-skel-row {
+  height: 6rem;
+  margin-top: 0.4rem;
+}
+.tvg-col {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  border-left: 0.1rem dashed rgba(255, 255, 255, 0.06);
+}
+.tvg-col.is-major {
+  border-left-style: solid;
+}
+.tvg-row {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 6rem;
+  margin-top: 0.4rem;
+}
+.tvg-row__empty {
+  position: absolute;
+  left: 1rem;
+  top: 1.8rem;
+  color: var(--tv-text-4);
+  font-size: 1.2rem;
+}
+.tvg-block {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  padding: 0 0.15rem;
+}
+.tvg-block__inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  padding: 0 0.9rem;
+  overflow: hidden;
+  border-radius: 0.3rem;
+  background: var(--tv-surface-2);
+  transition:
+    background-color 120ms linear,
+    color 120ms linear;
+}
+.tvg-block--live .tvg-block__inner {
+  background: #3a3a3a;
+}
+.tvg-block--past .tvg-block__inner {
+  color: var(--tv-text-3);
+  background: #1c1c1c;
+}
+.tvg-block.has-reminder .tvg-block__inner {
+  box-shadow: inset 0.3rem 0 0 var(--tv-accent);
+}
+.tvg-block.is-clipped-start .tvg-block__inner {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.tvg-block.is-focused {
+  z-index: 3;
+}
+.tvg-block.is-focused .tvg-block__inner {
+  background: #fff;
+  color: #000;
+  box-shadow: 0 0 0 0.25rem #fff;
+}
+.tvg-block.is-focused.has-reminder .tvg-block__inner {
+  box-shadow:
+    inset 0.3rem 0 0 var(--tv-accent),
+    0 0 0 0.25rem #fff;
+}
+.tvg-block__title {
+  overflow: hidden;
+  font-size: 1.35rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tvg-block__time {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  overflow: hidden;
+  color: var(--tv-text-3);
+  font-size: 1.1rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.tvg-block.is-focused .tvg-block__time {
+  color: #333;
+}
+.tvg-block__bell {
+  color: var(--tv-accent);
+}
+.tvg-block.is-focused .tvg-block__bell {
+  color: #000;
+}
+.tvg-now {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 4;
+  width: 0.2rem;
+  margin-left: -0.1rem;
+  background: var(--tv-live);
+  pointer-events: none;
+}
+
+.tvg-dialog .tv-dialog__message {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  max-width: 56rem;
+}
+.tvg-dialog__meta {
+  color: var(--tv-text-2);
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+.tvg-dialog__text {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--tv-text-3);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+}

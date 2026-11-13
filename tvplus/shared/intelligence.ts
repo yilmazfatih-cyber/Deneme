@@ -290,6 +290,11 @@ export interface ClusteringRun {
   /** −1…1 ortalama siluet (örneklemle); hesaplanamadıysa null */
   silhouette: number | null
   sources: ViewingSource[]
+  /** Geçmişi çok kısa olduğu için kümelenmeyen izleyici sayısı */
+  unassigned?: number
+  durationMs?: number
+  /** Denenen küme sayıları ve siluetleri */
+  candidates?: { k: number; silhouette: number | null }[]
 }
 
 export interface CommunitiesResponse {
@@ -401,6 +406,7 @@ export interface PlanResult {
  * GET  /api/studio/embeddings/videos/:videoId/shots                  → ShotSummary[]
  * GET  /api/studio/embeddings/videos/:videoId/shots/:index/neighbors → NeighborShot[]
  * GET  /api/studio/embeddings/projection                             → ProjectionPoint[]   (başlık vektörlerinin 2B izdüşümü)
+ * GET  /api/studio/embeddings/videos/:videoId/shots/:index/keyframe.jpg → image/jpeg (çekimin anahtar karesi)
  * POST /api/studio/embeddings/rebuild                                → EmbeddingInfo
  */
 
@@ -468,4 +474,110 @@ export interface StudioOverview {
   sources: DataSourceStatus[]
   audience: ClusteringRun | null
   embeddings: EmbeddingInfo | null
+}
+
+/* ═════════════ Tahmin modeli ═════════════
+ * İzleme verisinden eğitilen öneri modeli: her profil için her başlığa bir puan ve "eşleşme" yüzdesi üretir.
+ * Girdileri: izleyici × başlık özetleri (iş birlikçi katman) + başlığın içerik işaretleri — eğitilmiş gömme vektörü,
+ * etiket ölçekleri, mikro türler (içerik kulesi; hiç izlenmemiş başlıkları da puanlar) + sıralayıcı özellikleri.
+ *
+ * GET  /api/studio/model                                   → PredictionModelInfo   (model kartı, son eğitim, ölçümler)
+ * POST /api/studio/model/train          gövde: TrainRequest → TrainingRun           (arka planda eğitir; durum RUNNING döner)
+ * GET  /api/studio/model/runs                              → TrainingRun[]         (en yeni önce)
+ * GET  /api/studio/model/viewers?communityId=&first=20     → ModelViewerSample[]   (simülatör için örnek izleyiciler)
+ * GET  /api/studio/model/predict?viewerId=|profileGuid=&first=20 → ViewerPrediction
+ * GET  /api/studio/model/explain?viewerId=|profileGuid=&titleId= → PredictionExplanation
+ */
+
+/** Sıralama ölçümleri (zamana göre ayrılmış sınama kümesinde; 0–1). */
+export interface RankingMetrics {
+  recallAt10: number
+  ndcgAt10: number
+  /** En az bir isabet alan izleyici oranı */
+  hitRateAt10: number
+  /** İlk 10 önerilerde en az bir kez yer alan başlıkların kataloğa oranı */
+  coverage: number
+}
+
+export interface TrainRequest {
+  factors?: number
+  iterations?: number
+  regularization?: number
+  /** Güven ağırlığı: c = 1 + alpha × ilgi puanı */
+  alpha?: number
+  seed?: number
+}
+
+export interface TrainingRun {
+  runId: string
+  status: 'RUNNING' | 'DONE' | 'FAILED'
+  error: string | null
+  startedAt: string
+  finishedAt: string | null
+  durationMs: number | null
+  sources: ViewingSource[]
+  viewers: number
+  titles: number
+  interactions: number
+  params: Required<TrainRequest>
+  /** Yineleme başına eğitim kaybı */
+  loss: number[]
+  /**
+   * Ölçümler: model, karşılaştırma tabanları (popülerlik; tür yakınlığı) ve soğuk başlangıç
+   * (eğitimde hiç görülmemiş başlıklar yalnız içerik kulesiyle sıralanır). Eğitim bitmeden null.
+   */
+  metrics: {
+    model: RankingMetrics
+    popularity: RankingMetrics
+    genreAffinity: RankingMetrics
+    coldStart: RankingMetrics | null
+  } | null
+}
+
+export interface PredictionModelInfo {
+  ready: boolean
+  /** ör. 'tahmin-1 · 12 eğitim' */
+  version: string
+  /** Okunur özet, ör. "örtük geri bildirimli ALS + içerik kulesi + lojistik sıralayıcı" */
+  algorithm: string
+  trainedAt: string | null
+  run: TrainingRun | null
+  /** Sıralayıcının özellikleri ve öğrenilmiş ağırlıkları */
+  features: { name: string; description: string; weight: number }[]
+  /** İçerik kulesinin kullandığı işaretler */
+  contentSignals: {
+    tags: boolean
+    microgenres: boolean
+    /** Gömme sağlayıcısı ve sürümü (ör. 'dosya · mediafm-mini-1'); vektör yoksa null */
+    embeddings: string | null
+  }
+  /** Verinin kaynağı hakkında not (sentetik örnekle eğitildiyse açıkça söyler) */
+  note: string
+}
+
+export interface PredictionExplanation {
+  titleId: number
+  /** 0–100 eşleşme yüzdesi */
+  match: number
+  score: number
+  /** Sıralayıcı özelliklerinin katkıları */
+  parts: { name: string; value: number; contribution: number }[]
+  /** İzlediklerinden bu tahmine en çok katkı yapanlar */
+  becauseOf: { titleId: number; weight: number }[]
+  /** Okunur gerekçeler (Türkçe, kısa) */
+  reasons: string[]
+}
+
+export interface ModelViewerSample {
+  viewerId: string
+  communityId: string | null
+  titles: number
+  hours: number
+}
+
+export interface ViewerPrediction {
+  viewerId: string
+  communityId: string | null
+  history: { titleId: number; engagement: number }[]
+  picks: { titleId: number; score: number; match: number }[]
 }

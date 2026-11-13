@@ -88,7 +88,8 @@ export function indexVocabulary(vocabulary: TagVocabulary): VocabIndex {
   )
   const descriptors = new Map<string, DescriptorIndexEntry>()
   for (const s of vocabulary.scales)
-    for (const d of s.descriptors) descriptors.set(d.key, { scale: s, key: d.key, min: d.min, max: d.max, adjective: d.adjective })
+    for (const d of s.descriptors)
+      descriptors.set(d.key, { scale: s, key: d.key, min: d.min, max: d.max, adjective: d.adjective })
   const corePriority = new Map(Object.keys(vocabulary.naming.genreNouns).map((k, i) => [k, i]))
   const slotOrder = new Map<MicrogenreSlot, number>(vocabulary.naming.order.map((s, i) => [s, i]))
   const index: VocabIndex = { vocabulary, scales, facets, descriptors, corePriority, slotOrder }
@@ -125,13 +126,18 @@ export function checkVocabulary(v: TagVocabulary, file: string): TaggingIssue[] 
   const adjectives = new Map<string, string>()
   v.scales.forEach((s, si) => {
     const p = `scales[${si}]`
-    if (s.group === 'ADVISORY' && !s.advisory) err(`${p}.advisory`, `${s.key}: içerik uyarısı ölçeğinde RTÜK bağı (advisory) zorunlu`)
-    if (s.group !== 'ADVISORY' && s.advisory) err(`${p}.advisory`, `${s.key}: RTÜK bağı yalnız ADVISORY ölçeklerinde olur`)
+    if (s.group === 'ADVISORY' && !s.advisory)
+      err(`${p}.advisory`, `${s.key}: içerik uyarısı ölçeğinde RTÜK bağı (advisory) zorunlu`)
+    if (s.group !== 'ADVISORY' && s.advisory)
+      err(`${p}.advisory`, `${s.key}: RTÜK bağı yalnız ADVISORY ölçeklerinde olur`)
     if (s.advisory) {
       const r = s.advisory.ratings
       for (let i = 1; i < r.length; i++)
         if (RATING_RANK[r[i]!] < RATING_RANK[r[i - 1]!])
-          err(`${p}.advisory.ratings[${i}]`, `${s.key}: önerilen işaret seviye yükseldikçe düşemez (${r[i - 1]} → ${r[i]})`)
+          err(
+            `${p}.advisory.ratings[${i}]`,
+            `${s.key}: önerilen işaret seviye yükseldikçe düşemez (${r[i - 1]} → ${r[i]})`,
+          )
     }
     s.descriptors.forEach((d, di) => {
       const dp = `${p}.descriptors[${di}]`
@@ -149,7 +155,8 @@ export function checkVocabulary(v: TagVocabulary, file: string): TaggingIssue[] 
   v.facets.forEach((f, fi) => {
     const p = `facets[${fi}]`
     if (!f.multi && f.max !== 1) err(`${p}.max`, `${f.key}: tek değerli (multi: false) yüzde max 1 olmalı`)
-    if (f.max > f.values.length) warn(`${p}.max`, `${f.key}: max (${f.max}) değer sayısından (${f.values.length}) büyük`)
+    if (f.max > f.values.length)
+      warn(`${p}.max`, `${f.key}: max (${f.max}) değer sayısından (${f.values.length}) büyük`)
     const keys = new Set<string>()
     f.values.forEach((val, vi) => {
       if (keys.has(val.key)) err(`${p}.values[${vi}].key`, `${f.key}: değer anahtarı "${val.key}" yinelenmiş`)
@@ -200,6 +207,12 @@ export function checkVocabulary(v: TagVocabulary, file: string): TaggingIssue[] 
       if (!resolvesQuality(index, ref))
         err(`naming.genreNouns.${g}.implied[${i}]`, `"${ref}" çözülemedi (biçim: YUVA:anahtar, ör. ADJECTIVE:komik)`)
     })
+  ;(n.redundantPairs ?? []).forEach((pair, i) =>
+    pair.forEach((ref, j) => {
+      if (!resolvesQuality(index, ref))
+        err(`naming.redundantPairs[${i}][${j}]`, `"${ref}" çözülemedi (biçim: YUVA:anahtar, ör. FORMAT:bicim:sessiz)`)
+    }),
+  )
   return issues
 }
 
@@ -310,7 +323,10 @@ function readJson(abs: string, rel: string, issues: TaggingIssue[]): unknown {
  * Sözlüğü ve örnek fişleri okur ve doğrular; sorunları döndürür (fırlatmaz).
  * contentDir'de sözlük yoksa `fallbackVocabulary` (depodaki asıl sözlük) kullanılır — test içerikleri yalnız başlık taşır.
  */
-export function readTaggingContent(contentDir: string, fallbackVocabulary?: string): TaggingContent | { issues: TaggingIssue[] } {
+export function readTaggingContent(
+  contentDir: string,
+  fallbackVocabulary?: string,
+): TaggingContent | { issues: TaggingIssue[] } {
   const issues: TaggingIssue[] = []
   let vocabAbs = join(contentDir, VOCABULARY_FILE)
   if (!existsSync(vocabAbs) && fallbackVocabulary && existsSync(fallbackVocabulary)) vocabAbs = fallbackVocabulary
@@ -357,8 +373,7 @@ export function readTaggingContent(contentDir: string, fallbackVocabulary?: stri
   return { vocabulary, vocabularyFile: vocabRel, sheets, issues }
 }
 
-export const formatIssue = (i: TaggingIssue): string =>
-  `${i.file}${i.path ? ` ${i.path}` : ''}: ${i.message}`
+export const formatIssue = (i: TaggingIssue): string => `${i.file}${i.path ? ` ${i.path}` : ''}: ${i.message}`
 
 /** Sunucu açılışı: içerik geçersizse açık bir Türkçe iletiyle hemen durur (yarım sözlükle çalışılmaz). */
 export function loadTaggingContentOrThrow(contentDir: string, fallbackVocabulary?: string): TaggingContent {

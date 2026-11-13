@@ -112,6 +112,33 @@ describe('içe aktarma ucu (gerçek dinleyici)', () => {
 })
 
 describe('eşleme, sentetik, silme', () => {
+  it('gerçek izleyici sayısı eşiği geçince SENTETİK analiz dışı (realDataMinViewers: 3)', async () => {
+    const app = await createTestApp({ realDataMinViewers: 3 })
+    apps.push(app)
+    await app.inject({
+      method: 'POST',
+      url: '/api/studio/sources/synthetic/generate',
+      payload: { viewers: 20, days: 5, seed: 2 },
+    })
+    const line = (who: string, n: number) =>
+      JSON.stringify({
+        event: 'Video Start',
+        properties: { time: 1_790_000_000 + n, distinct_id: who, $insert_id: `t${n}`, content_id: '80010001' },
+      })
+    const send = (lines: string[]) =>
+      app.inject({ method: 'POST', url: IMPORT, payload: lines.join('\n'), headers: { 'content-type': 'text/plain' } })
+    await send([line('a', 1), line('b', 2)])
+    expect(app.services.viewing.activeSources()).toEqual(['MIXPANEL', 'SYNTHETIC'])
+    await send([line('c', 3)])
+    expect(app.services.viewing.activeSources()).toEqual(['MIXPANEL'])
+    const src = (await app.inject({ method: 'GET', url: '/api/studio/sources' })).json<SourcesResponse>()
+    expect(Object.fromEntries(src.sources.map((s) => [s.source, s.active]))).toEqual({
+      TVPLUS: false,
+      MIXPANEL: true,
+      SYNTHETIC: false,
+    })
+  })
+
   it('eşleme GET/PUT: doğrulanır, sunucu deposuna yazılır, yeni olay adı kod değişmeden bağlanır', async () => {
     const app = await createTestApp()
     apps.push(app)
@@ -149,7 +176,7 @@ describe('eşleme, sentetik, silme', () => {
     expect(src.mixpanel.mappedEvents).toContain('Oynatma Başladı')
   })
 
-  it('sentetik üretim aynı içe aktarıcıdan geçer; gerçek veri gelince analiz dışı; kaynak silme', async () => {
+  it('sentetik üretim aynı içe aktarıcıdan geçer; gerçek veri eşik altında örnekle birlikte; kaynak silme', async () => {
     const app = await createTestApp()
     apps.push(app)
     const gen = await app.inject({
@@ -174,7 +201,8 @@ describe('eşleme, sentetik, silme', () => {
     expect(app.services.viewing.sources().find((s) => s.source === 'SYNTHETIC')!.events).toBe(rep.accepted)
 
     await app.inject({ method: 'POST', url: IMPORT, payload: SAMPLE, headers: { 'content-type': 'text/plain' } })
-    expect(app.services.viewing.activeSources()).toEqual(['MIXPANEL'])
+    // Örnek dosyada birkaç gerçek izleyici var: varsayılan eşiğin (50) altında SENTETİK birlikte etkin kalır
+    expect(app.services.viewing.activeSources()).toEqual(['MIXPANEL', 'SYNTHETIC'])
     const bad = await app.inject({
       method: 'POST',
       url: '/api/studio/sources/synthetic/generate',

@@ -1,9 +1,11 @@
+# Rehber (#/rehber): kanallar + gün penceresindeki yayınlar (hatırlatma durumu dahil).
 query Guide($from: DateTime!, $to: DateTime!, $category: String) {
   channels(category: $category) {
     ...ChannelCard
     airings(from: $from, to: $to) {
       ...AiringBrief
       synopsis
+      hasReminder
       video {
         videoId
       }

@@ -10,6 +10,7 @@ import { buildLolomo, MIN_ROW_ITEMS } from '../src/services/discovery/lolomo'
 import { similarity, similarTitles } from '../src/services/discovery/similarity'
 import { top10ForProfile, top10Rank } from '../src/services/discovery/top10'
 import { localDayNumber } from '../src/services/epg/time'
+import { installEmptyIntelligence } from './fixtures/intelligence'
 import { ADULT, createAlanApp, FIXTURE_CONTENT_DIR, ID, KID, passport, setClock, TEEN, TEST_NOW } from './fixtures/alan'
 
 const ALL_ROWS = ['LIVE_HERO', 'CHANNEL_ROW', 'TONIGHT_ROW', 'CATCHUP_ROW', 'POSTER_ROW', 'CONTINUE_ROW', 'BRIDGE']
@@ -27,6 +28,7 @@ describe('Film & Dizi lolomo', () => {
   let app: FastifyInstance
   beforeEach(async () => {
     app = await createAlanApp()
+    installEmptyIntelligence(app) // bugünkü satırlar; içerik zekâsı satırları discovery-intelligence.test.ts'te
   })
   afterEach(async () => {
     await app.close()
@@ -131,6 +133,7 @@ describe('Film & Dizi lolomo', () => {
     }
     writeFileSync(file, JSON.stringify(titles))
     const other = await createAlanApp({ contentDir: dir })
+    installEmptyIntelligence(other)
     const l = buildLolomo(other.services, ADULT, { top10Supported: true, now: TEST_NOW })
     expect(l.lists.at(-1)).toMatchObject({
       context: 'leaving',

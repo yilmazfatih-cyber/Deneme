@@ -1,15 +1,9 @@
 /**
- * TV Canlı TV ve Rehber ekranları — YER TUTUCU (TV canlı + kumanda ekibi dolduracak). Dışa aktarım adları SABİT.
- *   TvLive   /tv/canli
- *   TvGuide  /tv/rehber
+ * TV Canlı TV ve Rehber ekranları. Dışa aktarım adları SABİT.
+ *   TvLive   /tv/canli   kanal listesi + sahne (TvLiveScreen.tsx)
+ *   TvGuide  /tv/rehber  zaman ızgarası (TvGuideScreen.tsx)
+ * Veri: data.ts · saf mantık: model.ts, guideModel.ts (testli).
  */
-import type { ReactElement } from 'react'
-import { TvPlaceholderScreen } from '../shell/Placeholder'
-
-export function TvLive(): ReactElement {
-  return <TvPlaceholderScreen id="canli" title="Canlı TV" />
-}
-
-export function TvGuide(): ReactElement {
-  return <TvPlaceholderScreen id="rehber" title="Rehber" />
-}
+export { TvLive } from './TvLiveScreen'
+export { TvGuide } from './TvGuideScreen'
+export { lastTunedChannel, noteTunedChannel } from './data'

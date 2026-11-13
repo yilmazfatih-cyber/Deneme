@@ -91,7 +91,12 @@ export function computeMix(input: MixInput): CatalogMix {
     totalTitles: titles.length,
     totalHours: Math.round(totalHours * 100) / 100,
     byGenre: breakdown(titles, hoursOf, (t) => t.genres, genreName),
-    byType: breakdown(titles, hoursOf, (t) => [t.type], (k) => TYPE_NAMES[k as ContentTitle['type']] ?? k),
+    byType: breakdown(
+      titles,
+      hoursOf,
+      (t) => [t.type],
+      (k) => TYPE_NAMES[k as ContentTitle['type']] ?? k,
+    ),
     byCountry: breakdown(titles, hoursOf, (t) => [countryOf(t)], countryName),
     byLanguage: breakdown(titles, hoursOf, (t) => [languageOf(t)], languageName),
     byAcquisition: breakdown(

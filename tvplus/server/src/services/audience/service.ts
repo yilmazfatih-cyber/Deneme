@@ -58,8 +58,13 @@ interface Model {
   sim: Float32Array
 }
 
+/**
+ * Kalıcı biçim yalnız modeli taşır (merkezler, özellik uzayı, topluluklar): küçük kalır, yazımı olay döngüsünü tutmaz.
+ * İzleyici atamaları taşınmaz; geri yüklenen modelde bir izleyicinin topluluğu kendi olgularından en yakın merkezle
+ * bulunur (aynı hesap), arka plandaki tazeleme bitince atamalar yeniden bellekte olur.
+ */
 export interface PersistedModel {
-  version: 1
+  version: 2
   run: ClusteringRunInfo
   communities: TasteCommunity[]
   titleLifts: TitleLift[][]
@@ -68,9 +73,6 @@ export interface PersistedModel {
   idf: number[]
   ct: number[]
   k: number
-  viewers: string[]
-  assign: number[]
-  sim: number[]
 }
 
 interface AudienceState {
@@ -113,7 +115,7 @@ const r6 = (x: number) => Math.round(x * 1e6) / 1e6
 
 export function serialiseModel(m: Model): PersistedModel {
   return {
-    version: 1,
+    version: 2,
     run: m.run,
     communities: m.communities,
     titleLifts: m.titleLifts,
@@ -122,16 +124,11 @@ export function serialiseModel(m: Model): PersistedModel {
     idf: Array.from(m.idf, r6),
     ct: Array.from(m.ct, r6),
     k: m.k,
-    viewers: [...m.viewerRow.keys()],
-    assign: Array.from(m.assign),
-    sim: Array.from(m.sim, r6),
   }
 }
 
 export function restoreModel(p: PersistedModel): Model | null {
-  if (p.version !== 1) return null
-  const viewerRow = new Map<string, number>()
-  p.viewers.forEach((v, i) => viewerRow.set(v, i))
+  if (p.version !== 2) return null
   return {
     stamp: null,
     run: p.run,
@@ -142,9 +139,9 @@ export function restoreModel(p: PersistedModel): Model | null {
     idf: Float32Array.from(p.idf),
     ct: Float32Array.from(p.ct),
     k: p.k,
-    viewerRow,
-    assign: Int32Array.from(p.assign),
-    sim: Float32Array.from(p.sim),
+    viewerRow: new Map(),
+    assign: new Int32Array(0),
+    sim: new Float32Array(0),
   }
 }
 
@@ -203,7 +200,11 @@ export function createAudienceService(app: FastifyInstance, tuning: AudienceTuni
     const t0 = performance.now()
     const s = svc()
     const coverage = new Map<number, number>()
-    for (const f of snap.facts) coverage.set(f.titleId, (coverage.get(f.titleId) ?? 0) + 1)
+    for (let i = 0; i < snap.facts.length; i++) {
+      const id = snap.facts[i]!.titleId
+      coverage.set(id, (coverage.get(id) ?? 0) + 1)
+      if ((i & 32767) === 0) yield
+    }
     const space = buildFeatureSpace(snap.titles, s.tagging, s.microgenres, coverage)
     yield
     const mat = yield* buildViewerMatrix(snap.facts, space)
@@ -215,7 +216,8 @@ export function createAudienceService(app: FastifyInstance, tuning: AudienceTuni
         return { device: null, country: null }
       }
     }
-    const desc = yield* describe(mat, space, res, traitsOf)
+    const titleTypes = new Map(snap.titles.map((t) => [t.videoId, t.type]))
+    const desc = yield* describe(mat, space, res, traitsOf, titleTypes)
     const viewerRow = new Map<string, number>()
     mat.viewerIds.forEach((v, i) => viewerRow.set(v, i))
     const hash = createHash('sha1')

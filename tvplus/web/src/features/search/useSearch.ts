@@ -1,9 +1,12 @@
 /**
- * Arama sorgusu: 250 ms gecikmeli, AbortController ile iptal edilir; yanıt sunucunun `expires` anına kadar
- * önbellekten verilir (isabet ağa HİÇ çıkmaz). Her isabet/ıska "Kaputun altı" paneline `cache` olayı yollar.
- * Yeni sorgu sürerken eski sonuç ekranda kalır.
+ * Arama sorguları.
+ *   useSearch       — sayfa: 250 ms gecikmeli, AbortController ile iptal edilir, eski yanıt düşürülür
+ *                     (queryState.ts); yanıt sunucunun `expires` anına kadar önbellekten verilir (isabet ağa HİÇ
+ *                     çıkmaz). Her isabet/ıska "Kaputun altı" paneline `cache`, her yanıt `predict · sıralama` yollar.
+ *   usePredictions  — açılır liste: `searchPredictions` (hafif uç), 100 ms gecikme, kısa ömürlü bellek;
+ *                     her yanıt `predict · tamamlama` yollar.
  */
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useReducer, useRef, useState } from 'react'
 import { useActiveProfile } from '../../app'
 import { gql } from '../../api/graphql'
 import { devbus } from '../../lib/devbus'
@@ -11,23 +14,26 @@ import { logEvent } from '../../telemetry/logger'
 import {
   buildDeclaration,
   declarationSignature,
-  type EntityKindName,
+  type CapabilityChoice,
   type SearchPageCapabilities,
 } from './capabilities'
-import { filtersInput, sectionCounts, type Filters, type SearchPageData, type SearchResponse } from './searchModel'
+import { ledger, onFeedback } from './feedback'
+import { debounceFor, initialQueryState, queryReducer, type QueryState } from './queryState'
+import {
+  rankingSummary,
+  sectionCounts,
+  type SearchPageData,
+  type SearchPrediction,
+  type SearchResponse,
+} from './searchModel'
 import { searchCache } from './searchStore'
-import { searchCacheKey } from './ttlCache'
+import { normalizeTerm, searchCacheKey } from './ttlCache'
 
 export const DEBOUNCE_MS = 250
+export const PREDICT_DEBOUNCE_MS = 100
 export const PAGE_SIZE = 48
 
-export interface SearchState {
-  data?: SearchPageData
-  /** Ekrandaki verinin terimi (eski veri gösteriliyorsa yeni terimden farklıdır) */
-  dataKey: string | null
-  loading: boolean
-  error: Error | null
-  fromCache: boolean
+export interface SearchState extends QueryState<SearchPageData> {
   declaration: SearchPageCapabilities
   retry: () => void
   /** Önbelleği atlayarak bu sorguyu yeniden çeker (ör. son aramalar silinince) */
@@ -44,53 +50,45 @@ function logSearch(page: SearchPageData, fromCache: boolean): void {
       isFallback: page.isFallback,
       fromCache,
       requestId: page.requestId,
+      modelVersion: page.modelVersion,
     },
     null,
   )
 }
 
-export function useSearch(
-  term: string,
-  filters: Filters,
-  enabledKinds: ReadonlySet<EntityKindName>,
-  exactTerm = false,
-): SearchState {
-  const profile = useActiveProfile()?.guid ?? ''
-  const kindsKey = [...enabledKinds].sort().join(',')
-  const declaration = useMemo(() => buildDeclaration(enabledKinds), [kindsKey])
-  const signature = declarationSignature(declaration)
-  const fInput = filtersInput(filters)
-  const key = searchCacheKey({ profile, term, filters: fInput ?? null, capabilities: signature, exact: exactTerm })
+/** Gösterilen yanıt: geri bildirim defterine yazılır, modelin sıralaması panele gider. */
+function shown(page: SearchPageData, fromCache: boolean): void {
+  ledger.registerPage(page.requestId, page.searchTerm, page.sections)
+  logSearch(page, fromCache)
+  devbus.emit('predict', 'sıralama', { ...rankingSummary(page), fromCache, requestId: page.requestId })
+}
 
-  const [state, setState] = useState<{
-    data?: SearchPageData
-    dataKey: string | null
-    loading: boolean
-    error: Error | null
-    fromCache: boolean
-  }>({
-    dataKey: null,
-    loading: true,
-    error: null,
-    fromCache: false,
-  })
+export function useSearch(term: string, choice: CapabilityChoice, exactTerm = false, explain = false): SearchState {
+  const profile = useActiveProfile()?.guid ?? ''
+  const choiceKey = `${[...choice.kinds].sort().join(',')}|${choice.predicted}`
+  const declaration = useMemo(() => buildDeclaration(choice), [choiceKey])
+  const signature = declarationSignature(declaration)
+  const key = searchCacheKey({ profile, term, filters: null, capabilities: signature, exact: exactTerm, explain })
+
+  const [state, dispatch] = useReducer(queryReducer<SearchPageData>, undefined, initialQueryState<SearchPageData>)
   const [nonce, setNonce] = useState(0)
-  const hasData = useRef(false)
-  const live = useRef({ term, declaration, fInput, exactTerm })
-  live.current = { term, declaration, fInput, exactTerm }
+  const seqRef = useRef(0)
+  const hasData = state.data !== undefined
+  const live = useRef({ term, declaration, exactTerm, explain, hasData })
+  live.current = { term, declaration, exactTerm, explain, hasData }
 
   useEffect(() => {
+    const seq = ++seqRef.current
     const hit = searchCache.get(key, Date.now())
     if (hit) {
       devbus.emit('cache', 'arama: isabet', { key, expires: hit.expires, ageMs: hit.ageMs })
-      setState({ data: hit.value.searchPage, dataKey: key, loading: false, error: null, fromCache: true })
-      hasData.current = true
-      logSearch(hit.value.searchPage, true)
+      dispatch({ type: 'cache', key, seq, data: hit.value.searchPage })
+      shown(hit.value.searchPage, true)
       return
     }
-    setState((s) => ({ ...s, loading: true, error: null }))
+    dispatch({ type: 'request', key, seq })
     const ctrl = new AbortController()
-    const { term: t, declaration: d, fInput: f, exactTerm: x } = live.current
+    const { term: t, declaration: d, exactTerm: x, explain: ex, hasData: had } = live.current
     const timer = window.setTimeout(
       () => {
         devbus.emit('cache', 'arama: ıska', { key, expires: null, ageMs: null })
@@ -99,16 +97,17 @@ export function useSearch(
           'SearchPageQueryResults',
           {
             searchTerm: t.trim(),
-            options: { pageCapabilities: d, filters: f, pageSize: PAGE_SIZE, ...(x ? { exactTerm: true } : {}) },
+            options: { pageCapabilities: d, pageSize: PAGE_SIZE, ...(x ? { exactTerm: true } : {}) },
+            withExplain: ex,
           },
           { signal: ctrl.signal },
         ).then(
           (res) => {
-            if (ctrl.signal.aborted) return
+            // Eski yanıt: iptal edildi ya da yerine yenisi istendi → düşür (önbelleğe de yazma).
+            if (ctrl.signal.aborted || seq !== seqRef.current) return
             searchCache.set(key, res, Date.parse(res.searchPage.expires), Date.now())
-            setState({ data: res.searchPage, dataKey: key, loading: false, error: null, fromCache: false })
-            hasData.current = true
-            logSearch(res.searchPage, false)
+            dispatch({ type: 'response', key, seq, data: res.searchPage })
+            shown(res.searchPage, false)
             devbus.emit('cache', 'arama: saklandı', {
               key,
               expires: Date.parse(res.searchPage.expires),
@@ -117,12 +116,12 @@ export function useSearch(
             })
           },
           (err: unknown) => {
-            if (ctrl.signal.aborted) return
-            setState((s) => ({ ...s, loading: false, error: err instanceof Error ? err : new Error(String(err)) }))
+            if (ctrl.signal.aborted || seq !== seqRef.current) return
+            dispatch({ type: 'error', seq, error: err instanceof Error ? err : new Error(String(err)) })
           },
         )
       },
-      hasData.current ? DEBOUNCE_MS : 0,
+      debounceFor(had, t, DEBOUNCE_MS),
     )
     return () => {
       window.clearTimeout(timer)
@@ -139,4 +138,78 @@ export function useSearch(
       setNonce((n) => n + 1)
     },
   }
+}
+
+/* ───────────── Tamamlama tahminleri ───────────── */
+
+const PREDICT_TTL_MS = 30_000
+const predictMemo = new Map<string, { at: number; value: SearchPrediction[] }>()
+
+// Geri bildirim tıklanma sayaçlarını değiştirir: tamamlamalar yeniden sorulmalı.
+onFeedback(() => predictMemo.clear())
+
+export interface PredictionsState {
+  /** Gösterilen tahminlerin öneki (eski liste gösteriliyorsa yazılandan farklıdır) */
+  prefix: string | null
+  items: SearchPrediction[]
+  loading: boolean
+}
+
+export function usePredictions(prefix: string, enabled: boolean, first = 8): PredictionsState {
+  const profile = useActiveProfile()?.guid ?? ''
+  const norm = normalizeTerm(prefix)
+  const key = `${profile}|${norm}|${first}`
+  const [state, dispatch] = useReducer(
+    queryReducer<SearchPrediction[]>,
+    undefined,
+    initialQueryState<SearchPrediction[]>,
+  )
+  const seqRef = useRef(0)
+
+  useEffect(() => {
+    if (!enabled) return
+    const seq = ++seqRef.current
+    const hit = predictMemo.get(key)
+    if (hit && Date.now() - hit.at < PREDICT_TTL_MS) {
+      dispatch({ type: 'cache', key, seq, data: hit.value })
+      return
+    }
+    dispatch({ type: 'request', key, seq })
+    const ctrl = new AbortController()
+    const timer = window.setTimeout(
+      () => {
+        const t0 = performance.now()
+        gql<{ searchPredictions: SearchPrediction[] }, { prefix: string; first: number }>(
+          'SearchPredictions',
+          { prefix: norm, first },
+          { signal: ctrl.signal },
+        ).then(
+          (res) => {
+            if (ctrl.signal.aborted || seq !== seqRef.current) return
+            predictMemo.set(key, { at: Date.now(), value: res.searchPredictions })
+            if (predictMemo.size > 80) predictMemo.delete(predictMemo.keys().next().value as string)
+            dispatch({ type: 'response', key, seq, data: res.searchPredictions })
+            devbus.emit(
+              'predict',
+              'tamamlama',
+              { prefix: norm, predictions: res.searchPredictions },
+              { ms: performance.now() - t0 },
+            )
+          },
+          (err: unknown) => {
+            if (ctrl.signal.aborted || seq !== seqRef.current) return
+            dispatch({ type: 'error', seq, error: err instanceof Error ? err : new Error(String(err)) })
+          },
+        )
+      },
+      state.data === undefined ? 0 : PREDICT_DEBOUNCE_MS,
+    )
+    return () => {
+      window.clearTimeout(timer)
+      ctrl.abort()
+    }
+  }, [key, enabled])
+
+  const shownPrefix = state.dataKey === null ? null : (state.dataKey.split('|')[1] ?? null)
+  return { prefix: shownPrefix, items: state.data ?? [], loading: state.loading }
 }

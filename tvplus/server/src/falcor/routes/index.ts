@@ -3,6 +3,9 @@
  *   lolomo → ref lolomos[guid] → ref lists[listId] → ref videos[id]
  *   lolomoByCategory[home|shows|movies|newPopular] → ref lolomos["<guid>:<kategori>"] (home → lolomos[guid], aynı nesne)
  * Motor ref'leri izler; bu dosya yalnızca yaprakları ve ref'leri üretir.
+ * `lists[..].summary` isteğe bağlı alanları: genreId, collectionId, reason (becauseYouWatched: ortak mikro tür adı),
+ * microgenreId (microgenre satırı), communityId (tasteCommunity satırı), source (gems: 'model' | 'rules') — MIMARI §10.1.
+ * `videos[id].matchScore`: tahmin modelinin 0–100 eşleşme yüzdesi (film/dizi); yoksa boş atom.
  */
 import type { FalcorKey } from '../../../../shared/types'
 import { videoEntityId, formatTctx } from '../../../../shared/tctx'
@@ -35,6 +38,7 @@ import {
   type Lolomo,
   type LolomoCategory,
 } from '../../services/discovery/lolomo'
+import { matchScoreOf } from '../../services/discovery/intel'
 import { memo, requestCache } from '../../services/discovery/memo'
 import { top10ForType, top10RankByType, type TitleType } from '../../services/discovery/top10'
 
@@ -156,6 +160,13 @@ export const VIDEO_FIELDS: Record<string, VideoField> = {
         top10ForType(ctx.services, ctx.passport.profile, nowOf(ctx), type),
       )
     return atom(top10RankByType(ctx.services, id, ctx.passport.profile, nowOf(ctx), listOf))
+  },
+  /** Tahmin modelinin eşleşme yüzdesi (yalnız film/dizi; model hazır değilse, profil yoksa ya da hata olursa boş atom) */
+  matchScore: (ctx, id) => {
+    const kind = ctx.services.catalog.videoInfo(id)!.kind
+    const g = guid(ctx)
+    const m = g && (kind === 'MOVIE' || kind === 'SHOW') ? matchScoreOf(ctx.services, g, id) : null
+    return m !== null ? atom(m, MEMBER_ATOM_EXPIRES_MS) : atom(undefined)
   },
   /** Önizleme kartındaki üç kısa etiket (GraphQL textEvidence BOB ile aynı) */
   tags: (ctx, id) => atom(textEvidenceOf(ctx.services.catalog.videoInfo(id)!.title, 'BOB').map((t) => t.text)),
@@ -298,6 +309,7 @@ const listSummaryRoute: FalcorRoute = {
               ...(L.reason !== undefined ? { reason: L.reason } : {}),
               ...(L.microgenreId !== undefined ? { microgenreId: L.microgenreId } : {}),
               ...(L.communityId !== undefined ? { communityId: L.communityId } : {}),
+              ...(L.source !== undefined ? { source: L.source } : {}),
             })
           : undefined,
       }

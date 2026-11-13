@@ -121,6 +121,11 @@ export const zRegion = z.object({
   /** "Yerli", "İskandinav", "Japon" */
   adjective: z.string().min(1),
   countries: z.array(z.string().regex(/^[A-Z]{2}$/)).min(1),
+  /**
+   * true → ad, türün tamlama biçimiyle kurulur: "Kore Dramları", "Amerikan Komedileri", "Japon Animasyonları".
+   * Sıfat gibi davrananlarda ("Yerli Dramlar", "Hollanda Yapımı Komediler") verilmez.
+   */
+  compound: z.boolean().optional(),
 })
 
 /** Yapım dönemi: başlığın `year` alanından türetilir, ör. 1920–1929 → "1920'lerden". */
@@ -144,6 +149,11 @@ export const zVocabulary = z
       eras: z.array(zEra).default([]),
       /** Yuvaların addaki sırası (soldan sağa); çekirdek tür adı en sonda gelir */
       order: z.array(z.enum(MICROGENRE_SLOTS)).min(1),
+      /**
+       * Aynı adda birlikte kullanılmayan nitelik çiftleri (`YUVA:anahtar`); biri ötekini zaten söyler:
+       * ["FORMAT:bicim:sessiz", "ADJECTIVE:ek-sifatlar:diyalogsuz"] → "Diyalogsuz Sessiz …" oluşmaz.
+       */
+      redundantPairs: z.array(z.tuple([z.string(), z.string()])).optional(),
     }),
   })
   .superRefine((v, ctx) => {

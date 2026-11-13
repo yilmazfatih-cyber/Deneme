@@ -7,7 +7,11 @@
       "question": "Ekranda cinsellik ne ölçüde gösteriliyor ya da konuşuluyor?",
       "group": "ADVISORY",
       "levels": [
-        { "value": 0, "label": "Yok", "description": "Cinsel içerikli hiçbir görüntü, söz ya da ima yok." },
+        {
+          "value": 0,
+          "label": "Yok",
+          "description": "Cinsel içerikli hiçbir görüntü, söz ya da ima yok."
+        },
         {
           "value": 1,
           "label": "İma",
@@ -34,8 +38,18 @@
           "description": "Cinsel ilişki açık çıplaklıkla ve ayrıntılı gösteriliyor; cinsellik yapımın belirleyici unsuru."
         }
       ],
-      "descriptors": [{ "key": "erotik", "min": 4, "max": 5, "adjective": "Erotik" }],
-      "advisory": { "reason": "cinsellik", "ratings": ["GENEL", "GENEL", "7+", "13+", "18+", "18+"] }
+      "descriptors": [
+        {
+          "key": "erotik",
+          "min": 4,
+          "max": 5,
+          "adjective": "Erotik"
+        }
+      ],
+      "advisory": {
+        "reason": "cinsellik",
+        "ratings": ["GENEL", "GENEL", "7+", "13+", "18+", "18+"]
+      }
     },
     {
       "key": "siddet",
@@ -43,7 +57,11 @@
       "question": "Ekranda fiziksel şiddet ne ölçüde ve nasıl gösteriliyor?",
       "group": "ADVISORY",
       "levels": [
-        { "value": 0, "label": "Yok", "description": "Kavga, vurma ya da silah kullanımı yok." },
+        {
+          "value": 0,
+          "label": "Yok",
+          "description": "Kavga, vurma ya da silah kullanımı yok."
+        },
         {
           "value": 1,
           "label": "Şakacı",
@@ -70,8 +88,18 @@
           "description": "Şiddet ayrıntılı ve ağır biçimde gösteriliyor; yapımın merkezinde ve kendi başına bir gösteri unsuru."
         }
       ],
-      "descriptors": [{ "key": "sert", "min": 4, "max": 5, "adjective": "Sert" }],
-      "advisory": { "reason": "siddet-korku", "ratings": ["GENEL", "GENEL", "7+", "13+", "18+", "18+"] }
+      "descriptors": [
+        {
+          "key": "sert",
+          "min": 4,
+          "max": 5,
+          "adjective": "Sert"
+        }
+      ],
+      "advisory": {
+        "reason": "siddet-korku",
+        "ratings": ["GENEL", "GENEL", "7+", "13+", "18+", "18+"]
+      }
     },
     {
       "key": "kan",
@@ -79,7 +107,11 @@
       "question": "Kan, yara ve bedene verilen zarar ne kadar görünür?",
       "group": "ADVISORY",
       "levels": [
-        { "value": 0, "label": "Yok", "description": "Kan ya da yara görünmüyor." },
+        {
+          "value": 0,
+          "label": "Yok",
+          "description": "Kan ya da yara görünmüyor."
+        },
         {
           "value": 1,
           "label": "Az",
@@ -106,8 +138,18 @@
           "description": "Kan ve vahşet yapımın gösteri unsuru; bu görüntüler uzun, ayrıntılı ve tekrarlı."
         }
       ],
-      "descriptors": [{ "key": "kanli", "min": 4, "max": 5, "adjective": "Kanlı" }],
-      "advisory": { "reason": "siddet-korku", "ratings": ["GENEL", "7+", "7+", "13+", "18+", "18+"] }
+      "descriptors": [
+        {
+          "key": "kanli",
+          "min": 4,
+          "max": 5,
+          "adjective": "Kanlı"
+        }
+      ],
+      "advisory": {
+        "reason": "siddet-korku",
+        "ratings": ["GENEL", "7+", "7+", "13+", "18+", "18+"]
+      }
     },
     {
       "key": "korku",
@@ -115,7 +157,11 @@
       "question": "Yapım izleyiciyi ne kadar korkutmaya ya da ürkütmeye çalışıyor?",
       "group": "ADVISORY",
       "levels": [
-        { "value": 0, "label": "Yok", "description": "Korkutucu görüntü, ses ya da durum yok." },
+        {
+          "value": 0,
+          "label": "Yok",
+          "description": "Korkutucu görüntü, ses ya da durum yok."
+        },
         {
           "value": 1,
           "label": "Hafif",
@@ -142,8 +188,18 @@
           "description": "Kesintisiz dehşet; ruhsal ya da bedensel olarak sarsıcı, uzun süre akılda kalan sahneler var."
         }
       ],
-      "descriptors": [{ "key": "urkutucu", "min": 4, "max": 5, "adjective": "Ürkütücü" }],
-      "advisory": { "reason": "siddet-korku", "ratings": ["GENEL", "GENEL", "7+", "13+", "13+", "18+"] }
+      "descriptors": [
+        {
+          "key": "urkutucu",
+          "min": 4,
+          "max": 5,
+          "adjective": "Ürkütücü"
+        }
+      ],
+      "advisory": {
+        "reason": "siddet-korku",
+        "ratings": ["GENEL", "GENEL", "7+", "13+", "13+", "18+"]
+      }
     },
     {
       "key": "argo",
@@ -151,7 +207,11 @@
       "question": "Konuşmalarda argo, küfür ve aşağılayıcı dil ne ölçüde var?",
       "group": "ADVISORY",
       "levels": [
-        { "value": 0, "label": "Yok", "description": "Argo ya da kaba söz yok." },
+        {
+          "value": 0,
+          "label": "Yok",
+          "description": "Argo ya da kaba söz yok."
+        },
         {
           "value": 1,
           "label": "Hafif",
@@ -162,7 +222,11 @@
           "label": "Belirgin",
           "description": "Argo konuşmanın doğal parçası; ağır küfür yok ya da sesle örtülüyor."
         },
-        { "value": 3, "label": "Sık", "description": "Ağır küfürler birkaç sahnede açıkça söyleniyor." },
+        {
+          "value": 3,
+          "label": "Sık",
+          "description": "Ağır küfürler birkaç sahnede açıkça söyleniyor."
+        },
         {
           "value": 4,
           "label": "Yoğun",
@@ -175,7 +239,10 @@
         }
       ],
       "descriptors": [],
-      "advisory": { "reason": "olumsuz-ornek", "ratings": ["GENEL", "7+", "13+", "13+", "18+", "18+"] }
+      "advisory": {
+        "reason": "olumsuz-ornek",
+        "ratings": ["GENEL", "7+", "13+", "13+", "18+", "18+"]
+      }
     },
     {
       "key": "madde-kullanimi",
@@ -215,7 +282,10 @@
         }
       ],
       "descriptors": [],
-      "advisory": { "reason": "olumsuz-ornek", "ratings": ["GENEL", "GENEL", "13+", "13+", "18+", "18+"] }
+      "advisory": {
+        "reason": "olumsuz-ornek",
+        "ratings": ["GENEL", "GENEL", "13+", "13+", "18+", "18+"]
+      }
     },
     {
       "key": "romantizm",
@@ -223,7 +293,11 @@
       "question": "Aşk ve romantik ilişki hikâyede ne kadar yer tutuyor?",
       "group": "TONE",
       "levels": [
-        { "value": 0, "label": "Yok", "description": "Romantik bir ilişki yok." },
+        {
+          "value": 0,
+          "label": "Yok",
+          "description": "Romantik bir ilişki yok."
+        },
         {
           "value": 1,
           "label": "Yan öğe",
@@ -250,7 +324,14 @@
           "description": "Yapımın tamamı bir aşk hikâyesi; neredeyse her sahne ilişkiye hizmet ediyor."
         }
       ],
-      "descriptors": [{ "key": "romantik", "min": 4, "max": 5, "adjective": "Romantik" }]
+      "descriptors": [
+        {
+          "key": "romantik",
+          "min": 4,
+          "max": 5,
+          "adjective": "Romantik"
+        }
+      ]
     },
     {
       "key": "mizah",
@@ -258,7 +339,11 @@
       "question": "Yapım izleyiciyi ne ölçüde güldürmeyi amaçlıyor?",
       "group": "TONE",
       "levels": [
-        { "value": 0, "label": "Yok", "description": "Güldürme amacı yok; ciddi ton baştan sona korunuyor." },
+        {
+          "value": 0,
+          "label": "Yok",
+          "description": "Güldürme amacı yok; ciddi ton baştan sona korunuyor."
+        },
         {
           "value": 1,
           "label": "Ara sıra",
@@ -286,8 +371,18 @@
         }
       ],
       "descriptors": [
-        { "key": "esprili", "min": 2, "max": 3, "adjective": "Esprili" },
-        { "key": "komik", "min": 4, "max": 5, "adjective": "Komik" }
+        {
+          "key": "esprili",
+          "min": 2,
+          "max": 3,
+          "adjective": "Esprili"
+        },
+        {
+          "key": "komik",
+          "min": 4,
+          "max": 5,
+          "adjective": "Komik"
+        }
       ]
     },
     {
@@ -296,7 +391,11 @@
       "question": "Yapım izleyiciyi ne kadar gergin ve merakta tutuyor?",
       "group": "TONE",
       "levels": [
-        { "value": 0, "label": "Yok", "description": "Tehlike ya da merak unsuru yok; olaylar sakin akıyor." },
+        {
+          "value": 0,
+          "label": "Yok",
+          "description": "Tehlike ya da merak unsuru yok; olaylar sakin akıyor."
+        },
         {
           "value": 1,
           "label": "Hafif",
@@ -323,7 +422,14 @@
           "description": "Gerilim hiç düşmüyor; neredeyse her sahnede bir tehlike, kaçış ya da çözülmemiş soru var."
         }
       ],
-      "descriptors": [{ "key": "gerilimli", "min": 4, "max": 5, "adjective": "Gerilimli" }]
+      "descriptors": [
+        {
+          "key": "gerilimli",
+          "min": 4,
+          "max": 5,
+          "adjective": "Gerilimli"
+        }
+      ]
     },
     {
       "key": "duygusallik",
@@ -336,7 +442,11 @@
           "label": "Yok",
           "description": "Duygusal bir an yok; anlatım mesafeli ya da yalnızca bilgilendirici."
         },
-        { "value": 1, "label": "Hafif", "description": "Bir iki dokunaklı an var; üzerinde durulmuyor." },
+        {
+          "value": 1,
+          "label": "Hafif",
+          "description": "Bir iki dokunaklı an var; üzerinde durulmuyor."
+        },
         {
           "value": 2,
           "label": "Orta",
@@ -358,7 +468,14 @@
           "description": "Baştan sona duygu yüklü; ölüm, ağır hastalık ya da büyük bir kayıp hikâyenin merkezinde."
         }
       ],
-      "descriptors": [{ "key": "duygusal", "min": 4, "max": 5, "adjective": "Duygusal" }]
+      "descriptors": [
+        {
+          "key": "duygusal",
+          "min": 4,
+          "max": 5,
+          "adjective": "Duygusal"
+        }
+      ]
     },
     {
       "key": "karanlik-ton",
@@ -397,7 +514,14 @@
           "description": "Umutsuz, acımasız bir dünya; yapım izleyiciyi bilerek rahatsız ediyor."
         }
       ],
-      "descriptors": [{ "key": "karanlik", "min": 4, "max": 5, "adjective": "Karanlık" }]
+      "descriptors": [
+        {
+          "key": "karanlik",
+          "min": 4,
+          "max": 5,
+          "adjective": "Karanlık"
+        }
+      ]
     },
     {
       "key": "tempo",
@@ -437,8 +561,18 @@
         }
       ],
       "descriptors": [
-        { "key": "agir-tempolu", "min": 0, "max": 1, "adjective": "Ağır Tempolu" },
-        { "key": "hizli-tempolu", "min": 4, "max": 5, "adjective": "Hızlı Tempolu" }
+        {
+          "key": "agir-tempolu",
+          "min": 0,
+          "max": 1,
+          "adjective": "Ağır Tempolu"
+        },
+        {
+          "key": "hizli-tempolu",
+          "min": 4,
+          "max": 5,
+          "adjective": "Hızlı Tempolu"
+        }
       ]
     },
     {
@@ -479,8 +613,18 @@
         }
       ],
       "descriptors": [
-        { "key": "kolay-izlenen", "min": 0, "max": 1, "adjective": "Kolay İzlenen" },
-        { "key": "dusundurucu", "min": 4, "max": 5, "adjective": "Düşündürücü" }
+        {
+          "key": "kolay-izlenen",
+          "min": 0,
+          "max": 1,
+          "adjective": "Kolay İzlenen"
+        },
+        {
+          "key": "dusundurucu",
+          "min": 4,
+          "max": 5,
+          "adjective": "Düşündürücü"
+        }
       ]
     },
     {
@@ -520,7 +664,14 @@
           "description": "Her şey açıkça bağlanıyor; çoğu zaman sonrasını gösteren bir kapanış sahnesi de var."
         }
       ],
-      "descriptors": [{ "key": "ucu-acik", "min": 0, "max": 1, "adjective": "Ucu Açık" }]
+      "descriptors": [
+        {
+          "key": "ucu-acik",
+          "min": 0,
+          "max": 1,
+          "adjective": "Ucu Açık"
+        }
+      ]
     },
     {
       "key": "gorsellik",
@@ -533,7 +684,11 @@
           "label": "İşlevsel",
           "description": "Görüntü yalnızca bilgi aktarıyor (ör. sabit kamera karşısında konuşma)."
         },
-        { "value": 1, "label": "Sade", "description": "Temiz ama sıradan görüntü; hiçbir görsel tercih dikkat çekmiyor." },
+        {
+          "value": 1,
+          "label": "Sade",
+          "description": "Temiz ama sıradan görüntü; hiçbir görsel tercih dikkat çekmiyor."
+        },
         {
           "value": 2,
           "label": "Özenli",
@@ -555,7 +710,14 @@
           "description": "Yapım büyük ölçüde görsel bir deneyim; görüntü hikâyenin önüne geçiyor."
         }
       ],
-      "descriptors": [{ "key": "gorsel", "min": 4, "max": 5, "adjective": "Görsel Açıdan Çarpıcı" }]
+      "descriptors": [
+        {
+          "key": "gorsel",
+          "min": 4,
+          "max": 5,
+          "adjective": "Görsel Açıdan Çarpıcı"
+        }
+      ]
     },
     {
       "key": "ogreticilik",
@@ -573,7 +735,11 @@
           "label": "Az",
           "description": "Arka planda tarihsel ya da kültürel bilgi geçiyor; üzerinde durulmuyor."
         },
-        { "value": 2, "label": "Orta", "description": "Hikâye ya da program birkaç olguyu açıkça anlatıyor." },
+        {
+          "value": 2,
+          "label": "Orta",
+          "description": "Hikâye ya da program birkaç olguyu açıkça anlatıyor."
+        },
         {
           "value": 3,
           "label": "Belirgin",
@@ -590,7 +756,14 @@
           "description": "Bir ders gibi kurulmuş; izleyici sonunda belirli bir konuyu ya da beceriyi öğrenmiş oluyor."
         }
       ],
-      "descriptors": [{ "key": "ogretici", "min": 4, "max": 5, "adjective": "Öğretici" }]
+      "descriptors": [
+        {
+          "key": "ogretici",
+          "min": 4,
+          "max": 5,
+          "adjective": "Öğretici"
+        }
+      ]
     }
   ],
   "facets": [
@@ -667,39 +840,125 @@
       "multi": true,
       "max": 2,
       "values": [
-        { "key": "buyuksehir", "name": "Büyükşehir", "phrase": "Büyükşehirde Geçen" },
-        { "key": "kasaba", "name": "Küçük kasaba", "phrase": "Küçük Kasabada Geçen" },
-        { "key": "kirsal", "name": "Köy ve kırsal", "phrase": "Kırsalda Geçen" },
-        { "key": "deniz", "name": "Deniz ve gemi", "phrase": "Denizde Geçen" },
+        {
+          "key": "buyuksehir",
+          "name": "Büyükşehir",
+          "phrase": "Büyükşehirde Geçen"
+        },
+        {
+          "key": "kasaba",
+          "name": "Küçük kasaba",
+          "phrase": "Küçük Kasabada Geçen"
+        },
+        {
+          "key": "kirsal",
+          "name": "Köy ve kırsal",
+          "phrase": "Kırsalda Geçen"
+        },
+        {
+          "key": "deniz",
+          "name": "Deniz ve gemi",
+          "phrase": "Denizde Geçen"
+        },
         {
           "key": "vahsi-doga",
           "name": "Vahşi doğa",
           "description": "Orman, dağ, çöl, kutup gibi yerleşim dışı doğa.",
           "phrase": "Vahşi Doğada Geçen"
         },
-        { "key": "uzay", "name": "Uzay", "description": "Uzay aracı, başka gezegen, yörünge.", "phrase": "Uzayda Geçen" },
+        {
+          "key": "uzay",
+          "name": "Uzay",
+          "description": "Uzay aracı, başka gezegen, yörünge.",
+          "phrase": "Uzayda Geçen"
+        },
         {
           "key": "hayali-dunya",
           "name": "Hayalî dünya",
           "description": "Gerçekte olmayan, yapım için kurulmuş bir dünya.",
           "phrase": "Hayalî Bir Dünyada Geçen"
         },
-        { "key": "okul", "name": "Okul ya da üniversite", "phrase": "Okulda Geçen" },
-        { "key": "hastane", "name": "Hastane", "phrase": "Hastanede Geçen" },
-        { "key": "is-yeri", "name": "İş yeri", "phrase": "İş Yerinde Geçen" },
-        { "key": "ev", "name": "Ev içi", "description": "Hikâye büyük ölçüde bir evin içinde geçiyor.", "phrase": "Bir Evde Geçen" },
-        { "key": "cezaevi", "name": "Cezaevi", "phrase": "Cezaevinde Geçen" },
-        { "key": "cephe", "name": "Cephe", "phrase": "Cephede Geçen" },
-        { "key": "tren", "name": "Tren ve demiryolu", "phrase": "Trende Geçen" },
-        { "key": "istanbul", "name": "İstanbul", "phrase": "İstanbul'da Geçen" },
-        { "key": "anadolu", "name": "Anadolu", "phrase": "Anadolu'da Geçen" },
-        { "key": "karadeniz", "name": "Karadeniz", "phrase": "Karadeniz'de Geçen" },
-        { "key": "avrupa", "name": "Avrupa", "phrase": "Avrupa'da Geçen" },
-        { "key": "amerika", "name": "Amerika", "phrase": "Amerika'da Geçen" },
-        { "key": "asya", "name": "Asya", "phrase": "Asya'da Geçen" },
-        { "key": "afrika", "name": "Afrika", "phrase": "Afrika'da Geçen" },
-        { "key": "orta-dogu", "name": "Orta Doğu", "phrase": "Orta Doğu'da Geçen" },
-        { "key": "latin-amerika", "name": "Latin Amerika", "phrase": "Latin Amerika'da Geçen" }
+        {
+          "key": "okul",
+          "name": "Okul ya da üniversite",
+          "phrase": "Okulda Geçen"
+        },
+        {
+          "key": "hastane",
+          "name": "Hastane",
+          "phrase": "Hastanede Geçen"
+        },
+        {
+          "key": "is-yeri",
+          "name": "İş yeri",
+          "phrase": "İş Yerinde Geçen"
+        },
+        {
+          "key": "ev",
+          "name": "Ev içi",
+          "description": "Hikâye büyük ölçüde bir evin içinde geçiyor.",
+          "phrase": "Bir Evde Geçen"
+        },
+        {
+          "key": "cezaevi",
+          "name": "Cezaevi",
+          "phrase": "Cezaevinde Geçen"
+        },
+        {
+          "key": "cephe",
+          "name": "Cephe",
+          "phrase": "Cephede Geçen"
+        },
+        {
+          "key": "tren",
+          "name": "Tren ve demiryolu",
+          "phrase": "Trende Geçen"
+        },
+        {
+          "key": "istanbul",
+          "name": "İstanbul",
+          "phrase": "İstanbul'da Geçen"
+        },
+        {
+          "key": "anadolu",
+          "name": "Anadolu",
+          "phrase": "Anadolu'da Geçen"
+        },
+        {
+          "key": "karadeniz",
+          "name": "Karadeniz",
+          "phrase": "Karadeniz'de Geçen"
+        },
+        {
+          "key": "avrupa",
+          "name": "Avrupa",
+          "phrase": "Avrupa'da Geçen"
+        },
+        {
+          "key": "amerika",
+          "name": "Amerika",
+          "phrase": "Amerika'da Geçen"
+        },
+        {
+          "key": "asya",
+          "name": "Asya",
+          "phrase": "Asya'da Geçen"
+        },
+        {
+          "key": "afrika",
+          "name": "Afrika",
+          "phrase": "Afrika'da Geçen"
+        },
+        {
+          "key": "orta-dogu",
+          "name": "Orta Doğu",
+          "phrase": "Orta Doğu'da Geçen"
+        },
+        {
+          "key": "latin-amerika",
+          "name": "Latin Amerika",
+          "phrase": "Latin Amerika'da Geçen"
+        }
       ]
     },
     {
@@ -710,25 +969,81 @@
       "multi": true,
       "max": 2,
       "values": [
-        { "key": "tarih-oncesi", "name": "Tarih öncesi", "phrase": "Tarih Öncesinde Geçen" },
-        { "key": "antik-cag", "name": "Antik çağ", "phrase": "Antik Çağda Geçen" },
-        { "key": "orta-cag", "name": "Orta Çağ", "phrase": "Orta Çağda Geçen" },
-        { "key": "osmanli", "name": "Osmanlı dönemi", "phrase": "Osmanlı Döneminde Geçen" },
-        { "key": "19-yuzyil", "name": "19. yüzyıl", "phrase": "19. Yüzyılda Geçen" },
-        { "key": "1-dunya-savasi", "name": "Birinci Dünya Savaşı", "phrase": "Birinci Dünya Savaşı'nda Geçen" },
-        { "key": "kurtulus-savasi", "name": "Kurtuluş Savaşı", "phrase": "Kurtuluş Savaşı'nda Geçen" },
+        {
+          "key": "tarih-oncesi",
+          "name": "Tarih öncesi",
+          "phrase": "Tarih Öncesinde Geçen"
+        },
+        {
+          "key": "antik-cag",
+          "name": "Antik çağ",
+          "phrase": "Antik Çağda Geçen"
+        },
+        {
+          "key": "orta-cag",
+          "name": "Orta Çağ",
+          "phrase": "Orta Çağda Geçen"
+        },
+        {
+          "key": "osmanli",
+          "name": "Osmanlı dönemi",
+          "phrase": "Osmanlı Döneminde Geçen"
+        },
+        {
+          "key": "19-yuzyil",
+          "name": "19. yüzyıl",
+          "phrase": "19. Yüzyılda Geçen"
+        },
+        {
+          "key": "1-dunya-savasi",
+          "name": "Birinci Dünya Savaşı",
+          "phrase": "Birinci Dünya Savaşı'nda Geçen"
+        },
+        {
+          "key": "kurtulus-savasi",
+          "name": "Kurtuluş Savaşı",
+          "phrase": "Kurtuluş Savaşı'nda Geçen"
+        },
         {
           "key": "erken-cumhuriyet",
           "name": "Erken Cumhuriyet (1923–1950)",
           "phrase": "Erken Cumhuriyet Döneminde Geçen"
         },
-        { "key": "2-dunya-savasi", "name": "İkinci Dünya Savaşı", "phrase": "İkinci Dünya Savaşı'nda Geçen" },
-        { "key": "1950-60lar", "name": "1950'ler ve 60'lar", "phrase": "1950'ler ve 60'larda Geçen" },
-        { "key": "1970-80ler", "name": "1970'ler ve 80'ler", "phrase": "1970'ler ve 80'lerde Geçen" },
-        { "key": "1990lar", "name": "1990'lar", "phrase": "1990'larda Geçen" },
-        { "key": "gunumuz", "name": "Günümüz", "description": "Yapımın çekildiği yıllar." },
-        { "key": "yakin-gelecek", "name": "Yakın gelecek", "phrase": "Yakın Gelecekte Geçen" },
-        { "key": "uzak-gelecek", "name": "Uzak gelecek", "phrase": "Uzak Gelecekte Geçen" },
+        {
+          "key": "2-dunya-savasi",
+          "name": "İkinci Dünya Savaşı",
+          "phrase": "İkinci Dünya Savaşı'nda Geçen"
+        },
+        {
+          "key": "1950-60lar",
+          "name": "1950'ler ve 60'lar",
+          "phrase": "1950'ler ve 60'larda Geçen"
+        },
+        {
+          "key": "1970-80ler",
+          "name": "1970'ler ve 80'ler",
+          "phrase": "1970'ler ve 80'lerde Geçen"
+        },
+        {
+          "key": "1990lar",
+          "name": "1990'lar",
+          "phrase": "1990'larda Geçen"
+        },
+        {
+          "key": "gunumuz",
+          "name": "Günümüz",
+          "description": "Yapımın çekildiği yıllar."
+        },
+        {
+          "key": "yakin-gelecek",
+          "name": "Yakın gelecek",
+          "phrase": "Yakın Gelecekte Geçen"
+        },
+        {
+          "key": "uzak-gelecek",
+          "name": "Uzak gelecek",
+          "phrase": "Uzak Gelecekte Geçen"
+        },
         {
           "key": "zamansiz",
           "name": "Belirsiz ya da zamansız",
@@ -744,51 +1059,211 @@
       "multi": true,
       "max": 3,
       "values": [
-        { "key": "aile", "name": "Aile ilişkileri", "phrase": "Aile Hakkında" },
-        { "key": "evlilik", "name": "Evlilik ve ayrılık", "phrase": "Evlilik ve Ayrılık Hakkında" },
-        { "key": "arkadaslik", "name": "Arkadaşlık", "phrase": "Arkadaşlık Hakkında" },
-        { "key": "buyumek", "name": "Büyümek ve ergenlik", "phrase": "Büyümek Hakkında" },
-        { "key": "yaslilik", "name": "Yaşlılık", "phrase": "Yaşlılık Hakkında" },
-        { "key": "saglik", "name": "Sağlık ve hastalık", "phrase": "Sağlık ve Hastalık Hakkında" },
-        { "key": "ruh-sagligi", "name": "Ruh sağlığı", "phrase": "Ruh Sağlığı Hakkında" },
-        { "key": "is-hayati", "name": "İş hayatı ve kariyer", "phrase": "İş Hayatı Hakkında" },
-        { "key": "para-ekonomi", "name": "Para ve ekonomi", "phrase": "Para ve Ekonomi Hakkında" },
-        { "key": "goc", "name": "Göç ve gurbet", "phrase": "Göç ve Gurbet Hakkında" },
-        { "key": "suc-adalet", "name": "Suç ve adalet", "phrase": "Suç ve Adalet Hakkında" },
-        { "key": "siyaset", "name": "Siyaset ve iktidar", "phrase": "Siyaset Hakkında" },
-        { "key": "savas", "name": "Savaş", "phrase": "Savaş Hakkında" },
-        { "key": "inanc", "name": "Din ve inanç", "phrase": "İnanç Hakkında" },
-        { "key": "hayatta-kalma", "name": "Hayatta kalma", "phrase": "Hayatta Kalma Hakkında" },
-        { "key": "intikam", "name": "İntikam", "phrase": "İntikam Hakkında" },
-        { "key": "sinif-emek", "name": "Sınıf farkı ve emek", "phrase": "Sınıf Farkı ve Emek Hakkında" },
-        { "key": "esitlik", "name": "Eşitlik ve haklar", "phrase": "Eşitlik ve Haklar Hakkında" },
-        { "key": "dayanisma", "name": "İyilik ve dayanışma", "phrase": "İyilik ve Dayanışma Hakkında" },
+        {
+          "key": "aile",
+          "name": "Aile ilişkileri",
+          "phrase": "Aile Hakkında"
+        },
+        {
+          "key": "evlilik",
+          "name": "Evlilik ve ayrılık",
+          "phrase": "Evlilik ve Ayrılık Hakkında"
+        },
+        {
+          "key": "arkadaslik",
+          "name": "Arkadaşlık",
+          "phrase": "Arkadaşlık Hakkında"
+        },
+        {
+          "key": "buyumek",
+          "name": "Büyümek ve ergenlik",
+          "phrase": "Büyümek Hakkında"
+        },
+        {
+          "key": "yaslilik",
+          "name": "Yaşlılık",
+          "phrase": "Yaşlılık Hakkında"
+        },
+        {
+          "key": "saglik",
+          "name": "Sağlık ve hastalık",
+          "phrase": "Sağlık ve Hastalık Hakkında"
+        },
+        {
+          "key": "ruh-sagligi",
+          "name": "Ruh sağlığı",
+          "phrase": "Ruh Sağlığı Hakkında"
+        },
+        {
+          "key": "is-hayati",
+          "name": "İş hayatı ve kariyer",
+          "phrase": "İş Hayatı Hakkında"
+        },
+        {
+          "key": "para-ekonomi",
+          "name": "Para ve ekonomi",
+          "phrase": "Para ve Ekonomi Hakkında"
+        },
+        {
+          "key": "goc",
+          "name": "Göç ve gurbet",
+          "phrase": "Göç ve Gurbet Hakkında"
+        },
+        {
+          "key": "suc-adalet",
+          "name": "Suç ve adalet",
+          "phrase": "Suç ve Adalet Hakkında"
+        },
+        {
+          "key": "siyaset",
+          "name": "Siyaset ve iktidar",
+          "phrase": "Siyaset Hakkında"
+        },
+        {
+          "key": "savas",
+          "name": "Savaş",
+          "phrase": "Savaş Hakkında"
+        },
+        {
+          "key": "inanc",
+          "name": "Din ve inanç",
+          "phrase": "İnanç Hakkında"
+        },
+        {
+          "key": "hayatta-kalma",
+          "name": "Hayatta kalma",
+          "phrase": "Hayatta Kalma Hakkında"
+        },
+        {
+          "key": "intikam",
+          "name": "İntikam",
+          "phrase": "İntikam Hakkında"
+        },
+        {
+          "key": "sinif-emek",
+          "name": "Sınıf farkı ve emek",
+          "phrase": "Sınıf Farkı ve Emek Hakkında"
+        },
+        {
+          "key": "esitlik",
+          "name": "Eşitlik ve haklar",
+          "phrase": "Eşitlik ve Haklar Hakkında"
+        },
+        {
+          "key": "dayanisma",
+          "name": "İyilik ve dayanışma",
+          "phrase": "İyilik ve Dayanışma Hakkında"
+        },
         {
           "key": "insan-hikayeleri",
           "name": "Sıradan insanların hikâyeleri",
           "phrase": "İnsan Hikâyeleri Anlatan"
         },
-        { "key": "spor", "name": "Spor", "phrase": "Spor Hakkında" },
-        { "key": "muzik", "name": "Müzik ve müzisyenler", "phrase": "Müzik Hakkında" },
-        { "key": "muzik-tarihi", "name": "Müzik tarihi", "phrase": "Müzik Tarihi Hakkında" },
-        { "key": "sinema", "name": "Sinema", "phrase": "Sinema Hakkında" },
-        { "key": "edebiyat", "name": "Edebiyat ve kitaplar", "phrase": "Edebiyat Hakkında" },
-        { "key": "sanat", "name": "Sanat ve sanatçılar", "phrase": "Sanat Hakkında" },
-        { "key": "yemek", "name": "Yemek ve mutfak kültürü", "phrase": "Yemek Kültürü Hakkında" },
-        { "key": "seyahat", "name": "Seyahat ve keşif", "phrase": "Seyahat Hakkında" },
-        { "key": "kultur-mirasi", "name": "Kültür ve miras", "phrase": "Kültürel Miras Hakkında" },
-        { "key": "arkeoloji", "name": "Arkeoloji ve antik uygarlıklar", "phrase": "Arkeoloji Hakkında" },
-        { "key": "osmanli-tarihi", "name": "Osmanlı tarihi", "phrase": "Osmanlı Tarihi Hakkında" },
-        { "key": "egitim", "name": "Eğitim ve okul", "phrase": "Eğitim Hakkında" },
-        { "key": "uzay-kesfi", "name": "Uzay keşfi ve uzay görevleri", "phrase": "Uzay Keşfi Hakkında" },
-        { "key": "astronomi", "name": "Evren ve astronomi", "phrase": "Evren ve Astronomi Hakkında" },
-        { "key": "fizik", "name": "Fizik", "phrase": "Fizik Hakkında" },
-        { "key": "hayvanlar", "name": "Hayvanlar", "phrase": "Hayvanlar Hakkında" },
-        { "key": "doga-cevre", "name": "Doğa, çevre ve iklim", "phrase": "Doğa ve Çevre Hakkında" },
-        { "key": "zihin", "name": "Beyin, zihin ve öğrenme", "phrase": "Zihin ve Öğrenme Hakkında" },
-        { "key": "muhendislik", "name": "Mühendislik ve icatlar", "phrase": "Mühendislik Hakkında" },
-        { "key": "yapay-zeka", "name": "Yapay zekâ ve robotlar", "phrase": "Yapay Zekâ ve Robotlar Hakkında" },
-        { "key": "sosyal-medya", "name": "İnternet ve sosyal medya", "phrase": "Sosyal Medya Hakkında" }
+        {
+          "key": "spor",
+          "name": "Spor",
+          "phrase": "Spor Hakkında"
+        },
+        {
+          "key": "muzik",
+          "name": "Müzik ve müzisyenler",
+          "phrase": "Müzik Hakkında"
+        },
+        {
+          "key": "muzik-tarihi",
+          "name": "Müzik tarihi",
+          "phrase": "Müzik Tarihi Hakkında"
+        },
+        {
+          "key": "sinema",
+          "name": "Sinema",
+          "phrase": "Sinema Hakkında"
+        },
+        {
+          "key": "edebiyat",
+          "name": "Edebiyat ve kitaplar",
+          "phrase": "Edebiyat Hakkında"
+        },
+        {
+          "key": "sanat",
+          "name": "Sanat ve sanatçılar",
+          "phrase": "Sanat Hakkında"
+        },
+        {
+          "key": "yemek",
+          "name": "Yemek ve mutfak kültürü",
+          "phrase": "Yemek Kültürü Hakkında"
+        },
+        {
+          "key": "seyahat",
+          "name": "Seyahat ve keşif",
+          "phrase": "Seyahat Hakkında"
+        },
+        {
+          "key": "kultur-mirasi",
+          "name": "Kültür ve miras",
+          "phrase": "Kültürel Miras Hakkında"
+        },
+        {
+          "key": "arkeoloji",
+          "name": "Arkeoloji ve antik uygarlıklar",
+          "phrase": "Arkeoloji Hakkında"
+        },
+        {
+          "key": "osmanli-tarihi",
+          "name": "Osmanlı tarihi",
+          "phrase": "Osmanlı Tarihi Hakkında"
+        },
+        {
+          "key": "egitim",
+          "name": "Eğitim ve okul",
+          "phrase": "Eğitim Hakkında"
+        },
+        {
+          "key": "uzay-kesfi",
+          "name": "Uzay keşfi ve uzay görevleri",
+          "phrase": "Uzay Keşfi Hakkında"
+        },
+        {
+          "key": "astronomi",
+          "name": "Evren ve astronomi",
+          "phrase": "Evren ve Astronomi Hakkında"
+        },
+        {
+          "key": "fizik",
+          "name": "Fizik",
+          "phrase": "Fizik Hakkında"
+        },
+        {
+          "key": "hayvanlar",
+          "name": "Hayvanlar",
+          "phrase": "Hayvanlar Hakkında"
+        },
+        {
+          "key": "doga-cevre",
+          "name": "Doğa, çevre ve iklim",
+          "phrase": "Doğa ve Çevre Hakkında"
+        },
+        {
+          "key": "zihin",
+          "name": "Beyin, zihin ve öğrenme",
+          "phrase": "Zihin ve Öğrenme Hakkında"
+        },
+        {
+          "key": "muhendislik",
+          "name": "Mühendislik ve icatlar",
+          "phrase": "Mühendislik Hakkında"
+        },
+        {
+          "key": "yapay-zeka",
+          "name": "Yapay zekâ ve robotlar",
+          "phrase": "Yapay Zekâ ve Robotlar Hakkında"
+        },
+        {
+          "key": "sosyal-medya",
+          "name": "İnternet ve sosyal medya",
+          "phrase": "Sosyal Medya Hakkında"
+        }
       ]
     },
     {
@@ -805,32 +1280,71 @@
           "description": "Kararları hikâyeyi yönlendiren kadın ana karakter.",
           "phrase": "Güçlü Kadın Karakterli"
         },
-        { "key": "cocuk", "name": "Çocuk", "phrase": "Çocuk Kahramanlı" },
-        { "key": "genc", "name": "Genç (13–19 yaş)", "phrase": "Genç Kahramanlı" },
-        { "key": "yasli", "name": "Yaşlı", "phrase": "Yaşlı Kahramanlı" },
-        { "key": "hayvan", "name": "Hayvan", "phrase": "Hayvan Kahramanlı" },
-        { "key": "robot", "name": "Robot ya da yapay zekâ", "phrase": "Robot Kahramanlı" },
+        {
+          "key": "cocuk",
+          "name": "Çocuk",
+          "phrase": "Çocuk Kahramanlı"
+        },
+        {
+          "key": "genc",
+          "name": "Genç (13–19 yaş)",
+          "phrase": "Genç Kahramanlı"
+        },
+        {
+          "key": "yasli",
+          "name": "Yaşlı",
+          "phrase": "Yaşlı Kahramanlı"
+        },
+        {
+          "key": "hayvan",
+          "name": "Hayvan",
+          "phrase": "Hayvan Kahramanlı"
+        },
+        {
+          "key": "robot",
+          "name": "Robot ya da yapay zekâ",
+          "phrase": "Robot Kahramanlı"
+        },
         {
           "key": "fantastik-varlik",
           "name": "Fantastik varlık",
           "description": "Ejderha, vampir, canavar, ruh gibi gerçek olmayan bir varlık.",
           "phrase": "Fantastik Varlıkların Yer Aldığı"
         },
-        { "key": "aile", "name": "Bir aile", "phrase": "Bir Aileyi Anlatan" },
-        { "key": "ekip", "name": "Bir ekip ya da arkadaş grubu", "phrase": "Bir Ekibi Anlatan" },
+        {
+          "key": "aile",
+          "name": "Bir aile",
+          "phrase": "Bir Aileyi Anlatan"
+        },
+        {
+          "key": "ekip",
+          "name": "Bir ekip ya da arkadaş grubu",
+          "phrase": "Bir Ekibi Anlatan"
+        },
         {
           "key": "anti-kahraman",
           "name": "Kusurlu ana karakter (anti kahraman)",
           "phrase": "Anti Kahramanlı"
         },
-        { "key": "dedektif", "name": "Polis ya da dedektif", "phrase": "Dedektif Kahramanlı" },
-        { "key": "doktor", "name": "Doktor ya da sağlık çalışanı", "phrase": "Doktor Kahramanlı" },
+        {
+          "key": "dedektif",
+          "name": "Polis ya da dedektif",
+          "phrase": "Dedektif Kahramanlı"
+        },
+        {
+          "key": "doktor",
+          "name": "Doktor ya da sağlık çalışanı",
+          "phrase": "Doktor Kahramanlı"
+        },
         {
           "key": "sunucu",
           "name": "Sunucu ya da anlatıcı",
           "description": "Programı bir sunucu ya da anlatıcı taşıyor (programlar ve belgeseller için)."
         },
-        { "key": "yok", "name": "Belirgin bir ana karakter yok" }
+        {
+          "key": "yok",
+          "name": "Belirgin bir ana karakter yok"
+        }
       ]
     },
     {
@@ -841,19 +1355,48 @@
       "multi": true,
       "max": 2,
       "values": [
-        { "key": "2-5", "name": "Okul öncesi (2–5 yaş)", "phrase": "2–5 Yaş için" },
-        { "key": "6-7", "name": "6–7 yaş", "phrase": "6–7 Yaş için" },
-        { "key": "8-10", "name": "8–10 yaş", "phrase": "8–10 Yaş için" },
-        { "key": "11-12", "name": "11–12 yaş", "phrase": "11–12 Yaş için" },
+        {
+          "key": "2-5",
+          "name": "Okul öncesi (2–5 yaş)",
+          "phrase": "2–5 Yaş için"
+        },
+        {
+          "key": "6-7",
+          "name": "6–7 yaş",
+          "phrase": "6–7 Yaş için"
+        },
+        {
+          "key": "8-10",
+          "name": "8–10 yaş",
+          "phrase": "8–10 Yaş için"
+        },
+        {
+          "key": "11-12",
+          "name": "11–12 yaş",
+          "phrase": "11–12 Yaş için"
+        },
         {
           "key": "cocuk",
           "name": "Çocuklar (yaş bandı belirsiz)",
           "description": "Çocuklar için yapılmış ama yaş bandı belirlenemiyor.",
           "phrase": "Çocuklar için"
         },
-        { "key": "genc", "name": "Gençler (13–17 yaş)", "phrase": "Gençler için" },
-        { "key": "aile", "name": "Tüm aile", "description": "Çocuk ve yetişkinin birlikte izlemesi için.", "phrase": "Tüm Aile için" },
-        { "key": "yetiskin", "name": "Yetişkinler", "phrase": "Yetişkinler için" }
+        {
+          "key": "genc",
+          "name": "Gençler (13–17 yaş)",
+          "phrase": "Gençler için"
+        },
+        {
+          "key": "aile",
+          "name": "Tüm aile",
+          "description": "Çocuk ve yetişkinin birlikte izlemesi için.",
+          "phrase": "Tüm Aile için"
+        },
+        {
+          "key": "yetiskin",
+          "name": "Yetişkinler",
+          "phrase": "Yetişkinler için"
+        }
       ]
     },
     {
@@ -864,28 +1407,71 @@
       "multi": true,
       "max": 3,
       "values": [
-        { "key": "uzun-metraj", "name": "Uzun metraj (60 dk ve üzeri film)", "phrase": "Uzun Metrajlı" },
-        { "key": "orta-metraj", "name": "Orta metraj (40–59 dk film)", "phrase": "Orta Metrajlı" },
-        { "key": "kisa-film", "name": "Kısa film (40 dk'dan kısa)", "phrase": "Kısa" },
-        { "key": "dizi", "name": "Sezonlu dizi", "description": "Birden çok sezonu olan ya da süren dizi." },
+        {
+          "key": "uzun-metraj",
+          "name": "Uzun metraj (60 dk ve üzeri film)",
+          "phrase": "Uzun Metrajlı"
+        },
+        {
+          "key": "orta-metraj",
+          "name": "Orta metraj (40–59 dk film)",
+          "phrase": "Orta Metrajlı"
+        },
+        {
+          "key": "kisa-film",
+          "name": "Kısa film (40 dk'dan kısa)",
+          "phrase": "Kısa"
+        },
+        {
+          "key": "dizi",
+          "name": "Sezonlu dizi",
+          "description": "Birden çok sezonu olan ya da süren dizi."
+        },
         {
           "key": "mini-dizi",
           "name": "Mini dizi",
           "description": "Tek sezonda biten, baştan sonu planlanmış dizi.",
           "phrase": "Tek Sezonluk"
         },
-        { "key": "antoloji", "name": "Antoloji (her bölüm ayrı hikâye)", "phrase": "Antoloji" },
-        { "key": "belgesel-film", "name": "Belgesel film" },
-        { "key": "belgesel-dizi", "name": "Belgesel dizi" },
+        {
+          "key": "antoloji",
+          "name": "Antoloji (her bölüm ayrı hikâye)",
+          "phrase": "Antoloji"
+        },
+        {
+          "key": "belgesel-film",
+          "name": "Belgesel film"
+        },
+        {
+          "key": "belgesel-dizi",
+          "name": "Belgesel dizi"
+        },
         {
           "key": "soylesi",
           "name": "Söyleşi ya da sohbet programı",
           "phrase": "Söyleşi Biçimindeki"
         },
-        { "key": "stand-up", "name": "Stand-up gösterisi", "phrase": "Sahnede Kaydedilmiş" },
-        { "key": "konser", "name": "Konser kaydı", "phrase": "Konser Kaydı Olan" },
-        { "key": "sessiz", "name": "Sessiz film", "description": "Konuşmalar ara yazılarla veriliyor.", "phrase": "Sessiz" },
-        { "key": "siyah-beyaz", "name": "Siyah-beyaz", "phrase": "Siyah-Beyaz" },
+        {
+          "key": "stand-up",
+          "name": "Stand-up gösterisi",
+          "phrase": "Sahnede Kaydedilmiş"
+        },
+        {
+          "key": "konser",
+          "name": "Konser kaydı",
+          "phrase": "Konser Kaydı Olan"
+        },
+        {
+          "key": "sessiz",
+          "name": "Sessiz film",
+          "description": "Konuşmalar ara yazılarla veriliyor.",
+          "phrase": "Sessiz"
+        },
+        {
+          "key": "siyah-beyaz",
+          "name": "Siyah-beyaz",
+          "phrase": "Siyah-Beyaz"
+        },
         {
           "key": "kamera-arkasi",
           "name": "Kamera arkası",
@@ -919,10 +1505,28 @@
           "name": "Eleştirmenlerce beğenilen",
           "phrase": "Eleştirmenlerce Beğenilen"
         },
-        { "key": "ic-isitan", "name": "İç ısıtan", "description": "İyilik, sevgi ve umut duygusu bırakıyor.", "phrase": "İç Isıtan" },
-        { "key": "nostaljik", "name": "Nostaljik", "phrase": "Nostaljik" },
-        { "key": "absurt", "name": "Absürt", "description": "Mantık dışı, gerçeküstü durumlarla oynuyor.", "phrase": "Absürt" },
-        { "key": "ilham-verici", "name": "İlham verici", "phrase": "İlham Verici" },
+        {
+          "key": "ic-isitan",
+          "name": "İç ısıtan",
+          "description": "İyilik, sevgi ve umut duygusu bırakıyor.",
+          "phrase": "İç Isıtan"
+        },
+        {
+          "key": "nostaljik",
+          "name": "Nostaljik",
+          "phrase": "Nostaljik"
+        },
+        {
+          "key": "absurt",
+          "name": "Absürt",
+          "description": "Mantık dışı, gerçeküstü durumlarla oynuyor.",
+          "phrase": "Absürt"
+        },
+        {
+          "key": "ilham-verici",
+          "name": "İlham verici",
+          "phrase": "İlham Verici"
+        },
         {
           "key": "dinlendirici",
           "name": "Dinlendirici",
@@ -935,12 +1539,37 @@
           "description": "Konuşma yok ya da anlamsız; hikâye görüntüyle anlatılıyor.",
           "phrase": "Diyalogsuz"
         },
-        { "key": "eglenceli", "name": "Eğlenceli", "phrase": "Eğlenceli" },
-        { "key": "sira-disi", "name": "Sıra dışı", "phrase": "Sıra Dışı" },
-        { "key": "zekice", "name": "Zekice kurgulanmış", "phrase": "Zekice Kurgulanmış" },
-        { "key": "gercekci", "name": "Gerçekçi", "phrase": "Gerçekçi" },
-        { "key": "destansi", "name": "Destansı", "phrase": "Destansı" },
-        { "key": "hicivli", "name": "Hicivli", "description": "Toplumu ya da iktidarı alaya alıyor.", "phrase": "Hicivli" }
+        {
+          "key": "eglenceli",
+          "name": "Eğlenceli",
+          "phrase": "Eğlenceli"
+        },
+        {
+          "key": "sira-disi",
+          "name": "Sıra dışı",
+          "phrase": "Sıra Dışı"
+        },
+        {
+          "key": "zekice",
+          "name": "Zekice kurgulanmış",
+          "phrase": "Zekice Kurgulanmış"
+        },
+        {
+          "key": "gercekci",
+          "name": "Gerçekçi",
+          "phrase": "Gerçekçi"
+        },
+        {
+          "key": "destansi",
+          "name": "Destansı",
+          "phrase": "Destansı"
+        },
+        {
+          "key": "hicivli",
+          "name": "Hicivli",
+          "description": "Toplumu ya da iktidarı alaya alıyor.",
+          "phrase": "Hicivli"
+        }
       ]
     }
   ],
@@ -953,9 +1582,22 @@
         "compound": "Komedileri",
         "implied": ["ADJECTIVE:komik", "ADJECTIVE:esprili", "ADJECTIVE:ek-sifatlar:eglenceli"]
       },
-      "dram": { "movie": "Dram Filmleri", "show": "Dram Dizileri", "mixed": "Dramlar", "compound": "Dramları" },
-      "aksiyon": { "movie": "Aksiyon Filmleri", "show": "Aksiyon Dizileri", "mixed": "Aksiyon Filmleri ve Dizileri" },
-      "macera": { "movie": "Macera Filmleri", "show": "Macera Dizileri", "mixed": "Macera Filmleri ve Dizileri" },
+      "dram": {
+        "movie": "Dram Filmleri",
+        "show": "Dram Dizileri",
+        "mixed": "Dramlar",
+        "compound": "Dramları"
+      },
+      "aksiyon": {
+        "movie": "Aksiyon Filmleri",
+        "show": "Aksiyon Dizileri",
+        "mixed": "Aksiyon Filmleri ve Dizileri"
+      },
+      "macera": {
+        "movie": "Macera Filmleri",
+        "show": "Macera Dizileri",
+        "mixed": "Macera Filmleri ve Dizileri"
+      },
       "gerilim": {
         "movie": "Gerilim Filmleri",
         "show": "Gerilim Dizileri",
@@ -968,7 +1610,11 @@
         "mixed": "Korku Filmleri ve Dizileri",
         "implied": ["ADJECTIVE:urkutucu"]
       },
-      "suc": { "movie": "Suç Filmleri", "show": "Suç Dizileri", "mixed": "Suç Filmleri ve Dizileri" },
+      "suc": {
+        "movie": "Suç Filmleri",
+        "show": "Suç Dizileri",
+        "mixed": "Suç Filmleri ve Dizileri"
+      },
       "romantik": {
         "movie": "Romantik Filmler",
         "show": "Romantik Diziler",
@@ -1011,7 +1657,11 @@
         "show": "Doğa ve Bilim Dizileri",
         "mixed": "Doğa ve Bilim Yapımları"
       },
-      "tarih": { "movie": "Tarih Filmleri", "show": "Tarih Dizileri", "mixed": "Tarih Yapımları" },
+      "tarih": {
+        "movie": "Tarih Filmleri",
+        "show": "Tarih Dizileri",
+        "mixed": "Tarih Yapımları"
+      },
       "muzik": {
         "movie": "Müzik Filmleri",
         "show": "Müzik Dizileri",
@@ -1035,7 +1685,11 @@
         "show": "Yaşam ve Kültür Programları",
         "mixed": "Yaşam ve Kültür Yapımları"
       },
-      "teknoloji": { "movie": "Teknoloji Filmleri", "show": "Teknoloji Programları", "mixed": "Teknoloji Yapımları" },
+      "teknoloji": {
+        "movie": "Teknoloji Filmleri",
+        "show": "Teknoloji Programları",
+        "mixed": "Teknoloji Yapımları"
+      },
       "haber": {
         "movie": "Haber ve Güncel Yapımlar",
         "show": "Haber ve Güncel Programlar",
@@ -1081,33 +1735,136 @@
       }
     },
     "regions": [
-      { "key": "yerli", "adjective": "Yerli", "countries": ["TR"] },
-      { "key": "amerikan", "adjective": "Amerikan", "countries": ["US"] },
-      { "key": "ingiliz", "adjective": "İngiliz", "countries": ["GB"] },
-      { "key": "irlanda", "adjective": "İrlanda Yapımı", "countries": ["IE"] },
-      { "key": "iskandinav", "adjective": "İskandinav", "countries": ["SE", "NO", "DK", "FI", "IS"] },
-      { "key": "alman", "adjective": "Alman", "countries": ["DE"] },
-      { "key": "fransiz", "adjective": "Fransız", "countries": ["FR"] },
-      { "key": "italyan", "adjective": "İtalyan", "countries": ["IT"] },
-      { "key": "ispanyol", "adjective": "İspanyol", "countries": ["ES"] },
-      { "key": "hollanda", "adjective": "Hollanda Yapımı", "countries": ["NL"] },
-      { "key": "belcika", "adjective": "Belçika Yapımı", "countries": ["BE"] },
-      { "key": "polonya", "adjective": "Polonya Yapımı", "countries": ["PL"] },
-      { "key": "yunan", "adjective": "Yunan", "countries": ["GR"] },
-      { "key": "rus", "adjective": "Rus", "countries": ["RU"] },
-      { "key": "azerbaycan", "adjective": "Azerbaycan Yapımı", "countries": ["AZ"] },
-      { "key": "iran", "adjective": "İran", "countries": ["IR"] },
+      {
+        "key": "yerli",
+        "adjective": "Yerli",
+        "countries": ["TR"]
+      },
+      {
+        "key": "amerikan",
+        "adjective": "Amerikan",
+        "compound": true,
+        "countries": ["US"]
+      },
+      {
+        "key": "ingiliz",
+        "adjective": "İngiliz",
+        "compound": true,
+        "countries": ["GB"]
+      },
+      {
+        "key": "irlanda",
+        "adjective": "İrlanda Yapımı",
+        "countries": ["IE"]
+      },
+      {
+        "key": "iskandinav",
+        "adjective": "İskandinav",
+        "compound": true,
+        "countries": ["SE", "NO", "DK", "FI", "IS"]
+      },
+      {
+        "key": "alman",
+        "adjective": "Alman",
+        "compound": true,
+        "countries": ["DE"]
+      },
+      {
+        "key": "fransiz",
+        "adjective": "Fransız",
+        "compound": true,
+        "countries": ["FR"]
+      },
+      {
+        "key": "italyan",
+        "adjective": "İtalyan",
+        "compound": true,
+        "countries": ["IT"]
+      },
+      {
+        "key": "ispanyol",
+        "adjective": "İspanyol",
+        "compound": true,
+        "countries": ["ES"]
+      },
+      {
+        "key": "hollanda",
+        "adjective": "Hollanda Yapımı",
+        "countries": ["NL"]
+      },
+      {
+        "key": "belcika",
+        "adjective": "Belçika Yapımı",
+        "countries": ["BE"]
+      },
+      {
+        "key": "polonya",
+        "adjective": "Polonya Yapımı",
+        "countries": ["PL"]
+      },
+      {
+        "key": "yunan",
+        "adjective": "Yunan",
+        "compound": true,
+        "countries": ["GR"]
+      },
+      {
+        "key": "rus",
+        "adjective": "Rus",
+        "compound": true,
+        "countries": ["RU"]
+      },
+      {
+        "key": "azerbaycan",
+        "adjective": "Azerbaycan Yapımı",
+        "countries": ["AZ"]
+      },
+      {
+        "key": "iran",
+        "adjective": "İran",
+        "compound": true,
+        "countries": ["IR"]
+      },
       {
         "key": "arap",
         "adjective": "Arap",
+        "compound": true,
         "countries": ["SA", "AE", "EG", "LB", "JO", "MA", "TN", "DZ", "QA", "KW", "SY", "IQ"]
       },
-      { "key": "hint", "adjective": "Hint", "countries": ["IN"] },
-      { "key": "cin", "adjective": "Çin", "countries": ["CN", "HK"] },
-      { "key": "japon", "adjective": "Japon", "countries": ["JP"] },
-      { "key": "kore", "adjective": "Kore", "countries": ["KR"] },
-      { "key": "kanada", "adjective": "Kanada Yapımı", "countries": ["CA"] },
-      { "key": "avustralya", "adjective": "Avustralya Yapımı", "countries": ["AU"] },
+      {
+        "key": "hint",
+        "adjective": "Hint",
+        "compound": true,
+        "countries": ["IN"]
+      },
+      {
+        "key": "cin",
+        "adjective": "Çin",
+        "compound": true,
+        "countries": ["CN", "HK"]
+      },
+      {
+        "key": "japon",
+        "adjective": "Japon",
+        "compound": true,
+        "countries": ["JP"]
+      },
+      {
+        "key": "kore",
+        "adjective": "Kore",
+        "compound": true,
+        "countries": ["KR"]
+      },
+      {
+        "key": "kanada",
+        "adjective": "Kanada Yapımı",
+        "countries": ["CA"]
+      },
+      {
+        "key": "avustralya",
+        "adjective": "Avustralya Yapımı",
+        "countries": ["AU"]
+      },
       {
         "key": "latin-amerika",
         "adjective": "Latin Amerika Yapımı",
@@ -1115,22 +1872,115 @@
       }
     ],
     "eras": [
-      { "key": "1890lar", "phrase": "1890'lardan", "fromYear": 1888, "toYear": 1899 },
-      { "key": "1900ler", "phrase": "1900'lerden", "fromYear": 1900, "toYear": 1909 },
-      { "key": "1910lar", "phrase": "1910'lardan", "fromYear": 1910, "toYear": 1919 },
-      { "key": "1920ler", "phrase": "1920'lerden", "fromYear": 1920, "toYear": 1929 },
-      { "key": "1930lar", "phrase": "1930'lardan", "fromYear": 1930, "toYear": 1939 },
-      { "key": "1940lar", "phrase": "1940'lardan", "fromYear": 1940, "toYear": 1949 },
-      { "key": "1950ler", "phrase": "1950'lerden", "fromYear": 1950, "toYear": 1959 },
-      { "key": "1960lar", "phrase": "1960'lardan", "fromYear": 1960, "toYear": 1969 },
-      { "key": "1970ler", "phrase": "1970'lerden", "fromYear": 1970, "toYear": 1979 },
-      { "key": "1980ler", "phrase": "1980'lerden", "fromYear": 1980, "toYear": 1989 },
-      { "key": "1990lar", "phrase": "1990'lardan", "fromYear": 1990, "toYear": 1999 },
-      { "key": "2000ler", "phrase": "2000'lerden", "fromYear": 2000, "toYear": 2009 },
-      { "key": "2010lar", "phrase": "2010'lardan", "fromYear": 2010, "toYear": 2019 },
-      { "key": "2020ler", "phrase": "2020'lerden", "fromYear": 2020, "toYear": 2029 },
-      { "key": "2030lar", "phrase": "2030'lardan", "fromYear": 2030, "toYear": 2039 }
+      {
+        "key": "1890lar",
+        "phrase": "1890'lardan",
+        "fromYear": 1888,
+        "toYear": 1899
+      },
+      {
+        "key": "1900ler",
+        "phrase": "1900'lerden",
+        "fromYear": 1900,
+        "toYear": 1909
+      },
+      {
+        "key": "1910lar",
+        "phrase": "1910'lardan",
+        "fromYear": 1910,
+        "toYear": 1919
+      },
+      {
+        "key": "1920ler",
+        "phrase": "1920'lerden",
+        "fromYear": 1920,
+        "toYear": 1929
+      },
+      {
+        "key": "1930lar",
+        "phrase": "1930'lardan",
+        "fromYear": 1930,
+        "toYear": 1939
+      },
+      {
+        "key": "1940lar",
+        "phrase": "1940'lardan",
+        "fromYear": 1940,
+        "toYear": 1949
+      },
+      {
+        "key": "1950ler",
+        "phrase": "1950'lerden",
+        "fromYear": 1950,
+        "toYear": 1959
+      },
+      {
+        "key": "1960lar",
+        "phrase": "1960'lardan",
+        "fromYear": 1960,
+        "toYear": 1969
+      },
+      {
+        "key": "1970ler",
+        "phrase": "1970'lerden",
+        "fromYear": 1970,
+        "toYear": 1979
+      },
+      {
+        "key": "1980ler",
+        "phrase": "1980'lerden",
+        "fromYear": 1980,
+        "toYear": 1989
+      },
+      {
+        "key": "1990lar",
+        "phrase": "1990'lardan",
+        "fromYear": 1990,
+        "toYear": 1999
+      },
+      {
+        "key": "2000ler",
+        "phrase": "2000'lerden",
+        "fromYear": 2000,
+        "toYear": 2009
+      },
+      {
+        "key": "2010lar",
+        "phrase": "2010'lardan",
+        "fromYear": 2010,
+        "toYear": 2019
+      },
+      {
+        "key": "2020ler",
+        "phrase": "2020'lerden",
+        "fromYear": 2020,
+        "toYear": 2029
+      },
+      {
+        "key": "2030lar",
+        "phrase": "2030'lardan",
+        "fromYear": 2030,
+        "toYear": 2039
+      }
     ],
-    "order": ["ERA", "AGE", "SOURCE", "PERIOD", "SETTING", "SUBJECT", "LEAD", "ADJECTIVE", "REGION", "FORMAT", "PERSON"]
+    "order": [
+      "ERA",
+      "AGE",
+      "SOURCE",
+      "PERIOD",
+      "SETTING",
+      "SUBJECT",
+      "LEAD",
+      "ADJECTIVE",
+      "REGION",
+      "FORMAT",
+      "PERSON"
+    ],
+    "redundantPairs": [
+      ["FORMAT:bicim:sessiz", "ADJECTIVE:ek-sifatlar:diyalogsuz"],
+      ["ADJECTIVE:ek-sifatlar:eglenceli", "ADJECTIVE:komik"],
+      ["ADJECTIVE:ek-sifatlar:eglenceli", "ADJECTIVE:esprili"],
+      ["ADJECTIVE:ek-sifatlar:dinlendirici", "ADJECTIVE:agir-tempolu"]
+    ]
   }
 }

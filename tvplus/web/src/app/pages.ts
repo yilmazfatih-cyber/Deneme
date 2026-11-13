@@ -25,6 +25,7 @@ export const RemotePage = lazy(() => import('../features/remote').then((m) => ({
 export const DevicesPage = lazy(() => import('../features/remote').then((m) => ({ default: m.DevicesPage })))
 export const PairPage = lazy(() => import('../features/pair').then((m) => ({ default: m.PairPage })))
 export const ShowcasePage = lazy(() => import('../features/showcase').then((m) => ({ default: m.ShowcasePage })))
+export const StudioPage = lazy(() => import('../features/studio').then((m) => ({ default: m.StudioPage })))
 export const WatchPage = lazy(() => import('../player').then((m) => ({ default: m.WatchPage })))
 export const TvApp = lazy(() => import('../tv').then((m) => ({ default: m.TvApp })))
 export const UiGallery = lazy(() => import('../ui/Gallery').then((m) => ({ default: m.UiGallery })))

@@ -1,0 +1,96 @@
+{
+  "version": 1,
+  "method": "SCENE_DETECT",
+  "videoId": 80030006,
+  "titleId": 80030006,
+  "durationSec": 60.038,
+  "generatedAt": "2026-11-13T12:37:29.123Z",
+  "params": {
+    "ffmpeg": "6.1.1-3ubuntu5",
+    "threshold": 0.12,
+    "minShotSec": 1,
+    "maxShots": 400,
+    "frameWidth": 160,
+    "fps": 8
+  },
+  "media": {
+    "video": "commons-360p.webm",
+    "audio": "commons-360p.webm",
+    "source": "LOCAL",
+    "note": "Wikimedia Commons: File:The Daily Dweebs - Blender Open Movie-full movie.webm (commons-360p VP9 dönüştürmesi) · CC BY 4.0 · Blender Studio",
+    "sha256": "1a4b8d19d7ae28b1eefee092ac47fcec654bca60fc7c81fa433d664f094557f4",
+    "textLang": null
+  },
+  "sprite": { "file": "80030006.jpg", "cols": 4, "cellW": 96, "cellH": 54, "count": 4 },
+  "flags": ["NO_TEXT"],
+  "shots": [
+    {
+      "i": 0,
+      "s": 0,
+      "e": 3.306,
+      "v": {
+        "hist": [0.076, 0.001, 0, 0, 0, 0.005, 0.423, 0, 0, 0, 0, 0, 0.115, 0.725, 0.149, 0.01],
+        "bright": 0.388,
+        "contrast": 0.118,
+        "sat": 0.879,
+        "colorful": 0.848,
+        "edges": 0.141,
+        "motion": 0.032
+      },
+      "a": { "loud": -14.2, "silence": 0, "zcr": 0.1426, "centroid": 1656 },
+      "t": "",
+      "k": 0
+    },
+    {
+      "i": 1,
+      "s": 3.306,
+      "e": 52.097,
+      "v": {
+        "hist": [0.069, 0.027, 0.004, 0, 0, 0, 0.002, 0.003, 0.001, 0.001, 0.004, 0.057, 0.156, 0.69, 0.107, 0.047],
+        "bright": 0.378,
+        "contrast": 0.146,
+        "sat": 0.334,
+        "colorful": 0.342,
+        "edges": 0.222,
+        "motion": 0.085
+      },
+      "a": { "loud": -11.8, "silence": 0, "zcr": 0.0951, "centroid": 1477 },
+      "t": "",
+      "k": 1
+    },
+    {
+      "i": 2,
+      "s": 52.097,
+      "e": 58.097,
+      "v": {
+        "hist": [0, 0, 0, 0, 0, 0.049, 0.358, 0, 0, 0, 0, 0, 0.211, 0.627, 0.162, 0],
+        "bright": 0.365,
+        "contrast": 0.121,
+        "sat": 0.816,
+        "colorful": 0.443,
+        "edges": 0.099,
+        "motion": 0.017
+      },
+      "a": { "loud": -12.4, "silence": 0, "zcr": 0.0468, "centroid": 882 },
+      "t": "",
+      "k": 2
+    },
+    {
+      "i": 3,
+      "s": 58.097,
+      "e": 60.038,
+      "v": {
+        "hist": [0, 0, 0, 0, 0, 0, 0, 0, 0.004, 0, 0, 0, 1, 0, 0, 0],
+        "bright": 0,
+        "contrast": 0,
+        "sat": 0,
+        "colorful": 0.002,
+        "edges": 0,
+        "motion": 0
+      },
+      "a": { "loud": -43.7, "silence": 0.85, "zcr": 0.1459, "centroid": 943 },
+      "t": "",
+      "k": 3
+    }
+  ]
+}

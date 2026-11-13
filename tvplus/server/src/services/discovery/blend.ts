@@ -20,6 +20,8 @@ import { SAME_COLLECTION_BOOST, similarity } from './similarity'
 export const BLEND_WEIGHTS = { kunye: 0.5, mikrotur: 0.3, gomme: 0.2 } as const
 export type SignalName = keyof typeof BLEND_WEIGHTS
 export const SIGNAL_NAMES: readonly SignalName[] = ['kunye', 'mikrotur', 'gomme']
+/** Gömme tek başına en çok bu kadar en yakın komşuyu aday yapar (değeri ise vektörü olan her çifte uygulanır) */
+export const EMBEDDING_NEIGHBORS = 12
 
 export interface BlendSignal {
   name: SignalName
@@ -116,7 +118,14 @@ function computeBlend(services: Partial<Services>, view: IntelligenceView, base:
   // Gömme işareti: vektörler hazır ve iki başlığın da vektörü varsa
   const srcVec = view.embeddingsReady ? view.vector(base.videoId) : null
   const emb = new Map<number, number>()
-  if (srcVec) for (const x of view.embeddingNeighbors(base.videoId, limit)) emb.set(x.titleId, x.score)
+  const near = new Set<number>()
+  if (srcVec) {
+    const neighbors = [...view.embeddingNeighbors(base.videoId, limit)].sort(
+      (a, b) => b.score - a.score || a.titleId - b.titleId,
+    )
+    for (const x of neighbors) emb.set(x.titleId, x.score)
+    for (const x of neighbors.slice(0, EMBEDDING_NEIGHBORS)) if (x.score > 0) near.add(x.titleId)
+  }
 
   const out: (BlendedSimilar & { raw: number; popularity: number })[] = []
   for (const t of titles) {
@@ -132,8 +141,9 @@ function computeBlend(services: Partial<Services>, view: IntelligenceView, base:
         cos = v ? cosine(srcVec, v) : null
       }
     }
-    // Aday ancak bir işaret gerçekten benzerlik gösteriyorsa listeye girer (eskisi: künye > 0)
-    if (!(raw > 0 || (mikrotur ?? 0) > 0 || (cos ?? 0) > 0)) continue
+    // Aday ancak bir işaret gerçekten benzerlik gösteriyorsa listeye girer (eskisi: künye > 0). Kosinüsün
+    // mutlak düzeyi modele bağlı olduğundan gömme tek başına yalnız kaynağın en yakın komşularını aday yapar.
+    if (!(raw > 0 || (mikrotur ?? 0) > 0 || near.has(t.videoId))) continue
     const { score, signals } = blendScore({
       kunye: kunyeValue(raw),
       mikrotur,
@@ -151,9 +161,7 @@ function computeBlend(services: Partial<Services>, view: IntelligenceView, base:
       popularity: t.popularity,
     })
   }
-  out.sort(
-    (a, b) => b.score - a.score || b.raw - a.raw || b.popularity - a.popularity || a.titleId - b.titleId,
-  )
+  out.sort((a, b) => b.score - a.score || b.raw - a.raw || b.popularity - a.popularity || a.titleId - b.titleId)
   return out.map(({ titleId, score, signals, shared, reason }) => ({ titleId, score, signals, shared, reason }))
 }
 

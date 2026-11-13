@@ -1,8 +1,8 @@
 /**
- * Önizleme (hover / uzun basış) ve keşif ekranlarının ortak parçaları.
+ * Önizleme kartı (Netflix hover kartı, yalnız masaüstü) ve keşif ekranlarının ortak parçaları.
  * Diğer ekranlar kartlarına aynı önizlemeyi şöyle bağlar:
  *   <PreviewScope>
- *     <PreviewTarget info={{ rowId, videoId, getRowVideoIds, tctx, title, imageUrl }}><PosterCard … /></PreviewTarget>
+ *     <PreviewTarget info={{ rowId, videoId, getRowVideoIds, tctx, title, imageUrl, edge }}><TitleCard … /></PreviewTarget>
  *   </PreviewScope>
  */
 export {
@@ -13,6 +13,8 @@ export {
   type PreviewTargetInfo,
   type PreviewTargetProps,
 } from './PreviewScope'
+export { placePreview, PREVIEW_SCALE, type Box, type Placement, type PlacementInput } from './placement'
+export { usePreviewOpen } from './openState'
 export { usePlaylistToggle, useThumbToggle, type ToggleState } from './actions'
 export {
   appPathOfHref,
@@ -31,6 +33,7 @@ export {
   joinMeta,
   lockedTextOf,
   playbackBadgeLabels,
+  previewMeta,
   remainingText,
   sourceLabels,
 } from './meta'

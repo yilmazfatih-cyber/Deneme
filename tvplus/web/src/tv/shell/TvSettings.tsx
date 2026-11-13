@@ -76,6 +76,12 @@ export function TvSettings(): ReactElement {
                 icon: 'user',
                 onPress: () => navigate(TV_PATHS.profiles),
               },
+              {
+                id: 'ayarlar:kumanda',
+                label: 'Telefonla Kontrol Et',
+                icon: 'remote',
+                onPress: () => navigate(TV_PATHS.remote),
+              },
               { id: 'ayarlar:cikis', label: 'Çıkış Yap', icon: 'signOut', onPress: () => setConfirm(true) },
             ]}
           />

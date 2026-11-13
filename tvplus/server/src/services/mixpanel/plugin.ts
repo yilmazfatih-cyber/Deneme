@@ -286,7 +286,7 @@ export default async function mixpanelPlugin(app: FastifyInstance): Promise<void
         exclusive(() => generateSynthetic({ ...DEFAULT_SAMPLE }))
           .then((report) => {
             app.log.info(
-              `SENTETİK örnek hazır: ${report.accepted} olay, ${Date.now() - t0} ms (gerçek veri gelince analiz dışı kalır)`,
+              `SENTETİK örnek hazır: ${report.accepted} olay, ${Date.now() - t0} ms (gerçek veri eşiği — TVP_REAL_DATA_MIN_VIEWERS — aşılınca analiz dışı kalır)`,
             )
             resolve(report)
           })

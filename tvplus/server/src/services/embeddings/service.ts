@@ -13,7 +13,6 @@ import { existsSync, mkdirSync, readFileSync } from 'node:fs'
 import { rename, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import sharp from 'sharp'
-import type { ContentTitle } from '../../../../shared/content-schema'
 import type {
   EffectiveTags,
   EmbeddingInfo,
@@ -27,7 +26,13 @@ import { SHOTS_DIR, type SpriteInfo } from '../../../../shared/shots-schema'
 import { ROUTES } from '../../../../shared/constants'
 import type { EmbeddingService, TaggingService } from '../../kernel/intelligence'
 import type { CatalogService } from '../../kernel/services'
-import { checkOutput, type EmbeddingInput, type EmbeddingOutput, type EmbeddingProvider, type ShotMethod } from './provider'
+import {
+  checkOutput,
+  type EmbeddingInput,
+  type EmbeddingOutput,
+  type EmbeddingProvider,
+  type ShotMethod,
+} from './provider'
 import { buildInput, embeddablePlayables, loadShotIndex, stableJson, type VideoShots } from './shots'
 import { normalize, pca2, topK } from './vectors'
 
@@ -46,6 +51,12 @@ export interface EmbeddingDeps {
   tagging: () => TaggingService | null
   provider: EmbeddingProvider
   log: { info: (msg: string) => void; warn: (msg: string) => void }
+  /**
+   * false (testler): ilk kurulum yalnız whenReady / rebuild / REST uçlarıyla başlar; başka servislerin ready() ya da
+   * similarTitles() çağrıları kurulum başlatmaz (başka alanların testleri gömme kurulumunu beklemesin).
+   * Kurulmuş bir dizin varken etiket değişikliği her durumda arka planda yeniden kurulumu tetikler.
+   */
+  autoStart: boolean
 }
 
 export interface BuildStats {
@@ -96,7 +107,38 @@ interface Index {
   titleRow: Map<number, number>
   titleMatrix: Float32Array
   sceneDetected: number
+  /** Yedekli sağlayıcıda: asıl modelden gelen / yedeğe düşen yaprak sayısı (yoksa null) */
+  coverage: { model: number; fallback: number } | null
   projection: ProjectionPoint[] | null
+}
+
+/** Kurulumda yaprak başına tutulan özet (tam girdi tutulmaz: 500 bin çekimde yüzlerce MB eder). */
+interface BuiltVideo {
+  videoId: number
+  titleId: number
+  method: ShotMethod
+  shots: ShotMeta[]
+  sprite: SpriteInfo | null
+  out: EmbeddingOutput
+}
+
+const MODALITY_ORDER: EmbeddingModality[] = ['VISUAL', 'AUDIO', 'TEXT', 'CONTEXT']
+
+function builtVideo(input: EmbeddingInput, out: EmbeddingOutput, rec: VideoShots | null): BuiltVideo {
+  return {
+    videoId: input.videoId,
+    titleId: input.titleId,
+    method: input.method,
+    shots: input.shots.map((s, i) => ({
+      startSec: s.startSec,
+      endSec: s.endSec,
+      text: s.text,
+      hasAudio: s.audio !== null,
+      cell: rec?.shots[i]?.k ?? null,
+    })),
+    sprite: rec?.sprite ?? null,
+    out,
+  }
 }
 
 interface CacheEntry {
@@ -112,6 +154,8 @@ export interface EmbeddingServiceImpl extends EmbeddingService {
   /** Kurulumu yeniden çalıştırır (önbellek geçerliyse yalnız değişen yapraklar kodlanır). */
   rebuild(): Promise<BuildStats>
   lastBuild(): BuildStats | null
+  /** Yedekli sağlayıcıda (depodaki model + taban) kapsama; değilse null */
+  coverage(): { model: number; fallback: number } | null
   /** Başlık komşuları; başlığın vektörü yoksa null */
   titleNeighbors(titleId: number, limit: number): NeighborTitle[] | null
   shots(videoId: number): ShotSummary[] | null
@@ -236,7 +280,9 @@ export function createEmbeddingService(deps: EmbeddingDeps): EmbeddingServiceImp
       const catalog = deps.catalog()
       const shotIndex = loadShotIndex(deps.contentDir)
       for (const p of shotIndex.problems) deps.log.warn(`gömme: ${p.file} okunamadı: ${p.reason}`)
-      const items: { title: ContentTitle; input: EmbeddingInput; out: EmbeddingOutput; rec: VideoShots | null }[] = []
+      const items: BuiltVideo[] = []
+      const modalities = new Set<EmbeddingModality>()
+      const coverage = provider.covers ? { model: 0, fallback: 0 } : null
       let n = 0
       for (const title of catalog.allTitles()) {
         const tags = effective(title.videoId)
@@ -266,12 +312,27 @@ export function createEmbeddingService(deps: EmbeddingDeps): EmbeddingServiceImp
               continue
             }
           }
-          items.push({ title, input, out, rec })
+          for (const m of provider.modalities([input])) modalities.add(m)
+          if (coverage && provider.covers) {
+            if (provider.covers(input)) coverage.model++
+            else coverage.fallback++
+          }
+          items.push(builtVideo(input, out, rec))
           if (++n % YIELD_EVERY === 0) await yieldNow()
         }
       }
       const prev = index
-      index = assemble(items, stats.tagRevision)
+      index = assemble(
+        items,
+        stats.tagRevision,
+        MODALITY_ORDER.filter((m) => modalities.has(m)),
+      )
+      index.coverage = coverage
+      if (coverage)
+        deps.log.info(
+          `gömme: ${provider.modelVersion ?? provider.version} — ${coverage.model} yaprak modelden, ` +
+            `${coverage.fallback} yaprak taban yedeğinden`,
+        )
       stats.changed =
         prev === null ||
         stats.computed > 0 ||
@@ -296,12 +357,9 @@ export function createEmbeddingService(deps: EmbeddingDeps): EmbeddingServiceImp
     return stats
   }
 
-  function assemble(
-    items: { title: ContentTitle; input: EmbeddingInput; out: EmbeddingOutput; rec: VideoShots | null }[],
-    tagRev: number,
-  ): Index {
+  function assemble(items: BuiltVideo[], tagRev: number, modalities: EmbeddingModality[]): Index {
     const dims = provider.dims
-    const totalShots = items.reduce((s, it) => s + it.input.shots.length, 0)
+    const totalShots = items.reduce((s, it) => s + it.shots.length, 0)
     const shotMatrix = new Float32Array(totalShots * dims)
     const shotVideo = new Int32Array(totalShots)
     const videos = new Map<number, VideoEntry>()
@@ -310,23 +368,17 @@ export function createEmbeddingService(deps: EmbeddingDeps): EmbeddingServiceImp
     let offset = 0
     let sceneDetected = 0
     for (const it of items) {
-      const count = it.input.shots.length
+      const count = it.shots.length
       shotMatrix.set(it.out.shots, offset * dims)
       shotVideo.fill(videoOrder.length, offset, offset + count)
       const entry: VideoEntry = {
-        videoId: it.input.videoId,
-        titleId: it.input.titleId,
-        method: it.input.method,
+        videoId: it.videoId,
+        titleId: it.titleId,
+        method: it.method,
         offset,
         count,
-        shots: it.input.shots.map((s, i) => ({
-          startSec: s.startSec,
-          endSec: s.endSec,
-          text: s.text,
-          hasAudio: s.audio !== null,
-          cell: it.rec?.shots[i]?.k ?? null,
-        })),
-        sprite: it.rec?.sprite ?? null,
+        shots: it.shots,
+        sprite: it.sprite,
       }
       // Bellek önbelleği artık bitişik matrisin görünümlerini tutar (kopya yok).
       const cached = memCache.get(entry.videoId)
@@ -341,9 +393,9 @@ export function createEmbeddingService(deps: EmbeddingDeps): EmbeddingServiceImp
     // Başlık vektörleri: film → kendi yaprağı; dizi → bölümlerin ortalaması (katalog sırasıyla)
     const byTitle = new Map<number, Float32Array[]>()
     for (const it of items) {
-      const list = byTitle.get(it.title.videoId) ?? []
-      list.push(pooledOf.get(it.input.videoId)!)
-      byTitle.set(it.title.videoId, list)
+      const list = byTitle.get(it.titleId) ?? []
+      list.push(pooledOf.get(it.videoId)!)
+      byTitle.set(it.titleId, list)
     }
     const titleIds = [...byTitle.keys()]
     const titleMatrix = new Float32Array(titleIds.length * dims)
@@ -359,7 +411,7 @@ export function createEmbeddingService(deps: EmbeddingDeps): EmbeddingServiceImp
       dims,
       builtAt: new Date().toISOString(),
       tagRevision: tagRev,
-      modalities: provider.modalities(items.map((i) => i.input)),
+      modalities,
       videos,
       shotVideo,
       shotMatrix,
@@ -368,6 +420,7 @@ export function createEmbeddingService(deps: EmbeddingDeps): EmbeddingServiceImp
       titleRow,
       titleMatrix,
       sceneDetected,
+      coverage: null,
       projection: null,
     }
   }
@@ -389,7 +442,9 @@ export function createEmbeddingService(deps: EmbeddingDeps): EmbeddingServiceImp
   /** Etiketler değiştiyse (ya da hiç kurulmadıysa) arka planda kurulumu başlatır. */
   function refreshIfStale(): void {
     if (closed || running) return
-    if (!index || index.tagRevision !== tagRevision()) void requestBuild()
+    if (!index) {
+      if (deps.autoStart) void requestBuild()
+    } else if (index.tagRevision !== tagRevision()) void requestBuild()
   }
 
   const titleNeighbors = (titleId: number, limit: number): NeighborTitle[] | null => {
@@ -409,7 +464,7 @@ export function createEmbeddingService(deps: EmbeddingDeps): EmbeddingServiceImp
       refreshIfStale()
       return {
         provider: provider.id,
-        modelVersion: provider.version,
+        modelVersion: provider.modelVersion ?? provider.version,
         dims: index?.dims ?? provider.dims,
         titles: index?.titleIds.length ?? 0,
         shots: index ? index.shotVideo.length : 0,
@@ -436,6 +491,7 @@ export function createEmbeddingService(deps: EmbeddingDeps): EmbeddingServiceImp
     },
     rebuild: () => requestBuild(),
     lastBuild: () => last,
+    coverage: () => index?.coverage ?? null,
     titleNeighbors,
     shots(videoId) {
       refreshIfStale()
@@ -458,9 +514,9 @@ export function createEmbeddingService(deps: EmbeddingDeps): EmbeddingServiceImp
       if (!ix || !v || shotIndex < 0 || shotIndex >= v.count) return null
       const row = v.offset + shotIndex
       const q = ix.shotMatrix.subarray(row * ix.dims, (row + 1) * ix.dims)
-      const ord = ix.shotVideo[row]!
       return topK(ix.shotMatrix, ix.dims, q, limit, {
-        skip: sameVideo ? (r) => r === row : (r) => ix.shotVideo[r] === ord,
+        // aynı videonun çekimleri bitişik satırlardır: aralık atlanır (sameVideo=true ise yalnız kendisi)
+        skipRange: sameVideo ? [row, row + 1] : [v.offset, v.offset + v.count],
       }).map((h) => {
         const e = ix.videoOrder[ix.shotVideo[h.row]!]!
         const i = h.row - e.offset
@@ -501,7 +557,12 @@ export function createEmbeddingService(deps: EmbeddingDeps): EmbeddingServiceImp
       const file = join(deps.contentDir, SHOTS_DIR, sp.file)
       if (!existsSync(file) || s.cell >= sp.count) return null
       const body = await sharp(file)
-        .extract({ left: (s.cell % sp.cols) * sp.cellW, top: Math.floor(s.cell / sp.cols) * sp.cellH, width: sp.cellW, height: sp.cellH })
+        .extract({
+          left: (s.cell % sp.cols) * sp.cellW,
+          top: Math.floor(s.cell / sp.cols) * sp.cellH,
+          width: sp.cellW,
+          height: sp.cellH,
+        })
         .jpeg({ quality: KEYFRAME_QUALITY })
         .toBuffer()
       keyframes.set(key, body)

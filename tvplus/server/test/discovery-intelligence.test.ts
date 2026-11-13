@@ -17,9 +17,19 @@ import { BLEND_WEIGHTS, blendedSimilars, blendScore, kunyeValue } from '../src/s
 import { buildLolomo, MIN_ROW_ITEMS, type Lolomo, type LolomoCategory } from '../src/services/discovery/lolomo'
 import { MICROGENRE_MAX_OVERLAP, MICROGENRE_ROW_MIN } from '../src/services/discovery/microgenreRows'
 import { similarity, similarTitles } from '../src/services/discovery/similarity'
-import { ADULT, createAlanApp, fakeRequest, FIXTURE_CONTENT_DIR, gqlContext, ID, KID, passport, TEEN } from './fixtures/alan'
+import {
+  ADULT,
+  createAlanApp,
+  fakeRequest,
+  FIXTURE_CONTENT_DIR,
+  gqlContext,
+  ID,
+  KID,
+  passport,
+  TEEN,
+} from './fixtures/alan'
 import { TEST_NOW } from './fixtures/alan'
-import { FIXTURE_MICROGENRES, installIntelligence, mg } from './fixtures/intelligence'
+import { FIXTURE_MICROGENRES, installEmptyIntelligence, installIntelligence, mg } from './fixtures/intelligence'
 import { createTestApp } from './helpers'
 
 const FLAGS = { webp: 'true', isTop10Supported: 'true', materialize: 'true', falcor_server: '0.1.0' }
@@ -76,7 +86,7 @@ describe('harman benzerlik', () => {
     ])
     // gömme yok → 0.5/0.8 ve 0.3/0.8
     const noEmb = blendScore({ kunye: 0.4, mikrotur: 0.5, gomme: null })
-    expect(noEmb.signals.map((s) => s.weight)).toEqual([0.625, 0.375, 0])
+    expect(noEmb.signals.map((s) => s.weight)).toEqual([0.625, expect.closeTo(0.375, 10), 0])
     expect(noEmb.score).toBeCloseTo(0.625 * 0.4 + 0.375 * 0.5)
     // yalnız künye → puan künyenin kendisi
     expect(blendScore({ kunye: 0.37 }).score).toBeCloseTo(0.37)
@@ -97,6 +107,7 @@ describe('harman benzerlik', () => {
     })
 
     it('yeni servisler boşken sıralama bugünküyle aynı (tüm başlıklar, yetişkin ve çocuk)', () => {
+      installEmptyIntelligence(app)
       const cat = app.services.catalog
       for (const profile of [ADULT, TEEN, KID]) {
         const vis = (id: number) => cat.isVisibleTo(profile, id)
@@ -120,7 +131,7 @@ describe('harman benzerlik', () => {
     })
 
     it('üç işaret: puan, gerekçe (en dar ortak mikro tür), çift başına ağırlık dağıtımı, kararlılık', () => {
-      installIntelligence(app)
+      const { embeddings } = installIntelligence(app)
       const list = blendedSimilars(app.services, ID.sintel)
       expect(list.map((x) => x.titleId)).not.toContain(ID.sintel)
       // Spring: künye, iki dar ortak mikro tür ve en yakın vektör → ilk sırada; gerekçe en dar ortak (3 yuva)
@@ -134,29 +145,38 @@ describe('harman benzerlik', () => {
       }
       // azalan puan
       for (let i = 1; i < list.length; i++) expect(list[i - 1]!.score).toBeGreaterThanOrEqual(list[i]!.score)
+      // kararlı
+      expect(blendedSimilars(app.services, ID.sintel)).toEqual(list)
       // Anadolu'nun vektörü yok → o çift için gömme ağırlığı 0, kalan 0.5/0.8 + 0.3/0.8
       const anadolu = blendedSimilars(app.services, ID.bbb).find((x) => x.titleId === ID.anadolu)!
       expect(anadolu.signals.map((s) => [s.name, s.weight])).toEqual([
         ['kunye', 0.625],
-        ['mikrotur', 0.375],
+        ['mikrotur', expect.closeTo(0.375, 10)],
         ['gomme', 0],
       ])
       expect(anadolu.reason).toBe('Ortak: Ailece İzlenecek Kısa Yapımlar')
+      // ortak mikro türü olmayan çift (Anadolu'ya vektör verilince Sintel'e yakın): gerekçe yok, mikro tür 0 ama ağırlıklı
+      embeddings.setVector(ID.anadolu, [1, 0.1, 0])
+      embeddings.bump()
+      const lone = blendedSimilars(app.services, ID.sintel).find((x) => x.titleId === ID.anadolu)!
+      expect(lone.reason).toBeNull()
+      expect(lone.shared).toEqual([])
+      expect(lone.signals.map((s) => [s.name, s.value, s.weight])).toEqual([
+        ['kunye', 0, 0.5],
+        ['mikrotur', 0, 0.3],
+        ['gomme', expect.closeTo(1, 5), 0.2],
+      ])
       // ortak mikro türü olmayan çiftte gerekçe yok, mikro tür işareti 0 ama ağırlığı var
-      const nos = list.find((x) => x.titleId === ID.nosferatu)
-      if (nos) {
-        expect(nos.reason).toBeNull()
-        expect(nos.signals.find((s) => s.name === 'mikrotur')).toMatchObject({ value: 0, weight: 0.3 })
-      }
-      // kararlı
-      expect(blendedSimilars(app.services, ID.sintel)).toEqual(list)
+      // Metropolis: hiçbir işaret benzerlik göstermiyor (künye 0, ortak mikro tür yok, kosinüs < 0) → listede yok
+      expect(list.map((x) => x.titleId)).not.toContain(ID.metropolis)
     })
 
     it('gömme hazır değilse ağırlığı dağıtılır; servis fırlatırsa keşif düşmez', () => {
       const { embeddings, microgenres } = installIntelligence(app)
       embeddings.setReady(false)
       const list = blendedSimilars(app.services, ID.sintel)
-      for (const x of list) expect(x.signals.find((s) => s.name === 'gomme')).toEqual({ name: 'gomme', value: 0, weight: 0 })
+      for (const x of list)
+        expect(x.signals.find((s) => s.name === 'gomme')).toEqual({ name: 'gomme', value: 0, weight: 0 })
       microgenres.similarTitles = () => {
         throw new Error('çöktü')
       }
@@ -195,6 +215,7 @@ describe('GraphQL: similarsWithReason, microgenres, Query.microgenre', () => {
   }
 
   it('servisler boşken: similars bugünküyle aynı, gerekçe yok, mikro tür yok', async () => {
+    installEmptyIntelligence(app)
     const d = await ok('Similars', { videoId: ID.sintel, first: 48 })
     const expected = similarTitles(app.services.catalog, ID.sintel, (t) =>
       app.services.catalog.isVisibleTo(ADULT, t.videoId),
@@ -234,8 +255,8 @@ describe('GraphQL: similarsWithReason, microgenres, Query.microgenre', () => {
       ['mg_b_buyu', 'VISIBLE'],
       ['mg_a_anim', 'VISIBLE'],
       ['mg_h1_ejder', 'HIDDEN'],
-      ['mg_h2_acik', 'HIDDEN'],
-      ['mg_h4_gotik', 'HIDDEN'],
+      ['mg_h4_gotik', 'HIDDEN'], // 2 yuva, 3 başlık
+      ['mg_h2_acik', 'HIDDEN'], // 2 yuva, 5 başlık
     ])
     expect(d.video.microgenres[0]).toMatchObject({
       unifiedEntityId: 'Microgenre:mg_b_buyu',
@@ -275,6 +296,7 @@ describe('ana sayfa satırları', () => {
     buildLolomo(app.services, profile, { top10Supported: true, now: TEST_NOW, category })
 
   it('servisler boşken yeni satır yok; satır adları sözlükteki yazımla', () => {
+    installEmptyIntelligence(app)
     app.services.progress.setBookmark(ADULT.guid, ID.sintel, 300)
     const l = home()
     expect(contexts(l)).not.toContain('microgenre')
@@ -317,7 +339,9 @@ describe('ana sayfa satırları', () => {
       const def = FIXTURE_MICROGENRES.find((m) => m.id === r.microgenreId)!
       expect(def.layer).toBe('VISIBLE')
     }
-    for (const a of rows) for (const b of rows) if (a !== b) expect(jaccard(a.videoIds, b.videoIds)).toBeLessThanOrEqual(MICROGENRE_MAX_OVERLAP)
+    for (const a of rows)
+      for (const b of rows)
+        if (a !== b) expect(jaccard(a.videoIds, b.videoIds)).toBeLessThanOrEqual(MICROGENRE_MAX_OVERLAP)
     expect(new Set(l.lists.map((x) => x.listId)).size).toBe(l.lists.length)
   })
 
@@ -431,10 +455,11 @@ describe('önbellek: sürüm değişince tazelenir', () => {
     const { microgenres } = installIntelligence(app)
     app.services.progress.setBookmark(ADULT.guid, ID.sintel, 300)
     const before = await summaries()
+    // Sintel izlendi → Büyülü ve Aile, Klasik'ten önce
     expect(before.filter((s) => s.context === 'microgenre').map((s) => s.microgenreId)).toEqual([
       'mg_b_buyu',
-      'mg_d_klasik',
       'mg_e_aile',
+      'mg_d_klasik',
     ])
     expect(before.find((s) => s.context === 'becauseYouWatched')!.reason).toBe('Açık Kaynakla Üretilmiş Kısa Filmler')
 
@@ -515,7 +540,7 @@ describe('Falcor ve açılış tohumu', () => {
       communityId: 'tc_03',
       length: 4,
     })
-    expect(of('microgenre').map((s) => s.microgenreId)).toEqual(['mg_b_buyu', 'mg_d_klasik', 'mg_e_aile'])
+    expect(of('microgenre').map((s) => s.microgenreId)).toEqual(['mg_b_buyu', 'mg_e_aile', 'mg_d_klasik'])
     // diğer satırlar yeni alanları taşımaz
     for (const s of of('genre')) expect(Object.keys(s)).not.toContain('microgenreId')
     // satır öğeleri ve tctx
@@ -547,5 +572,37 @@ describe('Falcor ve açılış tohumu', () => {
       }
       expect(Object.keys(l.itemTctx as object).length).toBe(Math.min(length, 10))
     }
+  })
+})
+
+describe('gerçek içerik zekâsı servisleriyle (örnek içerik)', () => {
+  let app: FastifyInstance
+  afterEach(async () => {
+    await app.close()
+  })
+
+  it('satır kuralları gerçek servislerin çıktısında da geçerli', async () => {
+    app = await createAlanApp()
+    app.services.progress.setBookmark(ADULT.guid, ID.sintel, 300)
+    for (const profile of [ADULT, TEEN, KID]) {
+      const l = buildLolomo(app.services, profile, { top10Supported: true, now: TEST_NOW })
+      const rows = l.lists.filter((x) => x.context === 'microgenre')
+      expect(rows.length).toBeLessThanOrEqual(3)
+      for (const r of rows) {
+        const m = app.services.microgenres.get(r.microgenreId!)!
+        expect(m.layer).toBe('VISIBLE')
+        expect(r.displayName).toBe(m.name)
+        expect(r.videoIds.length).toBeGreaterThanOrEqual(MICROGENRE_ROW_MIN)
+      }
+      for (const x of l.lists)
+        for (const v of x.videoIds) expect(app.services.catalog.isVisibleTo(profile, v), `${x.context} ${v}`).toBe(true)
+      expect(new Set(l.lists.map((x) => x.listId)).size).toBe(l.lists.length)
+    }
+    const row = byCtx(buildLolomo(app.services, ADULT, { top10Supported: true, now: TEST_NOW })).becauseYouWatched!
+    expect(row.videoIds).toEqual(
+      blendedSimilars(app.services, ID.sintel)
+        .map((x) => x.titleId)
+        .slice(0, 40),
+    )
   })
 })

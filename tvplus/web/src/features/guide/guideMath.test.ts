@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest'
 import {
+  blockAtTime,
+  dayLabel,
   dayWindow,
+  moveInGrid,
+  windowHasAirings,
   groupForList,
   initialScrollLeft,
   layoutBlocks,
@@ -102,5 +106,65 @@ describe('mobil liste grupları', () => {
     expect(g.next?.id).toBe('d')
     expect(g.later.map((x) => x.id)).toEqual(['e'])
     expect(g.earlier.map((x) => x.id)).toEqual(['b', 'a'])
+  })
+})
+
+describe('gün sekmeleri ve sınırları (Türkiye saati)', () => {
+  it('etiketler: Dün, Bugün, Yarın, sonra gün adı', () => {
+    expect([-1, 0, 1].map((d) => dayLabel(d as -1 | 0 | 1, NOW))).toEqual(['Dün', 'Bugün', 'Yarın'])
+    expect(dayLabel(2, NOW)).toBe('Pazar') // 13 Kasım 2026 Cuma → 15 Kasım Pazar
+  })
+  it('gün sınırı UTC değil Türkiye gece yarısıdır: 23:30 UTC (02:30 TSİ) ertesi gündür', () => {
+    const late = Date.parse('2026-11-13T23:30:00Z') // 14 Kasım 02:30 TSİ
+    expect(dayLabel(2, late)).toBe('Pazartesi')
+    // "bugün" penceresi 14 Kasım'a aittir ve şimdiyi kapsar
+    const w = dayWindow(0, late)
+    expect(w.from).toBeLessThanOrEqual(late)
+    expect(w.to).toBe(zonedTime(2026, 11, 15, 2))
+    expect(new Date(dayWindow(1, late).from).toISOString()).toBe('2026-11-15T03:00:00.000Z')
+  })
+  it('örnek akışın gittiği son gün', () => {
+    const chans = [{ airings: [{ startAt: iso('2026-11-14T05:00:00Z'), endAt: iso('2026-11-14T06:00:00Z') }] }]
+    expect(windowHasAirings(chans, dayWindow(1, NOW))).toBe(true)
+    expect(windowHasAirings(chans, dayWindow(2, NOW))).toBe(false)
+  })
+})
+
+describe('klavyeyle gezinme', () => {
+  const w = dayWindow(0, NOW)
+  const at = (h: number, m = 0) => iso(`2026-11-13T${String(h - 3).padStart(2, '0')}:${String(m).padStart(2, '0')}:00Z`)
+  const rows = [
+    [
+      { startAt: at(12), endAt: at(13) },
+      { startAt: at(13), endAt: at(15) },
+      { startAt: at(15), endAt: at(16) },
+    ],
+    [],
+    [
+      { startAt: at(11), endAt: at(13, 30) },
+      { startAt: at(13, 30), endAt: at(14, 30) },
+      { startAt: at(14, 30), endAt: at(17) },
+    ],
+  ]
+  it('←/→ aynı kanalda, kenarda durur', () => {
+    expect(moveInGrid(rows, { row: 0, index: 1 }, 'ArrowRight', w)).toEqual({ row: 0, index: 2 })
+    expect(moveInGrid(rows, { row: 0, index: 2 }, 'ArrowRight', w)).toEqual({ row: 0, index: 2 })
+    expect(moveInGrid(rows, { row: 0, index: 0 }, 'ArrowLeft', w)).toEqual({ row: 0, index: 0 })
+    expect(moveInGrid(rows, { row: 0, index: 1 }, 'Home', w)).toEqual({ row: 0, index: 0 })
+    expect(moveInGrid(rows, { row: 0, index: 0 }, 'End', w)).toEqual({ row: 0, index: 2 })
+  })
+  it('↓ boş kanalı atlar ve aynı ana denk gelen programa gider', () => {
+    // 13:00–15:00 bloğunun ortası 14:00 → alt kanalda 13:30–14:30
+    expect(moveInGrid(rows, { row: 0, index: 1 }, 'ArrowDown', w)).toEqual({ row: 2, index: 1 })
+    expect(moveInGrid(rows, { row: 2, index: 2 }, 'ArrowUp', w)).toEqual({ row: 0, index: 2 })
+  })
+  it('ilk/son kanalda ↑/↓ yerinde kalır; PageDown son dolu kanala gider', () => {
+    expect(moveInGrid(rows, { row: 0, index: 0 }, 'ArrowUp', w)).toEqual({ row: 0, index: 0 })
+    expect(moveInGrid(rows, { row: 2, index: 0 }, 'ArrowDown', w)).toEqual({ row: 2, index: 0 })
+    expect(moveInGrid(rows, { row: 0, index: 0 }, 'PageDown', w)).toEqual({ row: 2, index: 0 })
+  })
+  it('aralıkta blok yoksa ortası en yakın olan', () => {
+    expect(blockAtTime(rows[0]!, Date.parse(at(20)), w)).toBe(2)
+    expect(blockAtTime([], Date.parse(at(20)), w)).toBe(-1)
   })
 })

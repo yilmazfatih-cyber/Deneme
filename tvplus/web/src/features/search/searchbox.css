@@ -1,27 +1,26 @@
-/* Arama kutusu — DESIGN_SPEC "Web üst menü": 360×44, surface-1, hap, büyüteç, temizle düğmesi. */
+/*
+ * Arama kutusu (UX_SPEC §2 ve §3). Masaüstünde çerçeve ve genişlik üst menüden gelir (app/shell.css `.app-hsearch`);
+ * burada iç düzen, tahmin açılır listesi ve mobil biçim var.
+ */
 .tvp-searchbox {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 8px;
-  width: 360px;
-  max-width: 100%;
-  height: 44px;
-  padding: 0 4px 0 16px;
-  border: 1px solid var(--line);
-  border-radius: var(--r-pill);
-  background: var(--s1);
-  color: var(--t3);
+  color: var(--text-3);
+  font-family: var(--font-sans);
 }
-.tvp-searchbox > .cn-icon {
+.tvp-searchbox__field {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 100%;
+}
+.tvp-searchbox__field > .ui-icon {
   flex: none;
-}
-.tvp-searchbox:focus-within {
-  border-color: var(--line-strong);
-  color: var(--t2);
-}
-.tvp-searchbox:has(input:focus-visible) {
-  outline: 2px solid var(--t1);
-  outline-offset: 2px;
 }
 .tvp-searchbox input {
   flex: 1;
@@ -30,12 +29,12 @@
   border: 0;
   outline: none;
   background: transparent;
-  color: var(--t1);
+  color: var(--text-1);
   font: inherit;
   font-size: 14px;
 }
 .tvp-searchbox input::placeholder {
-  color: var(--t3);
+  color: var(--text-4);
 }
 /* Tarayıcının kendi temizle düğmesi yerine bizimki */
 .tvp-searchbox input::-webkit-search-cancel-button {
@@ -46,12 +45,107 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: var(--r-pill);
-  color: var(--t2);
+  width: 32px;
+  height: 32px;
+  border: 0;
+  background: none;
+  color: var(--text-2);
+  cursor: pointer;
 }
 .tvp-searchbox__clear:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--t1);
+  color: var(--text-1);
+}
+.tvp-searchbox__clear:focus-visible,
+.tvp-searchbox__cancel:focus-visible {
+  outline: 2px solid var(--text-1);
+  outline-offset: -2px;
+}
+
+/* ───────────── Masaüstü: kutu (üst menü çerçeveler) ───────────── */
+.tvp-searchbox--header {
+  color: var(--text-1);
+}
+.tvp-searchbox--header:has(input:focus-visible) {
+  box-shadow: 0 0 0 1px var(--text-1);
+}
+
+/* Tahmin açılır listesi: kutunun hemen altında, kutudan biraz geniş, siyah zemin. */
+.tvp-predict {
+  position: absolute;
+  top: calc(100% + 1px);
+  right: -1px;
+  width: max(100%, 340px);
+  margin: 0;
+  padding: 6px 0;
+  list-style: none;
+  background: var(--menu-bg);
+  border: 1px solid var(--line);
+  border-top: 0;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6);
+  z-index: var(--z-menu);
+}
+.tvp-predict[hidden] {
+  display: none;
+}
+.tvp-predict__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  padding: 0 12px;
+  color: var(--text-1);
+  font-size: 14px;
+  cursor: pointer;
+}
+.tvp-predict__item.is-active {
+  background: rgba(255, 255, 255, 0.1);
+}
+.tvp-predict__icon {
+  flex: none;
+  color: var(--text-4);
+}
+.tvp-predict__text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.tvp-predict__text b {
+  font-weight: 700;
+  color: var(--text-1);
+}
+.tvp-predict__typed {
+  font-weight: 400;
+  color: var(--text-3);
+}
+.tvp-predict__kind {
+  flex: none;
+  font-size: 12px;
+  color: var(--text-4);
+}
+
+/* ───────────── Mobil: sabit üst girdi + İptal ───────────── */
+.tvp-searchbox--page {
+  height: 36px;
+}
+.tvp-searchbox--page .tvp-searchbox__field {
+  height: 36px;
+  padding: 0 4px 0 10px;
+  border-radius: var(--radius-button);
+  background: var(--surface-2);
+}
+.tvp-searchbox--page input {
+  font-size: 16px; /* iOS yakınlaştırmasın */
+}
+.tvp-searchbox__cancel {
+  flex: none;
+  min-height: 36px;
+  padding: 0 2px 0 6px;
+  border: 0;
+  background: none;
+  color: var(--text-1);
+  font: inherit;
+  font-size: 15px;
+  cursor: pointer;
 }

@@ -13,8 +13,8 @@ afterEach(async () => {
   while (apps.length) await apps.pop()!.close()
 })
 
-async function loggedIn() {
-  const app = await createTestApp()
+async function loggedIn(realDataMinViewers = 50) {
+  const app = await createTestApp({ realDataMinViewers })
   apps.push(app)
   const cookies: Record<string, string> = {}
   const take = (res: { cookies: { name: string; value: string }[] }) => {
@@ -88,24 +88,30 @@ describe('uygulama olayları → izleme verisi', () => {
     expect(viewing.sources().find((s) => s.source === 'TVPLUS')!.events).toBe(10)
   })
 
-  it('sentetik veri varken uygulama verisi gelince SENTETİK analiz dışı kalır', async () => {
-    const { app, cookies } = await loggedIn()
-    await app.inject({
-      method: 'POST',
-      url: '/api/studio/sources/synthetic/generate',
-      payload: { viewers: 20, days: 5, seed: 1 },
+  for (const [min, expected] of [
+    [50, { TVPLUS: true, MIXPANEL: false, SYNTHETIC: true }],
+    [1, { TVPLUS: true, MIXPANEL: false, SYNTHETIC: false }],
+  ] as const) {
+    it(`uygulama verisi gelince: eşik ${min} → SENTETİK ${expected.SYNTHETIC ? 'etkin kalır' : 'analiz dışı'}`, async () => {
+      const { app, cookies } = await loggedIn(min)
+      await app.inject({
+        method: 'POST',
+        url: '/api/studio/sources/synthetic/generate',
+        payload: { viewers: 20, days: 5, seed: 1 },
+      })
+      expect(app.services.viewing.activeSources()).toEqual(['SYNTHETIC'])
+      await app.inject({
+        method: 'POST',
+        url: '/log/web/cl/1',
+        cookies,
+        payload: { sessionId: 's2', sentAt: NOW, events: [e('playback.start', { videoId: 80020001, positionSec: 0 })] },
+      })
+      const st = Object.fromEntries(app.services.viewing.sources().map((s) => [s.source, s.active]))
+      expect(st).toEqual(expected)
+      // Profilin kendi TVPLUS özeti her iki durumda da analizde
+      expect(app.services.viewing.facts().some((f) => f.source === 'TVPLUS')).toBe(true)
     })
-    expect(app.services.viewing.activeSources()).toEqual(['SYNTHETIC'])
-    await app.inject({
-      method: 'POST',
-      url: '/log/web/cl/1',
-      cookies,
-      payload: { sessionId: 's2', sentAt: NOW, events: [e('playback.start', { videoId: 80020001, positionSec: 0 })] },
-    })
-    expect(app.services.viewing.activeSources()).toEqual(['TVPLUS'])
-    const st = Object.fromEntries(app.services.viewing.sources().map((s) => [s.source, s.active]))
-    expect(st).toEqual({ TVPLUS: true, MIXPANEL: false, SYNTHETIC: false })
-  })
+  }
 
   it('anonim paket çevrilmez; dinleyici hatası olay ucunu bozmaz; abonelik kaldırılabilir', async () => {
     const app = await createTestApp()

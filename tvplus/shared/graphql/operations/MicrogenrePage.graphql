@@ -1,0 +1,11 @@
+# Mikro tür sayfası (#/tur/mg_…): satırdaki "Tümünü Gör" buraya gelir.
+query MicrogenrePage($id: ID!) {
+  microgenre(id: $id) {
+    id
+    name
+    size
+    videos(first: 60) {
+      ...CardVideo
+    }
+  }
+}

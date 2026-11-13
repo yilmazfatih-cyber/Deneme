@@ -45,8 +45,20 @@ function catalog(): ContentTitle[] {
     t({ title: 'b2', genres: ['belgesel'], addedAt: '2026-09-01', leavingAt: '2026-10-15' }),
     t({ title: 'b3', genres: ['belgesel'], addedAt: '2026-11-01', licenseName: 'Kamu malı' }),
     t({ title: 'k1', genres: ['korku'], addedAt: '2026-11-01', rating: '18+' }),
-    t({ type: 'SHOW', title: 's1', genres: ['komedi'], addedAt: '2026-10-01', origin: { countries: ['TR'], languages: ['tr'] } }),
-    t({ type: 'SHOW', title: 's2', genres: ['belgesel'], addedAt: '2026-10-01', origin: { countries: ['GB'], languages: ['en'] } }),
+    t({
+      type: 'SHOW',
+      title: 's1',
+      genres: ['komedi'],
+      addedAt: '2026-10-01',
+      origin: { countries: ['TR'], languages: ['tr'] },
+    }),
+    t({
+      type: 'SHOW',
+      title: 's2',
+      genres: ['belgesel'],
+      addedAt: '2026-10-01',
+      origin: { countries: ['GB'], languages: ['en'] },
+    }),
   ]
 }
 
@@ -220,7 +232,7 @@ describe('içgörüler — planlayıcı', () => {
     app.services.insights.plan(input)
   const slotsOf = (p: PlanResult) => Object.fromEntries(p.rows.map((r) => [r.key, r.slots]))
 
-  it('başlıklar tam N\'ye dağıtılır; her satırda gerekçe; sabit not', async () => {
+  it("başlıklar tam N'ye dağıtılır; her satırda gerekçe; sabit not", async () => {
     const titles = catalog()
     const { app } = await appWith(titles, playsOf(titles, BASE))
     for (const n of [1, 2, 7, 20, 33, 1000]) {
@@ -241,7 +253,9 @@ describe('içgörüler — planlayıcı', () => {
     // Belgesel: izlenme payı katalog payının üstünde (30/60 ÷ 4/12 = 1,5)
     const belgesel = p.rows.find((r) => r.key === 'belgesel')!
     expect(belgesel.reasons).toContain('İzlenme payı katalog payının 1,5 katı')
-    expect(p.rows.find((r) => r.key === 'korku')!.reasons).toContain('Katalogda izlendiğinden fazla yer tutuyor (0,0 kat)')
+    expect(p.rows.find((r) => r.key === 'korku')!.reasons).toContain(
+      'Katalogda izlendiğinden fazla yer tutuyor (0,0 kat)',
+    )
     // Satırlar başlık sayısına göre sıralı
     for (let i = 1; i < p.rows.length; i++) expect(p.rows[i]!.slots).toBeLessThanOrEqual(p.rows[i - 1]!.slots)
   })
@@ -274,7 +288,12 @@ describe('içgörüler — planlayıcı', () => {
     expect(common(withJ).sort()).toEqual(common(pure).sort())
     // Veri ağırlığı 0: farklı izleme verileriyle aynı dağılım
     const a = slotsOf(plan(app, { slots: 20, dataWeight: 0, judgment }))
-    viewing.addPlays(playsOf(titles, [['dk2', 50, 1], ['b3', 40, 2]]))
+    viewing.addPlays(
+      playsOf(titles, [
+        ['dk2', 50, 1],
+        ['b3', 40, 2],
+      ]),
+    )
     const b = slotsOf(plan(app, { slots: 20, dataWeight: 0, judgment }))
     expect(b).toEqual(a)
     expect(a.korku).toBeGreaterThan(a.dram!)
@@ -300,7 +319,10 @@ describe('içgörüler — planlayıcı', () => {
     const full = withCost.rows.reduce((s, r) => s + r.slots * costPerTitle[r.key as keyof typeof costPerTitle], 0)
     const budget = Math.floor(full / 2)
     const capped = plan(app, { slots: 20, costPerTitle, budget })
-    const spend = capped.rows.reduce((s, r) => s + r.slots * (costPerTitle[r.key as keyof typeof costPerTitle] ?? 55), 0)
+    const spend = capped.rows.reduce(
+      (s, r) => s + r.slots * (costPerTitle[r.key as keyof typeof costPerTitle] ?? 55),
+      0,
+    )
     expect(spend).toBeLessThanOrEqual(budget)
     const total = capped.rows.reduce((s, r) => s + r.slots, 0)
     expect(total).toBeLessThan(20)
@@ -362,7 +384,9 @@ describe('içgörüler — planlayıcı', () => {
     const p = plan(app, { slots: 10 })
     expect(p.underserved).toHaveLength(1)
     const u = p.underserved[0]!
-    expect(app.services.audience.get(u.communityId)!.topTitles.every((t) => pool('korku').includes(t.titleId))).toBe(true)
+    expect(app.services.audience.get(u.communityId)!.topTitles.every((t) => pool('korku').includes(t.titleId))).toBe(
+      true,
+    )
     expect(u.supplyShare).toBeCloseTo(2 / 26, 3)
     expect(u.demandShare).toBeGreaterThan(0.3)
   })
@@ -409,12 +433,21 @@ describe('içgörüler — genel bakış ve iskelet servisler', () => {
 
   it('genel bakış sahte servislerin sayılarını toplar', async () => {
     const titles = catalog()
-    const tagging = createFakeTagging({ [titles[0]!.videoId]: { basis: 'CONSENSUS' }, [titles[1]!.videoId]: { basis: 'MODEL' } })
+    const tagging = createFakeTagging({
+      [titles[0]!.videoId]: { basis: 'CONSENSUS' },
+      [titles[1]!.videoId]: { basis: 'MODEL' },
+    })
     const { app } = await appWith(titles, playsOf(titles, BASE), { tagging })
     app.services.audience.recompute()
     const o = (await app.inject({ method: 'GET', url: '/api/studio/overview' })).json<StudioOverview>()
     expect(o.catalog).toEqual({ titles: 12, movies: 10, shows: 2 })
-    expect(o.tagging).toMatchObject({ consensus: 1, modelOnly: 1, sampleOnly: 0, untagged: 10, rubricVersion: '2026.11-1' })
+    expect(o.tagging).toMatchObject({
+      consensus: 1,
+      modelOnly: 1,
+      sampleOnly: 0,
+      untagged: 10,
+      rubricVersion: '2026.11-1',
+    })
     expect(o.sources[0]!.source).toBe('SYNTHETIC')
     expect(o.audience!.viewers).toBeGreaterThan(0)
   })
@@ -427,36 +460,44 @@ describe('içgörüler — REST doğrulaması', () => {
     const get = (url: string) => app.inject({ method: 'GET', url })
     const post = (payload: unknown) =>
       app.inject({ method: 'POST', url: '/api/studio/plan', payload: payload as Record<string, unknown> })
-    const cases: [Promise<{ statusCode: number; json: () => { error: { code: string; message: string } } }>, RegExp][] = [
-      [get('/api/studio/insights/mix?type=FILM'), /'type'/],
-      [get('/api/studio/insights/mix?from=2026-13-01'), /'from'/],
-      [get('/api/studio/insights/mix?from=2026-02-30'), /'from'/],
-      [get('/api/studio/insights/mix?from=2026-11-10&to=2026-11-01'), /'to'/],
-      [get('/api/studio/insights/mix?tip=MOVIE'), /bilinmeyen alan \(tip\)/],
-      [get('/api/studio/insights/mix?type=MOVIE&type=SHOW'), /'type'/],
-      [get('/api/studio/insights/timeline?dimension=yil'), /'dimension'/],
-      [get('/api/studio/insights/timeline?months=0'), /'months'/],
-      [get('/api/studio/insights/timeline?months=61'), /'months'/],
-      [get('/api/studio/insights/timeline?months=abc'), /'months'/],
-      [post({}), /'slots'/],
-      [post({ slots: 0 }), /'slots'/],
-      [post({ slots: 2.5 }), /'slots'/],
-      [post({ slots: 5, dataWeight: 1.5 }), /'dataWeight'/],
-      [post({ slots: 5, scope: 'FILM' }), /'scope'/],
-      [post({ slots: 5, judgment: { uzay: 1 } }), /'judgment'/],
-      [post({ slots: 5, judgment: { dram: 3 } }), /'judgment'/],
-      [post({ slots: 5, costPerTitle: { dram: 0 } }), /'costPerTitle'/],
-      [post({ slots: 5, budget: 100 }), /'budget'/],
-      [post({ slots: 5, fazla: 1 }), /bilinmeyen alan \(fazla\)/],
-      [post([1, 2]), /JSON nesnesi/],
-    ]
+    const cases: [Promise<{ statusCode: number; json: () => { error: { code: string; message: string } } }>, RegExp][] =
+      [
+        [get('/api/studio/insights/mix?type=FILM'), /'type'/],
+        [get('/api/studio/insights/mix?from=2026-13-01'), /'from'/],
+        [get('/api/studio/insights/mix?from=2026-02-30'), /'from'/],
+        [get('/api/studio/insights/mix?from=2026-11-10&to=2026-11-01'), /'to'/],
+        [get('/api/studio/insights/mix?tip=MOVIE'), /bilinmeyen alan \(tip\)/],
+        [get('/api/studio/insights/mix?type=MOVIE&type=SHOW'), /'type'/],
+        [get('/api/studio/insights/timeline?dimension=yil'), /'dimension'/],
+        [get('/api/studio/insights/timeline?months=0'), /'months'/],
+        [get('/api/studio/insights/timeline?months=61'), /'months'/],
+        [get('/api/studio/insights/timeline?months=abc'), /'months'/],
+        [post({}), /'slots'/],
+        [post({ slots: 0 }), /'slots'/],
+        [post({ slots: 2.5 }), /'slots'/],
+        [post({ slots: 5, dataWeight: 1.5 }), /'dataWeight'/],
+        [post({ slots: 5, scope: 'FILM' }), /'scope'/],
+        [post({ slots: 5, judgment: { uzay: 1 } }), /'judgment'/],
+        [post({ slots: 5, judgment: { dram: 3 } }), /'judgment'/],
+        [post({ slots: 5, costPerTitle: { dram: 0 } }), /'costPerTitle'/],
+        [post({ slots: 5, budget: 100 }), /'budget'/],
+        [post({ slots: 5, fazla: 1 }), /bilinmeyen alan \(fazla\)/],
+        [post([1, 2]), /JSON nesnesi/],
+      ]
     for (const [p, re] of cases) {
       const res = await p
       expect(res.statusCode).toBe(400)
       expect(res.json().error.code).toBe('VALIDATION_FAILED')
       expect(res.json().error.message).toMatch(re)
     }
-    const ok = await post({ slots: 5, scope: 'MOVIE', dataWeight: 0.5, judgment: { dram: 0.5 }, costPerTitle: { dram: 10 }, budget: 1000 })
+    const ok = await post({
+      slots: 5,
+      scope: 'MOVIE',
+      dataWeight: 0.5,
+      judgment: { dram: 0.5 },
+      costPerTitle: { dram: 10 },
+      budget: 1000,
+    })
     expect(ok.statusCode).toBe(200)
     expect(ok.json<PlanResult>().input).toMatchObject({ slots: 5, scope: 'MOVIE', dataWeight: 0.5 })
     expect((await get('/api/studio/insights/mix?type=ALL&from=2026-01-01&to=2026-12-31')).statusCode).toBe(200)

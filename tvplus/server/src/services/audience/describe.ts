@@ -43,6 +43,7 @@ export function* describe(
   space: FeatureSpace,
   res: ClusterResult,
   traitsOf: TraitsOf,
+  titleTypes: Map<number, 'MOVIE' | 'SHOW'>,
 ): Work<Described> {
   const { k, n } = { k: res.k, n: mat.n }
   const dims = mat.dims
@@ -111,6 +112,11 @@ export function* describe(
       if (g <= 0) continue
       const mean = sums[f * k + j]! / sz
       const lift = mean / g
+      if (k === 1) {
+        // Tek topluluk: genelle aynıdır (kaldıraç 1); en ağır özellikler listelenir
+        if (mean >= MIN_FEATURE_MEAN) ranked.push({ def: space.features[f]!, lift: 1, score: mean })
+        continue
+      }
       if (lift < MIN_FEATURE_LIFT || mean < MIN_FEATURE_MEAN) continue
       ranked.push({ def: space.features[f]!, lift, score: mean * Math.log(lift) })
     }
@@ -124,15 +130,25 @@ export function* describe(
     for (const [titleId, cnt] of titleCount[j]!) {
       const reach = cnt / sz
       if (cnt < minCount || reach < MIN_TITLE_REACH) continue
-      const g = titleGlobal.get(titleId)! / n
-      lifts.push({ titleId, lift: round(reach / g, 3), reach: round(reach, 4) })
+      const lift = reach / (titleGlobal.get(titleId)! / n)
+      if (lift < 1) continue // genelden az izlenen başlık topluluğu temsil etmez
+      lifts.push({ titleId, lift: round(lift, 3), reach: round(reach, 4) })
     }
+    // Topluluğun izlediklerinde film payı → ad başındaki tür adının biçimi (film / dizi / karışık)
+    let movieViews = 0
+    let allViews = 0
+    for (const [titleId, cnt] of titleCount[j]!) {
+      allViews += cnt
+      if (titleTypes.get(titleId) === 'MOVIE') movieViews += cnt
+    }
+    const movieShare = allViews > 0 ? movieViews / allViews : 0.5
+    const form: NounForm = movieShare >= 0.8 ? 'movie' : movieShare <= 0.2 ? 'show' : 'mixed'
     lifts.sort((a, b) => b.lift - a.lift || b.reach - a.reach || a.titleId - b.titleId)
     titleLifts.push(lifts.slice(0, TITLE_LIFT_LIMIT))
 
     communities.push({
       id: communityId(j, k),
-      name: nameCommunity(ranked, takenNames),
+      name: k === 1 ? 'Tüm İzleyiciler' : nameCommunity(ranked, takenNames, form),
       size: sz,
       share: round(sz / n, 4),
       hoursShare: totalHours > 0 ? round(hours[j]! / totalHours, 4) : 0,
@@ -154,24 +170,52 @@ function distribution(counts: Map<string, number>, size: number): Record<string,
   return out
 }
 
+export type NounForm = 'movie' | 'show' | 'mixed'
+
+/** Mikro tür adı baş olabilsin diye kaldıracı en iyi türünkine en az bu oranda yakın olmalı */
+const MICRO_HEAD_RATIO = 0.8
+/** İkinci tür, puanı en iyi türün en az bu oranıysa eklenir */
+const SECOND_GENRE_RATIO = 0.4
+
+const lower = (x: string) => x.toLocaleLowerCase('tr-TR')
+
 /**
- * Ad: en ayırt edici tür ya da mikro tür başta, ardından (varsa) ikinci bir tür ve bir niteleyici/yüz:
- * "Belgeseller · Doğa ve Bilim · Düşündürücü". Ad başka toplulukta kullanılmışsa sıradaki ayırt edici özellik eklenir.
+ * Ad = baş + (varsa) ikinci tür + bir niteleyici, " · " ile:
+ *   baş       en ayırt edici mikro tür (kaldıracı en iyi türünkine yakınsa; adı zaten okunur bir Türkçe öbek)
+ *             ya da en ayırt edici türün çoğul adı — topluluk çoğunlukla film izliyorsa "… Filmleri", dizi izliyorsa
+ *             "… Dizileri", karışıksa sözlükteki karışık biçim
+ *   ikinci    başta geçmeyen güçlü ikinci tür (kısa adıyla)
+ *   niteleyici başta geçmeyen ilk niteleyici (sıfat); yoksa bir yüz değeri
+ * Örnek: "Uzay Keşfi Hakkında Doğa ve Bilim Yapımları · Teknoloji · Öğretici". Ad başka toplulukta kullanılmışsa
+ * sıradaki ayırt edici özellik eklenir.
  */
-export function nameCommunity(ranked: { def: FeatureDef; score: number }[], taken: Set<string>): string {
-  const heads = ranked.filter((r) => r.def.kind === 'GENRE' || r.def.kind === 'MICROGENRE')
-  const quals = ranked.filter((r) => r.def.kind === 'DESCRIPTOR' || r.def.kind === 'FACET')
+export function nameCommunity(
+  ranked: { def: FeatureDef; score: number; lift: number }[],
+  taken: Set<string>,
+  form: NounForm = 'mixed',
+): string {
   const parts: string[] = []
-  const contains = (label: string) => parts.some((p) => p.toLocaleLowerCase('tr-TR').includes(label.toLocaleLowerCase('tr-TR')))
-  const head = heads[0]
-  if (head) parts.push(head.def.label)
-  const second = heads.find((r, i) => i > 0 && r.def.kind === 'GENRE' && !contains(r.def.label))
-  if (second && head && second.score >= 0.4 * head.score) parts.push(second.def.label)
-  const qual = quals.find((r) => !contains(r.def.label))
+  const contains = (label: string) => parts.some((p) => lower(p).includes(lower(label)))
+  const genres = ranked.filter((r) => r.def.kind === 'GENRE')
+  const bestGenre = genres[0]
+  const bestMicro = ranked.find((r) => r.def.kind === 'MICROGENRE')
+  let headGenre: (typeof ranked)[number] | undefined
+  if (bestMicro && (!bestGenre || bestMicro.lift >= MICRO_HEAD_RATIO * bestGenre.lift)) {
+    parts.push(bestMicro.def.label)
+  } else if (bestGenre) {
+    headGenre = bestGenre
+    parts.push(bestGenre.def.nouns?.[form] ?? bestGenre.def.label)
+  }
+  const second = genres.find(
+    (r) => r !== headGenre && !contains(r.def.label) && (!bestGenre || r.score >= SECOND_GENRE_RATIO * bestGenre.score),
+  )
+  if (second) parts.push(second.def.label)
+  const qual =
+    ranked.find((r) => r.def.kind === 'DESCRIPTOR' && !contains(r.def.label)) ??
+    ranked.find((r) => r.def.kind === 'FACET' && !contains(r.def.label))
   if (qual) parts.push(qual.def.label)
   if (parts.length === 0) parts.push('Karışık Zevkler')
   let name = parts.join(' · ')
-  // Benzersizlik: kullanılmamış bir ayırt edici özellik daha ekle
   for (const r of ranked) {
     if (!taken.has(name)) break
     if (contains(r.def.label)) continue

@@ -62,6 +62,9 @@ export function AvatarMenu(): ReactElement | null {
       <MenuItem icon="tv" to="/cihazlar">
         Cihazlar
       </MenuItem>
+      <MenuItem icon="settings" to="/studyo">
+        Stüdyo
+      </MenuItem>
       <MenuItem icon="settings" onSelect={toggleDevtoolsPanel}>
         Kaputun altı
       </MenuItem>

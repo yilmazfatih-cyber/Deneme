@@ -45,28 +45,43 @@ export interface Hit {
 /**
  * Bitişik matriste `q` ile en yüksek iç çarpımlı `k` satır (satırlar ve q birim uzunluktaysa kosinüs).
  * Eşit puanlarda küçük `tieKey(row)` önce gelir (kararlı sıra). `skip(row)` true olan satırlar atlanır.
- * Karmaşıklık O(N·dims + N·log k): sonuç dizisi sıralı tutulur, yalnız eşiği geçen satır eklenir.
+ * Karmaşıklık O(N·dims + N·log k): sonuç dizisi sıralı tutulur, yalnız eşiği geçen satır için nesne oluşturulur.
  */
 export function topK(
   matrix: Float32Array,
   dims: number,
   q: ArrayLike<number>,
   k: number,
-  opts: { skip?: (row: number) => boolean; tieKey?: (row: number) => number } = {},
+  opts: {
+    skip?: (row: number) => boolean
+    /** [başlangıç, bitiş) satır aralığı atlanır (aynı videonun çekimleri gibi bitişik bloklar için hızlı yol) */
+    skipRange?: [number, number]
+    tieKey?: (row: number) => number
+  } = {},
 ): Hit[] {
   const rows = Math.floor(matrix.length / dims)
   const tie = opts.tieKey ?? ((r: number) => r)
   const best: Hit[] = []
   if (k <= 0) return best
   const qf = Float32Array.from(q)
+  const [skipFrom, skipTo] = opts.skipRange ?? [0, 0]
+  const skip = opts.skip
   const better = (a: Hit, b: Hit) => a.score > b.score || (a.score === b.score && tie(a.row) < tie(b.row))
   for (let r = 0; r < rows; r++) {
-    if (opts.skip?.(r)) continue
+    if (r >= skipFrom && r < skipTo) {
+      r = skipTo - 1
+      continue
+    }
+    if (skip && skip(r)) continue
     const off = r * dims
-    let s = 0
-    for (let d = 0; d < dims; d++) s += matrix[off + d]! * qf[d]!
-    const hit = { row: r, score: s }
-    if (best.length === k && !better(hit, best[k - 1]!)) continue
+    // Sıcak döngü (500 bin satırda ~100 milyon çarpma). Dört kısmi toplamla açmak V8'de ölçümde daha yavaştı.
+    let score = 0
+    for (let d = 0; d < dims; d++) score += matrix[off + d]! * qf[d]!
+    if (best.length === k) {
+      const last = best[k - 1]!
+      if (score < last.score || (score === last.score && tie(r) >= tie(last.row))) continue
+    }
+    const hit = { row: r, score }
     // ikili arama ile yerleştir
     let lo = 0
     let hi = best.length
@@ -104,7 +119,10 @@ export const PCA_TOLERANCE = 1e-10
  * iki özvektör kuvvet yinelemesiyle (sabit başlangıç, sabit yineleme sınırı) ve söndürmeyle bulunur. İşaret belirsizliği
  * için her özvektörün mutlak değerce en büyük bileşeni pozitif yapılır: aynı girdi → aynı harita.
  */
-export function pca2(matrix: Float32Array, dims: number): { x: Float64Array; y: Float64Array; variance: [number, number] } {
+export function pca2(
+  matrix: Float32Array,
+  dims: number,
+): { x: Float64Array; y: Float64Array; variance: [number, number] } {
   const n = Math.floor(matrix.length / dims)
   const mean = new Float64Array(dims)
   for (let r = 0; r < n; r++) for (let d = 0; d < dims; d++) mean[d]! += matrix[r * dims + d]!

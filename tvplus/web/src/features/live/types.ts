@@ -45,7 +45,12 @@ export interface AiringBriefData {
   catchup: { available: boolean; until: string | null }
   access: AccessData
   synopsis?: string
+  /** Bu profil hatırlatma kurdu mu (yalnız isteyen sorgularda gelir) */
+  hasReminder?: boolean
+  /** Büyük görsel (vitrin / pencere) */
   art?: ArtworkData | null
+  /** Kart görseli (16:9, ~480 px) */
+  card?: ArtworkData | null
 }
 
 /** ChannelCard parçası */

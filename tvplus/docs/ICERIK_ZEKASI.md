@@ -200,6 +200,8 @@ tabanlı yetki alır.
 | `server/src/services/embeddings/**`, `shared/shots-schema.ts`, `content/shots/**`, `scripts/{analyze-shots,embed-catalog}.ts`                                   | **gömme**                         |
 | `server/src/services/discovery/**`, `server/src/graphql/resolvers/**`, `server/src/falcor/routes/**` (ikinci aşama)                                             | **keşif bütünleşmesi**            |
 | `web/src/features/studio/**` (ikinci aşama)                                                                                                                     | **stüdyo arayüzü**                |
+| `server/src/services/predictions/**`                                                                                                                            | **tahmin modeli**                 |
+| `ml/**`, `content/models/**`                                                                                                                                    | **çekim gömme modeli (eğitim)**   |
 | `content/tagging/sheets/**`, başlıklardaki `origin` alanları                                                                                                    | içerik ekibi                      |
 
 ## 12. Gerçek veriyi bağlama (özet)
@@ -211,3 +213,55 @@ tabanlı yetki alır.
    eşlenmeyen olaylar ve bulunamayan içerikler kapatılır; sonra tarih aralığıyla çekilir.
 4. **Topluluklar ve içgörüler** gerçek veri gelince kendiliğinden yeniden hesaplanır; sentetik örnek analiz dışı kalır.
 5. **Model:** eğitilmiş bir çok kipli model `http` ya da `dosya` sağlayıcısıyla takılır; taban sağlayıcı devreden çıkar.
+
+## 13. Eğitilmiş modeller
+
+Taban sağlayıcı ve elle kurulmuş kurallar hattı ayakta tutar; **asıl ürün eğitilmiş modellerdir.** İki model vardır ve
+ikisi de aynı kapılardan beslenir: etiketler, çekim çözümlemesi, izleme verisi.
+
+### 13.1 Çekim gömme modeli — `ml/` ("mediafm-mini")
+
+Çok kipli bir ortam modelinin küçük ama gerçek bir örneği; PyTorch ile eğitilir, sunucuya `dosya` (çevrimdışı
+vektörler) ya da `http` (canlı model sunucusu) sağlayıcısıyla takılır.
+
+```
+çekim ──► görüntü kodlayıcısı ─┐
+      ──► ses kodlayıcısı ─────┼─► kaynaştırma ──► [CLS] [GENEL] ç1 ç2 … çN ──► dönüştürücü ──► çekim vektörleri
+      ──► metin kodlayıcısı ───┘                      ▲                                         başlık vektörü
+başlığın özeti + etiketleri ─────────────────────────┘ (genel bağlam belirteci)
+```
+
+- **Kip kodlayıcıları** önceden eğitilmiş ve dondurulmuştur (açık ağırlıklar); her çekimin anahtar kareleri, ses
+  parçası ve o sırada söylenenler ayrı ayrı vektöre çevrilir.
+- **Kaynaştırma dönüştürücüsü** bizim eğittiğimiz kısımdır. Hedef: **maskeli çekim modelleme** — dizideki çekimlerin
+  bir bölümü gizlenir, model komşu çekimlerden ve genel bağlamdan gizlenen çekimi tahmin eder. Böylece bir çekimin
+  vektörü yalnız kendi karesini değil, sahnedeki yerini ve yapımın etiketlerini de taşır.
+- **Genel bağlam:** başlığın özeti ve geçerli etiketleri tek bir belirteç olarak her dizinin başına eklenir; etiket
+  burada sınıflandırmanın sonucu değil, modelin girdisidir.
+- **Çıktılar** depoda durur (`content/models/mediafm-mini/`): çekim ve başlık vektörleri, model kartı, eğitim ve
+  değerlendirme ölçümleri. Sunucu bu vektörler varsa onları kullanır; yoksa taban sağlayıcıya düşer.
+- **Ölçek hakkında:** eğitim verisi açık lisanslı birkaç filmin gerçek çekimleridir. Bu, mimarinin ve eğitim hattının
+  çalışan küçük bir örneğidir; gerçek katalogla ve daha büyük donanımla aynı hat büyütülür.
+
+### 13.2 Tahmin modeli — `server/src/services/predictions`
+
+İzleme verisinden eğitilir ve ürünün her kişisel kararını verir: ana sayfadaki sıralama, "eşleşme" yüzdesi,
+"‹Ad› için En İyi Seçimler".
+
+1. **İş birlikçi katman** — örtük geri bildirimle matris ayrıştırma (ağırlıklı ALS): izleyici × başlık ilgi
+   puanlarından izleyici ve başlık vektörleri öğrenilir. Güven ağırlığı `c = 1 + α · ilgi`.
+2. **İçerik kulesi** — başlığın içerik işaretlerinden (eğitilmiş gömme vektörü, etiket ölçekleri, mikro türler, tür)
+   başlık vektörüne giden doğrusal eşleme. Hiç izlenmemiş (yeni eklenmiş) başlıklar bununla puanlanır; izlenme
+   arttıkça ağırlık iş birlikçi vektöre kayar.
+3. **Sıralayıcı** — iki katmanın puanlarını popülerlik, yenilik, zevk topluluğu kaldıracı ve yarım kalmışlıkla
+   birleştiren lojistik model; çıktısı ayarlanmış olasılık → eşleşme yüzdesi.
+4. **Yeni profil** — eğitimde olmayan bir profilin vektörü, kendi izleme özetlerinden anında çözülür (yeniden eğitim
+   gerekmez); birkaç oynatmadan sonra tahminler kişiselleşir.
+
+**Değerlendirme** her eğitimde yapılır ve saklanır: zamana göre ayrılmış sınama kümesinde Recall@10, NDCG@10, isabet
+oranı ve katalog kapsamı; karşılaştırma tabanları (popülerlik, tür yakınlığı); soğuk başlangıç (eğitimde hiç
+görülmemiş başlıklar). Sentetik örnekle elde edilen ölçümler öyle etiketlenir — gerçek sonuçlar Mixpanel verisi
+bağlandığında aynı hattan çıkar.
+
+**Eğitim** sunucunun içinde çalışır (ek kurulum yok): veri değişince arka planda, ya da
+`POST /api/studio/model/train` ile. Model `dataDir/models/` altında saklanır; aynı veri + tohum → aynı model.

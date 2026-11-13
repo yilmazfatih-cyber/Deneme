@@ -1,7 +1,7 @@
 /**
  * Lolomo'yu dürüst tutmak: Listem ya da yer imi değişince etkilenen Falcor yolları ve GraphQL girdileri geçersiz kılınır,
  * bağlı satırlar (useFalcorView) eksik yollarını yeniden ister.
- *   - lolomos[guid]           → satır sayısı + sıra (Listem satırı ilk eklemede ortaya çıkar, son çıkarmada kaybolur)
+ *   - lolomos[guid(:kategori)] → satır sayısı + sıra (Listem satırı ilk eklemede ortaya çıkar, son çıkarmada kaybolur)
  *   - lists[<bağlam>]         → yalnız etkilenen listeler (queue / continueWatching)
  *   - videos[id].{queue,…}    → değişen videonun kişisel yaprakları
  * Oynatıcıdan dönüş: oynat bağlantısına basılınca video not edilir; keşif sayfası yeniden açılınca geçersiz kılınır.
@@ -13,6 +13,7 @@ import { queryCache } from '../../api/hooks'
 import { peekBoot } from '../../api/session'
 import { clearPreviews } from './store'
 
+const LOLOMO_CATEGORY_KEYS = ['shows', 'movies', 'newPopular'] as const
 const PERSONAL_LEAVES = ['queue', 'bookmark', 'watchStatus', 'userRating', 'current']
 
 const isLeaf = (n: unknown): n is JsonGraphLeaf => typeof n === 'object' && n !== null && '$type' in n
@@ -42,7 +43,8 @@ export function invalidationPaths(
   videoIds: readonly number[],
 ): FalcorPath[] {
   const paths: FalcorPath[] = []
-  if (guid) paths.push(['lolomos', guid])
+  // Ana sayfa ve kategori lolomoları (Diziler, Filmler, Yeni ve Popüler: "<guid>:<kategori>")
+  if (guid) paths.push(['lolomos', [guid, ...LOLOMO_CATEGORY_KEYS.map((c) => `${guid}:${c}`)]])
   for (const id of cachedListIds(graph, contexts)) paths.push(['lists', id])
   for (const v of new Set(videoIds)) paths.push(['videos', v, PERSONAL_LEAVES])
   return paths

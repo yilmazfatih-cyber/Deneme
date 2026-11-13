@@ -1,161 +1,183 @@
-/* Önizleme kartı (mini modal). Ölçü ve renkler tokens.css'ten; sarı yalnız birincil "oynat". */
-
+/* Önizleme kartı (Netflix mini modal) — UX_SPEC §2. Konum ve büyüme: placement.ts + PreviewCard.tsx. */
 .pv-target {
   display: contents;
 }
 
 .pv-card {
   position: fixed;
-  z-index: 80; /* satırların ve okların üstünde, üst çubuğun (50) üstünde ama alt sayfaların (100) altında */
-  width: 380px;
-  top: 0;
+  z-index: var(--z-preview);
   left: 0;
-  display: flex;
-  flex-direction: column;
+  top: 0;
+  width: 320px;
   overflow: hidden;
-  border-radius: var(--r-card);
-  background: var(--s2);
-  border: 1px solid var(--line);
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6);
-  animation: pv-in 160ms ease-out;
+  border-radius: 6px;
+  background: var(--surface-1);
+  color: var(--text-1);
+  box-shadow:
+    rgba(0, 0, 0, 0.75) 0 3px 10px,
+    rgba(0, 0, 0, 0.5) 0 12px 32px;
+  transform-origin: 0 0;
+  /* Yazı kartla ölçeklenir (kart ~ 300–420 px) */
+  font-size: clamp(12px, 0.95vw, 15px);
+  transition:
+    transform var(--dur-card) var(--ease-netflix),
+    opacity var(--dur-card) var(--ease-netflix),
+    box-shadow var(--dur-card) ease;
 }
-@keyframes pv-in {
-  from {
-    opacity: 0;
-    transform: scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
+.pv-card.is-entering {
+  transform: var(--pv-from, scale(0.667));
+  box-shadow: none;
+  transition: none;
+}
+.pv-card.is-open {
+  transform: none;
+}
+.pv-card.is-closing {
+  transform: var(--pv-from, scale(0.667));
+  opacity: 0;
+  box-shadow: none;
+  pointer-events: none;
+}
+/* Bilgi alanı büyüme sırasında belirir (görsel karttan çıkıyormuş gibi) */
+.pv-card.is-entering .pv-body,
+.pv-card.is-closing .pv-body {
+  opacity: 0;
+}
+.pv-body {
+  transition: opacity var(--dur-card) ease;
 }
 
+/* ───────────── Görsel ───────────── */
 .pv-media {
   position: relative;
   aspect-ratio: 16 / 9;
-  background: var(--s1);
+  background: var(--surface-2);
   overflow: hidden;
 }
-.pv-media__still {
+.pv-media__still,
+.pv-media__empty {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  max-width: none;
   object-fit: cover;
-}
-.pv-media__empty {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
-  color: var(--t2);
-  font-weight: 600;
-  text-align: center;
 }
 .pv-media__clip {
   position: absolute;
   inset: 0;
   opacity: 0;
-  transition: opacity 300ms ease;
+  transition: opacity 0.4s ease;
 }
-.pv-media__clip--on {
+.pv-media__clip.is-on {
   opacity: 1;
 }
-
-.pv-body {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 12px 16px 16px;
-  min-width: 0;
+.pv-media__shade {
+  position: absolute;
+  inset: 45% 0 0 0;
+  background: linear-gradient(to top, rgba(24, 24, 24, 0.85), transparent);
+  pointer-events: none;
 }
-.pv-title {
-  margin: 0;
-  font-size: 15px;
-  line-height: 20px;
-  font-weight: 700;
-  white-space: nowrap;
+.pv-media__title {
+  position: absolute;
+  left: 1em;
+  right: 4em;
+  bottom: 0.8em;
+  pointer-events: none;
+}
+.pv-media__logo {
+  display: block;
+  max-width: 60%;
+  max-height: 3.4em;
+  object-fit: contain;
+  object-position: left bottom;
+  filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.6));
+}
+.pv-media__name {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
+  font-weight: 800;
+  font-size: 1.3em;
+  line-height: 1.15;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+}
+.pv-media__mute {
+  position: absolute;
+  right: 0.8em;
+  bottom: 0.8em;
+}
+
+/* ───────────── Bilgi ───────────── */
+.pv-body {
+  padding: 1em 1.15em 1.2em;
+  min-height: 7.5em;
 }
 .pv-actions {
   display: flex;
   align-items: center;
-  gap: 8px;
-  min-width: 0;
+  gap: 0.5em;
 }
 .pv-spacer {
-  flex: 1;
+  flex: 1 1 auto;
 }
-.pv-play {
-  flex: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  border-radius: var(--r-pill);
-  background: var(--yellow);
-  color: var(--on-yellow);
-}
-.pv-play:focus-visible {
-  outline: 2px solid var(--t1);
-  outline-offset: 2px;
-}
-/* Basılı (Listemde / Beğenildi): seçili durum BEYAZ (çiplerdeki gibi) */
-.pv-card .cn-iconbtn[aria-pressed='true'],
-.pv-pressable[aria-pressed='true'] {
-  background: var(--t1);
-  color: var(--bg);
+.pv-actions .ui-round.is-on {
+  background: var(--text-1);
+  color: var(--play-fg);
+  border-color: var(--text-1);
 }
 .pv-meta {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
-  min-width: 0;
-}
-.pv-meta .cn-advisory {
-  max-width: 100%;
-}
-.pv-meta__text {
-  color: var(--t2);
-  font-size: 12px;
-  line-height: 16px;
+  gap: 0.35em 0.6em;
+  margin-top: 1em;
+  font-size: 1em;
   font-weight: 600;
+  color: var(--text-3);
 }
-.pv-tag {
-  display: inline-flex;
-  align-items: center;
-  height: 20px;
-  padding: 0 6px;
-  border: 1px solid var(--line-strong);
-  border-radius: 6px;
-  color: var(--t2);
-  font-size: 12px;
-  line-height: 16px;
+.pv-match {
+  color: var(--positive);
   font-weight: 700;
 }
-.pv-line {
-  white-space: normal;
+.pv-meta__text {
+  white-space: nowrap;
 }
-.pv-evidence {
-  margin: 0;
-  color: var(--t2);
-  font-size: 13px;
-  line-height: 18px;
+.pv-quality {
+  padding: 0 0.4em;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 3px;
+  font-size: 0.75em;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--text-2);
+}
+.pv-tags {
+  margin-top: 0.8em;
+  font-size: 1em;
+  color: var(--text-1);
+}
+.pv-note {
+  margin: 0.8em 0 0;
+  color: var(--text-3);
 }
 .pv-skel {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  display: grid;
+  gap: 0.8em;
 }
-.pv-close {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  background: rgba(13, 14, 18, 0.72);
+
+@media (prefers-reduced-motion: reduce) {
+  .pv-card,
+  .pv-card.is-entering,
+  .pv-card.is-closing {
+    transform: none;
+    transition: opacity 0.01ms;
+  }
+}
+
+/* Tanıtım 16:9 kutuyu doldurur (sinemaskop kaynakta siyah bant kalmaz) */
+.pv-media__clip video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }

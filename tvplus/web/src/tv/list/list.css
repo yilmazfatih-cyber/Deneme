@@ -1,0 +1,69 @@
+/* TV Listem: başlık + 4 sütunlu 16:9 ızgara; boş durum sakin. */
+.tvl .tv-screen--padded,
+.tvl {
+  display: flex;
+  flex-direction: column;
+}
+.tvl-header {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-bottom: 2.4rem;
+  padding-top: 2rem;
+}
+.tvl-title {
+  font-size: 3.4rem;
+}
+.tvl-count {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  min-height: 2.2rem;
+  color: var(--tv-text-3);
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+.tvl-focus {
+  color: var(--tv-text-1);
+  font-weight: 800;
+}
+.tvl-meta {
+  color: var(--tv-text-3);
+}
+.tvl-grid {
+  flex: 1;
+  min-height: 0;
+}
+.tvl-grid--skel {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.4rem;
+}
+.tvl-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.2rem;
+  max-width: 50rem;
+  margin-top: 4rem;
+}
+.tvl-empty__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 6rem;
+  height: 6rem;
+  border: 0.2rem solid var(--tv-text-4);
+  border-radius: 50%;
+  color: var(--tv-text-3);
+}
+.tvl-empty__title {
+  font-size: 2.4rem;
+  font-weight: 800;
+}
+.tvl-empty__text {
+  margin-bottom: 1rem;
+  color: var(--tv-text-3);
+  font-size: 1.6rem;
+}

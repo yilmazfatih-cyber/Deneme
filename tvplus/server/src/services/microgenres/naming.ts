@@ -2,7 +2,8 @@
  * Mikro tür adı: sözlükteki hazır ifadeler `naming.order` sırasıyla dizilir, çekirdek türün çoğul adı sonda gelir.
  * Kod hiçbir ek üretmez; tüm Türkçe biçimler sözlükte hazırdır:
  *   "Uzay Keşfi Hakkında" + "Düşündürücü" + "Belgeseller"
- *   kişi yuvasında türün tamlama biçimi: "Buster Keaton" + "Komedileri" / "Komedi Filmleri"
+ *   kişi yuvasında ve tamlama isteyen bölgelerde türün tamlama biçimi:
+ *     "Buster Keaton" + "Komedileri" / "Komedi Filmleri" · "Kore" + "Dramları" · "Yerli" + "Dramlar"
  * Sıfat çiftinde önce "ek sıfatlar" yüzünün değeri, sonra ölçek niteleyicisi gelir ("Kült Karanlık …").
  */
 import type { MicrogenreDefinition } from '../../../../shared/intelligence'
@@ -10,12 +11,17 @@ import { norm } from '../../../../shared/text'
 import type { VocabIndex } from '../tagging/vocabulary'
 import type { Quality } from './qualities'
 
-export function genreNoun(index: VocabIndex, core: string, type: MicrogenreDefinition['type'], person: boolean): string {
+export function genreNoun(
+  index: VocabIndex,
+  core: string,
+  type: MicrogenreDefinition['type'],
+  compound: boolean,
+): string {
   const n = index.vocabulary.naming.genreNouns[core]
   if (!n) return core
-  if (type === 'MOVIE') return person ? (n.compoundMovie ?? n.movie) : n.movie
-  if (type === 'SHOW') return person ? (n.compoundShow ?? n.show) : n.show
-  return person ? (n.compound ?? n.mixed) : n.mixed
+  if (type === 'MOVIE') return compound ? (n.compoundMovie ?? n.movie) : n.movie
+  if (type === 'SHOW') return compound ? (n.compoundShow ?? n.show) : n.show
+  return compound ? (n.compound ?? n.mixed) : n.mixed
 }
 
 export function orderQualities(index: VocabIndex, quals: readonly Quality[]): Quality[] {
@@ -28,10 +34,16 @@ export function nameOf(
   core: string,
   type: MicrogenreDefinition['type'],
   quals: readonly Quality[],
+  alreadyOrdered = false,
 ): string {
-  const ordered = orderQualities(index, quals)
-  const noun = genreNoun(index, core, type, ordered.some((q) => q.slot === 'PERSON'))
-  return [...ordered.map((q) => q.phrase), noun].join(' ')
+  const ordered = alreadyOrdered ? quals : orderQualities(index, quals)
+  let name = ''
+  let compound = false
+  for (const q of ordered) {
+    name += `${q.phrase} `
+    if (q.compound) compound = true
+  }
+  return name + genreNoun(index, core, type, compound)
 }
 
 /** Adın kalıp sözcükleri: kök yinelemesi sayılmaz. */

@@ -11,7 +11,8 @@
  *   GET  /embeddings/projection                              → ProjectionPoint[]
  *   POST /embeddings/rebuild                                 → EmbeddingInfo (+ x-tvplus-embed-* kurulum başlıkları)
  *
- * Kurulum açılıştan sonra arka planda başlar; testlerde (isTest) ilk erişimde başlar ki uygulama anında açılsın.
+ * Kurulum açılıştan sonra arka planda başlar; testlerde (isTest) bu eklentinin uçlarına (ya da whenReady/rebuild)
+ * ilk erişimde başlar ki uygulama anında açılsın ve başka alanların testleri gömme kurulumunu beklemesin.
  * Sunucu ağa çıkmaz ve ffmpeg çalıştırmaz: vektörler content/shots altındaki çözümleme dosyalarından kurulur
  * (http sağlayıcısı seçilmişse yalnız TVP_EMBEDDING_URL'e gider).
  */
@@ -23,14 +24,26 @@ import type { AppConfig } from '../../kernel/config'
 import { assertStudioWrite } from '../../kernel/intelligence'
 import { createDosyaProvider } from './dosya'
 import { createHttpProvider } from './http'
+import { createShippedModelProvider, findShippedModel } from './models'
 import { inputModalities, type EmbeddingProvider } from './provider'
 import { createEmbeddingService, type EmbeddingServiceImpl } from './service'
 import { createTabanProvider } from './taban'
 
 const BASE = `${ROUTES.STUDIO}/embeddings`
 
-/** config.embedding'e göre sağlayıcı. */
-export function providerFor(config: AppConfig): EmbeddingProvider {
+/**
+ * Sağlayıcı seçimi:
+ *   1. Açık seçim her zaman kazanır: TVP_EMBEDDING_PROVIDER ortam değişkeni verilmişse ya da yapılandırma 'taban' dışı
+ *      bir sağlayıcı istiyorsa (testlerde config.embedding) o kullanılır.
+ *   2. Açık seçim yoksa ve content/models altında geçerli bir model varsa: o modelin vektörleri, kapsamadığı yapraklar
+ *      için taban yedeği (bkz. ./models.ts).
+ *   3. Aksi hâlde taban.
+ */
+export function providerFor(
+  config: AppConfig,
+  log: { info: (m: string) => void; warn: (m: string) => void } = { info: () => {}, warn: () => {} },
+): EmbeddingProvider {
+  const explicit = Boolean(process.env.TVP_EMBEDDING_PROVIDER) || config.embedding.provider !== 'taban'
   if (config.embedding.provider === 'dosya') return createDosyaProvider(config.dataDir)
   if (config.embedding.provider === 'http') {
     if (config.embedding.url) return createHttpProvider({ url: config.embedding.url })
@@ -43,6 +56,17 @@ export function providerFor(config: AppConfig): EmbeddingProvider {
         throw new Error('TVP_EMBEDDING_PROVIDER=http ama TVP_EMBEDDING_URL tanımlı değil')
       },
       embed: async () => null,
+    }
+  }
+  if (!explicit) {
+    const scan = findShippedModel(config.contentDir)
+    for (const p of scan.problems) log.warn(`gömme: content/models/${p.dir} kullanılmadı: ${p.reason}`)
+    if (scan.model) {
+      const m = scan.model.manifest
+      log.info(
+        `gömme: depodaki model kullanılıyor: ${m.id}@${m.version} (${m.dims} boyut, ${scan.model.videos.size} yaprak)`,
+      )
+      return createShippedModelProvider(scan.model)
     }
   }
   return createTabanProvider()
@@ -70,7 +94,8 @@ const zShotQuery = zFirst.extend({
 
 function parse<T>(schema: z.ZodType<T>, value: unknown, what: string): T {
   const r = schema.safeParse(value)
-  if (!r.success) throw httpError(400, 'INVALID_REQUEST', `Geçersiz ${what}: ${r.error.issues[0]?.message ?? ''}`.trim())
+  if (!r.success)
+    throw httpError(400, 'INVALID_REQUEST', `Geçersiz ${what}: ${r.error.issues[0]?.message ?? ''}`.trim())
   return r.data
 }
 
@@ -81,8 +106,9 @@ export default async function embeddingsPlugin(app: FastifyInstance): Promise<vo
     contentDir: config.contentDir,
     catalog: () => app.services.catalog,
     tagging: () => app.services.tagging ?? null,
-    provider: providerFor(config),
+    provider: providerFor(config, { info: (m) => app.log.info(m), warn: (m) => app.log.warn(m) }),
     log: { info: (m) => app.log.info(m), warn: (m) => app.log.warn(m) },
+    autoStart: !config.isTest,
   })
   app.services.embeddings = service
   internalsByApp.set(app, service)
@@ -104,7 +130,16 @@ export default async function embeddingsPlugin(app: FastifyInstance): Promise<vo
       )
   }
 
-  app.get(BASE, async () => service.info())
+  app.get(BASE, async (_req: FastifyRequest, reply: FastifyReply) => {
+    const info = service.info()
+    const cov = service.coverage()
+    if (cov) {
+      // Depodaki model + taban yedeği: kaç yaprak modelden, kaç yaprak yedekten (EmbeddingInfo'da alan yok; bkz. rapor)
+      reply.header('x-tvplus-embed-model-videos', String(cov.model))
+      reply.header('x-tvplus-embed-fallback-videos', String(cov.fallback))
+    }
+    return info
+  })
 
   app.get(`${BASE}/titles/:titleId/neighbors`, async (req: FastifyRequest) => {
     const { titleId } = parse(zTitleParams, req.params, 'başlık kimliği')

@@ -32,7 +32,11 @@ query MiniModalQuery($videoIds: [Int!]!, $uiContext: TextEvidenceUiContext = BOB
     titleLogo: artwork(type: TITLE_LOGO, params: { width: 400 }) {
       ...ArtworkFields
     }
+    ... on Movie {
+      matchScore
+    }
     ... on Show {
+      matchScore
       seasonCount
       currentEpisode {
         videoId

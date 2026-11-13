@@ -23,6 +23,7 @@ import type {
   EmbeddingService,
   InsightsService,
   MicrogenreService,
+  PredictionService,
   TaggingService,
   ViewingService,
 } from './intelligence'
@@ -300,4 +301,5 @@ export interface Services {
   audience: AudienceService
   insights: InsightsService
   embeddings: EmbeddingService
+  predictions: PredictionService
 }

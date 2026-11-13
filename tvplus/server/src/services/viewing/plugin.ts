@@ -34,6 +34,7 @@ export default async function viewingPlugin(app: FastifyInstance): Promise<void>
     dir: join(config.dataDir, 'viewing'),
     viewerKey,
     snapshotDelayMs: config.isTest ? 0 : 2000,
+    realDataMinViewers: config.realDataMinViewers,
     log: (level, message) => app.log[level](message),
   })
   // İlgi puanının referans süresi istek anında katalogdan okunur

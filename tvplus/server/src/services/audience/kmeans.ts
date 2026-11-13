@@ -5,7 +5,8 @@
  *   Bir satırın tüm merkezlere benzerliği O(nnz·k) — n satır için bir tur O(n·nnz·k); n² geçiş yoktur.
  * - Başlangıç: tohumlu k-means++ (uzaklık = 1 − kosinüs, ağırlık = uzaklık²). Ayrık nokta kalmazsa daha az merkezle durur
  *   (k veriyle sınırlanır).
- * - k seçimi: aday k'lar örneklem üzerinde kümelenir, siluetle karşılaştırılır; seçilen k tüm veride yeniden koşar.
+ * - k seçimi: aday k'lar örneklem üzerinde kümelenir, siluetle karşılaştırılır (en iyiye 0,01 yakın adaylardan en
+ *   büyük k); seçilen k tüm veride yeniden koşar.
  * - Siluet: birim vektörlerde bir noktanın bir kümeye ortalama kosinüs uzaklığı 1 − x·ΣC/|C| olduğundan küme toplamlarıyla
  *   KESİN hesaplanır (örneklem üzerinde, nokta başına O(nnz·k)).
  * - Hesap üreteç (generator) olarak yazılmıştır: `yield` noktalarında arka plan sürücüsü olay döngüsüne nefes aldırır;
@@ -55,19 +56,17 @@ const CONVERGE_TOL = 0.0002
 /** Ortalama küme boyunun bu oranından küçük kümeler dağıtılıp komşularına katılır */
 const TINY_FRACTION = 0.2
 const MAX_CANDIDATES = 12
-/** Aday başına k-means++ başlangıç sayısı */
+/** Aday başına k-means++ başlangıç sayısı (küçük örneklemde daha çok) */
 const RESTARTS = 3
+const RESTARTS_SMALL = 5
+const SMALL_SAMPLE = 3000
+/** Siluette bu kadar fark "aynı" sayılır; düzlükte daha ince bölümleme seçilir */
+const SIL_TOLERANCE = 0.01
 const YIELD_EVERY = 1024
 
 /* ───────────── çekirdek işlemler ───────────── */
 
-function scoreRow(
-  m: SparseMatrix,
-  i: number,
-  ct: Float32Array | Float64Array,
-  k: number,
-  scores: Float64Array,
-): void {
+function scoreRow(m: SparseMatrix, i: number, ct: Float32Array | Float64Array, k: number, scores: Float64Array): void {
   scores.fill(0, 0, k)
   const end = m.rowPtr[i + 1]!
   for (let p = m.rowPtr[i]!; p < end; p++) {
@@ -353,13 +352,14 @@ export function* cluster(m: SparseMatrix, opts: ClusterOptions): Work<ClusterRes
       : kCandidates(Math.min(bound, Math.max(1, Math.floor(Math.sqrt(n)))))
   const evalSample = strided(sampleRows.length, EVAL_SIZE)
 
-  let best: { res: LloydResult; sil: number | null } | null = null
+  const results: { res: LloydResult; sil: number | null }[] = []
   const tried: { k: number; silhouette: number | null }[] = []
+  const restarts = sampleRows.length <= SMALL_SAMPLE ? RESTARTS_SMALL : RESTARTS
   for (const kc of candidates) {
     // Birkaç tohumlu başlangıç; amaç (üyelerin merkezlerine toplam benzerliği) en yüksek olan kalır
     let res: LloydResult | null = null
     let bestObjective = -Infinity
-    for (let r = 0; r < RESTARTS; r++) {
+    for (let r = 0; r < restarts; r++) {
       const init = yield* seedPlusPlus(m, sampleRows, kc, mulberry32(mixSeed(opts.seed, kc * 16 + r)))
       const cand = yield* lloyd(m, sampleRows, init.k, init.ct, sampleIsAll ? MAX_ITER : MAX_ITER_SAMPLE)
       let objective = 0
@@ -372,9 +372,15 @@ export function* cluster(m: SparseMatrix, opts: ClusterOptions): Work<ClusterRes
     if (!res || tried.some((c) => c.k === res.k)) continue // veri daha fazla ayrık merkez vermedi
     const sil = candidates.length > 1 ? yield* silhouette(m, sampleRows, res.assign, res.k, evalSample) : null
     tried.push({ k: res.k, silhouette: sil === null ? null : round(sil, 4) })
-    if (!best || (sil ?? -2) > (best.sil ?? -2) + 1e-9) best = { res, sil }
+    results.push({ res, sil })
   }
-  if (!best) throw new Error('kümeleme adayı yok')
+  if (results.length === 0) throw new Error('kümeleme adayı yok')
+  // Siluet düzlüğü: en iyiye SIL_TOLERANCE kadar yakın adaylardan en ince olanı (en büyük k) seçilir —
+  // veri ayrımı bozmadan ne kadar ince topluluk taşıyorsa o kadar; gürültü düzeyindeki farklar seçimi oynatmaz.
+  const bestSil = Math.max(...results.map((r) => r.sil ?? -2))
+  let best = results[0]!
+  for (const r of results) if ((r.sil ?? -2) >= bestSil - SIL_TOLERANCE && r.res.k > best.res.k) best = r
+  if ((best.sil ?? -2) < bestSil - SIL_TOLERANCE) best = results.find((r) => (r.sil ?? -2) === bestSil)!
 
   let full: LloydResult = sampleIsAll ? best.res : yield* lloyd(m, null, best.res.k, best.res.ct, MAX_ITER)
   let iterations = full.iterations

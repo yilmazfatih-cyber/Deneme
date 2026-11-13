@@ -5,6 +5,7 @@ import { evaluatePaths } from '../src/falcor/engine'
 import { routes } from '../src/falcor/routes/index'
 import type { FalcorMatch, FalcorRouteContext, Passport } from '../src/kernel/context'
 import { buildLolomo } from '../src/services/discovery/lolomo'
+import { installEmptyIntelligence } from './fixtures/intelligence'
 import { ACCOUNT_SINEMA, ADULT, createAlanApp, fakeRequest, ID, KID, passport, TEEN, TEST_NOW } from './fixtures/alan'
 
 const FLAGS = { webp: 'true', isTop10Supported: 'true', materialize: 'true', falcor_server: '0.1.0' }
@@ -13,6 +14,7 @@ describe('Falcor rotaları', () => {
   let app: FastifyInstance
   beforeAll(async () => {
     app = await createAlanApp()
+    installEmptyIntelligence(app)
   })
   afterAll(async () => {
     await app.close()

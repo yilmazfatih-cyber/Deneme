@@ -1,0 +1,432 @@
+/* Cihaz arayüzü ortak biçimleri: seçici, "Şu an TV'de" çubuğu / kartı, TV'de İzle paneli. Tokenlar: ui/tokens.css */
+
+/* ───────────── küçük parçalar ───────────── */
+.dv-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-4);
+  flex: none;
+}
+.dv-dot.is-on {
+  background: var(--positive);
+  box-shadow: 0 0 0 3px rgba(70, 211, 105, 0.18);
+}
+
+.dv-art {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  overflow: hidden;
+  background: var(--surface-3);
+  color: var(--text-3);
+  border-radius: var(--radius-card);
+  aspect-ratio: 16 / 9;
+}
+.dv-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.dv-np-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 2px;
+}
+.dv-np-text__title {
+  font-weight: 700;
+  color: var(--text-1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.dv-np-text__sub {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  font-size: 13px;
+  color: var(--text-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.dv-np-text__sub > span:last-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.dv-live {
+  flex: none;
+}
+
+.dv-thin {
+  display: block;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.18);
+  overflow: hidden;
+}
+.dv-thin > span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transform-origin: left center;
+  transition: transform 1s linear;
+}
+@media (prefers-reduced-motion: reduce) {
+  .dv-thin > span {
+    transition: none;
+  }
+}
+
+/* ───────────── cihaz satırı (seçici, kumanda hedefi) ───────────── */
+.dv-choice {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  min-height: 64px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: var(--surface-2);
+  color: var(--text-1);
+  text-align: left;
+  border: 1px solid transparent;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+.dv-choice:hover:not(:disabled) {
+  background: var(--surface-3);
+}
+.dv-choice:focus-visible {
+  outline: 2px solid var(--text-1);
+  outline-offset: 2px;
+}
+.dv-choice.is-selected {
+  border-color: var(--accent);
+}
+.dv-choice:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+.dv-choice__icon {
+  position: relative;
+  display: inline-flex;
+  color: var(--text-2);
+}
+.dv-choice__icon .dv-dot {
+  position: absolute;
+  right: -3px;
+  bottom: 0;
+  border: 2px solid var(--surface-2);
+  box-shadow: none;
+  width: 11px;
+  height: 11px;
+}
+.dv-choice__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+.dv-choice__name {
+  font-weight: 700;
+  font-size: 16px;
+}
+.dv-choice__status {
+  font-size: 13px;
+  color: var(--text-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.dv-choice__check {
+  color: var(--accent);
+}
+
+/* ───────────── seçici ───────────── */
+.dv-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 4px 16px 20px;
+}
+.dv-picker__lead {
+  margin: 0;
+  color: var(--text-3);
+  font-size: 15px;
+}
+.dv-picker__list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.dv-picker__empty {
+  margin: 0;
+  color: var(--text-3);
+}
+.dv-picker__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  align-self: flex-start;
+  min-height: 44px;
+  padding: 0 4px;
+  color: var(--text-2);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.dv-picker__link:hover {
+  color: var(--text-1);
+}
+.dv-picker-modal {
+  padding: 24px 8px 8px;
+}
+.dv-picker-modal__title {
+  margin: 0 16px 14px;
+  font-size: 22px;
+}
+
+/* ───────────── TV'de İzle düğmesi + panel ───────────── */
+.dv-cast {
+  position: relative;
+  display: inline-flex;
+}
+.dv-cast__btn.is-connected {
+  color: var(--accent);
+}
+.dv-cast__pulse {
+  position: absolute;
+  top: 8px;
+  right: 6px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.dv-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: var(--z-menu);
+  width: 360px;
+  background: var(--surface-1);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-modal);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  animation: dv-pop var(--dur-modal) var(--ease-netflix);
+}
+@keyframes dv-pop {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+.dv-panel__body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px;
+}
+.ui-sheet .dv-panel__body {
+  padding: 4px 16px 20px;
+}
+.dv-panel__np {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.dv-panel__art {
+  width: 96px;
+}
+.dv-panel__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+.dv-panel__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ───────────── Şu an TV'de: mobil çubuk ───────────── */
+.dv-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 64px;
+  padding: 6px 8px 6px 10px;
+  background: rgba(35, 35, 35, 0.97);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+  border-top: 1px solid var(--line);
+}
+.dv-bar__progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2px;
+}
+.dv-bar__main {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+  min-height: 52px;
+  text-align: left;
+  color: inherit;
+}
+.dv-bar__art {
+  width: 72px;
+}
+.dv-bar__where {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--accent);
+  font-weight: 600;
+}
+.dv-bar__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 48px;
+  height: 52px;
+  color: var(--text-1);
+  border-radius: 8px;
+}
+.dv-bar__btn:active {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* ───────────── Şu an TV'de: masaüstü kartı ───────────── */
+.dv-card {
+  position: fixed;
+  left: 24px;
+  bottom: 24px;
+  z-index: calc(var(--z-header) + 1);
+  width: 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  background: var(--surface-1);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-modal);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65);
+  animation: dv-pop var(--dur-modal) var(--ease-netflix);
+}
+.dv-card__top {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.dv-card__art {
+  width: 104px;
+}
+.dv-card__text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+}
+.dv-card__where {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.dv-card__hide {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: var(--text-3);
+}
+.dv-card__hide:hover {
+  color: var(--text-1);
+  background: rgba(255, 255, 255, 0.08);
+}
+.dv-card__progress {
+  border-radius: 2px;
+}
+.dv-card__time {
+  font-size: 12px;
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
+}
+.dv-card__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.dv-card__actions .ui-btn {
+  margin-left: auto;
+}
+
+/* ───────────── TV kodu girişi ───────────── */
+.dv-code {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.dv-code__label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-3);
+}
+.dv-code__input {
+  width: 100%;
+  min-height: 64px;
+  padding: 0 16px;
+  border-radius: 8px;
+  border: 1px solid var(--line-2);
+  background: var(--surface-2);
+  color: var(--text-1);
+  font: inherit;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  text-transform: uppercase;
+}
+.dv-code__input::placeholder {
+  color: var(--text-4);
+  opacity: 0.6;
+}
+.dv-code__input:focus {
+  outline: none;
+  border-color: var(--text-1);
+}
+.dv-code.has-hint .dv-code__input {
+  border-color: var(--accent);
+}
+.dv-code__hint {
+  margin: 0;
+  color: var(--text-2);
+  font-size: 14px;
+}

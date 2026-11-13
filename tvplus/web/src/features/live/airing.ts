@@ -4,11 +4,11 @@
  * böylece sayfa açık kalırken biten ya da başlayan yayın yeniden çekmeyi beklemeden doğru eylemi gösterir.
  *
  *   UPCOMING → eylem yok, "Bugün 22:15'te başlıyor"
- *   LIVE     → "Canlı izle" (+ "Baştan başlat" startOver ise)
+ *   LIVE     → "Canlı İzle" (+ "Baştan Başlat" startOver ise)
  *   ENDED    → geri al penceresi açıksa "İzle" (Airing:<id>), değilse "Tekrar izlenemiyor"
  *   yetki PLAYABLE değilse oynatma eylemi yerine kilit + gerekçe (tam ekran hata yok)
  */
-import { formatDayTime } from '../../design/time'
+import { formatDayTime } from '../../ui'
 import type { AccessData } from './types'
 
 const HOUR_MS = 3_600_000
@@ -124,8 +124,8 @@ export function airingAction(a: AiringLike, channelId: number, now: number, tctx
     if (lock) return { kind: 'locked', reason: lock }
     return {
       kind: 'live',
-      primary: { label: 'Canlı izle', to: liveWatchPath(channelId, tctx) },
-      secondary: a.startOver ? { label: 'Baştan başlat', to: liveWatchPath(channelId, tctx, true) } : null,
+      primary: { label: 'Canlı İzle', to: liveWatchPath(channelId, tctx) },
+      secondary: a.startOver ? { label: 'Baştan Başlat', to: liveWatchPath(channelId, tctx, true) } : null,
     }
   }
   if (!catchupOpen(a, now)) return { kind: 'ended', note: 'Tekrar izlenemiyor' }

@@ -1,14 +1,15 @@
 /**
- * Önizleme kapsamı (Netflix "mini modal" / hover önizlemesi).
- *   Web: işaretçi bir başlık kartında ≥ 400 ms durursa ya da kart klavyeyle odak alırsa, karta tutturulmuş daha büyük
- *   yüzen kart açılır (görünür alanın içinde kalır, diğer satırların üstünde). Kartla önizleme arasında gezinmek açık
- *   tutar; dışarı çıkış / Esc / kaydırma kapatır.
- *   Dokunmatik: uzun basış açar (ardından gelen tıklama yutulur), dışarıya dokunmak kapatır.
- * Veri: o satırda ilk önizlemede satırın TÜM yüklü kimlikleri tek MiniModalQuery ile (store.ts).
+ * Önizleme kapsamı — Netflix'in üzerine gelince açılan kartı ("mini modal"), yalnız masaüstünde ve fareyle.
+ *   - İşaretçi bir kartta 500 ms durursa ya da kart klavyeyle odak alıp 500 ms beklerse, kartın kendi yerinden
+ *     ~1.5× büyüyen bir kart açılır (portal; satır ve pencere kırpmaz, bkz. placement.ts).
+ *   - Aynı anda tek kart. İşaretçi karttan çıkınca, sayfa kayınca, Esc'e basılınca ya da sayfa değişince kapanır.
+ *   - Klavye: kart odaktayken önizleme açıksa Tab önizlemenin düğmelerine girer; Esc kapatıp odağı karta döndürür.
+ *   - Dokunmatik cihazlarda ve mobil ekranda önizleme yoktur: dokunuş doğrudan bağlantıya gider.
+ * Veri: bir satırda ilk önizlemede satırın TÜM yüklü kimlikleri tek MiniModalQuery ile (store.ts); devbus `prefetch`.
  *
- * Kullanım:
- *   <PreviewScope> … <PreviewTarget info={{ rowId, videoId, getRowVideoIds, tctx, title, imageUrl }}><PosterCard …/></PreviewTarget> … </PreviewScope>
- * Kapsam yoksa PreviewTarget yalnızca çocuğunu çizer (önizleme kapalı).
+ *   <PreviewScope> … <PreviewTarget info={{ rowId, videoId, getRowVideoIds, tctx, title, imageUrl, edge }}>
+ *     <TitleCard …/></PreviewTarget> … </PreviewScope>
+ * Kapsam yoksa (ya da kapalıysa) PreviewTarget yalnızca çocuğunu çizer.
  */
 import {
   createContext,
@@ -19,14 +20,17 @@ import {
   useRef,
   useState,
   type FocusEvent,
-  type MouseEvent,
+  type KeyboardEvent,
   type PointerEvent,
   type ReactElement,
   type ReactNode,
 } from 'react'
 import { createPortal } from 'react-dom'
 import { useLocation } from 'react-router-dom'
+import { useFormFactor } from '../../lib/formFactor'
 import { logEvent } from '../../telemetry/logger'
+import { useMediaQuery } from '../../ui'
+import { CLOSE_MS, setPreviewOpen } from './openState'
 import { PreviewCard } from './PreviewCard'
 import { requestRowPreview } from './store'
 import './preview.css'
@@ -41,14 +45,17 @@ export interface PreviewTargetInfo {
   title: string
   /** Veri gelene kadar ve klip yokken gösterilen durağan görsel (16:9 tercih) */
   imageUrl?: string | null
+  /** Satırın ilk / son tam görünen kartı: kart içe doğru büyür (Slider `ctx.edge`) */
+  edge?: 'left' | 'right' | null
 }
 
-type Via = 'hover' | 'focus' | 'touch'
+type Via = 'hover' | 'focus'
 
 interface OpenState {
   info: PreviewTargetInfo
   anchor: HTMLElement
   via: Via
+  closing: boolean
 }
 
 interface Controller {
@@ -56,29 +63,30 @@ interface Controller {
   pointerLeave: (info: PreviewTargetInfo) => void
   focus: (info: PreviewTargetInfo, el: HTMLElement) => void
   blur: (info: PreviewTargetInfo, next: EventTarget | null) => void
-  touchStart: (info: PreviewTargetInfo, el: HTMLElement, x: number, y: number) => void
-  touchMove: (x: number, y: number) => void
-  touchEnd: () => void
-  /** Uzun basış önizleme açtıysa ardından gelen tıklamayı yut */
-  consumeClick: () => boolean
+  keyDown: (info: PreviewTargetInfo, e: KeyboardEvent<HTMLElement>) => void
 }
 
 const PreviewContext = createContext<Controller | null>(null)
 
-export const HOVER_DELAY_MS = 400
-const LONG_PRESS_MS = 500
-const LEAVE_GRACE_MS = 180
-const MOVE_TOLERANCE_PX = 10
+export const HOVER_DELAY_MS = 500
+/** Karttan önizlemeye geçerken (önizleme kartın üstünü örter) kapanmayı bekleten kısa pay */
+const LEAVE_GRACE_MS = 120
+
+const focusableOf = (el: HTMLElement): HTMLElement | null =>
+  el.matches('a[href], button') ? el : el.querySelector<HTMLElement>('a[href], button')
 
 export function PreviewScope({ children }: { children: ReactNode }): ReactElement {
+  const desktop = useFormFactor() === 'desktop'
+  const canHover = useMediaQuery('(hover: hover) and (pointer: fine)')
+  const enabled = desktop && canHover
   const [open, setOpen] = useState<OpenState | null>(null)
   const openRef = useRef<OpenState | null>(null)
   openRef.current = open
   const hoverTimer = useRef<number | null>(null)
   const leaveTimer = useRef<number | null>(null)
-  const pressTimer = useRef<number | null>(null)
-  const pressStart = useRef<{ x: number; y: number } | null>(null)
-  const swallowClick = useRef(false)
+  const closeTimer = useRef<number | null>(null)
+  /** Esc ile kapatıp odağı geri verdiğimiz kart: odak ondan ayrılana dek yeniden açılmaz */
+  const suppressed = useRef<HTMLElement | null>(null)
   const cardRef = useRef<HTMLDivElement | null>(null)
   const { pathname } = useLocation()
 
@@ -91,22 +99,37 @@ export function PreviewScope({ children }: { children: ReactNode }): ReactElemen
 
   const show = useCallback((info: PreviewTargetInfo, anchor: HTMLElement, via: Via) => {
     clear(leaveTimer)
+    clear(closeTimer)
     const cur = openRef.current
-    if (cur && cur.info.videoId === info.videoId && cur.info.rowId === info.rowId && cur.anchor === anchor) return
+    if (cur && !cur.closing && cur.info.videoId === info.videoId && cur.anchor === anchor) return
     requestRowPreview(info.rowId, info.getRowVideoIds(), info.videoId)
     logEvent('focus', { videoId: info.videoId, rowId: info.rowId, via }, info.tctx)
-    setOpen({ info, anchor, via })
+    setOpen({ info, anchor, via, closing: false })
+    setPreviewOpen(true)
   }, [])
 
-  const hide = useCallback((refocus = false) => {
+  const hide = useCallback((opts: { refocus?: boolean; immediate?: boolean } = {}) => {
     clear(hoverTimer)
     clear(leaveTimer)
     const cur = openRef.current
-    setOpen(null)
-    if (refocus && cur) {
-      const a = cur.anchor
-      ;(a.matches('a[href], button') ? a : a.querySelector<HTMLElement>('a[href], button'))?.focus()
+    if (!cur) return
+    if (opts.refocus) {
+      suppressed.current = cur.anchor
+      focusableOf(cur.anchor)?.focus({ preventScroll: true })
     }
+    setPreviewOpen(false)
+    if (opts.immediate) {
+      clear(closeTimer)
+      setOpen(null)
+      return
+    }
+    if (cur.closing) return
+    setOpen({ ...cur, closing: true })
+    clear(closeTimer)
+    closeTimer.current = window.setTimeout(() => {
+      closeTimer.current = null
+      setOpen((s) => (s && s.closing ? null : s))
+    }, CLOSE_MS)
   }, [])
 
   const hideSoon = useCallback(() => {
@@ -114,12 +137,16 @@ export function PreviewScope({ children }: { children: ReactNode }): ReactElemen
     leaveTimer.current = window.setTimeout(() => hide(), LEAVE_GRACE_MS)
   }, [hide])
 
+  const isOpenFor = (info: PreviewTargetInfo, el?: HTMLElement) => {
+    const cur = openRef.current
+    return !!cur && !cur.closing && cur.info.videoId === info.videoId && (!el || cur.anchor === el)
+  }
+
   const controller = useMemo<Controller>(
     () => ({
       pointerEnter(info, el) {
         clear(hoverTimer)
-        const cur = openRef.current
-        if (cur && cur.info.videoId === info.videoId && cur.anchor === el) {
+        if (isOpenFor(info, el)) {
           clear(leaveTimer)
           return
         }
@@ -127,62 +154,55 @@ export function PreviewScope({ children }: { children: ReactNode }): ReactElemen
       },
       pointerLeave(info) {
         clear(hoverTimer)
-        const cur = openRef.current
-        if (cur && cur.info.videoId === info.videoId && cur.via === 'hover') hideSoon()
+        if (isOpenFor(info) && openRef.current?.via === 'hover') hideSoon()
       },
       focus(info, el) {
+        if (suppressed.current === el) return
         let keyboard = false
         try {
-          keyboard = !!el.querySelector(':focus-visible') || el.matches(':focus-visible')
+          keyboard = el.matches(':focus-visible') || !!el.querySelector(':focus-visible')
         } catch {
           keyboard = false
         }
-        if (keyboard) show(info, el, 'focus')
+        if (!keyboard) return
+        clear(hoverTimer)
+        hoverTimer.current = window.setTimeout(() => show(info, el, 'focus'), HOVER_DELAY_MS)
       },
       blur(info, next) {
+        clear(hoverTimer)
+        // Esc sonrası bastırma, odak o karttan ayrılınca kalkar.
+        if (suppressed.current && !(next instanceof Node && suppressed.current.contains(next)))
+          suppressed.current = null
         const cur = openRef.current
-        if (!cur || cur.info.videoId !== info.videoId || cur.via !== 'focus') return
+        if (!cur || cur.closing || cur.info.videoId !== info.videoId || cur.via !== 'focus') return
         if (next instanceof Node && (cur.anchor.contains(next) || cardRef.current?.contains(next))) return
         hideSoon()
       },
-      touchStart(info, el, x, y) {
-        clear(pressTimer)
-        pressStart.current = { x, y }
-        pressTimer.current = window.setTimeout(() => {
-          pressTimer.current = null
-          swallowClick.current = true
-          show(info, el, 'touch')
-        }, LONG_PRESS_MS)
-      },
-      touchMove(x, y) {
-        const s = pressStart.current
-        if (s && Math.hypot(x - s.x, y - s.y) > MOVE_TOLERANCE_PX) clear(pressTimer)
-      },
-      touchEnd() {
-        clear(pressTimer)
-        pressStart.current = null
-      },
-      consumeClick() {
-        if (!swallowClick.current) return false
-        swallowClick.current = false
-        return true
+      keyDown(info, e) {
+        if (e.key !== 'Tab' || e.shiftKey || !isOpenFor(info)) return
+        const first = cardRef.current?.querySelector<HTMLElement>('button:not([disabled]), a[href]')
+        if (!first) return
+        e.preventDefault()
+        clear(leaveTimer)
+        first.focus()
       },
     }),
     [show, hideSoon],
   )
 
-  // Yol değişince kapat.
+  // Kapsam kapanınca (ekran mobile döndü) ya da sayfa değişince hemen kapat.
   useEffect(() => {
-    hide()
-  }, [pathname, hide])
+    hide({ immediate: true })
+  }, [pathname, enabled, hide])
 
-  // Esc, kaydırma, dışarı dokunma.
+  // Esc, kaydırma, pencere boyutu.
+  const isOpen = !!open && !open.closing
   useEffect(() => {
-    if (!open) return
-    const onKey = (e: KeyboardEvent) => {
+    if (!isOpen) return
+    const onKey = (e: globalThis.KeyboardEvent) => {
       if (e.key === 'Escape') {
         e.stopPropagation()
-        hide(true)
+        hide({ refocus: true })
       }
     }
     const onScroll = (e: Event) => {
@@ -190,51 +210,45 @@ export function PreviewScope({ children }: { children: ReactNode }): ReactElemen
       if (t instanceof Node && cardRef.current?.contains(t)) return
       hide()
     }
-    const onDown = (e: globalThis.PointerEvent) => {
-      const t = e.target
-      if (t instanceof Node && (cardRef.current?.contains(t) || open.anchor.contains(t))) return
-      hide()
-    }
-    document.addEventListener('keydown', onKey)
+    const onResize = () => hide({ immediate: true })
+    document.addEventListener('keydown', onKey, true)
     window.addEventListener('scroll', onScroll, { capture: true, passive: true })
-    window.addEventListener('resize', onScroll as EventListener)
-    document.addEventListener('pointerdown', onDown)
+    window.addEventListener('resize', onResize)
     return () => {
-      document.removeEventListener('keydown', onKey)
+      document.removeEventListener('keydown', onKey, true)
       window.removeEventListener('scroll', onScroll, { capture: true })
-      window.removeEventListener('resize', onScroll as EventListener)
-      document.removeEventListener('pointerdown', onDown)
+      window.removeEventListener('resize', onResize)
     }
-  }, [open, hide])
+  }, [isOpen, hide])
 
   useEffect(
     () => () => {
       clear(hoverTimer)
       clear(leaveTimer)
-      clear(pressTimer)
+      clear(closeTimer)
+      setPreviewOpen(false)
     },
     [],
   )
 
   return (
-    <PreviewContext.Provider value={controller}>
+    <PreviewContext.Provider value={enabled ? controller : null}>
       {children}
       {open &&
+        enabled &&
         createPortal(
           <PreviewCard
             key={`${open.info.rowId}|${open.info.videoId}`}
             ref={cardRef}
             info={open.info}
             anchor={open.anchor}
-            via={open.via}
+            closing={open.closing}
             onPointerEnter={() => clear(leaveTimer)}
-            onPointerLeave={() => {
-              if (openRef.current?.via !== 'touch') hideSoon()
-            }}
+            onPointerLeave={() => hideSoon()}
             onBlurOut={() => {
               if (openRef.current?.via === 'focus') hideSoon()
             }}
-            onClose={() => hide(true)}
+            onClose={(refocus) => hide({ refocus, immediate: !refocus })}
           />,
           document.body,
         )}
@@ -243,17 +257,17 @@ export function PreviewScope({ children }: { children: ReactNode }): ReactElemen
 }
 
 export interface PreviewTargetProps {
-  /** Hedef bilgisi; null ise önizleme bağlanmaz */
+  /** Hedef bilgisi; null ise önizleme bağlanmaz (ör. satır kayarken) */
   info: PreviewTargetInfo | null
   children: ReactNode
   className?: string
 }
 
-/** Sarmalayıcı `display: contents`: kutusu yok, konum ve kapsama kartın kendisinden alınır. */
+/** Sarmalayıcı `display: contents`: kutusu yok, konum kartın kendisinden alınır. */
 const anchorOf = (el: HTMLElement): HTMLElement =>
   el.firstElementChild instanceof HTMLElement ? el.firstElementChild : el
 
-/** Olay sahibi (wrapper) öğeye yayılacak dinleyiciler. Kapsam yoksa boş nesne. */
+/** Olay sahibi (sarmalayıcı) öğeye yayılacak dinleyiciler. Kapsam yoksa boş nesne. */
 export function usePreviewTarget(info: PreviewTargetInfo | null) {
   const ctl = useContext(PreviewContext)
   const infoRef = useRef(info)
@@ -264,24 +278,11 @@ export function usePreviewTarget(info: PreviewTargetInfo | null) {
     return {
       onPointerEnter(e: PointerEvent<HTMLElement>) {
         const i = get()
-        if (i && e.pointerType !== 'touch') ctl.pointerEnter(i, anchorOf(e.currentTarget))
+        if (i && e.pointerType === 'mouse') ctl.pointerEnter(i, anchorOf(e.currentTarget))
       },
       onPointerLeave(e: PointerEvent<HTMLElement>) {
         const i = get()
-        if (i && e.pointerType !== 'touch') ctl.pointerLeave(i)
-      },
-      onPointerDown(e: PointerEvent<HTMLElement>) {
-        const i = get()
-        if (i && e.pointerType === 'touch') ctl.touchStart(i, anchorOf(e.currentTarget), e.clientX, e.clientY)
-      },
-      onPointerMove(e: PointerEvent<HTMLElement>) {
-        if (e.pointerType === 'touch') ctl.touchMove(e.clientX, e.clientY)
-      },
-      onPointerUp() {
-        ctl.touchEnd()
-      },
-      onPointerCancel() {
-        ctl.touchEnd()
+        if (i && e.pointerType === 'mouse') ctl.pointerLeave(i)
       },
       onFocus(e: FocusEvent<HTMLElement>) {
         const i = get()
@@ -291,15 +292,9 @@ export function usePreviewTarget(info: PreviewTargetInfo | null) {
         const i = get()
         if (i) ctl.blur(i, e.relatedTarget)
       },
-      onClickCapture(e: MouseEvent<HTMLElement>) {
-        if (ctl.consumeClick()) {
-          e.preventDefault()
-          e.stopPropagation()
-        }
-      },
-      onContextMenu(e: MouseEvent<HTMLElement>) {
-        // Uzun basışta tarayıcının bağlantı menüsü önizlemeyi örtmesin (yalnız dokunmatik).
-        if (window.matchMedia?.('(hover: none)').matches) e.preventDefault()
+      onKeyDown(e: KeyboardEvent<HTMLElement>) {
+        const i = get()
+        if (i) ctl.keyDown(i, e)
       },
     }
   }, [ctl])

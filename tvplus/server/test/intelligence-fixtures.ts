@@ -11,6 +11,7 @@
  */
 import type { FastifyInstance } from 'fastify'
 import { zTitle, type ContentTitle } from '../../shared/content-schema'
+import { KIDS_MAX_MATURITY_LEVEL, MATURITY } from '../../shared/taxonomy'
 import type {
   DataSourceStatus,
   EffectiveTags,
@@ -61,7 +62,10 @@ export interface FakeViewing extends ViewingService {
   plays: FakePlay[]
   addPlays(plays: FakePlay[]): void
   /** Doğrudan olgu (oynatmasız) — büyük ölçek testleri için */
-  setFacts(facts: ViewingFact[], traits?: (viewerId: string) => { device: ViewingDevice | null; country: string | null }): void
+  setFacts(
+    facts: ViewingFact[],
+    traits?: (viewerId: string) => { device: ViewingDevice | null; country: string | null },
+  ): void
   bump(): void
 }
 
@@ -263,7 +267,9 @@ export function createFakeTagging(
   vocabulary: TagVocabulary = EMPTY_VOCABULARY,
 ): FakeTagging {
   let rev = 1
-  const map = new Map<number, Partial<Omit<EffectiveTags, 'titleId'>>>(Object.entries(tags).map(([k, v]) => [Number(k), v]))
+  const map = new Map<number, Partial<Omit<EffectiveTags, 'titleId'>>>(
+    Object.entries(tags).map(([k, v]) => [Number(k), v]),
+  )
   return {
     vocabulary: () => vocabulary,
     effective: (titleId) => {
@@ -308,7 +314,8 @@ export function createFakeMicrogenres(list: Microgenre[] = []): FakeMicrogenres 
   return {
     all: () => items,
     get: (id) => items.find((m) => m.id === id) ?? null,
-    ofTitle: (titleId) => items.filter((m) => m.titleIds.includes(titleId)).sort((a, b) => b.specificity - a.specificity),
+    ofTitle: (titleId) =>
+      items.filter((m) => m.titleIds.includes(titleId)).sort((a, b) => b.specificity - a.specificity),
     similarTitles: () => [],
     stats,
     revision: () => rev,
@@ -319,7 +326,13 @@ export function createFakeMicrogenres(list: Microgenre[] = []): FakeMicrogenres 
   }
 }
 
-export function makeMicrogenre(id: string, name: string, core: string, titleIds: number[], specificity = 1): Microgenre {
+export function makeMicrogenre(
+  id: string,
+  name: string,
+  core: string,
+  titleIds: number[],
+  specificity = 1,
+): Microgenre {
   return {
     id,
     name,
@@ -396,6 +409,14 @@ export function catalogWith(base: CatalogService, titles: ContentTitle[]): Catal
   const wrapped: CatalogService = Object.create(base) as CatalogService
   wrapped.allTitles = () => titles
   wrapped.getTitle = (id) => byId.get(id) ?? null
+  // Görünürlük asıl katalogdaki kuralla aynı (olgunluk seviyesi; çocuk profilinde üst sınır), ama sahte başlıklarla
+  wrapped.isVisibleTo = (profile, id) => {
+    const t = byId.get(id)
+    if (!t) return false
+    if (!profile) return true
+    const max = profile.isKids ? Math.min(profile.maturityLevel, KIDS_MAX_MATURITY_LEVEL) : profile.maturityLevel
+    return MATURITY[t.maturity.rating].maturityLevel <= max
+  }
   return wrapped
 }
 
@@ -554,4 +575,144 @@ export function syntheticFacts(
     }
   }
   return out
+}
+
+/* ───────────── tahmin modeli: ekilmiş zevk dünyası ───────────── */
+
+export interface TasteWorldArchetype {
+  name: string
+  /** Havuz başlıklarının çekirdek türü (iki arketip aynı türü paylaşabilir; ruh hâlleri ayırır) */
+  genre: ContentTitle['genres'][number]
+  moods: ContentTitle['moods']
+  type?: 'MOVIE' | 'SHOW'
+}
+
+export interface TasteWorld {
+  titles: ContentTitle[]
+  facts: ViewingFact[]
+  /** izleyici → arketip adı */
+  truth: Map<string, string>
+  /** arketip adı → havuzdaki başlık kimlikleri (popülerden aza) */
+  pools: Map<string, number[]>
+  tags: Record<number, Partial<Omit<EffectiveTags, 'titleId'>>>
+  microgenres: Microgenre[]
+}
+
+/** Arketiplerin paylaştığı ikincil türler (tür yakınlığı tabanını bilerek bulanıklaştırır) */
+const SHARED_GENRES: ContentTitle['genres'] = ['dram', 'yasam', 'tarih', 'muzik']
+
+export const TASTE_ARCHETYPES: TasteWorldArchetype[] = [
+  { name: 'uzay', genre: 'belgesel', moods: ['dusundurucu', 'ilham'] },
+  { name: 'savas', genre: 'belgesel', moods: ['karanlik', 'gercek-hikaye'] },
+  { name: 'sessiz', genre: 'komedi', moods: ['nostaljik', 'sozsuz'] },
+  { name: 'sitcom', genre: 'komedi', moods: ['eglenceli', 'esprili'], type: 'SHOW' },
+  { name: 'gerilim', genre: 'gerilim', moods: ['gerilimli', 'heyecanli'] },
+  { name: 'romantik', genre: 'romantik', moods: ['duygusal', 'ic-isitan'] },
+]
+
+/**
+ * Tahmin modeli için ekilmiş dünya: her arketipin `perPool` başlıklık havuzu (Zipf benzeri iç popülerlik),
+ * izleyiciler havuzlarından seçer, `noise` olasılıkla genel popüler bir başlığa kayar. Aynı çekirdek türü paylaşan
+ * arketip çiftleri yalnız davranış ve ruh hâliyle ayrılır (tür yakınlığı onları ayıramaz). Zamanlar 60 güne yayılır;
+ * ilgi 0,35–1 arası, havuz içi başlıkta yüksek.
+ */
+export function plantTasteWorld(opts: {
+  seed: number
+  viewersPerArchetype?: number
+  perPool?: number
+  titlesPerViewer?: [number, number]
+  noise?: number
+  archetypes?: TasteWorldArchetype[]
+  startTs?: number
+  /** İlk kimlik (ardışık) */
+  firstVideoId?: number
+  /** Kaçıncı havuz başlığının 18+ olacağı (çocuk görünürlüğü testleri için); verilmezse hepsi GENEL */
+  adultEvery?: number
+}): TasteWorld {
+  const r = rng(opts.seed)
+  const archetypes = opts.archetypes ?? TASTE_ARCHETYPES
+  const perPool = opts.perPool ?? 14
+  const [lo, hi] = opts.titlesPerViewer ?? [6, 12]
+  const noise = opts.noise ?? 0.1
+  const startTs = opts.startTs ?? Date.parse('2026-08-01T12:00:00Z')
+  let vid = opts.firstVideoId ?? 91_000_001
+  const titles: ContentTitle[] = []
+  const pools = new Map<string, number[]>()
+  const tags: TasteWorld['tags'] = {}
+  const microgenres: Microgenre[] = []
+  archetypes.forEach((a, ai) => {
+    const pool: number[] = []
+    for (let k = 0; k < perPool; k++) {
+      const videoId = vid
+      vid += a.type === 'SHOW' ? 1000 : 1
+      const second = SHARED_GENRES[Math.floor(r() * SHARED_GENRES.length)]!
+      titles.push(
+        makeTitle({
+          videoId,
+          type: a.type ?? 'MOVIE',
+          title: `${a.name} ${k + 1}`,
+          genres: [a.genre, second],
+          moods: a.moods,
+          rating: opts.adultEvery && k % opts.adultEvery === opts.adultEvery - 1 ? '18+' : 'GENEL',
+        }),
+      )
+      pool.push(videoId)
+      tags[videoId] = {
+        basis: 'SAMPLE',
+        scales: { tempo: (ai % 3) + 1, karanlik: a.moods.includes('karanlik') ? 4 : 1 },
+        descriptors: [`${a.name}-sifat`],
+        facets: { konu: [a.name] },
+      }
+    }
+    pools.set(a.name, pool)
+    microgenres.push(makeMicrogenre(`mg_${a.name}`, `${a.name} yapımları`, a.genre, pool, 2))
+  })
+  // Genel popülerlik: her havuzun ilk başlıkları
+  const global = [...pools.values()].flatMap((p) => p.slice(0, 3))
+  const facts: ViewingFact[] = []
+  const truth = new Map<string, string>()
+  const perArch = opts.viewersPerArchetype ?? 80
+  archetypes.forEach((a, ai) => {
+    const pool = pools.get(a.name)!
+    // Zipf benzeri iç popülerlik
+    const weights = pool.map((_, k) => 1 / (k + 1.5))
+    const total = weights.reduce((x, y) => x + y, 0)
+    const pick = () => {
+      let u = r() * total
+      for (let k = 0; k < pool.length; k++) {
+        u -= weights[k]!
+        if (u <= 0) return pool[k]!
+      }
+      return pool[pool.length - 1]!
+    }
+    for (let v = 0; v < perArch; v++) {
+      const viewerId = `v_${String(ai).padStart(2, '0')}${a.name}_${String(v).padStart(5, '0')}`
+      truth.set(viewerId, a.name)
+      const count = lo + Math.floor(r() * (hi - lo + 1))
+      const seen = new Set<number>()
+      for (let tries = 0; seen.size < count && tries < count * 6; tries++) {
+        const off = r() < noise
+        const titleId = off ? global[Math.floor(r() * global.length)]! : pick()
+        if (seen.has(titleId)) continue
+        seen.add(titleId)
+        const ts = startTs + Math.floor(r() * 60 * 86_400_000)
+        const watchedSec = Math.round(600 + r() * 5000)
+        const completions = !off && r() < 0.6 ? 1 : 0
+        facts.push({
+          viewerId,
+          titleId,
+          source: 'SYNTHETIC',
+          plays: 1 + Math.floor(r() * 2),
+          watchedSec,
+          completions,
+          firstTs: ts - Math.floor(r() * 3 * 86_400_000),
+          lastTs: ts,
+          inList: r() < 0.05,
+          rating: null,
+          engagement: Math.round((off ? 0.35 + 0.3 * r() : 0.55 + 0.45 * r()) * 10_000) / 10_000,
+        })
+      }
+    }
+  })
+  return { titles, facts, truth, pools, tags, microgenres }
 }

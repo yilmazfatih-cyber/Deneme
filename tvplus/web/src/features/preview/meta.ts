@@ -1,7 +1,8 @@
 /**
  * Kart ve önizleme meta satırı için saf yardımcılar: oynatma rozetleri, kaynak adı, kalan süre, yetki metni.
  */
-import type { BookmarkData, SourceKindName } from './types'
+import { formatRuntime, formatSeasons } from '../../ui/format'
+import type { BookmarkData, MiniModalVideo, SourceKindName } from './types'
 
 /** Oynatma rozetleri → kısa etiketler (tekrarsız, sabit sıra). */
 export function playbackBadgeLabels(badges: readonly string[]): string[] {
@@ -68,4 +69,30 @@ export function badgeTextOf(badge: { kind: string; text: string } | null | undef
 /** Ekran okuyucu ve görünür meta için kısa satır: "2024 · 1 sa 28 dk" */
 export function joinMeta(parts: (string | number | null | undefined | false)[]): string {
   return parts.filter((p) => p !== null && p !== undefined && p !== false && p !== '').join(' · ')
+}
+
+/**
+ * Eşleşme yüzdesi bu değerin altındaysa gösterilmez (Netflix de düşük eşleşmeyi yazmaz: "%4 Eşleşme" yeşil bir
+ * övgü gibi okunur ve yanıltır).
+ */
+export const MATCH_MIN = 50
+
+/** Eşleşme / yeni / yaş / süre / HD satırı ve etiketler için saf seçimler. */
+export function previewMeta(
+  video: Pick<
+    MiniModalVideo,
+    '__typename' | 'badge' | 'runtimeSec' | 'displayRuntime' | 'seasonCount' | 'playbackBadges' | 'matchScore'
+  >,
+): { match: string | null; isNew: boolean; length: string; quality: string | null } {
+  const match =
+    typeof video.matchScore === 'number' && Number.isFinite(video.matchScore) && video.matchScore >= MATCH_MIN
+      ? `%${Math.round(Math.min(100, video.matchScore))} Eşleşme`
+      : null
+  const isNew = video.badge?.kind === 'NEW' || video.badge?.kind === 'NEW_EPISODE'
+  const length =
+    video.__typename === 'Show'
+      ? formatSeasons(video.seasonCount) || video.displayRuntime
+      : formatRuntime(video.runtimeSec) || video.displayRuntime
+  const quality = playbackBadgeLabels(video.playbackBadges ?? []).find((b) => b === '4K' || b === 'HD') ?? null
+  return { match, isNew, length, quality }
 }

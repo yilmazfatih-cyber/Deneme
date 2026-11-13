@@ -5,7 +5,7 @@
  *   yargı  = (editör görüşü + 1) / 2            (görüş yoksa 0,5 = yansız)
  *   puan   = veriAğırlığı · talep + (1 − veriAğırlığı) · yargı
  *   maliyet verilirse puan, saat/maliyet veriminin geometrik ortalamaya oranının kareköküyle ölçeklenir (0,5–2 kat)
- *   hedef pay ∝ puan² (öneriyi belirginleştirir) · başlıklar en büyük kalan yöntemiyle tam N'ye dağıtılır
+ *   hedef pay ∝ puan³ (öneriyi belirginleştirir) · başlıklar en büyük kalan yöntemiyle tam N'ye dağıtılır
  *   bütçe verilirse toplam maliyet bütçeyi aşmayana kadar N küçültülür (aynı hedef paylarla)
  *
  * Her bileşen kendi türünün verisinde azalmayan, diğer türlerinkinde artmayan biçimdedir: bir türün talebi artarsa
@@ -20,11 +20,12 @@ export const PLAN_NOTE =
   'Bu plan bir öneridir: izleme verisini ve editör yargısını birleştirir. Kararı içerik ekibi verir; maliyet, hak ve yayın takvimi ayrıca değerlendirilmelidir.'
 
 export const DEFAULT_DATA_WEIGHT = 0.7
-const SHARPNESS = 2
+const SHARPNESS = 3
 const DEMAND_WEIGHTS = { share: 0.5, efficiency: 0.3, trend: 0.2 }
 const TREND_EPS = 0.01
 const GAP_MIN_LIFT = 1.5
 const GAP_LIMIT = 10
+const GAP_MAX_JACCARD = 0.5
 const FIT_MIN_LIFT = 1.2
 const UNDERSERVED_RATIO = 1.5
 const UNDERSERVED_MIN_DIFF = 0.02
@@ -171,9 +172,7 @@ export function computePlan(input: PlanInput, data: PlanData): PlanResult {
     const trend = r.trendRatio === null ? 0.5 : r.trendRatio / (1 + r.trendRatio)
     // Katalogda hiç başlığı olmayan türde veri bir şey söylemez: talep 0 (yalnız yargı ve maliyet taşır)
     r.demand =
-      r.titles === 0
-        ? 0
-        : DEMAND_WEIGHTS.share * share + DEMAND_WEIGHTS.efficiency * eff + DEMAND_WEIGHTS.trend * trend
+      r.titles === 0 ? 0 : DEMAND_WEIGHTS.share * share + DEMAND_WEIGHTS.efficiency * eff + DEMAND_WEIGHTS.trend * trend
     r.score = dataWeight * r.demand + (1 - dataWeight) * r.judgmentScore
   }
 
@@ -236,7 +235,7 @@ export function computePlan(input: PlanInput, data: PlanData): PlanResult {
       else if (r.efficiency <= 0.85)
         reasons.push(`Katalogda izlendiğinden fazla yer tutuyor (${trNumber(r.efficiency)} kat)`)
       else reasons.push('İzlenme payı katalog payıyla dengeli')
-      if (r.viewShare >= 0.2) reasons.push(`İzlemenin ${trPercent(r.viewShare)}'i bu türde`)
+      if (r.viewShare >= 0.2) reasons.push(`İzlemedeki payı ${trPercent(r.viewShare)}`)
     } else if (r.hours === 0 && r.titles > 0) reasons.push('Bu türde izlenme yok')
     if (r.trendRatio !== null) {
       if (r.trendRatio >= 1.15) reasons.push('Son 4 haftada talep artıyor')
@@ -282,11 +281,18 @@ export function computePlan(input: PlanInput, data: PlanData): PlanResult {
   }
 }
 
-/** Talebi yüksek (izlenme payı katalog payının ≥ 1,5 katı) ama başlığı az (≤ ortanca, en az 3) mikro türler. */
+/**
+ * Talebi yüksek (izlenme payı katalog payının ≥ 1,5 katı) ama başlığı az (≤ ortanca, en az 3) mikro türler;
+ * birbirinin neredeyse aynısı olanlardan yalnız ilki.
+ */
 function findGaps(titles: ContentTitle[], H: number, data: PlanData): PlanResult['gaps'] {
   if (H <= 0 || titles.length === 0) return []
   const scoped = new Set(titles.map((t) => t.videoId))
-  const scopeType = titles.every((t) => t.type === 'MOVIE') ? 'MOVIE' : titles.every((t) => t.type === 'SHOW') ? 'SHOW' : null
+  const scopeType = titles.every((t) => t.type === 'MOVIE')
+    ? 'MOVIE'
+    : titles.every((t) => t.type === 'SHOW')
+      ? 'SHOW'
+      : null
   const T = titles.length
   const cands: { mg: Microgenre; size: number; lift: number; sig: string }[] = []
   for (const mg of data.microgenres) {
@@ -302,17 +308,26 @@ function findGaps(titles: ContentTitle[], H: number, data: PlanData): PlanResult
   const sizes = cands.map((c) => c.size).sort((a, b) => a - b)
   const median = sizes[Math.floor(sizes.length / 2)]!
   const maxSize = Math.max(3, median)
-  const seen = new Set<string>()
+  // Çeşitlilik: başlık kümesi seçilmiş bir boşlukla yarıdan çok örtüşen aday atlanır (Jaccard ≥ 0,5)
+  const chosen: Set<number>[] = []
+  const overlaps = (ids: Set<number>) =>
+    chosen.some((c) => {
+      let inter = 0
+      for (const id of ids) if (c.has(id)) inter++
+      return inter / (ids.size + c.size - inter) >= GAP_MAX_JACCARD
+    })
   return cands
     .filter((c) => c.lift >= GAP_MIN_LIFT && c.size <= maxSize)
     .sort(
       (a, b) =>
-        b.lift - a.lift ||
-        a.size - b.size ||
-        a.mg.specificity - b.mg.specificity ||
-        (a.mg.id < b.mg.id ? -1 : 1),
+        b.lift - a.lift || a.size - b.size || a.mg.specificity - b.mg.specificity || (a.mg.id < b.mg.id ? -1 : 1),
     )
-    .filter((c) => (seen.has(c.sig) ? false : (seen.add(c.sig), true)))
+    .filter((c) => {
+      const ids = new Set(c.sig.split(',').map(Number))
+      if (overlaps(ids)) return false
+      chosen.push(ids)
+      return true
+    })
     .slice(0, GAP_LIMIT)
     .map((c) => ({ microgenreId: c.mg.id, name: c.mg.name, size: c.size, demandLift: Math.round(c.lift * 100) / 100 }))
 }
@@ -345,5 +360,8 @@ function findUnderserved(titles: ContentTitle[], data: PlanData): PlanResult['un
       (u) =>
         u.demandShare >= UNDERSERVED_RATIO * u.supplyShare && u.demandShare - u.supplyShare >= UNDERSERVED_MIN_DIFF,
     )
-    .sort((a, b) => b.demandShare - b.supplyShare - (a.demandShare - a.supplyShare) || (a.communityId < b.communityId ? -1 : 1))
+    .sort(
+      (a, b) =>
+        b.demandShare - b.supplyShare - (a.demandShare - a.supplyShare) || (a.communityId < b.communityId ? -1 : 1),
+    )
 }

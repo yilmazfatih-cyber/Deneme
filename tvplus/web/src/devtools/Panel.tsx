@@ -5,6 +5,7 @@ import { useRef, type KeyboardEvent, type ReactNode, type RefObject } from 'reac
 import './devtools.css'
 import { ApiTab } from './tabs/ApiTab'
 import { CdnTab } from './tabs/CdnTab'
+import { DevicesTab } from './tabs/DevicesTab'
 import { EventsTab } from './tabs/EventsTab'
 import { FeedTab } from './tabs/FeedTab'
 import { IdentityTab } from './tabs/IdentityTab'
@@ -83,6 +84,7 @@ export default function Panel({
         {tab === 'cdn' && <CdnTab />}
         {tab === 'kimlik' && <IdentityTab lastTraceId={model.lastTraceId} lastTraceAt={model.lastTraceAt} />}
         {tab === 'olaylar' && <EventsTab t={model.telemetry} />}
+        {tab === 'cihazlar' && <DevicesTab />}
       </div>
     </aside>
   )

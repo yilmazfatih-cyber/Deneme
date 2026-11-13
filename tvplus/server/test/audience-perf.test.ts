@@ -31,7 +31,10 @@ describe('zevk toplulukları — ölçek', () => {
         for (const id of pool) {
           tags[id] = {
             descriptors: [`nit-${pi}`],
-            facets: { konu: [`k${pi}-${Math.floor(r() * 4)}`, `ortak-${Math.floor(r() * 6)}`], mekan: [`m${Math.floor(r() * 8)}`] },
+            facets: {
+              konu: [`k${pi}-${Math.floor(r() * 4)}`, `ortak-${Math.floor(r() * 6)}`],
+              mekan: [`m${Math.floor(r() * 8)}`],
+            },
           }
         }
       })

@@ -14,7 +14,8 @@ export const PX_PER_MIN = 6
 export const DAY_START_HOUR = 6
 export const DAY_END_HOUR = 2
 
-export type DayOffset = -1 | 0 | 1
+/** Şimdiye göre gün: -1 Dün · 0 Bugün · 1 Yarın · 2 sonraki gün */
+export type DayOffset = -1 | 0 | 1 | 2
 
 const partsFmt = new Intl.DateTimeFormat('en-GB', {
   timeZone: TIME_ZONE,
@@ -65,7 +66,7 @@ export interface GuideWindow {
 const floorTo = (t: number, step: number) => Math.floor(t / step) * step
 const ceilTo = (t: number, step: number) => Math.ceil(t / step) * step
 
-/** Gün penceresi. `day` şimdiye göre: -1 Dün, 0 Bugün, 1 Yarın. */
+/** Gün penceresi. `day` şimdiye göre: -1 Dün, 0 Bugün, 1 Yarın, 2 sonraki gün. */
 export function dayWindow(day: DayOffset, now: number): GuideWindow {
   const p = zonedParts(now)
   const from = zonedTime(p.year, p.month, p.day + day, DAY_START_HOUR)
@@ -173,4 +174,102 @@ export function groupForList<T extends { startAt: string; endAt: string }>(
     later: upcoming.slice(1),
     earlier: sorted.filter((a) => Date.parse(a.endAt) <= now).reverse(),
   }
+}
+
+/* ───────────── Gün sekmeleri ───────────── */
+
+const WEEKDAYS = ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'] as const
+
+/** Sekme adı: "Dün" · "Bugün" · "Yarın" · daha ötesi gün adı ("Pazar"). */
+export function dayLabel(day: DayOffset, now: number): string {
+  if (day === -1) return 'Dün'
+  if (day === 0) return 'Bugün'
+  if (day === 1) return 'Yarın'
+  const p = zonedParts(dayWindow(day, now).from)
+  return WEEKDAYS[new Date(Date.UTC(p.year, p.month - 1, p.day)).getUTCDay()] ?? 'Sonra'
+}
+
+/** Pencerede en az bir yayın var mı (örnek akışın gittiği son günü bulmak için). */
+export function windowHasAirings(
+  channels: readonly { airings: readonly { startAt: string; endAt: string }[] }[],
+  w: GuideWindow,
+): boolean {
+  return channels.some((c) => c.airings.some((a) => Date.parse(a.endAt) > w.from && Date.parse(a.startAt) < w.to))
+}
+
+/* ───────────── Klavyeyle gezinme ───────────── */
+
+export interface GridPos {
+  row: number
+  index: number
+}
+
+export type GridKey = 'ArrowLeft' | 'ArrowRight' | 'ArrowUp' | 'ArrowDown' | 'Home' | 'End' | 'PageUp' | 'PageDown'
+
+export const GRID_KEYS: readonly string[] = [
+  'ArrowLeft',
+  'ArrowRight',
+  'ArrowUp',
+  'ArrowDown',
+  'Home',
+  'End',
+  'PageUp',
+  'PageDown',
+]
+
+interface Span {
+  startAt: string
+  endAt: string
+}
+
+/** Bloğun pencere içindeki görünen orta anı (üst/alt satıra geçerken hizalama için). */
+function midOf(a: Span, w: GuideWindow): number {
+  const s = Math.max(Date.parse(a.startAt), w.from)
+  const e = Math.min(Date.parse(a.endAt), w.to)
+  return (s + e) / 2
+}
+
+/** Satırda `t` anını kapsayan blok; yoksa ortası en yakın olan. Boş satırda -1. */
+export function blockAtTime(row: readonly Span[], t: number, w: GuideWindow): number {
+  if (!row.length) return -1
+  const hit = row.findIndex((a) => Date.parse(a.startAt) <= t && t < Date.parse(a.endAt))
+  if (hit >= 0) return hit
+  let best = 0
+  let dist = Infinity
+  row.forEach((a, i) => {
+    const d = Math.abs(midOf(a, w) - t)
+    if (d < dist) {
+      dist = d
+      best = i
+    }
+  })
+  return best
+}
+
+/**
+ * Izgarada sonraki konum: ←/→ aynı kanalda önceki/sonraki program, ↑/↓ komşu kanalda aynı ana denk gelen program
+ * (boş kanallar atlanır), Home/End satırın ilk/son programı, PageUp/PageDown 5 kanal yukarı/aşağı.
+ * `rows` pencereye yerleşmiş (soldan sağa sıralı) programlardır. Hareket yoksa aynı konum döner.
+ */
+export function moveInGrid(rows: readonly (readonly Span[])[], pos: GridPos, key: GridKey, w: GuideWindow): GridPos {
+  const row = rows[pos.row] ?? []
+  const cur = row[pos.index]
+  switch (key) {
+    case 'ArrowLeft':
+      return { row: pos.row, index: Math.max(0, pos.index - 1) }
+    case 'ArrowRight':
+      return { row: pos.row, index: Math.min(row.length - 1, pos.index + 1) }
+    case 'Home':
+      return { row: pos.row, index: 0 }
+    case 'End':
+      return { row: pos.row, index: Math.max(0, row.length - 1) }
+  }
+  const step = key === 'ArrowUp' ? -1 : key === 'ArrowDown' ? 1 : key === 'PageUp' ? -5 : 5
+  const t = cur ? midOf(cur, w) : w.from
+  const dir = Math.sign(step)
+  let target = Math.min(rows.length - 1, Math.max(0, pos.row + step))
+  // Boş satırları atla (hareket yönünde; bulunamazsa geri dön)
+  while (target >= 0 && target < rows.length && target !== pos.row && !(rows[target]?.length ?? 0)) target += dir
+  if (target < 0 || target >= rows.length || target === pos.row) return pos
+  return { row: target, index: blockAtTime(rows[target]!, t, w) }
 }

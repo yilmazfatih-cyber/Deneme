@@ -17,6 +17,7 @@ import type { ProfileRecord } from '../../kernel/context'
 import type { Services } from '../../kernel/services'
 import { DAY_MS, localDayNumber, localMidnight, parseLocalDate } from '../epg/time'
 import { blendedSimilars, rowReason } from './blend'
+import { modelReady, orderByScores, predictionPicks, predictionScores } from './intel'
 import { communityRow, MICROGENRE_ROWS_CATEGORY, MICROGENRE_ROWS_HOME, pickMicrogenreRows } from './microgenreRows'
 import { tasteScore, tasteVector } from './similarity'
 import { top10ForProfile, top10ForType, top10Scores, type TitleType } from './top10'
@@ -63,6 +64,8 @@ export interface LolomoList {
   microgenreId?: string
   /** tasteCommunity: profilin zevk topluluğu (tc_…) */
   communityId?: string
+  /** gems: satırı tahmin modeli mi ('model') kurallar mı ('rules') üretti ("Kaputun altı" için) */
+  source?: 'model' | 'rules'
 }
 export interface Lolomo {
   profileGuid: string
@@ -133,6 +136,15 @@ export interface LolomoOptions {
   category?: LolomoCategory
 }
 
+/**
+ * Tahmin modeli hazırken öğeleri modelin puanına göre sıralanan satırlar (satır İÇİ sıra; satırın yeri değişmez).
+ * Top 10, izlemeye devam, vitrin, Listem, koleksiyon ve editörün seçtiği satırlar kendi sıralarını korur.
+ */
+export const MODEL_ORDERED: readonly ListContext[] = ['genre', 'microgenre', 'newReleases', 'tasteCommunity']
+/** "En İyi Seçimler" için modelden istenen aday sayısı ve satır uzunluğu */
+export const MODEL_PICKS_FETCH = 60
+export const PICKS_ROW_SIZE = 20
+
 /** Satır ekleme kuralları (görünürlük, en az öğe, kimlik çakışması) tüm kategorilerde ortaktır. */
 function listBuilder(services: Partial<Services>, profile: ProfileRecord, category: LolomoCategory) {
   const catalog = services.catalog
@@ -140,6 +152,15 @@ function listBuilder(services: Partial<Services>, profile: ProfileRecord, catego
   const lists: LolomoList[] = []
   const usedIds = new Set<string>()
   const visible = (id: number) => !!catalog?.getTitle(id) && catalog.isVisibleTo(profile, id)
+  // Model puanları: lolomo başına TEK `scores` çağrısı (profilin görebildiği tüm başlıklar), ilk gerektiğinde
+  let scores: Map<number, number> | null | undefined
+  const scoresOf = () => {
+    if (scores === undefined)
+      scores = modelReady(services)
+        ? predictionScores(services, guid, (catalog?.allTitles() ?? []).map((t) => t.videoId).filter(visible))
+        : null
+    return scores
+  }
   const push = (
     context: ListContext,
     displayName: string,
@@ -147,7 +168,9 @@ function listBuilder(services: Partial<Services>, profile: ProfileRecord, catego
     key?: string | number,
     extra?: Partial<LolomoList>,
   ): boolean => {
-    const videoIds = [...new Set(ids)].filter(visible).slice(0, MAX_ROW_ITEMS)
+    let unique = [...new Set(ids)].filter(visible)
+    if (MODEL_ORDERED.includes(context)) unique = orderByScores(unique, scoresOf())
+    const videoIds = unique.slice(0, MAX_ROW_ITEMS)
     if (context !== 'bridge' && videoIds.length === 0) return false
     if (!EXEMPT.includes(context) && videoIds.length < MIN_ROW_ITEMS) return false
     let listId = listIdOf(guid, context, key, category)
@@ -281,10 +304,18 @@ function buildHomeLolomo(services: Partial<Services>, profile: ProfileRecord, op
       .map((t) => t.videoId),
   )
 
-  // 7. Sana özel: zevk vektörüne göre (sinyal yoksa satır yok)
+  // 7. En İyi Seçimler: model hazırsa ve yeterince görünür seçim verirse modelden (bitirilenler, beğenilmeyenler
+  //    hariç), değilse zevk vektörüne göre kurallar (sinyal yoksa satır yok)
   const { signals, disliked } = profileSignals(services, guid, recent)
   const gemsIds: number[] = []
-  if (signals.length) {
+  let gemsSource: 'model' | 'rules' = 'rules'
+  const modelPicks = predictionPicks(services, guid, MODEL_PICKS_FETCH, { excludeWatched: true }).filter(
+    (id) => visible(id) && !disliked.has(id) && progress?.watchStatus(guid, id) !== 'WATCHED',
+  )
+  if (new Set(modelPicks).size >= MIN_ROW_ITEMS) {
+    gemsSource = 'model'
+    gemsIds.push(...[...new Set(modelPicks)].slice(0, PICKS_ROW_SIZE))
+  } else if (signals.length) {
     const taste = tasteVector(catalog, signals)
     gemsIds.push(
       ...titles
@@ -321,7 +352,7 @@ function buildHomeLolomo(services: Partial<Services>, profile: ProfileRecord, op
 
   editorial[0]?.()
   // Kişisel satır: "‹Profil› için En İyi Seçimler"
-  push('gems', TEXT.topPicks(profile.name), gemsIds)
+  push('gems', TEXT.topPicks(profile.name), gemsIds, undefined, { source: gemsSource })
   // Görünmeyen katmanın yüzü: zevk topluluğu satırı, sonra görünen mikro tür satırları (servisler boşsa hiçbiri yok)
   const watched = new Set(progress?.recentTitles(guid) ?? [])
   const community = communityRow(services, profile, { visible, watched })

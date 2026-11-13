@@ -39,7 +39,11 @@ const finiteVec = (v: unknown, dims: number): v is number[] =>
   Array.isArray(v) && v.length === dims && v.every((x) => typeof x === 'number' && Number.isFinite(x))
 
 /** İçe aktarma klasörünü okur. Model bilgisi tutarsızsa (farklı dims) hata fırlatır; bozuk satırlar raporlanır. */
-export function readImportDir(dir: string): {
+export function readImportDir(
+  dir: string,
+  /** Yalnız bu dosyalar (verilmezse klasördeki tüm .jsonl) */
+  only?: string[],
+): {
   model: { id: string; version: string; dims: number } | null
   videos: Map<number, ImportedVideo>
   digest: string
@@ -49,11 +53,13 @@ export function readImportDir(dir: string): {
   const summary: ImportSummary = { files: [], videos: 0, rejected: [] }
   const hash = createHash('sha256')
   let model: { id: string; version: string; dims: number } | null = null
-  const files = existsSync(dir)
-    ? readdirSync(dir)
-        .filter((f) => f.endsWith('.jsonl'))
-        .sort()
-    : []
+  const files = only
+    ? [...only].sort()
+    : existsSync(dir)
+      ? readdirSync(dir)
+          .filter((f) => f.endsWith('.jsonl'))
+          .sort()
+      : []
   for (const f of files) {
     const text = readFileSync(join(dir, f), 'utf8')
     hash.update(f).update('\0').update(text)
@@ -92,8 +98,7 @@ export function readImportDir(dir: string): {
       normalizeRows(shots, dims)
       let pooled: Float32Array
       if (row.pooled !== undefined) {
-        if (!finiteVec(row.pooled, dims))
-          return void summary.rejected.push({ where, reason: 'pooled geçersiz' })
+        if (!finiteVec(row.pooled, dims)) return void summary.rejected.push({ where, reason: 'pooled geçersiz' })
         pooled = Float32Array.from(row.pooled)
       } else {
         pooled = new Float32Array(dims)
@@ -117,7 +122,8 @@ export function createDosyaProvider(dataDir: string): EmbeddingProvider & { summ
     summary: () => state?.summary ?? null,
     async init() {
       state = readImportDir(dir)
-      if (!state.model) throw new Error(`İçe aktarılacak vektör yok: ${dir} altında model satırı olan .jsonl bulunamadı`)
+      if (!state.model)
+        throw new Error(`İçe aktarılacak vektör yok: ${dir} altında model satırı olan .jsonl bulunamadı`)
       provider.dims = state.model.dims
       provider.version = `dosya:${state.model.id}@${state.model.version}#${state.digest}`
     },
@@ -126,7 +132,9 @@ export function createDosyaProvider(dataDir: string): EmbeddingProvider & { summ
       const v = state!.videos.get(input.videoId)
       if (!v) return null
       if (v.count !== input.shots.length)
-        throw new Error(`videoId ${input.videoId}: dosyada ${v.count} çekim vektörü var, çözümlemede ${input.shots.length} çekim`)
+        throw new Error(
+          `videoId ${input.videoId}: dosyada ${v.count} çekim vektörü var, çözümlemede ${input.shots.length} çekim`,
+        )
       return { dims: provider.dims, shots: v.shots, pooled: v.pooled }
     },
   }

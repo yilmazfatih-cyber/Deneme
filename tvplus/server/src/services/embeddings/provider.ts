@@ -75,6 +75,13 @@ export interface EmbeddingProvider {
   readonly id: string
   /** Model/sürüm kimliği; önbellek anahtarına girer. http/dosya'da init() sonrası kesinleşir. */
   version: string
+  /** EmbeddingInfo.modelVersion olarak gösterilecek ad (verilmezse `version`) */
+  modelVersion?: string
+  /**
+   * Bu yaprağın vektörü sağlayıcının asıl modelinden mi gelir? Yalnız yedekli sağlayıcılarda tanımlıdır (depodaki
+   * eğitilmiş vektörler + taban yedeği); servis kapsama sayısını buna göre raporlar.
+   */
+  covers?(input: EmbeddingInput): boolean
   dims: number
   /** Bu sağlayıcının çıktısına giren kipler (bilgi için) */
   modalities(inputs: EmbeddingInput[]): EmbeddingModality[]

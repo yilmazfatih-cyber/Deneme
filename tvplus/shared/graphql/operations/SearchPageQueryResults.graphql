@@ -1,4 +1,4 @@
-query SearchPageQueryResults($searchTerm: String!, $options: SearchOptionsInput!) {
+query SearchPageQueryResults($searchTerm: String!, $options: SearchOptionsInput!, $withExplain: Boolean = false) {
   searchPage(searchTerm: $searchTerm, options: $options) {
     searchTerm
     requestId
@@ -6,6 +6,10 @@ query SearchPageQueryResults($searchTerm: String!, $options: SearchOptionsInput!
     expires
     isFallback
     recentSearches
+    modelVersion
+    predictions {
+      ...SearchPredictionFields
+    }
     correction {
       mode
       originalTerm
@@ -25,6 +29,15 @@ query SearchPageQueryResults($searchTerm: String!, $options: SearchOptionsInput!
         displayString
         treatment
         fuzzy
+        predicted
+        score
+        reason
+        explain @include(if: $withExplain) {
+          name
+          value
+          weight
+          contribution
+        }
         track {
           ...TrackFields
         }
@@ -40,10 +53,18 @@ query SearchPageQueryResults($searchTerm: String!, $options: SearchOptionsInput!
         }
         channel {
           ...ChannelCard
+          now {
+            artwork(params: { width: 600 }) {
+              ...ArtworkFields
+            }
+          }
         }
         airing {
           ...AiringBrief
           synopsis
+          artwork(params: { width: 600 }) {
+            ...ArtworkFields
+          }
           channel {
             channelId
             name
@@ -76,4 +97,11 @@ query SearchPageQueryResults($searchTerm: String!, $options: SearchOptionsInput!
       }
     }
   }
+}
+
+fragment SearchPredictionFields on SearchPrediction {
+  text
+  kind
+  unifiedEntityId
+  score
 }

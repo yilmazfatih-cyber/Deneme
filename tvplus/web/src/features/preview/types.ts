@@ -75,6 +75,8 @@ export interface MiniModalVideo extends CardVideoData {
   boxartHighRes: ArtworkData
   titleLogo: ArtworkData
   seasonCount?: number
+  /** Tahmin modelinin eşleşme yüzdesi (0–100); yoksa ya da null ise gösterilmez */
+  matchScore?: number | null
   currentEpisode?: {
     videoId: number
     numberLabel: string

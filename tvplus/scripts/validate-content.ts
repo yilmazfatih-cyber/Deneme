@@ -26,6 +26,7 @@ import {
 import { GENRES } from '../shared/taxonomy'
 import { defaultContentDir, titleFiles } from './lib/content'
 import { isMain } from './lib/net'
+import { runTaggingCheck } from './validate-tagging'
 
 export interface ContentIssue {
   file: string
@@ -402,5 +403,8 @@ if (isMain(import.meta.url)) {
   const dir = process.argv[2] ?? defaultContentDir()
   const report = validateContent(dir)
   console.log(formatReport(report, dir))
-  process.exit(report.errors.length > 0 ? 1 : 0)
+  console.log('')
+  // Etiketleme sözlüğü ve örnek fişler (scripts/validate-tagging.ts); klasör yoksa "atlandı" yazar
+  const taggingErrors = runTaggingCheck(dir, true)
+  process.exit(report.errors.length > 0 || taggingErrors > 0 ? 1 : 0)
 }

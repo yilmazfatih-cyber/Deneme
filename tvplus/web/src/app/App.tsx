@@ -118,6 +118,7 @@ function ShellRoutes({ formFactor }: { formFactor: 'desktop' | 'mobile' }): Reac
         <Route path="/tvplusim" element={<P.AccountHubPage />} />
         <Route path="/kumanda" element={<P.RemotePage />} />
         <Route path="/cihazlar" element={<P.DevicesPage />} />
+        <Route path="/studyo/*" element={<P.StudioPage />} />
         <Route path="/kisi/:personId" element={<P.PersonPage />} />
         <Route path="/tur/:genreId" element={<P.GenrePage />} />
         <Route path="/koleksiyon/:collectionId" element={<P.CollectionPage />} />

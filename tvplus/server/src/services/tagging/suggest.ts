@@ -108,7 +108,12 @@ interface FacetRule {
   when: (v: TitleView) => boolean
 }
 
-const kwRule = (facet: string, value: string, terms: readonly string[], extra?: (v: TitleView) => boolean): FacetRule => ({
+const kwRule = (
+  facet: string,
+  value: string,
+  terms: readonly string[],
+  extra?: (v: TitleView) => boolean,
+): FacetRule => ({
   facet,
   value,
   why: `anahtar kelime (${terms.slice(0, 3).join(', ')}${terms.length > 3 ? '…' : ''})`,
@@ -130,14 +135,19 @@ export const FACET_RULES: readonly FacetRule[] = [
   {
     facet: 'bicim',
     value: 'kisa-film',
-    why: 'film, 40 dk\'dan kısa ya da tür kısa film',
+    why: "film, 40 dk'dan kısa ya da tür kısa film",
     when: (v) => v.type === 'MOVIE' && (v.genres.has('kisa-film') || (v.runtimeSec !== null && v.runtimeSec < 2400)),
   },
   {
     facet: 'bicim',
     value: 'orta-metraj',
     why: 'film, 40–59 dk',
-    when: (v) => v.type === 'MOVIE' && !v.genres.has('kisa-film') && v.runtimeSec !== null && v.runtimeSec >= 2400 && v.runtimeSec < 3600,
+    when: (v) =>
+      v.type === 'MOVIE' &&
+      !v.genres.has('kisa-film') &&
+      v.runtimeSec !== null &&
+      v.runtimeSec >= 2400 &&
+      v.runtimeSec < 3600,
   },
   {
     facet: 'bicim',
@@ -145,8 +155,18 @@ export const FACET_RULES: readonly FacetRule[] = [
     why: 'film, 60 dk ve üzeri',
     when: (v) => v.type === 'MOVIE' && v.runtimeSec !== null && v.runtimeSec >= 3600,
   },
-  { facet: 'bicim', value: 'belgesel-dizi', why: 'belgesel dizi', when: (v) => v.type === 'SHOW' && v.genres.has('belgesel') },
-  { facet: 'bicim', value: 'belgesel-film', why: 'belgesel film', when: (v) => v.type === 'MOVIE' && v.genres.has('belgesel') },
+  {
+    facet: 'bicim',
+    value: 'belgesel-dizi',
+    why: 'belgesel dizi',
+    when: (v) => v.type === 'SHOW' && v.genres.has('belgesel'),
+  },
+  {
+    facet: 'bicim',
+    value: 'belgesel-film',
+    why: 'belgesel film',
+    when: (v) => v.type === 'MOVIE' && v.genres.has('belgesel'),
+  },
   /* yaş grubu */
   { facet: 'yas-grubu', value: 'cocuk', why: 'çocuk işareti', when: (v) => v.kids },
   moodRule('yas-grubu', 'aile', 'aile-boyu'),
@@ -203,7 +223,12 @@ export const FACET_RULES: readonly FacetRule[] = [
   moodRule('ek-sifatlar', 'absurt', 'absurt'),
   moodRule('ek-sifatlar', 'ilham-verici', 'ilham'),
   moodRule('ek-sifatlar', 'dinlendirici', 'sakin'),
-  moodRule('ek-sifatlar', 'diyalogsuz', 'sozsuz'),
+  {
+    facet: 'ek-sifatlar',
+    value: 'diyalogsuz',
+    why: 'nitelik sözsüz anlatım (sessiz film değil)',
+    when: (v) => v.moods.has('sozsuz') && !v.genres.has('sessiz-sinema'),
+  },
   moodRule('ek-sifatlar', 'eglenceli', 'eglenceli'),
 ]
 

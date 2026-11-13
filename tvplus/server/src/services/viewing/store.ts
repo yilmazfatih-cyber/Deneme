@@ -186,6 +186,11 @@ export interface ViewingStoreOptions {
   log?: (level: 'info' | 'warn' | 'error', message: string) => void
   /** Saat (testler) */
   now?: () => number
+  /**
+   * Gerçek kaynaklarda (MIXPANEL + TVPLUS) özeti olan en az bu kadar tekil izleyici varsa SENTETİK analiz dışı kalır;
+   * altında SENTETİK gerçek kaynaklarla BİRLİKTE etkin kalır (config.realDataMinViewers, varsayılan 50).
+   */
+  realDataMinViewers?: number
 }
 
 export class ViewingStoreLockedError extends Error {
@@ -597,6 +602,26 @@ export async function openViewingStore(opts: ViewingStoreOptions): Promise<Viewi
       `İzleme deposu açıldı: ${rebuilt} kaynak günlükten kuruldu, ${tailBytes} bayt kuyruk oynatıldı (${Date.now() - t0} ms)`,
     )
 
+  /* — etkin kaynak kuralı — */
+  const minRealViewers = Math.max(1, opts.realDataMinViewers ?? 50)
+  let realViewersCache: { rev: number; n: number } | null = null
+  /** Gerçek kaynaklarda en az bir özeti (oynatma, izleme, liste ya da beğeni) olan tekil izleyici sayısı; sürüme göre önbellekli */
+  function realViewersWithFacts(): number {
+    if (realViewersCache?.rev === revision) return realViewersCache.n
+    const seen = new Set<string>()
+    for (const src of REAL_SOURCES)
+      for (const [viewerId, v] of st(src).viewers) {
+        if (seen.has(viewerId)) continue
+        for (const f of v.facts.values())
+          if (f.plays > 0 || f.watched > 0 || f.inList || f.rating !== 0) {
+            seen.add(viewerId)
+            break
+          }
+      }
+    realViewersCache = { rev: revision, n: seen.size }
+    return seen.size
+  }
+
   /* — sorgular — */
   const sourcesOf = (q?: { sources?: ViewingSource[] }) => q?.sources ?? store.activeSources()
 
@@ -797,8 +822,10 @@ export async function openViewingStore(opts: ViewingStoreOptions): Promise<Viewi
 
     activeSources() {
       const real = REAL_SOURCES.filter((s) => st(s).events > 0)
-      if (real.length) return real
-      return st('SYNTHETIC').events > 0 ? ['SYNTHETIC'] : []
+      const synthetic = st('SYNTHETIC').events > 0
+      if (!synthetic) return real
+      if (realViewersWithFacts() >= minRealViewers) return real
+      return [...real, 'SYNTHETIC']
     },
 
     clear(source) {

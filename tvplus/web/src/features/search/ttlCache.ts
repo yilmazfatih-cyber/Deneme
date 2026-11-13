@@ -35,15 +35,36 @@ export function stableJson(v: unknown): string {
     .join(',')}}`
 }
 
-/** `exact`: yazım düzeltmesiz arama ("Bunun yerine … ara") — düzeltmeli yanıttan ayrı girdi. */
+/**
+ * `exact`: yazım düzeltmesiz arama ("Bunun yerine … ara") — düzeltmeli yanıttan ayrı girdi.
+ * `explain`: puan bileşenleri istenmiş yanıt (açıklama kipi) — ayrı girdi.
+ * Terim kodlanarak yazılır: içinde `|` olsa da anahtar bölünebilir kalır (`termOfKey`).
+ */
 export function searchCacheKey(parts: {
   profile: string
   term: string
   filters: unknown
   capabilities: string
   exact?: boolean
+  explain?: boolean
 }): string {
-  return `${parts.profile}|${normalizeTerm(parts.term)}|${stableJson(parts.filters)}|${parts.capabilities}${parts.exact ? '|tam' : ''}`
+  return [
+    parts.profile,
+    encodeURIComponent(normalizeTerm(parts.term)),
+    stableJson(parts.filters),
+    parts.capabilities,
+    parts.exact ? 'tam' : '',
+    parts.explain ? 'aciklama' : '',
+  ].join('|')
+}
+
+/** Anahtardaki düzleştirilmiş terim (geri bildirimden sonra o terimin tüm girdilerini silmek için). */
+export function termOfKey(key: string): string {
+  try {
+    return decodeURIComponent(key.split('|')[1] ?? '')
+  } catch {
+    return ''
+  }
 }
 
 export class TtlCache<T> {

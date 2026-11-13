@@ -22,7 +22,8 @@ export function audienceInternals(app: FastifyInstance): AudienceImpl {
   return impl
 }
 
-export const DEFAULT_TUNING: AudienceTuning = { syncFactLimit: 40_000, sliceMs: 15 }
+/** Hiç çalıştırma yokken yalnız çok küçük veri eşzamanlı hesaplanır; gerisi arka planda (olay döngüsü kilitlenmez). */
+export const DEFAULT_TUNING: AudienceTuning = { syncFactLimit: 5_000, sliceMs: 15 }
 
 const zRecompute = z
   .object({
@@ -38,13 +39,21 @@ export default async function audiencePlugin(app: FastifyInstance): Promise<void
   implByApp.set(app, impl)
   app.services.audience = impl
 
+  // İlk hesap arka planda sürüyorsa stüdyo isteği onu bekler (await: olay döngüsü serbest kalır);
+  // önceki bir çalıştırma varsa beklemeden o sunulur.
+  const firstRun = async () => {
+    if (impl.run() === null && impl.busy()) await impl.idle()
+  }
+
   app.get(`${ROUTES.STUDIO}/communities`, async (): Promise<CommunitiesResponse> => {
+    await firstRun()
     return { run: impl.run(), items: impl.communities() }
   })
 
   app.get<{ Params: { id: string } }>(`${ROUTES.STUDIO}/communities/:id`, async (req): Promise<TasteCommunity> => {
     const { id } = req.params
     if (!COMMUNITY_ID_RE.test(id)) throw httpError(400, 'VALIDATION_FAILED', 'Topluluk kimliği geçersiz (ör. tc_01).')
+    await firstRun()
     const c = impl.get(id)
     if (!c) throw httpError(404, 'COMMUNITY_NOT_FOUND', 'Topluluk bulunamadı.')
     return c

@@ -45,15 +45,15 @@ describe('yayın durumu', () => {
 })
 
 describe('airingAction', () => {
-  it('LIVE + startOver → Canlı izle + Baştan başlat', () => {
+  it('LIVE + startOver → Canlı İzle + Baştan Başlat', () => {
     const r = airingAction(airing(), 1, NOW, '0,1,x,2,,,,,,,Channel:1,')
     expect(r.kind).toBe('live')
     if (r.kind !== 'live') return
     expect(r.primary).toEqual({
-      label: 'Canlı izle',
+      label: 'Canlı İzle',
       to: '/izle/Channel:1?tctx=0%2C1%2Cx%2C2%2C%2C%2C%2C%2C%2C%2CChannel%3A1%2C',
     })
-    expect(r.secondary?.label).toBe('Baştan başlat')
+    expect(r.secondary?.label).toBe('Baştan Başlat')
     expect(r.secondary?.to).toContain('baslat=bastan')
   })
 

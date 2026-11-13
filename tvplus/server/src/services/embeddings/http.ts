@@ -127,7 +127,10 @@ export function createHttpProvider(opts: HttpProviderOptions): EmbeddingProvider
       const shots = new Float32Array(rows.length * dims)
       rows.forEach((r, i) => {
         if (!Array.isArray(r) || r.length !== dims)
-          throw new EmbeddingHttpError(`çekim ${i} vektörünün boyutu ${Array.isArray(r) ? r.length : '?'}, beklenen ${dims}`, false)
+          throw new EmbeddingHttpError(
+            `çekim ${i} vektörünün boyutu ${Array.isArray(r) ? r.length : '?'}, beklenen ${dims}`,
+            false,
+          )
         r.forEach((x, d) => {
           if (typeof x !== 'number' || !Number.isFinite(x))
             throw new EmbeddingHttpError(`çekim ${i} vektöründe sayı olmayan değer`, false)

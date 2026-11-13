@@ -12,6 +12,7 @@ export const TV_PATHS = {
   guide: '/tv/rehber',
   myList: '/tv/listem',
   settings: '/tv/ayarlar',
+  remote: '/tv/kumanda',
   uiDemo: '/tv/_ui',
 } as const
 
@@ -82,6 +83,6 @@ export function railSectionOf(pathname: string): string | null {
   if (pathname === '/tv/kategori/movies') return 'filmler'
   if (pathname === '/tv/kategori/newPopular') return 'yeni'
   if (pathname.startsWith('/tv/listem')) return 'listem'
-  if (pathname.startsWith('/tv/ayarlar')) return 'ayarlar'
+  if (pathname.startsWith('/tv/ayarlar') || pathname.startsWith('/tv/kumanda')) return 'ayarlar'
   return null
 }

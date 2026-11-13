@@ -21,6 +21,7 @@ import type {
   ViewingSource,
 } from '../../../../shared/intelligence'
 import type { InsightsService, ViewingQuery } from '../../kernel/intelligence'
+import { audienceInternals } from '../audience/plugin'
 import { dayOf, dayStart, monthOf } from './labels'
 import { computeMix, computeTimeline, monthsEndingAt } from './mix'
 import { computeOverview } from './overview'
@@ -123,7 +124,20 @@ export default async function insightsPlugin(app: FastifyInstance): Promise<void
   }
   app.services.insights = service
 
-  app.get(`${ROUTES.STUDIO}/overview`, async (): Promise<StudioOverview> => computeOverview(s()))
+  /** Zevk topluluklarının ilk hesabı arka planda sürüyorsa bekle (await; olay döngüsü serbest). */
+  const audienceReady = async (): Promise<void> => {
+    try {
+      const impl = audienceInternals(app)
+      if (impl.run() === null && impl.busy()) await impl.idle()
+    } catch {
+      // topluluk servisi değiştirilmiş (testler) ya da kurulmamış: beklenecek bir şey yok
+    }
+  }
+
+  app.get(`${ROUTES.STUDIO}/overview`, async (): Promise<StudioOverview> => {
+    await audienceReady()
+    return computeOverview(s())
+  })
 
   app.get(`${ROUTES.STUDIO}/insights/mix`, async (req): Promise<CatalogMix> => {
     const q = parseOrThrow(zMixQuery, req.query, MIX_MESSAGES, 'Sorgu')
@@ -140,6 +154,7 @@ export default async function insightsPlugin(app: FastifyInstance): Promise<void
 
   app.post(`${ROUTES.STUDIO}/plan`, async (req): Promise<PlanResult> => {
     const body = parseOrThrow(zPlanBody, req.body, PLAN_MESSAGES, 'Gövde')
+    await audienceReady()
     return service.plan(body)
   })
 }

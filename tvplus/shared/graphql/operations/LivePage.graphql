@@ -1,3 +1,5 @@
+# Canlı TV ana sayfası (#/canli): istemci çizebildiği satır tiplerini ve varlık türlerini bildirir.
+# Kanal kartı şimdiki ve sıradaki yayını görselleri ve hatırlatma durumuyla taşır (önizleme kartı, "Az Sonra").
 query LivePage($capabilities: PageCapabilitiesInput!) {
   livePage(capabilities: $capabilities) {
     id
@@ -22,7 +24,18 @@ query LivePage($capabilities: PageCapabilitiesInput!) {
             description
             now {
               synopsis
+              hasReminder
               art: artwork(params: { width: 1280 }) {
+                ...ArtworkFields
+              }
+              card: artwork(params: { width: 480 }) {
+                ...ArtworkFields
+              }
+            }
+            next {
+              synopsis
+              hasReminder
+              card: artwork(params: { width: 480 }) {
                 ...ArtworkFields
               }
             }
@@ -30,6 +43,7 @@ query LivePage($capabilities: PageCapabilitiesInput!) {
           ... on ProgramAiring {
             ...AiringBrief
             synopsis
+            hasReminder
             channel {
               channelId
               name

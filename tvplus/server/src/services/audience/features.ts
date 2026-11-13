@@ -17,8 +17,10 @@ export interface FeatureDef {
   key: string
   /** Listelerde görünen ad, ör. "Mekân: Uzay" */
   name: string
-  /** Topluluk adında kullanılan biçim, ör. "Belgeseller", "Uzayda Geçen", "Düşündürücü" */
+  /** Topluluk adında kullanılan kısa biçim, ör. "Belgesel", "Uzay", "Düşündürücü" */
   label: string
+  /** Yalnız GENRE: adın başında kullanılan çoğul biçimler (sözlükten; yoksa yok) */
+  nouns?: { movie: string; show: string; mixed: string }
 }
 
 export interface TitleVec {
@@ -69,10 +71,9 @@ export function buildFeatureSpace(
   const vocab = safe(() => tagging.vocabulary(), EMPTY_VOCAB)
   const adjectives = new Map<string, string>()
   for (const s of vocab.scales) for (const d of s.descriptors) adjectives.set(d.key, d.adjective)
-  const facetValues = new Map<string, { facet: string; name: string; phrase: string }>()
+  const facetValues = new Map<string, { facet: string; name: string }>()
   for (const f of vocab.facets)
-    for (const v of f.values)
-      facetValues.set(`${f.key}:${v.key}`, { facet: f.name, name: v.name, phrase: v.phrase ?? v.name })
+    for (const v of f.values) facetValues.set(`${f.key}:${v.key}`, { facet: f.name, name: v.name })
 
   const defs = new Map<string, FeatureDef>()
   const define = (kind: FeatureKind, key: string, name: string, label: string): string => {
@@ -108,8 +109,13 @@ export function buildFeatureSpace(
   const perTitle = new Map<number, { id: string; kind: FeatureKind }[]>()
   for (const t of titles) {
     const items: { id: string; kind: FeatureKind }[] = []
-    const vocabNoun = (g: string) => vocab.naming.genreNouns[g]?.mixed
-    for (const g of t.genres) items.push({ id: define('GENRE', g, GENRES[g].name, vocabNoun(g) ?? GENRES[g].name), kind: 'GENRE' })
+    for (const g of t.genres) {
+      const id = define('GENRE', g, GENRES[g].name, GENRES[g].name)
+      const nouns = vocab.naming.genreNouns[g]
+      const def = defs.get(id)!
+      if (nouns && !def.nouns) def.nouns = { movie: nouns.movie, show: nouns.show, mixed: nouns.mixed }
+      items.push({ id, kind: 'GENRE' })
+    }
     for (const id of microOfTitle.get(t.videoId) ?? []) {
       if (!keptMicro.has(id)) continue
       const mg = microCandidates.get(id)!
@@ -128,7 +134,7 @@ export function buildFeatureSpace(
           const key = `${facet}:${v}`
           const fv = facetValues.get(key)
           items.push({
-            id: define('FACET', key, fv ? `${fv.facet}: ${fv.name}` : key, fv?.phrase ?? v),
+            id: define('FACET', key, fv ? `${fv.facet}: ${fv.name}` : key, fv?.name ?? v),
             kind: 'FACET',
           })
           tagged = true
@@ -240,6 +246,7 @@ export function* buildViewerMatrix(facts: ViewingFact[], space: FeatureSpace): W
     const r = rank[factViewer[i]!]!
     factRank[i] = r
     start[r + 1] = start[r + 1]! + 1
+    if ((i & 65535) === 0) yield
   }
   for (let r = 0; r < ids.length; r++) start[r + 1] = start[r + 1]! + start[r]!
   const order = new Uint32Array(facts.length)
@@ -248,6 +255,7 @@ export function* buildViewerMatrix(facts: ViewingFact[], space: FeatureSpace): W
     const r = factRank[i]!
     order[fill[r]!] = i
     fill[r] = fill[r]! + 1
+    if ((i & 65535) === 0) yield
   }
   yield
 

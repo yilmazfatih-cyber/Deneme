@@ -5,7 +5,7 @@
  */
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { gql } from '../../api/graphql'
-import { toast } from '../../design'
+import { toast } from '../../ui'
 import { logEvent } from '../../telemetry/logger'
 import { updatePreview } from './store'
 import { onMyListChanged, onRatingChanged } from './sync'

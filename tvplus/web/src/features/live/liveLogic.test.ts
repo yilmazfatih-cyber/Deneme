@@ -46,7 +46,7 @@ describe('tanınmayanı atlama', () => {
       row('c', 'TONIGHT_ROW', [{ kind: 'SPORT_EVENT', track: track('c', 0), entity: { __typename: 'SportEvent' } }]),
       row('d', 'BRIDGE', []),
     ])
-    expect(rows.map((r) => r.rowId)).toEqual(['b', 'd'])
+    expect(rows.map((r) => r.rowId)).toEqual(['b'])
     expect(rows[0]!.items).toHaveLength(1)
   })
 })
@@ -59,8 +59,8 @@ describe('ilerleme ve kalan süre', () => {
     expect(s.line).toBe('11:00–12:30 · 30 dk kaldı')
     expect(s.ended).toBe(false)
   })
-  it('geri sayım yalnız son 60 dakikada', () => {
-    expect(liveStatus('2026-11-13T08:00:00Z', '2026-11-13T11:00:00Z', NOW).line).toBe('11:00–14:00')
+  it('kalan süre her zaman yazılır (saat + dakika)', () => {
+    expect(liveStatus('2026-11-13T08:00:00Z', '2026-11-13T11:00:00Z', NOW).line).toBe('11:00–14:00 · 2 sa kaldı')
   })
   it('bitince ilerleme 1, kalan 0', () => {
     const s = liveStatus('2026-11-13T07:00:00Z', '2026-11-13T08:00:00Z', NOW)

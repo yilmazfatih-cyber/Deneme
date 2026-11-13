@@ -5,7 +5,12 @@
  */
 import type { FastifyInstance } from 'fastify'
 import type { ClusteringRun, Microgenre, NeighborTitle } from '../../../shared/intelligence'
-import type { AudienceService, EmbeddingService, MicrogenreService } from '../../src/kernel/intelligence'
+import type {
+  AudienceService,
+  EmbeddingService,
+  MicrogenreService,
+  PredictionService,
+} from '../../src/kernel/intelligence'
 import { ID } from './alan'
 
 export function mg(
@@ -235,17 +240,92 @@ export function fakeAudience(): FakeAudience {
   }
 }
 
-/** Üç sahteyi uygulamaya kurar ve döndürür */
+export interface FakePredictions extends PredictionService {
+  /** Profil → başlık → ham puan (0–1); `match` = round(100 × puan) */
+  setScores(profileGuid: string, scores: Record<number, number>): void
+  setReady(ready: boolean): void
+  bump(): void
+  /** `scores` çağrı sayısı (ucuzluk denetimi) */
+  calls: { scores: number; topPicks: number }
+}
+
+/** Tahmin modeli sahtesi: profil başına elle verilen puan tablosu; hazır değilken iskeletle aynı davranır. */
+export function fakePredictions(ready = true): FakePredictions {
+  const table = new Map<string, Map<number, number>>()
+  let isReady = ready
+  let rev = 1
+  const calls = { scores: 0, topPicks: 0 }
+  const of = (guid: string) => (isReady ? (table.get(guid) ?? new Map<number, number>()) : new Map<number, number>())
+  return {
+    calls,
+    ready: () => isReady,
+    info: () => ({
+      ready: isReady,
+      version: `sahte-${rev}`,
+      algorithm: 'sahte',
+      trainedAt: null,
+      run: null,
+      features: [],
+      contentSignals: { tags: false, microgenres: false, embeddings: null },
+      note: 'test',
+    }),
+    match: (guid, titleId) => {
+      const s = of(guid).get(titleId)
+      return s === undefined ? null : Math.round(s * 100)
+    },
+    scores: (guid, titleIds) => {
+      calls.scores++
+      const t = of(guid)
+      return new Map(titleIds.filter((id) => t.has(id)).map((id) => [id, t.get(id)!]))
+    },
+    topPicks: (guid, limit) => {
+      calls.topPicks++
+      return [...of(guid).entries()]
+        .sort((a, b) => b[1] - a[1] || a[0] - b[0])
+        .slice(0, limit)
+        .map(([titleId, score]) => ({ titleId, score, match: Math.round(score * 100) }))
+    },
+    explain: () => null,
+    revision: () => rev,
+    setScores(guid, scores) {
+      table.set(guid, new Map(Object.entries(scores).map(([k, v]) => [Number(k), v])))
+    },
+    setReady(r) {
+      isReady = r
+    },
+    bump() {
+      rev++
+    },
+  }
+}
+
+/** Sahteleri uygulamaya kurar ve döndürür; tahmin modeli iskelet gibi hazır DEĞİL başlar (`setReady(true)`) */
 export function installIntelligence(app: FastifyInstance): {
   microgenres: FakeMicrogenres
   embeddings: FakeEmbeddings
   audience: FakeAudience
+  predictions: FakePredictions
 } {
   const microgenres = fakeMicrogenres()
   const embeddings = fakeEmbeddings()
   const audience = fakeAudience()
+  const predictions = fakePredictions(false)
   app.services.microgenres = microgenres
   app.services.embeddings = embeddings
   app.services.audience = audience
-  return { microgenres, embeddings, audience }
+  app.services.predictions = predictions
+  return { microgenres, embeddings, audience, predictions }
+}
+
+/**
+ * Boş içerik zekâsı (iskelet servislerin davranışı: mikro tür yok, gömme hazır değil, topluluk yok).
+ * Keşfin "bugünkü" davranışını sınayan testler gerçek servislerin üretimine bağlı kalmasın diye bunu kurar.
+ */
+export function installEmptyIntelligence(app: FastifyInstance): void {
+  const microgenres = fakeMicrogenres([])
+  const embeddings = fakeEmbeddings({}, false)
+  app.services.microgenres = microgenres
+  app.services.embeddings = embeddings
+  app.services.audience = fakeAudience()
+  app.services.predictions = fakePredictions(false)
 }

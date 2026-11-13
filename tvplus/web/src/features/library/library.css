@@ -1,68 +1,86 @@
-/* Kitaplığım */
-.lb-tabs {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  margin: -4px 0;
+/* Listem: başlık + ızgara (masaüstü 16:9, mobil 2:3). Sütun sayısı satır kuralıyla aynı: 6 / 5 / 4 / 3. */
+.ml-page {
+  padding-top: 24px;
+  min-height: 60vh;
 }
-.lb-tabs::-webkit-scrollbar {
-  display: none;
+.ml-title {
+  margin-bottom: 24px;
 }
-.lb-tab {
-  min-height: 44px;
-}
-.lb-panel {
-  min-width: 0;
-}
-.lb-grid {
-  list-style: none;
-  margin-top: 0;
-  margin-bottom: 0;
-  padding: 0;
+.ml-grid {
+  --cols: 3;
   display: grid;
-  gap: 16px 12px;
-}
-.lb-grid--poster {
-  grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
-}
-.lb-grid--land {
-  grid-template-columns: repeat(auto-fill, minmax(232px, 1fr));
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  gap: 4vw var(--card-gap);
+  margin: 0;
+  list-style: none;
 }
 @media (min-width: 900px) {
-  .lb-grid--poster {
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 24px 16px;
+  .ml-page {
+    padding-top: 2.5vw;
   }
-  .lb-grid--land {
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 24px 16px;
+  .ml-grid {
+    --cols: 4;
   }
 }
-.lb-channel {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px;
-  border-radius: var(--r-card);
-  background: var(--s1);
+@media (min-width: 1100px) {
+  .ml-grid {
+    --cols: 5;
+  }
+}
+@media (min-width: 1400px) {
+  .ml-grid {
+    --cols: 6;
+  }
+}
+.ml-grid--poster {
+  gap: 8px;
+}
+.ml-item {
+  position: relative;
   min-width: 0;
 }
-.lb-channel__text {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
+/* ✓ çıkar: masaüstünde üzerine gelince / odakta, mobilde hep görünür */
+.ml-remove {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 1;
+  background: rgba(20, 20, 20, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.6);
 }
-
-/* Izgara hücresi içeriğe göre genişlemesin (ör. tek satır kilit metni dar hücrede) */
-.lb-grid > li {
-  min-width: 0;
+@media (hover: hover) and (min-width: 900px) {
+  .ml-remove {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  .ml-item:hover .ml-remove,
+  .ml-item:focus-within .ml-remove {
+    opacity: 1;
+  }
 }
-.lb-grid .cn-lock {
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
+@media (max-width: 899px) {
+  .ml-remove {
+    top: 4px;
+    right: 4px;
+  }
+}
+.ml-empty {
+  padding: 8vh var(--gutter);
+}
+.ml-skel {
+  padding-top: 0;
+}
+/* Mobilde üst çubuk zaten "Listem" yazar: başlık yalnız ekran okuyucuya kalır */
+@media (max-width: 899px) {
+  .ml-title {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+  .ml-page {
+    padding-top: 8px;
+  }
 }

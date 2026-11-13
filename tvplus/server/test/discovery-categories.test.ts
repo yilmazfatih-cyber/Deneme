@@ -25,6 +25,7 @@ import {
   TEEN,
   TEST_NOW,
 } from './fixtures/alan'
+import { installEmptyIntelligence } from './fixtures/intelligence'
 import { createTestApp } from './helpers'
 
 const FLAGS = { webp: 'true', isTop10Supported: 'true', materialize: 'true', falcor_server: '0.1.0' }
@@ -98,6 +99,7 @@ describe('kategori lolomoları', () => {
   let app: FastifyInstance
   beforeAll(async () => {
     app = await createAlanApp({ contentDir: extendedContent() })
+    installEmptyIntelligence(app) // bugünkü satırlar; içerik zekâsı satırları discovery-intelligence.test.ts'te
   })
   afterAll(async () => {
     await app.close()
@@ -187,6 +189,7 @@ describe('Falcor: lolomoByCategory, tags, top10Rank', () => {
   let app: FastifyInstance
   beforeAll(async () => {
     app = await createAlanApp({ contentDir: extendedContent() })
+    installEmptyIntelligence(app) // bugünkü satırlar; içerik zekâsı satırları discovery-intelligence.test.ts'te
   })
   afterAll(async () => {
     await app.close()

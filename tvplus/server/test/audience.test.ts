@@ -107,18 +107,16 @@ describe('zevk toplulukları — boş ve uç durumlar', () => {
     expect(run.viewers).toBe(1)
     expect(run.k).toBe(1)
     expect(audienceRun(app).unassigned).toBe(1)
-    expect(app.services.audience.communities()[0]!.id).toBe('tc_01')
+    expect(app.services.audience.communities()[0]).toMatchObject({ id: 'tc_01', name: 'Tüm İzleyiciler', share: 1 })
+    expect(app.services.audience.communities()[0]!.topFeatures[0]!.lift).toBe(1)
     expect(app.services.audience.ofViewer('v_a')?.communityId).toBe('tc_01')
     expect(app.services.audience.ofViewer('v_tek')?.communityId).toBe('tc_01')
   })
 
-  it('izleyici sayısı istenen k\'dan azsa k veriyle sınırlanır', async () => {
+  it("izleyici sayısı istenen k'dan azsa k veriyle sınırlanır", async () => {
     const { app } = await appWith([])
     const pools = archetypes(app)
-    const planted = plantArchetypes(
-      pools.map((a) => ({ ...a, viewers: 1 })).slice(0, 3),
-      { seed: 3, allTitles: [] },
-    )
+    const planted = plantArchetypes(pools.map((a) => ({ ...a, viewers: 1 })).slice(0, 3), { seed: 3, allTitles: [] })
     const viewing = createFakeViewing({ plays: planted.plays })
     installFakes(app, { viewing })
     const run = app.services.audience.recompute({ k: 10 })
@@ -128,7 +126,10 @@ describe('zevk toplulukları — boş ve uç durumlar', () => {
   })
 })
 
-function audienceRun(app: FastifyInstance): { unassigned: number; candidates: { k: number; silhouette: number | null }[] } {
+function audienceRun(app: FastifyInstance): {
+  unassigned: number
+  candidates: { k: number; silhouette: number | null }[]
+} {
   return app.services.audience.run() as unknown as {
     unassigned: number
     candidates: { k: number; silhouette: number | null }[]
@@ -204,7 +205,7 @@ describe('zevk toplulukları — ekilmiş kalıplar', () => {
     expect([...assignments(app, planted.truth.keys())]).toEqual(a1)
   })
 
-  it('k adaylar arasından siluetle seçilir; açık k verilince o kullanılır', async () => {
+  it('k adaylar arasından siluetle seçilir (düzlükte en ince); açık k verilince o kullanılır', async () => {
     const { app } = await appWith([])
     const all = app.services.catalog.allTitles().map((t) => t.videoId)
     const planted = plantArchetypes(archetypes(app), { seed: 14, allTitles: all })
@@ -212,8 +213,11 @@ describe('zevk toplulukları — ekilmiş kalıplar', () => {
     const run = app.services.audience.recompute()
     const cands = audienceRun(app).candidates
     expect(cands.length).toBeGreaterThan(3)
-    const best = cands.reduce((b, c) => ((c.silhouette ?? -2) > (b.silhouette ?? -2) ? c : b))
-    expect(run.k).toBe(best.k)
+    // Siluet düzlüğü kuralı: en iyiye 0,01 yakın adaylardan en büyük k
+    const bestSil = Math.max(...cands.map((c) => c.silhouette ?? -2))
+    const plateau = cands.filter((c) => (c.silhouette ?? -2) >= bestSil - 0.01).map((c) => c.k)
+    expect(run.k).toBe(Math.max(...plateau))
+    expect(run.k).toBe(4)
     expect(Math.max(...cands.map((c) => c.k))).toBeLessThanOrEqual(Math.min(app.config.maxCommunities, 20))
     const forced = app.services.audience.recompute({ k: 2 })
     expect(forced.k).toBe(2)
@@ -222,7 +226,13 @@ describe('zevk toplulukları — ekilmiş kalıplar', () => {
 
   it('küçük kümeler dağıtılıp komşularına katılır', async () => {
     // Sentetik katalog: dört ayrık zevk + yalnız 3 izleyicili beşinci (spor)
-    const groups: ContentTitle['genres'][] = [['belgesel', 'doga-bilim'], ['komedi', 'sessiz-sinema'], ['animasyon'], ['dram', 'romantik'], ['spor']]
+    const groups: ContentTitle['genres'][] = [
+      ['belgesel', 'doga-bilim'],
+      ['komedi', 'sessiz-sinema'],
+      ['animasyon'],
+      ['dram', 'romantik'],
+      ['spor'],
+    ]
     const titles = groups.flatMap((genres, gi) => Array.from({ length: gi === 4 ? 3 : 8 }, () => makeTitle({ genres })))
     const poolOf = (gi: number) => titles.filter((t) => t.genres[0] === groups[gi]![0]).map((t) => t.videoId)
     const arch: Archetype[] = [
@@ -240,7 +250,15 @@ describe('zevk toplulukları — ekilmiş kalıplar', () => {
     const minSize = Math.ceil((0.2 * run.viewers) / 5)
     for (const c of comms) expect(c.size).toBeGreaterThanOrEqual(minSize)
     expect(comms.reduce((s, c) => s + c.size, 0)).toBe(run.viewers)
-    expect(purity(assignments(app, [...planted.truth.keys()].filter((v) => planted.truth.get(v) !== 'kucuk')), planted.truth)).toBe(1)
+    expect(
+      purity(
+        assignments(
+          app,
+          [...planted.truth.keys()].filter((v) => planted.truth.get(v) !== 'kucuk'),
+        ),
+        planted.truth,
+      ),
+    ).toBe(1)
     // Otomatik k da dört ayrık zevki bulur
     expect(app.services.audience.recompute().k).toBe(4)
   })
@@ -298,29 +316,46 @@ describe('zevk toplulukları — adlandırma ve etiketler', () => {
     expect(run.k).toBe(4)
     const bilim = app.services.audience.communities()[0]!
     expect(bilim.name).toContain('Bilim ve Uzay Belgeselleri')
-    expect(bilim.name).toMatch(/Düşündürücü|Uzayda Geçen/)
+    expect(bilim.name).toMatch(/Düşündürücü|Uzay/)
     const kinds = new Set(bilim.topFeatures.map((f) => f.kind))
     expect(kinds.has('MICROGENRE')).toBe(true)
     expect(bilim.topFeatures.find((f) => f.kind === 'FACET')?.name).toBe('Mekân: Uzay')
   })
 
-  it('ad: baş tür + ikinci tür + niteleyici; çakışmada ayırt edici özellik eklenir', () => {
-    const def = (kind: 'GENRE' | 'DESCRIPTOR' | 'FACET' | 'MICROGENRE', label: string) => ({
-      def: { kind, key: label, name: label, label },
-      score: 1,
+  it('ad: baş (mikro tür ya da türün çoğulu) + ikinci tür + niteleyici; çakışmada ayırt edici özellik eklenir', () => {
+    const nouns = { movie: 'Belgesel Filmleri', show: 'Belgesel Dizileri', mixed: 'Belgeseller' }
+    const f = (kind: 'GENRE' | 'DESCRIPTOR' | 'FACET' | 'MICROGENRE', label: string, lift = 3, score = 1) => ({
+      def: { kind, key: label, name: label, label, ...(kind === 'GENRE' && label === 'Belgesel' ? { nouns } : {}) },
+      score,
+      lift,
     })
     const taken = new Set<string>()
-    const a = nameCommunity([def('GENRE', 'Belgeseller'), def('GENRE', 'Doğa ve Bilim'), def('DESCRIPTOR', 'Düşündürücü')], taken)
-    expect(a).toBe('Belgeseller · Doğa ve Bilim · Düşündürücü')
-    const b = nameCommunity(
-      [def('GENRE', 'Belgeseller'), def('GENRE', 'Doğa ve Bilim'), def('DESCRIPTOR', 'Düşündürücü'), def('FACET', 'Uzayda Geçen')],
-      taken,
+    const base = [
+      f('GENRE', 'Belgesel'),
+      f('GENRE', 'Doğa ve Bilim'),
+      f('FACET', 'Uzay'),
+      f('DESCRIPTOR', 'Düşündürücü'),
+    ]
+    expect(nameCommunity(base, taken, 'mixed')).toBe('Belgeseller · Doğa ve Bilim · Düşündürücü')
+    expect(nameCommunity(base, taken, 'show')).toBe('Belgesel Dizileri · Doğa ve Bilim · Düşündürücü')
+    // Aynı ad alınmışsa sıradaki ayırt edici özellik eklenir
+    expect(nameCommunity(base, taken, 'mixed')).toBe('Belgeseller · Doğa ve Bilim · Düşündürücü · Uzay')
+    // Kaldıracı en iyi türe yakın mikro tür baş olur; adında geçen tür ve sıfat yinelenmez
+    const micro = [
+      f('GENRE', 'Doğa ve Bilim', 5),
+      f('MICROGENRE', 'Düşündürücü Uzay Keşfi Hakkında Doğa ve Bilim Yapımları', 4.5),
+      f('GENRE', 'Teknoloji', 4),
+      f('DESCRIPTOR', 'Düşündürücü'),
+      f('DESCRIPTOR', 'Öğretici'),
+    ]
+    expect(nameCommunity(micro, taken)).toBe(
+      'Düşündürücü Uzay Keşfi Hakkında Doğa ve Bilim Yapımları · Teknoloji · Öğretici',
     )
-    expect(b).toBe('Belgeseller · Doğa ve Bilim · Düşündürücü · Uzayda Geçen')
+    // Mikro tür belirgin biçimde daha az ayırt ediciyse tür baştadır; zayıf ikinci tür eklenmez
+    expect(
+      nameCommunity([f('GENRE', 'Korku', 9), f('MICROGENRE', 'Kısa Filmler', 2), f('GENRE', 'Dram', 2, 0.1)], taken),
+    ).toBe('Korku')
     expect(nameCommunity([], taken)).toBe('Karışık Zevkler')
-    // Mikro tür adında zaten geçen niteleyici yinelenmez
-    const c = nameCommunity([def('MICROGENRE', 'Düşündürücü Uzay Belgeselleri'), def('DESCRIPTOR', 'Düşündürücü')], taken)
-    expect(c).toBe('Düşündürücü Uzay Belgeselleri')
   })
 })
 
@@ -336,7 +371,10 @@ describe('zevk toplulukları — profil, tazeleme, kalıcılık', () => {
     const vid = viewing.viewerIdOfProfile('profil-1')
     // Profil yalnız sessiz klasikler izliyor (kümelemeye girmedi; anında en yakın merkez)
     const sessiz = arch[1]!.pool
-    const bySessiz = assignments(app, [...planted.truth].filter(([, t]) => t === 'sessiz').map(([v]) => v))
+    const bySessiz = assignments(
+      app,
+      [...planted.truth].filter(([, t]) => t === 'sessiz').map(([v]) => v),
+    )
     const sessizCommunity = [...bySessiz.values()][0]!
     const before = app.services.audience.run()!.runId
     viewing.addPlays(sessiz.slice(0, 3).map((titleId, i) => ({ viewerId: vid, titleId, ts: 10 + i, watchedSec: 3600 })))
@@ -383,7 +421,22 @@ describe('zevk toplulukları — profil, tazeleme, kalıcılık', () => {
     expect(app.services.audience.run()!.viewers).toBe(r2.viewers)
   })
 
-  it('son çalıştırma ve atamalar kalıcıdır: yeni süreç önceki çalıştırmayı hemen sunar, arka planda tazeler', async () => {
+  it('büyük veride ilk hesap da arka planda: servis boş döner, REST ucu hesabı bekler (olay döngüsü kilitlenmez)', async () => {
+    const { app, viewing } = await appWith([])
+    const all = app.services.catalog.allTitles().map((t) => t.videoId)
+    const planted = plantArchetypes(archetypes(app, [500, 400, 300, 200]), { seed: 43, allTitles: all, noise: 0.05 })
+    viewing.addPlays(planted.plays)
+    expect(viewing.facts().length).toBeGreaterThan(5000)
+    expect(app.services.audience.run()).toBeNull()
+    expect(app.services.audience.ofProfile('p')).toBeNull()
+    expect(audienceInternals(app).busy()).toBe(true)
+    const res = await app.inject({ method: 'GET', url: '/api/studio/communities' })
+    expect(res.statusCode).toBe(200)
+    expect(res.json<CommunitiesResponse>().run!.k).toBe(4)
+    expect(app.services.audience.communities()).toHaveLength(4)
+  })
+
+  it('son çalıştırma (model) kalıcıdır: yeni süreç onu hemen sunar, atamaları en yakın merkezden bulur, arka planda tazeler', async () => {
     const dataDir = mkdtempSync(join(tmpdir(), 'tvplus-audience-'))
     const app1 = await createTestApp({ dataDir })
     const all = app1.services.catalog.allTitles().map((t) => t.videoId)
@@ -400,7 +453,9 @@ describe('zevk toplulukları — profil, tazeleme, kalıcılık', () => {
     installFakes(app2, { viewing: createFakeViewing({ plays: planted.plays }) })
     expect(app2.services.audience.run()!.runId).toBe(run1.runId)
     expect(app2.services.audience.communities()).toEqual(comms1)
-    expect(app2.services.audience.ofViewer(someViewer)).toEqual(a1)
+    // Atamalar taşınmaz: geri yüklenen modelde izleyicinin topluluğu kendi olgularından en yakın merkezle bulunur
+    expect(app2.services.audience.ofViewer(someViewer)?.communityId).toBe(a1!.communityId)
+    expect(app2.services.audience.ofViewer(someViewer)!.similarity).toBeCloseTo(a1!.similarity, 3)
     expect(audienceInternals(app2).busy()).toBe(true)
     await audienceInternals(app2).idle()
     expect(app2.services.audience.run()!.runId).toBe(run1.runId)
@@ -408,7 +463,8 @@ describe('zevk toplulukları — profil, tazeleme, kalıcılık', () => {
     // Serileştirme turu kayıpsız
     const m = restoreModel(JSON.parse(JSON.stringify(audienceInternals(app2).persisted()!)))!
     expect(m.communities).toEqual(comms1)
-    expect(serialiseModel(m).viewers).toHaveLength(run1.viewers)
+    expect(serialiseModel(m).k).toBe(run1.k)
+    expect(JSON.stringify(audienceInternals(app2).persisted()).length).toBeLessThan(200_000)
   })
 })
 
@@ -435,7 +491,11 @@ describe('zevk toplulukları — REST', () => {
       expect(r.statusCode).toBe(400)
       expect(r.json().error.code).toBe('VALIDATION_FAILED')
     }
-    const ok = await app.inject({ method: 'POST', url: '/api/studio/communities/recompute', payload: { k: 3, seed: 7 } })
+    const ok = await app.inject({
+      method: 'POST',
+      url: '/api/studio/communities/recompute',
+      payload: { k: 3, seed: 7 },
+    })
     expect(ok.statusCode).toBe(200)
     expect(ok.json().k).toBe(3)
     expect(ok.json().seed).toBe(7)

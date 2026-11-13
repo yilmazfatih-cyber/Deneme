@@ -12,12 +12,29 @@
  *                 her kare bir kez indirilir ve önbellekte tutulur) → sözde çekimler (yalnız görüntü). Görseli olmayan
  *                 yapımlar (ör. arşiv filmleri) yalnız metin kaydı alır (NO_IMAGE). Hepsi content/shots/keyframes.json.
  *
+ *   --media       `<videoId> --media <yerel dosya> [--subs <.vtt|.srt|.ttml>] [--note "<kaynak>"]`: tek bir katalog
+ *                 yaprağını başlığın kendi kaynağı yerine yerel bir dosyadan çözümler (ör. uygulamada YouTube'dan gömülen
+ *                 ama CC-BY medyası başka yerde bulunan açık filmler). Normal bir SCENE_DETECT dosyası + pafta yazılır,
+ *                 kaynağı `media.source = 'LOCAL'`, `media.note`, `media.sha256` alanlarına kaydedilir ve yaprak
+ *                 birleşik KEYFRAMES dosyasından çıkarılır (sonraki `all` çalıştırmaları onu geri eklemez).
+ *
  * Aynı girdiyle yeniden çalıştırmak bir şey değiştirmez (var olan çıktılar --force verilmedikçe korunur).
  */
 import { execFileSync, spawn } from 'node:child_process'
-import { createWriteStream, existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs'
+import { createHash } from 'node:crypto'
+import {
+  closeSync,
+  createWriteStream,
+  existsSync,
+  mkdirSync,
+  openSync,
+  readFileSync,
+  readSync,
+  statSync,
+  writeFileSync,
+} from 'node:fs'
 import { tmpdir } from 'node:os'
-import { join } from 'node:path'
+import { basename, extname, join, resolve } from 'node:path'
 import { Readable } from 'node:stream'
 import { pipeline } from 'node:stream/promises'
 import type { ReadableStream as WebReadableStream } from 'node:stream/web'
@@ -53,7 +70,7 @@ import {
 import { letterboxBounds } from '../server/src/services/image/render'
 import { parseMpd } from '../server/src/services/playback/sources/dash'
 import { parseTtml, parseVtt, type Cue } from '../server/src/services/subtitles/convert'
-import { defaultContentDir, titleFiles } from './lib/content'
+import { ROOT_DIR, defaultContentDir, titleFiles } from './lib/content'
 import { isMain, sleep } from './lib/net'
 
 /* ───────────── Ayarlar (hepsi raporlanır ve SCENE_DETECT dosyasına yazılır) ───────────── */
@@ -198,7 +215,13 @@ export interface PlayableRef {
 export function playablesOf(t: ContentTitle): PlayableRef[] {
   const out: PlayableRef[] = []
   if (t.type === 'MOVIE')
-    out.push({ videoId: t.videoId, titleId: t.videoId, displayTitle: t.title, runtimeSec: t.runtimeSec, sources: t.sources })
+    out.push({
+      videoId: t.videoId,
+      titleId: t.videoId,
+      displayTitle: t.title,
+      runtimeSec: t.runtimeSec,
+      sources: t.sources,
+    })
   for (const s of t.seasons)
     for (const e of s.episodes)
       out.push({
@@ -233,7 +256,11 @@ const UA = 'TVplus-ShotAnalysis/1.0'
 async function download(url: string, file: string, log: (s: string) => void): Promise<void> {
   if (existsSync(file) && statSync(file).size > 0) return
   mkdirSync(join(file, '..'), { recursive: true })
-  const res = await fetch(url, { dispatcher: dispatcher(), headers: { 'user-agent': UA }, signal: AbortSignal.timeout(300_000) })
+  const res = await fetch(url, {
+    dispatcher: dispatcher(),
+    headers: { 'user-agent': UA },
+    signal: AbortSignal.timeout(300_000),
+  })
   if (res.status !== 200 || !res.body) throw new Error(`İndirilemedi (${res.status}): ${url}`)
   const tmp = `${file}.part`
   await pipeline(Readable.fromWeb(res.body as WebReadableStream<Uint8Array>), createWriteStream(tmp))
@@ -243,7 +270,11 @@ async function download(url: string, file: string, log: (s: string) => void): Pr
 
 async function fetchText(url: string, file: string): Promise<string> {
   if (existsSync(file)) return readFileSync(file, 'utf8')
-  const res = await fetch(url, { dispatcher: dispatcher(), headers: { 'user-agent': UA }, signal: AbortSignal.timeout(30_000) })
+  const res = await fetch(url, {
+    dispatcher: dispatcher(),
+    headers: { 'user-agent': UA },
+    signal: AbortSignal.timeout(30_000),
+  })
   if (res.status !== 200) throw new Error(`İndirilemedi (${res.status}): ${url}`)
   const text = await res.text()
   mkdirSync(join(file, '..'), { recursive: true })
@@ -270,7 +301,9 @@ function runFfmpeg(args: string[], onData: (chunk: Buffer) => void): Promise<voi
     p.stdout.on('data', onData)
     p.stderr.on('data', (d: Buffer) => (err += d.toString()))
     p.on('error', reject)
-    p.on('close', (code) => (code === 0 ? resolve() : reject(new Error(`ffmpeg çıkış kodu ${code}: ${err.slice(-500)}`))))
+    p.on('close', (code) =>
+      code === 0 ? resolve() : reject(new Error(`ffmpeg çıkış kodu ${code}: ${err.slice(-500)}`)),
+    )
   })
 }
 
@@ -308,18 +341,38 @@ function frameSize(video: string): { w: number; h: number } {
 }
 
 /** Videoyu ANALYSIS_FPS hızında ham RGB olarak akıtır; yalnız istenen sıralardaki kareleri saklar. */
-async function grabFrames(video: string, size: { w: number; h: number }, wanted: Set<number>): Promise<Map<number, RawFrame>> {
+async function grabFrames(
+  video: string,
+  size: { w: number; h: number },
+  wanted: Set<number>,
+): Promise<Map<number, RawFrame>> {
   const frameBytes = size.w * size.h * 3
   const frames = new Map<number, RawFrame>()
   let buf: Buffer = Buffer.alloc(0)
   let idx = 0
   await runFfmpeg(
-    ['-i', video, '-an', '-vf', `fps=${ANALYSIS_FPS},scale=${size.w}:${size.h}`, '-pix_fmt', 'rgb24', '-f', 'rawvideo', '-'],
+    [
+      '-i',
+      video,
+      '-an',
+      '-vf',
+      `fps=${ANALYSIS_FPS},scale=${size.w}:${size.h}`,
+      '-pix_fmt',
+      'rgb24',
+      '-f',
+      'rawvideo',
+      '-',
+    ],
     (chunk) => {
       buf = buf.length ? Buffer.concat([buf, chunk]) : chunk
       while (buf.length >= frameBytes) {
         if (wanted.has(idx))
-          frames.set(idx, { data: new Uint8Array(buf.subarray(0, frameBytes)), width: size.w, height: size.h, channels: 3 })
+          frames.set(idx, {
+            data: new Uint8Array(buf.subarray(0, frameBytes)),
+            width: size.w,
+            height: size.h,
+            channels: 3,
+          })
         buf = buf.subarray(frameBytes)
         idx++
       }
@@ -331,7 +384,9 @@ async function grabFrames(video: string, size: { w: number; h: number }, wanted:
 async function decodePcm(audio: string, cacheFile: string): Promise<Float32Array> {
   if (!existsSync(cacheFile)) {
     const chunks: Buffer[] = []
-    await runFfmpeg(['-i', audio, '-vn', '-ac', '1', '-ar', String(AUDIO_RATE), '-f', 'f32le', '-'], (d) => chunks.push(d))
+    await runFfmpeg(['-i', audio, '-vn', '-ac', '1', '-ar', String(AUDIO_RATE), '-f', 'f32le', '-'], (d) =>
+      chunks.push(d),
+    )
     writeFileSync(cacheFile, Buffer.concat(chunks))
   }
   const b = readFileSync(cacheFile)
@@ -340,7 +395,12 @@ async function decodePcm(audio: string, cacheFile: string): Promise<Float32Array
 
 /* ───────────── Pafta ───────────── */
 
-async function buildSprite(cells: (RawFrame | null)[], cellW: number, cellH: number, file: string): Promise<SpriteInfo | null> {
+async function buildSprite(
+  cells: (RawFrame | null)[],
+  cellW: number,
+  cellH: number,
+  file: string,
+): Promise<SpriteInfo | null> {
   const present = cells.filter((c): c is RawFrame => c !== null)
   if (present.length === 0) return null
   const cols = Math.min(SPRITE_COLS, cells.length)
@@ -365,7 +425,8 @@ async function buildSprite(cells: (RawFrame | null)[], cellW: number, cellH: num
     .composite(composites.filter((c): c is NonNullable<typeof c> => c !== null))
     .jpeg({ quality: SPRITE_QUALITY, mozjpeg: true })
     .toBuffer()
-  writeFileSync(file, body)
+  // Aynı baytlar zaten yazılıysa dosyaya dokunulmaz (yeniden çalıştırma çalışma ağacını kirletmesin).
+  if (!existsSync(file) || !readFileSync(file).equals(body)) writeFileSync(file, body)
   return { file: file.split('/').pop()!, cols, cellW, cellH, count: cells.length }
 }
 
@@ -373,13 +434,88 @@ async function buildSprite(cells: (RawFrame | null)[], cellW: number, cellH: num
 
 /** Depo biçimlendiricisinin (prettier) çıktısıyla aynı metni yazar; `npm run format` dosyaları değiştirmez. */
 async function writeFormattedJson(file: string, value: unknown): Promise<number> {
-  const options = (await prettier.resolveConfig(file)) ?? {}
+  // Yapılandırma deponun kendi ayarlarından okunur (TVP_CONTENT_DIR depo dışındaysa da aynı biçim çıksın).
+  const options = (await prettier.resolveConfig(join(ROOT_DIR, 'content', 'shots', 'x.json'))) ?? {}
   const text = await prettier.format(JSON.stringify(value), { ...options, parser: 'json', filepath: file })
   writeFileSync(file, text)
   return Buffer.byteLength(text)
 }
 
+/* ───────────── Yerel medya (--media) ───────────── */
+
+/** SRT'yi WebVTT çözümleyicisinin okuyacağı biçime getirir (zaman damgasındaki virgül VTT çözümleyicisince kabul edilir). */
+export function srtToVtt(srt: string): string {
+  return `WEBVTT\n\n${srt.replace(/^\uFEFF/, '').replace(/\r\n?/g, '\n')}`
+}
+
+/** Altyazı metnini uzantısına göre çözer: .vtt · .srt · .ttml/.xml/.dfxp */
+export function parseSubtitleText(raw: string, file: string): Cue[] {
+  const ext = extname(file).toLowerCase()
+  if (ext === '.srt') return parseVtt(srtToVtt(raw))
+  if (ext === '.ttml' || ext === '.xml' || ext === '.dfxp') return parseTtml(raw)
+  return parseVtt(raw)
+}
+
+/** Dosya adından dil: "sintel.tr.srt" → 'tr'; bulunamazsa 'und' (belirsiz). */
+export function subtitleLangOf(file: string): string {
+  return /\.([a-z]{2,3})\.(vtt|srt|ttml|xml|dfxp)$/i.exec(basename(file))?.[1]?.toLowerCase() ?? 'und'
+}
+
+/** Yerel medyanın süresi, ses akışı olup olmadığı ve SHA-256 özeti (ffprobe; yalnız bu araçta). */
+function probeLocalMedia(file: string): {
+  path: string
+  durationSec: number | null
+  hasAudio: boolean
+  sha256: string
+} {
+  const path = resolve(file)
+  if (!existsSync(path) || !statSync(path).isFile()) throw new Error(`Medya dosyası bulunamadı: ${file}`)
+  const out = execFileSync(
+    process.env.FFPROBE ?? 'ffprobe',
+    ['-v', 'error', '-show_entries', 'format=duration:stream=codec_type', '-of', 'json', path],
+    { encoding: 'utf8' },
+  )
+  const info = JSON.parse(out) as { format?: { duration?: string }; streams?: { codec_type?: string }[] }
+  const streams = info.streams ?? []
+  if (!streams.some((st) => st.codec_type === 'video')) throw new Error(`Görüntü akışı yok: ${file}`)
+  const d = Number(info.format?.duration)
+  const hash = createHash('sha256')
+  const fd = openSync(path, 'r')
+  try {
+    const buf = Buffer.alloc(4 * 1024 * 1024)
+    for (let n = readSync(fd, buf); n > 0; n = readSync(fd, buf)) hash.update(buf.subarray(0, n))
+  } finally {
+    closeSync(fd)
+  }
+  return {
+    path,
+    durationSec: Number.isFinite(d) && d > 0 ? d : null,
+    hasAudio: streams.some((st) => st.codec_type === 'audio'),
+    sha256: hash.digest('hex'),
+  }
+}
+
+/** Yaprağı birleşik KEYFRAMES dosyasından çıkarır (pafta değişmez; kullanılmayan hücre kalır). Değiştiyse true. */
+export async function removeFromKeyframes(outDir: string, videoId: number): Promise<boolean> {
+  const file = join(outDir, KEYFRAMES_FILE)
+  if (!existsSync(file)) return false
+  const kf = zKeyframesFile.parse(JSON.parse(readFileSync(file, 'utf8')))
+  const videos = kf.videos.filter((v) => v.videoId !== videoId)
+  if (videos.length === kf.videos.length) return false
+  await writeFormattedJson(file, { ...kf, videos })
+  return true
+}
+
 /* ───────────── SCENE_DETECT ───────────── */
+
+export interface LocalMediaOptions {
+  /** Yerel medya dosyası (görüntü + varsa ses) */
+  file: string
+  /** İsteğe bağlı altyazı: .vtt, .srt, .ttml/.xml (dil dosya adından: film.tr.srt → 'tr') */
+  subs: string | null
+  /** Serbest metin: medyanın nereden geldiği (adres, lisans) */
+  note: string | null
+}
 
 interface Ctx {
   contentDir: string
@@ -388,10 +524,16 @@ interface Ctx {
   force: boolean
   /** Sahne eşiği (varsayılan SCENE_THRESHOLD; --threshold ile ayarlanır) */
   threshold: number
+  /** `--media`: tek yaprağı başlığın kaynağı yerine bu yerel dosyadan çözümle */
+  media: LocalMediaOptions | null
   log: (s: string) => void
 }
 
-async function subtitleCues(p: PlayableRef, ctx: Ctx, mpdTexts: { url: string; lang: string; format: 'vtt' | 'ttml' }[]) {
+async function subtitleCues(
+  p: PlayableRef,
+  ctx: Ctx,
+  mpdTexts: { url: string; lang: string; format: 'vtt' | 'ttml' }[],
+) {
   const dash = p.sources.find((s) => s.type === 'DASH')
   const own = dash && dash.type === 'DASH' ? dash.timedText : []
   const list = [
@@ -400,6 +542,12 @@ async function subtitleCues(p: PlayableRef, ctx: Ctx, mpdTexts: { url: string; l
   ]
   const order = (l: string) => (l === 'tr' ? 0 : l === 'en' ? 1 : 2)
   list.sort((a, b) => order(a.lang) - order(b.lang))
+  if (ctx.media?.subs) {
+    const raw = readFileSync(ctx.media.subs, 'utf8')
+    const cues = parseSubtitleText(raw, ctx.media.subs)
+    if (cues.length) return { lang: subtitleLangOf(ctx.media.subs), cues }
+    ctx.log(`  altyazı dosyasında satır bulunamadı: ${ctx.media.subs}`)
+  }
   for (const t of list) {
     try {
       let raw: string
@@ -425,6 +573,7 @@ export interface SceneSummary {
   bytes: number
   spriteBytes: number
   skipped: boolean
+  mediaSource: 'CATALOG' | 'LOCAL'
 }
 
 async function analyzeSceneDetect(p: PlayableRef, ctx: Ctx): Promise<SceneSummary> {
@@ -442,25 +591,57 @@ async function analyzeSceneDetect(p: PlayableRef, ctx: Ctx): Promise<SceneSummar
       bytes: statSync(outFile).size,
       spriteBytes: existsSync(spriteFile) ? statSync(spriteFile).size : 0,
       skipped: true,
+      mediaSource: f.media.source,
     }
   }
-  const dash = p.sources.find((s) => s.type === 'DASH')
-  if (!dash || dash.type !== 'DASH') throw new Error('DASH kaynağı yok')
-  const dir = join(ctx.cacheDir, String(p.videoId))
-  mkdirSync(dir, { recursive: true })
-  ctx.log(`• ${p.displayTitle} (${p.videoId}) — SCENE_DETECT`)
-  const mpd = parseMpd(await fetchText(dash.manifest, join(dir, 'manifest.mpd')), dash.manifest)
-  const vRep = mpd.video[0]
-  if (!vRep) throw new Error('Görüntü temsili yok')
-  const aRep = mpd.audio[0] ?? null
-  const videoFile = join(dir, vRep.url.split('/').pop()!)
-  await download(vRep.url, videoFile, ctx.log)
+  let dir: string
+  let videoFile: string
   let audioFile: string | null = null
-  if (aRep) {
-    audioFile = join(dir, aRep.url.split('/').pop()!)
-    await download(aRep.url, audioFile, ctx.log)
+  let duration: number | null
+  let mediaInfo: Omit<SceneDetectFile['media'], 'textLang'>
+  let mpdTexts: { url: string; lang: string; format: 'vtt' | 'ttml' }[] = []
+  if (ctx.media) {
+    const local = probeLocalMedia(ctx.media.file)
+    // Önbellek klasörü medyanın özetine bağlı: başka bir dosyayla eski sahne puanları kullanılmaz.
+    dir = join(ctx.cacheDir, `${p.videoId}-yerel-${local.sha256.slice(0, 12)}`)
+    mkdirSync(dir, { recursive: true })
+    ctx.log(`• ${p.displayTitle} (${p.videoId}) — SCENE_DETECT, yerel medya: ${basename(local.path)}`)
+    videoFile = local.path
+    audioFile = local.hasAudio ? local.path : null
+    duration = local.durationSec ?? p.runtimeSec
+    mediaInfo = {
+      video: basename(local.path),
+      audio: local.hasAudio ? basename(local.path) : null,
+      source: 'LOCAL',
+      note: ctx.media.note ?? `yerel dosya: ${basename(local.path)}`,
+      sha256: local.sha256,
+    }
+  } else {
+    const dash = p.sources.find((s) => s.type === 'DASH')
+    if (!dash || dash.type !== 'DASH') throw new Error('DASH kaynağı yok (yerel dosyayla çözümlemek için --media)')
+    dir = join(ctx.cacheDir, String(p.videoId))
+    mkdirSync(dir, { recursive: true })
+    ctx.log(`• ${p.displayTitle} (${p.videoId}) — SCENE_DETECT`)
+    const mpd = parseMpd(await fetchText(dash.manifest, join(dir, 'manifest.mpd')), dash.manifest)
+    const vRep = mpd.video[0]
+    if (!vRep) throw new Error('Görüntü temsili yok')
+    const aRep = mpd.audio[0] ?? null
+    videoFile = join(dir, vRep.url.split('/').pop()!)
+    await download(vRep.url, videoFile, ctx.log)
+    if (aRep) {
+      audioFile = join(dir, aRep.url.split('/').pop()!)
+      await download(aRep.url, audioFile, ctx.log)
+    }
+    duration = mpd.durationSec ?? p.runtimeSec
+    mpdTexts = mpd.text
+    mediaInfo = {
+      video: vRep.url.split('/').pop()!,
+      audio: aRep ? aRep.url.split('/').pop()! : null,
+      source: 'CATALOG',
+      note: null,
+      sha256: null,
+    }
   }
-  const duration = mpd.durationSec ?? p.runtimeSec
   if (!duration) throw new Error('Süre bilinmiyor')
 
   const t0 = Date.now()
@@ -492,7 +673,7 @@ async function analyzeSceneDetect(p: PlayableRef, ctx: Ctx): Promise<SceneSummar
     }
   }
   if (!pcm) flags.push('NO_AUDIO')
-  const sub = await subtitleCues(p, ctx, mpd.text)
+  const sub = await subtitleCues(p, ctx, mpdTexts)
   if (!sub) flags.push('NO_TEXT')
   const texts = sub ? textForSpans(sub.cues, spans) : spans.map(() => '')
 
@@ -505,7 +686,9 @@ async function analyzeSceneDetect(p: PlayableRef, ctx: Ctx): Promise<SceneSummar
     const motion = first && last && pl.last > pl.first ? motionEstimate(first, last) : null
     const v: VisualFeatures | null = mids.length ? averageVisual(mids.map(visualFeatures), motion) : null
     cells.push(mids[Math.floor(mids.length / 2)] ?? null)
-    const a = pcm ? audioFeatures(pcm.subarray(Math.floor(s * AUDIO_RATE), Math.floor(e * AUDIO_RATE)), AUDIO_RATE) : null
+    const a = pcm
+      ? audioFeatures(pcm.subarray(Math.floor(s * AUDIO_RATE), Math.floor(e * AUDIO_RATE)), AUDIO_RATE)
+      : null
     return { i, s, e, v, a, t: texts[i] ?? '', k: v ? i : null }
   })
   const cellH = Math.max(8, Math.round((SPRITE_CELL_W * size.h) / size.w))
@@ -526,13 +709,15 @@ async function analyzeSceneDetect(p: PlayableRef, ctx: Ctx): Promise<SceneSummar
       frameWidth: FRAME_WIDTH,
       fps: ANALYSIS_FPS,
     },
-    media: { video: vRep.url.split('/').pop()!, audio: aRep ? aRep.url.split('/').pop()! : null, textLang: sub?.lang ?? null },
+    media: { ...mediaInfo, textLang: sub?.lang ?? null },
     sprite,
     flags,
     shots,
   }
   zSceneDetectFile.parse(file)
   const bytes = await writeFormattedJson(outFile, file)
+  // Bu yaprak artık gerçek çekimlerle temsil ediliyor: birleşik KEYFRAMES kaydından çıkar.
+  if (await removeFromKeyframes(ctx.outDir, p.videoId)) ctx.log(`  ${KEYFRAMES_FILE} içinden çıkarıldı: ${p.videoId}`)
   return {
     videoId: p.videoId,
     title: p.displayTitle,
@@ -543,6 +728,7 @@ async function analyzeSceneDetect(p: PlayableRef, ctx: Ctx): Promise<SceneSummar
     bytes,
     spriteBytes: sprite ? statSync(join(ctx.outDir, sprite.file)).size : 0,
     skipped: false,
+    mediaSource: mediaInfo.source,
   }
 }
 
@@ -595,7 +781,10 @@ async function loadStill(id: string, name: StillName, ctx: Ctx, gate: () => Prom
     .removeAlpha()
     .raw()
     .toBuffer({ resolveWithObject: true })
-  return { frame: { data: out.data, width: out.info.width, height: out.info.height, channels: out.info.channels }, status }
+  return {
+    frame: { data: out.data, width: out.info.width, height: out.info.height, channels: out.info.channels },
+    status,
+  }
 }
 
 export interface KeyframesSummary {
@@ -657,9 +846,23 @@ async function analyzeKeyframes(list: PlayableRef[], ctx: Ctx): Promise<Keyframe
     }
     if (!duration) flags.push('NO_RUNTIME')
     flags.push('NO_AUDIO')
-    videos.push({ videoId: p.videoId, titleId: p.titleId, youtubeId, durationSec: duration, tried, fetched, flags, shots })
+    videos.push({
+      videoId: p.videoId,
+      titleId: p.titleId,
+      youtubeId,
+      durationSec: duration,
+      tried,
+      fetched,
+      flags,
+      shots,
+    })
   }
-  const sprite = await buildSprite(cells, STILL_CELL_W, STILL_CELL_H, join(ctx.outDir, KEYFRAMES_FILE.replace('.json', '.jpg')))
+  const sprite = await buildSprite(
+    cells,
+    STILL_CELL_W,
+    STILL_CELL_H,
+    join(ctx.outDir, KEYFRAMES_FILE.replace('.json', '.jpg')),
+  )
   const file: KeyframesFile = {
     version: SHOTS_SCHEMA_VERSION,
     method: 'KEYFRAMES',
@@ -674,7 +877,11 @@ async function analyzeKeyframes(list: PlayableRef[], ctx: Ctx): Promise<Keyframe
   const prev: KeyframesFile | null = existsSync(outFile)
     ? zKeyframesFile.parse(JSON.parse(readFileSync(outFile, 'utf8')))
     : null
-  if (ctx.force || !prev || JSON.stringify({ ...prev, generatedAt: '' }) !== JSON.stringify({ ...file, generatedAt: '' }))
+  if (
+    ctx.force ||
+    !prev ||
+    JSON.stringify({ ...prev, generatedAt: '' }) !== JSON.stringify({ ...file, generatedAt: '' })
+  )
     bytes = await writeFormattedJson(outFile, file)
   const withImages = videos.filter((v) => v.fetched > 0).length
   const tried = videos.reduce((s, v) => s + v.tried, 0)
@@ -703,27 +910,48 @@ export function parseArgs(argv: string[]): {
   force: boolean
   cache: string | null
   threshold: number
+  media: LocalMediaOptions | null
 } {
   let target = 'all'
   let force = false
   let cache: string | null = null
   let threshold = SCENE_THRESHOLD
+  let file: string | null = null
+  let subs: string | null = null
+  let note: string | null = null
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i]!
     if (a === '--force') force = true
     else if (a === '--cache') cache = argv[++i] ?? null
+    else if (a === '--media') file = argv[++i] ?? null
+    else if (a === '--subs') subs = argv[++i] ?? null
+    else if (a === '--note') note = argv[++i] ?? null
     else if (a === '--threshold') {
       const t = Number(argv[++i])
       if (!(t > 0 && t < 1)) throw new Error('--threshold 0 ile 1 arasında olmalı')
       threshold = t
-    }
-    else if (!a.startsWith('--')) target = a
+    } else if (!a.startsWith('--')) target = a
   }
-  return { target, force, cache, threshold }
+  if ((subs || note) && !file) throw new Error('--subs ve --note yalnız --media ile kullanılır')
+  if (file && !/^\d+$/.test(target))
+    throw new Error('--media tek bir yaprak ister: npm run analyze:shots -- <videoId> --media <dosya>')
+  if (note && note.length > 500) throw new Error('--note en çok 500 karakter')
+  return { target, force, cache, threshold, media: file ? { file, subs, note } : null }
 }
 
+const USAGE =
+  'Kullanım: npm run analyze:shots -- <videoId|all> [--force] [--cache <klasör>] [--threshold 0.12]\n' +
+  '          npm run analyze:shots -- <videoId> --media <yerel dosya> [--subs <.vtt|.srt|.ttml>] [--note "<kaynak>"]'
+
 async function main(argv: string[]): Promise<void> {
-  const { target, force, cache, threshold } = parseArgs(argv)
+  let args: ReturnType<typeof parseArgs>
+  try {
+    args = parseArgs(argv)
+  } catch (e) {
+    console.error(`${(e as Error).message}\n${USAGE}`)
+    process.exit(2)
+  }
+  const { target, force, cache, threshold, media } = args
   const contentDir = defaultContentDir()
   const ctx: Ctx = {
     contentDir,
@@ -731,10 +959,11 @@ async function main(argv: string[]): Promise<void> {
     cacheDir: cache ?? process.env.TVP_SHOTS_CACHE ?? join(tmpdir(), 'tvplus-shots-cache'),
     force,
     threshold,
+    media,
     log: (s) => console.log(s),
   }
   if (target !== 'all' && !/^\d+$/.test(target)) {
-    console.error('Kullanım: npm run analyze:shots -- <videoId|all> [--force] [--cache <klasör>]')
+    console.error(USAGE)
     process.exit(2)
   }
   mkdirSync(ctx.outDir, { recursive: true })
@@ -748,11 +977,21 @@ async function main(argv: string[]): Promise<void> {
   console.log(`Önbellek: ${ctx.cacheDir}`)
   const t0 = Date.now()
   const scenes: SceneSummary[] = []
-  for (const p of selected.filter((x) => methodOf(x) === 'SCENE_DETECT')) scenes.push(await analyzeSceneDetect(p, ctx))
+  // Yerel medyayla (--media) üretilmiş SCENE_DETECT dosyası olan yapraklar KEYFRAMES'e geri eklenmez.
+  const hasScene = (p: PlayableRef) => existsSync(join(ctx.outDir, `${p.videoId}.json`))
+  if (media) scenes.push(await analyzeSceneDetect(selected[0]!, ctx))
+  else
+    for (const p of selected) {
+      if (methodOf(p) === 'SCENE_DETECT') scenes.push(await analyzeSceneDetect(p, ctx))
+      else if (hasScene(p)) {
+        if (force) ctx.log(`• ${p.videoId}: yerel medyadan üretilmiş; yenilemek için --media ile çalıştırın`)
+        scenes.push(await analyzeSceneDetect(p, { ...ctx, force: false }))
+      }
+    }
   // KEYFRAMES dosyası tüm gömme yapraklarını tek dosyada tutar: tek bir yaprak istense de hepsi yeniden yazılır
-  // (önbellekteki kareler yeniden indirilmez); --force yalnız seçilen yaprağın karelerini değil kaydını tazeler.
-  const kfList = playables.filter((x) => methodOf(x) === 'KEYFRAMES')
-  const kfWanted = selected.some((x) => methodOf(x) === 'KEYFRAMES')
+  // (önbellekteki kareler yeniden indirilmez).
+  const kfList = playables.filter((x) => methodOf(x) === 'KEYFRAMES' && !hasScene(x))
+  const kfWanted = !media && selected.some((x) => methodOf(x) === 'KEYFRAMES' && !hasScene(x))
   const kf = kfWanted ? await analyzeKeyframes(kfList, ctx) : null
 
   console.log('\nÖzet')
@@ -760,7 +999,8 @@ async function main(argv: string[]): Promise<void> {
     console.log(
       `  SCENE_DETECT ${s.videoId} ${s.title}: ${s.shots} çekim, ort. ${s.avgShotSec} sn${s.capped ? ' (üst sınır)' : ''}, ` +
         `metin: ${s.textLang ?? 'yok'}, ${(s.bytes / 1024).toFixed(0)} KB + pafta ${(s.spriteBytes / 1024).toFixed(0)} KB` +
-        (s.skipped ? ' — var olan dosya (değişmedi; yenilemek için --force)' : ''),
+        (s.skipped ? ' — var olan dosya (değişmedi; yenilemek için --force)' : '') +
+        (s.mediaSource === 'LOCAL' ? ' [yerel medya]' : ''),
     )
   if (kf)
     console.log(

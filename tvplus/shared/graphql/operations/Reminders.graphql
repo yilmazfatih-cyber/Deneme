@@ -1,0 +1,19 @@
+# TV+'ım "Hatırlatmalar": bu profilin kurduğu yaklaşan yayın hatırlatmaları.
+query Reminders {
+  reminders {
+    ...AiringBrief
+    hasReminder
+    synopsis
+    artwork(params: { width: 480 }) {
+      ...ArtworkFields
+    }
+    channel {
+      channelId
+      name
+      number
+      logo(params: { width: 128 }) {
+        ...ArtworkFields
+      }
+    }
+  }
+}

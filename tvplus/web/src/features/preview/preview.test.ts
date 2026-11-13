@@ -2,7 +2,16 @@ import { describe, expect, it } from 'vitest'
 import { parseTctx } from '../../../../shared/tctx'
 import { PreviewCache } from './cache'
 import { appPathOfHref, detailPath, localTctx, playPath, withQuery } from './links'
-import { badgeTextOf, isInProgress, lockedTextOf, playbackBadgeLabels, remainingText, sourceLabels } from './meta'
+import {
+  badgeTextOf,
+  isInProgress,
+  lockedTextOf,
+  playbackBadgeLabels,
+  previewMeta,
+  remainingText,
+  sourceLabels,
+} from './meta'
+import { placePreview } from './placement'
 import { cachedListIds, invalidationPaths } from './sync'
 
 describe('PreviewCache — satır ön yüklemesi', () => {
@@ -118,10 +127,85 @@ describe('lolomo geçersiz kılma yolları', () => {
   it('yalnız istenen bağlamdaki listeler + lolomo sırası + değişen videonun kişisel yaprakları', () => {
     expect(cachedListIds(graph, ['queue'])).toEqual(['g_queue'])
     expect(invalidationPaths(graph, 'GUID', ['queue'], [80010001, 80010001])).toEqual([
-      ['lolomos', 'GUID'],
+      ['lolomos', ['GUID', 'GUID:shows', 'GUID:movies', 'GUID:newPopular']],
       ['lists', 'g_queue'],
       ['videos', 80010001, ['queue', 'bookmark', 'watchStatus', 'userRating', 'current']],
     ])
     expect(invalidationPaths({}, null, ['continueWatching'], [])).toEqual([])
+  })
+})
+
+describe('önizleme kartının yerleşimi', () => {
+  const viewport = { width: 1440, height: 900 }
+  const inset = { left: 57.6, right: 57.6, top: 76, bottom: 8 }
+  // 1440 px: kenar boşluğu %4, sayfada 6 kart → kart ~221 px, görsel ~124 px
+  const card = (i: number) => ({ left: 57.6 + i * 221, top: 400, width: 215, height: 121 })
+
+  it('ortadaki kart kendi ortasından ~1.5× büyür; görsel dikeyde ortalanır', () => {
+    const p = placePreview({ anchor: card(2), viewport, bodyHeight: 140, inset })
+    expect(p.align).toBe('center')
+    expect(p.width).toBe(323)
+    expect(p.mediaHeight).toBe(182)
+    expect(Math.abs(p.left + p.width / 2 - (card(2).left + 215 / 2))).toBeLessThanOrEqual(1)
+    expect(Math.abs(p.top + p.mediaHeight / 2 - (400 + 121 / 2))).toBeLessThanOrEqual(1)
+  })
+
+  it('ilk tam görünen kart sola, son kart sağa yaslanır (ipucuyla ya da sınırdan)', () => {
+    const first = placePreview({ anchor: card(0), viewport, bodyHeight: 140, inset })
+    expect(first.align).toBe('left')
+    expect(first.left).toBe(Math.round(card(0).left))
+    const last = placePreview({ anchor: card(5), viewport, bodyHeight: 140, inset })
+    expect(last.align).toBe('right')
+    expect(last.left + last.width).toBeCloseTo(card(5).left + 215, 0)
+    expect(placePreview({ anchor: card(2), viewport, bodyHeight: 140, inset, edge: 'left' }).align).toBe('left')
+    expect(placePreview({ anchor: card(3), viewport, bodyHeight: 140, inset, edge: 'right' }).align).toBe('right')
+  })
+
+  it('pencereyi hiçbir zaman aşmaz: altta yukarı, üstte menünün altına itilir; dar ekranda daralır', () => {
+    const low = placePreview({ anchor: { ...card(2), top: 820 }, viewport, bodyHeight: 160, inset })
+    expect(low.top + low.mediaHeight + 160).toBeLessThanOrEqual(900 - 8)
+    const high = placePreview({ anchor: { ...card(2), top: 20 }, viewport, bodyHeight: 160, inset })
+    expect(high.top).toBe(76)
+    const narrow = placePreview({
+      anchor: { left: 10, top: 300, width: 300, height: 169 },
+      viewport: { width: 360, height: 800 },
+      bodyHeight: 140,
+    })
+    expect(narrow.width).toBe(344)
+    expect(narrow.left).toBeGreaterThanOrEqual(8)
+    expect(narrow.left + narrow.width).toBeLessThanOrEqual(352)
+  })
+
+  it('büyüme kartın kendi yerinden başlar (sol üst kökenli öteleme + ölçek)', () => {
+    const a = card(2)
+    const p = placePreview({ anchor: a, viewport, bodyHeight: 140, inset })
+    expect(p.left + p.from.x).toBeCloseTo(a.left, 0)
+    expect(p.top + p.from.y).toBeCloseTo(a.top, 0)
+    expect(p.width * p.from.scale).toBeCloseTo(a.width, 0)
+  })
+})
+
+describe('önizleme bilgi satırı', () => {
+  const base = {
+    __typename: 'Movie' as const,
+    badge: null,
+    runtimeSec: 5280,
+    displayRuntime: '1 sa 28 dk',
+    playbackBadges: ['VIDEO_HD', 'AUDIO_FIVE_DOT_ONE'],
+  }
+  it('eşleşme yüzdesi varsa yeşil satır; yoksa (null / eksik) ya da düşükse gösterilmez', () => {
+    expect(previewMeta({ ...base, matchScore: 97 }).match).toBe('%97 Eşleşme')
+    expect(previewMeta({ ...base, matchScore: null }).match).toBeNull()
+    expect(previewMeta({ ...base, matchScore: 4 }).match).toBeNull()
+    expect(previewMeta({ ...base, matchScore: 100.4 }).match).toBe('%100 Eşleşme')
+    expect(previewMeta(base).match).toBeNull()
+  })
+  it('film süresi, dizi sezon sayısı, HD; yeni rozeti', () => {
+    expect(previewMeta(base)).toMatchObject({ length: '1 sa 28 dk', quality: 'HD', isNew: false })
+    expect(previewMeta({ ...base, __typename: 'Show', seasonCount: 2 }).length).toBe('2 Sezon')
+    expect(previewMeta({ ...base, badge: { kind: 'NEW', text: 'Yeni' }, playbackBadges: [] })).toMatchObject({
+      isNew: true,
+      quality: null,
+    })
   })
 })

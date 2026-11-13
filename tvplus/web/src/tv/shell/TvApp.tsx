@@ -19,6 +19,7 @@ import { TvGuide, TvLive } from '../live'
 import { TvLogin } from '../login'
 import { TvWatch } from '../player'
 import { TvProfiles } from '../profiles'
+import { TvRemote } from '../remote'
 import { TvSearch } from '../search'
 import {
   formatClock,
@@ -329,6 +330,7 @@ export function TvApp(): ReactElement {
                 <Route path="/tv/canli" element={<TvLive />} />
                 <Route path="/tv/rehber" element={<TvGuide />} />
                 <Route path="/tv/ayarlar" element={<TvSettings />} />
+                <Route path="/tv/kumanda" element={<TvRemote />} />
                 <Route path="/tv/_ui" element={<TvUiDemo />} />
                 <Route path="/tv/_ui/2" element={<TvUiDemo2 />} />
                 <Route path="/tv/*" element={<Navigate to={TV_PATHS.home} replace />} />

@@ -1,17 +1,22 @@
 /**
- * Göz atma sayfaları: koleksiyon (#/koleksiyon/:collectionId), kişi (#/kisi/:personId), tür (#/tur/:genreId).
- * Başlık + isteğe bağlı açıklama + duyarlı afiş ızgarası (afiş altında başlık + tek meta satırı), önizlemeli.
- * Bulunamayan kimlik sakin bir durum ve geri dönüş yolu gösterir. Dışa aktarım adları SABİT.
+ * Göz atma sayfaları:
+ *   Diziler / Filmler (#/goz-at/diziler, #/goz-at/filmler) — `lolomoByCategory` satırları, o kategorinin vitrini,
+ *     masaüstünde başlık + "Türler ▾", mobilde seçili hap + "Tüm Kategoriler".
+ *   Tür (#/tur/:id) — sayısal kimlik tür (`Query.genre`), `mg_` ile başlayan mikro tür (`Query.microgenre`).
+ *   Koleksiyon (#/koleksiyon/:id) · Kişi (#/kisi/:id).
+ * Izgaralar: başlık + duyarlı ızgara — masaüstünde 16:9 kart + önizleme kartı, mobilde 2:3 afiş.
+ * Bulunamayan kimlik ya da henüz hazır olmayan mikro tür sakin bir durum gösterir. Dışa aktarım adları SABİT.
  */
 import type { ReactElement } from 'react'
 import { useParams } from 'react-router-dom'
-import { PagePlaceholder, useDocumentTitle } from '../../app'
+import { useDocumentTitle, useShellOptions, useTitleHref } from '../../app'
 import { useGql } from '../../api/hooks'
-import { Button, EmptyHint, ErrorState, Page, PosterCard, Skeleton } from '../../design'
+import { useFormFactor } from '../../lib/formFactor'
 import { logEvent } from '../../telemetry/logger'
+import { Badge, ButtonLink, EmptyState, ErrorState, PosterCard, Skeleton, SkeletonGrid, TitleCard } from '../../ui'
+import { BrowsePills, CategoryHeader, LolomoPage } from '../home'
+import { cardBadgeOf } from '../home/lolomo'
 import {
-  detailPath,
-  joinMeta,
   localTctx,
   lockedTextOf,
   PreviewScope,
@@ -19,7 +24,29 @@ import {
   useFreshAfterPlayback,
   type CardVideoData,
 } from '../preview'
+import { gridIdOf } from './grid'
 import './browse.css'
+
+/* ───────────── Diziler / Filmler ───────────── */
+
+export function CategoryPage({ category }: { category: 'shows' | 'movies' }): ReactElement {
+  const title = category === 'shows' ? 'Diziler' : 'Filmler'
+  useShellOptions({ fullBleed: true, mobileTitle: title })
+  useDocumentTitle(title)
+  return (
+    <>
+      <BrowsePills category={category} />
+      <LolomoPage
+        key={category}
+        category={category}
+        title={title}
+        header={<CategoryHeader category={category} title={title} />}
+      />
+    </>
+  )
+}
+
+/* ───────────── Izgara sayfaları ───────────── */
 
 interface CollectionData {
   collection: { collectionId: number; name: string; description: string; videos: CardVideoData[] } | null
@@ -29,6 +56,9 @@ interface PersonData {
 }
 interface GenreData {
   genre: { genreId: number; name: string; videos: CardVideoData[] } | null
+}
+interface MicrogenreData {
+  microgenre: { id: string; name: string; size: number; videos: CardVideoData[] } | null
 }
 
 const idParam = (raw: string | undefined): number | null => {
@@ -46,9 +76,8 @@ export function CollectionPage(): ReactElement {
   )
   const c = q.data?.collection
   return (
-    <BrowseView
-      kind="koleksiyon"
-      id={id}
+    <GridView
+      rowId={`koleksiyon_${id}`}
       title={c?.name}
       description={c?.description}
       videos={c?.videos}
@@ -70,9 +99,8 @@ export function PersonPage(): ReactElement {
   )
   const p = q.data?.person
   return (
-    <BrowseView
-      kind="kisi"
-      id={id}
+    <GridView
+      rowId={`kisi_${id}`}
       title={p?.name}
       description={p ? 'Oynadığı ya da emeği geçen yapımlar' : undefined}
       videos={p?.videos}
@@ -84,9 +112,17 @@ export function PersonPage(): ReactElement {
   )
 }
 
-/** #/tur/:genreId ("Çocuk" bağlantısı #/tur/783) */
+/** #/tur/:genreId — sayısal kimlik tür, `mg_…` mikro tür. */
 export function GenrePage(): ReactElement {
-  const id = idParam(useParams().genreId)
+  const id = gridIdOf(useParams().genreId)
+  return id.kind === 'microgenre' ? (
+    <MicrogenreGrid id={id.id} />
+  ) : (
+    <GenreGrid id={id.kind === 'genre' ? id.id : null} />
+  )
+}
+
+function GenreGrid({ id }: { id: number | null }): ReactElement {
   const q = useGql<GenreData, { genreId: number }>(
     'GenrePage',
     { genreId: id ?? 0 },
@@ -94,9 +130,8 @@ export function GenrePage(): ReactElement {
   )
   const g = q.data?.genre
   return (
-    <BrowseView
-      kind="tur"
-      id={id}
+    <GridView
+      rowId={`tur_${id}`}
       title={g?.name}
       videos={g?.videos}
       notFound={id === null || (!!q.data && !g)}
@@ -107,117 +142,166 @@ export function GenrePage(): ReactElement {
   )
 }
 
-interface BrowseViewProps {
-  kind: 'koleksiyon' | 'kisi' | 'tur'
-  id: number | null
+/**
+ * Mikro tür: sunucu tarafı henüz hazır değilse (alan yok / hata) hata değil, sakin bir "yakında" durumu gösterilir.
+ */
+function MicrogenreGrid({ id }: { id: string }): ReactElement {
+  const q = useGql<MicrogenreData, { id: string }>('MicrogenrePage', { id }, { ttlMs: 5 * 60_000 })
+  const m = q.data?.microgenre
+  // Sunucu alanı henüz yoksa / hata verirse "hazırlanıyor"; alan var ama kimlik yoksa "bulunamadı".
+  const unavailable = !!q.error && !q.data
+  return (
+    <GridView
+      rowId={`mt_${id}`}
+      title={m?.name}
+      videos={m?.videos}
+      notFound={!!q.data && !m}
+      unavailable={unavailable}
+      loading={q.loading}
+      error={null}
+      onRetry={q.refetch}
+    />
+  )
+}
+
+interface GridViewProps {
+  rowId: string
   title?: string
   description?: string
   videos?: CardVideoData[]
   notFound: boolean
+  /** Sayfa var ama içeriği şu an gösterilemiyor (ör. mikro türler henüz hazır değil) */
+  unavailable?: boolean
   loading: boolean
   error: Error | null
   onRetry: () => void
 }
 
-function BrowseView({
-  kind,
-  id,
+function GridView({
+  rowId,
   title,
   description,
   videos,
   notFound,
+  unavailable,
   loading,
   error,
   onRetry,
-}: BrowseViewProps): ReactElement {
+}: GridViewProps): ReactElement {
   useFreshAfterPlayback()
+  useShellOptions({ mobileTitle: title ?? null })
   useDocumentTitle(title)
-  if (notFound) {
+  const mobile = useFormFactor() === 'mobile'
+  const href = useTitleHref()
+
+  if (notFound || unavailable) {
     return (
-      <Page title="Bu sayfa bulunamadı">
-        <div className="cn-gutter-x br-notfound">
-          <p className="cn-body">Aradığın liste kaldırılmış ya da bu profilde görünmüyor olabilir.</p>
-          <Button to="/film-dizi" icon="home">
-            Film &amp; Dizi'ye dön
-          </Button>
-        </div>
-      </Page>
+      <div className="br-page">
+        <EmptyState
+          icon={notFound ? 'search' : 'grid'}
+          title={notFound ? 'Bu sayfa bulunamadı' : 'Bu kategori hazırlanıyor'}
+          message={
+            notFound
+              ? 'Aradığın liste kaldırılmış ya da bu profilde görünmüyor olabilir.'
+              : 'Biraz sonra yeniden bak. Bu arada Ana Sayfa’daki satırlara göz atabilirsin.'
+          }
+          action={
+            <ButtonLink variant="secondary" icon="home" to="/goz-at">
+              Ana Sayfa
+            </ButtonLink>
+          }
+        />
+      </div>
     )
   }
   if (!videos) {
     if (error && !loading)
       return (
-        <ErrorState
-          size="page"
-          title="Bu sayfa yüklenemedi"
-          message="Bağlantını kontrol et ve tekrar dene."
-          onRetry={onRetry}
-        />
+        <div className="br-page">
+          <ErrorState
+            size="page"
+            title="Bu sayfa yüklenemedi"
+            message="Bağlantını kontrol et ve tekrar dene."
+            onRetry={onRetry}
+          />
+        </div>
       )
     return (
-      <div className="cn-page" aria-busy="true">
-        <span className="cn-gutter-x">
-          <Skeleton variant="title" width={240} />
-        </span>
-        <div className="br-grid cn-gutter-x">
-          {Array.from({ length: 12 }, (_, i) => (
-            <Skeleton key={i} variant="poster" />
-          ))}
+      <div className="br-page" aria-busy="true">
+        <div className="ui-gutter br-head">
+          <Skeleton variant="title" width={260} height={34} />
         </div>
+        <SkeletonGrid count={mobile ? 12 : 18} className="br-skel" />
       </div>
     )
   }
-  const rowId = `${kind}_${id}`
   const ids = () => videos.map((v) => v.videoId)
   return (
     <PreviewScope>
-      <Page title={title}>
-        {description && <p className="cn-body cn-gutter-x br-desc">{description}</p>}
+      <div className="br-page">
+        <header className="ui-gutter br-head">
+          <h1 className="ui-page-title br-title">{title}</h1>
+          {description && <p className="ui-body br-desc">{description}</p>}
+        </header>
         {videos.length === 0 ? (
-          <EmptyHint>Bu listede şu an izlenebilecek bir şey yok.</EmptyHint>
+          <EmptyState
+            icon="grid"
+            title="Şu an burada izlenecek bir şey yok"
+            message="Yeni başlıklar geldikçe burada görünecek."
+          />
         ) : (
-          <ul className="br-grid cn-gutter-x" aria-label={title}>
-            {videos.map((v, i) => {
-              const t = localTctx(rowId, i, v.videoId)
-              const locked = lockedTextOf(v.access)
-              return (
-                <li key={v.videoId}>
-                  <PreviewTarget
-                    info={{
-                      rowId,
-                      videoId: v.videoId,
-                      getRowVideoIds: ids,
-                      tctx: t,
-                      title: v.title,
-                      imageUrl: v.storyArt?.url ?? v.boxart?.url,
-                    }}
-                  >
-                    <PosterCard
-                      size="fill"
-                      showTitle
-                      title={v.title}
-                      imageUrl={v.boxart?.url}
-                      badge={!locked && v.badge && v.badge.kind !== 'LOCKED' ? v.badge.text : null}
-                      lockedText={locked}
-                      meta={joinMeta([v.latestYear, v.displayRuntime])}
-                      to={detailPath(v.videoId, t)}
-                      onClick={() => logEvent('click', { videoId: v.videoId, action: 'detail', from: rowId }, t)}
-                    />
-                  </PreviewTarget>
-                </li>
-              )
-            })}
+          <ul className={`ui-gutter br-grid${mobile ? ' br-grid--poster' : ''}`} aria-label={title}>
+            {videos.map((v, i) => (
+              <li key={v.videoId} className="br-grid__cell">
+                <GridCard video={v} index={i} rowId={rowId} mobile={mobile} href={href} rowIds={ids} />
+              </li>
+            ))}
           </ul>
         )}
-      </Page>
+      </div>
     </PreviewScope>
   )
 }
 
-/**
- * Diziler / Filmler (#/goz-at/diziler, #/goz-at/filmler) — YER TUTUCU (ikinci tur). Göz atma ekibi dolduracak;
- * dışa aktarım adı ve özelliği SABİT. UX_SPEC §2 "Sayfalar": başlık + "Türler ▾" + vitrin + o türün satırları.
- */
-export function CategoryPage({ category }: { category: 'shows' | 'movies' }): ReactElement {
-  return <PagePlaceholder title={category === 'shows' ? 'Diziler' : 'Filmler'} />
+function GridCard({
+  video: v,
+  index,
+  rowId,
+  mobile,
+  href,
+  rowIds,
+}: {
+  video: CardVideoData
+  index: number
+  rowId: string
+  mobile: boolean
+  href: (id: number, tctx?: string | null) => string
+  rowIds: () => number[]
+}): ReactElement {
+  const t = localTctx(rowId, index, v.videoId)
+  const locked = lockedTextOf(v.access)
+  const b = cardBadgeOf(v.badge, !!locked)
+  const badge = b ? <Badge tone={b.tone}>{b.tone === 'lock' ? undefined : b.text}</Badge> : undefined
+  const common = {
+    title: v.title,
+    badge,
+    to: href(v.videoId, t),
+    'aria-label': locked ? `${v.title}, ${locked}` : undefined,
+    onClick: () => logEvent('click', { videoId: v.videoId, action: 'detail', from: rowId }, t),
+  }
+  if (mobile) return <PosterCard {...common} image={v.boxart?.url} />
+  return (
+    <PreviewTarget
+      info={{
+        rowId,
+        videoId: v.videoId,
+        getRowVideoIds: rowIds,
+        tctx: t,
+        title: v.title,
+        imageUrl: v.storyArt?.url ?? v.boxart?.url,
+      }}
+    >
+      <TitleCard {...common} image={v.storyArt?.url} />
+    </PreviewTarget>
+  )
 }
