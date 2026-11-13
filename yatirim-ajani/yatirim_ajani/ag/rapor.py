@@ -19,18 +19,53 @@ OZELLIK_AD = {
 SERI_AD = {"ES=F": "S&P 500 vadeli", "NQ=F": "Nasdaq vadeli", "GC=F": "Altın", "SI=F": "Gümüş", "HG=F": "Bakır", "PL=F": "Platin", "BZ=F": "Brent petrol", "NG=F": "Doğal gaz",
            "USDTRY=X": "Dolar/TL", "EURUSD=X": "Euro/dolar", "TUR": "ABD'deki Türkiye fonu (TUR)"}  # fmt: skip
 AYLAR = ["Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara"]
+SEKTOR_AD = {
+    "banka": "bankalar", "sigorta": "sigorta", "leasing_faktoring": "leasing ve faktoring", "araci_kurum": "aracı kurumlar", "yatirim_ortakligi": "yatırım ortaklıkları",
+    "gyo": "GYO", "spor": "spor", "telekom": "telekom", "madencilik": "madencilik", "ulastirma": "ulaştırma", "turizm": "turizm", "insaat": "inşaat", "elektrik": "elektrik",
+    "ticaret": "ticaret", "bilisim": "bilişim", "kimya_petrol": "kimya ve petrol", "gida": "gıda", "metal_esya_makine": "metal eşya ve makine", "ana_metal": "ana metal",
+    "tas_toprak": "çimento ve taş-toprak", "tekstil": "tekstil", "kagit_orman": "kâğıt ve orman", "holding": "holdingler", "teknoloji": "teknoloji ve savunma",
+    "sanayi_diger": "diğer sanayi", "hizmet_diger": "diğer hizmetler", "mali_diger": "diğer mali", "diger": "diğer",
+}  # fmt: skip
+MEVSIM_AD = {"kis": "kış", "ilkbahar": "ilkbahar", "yaz": "yaz", "sonbahar": "sonbahar"}
+
+
+def sek(x) -> str:
+    return SEKTOR_AD.get(str(x), str(x))
+
+
+def bn(n) -> str:
+    """Tam sayı, binlik noktalı."""
+    try:
+        return f"{int(n):,}".replace(",", ".")
+    except (TypeError, ValueError):
+        return "-"
+
+
+def baslik_tr(x: str) -> str:
+    """Türkçe'ye uygun baş harf büyütme (İ/ı sorunu olmadan)."""
+    kucuk = str(x).replace("İ", "i").replace("I", "ı").lower()
+
+    def buyut(k: str) -> str:
+        return k.replace("i", "İ").replace("ı", "I").upper()
+
+    return " ".join(buyut(k) if ("." in k and len(k) <= 7) else (buyut(k[:1]) + k[1:]) if k else k for k in kucuk.split(" "))
 
 
 def y(x, n: int = 1) -> str:
     if x is None or x != x:
         return "-"
-    return f"{'+' if x >= 0 else '−'}%{abs(x) * 100:.{n}f}".replace(".", ",")
+    govde = f"{abs(x) * 100:.{n}f}"
+    isaret = "" if float(govde) == 0 else ("+" if x >= 0 else "−")
+    return f"{isaret}%{govde}".replace(".", ",")
 
 
 def s(x, n: int = 2) -> str:
     if x is None or x != x:
         return "-"
-    return f"{x:.{n}f}".replace(".", ",").replace("-", "−")
+    m = f"{x:.{n}f}"
+    if float(m) == 0:
+        m = m.lstrip("-")
+    return m.replace(".", ",").replace("-", "−")
 
 
 def tt(d: dict | None, anahtar: str = "t") -> str:
@@ -114,16 +149,16 @@ def rapor_yaz(S: dict, arastirma: Path | None = None) -> str:
               f"endeksin önceki günüyle korelasyonu {s(kf.get('piyasa_once'))}. Endeksin kendi günlük öz-ilişkisi yalnız {s(kf.get('xu100_oz_iliski'))}.",
               f"- İki etken ayıklandıktan sonra aynı sektördeki hisselerin ortalama korelasyonu {s(A.get('ort_kor_ayni_sektor_artik'), 3)}, farklı sektörlerdekilerin {s(A.get('ort_kor_farkli_sektor_artik'), 3)}. "
               "Sektör etiketi tek başına zayıf bir bağ.",
-              f"- En küçük kapsayan ağaçta kenarların %{(A.get('kenar_ayni_sektor_orani') or 0) * 100:.0f}'i aynı sektörden iki hisseyi bağlıyor (rastgele beklenti %{(A.get('rastgele_ayni_sektor_orani') or 0) * 100:.0f}).", ""]  # fmt: skip
+              f"- En küçük kapsayan ağaçta aynı sektörden iki hisseyi bağlayan kenarların oranı %{(A.get('kenar_ayni_sektor_orani') or 0) * 100:.0f} (rastgele beklenti %{(A.get('rastgele_ayni_sektor_orani') or 0) * 100:.0f}).", ""]  # fmt: skip
         sb = A.get("sektor_butunlugu") or []
         if sb:
             L += ["**Hangi sektörler gerçekten birlikte hareket ediyor** (iki etken ayıklanmış ortalama korelasyon):", "", "| Sektör | Hisse | Sektör içi | Sektör dışıyla |", "| --- | --- | --- | --- |"]
-            L += [f"| {x['sektor']} | {x['hisse']} | {s(x['ic_kor'], 3)} | {s(x['dis_kor'], 3)} |" for x in sb[:10]]
-            L += ["", "Bütünlüğü olmayanlar (iç ≈ dış): " + ", ".join(x["sektor"] for x in sb[-6:]) + ".", ""]
+            L += [f"| {sek(x['sektor'])} | {x['hisse']} | {s(x['ic_kor'], 3)} | {s(x['dis_kor'], 3)} |" for x in sb[:10]]
+            L += ["", "Bütünlüğü olmayanlar (iç ≈ dış): " + ", ".join(sek(x["sektor"]) for x in sb[-6:]) + ".", ""]
     B = S.get("baglar") or []
     if B:
         L += ["**En güçlü 25 bağ** (iki etken ayıklanmış korelasyon). Çoğu aynı gruba ait şirketler:", "", "| Hisse | Hisse | Korelasyon | Şirketler |", "| --- | --- | --- | --- |"]
-        L += [f"| {x['a']} | {x['b']} | {s(x['kor'])} | {x['a_ad'].title()[:28]} ~ {x['b_ad'].title()[:28]} |" for x in B[:25]] + [""]
+        L += [f"| {x['a']} | {x['b']} | {s(x['kor'])} | {baslik_tr(x['a_ad'])[:28]} ~ {baslik_tr(x['b_ad'])[:28]} |" for x in B[:25]] + [""]
     if Z:
         yil = Z.get("yil", {})
         if yil:
@@ -140,7 +175,7 @@ def rapor_yaz(S: dict, arastirma: Path | None = None) -> str:
                   "Korelasyon satış dalgalarında yükseliyor (herkes birlikte düşüyor), yükseliş dönemlerinde düşüyor (hisse seçimi öne çıkıyor)."]  # fmt: skip
         mv = Z.get("mevsim") or {}
         if mv:
-            L += ["- Mevsimlere göre ham korelasyon: " + ", ".join(f"{k} {s(v.get('ort_kor_ham'))}" for k, v in mv.items()) + ". Üç yıllık veriyle bu, mevsim etkisinden çok belirli dönemlerin (Mart–Nisan 2025, Eylül 2026) izidir."]
+            L += ["- Mevsimlere göre ham korelasyon: " + ", ".join(f"{MEVSIM_AD.get(k, k)} {s(v.get('ort_kor_ham'))}" for k, v in mv.items()) + ". Üç yıllık veriyle bu, mevsim etkisinden çok belirli dönemlerin (Mart–Nisan 2025, Eylül 2026) izidir."]
         L += [""]
 
     # ---------------------------------------------------------------- 2. yayılım
@@ -160,10 +195,10 @@ def rapor_yaz(S: dict, arastirma: Path | None = None) -> str:
         sk = [x for x in (K.get("sektor") or []) if x.get("anlamli") and x.get("tutarli")]
         if sk:
             tst = K.get("sektor_test", {})
-            L += [f"**Maden ve küresel seri → sektör bağları** (sektörün piyasa ortalamasına göre fazla getirisi; {tst.get('test')} testten yanlış keşif oranı %10 ile {tst.get('anlamli')} anlamlı, "
-                  f"{tst.get('anlamli_tutarli')}'i iki yarıda aynı işaretli):", "", "| Seri | Sektör | Ne zaman | Korelasyon | t | Beta |", "| --- | --- | --- | --- | --- | --- |"]  # fmt: skip
+            L += [f"**Maden ve küresel seri → sektör bağları** (sektörün piyasa ortalamasına göre fazla getirisi; {tst.get('test')} testten yanlış keşif oranı %10 ile {tst.get('anlamli')} tanesi anlamlı, "
+                  f"bunların {tst.get('anlamli_tutarli')} tanesi iki yarıda aynı işaretli):", "", "| Seri | Sektör | Ne zaman | Korelasyon | t | Beta |", "| --- | --- | --- | --- | --- | --- |"]  # fmt: skip
             tur_ad = {"bosluk": "gece → açılış boşluğu", "devam": "gece → açılıştan kapanışa", "esanli": "seans içi eşzamanlı"}
-            L += [f"| {SERI_AD.get(x['seri'], x['seri'])} | {x['sektor']} | {tur_ad[x['tur']]} | {s(x['kor'])} | {s(x['t'], 1)} | {s(x['beta'])} |" for x in sk[:18]]
+            L += [f"| {SERI_AD.get(x['seri'], x['seri'])} | {sek(x['sektor'])} | {tur_ad[x['tur']]} | {s(x['kor'])} | {s(x['t'], 1)} | {s(x['beta'])} |" for x in sk[:18]]
             L += ["", "Okuma: petrol yükselince savunma/teknoloji ayrışıyor ve havacılık geriliyor (jeopolitik gerilim); gümüş, altın, platin ve bakır madencilik hisselerini taşıyor; "
                   "bankalar küresel risk iştahına en duyarlı sektör. Havacılıkta gece gelen iyi haberin açılıştaki tepkisi gün içinde kısmen geri veriliyor.", ""]  # fmt: skip
     og = S.get("oncu_grup", {})
@@ -184,8 +219,8 @@ def rapor_yaz(S: dict, arastirma: Path | None = None) -> str:
     osk = S.get("oncu_sektor", {})
     if osk:
         anl = [k for k in osk.get("kenarlar", []) if k.get("anlamli") and k["oncu"] != k["takipci"]]
-        L += [f"**Sektörler arası** (iki etken ayıklanmış): {osk.get('test')} çiftten yalnız {len(anl)}'i anlamlı. Başlıcaları: "
-              + "; ".join(f"{k['oncu']} → {k['takipci']} ({s(k['kor'])})" for k in anl[:6]) + ". Etkiler küçük (korelasyon ≈ 0,11–0,14); tek başına işlem kuralı için yetersiz.", ""]  # fmt: skip
+        L += [f"**Sektörler arası** (iki etken ayıklanmış): {osk.get('test')} çift içinde anlamlı olan yalnız {len(anl)} tane. Başlıcaları: "
+              + "; ".join(f"{sek(k['oncu'])} → {sek(k['takipci'])} ({s(k['kor'])})" for k in anl[:6]) + ". Etkiler küçük (korelasyon ≈ 0,11–0,14); tek başına işlem kuralı için yetersiz.", ""]  # fmt: skip
     osa = S.get("oncu_saatlik", {})
     if osa:
         L += ["**Saat içi:** önceki saatin getirisi ile sonraki saatin getirisi arasındaki gruplar arası ilişki ilk yılda vardı (≈ 0,13–0,16), ikinci yılda kayboldu; "
@@ -250,7 +285,7 @@ def rapor_yaz(S: dict, arastirma: Path | None = None) -> str:
     if rt:
         L += ["**Sektör liderliği yıldan yıla kalıcı değil** (eşit ağırlıklı sektör sepetleri):", "", "| Yıl | Sektör ortalaması | En iyi 3 | En kötü 3 |", "| --- | --- | --- | --- |"]
         for yl, d in rt.get("yil", {}).items():
-            L.append(f"| {yl} | {y(d['ortalama'], 0)} | {', '.join(f'{k} {y(v, 0)}' for k, v in d['en_iyi'][:3])} | {', '.join(f'{k} {y(v, 0)}' for k, v in d['en_kotu'][-3:])} |")
+            L.append(f"| {yl} | {y(d['ortalama'], 0)} | {', '.join(f'{sek(k)} {y(v, 0)}' for k, v in d['en_iyi'][:3])} | {', '.join(f'{sek(k)} {y(v, 0)}' for k, v in d['en_kotu'][-3:])} |")
         kl = rt.get("kalicilik", {})
         L += ["", "Sıra korelasyonu: yıldan yıla " + ", ".join(f"{k} {s(v)}" for k, v in rt.get("yildan_yila", {}).items())
               + f"; aydan aya {s(_al(kl, '1ay', 'sira_kor'))} (t {tt(kl.get('1ay'))}), 3 aylık geçmişle {s(_al(kl, '3ay', 'sira_kor'))} (t {tt(kl.get('3ay'))}). "
@@ -274,8 +309,12 @@ def rapor_yaz(S: dict, arastirma: Path | None = None) -> str:
         except Exception:  # noqa: BLE001
             yd = None
     if yd:
-        sec = [x for x in yd.get("istatistikler", []) if (x.get("guven") or 0) >= 0.7][:9]
-        L += ["**Resmi istatistikler** (araştırma ajanı derlemesi; arama özetlerinden, güveni ≥ 0,7 olanlar):", ""]
+        anahtar = ["Pay senedi yatırımcı sayısı - 2025 yıl sonu", "Milyoner (≥1 milyon TL)", "Milyonerlerin pay senedi portföy değeri payı", "Yabancı payı (portföy değeri) - 2025 sonu",
+                   "Yabancıların pay senedi işlem hacmi payı", "Yabancı net hisse işlemi - 2025", "Halka arz sayısı ve büyüklüğü - 2024", "Halka arz sayısı ve katılım - 2026", "Emeklilik fonlarının en büyük"]  # fmt: skip
+        tum = yd.get("istatistikler", [])
+        sec = [next((x for x in tum if str(x.get("olcu", "")).startswith(a) and (x.get("guven") or 0) >= 0.5), None) for a in anahtar]
+        sec = [x for x in sec if x]
+        L += ["**Resmi istatistikler** (araştırma ajanı derlemesi; arama özetlerinden):", ""]
         L += [f"- {x['olcu']}: {x['deger']} ({x.get('tarih')}; [kaynak]({x.get('kaynak')}))" for x in sec] + [""]
     L += ["Hesap bazında veri yok. Bu yüzden iki vekil kullanıldı: BIST 100 içi (yabancı ve kurumsal ağırlıklı fiyatlama) ve BIST 100 dışı (bireysel ağırlıklı). "
           "Bir özelliğin bir grupta ödüllendirilmesi, o grubun fiyatı belirleyen yatırımcısının o ölçüye baktığına işarettir.", ""]  # fmt: skip
@@ -302,8 +341,8 @@ def rapor_yaz(S: dict, arastirma: Path | None = None) -> str:
         L += ["", "Gece getirisi yüksek hisseler gece kazanmaya, gün içinde kaybetmeye devam ediyor; toplamda geride kalıyor. Bu, açılışta alım yapan kitle ile gün içinde satan kitlenin ayrıştığına işaret ediyor "
               "(Lou, Polk ve Skouras'ın \"gece–gündüz çekişmesi\" bulgusuyla uyumlu). Gün içinde güçlenen hisseler ise sonraki haftalarda öne geçiyor.", ""]  # fmt: skip
     if tav:
-        L += [f"**Tavan ve taban dizileri.** {tav.get('gun')} tavan günü (hisse-günlerin %{(tav.get('hisse_gun_orani') or 0) * 100:.1f}'i), yalnız {tav.get('bist100_gun')}'i BIST 100'de. "
-              f"{tab.get('gun')} taban günü; yıllara göre {', '.join(f'{k}: {v}' for k, v in (tab.get('yillik') or {}).items())}.", "",
+        L += [f"**Tavan ve taban dizileri.** {bn(tav.get('gun'))} tavan günü var (tüm hisse-günlerin {y(tav.get('hisse_gun_orani')).lstrip('+')} kadarı); bunların yalnız {bn(tav.get('bist100_gun'))} tanesi BIST 100'de. "
+              f"Taban günü sayısı {bn(tab.get('gun'))}; yıllara göre {', '.join(f'{k}: {bn(v)}' for k, v in (tab.get('yillik') or {}).items())}.", "",
               "| Dizinin kaçıncı günü | Tavan: ertesi gün yine tavan | Ertesi gece | Ertesi gün içi | Taban: ertesi gün yine taban | Ertesi gece | Ertesi gün içi |", "| --- | --- | --- | --- | --- | --- | --- |"]  # fmt: skip
         for k in ("1", "2", "3", "4", "5+"):
             a, b = _al(tav, "dizi", k, varsayilan={}), _al(tab, "dizi", k, varsayilan={})
@@ -316,8 +355,8 @@ def rapor_yaz(S: dict, arastirma: Path | None = None) -> str:
               f"- Taban serisi bitince toparlanma yok: sonraki 5 gün {y(_al(bb, 'sonraki_5g', 'ort'))}, 20 gün {y(_al(bb, 'sonraki_20g', 'ort'))}.", ""]  # fmt: skip
     if ta.get("hepsi"):
         h_, k_, c_ = ta["hepsi"], ta.get("kilitli", {}), ta.get("ayni_gun_cikilabilen", {})
-        L += [f"**Tabandan alım gerçekte ne kazandırıyor?** {ta.get('olay')} olay. Taban kapanışının ertesi günü açılışta alıp kapanışta satmak kâğıt üstünde {y(h_.get('olculen_ort'))} görünüyor. "
-              f"Ama olayların %{(h_.get('kilitli_kalan') or 0) * 100:.0f}'inde hisse yine tabanda kapanıyor ve satılamıyor. Tabanda kapanmayan ilk güne kadar taşıyınca gerçekleşen ortalama **{y(h_.get('gercek_ort'))}** "
+        L += [f"**Tabandan alım gerçekte ne kazandırıyor?** {bn(ta.get('olay'))} olay. Taban kapanışının ertesi günü açılışta alıp kapanışta satmak kâğıt üstünde {y(h_.get('olculen_ort'))} görünüyor. "
+              f"Ama her 100 olayın {(h_.get('kilitli_kalan') or 0) * 100:.0f} tanesinde hisse yine tabanda kapanıyor ve satılamıyor. Tabanda kapanmayan ilk güne kadar taşıyınca gerçekleşen ortalama **{y(h_.get('gercek_ort'))}** "
               f"(medyan {y(h_.get('gercek_medyan'))}). Aynı gün çıkılabilenlerde {y(c_.get('gercek_ort'))}, kilitli kalanlarda {y(k_.get('gercek_ort'))}. "
               f"BIST 100 içinde {y(_al(ta, 'bist100', 'gercek_ort'))} (kilit oranı %{(_al(ta, 'bist100', 'kilitli_kalan') or 0) * 100:.0f}).", ""]  # fmt: skip
     if ha.get("hisse"):
@@ -417,7 +456,8 @@ def rapor_yaz(S: dict, arastirma: Path | None = None) -> str:
             yl = g1.get("yil", {})
             L += [f"- **Gece taşıma** istatistik olarak en sağlam etki (brüt Deflated Sharpe {s(g1.get('dsr_brut'))}); kârlılığı tamamen maliyete bağlı. Başabaş gidiş-dönüş maliyet {s((g1.get('basabas_maliyet') or 0) * 1e4, 0)} bp. "
                   "Yıllara göre brüt günlük getiri: " + ", ".join(f"{k} {y(v, 2)}" for k, v in yl.items()) + ". Etki azalıyor.",
-                  "- Kapanış ve açılış seanslarında (tek fiyat) işlem yapılırsa alım-satım farkı ödenmez; maliyet iki komisyona iner. Komisyonunuz tek yön 5 bp'nin üstündeyse bu kural size kâr bırakmaz."]  # fmt: skip
+                  f"- Kapanış ve açılış seanslarında (tek fiyat) işlem yapılırsa alım-satım farkı ödenmez; maliyet iki komisyona iner. Tek yön komisyon {s((g1.get('basabas_maliyet') or 0) * 1e4 / 2, 0)} bp'ye "
+                  f"yaklaştıkça kâr sıfırlanır; 2026'nın brüt getirisiyle bu eşik {s((list(yl.values())[-1] if yl else 0) * 1e4 / 2, 0)} bp."]  # fmt: skip
         if bl:
             L += [f"- **Bileşik puan** ({', '.join(('+' if v > 0 else '−') + OZELLIK_AD.get(k, k).lower() for k, v in (bl.get('agirlik') or {}).items())}): alınabilir küçük hisse evrenini "
                   f"20 günde {y(_al(bl, 'net_30bp', 'fazla_ort'))} geçiyor (t {tt(bl.get('net_30bp'), 'fazla_t')}); örneklem dışı ikinci yarıda {y(_al(bl, 'ikinci_yari', 'net_30bp', 'fazla_ort'))} "
@@ -430,12 +470,12 @@ def rapor_yaz(S: dict, arastirma: Path | None = None) -> str:
         if gg.get("bist30"):
             L.append(f"| Alımı kapanışa, satışı açılışa yakın yap; gün içinde beklemenin ödülü yok | Gece {y(gg['bist30']['gece'], 2)}, gün içi {y(gg['bist30']['gunici'], 2)} (BIST 30, günlük ort.); son yarım saat ve 11:30–14:30 negatif | Yüksek |")
         if tav:
-            L.append(f"| Tavan serisi bozulan hisseyi elde tutma; tavan görüp ertesi sabah alma | Seri bozulunca sonraki 5 gün {y(_al(tav, 'dizi_bitince', 'sonraki_5g', 'ort'))} (t {tt(_al(tav, 'dizi_bitince', 'sonraki_5g'))}, {_al(tav, 'dizi_bitince', 'n')} olay) | Yüksek |")
+            L.append(f"| Tavan serisi bozulan hisseyi elde tutma; tavan görüp ertesi sabah alma | Seri bozulunca sonraki 5 gün {y(_al(tav, 'dizi_bitince', 'sonraki_5g', 'ort'))} (t {tt(_al(tav, 'dizi_bitince', 'sonraki_5g'))}, {bn(_al(tav, 'dizi_bitince', 'n'))} olay) | Yüksek |")
         if ta.get("hepsi"):
-            L.append(f"| Tabandaki hisseyi alma (BIST 100 dışı) | Gerçekleşebilir ortalama {y(_al(ta, 'bist100_disi', 'gercek_ort'))}; %{(_al(ta, 'bist100_disi', 'kilitli_kalan') or 0) * 100:.0f} satılamıyor | Yüksek |")
+            L.append(f"| Tabandaki hisseyi alma (BIST 100 dışı) | Gerçekleşebilir ortalama {y(_al(ta, 'bist100_disi', 'gercek_ort'))}; her 100 alımın {(_al(ta, 'bist100_disi', 'kilitli_kalan') or 0) * 100:.0f} tanesi o gün satılamıyor | Yüksek |")
         if hp2.get("bist100_disi"):
             d = hp2["bist100_disi"]
-            L.append(f"| BIST 100 dışında hacmi 3 katına çıkan hisseyi alma; elindeyse çıkış düşün | Sonraki 5 gün {y(_al(d, 'sonraki_5g', 'ort'))} (t {tt(d.get('sonraki_5g'))}), 20 gün {y(_al(d, 'sonraki_20g', 'ort'))} ({d.get('olay')} olay); BIST 100'de etki yok | Yüksek |")
+            L.append(f"| BIST 100 dışında hacmi 3 katına çıkan hisseyi alma; elindeyse çıkış düşün | Sonraki 5 gün {y(_al(d, 'sonraki_5g', 'ort'))} (t {tt(d.get('sonraki_5g'))}), 20 gün {y(_al(d, 'sonraki_20g', 'ort'))} ({bn(d.get('olay'))} olay); BIST 100'de etki yok | Yüksek |")
         if ha.get("hisse"):
             L.append(f"| Halka arzı tavan serisi bittikten sonra alma | 20 günde medyan {y(_al(ha, 'sonra_20g', 'medyan'))}, bugüne medyan {y(_al(ha, 'bugune', 'medyan'))} (endekse göre, {ha['hisse']} arz) | Yüksek |")
         if fon.get("satim"):
@@ -464,3 +504,22 @@ def rapor_yaz(S: dict, arastirma: Path | None = None) -> str:
     if S.get("hata"):
         L += ["Çalışmayan adımlar: " + "; ".join(f"{k}: {v}" for k, v in S["hata"].items()), ""]
     return "\n".join(L)
+
+
+def rapor_yenile(cikti: str | Path, arastirma: str | Path | None, rapor_yolu: str | Path) -> str:
+    """Kaydedilmiş JSON çıktılarından raporu yeniden üretir (analizi yeniden çalıştırmadan)."""
+    cikti = Path(cikti)
+
+    def oku(ad: str) -> dict:
+        p = cikti / ad
+        return json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+
+    oz = oku("ozet.json")
+    ag = oku("agac.json")
+    S: dict = {"veri": oz.get("veri", {}), "hata": oz.get("hata", {}), "agac": ag, "baglar": ag.get("en_guclu_baglar"), "zaman": oku("zaman.json"), "strateji": oku("strateji.json")}
+    for dosya in ("oncu.json", "akis.json", "yatirimci.json"):
+        S.update({k: v for k, v in oku(dosya).items() if v is not None})
+    metin = rapor_yaz(S, Path(arastirma) if arastirma else None)
+    Path(rapor_yolu).parent.mkdir(parents=True, exist_ok=True)
+    Path(rapor_yolu).write_text(metin, encoding="utf-8")
+    return metin

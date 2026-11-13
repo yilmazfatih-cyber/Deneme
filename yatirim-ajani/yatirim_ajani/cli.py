@@ -861,6 +861,16 @@ def komut_ag_veri_cek(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
 
 
 def komut_ag_analiz(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
+    from datetime import date as _date
+    from pathlib import Path as _Path
+
+    if a.yalniz_rapor:
+        from .ag.rapor import rapor_yenile
+
+        yol = a.rapor or f"raporlar/ag-analiz-{_date.today():%Y%m%d}.md"
+        metin = rapor_yenile(a.cikti or _Path(a.klasor) / "analiz", a.arastirma, yol)
+        print(f"rapor → {yol} ({len(metin)} karakter)")
+        return 0
     from .ag.calistir import calistir
 
     calistir(a.klasor, a.cikti, a.rapor, a.arastirma)
@@ -1372,6 +1382,7 @@ def ayristirici() -> argparse.ArgumentParser:
     sp.add_argument("--cikti", help="JSON çıktı klasörü (varsayılan: <klasor>/analiz)")
     sp.add_argument("--rapor", help="Rapor yolu (varsayılan: raporlar/ag-analiz-YYYYMMDD.md)")
     sp.add_argument("--arastirma", default="dosya_kaynak/ag", help="Araştırma ajanı JSON'ları")
+    sp.add_argument("--yalniz-rapor", action="store_true", help="Analizi yeniden çalıştırma; kaydedilmiş JSON'lardan raporu yeniden üret")
     sp.set_defaults(islev=komut_ag_analiz)
 
     sp = alt.add_parser("yeniden-baslat", help="Düşüş sınırıyla durmuş sanal hesabı yeniden aç")
