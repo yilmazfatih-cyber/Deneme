@@ -860,6 +860,12 @@ def komut_ag_veri_cek(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
     return 0
 
 
+def komut_ag_analiz(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
+    from .ag.calistir import calistir
+
+    calistir(a.klasor, a.cikti, a.rapor, a.arastirma)
+    return 0
+
 # --- hisse dosyası -----------------------------------------------------------------------------
 def komut_dosya_veri_cek(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
     from datetime import date as _date
@@ -1360,6 +1366,13 @@ def ayristirici() -> argparse.ArgumentParser:
     sp.add_argument("--hisseler", help="Virgülle ayrılmış hisse listesi (verilmezse TradingView taraması)")
     sp.add_argument("--paralel", type=int, default=6)
     sp.set_defaults(islev=komut_ag_veri_cek)
+
+    sp = alt.add_parser("ag-analiz", help="Ağ analizi: BIST ağacı, öncü-takipçi, para akışı, yatırımcı tipleri, günlük kural testleri + rapor")
+    sp.add_argument("--klasor", default="veri/ag")
+    sp.add_argument("--cikti", help="JSON çıktı klasörü (varsayılan: <klasor>/analiz)")
+    sp.add_argument("--rapor", help="Rapor yolu (varsayılan: raporlar/ag-analiz-YYYYMMDD.md)")
+    sp.add_argument("--arastirma", default="dosya_kaynak/ag", help="Araştırma ajanı JSON'ları")
+    sp.set_defaults(islev=komut_ag_analiz)
 
     sp = alt.add_parser("yeniden-baslat", help="Düşüş sınırıyla durmuş sanal hesabı yeniden aç")
     sp.add_argument("--piyasa", choices=list(PIYASALAR), required=True)
