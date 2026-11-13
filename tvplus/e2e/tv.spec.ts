@@ -23,7 +23,8 @@ import {
 const heroTitle = (page: Page) => page.locator('[data-hero-title]').first()
 
 /** Odaktaki kart etiketinden başlık: "2. Sintel" → "Sintel", "Charge, Yeni" → "Charge". */
-const titleOf = (label: string) => label.replace(/^\d+\.\s*/, '').replace(/, (Yeni|Yeni Bölüm|Son 3 Gün|\d+ dk kaldı).*$/, '')
+const titleOf = (label: string) =>
+  label.replace(/^\d+\.\s*/, '').replace(/, (Yeni|Yeni Bölüm|Son 3 Gün|\d+ dk kaldı).*$/, '')
 
 async function openTv(page: Page): Promise<void> {
   await page.goto(appUrl('/', { cihaz: 'tv' }))
@@ -40,9 +41,7 @@ async function backOutOfPlayer(page: Page): Promise<void> {
 }
 
 test.describe('TV uygulaması', () => {
-  test('klavyeyle giriş → profil → ana sayfa; satırlarda tek odak, vitrin odaktaki başlığı izler', async ({
-    page,
-  }) => {
+  test('klavyeyle giriş → profil → ana sayfa; satırlarda tek odak, vitrin odaktaki başlığı izler', async ({ page }) => {
     await openTv(page)
     await expect(page.getByRole('region', { name: 'Ana Sayfa' })).toBeVisible()
     await expect(heroTitle(page)).not.toHaveText('')
@@ -52,9 +51,9 @@ test.describe('TV uygulaması', () => {
     for (const key of ['ArrowDown', 'ArrowDown', 'ArrowRight', 'ArrowRight', 'ArrowDown', 'ArrowRight', 'ArrowUp']) {
       const label = await tvKey(page, key)
       seen.add(label)
-      await expect.poll(async () => (await heroTitle(page).textContent())?.trim(), { message: `vitrin: ${label}` }).toBe(
-        titleOf(label),
-      )
+      await expect
+        .poll(async () => (await heroTitle(page).textContent())?.trim(), { message: `vitrin: ${label}` })
+        .toBe(titleOf(label))
     }
     expect(seen.size, 'odak gerçekten yer değiştirdi').toBeGreaterThan(4)
   })

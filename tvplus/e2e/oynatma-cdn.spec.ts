@@ -28,7 +28,7 @@ async function resetNodes(page: Page): Promise<void> {
 test.describe('CDN koşulları', () => {
   test.skip(offline, 'ağ gerekir (TVP_E2E_OFFLINE=1)')
 
-  test(`etkin düğüm yavaşlayınca bit hızı kademe kademe düşer ${NET}`, async ({ page }) => {
+  test(`düğümler yavaşlayınca (Kaputun altı → CDN → Zayıf Wi-Fi 2 Mb) bit hızı düşer ${NET}`, async ({ page }) => {
     await signIn(page)
     await resetNodes(page)
     try {

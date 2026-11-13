@@ -86,14 +86,18 @@ test.describe('Rehber', () => {
     // Rehberde de kalktı (sayfa yeniden yüklenince: sunucuda kalktığının kanıtı)
     await page.goto('/#/rehber')
     await page.reload()
-    const again = (await nextProgramme(page.getByRole('region', { name: /^Yayın akışı/ }).getByRole('group', { name: '20 TRT Haber' }))).block
+    const again = (
+      await nextProgramme(
+        page.getByRole('region', { name: /^Yayın akışı/ }).getByRole('group', { name: '20 TRT Haber' }),
+      )
+    ).block
     await expect(again).not.toHaveAttribute('aria-label', /hatırlatma kurulu/)
   })
 
   // UYGULAMA HATASI: TV+'ım'dan kaldırılan hatırlatma, aynı oturumda Rehber'e dönünce hâlâ "hatırlatma kurulu"
   // görünür. web/src/features/account/index.tsx `Reminders.remove` ham `SetReminder` yollar; Rehber'in dayandığı
   // web/src/features/live/actions.ts `reminderStore` geçersiz kılması ve 'Guide' sorgu önbelleği (120 sn) güncellenmez.
-  test.fixme('TV+\'ım\'dan kaldırılan hatırlatma uygulama içinde Rehber\'e döner dönmez kalkar', async ({ page }) => {
+  test.fixme("TV+'ım'dan kaldırılan hatırlatma uygulama içinde Rehber'e döner dönmez kalkar", async ({ page }) => {
     test.skip(isMobile(page), 'masaüstü')
     await signIn(page)
     await page.goto('/#/rehber')

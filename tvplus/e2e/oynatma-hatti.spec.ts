@@ -47,14 +47,23 @@ test.describe('oynatma hattı', () => {
     })
 
     await signIn(page)
-    await page.goto('/#/izle/Video:80010001')
+    // Baştan: Deniz'in yer imi (öteki testler Sintel'i oynatır) başlangıcı değiştirmesin
+    await page.goto('/#/izle/Video:80010001?baslat=bastan')
     await expect(page.getByText('Sintel').first()).toBeAttached()
     await waitPlaying(page, 4)
 
     const v = await videoState(page)
     expect(v?.error).toBeNull()
     expect(v?.width).toBeGreaterThan(0)
-    expect(v?.bufferedEnd).toBeGreaterThan(v!.currentTime)
+    await expect
+      .poll(
+        async () => {
+          const s = await videoState(page)
+          return (s?.bufferedEnd ?? 0) - (s?.currentTime ?? 0)
+        },
+        { message: 'oynatma konumunun ilerisi tamponda' },
+      )
+      .toBeGreaterThan(0)
 
     expect(seen.ftl, 'FTL yoklaması').toBeGreaterThan(0)
     expect(seen.provision, 'MSL anahtar sağlama').toBeGreaterThan(0)
@@ -113,7 +122,10 @@ test.describe('oynatma hattı', () => {
     await signIn(page)
     // Tears of Steel'i yalnız bu dosya oynatır: satırdaki yer imi bu testin. Oynatma detay penceresinden başlar.
     await page.goto('/#/goz-at?jbv=80010002')
-    await page.getByRole('dialog', { name: 'Tears of Steel' }).getByRole('link', { name: /^Oynat, Tears of Steel/ }).click()
+    await page
+      .getByRole('dialog', { name: 'Tears of Steel' })
+      .getByRole('link', { name: /^(Oynat|Devam Et), Tears of Steel/ })
+      .click()
     await expect(page).toHaveURL(/#\/izle\/Video:80010002/)
     await waitPlaying(page, 6)
     await wakeChrome(page)
@@ -123,30 +135,43 @@ test.describe('oynatma hattı', () => {
 
     await page.goto('/#/goz-at')
     await page.reload()
-    const card = page.getByRole('region', { name: 'İzlemeye Devam Et' }).getByRole('link', { name: /^Tears of Steel: Devam Et/ })
+    const card = page
+      .getByRole('region', { name: 'İzlemeye Devam Et' })
+      .getByRole('link', { name: /^Tears of Steel: Devam Et/ })
     await expect(card).toBeVisible()
     await expect(card).toHaveAttribute('aria-label', /dk kaldı/)
     // Tek adım: kart doğrudan oynatıcıyı açar, kaldığı yerden
     await card.click()
     await expect(page).toHaveURL(/#\/izle\/Video:80010002/)
-    await expect.poll(async () => (await videoState(page))?.readyState ?? 0, { timeout: 60_000 }).toBeGreaterThanOrEqual(2)
+    await expect
+      .poll(async () => (await videoState(page))?.readyState ?? 0, { timeout: 60_000 })
+      .toBeGreaterThanOrEqual(2)
     expect((await videoState(page))!.currentTime, 'yer iminden sürer').toBeGreaterThan(4)
     await waitPlaying(page, 8)
   })
 
-  // UYGULAMA HATASI: oynatıcıdan uygulama içinde ana sayfaya dönünce "İzlemeye Devam Et" bayat kalır. Detay penceresi
-  // oynatma niyetini web/src/features/detail/sync.ts'teki kümeye, ana sayfa (LolomoPage) ise
-  // web/src/features/preview/sync.ts'teki AYRI kümeye bakar; doğrudan / yansıtmayla açılan oynatıcı hiç not etmez.
-  test.fixme(`oynatıcıdan uygulama içinde dönünce "İzlemeye Devam Et" tazelenir ${NET}`, async ({ page }) => {
-    test.skip(isMobile(page), 'yalnız masaüstünde')
+  // UYGULAMA HATASI: oynatıcı "oynatma niyeti" not edilmeden açılınca (mobil aramadaki "‹Ad› oynat" bağlantısı,
+  // "Bu Cihazda Devam Et", gelen yansıtma, paylaşılan /izle bağlantısı) ana sayfaya uygulama içinde dönüldüğünde
+  // "İzlemeye Devam Et" bayat kalır; ancak sayfa yenilenince düzelir. Ana sayfa (LolomoPage) yalnız
+  // web/src/features/preview/sync.ts `notePlaybackIntent` kaydı varsa Falcor önbelleğini tazeler; detay
+  // penceresi de ayrı bir kümeye (web/src/features/detail/sync.ts) yazar. Oynatıcı oynatmayı kendisi not etmeli.
+  test.fixme(`aramadan oynatıp dönünce "İzlemeye Devam Et" tazelenir ${NET}`, async ({ page }) => {
+    test.skip(!isMobile(page), 'mobil aramanın oynat bağlantısı')
     await signIn(page)
-    await page.goto('/#/goz-at?jbv=80010002')
-    await page.getByRole('dialog', { name: 'Tears of Steel' }).getByRole('link', { name: /^Oynat, Tears of Steel/ }).click()
+    await page.goto('/#/goz-at')
+    await expect(page.getByRole('heading', { name: "Türkiye'de Bugünün Top 10 Dizi Listesi" })).toBeVisible()
+    await page.getByRole('banner').getByRole('link', { name: 'Ara', exact: true }).click()
+    await page
+      .getByRole('region', { name: 'Sana Özel Öneriler' })
+      .getByRole('link', { name: 'Tears of Steel oynat' })
+      .click()
+    await expect(page).toHaveURL(/#\/izle\/Video:80010002/)
     await waitPlaying(page, 6)
-    await wakeChrome(page)
-    await page.getByRole('button', { name: 'Geri' }).first().click()
-    await page.getByRole('link', { name: 'Ana Sayfa' }).first().click()
-    await expect(page.getByRole('region', { name: 'İzlemeye Devam Et' }).getByRole('link', { name: /^Tears of Steel: Devam Et/ })).toBeVisible()
+    await page.goBack()
+    await page.getByRole('link', { name: 'Ana Sayfa' }).click()
+    await expect(
+      page.getByRole('region', { name: 'İzlemeye Devam Et' }).getByRole('link', { name: /^Tears of Steel/ }),
+    ).toBeVisible()
   })
 })
 
@@ -160,9 +185,7 @@ test.describe('doğrusal kanal', () => {
       .poll(async () => (await videoState(page))?.readyState ?? 0, { timeout: 60_000 })
       .toBeGreaterThanOrEqual(3)
     const t1 = (await videoState(page))!.currentTime
-    await expect
-      .poll(async () => (await videoState(page))!.currentTime, { timeout: 30_000 })
-      .toBeGreaterThan(t1 + 2)
+    await expect.poll(async () => (await videoState(page))!.currentTime, { timeout: 30_000 }).toBeGreaterThan(t1 + 2)
     await expect(page.getByText('CANLI').first()).toBeVisible()
     test.skip(isMobile(page), 'Baştan Başlat masaüstü denetim şeridinde denenir')
 

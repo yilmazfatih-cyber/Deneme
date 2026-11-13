@@ -164,7 +164,7 @@ function CastPickerHost(): ReactElement {
   const mobile = detectFormFactor() === 'mobile'
   if (mobile)
     return (
-      <Sheet open={open} onClose={closeCastPicker} title="TV'de İzle">
+      <Sheet open={open} onClose={closeCastPicker} title="TV'de İzle" className="dv-picker-sheet">
         <PickerBody />
       </Sheet>
     )

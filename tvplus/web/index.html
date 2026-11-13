@@ -3,15 +3,108 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#0D0E12" />
+    <meta name="theme-color" content="#141414" />
     <title>TV+</title>
     <link rel="icon" type="image/png" href="/brand/logo.png" />
+    <!-- Uygulama yüklenene dek (ve yüklenemezse) ekran beyaz kalmasın. -->
+    <style>
+      html,
+      body {
+        background: #141414;
+      }
+    </style>
+    <!--
+      Yazı tipi sayfayı BEKLETMEZ: stil dosyası önce "preload" olarak istenir, gelince devreye girer.
+      (Engelleyen bir <link rel="stylesheet"> ağ takıldığında hem çizimi hem betikleri bekletir → boş ekran.)
+    -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      rel="stylesheet"
+      rel="preload"
+      as="style"
       href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+      onload="
+        this.onload = null
+        this.rel = 'stylesheet'
+      "
     />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+      />
+    </noscript>
+    <script>
+      /* Açılış tanılaması: uygulama başlayamazsa boş ekran yerine nedenini gösterir (README: "Açılmazsa"). */
+      ;(function () {
+        var shown = false
+        function show(detail) {
+          if (shown || window.__tvpBooted) return
+          shown = true
+          var box = document.createElement('div')
+          box.id = 'tvp-boot-error'
+          box.setAttribute('role', 'alert')
+          box.style.cssText =
+            'position:fixed;inset:0;z-index:2147483647;overflow:auto;background:#141414;color:#fff;padding:40px 24px;' +
+            'font:16px/1.6 system-ui,-apple-system,Segoe UI,sans-serif'
+          var h = document.createElement('h1')
+          h.textContent = 'TV+ açılamadı'
+          h.style.cssText = 'font-size:24px;margin:0 0 12px'
+          var p = document.createElement('p')
+          p.textContent = 'Uygulama başlatılamadı. Aşağıdaki metin nedenini söyler; kopyalayıp iletebilirsin.'
+          p.style.cssText = 'color:#b3b3b3;margin:0 0 16px;max-width:60ch'
+          var pre = document.createElement('pre')
+          pre.textContent = detail + '\n\nAdres: ' + location.href + '\nTarayıcı: ' + navigator.userAgent
+          pre.style.cssText =
+            'white-space:pre-wrap;word-break:break-word;background:#232323;padding:16px;border-radius:8px;' +
+            'max-width:100ch;font:13px/1.5 ui-monospace,Menlo,Consolas,monospace'
+          var ul = document.createElement('ul')
+          ul.style.cssText = 'color:#b3b3b3;max-width:70ch;padding-left:20px'
+          var tips = [
+            'Açık kalmış eski bir "npm run dev" penceresi varsa kapat (Ctrl+C), sonra yeniden başlat.',
+            'Depoyu güncelledikten sonra "npm install" çalıştır.',
+            'Sayfayı önbelleği atlayarak yenile (Mac: Cmd+Shift+R).',
+            'Olmazsa derlenmiş kipte dene: "npm run build", ardından "PORT=8790 npm start" ve http://localhost:8790',
+          ]
+          for (var i = 0; i < tips.length; i++) {
+            var li = document.createElement('li')
+            li.textContent = tips[i]
+            ul.appendChild(li)
+          }
+          box.appendChild(h)
+          box.appendChild(p)
+          box.appendChild(pre)
+          box.appendChild(ul)
+          ;(document.body || document.documentElement).appendChild(box)
+        }
+        window.addEventListener(
+          'error',
+          function (e) {
+            var t = e.target
+            if (t && t !== window && t.tagName) {
+              // Kaynak yükleme hatası: yalnız betikler uygulamayı durdurur (yazı tipi ya da görsel değil).
+              if (t.tagName === 'SCRIPT') show('Betik yüklenemedi: ' + (t.src || '(satır içi)'))
+              return
+            }
+            show(
+              (e.message || 'Bilinmeyen hata') +
+                (e.filename ? '\n' + e.filename + ':' + e.lineno + ':' + e.colno : '') +
+                (e.error && e.error.stack ? '\n\n' + e.error.stack : ''),
+            )
+          },
+          true,
+        )
+        window.addEventListener('unhandledrejection', function (e) {
+          var r = e.reason
+          show(String((r && (r.stack || r.message)) || r))
+        })
+        setTimeout(function () {
+          var root = document.getElementById('root')
+          if (!window.__tvpBooted && root && !root.childElementCount)
+            show('Uygulama 10 saniye içinde başlamadı: betikler yüklenmedi ya da çalışmadı.')
+        }, 10000)
+      })()
+    </script>
     <!--TVP_BOOT-->
   </head>
   <body>

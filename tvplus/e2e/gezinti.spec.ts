@@ -71,7 +71,10 @@ test.describe('Ana sayfa', () => {
     }
     await expect(page.getByRole('heading', { name: 'Deniz için En İyi Seçimler' })).toBeAttached()
     const titles = await rowTitles(page)
-    expect(titles.filter((t, i) => titles.indexOf(t) !== i), 'aynı satır iki kez yok').toEqual([])
+    expect(
+      titles.filter((t, i) => titles.indexOf(t) !== i),
+      'aynı satır iki kez yok',
+    ).toEqual([])
     expect(await horizontalOverflow(page)).toBe(0)
   })
 
@@ -140,7 +143,7 @@ test.describe('Satırlar ve önizleme (masaüstü)', () => {
     await page.goto('/#/goz-at?jbv=80010001')
     const modal = page.getByRole('dialog', { name: 'Sintel' })
     await expect(modal.getByRole('heading', { name: 'Sintel', exact: true })).toBeVisible()
-    await expect(modal.getByRole('link', { name: /^Oynat, Sintel/ })).toBeVisible()
+    await expect(modal.getByRole('link', { name: /^(Oynat|Devam Et), Sintel/ })).toBeVisible()
     await expect(modal.getByRole('region', { name: 'Benzerleri' })).toBeVisible()
     await expect(modal.getByText(/Ortak: /).first()).toBeVisible()
     expect(gql.ops).toContain('DetailModal')
@@ -179,7 +182,7 @@ test.describe('Mobil başlık sayfası', () => {
     await page.goto('/#/baslik/80010001')
     const article = page.getByRole('article', { name: 'Sintel' })
     await expect(article.getByRole('heading', { name: 'Sintel', level: 1 })).toBeVisible()
-    await expect(article.getByRole('link', { name: /^Oynat, Sintel/ })).toBeVisible()
+    await expect(article.getByRole('link', { name: /^(Oynat|Devam Et), Sintel/ })).toBeVisible()
     const tabs = article.getByRole('tablist', { name: 'Başlık bölümleri' })
     await expect(tabs.getByRole('tab', { name: 'Benzerleri' })).toHaveAttribute('aria-selected', 'true')
     await expect(article.getByRole('tabpanel', { name: 'Benzerleri' }).getByRole('link').first()).toBeVisible()

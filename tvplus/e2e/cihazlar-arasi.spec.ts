@@ -31,7 +31,7 @@ const esc = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 async function tvLoginCode(tv: Page): Promise<string> {
   const qr = tv.getByRole('img', { name: /^Giriş için QR kodu: / })
   await expect(qr).toBeVisible({ timeout: 30_000 })
-  const code = /([A-Z0-9]{4}-[A-Z0-9]{4})/.exec((await qr.getAttribute('aria-label')) ?? '')?.[1]
+  const code = /([A-Z0-9]{4}-[A-Z0-9]{4})/.exec((await qr.getAttribute('alt')) ?? '')?.[1]
   expect(code, 'TV kodu').toBeTruthy()
   await expect(tv.getByText(code!, { exact: true })).toBeVisible()
   return code!
@@ -67,20 +67,23 @@ async function chooseRemoteTarget(phone: Page, tvName: string): Promise<void> {
   const header = phone.locator('button[aria-haspopup="dialog"]').filter({ hasText: /\S/ }).first()
   await expect(header).toBeVisible()
   await expect
-    .poll(async () => {
-      if ((await header.innerText()).includes(tvName)) return true
-      const inline = phone.getByRole('button', { name: new RegExp(`^${esc(tvName)}`) })
-      if (await inline.first().isVisible()) {
-        await inline.first().click()
-      } else {
-        await header.click()
-        const sheet = phone.getByRole('dialog', { name: 'Kumanda edilecek TV' })
-        const choice = sheet.getByRole('button', { name: new RegExp(`^${esc(tvName)}`) })
-        if (await choice.isVisible().catch(() => false)) await choice.click()
-        else await phone.keyboard.press('Escape')
-      }
-      return (await header.innerText()).includes(tvName)
-    }, { timeout: 30_000, message: `kumanda hedefi ${tvName}` })
+    .poll(
+      async () => {
+        if ((await header.innerText()).includes(tvName)) return true
+        const inline = phone.getByRole('button', { name: new RegExp(`^${esc(tvName)}`) })
+        if (await inline.first().isVisible()) {
+          await inline.first().click()
+        } else {
+          await header.click()
+          const sheet = phone.getByRole('dialog', { name: 'Kumanda edilecek TV' })
+          const choice = sheet.getByRole('button', { name: new RegExp(`^${esc(tvName)}`) })
+          if (await choice.isVisible().catch(() => false)) await choice.click()
+          else await phone.keyboard.press('Escape')
+        }
+        return (await header.innerText()).includes(tvName)
+      },
+      { timeout: 30_000, message: `kumanda hedefi ${tvName}` },
+    )
     .toBe(true)
   await expect(phone.getByRole('status').filter({ hasText: 'Bağlı' })).toBeVisible()
 }
@@ -136,9 +139,7 @@ test.describe('QR / kodla TV girişi', () => {
 })
 
 test.describe('telefon kumanda', () => {
-  test("/kumanda yön tuşu TV'de odağı taşır; telefondan yazılan TV'deki arama kutusuna gider", async ({
-    context,
-  }) => {
+  test("/kumanda yön tuşu TV'de odağı taşır; telefondan yazılan TV'deki arama kutusuna gider", async ({ context }) => {
     const { tv, name } = await signedInTv(context)
     const phone = await context.newPage()
     await phone.setViewportSize({ width: 390, height: 844 })
@@ -158,9 +159,9 @@ test.describe('telefon kumanda', () => {
     // "Ara": TV arama ekranına geçer, telefon klavyesi açılır; yazılan TV'deki kutuya düşer
     await phone.getByRole('button', { name: 'Ara', exact: true }).click()
     await expect(tv).toHaveURL(/#\/tv\/ara/)
-    const typer = phone.getByRole('textbox', { name: "TV'deki arama kutusuna yaz" }).or(
-      phone.getByRole('searchbox', { name: "TV'deki arama kutusuna yaz" }),
-    )
+    const typer = phone
+      .getByRole('textbox', { name: "TV'deki arama kutusuna yaz" })
+      .or(phone.getByRole('searchbox', { name: "TV'deki arama kutusuna yaz" }))
     await expect(typer).toBeVisible()
     await typer.pressSequentially('sin', { delay: 120 })
     await expect(tv.getByRole('search')).toHaveText(/sin/i)
@@ -175,26 +176,38 @@ test.describe('yansıtma', () => {
     context,
     page,
   }) => {
+    // Evde iki TV: yansıtma seçicisi her koşuda açılır (oynatıcının üstünde görünmeli)
     const { tv, name } = await signedInTv(context)
+    await signedInTv(context)
     await signIn(page, 'Deniz', { vd: uniq('web'), cihaz: 'web' })
-    await page.goto(page.url().replace(/#.*$/, '#/izle/Video:80010001?konum=60'))
-    await waitPlaying(page, 63)
+    // Oynatma uygulama içinden başlar (detay penceresi → Oynat / Devam Et)
+    await page.goto(page.url().replace(/#.*$/, '#/goz-at?jbv=80010001'))
+    await page
+      .getByRole('dialog', { name: 'Sintel' })
+      .getByRole('link', { name: /^(Oynat|Devam Et), Sintel/ })
+      .click()
+    await expect(page).toHaveURL(/#\/izle\/Video:80010001/)
+    const start = (await videoState(page))?.currentTime ?? 0
+    await waitPlaying(page, start + 6)
 
     // Oynatıcıdaki "TV'de İzle"; birden çok TV varsa seçiciden bizimki
     await page.mouse.move(700, 450)
     await page.mouse.move(720, 460, { steps: 3 })
     await page.getByRole('button', { name: "TV'de İzle" }).click()
     const picker = page.getByRole('dialog', { name: "TV'de İzle" })
-    if (await picker.isVisible().catch(() => false)) {
-      await picker.getByRole('button', { name: new RegExp(`^${esc(name)}`) }).click()
-    }
-    const handedOver = (await videoState(page))?.currentTime ?? 60
+    await expect(picker).toBeVisible()
+    await picker.getByRole('button', { name: new RegExp(`^${esc(name)}`) }).click()
+    const handedOver = (await videoState(page))?.currentTime ?? 0
 
     // TV kaldığı yerden oynatır
     await expect(tv).toHaveURL(/#\/tv\/izle\/Video:80010001/, { timeout: 30_000 })
-    await waitPlaying(tv, Math.max(55, handedOver - 10))
+    await expect
+      .poll(async () => (await videoState(tv))?.readyState ?? 0, { timeout: 60_000 })
+      .toBeGreaterThanOrEqual(2)
     const tvPos = (await videoState(tv))!.currentTime
+    expect(tvPos, 'devredilen konumdan (baştan değil)').toBeGreaterThan(handedOver - 5)
     expect(tvPos, 'devredilen konumun yakınında').toBeLessThan(handedOver + 30)
+    await waitPlaying(tv, tvPos + 1)
 
     // Web "Şu an TV'de" kartını gösterir; kartta duraklat → TV'nin videosu durur
     const card = page.getByRole('region', { name: "Şu an TV'de" }).filter({ hasText: name })
@@ -205,8 +218,31 @@ test.describe('yansıtma', () => {
     // Bu Cihazda Devam Et: oynatma web'e döner, TV oynatıcıdan çıkar
     await card.getByRole('button', { name: 'Bu Cihazda Devam Et' }).click()
     await expect(page).toHaveURL(/#\/izle\/Video:80010001/)
-    await waitPlaying(page, Math.max(55, tvPos - 10))
+    await expect
+      .poll(async () => (await videoState(page))?.readyState ?? 0, { timeout: 60_000 })
+      .toBeGreaterThanOrEqual(2)
+    expect((await videoState(page))!.currentTime, "TV'nin konumundan sürer").toBeGreaterThan(tvPos - 5)
     await expect(tv).not.toHaveURL(/#\/tv\/izle\//, { timeout: 30_000 })
+  })
+})
+
+test.describe('yansıtma (doğrudan açılan oynatıcı)', () => {
+  // UYGULAMA HATASI: oynatıcı ilk açılan sayfaysa (paylaşılan bağlantı / yenileme) ve birden çok TV çevrimiçiyse
+  // "TV'de İzle" hiçbir şey yapmaz. Yansıtma işleyicisi web/src/app/services.ts'te kuruluyor, ama seçicinin yuvası
+  // (registerPickerHost, web/src/devices/ui.tsx) yalnız features/remote yüklenince — kabuksuz /izle'de hiç — kaydoluyor;
+  // openCastPicker (web/src/devices/runtime.tsx) yuva yokken sessizce hiçbir şey çizmiyor.
+  test.fixme(`/izle yenilenince iki TV varken "TV'de İzle" seçiciyi açar ${NET}`, async ({ context, page }) => {
+    const { name } = await signedInTv(context)
+    await signedInTv(context)
+    await signIn(page, 'Deniz', { vd: uniq('web'), cihaz: 'web' })
+    await page.goto(page.url().replace(/#.*$/, '#/izle/Video:80010001'))
+    await page.reload()
+    await waitPlaying(page, 3)
+    await page.mouse.move(700, 450)
+    await page.mouse.move(720, 460, { steps: 3 })
+    await page.getByRole('button', { name: "TV'de İzle" }).click()
+    const picker = page.getByRole('dialog', { name: "TV'de İzle" })
+    await expect(picker.getByRole('button', { name: new RegExp(`^${esc(name)}`) })).toBeVisible()
   })
 })
 
@@ -236,7 +272,10 @@ test.describe('cihaz yönetimi ve vitrin', () => {
     const auto = page.getByRole('switch', { name: 'Benim yerime onayla' })
     if ((await auto.getAttribute('aria-checked')) !== 'true') await auto.click()
     await expect(auto).toHaveAttribute('aria-checked', 'true')
-    await page.getByRole('group', { name: 'Senaryolar' }).getByRole('button', { name: /^1 · TV'de QR ile giriş/ }).click()
+    await page
+      .getByRole('group', { name: 'Senaryolar' })
+      .getByRole('button', { name: /^1 · TV'de QR ile giriş/ })
+      .click()
     await expect(page.getByText('TV açıldı. Şimdi 2. adımla telefonu kumanda yapabilirsin.')).toBeVisible({
       timeout: 90_000,
     })

@@ -10,14 +10,7 @@
  *   pageApi                sayfanın kendi oturumuyla (sanal cihaz başlığı + CSRF) REST çağrısı
  *   waitForModel           stüdyo uçlarını yoklayarak tahmin modelinin / toplulukların hazır olmasını bekler
  */
-import {
-  expect,
-  test as base,
-  type BrowserContext,
-  type Locator,
-  type Page,
-  type Response,
-} from '@playwright/test'
+import { expect, test as base, type BrowserContext, type Locator, type Page, type Response } from '@playwright/test'
 import { FORM_FACTOR_PARAM, HEADERS, VIRTUAL_DEVICE_PARAM } from '../shared/constants'
 
 export { expect }
@@ -100,12 +93,7 @@ const VIEWPORT: Record<Cihaz, { width: number; height: number }> = {
 }
 
 /** Aynı tarayıcı bağlamında ayrı bir sanal cihaz sayfası açar (cihaz vitrinindeki gibi). */
-export async function openDevice(
-  context: BrowserContext,
-  vd: string,
-  cihaz: Cihaz,
-  route = '/',
-): Promise<Page> {
+export async function openDevice(context: BrowserContext, vd: string, cihaz: Cihaz, route = '/'): Promise<Page> {
   const page = await context.newPage()
   await page.setViewportSize(VIEWPORT[cihaz])
   await page.goto(appUrl(route, { vd, cihaz }))
@@ -134,13 +122,6 @@ export async function pickProfile(page: Page, profile: string): Promise<void> {
   await expect(page.getByRole('heading', { name: 'Kim izliyor?' })).toBeVisible()
   await page.getByRole('button', { name: profile, exact: true }).click()
   await expect(page).toHaveURL(/#\/goz-at/)
-}
-
-/** Yalnız giriş (profil kapısında kalır). */
-export async function loginOnly(page: Page, opts: DeviceOpts = {}): Promise<void> {
-  await page.goto(appUrl('/', opts))
-  await page.getByRole('button', { name: /Demo hesabıyla devam et/ }).click()
-  await expect(page).toHaveURL(/#\/profiller/)
 }
 
 /* ───────────── TV kumandası ───────────── */

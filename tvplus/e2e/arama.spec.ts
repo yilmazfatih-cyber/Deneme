@@ -14,7 +14,11 @@ async function modelUpdates(page: Page): Promise<number> {
   let n = Number.NaN
   await expect
     .poll(async () => {
-      const text = (await page.getByText(/^Model: /).first().textContent()) ?? ''
+      const text =
+        (await page
+          .getByText(/^Model: /)
+          .first()
+          .textContent()) ?? ''
       n = Number(/(\d+)\s+güncelleme/.exec(text)?.[1] ?? Number.NaN)
       return Number.isNaN(n)
     })
@@ -84,7 +88,10 @@ test.describe('Arama', () => {
     await expect(results.getByRole('button', { name: /^Model puanı / }).first()).toBeVisible()
     const before = await modelUpdates(page)
 
-    await results.getByRole('link', { name: /^Sintel/ }).first().click()
+    await results
+      .getByRole('link', { name: /^Sintel/ })
+      .first()
+      .click()
     await expect(page.getByRole('dialog', { name: 'Sintel' })).toBeVisible()
     await expect.poll(() => feedback.length, { message: 'RecordSearchFeedback isteği' }).toBeGreaterThan(0)
     expect(feedback[0]).toMatchObject({ searchTerm: 'sintel', action: 'CLICK' })
@@ -106,6 +113,38 @@ test.describe('Arama', () => {
       .toBeGreaterThan(before)
   })
 
+  test('yetenek pazarlığı: istemci çizemediğini söylediği türü sunucudan almaz; aynı aramaya dönüş istek atmaz', async ({
+    page,
+  }) => {
+    test.skip(isMobile(page), 'yetenek bildirimi açıklama kipinde, masaüstünde')
+    const bodies: string[] = []
+    page.on('request', (req) => {
+      if (req.url().endsWith('/graphql') && (req.postData() ?? '').includes('SearchPageQueryResults'))
+        bodies.push(req.postData() ?? '')
+    })
+    await signIn(page)
+    await page.goto('/#/ara?q=trt&aciklama=1')
+    await expect(page.getByRole('region', { name: 'Canlı TV' })).toBeVisible()
+    const before = bodies.length
+    expect(bodies.at(-1)).toContain('standardChannelTile')
+    await page.getByRole('button', { name: 'Yetenek bildirimi' }).click()
+    const sheet = page.getByRole('dialog', { name: 'Yetenek bildirimi' })
+    await sheet.getByRole('switch', { name: /Kanal/ }).first().click()
+    await expect.poll(() => bodies.length).toBeGreaterThan(before)
+    expect(bodies.at(-1)).not.toContain('standardChannelTile')
+    await page.keyboard.press('Escape')
+    await expect(page.getByRole('region', { name: 'Canlı TV' })).toHaveCount(0)
+
+    // Yanıtın `expires` süresi dolmadan aynı aramaya dönüş: ağ isteği yok
+    await page.goto('/#/ara?q=sintel&aciklama=1')
+    await expect(page.getByRole('region', { name: 'Filmler ve Diziler' })).toBeVisible()
+    const afterSintel = bodies.length
+    await page.goto('/#/ara?q=trt&aciklama=1')
+    await expect(page.getByText(/önbellekten/)).toBeVisible()
+    await page.waitForTimeout(800)
+    expect(bodies.length, 'önbellekten').toBe(afterSintel)
+  })
+
   test('mobil arama: yazmadan önce "Sana Özel Öneriler", yazarken tahminler', async ({ page }) => {
     test.skip(!isMobile(page), 'mobil arama sayfası')
     await signIn(page)
@@ -121,6 +160,11 @@ test.describe('Arama', () => {
     await expect(predictions.getByRole('button', { name: /^Sintel/ })).toBeVisible()
     await predictions.getByRole('button', { name: /^Sintel/ }).click()
     await expect(box).toHaveValue(/^sintel$/i)
-    await expect(page.getByRole('region', { name: 'Filmler ve Diziler' }).getByRole('link', { name: /Sintel/ }).first()).toBeVisible()
+    await expect(
+      page
+        .getByRole('region', { name: 'Filmler ve Diziler' })
+        .getByRole('link', { name: /Sintel/ })
+        .first(),
+    ).toBeVisible()
   })
 })

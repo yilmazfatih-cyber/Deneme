@@ -187,6 +187,12 @@
 .dv-picker-modal {
   padding: 24px 8px 8px;
 }
+/* Seçici oynatıcıdan da açılır ("TV'de İzle"): tam ekran oynatıcının (player.css, --kb-z 350) üstünde,
+   kısa bildirimlerin (400) altında. */
+.ui-modal-layer:has(.dv-picker-modal),
+.ui-sheet-layer:has(.dv-picker-sheet) {
+  z-index: 360;
+}
 .dv-picker-modal__title {
   margin: 0 16px 14px;
   font-size: 22px;
