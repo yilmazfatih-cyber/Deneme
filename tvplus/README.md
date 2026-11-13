@@ -108,10 +108,12 @@ Tam şartname: [`docs/ICERIK_ZEKASI.md`](docs/ICERIK_ZEKASI.md). Hepsi **Stüdyo
   soğuk başlangıç). Bugünkü ölçümler **sentetik örnek** üzerindedir ve öyle etiketlenir; gerçek sonuçlar Mixpanel
   verisi bağlandığında aynı hattan çıkar. Örnek veride model popülerlik tabanını yaklaşık iki kat, tür yakınlığı
   tabanını küçük bir farkla geçer (sentetik üreteç izleyicileri doğrudan türlerden kurduğu için o taban avantajlıdır).
-- Çekim gömme modeli **küçük ama gerçekten eğitilmiş** bir modeldir: açık lisanslı filmlerin gerçek çekimleriyle, tek
-  bir CPU'da eğitilir. Mimarinin ve eğitim hattının çalışan bir örneğidir; bir temel model değildir. Vektörleri
-  depoda durur (`content/models/mediafm-mini/`) ve sunucu bunları kendiliğinden kullanır; Python yalnız yeniden
-  eğitmek ya da canlı model sunucusu çalıştırmak için gerekir.
+- Çekim gömme modeli **küçük ama gerçekten eğitilmiş** bir modeldir: 13 açık lisanslı yapımın yaklaşık 1.200 gerçek
+  çekimiyle, tek bir CPU'da eğitilir. Başlığa göre ayrılmış değerlendirmede "en yakın komşuyu kopyala" tabanını geçer,
+  "iki komşunun ortalaması" tabanıyla berabere kalır; özet ve etiket bağlamı bu ölçekte ölçülebilir fark yaratmaz.
+  Mimarinin ve eğitim hattının çalışan bir örneğidir; bir temel model değildir. Vektörleri depoda durur
+  (`content/models/mediafm-mini/`) ve sunucu bunları kendiliğinden kullanır; Python yalnız yeniden eğitmek ya da canlı
+  model sunucusu çalıştırmak için gerekir.
 - Depodaki etiket fişleri **örnek**tir (yapım izlenmeden, özetten doldurulmuştur). Etiketleyicilerin Stüdyo'dan
   gönderip onaylattığı fişler bunların önüne geçer.
 

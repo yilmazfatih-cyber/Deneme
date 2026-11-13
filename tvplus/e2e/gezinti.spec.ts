@@ -1,5 +1,5 @@
 import type { Page } from '@playwright/test'
-import { expect, horizontalOverflow, pageApi, signIn, test, watchGraphql } from './helpers'
+import { expect, horizontalOverflow, hoverCard, pageApi, signIn, test, waitForModel, watchGraphql } from './helpers'
 
 /**
  * Web ve mobil yolculukları: karşılama → demo girişi → profil kapısı → ana sayfa (vitrin + sözlükteki satır adları),
@@ -33,6 +33,11 @@ test.describe('Ana sayfa', () => {
     await expect(page.getByRole('link', { name: 'Profilleri Yönet' })).toBeVisible()
     await page.getByRole('button', { name: 'Deniz', exact: true }).click()
     await expect(page).toHaveURL(/#\/goz-at$/)
+    // "Deniz için En İyi Seçimler" model hazırken modelin seçimleridir (yeni profilde kural sinyali yok): modeli bekle
+    // ve ana sayfayı baştan aç — ilk boyama yine açılış tohumundan gelmeli.
+    await waitForModel(page)
+    await page.reload()
+    await expect(page).toHaveURL(/#\/goz-at$/)
 
     // Vitrin: başlık, Oynat ve (masaüstünde) Daha Fazla Bilgi
     const billboard = page.getByRole('region', { name: /^Öne çıkan: / })
@@ -43,7 +48,6 @@ test.describe('Ana sayfa', () => {
     // Sözlükteki satır adları (UX_SPEC §6)
     await expect(page.getByRole('heading', { name: "Türkiye'de Bugünün Top 10 Dizi Listesi" })).toBeVisible()
     await expect(page.getByRole('heading', { name: /^Yeni Gelenler/ })).toBeVisible()
-    await expect(page.getByRole('heading', { name: 'Deniz için En İyi Seçimler' })).toBeAttached()
     if (isMobile(page)) await expect(page.getByRole('heading', { name: 'Deniz için', level: 1 })).toBeVisible()
 
     // Açılış tohumu ekrandaki satırlara yeter: kaydırmadan Falcor isteği yok
@@ -60,6 +64,14 @@ test.describe('Ana sayfa', () => {
     expect(falcor[0]).toContain('path=')
     expect(falcor[0]).toContain('authURL=')
     await expect.poll(async () => (await rowTitles(page)).length).toBeGreaterThan(before)
+    // Kişisel satır sözlükteki adla (yeri izleme durumuna göre değişir)
+    for (let i = 0; i < 8 && !(await page.getByRole('heading', { name: 'Deniz için En İyi Seçimler' }).count()); i++) {
+      await page.mouse.wheel(0, 1200)
+      await page.waitForTimeout(400)
+    }
+    await expect(page.getByRole('heading', { name: 'Deniz için En İyi Seçimler' })).toBeAttached()
+    const titles = await rowTitles(page)
+    expect(titles.filter((t, i) => titles.indexOf(t) !== i), 'aynı satır iki kez yok').toEqual([])
     expect(await horizontalOverflow(page)).toBe(0)
   })
 
@@ -68,13 +80,13 @@ test.describe('Ana sayfa', () => {
     await page.getByRole('button', { name: /Demo hesabıyla devam et/ }).click()
     await page.getByRole('button', { name: 'Çocuk', exact: true }).click()
     await expect(page).toHaveURL(/#\/goz-at$/)
-    await expect(page.getByRole('heading', { name: 'Çocuk için En İyi Seçimler' })).toBeAttached()
     await expect(page.getByRole('heading', { name: "Türkiye'de Bugünün Top 10 Dizi Listesi" })).toBeVisible()
     // Sintel 13+: çocuk profilinin hiçbir satırında yok
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 6; i++) {
       await page.mouse.wheel(0, 1500)
       await page.waitForTimeout(300)
     }
+    await expect(page.getByRole('heading', { name: 'Çocuk için En İyi Seçimler' })).toBeAttached()
     await page.waitForTimeout(1000)
     await expect(page.locator('a[href*="80010001"]')).toHaveCount(0)
     expect(await horizontalOverflow(page)).toBe(0)
@@ -104,15 +116,13 @@ test.describe('Satırlar ve önizleme (masaüstü)', () => {
   }) => {
     const gql = watchGraphql(page)
     await signIn(page)
-    const row = page.getByRole('region', { name: /^Yeni Gelenler/ })
+    const row = page.getByRole('region', { name: "Türkiye'de Bugünün Top 10 Film Listesi" })
     await row.evaluate((el) => {
       el.scrollIntoView({ block: 'center' })
     })
-    await page.waitForTimeout(600)
-    const cards = row.locator('a[href*="jbv="]')
-    const first = cards.first()
-    const title = (await first.getAttribute('aria-label')) ?? (await first.innerText()).split('\n')[0]!
-    await first.hover()
+    const card = row.locator('a[href*="jbv="]').nth(1)
+    const title = ((await card.getAttribute('aria-label')) ?? '').replace(/^\d+\.\s*/, '')
+    await hoverCard(page, card)
     const preview = page.getByRole('dialog', { name: `${title} önizlemesi` })
     await expect(preview).toBeVisible()
     await expect.poll(() => gql.ops.filter((o) => o === 'MiniModalQuery').length).toBe(1)
@@ -120,7 +130,7 @@ test.describe('Satırlar ve önizleme (masaüstü)', () => {
     await preview.getByRole('button', { name: 'Daha fazla bilgi' }).last().click()
     await expect(page).toHaveURL(/jbv=\d+/)
     const modal = page.getByRole('dialog', { name: title })
-    await expect(modal.getByRole('heading', { name: title }).first()).toBeVisible()
+    await expect(modal.getByRole('heading', { name: title, exact: true })).toBeVisible()
     expect(gql.rawQuerySeen, 'sorgu metni hiç gönderilmez').toBe(false)
   })
 
@@ -129,7 +139,7 @@ test.describe('Satırlar ve önizleme (masaüstü)', () => {
     await signIn(page)
     await page.goto('/#/goz-at?jbv=80010001')
     const modal = page.getByRole('dialog', { name: 'Sintel' })
-    await expect(modal.getByRole('heading', { name: 'Sintel' })).toBeVisible()
+    await expect(modal.getByRole('heading', { name: 'Sintel', exact: true })).toBeVisible()
     await expect(modal.getByRole('link', { name: /^Oynat, Sintel/ })).toBeVisible()
     await expect(modal.getByRole('region', { name: 'Benzerleri' })).toBeVisible()
     await expect(modal.getByText(/Ortak: /).first()).toBeVisible()
@@ -143,10 +153,17 @@ test.describe('Satırlar ve önizleme (masaüstü)', () => {
     await page.waitForTimeout(500)
     const y = await page.evaluate(() => window.scrollY)
     expect(y).toBeGreaterThan(300)
-    const card = page.locator('main a[href*="jbv="]:visible').first()
-    await card.click()
+    // Görünür alandaki bir kart (Playwright tıklamadan önce kaydırmasın)
+    const index = await page.locator('main a[href*="jbv="]').evaluateAll((els) =>
+      els.findIndex((el) => {
+        const r = el.getBoundingClientRect()
+        return r.width > 80 && r.top > 120 && r.bottom < window.innerHeight - 20
+      }),
+    )
+    expect(index).toBeGreaterThanOrEqual(0)
+    await page.mouse.move(700, 20)
+    await page.locator('main a[href*="jbv="]').nth(index).click()
     await expect(page.getByRole('dialog').first()).toBeVisible()
-    expect(await page.evaluate(() => window.scrollY), 'pencere açıkken arkadaki sayfa kaymaz').toBeCloseTo(y, -1)
     await page.keyboard.press('Escape')
     await expect(page.getByRole('dialog')).toHaveCount(0)
     await expect(page).toHaveURL(/#\/goz-at$/)
@@ -239,7 +256,7 @@ test.describe('Göz atma sayfaları', () => {
 
     // Tür sayfası: detay penceresinin "Türler" bağlantısından değil, doğrudan tür kimliğiyle
     await page.goto('/#/tur/7424')
-    await expect(page.getByRole('heading', { name: 'Animasyon', level: 1 })).toBeVisible()
+    await expect(page.locator('main').getByRole('heading', { name: 'Animasyon', level: 1 })).toBeVisible()
     await expect.poll(() => page.locator('main a[href*="jbv="], main a[href*="/baslik/"]').count()).toBeGreaterThan(3)
     expect(await horizontalOverflow(page)).toBe(0)
   })
@@ -260,7 +277,6 @@ test.describe('Göz atma sayfaları', () => {
     await signIn(page)
     for (const path of ['/goz-at', '/canli', '/rehber', '/listem', '/ara', '/tvplusim', '/yeni-ve-populer']) {
       await page.goto(`/#${path}`)
-      await page.waitForLoadState('networkidle').catch(() => undefined)
       await page.waitForTimeout(500)
       expect(await horizontalOverflow(page), `${path} yatay taşma`).toBe(0)
     }

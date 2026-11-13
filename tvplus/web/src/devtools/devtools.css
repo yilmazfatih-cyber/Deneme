@@ -24,6 +24,8 @@
 /* İzleme sayfası (telefon, dikey): alt sayfa alçalır ve oynatıcının alt denetim şeridinin (≈100 px) üstünde durur;
    videonun ortası ve denetimler açık kalır. */
 .kp-panel.is-watch {
+  /* Oynatıcı artık 350'de (player.css, --kb-z): izleme sayfasında panel onun üstünde, bildirimlerin (400) altında. */
+  z-index: 360;
   height: 34dvh;
   bottom: 112px;
   border-radius: var(--r-sheet);

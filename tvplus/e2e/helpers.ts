@@ -355,6 +355,16 @@ export async function waitPlaying(page: Page, sec = 2, timeout = 60_000, within?
     .toBeGreaterThan(sec)
 }
 
+/**
+ * Masaüstünde bir kartın üzerine gelir. İşaretçi önce üst menüye çekilir: girişte işaretçinin kaldığı yerdeki kartın
+ * önizlemesi açık olabilir ve büyüyen kart komşusunu örter (gerçek kullanıcı da fareyi kıpırdatır).
+ */
+export async function hoverCard(page: Page, card: Locator): Promise<void> {
+  await page.mouse.move(Math.round((page.viewportSize()?.width ?? 1440) / 2), 20)
+  await page.waitForTimeout(900)
+  await card.hover()
+}
+
 /** Belgenin yatay taşması (piksel; 0 olmalı). */
 export const horizontalOverflow = (page: Page): Promise<number> =>
   page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)

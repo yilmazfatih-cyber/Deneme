@@ -243,6 +243,24 @@ başlığın özeti + etiketleri ───────────────�
 - **Ölçek hakkında:** eğitim verisi açık lisanslı birkaç filmin gerçek çekimleridir. Bu, mimarinin ve eğitim hattının
   çalışan küçük bir örneğidir; gerçek katalogla ve daha büyük donanımla aynı hat büyütülür.
 
+**Bugünkü durum (mediafm-mini).** Yaklaşık 1 milyon eğitilen parametre; 13 açık lisanslı yapımdan 1.184 gerçek
+çekim; dondurulmuş kip kodlayıcıları CLIP ViT-B/32 (görüntü), çok dilli CLIP (metin) ve CLAP (ses). Başlığa göre
+ayrılmış beş katlı değerlendirmede "gizlenen çekimi bul" görevinde:
+
+| Yöntem                                  | R@1   | R@5   |
+| --------------------------------------- | ----- | ----- |
+| Model                                   | 0,325 | 0,758 |
+| Taban: en yakın görünür komşuyu kopyala | 0,281 | 0,698 |
+| Taban: iki komşunun ortalaması          | 0,326 | 0,753 |
+
+Model komşu kopyalamayı geçiyor, iki komşunun ortalamasıyla berabere. **Genel bağlam (özet + etiket) bu ölçekte
+ölçülebilir fark yaratmıyor:** bağlam başka bir başlıktan verildiğinde ya da boş bırakıldığında sonuç değişmiyor; bir
+başlığın etiketi değişince vektörü neredeyse hiç oynamıyor. Yani hat ve soket çalışıyor, model gerçekten eğitiliyor ve
+dürüstçe ölçülüyor; bağlamın işe yaraması için birkaç film değil, gerçek bir katalog gerekiyor. Yalnız hazır karelerle
+temsil edilen (YouTube gömmesi) başlıkların vektörleri daha zayıftır. Ayrıntı ve sınırlar:
+`content/models/mediafm-mini/model-card.md`, yeniden üretim: `ml/README.md`. MediaFM yazısının kendisi bu ortamdan
+okunamadı; tasarım o yazının doğrulanmış bir okumasına değil, bu bölümdeki tarife dayanır.
+
 ### 13.2 Tahmin modeli — `server/src/services/predictions`
 
 İzleme verisinden eğitilir ve ürünün her kişisel kararını verir: ana sayfadaki sıralama, "eşleşme" yüzdesi,
