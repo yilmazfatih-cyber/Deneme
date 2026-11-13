@@ -196,8 +196,11 @@ test.describe('yansıtma', () => {
     await page.getByRole('button', { name: "TV'de İzle" }).click()
     const picker = page.getByRole('dialog', { name: "TV'de İzle" })
     await expect(picker).toBeVisible()
-    await picker.getByRole('button', { name: new RegExp(`^${esc(name)}`) }).click()
+    // Devredilen konum seçimden ÖNCE okunur: yansıtınca web detay penceresine döner ve oradaki önizleme videosu
+    // filmin başka bir yerinden oynar (sonradan okununca yanlış videoyu ölçerdi).
     const handedOver = (await videoState(page))?.currentTime ?? 0
+    expect(handedOver, 'web oynatıcısı devretmeden önce oynuyor olmalı').toBeGreaterThan(5)
+    await picker.getByRole('button', { name: new RegExp(`^${esc(name)}`) }).click()
 
     // TV kaldığı yerden oynatır
     await expect(tv).toHaveURL(/#\/tv\/izle\/Video:80010001/, { timeout: 30_000 })

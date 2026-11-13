@@ -57,7 +57,7 @@ test.describe('Arama', () => {
     await expect(results.getByRole('link', { name: /^Sintel/ }).first()).toBeVisible()
     const related = page.getByRole('region', { name: 'Sintel ile ilgili' })
     await expect(related).toBeVisible()
-    expect(await related.getByRole('link').count()).toBeGreaterThan(2)
+    await expect.poll(() => related.getByRole('link').count()).toBeGreaterThan(2)
 
     await page.goto('/#/ara?q=sitnel')
     await expect(page.getByText(/“sintel” için sonuçlar gösteriliyor/)).toBeVisible()
@@ -69,7 +69,7 @@ test.describe('Arama', () => {
     await expect(page.getByRole('status').filter({ hasText: '“qzxwvbk” için eşleşme bulunamadı.' })).toBeVisible()
     const predicted = page.getByRole('region', { name: 'Bunlar ilgini çekebilir' })
     await expect(predicted).toBeVisible()
-    expect(await predicted.getByRole('link').count()).toBeGreaterThan(0)
+    await expect.poll(() => predicted.getByRole('link').count()).toBeGreaterThan(0)
   })
 
   test('sonuca basınca RecordSearchFeedback gider ve model sürümü ilerler (?aciklama=1)', async ({ page }) => {
@@ -152,7 +152,8 @@ test.describe('Arama', () => {
     await expect(page).toHaveURL(/#\/ara/)
     const picks = page.getByRole('region', { name: 'Sana Özel Öneriler' })
     await expect(picks).toBeVisible()
-    expect(await picks.getByRole('link', { name: / oynat$/ }).count()).toBeGreaterThan(3)
+    // Bölüm başlığı önerilerden önce çizilir: sayım beklemeli yapılır
+    await expect.poll(() => picks.getByRole('link', { name: / oynat$/ }).count()).toBeGreaterThan(3)
 
     const box = page.getByRole('search').getByRole('searchbox', { name: 'Ara' })
     await box.pressSequentially('sin', { delay: 80 })
