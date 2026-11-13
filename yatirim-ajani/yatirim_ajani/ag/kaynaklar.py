@@ -679,6 +679,106 @@ def _html_tablo(html: str) -> pd.DataFrame:
     return pd.DataFrame(govde, columns=bas)
 
 
+def yabanci_gecmis(bas: date, adim: int = 5, sure_siniri_dk: float = 25) -> tuple[dict[str, pd.DataFrame], dict]:
+    """İş Yatırım "Temel Değerler ve Oranlar" sayfasındaki yabancı oranı tablosunun geçmişi: sayfadaki tarih seçeneklerinden
+    her `adim` işlem gününde bir (haftalık) kesit alınır. Tablonun arkasındaki istek gövdesi belgelenmemiştir; önce sayfanın
+    betiklerinde izi aranır (rapora yazılır), sonra olası gövde biçimleri denenir, çalışan ilk biçimle geçmiş çekilir."""
+    t0 = time.time()
+    rapor: dict[str, Any] = {}
+    h = {"User-Agent": TARAYICI, "Accept-Language": "tr-TR,tr;q=0.9"}
+    sayfa = "https://www.isyatirim.com.tr/tr-tr/analiz/hisse/Sayfalar/Temel-Degerler-Ve-Oranlar.aspx"
+    kok = "https://www.isyatirim.com.tr"
+    o = requests.Session()
+    o.headers.update(h)
+    html = o.get(sayfa, timeout=60).text
+    i = html.find('id="yabanciOranlarUC"')
+    j = html.find("</select>", i)
+    secenek = re.findall(r'<option[^>]*value="(\d{2}-\d{2}-\d{4})"', html[i:j]) if i >= 0 else []
+    gunler = sorted({datetime.strptime(x, "%d-%m-%Y").date() for x in secenek})
+    rapor["secenek"] = {"adet": len(gunler), "ilk": gunler[0].isoformat() if gunler else None, "son": gunler[-1].isoformat() if gunler else None}
+    # 1) Betiklerde uç nokta izi
+    izler: list[str] = []
+    for src in [x for x in re.findall(r'<script[^>]+src="([^"]+)"', html) if x.startswith("/SiteAssets") or "IsYatirim" in x][:12]:
+        try:
+            js = o.get(kok + src.replace("&amp;", "&"), timeout=60).text
+        except Exception as e:  # noqa: BLE001
+            izler.append(f"{src[-40:]}: {str(e)[:60]}")
+            continue
+        for m in re.finditer(r"(?i)yabanciOran", js):
+            izler.append(src[-28:] + " :: " + re.sub(r"\s+", " ", js[max(0, m.start() - 260) : m.start() + 520]))
+            if len(izler) >= 14:
+                break
+    rapor["betik_izleri"] = izler[:14]
+    if len(gunler) < 2:
+        return {}, rapor
+    # 2) Gövde biçimi denemeleri (en yeni iki gün ile)
+    o.headers.update({"Accept": "application/json, text/javascript, */*; q=0.01", "X-Requested-With": "XMLHttpRequest", "Content-Type": "application/json; charset=UTF-8", "Referer": sayfa})
+    uc = f"{kok}/_layouts/15/IsYatirim.Website/StockInfo/CompanyInfoAjax.aspx/GetYabanciOranlarXHR"
+    d1, d2 = gunler[-2], gunler[-1]
+    bicimler = ("%d-%m-%Y", "%Y-%m-%d", "%d.%m.%Y", "%Y%m%d")
+    adaylar = []
+    for bic in bicimler:
+        for a in ("baslangicTarih", "baslangicTarihi"):
+            for b in ("bitisTarihi", "bitisTarih"):
+                for ek in ({"sektor": None, "endeks": "09", "hisse": None}, {"sektor": "", "endeks": "", "hisse": ""}, {"sektor": None, "endeks": None, "hisse": None}, {}):
+                    adaylar.append((bic, a, b, ek))
+    calisan = None
+    denemeler = []
+    for bic, a, b, ek in adaylar:
+        govde = {a: d1.strftime(bic), b: d2.strftime(bic), **ek}
+        try:
+            r = o.post(uc, data=json.dumps(govde), timeout=40)
+        except Exception as e:  # noqa: BLE001
+            denemeler.append({"govde": govde, "hata": str(e)[:80]})
+            continue
+        tamam = r.status_code == 200 and r.text.lstrip().startswith("{") and '"d"' in r.text[:20]
+        veri = r.json().get("d") if tamam else None
+        if len(denemeler) < 12 or tamam:
+            denemeler.append({"govde": govde, "durum": r.status_code, "ornek": r.text[:220].replace("\n", " ")})
+        if tamam and isinstance(veri, list) and len(veri) > 50:
+            calisan = (bic, a, b, ek)
+            rapor["alanlar"] = list(veri[0].keys())
+            rapor["ornek_satir"] = veri[0]
+            break
+        time.sleep(0.25)
+    rapor["denemeler"] = denemeler[-14:]
+    rapor["calisan"] = {"bicim": calisan[0], "anahtar": [calisan[1], calisan[2]], "ek": calisan[3]} if calisan else None
+    if not calisan:
+        return {}, rapor
+    # 3) Geçmiş: haftalık kesitler, ikişer ikişer
+    bic, a, b, ek = calisan
+    secili = [g for g in gunler[::-1][::adim] if g >= bas][::-1]
+    if len(secili) % 2:
+        secili = secili[1:]
+    parcalar = []
+    hata = 0
+    for k in range(0, len(secili) - 1, 2):
+        if (time.time() - t0) / 60 > sure_siniri_dk:
+            rapor["sure_doldu"] = secili[k].isoformat()
+            break
+        g1, g2 = secili[k], secili[k + 1]
+        try:
+            r = o.post(uc, data=json.dumps({a: g1.strftime(bic), b: g2.strftime(bic), **ek}), timeout=60)
+            veri = r.json().get("d") if r.status_code == 200 else None
+        except Exception:  # noqa: BLE001
+            veri = None
+        if not veri:
+            hata += 1
+            time.sleep(2)
+            continue
+        df = pd.DataFrame(veri)
+        df.insert(0, "bitis", g2.isoformat())
+        df.insert(0, "baslangic", g1.isoformat())
+        parcalar.append(df)
+        time.sleep(0.4)
+    rapor["cekim"] = {"hafta": len(secili), "istek": len(parcalar), "hata": hata, "sure_dk": round((time.time() - t0) / 60, 1)}
+    if not parcalar:
+        return {}, rapor
+    G = pd.concat(parcalar, ignore_index=True)
+    rapor["cekim"].update({"satir": int(len(G)), "sutun": list(G.columns)})
+    return {"yabanci_gecmis": G}, rapor
+
+
 def isy_ek() -> tuple[dict[str, pd.DataFrame], dict]:
     """İş Yatırım ek kaynakları: (a) Temel Değerler sayfasındaki yabancı oranları tablosu (güncel kesit) ve sayfanın tarih
     parametresi mantığı (betik bağlamı rapora), (b) sektör endekslerinin uzun dönem günlük geçmişi (IndexHistoricalAll)."""
@@ -836,7 +936,7 @@ def saatlik_hisse_sec(tv: pd.DataFrame, adet: int = 250, ek: list[str] | None = 
 
 
 # --- toplu -------------------------------------------------------------------------------------
-TUM_KAYNAKLAR = ("tv", "yahoo", "isy", "mali", "seri", "saatlik", "hisse_saatlik", "yabanci", "tefas", "kap", "kesif", "kesif2", "kap_liste", "kap_detay", "isy_ek")
+TUM_KAYNAKLAR = ("tv", "yahoo", "isy", "mali", "seri", "saatlik", "hisse_saatlik", "yabanci", "tefas", "kap", "kesif", "kesif2", "kap_liste", "kap_detay", "isy_ek", "yabanci_gecmis")
 
 
 def ag_veri_cek(klasor: str | Path, bas: date, bit: date | None = None, kaynaklar: tuple[str, ...] = TUM_KAYNAKLAR, paralel: int = 6,
@@ -935,6 +1035,12 @@ def ag_veri_cek(klasor: str | Path, bas: date, bit: date | None = None, kaynakla
         r["hata"] = dict(list(r.get("hata", {}).items())[:10])
         return r
 
+    def _yabanci_gecmis() -> dict:
+        tablolar, r = yabanci_gecmis(bas)
+        for ad2, df in tablolar.items():
+            _yaz(df, klasor / f"{ad2}.csv.gz")
+        return r
+
     def _kap_liste() -> dict:
         tablolar, r = kap_liste(bas, bit)
         for ad2, df in tablolar.items():
@@ -953,7 +1059,7 @@ def ag_veri_cek(klasor: str | Path, bas: date, bit: date | None = None, kaynakla
             _yaz(df, klasor / f"{ad2}.csv.gz")
         return r
 
-    for ad, islev in (("kesif", kesif), ("kesif2", kesif2), ("isy_ek", _isy_ek), ("kap_liste", _kap_liste), ("kap_detay", _kap_detay), ("seri", _seri), ("saatlik", _saatlik), ("yabanci", _yabanci), ("kap", kap_sonda), ("tefas", _tefas),
+    for ad, islev in (("kesif", kesif), ("kesif2", kesif2), ("isy_ek", _isy_ek), ("yabanci_gecmis", _yabanci_gecmis), ("kap_liste", _kap_liste), ("kap_detay", _kap_detay), ("seri", _seri), ("saatlik", _saatlik), ("yabanci", _yabanci), ("kap", kap_sonda), ("tefas", _tefas),
                       ("yahoo", _yahoo), ("hisse_saatlik", _hisse_saatlik), ("isy", _isy), ("mali", _mali)):  # fmt: skip
         if ad in kaynaklar:
             if ad in ("yahoo", "isy", "mali") and not liste:
