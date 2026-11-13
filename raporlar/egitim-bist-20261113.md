@@ -7,7 +7,7 @@ Kayma kıyası (sıralama yalnız train korelasyonuna göre; test sütunu seçim
 
 Kayma 0 dk, 39 hisse, eşik %0.50 (masraf sonrası)
 [train] karar 100291, AL 0 (0.0%) | isabet - | AL başına net - | toplam net +0.00% | Sharpe - | al-tut -32.56% | tahmin-gerçek kor. 0.050
-[test] karar 25918, AL 0 (0.0%) | isabet - | AL başına net - | toplam net +0.00% | Sharpe - | al-tut -20.80% | tahmin-gerçek kor. -0.000
+[test] karar 26186, AL 0 (0.0%) | isabet - | AL başına net - | toplam net +0.00% | Sharpe - | al-tut -21.03% | tahmin-gerçek kor. -0.000
 Eşik taraması (yalnız train):
   esik  islem  ort_net  toplam_net
 0.0000      0      NaN      0.0000
