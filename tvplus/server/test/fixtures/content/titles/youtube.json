@@ -75,7 +75,11 @@
                 "type": "YOUTUBE",
                 "videoId": "SkVqJ1SGeL0"
               }
-            ]
+            ],
+            "artwork": {
+              "storyArt": "https://img.example.org/caminandes/s2e1.jpg",
+              "posterFit": "contain"
+            }
           },
           {
             "videoId": 80030104,
@@ -95,7 +99,8 @@
     ],
     "artwork": {
       "boxart": "https://img.example.org/caminandes/boxart.jpg",
-      "storyArt": "https://img.example.org/caminandes/story.jpg"
+      "storyArt": "https://img.example.org/caminandes/story.jpg",
+      "posterFit": "crop"
     },
     "license": {
       "name": "CC BY 3.0",

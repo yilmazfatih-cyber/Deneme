@@ -11,7 +11,7 @@ import { renderArtwork } from './render'
 import { createRemoteLoader, resolveLocalFile } from './source'
 
 /** Çizim mantığı değişince artırılır; tüm disk önbelleği kendiliğinden geçersiz olur. */
-export const RENDER_VERSION = 4
+export const RENDER_VERSION = 6
 
 export type ImageOrigin = 'remote' | 'source-cache' | 'local' | 'generated' | 'fallback'
 
@@ -106,6 +106,8 @@ export function createImagePipeline(opts: ImagePipelineOptions) {
         src.subtitle,
         src.seed,
         src.focal,
+        // Afiş düzeni anahtarın parçası: eski kırpılmış afişler yeni düzende sunulmasın
+        req.type === 'BOXART' ? (src.posterFit ?? 'contain') : null,
       ])
       const variantKey = sha(fingerprint)
       const running = inflight.get(variantKey)

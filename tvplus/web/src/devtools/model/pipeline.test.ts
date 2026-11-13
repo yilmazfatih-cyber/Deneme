@@ -314,4 +314,41 @@ describe('oynatma hattı modeli', () => {
     expect(s.streaming.activeCdn).toBe('c101')
     expect(s.streaming.video).toHaveLength(1)
   })
+
+  it('aynı başlık oynarken gelen manifest (yenileme / düğüm kapanınca) şeritleri ve işaretleri silmez; yeni izleme siler', () => {
+    const base = [
+      ev('player', 'durum: yükleniyor', { viewableId: 'Video:1', state: 'loading', positionSec: 0 }, 0),
+      ev(
+        'manifest',
+        'Video:1',
+        { kind: 'STREAMS', prefetch: false, video: ladder, cdns: [{ id: 'c101', rank: 1 }] },
+        10,
+      ),
+      ev(
+        'player',
+        'durum: yükleniyor',
+        { viewableId: 'Video:1', state: 'loading', positionSec: 0, kind: 'STREAMS' },
+        15,
+      ),
+      ev('range', 'video 0-9', { type: 'video', cdnId: 'c101', start: 0, end: 9, bytes: 10, streamId: 'v-235' }, 20),
+      ev('cdn', 'yük devri c101→c102', { from: 'c101', to: 'c102', reason: 'kapalı' }, 30, { ok: false }),
+      ev(
+        'manifest',
+        'Video:1',
+        { kind: 'STREAMS', prefetch: false, video: ladder, cdns: [{ id: 'c102', rank: 1 }] },
+        40,
+      ),
+    ]
+    const s = reducePipelineAll(initialPipeline(), base)
+    expect(s.streaming.video).toHaveLength(1)
+    expect(s.streaming.markers.map((m) => m.kind)).toEqual(['cdn'])
+    expect(s.streaming.activeCdn).toBe('c102')
+    expect(s.manifest?.urlRefreshes).toBe(1)
+    const again = reducePipelineAll(s, [
+      ev('player', 'durum: yükleniyor', { viewableId: 'Video:1', state: 'loading', positionSec: 0 }, 50),
+      ev('manifest', 'Video:1', { kind: 'STREAMS', prefetch: false, video: ladder, cdns: [] }, 60),
+    ])
+    expect(again.streaming.requests).toBe(0)
+    expect(again.streaming.markers).toHaveLength(0)
+  })
 })

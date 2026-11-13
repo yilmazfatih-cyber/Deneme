@@ -87,7 +87,7 @@ export const VIDEO_FIELDS: Record<string, VideoField> = {
   },
   access: (ctx, id) => {
     const a = access(ctx, id)
-    return atom({ state: a.state, reasonText: a.reasonText, requiredProduct: a.requiredProduct })
+    return atom({ state: a.state, reasonText: a.reasonText, requiredProduct: a.requiredProduct, requiredProductName: a.requiredProductName, cta: a.cta })
   },
   bookmark: (ctx, id) => {
     const b = bookmarkOf(ctx.services, guid(ctx), id)

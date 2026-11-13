@@ -4,7 +4,7 @@ import type { DebugServerState } from '../../../../shared/types'
 import { onBootChange, sessionHeaders } from '../../api/session'
 import { fmtClock, fmtInt, fmtMs } from '../model/format'
 import { sortedTally, type TelemetryState } from '../model/telemetry'
-import { ErrMark, Explainer, LoginNote, needsLogin, Stat, usePoll } from '../ui'
+import { ErrMark, Explainer, LoginNote, needsLogin, useSignedIn, Stat, usePoll } from '../ui'
 
 const STATE_URL = `${ROUTES.DEBUG_PREFIX}/state`
 
@@ -15,7 +15,10 @@ function uptime(sec: number): string {
 }
 
 export function EventsTab({ t }: { t: TelemetryState }): ReactNode {
-  const poll = usePoll<DebugServerState>(STATE_URL, 5000, 15_000, sessionHeaders)
+  const signedIn = useSignedIn()
+  const poll = usePoll<DebugServerState>(STATE_URL, 5000, 15_000, sessionHeaders, signedIn)
+  /** Anonimken uç 401 döner: hiç sorulmaz, tek sakin satır gösterilir. */
+  const locked = !signedIn || needsLogin(poll)
   const { refresh } = poll
   useEffect(() => onBootChange(() => refresh()), [refresh])
   const server = poll.data && typeof poll.data === 'object' && poll.data.events ? poll.data : null
@@ -88,7 +91,7 @@ export function EventsTab({ t }: { t: TelemetryState }): ReactNode {
       )}
 
       <h3 className="kp-h">Sunucu tarafı toplamlar</h3>
-      {needsLogin(poll) ? (
+      {locked ? (
         <LoginNote />
       ) : !server ? (
         <p className="kp-calm" role="status">

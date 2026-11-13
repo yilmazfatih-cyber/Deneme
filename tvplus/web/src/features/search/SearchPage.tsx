@@ -453,7 +453,7 @@ function CapabilitySheet({
 
 /* ───────────── Şeritler ───────────── */
 
-function Banner({ data, onSearch }: { data: Parameters<typeof selectBanner>[0]; onSearch: (q: string) => void }): ReactElement | null {
+function Banner({ data, onSearch }: { data: Parameters<typeof selectBanner>[0]; onSearch: (q: string, exactTerm?: boolean) => void }): ReactElement | null {
   const b = selectBanner(data)
   if (!b) return null
   if (b.kind === 'fallback') return <p className="sr-banner cn-gutter-x">“{b.term}” için sonuç yok</p>
@@ -471,7 +471,7 @@ function Banner({ data, onSearch }: { data: Parameters<typeof selectBanner>[0]; 
   return (
     <div className="sr-banner cn-gutter-x" role="status">
       <p className="sr-banner__line">“{b.corrected}” için sonuçlar gösteriliyor</p>
-      <button type="button" className="sr-banner__alt" onClick={() => onSearch(b.original)}>
+      <button type="button" className="sr-banner__alt" onClick={() => onSearch(b.original, true)}>
         Bunun yerine “{b.original}” ara
       </button>
     </div>
@@ -485,6 +485,8 @@ export default function SearchPage(): ReactElement {
   const navigate = useNavigate()
   const q = params.get('q') ?? ''
   const term = q.trim()
+  // "Bunun yerine … ara": düzeltmesiz arama. Kullanıcı sorguyu değiştirince SearchField adresi `tam` olmadan yazar.
+  const exact = params.get('tam') === '1' && !!term
   useDocumentTitle(term ? `“${term}” araması` : 'Ara')
 
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS)
@@ -507,7 +509,7 @@ export default function SearchPage(): ReactElement {
     saveEnabledKinds(s)
   }
 
-  const search = useSearch(term, filters, enabled)
+  const search = useSearch(term, filters, enabled, exact)
   const { data, loading, error, declaration } = search
 
   // Tür çipleri: bu terim için görülen galeri türleri birikir (süzgeç uygulanınca liste daralmasın).
@@ -526,7 +528,7 @@ export default function SearchPage(): ReactElement {
     [genreMemo, normTerm],
   )
 
-  const goSearch = (next: string) => navigate(`/ara?q=${encodeURIComponent(next)}`)
+  const goSearch = (next: string, exactTerm = false) => navigate(`/ara?q=${encodeURIComponent(next)}${exactTerm ? '&tam=1' : ''}`)
   const ctx: RenderCtx = {
     term,
     opened: (e, action) => {

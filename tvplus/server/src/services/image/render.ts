@@ -245,11 +245,19 @@ async function avatarDisc(input: RenderInput): Promise<Buffer> {
   return sharp(Buffer.from(svgDoc(w, h, body))).png().toBuffer()
 }
 
-/** Kaynaklı dikey afiş: kaynak zaten dikeyse (gerçek afiş) olduğu gibi kırpılır; yataysa 2:3 pencere + perde + başlık. */
-async function posterFromSource(img: RawImage, input: RenderInput): Promise<Buffer> {
+/** Kaynağın siyah şeritlerden arındırılmış en-boy oranı (genişlik / yükseklik). */
+function trimmedRatio(img: RawImage): number {
+  const lb = letterboxBounds(img)
+  return lb.width / lb.height
+}
+
+/**
+ * 'crop': 2:3 pencere odak noktasına göre kırpılır, alt perde + başlık eklenir. Kaynakta gömülü yazı varsa
+ * yarım kelimeler kalabilir; yalnızca yazısız, temiz kareler için.
+ */
+async function posterCrop(img: RawImage, input: RenderInput): Promise<Buffer> {
   const { width: w, height: h, source } = input
   const cropped = await coverCrop(img, w, h, source.focal)
-  if (img.height / img.width >= 1.2) return cropped
   const shade =
     `<linearGradient id="shade" x1="0" y1="0" x2="0" y2="1">` +
     `<stop offset="0.38" stop-color="${BG}" stop-opacity="0"/><stop offset="0.68" stop-color="${BG}" stop-opacity="0.6"/>` +
@@ -257,6 +265,84 @@ async function posterFromSource(img: RawImage, input: RenderInput): Promise<Buff
   const text = await posterTitleSvg(w, h, source.title, null, h * 0.93)
   const overlay = svgDoc(w, h, `<defs>${shade}${shadowFilter(h)}</defs><rect width="${w}" height="${h}" fill="url(#shade)"/>${text}`)
   return sharp(cropped).composite([{ input: Buffer.from(overlay) }]).png().toBuffer()
+}
+
+/**
+ * 'contain' (varsayılan): kaynak hiç kırpılmaz. Zemin = aynı görselin bulanık, karartılmış hali (görselin kendi
+ * renklerinde yumuşak bir alan); üstte tam genişlikte yatay görselin tamamı; altında başlık ve alt başlık.
+ */
+async function posterContain(img: RawImage, input: RenderInput): Promise<Buffer> {
+  const { width: w, height: h, source } = input
+  const lb = letterboxBounds(img)
+  const trimmed = rawSharp(img).extract({ left: lb.left, top: lb.top, width: lb.width, height: lb.height })
+  const trimmedPng = await trimmed.png().toBuffer()
+
+  // Zemin: kapla-kırp → çok küçült → bulanıklaştır → karart → büyüt. Biçim seçilmez, yalnız renk alanı kalır.
+  const small = Math.max(6, Math.round(w / 28))
+  const bg = await sharp(trimmedPng)
+    .resize(small, Math.round((small * h) / w), { fit: 'cover' })
+    .blur(Math.max(0.6, small / 6))
+    .modulate({ brightness: 0.38, saturation: 1.2 })
+    .resize(w, h, { fit: 'fill', kernel: 'cubic' })
+    .blur(Math.max(1, w / 30))
+    .png()
+    .toBuffer()
+
+  // Görselin tamamı, tam genişlikte, üst kenardan biraz aşağıda
+  const imgH = Math.max(1, Math.min(Math.round(w / (lb.width / lb.height)), Math.round(h * 0.5)))
+  const imgW = Math.round(imgH * (lb.width / lb.height)) >= w ? w : Math.round(imgH * (lb.width / lb.height))
+  const top = Math.round(h * 0.085)
+  const left = Math.round((w - imgW) / 2)
+  const fg = await sharp(trimmedPng).resize(imgW, imgH, { fit: 'cover', kernel: 'lanczos3' }).png().toBuffer()
+
+  // Yazı alanı: görselin altından alt kenara kadar; blok görselin hemen altına yaslanır (satırda başlıklar aynı hizada)
+  const areaTop = top + imgH + h * 0.06
+  const areaBottom = h * 0.94
+  const padX = w * 0.08
+  const maxWidth = w - 2 * padX
+  const sub = source.subtitle
+    ? await fitText(source.subtitle, { style: SUB_STYLE, maxWidth, maxHeight: h * 0.07, maxLines: 1, maxSize: w * 0.05, minSize: w * 0.036, lineHeight: 1.2 })
+    : null
+  const subGap = sub ? h * 0.018 : 0
+  const t = await fitText(source.title, {
+    style: TITLE_STYLE,
+    maxWidth,
+    maxHeight: areaBottom - areaTop - (sub ? sub.blockHeight + subGap : 0),
+    maxLines: 3,
+    maxSize: w * 0.125,
+    minSize: w * 0.06,
+    lineHeight: 1.05,
+  })
+  const blockTop = areaTop
+  const text =
+    textBlockSvg(t, TITLE_STYLE, { align: 'middle', x: w / 2, top: blockTop, fill: TEXT_1, filter: 'url(#tshadow)' }) +
+    (sub ? textBlockSvg(sub, SUB_STYLE, { align: 'middle', x: w / 2, top: blockTop + t.blockHeight + subGap, fill: TEXT_2 }) : '')
+
+  const defs =
+    `<linearGradient id="shade" x1="0" y1="0" x2="0" y2="1">` +
+    `<stop offset="0" stop-color="${BG}" stop-opacity="0.25"/><stop offset="0.45" stop-color="${BG}" stop-opacity="0.2"/>` +
+    `<stop offset="1" stop-color="${BG}" stop-opacity="0.85"/></linearGradient>` +
+    `<filter id="imgshadow" x="-10%" y="-20%" width="120%" height="150%"><feGaussianBlur stdDeviation="${(h * 0.012).toFixed(2)}"/></filter>` +
+    shadowFilter(h)
+  const under = svgDoc(
+    w,
+    h,
+    `<defs>${defs}</defs><rect width="${w}" height="${h}" fill="url(#shade)"/>` +
+      // Görselin altına yumuşak gölge: zeminden ayrışsın
+      `<rect x="${left}" y="${top + h * 0.01}" width="${imgW}" height="${imgH}" fill="#000" fill-opacity="0.55" filter="url(#imgshadow)"/>`,
+  )
+  const over = svgDoc(w, h, `<defs>${shadowFilter(h)}</defs>${text}`)
+  return sharp(bg)
+    .composite([{ input: Buffer.from(under) }, { input: fg, left, top }, { input: Buffer.from(over) }])
+    .png()
+    .toBuffer()
+}
+
+/** Kaynaklı dikey afiş: dikey kaynak (gerçek afiş) olduğu gibi kırpılır; yatay kaynak posterFit'e göre düzenlenir. */
+async function posterFromSource(img: RawImage, input: RenderInput): Promise<Buffer> {
+  if (img.height / img.width >= 1.2) return coverCrop(img, input.width, input.height, input.source.focal)
+  if (trimmedRatio(img) > 1.2 && (input.source.posterFit ?? 'contain') === 'contain') return posterContain(img, input)
+  return posterCrop(img, input)
 }
 
 /** Bu tip saydamlık taşır mı (jpg istenirse zemin rengine düzleştirilir). */

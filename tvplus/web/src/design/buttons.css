@@ -115,6 +115,14 @@
 .cn-iconbtn--ghost:hover {
   background: rgba(255, 255, 255, 0.08);
 }
+/* Basılı (aria-pressed="true"): seçili çiple aynı dil — beyaz dolgu, koyu ikon */
+.cn-iconbtn[aria-pressed='true'],
+.cn-iconbtn[aria-pressed='true']:hover,
+.cn-btn--secondary[aria-pressed='true'],
+.cn-btn--tertiary[aria-pressed='true'] {
+  background: var(--t1);
+  color: var(--bg);
+}
 .cn-iconbtn:disabled {
   opacity: 0.4;
   cursor: default;

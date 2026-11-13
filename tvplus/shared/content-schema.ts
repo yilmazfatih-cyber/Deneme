@@ -64,6 +64,11 @@ export const zArtwork = z
     storyArt: z.url().nullable().default(null), // yatay 16:9
     /** Kırpma odağı, CSS object-position biçiminde. */
     focal: z.string().default('50% 35%'),
+    /**
+     * Yatay (16:9) kaynaktan dikey afiş üretilirken: 'contain' görseli kırpmadan üst bölüme yerleştirir (üzerinde yazı
+     * olan YouTube küçük resimleri için varsayılan), 'crop' odağa göre 2:3 kırpar (yazısız, temiz kareler için).
+     */
+    posterFit: z.enum(['crop', 'contain']).default('contain'),
   })
   .prefault({})
 

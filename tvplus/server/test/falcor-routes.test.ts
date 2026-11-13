@@ -104,7 +104,7 @@ describe('Falcor rotaları', () => {
     expect(val('titleLogo')).toMatchObject({ width: 400, height: 160 })
     expect((val('boxart') as { url: string }).url).toMatch(/\.webp\?r=/)
     expect(val('maturity')).toEqual({ certificationValue: '13+', maturityLevel: 80, reasons: ['Şiddet ve Korku'] })
-    expect(val('access')).toEqual({ state: 'PLAYABLE', reasonText: null, requiredProduct: null })
+    expect(val('access')).toEqual({ state: 'PLAYABLE', reasonText: null, requiredProduct: null, requiredProductName: null, cta: null })
     expect(v.bookmark).toMatchObject({ $type: 'atom', value: { positionSec: 444, runtimeSec: 888, progress: 0.5 } })
     expect((v.bookmark as { $expires?: number }).$expires).toBeLessThan(0)
     expect(v.watchStatus).toMatchObject({ $type: 'atom', value: 'STARTED' })
@@ -124,11 +124,14 @@ describe('Falcor rotaları', () => {
     expect(s.seasonCount!.value).toBe(2)
     expect((s.boxart!.value as { url: string }).url).toMatch(/\.jpg\?r=/)
     expect(s.badge!.value).toEqual({ kind: 'EXCLUSIVE', text: "Sadece TV+'ta" })
+    // dizi kendi kimliğiyle oynatılmaz: önizleme de bölüme gider
+    const promo = await get(ctx, ['videos', 'INTEGERS', 'KEYS'], [['videos'], [ID.caminandes], ['promoVideo']])
+    expect((promo[0]!.value as { value: { viewableId: string } }).value.viewableId).toBe(`Video:${ID.cam_s1e1}`)
 
     // paket dışı / görünmez / bilinmeyen
     const tears = await get(ctx, ['videos', 'INTEGERS', 'KEYS'], [['videos'], [ID.tears], ['access', 'badge', 'promoVideo']])
     expect(tears.map((x) => (x.value as { value?: unknown }).value)).toEqual([
-      { state: 'UPSELL', reasonText: 'Sinema Paketi ile izlenir', requiredProduct: 'sinema-paketi' },
+      { state: 'UPSELL', reasonText: 'Sinema Paketi ile izlenir', requiredProduct: 'sinema-paketi', requiredProductName: 'Sinema Paketi', cta: 'Paketi incele' },
       { kind: 'LOCKED', text: 'Sinema Paketi' },
       undefined,
     ])

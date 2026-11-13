@@ -3,7 +3,7 @@
  * Kurallar: kart başına EN FAZLA bir rozet (öncelik CANLI > pakette yok > rozet);
  * canlı öğe her zaman ilerleme + bitiş/kalan süre taşır (bu yüzden canlı biçim başlangıç/bitiş ister).
  */
-import type { FocusEventHandler, MouseEventHandler, ReactElement, ReactNode } from 'react'
+import type { DOMAttributes, MouseEventHandler, ReactElement, ReactNode, Ref } from 'react'
 import { Link } from 'react-router-dom'
 import { cx } from './cx'
 import { AccessLock, Badge, LiveTag, ProgressBar } from './Feedback'
@@ -12,34 +12,58 @@ import { formatLiveLine, liveProgress, type DateInput } from './time'
 import { useNow } from './useNow'
 import './cards.css'
 
-interface CardLinkProps {
+/**
+ * Kök öğeye aynen iletilen olaylar (önizleme / MiniModal, uzun basış, bağlam menüsü).
+ * Özellikler sarmalayıcı öğe kullanmadan doğrudan karta bağlanır.
+ */
+export type CardEventProps = Pick<
+  DOMAttributes<HTMLElement>,
+  | 'onMouseEnter'
+  | 'onMouseLeave'
+  | 'onFocus'
+  | 'onBlur'
+  | 'onPointerEnter'
+  | 'onPointerLeave'
+  | 'onPointerMove'
+  | 'onPointerDown'
+  | 'onPointerUp'
+  | 'onPointerCancel'
+  | 'onContextMenu'
+  | 'onClickCapture'
+  | 'onKeyDown'
+>
+
+interface CardLinkProps extends CardEventProps {
   /** Uygulama içi hedef (ör. "/detay/80010001?tctx=…") */
   to?: string
   onClick?: MouseEventHandler<HTMLElement>
-  /** Önizleme / MiniModal ön yüklemesi için */
-  onMouseEnter?: MouseEventHandler<HTMLElement>
-  onFocus?: FocusEventHandler<HTMLElement>
   /** Etkileşimli kartın ekran okuyucu adı (varsayılan: başlık) */
   ariaLabel?: string
+  /** Kök öğe (a / button / span) */
+  ref?: Ref<HTMLElement>
 }
 
-/** Kartın dış kabı: bağlantı, buton ya da düz öğe. */
-function CardShell({ to, onClick, onMouseEnter, onFocus, ariaLabel, className, children }: CardLinkProps & { className: string; children: ReactNode }): ReactElement {
+/** Kartın dış kabı: bağlantı, buton ya da düz öğe. Olaylar ve ref köke gider. */
+function CardShell({ to, onClick, ariaLabel, className, children, ref, ...events }: CardLinkProps & { className: string; children: ReactNode }): ReactElement {
   if (to) {
     return (
-      <Link to={to} className={className} onClick={onClick} onMouseEnter={onMouseEnter} onFocus={onFocus} aria-label={ariaLabel}>
+      <Link ref={ref as Ref<HTMLAnchorElement>} to={to} className={className} onClick={onClick} aria-label={ariaLabel} {...events}>
         {children}
       </Link>
     )
   }
   if (onClick) {
     return (
-      <button type="button" className={className} onClick={onClick} onMouseEnter={onMouseEnter} onFocus={onFocus} aria-label={ariaLabel}>
+      <button ref={ref as Ref<HTMLButtonElement>} type="button" className={className} onClick={onClick} aria-label={ariaLabel} {...events}>
         {children}
       </button>
     )
   }
-  return <span className={className}>{children}</span>
+  return (
+    <span ref={ref as Ref<HTMLSpanElement>} className={className} {...events}>
+      {children}
+    </span>
+  )
 }
 
 function Img({ src, alt, fallback }: { src?: string | null; alt: string; fallback: string }): ReactElement {
@@ -62,7 +86,7 @@ export interface PosterCardProps extends CardLinkProps {
   badge?: string | null
   /** Pakette yoksa kısa yetki metni ("Sinema Paketi ile"): sol üstte kilit, altta tek satır. */
   lockedText?: string | null
-  /** Top 10 sırası (1–10): afişin sol altında büyük rakam. */
+  /** Top 10 sırası (1–10): afişin SOLUNDA büyük rakam; afiş rakamın sağ kenarına biner, kart genişler. */
   rank?: number | null
   /** Afiş altında başlık + meta (arama ızgarası, "Benzerleri"). Ana satırlarda yazılmaz. */
   showTitle?: boolean
@@ -74,9 +98,8 @@ export interface PosterCardProps extends CardLinkProps {
 
 export function PosterCard({ title, imageUrl, badge, lockedText, rank, showTitle, meta, size = 'row', className, ariaLabel, ...link }: PosterCardProps): ReactElement {
   const label = ariaLabel ?? [rank ? `${rank}. sıra` : null, title, lockedText].filter(Boolean).join(', ')
-  return (
-    <CardShell {...link} ariaLabel={link.to || link.onClick ? label : undefined} className={cx('cn-card', 'cn-poster', size === 'fill' && 'cn-card--fill', className)}>
-      <span className="cn-card__media cn-poster__media">
+  const media = (
+    <span className="cn-card__media cn-poster__media">
         <Img src={imageUrl} alt={`${title} afişi`} fallback={title} />
         {lockedText ? (
           <span className="cn-card__badge cn-card__lockchip" aria-hidden="true">
@@ -85,12 +108,24 @@ export function PosterCard({ title, imageUrl, badge, lockedText, rank, showTitle
         ) : badge ? (
           <Badge className="cn-card__badge">{badge}</Badge>
         ) : null}
-        {rank ? (
+    </span>
+  )
+  return (
+    <CardShell
+      {...link}
+      ariaLabel={link.to || link.onClick ? label : undefined}
+      className={cx('cn-card', 'cn-poster', size === 'fill' && 'cn-card--fill', rank ? (rank >= 10 ? 'cn-poster--ranked cn-poster--ranked2' : 'cn-poster--ranked') : null, className)}
+    >
+      {rank ? (
+        <span className="cn-poster__frame">
           <span className="cn-poster__rank" aria-hidden="true">
             {rank}
           </span>
-        ) : null}
-      </span>
+          {media}
+        </span>
+      ) : (
+        media
+      )}
       {showTitle && (
         <span className="cn-card__text">
           <span className="cn-card-title">{title}</span>
@@ -119,15 +154,19 @@ export interface LandscapeCardProps extends CardLinkProps {
   lockedText?: string | null
   /** Canlı yayın: CANLI etiketi + ilerleme + "20:00–23:15 · 42 dk kaldı" otomatik (meta yerine). */
   live?: LiveWindow | null
+  /** Görselin sağ üstünde küçük kanal logosu karosu (canlı yayın / kanal içeriği) */
+  channelLogoUrl?: string | null
+  /** Logonun erişilebilir adı (ör. "TRT Haber") */
+  channelName?: string
   size?: 'row' | 'fill'
   className?: string
 }
 
-export function LandscapeCard({ title, imageUrl, progress, meta, badge, lockedText, live, size = 'row', className, ariaLabel, ...link }: LandscapeCardProps): ReactElement {
+export function LandscapeCard({ title, imageUrl, progress, meta, badge, lockedText, live, channelLogoUrl, channelName, size = 'row', className, ariaLabel, ...link }: LandscapeCardProps): ReactElement {
   const now = useNow()
   const p = live ? liveProgress(live.start, live.end, now) : progress
   const line = live ? formatLiveLine(live.start, live.end, now) : meta
-  const label = ariaLabel ?? [live ? 'Canlı' : null, title, line, lockedText].filter(Boolean).join(', ')
+  const label = ariaLabel ?? [live ? 'Canlı' : null, channelName, title, line, lockedText].filter(Boolean).join(', ')
   return (
     <CardShell {...link} ariaLabel={link.to || link.onClick ? label : undefined} className={cx('cn-card', 'cn-land', size === 'fill' && 'cn-card--fill', className)}>
       <span className="cn-card__media cn-land__media">
@@ -141,6 +180,11 @@ export function LandscapeCard({ title, imageUrl, progress, meta, badge, lockedTe
         ) : badge ? (
           <Badge className="cn-card__badge">{badge}</Badge>
         ) : null}
+        {channelLogoUrl && (
+          <span className="cn-land__logo">
+            <img src={channelLogoUrl} alt={channelName ?? ''} loading="lazy" decoding="async" />
+          </span>
+        )}
         {p != null && <ProgressBar value={p} label={live ? 'Yayın ilerlemesi' : 'İzleme ilerlemesi'} className="cn-card__progress" />}
       </span>
       <span className="cn-card__text">

@@ -21,11 +21,11 @@
   font: 500 13px/18px var(--font);
   outline: none;
 }
-/* İzleme sayfası (telefon, dikey): alt sayfa alçalır ve oynatıcının alt denetim şeridinin (96 px) üstünde durur;
+/* İzleme sayfası (telefon, dikey): alt sayfa alçalır ve oynatıcının alt denetim şeridinin (≈100 px) üstünde durur;
    videonun ortası ve denetimler açık kalır. */
 .kp-panel.is-watch {
   height: 34dvh;
-  bottom: 96px;
+  bottom: 112px;
   border-radius: var(--r-sheet);
   border: 1px solid var(--line-strong);
   left: 8px;
@@ -772,7 +772,17 @@
 }
 .kp-big.kp-mono {
   font-size: 12px;
-  line-height: 20px;
+  line-height: 16px;
+  padding: 2px 0;
+}
+.kp-wrap {
+  overflow-wrap: anywhere;
+}
+.kp-big {
+  white-space: nowrap;
+}
+.kp-big.kp-wrap {
+  white-space: normal;
 }
 .kp-lane-head {
   display: flex;

@@ -78,7 +78,9 @@ describe('TTL önbelleği', () => {
     const b2 = searchCacheKey({ ...base, term: 'x', filters: { year: '2020', kind: 'film' } })
     const c = searchCacheKey({ ...base, term: 'x', capabilities: 'baska' })
     const d = searchCacheKey({ ...base, term: 'x', profile: 'Q' })
-    expect(new Set([a, b, c, d]).size).toBe(4)
+    const e = searchCacheKey({ ...base, term: 'x', exact: true })
+    expect(new Set([a, b, c, d, e]).size).toBe(5)
+    expect(searchCacheKey({ ...base, term: 'x', exact: false })).toBe(a)
     expect(b).toBe(b2)
   })
 

@@ -2,7 +2,7 @@
  * Tasarım sistemi galerisi (#/_tasarim) — görsel QA yüzeyi: her bileşen, her durumuyla.
  * Görsel sunucusu gerektirmez: kart görselleri yoksa yedek (başlıklı) yüzey çizilir; kanal logoları /brand altından.
  */
-import { useMemo, useState, type ReactElement, type ReactNode } from 'react'
+import { useMemo, useState, type CSSProperties, type ReactElement, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import {
   AccessLock,
@@ -43,7 +43,22 @@ import {
 import './gallery.css'
 
 const MIN = 60_000
-const CHANNELS = ['trt-1', 'show-tv', 'kanal-d', 'atv', 'star-tv', 'now', 'tv8', 'trt-haber', 'ntv', 'trt-cocuk', 'tabii-spor', 'dmax']
+/** Yalnız /brand/channels altında gerçekten bulunan logolar. */
+const CHANNELS: [slug: string, name: string][] = [
+  ['trt-haber', 'TRT Haber'],
+  ['ntv', 'NTV'],
+  ['cnn-turk', 'CNN Türk'],
+  ['haberturk', 'Habertürk'],
+  ['haber-global', 'Haber Global'],
+  ['a-haber', 'A Haber'],
+  ['tv100', 'tv100'],
+  ['szc', 'Sözcü TV'],
+  ['trt-cocuk', 'TRT Çocuk'],
+  ['tv-plus-kanal', 'TV+ Kanal'],
+]
+const logo = (slug: string) => `/brand/channels/${slug}.png`
+/** Afiş genişliğini bir kapsayıcıda sabitler (galeride iki ölçüyü yan yana göstermek için). */
+const posterW = (px: number) => ({ '--poster-w': `${px}px` }) as CSSProperties
 
 function Section({ title, children, note }: { title: string; note?: string; children: ReactNode }): ReactElement {
   return (
@@ -67,6 +82,8 @@ export function DesignGallery(): ReactElement {
   const [chip, setChip] = useState('Tümü')
   const [sheet, setSheet] = useState(false)
   const [range, setRange] = useState<VisibleRange>({ first: -1, last: -1 })
+  const [liked, setLiked] = useState(true)
+  const [listed, setListed] = useState(false)
   const now = useMemo(() => Date.now(), [])
   const ending = { start: now - 80 * MIN, end: now + 25 * MIN }
   const long = { start: now - 30 * MIN, end: now + 95 * MIN }
@@ -146,6 +163,9 @@ export function DesignGallery(): ReactElement {
             <Button disabled variant="secondary">
               Pasif
             </Button>
+            <Button variant="secondary" icon={listed ? 'check' : 'plus'} aria-pressed={listed} title="Listeme ekle / çıkar" onClick={() => setListed((v) => !v)}>
+              {listed ? 'Listende' : 'Listeme ekle'}
+            </Button>
             <Button to="/_tasarim" variant="secondary" icon="chevronRight">
               Bağlantı
             </Button>
@@ -158,6 +178,8 @@ export function DesignGallery(): ReactElement {
             <IconButton icon="bell" label="Bildirimler" variant="ghost" />
             <IconButton icon="close" label="Kapat" size={36} />
             <IconButton icon="download" label="İndir" disabled />
+            <IconButton icon="like" label="Beğendim" pressed={liked} onClick={() => setLiked((v) => !v)} />
+            <IconButton icon="check" label="Listende" pressed size={40} />
             <TextButton onClick={() => toast('Tümü açılır')}>Tümü</TextButton>
           </div>
         </Section>
@@ -181,6 +203,20 @@ export function DesignGallery(): ReactElement {
               <PosterCard key={i} title={`Film ${i + 1}`} rank={i + 1} to="/_tasarim" badge={i === 1 ? 'Yeni' : null} />
             ))}
           </Row>
+          <div style={posterW(112)}>
+            <Row title="Top 10 · 112 px afiş">
+              {[1, 2, 7, 9, 10].map((r) => (
+                <PosterCard key={r} title={`Film ${r}`} rank={r} imageUrl={r === 2 ? '/brand/avatar-2.png' : null} to="/_tasarim" />
+              ))}
+            </Row>
+          </div>
+          <div style={posterW(184)}>
+            <Row title="Top 10 · 184 px afiş">
+              {[1, 4, 8, 10].map((r) => (
+                <PosterCard key={r} title={`Film ${r}`} rank={r} showTitle={r === 4} meta={r === 4 ? '2024 · Dram' : null} imageUrl={r === 1 ? '/brand/avatar-1.png' : null} to="/_tasarim" />
+              ))}
+            </Row>
+          </div>
           <RowHeader title="Afiş durumları" />
           <HScroll label="Afiş durumları">
             <PosterCard title="Rozetli" badge="Yeni bölüm" onClick={() => toast('Afişe dokunuldu')} />
@@ -196,8 +232,8 @@ export function DesignGallery(): ReactElement {
         <Section title="Yatay kartlar (16:9)">
           <HScroll label="Yatay kartlar">
             <LandscapeCard title="Kuzgun" meta="S1 B4 · 23 dk kaldı" progress={0.62} to="/_tasarim" />
-            <LandscapeCard title="Ana Haber" live={ending} to="/_tasarim" />
-            <LandscapeCard title="Akşam Maçı" live={long} />
+            <LandscapeCard title="Ana Haber" live={ending} channelLogoUrl={logo('trt-haber')} channelName="TRT Haber" to="/_tasarim" />
+            <LandscapeCard title="Gece Bülteni" live={long} channelLogoUrl={logo('ntv')} channelName="NTV" />
             <LandscapeCard title="Yeni bölüm geldi" badge="Yeni bölüm" meta="S2 B1" />
             <LandscapeCard title="Pakette yok" lockedText="Sinema Paketi ile" progress={0.2} />
             <LandscapeCard title="Yeni başladı" meta="1 sa 12 dk" progress={0.04} />
@@ -206,15 +242,15 @@ export function DesignGallery(): ReactElement {
 
         <Section title="Kanal karoları ve canlı kanal kartı" note="Canlı öğe her zaman ilerleme + bitiş/kalan süre taşır">
           <HScroll label="Kanallar">
-            {CHANNELS.map((c, i) => (
-              <ChannelTile key={c} name={c} logoUrl={`/brand/channels/${c}.png`} to="/_tasarim" selected={i === 0} />
+            {CHANNELS.map(([slug, name], i) => (
+              <ChannelTile key={slug} name={name} logoUrl={logo(slug)} to="/_tasarim" selected={i === 0} />
             ))}
             <ChannelTile name="Logosuz" />
           </HScroll>
           <HScroll label="Kanallarım">
-            <LiveChannelCard channelName="TRT 1" channelLogoUrl="/brand/channels/trt-1.png" programmeTitle="Ana Haber Bülteni" {...ending} to="/_tasarim" />
-            <LiveChannelCard channelName="Show TV" channelLogoUrl="/brand/channels/show-tv.png" programmeTitle="Akşam Sineması: Uzun Bir Film Adı" {...long} to="/_tasarim" />
-            <LiveChannelCard channelName="beIN" channelLogoUrl="/brand/channels/s-sport.png" programmeTitle="Canlı Maç" {...long} lockedText="Spor Paketi ile" />
+            <LiveChannelCard channelName="TRT Haber" channelLogoUrl={logo('trt-haber')} programmeTitle="Ana Haber Bülteni" {...ending} to="/_tasarim" />
+            <LiveChannelCard channelName="CNN Türk" channelLogoUrl={logo('cnn-turk')} programmeTitle="Akşam Haberleri ve Uzun Bir Program Adı" {...long} to="/_tasarim" />
+            <LiveChannelCard channelName="TRT Çocuk" channelLogoUrl={logo('trt-cocuk')} programmeTitle="Çizgi Film Kuşağı" {...long} lockedText="Çocuk Paketi ile" />
           </HScroll>
         </Section>
 

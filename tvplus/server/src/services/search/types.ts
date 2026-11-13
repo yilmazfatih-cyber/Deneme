@@ -62,6 +62,8 @@ export interface SearchOptionsInput {
   pageCapabilities?: SearchPageCapabilitiesInput | null
   filters?: SearchFiltersInput | null
   pageSize?: number | null
+  /** true → yazım düzeltmesi yapılmaz (CORRECTED/MIXED yok, fuzzy varlık yok) */
+  exactTerm?: boolean | null
 }
 
 /* ───────────── Çıktı ───────────── */

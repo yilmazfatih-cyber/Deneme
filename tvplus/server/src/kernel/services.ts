@@ -73,6 +73,8 @@ export interface ArtworkSource {
   subtitle: string | null
   seed: string
   focal: string
+  /** Yatay kaynaktan dikey afiş (BOXART) üretim biçimi; verilmezse 'contain' (bkz. content-schema zArtwork.posterFit) */
+  posterFit?: 'crop' | 'contain'
 }
 /** Herhangi bir videoId'nin katalogdaki yeri (alan servisleri ekledi). */
 export interface VideoInfo {

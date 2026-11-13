@@ -516,6 +516,8 @@ input SearchOptionsInput {
   pageCapabilities: SearchPageCapabilitiesInput!
   filters: SearchFiltersInput
   pageSize: Int
+  "true → yazım düzeltmesi yapılmaz (kullanıcı 'bunun yerine … ara' dediğinde)"
+  exactTerm: Boolean
 }
 
 type SearchEntity {

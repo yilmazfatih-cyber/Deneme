@@ -35,8 +35,9 @@ export function stableJson(v: unknown): string {
     .join(',')}}`
 }
 
-export function searchCacheKey(parts: { profile: string; term: string; filters: unknown; capabilities: string }): string {
-  return `${parts.profile}|${normalizeTerm(parts.term)}|${stableJson(parts.filters)}|${parts.capabilities}`
+/** `exact`: yazım düzeltmesiz arama ("Bunun yerine … ara") — düzeltmeli yanıttan ayrı girdi. */
+export function searchCacheKey(parts: { profile: string; term: string; filters: unknown; capabilities: string; exact?: boolean }): string {
+  return `${parts.profile}|${normalizeTerm(parts.term)}|${stableJson(parts.filters)}|${parts.capabilities}${parts.exact ? '|tam' : ''}`
 }
 
 export class TtlCache<T> {

@@ -22,6 +22,10 @@ interface CommonProps {
   href?: string
   onClick?: MouseEventHandler<HTMLElement>
   'aria-label'?: string
+  /** Aç/kapa düğmesi (ör. "Listeme ekle"): yalnız <button> biçiminde yazılır; true → beyaz dolgu. */
+  'aria-pressed'?: boolean
+  /** İpucu metni */
+  title?: string
 }
 
 export interface ButtonProps extends CommonProps {
@@ -40,9 +44,10 @@ export interface ButtonProps extends CommonProps {
 }
 
 /** Ortak çizim: button / Link / a arasında seçim yapar. */
-function Pressable(props: CommonProps & { cls: string; disabled?: boolean; busy?: boolean; type?: ButtonProps['type']; title?: string }): ReactElement {
+function Pressable(props: CommonProps & { cls: string; disabled?: boolean; busy?: boolean; type?: ButtonProps['type'] }): ReactElement {
   const { cls, to, href, onClick, children, disabled, busy, type, title } = props
   const label = props['aria-label']
+  const pressed = props['aria-pressed']
   if (to && !disabled) {
     return (
       <Link className={cls} to={to} onClick={onClick} aria-label={label} title={title}>
@@ -58,7 +63,7 @@ function Pressable(props: CommonProps & { cls: string; disabled?: boolean; busy?
     )
   }
   return (
-    <button className={cls} type={type ?? 'button'} onClick={onClick} disabled={disabled || busy} aria-busy={busy || undefined} aria-label={label} title={title}>
+    <button className={cls} type={type ?? 'button'} onClick={onClick} disabled={disabled || busy} aria-busy={busy || undefined} aria-pressed={pressed} aria-label={label} title={title}>
       {children}
     </button>
   )

@@ -45,6 +45,7 @@ interface RunOpts {
   kids?: boolean
   index?: SearchIndex
   entitled?: (videoId: number) => boolean
+  exactTerm?: boolean
 }
 let reqSeq = 0
 function run(term: string, o: RunOpts = {}): SearchPageResult {
@@ -52,7 +53,12 @@ function run(term: string, o: RunOpts = {}): SearchPageResult {
   const byId = new Map(TITLES.map((t) => [t.videoId, t]))
   const ctx: SearchRequestContext = {
     term,
-    options: { pageCapabilities: o.caps ?? FULL_CAPS, filters: o.filters ?? null, pageSize: o.pageSize ?? null },
+    options: {
+      pageCapabilities: o.caps ?? FULL_CAPS,
+      filters: o.filters ?? null,
+      pageSize: o.pageSize ?? null,
+      exactTerm: o.exactTerm ?? null,
+    },
     now: NOW,
     requestId: `istek-${++reqSeq}`,
     kids: kidsProfile,
@@ -120,14 +126,27 @@ describe('puanlama', () => {
       }
     }
   })
-  it('kişi/anahtar kelime/tür ikincil ağırlıkla sayılır ve STORY_ART ister', () => {
+  it('kişi/anahtar kelime/tür ikincil ağırlıkla sayılır; öneride STORY_ART, galeride her zaman BOXART', () => {
     const p = run('haluk')
     const g = section(p, 'SearchGallerySection')
     expect(g?.entities[0]?.displayString).toBe('Şahsiyet')
     expect(g?.entities[0]?.score).toBeLessThan(SCORE.PREFIX)
-    expect(g?.entities[0]?.artworkType).toBe('STORY_ART')
+    // Galeri 2:3 afiş hücresi çizer → eşleşme kişi üzerinden olsa da BOXART
+    expect(g?.entities[0]?.artworkType).toBe('BOXART')
+    const suggestion = section(p, 'SearchListSection')?.entities.find((e) => e.treatment === 'standardSuggestion')
+    expect(suggestion?.artworkType).toBe('STORY_ART')
     expect(names(section(p, 'SearchListSection'))).toContain('Haluk Bilginer')
     expect(section(run('şahsiyet'), 'SearchGallerySection')?.entities[0]?.artworkType).toBe('BOXART')
+  })
+  it('galerideki her varlığın bağlamsal görseli BOXART', () => {
+    for (const q of ['haluk', 'yerli', 'yemek', 'dram', 'sahsyiet', '']) {
+      const g = run(q).sections.find((s) => s.sectionType === 'SearchGallerySection')
+      expect(g?.entities.length, q).toBeGreaterThan(0)
+      expect(
+        g?.entities.every((e) => e.artworkType === 'BOXART'),
+        q,
+      ).toBe(true)
+    }
   })
   it('eşitlikte popülerlik kazanır', () => {
     // "yerli" türü üç başlıkta eşit puan verir → popülerlik sırası
@@ -226,6 +245,42 @@ describe('yazım düzeltmesi', () => {
   })
   it('güçlü sonuçta düzeltme denenmez', () => {
     expect(run('sahil').correction).toBeNull()
+  })
+  it('exactTerm: sonuçsuz terim düzeltilmez, yedek sayfa döner', () => {
+    expect(run('sahsyiet').correction?.mode).toBe('CORRECTED')
+    const p = run('sahsyiet', { exactTerm: true })
+    expect(p.correction).toBeNull()
+    expect(p.isFallback).toBe(true)
+    expect(p.searchTerm).toBe('sahsyiet')
+    expect(allEntities(p).some((e) => e.fuzzy)).toBe(false)
+    // "Bunun yerine … ara" döngüsü yok: aynı çağrı yine düzeltmesiz
+    expect(run('sahsyiet', { exactTerm: true }).correction).toBeNull()
+  })
+  it('exactTerm: zayıf doğrudan sonuçlar MIXED olmadan döner', () => {
+    const mini = buildSearchIndex(
+      {
+        titles: [
+          title({ videoId: 1, title: 'Kaynak', popularity: 10 }),
+          title({ videoId: 2, title: 'Aynı Yol', popularity: 90 }),
+        ],
+        collections: [],
+        people: [],
+        channels: [],
+        airings: [],
+      },
+      NOW,
+    )
+    expect(run('ayna', { index: mini }).correction?.mode).toBe('MIXED')
+    const p = run('ayna', { index: mini, exactTerm: true })
+    expect(p.correction).toBeNull()
+    expect(p.isFallback).toBe(false)
+    expect(names(section(p, 'SearchGallerySection'))).toEqual(['Kaynak'])
+    expect(allEntities(p).every((e) => !e.fuzzy)).toBe(true)
+  })
+  it('exactTerm: güçlü doğrudan sonuçlar aynen döner', () => {
+    const p = run('sahil', { exactTerm: true })
+    expect(p.correction).toBeNull()
+    expect(section(p, 'SearchGallerySection')?.entities[0]?.displayString).toBe('Sahil')
   })
 })
 

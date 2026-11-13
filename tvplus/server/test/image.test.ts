@@ -237,6 +237,84 @@ describe('görsel API: çizim', () => {
     expect(st.channels[0]?.mean ?? 0).toBeGreaterThan(150)
   })
 
+  it("yatay kaynaktan afiş: 'contain' ve 'crop' istenen boyutta, birbirinden farklı; belirtilmezse 'contain'", async () => {
+    // 16:9, sol yarı kırmızı sağ yarı mavi, üstte ve altta siyah şerit (letterbox ayıklaması da çalışsın)
+    const W = 640
+    const H = 480
+    const raw = Buffer.alloc(W * H * 3)
+    for (let y = 60; y < 420; y++)
+      for (let x = 0; x < W; x++) {
+        const o = (y * W + x) * 3
+        if (x < W / 2) raw[o] = 220
+        else raw[o + 2] = 220
+      }
+    const png = await sharp(raw, { raw: { width: W, height: H, channels: 3 } }).png().toBuffer()
+    vi.spyOn(imageFetcher, 'fetch').mockResolvedValue({ status: 200, contentType: 'image/png', body: png })
+    const url = 'https://ornek.test/kare.png'
+    sources['Video:20'] = gen('Afiş Testi', 'x', { sourceUrl: url, posterFit: 'contain' })
+    sources['Video:21'] = gen('Afiş Testi', 'x', { sourceUrl: url, posterFit: 'crop' })
+    sources['Video:22'] = gen('Afiş Testi', 'x', { sourceUrl: url })
+    try {
+      const { app } = await makeApp({ offline: false })
+      const render = async (id: string, width?: number) => {
+        const a = buildArtwork(app.config, 'BOXART', id, { width, format: 'jpg' })
+        const res = await get(app, a.url)
+        expect(res.statusCode).toBe(200)
+        const out = await sharp(res.rawPayload).raw().toBuffer({ resolveWithObject: true })
+        expect([out.info.width, out.info.height]).toEqual([a.width, a.height])
+        return out.data
+      }
+      for (const width of [368, 112]) {
+        const contain = await render('Video:20', width)
+        const crop = await render('Video:21', width)
+        const dflt = await render('Video:22', width)
+        expect(dflt.equals(contain)).toBe(true)
+        expect(crop.equals(contain)).toBe(false)
+      }
+      // 'contain' kaynağın tamamını gösterir: görsel bandında hem kırmızı hem mavi yarı görünür.
+      // 'crop' ortadan 2:3 pencere alır; aynı satırda iki rengi de taşır ama sol kenar kırmızı, sağ kenar mavidir.
+      const { data, info } = await sharp((await get(app, buildArtwork(app.config, 'BOXART', 'Video:20').url)).rawPayload)
+        .raw()
+        .toBuffer({ resolveWithObject: true })
+      const px = (x: number, y: number) => {
+        const o = (y * info.width + x) * info.channels
+        return [data[o] ?? 0, data[o + 1] ?? 0, data[o + 2] ?? 0]
+      }
+      const bandY = Math.round(info.height * 0.085 + 40)
+      const [lr, , lb] = px(20, bandY)
+      const [rr, , rb] = px(info.width - 20, bandY)
+      expect(lr).toBeGreaterThan(150)
+      expect(lb).toBeLessThan(80)
+      expect(rb).toBeGreaterThan(150)
+      expect(rr).toBeLessThan(80)
+    } finally {
+      for (const id of ['Video:20', 'Video:21', 'Video:22']) delete sources[id]
+    }
+  })
+
+  it("afiş düzeni disk önbelleği anahtarının parçası", async () => {
+    const png = await sharp({ create: { width: 640, height: 360, channels: 3, background: { r: 30, g: 120, b: 200 } } })
+      .png()
+      .toBuffer()
+    vi.spyOn(imageFetcher, 'fetch').mockResolvedValue({ status: 200, contentType: 'image/png', body: png })
+    const dataDir = mkdtempSync(join(tmpdir(), 'tvplus-img-'))
+    sources['Video:30'] = gen('Önbellek', 'x', { sourceUrl: 'https://ornek.test/b.png', posterFit: 'crop' })
+    try {
+      const first = await makeApp({ offline: false, dataDir })
+      const url = buildArtwork(first.app.config, 'BOXART', 'Video:30').url
+      const r1 = await get(first.app, url)
+      expect(r1.headers['x-tvplus-img']).toContain('cache=miss')
+      expect((await get(first.app, url)).headers['x-tvplus-img']).toContain('cache=hit')
+      // İçerik 'contain'e geçti: aynı adres yeniden çizilir, eski kırpılmış afiş sunulmaz
+      sources['Video:30'] = { ...sources['Video:30'], posterFit: 'contain' } as ArtworkSource
+      const r2 = await get(first.app, url)
+      expect(r2.headers['x-tvplus-img']).toContain('cache=miss')
+      expect(r2.headers.etag).not.toBe(r1.headers.etag)
+    } finally {
+      delete sources['Video:30']
+    }
+  })
+
   it('çevrimiçi ama kaynak okunamadı: yedek kapak, kısa önbellek', async () => {
     vi.spyOn(imageFetcher, 'fetch').mockRejectedValue(new Error('zaman aşımı'))
     const { app } = await makeApp({ offline: false })

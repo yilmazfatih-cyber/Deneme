@@ -360,7 +360,8 @@ function resultSections(hits: Hit[], caps: NegotiatedCapabilities, ctx: SearchRe
         SECTION_TITLES.gallery,
         hits.filter((h) => h.doc.type === 'video'),
         ctx,
-        videoArtwork,
+        // Galeri 2:3 afiş hücresi çizer: bağlamsal görsel her zaman BOXART biçimli (eşleşme türünden bağımsız).
+        () => 'BOXART',
       ),
     )
   }
@@ -454,7 +455,8 @@ export function buildSearchPage(index: SearchIndex, ctx: SearchRequestContext): 
   let correction: SearchCorrectionResult | null = null
 
   const best = direct[0]?.score ?? 0
-  if (direct.length === 0 || best < WEAK_SCORE) {
+  // exactTerm: kullanıcı "Bunun yerine … ara" dedi → yazım düzeltmesi hiç denenmez.
+  if (!ctx.options?.exactTerm && (direct.length === 0 || best < WEAK_SCORE)) {
     const qc = correctQuery(tokens, index.vocab)
     if (qc.changed) {
       const seen = new Set(direct.map((h) => h.doc.key))

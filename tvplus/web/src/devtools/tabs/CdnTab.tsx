@@ -3,7 +3,7 @@ import { ROUTES } from '../../../../shared/constants'
 import type { OcaNodeState } from '../../../../shared/types'
 import { fmtBytes, fmtClock, fmtInt, fmtKbps } from '../model/format'
 import { onBootChange, sessionHeaders } from '../../api/session'
-import { Explainer, LoginNote, needsLogin, usePoll } from '../ui'
+import { Explainer, LoginNote, needsLogin, useSignedIn, usePoll } from '../ui'
 
 const OCA_URL = `${ROUTES.DEBUG_PREFIX}/oca`
 /** Bant genişliği kaydırıcısının basamakları; son basamak sınırsız. */
@@ -37,8 +37,11 @@ function stepIndex(kbps: number | null): number {
 }
 
 export function CdnTab(): ReactNode {
-  const poll = usePoll<unknown>(OCA_URL, 2000, 10_000, sessionHeaders)
-  const nodes = needsLogin(poll) ? null : readNodes(poll.data)
+  const signedIn = useSignedIn()
+  const poll = usePoll<unknown>(OCA_URL, 2000, 10_000, sessionHeaders, signedIn)
+  /** Anonimken uç 401 döner: hiç sorulmaz, tek sakin satır gösterilir. */
+  const locked = !signedIn || needsLogin(poll)
+  const nodes = locked ? null : readNodes(poll.data)
   const { refresh } = poll
   // Giriş/profil değişince beklemeden yeniden sor.
   useEffect(() => onBootChange(() => refresh()), [refresh])
@@ -75,8 +78,8 @@ export function CdnTab(): ReactNode {
         <li>Düğümü kapat → oynatıcı diğer düğüme geçer.</li>
       </ul>
 
-      {needsLogin(poll) && <LoginNote />}
-      {poll.error && !needsLogin(poll) && (
+      {locked && <LoginNote />}
+      {poll.error && !locked && (
         <p className="kp-calm" role="status">
           Sunucunun hata ayıklama ucu şu an yanıt vermiyor. 10 sn'de bir yeniden deneniyor.
           <span className="kp-dim kp-small"> ({poll.error})</span>
@@ -88,7 +91,7 @@ export function CdnTab(): ReactNode {
         </p>
       )}
 
-      {nodes === null && !poll.error && !needsLogin(poll) && <p className="kp-empty">Düğümler yükleniyor…</p>}
+      {nodes === null && !poll.error && !locked && <p className="kp-empty">Düğümler yükleniyor…</p>}
       {nodes && (
         <>
           <div className="kp-toolbar">

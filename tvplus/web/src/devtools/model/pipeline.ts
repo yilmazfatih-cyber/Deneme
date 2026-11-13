@@ -187,6 +187,8 @@ export interface PipelineState {
   previewCount: number
   /** Son alınan manifestler (önbellekten yeniden kullanılınca hatta geri getirmek için) */
   known: Record<string, ManifestView>
+  /** İzleme sayfası yeni bir oynatma başlattı (sıradaki manifest yeni oturumdur) */
+  pendingStart: boolean
   lastPrefetch: { at: number; viewableId: string } | null
   source: SourceKind
   streaming: StreamingView
@@ -231,6 +233,7 @@ export function initialPipeline(): PipelineState {
     prefetchCount: 0,
     previewCount: 0,
     known: {},
+    pendingStart: false,
     lastPrefetch: null,
     source: 'none',
     streaming: emptyStreaming(),
@@ -466,8 +469,8 @@ function reduceManifest(s: PipelineState, e: DevEvent): PipelineState {
     if (!s.manifest || s.manifest.prefetch) next.manifest = m
     return next
   }
-  // Gerçek manifest = yeni oynatma
-  return startPlayback(s, m)
+  // Gerçek manifest = yeni oynatma (aynı başlık sürüyorsa yenileme)
+  return startPlayback(s, m, true)
 }
 
 const KNOWN_MAX = 20
@@ -479,11 +482,29 @@ function rememberManifest(known: Record<string, ManifestView>, m: ManifestView):
   return next
 }
 
-/** Gerçek oynatmayı başlatır: akış, altyazı ve gömme durumu sıfırlanır. */
-function startPlayback(s: PipelineState, m: ManifestView): PipelineState {
+/**
+ * Gerçek oynatmayı başlatır: akış, altyazı ve gömme durumu sıfırlanır.
+ * Aynı başlık oynarken gelen manifest (imzalı adres yenileme, düğüm kapanınca yeniden isteme) yeni oturum değildir:
+ * yalnızca manifest bilgisi güncellenir, şeritler ve geçiş işaretleri korunur.
+ */
+function startPlayback(s: PipelineState, m: ManifestView, fetched: boolean): PipelineState {
+  const cur = playing(s)
+  if (cur && cur.viewableId === m.viewableId && !s.pendingStart) {
+    const urlRefreshes = cur.urlRefreshes + (fetched ? 1 : 0)
+    return { ...s, manifest: { ...m, reused: cur.reused, urlRefreshes }, manifestError: null }
+  }
   const streaming = emptyStreaming()
   streaming.activeCdn = m.cdns[0]?.id ?? null
-  return { ...s, manifest: m, manifestError: null, source: sourceOf(m.kind), streaming, ttml: null, embed: null }
+  return {
+    ...s,
+    manifest: m,
+    manifestError: null,
+    source: sourceOf(m.kind),
+    streaming,
+    ttml: null,
+    embed: null,
+    pendingStart: false,
+  }
 }
 
 /**
@@ -497,7 +518,7 @@ function reduceCache(s: PipelineState, e: DevEvent): PipelineState {
   if (!viewableId || promo === 'promo') return s
   const m = s.known[viewableId]
   if (!m) return s
-  return startPlayback(s, { ...m, prefetch: false, reused: m.prefetch || m.reused, at: e.at })
+  return startPlayback(s, { ...m, prefetch: false, reused: m.prefetch || m.reused, at: e.at }, false)
 }
 
 /* ───────────── ④ bayt aralıkları, ABR, tampon, CDN ───────────── */
@@ -734,8 +755,11 @@ function reducePlayer(s: PipelineState, e: DevEvent): PipelineState {
   const fromLabel = /^durum:\s*(.+)$/.exec(e.label)?.[1] ?? null
   // Önizleme kartı olayları ana oynatıcının durumunu değiştirmez.
   if (/önizleme/.test(e.label)) return s
+  // İzleme sayfasının açılışı ("durum: yükleniyor", konum 0, bağdaştırıcı türü yok) yeni bir oturumun habercisidir.
+  const starting = raw === 'loading' && field(d, 'kind') === undefined && (num(field(d, 'positionSec')) ?? 0) === 0
   return {
     ...s,
+    pendingStart: s.pendingStart || starting,
     player: {
       at: e.at,
       state: fromLabel ?? (raw ? (PLAYER_STATE[raw] ?? raw) : (prev?.state ?? null)),

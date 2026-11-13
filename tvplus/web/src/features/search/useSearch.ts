@@ -44,13 +44,13 @@ function logSearch(page: SearchPageData, fromCache: boolean): void {
   )
 }
 
-export function useSearch(term: string, filters: Filters, enabledKinds: ReadonlySet<EntityKindName>): SearchState {
+export function useSearch(term: string, filters: Filters, enabledKinds: ReadonlySet<EntityKindName>, exactTerm = false): SearchState {
   const profile = useActiveProfile()?.guid ?? ''
   const kindsKey = [...enabledKinds].sort().join(',')
   const declaration = useMemo(() => buildDeclaration(enabledKinds), [kindsKey])
   const signature = declarationSignature(declaration)
   const fInput = filtersInput(filters)
-  const key = searchCacheKey({ profile, term, filters: fInput ?? null, capabilities: signature })
+  const key = searchCacheKey({ profile, term, filters: fInput ?? null, capabilities: signature, exact: exactTerm })
 
   const [state, setState] = useState<{ data?: SearchPageData; dataKey: string | null; loading: boolean; error: Error | null; fromCache: boolean }>({
     dataKey: null,
@@ -60,8 +60,8 @@ export function useSearch(term: string, filters: Filters, enabledKinds: Readonly
   })
   const [nonce, setNonce] = useState(0)
   const hasData = useRef(false)
-  const live = useRef({ term, declaration, fInput })
-  live.current = { term, declaration, fInput }
+  const live = useRef({ term, declaration, fInput, exactTerm })
+  live.current = { term, declaration, fInput, exactTerm }
 
   useEffect(() => {
     const hit = searchCache.get(key, Date.now())
@@ -74,12 +74,12 @@ export function useSearch(term: string, filters: Filters, enabledKinds: Readonly
     }
     setState((s) => ({ ...s, loading: true, error: null }))
     const ctrl = new AbortController()
-    const { term: t, declaration: d, fInput: f } = live.current
+    const { term: t, declaration: d, fInput: f, exactTerm: x } = live.current
     const timer = window.setTimeout(
       () => {
         devbus.emit('cache', 'arama: ıska', { key, expires: null, ageMs: null })
         const t0 = Date.now()
-        gql<SearchResponse, object>('SearchPageQueryResults', { searchTerm: t.trim(), options: { pageCapabilities: d, filters: f, pageSize: PAGE_SIZE } }, { signal: ctrl.signal }).then(
+        gql<SearchResponse, object>('SearchPageQueryResults', { searchTerm: t.trim(), options: { pageCapabilities: d, filters: f, pageSize: PAGE_SIZE, ...(x ? { exactTerm: true } : {}) } }, { signal: ctrl.signal }).then(
           (res) => {
             if (ctrl.signal.aborted) return
             searchCache.set(key, res, Date.parse(res.searchPage.expires), Date.now())

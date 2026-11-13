@@ -194,6 +194,18 @@ describe('Falcor motoru', () => {
     expect(at(res.jsonGraph, 'loop', 'a')).toEqual({ $type: 'ref', value: ['loop', 'b'] })
   })
 
+  it('rota çağrıları istenenden fazlasını kapsamaz (yaprak kümesine göre bölünür)', async () => {
+    const { routes, calls } = fakeRoutes()
+    const engine = createFalcorEngine({ routes })
+    const res = await engine.evaluate(ctx(), [['videos', [1, 2], ['title', 'isKids']], ['videos', 3, 'boxart']])
+    expect(at(res.jsonGraph, 'videos', 3, 'title')).toBeUndefined()
+    expect(at(res.jsonGraph, 'videos', 1, 'boxart')).toBeUndefined()
+    expect(calls.map((c) => c.match).sort((a, b) => a[1]!.length - b[1]!.length)).toEqual([
+      [['videos'], [3], ['boxart']],
+      [['videos'], [1, 2], ['title', 'isKids']],
+    ])
+  })
+
   it('rota yoksa boş grafik', async () => {
     const engine = createFalcorEngine({ routes: [] })
     const res = await engine.evaluate(ctx(), [['lolomo', 'summary']])

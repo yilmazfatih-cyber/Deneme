@@ -1,5 +1,6 @@
 /** Panelin küçük yapı taşları (tasarım sistemi bileşenlerinden bağımsız; yalnızca tokens.css değişkenleri). */
-import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from 'react'
+import { onBootChange, peekBoot } from '../api/session'
 
 export function Icon({ d, size = 18, title }: { d: string; size?: number; title?: string }): ReactNode {
   return (
@@ -110,6 +111,8 @@ export function usePoll<T>(
   everyMs: number,
   slowMs: number,
   headers: () => Record<string, string>,
+  /** false → hiç istek atılmaz (ör. anonimken; uç 401 döner ve tarayıcı bunu konsola hata diye yazar) */
+  enabled = true,
 ): PollState<T> & { refresh: () => void } {
   const [state, setState] = useState<PollState<T>>({ data: null, error: null, status: null, at: null })
   const kick = useRef<() => void>(() => {})
@@ -128,6 +131,7 @@ export function usePoll<T>(
       timer = null
       if (!alive) return
       if (document.visibilityState === 'hidden') return // görünür olunca yeniden başlar
+      if (!enabled) return
       ctrl?.abort()
       ctrl = new AbortController()
       try {
@@ -173,7 +177,7 @@ export function usePoll<T>(
       if (timer !== null) window.clearTimeout(timer)
       document.removeEventListener('visibilitychange', onVis)
     }
-  }, [url, everyMs, slowMs])
+  }, [url, everyMs, slowMs, enabled])
   const refresh = useCallback(() => kick.current(), [])
   return { ...state, refresh }
 }
@@ -190,4 +194,10 @@ export function LoginNote(): ReactNode {
       Giriş yaptıktan sonra görünür.
     </p>
   )
+}
+
+/** Oturum açık mı (anonim değil); açılış bağlamı değişince yeniden çizer. */
+export function useSignedIn(): boolean {
+  const boot = useSyncExternalStore(onBootChange, peekBoot, peekBoot)
+  return !!boot && boot.membershipStatus !== 'ANONYMOUS'
 }

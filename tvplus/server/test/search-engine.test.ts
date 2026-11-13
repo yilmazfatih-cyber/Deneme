@@ -223,9 +223,13 @@ describe('çözümleyici haritası (gerçek şema + motor)', () => {
     const first = gallery?.entities[0]
     expect(first?.video).toEqual({ videoId: 80030001 })
     expect(first?.channel).toBeNull()
-    // "yerli" türden eşleşti → bağlamsal görsel STORY_ART, imzalı adres
-    expect(first?.contextualArtwork?.type).toBe('STORY_ART')
-    expect(first?.contextualArtwork?.url).toMatch(/^\/img\/v1\/story_art\/\d+x\d+\/Video%3A80030001\.webp\?r=/)
+    // "yerli" türden eşleşti; galeri yine 2:3 afiş (BOXART) alır, imzalı adres
+    expect(first?.contextualArtwork?.type).toBe('BOXART')
+    expect(first?.contextualArtwork?.url).toMatch(/^\/img\/v1\/boxart\/\d+x\d+\/Video%3A80030001\.webp\?r=/)
+    expect(gallery?.entities.every((e) => e.contextualArtwork?.type === 'BOXART')).toBe(true)
+    // Öneri listesinde bağlamsal STORY_ART kalır
+    const suggestion = page.sections[0]?.entities.find((e) => e.treatment === 'standardSuggestion')
+    expect(suggestion?.contextualArtwork?.type).toBe('STORY_ART')
     const list = page.sections[0]
     expect(list?.entities.find((e) => e.treatment === 'standardDestination')).toBeTruthy()
     expect(Date.parse(page.expires)).toBeGreaterThan(Date.now())
@@ -255,6 +259,16 @@ describe('çözümleyici haritası (gerçek şema + motor)', () => {
     const page = (r.body.data as GqlPage).searchPage
     expect(page.sections.map((s) => s.__typename)).toEqual(['SearchGallerySection'])
     expect(page.sections[0]?.entities.every((e) => e.kind === 'VIDEO' && e.treatment === 'standardBoxshot')).toBe(true)
+  })
+
+  it('exactTerm $options değişkeniyle taşınır: düzeltme yok, yedek sayfa', async () => {
+    const corrected = (await exec('sahsyiet', { pageCapabilities: FULL_CAPS })).body.data as GqlPage
+    expect(corrected.searchPage.correction?.mode).toBe('CORRECTED')
+    const r = await exec('sahsyiet', { pageCapabilities: FULL_CAPS, exactTerm: true })
+    expect(r.body.errors).toBeUndefined()
+    const page = (r.body.data as GqlPage).searchPage
+    expect(page.correction).toBeNull()
+    expect(page.isFallback).toBe(true)
   })
 
   it('profil yoksa motor PROFILE_REQUIRED döner', async () => {

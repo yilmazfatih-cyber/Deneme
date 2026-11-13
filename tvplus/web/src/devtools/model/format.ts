@@ -24,6 +24,12 @@ export function fmtKbps(n: number | null | undefined): string {
   return `${dec(Math.round(n), 0)} kbps`
 }
 
+/** Kısa hız: 1000 kbps üstü "8,0 Mbps" (dar kartlar için) */
+export function fmtRate(n: number | null | undefined): string {
+  if (n === null || n === undefined) return '—'
+  return n >= 1000 ? `${dec(n / 1000, 1)} Mbps` : `${Math.round(n)} kbps`
+}
+
 export function fmtInt(n: number | null | undefined): string {
   if (n === null || n === undefined) return '—'
   return dec(Math.round(n), 0)

@@ -159,6 +159,32 @@ function buildMatch(route: FalcorRoute, paths: FalcorKey[][]): FalcorMatch {
   })
 }
 
+/**
+ * Bir rotanın yollarını, kartezyen çarpımı istenenden fazlasını kapsamayacak alt gruplara böler: son kalıp parçasında
+ * aynı anahtar kümesini isteyen ön ekler birlikte gider. Ör. videos[1,2].[title,boxart] + videos[3].[billboardArt]
+ * iki çağrı olur; tek çağrıda video 1-3 × üç yaprak (fazladan değerlendirme ve şişkin yanıt) üretilmez.
+ */
+function partition(route: FalcorRoute, paths: FalcorKey[][]): FalcorKey[][][] {
+  const n = route.route.length
+  if (n < 2 || paths.length < 2) return [paths]
+  const byPrefix = new Map<string, { paths: FalcorKey[][]; last: Set<string> }>()
+  for (const p of paths) {
+    const k = keyOf(p.slice(0, n - 1))
+    let e = byPrefix.get(k)
+    if (!e) byPrefix.set(k, (e = { paths: [], last: new Set() }))
+    e.paths.push(p)
+    e.last.add(String(p[n - 1]))
+  }
+  const bySignature = new Map<string, FalcorKey[][]>()
+  for (const e of byPrefix.values()) {
+    const sig = [...e.last].sort().join('\u0000')
+    const list = bySignature.get(sig)
+    if (list) list.push(...e.paths)
+    else bySignature.set(sig, [...e.paths])
+  }
+  return [...bySignature.values()]
+}
+
 interface Item {
   path: FalcorKey[]
   depth: number
@@ -210,8 +236,9 @@ export function createFalcorEngine(options: FalcorEngineOptions): FalcorEngine {
         else groups.set(route, [item.path])
       }
 
+      const calls = [...groups].flatMap(([route, list]) => partition(route, list).map((ps) => [route, ps] as const))
       await Promise.all(
-        [...groups].map(async ([route, groupPaths]) => {
+        calls.map(async ([route, groupPaths]) => {
           try {
             const values = await route.get(ctx, buildMatch(route, groupPaths))
             for (const pv of values ?? []) {

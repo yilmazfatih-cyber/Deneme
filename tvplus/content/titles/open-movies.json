@@ -85,7 +85,8 @@
     "artwork": {
       "boxart": null,
       "storyArt": "https://i.ytimg.com/vi/eRsGyueVLvQ/maxres1.jpg",
-      "focal": "50% 30%"
+      "focal": "50% 30%",
+      "posterFit": "crop"
     },
     "license": {
       "name": "CC BY 3.0",
@@ -187,7 +188,8 @@
     "artwork": {
       "boxart": null,
       "storyArt": "https://i.ytimg.com/vi/R6MlUcmOul8/maxresdefault.jpg",
-      "focal": "50% 30%"
+      "focal": "50% 30%",
+      "posterFit": "crop"
     },
     "license": {
       "name": "CC BY 3.0",

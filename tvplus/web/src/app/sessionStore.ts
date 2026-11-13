@@ -8,7 +8,7 @@ import { ROUTES } from '../../../shared/constants'
 import type { ApiError, BootContext } from '../../../shared/types'
 import { falcor } from '../api/falcor'
 import { queryCache } from '../api/hooks'
-import { loadBoot, onBootChange, refreshBoot, sessionHeaders } from '../api/session'
+import { applyBoot, loadBoot, onBootChange, refreshBoot, sessionHeaders } from '../api/session'
 import { toast } from '../design'
 import { devbus } from '../lib/devbus'
 import { lastModePath } from './mode'
@@ -47,7 +47,11 @@ function resetClientCaches(boot: BootContext): void {
   queryCache.invalidate()
 }
 
-async function post(path: string, body: object): Promise<void> {
+const isBoot = (b: unknown): b is BootContext =>
+  typeof b === 'object' && b !== null && typeof (b as BootContext).membershipStatus === 'string' && Array.isArray((b as BootContext).profiles)
+
+/** POST; yanıt gövdesi yeni BootContext'tir (değilse null). */
+async function post(path: string, body: object): Promise<BootContext | null> {
   const res = await fetch(path, {
     method: 'POST',
     credentials: 'same-origin',
@@ -63,21 +67,26 @@ async function post(path: string, body: object): Promise<void> {
     }
     throw new Error(message)
   }
+  try {
+    const data: unknown = await res.json()
+    return isBoot(data) ? data : null
+  } catch {
+    return null
+  }
 }
 
 export const useSession = create<SessionState>()((set, get) => {
   /**
-   * Eylem iskeleti: POST → bağlamı yenile → önbellekleri boşalt → yönlendir.
-   * Not: api/session.ts bağlamı dışarıdan yazmaya izin vermediği için POST yanıtı yerine
-   * refreshBoot() ile alınan bağlam esas alınır (oturum başlıkları da böylece güncellenir).
+   * Eylem iskeleti: POST → yanıttaki BootContext'i uygula (applyBoot; oturum başlıkları da güncellenir)
+   * → önbellekleri boşalt → yönlendir. Yanıt beklenen biçimde değilse yedek olarak GET /api/boot.
    */
   const act = async (label: string, path: string, body: object, failText: string, target: (b: BootContext) => string): Promise<BootContext | null> => {
     if (get().busy) return null
     set({ busy: true })
     const t0 = performance.now()
     try {
-      await post(path, body)
-      const boot = await refreshBoot()
+      const fromPost = await post(path, body)
+      const boot = fromPost ? applyBoot(fromPost) : await refreshBoot()
       resetClientCaches(boot)
       set({ boot, busy: false, status: 'ready', error: null })
       devbus.emit('session', label, { membershipStatus: boot.membershipStatus, profile: boot.activeProfile?.guid ?? null }, { ms: performance.now() - t0 })

@@ -178,7 +178,9 @@ export function createCatalog(bundle: ContentBundle, deps: CatalogDeps): Catalog
     const vi = info.get(videoId)
     if (!vi) return null
     const t = vi.title
-    const own = vi.episode?.data.artwork ?? vi.supplemental?.artwork ?? null
+    const ownRaw = vi.episode?.data.artwork ?? vi.supplemental?.artwork ?? null
+    // Bölüm/ek videonun kendi görseli yoksa (boxart ve storyArt boş) üst başlığınki geçerlidir
+    const own = ownRaw && (ownRaw.boxart || ownRaw.storyArt) ? ownRaw : null
     const pick = (a: { boxart: string | null; storyArt: string | null } | null) =>
       a ? (type === 'BOXART' ? (a.boxart ?? a.storyArt) : (a.storyArt ?? a.boxart)) : null
     const sourceUrl = type === 'TITLE_LOGO' ? null : (pick(own) ?? pick(t.artwork))
@@ -194,6 +196,7 @@ export function createCatalog(bundle: ContentBundle, deps: CatalogDeps): Catalog
       subtitle,
       seed: entityId,
       focal: own?.focal ?? t.artwork.focal,
+      posterFit: own?.posterFit ?? t.artwork.posterFit,
     }
   }
 
@@ -272,6 +275,7 @@ export function createCatalog(bundle: ContentBundle, deps: CatalogDeps): Catalog
             subtitle: null,
             seed: entityId,
             focal: art?.focal ?? '50% 35%',
+            posterFit: art?.posterFit ?? 'contain',
           }
         }
         case 'Airing': {
@@ -279,14 +283,18 @@ export function createCatalog(bundle: ContentBundle, deps: CatalogDeps): Catalog
           if (!a) return null
           const art = a.videoId !== null ? videoArtwork(a.videoId, type, entityId) : null
           const ch = channels.get(a.channelId)
-          if (art?.sourceUrl) return { ...art, title: a.title, subtitle: ch?.name ?? null }
+          if (art) return { ...art, title: a.title, subtitle: ch?.name ?? null }
+          // Videosuz yayın: kanal logosu yalnız CHANNEL_LOGO için; diğer tiplerde program adıyla kapak üretilir
+          // (logo 16:9'a gerilmez). Tohum program adı + kanala göre değişir.
+          const logo = type === 'CHANNEL_LOGO' && ch?.logo ? `brand/channels/${ch.logo}` : null
           return {
             sourceUrl: null,
-            localFile: ch?.logo ? `brand/channels/${ch.logo}` : null,
+            localFile: logo,
             title: a.title,
             subtitle: ch?.name ?? null,
-            seed: entityId,
+            seed: logo ? entityId : `Program:${a.channelId}:${norm(a.title)}`,
             focal: '50% 50%',
+            posterFit: 'contain',
           }
         }
         default:

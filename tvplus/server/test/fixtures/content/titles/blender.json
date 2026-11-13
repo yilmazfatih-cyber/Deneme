@@ -55,7 +55,8 @@
     ],
     "artwork": {
       "boxart": "https://img.example.org/sintel/boxart.jpg",
-      "storyArt": "https://img.example.org/sintel/story.jpg"
+      "storyArt": "https://img.example.org/sintel/story.jpg",
+      "posterFit": "crop"
     },
     "license": {
       "name": "CC BY 3.0",

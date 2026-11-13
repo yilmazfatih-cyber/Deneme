@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from 'react'
-import { fmtBytes, fmtClock, fmtCountdown, fmtInt, fmtKbps, fmtMs, fmtSec } from '../model/format'
+import { fmtBytes, fmtClock, fmtCountdown, fmtInt, fmtKbps, fmtMs, fmtRate, fmtSec } from '../model/format'
 import {
   activeRungIndex,
   type EmbedView,
@@ -412,7 +412,7 @@ function StreamingPanel({ st }: { st: StreamingView }): ReactNode {
     <div className="kp-stream">
       <div className="kp-stats4">
         <div>
-          <div className="kp-big">{fmtKbps(st.currentKbps)}</div>
+          <div className="kp-big">{fmtRate(st.currentKbps)}</div>
           <div className="kp-dim kp-small">bit hızı</div>
         </div>
         <div>
@@ -420,7 +420,7 @@ function StreamingPanel({ st }: { st: StreamingView }): ReactNode {
           <div className="kp-dim kp-small">çözünürlük</div>
         </div>
         <div>
-          <div className="kp-big kp-mono kp-ellipsis" title={st.activeCdn ?? ''}>
+          <div className="kp-big kp-mono kp-wrap" title={st.activeCdn ?? ''}>
             {st.activeCdn ?? '—'}
           </div>
           <div className="kp-dim kp-small">düğüm</div>
@@ -470,22 +470,19 @@ function StreamingPanel({ st }: { st: StreamingView }): ReactNode {
 
       {st.markers.length > 0 && (
         <ul className="kp-markers" aria-label="Son geçişler">
-          {st.markers
-            .slice(-4)
-            .reverse()
-            .map((mk) => (
-              <li key={mk.id}>
-                <span className="kp-time">{fmtClock(mk.at)}</span>
-                <span className={`kp-mk kp-mk-${mk.kind}`}>
-                  {mk.kind === 'abr' ? (mk.dir === 'down' ? '↓' : '↑') : '⇄'}
-                </span>
-                <span>
-                  {mk.kind === 'abr' ? 'Bit hızı: ' : 'Yük devri: '}
-                  {mk.text}
-                  {mk.reason && <span className="kp-dim"> · {mk.reason}</span>}
-                </span>
-              </li>
-            ))}
+          {recentMarkers(st.markers).map((mk) => (
+            <li key={mk.id}>
+              <span className="kp-time">{fmtClock(mk.at)}</span>
+              <span className={`kp-mk kp-mk-${mk.kind}`}>
+                {mk.kind === 'abr' ? (mk.dir === 'down' ? '↓' : '↑') : '⇄'}
+              </span>
+              <span>
+                {mk.kind === 'abr' ? 'Bit hızı: ' : 'Yük devri: '}
+                {mk.text}
+                {mk.reason && <span className="kp-dim"> · {mk.reason}</span>}
+              </span>
+            </li>
+          ))}
         </ul>
       )}
     </div>
@@ -549,11 +546,12 @@ function Spark({ st }: { st: StreamingView }): ReactNode {
   if (pts.length < 2) return null
   const t0 = Math.min(...pts.map((p) => p.at))
   const t1 = Math.max(...pts.map((p) => p.at), t0 + 1)
-  const max = Math.max(...pts.map((p) => p.kbps), st.currentKbps ?? 0) * 1.15
+  const max = sparkScale(st)
   const W = 400
   const H = 64
   const x = (at: number) => ((at - t0) / (t1 - t0)) * W
-  const y = (k: number) => H - (k / max) * H
+  // Ölçeğin üstündeki tek tük ölçümler (önbellekten gelen küçük parçalar) üst kenara kırpılır.
+  const y = (k: number) => H - (Math.min(k, max) / max) * H
   const line = (list: { at: number; kbps: number }[]) =>
     list.map((p) => `${x(p.at).toFixed(1)},${y(p.kbps).toFixed(1)}`).join(' ')
   const marks = st.markers.filter((m) => m.at >= t0 && m.at <= t1)
@@ -599,6 +597,28 @@ function Spark({ st }: { st: StreamingView }): ReactNode {
       </div>
     </figure>
   )
+}
+
+/**
+ * Grafik ölçeği: tek bir aykırı ölçüm (ör. birkaç ms'de gelen küçük parça → yüzlerce Mbps) çizgiyi ezmesin diye
+ * ölçülen hızların 90. yüzdeliği, ABR tahmini ve şu anki bit hızının büyüğü alınır.
+ */
+export function sparkScale(st: {
+  samples: { kbps: number }[]
+  estimates: { kbps: number }[]
+  currentKbps: number | null
+}): number {
+  const sorted = st.samples.map((p) => p.kbps).sort((a, b) => a - b)
+  const p90 = sorted.length ? (sorted[Math.min(sorted.length - 1, Math.floor(sorted.length * 0.9))] ?? 0) : 0
+  const est = Math.max(0, ...st.estimates.map((p) => p.kbps))
+  return Math.max(1, p90, est, st.currentKbps ?? 0) * 1.15
+}
+
+/** Son 4 ABR geçişi + son 2 yük devri, yeniden eskiye (yük devri ABR geçişlerinin altında kaybolmasın). */
+function recentMarkers(list: StreamingView['markers']): StreamingView['markers'] {
+  const abr = list.filter((m) => m.kind === 'abr').slice(-4)
+  const cdn = list.filter((m) => m.kind === 'cdn').slice(-2)
+  return [...abr, ...cdn].sort((a, b) => b.at - a.at)
 }
 
 const BUFFER_TARGET_SEC = 30

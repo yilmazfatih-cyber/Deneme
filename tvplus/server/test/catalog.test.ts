@@ -162,10 +162,32 @@ describe('katalog servisi', () => {
       title: 'Gece Sineması: Nosferatu',
       subtitle: 'TRT 1',
     })
-    expect(cat.getArtworkSource('Airing:1-20261113-1900', 'STORY_ART')).toMatchObject({ sourceUrl: null, localFile: 'brand/channels/trt-1.png' })
+    // Videosuz yayın: logo 16:9'a gerilmez; program adıyla kapak üretilir, tohum program + kanala göre
+    const news = cat.getArtworkSource('Airing:1-20261113-1900', 'STORY_ART')!
+    expect(news).toMatchObject({ sourceUrl: null, localFile: null, title: 'Ana Haber', subtitle: 'TRT 1' })
+    expect(cat.getArtworkSource('Airing:1-20261112-1900', 'STORY_ART')!.seed).toBe(news.seed) // aynı program, başka gün
+    expect(cat.getArtworkSource('Airing:2-20261113-1900', 'STORY_ART')!.seed).not.toBe(news.seed) // başka kanal
+    expect(cat.getArtworkSource('Airing:1-20261113-0900', 'STORY_ART')!.seed).not.toBe(news.seed) // başka program
+    expect(cat.getArtworkSource('Airing:1-20261113-1900', 'BOXART')).toMatchObject({ sourceUrl: null, localFile: null })
+    expect(cat.getArtworkSource('Airing:1-20261113-1900', 'CHANNEL_LOGO')).toMatchObject({ localFile: 'brand/channels/trt-1.png' })
+    // videolu yayın (görselsiz video) da logo değil, videonun kapağı
+    expect(cat.getArtworkSource('Airing:4-20261113-0700', 'STORY_ART')).toMatchObject({ localFile: null, title: 'Çizgi Film Kuşağı' })
     expect(cat.getArtworkSource('Video:1', 'BOXART')).toBeNull()
     expect(cat.getArtworkSource('Channel:99', 'CHANNEL_LOGO')).toBeNull()
     expect(cat.getArtworkSource('bozuk', 'BOXART')).toBeNull()
+  })
+
+  it('posterFit: başlıktan; kendi görseli olan bölümde kendisinden; koleksiyonda görseli kullanılan videodan', () => {
+    const cat = app.services.catalog
+    for (const type of ['BOXART', 'STORY_ART', 'BILLBOARD', 'TITLE_LOGO', 'EPISODE_STILL'] as const) {
+      expect(cat.getArtworkSource(`Video:${ID.sintel}`, type)?.posterFit).toBe('crop')
+    }
+    expect(cat.getArtworkSource(`Video:${ID.bbb}`, 'BOXART')?.posterFit).toBe('contain') // varsayılan
+    expect(cat.getArtworkSource(`Video:${ID.caminandes}`, 'BOXART')?.posterFit).toBe('crop')
+    expect(cat.getArtworkSource(`Video:${ID.cam_s1e1}`, 'BOXART')).toMatchObject({ posterFit: 'crop', sourceUrl: 'https://img.example.org/caminandes/boxart.jpg' })
+    expect(cat.getArtworkSource(`Video:${ID.cam_s2e1}`, 'BOXART')).toMatchObject({ posterFit: 'contain', sourceUrl: 'https://img.example.org/caminandes/s2e1.jpg' })
+    expect(cat.getArtworkSource('Collection:9001', 'BOXART')?.posterFit).toBe('crop') // ilk video Sintel
+    expect(cat.getArtworkSource('Collection:9002', 'BOXART')?.posterFit).toBe('contain')
   })
 
   it('koleksiyonlar, ana sayfa düzeni, duyurular', () => {

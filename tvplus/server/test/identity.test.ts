@@ -241,6 +241,41 @@ describe('açılış bağlamı ve oturum akışı', () => {
     expect(after.json<BootContext>().membershipStatus).toBe('ANONYMOUS')
   })
 
+  it('açılış önbelleği ilk boyamanın tüm yapraklarını taşır (bağlama göre)', async () => {
+    const { jar, boot } = await login()
+    const deniz = boot.profiles[0]!
+    // Devam et satırı oluşsun diye bir yer imi
+    const firstVideo = app.services.catalog.allTitles()[0]
+    if (firstVideo) app.services.progress.setBookmark(deniz.guid, firstVideo.videoId, 120, 600)
+    await switchTo(jar, deniz.guid)
+    const res = await app.inject({ url: '/api/boot', cookies: jar.cookies })
+    const g = res.json<BootContext>().falcorCache as Record<string, any> | null // eslint-disable-line @typescript-eslint/no-explicit-any
+    if (!g) return // rotalar yoksa tohum yok (sözleşmeye uygun)
+    const follow = (ref: { value: (string | number)[] }) => ref.value.reduce<any>((n, k) => n?.[k], g) // eslint-disable-line @typescript-eslint/no-explicit-any
+    const lolomo = follow(g.lolomo)
+    const need: Record<string, string[]> = {
+      billboard: ['summary', 'title', 'billboardArt', 'titleLogo', 'promoVideo', 'synopsis', 'releaseYear', 'runtime', 'bookmark'],
+      continueWatching: ['summary', 'title', 'storyArt', 'displayRuntime', 'bookmark', 'watchStatus'],
+      top10: ['summary', 'title', 'boxart', 'badge', 'access', 'top10Rank'],
+    }
+    const seen = new Set<string>()
+    for (let i = 0; i < 6; i++) {
+      if (!lolomo[i]) continue
+      const list = follow(lolomo[i])
+      const ctxName: string = list.summary.value.context
+      seen.add(ctxName)
+      const n = Math.min(ctxName === 'billboard' ? 1 : 10, ctxName === 'bridge' ? 0 : list.summary.value.length)
+      for (let j = 0; j < n; j++) {
+        expect(list.itemTctx?.[j], `${ctxName} itemTctx ${j}`).toBeDefined()
+        const video = follow(list[j])
+        for (const leaf of need[ctxName] ?? ['summary', 'title', 'boxart']) expect(video[leaf], `${ctxName}[${j}].${leaf}`).toBeDefined()
+        if (ctxName === 'billboard' || ctxName === 'continueWatching') expect(video.current, `${ctxName}[${j}].current`).toBeDefined()
+      }
+    }
+    expect(seen.has('billboard')).toBe(true)
+    if (firstVideo) expect(seen.has('continueWatching')).toBe(true)
+  })
+
   it('başka hesaba ait ya da bilinmeyen profil seçilemez', async () => {
     const { jar } = await login()
     const res = await switchTo(jar, 'AAAAAAAAAAAAAAAAAAAAAAAA')
