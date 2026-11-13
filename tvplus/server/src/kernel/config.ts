@@ -40,6 +40,12 @@ export interface AppConfig {
   /** İzleme deposu boşsa açılışta SENTETİK örnek veri üretilsin mi (geliştirmede açık; TVP_SAMPLE_VIEWING=0 kapatır). */
   sampleViewing: boolean
   /**
+   * Durağan barındırma kipi (GitHub Pages): sunucu tarayıcının içinde çalışır, ağda çalışan bir sunucu yoktur.
+   * Bu kipte sunucu tarafı işleme ve vekillik yapılamaz: görseller derleme anında üretilmiş dosyalardan,
+   * videolar doğrudan açık kaynağından gelir. `TVP_STATIC_HOST=1` ile ya da tarayıcı girişinden açılır.
+   */
+  staticHost: boolean
+  /**
    * Gerçek veri (MIXPANEL + TVPLUS) en az bu kadar izleyiciye ulaşınca SENTETİK örnek analiz dışı kalır
    * (TVP_REAL_DATA_MIN_VIEWERS, varsayılan 50). Böylece tek bir geliştiricinin tıklamaları örneği devre dışı bırakmaz.
    */
@@ -99,6 +105,7 @@ export function loadConfig(overrides: Partial<AppConfig> = {}): AppConfig {
     studioAccess: process.env.TVP_STUDIO === 'off' ? 'off' : process.env.TVP_STUDIO === 'open' ? 'open' : 'member',
     studioKey: process.env.TVP_STUDIO_KEY || null,
     sampleViewing: process.env.TVP_SAMPLE_VIEWING !== '0',
+    staticHost: process.env.TVP_STATIC_HOST === '1',
     realDataMinViewers: Math.max(1, Number(process.env.TVP_REAL_DATA_MIN_VIEWERS ?? 50) || 50),
     maxCommunities: Math.max(2, Math.min(2000, Number(process.env.TVP_MAX_COMMUNITIES ?? 12) || 12)),
     mixpanel: {
