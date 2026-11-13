@@ -124,7 +124,7 @@ function gorunumKurallar(kok) {
         Object.entries(TR.kacin).filter(([, v]) => v.length).map(([neden, v]) => h('details', { class: 'ac' },
           h('summary', null, neden, h('small', { text: `${v.length} hisse` })),
           h('div', null, h('div', { class: 'cipler' }, v.map(x => h('span', { class: 'cip', title: `${tarihKisa(x[1])}${x[2] ? ' · ' + x[2] : ''}`, text: x[0] })))))),
-        p('Bir hisse hem aday hem kaçınma listesinde olabilir; o durumda kaçınma önce gelir. Liste her akşam, kapanış fiyatları ve o günün bildirimleriyle yeniden üretilir.', 'alt'))));
+        p('Bir hisse hem aday hem kaçınma listesinde olabilir; o durumda kaçınma önce gelir. Liste, fiyat verisi ve bildirim listesi yenilenip analiz yeniden çalıştırıldığında güncellenir.', 'alt'))));
   }
 
   // Gün akışı + sınırlar
