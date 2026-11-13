@@ -23,6 +23,8 @@ export type DevCategory =
   | 'event-log' // olay günlüğü gönderimi
   | 'push' // bildirim yoklaması
   | 'session' // kimlik / profil
+  | 'device' // cihazlar arası: kayıt, komut, durum, TV girişi
+  | 'predict' // arama tahmin modeli: tamamlamalar, puan bileşenleri, geri bildirim
 
 export interface DevEvent {
   id: number

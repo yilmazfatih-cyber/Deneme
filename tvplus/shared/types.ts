@@ -11,6 +11,9 @@ export interface ProfileSummary {
   avatarUrl: string
   isKids: boolean
   maturityLevel: number
+  /** Profil kilidi (4 haneli PIN) açık mı */
+  isLocked?: boolean
+  avatarKey?: string
 }
 
 /**

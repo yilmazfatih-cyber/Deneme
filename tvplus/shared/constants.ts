@@ -44,6 +44,8 @@ export const HEADERS = {
   GQL_OP: 'x-tvplus-gql-op',
   /** Görsel servisinin hata ayıklama başlığı: `<kaynak>; cache=hit|miss`. */
   IMAGE_DEBUG: 'x-tvplus-img',
+  /** Sanal cihaz adı (cihaz vitrini): çerez adlarına `__<ad>` eklenir. Başlık taşıyamayan isteklerde `?vd=<ad>`. */
+  VIRTUAL_DEVICE: 'x-tvplus-vd',
 } as const
 
 export const COOKIES = {
@@ -81,6 +83,11 @@ export const ROUTES = {
   /** Netflix: notifications.netflix.com/push (uzun yoklama) */
   PUSH: '/push',
   DEBUG_PREFIX: '/api/debug',
+  /** Cihazlar arası deneyim (bkz. shared/devices.ts) */
+  DEVICES: '/api/devices',
+  DEVICE_STREAM: '/api/devices/stream',
+  TV_LOGIN: '/api/tv/login',
+  PROFILES: '/api/profiles',
 } as const
 
 /** Kalıcı sorgu kayıt defteri sürümü (istemci her istekte yollar). */
@@ -98,3 +105,11 @@ export const LIVE_SECTION_TTL_SEC = 60
 
 export const REGION = 'tr-ist-1'
 export const TIME_ZONE = 'Europe/Istanbul'
+
+/** Sanal cihaz sorgu parametresi (bkz. HEADERS.VIRTUAL_DEVICE). Yalnız [a-z0-9]{1,12}. */
+export const VIRTUAL_DEVICE_PARAM = 'vd'
+/** Ekran biçimini zorlamak için sorgu parametresi: ?cihaz=tv|mobil|web */
+export const FORM_FACTOR_PARAM = 'cihaz'
+/** TV giriş kodunun ömrü ve yoklama aralığı. */
+export const TV_LOGIN_TTL_SEC = 600
+export const TV_LOGIN_POLL_SEC = 2

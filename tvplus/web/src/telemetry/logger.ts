@@ -5,7 +5,7 @@
 import { ROUTES } from '../../../shared/constants'
 import type { ClientEvent, ClientEventName, EventBatch } from '../../../shared/types'
 import { devbus } from '../lib/devbus'
-import { sessionHeaders } from '../api/session'
+import { apiUrl, sessionHeaders } from '../api/session'
 
 const FLUSH_MS = 5000
 const MAX_BATCH = 25
@@ -31,7 +31,7 @@ export async function flushEvents(useBeacon = false): Promise<void> {
   const batch: EventBatch = { sessionId, sentAt: Date.now(), events }
   const body = JSON.stringify(batch)
   if (useBeacon && navigator.sendBeacon) {
-    const ok = navigator.sendBeacon(ROUTES.EVENT_LOG, new Blob([body], { type: 'application/json' }))
+    const ok = navigator.sendBeacon(apiUrl(ROUTES.EVENT_LOG), new Blob([body], { type: 'application/json' }))
     devbus.emit('event-log', `${events.length} olay (beacon)`, { names: events.map((e) => e.name) }, { ok })
     return
   }

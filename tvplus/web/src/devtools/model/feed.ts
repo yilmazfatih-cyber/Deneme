@@ -45,6 +45,8 @@ export const CATEGORY_LABEL: Record<DevCategory, string> = {
   'event-log': 'olay günlüğü',
   push: 'bildirim',
   session: 'oturum',
+  device: 'cihaz',
+  predict: 'tahmin',
 }
 
 export const ALL_CATEGORIES = Object.keys(CATEGORY_LABEL) as DevCategory[]

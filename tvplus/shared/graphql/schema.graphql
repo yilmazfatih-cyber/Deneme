@@ -425,6 +425,8 @@ type ProgramAiring {
   "Program başladıktan sonra baştan izlenebilir mi"
   startOver: Boolean!
   catchup: Catchup!
+  "Bu profil bu yayın için hatırlatma kurdu mu"
+  hasReminder: Boolean!
   "Katalogdaki karşılığı (varsa)"
   video: Video
   artwork(params: ArtworkParams): Artwork!
@@ -497,6 +499,8 @@ input CapabilitiesBySectionInput {
   searchList: SectionCapabilitiesInput
   searchGallery: SectionCapabilitiesInput
   searchLive: SectionCapabilitiesInput
+  "Tahmin modelinin önerdiği (doğrudan eşleşmeyen) sonuçlar"
+  searchPredicted: SectionCapabilitiesInput
 }
 input SearchPageCapabilitiesInput {
   capabilitiesBySection: CapabilitiesBySectionInput!
@@ -537,6 +541,36 @@ type SearchEntity {
   genre: Genre
   "Sorgu bağlamına göre seçilmiş görsel"
   contextualArtwork: Artwork
+  "true → metin eşleşmesiyle değil, tahmin modeliyle geldi"
+  predicted: Boolean!
+  "Modelin tıklanma olasılığı tahmini (0–1)"
+  score: Float
+  "Kullanıcıya gösterilen kısa gerekçe: 'Sana özel' · 'Sintel ile ilgili' · 'Çok arananlar'"
+  reason: String
+  "Puanın bileşenleri (Kaputun altı için)"
+  explain: [SearchFeature!]
+}
+"Tahmin modelinin bir sonuca verdiği puanın bileşeni"
+type SearchFeature {
+  "metin | begeni | populerlik | tiklanma | yenilik | devam"
+  name: String!
+  value: Float!
+  weight: Float!
+  contribution: Float!
+}
+"Yazılan önekten model tahmini sorgu tamamlaması"
+type SearchPrediction {
+  text: String!
+  "TITLE | PERSON | GENRE | COLLECTION | CHANNEL | QUERY"
+  kind: String!
+  unifiedEntityId: ID
+  score: Float!
+}
+enum SearchFeedbackAction {
+  CLICK
+  PLAY
+  ADD_TO_LIST
+  DISMISS
 }
 interface SearchSection {
   id: ID!
@@ -567,6 +601,13 @@ type SearchLiveSection implements SearchSection {
   expires: DateTime!
   entities: [SearchEntity!]!
 }
+"Tahmin modelinin önerileri: 'Bunlar ilgini çekebilir' · 'Sana özel öneriler' · '‹Başlık› ile ilgili'"
+type SearchPredictedSection implements SearchSection {
+  id: ID!
+  displayString: String!
+  expires: DateTime!
+  entities: [SearchEntity!]!
+}
 type SearchCorrection {
   mode: SearchCorrectionMode!
   originalTerm: String!
@@ -583,6 +624,10 @@ type SearchPage {
   "Sonuç yoksa gösterilecek yedek bölümler (popüler + şu an canlı)"
   isFallback: Boolean!
   recentSearches: [String!]!
+  "Yazılan metnin model tahmini tamamlamaları"
+  predictions: [SearchPrediction!]!
+  "Sıralamayı yapan modelin sürümü ve öğrenme adımı, ör. 'lr-1 · 42 güncelleme'"
+  modelVersion: String!
 }
 
 # ───────────── Üyelik / profil ─────────────
@@ -594,6 +639,8 @@ type Profile {
   isKids: Boolean!
   maturityLevel: Int!
   isActive: Boolean!
+  avatarKey: String!
+  isLocked: Boolean!
 }
 type Account {
   accountId: ID!
@@ -685,6 +732,12 @@ type Query {
   interstitial(location: String!): Interstitial
   notifications: [Notification!]!
   playbackMetadata(viewableId: ID!): PlaybackMetadata
+  "Hafif tahmin ucu: TV ekran klavyesi ve mobilde yazarken tamamlamalar"
+  searchPredictions(prefix: String!, first: Int = 8): [SearchPrediction!]!
+  "Arama kutusu boşken gösterilen, profile göre tahmin edilmiş başlıklar"
+  popularSearches(first: Int = 12): [Video!]!
+  "Bu profilin kurduğu yayın hatırlatmaları"
+  reminders: [ProgramAiring!]!
 }
 
 type Mutation {
@@ -699,4 +752,14 @@ type Mutation {
   recordSearch(term: String!): Boolean!
   clearRecentSearches: Boolean!
   markNotificationsRead(ids: [ID!]): Boolean!
+  "Arama sonucuna verilen tepki; tahmin modeli bundan öğrenir"
+  recordSearchFeedback(
+    requestId: ID!
+    searchTerm: String!
+    unifiedEntityId: ID!
+    position: Int!
+    action: SearchFeedbackAction!
+  ): Boolean!
+  "Yaklaşan yayın için hatırlatma kur / kaldır; yayın başlayınca bildirim gelir"
+  setReminder(airingId: ID!, enabled: Boolean!): ProgramAiring
 }

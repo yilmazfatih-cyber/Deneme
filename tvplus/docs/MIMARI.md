@@ -166,3 +166,69 @@ Her istemci katmanı `devbus.emit(cat, label, detail, { ms, ok })` çağırır (
 2. Kendi testleri `npx vitest run <yol>` ile geçiyor; sunucu `npm start` ile açılıyor.
 3. Rapor: ne yapıldı (dosya listesi), nasıl doğrulandı (çalıştırılan komutlar ve sonuçları), bilinen eksikler,
    varsa "SÖZLEŞME:" önerileri. Çalışmayan şeyi çalışıyor diye yazma.
+
+## 9. İkinci tur: üç ekran, cihazlar arası deneyim, arama tahmin modeli
+
+Görünüm ve etkileşimin tek kaynağı artık [`UX_SPEC.md`](UX_SPEC.md)'dir (Netflix deneyimi, TV+ markası).
+
+### 9.1 Ekran biçimleri
+
+`web/src/lib/formFactor.ts` karar verir: `tv` (TV tarayıcısı ya da `?cihaz=tv`) · `mobile` (< 900 px) · `desktop`.
+Masaüstü ve mobil aynı yol ağacını ayrı kabuklarla çizer; TV'nin kendi yol ağacı (`/tv/*`), odak motoru ve bileşenleri
+vardır (`web/src/tv`). Yeni yollar: `/goz-at`, `/goz-at/diziler`, `/goz-at/filmler`, `/yeni-ve-populer`, `/canli`,
+`/rehber`, `/listem`, `/ara?q=`, `?jbv=<videoId>` (masaüstü detay penceresi), `/baslik/:id` (mobil detay),
+`/izle/:viewableId`, `/profiller`, `/profiller/yonet`, `/tvplusim`, `/kumanda`, `/bagla?kod=`, `/cihazlar`, `/vitrin`.
+
+### 9.2 Cihazlar arası (sözleşme: `shared/devices.ts`)
+
+- **TV'de kodla giriş:** OAuth "device authorization grant" kalıbı — TV `start` → QR + kısa kod → telefon `approve` →
+  TV `poll` ile çerez zincirini alır.
+- **Kumanda ve yansıtma:** her cihaz `GET /api/devices/stream` (SSE) ile komut dinler; denetleyen cihaz
+  `POST /api/devices/:id/command` yollar; cihazlar durumlarını (`screen`, `nowPlaying`) bildirir. Komutlar yalnız aynı
+  hesabın cihazları arasında gider.
+- **Sanal cihaz:** `x-tvplus-vd` başlığı / `?vd=` sorgusu çerez adlarına `__<ad>` ekler; cihaz vitrini üç çerçeveyi
+  üç ayrı cihaz olarak çalıştırır. İstemci: `web/src/api/session.ts` (`virtualDevice`, `apiUrl`).
+- **İstemci:** `web/src/devices/client.ts` (`deviceClient`), yansıtma köprüsü `web/src/devices/bridge.ts`.
+- devbus `device` olayları: `kayıt`, `akış açık/koptu`, `komut → <cihaz>` (`{to, command}`), `komut ← <cihaz>`
+  (`{from, command}`), `durum` (`{screen, nowPlaying}`), `tv girişi: <durum>` (`{userCode, status}`).
+
+### 9.3 Arama tahmin modeli
+
+Sıralama ve öneriler çevrimiçi öğrenen küçük bir modelden gelir (`server/src/services/search/model`): lojistik
+regresyon; öznitelikler `metin` (eşleşme puanı), `begeni` (profilin beğeni vektörüyle benzerlik), `populerlik`
+(katalog + son 24 saat oynatma), `tiklanma` (sorgu/önek → başlık tıklanma oranı, yumuşatılmış), `yenilik`, `devam`
+(yarım kalmış başlık). `recordSearchFeedback` mutasyonu her tıklamada ağırlıkları günceller; ağırlıklar ve sayaçlar
+`.data/search-model.json` içinde kalır. Model şunları üretir: yazarken **tamamlama tahminleri** (`predictions`,
+`searchPredictions`), puana göre sıralı sonuçlar (`score`, `reason`, `explain`), doğrudan eşleşmeyen **tahmini
+sonuçlar** (`SearchPredictedSection`, `predicted: true`) ve kutu boşken **sana özel öneriler** (`popularSearches`).
+devbus `predict` olayları: `tamamlama` (`{prefix, predictions}`), `sıralama` (`{term, modelVersion, top[{id, score,
+explain}]}`), `geri bildirim` (`{term, entityId, action}`).
+
+### 9.4 Falcor ekleri
+
+```
+lolomoByCategory[home|shows|movies|newPopular]  → ref ["lolomos", "<guid>:<kategori>"]     (lolomo = home)
+lists[..].summary.context ekleri: top10Shows | top10Movies | popular
+videos[id].tags                                  → atom string[]   (önizleme kartındaki üç etiket)
+```
+
+### 9.5 Sahiplik (ikinci tur)
+
+| Yol | Sahibi |
+| --- | --- |
+| `docs/UX_SPEC.md`, `shared/**`, `server/src/kernel/**`, `web/src/lib/**`, `web/src/api/session.ts`, `web/src/devices/bridge.ts` | mimar |
+| `server/src/services/devices/**`, `web/src/devices/client.ts` | **cihazlar (sunucu)** |
+| `server/src/services/{identity,image,catalog,entitlement,epg,progress,discovery}/**`, `graphql/resolvers/**` (search hariç), `falcor/routes/**` | **sunucu ekleri** |
+| `server/src/services/search/**`, `graphql/resolvers/search.ts` | **arama tahmin modeli** |
+| `web/src/ui/**`, `web/src/app/**`, `web/src/features/{welcome,profiles}/**` | **web temel v2** |
+| `web/src/features/{home,browse,detail,preview,library,newpopular,account}/**` | **göz atma** |
+| `web/src/features/{search,live,guide}/**` | **arama + canlı** |
+| `web/src/devices/**` (client.ts ve bridge.ts hariç), `web/src/features/{remote,pair,showcase}/**`, `web/src/devtools/tabs/DevicesTab.tsx` | **cihaz deneyimi** |
+| `web/src/tv/{focus,ui,shell,login,profiles}/**`, `web/src/tv/index.ts*` | **TV temel** |
+| `web/src/tv/{home,detail,search,list}/**` | **TV göz atma** |
+| `web/src/tv/{live,player,remote}/**` | **TV canlı + kumanda** |
+| `web/src/player/**` | **oynatıcı** |
+| `content/**` | içerik ekibi |
+
+Eski `web/src/design/**` (v1) geçiş boyunca derlenir halde kalır; hiçbir yeni kod onu içe aktarmaz, ikinci turun
+sonunda silinir.

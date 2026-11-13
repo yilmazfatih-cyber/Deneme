@@ -16,6 +16,7 @@ import { loadConfig, type AppConfig } from './kernel/config'
 import type { Services } from './kernel/services'
 import catalogPlugin from './services/catalog/plugin'
 import debugPlugin from './services/debug/plugin'
+import devicesPlugin from './services/devices/plugin'
 import discoveryPlugin from './services/discovery/plugin'
 import entitlementPlugin from './services/entitlement/plugin'
 import epgPlugin from './services/epg/plugin'
@@ -78,6 +79,7 @@ export async function buildApp(overrides: Partial<AppConfig> = {}): Promise<Fast
 
   await graphqlPlugin(app)
   await falcorPlugin(app)
+  await devicesPlugin(app)
   await debugPlugin(app)
   await shellPlugin(app)
 
