@@ -34,6 +34,9 @@ class ModelConfig:
     ff: int = 256
     dropout: float = 0.2
     use_global: bool = True
+    # ALiBi tarzı yerellik önyargısı: çekimler arası dikkat puanından −eğim·|i−j| düşülür (baş başına farklı eğim);
+    # küçük veride "yakın çekime bak" bilgisinin sıfırdan öğrenilmesi gerekmez. Özel belirteçlere uzaklık cezası yok.
+    alibi: bool = True
     max_len: int = 64  # eğitim penceresi; daha uzun yapraklar örtüşen pencerelerle kodlanır
 
     def to_dict(self) -> dict:
@@ -85,6 +88,20 @@ class MediaFMMini(nn.Module):
     def n_params(self) -> int:
         return sum(p.numel() for p in self.parameters())
 
+    def attn_bias(self, pad: torch.Tensor, k: int) -> torch.Tensor:
+        """(B·baş, S, S) toplamsal dikkat maskesi: dolgu anahtarları −∞, çekim çiftleri için ALiBi yerellik cezası."""
+        B, S = pad.shape
+        H = self.cfg.heads
+        bias = torch.zeros(H, S, S, device=pad.device)
+        if self.cfg.alibi:
+            pos = torch.arange(S - k, device=pad.device, dtype=torch.float32)
+            dist = (pos[:, None] - pos[None, :]).abs()
+            slopes = torch.tensor([2.0 ** (-2 * h) for h in range(H)], device=pad.device)  # 1, 1/4, 1/16, 1/64
+            bias[:, k:, k:] = -slopes[:, None, None] * dist
+        m = bias[None].expand(B, H, S, S).clone()
+        m = m.masked_fill(pad[:, None, None, :], float("-inf"))
+        return m.reshape(B * H, S, S)
+
     def global_token(self, b: Batch) -> torch.Tensor:
         syn = torch.where(b.synopsis_ok[:, None], self.syn_proj(b.synopsis), self.syn_missing.expand(len(b.tags), -1))
         return syn + self.tag_mlp(b.tags)
@@ -108,7 +125,7 @@ class MediaFMMini(nn.Module):
         k = len(special)
         seq = torch.cat([torch.stack(special, dim=1), x], dim=1)
         pad = torch.cat([torch.zeros(B, k, dtype=torch.bool, device=x.device), b.pad], dim=1)
-        h = self.encoder(self.in_drop(seq), src_key_padding_mask=pad)
+        h = self.encoder(self.in_drop(seq), mask=self.attn_bias(pad, k))
         h = self.out_norm(h[:, k:])
         pred = torch.stack([self.heads[m](h) for m in range(N_MODS)], dim=2)
         return h, pred

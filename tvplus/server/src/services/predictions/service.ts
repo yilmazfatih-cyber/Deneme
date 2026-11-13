@@ -252,7 +252,12 @@ export function createPredictionService(app: FastifyInstance, tuning: Prediction
     const content = contentSources()
     const byId = new Map(titles.map((t) => [t.videoId, t]))
     const ids = [...byId.keys()].sort((a, b) => a - b)
-    const feats = runSync(buildContentFeatures(ids.map((id) => byId.get(id)!), content))
+    const feats = runSync(
+      buildContentFeatures(
+        ids.map((id) => byId.get(id)!),
+        content,
+      ),
+    )
     const h = createHash('sha1')
     h.update(feats.names.join('|'))
     for (const r of feats.rows) h.update(Buffer.from(r.idx.buffer)).update(Buffer.from(r.val.buffer))
@@ -292,7 +297,8 @@ export function createPredictionService(app: FastifyInstance, tuning: Prediction
     if (prev.content !== cur.content) return 'içerik işaretleri değişti (gömme / etiket / mikro tür / katalog)'
     if (rel(cur.interactions, prev.interactions) >= MATERIAL_SHARE)
       return `etkileşim sayısı değişti (${prev.interactions} → ${cur.interactions})`
-    if (rel(cur.viewers, prev.viewers) >= MATERIAL_SHARE) return `izleyici sayısı değişti (${prev.viewers} → ${cur.viewers})`
+    if (rel(cur.viewers, prev.viewers) >= MATERIAL_SHARE)
+      return `izleyici sayısı değişti (${prev.viewers} → ${cur.viewers})`
     // Kaynak kümesi: yalnız veri payı da değiştiyse (ör. sentetiğe birkaç gerçek olay eklenmesi anlamlı değildir)
     if (majorOf(prev) !== majorOf(cur) && !cur.sources.includes('SYNTHETIC')) return 'eğitim kaynakları değişti'
     if (prev.audience === null && cur.audience !== null) return 'zevk toplulukları hazır'
@@ -554,9 +560,7 @@ export function createPredictionService(app: FastifyInstance, tuning: Prediction
         communityId = null
       }
     }
-    const communityRow = m.communities
-      ? nearestCommunity(m.communities.lift, m.communities.ids.length, T, hist)
-      : -1
+    const communityRow = m.communities ? nearestCommunity(m.communities.lift, m.communities.ids.length, T, hist) : -1
     const ctx: FeatureContext = {
       x: fi?.x ?? null,
       now: Date.now(),

@@ -78,13 +78,23 @@ export function createBrowserEnv(frames: () => Partial<Record<FrameId, HTMLIFram
         b.authURL,
       )
     },
+    // Çerçeveler sayfanın ortak oturum geçmişini paylaşır: yükleme ve yol değişimi geçmişe girdi EKLEMEZ
+    // (location.replace), yoksa bir çerçevedeki "geri" başka bir çerçevenin gezinmesini geri alabilir.
     open(id, route) {
-      const f = frames()[id]
-      if (f) f.src = frameUrl(id, route, true)
+      const url = frameUrl(id, route, true)
+      const w = win(id)
+      if (w) w.location.replace(url)
+      else {
+        const f = frames()[id]
+        if (f) f.src = url
+      }
     },
     go(id, route) {
       const w = win(id)
-      if (w) w.location.hash = `#${route}`
+      if (!w) return
+      const url = new URL(w.location.href)
+      url.hash = `#${route}`
+      w.location.replace(url.toString())
     },
     route(id) {
       try {

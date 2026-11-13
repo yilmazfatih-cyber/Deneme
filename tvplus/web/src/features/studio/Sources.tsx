@@ -63,7 +63,15 @@ export function SourcesSection(): ReactElement {
   )
 }
 
-function SourceCard({ s, all, onChanged }: { s: DataSourceStatus; all: DataSourceStatus[]; onChanged: () => void }): ReactElement {
+function SourceCard({
+  s,
+  all,
+  onChanged,
+}: {
+  s: DataSourceStatus
+  all: DataSourceStatus[]
+  onChanged: () => void
+}): ReactElement {
   const [confirm, setConfirm] = useState(false)
   const action = useAction()
   const clear = async () => {
@@ -117,12 +125,20 @@ function SourceCard({ s, all, onChanged }: { s: DataSourceStatus; all: DataSourc
           Kaynağı temizle
         </Button>
       </div>
-      <Modal open={confirm} onClose={() => setConfirm(false)} label={`${SOURCE_LABEL[s.source]} kaynağını temizle`} maxWidth={460}>
+      <Modal
+        open={confirm}
+        onClose={() => setConfirm(false)}
+        label={`${SOURCE_LABEL[s.source]} kaynağını temizle`}
+        maxWidth={460}
+      >
         <div className="st-confirm">
           <h2 className="st-panel__title">{SOURCE_LABEL[s.source]} kaynağı temizlensin mi?</h2>
           <p className="ui-body">
-            Bu kaynağın {fmtInt(s.events)} olayı silinir. Topluluklar, içgörüler ve model bundan sonra bu veri olmadan hesaplanır.
-            {s.source === 'SYNTHETIC' ? ' Sentetik örnek istenirse yeniden üretilebilir.' : ' Gerçek veriyi geri getirmek için yeniden içe aktarmak gerekir.'}
+            Bu kaynağın {fmtInt(s.events)} olayı silinir. Topluluklar, içgörüler ve model bundan sonra bu veri olmadan
+            hesaplanır.
+            {s.source === 'SYNTHETIC'
+              ? ' Sentetik örnek istenirse yeniden üretilebilir.'
+              : ' Gerçek veriyi geri getirmek için yeniden içe aktarmak gerekir.'}
           </p>
           {action.error && <p className="st-error">{action.error}</p>}
           <div className="st-actions">
@@ -207,7 +223,11 @@ function MixpanelPanel({ d, onChanged }: { d: SourcesResponse; onChanged: () => 
         id="mixpanel"
         title="Mixpanel"
         sub="Kimlik bilgileri yalnız sunucunun ortam değişkenlerinden okunur; burada hiçbir gizli değer gösterilmez."
-        actions={<Chip tone={mp.configured ? 'ok' : 'muted'}>{mp.configured ? 'Servis hesabı tanımlı' : 'Servis hesabı tanımlı değil'}</Chip>}
+        actions={
+          <Chip tone={mp.configured ? 'ok' : 'muted'}>
+            {mp.configured ? 'Servis hesabı tanımlı' : 'Servis hesabı tanımlı değil'}
+          </Chip>
+        }
       >
         <dl className="st-dl">
           <dt>Veri bölgesi</dt>
@@ -250,7 +270,9 @@ function UploadBox({ onDone }: { onDone: () => void }): ReactElement {
     try {
       const r = await up.promise
       setReport({ r, dry: dryRun })
-      toast(dryRun ? 'Deneme bitti; depoya yazılmadı.' : `${fmtInt(r.accepted)} olay içe aktarıldı.`, { kind: 'success' })
+      toast(dryRun ? 'Deneme bitti; depoya yazılmadı.' : `${fmtInt(r.accepted)} olay içe aktarıldı.`, {
+        kind: 'success',
+      })
       if (!dryRun) onDone()
     } catch (e) {
       setError(errorMessage(e))
@@ -262,7 +284,9 @@ function UploadBox({ onDone }: { onDone: () => void }): ReactElement {
   return (
     <div className="st-box">
       <h3 className="st-h3">Dışa aktarım dosyası yükle</h3>
-      <p className="ui-caption">Mixpanel ham olay dışa aktarımı: .jsonl ya da .jsonl.gz (en çok 1 GB). Dosya akış olarak gönderilir.</p>
+      <p className="ui-caption">
+        Mixpanel ham olay dışa aktarımı: .jsonl ya da .jsonl.gz (en çok 1 GB). Dosya akış olarak gönderilir.
+      </p>
       <label className="st-file">
         <span className="st-select__label">Dosya</span>
         <input
@@ -280,14 +304,25 @@ function UploadBox({ onDone }: { onDone: () => void }): ReactElement {
           {file.name} · {fmtInt(file.size / 1024)} KB
         </p>
       )}
-      <Switch checked={dryRun} onChange={setDryRun} label="Deneme (depoya yazma)" description="Önce raporu görün; sonra kapatıp gerçek içe aktarın." />
+      <Switch
+        checked={dryRun}
+        onChange={setDryRun}
+        label="Deneme (depoya yazma)"
+        description="Önce raporu görün; sonra kapatıp gerçek içe aktarın."
+      />
       <div className="st-actions">
         {progress !== null && (
           <Button variant="ghost" size="sm" onClick={() => abortRef.current?.()}>
             İptal
           </Button>
         )}
-        <Button variant="accent" size="sm" disabled={!file || progress !== null} busy={progress !== null} onClick={start}>
+        <Button
+          variant="accent"
+          size="sm"
+          disabled={!file || progress !== null}
+          busy={progress !== null}
+          onClick={start}
+        >
           {dryRun ? 'Dene' : 'İçe aktar'}
         </Button>
       </div>
@@ -324,8 +359,8 @@ function PullBox({ configured, onDone }: { configured: boolean; onDone: () => vo
       <h3 className="st-h3">Tarih aralığı çek</h3>
       {!configured && (
         <p className="ui-caption">
-          Sunucuda Mixpanel servis hesabı tanımlı değil. MIXPANEL_SERVICE_ACCOUNT_USERNAME, MIXPANEL_SERVICE_ACCOUNT_SECRET ve
-          MIXPANEL_PROJECT_ID ortam değişkenleri ayarlanınca açılır.
+          Sunucuda Mixpanel servis hesabı tanımlı değil. MIXPANEL_SERVICE_ACCOUNT_USERNAME,
+          MIXPANEL_SERVICE_ACCOUNT_SECRET ve MIXPANEL_PROJECT_ID ortam değişkenleri ayarlanınca açılır.
         </p>
       )}
       <div className="st-form-row">
@@ -333,7 +368,13 @@ function PullBox({ configured, onDone }: { configured: boolean; onDone: () => vo
         <TextField label="Bitiş" type="date" value={to} onChange={setTo} disabled={!configured} />
       </div>
       <div className="st-actions">
-        <Button variant="secondary" size="sm" disabled={!configured || !from || !to || action.busy} busy={action.busy} onClick={pull}>
+        <Button
+          variant="secondary"
+          size="sm"
+          disabled={!configured || !from || !to || action.busy}
+          busy={action.busy}
+          onClick={pull}
+        >
           Çek
         </Button>
       </div>
@@ -372,9 +413,27 @@ function SyntheticBox({ onDone }: { onDone: () => void }): ReactElement {
       </h3>
       <p className="ui-caption">Mevcut sentetik örneğin yerini alır. Gerçek kaynaklara dokunmaz.</p>
       <div className="st-form-row">
-        <TextField label="İzleyici" inputMode="numeric" placeholder="1500" value={viewers} onChange={(v) => setViewers(v.replace(/\D/g, ''))} />
-        <TextField label="Gün" inputMode="numeric" placeholder="90" value={days} onChange={(v) => setDays(v.replace(/\D/g, ''))} />
-        <TextField label="Tohum" inputMode="numeric" placeholder="7" value={seed} onChange={(v) => setSeed(v.replace(/\D/g, ''))} />
+        <TextField
+          label="İzleyici"
+          inputMode="numeric"
+          placeholder="1500"
+          value={viewers}
+          onChange={(v) => setViewers(v.replace(/\D/g, ''))}
+        />
+        <TextField
+          label="Gün"
+          inputMode="numeric"
+          placeholder="90"
+          value={days}
+          onChange={(v) => setDays(v.replace(/\D/g, ''))}
+        />
+        <TextField
+          label="Tohum"
+          inputMode="numeric"
+          placeholder="7"
+          value={seed}
+          onChange={(v) => setSeed(v.replace(/\D/g, ''))}
+        />
       </div>
       <div className="st-actions">
         <Button variant="secondary" size="sm" onClick={gen} busy={action.busy} disabled={action.busy}>
@@ -471,10 +530,21 @@ function MappingEditor({ onSaved }: { onSaved: () => void }): ReactElement {
             </p>
             {action.error && <p className="st-error">{action.error}</p>}
             <div className="st-actions">
-              <Button variant="ghost" size="sm" disabled={!dirty} onClick={() => setState({ ...state, text: state.loaded })}>
+              <Button
+                variant="ghost"
+                size="sm"
+                disabled={!dirty}
+                onClick={() => setState({ ...state, text: state.loaded })}
+              >
                 Geri al
               </Button>
-              <Button variant="accent" size="sm" disabled={!dirty || !!problem || action.busy} busy={action.busy} onClick={save}>
+              <Button
+                variant="accent"
+                size="sm"
+                disabled={!dirty || !!problem || action.busy}
+                busy={action.busy}
+                onClick={save}
+              >
                 Kaydet
               </Button>
             </div>

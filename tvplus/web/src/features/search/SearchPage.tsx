@@ -232,7 +232,7 @@ function DesktopTitleGrid({
                 progress={
                   v.bookmark && v.bookmark.progress > 0 && v.bookmark.progress < 0.97 ? v.bookmark.progress : null
                 }
-                caption={e.reason ?? undefined}
+                caption={e.reason && e.reason !== section.displayString ? e.reason : undefined}
                 to={href(v.videoId, e.track.tctx)}
                 onClick={() => ctx.opened(e)}
               />

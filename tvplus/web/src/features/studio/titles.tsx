@@ -48,7 +48,11 @@ const subscribe = (fn: () => void) => {
 
 /** Başlık dizini (yüklenene dek boş). */
 export function useTitleIndex(): Map<number, TitleInfo> {
-  const snap = useSyncExternalStore(subscribe, () => index, () => index)
+  const snap = useSyncExternalStore(
+    subscribe,
+    () => index,
+    () => index,
+  )
   useEffect(() => {
     if (!index) void loadIndex()
   }, [])

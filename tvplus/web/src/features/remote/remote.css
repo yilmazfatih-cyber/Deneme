@@ -185,6 +185,13 @@
   color: var(--text-1);
   background: var(--surface-2);
 }
+.rm-round--caption {
+  flex-direction: column;
+  gap: 0;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-2);
+}
 .rm-play {
   display: inline-flex;
   align-items: center;
@@ -521,6 +528,9 @@
 }
 .rm-type__input:focus {
   outline: none;
+}
+.rm-type__input::-webkit-search-cancel-button {
+  display: none;
 }
 .rm-type__close {
   display: inline-flex;

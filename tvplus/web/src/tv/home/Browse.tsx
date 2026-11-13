@@ -15,25 +15,10 @@ import { prefetchManifest } from '../../player'
 import { logEvent } from '../../telemetry/logger'
 import { useFocusWithin } from '../focus'
 import { titlePath, useTvBoot, watchPath } from '../shell'
-import {
-  formatRemaining,
-  formatTimeRange,
-  screenScopeId,
-  TvCard,
-  TvPosterCard,
-  TvScreen,
-  TvSkeletonRow,
-} from '../ui'
+import { formatRemaining, formatTimeRange, screenScopeId, TvCard, TvPosterCard, TvScreen, TvSkeletonRow } from '../ui'
 import { Hero } from './Hero'
 import { Lane } from './Lane'
-import {
-  browseMemory,
-  rememberFocus,
-  restoreFocusId,
-  restoreIndex,
-  rowScopeId,
-  type BrowseMemory,
-} from './memory'
+import { browseMemory, rememberFocus, restoreFocusId, restoreIndex, rowScopeId, type BrowseMemory } from './memory'
 import {
   HERO_LEAVES,
   heroOf,
@@ -58,6 +43,7 @@ import {
 import { useFalcorPaths } from './falcorView'
 import { useSettled } from './Hero'
 import { RowsStack } from './RowsStack'
+import { useClaimFocusOnContent } from './claimFocus'
 import './home.css'
 
 /* ───────────── Ölçüler (rem) ───────────── */
@@ -296,9 +282,7 @@ export function Browse({ screenId, category, title, showPageTitle }: BrowseProps
   const hero: HeroVM | null = useMemo(() => {
     if (!focusedItem || !focusedRow || !focus) return null
     if (focusedItem.kind === 'channel') return channelHero(focusedItem.channel)
-    const node = obj(obj(heroRoot?.[String(focusedRow.vm.rowIndex)])?.[String(focus.index)]) as
-      | VideoNode
-      | undefined
+    const node = obj(obj(heroRoot?.[String(focusedRow.vm.rowIndex)])?.[String(focus.index)]) as VideoNode | undefined
     const sameVideo = node?.summary?.id === focusedItem.card.videoId ? node : undefined
     return heroOf(focusedItem.card, sameVideo, matchScores.get(focusedItem.card.videoId))
   }, [focusedItem, focusedRow, focus, heroRoot, matchScores])
@@ -360,6 +344,8 @@ export function Browse({ screenId, category, title, showPageTitle }: BrowseProps
     0,
     rows.findIndex((r) => r.key === mem0.rowListId),
   )
+
+  useClaimFocusOnContent(screenId, rows.length > 0, restoreId)
 
   const laneNodes = rows.map((row, ri) => {
     const keys = row.items.map((it) => (it ? (it.kind === 'video' ? it.card.key : it.channel.key) : null))
@@ -493,8 +479,6 @@ function RowsStackLazy({
   initialIndex: number
   loading: boolean
 }): ReactElement {
-  const all = loading
-    ? [...rows, { key: '__iskelet', node: <TvSkeletonRow cards={6} /> }]
-    : rows
+  const all = loading ? [...rows, { key: '__iskelet', node: <TvSkeletonRow cards={6} /> }] : rows
   return <RowsStack id={id} rows={all} anchor={ROWS_ANCHOR} initialIndex={initialIndex} />
 }

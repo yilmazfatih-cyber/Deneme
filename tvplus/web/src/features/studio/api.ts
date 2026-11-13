@@ -120,10 +120,14 @@ export function usePolling(active: boolean, refetch: () => void, ms = 1500): voi
 }
 
 /** Yazma işlemi durumu: { busy, run(fn) } — hata iletisi döner ya da null. */
-export function useAction(): { busy: boolean; run: <T>(fn: () => Promise<T>) => Promise<T | null>; error: string | null } {
+export function useAction(): {
+  busy: boolean
+  run: <T>(fn: () => Promise<T>) => Promise<T | null>
+  error: string | null
+} {
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const runFn = useCallback(async <T,>(fn: () => Promise<T>): Promise<T | null> => {
+  const runFn = useCallback(async <T>(fn: () => Promise<T>): Promise<T | null> => {
     setBusy(true)
     setError(null)
     try {

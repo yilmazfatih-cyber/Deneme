@@ -73,9 +73,7 @@ export function StudioPage(): ReactElement {
             </li>
           ))}
         </ul>
-        <p className="ui-caption st-nav__foot">
-          İç araç. Örnek ve sentetik veriler her yerde öyle etiketlenir.
-        </p>
+        <p className="ui-caption st-nav__foot">İç araç. Örnek ve sentetik veriler her yerde öyle etiketlenir.</p>
       </nav>
       <div className="st-content">
         <Routes>

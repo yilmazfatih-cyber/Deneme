@@ -304,33 +304,30 @@ export function useTvGuide(win: { from: number; to: number }): TvGuideResult {
     setVersion((v) => v + 1)
   }
 
-  const setReminder = useCallback(
-    (a: TvAiring, channel: TvChannel, enabled: boolean) => {
-      put(a.airingId, enabled)
-      logEvent(
-        'click',
-        { surface: 'tv-rehber', action: enabled ? 'hatirlat' : 'hatirlatma-kaldir', entityId: a.unifiedEntityId },
-        null,
-      )
-      gql<{ setReminder: { airingId: string; hasReminder: boolean } | null }, { airingId: string; enabled: boolean }>(
-        'SetReminder',
-        { airingId: a.airingId, enabled },
-      ).then(
-        (res) => {
-          const on = res.setReminder?.hasReminder ?? enabled
-          put(a.airingId, on)
-          tvToast(on ? `${a.title} başlayınca haber vereceğiz` : 'Hatırlatma kaldırıldı')
-          queryCache.invalidate('Reminders')
-          devbus.emit('cache', 'Rehber (TV): hatırlatma', { airingId: a.airingId, channelId: channel.channelId, on })
-        },
-        () => {
-          put(a.airingId, null)
-          tvToast('Hatırlatma kurulamadı. Tekrar dene.')
-        },
-      )
-    },
-    [],
-  )
+  const setReminder = useCallback((a: TvAiring, channel: TvChannel, enabled: boolean) => {
+    put(a.airingId, enabled)
+    logEvent(
+      'click',
+      { surface: 'tv-rehber', action: enabled ? 'hatirlat' : 'hatirlatma-kaldir', entityId: a.unifiedEntityId },
+      null,
+    )
+    gql<{ setReminder: { airingId: string; hasReminder: boolean } | null }, { airingId: string; enabled: boolean }>(
+      'SetReminder',
+      { airingId: a.airingId, enabled },
+    ).then(
+      (res) => {
+        const on = res.setReminder?.hasReminder ?? enabled
+        put(a.airingId, on)
+        tvToast(on ? `${a.title} başlayınca haber vereceğiz` : 'Hatırlatma kaldırıldı')
+        queryCache.invalidate('Reminders')
+        devbus.emit('cache', 'Rehber (TV): hatırlatma', { airingId: a.airingId, channelId: channel.channelId, on })
+      },
+      () => {
+        put(a.airingId, null)
+        tvToast('Hatırlatma kurulamadı. Tekrar dene.')
+      },
+    )
+  }, [])
 
   return { channels, hasReminder, setReminder, loading, error: data ? null : error, refetch }
 }

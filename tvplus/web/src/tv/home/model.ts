@@ -338,8 +338,7 @@ export function typeLabel(type: string | undefined): string {
 /** Odaktaki başlığın üst alan modeli: kart (anında) + üst alan yaprakları (gelince) + eşleşme (gelince). */
 export function heroOf(card: CardVM, node: VideoNode | undefined, matchScore: number | null | undefined): HeroVM {
   const type = node?.summary?.type ?? (card.isShow ? 'show' : 'movie')
-  const runtime =
-    type === 'show' && node?.seasonCount ? `${node.seasonCount} Sezon` : (node?.displayRuntime ?? null)
+  const runtime = type === 'show' && node?.seasonCount ? `${node.seasonCount} Sezon` : (node?.displayRuntime ?? null)
   const rank = node?.top10Rank ?? null
   return {
     key: card.key,

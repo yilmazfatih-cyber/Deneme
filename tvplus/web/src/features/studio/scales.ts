@@ -134,7 +134,8 @@ export function gapReadings(rows: readonly MixRow[], minGap = 0.02): string[] {
   const out: string[] = []
   const over = byGap[0]
   const under = byGap[byGap.length - 1]
-  const sentence = (r: MixRow) => `${r.name} kataloğun ${pctWithSuffix(r.catalogShare)}, izlenmenin ${pctWithSuffix(r.viewShare)}.`
+  const sentence = (r: MixRow) =>
+    `${r.name} kataloğun ${pctWithSuffix(r.catalogShare)}, izlenmenin ${pctWithSuffix(r.viewShare)}.`
   if (over && over.viewShare - over.catalogShare >= minGap) out.push(sentence(over))
   if (under && under !== over && under.catalogShare - under.viewShare >= minGap) out.push(sentence(under))
   return out

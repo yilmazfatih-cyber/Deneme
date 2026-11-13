@@ -40,7 +40,12 @@ const page: SearchPageData = {
       displayString: 'Bunlar ilgini çekebilir',
       entities: [video(3, { predicted: true, reason: 'Sintel ile ilgili' })],
     },
-    { __typename: 'SearchGallerySection', id: 'galeri', displayString: 'Film ve Diziler', entities: [video(1), video(2)] },
+    {
+      __typename: 'SearchGallerySection',
+      id: 'galeri',
+      displayString: 'Film ve Diziler',
+      entities: [video(1), video(2)],
+    },
   ],
 }
 
@@ -88,7 +93,12 @@ describe('arama sonuçları', () => {
       Date.parse('2026-01-01T20:30:00Z'),
     )
     expect(s).toHaveLength(1)
-    expect(s[0]!.items[0]).toMatchObject({ live: true, progress: 0.5, target: { kind: 'channel', channelId: 4 }, position: 1 })
+    expect(s[0]!.items[0]).toMatchObject({
+      live: true,
+      progress: 0.5,
+      target: { kind: 'channel', channelId: 4 },
+      position: 1,
+    })
   })
 
   it('sıralama olayı: ilk 5 sonucun puanı ve bileşenleri', () => {

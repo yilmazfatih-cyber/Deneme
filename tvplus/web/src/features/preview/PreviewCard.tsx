@@ -293,10 +293,14 @@ function PreviewBody({
   const playId = isShow ? (ep?.videoId ?? null) : video.videoId
   const bm = isShow ? (ep?.bookmark ?? null) : video.bookmark
   const resume = isInProgress(bm)
-  const meta = previewMeta(video)
-  // Etiketler: Falcor `videos[id].tags` yaprağı (satırla birlikte gelmişse), yoksa aynı kaynaklı textEvidence.
-  const cached = falcor.peek<{ videos?: Record<string, { tags?: unknown }> }>(['videos', video.videoId, 'tags']).json
-    .videos?.[String(video.videoId)]?.tags
+  // Falcor önbelleğindeki yapraklar (satırla birlikte gelmişse): `tags` ve `matchScore`; yoksa GraphQL karşılıkları.
+  const leaf = falcor.peek<{ videos?: Record<string, { tags?: unknown; matchScore?: unknown }> }>([
+    'videos',
+    video.videoId,
+    ['tags', 'matchScore'],
+  ]).json.videos?.[String(video.videoId)]
+  const meta = previewMeta(typeof leaf?.matchScore === 'number' ? { ...video, matchScore: leaf.matchScore } : video)
+  const cached = leaf?.tags
   const tags = (
     Array.isArray(cached) && cached.every((t) => typeof t === 'string')
       ? (cached as string[])

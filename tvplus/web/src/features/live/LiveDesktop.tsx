@@ -211,7 +211,9 @@ function LiveBillboard({
               <Button
                 size="lg"
                 icon="cast"
-                onClick={() => castChannel({ channelId: ch.channelId, name: ch.name, programme: air?.title }, 'canli', tctx)}
+                onClick={() =>
+                  castChannel({ channelId: ch.channelId, name: ch.name, programme: air?.title }, 'canli', tctx)
+                }
               >
                 TV'de İzle
               </Button>
@@ -521,7 +523,13 @@ export function LiveDesktop({ model, handlers }: { model: LiveModel; handlers: L
     />
   )
 
-  const airingRow = (rowId: string, rowType: string, title: string, items: AiringItem[], caption: (a: AiringItem) => string) => (
+  const airingRow = (
+    rowId: string,
+    rowType: string,
+    title: string,
+    items: AiringItem[],
+    caption: (a: AiringItem) => string,
+  ) => (
     <LiveSlider
       key={rowId}
       rowId={rowId}
@@ -573,7 +581,13 @@ export function LiveDesktop({ model, handlers }: { model: LiveModel; handlers: L
       <div className="ui-billboard-rows lv-rows">
         {channelRow('live-all', 'Şu An Yayında', model.entries, '/rehber')}
         {channelRow('live-favorites', 'Kanallarım', model.favorites)}
-        {airingRow('live-upnext', 'TONIGHT_ROW', 'Az Sonra', upNextItems, (it) => `${formatClock(it.airing.startAt)} · ${it.channel.name}`)}
+        {airingRow(
+          'live-upnext',
+          'TONIGHT_ROW',
+          'Az Sonra',
+          upNextItems,
+          (it) => `${formatClock(it.airing.startAt)} · ${it.channel.name}`,
+        )}
         {airingRow('live-reminders', 'TONIGHT_ROW', 'Hatırlatmaların', model.reminders.map(reminderItem), liveCaption)}
         {model.categories.map((g) => channelRow(`live-cat-${g.key}`, g.name, g.entries))}
         {model.tonight &&

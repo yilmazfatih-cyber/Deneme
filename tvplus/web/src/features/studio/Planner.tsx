@@ -63,7 +63,12 @@ export function PlannerSection(): ReactElement {
       />
       <Panel title="Girdiler">
         <div className="st-form-row st-form-row--plan">
-          <TextField label="Eklenecek başlık" inputMode="numeric" value={slots} onChange={(v) => setSlots(v.replace(/\D/g, ''))} />
+          <TextField
+            label="Eklenecek başlık"
+            inputMode="numeric"
+            value={slots}
+            onChange={(v) => setSlots(v.replace(/\D/g, ''))}
+          />
           <div className="st-field">
             <span className="st-select__label">Kapsam</span>
             <Segmented<Scope>
@@ -95,9 +100,17 @@ export function PlannerSection(): ReactElement {
               <span>Yalnız veri</span>
             </span>
           </label>
-          <TextField label="Bütçe (isteğe bağlı)" inputMode="decimal" value={budget} onChange={setBudget} hint="Maliyet girilen türlere göre" />
+          <TextField
+            label="Bütçe (isteğe bağlı)"
+            inputMode="decimal"
+            value={budget}
+            onChange={setBudget}
+            hint="Maliyet girilen türlere göre"
+          />
         </div>
-        <Disclosure summary={`Tür başına editör yargısı ve maliyet${Object.values(judgment).some((v) => v !== 0) ? ' · değişti' : ''}`}>
+        <Disclosure
+          summary={`Tür başına editör yargısı ve maliyet${Object.values(judgment).some((v) => v !== 0) ? ' · değişti' : ''}`}
+        >
           <table className="st-table st-table--compact st-nudges">
             <caption className="ui-sr-only">Tür başına yargı (−1 azalt … +1 artır) ve başlık maliyeti</caption>
             <thead>
@@ -157,12 +170,22 @@ export function PlannerSection(): ReactElement {
           </p>
         )}
         <div className="st-actions">
-          <Button variant="accent" size="sm" onClick={plan} busy={action.busy} disabled={action.busy || typeof input === 'string'}>
+          <Button
+            variant="accent"
+            size="sm"
+            onClick={plan}
+            busy={action.busy}
+            disabled={action.busy || typeof input === 'string'}
+          >
             Planla
           </Button>
         </div>
       </Panel>
-      {result ? <PlanView r={result} /> : action.busy ? null : action.error ? <NotReady detail={action.error} onRetry={plan} /> : null}
+      {result ? (
+        <PlanView r={result} />
+      ) : action.busy ? null : action.error ? (
+        <NotReady detail={action.error} onRetry={plan} />
+      ) : null}
     </>
   )
 }
@@ -260,7 +283,10 @@ function PlanView({ r }: { r: PlanResult }): ReactElement {
             </ul>
           )}
         </Panel>
-        <Panel title="Yeterince beslenmeyen topluluklar" sub="İzlenme payı, kendilerine uygun katalog payından belirgin büyük">
+        <Panel
+          title="Yeterince beslenmeyen topluluklar"
+          sub="İzlenme payı, kendilerine uygun katalog payından belirgin büyük"
+        >
           {r.underserved.length === 0 ? (
             <p className="ui-meta">Yok.</p>
           ) : (

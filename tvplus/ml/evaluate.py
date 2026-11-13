@@ -77,13 +77,13 @@ def evaluate_sequence(s: Sequence, models: dict, donor: Sequence, repeats: int, 
     ctx_variants = {"model": s, "model_ctx_shuffled": with_context(s, donor), "model_ctx_blank": with_context(s, None)}
     _, pred_visible = encode(models["full"], s)
     # Adaylar ve temeller, modelin hedef uzayında (kip ortalaması çıkarılmış) karşılaştırılır — hepsi için aynı dönüşüm.
-    sc = copy.copy(s)
-    sc.feats = np.where(s.ok[..., None], s.feats - models["full"].center.numpy()[None], 0.0).astype(np.float32)
+    cs = copy.copy(s)
+    cs.feats = np.where(s.ok[..., None], s.feats - models["full"].center.numpy()[None], 0.0).astype(np.float32)
     for _ in range(repeats):
         hidden = np.zeros(s.n, bool)
         hidden[rng.choice(eligible, size=min(k, len(eligible) - 1), replace=False)] = True
         idx = np.nonzero(hidden)[0]
-        cand, cand_ok = sc.feats[idx], s.ok[idx]
+        cand, cand_ok = cs.feats[idx], s.ok[idx]
         true = np.arange(len(idx))
         preds: dict[str, tuple[np.ndarray, np.ndarray]] = {}
         for name, seq in ctx_variants.items():
@@ -93,7 +93,7 @@ def evaluate_sequence(s: Sequence, models: dict, donor: Sequence, repeats: int, 
         preds["model_noglobal"] = (p[idx], np.ones((len(idx), 3), bool))
         preds["model_visible_ref"] = (pred_visible[idx], np.ones((len(idx), 3), bool))
         for kind in ("nearest_visible", "neighbour_mean"):
-            rows = [baseline_pred(sc, i, hidden, kind) for i in idx]
+            rows = [baseline_pred(cs, i, hidden, kind) for i in idx]
             preds[kind] = (np.stack([r[0] for r in rows]), np.stack([r[1] for r in rows]))
         for name, (p, p_ok) in preds.items():
             sc = modal_scores(p, p_ok, cand, cand_ok)

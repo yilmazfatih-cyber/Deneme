@@ -14,7 +14,17 @@
  *     yerel düğmeler, ←/→ çalışmaz) görünür kalmaz; aynı metin ve AYNI düğme işleyicileriyle (oynatıcının
  *     düğmelerine tıklanarak) TV düğmeli bir pencere çizilir
  */
-import { Component, useCallback, useEffect, useLayoutEffect, useRef, useState, type ReactElement, type ReactNode } from 'react'
+import {
+  Component,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type ReactElement,
+  type ReactNode,
+} from 'react'
 import { useNavigate, useNavigationType, useParams } from 'react-router-dom'
 import { useGql } from '../../api/hooks'
 import { devbus } from '../../lib/devbus'
@@ -253,7 +263,10 @@ export function TvWatch(): ReactElement {
       })
       if (!target) return
       endedRef.current = true
-      devbus.emit('player', 'TV izleme: bitti → detay', { viewableId, target: target.kind === 'path' ? target.path : 'geçmiş' })
+      devbus.emit('player', 'TV izleme: bitti → detay', {
+        viewableId,
+        target: target.kind === 'path' ? target.path : 'geçmiş',
+      })
       if (target.kind === 'history') navigate(-1)
       else navigate(target.path, { replace: true })
     }
@@ -268,7 +281,7 @@ export function TvWatch(): ReactElement {
     setSenderVisible(true)
     const t = window.setTimeout(() => setSenderVisible(false), 5000)
     return () => window.clearTimeout(t)
-  }, [session?.sender])
+  }, [session])
 
   // "Oynatılamıyor" sayfasını izle.
   const hostRef = useRef<HTMLDivElement | null>(null)
@@ -308,6 +321,12 @@ export function TvWatch(): ReactElement {
     devbus.emit('player', 'TV izleme: kanal değiştir (pencere)', { from: viewableId, to: `Channel:${ch.channelId}` })
     navigate(watchPath(`Channel:${ch.channelId}`), { replace: true })
   }
+  // YouTube gömmesinin üstüne arayüz çizilmez (UX_SPEC §7 kural 10): künye çerçevenin altındaki şeride iner.
+  const embed = useSyncExternalStore(
+    playerRemote.subscribe,
+    () => playerRemote.getState()?.sourceKind === 'YOUTUBE',
+    () => false,
+  )
   const canZap = viewableId.startsWith('Channel:') && !!(meta?.nextChannel || meta?.previousChannel)
 
   return (
@@ -345,7 +364,7 @@ export function TvWatch(): ReactElement {
         />
       ) : null}
       {senderVisible && session?.sender && (
-        <div className="tvw-sender" role="status">
+        <div className={embed ? 'tvw-sender tvw-sender--below' : 'tvw-sender'} role="status">
           <TvIcon name="phone" size={1.8} />
           <span>
             <strong>{session.sender}</strong> gönderdi{title ? ` · ${title}` : ''}

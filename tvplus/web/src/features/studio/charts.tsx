@@ -19,7 +19,7 @@ export function PairedBars({
   caption: string
   firstLabel?: string
   secondLabel?: string
-  /** Hesap sentetik veriyle yapıldıysa sayının yanına konan etiket */
+  /** Hesap sentetik veriyle yapıldıysa izlenme sütununun başlığına konan etiket */
   sampleTag?: ReactNode
 }): ReactElement {
   if (!data.rows.length) return <p className="ui-meta">Gösterilecek satır yok.</p>
@@ -32,7 +32,7 @@ export function PairedBars({
           <th scope="col">
             <span className="st-key st-key--base" aria-hidden="true" />
             {firstLabel} <span className="st-dim">·</span> <span className="st-key st-key--accent" aria-hidden="true" />
-            {secondLabel}
+            {secondLabel} {sampleTag}
           </th>
           <th scope="col" className="st-num">
             Verim
@@ -48,15 +48,18 @@ export function PairedBars({
             </th>
             <td className="st-paired__bars">
               <span className="st-pbar">
-                <span className="st-pbar__fill st-pbar__fill--base" style={{ width: `${(r.catalogShare / data.max) * 100}%` }} />
+                <span
+                  className="st-pbar__fill st-pbar__fill--base"
+                  style={{ width: `${(r.catalogShare / data.max) * 100}%` }}
+                />
                 <span className="st-pbar__val">{fmtPct(r.catalogShare)}</span>
               </span>
               <span className="st-pbar">
-                <span className="st-pbar__fill st-pbar__fill--accent" style={{ width: `${(r.viewShare / data.max) * 100}%` }} />
-                <span className="st-pbar__val">
-                  {fmtPct(r.viewShare)}
-                  {sampleTag}
-                </span>
+                <span
+                  className="st-pbar__fill st-pbar__fill--accent"
+                  style={{ width: `${(r.viewShare / data.max) * 100}%` }}
+                />
+                <span className="st-pbar__val">{fmtPct(r.viewShare)}</span>
               </span>
             </td>
             <td className={`st-num${r.efficiency !== null && r.efficiency >= 1 ? ' st-strong' : ''}`}>
@@ -71,7 +74,19 @@ export function PairedBars({
 
 /* ───────────── İki ince çubuk (topluluk: izleyici payı ↔ saat payı) ───────────── */
 
-export function TwinBars({ a, b, aLabel, bLabel, max = 1 }: { a: number; b: number; aLabel: string; bLabel: string; max?: number }): ReactElement {
+export function TwinBars({
+  a,
+  b,
+  aLabel,
+  bLabel,
+  max = 1,
+}: {
+  a: number
+  b: number
+  aLabel: string
+  bLabel: string
+  max?: number
+}): ReactElement {
   return (
     <div className="st-twin">
       <span className="st-twin__row">
@@ -103,7 +118,15 @@ export interface SignedItem {
   note?: ReactNode
 }
 
-export function SignedBars({ items, caption, digits = 2 }: { items: readonly SignedItem[]; caption: string; digits?: number }): ReactElement {
+export function SignedBars({
+  items,
+  caption,
+  digits = 2,
+}: {
+  items: readonly SignedItem[]
+  caption: string
+  digits?: number
+}): ReactElement {
   const max = symmetricMax(items.map((i) => i.value))
   return (
     <ul className="st-signed" aria-label={caption}>
@@ -159,7 +182,13 @@ export function GroupedBarChart({
   const PAD = { l: 40, r: 8, t: 18, b: 26 }
   const iw = W - PAD.l - PAD.r
   const ih = H - PAD.t - PAD.b
-  const layout = groupedBars(groups, series.map((s) => s.key), values, iw, ih)
+  const layout = groupedBars(
+    groups,
+    series.map((s) => s.key),
+    values,
+    iw,
+    ih,
+  )
   const y = linear([0, layout.max], [ih, 0])
   const toneOf = new Map(series.map((s) => [s.key, s.tone]))
   return (

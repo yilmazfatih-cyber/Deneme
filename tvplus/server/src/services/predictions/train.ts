@@ -11,7 +11,13 @@
  */
 import { createHash } from 'node:crypto'
 import type { ContentTitle } from '../../../../shared/content-schema'
-import type { RankingMetrics, TrainRequest, TrainingRun, ViewingFact, ViewingSource } from '../../../../shared/intelligence'
+import type {
+  RankingMetrics,
+  TrainRequest,
+  TrainingRun,
+  ViewingFact,
+  ViewingSource,
+} from '../../../../shared/intelligence'
 import { trainAls, type AlsResult } from './als'
 import {
   blend,
@@ -37,7 +43,15 @@ import {
 } from './data'
 import { gram, mixSeed, mulberry32 } from './linalg'
 import { K, MetricAccumulator, topK } from './metrics'
-import { features, foldIn, nearestCommunity, rowDot, type FeatureContext, type Fingerprint, type PredictionModel } from './model'
+import {
+  features,
+  foldIn,
+  nearestCommunity,
+  rowDot,
+  type FeatureContext,
+  type Fingerprint,
+  type PredictionModel,
+} from './model'
 import { fitRanker, NF, rankerLogit, type RankerFit } from './ranker'
 
 /** Büyük veride (otomatik seçim yapılmadığında) kullanılan değerler; küçük veride ızgaradan seçilir. */
@@ -83,7 +97,13 @@ export interface TrainingRunInfo extends TrainingRun {
   validationCollaborative: RankingMetrics | null
   /** Otomatik seçimde denenen adaylar ve doğrulama puanları (seçilen `params`'tadır); seçim yapılmadıysa null */
   selection:
-    | { factors: number; regularization: number; alpha: number; validationNdcgAt10: number; validationRecallAt10: number }[]
+    | {
+        factors: number
+        regularization: number
+        alpha: number
+        validationNdcgAt10: number
+        validationRecallAt10: number
+      }[]
     | null
   /** Soğuk başlıklar arasında popülerlik tabanı (popülerlik izleyicilerin diğer yarısından ölçülür) */
   coldStartPopularity: RankingMetrics | null
@@ -117,7 +137,11 @@ export interface TrainOutput {
 
 const r4 = (x: number) => Math.round(x * 10_000) / 10_000
 
-export function emptyRun(runId: string, params: Required<TrainRequest>, input: Pick<TrainInput, 'sources' | 'synthetic' | 'note'>): TrainingRunInfo {
+export function emptyRun(
+  runId: string,
+  params: Required<TrainRequest>,
+  input: Pick<TrainInput, 'sources' | 'synthetic' | 'note'>,
+): TrainingRunInfo {
   return {
     runId,
     status: 'RUNNING',
@@ -182,12 +206,12 @@ function* fitFactors(
 }
 
 /** Rol filtresine göre topluluk × başlık log kaldıraç tablosu. */
-function liftTable(
+function* liftTable(
   data: Interactions,
   keep: (k: number) => boolean,
   community: Int32Array,
   k: number,
-): Float32Array {
+): Work<Float32Array> {
   const T = data.titleIds.length
   const nct = new Float64Array(k * T)
   const nc = new Float64Array(k)
@@ -207,6 +231,7 @@ function liftTable(
       N++
       if (c >= 0) nc[c]!++
     }
+    if ((v & 4095) === 4095) yield
   }
   const out = new Float32Array(k * T)
   for (let c = 0; c < k; c++)
@@ -224,11 +249,17 @@ function liftTable(
  * izlenen başlıkların ortancasına doğru büzülür (n / (n + k) ağırlık, k = SHRINKAGE) — vektör harmanıyla aynı kural.
  * Böylece yeni eklenmiş bir başlık "hiç izlenmedi" diye dibe itilmez; içerik kulesi onu doğru izleyiciye taşır.
  */
-export function popularityOf(data: Interactions, keep: (k: number) => boolean): Float32Array {
+export function* popularityOf(data: Interactions, keep: (k: number) => boolean): Work<Float32Array> {
   const T = data.titleIds.length
   const c = new Float64Array(T)
-  for (let q = 0; q < data.u.length; q++) if (keep(q)) c[data.i[q]!]!++
-  const seen = [...c].filter((x) => x > 0).map((x) => Math.log1p(x)).sort((a, b) => a - b)
+  for (let q = 0; q < data.u.length; q++) {
+    if (keep(q)) c[data.i[q]!]!++
+    if ((q & 65535) === 65535) yield
+  }
+  const seen = [...c]
+    .filter((x) => x > 0)
+    .map((x) => Math.log1p(x))
+    .sort((a, b) => a - b)
   const median = seen.length ? seen[Math.floor(seen.length / 2)]! : 0
   return Float32Array.from(c, (x) => {
     const w = x / (x + SHRINKAGE)
@@ -251,7 +282,14 @@ function sample(items: number[], max: number, seed: number): number[] {
 }
 
 /** Puan dağılımı (ortalama, sapma): örneklem izleyici satırları × rastgele başlıklar. */
-function scoreStats(x: Float32Array, M: Float32Array, rows: number, T: number, f: number, seed: number): [number, number] {
+function scoreStats(
+  x: Float32Array,
+  M: Float32Array,
+  rows: number,
+  T: number,
+  f: number,
+  seed: number,
+): [number, number] {
   const rng = mulberry32(seed)
   let s = 0
   let s2 = 0
@@ -350,10 +388,10 @@ export function* train(
   /* ── 2. değerlendirme modeli (+ doğrulamayla hiperparametre seçimi) ── */
   const isTrain = (q: number) => role[q] === ROLE_TRAIN
   const isPreTest = (q: number) => role[q] === ROLE_TRAIN || role[q] === ROLE_VALID
-  const popTrain = popularityOf(data, isTrain)
-  const popPreTest = popularityOf(data, isPreTest)
-  const liftTrain = k > 0 ? liftTable(data, isTrain, community, k) : null
-  const liftPreTest = k > 0 ? liftTable(data, isPreTest, community, k) : null
+  const popTrain = yield* popularityOf(data, isTrain)
+  const popPreTest = yield* popularityOf(data, isPreTest)
+  const liftTrain = k > 0 ? yield* liftTable(data, isTrain, community, k) : null
+  const liftPreTest = k > 0 ? yield* liftTable(data, isPreTest, community, k) : null
   const modelOf = (
     fit: Fitted,
     p: Required<TrainRequest>,
@@ -694,12 +732,12 @@ export function* train(
     V: prodFit.V,
     C: prodFit.C,
     counts: prodFit.counts,
-    popularity: popularityOf(data, all),
+    popularity: yield* popularityOf(data, all),
     addedAt,
     gram: prodFit.gram,
     ranker: { mean: rankerFit.mean, std: rankerFit.std, weights: rankerFit.weights, bias: rankerFit.bias },
     adjust: { cf: map(prodCf, evalCf), content: map(prodCt, evalCt) },
-    communities: k > 0 ? { ids: communityIds, lift: liftTable(data, all, community, k) } : null,
+    communities: k > 0 ? { ids: communityIds, lift: yield* liftTable(data, all, community, k) } : null,
     contentSignals: {
       tags: feats.signals.tags,
       microgenres: feats.signals.microgenres,

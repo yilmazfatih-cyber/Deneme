@@ -4,7 +4,13 @@
  * başka başlıklardaki en yakın çekimleri; başlık vektörlerinin 2B haritası; "Yeniden kur".
  */
 import { useMemo, useState, type ReactElement } from 'react'
-import type { EmbeddingInfo, NeighborShot, NeighborTitle, ProjectionPoint, ShotSummary } from '../../../../shared/intelligence'
+import type {
+  EmbeddingInfo,
+  NeighborShot,
+  NeighborTitle,
+  ProjectionPoint,
+  ShotSummary,
+} from '../../../../shared/intelligence'
 import { apiUrl } from '../../api/session'
 import { Button, toast } from '../../ui'
 import { studioSend, useAction, useStudio } from './api'
@@ -29,7 +35,10 @@ export function EmbeddingsSection(): ReactElement {
   const info = useStudio<EmbeddingInfo>('/embeddings')
   const idx = useTitleIndex()
   const [titleId, setTitleId] = useState<number | null>(null)
-  const fallback = useMemo(() => [...idx.values()].find((t) => t.title === DEFAULT_TITLE_NAME)?.id ?? [...idx.keys()][0] ?? null, [idx])
+  const fallback = useMemo(
+    () => [...idx.values()].find((t) => t.title === DEFAULT_TITLE_NAME)?.id ?? [...idx.keys()][0] ?? null,
+    [idx],
+  )
   const current = titleId ?? fallback
   const options = useMemo(() => [...idx.values()].sort((a, b) => a.title.localeCompare(b.title, 'tr')), [idx])
   const rebuild = useAction()
@@ -63,16 +72,27 @@ export function EmbeddingsSection(): ReactElement {
             <>
               <div className="st-stats">
                 <Stat label="Sağlayıcı" value={e.provider} note={<Chip tone={kind.tone}>{kind.label}</Chip>} />
-                <Stat label="Model sürümü" value={<span className="st-small st-mono">{e.modelVersion}</span>} note={`${e.dims} boyut`} />
+                <Stat
+                  label="Model sürümü"
+                  value={<span className="st-small st-mono">{e.modelVersion}</span>}
+                  note={`${e.dims} boyut`}
+                />
                 <Stat label="Başlık vektörü" value={fmtInt(e.titles)} />
-                <Stat label="Çekim vektörü" value={fmtInt(e.shots)} note={`sahne algılanan ${fmtInt(e.sceneDetected)} video`} />
-                <Stat label="Kipler" value={<span className="st-small">{e.modalities.map((m) => MODALITY_LABEL[m]).join(', ')}</span>} />
+                <Stat
+                  label="Çekim vektörü"
+                  value={fmtInt(e.shots)}
+                  note={`sahne algılanan ${fmtInt(e.sceneDetected)} video`}
+                />
+                <Stat
+                  label="Kipler"
+                  value={<span className="st-small">{e.modalities.map((m) => MODALITY_LABEL[m]).join(', ')}</span>}
+                />
                 <Stat label="Kuruldu" value={<span className="st-small">{fmtDateTime(e.builtAt)}</span>} />
               </div>
               {!kind.trained && (
                 <p className="ui-caption st-honest">
-                  Taban sağlayıcı eğitilmemiş, elle kurulmuş bir kodlayıcıdır. Hattı ve arayüzü çalışır tutar; eğitilmiş bir
-                  modelin yerini tutmaz. Eğitilmiş vektörler dosya ya da http sağlayıcısıyla takılır.
+                  Taban sağlayıcı eğitilmemiş, elle kurulmuş bir kodlayıcıdır. Hattı ve arayüzü çalışır tutar; eğitilmiş
+                  bir modelin yerini tutmaz. Eğitilmiş vektörler dosya ya da http sağlayıcısıyla takılır.
                 </p>
               )}
             </>
@@ -94,7 +114,11 @@ export function EmbeddingsSection(): ReactElement {
           </label>
         }
       >
-        {current !== null ? <TitleNeighbors titleId={current} onPick={setTitleId} /> : <LoadingBlock lines={1} block={false} />}
+        {current !== null ? (
+          <TitleNeighbors titleId={current} onPick={setTitleId} />
+        ) : (
+          <LoadingBlock lines={1} block={false} />
+        )}
       </Panel>
       {current !== null && <ShotStrip key={current} videoId={current} />}
       <MapPanel selected={current} onSelect={setTitleId} />
@@ -140,7 +164,8 @@ function ShotStrip({ videoId }: { videoId: number }): ReactElement {
     >
       {res.error && !res.data ? (
         <p className="ui-meta">
-          Bu yaprağın çekim vektörü yok{res.error.status === 404 ? '' : ` (${res.error.message})`}. Dizilerde çekimler bölüm düzeyindedir.
+          Bu yaprağın çekim vektörü yok{res.error.status === 404 ? '' : ` (${res.error.message})`}. Dizilerde çekimler
+          bölüm düzeyindedir.
         </p>
       ) : (
         <Loadable res={res} what="Çekimler" skeleton={<LoadingBlock lines={1} />}>

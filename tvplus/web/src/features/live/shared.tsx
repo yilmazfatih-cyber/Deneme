@@ -158,7 +158,11 @@ function AiringWindowBody({
   }
 
   const lock =
-    action.kind === 'locked' ? action.reason : action.kind === 'upcoming' ? action.lockReason : packageLock(airing.access)
+    action.kind === 'locked'
+      ? action.reason
+      : action.kind === 'upcoming'
+        ? action.lockReason
+        : packageLock(airing.access)
   const when = live
     ? joinDot([formatTimeRange(airing.startAt, airing.endAt), formatRemaining(airing.endAt, now)])
     : `${formatDayTime(airing.startAt, now)}–${formatClock(airing.endAt)}`
@@ -233,13 +237,7 @@ export function AiringSheet({
   const shown = target ?? last.current
   if (!shown) return null
   const body = (
-    <AiringWindowBody
-      key={shown.airing.airingId}
-      target={shown}
-      titleId={titleId}
-      onClose={onClose}
-      sheet={mobile}
-    />
+    <AiringWindowBody key={shown.airing.airingId} target={shown} titleId={titleId} onClose={onClose} sheet={mobile} />
   )
   if (mobile)
     return (

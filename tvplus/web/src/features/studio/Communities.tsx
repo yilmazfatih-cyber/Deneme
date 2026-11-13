@@ -46,7 +46,13 @@ export function CommunitiesSection(): ReactElement {
         lead="İzleyiciler yaşa ya da cinsiyete göre değil, ne izlediklerine göre kümelenir. Aynı toplulukta farklı ülkelerden izleyiciler olabilir."
         actions={
           <div className="st-inline">
-            <TextField label="k (isteğe bağlı)" inputMode="numeric" placeholder="veriden" value={k} onChange={(v) => setK(v.replace(/\D/g, ''))} />
+            <TextField
+              label="k (isteğe bağlı)"
+              inputMode="numeric"
+              placeholder="veriden"
+              value={k}
+              onChange={(v) => setK(v.replace(/\D/g, ''))}
+            />
             <Button variant="accent" size="sm" onClick={recompute} busy={action.busy} disabled={action.busy}>
               Yeniden hesapla
             </Button>
@@ -62,14 +68,21 @@ export function CommunitiesSection(): ReactElement {
         {(d) =>
           d.run === null ? (
             <Panel>
-              <p className="ui-meta">Henüz kümeleme yok. İzleme verisi geldikçe hesaplanır ya da yukarıdan başlatılabilir.</p>
+              <p className="ui-meta">
+                Henüz kümeleme yok. İzleme verisi geldikçe hesaplanır ya da yukarıdan başlatılabilir.
+              </p>
             </Panel>
           ) : (
             <>
               <RunSummary run={d.run} />
               <div className="st-communities">
                 {d.items.map((c) => (
-                  <CommunityRow key={c.id} c={c} synthetic={usesSynthetic(d.run!.sources)} max={niceMax(Math.max(...d.items.map((x) => Math.max(x.share, x.hoursShare))))} />
+                  <CommunityRow
+                    key={c.id}
+                    c={c}
+                    synthetic={usesSynthetic(d.run!.sources)}
+                    max={niceMax(Math.max(...d.items.map((x) => Math.max(x.share, x.hoursShare))))}
+                  />
                 ))}
                 {d.items.length === 0 && <p className="ui-meta">Topluluk yok.</p>}
               </div>
@@ -88,7 +101,11 @@ function RunSummary({ run }: { run: ClusteringRun }): ReactElement {
   return (
     <div className="st-grid2 st-grid2--wide-left">
       <div className="st-stats">
-        <Stat label="İzleyici" value={fmtInt(run.viewers)} note={run.unassigned ? `${fmtInt(run.unassigned)} kümelenmedi` : undefined} />
+        <Stat
+          label="İzleyici"
+          value={fmtInt(run.viewers)}
+          note={run.unassigned ? `${fmtInt(run.unassigned)} kümelenmedi` : undefined}
+        />
         <Stat label="Topluluk (k)" value={fmtInt(run.k)} />
         <Stat label="Siluet" value={fmtDec(run.silhouette, 3)} note={<SyntheticTag show={synthetic} />} />
         <Stat label="Özellik" value={fmtInt(run.featureCount)} note={`${run.iterations} yineleme`} />
@@ -102,7 +119,11 @@ function RunSummary({ run }: { run: ClusteringRun }): ReactElement {
         <Panel title="Aday k'lar" sub="Siluete göre seçildi">
           <ul className="st-kbars" aria-label="Aday küme sayıları ve siluetleri">
             {cands.map((c) => (
-              <li key={c.k} className={c.k === run.k ? 'is-on' : ''} aria-label={`k ${c.k}: siluet ${fmtDec(c.silhouette, 3)}`}>
+              <li
+                key={c.k}
+                className={c.k === run.k ? 'is-on' : ''}
+                aria-label={`k ${c.k}: siluet ${fmtDec(c.silhouette, 3)}`}
+              >
                 <span className="st-kbars__bar" style={{ height: `${((c.silhouette ?? 0) / top) * 100}%` }} />
                 <span className="st-kbars__k">{c.k}</span>
               </li>
@@ -131,10 +152,16 @@ function CommunityRow({ c, synthetic, max }: { c: TasteCommunity; synthetic: boo
         <div>
           <TwinBars a={c.share} b={c.hoursShare} aLabel="İzleyici payı" bLabel="Saat payı" max={max} />
           <p className="ui-caption">
-            {c.hoursShare > c.share * 1.1 ? 'Kişi başına ortalamadan çok izliyor.' : c.hoursShare < c.share * 0.9 ? 'Kişi başına ortalamadan az izliyor.' : 'İzleme yoğunluğu ortalamaya yakın.'}
+            {c.hoursShare > c.share * 1.1
+              ? 'Kişi başına ortalamadan çok izliyor.'
+              : c.hoursShare < c.share * 0.9
+                ? 'Kişi başına ortalamadan az izliyor.'
+                : 'İzleme yoğunluğu ortalamaya yakın.'}
           </p>
           <p className="st-h4">Cihaz</p>
-          <p className="ui-caption">{devices.map(([d, v]) => `${DEVICE_LABEL[d] ?? d} ${fmtPct(v ?? 0, 0)}`).join(' · ') || '—'}</p>
+          <p className="ui-caption">
+            {devices.map(([d, v]) => `${DEVICE_LABEL[d] ?? d} ${fmtPct(v ?? 0, 0)}`).join(' · ') || '—'}
+          </p>
           <p className="st-h4">Ülke</p>
           <p className="ui-caption">
             {countries
@@ -148,7 +175,8 @@ function CommunityRow({ c, synthetic, max }: { c: TasteCommunity; synthetic: boo
           <ul className="st-features">
             {c.topFeatures.slice(0, 8).map((f) => (
               <li key={`${f.kind}-${f.key}`}>
-                <span className="st-dim">{KIND_LABEL[f.kind]}</span> {f.name} <span className="st-num st-strong">{fmtRatio(f.lift)}</span>
+                <span className="st-dim">{KIND_LABEL[f.kind]}</span> {f.name}{' '}
+                <span className="st-num st-strong">{fmtRatio(f.lift)}</span>
               </li>
             ))}
           </ul>
@@ -157,7 +185,11 @@ function CommunityRow({ c, synthetic, max }: { c: TasteCommunity; synthetic: boo
           <p className="st-h4">Öne çıkan başlıklar</p>
           <div className="st-cards st-cards--xs">
             {c.topTitles.slice(0, 4).map((t) => (
-              <StudioTitleCard key={t.titleId} id={t.titleId} caption={`erişim ${fmtPct(t.reach, 0)} · ${fmtRatio(t.lift)}`} />
+              <StudioTitleCard
+                key={t.titleId}
+                id={t.titleId}
+                caption={`erişim ${fmtPct(t.reach, 0)} · ${fmtRatio(t.lift)}`}
+              />
             ))}
           </div>
         </div>

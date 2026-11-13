@@ -15,7 +15,11 @@ export interface TimedAiring {
 }
 
 /** Sunucu saatine göre şimdi yayında olan ve sonra gelecek `count` yayın. */
-export function nowNext<T extends TimedAiring>(airings: readonly T[], now: number, count = 2): { now: T | null; next: T[] } {
+export function nowNext<T extends TimedAiring>(
+  airings: readonly T[],
+  now: number,
+  count = 2,
+): { now: T | null; next: T[] } {
   const sorted = [...airings].sort((a, b) => Date.parse(a.startAt) - Date.parse(b.startAt))
   const seen = new Set<string>()
   const uniq = sorted.filter((a) => (seen.has(a.airingId) ? false : (seen.add(a.airingId), true)))
@@ -97,7 +101,12 @@ export interface DigitResult {
  * yazılan önekle başlayan daha uzun bir kanal numarası yoksa (ör. kanallar 1, 20–60 iken "1" → hemen 1;
  * "2" → beklenir, "21" → hemen). Baştaki sıfır yok sayılır.
  */
-export function typeDigit(entry: NumberEntry | null, digit: number, numbers: readonly number[], now: number): DigitResult {
+export function typeDigit(
+  entry: NumberEntry | null,
+  digit: number,
+  numbers: readonly number[],
+  now: number,
+): DigitResult {
   const prev = entry && now - entry.at <= NUMBER_ENTRY_MS ? entry.digits : ''
   if (prev === '' && digit === 0) return { entry: null, commit: null }
   const digits = `${prev}${digit}`

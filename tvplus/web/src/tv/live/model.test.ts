@@ -59,7 +59,7 @@ describe('süzgeç', () => {
   it('Tümü · Kanallarım · kategoriler (ilk görünme sırasıyla, tekrarsız)', () => {
     expect(liveFilters(chans).map((f) => f.label)).toEqual(['Tümü', 'Kanallarım', 'Film & Dizi', 'Haber', 'Çocuk'])
   })
-  it('kategoriye ve Kanallarım\'a göre süzer', () => {
+  it("kategoriye ve Kanallarım'a göre süzer", () => {
     const fav = (c: (typeof chans)[number]): boolean => c.fav
     expect(applyFilter(chans, 'kategori:haber', fav).map((c) => c.channelId)).toEqual([20, 24])
     expect(applyFilter(chans, 'kanallarim', fav).map((c) => c.channelId)).toEqual([1, 20])

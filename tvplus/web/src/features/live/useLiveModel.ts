@@ -151,10 +151,7 @@ export function useLiveModel(): {
   const entries = useMemo(() => channelEntries(rows), [rows])
   const heroRow = rows.find((r) => r.type === 'LIVE_HERO')
   const featured = useMemo(() => featuredEntry(heroRow, entries), [heroRow, entries])
-  const serverFavorites = useMemo(
-    () => rowEntries(rows.find((r) => r.rowId === 'live-favorites') ?? undefined),
-    [rows],
-  )
+  const serverFavorites = useMemo(() => rowEntries(rows.find((r) => r.rowId === 'live-favorites') ?? undefined), [rows])
   const favorites = favoriteEntries(serverFavorites, entries, (ch) => isFav(ch.channelId, ch.isFavorite))
   const categories = useMemo(() => categoryGroups(entries), [entries])
   const upcoming = useMemo(() => upNext(entries, now), [entries, now])

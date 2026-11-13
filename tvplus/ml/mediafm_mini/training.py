@@ -155,7 +155,7 @@ def train(train_seqs: list[Sequence], val_seqs: list[Sequence], mc: ModelConfig,
             loss.backward()
             torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
             opt.step()
-            tl += float(loss)
+            tl += float(loss.detach())
             ts += st["shot"]
             tm += st["mod"]
             nb += 1

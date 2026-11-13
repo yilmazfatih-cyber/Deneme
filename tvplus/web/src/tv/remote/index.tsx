@@ -23,6 +23,7 @@ import { isLocalHostname, keyLabel, lanOriginOf, phoneRemoteUrl, remoteKeyOf, ty
 import './remote.css'
 
 const SCREEN = 'kumanda'
+const MAX_DEVICES = 4
 
 const cx = (...c: (string | false | null | undefined)[]): string => c.filter(Boolean).join(' ')
 
@@ -32,6 +33,22 @@ interface PhoneAddress {
   url: string
   /** 'page' sayfanın kendi kökü · 'server' sunucunun bildirdiği yerel ağ kökü · 'local' yalnız bu makineden */
   source: 'page' | 'server' | 'local'
+  /** Adres bu TV'den yoklanabildi mi (yerel ağ kökü dinlenmiyorsa telefon da açamaz); bilinmiyorsa null */
+  reachable: boolean | null
+}
+
+/** Kökü yoklar: yanıt (opak da olsa) gelirse erişilebilir; bağlantı reddi / zaman aşımı → değil. */
+async function probe(origin: string): Promise<boolean> {
+  const ctrl = new AbortController()
+  const t = window.setTimeout(() => ctrl.abort(), 3000)
+  try {
+    await fetch(`${origin}/`, { mode: 'no-cors', cache: 'no-store', signal: ctrl.signal })
+    return true
+  } catch {
+    return false
+  } finally {
+    window.clearTimeout(t)
+  }
 }
 
 let resolved: Promise<PhoneAddress> | null = null
@@ -40,18 +57,19 @@ function resolveAddress(): Promise<PhoneAddress> {
   if (resolved) return resolved
   const here = window.location.origin
   if (!isLocalHostname(window.location.hostname)) {
-    resolved = Promise.resolve({ url: phoneRemoteUrl(here), source: 'page' })
+    resolved = Promise.resolve({ url: phoneRemoteUrl(here), source: 'page', reachable: true })
     return resolved
   }
   resolved = deviceClient
     .startTvLogin('Kumanda QR')
-    .then((s): PhoneAddress => {
+    .then(async (s): Promise<PhoneAddress> => {
       const lan = lanOriginOf(s.verificationUrl)
-      return lan ? { url: phoneRemoteUrl(lan), source: 'server' } : { url: phoneRemoteUrl(here), source: 'local' }
+      if (!lan) return { url: phoneRemoteUrl(here), source: 'local', reachable: false }
+      return { url: phoneRemoteUrl(lan), source: 'server', reachable: await probe(lan) }
     })
     .catch((): PhoneAddress => {
       resolved = null // sonra yeniden denensin
-      return { url: phoneRemoteUrl(here), source: 'local' }
+      return { url: phoneRemoteUrl(here), source: 'local', reachable: false }
     })
   return resolved
 }
@@ -142,7 +160,12 @@ export function TvRemote(): ReactElement {
     void resolveAddress().then((a) => {
       if (!alive) return
       setAddress(a)
-      devbus.emit('device', 'kumanda QR', { url: a.url, source: a.source })
+      devbus.emit(
+        'device',
+        'kumanda QR',
+        { url: a.url, source: a.source, reachable: a.reachable },
+        { ok: a.reachable !== false },
+      )
     })
     return () => {
       alive = false
@@ -166,7 +189,11 @@ export function TvRemote(): ReactElement {
     }
   }, [address])
 
-  const phones = state.devices.filter((d) => d.kind !== 'TV')
+  // Çevrimiçiler önce, sonra en son görülenler; ekrana sığan kadar (gizli satır odak adayı olmasın).
+  const all = state.devices
+    .filter((d) => d.kind !== 'TV')
+    .sort((a, b) => Number(b.online) - Number(a.online) || b.lastSeenAt.localeCompare(a.lastSeenAt))
+  const phones = all.slice(0, MAX_DEVICES)
 
   return (
     <TvScreen id={SCREEN} title="Telefonla Kontrol Et" defaultFocus={`${SCREEN}:tamam`} className="tvr">
@@ -198,11 +225,19 @@ export function TvRemote(): ReactElement {
             ) : (
               <p className="tv-subtle tvr-devices__empty">Henüz bağlı telefon yok.</p>
             )}
+            {all.length > phones.length && (
+              <p className="tv-subtle tvr-devices__more">ve {all.length - phones.length} cihaz daha (Ayarlar)</p>
+            )}
           </section>
 
           <div className="tvr-actions">
             <TvButton id={`${SCREEN}:tamam`} label="Tamam" icon="check" onPress={back} />
-            <TvButton id={`${SCREEN}:ayarlar`} label="Ayarlar" icon="settings" onPress={() => navigate('/tv/ayarlar')} />
+            <TvButton
+              id={`${SCREEN}:ayarlar`}
+              label="Ayarlar"
+              icon="settings"
+              onPress={() => navigate('/tv/ayarlar')}
+            />
           </div>
         </div>
 
@@ -218,6 +253,11 @@ export function TvRemote(): ReactElement {
           {address?.source === 'local' && (
             <p className="tvr-note">
               Bu TV adresi yalnız bu bilgisayarda açılıyor. Telefonda localhost yerine bilgisayarın ağ adresini yaz.
+            </p>
+          )}
+          {address?.source === 'server' && address.reachable === false && (
+            <p className="tvr-note">
+              Bu adres şu an yerel ağa açık değil. TV+ ağ adresinden yayınlanınca telefonun bağlanır.
             </p>
           )}
           <SignalLamp />

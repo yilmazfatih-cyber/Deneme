@@ -6,7 +6,13 @@
  */
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactElement } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import type { Microgenre, TaggingQueueItem, TagSheet, TagVocabulary, TitleTagging } from '../../../../shared/intelligence'
+import type {
+  Microgenre,
+  TaggingQueueItem,
+  TagSheet,
+  TagVocabulary,
+  TitleTagging,
+} from '../../../../shared/intelligence'
 import type { TagScale } from '../../../../shared/tagging-schema'
 import { Button, Switch, TextField, toast } from '../../ui'
 import { studioSend, useAction, useStudio } from './api'
@@ -27,7 +33,16 @@ import {
   STATUS_LABEL,
   TYPE_LABEL,
 } from './parts'
-import { initialForm, ratedCount, setScale, toggleFacet, toInput, validateForm, type FormIssue, type TagFormState } from './tagForm'
+import {
+  initialForm,
+  ratedCount,
+  setScale,
+  toggleFacet,
+  toInput,
+  validateForm,
+  type FormIssue,
+  type TagFormState,
+} from './tagForm'
 
 const GROUP_LABEL: Record<string, string> = {
   ADVISORY: 'İçerik uyarıları',
@@ -109,11 +124,16 @@ function Queue({ items, selected }: { items: TaggingQueueItem[]; selected: numbe
   return (
     <>
       <p className="ui-caption">
-        {items.length} başlık · Uzlaşı {counts.CONSENSUS ?? 0} · Örnek {counts.SAMPLE ?? 0} · Model önerisi {counts.MODEL ?? 0} · Etiketsiz{' '}
-        {counts.NONE ?? 0}
+        {items.length} başlık · Uzlaşı {counts.CONSENSUS ?? 0} · Örnek {counts.SAMPLE ?? 0} · Model önerisi{' '}
+        {counts.MODEL ?? 0} · Etiketsiz {counts.NONE ?? 0}
       </p>
       <div className="st-filters">
-        <select aria-label="Dayanağa göre süz" value={filter} onChange={(e) => setFilter(e.target.value as BasisFilter)} className="st-input">
+        <select
+          aria-label="Dayanağa göre süz"
+          value={filter}
+          onChange={(e) => setFilter(e.target.value as BasisFilter)}
+          className="st-input"
+        >
           {FILTERS.map((f) => (
             <option key={f.id} value={f.id}>
               {f.label}
@@ -150,8 +170,8 @@ function VocabularySummary({ v }: { v: TagVocabulary }): ReactElement {
   return (
     <div className="st-vocab">
       <p className="ui-body">
-        Kılavuz sürümü <strong>{v.version}</strong>: {v.scales.length} ölçek, {v.facets.length} yüz. Her ölçeğin altı seviyesi ve
-        her seviyenin yazılı ölçütü vardır; etiketleyici yoruma değil ölçüte bakar.
+        Kılavuz sürümü <strong>{v.version}</strong>: {v.scales.length} ölçek, {v.facets.length} yüz. Her ölçeğin altı
+        seviyesi ve her seviyenin yazılı ölçütü vardır; etiketleyici yoruma değil ölçüte bakar.
       </p>
       {(['ADVISORY', 'TONE', 'STORY', 'FORM'] as const).map((g) => (
         <Disclosure key={g} summary={`${GROUP_LABEL[g]} · ${v.scales.filter((s) => s.group === g).length} ölçek`}>
@@ -230,7 +250,10 @@ function TitleDesk({
             )}
             <TitleMicrogenres res={mg} before={mgBefore} />
           </Panel>
-          <Panel title="Fişler" sub="Örnek fişler izlenmeden doldurulmuştur; model önerisi yalnız başlangıç noktasıdır.">
+          <Panel
+            title="Fişler"
+            sub="Örnek fişler izlenmeden doldurulmuştur; model önerisi yalnız başlangıç noktasıdır."
+          >
             {approve.error && (
               <p className="st-error" role="alert">
                 {approve.error}
@@ -238,7 +261,13 @@ function TitleDesk({
             )}
             <div className="st-sheets">
               {data.sheets.map((s, i) => (
-                <SheetCard key={`${s.source}-${s.tagger ?? i}`} s={s} vocab={vocab.data} onApprove={doApprove} busy={approve.busy} />
+                <SheetCard
+                  key={`${s.source}-${s.tagger ?? i}`}
+                  s={s}
+                  vocab={vocab.data}
+                  onApprove={doApprove}
+                  busy={approve.busy}
+                />
               ))}
               {data.sheets.length === 0 && <p className="ui-meta">Bu başlıkta fiş yok.</p>}
             </div>
@@ -323,7 +352,13 @@ function Effective({ data, vocab }: { data: TitleTagging; vocab: TagVocabulary |
   )
 }
 
-function TitleMicrogenres({ res, before }: { res: ReturnType<typeof useStudio<Microgenre[]>>; before: Microgenre[] | null }): ReactElement {
+function TitleMicrogenres({
+  res,
+  before,
+}: {
+  res: ReturnType<typeof useStudio<Microgenre[]>>
+  before: Microgenre[] | null
+}): ReactElement {
   const list = res.data ?? []
   const prev = before ? new Set(before.map((m) => m.id)) : null
   const now = new Set(list.map((m) => m.id))
@@ -347,7 +382,11 @@ function TitleMicrogenres({ res, before }: { res: ReturnType<typeof useStudio<Mi
           </Chip>
         ))}
       </div>
-      {prev && <p className="ui-caption">Onaydan önceki listeyle karşılaştırıldı: yeni gelenler vurgulu, çıkanlar ayrıca gösterilir.</p>}
+      {prev && (
+        <p className="ui-caption">
+          Onaydan önceki listeyle karşılaştırıldı: yeni gelenler vurgulu, çıkanlar ayrıca gösterilir.
+        </p>
+      )}
     </div>
   )
 }
@@ -370,9 +409,12 @@ function SheetCard({
       <header className="st-sheet__head">
         <Chip tone={SHEET_SOURCE_TONE[s.source]}>{SHEET_SOURCE_LABEL[s.source]}</Chip>
         {s.tagger && <span className="st-mono">{s.tagger}</span>}
-        <Chip tone={s.status === 'APPROVED' ? 'ok' : s.status === 'SUBMITTED' ? 'accent' : 'muted'}>{STATUS_LABEL[s.status]}</Chip>
+        <Chip tone={s.status === 'APPROVED' ? 'ok' : s.status === 'SUBMITTED' ? 'accent' : 'muted'}>
+          {STATUS_LABEL[s.status]}
+        </Chip>
         <span className="st-dim">
-          {s.watched ? 'izlendi' : 'izlenmeden'} · {fmtDate(s.taggedAt)} · {rated.length} ölçek · {facetCount} yüz değeri
+          {s.watched ? 'izlendi' : 'izlenmeden'} · {fmtDate(s.taggedAt)} · {rated.length} ölçek · {facetCount} yüz
+          değeri
         </span>
         {s.source === 'TAGGER' && s.status === 'SUBMITTED' && (
           <Button variant="accent" size="sm" onClick={() => onApprove(s)} busy={busy} disabled={busy}>
@@ -383,7 +425,8 @@ function SheetCard({
       {s.notes && <p className="ui-meta st-sheet__notes">{s.notes}</p>}
       <Disclosure summary="Fişin değerleri">
         <p className="ui-caption">
-          {rated.map(([k, v]) => `${vocab?.scales.find((x) => x.key === k)?.name ?? k} ${v}`).join(' · ') || 'Ölçek yok'}
+          {rated.map(([k, v]) => `${vocab?.scales.find((x) => x.key === k)?.name ?? k} ${v}`).join(' · ') ||
+            'Ölçek yok'}
         </p>
         <p className="ui-caption">
           {Object.entries(s.facets)
@@ -434,7 +477,11 @@ function TagFormPanel({
     if (found.length) return
     writeTagger(tagger)
     const r = await action.run(() =>
-      studioSend<TagSheet>('PUT', `/tagging/titles/${titleId}/sheets/${encodeURIComponent(tagger)}`, toInput(form, status)),
+      studioSend<TagSheet>(
+        'PUT',
+        `/tagging/titles/${titleId}/sheets/${encodeURIComponent(tagger)}`,
+        toInput(form, status),
+      ),
     )
     if (r) {
       toast(status === 'DRAFT' ? 'Taslak kaydedildi.' : 'Fiş gönderildi; onay bekliyor.', { kind: 'success' })
@@ -454,7 +501,11 @@ function TagFormPanel({
       }
       actions={
         modelSheet && (
-          <Button variant="ghost" size="sm" onClick={() => setForm({ ...initialForm(vocab, modelSheet), watched: form.watched, notes: form.notes })}>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setForm({ ...initialForm(vocab, modelSheet), watched: form.watched, notes: form.notes })}
+          >
             Model önerisinden doldur
           </Button>
         )
@@ -629,7 +680,9 @@ function ScaleInput({
               {level.value} · {level.label}:
             </strong>{' '}
             {level.description}
-            {scale.advisory && <span className="st-dim"> · önerilen en düşük işaret {scale.advisory.ratings[level.value]}</span>}
+            {scale.advisory && (
+              <span className="st-dim"> · önerilen en düşük işaret {scale.advisory.ratings[level.value]}</span>
+            )}
           </>
         ) : (
           <span className="st-dim">Değerlendirilmedi</span>

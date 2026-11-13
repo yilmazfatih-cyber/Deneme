@@ -177,7 +177,6 @@
 
 /* Tanıtım 16:9 kutuyu doldurur (sinemaskop kaynakta siyah bant kalmaz) */
 .pv-media__clip video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  /* oynatıcı öğeye satır içi `contain` yazar */
+  object-fit: cover !important;
 }

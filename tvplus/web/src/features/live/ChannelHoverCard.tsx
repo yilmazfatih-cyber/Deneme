@@ -21,7 +21,15 @@ import {
   RoundButton,
   usePrefersReducedMotion,
 } from '../../ui'
-import { castChannel, rememberChannel, setReminder, toggleFavorite, useCastAvailable, useFavorite, useReminder } from './actions'
+import {
+  castChannel,
+  rememberChannel,
+  setReminder,
+  toggleFavorite,
+  useCastAvailable,
+  useFavorite,
+  useReminder,
+} from './actions'
 import { liveWatchPath, lockText } from './airing'
 import { placeHoverCard, type HoverPlacement } from './hoverPlacement'
 import { currentAiring, previewable, upcomingAiring, type ChannelEntry } from './liveRows'
@@ -178,7 +186,9 @@ export function ChannelHoverCard({
             <RoundButton
               icon="cast"
               label="TV'de İzle"
-              onClick={() => castChannel({ channelId: ch.channelId, name: ch.name, programme: air?.title }, 'canli', tctx)}
+              onClick={() =>
+                castChannel({ channelId: ch.channelId, name: ch.name, programme: air?.title }, 'canli', tctx)
+              }
             />
           )}
           <span className="lv-hc__spacer" />

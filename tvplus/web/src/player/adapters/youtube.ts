@@ -337,14 +337,26 @@ export class YouTubeAdapter implements PlayerAdapter {
   }
 
   play(): Promise<void> {
-    this.player?.playVideo()
+    try {
+      this.player?.playVideo()
+    } catch {
+      /* oynatıcı henüz hazır değil */
+    }
     return Promise.resolve()
   }
   pause(): void {
-    this.player?.pauseVideo()
+    try {
+      this.player?.pauseVideo()
+    } catch {
+      /* oynatıcı henüz hazır değil */
+    }
   }
   seek(sec: number): void {
-    this.player?.seekTo(Math.max(0, sec), true)
+    try {
+      this.player?.seekTo(Math.max(0, sec), true)
+    } catch {
+      /* oynatıcı henüz hazır değil */
+    }
   }
   position(): number {
     try {
@@ -362,18 +374,35 @@ export class YouTubeAdapter implements PlayerAdapter {
   state(): PlaybackState {
     return this.st
   }
+  // Not: IFrame oynatıcısı "hazır" olana dek nesnede bu yöntemler bulunmaz; çağrılar o yüzden korumalıdır.
   setVolume(v: number): void {
-    this.player?.setVolume(Math.round(Math.max(0, Math.min(1, v)) * 100))
+    try {
+      this.player?.setVolume(Math.round(Math.max(0, Math.min(1, v)) * 100))
+    } catch {
+      /* oynatıcı henüz hazır değil */
+    }
   }
   volume(): number {
-    return (this.player?.getVolume() ?? 100) / 100
+    try {
+      return (this.player?.getVolume() ?? 100) / 100
+    } catch {
+      return 1
+    }
   }
   setMuted(m: boolean): void {
-    if (m) this.player?.mute()
-    else this.player?.unMute()
+    try {
+      if (m) this.player?.mute()
+      else this.player?.unMute()
+    } catch {
+      /* oynatıcı henüz hazır değil */
+    }
   }
   muted(): boolean {
-    return this.player?.isMuted() ?? this.opts.muted
+    try {
+      return this.player?.isMuted() ?? this.opts.muted
+    } catch {
+      return this.opts.muted
+    }
   }
   audioOptions(): AudioOption[] {
     return []

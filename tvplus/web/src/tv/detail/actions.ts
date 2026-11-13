@@ -20,7 +20,10 @@ function listIdsOf(graph: JsonGraph, contexts: readonly string[]): string[] {
   if (!lists || typeof lists !== 'object' || '$type' in lists) return []
   const out: string[] = []
   for (const [id, node] of Object.entries(lists)) {
-    const summary = (node as Record<string, unknown> | null)?.summary as { $type?: string; value?: { context?: string } }
+    const summary = (node as Record<string, unknown> | null)?.summary as {
+      $type?: string
+      value?: { context?: string }
+    }
     if (summary?.$type === 'atom' && summary.value?.context && contexts.includes(summary.value.context)) out.push(id)
   }
   return out
@@ -60,9 +63,7 @@ export function useMyListToggle(videoId: number, initial: boolean, tctx: string 
     busyRef.current = true
     setBusy(true)
     setOn(next)
-    const op = next
-      ? gql('AddToPlaylist', { videoId, tctx: tctx ?? null })
-      : gql('RemoveFromPlaylist', { videoId })
+    const op = next ? gql('AddToPlaylist', { videoId, tctx: tctx ?? null }) : gql('RemoveFromPlaylist', { videoId })
     op.then(
       () => {
         logEvent('playlist', { videoId, action: next ? 'ADD_TO_PLAYLIST' : 'DELETE_FROM_PLAYLIST', from: 'tv' }, tctx)

@@ -10,13 +10,17 @@ describe('klavye düzeni', () => {
   it('6 sütun; Türk harfleri, rakamlar, boşluk · sil · temizle', () => {
     expect(COLUMNS).toBe(6)
     const all = LAYOUT.flat()
-    for (const ch of [...'abcçdefgğhıijklmnoöprsştuüvyz', ...'qwx', ...'0123456789']) expect(findKey(LAYOUT, id(ch))).not.toBeNull()
+    for (const ch of [...'abcçdefgğhıijklmnoöprsştuüvyz', ...'qwx', ...'0123456789'])
+      expect(findKey(LAYOUT, id(ch))).not.toBeNull()
     expect(LETTERS).toHaveLength(32)
     expect(all.map((k) => k.action).filter((a) => a !== 'char')).toEqual(['space', 'delete', 'clear'])
     for (const row of LAYOUT) expect(row.reduce((n, k) => n + k.span, 0)).toBeLessThanOrEqual(6)
     expect(new Set(all.map((k) => k.id)).size).toBe(all.length)
     // Alfabe sırası: ç c'den, ğ g'den, ı i'den önce gelir
-    const order = all.filter((k) => k.action === 'char').map((k) => k.char).join('')
+    const order = all
+      .filter((k) => k.action === 'char')
+      .map((k) => k.char)
+      .join('')
     expect(order.startsWith('abcçdefgğhıij')).toBe(true)
     expect(order.endsWith('1234567890')).toBe(true)
   })

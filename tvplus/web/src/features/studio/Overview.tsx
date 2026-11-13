@@ -77,7 +77,12 @@ export function OverviewSection(): ReactElement {
           <LoadingBlock lines={2} />
         )
       ) : (
-        <Pipeline ov={ov.data} model={model.data ?? null} modelError={model.error?.message ?? null} modelLoading={model.loading} />
+        <Pipeline
+          ov={ov.data}
+          model={model.data ?? null}
+          modelError={model.error?.message ?? null}
+          modelLoading={model.loading}
+        />
       )}
     </>
   )
@@ -109,10 +114,15 @@ function Pipeline({
   return (
     <div className="st-pipeline" role="list" aria-label="İçerik zekâsı hattı">
       <div role="listitem" className="st-pipeline__cell" style={{ gridColumn: 1, gridRow: 1 }}>
-        <Node title="Etiketler" to="/studyo/etiketleme" value={fmtInt(tagged)} unit={`/ ${fmtInt(ov.catalog.titles)} başlık`}>
+        <Node
+          title="Etiketler"
+          to="/studyo/etiketleme"
+          value={fmtInt(tagged)}
+          unit={`/ ${fmtInt(ov.catalog.titles)} başlık`}
+        >
           <span>
-            Uzlaşı {fmtInt(t.consensus)} · <Chip tone="sample">Örnek</Chip> {fmtInt(t.sampleOnly)} · <Chip tone="model">Model önerisi</Chip>{' '}
-            {fmtInt(t.modelOnly)}
+            Uzlaşı {fmtInt(t.consensus)} · <Chip tone="sample">Örnek</Chip> {fmtInt(t.sampleOnly)} ·{' '}
+            <Chip tone="model">Model önerisi</Chip> {fmtInt(t.modelOnly)}
           </span>
           <span>
             Etiketsiz {fmtInt(t.untagged)} · insan fişi {fmtInt(t.humanSheets)}
@@ -122,7 +132,12 @@ function Pipeline({
       </div>
       <Arrow col={2} row={1} />
       <div role="listitem" className="st-pipeline__cell" style={{ gridColumn: 3, gridRow: 1 }}>
-        <Node title="Mikro türler" to="/studyo/mikro-turler" value={mg ? fmtInt(mg.total) : '—'} state={mg ? 'on' : 'off'}>
+        <Node
+          title="Mikro türler"
+          to="/studyo/mikro-turler"
+          value={mg ? fmtInt(mg.total) : '—'}
+          state={mg ? 'on' : 'off'}
+        >
           {mg ? (
             <>
               <span>
@@ -137,10 +152,17 @@ function Pipeline({
       </div>
       <Arrow col={4} row={1} />
       <div role="listitem" className="st-pipeline__cell" style={{ gridColumn: 5, gridRow: 1 }}>
-        <Node title="İzleme verisi" to="/studyo/kaynaklar" value={fmtInt(events)} unit="olay" state={active.length ? 'on' : 'off'}>
+        <Node
+          title="İzleme verisi"
+          to="/studyo/kaynaklar"
+          value={fmtInt(events)}
+          unit="olay"
+          state={active.length ? 'on' : 'off'}
+        >
           {ov.sources.map((s) => (
             <span key={s.source} className={s.active ? '' : 'st-dim'}>
-              {SOURCE_LABEL[s.source]}: {fmtInt(s.events)} olay · {fmtInt(s.viewers)} izleyici {s.active ? '· etkin' : '· etkin değil'}
+              {SOURCE_LABEL[s.source]}: {fmtInt(s.events)} olay · {fmtInt(s.viewers)} izleyici{' '}
+              {s.active ? '· etkin' : '· etkin değil'}
             </span>
           ))}
           {synthetic && (
@@ -152,7 +174,13 @@ function Pipeline({
       </div>
       <Arrow col={6} row={1} />
       <div role="listitem" className="st-pipeline__cell" style={{ gridColumn: 7, gridRow: 1 }}>
-        <Node title="Zevk toplulukları" to="/studyo/topluluklar" value={au ? fmtInt(au.k) : '—'} unit="topluluk" state={au ? 'on' : 'off'}>
+        <Node
+          title="Zevk toplulukları"
+          to="/studyo/topluluklar"
+          value={au ? fmtInt(au.k) : '—'}
+          unit="topluluk"
+          state={au ? 'on' : 'off'}
+        >
           {au ? (
             <>
               <span>{fmtInt(au.viewers)} izleyici kümelendi</span>
@@ -188,13 +216,29 @@ function Pipeline({
         </Node>
       </div>
       <div role="listitem" className="st-pipeline__cell" style={{ gridColumn: 5, gridRow: 2 }}>
-        <Node title="Çekimler" to="/studyo/gomme" value={em ? fmtInt(em.shots) : '—'} unit="çekim" state={em ? 'on' : 'off'}>
-          {em ? <span>Sahne algılanan {fmtInt(em.sceneDetected)} video; kalanlar anahtar karelerle</span> : <span>Servis yanıt vermedi</span>}
+        <Node
+          title="Çekimler"
+          to="/studyo/gomme"
+          value={em ? fmtInt(em.shots) : '—'}
+          unit="çekim"
+          state={em ? 'on' : 'off'}
+        >
+          {em ? (
+            <span>Sahne algılanan {fmtInt(em.sceneDetected)} video; kalanlar anahtar karelerle</span>
+          ) : (
+            <span>Servis yanıt vermedi</span>
+          )}
         </Node>
       </div>
       <Arrow col={6} row={2} />
       <div role="listitem" className="st-pipeline__cell" style={{ gridColumn: 7, gridRow: 2 }}>
-        <Node title="Gömme" to="/studyo/gomme" value={em ? fmtInt(em.titles) : '—'} unit="başlık vektörü" state={em ? 'on' : 'off'}>
+        <Node
+          title="Gömme"
+          to="/studyo/gomme"
+          value={em ? fmtInt(em.titles) : '—'}
+          unit="başlık vektörü"
+          state={em ? 'on' : 'off'}
+        >
           {em && kind ? (
             <>
               <span>

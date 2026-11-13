@@ -140,14 +140,20 @@ describe('mapRow', () => {
       caption: 'S1:B3 · 23 dk kaldı',
       play: { viewableId: 'Video:80047003', positionSec: 600 },
     })
-    expect(row.items[1]).toMatchObject({ caption: '1 sa 38 dk kaldı', play: { viewableId: 'Video:5', positionSec: 100 } })
+    expect(row.items[1]).toMatchObject({
+      caption: '1 sa 38 dk kaldı',
+      play: { viewableId: 'Video:5', positionSec: 100 },
+    })
   })
 
   it('kilitli başlık oynatılmaz, rozet gösterilmez; gelmemiş öğe null; tekrar eden anahtar tekilleşir', () => {
     const row = mapRow(
       {
         summary: summary('genre', 4),
-        '0': node(1, { access: { state: 'UPSELL', reasonText: 'Sinema Paketi ile' }, badge: { kind: 'NEW', text: 'Yeni' } }),
+        '0': node(1, {
+          access: { state: 'UPSELL', reasonText: 'Sinema Paketi ile' },
+          badge: { kind: 'NEW', text: 'Yeni' },
+        }),
         '2': node(1),
       } as RowNode,
       3,
@@ -160,20 +166,32 @@ describe('mapRow', () => {
   })
 
   it('becauseYouWatched gerekçesi taşınır', () => {
-    const row = mapRow({ summary: summary('becauseYouWatched', 1, { reason: 'Uzay Belgeselleri' }), '0': node(1) } as RowNode, 0, 10)!
+    const row = mapRow(
+      { summary: summary('becauseYouWatched', 1, { reason: 'Uzay Belgeselleri' }), '0': node(1) } as RowNode,
+      0,
+      10,
+    )!
     expect(row.reason).toBe('Uzay Belgeselleri')
   })
 })
 
 describe('üst alan', () => {
   const card = mapRow(
-    { summary: summary('microgenre', 1), '0': { summary: { id: 9, type: 'show', isPlayable: true }, title: 'Dizi', storyArt: { url: '/s' } } } as RowNode,
+    {
+      summary: summary('microgenre', 1),
+      '0': { summary: { id: 9, type: 'show', isPlayable: true }, title: 'Dizi', storyArt: { url: '/s' } },
+    } as RowNode,
     0,
     1,
   )!.items[0]!
 
   it('yapraklar gelmeden kartla, gelince tam bilgiyle', () => {
-    expect(heroOf(card, undefined, undefined)).toMatchObject({ title: 'Dizi', eyebrow: 'DİZİ', match: null, artUrl: '/s' })
+    expect(heroOf(card, undefined, undefined)).toMatchObject({
+      title: 'Dizi',
+      eyebrow: 'DİZİ',
+      match: null,
+      artUrl: '/s',
+    })
     const h = heroOf(
       card,
       {
@@ -216,7 +234,13 @@ describe('yardımcılar', () => {
     expect(airingProgress(start, end, Date.parse('2026-01-01T21:00:00Z'))).toBe(0.5)
     expect(airingProgress(end, start, 0)).toBeNull()
     const ch = mapChannel(
-      { channelId: 3, unifiedEntityId: 'Channel:3', name: 'TRT 1', number: 1, now: { title: 'Haber', startAt: start, endAt: end } },
+      {
+        channelId: 3,
+        unifiedEntityId: 'Channel:3',
+        name: 'TRT 1',
+        number: 1,
+        now: { title: 'Haber', startAt: start, endAt: end },
+      },
       Date.parse('2026-01-01T20:30:00Z'),
     )
     expect(ch).toMatchObject({ key: 'kanal-3', program: 'Haber', progress: 0.25, locked: false })

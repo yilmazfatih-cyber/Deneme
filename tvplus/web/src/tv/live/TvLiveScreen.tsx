@@ -532,7 +532,9 @@ export function TvLive(): ReactElement {
             onToggleFavorite={() => live.toggleFavorite(selected)}
             onGuide={() => openGuide(selected)}
             onLeft={() =>
-              engine.focus(channelFocusId(selected.channelId)) || engine.focusScope(LIST_SCOPE) || engine.focusScope(FILTER_SCOPE)
+              engine.focus(channelFocusId(selected.channelId)) ||
+              engine.focusScope(LIST_SCOPE) ||
+              engine.focusScope(FILTER_SCOPE)
             }
           />
         ) : (

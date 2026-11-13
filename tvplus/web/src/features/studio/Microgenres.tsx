@@ -54,7 +54,11 @@ export function MicrogenresSection(): ReactElement {
             <Stat label="Görünmeyen" value={fmtInt(d.stats.hidden)} />
             <Stat label="Kapsanan başlık" value={fmtInt(d.stats.coveredTitles)} />
             <Stat label="Tanımlanabilir alan" value={fmtInt(d.stats.possibleDefinitions)} note="kuramsal birleşim" />
-            <Stat label="Üretildi" value={<span className="st-small">{fmtDateTime(d.stats.generatedAt)}</span>} note={`kılavuz ${d.stats.rubricVersion}`} />
+            <Stat
+              label="Üretildi"
+              value={<span className="st-small">{fmtDateTime(d.stats.generatedAt)}</span>}
+              note={`kılavuz ${d.stats.rubricVersion}`}
+            />
           </div>
         )}
       </Loadable>
@@ -97,22 +101,33 @@ export function MicrogenresSection(): ReactElement {
               value={minSize}
               onChange={(v) => (setMinSize(v.replace(/\D/g, '')), reset())}
             />
-            <TextField label="Ad içinde ara" value={q} onChange={(v) => (setQ(v), reset())} className="st-filters__wide" />
+            <TextField
+              label="Ad içinde ara"
+              value={q}
+              onChange={(v) => (setQ(v), reset())}
+              className="st-filters__wide"
+            />
           </div>
           <Loadable res={list} what="Mikro türler" skeleton={<LoadingBlock lines={6} block={false} />}>
             {(d) => (
               <>
                 <p className="ui-caption" role="status">
-                  {fmtInt(d.total)} sonuç{d.total > PAGE ? ` · ${page * PAGE + 1}–${Math.min(d.total, (page + 1) * PAGE)}` : ''}
+                  {fmtInt(d.total)} sonuç
+                  {d.total > PAGE ? ` · ${page * PAGE + 1}–${Math.min(d.total, (page + 1) * PAGE)}` : ''}
                 </p>
                 <ul className="st-mglist">
                   {d.items.map((m) => (
                     <li key={m.id}>
-                      <Link to={`/studyo/mikro-turler/${m.id}`} className={m.id === id ? 'st-mgitem is-on' : 'st-mgitem'}>
+                      <Link
+                        to={`/studyo/mikro-turler/${m.id}`}
+                        className={m.id === id ? 'st-mgitem is-on' : 'st-mgitem'}
+                      >
                         <span className="st-mgitem__name">{m.name}</span>
                         <span className="st-mgitem__meta">
                           <span className="st-num">{m.size} başlık</span>
-                          <Chip tone={m.layer === 'VISIBLE' ? 'accent' : 'muted'}>{m.layer === 'VISIBLE' ? 'Görünen' : 'Görünmeyen'}</Chip>
+                          <Chip tone={m.layer === 'VISIBLE' ? 'accent' : 'muted'}>
+                            {m.layer === 'VISIBLE' ? 'Görünen' : 'Görünmeyen'}
+                          </Chip>
                           {m.definition.slots.map((s) => (
                             <Chip key={`${s.slot}-${s.key}`}>{SLOT_LABEL[s.slot] ?? s.slot}</Chip>
                           ))}
@@ -127,7 +142,12 @@ export function MicrogenresSection(): ReactElement {
                     <Button variant="secondary" size="sm" disabled={page === 0} onClick={() => setPage((p) => p - 1)}>
                       Önceki
                     </Button>
-                    <Button variant="secondary" size="sm" disabled={(page + 1) * PAGE >= d.total} onClick={() => setPage((p) => p + 1)}>
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      disabled={(page + 1) * PAGE >= d.total}
+                      onClick={() => setPage((p) => p + 1)}
+                    >
                       Sonraki
                     </Button>
                   </div>
@@ -137,7 +157,13 @@ export function MicrogenresSection(): ReactElement {
           </Loadable>
         </Panel>
         <div className="st-split__main">
-          {id ? <MicrogenreDetail id={id} /> : <Panel><p className="ui-meta">Listeden bir mikro tür seçin.</p></Panel>}
+          {id ? (
+            <MicrogenreDetail id={id} />
+          ) : (
+            <Panel>
+              <p className="ui-meta">Listeden bir mikro tür seçin.</p>
+            </Panel>
+          )}
           <ByTitle />
         </div>
       </div>
@@ -153,13 +179,19 @@ function MicrogenreDetail({ id }: { id: string }): ReactElement {
         <Panel
           title={m.name}
           sub={<span className="st-mono">{m.id}</span>}
-          actions={<Chip tone={m.layer === 'VISIBLE' ? 'accent' : 'muted'}>{m.layer === 'VISIBLE' ? 'Görünen katman' : 'Görünmeyen katman'}</Chip>}
+          actions={
+            <Chip tone={m.layer === 'VISIBLE' ? 'accent' : 'muted'}>
+              {m.layer === 'VISIBLE' ? 'Görünen katman' : 'Görünmeyen katman'}
+            </Chip>
+          }
         >
           <dl className="st-dl">
             <dt>Çekirdek tür</dt>
             <dd>
               {genreName(m.definition.core)}
-              {m.definition.type && <span className="st-dim"> · yalnız {TYPE_LABEL[m.definition.type].toLocaleLowerCase('tr')}</span>}
+              {m.definition.type && (
+                <span className="st-dim"> · yalnız {TYPE_LABEL[m.definition.type].toLocaleLowerCase('tr')}</span>
+              )}
             </dd>
             <dt>Yuvalar</dt>
             <dd className="st-chips">
@@ -218,11 +250,17 @@ function ByTitle(): ReactElement {
                   .sort((a, b) => b.specificity - a.specificity || a.size - b.size)
                   .map((m) => (
                     <li key={m.id}>
-                      <button type="button" className="st-mgitem" onClick={() => navigate(`/studyo/mikro-turler/${m.id}`)}>
+                      <button
+                        type="button"
+                        className="st-mgitem"
+                        onClick={() => navigate(`/studyo/mikro-turler/${m.id}`)}
+                      >
                         <span className="st-mgitem__name">{m.name}</span>
                         <span className="st-mgitem__meta">
                           <span className="st-num">{m.size} başlık</span>
-                          <Chip tone={m.layer === 'VISIBLE' ? 'accent' : 'muted'}>{m.layer === 'VISIBLE' ? 'Görünen' : 'Görünmeyen'}</Chip>
+                          <Chip tone={m.layer === 'VISIBLE' ? 'accent' : 'muted'}>
+                            {m.layer === 'VISIBLE' ? 'Görünen' : 'Görünmeyen'}
+                          </Chip>
                         </span>
                       </button>
                     </li>

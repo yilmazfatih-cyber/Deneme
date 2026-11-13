@@ -291,8 +291,7 @@ export function loadModel(dir: string): PredictionModel | null {
     gram: f64('gram'),
     ranker: meta.ranker,
     adjust: meta.adjust,
-    communities:
-      meta.communityIds && lift instanceof Float32Array ? { ids: meta.communityIds, lift } : null,
+    communities: meta.communityIds && lift instanceof Float32Array ? { ids: meta.communityIds, lift } : null,
     contentSignals: meta.contentSignals,
     sources: meta.sources,
     synthetic: meta.synthetic,

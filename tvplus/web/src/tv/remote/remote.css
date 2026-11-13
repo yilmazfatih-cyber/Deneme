@@ -178,3 +178,7 @@
   background: var(--tv-accent);
   box-shadow: 0 0 1.2rem var(--tv-accent);
 }
+.tvr-devices__more {
+  margin-top: 0.8rem;
+  font-size: 1.3rem;
+}

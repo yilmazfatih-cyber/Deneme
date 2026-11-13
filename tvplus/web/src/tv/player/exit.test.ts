@@ -1,7 +1,13 @@
 import { describe, expect, it } from 'vitest'
 import { castFromEvent, endedExit, fallbackExit, matchCast, resolveExit, type ExitInput } from './exit'
 
-const base: ExitInput = { viewableId: 'Video:80010001', cast: false, continued: null, originScreen: null, canGoBack: false }
+const base: ExitInput = {
+  viewableId: 'Video:80010001',
+  cast: false,
+  continued: null,
+  originScreen: null,
+  canGoBack: false,
+}
 
 describe('çıkış hedefi', () => {
   it('yansıtmayla açıldıysa Ana Sayfa', () => {
@@ -34,16 +40,16 @@ describe('çıkış hedefi', () => {
 
 describe('bitişte', () => {
   it('film detayına döner; detaydan gelindiyse geçmişte geri', () => {
-    expect(
-      endedExit({ typename: 'Movie', videoId: 5, plan: { kind: 'history' }, originScreen: 'detay-5' }),
-    ).toEqual({ kind: 'history' })
+    expect(endedExit({ typename: 'Movie', videoId: 5, plan: { kind: 'history' }, originScreen: 'detay-5' })).toEqual({
+      kind: 'history',
+    })
     expect(endedExit({ typename: 'Movie', videoId: 5, plan: { kind: 'history' }, originScreen: 'ana' })).toEqual({
       kind: 'path',
       path: '/tv/baslik/5',
     })
-    expect(endedExit({ typename: 'Movie', videoId: 5, plan: { kind: 'path', path: '/tv' }, originScreen: null })).toEqual(
-      { kind: 'path', path: '/tv/baslik/5' },
-    )
+    expect(
+      endedExit({ typename: 'Movie', videoId: 5, plan: { kind: 'path', path: '/tv' }, originScreen: null }),
+    ).toEqual({ kind: 'path', path: '/tv/baslik/5' })
   })
   it('bölüm ve kanal oynatıcıya bırakılır', () => {
     expect(endedExit({ typename: 'Episode', videoId: 7, plan: { kind: 'history' }, originScreen: null })).toBeNull()

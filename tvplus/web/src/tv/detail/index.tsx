@@ -181,7 +181,12 @@ function DetailBody({
       onPress: () => navigate(episodesPath(video.videoId)),
     })
   if (trailer)
-    actions.push({ id: 'detay:fragman', label: 'Fragman', icon: 'movies', onPress: () => play(trailer, null, 'trailer') })
+    actions.push({
+      id: 'detay:fragman',
+      label: 'Fragman',
+      icon: 'movies',
+      onPress: () => play(trailer, null, 'trailer'),
+    })
   actions.push({
     id: 'detay:listem',
     label: myList.on ? 'Listemde' : 'Listeme Ekle',
@@ -399,7 +404,13 @@ function EpisodesBody({
   const play = (ep: EpisodeData): void => {
     const target = episodePlay(ep)
     if (!target) return
-    const t = formatTctx({ row: 0, rank: ep.number - 1, rowId: `bolumler_${showId}`, trackId: 0, entityId: ep.unifiedEntityId })
+    const t = formatTctx({
+      row: 0,
+      rank: ep.number - 1,
+      rowId: `bolumler_${showId}`,
+      trackId: 0,
+      entityId: ep.unifiedEntityId,
+    })
     logEvent('click', { videoId: ep.videoId, showId, action: 'play', from: 'tv-episodes' }, t)
     logEvent('playback.intent', { videoId: ep.videoId, viewableId: target.viewableId, from: 'tv-episodes' }, t)
     navigate(watchPath(target.viewableId, { positionSec: target.positionSec, tctx: t }))
@@ -485,7 +496,15 @@ function EpisodeList({
   )
 }
 
-function EpisodeItem({ ep, autoFocus, onPlay }: { ep: EpisodeData; autoFocus: boolean; onPlay: () => void }): ReactElement {
+function EpisodeItem({
+  ep,
+  autoFocus,
+  onPlay,
+}: {
+  ep: EpisodeData
+  autoFocus: boolean
+  onPlay: () => void
+}): ReactElement {
   const { ref, focused } = useFocusable<HTMLDivElement>({ id: episodeFocusId(ep.videoId), onEnter: onPlay, autoFocus })
   const locked = ep.access.state !== 'PLAYABLE'
   const runtime = durationText(ep.runtimeSec ?? ep.bookmark?.runtimeSec) ?? ep.displayRuntime

@@ -259,7 +259,10 @@ export function TvSearch(): ReactElement {
             <span className="tvs-box__caret" aria-hidden="true" />
           </div>
           <Keyboard act={act} lastKey={lastKey} />
-          <Predictions items={predictions.map((p) => p.text)} onPick={(text) => act({ type: 'set', text, from: 'prediction' })} />
+          <Predictions
+            items={predictions.map((p) => p.text)}
+            onPick={(text) => act({ type: 'set', text, from: 'prediction' })}
+          />
           {phoneOnline && (
             <p className="tvs-hint">
               <TvIcon name="phone" size={1.6} />
@@ -379,12 +382,7 @@ function Predictions({ items, onPick }: { items: string[]; onPick: (text: string
 function PredictionItem({ text, onPick }: { text: string; onPick: () => void }): ReactElement {
   const { ref, focused } = useFocusable<HTMLDivElement>({ id: `ara:tahmin:${text}`, onEnter: onPick })
   return (
-    <div
-      ref={ref}
-      role="listitem"
-      aria-label={`Şunu ara: ${text}`}
-      className={cx('tvs-pred', focused && 'is-focused')}
-    >
+    <div ref={ref} role="listitem" aria-label={`Şunu ara: ${text}`} className={cx('tvs-pred', focused && 'is-focused')}>
       <TvIcon name="search" size={1.4} />
       <span>{text}</span>
     </div>

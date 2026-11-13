@@ -469,8 +469,14 @@
 }
 .lv-mhero__actions > .ui-btn {
   min-width: 0;
-  padding-left: 8px;
-  padding-right: 8px;
+  gap: 6px;
+  padding-left: 6px;
+  padding-right: 6px;
+  font-size: 15px;
+}
+.lv-mhero__actions .ui-btn__icon {
+  width: 20px;
+  height: 20px;
 }
 .lv-mhero__sample {
   align-self: flex-start;

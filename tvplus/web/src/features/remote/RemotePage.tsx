@@ -69,7 +69,8 @@ export default function RemotePage(): ReactElement {
   const tvs = useMemo(() => pickerDevices(state.devices), [state.devices])
   useCastDeepLink(target)
 
-  if (state.connection !== 'idle' && tvs.length === 0) {
+  // Çevrimiçi TV yoksa ve seçili hedef de yoksa: bağlanma yolu (çevrimdışı hedef varsa kumanda uyarıyla kalır).
+  if (state.connection !== 'idle' && !target && !tvs.some((d) => d.online)) {
     return (
       <div className="rm-page rm-page--empty">
         <EmptyState
@@ -102,7 +103,7 @@ export default function RemotePage(): ReactElement {
         <div className="rm-choose">
           <p className="rm-note">Kumanda etmek istediğin TV'yi seç.</p>
           {tvs.map((d) => (
-            <DeviceChoice key={d.deviceId} device={d} onSelect={() => setTargetDevice(d)} />
+            <DeviceChoice key={d.deviceId} device={d} disabled={!d.online} onSelect={() => setTargetDevice(d)} />
           ))}
         </div>
       ) : (
@@ -222,6 +223,8 @@ function Remote({ target }: { target: DeviceInfo }): ReactElement {
 
       {playing ? <NowPlayingPanel target={target} onKeypad={showKeypad ? () => setKeypad(true) : null} /> : null}
 
+      {typing ? <TypeToTv deviceId={id} onClose={() => setTyping(false)} autoFocus={screen !== 'search'} /> : null}
+
       <div className="rm-modes" role="radiogroup" aria-label="Yön denetimi">
         {(
           [
@@ -263,9 +266,7 @@ function Remote({ target }: { target: DeviceInfo }): ReactElement {
         )}
       </div>
 
-      {typing ? <TypeToTv deviceId={id} onClose={() => setTyping(false)} autoFocus={screen !== 'search'} /> : null}
-
-      {showKeypad || live ? (
+      {showKeypad && !playing ? (
         <div className="rm-row rm-row--channels" aria-label="Kanal">
           <WideKey label="Kanal −" icon="chevronDown" onPress={() => repeater.tap('CHANNEL_DOWN')} />
           <WideKey label="Kanal +" icon="chevronUp" onPress={() => repeater.tap('CHANNEL_UP')} />
@@ -339,7 +340,12 @@ function NowPlayingPanel({
       {np.live ? null : <Scrubber target={target} np={np} now={now} />}
       <div className="rm-transport">
         {np.live ? (
-          <RoundKey icon="chevronDown" label="Kanal −" onPress={() => void sendKey(target.deviceId, 'CHANNEL_DOWN')} />
+          <RoundKey
+            icon="chevronDown"
+            label="Kanal −"
+            caption="Kanal"
+            onPress={() => void sendKey(target.deviceId, 'CHANNEL_DOWN')}
+          />
         ) : (
           <RoundKey icon="back10" label="10 saniye geri" onPress={() => seekBy(target, -10)} />
         )}
@@ -355,7 +361,12 @@ function NowPlayingPanel({
           <Icon name={np.paused ? 'play' : 'pause'} size={34} />
         </button>
         {np.live ? (
-          <RoundKey icon="chevronUp" label="Kanal +" onPress={() => void sendKey(target.deviceId, 'CHANNEL_UP')} />
+          <RoundKey
+            icon="chevronUp"
+            label="Kanal +"
+            caption="Kanal"
+            onPress={() => void sendKey(target.deviceId, 'CHANNEL_UP')}
+          />
         ) : (
           <RoundKey icon="forward10" label="10 saniye ileri" onPress={() => seekBy(target, 10)} />
         )}
@@ -402,11 +413,22 @@ function NowPlayingPanel({
   )
 }
 
-function RoundKey({ icon, label, onPress }: { icon: IconName; label: string; onPress: () => void }): ReactElement {
+function RoundKey({
+  icon,
+  label,
+  caption,
+  onPress,
+}: {
+  icon: IconName
+  label: string
+  /** Görünür kısa etiket (kanal tuşları yön tuşlarıyla karışmasın) */
+  caption?: string
+  onPress: () => void
+}): ReactElement {
   return (
     <button
       type="button"
-      className="rm-round"
+      className={cx('rm-round', caption && 'rm-round--caption')}
       aria-label={label}
       title={label}
       onClick={() => {
@@ -414,7 +436,8 @@ function RoundKey({ icon, label, onPress }: { icon: IconName; label: string; onP
         onPress()
       }}
     >
-      <Icon name={icon} size={28} />
+      <Icon name={icon} size={caption ? 22 : 28} />
+      {caption ? <span aria-hidden="true">{caption}</span> : null}
     </button>
   )
 }

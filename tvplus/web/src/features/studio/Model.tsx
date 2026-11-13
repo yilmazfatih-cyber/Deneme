@@ -135,7 +135,9 @@ function ModelCard({ m }: { m: PredictionModelInfo }): ReactElement {
             </dd>
             <dt>İçerik işaretleri</dt>
             <dd className="st-chips">
-              <Chip tone={m.contentSignals.tags ? 'neutral' : 'muted'}>Etiket ölçekleri {m.contentSignals.tags ? 'var' : 'yok'}</Chip>
+              <Chip tone={m.contentSignals.tags ? 'neutral' : 'muted'}>
+                Etiket ölçekleri {m.contentSignals.tags ? 'var' : 'yok'}
+              </Chip>
               <Chip tone={m.contentSignals.microgenres ? 'neutral' : 'muted'}>
                 Mikro türler {m.contentSignals.microgenres ? 'var' : 'yok'}
               </Chip>
@@ -151,8 +153,8 @@ function ModelCard({ m }: { m: PredictionModelInfo }): ReactElement {
           <p className="ui-meta">{m.note || '—'}</p>
           {run?.params && (
             <p className="ui-caption">
-              Parametreler: {run.params.factors} etken · {run.params.iterations} yineleme · λ {fmtDec(run.params.regularization, 3)} · α{' '}
-              {fmtDec(run.params.alpha, 1)} · tohum {run.params.seed}
+              Parametreler: {run.params.factors} etken · {run.params.iterations} yineleme · λ{' '}
+              {fmtDec(run.params.regularization, 3)} · α {fmtDec(run.params.alpha, 1)} · tohum {run.params.seed}
             </p>
           )}
         </aside>
@@ -164,7 +166,10 @@ function ModelCard({ m }: { m: PredictionModelInfo }): ReactElement {
 function NotTrained({ m }: { m: PredictionModelInfo }): ReactElement {
   return (
     <Panel title="Değerlendirme">
-      <NotReady title="Henüz ölçüm yok" detail={`${m.note || 'Model eğitilmedi.'} Aşağıdan bir eğitim başlatabilirsiniz.`} />
+      <NotReady
+        title="Henüz ölçüm yok"
+        detail={`${m.note || 'Model eğitilmedi.'} Aşağıdan bir eğitim başlatabilirsiniz.`}
+      />
     </Panel>
   )
 }
@@ -191,11 +196,7 @@ function Evaluation({ m }: { m: PredictionModelInfo }): ReactElement {
         <Stat label="NDCG@10" value={fmtPct(metrics.model.ndcgAt10)} note={<SyntheticTag show={synthetic} />} />
         <Stat label="İsabet oranı" value={fmtPct(metrics.model.hitRateAt10)} note={<SyntheticTag show={synthetic} />} />
         <Stat label="Kapsam" value={fmtPct(metrics.model.coverage)} note="katalogdan" />
-        <Stat
-          label="Popülerliğe göre"
-          value={lift === null ? '—' : `${fmtDec(lift, 1)} kat`}
-          note="Recall@10 oranı"
-        />
+        <Stat label="Popülerliğe göre" value={lift === null ? '—' : `${fmtDec(lift, 1)} kat`} note="Recall@10 oranı" />
       </div>
       <div className="st-grid2">
         <Panel
@@ -232,7 +233,8 @@ function Evaluation({ m }: { m: PredictionModelInfo }): ReactElement {
             </tbody>
           </table>
           <p className="ui-caption">
-            Soğuk başlangıç: eğitimde hiç görülmemiş başlıklar yalnız içerik kulesiyle sıralanır.{' '}
+            Soğuk başlangıç: eğitimde hiç görülmemiş başlıklar yalnız içerik kulesiyle, yalnız birbirleri arasında
+            sıralanır. Aday sayısı az olduğundan bu satır öteki sütunlarla doğrudan karşılaştırılmaz.{' '}
             {synthetic && 'Ölçümler sentetik örnekle hesaplandı; gerçek izleyici davranışını göstermez.'}
           </p>
         </Panel>
@@ -402,7 +404,8 @@ function Training({
                     <td className="st-num">{fmtInt(r.interactions)}</td>
                     <td className="st-num">{r.params.factors}</td>
                     <td className="st-num">
-                      {fmtPct(r.metrics?.model.recallAt10)} <SyntheticTag show={!!r.metrics && usesSynthetic(r.sources)} />
+                      {fmtPct(r.metrics?.model.recallAt10)}{' '}
+                      <SyntheticTag show={!!r.metrics && usesSynthetic(r.sources)} />
                     </td>
                   </tr>
                 ))}
@@ -419,7 +422,8 @@ function Training({
 
 type Who = { kind: 'viewer'; viewerId: string } | { kind: 'profile'; guid: string; name: string }
 
-const whoQuery = (w: Who) => (w.kind === 'viewer' ? `viewerId=${encodeURIComponent(w.viewerId)}` : `profileGuid=${encodeURIComponent(w.guid)}`)
+const whoQuery = (w: Who) =>
+  w.kind === 'viewer' ? `viewerId=${encodeURIComponent(w.viewerId)}` : `profileGuid=${encodeURIComponent(w.guid)}`
 
 function Simulator({ synthetic }: { synthetic: boolean }): ReactElement {
   const comms = useStudio<CommunitiesResponse>('/communities')
@@ -429,7 +433,9 @@ function Simulator({ synthetic }: { synthetic: boolean }): ReactElement {
   const [pick, setPick] = useState<number | null>(null)
   const items = comms.data?.items ?? []
   const cid = communityId ?? items[0]?.id ?? null
-  const viewers = useStudio<ModelViewerSample[]>(cid ? `/model/viewers?communityId=${encodeURIComponent(cid)}&first=12` : null)
+  const viewers = useStudio<ModelViewerSample[]>(
+    cid ? `/model/viewers?communityId=${encodeURIComponent(cid)}&first=12` : null,
+  )
   // Topluluk değişince ilk örnek izleyici seçilir
   useEffect(() => {
     const first = viewers.data?.[0]
@@ -475,7 +481,9 @@ function Simulator({ synthetic }: { synthetic: boolean }): ReactElement {
           </Button>
         )}
       </div>
-      {comms.error && !items.length && <NotReady detail={`Topluluklar yüklenemedi: ${comms.error.message}`} onRetry={comms.refetch} />}
+      {comms.error && !items.length && (
+        <NotReady detail={`Topluluklar yüklenemedi: ${comms.error.message}`} onRetry={comms.refetch} />
+      )}
       <div className="st-sim__viewers" role="radiogroup" aria-label="Örnek izleyiciler">
         {viewers.loading && !viewers.data && <span className="ui-meta">İzleyiciler yükleniyor</span>}
         {viewers.error && <span className="ui-meta">İzleyiciler yüklenemedi: {viewers.error.message}</span>}

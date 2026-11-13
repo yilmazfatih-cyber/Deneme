@@ -63,11 +63,24 @@ const ep = (id: number, season: number, extra: Partial<EpisodeData> = {}): Episo
 
 describe('birincil eylem', () => {
   it('film: Oynat; yarım kaldıysa Devam Et + Baştan Başlat ve kalan süre', () => {
-    expect(primaryActionOf(base)).toMatchObject({ kind: 'play', label: 'Oynat', viewableId: 'Video:80010001', startOver: false })
+    expect(primaryActionOf(base)).toMatchObject({
+      kind: 'play',
+      label: 'Oynat',
+      viewableId: 'Video:80010001',
+      startOver: false,
+    })
     const r = primaryActionOf({ ...base, bookmark: { positionSec: 288, runtimeSec: 888, progress: 0.32 } })
-    expect(r).toMatchObject({ kind: 'resume', label: 'Devam Et', positionSec: 288, startOver: true, progressLine: '10 dk kaldı' })
+    expect(r).toMatchObject({
+      kind: 'resume',
+      label: 'Devam Et',
+      positionSec: 288,
+      startOver: true,
+      progressLine: '10 dk kaldı',
+    })
     // bitmeye yakın: baştan oynatılır
-    expect(primaryActionOf({ ...base, bookmark: { positionSec: 880, runtimeSec: 888, progress: 0.99 } }).kind).toBe('play')
+    expect(primaryActionOf({ ...base, bookmark: { positionSec: 880, runtimeSec: 888, progress: 0.99 } }).kind).toBe(
+      'play',
+    )
   })
 
   it('dizi: devam edilecek bölüm oynatılır', () => {
@@ -95,8 +108,16 @@ describe('birincil eylem', () => {
 
   it('paket gerektiren başlık: Paketi İncele + sunucunun sakin metni; diğer durumlar Benzerlerini Gör', () => {
     expect(
-      primaryActionOf({ ...base, access: { state: 'UPSELL', reasonText: 'Sinema Paketi ile izlenir', requiredProductName: 'Sinema' } }),
-    ).toMatchObject({ kind: 'upsell', label: 'Paketi İncele', viewableId: null, accessText: 'Sinema Paketi ile izlenir' })
+      primaryActionOf({
+        ...base,
+        access: { state: 'UPSELL', reasonText: 'Sinema Paketi ile izlenir', requiredProductName: 'Sinema' },
+      }),
+    ).toMatchObject({
+      kind: 'upsell',
+      label: 'Paketi İncele',
+      viewableId: null,
+      accessText: 'Sinema Paketi ile izlenir',
+    })
     expect(primaryActionOf({ ...base, access: { state: 'OUT_OF_WINDOW', reasonText: null } })).toMatchObject({
       kind: 'unavailable',
       label: 'Benzerlerini Gör',
@@ -108,11 +129,16 @@ describe('birincil eylem', () => {
 describe('bilgi satırı', () => {
   it('eşleşme, yıl, süre, yaş işareti, kalite, oyuncular', () => {
     expect(detailMeta(base)).toEqual({ match: '%92 Eşleşme', parts: ['2010', '15 dk'], maturity: '13+' })
-    expect(detailMeta({ ...base, __typename: 'Show', seasonCount: 2, matchScore: null }).parts).toEqual(['2010', '2 Sezon'])
+    expect(detailMeta({ ...base, __typename: 'Show', seasonCount: 2, matchScore: null }).parts).toEqual([
+      '2010',
+      '2 Sezon',
+    ])
     expect(qualityLabels(base.playbackBadges)).toEqual(['HD', '5.1', 'Altyazı'])
     expect(qualityLabels(['VIDEO_ULTRA_HD', 'VIDEO_HD'])).toEqual(['4K'])
     expect(castLine(base)).toBe('Oyuncular: Halina Reijn')
-    expect(castLine({ ...base, cast: [], directors: [{ personId: 2, name: 'Colin Levy' }] })).toBe('Yönetmen: Colin Levy')
+    expect(castLine({ ...base, cast: [], directors: [{ personId: 2, name: 'Colin Levy' }] })).toBe(
+      'Yönetmen: Colin Levy',
+    )
     expect(castLine({ ...base, cast: [] })).toBeNull()
     expect(episodeLabel('S2 B10')).toBe('S2:B10')
   })

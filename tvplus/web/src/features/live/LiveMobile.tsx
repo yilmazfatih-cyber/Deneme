@@ -191,7 +191,11 @@ function ChannelListRow({
         className="lv-mrow__main"
         aria-label={label}
         onClick={(e) => {
-          logEvent('click', { surface: 'canli', rowType: 'CHANNEL_ROW', action: lock ? 'kilit' : 'canli', entityId }, tctx)
+          logEvent(
+            'click',
+            { surface: 'canli', rowType: 'CHANNEL_ROW', action: lock ? 'kilit' : 'canli', entityId },
+            tctx,
+          )
           if (lock) {
             e.preventDefault()
             onLocked(ch.name, lock)
@@ -228,7 +232,12 @@ function ChannelListRow({
           )}
         </span>
       </Link>
-      <button type="button" className="lv-mrow__more" aria-label={`${ch.name}: diğer eylemler`} onClick={() => onMore(entry)}>
+      <button
+        type="button"
+        className="lv-mrow__more"
+        aria-label={`${ch.name}: diğer eylemler`}
+        onClick={() => onMore(entry)}
+      >
         <Icon name="more" size={22} />
       </button>
     </li>
@@ -295,7 +304,15 @@ function ChannelSheet({
   )
 }
 
-function ChannelSheetBody({ entry, now, onClose }: { entry: ChannelEntry; now: number; onClose: () => void }): ReactElement {
+function ChannelSheetBody({
+  entry,
+  now,
+  onClose,
+}: {
+  entry: ChannelEntry
+  now: number
+  onClose: () => void
+}): ReactElement {
   const navigate = useNavigate()
   const ch = entry.channel
   const tctx = entry.track.tctx
@@ -432,7 +449,13 @@ export function LiveMobile({ model, handlers }: { model: LiveModel; handlers: Li
         </div>
         <ul className={cx('lv-mrows')}>
           {list.map((e) => (
-            <ChannelListRow key={e.channel.channelId} entry={e} now={now} onMore={setSheet} onLocked={handlers.openLocked} />
+            <ChannelListRow
+              key={e.channel.channelId}
+              entry={e}
+              now={now}
+              onMore={setSheet}
+              onLocked={handlers.openLocked}
+            />
           ))}
         </ul>
         {list.some((e) => e.channel.isSampleSchedule) && (

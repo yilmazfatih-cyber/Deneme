@@ -16,9 +16,7 @@
   align-items: center;
   justify-content: center;
   padding: var(--tv-safe-y) var(--tv-safe);
-  background:
-    radial-gradient(ellipse at 30% 20%, rgba(247, 216, 73, 0.06), transparent 60%),
-    rgba(14, 14, 14, 0.97);
+  background: radial-gradient(ellipse at 30% 20%, rgba(247, 216, 73, 0.06), transparent 60%), rgba(14, 14, 14, 0.97);
   animation: tv-fade-in 200ms linear;
 }
 .tvw-sheet__box {
@@ -82,4 +80,9 @@
   color: var(--tv-text-3);
   font-size: 1.4rem;
   font-weight: 600;
+}
+/* YouTube gömmesinde: çerçevenin altındaki şeritte, sağda */
+.tvw-sender--below {
+  top: auto;
+  bottom: 2rem;
 }

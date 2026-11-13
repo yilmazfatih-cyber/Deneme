@@ -111,7 +111,8 @@ export function* solveSide(
         for (let c = 0; c < f; c++) out[ro + c] = x[c]!
       }
     }
-    work += (end - start) * f * (solver === 'cholesky' ? f : 4 * cgSteps) + f * f * (solver === 'cholesky' ? 1 : cgSteps)
+    work +=
+      (end - start) * f * (solver === 'cholesky' ? f : 4 * cgSteps) + f * f * (solver === 'cholesky' ? 1 : cgSteps)
     if (work >= YIELD_WORK) {
       work = 0
       yield

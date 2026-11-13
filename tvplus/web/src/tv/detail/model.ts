@@ -152,7 +152,8 @@ export interface PrimaryAction {
 export function primaryActionOf(v: DetailVideoData): PrimaryAction {
   const state = v.access.state
   if (state !== 'PLAYABLE') {
-    const text = v.access.reasonText ?? (state === 'UPSELL' ? 'Bu başlık paketinde yok.' : 'Bu başlık şu an izlenemiyor.')
+    const text =
+      v.access.reasonText ?? (state === 'UPSELL' ? 'Bu başlık paketinde yok.' : 'Bu başlık şu an izlenemiyor.')
     return {
       kind: state === 'UPSELL' ? 'upsell' : 'unavailable',
       label: state === 'UPSELL' ? 'Paketi İncele' : 'Benzerlerini Gör',
@@ -200,7 +201,8 @@ export function primaryActionOf(v: DetailVideoData): PrimaryAction {
 export function trailerOf(v: DetailVideoData): string | null {
   const supp = v.supplementalVideos ?? []
   const pick =
-    supp.find((s) => s.subType === 'TRAILER' && s.isPlayable) ?? supp.find((s) => s.subType === 'TEASER' && s.isPlayable)
+    supp.find((s) => s.subType === 'TRAILER' && s.isPlayable) ??
+    supp.find((s) => s.subType === 'TEASER' && s.isPlayable)
   if (pick) return videoEntityId(pick.videoId)
   return null
 }
@@ -250,7 +252,10 @@ export function startEpisodeOf(
 /** Bölüm oynatma hedefi: yarım kaldıysa kaldığı yerden. */
 export function episodePlay(ep: EpisodeData): { viewableId: string; positionSec: number | null } | null {
   if (!ep.isPlayable || ep.access.state !== 'PLAYABLE') return null
-  return { viewableId: videoEntityId(ep.videoId), positionSec: isInProgress(ep.bookmark) ? ep.bookmark!.positionSec : null }
+  return {
+    viewableId: videoEntityId(ep.videoId),
+    positionSec: isInProgress(ep.bookmark) ? ep.bookmark!.positionSec : null,
+  }
 }
 
 /** Sezon düğmesinin yazısı: "Sezon 1" (sezon adı ayrı satırda) */

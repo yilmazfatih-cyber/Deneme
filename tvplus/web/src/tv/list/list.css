@@ -34,6 +34,9 @@
 .tvl-grid {
   flex: 1;
   min-height: 0;
+  /* Odaktaki kart 1.08× büyür ve çerçeve alır: kenarlarda kırpılmasın */
+  margin: -1.6rem;
+  padding: 1.6rem;
 }
 .tvl-grid--skel {
   display: grid;

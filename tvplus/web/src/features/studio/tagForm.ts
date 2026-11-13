@@ -18,7 +18,10 @@ export interface TagFormState {
 }
 
 /** Boş form ya da var olan bir fişten (kendi taslağı / gönderilmiş fişi) başlangıç. */
-export function initialForm(vocab: TagVocabulary, from?: Pick<TagSheet, 'watched' | 'scales' | 'facets' | 'notes'> | null): TagFormState {
+export function initialForm(
+  vocab: TagVocabulary,
+  from?: Pick<TagSheet, 'watched' | 'scales' | 'facets' | 'notes'> | null,
+): TagFormState {
   const scales: Record<string, number | null> = {}
   for (const s of vocab.scales) {
     const v = from?.scales[s.key]
@@ -44,7 +47,11 @@ export type FacetToggle = { state: TagFormState; blocked: boolean }
  * Yüz değerini açar/kapar. Tek seçimli yüzde yeni değer eskisinin yerini alır; çok seçimlide `max` doluysa
  * yeni değer eklenmez (`blocked: true`).
  */
-export function toggleFacet(state: TagFormState, facet: Pick<TagFacet, 'key' | 'multi' | 'max'>, value: string): FacetToggle {
+export function toggleFacet(
+  state: TagFormState,
+  facet: Pick<TagFacet, 'key' | 'multi' | 'max'>,
+  value: string,
+): FacetToggle {
   const cur = state.facets[facet.key] ?? []
   let next: string[]
   if (cur.includes(value)) next = cur.filter((v) => v !== value)
@@ -89,16 +96,20 @@ export function validateForm(
     const known = new Set(f.values.map((v) => v.key))
     const unknown = values.filter((v) => !known.has(v))
     if (unknown.length) out.push({ path: `facets.${k}`, message: `Bilinmeyen değer: ${unknown.join(', ')}.` })
-    if (new Set(values).size !== values.length) out.push({ path: `facets.${k}`, message: 'Aynı değer iki kez seçilmiş.' })
+    if (new Set(values).size !== values.length)
+      out.push({ path: `facets.${k}`, message: 'Aynı değer iki kez seçilmiş.' })
     if (values.length > f.max) out.push({ path: `facets.${k}`, message: `En çok ${f.max} değer seçilebilir.` })
     if (!f.multi && values.length > 1) out.push({ path: `facets.${k}`, message: 'Bu yüzde tek değer seçilir.' })
   }
-  if (state.notes.length > NOTES_MAX)
-    out.push({ path: 'notes', message: `Not en çok ${NOTES_MAX} karakter olabilir.` })
+  if (state.notes.length > NOTES_MAX) out.push({ path: 'notes', message: `Not en çok ${NOTES_MAX} karakter olabilir.` })
   if (status === 'SUBMITTED') {
     if (!state.watched)
-      out.push({ path: 'watched', message: 'Göndermek için yapımı baştan sona izlemiş olmalısınız. Yoksa taslak kaydedin.' })
-    if (ratedCount(state) === 0) out.push({ path: 'scales', message: 'Göndermeden önce en az bir ölçeği değerlendirin.' })
+      out.push({
+        path: 'watched',
+        message: 'Göndermek için yapımı baştan sona izlemiş olmalısınız. Yoksa taslak kaydedin.',
+      })
+    if (ratedCount(state) === 0)
+      out.push({ path: 'scales', message: 'Göndermeden önce en az bir ölçeği değerlendirin.' })
   }
   return out
 }

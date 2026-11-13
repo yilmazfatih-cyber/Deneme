@@ -6,7 +6,7 @@
  * Odaktaki kart sol güvenli kenarda sabit kalır, iz kayar; yalnız odak çevresindeki pencere çizilir — satır
  * yüzlerce öğeyle de aynı hızda çalışır. Satır kendi kapsamıdır: ↑/↓ ile dönülünce son karta iner.
  */
-import { useLayoutEffect, useRef, useState, type ReactElement, type ReactNode } from 'react'
+import { useLayoutEffect, useRef, useState, type ReactElement } from 'react'
 import { FocusScope } from '../focus'
 import { TvSkeletonCard, useFocusedIndexWithin } from '../ui'
 import { windowRange } from './model'
@@ -35,7 +35,6 @@ export interface LaneProps<T> {
   /** İskelet en-boy oranı (CSS) */
   skeletonRatio?: string
   className?: string
-  children?: ReactNode
 }
 
 const cx = (...c: (string | false | null | undefined)[]): string => c.filter(Boolean).join(' ')
@@ -95,11 +94,7 @@ export function Lane<T>({
         data-row-index={i}
         style={{ left: `${i * step}rem`, width: `${itemWidth}rem` }}
       >
-        {item ? (
-          renderItem(item, i, `${id}:${key}`)
-        ) : (
-          <TvSkeletonCard width={itemWidth} ratio={skeletonRatio} />
-        )}
+        {item ? renderItem(item, i, `${id}:${key}`) : <TvSkeletonCard width={itemWidth} ratio={skeletonRatio} />}
       </div>,
     )
   }

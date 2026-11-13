@@ -12,7 +12,14 @@ import { HEADERS } from '../../shared/constants'
 import type { PredictionModelInfo, TrainingRun, ViewerPrediction, ViewingFact } from '../../shared/intelligence'
 import type { BootContext } from '../../shared/types'
 import { alsLoss, trainAls } from '../src/services/predictions/als'
-import { buildCsr, buildInteractions, DEFAULT_SPLIT, ROLE_COLD, ROLE_TEST, splitInteractions } from '../src/services/predictions/data'
+import {
+  buildCsr,
+  buildInteractions,
+  DEFAULT_SPLIT,
+  ROLE_COLD,
+  ROLE_TEST,
+  splitInteractions,
+} from '../src/services/predictions/data'
 import {
   cholesky,
   choleskySolve,
@@ -536,7 +543,11 @@ describe('tahmin modeli — kalıcılık, belirlenimcilik, yeniden eğitim karar
   it('veri yoksa eğitim FAILED olur ve açıklama yazar; model hazır olmaz', async () => {
     const app = await createTestApp()
     apps.push(app)
-    installFakes(app, { viewing: createFakeViewing(), tagging: createFakeTagging(), microgenres: createFakeMicrogenres() })
+    installFakes(app, {
+      viewing: createFakeViewing(),
+      tagging: createFakeTagging(),
+      microgenres: createFakeMicrogenres(),
+    })
     const impl = predictionInternals(app)
     expect(impl.checkNow().decision).toBe('no-data')
     const run = await impl.trainNow()
@@ -568,7 +579,11 @@ describe('tahmin modeli — REST', () => {
       expect(bad.statusCode).toBe(400)
       expect(bad.json().error.code).toBe('VALIDATION_FAILED')
     }
-    const started = await app.inject({ method: 'POST', url: '/api/studio/model/train', payload: { seed: 2, factors: 8 } })
+    const started = await app.inject({
+      method: 'POST',
+      url: '/api/studio/model/train',
+      payload: { seed: 2, factors: 8 },
+    })
     expect(started.statusCode).toBe(200)
     const run = started.json<TrainingRun>()
     expect(run.status).toBe('RUNNING')
@@ -587,7 +602,10 @@ describe('tahmin modeli — REST', () => {
     expect(sample.length).toBe(5)
     expect(sample.every((s) => s.communityId === comm[0]!.id && s.titles > 0)).toBe(true)
 
-    const pr = await app.inject({ method: 'GET', url: `/api/studio/model/predict?viewerId=${sample[0]!.viewerId}&first=10` })
+    const pr = await app.inject({
+      method: 'GET',
+      url: `/api/studio/model/predict?viewerId=${sample[0]!.viewerId}&first=10`,
+    })
     expect(pr.statusCode).toBe(200)
     const pred = pr.json<ViewerPrediction>()
     expect(pred.picks.length).toBe(10)

@@ -82,8 +82,8 @@ Tanım = **çekirdek tür** (+ isteğe bağlı film/dizi) + **yuvalar**:
 - Ad, sözlükteki hazır ifadelerin `naming.order` sırasıyla dizilmesidir; çekirdek tür adı sonda gelir:
   "Gerçek Olaylardan Uyarlanan Karanlık İskandinav Suç Dizileri", "Uzay Keşfi Hakkında Düşündürücü Belgeseller",
   "1920'lerden Sessiz Komedi Filmleri", "Charlie Chaplin Komedileri".
-- Kimlik, tanımın kararlı özetidir (`mg_…`): aynı tanım her üretimde aynı kimliği alır; ad değişse de kimlik değişmez.
-- Üretim: her başlığın nitelikleri çıkarılır; 0–4 yuvalı birleşimler sayılır; en az `minTitles` (varsayılan 2) başlığı
+- Kimlik, tanımın kararlı özetidir (`mg_` + 12 onaltılık hane): aynı tanım her üretimde aynı kimliği alır; ad değişse de kimlik değişmez.
+- Üretim: her başlığın nitelikleri çıkarılır; 0–3 yuvalı birleşimler sayılır; en az `minTitles` (varsayılan 2) başlığı
   olan tanımlar mikro tür olur. Aynı başlık kümesini veren tanımlardan en okunur olanı kalır.
 - **Katmanlar:** `VISIBLE` — ana sayfada satır olabilecek genişlikte (≥ 4 başlık, ≤ 2 yuva) · `HIDDEN` — dar olanlar;
   yalnız benzerlik ve gerekçe için. İzleyicinin gördüğü geniş türler yüzeydir; benzerlik görünmeyen katmandan beslenir.

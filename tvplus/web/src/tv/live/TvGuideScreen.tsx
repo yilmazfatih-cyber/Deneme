@@ -108,6 +108,7 @@ function GuideBlock({
   reminder,
   focusedHere,
   autoFocus,
+  scrollX,
   onArrow,
   onFocus,
   onOpen,
@@ -117,6 +118,8 @@ function GuideBlock({
   reminder: boolean
   focusedHere: boolean
   autoFocus: boolean
+  /** ızgaranın yatay kayması (rem): görünür alanın solundan başlayan bloğun başlığı görünür kenarda kalır */
+  scrollX: number
   onArrow: (dir: Direction) => boolean
   onFocus: () => void
   onOpen: () => void
@@ -130,7 +133,8 @@ function GuideBlock({
     autoFocus,
   })
   const state = timeStateOf(a, now)
-  const roomy = block.width >= 7
+  const stick = Math.max(0, Math.min(scrollX - block.left, block.width - 7))
+  const roomy = block.width - stick >= 7
   return (
     <div
       ref={ref}
@@ -146,7 +150,7 @@ function GuideBlock({
       )}
       style={{ left: `${block.left}rem`, width: `${block.width}rem` }}
     >
-      <span className="tvg-block__inner">
+      <span className="tvg-block__inner" style={stick > 0 ? { paddingLeft: `${0.9 + stick}rem` } : undefined}>
         <span className="tvg-block__title">{a.title}</span>
         {roomy && (
           <span className="tvg-block__time">
@@ -434,7 +438,12 @@ export function TvGuide(): ReactElement {
     if (r < 0) return
     let i = blockAt(rows[r]!.blocks, pending.anchor)
     if (i === null) {
-      const v = verticalStep(rows.map((x) => x.blocks), r, pending.anchor, 1)
+      const v = verticalStep(
+        rows.map((x) => x.blocks),
+        r,
+        pending.anchor,
+        1,
+      )
       if (!v) return
       r = v.row
       i = v.index
@@ -530,7 +539,11 @@ export function TvGuide(): ReactElement {
     const past = timeStateOf(t.airing, serverNow()) === 'past'
     logEvent(
       'click',
-      { surface: 'tv-rehber', action: past ? 'izle' : startOver ? 'bastan' : 'canli-izle', entityId: t.airing.unifiedEntityId },
+      {
+        surface: 'tv-rehber',
+        action: past ? 'izle' : startOver ? 'bastan' : 'canli-izle',
+        entityId: t.airing.unifiedEntityId,
+      },
       live.tctxOf(t.channel.channelId),
     )
     navigate(
@@ -594,12 +607,9 @@ export function TvGuide(): ReactElement {
         <div className="tvg-times" aria-hidden="true">
           <div className="tvg-times__track" style={{ transform: `translateX(${-scroll.x}rem)`, width: `${total}rem` }}>
             {ticks.map((t) => (
-              <span
-                key={t.t}
-                className={cx('tvg-tick', t.major && 'is-major')}
-                style={{ left: `${t.left}rem` }}
-              >
-                {t.label}
+              <span key={t.t} className={cx('tvg-tick', t.major && 'is-major')} style={{ left: `${t.left}rem` }}>
+                {/* "şimdi" etiketiyle çakışan saat yazısı gizlenir (çizgi kalır) */}
+                {nowLeft !== null && Math.abs(t.left - nowLeft) < 3.2 ? '' : t.label}
               </span>
             ))}
             {nowLeft !== null && (
@@ -671,6 +681,7 @@ export function TvGuide(): ReactElement {
                         reminder={guide.hasReminder(b.item)}
                         focusedHere={focus?.airingId === b.id}
                         autoFocus={false}
+                        scrollX={scroll.x}
                         onArrow={arrow}
                         onFocus={() => {
                           const f = focusRef.current

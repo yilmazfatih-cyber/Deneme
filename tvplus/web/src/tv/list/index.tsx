@@ -11,6 +11,7 @@ import { useGql } from '../../api/hooks'
 import { logEvent } from '../../telemetry/logger'
 import { TV_PATHS, titlePath } from '../shell'
 import { TvButton, TvCard, TvGrid, TvIcon, TvScreen, TvSkeletonCard } from '../ui'
+import { useClaimFocusOnContent } from '../home/claimFocus'
 import './list.css'
 
 interface ListVideo {
@@ -36,6 +37,8 @@ export function TvMyList(): ReactElement {
   const list = q.data?.library.myList ?? null
   const [focused, setFocused] = useState<ListVideo | null>(null)
   const current = focused && list?.some((v) => v.videoId === focused.videoId) ? focused : (list?.[0] ?? null)
+
+  useClaimFocusOnContent(SCREEN_ID, list !== null)
 
   const open = (v: ListVideo, i: number): void => {
     const tctx = formatTctx({ row: 0, rank: i, rowId: 'listem', trackId: 0, entityId: v.unifiedEntityId })
@@ -92,7 +95,12 @@ export function TvMyList(): ReactElement {
           </span>
           <p className="tvl-empty__title">Listende henüz bir şey yok</p>
           <p className="tvl-empty__text">Bir başlığın detayında "Listeme Ekle"yi seç, burada görünsün.</p>
-          <TvButton id="listem:ana-sayfa" label="Ana Sayfa'ya git" icon="home" onPress={() => navigate(TV_PATHS.home)} />
+          <TvButton
+            id="listem:ana-sayfa"
+            label="Ana Sayfa'ya git"
+            icon="home"
+            onPress={() => navigate(TV_PATHS.home)}
+          />
         </div>
       ) : (
         <TvGrid id="listem:izgara" columns={4} gap={1.4} label="Listem" className="tvl-grid">
@@ -105,8 +113,11 @@ export function TvMyList(): ReactElement {
                 imageUrl={v.storyArt?.url ?? v.boxart?.url}
                 title={v.title}
                 locked={locked}
-                badge={!locked && v.badge && v.badge.kind !== 'LOCKED' && v.badge.kind !== 'TOP10' ? v.badge.text : null}
+                badge={
+                  !locked && v.badge && v.badge.kind !== 'LOCKED' && v.badge.kind !== 'TOP10' ? v.badge.text : null
+                }
                 width="100%"
+                autoFocus={i === 0}
                 onFocus={() => setFocused(v)}
                 onPress={() => open(v, i)}
               />

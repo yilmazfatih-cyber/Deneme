@@ -82,7 +82,16 @@ describe('ölçekler', () => {
     expect(linePath([{ x: 0, y: 1 }, { x: 1, y: 2 }, null, { x: 3, y: 4 }])).toBe('M0 1 L1 2 M3 4')
   })
   it('gruplu çubuklar', () => {
-    const l = groupedBars(['A', 'B'], ['m', 'p'], [[0.5, 0.25], [null, 1]], 600, 100)
+    const l = groupedBars(
+      ['A', 'B'],
+      ['m', 'p'],
+      [
+        [0.5, 0.25],
+        [null, 1],
+      ],
+      600,
+      100,
+    )
     expect(l.max).toBe(1)
     expect(l.groups[0]!.bars).toHaveLength(2)
     expect(l.groups[1]!.bars).toHaveLength(1)

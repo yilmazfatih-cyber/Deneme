@@ -268,5 +268,8 @@ Görünmeyen katman keşfi besler; izleyici yalnız sonucunu görür:
   `microgenre` (görünen mikro tür satırı; `summary.microgenreId`, "Tümünü Gör" → `/tur/<mg_…>`) ve
   `tasteCommunity` (profilin zevk topluluğunda öne çıkanlar; `summary.communityId`).
   `becauseYouWatched` satırları kaynağın görünmeyen mikro türlerinden kurulur; `summary.reason` ortak mikro tür adını taşır.
+- **Tahmin modeli** — `Movie/Show.matchScore` ve Falcor `videos[id].matchScore` (0–100; model hazır değilse boş);
+  "‹Ad› için En İyi Seçimler" satırı model hazırken modelin seçimleridir (`summary.source: 'model' | 'rules'`);
+  tür, mikro tür, yeni gelenler ve topluluk satırlarının iç sırası modelin puanına göredir.
 - **Satır adları** UX_SPEC §6 sözlüğündeki yazımla verilir ("İzlemeye Devam Et", "Yeni Gelenler", "Son Şans").
 - **Stüdyo** — `/studyo` (yalnız masaüstü, üst menüde değil; profil menüsünden): arka ofisin penceresi.

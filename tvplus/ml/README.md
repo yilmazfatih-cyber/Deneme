@@ -26,23 +26,23 @@ başlığın özeti (aynı metin kodlayıcısı) + geçerli etiketleri (öznitel
   %20'si öğrenilmiş `[MASK]` ile değiştirilir, model gizlenen çekimin özgün üç kip vektörünü komşu çekimlerden ve genel
   bağlamdan tahmin eder; kayıp kosinüs uzaklığıdır (1 − cos). Ek olarak gizlenmemiş çekimlerde bazen tek bir kip
   gizlenip yalnız o kip tahmin edilir.
-- **`[GLOBAL]` belirteci** başlığın özetinin metin vektöründen ve **geçerli etiketlerinden** (16 ölçek, niteleyiciler,
+- **`[GLOBAL]` belirteci** başlığın özetinin metin vektöründen ve **geçerli etiketlerinden** (bugün tüm başlıklar için
+  özetten doldurulmuş ÖRNEK fişler — izlenerek değil; 16 ölçek, niteleyiciler,
   yüz değerleri, tür, ruh hâli, etiket dayanağı) kurulur ve `[CLS]`'den hemen sonra gelir; her çekim ona dikkat eder.
   Etiket burada nihai sınıflandırma değil, modelin girdisidir: uygulamada bir başlığın etiketi değişince (http
   sağlayıcısıyla) o başlığın vektörleri de değişir.
 
-### MediaFM'den ne alındı, ne doğrulanamadı?
+### Tasarımın dayanağı (MediaFM hakkında ne biliyoruz, ne bilmiyoruz)
 
-MediaFM yazısı (Netflix TechBlog, Şubat 2026) bu makineden açılamadı (alan adı ağ izninde yok); ayrıntılar yazıyı
-aktaran ikincil kaynaklardan ve bir arXiv makalesinin (2608.18322) özetlerinden derlendi. Bu kaynaklarda tutarlı
-olanlar: temel birim çekimdir; çekim başına görüntü, ses ve zamanlı metin gömmeleri birleştirilip birim uzunluğa
-getirilir; bir başlık en çok 512 çekimlik bir dizidir; BERT benzeri bir dönüştürücü (bir kaynakta 3 katman) diziyi
-bağlamlar; `[CLS]`'den sonra başlık meta verisinden (özet, etiketler) kurulan ve izdüşürülen bir `[GLOBAL]` belirteci
-gelir; çekimlerin %20'si öğrenilmiş `[MASK]` ile değiştirilir ve tahmin ile özgün (birleşik) gömme arasındaki kosinüs
-uzaklığı en aza indirilir. Doğrulanamayan her ayrıntıda docs/ICERIK_ZEKASI.md §13.1 izlendi. Farklar: kodlayıcılar
-burada küçük ve açık (SeqCLIP / wav2vec 2.0 / ticari metin gömmesi yerine CLIP, CLAP, çok dilli CLIP), hedef birleşik
-vektör yerine kip başına kosinüs ortalamasıdır (eksik kipler kayba girmez), konum sinüs kodlamasıdır ve eğitim
-penceresi 64 çekimdir.
+MediaFM yazısı (Netflix TechBlog, Şubat 2026) bu makineden okunamadı (makale sayfaları bot korumasıyla 403 döndürüyor,
+RSS akışında yok). Tasarım bu yüzden **makalenin doğrulanmış bir okumasına değil**, şunlara dayanır:
+(1) ürün sahibinin modeli anlatışı — ses + görüntü + metinden çekim düzeyi vektörler; başlığın özeti ve etiketleri
+her çekime eklenen genel bağlam ("etiketler artık nihai sınıflandırma değil, modelin girdilerinden biri");
+(2) çekim dizileri üzerinde maskeli modelleme fikrinin genel, yayımlanmış hâli (BERT tarzı maskeli tahmin,
+kosinüs benzerliğiyle gömme hedefi); (3) docs/ICERIK_ZEKASI.md §13.1. Ayrıntılarda (katman sayısı, maske oranı,
+kodlayıcılar, kayıp biçimi) MediaFM ile **eşleştiğine dair hiçbir iddiada bulunmuyoruz**; buradaki seçimler bu
+veri ölçeğine göre yapılmış kendi seçimlerimizdir: maske oranı %20, kip başına kosinüs kaybı (eksik kipler kayba
+girmez), sinüs konum kodlaması, 64 çekimlik eğitim penceresi, 3 katman.
 
 ### Kip kodlayıcıları ve neden bunlar
 

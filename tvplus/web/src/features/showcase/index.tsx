@@ -6,6 +6,8 @@
  */
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactElement } from 'react'
 import { useDocumentTitle } from '../../app'
+import { deviceClient } from '../../devices/client'
+import { detectFormFactor } from '../../lib/formFactor'
 import { cx, Icon, Logo, Spinner, Switch, type IconName } from '../../ui'
 import { createBrowserEnv, frameUrl, HOME_ROUTE } from './env'
 import { CHROME, FRAMES, layoutFrames, type Layout } from './layout'
@@ -63,8 +65,33 @@ function useFrameRoutes(env: ReturnType<typeof createBrowserEnv>): Record<FrameI
   return routes
 }
 
+/**
+ * Vitrin sayfasının kendisi bir cihaz değildir: üç çerçeve zaten üç ayrı cihaz olarak komut akışı (SSE) ve bildirim
+ * yoklaması açar. Tarayıcı aynı köke en çok 6 HTTP/1.1 bağlantısı açar; üst belge de girişliyse yedinci uzun
+ * bağlantı çerçevelerin isteklerini bekletir. Bu yüzden vitrin açıkken üst belgenin cihaz akışı kapatılır,
+ * sayfadan çıkınca yeniden açılır.
+ */
+function useNotADevice(): void {
+  useEffect(() => {
+    let stopped = false
+    const check = () => {
+      if (deviceClient.getState().connection !== 'idle') {
+        stopped = true
+        deviceClient.stop()
+      }
+    }
+    check()
+    const off = deviceClient.subscribe(check)
+    return () => {
+      off()
+      if (stopped) deviceClient.start({ kind: detectFormFactor() === 'mobile' ? 'MOBILE' : 'WEB' })
+    }
+  }, [])
+}
+
 export function ShowcasePage(): ReactElement {
   useDocumentTitle('Cihaz vitrini')
+  useNotADevice()
   const frames = useRef<Partial<Record<FrameId, HTMLIFrameElement | null>>>({})
   const env = useMemo(() => createBrowserEnv(() => frames.current), [])
   const [stageRef, size] = useStageSize()

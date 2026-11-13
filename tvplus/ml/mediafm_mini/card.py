@@ -67,11 +67,10 @@ dakikalar sürer.
   kaynaştırma dönüştürücüsüdür.
 - Çekim vektörleri **bağlamsaldır**: bir çekimin vektörü komşu çekimleri ve başlığın özet + etiketlerini de taşır.
   Bu yüzden aynı filmin çekimleri birbirine yakın kümelenir (bkz. sınırlar).
-- MediaFM yazısının kendisine (Netflix TechBlog, Şubat 2026) bu ortamdan erişilemedi; mimari ayrıntılar yazıyı
-  aktaran ikincil kaynaklardan (çekim = birim; kip başına gömmeler birleştirilir; `[CLS]` ardından özet ve
-  etiketlerden kurulan `[GLOBAL]`; çekimlerin %20'si öğrenilmiş `[MASK]` ile değiştirilir; tahmin ile özgün gömme
-  arasında kosinüs uzaklığı) ve docs/ICERIK_ZEKASI.md §13.1'den alınmıştır. Doğrulanamayan her şey §13.1'e göre
-  yapılmıştır.
+- **Tasarımın dayanağı:** MediaFM yazısı (Netflix TechBlog, Şubat 2026) bu makineden okunamadı. Tasarım, ürün
+  sahibinin modeli anlatışını (ses + görüntü + metinden çekim düzeyi vektörler; özet ve etiketler her çekime genel
+  bağlam) ve çekim dizileri üzerinde maskeli modellemenin genel yayımlanmış fikrini izler; docs/ICERIK_ZEKASI.md §13.1
+  esas alınmıştır. Makalenin doğrulanmış bir okuması **değildir**; ayrıntılarda MediaFM ile eşleşme iddiası yoktur.
 
 ## Mimari
 
@@ -90,7 +89,8 @@ yaprak vektörü = birim h_i'lerin ortalaması · başlık vektörü = yaprak ve
 Eğitim penceresi {mcfg['max_len']} çekimdir; daha uzun yapraklar yarı örtüşen pencerelerle kodlanır (pencere ortası
 ağırlıklı ortalama). Etiket öznitelikleri: 16 ölçek (değer/5 + "dolu mu"), niteleyiciler, yüz değerleri, türler, ruh
 hâlleri (çoklu-sıcak), etiket dayanağı (CONSENSUS/SAMPLE/MODEL/NONE) ve tür (film/dizi). Bağlam sunucunun
-gönderdiği **geçerli** etiketlerdir; eğitimde de aynı girdiler kullanılır (`ml/tools/dump-inputs.ts`).
+gönderdiği **geçerli** etiketlerdir — bugün tüm başlıklarda bunlar özetten doldurulmuş ÖRNEK fişlerdir (izlenerek
+değil, dayanak SAMPLE); eğitimde de aynı girdiler kullanılır (`ml/tools/dump-inputs.ts`).
 
 ## Kip kodlayıcıları (dondurulmuş, ONNX Runtime, CPU)
 
@@ -170,7 +170,8 @@ modelden iyi olmadığı satırlar da raporlanmıştır.
 - Metin kipi neredeyse yok (iki filmde altyazı); konuşma içeriği vektörlere az yansır.
 - KEYFRAMES yapımları (katalogun çoğu) 1–4 küçük kareyle temsil edilir; benzerlikleri büyük ölçüde kare görünümü ve
   bağlamdan (özet + etiketler) gelir.
-- Etiketlerin çoğu otomatik öneridir (dayanak MODEL); etiket bağlamının katkısı bu yüzden de sınırlıdır.
+- Etiketler örnek fişlerdir (özetten, izlenmeden doldurulmuş; dayanak SAMPLE) ve özetle büyük ölçüde aynı bilgiyi
+  taşır; etiket bağlamının katkısı bu yüzden de sınırlıdır.
 - Bağlamsal vektörler başlığa göre kümelenir: "başka filmlerdeki benzer çekim" araması için tek kipli vektörler
   (model sunucusundaki /search) daha uygundur.
 - Kodlayıcı çıktıları referans uygulamalarla (transformers) sayısal olarak karşılaştırılmadı; ön işleme

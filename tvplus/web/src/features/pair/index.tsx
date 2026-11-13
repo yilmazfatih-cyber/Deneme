@@ -33,9 +33,11 @@ type View =
 export function PairPage(): ReactElement {
   useDocumentTitle("TV'ye Bağlan")
   const [params, setParams] = useSearchParams()
-  const [code, setCode] = useState(() => codeFromSearch(`?${params.toString()}`))
+  const urlCode = codeFromSearch(`?${params.toString()}`)
+  const [code, setCode] = useState(urlCode)
   const [view, setView] = useState<View>({ kind: 'enter', problem: null })
-  const autoTried = useRef(false)
+  /** Adresteki son işlenen kod: QR yeniden okutulunca (aynı sayfadayken) baştan başlanır. */
+  const handled = useRef<string | null>(null)
 
   const lookup = async (clean: string) => {
     if (checkCode(clean).kind !== 'complete') return
@@ -50,20 +52,33 @@ export function PairPage(): ReactElement {
       ])
       setView({ kind: 'confirm', lookup: l, profiles })
     } catch (err) {
-      setView({ kind: 'enter', problem: classifyPairError(err) })
+      const problem = classifyPairError(err)
+      setView({ kind: 'enter', problem })
+      // Sınır kısa sürede kalkar: düğme yarım dakika sonra yeniden açılır (metin yerinde kalır).
+      if (problem === 'throttled')
+        window.setTimeout(
+          () => setView((v) => (v.kind === 'enter' && v.problem === 'throttled' ? { kind: 'enter', problem: 'unknown' } : v)),
+          30_000,
+        )
     }
   }
 
-  // QR'dan gelen kod: bir kez kendiliğinden sorgula.
+  // QR'dan gelen kod: kendiliğinden sorgula. Adres değişirse (yeni kod ya da kodsuz /bagla) baştan başla.
   useEffect(() => {
-    if (autoTried.current) return
-    autoTried.current = true
-    if (checkCode(code).kind === 'complete') void lookup(code)
-  }, [])
+    if (handled.current === urlCode) return
+    const first = handled.current === null
+    handled.current = urlCode
+    if (!first || urlCode) {
+      setCode(urlCode)
+      setView({ kind: 'enter', problem: null })
+    }
+    if (checkCode(urlCode).kind === 'complete') void lookup(urlCode)
+  }, [urlCode])
 
   const restart = () => {
     setCode('')
     setView({ kind: 'enter', problem: null })
+    handled.current = ''
     if (params.has('kod')) {
       const next = new URLSearchParams(params)
       next.delete('kod')

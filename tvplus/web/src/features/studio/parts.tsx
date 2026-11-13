@@ -89,7 +89,11 @@ export function Loadable<T>({
     if (res.error)
       return (
         <NotReady
-          detail={res.error.unavailable ? `${what ? `${what}: ` : ''}servis yanıt vermiyor (${res.error.message})` : res.error.message}
+          detail={
+            res.error.unavailable
+              ? `${what ? `${what}: ` : ''}servis yanıt vermiyor (${res.error.message})`
+              : res.error.message
+          }
           onRetry={res.refetch}
         />
       )
@@ -128,7 +132,10 @@ export function Panel({
   className?: string
 }): ReactElement {
   return (
-    <section className={`st-panel${className ? ` ${className}` : ''}`} aria-labelledby={id && title ? `${id}-h` : undefined}>
+    <section
+      className={`st-panel${className ? ` ${className}` : ''}`}
+      aria-labelledby={id && title ? `${id}-h` : undefined}
+    >
       {(title || actions) && (
         <header className="st-panel__head">
           <div>
@@ -147,7 +154,15 @@ export function Panel({
   )
 }
 
-export function SectionHead({ title, lead, actions }: { title: string; lead?: ReactNode; actions?: ReactNode }): ReactElement {
+export function SectionHead({
+  title,
+  lead,
+  actions,
+}: {
+  title: string
+  lead?: ReactNode
+  actions?: ReactNode
+}): ReactElement {
   return (
     <header className="st-head">
       <div>
@@ -173,7 +188,15 @@ export function Stat({ label, value, note }: { label: string; value: ReactNode; 
 
 export type ChipTone = 'neutral' | 'accent' | 'sample' | 'model' | 'ok' | 'warn' | 'muted'
 
-export function Chip({ children, tone = 'neutral', title }: { children: ReactNode; tone?: ChipTone; title?: string }): ReactElement {
+export function Chip({
+  children,
+  tone = 'neutral',
+  title,
+}: {
+  children: ReactNode
+  tone?: ChipTone
+  title?: string
+}): ReactElement {
   return (
     <span className={`st-chip st-chip--${tone}`} title={title}>
       {children}
@@ -269,7 +292,15 @@ export function countryName(code: string): string {
 }
 
 /** Açılır ayrıntı (<details>) — klavyeyle açılır, durum ekran okuyucuya bildirilir. */
-export function Disclosure({ summary, children, open }: { summary: ReactNode; children: ReactNode; open?: boolean }): ReactElement {
+export function Disclosure({
+  summary,
+  children,
+  open,
+}: {
+  summary: ReactNode
+  children: ReactNode
+  open?: boolean
+}): ReactElement {
   return (
     <details className="st-disclosure" open={open}>
       <summary>{summary}</summary>

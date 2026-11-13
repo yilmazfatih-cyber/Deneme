@@ -135,7 +135,11 @@ export interface PlacedBlock<T extends GuideItem = GuideItem> {
  * Bir kanalın yayınlarını pencereye yerleştirir: sıralar, pencere dışını atar, kenarda kırpar; çakışan yayında
  * sonraki yayının başı öncekinin bitişine çekilir (bloklar üst üste binmez, sıra bozulmaz).
  */
-export function placeRow<T extends GuideItem>(items: readonly T[], w: GuideWindow, remPerSlot = REM_PER_SLOT): PlacedBlock<T>[] {
+export function placeRow<T extends GuideItem>(
+  items: readonly T[],
+  w: GuideWindow,
+  remPerSlot = REM_PER_SLOT,
+): PlacedBlock<T>[] {
   const sorted = [...items].sort((a, b) => Date.parse(a.startAt) - Date.parse(b.startAt))
   const out: PlacedBlock<T>[] = []
   let cursor = w.from

@@ -114,6 +114,7 @@
   justify-content: center;
   width: 7.2rem;
   height: 4.4rem;
+  overflow: hidden;
   border-radius: 0.3rem;
   background: rgba(255, 255, 255, 0.08);
 }
@@ -121,9 +122,10 @@
   background: #1d1d1d;
 }
 .tvl-row__logo img {
-  max-width: 82%;
-  max-height: 78%;
-  object-fit: contain;
+  /* kanal logoları koyu kare karolardır: kutuyu doldurup üst-alt boşluk kırpılır, yazı büyür */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 .tvl-row__text {
   display: flex;
@@ -231,8 +233,9 @@
 .tvl-media__preview.is-on {
   opacity: 1;
 }
-.tvl-media__preview video {
-  object-fit: cover;
+.tvl-media .tvl-media__preview video {
+  /* bağdaştırıcı satır içi 'contain' verir; sahne kırpılmış 16:9'dan geniş olduğu için doldurulur */
+  object-fit: cover !important;
 }
 .tvl-media__scrim {
   position: absolute;
@@ -253,14 +256,15 @@
 }
 .tvl-media__logo {
   display: flex;
-  align-items: center;
-  height: 2.4rem;
+  width: 5.2rem;
+  height: 3rem;
+  overflow: hidden;
+  border-radius: 0.25rem;
 }
 .tvl-media__logo img {
-  max-height: 100%;
-  max-width: 8rem;
-  object-fit: contain;
-  filter: drop-shadow(0 0.1rem 0.4rem rgba(0, 0, 0, 0.7));
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .tvl-stage__body {
@@ -502,7 +506,7 @@
 .tvg-grid {
   display: grid;
   flex: 1;
-  grid-template-columns: 17rem minmax(0, 1fr);
+  grid-template-columns: 19rem minmax(0, 1fr);
   grid-template-rows: 3rem minmax(0, 1fr);
   min-height: 0;
   /* sağ güvenli alanın ötesine taşmasın, odak çerçevesi kırpılmasın */
@@ -586,21 +590,23 @@
 }
 .tvg-ch__logo {
   display: flex;
-  align-items: center;
-  justify-content: center;
   height: 3.6rem;
+  overflow: hidden;
+  border-radius: 0.25rem;
 }
 .tvg-ch__logo img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 .tvg-ch__name {
+  display: -webkit-box;
   overflow: hidden;
   font-size: 1.2rem;
   font-weight: 700;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  line-height: 1.25;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 .tvg-view {
   position: relative;
@@ -652,7 +658,8 @@
   background: var(--tv-surface-2);
   transition:
     background-color 120ms linear,
-    color 120ms linear;
+    color 120ms linear,
+    padding-left 220ms var(--tv-ease);
 }
 .tvg-block--live .tvg-block__inner {
   background: #3a3a3a;

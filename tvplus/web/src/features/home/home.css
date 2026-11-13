@@ -181,9 +181,8 @@
 
 /* Vitrin tanıtımı kutuyu doldurur */
 .gz-bb__clip video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  /* oynatıcı öğeye satır içi `contain` yazar */
+  object-fit: cover !important;
 }
 @media (max-width: 899px) {
   .gz-page--plain {

@@ -7,7 +7,18 @@ import type { CatalogMix, MixRow, Timeline } from '../../../../shared/intelligen
 import { useStudio } from './api'
 import { LineChart, PairedBars, TwinBars } from './charts'
 import { fmtHours, fmtInt, fmtMonth, fmtPct } from './format'
-import { Disclosure, Loadable, LoadingBlock, Panel, SectionHead, Segmented, SOURCE_LABEL, Stat, SyntheticTag, usesSynthetic } from './parts'
+import {
+  Disclosure,
+  Loadable,
+  LoadingBlock,
+  Panel,
+  SectionHead,
+  Segmented,
+  SOURCE_LABEL,
+  Stat,
+  SyntheticTag,
+  usesSynthetic,
+} from './parts'
 import { gapReadings, pairedRows } from './scales'
 
 type Scope = 'ALL' | 'MOVIE' | 'SHOW'
@@ -52,9 +63,16 @@ function Mix({ m }: { m: CatalogMix }): ReactElement {
       <div className="st-stats">
         <Stat label="Başlık" value={fmtInt(m.totalTitles)} />
         <Stat label="İzlenen saat" value={fmtHours(m.totalHours)} note={<SyntheticTag show={synthetic} />} />
-        <Stat label="Kaynaklar" value={<span className="st-small">{m.sources.map((s) => SOURCE_LABEL[s]).join(', ') || 'Yok'}</span>} />
+        <Stat
+          label="Kaynaklar"
+          value={<span className="st-small">{m.sources.map((s) => SOURCE_LABEL[s]).join(', ') || 'Yok'}</span>}
+        />
         <Stat label="Yerli içerik — katalog" value={fmtPct(m.local.catalogShare)} />
-        <Stat label="Yerli içerik — izlenme" value={fmtPct(m.local.viewShare)} note={<SyntheticTag show={synthetic} />} />
+        <Stat
+          label="Yerli içerik — izlenme"
+          value={fmtPct(m.local.viewShare)}
+          note={<SyntheticTag show={synthetic} />}
+        />
       </div>
       {readings.length > 0 && (
         <Panel className="st-reading">
@@ -70,7 +88,11 @@ function Mix({ m }: { m: CatalogMix }): ReactElement {
       )}
       <div className="st-grid2 st-grid2--wide-left">
         <Panel title="Tür" sub="Verime göre sıralı. Bir yapım birden çok tür taşıdığından paylar toplamda %100'ü aşar.">
-          <PairedBars data={pairedRows(m.byGenre)} caption="Türlere göre katalog payı ve izlenme payı" sampleTag={tag} />
+          <PairedBars
+            data={pairedRows(m.byGenre)}
+            caption="Türlere göre katalog payı ve izlenme payı"
+            sampleTag={tag}
+          />
         </Panel>
         <div className="st-stack">
           <Panel title="Yerli içerik">
@@ -89,7 +111,17 @@ function Mix({ m }: { m: CatalogMix }): ReactElement {
   )
 }
 
-function Breakdown({ title, rows, tag, limit }: { title: string; rows: MixRow[]; tag: ReactElement | undefined; limit?: number }): ReactElement {
+function Breakdown({
+  title,
+  rows,
+  tag,
+  limit,
+}: {
+  title: string
+  rows: MixRow[]
+  tag: ReactElement | undefined
+  limit?: number
+}): ReactElement {
   const data = pairedRows(rows, limit)
   return (
     <Panel title={title} sub={limit && rows.length > limit ? `İlk ${limit} / ${rows.length}` : undefined}>
@@ -130,7 +162,10 @@ function TimelinePanel(): ReactElement {
 
 function TimelineChart({ t }: { t: Timeline }): ReactElement {
   const ranked = useMemo(
-    () => [...t.series].sort((a, b) => (b.viewShare[b.viewShare.length - 1] ?? 0) - (a.viewShare[a.viewShare.length - 1] ?? 0)),
+    () =>
+      [...t.series].sort(
+        (a, b) => (b.viewShare[b.viewShare.length - 1] ?? 0) - (a.viewShare[a.viewShare.length - 1] ?? 0),
+      ),
     [t],
   )
   const [key, setKey] = useState<string | null>(null)

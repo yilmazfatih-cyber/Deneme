@@ -7,7 +7,8 @@ describe('kumanda adresi', () => {
     expect(phoneRemoteUrl('https://tvplus.example/')).toBe('https://tvplus.example/#/kumanda')
   })
   it('yerel adresleri tanır', () => {
-    for (const h of ['localhost', '127.0.0.1', '127.1.2.3', 'tv.localhost', '::1']) expect(isLocalHostname(h)).toBe(true)
+    for (const h of ['localhost', '127.0.0.1', '127.1.2.3', 'tv.localhost', '::1'])
+      expect(isLocalHostname(h)).toBe(true)
     expect(isLocalHostname('192.168.1.20')).toBe(false)
   })
   it('giriş doğrulama adresinden yerel ağ kökünü alır', () => {
