@@ -1,0 +1,130 @@
+query DetailModal($videoId: Int!) {
+  video(videoId: $videoId) {
+    ...CardVideo
+    synopsis
+    contextualSynopsis
+    runtimeSec
+    isAvailable
+    isInPlaylist
+    playlistActions
+    thumbRating
+    playbackBadges
+    billboard: artwork(type: BILLBOARD, params: { width: 1280 }) {
+      ...ArtworkFields
+    }
+    genreTags {
+      genreId
+      name
+    }
+    moodTags {
+      id
+      displayName
+      isMood
+    }
+    contentAdvisory {
+      certificationValue
+      maturityLevel
+      boardName
+      reasons
+    }
+    textEvidence(uiContext: ODP) {
+      key
+      text
+    }
+    license {
+      name
+      attribution
+      url
+    }
+    promoVideo {
+      viewableId
+      computeId
+      offset
+      sourceKind
+    }
+    ... on Movie {
+      originalTitle
+      cast {
+        personId
+        name
+      }
+      directors {
+        personId
+        name
+      }
+      creators {
+        personId
+        name
+      }
+      similars(first: 12) {
+        ...CardVideo
+      }
+      supplementalVideos {
+        ...CardVideo
+        subType
+      }
+      collections {
+        collectionId
+        name
+      }
+    }
+    ... on Show {
+      originalTitle
+      seasonCount
+      episodeCount
+      cast {
+        personId
+        name
+      }
+      directors {
+        personId
+        name
+      }
+      creators {
+        personId
+        name
+      }
+      currentEpisode {
+        ...CardVideo
+        number
+        seasonNumber
+        runtimeSec
+      }
+      seasons {
+        seasonId
+        number
+        numberLabel
+        title
+        episodes {
+          ...CardVideo
+          number
+          seasonNumber
+          synopsis
+          runtimeSec
+          still: artwork(type: EPISODE_STILL, params: { width: 480 }) {
+            ...ArtworkFields
+          }
+        }
+      }
+      similars(first: 12) {
+        ...CardVideo
+      }
+      supplementalVideos {
+        ...CardVideo
+        subType
+      }
+      collections {
+        collectionId
+        name
+      }
+    }
+    ... on Episode {
+      number
+      seasonNumber
+      parentShow {
+        videoId
+        title
+      }
+    }
+  }
+}

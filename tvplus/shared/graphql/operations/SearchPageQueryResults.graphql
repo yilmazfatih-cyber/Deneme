@@ -1,0 +1,70 @@
+query SearchPageQueryResults($searchTerm: String!, $options: SearchOptionsInput!) {
+  searchPage(searchTerm: $searchTerm, options: $options) {
+    searchTerm
+    requestId
+    trackId
+    expires
+    isFallback
+    recentSearches
+    correction {
+      mode
+      originalTerm
+      correctedTerm
+    }
+    sections {
+      __typename
+      id
+      displayString
+      expires
+      ... on SearchGallerySection {
+        totalCount
+      }
+      entities {
+        unifiedEntityId
+        kind
+        displayString
+        treatment
+        fuzzy
+        track {
+          ...TrackFields
+        }
+        contextualArtwork {
+          ...ArtworkFields
+        }
+        video {
+          ...CardVideo
+        }
+        channel {
+          ...ChannelCard
+        }
+        airing {
+          ...AiringBrief
+          channel {
+            channelId
+            name
+            number
+            logo(params: { width: 96 }) {
+              ...ArtworkFields
+            }
+          }
+          video {
+            videoId
+          }
+        }
+        person {
+          personId
+          name
+        }
+        collection {
+          collectionId
+          name
+          description
+        }
+        genre {
+          genreId
+          name
+        }
+      }
+    }
+  }
+}

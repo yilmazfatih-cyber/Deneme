@@ -1,0 +1,12 @@
+query Guide($from: DateTime!, $to: DateTime!, $category: String) {
+  channels(category: $category) {
+    ...ChannelCard
+    airings(from: $from, to: $to) {
+      ...AiringBrief
+      synopsis
+      video {
+        videoId
+      }
+    }
+  }
+}

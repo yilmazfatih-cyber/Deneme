@@ -1,0 +1,46 @@
+/* "Kaputun altı" başlatıcı düğmesi (panel kapalıyken tek görünen parça). */
+.kp-launcher {
+  position: fixed;
+  right: 16px;
+  bottom: calc(var(--bottomnav-h) + 16px + env(safe-area-inset-bottom, 0px));
+  z-index: 2000;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: var(--r-pill);
+  background: var(--s2);
+  border: 1px solid var(--line-strong);
+  color: var(--t1);
+  font: 700 13px/16px var(--font);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+}
+.kp-launcher:hover {
+  background: var(--s3);
+}
+.kp-launcher-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--t3);
+  transition: background-color 0.2s;
+}
+.kp-launcher-dot.is-on {
+  background: var(--t1);
+  animation: kp-pulse 1.2s ease-out;
+}
+@keyframes kp-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 0 8px rgba(255, 255, 255, 0);
+  }
+}
+@media (min-width: 900px) {
+  .kp-launcher {
+    right: 24px;
+    bottom: 24px;
+  }
+}

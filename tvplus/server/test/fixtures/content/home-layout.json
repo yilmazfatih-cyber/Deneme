@@ -1,0 +1,33 @@
+{
+  "billboard": [
+    80010001,
+    80010003,
+    80030001
+  ],
+  "rows": [
+    {
+      "kind": "genre",
+      "genre": "animasyon"
+    },
+    {
+      "kind": "collection",
+      "collectionId": 9001
+    },
+    {
+      "kind": "curated",
+      "id": "editor-secimi",
+      "title": "Editörün seçimi",
+      "videoIds": [
+        80020001,
+        80010004,
+        80040001,
+        80010005
+      ]
+    },
+    {
+      "kind": "genre",
+      "genre": "korku",
+      "title": "Gece yarısı korkuları"
+    }
+  ]
+}

@@ -1,0 +1,120 @@
+{
+  "version": 102,
+  "operations": {
+    "45d0aaae-059d-4e88-a78d-ded6b8874d68": {
+      "name": "AddToPlaylist",
+      "type": "mutation",
+      "document": "mutation AddToPlaylist($videoId: Int!, $tctx: String) {\n  addToPlaylist(videoId: $videoId, tctx: $tctx) {\n    isInPlaylist\n    video {\n      videoId\n      isInPlaylist\n      playlistActions\n    }\n  }\n}"
+    },
+    "b5ab0dcd-4ae3-47b9-af3c-fadd76aa9e7c": {
+      "name": "ClearRecentSearches",
+      "type": "mutation",
+      "document": "mutation ClearRecentSearches {\n  clearRecentSearches\n}"
+    },
+    "b17ec0b4-6006-4878-acd7-fa27accb26a5": {
+      "name": "CollectionPage",
+      "type": "query",
+      "document": "query CollectionPage($collectionId: Int!) {\n  collection(collectionId: $collectionId) {\n    collectionId\n    unifiedEntityId\n    name\n    description\n    videos {\n      ...CardVideo\n    }\n  }\n}\n\nfragment AccessFields on Access {\n  state\n  reasonText\n  requiredProduct\n  requiredProductName\n  cta\n}\n\nfragment ArtworkFields on Artwork {\n  key\n  type\n  url\n  width\n  height\n}\n\nfragment CardVideo on Video {\n  __typename\n  videoId\n  unifiedEntityId\n  title\n  shortSynopsis\n  displayRuntime\n  latestYear\n  isPlayable\n  isKids\n  top10Rank\n  sourceKinds\n  watchStatus\n  access {\n    ...AccessFields\n  }\n  badge {\n    kind\n    text\n  }\n  boxart: artwork(type: BOXART, params: {width: 368}) {\n    ...ArtworkFields\n  }\n  storyArt: artwork(type: STORY_ART, params: {width: 600}) {\n    ...ArtworkFields\n  }\n  contentAdvisory {\n    certificationValue\n    maturityLevel\n  }\n  bookmark {\n    positionSec\n    runtimeSec\n    progress\n  }\n  ... on Episode {\n    numberLabel\n    parentShow {\n      videoId\n      title\n    }\n  }\n}"
+    },
+    "c68d01c6-a564-4f6a-aa1d-876e40ae7512": {
+      "name": "DetailModal",
+      "type": "query",
+      "document": "query DetailModal($videoId: Int!) {\n  video(videoId: $videoId) {\n    ...CardVideo\n    synopsis\n    contextualSynopsis\n    runtimeSec\n    isAvailable\n    isInPlaylist\n    playlistActions\n    thumbRating\n    playbackBadges\n    billboard: artwork(type: BILLBOARD, params: {width: 1280}) {\n      ...ArtworkFields\n    }\n    genreTags {\n      genreId\n      name\n    }\n    moodTags {\n      id\n      displayName\n      isMood\n    }\n    contentAdvisory {\n      certificationValue\n      maturityLevel\n      boardName\n      reasons\n    }\n    textEvidence(uiContext: ODP) {\n      key\n      text\n    }\n    license {\n      name\n      attribution\n      url\n    }\n    promoVideo {\n      viewableId\n      computeId\n      offset\n      sourceKind\n    }\n    ... on Movie {\n      originalTitle\n      cast {\n        personId\n        name\n      }\n      directors {\n        personId\n        name\n      }\n      creators {\n        personId\n        name\n      }\n      similars(first: 12) {\n        ...CardVideo\n      }\n      supplementalVideos {\n        ...CardVideo\n        subType\n      }\n      collections {\n        collectionId\n        name\n      }\n    }\n    ... on Show {\n      originalTitle\n      seasonCount\n      episodeCount\n      cast {\n        personId\n        name\n      }\n      directors {\n        personId\n        name\n      }\n      creators {\n        personId\n        name\n      }\n      currentEpisode {\n        ...CardVideo\n        number\n        seasonNumber\n        runtimeSec\n      }\n      seasons {\n        seasonId\n        number\n        numberLabel\n        title\n        episodes {\n          ...CardVideo\n          number\n          seasonNumber\n          synopsis\n          runtimeSec\n          still: artwork(type: EPISODE_STILL, params: {width: 480}) {\n            ...ArtworkFields\n          }\n        }\n      }\n      similars(first: 12) {\n        ...CardVideo\n      }\n      supplementalVideos {\n        ...CardVideo\n        subType\n      }\n      collections {\n        collectionId\n        name\n      }\n    }\n    ... on Episode {\n      number\n      seasonNumber\n      parentShow {\n        videoId\n        title\n      }\n    }\n  }\n}\n\nfragment AccessFields on Access {\n  state\n  reasonText\n  requiredProduct\n  requiredProductName\n  cta\n}\n\nfragment ArtworkFields on Artwork {\n  key\n  type\n  url\n  width\n  height\n}\n\nfragment CardVideo on Video {\n  __typename\n  videoId\n  unifiedEntityId\n  title\n  shortSynopsis\n  displayRuntime\n  latestYear\n  isPlayable\n  isKids\n  top10Rank\n  sourceKinds\n  watchStatus\n  access {\n    ...AccessFields\n  }\n  badge {\n    kind\n    text\n  }\n  boxart: artwork(type: BOXART, params: {width: 368}) {\n    ...ArtworkFields\n  }\n  storyArt: artwork(type: STORY_ART, params: {width: 600}) {\n    ...ArtworkFields\n  }\n  contentAdvisory {\n    certificationValue\n    maturityLevel\n  }\n  bookmark {\n    positionSec\n    runtimeSec\n    progress\n  }\n  ... on Episode {\n    numberLabel\n    parentShow {\n      videoId\n      title\n    }\n  }\n}"
+    },
+    "e0d34923-60a4-4916-aac8-87f2417028cf": {
+      "name": "DismissInterstitial",
+      "type": "mutation",
+      "document": "mutation DismissInterstitial($id: ID!) {\n  dismissInterstitial(id: $id)\n}"
+    },
+    "1783f1cf-80e3-46a9-a46e-ae82764c4c3a": {
+      "name": "GenrePage",
+      "type": "query",
+      "document": "query GenrePage($genreId: Int!) {\n  genre(genreId: $genreId) {\n    genreId\n    name\n    videos(first: 60) {\n      ...CardVideo\n    }\n  }\n}\n\nfragment AccessFields on Access {\n  state\n  reasonText\n  requiredProduct\n  requiredProductName\n  cta\n}\n\nfragment ArtworkFields on Artwork {\n  key\n  type\n  url\n  width\n  height\n}\n\nfragment CardVideo on Video {\n  __typename\n  videoId\n  unifiedEntityId\n  title\n  shortSynopsis\n  displayRuntime\n  latestYear\n  isPlayable\n  isKids\n  top10Rank\n  sourceKinds\n  watchStatus\n  access {\n    ...AccessFields\n  }\n  badge {\n    kind\n    text\n  }\n  boxart: artwork(type: BOXART, params: {width: 368}) {\n    ...ArtworkFields\n  }\n  storyArt: artwork(type: STORY_ART, params: {width: 600}) {\n    ...ArtworkFields\n  }\n  contentAdvisory {\n    certificationValue\n    maturityLevel\n  }\n  bookmark {\n    positionSec\n    runtimeSec\n    progress\n  }\n  ... on Episode {\n    numberLabel\n    parentShow {\n      videoId\n      title\n    }\n  }\n}"
+    },
+    "9f1be5ab-af4d-4f70-ae8b-03d826934a58": {
+      "name": "Guide",
+      "type": "query",
+      "document": "query Guide($from: DateTime!, $to: DateTime!, $category: String) {\n  channels(category: $category) {\n    ...ChannelCard\n    airings(from: $from, to: $to) {\n      ...AiringBrief\n      synopsis\n      video {\n        videoId\n      }\n    }\n  }\n}\n\nfragment AccessFields on Access {\n  state\n  reasonText\n  requiredProduct\n  requiredProductName\n  cta\n}\n\nfragment AiringBrief on ProgramAiring {\n  __typename\n  airingId\n  unifiedEntityId\n  title\n  kind\n  startAt\n  endAt\n  liveState\n  startOver\n  catchup {\n    available\n    until\n  }\n  access {\n    ...AccessFields\n  }\n}\n\nfragment ArtworkFields on Artwork {\n  key\n  type\n  url\n  width\n  height\n}\n\nfragment ChannelCard on Channel {\n  __typename\n  channelId\n  unifiedEntityId\n  name\n  number\n  category\n  categoryName\n  isHd\n  isFavorite\n  isKids\n  isSampleSchedule\n  sourceKind\n  access {\n    ...AccessFields\n  }\n  logo(params: {width: 128}) {\n    ...ArtworkFields\n  }\n  now {\n    ...AiringBrief\n  }\n  next {\n    ...AiringBrief\n  }\n}"
+    },
+    "3d469ec4-03aa-480d-ade9-7d32a3baed40": {
+      "name": "InterstitialHome",
+      "type": "query",
+      "document": "query InterstitialHome($location: String!) {\n  interstitial(location: $location) {\n    id\n    location\n    title\n    body\n    cta\n    href\n  }\n}"
+    },
+    "674c1014-834d-411c-ae3c-4ace1f8485f1": {
+      "name": "Library",
+      "type": "query",
+      "document": "query Library {\n  library {\n    myList {\n      ...CardVideo\n    }\n    continueWatching {\n      ...CardVideo\n    }\n    liked {\n      ...CardVideo\n    }\n    favoriteChannels {\n      ...ChannelCard\n    }\n  }\n}\n\nfragment AccessFields on Access {\n  state\n  reasonText\n  requiredProduct\n  requiredProductName\n  cta\n}\n\nfragment AiringBrief on ProgramAiring {\n  __typename\n  airingId\n  unifiedEntityId\n  title\n  kind\n  startAt\n  endAt\n  liveState\n  startOver\n  catchup {\n    available\n    until\n  }\n  access {\n    ...AccessFields\n  }\n}\n\nfragment ArtworkFields on Artwork {\n  key\n  type\n  url\n  width\n  height\n}\n\nfragment CardVideo on Video {\n  __typename\n  videoId\n  unifiedEntityId\n  title\n  shortSynopsis\n  displayRuntime\n  latestYear\n  isPlayable\n  isKids\n  top10Rank\n  sourceKinds\n  watchStatus\n  access {\n    ...AccessFields\n  }\n  badge {\n    kind\n    text\n  }\n  boxart: artwork(type: BOXART, params: {width: 368}) {\n    ...ArtworkFields\n  }\n  storyArt: artwork(type: STORY_ART, params: {width: 600}) {\n    ...ArtworkFields\n  }\n  contentAdvisory {\n    certificationValue\n    maturityLevel\n  }\n  bookmark {\n    positionSec\n    runtimeSec\n    progress\n  }\n  ... on Episode {\n    numberLabel\n    parentShow {\n      videoId\n      title\n    }\n  }\n}\n\nfragment ChannelCard on Channel {\n  __typename\n  channelId\n  unifiedEntityId\n  name\n  number\n  category\n  categoryName\n  isHd\n  isFavorite\n  isKids\n  isSampleSchedule\n  sourceKind\n  access {\n    ...AccessFields\n  }\n  logo(params: {width: 128}) {\n    ...ArtworkFields\n  }\n  now {\n    ...AiringBrief\n  }\n  next {\n    ...AiringBrief\n  }\n}"
+    },
+    "3293e931-413d-4fc9-ab90-ad472c2059aa": {
+      "name": "LivePage",
+      "type": "query",
+      "document": "query LivePage($capabilities: PageCapabilitiesInput!) {\n  livePage(capabilities: $capabilities) {\n    id\n    expires\n    serverTime\n    rows {\n      rowId\n      type\n      title\n      ttlSec\n      trackId\n      bridgeTo\n      items {\n        kind\n        track {\n          ...TrackFields\n        }\n        entity {\n          __typename\n          ... on Channel {\n            ...ChannelCard\n            description\n          }\n          ... on ProgramAiring {\n            ...AiringBrief\n            synopsis\n            channel {\n              channelId\n              name\n              number\n              sourceKind\n              logo(params: {width: 96}) {\n                ...ArtworkFields\n              }\n            }\n            video {\n              videoId\n            }\n            art: artwork(params: {width: 600}) {\n              ...ArtworkFields\n            }\n          }\n          ... on Movie {\n            ...CardVideo\n          }\n          ... on Show {\n            ...CardVideo\n          }\n          ... on Episode {\n            ...CardVideo\n          }\n        }\n      }\n    }\n  }\n}\n\nfragment AccessFields on Access {\n  state\n  reasonText\n  requiredProduct\n  requiredProductName\n  cta\n}\n\nfragment AiringBrief on ProgramAiring {\n  __typename\n  airingId\n  unifiedEntityId\n  title\n  kind\n  startAt\n  endAt\n  liveState\n  startOver\n  catchup {\n    available\n    until\n  }\n  access {\n    ...AccessFields\n  }\n}\n\nfragment ArtworkFields on Artwork {\n  key\n  type\n  url\n  width\n  height\n}\n\nfragment CardVideo on Video {\n  __typename\n  videoId\n  unifiedEntityId\n  title\n  shortSynopsis\n  displayRuntime\n  latestYear\n  isPlayable\n  isKids\n  top10Rank\n  sourceKinds\n  watchStatus\n  access {\n    ...AccessFields\n  }\n  badge {\n    kind\n    text\n  }\n  boxart: artwork(type: BOXART, params: {width: 368}) {\n    ...ArtworkFields\n  }\n  storyArt: artwork(type: STORY_ART, params: {width: 600}) {\n    ...ArtworkFields\n  }\n  contentAdvisory {\n    certificationValue\n    maturityLevel\n  }\n  bookmark {\n    positionSec\n    runtimeSec\n    progress\n  }\n  ... on Episode {\n    numberLabel\n    parentShow {\n      videoId\n      title\n    }\n  }\n}\n\nfragment ChannelCard on Channel {\n  __typename\n  channelId\n  unifiedEntityId\n  name\n  number\n  category\n  categoryName\n  isHd\n  isFavorite\n  isKids\n  isSampleSchedule\n  sourceKind\n  access {\n    ...AccessFields\n  }\n  logo(params: {width: 128}) {\n    ...ArtworkFields\n  }\n  now {\n    ...AiringBrief\n  }\n  next {\n    ...AiringBrief\n  }\n}\n\nfragment TrackFields on Track {\n  row\n  pos\n  rowId\n  trackId\n  entityId\n  tctx\n}"
+    },
+    "295bcc77-e799-4112-a4a3-c1eed84c9327": {
+      "name": "MarkNotificationsRead",
+      "type": "mutation",
+      "document": "mutation MarkNotificationsRead($ids: [ID!]) {\n  markNotificationsRead(ids: $ids)\n}"
+    },
+    "9894b953-d5b7-46d1-a483-b81009d22d43": {
+      "name": "MembershipStatus",
+      "type": "query",
+      "document": "query MembershipStatus {\n  membershipStatus {\n    status\n    account {\n      accountId\n      planName\n      products\n      profiles {\n        guid\n        name\n        isKids\n        maturityLevel\n        isActive\n        avatar(params: {width: 160}) {\n          ...ArtworkFields\n        }\n      }\n    }\n    activeProfile {\n      guid\n      name\n      isKids\n    }\n  }\n}\n\nfragment ArtworkFields on Artwork {\n  key\n  type\n  url\n  width\n  height\n}"
+    },
+    "9b032c6a-be5c-491f-a56c-0a92d082a112": {
+      "name": "MiniModalQuery",
+      "type": "query",
+      "document": "query MiniModalQuery($videoIds: [Int!]!, $uiContext: TextEvidenceUiContext = BOB) {\n  videos(videoIds: $videoIds) {\n    ...CardVideo\n    isInPlaylist\n    playlistActions\n    thumbRating\n    playbackBadges\n    runtimeSec\n    textEvidence(uiContext: $uiContext) {\n      key\n      text\n    }\n    promoVideo {\n      viewableId\n      computeId\n      offset\n      sourceKind\n    }\n    genreTags {\n      genreId\n      name\n    }\n    boxartHighRes: artwork(type: BOXART, params: {width: 736}) {\n      ...ArtworkFields\n    }\n    titleLogo: artwork(type: TITLE_LOGO, params: {width: 400}) {\n      ...ArtworkFields\n    }\n    ... on Show {\n      seasonCount\n      currentEpisode {\n        videoId\n        numberLabel\n        title\n        runtimeSec\n        bookmark {\n          positionSec\n          progress\n        }\n      }\n    }\n  }\n}\n\nfragment AccessFields on Access {\n  state\n  reasonText\n  requiredProduct\n  requiredProductName\n  cta\n}\n\nfragment ArtworkFields on Artwork {\n  key\n  type\n  url\n  width\n  height\n}\n\nfragment CardVideo on Video {\n  __typename\n  videoId\n  unifiedEntityId\n  title\n  shortSynopsis\n  displayRuntime\n  latestYear\n  isPlayable\n  isKids\n  top10Rank\n  sourceKinds\n  watchStatus\n  access {\n    ...AccessFields\n  }\n  badge {\n    kind\n    text\n  }\n  boxart: artwork(type: BOXART, params: {width: 368}) {\n    ...ArtworkFields\n  }\n  storyArt: artwork(type: STORY_ART, params: {width: 600}) {\n    ...ArtworkFields\n  }\n  contentAdvisory {\n    certificationValue\n    maturityLevel\n  }\n  bookmark {\n    positionSec\n    runtimeSec\n    progress\n  }\n  ... on Episode {\n    numberLabel\n    parentShow {\n      videoId\n      title\n    }\n  }\n}"
+    },
+    "0b2e2a42-d2bb-4aa4-aa17-40904589be7d": {
+      "name": "Notifications",
+      "type": "query",
+      "document": "query Notifications {\n  notifications {\n    id\n    kind\n    title\n    body\n    href\n    createdAt\n    read\n  }\n}"
+    },
+    "8fa3819c-6383-46e8-a771-5a781cdb4ecb": {
+      "name": "PersonPage",
+      "type": "query",
+      "document": "query PersonPage($personId: Int!) {\n  person(personId: $personId) {\n    personId\n    name\n    videos {\n      ...CardVideo\n    }\n  }\n}\n\nfragment AccessFields on Access {\n  state\n  reasonText\n  requiredProduct\n  requiredProductName\n  cta\n}\n\nfragment ArtworkFields on Artwork {\n  key\n  type\n  url\n  width\n  height\n}\n\nfragment CardVideo on Video {\n  __typename\n  videoId\n  unifiedEntityId\n  title\n  shortSynopsis\n  displayRuntime\n  latestYear\n  isPlayable\n  isKids\n  top10Rank\n  sourceKinds\n  watchStatus\n  access {\n    ...AccessFields\n  }\n  badge {\n    kind\n    text\n  }\n  boxart: artwork(type: BOXART, params: {width: 368}) {\n    ...ArtworkFields\n  }\n  storyArt: artwork(type: STORY_ART, params: {width: 600}) {\n    ...ArtworkFields\n  }\n  contentAdvisory {\n    certificationValue\n    maturityLevel\n  }\n  bookmark {\n    positionSec\n    runtimeSec\n    progress\n  }\n  ... on Episode {\n    numberLabel\n    parentShow {\n      videoId\n      title\n    }\n  }\n}"
+    },
+    "a917aa5e-0d3f-4be0-a087-4a5f914f9237": {
+      "name": "PlaybackMetadata",
+      "type": "query",
+      "document": "query PlaybackMetadata($viewableId: ID!) {\n  playbackMetadata(viewableId: $viewableId) {\n    viewableId\n    title\n    subtitle\n    live\n    creditsOffsetSec\n    access {\n      ...AccessFields\n    }\n    bookmark {\n      positionSec\n      runtimeSec\n      progress\n    }\n    video {\n      ...CardVideo\n      synopsis\n      runtimeSec\n      license {\n        name\n        attribution\n        url\n      }\n      ... on Episode {\n        number\n        seasonNumber\n      }\n    }\n    channel {\n      ...ChannelCard\n    }\n    airing {\n      ...AiringBrief\n      synopsis\n    }\n    nextEpisode {\n      ...CardVideo\n      number\n      seasonNumber\n      runtimeSec\n    }\n    previousChannel {\n      channelId\n      name\n      number\n    }\n    nextChannel {\n      channelId\n      name\n      number\n    }\n  }\n}\n\nfragment AccessFields on Access {\n  state\n  reasonText\n  requiredProduct\n  requiredProductName\n  cta\n}\n\nfragment AiringBrief on ProgramAiring {\n  __typename\n  airingId\n  unifiedEntityId\n  title\n  kind\n  startAt\n  endAt\n  liveState\n  startOver\n  catchup {\n    available\n    until\n  }\n  access {\n    ...AccessFields\n  }\n}\n\nfragment ArtworkFields on Artwork {\n  key\n  type\n  url\n  width\n  height\n}\n\nfragment CardVideo on Video {\n  __typename\n  videoId\n  unifiedEntityId\n  title\n  shortSynopsis\n  displayRuntime\n  latestYear\n  isPlayable\n  isKids\n  top10Rank\n  sourceKinds\n  watchStatus\n  access {\n    ...AccessFields\n  }\n  badge {\n    kind\n    text\n  }\n  boxart: artwork(type: BOXART, params: {width: 368}) {\n    ...ArtworkFields\n  }\n  storyArt: artwork(type: STORY_ART, params: {width: 600}) {\n    ...ArtworkFields\n  }\n  contentAdvisory {\n    certificationValue\n    maturityLevel\n  }\n  bookmark {\n    positionSec\n    runtimeSec\n    progress\n  }\n  ... on Episode {\n    numberLabel\n    parentShow {\n      videoId\n      title\n    }\n  }\n}\n\nfragment ChannelCard on Channel {\n  __typename\n  channelId\n  unifiedEntityId\n  name\n  number\n  category\n  categoryName\n  isHd\n  isFavorite\n  isKids\n  isSampleSchedule\n  sourceKind\n  access {\n    ...AccessFields\n  }\n  logo(params: {width: 128}) {\n    ...ArtworkFields\n  }\n  now {\n    ...AiringBrief\n  }\n  next {\n    ...AiringBrief\n  }\n}"
+    },
+    "657b4b75-f827-439a-a0a5-36e650ea208c": {
+      "name": "RecordSearch",
+      "type": "mutation",
+      "document": "mutation RecordSearch($term: String!) {\n  recordSearch(term: $term)\n}"
+    },
+    "6c596471-e4f6-4a12-a66b-8ab9adb1c7d2": {
+      "name": "RemoveFromPlaylist",
+      "type": "mutation",
+      "document": "mutation RemoveFromPlaylist($videoId: Int!) {\n  removeFromPlaylist(videoId: $videoId) {\n    isInPlaylist\n    video {\n      videoId\n      isInPlaylist\n      playlistActions\n    }\n  }\n}"
+    },
+    "45d05a6f-6634-4bd2-aa3e-332a61346e20": {
+      "name": "SearchPageQueryResults",
+      "type": "query",
+      "document": "query SearchPageQueryResults($searchTerm: String!, $options: SearchOptionsInput!) {\n  searchPage(searchTerm: $searchTerm, options: $options) {\n    searchTerm\n    requestId\n    trackId\n    expires\n    isFallback\n    recentSearches\n    correction {\n      mode\n      originalTerm\n      correctedTerm\n    }\n    sections {\n      __typename\n      id\n      displayString\n      expires\n      ... on SearchGallerySection {\n        totalCount\n      }\n      entities {\n        unifiedEntityId\n        kind\n        displayString\n        treatment\n        fuzzy\n        track {\n          ...TrackFields\n        }\n        contextualArtwork {\n          ...ArtworkFields\n        }\n        video {\n          ...CardVideo\n        }\n        channel {\n          ...ChannelCard\n        }\n        airing {\n          ...AiringBrief\n          channel {\n            channelId\n            name\n            number\n            logo(params: {width: 96}) {\n              ...ArtworkFields\n            }\n          }\n          video {\n            videoId\n          }\n        }\n        person {\n          personId\n          name\n        }\n        collection {\n          collectionId\n          name\n          description\n        }\n        genre {\n          genreId\n          name\n        }\n      }\n    }\n  }\n}\n\nfragment AccessFields on Access {\n  state\n  reasonText\n  requiredProduct\n  requiredProductName\n  cta\n}\n\nfragment AiringBrief on ProgramAiring {\n  __typename\n  airingId\n  unifiedEntityId\n  title\n  kind\n  startAt\n  endAt\n  liveState\n  startOver\n  catchup {\n    available\n    until\n  }\n  access {\n    ...AccessFields\n  }\n}\n\nfragment ArtworkFields on Artwork {\n  key\n  type\n  url\n  width\n  height\n}\n\nfragment CardVideo on Video {\n  __typename\n  videoId\n  unifiedEntityId\n  title\n  shortSynopsis\n  displayRuntime\n  latestYear\n  isPlayable\n  isKids\n  top10Rank\n  sourceKinds\n  watchStatus\n  access {\n    ...AccessFields\n  }\n  badge {\n    kind\n    text\n  }\n  boxart: artwork(type: BOXART, params: {width: 368}) {\n    ...ArtworkFields\n  }\n  storyArt: artwork(type: STORY_ART, params: {width: 600}) {\n    ...ArtworkFields\n  }\n  contentAdvisory {\n    certificationValue\n    maturityLevel\n  }\n  bookmark {\n    positionSec\n    runtimeSec\n    progress\n  }\n  ... on Episode {\n    numberLabel\n    parentShow {\n      videoId\n      title\n    }\n  }\n}\n\nfragment ChannelCard on Channel {\n  __typename\n  channelId\n  unifiedEntityId\n  name\n  number\n  category\n  categoryName\n  isHd\n  isFavorite\n  isKids\n  isSampleSchedule\n  sourceKind\n  access {\n    ...AccessFields\n  }\n  logo(params: {width: 128}) {\n    ...ArtworkFields\n  }\n  now {\n    ...AiringBrief\n  }\n  next {\n    ...AiringBrief\n  }\n}\n\nfragment TrackFields on Track {\n  row\n  pos\n  rowId\n  trackId\n  entityId\n  tctx\n}"
+    },
+    "847c3206-c437-4639-aa65-0c8295e77303": {
+      "name": "SetBookmark",
+      "type": "mutation",
+      "document": "mutation SetBookmark($viewableId: ID!, $positionSec: Int!, $durationSec: Int) {\n  setBookmark(\n    viewableId: $viewableId\n    positionSec: $positionSec\n    durationSec: $durationSec\n  ) {\n    viewableId\n    watchStatus\n    bookmark {\n      positionSec\n      runtimeSec\n      progress\n    }\n  }\n}"
+    },
+    "9af7506c-0d4b-433f-adf8-289a7a2f0a0e": {
+      "name": "SetLastChannel",
+      "type": "mutation",
+      "document": "mutation SetLastChannel($channelId: Int!) {\n  setLastChannel(channelId: $channelId)\n}"
+    },
+    "6471ba95-7c47-4f1f-adef-b1731eda828b": {
+      "name": "SetThumbRating",
+      "type": "mutation",
+      "document": "mutation SetThumbRating($videoId: Int!, $rating: ThumbRating!) {\n  setThumbRating(videoId: $videoId, rating: $rating) {\n    thumbRating\n    video {\n      videoId\n      thumbRating\n    }\n  }\n}"
+    },
+    "9cbfc4c3-477b-4f27-abae-50dcc7abb0ac": {
+      "name": "ToggleFavoriteChannel",
+      "type": "mutation",
+      "document": "mutation ToggleFavoriteChannel($channelId: Int!) {\n  toggleFavoriteChannel(channelId: $channelId) {\n    channelId\n    isFavorite\n  }\n}"
+    }
+  }
+}

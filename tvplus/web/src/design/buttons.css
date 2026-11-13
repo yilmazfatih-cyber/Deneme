@@ -1,0 +1,222 @@
+/* çini — butonlar, çip, Geçiş (DESIGN_SPEC §2). */
+
+.cn-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 48px;
+  padding: 0 24px;
+  border: 0;
+  border-radius: var(--r-pill);
+  font: inherit;
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 700;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 120ms ease,
+    opacity 120ms ease;
+}
+.cn-btn--md {
+  height: 40px;
+  padding: 0 20px;
+}
+.cn-btn--sm {
+  height: 36px;
+  padding: 0 16px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.cn-btn--block {
+  display: flex;
+  width: 100%;
+}
+.cn-btn--primary {
+  background: var(--yellow);
+  color: var(--on-yellow);
+}
+.cn-btn--primary:hover {
+  filter: brightness(1.06); /* yeni renk yok: üzerine gelme geri bildirimi */
+}
+.cn-btn--secondary {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--t1);
+}
+.cn-btn--secondary:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+.cn-btn--tertiary {
+  height: 44px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--t1);
+}
+.cn-btn--tertiary.cn-btn--md {
+  height: 40px;
+}
+.cn-btn--tertiary.cn-btn--sm {
+  height: 36px;
+}
+.cn-btn--tertiary:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+.cn-btn--over {
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+.cn-btn:disabled,
+.cn-btn[aria-disabled='true'] {
+  opacity: 0.5;
+  cursor: default;
+}
+.cn-btn[aria-busy='true'] {
+  cursor: progress;
+}
+@media (min-width: 900px) {
+  .cn-btn {
+    font-size: 16px;
+  }
+  .cn-btn--sm {
+    font-size: 13px;
+  }
+}
+
+/* İkon buton */
+.cn-iconbtn {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--t1);
+  cursor: pointer;
+  transition: background-color 120ms ease;
+}
+.cn-iconbtn--40 {
+  width: 40px;
+  height: 40px;
+}
+.cn-iconbtn--36 {
+  width: 36px;
+  height: 36px;
+}
+.cn-iconbtn:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+.cn-iconbtn--ghost {
+  background: transparent;
+}
+.cn-iconbtn--ghost:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+.cn-iconbtn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* Metin buton ("Tümü") */
+.cn-textbtn {
+  display: inline-flex;
+  align-items: center;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--t2);
+  font: inherit;
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.cn-textbtn:hover {
+  color: var(--t1);
+}
+
+/* Çip — seçili BEYAZ (sarı Geçiş'e ve birincil eyleme ayrılır) */
+.cn-chip {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  background: var(--s1);
+  color: var(--t2);
+  font: inherit;
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 600;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+}
+.cn-chip:hover {
+  color: var(--t1);
+}
+.cn-chip--selected,
+.cn-chip--selected:hover {
+  background: var(--t1);
+  border-color: var(--t1);
+  color: var(--bg);
+}
+
+/* Geçiş: Canlı TV / Film & Dizi */
+.cn-mode {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+  padding: 4px;
+  width: 100%;
+  background: var(--s1);
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+}
+.cn-mode__seg {
+  height: 44px;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--t2);
+  font: inherit;
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.cn-mode__seg:hover {
+  color: var(--t1);
+}
+.cn-mode__seg[aria-checked='true'] {
+  background: var(--yellow);
+  color: var(--on-yellow);
+}
+.cn-mode__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--r-pill);
+  background: currentColor;
+}
+@media (min-width: 900px) {
+  .cn-mode {
+    width: 280px;
+  }
+  .cn-mode__seg {
+    height: 40px;
+  }
+}

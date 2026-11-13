@@ -1,0 +1,54 @@
+query PlaybackMetadata($viewableId: ID!) {
+  playbackMetadata(viewableId: $viewableId) {
+    viewableId
+    title
+    subtitle
+    live
+    creditsOffsetSec
+    access {
+      ...AccessFields
+    }
+    bookmark {
+      positionSec
+      runtimeSec
+      progress
+    }
+    video {
+      ...CardVideo
+      synopsis
+      runtimeSec
+      license {
+        name
+        attribution
+        url
+      }
+      ... on Episode {
+        number
+        seasonNumber
+      }
+    }
+    channel {
+      ...ChannelCard
+    }
+    airing {
+      ...AiringBrief
+      synopsis
+    }
+    nextEpisode {
+      ...CardVideo
+      number
+      seasonNumber
+      runtimeSec
+    }
+    previousChannel {
+      channelId
+      name
+      number
+    }
+    nextChannel {
+      channelId
+      name
+      number
+    }
+  }
+}

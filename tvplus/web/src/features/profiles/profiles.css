@@ -1,0 +1,92 @@
+.tvp-gate {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  padding: 48px var(--gut);
+  text-align: center;
+}
+.tvp-gate__logo {
+  height: 30px;
+  width: auto;
+}
+.tvp-gate__list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-width: 720px;
+}
+.tvp-gate__profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 112px;
+  padding: 8px 0;
+  border-radius: var(--r-card);
+  color: var(--t2);
+}
+.tvp-gate__profile:hover,
+.tvp-gate__profile:focus-visible {
+  color: var(--t1);
+}
+.tvp-gate__profile:hover .tvp-gate__avatar,
+.tvp-gate__profile:focus-visible .tvp-gate__avatar {
+  box-shadow: 0 0 0 3px var(--t1);
+}
+.tvp-gate__profile:disabled {
+  cursor: progress;
+  opacity: 0.6;
+}
+.tvp-gate__profile[aria-busy='true'] {
+  opacity: 1;
+}
+.tvp-gate__name {
+  max-width: 100%;
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* Çocuk işareti: küçük nötr etiket (sarı değil; sarı birincil eyleme ayrılır) */
+.tvp-gate__kids {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  margin-top: -4px;
+  padding: 0 8px;
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  color: var(--t2);
+  font-size: 11px;
+  line-height: 14px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+@media (min-width: 900px) {
+  .tvp-gate {
+    gap: 48px;
+  }
+  .tvp-gate__list {
+    gap: 32px;
+  }
+  .tvp-gate__profile {
+    width: 144px;
+  }
+  .tvp-gate__avatar {
+    width: 128px !important;
+    height: 128px !important;
+    font-size: 54px !important;
+  }
+  .tvp-gate__name {
+    font-size: 16px;
+  }
+}

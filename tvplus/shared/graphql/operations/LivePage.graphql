@@ -1,0 +1,56 @@
+query LivePage($capabilities: PageCapabilitiesInput!) {
+  livePage(capabilities: $capabilities) {
+    id
+    expires
+    serverTime
+    rows {
+      rowId
+      type
+      title
+      ttlSec
+      trackId
+      bridgeTo
+      items {
+        kind
+        track {
+          ...TrackFields
+        }
+        entity {
+          __typename
+          ... on Channel {
+            ...ChannelCard
+            description
+          }
+          ... on ProgramAiring {
+            ...AiringBrief
+            synopsis
+            channel {
+              channelId
+              name
+              number
+              sourceKind
+              logo(params: { width: 96 }) {
+                ...ArtworkFields
+              }
+            }
+            video {
+              videoId
+            }
+            art: artwork(params: { width: 600 }) {
+              ...ArtworkFields
+            }
+          }
+          ... on Movie {
+            ...CardVideo
+          }
+          ... on Show {
+            ...CardVideo
+          }
+          ... on Episode {
+            ...CardVideo
+          }
+        }
+      }
+    }
+  }
+}

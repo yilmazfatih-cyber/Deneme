@@ -1,0 +1,11 @@
+# Netflix CLCSInterstitialLolomo karşılığı: göz atma sayfasının üstünde gösterilecek duyuru.
+query InterstitialHome($location: String!) {
+  interstitial(location: $location) {
+    id
+    location
+    title
+    body
+    cta
+    href
+  }
+}

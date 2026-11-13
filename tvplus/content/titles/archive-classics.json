@@ -1,0 +1,489 @@
+[
+  {
+    "videoId": 80020001,
+    "slug": "a-trip-to-the-moon",
+    "type": "MOVIE",
+    "title": "A Trip to the Moon",
+    "year": 1902,
+    "synopsis": "Bir grup astronom, bir topun ucundaki mermi biçimli kapsülle Ay'a fırlatılır. Kapsül Ay'ın yüzüne çarpar ve astronomlar Ay sakinleriyle karşılaşır. Kaçıp dünyaya dönerken kapsül denize düşer.",
+    "shortSynopsis": "Astronomlar mermi biçimli bir kapsülle Ay'a gider ve Ay sakinleriyle karşılaşır.",
+    "genres": [
+      "bilim-kurgu",
+      "klasik",
+      "sessiz-sinema",
+      "kisa-film"
+    ],
+    "moods": [
+      "sozsuz",
+      "kult-klasik",
+      "absurt"
+    ],
+    "cast": [],
+    "directors": [
+      "Georges Méliès"
+    ],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": 772,
+    "sources": [
+      {
+        "type": "PROGRESSIVE",
+        "url": "https://archive.org/download/ATripToTheMoonGeorgeMelies/A%20Trip%20to%20the%20Moon-George%20M%C3%A9li%C3%A8s.mp4",
+        "mimeType": "video/mp4",
+        "sizeBytes": 218115276
+      }
+    ],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": null,
+      "focal": "50% 35%"
+    },
+    "license": {
+      "name": "Kamu malı",
+      "attribution": "Internet Archive · ATripToTheMoonGeorgeMelies",
+      "url": "https://archive.org/details/ATripToTheMoonGeorgeMelies"
+    },
+    "availability": {
+      "addedAt": "2026-08-03",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 60,
+    "originalTitle": "Le Voyage dans la Lune"
+  },
+  {
+    "videoId": 80020002,
+    "slug": "the-cabinet-of-dr-caligari",
+    "type": "MOVIE",
+    "title": "The Cabinet of Dr. Caligari",
+    "year": 1920,
+    "synopsis": "Bir panayır kasabasında Dr. Caligari, uyurgezer Cesare'yi gezici bir gösteride sergiler. Cesare insanların ölüm saatini söylemeye başlar ve ardından cinayetler işlenir. Anlatıcı Francis, Caligari'nin bu olaylarla bağlantılı olduğundan şüphelenir.",
+    "shortSynopsis": "Uyurgezer Cesare'yi gezici bir gösteride sergileyen Dr. Caligari'nin peşinden gelen cinayetler.",
+    "genres": [
+      "korku",
+      "gerilim",
+      "klasik",
+      "sessiz-sinema"
+    ],
+    "moods": [
+      "karanlik",
+      "kult-klasik",
+      "sozsuz"
+    ],
+    "cast": [
+      "Werner Krauss",
+      "Conrad Veidt",
+      "Lil Dagover"
+    ],
+    "directors": [
+      "Robert Wiene"
+    ],
+    "maturity": {
+      "rating": "13+",
+      "reasons": [
+        "siddet-korku"
+      ]
+    },
+    "kids": false,
+    "runtimeSec": 4463,
+    "sources": [
+      {
+        "type": "PROGRESSIVE",
+        "url": "https://archive.org/download/TheCabinetOfDr.Caligari1920FULLMOVIE/The%20Cabinet%20of%20Dr.%20Caligari%20%281920%29%20FULL%20MOVIE.mp4",
+        "mimeType": "video/mp4",
+        "sizeBytes": 338923562
+      }
+    ],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": null,
+      "focal": "50% 35%"
+    },
+    "license": {
+      "name": "Kamu malı",
+      "attribution": "Internet Archive · TheCabinetOfDr.Caligari1920FULLMOVIE",
+      "url": "https://archive.org/details/TheCabinetOfDr.Caligari1920FULLMOVIE"
+    },
+    "availability": {
+      "addedAt": "2026-08-15",
+      "leavingAt": "2026-11-19",
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 70,
+    "originalTitle": "Das Cabinet des Dr. Caligari"
+  },
+  {
+    "videoId": 80020003,
+    "slug": "nosferatu",
+    "type": "MOVIE",
+    "title": "Nosferatu",
+    "year": 1922,
+    "synopsis": "Emlakçı Hutter, Transilvanya'da yaşayan Kont Orlok ile bir ev satışını görüşmek için yola çıkar. Kontun bir vampir olduğu ortaya çıktığında, Hutter'in eşi Ellen için tehlike büyür. Kontun getirdiği veba salgını kasabayı sarar.",
+    "shortSynopsis": "Emlakçı Hutter bir ev satışı için Kont Orlok'un kalesine gider; kasabaya veba ve vampir gelir.",
+    "genres": [
+      "korku",
+      "klasik",
+      "sessiz-sinema"
+    ],
+    "moods": [
+      "karanlik",
+      "kult-klasik",
+      "sozsuz"
+    ],
+    "cast": [
+      "Max Schreck",
+      "Gustav von Wangenheim",
+      "Greta Schröder"
+    ],
+    "directors": [
+      "F. W. Murnau"
+    ],
+    "maturity": {
+      "rating": "13+",
+      "reasons": [
+        "siddet-korku"
+      ]
+    },
+    "kids": false,
+    "runtimeSec": 5514,
+    "sources": [
+      {
+        "type": "PROGRESSIVE",
+        "url": "https://archive.org/download/Nosferatu1922/Nosferatu.mp4",
+        "mimeType": "video/mp4",
+        "sizeBytes": 574390206
+      }
+    ],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": null,
+      "focal": "50% 35%"
+    },
+    "license": {
+      "name": "Kamu malı",
+      "attribution": "Internet Archive · Nosferatu1922",
+      "url": "https://archive.org/details/Nosferatu1922"
+    },
+    "availability": {
+      "addedAt": "2026-09-01",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": "sinema-paketi"
+    },
+    "popularity": 74,
+    "originalTitle": "Nosferatu, eine Symphonie des Grauens"
+  },
+  {
+    "videoId": 80020004,
+    "slug": "sherlock-jr",
+    "type": "MOVIE",
+    "title": "Sherlock Jr.",
+    "year": 1924,
+    "synopsis": "Bir sinema operatörü, kız arkadaşının babasına ait bir saatin çalınmasıyla suçlanır. Gerçek hırsızı bulmaya çalışırken yorulup uyur ve kendini rüyasında bir dedektif filminin içinde bulur. Filmdeki maceraları, gerçek dünyadaki sorununu çözmesine yardım eder.",
+    "shortSynopsis": "Sinema operatörü bir saat hırsızlığıyla suçlanınca rüyasında dedektif olup film dünyasına girer.",
+    "genres": [
+      "komedi",
+      "klasik",
+      "sessiz-sinema"
+    ],
+    "moods": [
+      "esprili",
+      "sozsuz",
+      "kult-klasik"
+    ],
+    "cast": [
+      "Buster Keaton",
+      "Kathryn McGuire"
+    ],
+    "directors": [
+      "Buster Keaton"
+    ],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": 2674,
+    "sources": [
+      {
+        "type": "PROGRESSIVE",
+        "url": "https://archive.org/download/sherlockjr1924_201909/Sherlock%20Jr.%20-%20Buster%20Keaton%20%281924%29%20HD%20%5B720p%5D.mp4",
+        "mimeType": "video/mp4",
+        "sizeBytes": 354283591
+      }
+    ],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": null,
+      "focal": "50% 35%"
+    },
+    "license": {
+      "name": "Kamu malı",
+      "attribution": "Internet Archive · sherlockjr1924_201909",
+      "url": "https://archive.org/details/sherlockjr1924_201909"
+    },
+    "availability": {
+      "addedAt": "2026-09-12",
+      "leavingAt": "2026-11-22",
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 55
+  },
+  {
+    "videoId": 80020005,
+    "slug": "metropolis",
+    "type": "MOVIE",
+    "title": "Metropolis",
+    "year": 1927,
+    "synopsis": "Yeraltında çalışan işçilerin yaşadığı devasa bir kentte, kentin patronunun oğlu Freder, işçiler arasında vaaz veren Maria'ya âşık olur. Bilgin Rotwang'ın yaptığı bir robot, Maria'nın kılığına girip işçileri isyana kışkırtır. Film sınıf farkını ve emeği temel alır.",
+    "shortSynopsis": "Yeraltı işçileri ile kentin patronunun oğlu arasında geçen, robotun isyanı kışkırttığı bir bilim kurgu.",
+    "genres": [
+      "bilim-kurgu",
+      "dram",
+      "klasik",
+      "sessiz-sinema"
+    ],
+    "moods": [
+      "dusundurucu",
+      "kult-klasik",
+      "sozsuz"
+    ],
+    "cast": [
+      "Brigitte Helm",
+      "Alfred Abel",
+      "Gustav Fröhlich"
+    ],
+    "directors": [
+      "Fritz Lang"
+    ],
+    "maturity": {
+      "rating": "13+",
+      "reasons": [
+        "siddet-korku"
+      ]
+    },
+    "kids": false,
+    "runtimeSec": 7118,
+    "sources": [
+      {
+        "type": "PROGRESSIVE",
+        "url": "https://archive.org/download/Metropolis1927EnglishVersion/Metropolis_1927_English_Version.mp4",
+        "mimeType": "video/mp4",
+        "sizeBytes": 737006464
+      }
+    ],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": null,
+      "focal": "50% 35%"
+    },
+    "license": {
+      "name": "Kamu malı",
+      "attribution": "Internet Archive · Metropolis1927EnglishVersion",
+      "url": "https://archive.org/details/Metropolis1927EnglishVersion"
+    },
+    "availability": {
+      "addedAt": "2026-09-28",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": "sinema-paketi"
+    },
+    "popularity": 68
+  },
+  {
+    "videoId": 80020006,
+    "slug": "the-general",
+    "type": "MOVIE",
+    "title": "The General",
+    "year": 1926,
+    "synopsis": "İç Savaş sırasında makinist Johnnie Gray, sevdiği Annabelle'in gözünde kendini kanıtlamak ister. Ordu onu kabul etmez; ama trenini kuzeyli casuslar kaçırınca Johnnie, lokomotifinin ve Annabelle'in peşine düşer. Yakalama ve kurtarma sahneleri filmin ana gerilimini oluşturur.",
+    "shortSynopsis": "Trenini kuzeyli casuslar kaçıran bir makinistin, lokomotifi ve sevdiği kadını kurtarma yarışı.",
+    "genres": [
+      "komedi",
+      "macera",
+      "klasik",
+      "sessiz-sinema"
+    ],
+    "moods": [
+      "esprili",
+      "kult-klasik",
+      "sozsuz"
+    ],
+    "cast": [
+      "Buster Keaton",
+      "Marion Mack"
+    ],
+    "directors": [
+      "Buster Keaton",
+      "Clyde Bruckman"
+    ],
+    "maturity": {
+      "rating": "7+",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": 4724,
+    "sources": [
+      {
+        "type": "PROGRESSIVE",
+        "url": "https://archive.org/download/The_General_Buster_Keaton/The_General.mp4",
+        "mimeType": "video/mp4",
+        "sizeBytes": 412400222
+      }
+    ],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": null,
+      "focal": "50% 35%"
+    },
+    "license": {
+      "name": "Kamu malı",
+      "attribution": "Internet Archive · The_General_Buster_Keaton",
+      "url": "https://archive.org/details/The_General_Buster_Keaton"
+    },
+    "availability": {
+      "addedAt": "2026-10-05",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 62
+  },
+  {
+    "videoId": 80020007,
+    "slug": "steamboat-bill-jr",
+    "type": "MOVIE",
+    "title": "Steamboat Bill, Jr.",
+    "year": 1928,
+    "synopsis": "Üniversiteden dönen genç William, nehir kıyısındaki kasabaya gelir ve babası Steamboat Bill'in eski, gösterişsiz teknesiyle tanışır. Rakip bir tekne sahibinin kızı Kitty'ye âşık olan William, babasının işine yardım etmeye çalışır. Kasırga kasabayı vurduğunda baba ve oğul birbirini daha iyi anlar.",
+    "shortSynopsis": "Üniversiteden dönen genç William, babasının eski teknesinde rakip bir kızla tanışır ve kasırgaya girer.",
+    "genres": [
+      "komedi",
+      "klasik",
+      "sessiz-sinema"
+    ],
+    "moods": [
+      "esprili",
+      "sozsuz"
+    ],
+    "cast": [
+      "Buster Keaton",
+      "Ernest Torrence",
+      "Marion Byron"
+    ],
+    "directors": [
+      "Charles Reisner"
+    ],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": 4149,
+    "sources": [
+      {
+        "type": "PROGRESSIVE",
+        "url": "https://archive.org/download/STEAMBOATBILLJR.1928BusterKeaton/STEAMBOAT%20BILL%2C%20JR.%20%281928%29%20--%20Buster%20Keaton.mp4",
+        "mimeType": "video/mp4",
+        "sizeBytes": 355051652
+      }
+    ],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": null,
+      "focal": "50% 35%"
+    },
+    "license": {
+      "name": "Kamu malı",
+      "attribution": "Internet Archive · STEAMBOATBILLJR.1928BusterKeaton",
+      "url": "https://archive.org/details/STEAMBOATBILLJR.1928BusterKeaton"
+    },
+    "availability": {
+      "addedAt": "2026-10-19",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 48
+  },
+  {
+    "videoId": 80020008,
+    "slug": "safety-last",
+    "type": "MOVIE",
+    "title": "Safety Last!",
+    "year": 1923,
+    "synopsis": "Kasabadan büyük şehre gelen genç Harold, sevdiği Mildred'a gelecek vaat etmek için bir mağazada çalışır. İşinde yükselmek için kurduğu plan, bir binanın dış cephesine tırmanmasıyla sonuçlanır. Filmin en ünlü sahnesi, Harold'ın bir saatin kadranına tutunduğu andır.",
+    "shortSynopsis": "Sevdiği kıza gelecek vaat etmek isteyen genç Harold, bir binanın cephesine tırmanmak zorunda kalır.",
+    "genres": [
+      "komedi",
+      "klasik",
+      "sessiz-sinema"
+    ],
+    "moods": [
+      "esprili",
+      "sozsuz",
+      "kult-klasik"
+    ],
+    "cast": [
+      "Harold Lloyd",
+      "Mildred Davis"
+    ],
+    "directors": [
+      "Fred C. Newmeyer",
+      "Sam Taylor"
+    ],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": 4414,
+    "sources": [
+      {
+        "type": "PROGRESSIVE",
+        "url": "https://archive.org/download/SafetyLastHaroldLloyd1923.FullMovieexcellentQuality./Safety%20Last%20-%20Harold%20Lloyd%201923.%20Full%20movie%2Cexcellent%20quality..mp4",
+        "mimeType": "video/mp4",
+        "sizeBytes": 303470251
+      }
+    ],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": null,
+      "focal": "50% 35%"
+    },
+    "license": {
+      "name": "Kamu malı",
+      "attribution": "Internet Archive · SafetyLastHaroldLloyd1923.FullMovieexcellentQuality.",
+      "url": "https://archive.org/details/SafetyLastHaroldLloyd1923.FullMovieexcellentQuality."
+    },
+    "availability": {
+      "addedAt": "2026-11-02",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 52
+  }
+]

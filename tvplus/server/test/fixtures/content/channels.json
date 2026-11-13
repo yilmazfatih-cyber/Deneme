@@ -1,0 +1,77 @@
+[
+  {
+    "channelId": 1,
+    "slug": "trt-1",
+    "name": "TRT 1",
+    "number": 1,
+    "category": "ulusal",
+    "description": "Ulusal yayın: haber, dizi ve film.",
+    "logo": "trt-1.png",
+    "favorite": true,
+    "source": {
+      "type": "YOUTUBE_LIVE",
+      "channelId": "UCtrt1abcdefgtrt1abcdefg"
+    }
+  },
+  {
+    "channelId": 2,
+    "slug": "haber-kanali",
+    "name": "Haber Kanalı",
+    "number": 2,
+    "category": "haber",
+    "description": "Gün boyu haber.",
+    "logo": null,
+    "isHd": false,
+    "source": {
+      "type": "YOUTUBE_LIVE",
+      "channelId": "UChaberxyzhaberxyzhaberx",
+      "videoId": "liveabcdefg"
+    }
+  },
+  {
+    "channelId": 3,
+    "slug": "tv-plus-sinema",
+    "name": "TV+ Sinema",
+    "number": 3,
+    "category": "film-dizi",
+    "description": "Açık filmler kesintisiz.",
+    "logo": "tv-plus-kanal.png",
+    "favorite": true,
+    "source": {
+      "type": "LINEAR",
+      "playlist": [
+        80010001,
+        80010002,
+        80010005
+      ]
+    }
+  },
+  {
+    "channelId": 4,
+    "slug": "trt-cocuk",
+    "name": "TRT Çocuk",
+    "number": 4,
+    "category": "cocuk",
+    "description": "Çocuklar için çizgi film ve eğlence.",
+    "logo": "trt-cocuk.png",
+    "kids": true,
+    "source": {
+      "type": "YOUTUBE_LIVE",
+      "channelId": "UCcocuk123cocuk123cocuk1"
+    }
+  },
+  {
+    "channelId": 5,
+    "slug": "sinema-tv",
+    "name": "Sinema TV",
+    "number": 5,
+    "category": "film-dizi",
+    "description": "Paket kanalı: gece boyu film.",
+    "logo": "sinema-tv.png",
+    "requiredProduct": "sinema-paketi",
+    "source": {
+      "type": "YOUTUBE_LIVE",
+      "channelId": "UCsinematvsinematvsinema"
+    }
+  }
+]

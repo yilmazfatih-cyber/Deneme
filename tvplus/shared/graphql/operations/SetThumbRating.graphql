@@ -1,0 +1,9 @@
+mutation SetThumbRating($videoId: Int!, $rating: ThumbRating!) {
+  setThumbRating(videoId: $videoId, rating: $rating) {
+    thumbRating
+    video {
+      videoId
+      thumbRating
+    }
+  }
+}

@@ -1,0 +1,153 @@
+[
+  {
+    "videoId": 80030001,
+    "slug": "caminandes",
+    "type": "SHOW",
+    "title": "Caminandes",
+    "year": 2013,
+    "synopsis": "Patagonya'da yaşayan inatçı lama Koba, çitin öte yanındaki her şeye ulaşmak ister. Kısa ve komik bölümlerle bir lamanın macerası.",
+    "shortSynopsis": "İnatçı lama Koba, Patagonya'da başına iş açıyor.",
+    "genres": [
+      "animasyon",
+      "komedi",
+      "cocuk-aile"
+    ],
+    "moods": [
+      "eglenceli",
+      "esprili",
+      "aile-boyu"
+    ],
+    "directors": [
+      "Pablo Vazquez"
+    ],
+    "creators": [
+      "Pablo Vazquez",
+      "Ton Roosendaal"
+    ],
+    "maturity": {
+      "rating": "GENEL"
+    },
+    "kids": true,
+    "seasons": [
+      {
+        "number": 1,
+        "episodes": [
+          {
+            "videoId": 80030101,
+            "number": 1,
+            "title": "Llama Drama",
+            "synopsis": "Llama Drama: Koba'nın başı yine dertte.",
+            "runtimeSec": 90,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "Z4C82eyhwgU"
+              }
+            ]
+          },
+          {
+            "videoId": 80030102,
+            "number": 2,
+            "title": "Gran Dillama",
+            "synopsis": "Gran Dillama: Koba'nın başı yine dertte.",
+            "runtimeSec": 146,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "JOhiWLlWy4w"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "number": 2,
+        "title": "Yeni maceralar",
+        "episodes": [
+          {
+            "videoId": 80030103,
+            "number": 1,
+            "title": "Llamigos",
+            "synopsis": "Llamigos: Koba'nın başı yine dertte.",
+            "runtimeSec": 150,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "SkVqJ1SGeL0"
+              }
+            ]
+          },
+          {
+            "videoId": 80030104,
+            "number": 2,
+            "title": "Kar Fırtınası",
+            "synopsis": "Kar Fırtınası: Koba'nın başı yine dertte.",
+            "runtimeSec": null,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "kMyU3ZeLbhU"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "artwork": {
+      "boxart": "https://img.example.org/caminandes/boxart.jpg",
+      "storyArt": "https://img.example.org/caminandes/story.jpg"
+    },
+    "license": {
+      "name": "CC BY 3.0",
+      "attribution": "© Blender Foundation | blender.org",
+      "url": "https://creativecommons.org/licenses/by/3.0/"
+    },
+    "availability": {
+      "addedAt": "2026-02-01",
+      "exclusive": true
+    },
+    "popularity": 65
+  },
+  {
+    "videoId": 80040001,
+    "slug": "anadolunun-sesleri",
+    "type": "MOVIE",
+    "title": "Anadolu'nun Sesleri",
+    "year": 2024,
+    "synopsis": "Karadeniz'den Hakkari'ye, Anadolu'nun yaşayan müzik geleneklerini ustalarının sesinden dinleyen bir belgesel.",
+    "shortSynopsis": "Anadolu'nun yaşayan müzik geleneklerine bir yolculuk.",
+    "genres": [
+      "belgesel",
+      "muzik",
+      "yerli"
+    ],
+    "moods": [
+      "ilham",
+      "nostaljik"
+    ],
+    "keywords": [
+      "türkü",
+      "bağlama"
+    ],
+    "maturity": {
+      "rating": "7+"
+    },
+    "runtimeSec": null,
+    "sources": [
+      {
+        "type": "YOUTUBE",
+        "videoId": "abcdefghijk"
+      }
+    ],
+    "artwork": {},
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "Resmî YouTube gömmesi"
+    },
+    "availability": {
+      "addedAt": "2026-11-10",
+      "exclusive": true
+    },
+    "popularity": 40
+  }
+]

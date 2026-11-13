@@ -1,0 +1,330 @@
+[
+  {
+    "videoId": 80010001,
+    "slug": "sintel",
+    "type": "MOVIE",
+    "title": "Sintel",
+    "year": 2010,
+    "synopsis": "Yalnız bir kız, yaralı bir yavru ejderhayı iyileştirir ve ona Scales adını verir. Ejderha kaçırılınca Sintel onu bulmak için tehlikeli bir yolculuğa çıkar.",
+    "shortSynopsis": "Kayıp ejderhasını arayan genç bir kadının hüzünlü yolculuğu.",
+    "genres": [
+      "animasyon",
+      "fantastik",
+      "macera"
+    ],
+    "moods": [
+      "duygusal",
+      "goz-alici",
+      "acik-kaynak"
+    ],
+    "cast": [
+      "Halina Reijn",
+      "Thom Hoffman"
+    ],
+    "directors": [
+      "Colin Levy"
+    ],
+    "creators": [
+      "Ton Roosendaal"
+    ],
+    "keywords": [
+      "ejderha",
+      "yolculuk"
+    ],
+    "maturity": {
+      "rating": "13+",
+      "reasons": [
+        "siddet-korku"
+      ]
+    },
+    "runtimeSec": 888,
+    "sources": [
+      {
+        "type": "DASH",
+        "manifest": "https://media.example.org/sintel/manifest.mpd",
+        "timedText": [
+          {
+            "lang": "tr",
+            "label": "Türkçe",
+            "format": "vtt",
+            "file": "sintel-tr.vtt"
+          }
+        ],
+        "extraAudioManifest": "https://media.example.org/sintel/audio51.mpd"
+      }
+    ],
+    "artwork": {
+      "boxart": "https://img.example.org/sintel/boxart.jpg",
+      "storyArt": "https://img.example.org/sintel/story.jpg"
+    },
+    "license": {
+      "name": "CC BY 3.0",
+      "attribution": "© Blender Foundation | blender.org",
+      "url": "https://creativecommons.org/licenses/by/3.0/"
+    },
+    "promo": {
+      "source": {
+        "type": "DASH",
+        "manifest": "https://media.example.org/sintel/manifest.mpd",
+        "timedText": [
+          {
+            "lang": "tr",
+            "label": "Türkçe",
+            "format": "vtt",
+            "file": "sintel-tr.vtt"
+          }
+        ]
+      },
+      "offsetSec": 120
+    },
+    "supplementals": [
+      {
+        "videoId": 81000001,
+        "title": "Sintel fragmanı",
+        "synopsis": "Sintel filminin resmî fragmanı.",
+        "runtimeSec": 52,
+        "sources": [
+          {
+            "type": "YOUTUBE",
+            "videoId": "eRsGyueVLvQ"
+          }
+        ],
+        "subType": "TRAILER"
+      }
+    ],
+    "availability": {
+      "addedAt": "2026-01-15"
+    },
+    "popularity": 80
+  },
+  {
+    "videoId": 80010002,
+    "slug": "big-buck-bunny",
+    "type": "MOVIE",
+    "title": "Big Buck Bunny",
+    "year": 2008,
+    "synopsis": "Koca yürekli bir tavşan, ormanın üç haylaz kemirgenine karşı sabrını yitirir. Sonunda onlara unutamayacakları bir ders vermeye karar verir.",
+    "shortSynopsis": "Koca yürekli tavşan, haylaz kemirgenlere ders veriyor.",
+    "genres": [
+      "animasyon",
+      "komedi",
+      "cocuk-aile"
+    ],
+    "moods": [
+      "eglenceli",
+      "aile-boyu",
+      "acik-kaynak"
+    ],
+    "directors": [
+      "Sacha Goedegebure"
+    ],
+    "creators": [
+      "Ton Roosendaal"
+    ],
+    "keywords": [
+      "tavşan",
+      "orman"
+    ],
+    "maturity": {
+      "rating": "GENEL"
+    },
+    "kids": true,
+    "runtimeSec": 596,
+    "sources": [
+      {
+        "type": "DASH",
+        "manifest": "https://media.example.org/bbb/manifest.mpd",
+        "timedText": [
+          {
+            "lang": "tr",
+            "label": "Türkçe",
+            "format": "vtt",
+            "file": "bbb-tr.vtt"
+          }
+        ],
+        "extraAudioManifest": "https://media.example.org/bbb/audio51.mpd"
+      }
+    ],
+    "artwork": {
+      "boxart": "https://img.example.org/bbb/boxart.jpg",
+      "storyArt": "https://img.example.org/bbb/story.jpg"
+    },
+    "license": {
+      "name": "CC BY 3.0",
+      "attribution": "© Blender Foundation | blender.org",
+      "url": "https://creativecommons.org/licenses/by/3.0/"
+    },
+    "availability": {
+      "addedAt": "2026-01-10"
+    },
+    "popularity": 70
+  },
+  {
+    "videoId": 80010003,
+    "slug": "tears-of-steel",
+    "type": "MOVIE",
+    "title": "Tears of Steel",
+    "year": 2012,
+    "synopsis": "Yakın gelecekte Amsterdam'da bir grup bilim insanı, dünyayı robotlardan kurtarmak için geçmişteki bir kırgınlığı onarmak zorundadır.",
+    "shortSynopsis": "Amsterdam'da robotlara karşı son direniş.",
+    "genres": [
+      "bilim-kurgu",
+      "aksiyon"
+    ],
+    "moods": [
+      "heyecanli",
+      "goz-alici",
+      "acik-kaynak"
+    ],
+    "cast": [
+      "Derek de Lint",
+      "Sergio Hasselbaink"
+    ],
+    "directors": [
+      "Ian Hubert"
+    ],
+    "creators": [
+      "Ton Roosendaal"
+    ],
+    "maturity": {
+      "rating": "13+",
+      "reasons": [
+        "siddet-korku"
+      ]
+    },
+    "runtimeSec": 734,
+    "sources": [
+      {
+        "type": "DASH",
+        "manifest": "https://media.example.org/tos/manifest.mpd",
+        "timedText": [
+          {
+            "lang": "tr",
+            "label": "Türkçe",
+            "format": "vtt",
+            "file": "tos-tr.vtt"
+          }
+        ]
+      }
+    ],
+    "artwork": {
+      "boxart": "https://img.example.org/tos/boxart.jpg",
+      "storyArt": "https://img.example.org/tos/story.jpg"
+    },
+    "license": {
+      "name": "CC BY 3.0",
+      "attribution": "© Blender Foundation | blender.org",
+      "url": "https://creativecommons.org/licenses/by/3.0/"
+    },
+    "availability": {
+      "addedAt": "2026-02-01",
+      "requiredProduct": "sinema-paketi"
+    },
+    "popularity": 75
+  },
+  {
+    "videoId": 80010004,
+    "slug": "cosmos-laundromat",
+    "type": "MOVIE",
+    "title": "Cosmos Laundromat",
+    "year": 2015,
+    "synopsis": "Issız bir adada yaşamaktan bıkmış bir koyun, ona hayatı boyunca istediği her şeyi vaat eden gizemli bir satıcıyla karşılaşır.",
+    "shortSynopsis": "Bıkkın bir koyun ve her şeyi vaat eden gizemli bir satıcı.",
+    "genres": [
+      "fantastik",
+      "komedi",
+      "dram"
+    ],
+    "moods": [
+      "absurt",
+      "dusundurucu",
+      "acik-kaynak"
+    ],
+    "directors": [
+      "Mathieu Auvray"
+    ],
+    "creators": [
+      "Ton Roosendaal"
+    ],
+    "maturity": {
+      "rating": "13+"
+    },
+    "runtimeSec": 730,
+    "sources": [
+      {
+        "type": "DASH",
+        "manifest": "https://media.example.org/cosmos/manifest.mpd",
+        "timedText": [
+          {
+            "lang": "tr",
+            "label": "Türkçe",
+            "format": "vtt",
+            "file": "cosmos-tr.vtt"
+          }
+        ]
+      }
+    ],
+    "artwork": {
+      "boxart": "https://img.example.org/cosmos/boxart.jpg",
+      "storyArt": "https://img.example.org/cosmos/story.jpg"
+    },
+    "license": {
+      "name": "CC BY 3.0",
+      "attribution": "© Blender Foundation | blender.org",
+      "url": "https://creativecommons.org/licenses/by/3.0/"
+    },
+    "availability": {
+      "addedAt": "2026-03-01",
+      "leavingAt": "2026-11-18"
+    },
+    "popularity": 55
+  },
+  {
+    "videoId": 80010005,
+    "slug": "spring",
+    "type": "MOVIE",
+    "title": "Spring",
+    "year": 2019,
+    "synopsis": "Bir çoban kız ve köpeği, kışı sona erdirmek için eski ruhlarla yüzleşir. Doğanın döngüsüne dair sözsüz bir masal.",
+    "shortSynopsis": "Çoban kız ve köpeği, baharı getirmek için ruhlarla yüzleşiyor.",
+    "genres": [
+      "animasyon",
+      "fantastik"
+    ],
+    "moods": [
+      "sakin",
+      "sozsuz",
+      "acik-kaynak"
+    ],
+    "directors": [
+      "Andy Goralczyk"
+    ],
+    "creators": [
+      "Ton Roosendaal"
+    ],
+    "maturity": {
+      "rating": "7+"
+    },
+    "runtimeSec": 464,
+    "sources": [
+      {
+        "type": "DASH",
+        "manifest": "https://media.example.org/spring/manifest.mpd",
+        "timedText": []
+      }
+    ],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://img.example.org/spring/story.jpg"
+    },
+    "license": {
+      "name": "CC BY 3.0",
+      "attribution": "© Blender Foundation | blender.org",
+      "url": "https://creativecommons.org/licenses/by/3.0/"
+    },
+    "availability": {
+      "addedAt": "2026-10-01"
+    },
+    "popularity": 60
+  }
+]

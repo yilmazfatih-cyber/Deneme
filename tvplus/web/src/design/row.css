@@ -1,0 +1,105 @@
+/* çini — satır başlığı ve yatay kayan dizi */
+
+.cn-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px; /* başlık satırı 44 px yüksek: görsel aralık ≈ 14 px */
+  min-width: 0;
+}
+@media (min-width: 900px) {
+  .cn-row {
+    gap: 8px;
+  }
+}
+
+.cn-rowhead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 var(--gut);
+  min-height: 44px; /* "Tümü" dokunma alanı */
+}
+.cn-rowhead .cn-row-title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cn-hscroll {
+  position: relative;
+  min-width: 0;
+}
+.cn-hscroll__list {
+  display: flex;
+  gap: 12px;
+  margin: 0;
+  padding: 0 var(--gut);
+  list-style: none;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scroll-padding-inline: var(--gut);
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.cn-hscroll__list::-webkit-scrollbar {
+  display: none;
+}
+.cn-hscroll__item {
+  flex: none;
+  scroll-snap-align: start;
+  min-width: 0;
+}
+/* Odak halkası taşınca kırpılmasın */
+.cn-hscroll__list {
+  padding-top: 4px;
+  padding-bottom: 4px;
+  margin-top: -4px;
+  margin-bottom: -4px;
+}
+
+.cn-hscroll__arrow {
+  display: none;
+}
+@media (min-width: 900px) and (hover: hover) {
+  .cn-hscroll__arrow {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 2;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--t1);
+    background: transparent;
+    opacity: 0;
+    transition: opacity 120ms ease;
+  }
+  .cn-hscroll__arrow::before {
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    border-radius: var(--r-pill);
+    background: rgba(13, 14, 18, 0.72);
+    border: 1px solid var(--line-strong);
+    z-index: -1;
+  }
+  .cn-hscroll__arrow--prev {
+    left: 4px;
+  }
+  .cn-hscroll__arrow--next {
+    right: 4px;
+  }
+  .cn-hscroll:hover .cn-hscroll__arrow,
+  .cn-hscroll__arrow:focus-visible {
+    opacity: 1;
+  }
+}

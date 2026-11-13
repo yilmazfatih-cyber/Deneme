@@ -1,0 +1,110 @@
+# Ortak parçalar. build-persisted betiği, bir sorguda kullanılan parçaları (geçişli olarak) sorgunun sonuna ekler.
+fragment ArtworkFields on Artwork {
+  key
+  type
+  url
+  width
+  height
+}
+fragment AccessFields on Access {
+  state
+  reasonText
+  requiredProduct
+  requiredProductName
+  cta
+}
+fragment TrackFields on Track {
+  row
+  pos
+  rowId
+  trackId
+  entityId
+  tctx
+}
+fragment CardVideo on Video {
+  __typename
+  videoId
+  unifiedEntityId
+  title
+  shortSynopsis
+  displayRuntime
+  latestYear
+  isPlayable
+  isKids
+  top10Rank
+  sourceKinds
+  watchStatus
+  access {
+    ...AccessFields
+  }
+  badge {
+    kind
+    text
+  }
+  boxart: artwork(type: BOXART, params: { width: 368 }) {
+    ...ArtworkFields
+  }
+  storyArt: artwork(type: STORY_ART, params: { width: 600 }) {
+    ...ArtworkFields
+  }
+  contentAdvisory {
+    certificationValue
+    maturityLevel
+  }
+  bookmark {
+    positionSec
+    runtimeSec
+    progress
+  }
+  ... on Episode {
+    numberLabel
+    parentShow {
+      videoId
+      title
+    }
+  }
+}
+fragment AiringBrief on ProgramAiring {
+  __typename
+  airingId
+  unifiedEntityId
+  title
+  kind
+  startAt
+  endAt
+  liveState
+  startOver
+  catchup {
+    available
+    until
+  }
+  access {
+    ...AccessFields
+  }
+}
+fragment ChannelCard on Channel {
+  __typename
+  channelId
+  unifiedEntityId
+  name
+  number
+  category
+  categoryName
+  isHd
+  isFavorite
+  isKids
+  isSampleSchedule
+  sourceKind
+  access {
+    ...AccessFields
+  }
+  logo(params: { width: 128 }) {
+    ...ArtworkFields
+  }
+  now {
+    ...AiringBrief
+  }
+  next {
+    ...AiringBrief
+  }
+}

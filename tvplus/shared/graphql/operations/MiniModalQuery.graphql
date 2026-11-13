@@ -1,0 +1,44 @@
+# Bir karta gelindiğinde TÜM satırın önizleme verisi tek istekte çekilir (satır ön yüklemesi).
+query MiniModalQuery($videoIds: [Int!]!, $uiContext: TextEvidenceUiContext = BOB) {
+  videos(videoIds: $videoIds) {
+    ...CardVideo
+    isInPlaylist
+    playlistActions
+    thumbRating
+    playbackBadges
+    runtimeSec
+    textEvidence(uiContext: $uiContext) {
+      key
+      text
+    }
+    promoVideo {
+      viewableId
+      computeId
+      offset
+      sourceKind
+    }
+    genreTags {
+      genreId
+      name
+    }
+    boxartHighRes: artwork(type: BOXART, params: { width: 736 }) {
+      ...ArtworkFields
+    }
+    titleLogo: artwork(type: TITLE_LOGO, params: { width: 400 }) {
+      ...ArtworkFields
+    }
+    ... on Show {
+      seasonCount
+      currentEpisode {
+        videoId
+        numberLabel
+        title
+        runtimeSec
+        bookmark {
+          positionSec
+          progress
+        }
+      }
+    }
+  }
+}

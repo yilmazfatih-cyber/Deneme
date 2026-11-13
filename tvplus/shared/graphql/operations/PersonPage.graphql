@@ -1,0 +1,9 @@
+query PersonPage($personId: Int!) {
+  person(personId: $personId) {
+    personId
+    name
+    videos {
+      ...CardVideo
+    }
+  }
+}

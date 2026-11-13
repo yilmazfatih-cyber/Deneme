@@ -1,0 +1,337 @@
+{
+  "checkedAt": "2026-11-13T07:37:40.042Z",
+  "videos": {
+    "eRsGyueVLvQ": {
+      "ok": true,
+      "status": 200,
+      "state": "ok",
+      "title": "Sintel - Open Movie by Blender Foundation",
+      "author": "Blender",
+      "usedBy": [
+        "titles/open-movies.json [0].sources[1]"
+      ]
+    },
+    "R6MlUcmOul8": {
+      "ok": true,
+      "status": 200,
+      "state": "ok",
+      "title": "Tears of Steel - Blender VFX Open Movie",
+      "author": "Blender",
+      "usedBy": [
+        "titles/open-movies.json [1].sources[1]"
+      ]
+    },
+    "aqz-KE-bpKQ": {
+      "ok": true,
+      "status": 200,
+      "state": "ok",
+      "title": "Big Buck Bunny 60fps 4K - Official Blender Foundation Short Film",
+      "author": "Blender",
+      "usedBy": [
+        "titles/youtube-acik-ve-cocuk.json [0].sources[0]"
+      ]
+    },
+    "TLkA0RELQ1g": {
+      "ok": true,
+      "status": 200,
+      "state": "ok",
+      "title": "Elephants Dream",
+      "author": "Blender",
+      "usedBy": [
+        "titles/youtube-acik-ve-cocuk.json [1].sources[0]"
+      ]
+    },
+    "Y-rmzh0PI3c": {
+      "ok": true,
+      "status": 200,
+      "state": "ok",
+      "title": "Cosmos Laundromat - First Cycle. Official Blender Foundation release.",
+      "author": "Blender",
+      "usedBy": [
+        "titles/youtube-acik-ve-cocuk.json [2].sources[0]"
+      ]
+    },
+    "lqiN98z6Dak": {
+      "ok": true,
+      "status": 200,
+      "state": "ok",
+      "title": "Glass Half - Blender animated cartoon",
+      "author": "Blender",
+      "usedBy": [
+        "titles/youtube-acik-ve-cocuk.json [3].sources[0]"
+      ]
+    },
+    "mN0zPOpADL4": {
+      "ok": true,
+      "status": 200,
+      "state": "ok",
+      "title": "Agent 327: Operation Barbershop",
+      "author": "Blender Studio",
+      "usedBy": [
+        "titles/youtube-acik-ve-cocuk.json [4].sources[0]"
+      ]
+    },
+    "RJnKaAtBPhA": {
+      "ok": true,
+      "status": 200,
+      "state": "ok",
+      "title": "The Daily Dweebs",
+      "author": "Blender Studio",
+      "usedBy": [
+        "titles/youtube-acik-ve-cocuk.json [5].sources[0]"
+      ]
+    },
+    "WhWc3b3KhnY": {
+      "ok": true,
+      "status": 200,
+      "state": "ok",
+      "title": "Spring - Blender Open Movie",
+      "author": "Blender Studio",
+      "usedBy": [
+        "titles/youtube-acik-ve-cocuk.json [6].sources[0]"
+      ]
+    },
+    "PVGeM40dABA": {
+      "ok": true,
+      "status": 200,
+      "state": "ok",
+      "title": "Coffee Run - Blender Open Movie",
+      "author": "Blender Studio",
+      "usedBy": [
+        "titles/youtube-acik-ve-cocuk.json [7].sources[0]"
+      ]
+    },
+    "_cMxraX_5RE": {
+      "ok": true,
+      "status": 200,
+      "state": "ok",
+      "title": "Sprite Fright - Blender Open Movie",
+      "author": "Blender Studio",
+      "usedBy": [
+        "titles/youtube-acik-ve-cocuk.json [8].sources[0]"
+      ]
+    },
+    "UXqq0ZvbOnk": {
+      "ok": true,
+      "status": 200,
+      "state": "ok",
+      "title": "CHARGE - Blender Open Movie",
+      "author": "Blender Studio",
+      "usedBy": [
+        "titles/youtube-acik-ve-cocuk.json [9].sources[0]"
+      ]
+    },
+    "u9lj-c29dxI": {
+      "ok": true,
+      "status": 200,
+      "state": "ok",
+      "title": "WING IT! - Blender Open Movie",
+      "author": "Blender Studio",
+      "usedBy": [
+        "titles/youtube-acik-ve-cocuk.json [10].sources[0]"
+      ]
+    },
+    "Z4C82eyhwgU": {
+      "ok": true,
+      "status": 200,
+      "state": "ok",
+      "title": "\"Caminandes 2: Gran Dillama\" - Blender Animated Short",
+      "author": "Blender",
+      "usedBy": [
+        "titles/youtube-acik-ve-cocuk.json [11].seasons[0].episodes[0].sources[0]"
+      ]
+    },
+    "SkVqJ1SGeL0": {
+      "ok": true,
+      "status": 200,
+      "state": "ok",
+      "title": "Caminandes 3: Llamigos",
+      "author": "Blender",
+      "usedBy": [
+        "titles/youtube-acik-ve-cocuk.json [11].seasons[0].episodes[1].sources[0]"
+      ]
+    },
+    "iwTrNHvVcL0": {
+      "ok": true,
+      "status": 200,
+      "state": "ok",
+      "title": "Haluk Bilginer İngiliz mi İngiltereli mi? - Yılmaz Özdil",
+      "author": "Yılmaz Özdil",
+      "usedBy": [
+        "channels.json [1].source"
+      ]
+    },
+    "OPPTyKgnHWk": {
+      "ok": true,
+      "status": 200,
+      "state": "ok",
+      "title": "Güldür Güldür Show - Eşofmanlı Şevket Hoca Skeci",
+      "author": "Beşiktaş Kültür Merkezi (BKM)",
+      "usedBy": [
+        "channels.json [2].source"
+      ]
+    },
+    "ztmY_cCtUl0": {
+      "ok": true,
+      "status": 200,
+      "state": "ok",
+      "title": "SÖZCÜ TV Canlı Yayını ᴴᴰ",
+      "author": "SÖZCÜ Televizyonu",
+      "usedBy": [
+        "channels.json [6].source"
+      ]
+    },
+    "WX29nlgdqho": {
+      "ok": true,
+      "status": 200,
+      "state": "ok",
+      "title": "TGRT Haber Canlı Yayın ᴴᴰ - Son Dakika Canlı Haber İzle",
+      "author": "TGRT Haber TV",
+      "usedBy": [
+        "channels.json [9].source"
+      ]
+    },
+    "RTgmjLhrXVM": {
+      "ok": true,
+      "status": 200,
+      "state": "ok",
+      "title": "PBS News Hour full episode, Nov. 12, 2026",
+      "author": "PBS NewsHour",
+      "usedBy": [
+        "channels.json [10].source"
+      ]
+    },
+    "-umyX-Oxjzk": {
+      "ok": true,
+      "status": 200,
+      "state": "ok",
+      "title": "Rafadan Tayfa | Rafadan Kulüp",
+      "author": "TRT Çocuk",
+      "usedBy": [
+        "channels.json [12].source"
+      ]
+    }
+  },
+  "channels": {
+    "UCBgTP2LOFVPmq15W-RH-WXA": {
+      "ok": true,
+      "status": 200,
+      "title": "TRT Haber",
+      "latestVideoId": null,
+      "via": "page",
+      "usedBy": [
+        "channels.json [1].source"
+      ]
+    },
+    "UC9TDTjbOjFB9jADmPhSAPsw": {
+      "ok": true,
+      "status": 200,
+      "title": "NTV",
+      "latestVideoId": null,
+      "via": "page",
+      "usedBy": [
+        "channels.json [2].source"
+      ]
+    },
+    "UCn6dNfiRE_Xunu7iMyvD7AA": {
+      "ok": true,
+      "status": 200,
+      "title": "Habertürk TV",
+      "latestVideoId": null,
+      "via": "page",
+      "usedBy": [
+        "channels.json [3].source"
+      ]
+    },
+    "UCV6zcRug6Hqp1UX_FdyUeBg": {
+      "ok": true,
+      "status": 200,
+      "title": "CNN TÜRK",
+      "latestVideoId": null,
+      "via": "page",
+      "usedBy": [
+        "channels.json [4].source"
+      ]
+    },
+    "UCtc-a9ZUIg0_5HpsPxEO7Qg": {
+      "ok": true,
+      "status": 200,
+      "title": "Haber Global",
+      "latestVideoId": null,
+      "via": "page",
+      "usedBy": [
+        "channels.json [5].source"
+      ]
+    },
+    "UCOulx_rep5O4i9y6AyDqVvw": {
+      "ok": true,
+      "status": 200,
+      "title": "SÖZCÜ Televizyonu",
+      "latestVideoId": null,
+      "via": "page",
+      "usedBy": [
+        "channels.json [6].source"
+      ]
+    },
+    "UCndsdUW_oPLqpQJY9J8oIRg": {
+      "ok": true,
+      "status": 200,
+      "title": "TV100",
+      "latestVideoId": null,
+      "via": "page",
+      "usedBy": [
+        "channels.json [7].source"
+      ]
+    },
+    "UCKQhfw-lzz0uKnE1fY1PsAA": {
+      "ok": true,
+      "status": 200,
+      "title": "A Haber",
+      "latestVideoId": null,
+      "via": "page",
+      "usedBy": [
+        "channels.json [8].source"
+      ]
+    },
+    "UCzgrZ-CndOoylh2_e72nSBQ": {
+      "ok": true,
+      "status": 200,
+      "title": "TGRT Haber TV",
+      "latestVideoId": null,
+      "via": "page",
+      "usedBy": [
+        "channels.json [9].source"
+      ]
+    },
+    "UC7fWeaHhqgM4Ry-RMpM2YYw": {
+      "ok": true,
+      "status": 200,
+      "title": "TRT World",
+      "latestVideoId": null,
+      "via": "page",
+      "usedBy": [
+        "channels.json [10].source"
+      ]
+    },
+    "UCN7VYCsI4Lx1-J4_BtjoWUA": {
+      "ok": true,
+      "status": 200,
+      "title": "24 TV",
+      "latestVideoId": null,
+      "via": "page",
+      "usedBy": [
+        "channels.json [11].source"
+      ]
+    },
+    "UCrFf5dtMe6M1XJHqbKJ4X6Q": {
+      "ok": true,
+      "status": 200,
+      "title": "TRT Çocuk",
+      "latestVideoId": null,
+      "via": "page",
+      "usedBy": [
+        "channels.json [12].source"
+      ]
+    }
+  }
+}

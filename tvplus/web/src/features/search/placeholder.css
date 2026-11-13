@@ -1,0 +1,39 @@
+/* YER TUTUCU arama kutusu — DESIGN_SPEC "Web üst menü": 360×44, surface-1, hap, büyüteç. */
+.tvp-searchbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 360px;
+  max-width: 100%;
+  height: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  background: var(--s1);
+  color: var(--t3);
+}
+.tvp-searchbox:focus-within {
+  border-color: var(--line-strong);
+  color: var(--t2);
+}
+.tvp-searchbox:has(input:focus-visible) {
+  outline: 2px solid var(--t1);
+  outline-offset: 2px;
+}
+.tvp-searchbox input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--t1);
+  font: inherit;
+  font-size: 14px;
+}
+.tvp-searchbox input::placeholder {
+  color: var(--t3);
+}
+.tvp-searchbox input::-webkit-search-cancel-button {
+  filter: invert(1);
+}
