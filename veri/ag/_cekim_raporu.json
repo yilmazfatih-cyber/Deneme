@@ -1,5 +1,5 @@
 {
- "zaman": "2026-11-13T12:25",
+ "zaman": "2026-11-13T16:12",
  "rapor": {
   "tv": {
    "satir": 649,
@@ -156,7 +156,7 @@
    "zaman": "2026-11-12T11:18"
   },
   "_toplam": {
-   "sure_dk": 53.4,
+   "sure_dk": 150.0,
    "hisse": 623
   },
   "kesif": {
@@ -1138,6 +1138,30 @@
    },
    "sure_sn": 3119.5,
    "zaman": "2026-11-13T12:25"
+  },
+  "kap_detay": {
+   "aday": {
+    "0": 166,
+    "1": 1070,
+    "2": 5096
+   },
+   "yeni": 1503,
+   "yeni_tamam": 1489,
+   "toplam": 1503,
+   "durum": {
+    "200": 1489,
+    "429": 70,
+    "ornek_429": ""
+   },
+   "oncelik_tamam": {
+    "0": 165,
+    "1": 1059,
+    "2": 265
+   },
+   "ornek": "KAP Tüm Kategoriler Tüm Kategoriler Özel Durum Açıklaması Finansal Rapor Diğer Bildirimler Fon Bildirimleri (*) Aşağıdaki öneriler, sadece endeks/pazar/dönem bilgisi girildiğinde ilgili yılın son 14 günü, diğer durumlarda geçmişe dönük 30 günlük dönem esas alınarak listelenmektedir. Daha geniş dönemli arama “detaylı sorgulama” sayfasından yapılmalıdır. Bildirim İçeriklerinde ve Eklerinde Ara EN Bildirim Sorguları Bildirim Sorguları Bugün Gelen Bildirimler Beklenen Bildirimler Detaylı Sorgulama Finansal Tablo Kalem Sorgulama Şirketler Şirketler BIST Şirketleri Yatırım Kuruluşları Portföy Yönetim Şirketleri Bağımsız Denetim Kuruluşları Tüm Şirketler Diğer KAP Üyeleri ve İşlem Görmeyen Şirketler Derecelendirme Şirketleri Kripto Varlık Hizmet Sağlayıcı KAP Üyeliği Sona Eren Şirketler Fonlar Fonlar Borsa Yatırım Fonları Yatırım Fonları Emeklilik Yatırım Fonları OKS Emeklilik Yatırım Fonları Y",
+   "sure_dk": 150.0,
+   "sure_sn": 9002.4,
+   "zaman": "2026-11-13T16:12"
   }
  }
 }
