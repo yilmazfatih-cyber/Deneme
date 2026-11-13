@@ -46,6 +46,24 @@ function gorunumZaman(kok) {
         `En zayıf gün içi: ${enZayif}. İki yıllık veriyle tek tek günlerin farkı kesin sayılmaz; gece ve gün içi ayrımı ise haftanın geneline yayılmış.`, 'okuma'))));
   cubukDikey(wEl, { baslik: 'Haftanın günlerine göre gece ve gün içi getiri', kat: gunler, seri: wSeri, bicim: bpz, eksenBicim: v => sy(v * 1e4, 0), yukseklik: 220 });
 
+  // 2b) Madenler: gece ve seans
+  const MS = al(Z, 'maden_saat', 'varlik');
+  if (MS && Object.keys(MS).length) {
+    const adlar = Object.keys(MS).sort((a, b2) => (al(MS, b2, 'gece', 'ort') || 0) - (al(MS, a, 'gece', 'ort') || 0));
+    const msEl = cizimKutusu();
+    const MSS = [{ ad: 'BIST kapalıyken (18:00 → 10:00, hafta sonu dahil)', renk: 'var(--s1)' }, { ad: 'Seans içinde (10:00 → 18:00)', renk: 'var(--s2)' }];
+    kok.append(h('div', { class: 'grid' },
+      sekil({ baslik: 'Altın ve gümüş de BIST kapalıyken kazanıyor', alt: `Ons fiyatı × dolar/TL üzerinden, saatlik veriyle; ${tam(al(MS, adlar[0], 'gece', 'gun'))} işlem günü. Günlük ortalama getiri, baz puan. Nokta: |t| ≥ 2.` },
+        gosterge(MSS), msEl,
+        p(`Doların TL karşısındaki günlük yükselişinin tamamı (${bpz(al(MS, 'Dolar/TL', 'gece', 'ort'))}) seans dışında birikiyor; seans içinde ${bpz(al(MS, 'Dolar/TL', 'seans', 'ort'))}. ` +
+          `Altının TL getirisi gecede ${bpz(al(MS, 'Altın (TL)', 'gece', 'ort'))}, seansta ${bpz(al(MS, 'Altın (TL)', 'seans', 'ort'))}; gümüşte ${bpz(al(MS, 'Gümüş (TL)', 'gece', 'ort'))} ve ${bpz(al(MS, 'Gümüş (TL)', 'seans', 'ort'))}. ` +
+          '**Borsada işlem gören altın ve gümüş fonlarını gün içinde alıp satmak, getirinin oluştuğu saatleri dışarıda bırakır.** Maden fonu taşınır; alım kapanışa, satış açılışa yakın yapılır. (Fonların kendi fiyat geçmişi yok; hesap ons fiyatı ve kur üzerinden.)', 'okuma'))));
+    cubukYatay(msEl, { baslik: 'Gece ve seans getirisi', seri: MSS, bicim: bpz, etiketGen: 200, degerGen: 70,
+      satir: adlar.map(a => ({ ad: a, v: [al(MS, a, 'gece', 'ort'), al(MS, a, 'seans', 'ort')], isaret: [Math.abs(al(MS, a, 'gece', 't') || 0) >= 2, Math.abs(al(MS, a, 'seans', 't') || 0) >= 2],
+        ipucu: () => [tipSatir('BIST kapalıyken', bpz(al(MS, a, 'gece', 'ort')), 'var(--s1)'), tipSatir('t', sy(al(MS, a, 'gece', 't'), 1)), tipSatir('Seans içinde', bpz(al(MS, a, 'seans', 'ort')), 'var(--s2)'), tipSatir('t', sy(al(MS, a, 'seans', 't'), 1)),
+          tipSatir('Yıllara göre gece', Object.entries(al(MS, a, 'gece', 'yil') || {}).map(([y, v]) => `${y} ${sy(v * 1e4, 0)}`).join(' · '))] })) });
+  }
+
   // 3) Ayların düzeni
   const M = Z.mevsim || {};
   const mAd = Object.keys(M);

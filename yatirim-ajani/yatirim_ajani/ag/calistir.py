@@ -118,6 +118,7 @@ def calistir(klasor: str | Path = "veri/ag", cikti: str | Path | None = None, ra
     SS = pd.read_csv(klasor / "seriler_saatlik.csv.gz") if (klasor / "seriler_saatlik.csv.gz").exists() else None
     if SS is not None:
         adim("kuresel", lambda: akis.kuresel_zincir(SS, P))
+        adim("maden_saat", lambda: akis.maden_gece_seans(SS, P))
 
     # --- yatırımcı tipleri
     X = {}
@@ -207,7 +208,7 @@ def calistir(klasor: str | Path = "veri/ag", cikti: str | Path | None = None, ra
     _yaz(cikti / "agac.json", {**agac_json, "en_guclu_baglar": S.get("baglar")})
     _yaz(cikti / "zaman.json", S.get("zaman"))
     _yaz(cikti / "oncu.json", {k: S.get(k) for k in ("oncu_grup", "oncu_sektor", "gecikme", "oncu_saatlik")})
-    _yaz(cikti / "akis.json", {k: S.get(k) for k in ("saat_profili", "saat_takvim", "isaretli_akis", "ilgi_sektor", "ilgi_grup", "rotasyon", "mevsimsellik", "varlik", "kuresel")})
+    _yaz(cikti / "akis.json", {k: S.get(k) for k in ("saat_profili", "saat_takvim", "isaretli_akis", "ilgi_sektor", "ilgi_grup", "rotasyon", "mevsimsellik", "varlik", "kuresel", "maden_saat")})
     _yaz(cikti / "yatirimci.json", {k: S.get(k) for k in ("tavan", "taban_alimi", "halka_arz", "faktor", "kisa_vade", "fm", "fon", "tasfiye")})
     _yaz(cikti / "strateji.json", S.get("strateji"))
     if S.get("kap_olay"):

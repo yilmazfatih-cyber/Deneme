@@ -283,6 +283,32 @@ def kuresel_degisimler(SS: pd.DataFrame, gunler: pd.DatetimeIndex) -> dict[str, 
     return out
 
 
+def maden_gece_seans(SS: pd.DataFrame, P: Panel) -> dict:
+    """Altın, gümüş ve doların TL getirisi günün hangi bölümünde oluşuyor? 'gece' = BIST kapanışından (18:00) açılışına (10:00),
+    hafta sonları dahil; 'seans' = 10:00 → 18:00. BIST'te işlem gören altın ve gümüş fonlarını gün içinde alıp satmanın neyi
+    kaçırdığını gösterir (fonların kendi fiyat geçmişi yok; ons fiyatı × dolar/TL üzerinden, saatlik veriyle hesaplanır)."""
+    ilk = pd.Timestamp(pd.to_datetime(SS["zaman"]).min()).normalize()
+    G = kuresel_degisimler(SS, P.R.index[P.R.index >= ilk])
+    if "USDTRY=X" not in G:
+        return {}
+
+    def oz(x: pd.Series) -> dict:
+        x = x.dropna()
+        if len(x) < 30:
+            return {"gun": int(len(x))}
+        return {"ort": float(x.mean()), "t": float(x.mean() / (x.std() / np.sqrt(len(x)))), "gun": int(len(x)), "pozitif": float((x > 0).mean()),
+                "yil": {str(y): float(v.mean()) for y, v in x.groupby(x.index.year)}}  # fmt: skip
+
+    kur = G["USDTRY=X"]
+    out: dict = {"varlik": {"Dolar/TL": {"gece": oz(kur["gece"]), "seans": oz(kur["seans"])}}}
+    for ad, kod in (("Altın (TL)", "GC=F"), ("Gümüş (TL)", "SI=F"), ("Platin (TL)", "PL=F"), ("Bakır (TL)", "HG=F")):
+        if kod in G:
+            out["varlik"][ad] = {"gece": oz((1 + G[kod]["gece"]) * (1 + kur["gece"]) - 1), "seans": oz((1 + G[kod]["seans"]) * (1 + kur["seans"]) - 1)}
+    b100 = P.evren.index[P.evren["bist100"] == 1].intersection(P.GECE.columns)
+    out["varlik"]["BIST 100 hisseleri"] = {"gece": oz(P.GECE.loc[P.GECE.index >= ilk, b100].mean(axis=1)), "seans": oz(P.GI.loc[P.GI.index >= ilk, b100].mean(axis=1))}
+    return out
+
+
 def _reg(x: pd.Series, y: pd.Series) -> dict:
     d = pd.concat([x, y], axis=1).dropna()
     if len(d) < 80 or d.iloc[:, 0].std() == 0:

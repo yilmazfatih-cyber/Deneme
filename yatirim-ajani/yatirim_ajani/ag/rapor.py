@@ -81,6 +81,126 @@ def _al(d, *yol, varsayilan=None):
     return d
 
 
+KONU_AD = {"geri_alim_ilk": "Pay geri alımı (ilk bildirim)", "bedelsiz_ilk": "Bedelsiz sermaye artırımı (ilk bildirim)", "bedelsiz_onay": "Bedelsiz: SPK onayı",
+           "bedelli_ilk": "Bedelli sermaye artırımı (ilk bildirim)", "tahsisli_ilk": "Tahsisli sermaye artırımı (ilk bildirim)", "kar_payi_yk": "Kâr payı: yönetim kurulu kararı",
+           "birlesme_ilk": "Birleşme (ilk bildirim)", "pay_kap_ilk": "Ortaklık payı eşik bildirimi (ilk)", "pay_portfoy": "Portföy şirketi pay bildirimi",
+           "pay_sirket_ilk": "Şirketin başka şirkette pay alımı (ilk)"}  # fmt: skip
+KURAL_AD = {"geri_alim_acilis_5g": "İlk geri alım: ertesi açılışta al, 5 gün tut", "geri_alim_kapanis_5g": "İlk geri alım: kapanışta al, 5 gün tut",
+            "geri_alim_kapanis_20g": "İlk geri alım: 20 gün tut", "geri_alim_kapanis_60g": "İlk geri alım: 60 gün tut", "kar_payi_20g": "Kâr payı kararı: 20 gün tut",
+            "portfoy_alim_20g": "Portföy şirketi alım bildirimi: 20 gün tut", "portfoy_20g": "Portföy şirketi bildirimi: 20 gün tut", "portfoy_satim_20g": "Portföy şirketi satım bildirimi: 20 gün tut",
+            "sirket_alimi_20g": "Şirketin pay alımı: 20 gün tut", "kap_esik_alim_20g": "Eşik bildirimi, pay artışı: 20 gün tut", "kap_esik_20g": "Ortaklık payı eşik bildirimi: 20 gün tut",
+            "kap_esik_satim_20g": "Eşik bildirimi, pay azalışı: 20 gün tut", "bedelli_20g": "Bedelli kararı: 20 gün tut", "bedelsiz_60g": "Bedelsiz kararı: 60 gün tut",
+            "bedelsiz_20g": "Bedelsiz kararı: 20 gün tut"}  # fmt: skip
+
+
+def bp(x, n: int = 1) -> str:
+    """Baz puan (kesirden), işaretli."""
+    if x is None:
+        return "-"
+    return s(x * 1e4, n) if x < 0 else "+" + s(x * 1e4, n)
+
+
+def _kap_bolumu(S: dict) -> list[str]:
+    """KAP bildirimleri, portföy şirketleri, yabancı payı, sektör endeksleri ve madenlerin gece-seans ayrımı."""
+    O, F, R = S.get("kap_olay") or {}, S.get("kap_fon") or {}, S.get("kap_kural") or {}
+    YK, YG, SM, MS = S.get("yabanci_kesit") or {}, S.get("yabanci_gecmis") or {}, S.get("sektor_mevsim") or {}, S.get("maden_saat") or {}
+    if not (O or YK or SM or MS):
+        return []
+    L: list[str] = ["## 7. KAP bildirimleri, fonların gerçek kayıtları, yabancı payı ve sektör takvimi", ""]
+    if O.get("konu"):
+        an = O.get("an_sayim", {})
+        toplam = sum(an.values()) or 1
+        L += [f"KAP'ın bildirim sorgusundan {O['donem'][0]} – {O['donem'][1]} arasında seçili konularda {bn(O['bildirim'])} bildirim alındı (Tera grubu hariç). Her bildirim yayım saatine göre fiyatın ilk tepki "
+              f"verebildiği işlem gününe bağlandı: seans kapandıktan sonra gelenlerin payı %{an.get('sonrasi', 0) / toplam * 100:.0f}, açılıştan önce gelenlerin payı %{an.get('oncesi', 0) / toplam * 100:.0f}. "
+              "Getiriler hissenin kendi pazar katmanına göre fazla getiridir.", "",
+              "### Bildirim türüne göre fiyat tepkisi (olay ortalamaları)", "",
+              "| Bildirim | Olay | Önceki 20 gün | Açılış boşluğu | İlk gün, gün içi | Sonraki 5 gün | Sonraki 20 gün |", "| --- | ---: | ---: | ---: | ---: | ---: | ---: |"]  # fmt: skip
+        for k, ad in KONU_AD.items():
+            o = O["konu"].get(k)
+            if not o or o.get("olay", 0) < 20:
+                continue
+            h = lambda c: f"{y(_al(o, c, 'ort'))} ({tt(o.get(c))})"  # noqa: E731
+            L.append(f"| {ad} | {bn(o['olay'])} | {h('once_20g')} | {h('gece_0')} | {h('gunici_0')} | {h('sonra_5g')} | {h('sonra_20g')} |")
+        L += ["", "Parantez içi t değeridir (aynı günün bildirimleri tek gözlem). Olay ortalaması birkaç hisseye ve bildirimlerin yığıldığı günlere fazla ağırlık verir; karar aşağıdaki sepet testine göre verilir.", ""]
+    if R:
+        L += ["### Aynı bildirimler kurala dönüşünce (takvim zamanlı sepet, gidiş-dönüş 30 bp maliyet)", "",
+              "| Kural | Alınan | Net yıllık | Kıyas yıllık | Fazla (bp/gün) | t | İlk yarı | İkinci yarı | Deflated Sharpe |", "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |"]
+        satir = [(k, ad, R[k]) for k, ad in KURAL_AD.items() if isinstance(R.get(k), dict) and _al(R[k], "net", "fazla_ort") is not None]
+        for k, ad, r in sorted(satir, key=lambda x: -(_al(x[2], "net", "fazla_ort") or 0)):
+            n = r.get("net", {})
+            yr = n.get("fazla_yari") or [None, None]
+            L.append(f"| {ad} | {bn(r.get('alinan'))} | {y(n.get('yillik'), 0)} | {y(_al(r, 'kiyas', 'yillik'), 0)} | {bp(n.get('fazla_ort'))} | {tt(n, 'fazla_t')} | {bp(yr[0])} | {bp(yr[1])} | {s(r.get('dsr_fazla'))} |")
+        ga = R.get("geri_alim_acilis_5g") or {}
+        L += ["", "Okuma:", "",
+              f"- **Bedelsiz, bedelli ve eşik bildirimlerinin ardından almak düzenli biçimde kaybettiriyor**: dönemin iki yarısında ve her yıl aynı yönde. Bedelsizde hisse haberden önceki 20 günde "
+              f"{y(_al(O, 'konu', 'bedelsiz_ilk', 'once_20g', 'ort'))} yükseliyor, haber sabahı açılışta {y(_al(O, 'konu', 'bedelsiz_ilk', 'gece_0', 'ort'))} sıçrıyor, sonraki 20 günde {y(_al(O, 'konu', 'bedelsiz_ilk', 'sonra_20g', 'ort'))} veriyor.",
+              f"- **Tek olumlu aday ilk geri alım bildirimi**: ertesi açılışta alıp 5 gün tutmak maliyet sonrası yılda {y(_al(ga, 'net', 'yillik'), 0)}, günlük fazla getiri {bp(_al(ga, 'net', 'fazla_ort'))} bp (t {tt(ga.get('net'), 'fazla_t')}), "
+              f"yıllara göre fazla getiri {', '.join(f'{k} {y(v, 0)}' for k, v in (ga.get('yil_fazla') or {}).items())}. Deflated Sharpe {s(ga.get('dsr_fazla'))}: çoklu deneme eşiğinin (0,95) altında, bu yüzden aday.",
+              "- Kâr payı kararı ve şirketlerin başka şirkette pay alımı için alım yönünde kanıt yok.", ""]  # fmt: skip
+    if F.get("hepsi"):
+        hep = F["hepsi"]
+        ho = F.get("hedef_ozellikleri", {})
+        L += ["### Portföy şirketlerinin pay bildirimleri (KAP kayıtları)", "",
+              f"Portföy yönetim şirketleri {bn(F['bildirim'])} pay alım satım bildirimi verdi ({F['sirket_sayisi']} şirket, {F['hisse_sayisi']} hisse). Bildirim, bir şirketteki pay %5 ve katlarını geçince verilir. "
+              f"Hedef hisseler içinde BIST 100 dışında olanların payı %{(1 - (hep.get('bist100_payi') or 0)) * 100:.0f}; ortadaki hissenin halka açık değeri {s(hep.get('hao_medyan_mlr'), 1)} milyar TL; "
+              f"son bir yılda halka arz olanların payı %{(hep.get('yeni_arz_payi') or 0) * 100:.0f}.", "",
+              "Hedef hissenin bildirimden bir gün önceki kesit sırası (medyan yüzdelik; 50 = ortadaki hisse): "
+              + ", ".join(f"{OZELLIK_AD.get(k, k).lower()} {v['medyan'] * 100:.0f} (t {s(v['t'], 1)})" for k, v in sorted(ho.items(), key=lambda kv: -kv[1]["medyan"])) + ".", "",
+              "| Şirket | Bildirim | Hisse | Dönem | En çok bildirim verilen hisseler | Oynaklık | Momentum | Devir | Defter/piyasa | BIST 100 payı | Medyan halka açık değer (mlr TL) |",
+              "| --- | ---: | ---: | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |"]  # fmt: skip
+        om = lambda p, k: "-" if _al(p, "ozellik_medyan", k) is None else f"{_al(p, 'ozellik_medyan', k) * 100:.0f}"  # noqa: E731
+        for ad, p in sorted(F.get("sirket", {}).items(), key=lambda kv: -kv[1]["bildirim"])[:16]:
+            L.append(f"| {ad} | {p['bildirim']} | {p['hisse_sayisi']} | {p['ilk'][:7]} – {p['son'][:7]} | {' '.join(x[0] for x in p.get('hisseler', [])[:6])} | {om(p, 'oynaklik_20g')} | {om(p, 'momentum_120_20')} | "
+                     f"{om(p, 'devir_hizi_20g')} | {om(p, 'defter_piyasa')} | %{(p.get('bist100_payi') or 0) * 100:.0f} | {s(p.get('hao_medyan_mlr'), 1)} |")
+        ag = F.get("ortak_hisse_agi", [])[:8]
+        if ag:
+            L += ["", "Aynı hissede buluşan şirketler (ortak hisse sayısı): " + "; ".join(f"{b['a']} – {b['b']} {b['adet']} ({', '.join(b['ortak'][:5])})" for b in ag) + ".", ""]
+        pdn = R.get("portfoy_donem") or {}
+        if pdn:
+            L += ["| Dönem | Bildirim | Önceki 20 gün | İlk gün | Sonraki 5 gün | Sonraki 20 gün |", "| --- | ---: | ---: | ---: | ---: | ---: |"]
+            for ad, d in pdn.items():
+                L.append(f"| {ad} | {bn(d.get('bildirim'))} | {y(_al(d, 'once_20g', 'ort'))} | {y(_al(d, 'gun_0', 'ort'))} | {y(_al(d, 'sonra_5g', 'ort'))} | {y(_al(d, 'sonra_20g', 'ort'))} |")
+            L += ["", "Fon bildirimi 2025'e kadar yükselişin ortasında geliyordu; fon rehberi değiştikten sonra bildirimin öncesi de sonrası da eksi.", ""]
+        if any(k in R for k in ("portfoy_alim_20g", "portfoy_satim_20g")):
+            L += ["Bildirim metninden ayrıştırılan yöne göre (20 gün tutma, günlük fazla getiri): "
+                  + "; ".join(f"{'alım' if 'alim' in k else 'satım'} {bp(_al(R[k], 'net', 'fazla_ort'))} bp (t {tt(R[k].get('net'), 'fazla_t')}, {R[k].get('alinan')} bildirim)" for k in ("portfoy_alim_20g", "portfoy_satim_20g") if k in R) + ".", ""]
+    if YK.get("ozellik"):
+        g = YK.get("grup", {})
+        oz = YK["ozellik"]
+        L += ["### Yabancı neyi tutuyor (İş Yatırım, güncel kesit)", "",
+              f"{YK['hisse']} hissede halka açık paylar içindeki yabancı payı: piyasa değeri ağırlıklı ortalama %{s(YK.get('pd_agirlikli'), 1)}, ortadaki hisse %{s(YK.get('medyan'), 1)}; "
+              f"yabancı payı %10'un altında kalan hisselerin oranı %{(YK.get('yuzde10_alti_payi') or 0) * 100:.0f}. Katmanlara göre ortalama: "
+              + ", ".join(f"{GRUP_AD.get(k, k)} %{s(g[k]['ort'], 1)}" for k in ("bist30", "bist100_30", "yildiz_diger", "ana_pazar", "alt_pazar") if k in g) + ".", "",
+              "| Özellik | Sıra korelasyonu (tüm hisseler) | t | BIST 100 içinde |", "| --- | ---: | ---: | ---: |"]  # fmt: skip
+        for k in ("halka_acik_deger", "buyukluk", "roe", "kazanc_verimi", "momentum_120_20", "zirveye_yakinlik", "defter_piyasa", "oynaklik_20g", "max_20g", "halka_aciklik"):
+            if k in oz:
+                L.append(f"| {OZELLIK_AD.get(k, k)} | {s(oz[k]['sira_kor'])} | {s(oz[k]['t'], 1)} | {s(oz[k].get('bist100_sira_kor'))} |")
+        L += ["", "Yabancı önce büyüklüğe ve derinliğe bakıyor; BIST 100 içinde payı yüksek hisseler yükselmiş, kârlı ve düşük oynaklıklı. Fonların büyük pay aldığı hisse tipinin tersi.", ""]
+    if YG.get("getiri"):
+        gt, yo = YG["getiri"], YG.get("ozellik", {})
+        L += [f"**Yabancı payının haftalık değişimi** ({YG['hafta']} hafta, {YG['donem'][0]} – {YG['donem'][1]}). Payın arttığı hisseler aynı hafta {y(_al(gt, 'ust_alt_ayni', 'ort'))} daha iyi getiri sağlıyor "
+              f"(t {tt(gt.get('ust_alt_ayni'))}); sonraki hafta fark {y(_al(gt, 'ust_alt_sonra', 'ort'), 2)} (t {tt(gt.get('ust_alt_sonra'))}), sonraki 20 gün {y(_al(gt, 'ust_alt_sonra20', 'ort'), 2)} (t {tt(gt.get('ust_alt_sonra20'))}). "
+              f"Önceki 20 günün getirisiyle pay değişiminin sıra korelasyonu {s(_al(gt, 'once_kor', 'ort'))} (t {tt(gt.get('once_kor'))}).",
+              "Pay artışının önceki hafta sonundaki özelliklerle sıra korelasyonu: " + ", ".join(f"{OZELLIK_AD.get(k, k).lower()} {s(v['ort'])} (t {s(v['t'], 1)})" for k, v in yo.items() if v.get("t") is not None and abs(v["t"]) >= 2) + ".", ""]  # fmt: skip
+    if SM.get("sureklilik"):
+        su = SM["sureklilik"]
+        anlamli = sum(1 for x in SM.get("en_belirgin", []) if abs(x["t"]) >= 2)
+        L += ["### Sektör endeksleri, 2010–2026", "",
+              f"{SM['ay_sayisi']} ay, {len(SM['sektor'])} sektör endeksi (BIST 100'e göre fazla getiri). {SM['test_sayisi']} sektör-ay çiftinden {anlamli} tanesinde |t| ≥ 2; hiçbir etki olmasa şans eseri beklenen "
+              f"sayı yaklaşık {SM['test_sayisi'] * 0.046:.0f}. Sektörlerin güvenilir bir ay takvimi yok.", "",
+              "| Bakılan dönem | Sıra korelasyonu | t | En iyi 3 sektör, ertesi ay | t | En kötü 3 sektör, ertesi ay | t |", "| --- | ---: | ---: | ---: | ---: | ---: | ---: |"]  # fmt: skip
+        for k, v in su.items():
+            L.append(f"| {k.replace('ay', ' ay')} | {s(v['sira_kor'], 3)} | {s(v['t'], 1)} | {y(v['ust3_fazla'], 2)} | {s(v['ust3_t'], 1)} | {y(v['alt3_fazla'], 2)} | {s(v['alt3_t'], 1)} |")
+        L += ["", "Uzun dönemde zayıf ama ölçülebilir bir süreklilik var: son 12 ayın en kötü üç sektörü ertesi ay ortalamanın gerisinde kalmaya devam ediyor. 2024–2026 hisse panelinde görülmeyen bu etki 17 yıllık endeks verisinde çıkıyor.", ""]
+    if MS.get("varlik"):
+        L += ["### Madenler ve dolar: getirinin oluştuğu saatler", "", "| Varlık | BIST kapalıyken (bp/gün) | t | Seans içinde (bp/gün) | t |", "| --- | ---: | ---: | ---: | ---: |"]
+        for ad, v in sorted(MS["varlik"].items(), key=lambda kv: -(_al(kv[1], "gece", "ort") or 0)):
+            L.append(f"| {ad} | {bp(_al(v, 'gece', 'ort'))} | {tt(v.get('gece'))} | {bp(_al(v, 'seans', 'ort'))} | {tt(v.get('seans'))} |")
+        L += ["", "Altın, gümüş ve doların TL getirisi BIST kapalıyken (18:00 → 10:00, hafta sonları dahil) oluşuyor. Borsada işlem gören altın ve gümüş fonlarını gün içinde alıp satmak getirinin oluştuğu saatleri dışarıda bırakır. "
+              "(Fonların kendi fiyat geçmişi yok; hesap ons fiyatı × dolar/TL üzerinden, saatlik veriyle.)", ""]
+    return L
+
+
 def rapor_yaz(S: dict, arastirma: Path | None = None) -> str:
     L: list[str] = []
     V = S.get("veri", {})
@@ -493,10 +613,18 @@ def rapor_yaz(S: dict, arastirma: Path | None = None) -> str:
             L += [f"**Bugünkü durum (yalnız tarama çıktısı, emir değildir).** Küçük hisse etkeni son 20 günde {'artıda: rejim süzgeci açık' if bl.get('rejim_acik_mi') else 'ekside: rejim süzgeci kapalı (kural nakit bekler)'}. "
                   "Bileşik puanı en yüksek 15 BIST 100 dışı hisse: " + ", ".join(bl["son_secim"]) + ".", ""]  # fmt: skip
 
-    # ---------------------------------------------------------------- 7. sınırlar
-    L += ["## 7. Sınırlar ve bilinmeyenler", "",
-          "- **Yatırımcı tipi verisi yok.** Yabancı payı geçmişi (İş Yatırım) ve fon verisi (TEFAS) bu ortamdan çekilemedi; hesap bazında veri hiç yok. Büyük/küçük yatırımcı ayrımı hisse grubu üzerinden bir vekildir.",
-          "- **Fon bildirimleri** arama özetlerinden derlendi (87 kayıt; çoğu 2026). KAP'ın kendi sorgusu çalışıyor ama hız sınırı nedeniyle tam liste henüz alınamadı. Şirket bazındaki sayılar küçük örneklemdir.",
+    # ---------------------------------------------------------------- 7. KAP, yabancı, sektör, maden
+    kap_bolumu = _kap_bolumu(S)
+    L += kap_bolumu
+
+    # ---------------------------------------------------------------- sınırlar
+    kap_var = bool(S.get("kap_olay"))
+    L += [f"## {8 if kap_bolumu else 7}. Sınırlar ve bilinmeyenler", "",
+          "- **Hesap bazında yatırımcı verisi yok.** " + ("Yabancı payının güncel kesiti ve (çekilebildiği kadar) haftalık geçmişi var; " if S.get("yabanci_kesit") else "Yabancı payı geçmişi çekilemedi; ")
+          + "fon fiyatları (TEFAS) çekilemedi. Büyük/küçük yatırımcı ayrımı hisse grubu üzerinden bir vekildir.",
+          ("- **Fon bildirimleri** KAP listesinden alındı; bildirimin alım mı satım mı olduğu metinden ayrıştırılır ve her zaman kesin değildir. Şirket bazındaki sayılar küçük örneklemdir."
+           if kap_var else "- **Fon bildirimleri** arama özetlerinden derlendi (87 kayıt; çoğu 2026). Şirket bazındaki sayılar küçük örneklemdir."),
+          "- **Olay ortalaması ile sepet testi farklı sonuç verebilir.** Ortalama, birkaç hisseye ve kalabalık günlere fazla ağırlık verir; kurallar takvim zamanlı sepet testine göre sınıflandı.",
           "- **Dönem tek bir rejim içeriyor:** 2024–2025 yükselişi ve 2026 küçük hisse çöküşü. Üç yıllık veriyle mevsim ve yıl etkileri ayrıştırılamaz; uzun dönem mevsimsellik yalnız dört endeks ve madenler için var.",
           "- **Tavan/taban kilidi** fiyat verisinden (kapanış getirisi ≥ %9,5) tahmin edildi; gerçek emir defteri yok. Tek fiyat ya da brüt takas tedbirindeki hisseler ayrıca işaretlenmedi.",
           "- **Maliyet** varsayımdır. Düşük fiyatlı hisselerde tek fiyat adımı %0,3'ü bulabilir; Midas'ta gerçekleşen fiyat farklı olabilir.",
@@ -519,6 +647,9 @@ def rapor_yenile(cikti: str | Path, arastirma: str | Path | None, rapor_yolu: st
     S: dict = {"veri": oz.get("veri", {}), "hata": oz.get("hata", {}), "agac": ag, "baglar": ag.get("en_guclu_baglar"), "zaman": oku("zaman.json"), "strateji": oku("strateji.json")}
     for dosya in ("oncu.json", "akis.json", "yatirimci.json"):
         S.update({k: v for k, v in oku(dosya).items() if v is not None})
+    kp, yb = oku("kap.json"), oku("yabanci.json")
+    S.update({"kap_veri": kp.get("veri"), "kap_olay": kp.get("olay"), "kap_fon": kp.get("fon"), "kap_kural": kp.get("kural"), "yabanci_kesit": yb.get("kesit"), "yabanci_gecmis": yb.get("gecmis"),
+              "sektor_mevsim": oku("sektor_mevsim.json")})  # fmt: skip
     metin = rapor_yaz(S, Path(arastirma) if arastirma else None)
     Path(rapor_yolu).parent.mkdir(parents=True, exist_ok=True)
     Path(rapor_yolu).write_text(metin, encoding="utf-8")

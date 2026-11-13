@@ -182,7 +182,7 @@ def _zaman(K: dict) -> dict:
         "ilgi": {"grup_yil": il.get("yillik_pay", {}), "grup_getiri_sonra": il.get("getiri_sonra_ilgi"), "sektor_yil": ils.get("yillik_pay", {}),
                  "sektor_degisim": ils.get("pay_degisimi_ilk_son", {}), "getiri_sonra_ilgi": ils.get("getiri_sonra_ilgi"), "ilgi_sonra_getiri": ils.get("ilgi_sonra_getiri"),
                  "en_ters": ils.get("en_ters", [])[:6]},
-        "akis": K.get("isaretli_akis", {}),
+        "akis": K.get("isaretli_akis", {}), "maden_saat": K.get("maden_saat", {}),
     }  # fmt: skip
 
 
