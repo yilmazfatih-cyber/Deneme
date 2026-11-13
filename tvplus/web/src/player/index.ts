@@ -7,11 +7,20 @@ import { createElement, lazy, Suspense, type ReactElement } from 'react'
 import { prefetchManifest as prefetch } from './net/manifest'
 import { startNetworkProbing as startProbing } from './net/ftl'
 
+export { playerRemote } from './remote'
+export type { PlayerSnapshot, PlayerCommand } from './remote'
+
 const LazyWatchPage = lazy(() => import('./ui/WatchPage'))
 const LazyPreviewPlayer = lazy(() => import('./ui/PreviewPlayer'))
 
-/** Tam ekran oynatma sayfası. Yol: #/izle/:viewableId  (?tctx=…&baslat=bastan&kaynak=OWN_CDN|YOUTUBE) */
-export function WatchPage(): ReactElement {
+/**
+ * Tam ekran oynatma sayfası. Yol: #/izle/:viewableId  (?tctx=…&baslat=bastan&kaynak=OWN_CDN|YOUTUBE&konum=<sn>)
+ * `chrome`: 'auto' (varsayılan; ekran biçimi) | 'desktop' | 'mobile' | 'tv' (yalnız kumanda tuşları).
+ * `exitTo`: çıkışta gidilecek yol (verilmezse geçmişte geri). Dış denetim: `playerRemote`.
+ */
+export function WatchPage(
+  props: { chrome?: 'auto' | 'desktop' | 'mobile' | 'tv'; exitTo?: string } = {},
+): ReactElement {
   return createElement(
     Suspense,
     {
@@ -20,7 +29,7 @@ export function WatchPage(): ReactElement {
         'aria-busy': 'true',
       }),
     },
-    createElement(LazyWatchPage),
+    createElement(LazyWatchPage, props),
   )
 }
 

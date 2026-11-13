@@ -52,6 +52,16 @@ export async function buildApp(overrides: Partial<AppConfig> = {}): Promise<Fast
   // Eklentiler kapsüllenmez: hepsi aynı örneğe kanca/uç ekler (fastify-plugin'e gerek kalmasın diye doğrudan çağrılır).
   await tracingPlugin(app)
   await errorsPlugin(app)
+
+  // Gövdesi olmayan ama `content-type: application/json` taşıyan istek (ör. tarayıcıdan gövdesiz DELETE/POST) hata
+  // sayılmaz: içerik türü başlığı düşürülür, böylece gövde ayrıştırıcısı "boş JSON" diye reddetmez.
+  app.addHook('onRequest', async (req) => {
+    const h = req.headers
+    const bodyless =
+      h['transfer-encoding'] === undefined && (h['content-length'] === undefined || h['content-length'] === '0')
+    if (bodyless && h['content-type'] !== undefined) delete h['content-type']
+  })
+
   await app.register(cookie)
   await app.register(formbody)
 

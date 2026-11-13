@@ -163,8 +163,13 @@ export interface TvLoginLookup {
  * GET    /api/profiles                 → ProfilesResponse
  * POST   /api/profiles                 { name, avatarKey, isKids }                    → { profile }
  * PATCH  /api/profiles/:guid           { name?, avatarKey?, isKids?, pin?: string|null } → { profile }   (pin: 4 hane; null kilidi kaldırır)
- * DELETE /api/profiles/:guid           → 204   (son profil silinemez)
+ * DELETE /api/profiles/:guid           { currentPin? } → 204   (son profil silinemez)
  * POST   /api/profiles/switch          { guid, pin? } → BootContext | 403 { error: { code: 'PIN_REQUIRED' | 'PIN_INVALID' } }
+ *
+ * Kilitli profili değiştirmek/silmek: profil bu oturumda etkin değilse gövdede `currentPin` gerekir
+ * (PATCH'te de geçerli); yoksa 403 PIN_REQUIRED, yanlışsa 403 PIN_INVALID.
+ * Hata kodları: 403 CSRF_FAILED (authURL yok) · 403 PIN_REQUIRED / PIN_INVALID · 429 PIN_LOCKED (5 yanlış PIN, 60 sn) ·
+ * 409 PROFILE_NAME_TAKEN / PROFILE_LIMIT / LAST_PROFILE · 404 PROFILE_NOT_FOUND.
  */
 export interface AvatarOption {
   key: string

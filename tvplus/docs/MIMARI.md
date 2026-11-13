@@ -160,6 +160,8 @@ Her istemci katmanı `devbus.emit(cat, label, detail, { ms, ok })` çağırır (
 | `push`      | `yoklama` / `3 bildirim`       | `cursor, wait` · `count, cursor, waitMs, initial` · `error, retryInMs`                                                                                                     |
 | `player`    | `durum: oynuyor`               | `viewableId, state, positionSec`                                                                                                                                           |
 
+`device` ve `predict` olaylarının alanları §9.2 ve §9.3'te tanımlıdır.
+
 ## 8. Bitti tanımı (her ajan teslim etmeden önce)
 
 1. `npm run typecheck` hatasız (kendi alanında; başka alanın hatasını raporla, düzeltme).
@@ -207,28 +209,29 @@ explain}]}`), `geri bildirim` (`{term, entityId, action}`).
 ### 9.4 Falcor ekleri
 
 ```
-lolomoByCategory[home|shows|movies|newPopular]  → ref ["lolomos", "<guid>:<kategori>"]     (lolomo = home)
+lolomoByCategory[home|shows|movies|newPopular]  → ref ["lolomos", "<guid>:<kategori>"]
+                                                   home → ref ["lolomos", "<guid>"] (lolomo ile aynı nesne; "<guid>:home" da kabul edilir)
 lists[..].summary.context ekleri: top10Shows | top10Movies | popular
 videos[id].tags                                  → atom string[]   (önizleme kartındaki üç etiket)
 ```
 
 ### 9.5 Sahiplik (ikinci tur)
 
-| Yol | Sahibi |
-| --- | --- |
-| `docs/UX_SPEC.md`, `shared/**`, `server/src/kernel/**`, `web/src/lib/**`, `web/src/api/session.ts`, `web/src/devices/bridge.ts` | mimar |
-| `server/src/services/devices/**`, `web/src/devices/client.ts` | **cihazlar (sunucu)** |
-| `server/src/services/{identity,image,catalog,entitlement,epg,progress,discovery}/**`, `graphql/resolvers/**` (search hariç), `falcor/routes/**` | **sunucu ekleri** |
-| `server/src/services/search/**`, `graphql/resolvers/search.ts` | **arama tahmin modeli** |
-| `web/src/ui/**`, `web/src/app/**`, `web/src/features/{welcome,profiles}/**` | **web temel v2** |
-| `web/src/features/{home,browse,detail,preview,library,newpopular,account}/**` | **göz atma** |
-| `web/src/features/{search,live,guide}/**` | **arama + canlı** |
-| `web/src/devices/**` (client.ts ve bridge.ts hariç), `web/src/features/{remote,pair,showcase}/**`, `web/src/devtools/tabs/DevicesTab.tsx` | **cihaz deneyimi** |
-| `web/src/tv/{focus,ui,shell,login,profiles}/**`, `web/src/tv/index.ts*` | **TV temel** |
-| `web/src/tv/{home,detail,search,list}/**` | **TV göz atma** |
-| `web/src/tv/{live,player,remote}/**` | **TV canlı + kumanda** |
-| `web/src/player/**` | **oynatıcı** |
-| `content/**` | içerik ekibi |
+| Yol                                                                                                                                             | Sahibi                  |
+| ----------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| `docs/UX_SPEC.md`, `shared/**`, `server/src/kernel/**`, `web/src/lib/**`, `web/src/api/session.ts`, `web/src/devices/bridge.ts`                 | mimar                   |
+| `server/src/services/devices/**`, `web/src/devices/client.ts`                                                                                   | **cihazlar (sunucu)**   |
+| `server/src/services/{identity,image,catalog,entitlement,epg,progress,discovery}/**`, `graphql/resolvers/**` (search hariç), `falcor/routes/**` | **sunucu ekleri**       |
+| `server/src/services/search/**`, `graphql/resolvers/search.ts`                                                                                  | **arama tahmin modeli** |
+| `web/src/ui/**`, `web/src/app/**`, `web/src/features/{welcome,profiles}/**`                                                                     | **web temel v2**        |
+| `web/src/features/{home,browse,detail,preview,library,newpopular,account}/**`                                                                   | **göz atma**            |
+| `web/src/features/{search,live,guide}/**`                                                                                                       | **arama + canlı**       |
+| `web/src/devices/**` (client.ts ve bridge.ts hariç), `web/src/features/{remote,pair,showcase}/**`, `web/src/devtools/tabs/DevicesTab.tsx`       | **cihaz deneyimi**      |
+| `web/src/tv/{focus,ui,shell,login,profiles}/**`, `web/src/tv/index.ts*`                                                                         | **TV temel**            |
+| `web/src/tv/{home,detail,search,list}/**`                                                                                                       | **TV göz atma**         |
+| `web/src/tv/{live,player,remote}/**`                                                                                                            | **TV canlı + kumanda**  |
+| `web/src/player/**`                                                                                                                             | **oynatıcı**            |
+| `content/**`                                                                                                                                    | içerik ekibi            |
 
 Eski `web/src/design/**` (v1) geçiş boyunca derlenir halde kalır; hiçbir yeni kod onu içe aktarmaz, ikinci turun
 sonunda silinir.
@@ -240,14 +243,29 @@ Etiketleme → mikro türler → izleme verisi (uygulama + Mixpanel) → zevk to
 şemaları `shared/tagging-schema.ts` · servis arayüzleri `server/src/kernel/intelligence.ts` · uçlar `/api/studio/*`
 (erişim: `TVP_STUDIO`, `TVP_STUDIO_KEY`; yazma uçlarında `assertStudioWrite`).
 
-| Servis (`app.services.*`) | Klasör | Ne yapar |
-| --- | --- | --- |
-| `tagging` | `services/tagging` | Kılavuz sözlüğü, etiket fişleri, uzlaşı → geçerli etiketler |
-| `microgenres` | `services/microgenres` | Etiketleri birleştirip dar kategoriler üretir; görünen / görünmeyen katman |
-| `viewing` | `services/viewing` (+ `services/mixpanel`, `services/events` köprüsü) | Kanonik izleme olayları ve izleyici × başlık özetleri |
-| `audience` | `services/audience` | İzleyicileri davranışa göre zevk topluluklarına ayırır |
-| `insights` | `services/insights` | Katalog payı ↔ izlenme payı, verim, zaman çizelgesi, içerik karması önerisi |
-| `embeddings` | `services/embeddings` | Çekim düzeyi vektörler; etiket ve özet genel bağlam girdisidir; sağlayıcı takılabilir |
+| Servis (`app.services.*`) | Klasör                                                                | Ne yapar                                                                              |
+| ------------------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| `tagging`                 | `services/tagging`                                                    | Kılavuz sözlüğü, etiket fişleri, uzlaşı → geçerli etiketler                           |
+| `microgenres`             | `services/microgenres`                                                | Etiketleri birleştirip dar kategoriler üretir; görünen / görünmeyen katman            |
+| `viewing`                 | `services/viewing` (+ `services/mixpanel`, `services/events` köprüsü) | Kanonik izleme olayları ve izleyici × başlık özetleri                                 |
+| `audience`                | `services/audience`                                                   | İzleyicileri davranışa göre zevk topluluklarına ayırır                                |
+| `insights`                | `services/insights`                                                   | Katalog payı ↔ izlenme payı, verim, zaman çizelgesi, içerik karması önerisi           |
+| `embeddings`              | `services/embeddings`                                                 | Çekim düzeyi vektörler; etiket ve özet genel bağlam girdisidir; sağlayıcı takılabilir |
 
 Sahiplik tablosu `docs/ICERIK_ZEKASI.md` §11'dedir. Başlık şemasına üç isteğe bağlı alan eklendi: `origin`,
 `acquisition`, `externalIds` (`shared/content-schema.ts`).
+
+### 10.1 İzleyiciye görünen yüz (keşif bütünleşmesi)
+
+Görünmeyen katman keşfi besler; izleyici yalnız sonucunu görür:
+
+- **Benzerler** — `similars` artık künye benzerliği + ortak mikro türler + gömme benzerliğinin harmanıdır;
+  `similarsWithReason` aynı listeyi gerekçe ("Ortak: …") ve işaret dökümüyle verir.
+- **GraphQL ekleri** — `Movie/Show.microgenres`, `Movie/Show.similarsWithReason`, `Query.microgenre(id)`,
+  türler `Microgenre`, `SimilarVideo`, `SimilaritySignal`.
+- **Falcor ekleri** — ana sayfa lolomosuna iki satır bağlamı eklenir:
+  `microgenre` (görünen mikro tür satırı; `summary.microgenreId`, "Tümünü Gör" → `/tur/<mg_…>`) ve
+  `tasteCommunity` (profilin zevk topluluğunda öne çıkanlar; `summary.communityId`).
+  `becauseYouWatched` satırları kaynağın görünmeyen mikro türlerinden kurulur; `summary.reason` ortak mikro tür adını taşır.
+- **Satır adları** UX_SPEC §6 sözlüğündeki yazımla verilir ("İzlemeye Devam Et", "Yeni Gelenler", "Son Şans").
+- **Stüdyo** — `/studyo` (yalnız masaüstü, üst menüde değil; profil menüsünden): arka ofisin penceresi.

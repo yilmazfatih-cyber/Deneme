@@ -136,6 +136,39 @@ type MoodTag {
   displayName: String!
   isMood: Boolean!
 }
+"""
+Mikro tür: etiketlerden üretilen dar kategori (bkz. docs/ICERIK_ZEKASI.md §4).
+Görünen katman ana sayfada satır olur; görünmeyen katman benzerliği ve "… izlediğin için" satırlarını besler.
+"""
+type Microgenre {
+  "Kararlı kimlik, ör. mg_3fa92c1b"
+  id: ID!
+  unifiedEntityId: ID!
+  name: String!
+  layer: MicrogenreLayer!
+  size: Int!
+  "Profilin görebildiği başlıklar"
+  videos(first: Int = 40): [Video!]!
+}
+enum MicrogenreLayer {
+  VISIBLE
+  HIDDEN
+}
+"Benzer başlık ve benzerliğin nedeni"
+type SimilarVideo {
+  video: Video!
+  "0–1 harman puanı"
+  score: Float!
+  "Okunur gerekçe, ör. 'Ortak: Uzay Keşfi Hakkında Düşündürücü Belgeseller'; yoksa null"
+  reason: String
+  "Harmanı oluşturan işaretler: kunye, mikrotur, gomme"
+  signals: [SimilaritySignal!]!
+}
+type SimilaritySignal {
+  name: String!
+  value: Float!
+  weight: Float!
+}
 "RTÜK akıllı işaretleri"
 type ContentAdvisory {
   certificationValue: String!
@@ -242,7 +275,12 @@ type Movie implements Video {
   cast: [Person!]!
   directors: [Person!]!
   creators: [Person!]!
+  "Benzerler: künye benzerliği + ortak mikro türler + gömme benzerliğinin harmanı"
   similars(first: Int = 12): [Video!]!
+  "Benzerler, nedenleriyle (detay ekranı gerekçe satırı ve Kaputun altı için)"
+  similarsWithReason(first: Int = 12): [SimilarVideo!]!
+  "Bu başlığın girdiği mikro türler: önce görünen katman, en dar olan önce"
+  microgenres(first: Int = 4): [Microgenre!]!
   supplementalVideos: [Supplemental!]!
   collections: [Collection!]!
 }
@@ -281,7 +319,12 @@ type Show implements Video {
   cast: [Person!]!
   directors: [Person!]!
   creators: [Person!]!
+  "Benzerler: künye benzerliği + ortak mikro türler + gömme benzerliğinin harmanı"
   similars(first: Int = 12): [Video!]!
+  "Benzerler, nedenleriyle (detay ekranı gerekçe satırı ve Kaputun altı için)"
+  similarsWithReason(first: Int = 12): [SimilarVideo!]!
+  "Bu başlığın girdiği mikro türler: önce görünen katman, en dar olan önce"
+  microgenres(first: Int = 4): [Microgenre!]!
   supplementalVideos: [Supplemental!]!
   collections: [Collection!]!
   seasons: [Season!]!
@@ -722,6 +765,8 @@ type Query {
   collection(collectionId: Int!): Collection
   person(personId: Int!): Person
   genre(genreId: Int!): Genre
+  "Mikro tür sayfası (satırdaki 'Tümünü Gör')"
+  microgenre(id: ID!): Microgenre
   channel(channelId: Int!): Channel
   channels(category: String, favoritesOnly: Boolean): [Channel!]!
   airing(airingId: ID!): ProgramAiring

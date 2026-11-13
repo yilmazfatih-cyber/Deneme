@@ -141,3 +141,52 @@ export const IconInfo = ({ size }: P) => (
     <path d="M12 11v6M12 7.5v.5" />
   </Svg>
 )
+/** Geri (oynatıcının sol üstü): ok */
+export const IconArrowLeft = ({ size }: P) => (
+  <Svg size={size}>
+    <path d="M20 12H4M10 6l-6 6 6 6" />
+  </Svg>
+)
+/** TV'de izle (yansıtma): ekran + yayın dalgaları */
+export const IconCast = ({ size }: P) => (
+  <Svg size={size}>
+    <path d="M3 8V6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-6" />
+    <path d="M3 12a8 8 0 0 1 8 8M3 16a4 4 0 0 1 4 4" />
+    <path d="M3 20h.01" />
+  </Svg>
+)
+/** Resim içinde resim */
+export const IconPip = ({ size }: P) => (
+  <Svg size={size}>
+    <rect x="2.5" y="4.5" width="19" height="15" rx="2" />
+    <rect x="12" y="11" width="7" height="6" rx="1" fill="currentColor" stroke="none" />
+  </Svg>
+)
+/** Oynatma hızı: gösterge */
+export const IconSpeed = ({ size }: P) => (
+  <Svg size={size}>
+    <path d="M4.5 18a9 9 0 1 1 15 0" />
+    <path d="m12 14 4-5" />
+    <circle cx="12" cy="14" r="1.2" fill="currentColor" />
+  </Svg>
+)
+/** Ses ve altyazı: konuşma balonu */
+export const IconAudioSubs = ({ size }: P) => (
+  <Svg size={size}>
+    <path d="M4 5h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-9l-5 4v-4H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z" />
+    <path d="M7 10h4M13 10h4M7 13h7" />
+  </Svg>
+)
+/** Tam ekrandan çık */
+export const IconFullscreenExit = ({ size }: P) => (
+  <Svg size={size}>
+    <path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5" />
+  </Svg>
+)
+/** Telefonu yan çevir ipucu */
+export const IconRotate = ({ size }: P) => (
+  <Svg size={size}>
+    <rect x="7" y="2.5" width="10" height="17" rx="2" transform="rotate(-90 12 11)" />
+    <path d="M4 18a8 8 0 0 0 6 3.5M10 21.5l-2 1.5M10 21.5 8.5 19.5" />
+  </Svg>
+)

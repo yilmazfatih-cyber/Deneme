@@ -25,6 +25,36 @@ query PlaybackMetadata($viewableId: ID!) {
       ... on Episode {
         number
         seasonNumber
+        parentShow {
+          videoId
+          unifiedEntityId
+          title
+          seasons {
+            seasonId
+            number
+            numberLabel
+            title
+            episodes {
+              videoId
+              unifiedEntityId
+              title
+              number
+              seasonNumber
+              runtimeSec
+              shortSynopsis
+              isPlayable
+              bookmark {
+                positionSec
+                progress
+              }
+              still: artwork(type: STORY_ART, params: { width: 400 }) {
+                url
+                width
+                height
+              }
+            }
+          }
+        }
       }
     }
     channel {
@@ -44,11 +74,21 @@ query PlaybackMetadata($viewableId: ID!) {
       channelId
       name
       number
+      logo(params: { width: 128 }) {
+        url
+        width
+        height
+      }
     }
     nextChannel {
       channelId
       name
       number
+      logo(params: { width: 128 }) {
+        url
+        width
+        height
+      }
     }
   }
 }

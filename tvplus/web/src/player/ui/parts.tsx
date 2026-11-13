@@ -15,16 +15,23 @@ export function Scrubber(props: {
   buffered: { start: number; end: number }[]
   disabled?: boolean
   onSeek: (sec: number) => void
+  /** Fareyle üzerine gelince zaman balonu (masaüstü) */
+  hoverLabel?: boolean
+  /** TV sarma önizlemesi: hedef konum (balon + hayalet dolgu) */
+  previewSec?: number | null
 }): ReactElement {
   const { position, duration, buffered, disabled, onSeek } = props
   const ref = useRef<HTMLDivElement>(null)
   const [drag, setDrag] = useState<number | null>(null)
+  const [hover, setHover] = useState<number | null>(null)
   const pct = (t: number) => (duration > 0 ? Math.max(0, Math.min(100, (t / duration) * 100)) : 0)
-  const shown = drag ?? position
+  const preview = props.previewSec ?? null
+  const shown = drag ?? preview ?? position
   const timeAt = (clientX: number) => {
     const r = ref.current!.getBoundingClientRect()
     return Math.max(0, Math.min(1, (clientX - r.left) / r.width)) * duration
   }
+  const bubble = drag ?? preview ?? (props.hoverLabel ? hover : null)
   return (
     <div
       ref={ref}
@@ -37,20 +44,25 @@ export function Scrubber(props: {
       aria-valuenow={Math.round(shown)}
       aria-valuetext={`${spokenDuration(shown)} / ${spokenDuration(duration)}`}
       aria-disabled={disabled ? 'true' : 'false'}
+      data-preview={preview !== null}
       onPointerDown={(e) => {
         if (disabled || duration <= 0) return
+        e.stopPropagation()
         e.currentTarget.setPointerCapture(e.pointerId)
         setDrag(timeAt(e.clientX))
       }}
       onPointerMove={(e) => {
         if (drag !== null) setDrag(timeAt(e.clientX))
+        else if (props.hoverLabel && e.pointerType === 'mouse' && duration > 0) setHover(timeAt(e.clientX))
       }}
+      onPointerLeave={() => setHover(null)}
       onPointerUp={(e) => {
         if (drag === null) return
         onSeek(timeAt(e.clientX))
         setDrag(null)
       }}
       onPointerCancel={() => setDrag(null)}
+      onClick={(e) => e.stopPropagation()}
     >
       <div className="kb-rail">
         {buffered.map((b, i) => (
@@ -60,9 +72,18 @@ export function Scrubber(props: {
             style={{ left: `${pct(b.start)}%`, width: `${Math.max(0, pct(b.end) - pct(b.start))}%` }}
           />
         ))}
+        {preview !== null ? <span className="kb-ghost" style={{ width: `${pct(position)}%` }} /> : null}
         <span className="kb-fill" style={{ width: `${pct(shown)}%` }} />
+        {hover !== null && drag === null && preview === null ? (
+          <span className="kb-hoverfill" style={{ width: `${pct(hover)}%` }} />
+        ) : null}
       </div>
       {!disabled && <span className="kb-thumb" style={{ left: `${pct(shown)}%` }} />}
+      {bubble !== null && duration > 0 ? (
+        <span className="kb-bubble" style={{ left: `${pct(bubble)}%` }} aria-hidden="true">
+          {formatClock(bubble)}
+        </span>
+      ) : null}
     </div>
   )
 }
