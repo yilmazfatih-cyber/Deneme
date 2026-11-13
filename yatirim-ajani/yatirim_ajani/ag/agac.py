@@ -40,6 +40,35 @@ def artik_getiri(R: pd.DataFrame, piyasa: pd.Series) -> tuple[pd.DataFrame, pd.S
     return pd.DataFrame(E, index=R.index, columns=R.columns), pd.Series(beta, index=R.columns)
 
 
+def cok_faktor_artik(R: pd.DataFrame, F: pd.DataFrame, min_gun: int = 60) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Her hissenin birden çok faktöre (ör. XU100 ve küçük hisse faktörü) regresyon artığı ve katsayıları."""
+    F = F.reindex(R.index)
+    E = np.full(R.shape, np.nan)
+    B = np.full((R.shape[1], F.shape[1]), np.nan)
+    X, Y = F.to_numpy(float), R.to_numpy(float)
+    fok = ~np.isnan(X).any(axis=1)
+    for j in range(Y.shape[1]):
+        ok = fok & ~np.isnan(Y[:, j])
+        if ok.sum() < min_gun:
+            continue
+        A = np.column_stack([np.ones(ok.sum()), X[ok]])
+        k = np.linalg.lstsq(A, Y[ok, j], rcond=None)[0]
+        E[ok, j] = Y[ok, j] - A @ k
+        B[j] = k[1:]
+    return pd.DataFrame(E, index=R.index, columns=R.columns), pd.DataFrame(B, index=R.columns, columns=F.columns)
+
+
+def faktorler(P: Panel) -> pd.DataFrame:
+    """İki ortak faktör: 'piyasa' (XU100) ve 'kucuk' (BIST 100 dışı hisselerin eşit ağırlıklı getirisinin XU100'e göre artığı).
+    İkincisi, endeksin açıklamadığı ama küçük hisselerin birlikte yaşadığı hareketi (bireysel ağırlıklı blok) ölçer."""
+    dis = [h for h in P.R.columns if P.evren.at[h, "bist100"] != 1]
+    k = P.R[dis].mean(axis=1)
+    d = pd.concat([k, P.xu100], axis=1).dropna()
+    b = np.polyfit(d.iloc[:, 1], d.iloc[:, 0], 1)
+    kucuk = k - (b[1] + b[0] * P.xu100)
+    return pd.DataFrame({"piyasa": P.xu100, "kucuk": kucuk})
+
+
 def uzaklik(C: pd.DataFrame) -> np.ndarray:
     D = np.sqrt(np.clip(2 * (1 - C.to_numpy(float)), 0, 4))
     D[np.isnan(D)] = 2.0  # bilinmeyen çift: ilişkisiz say
@@ -161,12 +190,17 @@ def korelasyon_agi(P: Panel, min_gun: int = 400, kume_sayisi: int = 14, bas: str
     ortak = max(30, min(min_ortak, int(len(R) * 0.5)))
     C = R.corr(min_periods=ortak)
     E, beta = artik_getiri(R, P.xu100)
-    CE = E.corr(min_periods=ortak)
+    CE1 = E.corr(min_periods=ortak)
+    F = faktorler(P)
+    E2, yuk = cok_faktor_artik(R, F)
+    CE = E2.corr(min_periods=ortak)  # iki faktör ayıklanmış: sektör/tema bağları
     ad = list(R.columns)
     n = len(ad)
     ev = P.evren.reindex(ad)
     kenar = mst(uzaklik(C))
     olcu = agac_olculeri(kenar, n)
+    kenar2 = mst(uzaklik(CE))
+    olcu2 = agac_olculeri(kenar2, n)
     kume = hiyerarsik_kume(uzaklik(CE), min(kume_sayisi, max(2, n // 4)))
     ust = np.triu_indices(n, 1)
     c_ham, c_art = C.to_numpy()[ust], CE.to_numpy()[ust]
@@ -200,6 +234,12 @@ def korelasyon_agi(P: Panel, min_gun: int = 400, kume_sayisi: int = 14, bas: str
                       "dal": ad[olcu["dal"][i]] if olcu["dal"][i] >= 0 else None, "kume": int(kume[i])})  # fmt: skip
     kenarlar = [{"a": ad[a], "b": ad[b], "kor": float(1 - d * d / 2)} for a, b, d in kenar]
     ayni_sektor_kenar = float(np.mean([sek[a] == sek[b] for a, b, _ in kenar]))
+    for i, d in enumerate(dugum):
+        d["kucuk_yuk"] = float(yuk["kucuk"].iloc[i]) if pd.notna(yuk["kucuk"].iloc[i]) else None
+        d["tema_derece"] = int(olcu2["derece"][i])
+        d["tema_ebeveyn"] = ad[olcu2["ebeveyn"][i]] if olcu2["ebeveyn"][i] >= 0 else None
+    tema_kenarlar = [{"a": ad[a], "b": ad[b], "kor": float(1 - d * d / 2)} for a, b, d in kenar2]
+    tema_ayni_sektor = float(np.mean([sek[a] == sek[b] for a, b, _ in kenar2]))
     dallar = []
     kok = olcu["kok"]
     for c in sorted(set(olcu["dal"]) - {-1}, key=lambda c: -olcu["alt_boyut"][c]):
@@ -209,7 +249,9 @@ def korelasyon_agi(P: Panel, min_gun: int = 400, kume_sayisi: int = 14, bas: str
                        "sektorler": {str(a): int(b) for a, b in say.head(4).items()}})  # fmt: skip
     return {
         "donem": [str(R.index[0].date()), str(R.index[-1].date())], "gun": int(len(R)), "hisse": n,
-        "ort_kor_ham": float(np.nanmean(c_ham)), "ort_kor_artik": float(np.nanmean(c_art)),
+        "ort_kor_ham": float(np.nanmean(c_ham)), "ort_kor_piyasa_artik": float(np.nanmean(CE1.to_numpy()[ust])), "ort_kor_artik": float(np.nanmean(c_art)),
+        "tema_agaci": {"kok": ad[olcu2["kok"]], "kenar_ayni_sektor_orani": tema_ayni_sektor, "kenarlar": tema_kenarlar,
+                       "en_bagli": sorted(((ad[i], int(olcu2["derece"][i])) for i in range(n)), key=lambda x: -x[1])[:15]},
         "ort_kor_ayni_sektor_artik": float(np.nanmean(c_art[ayni])), "ort_kor_farkli_sektor_artik": float(np.nanmean(c_art[~ayni])),
         "kok": ad[kok], "kenar_ayni_sektor_orani": ayni_sektor_kenar, "rastgele_ayni_sektor_orani": float(ayni.mean()),
         "en_merkezi": [d["hisse"] for d in sorted(dugum, key=lambda d: -d["arasindalik"])[:15]],
@@ -312,7 +354,7 @@ def oncu_takipci_grup(P: Panel, anahtar: str = "grup", artik: bool = False, geci
     """Gruplar (pazar/endeks grubu ya da sektör) arası gecikmeli korelasyon; BH-FDR ve iki yarıda işaret tutarlılığı."""
     G = grup_serileri(P, anahtar)
     if artik:
-        G, _ = artik_getiri(G, P.xu100)
+        G, _ = cok_faktor_artik(G, faktorler(P))
     ad = list(G.columns)
     Rm, Nm = _gecikme_matrisi(G, gecikme)
     T = np.vectorize(_t)(np.nan_to_num(Rm), np.maximum(Nm, 3).astype(int))
