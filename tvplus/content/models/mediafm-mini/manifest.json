@@ -1,0 +1,17 @@
+{
+ "format": "tvplus-embedding/1",
+ "id": "mediafm-mini",
+ "version": "2026-11-13-8d10628b",
+ "dims": 128,
+ "builtAt": "2026-11-13T13:43:18Z",
+ "modalities": [
+  "VISUAL",
+  "AUDIO",
+  "TEXT",
+  "CONTEXT"
+ ],
+ "files": [
+  "vectors.jsonl"
+ ],
+ "description": "mediafm-mini: 15 açık lisanslı yaprakta (1184 gerçek çekim) CPU'da maskeli çekim modellemesiyle eğitilmiş 989,826 parametreli kaynaştırma dönüştürücüsü; dondurulmuş CLIP ViT-B/32 (görüntü), çok dilli CLIP metin, CLAP (ses) kodlayıcıları. Küçük bir örnektir, temel model değildir. Ayrıntı: model-card.md, metrics.json."
+}

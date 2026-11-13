@@ -13,19 +13,19 @@ TV+'a özgü olanlar (Canlı TV, Rehber, kumanda, TV'ye yansıtma) aynı görsel
 
 ## 1. Tokenlar (`web/src/ui/tokens.css`)
 
-| Token | Değer | Kullanım |
-| --- | --- | --- |
-| `--bg` | `#141414` | sayfa zemini |
-| `--surface-1` | `#181818` | modal, önizleme kartı, açılır menü, TV paneli |
-| `--surface-2` | `#232323` | kart zemini, girdi |
-| `--surface-3` | `#2f2f2f` | "Benzerleri" kartı, basılı yüzey |
-| `--line` | `rgba(255,255,255,.12)` | ayırıcı |
-| `--text-1` `#fff` · `--text-2` `#e5e5e5` · `--text-3` `#b3b3b3` · `--text-4` `#808080` | | başlık · gövde · ikincil · üçüncül (daha koyusu yok) |
-| `--accent` | `#F7D849` (`--on-accent` `#14140F`) | TV+ sarısı: ilerleme, rozet, etkin gösterge, TV odağı |
-| `--play-bg` `#fff` · `--play-fg` `#000` | | "Oynat" |
-| `--btn-2` | `rgba(109,109,110,.7)` (üzerine gelince `.4`) | ikincil düğme ("Daha Fazla Bilgi") |
-| `--live` | `#FF5247` | yalnız CANLI etiketi ve "şimdi" çizgisi |
-| `--positive` | `#46d369` | "Yeni" metni |
+| Token                                                                                  | Değer                                         | Kullanım                                              |
+| -------------------------------------------------------------------------------------- | --------------------------------------------- | ----------------------------------------------------- |
+| `--bg`                                                                                 | `#141414`                                     | sayfa zemini                                          |
+| `--surface-1`                                                                          | `#181818`                                     | modal, önizleme kartı, açılır menü, TV paneli         |
+| `--surface-2`                                                                          | `#232323`                                     | kart zemini, girdi                                    |
+| `--surface-3`                                                                          | `#2f2f2f`                                     | "Benzerleri" kartı, basılı yüzey                      |
+| `--line`                                                                               | `rgba(255,255,255,.12)`                       | ayırıcı                                               |
+| `--text-1` `#fff` · `--text-2` `#e5e5e5` · `--text-3` `#b3b3b3` · `--text-4` `#808080` |                                               | başlık · gövde · ikincil · üçüncül (daha koyusu yok)  |
+| `--accent`                                                                             | `#F7D849` (`--on-accent` `#14140F`)           | TV+ sarısı: ilerleme, rozet, etkin gösterge, TV odağı |
+| `--play-bg` `#fff` · `--play-fg` `#000`                                                |                                               | "Oynat"                                               |
+| `--btn-2`                                                                              | `rgba(109,109,110,.7)` (üzerine gelince `.4`) | ikincil düğme ("Daha Fazla Bilgi")                    |
+| `--live`                                                                               | `#FF5247`                                     | yalnız CANLI etiketi ve "şimdi" çizgisi               |
+| `--positive`                                                                           | `#46d369`                                     | "Yeni" metni                                          |
 
 Eski değişken adları (`--s1 --s2 --s3 --t1 --t2 --t3 --yellow --on-yellow --ok --font`) takma ad olarak tanımlı kalır
 (oynatıcı ve Kaputun altı paneli kullanıyor).
@@ -73,13 +73,14 @@ büyük sıra numarası · 130×73 görsel · başlık + süre · özet; sırada
 "Paketi İncele"dir; pencerenin içinde sakin bir açıklama açar (hata sayfası yok).
 
 **Arama.** Yazdıkça anında sonuç (250 ms gecikme). Düzen yukarıdan aşağıya:
-1. **Tahminler** — "Şunu mu arıyorsun:" ardından model tahmini tamamlamalar (bağlantılar, ` | ` ile ayrılmış).
+
+1. **Tahminler** — "Şunu mu arıyorsun:" ardından model tahmini tamamlamalar (bağlantılar, `|` ile ayrılmış).
 2. **"Şunlarla ilgili daha fazla keşfedin:"** — kişi, tür, koleksiyon bağlantıları.
 3. **Canlı TV** — eşleşen kanal ve yayınlar (tek satır; varsa).
 4. **Sonuç ızgarası** — 16:9 kartlar, 6 sütun (satır kuralındaki kırılımlar), önizleme kartı açılır. Tahminle gelen
    kartların altında gerekçe satırı: "Sana özel" · "Sintel ile ilgili" · "Çok arananlar".
 5. Doğrudan eşleşme yoksa: "“xyz” için eşleşme bulunamadı." + **"Bunlar ilgini çekebilir"** (modelin tahminleri).
-Kutu boşken: "Sana özel öneriler" ızgarası + son aramalar. Yetenek bildirimi denetimi Kaputun altı panelindedir.
+   Kutu boşken: "Sana özel öneriler" ızgarası + son aramalar. Yetenek bildirimi denetimi Kaputun altı panelindedir.
 
 **Sayfalar.** Ana Sayfa (vitrin + satırlar) · Diziler / Filmler (başlık + "Türler ▾" açılır listesi + vitrin + o türün
 satırları) · Yeni ve Popüler (Yeni Gelenler, Top 10 Diziler, Top 10 Filmler, Son Şans, Herkes Bunları İzliyor) ·
@@ -89,8 +90,8 @@ sorulur.
 
 **Canlı TV.** Üstte vitrin: seçili kanalın canlı görüntüsü (sessiz), kanal logosu, CANLI etiketi, program adı,
 "20:00–23:15 · 42 dk kaldı", ilerleme; düğmeler **▶ Canlı İzle** (beyaz) · **Baştan Başlat** · **TV'de İzle**. Altında
-satırlar: Kanallarım, Tüm Kanallar (16:9 kart: program görseli, sol üstte kanal logosu, altta ilerleme çubuğu ve
-program adı), Bu Akşam, Kaçırdıkların. Rehber: yapışkan kanal sütunu + zaman ızgarası, kırmızı "şimdi" çizgisi.
+satırlar: Şu An Yayında (tüm kanallar; 16:9 kart: program görseli, sol üstte kanal logosu, altta ilerleme çubuğu ve
+program adı), Kanallarım, Bu Akşam, Kaçırdıkların. Rehber: yapışkan kanal sütunu + zaman ızgarası, kırmızı "şimdi" çizgisi.
 Canlı her öğe ilerleme + bitiş/kalan süre taşır.
 
 **Oynatıcı.** Sol üst: geri oku. Alt: ilerleme çubuğu (`--accent`), sağında kalan süre; düğme sırası — sol: oynat/

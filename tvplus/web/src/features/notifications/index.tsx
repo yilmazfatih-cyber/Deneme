@@ -15,7 +15,7 @@ import { createPortal } from 'react-dom'
 import { ROUTES } from '../../../../shared/constants'
 import type { PushEvent } from '../../../../shared/types'
 import { gql } from '../../api/graphql'
-import { onBootChange, peekBoot, sessionHeaders } from '../../api/session'
+import { onBootChange, peekBoot, sessionHeaders, virtualDevice } from '../../api/session'
 import { devbus } from '../../lib/devbus'
 import './notifications.css'
 import { createPushPoller } from './poller'
@@ -108,6 +108,9 @@ function Bell(): ReactElement {
       {
         route: ROUTES.PUSH,
         cursor: null,
+        // Cihaz vitrininde üç çerçeve aynı tarayıcıdadır; tarayıcının ana makine başına bağlantı sınırı dolmasın diye
+        // sanal cihazlar uzun yoklama yerine seyrek kısa yoklama yapar (bağlantı açık tutulmaz).
+        ...(virtualDevice ? { waitSec: 0, minGapMs: 20_000 } : {}),
         onEvents: (events, info) => {
           const fresh = events.map(toItem)
           const brandNew = fresh.filter((f) => !known.has(f.id))

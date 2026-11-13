@@ -39,3 +39,16 @@ def l2n(x: np.ndarray) -> np.ndarray:
 def pooled(h: np.ndarray) -> np.ndarray:
     """Yaprak vektörü: birim uzunluktaki bağlamsal çekim vektörlerinin ortalaması."""
     return l2n(l2n(h).mean(0))
+
+
+@torch.no_grad()
+def match_logit(model: MediaFMMini, seq: Sequence, stride: int | None = None) -> float:
+    """Bağlam eşleştirme puanı (pencerelerin ortalaması): yüksek = özet + etiketler bu çekim dizisine uyuyor."""
+    model.eval()
+    n, L = seq.n, model.cfg.max_len
+    out = []
+    for a in window_starts(n, L, stride or max(1, L // 2)):
+        b = min(a + L, n)
+        model(collate([(seq, a, b, np.zeros(b - a, bool), np.zeros((b - a, 3), bool))]))
+        out.append(float(model.match_head(model.last_cls)[0, 0]))
+    return float(np.mean(out))

@@ -17,6 +17,7 @@
     "typecheck": "tsc -p tsconfig.server.json --noEmit && tsc -p tsconfig.web.json --noEmit && tsc -p tsconfig.e2e.json --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:perf": "TVP_PERF=1 vitest run server/test/audience-perf.test.ts server/test/predictions-perf.test.ts server/test/microgenres-perf.test.ts",
     "validate:content": "tsx scripts/validate-content.ts",
     "validate:tagging": "tsx scripts/validate-tagging.ts",
     "tagging:guide": "tsx scripts/tagging-guide.ts",

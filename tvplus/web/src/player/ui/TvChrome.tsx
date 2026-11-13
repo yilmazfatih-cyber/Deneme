@@ -350,7 +350,7 @@ export function TvChrome({
   const hasChannels = !!channels && channels.length > 0
   const shownPos = tv.seek ? tv.seek.target : m.position
   const panelOpen = !!p
-  const bandVisible = tv.band && !panelOpen
+  const bandVisible = tv.band && !panelOpen && !m.error
 
   const hints: ReactNode[] = []
   if (channelMode) {

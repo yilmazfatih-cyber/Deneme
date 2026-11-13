@@ -107,6 +107,7 @@ class Batch:
     synopsis: torch.Tensor  # (B, D)
     synopsis_ok: torch.Tensor  # (B,) bool
     tags: torch.Tensor  # (B, T)
+    title: torch.Tensor  # (B,) başlık kimliği (bağlam eşleştirme kaybı için)
 
 
 def collate(items: list[tuple[Sequence, int, int, np.ndarray, np.ndarray]]) -> Batch:
@@ -124,6 +125,7 @@ def collate(items: list[tuple[Sequence, int, int, np.ndarray, np.ndarray]]) -> B
     syn = torch.zeros(B, D)
     syn_ok = torch.zeros(B, dtype=torch.bool)
     tags = torch.zeros(B, T)
+    title = torch.tensor([it[0].title_id for it in items], dtype=torch.long)
     for j, (s, a, b, m_shot, m_mod) in enumerate(items):
         n = b - a
         feats[j, :n] = torch.from_numpy(s.feats[a:b])
@@ -134,4 +136,20 @@ def collate(items: list[tuple[Sequence, int, int, np.ndarray, np.ndarray]]) -> B
         syn[j] = torch.from_numpy(s.synopsis)
         syn_ok[j] = s.synopsis_ok
         tags[j] = torch.from_numpy(s.tags)
-    return Batch(feats, ok, pad, hs, hm, syn, syn_ok, tags)
+    return Batch(feats, ok, pad, hs, hm, syn, syn_ok, tags, title)
+
+
+def swap_context(b: Batch, p: float, rng: np.random.Generator) -> torch.Tensor:
+    """Bağlam eşleştirme için: yığındaki öğelerin bir kısmının özet + etiketini BAŞKA başlıktan bir öğeyle değiştirir
+    (yerinde). Dönen etiket: 1 = bağlam kendi başlığının, 0 = başka başlığın. Başka başlık yoksa değiştirilmez."""
+    B = len(b.title)
+    label = torch.ones(B)
+    syn, syn_ok, tags = b.synopsis.clone(), b.synopsis_ok.clone(), b.tags.clone()
+    for i in range(B):
+        others = [j for j in range(B) if b.title[j] != b.title[i]]
+        if others and rng.random() < p:
+            j = others[int(rng.integers(len(others)))]
+            syn[i], syn_ok[i], tags[i] = b.synopsis[j], b.synopsis_ok[j], b.tags[j]
+            label[i] = 0.0
+    b.synopsis, b.synopsis_ok, b.tags = syn, syn_ok, tags
+    return label

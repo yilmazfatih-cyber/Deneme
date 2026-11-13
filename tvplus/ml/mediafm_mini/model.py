@@ -77,6 +77,9 @@ class MediaFMMini(nn.Module):
         self.encoder = nn.TransformerEncoder(layer, cfg.layers, enable_nested_tensor=False)
         self.out_norm = nn.LayerNorm(d)
         self.heads = nn.ModuleList([nn.Linear(d, cfg.in_dim) for _ in range(N_MODS)])
+        # Bağlam eşleştirme başlığı: [CLS] çıktısından "bu özet + etiketler bu çekim dizisinin mi?" (bizim eklememiz:
+        # salt maskeli çekim hedefi aynı filmin çekimleri arasında sıralama yaptığından bağlamı kullanmayı gerektirmez)
+        self.match_head = nn.Linear(d, 1)
         self.copy_q = nn.Linear(d, d)
         self.copy_k = nn.Linear(d, d)
         # öğrenilmiş uzaklık cezası (softplus ≥ 0) ve başlık katkısının ölçeği (exp; başta 0,1)
@@ -135,7 +138,9 @@ class MediaFMMini(nn.Module):
         seq = torch.cat([torch.stack(special, dim=1), x], dim=1)
         pad = torch.cat([torch.zeros(B, k, dtype=torch.bool, device=x.device), b.pad], dim=1)
         h = self.encoder(self.in_drop(seq), mask=self.attn_bias(pad, k))
-        h = self.out_norm(h[:, k:])
+        h = self.out_norm(h)
+        self.last_cls = h[:, 0]
+        h = h[:, k:]
         pred = torch.stack([self.heads[m](h) for m in range(N_MODS)], dim=2)
         if self.cfg.copy_head:
             # İki terim de birim uzunlukta: başlığın ölçeği serbest kalırsa (kosinüs kaybı ölçeğe bakmaz) kopyayı

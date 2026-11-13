@@ -42,6 +42,9 @@ import { readAdapter } from './readout'
 import { episodeCode, type Choice } from './panels'
 import type { PlaybackSession } from './session'
 
+/** Gömme bu süre içinde hazır olmazsa hata gösterilir */
+const EMBED_LOAD_TIMEOUT_MS = 15_000
+
 export const SOURCE_LABEL: Record<Source, string> = { OWN_CDN: "Kendi CDN'imiz", YOUTUBE: 'YouTube' }
 
 export interface CoreProps {
@@ -206,6 +209,8 @@ export function usePlayerCore(props: CoreProps, mountRef: RefObject<HTMLDivEleme
   const [nextDismissed, setNextDismissed] = useState(false)
   const [countdown, setCountdown] = useState<number | null>(null)
   const keyRef = useRef<((k: RemoteKey) => boolean) | null>(null)
+  const loadSinceRef = useRef(0)
+  const errorRef = useRef<PlayerError | null>(null)
   const propsRef = useRef(props)
   propsRef.current = props
   const text = useMemo(
@@ -242,7 +247,28 @@ export function usePlayerCore(props: CoreProps, mountRef: RefObject<HTMLDivEleme
     })
     setAdapter(a)
     if (mountRef.current) void a.mount(mountRef.current)
+    // Gömme bekçisi: YouTube çerçevesi hiç hazır olmazsa (engellenmiş ağ, bozuk gömme) sonsuza dek "yükleniyor"da
+    // kalınmaz; sakin bir hata gösterilir ki izleyici Tekrar dene / Geri ile çıkabilsin.
+    loadSinceRef.current = performance.now()
+    const watchdog = embed
+      ? window.setInterval(() => {
+          if (errorRef.current || a.state() !== 'loading') return
+          if (performance.now() - loadSinceRef.current < EMBED_LOAD_TIMEOUT_MS) return
+          devbus.emit(
+            'embed',
+            'YouTube: yanıt yok',
+            {
+              videoId: (manifest as { videoId?: string | null }).videoId ?? null,
+              state: 'UNSTARTED',
+              error: 'TIMEOUT',
+            },
+            { ok: false },
+          )
+          setError({ code: 'EMBED_TIMEOUT', message: 'YouTube oynatıcısı açılamadı.', retryable: true })
+        }, 1000)
+      : null
     return () => {
+      if (watchdog !== null) clearInterval(watchdog)
       off()
       a.destroy()
       adapterRef.current = null
@@ -279,6 +305,8 @@ export function usePlayerCore(props: CoreProps, mountRef: RefObject<HTMLDivEleme
     const t = window.setTimeout(() => setResumeChip(false), 12_000)
     return () => clearTimeout(t)
   }, [resumeChip])
+
+  errorRef.current = error
 
   /* ───── türetilmiş değerler ───── */
   // Okumalar fırlatmaz (YouTube oynatıcısı hazır olmadan yöntemsizdir): bkz. readout.ts
@@ -498,6 +526,7 @@ export function usePlayerCore(props: CoreProps, mountRef: RefObject<HTMLDivEleme
         p().onBack()
       },
       retry() {
+        loadSinceRef.current = performance.now()
         setError(null)
         a()?.retry()
       },
@@ -563,7 +592,7 @@ export function usePlayerCore(props: CoreProps, mountRef: RefObject<HTMLDivEleme
         live: isLive,
         positionSec: position,
         durationSec: isLive && !seekable ? null : duration,
-        state,
+        state: error ? 'error' : state,
         volume,
         muted,
         sourceKind: sourceKindOf(manifest),

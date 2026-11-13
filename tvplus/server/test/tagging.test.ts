@@ -2,7 +2,7 @@
  * Etiketleme: sözlük ve çapraz kurallar, uzlaşı ve uyum puanı, geçerli etiket zinciri (uzlaşı → örnek → model → boş),
  * künyeden model önerisi kuralları, REST uçları (doğrulama, iş akışı, CSRF) ve açılışta geçersiz içerikte durma.
  */
-import { cpSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs'
+import { cpSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import type { FastifyInstance } from 'fastify'
@@ -33,7 +33,7 @@ const INDEX = indexVocabulary(VOCAB)
 
 const SINTEL = 80010001
 const TEARS = 80010002
-const NO_SAMPLE = 80040001 // "Evrende İstediğimiz Yere…": örnek fişi yok → model önerisi
+const NO_SAMPLE = 80040001 // fikstürde örnek fişi yok → model önerisi
 
 function title(over: Record<string, unknown>): ContentTitle {
   return zTitle.parse({
@@ -53,6 +53,83 @@ function title(over: Record<string, unknown>): ContentTitle {
 }
 
 const sheet = (scales: Record<string, number | null>, facets: Record<string, string[]> = {}) => ({ scales, facets })
+
+/* ───────────── kendi içerik ağacı ───────────── */
+
+const titleJson = (over: Record<string, unknown>) => ({
+  slug: `t-${String(over['videoId'])}`,
+  type: 'MOVIE',
+  year: 2010,
+  synopsis: 'Yirmi karakterden uzun bir deneme özeti.',
+  shortSynopsis: 'Kısa.',
+  maturity: { rating: 'GENEL' },
+  sources: [{ type: 'YOUTUBE', videoId: 'aqz-KE-bpKQ' }],
+  license: { name: 'CC BY', attribution: 'x' },
+  ...over,
+})
+const sampleJson = (titleId: number, scales: Record<string, number>, facets: Record<string, string[]>) => ({
+  titleId,
+  rubricVersion: VOCAB.version,
+  source: 'SAMPLE',
+  tagger: null,
+  status: 'APPROVED',
+  watched: false,
+  taggedAt: '2026-11-13',
+  scales,
+  facets,
+})
+
+/**
+ * Testin kendi içerik ağacı: depodaki sözlük + üç başlık + iki örnek fiş (depodaki fişlere hiç bakmaz).
+ *   SINTEL ve TEARS örnek fişli; NO_SAMPLE fişsiz → model önerisi.
+ */
+function fixtureContent(): string {
+  const dir = mkdtempSync(join(tmpdir(), 'tvplus-etiket-fikstur-'))
+  mkdirSync(join(dir, 'titles'))
+  mkdirSync(join(dir, 'tagging', 'sheets'), { recursive: true })
+  cpSync(join(CONTENT, 'tagging', 'vocabulary.json'), join(dir, 'tagging', 'vocabulary.json'))
+  const rated = { rating: '13+', reasons: ['siddet-korku'] }
+  writeFileSync(
+    join(dir, 'titles', 'a.json'),
+    JSON.stringify([
+      titleJson({
+        videoId: SINTEL,
+        title: 'Sintel',
+        genres: ['animasyon', 'fantastik', 'macera', 'kisa-film'],
+        maturity: rated,
+        runtimeSec: 888,
+      }),
+      titleJson({
+        videoId: TEARS,
+        title: 'Tears of Steel',
+        year: 2012,
+        genres: ['bilim-kurgu', 'kisa-film'],
+        maturity: rated,
+      }),
+      titleJson({
+        videoId: NO_SAMPLE,
+        title: 'Evrende İstediğimiz Yere Anında Gidebilir miyiz?',
+        year: 2026,
+        genres: ['doga-bilim'],
+        moods: ['dusundurucu'],
+        keywords: ['uzay', 'evren', 'fizik'],
+        runtimeSec: 1267,
+      }),
+    ]),
+  )
+  writeFileSync(
+    join(dir, 'tagging', 'sheets', 'ornek.json'),
+    JSON.stringify([
+      sampleJson(
+        SINTEL,
+        { cinsellik: 0, siddet: 3, duygusallik: 4, gorsellik: 4 },
+        { mekan: ['hayali-dunya'], bicim: ['kisa-film'] },
+      ),
+      sampleJson(TEARS, { siddet: 3, gerilim: 3 }, { bicim: ['kisa-film'] }),
+    ]),
+  )
+  return dir
+}
 
 /* ───────────── sözlük ───────────── */
 
@@ -107,14 +184,23 @@ describe('sözlük', () => {
     expect(text).toMatch(/"ek-sifatlar" yüzünde en çok 4 değer/)
   })
 
-  it('örnek fişler depodan okunur ve kurallara uyar (12 başlık, başlık başına tek fiş)', () => {
+  it('depodaki örnek fişler kurallara uyar (sayıdan bağımsız değişmezler)', () => {
     const r = readTaggingContent(CONTENT)
     expect(r.issues.filter((i) => i.level === 'error')).toEqual([])
     if (!('vocabulary' in r)) throw new Error('sözlük okunamadı')
-    expect(r.sheets).toHaveLength(12)
-    expect(new Set(r.sheets.map((s) => s.sheet.titleId)).size).toBe(12)
-    expect(r.sheets.every((s) => s.sheet.source === 'SAMPLE' && !s.sheet.watched)).toBe(true)
-    expect(r.sheets.map((s) => s.sheet.titleId)).toEqual(expect.arrayContaining([SINTEL, TEARS]))
+    const catalogue = new Set<number>()
+    for (const f of readdirSync(join(CONTENT, 'titles')).filter((x) => x.endsWith('.json')))
+      for (const item of JSON.parse(readFileSync(join(CONTENT, 'titles', f), 'utf8')) as unknown[]) {
+        const t = zTitle.safeParse(item)
+        if (t.success) catalogue.add(t.data.videoId)
+      }
+    const samples = r.sheets.filter((s) => s.sheet.source === 'SAMPLE').map((s) => s.sheet.titleId)
+    expect(new Set(samples).size).toBe(samples.length)
+    for (const { sheet } of r.sheets) {
+      expect(catalogue.has(sheet.titleId), String(sheet.titleId)).toBe(true)
+      expect(sheet.rubricVersion).toBe(r.vocabulary.version)
+      expect(sheet.watched).toBe(false)
+    }
   })
 })
 
@@ -238,8 +324,9 @@ describe('künyeden model önerisi', () => {
 
 describe('etiketleme servisi ve uçlar', () => {
   let app: FastifyInstance
+  const content = fixtureContent()
   beforeAll(async () => {
-    app = await createTestApp()
+    app = await createTestApp({ contentDir: content })
   })
   afterAll(async () => {
     await app.close()
@@ -284,7 +371,11 @@ describe('etiketleme servisi ve uçlar', () => {
     expect(q).toHaveLength(app.services.catalog.allTitles().length)
     const ranks = q.map((i) => ({ NONE: 0, MODEL: 1, SAMPLE: 2, CONSENSUS: 3 })[i.basis])
     expect([...ranks].sort((a, b) => a - b)).toEqual(ranks)
-    expect(q.filter((i) => i.basis === 'SAMPLE')).toHaveLength(12)
+    expect(q.map((i) => [i.titleId, i.basis])).toEqual([
+      [NO_SAMPLE, 'MODEL'],
+      [SINTEL, 'SAMPLE'],
+      [TEARS, 'SAMPLE'],
+    ])
   })
 
   it('doğrulama: bilinmeyen ölçek/yüz/değer, max aşımı, aralık dışı, bilinmeyen alan, kötü kimlik → 400 ve anahtar adı', async () => {
@@ -412,14 +503,14 @@ describe('etiketleme servisi ve uçlar', () => {
 
   it('insan fişleri depoya yazılır ve aynı veri klasörüyle yeniden açılınca geri gelir', async () => {
     const dataDir = mkdtempSync(join(tmpdir(), 'tvplus-etiket-'))
-    const a1 = await createTestApp({ dataDir, isTest: false })
+    const a1 = await createTestApp({ dataDir, isTest: false, contentDir: content })
     await a1.inject({
       method: 'PUT',
       url: `/api/studio/tagging/titles/${TEARS}/sheets/etiket-07`,
       payload: { watched: true, scales: { mizah: 1 }, facets: {} },
     })
     await a1.close()
-    const a2 = await createTestApp({ dataDir })
+    const a2 = await createTestApp({ dataDir, contentDir: content })
     expect(
       taggingCore(a2)
         .humanSheets(TEARS)
@@ -434,7 +525,7 @@ describe('etiketleme servisi ve uçlar', () => {
 describe('stüdyo erişimi (TVP_STUDIO=member)', () => {
   let app: FastifyInstance
   beforeAll(async () => {
-    app = await createTestApp({ studioAccess: 'member' })
+    app = await createTestApp({ studioAccess: 'member', contentDir: fixtureContent() })
   })
   afterAll(async () => {
     await app.close()
@@ -473,9 +564,7 @@ describe('stüdyo erişimi (TVP_STUDIO=member)', () => {
 
 describe('açılışta içerik denetimi', () => {
   const contentWith = (mutate: (dir: string) => void): string => {
-    const dir = mkdtempSync(join(tmpdir(), 'tvplus-etiket-icerik-'))
-    mkdirSync(join(dir, 'titles'), { recursive: true })
-    cpSync(join(CONTENT, 'tagging'), join(dir, 'tagging'), { recursive: true })
+    const dir = fixtureContent()
     mutate(dir)
     return dir
   }
@@ -491,13 +580,13 @@ describe('açılışta içerik denetimi', () => {
 
   it('geçersiz örnek fiş → dosya, sıra ve anahtar adıyla durur', async () => {
     const dir = contentWith((d) => {
-      const f = join(d, 'tagging', 'sheets', 'ornek-temel.json')
+      const f = join(d, 'tagging', 'sheets', 'ornek.json')
       const sheets = JSON.parse(readFileSync(f, 'utf8')) as { facets: Record<string, string[]> }[]
-      sheets[3]!.facets['mekan'] = ['mars']
+      sheets[1]!.facets['mekan'] = ['mars']
       writeFileSync(f, JSON.stringify(sheets))
     })
     await expect(createTestApp({ contentDir: dir })).rejects.toThrow(
-      /tagging\/sheets\/ornek-temel\.json \[3\]\.facets\.mekan\[0\]: "mekan" yüzünde "mars" değeri yok/,
+      /tagging\/sheets\/ornek\.json \[1\]\.facets\.mekan\[0\]: "mekan" yüzünde "mars" değeri yok/,
     )
   })
 

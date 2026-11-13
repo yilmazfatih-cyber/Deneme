@@ -83,3 +83,17 @@ def test_modality_means_ignore_missing_rows():
                              "text": (np.zeros((2, 2)), np.zeros(2, bool))}, None, np.zeros(1))
     m = modality_means([s], 2)
     assert m[0].tolist() == [2.0, 0.0] and m[1].tolist() == [0.0, 2.0] and m[2].tolist() == [0.0, 0.0]
+
+
+def test_swap_context_only_swaps_across_titles():
+    from mediafm_mini.dataset import swap_context
+
+    a, b2, c = seq(1, 1, 3), seq(2, 1, 3), seq(3, 2, 3)
+    c.tags = np.ones_like(c.tags)
+    z = np.zeros((3, 3), bool)
+    batch = collate([(s, 0, 3, np.zeros(3, bool), z) for s in (a, b2, c)])
+    label = swap_context(batch, 1.0, np.random.default_rng(0))
+    assert label.tolist() == [0.0, 0.0, 0.0]
+    assert batch.tags[0].sum() == 3 and batch.tags[2].sum() == 0  # 1. başlık ↔ 2. başlık
+    one = collate([(a, 0, 3, np.zeros(3, bool), z), (b2, 0, 3, np.zeros(3, bool), z)])
+    assert swap_context(one, 1.0, np.random.default_rng(0)).tolist() == [1.0, 1.0]  # aynı başlık: değişmez

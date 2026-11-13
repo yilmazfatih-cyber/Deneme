@@ -18,7 +18,8 @@ import {
 
 const N = 200_000
 
-describe('zevk toplulukları — ölçek', () => {
+// Ölçek testleri zaman sınırı taşır ve makine yüküne duyarlıdır; `npm run test:perf` (TVP_PERF=1) ile çalışır.
+describe.skipIf(!process.env.TVP_PERF)('zevk toplulukları — ölçek', () => {
   it(`${N.toLocaleString('tr-TR')} izleyiciyi makul sürede kümeler; arka plan hesabı olay döngüsünü kilitlemez`, async () => {
     const app = await createTestApp()
     try {

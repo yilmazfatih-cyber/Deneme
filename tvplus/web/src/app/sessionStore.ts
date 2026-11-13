@@ -91,6 +91,15 @@ export function peekNextPath(): string | null {
     return null
   }
 }
+/**
+ * Girişin az önce belirlediği hedef. Oturum bağlamı uygulanınca karşılama sayfasının koruması da yeniden çizilir ve
+ * yönlendirir; ikisi aynı adrese gitsin diye koruma bunu okur (yoksa /bagla?kod=… gibi hatırlanan adres ezilirdi).
+ */
+let loginTarget: string | null = null
+export function peekLoginTarget(): string | null {
+  return loginTarget
+}
+
 function takeNextPath(): string | null {
   const v = peekNextPath()
   rememberNextPath(null)
@@ -155,12 +164,18 @@ export const useSession = create<SessionState>()((set, get) => {
       set({ busy: true })
       const t0 = performance.now()
       try {
-        const boot = adopt(await postBoot(ROUTES.LOGIN, {}))
-        devbus.emit('session', 'giriş', { membershipStatus: boot.membershipStatus }, { ms: performance.now() - t0 })
+        const raw = await postBoot(ROUTES.LOGIN, {})
+        // Hedef, bağlam uygulanmadan ÖNCE belirlenir: koruma yeniden çizildiğinde aynı adresi görsün.
         const next = peekNextPath()
-        const target = afterLoginTarget(boot, next)
+        const target = afterLoginTarget(raw, next)
+        loginTarget = target
         if (target === next) rememberNextPath(null)
+        const boot = adopt(raw)
+        devbus.emit('session', 'giriş', { membershipStatus: boot.membershipStatus }, { ms: performance.now() - t0 })
         navigate?.(target, { replace: true })
+        window.setTimeout(() => {
+          if (loginTarget === target) loginTarget = null
+        }, 2000)
         return boot
       } catch (err) {
         devbus.emit('session', 'giriş başarısız', { error: String(err) }, { ms: performance.now() - t0, ok: false })

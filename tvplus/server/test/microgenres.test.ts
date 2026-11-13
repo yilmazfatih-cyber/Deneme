@@ -2,7 +2,8 @@
  * Mikro türler: nitelik çıkarımı, tanım sayımı (0–3 yuva, sıfat çifti), minTitles, aynı küme ayıklaması, kararlı
  * kimlik, ad kurma (her yuva türü ve birleşimleri), katmanlar, benzerlik ağırlığı, etiket değişince yeniden üretim, uçlar.
  */
-import { readFileSync } from 'node:fs'
+import { cpSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs'
+import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import type { FastifyInstance } from 'fastify'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
@@ -553,10 +554,54 @@ describe('yeniden üretim', () => {
 
 /* ───────────── uçlar (gerçek katalog) ───────────── */
 
+/**
+ * Uç testlerinin kendi içerik ağacı: depodaki sözlük + altı başlık, örnek fiş yok (hepsi künyeden model önerisi).
+ * Depodaki fişlere bakmaz; içerik ekibi fiş ekledikçe sonuç değişmez.
+ */
+function endpointContent(): string {
+  const dir = mkdtempSync(join(tmpdir(), 'tvplus-mikro-fikstur-'))
+  mkdirSync(join(dir, 'titles'))
+  mkdirSync(join(dir, 'tagging', 'sheets'), { recursive: true })
+  cpSync(join(__dirname, '..', '..', 'content', 'tagging', 'vocabulary.json'), join(dir, 'tagging', 'vocabulary.json'))
+  const t = (videoId: number, title: string, over: Record<string, unknown>) => ({
+    videoId,
+    slug: `t-${videoId}`,
+    type: 'MOVIE',
+    title,
+    synopsis: 'Yirmi karakterden uzun bir deneme özeti.',
+    shortSynopsis: 'Kısa.',
+    maturity: { rating: 'GENEL' },
+    sources: [{ type: 'YOUTUBE', videoId: 'aqz-KE-bpKQ' }],
+    license: { name: 'CC BY', attribution: 'x' },
+    ...over,
+  })
+  const keaton = { genres: ['komedi'], cast: ['Buster Keaton'], moods: ['kult-klasik'], runtimeSec: 4000 }
+  const us = { origin: { countries: ['US'], languages: ['zxx'] } }
+  const nl = { origin: { countries: ['NL'], languages: ['en'] } }
+  writeFileSync(
+    join(dir, 'titles', 'a.json'),
+    JSON.stringify([
+      t(80020004, 'Sherlock Jr.', { ...keaton, ...us, year: 1924 }),
+      t(80020006, 'The General', { ...keaton, ...us, year: 1926 }),
+      t(80020007, 'Steamboat Bill, Jr.', { ...keaton, ...us, moods: [], year: 1928 }),
+      t(80020008, 'Safety Last!', { genres: ['komedi'], cast: ['Harold Lloyd'], runtimeSec: 4000, ...us, year: 1923 }),
+      t(80010001, 'Sintel', {
+        genres: ['animasyon', 'fantastik', 'kisa-film'],
+        moods: ['duygusal'],
+        runtimeSec: 888,
+        ...nl,
+        year: 2010,
+      }),
+      t(80010002, 'Tears of Steel', { genres: ['bilim-kurgu', 'kisa-film'], runtimeSec: 734, ...nl, year: 2012 }),
+    ]),
+  )
+  return dir
+}
+
 describe('mikro tür uçları', () => {
   let app: FastifyInstance
   beforeAll(async () => {
-    app = await createTestApp()
+    app = await createTestApp({ contentDir: endpointContent() })
   })
   afterAll(async () => {
     await app.close()
@@ -605,7 +650,7 @@ describe('mikro tür uçları', () => {
     const mg = app.services.microgenres
     const sim = mg.similarTitles(80020004, 5) // Sherlock Jr.
     expect(sim.length).toBeGreaterThan(0)
-    expect(sim.map((s) => s.titleId)).toContain(80020006) // The General: Buster Keaton, sessiz, kült komedi
+    expect(sim.map((s) => s.titleId)).toContain(80020006) // The General: Buster Keaton, kült komedi
     for (const s of sim)
       for (const id of s.shared) expect(mg.get(id)?.titleIds).toEqual(expect.arrayContaining([80020004, s.titleId]))
 

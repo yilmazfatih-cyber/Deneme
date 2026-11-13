@@ -11,10 +11,11 @@ from pathlib import Path
 
 import numpy as np
 import torch
+import torch.nn.functional as F
 
 from .context import TagLayout
 from .corpus import Input, is_open, load_titles
-from .dataset import MODS, Sequence, collate, crop, make_sequence, modality_mask, shot_mask
+from .dataset import MODS, Sequence, collate, crop, make_sequence, modality_mask, shot_mask, swap_context
 from .features import SynopsisCache, context_text, load_cached
 from .model import MediaFMMini, ModelConfig, msm_loss
 
@@ -76,6 +77,8 @@ class TrainConfig:
     mod_weight: float = 0.5
     crops_per_window: float = 2.0  # dönem başına, her max_len'lik dilim için bu kadar rastgele pencere
     fixed_epochs: int | None = None  # verilirse doğrulama olmadan bu kadar dönem
+    match_weight: float = 0.5  # bağlam eşleştirme kaybının ağırlığı (0 = kapalı; [GLOBAL]'sız modelde kapalı)
+    match_p: float = 0.5  # yığında bağlamı başka başlıkla değiştirilen öğe oranı
 
 
 @dataclass
@@ -128,6 +131,13 @@ def eval_loss(model: MediaFMMini, items, batch: int = 16) -> float:
     return tot / max(n, 1)
 
 
+def _subset(b, keep: torch.Tensor):
+    from .dataset import Batch
+
+    return Batch(*(getattr(b, f)[keep] for f in ("feats", "ok", "pad", "hide_shot", "hide_mod", "synopsis",
+                                                 "synopsis_ok", "tags", "title")))
+
+
 def train(train_seqs: list[Sequence], val_seqs: list[Sequence], mc: ModelConfig, tc: TrainConfig,
           log_every: int = 10, log=print) -> TrainResult:
     seed_all(tc.seed)
@@ -136,8 +146,11 @@ def train(train_seqs: list[Sequence], val_seqs: list[Sequence], mc: ModelConfig,
     model.set_center(torch.from_numpy(modality_means(train_seqs, mc.in_dim)))
     opt = torch.optim.AdamW(model.parameters(), lr=tc.lr, weight_decay=tc.weight_decay)
     epochs = tc.fixed_epochs or tc.max_epochs
+    # Öğrenme oranı takvimi her zaman max_epochs'a göre: son model (fixed_epochs) CV'deki koşuların ilk N dönemiyle
+    # aynı takvimi görür, yani CV'de seçilen dönem sayısı aynı anlama gelir.
+    horizon = tc.max_epochs
     sched = torch.optim.lr_scheduler.LambdaLR(
-        opt, lambda e: min(1.0, (e + 1) / tc.warmup) * 0.5 * (1 + math.cos(math.pi * min(e / epochs, 1.0))))
+        opt, lambda e: min(1.0, (e + 1) / tc.warmup) * 0.5 * (1 + math.cos(math.pi * min(e / horizon, 1.0))))
     rng = np.random.default_rng(tc.seed)
     val_items = fixed_val_items(val_seqs, mc.max_len, tc) if val_seqs and not tc.fixed_epochs else []
     best, best_ep, best_state, bad = math.inf, 0, None, 0
@@ -146,11 +159,23 @@ def train(train_seqs: list[Sequence], val_seqs: list[Sequence], mc: ModelConfig,
     for ep in range(1, epochs + 1):
         model.train()
         items = _items(train_seqs, mc.max_len, tc, rng)
-        tl, ts, tm, nb = 0.0, 0.0, 0.0, 0
+        tl, ts, tm, nb, tmatch = 0.0, 0.0, 0.0, 0, 0.0
         for k in range(0, len(items), tc.batch):
             b = collate(items[k : k + tc.batch])
+            use_match = tc.match_weight > 0 and mc.use_global
+            label = swap_context(b, tc.match_p, rng) if use_match else None
             _, pred = model(b)
             loss, st = msm_loss(pred, b, tc.mod_weight, center=model.center)
+            if label is not None:
+                # MSM kaybı yalnız bağlamı doğru olan öğelerden; eşleştirme kaybı hepsinden
+                logit = model.match_head(model.last_cls).squeeze(-1)
+                l_match = F.binary_cross_entropy_with_logits(logit, label)
+                keep = label.bool()
+                if not keep.all():
+                    sub = _subset(b, keep)
+                    loss, st = msm_loss(pred[keep], sub, tc.mod_weight, center=model.center)
+                loss = loss + tc.match_weight * l_match
+                tmatch += float(l_match.detach())
             opt.zero_grad()
             loss.backward()
             torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
@@ -160,7 +185,7 @@ def train(train_seqs: list[Sequence], val_seqs: list[Sequence], mc: ModelConfig,
             tm += st["mod"]
             nb += 1
         sched.step()
-        row = {"epoch": ep, "train_loss": tl / nb, "train_shot": ts / nb, "train_mod": tm / nb,
+        row = {"epoch": ep, "train_loss": tl / nb, "train_shot": ts / nb, "train_mod": tm / nb, "train_match": tmatch / nb,
                "lr": opt.param_groups[0]["lr"]}
         if val_items:
             v = eval_loss(model, val_items)

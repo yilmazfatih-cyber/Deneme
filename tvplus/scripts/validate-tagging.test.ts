@@ -1,4 +1,4 @@
-import { cpSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs'
+import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
@@ -14,17 +14,21 @@ type Sheet = {
   facets: Record<string, string[]>
 } & Record<string, unknown>
 
-/** Gerçek sözlük + örnek fişler + iki başlıklık katalog; `mutate` fiş dizisini ya da sözlüğü bozar. */
+const VERSION = (JSON.parse(readFileSync(join(CONTENT, 'tagging', 'vocabulary.json'), 'utf8')) as { version: string })
+  .version
+
+/**
+ * Testin kendi ağacı: depodaki sözlüğün kopyası + iki başlıklık katalog + bu iki başlığın örnek fişleri.
+ * Depodaki fiş klasörüne hiç bakılmaz; `mutate` fişleri ya da sözlüğü bozar.
+ */
 function tree(mutate?: (sheets: Sheet[], vocab: Record<string, unknown>) => void): string {
   const dir = mkdtempSync(join(tmpdir(), 'tvplus-etiket-dogrula-'))
-  cpSync(join(CONTENT, 'tagging'), join(dir, 'tagging'), { recursive: true })
   mkdirSync(join(dir, 'titles'))
-  const sheetsFile = join(dir, 'tagging', 'sheets', 'ornek-temel.json')
-  const sheets = (JSON.parse(readFileSync(sheetsFile, 'utf8')) as Sheet[]).slice(0, 2)
-  const vocabFile = join(dir, 'tagging', 'vocabulary.json')
-  const vocab = JSON.parse(readFileSync(vocabFile, 'utf8')) as Record<string, unknown>
-  const titles = sheets.map((s, i) => ({
-    videoId: s.titleId,
+  mkdirSync(join(dir, 'tagging', 'sheets'), { recursive: true })
+  const vocab = JSON.parse(readFileSync(join(CONTENT, 'tagging', 'vocabulary.json'), 'utf8')) as Record<string, unknown>
+  const ids = [80010001, 80010002]
+  const titles = ids.map((videoId, i) => ({
+    videoId,
     slug: `t-${i}`,
     type: 'MOVIE',
     title: `Film ${i}`,
@@ -36,10 +40,21 @@ function tree(mutate?: (sheets: Sheet[], vocab: Record<string, unknown>) => void
     sources: [{ type: 'YOUTUBE', videoId: 'aqz-KE-bpKQ' }],
     license: { name: 'CC BY', attribution: 'x' },
   }))
+  const sheets: Sheet[] = ids.map((titleId) => ({
+    titleId,
+    rubricVersion: VERSION,
+    source: 'SAMPLE',
+    tagger: null,
+    status: 'APPROVED',
+    watched: false,
+    taggedAt: '2026-11-13',
+    scales: { mizah: 3, romantizm: null },
+    facets: { mekan: ['hayali-dunya'] },
+  }))
   writeFileSync(join(dir, 'titles', 'a.json'), JSON.stringify(titles))
   mutate?.(sheets, vocab)
-  writeFileSync(sheetsFile, JSON.stringify(sheets))
-  writeFileSync(vocabFile, JSON.stringify(vocab))
+  writeFileSync(join(dir, 'tagging', 'sheets', 'ornek-temel.json'), JSON.stringify(sheets))
+  writeFileSync(join(dir, 'tagging', 'vocabulary.json'), JSON.stringify(vocab))
   return dir
 }
 
@@ -49,20 +64,20 @@ const errorsOf = (dir: string) =>
     .map((i) => `${i.file} ${i.path}: ${i.message}`)
 
 describe('validate-tagging', () => {
-  it('depodaki içerik geçerli; özet sözlüğü ve fişleri sayar', () => {
+  it('depodaki içerik geçerli (sayıdan bağımsız); özet sözlüğü ve fişleri yazar', () => {
     const r = validateTagging(CONTENT)
     expect(r.issues.filter((i) => i.level === 'error')).toEqual([])
-    expect(r.stats).toMatchObject({
-      version: '2026.11-1',
-      scales: 16,
-      facets: 8,
-      genres: 24,
-      sheets: 12,
-      sheetFiles: 1,
-    })
+    expect(r.stats.version).toBe(VERSION)
+    expect(r.stats.sheets).toBeGreaterThan(0)
+    expect(r.stats.sheetFiles).toBeGreaterThan(0)
     const text = formatTaggingReport(r, CONTENT)
-    expect(text).toMatch(/Sözlük 2026\.11-1 · ölçek 16/)
+    expect(text).toMatch(new RegExp(`Sözlük ${VERSION.replace('.', '\\.')} · ölçek \\d+`))
+    expect(text).toMatch(/Örnek fiş: \d+ \(\d+ dosya\)/)
     expect(text).toMatch(/Sonuç: geçerli/)
+  })
+
+  it('özet sayıları kendi ağacından', () => {
+    expect(validateTagging(tree()).stats).toMatchObject({ scales: 16, facets: 8, genres: 24, sheets: 2, sheetFiles: 1 })
   })
 
   it('küçük ağaç geçerli', () => {

@@ -166,6 +166,11 @@ export const queryCache = {
     for (const key of [...entries.keys()]) if (!operationName || opOf(key) === operationName) entries.delete(key)
     notifyCache()
   },
+  /** Önbellekteki veriyi silmeden bayatlatır: bağlı kancalar eski veriyi gösterirken yeniden çeker (iskelete düşmez). */
+  refresh(operationName?: string): void {
+    for (const [key, e] of entries) if (!operationName || opOf(key) === operationName) entries.set(key, { ...e, at: 0 })
+    notifyCache()
+  },
   /** Tanılama: önbellekteki anahtarlar */
   keys(): string[] {
     return [...entries.keys()]

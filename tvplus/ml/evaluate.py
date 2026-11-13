@@ -15,6 +15,10 @@ Karşılaştırılanlar:
   nearest_visible       temel: en yakın görünür komşu çekimin vektörleri
   neighbour_mean        temel: soldaki ve sağdaki en yakın görünür çekimlerin ortalaması
   model_visible_ref     üst referans: çekim GİZLENMEDEN modelin aynı çekim için tahmini (yeniden kurma)
+İkinci görev — bağlam eşleştirme (bağlamın gerçekten kullanılıp kullanılmadığı): ayrılmış her başlığın çekim dizisi,
+havuzdaki TÜM başlıkların özet + etiketleriyle ayrı ayrı modele verilir; eşleştirme puanına göre kendi bağlamının
+sırası. Temel: filmin ortalama CLIP görüntü vektörü ile özetin çok dilli CLIP metin vektörü arasındaki kosinüs (aynı
+ortak uzay, eğitimsiz).
 Çıktı: ml/.cache/runs/cv/metrics.json (+ ekrana tablo).
 """
 
@@ -28,7 +32,7 @@ import numpy as np
 
 from mediafm_mini.context import TagLayout
 from mediafm_mini.dataset import Sequence
-from mediafm_mini.infer import encode
+from mediafm_mini.infer import encode, match_logit
 from mediafm_mini.metrics import modal_scores, nearest_visible, neighbour_sides, ranks, summarize
 from mediafm_mini.paths import RUNS_DIR
 from mediafm_mini.pipeline import load_all
@@ -131,19 +135,47 @@ def main() -> None:
             per_title[str(t)] = {"title": name, "fold": f, "shots": sum(s.n for s in by_title[t]),
                                  **{m: summarize(np.array([a for a, _ in tq[m]]), np.array([b for _, b in tq[m]]))
                                     for m in METHODS}}
+    # bağlam eşleştirme
+    ctx_rows = []
+    for f, test in enumerate(folds):
+        full = load_checkpoint(RUNS_DIR / "cv" / f"fold{f}-full.pt")[0]
+        for t in test:
+            for s in by_title.get(t, []):
+                sc_model, sc_base = [], []
+                vis = s.feats[s.ok[:, 0], 0].mean(0)
+                for u in titles:
+                    d = by_title[u][0]
+                    sc_model.append(match_logit(full, with_context(s, d)))
+                    sc_base.append(float(vis @ d.synopsis / (np.linalg.norm(vis) * np.linalg.norm(d.synopsis) + 1e-9))
+                                   if d.synopsis_ok else -1.0)
+                ti = titles.index(t)
+                ctx_rows.append({"videoId": s.video_id, "title": s.meta["title"], "fold": f,
+                                 "model_rank": int(ranks(np.array([sc_model]), np.array([ti]))[0]),
+                                 "clip_baseline_rank": int(ranks(np.array([sc_base]), np.array([ti]))[0])})
+    n_cand = len(titles)
+    context_match = {"candidates": n_cand, "videos": ctx_rows,
+                     "model": summarize(np.array([r["model_rank"] for r in ctx_rows]), np.full(len(ctx_rows), n_cand)),
+                     "clip_baseline": summarize(np.array([r["clip_baseline_rank"] for r in ctx_rows]),
+                                                np.full(len(ctx_rows), n_cand))}
     overall = {m: summarize(np.array([a for a, _ in allq[m]]), np.array([b for _, b in allq[m]])) for m in METHODS}
     # başlık başına ortalama (makro): uzun filmler sonucu domine etmesin
     macro = {m: {k: float(np.mean([per_title[t][m][k] for t in per_title if per_title[t][m].get("queries")]))
                  for k in ("R@1", "R@5", "mean_rank", "norm_rank", "MRR")} for m in METHODS}
     res = {"protocol": __doc__.split("Çıktı:")[0].strip(), "mask_ratio": MASK_RATIO, "repeats": args.repeats,
            "seed": args.seed, "folds": folds, "overall_micro": overall, "overall_macro_by_title": macro,
-           "per_title": per_title}
+           "per_title": per_title,
+           "context_match": context_match}
     write_json(RUNS_DIR / "cv" / "metrics.json", res)
     print(f"{'yöntem':22s} {'R@1':>6s} {'R@5':>6s} {'ort.sıra':>8s} {'norm.sıra':>9s} {'MRR':>6s}  (mikro; adaylar ≈ "
           f"{overall['model']['candidates_mean']:.1f}, rastgele R@1 {overall['model']['random_R@1']:.3f})")
     for m in METHODS:
         o = overall[m]
         print(f"{m:22s} {o['R@1']:6.3f} {o['R@5']:6.3f} {o['mean_rank']:8.2f} {o['norm_rank']:9.3f} {o['MRR']:6.3f}")
+    print(f"bağlam eşleştirme ({n_cand} aday başlık, {len(ctx_rows)} sınama yaprağı):")
+    for m in ("model", "clip_baseline"):
+        o = context_match[m]
+        print(f"  {m:20s} R@1 {o['R@1']:.3f} R@5 {o['R@5']:.3f} ort.sıra {o['mean_rank']:.2f} "
+              f"(rastgele R@1 {o['random_R@1']:.3f})")
     print("makro (başlık ortalaması):")
     for m in METHODS:
         o = macro[m]

@@ -136,7 +136,8 @@ function realisticCatalogue(n: number, seed = 42): Synthetic[] {
   return out
 }
 
-describe('mikro tür üreteci — ölçek', () => {
+// Ölçek testleri zaman sınırı taşır ve makine yüküne duyarlıdır; `npm run test:perf` (TVP_PERF=1) ile çalışır.
+describe.skipIf(!process.env.TVP_PERF)('mikro tür üreteci — ölçek', () => {
   it('5000 başlık birkaç saniyede üretilir', () => {
     const titles = realisticCatalogue(5000)
     const g = generateMicrogenres({ index: INDEX, titles, minTitles: 2 })
