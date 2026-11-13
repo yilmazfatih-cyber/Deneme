@@ -348,6 +348,75 @@ def kap_kurallari(P: Panel, K: pd.DataFrame, deneme: int = 95, detay: pd.DataFra
     return out
 
 
+def gunluk_tarama(P: Panel, K: pd.DataFrame, X: dict[str, pd.DataFrame], pencere: int = 20, en_cok: int = 60) -> dict:
+    """Kuralların güncel çıktısı: nedenleriyle kaçınma listesi ve aday listesi. Fiyatlar panelin son gününe, bildirimler listenin son
+    satırına kadardır. Tarama çıktısıdır; emir değildir. Her kayıt: [hisse, tarih, açıklama]."""
+    R = P.R
+    n = len(R)
+    son_i = n - 1
+    kolon = list(R.columns)
+    r = R.to_numpy(float)
+    b100 = (P.evren["bist100"].reindex(R.columns) == 1).to_numpy()
+    out: dict = {"fiyat_gunu": str(R.index[-1].date()), "bildirim_son": str(K["zaman"].max()) if not K.empty else None, "kacin": {}, "aday": {}}
+
+    def sirala(kayitlar: list[list]) -> list[list]:
+        gorulen, sonuc = set(), []
+        for k in sorted(kayitlar, key=lambda x: x[1], reverse=True):
+            if k[0] not in gorulen:
+                gorulen.add(k[0])
+                sonuc.append(k)
+        return sonuc[:en_cok]
+
+    # --- fiyattan
+    tavan = r >= TAVAN
+    bozulan, patlama = [], []
+    hs = X["hacim_soku"].reindex(index=R.index, columns=R.columns).to_numpy(float) if "hacim_soku" in X else None
+    for g in range(max(1, n - 5), n):
+        gun = str(R.index[g].date())
+        for j in np.where(tavan[g - 1] & ~tavan[g] & ~np.isnan(r[g]))[0]:
+            bozulan.append([kolon[j], gun, f"o gün {r[g, j] * 100:+.1f}%".replace(".", ",")])
+        if hs is not None:
+            for j in np.where((hs[g] >= 3) & (np.abs(r[g]) < TAVAN) & ~b100)[0]:
+                patlama.append([kolon[j], gun, f"hacim olağanın {hs[g, j]:.1f} katı".replace(".", ",")])
+    out["kacin"]["Tavan serisi bozuldu (son 5 gün)"] = sirala(bozulan)
+    out["kacin"]["Hacmi patladı, BIST 100 dışı (son 5 gün)"] = sirala(patlama)
+    out["kacin"]["Tabanda kapandı (son gün)"] = [[kolon[j], out["fiyat_gunu"], f"{r[-1, j] * 100:+.1f}%".replace(".", ",")] for j in np.where(r[-1] <= -TAVAN)[0]][:en_cok]
+    ilk = pd.to_datetime(P.evren["ilk_gun"].reindex(R.columns), errors="coerce")
+    esik = R.index[max(0, n - 40)]
+    out["kacin"]["Yeni halka arz (son 40 işlem günü)"] = sirala([[h, str(t.date()), "ilk işlem günü"] for h, t in ilk.items() if pd.notna(t) and t >= esik and t > R.index[0]])
+    # --- bildirimlerden
+    if not K.empty:
+        K2 = K.copy()
+        K2["i"], K2["an"] = olay_gunu(K2["zaman"], R.index)
+        yakin = K2["i"] >= son_i - pencere + 1
+        se = K2[K2["tur"] == "sermaye"]
+        tarih = lambda D: D["zaman"].dt.strftime("%Y-%m-%d")  # noqa: E731
+        for ad, on in (("Bedelsiz sermaye artırımı bildirimi", "bedelsiz"), ("Bedelli sermaye artırımı bildirimi", "bedelli")):
+            d = _ilkler(se[se["alt"].str.startswith(on)], ["hisse"], 120)
+            d = d[d["i"] >= son_i - pencere + 1]
+            out["kacin"][f"{ad} (son {pencere} işlem günü)"] = sirala([[h, t, o[:60]] for h, t, o in zip(d["hisse"], tarih(d), d["ozet"])])
+        pk = K2[(K2["tur"] == "pay_alim_satim") & (K2["bildiren_tur"] == "kap") & yakin]
+        out["kacin"][f"Ortaklık payı eşik bildirimi (son {pencere} işlem günü)"] = sirala([[h, t, "eşik bildirimi"] for h, t in zip(pk["hisse"], tarih(pk))])
+        pp = K2[(K2["tur"] == "pay_alim_satim") & (K2["bildiren_tur"] == "portfoy") & yakin]
+        out["kacin"][f"Portföy şirketi pay bildirimi (son {pencere} işlem günü)"] = sirala([[h, t, _baslik(re.sub(r"\s*PORTFÖY YÖNETİMİ.*$", "", b))] for h, t, b in zip(pp["hisse"], tarih(pp), pp["bildiren"])])
+        # Aday: ilk geri alım bildirimi; henüz fiyatlanmamış (son kapanıştan sonra gelen) ve son üç işlem gününde gelenler
+        W = Pencereler(P)
+        ga = _ilkler(K2[K2["tur"] == "geri_alim"], ["hisse"], 20)
+        ga = ga[(ga["i"] >= son_i - 2) & ga["hisse"].isin(W.kolon)]
+        aday = []
+        for h, z, i, an in zip(ga["hisse"], ga["zaman"], ga["i"].astype(int), ga["an"]):
+            j = W.kolon[h]
+            bit = min(i, n)
+            once = float(np.expm1(W.C[bit, j] - W.C[max(0, bit - 20), j])) if bit >= 20 else None
+            durum = "henüz fiyatlanmadı: sonraki açılış" if i > son_i else f"{son_i - i + 1}. gün"
+            aday.append([h, z.strftime("%Y-%m-%d %H:%M"), {"durum": durum, "once_20g": once, "seans_ici": an == "seans", "bist100": bool(P.evren.at[h, "bist100"] == 1)}])
+        out["aday"]["İlk geri alım bildirimi (son 3 işlem günü ve sonrası)"] = sorted(aday, key=lambda x: x[1], reverse=True)[:en_cok]
+    kacinilan = {k[0] for v in out["kacin"].values() for k in v}
+    out["ozet"] = {"kacin_hisse": len(kacinilan), "aday": sum(len(v) for v in out["aday"].values()),
+                   "aday_ve_kacin": sorted({a[0] for v in out["aday"].values() for a in v} & kacinilan)}  # fmt: skip
+    return out
+
+
 def _yuzdelikler(P: Panel, X: dict[str, pd.DataFrame]) -> dict[str, np.ndarray]:
     """Özelliklerin günlük kesitteki yüzdelik sırası, panelin gün ve hisse eksenine hizalanmış."""
     return {ad: X[ad].reindex(index=P.R.index, columns=P.R.columns).rank(axis=1, pct=True).values for ad in OZELLIK if ad in X}

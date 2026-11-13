@@ -1042,7 +1042,25 @@ def ag_veri_cek(klasor: str | Path, bas: date, bit: date | None = None, kaynakla
         return r
 
     def _kap_liste() -> dict:
-        tablolar, r = kap_liste(bas, bit)
+        # Artımlı: eldeki listenin son bildiriminden üç gün öncesinden bugüne çekilir, eskiyle birleştirilir
+        eski_yol = klasor / "kap_bildirimler.csv.gz"
+        eski, bas2 = None, bas
+        if eski_yol.exists():
+            try:
+                eski = pd.read_csv(eski_yol)
+                son = pd.to_datetime(eski["publishDate"], format="%d.%m.%Y %H:%M:%S", errors="coerce").max()
+                if pd.notna(son):
+                    bas2 = max(bas, (son - timedelta(days=3)).date())
+            except Exception:  # noqa: BLE001
+                eski = None
+        tablolar, r = kap_liste(bas2, bit)
+        r["artimli"] = {"baslangic": bas2.isoformat(), "eski_satir": int(len(eski)) if eski is not None else 0}
+        yeni = tablolar.get("kap_bildirimler")
+        if yeni is not None and eski is not None and len(eski):
+            hepsi = pd.concat([yeni, eski], ignore_index=True)
+            hepsi = hepsi.drop_duplicates("disclosureIndex", keep="first") if "disclosureIndex" in hepsi.columns else hepsi
+            tablolar["kap_bildirimler"] = hepsi
+            r["artimli"]["toplam_satir"] = int(len(hepsi))
         for ad2, df in tablolar.items():
             _yaz(df, klasor / f"{ad2}.csv.gz")
         return r

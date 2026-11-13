@@ -62,6 +62,9 @@ python -m yatirim_ajani ag-analiz --klasor cikti/veri/ag --rapor cikti/raporlar/
 # Yalnız raporu yeniden üret
 python -m yatirim_ajani ag-analiz --yalniz-rapor --klasor cikti/veri/ag --rapor cikti/raporlar/ag-analiz-YYYYMMDD.md
 
+# Günlük tarama (akşam): fiyat panelini ve KAP listesini tazele (liste artımlıdır: son bildirimden üç gün öncesinden bugüne)
+#   Actions: is=ag-veri, kaynak=isy,yahoo,kap_liste  (≈ 20 dk)  →  ag-analiz  →  veri/ag/analiz/tarama.json (kaçınma ve aday listesi)
+
 # Etkileşimli sayfa ("BIST Ağacı"): tek dosyalık HTML; tarayıcıda açılır ya da Artifact olarak yayınlanır
 python -m yatirim_ajani ag-sayfa --klasor cikti/veri/ag --html cikti/raporlar/bist-agaci.html
 ```

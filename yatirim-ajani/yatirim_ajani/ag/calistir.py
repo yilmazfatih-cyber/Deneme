@@ -198,6 +198,7 @@ def calistir(klasor: str | Path = "veri/ag", cikti: str | Path | None = None, ra
         adim("kap_olay", lambda: kap.kap_olaylari(P, K))
         adim("kap_fon", lambda: kap.portfoy_profilleri(P, K, X, detay))
         adim("kap_kural", lambda: kap.kap_kurallari(P, K, DENEME, detay))
+    adim("tarama", lambda: kap.gunluk_tarama(P, K, X))
     adim("yabanci_kesit", lambda: kap.yabanci_kesit(P, klasor, X))
     adim("yabanci_gecmis", lambda: kap.yabanci_gecmis(P, klasor, X))
     adim("sektor_mevsim", lambda: kap.sektor_mevsim(klasor))
@@ -214,6 +215,8 @@ def calistir(klasor: str | Path = "veri/ag", cikti: str | Path | None = None, ra
     _yaz(cikti / "strateji.json", S.get("strateji"))
     if S.get("kap_olay"):
         _yaz(cikti / "kap.json", {"veri": S.get("kap_veri"), "olay": S.get("kap_olay"), "fon": S.get("kap_fon"), "kural": S.get("kap_kural")})
+    if S.get("tarama"):
+        _yaz(cikti / "tarama.json", S.get("tarama"))
     if S.get("yabanci_kesit") or S.get("yabanci_gecmis"):
         _yaz(cikti / "yabanci.json", {"kesit": S.get("yabanci_kesit"), "gecmis": S.get("yabanci_gecmis")})
     if S.get("sektor_mevsim"):

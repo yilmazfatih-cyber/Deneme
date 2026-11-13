@@ -410,3 +410,34 @@ def test_komsu_gecisi_gecikmeli_izlemeyi_yakalar():
     assert r["cift"] >= cift  # her hissenin eşi bulundu
     yukari = r["test"]["yukari"]
     assert yukari["olay"] >= 60 and yukari["ertesi"]["ort"] > 0.02 and yukari["ertesi"]["t"] > 4
+
+
+def test_gunluk_tarama_kacinma_ve_aday():
+    from yatirim_ajani.ag import kap
+
+    P = _kap_paneli(120, 20, tohum=9)
+    gun = P.R.index
+    # H03: dün tavan, bugün değil → seri bozuldu; H05: son gün tabanda
+    P.R.loc[gun[-2], "H03"] = 0.0999
+    P.R.loc[gun[-1], "H03"] = -0.02
+    P.R.loc[gun[-1], "H05"] = -0.0999
+    K = pd.DataFrame({
+        "no": [1, 2, 3, 4],
+        "zaman": pd.to_datetime([f"{gun[-3].date()} 19:10:00", f"{gun[-1].date()} 20:05:00", f"{gun[-40].date()} 11:00:00", f"{gun[-2].date()} 12:00:00"]),
+        "tur": ["sermaye", "geri_alim", "sermaye", "pay_alim_satim"], "alt": ["bedelsiz_karar", "", "bedelli_karar", ""],
+        "hisse": ["H07", "H09", "H11", "H12"], "bildiren": ["H07 A.Ş.", "H09 A.Ş.", "H11 A.Ş.", "KAMUYU AYDINLATMA PLATFORMU"],
+        "bildiren_tur": ["sirket", "sirket", "sirket", "kap"], "bildiren_hisse": ["H07", "H09", "H11", None], "ozet": ["Bedelsiz", "Geri alım", "Bedelli", "Pay Alım Satım"],
+    })  # fmt: skip
+    X = {"hacim_soku": pd.DataFrame(1.0, index=gun, columns=P.R.columns)}
+    X["hacim_soku"].loc[gun[-1], "H15"] = 4.2  # ana pazar hissesi (BIST 100 dışı)
+    T = kap.gunluk_tarama(P, K, X)
+    al = lambda on: next(v for k, v in T["kacin"].items() if k.startswith(on))  # noqa: E731
+    assert [x[0] for x in al("Tavan serisi")] == ["H03"]
+    assert [x[0] for x in al("Tabanda")] == ["H05"]
+    assert [x[0] for x in al("Hacmi patladı")] == ["H15"]
+    assert [x[0] for x in al("Bedelsiz")] == ["H07"]
+    assert al("Bedelli") == []  # 40 işlem günü önceki bildirim pencerenin dışında
+    assert [x[0] for x in al("Ortaklık payı")] == ["H12"]
+    aday = next(iter(T["aday"].values()))
+    assert aday[0][0] == "H09" and aday[0][2]["durum"].startswith("henüz fiyatlanmadı") and aday[0][2]["seans_ici"] is False
+    assert T["ozet"]["kacin_hisse"] == 5 and T["ozet"]["aday"] == 1

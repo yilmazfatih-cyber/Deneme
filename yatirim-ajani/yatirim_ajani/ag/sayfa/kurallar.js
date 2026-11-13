@@ -106,6 +106,27 @@ function gorunumKurallar(kok) {
       ipucu: () => [tipSatir('Brüt, gece başına', bpz(al(g, 'brut', 'ort'))), tipSatir('10 bp ile yıllık', yz(al(g, 'net_10bp', 'yillik'), 0), 'var(--s1)'), tipSatir('30 bp ile yıllık', yz(al(g, 'net_30bp', 'yillik'), 0), 'var(--s2)'),
         tipSatir('Deflated Sharpe (10 bp)', sy(g.dsr_10bp, 2)), tipSatir('En büyük düşüş (10 bp)', yz(al(g, 'net_10bp', 'en_buyuk_dusus'), 0))] })) });
 
+  // Güncel tarama: kuralların bugünkü çıktısı
+  const TR = al(V, 'ek', 'tarama');
+  if (TR && TR.kacin) {
+    const tarihKisa = t => { const m = /^(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{2}:\d{2}))?/.exec(t || ''); return m ? `${Number(m[3])} ${AD.ay[Number(m[2]) - 1]}${m[4] ? ' ' + m[4] : ''}` : ''; };
+    const adaylar = Object.values(TR.aday || {}).flat();
+    const kacinSet = new Set(Object.values(TR.kacin).flat().map(x => x[0]));
+    kok.append(h('div', { class: 'grid' },
+      sekil({ baslik: 'Kuralların güncel çıktısı', alt: `${tarihKisa(TR.fiyat_gunu)} kapanışı ve ${tarihKisa(TR.bildirim_son)} saatine kadar gelen KAP bildirimleriyle. Tarama çıktısıdır; emir ya da öneri değildir.` },
+        h('div', { class: 'sayilar' }, sayi(tam(al(TR, 'ozet', 'kacin_hisse')), 'hisse en az bir kaçınma kuralına takılıyor'), sayi(tam(adaylar.length), 'ilk geri alım bildirimi (son üç işlem günü)')),
+        adaylar.length ? h('div', { class: 'kbaslik', text: 'Aday: ilk geri alım bildirimi' }) : null,
+        adaylar.length ? tablo([{ ad: 'Hisse' }, { ad: 'Bildirim' }, { ad: 'Durum' }, { ad: 'Önceki 20 gün (katmana göre)', n: 1 }, { ad: 'Not' }],
+          adaylar.map(a => { const e = a[2] || {}; const notlar = [e.seans_ici ? 'seans içinde yayımlandı: açılış kuralı uygulanmaz' : null, kacinSet.has(a[0]) ? 'kaçınma listesinde de var' : null,
+            e.once_20g != null && e.once_20g < 0 ? 'bildirim öncesi zayıf: etki bu grupta ölçülmedi' : null].filter(Boolean);
+            return [h('span', { class: 'mono', text: a[0] }), tarihKisa(a[1]), e.durum || '', yz(e.once_20g, 1), notlar.join('; ') || 'koşullar uygun']; }), { genis: true }) : null,
+        h('div', { class: 'kbaslik', text: 'Kaçınma listesi, nedenleriyle' }),
+        Object.entries(TR.kacin).filter(([, v]) => v.length).map(([neden, v]) => h('details', { class: 'ac' },
+          h('summary', null, neden, h('small', { text: `${v.length} hisse` })),
+          h('div', null, h('div', { class: 'cipler' }, v.map(x => h('span', { class: 'cip', title: `${tarihKisa(x[1])}${x[2] ? ' · ' + x[2] : ''}`, text: x[0] })))))),
+        p('Bir hisse hem aday hem kaçınma listesinde olabilir; o durumda kaçınma önce gelir. Liste her akşam, kapanış fiyatları ve o günün bildirimleriyle yeniden üretilir.', 'alt'))));
+  }
+
   // Gün akışı + sınırlar
   kok.append(h('div', { class: 'grid' },
     sekil({ baslik: 'Bir işlem gününün akışı', cls: 'y7', alt: 'Kuralların saat sırasına dizilmiş hali. Hangi hissenin alınacağını tez listesi belirler; bu akış ne zaman ve nelerden uzak durulacağını söyler.' },

@@ -225,7 +225,7 @@ def sayfa_verisi(cikti: str | Path, arastirma: str | Path | None = None) -> dict
     """Analiz çıktılarından sayfanın tek veri nesnesi. `cikti` = `veri/ag/analiz`; şirket adları bir üst klasördeki `tv_tarama.csv`'den okunur."""
     cikti = Path(cikti)
     A, Z, O, K, Y, S, OZ = (_oku(cikti / f"{ad}.json") for ad in ("agac", "zaman", "oncu", "akis", "yatirimci", "strateji", "ozet"))
-    ek = {ad: _oku(cikti / f"{ad}.json") for ad in ("kap", "yabanci", "sektor_mevsim") if (cikti / f"{ad}.json").exists()}
+    ek = {ad: _oku(cikti / f"{ad}.json") for ad in ("kap", "yabanci", "sektor_mevsim", "tarama") if (cikti / f"{ad}.json").exists()}
     if isinstance(al := (ek.get("kap") or {}).get("fon"), dict):
         al.pop("olaylar", None)  # tek tek bildirimler sayfada kullanılmaz
     veri = {
