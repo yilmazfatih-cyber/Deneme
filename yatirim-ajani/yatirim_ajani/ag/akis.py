@@ -94,6 +94,32 @@ def akis_ongoru(A: pd.DataFrame, P: Panel) -> dict:
     return out
 
 
+def akis_testi(A: pd.DataFrame, P: Panel, tavan: float = 0.09) -> dict:
+    """İşaretli akış sinyalinin dürüstlük testleri: ham sonuç; tavan/taban günleri çıkarılmış; BIST 100 içi/dışı; bugünkü getiriden
+    arındırılmış akış; yalnız bugünkü getiri (kıyas). Ham sonuçtaki güçlü gece etkisi tavan/taban günlerinin yan ürünüdür."""
+    A = A[[c for c in A.columns if c in P.R.columns]]
+    ort = A.index.intersection(P.R.index)
+    A = A.loc[ort]
+    R0 = P.R.loc[ort, A.columns]
+    islenebilir = R0.abs() < tavan
+    b100 = [h for h in A.columns if P.evren.at[h, "bist100"] == 1]
+    dis = [h for h in A.columns if P.evren.at[h, "bist100"] != 1]
+    arinmis = A.copy()
+    for t in ort:
+        a, r = A.loc[t], R0.loc[t]
+        ok = a.notna() & r.notna()
+        if ok.sum() > 50:
+            k = np.polyfit(r[ok], a[ok], 1)
+            arinmis.loc[t] = a - (k[1] + k[0] * r)
+
+    def kisa(x: pd.DataFrame) -> dict:
+        o = akis_ongoru(x, P)
+        return {k: {"ust_alt": o[k]["ust_alt_fark"], "t": o[k]["t"], "dilim_ort": o[k]["dilim_ort"]} for k in ("ertesi_gece", "ertesi_gunici", "ertesi_gun")}
+
+    return {"gun": int(len(ort)), "hisse": int(A.shape[1]), "ham": kisa(A), "tavan_taban_haric": kisa(A.where(islenebilir)), "bist100": kisa(A[b100].where(islenebilir[b100])),
+            "bist100_disi": kisa(A[dis].where(islenebilir[dis])), "getiriden_arinmis": kisa(arinmis.where(islenebilir)), "yalniz_getiri": kisa(R0.where(islenebilir))}  # fmt: skip
+
+
 def islem_ilgisi(P: Panel, anahtar: str = "sektor") -> dict:
     """TL işlem hacminin gruplara dağılımı: yıllık paylar, aylık pay değişimleri, pay ↔ getiri ilişkisi, rotasyon matrisi."""
     cols = [h for h in P.HTL.columns if h in P.evren.index]

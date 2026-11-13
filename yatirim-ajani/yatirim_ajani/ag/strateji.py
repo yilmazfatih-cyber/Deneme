@@ -60,7 +60,7 @@ def deflated_sharpe(getiri: pd.Series, deneme: int) -> float:
 def ozet(getiri: pd.Series, kiyas: pd.Series | None = None, yil_donem: float = YIL_GUN, deneme: int = 1) -> dict:
     """Dönemlik getiri serisinin özeti: yıllık getiri, Sharpe, en büyük düşüş, isabet, iki yarı, kıyasa göre fazla getiri ve t."""
     r = getiri.dropna()
-    if len(r) < 20:
+    if len(r) < 8:
         return {"donem": int(len(r))}
     kum = (1 + r).cumprod()
     dusus = float((kum / kum.cummax() - 1).min())
@@ -71,7 +71,7 @@ def ozet(getiri: pd.Series, kiyas: pd.Series | None = None, yil_donem: float = Y
            "dsr": deflated_sharpe(r, deneme) if deneme > 1 else None}  # fmt: skip
     if kiyas is not None:
         f = (r - kiyas.reindex(r.index)).dropna()
-        if len(f) > 20 and f.std() > 0:
+        if len(f) >= 8 and f.std() > 0:
             out["fazla_ort"] = float(f.mean())
             out["fazla_t"] = float(f.mean() / (f.std() / np.sqrt(len(f))))
             out["fazla_yari"] = [float(f.iloc[: len(f) // 2].mean()), float(f.iloc[len(f) // 2 :].mean())]

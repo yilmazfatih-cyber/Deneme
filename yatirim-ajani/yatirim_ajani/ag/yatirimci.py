@@ -359,3 +359,41 @@ def olay_penceresi(P: Panel, hisseler: list[str], bas: str, bit: str, kiyas: lis
     return {"donem": [bas, bit], "kume": int(len(h)), "kiyas": int(len(k)), "kume_ort": float(a.mean()), "kume_medyan": float(a.median()), "kiyas_ort": float(b.mean()), "kiyas_medyan": float(b.median()),
             "gunluk_fark_t": float(gunluk.mean() / (gunluk.std() / np.sqrt(len(gunluk)))) if gunluk.std() > 0 else None, "kume_en_kotu": [(x, float(v)) for x, v in a.sort_values().head(8).items()],
             "tavan_taban_gun": {"kume_taban": int((R[h] <= -TAVAN).sum().sum()), "kume_gun": int(R[h].notna().sum().sum()), "kiyas_taban": int((R[k] <= -TAVAN).sum().sum()), "kiyas_gun": int(R[k].notna().sum().sum())}}  # fmt: skip
+
+
+def taban_alimi(P: Panel, min_hacim: float = 5e6, en_cok_gun: int = 10) -> dict:
+    """'Tabandan alım' gerçekte ne kazandırır? Taban kapanışının ertesi günü açılışta alınır; hisse tabanda kapanıyorsa satılamaz
+    (alıcı yok), pozisyon tabanda kapanmayan ilk günün kapanışına kadar taşınır. Ölçülen (kâğıt üstü) gün içi getiri ile
+    gerçekleşebilir getiri karşılaştırılır."""
+    R, GI, GE = P.R.to_numpy(), P.GI.to_numpy(), P.GECE.to_numpy()
+    htl = P.HTL.rolling(20, min_periods=10).mean().to_numpy()
+    T, N = R.shape
+    b100 = (P.evren["bist100"].reindex(P.R.columns) == 1).to_numpy()
+    kayit = []
+    for j in range(N):
+        for t in np.nonzero(R[: T - en_cok_gun - 2, j] <= -TAVAN)[0]:
+            if np.isnan(GI[t + 1, j]) or np.isnan(GE[t + 1, j]) or not htl[t, j] > min_hacim:
+                continue
+            g, k, kilit = GI[t + 1, j], t + 1, 0
+            while R[k, j] <= -TAVAN and k < t + 1 + en_cok_gun and not np.isnan(R[k + 1, j]):
+                k += 1
+                g = (1 + g) * (1 + R[k, j]) - 1
+                kilit += 1
+            kayit.append((P.R.index[t + 1], bool(b100[j]), GE[t + 1, j], GI[t + 1, j], g, kilit))
+    D = pd.DataFrame(kayit, columns=["gun", "bist100", "bosluk", "olculen", "gercek", "kilit"])
+    if D.empty:
+        return {"olay": 0}
+
+    def oz(d: pd.DataFrame) -> dict:
+        if len(d) < 10:
+            return {"n": int(len(d))}
+        g = d.groupby("gun")["gercek"].mean()
+        return {"n": int(len(d)), "olculen_ort": float(d["olculen"].mean()), "gercek_ort": float(d["gercek"].mean()), "gercek_medyan": float(d["gercek"].median()),
+                "kazanan": float((d["gercek"] > 0.003).mean()), "kilitli_kalan": float((d["kilit"] > 0).mean()), "t": float(g.mean() / (g.std() / np.sqrt(len(g)))) if g.std() > 0 else None,
+                "yuzde5": float(d["gercek"].quantile(0.05)), "yuzde95": float(d["gercek"].quantile(0.95))}  # fmt: skip
+
+    out = {"olay": int(len(D)), "hepsi": oz(D), "bist100": oz(D[D["bist100"]]), "bist100_disi": oz(D[~D["bist100"]]), "ayni_gun_cikilabilen": oz(D[D["kilit"] == 0]), "kilitli": oz(D[D["kilit"] > 0]),
+           "yil": {str(y): oz(d) for y, d in D.groupby(D["gun"].dt.year)}, "bosluk": {}}  # fmt: skip
+    for a, b in ((-0.11, -0.08), (-0.08, -0.04), (-0.04, -0.01), (-0.01, 0.02), (0.02, 0.11)):
+        out["bosluk"][f"{a:+.0%}..{b:+.0%}"] = oz(D[(D["bosluk"] > a) & (D["bosluk"] <= b)])
+    return out
