@@ -52,3 +52,10 @@ def match_logit(model: MediaFMMini, seq: Sequence, stride: int | None = None) ->
         model(collate([(seq, a, b, np.zeros(b - a, bool), np.zeros((b - a, 3), bool))]))
         out.append(float(model.match_head(model.last_cls)[0, 0]))
     return float(np.mean(out))
+
+
+def finalize(h: np.ndarray, out_center: np.ndarray | None) -> np.ndarray:
+    """Dışa aktarılan çekim vektörü: birim h, eğitim çekimlerinin ortalaması çıkarılmış, yeniden birim uzunlukta.
+    (LayerNorm çıktısının tüm çekimlerde ortak büyük bir bileşeni var; çıkarılmazsa her kosinüs ≈ 0,99 olur.)"""
+    x = l2n(h)
+    return l2n(x - out_center) if out_center is not None else x

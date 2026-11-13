@@ -9,3 +9,7 @@ shared/graphql/persisted.server.json
 shared/graphql/persisted.client.json
 content/.youtube-report.json
 docs/referans
+ml/.venv
+ml/.cache
+content/models
+content/shots

@@ -20,7 +20,7 @@ from mediafm_mini import MODEL_ID
 from mediafm_mini.card import render_card
 from mediafm_mini.corpus import load_titles
 from mediafm_mini.export_format import check_vectors_file, manifest, model_line, save_weights, video_line
-from mediafm_mini.infer import encode, l2n, pooled
+from mediafm_mini.infer import encode, finalize, l2n, pooled
 from mediafm_mini.paths import FEATURE_DIR, MODEL_OUT_DIR, RUNS_DIR
 from mediafm_mini.pipeline import load_all
 from mediafm_mini.training import load_checkpoint, training_pool
@@ -43,6 +43,8 @@ def main() -> None:
     wsha = hashlib.sha256(b"".join(t.detach().numpy().tobytes() for t in model.state_dict().values())).hexdigest()
     version = f"{info['trainedAt'][:10]}-{wsha[:8]}"
     dims = model.cfg.d
+    pool = training_pool(inputs, seqs)
+    out_center = np.round(np.mean(np.concatenate([l2n(encode(model, s)[0]) for s in pool]), 0), 6).astype(np.float32)
     lines = [model_line(MODEL_ID, version, dims)]
     pooled_by_video: dict[int, np.ndarray] = {}
     title_of: dict[int, int] = {}
@@ -51,8 +53,7 @@ def main() -> None:
         s = seqs.get(inp["videoId"])
         if s is None:
             continue
-        h, _ = encode(model, s)
-        h = l2n(h)
+        h = finalize(encode(model, s)[0], out_center)
         p = pooled(h)
         lines.append(video_line(inp["videoId"], inp["titleId"], h, p))
         pooled_by_video[inp["videoId"]] = p
@@ -74,7 +75,8 @@ def main() -> None:
                                                         "note": "Bilgi için; sunucu başlık vektörünü kendisi kurar.",
                                                         "titles": tv}, ensure_ascii=False) + "\n")
 
-    save_weights(out, model, layout, {"version": version, "trainedAt": info["trainedAt"]})
+    save_weights(out, model, layout, {"version": version, "trainedAt": info["trainedAt"],
+                                      "outCenter": [round(float(x), 6) for x in out_center]})
 
     cv = json.loads((RUNS_DIR / "cv" / "metrics.json").read_text())
     final_log = json.loads((RUNS_DIR / "final.json").read_text())
@@ -84,7 +86,6 @@ def main() -> None:
             j = json.loads((RUNS_DIR / "cv" / f"fold{f}-{v}.json").read_text())
             folds.append({"fold": f, "variant": v, "test": j["test"], "val": j["val"], "best_epoch": j["best_epoch"],
                           "best_val_shot": r4(j["best_val_shot"]), "epochs_run": len(j["log"]), "seconds": j["seconds"]})
-    pool = training_pool(inputs, seqs)
     stats = json.loads((FEATURE_DIR / "stats.json").read_text())
     data = []
     for inp in inputs:
@@ -97,7 +98,7 @@ def main() -> None:
     metrics = {
         "model": f"{MODEL_ID}@{version}", "params": model.n_params(), "dims": dims,
         "evaluation": {k: cv[k] for k in ("protocol", "mask_ratio", "repeats", "seed", "folds", "overall_micro",
-                                          "overall_macro_by_title", "per_title")},
+                                          "overall_macro_by_title", "per_title", "context_match")},
         "cv_training": folds,
         "final_training": {k: final_log[k] for k in ("epochs", "cv_best_epochs", "titles", "videos", "shots",
                                                       "seconds", "trainedAt")}

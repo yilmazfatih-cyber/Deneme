@@ -1,6 +1,5 @@
 /**
- * Giriş noktası. Tasarım sistemi v2'nin tokenları ve temel stilleri ilk yüklenir (web/src/ui);
- * v1 (web/src/design) yalnız henüz yenilenmemiş sayfalar onu içe aktardıkça yüklenir.
+ * Giriş noktası. Tasarım sisteminin tokenları ve temel stilleri ilk yüklenir (web/src/ui).
  */
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'

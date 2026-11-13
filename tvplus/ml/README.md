@@ -5,7 +5,7 @@ veri hattı, dondurulmuş kip kodlayıcıları, PyTorch ile eğitilen kaynaştı
 değerlendirme, sunucunun okuduğu biçimde dışa aktarma ve küçük bir model sunucusu.
 
 **Ölçek hakkında açık konuşalım:** mediafm-mini, açık lisanslı bir avuç filmin (≈ 1 200 gerçek çekim) üzerinde, tek
-bir paylaşımlı CPU'da birkaç dakikada eğitilen ≈ 0,6 milyon parametrelik bir kaynaştırma modelidir. Netflix'in
+paylaşımlı bir CPU'da dakikalar içinde eğitilen ≈ 1,0 milyon (989 955) parametrelik bir kaynaştırma modelidir. Netflix'in
 MediaFM'inde anlatılan mimarinin ve eğitim hattının **çalışan küçük bir örneğidir; bir temel model değildir** ve hiçbir
 üretim modeliyle eşdeğerlik iddiası yoktur.
 
@@ -24,8 +24,18 @@ başlığın özeti (aynı metin kodlayıcısı) + geçerli etiketleri (öznitel
   modele öğrenilmiş bir "kip yok" gömmesi olarak girer; sıfır vektörü veri gibi kullanılmaz.
 - **Kaynaştırma dönüştürücüsü** eğittiğimiz parçadır. Hedef **maskeli çekim modelleme**: bir pencerede çekimlerin
   %20'si öğrenilmiş `[MASK]` ile değiştirilir, model gizlenen çekimin özgün üç kip vektörünü komşu çekimlerden ve genel
-  bağlamdan tahmin eder; kayıp kosinüs uzaklığıdır (1 − cos). Ek olarak gizlenmemiş çekimlerde bazen tek bir kip
-  gizlenip yalnız o kip tahmin edilir.
+  bağlamdan tahmin eder; kayıp kosinüs uzaklığıdır (1 − cos), hedefler kip başına eğitim ortalaması çıkarılmış
+  vektörlerdir (CLIP/CLAP vektörlerinde rastgele iki çekimin kosinüsü ≈ 0,8; ortalama çıkarılmazsa "ortalamayı tahmin
+  et" kestirmesi ödüllenir). Ek olarak gizlenmemiş çekimlerde bazen tek bir kip gizlenip yalnız o kip tahmin edilir.
+- **Kopya başlığı (bizim eklememiz):** tahmin = görünür çekimlerin özgün kip vektörlerinin dikkat ağırlıklı toplamı
+  (ağırlıklar bağlamsal vektörlerden + öğrenilmiş uzaklık cezası) + küçük ölçekli doğrusal başlık. İlk sürümde
+  (salt doğrusal başlık, 128 boyutlu darboğaz) model eğitim filmlerinde komşu ortalaması kadar iyi, ayrılmış filmlerde
+  ise çok kötüydü (kosinüs 0,24'e karşı 0,46): eğitim filmlerinin içeriğini ezberliyordu.
+- **Bağlam eşleştirme kaybı (bizim eklememiz):** `[CLS]`'den "bu özet + etiketler bu çekim dizisinin mi?" ikili
+  sınıflandırması; yığındaki öğelerin yarısında bağlam başka başlıkla değiştirilir. Amaç modeli bağlamı okumaya
+  zorlamaktı; ayrılmış başlıklara genelleyemedi (aşağıda).
+- **Dışa aktarılan çekim vektörü** = son katmanın bağlamsal çekim çıktısı (128 boyut), eğitim çekimlerinin ortalaması
+  çıkarılmış ve birim uzunlukta (çıkarılmazsa tüm kosinüsler ≈ 0,99 çıkıyordu). Yaprak vektörü bunların ortalaması.
 - **`[GLOBAL]` belirteci** başlığın özetinin metin vektöründen ve **geçerli etiketlerinden** (bugün tüm başlıklar için
   özetten doldurulmuş ÖRNEK fişler — izlenerek değil; 16 ölçek, niteleyiciler,
   yüz değerleri, tür, ruh hâli, etiket dayanağı) kurulur ve `[CLS]`'den hemen sonra gelir; her çekim ona dikkat eder.
@@ -78,11 +88,11 @@ erişilebiliyorsa `--index-url https://download.pytorch.org/whl/cpu` ile daha k�
 | 1. medya | `.venv/bin/python -m data.fetch_media` | açık filmleri indirir (`mediafm_mini/sources.py` kaydı; sırayla, ≈ 1 istek/sn, 429'da bekler; Commons 360p VP9) | ~10 dk (Wikimedia kısıtlamasıyla) |
 | 2. çekimler | `.venv/bin/python -m data.analyze_all` | her Commons filmi için **uygulamanın** çözümleyicisini çalıştırır: `npm run analyze:shots -- <id> --media <dosya> --note "<kaynak · lisans>"` → `content/shots/<id>.json` | ~5 dk |
 | 3. girdiler | `cd .. && npx tsx ml/tools/dump-inputs.ts --out ml/.cache/inputs.json` | sunucunun sağlayıcıya göndereceği `EmbeddingInput`'ları (çekimler + özet + GEÇERLİ etiketler) aynen döker | 2 sn |
-| 4. öznitelikler | `.venv/bin/python -m data.build_features` | kodlayıcıları ilk kullanımda indirir; çekim başına 3 kip vektörü + özet vektörleri → `.cache/features/` (KEYFRAMES kareleri i.ytimg.com'dan bir kez) | ~25 dk ilk sefer |
-| 5. çapraz doğrulama | `.venv/bin/python train.py --cv 5` | başlığa göre 5 kat × (tam model, `[GLOBAL]`'sız ablasyon) | ~10 dk |
-| 6. değerlendirme | `.venv/bin/python evaluate.py` | ayrılmış başlıklarda maskeli çekim bulma + temeller + ablasyonlar → `.cache/runs/cv/metrics.json` | ~2 dk |
-| 7. son model | `.venv/bin/python train.py --final` | tüm açık filmlerle; dönem sayısı CV'den | ~1 dk |
-| 8. dışa aktarma | `.venv/bin/python export.py` | tüm katalog → `content/models/mediafm-mini/` | ~1 dk |
+| 4. öznitelikler | `.venv/bin/python -m data.build_features` | kodlayıcıları ilk kullanımda indirir (≈ 1 GB, 40 sn); çekim başına 3 kip vektörü + özet vektörleri → `.cache/features/` (KEYFRAMES kareleri i.ytimg.com'dan bir kez; 424 istek) | 35 dk ilk sefer (yüklü makinede), sonra saniyeler |
+| 5. çapraz doğrulama | `.venv/bin/python train.py --cv 5` | başlığa göre 5 kat × (tam model, `[GLOBAL]`'sız ablasyon) | ~5 dk |
+| 6. değerlendirme | `.venv/bin/python evaluate.py` | ayrılmış başlıklarda maskeli çekim bulma + temeller + ablasyonlar + bağlam eşleştirme → `.cache/runs/cv/metrics.json` | ~25 sn |
+| 7. son model | `.venv/bin/python train.py --final` | tüm açık filmlerle; dönem sayısı CV'deki en iyi dönemlerin ortancası (43) | ~30 sn |
+| 8. dışa aktarma | `.venv/bin/python export.py` | tüm katalog (129 yaprak) → `content/models/mediafm-mini/` (≈ 6,3 MB) | ~30 sn |
 | 9. sınamalar | `.venv/bin/python -m pytest` | saf parçaların birim sınamaları (ağsız, saniyeler) | 3 sn |
 
 Tohumlar sabittir (eğitim 7, katlar 7, değerlendirme maskeleri 2026). Aynı önbellek + aynı tohum aynı ağırlıkları
@@ -103,19 +113,47 @@ verir (CPU'da `torch.set_num_threads(2)`).
    Ek uçlar: `GET /health`; `GET /search?q=karlı dağlar&k=10` (demo: çok dilli CLIP metin vektörüyle çekimlerin CLIP
    görüntü vektörleri arasında arama — bağlamsal vektörler değil, ortak uzaydaki tek kipli vektörler kullanılır).
 
-## Sonuçlar
+## Sonuçlar (ayrılmış başlıklar, 5 katlı başlık çapraz doğrulaması)
 
-Güncel sayılar `content/models/mediafm-mini/metrics.json` ve `model-card.md` içindedir (dışa aktarmada üretilir).
-Okuma kılavuzu:
+Tam tablolar: `content/models/mediafm-mini/model-card.md` ve `metrics.json`. Veri: 13 açık lisanslı başlığın 15
+yaprağı, 1 184 gerçek çekim (eğitim); dışa aktarma 129 yaprak, 1 619 çekim/sözde çekim.
 
-- Değerlendirme yalnız **ayrılmış başlıklarda**dır (5 katlı başlık çapraz doğrulaması; bir başlığın hiçbir çekimi
-  sınandığı katta eğitime girmez). Görev: çekimlerin %20'si gizlenir; her gizli çekimin tahmini, aynı maskedeki gizli
-  çekimler arasında sıralanır.
-- **Temeller:** en yakın görünür komşunun vektörü; soldaki ve sağdaki komşuların ortalaması. Komşu ortalaması bu
-  görevde güçlü bir temeldir (ardışık çekimler çok benzer).
-- **Ablasyonlar:** `[GLOBAL]`'sız ayrıca eğitilen model; aynı modele başka başlığın bağlamını (özet + etiket) vermek;
-  bağlamı boşaltmak. Bağlamın katkısı küçükse bu tablolar onu gösterir.
-- **Üst referans:** çekim gizlenmeden modelin aynı çekim için tahmini (yeniden kurma).
+**Maskeli çekim bulma** — çekimlerin %20'si gizlenir (yaprak başına 10 tohumlu tekrar), her gizli çekimin tahmini aynı
+maskedeki gizli çekimler (ort. 21,5 aday; rastgele R@1 0,064) arasında sıralanır. Tüm sorgular (mikro, 2 360 sorgu):
+
+| yöntem | R@1 | R@5 | ort. sıra | MRR |
+|---|---:|---:|---:|---:|
+| mediafm-mini (özet + geçerli etiketler) | 0,325 | 0,758 | 4,33 | 0,511 |
+| aynı model, bağlam başka başlıktan | 0,325 | 0,758 | 4,33 | 0,511 |
+| aynı model, bağlam boş | 0,325 | 0,758 | 4,33 | 0,511 |
+| `[GLOBAL]`'sız eğitilmiş model | 0,327 | 0,764 | 4,28 | 0,514 |
+| temel: en yakın görünür komşu | 0,281 | 0,698 | 5,11 | 0,465 |
+| temel: iki komşunun ortalaması | 0,326 | 0,753 | 4,34 | 0,511 |
+
+**Bağlam eşleştirme** — ayrılmış yaprağın çekimleri 13 başlığın bağlamıyla ayrı ayrı modele verilir: model R@1 0,000,
+R@5 0,267, ortalama sıra 6,87 (rastgele 7); eğitimsiz CLIP temeli (film görüntü ortalaması · özet metni) R@1 0,400,
+R@5 0,867, ortalama sıra 3,20.
+
+**Dürüst özet:**
+
+1. Model ayrılmış filmlerde "en yakın komşuyu kopyala"yı geçer, **"iki komşunun ortalaması" ile berabere kalır**
+   (başlık ortalamasında temel R@1'de az farkla önde). Öğrendiği şey esasen yerel aradeğerlemedir.
+2. **Bağlamın (`[GLOBAL]`: özet + etiketler) bu ölçekte ölçülebilir bir katkısı yok.** Ablasyon ve karıştırma aynı
+   sonucu verir; eşleştirme başlığı rastgele düzeyinde, eğitimsiz CLIP temeli açıkça daha iyi. 10 civarı eğitim
+   başlığıyla model başlık bağlamını kullanmayı öğrenemiyor.
+3. Uygulamada (aşağıdaki denetim) etiket değişikliği vektörü değiştirir ama çok az (Sintel havuz vektörü kosinüsü
+   0,99999). Hat çalışıyor; bu modelin bağlama duyarlılığı yok denecek kadar küçük.
+4. Tasarım kararları (ortalama çıkarma, kopya başlığı) ilk CV sonuçlarına ve kat 0'ın sınama başlıklarına bakılarak
+   verildi; bu, raporlanan sayılarda küçük bir iyimserlik kaynağıdır. Hiperparametre taraması yapılmadı.
+
+**Uygulamada nitel denetim** (Sintel çekim komşuları, başka filmlerden): karanlık mağara/ejderha çekimi → Spring'in
+karanlık orman yaratığı çekimleri (taban sağlayıcı: Elephants Dream'in karanlık sahnesi); yavru ejderha yakın planı →
+Elephants Dream'deki yüz yakın planı, Big Buck Bunny yaratık yakın planı (taban: Big Buck Bunny geniş çayır planı);
+Sintel'in yüz yakın planı → Tears of Steel asker, Charge robotu (karışık). Başlık komşuları: Sintel → Big Buck Bunny,
+Tears of Steel, Cosmos Laundromat, Spring (taban: Elephants Dream, Spring, Agent 327 — ikisi de makul). Zayıf yer:
+A Trip to the Moon (gerçek çekimli sessiz film) Türkçe belgesellere yakın düşüyor; taban sağlayıcı onu doğru biçimde
+öteki sessiz klasiklerin yanına koyuyor (o, tür/ruh hâli bağlamını doğrudan karıştırıyor; bizim model bağlamı
+kullanmıyor). Görseli olmayan arşiv klasikleri yalnız özet metniyle temsil edilir ve birbirine yakın kümelenir.
 
 ## Gerçek katalog ve GPU ile büyütme
 

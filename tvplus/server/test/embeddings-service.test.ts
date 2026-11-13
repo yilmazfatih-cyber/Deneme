@@ -3,7 +3,7 @@
  * çekim komşuları, izdüşüm, anahtar kare, doğrulama, erişim kancası ve yazma koruması, dosya ve http sağlayıcıları.
  * Gerçek içerik (content/titles + content/shots) kullanılır; ağ yok.
  */
-import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs'
+import { copyFileSync, cpSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, writeFileSync } from 'node:fs'
 import { createServer, type Server } from 'node:http'
 import type { AddressInfo } from 'node:net'
 import { tmpdir } from 'node:os'
@@ -20,7 +20,7 @@ import type {
   ProjectionPoint,
   ShotSummary,
 } from '../../shared/intelligence'
-import { zSceneDetectFile } from '../../shared/shots-schema'
+import { KEYFRAMES_FILE, zKeyframesFile, zSceneDetectFile } from '../../shared/shots-schema'
 import type { BootContext } from '../../shared/types'
 import type { TaggingService } from '../src/kernel/intelligence'
 import { EMBEDDING_PROTOCOL } from '../src/services/embeddings/http'
@@ -41,6 +41,28 @@ const SHOTS_DIR = join(__dirname, '..', '..', 'content', 'shots')
 const sintelShots = zSceneDetectFile.parse(JSON.parse(readFileSync(join(SHOTS_DIR, `${SINTEL}.json`), 'utf8')))
 
 const B = '/api/studio/embeddings'
+
+/** Depodaki tüm SCENE_DETECT dosyaları (sayıları depoyla değişir; testler sayıya değil değişmezlere bakar). */
+const sceneFiles = () =>
+  readdirSync(SHOTS_DIR)
+    .filter((f) => f.endsWith('.json') && f !== KEYFRAMES_FILE)
+    .map((f) => zSceneDetectFile.parse(JSON.parse(readFileSync(join(SHOTS_DIR, f), 'utf8'))))
+const keyframesFile = () => zKeyframesFile.parse(JSON.parse(readFileSync(join(SHOTS_DIR, KEYFRAMES_FILE), 'utf8')))
+
+/**
+ * Küçük içerik ağacı: gerçek katalog + yalnız iki SCENE_DETECT dosyası (Sintel, Tears of Steel) + birleşik KEYFRAMES
+ * dosyası; content/models yok. Sayıya bağlı beklentiler bunun üzerinde sınanır.
+ */
+function smallContent(): string {
+  const real = join(SHOTS_DIR, '..')
+  const dir = mkdtempSync(join(tmpdir(), 'tvplus-emb-icerik-'))
+  for (const name of readdirSync(real))
+    if (name !== 'shots' && name !== 'models') cpSync(join(real, name), join(dir, name), { recursive: true })
+  mkdirSync(join(dir, 'shots'))
+  for (const f of [`${SINTEL}.json`, `${SINTEL}.jpg`, `${TEARS}.json`, `${TEARS}.jpg`, KEYFRAMES_FILE, 'keyframes.jpg'])
+    copyFileSync(join(SHOTS_DIR, f), join(dir, 'shots', f))
+  return dir
+}
 
 /** Etiketleri testin denetlediği sahte etiketleme servisi (gerçek servisin yerine konur). */
 function fakeTagging(app: FastifyInstance) {
@@ -86,7 +108,7 @@ describe('gömme servisi (taban, gerçek içerik)', () => {
     expect(svc.revision()).toBe(1)
   })
 
-  it('GET /embeddings bilgisi', async () => {
+  it('GET /embeddings bilgisi (değişmezler: sahne algılamalı yaprak sayısı diskteki dosya sayısıdır)', async () => {
     const res = await app.inject({ method: 'GET', url: B })
     expect(res.statusCode).toBe(200)
     const info = res.json<EmbeddingInfo>()
@@ -94,8 +116,9 @@ describe('gömme servisi (taban, gerçek içerik)', () => {
     expect(info.modelVersion).toMatch(/^taban-/)
     expect(info.dims).toBe(TABAN_DIMS)
     expect(info.titles).toBe(app.services.catalog.allTitles().length)
-    expect(info.sceneDetected).toBe(2)
-    expect(info.shots).toBeGreaterThan(sintelShots.shots.length)
+    const scenes = sceneFiles()
+    expect(info.sceneDetected).toBe(scenes.length)
+    expect(info.shots).toBeGreaterThanOrEqual(scenes.reduce((n, f) => n + f.shots.length, 0))
     expect(info.modalities).toEqual(['VISUAL', 'AUDIO', 'TEXT', 'CONTEXT'])
     expect(info.builtAt).not.toBeNull()
   })
@@ -141,26 +164,35 @@ describe('gömme servisi (taban, gerçek içerik)', () => {
     )
   })
 
-  it('çekim listesi çözümleme dosyasıyla aynı; anahtar kare paftadan kırpılır', async () => {
-    const res = await app.inject({ method: 'GET', url: `${B}/videos/${SINTEL}/shots` })
-    const shots = res.json<ShotSummary[]>()
-    expect(shots).toHaveLength(sintelShots.shots.length)
-    expect(shots[0]!.startSec).toBe(0)
-    expect(shots.at(-1)!.endSec).toBeCloseTo(sintelShots.durationSec, 2)
-    expect(shots.every((s) => s.hasAudio && s.keyframeUrl)).toBe(true)
-    expect(shots.some((s) => s.text.length > 0)).toBe(true)
-    const img = await app.inject({ method: 'GET', url: shots[5]!.keyframeUrl! })
-    expect(img.statusCode).toBe(200)
-    expect(img.headers['content-type']).toBe('image/jpeg')
-    const meta = await sharp(img.rawPayload).metadata()
-    expect([meta.width, meta.height]).toEqual([sintelShots.sprite!.cellW, sintelShots.sprite!.cellH])
-    // ikinci istek önbellekten (aynı bayt)
-    const again = await app.inject({ method: 'GET', url: shots[5]!.keyframeUrl! })
-    expect(again.rawPayload.equals(img.rawPayload)).toBe(true)
-    // KEYFRAMES yaprağı: çekim metni boş (özet çekimde söylenen bir şey değildir), ses yok
-    const yt = (await app.inject({ method: 'GET', url: `${B}/videos/80030001/shots` })).json<ShotSummary[]>()
-    expect(yt.length).toBeGreaterThanOrEqual(1)
-    expect(yt.every((s) => !s.hasAudio && s.text === '')).toBe(true)
+  it('her çözümlenmiş yaprağın çekim listesi dosyasıyla aynı; anahtar kare paftadan kırpılır', async () => {
+    for (const f of sceneFiles()) {
+      const res = await app.inject({ method: 'GET', url: `${B}/videos/${f.videoId}/shots` })
+      expect(res.statusCode, String(f.videoId)).toBe(200)
+      const shots = res.json<ShotSummary[]>()
+      expect(shots, String(f.videoId)).toHaveLength(f.shots.length)
+      shots.forEach((s, i) => {
+        const r = f.shots[i]!
+        expect([s.index, s.startSec, s.endSec, s.text, s.hasAudio]).toEqual([i, r.s, r.e, r.t, r.a !== null])
+        expect(s.keyframeUrl !== null).toBe(r.k !== null && f.sprite !== null)
+      })
+      const withKf = shots.find((s) => s.keyframeUrl)
+      if (!withKf) continue
+      const img = await app.inject({ method: 'GET', url: withKf.keyframeUrl! })
+      expect(img.statusCode, withKf.keyframeUrl!).toBe(200)
+      expect(img.headers['content-type']).toBe('image/jpeg')
+      const meta = await sharp(img.rawPayload).metadata()
+      expect([meta.width, meta.height]).toEqual([f.sprite!.cellW, f.sprite!.cellH])
+      // ikinci istek önbellekten (aynı bayt)
+      const again = await app.inject({ method: 'GET', url: withKf.keyframeUrl! })
+      expect(again.rawPayload.equals(img.rawPayload)).toBe(true)
+    }
+    // KEYFRAMES yaprakları: çekim metni boş (özet çekimde söylenen bir şey değildir), ses yok
+    const kf = keyframesFile().videos.find((v) => v.fetched > 0)
+    if (kf) {
+      const yt = (await app.inject({ method: 'GET', url: `${B}/videos/${kf.videoId}/shots` })).json<ShotSummary[]>()
+      expect(yt).toHaveLength(kf.shots.length)
+      expect(yt.every((s) => !s.hasAudio && s.text === '' && s.keyframeUrl)).toBe(true)
+    }
   })
 
   it('çekim komşuları: varsayılan olarak başka videolardan; sameVideo=true aynı videoyu da katar', async () => {
@@ -231,6 +263,34 @@ describe('gömme servisi (taban, gerçek içerik)', () => {
       expect(svc2.lastBuild()!.reused).toBeGreaterThan(100)
     } finally {
       await app2.close()
+    }
+  })
+})
+
+describe('küçük içerik ağacı (sayıya bağlı beklentiler)', () => {
+  it('iki sahne algılamalı yaprak, gerisi KEYFRAMES; modeller klasörü yok → taban', async () => {
+    const contentDir = smallContent()
+    const app = await createTestApp({ contentDir })
+    try {
+      const info = (await app.inject({ method: 'POST', url: `${B}/rebuild` })).json<EmbeddingInfo>()
+      expect(info.provider).toBe('taban')
+      expect(info.sceneDetected).toBe(2)
+      expect(info.titles).toBe(app.services.catalog.allTitles().length)
+      const kf = zKeyframesFile.parse(JSON.parse(readFileSync(join(contentDir, 'shots', KEYFRAMES_FILE), 'utf8')))
+      const expected =
+        sintelShots.shots.length +
+        zSceneDetectFile.parse(JSON.parse(readFileSync(join(contentDir, 'shots', `${TEARS}.json`), 'utf8'))).shots
+          .length +
+        kf.videos
+          .filter((v) => v.videoId !== SINTEL && v.videoId !== TEARS)
+          .filter((v) => app.services.catalog.getPlayable(v.videoId))
+          .reduce((n, v) => n + v.shots.length, 0)
+      // çözümlemesi olmayan yapraklar tek sözde çekimle temsil edilir
+      const embedded = embeddingsInternals(app).videoIds()
+      const covered = new Set([SINTEL, TEARS, ...kf.videos.map((v) => v.videoId)])
+      expect(info.shots).toBe(expected + embedded.filter((id) => !covered.has(id)).length)
+    } finally {
+      await app.close()
     }
   })
 })

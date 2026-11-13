@@ -31,7 +31,7 @@ import torch
 from mediafm_mini.corpus import load_inputs
 from mediafm_mini.export_format import PROTOCOL, load_shipped
 from mediafm_mini.features import Extractor, SynopsisCache, load_cached
-from mediafm_mini.infer import encode, l2n, pooled
+from mediafm_mini.infer import encode, finalize, pooled
 from mediafm_mini.paths import MODEL_OUT_DIR
 from mediafm_mini.training import build_sequence
 
@@ -58,7 +58,7 @@ class State:
             assert seq is not None
             h, _ = encode(self.model, seq)
             self.requests += 1
-        h = l2n(h)
+        h = finalize(h, self.manifest["outCenter"])
         return {"videoId": inp["videoId"], "shots": np.round(h, 6).tolist(), "pooled": np.round(pooled(h), 6).tolist()}
 
     def search(self, q: str, k: int) -> list[dict]:

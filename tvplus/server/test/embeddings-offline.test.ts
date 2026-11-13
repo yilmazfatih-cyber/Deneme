@@ -36,6 +36,8 @@ vi.mock('node:child_process', async (orig) => {
 })
 
 import { execFileSync } from 'node:child_process'
+import { readdirSync } from 'node:fs'
+import { join } from 'node:path'
 import type { FastifyInstance } from 'fastify'
 import { fetch as undiciFetch } from 'undici'
 import type { EmbeddingInfo } from '../../shared/intelligence'
@@ -66,7 +68,10 @@ describe('çevrimdışı açılış', () => {
     expect(res.statusCode).toBe(200)
     const info = res.json<EmbeddingInfo>()
     expect(info.titles).toBeGreaterThan(50)
-    expect(info.sceneDetected).toBe(2)
+    const sceneFiles = readdirSync(join(__dirname, '..', '..', 'content', 'shots')).filter(
+      (f) => f.endsWith('.json') && f !== 'keyframes.json',
+    )
+    expect(info.sceneDetected).toBe(sceneFiles.length)
     const img = await app.inject({ method: 'GET', url: '/api/studio/embeddings/videos/80010002/shots/3/keyframe.jpg' })
     expect(img.statusCode).toBe(200)
     expect(calls.net).toEqual([])

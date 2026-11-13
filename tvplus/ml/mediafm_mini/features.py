@@ -48,9 +48,12 @@ class VideoFeatures:
 
 
 def shot_texts(inp: Input) -> list[str]:
-    """Çekim metni; KEYFRAMES yapraklarında çekim metni olmadığından yaprağın kendi özeti (videoText) kullanılır."""
+    """Çekim metni. KEYFRAMES yapraklarında çekim metni yoktur; çekim şemasındaki gibi (keyframes.json
+    `textSource: 'SYNOPSIS'`) sözde çekimin metni yaprağın özetidir: bölüm/ek video özeti (videoText), filmde başlığın
+    özeti. Böylece görseli olmayan yapımlar da en az bir gözlenmiş kiple (metin) temsil edilir."""
     if inp["method"] == "KEYFRAMES":
-        return [inp.get("videoText") or "" for _ in inp["shots"]]
+        t = (inp.get("videoText") or "").strip() or (inp["context"].get("synopsis") or "").strip()
+        return [t for _ in inp["shots"]]
     return [(s.get("text") or "").strip() for s in inp["shots"]]
 
 

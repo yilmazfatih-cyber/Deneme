@@ -85,6 +85,7 @@ def save_weights(out: Path, model: MediaFMMini, layout: TagLayout, extra: dict) 
 
 
 def load_shipped(model_dir: Path) -> tuple[MediaFMMini, TagLayout, dict]:
+    """Dönen manifest sözlüğüne `outCenter` (np.ndarray | None) eklenir."""
     from safetensors.torch import load_file
 
     cfg = json.loads((model_dir / "config.json").read_text("utf-8"))
@@ -92,4 +93,5 @@ def load_shipped(model_dir: Path) -> tuple[MediaFMMini, TagLayout, dict]:
     model = MediaFMMini(ModelConfig(**cfg["model"]))
     model.load_state_dict(load_file(str(model_dir / "model.safetensors")))
     model.eval()
+    man["outCenter"] = np.array(cfg["outCenter"], dtype=np.float32) if cfg.get("outCenter") else None
     return model, TagLayout.from_json(cfg["layout"]), man

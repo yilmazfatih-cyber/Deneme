@@ -12,7 +12,7 @@ METHOD_TR = {
     "model_noglobal": "[GLOBAL]'sız eğitilmiş ablasyon",
     "nearest_visible": "temel: en yakın görünür komşu",
     "neighbour_mean": "temel: iki komşunun ortalaması",
-    "model_visible_ref": "üst referans: çekim gizlenmeden",
+    "model_visible_ref": "denetim: çekim gizlenmeden (kopya başlığı çekimin kendisini görür)",
 }
 
 
@@ -34,8 +34,9 @@ def render_card(metrics: dict, man: dict, mcfg: dict, tcfg: dict) -> str:
     for d in sorted(train_rows, key=lambda x: x["videoId"]):
         f = by_id.get(d["videoId"])
         src = f"[{f.kind.lower()}]({f.page})" if f else ""
+        author = (f.author if f else "").replace("|", "\\|")
         film_rows.append(f"| {d['title']} | {d['videoId']} | {d['shots']} | {d['visual']}/{d['audio']}/{d['text']} | "
-                         f"{f.author if f else ''} | {d['licence']} | {src} |")
+                         f"{author} | {d['licence']} | {src} |")
     sd = [d for d in data if d["method"] == "SCENE_DETECT"]
     kf = [d for d in data if d["method"] == "KEYFRAMES"]
     per_title = ev["per_title"]
@@ -48,6 +49,10 @@ def render_card(metrics: dict, man: dict, mcfg: dict, tcfg: dict) -> str:
     fold_rows = [f"| {f['fold']} | {f['variant']} | {f['test']} | {f['val']} | {f['best_epoch']} | {f['epochs_run']} | "
                  f"{f['best_val_shot']:.4f} | {f['seconds']:.0f} |" for f in folds]
     ft = metrics["final_training"]
+    cm = ev["context_match"]
+    cm_rows = "\n".join(f"| {r['title']} | {r['fold']} | {r['model_rank']} | {r['clip_baseline_rank']} |"
+                         for r in cm["videos"])
+    m_, b_ = micro["model"], micro["neighbour_mean"]
     enc = "\n".join(f"| {k} | [{v['model']}]({v['url']}) | {v['onnx']} | {v['licence']} |" for k, v in ENCODERS.items())
     return f"""# mediafm-mini — model kartı
 
@@ -75,16 +80,26 @@ dakikalar sürer.
 ## Mimari
 
 ```
-çekim i ─► CLIP ViT-B/32 görüntü (3 kare ort.) 512 ─► Doğrusal ─┐   kip yoksa/gizliyse: öğrenilmiş "kip yok"
-        ─► CLAP HTSAT ses (≤10 sn, 48 kHz)     512 ─► Doğrusal ─┼─► birleştir ─► Doğrusal+LN ─► x_i  (gizliyse [MASK])
-        ─► çok dilli CLIP metin (altyazı)      512 ─► Doğrusal ─┘
+çekim i ─► CLIP ViT-B/32 görüntü (3 kare ort.) 512 ─┐  kip başına eğitim ortalaması çıkarılır, birim uzunluk
+        ─► CLAP HTSAT ses (≤10 sn, 48 kHz)     512 ─┼─► kip başına Doğrusal ─► birleştir ─► Doğrusal+LN ─► x_i
+        ─► çok dilli CLIP metin (altyazı)      512 ─┘   (kip yok/gizli: öğrenilmiş gömme; gizli çekim: [MASK])
 özet (çok dilli CLIP metin 512) ─► Doğrusal ─┐
 etiket öznitelikleri ({mcfg['tag_dim']}) ─► MLP ───────┴─► [GLOBAL]
-[CLS] [GLOBAL] x_1 … x_n  + sinüs konum ─► dönüştürücü ({mcfg['layers']} katman, d={mcfg['d']}, {mcfg['heads']} baş,
-ff={mcfg['ff']}, pre-LN, dropout {mcfg['dropout']}) ─► h_i (dışa aktarılan çekim vektörü, {mcfg['d']} boyut)
-                                                    └─► kip başına başlık ─► gizlenen çekimin 3 kip vektörü (kosinüs)
-yaprak vektörü = birim h_i'lerin ortalaması · başlık vektörü = yaprak vektörlerinin ortalaması (sunucuda)
+[CLS] [GLOBAL] x_1 … x_n + sinüs konum ─► dönüştürücü ({mcfg['layers']} katman, d={mcfg['d']}, {mcfg['heads']} baş, ff={mcfg['ff']},
+                                          pre-LN, dropout {mcfg['dropout']})
+   ├─► h_i ─► (eğitim çekimlerinin ortalaması çıkarılır, birim) ─► DIŞA AKTARILAN çekim vektörü ({mcfg['d']} boyut)
+   ├─► tahmin_i,k = birim(Σ_j a_ij · görünür j'nin k kipi) + β · birim(Doğrusal_k(h_i))      (kopya başlığı)
+   │      a_ij = softmax_j(q(h_i)·k(h_j)/√d − λ|i−j|), yalnız görünür ve k kipini taşıyan j'ler
+   └─► [CLS] ─► bağlam eşleştirme başlığı (özet + etiketler bu diziye mi ait?)
+yaprak vektörü = birim çekim vektörlerinin ortalaması · başlık vektörü = yaprak vektörlerinin ortalaması (sunucuda)
 ```
+
+Kayıp: gizlenen çekimlerin var olan her kipi için 1 − cos(tahmin, ortalaması çıkarılmış özgün vektör) + gizlenen
+tek kipler (ağırlık {tcfg['mod_weight']}) + bağlam eşleştirme ikili çapraz entropisi (ağırlık {tcfg['match_weight']};
+yığındaki öğelerin %{int(tcfg['match_p'] * 100)}'inde özet + etiketler başka başlığınkiyle değiştirilir, bu öğeler
+maskeli çekim kaybına girmez). Kopya başlığı ve bağlam eşleştirme bizim eklememizdir: kopya başlığı olmadan 128 boyutlu
+darboğazdan geçen tahmin yeni filmlere genelleyemedi (ayrılmış başlıklarda komşu ortalamasının çok altında kaldı);
+eşleştirme kaybı, salt maskeli çekim hedefinin bağlamı kullanmayı gerektirmemesi yüzünden denendi.
 
 Eğitim penceresi {mcfg['max_len']} çekimdir; daha uzun yapraklar yarı örtüşen pencerelerle kodlanır (pencere ortası
 ağırlıklı ortalama). Etiket öznitelikleri: 16 ölçek (değer/5 + "dolu mu"), niteleyiciler, yüz değerleri, türler, ruh
@@ -160,8 +175,35 @@ rastgele ≈ 0,5.
 |---|---|---|---|---:|---:|---:|---:|
 {chr(10).join(fold_rows)}
 
-Yorum ve dürüst okuma için `ml/README.md` → "Sonuçlar"a bakın; kısa özet: tablolardaki sıralama neyse odur — bir temel
-modelden iyi olmadığı satırlar da raporlanmıştır.
+**Bağlam eşleştirme** (ayrılmış her yaprağın çekimleri {cm['candidates']} başlığın özet + etiketleriyle ayrı ayrı
+modele verilir; kendi bağlamının sırası — bağlamın kullanılıp kullanılmadığının doğrudan sınaması):
+
+| yöntem | R@1 | R@5 | ortalama sıra |
+|---|---:|---:|---:|
+| mediafm-mini eşleştirme başlığı | {cm['model']['R@1']:.3f} | {cm['model']['R@5']:.3f} | {cm['model']['mean_rank']:.2f} |
+| temel: eğitimsiz CLIP (film görüntü ortalaması · özet metni) | {cm['clip_baseline']['R@1']:.3f} | {cm['clip_baseline']['R@5']:.3f} | {cm['clip_baseline']['mean_rank']:.2f} |
+| rastgele | {cm['model']['random_R@1']:.3f} | {cm['model']['random_R@5']:.3f} | {(cm['candidates'] + 1) / 2:.2f} |
+
+| yaprak | kat | model sırası | CLIP temeli sırası |
+|---|---:|---:|---:|
+{cm_rows}
+
+### Sonuçların dürüst okuması
+
+- **Maskeli çekim bulmada model, "iki komşunun ortalaması" temeliyle berabere** (mikro R@1 {m_['R@1']:.3f} — temel
+  {b_['R@1']:.3f}; R@5 {m_['R@5']:.3f} — {b_['R@5']:.3f}; ortalama sıra {m_['mean_rank']:.2f} — {b_['mean_rank']:.2f}).
+  Başlık ortalamasında temel R@1'de biraz önde. "En yakın görünür komşu" temelini açıkça geçer. Yani model, ayrılmış
+  filmlerde komşu çekimlerden yerel bir aradeğerleme öğrenmiştir; bunun ötesinde ölçülebilir bir kazanç yoktur.
+- **Bağlam (`[GLOBAL]`) bu görevde ölçülebilir bir katkı yapmıyor:** bağlamı başka başlıkla değiştirmek ya da boşaltmak
+  sonucu değiştirmiyor, `[GLOBAL]`'sız eğitilen model aynı düzeyde. Bu beklenebilir: adayların hepsi aynı filmdendir,
+  ayırt etmek için başlık bağlamına gerek yoktur.
+- **Bağlam eşleştirme başlığı ayrılmış başlıklara genelleyemedi** (rastgele düzeyinde); aynı ortak uzaydaki eğitimsiz
+  CLIP temeli açıkça daha iyi. 10 civarı eğitim başlığıyla "özet ↔ görüntü dizisi" eşlemesi öğrenilemiyor.
+- Sonuç olarak dışa aktarılan vektörlerde etiket değişikliğinin etkisi çok küçüktür (Sintel'de etiketler tamamen
+  değiştirildiğinde havuz vektörünün kosinüsü 0,99999). Hat uçtan uca çalışır (etiket değişir → yaprak yeniden
+  kodlanır → vektör değişir), ama bu ölçekte model bağlamı kullanmayı öğrenmemiştir.
+- "Denetim" satırı (çekim gizlenmeden) bir üst sınır değildir: kopya başlığı görünür çekimin kendisine bakabilir;
+  yalnız sızıntısız tasarımın tersini (gizlenince bulamaması) göstermek içindir.
 
 ## Sınırlar
 
@@ -170,6 +212,12 @@ modelden iyi olmadığı satırlar da raporlanmıştır.
 - Metin kipi neredeyse yok (iki filmde altyazı); konuşma içeriği vektörlere az yansır.
 - KEYFRAMES yapımları (katalogun çoğu) 1–4 küçük kareyle temsil edilir; benzerlikleri büyük ölçüde kare görünümü ve
   bağlamdan (özet + etiketler) gelir.
+- `[GLOBAL]` bağlamı bu ölçekte kullanılmıyor (yukarıya bakın); KEYFRAMES ve yalnız metinli yapımlarda vektörler
+  büyük ölçüde karelerden ve özet metninden (metin kipi) gelir.
+- Agent 327 katalogda CC BY 4.0 yazıyor, Blender Studio ise filmi CC BY-ND olarak duyurmuş; Commons'ta da
+  bulunamadı — eğitime alınmadı (yalnız KEYFRAMES ile çıkarım).
+- Sessiz film (A Trip to the Moon) eski film titremesi yüzünden sahne eşiği 0,25 ile çözümlendi (varsayılan 0,12
+  380 sahte kesim üretiyordu); Commons kopyasında ses yok.
 - Etiketler örnek fişlerdir (özetten, izlenmeden doldurulmuş; dayanak SAMPLE) ve özetle büyük ölçüde aynı bilgiyi
   taşır; etiket bağlamının katkısı bu yüzden de sınırlıdır.
 - Bağlamsal vektörler başlığa göre kümelenir: "başka filmlerdeki benzer çekim" araması için tek kipli vektörler

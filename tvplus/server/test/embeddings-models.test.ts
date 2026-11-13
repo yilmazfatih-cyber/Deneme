@@ -39,7 +39,8 @@ function fixture(opts: {
   lines?: string[]
 }): Fixture {
   const contentDir = mkdtempSync(join(tmpdir(), 'tvplus-models-'))
-  cpSync(REAL_CONTENT, contentDir, { recursive: true })
+  // Gerçek içeriğin kopyası, ama depodaki modeller olmadan (yalnız bu testin modeli sınansın)
+  cpSync(REAL_CONTENT, contentDir, { recursive: true, filter: (src) => !src.startsWith(join(REAL_CONTENT, 'models')) })
   const id = opts.id ?? 'deneme-model'
   const dims = opts.dims ?? 4
   const modelDir = join(contentDir, 'models', id)
