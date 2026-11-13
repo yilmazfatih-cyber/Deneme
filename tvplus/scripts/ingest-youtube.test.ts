@@ -231,3 +231,15 @@ describe('ingest-youtube', () => {
     expect(approximateDate('', now)).toBe('2026-11-13')
   })
 })
+
+describe('canlı kanalın yedek videosu', () => {
+  it('yükleyen adı kanal adıyla eşleşmeli', async () => {
+    const { sameChannelName } = await import('./ingest-youtube')
+    expect(sameChannelName('SÖZCÜ Televizyonu', 'SÖZCÜ Televizyonu')).toBe(true)
+    expect(sameChannelName('TGRT Haber TV', 'TGRT Haber')).toBe(true)
+    expect(sameChannelName('TRT Çocuk', 'trt cocuk')).toBe(true)
+    expect(sameChannelName('Yılmaz Özdil', 'TRT Haber')).toBe(false)
+    expect(sameChannelName('PBS NewsHour', 'TRT World')).toBe(false)
+    expect(sameChannelName(null, 'TRT Haber')).toBe(true)
+  })
+})

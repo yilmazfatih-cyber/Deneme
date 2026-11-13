@@ -90,14 +90,14 @@ a.cn-card {
   aspect-ratio: 2 / 3;
   border-radius: var(--r-poster);
 }
-/* Top 10: rakam afişin SOLUNDA (görselin dışında). Rakam sütunu = afiş genişliğinin %50'si (10 için %80);
+/* Top 10: rakam afişin SOLUNDA (görselin dışında). Rakam sütunu = afiş genişliğinin %50'si (10 için %95);
    afiş rakamın sağ kenarına %12 biner. Ölçüler --poster-w'den türer: 112 ve 184 px'te aynı oran. */
 .cn-poster--ranked {
   --rank-col: calc(var(--poster-w) * 0.5);
   width: calc(var(--poster-w) + var(--rank-col));
 }
 .cn-poster--ranked2 {
-  --rank-col: calc(var(--poster-w) * 0.8);
+  --rank-col: calc(var(--poster-w) * 0.95);
 }
 .cn-poster__frame {
   position: relative;

@@ -85,3 +85,14 @@ export function preview(value: unknown, max = 80): string {
   if (s === '{}' || s === '') return '{}'
   return s.length > max ? `${s.slice(0, max - 1)}…` : s
 }
+
+/** Logaritmik grafik aralığı: ölçümleri kapsayan, 10'un kuvvetlerine yuvarlanmış alt/üst sınır. */
+export function sparkRange(values: number[]): { lo: number; hi: number } {
+  const v = values.filter((n) => n > 0)
+  if (!v.length) return { lo: 100, hi: 10_000 }
+  const min = Math.min(...v)
+  const max = Math.max(...v)
+  const lo = 10 ** Math.floor(Math.log10(min))
+  const hi = Math.max(lo * 10, 10 ** Math.ceil(Math.log10(max * 1.05)))
+  return { lo, hi }
+}

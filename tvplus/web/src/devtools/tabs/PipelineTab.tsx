@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from 'react'
-import { fmtBytes, fmtClock, fmtCountdown, fmtInt, fmtKbps, fmtMs, fmtRate, fmtSec } from '../model/format'
+import { fmtBytes, fmtClock, fmtCountdown, fmtInt, fmtKbps, fmtMs, fmtRate, fmtSec, sparkRange } from '../model/format'
 import {
   activeRungIndex,
   type EmbedView,
@@ -546,23 +546,24 @@ function Spark({ st }: { st: StreamingView }): ReactNode {
   if (pts.length < 2) return null
   const t0 = Math.min(...pts.map((p) => p.at))
   const t1 = Math.max(...pts.map((p) => p.at), t0 + 1)
-  const max = sparkScale(st)
+  const { lo, hi } = sparkRange(pts.map((p) => p.kbps).concat(st.currentKbps ?? []))
   const W = 400
-  const H = 64
+  const H = 72
   const x = (at: number) => ((at - t0) / (t1 - t0)) * W
-  // Ölçeğin üstündeki tek tük ölçümler (önbellekten gelen küçük parçalar) üst kenara kırpılır.
-  const y = (k: number) => H - (Math.min(k, max) / max) * H
+  // Logaritmik eksen: 500 kbps ile 500 Mbps aynı grafikte okunur (yerel sunucu kısılmadığında çok hızlıdır).
+  const y = (k: number) =>
+    H - ((Math.log10(Math.min(Math.max(k, lo), hi)) - Math.log10(lo)) / (Math.log10(hi) - Math.log10(lo))) * H
   const line = (list: { at: number; kbps: number }[]) =>
     list.map((p) => `${x(p.at).toFixed(1)},${y(p.kbps).toFixed(1)}`).join(' ')
   const marks = st.markers.filter((m) => m.at >= t0 && m.at <= t1)
+  const grid = [100, 1000, 10_000, 100_000, 1_000_000].filter((g) => g > lo && g < hi)
   return (
     <figure className="kp-spark">
       <figcaption className="kp-spark-head">
-        <span className="kp-dim kp-small">İndirme hızı</span>
+        <span className="kp-dim kp-small">İndirme hızı (log ölçek)</span>
         <span className="kp-small">
           <span className="kp-key kp-key-sample" /> ölçülen <span className="kp-key kp-key-est" /> ABR tahmini
         </span>
-        <span className="kp-dim kp-small">üst: {fmtKbps(max)}</span>
       </figcaption>
       <div className="kp-spark-box">
         <svg
@@ -571,6 +572,17 @@ function Spark({ st }: { st: StreamingView }): ReactNode {
           role="img"
           aria-label="Ölçülen hız ve ABR tahmini grafiği"
         >
+          {grid.map((g) => (
+            <line
+              key={g}
+              className="kp-spark-grid"
+              x1={0}
+              x2={W}
+              y1={y(g)}
+              y2={y(g)}
+              vectorEffect="non-scaling-stroke"
+            />
+          ))}
           {st.samples.length > 1 && (
             <polyline className="kp-spark-sample" points={line(st.samples)} vectorEffect="non-scaling-stroke" />
           )}
@@ -589,6 +601,11 @@ function Spark({ st }: { st: StreamingView }): ReactNode {
             />
           ))}
         </svg>
+        {grid.map((g) => (
+          <span key={g} className="kp-spark-gl" style={{ top: `${(y(g) / H) * 100}%` }}>
+            {fmtRate(g)}
+          </span>
+        ))}
         {marks.map((m) => (
           <span key={m.id} className="kp-spark-tag" style={{ left: `${(x(m.at) / W) * 100}%` }}>
             {m.kind === 'abr' ? (m.dir === 'down' ? '↓' : '↑') : '⇄'}
@@ -597,21 +614,6 @@ function Spark({ st }: { st: StreamingView }): ReactNode {
       </div>
     </figure>
   )
-}
-
-/**
- * Grafik ölçeği: tek bir aykırı ölçüm (ör. birkaç ms'de gelen küçük parça → yüzlerce Mbps) çizgiyi ezmesin diye
- * ölçülen hızların 90. yüzdeliği, ABR tahmini ve şu anki bit hızının büyüğü alınır.
- */
-export function sparkScale(st: {
-  samples: { kbps: number }[]
-  estimates: { kbps: number }[]
-  currentKbps: number | null
-}): number {
-  const sorted = st.samples.map((p) => p.kbps).sort((a, b) => a - b)
-  const p90 = sorted.length ? (sorted[Math.min(sorted.length - 1, Math.floor(sorted.length * 0.9))] ?? 0) : 0
-  const est = Math.max(0, ...st.estimates.map((p) => p.kbps))
-  return Math.max(1, p90, est, st.currentKbps ?? 0) * 1.15
 }
 
 /** Son 4 ABR geçişi + son 2 yük devri, yeniden eskiye (yük devri ABR geçişlerinin altında kaybolmasın). */

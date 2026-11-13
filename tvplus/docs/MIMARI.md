@@ -119,13 +119,16 @@ videos[id].title | shortSynopsis | synopsis | releaseYear | displayRuntime | run
 videos[id].boxart | storyArt | billboardArt | titleLogo   → atom { url, width, height, key }
 videos[id].badge                        → atom { kind, text } | boş atom
 videos[id].maturity                     → atom { certificationValue, maturityLevel, reasons[] }
-videos[id].access                       → atom { state, reasonText, requiredProduct }
+videos[id].access                       → atom { state, reasonText, requiredProduct, requiredProductName, cta }
 videos[id].bookmark                     → atom { positionSec, runtimeSec, progress } ($expires kısa)
 videos[id].watchStatus | queue | userRating | top10Rank | sourceKinds
 videos[id].promoVideo                   → atom { viewableId, computeId, offset, sourceKind }
 videos[id].current                      → ref ["videos", <devam edilecek bölüm>]   (diziler)
 usp.features[<bayrak>]                  → atom boolean      (ör. liveTv, kidsMode, top10)
 ```
+
+Diziler kendi kimlikleriyle oynatılmaz: istemci `videos[dizi].current` ref'ini (GraphQL'de `currentEpisode` /
+`promoVideo.viewableId`) izleyip bölüm kimliğiyle oynatır; manifest isteği her zaman bir film, bölüm ya da ek video içindir.
 
 `$expires`: negatif değer alındığı andan itibaren göreli milisaniye, pozitif değer mutlak epoch ms; `0` hemen bayat, `1` hiç
 bayatlamaz. `lolomos[guid].summary.expires` ISO tarihidir. Liste kimlikleri profile özeldir; başka profilin listesi `FORBIDDEN`

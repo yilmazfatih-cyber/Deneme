@@ -3,7 +3,7 @@ import type { DevCategory, DevEvent } from '../../lib/devbus'
 import { averageMs, formatFalcorPath, initialApi, reduceApi } from './api'
 import { splitEsn } from './esn'
 import { FEED_MAX, filterFeed, initialFeed, reduceFeed } from './feed'
-import { fmtBytes, fmtCountdown, fmtKbps, fmtMs } from './format'
+import { fmtBytes, fmtCountdown, fmtKbps, fmtMs, fmtRate, sparkRange } from './format'
 import { initialModel, reduceModel } from './index'
 import { initialTelemetry, parseRateLimit, reduceTelemetry, sortedTally } from './telemetry'
 
@@ -152,6 +152,10 @@ describe('biçimler', () => {
     expect(fmtCountdown(11 * 60_000 + 4000)).toBe('11 dk 4 sn')
     expect(fmtCountdown(12 * 3600_000 - 60_000)).toBe('11 sa 59 dk')
     expect(fmtCountdown(-1)).toBe('süresi doldu')
+    expect(fmtRate(8018)).toBe('8 Mbps')
+    expect(fmtRate(521)).toBe('521 kbps')
+    expect(sparkRange([521, 35_000, 700_000])).toEqual({ lo: 100, hi: 1_000_000 })
+    expect(sparkRange([])).toEqual({ lo: 100, hi: 10_000 })
   })
 })
 

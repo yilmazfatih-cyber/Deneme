@@ -54,7 +54,9 @@ export function EventsTab({ t }: { t: TelemetryState }): ReactNode {
         <ul className="kp-tally">
           {tally.map(([name, n]) => (
             <li key={name}>
-              <span className="kp-mono kp-tally-name">{name}</span>
+              <span className="kp-mono kp-tally-name" title={name}>
+                {name}
+              </span>
               <span className="kp-tally-bar" aria-hidden="true">
                 <span style={{ width: `${(n / max) * 100}%` }} />
               </span>
@@ -114,7 +116,9 @@ export function EventsTab({ t }: { t: TelemetryState }): ReactNode {
             <ul className="kp-tally">
               {serverTally.map(([name, n]) => (
                 <li key={name}>
-                  <span className="kp-mono kp-tally-name">{name}</span>
+                  <span className="kp-mono kp-tally-name" title={name}>
+                    {name}
+                  </span>
                   <span className="kp-tally-bar" aria-hidden="true">
                     <span style={{ width: `${(n / (serverTally[0]?.[1] ?? 1)) * 100}%` }} />
                   </span>

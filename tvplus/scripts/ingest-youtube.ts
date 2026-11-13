@@ -21,7 +21,7 @@ export interface YoutubeDeps {
 }
 export const REQUEST_GAP_MS = 150
 
-export type VideoState = 'ok' | 'embed-disabled' | 'missing' | 'error'
+export type VideoState = 'ok' | 'embed-disabled' | 'missing' | 'error' | 'wrong-channel'
 export interface VideoCheck {
   ok: boolean
   status: number
@@ -176,19 +176,43 @@ export function parseChannelVideosPage(html: string, now: Date): ParsedFeed {
 }
 
 /** İçerikteki YouTube video ve kanal kimliklerini, kullanıldıkları yerlerle toplar. */
-export function collectYoutubeRefs(contentDir: string): { videos: Map<string, string[]>; channels: Map<string, string[]> } {
+export function collectYoutubeRefs(contentDir: string): {
+  videos: Map<string, string[]>
+  channels: Map<string, string[]>
+  /** Canlı kanalın yedek videosu → o kanalın kimliği (video gerçekten o kanala mı ait diye bakılır) */
+  liveVideos: Map<string, string>
+} {
   const videos = new Map<string, string[]>()
   const channels = new Map<string, string[]>()
+  const liveVideos = new Map<string, string>()
   const add = (m: Map<string, string[]>, id: string, where: string) => m.set(id, [...(m.get(id) ?? []), where])
   for (const ref of collectSources(contentDir)) {
     const where = `${ref.file} ${ref.path}`
     if (ref.source.type === 'YOUTUBE') add(videos, ref.source.videoId, where)
     else if (ref.source.type === 'YOUTUBE_LIVE') {
       add(channels, ref.source.channelId, where)
-      if (ref.source.videoId) add(videos, ref.source.videoId, where)
+      if (ref.source.videoId) {
+        add(videos, ref.source.videoId, where)
+        liveVideos.set(ref.source.videoId, ref.source.channelId)
+      }
     }
   }
-  return { videos, channels }
+  return { videos, channels, liveVideos }
+}
+
+/** Yükleyen adı ile kanal adı aynı kanalı mı gösteriyor (harf büyüklüğü, Türkçe harfler ve noktalama yok sayılır). */
+export function sameChannelName(author: string | null, channelTitle: string | null): boolean {
+  const fold = (x: string) =>
+    x
+      .toLocaleLowerCase('tr-TR')
+      .replace(/[ıİ]/g, 'i')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]/g, '')
+  if (!author || !channelTitle) return true // bilinmiyorsa hüküm verme
+  const a = fold(author)
+  const c = fold(channelTitle)
+  return a.length > 0 && c.length > 0 && (a.includes(c) || c.includes(a))
 }
 
 export const oembedUrl = (id: string) => `https://www.youtube.com/oembed?url=${encodeURIComponent(`https://www.youtube.com/watch?v=${id}`)}&format=json`
@@ -252,7 +276,13 @@ export async function checkChannel(id: string, deps: Pick<YoutubeDeps, 'get'> & 
   }
 }
 
-const STATE_TEXT: Record<VideoState, string> = { ok: 'tamam', 'embed-disabled': 'gömme kapalı', missing: 'yok', error: 'hata' }
+const STATE_TEXT: Record<VideoState, string> = {
+  ok: 'tamam',
+  'embed-disabled': 'gömme kapalı',
+  missing: 'yok',
+  error: 'hata',
+  'wrong-channel': 'başka kanal',
+}
 
 /** Tüm YouTube kaynaklarını denetler; rapor nesnesini döndürür (dosyaya yazmaz). */
 export async function runCheck(contentDir: string, deps: YoutubeDeps): Promise<YoutubeReport> {
@@ -270,6 +300,12 @@ export async function runCheck(contentDir: string, deps: YoutubeDeps): Promise<Y
   for (const [id, usedBy] of refs.channels) {
     await gap()
     report.channels[id] = { ...(await checkChannel(id, deps)), usedBy }
+  }
+  // Canlı kanalın yedek videosu o kanalın kendi yayını olmalı; başka kanalın videosuysa sorunlu say.
+  for (const [videoId, channelId] of refs.liveVideos) {
+    const v = report.videos[videoId]
+    const c = report.channels[channelId]
+    if (v?.ok && c?.ok && !sameChannelName(v.author, c.title)) report.videos[videoId] = { ...v, ok: false, state: 'wrong-channel' }
   }
   return report
 }

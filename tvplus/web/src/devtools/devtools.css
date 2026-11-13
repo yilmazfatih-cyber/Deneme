@@ -851,7 +851,7 @@
 }
 .kp-spark-box {
   position: relative;
-  height: 64px;
+  height: 72px;
   background: var(--bg);
   border: 1px solid var(--line);
   border-radius: 6px;
@@ -861,6 +861,21 @@
   display: block;
   width: 100%;
   height: 100%;
+}
+.kp-spark-grid {
+  stroke: var(--line);
+  stroke-width: 1;
+}
+.kp-spark-gl {
+  position: absolute;
+  left: 4px;
+  padding: 0 3px;
+  border-radius: 3px;
+  background: var(--bg);
+  transform: translateY(-100%);
+  font: 500 12px/14px var(--font);
+  color: var(--t3);
+  pointer-events: none;
 }
 .kp-spark-sample {
   fill: none;
@@ -1239,7 +1254,7 @@
 }
 .kp-tally li {
   display: grid;
-  grid-template-columns: minmax(0, 150px) minmax(0, 1fr) 40px;
+  grid-template-columns: minmax(0, 190px) minmax(0, 1fr) 40px;
   align-items: center;
   gap: 8px;
 }
@@ -1265,6 +1280,17 @@
   font-weight: 700;
 }
 
+/* Telefonda izleme sayfası: alçak alt sayfada içeriğe yer açmak için başlık sıkışır. */
+@media (max-width: 899px) {
+  .kp-panel.is-watch .kp-grab,
+  .kp-panel.is-watch .kp-sub {
+    display: none;
+  }
+  .kp-panel.is-watch .kp-head {
+    padding-top: 4px;
+    padding-bottom: 0;
+  }
+}
 @media (max-width: 420px) {
   .kp-kv-row {
     grid-template-columns: 104px minmax(0, 1fr);

@@ -10,7 +10,13 @@
     "isHd": true,
     "favorite": true,
     "kids": false,
-    "source": { "type": "LINEAR", "playlist": [80010001, 80010002] },
+    "source": {
+      "type": "LINEAR",
+      "playlist": [
+        80010001,
+        80010002
+      ]
+    },
     "requiredProduct": null
   },
   {
@@ -24,7 +30,10 @@
     "isHd": true,
     "favorite": true,
     "kids": false,
-    "source": { "type": "YOUTUBE_LIVE", "channelId": "UCBgTP2LOFVPmq15W-RH-WXA", "videoId": "iwTrNHvVcL0" },
+    "source": {
+      "type": "YOUTUBE_LIVE",
+      "channelId": "UCBgTP2LOFVPmq15W-RH-WXA"
+    },
     "requiredProduct": null
   },
   {
@@ -38,7 +47,10 @@
     "isHd": true,
     "favorite": true,
     "kids": false,
-    "source": { "type": "YOUTUBE_LIVE", "channelId": "UC9TDTjbOjFB9jADmPhSAPsw", "videoId": "OPPTyKgnHWk" },
+    "source": {
+      "type": "YOUTUBE_LIVE",
+      "channelId": "UC9TDTjbOjFB9jADmPhSAPsw"
+    },
     "requiredProduct": null
   },
   {
@@ -52,7 +64,10 @@
     "isHd": true,
     "favorite": true,
     "kids": false,
-    "source": { "type": "YOUTUBE_LIVE", "channelId": "UCn6dNfiRE_Xunu7iMyvD7AA" },
+    "source": {
+      "type": "YOUTUBE_LIVE",
+      "channelId": "UCn6dNfiRE_Xunu7iMyvD7AA"
+    },
     "requiredProduct": null
   },
   {
@@ -66,7 +81,10 @@
     "isHd": true,
     "favorite": true,
     "kids": false,
-    "source": { "type": "YOUTUBE_LIVE", "channelId": "UCV6zcRug6Hqp1UX_FdyUeBg" },
+    "source": {
+      "type": "YOUTUBE_LIVE",
+      "channelId": "UCV6zcRug6Hqp1UX_FdyUeBg"
+    },
     "requiredProduct": null
   },
   {
@@ -80,7 +98,10 @@
     "isHd": true,
     "favorite": false,
     "kids": false,
-    "source": { "type": "YOUTUBE_LIVE", "channelId": "UCtc-a9ZUIg0_5HpsPxEO7Qg" },
+    "source": {
+      "type": "YOUTUBE_LIVE",
+      "channelId": "UCtc-a9ZUIg0_5HpsPxEO7Qg"
+    },
     "requiredProduct": null
   },
   {
@@ -94,7 +115,11 @@
     "isHd": true,
     "favorite": false,
     "kids": false,
-    "source": { "type": "YOUTUBE_LIVE", "channelId": "UCOulx_rep5O4i9y6AyDqVvw", "videoId": "ztmY_cCtUl0" },
+    "source": {
+      "type": "YOUTUBE_LIVE",
+      "channelId": "UCOulx_rep5O4i9y6AyDqVvw",
+      "videoId": "ztmY_cCtUl0"
+    },
     "requiredProduct": null
   },
   {
@@ -108,7 +133,10 @@
     "isHd": true,
     "favorite": false,
     "kids": false,
-    "source": { "type": "YOUTUBE_LIVE", "channelId": "UCndsdUW_oPLqpQJY9J8oIRg" },
+    "source": {
+      "type": "YOUTUBE_LIVE",
+      "channelId": "UCndsdUW_oPLqpQJY9J8oIRg"
+    },
     "requiredProduct": null
   },
   {
@@ -122,7 +150,10 @@
     "isHd": true,
     "favorite": false,
     "kids": false,
-    "source": { "type": "YOUTUBE_LIVE", "channelId": "UCKQhfw-lzz0uKnE1fY1PsAA" },
+    "source": {
+      "type": "YOUTUBE_LIVE",
+      "channelId": "UCKQhfw-lzz0uKnE1fY1PsAA"
+    },
     "requiredProduct": null
   },
   {
@@ -136,7 +167,11 @@
     "isHd": true,
     "favorite": false,
     "kids": false,
-    "source": { "type": "YOUTUBE_LIVE", "channelId": "UCzgrZ-CndOoylh2_e72nSBQ", "videoId": "WX29nlgdqho" },
+    "source": {
+      "type": "YOUTUBE_LIVE",
+      "channelId": "UCzgrZ-CndOoylh2_e72nSBQ",
+      "videoId": "WX29nlgdqho"
+    },
     "requiredProduct": null
   },
   {
@@ -150,7 +185,10 @@
     "isHd": true,
     "favorite": false,
     "kids": false,
-    "source": { "type": "YOUTUBE_LIVE", "channelId": "UC7fWeaHhqgM4Ry-RMpM2YYw", "videoId": "RTgmjLhrXVM" },
+    "source": {
+      "type": "YOUTUBE_LIVE",
+      "channelId": "UC7fWeaHhqgM4Ry-RMpM2YYw"
+    },
     "requiredProduct": null
   },
   {
@@ -164,7 +202,10 @@
     "isHd": true,
     "favorite": false,
     "kids": false,
-    "source": { "type": "YOUTUBE_LIVE", "channelId": "UCN7VYCsI4Lx1-J4_BtjoWUA" },
+    "source": {
+      "type": "YOUTUBE_LIVE",
+      "channelId": "UCN7VYCsI4Lx1-J4_BtjoWUA"
+    },
     "requiredProduct": null
   },
   {
@@ -178,7 +219,11 @@
     "isHd": true,
     "favorite": false,
     "kids": true,
-    "source": { "type": "YOUTUBE_LIVE", "channelId": "UCrFf5dtMe6M1XJHqbKJ4X6Q", "videoId": "-umyX-Oxjzk" },
+    "source": {
+      "type": "YOUTUBE_LIVE",
+      "channelId": "UCrFf5dtMe6M1XJHqbKJ4X6Q",
+      "videoId": "-umyX-Oxjzk"
+    },
     "requiredProduct": null
   }
 ]
