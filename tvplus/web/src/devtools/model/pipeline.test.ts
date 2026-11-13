@@ -222,4 +222,96 @@ describe('oynatma hattı modeli', () => {
     expect(s.embed?.states.map((x) => x.state)).toEqual(['UNSTARTED', 'BUFFERING', 'PLAYING', 'ERROR'])
     expect(s.embed?.error).toBe('150')
   })
+
+  it('gerçek oynatıcı olayları: yoklama, adres yenileme, dizin, akış kimliğiyle ABR, yeniden tamponlama, altyazı seçimi', () => {
+    const s = reducePipelineAll(initialPipeline(), [
+      ev('ftl', 'yoklama', { iter: 2, targets: ['a'], pulse_delays: [0, 2000, 70000] }, 0),
+      ev(
+        'manifest',
+        'Video:1',
+        { kind: 'STREAMS', prefetch: false, video: ladder, cdns: [{ id: 'c101', rank: 1 }], expiration: T0 + 1000 },
+        10,
+      ),
+      ev('range', 'video dizini: 120 bölüm', { type: 'header', streamId: 'v-235', segments: 120 }, 20),
+      ev('range', 'header 0-999', { type: 'header', cdnId: 'c101', start: 0, end: 999, bytes: 1000 }, 25),
+      ev(
+        'abr',
+        '↑ 3000 kbps',
+        {
+          from: 235,
+          to: 3000,
+          fromStreamId: 'v-235',
+          toStreamId: 'v-3000',
+          reason: 'bant',
+          estimateKbps: 5000,
+          bufferSec: 8,
+        },
+        30,
+      ),
+      ev('buffer', 'yeniden tamponlama', { durationMs: 400 }, 40, { ok: false, ms: 400 }),
+      ev('buffer', 'boşluk atlandı', { from: 1, to: 1.1 }, 45),
+      ev('ttml', 'tr yüklendi', { language: 'tr', cues: 10, tickRate: 10_000_000 }, 50),
+      ev('ttml', 'seçildi: en', { language: 'en' }, 60),
+      ev('manifest', 'Video:1: adresler yenilendi', { streams: 6, expiration: T0 + 9000 }, 70),
+      ev('manifest', 'Video:2', { prefetch: false, error: 'ACCESS_DENIED', message: 'pakette yok' }, 80, { ok: false }),
+      ev('player', 'ilk kare', { viewableId: 'Video:1', state: 'playing', startupMs: 812 }, 90),
+    ])
+    expect(s.ftl).toMatchObject({ iter: 2, pulses: [], error: null })
+    expect(s.streaming.headerRequests).toBe(1)
+    expect(s.streaming.currentStreamId).toBe('v-3000')
+    expect(activeRungIndex(s.manifest, s.streaming)).toBe(2)
+    expect(s.streaming).toMatchObject({ rebuffers: 1, rebufferMs: 400 })
+    expect(s.streaming.buffer?.videoSec).toBe(8) // "boşluk atlandı" ölçüm değil, çubukları ezmez
+    expect(s.ttml).toMatchObject({ cues: 10, selected: 'en' })
+    expect(s.manifest).toMatchObject({ viewableId: 'Video:1', expiresAt: T0 + 9000, urlRefreshes: 1 })
+    expect(s.manifestError).toMatchObject({ viewableId: 'Video:2', code: 'ACCESS_DENIED' })
+    expect(s.player).toMatchObject({ state: 'oynuyor', startupMs: 812 })
+  })
+
+  it('FTL: detail.pulse 0 tabanlıdır ve etiketten önce gelir; yoklama hatası işaretlenir', () => {
+    const s = reducePipelineAll(initialPipeline(), [
+      ev('ftl', 'darbe 2', { iter: 0, pulse: 1, results: ftlResults(20), winner: 'c101-ist001-ix' }, 0),
+      ev('ftl', 'yoklama alınamadı', { iter: 0, error: 'HTTP 503' }, 10, { ok: false }),
+    ])
+    expect(s.ftl?.pulses.map((p) => p.index)).toEqual([1])
+    expect(s.ftl?.error).toBe('HTTP 503')
+  })
+
+  it('kart önizlemeleri (promo manifest ve onların olayları) hattı ele geçirmez', () => {
+    const s = reducePipelineAll(initialPipeline(), [
+      ev(
+        'manifest',
+        'Video:9',
+        { kind: 'EXTERNAL_EMBED', prefetch: true, videoId: 'yt1', request: { promo: true } },
+        0,
+      ),
+      ev('embed', 'YouTube: PLAYING', { videoId: 'yt1', state: 'PLAYING' }, 10),
+      ev('player', 'durum: oynuyor', { viewableId: 'Video:9', state: 'playing' }, 20),
+      ev('range', 'video 0-9', { type: 'video', cdnId: 'c', start: 0, end: 9, bytes: 10, streamId: 'p-1' }, 30),
+      ev('player', 'durum: yükleniyor', { viewableId: 'Video:1', state: 'loading' }, 40),
+      ev('manifest', 'Video:1', { kind: 'STREAMS', prefetch: false, video: ladder }, 50),
+      ev('range', 'video 0-9', { type: 'video', cdnId: 'c', start: 0, end: 9, bytes: 10, streamId: 'p-1' }, 60),
+      ev('range', 'video 0-9', { type: 'video', cdnId: 'c', start: 0, end: 9, bytes: 10, streamId: 'v-235' }, 70),
+      ev('player', 'durum: oynuyor', { viewableId: 'Video:9', state: 'playing' }, 80),
+    ])
+    expect(s.previewCount).toBe(1)
+    expect(s.embed).toBeNull()
+    expect(s.source).toBe('streams')
+    expect(s.streaming.video).toHaveLength(1)
+    expect(s.player).toMatchObject({ viewableId: 'Video:1', state: 'yükleniyor' })
+  })
+
+  it('oynatma ön hazırlıkla alınan manifesti yeniden kullanırsa (önbellek olayı) hat o manifestle başlar', () => {
+    const s = reducePipelineAll(initialPipeline(), [
+      ev('manifest', 'Video:1', { kind: 'STREAMS', prefetch: true, video: ladder, cdns: [{ id: 'c101', rank: 1 }] }, 0),
+      ev('manifest', 'Video:7', { kind: 'EXTERNAL_EMBED', prefetch: true, videoId: 'yt' }, 5),
+      ev('cache', 'manifest: ön hazırlıktan', { key: 'Video:1|-|-|-', prefetched: true }, 10),
+      ev('range', 'video 0-9', { type: 'video', cdnId: 'c101', start: 0, end: 9, bytes: 10, streamId: 'v-235' }, 20),
+      ev('cache', 'manifest: ön hazırlıktan', { key: 'Video:7|promo|-|-' }, 30),
+    ])
+    expect(s.manifest).toMatchObject({ viewableId: 'Video:1', prefetch: false, reused: true })
+    expect(s.source).toBe('streams')
+    expect(s.streaming.activeCdn).toBe('c101')
+    expect(s.streaming.video).toHaveLength(1)
+  })
 })

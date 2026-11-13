@@ -141,12 +141,10 @@ describe('manifest önbelleği', () => {
     expect(c.pending('k')).toBeUndefined()
   })
 
-  it('ön hazırlık manifesti yer imi gerekiyorsa yeniden istenir', () => {
-    const m = manifest(0)
-    expect(canReuseForPlay(m, false)).toBe(true)
-    expect(canReuseForPlay(m, true)).toBe(false)
-    expect(canReuseForPlay({ ...m, bookmark: { positionMs: 1000 } }, true)).toBe(true)
-    expect(canReuseForPlay({ ...m, isPrefetch: false }, true)).toBe(true)
+  it('taze ön hazırlık manifesti (VOD dahil) gerçek oynatmada yeniden kullanılır; süresi dolan kullanılmaz', () => {
+    const now = 1_000_000
+    expect(canReuseForPlay(manifest(now + EXPIRY_MARGIN_MS + 1000), now)).toBe(true)
+    expect(canReuseForPlay(manifest(now + EXPIRY_MARGIN_MS - 1), now)).toBe(false)
   })
 })
 

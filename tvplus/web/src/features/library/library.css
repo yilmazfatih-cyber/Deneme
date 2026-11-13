@@ -1,0 +1,68 @@
+/* Kitaplığım */
+.lb-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  margin: -4px 0;
+}
+.lb-tabs::-webkit-scrollbar {
+  display: none;
+}
+.lb-tab {
+  min-height: 44px;
+}
+.lb-panel {
+  min-width: 0;
+}
+.lb-grid {
+  list-style: none;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 0;
+  display: grid;
+  gap: 16px 12px;
+}
+.lb-grid--poster {
+  grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+}
+.lb-grid--land {
+  grid-template-columns: repeat(auto-fill, minmax(232px, 1fr));
+}
+@media (min-width: 900px) {
+  .lb-grid--poster {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 24px 16px;
+  }
+  .lb-grid--land {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px 16px;
+  }
+}
+.lb-channel {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: var(--r-card);
+  background: var(--s1);
+  min-width: 0;
+}
+.lb-channel__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+/* Izgara hücresi içeriğe göre genişlemesin (ör. tek satır kilit metni dar hücrede) */
+.lb-grid > li {
+  min-width: 0;
+}
+.lb-grid .cn-lock {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

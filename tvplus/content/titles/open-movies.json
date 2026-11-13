@@ -7,11 +7,31 @@
     "year": 2010,
     "synopsis": "Sintel, yalnız yaşayan genç bir kadındır. Bir gün küçük bir ejderha yavrusunu kurtarır, ona Scales adını verir ve bakmaya başlar. Ejderha büyüyüp ondan ayrılınca Sintel onu bulmak için tehlikeli bir yolculuğa çıkar.",
     "shortSynopsis": "Yalnız yaşayan Sintel, kurtardığı ejderha yavrusu Scales'i bulmak için tehlikeli bir yolculuğa çıkar.",
-    "genres": ["animasyon", "fantastik", "macera", "kisa-film"],
-    "moods": ["duygusal", "heyecanli", "acik-kaynak", "goz-alici"],
-    "cast": ["Halina Reijn", "Thom Hoffman"],
-    "directors": ["Colin Levy"],
-    "maturity": { "rating": "13+", "reasons": ["siddet-korku"] },
+    "genres": [
+      "animasyon",
+      "fantastik",
+      "macera",
+      "kisa-film"
+    ],
+    "moods": [
+      "duygusal",
+      "heyecanli",
+      "acik-kaynak",
+      "goz-alici"
+    ],
+    "cast": [
+      "Halina Reijn",
+      "Thom Hoffman"
+    ],
+    "directors": [
+      "Colin Levy"
+    ],
+    "maturity": {
+      "rating": "13+",
+      "reasons": [
+        "siddet-korku"
+      ]
+    },
     "kids": false,
     "runtimeSec": 888,
     "sources": [
@@ -20,11 +40,24 @@
         "manifest": "https://storage.googleapis.com/shaka-demo-assets/sintel/dash.mpd",
         "extraAudioManifest": "https://storage.googleapis.com/shaka-demo-assets/sintel-many-subs/dash.mpd",
         "timedText": [
-          { "lang": "tr", "label": "Türkçe", "format": "vtt", "url": "https://storage.googleapis.com/shaka-demo-assets/sintel-many-subs/s-tr.webvtt" },
-          { "lang": "en", "label": "İngilizce", "format": "vtt", "url": "https://storage.googleapis.com/shaka-demo-assets/sintel-many-subs/s-eng.webvtt" }
+          {
+            "lang": "tr",
+            "label": "Türkçe",
+            "format": "vtt",
+            "url": "https://storage.googleapis.com/shaka-demo-assets/sintel-many-subs/s-tr.webvtt"
+          },
+          {
+            "lang": "en",
+            "label": "İngilizce",
+            "format": "vtt",
+            "url": "https://storage.googleapis.com/shaka-demo-assets/sintel-many-subs/s-eng.webvtt"
+          }
         ]
       },
-      { "type": "YOUTUBE", "videoId": "eRsGyueVLvQ" }
+      {
+        "type": "YOUTUBE",
+        "videoId": "eRsGyueVLvQ"
+      }
     ],
     "promo": {
       "source": {
@@ -32,8 +65,18 @@
         "manifest": "https://storage.googleapis.com/shaka-demo-assets/sintel/dash.mpd",
         "extraAudioManifest": "https://storage.googleapis.com/shaka-demo-assets/sintel-many-subs/dash.mpd",
         "timedText": [
-          { "lang": "tr", "label": "Türkçe", "format": "vtt", "url": "https://storage.googleapis.com/shaka-demo-assets/sintel-many-subs/s-tr.webvtt" },
-          { "lang": "en", "label": "İngilizce", "format": "vtt", "url": "https://storage.googleapis.com/shaka-demo-assets/sintel-many-subs/s-eng.webvtt" }
+          {
+            "lang": "tr",
+            "label": "Türkçe",
+            "format": "vtt",
+            "url": "https://storage.googleapis.com/shaka-demo-assets/sintel-many-subs/s-tr.webvtt"
+          },
+          {
+            "lang": "en",
+            "label": "İngilizce",
+            "format": "vtt",
+            "url": "https://storage.googleapis.com/shaka-demo-assets/sintel-many-subs/s-eng.webvtt"
+          }
         ]
       },
       "offsetSec": 105
@@ -41,7 +84,7 @@
     "supplementals": [],
     "artwork": {
       "boxart": null,
-      "storyArt": "https://i.ytimg.com/vi/eRsGyueVLvQ/hqdefault.jpg",
+      "storyArt": "https://i.ytimg.com/vi/eRsGyueVLvQ/maxres1.jpg",
       "focal": "50% 30%"
     },
     "license": {
@@ -65,11 +108,32 @@
     "year": 2012,
     "synopsis": "Gelecekte Amsterdam'da bir grup asker ve bilim insanı, yıkıcı robotları durdurmak amacıyla geçmişteki kritik bir anı yeniden canlandırmak için Oude Kerk'te bir araya gelir. Film, canlı çekimi ve görsel efektleri bir arada kullanan bir bilim kurgu kısa filmidir.",
     "shortSynopsis": "Gelecekte Amsterdam'da, yıkıcı robotları durdurmak isteyen asker ve bilim insanlarının hikâyesi.",
-    "genres": ["bilim-kurgu", "kisa-film"],
-    "moods": ["dusundurucu", "gerilimli"],
-    "cast": ["Derek de Lint", "Sergio Hasselbaink", "Rogier Schippers", "Vanja Rukavina", "Denise Rebergen", "Jody Bhe", "Chris Haley"],
-    "directors": ["Ian Hubert"],
-    "maturity": { "rating": "13+", "reasons": ["siddet-korku"] },
+    "genres": [
+      "bilim-kurgu",
+      "kisa-film"
+    ],
+    "moods": [
+      "dusundurucu",
+      "gerilimli"
+    ],
+    "cast": [
+      "Derek de Lint",
+      "Sergio Hasselbaink",
+      "Rogier Schippers",
+      "Vanja Rukavina",
+      "Denise Rebergen",
+      "Jody Bhe",
+      "Chris Haley"
+    ],
+    "directors": [
+      "Ian Hubert"
+    ],
+    "maturity": {
+      "rating": "13+",
+      "reasons": [
+        "siddet-korku"
+      ]
+    },
     "kids": false,
     "runtimeSec": 734,
     "sources": [
@@ -78,11 +142,24 @@
         "manifest": "https://storage.googleapis.com/shaka-demo-assets/tos-ttml/dash.mpd",
         "extraAudioManifest": "https://storage.googleapis.com/shaka-demo-assets/tos-surround/dash.mpd",
         "timedText": [
-          { "lang": "tr", "label": "Türkçe", "format": "vtt", "file": "tears-of-steel.tr.vtt" },
-          { "lang": "en", "label": "İngilizce", "format": "ttml", "url": "https://storage.googleapis.com/shaka-demo-assets/tos-ttml/s-eng.ttml" }
+          {
+            "lang": "tr",
+            "label": "Türkçe",
+            "format": "vtt",
+            "file": "tears-of-steel.tr.vtt"
+          },
+          {
+            "lang": "en",
+            "label": "İngilizce",
+            "format": "ttml",
+            "url": "https://storage.googleapis.com/shaka-demo-assets/tos-ttml/s-eng.ttml"
+          }
         ]
       },
-      { "type": "YOUTUBE", "videoId": "R6MlUcmOul8" }
+      {
+        "type": "YOUTUBE",
+        "videoId": "R6MlUcmOul8"
+      }
     ],
     "promo": {
       "source": {
@@ -90,8 +167,18 @@
         "manifest": "https://storage.googleapis.com/shaka-demo-assets/tos-ttml/dash.mpd",
         "extraAudioManifest": "https://storage.googleapis.com/shaka-demo-assets/tos-surround/dash.mpd",
         "timedText": [
-          { "lang": "tr", "label": "Türkçe", "format": "vtt", "file": "tears-of-steel.tr.vtt" },
-          { "lang": "en", "label": "İngilizce", "format": "ttml", "url": "https://storage.googleapis.com/shaka-demo-assets/tos-ttml/s-eng.ttml" }
+          {
+            "lang": "tr",
+            "label": "Türkçe",
+            "format": "vtt",
+            "file": "tears-of-steel.tr.vtt"
+          },
+          {
+            "lang": "en",
+            "label": "İngilizce",
+            "format": "ttml",
+            "url": "https://storage.googleapis.com/shaka-demo-assets/tos-ttml/s-eng.ttml"
+          }
         ]
       },
       "offsetSec": 60

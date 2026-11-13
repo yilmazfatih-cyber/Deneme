@@ -1,10 +1,10 @@
-import type { ReactNode } from 'react'
+import { useEffect, type ReactNode } from 'react'
 import { ROUTES } from '../../../../shared/constants'
 import type { DebugServerState } from '../../../../shared/types'
-import { sessionHeaders } from '../../api/session'
+import { onBootChange, sessionHeaders } from '../../api/session'
 import { fmtClock, fmtInt, fmtMs } from '../model/format'
 import { sortedTally, type TelemetryState } from '../model/telemetry'
-import { ErrMark, Explainer, Stat, usePoll } from '../ui'
+import { ErrMark, Explainer, LoginNote, needsLogin, Stat, usePoll } from '../ui'
 
 const STATE_URL = `${ROUTES.DEBUG_PREFIX}/state`
 
@@ -16,6 +16,8 @@ function uptime(sec: number): string {
 
 export function EventsTab({ t }: { t: TelemetryState }): ReactNode {
   const poll = usePoll<DebugServerState>(STATE_URL, 5000, 15_000, sessionHeaders)
+  const { refresh } = poll
+  useEffect(() => onBootChange(() => refresh()), [refresh])
   const server = poll.data && typeof poll.data === 'object' && poll.data.events ? poll.data : null
   const tally = sortedTally(t.tally)
   const max = tally[0]?.[1] ?? 1
@@ -86,7 +88,9 @@ export function EventsTab({ t }: { t: TelemetryState }): ReactNode {
       )}
 
       <h3 className="kp-h">Sunucu tarafı toplamlar</h3>
-      {!server ? (
+      {needsLogin(poll) ? (
+        <LoginNote />
+      ) : !server ? (
         <p className="kp-calm" role="status">
           {poll.error ? "Sunucu durumu şu an alınamıyor; 15 sn'de bir yeniden deneniyor." : 'Yükleniyor…'}
         </p>

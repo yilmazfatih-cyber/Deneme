@@ -68,11 +68,9 @@ export class ManifestCache {
 }
 
 /**
- * Gerçek oynatma, ön hazırlıkla alınmış taze bir manifesti yeniden kullanabilir mi?
- * Yer imi gerekiyorsa ve ön hazırlık manifesti yer imi taşımıyorsa yeniden istenir.
+ * Gerçek oynatma, ön hazırlıkla alınmış taze bir manifesti her zaman yeniden kullanabilir: devam konumu
+ * PlaybackMetadata.bookmark'tan gelir (manifest.bookmark yalnızca yedek). Seçenekleri farklı olanlar zaten ayrı anahtardadır.
  */
-export function canReuseForPlay(m: LicensedManifest, needBookmark: boolean): boolean {
-  if (!needBookmark) return true
-  if (!m.isPrefetch) return true
-  return m.bookmark !== null || m.live !== null
+export function canReuseForPlay(m: LicensedManifest, now: number): boolean {
+  return m.expiration - EXPIRY_MARGIN_MS > now
 }

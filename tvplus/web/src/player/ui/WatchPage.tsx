@@ -41,6 +41,8 @@ type MenuKind = 'subs' | 'audio' | 'quality' | 'source'
 
 /** Kaynak değişiminde konumu korumak için (yeni manifest gelince oradan başlanır). */
 let resumeHint: { viewableId: string; positionSec: number } | null = null
+/** Son kaydedilen oynatma niyeti (StrictMode'un çift kurulumunda ikinciyi yutmak için) */
+let lastIntent: { key: string; at: number } | null = null
 
 interface LoadFailure {
   kind: 'access' | 'error'
@@ -74,7 +76,8 @@ function startPosition(manifest: LicensedManifest, meta: PlaybackMetadata | null
   if (hintSec !== null) return { sec: hintSec, resumed: false }
   if (manifest.live) return { sec: manifest.live.joinOffsetMs / 1000, resumed: false }
   if (fromStart) return { sec: 0, resumed: false }
-  const bm = manifest.bookmark ? manifest.bookmark.positionMs / 1000 : (meta?.bookmark?.positionSec ?? 0)
+  // Devam konumu PlaybackMetadata'dan (her istekte taze); manifest.bookmark yalnızca yedek
+  const bm = meta?.bookmark ? meta.bookmark.positionSec : manifest.bookmark ? manifest.bookmark.positionMs / 1000 : 0
   const dur = manifest.durationMs ? manifest.durationMs / 1000 : (meta?.video?.runtimeSec ?? 0)
   if (bm > 5 && (!dur || bm < dur - 10)) return { sec: bm, resumed: true }
   if (manifest.kind === 'EXTERNAL_EMBED' && manifest.startSec) return { sec: manifest.startSec, resumed: false }
@@ -108,7 +111,12 @@ export default function WatchPageImpl(): ReactElement {
     const isChannel = viewableId.startsWith('Channel:')
     const live = isChannel || viewableId.startsWith('Airing:')
     const s = new PlaybackSession(viewableId, tctx, live)
-    s.intent({ fromStart, kaynak, reload: reloadKey })
+    // StrictMode efekti iki kez kurar: aynı kullanıcı eylemi için tek playback.intent
+    const intentKey = `${viewableId}|${fromStart}|${kaynak}|${reloadKey}|${tctx}`
+    if (!(lastIntent && lastIntent.key === intentKey && performance.now() - lastIntent.at < 1500)) {
+      lastIntent = { key: intentKey, at: performance.now() }
+      s.intent({ fromStart, kaynak, reload: reloadKey })
+    }
     setSession(s)
     setMeta(undefined)
     setManifest(null)
@@ -123,7 +131,6 @@ export default function WatchPageImpl(): ReactElement {
         if (m?.airing?.startOver) return requestManifest(m.airing.unifiedEntityId, { startOver: true, fresh: reloadKey > 0 })
       }
       return requestManifest(viewableId, {
-        needBookmark: !fromStart && !live,
         preferredSource: kaynak ?? undefined,
         fresh: reloadKey > 0,
       })

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { catchupMeta, liveStatus, neighbourChannelIds, renderableRows, rowHasSampleSchedule, rowsNeedingRefetch, tonightMeta } from './liveLogic'
+import { catchupMeta, liveStatus, neighbourChannelIds, nextRefetchAt, renderableRows, rowHasSampleSchedule, rowsNeedingRefetch, tonightMeta } from './liveLogic'
 import type { PageRowData, RowItemData } from './types'
 
 const NOW = Date.parse('2026-11-13T09:00:00Z') // 12:00 TSİ
@@ -73,6 +73,11 @@ describe('hangi satır yeniden çekilmeli', () => {
   it('program sınırı geçen satır', () => {
     const r = rowsNeedingRefetch([rows[0]!], fetchedAt, NOW + 10 * M + 1000)
     expect(r).toEqual(['kanallar'])
+  })
+  it('bir sonraki yeniden çekme anı: en erken ttl ya da sınır', () => {
+    expect(nextRefetchAt(rows, fetchedAt)).toBe(NOW + 60_000)
+    expect(nextRefetchAt([rows[0]!], fetchedAt)).toBe(NOW + 10 * M)
+    expect(nextRefetchAt([], fetchedAt)).toBe(null)
   })
   it('veri alınmadan önce geçmiş sınır yeniden çekme sebebi değildir', () => {
     const old = row('eski', 'CHANNEL_ROW', [channelItem('eski', 0, NOW - 5 * M)], 600)

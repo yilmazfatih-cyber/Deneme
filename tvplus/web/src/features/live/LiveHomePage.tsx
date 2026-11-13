@@ -38,6 +38,7 @@ import {
   LIVE_CAPABILITIES,
   liveStatus,
   neighbourChannelIds,
+  nextRefetchAt,
   renderableRows,
   rowHasSampleSchedule,
   rowsNeedingRefetch,
@@ -343,6 +344,18 @@ export function LiveHomePage(): ReactElement {
     }
   }, [now, page, loading, fetchedAt, refetch])
 
+  // Kesin zamanlayıcı: bir sonraki sınır / ttl anında (useNow tiki 30 sn'de bir; onu beklemeden).
+  useEffect(() => {
+    if (!page) return
+    const at = nextRefetchAt(page.rows, fetchedAt)
+    if (at === null) return
+    const t = window.setTimeout(() => {
+      devbus.emit('cache', 'Canlı TV: yeniden çek', { key: 'LivePage', rows: rowsNeedingRefetch(page.rows, fetchedAt, Date.now()), ageMs: Date.now() - fetchedAt })
+      refetch()
+    }, Math.max(1000, at - Date.now() + 500))
+    return () => window.clearTimeout(t)
+  }, [page, fetchedAt, refetch])
+
   // Sunucu verisi iyimser değeri yakalayınca geçersiz kılmayı bırak.
   useEffect(() => {
     if (!page || favOverride.size === 0) return
@@ -353,7 +366,7 @@ export function LiveHomePage(): ReactElement {
         if (ch && next.get(ch.channelId) === ch.isFavorite) next.delete(ch.channelId)
       }
     if (next.size !== favOverride.size) setFavOverride(next)
-  }, [page]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [page])
 
   const hero = rows.find((r) => r.type === 'LIVE_HERO')
   const heroItem = hero?.items[0]
@@ -372,7 +385,7 @@ export function LiveHomePage(): ReactElement {
       devbus.emit('prefetch', 'komşu kanal', { viewableId: `Channel:${id}`, hero: id === heroId })
       void prefetchManifest(`Channel:${id}`)
     }
-  }, [heroId, channelOrder.join(',')]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [heroId, channelOrder.join(',')])
 
   useEffect(() => {
     if (heroItem) onVisible(hero!, [heroItem])

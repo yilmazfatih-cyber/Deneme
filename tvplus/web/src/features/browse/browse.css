@@ -1,0 +1,39 @@
+/* Göz atma sayfaları: duyarlı afiş ızgarası */
+.br-grid {
+  list-style: none;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+  gap: 16px 12px;
+}
+@media (min-width: 900px) {
+  .br-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 24px 16px;
+  }
+}
+.br-desc {
+  margin-top: -16px;
+  max-width: 720px;
+}
+.br-notfound {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+.br-notfound .cn-body {
+  margin: 0;
+}
+
+/* Izgara hücresi içeriğe göre genişlemesin (ör. tek satır kilit metni dar hücrede) */
+.br-grid > li {
+  min-width: 0;
+}
+.br-grid .cn-lock {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

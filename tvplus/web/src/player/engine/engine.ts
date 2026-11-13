@@ -12,6 +12,7 @@ import { parseWebmIndex } from '../demux/webmCues'
 import { devbus } from '../../lib/devbus'
 import { isStreamPlayable, mediaSourceCtor, streamMime } from '../net/capabilities'
 import { nextRangeStart, toRanges } from './buffered'
+import { audioMime, defaultAudioTrackOf, pickAudioStreamOf, planAudioSwitch } from './audioSelection'
 import { cdnHealth, fetchRange, type RangeResult } from './fetcher'
 import { MediaPipeline, type MediaKind, type PipelineHost, type StreamHeader } from './pipeline'
 
@@ -74,18 +75,11 @@ function pickVideoStreams(m: StreamsManifest): ManifestStream[] {
 }
 
 export function defaultAudioTrack(tracks: AudioTrack[]): AudioTrack | null {
-  const playable = tracks.filter((t) => t.streams.some(isStreamPlayable))
-  return playable.find((t) => t.language.startsWith('tr')) ?? playable.find((t) => t.isNative) ?? playable[0] ?? null
+  return defaultAudioTrackOf(tracks, isStreamPlayable)
 }
 
 function pickAudioStream(track: AudioTrack, estimateKbps: number): ManifestStream | null {
-  const playable = track.streams.filter(isStreamPlayable)
-  const profile = (['opus-webm', 'aac-mp4'] as const).find((p) => playable.some((s) => s.profile === p)) ?? playable[0]?.profile
-  const list = playable.filter((s) => s.profile === profile).sort((a, b) => a.bitrateKbps - b.bitrateKbps)
-  const budget = Math.max(160, estimateKbps * 0.2)
-  let best = list[0] ?? null
-  for (const s of list) if (s.bitrateKbps <= budget) best = s
-  return best
+  return pickAudioStreamOf(track, estimateKbps, isStreamPlayable)
 }
 
 export class MseEngine implements PipelineHost {
@@ -408,16 +402,58 @@ export class MseEngine implements PipelineHost {
     return this.audioTrack
   }
 
-  /** Ses parçası değişimi: yalnız ses boru hattı yeniden kurulur, video oynamaya devam eder. */
+  /**
+   * Ses parçası değişimi: yalnız ses boru hattı yeniden kurulur, video oynamaya devam eder.
+   * Kodek/kap değişiyorsa (Opus/WebM ↔ AAC/MP4) SourceBuffer.changeType, yoksa ses SourceBuffer'ı yeniden kurulur;
+   * ses tamponu konumun 0,5 sn ilerisinden temizlenir, yeni başlatma bölümü eklenir ve oradan doldurulur.
+   */
   setAudioTrack(trackId: string): void {
     const track = this.manifest.audioTracks.find((t) => t.trackId === trackId)
     if (!track || track === this.audioTrack) return
     const stream = pickAudioStream(track, this.estimator.estimateKbps())
     if (!stream) return
+    const prev = this.audioStream
+    const pipe = this.audio
+    const sbx = pipe?.sourceBuffer as (SourceBuffer & { changeType?: (t: string) => void }) | undefined
+    const plan = planAudioSwitch(prev ? audioMime(prev) : null, prev, stream, typeof sbx?.changeType === 'function')
     this.audioTrack = track
     this.audioStream = stream
-    devbus.emit('player', `ses: ${track.languageDescription}`, { trackId, streamId: stream.streamId, channels: track.channels })
-    if (this.audio) void this.audio.flushFrom(this.media.currentTime + 0.5, true).then(() => this.tick())
+    devbus.emit('player', `ses: ${track.languageDescription} · ${track.channels}`, {
+      viewableId: this.manifest.viewableId,
+      state: 'oynuyor',
+      positionSec: round1(this.media.currentTime),
+      trackId,
+      streamId: stream.streamId,
+      profile: stream.profile,
+      channels: track.channels,
+      plan,
+    })
+    if (!pipe || plan === 'same-stream') return
+    const from = this.media.currentTime + 0.5
+    if (plan === 'rebuild') {
+      this.rebuildAudio(stream, from)
+      return
+    }
+    // same-codec / change-type: temizle; changeType, init eklenmeden önce boru hattında yapılır
+    void pipe.flushFrom(from, true).then(() => this.tick())
+  }
+
+  /** changeType yoksa: eski ses SourceBuffer'ını kaldır, seçilen akışın mime değeriyle yenisini kur. */
+  private rebuildAudio(stream: ManifestStream, from: number): void {
+    const old = this.audio
+    if (!old) return
+    old.destroy()
+    try {
+      if (this.mediaSource.readyState === 'open') this.mediaSource.removeSourceBuffer(old.sourceBuffer)
+      const mime = streamMime(stream)
+      const sb = this.mediaSource.addSourceBuffer(mime)
+      this.audio = new MediaPipeline('audio', sb, mime, from, this)
+      this.audio.seek(from)
+      this.tick()
+    } catch (err) {
+      this.audio = null
+      this.onFatal(old, err instanceof Error ? err : new Error(String(err)))
+    }
   }
 
   /** Elle kalite kilidi (null = Otomatik). Kilit değişince ileri tampon bir sonraki bölüm sınırından yenilenir. */

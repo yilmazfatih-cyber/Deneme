@@ -211,13 +211,18 @@ function resolveTarget(app: FastifyInstance, passport: Passport, req: z.infer<ty
   }
 }
 
-/** Profil pazarlığı: istemcinin ilk tercih ettiği ve başlıkta bulunan video + ses profili. */
-export function negotiate(d: Extract<Deliverable, { kind: 'STREAMS' }>, profiles: string[]): { video: CodecProfile; audio: CodecProfile | null } | null {
+/**
+ * Profil pazarlığı. Video: istemcinin ilk tercih ettiği ve başlıkta bulunan profil (tüm akışlar aynı profilde,
+ * böylece ABR geçişi kesintisizdir). Ses: her parça için ayrı ayrı, istemcinin sırasıyla o parçanın sahip olduğu
+ * ilk profil (MSE'de ses SourceBuffer'ı videodan farklı kapta olabilir; parça değişimi changeType ile yapılır).
+ * Hiçbir ses parçası sunulamıyorsa (başlıkta ses varken) kaynak uyumsuzdur.
+ */
+export function negotiate(d: Extract<Deliverable, { kind: 'STREAMS' }>, profiles: string[]): { video: CodecProfile; audio: CodecProfile[] } | null {
   const video = profiles.find((p): p is CodecProfile => VIDEO_PROFILES.includes(p as CodecProfile) && d.video.some((v) => v.profile === p))
   if (!video) return null
-  if (d.audio.length === 0) return { video, audio: null }
-  const audio = profiles.find((p): p is CodecProfile => AUDIO_PROFILES.includes(p as CodecProfile) && d.audio.some((a) => a.profile === p))
-  if (!audio) return null
+  const audio = profiles.filter((p, i): p is CodecProfile => AUDIO_PROFILES.includes(p as CodecProfile) && profiles.indexOf(p) === i)
+  if (d.audio.length === 0) return { video, audio }
+  if (!d.audio.some((a) => audio.includes(a.profile))) return null
   return { video, audio }
 }
 
@@ -311,7 +316,7 @@ export async function buildManifest(
         ...base(d.durationSec),
         kind: 'STREAMS',
         videoTracks: [{ trackId: 'V-main', streams: videoStreams(plane, d, pick.video, cdns, e, target.promo) }],
-        audioTracks: pick.audio ? audioTracks(plane, d, pick.audio, cdns, e, input.uiLanguage) : [],
+        audioTracks: audioTracks(plane, d, pick.audio, cdns, e, input.uiLanguage),
         timedTextTracks: textTracks(plane, d.text, cdns, e, input.uiLanguage),
         cdns,
         license: { type: 'ACCESS_GRANT', grantId: newId('G') },
@@ -373,14 +378,19 @@ function videoStreams(plane: Plane, d: Extract<Deliverable, { kind: 'STREAMS' }>
   return reps.map((r) => toStream(plane, r, cdns, e))
 }
 
-function audioTracks(plane: Plane, d: Extract<Deliverable, { kind: 'STREAMS' }>, profile: CodecProfile, cdns: CdnInfo[], e: number, uiLanguage: string): AudioTrack[] {
-  const groups = new Map<string, StreamRep[]>()
+function audioTracks(plane: Plane, d: Extract<Deliverable, { kind: 'STREAMS' }>, allowed: CodecProfile[], cdns: CdnInfo[], e: number, uiLanguage: string): AudioTrack[] {
+  // Önce dil + kanal düzenine göre parçalar (tüm profiller), sonra her parçada istemcinin tercih ettiği ilk profil.
+  const all = new Map<string, StreamRep[]>()
   for (const a of d.audio) {
-    if (a.profile !== profile) continue
     const key = `${a.lang ?? 'und'}|${(a.channels ?? 2) >= 6 ? '5.1' : '2.0'}`
-    const g = groups.get(key) ?? []
+    const g = all.get(key) ?? []
     g.push(a)
-    groups.set(key, g)
+    all.set(key, g)
+  }
+  const groups = new Map<string, StreamRep[]>()
+  for (const [key, reps] of all) {
+    const profile = allowed.find((p) => reps.some((r) => r.profile === p))
+    if (profile) groups.set(key, reps.filter((r) => r.profile === profile))
   }
   // Özgün dil: ana (Role=main) temsillerin dili, yoksa ilk grubun dili. Aynı dilin 5.1 sürümü de özgündür.
   const entries = [...groups.entries()]

@@ -1,0 +1,57 @@
+/* Arama kutusu — DESIGN_SPEC "Web üst menü": 360×44, surface-1, hap, büyüteç, temizle düğmesi. */
+.tvp-searchbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 360px;
+  max-width: 100%;
+  height: 44px;
+  padding: 0 4px 0 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  background: var(--s1);
+  color: var(--t3);
+}
+.tvp-searchbox > .cn-icon {
+  flex: none;
+}
+.tvp-searchbox:focus-within {
+  border-color: var(--line-strong);
+  color: var(--t2);
+}
+.tvp-searchbox:has(input:focus-visible) {
+  outline: 2px solid var(--t1);
+  outline-offset: 2px;
+}
+.tvp-searchbox input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--t1);
+  font: inherit;
+  font-size: 14px;
+}
+.tvp-searchbox input::placeholder {
+  color: var(--t3);
+}
+/* Tarayıcının kendi temizle düğmesi yerine bizimki */
+.tvp-searchbox input::-webkit-search-cancel-button {
+  display: none;
+}
+.tvp-searchbox__clear {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r-pill);
+  color: var(--t2);
+}
+.tvp-searchbox__clear:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--t1);
+}

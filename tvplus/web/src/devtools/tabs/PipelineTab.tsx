@@ -79,6 +79,7 @@ export function PipelineTab({ p }: { p: PipelineState }): ReactNode {
           <span>
             Oynatıcı: <strong>{p.player.state}</strong>
             {p.player.positionSec !== null && ` · ${fmtSec(p.player.positionSec)}`}
+            {p.player.startupMs !== null && ` · ilk kare ${fmtMs(p.player.startupMs)}`}
           </span>
         )}
       </div>
@@ -109,6 +110,13 @@ export function PipelineTab({ p }: { p: PipelineState }): ReactNode {
           netflix="licensedManifest (+ prefetch)"
           status={p.manifest ? 'done' : 'wait'}
         >
+          {p.manifestError && (
+            <p className="kp-errline">
+              <ErrMark /> {p.manifestError.viewableId} alınamadı
+              {p.manifestError.code ? ` (${p.manifestError.code})` : ''}
+              {p.manifestError.message ? `: ${p.manifestError.message}` : ''}
+            </p>
+          )}
           {p.manifest ? (
             <ManifestPanel
               m={p.manifest}
@@ -163,7 +171,15 @@ export function PipelineTab({ p }: { p: PipelineState }): ReactNode {
 
 function FtlPanel({ ftl, now }: { ftl: FtlView; now: number }): ReactNode {
   const last = ftl.pulses.at(-1)
-  if (!last) return null
+  if (!last) {
+    return ftl.error ? (
+      <p className="kp-errline">
+        <ErrMark /> Yoklama alınamadı: {ftl.error}
+      </p>
+    ) : (
+      <Empty>{ftl.iter + 1}. tur başladı; ilk darbenin sonuçları bekleniyor.</Empty>
+    )
+  }
   const max = Math.max(1, ...last.targets.map((t) => t.totalMs ?? 0))
   const done = new Set(ftl.pulses.map((x) => x.index))
   return (
@@ -292,8 +308,20 @@ function ManifestPanel({
               <span className="kp-mono">{m.kind}</span> — {KIND_TEXT[m.kind]}
             </span>,
           ],
-          ['İstek', m.prefetch ? "Ön hazırlık (oynat'a basılmadan önce)" : 'Gerçek oynatma'],
-          ['Geçerlilik', m.expiresAt ? `${fmtCountdown(m.expiresAt - now)} sonra biter` : '—'],
+          [
+            'İstek',
+            m.prefetch
+              ? "Ön hazırlık (oynat'a basılmadan önce)"
+              : m.reused
+                ? 'Gerçek oynatma — ön hazırlıkla alınan manifest yeniden kullanıldı, yeni istek gitmedi'
+                : 'Gerçek oynatma',
+          ],
+          [
+            'Geçerlilik',
+            m.expiresAt
+              ? `${fmtCountdown(m.expiresAt - now)} sonra biter${m.urlRefreshes ? ` · adresler ${m.urlRefreshes} kez yenilendi` : ''}`
+              : '—',
+          ],
           ['Ön hazırlık', prefetchCount ? `${prefetchCount} kez · son ${lastPrefetch?.viewableId ?? ''}` : 'yok'],
         ]}
       />
@@ -432,7 +460,10 @@ function StreamingPanel({ st }: { st: StreamingView }): ReactNode {
       <Spark st={st} />
 
       <div className="kp-buffers">
-        <span className="kp-dim kp-small">Tampon {buf?.state ? `· ${buf.state}` : ''}</span>
+        <span className="kp-dim kp-small">
+          Tampon {buf?.state ? `· ${buf.state}` : ''} · yeniden tamponlama:{' '}
+          {st.rebuffers ? `${st.rebuffers} kez (${fmtMs(st.rebufferMs)})` : 'yok'}
+        </span>
         <BufferBar label="Video" sec={buf?.videoSec ?? null} />
         <BufferBar label="Ses" sec={buf?.audioSec ?? null} />
       </div>
@@ -605,6 +636,7 @@ function TtmlPanel({ t }: { t: TtmlView }): ReactNode {
       <KV
         rows={[
           ['Dil', t.language ?? '—'],
+          ['Ekranda', t.selected ?? 'kapalı'],
           ['Satır sayısı', fmtInt(t.cues)],
           ['Zaman birimi', t.tickRate ? `saniyede ${fmtInt(t.tickRate)} tik` : '—'],
         ]}

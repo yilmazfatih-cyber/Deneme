@@ -2,7 +2,16 @@
  * Bildirim zili: ilk liste GraphQL `Notifications` ile gelir, sonra GET /push uzun yoklamasıyla canlı güncellenir
  * (Netflix'te notifications.netflix.com/push). Profil yoksa hiçbir şey yapmaz; profil değişince döngü baştan kurulur.
  */
-import { useCallback, useEffect, useRef, useState, useSyncExternalStore, type ReactElement } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type ReactElement,
+  type ReactNode,
+} from 'react'
+import { createPortal } from 'react-dom'
 import { ROUTES } from '../../../../shared/constants'
 import type { PushEvent } from '../../../../shared/types'
 import { gql } from '../../api/graphql'
@@ -74,6 +83,7 @@ function Bell(): ReactElement {
   const openRef = useRef(open)
   openRef.current = open
   const rootRef = useRef<HTMLDivElement | null>(null)
+  const layerRef = useRef<HTMLDivElement | null>(null)
   const btnRef = useRef<HTMLButtonElement | null>(null)
   const wide = useWide()
 
@@ -141,7 +151,9 @@ function Bell(): ReactElement {
   useEffect(() => {
     if (!open) return
     const onDown = (e: PointerEvent) => {
-      if (rootRef.current && !rootRef.current.contains(e.target as Node)) setOpen(false)
+      const t = e.target as Node
+      if (rootRef.current?.contains(t) || layerRef.current?.contains(t)) return
+      setOpen(false)
     }
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -177,6 +189,54 @@ function Bell(): ReactElement {
   const now = Date.now()
   const label = unread.length ? `Bildirimler, ${unread.length} okunmamış` : 'Bildirimler'
 
+  const toastEl: ReactNode =
+    toast && !open ? (
+      <button type="button" className="nb-toast" role="status" onClick={() => openItem(toast)}>
+        <span className="nb-toast-title">{toast.title}</span>
+        <span className="nb-toast-body">{toast.body}</span>
+      </button>
+    ) : null
+  const dialog: ReactNode = (
+    <div className={wide ? 'nb-pop' : 'nb-sheet'} role="dialog" aria-label="Bildirimler">
+      {!wide && <div className="nb-grab" aria-hidden="true" />}
+      <div className="nb-head">
+        <h2 className="nb-title">Bildirimler</h2>
+        <button
+          type="button"
+          className="nb-all"
+          disabled={unread.length === 0}
+          onClick={() => markRead(unread.map((u) => u.id))}
+        >
+          Tümünü okundu say
+        </button>
+      </div>
+      {status === 'loading' && items.length === 0 && <p className="nb-empty">Yükleniyor…</p>}
+      {status === 'error' && items.length === 0 && (
+        <p className="nb-empty">Bildirimler şu an yüklenemedi. Biraz sonra yeniden denenecek.</p>
+      )}
+      {status === 'ready' && items.length === 0 && <p className="nb-empty">Yeni bildirim yok.</p>}
+      {items.length > 0 && (
+        <ul className="nb-list">
+          {items.map((i) => (
+            <li key={i.id}>
+              <button type="button" className={`nb-item${i.read ? '' : ' is-unread'}`} onClick={() => openItem(i)}>
+                <span className="nb-mark" aria-hidden="true" />
+                <span className="nb-text">
+                  <span className="nb-item-title">
+                    {i.title}
+                    {!i.read && <span className="nb-sr"> (okunmadı)</span>}
+                  </span>
+                  <span className="nb-item-body">{i.body}</span>
+                  <span className="nb-time">{relativeTime(Date.parse(i.createdAt), now)}</span>
+                </span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+
   return (
     <div className="nb-root" ref={rootRef}>
       <button
@@ -208,60 +268,18 @@ function Bell(): ReactElement {
         {unread.length > 0 && <span className="nb-dot" aria-hidden="true" />}
       </button>
 
-      {toast && !open && (
-        <button type="button" className="nb-toast" role="status" onClick={() => openItem(toast)}>
-          <span className="nb-toast-title">{toast.title}</span>
-          <span className="nb-toast-body">{toast.body}</span>
-        </button>
-      )}
-
-      {open && (
-        <>
-          {!wide && <div className="nb-scrim" aria-hidden="true" onClick={() => setOpen(false)} />}
-          <div className={wide ? 'nb-pop' : 'nb-sheet'} role="dialog" aria-label="Bildirimler">
-            {!wide && <div className="nb-grab" aria-hidden="true" />}
-            <div className="nb-head">
-              <h2 className="nb-title">Bildirimler</h2>
-              <button
-                type="button"
-                className="nb-all"
-                disabled={unread.length === 0}
-                onClick={() => markRead(unread.map((u) => u.id))}
-              >
-                Tümünü okundu say
-              </button>
-            </div>
-            {status === 'loading' && items.length === 0 && <p className="nb-empty">Yükleniyor…</p>}
-            {status === 'error' && items.length === 0 && (
-              <p className="nb-empty">Bildirimler şu an yüklenemedi. Biraz sonra yeniden denenecek.</p>
-            )}
-            {status === 'ready' && items.length === 0 && <p className="nb-empty">Yeni bildirim yok.</p>}
-            {items.length > 0 && (
-              <ul className="nb-list">
-                {items.map((i) => (
-                  <li key={i.id}>
-                    <button
-                      type="button"
-                      className={`nb-item${i.read ? '' : ' is-unread'}`}
-                      onClick={() => openItem(i)}
-                    >
-                      <span className="nb-mark" aria-hidden="true" />
-                      <span className="nb-text">
-                        <span className="nb-item-title">
-                          {i.title}
-                          {!i.read && <span className="nb-sr"> (okunmadı)</span>}
-                        </span>
-                        <span className="nb-item-body">{i.body}</span>
-                        <span className="nb-time">{relativeTime(Date.parse(i.createdAt), now)}</span>
-                      </span>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        </>
-      )}
+      {wide && toastEl}
+      {wide && open && dialog}
+      {!wide &&
+        (open || toastEl) &&
+        // Telefonda alt sayfa ve balon body'ye taşınır: üst çubuğun katmanı (z 50) onları alt gezinmenin altında bırakmasın.
+        createPortal(
+          <div className="nb-layer" ref={layerRef}>
+            {open && <div className="nb-scrim" aria-hidden="true" onClick={() => setOpen(false)} />}
+            {open ? dialog : toastEl}
+          </div>,
+          document.body,
+        )}
     </div>
   )
 }

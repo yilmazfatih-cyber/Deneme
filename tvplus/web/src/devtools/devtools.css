@@ -3,9 +3,10 @@
  * Renk kuralı: sarı yalnızca seçili sekme/çip, etkin basamak ve ilerleme (tampon) için; kırmızı hiç yok.
  * Hatalar nötr çerçeveli "!" ile işaretlenir.
  */
+/* Katman: sayfa ve oynatıcının (100, DOM'da önce) üstünde; çini Sheet (100, body'de sonra) ve kısa bildirimlerin (120) altında. */
 .kp-panel {
   position: fixed;
-  z-index: 2000;
+  z-index: 100;
   left: 0;
   right: 0;
   bottom: 0;
@@ -20,9 +21,15 @@
   font: 500 13px/18px var(--font);
   outline: none;
 }
-/* İzleme sayfası (telefon, dikey): alt sayfa alçalır, videonun ortası açık kalır. */
+/* İzleme sayfası (telefon, dikey): alt sayfa alçalır ve oynatıcının alt denetim şeridinin (96 px) üstünde durur;
+   videonun ortası ve denetimler açık kalır. */
 .kp-panel.is-watch {
-  height: 38dvh;
+  height: 34dvh;
+  bottom: 96px;
+  border-radius: var(--r-sheet);
+  border: 1px solid var(--line-strong);
+  left: 8px;
+  right: 8px;
 }
 /* Yatay telefon: alt sayfa yerine yarım genişlikte sağ çekmece. */
 @media (max-width: 899px) and (orientation: landscape) {
@@ -51,6 +58,14 @@
     border-top: 0;
     border-left: 1px solid var(--line-strong);
     box-shadow: -12px 0 40px rgba(0, 0, 0, 0.45);
+  }
+  /* İzleme sayfası: oynatıcının üst çubuğu (64 px) ve alt denetim şeridi (96 px) açık kalır. */
+  .kp-panel.is-watch {
+    top: 64px;
+    bottom: 96px;
+    right: 8px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-card);
   }
   .kp-grab {
     display: none;

@@ -30,6 +30,8 @@ export interface FtlView {
   iter: number
   pulses: FtlPulse[]
   totalPulses: number
+  /** Yoklama alınamadıysa kısa açıklama */
+  error: string | null
   /** Bir sonraki darbenin yaklaşık zamanı (epoch ms); darbeler bittiyse null */
   nextPulseAt: number | null
 }
@@ -76,6 +78,18 @@ export interface ManifestView {
   /** epoch ms */
   expiresAt: number | null
   ok: boolean
+  /** İmzalı adreslerin kaç kez yenilendiği */
+  urlRefreshes: number
+  /** EXTERNAL_EMBED için YouTube kimliği */
+  videoId: string | null
+  /** Oynatma, ön hazırlıkla alınmış manifesti yeniden kullanarak başladı (yeni istek yok) */
+  reused: boolean
+}
+export interface ManifestError {
+  at: number
+  viewableId: string
+  code: string | null
+  message: string | null
 }
 
 export interface RangeBlock {
@@ -128,6 +142,9 @@ export interface StreamingView {
   activeCdn: string | null
   buffer: BufferView | null
   markers: Marker[]
+  /** Oynatma sırasında tampon boşaldı (yeniden tamponlama) */
+  rebuffers: number
+  rebufferMs: number
 }
 
 export interface TtmlView {
@@ -136,6 +153,8 @@ export interface TtmlView {
   cues: number | null
   tickRate: number | null
   ok: boolean
+  /** Kullanıcının seçtiği dil (null = kapalı) */
+  selected: string | null
 }
 
 export interface EmbedState {
@@ -153,6 +172,7 @@ export interface PlayerView {
   state: string | null
   viewableId: string | null
   positionSec: number | null
+  startupMs: number | null
 }
 
 export type SourceKind = 'none' | 'streams' | 'progressive' | 'embed'
@@ -161,7 +181,12 @@ export interface PipelineState {
   ftl: FtlView | null
   msl: MslView | null
   manifest: ManifestView | null
+  manifestError: ManifestError | null
   prefetchCount: number
+  /** Kart önizlemeleri (promo manifest): sayılır ama hattı değiştirmez */
+  previewCount: number
+  /** Son alınan manifestler (önbellekten yeniden kullanılınca hatta geri getirmek için) */
+  known: Record<string, ManifestView>
   lastPrefetch: { at: number; viewableId: string } | null
   source: SourceKind
   streaming: StreamingView
@@ -192,6 +217,8 @@ export function emptyStreaming(): StreamingView {
     activeCdn: null,
     buffer: null,
     markers: [],
+    rebuffers: 0,
+    rebufferMs: 0,
   }
 }
 
@@ -200,7 +227,10 @@ export function initialPipeline(): PipelineState {
     ftl: null,
     msl: null,
     manifest: null,
+    manifestError: null,
     prefetchCount: 0,
+    previewCount: 0,
+    known: {},
     lastPrefetch: null,
     source: 'none',
     streaming: emptyStreaming(),
@@ -246,33 +276,48 @@ function winnerKeyOf(v: unknown): string | null {
   return str(v)
 }
 
-/** Darbe sırası: önce etiketteki "darbe N" (1'den başlar), yoksa detail.pulse (0'dan başlar sayılır). */
+/** Darbe sırası: detail.pulse (0 tabanlı, MIMARI §7); yoksa etiketteki "darbe N" (1 tabanlı). */
 function pulseIndex(e: DevEvent): number {
+  const p = num(field(e.detail, 'pulse'))
+  if (p !== null) return Math.max(0, p)
   const m = /darbe\s*(\d+)/i.exec(e.label)
-  if (m) return Math.max(0, Number(m[1]) - 1)
-  return Math.max(0, num(field(e.detail, 'pulse')) ?? 0)
+  return m ? Math.max(0, Number(m[1]) - 1) : 0
 }
 
-function reduceFtl(prev: FtlView | null, e: DevEvent): FtlView {
+function reduceFtl(prev: FtlView | null, e: DevEvent): FtlView | null {
   const d = e.detail
+  const delays: readonly number[] = FTL_PULSE_DELAYS_MS
   const iter = num(field(d, 'iter')) ?? prev?.iter ?? 0
+  if (!Array.isArray(field(d, 'results'))) {
+    // Darbe sonucu olmayan olaylar: "yoklama" (yeni tur başladı), "yoklama alınamadı", "yeniden yoklama".
+    if (!e.ok)
+      return {
+        iter,
+        pulses: prev?.iter === iter ? prev.pulses : [],
+        totalPulses: delays.length,
+        nextPulseAt: null,
+        error: str(field(d, 'error')) ?? e.label,
+      }
+    if (num(field(d, 'iter')) !== null && prev?.iter !== iter)
+      return { iter, pulses: [], totalPulses: delays.length, nextPulseAt: e.at + (delays[0] ?? 0), error: null }
+    return prev
+  }
   const index = pulseIndex(e)
   const { targets, winnerCdnId } = readFtlTargets(d, winnerKeyOf(field(d, 'winner')))
   const pulse: FtlPulse = { index, at: e.at, targets, winnerCdnId }
-  const base = prev && prev.iter === iter && index > 0 ? prev.pulses.filter((p) => p.index !== index) : []
+  const base = prev && prev.iter === iter ? prev.pulses.filter((p) => p.index !== index) : []
   const pulses = [...base, pulse].sort((a, b) => a.index - b.index)
-  const delays: readonly number[] = FTL_PULSE_DELAYS_MS
   const cur = delays[index]
   const next = delays[index + 1]
   const nextPulseAt = cur !== undefined && next !== undefined ? e.at + (next - cur) : null
-  return { iter, pulses, totalPulses: delays.length, nextPulseAt }
+  return { iter, pulses, totalPulses: delays.length, nextPulseAt, error: null }
 }
 
 /* ───────────── ② MSL ───────────── */
 
 function reduceMsl(prev: MslView | null, e: DevEvent): MslView {
   const d = e.detail
-  const provision = /provision/i.test(e.label)
+  const provision = /provision|sağlama/i.test(e.label)
   const serial = num(field(d, 'serialnumber'))
   const base: MslView = prev ?? {
     scheme: null,
@@ -376,11 +421,41 @@ function readManifest(e: DevEvent): ManifestView {
     cdns: readCdns(field(d, 'cdns')),
     expiresAt: toEpochMs(field(d, 'expiration')),
     ok: e.ok,
+    urlRefreshes: 0,
+    videoId: str(field(d, 'videoId')),
+    reused: false,
   }
 }
 
 function reduceManifest(s: PipelineState, e: DevEvent): PipelineState {
+  const d = e.detail
+  if (field(d, 'kind') === undefined) {
+    if (!e.ok) {
+      // Manifest alınamadı: ekrandaki oynatma bozulmaz, hata ayrıca gösterilir.
+      const viewableId = e.label
+      return {
+        ...s,
+        manifestError: { at: e.at, viewableId, code: str(field(d, 'error')), message: str(field(d, 'message')) },
+      }
+    }
+    // "<viewable>: adresler yenilendi" — imzalı adreslerin süresi uzadı.
+    if (s.manifest && e.label.startsWith(s.manifest.viewableId)) {
+      return {
+        ...s,
+        manifest: {
+          ...s.manifest,
+          expiresAt: toEpochMs(field(d, 'expiration')) ?? s.manifest.expiresAt,
+          urlRefreshes: s.manifest.urlRefreshes + 1,
+        },
+      }
+    }
+    return s
+  }
+  // Kart önizlemesi (promo): kendi küçük oynatıcısı vardır; ana oynatma hattına karışmaz.
+  if (obj(field(d, 'request'))?.promo === true) return { ...s, previewCount: s.previewCount + 1 }
   const m = readManifest(e)
+  const known = rememberManifest(s.known, m)
+  s = { ...s, known }
   if (m.prefetch) {
     const next: PipelineState = {
       ...s,
@@ -391,10 +466,38 @@ function reduceManifest(s: PipelineState, e: DevEvent): PipelineState {
     if (!s.manifest || s.manifest.prefetch) next.manifest = m
     return next
   }
-  // Gerçek manifest = yeni oynatma: akış, altyazı ve gömme durumu sıfırlanır.
+  // Gerçek manifest = yeni oynatma
+  return startPlayback(s, m)
+}
+
+const KNOWN_MAX = 20
+
+function rememberManifest(known: Record<string, ManifestView>, m: ManifestView): Record<string, ManifestView> {
+  const next = { ...known, [m.viewableId]: m }
+  const keys = Object.keys(next)
+  if (keys.length > KNOWN_MAX) delete next[keys[0]!]
+  return next
+}
+
+/** Gerçek oynatmayı başlatır: akış, altyazı ve gömme durumu sıfırlanır. */
+function startPlayback(s: PipelineState, m: ManifestView): PipelineState {
   const streaming = emptyStreaming()
   streaming.activeCdn = m.cdns[0]?.id ?? null
-  return { ...s, manifest: m, source: sourceOf(m.kind), streaming, ttml: null, embed: null }
+  return { ...s, manifest: m, manifestError: null, source: sourceOf(m.kind), streaming, ttml: null, embed: null }
+}
+
+/**
+ * Önbellek olayı "manifest: ön hazırlıktan" / "isabet" / "uçuştaki istek paylaşıldı": oynatıcı yeni istek atmadan
+ * daha önce alınmış manifesti kullandı (Netflix'teki vitrin ön hazırlığının amacı budur). Anahtar: "<viewable>|promo|…".
+ */
+function reduceCache(s: PipelineState, e: DevEvent): PipelineState {
+  if (!/^manifest: (ön hazırlıktan|isabet|uçuştaki)/.test(e.label)) return s
+  const key = str(field(e.detail, 'key')) ?? ''
+  const [viewableId, promo] = key.split('|')
+  if (!viewableId || promo === 'promo') return s
+  const m = s.known[viewableId]
+  if (!m) return s
+  return startPlayback(s, { ...m, prefetch: false, reused: m.prefetch || m.reused, at: e.at })
 }
 
 /* ───────────── ④ bayt aralıkları, ABR, tampon, CDN ───────────── */
@@ -410,6 +513,8 @@ function reduceRange(s: PipelineState, e: DevEvent): PipelineState {
   const d = e.detail
   const type = str(field(d, 'type'))
   const st = s.streaming
+  // Bilgi olayları ("video dizini: N bölüm", tek dosya kaynağın açılışı) bir bayt isteği değildir.
+  if (num(field(d, 'start')) === null && num(field(d, 'bytes')) === null) return s
   if (type === 'header') {
     return {
       ...s,
@@ -491,13 +596,14 @@ function reduceAbr(s: PipelineState, e: DevEvent): PipelineState {
         : /↑/.test(e.label)
           ? 'up'
           : null
-  const rung = rungByKbps(s.manifest, to)
+  const toStreamId = str(field(d, 'toStreamId'))
+  const rung = (toStreamId && s.manifest?.video.find((r) => r.streamId === toStreamId)) || rungByKbps(s.manifest, to)
   const marker: Marker = { id: e.id, at: e.at, kind: 'abr', dir, text: e.label, reason: str(field(d, 'reason')) }
   const next: StreamingView = {
     ...st,
     currentKbps: to ?? st.currentKbps,
-    currentHeight: rung?.height ?? (to !== null ? null : st.currentHeight),
-    currentStreamId: rung?.streamId ?? st.currentStreamId,
+    currentHeight: num(field(d, 'height')) ?? rung?.height ?? (to !== null ? null : st.currentHeight),
+    currentStreamId: toStreamId ?? rung?.streamId ?? st.currentStreamId,
     estimates: est !== null ? keepLast([...st.estimates, { at: e.at, kbps: est }], MAX_SAMPLES) : st.estimates,
     // İlk karar (from yok) bir geçiş değildir; işaret yalnızca gerçek değişimde konur.
     markers: from !== null || dir !== null ? keepLast([...st.markers, marker], MAX_MARKERS) : st.markers,
@@ -509,6 +615,19 @@ function reduceAbr(s: PipelineState, e: DevEvent): PipelineState {
 
 function reduceBuffer(s: PipelineState, e: DevEvent): PipelineState {
   const d = e.detail
+  if (/yeniden tamponlama/i.test(e.label)) {
+    const st = s.streaming
+    return {
+      ...s,
+      streaming: {
+        ...st,
+        rebuffers: st.rebuffers + 1,
+        rebufferMs: st.rebufferMs + (e.ms ?? num(field(d, 'durationMs')) ?? 0),
+      },
+    }
+  }
+  // Yalnızca tampon ölçümü taşıyan olaylar çubukları günceller ("boşluk atlandı" gibi notlar değil).
+  if (num(field(d, 'videoSec')) === null && num(field(d, 'audioSec')) === null) return s
   const prev = s.streaming.buffer
   const buffer: BufferView = {
     at: e.at,
@@ -575,37 +694,116 @@ function reduceEmbed(s: PipelineState, e: DevEvent): PipelineState {
 
 function reduceTtml(s: PipelineState, e: DevEvent): PipelineState {
   const d = e.detail
+  const prev = s.ttml
+  const cues = num(field(d, 'cues'))
+  const lang = str(field(d, 'language'))
+  // "seçildi: tr" / "kapatıldı": yalnızca seçim değişir; belge bilgisi korunur.
+  if (/^seçildi|^kapatıldı/.test(e.label)) {
+    const base: TtmlView = prev ?? { at: e.at, language: null, cues: null, tickRate: null, ok: true, selected: null }
+    return { ...s, ttml: { ...base, selected: lang } }
+  }
   return {
     ...s,
     ttml: {
       at: e.at,
-      language: str(field(d, 'language')),
-      cues: num(field(d, 'cues')),
-      tickRate: num(field(d, 'tickRate')),
+      language: lang ?? prev?.language ?? null,
+      cues: cues ?? (e.ok ? (prev?.cues ?? null) : null),
+      tickRate: num(field(d, 'tickRate')) ?? prev?.tickRate ?? null,
       ok: e.ok,
+      selected: prev?.selected ?? lang,
     },
   }
 }
 
+const PLAYER_STATE: Record<string, string> = {
+  loading: 'yükleniyor',
+  playing: 'oynuyor',
+  paused: 'duraklatıldı',
+  buffering: 'tamponlanıyor',
+  seeking: 'konum aranıyor',
+  ended: 'bitti',
+  endOfStream: 'akış sonu',
+  error: 'hata',
+  idle: 'bekliyor',
+}
+
 function reducePlayer(s: PipelineState, e: DevEvent): PipelineState {
   const d = e.detail
+  const prev = s.player
+  const raw = str(field(d, 'state'))
+  const fromLabel = /^durum:\s*(.+)$/.exec(e.label)?.[1] ?? null
+  // Önizleme kartı olayları ana oynatıcının durumunu değiştirmez.
+  if (/önizleme/.test(e.label)) return s
   return {
     ...s,
     player: {
       at: e.at,
-      state: str(field(d, 'state')) ?? (e.label.replace(/^durum:\s*/, '') || null),
-      viewableId: str(field(d, 'viewableId')) ?? s.player?.viewableId ?? null,
-      positionSec: num(field(d, 'positionSec')),
+      state: fromLabel ?? (raw ? (PLAYER_STATE[raw] ?? raw) : (prev?.state ?? null)),
+      viewableId: str(field(d, 'viewableId')) ?? prev?.viewableId ?? null,
+      positionSec: num(field(d, 'positionSec')) ?? prev?.positionSec ?? null,
+      startupMs: num(field(d, 'startupMs')) ?? prev?.startupMs ?? null,
     },
   }
 }
 
 /* ───────────── giriş noktası ───────────── */
 
-export function reducePipeline(s: PipelineState, e: DevEvent): PipelineState {
+/** Gerçek (ön hazırlık olmayan) bir oynatma sürüyor mu */
+function playing(s: PipelineState): ManifestView | null {
+  return s.manifest && !s.manifest.prefetch ? s.manifest : null
+}
+
+/**
+ * Akış olayları (aralık, ABR, tampon, CDN, altyazı, gömme, oynatıcı) yalnızca gerçek oynatmaya bağlanır.
+ * Ana sayfadaki kart önizlemeleri aynı motoru kullanır ve olayları önizleme olduğunu söylemez;
+ * bu süzgeç onların hattı ele geçirmesini önler.
+ */
+function belongsToPlayback(s: PipelineState, e: DevEvent): boolean {
+  const m = playing(s)
+  const d = e.detail
   switch (e.cat) {
-    case 'ftl':
-      return { ...s, ftl: reduceFtl(s.ftl, e) }
+    case 'range': {
+      if (!m) return false
+      const sid = str(field(d, 'streamId'))
+      // Video akış kimliği manifestin basamaklarında yoksa başka bir oynatıcının (önizleme) isteğidir.
+      if (
+        str(field(d, 'type')) === 'video' &&
+        sid &&
+        m.video.some((r) => r.streamId) &&
+        !m.video.some((r) => r.streamId === sid)
+      )
+        return false
+      return true
+    }
+    case 'abr':
+    case 'buffer':
+    case 'cdn':
+    case 'ttml':
+      return !!m
+    case 'embed': {
+      if (!m || m.kind !== 'EXTERNAL_EMBED') return false
+      const vid = str(field(d, 'videoId'))
+      return !vid || !m.videoId || vid === m.videoId
+    }
+    case 'player': {
+      const vid = str(field(d, 'viewableId'))
+      if (!vid) return true
+      if (m) return vid === m.viewableId
+      // İzleme sayfası açılırken (manifest gelmeden) yalnızca "yükleniyor" kabul edilir.
+      return str(field(d, 'state')) === 'loading'
+    }
+    default:
+      return true
+  }
+}
+
+export function reducePipeline(s: PipelineState, e: DevEvent): PipelineState {
+  if (!belongsToPlayback(s, e)) return s
+  switch (e.cat) {
+    case 'ftl': {
+      const ftl = reduceFtl(s.ftl, e)
+      return ftl === s.ftl ? s : { ...s, ftl }
+    }
     case 'msl':
       return { ...s, msl: reduceMsl(s.msl, e) }
     case 'manifest':
@@ -624,6 +822,8 @@ export function reducePipeline(s: PipelineState, e: DevEvent): PipelineState {
       return reduceEmbed(s, e)
     case 'player':
       return reducePlayer(s, e)
+    case 'cache':
+      return reduceCache(s, e)
     default:
       return s
   }

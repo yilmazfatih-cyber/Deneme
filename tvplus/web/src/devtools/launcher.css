@@ -1,24 +1,34 @@
-/* "Kaputun altı" başlatıcı düğmesi (panel kapalıyken tek görünen parça). */
+/*
+ * "Kaputun altı" başlatıcı düğmesi (panel kapalıyken tek görünen parça).
+ * Katman: çini Sheet/örtü (100, body'ye taşınır → DOM'da sonra gelir) ve kısa bildirimlerin (120) ALTINDA;
+ * oynatıcının (100, #root içinde, DOM'da önce) üstünde. Eşit z-index'te DOM sırası belirler.
+ */
 .kp-launcher {
   position: fixed;
   right: 16px;
   bottom: calc(var(--bottomnav-h) + 16px + env(safe-area-inset-bottom, 0px));
-  /* Uygulamanın alt sayfalarının (1500) altında kalır; açılan panel 2000'dedir. */
-  z-index: 1400;
+  z-index: 100;
   display: inline-flex;
   align-items: center;
   gap: 8px;
   min-height: 44px;
-  padding: 0 16px;
+  padding: 0 14px;
   border-radius: var(--r-pill);
   background: var(--s2);
   border: 1px solid var(--line-strong);
   color: var(--t1);
   font: 700 13px/16px var(--font);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+  transition:
+    opacity 0.15s,
+    background-color 0.15s;
 }
 .kp-launcher:hover {
   background: var(--s3);
+}
+.kp-launcher-icon {
+  flex: none;
+  color: var(--t2);
 }
 .kp-launcher-dot {
   width: 8px;
@@ -43,5 +53,45 @@
   .kp-launcher {
     right: 24px;
     bottom: 24px;
+  }
+}
+
+/* İzleme sayfası: oynatıcının denetim alanından (alt şerit, tam ekran, Kaynak) uzakta — sağ üstte,
+   oynatıcının üst çubuğunun altında, küçük ve yarı saydam. Alt 96 px'e hiç girmez. */
+.kp-launcher.is-watch,
+.kp-launcher.is-watch:hover {
+  top: calc(72px + env(safe-area-inset-top, 0px));
+  bottom: auto;
+  right: 12px;
+  min-height: 40px;
+  padding: 0 12px;
+  gap: 6px;
+  font-size: 12px;
+  background: rgba(22, 23, 28, 0.72);
+  box-shadow: none;
+}
+.kp-launcher.is-watch {
+  opacity: 0.55;
+}
+.kp-launcher.is-watch:hover,
+.kp-launcher.is-watch:focus-visible {
+  opacity: 1;
+}
+@media (max-width: 599px) {
+  .kp-launcher.is-watch {
+    width: 44px;
+    min-height: 44px;
+    padding: 0;
+    justify-content: center;
+  }
+  .kp-launcher.is-watch .kp-launcher-label {
+    display: none;
+  }
+  .kp-launcher.is-watch .kp-launcher-dot {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 6px;
+    height: 6px;
   }
 }

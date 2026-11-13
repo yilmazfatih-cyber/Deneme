@@ -47,7 +47,7 @@ export function reduceTelemetry(s: TelemetryState, e: DevEvent): TelemetryState 
   const d = e.detail
   const names = arr(field(d, 'names')).flatMap((n) => str(n) ?? [])
   const labelCount = /^(\d+)/.exec(e.label)
-  const count = names.length || (labelCount ? Number(labelCount[1]) : 0)
+  const count = num(field(d, 'count')) ?? (names.length || (labelCount ? Number(labelCount[1]) : 0))
   const rate = str(field(d, 'rate'))
   const remaining = parseRateLimit(rate)
   const batch: EventBatchView = {

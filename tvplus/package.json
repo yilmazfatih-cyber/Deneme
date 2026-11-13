@@ -14,7 +14,7 @@
     "build": "npm run persisted && vite build",
     "start": "tsx server/src/index.ts",
     "persisted": "tsx scripts/build-persisted.ts",
-    "typecheck": "tsc -p tsconfig.server.json --noEmit && tsc -p tsconfig.web.json --noEmit",
+    "typecheck": "tsc -p tsconfig.server.json --noEmit && tsc -p tsconfig.web.json --noEmit && tsc -p tsconfig.e2e.json --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
     "validate:content": "tsx scripts/validate-content.ts",

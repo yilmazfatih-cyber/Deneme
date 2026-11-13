@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { ROUTES } from '../../../../shared/constants'
 import type { OcaNodeState } from '../../../../shared/types'
-import { sessionHeaders } from '../../api/session'
 import { fmtBytes, fmtClock, fmtInt, fmtKbps } from '../model/format'
-import { Explainer, usePoll } from '../ui'
+import { onBootChange, sessionHeaders } from '../../api/session'
+import { Explainer, LoginNote, needsLogin, usePoll } from '../ui'
 
 const OCA_URL = `${ROUTES.DEBUG_PREFIX}/oca`
 /** Bant genişliği kaydırıcısının basamakları; son basamak sınırsız. */
@@ -38,7 +38,10 @@ function stepIndex(kbps: number | null): number {
 
 export function CdnTab(): ReactNode {
   const poll = usePoll<unknown>(OCA_URL, 2000, 10_000, sessionHeaders)
-  const nodes = readNodes(poll.data)
+  const nodes = needsLogin(poll) ? null : readNodes(poll.data)
+  const { refresh } = poll
+  // Giriş/profil değişince beklemeden yeniden sor.
+  useEffect(() => onBootChange(() => refresh()), [refresh])
   const [busy, setBusy] = useState<string | null>(null)
   const [postError, setPostError] = useState<string | null>(null)
 
@@ -72,7 +75,8 @@ export function CdnTab(): ReactNode {
         <li>Düğümü kapat → oynatıcı diğer düğüme geçer.</li>
       </ul>
 
-      {poll.error && (
+      {needsLogin(poll) && <LoginNote />}
+      {poll.error && !needsLogin(poll) && (
         <p className="kp-calm" role="status">
           Sunucunun hata ayıklama ucu şu an yanıt vermiyor. 10 sn'de bir yeniden deneniyor.
           <span className="kp-dim kp-small"> ({poll.error})</span>
@@ -84,7 +88,7 @@ export function CdnTab(): ReactNode {
         </p>
       )}
 
-      {nodes === null && !poll.error && <p className="kp-empty">Düğümler yükleniyor…</p>}
+      {nodes === null && !poll.error && !needsLogin(poll) && <p className="kp-empty">Düğümler yükleniyor…</p>}
       {nodes && (
         <>
           <div className="kp-toolbar">

@@ -7,11 +7,18 @@
 import { lazy, Suspense, useCallback, useEffect, useRef, useState, type ReactElement } from 'react'
 import { devbus } from '../lib/devbus'
 import './launcher.css'
+import { startCollector } from './collector'
 import { isTabId, type TabId } from './tabIds'
 
 const Panel = lazy(() => import('./Panel'))
 
+// Seyrek olayları uygulama açıldığından beri sakla (bkz. collector.ts).
+startCollector()
+
 const STORAGE_KEY = 'tvp.kaput.v1'
+/** DESIGN_SPEC §3 "ayar" ikonu */
+const GEAR =
+  'M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1'
 
 interface Persisted {
   open: boolean
@@ -126,12 +133,27 @@ export function DevtoolsPanel(): ReactElement {
         <button
           ref={launcherRef}
           type="button"
-          className="kp-launcher"
+          className={`kp-launcher${watch ? ' is-watch' : ''}`}
           onClick={() => setOpen(true)}
           aria-label="Kaputun altı panelini aç (Ctrl+.)"
+          title="Kaputun altı (Ctrl+.)"
         >
+          <svg
+            className="kp-launcher-icon"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d={GEAR} />
+          </svg>
+          <span className="kp-launcher-label">{watch ? 'Kaput' : 'Kaputun altı'}</span>
           <span ref={dotRef} className="kp-launcher-dot" aria-hidden="true" />
-          Kaputun altı
         </button>
       )}
       {state.open && (

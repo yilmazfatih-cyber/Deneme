@@ -1,5 +1,6 @@
 /** STREAMS bağdaştırıcısı: kendi MSE motorumuz (ayrı ses/video, bayt aralığı, ABR, CDN yük devri). */
 import type { StreamsManifest } from '../../../../shared/playback'
+import { audioTrackLabel } from '../engine/audioSelection'
 import { EngineError, MseEngine } from '../engine/engine'
 import { AllCdnsFailedError, RangeRequestError, StaleUrlError } from '../engine/fetcher'
 import { devbus } from '../../lib/devbus'
@@ -71,7 +72,7 @@ export class StreamsAdapter extends MediaElementAdapter {
   }
 
   override audioOptions(): AudioOption[] {
-    return (this.engine?.audioTracks() ?? []).map((t) => ({ id: t.trackId, label: `${t.languageDescription} · ${t.channels}`, language: t.language }))
+    return (this.engine?.audioTracks() ?? []).map((t) => ({ id: t.trackId, label: audioTrackLabel(t), language: t.language }))
   }
   override currentAudio(): string | null {
     return this.engine?.currentAudioTrack()?.trackId ?? null

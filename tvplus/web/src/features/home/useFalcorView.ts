@@ -24,8 +24,11 @@ const subscribe = (fn: () => void) => {
 }
 const getVersion = () => version
 
-/** Aynı eksik küme başarılı bir istekten sonra hâlâ eksikse en erken bu kadar sonra yeniden sorulur. */
-const REFETCH_FLOOR_MS = 5000
+/**
+ * Aynı eksik küme bu süre içinde yeniden sorulmaz (ör. süresi 0 olan yapraklarla oluşabilecek istek fırtınasına karşı).
+ * Kısa tutulur: Listem'e ekle → çıkar gibi art arda geçersiz kılmalar aynı yolları meşru olarak yeniden ister.
+ */
+const REFETCH_FLOOR_MS = 250
 
 type Json = Record<string, unknown>
 
@@ -61,6 +64,7 @@ export function useFalcorView<T>(paths: FalcorPath[], opts: { fetch?: boolean } 
   const [inflight, setInflight] = useState(false)
 
   useEffect(() => {
+    if (!missingKey && failure) setFailure(null)
     if (!fetch || !missingKey) return
     if (failure && failure.key === missingKey) return
     const last = lastFetch.current

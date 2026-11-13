@@ -1,7 +1,7 @@
 /**
  * Kart ve önizleme meta satırı için saf yardımcılar: oynatma rozetleri, kaynak adı, kalan süre, yetki metni.
  */
-import type { AccessData, BookmarkData, SourceKindName } from './types'
+import type { BookmarkData, SourceKindName } from './types'
 
 /** Oynatma rozetleri → kısa etiketler (tekrarsız, sabit sıra). */
 export function playbackBadgeLabels(badges: readonly string[]): string[] {
@@ -48,7 +48,7 @@ export function isInProgress(bookmark: Pick<BookmarkData, 'positionSec' | 'progr
 }
 
 /** Pakette yoksa karttaki tek satır ("Sinema Paketi ile"); oynatılabiliyorsa null. */
-export function lockedTextOf(access: Pick<AccessData, 'state' | 'reasonText'> | null | undefined, fallback?: string | null): string | null {
+export function lockedTextOf(access: { state: string; reasonText: string | null } | null | undefined, fallback?: string | null): string | null {
   if (!access || access.state === 'PLAYABLE') return null
   return access.reasonText ?? fallback ?? 'Paketinde yok'
 }

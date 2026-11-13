@@ -7,7 +7,7 @@
 .pv-card {
   position: fixed;
   z-index: 80; /* satırların ve okların üstünde, üst çubuğun (50) üstünde ama alt sayfaların (100) altında */
-  width: 360px;
+  width: 380px;
   top: 0;
   left: 0;
   display: flex;

@@ -1,10 +1,11 @@
 /**
  * Panel açıkken devbus'a abone olur; kapalıyken hiçbir şey yapmaz.
- * Açılışta devbus.snapshot() ile son olaylardan durumu kurar, sonra gelen olayları 250 ms'lik paketlerle uygular
+ * Açılışta halka tamponu + seyrek olay toplayıcısından (collector.ts) durumu kurar, sonra gelen olayları 250 ms'lik paketlerle uygular
  * (en çok saniyede 4 çizim).
  */
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { devbus, type DevEvent } from '../lib/devbus'
+import { hydrationEvents } from './collector'
 import { initialModel, reduceModel, type DevModel } from './model'
 
 const FLUSH_MS = 250
@@ -23,7 +24,7 @@ export function useDevModel(active: boolean): { model: DevModel; clearFeed: () =
       setModel(ref.current)
       return
     }
-    ref.current = reduceModel(initialModel(), devbus.snapshot(), feedClearedAfter)
+    ref.current = reduceModel(initialModel(), hydrationEvents(), feedClearedAfter)
     setModel(ref.current)
     let pending: DevEvent[] = []
     let timer: number | null = null

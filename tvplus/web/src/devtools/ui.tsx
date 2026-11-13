@@ -1,5 +1,5 @@
 /** Panelin küçük yapı taşları (tasarım sistemi bileşenlerinden bağımsız; yalnızca tokens.css değişkenleri). */
-import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 
 export function Icon({ d, size = 18, title }: { d: string; size?: number; title?: string }): ReactNode {
   return (
@@ -96,6 +96,8 @@ export function useNow(intervalMs = 1000): number {
 export interface PollState<T> {
   data: T | null
   error: string | null
+  /** Son yanıtın HTTP durumu (ağ hatasında null) */
+  status: number | null
   at: number | null
 }
 
@@ -109,7 +111,7 @@ export function usePoll<T>(
   slowMs: number,
   headers: () => Record<string, string>,
 ): PollState<T> & { refresh: () => void } {
-  const [state, setState] = useState<PollState<T>>({ data: null, error: null, at: null })
+  const [state, setState] = useState<PollState<T>>({ data: null, error: null, status: null, at: null })
   const kick = useRef<() => void>(() => {})
   const headersRef = useRef(headers)
   headersRef.current = headers
@@ -134,15 +136,28 @@ export function usePoll<T>(
           signal: ctrl.signal,
           headers: { accept: 'application/json', ...headersRef.current() },
         })
-        if (!res.ok) throw new Error(`HTTP ${res.status}`)
+        if (!res.ok) {
+          if (!alive) return
+          failing = true
+          // 401/403: oturum yok — eski veri gösterilmez.
+          const auth = res.status === 401 || res.status === 403
+          setState((s) => ({
+            data: auth ? null : s.data,
+            error: `HTTP ${res.status}`,
+            status: res.status,
+            at: Date.now(),
+          }))
+          schedule(slowMs)
+          return
+        }
         const data = (await res.json()) as T
         if (!alive) return
         failing = false
-        setState({ data, error: null, at: Date.now() })
+        setState({ data, error: null, status: res.status, at: Date.now() })
       } catch (err) {
         if (!alive || (err as Error).name === 'AbortError') return
         failing = true
-        setState((s) => ({ ...s, error: String((err as Error).message ?? err), at: Date.now() }))
+        setState((s) => ({ ...s, error: String((err as Error).message ?? err), status: null, at: Date.now() }))
       }
       if (alive) schedule(failing ? slowMs : everyMs)
     }
@@ -159,5 +174,20 @@ export function usePoll<T>(
       document.removeEventListener('visibilitychange', onVis)
     }
   }, [url, everyMs, slowMs])
-  return { ...state, refresh: () => kick.current() }
+  const refresh = useCallback(() => kick.current(), [])
+  return { ...state, refresh }
+}
+
+/** Uç oturum istiyor mu (anonimken 401/403) */
+export function needsLogin(p: { status: number | null }): boolean {
+  return p.status === 401 || p.status === 403
+}
+
+/** Anonimken gösterilen tek, sakin satır */
+export function LoginNote(): ReactNode {
+  return (
+    <p className="kp-calm" role="status">
+      Giriş yaptıktan sonra görünür.
+    </p>
+  )
 }

@@ -15,8 +15,6 @@ import { MslError, msl } from './msl'
 export interface ManifestOptions extends ManifestKeyOptions {
   /** Vitrin / komşu kanal ön hazırlığı */
   prefetch?: boolean
-  /** Oynatma yer imi gerektiriyorsa (devam et) ön hazırlık manifesti yer imi taşımıyorsa yeniden istenir */
-  needBookmark?: boolean
   /** Önbelleği atla (kaynak değişimi, program bitti) */
   fresh?: boolean
   signal?: AbortSignal
@@ -128,8 +126,9 @@ export async function requestManifest(viewableId: string, opts: ManifestOptions 
   const now = Date.now()
   if (!opts.fresh) {
     const hit = cache.get(key, now)
-    if (hit && (opts.prefetch || canReuseForPlay(hit.manifest, !!opts.needBookmark))) {
-      devbus.emit('cache', 'manifest: isabet', { key, expires: hit.manifest.expiration, ageMs: hit.ageMs, prefetched: hit.manifest.isPrefetch })
+    if (hit && canReuseForPlay(hit.manifest, now)) {
+      const label = !opts.prefetch && hit.manifest.isPrefetch ? 'manifest: ön hazırlıktan' : 'manifest: isabet'
+      devbus.emit('cache', label, { key, expires: hit.manifest.expiration, ageMs: hit.ageMs, prefetched: hit.manifest.isPrefetch })
       return hit.manifest
     }
     const pending = cache.pending(key)
@@ -137,12 +136,12 @@ export async function requestManifest(viewableId: string, opts: ManifestOptions 
       if (opts.prefetch) return pending
       // Uçuştaki isteği (ön hazırlık ya da eşzamanlı oynatma isteği) bekle; uygunsa onu kullan
       const m = await pending.catch(() => null)
-      if (m && canReuseForPlay(m, !!opts.needBookmark)) {
-        devbus.emit('cache', 'manifest: uçuştaki istek paylaşıldı', { key, expires: m.expiration })
+      if (m && canReuseForPlay(m, Date.now())) {
+        devbus.emit('cache', m.isPrefetch ? 'manifest: ön hazırlıktan' : 'manifest: uçuştaki istek paylaşıldı', { key, expires: m.expiration, prefetched: m.isPrefetch, inflight: true })
         return m
       }
     }
-    devbus.emit('cache', hit ? 'manifest: yer imi için yeniden' : 'manifest: ıska', { key })
+    devbus.emit('cache', 'manifest: ıska', { key })
   }
   const p = fetchManifest(viewableId, opts).then((m) => {
     cache.set(key, m, Date.now())

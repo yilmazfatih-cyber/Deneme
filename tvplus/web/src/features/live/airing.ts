@@ -65,6 +65,11 @@ export function lockText(access: AccessData): string | null {
   return access.reasonText ?? (access.requiredProductName ? `${access.requiredProductName} ile` : 'Paketinde yok')
 }
 
+/** Paket/cihaz kilidi (kilit simgesi): OUT_OF_WINDOW bir kilit değil, "Tekrar izlenemiyor" durumudur. */
+export function packageLock(access: AccessData): string | null {
+  return access.state === 'OUT_OF_WINDOW' ? null : lockText(access)
+}
+
 /** Geri al penceresi açık mı (istemci saatiyle): yayın bitmiş ve `until` geçmemiş. */
 export function catchupOpen(a: Pick<AiringLike, 'endAt' | 'catchup'>, now: number): boolean {
   if (!a.catchup.until) return false

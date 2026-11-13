@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { airingAction, catchupHint, catchupOpen, liveWatchPath, locativeSuffix, timeStateOf, upcomingNote, type AiringLike } from './airing'
+import { airingAction, catchupHint, catchupOpen, liveWatchPath, locativeSuffix, packageLock, timeStateOf, upcomingNote, type AiringLike } from './airing'
 import type { AccessData } from './types'
 
 const PLAYABLE: AccessData = { state: 'PLAYABLE', reasonText: null, requiredProduct: null, requiredProductName: null, cta: null }
@@ -109,6 +109,11 @@ describe('yardımcılar', () => {
     expect(catchupOpen(a, NOW)).toBe(true)
     expect(catchupOpen(a, NOW + 2 * H)).toBe(false)
     expect(catchupOpen({ ...a, catchup: { available: false, until: null } }, NOW)).toBe(false)
+  })
+
+  it('OUT_OF_WINDOW kilit simgesi almaz', () => {
+    expect(packageLock({ ...PLAYABLE, state: 'OUT_OF_WINDOW', reasonText: 'Tekrar izlenemiyor' })).toBe(null)
+    expect(packageLock({ ...PLAYABLE, state: 'UPSELL', reasonText: 'Spor Paketi ile' })).toBe('Spor Paketi ile')
   })
 
   it('izleme yolu', () => {

@@ -95,6 +95,10 @@ describe('olay günlüğü modeli', () => {
       ['navigate', 1],
       ['playback.end', 1],
     ])
+    expect(
+      reduceTelemetry(initialTelemetry(), ev('event-log', '12 olay', { count: 12, names: ['a'], status: 202 }))
+        .eventsSent,
+    ).toBe(12)
     expect(parseRateLimit('~0=true~RL=17')).toBe(17)
     expect(parseRateLimit(null)).toBeNull()
   })
@@ -148,5 +152,15 @@ describe('biçimler', () => {
     expect(fmtCountdown(11 * 60_000 + 4000)).toBe('11 dk 4 sn')
     expect(fmtCountdown(12 * 3600_000 - 60_000)).toBe('11 sa 59 dk')
     expect(fmtCountdown(-1)).toBe('süresi doldu')
+  })
+})
+
+describe('toplayıcı birleştirme', () => {
+  it('kimliğe göre tekrarsız ve sıralı', async () => {
+    const { mergeEvents } = await import('../collector')
+    const a = ev('ftl', 'x')
+    const b = ev('range', 'y')
+    const c = ev('msl', 'z')
+    expect(mergeEvents([c, a], [a, b]).map((e) => e.id)).toEqual([a.id, b.id, c.id])
   })
 })

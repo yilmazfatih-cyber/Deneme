@@ -231,6 +231,23 @@ describe('lisanslı manifest: DASH (önbellekteki MPD)', () => {
     expect(v.sizeBytes).toBe(5_000_000 + 417975)
   })
 
+  it('ses profili parça başına seçilir: VP9 + Opus stereo + yalnız AAC olan 5.1', async () => {
+    const m = await manifest<StreamsManifest>({ viewableId: 'Video:1002', profiles: ['vp9-webm', 'opus-webm', 'aac-mp4'] })
+    expect(m.videoTracks[0]!.streams.every((s) => s.profile === 'vp9-webm')).toBe(true)
+    expect(m.audioTracks.map((a) => [a.trackId, a.isNative, [...new Set(a.streams.map((s) => s.profile))]])).toEqual([
+      ['A-en-20', true, ['opus-webm']],
+      ['A-en-51', true, ['aac-mp4']],
+    ])
+    expect(m.audioTracks[1]!.streams[0]).toMatchObject({ mimeType: 'audio/mp4', container: 'mp4', codecs: 'mp4a.40.2' })
+    // yalnız Opus bilen istemci: 5.1 (yalnız AAC) düşer, stereo kalır
+    const opusOnly = await manifest<StreamsManifest>({ viewableId: 'Video:1002', profiles: ['vp9-webm', 'opus-webm'] })
+    expect(opusOnly.audioTracks.map((a) => a.trackId)).toEqual(['A-en-20'])
+    expect(opusOnly.audioTracks[0]!.streams.map((s) => s.profile)).toEqual(['opus-webm'])
+    // AAC'yi önce sayan istemci: stereo da AAC olur
+    const aacFirst = await manifest<StreamsManifest>({ viewableId: 'Video:1002', profiles: ['vp9-webm', 'aac-mp4', 'opus-webm'] })
+    expect(aacFirst.audioTracks.map((a) => a.streams[0]!.profile)).toEqual(['aac-mp4', 'aac-mp4'])
+  })
+
   it('promo: true → en çok 480p, tanıtım ofseti konum olarak', async () => {
     const m = await manifest<StreamsManifest>({ viewableId: 'Video:1002', promo: true, prefetch: true, profiles: ['vp9-webm', 'opus-webm'] })
     expect(m.videoTracks[0]!.streams.map((s) => s.height)).toEqual([182, 364])

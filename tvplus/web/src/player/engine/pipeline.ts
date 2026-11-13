@@ -64,6 +64,10 @@ export class MediaPipeline {
     this.host = host
   }
 
+  get sourceBuffer(): SourceBuffer {
+    return this.sb
+  }
+
   bufferedRanges(): Range[] {
     try {
       return toRanges(this.sb.buffered)

@@ -1,4 +1,8 @@
-/* Bildirim zili. Yalnızca tokens.css değişkenleri. Sarı yalnızca zildeki tek rozet noktası için. */
+/*
+ * Bildirim zili. Yalnızca tokens.css değişkenleri. Sarı yalnızca zildeki tek rozet noktası için.
+ * Katmanlar çini ile aynı düzende: açılır liste üst çubuğun içinde (60, kabuk menüsü gibi); telefondaki alt sayfa
+ * ve örtü body'ye taşınır (100, çini Sheet ile aynı); balon 110 (çini kısa bildirimlerinin 120 altında).
+ */
 .nb-root {
   position: relative;
   display: inline-flex;
@@ -31,7 +35,7 @@
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
-  z-index: 1500;
+  z-index: 60;
   width: 380px;
   max-height: min(520px, 70vh);
   display: flex;
@@ -45,7 +49,7 @@
 .nb-scrim {
   position: fixed;
   inset: 0;
-  z-index: 1499;
+  z-index: 100;
   background: rgba(0, 0, 0, 0.55);
 }
 .nb-sheet {
@@ -53,7 +57,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 1500;
+  z-index: 100;
   max-height: 80dvh;
   display: flex;
   flex-direction: column;
@@ -175,7 +179,7 @@
   top: calc(var(--topbar-h) + 8px);
   left: 16px;
   right: 16px;
-  z-index: 1500;
+  z-index: 110;
   display: flex;
   flex-direction: column;
   gap: 2px;

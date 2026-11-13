@@ -16,7 +16,7 @@ import { notePlaybackIntent } from './sync'
 import type { MiniModalVideo } from './types'
 
 const PROMO_DELAY_MS = 600
-const MAX_W = 360
+const MAX_W = 380 // ortam alanı ≥ 356×200: YouTube gömmesinin en küçük oynatıcı boyutu
 const EDGE = 8
 
 export interface PreviewCardProps {
@@ -59,7 +59,7 @@ function place(el: HTMLDivElement, anchor: HTMLElement): void {
   el.style.top = `${Math.round(top)}px`
 }
 
-export function PreviewCard({ ref, info, anchor, via, onPointerEnter, onPointerLeave, onBlurOut, onClose }: PreviewCardProps): ReactElement {
+export function PreviewCard({ ref, info, anchor, onPointerEnter, onPointerLeave, onBlurOut, onClose }: PreviewCardProps): ReactElement {
   const boxRef = useRef<HTMLDivElement | null>(null)
   const { video, failed } = usePreviewVideo(info.videoId)
 
@@ -112,7 +112,7 @@ export function PreviewCard({ ref, info, anchor, via, onPointerEnter, onPointerL
           )}
         </div>
       )}
-      {via === 'touch' && <IconButton className="pv-close" icon="close" label="Önizlemeyi kapat" size={36} overImage onClick={onClose} />}
+      <IconButton className="pv-close" icon="close" label="Önizlemeyi kapat" size={36} overImage onClick={onClose} />
     </div>
   )
 }

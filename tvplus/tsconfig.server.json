@@ -1,8 +1,18 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "lib": ["ES2023"],
-    "types": ["node"]
+    "lib": [
+      "ES2023"
+    ],
+    "types": [
+      "node"
+    ]
   },
-  "include": ["server", "shared", "scripts", "vite.config.ts", "vitest.config.ts", "playwright.config.ts", "e2e"]
+  "include": [
+    "server",
+    "shared",
+    "scripts",
+    "vite.config.ts",
+    "vitest.config.ts"
+  ]
 }

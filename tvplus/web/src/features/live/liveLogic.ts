@@ -96,6 +96,20 @@ export function rowsNeedingRefetch(rows: readonly PageRowData[], fetchedAt: numb
   return out
 }
 
+/** Bir sonraki yeniden çekme anı: satır ttl'lerinin ve veri alındıktan sonraki ilk program sınırının en erkeni. */
+export function nextRefetchAt(rows: readonly PageRowData[], fetchedAt: number): number | null {
+  let at = Infinity
+  for (const r of rows) {
+    if (r.ttlSec > 0) at = Math.min(at, fetchedAt + r.ttlSec * 1000)
+    for (const it of r.items)
+      for (const iso of boundariesOf(it)) {
+        const t = Date.parse(iso)
+        if (t > fetchedAt) at = Math.min(at, t)
+      }
+  }
+  return Number.isFinite(at) ? at : null
+}
+
 /* ───────────── Komşu kanal ön hazırlığı ───────────── */
 
 /** Kahraman kanalın kanal sırasındaki sonraki `n` kanalı (sona gelince başa döner). */

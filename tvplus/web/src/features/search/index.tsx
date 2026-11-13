@@ -1,31 +1,23 @@
 /**
- * YER TUTUCU — canlı + arama ajanı arama sayfası ve öneri kutusuyla değiştirecek. Dışa aktarım adları SABİT.
- * SearchBox web üst çubuğunda durur (360×44, surface-1, hap); gönderince #/ara?q=… açılır.
+ * Arama — dışa aktarım adları SABİT.
+ *   SearchBox  — web üst çubuğundaki kutu (360×44, hap). Kabuk bunu durağan içe aktarır: bu dosya İNCE kalır.
+ *   SearchPage — #/ara?q= ; ağır sayfa kodu ayrı parça olarak (SearchPage.tsx) istek anında yüklenir.
  */
-import { useEffect, useState, type FormEvent, type ReactElement } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
-import { PagePlaceholder } from '../../app/PagePlaceholder'
-import { Icon } from '../../design'
-import './placeholder.css'
+import { lazy, Suspense, type ReactElement } from 'react'
+import { SkeletonRow } from '../../design'
+import { SearchField } from './SearchField'
+
+const LazySearchPage = lazy(() => import('./SearchPage'))
 
 /** #/ara?q= */
 export function SearchPage(): ReactElement {
-  return <PagePlaceholder title="Ara" />
+  return (
+    <Suspense fallback={<SkeletonRow variant="poster" count={6} />}>
+      <LazySearchPage />
+    </Suspense>
+  )
 }
 
 export function SearchBox({ className }: { className?: string }): ReactElement {
-  const navigate = useNavigate()
-  const [params] = useSearchParams()
-  const [q, setQ] = useState(params.get('q') ?? '')
-  useEffect(() => setQ(params.get('q') ?? ''), [params])
-  const submit = (e: FormEvent) => {
-    e.preventDefault()
-    navigate(`/ara?q=${encodeURIComponent(q.trim())}`)
-  }
-  return (
-    <form role="search" className={className ? `tvp-searchbox ${className}` : 'tvp-searchbox'} onSubmit={submit}>
-      <Icon name="search" size={20} />
-      <input type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Film, dizi, kanal, program, oyuncu ara" aria-label="Ara" enterKeyHint="search" />
-    </form>
-  )
+  return <SearchField className={className} />
 }
