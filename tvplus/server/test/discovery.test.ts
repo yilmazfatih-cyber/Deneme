@@ -48,7 +48,7 @@ describe('Film & Dizi lolomo', () => {
     const byCtx = Object.fromEntries(l.lists.map((x) => [x.context, x]))
     expect(byCtx.top10!.videoIds.length).toBe(9)
     expect(byCtx.newReleases!.videoIds.slice(0, 3)).toEqual([ID.anadolu, ID.nosferatu, ID.spring]) // eklenme tarihi azalan
-    expect(byCtx.newReleases!.displayName).toBe('Yeni gelenler')
+    expect(byCtx.newReleases!.displayName).toBe('Yeni Gelenler')
     expect(byCtx.genre).toMatchObject({ displayName: 'Animasyon', genreId: 7424 })
     expect(byCtx.genre!.videoIds).toEqual([ID.sintel, ID.bbb, ID.caminandes, ID.spring]) // popülerlik sırası
     expect(byCtx.collection).toMatchObject({ displayName: 'Blender açık filmleri', collectionId: 9001 })
@@ -86,7 +86,7 @@ describe('Film & Dizi lolomo', () => {
     expect(l.lists.map((x) => x.context)).toEqual(['billboard', 'top10', 'newReleases', 'genre', 'bridge'])
   })
 
-  it('kişisel satırlar: devam et, Listem, "… izlediğin için", Sana özel', () => {
+  it('kişisel satırlar: devam et, Listem, "… adlı içeriği izlediğin için", En İyi Seçimler', () => {
     const p = app.services.progress
     setClock(app, new Date(TEST_NOW.getTime() - 60_000))
     p.setBookmark(ADULT.guid, ID.nosferatu, 600)
@@ -105,7 +105,7 @@ describe('Film & Dizi lolomo', () => {
     ])
     expect(byCtx.continueWatching!.videoIds).toEqual([ID.sintel, ID.nosferatu])
     expect(byCtx.queue!.videoIds).toEqual([ID.metropolis])
-    expect(byCtx.becauseYouWatched!.displayName).toBe('Sintel izlediğin için')
+    expect(byCtx.becauseYouWatched!.displayName).toBe('Sintel adlı içeriği izlediğin için')
     expect(byCtx.becauseYouWatched!.videoIds).not.toContain(ID.sintel)
     expect(byCtx.gems!.displayName).toBe('Deniz için En İyi Seçimler')
     expect(byCtx.gems!.videoIds.length).toBeGreaterThanOrEqual(3)
@@ -116,7 +116,7 @@ describe('Film & Dizi lolomo', () => {
     expect(teen.becauseYouWatched).toBeUndefined()
   })
 
-  it('Kalkmadan izle: 30 gün içinde kalkanlar, en yakın önce', async () => {
+  it('Son Şans: 30 gün içinde kalkanlar, en yakın önce', async () => {
     const dir = mkdtempSync(join(tmpdir(), 'tvplus-alan-'))
     cpSync(FIXTURE_CONTENT_DIR, dir, { recursive: true })
     const file = join(dir, 'titles', 'blender.json')
@@ -134,7 +134,7 @@ describe('Film & Dizi lolomo', () => {
     const l = buildLolomo(other.services, ADULT, { top10Supported: true, now: TEST_NOW })
     expect(l.lists.at(-1)).toMatchObject({
       context: 'leaving',
-      displayName: 'Kalkmadan izle',
+      displayName: 'Son Şans',
       videoIds: [ID.cosmos, ID.bbb, ID.spring],
     })
     await other.close()

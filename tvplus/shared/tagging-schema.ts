@@ -102,6 +102,17 @@ export const zGenreNoun = z.object({
   mixed: z.string().min(1),
   /** Kişi adıyla tamlama biçimi: "Charlie Chaplin Komedileri" */
   compound: z.string().optional(),
+  /**
+   * Film/dizi adının kişi adıyla tamlama biçimi ("Kısa Filmler" → "Colin Levy Kısa Filmleri"). Verilmezse film/dizi
+   * biçimi olduğu gibi kullanılır ("Komedi Filmleri" zaten tamlamadır).
+   */
+  compoundMovie: z.string().optional(),
+  compoundShow: z.string().optional(),
+  /**
+   * Bu türün adında zaten söylenen nitelikler (`YUVA:anahtar`, ör. "ADJECTIVE:komik", "FORMAT:bicim:sessiz"):
+   * bu çekirdek türle ada girmezler ("Komik Komediler", "Sessiz Sessiz Filmler" oluşmaz).
+   */
+  implied: z.array(z.string()).optional(),
 })
 
 /** Köken bölgesi: başlığın `origin.countries` alanından türetilir. */

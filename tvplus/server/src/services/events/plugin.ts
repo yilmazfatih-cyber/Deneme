@@ -137,6 +137,8 @@ export default async function plugin(app: FastifyInstance): Promise<void> {
     plays: [],
   }))
   const recent: StoredEvent[] = []
+  /** Kabul edilen paketlerin dinleyicileri (izleme verisi köprüsü) */
+  const listeners = new Set<(batch: EventBatch, profileGuid: string | null) => void>()
   const ndjsonFile = join(config.dataDir, 'events.ndjson')
   let writeChain: Promise<void> = Promise.resolve()
 
@@ -194,6 +196,21 @@ export default async function plugin(app: FastifyInstance): Promise<void> {
         }
       })
       persistLines(good)
+      if (listeners.size) {
+        // Dinleyiciye sunucu saatine göre düzeltilmiş anlar gider (ts = serverTs)
+        const out: EventBatch = {
+          sessionId: batch.sessionId ?? '',
+          sentAt: now,
+          events: good.map((e) => ({ name: e.name, ts: e.serverTs, seq: e.seq, tctx: e.tctx, data: e.data })),
+        }
+        for (const fn of listeners) {
+          try {
+            fn(out, profileGuid)
+          } catch (err) {
+            app.log.warn({ err }, 'olay dinleyicisi hata verdi (yutuldu)')
+          }
+        }
+      }
     }
     return { accepted: good.length, dropped }
   }
@@ -209,6 +226,12 @@ export default async function plugin(app: FastifyInstance): Promise<void> {
       const events = Array.isArray(batch?.events) ? batch.events : []
       const r = accept({ sessionId: batch?.sessionId, sentAt: batch?.sentAt, events }, profileGuid, null)
       return { ...r, rateLimitRemaining: RATE_CAPACITY }
+    },
+    subscribe(listener) {
+      listeners.add(listener)
+      return () => {
+        listeners.delete(listener)
+      }
     },
     stats() {
       const s = counters.get()

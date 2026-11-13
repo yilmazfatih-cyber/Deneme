@@ -1,0 +1,69 @@
+{
+  "$comment": "TV+ Mixpanel eşlemesi. Olay ve özellik adlarını kendi Mixpanel projenizdekilerle değiştirin; kod değişmez. Alanların anlamı: docs/MIXPANEL.md",
+  "version": 1,
+  "viewerProperty": "distinct_id",
+  "insertIdProperty": "$insert_id",
+  "time": { "property": "time", "unit": "auto", "offsetMinutes": 0 },
+  "events": {
+    "Content Impression": "IMPRESSION",
+    "Content Click": "CLICK",
+    "Video Start": "PLAY_START",
+    "Video Progress": "PLAY_PROGRESS",
+    "Video Stop": "PLAY_END",
+    "My List Add": "ADD_TO_LIST",
+    "My List Remove": "REMOVE_FROM_LIST",
+    "Content Rated": "RATING",
+    "Search": "SEARCH"
+  },
+  "properties": {
+    "contentId": ["content_id", "video_id"],
+    "contentTitle": "content_title",
+    "watchedSeconds": "watched_seconds",
+    "positionSeconds": "position",
+    "durationSeconds": "duration",
+    "completed": "completed",
+    "rating": "rating",
+    "query": "search_query",
+    "device": ["platform", "$os"],
+    "country": "mp_country_code"
+  },
+  "durationUnit": "s",
+  "completionThreshold": 0.9,
+  "deviceMap": {
+    "smart tv": "TV",
+    "android tv": "TV",
+    "tvos": "TV",
+    "tizen": "TV",
+    "webos": "TV",
+    "roku": "TV",
+    "fire tv": "TV",
+    "tv": "TV",
+    "ios": "MOBILE",
+    "iphone": "MOBILE",
+    "ipad": "MOBILE",
+    "android": "MOBILE",
+    "mobile": "MOBILE",
+    "web": "WEB",
+    "windows": "WEB",
+    "mac os x": "WEB",
+    "linux": "WEB",
+    "chrome os": "WEB"
+  },
+  "ratingMap": {
+    "-1": -1,
+    "0": 0,
+    "1": 1,
+    "2": 2,
+    "thumbs_down": -1,
+    "thumbs_unrated": 0,
+    "thumbs_up": 1,
+    "thumbs_way_up": 2,
+    "dislike": -1,
+    "like": 1,
+    "love": 2
+  },
+  "titleMatch": {
+    "order": ["externalId", "videoId", "slug", "title"],
+    "namespace": "mixpanel"
+  }
+}

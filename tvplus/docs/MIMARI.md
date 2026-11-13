@@ -217,21 +217,22 @@ videos[id].tags                                  → atom string[]   (önizleme 
 
 ### 9.5 Sahiplik (ikinci tur)
 
-| Yol                                                                                                                                             | Sahibi                  |
-| ----------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
-| `docs/UX_SPEC.md`, `shared/**`, `server/src/kernel/**`, `web/src/lib/**`, `web/src/api/session.ts`, `web/src/devices/bridge.ts`                 | mimar                   |
-| `server/src/services/devices/**`, `web/src/devices/client.ts`                                                                                   | **cihazlar (sunucu)**   |
-| `server/src/services/{identity,image,catalog,entitlement,epg,progress,discovery}/**`, `graphql/resolvers/**` (search hariç), `falcor/routes/**` | **sunucu ekleri**       |
-| `server/src/services/search/**`, `graphql/resolvers/search.ts`                                                                                  | **arama tahmin modeli** |
-| `web/src/ui/**`, `web/src/app/**`, `web/src/features/{welcome,profiles}/**`                                                                     | **web temel v2**        |
-| `web/src/features/{home,browse,detail,preview,library,newpopular,account}/**`                                                                   | **göz atma**            |
-| `web/src/features/{search,live,guide}/**`                                                                                                       | **arama + canlı**       |
-| `web/src/devices/**` (client.ts ve bridge.ts hariç), `web/src/features/{remote,pair,showcase}/**`, `web/src/devtools/tabs/DevicesTab.tsx`       | **cihaz deneyimi**      |
-| `web/src/tv/{focus,ui,shell,login,profiles}/**`, `web/src/tv/index.ts*`                                                                         | **TV temel**            |
-| `web/src/tv/{home,detail,search,list}/**`                                                                                                       | **TV göz atma**         |
-| `web/src/tv/{live,player,remote}/**`                                                                                                            | **TV canlı + kumanda**  |
-| `web/src/player/**`                                                                                                                             | **oynatıcı**            |
-| `content/**`                                                                                                                                    | içerik ekibi            |
+| Yol                                                                                                                                             | Sahibi                                                   |
+| ----------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| `docs/UX_SPEC.md`, `shared/**`, `server/src/kernel/**`, `web/src/lib/**`, `web/src/api/session.ts`, `web/src/devices/bridge.ts`                 | mimar                                                    |
+| `server/src/services/devices/**`, `web/src/devices/client.ts`                                                                                   | **cihazlar (sunucu)**                                    |
+| `server/src/services/{identity,image,catalog,entitlement,epg,progress,discovery}/**`, `graphql/resolvers/**` (search hariç), `falcor/routes/**` | **sunucu ekleri**                                        |
+| `server/src/services/search/**`, `graphql/resolvers/search.ts`                                                                                  | **arama tahmin modeli**                                  |
+| `web/src/ui/**`, `web/src/app/**`, `web/src/features/{welcome,profiles}/**`                                                                     | **web temel v2**                                         |
+| `web/src/features/{home,browse,detail,preview,library,newpopular,account}/**`                                                                   | **göz atma**                                             |
+| `web/src/features/{search,live,guide}/**`                                                                                                       | **arama + canlı**                                        |
+| `web/src/devices/**` (client.ts ve bridge.ts hariç), `web/src/features/{remote,pair,showcase}/**`, `web/src/devtools/tabs/DevicesTab.tsx`       | **cihaz deneyimi**                                       |
+| `web/src/tv/{focus,ui,shell,login,profiles}/**`, `web/src/tv/index.ts*`                                                                         | **TV temel**                                             |
+| `web/src/tv/{home,detail,search,list}/**`                                                                                                       | **TV göz atma**                                          |
+| `web/src/tv/{live,player,remote}/**`                                                                                                            | **TV canlı + kumanda**                                   |
+| `web/src/player/**`                                                                                                                             | **oynatıcı**                                             |
+| `web/src/features/studio/**`                                                                                                                    | **stüdyo arayüzü** (içerik zekâsı arka ofisi, `/studyo`) |
+| `content/**`                                                                                                                                    | içerik ekibi                                             |
 
 Eski `web/src/design/**` (v1) geçiş boyunca derlenir halde kalır; hiçbir yeni kod onu içe aktarmaz, ikinci turun
 sonunda silinir.

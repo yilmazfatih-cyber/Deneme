@@ -122,7 +122,7 @@ describe('kategori lolomoları', () => {
       'Animasyon',
       'Komedi',
       'Çocuk ve Aile',
-      'Yeni gelenler',
+      'Yeni Gelenler',
     ])
     for (const x of l.lists) for (const id of x.videoIds) expect(typeOf(id), `${x.context} ${id}`).toBe('SHOW')
     expect(l.lists[2]).toMatchObject({ genreId: 7424 })

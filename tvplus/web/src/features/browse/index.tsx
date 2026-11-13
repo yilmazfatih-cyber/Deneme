@@ -5,7 +5,7 @@
  */
 import type { ReactElement } from 'react'
 import { useParams } from 'react-router-dom'
-import { useDocumentTitle } from '../../app'
+import { PagePlaceholder, useDocumentTitle } from '../../app'
 import { useGql } from '../../api/hooks'
 import { Button, EmptyHint, ErrorState, Page, PosterCard, Skeleton } from '../../design'
 import { logEvent } from '../../telemetry/logger'
@@ -212,4 +212,12 @@ function BrowseView({
       </Page>
     </PreviewScope>
   )
+}
+
+/**
+ * Diziler / Filmler (#/goz-at/diziler, #/goz-at/filmler) — YER TUTUCU (ikinci tur). Göz atma ekibi dolduracak;
+ * dışa aktarım adı ve özelliği SABİT. UX_SPEC §2 "Sayfalar": başlık + "Türler ▾" + vitrin + o türün satırları.
+ */
+export function CategoryPage({ category }: { category: 'shows' | 'movies' }): ReactElement {
+  return <PagePlaceholder title={category === 'shows' ? 'Diziler' : 'Filmler'} />
 }

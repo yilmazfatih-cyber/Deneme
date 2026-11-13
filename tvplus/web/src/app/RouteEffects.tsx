@@ -1,31 +1,38 @@
 /**
- * Yol değişiminin yan etkileri: belge başlığı, kaydırma (ileri gidişte en üst, geri dönüşte eski konum),
- * mod hafızası ve `navigate` olay kaydı.
+ * Yol değişiminin yan etkileri: belge başlığı, kaydırma (ileri gidişte en üst, geri dönüşte eski konum)
+ * ve `navigate` olay kaydı. Yalnız sorgu değişirse (ör. `?jbv=` detay penceresi, arama yazımı) sayfa kaymaz.
  */
 import { useEffect, useLayoutEffect, useRef } from 'react'
 import { useLocation, useNavigationType } from 'react-router-dom'
 import { logEvent } from '../telemetry/logger'
-import { modeOfPath, setLastMode } from './mode'
 
 const SUFFIX = ' · TV+'
 
-/** Yol → başlık (sayfalar useDocumentTitle ile daha özel başlık koyabilir). */
+/** Yol → başlık (sayfalar useDocumentTitle ile daha özel başlık koyabilir: "Sintel · TV+"). */
 export function titleForPath(pathname: string): string {
   const table: [RegExp, string][] = [
-    [/^\/film-dizi/, 'Film & Dizi'],
+    [/^\/goz-at\/diziler/, 'Diziler'],
+    [/^\/goz-at\/filmler/, 'Filmler'],
+    [/^\/goz-at/, 'Ana Sayfa'],
+    [/^\/yeni-ve-populer/, 'Yeni ve Popüler'],
+    [/^\/listem/, 'Listem'],
     [/^\/canli/, 'Canlı TV'],
     [/^\/rehber/, 'Rehber'],
     [/^\/ara/, 'Ara'],
-    [/^\/kitaplik/, 'Kitaplığım'],
-    [/^\/detay\//, 'Detay'],
+    [/^\/baslik\//, 'Detay'],
     [/^\/koleksiyon\//, 'Koleksiyon'],
     [/^\/kisi\//, 'Oyuncu ve ekip'],
-    [/^\/tur\/783$/, 'Çocuk'],
     [/^\/tur\//, 'Tür'],
     [/^\/izle\//, 'İzle'],
+    [/^\/tvplusim/, "TV+'ım"],
+    [/^\/kumanda/, 'Kumanda'],
+    [/^\/cihazlar/, 'Cihazlar'],
+    [/^\/bagla/, "TV'ye Bağlan"],
+    [/^\/vitrin/, 'Cihaz vitrini'],
     [/^\/karsilama/, 'Hoş geldin'],
+    [/^\/profiller\/yonet/, 'Profilleri Yönet'],
     [/^\/profiller/, 'Kim izliyor?'],
-    [/^\/_tasarim/, 'Tasarım sistemi'],
+    [/^\/_ui/, 'Tasarım sistemi'],
   ]
   for (const [re, t] of table) if (re.test(pathname)) return t + SUFFIX
   return 'TV+'
@@ -108,8 +115,6 @@ export function RouteEffects(): null {
 
   useEffect(() => {
     document.title = titleForPath(location.pathname)
-    const mode = modeOfPath(location.pathname)
-    if (mode) setLastMode(mode)
   }, [location.pathname])
 
   useEffect(() => {

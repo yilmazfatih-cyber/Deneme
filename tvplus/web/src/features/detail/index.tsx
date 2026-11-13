@@ -8,7 +8,7 @@
 import { useEffect, useMemo, useRef, useState, type ReactElement, type Ref } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
 import { formatRuntime } from '../../../../shared/text'
-import { useDocumentTitle } from '../../app'
+import { PagePlaceholder, useDetailModal, useDocumentTitle } from '../../app'
 import { useGql } from '../../api/hooks'
 import {
   AccessLock,
@@ -52,6 +52,7 @@ import {
   type ThumbRatingName,
 } from '../preview'
 import { primaryActionOf, type PrimaryAction } from './primaryAction'
+import { Modal, SkeletonText } from '../../ui'
 import './detail.css'
 
 interface PersonRef {
@@ -635,4 +636,26 @@ function Similars({
       {!items.length && <p className="cn-body cn-gutter-x">Paketinde benzer içerik şu an yok.</p>}
     </section>
   )
+}
+
+/**
+ * Masaüstü detay penceresi — YER TUTUCU (ikinci tur). Kabuk bunu `?jbv=<videoId>` görülünce bir kez yükler ve
+ * kabuğun içinde çizer; adres sözleşmesi app `useDetailModal()` (videoId, tctx, close). Dışa aktarım adı SABİT.
+ */
+export function DetailModalOutlet(): ReactElement {
+  const { videoId, close } = useDetailModal()
+  return (
+    <Modal open={videoId !== null} onClose={close} label="Başlık ayrıntıları">
+      <div style={{ aspectRatio: '16 / 9', background: 'var(--surface-2)' }} />
+      <div style={{ padding: '24px 48px 48px', display: 'grid', gap: 16 }}>
+        <p className="ui-meta">Bu bölüm hazırlanıyor · {videoId}</p>
+        <SkeletonText lines={4} />
+      </div>
+    </Modal>
+  )
+}
+
+/** Mobil tam sayfa detay (#/baslik/:videoId) — YER TUTUCU (ikinci tur). Dışa aktarım adı SABİT. */
+export function TitlePage(): ReactElement {
+  return <PagePlaceholder title="Detay" />
 }

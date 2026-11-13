@@ -1,0 +1,113 @@
+/*
+ * TV+ tasarım sistemi v2 — tokenlar (docs/UX_SPEC.md §1). "Netflix deneyimi, TV+ markası".
+ *
+ * Seçici `html:root` (özgüllük 0,1,1): eski v1 (`web/src/design/tokens.css`, `:root`) hangi sırayla yüklenirse
+ * yüklensin bu değerler kazanır. Eski adlar (`--s1`, `--t1`, `--yellow`, `--gut` …) aşağıda TAKMA AD olarak durur:
+ * oynatıcı, Kaputun altı paneli, bildirim zili ve henüz yenilenmemiş v1 sayfaları yeni paletle çizilir.
+ */
+html:root {
+  color-scheme: dark;
+
+  /* ───── Renk ───── */
+  --bg: #141414;
+  --surface-1: #181818; /* modal, önizleme kartı, açılır menü */
+  --surface-2: #232323; /* kart zemini, girdi */
+  --surface-3: #2f2f2f; /* "Benzerleri" kartı, basılı yüzey */
+  --line: rgba(255, 255, 255, 0.12);
+  --line-2: rgba(255, 255, 255, 0.24); /* belirgin çerçeve (girdi odağı, hap) */
+  --text-1: #fff;
+  --text-2: #e5e5e5;
+  --text-3: #b3b3b3;
+  --text-4: #808080;
+  --accent: #f7d849; /* TV+ sarısı: Netflix'in kırmızısının her kullanımı */
+  --on-accent: #14140f;
+  --play-bg: #fff;
+  --play-fg: #000;
+  --btn-2: rgba(109, 109, 110, 0.7);
+  --btn-2-hover: rgba(109, 109, 110, 0.4);
+  --live: #ff5247; /* yalnız CANLI etiketi ve "şimdi" çizgisi */
+  --positive: #46d369; /* "Yeni" metni */
+  --scrim: rgba(0, 0, 0, 0.7); /* modal arkası */
+  --menu-bg: rgba(0, 0, 0, 0.9); /* avatar menüsü, açılır liste */
+
+  /* ───── Yazı ───── */
+  --font-sans: Manrope, 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif;
+
+  /* ───── Köşe ───── */
+  --radius-card: 4px;
+  --radius-card-mobile: 6px;
+  --radius-modal: 8px;
+  --radius-button: 4px;
+  --radius-pill: 999px;
+  --radius-avatar: 4px;
+  --radius-hero: 12px; /* mobil vitrin kartı */
+
+  /* ───── Yerleşim ───── */
+  --gutter: 16px; /* yatay kenar boşluğu: mobil 16 px, masaüstü %4 */
+  --row-gap: 24px; /* satırlar arası */
+  --card-gap: 8px; /* satır içi kart aralığı (masaüstü 0.4vw) */
+  --header-h: 56px; /* mobil üst çubuk; masaüstü 68 */
+  --tabbar-h: 56px; /* mobil alt sekmeler (güvenli alan hariç) */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --poster-w: 110px; /* mobil satır afişi (2:3) */
+
+  /* ───── Hareket ───── */
+  --ease-netflix: cubic-bezier(0.5, 0, 0.1, 1);
+  --dur-card: 300ms;
+  --dur-modal: 250ms;
+  --dur-slide: 750ms;
+
+  /* ───── Katman sırası ───── */
+  --z-header: 100;
+  --z-menu: 120;
+  --z-preview: 200;
+  --z-modal: 300;
+  --z-toast: 400;
+
+  /* ───── Eski adlar (v1 takma adları — kaldırmayın; oynatıcı ve Kaputun altı okur) ───── */
+  --s1: var(--surface-1);
+  --s2: var(--surface-2);
+  --s3: var(--surface-3);
+  --t1: var(--text-1);
+  --t2: var(--text-3);
+  --t3: var(--text-4);
+  --yellow: var(--accent);
+  --on-yellow: var(--on-accent);
+  --ok: var(--positive);
+  --font: var(--font-sans);
+  --line-strong: var(--line-2);
+  --gut: var(--gutter);
+  --sec: var(--row-gap);
+  --r-poster: var(--radius-card-mobile);
+  --r-card: var(--radius-modal);
+  --r-sheet: 12px;
+  --r-pill: var(--radius-pill);
+  --touch: 44px;
+  --topbar-h: var(--header-h);
+  --bottomnav-h: calc(var(--tabbar-h) + var(--safe-bottom));
+  --land-w: 232px;
+  --tile: 56px;
+  --content-max: 100%;
+}
+
+@media (min-width: 900px) {
+  html:root {
+    --gutter: 4vw;
+    --row-gap: 3vw;
+    --card-gap: 0.4vw;
+    --header-h: 68px;
+    --tabbar-h: 0px;
+    --touch: 40px;
+    --land-w: 300px;
+    --tile: 64px;
+  }
+  html:root .ui-mobile-only {
+    display: none !important;
+  }
+}
+@media (max-width: 899px) {
+  html:root .ui-desktop-only {
+    display: none !important;
+  }
+}

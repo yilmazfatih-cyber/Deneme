@@ -1,11 +1,11 @@
 /**
- * Her yolun çerçevesi: hata sınırı (ErrorState + "Tekrar dene") ve tembel yükleme iskeleti.
- * Bir sayfanın hatası kabuğu ve diğer sayfaları düşürmez.
+ * Her yolun çerçevesi: hata sınırı (ErrorState + "Tekrar Dene") ve tembel yükleme iskeleti.
+ * Bir sayfanın hatası kabuğu ve diğer sayfaları düşürmez; yol değişince sınır sıfırlanır.
  */
 import { Component, Suspense, type ErrorInfo, type ReactElement, type ReactNode } from 'react'
 import { useLocation } from 'react-router-dom'
-import { ErrorState, Skeleton, SkeletonRow } from '../design'
 import { devbus } from '../lib/devbus'
+import { ErrorState, SkeletonBillboard, SkeletonSlider } from '../ui'
 
 interface BoundaryProps {
   children: ReactNode
@@ -44,25 +44,23 @@ export class RouteErrorBoundary extends Component<BoundaryProps, BoundaryState> 
   }
 }
 
-/** Sayfa yüklenirken: başlık + iki satır iskelet. */
-export function PageSkeleton(): ReactElement {
+/** Sayfa yüklenirken: vitrin + iki satır iskeleti (Netflix'in gri yükleme ekranı). */
+export function PageSkeleton({ hero = true }: { hero?: boolean }): ReactElement {
   return (
-    <div className="cn-page" aria-busy="true">
-      <span className="cn-gutter-x">
-        <Skeleton variant="title" width={220} />
-      </span>
-      <SkeletonRow variant="landscape" count={6} />
-      <SkeletonRow variant="poster" count={10} />
+    <div className="app-page-skeleton" aria-busy="true" aria-label="Yükleniyor">
+      {hero ? <SkeletonBillboard /> : <div className="app-page-skeleton__spacer" />}
+      <SkeletonSlider />
+      <SkeletonSlider />
     </div>
   )
 }
 
 /** Yol değişince hata sınırı sıfırlanır (anahtar = yol). */
-export function RouteFrame({ children }: { children: ReactNode }): ReactElement {
+export function RouteFrame({ children, hero }: { children: ReactNode; hero?: boolean }): ReactElement {
   const { pathname } = useLocation()
   return (
     <RouteErrorBoundary key={pathname} name={pathname}>
-      <Suspense fallback={<PageSkeleton />}>{children}</Suspense>
+      <Suspense fallback={<PageSkeleton hero={hero} />}>{children}</Suspense>
     </RouteErrorBoundary>
   )
 }

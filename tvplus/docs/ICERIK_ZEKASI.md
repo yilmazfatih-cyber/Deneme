@@ -198,6 +198,8 @@ tabanlı yetki alır.
 | `server/src/services/{viewing,mixpanel,events}/**`, `shared/mixpanel-mapping.ts`, `content/analytics/**`, `scripts/{mixpanel-import,sample-viewing}.ts`         | **izleme verisi + Mixpanel**      |
 | `server/src/services/{audience,insights}/**`                                                                                                                    | **zevk toplulukları + içgörüler** |
 | `server/src/services/embeddings/**`, `shared/shots-schema.ts`, `content/shots/**`, `scripts/{analyze-shots,embed-catalog}.ts`                                   | **gömme**                         |
+| `server/src/services/discovery/**`, `server/src/graphql/resolvers/**`, `server/src/falcor/routes/**` (ikinci aşama)                                             | **keşif bütünleşmesi**            |
+| `web/src/features/studio/**` (ikinci aşama)                                                                                                                     | **stüdyo arayüzü**                |
 | `content/tagging/sheets/**`, başlıklardaki `origin` alanları                                                                                                    | içerik ekibi                      |
 
 ## 12. Gerçek veriyi bağlama (özet)

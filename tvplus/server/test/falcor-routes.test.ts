@@ -248,10 +248,10 @@ describe('Falcor rotaları', () => {
     const ref1 = at(g, 'lolomos', ADULT.guid, 1) as { value: string[] }
     expect(ref1.value[0]).toBe('lists')
     const listId = ref1.value[1]!
-    // önceki testte Sintel'e yer imi kondu → 2. satır "İzlemeye devam et"
+    // önceki testte Sintel'e yer imi kondu → 2. satır "İzlemeye Devam Et"
     expect(at(g, 'lists', listId, 'summary')).toMatchObject({
       $type: 'atom',
-      value: { context: 'continueWatching', displayName: 'İzlemeye devam et', length: 1 },
+      value: { context: 'continueWatching', displayName: 'İzlemeye Devam Et', length: 1 },
     })
     const v0 = (at(g, 'lists', listId, 0) as { value: (string | number)[] }).value
     expect(v0).toEqual(['videos', ID.sintel])

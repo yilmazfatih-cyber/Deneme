@@ -2,7 +2,6 @@
  * Video arayüzü ve somut tipleri (Movie, Show, Episode, Supplemental). Üst nesne her zaman `{ videoId }`;
  * diğer her alan katalogdan / üye durumundan / yetkiden kimlikle çözülür.
  */
-import type { ContentTitle } from '../../../../shared/content-schema'
 import { GENRES } from '../../../../shared/taxonomy'
 import { personEntityId, videoEntityId } from '../../../../shared/tctx'
 import type { GqlContext, ResolverFn, ResolverMap } from '../../kernel/context'
@@ -22,10 +21,9 @@ import {
   sourceKindsOfVideo,
   textEvidenceOf,
 } from '../../services/catalog/present'
-import { memo } from '../../services/discovery/memo'
-import { similarTitles } from '../../services/discovery/similarity'
 import { top10RankByType } from '../../services/discovery/top10'
-import { accessForVideo, findContext, gqlError, guidOf, nowOf, top10TypeList, videoRefs, visible } from './util'
+import { microgenreTitleFields } from './microgenre'
+import { accessForVideo, findContext, gqlError, guidOf, nowOf, top10TypeList, videoRefs } from './util'
 
 export interface VideoRef {
   videoId: number
@@ -130,15 +128,8 @@ const titleFields: Record<string, ResolverFn> = {
   cast: (p: VideoRef, _a: unknown, ctx: GqlContext) => people(infoOf(ctx, p.videoId).title.cast),
   directors: (p: VideoRef, _a: unknown, ctx: GqlContext) => people(infoOf(ctx, p.videoId).title.directors),
   creators: (p: VideoRef, _a: unknown, ctx: GqlContext) => people(infoOf(ctx, p.videoId).title.creators),
-  similars: (p: VideoRef, a: { first?: number | null }, ctx: GqlContext) => {
-    const first = Math.max(0, Math.min(a.first ?? 12, 48))
-    const ids = memo(ctx.cache, `similars:${p.videoId}`, () =>
-      similarTitles(ctx.services.catalog, p.videoId, (t: ContentTitle) => visible(ctx, t.videoId)).map(
-        (t) => t.videoId,
-      ),
-    )
-    return ids.slice(0, first).map((videoId) => ({ videoId }))
-  },
+  // similars (harman), similarsWithReason, microgenres
+  ...microgenreTitleFields,
   supplementalVideos: (p: VideoRef, _a: unknown, ctx: GqlContext) =>
     infoOf(ctx, p.videoId).title.supplementals.map((s) => ({ videoId: s.videoId })),
   collections: (p: VideoRef, _a: unknown, ctx: GqlContext) =>

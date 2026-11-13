@@ -35,6 +35,7 @@ import {
   type ArtworkData,
   type CardVideoData,
 } from '../preview'
+import { PagePlaceholder } from '../../app'
 import './library.css'
 
 interface ContinueVideo extends CardVideoData {
@@ -289,4 +290,9 @@ function ChannelGrid({ items }: { items: ChannelData[] }): ReactElement {
       })}
     </ul>
   )
+}
+
+/** Listem (#/listem) — YER TUTUCU (ikinci tur): 16:9 ızgara. Göz atma ekibi dolduracak; dışa aktarım adı SABİT. */
+export function MyListPage(): ReactElement {
+  return <PagePlaceholder title="Listem" variant="grid" />
 }

@@ -295,6 +295,9 @@ const listSummaryRoute: FalcorRoute = {
               trackId: L.trackId,
               ...(L.genreId !== undefined ? { genreId: L.genreId } : {}),
               ...(L.collectionId !== undefined ? { collectionId: L.collectionId } : {}),
+              ...(L.reason !== undefined ? { reason: L.reason } : {}),
+              ...(L.microgenreId !== undefined ? { microgenreId: L.microgenreId } : {}),
+              ...(L.communityId !== undefined ? { communityId: L.communityId } : {}),
             })
           : undefined,
       }

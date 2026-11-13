@@ -5,6 +5,7 @@
 import type { ResolverMap } from '../../kernel/context'
 import { liveResolvers } from './live'
 import { memberResolvers } from './member'
+import { microgenreResolvers } from './microgenre'
 import { playbackResolvers } from './playback'
 import { searchResolvers } from './search'
 import { videoResolvers } from './video'
@@ -22,6 +23,7 @@ export const resolvers: ResolverMap = mergeResolvers(
   videoResolvers,
   liveResolvers,
   memberResolvers,
+  microgenreResolvers,
   playbackResolvers,
   searchResolvers,
 )
