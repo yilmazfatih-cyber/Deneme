@@ -24,31 +24,39 @@
 }
 
 /* Ekran başlığı 26/32 → 32/40, 800 */
-.cn-screen-title {
+:where(.cn-screen-title) {
   margin: 0;
+}
+.cn-screen-title {
   font-size: 26px;
   line-height: 32px;
   font-weight: 800;
   letter-spacing: -0.02em;
 }
 /* Hero başlığı 30/34 → 56/60, 800 */
-.cn-hero-title {
+:where(.cn-hero-title) {
   margin: 0;
+}
+.cn-hero-title {
   font-size: 30px;
   line-height: 34px;
   font-weight: 800;
   letter-spacing: -0.02em;
 }
 /* Satır başlığı 18/24 → 22/28, 700 */
-.cn-row-title {
+:where(.cn-row-title) {
   margin: 0;
+}
+.cn-row-title {
   font-size: 18px;
   line-height: 24px;
   font-weight: 700;
 }
 /* Kart başlığı 14/18 → 15/20, 600, tek satır */
-.cn-card-title {
+:where(.cn-card-title) {
   margin: 0;
+}
+.cn-card-title {
   font-size: 14px;
   line-height: 18px;
   font-weight: 600;
@@ -57,16 +65,20 @@
   text-overflow: ellipsis;
 }
 /* Gövde 14/20 → 16/24, 500, text-2 */
-.cn-body {
+:where(.cn-body) {
   margin: 0;
+}
+.cn-body {
   font-size: 14px;
   line-height: 20px;
   font-weight: 500;
   color: var(--t2);
 }
 /* Meta 12/16 → 13/18, 500, text-3 (en küçük yazı 12 px) */
-.cn-meta {
+:where(.cn-meta) {
   margin: 0;
+}
+.cn-meta {
   font-size: 12px;
   line-height: 16px;
   font-weight: 500;

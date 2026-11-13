@@ -14,7 +14,8 @@ export interface ProfileSummary {
 }
 
 /**
- * Sunucunun ilk HTML'e gömdüğü bağlam (Netflix `reactContext` karşılığı): `window.__TVP_BOOT__`.
+ * Sunucunun ilk HTML'e gömdüğü bağlam (Netflix `reactContext` karşılığı):
+ * `<script id="tvp-boot" type="application/json">…</script>`.
  * Geliştirmede (Vite) HTML'e gömülemediği için istemci GET /api/boot ile aynı gövdeyi alır.
  */
 export interface BootContext {
@@ -40,6 +41,7 @@ export interface BootContext {
 /* ───────────── Falcor (eski üye API'si) ───────────── */
 
 export type FalcorKey = string | number
+/** İstekte `{ from, length }` biçimi de kabul edilir; motor bunu `{ from, to }` biçimine çevirir. */
 export interface FalcorRange {
   from: number
   to: number

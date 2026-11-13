@@ -8,16 +8,41 @@ import { initialModel, reduceModel } from './index'
 import { initialTelemetry, parseRateLimit, reduceTelemetry, sortedTally } from './telemetry'
 
 let seq = 0
-function ev(cat: DevCategory, label: string, detail?: Record<string, unknown>, opts: { ms?: number; ok?: boolean } = {}): DevEvent {
+function ev(
+  cat: DevCategory,
+  label: string,
+  detail?: Record<string, unknown>,
+  opts: { ms?: number; ok?: boolean } = {},
+): DevEvent {
   return { id: ++seq, at: 1_760_000_000_000 + seq, cat, label, ok: opts.ok ?? true, ms: opts.ms, detail }
 }
 
 describe('API modeli', () => {
   it('GraphQL ve Falcor sayaçları, önbellek isabeti ortalamaya girmez', () => {
     const events = [
-      ev('graphql', 'DetailModal', { id: 'c68d01c6-a564', version: 102, variables: { videoId: 1 }, traceId: 't1', bytes: 2048, status: 200 }, { ms: 100 }),
-      ev('graphql', 'MiniModalQuery', { id: 'x', version: 102, status: 400, errors: [{ message: 'yok', extensions: { code: 'PERSISTED_QUERY_NOT_FOUND' } }] }, { ms: 50, ok: false }),
-      ev('falcor', '3 yol', { paths: [['lolomo', 0, { from: 0, to: 9 }, 'title']], fromCache: false, traceId: 't2' }, { ms: 80 }),
+      ev(
+        'graphql',
+        'DetailModal',
+        { id: 'c68d01c6-a564', version: 102, variables: { videoId: 1 }, traceId: 't1', bytes: 2048, status: 200 },
+        { ms: 100 },
+      ),
+      ev(
+        'graphql',
+        'MiniModalQuery',
+        {
+          id: 'x',
+          version: 102,
+          status: 400,
+          errors: [{ message: 'yok', extensions: { code: 'PERSISTED_QUERY_NOT_FOUND' } }],
+        },
+        { ms: 50, ok: false },
+      ),
+      ev(
+        'falcor',
+        '3 yol',
+        { paths: [['lolomo', 0, { from: 0, to: 9 }, 'title']], fromCache: false, traceId: 't2' },
+        { ms: 80 },
+      ),
       ev('falcor', '1 yol', { paths: [['videos', 1, 'title']], fromCache: true }, { ms: 1 }),
       ev('falcor', '1 yol', { paths: [], fromCache: false, missing: [['a'], ['b']] }, { ms: 40 }),
       ev('rest', 'GET /x'),
@@ -36,7 +61,9 @@ describe('API modeli', () => {
 
   it('Falcor yollarını okunur biçimde yazar', () => {
     expect(formatFalcorPath(['lolomo', 0, { from: 0, to: 9 }, 'title'])).toBe('lolomo[0][0..9].title')
-    expect(formatFalcorPath(['videos', [80010001, 80010002], ['title', 'boxart']])).toBe('videos[80010001,80010002]["title","boxart"]')
+    expect(formatFalcorPath(['videos', [80010001, 80010002], ['title', 'boxart']])).toBe(
+      'videos[80010001,80010002]["title","boxart"]',
+    )
     expect(formatFalcorPath(['lolomos', 'GUID-1', 'summary'])).toBe('lolomos["GUID-1"].summary')
     expect(formatFalcorPath(['lists', 'L1', { from: 2, length: 3 }])).toBe('lists.L1[2..4]')
   })
@@ -45,7 +72,15 @@ describe('API modeli', () => {
 describe('olay günlüğü modeli', () => {
   it('paketleri ve olay adlarını sayar, hız sınırını okur', () => {
     let s = initialTelemetry()
-    s = reduceTelemetry(s, ev('event-log', '3 olay', { names: ['navigate', 'impression', 'impression'], status: 202, rate: '~0=true~RL=2212' }, { ms: 30 }))
+    s = reduceTelemetry(
+      s,
+      ev(
+        'event-log',
+        '3 olay',
+        { names: ['navigate', 'impression', 'impression'], status: 202, rate: '~0=true~RL=2212' },
+        { ms: 30 },
+      ),
+    )
     s = reduceTelemetry(s, ev('event-log', '2 olay gönderilemedi', { error: 'TypeError: ağ' }, { ok: false }))
     s = reduceTelemetry(s, ev('event-log', '1 olay (beacon)', { names: ['playback.end'] }))
     s = reduceTelemetry(s, ev('graphql', 'X'))

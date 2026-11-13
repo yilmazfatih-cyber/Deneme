@@ -40,6 +40,10 @@ export const HEADERS = {
   /** OCA düğümünün bağlantı bilgisi (QoS izleme). */
   TCP_INFO: 'x-tcp-info',
   OCA_NODE: 'x-tvplus-oca',
+  /** Yanıtta çalıştırılan kalıcı sorgunun adı. */
+  GQL_OP: 'x-tvplus-gql-op',
+  /** Görsel servisinin hata ayıklama başlığı: `<kaynak>; cache=hit|miss`. */
+  IMAGE_DEBUG: 'x-tvplus-img',
 } as const
 
 export const COOKIES = {

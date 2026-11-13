@@ -1,0 +1,222 @@
+/** Oynatıcı arayüzünün küçük parçaları: ilerleme çubuğu, menü, altyazı katmanı, istatistik, canlı bilgisi. */
+import { useEffect, useRef, useState, type ReactElement, type ReactNode } from 'react'
+import type { PlayerAdapter } from '../adapters/types'
+import type { TextTrackController } from '../text/textTracks'
+import type { TtmlCue } from '../text/ttml'
+import { airingProgress, formatClock, formatSpan, remainingLabel, spokenDuration } from './format'
+import { IconCheck } from './icons'
+import type { AiringBrief } from './metadata'
+
+/* ───────────── ilerleme çubuğu ───────────── */
+
+export function Scrubber(props: {
+  position: number
+  duration: number
+  buffered: { start: number; end: number }[]
+  disabled?: boolean
+  onSeek: (sec: number) => void
+}): ReactElement {
+  const { position, duration, buffered, disabled, onSeek } = props
+  const ref = useRef<HTMLDivElement>(null)
+  const [drag, setDrag] = useState<number | null>(null)
+  const pct = (t: number) => (duration > 0 ? Math.max(0, Math.min(100, (t / duration) * 100)) : 0)
+  const shown = drag ?? position
+  const timeAt = (clientX: number) => {
+    const r = ref.current!.getBoundingClientRect()
+    return Math.max(0, Math.min(1, (clientX - r.left) / r.width)) * duration
+  }
+  return (
+    <div
+      ref={ref}
+      className="kp-scrub"
+      role="slider"
+      tabIndex={disabled ? -1 : 0}
+      aria-label="Oynatma konumu"
+      aria-valuemin={0}
+      aria-valuemax={Math.round(duration)}
+      aria-valuenow={Math.round(shown)}
+      aria-valuetext={`${spokenDuration(shown)} / ${spokenDuration(duration)}`}
+      aria-disabled={disabled ? 'true' : 'false'}
+      onPointerDown={(e) => {
+        if (disabled || duration <= 0) return
+        e.currentTarget.setPointerCapture(e.pointerId)
+        setDrag(timeAt(e.clientX))
+      }}
+      onPointerMove={(e) => {
+        if (drag !== null) setDrag(timeAt(e.clientX))
+      }}
+      onPointerUp={(e) => {
+        if (drag === null) return
+        onSeek(timeAt(e.clientX))
+        setDrag(null)
+      }}
+      onPointerCancel={() => setDrag(null)}
+    >
+      <div className="kp-rail">
+        {buffered.map((b, i) => (
+          <span key={i} className="kp-buf" style={{ left: `${pct(b.start)}%`, width: `${Math.max(0, pct(b.end) - pct(b.start))}%` }} />
+        ))}
+        <span className="kp-fill" style={{ width: `${pct(shown)}%` }} />
+      </div>
+      {!disabled && <span className="kp-thumb" style={{ left: `${pct(shown)}%` }} />}
+    </div>
+  )
+}
+
+export function Times({ position, duration }: { position: number; duration: number }): ReactElement {
+  return (
+    <div className="kp-times" aria-hidden="true">
+      <span>{formatClock(position)}</span>
+      <span>{duration > 0 ? `-${formatClock(Math.max(0, duration - position))}` : ''}</span>
+    </div>
+  )
+}
+
+/* ───────────── menü ───────────── */
+
+export interface MenuOption {
+  id: string
+  label: string
+  hint?: string
+}
+
+export function Menu(props: { title: string; options: MenuOption[]; selected: string | null; onSelect: (id: string) => void; onClose: () => void }): ReactElement {
+  const ref = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const first = ref.current?.querySelector<HTMLButtonElement>('[aria-checked="true"]') ?? ref.current?.querySelector<HTMLButtonElement>('button')
+    first?.focus()
+  }, [])
+  return (
+    <div
+      ref={ref}
+      className="kp-menu"
+      role="menu"
+      aria-label={props.title}
+      onKeyDown={(e) => {
+        if (e.key === 'Escape') {
+          e.stopPropagation()
+          props.onClose()
+        }
+      }}
+    >
+      <h2>{props.title}</h2>
+      {props.options.map((o) => (
+        <button
+          key={o.id}
+          type="button"
+          role="menuitemradio"
+          aria-checked={o.id === props.selected}
+          className="kp-opt"
+          onClick={() => props.onSelect(o.id)}
+        >
+          <span className="kp-check">{o.id === props.selected ? <IconCheck size={20} /> : null}</span>
+          <span>
+            {o.label}
+            {o.hint ? <small>{o.hint}</small> : null}
+          </span>
+        </button>
+      ))}
+    </div>
+  )
+}
+
+/* ───────────── altyazı katmanı (medya saatine eşzamanlı) ───────────── */
+
+export function SubtitleOverlay({ controller, adapter, raised }: { controller: TextTrackController; adapter: PlayerAdapter; raised: boolean }): ReactElement | null {
+  const [cues, setCues] = useState<TtmlCue[]>([])
+  useEffect(() => {
+    let raf = 0
+    let last = ''
+    const loop = () => {
+      const t = adapter.position()
+      const now = controller.cuesAt(t)
+      const sig = now.map((c) => `${c.start}-${c.end}`).join('|')
+      if (sig !== last) {
+        last = sig
+        setCues(now)
+      }
+      raf = requestAnimationFrame(loop)
+    }
+    raf = requestAnimationFrame(loop)
+    const off = controller.subscribe(() => {
+      last = '#'
+    })
+    return () => {
+      cancelAnimationFrame(raf)
+      off()
+    }
+  }, [controller, adapter])
+  if (!cues.length) return null
+  return (
+    <div className="kp-subs" data-raised={raised ? 'true' : 'false'} aria-live="off">
+      {cues.map((c) =>
+        c.lines.map((line, li) => (
+          <div key={`${c.start}-${li}`}>
+            <span className="kp-cue">{line.map((s, si) => (s.italic ? <em key={si}>{s.text}</em> : <span key={si}>{s.text}</span>))}</span>
+          </div>
+        )),
+      )}
+    </div>
+  )
+}
+
+/* ───────────── istatistik ───────────── */
+
+export function StatsOverlay({ adapter, onClose }: { adapter: PlayerAdapter; onClose: () => void }): ReactElement {
+  const s = adapter.stats()
+  const row = (k: string, v: ReactNode) => (
+    <>
+      <dt>{k}</dt>
+      <dd>{v ?? '—'}</dd>
+    </>
+  )
+  return (
+    <section className="kp-stats" aria-label="Oynatma istatistikleri" onClick={onClose}>
+      <h2>İstatistik</h2>
+      <dl>
+        {row('Kaynak', adapter.kind)}
+        {row('Akış', s?.streamId)}
+        {row('Biçim', s?.profile)}
+        {row('Çözünürlük', s?.resolution)}
+        {row('Bit hızı', s?.bitrateKbps ? `${s.bitrateKbps} kbps` : null)}
+        {row('Tahmin', s?.estimateKbps ? `${s.estimateKbps} kbps` : null)}
+        {row('Tampon', s ? `${s.bufferSec.toFixed(1)} sn` : null)}
+        {row('CDN', s?.cdnId)}
+        {row('Düşen kare', s ? `${s.droppedFrames} / ${s.totalFrames}` : null)}
+      </dl>
+    </section>
+  )
+}
+
+/* ───────────── canlı ───────────── */
+
+export function LiveTag(): ReactElement {
+  return (
+    <span className="kp-live-tag">
+      <span className="kp-live-dot" aria-hidden="true" />
+      CANLI
+    </span>
+  )
+}
+
+export function LiveProgramme({ airing }: { airing: AiringBrief }): ReactElement {
+  const p = airingProgress(airing.startAt, airing.endAt)
+  return (
+    <div className="kp-live">
+      <span className="kp-card-title">{airing.title}</span>
+      <span className="kp-live-meta">
+        {formatSpan(airing.startAt, airing.endAt)} · {remainingLabel(airing.endAt)}
+      </span>
+      <div
+        className="kp-live-bar"
+        role="progressbar"
+        aria-label="Program ilerlemesi"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={Math.round(p * 100)}
+      >
+        <span style={{ width: `${p * 100}%` }} />
+      </div>
+    </div>
+  )
+}

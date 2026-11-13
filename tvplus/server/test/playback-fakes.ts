@@ -96,3 +96,18 @@ export function installFakes(app: FastifyInstance, subtitlesDir = '/nonexistent'
 export function usePassport(app: FastifyInstance, passport: Passport | null): void {
   planeOf(app).passportOf = () => passport
 }
+
+/** ~6 sn'lik sentetik klip (testsrc2 + sinüs), küçük çözünürlükte. */
+export async function generateClip(dir: string, seconds = 6): Promise<string> {
+  const { execFile } = await import('node:child_process')
+  const { promisify } = await import('node:util')
+  const { join } = await import('node:path')
+  const out = join(dir, 'kaynak.mp4')
+  await promisify(execFile)('ffmpeg', [
+    '-hide_banner', '-loglevel', 'error', '-y',
+    '-f', 'lavfi', '-i', `testsrc2=size=256x144:rate=24:duration=${seconds}`,
+    '-f', 'lavfi', '-i', `sine=frequency=440:sample_rate=48000:duration=${seconds}`,
+    '-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '28', '-c:a', 'aac', '-shortest', out,
+  ])
+  return out
+}

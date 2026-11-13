@@ -191,7 +191,17 @@ function Bell(): ReactElement {
           setToast(null)
         }}
       >
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
           <path d={BELL_PATH_1} />
           <path d={BELL_PATH_2} />
         </svg>
@@ -212,18 +222,29 @@ function Bell(): ReactElement {
             {!wide && <div className="nb-grab" aria-hidden="true" />}
             <div className="nb-head">
               <h2 className="nb-title">Bildirimler</h2>
-              <button type="button" className="nb-all" disabled={unread.length === 0} onClick={() => markRead(unread.map((u) => u.id))}>
+              <button
+                type="button"
+                className="nb-all"
+                disabled={unread.length === 0}
+                onClick={() => markRead(unread.map((u) => u.id))}
+              >
                 Tümünü okundu say
               </button>
             </div>
             {status === 'loading' && items.length === 0 && <p className="nb-empty">Yükleniyor…</p>}
-            {status === 'error' && items.length === 0 && <p className="nb-empty">Bildirimler şu an yüklenemedi. Biraz sonra yeniden denenecek.</p>}
+            {status === 'error' && items.length === 0 && (
+              <p className="nb-empty">Bildirimler şu an yüklenemedi. Biraz sonra yeniden denenecek.</p>
+            )}
             {status === 'ready' && items.length === 0 && <p className="nb-empty">Yeni bildirim yok.</p>}
             {items.length > 0 && (
               <ul className="nb-list">
                 {items.map((i) => (
                   <li key={i.id}>
-                    <button type="button" className={`nb-item${i.read ? '' : ' is-unread'}`} onClick={() => openItem(i)}>
+                    <button
+                      type="button"
+                      className={`nb-item${i.read ? '' : ' is-unread'}`}
+                      onClick={() => openItem(i)}
+                    >
                       <span className="nb-mark" aria-hidden="true" />
                       <span className="nb-text">
                         <span className="nb-item-title">

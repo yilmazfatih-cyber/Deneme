@@ -3,7 +3,8 @@
   position: fixed;
   right: 16px;
   bottom: calc(var(--bottomnav-h) + 16px + env(safe-area-inset-bottom, 0px));
-  z-index: 2000;
+  /* Uygulamanın alt sayfalarının (1500) altında kalır; açılan panel 2000'dedir. */
+  z-index: 1400;
   display: inline-flex;
   align-items: center;
   gap: 8px;

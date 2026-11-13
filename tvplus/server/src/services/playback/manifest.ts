@@ -382,13 +382,14 @@ function audioTracks(plane: Plane, d: Extract<Deliverable, { kind: 'STREAMS' }>,
     g.push(a)
     groups.set(key, g)
   }
-  const anyMain = [...groups.values()].some((g) => g.some((r) => r.isMain))
+  // Özgün dil: ana (Role=main) temsillerin dili, yoksa ilk grubun dili. Aynı dilin 5.1 sürümü de özgündür.
+  const entries = [...groups.entries()]
+  const mainEntry = entries.find(([, reps]) => reps.some((r) => r.isMain)) ?? entries[0]
+  const nativeLang = mainEntry ? mainEntry[0].split('|')[0] : null
   const tracks: AudioTrack[] = []
-  let first = true
-  for (const [key, reps] of groups) {
+  for (const [key, reps] of entries) {
     const [lang, channels] = key.split('|') as [string, '2.0' | '5.1']
-    const isNative = anyMain ? reps.some((r) => r.isMain) : first
-    first = false
+    const isNative = lang === nativeLang
     tracks.push({
       trackId: `A-${lang}-${channels === '5.1' ? '51' : '20'}`,
       language: lang,

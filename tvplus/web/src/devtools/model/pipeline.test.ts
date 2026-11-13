@@ -4,7 +4,13 @@ import { activeRungIndex, initialPipeline, LANE_BLOCKS, reducePipelineAll } from
 
 let seq = 0
 const T0 = 1_760_000_000_000
-function ev(cat: DevCategory, label: string, detail: Record<string, unknown>, at: number, opts: { ms?: number; ok?: boolean } = {}): DevEvent {
+function ev(
+  cat: DevCategory,
+  label: string,
+  detail: Record<string, unknown>,
+  at: number,
+  opts: { ms?: number; ok?: boolean } = {},
+): DevEvent {
   return { id: ++seq, at: T0 + at, cat, label, ok: opts.ok ?? true, ms: opts.ms, detail }
 }
 
@@ -26,8 +32,19 @@ function streamsSequence(): DevEvent[] {
   return [
     ev('ftl', 'darbe 1', { iter: 0, pulse: 0, results: ftlResults(20), winner: 'oc.ix.proxy' }, 0),
     ev('ftl', 'darbe 2', { iter: 0, pulse: 1, results: ftlResults(25), winner: 'c101-ist001-ix' }, 2100),
-    ev('msl', 'aleProvision', { scheme: 'ECDH_P256_AESGCM', serialnumber: 42, renewalwindow: Math.floor(T0 / 1000) + 3600, expiration: exp }, 2500, { ms: 40 }),
-    ev('manifest', 'Video:80010009', { kind: 'STREAMS', prefetch: true, video: ladder, audio: [], text: [], cdns: [], expiration: exp }, 2600),
+    ev(
+      'msl',
+      'aleProvision',
+      { scheme: 'ECDH_P256_AESGCM', serialnumber: 42, renewalwindow: Math.floor(T0 / 1000) + 3600, expiration: exp },
+      2500,
+      { ms: 40 },
+    ),
+    ev(
+      'manifest',
+      'Video:80010009',
+      { kind: 'STREAMS', prefetch: true, video: ladder, audio: [], text: [], cdns: [], expiration: exp },
+      2600,
+    ),
     ev('msl', 'zarf', { messageid: 7, bytes: 3200 }, 3000),
     ev(
       'manifest',
@@ -49,13 +66,46 @@ function streamsSequence(): DevEvent[] {
     ev('range', 'header 0-4095', { type: 'header', cdnId: 'c101-ist001-ix', start: 0, end: 4095, bytes: 4096 }, 3200),
     ev('abr', 'ilk: 235 kbps', { to: 235, reason: 'başlangıç', estimateKbps: 900 }, 3250),
     ...Array.from({ length: 14 }, (_, i) =>
-      ev('range', `video ${i}`, { type: 'video', cdnId: 'c101-ist001-ix', start: i * 1000, end: i * 1000 + 999, bytes: 1000, ttfbMs: 10, kbps: 1500 + i * 100, streamId: 'v-235', segment: i }, 3300 + i * 100, { ms: 30 }),
+      ev(
+        'range',
+        `video ${i}`,
+        {
+          type: 'video',
+          cdnId: 'c101-ist001-ix',
+          start: i * 1000,
+          end: i * 1000 + 999,
+          bytes: 1000,
+          ttfbMs: 10,
+          kbps: 1500 + i * 100,
+          streamId: 'v-235',
+          segment: i,
+        },
+        3300 + i * 100,
+        { ms: 30 },
+      ),
     ),
-    ev('range', 'audio 2935-27888', { type: 'audio', cdnId: 'c101-ist001-ix', start: 2935, end: 27888, kbps: 900, streamId: 'a-128' }, 3400, { ms: 20 }),
-    ev('abr', '↑ 1127 kbps', { from: 235, to: 1127, reason: 'bant genişliği yeterli', estimateKbps: 2400, bufferSec: 12 }, 5000),
+    ev(
+      'range',
+      'audio 2935-27888',
+      { type: 'audio', cdnId: 'c101-ist001-ix', start: 2935, end: 27888, kbps: 900, streamId: 'a-128' },
+      3400,
+      { ms: 20 },
+    ),
+    ev(
+      'abr',
+      '↑ 1127 kbps',
+      { from: 235, to: 1127, reason: 'bant genişliği yeterli', estimateKbps: 2400, bufferSec: 12 },
+      5000,
+    ),
     ev('buffer', 'tampon', { videoSec: 14.5, audioSec: 20, state: 'oynuyor' }, 5100),
     ev('cdn', 'yük devri c101→c103', { from: 'c101-ist001-ix', to: 'c103-anycast', reason: 'zaman aşımı' }, 5200),
-    ev('range', 'video x', { type: 'video', cdnId: 'c103-anycast', start: 50000, end: 59999, kbps: 1300, streamId: 'v-1127' }, 5300, { ms: 80 }),
+    ev(
+      'range',
+      'video x',
+      { type: 'video', cdnId: 'c103-anycast', start: 50000, end: 59999, kbps: 1300, streamId: 'v-1127' },
+      5300,
+      { ms: 80 },
+    ),
     ev('ttml', 'tr yüklendi', { language: 'tr', cues: 812, tickRate: 10_000_000 }, 5400),
     ev('player', 'durum: oynuyor', { viewableId: 'Video:80010001', state: 'oynuyor', positionSec: 3 }, 5500),
   ]
@@ -104,7 +154,10 @@ describe('oynatma hattı modeli', () => {
   })
 
   it('ön hazırlık manifesti oynatma sürerken ekrandakini değiştirmez', () => {
-    const seq2 = [...streamsSequence(), ev('manifest', 'Video:999', { kind: 'STREAMS', prefetch: true, video: [] }, 9000)]
+    const seq2 = [
+      ...streamsSequence(),
+      ev('manifest', 'Video:999', { kind: 'STREAMS', prefetch: true, video: [] }, 9000),
+    ]
     const s = reducePipelineAll(initialPipeline(), seq2)
     expect(s.manifest?.viewableId).toBe('Video:80010001')
     expect(s.prefetchCount).toBe(2)
@@ -143,7 +196,12 @@ describe('oynatma hattı modeli', () => {
   it('yeni gerçek manifest akışı ve altyazıyı sıfırlar', () => {
     const s = reducePipelineAll(initialPipeline(), [
       ...streamsSequence(),
-      ev('manifest', 'Video:80010002', { kind: 'STREAMS', prefetch: false, video: ladder, cdns: ['c102-ist002-isp'] }, 10_000),
+      ev(
+        'manifest',
+        'Video:80010002',
+        { kind: 'STREAMS', prefetch: false, video: ladder, cdns: ['c102-ist002-isp'] },
+        10_000,
+      ),
     ])
     expect(s.streaming.requests).toBe(0)
     expect(s.streaming.activeCdn).toBe('c102-ist002-isp')

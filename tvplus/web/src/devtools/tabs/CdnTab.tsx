@@ -64,7 +64,8 @@ export function CdnTab(): ReactNode {
   return (
     <div className="kp-tab">
       <Explainer netflix="Open Connect (OCA) düğümleri">
-        Videoyu dört sanal sunucu dağıtır. Burada her birinin ağ koşulunu bozup oynatıcının nasıl uyum sağladığını izleyebilirsin.
+        Videoyu dört sanal sunucu dağıtır. Burada her birinin ağ koşulunu bozup oynatıcının nasıl uyum sağladığını
+        izleyebilirsin.
       </Explainer>
       <ul className="kp-guide">
         <li>Bant genişliğini kıs → ④'te bit hızının düştüğünü izle.</li>
@@ -87,16 +88,24 @@ export function CdnTab(): ReactNode {
       {nodes && (
         <>
           <div className="kp-toolbar">
-            <button type="button" className="kp-btn" disabled={busy !== null} onClick={() => void post(`${OCA_URL}/reset`, {}, 'reset')}>
+            <button
+              type="button"
+              className="kp-btn"
+              disabled={busy !== null}
+              onClick={() => void post(`${OCA_URL}/reset`, {}, 'reset')}
+            >
               Sıfırla
             </button>
-            <span className="kp-toolbar-note">
-              {poll.at ? `Güncellendi ${fmtClock(poll.at)}` : ''} · 2 sn'de bir
-            </span>
+            <span className="kp-toolbar-note">{poll.at ? `Güncellendi ${fmtClock(poll.at)}` : ''} · 2 sn'de bir</span>
           </div>
           <ul className="kp-nodes">
             {nodes.map((n) => (
-              <NodeCard key={n.id} node={n} disabled={busy === 'reset'} onApply={(c) => void post(`${OCA_URL}/${encodeURIComponent(n.id)}`, c, n.id)} />
+              <NodeCard
+                key={n.id}
+                node={n}
+                disabled={busy === 'reset'}
+                onApply={(c) => void post(`${OCA_URL}/${encodeURIComponent(n.id)}`, c, n.id)}
+              />
             ))}
           </ul>
         </>
@@ -105,8 +114,21 @@ export function CdnTab(): ReactNode {
   )
 }
 
-function NodeCard({ node, disabled, onApply }: { node: OcaNodeState; disabled: boolean; onApply: (c: Controls) => void }): ReactNode {
-  const server: Controls = { latencyMs: node.latencyMs, throughputKbps: node.throughputKbps, errorRate: node.errorRate, down: node.down }
+function NodeCard({
+  node,
+  disabled,
+  onApply,
+}: {
+  node: OcaNodeState
+  disabled: boolean
+  onApply: (c: Controls) => void
+}): ReactNode {
+  const server: Controls = {
+    latencyMs: node.latencyMs,
+    throughputKbps: node.throughputKbps,
+    errorRate: node.errorRate,
+    down: node.down,
+  }
   const [draft, setDraft] = useState<Controls | null>(null)
   const timer = useRef<number | null>(null)
   const c = draft ?? server

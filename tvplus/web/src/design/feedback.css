@@ -85,14 +85,18 @@
 .cn-skel--text {
   width: 100%;
   height: 12px;
-  margin: 4px 0;
   border-radius: 6px;
 }
 .cn-skel--title {
   width: 160px;
   height: 18px;
-  margin: 3px 0;
   border-radius: 6px;
+}
+:where(.cn-skel--text) {
+  margin: 4px 0;
+}
+:where(.cn-skel--title) {
+  margin: 3px 0;
 }
 .cn-skelrow {
   display: flex;

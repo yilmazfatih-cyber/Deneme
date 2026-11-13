@@ -100,7 +100,11 @@ describe('bildirim yoklaması', () => {
   it('eşitler, sonra imleçle bekler; yanıt gelince imleç ilerler ve hemen yeniden sorar', async () => {
     const e = env()
     const got: { ids: string[]; initial: boolean }[] = []
-    const p = createPushPoller(e.deps, { route: '/push', cursor: null, onEvents: (ev, info) => got.push({ ids: ev.map((x) => x.id), initial: info.initial }) })
+    const p = createPushPoller(e.deps, {
+      route: '/push',
+      cursor: null,
+      onEvents: (ev, info) => got.push({ ids: ev.map((x) => x.id), initial: info.initial }),
+    })
     p.start()
     await e.flush()
     expect(e.last().url).toBe('/push?cursor=0&wait=0')

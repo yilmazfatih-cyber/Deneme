@@ -103,7 +103,12 @@ export interface PollState<T> {
  * Sekme açık ve sayfa görünürken uç noktayı düzenli sorar; hata olursa yavaşlar (`slowMs`).
  * `refresh()` hemen yeniden sorar.
  */
-export function usePoll<T>(url: string, everyMs: number, slowMs: number, headers: () => Record<string, string>): PollState<T> & { refresh: () => void } {
+export function usePoll<T>(
+  url: string,
+  everyMs: number,
+  slowMs: number,
+  headers: () => Record<string, string>,
+): PollState<T> & { refresh: () => void } {
   const [state, setState] = useState<PollState<T>>({ data: null, error: null, at: null })
   const kick = useRef<() => void>(() => {})
   const headersRef = useRef(headers)
@@ -124,7 +129,11 @@ export function usePoll<T>(url: string, everyMs: number, slowMs: number, headers
       ctrl?.abort()
       ctrl = new AbortController()
       try {
-        const res = await fetch(url, { credentials: 'same-origin', signal: ctrl.signal, headers: { accept: 'application/json', ...headersRef.current() } })
+        const res = await fetch(url, {
+          credentials: 'same-origin',
+          signal: ctrl.signal,
+          headers: { accept: 'application/json', ...headersRef.current() },
+        })
         if (!res.ok) throw new Error(`HTTP ${res.status}`)
         const data = (await res.json()) as T
         if (!alive) return

@@ -15,7 +15,19 @@ import { Empty, ErrMark, Explainer, Icon, ICONS, KV, useNow } from '../ui'
 
 type StepStatus = 'wait' | 'done' | 'live'
 
-function Step({ n, title, netflix, status, children }: { n: number; title: string; netflix: string; status: StepStatus; children: ReactNode }): ReactNode {
+function Step({
+  n,
+  title,
+  netflix,
+  status,
+  children,
+}: {
+  n: number
+  title: string
+  netflix: string
+  status: StepStatus
+  children: ReactNode
+}): ReactNode {
   const statusText = status === 'wait' ? 'bekliyor' : status === 'live' ? 'şu an çalışıyor' : 'tamam'
   return (
     <li className={`kp-step is-${status}`}>
@@ -55,8 +67,8 @@ export function PipelineTab({ p }: { p: PipelineState }): ReactNode {
   return (
     <div className="kp-tab">
       <Explainer netflix="Cadmium oynatıcı · FTL · MSL · Open Connect">
-        Oynat'a bastığında beş adım işler: en hızlı sunucu ölçülür, şifreli anahtar alınır, izinli akış listesi (manifest) istenir,
-        görüntü ve ses ayrı ayrı parça parça iner, altyazı ayrı belge olarak gelir.
+        Oynat'a bastığında beş adım işler: en hızlı sunucu ölçülür, şifreli anahtar alınır, izinli akış listesi
+        (manifest) istenir, görüntü ve ses ayrı ayrı parça parça iner, altyazı ayrı belge olarak gelir.
       </Explainer>
 
       <div className="kp-source" aria-live="polite">
@@ -70,32 +82,63 @@ export function PipelineTab({ p }: { p: PipelineState }): ReactNode {
           </span>
         )}
       </div>
-      {!p.manifest && !p.embed && st.requests === 0 && <p className="kp-hint">Bir başlık oynat; adımlar burada canlı dolar.</p>}
+      {!p.manifest && !p.embed && st.requests === 0 && (
+        <p className="kp-hint">Bir başlık oynat; adımlar burada canlı dolar.</p>
+      )}
 
       <ol className="kp-steps">
         <Step n={1} title="FTL yoklaması" netflix="FTL (Faster Than Light)" status={p.ftl ? 'done' : 'wait'}>
-          {p.ftl ? <FtlPanel ftl={p.ftl} now={now} /> : <Empty>Profil seçilince dört uç yarıştırılır; en hızlısı manifest sıralamasına girer.</Empty>}
+          {p.ftl ? (
+            <FtlPanel ftl={p.ftl} now={now} />
+          ) : (
+            <Empty>Profil seçilince dört uç yarıştırılır; en hızlısı manifest sıralamasına girer.</Empty>
+          )}
         </Step>
 
         <Step n={2} title="MSL anahtar sağlama" netflix="MSL / ALE (aleProvision)" status={p.msl ? 'done' : 'wait'}>
-          {p.msl ? <MslPanel msl={p.msl} now={now} /> : <Empty>Oynatmadan önce tarayıcı sunucuyla ortak bir şifre anahtarı kurar.</Empty>}
+          {p.msl ? (
+            <MslPanel msl={p.msl} now={now} />
+          ) : (
+            <Empty>Oynatmadan önce tarayıcı sunucuyla ortak bir şifre anahtarı kurar.</Empty>
+          )}
         </Step>
 
-        <Step n={3} title="Lisanslı manifest" netflix="licensedManifest (+ prefetch)" status={p.manifest ? 'done' : 'wait'}>
+        <Step
+          n={3}
+          title="Lisanslı manifest"
+          netflix="licensedManifest (+ prefetch)"
+          status={p.manifest ? 'done' : 'wait'}
+        >
           {p.manifest ? (
-            <ManifestPanel m={p.manifest} st={st} now={now} prefetchCount={p.prefetchCount} lastPrefetch={p.lastPrefetch} />
+            <ManifestPanel
+              m={p.manifest}
+              st={st}
+              now={now}
+              prefetchCount={p.prefetchCount}
+              lastPrefetch={p.lastPrefetch}
+            />
           ) : (
             <Empty>Hangi kalitelerin, dillerin ve sunucuların kullanılabileceğini söyleyen şifreli liste.</Empty>
           )}
         </Step>
 
         {embed ? (
-          <Step n={4} title="YouTube oynatıcısı" netflix="(karşılığı yok — dış sağlayıcı)" status={p.embed?.states.length ? 'live' : 'wait'}>
+          <Step
+            n={4}
+            title="YouTube oynatıcısı"
+            netflix="(karşılığı yok — dış sağlayıcı)"
+            status={p.embed?.states.length ? 'live' : 'wait'}
+          >
             <EmbedPanel embed={p.embed} />
           </Step>
         ) : (
           <>
-            <Step n={4} title="Bayt-aralığı akışı" netflix="Open Connect /range/ istekleri + ABR" status={st.requests === 0 ? 'wait' : now - lastRange < 5000 ? 'live' : 'done'}>
+            <Step
+              n={4}
+              title="Bayt-aralığı akışı"
+              netflix="Open Connect /range/ istekleri + ABR"
+              status={st.requests === 0 ? 'wait' : now - lastRange < 5000 ? 'live' : 'done'}
+            >
               {st.requests === 0 ? (
                 <Empty>
                   {p.source === 'progressive'
@@ -133,7 +176,8 @@ function FtlPanel({ ftl, now }: { ftl: FtlView; now: number }): ReactNode {
           </span>
         ))}
         <span className="kp-pulse-next">
-          {ftl.nextPulseAt ? `Sonraki: ${fmtCountdown(ftl.nextPulseAt - now)}` : 'Tur bitti'} · tur {ftl.iter}
+          {ftl.iter + 1}. tur ·{' '}
+          {ftl.nextPulseAt ? `sonraki darbe ${fmtCountdown(ftl.nextPulseAt - now)} sonra` : 'tur bitti'}
         </span>
       </div>
       <ul className="kp-bars" aria-label={`Darbe ${last.index + 1} sonuçları`}>
@@ -151,9 +195,16 @@ function FtlPanel({ ftl, now }: { ftl: FtlView; now: number }): ReactNode {
             </div>
             {t.ok ? (
               <>
-                <div className="kp-bar" role="img" aria-label={`ilk bayt ${fmtMs(t.ttfbMs)}, toplam ${fmtMs(t.totalMs)}`}>
+                <div
+                  className="kp-bar"
+                  role="img"
+                  aria-label={`ilk bayt ${fmtMs(t.ttfbMs)}, toplam ${fmtMs(t.totalMs)}`}
+                >
                   <span className="kp-bar-total" style={{ width: `${((t.totalMs ?? 0) / max) * 100}%` }}>
-                    <span className="kp-bar-ttfb" style={{ width: `${t.totalMs ? ((t.ttfbMs ?? 0) / t.totalMs) * 100 : 0}%` }} />
+                    <span
+                      className="kp-bar-ttfb"
+                      style={{ width: `${t.totalMs ? ((t.ttfbMs ?? 0) / t.totalMs) * 100 : 0}%` }}
+                    />
                   </span>
                 </div>
                 <div className="kp-dim kp-small">
@@ -169,7 +220,8 @@ function FtlPanel({ ftl, now }: { ftl: FtlView; now: number }): ReactNode {
         ))}
       </ul>
       <p className="kp-legend">
-        <span className="kp-key kp-key-ttfb" /> ilk bayt <span className="kp-key kp-key-total" /> 5 KB'ın tamamı · kısa çubuk daha hızlı
+        <span className="kp-key kp-key-ttfb" /> ilk bayt <span className="kp-key kp-key-total" /> 5 KB'ın tamamı · kısa
+        çubuk daha hızlı
       </p>
     </div>
   )
@@ -196,7 +248,10 @@ function MslPanel({ msl, now }: { msl: MslView; now: number }): ReactNode {
           ['Ana belirteç no', msl.serial !== null ? `#${msl.serial}` : '—'],
           ['Yenileme', msl.renewalAt ? `${fmtCountdown(msl.renewalAt - now)} sonra` : '—'],
           ['Geçerlilik sonu', msl.expiresAt ? `${fmtCountdown(msl.expiresAt - now)} sonra` : '—'],
-          ['Son ileti no', msl.lastMessageId !== null ? `#${msl.lastMessageId} · ${msl.messages} zarf` : `${msl.messages} zarf`],
+          [
+            'Son ileti no',
+            msl.lastMessageId !== null ? `#${msl.lastMessageId} · ${msl.messages} zarf` : `${msl.messages} zarf`,
+          ],
           ['Sağlandı', msl.provisionedAt ? fmtClock(msl.provisionedAt) : '—'],
         ]}
       />
@@ -231,10 +286,13 @@ function ManifestPanel({
       <KV
         rows={[
           ['İçerik', m.title ? `${m.title} · ${m.viewableId}` : m.viewableId],
-          ['Tür', <span key="k">
-            <span className="kp-mono">{m.kind}</span> — {KIND_TEXT[m.kind]}
-          </span>],
-          ['İstek', m.prefetch ? 'Ön hazırlık (oynat\'a basılmadan önce)' : 'Gerçek oynatma'],
+          [
+            'Tür',
+            <span key="k">
+              <span className="kp-mono">{m.kind}</span> — {KIND_TEXT[m.kind]}
+            </span>,
+          ],
+          ['İstek', m.prefetch ? "Ön hazırlık (oynat'a basılmadan önce)" : 'Gerçek oynatma'],
           ['Geçerlilik', m.expiresAt ? `${fmtCountdown(m.expiresAt - now)} sonra biter` : '—'],
           ['Ön hazırlık', prefetchCount ? `${prefetchCount} kez · son ${lastPrefetch?.viewableId ?? ''}` : 'yok'],
         ]}
@@ -251,7 +309,11 @@ function ManifestPanel({
           </thead>
           <tbody>
             {m.video.map((r, i) => (
-              <tr key={`${r.bitrateKbps}-${i}`} className={i === active ? 'is-active' : undefined} aria-current={i === active ? 'true' : undefined}>
+              <tr
+                key={`${r.bitrateKbps}-${i}`}
+                className={i === active ? 'is-active' : undefined}
+                aria-current={i === active ? 'true' : undefined}
+              >
                 <td>{fmtKbps(r.bitrateKbps)}</td>
                 <td>{r.height ? `${r.height}p` : '—'}</td>
                 <td className="kp-mono">
@@ -343,14 +405,20 @@ function StreamingPanel({ st }: { st: StreamingView }): ReactNode {
 
       <Lane title="Video" blocks={st.video} scale={scale} picked={sel?.id ?? null} onPick={setPicked} />
       <Lane title="Ses" blocks={st.audio} scale={scale} picked={sel?.id ?? null} onPick={setPicked} />
-      <p className="kp-legend">Her kutu bir aralık isteği; genişliği indirilen bayt kadar. Ses parçaları videodan çok küçüktür.</p>
+      <p className="kp-legend">
+        Her kutu bir aralık isteği; genişliği indirilen bayt kadar. Ses parçaları videodan çok küçüktür.
+        {[...st.video, ...st.audio].some(
+          (b, i, a) => i > 0 && a[i - 1]?.type === b.type && a[i - 1]?.cdnId !== b.cdnId,
+        ) && ' Kutunun solundaki beyaz çizgi: düğüm değişti.'}
+      </p>
       {sel && (
         <div className="kp-sel" aria-live="polite">
           <span className="kp-mono">
             {sel.type === 'video' ? 'video' : 'ses'} /range/{sel.start ?? '?'}-{sel.end ?? '?'}
           </span>
           <span>
-            {fmtBytes(sel.bytes)} · {fmtMs(sel.ms)} · {fmtKbps(sel.kbps)} · <span className="kp-mono">{sel.cdnId ?? '—'}</span>
+            {fmtBytes(sel.bytes)} · {fmtMs(sel.ms)} · {fmtKbps(sel.kbps)} ·{' '}
+            <span className="kp-mono">{sel.cdnId ?? '—'}</span>
             {!sel.ok && (
               <>
                 {' '}
@@ -377,7 +445,9 @@ function StreamingPanel({ st }: { st: StreamingView }): ReactNode {
             .map((mk) => (
               <li key={mk.id}>
                 <span className="kp-time">{fmtClock(mk.at)}</span>
-                <span className={`kp-mk kp-mk-${mk.kind}`}>{mk.kind === 'abr' ? (mk.dir === 'down' ? '↓' : '↑') : '⇄'}</span>
+                <span className={`kp-mk kp-mk-${mk.kind}`}>
+                  {mk.kind === 'abr' ? (mk.dir === 'down' ? '↓' : '↑') : '⇄'}
+                </span>
                 <span>
                   {mk.kind === 'abr' ? 'Bit hızı: ' : 'Yük devri: '}
                   {mk.text}
@@ -395,7 +465,19 @@ function sum(list: RangeBlock[]): number {
   return list.reduce((a, b) => a + b.bytes, 0)
 }
 
-function Lane({ title, blocks, scale, picked, onPick }: { title: string; blocks: RangeBlock[]; scale: number; picked: number | null; onPick: (id: number) => void }): ReactNode {
+function Lane({
+  title,
+  blocks,
+  scale,
+  picked,
+  onPick,
+}: {
+  title: string
+  blocks: RangeBlock[]
+  scale: number
+  picked: number | null
+  onPick: (id: number) => void
+}): ReactNode {
   const total = sum(blocks)
   const timed = blocks.filter((b) => b.kbps !== null)
   const avg = timed.length ? timed.reduce((a, b) => a + (b.kbps ?? 0), 0) / timed.length : null
@@ -415,7 +497,7 @@ function Lane({ title, blocks, scale, picked, onPick }: { title: string; blocks:
               key={b.id}
               type="button"
               className={`kp-block${b.id === picked ? ' is-picked' : ''}${switched ? ' is-switch' : ''}${b.ok ? '' : ' is-fail'}`}
-              style={{ width: `${(b.bytes / scale) * 100}%` }}
+              style={{ flexGrow: Math.max(b.bytes, 1) }}
               title={`${b.start ?? '?'}-${b.end ?? '?'} · ${fmtBytes(b.bytes)} · ${fmtMs(b.ms)} · ${fmtKbps(b.kbps)} · ${b.cdnId ?? ''}`}
               aria-label={`${title} aralığı ${fmtBytes(b.bytes)}, ${b.cdnId ?? ''}`}
               onClick={() => onPick(b.id)}
@@ -424,6 +506,8 @@ function Lane({ title, blocks, scale, picked, onPick }: { title: string; blocks:
             </button>
           )
         })}
+        {/* Ortak ölçek: şeridin boş kalan kısmı, iki şerit aynı bayt ölçeğinde kalsın diye. */}
+        {scale > total && <span className="kp-lane-rest" style={{ flexGrow: scale - total }} aria-hidden="true" />}
       </div>
     </div>
   )
@@ -439,7 +523,8 @@ function Spark({ st }: { st: StreamingView }): ReactNode {
   const H = 64
   const x = (at: number) => ((at - t0) / (t1 - t0)) * W
   const y = (k: number) => H - (k / max) * H
-  const line = (list: { at: number; kbps: number }[]) => list.map((p) => `${x(p.at).toFixed(1)},${y(p.kbps).toFixed(1)}`).join(' ')
+  const line = (list: { at: number; kbps: number }[]) =>
+    list.map((p) => `${x(p.at).toFixed(1)},${y(p.kbps).toFixed(1)}`).join(' ')
   const marks = st.markers.filter((m) => m.at >= t0 && m.at <= t1)
   return (
     <figure className="kp-spark">
@@ -451,11 +536,28 @@ function Spark({ st }: { st: StreamingView }): ReactNode {
         <span className="kp-dim kp-small">üst: {fmtKbps(max)}</span>
       </figcaption>
       <div className="kp-spark-box">
-        <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" role="img" aria-label="Ölçülen hız ve ABR tahmini grafiği">
-          {st.samples.length > 1 && <polyline className="kp-spark-sample" points={line(st.samples)} vectorEffect="non-scaling-stroke" />}
-          {st.estimates.length > 1 && <polyline className="kp-spark-est" points={line(st.estimates)} vectorEffect="non-scaling-stroke" />}
+        <svg
+          viewBox={`0 0 ${W} ${H}`}
+          preserveAspectRatio="none"
+          role="img"
+          aria-label="Ölçülen hız ve ABR tahmini grafiği"
+        >
+          {st.samples.length > 1 && (
+            <polyline className="kp-spark-sample" points={line(st.samples)} vectorEffect="non-scaling-stroke" />
+          )}
+          {st.estimates.length > 1 && (
+            <polyline className="kp-spark-est" points={line(st.estimates)} vectorEffect="non-scaling-stroke" />
+          )}
           {marks.map((m) => (
-            <line key={m.id} className={`kp-spark-mk kp-spark-mk-${m.kind}`} x1={x(m.at)} x2={x(m.at)} y1={0} y2={H} vectorEffect="non-scaling-stroke" />
+            <line
+              key={m.id}
+              className={`kp-spark-mk kp-spark-mk-${m.kind}`}
+              x1={x(m.at)}
+              x2={x(m.at)}
+              y1={0}
+              y2={H}
+              vectorEffect="non-scaling-stroke"
+            />
           ))}
         </svg>
         {marks.map((m) => (
@@ -475,7 +577,14 @@ function BufferBar({ label, sec }: { label: string; sec: number | null }): React
   return (
     <div className="kp-buf">
       <span className="kp-buf-l">{label}</span>
-      <span className="kp-buf-track" role="meter" aria-valuemin={0} aria-valuemax={BUFFER_TARGET_SEC} aria-valuenow={sec ?? 0} aria-label={`${label} tamponu`}>
+      <span
+        className="kp-buf-track"
+        role="meter"
+        aria-valuemin={0}
+        aria-valuemax={BUFFER_TARGET_SEC}
+        aria-valuenow={sec ?? 0}
+        aria-label={`${label} tamponu`}
+      >
         <span className="kp-buf-fill" style={{ width: `${pct}%` }} />
       </span>
       <span className="kp-buf-v">{fmtSec(sec)}</span>
@@ -521,8 +630,8 @@ function EmbedPanel({ embed }: { embed: EmbedView | null }): ReactNode {
   return (
     <>
       <p className="kp-note kp-note-strong">
-        Bu başlığı YouTube'un kendi oynatıcısı taşıyor. Görüntü YouTube sunucularından gelir; bizim bayt-aralığı trafiğimiz ve TTML
-        altyazımız olmadığı için ④ ve ⑤ burada yok.
+        Bu başlığı YouTube'un kendi oynatıcısı taşıyor. Görüntü YouTube sunucularından gelir; bizim bayt-aralığı
+        trafiğimiz ve TTML altyazımız olmadığı için ④ ve ⑤ burada yok.
       </p>
       {embed && embed.states.length > 0 ? (
         <ol className="kp-timeline" aria-label="Gömme oynatıcı durumları">
@@ -538,7 +647,11 @@ function EmbedPanel({ embed }: { embed: EmbedView | null }): ReactNode {
       ) : (
         <Empty>Oynatıcı yüklenince durumlar burada sıralanır.</Empty>
       )}
-      {embed?.videoId && <p className="kp-dim kp-small">YouTube kimliği: <span className="kp-mono">{embed.videoId}</span></p>}
+      {embed?.videoId && (
+        <p className="kp-dim kp-small">
+          YouTube kimliği: <span className="kp-mono">{embed.videoId}</span>
+        </p>
+      )}
       {embed?.error && (
         <p className="kp-errline">
           <ErrMark /> YouTube hatası: {embed.error}

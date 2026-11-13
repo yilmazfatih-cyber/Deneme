@@ -107,6 +107,74 @@ export function parseChannelFeed(xml: string): ParsedFeed {
   return { channelTitle: str(feed.title) || null, entries }
 }
 
+/** "2 gün önce" / "3 years ago" gibi göreli tarihten yaklaşık ISO tarih (bilinmiyorsa bugün). */
+export function approximateDate(text: string, now: Date): string {
+  const m = /(\d+)\s*(saniye|sn\.|dakika|dk\.|saat|sa\.|gün|hafta|hf\.|ay|yıl|second|minute|hour|day|week|month|year)/i.exec(text)
+  const d = new Date(now)
+  if (m && m[1] && m[2]) {
+    const n = Number(m[1])
+    const unit = m[2].toLocaleLowerCase('tr-TR')
+    if (/^(gün|day)/.test(unit)) d.setUTCDate(d.getUTCDate() - n)
+    else if (/^(hafta|hf|week)/.test(unit)) d.setUTCDate(d.getUTCDate() - 7 * n)
+    else if (/^(ay|month)/.test(unit)) d.setUTCMonth(d.getUTCMonth() - n)
+    else if (/^(yıl|year)/.test(unit)) d.setUTCFullYear(d.getUTCFullYear() - n)
+  }
+  return d.toISOString().slice(0, 10)
+}
+
+/**
+ * Yedek: kanalın /videos sayfasındaki ytInitialData'dan son videolar (Atom akışı yanıt vermediğinde).
+ * Açıklama sayfada yoktur; yayın tarihi göreli metinden yaklaşık hesaplanır.
+ */
+export function parseChannelVideosPage(html: string, now: Date): ParsedFeed {
+  const m = /var ytInitialData = (\{.*?\});<\/script>/s.exec(html)
+  if (!m || !m[1]) return { channelTitle: null, entries: [] }
+  let data: unknown
+  try {
+    data = JSON.parse(m[1])
+  } catch {
+    return { channelTitle: null, entries: [] }
+  }
+  const entries: FeedEntry[] = []
+  const seen = new Set<string>()
+  let channelTitle: string | null = null
+  const walk = (v: unknown) => {
+    if (Array.isArray(v)) v.forEach(walk)
+    else if (isObj(v)) {
+      const cmr = v.channelMetadataRenderer
+      if (isObj(cmr) && typeof cmr.title === 'string') channelTitle = cmr.title
+      const l = v.lockupViewModel
+      if (isObj(l) && l.contentType === 'LOCKUP_CONTENT_TYPE_VIDEO' && typeof l.contentId === 'string' && !seen.has(l.contentId)) {
+        seen.add(l.contentId)
+        const meta = isObj(l.metadata) && isObj(l.metadata.lockupMetadataViewModel) ? l.metadata.lockupMetadataViewModel : {}
+        const title = isObj(meta.title) ? str(meta.title.content) : ''
+        // Satırlardaki son parça genellikle "2 gün önce"
+        const texts: string[] = []
+        const collect = (x: unknown) => {
+          if (Array.isArray(x)) x.forEach(collect)
+          else if (isObj(x)) {
+            if (isObj(x.text) && typeof x.text.content === 'string') texts.push(x.text.content)
+            Object.values(x).forEach(collect)
+          }
+        }
+        collect(meta.metadata)
+        const rel = texts.find((t) => /önce|ago/i.test(t)) ?? ''
+        entries.push({
+          videoId: l.contentId,
+          title,
+          published: approximateDate(rel, now),
+          author: null,
+          description: '',
+          thumbnail: `https://i.ytimg.com/vi/${l.contentId}/hqdefault.jpg`,
+        })
+      }
+      Object.values(v).forEach(walk)
+    }
+  }
+  walk(data)
+  return { channelTitle, entries }
+}
+
 /** İçerikteki YouTube video ve kanal kimliklerini, kullanıldıkları yerlerle toplar. */
 export function collectYoutubeRefs(contentDir: string): { videos: Map<string, string[]>; channels: Map<string, string[]> } {
   const videos = new Map<string, string[]>()
@@ -356,16 +424,20 @@ async function main() {
       process.exit(2)
     }
     const res = await httpGet(feedUrl(args.channelId), { timeoutMs: 8000 })
-    if (res.status !== 200) {
-      const page = await checkChannel(args.channelId, { get: httpGet })
-      console.error(
-        page.ok
-          ? `Kanal var (${page.title ?? '?'}) ama Atom akışı yanıt vermedi (HTTP ${res.status}); video listesi alınamadı. Sonra yeniden deneyin.`
-          : `Kanal akışı okunamadı (HTTP ${res.status}) ve kanal sayfası bulunamadı.`,
-      )
-      process.exit(1)
+    let feed: ParsedFeed
+    if (res.status === 200) feed = parseChannelFeed(res.text)
+    else {
+      // Atom akışı bazen var olan kanallar için de 404 döner: kanalın video sayfasına düşülür.
+      console.error(`Atom akışı yanıt vermedi (HTTP ${res.status}); kanalın video sayfası okunuyor…`)
+      await sleep(REQUEST_GAP_MS)
+      const page = await httpGet(`${channelPageUrl(args.channelId)}/videos`, { timeoutMs: 10000 })
+      feed = page.status === 200 ? parseChannelVideosPage(page.text, new Date()) : { channelTitle: null, entries: [] }
+      if (feed.entries.length === 0) {
+        console.error(`Kanalın videoları okunamadı (akış HTTP ${res.status}, sayfa HTTP ${page.status}).`)
+        process.exit(1)
+      }
+      console.error('Not: video sayfasında açıklama yoktur; yayın tarihleri yaklaşıktır.')
     }
-    const feed = parseChannelFeed(res.text)
     console.error(`Kanal: ${feed.channelTitle ?? '?'} · ${feed.entries.length} video`)
     for (const e of feed.entries) console.error(`  ${e.published.slice(0, 10)}  ${e.videoId}  ${cut(e.title, 70)}`)
     const skeletons = feedToSkeletons(feed, { usedIds: usedVideoIds(args.dir), today: new Date().toISOString().slice(0, 10) })

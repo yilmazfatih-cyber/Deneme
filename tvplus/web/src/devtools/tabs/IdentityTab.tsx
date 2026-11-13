@@ -6,10 +6,28 @@ import { fmtClock } from '../model/format'
 import { Explainer, KV } from '../ui'
 
 const COOKIE_ROWS: { name: string; netflix: string; purpose: string; flags: string[]; httpOnly: boolean }[] = [
-  { name: COOKIES.SESSION, netflix: 'NetflixId', purpose: 'Oturum ve seçili profil (pg=…)', flags: ['HttpOnly', 'SameSite=Lax', '1 yıl'], httpOnly: true },
-  { name: COOKIES.SECURE, netflix: 'SecureNetflixId', purpose: 'Oturum çerezinin imzası (MAC)', flags: ['HttpOnly', 'SameSite=Strict', '1 yıl'], httpOnly: true },
+  {
+    name: COOKIES.SESSION,
+    netflix: 'NetflixId',
+    purpose: 'Oturum ve seçili profil (pg=…)',
+    flags: ['HttpOnly', 'SameSite=Lax', '1 yıl'],
+    httpOnly: true,
+  },
+  {
+    name: COOKIES.SECURE,
+    netflix: 'SecureNetflixId',
+    purpose: 'Oturum çerezinin imzası (MAC)',
+    flags: ['HttpOnly', 'SameSite=Strict', '1 yıl'],
+    httpOnly: true,
+  },
   { name: COOKIES.DEVICE, netflix: 'nfvdid', purpose: 'Sanal cihaz kimliği', flags: ['1 yıl'], httpOnly: false },
-  { name: COOKIES.PROFILE_GATE, netflix: 'profilesNewSession', purpose: 'Profil seçim kapısının durumu', flags: ['oturum çerezi'], httpOnly: false },
+  {
+    name: COOKIES.PROFILE_GATE,
+    netflix: 'profilesNewSession',
+    purpose: 'Profil seçim kapısının durumu',
+    flags: ['oturum çerezi'],
+    httpOnly: false,
+  },
 ]
 
 const STATUS_TEXT: Record<string, string> = {
@@ -31,7 +49,13 @@ function readableCookies(): Set<string> {
   }
 }
 
-export function IdentityTab({ lastTraceId, lastTraceAt }: { lastTraceId: string | null; lastTraceAt: number | null }): ReactNode {
+export function IdentityTab({
+  lastTraceId,
+  lastTraceAt,
+}: {
+  lastTraceId: string | null
+  lastTraceAt: number | null
+}): ReactNode {
   const boot = useSyncExternalStore(onBootChange, peekBoot, peekBoot)
   const headers = sessionHeaders()
   const parts = splitEsn(boot?.esn)
@@ -40,8 +64,8 @@ export function IdentityTab({ lastTraceId, lastTraceAt }: { lastTraceId: string 
   return (
     <div className="kp-tab">
       <Explainer netflix="Passport · ESN · NetflixId çerez zinciri">
-        Sunucu seni çerezlerden tanır; profil kimliğini her istekte çerezden yeniden çözer. Tarayıcı ayrıca her isteğe cihaz seri
-        numarasını (ESN) ve istemci başlıklarını ekler.
+        Sunucu seni çerezlerden tanır; profil kimliğini her istekte çerezden yeniden çözer. Tarayıcı ayrıca her isteğe
+        cihaz seri numarasını (ESN) ve istemci başlıklarını ekler.
       </Explainer>
 
       {!boot ? (
@@ -68,7 +92,12 @@ export function IdentityTab({ lastTraceId, lastTraceAt }: { lastTraceId: string 
                 ),
               ],
               ['Bölge', boot.region],
-              ['Derleme', <span key="b" className="kp-mono">{boot.buildId}</span>],
+              [
+                'Derleme',
+                <span key="b" className="kp-mono">
+                  {boot.buildId}
+                </span>,
+              ],
             ]}
           />
 
@@ -85,7 +114,9 @@ export function IdentityTab({ lastTraceId, lastTraceAt }: { lastTraceId: string 
               ))}
             </ol>
           ) : (
-            <p className="kp-dim kp-small">Bu ESN beklenen biçimde değil (TVP · W · tarayıcı · platform · cihaz özeti).</p>
+            <p className="kp-dim kp-small">
+              Bu ESN beklenen biçimde değil (TVP · W · tarayıcı · platform · cihaz özeti).
+            </p>
           )}
           <p className="kp-note">Netflix'te NFCDCH-MC-…: Netflix · Cadmium Chrome · Mac · cihaz özeti.</p>
         </>
@@ -101,8 +132,7 @@ export function IdentityTab({ lastTraceId, lastTraceAt }: { lastTraceId: string 
         ))}
       </dl>
       <p className="kp-dim kp-small">
-        Son iz kimliği (x-b3-traceid):{' '}
-        <span className="kp-mono">{lastTraceId ?? '—'}</span>
+        Son iz kimliği (x-b3-traceid): <span className="kp-mono">{lastTraceId ?? '—'}</span>
         {lastTraceAt ? ` · ${fmtClock(lastTraceAt)}` : ''}
       </p>
 
@@ -128,7 +158,9 @@ export function IdentityTab({ lastTraceId, lastTraceAt }: { lastTraceId: string 
           </li>
         ))}
       </ul>
-      <p className="kp-note">HttpOnly çerezleri JavaScript bilerek okuyamaz; böylece sayfaya sızan bir betik oturumu çalamaz.</p>
+      <p className="kp-note">
+        HttpOnly çerezleri JavaScript bilerek okuyamaz; böylece sayfaya sızan bir betik oturumu çalamaz.
+      </p>
     </div>
   )
 }

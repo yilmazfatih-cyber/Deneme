@@ -5,6 +5,8 @@ import { describe, expect, it, vi } from 'vitest'
 import type { HttpResponse } from './lib/net'
 import {
   REQUEST_GAP_MS,
+  approximateDate,
+  parseChannelVideosPage,
   channelPageUrl,
   classifyOembed,
   collectYoutubeRefs,
@@ -192,5 +194,40 @@ describe('ingest-youtube', () => {
     })
     expect(sk[1]).toMatchObject({ videoId: 80030003, year: 2023 })
     expect(String(sk[1]?.synopsis).length).toBeGreaterThanOrEqual(20)
+  })
+
+  it('kanal video sayfası (yedek) ayrıştırma ve yaklaşık tarih', () => {
+    const lockup = (id: string, title: string, when: string) => ({
+      richItemRenderer: {
+        content: {
+          lockupViewModel: {
+            contentId: id,
+            contentType: 'LOCKUP_CONTENT_TYPE_VIDEO',
+            metadata: {
+              lockupMetadataViewModel: {
+                title: { content: title },
+                metadata: { contentMetadataViewModel: { metadataRows: [{ metadataParts: [{ text: { content: '253 B' } }, { text: { content: when } }] }] } },
+              },
+            },
+          },
+        },
+      },
+    })
+    const data = {
+      metadata: { channelMetadataRenderer: { title: 'Blender' } },
+      contents: [lockup(GOOD, 'Yeni Sürüm', '2 gün önce'), lockup('pvUy69I_Xuk', 'Eski', '3 yıl önce'), lockup(GOOD, 'Yinelenen', '1 gün önce')],
+    }
+    const html = `<html><script>var ytInitialData = ${JSON.stringify(data)};</script></html>`
+    const now = new Date('2026-11-13T10:00:00Z')
+    const f = parseChannelVideosPage(html, now)
+    expect(f.channelTitle).toBe('Blender')
+    expect(f.entries.map((e) => [e.videoId, e.title, e.published])).toEqual([
+      [GOOD, 'Yeni Sürüm', '2026-11-11'],
+      ['pvUy69I_Xuk', 'Eski', '2023-11-13'],
+    ])
+    expect(parseChannelVideosPage('<html></html>', now).entries).toEqual([])
+    expect(approximateDate('5 weeks ago', now)).toBe('2026-10-09')
+    expect(approximateDate('2 hf. önce', now)).toBe('2026-10-30')
+    expect(approximateDate('', now)).toBe('2026-11-13')
   })
 })

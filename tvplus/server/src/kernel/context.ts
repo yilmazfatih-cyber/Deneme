@@ -67,7 +67,11 @@ export interface GqlContext {
   cache: Map<string, unknown>
 }
 
-/** Çözümleyici haritası: { TipAdı: { alan: (parent, args, ctx) => değer } } · birlik/arayüz için { __resolveType } */
+/**
+ * Çözümleyici haritası: { TipAdı: { alan: (parent, args, ctx) => değer } }.
+ * Birlik/arayüz tipleri için { __resolveType }: motor bunu `fn(değer, {}, ctx)` olarak çağırır ve tip adını (dizge)
+ * bekler; tanımlı değilse graphql-js `değer.__typename` alanına bakar.
+ */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type ResolverFn = (parent: any, args: any, ctx: GqlContext) => unknown
 export type ResolverMap = Record<string, Record<string, ResolverFn>>

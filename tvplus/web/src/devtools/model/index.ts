@@ -50,5 +50,13 @@ export function reduceModel(m: DevModel, events: readonly DevEvent[], feedAfterI
     }
   }
   const feedEvents = feedAfterId ? events.filter((e) => e.id > feedAfterId) : events
-  return { feed: reduceFeed(m.feed, feedEvents), pipeline, api, telemetry, lastTraceId, lastTraceAt, total: m.total + events.length }
+  return {
+    feed: reduceFeed(m.feed, feedEvents),
+    pipeline,
+    api,
+    telemetry,
+    lastTraceId,
+    lastTraceAt,
+    total: m.total + events.length,
+  }
 }

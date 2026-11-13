@@ -25,11 +25,17 @@ export function FeedTab({ feed, onClear }: { feed: FeedState; onClear: () => voi
   return (
     <div className="kp-tab">
       <Explainer netflix="tarayıcının Ağ sekmesi + Ichnaea iz kayıtları">
-        Uygulamanın her katmanı yaptığı işi buraya bildirir: sorgular, oynatıcı istekleri, olay paketleri. Satıra dokun, ayrıntısı açılsın.
+        Uygulamanın her katmanı yaptığı işi buraya bildirir: sorgular, oynatıcı istekleri, olay paketleri. Satıra dokun,
+        ayrıntısı açılsın.
       </Explainer>
 
       <div className="kp-toolbar">
-        <button type="button" className="kp-btn" onClick={() => setFrozen(frozen ? null : feed.rows)} aria-pressed={!!frozen}>
+        <button
+          type="button"
+          className="kp-btn"
+          onClick={() => setFrozen(frozen ? null : feed.rows)}
+          aria-pressed={!!frozen}
+        >
           <Icon d={frozen ? ICONS.play : ICONS.pause} size={16} />
           {frozen ? 'Sürdür' : 'Duraklat'}
         </button>
@@ -65,7 +71,12 @@ export function FeedTab({ feed, onClear }: { feed: FeedState; onClear: () => voi
       ) : (
         <ol className="kp-feed">
           {rows.map((r) => (
-            <FeedRow key={r.id} e={r} open={openId === r.id} onToggle={() => setOpenId(openId === r.id ? null : r.id)} />
+            <FeedRow
+              key={r.id}
+              e={r}
+              open={openId === r.id}
+              onToggle={() => setOpenId(openId === r.id ? null : r.id)}
+            />
           ))}
         </ol>
       )}
@@ -78,7 +89,13 @@ function FeedRow({ e, open, onToggle }: { e: DevEvent; open: boolean; onToggle: 
   const json = open ? JSON.stringify(e.detail ?? {}, null, 2) : ''
   const copy = async () => {
     try {
-      await navigator.clipboard.writeText(JSON.stringify({ cat: e.cat, label: e.label, at: new Date(e.at).toISOString(), ms: e.ms, ok: e.ok, detail: e.detail }, null, 2))
+      await navigator.clipboard.writeText(
+        JSON.stringify(
+          { cat: e.cat, label: e.label, at: new Date(e.at).toISOString(), ms: e.ms, ok: e.ok, detail: e.detail },
+          null,
+          2,
+        ),
+      )
       setCopied(true)
       window.setTimeout(() => setCopied(false), 1500)
     } catch {

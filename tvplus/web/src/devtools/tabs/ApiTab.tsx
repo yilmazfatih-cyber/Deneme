@@ -13,8 +13,8 @@ export function ApiTab({ api }: { api: ApiState }): ReactNode {
   return (
     <div className="kp-tab">
       <Explainer netflix="GraphQL (yeni) ve Shakti / Falcor pathEvaluator (eski)">
-        Netflix iki API'yi yan yana çalıştırıyor; biz de öyle. Ana sayfa satırları eski Falcor yollarıyla, detay, arama ve canlı yeni
-        GraphQL ile gelir.
+        Netflix iki API'yi yan yana çalıştırıyor; biz de öyle. Ana sayfa satırları eski Falcor yollarıyla, detay, arama
+        ve canlı yeni GraphQL ile gelir.
       </Explainer>
 
       <div className="kp-compare">
@@ -32,12 +32,14 @@ export function ApiTab({ api }: { api: ApiState }): ReactNode {
           <p className="kp-dim kp-small">JSON Graph yolları</p>
           <div className="kp-mini-stats">
             <MiniStat v={fmtInt(f.network)} l="ağdan" />
-            <MiniStat v={fmtInt(f.cacheHits)} l="önbellekten" />
+            <MiniStat v={fmtInt(f.cacheHits)} l="önbellek" />
             <MiniStat v={fmtMs(averageMs(f))} l="ortalama" />
           </div>
         </section>
       </div>
-      <p className="kp-note kp-note-strong">Sorgu metni hiç gönderilmez: yalnızca işlem adı, kayıt kimliği ve sürüm gider. Sunucu ham sorguyu reddeder.</p>
+      <p className="kp-note kp-note-strong">
+        Sorgu metni hiç gönderilmez: yalnızca işlem adı, kayıt kimliği ve sürüm gider. Sunucu ham sorguyu reddeder.
+      </p>
 
       <h3 className="kp-h">GraphQL istekleri</h3>
       {api.graphql.length === 0 ? (

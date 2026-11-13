@@ -185,7 +185,7 @@ export function badgeOf(services: Svc, passport: Passport, videoId: number, acce
 
 /** Jenerik başlangıcı: süre biliniyorsa sondan 45 sn önce */
 export function creditsOffsetOf(runtimeSec: number | null): number | null {
-  return runtimeSec && runtimeSec > CREDITS_BEFORE_END_SEC * 2 ? runtimeSec - CREDITS_BEFORE_END_SEC : null
+  return runtimeSec && runtimeSec > CREDITS_BEFORE_END_SEC ? runtimeSec - CREDITS_BEFORE_END_SEC : null
 }
 
 /** Dizide sıradaki bölüm (sezonlar arası); son bölümse null */

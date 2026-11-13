@@ -99,7 +99,7 @@ export function reduceApi(s: ApiState, e: DevEvent): ApiState {
       bytes: num(field(d, 'bytes')),
       status: num(field(d, 'status')),
       ok: e.ok,
-      error: e.ok ? null : errorText(d) ?? 'hata',
+      error: e.ok ? null : (errorText(d) ?? 'hata'),
     }
     return { ...s, graphql: [call, ...s.graphql].slice(0, API_LIST_MAX), gqlStats: bump(s.gqlStats, e.ok, ms, false) }
   }
@@ -117,9 +117,13 @@ export function reduceApi(s: ApiState, e: DevEvent): ApiState {
       status: num(field(d, 'status')),
       missing: Array.isArray(missingRaw) ? missingRaw.length : num(missingRaw),
       ok: e.ok,
-      error: e.ok ? null : errorText(d) ?? 'hata',
+      error: e.ok ? null : (errorText(d) ?? 'hata'),
     }
-    return { ...s, falcor: [call, ...s.falcor].slice(0, API_LIST_MAX), falcorStats: bump(s.falcorStats, e.ok, ms, fromCache) }
+    return {
+      ...s,
+      falcor: [call, ...s.falcor].slice(0, API_LIST_MAX),
+      falcorStats: bump(s.falcorStats, e.ok, ms, fromCache),
+    }
   }
   return s
 }

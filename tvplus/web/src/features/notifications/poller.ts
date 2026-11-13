@@ -15,7 +15,10 @@ export interface PollResponseLike {
 }
 
 export interface PollerDeps {
-  fetch(url: string, init: { signal: AbortSignal; credentials: 'same-origin'; headers: Record<string, string> }): Promise<PollResponseLike>
+  fetch(
+    url: string,
+    init: { signal: AbortSignal; credentials: 'same-origin'; headers: Record<string, string> },
+  ): Promise<PollResponseLike>
   setTimeout(fn: () => void, ms: number): unknown
   clearTimeout(handle: unknown): void
   now(): number
@@ -68,7 +71,8 @@ export function createPushPoller(deps: PollerDeps, opts: PollerOptions): PushPol
   let timer: unknown = null
   let unVis: (() => void) | null = null
 
-  const emit = (label: string, detail: Record<string, unknown>, o?: { ms?: number; ok?: boolean }) => deps.emit?.(label, detail, o)
+  const emit = (label: string, detail: Record<string, unknown>, o?: { ms?: number; ok?: boolean }) =>
+    deps.emit?.(label, detail, o)
 
   /** İptal edilebilir bekleme: stop() ya da görünürlük değişimi uyandırır. */
   function sleep(ms: number): Promise<void> {
@@ -128,7 +132,11 @@ export function createPushPoller(deps: PollerDeps, opts: PollerOptions): PushPol
         const ms = deps.now() - t0
         cursor = Math.max(cursor ?? 0, body.cursor)
         backoff = 0
-        emit(`${body.events.length} bildirim`, { count: body.events.length, cursor, waitMs: Math.round(ms), initial }, { ms })
+        emit(
+          `${body.events.length} bildirim`,
+          { count: body.events.length, cursor, waitMs: Math.round(ms), initial },
+          { ms },
+        )
         if (body.events.length || initial) opts.onEvents(body.events, { initial, cursor })
         if (!body.events.length && ms < minGap && !initial) await sleep(minGap - ms)
       } catch (err) {

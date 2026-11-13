@@ -308,7 +308,15 @@ function readRungs(v: unknown): Rung[] {
       const o = obj(r)
       const kbps = o ? num(o.bitrateKbps) : null
       if (!o || kbps === null) return []
-      return [{ bitrateKbps: kbps, height: num(o.height), width: num(o.width), profile: str(o.profile), streamId: str(o.streamId) }]
+      return [
+        {
+          bitrateKbps: kbps,
+          height: num(o.height),
+          width: num(o.width),
+          profile: str(o.profile),
+          streamId: str(o.streamId),
+        },
+      ]
     })
     .sort((a, b) => a.bitrateKbps - b.bitrateKbps)
 }
@@ -374,7 +382,11 @@ function readManifest(e: DevEvent): ManifestView {
 function reduceManifest(s: PipelineState, e: DevEvent): PipelineState {
   const m = readManifest(e)
   if (m.prefetch) {
-    const next: PipelineState = { ...s, prefetchCount: s.prefetchCount + 1, lastPrefetch: { at: e.at, viewableId: m.viewableId } }
+    const next: PipelineState = {
+      ...s,
+      prefetchCount: s.prefetchCount + 1,
+      lastPrefetch: { at: e.at, viewableId: m.viewableId },
+    }
     // Gerçek oynatma sürerken ön hazırlık manifesti ekrandakini değiştirmez.
     if (!s.manifest || s.manifest.prefetch) next.manifest = m
     return next
@@ -399,7 +411,15 @@ function reduceRange(s: PipelineState, e: DevEvent): PipelineState {
   const type = str(field(d, 'type'))
   const st = s.streaming
   if (type === 'header') {
-    return { ...s, streaming: { ...st, headerRequests: st.headerRequests + 1, requests: st.requests + 1, totalBytes: st.totalBytes + rangeBytes(d) } }
+    return {
+      ...s,
+      streaming: {
+        ...st,
+        headerRequests: st.headerRequests + 1,
+        requests: st.requests + 1,
+        totalBytes: st.totalBytes + rangeBytes(d),
+      },
+    }
   }
   if (type !== 'video' && type !== 'audio') return s
   const block: RangeBlock = {
@@ -425,7 +445,8 @@ function reduceRange(s: PipelineState, e: DevEvent): PipelineState {
   }
   if (type === 'video') {
     next.video = keepLast([...st.video, block], LANE_BLOCKS)
-    if (block.kbps !== null && e.ok) next.samples = keepLast([...st.samples, { at: e.at, kbps: block.kbps }], MAX_SAMPLES)
+    if (block.kbps !== null && e.ok)
+      next.samples = keepLast([...st.samples, { at: e.at, kbps: block.kbps }], MAX_SAMPLES)
     // Video akışının kimliği manifest basamağıyla eşleşirse etkin basamak odur.
     const rung = block.streamId && s.manifest ? s.manifest.video.find((r) => r.streamId === block.streamId) : undefined
     if (rung) {
@@ -460,7 +481,16 @@ function reduceAbr(s: PipelineState, e: DevEvent): PipelineState {
   const to = kbpsOf(field(d, 'to'))
   const est = num(field(d, 'estimateKbps'))
   const bufferSec = num(field(d, 'bufferSec'))
-  const dir: 'up' | 'down' | null = from !== null && to !== null ? (to >= from ? 'up' : 'down') : /↓/.test(e.label) ? 'down' : /↑/.test(e.label) ? 'up' : null
+  const dir: 'up' | 'down' | null =
+    from !== null && to !== null
+      ? to >= from
+        ? 'up'
+        : 'down'
+      : /↓/.test(e.label)
+        ? 'down'
+        : /↑/.test(e.label)
+          ? 'up'
+          : null
   const rung = rungByKbps(s.manifest, to)
   const marker: Marker = { id: e.id, at: e.at, kind: 'abr', dir, text: e.label, reason: str(field(d, 'reason')) }
   const next: StreamingView = {
@@ -471,7 +501,8 @@ function reduceAbr(s: PipelineState, e: DevEvent): PipelineState {
     estimates: est !== null ? keepLast([...st.estimates, { at: e.at, kbps: est }], MAX_SAMPLES) : st.estimates,
     // İlk karar (from yok) bir geçiş değildir; işaret yalnızca gerçek değişimde konur.
     markers: from !== null || dir !== null ? keepLast([...st.markers, marker], MAX_MARKERS) : st.markers,
-    buffer: bufferSec !== null && !st.buffer ? { at: e.at, videoSec: bufferSec, audioSec: null, state: null } : st.buffer,
+    buffer:
+      bufferSec !== null && !st.buffer ? { at: e.at, videoSec: bufferSec, audioSec: null, state: null } : st.buffer,
   }
   return { ...s, streaming: next }
 }
@@ -498,13 +529,24 @@ function reduceCdn(s: PipelineState, e: DevEvent): PipelineState {
   const marker: Marker = { id: e.id, at: e.at, kind: 'cdn', dir: null, text: e.label, reason: str(field(d, 'reason')) }
   return {
     ...s,
-    streaming: { ...st, activeCdn: to ?? st.activeCdn, markers: isSwitch ? keepLast([...st.markers, marker], MAX_MARKERS) : st.markers },
+    streaming: {
+      ...st,
+      activeCdn: to ?? st.activeCdn,
+      markers: isSwitch ? keepLast([...st.markers, marker], MAX_MARKERS) : st.markers,
+    },
   }
 }
 
 /* ───────────── ⑤ TTML, gömme, oynatıcı ───────────── */
 
-const YT_STATES: Record<number, string> = { [-1]: 'UNSTARTED', 0: 'ENDED', 1: 'PLAYING', 2: 'PAUSED', 3: 'BUFFERING', 5: 'CUED' }
+const YT_STATES: Record<number, string> = {
+  [-1]: 'UNSTARTED',
+  0: 'ENDED',
+  1: 'PLAYING',
+  2: 'PAUSED',
+  3: 'BUFFERING',
+  5: 'CUED',
+}
 
 function embedStateOf(e: DevEvent): string | null {
   const v = field(e.detail, 'state')
@@ -520,7 +562,8 @@ function reduceEmbed(s: PipelineState, e: DevEvent): PipelineState {
   const state = embedStateOf(e)
   const prev = s.embed ?? { videoId: null, states: [], error: null }
   let states = prev.states
-  if (state && states[states.length - 1]?.state !== state) states = keepLast([...states, { at: e.at, state }], MAX_EMBED_STATES)
+  if (state && states[states.length - 1]?.state !== state)
+    states = keepLast([...states, { at: e.at, state }], MAX_EMBED_STATES)
   const err = field(e.detail, 'error')
   const embed: EmbedView = {
     videoId: str(field(e.detail, 'videoId')) ?? prev.videoId,
@@ -534,7 +577,13 @@ function reduceTtml(s: PipelineState, e: DevEvent): PipelineState {
   const d = e.detail
   return {
     ...s,
-    ttml: { at: e.at, language: str(field(d, 'language')), cues: num(field(d, 'cues')), tickRate: num(field(d, 'tickRate')), ok: e.ok },
+    ttml: {
+      at: e.at,
+      language: str(field(d, 'language')),
+      cues: num(field(d, 'cues')),
+      tickRate: num(field(d, 'tickRate')),
+      ok: e.ok,
+    },
   }
 }
 

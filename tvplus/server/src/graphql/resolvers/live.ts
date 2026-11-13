@@ -37,8 +37,11 @@ export function airingAccess(ctx: GqlContext, a: AiringRecord): AccessDecision {
   if (base.state !== 'PLAYABLE') return base
   const now = nowOf(ctx)
   const linear = ctx.services.epg.isLinear(a.channelId)
-  if (liveStateOf(norm(a), now) === 'ENDED' && !catchupOf(norm(a), now, linear).available) {
-    return { ...base, state: 'OUT_OF_WINDOW', reasonText: 'Tekrar izlenemiyor', cta: null }
+  if (liveStateOf(norm(a), now) !== 'ENDED') return base
+  if (!catchupOf(norm(a), now, linear).available) return { ...base, state: 'OUT_OF_WINDOW', reasonText: 'Tekrar izlenemiyor', cta: null }
+  // Geri al katalog videosunu oynatır: videonun olgunluk süzgeci de geçerli
+  if (a.videoId !== null && !ctx.services.catalog.isVisibleTo(ctx.passport.profile, a.videoId)) {
+    return { ...base, state: 'BLOCKED', reasonText: 'Bu profil için uygun değil', cta: null }
   }
   return base
 }

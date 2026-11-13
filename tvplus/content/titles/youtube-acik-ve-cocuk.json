@@ -308,6 +308,15 @@
         "number": 1,
         "episodes": [
           {
+            "number": 1,
+            "videoId": 80031101,
+            "title": "Llama Drama",
+            "synopsis": "Lama Koro, Patagonya'da yolu geçmeye çalışır.",
+            "runtimeSec": null,
+            "sources": [{ "type": "YOUTUBE", "videoId": "JOhiWY7XmoY" }],
+            "artwork": { "boxart": null, "storyArt": "https://i.ytimg.com/vi/JOhiWY7XmoY/maxresdefault.jpg", "focal": "50% 40%" }
+          },
+          {
             "number": 2,
             "videoId": 80031102,
             "title": "Caminandes 2: Gran Dillama",

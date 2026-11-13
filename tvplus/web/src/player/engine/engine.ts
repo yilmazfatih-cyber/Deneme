@@ -48,6 +48,8 @@ export interface EngineStats {
   estimateKbps: number
   videoBufferSec: number
   audioBufferSec: number
+  /** oynatılabilir tampon: ses ve videonun küçüğü */
+  bufferSec: number
   cdnId: string | null
   droppedFrames: number
   totalFrames: number
@@ -440,6 +442,8 @@ export class MseEngine implements PipelineHost {
     } catch {
       /* desteklenmiyor */
     }
+    const vb = this.video?.bufferedAheadSec() ?? 0
+    const ab = this.audio ? this.audio.bufferedAheadSec() : vb
     return {
       streamId: s?.streamId ?? null,
       width: s?.width ?? null,
@@ -448,8 +452,9 @@ export class MseEngine implements PipelineHost {
       profile: s?.profile ?? null,
       bufferingStreamId: this.video?.current?.streamId ?? null,
       estimateKbps: Math.round(this.estimator.estimateKbps()),
-      videoBufferSec: round1(this.video?.bufferedAheadSec() ?? 0),
-      audioBufferSec: round1(this.audio?.bufferedAheadSec() ?? 0),
+      videoBufferSec: round1(vb),
+      audioBufferSec: round1(ab),
+      bufferSec: round1(Math.min(vb, ab)),
       cdnId: this.lastCdnId,
       droppedFrames: dropped,
       totalFrames: total,

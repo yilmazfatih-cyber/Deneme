@@ -62,7 +62,10 @@ export interface PlayableVideo {
   requiredProduct: string | null
 }
 export interface ArtworkSource {
-  /** Kaynak görsel adresi (uzak) ya da web/public altındaki yerel dosya; ikisi de yoksa kapak üretilir */
+  /**
+   * Kaynak görsel adresi (uzak) ya da yerel dosya; ikisi de yoksa kapak üretilir.
+   * `localFile` web/public klasörüne görelidir, ör. 'brand/channels/trt-haber.png'.
+   */
   sourceUrl: string | null
   localFile: string | null
   /** Üretilen kapakta yazılacak metin ve renk tohumu */
@@ -114,7 +117,7 @@ export interface CatalogService {
   /** Herhangi bir videoId'nin (film/dizi/bölüm/ek video) bağlı olduğu üst başlık */
   titleOf(videoId: number): ContentTitle | null
   allCollections(): ContentCollection[]
-  /** Kişi dizini: personId = stableId(norm(ad)) */
+  /** Kişi dizini: personId = stableId(norm(ad)); `videoIds` üst başlık (film/dizi) kimlikleridir */
   people(): { personId: number; name: string; videoIds: number[] }[]
   /** Olgunluk seviyesi / çocuk profili süzgeci: bu profil bu başlığı görebilir mi */
   isVisibleTo(profile: ProfileRecord | null, titleId: number): boolean

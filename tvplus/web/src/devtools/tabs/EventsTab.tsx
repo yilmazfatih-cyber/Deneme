@@ -24,15 +24,19 @@ export function EventsTab({ t }: { t: TelemetryState }): ReactNode {
   return (
     <div className="kp-tab">
       <Explainer netflix="Ichnaea olay günlüğü (logs.netflix.com/log/www/cl/2)">
-        Gezinme, görünen kartlar ve oynatma olayları kuyrukta biriktirilir, birkaç saniyede bir tek paket olarak yollanır. Arayüz bu
-        gönderimi asla beklemez.
+        Gezinme, görünen kartlar ve oynatma olayları kuyrukta biriktirilir, birkaç saniyede bir tek paket olarak
+        yollanır. Arayüz bu gönderimi asla beklemez.
       </Explainer>
 
       <div className="kp-stats-row">
         <Stat label="paket" value={fmtInt(t.batchesSent)} />
         <Stat label="olay" value={fmtInt(t.eventsSent)} />
         <Stat label="başarısız paket" value={fmtInt(t.failed)} />
-        <Stat label="kalan kota" value={t.lastRemaining === null ? '—' : fmtInt(t.lastRemaining)} hint="x-tvplus-izci başlığındaki RL değeri" />
+        <Stat
+          label="kalan kota"
+          value={t.lastRemaining === null ? '—' : fmtInt(t.lastRemaining)}
+          hint="x-tvplus-izci başlığındaki RL değeri"
+        />
       </div>
       <p className="kp-dim kp-small">
         Hız sınırı başlığı: <span className="kp-mono">x-tvplus-izci: {t.lastRate ?? '—'}</span> (Netflix: x-ichnaea)
@@ -84,7 +88,7 @@ export function EventsTab({ t }: { t: TelemetryState }): ReactNode {
       <h3 className="kp-h">Sunucu tarafı toplamlar</h3>
       {!server ? (
         <p className="kp-calm" role="status">
-          {poll.error ? 'Sunucu durumu şu an alınamıyor; 15 sn\'de bir yeniden deneniyor.' : 'Yükleniyor…'}
+          {poll.error ? "Sunucu durumu şu an alınamıyor; 15 sn'de bir yeniden deneniyor." : 'Yükleniyor…'}
         </p>
       ) : (
         <>
@@ -95,8 +99,8 @@ export function EventsTab({ t }: { t: TelemetryState }): ReactNode {
             <Stat label="ön hazırlık" value={fmtInt(server.playback.prefetchIssued)} />
           </div>
           <p className="kp-dim kp-small">
-            Son paket: {server.events.lastBatchAt ? fmtClock(Date.parse(server.events.lastBatchAt)) : '—'} · sunucu {uptime(server.uptimeSec)} açık ·{' '}
-            {server.region}
+            Son paket: {server.events.lastBatchAt ? fmtClock(Date.parse(server.events.lastBatchAt)) : '—'} · sunucu{' '}
+            {uptime(server.uptimeSec)} açık · {server.region}
             {poll.error ? ' · son yenileme başarısız' : ''}
           </p>
           {serverTally.length > 0 && (

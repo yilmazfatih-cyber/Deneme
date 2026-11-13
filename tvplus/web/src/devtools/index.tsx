@@ -123,7 +123,13 @@ export function DevtoolsPanel(): ReactElement {
   return (
     <>
       {!state.open && (
-        <button ref={launcherRef} type="button" className="kp-launcher" onClick={() => setOpen(true)} aria-label="Kaputun altı panelini aç (Ctrl+.)">
+        <button
+          ref={launcherRef}
+          type="button"
+          className="kp-launcher"
+          onClick={() => setOpen(true)}
+          aria-label="Kaputun altı panelini aç (Ctrl+.)"
+        >
           <span ref={dotRef} className="kp-launcher-dot" aria-hidden="true" />
           Kaputun altı
         </button>

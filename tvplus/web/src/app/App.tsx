@@ -15,7 +15,6 @@ import { lazy, useEffect, useLayoutEffect, type ReactElement, type ReactNode } f
 import { HashRouter, Navigate, Outlet, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import { ErrorState, ToastHost } from '../design'
 import { DevtoolsPanel } from '../devtools'
-import { startNetworkProbing } from '../player'
 import { installEventFlushOnExit } from '../telemetry/logger'
 import { lastModePath } from './mode'
 import { PagePlaceholder } from './PagePlaceholder'
@@ -48,8 +47,9 @@ let profileServicesStarted = false
 function startProfileServices(): void {
   if (profileServicesStarted) return
   profileServicesStarted = true
-  startNetworkProbing()
   installEventFlushOnExit()
+  // Oynatıcı modülü tembel kalsın diye dinamik içe aktarma (WatchPage ile aynı parça).
+  void import('../player').then((m) => m.startNetworkProbing())
 }
 
 /** Üye + seçili profil ister. */
