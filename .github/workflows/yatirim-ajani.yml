@@ -20,7 +20,7 @@ on:
         default: '2024-01-01'
         required: false
       kaynak:
-        description: 'ag-veri için kaynak listesi (boş = hepsi): tv,yahoo,isy,mali,seri,saatlik,yabanci,tefas,kap'
+        description: 'ag-veri için kaynak listesi (boş = hepsi): tv,yahoo,isy,mali,seri,saatlik,hisse_saatlik,isy_ek,kap_liste,kap_detay'
         default: ''
         required: false
   schedule:
@@ -124,4 +124,9 @@ jobs:
           git add -A
           git diff --cached --quiet && { echo "Değişiklik yok"; exit 0; }
           git commit -q -m "ajan çıktıları: ${{ steps.is.outputs.ad }} $(date '+%Y-%m-%d %H:%M %Z')"
-          git push origin ajan-ciktilari
+          # İş sürerken dala başka bir commit gelmiş olabilir: önce üstüne al, sonra gönder (3 deneme)
+          for i in 1 2 3; do
+            git pull -q --rebase origin ajan-ciktilari && git push origin HEAD:ajan-ciktilari && exit 0
+            sleep $((i * 10))
+          done
+          exit 1

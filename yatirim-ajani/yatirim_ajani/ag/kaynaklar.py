@@ -552,21 +552,19 @@ def _kap_iste(o: requests.Session, yontem: str, url: str, sayac: dict, govde: di
     return None
 
 
-def kap_bildirim(bas: date, bit: date, pencere_gun: int = 2, detay_sinir: int = 1800, sure_siniri_dk: float = 75) -> tuple[dict[str, pd.DataFrame], dict]:
-    """KAP bildirim sorgusu (işlem gören şirketlerin özel durum açıklamaları): seçili konularda 2024→bugün liste ve
-    pay alım satım / halka arzda %5 üstü alım bildirimlerinin metni. Gövde biçimi sitenin kendi sorgu sayfasından alınmıştır.
-    Site hız sınırı uyguladığı için istekler yavaş ve yeniden denemeli gider; süre sınırı dolarsa eldeki kısım yazılır."""
+def kap_liste(bas: date, bit: date, pencere_gun: int = 2, sure_siniri_dk: float = 75) -> tuple[dict[str, pd.DataFrame], dict]:
+    """KAP bildirim sorgusu (işlem gören şirketlerin özel durum açıklamaları): seçili konularda `bas`→`bit` liste.
+    Gövde biçimi sitenin kendi sorgu sayfasından alınmıştır. Site hız sınırı uyguladığı için istekler yavaş ve yeniden denemeli gider;
+    yeniden eskiye çekilir, süre sınırı dolarsa eldeki (en güncel) kısım yazılır."""
     t0 = time.time()
     rapor: dict[str, Any] = {}
     sayac: dict[str, Any] = {}
     o = _kap_oturum()
     tablolar: dict[str, pd.DataFrame] = {}
     parcalar: list[pd.DataFrame] = []
-    ham_satir = 0
-    en_buyuk = 0
-    bos_pencere = 0
-    d = bit  # yeniden eskiye: süre biterse en güncel dönem elde kalsın
-    while d >= bas and (time.time() - t0) / 60 < sure_siniri_dk * 0.6:
+    ham_satir = en_buyuk = bos_pencere = 0
+    d = bit
+    while d >= bas and (time.time() - t0) / 60 < sure_siniri_dk:
         b = max(bas, d - timedelta(days=pencere_gun - 1))
         r = _kap_iste(o, "POST", f"{KAP_API}/disclosure/members/byCriteria", sayac, _kap_govde(b, d, "%Y-%m-%d", "IGS", "ODA"))
         v = r.json() if r is not None and r.text[:1] == "[" else None
@@ -592,32 +590,65 @@ def kap_bildirim(bas: date, bit: date, pencere_gun: int = 2, detay_sinir: int = 
     L = L.drop_duplicates("disclosureIndex") if "disclosureIndex" in L.columns else L
     tablolar["kap_bildirimler"] = L
     rapor["liste"].update({"satir": int(len(L)), "konu": L["subject"].astype(str).value_counts().head(25).to_dict()})
-    # ayrıntı metni: önce halka arzda %5 üstü alanlar ve fon/portföy şirketlerinin pay alım satımları, sonra diğer pay alım satımlar
+    return tablolar, rapor
+
+
+def kap_detay_sec(L: pd.DataFrame) -> pd.DataFrame:
+    """Metni çekilecek bildirimler, öncelik sırasıyla: 0 = halka arzda %5 üstü alanlar; 1 = unvanında portföy/fon/yatırım ortaklığı/girişim
+    geçenlerin pay alım satım bildirimleri; 2 = diğer pay alım satım bildirimleri. Her öncelikte yeniden eskiye."""
     konu = L["subject"].astype(str).str.lower()
     unvan = L["kapTitle"].astype(str).str.upper()
+    ozet = L["summary"].astype(str).str.upper() if "summary" in L.columns else pd.Series("", index=L.index)
+    pas = konu.str.contains(r"pay al[ıi]m sat[ıi]m", regex=True)
+    fon = unvan.str.contains(r"PORTF|FON|YATIRIM ORTAKLI|G[İI]R[İI][ŞS][İI]M", regex=True) | ozet.str.contains(r"PORTF|FON", regex=True)
     oncelik = pd.Series(9, index=L.index)
-    oncelik[konu.str.contains(r"pay al[ıi]m sat[ıi]m", regex=True)] = 2
-    oncelik[konu.str.contains(r"pay al[ıi]m sat[ıi]m", regex=True) & unvan.str.contains(r"PORTF|FON|YATIRIM ORTAKLI|G[İI]R[İI][ŞS][İI]M", regex=True)] = 1
+    oncelik[pas] = 2
+    oncelik[pas & fon] = 1
     oncelik[konu.str.contains(r"% ?5", regex=True)] = 0
-    secim = L[oncelik < 9].assign(_o=oncelik[oncelik < 9]).sort_values(["_o", "disclosureIndex"], ascending=[True, False])
-    rapor["detay_aday"] = {str(k): int(v) for k, v in secim["_o"].value_counts().sort_index().items()}
-    sayac2: dict[str, Any] = {}
-    satir = []
+    return L[oncelik < 9].assign(_o=oncelik[oncelik < 9]).sort_values(["_o", "disclosureIndex"], ascending=[True, False])
+
+
+def kap_detay(klasor: Path, detay_sinir: int = 2500, sure_siniri_dk: float = 150, bekle: float = 4.0) -> tuple[dict[str, pd.DataFrame], dict]:
+    """`kap_bildirimler.csv.gz` listesinden seçilen bildirimlerin sayfa metnini çeker; daha önce çekilmiş olanları (kap_pay_detay) atlar."""
+    t0 = time.time()
+    rapor: dict[str, Any] = {}
+    yol = klasor / "kap_bildirimler.csv.gz"
+    if not yol.exists():
+        return {}, {"hata": "kap_bildirimler.csv.gz yok; önce kap_liste çalıştırın"}
+    L = pd.read_csv(yol)
+    secim = kap_detay_sec(L)
+    rapor["aday"] = {str(k): int(v) for k, v in secim["_o"].value_counts().sort_index().items()}
+    eski = pd.DataFrame()
+    eski_yol = klasor / "kap_pay_detay.csv.gz"
+    if eski_yol.exists():
+        try:
+            eski = pd.read_csv(eski_yol)
+            eski = eski[eski["durum"] == 200]
+        except Exception:  # noqa: BLE001
+            eski = pd.DataFrame()
+    var = set(eski["disclosureIndex"].astype(str)) if not eski.empty else set()
+    o = _kap_oturum()
     o.headers.update({"Accept": "text/html,application/xhtml+xml"})
     o.headers.pop("Content-Type", None)
-    for i, (idx, onc) in enumerate(zip(secim["disclosureIndex"].astype(str), secim["_o"])):
+    sayac: dict[str, Any] = {}
+    satir = []
+    i = 0
+    for idx, onc in zip(secim["disclosureIndex"].astype(str), secim["_o"]):
+        if idx in var:
+            continue
         if i >= detay_sinir or (time.time() - t0) / 60 > sure_siniri_dk:
             break
-        r = _kap_iste(o, "GET", f"https://www.kap.org.tr/tr/Bildirim/{idx}", sayac2, bekle=0.9, deneme=2)
+        r = _kap_iste(o, "GET", f"https://www.kap.org.tr/tr/Bildirim/{idx}", sayac, bekle=bekle, deneme=3)
         satir.append({"disclosureIndex": idx, "oncelik": int(onc), "durum": r.status_code if r is not None else -1, "metin": _metin(r.text)[:12000] if r is not None else ""})
+        i += 1
         if i % 100 == 0:
-            print(f"[kap-detay] {i}/{min(len(secim), detay_sinir)} {sayac2}", flush=True)
-    if satir:
-        tablolar["kap_pay_detay"] = pd.DataFrame(satir)
-        rapor["detay"] = {"satir": len(satir), "tamam": sum(1 for x in satir if x["durum"] == 200), "durum": dict(sayac2),
-                          "ornek": next((x["metin"][:700] for x in satir if x["durum"] == 200), "")}  # fmt: skip
-    rapor["toplam_sure_dk"] = round((time.time() - t0) / 60, 1)
-    return tablolar, rapor
+            print(f"[kap-detay] {i} {sayac} {round((time.time() - t0) / 60)} dk", flush=True)
+    yeni = pd.DataFrame(satir)
+    hepsi = pd.concat([eski, yeni], ignore_index=True) if not eski.empty else yeni
+    rapor.update({"yeni": int(len(yeni)), "yeni_tamam": int((yeni["durum"] == 200).sum()) if len(yeni) else 0, "toplam": int(len(hepsi)), "durum": dict(sayac),
+                  "oncelik_tamam": {str(k): int(v) for k, v in hepsi[hepsi["durum"] == 200]["oncelik"].value_counts().sort_index().items()} if len(hepsi) else {},
+                  "ornek": next((x["metin"][:900] for x in satir if x["durum"] == 200), ""), "sure_dk": round((time.time() - t0) / 60, 1)})  # fmt: skip
+    return ({"kap_pay_detay": hepsi} if len(hepsi) else {}), rapor
 
 
 def _html_tablo(html: str) -> pd.DataFrame:
@@ -649,8 +680,11 @@ def isy_ek() -> tuple[dict[str, pd.DataFrame], dict]:
             j = html.find("</table>", i)
             T = _html_tablo(html[i:j])
             if not T.empty:
+                T.columns = [f"s{k}_{str(c)[:24]}" for k, c in enumerate(T.columns)]  # başlık hücrelerinde tarih seçicileri var: adları kısalt ve benzersiz yap
                 T.insert(0, "cekilme", date.today().isoformat())
                 tablolar["yabanci_oran_guncel"] = T
+                rapor["yabanci_secenekler"] = re.findall(r'<option[^>]*value="([^"]*)"', html[i:j])[:400]
+                rapor["yabanci_baslik_html"] = re.sub(r"\s+", " ", html[i : i + 2500])
                 rapor["yabanci_tablo"] = {"satir": int(len(T)), "sutun": list(T.columns), "ornek": T.head(2).to_dict(orient="records"),
                                           "tarih_ozniteligi": re.findall(r'data-start="([^"]*)" data-end="([^"]*)"', html[i : i + 600])}  # fmt: skip
         betik = []
@@ -788,7 +822,7 @@ def saatlik_hisse_sec(tv: pd.DataFrame, adet: int = 250, ek: list[str] | None = 
 
 
 # --- toplu -------------------------------------------------------------------------------------
-TUM_KAYNAKLAR = ("tv", "yahoo", "isy", "mali", "seri", "saatlik", "hisse_saatlik", "yabanci", "tefas", "kap", "kesif", "kesif2", "kap_bildirim", "isy_ek")
+TUM_KAYNAKLAR = ("tv", "yahoo", "isy", "mali", "seri", "saatlik", "hisse_saatlik", "yabanci", "tefas", "kap", "kesif", "kesif2", "kap_liste", "kap_detay", "isy_ek")
 
 
 def ag_veri_cek(klasor: str | Path, bas: date, bit: date | None = None, kaynaklar: tuple[str, ...] = TUM_KAYNAKLAR, paralel: int = 6,
@@ -887,8 +921,14 @@ def ag_veri_cek(klasor: str | Path, bas: date, bit: date | None = None, kaynakla
         r["hata"] = dict(list(r.get("hata", {}).items())[:10])
         return r
 
-    def _kap_bildirim() -> dict:
-        tablolar, r = kap_bildirim(bas, bit)
+    def _kap_liste() -> dict:
+        tablolar, r = kap_liste(bas, bit)
+        for ad2, df in tablolar.items():
+            _yaz(df, klasor / f"{ad2}.csv.gz")
+        return r
+
+    def _kap_detay() -> dict:
+        tablolar, r = kap_detay(klasor)
         for ad2, df in tablolar.items():
             _yaz(df, klasor / f"{ad2}.csv.gz")
         return r
@@ -899,7 +939,7 @@ def ag_veri_cek(klasor: str | Path, bas: date, bit: date | None = None, kaynakla
             _yaz(df, klasor / f"{ad2}.csv.gz")
         return r
 
-    for ad, islev in (("kesif", kesif), ("kesif2", kesif2), ("isy_ek", _isy_ek), ("kap_bildirim", _kap_bildirim), ("seri", _seri), ("saatlik", _saatlik), ("yabanci", _yabanci), ("kap", kap_sonda), ("tefas", _tefas),
+    for ad, islev in (("kesif", kesif), ("kesif2", kesif2), ("isy_ek", _isy_ek), ("kap_liste", _kap_liste), ("kap_detay", _kap_detay), ("seri", _seri), ("saatlik", _saatlik), ("yabanci", _yabanci), ("kap", kap_sonda), ("tefas", _tefas),
                       ("yahoo", _yahoo), ("hisse_saatlik", _hisse_saatlik), ("isy", _isy), ("mali", _mali)):  # fmt: skip
         if ad in kaynaklar:
             if ad in ("yahoo", "isy", "mali") and not liste:
