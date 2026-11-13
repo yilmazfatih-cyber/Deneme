@@ -172,8 +172,8 @@ modülünün `llm` bileşeni bu kimliğe çevrilir.
 
 ## 4. Sınırlar
 
-- Bu depo ağırlık **üretmez**; GPU, Hugging Face erişimi ve BIRD verisi gerekir. Burada çalışan ve test edilen
-  kısım çıkarım hattı, veri hazırlama mantığı ve birleştirme aritmetiğidir (sentetik küçük model üzerinde).
+- 7B ağırlıklar ve LoRA eğitimi GPU ister; bu depoda yalnızca 1.5B ölçekte gerçek birleştirme ve CPU ölçümü
+  yapıldı (bkz. §5). BIRD **train** kümesi olmadan LoRA eğitilmemeli: dev veritabanlarıyla eğitmek ölçümü kirletir.
 - Sütun bağlama sqlglot'un ayrıştırabildiği lehçelerde çalışır (sqlite, postgres, mysql, tsql, oracle). Ayrıştırılamayan
   SQL de reddedilir, yani güvenli tarafta kalır.
 - Oylama sonuç kümesine bakar; iki yanlış aday aynı sonucu veriyorsa yanlış kazanabilir. Aday sayısı 4-8 arası
@@ -181,3 +181,43 @@ modülünün `llm` bileşeni bu kimliğe çevrilir.
 - Türkçe soru + İngilizce şema (ERP'de yaygın) için `--lang tr` istemi kullanılır; model Qwen2.5-Coder iki dili de
   bilir, ama Türkçe soru sözcüğü ile İngilizce sütun adı eşleşmesi `link_schema` için zayıftır — açıklama sütunları
   (`description`) doldurulursa bağlama güçlenir.
+
+## 5. Gerçek koşu: 1.5B, CPU (2026-11)
+
+Hattın ve birleştirme betiğinin uçtan uca çalıştığını görmek için 7B yerine aynı ailenin 1.5B üyeleriyle ölçüldü
+(GPU yok; CPU'da bf16, soru başına ~1 dk).
+
+- **Taban:** `Qwen/Qwen2.5-Coder-1.5B-Instruct`
+- **Donör:** `Chinastark/DatA-SQL-1.5B` (aynı tabandan SQL için eğitilmiş)
+- **Birleşimler** (`merge_weights.py`, ~25 sn): `λ=1.5` görev vektörü ve `λ=1, density=0.3` TIES.
+  Donör tabandan yalnızca dikkat katmanlarında ayrışıyor: 338 tensörün 112'si değişmiş, TIES sonrası parametrelerin
+  %3,1'i güncellendi.
+- **Veri:** BIRD mini-dev (SQLite) içindeki zor olmayan 40 soru (8 kolay, 32 orta). Bu sürümün %92'si "challenging";
+  zor 42 soruda donör bile %4,8'de kaldı, ağırlık farkını göremeyiz.
+- **Ayarlar:** `--style cot`, tek aday, `max_repairs=2`, en çok 640 yeni token.
+
+| Ağırlık | İlk tur EX | Hat sonrası EX | Kolay / Orta | İlk turda uydurma sütun/tablo | Dönen SQL | Dönen SQL'de uydurma |
+| --- | --- | --- | --- | --- | --- | --- |
+| Taban | %5,0 | %5,0 | %25 / %0 | 21/40 | 22 | **0** |
+| Donör (DatA-SQL) | %5,0 | **%10,0** | %25 / %6,25 | 12/40 | 29 | **0** |
+| Görev vektörü λ=1.5 | %2,5 | %2,5 | %12,5 / %0 | **8/40** | 28 | **0** |
+| TIES λ=1, d=0.3 | **%7,5** | **%10,0** | %25 / %6,25 | 15/40 | 26 | **0** |
+
+Bulgular:
+
+1. **Sütun uydurma hattın çıktısında sıfır.** Dönen 105 SQL'in tamamı sonradan yeniden bağlandı; uydurma sütun ya da
+   tablo yok. Model ilk denemede 8-21 kez uyduruyor. Hat bunları ya düzeltme turuyla onarıyor ya da yanıt vermiyor
+   (`no_valid_sql`). "Yanlış ama uydurmasız" ile "yanıt yok" arasındaki seçim bilinçli olarak ikincisinden yana.
+2. **TIES, taban ile donör arasında en iyi ilk tur sonucunu verdi.** Hat sonrası donörle eşit (%10). Ölçek
+   küçük (40 soru, ±1 soru = 2,5 puan): bu bir eğilimdir, kanıt değildir.
+3. **λ>1 uydurmayı azaltıp doğruluğu düşürdü.** En az uyduran (8/40) ama en düşük EX. Görev vektörünü abartmak
+   şema sadakatini artırıyor, akıl yürütmeyi bozuyor. Taramada λ ≤ 1 tutun.
+4. **İstem biçimi ağırlık kadar önemli.** DatA-SQL JSON istemini yok sayıp Python yazdı. Bu yüzden `--style cot`
+   (düşün, sonra ```sql bloğu) eklendi. Modeli değiştirirken eğitildiği istem biçimini kullanın.
+5. **Düzeltme turu bozmadı, düzeltti.** `fixed_by_pipeline` 0-2, `broken_by_pipeline` her yapılandırmada 0.
+   Hata iletileri modelin diline göre (`lang`) çevrilir, birden çok sorun tek iletide toplanır, eksik tablo için
+   FK üzerinden JOIN önerilir.
+
+1.5B mutlak sayıları 7B beklentisini (§2) temsil etmez. Aynı komutlar 7B taban/donörle (`Qwen2.5-Coder-7B-Instruct`
++ `Arctic-Text2SQL-R1-7B`) GPU'da tekrarlanmalı. Koşu sürücüsü: `python -m aiplatform.text2sql.bird --hf-model
+<dizin> --style cot --max-repairs 2 --offset/--stride` ile parça parça, sonra `summary.json`.
