@@ -279,6 +279,14 @@ def olay_portfoyu(P: Panel, D: pd.DataFrame, tutma: int = 20, maliyet: float = 0
     return out
 
 
+def _kalan_pay(P: Panel, D: pd.DataFrame) -> np.ndarray:
+    """"%5'inden fazlasını alanlar" bildirimi ilk halka arza mı (payın borsadaki ilk gününün çevresinde) yoksa borsada işlem gören
+    şirketin bedelli artırımından kalan payların satışına mı ait? True = kalan pay satışı."""
+    arz = pd.to_datetime(P.evren["halka_arz"].reindex(D["hisse"]).values, errors="coerce")
+    fark = (D["zaman"].dt.normalize().values - arz.values) / np.timedelta64(1, "D")
+    return ~((fark >= -15) & (fark <= 20))
+
+
 def kap_kurallari(P: Panel, K: pd.DataFrame, deneme: int = 95, detay: pd.DataFrame | None = None) -> dict:
     """Bildirimlerden türetilen kuralların takvim zamanlı sepet testi (maliyet gidiş-dönüş 30 bp, kıyas = pazar katmanı).
     Olay ortalamaları birkaç hisseye ve kümelenmiş günlere fazla ağırlık verir; karar bu testin fazla getirisine ve t değerine göre verilir."""
@@ -336,6 +344,11 @@ def kap_kurallari(P: Panel, K: pd.DataFrame, deneme: int = 95, detay: pd.DataFra
             d = _ilkler(kyon[kyon["yon"] == y], ["hisse"], 20)
             if len(d) >= 30:
                 out[f"kap_esik_{y}_20g"] = olay_portfoyu(P, d, 20, 0.003, deneme)
+    # Bedelli artırımdan kalan payların birincil piyasada satışı (%5 üstü alanlar bildirimi; ilk halka arz bildirimleri hariç)
+    a5t = T[T["tur"] == "halka_arz_5"]
+    kalan = _ilkler(a5t[_kalan_pay(P, a5t)], ["hisse"], 20)
+    out["kalan_pay_5g"] = olay_portfoyu(P, kalan, 5, 0.003, deneme, min_pozisyon=1)
+    out["kalan_pay_20g"] = olay_portfoyu(P, kalan, 20, 0.003, deneme, min_pozisyon=2)
     # Portföy şirketi bildirimleri: düzenleme öncesi ve sonrası (28 Ağustos 2026 fon rehberi)
     out["portfoy_donem"] = {}
     for ad, b0, b1 in (("28 Ağu 2026 öncesi", "2024-01-01", "2026-08-27"), ("28 Ağu 2026 sonrası", "2026-08-28", "2100-01-01")):
@@ -399,6 +412,9 @@ def gunluk_tarama(P: Panel, K: pd.DataFrame, X: dict[str, pd.DataFrame], pencere
         out["kacin"][f"Ortaklık payı eşik bildirimi (son {pencere} işlem günü)"] = sirala([[h, t, "eşik bildirimi"] for h, t in zip(pk["hisse"], tarih(pk))])
         pp = K2[(K2["tur"] == "pay_alim_satim") & (K2["bildiren_tur"] == "portfoy") & yakin]
         out["kacin"][f"Portföy şirketi pay bildirimi (son {pencere} işlem günü)"] = sirala([[h, t, _baslik(re.sub(r"\s*PORTFÖY YÖNETİMİ.*$", "", b))] for h, t, b in zip(pp["hisse"], tarih(pp), pp["bildiren"])])
+        a5 = K2[(K2["tur"] == "halka_arz_5") & (K2["i"] >= son_i - 4)]
+        a5 = a5[_kalan_pay(P, a5)] if len(a5) else a5
+        out["kacin"]["Bedelliden kalan payların satışı (son 5 işlem günü)"] = sirala([[h, t, "kalan pay satışı sonucu"] for h, t in zip(a5["hisse"], tarih(a5))])
         # Aday: ilk geri alım bildirimi; henüz fiyatlanmamış (son kapanıştan sonra gelen) ve son üç işlem gününde gelenler
         W = Pencereler(P)
         ga = _ilkler(K2[K2["tur"] == "geri_alim"], ["hisse"], 20)
@@ -444,11 +460,16 @@ def portfoy_profilleri(P: Panel, K: pd.DataFrame, X: dict[str, pd.DataFrame], de
     hizala = lambda M: M.reindex(index=P.R.index, columns=P.R.columns).ffill(limit=5).values  # noqa: E731
     T["pd"] = hizala(P.PD)[i0, j]
     T["hao"] = hizala(P.HAO)[i0, j]
+    T["hao_oran"] = hizala(X["halka_aciklik"])[i0, j] if "halka_aciklik" in X else np.nan
     T["sirket"] = T["bildiren"].str.replace(r"\s*PORTFÖY YÖNETİMİ.*$", "", regex=True).str.strip().map(_baslik)
     if detay is not None and not detay.empty:
         T = T.merge(detay[["no", "yon", "oran_once", "oran_sonra", "fon_sayisi"]], on="no", how="left")
     else:
-        T["yon"] = None
+        T["yon"], T["oran_once"], T["oran_sonra"] = None, np.nan, np.nan
+    T["oran_sonra"] = pd.to_numeric(T["oran_sonra"], errors="coerce").where(lambda x: (x >= 0) & (x <= 100))
+    # Tutulan payın halka açık paylara oranı (sermayedeki pay / halka açıklık oranı); 1'in üstü veri uyuşmazlığıdır, 1'de kesilir
+    T["pay_halka_acik"] = (T["oran_sonra"] / (T["hao_oran"] * 100)).clip(upper=1.0)
+    son_konum = T.dropna(subset=["oran_sonra"]).sort_values("zaman").drop_duplicates(["sirket", "hisse"], keep="last")
     ozk = [c for c in T.columns if c.startswith("oz_")]
     ciftler = T.sort_values("zaman").drop_duplicates(["sirket", "hisse"])  # her (şirket, hisse) için ilk bildirim
 
@@ -469,9 +490,14 @@ def portfoy_profilleri(P: Panel, K: pd.DataFrame, X: dict[str, pd.DataFrame], de
             for yon in ("alim", "satim"):
                 y = d[d["yon"] == yon]
                 p[yon] = {"bildirim": int(len(y)), **{c: _gun_kumeli(y[c], y["gun"]) for c in ("once_20g", "gun_0", "sonra_5g", "sonra_20g", "sonra_60g")}}
-            if "oran_sonra" in d and d["oran_sonra"].notna().any():
-                p["oran_sonra_medyan"] = float(d["oran_sonra"].median())
-                p["oran_sonra_en_yuksek"] = float(d["oran_sonra"].max())
+            k = d.dropna(subset=["oran_sonra"]).sort_values("zaman").drop_duplicates("hisse", keep="last")  # hisse başına son bildirilen konum
+            if len(k):
+                p["konum"] = {"hisse": int(len(k)), "oran_medyan": float(k["oran_sonra"].median()), "oran_en_yuksek": float(k["oran_sonra"].max()),
+                              "yuzde5_ustu": int((k["oran_sonra"] >= 5).sum()), "yuzde10_ustu": int((k["oran_sonra"] >= 10).sum()),
+                              "halka_acik_pay_medyan": float(k["pay_halka_acik"].median()) if k["pay_halka_acik"].notna().any() else None,
+                              "halka_acik_ceyrek_ustu": int((k["pay_halka_acik"] >= 0.25).sum()),
+                              "en_buyukler": [{"hisse": r.hisse, "oran": round(float(r.oran_sonra), 2), "halka_acik_pay": (round(float(r.pay_halka_acik), 3) if pd.notna(r.pay_halka_acik) else None),
+                                               "yon": r.yon, "gun": str(r.zaman.date())} for r in k.sort_values("oran_sonra", ascending=False).head(8).itertuples()]}  # fmt: skip
         return p
 
     out: dict = {"bildirim": int(len(T)), "sirket_sayisi": int(T["sirket"].nunique()), "hisse_sayisi": int(T["hisse"].nunique()), "hepsi": profil(T), "sirket": {}}
@@ -496,12 +522,32 @@ def portfoy_profilleri(P: Panel, K: pd.DataFrame, X: dict[str, pd.DataFrame], de
     out["ortak_hisse_agi"] = sorted(bag, key=lambda x: -x["adet"])[:40]
     sayim = T.groupby("hisse")["sirket"].nunique().sort_values(ascending=False)
     out["en_kalabalik_hisseler"] = [{"hisse": h, "sirket": int(n), "bildirim": int((T["hisse"] == h).sum()), "sirketler": sorted(set(T.loc[T["hisse"] == h, "sirket"]))} for h, n in sayim.head(25).items() if n >= 2]
-    out["olaylar"] = T.assign(gun=T["gun"].dt.strftime("%Y-%m-%d"))[["no", "sirket", "hisse", "gun", "an", "yon", "once_20g", "gun_0", "sonra_5g", "sonra_20g", "sonra_60g"]].round(4).to_dict(orient="records")
+    # Tutulan pay: (şirket, hisse) başına son bildirilen konumun sermayeye ve halka açık paylara oranı
+    if len(son_konum) >= 10:
+        o, f = son_konum["oran_sonra"], son_konum["pay_halka_acik"].dropna()
+        out["tutulan_pay"] = {
+            "konum": int(len(son_konum)), "yon_bulunan": int(T["yon"].notna().sum()), "alim": int((T["yon"] == "alim").sum()), "satim": int((T["yon"] == "satim").sum()),
+            "oran": {"c25": float(o.quantile(0.25)), "medyan": float(o.median()), "c75": float(o.quantile(0.75)), "en_yuksek": float(o.max())},
+            "oran_dilim": {"%0-3": int((o < 3).sum()), "%3-5": int(((o >= 3) & (o < 5)).sum()), "%5-10": int(((o >= 5) & (o < 10)).sum()), "%10-20": int(((o >= 10) & (o < 20)).sum()), "%20+": int((o >= 20).sum())},
+            "halka_acik": {"c25": float(f.quantile(0.25)), "medyan": float(f.median()), "c75": float(f.quantile(0.75)), "n": int(len(f)),
+                           "ceyrek_ustu": int((f >= 0.25).sum()), "yari_ustu": int((f >= 0.5).sum())} if len(f) >= 10 else None,
+            "en_yogun": [{"sirket": r.sirket, "hisse": r.hisse, "oran": round(float(r.oran_sonra), 2), "halka_acik_pay": (round(float(r.pay_halka_acik), 3) if pd.notna(r.pay_halka_acik) else None),
+                          "yon": r.yon, "gun": str(r.zaman.date())} for r in son_konum.sort_values("pay_halka_acik", ascending=False).head(20).itertuples()],
+        }  # fmt: skip
+        # Eşik çevresinde yığılma: bildirim sınırının hemen altına inen satışlar ve hemen üstüne çıkan alımlar
+        d = T.dropna(subset=["oran_once", "oran_sonra"])
+        out["tutulan_pay"]["esik_gecisi"] = {str(e): {"yukari": int(((d["oran_once"] < e) & (d["oran_sonra"] >= e)).sum()), "asagi": int(((d["oran_once"] >= e) & (d["oran_sonra"] < e)).sum())} for e in (3, 5, 10, 15, 20, 25)}
+    out["olaylar"] = T.assign(gun=T["gun"].dt.strftime("%Y-%m-%d"))[["no", "sirket", "hisse", "gun", "an", "yon", "oran_once", "oran_sonra", "once_20g", "gun_0", "sonra_5g", "sonra_20g", "sonra_60g"]].round(4).to_dict(orient="records")
     return out
 
 
 # --- bildirim metinleri --------------------------------------------------------------------------
-_SAYI = r"(\d{1,3}(?:\.\d{3})*(?:,\d+)?|\d+(?:,\d+)?)"
+_N = r"(-?\d{1,3}(?:\.\d{3})*(?:,\d+)?|-?\d+(?:,\d+)?)"
+# KAP pay alım satım formunun satırı: tarih, alım nominal, satım nominal, net, gün başı nominal, gün sonu nominal, sonra dört oran
+# (alım, satım ya da net alanı boş bırakılmış formlarda sayı adedi 3-5 arasında değişir; son iki sayı gün başı ve gün sonu nominalidir)
+_SATIR = re.compile(r"(\d{2}/\d{2}/\d{4})\s+((?:" + _N + r"\s+){3,5})%\s*" + _N + r"\s+%\s*" + _N + r"\s+%\s*" + _N + r"\s+%\s*" + _N)
+_YABANCI = re.compile(r"bank of america|citigroup|citibank|goldman|morgan stanley|j\.?p\.? ?morgan|\bubs\b|barclays|deutsche|hsbc|bnp|soci[eé]t[eé] g[eé]n[eé]rale|credit suisse|merrill|nomura|"
+                      r"blackrock|vanguard|norges|state street|wellington|fidelity|\blimited\b|\bltd\.?$|\bllc\b|\binc\.?\b|corporation|\bplc\b|\bn\.v\.|\bgmbh\b|\bs\.a\.(?!ş)|\bl\.p\.|\bfund\b|capital management")  # fmt: skip
 
 
 def _sayi(s: str) -> float | None:
@@ -511,33 +557,147 @@ def _sayi(s: str) -> float | None:
         return None
 
 
+def _form_satirlari(govde: str) -> list[dict]:
+    """Pay alım satım formunun satırları: tarih, (varsa) alım ve satım nominali, gün başı ve gün sonu nominali, gün başı ve gün sonu
+    sermaye oranı. Satırlar sayfada Türkçe ve İngilizce bölümde ikişer kez yer alır; sayısal değeri aynı olan yinelenenler atılır."""
+    out, gorulen = [], set()
+    for m in _SATIR.finditer(govde):
+        sayilar = [_sayi(x) for x in re.findall(_N, m.group(2))]
+        oranlar = [_sayi(m.group(k)) for k in range(m.lastindex - 3, m.lastindex + 1)]
+        if len(sayilar) < 3 or any(x is None for x in sayilar[-2:]) or oranlar[0] is None or oranlar[2] is None:
+            continue
+        anahtar = (m.group(1), round(sayilar[-2], 2), round(sayilar[-1], 2), round(oranlar[0], 4), round(oranlar[2], 4))
+        if anahtar in gorulen:
+            continue
+        gorulen.add(anahtar)
+        out.append({"gun": m.group(1), "alim": sayilar[0] if len(sayilar) == 5 else None, "satim": sayilar[1] if len(sayilar) == 5 else None,
+                    "basi": sayilar[-2], "sonu": sayilar[-1], "oran_basi": oranlar[0], "oran_sonu": oranlar[2]})  # fmt: skip
+    return sorted(out, key=lambda x: x["gun"][6:] + x["gun"][3:5] + x["gun"][:2])  # kararlı sıralama: aynı günün satırları sayfadaki sırasıyla
+
+
+def bildiren_kisi_turu(ad: str) -> str:
+    """Eşik bildirimindeki pay sahibinin türü: yabancı kurum / yerli tüzel kişi / gerçek kişi (addan, kaba sınıflama)."""
+    a = _kucuk(ad)
+    if _YABANCI.search(a):
+        return "yabanci_kurum"
+    if re.search(r"a\.ş|a\.s\.|holding|şti|vakf|portföy|yatırım|bankası|sigorta|fonu|kooperatif|belediye|müdürlüğü", a):
+        return "yerli_tuzel"
+    return "gercek_kisi"
+
+
 def detay_ayristir(metin: str) -> dict:
-    """Pay alım satım bildirimi metninden yön ve oranlar. KAP sayfasının düz metni üzerinde çalışır; bulunamayan alan None kalır.
-    Yön: metindeki işlem ifadelerinden ("alış", "satış" işlemi; "payı ... yükselmiştir / düşmüştür"; önce ve sonra oranları)."""
-    m = _kucuk(metin)
-    out: dict = {"yon": None, "oran_once": None, "oran_sonra": None, "fon_sayisi": None, "fiyat": None}
-    # sınır aşımı cümlesi: "... sermayedeki payı/oy hakları ... %X sınırını aşmıştır / altına düşmüştür / ulaşmıştır"
-    oranlar = [_sayi(x) for x in re.findall(r"%\s*" + _SAYI, m)]
-    oranlar = [x for x in oranlar if x is not None and 0 <= x <= 100]
-    asti = bool(re.search(r"aşmıştır|aşmış|ulaşmıştır|yükselmiştir|geçmiştir|çıkmıştır", m))
-    dustu = bool(re.search(r"altına düşmüş|altına inmiş|düşmüştür|inmiştir|gerilemiştir|azalmıştır", m))
-    alis = len(re.findall(r"\balış\b|\balım\b|\balınmış|satın al", m))
-    satis = len(re.findall(r"\bsatış\b|\bsatım\b|\bsatılmış|\bsatmış", m))
-    es = re.search(r"işlem öncesi[^%]{0,80}%\s*" + _SAYI + r".{0,200}?işlem sonrası[^%]{0,80}%\s*" + _SAYI, m, re.S)
-    if es:
-        out["oran_once"], out["oran_sonra"] = _sayi(es.group(1)), _sayi(es.group(2))
-    if out["oran_once"] is not None and out["oran_sonra"] is not None and out["oran_once"] != out["oran_sonra"]:
-        out["yon"] = "alim" if out["oran_sonra"] > out["oran_once"] else "satim"
-    elif asti != dustu:
-        out["yon"] = "alim" if asti else "satim"
-    elif alis != satis and (alis + satis) > 0:
-        out["yon"] = "alim" if alis > satis else "satim"
-    if out["oran_sonra"] is None and oranlar:
-        out["oran_sonra"] = oranlar[-1]
-    fonlar = set(re.findall(r"\b[a-zçğıöşü]{2,}\s+portföy[^.,;\n]{3,80}?fon", m))
-    out["fon_sayisi"] = len(fonlar) or None
-    f = re.search(r"(?:ortalama|fiyat)[^0-9]{0,40}" + _SAYI + r"\s*(?:tl|türk lirası)", m)
-    out["fiyat"] = _sayi(f.group(1)) if f else None
+    """Pay alım satım bildirimi sayfasının düz metninden: yön, işlem öncesi ve sonrası oran, alım ve satım nominali, işlem günü,
+    fiyat aralığı; MKK üzerinden gelen eşik bildirimlerinde pay sahibinin adı ve türü. Bulunamayan alan None kalır.
+    Yön önce form tablosundan (net nominal, olmazsa oran farkı), tablo yoksa açıklama metnindeki ifadelerden çıkarılır."""
+    out: dict = {"yon": None, "oran_once": None, "oran_sonra": None, "alim_nominal": None, "satim_nominal": None, "islem_gunu": None, "fiyat": None,
+                 "kisi": None, "kisi_tur": None, "kaynak": None}  # fmt: skip
+    i = metin.find("Bildirim İçeriği")
+    govde = metin[i:] if i >= 0 else metin[max(0, metin.find("Özet Bilgi")) :]
+    satirlar = _form_satirlari(govde)
+    if satirlar:
+        ilk, son = satirlar[0], satirlar[-1]
+        alim = sum(x["alim"] or 0 for x in satirlar) if all(x["alim"] is not None for x in satirlar) else None
+        satim = sum(x["satim"] or 0 for x in satirlar) if all(x["satim"] is not None for x in satirlar) else None
+        out.update({"alim_nominal": alim, "satim_nominal": satim, "oran_once": ilk["oran_basi"], "oran_sonra": son["oran_sonu"], "kaynak": "tablo",
+                    "islem_gunu": "-".join(reversed(son["gun"].split("/")))})  # fmt: skip
+        fark_nominal = son["sonu"] - ilk["basi"]
+        fark_oran = son["oran_sonu"] - ilk["oran_basi"]
+        net = (alim or 0) - (satim or 0)
+        out["yon"] = ("alim" if fark_nominal > 0 else "satim") if fark_nominal else ("alim" if fark_oran > 0 else "satim") if fark_oran else ("alim" if net > 0 else "satim" if net < 0 else None)
+    m = _kucuk(govde)
+    if out["yon"] is None:
+        gecis = re.search(r"%?\s*" + _N + r"\s*%?\s*'?[dt][ae]n\s*%?\s*" + _N + r"\s*%?\s*'?y?[ae]\s*(düş|yüksel|çık|in|geril|ulaş)", m)
+        if gecis:
+            a, b = _sayi(gecis.group(1)), _sayi(gecis.group(2))
+            if a is not None and b is not None and 0 <= a <= 100 and 0 <= b <= 100 and a != b:
+                out.update({"oran_once": a, "oran_sonra": b, "yon": "alim" if b > a else "satim", "kaynak": "metin"})
+    if out["yon"] is None:
+        alis = len(re.findall(r"\balış işlemi|\balım işlemi|satın alın|pay alımı", m))
+        satis = len(re.findall(r"\bsatış işlemi|\bsatım işlemi|pay satışı|satılmış", m))
+        asti = bool(re.search(r"sınırını aşmış|oranına ulaşmış|üzerine çıkmış", m))
+        dustu = bool(re.search(r"altına düşmüş|altına inmiş", m))
+        if asti != dustu:
+            out.update({"yon": "alim" if asti else "satim", "kaynak": "metin"})
+        elif alis != satis:
+            out.update({"yon": "alim" if alis > satis else "satim", "kaynak": "metin"})
+    f = re.search(_N + r"\s*-\s*" + _N + r"\s*tl\s*fiyat aralığ", m)
+    if f:
+        a, b = _sayi(f.group(1)), _sayi(f.group(2))
+        out["fiyat"] = (a + b) / 2 if a and b else None
+    k = re.search(r"kapsamında\s+(.{3,120}?)\s+tarafından kuruluşumuza gönderilen", govde, re.I)
+    if k:
+        out["kisi"] = k.group(1).strip()
+        out["kisi_tur"] = bildiren_kisi_turu(out["kisi"])
+    return out
+
+
+_ARZ_CIFT = re.compile(r"(?<![\d.,])" + _N + r"\s+%\s*%?\s*" + _N + r"(?![\d.,])")
+_ARZ_KISI = r"(?:gerçek\s+kişi(?:ler)?|individuals?|real\s+persons?|natural\s+persons?)"
+_ARZ_TUZEL = r"(?:tüzel\s+kişi(?:ler)?|legal\s+entit(?:y|ies)|legal\s+persons?)"
+_ARZ_ULKE = re.compile(r"\b(?:türkiye(?:\s+cumhuriyeti)?|turkey|turkiye)\b\s*")
+_ARZ_AMAC = re.compile(r"^(?:kendi\s+nam(?:ına)?\s+ve\s+hesabına|on\s+(?:its\s+|his\s+|her\s+|their\s+)?own\s+(?:account|behalf)|(?:uzun\s+vadeli\s+)?yatırım(?:\s+amaçlı|\s+amacıyla|\s+amacı)?|"
+                       r"(?:long[\s-]term\s+)?investment(?:\s+purposes?)?|portföy\s+yatırımı)\b[\s.,;:-]*")  # fmt: skip
+_FON_AD = re.compile(r"\bfon\b|\bfonu\b|\bfund\b|portföy|yatırım ortaklığı|emeklilik")
+
+
+def _arz_ad(on: str) -> str:
+    """İki (tutar, oran) çifti arasındaki metinden alıcının adı. Metin `[faaliyet konusu] [ülke] [alım amacı] [ad]` sırasındadır;
+    ülke sözcüğüne kadar olan kısım ve bilinen alım amacı kalıpları atılır."""
+    k = _kucuk(on)
+    bas = 0
+    m = re.match(r"\s*(?:" + _ARZ_KISI + "|" + _ARZ_TUZEL + r")\b\s*", k)
+    if m:
+        bas = m.end()
+    u = _ARZ_ULKE.search(k, bas)
+    if u and u.start() - bas <= 60:
+        bas = u.end()
+    for _ in range(2):
+        a = _ARZ_AMAC.match(k[bas:])
+        if not a:
+            break
+        bas += a.end()
+    a = re.match(r".{0,45}?(?:hesabına|account|behalf)\b[\s.,;:-]*", k[bas:])  # tanınmayan alım amacı kalıbı
+    if a:
+        bas += a.end()
+    return re.sub(r"^[%\d.,;:\s/-]+", "", on[bas:]).strip(" -.,;:")
+
+
+def arz5_ayristir(metin: str) -> list[dict]:
+    """Satışa sunulan sermaye piyasası aracının %5'inden fazlasını alanlar: ad, nominal tutar, oran (%), tür
+    (fon / yabancı kurum / yerli tüzel / gerçek kişi). Her satır sayfada Türkçe ve İngilizce iki kez yer alır; bir önceki kabul edilen
+    satırla aynı (tutar, oran) çiftini taşıyan adsız, İngilizce ya da aynı adlı satır yineleme sayılır."""
+    i = metin.find("Buying Reason of Capital Market Instrument")
+    if i < 0:
+        return []
+    govde = metin[i + len("Buying Reason of Capital Market Instrument") :]
+    j = govde.find("Yukarıdaki açıklamalarımızın")
+    govde = govde[: j if j >= 0 else len(govde)]
+    out: list[dict] = []
+    son, onceki = 0, None
+    for m in _ARZ_CIFT.finditer(govde):
+        nominal, oran = _sayi(m.group(1)), _sayi(m.group(2))
+        on, son = govde[son : m.start()], m.end()
+        if nominal is None or oran is None or not (0 < oran <= 100):
+            continue
+        ad = _arz_ad(on)
+        sonrasi = _kucuk(govde[m.end() : m.end() + 60]).strip()
+        ingilizce = bool(re.match(r"legal|individual|real person|natural person", sonrasi))
+        cift = (round(nominal, 2), round(oran, 4))
+        if len(ad) < 3 or (onceki and onceki["kabul"] and onceki["cift"] == cift and (ingilizce or _kucuk(ad) == _kucuk(onceki["ad"]))):
+            onceki = {"cift": cift, "kabul": False, "ad": ad}
+            continue
+        a = _kucuk(ad)
+        faaliyet = _ARZ_ULKE.split(sonrasi)[0]
+        if _FON_AD.search(a) or re.search(r"\bfon\b|\bfonu\b|\bfund\b", faaliyet):
+            tur = "fon"
+        elif re.match(_ARZ_KISI, sonrasi):
+            tur = "gercek_kisi"
+        else:
+            tur = bildiren_kisi_turu(ad)
+            if tur == "gercek_kisi" and re.match(_ARZ_TUZEL, sonrasi):
+                tur = "yerli_tuzel"
+        out.append({"ad": ad[:90], "nominal": nominal, "oran": oran, "tur": tur})
+        onceki = {"cift": cift, "kabul": True, "ad": ad}
     return out
 
 
@@ -561,7 +721,116 @@ def detay_yukle(klasor: str | Path) -> pd.DataFrame:
     A.insert(0, "no", D["disclosureIndex"].values)
     A["metin"] = D["metin"].values
     A["oncelik"] = D["oncelik"].values if "oncelik" in D else 9
+    A["fon_sayisi"] = None
+    A["alicilar"] = [arz5_ayristir(x) if o == 0 else None for x, o in zip(A["metin"], A["oncelik"])]
     return A
+
+
+def _kisi_anahtari(ad: str) -> str:
+    return re.sub(r"[^a-zçğıöşü ]", "", re.sub(r"\s+", " ", _kucuk(ad))).strip()
+
+
+def _fon_sirketi(ad: str) -> str:
+    """Fon adından yönetici şirket: 'Hedef Portföy Kuzey Hisse Senedi Serbest Fon' → 'Hedef Portföy'."""
+    a = re.sub(r"^[^A-Za-zÇĞİÖŞÜçğıöşü]+", "", ad).strip()
+    a = re.sub(r"^(?:TLY|TL)\s+", "", a)
+    m = re.match(r"(.{2,40}?\bportf[öo]y)", _kucuk(a))
+    if m and len(a[: m.end()].split()) <= 3:
+        return _baslik(a[: m.end()])
+    return _baslik(" ".join(a.split()[:2]))
+
+
+def arz_alicilari(P: Panel, K: pd.DataFrame, detay: pd.DataFrame | None) -> dict:
+    """Satışa sunulan payların %5'inden fazlasını alanlar (bildirim sayfasındaki tablo). İki satış türü ayrılır: ilk halka arz (bildirim,
+    payın borsadaki ilk gününün çevresindedir) ve borsada işlem gören şirketin bedelli artırımından kalan payların birincil piyasada
+    satışı. Gerçek kişilerin adı çıktıya yazılmaz; yalnız sayıları ve yinelenme dağılımı verilir. Fon şirketleri ve yabancı kurumlar adıyla yer alır."""
+    if K.empty or detay is None or detay.empty or "alicilar" not in detay:
+        return {}
+    A = K[K["tur"] == "halka_arz_5"].merge(detay[["no", "alicilar"]], on="no", how="inner")
+    A = A[A["alicilar"].map(lambda x: isinstance(x, list))].copy()
+    if A.empty:
+        return {}
+    A["sinif"] = np.where(_kalan_pay(P, A), "kalan_pay", "halka_arz")
+    A["alicilar"] = A["alicilar"].map(lambda L: [x for x in L if not re.search(r"\btera\b", _kucuk(x["ad"]))])  # Tera'nın işlemleri araştırma dışı
+    sayim: dict[str, int] = {}
+    for L in A["alicilar"]:
+        for x in L:
+            if x["tur"] == "gercek_kisi":
+                k = _kisi_anahtari(x["ad"])
+                sayim[k] = sayim.get(k, 0) + 1
+    sik = {k for k, n in sayim.items() if n >= 5}
+    A["adet"] = A["alicilar"].map(len)
+    A["toplam_oran"] = A["alicilar"].map(lambda L: min(100.0, sum(x["oran"] for x in L)) if L else 0.0)
+    A["en_buyuk_oran"] = A["alicilar"].map(lambda L: max((x["oran"] for x in L), default=np.nan))
+    A["fon_var"] = A["alicilar"].map(lambda L: any(x["tur"] == "fon" for x in L))
+    A["fon_orani"] = A["alicilar"].map(lambda L: sum(x["oran"] for x in L if x["tur"] == "fon"))
+    A["sik_kisi_var"] = A["alicilar"].map(lambda L: any(x["tur"] == "gercek_kisi" and _kisi_anahtari(x["ad"]) in sik for x in L))
+    W = Pencereler(P)
+    A["i"], A["an"] = olay_gunu(A["zaman"], P.R.index)
+    T = W.tablo(A)
+    TUR = ("gercek_kisi", "fon", "yerli_tuzel", "yabanci_kurum")
+    PEN = ("once_20g", "sonra_5g", "sonra_20g", "sonra_60g")
+
+    def ozet(d: pd.DataFrame) -> dict:
+        dolu = d[d["adet"] > 0]
+        kayit = [x for L in d["alicilar"] for x in L]
+        top = sum(x["oran"] for x in kayit) or 1.0
+        return {"bildirim": int(len(d)), "hisse": int(d["hisse"].nunique()), "alicili": int(len(dolu)), "alici_ort": float(dolu["adet"].mean()) if len(dolu) else None,
+                "toplam_oran_medyan": float(dolu["toplam_oran"].median()) if len(dolu) else None, "en_buyuk_oran_medyan": float(dolu["en_buyuk_oran"].median()) if len(dolu) else None,
+                "yari_ustu_tek_alici": int((dolu["en_buyuk_oran"] >= 50).sum()),
+                "tur": {t: {"kayit": int(sum(x["tur"] == t for x in kayit)), "oran_payi": float(sum(x["oran"] for x in kayit if x["tur"] == t) / top)} for t in TUR}}  # fmt: skip
+
+    def getiri(d: pd.DataFrame) -> dict:
+        return {"bildirim": int(len(d)), **{c: _gun_kumeli(d[c], d["gun"]) for c in PEN}}
+
+    out: dict = {"bildirim": int(len(A)), "sinif": {s: ozet(d) for s, d in A.groupby("sinif")}}
+    n = sorted(sayim.values(), reverse=True)
+    out["kisi"] = {"kisi_sayisi": int(len(n)), "kayit": int(sum(n)), "en_sik": n[:10], "en_sik_10_payi": float(sum(n[:10]) / max(1, sum(n))),
+                   "dagilim": {"1": int(sum(x == 1 for x in n)), "2-4": int(sum(2 <= x <= 4 for x in n)), "5-9": int(sum(5 <= x <= 9 for x in n)), "10+": int(sum(x >= 10 for x in n))},
+                   "bes_ustu_kisi": int(len(sik)), "bes_ustu_kayit_payi": float(sum(x for x in n if x >= 5) / max(1, sum(n)))}  # fmt: skip
+    kurum: dict[str, dict] = {}
+    for r in A.itertuples():
+        for x in r.alicilar:
+            if x["tur"] not in ("fon", "yabanci_kurum"):
+                continue
+            ad = _fon_sirketi(x["ad"]) if x["tur"] == "fon" else _baslik(x["ad"])
+            k = kurum.setdefault(ad, {"ad": ad, "tur": x["tur"], "kayit": 0, "oranlar": [], "hisseler": [], "sinif": {}})
+            k["kayit"] += 1
+            k["oranlar"].append(x["oran"])
+            k["hisseler"].append(r.hisse)
+            k["sinif"][r.sinif] = k["sinif"].get(r.sinif, 0) + 1
+    out["kurum"] = sorted(({"ad": k["ad"], "tur": k["tur"], "kayit": k["kayit"], "oran_ort": float(np.mean(k["oranlar"])), "oran_en_yuksek": float(max(k["oranlar"])),
+                            "hisseler": sorted(set(k["hisseler"]))[:10], "sinif": k["sinif"]} for k in kurum.values()), key=lambda x: (-x["kayit"], -x["oran_en_yuksek"]))  # fmt: skip
+    # Bildirim sonrası fiyat: borsada işlem gören şirketin kalan pay satışında alıcı türüne göre
+    kp = T[T["sinif"] == "kalan_pay"]
+    out["kalan_pay_getiri"] = {"hepsi": getiri(kp), "fon aldı": getiri(kp[kp["fon_var"]]), "sık görülen kişi aldı": getiri(kp[kp["sik_kisi_var"] & ~kp["fon_var"]]),
+                               "%5 üstü alan yok": getiri(kp[kp["adet"] == 0])}  # fmt: skip
+    ha = T[T["sinif"] == "halka_arz"]
+    out["halka_arz_getiri"] = {"hepsi": getiri(ha), "%5 üstü alan var": getiri(ha[ha["adet"] > 0]), "%5 üstü alan yok": getiri(ha[ha["adet"] == 0]),
+                               "sık görülen kişi aldı": getiri(ha[ha["sik_kisi_var"]])}  # fmt: skip
+    d = ha[ha["adet"] > 0].dropna(subset=["sonra_20g"])
+    if len(d) >= 12:
+        r = float(d["toplam_oran"].rank().corr(d["sonra_20g"].rank()))
+        out["halka_arz_yogunluk"] = {"n": int(len(d)), "sira_kor_20g": r, "t": float(r * np.sqrt((len(d) - 2) / max(1e-9, 1 - r * r)))}
+    out["olaylar"] = [{"hisse": r.hisse, "gun": str(r.zaman.date()), "sinif": r.sinif, "alici": int(r.adet), "toplam_oran": round(float(r.toplam_oran), 1),
+                       "fon_orani": round(float(r.fon_orani), 1), "sik_kisi": bool(r.sik_kisi_var)} for r in A.sort_values("zaman").itertuples()]  # fmt: skip
+    return out
+
+
+def esik_sahipleri(K: pd.DataFrame, detay: pd.DataFrame | None) -> dict:
+    """MKK'nın otomatik eşik bildirimlerinde (bir pay sahibinin payı %5, 10, 15... sınırını geçtiğinde) pay sahibinin türü: gerçek kişi,
+    yerli tüzel kişi, yabancı kurum. Yalnız metni çekilmiş bildirimler sayılır; gerçek kişilerin adı çıktıya yazılmaz."""
+    if K.empty or detay is None or detay.empty or "kisi" not in detay:
+        return {}
+    tum = K[(K["tur"] == "pay_alim_satim") & (K["bildiren_tur"] == "kap")]
+    d = detay[detay["kisi"].notna()].merge(tum[["no", "hisse", "zaman"]], on="no", how="inner")
+    if d.empty:
+        return {}
+    out: dict = {"bildirim": int(len(tum)), "metni_cekilen": int(len(d)), "tur": {t: {"bildirim": int(len(x)), "sahip": int(x["kisi"].map(_kisi_anahtari).nunique()), "hisse": int(x["hisse"].nunique())} for t, x in d.groupby("kisi_tur")}}
+    y = d[d["kisi_tur"] == "yabanci_kurum"].assign(anahtar=lambda x: x["kisi"].map(_kisi_anahtari))
+    out["yabanci_kurum"] = [{"ad": re.sub(r"\bOf\b", "of", str(x["kisi"].mode().iloc[0])), "bildirim": int(len(x)), "hisseler": sorted(set(x["hisse"]))[:12]}
+                            for _, x in sorted(y.groupby("anahtar"), key=lambda kv: -len(kv[1]))][:12]  # fmt: skip
+    return out
 
 
 # --- yabancı oranı -------------------------------------------------------------------------------

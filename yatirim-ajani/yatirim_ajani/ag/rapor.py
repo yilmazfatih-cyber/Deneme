@@ -90,7 +90,9 @@ KURAL_AD = {"geri_alim_acilis_5g": "İlk geri alım: ertesi açılışta al, 5 g
             "portfoy_alim_20g": "Portföy şirketi alım bildirimi: 20 gün tut", "portfoy_20g": "Portföy şirketi bildirimi: 20 gün tut", "portfoy_satim_20g": "Portföy şirketi satım bildirimi: 20 gün tut",
             "sirket_alimi_20g": "Şirketin pay alımı: 20 gün tut", "kap_esik_alim_20g": "Eşik bildirimi, pay artışı: 20 gün tut", "kap_esik_20g": "Ortaklık payı eşik bildirimi: 20 gün tut",
             "kap_esik_satim_20g": "Eşik bildirimi, pay azalışı: 20 gün tut", "bedelli_20g": "Bedelli kararı: 20 gün tut", "bedelsiz_60g": "Bedelsiz kararı: 60 gün tut",
-            "bedelsiz_20g": "Bedelsiz kararı: 20 gün tut"}  # fmt: skip
+            "bedelsiz_20g": "Bedelsiz kararı: 20 gün tut", "kalan_pay_20g": "Bedelliden kalan pay satışı: 20 gün tut", "kalan_pay_5g": "Bedelliden kalan pay satışı: 5 gün tut"}  # fmt: skip
+YON_AD = {"alim": "alım", "satim": "satım"}
+ALICI_AD = {"gercek_kisi": "gerçek kişiler", "fon": "yatırım fonları", "yerli_tuzel": "yerli şirketler", "yabanci_kurum": "yabancı kurumlar"}
 
 
 def bp(x, n: int = 1) -> str:
@@ -103,6 +105,7 @@ def bp(x, n: int = 1) -> str:
 def _kap_bolumu(S: dict) -> list[str]:
     """KAP bildirimleri, portföy şirketleri, yabancı payı, sektör endeksleri ve madenlerin gece-seans ayrımı."""
     O, F, R = S.get("kap_olay") or {}, S.get("kap_fon") or {}, S.get("kap_kural") or {}
+    AZ, ES = S.get("kap_arz") or {}, S.get("kap_esik") or {}
     YK, YG, SM, MS = S.get("yabanci_kesit") or {}, S.get("yabanci_gecmis") or {}, S.get("sektor_mevsim") or {}, S.get("maden_saat") or {}
     if not (O or YK or SM or MS):
         return []
@@ -164,6 +167,54 @@ def _kap_bolumu(S: dict) -> list[str]:
         if any(k in R for k in ("portfoy_alim_20g", "portfoy_satim_20g")):
             L += ["Bildirim metninden ayrıştırılan yöne göre (20 gün tutma, günlük fazla getiri): "
                   + "; ".join(f"{'alım' if 'alim' in k else 'satım'} {bp(_al(R[k], 'net', 'fazla_ort'))} bp (t {tt(R[k].get('net'), 'fazla_t')}, {R[k].get('alinan')} bildirim)" for k in ("portfoy_alim_20g", "portfoy_satim_20g") if k in R) + ".", ""]
+        TP = F.get("tutulan_pay") or {}
+        if TP.get("halka_acik"):
+            ha, hep_a, hep_s = TP["halka_acik"], hep.get("alim") or {}, hep.get("satim") or {}
+            pen = (("once_20g", "Önceki 20 gün"), ("gun_0", "Bildirim günü"), ("sonra_5g", "Sonraki 5 gün"), ("sonra_20g", "Sonraki 20 gün"), ("sonra_60g", "Sonraki 60 gün"))
+            L += ["### Fon bir şirketin ne kadarını tutuyor? (bildirim sayfalarındaki tablodan)", "",
+                  f"{bn(F['bildirim'])} bildirimin {bn(TP['yon_bulunan'])} tanesinde yön ve işlem sonrası pay okunabildi ({bn(TP['alim'])} alım, {bn(TP['satim'])} satım; kalanında ayrıntı ekte). "
+                  f"Her şirket ve hisse çifti için son bildirilen konum alındığında {TP['konum']} konum çıkıyor: sermayedeki pay medyan %{s(TP['oran']['medyan'], 1)} "
+                  f"(çeyrekler %{s(TP['oran']['c25'], 1)} – %{s(TP['oran']['c75'], 1)}, en yüksek %{s(TP['oran']['en_yuksek'], 1)}). Halka açık paya oran (sermayedeki pay / halka açıklık oranı; yaklaşık ölçü) "
+                  f"medyan %{ha['medyan'] * 100:.0f}; {ha['ceyrek_ustu']} konumda fon dolaşımdaki payın dörtte birinden fazlasını, {ha['yari_ustu']} konumda yarısından fazlasını tutuyor.", "",
+                  "| Şirket | Hisse | Sermayedeki pay | Halka açık paya oranı | Son işlem | Tarih |", "| --- | --- | ---: | ---: | --- | --- |"]  # fmt: skip
+            for x in TP.get("en_yogun", [])[:14]:
+                hp = "-" if x["halka_acik_pay"] is None else f"%{x['halka_acik_pay'] * 100:.0f}"
+                L.append(f"| {x['sirket']} | {x['hisse']} | %{s(x['oran'], 1)} | {hp} | {YON_AD.get(x['yon'], '-')} | {x['gun']} |")
+            L += ["", "| Şirket | Konum | Medyan sermaye payı | Medyan halka açık paya oranı | Dörtte birden büyük konum | Alım / satım | Alım sonrası 20 gün | Satım sonrası 20 gün |", "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |"]
+            konumlu = [(ad, p) for ad, p in F.get("sirket", {}).items() if _al(p, "konum", "hisse", varsayilan=0) >= 3]
+            for ad, p in sorted(konumlu, key=lambda kv: -(kv[1]["konum"].get("halka_acik_pay_medyan") or 0)):
+                k = p["konum"]
+                hm = k.get("halka_acik_pay_medyan")
+                hp = "-" if hm is None else f"%{hm * 100:.0f}"
+                L.append(f"| {ad} | {k['hisse']} | %{s(k['oran_medyan'], 1)} | {hp} | {k['halka_acik_ceyrek_ustu']} | {_al(p, 'alim', 'bildirim', varsayilan=0)} / {_al(p, 'satim', 'bildirim', varsayilan=0)} | "
+                         f"{y(_al(p, 'alim', 'sonra_20g', 'ort'))} | {y(_al(p, 'satim', 'sonra_20g', 'ort'))} |")
+            L += ["", "| Pencere | Alım bildirimi: ortalama (t) | medyan | Satım bildirimi: ortalama (t) | medyan |", "| --- | ---: | ---: | ---: | ---: |"]
+            for k, ad in pen:
+                L.append(f"| {ad} | {y(_al(hep_a, k, 'ort'))} ({tt(hep_a.get(k))}) | {y(_al(hep_a, k, 'medyan'))} | {y(_al(hep_s, k, 'ort'))} ({tt(hep_s.get(k))}) | {y(_al(hep_s, k, 'medyan'))} |")
+            L += ["", "Alım bildirimi yükselişin ardından geliyor; sonraki ortalamaları art arda bildirim gelen birkaç hisse taşıyor ve sepet testinde alım bildirimini izlemek kaybettiriyor. Satım bildirimi günü hisse belirgin düşüyor. "
+                  "Halka açık payın büyük bölümünü tek bir fonun tuttuğu hissede fiyatı fonun kendi alımı taşır; fon satıcıya dönünce karşısında alıcı kalmaz.", ""]
+    if _al(AZ, "sinif", "kalan_pay"):
+        kp, hz, ki, G = AZ["sinif"]["kalan_pay"], AZ["sinif"].get("halka_arz") or {}, AZ.get("kisi") or {}, AZ.get("kalan_pay_getiri") or {}
+        k5 = R.get("kalan_pay_5g") or {}
+        fonlar = [x for x in AZ.get("kurum", []) if x["tur"] == "fon"]
+        L += ["### Bedelliden kalan payları ve halka arzda büyük payı kim alıyor?", "",
+              f"Ortakların kullanmadığı rüçhan haklarından kalan paylar borsanın birincil piyasasında satılır; payların %5'inden fazlasını alanlar bildirilir. {kp['bildirim']} satışın ({kp['hisse']} şirket) {kp['alicili']} tanesinde "
+              f"en az bir büyük alıcı var; ortadaki satışta büyük alıcıların toplam payı %{s(kp.get('toplam_oran_medyan'), 0)}, {kp['yari_ustu_tek_alici']} satışta tek alıcı payların yarısından fazlasını aldı. "
+              "Alınan payın dağılımı: " + ", ".join(f"{ALICI_AD[t]} %{v['oran_payi'] * 100:.0f} ({v['kayit']} kayıt)" for t, v in kp["tur"].items() if v["kayit"]) + ". "
+              f"{ki.get('kisi_sayisi')} gerçek kişiden {ki.get('bes_ustu_kisi')} tanesi beş ve daha çok satışta alıcı ve kişi kayıtlarının %{(ki.get('bes_ustu_kayit_payi') or 0) * 100:.0f}'ini oluşturuyor; "
+              f"en sık görülen kişi {(ki.get('en_sik') or [0])[0]} ayrı satışta yer alıyor (gerçek kişilerin adı rapora yazılmaz). "
+              + (("Fon tarafında " + "; ".join(f"{x['ad']} fonları {x['kayit']} satışta ortalama %{x['oran_ort']:.0f}, en yüksek %{x['oran_en_yuksek']:.0f} ({', '.join(x['hisseler'][:6])})" for x in fonlar[:3]) + ". ") if fonlar else "")
+              + f"İlk halka arzlarda durum farklı: {hz.get('bildirim')} halka arzın yalnız {hz.get('alicili')} tanesinde payların %5'inden fazlasını alan biri var.", "",
+              "| Kalan pay satışı | Satış | Önceki 20 gün | Sonraki 5 gün | Sonraki 20 gün | Sonraki 60 gün |", "| --- | ---: | ---: | ---: | ---: | ---: |"]  # fmt: skip
+        for ad, g in G.items():
+            L.append(f"| {'Tüm satışlar' if ad == 'hepsi' else ad[0].upper() + ad[1:]} | {g.get('bildirim')} | " + " | ".join(f"{y(_al(g, c, 'ort'))} ({tt(g.get(c))})" for c in ("once_20g", "sonra_5g", "sonra_20g", "sonra_60g")) + " |")
+        L += ["", f"Satış sonucunun bildirilmesini izleyen beş günde hisse katmanının gerisinde kalıyor (satışların %{(_al(G, 'hepsi', 'sonra_5g', 'pozitif') or 0) * 100:.0f}'inde artı); sepet testinde bu beş günü taşımak "
+              f"günlük {bp(_al(k5, 'net', 'fazla_ort'))} bp (t {tt(k5.get('net'), 'fazla_t')}). Payı toplu alan alıcı ilk günlerde piyasaya satıyor: bedelli süreci kalan payların satışıyla bitmiyor.", ""]
+    if ES.get("tur"):
+        ad = {"gercek_kisi": "gerçek kişi", "yerli_tuzel": "yerli şirket, holding, vakıf", "yabanci_kurum": "yabancı kurum"}
+        L += [f"**Eşik bildirimlerinin sahibi** (merkezi kayıt kuruluşunun otomatik bildirimleri; {bn(ES['bildirim'])} bildirimin metni okunan {ES['metni_cekilen']} tanesi): "
+              + ", ".join(f"{ad.get(t, t)} {v['bildirim']} bildirim ({v['sahip']} ayrı sahip)" for t, v in ES["tur"].items()) + ". Yabancı kurum tarafında "
+              + ", ".join(f"{x['ad']} ({x['bildirim']})" for x in ES.get("yabanci_kurum", [])[:3]) + "; bu paylar büyük olasılıkla müşteriler adına tutulan saklama hesaplarıdır. Bu grupta yön bildirimin ekinde olduğu için ayrılamadı.", ""]
     if YK.get("ozellik"):
         g = YK.get("grup", {})
         oz = YK["ozellik"]
@@ -648,7 +699,7 @@ def rapor_yenile(cikti: str | Path, arastirma: str | Path | None, rapor_yolu: st
     for dosya in ("oncu.json", "akis.json", "yatirimci.json"):
         S.update({k: v for k, v in oku(dosya).items() if v is not None})
     kp, yb = oku("kap.json"), oku("yabanci.json")
-    S.update({"kap_veri": kp.get("veri"), "kap_olay": kp.get("olay"), "kap_fon": kp.get("fon"), "kap_kural": kp.get("kural"), "yabanci_kesit": yb.get("kesit"), "yabanci_gecmis": yb.get("gecmis"),
+    S.update({"kap_veri": kp.get("veri"), "kap_olay": kp.get("olay"), "kap_fon": kp.get("fon"), "kap_kural": kp.get("kural"), "kap_arz": kp.get("arz"), "kap_esik": kp.get("esik"), "yabanci_kesit": yb.get("kesit"), "yabanci_gecmis": yb.get("gecmis"),
               "sektor_mevsim": oku("sektor_mevsim.json")})  # fmt: skip
     metin = rapor_yaz(S, Path(arastirma) if arastirma else None)
     Path(rapor_yolu).parent.mkdir(parents=True, exist_ok=True)

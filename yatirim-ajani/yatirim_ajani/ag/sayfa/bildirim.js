@@ -13,7 +13,11 @@ const KURAL_AD = [
   ['portfoy_satim_20g', 'Portföy şirketi satım bildirimi: 20 gün tut'], ['sirket_alimi_20g', 'Şirketin pay alımı: 20 gün tut'],
   ['kap_esik_alim_20g', 'Eşik bildirimi, pay artışı: 20 gün tut'], ['kap_esik_20g', 'Ortaklık payı eşik bildirimi: 20 gün tut'], ['kap_esik_satim_20g', 'Eşik bildirimi, pay azalışı: 20 gün tut'],
   ['bedelli_20g', 'Bedelli kararı: 20 gün tut'], ['bedelsiz_60g', 'Bedelsiz kararı: 60 gün tut'], ['bedelsiz_20g', 'Bedelsiz kararı: 20 gün tut'],
+  ['kalan_pay_20g', 'Bedelliden kalan pay satışı: 20 gün tut'], ['kalan_pay_5g', 'Bedelliden kalan pay satışı: 5 gün tut'],
 ];
+const YON_AD = { alim: 'alım', satim: 'satım' };
+const ALICI_TUR = [['gercek_kisi', 'Gerçek kişiler'], ['fon', 'Yatırım fonları'], ['yerli_tuzel', 'Yerli şirketler'], ['yabanci_kurum', 'Yabancı kurumlar']];
+const ortT = x => (x && x.ort != null ? `${yz(x.ort, 1)} (${sy(x.t, 1)})` : '–');
 const PEN_AD = [['once_20g', 'Önceki 20 gün'], ['gece_0', 'Açılış boşluğu'], ['gunici_0', 'İlk gün, açılıştan kapanışa'], ['sonra_5g', 'Sonraki 5 gün'], ['sonra_20g', 'Sonraki 20 gün']];
 const tDeger = x => (x && x.t != null ? x.t : 0);
 
@@ -89,6 +93,45 @@ function gorunumBildirim(kok) {
       seri: [{ ad: 'Ortalama fazla getiri', v: cq.map(k => GQ[k].ort) }], ipucu: i => [tipBaslik(cq[i].replace('Q', ' Ç')), tipSatir('Ortalama', yz(GQ[cq[i]].ort, 2)), tipSatir('Medyan', yz(GQ[cq[i]].medyan, 2)), tipSatir('Olay', tam(GQ[cq[i]].olay))] });
   }
 
+  // 2c) Bedelliden kalan paylar ve %5 üstü alanlar
+  const AZ = K.arz;
+  if (AZ && AZ.sinif && AZ.sinif.kalan_pay) {
+    const kp = AZ.sinif.kalan_pay, hz = AZ.sinif.halka_arz || {}, ki = AZ.kisi || {};
+    const G = AZ.kalan_pay_getiri || {};
+    const k5 = R.kalan_pay_5g || {};
+    const fonlar = (AZ.kurum || []).filter(x => x.tur === 'fon');
+    const tEl = cizimKutusu();
+    kok.append(h('div', { class: 'grid' },
+      sekil({ baslik: 'Bedelli artırımda kalan payları kim alıyor?', cls: 'y5', alt: `Ortakların kullanmadığı rüçhan haklarından kalan paylar borsanın birincil piyasasında satılır ve payların %5'inden fazlasını alanlar bildirilir. 2024'ten bu yana ${tam(kp.bildirim)} satış, ${tam(kp.hisse)} şirket.` },
+        h('div', { class: 'sayilar iki' }, sayi(yzp(kp.toplam_oran_medyan / 100), 'ortadaki satışta %5 üstü alanların toplam payı'), sayi(`${tam(kp.yari_ustu_tek_alici)} / ${tam(kp.bildirim)}`, 'satışta tek alıcı payların yarısından fazlasını aldı'),
+          sayi(tam(ki.bes_ustu_kisi), 'kişi beş ve daha çok satışta alıcı'), sayi(yzp(ki.bes_ustu_kayit_payi), 'gerçek kişi alımlarında bu kişilerin payı')),
+        h('div', { class: 'kbaslik', text: 'Alınan payın alıcı türüne dağılımı' }), tEl,
+        p(`Kalan paylar geniş bir kitleye dağılmıyor: tipik satışta payların neredeyse tamamı birkaç alıcıya gidiyor ve alıcılar **aynı küçük grup**. ${tam(ki.kisi_sayisi)} gerçek kişiden ${tam(ki.bes_ustu_kisi)} tanesi kayıtların ${yzp(ki.bes_ustu_kayit_payi)}'ini oluşturuyor; en sık görülen kişi ${tam((ki.en_sik || [])[0])} ayrı satışta alıcı. ` +
+          (fonlar.length ? `Fonlar az sayıda ama büyük alıyor: ${fonlar.slice(0, 2).map(x => `${x.ad} fonları ${tam(x.kayit)} satışta ortalama ${yzp(x.oran_ort / 100)}, en yüksek ${yzp(x.oran_en_yuksek / 100)}`).join('; ')}. ` : '') +
+          `İlk halka arzlarda tablo farklı: ${tam(hz.bildirim)} halka arzın yalnız ${tam(hz.alicili)} tanesinde payların %5'inden fazlasını alan biri var.`, 'okuma')),
+      sekil({ baslik: 'Kalan pay satışından sonra fiyat', cls: 'y7', alt: 'Satış sonucunun bildirilmesinden sonra hissenin pazar katmanına göre fazla getirisi: ortalama ve parantez içinde t. Az sayıda olay olan satırlar yalnız yön gösterir.' },
+        tablo([{ ad: 'Alıcı' }, { ad: 'Satış', n: 1 }, { ad: 'Önceki 20 gün', n: 1 }, { ad: 'Sonraki 5 gün', n: 1 }, { ad: 'Sonraki 20 gün', n: 1 }, { ad: 'Sonraki 60 gün', n: 1 }],
+          Object.entries(G).map(([ad, g]) => [ad === 'hepsi' ? 'Tüm satışlar' : buyukIlk(ad), tam(g.bildirim), ortT(g.once_20g), ortT(g.sonra_5g), ortT(g.sonra_20g), ortT(g.sonra_60g)]), { genis: true }),
+        p(`Bildirimi izleyen beş günde hissenin katmanına göre getirisi **${yz(al(G, 'hepsi', 'sonra_5g', 'ort'), 1)}**; satışların yalnız ${yzp(al(G, 'hepsi', 'sonra_5g', 'pozitif'))}'inde artı. ` +
+          (k5.net ? `Sepet testinde bu beş günü taşımak günlük **${bpz(al(k5, 'net', 'fazla_ort'))}** (t ${sy(al(k5, 'net', 'fazla_t'), 1)}), dönemin iki yarısında ${(al(k5, 'net', 'fazla_yari') || []).map(x => bpz(x)).join(' ve ')}. ` : '') +
+          'Payı toplu alan alıcı aldığını ilk günlerde piyasaya satıyor: **bedelli süreci "kalan paylar satıldı" bildirimiyle bitmiyor, bir hafta daha baskı sürüyor.** Altmış günün medyanı da eksi; ortalamayı birkaç sert yükseliş taşıyor.', 'okuma'))));
+    cubukYatay(tEl, { baslik: 'Kalan payların alıcı türüne dağılımı', seri: [{ ad: 'Alınan payın bölümü', renk: 'var(--s1)' }], bicim: v => yzp(v), enBuyuk: 1, etiketGen: 150,
+      satir: ALICI_TUR.filter(([k]) => al(kp, 'tur', k)).map(([k, ad]) => ({ ad, alt: `${tam(kp.tur[k].kayit)} kayıt`, v: [kp.tur[k].oran_payi] })) });
+  }
+  const ES = K.esik;
+  if (ES && ES.tur) {
+    const kurumlar = (AZ && AZ.kurum) || [];
+    kok.append(h('div', { class: 'grid' },
+      sekil({ baslik: 'Eşik bildirimlerinde pay sahibi kim?', cls: 'y6', alt: `Bir ortağın payı %5, %10, %15 gibi sınırları geçince merkezi kayıt kuruluşu otomatik bildirim yayımlar. ${tam(ES.bildirim)} bildirimin şimdilik ${tam(ES.metni_cekilen)} tanesinin metni okundu (en yeniler); oranlar bu örneğe aittir.` },
+        tablo([{ ad: 'Pay sahibi' }, { ad: 'Bildirim', n: 1 }, { ad: 'Ayrı sahip', n: 1 }, { ad: 'Hisse', n: 1 }],
+          [['gercek_kisi', 'Gerçek kişi'], ['yerli_tuzel', 'Yerli şirket, holding, vakıf'], ['yabanci_kurum', 'Yabancı kurum']].filter(([k]) => ES.tur[k]).map(([k, ad]) => [ad, tam(ES.tur[k].bildirim), tam(ES.tur[k].sahip), tam(ES.tur[k].hisse)])),
+        p(`Eşik bildirimlerinin çoğu şirketin kendi ortaklarından geliyor: kurucu kişiler ve holdingler. Yabancı kurum tarafında ${(ES.yabanci_kurum || []).slice(0, 2).map(x => `${x.ad} (${tam(x.bildirim)})`).join(' ve ')} öne çıkıyor; ` +
+          'bu adların küçük hisselerdeki payı büyük olasılıkla müşterileri adına tutulan saklama ve takas hesaplarıdır, kimin aldığını göstermez. Bildirim yönü metinde değil ekindeki tabloda olduğu için bu grupta alım ve satım ayrılamadı.', 'okuma')),
+      kurumlar.length ? sekil({ baslik: 'Pay satışlarında adıyla görünen kurumlar', cls: 'y6', alt: 'Halka arz ve kalan pay satışlarında payların %5\'inden fazlasını alan fon şirketleri ve yabancı kurumlar. Gerçek kişiler adla gösterilmez.' },
+        tablo([{ ad: 'Kurum' }, { ad: 'Satış', n: 1 }, { ad: 'Ortalama pay', n: 1 }, { ad: 'En yüksek', n: 1 }, { ad: 'Hisseler' }],
+          kurumlar.slice(0, 10).map(x => [x.ad, tam(x.kayit), yzp(x.oran_ort / 100), yzp(x.oran_en_yuksek / 100), h('span', { class: 'mono', text: x.hisseler.join(' ') })]), { sinirli: true })) : null));
+  }
+
   // 3) Yayım anı
   const aEl = cizimKutusu();
   const AN = [['oncesi', 'Açılıştan önce'], ['seans', 'Seans içinde'], ['sonrasi', 'Kapanıştan sonra ya da tatilde']];
@@ -103,6 +146,8 @@ function gorunumBildirim(kok) {
           p(`20 gün tutmak: günlük ${bpz(al(R, 'bedelli_20g', 'net', 'fazla_ort'))} (t ${sy(al(R, 'bedelli_20g', 'net', 'fazla_t'), 1)}).`, 'kanit'), hap('kacin', 'Kaçın')),
         h('div', { class: 'kural' }, h('div', null, h('h4', { text: 'Ortaklık payı eşik bildirimi' }), p('Bir ortağın %5, %10 gibi eşikleri geçtiği bildirimi alım işareti sayma.', 'ne')),
           p(`Öncesinde ${yz(al(O.konu, 'pay_kap_ilk', 'once_20g', 'ort'), 1)} yükseliş; sonrasında 20 gün tutmak günlük ${bpz(al(R, 'kap_esik_20g', 'net', 'fazla_ort'))} (t ${sy(al(R, 'kap_esik_20g', 'net', 'fazla_t'), 1)}).`, 'kanit'), hap('kacin', 'Kaçın')),
+        R.kalan_pay_5g ? h('div', { class: 'kural' }, h('div', null, h('h4', { text: 'Bedelliden kalan payların satışı' }), p('Satış sonucu bildirildikten sonraki bir hafta **alma**.', 'ne')),
+          p(`5 gün tutmak: günlük ${bpz(al(R, 'kalan_pay_5g', 'net', 'fazla_ort'))} (t ${sy(al(R, 'kalan_pay_5g', 'net', 'fazla_t'), 1)}); ${tam(al(R, 'kalan_pay_5g', 'alinan'))} satış.`, 'kanit'), hap('kacin', 'Kaçın')) : null,
         h('div', { class: 'kural' }, h('div', null, h('h4', { text: 'İlk geri alım bildirimi' }), p('Akşam gelen ilk geri alım bildiriminin ertesi sabahı açılışta al, 5 işlem günü tut.', 'ne')),
           p(`Günlük fazla getiri ${bpz(al(gaA, 'net', 'fazla_ort'))} (t ${sy(al(gaA, 'net', 'fazla_t'), 1)}); yıllara göre ${Object.entries(gaA.yil_fazla || {}).map(([y, v]) => `${y} ${yz(v, 0)}`).join(', ')} (yıllık fazla).`, 'kanit'), hap('aday', 'Aday'))))));
   cubukDikey(aEl, { baslik: 'Yayım anına göre bildirim sayısı', kat: AN.map(x => x[1]), bicim: v => tam(v), eksenBicim: v => tam(v), yukseklik: 190,
@@ -169,6 +214,53 @@ function gorunumKap(kok, K) {
     satir: ho.map(([k, v]) => ({ ad: ozAd(k), alt: `${v.n} şirket-hisse çifti`, v: [v.medyan], isaret: [Math.abs(v.t || 0) >= 2], ipucu: () => [tipSatir('Medyan yüzdelik', yzp(v.medyan)), tipSatir('Ortalama', yzp(v.ort)), tipSatir('Ortadan fark, t', sy(v.t, 1))] })) });
   cemberAg(agEl, (F.ortak_hisse_agi || []).slice(0, 24));
 
+  // Tutulan pay: fon bir şirketin ve halka açık payın ne kadarını tutuyor? Alım ile satım ayrı ayrı.
+  const TP = F.tutulan_pay;
+  if (TP && TP.halka_acik) {
+    const dEl = cizimKutusu(), yEl = cizimKutusu();
+    const ha = TP.halka_acik, dl = Object.entries(TP.oran_dilim || {});
+    const A = hep.alim || {}, St = hep.satim || {};
+    const YP = [['once_20g', 'Önceki 20 gün', '−20 gün'], ['gun_0', 'Bildirim günü', 'Bildirim'], ['sonra_5g', 'Sonraki 5 gün', '+5 gün'], ['sonra_20g', 'Sonraki 20 gün', '+20 gün'], ['sonra_60g', 'Sonraki 60 gün', '+60 gün']];
+    const YS = [{ ad: 'Alım bildirimi', renk: 'var(--s1)' }, { ad: 'Satım bildirimi', renk: 'var(--s2)' }];
+    const konumlu = sirketler.filter(([, s]) => s.konum && s.konum.hisse >= 3).sort((a, b) => (b[1].konum.halka_acik_pay_medyan || 0) - (a[1].konum.halka_acik_pay_medyan || 0));
+    const yogun = konumlu.filter(([, s]) => s.konum.halka_acik_pay_medyan >= 0.2).map(x => x[0]);
+    const daginik = konumlu.filter(([, s]) => s.konum.halka_acik_ceyrek_ustu === 0).map(x => x[0]);
+    const ra = R.portfoy_alim_20g || {}, rs = R.portfoy_satim_20g || {};
+    kok.append(h('div', { class: 'grid' },
+      sekil({ baslik: 'Fon bir şirketin ne kadarını tutuyor?', cls: 'y5', alt: `Bildirim sayfasındaki tablodan okunan işlem sonrası pay; her şirket ve hisse çifti için son bildirilen konum (${tam(TP.konum)} konum).` },
+        h('div', { class: 'sayilar iki' }, sayi(yzp(TP.oran.medyan / 100, 1), 'ortadaki konumun sermayedeki payı'), sayi(yzp(ha.medyan), 'aynı konumun halka açık paya oranı'),
+          sayi(tam(ha.ceyrek_ustu), 'konum halka açık payın dörtte birinden büyük'), sayi(tam(ha.yari_ustu), 'konum halka açık payın yarısından büyük')),
+        h('div', { class: 'kbaslik', text: 'Konumların sermayedeki paya göre dağılımı' }), dEl,
+        p(`Sermayenin %${sy(TP.oran.medyan, 1)}'i küçük görünür; ama bu şirketlerde halka açık pay dar olduğu için piyasada dolaşan payın onda biri demektir. ${tam(TP.konum)} konumun ${tam(ha.ceyrek_ustu)} tanesinde fon dolaşımdaki payın dörtte birinden fazlasını, ${tam(ha.yari_ustu)} tanesinde yarısından fazlasını tutuyor. ` +
+          '**Bu büyüklükte bir pay piyasada satılarak boşaltılamaz:** fon satmaya başladığında karşısında yeterli alıcı yoktur ve fiyatı kendi satışı düşürür.', 'okuma')),
+      sekil({ baslik: 'Dolaşımdaki payın en büyük bölümünü tutan konumlar', cls: 'y7', alt: 'Halka açık paya oran = sermayedeki pay / halka açıklık oranı (yaklaşık ölçü; %100\'de kesildi). Yön ve tarih son bildirime aittir.' },
+        tablo([{ ad: 'Şirket' }, { ad: 'Hisse' }, { ad: 'Sermayedeki pay', n: 1 }, { ad: 'Halka açık paya oranı', n: 1 }, { ad: 'Son işlem' }, { ad: 'Tarih' }],
+          (TP.en_yogun || []).slice(0, 16).map(x => [x.sirket, h('span', { class: 'mono', text: x.hisse }), yzp(x.oran / 100, 1), x.halka_acik_pay == null ? '–' : yzp(x.halka_acik_pay), YON_AD[x.yon] || '–', x.gun]), { sinirli: true }))));
+    cubukDikey(dEl, { baslik: 'Konumların sermayedeki paya göre dağılımı', kat: dl.map(x => x[0]), bicim: v => tam(v), eksenBicim: v => tam(v), yukseklik: 180,
+      seri: [{ ad: 'Konum sayısı', renk: 'var(--s1)', v: dl.map(x => x[1]) }] });
+    kok.append(h('div', { class: 'grid' },
+      sekil({ baslik: 'Alım bildirimi ile satım bildirimi', cls: 'y5', alt: `Yönü bildirim sayfasından okunan ${tam(TP.alim)} alım ve ${tam(TP.satim)} satım bildirimi. Hissenin pazar katmanına göre fazla getirisi (ortalama): bildirimden önceki 20 gün, bildirim günü ve sonraki 5, 20, 60 gün.` },
+        gosterge(YS), yEl,
+        p(`Alım bildirimi yükselişin ardından geliyor: önceki 20 günde hisse katmanının ${yzp(al(A, 'once_20g', 'ort'), 1)} önünde (t ${sy(al(A, 'once_20g', 't'), 1)}). Sonraki ortalamalar artı görünse de bunu art arda bildirim gelen birkaç hisse taşıyor; ` +
+          (ra.net ? `her günü bir kez sayan sepet testinde alım bildiriminden sonra alıp 20 gün tutmak günlük **${bpz(al(ra, 'net', 'fazla_ort'))}** (t ${sy(al(ra, 'net', 'fazla_t'), 1)}). ` : '') +
+          `**Satım bildirimi günü ${yz(al(St, 'gun_0', 'ort'), 1)}** (t ${sy(al(St, 'gun_0', 't'), 1)}), sonraki 60 günde ${yz(al(St, 'sonra_60g', 'ort'), 1)}` +
+          (rs.net ? `; sepet testinde ${bpz(al(rs, 'net', 'fazla_ort'))} (t ${sy(al(rs, 'net', 'fazla_t'), 1)}). ` : '. ') +
+          'Bildirimi izleyerek alan iki yönde de kazanmıyor; satım bildirimi ise elinde tutana uyarıdır.', 'okuma'),
+        tabloAc([{ ad: 'Pencere' }, { ad: 'Alım: ortalama (t)', n: 1 }, { ad: 'medyan', n: 1 }, { ad: 'Satım: ortalama (t)', n: 1 }, { ad: 'medyan', n: 1 }],
+          () => YP.map(([k, ad]) => [ad, ortT(A[k]), yz(al(A, k, 'medyan'), 1), ortT(St[k]), yz(al(St, k, 'medyan'), 1)]))),
+      sekil({ baslik: 'Hangi şirket ne kadar büyük pay tutuyor?', cls: 'y7', alt: 'En az üç hissede konumu okunabilen şirketler, halka açık paya orana göre sıralı. Pay sütunları medyandır. Son iki sütun: bildirimden sonraki 20 günde hissenin fazla getirisi (ortalama; az olay).' },
+        tablo([{ ad: 'Şirket' }, { ad: 'Konum', n: 1 }, { ad: 'Sermaye payı', n: 1 }, { ad: 'Halka açık paya oranı', n: 1 }, { ad: 'Dörtte birden büyük', n: 1 }, { ad: 'Alım sonrası', n: 1 }, { ad: 'Satım sonrası', n: 1 }],
+          konumlu.map(([ad, s]) => [ad, tam(s.konum.hisse), yzp(s.konum.oran_medyan / 100, 1), s.konum.halka_acik_pay_medyan == null ? '–' : yzp(s.konum.halka_acik_pay_medyan), tam(s.konum.halka_acik_ceyrek_ustu),
+            yz(al(s, 'alim', 'sonra_20g', 'ort'), 1), yz(al(s, 'satim', 'sonra_20g', 'ort'), 1)]), { sinirli: true, genis: true }),
+        p((yogun.length ? `**Dolaşımdaki payı toplayanlar:** ${yogun.join(', ')}; ortadaki konumları halka açık payın beşte birinden büyük. Bu hisselerde fiyatı fiilen fonun kendisi belirliyor. ` : '') +
+          (daginik.length ? `**Küçük pay tutanlar:** ${daginik.join(', ')}; hiçbir konumları dolaşımdaki payın dörtte birini aşmıyor. ` : '') +
+          'Azimut bildirimlerinde ayrıntı ekte verildiği için yön ve pay okunamadı.', 'okuma'))));
+    cubukDikey(yEl, { baslik: 'Alım ve satım bildirimi çevresinde fazla getiri', kat: YP.map(x => x[2]), bicim: v => yz(v, 1), eksenBicim: v => yz(v, 0), yukseklik: 230,
+      seri: [{ ad: 'Alım bildirimi', renk: 'var(--s1)', v: YP.map(x => al(A, x[0], 'ort')) }, { ad: 'Satım bildirimi', renk: 'var(--s2)', v: YP.map(x => al(St, x[0], 'ort')) }],
+      ipucu: i => [tipBaslik(YP[i][1]), tipSatir('Alım: ortalama', yz(al(A, YP[i][0], 'ort'), 1), 'var(--s1)'), tipSatir('medyan', yz(al(A, YP[i][0], 'medyan'), 1)), tipSatir('t', sy(al(A, YP[i][0], 't'), 1)), tipSatir('bildirim', tam(al(A, YP[i][0], 'n'))),
+        tipSatir('Satım: ortalama', yz(al(St, YP[i][0], 'ort'), 1), 'var(--s2)'), tipSatir('medyan', yz(al(St, YP[i][0], 'medyan'), 1)), tipSatir('t', sy(al(St, YP[i][0], 't'), 1)), tipSatir('bildirim', tam(al(St, YP[i][0], 'n')))] });
+  }
+
   const pd = R.portfoy_donem || {};
   const donemler = Object.keys(pd);
   kok.append(h('div', { class: 'grid' },
@@ -215,6 +307,39 @@ function yabanciSekli() {
       satir: SEC.map(k => ({ ad: ozAd(k), v: [al(Y, 'ozellik', k, 'sira_kor'), kor(k)], isaret: [Math.abs(al(Y, 'ozellik', k, 't') || 0) >= 2, false] })) });
     cubukYatay(gEl, { baslik: 'Pazar katmanına göre yabancı payı', seri: [{ ad: 'Ortalama yabancı payı', renk: 'var(--s1)' }], bicim: v => yzp(v / 100), etiketGen: 150,
       satir: AD.grup_sira.filter(g => al(Y, 'grup', g)).map(g => ({ ad: grupAd(g), alt: `${Y.grup[g].hisse} hisse`, v: [Y.grup[g].ort], ipucu: () => [tipSatir('Ortalama', yzp(Y.grup[g].ort / 100, 1)), tipSatir('Medyan', yzp(Y.grup[g].medyan / 100, 1))] })) });
+  });
+  const gf = yabanciGecmisSekli();
+  return gf ? [fig, gf] : [fig];
+}
+
+function yabanciGecmisSekli() {
+  const G = al(V, 'ek', 'yabanci', 'gecmis');
+  if (!G || !G.getiri || !G.toplam_seri) return null;
+  const ge = G.getiri, oz = G.ozellik || {};
+  const GK = [['once_kor', 'Hissenin önceki 20 gündeki getirisi'], ['ayni_kor', 'Aynı haftanın getirisi'], ['sonra_kor', 'Sonraki haftanın getirisi'], ['sonra20_kor', 'Sonraki 20 günün getirisi']];
+  const OK = Object.keys(oz).filter(k => Math.abs(oz[k].t || 0) >= 2).sort((a, b) => oz[b].ort - oz[a].ort);
+  const kEl = cizimKutusu(), sEl = cizimKutusu();
+  const ts = G.toplam_seri;
+  const enDusuk = ts.reduce((a, b) => (b[1] < a[1] ? b : a), ts[0]);
+  const gs = G.grup_seri || {};
+  const fig = h('div', { class: 'grid' },
+    sekil({ baslik: 'Yabancı payı ne zaman artıyor, sonra ne oluyor?', cls: 'y7', alt: `${tam(G.hafta)} haftalık kesit, ${tam(G.hisse)} hisse (${G.donem[0].slice(0, 7)} – ${G.donem[1].slice(0, 7)}). Her hafta hisseler yabancı payındaki değişime göre sıralanır; çubuk, bu sıranın getiri sırasıyla korelasyonunun haftalar üzerinden ortalamasıdır. Nokta: |t| ≥ 2.` },
+      kEl,
+      p(`Yabancı payının arttığı hafta hisse de yükseliyor: payı en çok artan beşte birlik ile en çok azalan arasındaki fark o hafta **${yz(al(ge, 'ust_alt_ayni', 'ort'), 2)}**, haftaların ${yzp(al(ge, 'ust_alt_ayni', 'pozitif'))}'inde aynı yönde. ` +
+        `Ama sonraki hafta fark yalnız ${yz(al(ge, 'ust_alt_sonra', 'ort'), 2)} (t ${sy(al(ge, 'ust_alt_sonra', 't'), 1)}), sonraki 20 günde ${yz(al(ge, 'ust_alt_sonra20', 'ort'), 2)}. **Yabancı alımı fiyata aynı hafta yazılıyor; veri yayımlandığında izlenecek bir şey kalmıyor.** ` +
+        (OK.length ? `Payın artacağı hisse artıştan önce şöyle görünüyor: ${OK.map(k => `${ozAd(k).replace(/\s*\(.*\)$/, '').toLocaleLowerCase('tr-TR')} ${oz[k].ort > 0 ? 'yüksek' : 'düşük'} (t ${sy(oz[k].t, 1)})`).join(', ')}.` : ''), 'okuma'),
+      tabloAc([{ ad: 'Ölçü' }, { ad: 'Ortalama sıra korelasyonu', n: 1 }, { ad: 't', n: 1 }, { ad: 'Artı haftalar', n: 1 }],
+        () => GK.map(([k, ad]) => [ad, sy(al(ge, k, 'ort'), 3), sy(al(ge, k, 't'), 1), yzp(al(ge, k, 'pozitif'))]).concat(Object.keys(oz).map(k => [`Hafta öncesi: ${ozAd(k)}`, sy(oz[k].ort, 3), sy(oz[k].t, 1), yzp(oz[k].pozitif)])))),
+    sekil({ baslik: 'Yabancı payı üç yılda nereye gitti?', cls: 'y5', alt: 'Halka açık paylar içinde yabancı payı, piyasa değeri ağırlıklı ortalama (haftalık).' },
+      sEl,
+      tablo([{ ad: 'Pazar katmanı' }, { ad: G.donem[0].slice(0, 7), n: 1 }, { ad: G.donem[1].slice(0, 7), n: 1 }],
+        AD.grup_sira.filter(g => gs[g] && gs[g].length).map(g => [grupAd(g), yzp(gs[g][0][1] / 100, 1), yzp(gs[g][gs[g].length - 1][1] / 100, 1)])),
+      p(`Toplam pay ${enDusuk[0].slice(0, 7)} tarihinde ${yzp(enDusuk[1] / 100, 1)} ile dibi gördü, bugün ${yzp(ts[ts.length - 1][1] / 100, 1)}. Artış BIST 100'ün ikinci yarısında ve Yıldız Pazar'da; Alt Pazar'da yabancı yok. ` +
+        `En çok artanlar: ${(G.en_cok_artan || []).slice(0, 6).map(x => x[0]).join(', ')}; en çok azalanlar: ${(G.en_cok_azalan || []).slice(0, 6).map(x => x[0]).join(', ')}. Onlarca puanlık sıçramalar çoğunlukla ortaklık yapısı ya da saklama değişikliğidir, piyasa alımı değil.`, 'okuma')));
+  queueMicrotask(() => {
+    cubukYatay(kEl, { baslik: 'Yabancı payındaki haftalık değişimin getiriyle ilişkisi', seri: [{ ad: 'Ortalama sıra korelasyonu', renk: 'var(--s1)' }], bicim: v => sy(v, 3), etiketGen: 250,
+      satir: GK.map(([k, ad]) => ({ ad, v: [al(ge, k, 'ort')], isaret: [Math.abs(al(ge, k, 't') || 0) >= 2], ipucu: () => [tipSatir('Ortalama sıra korelasyonu', sy(al(ge, k, 'ort'), 3)), tipSatir('t', sy(al(ge, k, 't'), 1)), tipSatir('Artı haftalar', yzp(al(ge, k, 'pozitif')))] })) });
+    cizgi(sEl, { baslik: 'Piyasa değeri ağırlıklı yabancı payı', x: ts.map(k => k[0].slice(0, 7)), seri: [{ ad: 'Yabancı payı', renk: 'var(--s1)', v: ts.map(k => k[1] / 100) }], bicim: v => yzp(v, 1), eksenBicim: v => yzp(v), yukseklik: 190, sonEtiket: true });
   });
   return fig;
 }

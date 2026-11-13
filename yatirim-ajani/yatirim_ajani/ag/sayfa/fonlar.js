@@ -8,6 +8,8 @@ function gorunumFonlar(kok) {
   const O = F.olay || {};
   const T = F.tasfiye || {};
   const K = al(V, 'ek', 'kap');
+  const kapYon = !!al(K, 'fon', 'tutulan_pay', 'halka_acik');  // yön KAP sayfalarından okunduysa basın derlemesine dayanan olay şekli gösterilmez
+  const KH = al(K, 'fon', 'hepsi') || {};
 
   kok.append(giris('Fon şirketleri nasıl karar veriyor, onlara karşı nasıl durulur?',
     'Fonların günlük alım satımı yayımlanmaz. Görünen iki iz var: bir şirkette %5 ve katlarını aşınca KAP\'a verilen pay bildirimi ve fonların yazılı strateji beyanları. ' +
@@ -28,9 +30,10 @@ function gorunumFonlar(kok) {
   const tabanPay = d => { const x = al(d, 'tavan_taban_gun') || {}; return [x.kume_gun ? x.kume_taban / x.kume_gun : null, x.kiyas_gun ? x.kiyas_taban / x.kiyas_gun : null]; };
   const OS = [{ ad: 'Alım bildirimi', renk: 'var(--s1)' }, { ad: 'Satım bildirimi', renk: 'var(--s2)' }];
   const PEN = [['once_20g', '20 gün önce'], ['once_5g', '5 gün önce'], ['gun_0', 'Bildirim günü'], ['sonra_5g', '5 gün sonra'], ['sonra_20g', '20 gün sonra']];
+  if (kapYon) O.alim = null;
   if (dn.length || O.alim) {
     kok.append(h('div', { class: 'grid' },
-      dn.length ? sekil({ baslik: 'Yoğun fon payı taşıyan hisseler: önce uçtu, sonra çöktü', cls: 'y7', alt: 'İşleme kapatılan fonların ağır pozisyonu olduğu bildirilen hisselerin ortalama getirisi ile diğer hisselerin ortalaması, dönem dönem.' },
+      dn.length ? sekil({ baslik: 'Yoğun fon payı taşıyan hisseler: önce uçtu, sonra çöktü', cls: O.alim ? 'y7' : '', alt: 'İşleme kapatılan fonların ağır pozisyonu olduğu bildirilen hisselerin ortalama getirisi ile diğer hisselerin ortalaması, dönem dönem.' },
         gosterge(TS), tEl,
         p(`2025'te bu hisseler diğerlerinin kat kat üstünde kazandırdı; karardan sonraki dört haftada ${yz(al(T, 'donem', '17 Eyl–15 Eki 2026', 'kume_ort'), 0)} (diğerleri ${yz(al(T, 'donem', '17 Eyl–15 Eki 2026', 'kiyas_ort'), 0)}). ` +
           (son ? `Son dönemde işlem günlerinin ${yzp(tabanPay(son)[0], 1)}'i tabanda kapandı (diğer hisselerde ${yzp(tabanPay(son)[1], 1)}): satmak isteyen satamadı. ` : '') +
@@ -97,8 +100,10 @@ function gorunumFonlar(kok) {
   // 6) Karşı duruş
   kok.append(h('div', { class: 'grid' }, sekil({ baslik: 'Onlara karşı nasıl durulur?' },
     h('ul', { class: 'duz' },
-      h('li', null, metin('**Fon aldı diye alma.** Pay bildirimi yükselişin sonunda yayımlanır; bildirimden sonra ortalama getiri eksi.')),
-      h('li', null, metin('**Satım bildirimi çıkış işaretidir.** Fon pay azaltıyorsa aynı gün çık; sonraki 20 günün ortalaması en sert kayıp.')),
+      h('li', null, metin(KH.alim ? `**Fon aldı diye alma.** Alım bildirimi geldiğinde hisse son 20 günde katmanının ${yzp(al(KH, 'alim', 'once_20g', 'ort'))} önüne geçmiş oluyor; bildirimden sonra alıp 20 gün tutan sepetin günlük fazla getirisi ${bpz(al(K, 'kural', 'portfoy_alim_20g', 'net', 'fazla_ort'))}.`
+        : '**Fon aldı diye alma.** Pay bildirimi yükselişin sonunda yayımlanır; bildirimden sonra ortalama getiri eksi.')),
+      h('li', null, metin(KH.satim ? `**Satım bildirimi çıkış işaretidir.** Bildirim günü hisse ${yz(al(KH, 'satim', 'gun_0', 'ort'), 1)}, sonraki 60 günde ${yz(al(KH, 'satim', 'sonra_60g', 'ort'), 1)}; fon pay azaltıyorsa beklemek pahalı.`
+        : '**Satım bildirimi çıkış işaretidir.** Fon pay azaltıyorsa aynı gün çık; sonraki 20 günün ortalaması en sert kayıp.')),
       h('li', null, metin('**Halka açık payı birkaç fonda toplanmış hissede likidite yanıltır.** Günlük hacim yüksek görünür ama alıcı tek bir kaynaktır; kaynak kesildiğinde taban serisi başlar ve satış gerçekleşmez.')),
       h('li', null, metin('**Halka arzda seri bitince borsadan alma.** Tahsisat alan kazanır; seri bittikten sonra alan, payı tahsisat alana devralır.')),
       h('li', null, metin('**Düzenleme takvimini izle.** Pay sınırını aşan fonların 31 Aralık 2026 uyum tarihine kadar payını azaltması gerekiyor; bu hisselerde satış baskısı yıl sonuna kadar sürebilir.'))),

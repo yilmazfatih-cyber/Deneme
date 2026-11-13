@@ -372,14 +372,41 @@ def test_kap_olay_portfoyu_tavani_atlar_ve_olayi_yakalar():
     assert r3["acilista"] and r3["alinan"] >= r["alinan"] - 5
 
 
-def test_kap_detay_ayristir_yon_ve_oran():
+def test_kap_detay_ayristir_form_tablosu():
+    """KAP pay alım satım formunun satırı: tarih, alım, satım, net, gün başı, gün sonu nominali ve dört oran; sayfada iki dilde yinelenir."""
     from yatirim_ajani.ag import kap
 
-    a = kap.detay_ayristir("Fonların toplam payı işlem öncesi % 4,85 iken işlem sonrası % 5,12 olmuştur. Alış işlemi ortalama 12,40 TL fiyattan gerçekleşmiştir.")
-    assert a["yon"] == "alim" and a["oran_once"] == pytest.approx(4.85) and a["oran_sonra"] == pytest.approx(5.12)
-    s = kap.detay_ayristir("Şirket sermayesindeki payımız %5 sınırının altına düşmüştür. Satış işlemleri sonrası payımız %4,10 olmuştur.")
-    assert s["yon"] == "satim" and s["oran_sonra"] == pytest.approx(4.10)
+    bas = "Bildirim İçeriği Pay Alım Satım Bilgileri İşlem Tarihi Alım İşlemine Konu Payların Toplam Nominal Tutarı (TL) "
+    satir = "12/11/2026 200.000 0 200.000 1.450.000 1.650.000 % 4,83 % 4,83 % 5,5 % 5,5"
+    a = kap.detay_ayristir(bas + satir + " Transaction Date " + satir)
+    assert a["yon"] == "alim" and a["kaynak"] == "tablo" and a["islem_gunu"] == "2026-11-12"
+    assert a["oran_once"] == pytest.approx(4.83) and a["oran_sonra"] == pytest.approx(5.5) and a["alim_nominal"] == 200000
+    # Alım alanı boş bırakılmış form (dört sayı): yön gün başı ve gün sonu bakiyesinden çıkar
+    s = kap.detay_ayristir(bas + "23/09/2026 1.600.000 1.600.000 2.807.357 1.207.357 % 5,1 % 5,1 % 2,2 % 2,2")
+    assert s["yon"] == "satim" and s["oran_once"] == pytest.approx(5.1) and s["oran_sonra"] == pytest.approx(2.2)
+    # Birden çok gün, satırlar ters sırada: ilk günün başı ile son günün sonu
+    c = kap.detay_ayristir(bas + "11/11/2026 0 50.000 -50.000 1.050.000 1.000.000 % 5,25 % 5,25 % 5 % 5 10/11/2026 0 150.000 -150.000 1.200.000 1.050.000 % 6 % 6 % 5,25 % 5,25")
+    assert c["yon"] == "satim" and c["oran_once"] == pytest.approx(6.0) and c["oran_sonra"] == pytest.approx(5.0) and c["satim_nominal"] == 200000
+    # Tablo yoksa açıklama metninden
+    m = kap.detay_ayristir("Fonların toplam payı %4,85'ten %5,12'ye yükselmiştir.")
+    assert m["yon"] == "alim" and m["oran_sonra"] == pytest.approx(5.12) and m["kaynak"] == "metin"
     assert kap.detay_ayristir("Bilgilendirme amaçlıdır.")["yon"] is None
+
+
+def test_kap_arz5_ayristir_alicilar():
+    """%5 üstü alanlar tablosu: aynı tutar ve oranı taşıyan iki ayrı alıcı korunur, iki dildeki yineleme tek sayılır, fon addan tanınır."""
+    from yatirim_ajani.ag import kap
+
+    t = ("Name or Corporate Title Nominal Value Bought (TL) Buying Reason of Capital Market Instrument "
+         "AHMET ÖRNEK 1.305.496 % 8 Gerçek Kişi Türkiye Kendi Nam ve Hesabına 1.305.496 % 8 "
+         "MEHMET DENEME 1.305.496 % 8 Gerçek Kişi Türkiye Kendi Nam ve Hesabına 1.305.496 % 8 "
+         "ÖRNEK PORTFÖY BİRİNCİ SERBEST FON 5.196.367 % 62,5 Tüzel Kişi Türkiye Kendi nam ve hesabına "
+         "ÖRNEK PORTFÖY BİRİNCİ SERBEST FON 5.196.367 % 62,5 Legal Entities Türkiye On own account "
+         "Yukarıdaki açıklamalarımızın, Sermaye Piyasası Kurulu'nun")  # fmt: skip
+    r = kap.arz5_ayristir(t)
+    assert [(x["ad"], x["oran"], x["tur"]) for x in r] == [("AHMET ÖRNEK", 8.0, "gercek_kisi"), ("MEHMET DENEME", 8.0, "gercek_kisi"), ("ÖRNEK PORTFÖY BİRİNCİ SERBEST FON", 62.5, "fon")]
+    assert kap._fon_sirketi("Örnek Portföy Birinci Serbest Fon") == "Örnek Portföy"
+    assert kap.arz5_ayristir("tablo yok") == []
 
 
 def test_komsu_gecisi_gecikmeli_izlemeyi_yakalar():

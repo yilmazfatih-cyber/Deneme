@@ -21,6 +21,8 @@ function gorunumKurallar(kok) {
   const KR = al(V, 'ek', 'kap', 'kural') || {};
   const KO = al(V, 'ek', 'kap', 'olay', 'konu') || {};
   const gaA = KR.geri_alim_acilis_5g;
+  const KF = al(V, 'ek', 'kap', 'fon', 'hepsi') || {};
+  const TP = al(V, 'ek', 'kap', 'fon', 'tutulan_pay');
   const kural = (ad, ne, kanit, tur, etiket) => h('div', { class: 'kural' }, h('div', null, h('h4', { text: ad }), h('p', { class: 'ne' }, metin(ne))), h('p', { class: 'kanit' }, metin(kanit)), hap(tur, etiket));
 
   kok.append(giris('Günlük kurallar',
@@ -38,13 +40,18 @@ function gorunumKurallar(kok) {
       kural('Yeni halka arz', 'Tavan serisi bittikten sonra borsadan **alma**.',
         `Seri bittikten 20 gün sonra medyan **${yz(al(HA, 'sonra_20g', 'medyan'), 0)}**, bugüne medyan ${yz(al(HA, 'bugune', 'medyan'), 0)}; ${tam(HA.hisse)} halka arz.`, 'kacin', 'Kaçın'),
       kural('Fonun sattığı ya da ağır olduğu küçük hisse', 'Fon satım bildirimi gelen hisseden **çık**; halka açık payı birkaç fonda toplanmış hisseyi **alma**.',
-        `Satım bildiriminden sonraki 20 gün **${yz(al(FO, 'satim', 'sonra_20g', 'ort'), 1)}** (t ${sy(al(FO, 'satim', 'sonra_20g', 't'), 1)}, ${tam(al(FO, 'satim', 'sonra_20g', 'n'))} olay; az sayıda olay).`, 'kacin', 'Kaçın'),
+        KF.satim && KF.alim ? `Satım bildirimi günü **${yz(al(KF, 'satim', 'gun_0', 'ort'), 1)}** (t ${sy(al(KF, 'satim', 'gun_0', 't'), 1)}), sonraki 60 günde ${yz(al(KF, 'satim', 'sonra_60g', 'ort'), 1)}; ${tam(KF.satim.bildirim)} bildirim. ` +
+          `Alım bildirimi de işaret değil: öncesinde hisse ${yz(al(KF, 'alim', 'once_20g', 'ort'), 0)} yükselmiş oluyor, sonra 20 gün tutan sepetin günlük fazla getirisi ${bpz(al(KR, 'portfoy_alim_20g', 'net', 'fazla_ort'))} (t ${sy(al(KR, 'portfoy_alim_20g', 'net', 'fazla_t'), 1)}). ` +
+          (TP && TP.halka_acik ? `${tam(TP.konum)} fon konumunun ${tam(TP.halka_acik.ceyrek_ustu)} tanesi dolaşımdaki payın dörtte birinden büyük.` : '')
+          : `Satım bildiriminden sonraki 20 gün **${yz(al(FO, 'satim', 'sonra_20g', 'ort'), 1)}** (t ${sy(al(FO, 'satim', 'sonra_20g', 't'), 1)}, ${tam(al(FO, 'satim', 'sonra_20g', 'n'))} olay; az sayıda olay).`, 'kacin', 'Kaçın'),
       KR.bedelsiz_20g ? kural('Bedelsiz sermaye artırımı haberi', 'Haber çıktıktan sonra **alma**; elindeyse haber sabahındaki sıçramada sat.',
-        `Haber sabahı açılışta ${yz(al(KO, 'bedelsiz_ilk', 'gece_0', 'ort'), 1)}; sonra 20 gün tutan sepet pazar katmanının günde **${bpz(al(KR, 'bedelsiz_20g', 'net', 'fazla_ort'))}** gerisinde (t ${sy(al(KR, 'bedelsiz_20g', 'net', 'fazla_t'), 1)}), her yıl aynı yönde.`, 'kacin', 'Kaçın') : null,
+        `Haber sabahı açılışta ${yz(al(KO, 'bedelsiz_ilk', 'gece_0', 'ort'), 1)}; sonra 20 gün tutan sepetin pazar katmanına göre günlük fazla getirisi **${bpz(al(KR, 'bedelsiz_20g', 'net', 'fazla_ort'))}** (t ${sy(al(KR, 'bedelsiz_20g', 'net', 'fazla_t'), 1)}), her yıl aynı yönde.`, 'kacin', 'Kaçın') : null,
       KR.bedelli_20g ? kural('Bedelli sermaye artırımı kararı', 'Karar çıkan hisseden **çık**; yeni alım yapma.',
-        `Açılışta ${yz(al(KO, 'bedelli_ilk', 'gece_0', 'ort'), 1)}; sonraki 20 günde sepet günde **${bpz(al(KR, 'bedelli_20g', 'net', 'fazla_ort'))}** geride (t ${sy(al(KR, 'bedelli_20g', 'net', 'fazla_t'), 1)}).`, 'kacin', 'Kaçın') : null,
+        `Açılışta ${yz(al(KO, 'bedelli_ilk', 'gece_0', 'ort'), 1)}; sonraki 20 günde sepetin günlük fazla getirisi **${bpz(al(KR, 'bedelli_20g', 'net', 'fazla_ort'))}** (t ${sy(al(KR, 'bedelli_20g', 'net', 'fazla_t'), 1)}).`, 'kacin', 'Kaçın') : null,
+      KR.kalan_pay_5g ? kural('Bedelliden kalan payların satışı', 'Kalan payların satış sonucu bildirildikten sonraki bir hafta **alma**.',
+        `Payların çoğunu birkaç alıcı topluyor ve ilk günlerde satıyor: 5 gün tutan sepetin günlük fazla getirisi **${bpz(al(KR, 'kalan_pay_5g', 'net', 'fazla_ort'))}** (t ${sy(al(KR, 'kalan_pay_5g', 'net', 'fazla_t'), 1)}), iki yarıda ${(al(KR, 'kalan_pay_5g', 'net', 'fazla_yari') || []).map(x => bpz(x)).join(' ve ')}; ${tam(al(KR, 'kalan_pay_5g', 'alinan'))} satış.`, 'kacin', 'Kaçın') : null,
       KR.kap_esik_20g ? kural('Ortaklık payı eşik bildirimi', 'Bir ortağın payının %5, %10 gibi eşikleri geçtiği bildirimi alım işareti sayma.',
-        `Bildirimden önceki 20 günde ${yz(al(KO, 'pay_kap_ilk', 'once_20g', 'ort'), 1)} yükseliş; sonra 20 gün tutan sepet günde **${bpz(al(KR, 'kap_esik_20g', 'net', 'fazla_ort'))}** geride (t ${sy(al(KR, 'kap_esik_20g', 'net', 'fazla_t'), 1)}).`, 'kacin', 'Kaçın') : null,
+        `Bildirimden önceki 20 günde ${yz(al(KO, 'pay_kap_ilk', 'once_20g', 'ort'), 1)} yükseliş; sonra 20 gün tutan sepetin günlük fazla getirisi **${bpz(al(KR, 'kap_esik_20g', 'net', 'fazla_ort'))}** (t ${sy(al(KR, 'kap_esik_20g', 'net', 'fazla_t'), 1)}).`, 'kacin', 'Kaçın') : null,
       kural('Kötü gecenin sabahı', 'S&P 500 vadelisi BIST kapanışından açılışına %0,5\'ten fazla düştüyse o gün **gün içinde alım yapma**; satılacak varsa açılışta sat.',
         `Böyle ${tam(kg.gun)} günde BIST 100'ün açılıştan kapanışa ortalaması **${yz(al(kg, 'brut', 'ort'), 2)}**; diğer günlerde ${yz(kg.kosul_disi_ort, 2)}.`, 'kacin', 'Kaçın'),
       kural('Endeksin sert düştüğü günün ertesi', 'BIST 100 günü %1\'den fazla düşüşle kapattıysa ertesi gün **küçük hisse alma**.',
@@ -135,12 +142,13 @@ function gorunumKurallar(kok) {
         h('dt', { text: '09:55–10:10' }), h('dd', null, metin('**Satışlar açılışta.** Gece primi alınmış olur; gün içini beklemek ortalamada kaybettirir.')),
         h('dt', { text: '10:30–16:30' }), h('dd', null, metin('**Yeni alım yok.** KAP akışını izle: fon satım bildirimi, tavan serisi bozan, hacmi üç katına çıkan hisseler kaçınma listesine girer.')),
         h('dt', { text: '17:00–17:50' }), h('dd', null, metin('**Alımlar.** Tez listesindeki ve kaçınma listesinde olmayan hisseler; endeks bugün %1\'den fazla düştüyse küçük hisse alımı ertelenir.')),
-        h('dt', { text: '18:10 sonrası' }), h('dd', null, metin('**Günün taraması:** tavan ve taban kapananlar, hacim patlamaları ve akşam KAP bildirimleri. Bedelsiz, bedelli ve eşik bildirimleri kaçınma listesine; ilk geri alım bildirimi ertesi sabahın alım adaylarına yazılır.')))),
+        h('dt', { text: '18:10 sonrası' }), h('dd', null, metin('**Günün taraması:** tavan ve taban kapananlar, hacim patlamaları ve akşam KAP bildirimleri. Bedelsiz, bedelli, kalan pay satışı ve eşik bildirimleri kaçınma listesine; ilk geri alım bildirimi ertesi sabahın alım adaylarına yazılır.')))),
     sekil({ baslik: 'Bu sonuçların sınırları', cls: 'y5' },
       h('ul', { class: 'duz' },
         h('li', { text: 'Veri 2024–2026: yüksek enflasyon ve tek bir düzenleme dönemi. Başka bir rejimde sayılar değişebilir.' }),
         h('li', { text: 'Kimin aldığını gösteren veri yok (MKK, takas, aracı kurum dağılımı). Büyük ve küçük yatırımcı ayrımı evren üzerinden dolaylı yapıldı.' }),
-        h('li', { text: 'Fon şirketlerinin bildirimleri KAP listesinden alındı; bildirimin alım mı satım mı olduğu metinden ayrıştırılıyor ve her zaman kesin değil. TEFAS fon fiyatları çekilemedi.' }),
+        h('li', { text: TP ? `Fon bildirimlerinin yönü ve tutulan pay bildirim sayfasındaki tablodan okundu: ${tam(al(V, 'ek', 'kap', 'fon', 'bildirim'))} bildirimin ${tam(TP.yon_bulunan)} tanesinde okunabildi, kalanında ayrıntı ekte. Halka açık paya oran yaklaşık bir ölçüdür. TEFAS fon fiyatları çekilemedi.`
+          : 'Fon şirketlerinin bildirimleri KAP listesinden alındı; bildirimin yönü okunamadı. TEFAS fon fiyatları çekilemedi.' }),
         h('li', { text: 'Olay ortalamaları ile sepet testi farklı sonuç verebilir: ortalama, birkaç hisseye ve kalabalık günlere fazla ağırlık verir. Kurallar sepet testine göre sınıflandı.' }),
         h('li', { text: 'Maliyet varsayımı gidiş-dönüş 10 ve 30 baz puan. Gerçek maliyet aracı kuruma, emir tipine ve hissenin derinliğine göre değişir.' }),
         h('li', { text: 'Küçük hisselerde büyük tutarla işlem fiyatı oynatır; testler fiyat etkisini hesaba katmaz.' }),

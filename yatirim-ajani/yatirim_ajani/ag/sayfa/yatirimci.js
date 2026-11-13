@@ -29,7 +29,7 @@ function gorunumYatirimci(kok) {
     p('Sonuç: büyük hisselerde "ucuz olanı al" dışında bir üstünlük ölçülemiyor. Küçük hisselerde kazanç, kalabalığın peşinden gitmemekten geliyor: herkesin konuştuğu, hacmi ve oynaklığı artmış hisse sonraki haftalarda geride kalıyor.', 'okuma'))));
 
   const yb = yabanciSekli();
-  if (yb) kok.append(yb);
+  if (yb) kok.append(...[].concat(yb));
 
   // 2) Faktör primleri + dilimler
   const ozler = Object.keys(F);

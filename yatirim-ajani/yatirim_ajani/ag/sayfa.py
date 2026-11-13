@@ -228,6 +228,10 @@ def sayfa_verisi(cikti: str | Path, arastirma: str | Path | None = None) -> dict
     ek = {ad: _oku(cikti / f"{ad}.json") for ad in ("kap", "yabanci", "sektor_mevsim", "tarama") if (cikti / f"{ad}.json").exists()}
     if isinstance(al := (ek.get("kap") or {}).get("fon"), dict):
         al.pop("olaylar", None)  # tek tek bildirimler sayfada kullanılmaz
+    if isinstance(al := (ek.get("kap") or {}).get("arz"), dict):
+        al.pop("olaylar", None)
+    if isinstance(al := (ek.get("yabanci") or {}).get("gecmis"), dict):
+        al["grup_seri"] = {g: [v[0], v[-1]] for g, v in (al.get("grup_seri") or {}).items() if v}  # sayfa yalnız ilk ve son değeri kullanır
     veri = {
         "uretim": OZ.get("zaman"), "veri": OZ.get("veri", {}),
         "ad": {"grup": GRUP_AD, "grup_sira": GRUP_SIRA, "ozellik": OZELLIK_AD, "sektor": SEKTOR_AD, "seri": SERI_AD, "ay": AYLAR, "ay_uzun": AY_UZUN, "mevsim": MEVSIM_AD},

@@ -30,7 +30,7 @@ const metin = s => String(s).split('**').map((x, i) => (i % 2 ? h('b', { text: x
 const p = (s, cls) => h('p', { class: cls }, metin(s));
 
 // --- Sayı biçimleri (Türkçe: ondalık virgül, yüzde işareti başta) ---
-const EKSI = '−';
+const EKSI = '−\u2060';  // eksi işaretinden sonra satır kırılmasın
 const sifirMi = s => Number(s.replace(',', '.')) === 0;
 function sy(x, n = 2) {
   if (x == null || !isFinite(x)) return '–';
@@ -40,7 +40,7 @@ function sy(x, n = 2) {
 function yz(x, n = 1) {
   if (x == null || !isFinite(x)) return '–';
   const s = Math.abs(x * 100).toFixed(n).replace('.', ',');
-  return (sifirMi(s) ? '' : x < 0 ? EKSI : '+') + '%' + s;
+  return (sifirMi(s) ? '' : x < 0 ? EKSI : '+\u2060') + '%' + s;
 }
 function yzp(x, n = 0) {
   if (x == null || !isFinite(x)) return '–';

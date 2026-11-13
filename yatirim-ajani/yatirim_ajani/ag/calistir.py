@@ -18,7 +18,7 @@ from . import agac, akis, strateji, yatirimci
 from .panel import panel_yukle, saat_getirileri, saatlik_yukle, seriler_yukle
 
 BILESIK = {"zirveye_yakinlik": 1, "gunici_20g": 1, "devir_hizi_20g": -1, "max_20g": -1, "oynaklik_20g": -1, "hacim_soku": -1, "kazanc_verimi": 1}
-DENEME = 95  # sınanan kural sayısı (60 fiyat ve akış kuralı + 15 bildirim kuralı + 20 duyarlılık ve komşu geçişi denemesi); Deflated Sharpe bu sayıyla hesaplanır
+DENEME = 101  # sınanan kural sayısı (60 fiyat ve akış kuralı + 21 bildirim kuralı + 20 duyarlılık ve komşu geçişi denemesi); Deflated Sharpe bu sayıyla hesaplanır
 TASFIYE = ("Pardus", "Hedef", "Bulls", "Pusula", "Atlas", "A1")  # SPK 17.09.2026 kararı (Tera kullanıcı kuralı gereği kapsam dışı)
 
 
@@ -198,6 +198,8 @@ def calistir(klasor: str | Path = "veri/ag", cikti: str | Path | None = None, ra
         adim("kap_olay", lambda: kap.kap_olaylari(P, K))
         adim("kap_fon", lambda: kap.portfoy_profilleri(P, K, X, detay))
         adim("kap_kural", lambda: kap.kap_kurallari(P, K, DENEME, detay))
+        adim("kap_arz", lambda: kap.arz_alicilari(P, K, detay))
+        adim("kap_esik", lambda: kap.esik_sahipleri(K, detay))
     adim("tarama", lambda: kap.gunluk_tarama(P, K, X))
     adim("yabanci_kesit", lambda: kap.yabanci_kesit(P, klasor, X))
     adim("yabanci_gecmis", lambda: kap.yabanci_gecmis(P, klasor, X))
@@ -214,7 +216,7 @@ def calistir(klasor: str | Path = "veri/ag", cikti: str | Path | None = None, ra
     _yaz(cikti / "yatirimci.json", {k: S.get(k) for k in ("tavan", "taban_alimi", "halka_arz", "faktor", "kisa_vade", "fm", "fon", "tasfiye")})
     _yaz(cikti / "strateji.json", S.get("strateji"))
     if S.get("kap_olay"):
-        _yaz(cikti / "kap.json", {"veri": S.get("kap_veri"), "olay": S.get("kap_olay"), "fon": S.get("kap_fon"), "kural": S.get("kap_kural")})
+        _yaz(cikti / "kap.json", {"veri": S.get("kap_veri"), "olay": S.get("kap_olay"), "fon": S.get("kap_fon"), "kural": S.get("kap_kural"), "arz": S.get("kap_arz"), "esik": S.get("kap_esik")})
     if S.get("tarama"):
         _yaz(cikti / "tarama.json", S.get("tarama"))
     if S.get("yabanci_kesit") or S.get("yabanci_gecmis"):
