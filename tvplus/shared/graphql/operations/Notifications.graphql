@@ -1,0 +1,11 @@
+query Notifications {
+  notifications {
+    id
+    kind
+    title
+    body
+    href
+    createdAt
+    read
+  }
+}

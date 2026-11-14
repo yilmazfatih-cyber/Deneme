@@ -1,0 +1,15 @@
+mutation RecordSearchFeedback(
+  $requestId: ID!
+  $searchTerm: String!
+  $unifiedEntityId: ID!
+  $position: Int!
+  $action: SearchFeedbackAction!
+) {
+  recordSearchFeedback(
+    requestId: $requestId
+    searchTerm: $searchTerm
+    unifiedEntityId: $unifiedEntityId
+    position: $position
+    action: $action
+  )
+}

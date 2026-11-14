@@ -1,0 +1,202 @@
+/* Netflix satırı (Slider.tsx). */
+.ui-slider {
+  position: relative;
+  /* Yalnız yatayda kırp: kenardan görünen kartlar kenar boşluğunda kalır, dikeyde hiçbir şey kırpılmaz. */
+  overflow-x: clip;
+  overflow-y: visible;
+}
+.ui-slider__header {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  padding: 0 var(--gutter);
+  margin-bottom: 0.6em;
+  min-height: 1.6em;
+}
+.ui-slider__title {
+  min-width: 0;
+  flex: 0 1 auto;
+}
+.ui-slider__title-link {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 0;
+  color: inherit;
+  max-width: 100%;
+}
+.ui-slider__title-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* "Tümünü Gör ›": başlığın üzerine gelince soldan açılır; ok satırın üzerine gelince görünür. */
+.ui-slider__more {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0.6em;
+  font-size: 0.6em;
+  font-weight: 700;
+  line-height: 1.6;
+  color: var(--accent);
+  white-space: nowrap;
+}
+.ui-slider__more-label {
+  display: inline-block;
+  max-width: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    max-width 0.5s var(--ease-netflix),
+    opacity 0.4s ease;
+}
+.ui-slider__more-icon {
+  opacity: 0;
+  transform: translateX(-4px);
+  transition:
+    opacity 0.2s ease,
+    transform 0.5s var(--ease-netflix);
+}
+.ui-slider:hover .ui-slider__more-icon,
+.ui-slider__title-link:focus-visible .ui-slider__more-icon {
+  opacity: 1;
+  transform: none;
+}
+.ui-slider__title-link:hover .ui-slider__more-label,
+.ui-slider__title-link:focus-visible .ui-slider__more-label {
+  max-width: 12em;
+  opacity: 1;
+}
+.ui-slider__title-link:hover .ui-slider__more-icon {
+  transform: translateX(4px);
+}
+
+/* Sayfa göstergesi: sağ üstte 12×2 çizgiler, satırın üzerine gelince */
+.ui-slider__pager {
+  display: flex;
+  gap: 1px;
+  margin: 0 0 0.4em auto;
+  padding: 0;
+  list-style: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.ui-slider__pager > li {
+  width: 12px;
+  height: 2px;
+  background: #4d4d4d;
+}
+.ui-slider__pager > li.is-active {
+  background: #aaa;
+}
+.ui-slider:hover .ui-slider__pager,
+.ui-slider:focus-within .ui-slider__pager {
+  opacity: 1;
+}
+
+/* ───────────── Sayfalı gövde ───────────── */
+.ui-slider__body {
+  position: relative;
+}
+.ui-slider__mask {
+  margin: 0 var(--gutter);
+}
+.ui-slider__track {
+  display: flex;
+  transform: translate3d(calc(var(--first) * -100% / var(--per-page)), 0, 0);
+  transition: transform var(--dur-slide) var(--ease-netflix);
+  will-change: transform;
+}
+.ui-slider--paged .ui-slider__item {
+  flex: 0 0 calc(100% / var(--per-page));
+  min-width: 0;
+  padding: 0 calc(var(--card-gap) / 2);
+}
+
+/* Kenar tutamaçları: %4 genişlik, yarı saydam; ok yalnız satırın üzerine gelince */
+.ui-slider__handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  width: calc(var(--gutter) - var(--card-gap) / 2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  padding: 0;
+  background: rgba(20, 20, 20, 0.5);
+  color: var(--text-1);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.ui-slider__handle--prev {
+  left: 0;
+  border-radius: 0 var(--radius-card) var(--radius-card) 0;
+}
+.ui-slider__handle--next {
+  right: 0;
+  border-radius: var(--radius-card) 0 0 var(--radius-card);
+}
+.ui-slider__handle:disabled {
+  cursor: default;
+}
+.ui-slider__chevron {
+  width: 60%;
+  height: auto;
+  max-width: 40px;
+  opacity: 0;
+  transition:
+    opacity 0.2s ease,
+    transform 0.15s ease;
+}
+.ui-slider:hover .ui-slider__chevron {
+  opacity: 1;
+}
+.ui-slider__handle:hover {
+  background: rgba(20, 20, 20, 0.7);
+}
+.ui-slider__handle:hover .ui-slider__chevron {
+  transform: scale(1.25);
+}
+/* ───────────── Mobil: serbest kaydırma ───────────── */
+.ui-slider--free .ui-slider__header {
+  margin-bottom: 8px;
+}
+.ui-slider--free .ui-slider__title {
+  font-size: 17px;
+  color: var(--text-1);
+}
+.ui-slider--free .ui-slider__more-label {
+  display: none;
+}
+.ui-slider--free .ui-slider__more-icon {
+  opacity: 1;
+  transform: none;
+}
+.ui-slider__scroller {
+  display: flex;
+  gap: 8px;
+  padding: 0 var(--gutter);
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scroll-padding: 0 var(--gutter);
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.ui-slider__scroller::-webkit-scrollbar {
+  display: none;
+}
+.ui-slider--free .ui-slider__item {
+  flex: 0 0 var(--item-w);
+  width: var(--item-w);
+  scroll-snap-align: start;
+}
+/* Kaydırıcı sona varınca son kartın sağında da kenar boşluğu kalsın */
+.ui-slider__scroller::after {
+  content: '';
+  flex: 0 0 1px;
+  margin-left: calc(var(--gutter) - 9px);
+}

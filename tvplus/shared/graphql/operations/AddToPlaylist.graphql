@@ -1,0 +1,10 @@
+mutation AddToPlaylist($videoId: Int!, $tctx: String) {
+  addToPlaylist(videoId: $videoId, tctx: $tctx) {
+    isInPlaylist
+    video {
+      videoId
+      isInPlaylist
+      playlistActions
+    }
+  }
+}

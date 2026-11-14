@@ -1,0 +1,27 @@
+# TV+ gösterimini tek tıkla yayına alır (Render Blueprint). Yalnız tvplus/ klasörünü derler ve çalıştırır;
+# depodaki öteki projelere dokunmaz. Kurulum ve sınırlar: tvplus/README.md → "Telefonda açılacak bağlantı".
+services:
+  - type: web
+    name: tvplus
+    runtime: node
+    plan: free
+    region: frankfurt
+    branch: claude/cool-ride-ns0h7v
+    rootDir: tvplus
+    buildCommand: npm ci --include=dev && npm run build
+    # tsx yükleyici olarak: tek süreç (sarmalayıcı süreç yok), daha az bellek
+    startCommand: node --import tsx server/src/index.ts
+    healthCheckPath: /api/boot
+    autoDeployTrigger: 'off'
+    envVars:
+      - key: NODE_VERSION
+        value: 22.23.4
+      - key: HOST
+        value: 0.0.0.0
+      # Ücretsiz katmanın belleği dar: bu iki ayarla tepe kullanım yaklaşık 330 MB'ta kalır (ölçüldü)
+      - key: MALLOC_ARENA_MAX
+        value: '2'
+      - key: NODE_OPTIONS
+        value: --max-old-space-size=256
+      - key: TVP_LOG_LEVEL
+        value: warn

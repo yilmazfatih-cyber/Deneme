@@ -1,0 +1,48 @@
+# TV arama sonuçları: model sırası, tahmin bölümü (searchPredicted), gerekçe ve puan bileşenleri.
+query TvSearchPage($searchTerm: String!, $options: SearchOptionsInput!) {
+  searchPage(searchTerm: $searchTerm, options: $options) {
+    searchTerm
+    requestId
+    trackId
+    expires
+    isFallback
+    modelVersion
+    correction {
+      mode
+      originalTerm
+      correctedTerm
+    }
+    sections {
+      __typename
+      id
+      displayString
+      entities {
+        unifiedEntityId
+        kind
+        displayString
+        treatment
+        predicted
+        score
+        reason
+        explain {
+          name
+          value
+          weight
+          contribution
+        }
+        track {
+          ...TrackFields
+        }
+        contextualArtwork {
+          ...ArtworkFields
+        }
+        video {
+          ...CardVideo
+        }
+        channel {
+          ...ChannelCard
+        }
+      }
+    }
+  }
+}

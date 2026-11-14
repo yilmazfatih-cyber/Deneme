@@ -1,0 +1,6 @@
+mutation ToggleFavoriteChannel($channelId: Int!) {
+  toggleFavoriteChannel(channelId: $channelId) {
+    channelId
+    isFavorite
+  }
+}

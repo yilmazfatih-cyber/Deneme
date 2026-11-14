@@ -1,0 +1,35 @@
+# TV izleme ekranı: içerik türü (film / bölüm / kanal), dizinin kimliği ve sonraki bölüm — bitişte nereye
+# dönüleceği, oynatıcı açılamazsa TV penceresindeki başlık ve komşu kanallar (↑/↓ ile kanal değiştirme) için.
+query TvWatchInfo($viewableId: ID!) {
+  playbackMetadata(viewableId: $viewableId) {
+    viewableId
+    title
+    subtitle
+    live
+    video {
+      __typename
+      videoId
+      title
+      ... on Episode {
+        parentShow {
+          videoId
+          title
+        }
+      }
+    }
+    channel {
+      channelId
+      name
+      number
+    }
+    nextEpisode {
+      videoId
+    }
+    previousChannel {
+      channelId
+    }
+    nextChannel {
+      channelId
+    }
+  }
+}

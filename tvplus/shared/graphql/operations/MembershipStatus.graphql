@@ -1,0 +1,25 @@
+query MembershipStatus {
+  membershipStatus {
+    status
+    account {
+      accountId
+      planName
+      products
+      profiles {
+        guid
+        name
+        isKids
+        maturityLevel
+        isActive
+        avatar(params: { width: 160 }) {
+          ...ArtworkFields
+        }
+      }
+    }
+    activeProfile {
+      guid
+      name
+      isKids
+    }
+  }
+}

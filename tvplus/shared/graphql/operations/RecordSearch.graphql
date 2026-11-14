@@ -1,0 +1,3 @@
+mutation RecordSearch($term: String!) {
+  recordSearch(term: $term)
+}

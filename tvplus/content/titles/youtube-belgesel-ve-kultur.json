@@ -1,0 +1,1865 @@
+[
+  {
+    "videoId": 80041000,
+    "slug": "ailenin-yeni-uyesi",
+    "type": "SHOW",
+    "title": "Ailenin Yeni Üyesi",
+    "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": ["tr"]
+    },
+    "synopsis": "Bir gezginin farklı ülkelerdeki ailelere katılıp onlarla aynı sofrada buluştuğu bir belgesel dizisi. Bu bölümlerde Tayland, Kamboçya ve Malezya’daki aileler konu alınıyor.",
+    "shortSynopsis": "Bir gezginin farklı ülkelerdeki ailelerin sofrasına katıldığı belgesel dizisi. Tayland, Kamboçya ve Malezya.",
+    "genres": ["belgesel", "yasam"],
+    "moods": ["sakin"],
+    "cast": [],
+    "directors": [],
+    "creators": [],
+    "keywords": ["aile", "seyahat", "Tayland", "Kamboçya", "Malezya", "belgesel"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": null,
+    "sources": [],
+    "seasons": [
+      {
+        "number": 1,
+        "episodes": [
+          {
+            "videoId": 80041105,
+            "number": 5,
+            "title": "Tayland",
+            "synopsis": "Ailenin Yeni Üyesi dizisinin Tayland bölümü.",
+            "runtimeSec": 3005,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "UJp2ZSdx09w"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/UJp2ZSdx09w/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80041106,
+            "number": 6,
+            "title": "Kamboçya",
+            "synopsis": "Ailenin Yeni Üyesi dizisinin Kamboçya’daki ilk bölümü.",
+            "runtimeSec": 3179,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "jn4G0HnDgFk"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/jn4G0HnDgFk/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80041107,
+            "number": 7,
+            "title": "Kamboçya",
+            "synopsis": "Ailenin Yeni Üyesi dizisinin Kamboçya’daki ikinci bölümü.",
+            "runtimeSec": 3073,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "2zUENiBOnF8"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/2zUENiBOnF8/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80041108,
+            "number": 8,
+            "title": "Malezya",
+            "synopsis": "Ailenin Yeni Üyesi dizisinin Malezya bölümü.",
+            "runtimeSec": 3005,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "nwB_5gHKC7M"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/nwB_5gHKC7M/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          }
+        ]
+      }
+    ],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/nwB_5gHKC7M/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "TRT Belgesel · YouTube",
+      "url": "https://www.youtube.com/channel/UCdVBWUBCuREx1Q2Ikw9R8Mw"
+    },
+    "availability": {
+      "addedAt": "2026-11-07",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 61
+  },
+  {
+    "videoId": 80042000,
+    "slug": "benim-sakin-dunyam",
+    "type": "SHOW",
+    "title": "Benim Sakin Dünyam",
+    "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": ["tr"]
+    },
+    "synopsis": "Adı “sakin dünyam” olan bu TRT Belgesel dizisi, 7 ila 13. bölümleriyle burada yer alıyor. Bölüm başlıklarında ek bir konu adı verilmiyor.",
+    "shortSynopsis": "TRT Belgesel’in Benim Sakin Dünyam dizisinden 7 ila 13. bölümler.",
+    "genres": ["belgesel", "yasam"],
+    "moods": ["sakin"],
+    "cast": [],
+    "directors": [],
+    "creators": [],
+    "keywords": ["sakin dünya", "belgesel", "yaşam", "TRT Belgesel", "bölümler"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": null,
+    "sources": [],
+    "seasons": [
+      {
+        "number": 1,
+        "episodes": [
+          {
+            "videoId": 80042107,
+            "number": 7,
+            "title": "7. Bölüm",
+            "synopsis": "Benim Sakin Dünyam dizisinin yedinci bölümü.",
+            "runtimeSec": 1657,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "Po5ZSdovFuM"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/Po5ZSdovFuM/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80042108,
+            "number": 8,
+            "title": "8. Bölüm",
+            "synopsis": "Benim Sakin Dünyam dizisinin sekizinci bölümü.",
+            "runtimeSec": 2033,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "YI-JbC1GSMQ"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/YI-JbC1GSMQ/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80042109,
+            "number": 9,
+            "title": "9. Bölüm",
+            "synopsis": "Benim Sakin Dünyam dizisinin dokuzuncu bölümü.",
+            "runtimeSec": 1711,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "aeYMbc2nzjc"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/aeYMbc2nzjc/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80042110,
+            "number": 10,
+            "title": "10. Bölüm",
+            "synopsis": "Benim Sakin Dünyam dizisinin onuncu bölümü.",
+            "runtimeSec": 1641,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "BxdA9PFNKNo"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/BxdA9PFNKNo/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80042111,
+            "number": 11,
+            "title": "11. Bölüm",
+            "synopsis": "Benim Sakin Dünyam dizisinin on birinci bölümü.",
+            "runtimeSec": 1837,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "GqZF9SIm_8M"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/GqZF9SIm_8M/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80042112,
+            "number": 12,
+            "title": "12. Bölüm",
+            "synopsis": "Benim Sakin Dünyam dizisinin on ikinci bölümü.",
+            "runtimeSec": 2399,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "im4BD0fDNg4"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/im4BD0fDNg4/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80042113,
+            "number": 13,
+            "title": "13. Bölüm",
+            "synopsis": "Benim Sakin Dünyam dizisinin on üçüncü bölümü.",
+            "runtimeSec": 2344,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "tXlpexPToFI"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/tXlpexPToFI/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          }
+        ]
+      }
+    ],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/tXlpexPToFI/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "TRT Belgesel · YouTube",
+      "url": "https://www.youtube.com/channel/UCdVBWUBCuREx1Q2Ikw9R8Mw"
+    },
+    "availability": {
+      "addedAt": "2026-10-16",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 55
+  },
+  {
+    "videoId": 80043000,
+    "slug": "bir-dunya-yasam",
+    "type": "SHOW",
+    "title": "Bir Dünya Yaşam",
+    "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": ["tr"]
+    },
+    "synopsis": "TRT Belgesel’in Bir Dünya Yaşam dizisinden iki bölüm burada yer alıyor. Bölümler Pakistan’daki hayatlara odaklanıyor ve suların ardındaki yaşamı ele alıyor.",
+    "shortSynopsis": "TRT Belgesel’in Bir Dünya Yaşam dizisinden Pakistan’a ayrılan iki bölüm.",
+    "genres": ["belgesel", "yasam"],
+    "moods": ["dusundurucu"],
+    "cast": [],
+    "directors": [],
+    "creators": [],
+    "keywords": ["Pakistan", "yaşam", "vefa", "seyahat", "belgesel"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": null,
+    "sources": [],
+    "seasons": [
+      {
+        "number": 1,
+        "episodes": [
+          {
+            "videoId": 80043105,
+            "number": 5,
+            "title": "Pakistan: İkiz Şehirlerin Yükünü Çekenler",
+            "synopsis": "Bir Dünya Yaşam dizisinin Pakistan’a ayrılan beşinci bölümü.",
+            "runtimeSec": 1574,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "1uMSCIvFLLs"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/1uMSCIvFLLs/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80043106,
+            "number": 6,
+            "title": "Pakistan: Suların Ardındaki Hayatlar ve Vefa Yolculuğu",
+            "synopsis": "Bir Dünya Yaşam dizisinin Pakistan’a ayrılan altıncı bölümü.",
+            "runtimeSec": 1585,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "k8sO8FxaQW8"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/k8sO8FxaQW8/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          }
+        ]
+      }
+    ],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/k8sO8FxaQW8/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "TRT Belgesel · YouTube",
+      "url": "https://www.youtube.com/channel/UCdVBWUBCuREx1Q2Ikw9R8Mw"
+    },
+    "availability": {
+      "addedAt": "2026-09-13",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 55
+  },
+  {
+    "videoId": 80044000,
+    "slug": "iyiligin-cekim-gucu",
+    "type": "SHOW",
+    "title": "İyiliğin Çekim Gücü",
+    "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": ["tr"]
+    },
+    "synopsis": "Fikirdaş Medya yapımı ve Bekir Köse’nin sunduğu bu TRT Belgesel dizisi iyilik hikâyelerine odaklanıyor. Gönüllülük ve karşılıksız yardım gibi konular dizinin bölümlerinde yer alıyor.",
+    "shortSynopsis": "İyiliğin hikâyelerini anlatan TRT Belgesel dizisinden 5. ile 9. bölümler.",
+    "genres": ["belgesel", "yasam", "yerli"],
+    "moods": ["ic-isitan"],
+    "cast": [],
+    "directors": [],
+    "creators": [],
+    "keywords": ["iyilik", "gönüllülük", "dayanışma", "mahalle", "TRT Belgesel"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": null,
+    "sources": [],
+    "seasons": [
+      {
+        "number": 1,
+        "episodes": [
+          {
+            "videoId": 80044105,
+            "number": 5,
+            "title": "Bir Bardak Serinlik ve Tohumların Uykusu",
+            "synopsis": "İyiliğin Çekim Gücü dizisinin beşinci bölümü.",
+            "runtimeSec": 2543,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "4a4KOPmMJXs"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/4a4KOPmMJXs/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80044106,
+            "number": 6,
+            "title": "Gökyüzünün Özgürlüğü ve Bir Tas Samimiyet",
+            "synopsis": "İyiliğin Çekim Gücü dizisinin altıncı bölümü.",
+            "runtimeSec": 2299,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "hGZuT8O5Hos"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/hGZuT8O5Hos/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80044107,
+            "number": 7,
+            "title": "Mahalle Sineması ve Acil Sanat Hattı",
+            "synopsis": "İyiliğin Çekim Gücü dizisinin yedinci bölümü.",
+            "runtimeSec": 2189,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "W1gi94ZEsaI"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/W1gi94ZEsaI/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80044108,
+            "number": 8,
+            "title": "Hayallerin Mühendisleri ve Parkurların Enerjisi",
+            "synopsis": "İyiliğin Çekim Gücü dizisinin sekizinci bölümü.",
+            "runtimeSec": 2284,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "Rg5xUTROQas"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/Rg5xUTROQas/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80044109,
+            "number": 9,
+            "title": "Tiyatro Heyecanı ve Birsen Ablanın Hızır Sofrası",
+            "synopsis": "İyiliğin Çekim Gücü dizisinin dokuzuncu bölümü.",
+            "runtimeSec": 2161,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "Tk9gF_xIMhM"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/Tk9gF_xIMhM/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          }
+        ]
+      }
+    ],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/Tk9gF_xIMhM/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "TRT Belgesel · YouTube",
+      "url": "https://www.youtube.com/channel/UCdVBWUBCuREx1Q2Ikw9R8Mw"
+    },
+    "availability": {
+      "addedAt": "2026-08-13",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 47
+  },
+  {
+    "videoId": 80045000,
+    "slug": "turk-dunyasi-kesif-rotasi",
+    "type": "SHOW",
+    "title": "Türk Dünyası Keşif Rotası",
+    "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": ["tr"]
+    },
+    "synopsis": "TRT Avaz’ın Türk Dünyası Keşif Rotası dizisi, Türk dünyasının farklı yerlerine yapılan keşif yolculuğunu konu alıyor. Bu bölümlerde Belgrad, Edirne, Çimkent ve Otrar yer alıyor.",
+    "shortSynopsis": "Belgrad, Edirne, Çimkent ve Otrar’a yapılan keşif yolculukları. Dört bölüm.",
+    "genres": ["belgesel", "tarih", "yerli"],
+    "moods": ["ilham"],
+    "cast": [],
+    "directors": [],
+    "creators": [],
+    "keywords": ["Türk dünyası", "Kazakistan", "Sırbistan", "keşif", "kültür rotası"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": null,
+    "sources": [],
+    "seasons": [
+      {
+        "number": 1,
+        "episodes": [
+          {
+            "videoId": 80045114,
+            "number": 14,
+            "title": "Belgrad - Sırbistan",
+            "synopsis": "Türk Dünyası Keşif Rotası dizisinin Belgrad’a ayrılan bölümü.",
+            "runtimeSec": 2148,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "M1GZA_tvdRU"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/M1GZA_tvdRU/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80045115,
+            "number": 15,
+            "title": "Edirne",
+            "synopsis": "Türk Dünyası Keşif Rotası dizisinin Edirne bölümü.",
+            "runtimeSec": 2020,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "De3z6it2MFk"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/De3z6it2MFk/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80045116,
+            "number": 16,
+            "title": "Çimkent - Kazakistan",
+            "synopsis": "Türk Dünyası Keşif Rotası dizisinin Çimkent bölümü.",
+            "runtimeSec": 2044,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "lbFsLHOWMzw"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/lbFsLHOWMzw/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80045117,
+            "number": 17,
+            "title": "Otrar - Kazakistan",
+            "synopsis": "Türk Dünyası Keşif Rotası dizisinin Otrar bölümü.",
+            "runtimeSec": 1907,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "CcC_nvVsQak"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/CcC_nvVsQak/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          }
+        ]
+      }
+    ],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/CcC_nvVsQak/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "TRT Avaz · YouTube",
+      "url": "https://www.youtube.com/channel/UCib1E6oJRLd2pXkxqzxyg7A"
+    },
+    "availability": {
+      "addedAt": "2026-11-12",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 43
+  },
+  {
+    "videoId": 80046000,
+    "slug": "koydeki-lezzet",
+    "type": "SHOW",
+    "title": "Köydeki Lezzet",
+    "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": ["tr"]
+    },
+    "synopsis": "TRT Avaz’ın Köydeki Lezzet dizisi yemek kültürünü konu alıyor. Sebzeli pilav, Azerbaycan mantısı, Özbek pilavı, menemen ve Karabağ ketesi bu bölümlerde ele alınıyor.",
+    "shortSynopsis": "Sebzeli pilavdan menemene, köy mutfağından beş yemek ve tarifleri.",
+    "genres": ["belgesel", "yasam"],
+    "moods": ["ic-isitan"],
+    "cast": [],
+    "directors": [],
+    "creators": [],
+    "keywords": ["yemek", "mutfak", "köy", "pilav", "yemek kültürü"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": null,
+    "sources": [],
+    "seasons": [
+      {
+        "number": 1,
+        "episodes": [
+          {
+            "videoId": 80046101,
+            "number": 1,
+            "title": "Sebzeli Pilav",
+            "synopsis": "Köydeki Lezzet dizisinin sebzeli pilav bölümü.",
+            "runtimeSec": 1568,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "6vGrirDnCfI"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/6vGrirDnCfI/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80046102,
+            "number": 2,
+            "title": "Azerbaycan Mantısı (Düşbere) ve Kutab",
+            "synopsis": "Köydeki Lezzet dizisinin Azerbaycan mantısı ve kutab bölümü.",
+            "runtimeSec": 1574,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "xcpyx5UP0A4"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/xcpyx5UP0A4/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80046103,
+            "number": 3,
+            "title": "Özbek Pilavı",
+            "synopsis": "Köydeki Lezzet dizisinin Özbek pilavı bölümü.",
+            "runtimeSec": 1562,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "zeOk7EDoL6Q"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/zeOk7EDoL6Q/hqdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80046104,
+            "number": 4,
+            "title": "Menemen",
+            "synopsis": "Köydeki Lezzet dizisinin menemen bölümü.",
+            "runtimeSec": 1575,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "T5r2JREm34E"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/T5r2JREm34E/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80046105,
+            "number": 5,
+            "title": "Karabağ Ketesi",
+            "synopsis": "Köydeki Lezzet dizisinin Karabağ ketesi bölümü.",
+            "runtimeSec": 1564,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "6w77YAvRi_w"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/6w77YAvRi_w/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          }
+        ]
+      }
+    ],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/6w77YAvRi_w/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "TRT Avaz · YouTube",
+      "url": "https://www.youtube.com/channel/UCib1E6oJRLd2pXkxqzxyg7A"
+    },
+    "availability": {
+      "addedAt": "2026-11-11",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 44
+  },
+  {
+    "videoId": 80047000,
+    "slug": "japonya-yolculugu",
+    "type": "SHOW",
+    "title": "Japonya Yolculuğu",
+    "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": ["tr"]
+    },
+    "synopsis": "Barış Özcan’ın Japonya’da çektiği üç bölümlük seyahat serisi. Bölümlerde bir tayfunun ortasında geçen günler ve küçük bir kasabada misafir olunan zaman anlatılıyor.",
+    "shortSynopsis": "Barış Özcan’ın Japonya’da üç bölüm boyunca anlattığı seyahat: tayfun, kasaba ve beklenmedik yerler.",
+    "genres": ["belgesel", "yasam"],
+    "moods": ["goz-alici"],
+    "cast": ["Barış Özcan"],
+    "directors": [],
+    "creators": [],
+    "keywords": ["Japonya", "seyahat", "kasaba", "tayfun", "yerel yaşam"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": null,
+    "sources": [],
+    "seasons": [
+      {
+        "number": 1,
+        "episodes": [
+          {
+            "videoId": 80047101,
+            "number": 1,
+            "title": "Japonya'da hiçbir şey göründüğü gibi değil - 1. Bölüm",
+            "synopsis": "Japonya Yolculuğu serisinin birinci bölümü.",
+            "runtimeSec": 4565,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "f8wQj7zbspE"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/f8wQj7zbspE/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80047102,
+            "number": 2,
+            "title": "Japonya'da iki tayfunun ortasında kaldık - 2. Bölüm",
+            "synopsis": "Japonya Yolculuğu serisinin ikinci bölümü.",
+            "runtimeSec": 4415,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "-JiUa59FGDY"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/-JiUa59FGDY/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80047103,
+            "number": 3,
+            "title": "Japonların bile bilmediği bir kasabada misafir olduk - 3. Bölüm",
+            "synopsis": "Japonya Yolculuğu serisinin üçüncü bölümü.",
+            "runtimeSec": 4103,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "gVPIA39W0Qg"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/gVPIA39W0Qg/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          }
+        ]
+      }
+    ],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/gVPIA39W0Qg/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "Barış Özcan · YouTube",
+      "url": "https://www.youtube.com/channel/UCv6jcPwFujuTIwFQ11jt1Yw"
+    },
+    "availability": {
+      "addedAt": "2026-10-13",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 81
+  },
+  {
+    "videoId": 80048000,
+    "slug": "sinematograf",
+    "type": "SHOW",
+    "title": "Sinematograf",
+    "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": ["tr"]
+    },
+    "synopsis": "TRT 2’nin Sinematograf programı Türk sinemasının tarihine bakıyor. Bu bölümlerde II. Dünya Savaşı dönemi ile 1940’lar ve o yılların Türk yönetmenleri konu alınıyor.",
+    "shortSynopsis": "1940’lardaki Türk sineması ve yönetmenleri. Üç bölüm.",
+    "genres": ["tarih", "yerli"],
+    "moods": ["nostaljik"],
+    "cast": [],
+    "directors": [],
+    "creators": [],
+    "keywords": ["Türk sineması", "yönetmenler", "1940’lar", "sinema tarihi", "II. Dünya Savaşı"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": null,
+    "sources": [],
+    "seasons": [
+      {
+        "number": 1,
+        "episodes": [
+          {
+            "videoId": 80048140,
+            "number": 40,
+            "title": "II. Dünya Savaşı ve Türk Sineması",
+            "synopsis": "Sinematograf programının II. Dünya Savaşı ve Türk sinemasını konu alan bölümü.",
+            "runtimeSec": 1589,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "S061ijD6B-A"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/S061ijD6B-A/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80048142,
+            "number": 42,
+            "title": "1940’lı Yılların Türk Yönetmenleri",
+            "synopsis": "Sinematograf programının 1940’lı yılların Türk yönetmenlerine ayrılan bölümü.",
+            "runtimeSec": 1631,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "5TJPNyFJhdU"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/5TJPNyFJhdU/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80048143,
+            "number": 43,
+            "title": "1940'lar Türk Sineması ve Yönetmenleri",
+            "synopsis": "Sinematograf programının 1940’lar Türk sinemasına ayrılan bölümü.",
+            "runtimeSec": 1711,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "zz3J4v05qns"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/zz3J4v05qns/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          }
+        ]
+      }
+    ],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/zz3J4v05qns/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "TRT 2 · YouTube",
+      "url": "https://www.youtube.com/channel/UC2r8FIjCvkYbcbxVe5koa_g"
+    },
+    "availability": {
+      "addedAt": "2026-11-06",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 44
+  },
+  {
+    "videoId": 80049000,
+    "slug": "edebiyat-dunyasi",
+    "type": "SHOW",
+    "title": "Edebiyat Dünyası",
+    "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": ["tr"]
+    },
+    "synopsis": "TRT 2’nin Edebiyat Dünyası programından iki bölüm burada yer alıyor. Bölüm başlıklarında Ercan İriş ve Ömer Fatih Andı’nın adları geçiyor.",
+    "shortSynopsis": "Edebiyat Dünyası programından Ercan İriş ve Ömer Fatih Andı bölümleri.",
+    "genres": ["yasam", "yerli"],
+    "moods": ["dusundurucu"],
+    "cast": [],
+    "directors": [],
+    "creators": [],
+    "keywords": ["edebiyat", "yazar", "kitap", "Türk edebiyatı", "söyleşi"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": null,
+    "sources": [],
+    "seasons": [
+      {
+        "number": 1,
+        "episodes": [
+          {
+            "videoId": 80049213,
+            "number": 113,
+            "title": "Ercan İriş",
+            "synopsis": "Edebiyat Dünyası programının 113. bölümü; bölüm başlığında Ercan İriş’in adı geçiyor.",
+            "runtimeSec": 2516,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "AY5JQqo4ZYU"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/AY5JQqo4ZYU/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80049216,
+            "number": 116,
+            "title": "Ömer Fatih Andı",
+            "synopsis": "Edebiyat Dünyası programının 116. bölümü; bölüm başlığında Ömer Fatih Andı’nın adı geçiyor.",
+            "runtimeSec": 2318,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "e7ygTY2d9Vg"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/e7ygTY2d9Vg/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          }
+        ]
+      }
+    ],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/e7ygTY2d9Vg/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "TRT 2 · YouTube",
+      "url": "https://www.youtube.com/channel/UC2r8FIjCvkYbcbxVe5koa_g"
+    },
+    "availability": {
+      "addedAt": "2026-11-06",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 45
+  },
+  {
+    "videoId": 80040001,
+    "slug": "evrende-aninda-gidebilir-miyiz",
+    "type": "MOVIE",
+    "title": "Evrende İstediğimiz Yere Anında Gidebilir miyiz?",
+    "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": ["tr"]
+    },
+    "synopsis": "Evrende bir yerden başka bir yere anında gidebilmenin mümkün olup olmadığını bilimsel açıdan sorguluyor.",
+    "shortSynopsis": "Evrende bir yerden başka bir yere anında gidebilmenin mümkün olup olmadığı sorusu.",
+    "genres": ["doga-bilim"],
+    "moods": ["dusundurucu"],
+    "cast": [],
+    "directors": [],
+    "creators": [],
+    "keywords": ["uzay", "evren", "fizik", "bilim", "ışınlanma"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": 1267,
+    "sources": [
+      {
+        "type": "YOUTUBE",
+        "videoId": "sgDe-ruggGE"
+      }
+    ],
+    "seasons": [],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/sgDe-ruggGE/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "Evrim Ağacı · YouTube",
+      "url": "https://www.youtube.com/watch?v=sgDe-ruggGE"
+    },
+    "availability": {
+      "addedAt": "2026-10-23",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 81
+  },
+  {
+    "videoId": 80040002,
+    "slug": "evrenin-sinirina-gitsek",
+    "type": "MOVIE",
+    "title": "Evrenin Sınırına Gitsek Ne Görürdük?",
+    "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": ["tr"]
+    },
+    "synopsis": "Evrenin en uç noktalarına gidilebilseydi neyle karşılaşılacağı sorusunu ele alan bir bilim anlatımı.",
+    "shortSynopsis": "Evrenin sınırına gidilse ne görülürdü sorusunu ele alan bir bilim anlatımı.",
+    "genres": ["doga-bilim"],
+    "moods": ["dusundurucu"],
+    "cast": [],
+    "directors": [],
+    "creators": [],
+    "keywords": ["evren", "uzay", "kozmoloji", "bilim", "gözlem"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": 1806,
+    "sources": [
+      {
+        "type": "YOUTUBE",
+        "videoId": "GHFA2inzbwA"
+      }
+    ],
+    "seasons": [],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/GHFA2inzbwA/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "Evrim Ağacı · YouTube",
+      "url": "https://www.youtube.com/watch?v=GHFA2inzbwA"
+    },
+    "availability": {
+      "addedAt": "2026-08-13",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 82
+  },
+  {
+    "videoId": 80040003,
+    "slug": "zaman-hakkinda-ne-biliyoruz",
+    "type": "MOVIE",
+    "title": "Zaman Hakkında Ne Biliyoruz?",
+    "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": ["tr"]
+    },
+    "synopsis": "Zamanın ne olduğu ve bu konudaki bilgilerimizin neler olduğu üzerine bir bilim anlatımı.",
+    "shortSynopsis": "Zamanın ne olduğu ve bildiklerimiz üzerine kısa bir bilim anlatımı.",
+    "genres": ["doga-bilim"],
+    "moods": ["dusundurucu"],
+    "cast": [],
+    "directors": [],
+    "creators": [],
+    "keywords": ["zaman", "fizik", "evren", "bilim"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": 1768,
+    "sources": [
+      {
+        "type": "YOUTUBE",
+        "videoId": "jEUVhAvqgmA"
+      }
+    ],
+    "seasons": [],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/jEUVhAvqgmA/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "Evrim Ağacı · YouTube",
+      "url": "https://www.youtube.com/watch?v=jEUVhAvqgmA"
+    },
+    "availability": {
+      "addedAt": "2026-09-13",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 81
+  },
+  {
+    "videoId": 80040004,
+    "slug": "toz-yildiz-tozu-muyuz",
+    "type": "MOVIE",
+    "title": "Toz: Gerçekten Yıldız Tozu muyuz?",
+    "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": ["tr"]
+    },
+    "synopsis": "Yıldız tozu kavramının bizimle olan ilişkisini soran bir bilim anlatımı.",
+    "shortSynopsis": "Yıldız tozu kavramının bizimle ilişkisini soran bir bilim anlatımı.",
+    "genres": ["doga-bilim"],
+    "moods": ["dusundurucu"],
+    "cast": [],
+    "directors": [],
+    "creators": [],
+    "keywords": ["yıldız tozu", "evren", "astronomi", "bilim"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": 1268,
+    "sources": [
+      {
+        "type": "YOUTUBE",
+        "videoId": "3SxomqLp1kM"
+      }
+    ],
+    "seasons": [],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/3SxomqLp1kM/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "Evrim Ağacı · YouTube",
+      "url": "https://www.youtube.com/watch?v=3SxomqLp1kM"
+    },
+    "availability": {
+      "addedAt": "2026-07-13",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 63
+  },
+  {
+    "videoId": 80040005,
+    "slug": "diger-hayvanlar-evcil-olabilir-mi",
+    "type": "MOVIE",
+    "title": "Diğer Hayvanların da Evcil Hayvanı Olabilir mi?",
+    "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": ["tr"]
+    },
+    "synopsis": "Evcil hayvan kavramının hangi hayvan türleri için geçerli olabileceğini tartışan bir bilim anlatımı.",
+    "shortSynopsis": "Hangi hayvanların evcil hayvan olabileceği sorusunu tartışan bir bilim anlatımı.",
+    "genres": ["doga-bilim"],
+    "moods": ["dusundurucu"],
+    "cast": [],
+    "directors": [],
+    "creators": [],
+    "keywords": ["evcil hayvan", "hayvanlar", "evcilleştirme", "biyoloji", "bilim"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": 1268,
+    "sources": [
+      {
+        "type": "YOUTUBE",
+        "videoId": "mRfXV-BLoBI"
+      }
+    ],
+    "seasons": [],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/mRfXV-BLoBI/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "Evrim Ağacı · YouTube",
+      "url": "https://www.youtube.com/watch?v=mRfXV-BLoBI"
+    },
+    "availability": {
+      "addedAt": "2026-09-13",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 80
+  },
+  {
+    "videoId": 80040006,
+    "slug": "jet-motorlari-neden-gurultulu",
+    "type": "MOVIE",
+    "title": "Jet Motorları Neden Bu Kadar Gürültülü?",
+    "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": ["tr"]
+    },
+    "synopsis": "Jet motorlarının neden bu kadar yüksek ses çıkardığını anlatan bir teknoloji videosu.",
+    "shortSynopsis": "Jet motorlarının neden bu kadar gürültülü olduğunu anlatan bir teknoloji videosu.",
+    "genres": ["teknoloji"],
+    "moods": ["dusundurucu"],
+    "cast": [],
+    "directors": [],
+    "creators": [],
+    "keywords": ["jet motoru", "ses", "uçak", "mühendislik", "teknoloji"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": 1248,
+    "sources": [
+      {
+        "type": "YOUTUBE",
+        "videoId": "YNGrMYo3aZw"
+      }
+    ],
+    "seasons": [],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/YNGrMYo3aZw/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "Evrim Ağacı · YouTube",
+      "url": "https://www.youtube.com/watch?v=YNGrMYo3aZw"
+    },
+    "availability": {
+      "addedAt": "2026-10-13",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 72
+  },
+  {
+    "videoId": 80040007,
+    "slug": "2400-yillik-ogrenme-teknigi",
+    "type": "MOVIE",
+    "title": "2400 Yıllık Öğrenme Tekniği",
+    "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": ["tr"]
+    },
+    "synopsis": "Adından yola çıkılarak yaklaşık 2400 yıllık bir öğrenme tekniği üzerine yapılmış bir anlatım.",
+    "shortSynopsis": "Yaklaşık 2400 yıllık bir öğrenme tekniği üzerine kısa bir anlatım.",
+    "genres": ["yasam"],
+    "moods": ["ilham"],
+    "cast": ["Barış Özcan"],
+    "directors": [],
+    "creators": [],
+    "keywords": ["öğrenme", "eğitim", "hafıza", "zihin", "teknik"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": 1179,
+    "sources": [
+      {
+        "type": "YOUTUBE",
+        "videoId": "hWB35nj19O4"
+      }
+    ],
+    "seasons": [],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/hWB35nj19O4/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "Barış Özcan · YouTube",
+      "url": "https://www.youtube.com/watch?v=hWB35nj19O4"
+    },
+    "availability": {
+      "addedAt": "2026-10-31",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 71
+  },
+  {
+    "videoId": 80040008,
+    "slug": "okudugunu-neden-unutuyorsun",
+    "type": "MOVIE",
+    "title": "Okuduğunu Neden Unutuyorsun?",
+    "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": ["tr"]
+    },
+    "synopsis": "Okuduklarımızın neden hızla unutulduğu sorusu üzerine kısa bir anlatım.",
+    "shortSynopsis": "Okuduklarımızın neden hızla unutulduğu sorusu üzerine kısa bir anlatım.",
+    "genres": ["yasam"],
+    "moods": ["dusundurucu"],
+    "cast": ["Barış Özcan"],
+    "directors": [],
+    "creators": [],
+    "keywords": ["okuma", "hafıza", "unutma", "öğrenme", "zihin"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": 1244,
+    "sources": [
+      {
+        "type": "YOUTUBE",
+        "videoId": "nnNkf7ttuGc"
+      }
+    ],
+    "seasons": [],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/nnNkf7ttuGc/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "Barış Özcan · YouTube",
+      "url": "https://www.youtube.com/watch?v=nnNkf7ttuGc"
+    },
+    "availability": {
+      "addedAt": "2026-10-13",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 81
+  },
+  {
+    "videoId": 80040009,
+    "slug": "senin-mavin-benimkiyle-ayni-mi",
+    "type": "MOVIE",
+    "title": "Senin Mavin Benimkiyle Aynı mı?",
+    "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": ["tr"]
+    },
+    "synopsis": "İnsanların mavi rengi aynı biçimde görüp görmediği sorusunu ele alan bir bilim anlatımı.",
+    "shortSynopsis": "Mavi rengin herkeste aynı görünüp görünmediğini soran bir bilim anlatımı.",
+    "genres": ["doga-bilim"],
+    "moods": ["dusundurucu"],
+    "cast": ["Barış Özcan"],
+    "directors": [],
+    "creators": [],
+    "keywords": ["renk", "mavi", "algı", "göz", "bilim"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": 985,
+    "sources": [
+      {
+        "type": "YOUTUBE",
+        "videoId": "9dMSKvFMLm4"
+      }
+    ],
+    "seasons": [],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/9dMSKvFMLm4/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "Barış Özcan · YouTube",
+      "url": "https://www.youtube.com/watch?v=9dMSKvFMLm4"
+    },
+    "availability": {
+      "addedAt": "2026-07-13",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 63
+  },
+  {
+    "videoId": 80040010,
+    "slug": "planetary-defenders",
+    "type": "MOVIE",
+    "title": "Planetary Defenders: This Is Not an Exercise",
+    "year": 2026,
+    "origin": {
+      "countries": ["US"],
+      "languages": ["en"]
+    },
+    "synopsis": "NASA’nın gezegen savunma çalışmalarını konu alan bir video; başlığı bunun bir tatbikat olmadığını belirtiyor.",
+    "shortSynopsis": "NASA’nın gezegen savunma çalışmalarını konu alan bir video.",
+    "genres": ["teknoloji", "doga-bilim"],
+    "moods": ["dusundurucu"],
+    "cast": [],
+    "directors": [],
+    "creators": [],
+    "keywords": ["gezegen savunması", "asteroit", "NASA", "uzay", "bilim"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": 1215,
+    "sources": [
+      {
+        "type": "YOUTUBE",
+        "videoId": "5b3n-u_0QAI"
+      }
+    ],
+    "seasons": [],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/5b3n-u_0QAI/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "NASA · YouTube",
+      "url": "https://www.youtube.com/watch?v=5b3n-u_0QAI"
+    },
+    "availability": {
+      "addedAt": "2026-10-16",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 74
+  },
+  {
+    "videoId": 80040011,
+    "slug": "nasa-moon-base-lunar-landers",
+    "type": "MOVIE",
+    "title": "NASA Moon Base: Lunar Landers (August 2026 Update)",
+    "year": 2026,
+    "origin": {
+      "countries": ["US"],
+      "languages": ["en"]
+    },
+    "synopsis": "NASA’nın Ay üssü çalışmaları kapsamında Ay iniş araçlarını anlatan ağustos 2026 güncellemesi.",
+    "shortSynopsis": "NASA’nın Ay üssü çalışmalarındaki Ay iniş araçlarını anlatan güncelleme.",
+    "genres": ["teknoloji", "doga-bilim"],
+    "moods": ["ilham"],
+    "cast": [],
+    "directors": [],
+    "creators": [],
+    "keywords": ["Ay üssü", "Ay iniş aracı", "NASA", "uzay", "Ay"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": 615,
+    "sources": [
+      {
+        "type": "YOUTUBE",
+        "videoId": "Sempwv5MPMQ"
+      }
+    ],
+    "seasons": [],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/Sempwv5MPMQ/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "NASA · YouTube",
+      "url": "https://www.youtube.com/watch?v=Sempwv5MPMQ"
+    },
+    "availability": {
+      "addedAt": "2026-08-13",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 71
+  },
+  {
+    "videoId": 80040012,
+    "slug": "kef-kalesinden-arta-kalanlar",
+    "type": "MOVIE",
+    "title": "Kef Kalesinden Arta Kalanlar",
+    "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": ["tr"]
+    },
+    "synopsis": "TRT 2’nin Antik Miras programının 28. bölümü; Kef Kalesi’nden geriye kalanları ele alıyor.",
+    "shortSynopsis": "TRT 2’nin Antik Miras programından, Kef Kalesi’nden geriye kalanlar.",
+    "genres": ["tarih", "belgesel"],
+    "moods": ["sakin"],
+    "cast": [],
+    "directors": [],
+    "creators": [],
+    "keywords": ["Kef Kalesi", "antik miras", "arkeoloji", "tarih", "miras"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": 1510,
+    "sources": [
+      {
+        "type": "YOUTUBE",
+        "videoId": "Ca9gzDou1hA"
+      }
+    ],
+    "seasons": [],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/Ca9gzDou1hA/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "TRT 2 · YouTube",
+      "url": "https://www.youtube.com/watch?v=Ca9gzDou1hA"
+    },
+    "availability": {
+      "addedAt": "2026-11-09",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 46
+  },
+  {
+    "videoId": 80040013,
+    "slug": "muzik-arkeolojisi-lidya-ve-ionya",
+    "type": "MOVIE",
+    "title": "Müzik Arkeolojisi: Lidya ve İyonya’da Müzik",
+    "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": ["tr"]
+    },
+    "synopsis": "Müzik Arkeolojisi serisinin dördüncü bölümü; Lidya ve İyonya’da müziği anlatıyor.",
+    "shortSynopsis": "Müzik Arkeolojisi serisinden Lidya ve İyonya’da müzik.",
+    "genres": ["muzik", "tarih"],
+    "moods": ["dusundurucu"],
+    "cast": [],
+    "directors": [],
+    "creators": [],
+    "keywords": ["müzik", "arkeoloji", "Lidya", "İyonya", "antik çağ"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": 1619,
+    "sources": [
+      {
+        "type": "YOUTUBE",
+        "videoId": "NSOgoho2NEA"
+      }
+    ],
+    "seasons": [],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/NSOgoho2NEA/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "TRT 2 · YouTube",
+      "url": "https://www.youtube.com/watch?v=NSOgoho2NEA"
+    },
+    "availability": {
+      "addedAt": "2026-11-06",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 46
+  },
+  {
+    "videoId": 80040014,
+    "slug": "son-toplayicilar-hayalet-ag",
+    "type": "MOVIE",
+    "title": "Son Toplayıcılar: Hayalet Ağ",
+    "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": ["tr"]
+    },
+    "synopsis": "TRT Belgesel’de yayımlanan bu belgesel, başlığında “son toplayıcılar” ve “hayalet ağ” ifadelerini taşıyor.",
+    "shortSynopsis": "TRT Belgesel’de yayımlanan “Son Toplayıcılar: Hayalet Ağ” belgeseli.",
+    "genres": ["belgesel", "yasam"],
+    "moods": ["dusundurucu"],
+    "cast": [],
+    "directors": [],
+    "creators": [],
+    "keywords": ["toplayıcılar", "hayalet ağ", "belgesel", "doğa", "yaşam"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": 1865,
+    "sources": [
+      {
+        "type": "YOUTUBE",
+        "videoId": "T4btm3parek"
+      }
+    ],
+    "seasons": [],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/T4btm3parek/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "TRT Belgesel · YouTube",
+      "url": "https://www.youtube.com/watch?v=T4btm3parek"
+    },
+    "availability": {
+      "addedAt": "2026-09-13",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 54
+  },
+  {
+    "videoId": 80040015,
+    "slug": "making-of-taste-of-izmir",
+    "type": "MOVIE",
+    "title": "Making of \"Taste of İzmir\" Mini-Series",
+    "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": []
+    },
+    "synopsis": "Go Türkiye’nin İzmir lezzetlerini konu alan “Taste of İzmir” mini dizisinin yapım sürecine bakan bir video.",
+    "shortSynopsis": "Go Türkiye’nin “Taste of İzmir” mini dizisinin yapım sürecine bakan bir video.",
+    "genres": ["belgesel", "yasam"],
+    "moods": ["ic-isitan"],
+    "cast": [],
+    "directors": [],
+    "creators": [],
+    "keywords": ["İzmir", "yemek", "yapım süreci", "mini dizi", "Go Türkiye"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": 1307,
+    "sources": [
+      {
+        "type": "YOUTUBE",
+        "videoId": "t48oEBJnX0s"
+      }
+    ],
+    "seasons": [],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/t48oEBJnX0s/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "Go Türkiye · YouTube",
+      "url": "https://www.youtube.com/watch?v=t48oEBJnX0s"
+    },
+    "availability": {
+      "addedAt": "2026-10-13",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 48
+  }
+]

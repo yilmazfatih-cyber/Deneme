@@ -1,0 +1,12 @@
+# Ana Sayfa'daki Canlı TV köprü satırı: kanal kartları (şimdiki yayın, görsel, ilerleme).
+query TvBridgeChannels {
+  channels {
+    ...ChannelCard
+    now {
+      synopsis
+      art: artwork(params: { width: 600 }) {
+        ...ArtworkFields
+      }
+    }
+  }
+}

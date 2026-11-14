@@ -1,0 +1,184 @@
+/* "Telefonla Kontrol Et" (/tv/kumanda) */
+
+.tvr-cols {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 30rem;
+  gap: 6rem;
+  height: 100%;
+  padding-right: 2rem;
+}
+.tvr-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+  min-height: 0;
+}
+.tvr-title {
+  margin-top: 1rem;
+}
+.tvr-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 2rem;
+  font-weight: 600;
+}
+.tvr-steps li {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+}
+.tvr-steps__n {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: var(--tv-accent);
+  color: var(--tv-on-accent);
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+.tvr-label {
+  margin-bottom: 1rem;
+  color: var(--tv-text-3);
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+.tvr-devices {
+  min-height: 0;
+}
+.tvr-devices__list {
+  max-height: 22rem;
+  max-width: 56rem;
+}
+.tvr-devices__empty {
+  font-size: 1.5rem;
+}
+.tvr-device {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 1.2rem;
+  height: 4.6rem;
+  padding: 0 1.4rem;
+  border-radius: 0.4rem;
+  background: var(--tv-surface-2);
+  transition:
+    transform var(--tv-dur) var(--tv-ease),
+    background-color 150ms linear;
+}
+.tvr-device.is-focused {
+  background: #fff;
+  color: #000;
+  transform: scale(1.02);
+}
+.tvr-device__name {
+  flex: 1;
+  overflow: hidden;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tvr-device__state {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--tv-text-3);
+  font-size: 1.3rem;
+}
+.tvr-device.is-focused .tvr-device__state {
+  color: #333;
+}
+.tvr-device__dot {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 50%;
+  background: var(--tv-text-4);
+}
+.tvr-device__state.is-online .tvr-device__dot {
+  background: var(--tv-positive);
+}
+.tvr-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: auto;
+}
+
+.tvr-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.4rem;
+  padding-top: 5rem;
+}
+.tvr-qr {
+  width: 24rem;
+  height: 24rem;
+  padding: 1rem;
+  border-radius: 0.6rem;
+  background: #fff;
+}
+.tvr-qr img {
+  width: 100%;
+  height: 100%;
+}
+.tvr-qr__wait {
+  width: 100%;
+  height: 100%;
+  border-radius: 0.3rem;
+  background: #e8e8e8;
+}
+.tvr-address {
+  color: var(--tv-text-1);
+  font-size: 1.6rem;
+  font-weight: 700;
+  text-align: center;
+  word-break: break-all;
+}
+.tvr-note {
+  color: var(--tv-text-3);
+  font-size: 1.3rem;
+  text-align: center;
+}
+.tvr-signal {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  margin-top: 1rem;
+  padding: 1rem 1.4rem;
+  border-radius: 0.4rem;
+  background: var(--tv-surface-1);
+  color: var(--tv-text-3);
+  font-size: 1.35rem;
+  transition: background-color 150ms linear;
+}
+.tvr-signal.is-lit {
+  background: var(--tv-surface-3);
+  color: var(--tv-text-1);
+}
+.tvr-signal__lamp {
+  flex: none;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 50%;
+  background: #3a3a3a;
+  transition:
+    background-color 120ms linear,
+    box-shadow 120ms linear;
+}
+.tvr-signal.is-lit .tvr-signal__lamp {
+  background: var(--tv-accent);
+  box-shadow: 0 0 1.2rem var(--tv-accent);
+}
+.tvr-devices__more {
+  margin-top: 0.8rem;
+  font-size: 1.3rem;
+}

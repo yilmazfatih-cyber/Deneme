@@ -1,0 +1,389 @@
+/* Modal, alt sayfa, kısa bildirim, ipucu (Overlay.tsx); açılır menü (Menu.tsx). */
+
+/* ───────────── Modal ───────────── */
+.ui-modal-layer {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 2em 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+.ui-modal-scrim {
+  position: fixed;
+  inset: 0;
+  background: var(--scrim);
+  pointer-events: none;
+  transition: opacity var(--dur-modal) ease;
+}
+.ui-modal {
+  position: relative;
+  width: calc(100% - 2 * var(--gutter));
+  margin: 0 auto;
+  border-radius: var(--radius-modal);
+  background: var(--surface-1);
+  color: var(--text-1);
+  box-shadow: rgba(0, 0, 0, 0.75) 0 3px 10px;
+  overflow: hidden;
+  transform-origin: 50% 0;
+  transition:
+    transform var(--dur-modal) var(--ease-netflix),
+    opacity var(--dur-modal) ease;
+}
+.ui-modal:focus {
+  outline: none;
+}
+.ui-modal__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 5;
+}
+.ui-modal-layer.is-entering .ui-modal,
+.ui-modal-layer.is-exiting .ui-modal {
+  transform: translateY(24px) scale(0.94);
+  opacity: 0;
+}
+.ui-modal-layer.is-entering .ui-modal-scrim,
+.ui-modal-layer.is-exiting .ui-modal-scrim {
+  opacity: 0;
+}
+@media (max-width: 899px) {
+  .ui-modal-layer {
+    padding: 0;
+  }
+  .ui-modal {
+    width: 100%;
+    min-height: 100%;
+    border-radius: 0;
+  }
+}
+
+/* ───────────── Alt sayfa ───────────── */
+.ui-sheet-layer {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background: rgba(0, 0, 0, 0.6);
+  transition: background-color var(--dur-modal) ease;
+}
+.ui-sheet {
+  position: relative;
+  max-height: 88dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-1);
+  border-radius: 12px 12px 0 0;
+  padding-bottom: var(--safe-bottom);
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.4);
+  transition: transform var(--dur-modal) var(--ease-netflix);
+}
+.ui-sheet:focus {
+  outline: none;
+}
+.ui-sheet-layer.is-entering,
+.ui-sheet-layer.is-exiting {
+  background: rgba(0, 0, 0, 0);
+}
+.ui-sheet-layer.is-entering .ui-sheet,
+.ui-sheet-layer.is-exiting .ui-sheet {
+  transform: translateY(100%);
+}
+.ui-sheet__grip {
+  align-self: center;
+  width: 36px;
+  height: 4px;
+  margin: 8px 0 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.3);
+}
+.ui-sheet__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  padding: 0 12px 0 var(--gutter);
+}
+.ui-sheet__title {
+  flex: 1;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+.ui-sheet__close {
+  margin-left: auto;
+  background: var(--surface-3);
+}
+.ui-sheet__body {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 4px var(--gutter) 20px;
+}
+.ui-sheet__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 12px var(--gutter) 16px;
+  border-top: 1px solid var(--line);
+}
+.ui-sheet__actions > * {
+  flex: 1 1 0;
+}
+@media (min-width: 900px) {
+  /* Masaüstünde alt sayfa ortada küçük pencere olur */
+  .ui-sheet-layer {
+    justify-content: center;
+    align-items: center;
+  }
+  .ui-sheet {
+    width: min(480px, calc(100% - 64px));
+    border-radius: var(--radius-modal);
+  }
+  .ui-sheet-layer.is-entering .ui-sheet,
+  .ui-sheet-layer.is-exiting .ui-sheet {
+    transform: translateY(24px);
+    opacity: 0;
+  }
+  .ui-sheet__grip {
+    display: none;
+  }
+}
+
+/* ───────────── Kısa bildirim ───────────── */
+.ui-toasts {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--tabbar-h) + var(--safe-bottom) + 16px);
+  z-index: var(--z-toast);
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: max-content;
+  max-width: calc(100vw - 32px);
+  pointer-events: none;
+}
+.ui-toast {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  padding: 10px 16px;
+  border-radius: var(--radius-button);
+  background: #f2f2f2;
+  color: #141414;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+  font-size: 15px;
+  font-weight: 600;
+  pointer-events: auto;
+  animation: ui-toast-in 0.25s var(--ease-netflix);
+}
+.ui-toast--error {
+  border-left: 4px solid var(--accent);
+}
+.ui-toast__icon {
+  color: #1b7f3b;
+}
+.ui-toast__action {
+  margin-left: 4px;
+  padding: 6px 8px;
+  border-radius: 2px;
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+@keyframes ui-toast-in {
+  from {
+    transform: translateY(12px);
+    opacity: 0;
+  }
+}
+
+/* ───────────── İpucu ───────────── */
+.ui-tooltip {
+  position: relative;
+  display: inline-flex;
+}
+.ui-tooltip__bubble {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 10px);
+  z-index: 5;
+  transform: translate(-50%, 4px);
+  padding: 6px 10px;
+  border-radius: 4px;
+  background: #e6e6e6;
+  color: #141414;
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
+}
+.ui-tooltip__bubble::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  margin-left: -6px;
+  border: 6px solid transparent;
+  border-top-color: #e6e6e6;
+}
+.ui-tooltip--bottom .ui-tooltip__bubble {
+  bottom: auto;
+  top: calc(100% + 10px);
+  transform: translate(-50%, -4px);
+}
+.ui-tooltip--bottom .ui-tooltip__bubble::after {
+  top: auto;
+  bottom: 100%;
+  border-top-color: transparent;
+  border-bottom-color: #e6e6e6;
+}
+.ui-tooltip:hover .ui-tooltip__bubble,
+.ui-tooltip:focus-within .ui-tooltip__bubble {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+@media (hover: none) {
+  .ui-tooltip__bubble {
+    display: none;
+  }
+}
+
+/* ───────────── Açılır menü ───────────── */
+.ui-menu {
+  position: relative;
+  display: inline-flex;
+}
+.ui-menu__panel {
+  position: absolute;
+  top: calc(100% + 14px);
+  z-index: var(--z-menu);
+  min-width: 220px;
+  padding: 10px 0;
+  margin: 0;
+  list-style: none;
+  background: var(--menu-bg);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--text-1);
+  font-size: 13px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+  animation: ui-menu-in 0.15s ease;
+}
+.ui-menu__panel--end {
+  right: 0;
+}
+.ui-menu__panel--start {
+  left: 0;
+}
+/* Üstteki küçük ok (Netflix hesap menüsü) */
+.ui-menu__panel::before {
+  content: '';
+  position: absolute;
+  top: -16px;
+  border: 8px solid transparent;
+  border-bottom-color: #e5e5e5;
+}
+.ui-menu__panel--end::before {
+  right: 22px;
+}
+.ui-menu__panel--start::before {
+  left: 22px;
+}
+.ui-menu__panel.ui-menu__panel--plain::before {
+  display: none;
+}
+.ui-menu__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 40px;
+  padding: 6px 16px;
+  color: var(--text-1);
+  text-align: left;
+  font-size: 13px;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+.ui-menu__item:hover,
+.ui-menu__item:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  outline: none;
+}
+.ui-menu__item[aria-current='true'] {
+  font-weight: 700;
+}
+.ui-menu__item .ui-icon {
+  flex: none;
+  color: var(--text-3);
+}
+.ui-menu__item-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ui-menu__sep {
+  height: 1px;
+  margin: 8px 0;
+  background: rgba(255, 255, 255, 0.25);
+}
+.ui-menu__footer {
+  display: block;
+  width: 100%;
+  padding: 10px 16px 4px;
+  margin-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  text-align: center;
+  font-size: 13px;
+}
+.ui-menu__footer:hover {
+  text-decoration: underline;
+}
+/* Kategori listesi (Türler ▾): çok sütunlu */
+.ui-menu__panel--grid {
+  display: grid;
+  grid-template-columns: repeat(var(--menu-cols, 3), minmax(140px, auto));
+  padding: 8px 0;
+}
+.ui-menu__panel--grid .ui-menu__item {
+  min-height: 30px;
+  padding: 4px 16px;
+}
+@keyframes ui-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+/* Açılır liste tetiği (Netflix "Türler ▾": siyah, ince beyaz çerçeve) */
+.ui-dropdown__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  height: 32px;
+  padding: 0 8px 0 10px;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  background: #000;
+  color: var(--text-1);
+  font-size: 14px;
+  font-weight: 700;
+}
+.ui-dropdown__trigger:hover {
+  background: rgba(255, 255, 255, 0.1);
+}

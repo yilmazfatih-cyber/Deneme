@@ -1,0 +1,114 @@
+[
+  {
+    "channelId": 1,
+    "programs": [
+      {
+        "start": "06:00",
+        "durationMin": 180,
+        "title": "Güne Başlarken",
+        "synopsis": "Sabah haberleri ve hava durumu.",
+        "kind": "program"
+      },
+      {
+        "start": "09:00",
+        "durationMin": 240,
+        "title": "Gündüz Kuşağı",
+        "kind": "program"
+      },
+      {
+        "start": "13:00",
+        "durationMin": 360,
+        "title": "Öğleden Sonra",
+        "kind": "program"
+      },
+      {
+        "start": "19:00",
+        "durationMin": 60,
+        "title": "Ana Haber",
+        "synopsis": "Günün özeti.",
+        "kind": "haber"
+      },
+      {
+        "start": "20:00",
+        "durationMin": 120,
+        "title": "Akşam Dizisi",
+        "kind": "dizi",
+        "videoId": 80030102
+      },
+      {
+        "start": "22:00",
+        "durationMin": 150,
+        "title": "Gece Sineması: Nosferatu",
+        "kind": "film",
+        "videoId": 80020001
+      },
+      {
+        "start": "00:30",
+        "durationMin": 330,
+        "title": "Gece Kuşağı",
+        "kind": "program"
+      }
+    ]
+  },
+  {
+    "channelId": 2,
+    "programs": [
+      {
+        "start": "07:00",
+        "durationMin": 720,
+        "title": "Gün Boyu Haber",
+        "kind": "haber"
+      },
+      {
+        "start": "19:00",
+        "durationMin": 180,
+        "title": "Akşam Bülteni",
+        "kind": "haber"
+      },
+      {
+        "start": "22:00",
+        "durationMin": 540,
+        "title": "Gece Haberleri",
+        "kind": "haber"
+      }
+    ]
+  },
+  {
+    "channelId": 4,
+    "isSample": true,
+    "programs": [
+      {
+        "start": "07:00",
+        "durationMin": 600,
+        "title": "Çizgi Film Kuşağı",
+        "kind": "cocuk",
+        "videoId": 80030101
+      },
+      {
+        "start": "17:00",
+        "durationMin": 840,
+        "title": "Uyku Vakti Masalları",
+        "kind": "cocuk"
+      }
+    ]
+  },
+  {
+    "channelId": 5,
+    "isSample": false,
+    "programs": [
+      {
+        "start": "20:00",
+        "durationMin": 180,
+        "title": "Gece Filmi: Tears of Steel",
+        "kind": "film",
+        "videoId": 80010003
+      },
+      {
+        "start": "23:00",
+        "durationMin": 1260,
+        "title": "Film Kuşağı",
+        "kind": "film"
+      }
+    ]
+  }
+]

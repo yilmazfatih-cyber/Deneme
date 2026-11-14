@@ -1,0 +1,191 @@
+/* Göz atma sayfaları (Ana Sayfa, Diziler, Filmler, Yeni ve Popüler) — UX_SPEC §2 ve §3. Önek: gz- */
+
+.gz-page {
+  position: relative;
+  padding-bottom: 48px;
+  /* Satır içi kartlar portal önizlemesi için yatayda kırpılır; sayfa yatay kaymaz */
+  overflow-x: clip;
+}
+.gz-page--plain {
+  padding-top: 16px;
+}
+
+/* Satırlar: aralarında --row-gap; vitrinin altına binen kapsayıcı ui-billboard-rows */
+.gz-rows {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--row-gap);
+}
+.gz-slot:empty {
+  display: none;
+}
+.gz-row__title {
+  margin: 0 0 0.6em;
+}
+.gz-row-skel {
+  min-height: 8vw;
+}
+
+/* ───────────── Vitrin ───────────── */
+.gz-bb {
+  position: relative;
+}
+.gz-bb__clip {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  background: #000;
+}
+.gz-bb__clip.is-on {
+  opacity: 1;
+}
+.gz-bb-error {
+  min-height: 40vw;
+  display: grid;
+  place-items: center;
+  padding: calc(var(--header-h) + 24px) var(--gutter) 24px;
+}
+@media (max-width: 899px) {
+  .gz-bb-error {
+    min-height: 0;
+    padding: 16px var(--gutter);
+  }
+  .gz-mhero-skel {
+    margin: 4px var(--gutter) 0;
+    height: auto;
+    aspect-ratio: 2 / 3;
+    max-height: 70vh;
+    border-radius: var(--radius-hero);
+  }
+  .gz-rows {
+    margin-top: 28px;
+  }
+}
+
+/* ───────────── İzlemeye Devam Et (mobil afiş altındaki ⓘ / ⋮) ───────────── */
+.gz-cw__act {
+  min-width: 40px;
+  min-height: 36px;
+}
+.gz-sheet-actions {
+  display: grid;
+  gap: 4px;
+  padding-bottom: 8px;
+}
+.gz-sheet-actions .ui-btn {
+  justify-content: flex-start;
+}
+
+/* ───────────── Canlı köprü kartı altyazısı ───────────── */
+.gz-live-caption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.gz-live-caption .ui-live {
+  flex: none;
+}
+.gz-live-caption__text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ───────────── Duyuru ───────────── */
+.gz-banner__inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  background: rgba(35, 35, 35, 0.85);
+}
+.gz-banner__text {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.gz-banner__title {
+  margin: 0 0 2px;
+  font-weight: 700;
+  color: var(--text-1);
+}
+.gz-banner__body {
+  margin: 0;
+  color: var(--text-3);
+}
+.gz-banner__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+}
+@media (max-width: 599px) {
+  .gz-banner__inner {
+    flex-wrap: wrap;
+  }
+}
+
+/* ───────────── Diziler / Filmler başlığı (masaüstü) ───────────── */
+.gz-subnav {
+  position: sticky;
+  top: var(--header-h);
+  z-index: 5;
+  height: 0;
+}
+.gz-subnav__bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  height: 64px;
+  transition: background-color 0.4s ease;
+}
+.gz-subnav__bar.is-solid {
+  background: var(--bg);
+}
+.gz-subnav__title {
+  margin: 0;
+  font-size: clamp(26px, 2.6vw, 38px);
+  font-weight: 800;
+  line-height: 1;
+  color: var(--text-1);
+}
+
+/* ───────────── Kategoriler alt sayfası (mobil) ───────────── */
+.gz-cat-list {
+  list-style: none;
+  margin: 0;
+  padding: 4px 0 16px;
+  display: grid;
+}
+.gz-cat-list__link {
+  display: block;
+  padding: 14px 4px;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-3);
+  text-align: center;
+}
+.gz-cat-list__link:hover,
+.gz-cat-list__link:focus-visible {
+  color: var(--text-1);
+}
+
+/* Vitrin tanıtımı kutuyu doldurur */
+.gz-bb__clip video {
+  /* oynatıcı öğeye satır içi `contain` yazar */
+  object-fit: cover !important;
+}
+@media (max-width: 899px) {
+  .gz-page--plain {
+    padding-top: 0;
+  }
+}

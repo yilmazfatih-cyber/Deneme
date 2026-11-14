@@ -1,0 +1,13 @@
+# Ana Sayfa üst alanı: odaktaki satırın başlıkları için eşleşme yüzdesi (Falcor'da yok).
+query TvMatchScores($videoIds: [Int!]!) {
+  videos(videoIds: $videoIds) {
+    __typename
+    videoId
+    ... on Movie {
+      matchScore
+    }
+    ... on Show {
+      matchScore
+    }
+  }
+}

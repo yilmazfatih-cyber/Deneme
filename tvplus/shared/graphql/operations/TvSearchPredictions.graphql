@@ -1,0 +1,9 @@
+# TV ekran klavyesinin altındaki tamamlama tahminleri.
+query TvSearchPredictions($prefix: String!, $first: Int) {
+  searchPredictions(prefix: $prefix, first: $first) {
+    text
+    kind
+    unifiedEntityId
+    score
+  }
+}

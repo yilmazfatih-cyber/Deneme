@@ -1,0 +1,11 @@
+# Ana sayfadaki Canlı TV köprü satırı (bridge): kanallar ve şu anki yayının 16:9 görseli.
+query HomeLiveRow {
+  channels {
+    ...ChannelCard
+    now {
+      artwork(params: { width: 480 }) {
+        ...ArtworkFields
+      }
+    }
+  }
+}

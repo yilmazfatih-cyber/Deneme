@@ -1,0 +1,104 @@
+/* "Kim izliyor?" (UX_SPEC §2 Profil kapısı, §4 TV) */
+.tv-profiles {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+.tv-profiles__logo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 2.6rem;
+  width: auto;
+}
+.tv-profiles__title {
+  margin-bottom: 4rem;
+  font-size: 3.6rem;
+  font-weight: 700;
+}
+.tv-profiles__row {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+}
+.tv-profiles__skel {
+  width: 12rem;
+  height: 12rem;
+  border-radius: 0.5rem;
+}
+.tv-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+  width: 13rem;
+}
+.tv-profile__avatar {
+  transition:
+    transform var(--tv-dur) var(--tv-ease),
+    box-shadow var(--tv-dur) var(--tv-ease);
+}
+.tv-profile.is-focused .tv-profile__avatar {
+  transform: scale(1.08);
+  box-shadow:
+    0 0 0 0.3rem #fff,
+    0 1.2rem 2.4rem rgba(0, 0, 0, 0.6);
+}
+.tv-profile.is-busy .tv-profile__avatar {
+  opacity: 0.6;
+}
+.tv-profile__name {
+  margin-top: 0.4rem;
+  color: var(--tv-text-3);
+  font-size: 1.7rem;
+  font-weight: 600;
+  transition: color 150ms linear;
+}
+.tv-profile.is-focused .tv-profile__name {
+  color: var(--tv-text-1);
+  font-weight: 800;
+}
+.tv-profile__lock {
+  display: flex;
+  height: 1.6rem;
+  color: var(--tv-text-3);
+}
+.tv-profiles__hint {
+  position: absolute;
+  bottom: 0;
+  color: var(--tv-text-4);
+  font-size: 1.3rem;
+}
+
+/* PIN */
+.tv-pin__dots {
+  display: flex;
+  gap: 1.4rem;
+  margin-top: 0.4rem;
+}
+.tv-pin__dots.is-shaking {
+  animation: tv-shake 450ms var(--tv-ease);
+}
+.tv-pin__dot {
+  width: 1.6rem;
+  height: 1.6rem;
+  border: 0.18rem solid var(--tv-text-2);
+  border-radius: 50%;
+  transition: background-color 120ms linear;
+}
+.tv-pin__dot.is-filled {
+  background: var(--tv-text-1);
+  border-color: var(--tv-text-1);
+}
+.tv-pin__error {
+  min-height: 2rem;
+  color: var(--tv-text-2);
+  font-size: 1.4rem;
+  visibility: hidden;
+}
+.tv-pin__error.is-visible {
+  visibility: visible;
+}

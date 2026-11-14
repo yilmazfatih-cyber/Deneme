@@ -1,0 +1,10 @@
+mutation RemoveFromPlaylist($videoId: Int!) {
+  removeFromPlaylist(videoId: $videoId) {
+    isInPlaylist
+    video {
+      videoId
+      isInPlaylist
+      playlistActions
+    }
+  }
+}

@@ -1,0 +1,5 @@
+query PopularSearches($first: Int) {
+  popularSearches(first: $first) {
+    ...CardVideo
+  }
+}

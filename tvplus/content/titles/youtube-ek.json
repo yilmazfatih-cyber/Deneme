@@ -1,0 +1,1252 @@
+[
+  {
+    "videoId": 80051000,
+    "slug": "anadolu-insani",
+    "type": "SHOW",
+    "title": "Anadolu İnsanı",
+    "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": ["tr"]
+    },
+    "synopsis": "TRT Belgesel'de yayımlanan bu belgesel dizisi, Anadolu insanının hikâyelerini erdemler üzerinden anlatıyor. Her bölüm bir erdemi merkezine alıyor; katalogda 35. ve 36. bölümler yer alıyor.",
+    "shortSynopsis": "Anadolu insanının hikâyelerini erdemler üzerinden anlatan TRT Belgesel dizisi.",
+    "genres": ["belgesel", "yerli"],
+    "moods": ["ilham"],
+    "cast": [],
+    "directors": [],
+    "creators": [],
+    "keywords": ["Anadolu", "erdem", "insan hikâyeleri", "belgesel", "TRT Belgesel"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": null,
+    "sources": [],
+    "seasons": [
+      {
+        "number": 1,
+        "episodes": [
+          {
+            "videoId": 80051135,
+            "number": 35,
+            "title": "Merak",
+            "synopsis": "Anadolu İnsanı dizisinin 35. bölümü, merak erdemini konu alıyor.",
+            "runtimeSec": 2831,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "TXNmwY67Qgg"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/TXNmwY67Qgg/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80051136,
+            "number": 36,
+            "title": "Başarı",
+            "synopsis": "Anadolu İnsanı dizisinin 36. bölümü, başarı erdemini konu alıyor.",
+            "runtimeSec": 2882,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "PWxJgYa1r2Q"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/PWxJgYa1r2Q/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          }
+        ]
+      }
+    ],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/PWxJgYa1r2Q/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "TRT Belgesel · YouTube",
+      "url": "https://www.youtube.com/channel/UCdVBWUBCuREx1Q2Ikw9R8Mw"
+    },
+    "availability": {
+      "addedAt": "2026-10-13",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 58
+  },
+  {
+    "videoId": 80052000,
+    "slug": "mirasin-rengi",
+    "type": "SHOW",
+    "title": "Mirasın Rengi",
+    "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": ["tr"]
+    },
+    "synopsis": "Adı miras temasına işaret eden bu TRT Avaz dizisi beş bölümden oluşuyor. Bölüm başlıkları yalnızca numaralandırılmış olduğu için ayrıntılı konu bilgisi bu tanımda yer almıyor.",
+    "shortSynopsis": "Adı miras temasına işaret eden TRT Avaz dizisi; beş bölüm.",
+    "genres": ["yasam", "yerli"],
+    "moods": [],
+    "cast": [],
+    "directors": [],
+    "creators": [],
+    "keywords": ["miras", "kültür", "TRT Avaz", "dizi"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": null,
+    "sources": [],
+    "seasons": [
+      {
+        "number": 1,
+        "episodes": [
+          {
+            "videoId": 80052101,
+            "number": 1,
+            "title": "1. Bölüm",
+            "synopsis": "Mirasın Rengi dizisinin 1. bölümü.",
+            "runtimeSec": 1260,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "5TmYhKslkmE"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/5TmYhKslkmE/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80052102,
+            "number": 2,
+            "title": "2. Bölüm",
+            "synopsis": "Mirasın Rengi dizisinin 2. bölümü.",
+            "runtimeSec": 1319,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "TwykmlN47NU"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/TwykmlN47NU/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80052103,
+            "number": 3,
+            "title": "3. Bölüm",
+            "synopsis": "Mirasın Rengi dizisinin 3. bölümü.",
+            "runtimeSec": 1320,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "nE0IBUYgF9c"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/nE0IBUYgF9c/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80052104,
+            "number": 4,
+            "title": "4. Bölüm",
+            "synopsis": "Mirasın Rengi dizisinin 4. bölümü.",
+            "runtimeSec": 1319,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "LwdxJnQEuns"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/LwdxJnQEuns/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80052105,
+            "number": 5,
+            "title": "5. Bölüm",
+            "synopsis": "Mirasın Rengi dizisinin 5. bölümü.",
+            "runtimeSec": 1329,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "wOXlpcA1Yf8"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/wOXlpcA1Yf8/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          }
+        ]
+      }
+    ],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/nE0IBUYgF9c/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "TRT Avaz · YouTube",
+      "url": "https://www.youtube.com/channel/UCib1E6oJRLd2pXkxqzxyg7A"
+    },
+    "availability": {
+      "addedAt": "2026-11-10",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 40
+  },
+  {
+    "videoId": 80053000,
+    "slug": "zamana-konusanlar",
+    "type": "SHOW",
+    "title": "Zamana Konuşanlar",
+    "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": ["tr"]
+    },
+    "synopsis": "TRT Avaz'da yayımlanan bu dizi, bölüm başlıklarında adı geçen isimleri zamana konuşturuyor: Yavuz Bülent Bakiler, Ziya Gökalp, Nuri Pakdil, Mübahat Türker Küyel ve Osman Yüksel Serdengeçti. Beş bölüm katalogda yer alıyor.",
+    "shortSynopsis": "TRT Avaz'da yayımlanan, bölümleri isimlere ayrılmış beş bölümlük dizi.",
+    "genres": ["yasam", "yerli"],
+    "moods": [],
+    "cast": [],
+    "directors": [],
+    "creators": [],
+    "keywords": ["kültür", "fikir tarihi", "TRT Avaz", "portre"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": null,
+    "sources": [],
+    "seasons": [
+      {
+        "number": 1,
+        "episodes": [
+          {
+            "videoId": 80053101,
+            "number": 1,
+            "title": "Yavuz Bülent Bakiler",
+            "synopsis": "Bölüm başlığı Yavuz Bülent Bakiler'in adını taşıyor.",
+            "runtimeSec": 1593,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "8mhuGs9T-Zo"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/8mhuGs9T-Zo/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80053102,
+            "number": 2,
+            "title": "Ziya Gökalp",
+            "synopsis": "Bölüm başlığı Ziya Gökalp'in adını taşıyor.",
+            "runtimeSec": 1566,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "90CnfB-9GDA"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/90CnfB-9GDA/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80053103,
+            "number": 3,
+            "title": "Nuri Pakdil",
+            "synopsis": "Bölüm başlığı Nuri Pakdil'in adını taşıyor.",
+            "runtimeSec": 1580,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "07MIgEcjV2s"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/07MIgEcjV2s/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80053104,
+            "number": 4,
+            "title": "Mübahat Türker Küyel",
+            "synopsis": "Bölüm başlığı Mübahat Türker Küyel'in adını taşıyor.",
+            "runtimeSec": 1585,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "qNtOIgFIi20"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/qNtOIgFIi20/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80053105,
+            "number": 5,
+            "title": "Osman Yüksel Serdengeçti",
+            "synopsis": "Bölüm başlığı Osman Yüksel Serdengeçti'nin adını taşıyor.",
+            "runtimeSec": 1572,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "vdfwUaE0oHE"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/vdfwUaE0oHE/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          }
+        ]
+      }
+    ],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/vdfwUaE0oHE/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "TRT Avaz · YouTube",
+      "url": "https://www.youtube.com/channel/UCib1E6oJRLd2pXkxqzxyg7A"
+    },
+    "availability": {
+      "addedAt": "2026-11-10",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 40
+  },
+  {
+    "videoId": 80054000,
+    "slug": "artemis-ii-gunluk-ozetler",
+    "type": "SHOW",
+    "title": "Artemis II Günlük Özetleri",
+    "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": ["tr"]
+    },
+    "synopsis": "Barış Özcan kanalında, Artemis II görevinin günlük özetlerini Türkçe altyazılı olarak sunan bir seri. Bölümler ay geçişi, dönüş hazırlıkları ve okyanusa iniş gibi başlıkları taşıyor.",
+    "shortSynopsis": "Artemis II görevinin günlük özetlerini Türkçe altyazılı sunan seri.",
+    "genres": ["doga-bilim", "teknoloji"],
+    "moods": ["ilham"],
+    "cast": [],
+    "directors": [],
+    "creators": [],
+    "keywords": ["Artemis II", "uzay", "NASA", "Ay", "uzay görevi"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": null,
+    "sources": [],
+    "seasons": [
+      {
+        "number": 1,
+        "episodes": [
+          {
+            "videoId": 80054104,
+            "number": 4,
+            "title": "Tarihin En Uzak Röportajı ve İrtifa Referans Değişimi",
+            "synopsis": "Artemis II görevinin 4. günü için Türkçe altyazılı bir özet.",
+            "runtimeSec": 1327,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "PIKh7fpyqAY"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/PIKh7fpyqAY/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80054105,
+            "number": 5,
+            "title": "Ay Geçişine Son Hazırlıklar",
+            "synopsis": "Artemis II görevinin 5. günü için Türkçe altyazılı bir özet.",
+            "runtimeSec": 1468,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "ccZqiZ3Woo4"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/ccZqiZ3Woo4/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80054106,
+            "number": 6,
+            "title": "Ay Geçişi",
+            "synopsis": "Artemis II görevinin 6. günü için Türkçe altyazılı bir özet.",
+            "runtimeSec": 2426,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "MWdQoLkiB2A"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/MWdQoLkiB2A/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80054107,
+            "number": 7,
+            "title": "ISS ve Integrity astronotları uzayda konuşuyor",
+            "synopsis": "Artemis II görevinin 7. günü için Türkçe altyazılı bir özet.",
+            "runtimeSec": 1473,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "dAGGhi6On20"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/dAGGhi6On20/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80054108,
+            "number": 8,
+            "title": "Eve Dönüş Hazırlıkları",
+            "synopsis": "Artemis II görevinin 8. günü için Türkçe altyazılı bir özet.",
+            "runtimeSec": 1353,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "vtjaQDJLG5c"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/vtjaQDJLG5c/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80054109,
+            "number": 9,
+            "title": "Dönüş Yolunun Yarısı",
+            "synopsis": "Artemis II görevinin 9. günü için Türkçe altyazılı bir özet.",
+            "runtimeSec": 1152,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "9FzsLFfooCQ"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/9FzsLFfooCQ/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80054110,
+            "number": 10,
+            "title": "Atmosfere Giriş ve Tarihi Okyanus İnişi",
+            "synopsis": "Artemis II görevinin 10. günü için Türkçe altyazılı bir özet.",
+            "runtimeSec": 2647,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "s2zxxlsw6WU"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/s2zxxlsw6WU/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          }
+        ]
+      }
+    ],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/s2zxxlsw6WU/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "Barış Özcan · YouTube",
+      "url": "https://www.youtube.com/channel/UCv6jcPwFujuTIwFQ11jt1Yw"
+    },
+    "availability": {
+      "addedAt": "2026-04-13",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 55
+  },
+  {
+    "videoId": 80055000,
+    "slug": "osmanlinin-kayip-besteleri",
+    "type": "SHOW",
+    "title": "Osmanlı'nın Kayıp Besteleri",
+    "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": ["tr"]
+    },
+    "synopsis": "TRT 2'de yayımlanan bu dizi, Osmanlı dönemine ait kayıp besteleri konu alıyor. Katalogdaki iki bölüm Naatlar Edebi ve Nevbe Geleneği başlıklarını taşıyor.",
+    "shortSynopsis": "Osmanlı dönemine ait kayıp besteleri konu alan TRT 2 dizisi.",
+    "genres": ["tarih", "muzik"],
+    "moods": [],
+    "cast": [],
+    "directors": [],
+    "creators": [],
+    "keywords": ["Osmanlı", "müzik tarihi", "beste", "nevbe", "TRT 2"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": null,
+    "sources": [],
+    "seasons": [
+      {
+        "number": 1,
+        "episodes": [
+          {
+            "videoId": 80055116,
+            "number": 16,
+            "title": "Naatlar Edebi",
+            "synopsis": "Osmanlı'nın Kayıp Besteleri dizisinin 16. bölümü, naat edebiyatını konu alıyor.",
+            "runtimeSec": 1513,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "V-lVhOzOXu8"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/V-lVhOzOXu8/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          },
+          {
+            "videoId": 80055117,
+            "number": 17,
+            "title": "Nevbe Geleneği",
+            "synopsis": "Osmanlı'nın Kayıp Besteleri dizisinin 17. bölümü, nevbe geleneğini konu alıyor.",
+            "runtimeSec": 1520,
+            "sources": [
+              {
+                "type": "YOUTUBE",
+                "videoId": "yUfFs72W3jY"
+              }
+            ],
+            "artwork": {
+              "boxart": null,
+              "storyArt": "https://i.ytimg.com/vi/yUfFs72W3jY/maxresdefault.jpg",
+              "focal": "50% 40%"
+            }
+          }
+        ]
+      }
+    ],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/yUfFs72W3jY/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "TRT 2 · YouTube",
+      "url": "https://www.youtube.com/channel/UC2r8FIjCvkYbcbxVe5koa_g"
+    },
+    "availability": {
+      "addedAt": "2026-11-07",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 40
+  },
+  {
+    "videoId": 80050001,
+    "slug": "roman-uzay-teleskobu",
+    "type": "MOVIE",
+    "title": "Roman Uzay Teleskobu Ne İşe Yarayacak?",
+    "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": ["tr"]
+    },
+    "synopsis": "Roman Uzay Teleskobu'nun ne işe yarayacağını anlatan bir bilim videosu.",
+    "shortSynopsis": "Roman Uzay Teleskobu'nun ne işe yarayacağını anlatan bir bilim videosu.",
+    "genres": ["doga-bilim", "teknoloji"],
+    "moods": ["dusundurucu"],
+    "cast": [],
+    "directors": [],
+    "creators": [],
+    "keywords": ["uzay", "teleskop", "astronomi", "evren"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": 1442,
+    "sources": [
+      {
+        "type": "YOUTUBE",
+        "videoId": "qehnCSTeJqU"
+      }
+    ],
+    "seasons": [],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/qehnCSTeJqU/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "Evrim Ağacı · YouTube",
+      "url": "https://www.youtube.com/watch?v=qehnCSTeJqU"
+    },
+    "availability": {
+      "addedAt": "2026-10-13",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 72
+  },
+  {
+    "videoId": 80050002,
+    "slug": "ozel-gorelilik-einstein",
+    "type": "MOVIE",
+    "title": "Özel Görelilik: Einstein Zaman Algımızı Nasıl Değiştirdi?",
+    "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": ["tr"]
+    },
+    "synopsis": "Özel göreliliğin zaman algımızı nasıl değiştirdiğini anlatan bir fizik videosu.",
+    "shortSynopsis": "Özel göreliliğin zaman algımızı nasıl değiştirdiğini anlatan bir fizik videosu.",
+    "genres": ["doga-bilim"],
+    "moods": ["dusundurucu"],
+    "cast": [],
+    "directors": [],
+    "creators": [],
+    "keywords": ["Einstein", "özel görelilik", "fizik", "zaman"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": 1614,
+    "sources": [
+      {
+        "type": "YOUTUBE",
+        "videoId": "rxteuKGbL_Q"
+      }
+    ],
+    "seasons": [],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/rxteuKGbL_Q/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "Evrim Ağacı · YouTube",
+      "url": "https://www.youtube.com/watch?v=rxteuKGbL_Q"
+    },
+    "availability": {
+      "addedAt": "2026-09-13",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 70
+  },
+  {
+    "videoId": 80050003,
+    "slug": "antidepresanlar-nasil-calisir",
+    "type": "MOVIE",
+    "title": "Antidepresanlar Nasıl Çalışıyor?",
+    "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": ["tr"]
+    },
+    "synopsis": "Antidepresan ilaçların vücutta nasıl çalıştığını anlatan bir bilim videosu.",
+    "shortSynopsis": "Antidepresan ilaçların vücutta nasıl çalıştığını anlatan bir bilim videosu.",
+    "genres": ["doga-bilim"],
+    "moods": ["dusundurucu"],
+    "cast": [],
+    "directors": [],
+    "creators": [],
+    "keywords": ["ilaç", "beyin", "nörobilim", "sağlık"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": 1726,
+    "sources": [
+      {
+        "type": "YOUTUBE",
+        "videoId": "1nPQu-6tQG0"
+      }
+    ],
+    "seasons": [],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/1nPQu-6tQG0/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "Evrim Ağacı · YouTube",
+      "url": "https://www.youtube.com/watch?v=1nPQu-6tQG0"
+    },
+    "availability": {
+      "addedAt": "2026-11-10",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 72
+  },
+  {
+    "videoId": 80050004,
+    "slug": "en-hizli-uzay-yolculugu",
+    "type": "MOVIE",
+    "title": "En Hızlı Uzay Yolculuğu Nasıl Yapılır?",
+    "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": ["tr"]
+    },
+    "synopsis": "Uzayda en hızlı yolculuğun hangi yöntemlerle mümkün olabileceğini anlatan bir bilim videosu.",
+    "shortSynopsis": "Uzayda en hızlı yolculuğun nasıl mümkün olabileceğini anlatan bir bilim videosu.",
+    "genres": ["doga-bilim", "teknoloji"],
+    "moods": ["dusundurucu"],
+    "cast": [],
+    "directors": [],
+    "creators": [],
+    "keywords": ["uzay yolculuğu", "roket", "fizik", "uzay"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": 1587,
+    "sources": [
+      {
+        "type": "YOUTUBE",
+        "videoId": "uRoY1fnGROY"
+      }
+    ],
+    "seasons": [],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/uRoY1fnGROY/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "Evrim Ağacı · YouTube",
+      "url": "https://www.youtube.com/watch?v=uRoY1fnGROY"
+    },
+    "availability": {
+      "addedAt": "2026-09-13",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 68
+  },
+  {
+    "videoId": 80050005,
+    "slug": "uzay-gercekte-sessiz-mi",
+    "type": "MOVIE",
+    "title": "Uzay Gerçekte Sessiz mi? (Bir Kara Deliğin Orijinal Sesi)",
+    "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": ["tr"]
+    },
+    "synopsis": "Uzayın gerçekten sessiz olup olmadığını, bir kara deliğin sesi üzerinden anlatan bir video.",
+    "shortSynopsis": "Uzayın gerçekten sessiz olup olmadığını bir kara deliğin sesi üzerinden anlatan video.",
+    "genres": ["doga-bilim"],
+    "moods": ["dusundurucu"],
+    "cast": [],
+    "directors": [],
+    "creators": [],
+    "keywords": ["kara delik", "uzay", "astronomi", "ses"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": 1227,
+    "sources": [
+      {
+        "type": "YOUTUBE",
+        "videoId": "ghS-AkvGg9U"
+      }
+    ],
+    "seasons": [],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/ghS-AkvGg9U/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "Barış Özcan · YouTube",
+      "url": "https://www.youtube.com/watch?v=ghS-AkvGg9U"
+    },
+    "availability": {
+      "addedAt": "2026-05-13",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 66
+  },
+  {
+    "videoId": 80050006,
+    "slug": "making-of-the-knot",
+    "type": "MOVIE",
+    "title": "Making of \"The Knot: Gateway to Anatolia\" Mini-Series",
+    "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": []
+    },
+    "synopsis": "\"The Knot: Gateway to Anatolia\" mini dizisinin yapım sürecini gösteren bir kayıt.",
+    "shortSynopsis": "\"The Knot: Gateway to Anatolia\" mini dizisinin yapım sürecini gösteren bir kayıt.",
+    "genres": ["belgesel", "yasam"],
+    "moods": [],
+    "cast": [],
+    "directors": [],
+    "creators": [],
+    "keywords": ["Anadolu", "yapım süreci", "mini dizi", "Go Türkiye"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": 1913,
+    "sources": [
+      {
+        "type": "YOUTUBE",
+        "videoId": "3c66a2MDQbk"
+      }
+    ],
+    "seasons": [],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/3c66a2MDQbk/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "Go Türkiye · YouTube",
+      "url": "https://www.youtube.com/watch?v=3c66a2MDQbk"
+    },
+    "availability": {
+      "addedAt": "2026-10-16",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 40
+  },
+  {
+    "videoId": 80050007,
+    "slug": "making-of-turquoise-summer",
+    "type": "MOVIE",
+    "title": "Making of \"Turquoise Summer\" Mini-Series",
+    "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": []
+    },
+    "synopsis": "\"Turquoise Summer\" mini dizisinin yapım sürecini gösteren bir kayıt.",
+    "shortSynopsis": "\"Turquoise Summer\" mini dizisinin yapım sürecini gösteren bir kayıt.",
+    "genres": ["belgesel", "yasam"],
+    "moods": [],
+    "cast": [],
+    "directors": [],
+    "creators": [],
+    "keywords": ["yapım süreci", "mini dizi", "Go Türkiye"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": 1001,
+    "sources": [
+      {
+        "type": "YOUTUBE",
+        "videoId": "mm1FpbA-JIc"
+      }
+    ],
+    "seasons": [],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/mm1FpbA-JIc/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "Go Türkiye · YouTube",
+      "url": "https://www.youtube.com/watch?v=mm1FpbA-JIc"
+    },
+    "availability": {
+      "addedAt": "2026-10-13",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 38
+  },
+  {
+    "videoId": 80050008,
+    "slug": "making-of-heartbound",
+    "type": "MOVIE",
+    "title": "Making of \"Heartbound: Turkish Black Sea\" Mini-Series",
+    "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": []
+    },
+    "synopsis": "\"Heartbound: Turkish Black Sea\" mini dizisinin yapım sürecini gösteren bir kayıt.",
+    "shortSynopsis": "\"Heartbound: Turkish Black Sea\" mini dizisinin yapım sürecini gösteren bir kayıt.",
+    "genres": ["belgesel", "yasam"],
+    "moods": [],
+    "cast": [],
+    "directors": [],
+    "creators": [],
+    "keywords": ["Karadeniz", "yapım süreci", "mini dizi", "Go Türkiye"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": 954,
+    "sources": [
+      {
+        "type": "YOUTUBE",
+        "videoId": "Im4doE5L3Q4"
+      }
+    ],
+    "seasons": [],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/Im4doE5L3Q4/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "Go Türkiye · YouTube",
+      "url": "https://www.youtube.com/watch?v=Im4doE5L3Q4"
+    },
+    "availability": {
+      "addedAt": "2026-10-13",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 55
+  },
+  {
+    "videoId": 80050009,
+    "slug": "nasa-moon-base-rovers",
+    "type": "MOVIE",
+    "title": "NASA Moon Base: Rovers and Lunar Terrain Vehicles (October 2026 Update)",
+    "year": 2026,
+    "origin": {
+      "countries": ["US"],
+      "languages": ["en"]
+    },
+    "synopsis": "NASA'nın Ay üssü çalışmasında gezici araçları ve Ay yüzeyi araçlarını anlatan Ekim 2026 güncellemesi.",
+    "shortSynopsis": "NASA'nın Ay üssü için gezici ve Ay yüzeyi araçlarını anlatan Ekim 2026 güncellemesi.",
+    "genres": ["doga-bilim", "teknoloji"],
+    "moods": ["ilham"],
+    "cast": [],
+    "directors": [],
+    "creators": [],
+    "keywords": ["Ay üssü", "Ay", "gezici araç", "NASA"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": 558,
+    "sources": [
+      {
+        "type": "YOUTUBE",
+        "videoId": "Zezt6EsG9WE"
+      }
+    ],
+    "seasons": [],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/Zezt6EsG9WE/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "NASA · YouTube",
+      "url": "https://www.youtube.com/watch?v=Zezt6EsG9WE"
+    },
+    "availability": {
+      "addedAt": "2026-10-23",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 82
+  },
+  {
+    "videoId": 80050010,
+    "slug": "tarihin-renkleri-osmanli-sultani-okullari",
+    "type": "MOVIE",
+    "title": "Tarihin Renkleri: Osmanlı Sultani Okulları",
+    "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": ["tr"]
+    },
+    "synopsis": "Tarihin Renkleri dizisinin 17. bölümü, Osmanlı sultani okullarını konu alıyor.",
+    "shortSynopsis": "Tarihin Renkleri dizisinin 17. bölümü: Osmanlı sultani okulları.",
+    "genres": ["tarih", "yerli"],
+    "moods": [],
+    "cast": [],
+    "directors": [],
+    "creators": [],
+    "keywords": ["Osmanlı", "eğitim tarihi", "sultani okullar", "TRT 2"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": 1505,
+    "sources": [
+      {
+        "type": "YOUTUBE",
+        "videoId": "cqjChuaXJ60"
+      }
+    ],
+    "seasons": [],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/cqjChuaXJ60/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "TRT 2 · YouTube",
+      "url": "https://www.youtube.com/watch?v=cqjChuaXJ60"
+    },
+    "availability": {
+      "addedAt": "2026-11-06",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 40
+  },
+  {
+    "videoId": 80050011,
+    "slug": "gun-batidan-dogmadan-muzik",
+    "type": "MOVIE",
+    "title": "Gün Batıdan Doğmadan: Mezopotamya ve Mısır'da Müzik",
+    "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": ["tr"]
+    },
+    "synopsis": "Gün Batıdan Doğmadan dizisinin 2. bölümü, Mezopotamya ve Mısır'da müziği ele alıyor.",
+    "shortSynopsis": "Gün Batıdan Doğmadan dizisinin 2. bölümü: Mezopotamya ve Mısır'da müzik.",
+    "genres": ["tarih", "muzik"],
+    "moods": [],
+    "cast": [],
+    "directors": [],
+    "creators": [],
+    "keywords": ["Mezopotamya", "Mısır", "müzik tarihi", "antik müzik"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": 2472,
+    "sources": [
+      {
+        "type": "YOUTUBE",
+        "videoId": "RKGvVwqsZhY"
+      }
+    ],
+    "seasons": [],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/RKGvVwqsZhY/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "TRT 2 · YouTube",
+      "url": "https://www.youtube.com/watch?v=RKGvVwqsZhY"
+    },
+    "availability": {
+      "addedAt": "2026-11-05",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 40
+  },
+  {
+    "videoId": 80050012,
+    "slug": "lezzet-turevleri-tayvan",
+    "type": "MOVIE",
+    "title": "Lezzet Türevleri: Tayvan",
+    "year": 2026,
+    "origin": {
+      "countries": ["TR"],
+      "languages": ["tr"]
+    },
+    "synopsis": "Lezzet Türevleri dizisinin 5. bölümü Tayvan mutfağını konu alıyor.",
+    "shortSynopsis": "Lezzet Türevleri dizisinin 5. bölümü: Tayvan mutfağı.",
+    "genres": ["belgesel", "yasam"],
+    "moods": [],
+    "cast": [],
+    "directors": [],
+    "creators": [],
+    "keywords": ["yemek kültürü", "Tayvan", "lezzet", "TRT Belgesel"],
+    "maturity": {
+      "rating": "GENEL",
+      "reasons": []
+    },
+    "kids": false,
+    "runtimeSec": 2718,
+    "sources": [
+      {
+        "type": "YOUTUBE",
+        "videoId": "h9QU2co6dMA"
+      }
+    ],
+    "seasons": [],
+    "promo": null,
+    "supplementals": [],
+    "artwork": {
+      "boxart": null,
+      "storyArt": "https://i.ytimg.com/vi/h9QU2co6dMA/maxresdefault.jpg",
+      "focal": "50% 40%"
+    },
+    "license": {
+      "name": "YouTube standart lisansı",
+      "attribution": "TRT Belgesel · YouTube",
+      "url": "https://www.youtube.com/watch?v=h9QU2co6dMA"
+    },
+    "availability": {
+      "addedAt": "2026-10-13",
+      "leavingAt": null,
+      "exclusive": false,
+      "requiredProduct": null
+    },
+    "popularity": 55
+  }
+]

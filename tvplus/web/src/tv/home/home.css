@@ -1,0 +1,170 @@
+/*
+ * TV göz atma ekranları (Ana Sayfa, Diziler, Filmler, Yeni ve Popüler). Ölçüler rem (1 rem = genişlik / 120).
+ * Üst alan ekranın ~%52'si; odaktaki satırın üst kenarı 35 rem'de sabit, sonraki satır alttan görünür.
+ */
+.tvb .tv-bg {
+  z-index: 0;
+}
+
+.tvb-page-title {
+  position: absolute;
+  top: var(--tv-safe-y);
+  left: var(--tv-left);
+  z-index: 2;
+  color: var(--tv-text-1);
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.tvb-hero {
+  position: absolute;
+  top: 0;
+  left: var(--tv-left);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.9rem;
+  width: 54rem;
+  height: 32.6rem;
+  padding-top: calc(var(--tv-safe-y) + 3rem);
+}
+.tvb-hero__eyebrow {
+  color: var(--tv-text-3);
+  font-size: 1.3rem;
+  font-weight: 800;
+  letter-spacing: 0.24em;
+}
+.tvb-hero__title {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: 4.5rem;
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  text-shadow: 0 0.2rem 1.2rem rgba(0, 0, 0, 0.5);
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.tvb-hero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 1.2rem;
+  min-height: 2.1rem;
+  color: var(--tv-text-2);
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+.tvb-match {
+  color: var(--tv-positive);
+  font-weight: 800;
+}
+.tvb-maturity {
+  padding: 0 0.5rem;
+  border: 0.1rem solid var(--tv-text-3);
+  border-radius: 0.2rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.6;
+}
+.tvb-hero__rank {
+  color: var(--tv-text-1);
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+.tvb-hero__rank::before {
+  content: 'TOP 10';
+  display: inline-block;
+  margin-right: 0.8rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: 0.2rem;
+  background: var(--tv-accent);
+  color: var(--tv-on-accent);
+  font-size: 1rem;
+  font-weight: 800;
+  vertical-align: 0.15rem;
+}
+.tvb-hero__synopsis {
+  display: -webkit-box;
+  overflow: hidden;
+  max-width: 48rem;
+  color: var(--tv-text-2);
+  font-size: 1.6rem;
+  line-height: 1.4;
+  text-shadow: 0 0.1rem 0.6rem rgba(0, 0, 0, 0.6);
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+.tvb-hero__tags {
+  color: var(--tv-text-3);
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+.tvb-hero__skeleton {
+  width: 36rem;
+  height: 12rem;
+  border-radius: 0.25rem;
+  background: linear-gradient(90deg, #1c1c1c 0%, #262626 50%, #1c1c1c 100%);
+  background-size: 200% 100%;
+  animation: tv-shimmer 1.4s linear infinite;
+}
+
+/* Sessiz önizleme: görsel alanında, oynamaya başlayınca belirir */
+.tvb-preview {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 600ms linear;
+}
+.tvb-preview.is-playing {
+  opacity: 1;
+}
+.tvb-preview video,
+.tvb-preview iframe {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Satırlar */
+.tvb .tv-rows {
+  z-index: 1;
+}
+.tvb-no-anim {
+  transition: none !important;
+}
+.tvb-lane__title {
+  display: flex;
+  align-items: baseline;
+  gap: 1.2rem;
+}
+.tvb-lane__aside {
+  color: var(--tv-text-4);
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+.tvb .tv-rows__row:not(.is-current) .tv-row__title {
+  color: var(--tv-text-3);
+}
+.tvb-channel-logo {
+  position: absolute;
+  right: 0.6rem;
+  bottom: 0.9rem;
+  max-width: 5rem;
+  max-height: 2.4rem;
+  object-fit: contain;
+  filter: drop-shadow(0 0.1rem 0.4rem rgba(0, 0, 0, 0.8));
+}
+.tvb-rows-loading {
+  position: absolute;
+  top: 35rem;
+  left: var(--tv-left);
+  right: 0;
+  z-index: 1;
+}
+.tvb-empty {
+  color: var(--tv-text-3);
+  font-size: 1.8rem;
+}

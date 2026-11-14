@@ -1,0 +1,11 @@
+query CollectionPage($collectionId: Int!) {
+  collection(collectionId: $collectionId) {
+    collectionId
+    unifiedEntityId
+    name
+    description
+    videos {
+      ...CardVideo
+    }
+  }
+}

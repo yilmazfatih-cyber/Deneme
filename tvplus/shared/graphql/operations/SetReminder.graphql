@@ -1,0 +1,6 @@
+mutation SetReminder($airingId: ID!, $enabled: Boolean!) {
+  setReminder(airingId: $airingId, enabled: $enabled) {
+    airingId
+    hasReminder
+  }
+}

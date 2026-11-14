@@ -1,0 +1,760 @@
+/*
+ * TV (10-foot) stil sayfası. Tuval 1920×1080; TvApp bağlıyken html { font-size: calc(100vw / 120) } → 1 rem = 16 px.
+ * Tüm ölçüler rem. Değerler docs/UX_SPEC.md §1 ve §4'ten; TV kendi değişkenlerini tanımlar (web token dosyasına bağlı değil).
+ */
+.tv-root {
+  --tv-bg: #141414;
+  --tv-surface-1: #181818;
+  --tv-surface-2: #232323;
+  --tv-surface-3: #2f2f2f;
+  --tv-line: rgba(255, 255, 255, 0.12);
+  --tv-text-1: #fff;
+  --tv-text-2: #e5e5e5;
+  --tv-text-3: #b3b3b3;
+  --tv-text-4: #808080;
+  --tv-accent: #f7d849;
+  --tv-on-accent: #14140f;
+  --tv-btn-2: rgba(109, 109, 110, 0.7);
+  --tv-live: #ff5247;
+  --tv-positive: #46d369;
+  --tv-ease: cubic-bezier(0.5, 0, 0.1, 1);
+  --tv-dur: 300ms;
+  /* Kenar güvenli alanı: yatayda 6 rem (genişliğin %5'i), dikeyde yüksekliğin %5'i ≈ 3.5 rem */
+  --tv-safe: 6rem;
+  --tv-safe-y: 3.5rem;
+  --tv-rail-w: 6.5rem;
+  --tv-rail-open: 22rem;
+  /* İçeriğin sol kenarı (yan menülü düzende menünün sağında) */
+  --tv-left: var(--tv-safe);
+  --tv-focus-ring: 0 0 0 0.25rem #fff;
+
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: var(--tv-bg);
+  color: var(--tv-text-1);
+  font-family:
+    Manrope,
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    sans-serif;
+  font-size: 1.5rem;
+  line-height: 1.35;
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+  cursor: default;
+}
+.tv-root *,
+.tv-root *::before,
+.tv-root *::after {
+  box-sizing: border-box;
+}
+.tv-root :focus,
+.tv-root :focus-visible {
+  outline: none;
+}
+:where(.tv-root) :where(h1, h2, h3, p) {
+  margin: 0;
+}
+:where(.tv-root) :where(img) {
+  display: block;
+}
+
+/* ───────────── Ekran ───────────── */
+
+.tv-screen {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.tv-screen--padded {
+  padding: var(--tv-safe-y) var(--tv-safe) var(--tv-safe-y) var(--tv-left);
+}
+.tv-main {
+  --tv-left: calc(var(--tv-rail-w) + 2.5rem);
+}
+
+.tv-heading {
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+.tv-subtle {
+  color: var(--tv-text-3);
+}
+
+/* ───────────── Düğmeler ───────────── */
+
+.tv-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  height: 3.6rem;
+  padding: 0 1.8rem;
+  border-radius: 0.25rem;
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--tv-text-1);
+  font-size: 1.5rem;
+  font-weight: 700;
+  white-space: nowrap;
+  transition:
+    transform var(--tv-dur) var(--tv-ease),
+    background-color 150ms linear,
+    color 150ms linear;
+}
+.tv-btn--lg {
+  height: 4rem;
+  padding: 0 2rem;
+  font-size: 1.6rem;
+}
+.tv-btn--primary {
+  background: rgba(255, 255, 255, 0.24);
+}
+.tv-btn--quiet {
+  background: transparent;
+  color: var(--tv-text-3);
+}
+/* Odak: beyaz zemin + siyah yazı, büyüme ve dışta beyaz halka (beyaz "Oynat"tan ayırt edilsin diye her düğmede). */
+.tv-btn.is-focused {
+  background: #fff;
+  color: #000;
+  transform: scale(1.04);
+  box-shadow:
+    0 0 0 0.22rem var(--tv-bg),
+    0 0 0 0.5rem #fff,
+    0 0.6rem 1.6rem rgba(0, 0, 0, 0.45);
+}
+/* "Oynat": odaksızken de beyaz zemin + siyah yazı (UX_SPEC); odakta halka ve büyüme ile ayrılır. */
+.tv-btn--play {
+  background: #fff;
+  color: #000;
+}
+.tv-btn.is-disabled {
+  opacity: 0.45;
+}
+
+.tv-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  width: 26rem;
+}
+.tv-actions__item {
+  justify-content: flex-start;
+  width: 100%;
+}
+.tv-actions__item.is-focused {
+  transform: scale(1.02);
+}
+
+/* ───────────── Tuş takımı ───────────── */
+
+.tv-keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 5.5rem);
+  gap: 0.8rem;
+}
+.tv-key {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 4.6rem;
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  font-size: 2rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  transition:
+    transform var(--tv-dur) var(--tv-ease),
+    background-color 150ms linear;
+}
+.tv-key.is-focused {
+  background: #fff;
+  color: #000;
+  transform: scale(1.08);
+}
+
+/* ───────────── Göstergeler ───────────── */
+
+.tv-progress {
+  height: 0.3rem;
+  background: rgba(255, 255, 255, 0.3);
+  overflow: hidden;
+}
+.tv-progress__fill {
+  height: 100%;
+  background: var(--tv-accent);
+}
+.tv-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.15rem 0.55rem;
+  border-radius: 0.2rem;
+  background: var(--tv-live);
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+.tv-live__dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: #fff;
+}
+.tv-badge {
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  border-radius: 0.2rem;
+  background: var(--tv-accent);
+  color: var(--tv-on-accent);
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+.tv-avatar {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  background: var(--tv-surface-3);
+}
+.tv-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.tv-avatar__initial {
+  font-weight: 800;
+  color: var(--tv-text-2);
+}
+.tv-icon {
+  flex: none;
+}
+
+/* ───────────── Kartlar ───────────── */
+
+.tv-card,
+.tv-poster {
+  position: relative;
+  flex: none;
+}
+.tv-card.is-focused,
+.tv-poster.is-focused {
+  z-index: 2;
+}
+.tv-card__frame,
+.tv-poster__frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.25rem;
+  background: var(--tv-surface-2);
+  transition:
+    transform var(--tv-dur) var(--tv-ease),
+    box-shadow var(--tv-dur) var(--tv-ease);
+}
+.tv-card__frame {
+  aspect-ratio: 16 / 9;
+}
+.tv-poster__frame {
+  aspect-ratio: 2 / 3;
+  margin-left: auto;
+}
+.tv-card.is-focused .tv-card__frame,
+.tv-poster.is-focused .tv-poster__frame {
+  transform: scale(1.08);
+  box-shadow:
+    var(--tv-focus-ring),
+    0 1.2rem 2.4rem rgba(0, 0, 0, 0.7);
+}
+.tv-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 250ms linear;
+}
+.tv-art.is-loaded {
+  opacity: 1;
+}
+.tv-art__fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  padding: 0.8rem 1rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--tv-text-2);
+}
+.tv-card__badge {
+  position: absolute;
+  top: 0.6rem;
+  left: 0.6rem;
+}
+.tv-card__lock {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  display: flex;
+  padding: 0.35rem;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.65);
+}
+.tv-card__progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.tv-card__caption {
+  margin-top: 0.9rem;
+  overflow: hidden;
+  color: var(--tv-text-3);
+  font-size: 1.15rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transition: color 150ms linear;
+}
+.tv-card.is-focused .tv-card__caption {
+  color: var(--tv-text-1);
+}
+.tv-poster {
+  display: flex;
+  align-items: flex-end;
+}
+.tv-poster__rank {
+  position: absolute;
+  left: 0;
+  bottom: -1.2rem;
+  font-size: 13rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.06em;
+  color: var(--tv-bg);
+  -webkit-text-stroke: 0.22rem #6b6b6b;
+  paint-order: stroke;
+}
+
+/* Top 10: rakam + 16:9 görsel + ad (TvRankedCard) */
+.tv-ranked {
+  position: relative;
+  flex: none;
+  display: flex;
+  justify-content: flex-end;
+}
+.tv-ranked.is-focused {
+  z-index: 2;
+}
+.tv-ranked__rank {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: flex-end;
+  font-size: 10.5rem;
+  font-weight: 800;
+  line-height: 0.78;
+  letter-spacing: -0.06em;
+  color: var(--tv-bg);
+  -webkit-text-stroke: 0.2rem #9a9a9a;
+  paint-order: stroke;
+}
+.tv-ranked__rank--wide {
+  transform: scaleX(0.62);
+  transform-origin: left bottom;
+}
+.tv-ranked__body {
+  position: relative;
+  z-index: 1;
+}
+.tv-ranked .tv-card__frame {
+  box-shadow: -0.9rem 0 1.5rem rgba(0, 0, 0, 0.6);
+}
+.tv-ranked.is-focused .tv-card__frame {
+  transform: scale(1.06);
+  box-shadow:
+    var(--tv-focus-ring),
+    0 1.2rem 2.4rem rgba(0, 0, 0, 0.7);
+}
+.tv-ranked__title {
+  margin-top: 0.9rem;
+  overflow: hidden;
+  color: var(--tv-text-2);
+  font-size: 1.2rem;
+  font-weight: 600;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transition: color 150ms linear;
+}
+.tv-ranked.is-focused .tv-ranked__title {
+  color: var(--tv-text-1);
+}
+
+/* ───────────── Satırlar ───────────── */
+
+.tv-row {
+  position: relative;
+  padding-bottom: 1.6rem;
+}
+.tv-row__title {
+  margin: 0 0 1rem;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--tv-text-2);
+}
+.tv-row__aside {
+  margin-left: 1rem;
+  color: var(--tv-text-4);
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+.tv-no-anim,
+.tv-no-anim * {
+  transition: none !important;
+}
+.tv-row__viewport {
+  position: relative;
+  /* Solda yalnız odak çerçevesine yer; sağ, üst ve alt taşabilir (büyüme, alt yazı). */
+  clip-path: inset(-3rem -100vw -4rem -0.5rem);
+}
+.tv-row__track {
+  position: relative;
+  transition: transform var(--tv-dur) var(--tv-ease);
+  will-change: transform;
+}
+.tv-row__cell {
+  position: absolute;
+  top: 0;
+}
+/* Satırda odak sol kenara sabitlendiği için kart sağa doğru büyür. */
+.tv-row .tv-card__frame {
+  transform-origin: left center;
+}
+
+.tv-rows {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding-left: var(--tv-left);
+}
+.tv-rows__stack {
+  transition: transform var(--tv-dur) var(--tv-ease);
+  will-change: transform;
+}
+.tv-rows__row {
+  padding-bottom: 1.4rem;
+  transition: opacity var(--tv-dur) var(--tv-ease);
+}
+.tv-rows__row.is-above {
+  opacity: 0;
+}
+
+/* ───────────── Liste ve ızgara ───────────── */
+
+/* Kenardaki kartın 1.08× büyümesi + 0.25 rem halkası + gölgesi kırpılmasın diye iç pay (dış payla dengelenir). */
+.tv-list,
+.tv-grid {
+  --tv-list-pad: 2rem;
+  overflow: hidden;
+  padding: var(--tv-list-pad);
+  margin: calc(-1 * var(--tv-list-pad));
+  scroll-padding: var(--tv-list-pad);
+}
+.tv-list {
+  display: flex;
+  flex-direction: column;
+}
+.tv-grid {
+  display: grid;
+  align-content: start;
+}
+
+/* ───────────── Yan menü ───────────── */
+
+.tv-rail {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  width: var(--tv-rail-w);
+  padding: var(--tv-safe-y) 0;
+  overflow: hidden;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.45) 60%, rgba(0, 0, 0, 0) 100%);
+  transition:
+    width var(--tv-dur) var(--tv-ease),
+    background-color var(--tv-dur) linear;
+}
+.tv-rail.is-open {
+  width: var(--tv-rail-open);
+  background: rgba(10, 10, 10, 0.94);
+  box-shadow: 1rem 0 4rem rgba(0, 0, 0, 0.8);
+}
+.tv-rail-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 19;
+  background: rgba(0, 0, 0, 0.62);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--tv-dur) var(--tv-ease);
+}
+.tv-rail-scrim.is-open {
+  opacity: 1;
+}
+.tv-rail__profile {
+  margin-bottom: 1rem;
+}
+.tv-rail__main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.3rem;
+}
+.tv-rail__bottom {
+  display: flex;
+  flex-direction: column;
+}
+.tv-rail__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  height: 4rem;
+  margin: 0 0.85rem;
+  padding: 0 1.05rem;
+  border-radius: 0.5rem;
+  color: var(--tv-text-3);
+  white-space: nowrap;
+  transition:
+    background-color 150ms linear,
+    color 150ms linear;
+}
+.tv-rail__item--profile {
+  height: 4.6rem;
+  padding: 0 0.75rem;
+}
+.tv-rail__icon {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+}
+.tv-rail__label {
+  font-size: 1.6rem;
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 200ms linear;
+}
+.tv-rail.is-open .tv-rail__label {
+  opacity: 1;
+}
+.tv-rail__item.is-active {
+  color: var(--tv-text-1);
+}
+.tv-rail__item.is-active::before {
+  content: '';
+  position: absolute;
+  left: -0.85rem;
+  top: 1rem;
+  bottom: 1rem;
+  width: 0.3rem;
+  border-radius: 0 0.2rem 0.2rem 0;
+  background: var(--tv-accent);
+}
+.tv-rail__item.is-focused {
+  background: #fff;
+  color: #000;
+}
+.tv-rail__item.is-focused .tv-rail__label {
+  font-weight: 800;
+}
+
+/* ───────────── Katmanlar ───────────── */
+
+.tv-dialog-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.78);
+  animation: tv-fade-in 200ms linear;
+}
+.tv-dialog {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.6rem;
+  min-width: 40rem;
+  max-width: 64rem;
+  padding: 3rem 3.5rem;
+  border-radius: 0.5rem;
+  background: var(--tv-surface-1);
+  box-shadow: 0 2rem 6rem rgba(0, 0, 0, 0.7);
+  text-align: center;
+  animation: tv-rise 250ms var(--tv-ease);
+}
+.tv-dialog__title {
+  font-size: 2.4rem;
+  font-weight: 800;
+}
+.tv-dialog__message {
+  color: var(--tv-text-3);
+  font-size: 1.5rem;
+}
+.tv-dialog__actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.6rem;
+}
+
+.tv-toasts {
+  position: absolute;
+  right: var(--tv-safe);
+  bottom: var(--tv-safe-y);
+  /* Tam ekran oynatıcının (z-index 100) ve pencerelerin (50) üstünde */
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.8rem;
+  pointer-events: none;
+}
+.tv-toast {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  max-width: 44rem;
+  padding: 1.1rem 1.8rem;
+  border-left: 0.3rem solid var(--tv-accent);
+  border-radius: 0.4rem;
+  background: rgba(24, 24, 24, 0.96);
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.6);
+  font-size: 1.4rem;
+  font-weight: 600;
+  animation: tv-rise 250ms var(--tv-ease);
+}
+
+/* ───────────── Arka plan ───────────── */
+
+.tv-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.tv-bg__art {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.tv-bg__img,
+.tv-bg__overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.tv-bg__img.is-top {
+  animation: tv-fade-in 600ms linear;
+}
+.tv-bg__fade-left {
+  position: absolute;
+  inset: 0 auto 0 -1px;
+  width: 60%;
+  background: linear-gradient(90deg, var(--tv-bg) 0%, rgba(20, 20, 20, 0.86) 25%, rgba(20, 20, 20, 0) 100%);
+}
+.tv-bg__fade-bottom {
+  position: absolute;
+  inset: auto 0 -1px 0;
+  height: 55%;
+  background: linear-gradient(0deg, var(--tv-bg) 0%, rgba(20, 20, 20, 0.7) 40%, rgba(20, 20, 20, 0) 100%);
+}
+
+/* ───────────── İskeletler ───────────── */
+
+.tv-skel {
+  border-radius: 0.25rem;
+  background: linear-gradient(90deg, #232323 0%, #2f2f2f 50%, #232323 100%);
+  background-size: 200% 100%;
+  animation: tv-shimmer 1.4s linear infinite;
+}
+.tv-skel-row__title {
+  width: 16rem;
+  height: 1.6rem;
+  margin-bottom: 1rem;
+}
+.tv-skel-row__cards {
+  display: flex;
+  gap: 0.75rem;
+  overflow: hidden;
+}
+.tv-skel-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.tv-skel-text__line {
+  height: 1.3rem;
+}
+
+/* ───────────── Hareket ───────────── */
+
+@keyframes tv-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes tv-rise {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+}
+@keyframes tv-shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+@keyframes tv-shake {
+  10%,
+  90% {
+    transform: translateX(-0.2rem);
+  }
+  20%,
+  80% {
+    transform: translateX(0.4rem);
+  }
+  30%,
+  50%,
+  70% {
+    transform: translateX(-0.8rem);
+  }
+  40%,
+  60% {
+    transform: translateX(0.8rem);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tv-root *,
+  .tv-root *::before,
+  .tv-root *::after {
+    transition-duration: 0ms !important;
+    animation-duration: 0ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

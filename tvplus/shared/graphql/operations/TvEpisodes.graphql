@@ -1,0 +1,46 @@
+# TV bölümler ekranı (/tv/baslik/:videoId/bolumler): sezonlar ve bölümler.
+query TvEpisodes($videoId: Int!) {
+  video(videoId: $videoId) {
+    __typename
+    videoId
+    title
+    billboard: artwork(type: BILLBOARD, params: { width: 1280 }) {
+      ...ArtworkFields
+    }
+    ... on Show {
+      currentEpisode {
+        videoId
+        seasonNumber
+      }
+      seasons {
+        seasonId
+        number
+        numberLabel
+        title
+        episodes {
+          videoId
+          unifiedEntityId
+          title
+          number
+          seasonNumber
+          numberLabel
+          synopsis
+          runtimeSec
+          displayRuntime
+          isPlayable
+          access {
+            ...AccessFields
+          }
+          bookmark {
+            positionSec
+            runtimeSec
+            progress
+          }
+          still: artwork(type: EPISODE_STILL, params: { width: 480 }) {
+            ...ArtworkFields
+          }
+        }
+      }
+    }
+  }
+}

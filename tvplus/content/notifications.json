@@ -1,0 +1,25 @@
+[
+  {
+    "id": "n-sintel",
+    "title": "Sintel artık TV+'ta",
+    "body": "Açık kaynak fantastik macera, Türkçe altyazıyla.",
+    "videoId": 80010001
+  },
+  {
+    "id": "n-tears-of-steel",
+    "title": "Tears of Steel artık TV+'ta",
+    "body": "Açık kaynak bilim kurgu filmi, hemen izleyebilirsin.",
+    "videoId": 80010002
+  },
+  {
+    "id": "n-tvplus-sinema",
+    "title": "TV+ Sinema yayında",
+    "body": "Açık kaynak filmler arka arkaya, gece gündüz. Kanal 1.",
+    "channelId": 1
+  },
+  {
+    "id": "n-kaputun-alti",
+    "title": "Kaputun altında neler var?",
+    "body": "Kaputun altı panelinde, bir izlemenin telefonuna nasıl ulaştığını görebilirsin."
+  }
+]

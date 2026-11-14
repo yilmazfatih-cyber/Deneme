@@ -13,6 +13,10 @@ Kelime bulmakta zorlanan afazili yetişkinler için Türkçe bir web uygulaması
 > **Ayrıca:** aynı depoda [`bolus/`](bolus/README.md) altında Splitwise benzeri, ev içi ortak harcama uygulaması **Bölüş** var;
 > GitHub Pages'te `/bolus/` adresinde yayınlanır.
 >
+> **Ayrıca:** [`tvplus/`](tvplus/README.md) altında Netflix web mimarisinin mekaniklerini (kalıcı GraphQL sorguları, Falcor,
+> ağ yoklaması, şifreli manifest, imzalı bayt-aralığı akışı, uyarlamalı oynatıcı) TV+ için sıfırdan kuran, YouTube ve açık
+> lisanslı içerik oynatan **TV+** denemesi var (Fable mimar, Opus kod ekibi, Haiku içerik ekibi).
+>
 > **Ayrıca:** [`moda-radar/`](moda-radar/README.md) altında defilelerden sezon rengi (Pantone TCX), kumaş ve desen tahmini yapan,
 > İstanbul'u beş sosyoekonomik segmente bölen ve ürün bazlı yatırım kararı üreten **Moda Radar** tasarımı var (Fable mimar, Opus ekip).
 

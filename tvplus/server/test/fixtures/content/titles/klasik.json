@@ -1,0 +1,74 @@
+[
+  {
+    "videoId": 80020001,
+    "slug": "nosferatu",
+    "type": "MOVIE",
+    "title": "Nosferatu",
+    "originalTitle": "Nosferatu, eine Symphonie des Grauens",
+    "year": 1922,
+    "synopsis": "Emlakçı Hutter, Transilvanya'daki gizemli Kont Orlok'a ev satmaya gider. Kontun gerçek yüzü ortaya çıktığında kasabayı veba sarar.",
+    "shortSynopsis": "Sessiz sinemanın en ürkütücü vampiri.",
+    "genres": ["korku", "klasik", "sessiz-sinema"],
+    "moods": ["karanlik", "kult-klasik"],
+    "cast": ["Max Schreck", "Gustav von Wangenheim"],
+    "directors": ["F. W. Murnau"],
+    "maturity": {
+      "rating": "18+",
+      "reasons": ["siddet-korku"]
+    },
+    "runtimeSec": 5640,
+    "sources": [
+      {
+        "type": "PROGRESSIVE",
+        "url": "https://archive.example.org/nosferatu.mp4"
+      }
+    ],
+    "artwork": {
+      "boxart": "https://img.example.org/nosferatu/boxart.jpg",
+      "storyArt": "https://img.example.org/nosferatu/story.jpg"
+    },
+    "license": {
+      "name": "Kamu malı",
+      "attribution": "Kamu malı eser (archive.org)"
+    },
+    "availability": {
+      "addedAt": "2026-11-05"
+    },
+    "popularity": 50
+  },
+  {
+    "videoId": 80020002,
+    "slug": "metropolis",
+    "type": "MOVIE",
+    "title": "Metropolis",
+    "year": 1927,
+    "synopsis": "Geleceğin kentinde zenginler göklerde, işçiler yerin altında yaşar. Kentin efendisinin oğlu, iki dünyayı birleştirmeye çalışır.",
+    "shortSynopsis": "İkiye bölünmüş bir gelecek kentinde umut arayışı.",
+    "genres": ["bilim-kurgu", "klasik", "sessiz-sinema"],
+    "moods": ["dusundurucu", "kult-klasik"],
+    "cast": ["Brigitte Helm", "Gustav Fröhlich"],
+    "directors": ["Fritz Lang"],
+    "maturity": {
+      "rating": "7+"
+    },
+    "runtimeSec": 9180,
+    "sources": [
+      {
+        "type": "PROGRESSIVE",
+        "url": "https://archive.example.org/metropolis.mp4"
+      }
+    ],
+    "artwork": {
+      "boxart": "https://img.example.org/metropolis/boxart.jpg",
+      "storyArt": "https://img.example.org/metropolis/story.jpg"
+    },
+    "license": {
+      "name": "Kamu malı",
+      "attribution": "Kamu malı eser (archive.org)"
+    },
+    "availability": {
+      "addedAt": "2026-04-01"
+    },
+    "popularity": 45
+  }
+]

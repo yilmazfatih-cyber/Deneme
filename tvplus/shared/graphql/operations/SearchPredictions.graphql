@@ -1,0 +1,8 @@
+query SearchPredictions($prefix: String!, $first: Int) {
+  searchPredictions(prefix: $prefix, first: $first) {
+    text
+    kind
+    unifiedEntityId
+    score
+  }
+}

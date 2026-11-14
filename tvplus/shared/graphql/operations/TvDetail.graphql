@@ -1,0 +1,91 @@
+# TV detay ekranı (/tv/baslik/:videoId): başlık bilgisi, eylemler, Benzerleri.
+query TvDetail($videoId: Int!) {
+  video(videoId: $videoId) {
+    ...CardVideo
+    synopsis
+    contextualSynopsis
+    runtimeSec
+    isInPlaylist
+    thumbRating
+    playbackBadges
+    billboard: artwork(type: BILLBOARD, params: { width: 1280 }) {
+      ...ArtworkFields
+    }
+    genreTags {
+      genreId
+      name
+    }
+    contentAdvisory {
+      certificationValue
+      maturityLevel
+      boardName
+      reasons
+    }
+    textEvidence(uiContext: BOB) {
+      key
+      text
+    }
+    promoVideo {
+      viewableId
+      offset
+      sourceKind
+    }
+    ... on Movie {
+      matchScore
+      cast {
+        personId
+        name
+      }
+      directors {
+        personId
+        name
+      }
+      similars(first: 12) {
+        ...CardVideo
+      }
+      supplementalVideos {
+        videoId
+        title
+        subType
+        isPlayable
+      }
+    }
+    ... on Show {
+      matchScore
+      seasonCount
+      cast {
+        personId
+        name
+      }
+      creators {
+        personId
+        name
+      }
+      currentEpisode {
+        videoId
+        numberLabel
+        title
+        runtimeSec
+        bookmark {
+          positionSec
+          runtimeSec
+          progress
+        }
+      }
+      similars(first: 12) {
+        ...CardVideo
+      }
+      supplementalVideos {
+        videoId
+        title
+        subType
+        isPlayable
+      }
+    }
+    ... on Episode {
+      parentShow {
+        videoId
+      }
+    }
+  }
+}

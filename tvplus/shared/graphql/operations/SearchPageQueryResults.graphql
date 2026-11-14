@@ -1,0 +1,107 @@
+query SearchPageQueryResults($searchTerm: String!, $options: SearchOptionsInput!, $withExplain: Boolean = false) {
+  searchPage(searchTerm: $searchTerm, options: $options) {
+    searchTerm
+    requestId
+    trackId
+    expires
+    isFallback
+    recentSearches
+    modelVersion
+    predictions {
+      ...SearchPredictionFields
+    }
+    correction {
+      mode
+      originalTerm
+      correctedTerm
+    }
+    sections {
+      __typename
+      id
+      displayString
+      expires
+      ... on SearchGallerySection {
+        totalCount
+      }
+      entities {
+        unifiedEntityId
+        kind
+        displayString
+        treatment
+        fuzzy
+        predicted
+        score
+        reason
+        explain @include(if: $withExplain) {
+          name
+          value
+          weight
+          contribution
+        }
+        track {
+          ...TrackFields
+        }
+        contextualArtwork {
+          ...ArtworkFields
+        }
+        video {
+          ...CardVideo
+          genreTags {
+            genreId
+            name
+          }
+        }
+        channel {
+          ...ChannelCard
+          now {
+            artwork(params: { width: 600 }) {
+              ...ArtworkFields
+            }
+          }
+        }
+        airing {
+          ...AiringBrief
+          synopsis
+          artwork(params: { width: 600 }) {
+            ...ArtworkFields
+          }
+          channel {
+            channelId
+            name
+            number
+            isSampleSchedule
+            logo(params: { width: 96 }) {
+              ...ArtworkFields
+            }
+          }
+          video {
+            videoId
+          }
+        }
+        person {
+          personId
+          name
+        }
+        collection {
+          collectionId
+          name
+          description
+          artwork(params: { width: 600 }) {
+            ...ArtworkFields
+          }
+        }
+        genre {
+          genreId
+          name
+        }
+      }
+    }
+  }
+}
+
+fragment SearchPredictionFields on SearchPrediction {
+  text
+  kind
+  unifiedEntityId
+  score
+}

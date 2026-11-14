@@ -1,0 +1,11 @@
+mutation SetBookmark($viewableId: ID!, $positionSec: Int!, $durationSec: Int) {
+  setBookmark(viewableId: $viewableId, positionSec: $positionSec, durationSec: $durationSec) {
+    viewableId
+    watchStatus
+    bookmark {
+      positionSec
+      runtimeSec
+      progress
+    }
+  }
+}

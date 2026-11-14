@@ -1,0 +1,40 @@
+# TV Canlı TV ekranı: yetenek pazarlıklı livePage (yalnız LIVE_HERO + CHANNEL_ROW, yalnız kanal). Kahraman = profilin
+# son kanalı (yoksa ilk favori); "Tüm kanallar" satırı kanal listesidir. Her kanal için şimdiki yayın görseli ve
+# [$from, $to) aralığındaki yayınlar (sıradaki iki program istemcide sunucu saatiyle seçilir).
+query TvLivePage($capabilities: PageCapabilitiesInput!, $from: DateTime!, $to: DateTime!) {
+  livePage(capabilities: $capabilities) {
+    id
+    expires
+    serverTime
+    rows {
+      rowId
+      type
+      title
+      ttlSec
+      trackId
+      items {
+        kind
+        track {
+          ...TrackFields
+        }
+        entity {
+          __typename
+          ... on Channel {
+            ...ChannelCard
+            description
+            now {
+              synopsis
+              art: artwork(params: { width: 1280 }) {
+                ...ArtworkFields
+              }
+            }
+            upcoming: airings(from: $from, to: $to) {
+              ...AiringBrief
+              synopsis
+            }
+          }
+        }
+      }
+    }
+  }
+}

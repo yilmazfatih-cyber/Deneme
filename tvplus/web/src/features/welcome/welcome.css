@@ -1,0 +1,247 @@
+/* Karşılama — Netflix giriş öncesi sayfa düzeni, TV+ sarısıyla. */
+.wl-page {
+  min-height: 100dvh;
+  background: #000;
+  color: var(--text-1);
+}
+
+/* ───────────── Vitrin ───────────── */
+.wl-hero {
+  position: relative;
+  min-height: min(100dvh, 860px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  isolation: isolate;
+}
+/* CSS kolajı: eğik afiş ızgarası */
+.wl-collage {
+  position: absolute;
+  inset: -25% -15%;
+  z-index: -2;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 14px;
+  transform: rotate(-12deg) skewX(4deg);
+  opacity: 0.85;
+}
+.wl-collage__tile {
+  aspect-ratio: 2 / 3;
+  border-radius: 6px;
+  background:
+    radial-gradient(120% 70% at 30% 15%, rgba(255, 255, 255, 0.14), transparent 55%),
+    linear-gradient(165deg, var(--a), var(--b));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  animation: wl-breathe 9s ease-in-out var(--d) infinite;
+}
+@keyframes wl-breathe {
+  50% {
+    filter: brightness(1.25);
+  }
+}
+.wl-hero__shade {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(90% 70% at 50% 45%, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.85)),
+    linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 100%);
+}
+.wl-head {
+  display: flex;
+  align-items: center;
+  height: 88px;
+  padding: var(--safe-top) max(var(--gutter), calc((100% - 1200px) / 2)) 0;
+}
+.wl-hero__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px var(--gutter) 120px;
+  text-align: center;
+}
+.wl-title {
+  margin: 0;
+  font-size: clamp(32px, 4.4vw, 60px);
+  line-height: 1.1;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+.wl-lead {
+  margin: 0;
+  font-size: clamp(17px, 1.6vw, 22px);
+  font-weight: 500;
+}
+.wl-cta {
+  margin-top: 16px;
+}
+.wl-cta.ui-btn--lg {
+  height: 56px;
+  padding: 0 24px 0 28px;
+  font-size: clamp(18px, 1.6vw, 24px);
+}
+.wl-note {
+  margin: 4px 0 0;
+  color: var(--text-3);
+  font-size: 14px;
+}
+.wl-tvhint {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+  padding: 10px 16px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: var(--text-2);
+  font-size: 15px;
+  font-weight: 600;
+}
+.wl-tvhint:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--text-1);
+}
+/* Netflix'in kırmızı kavisli ayracı → sarı */
+.wl-arc {
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  bottom: -1px;
+  height: 90px;
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  border-top: 3px solid var(--accent);
+  background: radial-gradient(60% 120% at 50% 0%, rgba(247, 216, 73, 0.28), rgba(0, 0, 0, 0) 70%), #000;
+  box-shadow: 0 -12px 40px rgba(247, 216, 73, 0.25);
+}
+
+/* ───────────── Bölümler ───────────── */
+.wl-section {
+  width: min(1200px, 100% - 2 * var(--gutter));
+  margin: 0 auto;
+  padding: 32px 0;
+}
+.wl-section__title {
+  margin: 0 0 16px;
+  font-size: clamp(20px, 1.8vw, 26px);
+  font-weight: 700;
+}
+.wl-reasons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.wl-reason {
+  position: relative;
+  min-height: 200px;
+  padding: 24px 24px 72px;
+  border-radius: 16px;
+  background: linear-gradient(150deg, #1f2033 0%, #17121b 100%);
+}
+.wl-reason h3 {
+  margin: 0 0 10px;
+  font-size: 22px;
+  font-weight: 800;
+}
+.wl-reason p {
+  margin: 0;
+  color: var(--text-3);
+  font-size: 15px;
+  line-height: 1.45;
+}
+.wl-reason__icon {
+  position: absolute;
+  right: 20px;
+  bottom: 18px;
+  color: var(--accent);
+}
+.wl-tv {
+  padding-bottom: 56px;
+}
+.wl-tv__lead {
+  margin: 0 0 20px;
+  color: var(--text-3);
+  font-size: 17px;
+}
+.wl-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.wl-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 20px;
+  border-radius: 12px;
+  background: var(--surface-1);
+  border: 1px solid var(--line);
+  font-size: 16px;
+  line-height: 1.45;
+}
+.wl-step__num {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 800;
+}
+.wl-tv__note {
+  margin: 16px 0 0;
+  color: var(--text-4);
+  font-size: 14px;
+}
+.wl-footer {
+  width: min(1200px, 100% - 2 * var(--gutter));
+  margin: 0 auto;
+  padding: 24px 0 40px;
+  border-top: 1px solid var(--line);
+  color: var(--text-4);
+  font-size: 13px;
+}
+.wl-footer p {
+  margin: 0;
+}
+
+@media (max-width: 599px) {
+  .wl-collage {
+    grid-template-columns: repeat(5, 1fr);
+    inset: -20% -40%;
+  }
+  .wl-head {
+    height: 64px;
+  }
+  .wl-cta.ui-btn--lg {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .wl-tvhint {
+    font-size: 14px;
+    text-align: left;
+  }
+  .wl-arc {
+    height: 48px;
+  }
+}
+.wl-cta .ui-btn__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
