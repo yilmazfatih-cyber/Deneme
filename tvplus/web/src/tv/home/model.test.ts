@@ -54,7 +54,7 @@ describe('yol planı', () => {
     expect(paths[0]).toEqual(['lolomo', 1, { from: 0, to: 9 }, expect.arrayContaining(['bookmark', 'storyArt'])])
     expect(paths[2]).toEqual(['lolomo', 1, { from: 0, to: 9 }, 'current', ['summary', 'displayRuntime', 'bookmark']])
     expect(planRowItems('home', 4, 'channel', 10)).toEqual([])
-    expect(planRowItems('home', 2, 'poster', 1)[0]).toEqual(['lolomo', 2, 0, expect.arrayContaining(['boxart'])])
+    expect(planRowItems('home', 2, 'poster', 1)[0]).toEqual(['lolomo', 2, 0, expect.arrayContaining(['storyArt'])])
   })
 
   it('satırlar odak yaklaştıkça 3erli büyür, hiç küçülmez', () => {
@@ -100,7 +100,7 @@ describe('mapRow', () => {
     expect(mapRow({ summary: summary('billboard', 1), '0': node(1) } as RowNode, 0, 10)).toBeNull()
   })
 
-  it('Top 10: afiş görseli ve sıra; rozet TOP10/kilit değilse', () => {
+  it('Top 10: yatay görsel ve sıra; rozet TOP10/kilit değilse', () => {
     const row = mapRow(
       {
         summary: summary('top10Movies', 2),
@@ -112,7 +112,7 @@ describe('mapRow', () => {
       10,
     )!
     expect(row.kind).toBe('poster')
-    expect(row.items[0]).toMatchObject({ imageUrl: '/b/7', rank: 1, badge: 'Yeni', tctx: 'T0', key: '7' })
+    expect(row.items[0]).toMatchObject({ imageUrl: '/s/7', rank: 1, badge: 'Yeni', tctx: 'T0', key: '7' })
     expect(row.items[1]).toMatchObject({ rank: 2, badge: null })
     expect(row.items[1]!.tctx).toBe('2,1,L_top10Movies,42,,,,,,,Video:8,')
   })

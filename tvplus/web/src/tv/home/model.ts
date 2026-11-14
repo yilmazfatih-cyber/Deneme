@@ -87,7 +87,7 @@ export interface RowNode {
 /* ───────────── Bağlam → kart biçimi ───────────── */
 
 /**
- * poster   Top 10: dikey afiş + rakam
+ * poster   Top 10: rakam + 16:9 görsel + ad (TvRankedCard)
  * resume   İzlemeye Devam Et: ilerleme + alt yazı; OK doğrudan oynatır
  * channel  Canlı TV köprüsü: kanal kartları (GraphQL'den)
  * standard 16:9 başlık kartı (mikro tür, zevk topluluğu, tür, editoryal, Listem…)
@@ -107,7 +107,7 @@ export function cardKindOf(context: string | undefined): CardKind {
 
 /** Kartın yaprakları (satır öğeleri için) */
 export const CARD_LEAVES = ['summary', 'title', 'storyArt', 'badge', 'access', 'displayRuntime'] as const
-export const POSTER_LEAVES = ['summary', 'title', 'boxart', 'badge', 'access', 'top10Rank'] as const
+export const POSTER_LEAVES = ['summary', 'title', 'storyArt', 'badge', 'access', 'top10Rank'] as const
 export const RESUME_LEAVES = ['summary', 'title', 'storyArt', 'access', 'displayRuntime', 'bookmark'] as const
 /** Dizide devam edilecek bölüm (videos[id].current → ref) */
 export const CURRENT_LEAVES = ['summary', 'displayRuntime', 'bookmark'] as const
@@ -271,7 +271,7 @@ export function mapCard(row: RowNode, summary: ListSummary, rowIndex: number, in
     title: node.title,
     isShow,
     tctx,
-    imageUrl: (kind === 'poster' ? node.boxart?.url : node.storyArt?.url) ?? node.storyArt?.url ?? null,
+    imageUrl: node.storyArt?.url ?? node.boxart?.url ?? null,
     rank: kind === 'poster' ? (node.top10Rank ?? index + 1) : null,
     progress,
     caption,

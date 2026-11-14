@@ -16,11 +16,13 @@ import {
   ErrorState,
   IconButton,
   PosterCard,
+  RankedCard,
   Sheet,
   Skeleton,
   SkeletonSlider,
   Slider,
   TitleCard,
+  useBreakpointItems,
   type IndexRange,
   type SliderItemContext,
 } from '../../ui'
@@ -52,7 +54,8 @@ export interface LolomoRowProps {
 }
 
 /** Mobil kart genişliği: afiş 110, Top 10 (rakam + afiş) 150 */
-const mobileWidthOf = (kind: RowKind) => (kind === 'top10' ? 150 : 110)
+/** Mobil kart genişliği: Top 10 yatay karttır (rakam + 16:9 görsel), ötekiler 2:3 afiş. */
+const mobileWidthOf = (kind: RowKind) => (kind === 'top10' ? 244 : 110)
 
 export function LolomoRow({
   list,
@@ -67,6 +70,8 @@ export function LolomoRow({
   tracker,
 }: LolomoRowProps): ReactElement | null {
   const mobile = useFormFactor() === 'mobile'
+  // Top 10 kartı (rakam + görsel) sıradan karttan geniştir: sayfaya iki kart az sığdırılır
+  const perPageAuto = useBreakpointItems()
   const href = useTitleHref()
   const row = mapRow(list, rowIndex, loaded, category)
   const sectionRef = useRef<HTMLElement>(null)
@@ -148,7 +153,7 @@ export function LolomoRow({
   }
   // Boş satır yok: veri geldi ama gösterilecek öğe kalmadıysa satır çizilmez.
   if (!readyCount && settled && !loading) return null
-  if (!readyCount) return <SkeletonSlider poster={mobile || row.kind === 'top10'} className="gz-row-skel" />
+  if (!readyCount) return <SkeletonSlider poster={mobile && row.kind !== 'top10'} className="gz-row-skel" />
 
   const kind = row.kind
   const getRowVideoIds = () => (rowRef.current?.items ?? []).filter((c): c is CardVM => !!c).map((c) => c.videoId)
@@ -171,7 +176,7 @@ export function LolomoRow({
   }
 
   const renderItem = (c: CardVM | null, ctx: SliderItemContext): ReactElement => {
-    if (!c) return <Skeleton variant={ctx.mobile || kind === 'top10' ? 'poster' : 'card'} />
+    if (!c) return <Skeleton variant={ctx.mobile && kind !== 'top10' ? 'poster' : 'card'} />
     const label = c.lockedText ? `${c.title}, ${c.lockedText}` : undefined
     const badge = c.badge ? (
       <Badge tone={c.badge.tone}>{c.badge.tone === 'lock' ? undefined : c.badge.text}</Badge>
@@ -180,10 +185,11 @@ export function LolomoRow({
 
     if (kind === 'top10') {
       const card = (
-        <PosterCard
+        <RankedCard
           title={c.title}
-          image={c.posterUrl}
+          image={c.landscapeUrl ?? c.posterUrl}
           rank={c.rank ?? ctx.index + 1}
+          meta={c.isShow ? 'Dizi' : 'Film'}
           badge={c.badge?.tone === 'lock' ? badge : undefined}
           to={detail}
           tabIndex={ctx.tabIndex}
@@ -283,6 +289,7 @@ export function LolomoRow({
         renderItem={renderItem}
         onVisibleRangeChange={onRange}
         mobileItemWidth={mobileWidthOf(kind)}
+        itemsPerPage={kind === 'top10' ? Math.max(2, perPageAuto - 2) : undefined}
       />
       {menu && (
         <Sheet open onClose={() => setMenu(null)} title={menu.title}>

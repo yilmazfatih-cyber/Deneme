@@ -15,7 +15,16 @@ import { prefetchManifest } from '../../player'
 import { logEvent } from '../../telemetry/logger'
 import { useFocusWithin } from '../focus'
 import { titlePath, useTvBoot, watchPath } from '../shell'
-import { formatRemaining, formatTimeRange, screenScopeId, TvCard, TvPosterCard, TvScreen, TvSkeletonRow } from '../ui'
+import {
+  formatRemaining,
+  formatTimeRange,
+  screenScopeId,
+  TV_RANK_SPACE,
+  TvCard,
+  TvRankedCard,
+  TvScreen,
+  TvSkeletonRow,
+} from '../ui'
 import { Hero } from './Hero'
 import { Lane } from './Lane'
 import { browseMemory, rememberFocus, restoreFocusId, restoreIndex, rowScopeId, type BrowseMemory } from './memory'
@@ -49,8 +58,10 @@ import './home.css'
 /* ───────────── Ölçüler (rem) ───────────── */
 
 const CARD_W = 19.5
-const POSTER_W = 10.5
-const RANKED_W = POSTER_W * 1.6
+/** Top 10 kartı: 16:9 görselin genişliği ve rakam payıyla kartın tamamı (rem) */
+const RANKED_ART_W = 17
+const RANKED_W = RANKED_ART_W + TV_RANK_SPACE
+const RANKED_ART_H = (RANKED_ART_W * 9) / 16
 const CHANNEL_W = 19.5
 const CAPTION_SPACE = 2.6
 /** Odaktaki satırın üst kenarı: üst alan ekranın ~%52'si */
@@ -222,7 +233,7 @@ export function Browse({ screenId, category, title, showPageTitle }: BrowseProps
     if (!focusedRow || !focus) return
     const fresh: number[] = []
     const entityIds: string[] = []
-    const visible = focusedRow.vm.kind === 'poster' ? 7 : 6
+    const visible = focusedRow.vm.kind === 'poster' ? 5 : 6
     for (let i = focus.index; i < Math.min(focusedRow.length, focus.index + visible); i++) {
       const k = `${focusedRow.key}:${i}`
       const it = focusedRow.items[i]
@@ -354,7 +365,7 @@ export function Browse({ screenId, category, title, showPageTitle }: BrowseProps
     const kind = row.vm.kind
     const poster = kind === 'poster'
     const width = poster ? RANKED_W : kind === 'channel' ? CHANNEL_W : CARD_W
-    const aspect = poster ? RANKED_W / (POSTER_W * 1.5) : 16 / 9
+    const aspect = poster ? RANKED_W / RANKED_ART_H : 16 / 9
     return {
       key: row.key,
       node: (
@@ -367,8 +378,8 @@ export function Browse({ screenId, category, title, showPageTitle }: BrowseProps
           itemKey={(it) => (it.kind === 'video' ? it.card.key : it.channel.key)}
           itemWidth={width}
           aspect={aspect}
-          captionSpace={kind === 'resume' || kind === 'channel' ? CAPTION_SPACE : 0}
-          skeletonRatio={poster ? '1.6 / 1.5' : '16 / 9'}
+          captionSpace={kind === 'resume' || kind === 'channel' || poster ? CAPTION_SPACE : 0}
+          skeletonRatio={poster ? `${RANKED_W} / ${RANKED_ART_H}` : '16 / 9'}
           initialIndex={initialIndex}
           onFocusIndex={(i) => onFocusCard(row, i)}
           renderItem={(it, i, focusId) =>
@@ -388,12 +399,12 @@ export function Browse({ screenId, category, title, showPageTitle }: BrowseProps
                 onPress={() => openChannel(row, it.channel)}
               />
             ) : poster ? (
-              <TvPosterCard
+              <TvRankedCard
                 id={focusId}
                 imageUrl={it.card.imageUrl}
                 title={it.card.title}
-                rank={it.card.rank}
-                width={POSTER_W}
+                rank={it.card.rank ?? i + 1}
+                width={RANKED_ART_W}
                 autoFocus={!restoreId && ri === 0 && i === 0}
                 onPress={() => openVideo(row, it.card)}
               />

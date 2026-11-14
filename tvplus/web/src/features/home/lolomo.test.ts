@@ -65,11 +65,13 @@ describe('bağlam → satır biçimi', () => {
     expect(rowKindOf('')).toBeNull()
   })
 
-  it('kart görseli ekrana göre: masaüstü 16:9, mobil afiş; Top 10 her yerde afiş', () => {
+  it('kart görseli ekrana göre: masaüstü 16:9, mobil afiş; Top 10 her ekranda 16:9 (görsel tam görünsün)', () => {
     expect(leavesFor('standard', 'desktop')).toContain('storyArt')
     expect(leavesFor('standard', 'desktop')).not.toContain('boxart')
     expect(leavesFor('standard', 'mobile')).toContain('boxart')
-    expect(leavesFor('top10', 'desktop')).toContain('boxart')
+    expect(leavesFor('top10', 'desktop')).toContain('storyArt')
+    expect(leavesFor('top10', 'mobile')).toContain('storyArt')
+    expect(leavesFor('top10', 'mobile')).not.toContain('boxart')
     expect(leavesFor('continue', 'desktop')).toEqual(expect.arrayContaining(['storyArt', 'bookmark']))
     expect(leavesFor('continue', 'mobile')).toEqual(expect.arrayContaining(['boxart', 'bookmark']))
     expect(leavesFor('hero', 'mobile')).toEqual(expect.arrayContaining(['boxart', 'tags']))

@@ -4,6 +4,14 @@
 import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore, type RefObject } from 'react'
 import { itemsPerPageFor } from './sliderMath'
 
+/*
+ * Pencere kapanınca odak, onu açan öğeye geri verilir. Bu "geri verilen" odak kullanıcının o öğeye yeniden gitmesi
+ * değildir: odakla açılan şeyler (ör. kart önizlemesi) bunu ayırt edebilsin diye son geri verme anı tutulur.
+ */
+let focusRestoredAt = 0
+/** Odak az önce bir pencere kapanırken mi geri verildi? */
+export const focusRestoredJustNow = (): boolean => performance.now() - focusRestoredAt < 200
+
 /* ───────────── Kaydırma ───────────── */
 
 function subscribeScroll(cb: () => void): () => void {
@@ -169,7 +177,10 @@ export function useFocusTrap(
     document.addEventListener('keydown', onKey)
     return () => {
       document.removeEventListener('keydown', onKey)
-      if (opener && opener.isConnected) opener.focus({ preventScroll: true })
+      if (opener && opener.isConnected) {
+        focusRestoredAt = performance.now()
+        opener.focus({ preventScroll: true })
+      }
     }
   }, [active, ref, initialFocus])
 }

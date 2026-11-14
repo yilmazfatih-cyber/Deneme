@@ -156,9 +156,12 @@ export function heroDeferredLeaves(screen: Screen): string[] {
 /** Dizilerde devam edilecek bölüm (videos[id].current → ref) */
 export const CURRENT_LEAVES = ['summary', 'displayRuntime', 'bookmark'] as const
 
-/** Kart görseli: masaüstünde 16:9, mobilde 2:3 (Top 10 her yerde dikey). */
+/**
+ * Kart görseli: masaüstünde 16:9, mobilde 2:3. Top 10 her ekranda 16:9: görseller yatay olduğu için dikey afişte
+ * küçük ve karanlık kalıyordu; sıralı kart görseli tam gösterir ve adı altına yazar (ui/Cards RankedCard).
+ */
 export function artLeafOf(kind: RowKind, screen: Screen): 'storyArt' | 'boxart' {
-  if (kind === 'top10') return 'boxart'
+  if (kind === 'top10') return 'storyArt'
   return screen === 'mobile' ? 'boxart' : 'storyArt'
 }
 

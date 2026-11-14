@@ -220,6 +220,67 @@ export function TvPosterCard({
   )
 }
 
+export interface TvRankedCardProps {
+  id?: string
+  imageUrl: string | null | undefined
+  title: string
+  /** Sıra (1–10) */
+  rank: number
+  badge?: string | null
+  /** rem; 16:9 görselin genişliği (varsayılan 17). Kartın tamamı rakam payıyla birlikte daha geniştir. */
+  width?: number
+  onPress?: () => void
+  onFocus?: () => void
+  autoFocus?: boolean
+  className?: string
+}
+
+/** Rakamın kartın solunda kapladığı pay (rem). */
+export const TV_RANK_SPACE = 6
+
+/**
+ * Top 10 kartı: solda büyük dış hatlı rakam, yanında 16:9 görsel, altında ad.
+ * Görseller yatay olduğu için dikey afişte küçük ve karanlık kalıyordu; burada görsel tam, ad yazıyla görünür.
+ */
+export function TvRankedCard({
+  id,
+  imageUrl,
+  title,
+  rank,
+  badge,
+  width = 17,
+  onPress,
+  onFocus,
+  autoFocus,
+  className,
+}: TvRankedCardProps): ReactElement {
+  const { ref, focused } = useFocusable<HTMLDivElement>({ id, onEnter: onPress, onFocus, autoFocus })
+  return (
+    <div
+      ref={ref}
+      role="button"
+      aria-label={`${rank}. ${title}`}
+      className={cx('tv-ranked', focused && 'is-focused', className)}
+      style={{ width: `${width + TV_RANK_SPACE}rem` }}
+    >
+      <span
+        className={cx('tv-ranked__rank', rank >= 10 && 'tv-ranked__rank--wide')}
+        style={{ height: `${(width * 9) / 16}rem` }}
+        aria-hidden="true"
+      >
+        {rank}
+      </span>
+      <div className="tv-ranked__body" style={{ width: `${width}rem` }}>
+        <div className="tv-card__frame">
+          <Art key={imageUrl ?? ''} url={imageUrl} title={title} />
+          {badge && <span className="tv-badge tv-card__badge">{badge}</span>}
+        </div>
+        <div className="tv-ranked__title">{title}</div>
+      </div>
+    </div>
+  )
+}
+
 /* ───────────── İskeletler ───────────── */
 
 export function TvSkeletonCard({ width = 19.5, ratio = '16 / 9' }: { width?: number; ratio?: string }): ReactElement {

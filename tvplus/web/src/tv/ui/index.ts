@@ -11,12 +11,15 @@ export {
   TvCard,
   TvLiveTag,
   TvPosterCard,
+  TvRankedCard,
+  TV_RANK_SPACE,
   TvProgress,
   TvSkeletonCard,
   TvSkeletonRow,
   TvSkeletonText,
   type TvCardProps,
   type TvPosterCardProps,
+  type TvRankedCardProps,
 } from './cards'
 export {
   clampIndex,

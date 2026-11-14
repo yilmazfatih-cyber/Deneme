@@ -342,6 +342,61 @@
   paint-order: stroke;
 }
 
+/* Top 10: rakam + 16:9 görsel + ad (TvRankedCard) */
+.tv-ranked {
+  position: relative;
+  flex: none;
+  display: flex;
+  justify-content: flex-end;
+}
+.tv-ranked.is-focused {
+  z-index: 2;
+}
+.tv-ranked__rank {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: flex-end;
+  font-size: 10.5rem;
+  font-weight: 800;
+  line-height: 0.78;
+  letter-spacing: -0.06em;
+  color: var(--tv-bg);
+  -webkit-text-stroke: 0.2rem #9a9a9a;
+  paint-order: stroke;
+}
+.tv-ranked__rank--wide {
+  transform: scaleX(0.62);
+  transform-origin: left bottom;
+}
+.tv-ranked__body {
+  position: relative;
+  z-index: 1;
+}
+.tv-ranked .tv-card__frame {
+  box-shadow: -0.9rem 0 1.5rem rgba(0, 0, 0, 0.6);
+}
+.tv-ranked.is-focused .tv-card__frame {
+  transform: scale(1.06);
+  box-shadow:
+    var(--tv-focus-ring),
+    0 1.2rem 2.4rem rgba(0, 0, 0, 0.7);
+}
+.tv-ranked__title {
+  margin-top: 0.9rem;
+  overflow: hidden;
+  color: var(--tv-text-2);
+  font-size: 1.2rem;
+  font-weight: 600;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transition: color 150ms linear;
+}
+.tv-ranked.is-focused .tv-ranked__title {
+  color: var(--tv-text-1);
+}
+
 /* ───────────── Satırlar ───────────── */
 
 .tv-row {

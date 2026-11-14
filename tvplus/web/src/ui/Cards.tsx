@@ -3,7 +3,8 @@
  *   TitleCard   16:9 (STORY_ART), köşe 4 — masaüstü satırları, arama ızgarası, canlı kanal kartı (sol üstte kanal logosu).
  *               En çok bir rozet (sol üst), isteğe bağlı ilerleme çubuğu + altyazı satırı ("S1:B3 · 23 dk kaldı").
  *   PosterCard  2:3 afiş (BOXART), köşe 4 / mobil 6 — mobil satırlar ve Top 10 (`rank` → solunda dış hat rakam).
- *   RankNumber  Top 10 rakamı (koyu dolgu, gri dış hat).
+ *   RankedCard  Top 10: büyük rakam + 16:9 görsel + altında ad (görsel ve ad her zaman tam görünür).
+ *   RankNumber  Top 10 rakamı (koyu dolgu, açık gri dış hat).
  *
  * Önizleme kartı (başka ekip) kartın üzerinde portal ile açılır: kartlar `ref`'i ve fare / işaretçi / odak
  * işleyicilerini kök öğeye iletir; kart kendisi üzerine gelince büyümez.
@@ -162,6 +163,46 @@ export function RankNumber({ value, className }: { value: number; className?: st
         {text}
       </text>
     </svg>
+  )
+}
+
+/* ───────────── Top 10 kartı ───────────── */
+
+export interface RankedCardProps extends CardBaseProps {
+  /** 16:9 görsel (STORY_ART): kırpılmadan, tam görünür */
+  image?: string | null
+  /** Sıra (1–10) */
+  rank: number
+  /** Adın altındaki küçük satır (ör. "Dizi") */
+  meta?: ReactNode
+}
+
+/**
+ * Top 10 kartı: solda büyük dış hatlı rakam, yanında 16:9 görsel, altında ad.
+ * Görseller yatay olduğu için dikey afiş yerine yatay kart kullanılır: görsel tam görünür, ad her zaman yazıyla okunur.
+ */
+export function RankedCard({
+  title,
+  image,
+  rank,
+  badge,
+  meta,
+  className,
+  'aria-label': ariaLabel,
+  ...rest
+}: RankedCardProps): ReactElement {
+  return (
+    <CardRoot className={cx('ui-ranked', className)} label={ariaLabel ?? `${rank}. ${title}`} {...rest}>
+      <RankNumber value={rank} className="ui-ranked__rank" />
+      <span className="ui-ranked__body">
+        <span className="ui-ranked__media">
+          <Art src={image} title={title} className="ui-card__img" />
+          {badge && <span className="ui-card__badge">{badge}</span>}
+        </span>
+        <span className="ui-ranked__title">{title}</span>
+        {meta && <span className="ui-ranked__meta">{meta}</span>}
+      </span>
+    </CardRoot>
   )
 }
 

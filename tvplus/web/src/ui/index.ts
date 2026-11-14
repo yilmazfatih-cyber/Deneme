@@ -36,7 +36,15 @@ export {
   type RoundButtonSize,
   type RoundButtonVariant,
 } from './Button'
-export { PosterCard, RankNumber, TitleCard, type PosterCardProps, type TitleCardProps } from './Cards'
+export {
+  PosterCard,
+  RankedCard,
+  RankNumber,
+  TitleCard,
+  type PosterCardProps,
+  type RankedCardProps,
+  type TitleCardProps,
+} from './Cards'
 export { Slider, type SliderHandle, type SliderItemContext, type SliderProps } from './Slider'
 export {
   clampPage,
@@ -146,6 +154,7 @@ export { useNow } from './useNow'
 export {
   focusableIn,
   useBodyScrollLock,
+  focusRestoredJustNow,
   useBreakpointItems,
   useEscape,
   useFocusTrap,

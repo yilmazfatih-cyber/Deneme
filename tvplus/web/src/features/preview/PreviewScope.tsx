@@ -29,7 +29,7 @@ import { createPortal } from 'react-dom'
 import { useLocation } from 'react-router-dom'
 import { useFormFactor } from '../../lib/formFactor'
 import { logEvent } from '../../telemetry/logger'
-import { useMediaQuery } from '../../ui'
+import { focusRestoredJustNow, useMediaQuery } from '../../ui'
 import { CLOSE_MS, setPreviewOpen } from './openState'
 import { PreviewCard } from './PreviewCard'
 import { requestRowPreview } from './store'
@@ -158,6 +158,8 @@ export function PreviewScope({ children }: { children: ReactNode }): ReactElemen
       },
       focus(info, el) {
         if (suppressed.current === el) return
+        // Detay penceresi kapanınca karta geri verilen odak önizleme açmaz (kullanıcı karta yeniden gitmedi)
+        if (focusRestoredJustNow()) return
         let keyboard = false
         try {
           keyboard = el.matches(':focus-visible') || !!el.querySelector(':focus-visible')
@@ -267,20 +269,53 @@ export interface PreviewTargetProps {
 const anchorOf = (el: HTMLElement): HTMLElement =>
   el.firstElementChild instanceof HTMLElement ? el.firstElementChild : el
 
+/*
+ * Gerçek fare hareketi. Bir pencere kapanınca ya da sayfa kayınca tarayıcı, duran imlecin altına gelen karta
+ * hareket olmadan `pointerenter` (ve aynı konumlu sahte `pointermove`) yollar. Önizleme yalnız imleç gerçekten
+ * hareket ettiyse açılır: detay penceresini kapatan ya da tekerlekle kaydıran kullanıcının önüne kart fırlamaz.
+ */
+const REAL_MOVE_WINDOW_MS = 250
+let lastRealMove = { x: Number.NaN, y: Number.NaN, at: 0 }
+if (typeof window !== 'undefined') {
+  window.addEventListener(
+    'pointermove',
+    (e) => {
+      if (e.pointerType !== 'mouse') return
+      if (e.screenX === lastRealMove.x && e.screenY === lastRealMove.y) return
+      lastRealMove = { x: e.screenX, y: e.screenY, at: performance.now() }
+    },
+    { capture: true, passive: true },
+  )
+}
+const movedJustNow = () => performance.now() - lastRealMove.at < REAL_MOVE_WINDOW_MS
+
 /** Olay sahibi (sarmalayıcı) öğeye yayılacak dinleyiciler. Kapsam yoksa boş nesne. */
 export function usePreviewTarget(info: PreviewTargetInfo | null) {
   const ctl = useContext(PreviewContext)
   const infoRef = useRef(info)
   infoRef.current = info
+  /** İmleç hareket etmeden kartın üstünde kaldı: ilk gerçek harekette önizleme zamanlanır */
+  const armed = useRef(false)
   return useMemo(() => {
     if (!ctl) return {}
     const get = () => infoRef.current
     return {
       onPointerEnter(e: PointerEvent<HTMLElement>) {
         const i = get()
-        if (i && e.pointerType === 'mouse') ctl.pointerEnter(i, anchorOf(e.currentTarget))
+        if (!i || e.pointerType !== 'mouse') return
+        if (movedJustNow()) {
+          armed.current = false
+          ctl.pointerEnter(i, anchorOf(e.currentTarget))
+        } else armed.current = true
+      },
+      onPointerMove(e: PointerEvent<HTMLElement>) {
+        if (!armed.current || e.pointerType !== 'mouse' || !movedJustNow()) return
+        const i = get()
+        armed.current = false
+        if (i) ctl.pointerEnter(i, anchorOf(e.currentTarget))
       },
       onPointerLeave(e: PointerEvent<HTMLElement>) {
+        armed.current = false
         const i = get()
         if (i && e.pointerType === 'mouse') ctl.pointerLeave(i)
       },
