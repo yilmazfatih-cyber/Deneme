@@ -6831,9 +6831,9 @@
  },
  "dallar": {
   "olay_buyume_buyuk": {
-   "n": 18,
-   "ort_net": 0.0044378217231805205,
-   "ort_anormal": 0.008655522070027257,
+   "n": 19,
+   "ort_net": 0.006616258699455453,
+   "ort_anormal": 0.012815631370701817,
    "kaynak": "havuzlanmış olay çalışması"
   },
   "olay_buyume_orta": {
@@ -6843,56 +6843,45 @@
    "kaynak": "havuzlanmış olay çalışması"
   },
   "olay_buyume_kucuk": {
-   "n": 5,
-   "ort_net": -0.0005690877786385081,
-   "ort_anormal": -0.01167871204391333,
+   "n": 6,
+   "ort_net": -0.0020554831746871015,
+   "ort_anormal": -0.0025959564426648782,
    "kaynak": "havuzlanmış olay çalışması"
   },
   "satin_alma": {
-   "n": 22,
-   "ort_net": 0.011628952877004082,
-   "ort_anormal": -2.202910710104942e-05,
+   "n": 27,
+   "ort_net": 0.013939515415905684,
+   "ort_anormal": -0.000500496274199536,
    "kaynak": "havuzlanmış olay çalışması"
   },
   "pead": {
-   "n": 15,
-   "ort_net": -0.005735206098786768,
-   "ort_anormal": 0.01664710213905855,
+   "n": 19,
+   "ort_net": -0.018950838319669063,
+   "ort_anormal": 0.010707098174369288,
    "kaynak": "havuzlanmış olay çalışması"
   },
   "temettu_yakalama": {
-   "n": 55,
-   "ort_net": -0.005732420662993087,
-   "ort_anormal": -0.0024759988838593365,
+   "n": 66,
+   "ort_net": -0.006012486044131368,
+   "ort_anormal": -0.005904041089531493,
    "kaynak": "havuzlanmış olay çalışması"
   },
   "bedelsiz_beklenti": {
-   "n": 7,
-   "ort_net": -0.014693315821607107,
-   "ort_anormal": 0.0016294078529736236,
+   "n": 8,
+   "ort_net": -0.0279954287465554,
+   "ort_anormal": -0.009002104767852612,
    "kaynak": "havuzlanmış olay çalışması"
   },
   "geri_alim": {
-   "n": 54,
-   "siklik_hisse_ay": 0.031,
-   "isabet": 0.5,
-   "ort_net": 0.00667545578805121,
-   "medyan_net": 0.0002920082502406744,
-   "ort_brut": 0.009675455788051212,
-   "t_gun": 1.398453826534025,
-   "gun_sayisi": 45,
-   "yari1": 0.012447533500585464,
-   "yari2": 0.0009033780755169548,
-   "tutarli": true,
-   "ort_cubuk": 16.85185185185185,
-   "ort_net_dusuk_maliyet": 0.008675455788051213,
-   "t_gun_dusuk_maliyet": 1.781878976107041,
-   "vekil": "haber_momentum"
+   "n": 6,
+   "ort_net": 0.045729034661334454,
+   "ort_anormal": 0.011698379208755586,
+   "kaynak": "havuzlanmış olay çalışması"
   },
   "arz_baskisi": {
-   "n": 17,
-   "ort_net": -0.0017812488161466835,
-   "ort_anormal": -0.00976334651770545,
+   "n": 20,
+   "ort_net": -0.0017688583148382539,
+   "ort_anormal": -0.008535693077550654,
    "kaynak": "havuzlanmış olay çalışması"
   }
  },
