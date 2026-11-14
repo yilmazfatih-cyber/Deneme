@@ -183,6 +183,8 @@ export interface ViewingStoreOptions {
   viewerKey: Buffer
   /** Değişiklikten sonra anlık görüntü gecikmesi (ms); 0 → her değişiklikte hemen */
   snapshotDelayMs?: number
+  /** Kilidin tazelenme aralığı (ms); 0 → tazelenmez (tek süreçli ortamlar: tarayıcı içi sunucu). Varsayılan 5 sn. */
+  lockHeartbeatMs?: number
   log?: (level: 'info' | 'warn' | 'error', message: string) => void
   /** Saat (testler) */
   now?: () => number
@@ -213,12 +215,21 @@ function pidAlive(pid: number): boolean {
   }
 }
 
-/** Kilit dosyası: başka canlı süreç tutuyorsa hata. */
+/** Sahibi kilidi bu aralıkla tazeler. */
+const LOCK_HEARTBEAT_MS = 5_000
+/**
+ * Bu süredir tazelenmeyen kilit bayattır. Yalnız pid'e bakmak yetmez: makine yeniden başladıktan ya da sunucu
+ * çöktükten sonra aynı pid ilgisiz bir sürece verilebilir ve depo sonsuza dek "kilitli" görünür.
+ */
+export const LOCK_STALE_MS = 30_000
+
+/** Kilit dosyası: başka canlı süreç tutuyorsa (ve kilidi tazeliyorsa) onun pid'i; yoksa null. */
 export function lockOwner(dir: string): number | null {
   const file = join(dir, 'LOCK')
   if (!existsSync(file)) return null
   const pid = Number(readFileSync(file, 'utf8').trim())
   if (!Number.isInteger(pid) || pid <= 0 || pid === process.pid || !pidAlive(pid)) return null
+  if (Date.now() - statSync(file).mtimeMs > LOCK_STALE_MS) return null
   return pid
 }
 
@@ -273,6 +284,19 @@ export async function openViewingStore(opts: ViewingStoreOptions): Promise<Viewi
   if (owner !== null) throw new ViewingStoreLockedError(owner)
   const lockFile = join(dir, 'LOCK')
   writeFileSync(lockFile, String(process.pid))
+  // Kilidi düzenli tazele: tazelenmeyen kilit bayat sayılır (bkz. LOCK_STALE_MS). Süreci ayakta tutmaz.
+  const heartbeatMs = opts.lockHeartbeatMs ?? LOCK_HEARTBEAT_MS
+  const heartbeat =
+    heartbeatMs > 0
+      ? setInterval(() => {
+          try {
+            writeFileSync(lockFile, String(process.pid))
+          } catch {
+            /* klasör silinmiş olabilir; kilit zaten anlamını yitirmiştir */
+          }
+        }, heartbeatMs)
+      : null
+  heartbeat?.unref?.()
 
   const state = new Map<ViewingSource, SourceState>(VIEWING_SOURCES.map((s) => [s, emptySource()]))
   const st = (s: ViewingSource) => state.get(s)!
@@ -860,6 +884,7 @@ export async function openViewingStore(opts: ViewingStoreOptions): Promise<Viewi
       if (closed) return
       writeSnapshot()
       closed = true
+      if (heartbeat) clearInterval(heartbeat)
       if (existsSync(lockFile) && readFileSync(lockFile, 'utf8').trim() === String(process.pid)) safeUnlink(lockFile)
     },
 

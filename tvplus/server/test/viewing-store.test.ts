@@ -3,7 +3,7 @@
  * yeniden açılışta korunması, anlık görüntü ↔ günlükten kurma eşdeğerliği, kuyruk oynatma, activeSources kuralı,
  * clear, temizleme (fazla alan saklanmaz), kilit.
  */
-import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync, utimesSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
@@ -376,5 +376,17 @@ describe('kaynaklar', () => {
     s.close()
     stores.length = 0
     expect(existsSync(join(dir, 'LOCK'))).toBe(false)
+  })
+
+  it('kilit: canlı bir pid taşısa da uzun süredir tazelenmeyen kilit bayattır (yeniden başlatma sonrası pid başkasına geçer)', async () => {
+    const dir = tmp()
+    const lock = join(dir, 'LOCK')
+    writeFileSync(lock, String(process.ppid))
+    const past = new Date(Date.now() - 5 * 60_000)
+    utimesSync(lock, past, past)
+    const s = await open(dir)
+    expect(readFileSync(lock, 'utf8')).toBe(String(process.pid))
+    s.close()
+    stores.length = 0
   })
 })

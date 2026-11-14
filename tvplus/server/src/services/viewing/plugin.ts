@@ -35,6 +35,8 @@ export default async function viewingPlugin(app: FastifyInstance): Promise<void>
     viewerKey,
     snapshotDelayMs: config.isTest ? 0 : 2000,
     realDataMinViewers: config.realDataMinViewers,
+    // Tarayıcı içi sunucuda tek süreç vardır; kilidi tazelemek yalnız gereksiz kalıcılık yazımı üretir
+    lockHeartbeatMs: config.staticHost ? 0 : undefined,
     log: (level, message) => app.log[level](message),
   })
   // İlgi puanının referans süresi istek anında katalogdan okunur
