@@ -118,11 +118,21 @@ def _genis(df: pd.DataFrame, deger: str) -> pd.DataFrame:
 
 
 def panel_yukle(klasor: str | Path = "veri/ag", min_gun: int = 60, asiri: float = 0.25) -> Panel:
-    """Ham tablolardan panel. `min_gun`: en az bu kadar getirisi olan hisseler; |getiri| > `asiri` veri hatası sayılır (NaN)."""
+    """Ham tablolardan panel. `min_gun`: en az bu kadar getirisi olan hisseler; |getiri| > `asiri` veri hatası sayılır (NaN).
+    Hisselerin yarısından azının fiyatı bulunan son günler (yarım çekim) panele alınmaz."""
     klasor = Path(klasor)
     isy = pd.read_csv(klasor / "isy_panel.csv.gz")
     isy["hisse"] = isy["hisse"].astype(str).str.upper()
     isy = isy[~isy["hisse"].isin(HARIC)]
+    # Eksik çekilmiş son günler atılır (o gün fiyatı olan hisse sayısı önceki 20 günün medyanının yarısından az):
+    # yarım gün, son güne bakan ölçüleri ve günlük taramayı yanıltır.
+    say = isy.groupby("tarih")["HGDG_KAPANIS"].count().sort_index()
+    eksik = []
+    while len(say) > 25 and say.iloc[-1] < 0.5 * say.iloc[-21:-1].median():
+        eksik.append(say.index[-1])
+        say = say.iloc[:-1]
+    if eksik:
+        isy = isy[~isy["tarih"].isin(eksik)]
     K = _genis(isy, "HGDG_KAPANIS")
     R = K.pct_change(fill_method=None)
     R = R.where(R.abs() <= asiri)

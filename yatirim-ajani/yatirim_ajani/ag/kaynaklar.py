@@ -57,6 +57,25 @@ def _yaz(df: pd.DataFrame, yol: Path) -> int:
     return int(len(df))
 
 
+def _yaz_koruyarak(df: pd.DataFrame, yol: Path, anahtar: list[str]) -> dict:
+    """Yeni çekimi var olan dosyayla birleştirerek yazar: aynı anahtarlı satırda yeni değer geçerlidir; yeni çekimde hiç gelmeyen
+    satırlar (kaynağın boş yanıt verdiği hisseler) eski dosyadan korunur. Yarım kalan bir çekim eldeki paneli silmesin diye."""
+    korunan = 0
+    if yol.exists():
+        try:
+            eski = pd.read_csv(yol)
+        except Exception:  # noqa: BLE001
+            eski = pd.DataFrame()
+        if not eski.empty and all(k in eski.columns for k in anahtar) and all(k in df.columns for k in anahtar):
+            df = df.copy()
+            for k in anahtar:
+                eski[k], df[k] = eski[k].astype(str), df[k].astype(str)
+            if "hisse" in anahtar:
+                korunan = len(set(eski["hisse"]) - set(df["hisse"]))
+            df = pd.concat([eski, df], ignore_index=True).drop_duplicates(anahtar, keep="last").sort_values(anahtar, kind="stable")
+    return {"yazilan_satir": _yaz(df, yol), "eski_dosyadan_korunan_hisse": int(korunan)}
+
+
 # --- TradingView ------------------------------------------------------------------------------
 def _tv_iste(kolonlar: list[str], markets: bool = True) -> requests.Response:
     govde: dict[str, Any] = {"columns": kolonlar, "range": [0, 5000], "options": {"lang": "tr"}, "sort": {"sortBy": "name", "sortOrder": "asc"},
@@ -157,6 +176,15 @@ def isy_panel(hisseler: list[str], bas: date, bit: date, paralel: int = 6) -> tu
         return df.rename(columns={"HGDG_HS_KODU": "hisse"})
 
     parcalar, hata = _paralel(tek, hisseler, paralel, "isy")
+    if hata:  # kaynak bir süre sonra boş yanıt vermeye başlayabiliyor: bekleyip daha yavaş yeniden dene
+        time.sleep(30)
+        p2, h2 = _paralel(tek, sorted(hata), 2, "isy-2")
+        parcalar += p2
+        if h2 and len(h2) < 0.9 * len(hata):  # ikinci tur işe yaradıysa bir tur daha
+            time.sleep(60)
+            p3, h2 = _paralel(tek, sorted(h2), 1, "isy-3")
+            parcalar += p3
+        hata = h2
     df = pd.concat(parcalar, ignore_index=True) if parcalar else pd.DataFrame()
     return df, {"hisse": int(df["hisse"].nunique()) if not df.empty else 0, "satir": int(len(df)), "hata_sayisi": len(hata), "hata_ornek": dict(list(hata.items())[:8])}
 
@@ -985,19 +1013,19 @@ def ag_veri_cek(klasor: str | Path, bas: date, bit: date | None = None, kaynakla
     def _yahoo() -> dict:
         df, r = gunluk_panel(liste, bas, paralel=min(paralel, 4))
         if not df.empty:
-            _yaz(df, klasor / "gunluk_panel.csv.gz")
+            r.update(_yaz_koruyarak(df, klasor / "gunluk_panel.csv.gz", ["hisse", "tarih"]))
         return r
 
     def _isy() -> dict:
         df, r = isy_panel(liste, bas, bit, paralel=paralel)
         if not df.empty:
-            _yaz(df, klasor / "isy_panel.csv.gz")
+            r.update(_yaz_koruyarak(df, klasor / "isy_panel.csv.gz", ["hisse", "tarih"]))
         return r
 
     def _mali() -> dict:
         df, r = mali_panel(liste, bas, bit, paralel=paralel)
         if not df.empty:
-            _yaz(df, klasor / "mali_panel.csv.gz")
+            r.update(_yaz_koruyarak(df, klasor / "mali_panel.csv.gz", ["hisse", "kod", "donem"]))
         return r
 
     def _seri() -> dict:

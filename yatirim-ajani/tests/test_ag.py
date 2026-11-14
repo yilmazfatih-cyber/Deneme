@@ -224,6 +224,43 @@ def test_panel_yukle_kucuk_veri(tmp_path):
     assert P.evren.at["AAAAA", "halka_aciklik"] == pytest.approx(0.3)
 
 
+def test_panel_yukle_yarim_son_gunu_atar(tmp_path):
+    """Son günün fiyatı hisselerin yarısından azı için çekilmişse o gün panele alınmaz."""
+    gun = pd.bdate_range("2024-01-02", periods=60)
+    rng = np.random.default_rng(11)
+    kodlar = ["AAAAA", "BBBBB", "CCCCC", "DDDDD"]
+    isy, yh = [], []
+    for h in kodlar:
+        k = 10 * np.exp(np.cumsum(rng.normal(0, 0.01, len(gun))))
+        for i, (t, p) in enumerate(zip(gun, k)):
+            if i == len(gun) - 1 and h != "AAAAA":
+                continue  # son gün yalnız bir hissede var
+            isy.append({"hisse": h, "HGDG_KAPANIS": p, "HGDG_AOF": p, "HGDG_HACIM": 1e7, "END_DEGER": 10000.0, "DOLAR_BAZLI_FIYAT": p / 30, "PD": p * 1e8, "HAO_PD": p * 3e7, "tarih": t.strftime("%Y-%m-%d")})
+            yh.append({"hisse": h, "tarih": t.strftime("%Y-%m-%d"), "acilis": p * 0.995, "yuksek": p * 1.01, "dusuk": p * 0.99, "kapanis": p})
+    pd.DataFrame(isy).to_csv(tmp_path / "isy_panel.csv.gz", index=False, compression="gzip")
+    pd.DataFrame(yh).to_csv(tmp_path / "gunluk_panel.csv.gz", index=False, compression="gzip")
+    pd.DataFrame({"hisse": kodlar, "type": "stock", "description": kodlar, "sector": "Finance", "market_cap_basic": 1e9, "float_shares_percent_current": 30.0,
+                  "ipo_offer_date": 1.7e9, "indexes": [None] * 4}).to_csv(tmp_path / "tv_tarama.csv", index=False)  # fmt: skip
+    P = panel_yukle(tmp_path, min_gun=30)
+    assert P.R.shape == (59, 4) and P.R.index[-1] == gun[-2]
+    assert P.R.iloc[-1].notna().all()
+
+
+def test_yaz_koruyarak_yarim_cekimde_eski_satirlari_korur(tmp_path):
+    """Yeni çekim yalnız bir hisseyi getirdiyse öbür hisselerin satırları silinmez; aynı anahtarda yeni değer geçerlidir."""
+    from yatirim_ajani.ag.kaynaklar import _yaz_koruyarak
+
+    yol = tmp_path / "isy_panel.csv.gz"
+    eski = pd.DataFrame({"hisse": ["AAAAA", "AAAAA", "BBBBB", "CCCCC"], "tarih": ["2026-11-11", "2026-11-12", "2026-11-12", "2026-11-12"], "HGDG_KAPANIS": [10.0, 11.0, 20.0, 30.0]})
+    assert _yaz_koruyarak(eski, yol, ["hisse", "tarih"]) == {"yazilan_satir": 4, "eski_dosyadan_korunan_hisse": 0}
+    yeni = pd.DataFrame({"hisse": ["AAAAA", "AAAAA"], "tarih": ["2026-11-12", "2026-11-13"], "HGDG_KAPANIS": [11.5, 12.0]})
+    r = _yaz_koruyarak(yeni, yol, ["hisse", "tarih"])
+    d = pd.read_csv(yol)
+    assert r == {"yazilan_satir": 5, "eski_dosyadan_korunan_hisse": 2}
+    assert set(d["hisse"]) == {"AAAAA", "BBBBB", "CCCCC"}
+    assert d[(d["hisse"] == "AAAAA") & (d["tarih"] == "2026-11-12")]["HGDG_KAPANIS"].iloc[0] == pytest.approx(11.5)
+
+
 def test_rapor_bicimleri_ve_bos_sonuc():
     assert y(0.0234) == "+%2,3" and y(-0.2, 0) == "−%20" and y(-0.00001, 2) == "%0,00" and y(None) == "-"
     assert s(-0.14) == "−0,14" and s(-0.0001) == "0,00"
