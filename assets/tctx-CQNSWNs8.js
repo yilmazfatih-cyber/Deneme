@@ -1,0 +1,1 @@
+function e(e){return`${e.row},${e.rank},${e.rowId},${e.trackId},,,,,,,${e.entityId},`}function t(e){let t=e.indexOf(`:`);return t<=0?null:{kind:e.slice(0,t),id:e.slice(t+1)}}var n=e=>`Video:${e}`;export{t as n,n as r,e as t};
