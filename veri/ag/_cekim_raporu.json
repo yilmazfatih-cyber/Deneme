@@ -1,5 +1,5 @@
 {
- "zaman": "2026-11-13T16:17",
+ "zaman": "2026-11-14T13:53",
  "rapor": {
   "tv": {
    "satir": 649,
@@ -156,7 +156,7 @@
    "zaman": "2026-11-12T11:18"
   },
   "_toplam": {
-   "sure_dk": 3.9,
+   "sure_dk": 0.1,
    "hisse": 623
   },
   "kesif": {
@@ -1109,35 +1109,35 @@
   },
   "kap_liste": {
    "liste": {
-    "ham_satir": 101076,
-    "en_buyuk_pencere": 513,
-    "yanitsiz_ilk_tur": 10,
+    "ham_satir": 634,
+    "en_buyuk_pencere": 337,
+    "yanitsiz_ilk_tur": 0,
     "yanitsiz_pencere": [],
-    "en_eski_gun": "2024-01-01",
+    "en_eski_gun": "2026-11-10",
     "durum": {
-     "200": 524,
-     "429": 50,
-     "ornek_429": ""
+     "200": 3
     },
-    "sure_dk": 52.0,
-    "satir": 20558,
+    "sure_dk": 0.1,
+    "satir": 254,
     "konu": {
-     "Payların Geri Alınmasına İlişkin Bildirim": 6934,
-     "Pay Alım Satım Bildirimi": 6156,
-     "Kar Payı Dağıtım İşlemlerine İlişkin Bildirim": 3853,
-     "Sermaye Artırımı - Azaltımı İşlemlerine İlişkin Bildirim": 2760,
-     "Birleşme İşlemlerine İlişkin Bildirim": 396,
-     "Halka Arz İşlemlerinde Sermaye Piyasası Aracının % 5 inden Fazlasını Satın Alanlara İlişkin Bildirim": 166,
-     "Geri Alınan Payların Elden Çıkarılması": 133,
-     "Sermaye Artırımı veya Azaltımı Bildirimi": 92,
-     "Kar Payı Bildirimi": 31,
-     "Kar Payı Avansı Ödemesi İşlemlerine İlişkin Bildirim": 25,
-     "Fon Kurucusu Tarafından Yapılan Pay Alım Satım Bildirimi": 10,
-     "Birleşmeye İlişkin Bildirim": 2
+     "Payların Geri Alınmasına İlişkin Bildirim": 158,
+     "Pay Alım Satım Bildirimi": 80,
+     "Kar Payı Dağıtım İşlemlerine İlişkin Bildirim": 7,
+     "Fon Kurucusu Tarafından Yapılan Pay Alım Satım Bildirimi": 2,
+     "Sermaye Artırımı veya Azaltımı Bildirimi": 2,
+     "Sermaye Artırımı - Azaltımı İşlemlerine İlişkin Bildirim": 2,
+     "Birleşme İşlemlerine İlişkin Bildirim": 1,
+     "Geri Alınan Payların Elden Çıkarılması": 1,
+     "Halka Arz İşlemlerinde Sermaye Piyasası Aracının % 5 inden Fazlasını Satın Alanlara İlişkin Bildirim": 1
     }
    },
-   "sure_sn": 3119.5,
-   "zaman": "2026-11-13T12:25"
+   "artimli": {
+    "baslangic": "2026-11-10",
+    "eski_satir": 20558,
+    "toplam_satir": 20594
+   },
+   "sure_sn": 6.8,
+   "zaman": "2026-11-14T13:53"
   },
   "kap_detay": {
    "aday": {
