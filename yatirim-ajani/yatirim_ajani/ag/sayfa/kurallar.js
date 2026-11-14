@@ -119,6 +119,7 @@ function gorunumKurallar(kok) {
     const tarihKisa = t => { const m = /^(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{2}:\d{2}))?/.exec(t || ''); return m ? `${Number(m[3])} ${AD.ay[Number(m[2]) - 1]}${m[4] ? ' ' + m[4] : ''}` : ''; };
     const adaylar = Object.values(TR.aday || {}).flat();
     const kacinSet = new Set(Object.values(TR.kacin).flat().map(x => x[0]));
+    const gunFarki = Math.round((new Date(String(TR.bildirim_son || '').slice(0, 10)) - new Date(TR.fiyat_gunu)) / 864e5) || 0;
     kok.append(h('div', { class: 'grid' },
       sekil({ baslik: 'Kuralların güncel çıktısı', alt: `${tarihKisa(TR.fiyat_gunu)} kapanışı ve ${tarihKisa(TR.bildirim_son)} saatine kadar gelen KAP bildirimleriyle. Tarama çıktısıdır; emir ya da öneri değildir.` },
         h('div', { class: 'sayilar' }, sayi(tam(al(TR, 'ozet', 'kacin_hisse')), 'hisse en az bir kaçınma kuralına takılıyor'), sayi(tam(adaylar.length), 'ilk geri alım bildirimi (son üç işlem günü)')),
@@ -131,6 +132,7 @@ function gorunumKurallar(kok) {
         Object.entries(TR.kacin).filter(([, v]) => v.length).map(([neden, v]) => h('details', { class: 'ac' },
           h('summary', null, neden, h('small', { text: `${v.length} hisse` })),
           h('div', null, h('div', { class: 'cipler' }, v.map(x => h('span', { class: 'cip', title: `${tarihKisa(x[1])}${x[2] ? ' · ' + x[2] : ''}`, text: x[0] })))))),
+        gunFarki > 1 ? p(`**Fiyat verisi bildirim listesinden ${gunFarki} gün eski.** Arada geçen işlem günlerinin tavan, taban ve hacim sinyalleri listede yok; "henüz fiyatlanmadı" yazan adaylar o günlerde fiyatlanmış olabilir.`, 'okuma') : null,
         p('Bir hisse hem aday hem kaçınma listesinde olabilir; o durumda kaçınma önce gelir. Liste, fiyat verisi ve bildirim listesi yenilenip analiz yeniden çalıştırıldığında güncellenir.', 'alt'))));
   }
 
