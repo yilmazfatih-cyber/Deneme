@@ -1,5 +1,5 @@
 {
- "zaman": "2026-11-14T13:55",
+ "zaman": "2026-11-14T14:12",
  "rapor": {
   "tv": {
    "satir": 649,
@@ -156,7 +156,7 @@
    "zaman": "2026-11-12T11:18"
   },
   "_toplam": {
-   "sure_dk": 0.2,
+   "sure_dk": 13.9,
    "hisse": 623
   },
   "kesif": {
@@ -259,13 +259,13 @@
   },
   "yahoo": {
    "hisse": 621,
-   "satir": 411198,
+   "satir": 411820,
    "hata": {
     "ALTIN": "boş",
     "DMLKT": "boş"
    },
-   "sure_sn": 46.3,
-   "zaman": "2026-11-12T21:01"
+   "sure_sn": 56.2,
+   "zaman": "2026-11-14T13:59"
   },
   "hisse_saatlik": {
    "sembol": 251,
@@ -278,16 +278,21 @@
    "zaman": "2026-11-12T21:01"
   },
   "isy": {
-   "hisse": 620,
-   "satir": 413255,
-   "hata_sayisi": 3,
+   "hisse": 92,
+   "satir": 47441,
+   "hata_sayisi": 531,
    "hata_ornek": {
     "ALTIN": "boş",
-    "CITAS": "boş",
-    "DMLKT": "boş"
+    "ATATP": "boş",
+    "ATATR": "boş",
+    "ATEKS": "boş",
+    "ATLAS": "boş",
+    "ATSYH": "boş",
+    "AVGYO": "boş",
+    "AVHOL": "boş"
    },
-   "sure_sn": 827.4,
-   "zaman": "2026-11-12T21:15"
+   "sure_sn": 775.9,
+   "zaman": "2026-11-14T14:12"
   },
   "mali": {
    "hisse": 585,
