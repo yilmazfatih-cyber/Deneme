@@ -1,0 +1,284 @@
+{
+ "not": "ajan araştırması (web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "ALARK",
+   "sektor": null,
+   "baslangic": "2025-04-17",
+   "bitis": "2025-04-17",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Alarko Holding 2024 kârından hisse başına brüt 2,60 TL temettü ödedi",
+   "anlam": "Arama özetine göre 2024 hesap dönemi için brüt 2,60 TL (net 2,2507 TL) temettü 17 Nisan 2025'te ödendi; karar günü doğrulanmadı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.5,
+   "etiketler": [
+    "temettu",
+    "brut_2.60"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/alarko-holding-alark-yatirimcilarina-temettu-verecek/",
+    "https://www.borsagundem.com.tr/alarko-holding-2025-yili-kar-payi-kararini-acikladi"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 2.6,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ALARK",
+   "sektor": null,
+   "baslangic": "2025-07-08",
+   "bitis": "2025-07-08",
+   "kamuya_acilma": "2025-07-08 19:18",
+   "tur": "geri_alim",
+   "baslik": "Alarko Holding geri aldığı 18 milyon TL nominal payın iptali için SPK'ya başvurdu",
+   "anlam": "8 Temmuz 2025 KAP'ta geri alım programlarıyla alınan 18.000.000 TL nominal pay, nakit çıkışı olmadan sermaye azaltımıyla itfa edilmek üzere SPK'ya başvuruldu (435 milyon TL -> 417 milyon TL).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.65,
+   "etiketler": [
+    "geri_alim",
+    "sermaye_azaltimi",
+    "pay_iptali"
+   ],
+   "kaynaklar": [
+    "https://www.alarko.com.tr/media/wl5jazcy/diğer-pay-ihracı-iptaline-ilişkin-bildirim_08072025.pdf",
+    "https://www.hisse.net/haber/alarko-holding-2-milyar-tl-degerinde-hisseyi-piyasadan-cekti-75919"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 18000000,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ALARK",
+   "sektor": null,
+   "baslangic": "2025-10-24",
+   "bitis": "2025-10-24",
+   "kamuya_acilma": null,
+   "tur": "pay_satisi",
+   "baslik": "SPK, Alarko Holding'in Alarko Carrier'daki %10 payının borsada satışına onay verdi",
+   "anlam": "Satış izahnamesinin onayı 24 Ekim 2025'te KAP'a yansıdı (SPK bülteni 23 Ekim). Satışa konu pay 1.080.000 TL nominal, sermayenin %10'u; satışın gerçekleşip gerçekleşmediği doğrulanamadı.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.55,
+   "etiketler": [
+    "pay_satisi",
+    "Alarko_Carrier",
+    "SPK"
+   ],
+   "kaynaklar": [
+    "https://alarko.com.tr/media/wcjcekhp/approval-of-the-share-sale-information-memorandum_24102025.pdf",
+    "https://rotaborsa.com/?p=384148"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": 10,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ALARK",
+   "sektor": null,
+   "baslangic": "2025-10-31",
+   "bitis": "2025-10-31",
+   "kamuya_acilma": null,
+   "tur": "is_iliskisi",
+   "baslik": "Alarko'nun iştiraki Alfor Aviation 8 yolcu uçağının kargoya dönüşümü için sözleşme imzaladı",
+   "anlam": "31 Ekim 2025 KAP duyurusuna göre uluslararası bir şirketle 8 yolcu uçağını kargo uçağına çevirme sözleşmesi imzalandı; tutar açıklanmadı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.55,
+   "etiketler": [
+    "sozlesme",
+    "havacilik",
+    "Alfor"
+   ],
+   "kaynaklar": [
+    "https://rotaborsa.com/?p=373413",
+    "https://kap.org.tr/Bildirim/1428865"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ALARK",
+   "sektor": null,
+   "baslangic": "2025-11-26",
+   "bitis": "2025-11-26",
+   "kamuya_acilma": null,
+   "tur": "geri_alim",
+   "baslik": "SPK, Alarko Holding'in geri alınan payların itfasıyla sermaye azaltımını onayladı",
+   "anlam": "26 Kasım 2025 KAP'ta SPK onayı (bülten 25 Kasım) duyuruldu; sermaye 435 milyon TL'den 417 milyon TL'ye inecek, tescil Nisan 2026'da yapıldı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.65,
+   "etiketler": [
+    "sermaye_azaltimi",
+    "geri_alim",
+    "SPK"
+   ],
+   "kaynaklar": [
+    "https://www.alarko.com.tr/media/pnsj4f0b/approval-of-the-capital-markets-board-application-regarding-capital-reduction_26112025.pdf",
+    "https://paratic.com/alarko-holdingden-alark-sermaye-azaltimi-karari/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 18000000,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ALARK",
+   "sektor": null,
+   "baslangic": "2026-04-13",
+   "bitis": "2026-04-13",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Alarko Holding 2025 kârından hisse başına brüt 3,185 TL temettü dağıtacak",
+   "anlam": "Sermaye azaltımı nedeniyle temettü ilk açıklanan brüt 3,0532 TL'den 3,1850 TL'ye (net 2,7359 TL) revize edildi; toplam 1,328 milyar TL brüt, hak kullanım tarihi 4 Mayıs 2026. 13 Nisan 2026 genel kurul/ödeme bildirimi tarihi alındı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.6,
+   "etiketler": [
+    "temettu",
+    "brut_3.185",
+    "revize"
+   ],
+   "kaynaklar": [
+    "https://alarko.com.tr/media/py4ekp3t/notification-regarding-dividend-payment_13042026.pdf",
+    "https://paratic.com/alarko-holding-alark-temettu-tutarini-revize-etti/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 3.185,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ALARK",
+   "sektor": null,
+   "baslangic": "2026-06-19",
+   "bitis": "2026-06-19",
+   "kamuya_acilma": null,
+   "tur": "is_iliskisi",
+   "baslik": "Alarko Enerji, Tuzla'daki 23.570 m² arsayı 1,737 milyar TL'ye satmak için vaat sözleşmesi imzaladı",
+   "anlam": "Bağlı ortaklık Alarko Enerji, vadeli ödemeli gayrimenkul satış vaadi sözleşmesiyle 1.737.348.750 TL (KDV hariç) bedeli kabul etti; alıcı bir yapı kooperatifi. Kaynaklarda 10-19 Haziran arası tarih farkı var, 19 Haziran alındı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.55,
+   "etiketler": [
+    "gayrimenkul_satisi",
+    "Alarko_Enerji",
+    "Tuzla"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/borsa/alarko-enerjinin-tuzladaki-arsasi-174-milyar-tlye-satildi-h31916",
+    "https://paratic.com/alarko-enerjinin-tuzladaki-tasinmaz-satisinda-imzalar-atildi/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 1737348750,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ALARK",
+   "sektor": null,
+   "baslangic": "2026-08-07",
+   "bitis": "2026-08-07",
+   "kamuya_acilma": null,
+   "tur": "birlesme_devralma",
+   "baslik": "Alarko Holding, Carrier'ın Alarko Carrier'daki %42,03 payını 16,8 milyon USD'ye satın alıyor",
+   "anlam": "7 Ağustos 2026 sözleşmesine göre pay başına 3,70 USD, toplam 16.811.593,52 USD; Holding'in payı %84,06'ya çıkacak ve zorunlu pay alım teklifi gerekecek. Gebze'de Carrier markalı üretim Şubat 2027'ye kadar bitirilecek. Rekabet onayına tabi.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.7,
+   "etiketler": [
+    "satin_alma",
+    "Alarko_Carrier",
+    "pay_alim_teklifi"
+   ],
+   "kaynaklar": [
+    "https://www.bloomberght.com/alarko-carrierda-ortaklik-paylari-degisiyor-3785057",
+    "https://paratic.com/alcarda-yuzde-42-03luk-payin-satisi-icin-spkya-basvuru/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 16811593.52,
+    "para_birimi": "USD",
+    "oran": 42.03,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

@@ -1,0 +1,144 @@
+{
+ "not": "ajan araştırması (web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "ALBRK",
+   "sektor": null,
+   "baslangic": "2025-04-15",
+   "bitis": "2025-04-15",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Albaraka Türk 2024 kârından hisse başına brüt 0,1724 TL temettü ödedi",
+   "anlam": "Arama özetine göre 4,31 milyar TL kârdan hisse başına brüt 0,172418 TL nakit temettü 15 Nisan 2025'te dağıtıldı; karar günü doğrulanmadı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.55,
+   "etiketler": [
+    "temettu",
+    "brut_0.1724"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/albaraka-turk-albrk-2025-temettu-kararini-acikladi/",
+    "https://www.yatirimx.com.tr/sirket-haberleri/albaraka-turk-2025-temettu-karari-albrk-ne-kadar-kar-payi-odeyecek/18782"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 0.172418,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ALBRK",
+   "sektor": null,
+   "baslangic": "2026-02-15",
+   "bitis": "2026-02-15",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Albaraka Türk 2025 yılını yaklaşık 15 milyar TL net kârla kapattı",
+   "anlam": "Foreks/CNBC-e haberlerine göre 2025 net kârı yaklaşık 15 milyar TL (yatırımcı sunumunda 15,475 milyar TL; 2024: 8,94 milyar TL). Foreks haberinin tarihi 15 Şubat 2026; tam KAP günü ve beklenti doğrulanmadı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.5,
+   "etiketler": [
+    "bilanco",
+    "2025_yillik",
+    "net_kar"
+   ],
+   "kaynaklar": [
+    "https://www.foreks.com/haber/detay/699219342663b328fe326643/PICNEWS/tr/albaraka-turk-2025-te-15-milyar-lira-kar-etti-15-02-26/",
+    "https://www.cnbce.com/haberler/albaraka-turkten-2025te-15-milyar-lira-net-kar-h25013"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 15000000000,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ALBRK",
+   "sektor": null,
+   "baslangic": "2026-03-27",
+   "bitis": "2026-03-27",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Albaraka Türk genel kurulu 2025 kârından brüt 0,2618 TL temettüyü onayladı",
+   "anlam": "27 Mart 2026 genel kurulunda toplam 654,5 milyon TL brüt nakit temettü (pay başına brüt 0,261802 TL, net 0,2225 TL) onaylandı; ödeme 15-17 Nisan 2026.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.6,
+   "etiketler": [
+    "temettu",
+    "brut_0.2618"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/albaraka-albrk-temettu-kararini-acikladi-genel-kurula-sunacak/",
+    "https://www.yatirimx.com.tr/sirket-haberleri/albaraka-turk-2025-temettu-karari-albrk-ne-kadar-kar-payi-odeyecek/18782"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 654505000,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": 0.261802,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ALBRK",
+   "sektor": null,
+   "baslangic": "2026-08-06",
+   "bitis": "2026-08-06",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Albaraka Türk 2Ç26 net kârı 2,6 milyar TL ile tahminin üzerinde geldi",
+   "anlam": "Paratic'e göre bilanço 6 Ağustos 2026'da KAP'a girdi (Capital haberi 7 Ağustos). 2Ç26 net kârı ~2,6 milyar TL; tek aracı kurum (Şeker Yatırım) tahmini 1,9 milyar TL. İlk yarı konsolide net kâr ~4 milyar TL, geçen yılın belirgin altında.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.5,
+   "etiketler": [
+    "bilanco",
+    "2Ç26",
+    "beklenti_ustu"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/albaraka-turk-2026-ikinci-ceyrek-bilancosu-aciklandi/",
+    "https://www.capital.com.tr/finans/bankacilik/albaraka-turkten-2-ceyrek-bilanco-degerlendirmesi-var",
+    "https://paratic.com/albaraka-2c26-bilanco-beklentisi-net-kar-ne-kadar-olacak/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 2600000000,
+    "beklenti": 1900000000,
+    "sure_ay": null
+   }
+  }
+ ]
+}

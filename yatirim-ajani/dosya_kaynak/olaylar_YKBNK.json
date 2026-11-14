@@ -34,6 +34,249 @@
     "beklenti": null,
     "sure_ay": null
    }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "YKBNK",
+   "sektor": null,
+   "baslangic": "2025-02-27",
+   "bitis": "2025-02-27",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Yapı Kredi 2024 kârından nakit temettü dağıtmama kararı aldı; 28,96 milyar TL yedeğe aktarılacak",
+   "anlam": "27 Şubat 2025 kâr dağıtım tablosuna göre nakit temettü önerilmedi, kalan kâr olağanüstü yedeğe aktarıldı; genel kurul da onayladı. İş Yatırım ~1,02 TL tahmin etmişti.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.55,
+   "etiketler": [
+    "temettu",
+    "dagitim_yok"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/yapi-ve-kredi-bankasi-ykbnk-2025te-temettu-dagitacak-mi/",
+    "https://www.finansopia.com/kap-bildirimleri/yapi-kredi-ykbnk-2025-yili-temettu-kararini-acikladi/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 0.0,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "YKBNK",
+   "sektor": null,
+   "baslangic": "2025-07-30",
+   "bitis": "2025-07-30",
+   "kamuya_acilma": null,
+   "tur": "derecelendirme",
+   "baslik": "Moody's Yapı Kredi'nin kredi notunu B1'den Ba3'e yükseltti, görünümü durağan yaptı",
+   "anlam": "Banka açıklamasına göre 30 Temmuz 2025'te not artırımı, Türkiye'nin 25 Temmuz'da Ba3'e yükseltilmesinin ardından geldi; görünüm pozitiften durağana indi.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.7,
+   "etiketler": [
+    "kredi_notu",
+    "Moodys",
+    "Ba3"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/moodys-yapi-kredinin-notunu-yukseltti-gorunumu-dusurdu/",
+    "https://www.finansopia.com/?p=187722"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "YKBNK",
+   "sektor": null,
+   "baslangic": "2025-11-01",
+   "bitis": "2025-11-01",
+   "kamuya_acilma": null,
+   "tur": "borclanma",
+   "baslik": "Yapı Kredi 54 bankanın katılımıyla yaklaşık 1,274 milyar USD sendikasyon kredisi sağladı",
+   "anlam": "Yılın ikinci yarısında 24 ülkeden 54 banka; 367, 734 ve ilk kez 1101 günlük dilimler. Kesin duyuru günü doğrulanamadı (Kasım 2025 olabilir); tarih kesin değildir.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.35,
+   "etiketler": [
+    "sendikasyon",
+    "3_yil_vade"
+   ],
+   "kaynaklar": [
+    "https://www.bloomberght.com/yapi-kredi-den-1-274-milyar-dolarlik-sendikasyon-kredisi-3761140",
+    "https://www.cnbce.com/sirket-haberleri/yapi-krediden-1274-milyar-dolarlik-sendikasyon-kredisi-h19427"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 1274000000,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "YKBNK",
+   "sektor": null,
+   "baslangic": "2026-02-05",
+   "bitis": "2026-02-05",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Yapı Kredi 4Ç25 net kârı 9,28 milyar TL ile beklentinin üzerinde, 2025 net kârı 47,09 milyar TL",
+   "anlam": "5 Şubat 2026'da açıklandı: 4Ç25 net kâr 9.280.284.000 TL, Matriks ortalama beklentisi 8,21 milyar TL; yıllık 47,09 milyar TL ise ~50,4 milyar TL konsensüsün biraz altında. Yıllık artış %62.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.75,
+   "etiketler": [
+    "bilanco",
+    "4Ç25",
+    "beklenti_ustu"
+   ],
+   "kaynaklar": [
+    "https://www.bloomberght.com/yapi-kredi-den-beklenti-uzeri-net-kr-3768312",
+    "https://www.borsagundem.com.tr/yapi-kredi-2025-yili-4-ceyrek-bilancosunu-acikladi",
+    "https://www.finansopia.com/kap-bildirimleri/yapi-kredi-ykbnk-2025-4-ceyrek-bilancosunu-acikladi/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 9280284000,
+    "beklenti": 8207900000,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "YKBNK",
+   "sektor": null,
+   "baslangic": "2026-03-12",
+   "bitis": "2026-03-12",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Yapı Kredi 2025 kârının tamamını yedeğe aktarıyor: nakit temettü yok",
+   "anlam": "Kâr dağıtım özetine göre 277 milyon TL özel yedek ve 46,81 milyar TL olağanüstü yedek ayrıldı; genel kurul 12 Mart 2026. Karar tablosu ilk olarak Şubat başında açıklanmış olabilir, tarih kesin değil.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.45,
+   "etiketler": [
+    "temettu",
+    "dagitim_yok"
+   ],
+   "kaynaklar": [
+    "https://www.finansopia.com/kap-bildirimleri/yapi-kredi-ykbnk-2025-4-ceyrek-bilancosunu-acikladi/",
+    "https://www.qnbinvest.com.tr/investodak/qnbarastirma/yapi-kredi-ykbnk-4c25-bilanco-degerlendirmesi"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 0.0,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "YKBNK",
+   "sektor": null,
+   "baslangic": "2026-07-29",
+   "bitis": "2026-07-29",
+   "kamuya_acilma": null,
+   "tur": "birlesme_devralma",
+   "baslik": "Yapı Kredi, Yapı Kredi Portföy'ü Azimut'a yaklaşık 16,4 milyar TL'ye satıyor",
+   "anlam": "29 Temmuz 2026 KAP: banka ve Yapı Kredi Yatırım'ın payları AZ International Holdings'e devrediliyor; peşin azami 13,98 milyar TL, 2026 performansına bağlı ertelenmiş azami 2,42 milyar TL, 15 yıllık münhasır dağıtım anlaşması. İşlem 2026 içinde tamamlanacak.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.75,
+   "etiketler": [
+    "iştirak_satisi",
+    "Azimut",
+    "portfoy_yonetimi"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/borsa/yapi-krediden-164-milyar-tllik-dev-satis-o-istirak-devrediliyor-h34010",
+    "https://halktv.com.tr/ekonomi/finans-devi-yapi-kredi-portfoy-satildi-1045511h",
+    "https://www.karar.com/ekonomi-haberleri/yapi-kredi-portfoy-satildi-iste-yeni-sahibi-ve-satis-bedeli-2062371"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 16400000000,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": 180
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "YKBNK",
+   "sektor": null,
+   "baslangic": "2026-11-10",
+   "bitis": "2026-11-10",
+   "kamuya_acilma": null,
+   "tur": "borclanma",
+   "baslik": "Yapı Kredi 40 kurumla yaklaşık 933 milyon USD'lik sendikasyon kredisi imzaladı",
+   "anlam": "4 dilimli kredi (367 ve 734 gün; USD SOFR+%1,25/%1,75, EUR Euribor+%1,00/%1,45), 18 ülkeden 40 kurum. Haberler 10-11 Kasım 2026 tarihli; Haziran 2026'da ~1,1 milyar USD'lik başka bir sendikasyon da duyurulmuştu (tarihi doğrulanmadı).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.65,
+   "etiketler": [
+    "sendikasyon",
+    "933_milyon_usd"
+   ],
+   "kaynaklar": [
+    "https://www.uscmarkets.com/haberler/ykbnk-933-milyon-dolar-sendikasyon-kredisi-kasim-2026",
+    "https://www.bloomberght.com/yapi-kredi-den-933-milyon-dolarlik-sendikasyon-kredisi-3794134"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 933000000,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
   }
  ]
 }

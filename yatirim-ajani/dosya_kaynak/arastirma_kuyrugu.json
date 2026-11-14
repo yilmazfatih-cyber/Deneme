@@ -1,10 +1,6 @@
 {
  "aciklama": "Gece araştırma kuyruğu: her gece sıradaki hisseler için 2024-01→bugün olay çizelgesi (DOSYA.md bölüm 6). 'derinlestir' = olay sayısı az olanlar.",
  "bekleyen": [
-  "AKSA",
-  "ALARK",
-  "ALBRK",
-  "ANHYT",
   "AYGAZ",
   "BINHO",
   "BTCIM",
@@ -33,8 +29,6 @@
   "TTRAK"
  ],
  "derinlestir": [
-  "YKBNK",
-  "ODAS",
   "AKBNK",
   "AHGAZ",
   "ISCTR",
@@ -43,7 +37,8 @@
   "GARAN",
   "AKSEN",
   "HEKTS",
-  "DOAS"
+  "DOAS",
+  "ANHYT"
  ],
  "biten": [
   "AEFES",
@@ -89,7 +84,11 @@
   "TUPRS",
   "ULKER",
   "VAKBN",
-  "YKBNK"
+  "YKBNK",
+  "AKSA",
+  "ALARK",
+  "ALBRK",
+  "ANHYT"
  ],
- "guncelleme": "2026-11-12"
+ "guncelleme": "2026-11-14"
 }

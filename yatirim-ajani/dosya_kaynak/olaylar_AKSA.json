@@ -1,0 +1,315 @@
+{
+ "not": "ajan araştırması (web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "AKSA",
+   "sektor": null,
+   "baslangic": "2024-08-01",
+   "bitis": "2024-08-01",
+   "kamuya_acilma": null,
+   "tur": "bedelsiz",
+   "baslik": "Aksa Akrilik sermayesini %1100 bedelsizle 323,75 milyon TL'den 3,885 milyar TL'ye çıkardı",
+   "anlam": "Arama özetlerine göre %1100 oranlı bedelsiz artırım 1 Ağustos 2024'te tescil edildi (100 pay 1.200 pay oldu). Tarih tescil günüdür; ilk KAP duyuru günü doğrulanamadı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.5,
+   "etiketler": [
+    "bedelsiz",
+    "sermaye_artirimi"
+   ],
+   "kaynaklar": [
+    "https://fintables.com/sirketler/AKSA/sermaye-artirimlari-temettuler",
+    "https://paratic.com/dikkat-borsada-3-temettu-2-bedelsiz-gunu/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": 1100,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AKSA",
+   "sektor": null,
+   "baslangic": "2024-11-01",
+   "bitis": "2024-11-01",
+   "kamuya_acilma": null,
+   "tur": "birlesme_devralma",
+   "baslik": "Aksa Akrilik, Epsilon Kompozit'in %54'ünü yaklaşık 22,3 milyon USD'ye satın almak üzere anlaşma yaptı",
+   "anlam": "BTB Havacılık paylarının 20,237 milyon USD ve NDÇ Holding'den %5 payın yaklaşık 2,065 milyon USD'ye alınmasıyla toplam %54 pay. Kesin duyuru günü doğrulanamadı: kaynaklarda Kasım 2024 - Ocak 2025 arası farklı tarihler var, Rekabet Kurulu onayı 26 Aralık 2024; tarih kesin değildir.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.4,
+   "etiketler": [
+    "satin_alma",
+    "havacilik",
+    "Epsilon"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/aksadan-havacilik-sektorune-yonelik-yeni-yatirim-duyurusu/",
+    "https://asset.aksa.com/media-data/docs/2025/08/01/epsilon-kompozitin-54-hissesinin-aksa-akrilik-tarafindan-satin-alinmasina-iliskin-anlasma-psy2ousz.pdf"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 22300000,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AKSA",
+   "sektor": null,
+   "baslangic": "2025-05-21",
+   "bitis": "2025-05-21",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Aksa Akrilik hisse başına brüt 0,48 TL nakit temettü ödemesine başladı",
+   "anlam": "Arama özetine göre brüt 0,48 TL (net 0,408 TL) temettü 21 Mayıs 2025'ten itibaren ödendi; hak sahipliği 20 Mayıs kapanışına göre. Toplam tutar kaynaklarda farklı; karar günü doğrulanmadı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.6,
+   "etiketler": [
+    "temettu",
+    "brut_0.48"
+   ],
+   "kaynaklar": [
+    "https://rotaborsa.com/aksa-akrilik-aksa-2025-yili-temettu-kararini-acikladi/",
+    "https://www.capital.com.tr/haberler/tum-haberler/aksa-akrilikten-aksa-temettu-karari"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 0.48,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AKSA",
+   "sektor": null,
+   "baslangic": "2025-06-02",
+   "bitis": "2025-06-02",
+   "kamuya_acilma": null,
+   "tur": "birlesme_devralma",
+   "baslik": "Aksa Akrilik, DowAksa'nın kalan %50 payını 125 milyon USD'ye devralmak için bağlayıcı sözleşme imzaladı",
+   "anlam": "2 Haziran 2025 KAP duyurusuna göre Dow Europe Holding'den DowAksa'nın kalan %50'si 125 milyon USD bedelle alınacak; birden çok haber kaynağı tutarı ve tarihi doğruluyor.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.75,
+   "etiketler": [
+    "satin_alma",
+    "DowAksa",
+    "karbon_elyaf"
+   ],
+   "kaynaklar": [
+    "https://www.capital.com.tr/haberler/tum-haberler/aksa-akrilikten-125-milyon-dolarlik-satin-alma-aciklamasi",
+    "https://www.paradergi.com.tr/is-dunyasi-kulis/2025/06/03/aksa-akrilik-dowaksanin-tamamini-satin-aliyor",
+    "https://www.cnbce.com/borsa/aksa-akrilik-dowaksanin-kalan-yuzde-50sini-125-milyon-dolara-satin-aliyor-h13450"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 125000000,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AKSA",
+   "sektor": null,
+   "baslangic": "2025-08-08",
+   "bitis": "2025-08-08",
+   "kamuya_acilma": null,
+   "tur": "birlesme_devralma",
+   "baslik": "Aksa Akrilik DowAksa devrini 125 milyon USD ödemeyle tamamladı, şirket tamamen Aksa'nın oldu",
+   "anlam": "8 Ağustos 2025 tarihli KAP bildirimine göre 125 milyon USD ödendi ve DowAksa sermayesinin tamamı Aksa'ya geçti (şirket sonra Aksa Carbon adıyla devam edecek). Haberler 11 Ağustos'ta çıktı.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.6,
+   "etiketler": [
+    "tamamlama",
+    "DowAksa",
+    "Aksa_Carbon"
+   ],
+   "kaynaklar": [
+    "https://www.paradergi.com.tr/is-dunyasi-kulis/2025/08/11/dowaksa-faaliyetlerine-aksa-carbon-olarak-devam-edecek",
+    "https://www.ekonomim.com/sirketler/rekabet-kurulu-onay-verdi-aksadan-125-milyon-dolarlik-devralma-hamlesi-haberi-828589"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 125000000,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AKSA",
+   "sektor": null,
+   "baslangic": "2026-03-31",
+   "bitis": "2026-03-31",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Aksa Akrilik 2025 kârından hisse başına brüt 0,58 TL temettü kararı aldı",
+   "anlam": "Arama özetlerine göre net 0,493 TL (brüt 0,58 TL) nakit temettü; genel kurul 31 Mart 2026, ödeme 7 Nisan 2026'da başladı. Karar günü olarak genel kurul tarihi alındı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.5,
+   "etiketler": [
+    "temettu",
+    "brut_0.58"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/borsa/aksada-temettu-sonrasi-fiyat-duzenlemesi-belli-oldu-h27799",
+    "https://paratic.com/aksa-akrilik-aksa-2025te-temettu-verecek-mi/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 0.58,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AKSA",
+   "sektor": null,
+   "baslangic": "2026-05-07",
+   "bitis": "2026-05-07",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Aksa Akrilik 1Ç26 net kârı beklentinin çok üzerinde geldi",
+   "anlam": "7 Mayıs 2026 KAP bilançosu; Ak Yatırım'a göre net kâr piyasa beklentisinin çok üzerinde, FAVÖK ise beklentinin altında kaldı. Haber yıllık %133 kâr artışı yazıyor; net kâr ve beklenti rakamı doğrulanmadı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.45,
+   "etiketler": [
+    "bilanco",
+    "1Ç26",
+    "beklenti_ustu"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/borsa/aksa-akrilik-aksa-2026-yili-1-ceyrek-bilancosunu-acikladi-h29639"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AKSA",
+   "sektor": null,
+   "baslangic": "2026-09-24",
+   "bitis": "2026-09-24",
+   "kamuya_acilma": null,
+   "tur": "yatirim",
+   "baslik": "Aksa Kompozit Tunus'ta yaklaşık 5 milyon USD'lik tesis yatırımı yapacak",
+   "anlam": "Aksa Akrilik'in %54 paylı bağlı ortaklığı Aksa Kompozit'in Tunus yatırımı, Foreks haberine göre 24 Eylül 2026'da duyuruldu; tarih haber adresinden çıkarıldı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.5,
+   "etiketler": [
+    "yatirim",
+    "Tunus",
+    "Aksa_Kompozit"
+   ],
+   "kaynaklar": [
+    "https://www.foreks.com/haber/detay/6ab544cd95016b5817e5fbf1/FRKS/tr/aksa-akrilik-in-bagli-ortakligi-aksa-kompozit-tunus-ta-5-milyon-dolar-mertebesindeki-tesis-yatirimi-yapacak-24-09-26/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 5000000,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AKSA",
+   "sektor": null,
+   "baslangic": "2026-11-04",
+   "bitis": "2026-11-04",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Aksa Akrilik 9 aylık net kârı geçen yılın altında kaldı: 2,53 milyar TL",
+   "anlam": "4 Kasım 2026 KAP bilançosuna göre 9 aylık net dönem kârı 2.531.940.000 TL (2025 aynı dönem 3.349.095.000 TL). Net kâr alanı 9 aylık toplamdır; 3Ç tek başına net kâr ve beklenti doğrulanmadı.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.5,
+   "etiketler": [
+    "bilanco",
+    "3Ç26",
+    "9_aylik"
+   ],
+   "kaynaklar": [
+    "https://www.finansopia.com/kap-bildirimleri/aksa-akrilik-aksa-2026-yili-3-ceyrek-bilancosunu-acikladi/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 2531940000,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

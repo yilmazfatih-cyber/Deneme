@@ -35,6 +35,179 @@
     "beklenti": null,
     "sure_ay": null
    }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ODAS",
+   "sektor": null,
+   "baslangic": "2024-06-21",
+   "bitis": "2024-06-21",
+   "kamuya_acilma": null,
+   "tur": "pay_satisi",
+   "baslik": "Odaş, Çan2 Termik (CANTE) paylarının bir kısmını kurumsal yatırımcılara toptan sattı",
+   "anlam": "Haberlere göre 21 Haziran 2024'te 93 milyon adet pay 15,35 TL'den (sermayenin %9,91'i) ve 28 Haziran'da 596,9 milyon pay 2 TL'den satıldı; kaynaklar fiyat/adet eşleşmesinde çelişiyor, rakamlar kesin değil.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.4,
+   "etiketler": [
+    "pay_satisi",
+    "CANTE",
+    "toptan_satis"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/odas-can2-termik-paylarindaki-dev-satisi-duyurdu/",
+    "https://paratic.com/odas-cante-pay-satislarindan-3-milyar-tl-kaynak-sagladi/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ODAS",
+   "sektor": null,
+   "baslangic": "2024-10-07",
+   "bitis": "2024-10-07",
+   "kamuya_acilma": null,
+   "tur": "is_iliskisi",
+   "baslik": "Odaş ve Çan2 Termik, Akçansa ile yaklaşık 2 milyon ton uçucu kül satışı için iş birliği anlaşması imzaladı",
+   "anlam": "Çan2 santralinin ürettiği uçucu külün çimento üretiminde kullanılması öngörülüyor; tutar açıklanmadı. Tarih Foreks haberinin zaman damgasından (7 Ekim 2024) çıkarıldı, kesin değil.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.4,
+   "etiketler": [
+    "Akcansa",
+    "ucucu_kul",
+    "sozlesme"
+   ],
+   "kaynaklar": [
+    "https://www.foreks.com/haber/detay/67038970cc06f44b9ae445d3/FRKS/tr/odas-ve-akcansa-stratejik-is-birligi-yapti/",
+    "https://www.odas.com.tr/en/odas-news/odas-news/strategic-cooperation-between-odas-and-akcansa"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ODAS",
+   "sektor": null,
+   "baslangic": "2025-08-13",
+   "bitis": "2025-08-13",
+   "kamuya_acilma": null,
+   "tur": "pay_satisi",
+   "baslik": "Odaş'ın Çan2 Termik'teki 750 milyon paylık satışıyla payı %29,29'a geriledi",
+   "anlam": "Borsa İstanbul toptan satış pazarında 750 milyon nominal CANTE payı (%10,71) pay başına 2,10 TL'den satıldı; KAP/Borsa bildirimi 13 Ağustos 2025. Tutar 750 milyon x 2,10 hesabıyla ~1,575 milyar TL (hesaplama bizdendir).",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.55,
+   "etiketler": [
+    "pay_satisi",
+    "CANTE",
+    "toptan_satis"
+   ],
+   "kaynaklar": [
+    "https://rotaborsa.com/odas-elektrikten-odas-can2-termikte-cante-dev-hisse-satisi/",
+    "https://paratic.com/odas-can2-termik-paylarindaki-dev-satisi-duyurdu/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 1575000000,
+    "para_birimi": "TRY",
+    "oran": 10.71,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ODAS",
+   "sektor": null,
+   "baslangic": "2025-12-17",
+   "bitis": "2025-12-17",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Odaş genel kurulu 2024 için temettü dağıtılmamasını onayladı",
+   "anlam": "17 Aralık 2025 genel kurulunda dağıtılabilir kâr oluşmadığı için nakit veya bedelsiz temettü verilmemesi oy çokluğuyla kabul edildi (2023 için de aynı karar).",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.5,
+   "etiketler": [
+    "temettu",
+    "dagitim_yok"
+   ],
+   "kaynaklar": [
+    "https://www.yatirimx.com.tr/ekonomi/odas-yatirimcilarinin-bekledigi-temettu-haberi-geldi-iste-detaylar/15805"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 0.0,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ODAS",
+   "sektor": null,
+   "baslangic": "2026-05-05",
+   "bitis": "2026-05-05",
+   "kamuya_acilma": null,
+   "tur": "is_iliskisi",
+   "baslik": "Odaş iştiraki Suda Maden, Özbekistan'la kritik metal alanında stratejik iş birliği protokolü imzaladı",
+   "anlam": "5 Mayıs 2026'da KAP'a bildirilen UzTMK ile protokol; haber hissenin tavan olduğunu yazıyor. Tutar açıklanmadı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.5,
+   "etiketler": [
+    "Suda_Maden",
+    "Ozbekistan",
+    "kritik_metal"
+   ],
+   "kaynaklar": [
+    "https://www.dunya.com/finans/borsa/odas-elektrik-istiraki-suda-maden-ozbekistan-ile-stratejik-isbirligi-protokolu-imzaladi-haberi-824123",
+    "https://www.cnbce.com/borsa/hisse-tavan-oldu-bist-30daki-enerji-sirketinden-ozbekistanla-stratejik-maden-isbirligi-h29494"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
   }
  ]
 }

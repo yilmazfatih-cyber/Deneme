@@ -1,0 +1,73 @@
+{
+ "not": "ajan araştırması (web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "ANHYT",
+   "sektor": null,
+   "baslangic": "2025-02-27",
+   "bitis": "2025-02-27",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Anadolu Hayat Emeklilik 2024 kârından hisse başına brüt 5,8140 TL temettü önerdi",
+   "anlam": "27 Şubat 2025 KAP kararı: brüt 5,8139534 TL (net 4,9419 TL), yaklaşık 2,5 milyar TL toplam; genel kurul sonrası 26 Mart 2025'te ödendi.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.7,
+   "etiketler": [
+    "temettu",
+    "brut_5.81"
+   ],
+   "kaynaklar": [
+    "https://www.ekonomist.com.tr/borsa/anadolu-hayat-emeklilik-ten-anhyt-temettu-karari--57939",
+    "https://paratic.com/anadolu-hayat-emeklilik-6-9-tl-temettu-verecek/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 5.8139534,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ANHYT",
+   "sektor": null,
+   "baslangic": "2026-02-27",
+   "bitis": "2026-02-27",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Anadolu Hayat Emeklilik 2025 kârından hisse başına brüt 8,1395 TL temettü önerdi",
+   "anlam": "27 Şubat 2026 KAP kararı: brüt 8,1395348 TL (net 6,9186 TL), İş Yatırım kartına göre toplam 3,5 milyar TL; ödeme 26-30 Mart 2026 (kaynaklarda farklı).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.7,
+   "etiketler": [
+    "temettu",
+    "brut_8.14"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/anadolu-hayat-emeklilik-6-9-tl-temettu-verecek/",
+    "https://paraajansi.com.tr/temettu/sigorta-hissesinden-net-69186045-tl-temettu-odemesi-geliyor-22225875h"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 8.1395348,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}
