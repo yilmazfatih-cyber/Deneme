@@ -1,0 +1,15 @@
+{
+ "haneler": [
+  {
+   "hisse": "AHGAZ",
+   "kamuya_acilma": "2026-11-13T18:42:13+03:00",
+   "tur": "geri_alim",
+   "baslik": "Ahlatcı Doğal Gaz: 13.11.2026 tarihli pay geri alım işlemleri (süren program)",
+   "metin": "KAP bildirim listesi: 'Payların Geri Alınmasına İlişkin Bildirim — 13.11.2026 Tarihli Pay Geri Alım İşlemleri' (yayım 13.11.2026 18:42). Program 17.09.2026'da onaylandı (en çok 50 milyon pay, 2 milyar TL fon, bir yıl). Şirket 2, 3, 5, 9, 10, 11, 12 ve 13 Kasım'da alım bildirdi. Bildirimin içeriği (adet, fiyat) okunamadı; yalnız başlık ve yayım saati doğrulandı.",
+   "kaynak": "KAP bildirim listesi (veri/ag/kap_bildirimler.csv.gz)",
+   "yon": "olumlu",
+   "guven": 0.7,
+   "okuyan": "ajan:kap-listesi"
+  }
+ ]
+}

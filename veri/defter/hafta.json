@@ -249,11 +249,20 @@
    "toplam": 1006279.22,
    "xu100": 11801.5,
    "eksik": []
+  },
+  {
+   "gun": "2026-11-13",
+   "nakit": 618549.67,
+   "hisse": 390944.14,
+   "toplam": 1009493.82,
+   "xu100": 11843.98046875,
+   "eksik": []
   }
  ],
  "notlar": [
   "Hafta 1 (9-13 Kasım 2026): yönetim kuralları yatirim-ajani/HAFTA.md. Sanal hesap; emirler kullanıcıya saat+fiyat+adetle sunulur, dolum gerçek 5dk çubuklarla.",
-  "2026-11-09 09:40 sabah: KCHOL ve BIMAS 3Ç bilançoları bugün açıklanıyor; alımlar Salı'ya ertelendi. TUPRS (6 Kas, beklenti üstü) ve AHGAZ (9 aylık açıklandı) alımları duruyor."
+  "2026-11-09 09:40 sabah: KCHOL ve BIMAS 3Ç bilançoları bugün açıklanıyor; alımlar Salı'ya ertelendi. TUPRS (6 Kas, beklenti üstü) ve AHGAZ (9 aylık açıklandı) alımları duruyor.",
+  "2026-11-14 13:55 haftalık değerlendirme (Cuma 20:26 rutini oturum kapalı olduğu için Cumartesi yapıldı): dört tez de geçerli, pozisyonlar Hafta 2'ye taşınıyor; Pazartesi 16 Kas için emir yok. Kaçırılan kural: Çarşamba 11 Kas 16:25'te ikinci dilim koşulu sağlanmıştı (XU100 11.731 > 11.470; 3/4 pozisyon maliyet üstünde), o günün rutini çalışmadığı için alım yazılmadı; geriye dönük emir yazılmaz."
  ],
  "sayac": 9
 }
