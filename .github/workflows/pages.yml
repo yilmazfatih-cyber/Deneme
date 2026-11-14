@@ -2,6 +2,7 @@ name: Yayınla (GitHub Pages)
 
 # Her güncellemede uygulamayı derler ve https://<kullanıcı>.github.io/<depo>/ adresinde yayınlar.
 # Bölüş (ortak harcama uygulaması) derleme gerektirmez; bolus/ klasörü olduğu gibi /bolus/ altında yayınlanır.
+# TV+ gösterimi /tvplus/ altında yayınlanır (hazır derlenmiş site gh-pages dalından alınır).
 on:
   push:
     branches: [main, claude/merhaba-f982gj, claude/hopeful-johnson-m02kmc]
@@ -29,6 +30,23 @@ jobs:
       - run: npm run build
       - name: Bölüş uygulamasını ekle
         run: cp -r bolus dist/bolus
+      # TV+ (tvplus/) sunucusuz çalışan durağan bir sitedir; derlenmiş hâli gh-pages dalında durur
+      # (tvplus klasöründe `npm run build:pages` çıktısı) ve /tvplus/ altında yayınlanır. Dal yoksa adım atlanır.
+      - name: TV+ sitesini al (gh-pages dalı)
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          ref: gh-pages
+          path: .tvplus-site
+      - name: TV+ sitesini ekle
+        run: |
+          if [ -f .tvplus-site/index.html ]; then
+            rm -rf .tvplus-site/.git
+            cp -r .tvplus-site dist/tvplus
+            echo "TV+ eklendi: $(find dist/tvplus -type f | wc -l) dosya"
+          else
+            echo "gh-pages dalında TV+ sitesi yok; atlandı"
+          fi
       - uses: actions/configure-pages@v5
         with:
           enablement: true
