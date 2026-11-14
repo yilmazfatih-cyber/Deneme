@@ -113,9 +113,9 @@ sektör × seri ısı haritası), saat-mevsim-yıl, yatırımcı izleri, fonlar,
    geliyor, tepki ertesi açılışta fiyatlanıyor.
 9. Portföy şirketlerinin 741 pay bildirimi: hedefler %91 BIST 100 dışı, oynak (70. yüzdelik), çok el değiştiren, yükselmiş,
    defter değerine göre pahalı (32. yüzdelik). Şirketler ortak hisselerde buluşuyor (merkezde Pardus). Bildirim 28 Ağustos 2026'ya
-   kadar yükselişin ortasında geliyordu; sonrasında öncesi de sonrası da eksi. Bildirim sayfalarından yönü okunan 642 bildirimde
-   (345 alım, 297 satım): alım bildirimi öncesinde hisse katmanının %12 önünde (t 6,3), ama bildirimi izleyip 20 gün tutan sepet
-   günde −11 bp (t −1,7). **Tutulan pay:** 186 konumda sermayedeki pay medyan %4,8, halka açık paya oranı medyan %11; 37 konum
+   kadar yükselişin ortasında geliyordu; sonrasında öncesi de sonrası da eksi. Bildirim sayfalarından yönü okunan 643 bildirimde
+   (345 alım, 298 satım): alım bildirimi öncesinde hisse katmanının %12 önünde (t 6,3), ama bildirimi izleyip 20 gün tutan sepet
+   günde −11 bp (t −1,7). **Tutulan pay:** 186 konumda sermayedeki pay medyan %4,8, halka açık paya oranı medyan %11; 36 konum
    dolaşımdaki payın dörtte birinden, 14 konum yarısından büyük. Dolaşımdaki payı toplayan şirket Pusula (ortadaki konumu halka
    açık payın %40'ı; 16 konumun 10'u dörtte birin üstünde); Pardus ve Hedef geniş sepetli (%9–11).
 10. Yabancı payı (596 hisse): büyüklük ve derinlikle 0,5; BIST 100 içinde momentum +0,45, özkaynak kârlılığı +0,39, oynaklık −0,43.
