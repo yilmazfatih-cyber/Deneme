@@ -1,5 +1,5 @@
 {
- "zaman": "2026-11-14T13:53",
+ "zaman": "2026-11-14T13:55",
  "rapor": {
   "tv": {
    "satir": 649,
@@ -45,8 +45,8 @@
    ],
    "gecersiz_ek": [],
    "hisse_listesi": 623,
-   "sure_sn": 12.6,
-   "zaman": "2026-11-12T11:17"
+   "sure_sn": 12.8,
+   "zaman": "2026-11-14T13:55"
   },
   "seri": {
    "sembol": 81,
@@ -156,7 +156,7 @@
    "zaman": "2026-11-12T11:18"
   },
   "_toplam": {
-   "sure_dk": 0.1,
+   "sure_dk": 0.2,
    "hisse": 623
   },
   "kesif": {
