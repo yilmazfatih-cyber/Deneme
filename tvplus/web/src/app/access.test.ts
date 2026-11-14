@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { ProfileSummary } from '../../../shared/types'
-import { accessOf, afterLoginTarget, afterProfileTarget, decideAccess } from './guards'
+import { accessOf, afterLoginTarget, afterProfileTarget, decideAccess } from './access'
 
 const profile: ProfileSummary = { guid: 'G', name: 'Deniz', avatarUrl: '', isKids: false, maturityLevel: 110 }
 const anon = { membershipStatus: 'ANONYMOUS' as const, activeProfile: null }

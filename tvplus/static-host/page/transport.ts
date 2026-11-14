@@ -200,7 +200,14 @@ export function installTransport(backend: Backend): Transport {
     }
 
     #fire(ev: Event): void {
-      const handler = ev.type === 'open' ? this.onopen : ev.type === 'error' ? this.onerror : ev.type === 'message' ? this.onmessage : null
+      const handler =
+        ev.type === 'open'
+          ? this.onopen
+          : ev.type === 'error'
+            ? this.onerror
+            : ev.type === 'message'
+              ? this.onmessage
+              : null
       this.dispatchEvent(ev)
       if (handler) (handler as (ev: Event) => unknown).call(this as unknown as EventSource, ev)
     }
@@ -325,6 +332,10 @@ export function installTransport(backend: Backend): Transport {
 
   installXhr(backend, client, track, open)
 
+  /* ───────────── <img src="/api/..."> (TV giriş QR'ı vb.) ───────────── */
+
+  installImageHook()
+
   /* ───────────── sayfa kapanışı ───────────── */
 
   const closeAll = () => {
@@ -342,13 +353,72 @@ export function installTransport(backend: Backend): Transport {
 
   // Canlılık kilidi: sekme/çerçeve ölünce arka uç bu istemcinin akışlarını kapatır.
   let lock: string | null = null
-  if (typeof navigator.locks?.request === 'function' && !location.search.includes('kilitsiz')) {
+  if (typeof navigator.locks?.request === 'function') {
     lock = `tvplus-istemci-${client}`
     void navigator.locks.request(lock, () => new Promise<never>(() => {})).catch(() => {})
   }
   backend.hello(client, lock)
 
   return { client, closeAll }
+}
+
+/* ───────────── görseller ───────────── */
+
+/**
+ * `<img>` öğesinin kaynağı bir API yoluysa (ör. /api/tv/login/qr.svg) görseli ağ yerine arka uçtan alır ve blob
+ * adresiyle gösterir. `src` ataması (özellik ya da setAttribute — React ikincisini kullanır) daha istek çıkmadan
+ * yakalanır; böylece durağan barındırmada 404 olmaz. Öteki görseller (durağan dosyalar) dokunulmadan geçer.
+ */
+function installImageHook(): void {
+  const proto = HTMLImageElement.prototype
+  const desc = Object.getOwnPropertyDescriptor(proto, 'src')
+  const nativeSetAttribute = Element.prototype.setAttribute
+  if (!desc?.set) return
+  const nativeSrcSet = desc.set
+  const pending = new WeakMap<HTMLImageElement, number>()
+  const blobs = new WeakMap<HTMLImageElement, string>()
+  let seq = 0
+
+  const load = (img: HTMLImageElement, target: URL): void => {
+    const token = ++seq
+    pending.set(img, token)
+    void window
+      .fetch(target.href, { credentials: 'same-origin' })
+      .then(async (res) => {
+        if (pending.get(img) !== token) return
+        if (!res.ok) throw new Error(String(res.status))
+        const url = URL.createObjectURL(await res.blob())
+        if (pending.get(img) !== token) return URL.revokeObjectURL(url)
+        const old = blobs.get(img)
+        blobs.set(img, url)
+        nativeSrcSet.call(img, url)
+        if (old) URL.revokeObjectURL(old)
+      })
+      .catch(() => {
+        if (pending.get(img) === token) img.dispatchEvent(new Event('error'))
+      })
+  }
+
+  Object.defineProperty(proto, 'src', {
+    ...desc,
+    set(this: HTMLImageElement, value: string) {
+      const target = apiTarget(value)
+      if (target) load(this, target)
+      else {
+        pending.delete(this)
+        nativeSrcSet.call(this, value)
+      }
+    },
+  })
+
+  Element.prototype.setAttribute = function setAttribute(this: Element, name: string, value: string): void {
+    if (this instanceof HTMLImageElement && name.toLowerCase() === 'src') {
+      const target = apiTarget(value)
+      if (target) return load(this, target)
+      pending.delete(this)
+    }
+    nativeSetAttribute.call(this, name, value)
+  }
 }
 
 /* ───────────── XHR ───────────── */
@@ -377,7 +447,13 @@ function installXhr(
   class BackendXhr extends Native {
     #emu: Emu | null = null
 
-    override open(method: string, url: string | URL, async?: boolean, user?: string | null, pass?: string | null): void {
+    override open(
+      method: string,
+      url: string | URL,
+      async?: boolean,
+      user?: string | null,
+      pass?: string | null,
+    ): void {
       const target = apiTarget(url)
       if (!target) {
         this.#emu = null

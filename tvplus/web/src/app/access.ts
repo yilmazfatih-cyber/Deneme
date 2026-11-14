@@ -1,5 +1,5 @@
 /**
- * Yol korumaları — saf karar işlevleri (birim testi: guards.test.ts). Bileşen tarafı: Guards.tsx.
+ * Yol korumaları — saf karar işlevleri (birim testi: access.test.ts). Bileşen tarafı: Guards.tsx.
  *
  *   herkese açık          /vitrin (cihaz vitrini), /_ui (galeri; /_ui/kabuk hariç)
  *   yalnız anonim         /karsilama (üye girişliyse içeri yönlenir)

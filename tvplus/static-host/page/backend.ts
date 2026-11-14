@@ -171,7 +171,8 @@ function sharedWorkerBackend(url: string): Backend {
   const port = sw.port
   port.onmessage = (e: MessageEvent<FromBackend>) => core.receive(e.data)
   port.start()
-  sw.onerror = () => core.receive({ t: 'status', status: { phase: 'hata', text: 'Arka uç (SharedWorker) yüklenemedi.' } })
+  sw.onerror = () =>
+    core.receive({ t: 'status', status: { phase: 'hata', text: 'Arka uç (SharedWorker) yüklenemedi.' } })
   return makeBackend('shared-worker', core, (msg, transfer) => port.postMessage(msg, transfer ?? []))
 }
 
@@ -213,7 +214,8 @@ function leaderBackend(url: string): Backend {
         for (const h of hellos) channel.postMessage({ kind: 'to-leader', msg: h } satisfies ChannelMsg)
       }
     } else if (d.kind === 'status?') {
-      if (leader) channel.postMessage({ kind: 'from-leader', msg: { t: 'status', status: core.status } } satisfies ChannelMsg)
+      if (leader)
+        channel.postMessage({ kind: 'from-leader', msg: { t: 'status', status: core.status } } satisfies ChannelMsg)
     }
   }
   channel.postMessage({ kind: 'status?' } satisfies ChannelMsg)

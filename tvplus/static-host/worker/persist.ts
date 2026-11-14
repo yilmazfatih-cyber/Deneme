@@ -128,10 +128,13 @@ export async function restore(): Promise<{ files: number; bytes: number; availab
           if (row.i === cur.parts.length) cur.parts.push(row.bytes)
           c.continue()
         }
-        tx.oncomplete = tx.onerror = tx.onabort = () => {
-          finish()
-          resolve()
-        }
+        tx.oncomplete =
+          tx.onerror =
+          tx.onabort =
+            () => {
+              finish()
+              resolve()
+            }
       })
     }),
   )
@@ -141,6 +144,7 @@ export async function restore(): Promise<{ files: number; bytes: number; availab
 const dirty: Record<Kind, Map<string, Op[1]>> = { [STATE]: new Map(), [BULK]: new Map() }
 const chain: Record<Kind, Promise<void>> = { [STATE]: Promise.resolve(), [BULK]: Promise.resolve() }
 let stateQueued = false
+let stateInflight = 0
 let bulkTimer: ReturnType<typeof setTimeout> | null = null
 let bulkFirstDirtyAt = 0
 let warned = false
@@ -172,8 +176,33 @@ function flushKind(kind: Kind): Promise<void> {
   if (!map.size) return chain[kind]
   const ops: Op[] = [...map]
   map.clear()
-  chain[kind] = chain[kind].then(() => write(kind, ops))
+  if (kind === STATE) stateInflight++
+  chain[kind] = chain[kind]
+    .then(() => write(kind, ops))
+    .finally(() => {
+      if (kind === STATE) stateInflight--
+    })
   return chain[kind]
+}
+
+/** Durum dosyalarında yazılmamış ya da yazılmakta olan değişiklik var mı? */
+export function stateBusy(): boolean {
+  return dirty[STATE].size > 0 || stateQueued || stateInflight > 0
+}
+
+/**
+ * Bu ana dek yapılan durum değişiklikleri IndexedDB'ye işlenince çözülür. Önce bir makro görev beklenir: aynı görevde
+ * sıraya giren yazımlar (mikro görevler) kuyruğa girmiş olur.
+ */
+export function whenStateSaved(): Promise<void> {
+  return new Promise<void>((resolve) => {
+    const ch = new MessageChannel()
+    ch.port1.onmessage = () => {
+      ch.port1.close()
+      void chain[STATE].then(resolve, resolve)
+    }
+    ch.port2.postMessage(0)
+  })
 }
 
 /** Bekleyen tüm değişiklikleri hemen yazar. */
@@ -218,7 +247,14 @@ function writePart(db: IDBDatabase, kind: Kind, part: { op: Op; row: Row | null 
       const n = Math.max(1, Math.ceil(row.bytes.length / PART_BYTES))
       for (let i = 0; i < n; i++) {
         const piece = row.bytes.slice(i * PART_BYTES, (i + 1) * PART_BYTES)
-        store.put({ k: partKey(row.path, i), path: row.path, i, n, bytes: piece, mtimeMs: row.mtimeMs } satisfies PartRow)
+        store.put({
+          k: partKey(row.path, i),
+          path: row.path,
+          i,
+          n,
+          bytes: piece,
+          mtimeMs: row.mtimeMs,
+        } satisfies PartRow)
       }
       bytes += row.bytes.length
     }

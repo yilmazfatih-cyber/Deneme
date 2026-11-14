@@ -8,9 +8,15 @@ import { setLogSink } from '../host/fastify'
 import { flushPendingStores } from '../../server/src/kernel/store'
 import { seedFile } from '../node/fs'
 import { process } from '../node/process'
-import { CONTENT_PACK_FILE, type BackendStatus, type ContentPack, type FromBackend, type ToBackend } from '../shared/protocol'
+import {
+  CONTENT_PACK_FILE,
+  type BackendStatus,
+  type ContentPack,
+  type FromBackend,
+  type ToBackend,
+} from '../shared/protocol'
 import { absorb, cookieHeader, loadCookies } from './cookies'
-import { DATA_ROOT, flush, onPersistLog, restore, watch } from './persist'
+import { DATA_ROOT, flush, onPersistLog, restore, stateBusy, watch, whenStateSaved } from './persist'
 
 export interface PortLike {
   postMessage(msg: FromBackend, transfer?: Transferable[]): void
@@ -130,24 +136,40 @@ function handle(port: PortLike, msg: Extract<ToBackend, { t: 'req' }>): void {
   else if (r.method !== 'GET' && r.method !== 'HEAD') headers['content-length'] = '0'
 
   let ended = false
+  const live = () => exchanges.get(r.id)?.port === port
+  // Durum değiştiren istekler (GET dışı) yanıtı ancak değişiklik IndexedDB'ye işlendikten sonra alır: sayfa yanıtı
+  // görüp hemen yenilense (SharedWorker kapanır) de değişiklik kaybolmaz. Bu yanıtlar küçüktür; tamamı tutulur.
+  const holds = r.method !== 'GET' && r.method !== 'HEAD'
+  const held: FromBackend[] = []
+  const send = (msg: FromBackend, transfer?: Transferable[]) => {
+    if (holds && !ended) held.push(msg)
+    else port.postMessage(msg, transfer)
+  }
   const ex = app!.dispatch(
     { method: r.method, url: r.url, headers, body, protocol: r.protocol },
     {
       head: (statusCode, hs) => {
-        if (exchanges.get(r.id)?.port !== port) return
-        port.postMessage({ t: 'head', id: r.id, status: statusCode, headers: absorb(hs) })
+        if (!live()) return
+        send({ t: 'head', id: r.id, status: statusCode, headers: absorb(hs) })
       },
       data: (chunk) => {
-        if (exchanges.get(r.id)?.port !== port) return
+        if (!live()) return
         // Parça paylaşılan bir arabelleğin görünümü olabilir: kopyalanıp aktarılır.
         const copy = chunk.slice().buffer
-        port.postMessage({ t: 'data', id: r.id, chunk: copy }, [copy])
+        send({ t: 'data', id: r.id, chunk: copy }, [copy])
       },
       end: () => {
         if (ended) return
-        ended = true
-        if (exchanges.get(r.id)?.port === port) port.postMessage({ t: 'end', id: r.id })
-        exchanges.delete(r.id)
+        const finish = () => {
+          ended = true
+          if (live()) {
+            for (const m of held.splice(0)) port.postMessage(m)
+            port.postMessage({ t: 'end', id: r.id })
+          }
+          exchanges.delete(r.id)
+        }
+        if (holds || stateBusy()) void whenStateSaved().then(finish)
+        else finish()
       },
     },
   )
@@ -207,13 +229,6 @@ async function start(): Promise<void> {
     app = built
     const ms = Math.round(performance.now() - t0)
     setStatus({ phase: 'hazir', text: 'Hazır', ms })
-    // Tanılama: olay döngüsünü 250 ms'den uzun bloke eden işler günlüğe yazılır.
-    let last = performance.now()
-    setInterval(() => {
-      const now = performance.now()
-      if (now - last > 350) broadcast({ t: 'log', level: 'debug', msg: `olay döngüsü ${Math.round(now - last - 100)} ms bloke` })
-      last = now
-    }, 100)
     for (const q of queued.splice(0)) handle(q.port, q.msg)
   } catch (err) {
     const message = err instanceof Error ? `${err.message}\n${err.stack ?? ''}` : String(err)

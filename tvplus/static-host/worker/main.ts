@@ -18,7 +18,10 @@ const scope = globalThis as unknown as {
   SharedWorkerGlobalScope?: unknown
 }
 
-if (typeof scope.SharedWorkerGlobalScope === 'function' && globalThis instanceof (scope.SharedWorkerGlobalScope as typeof Object)) {
+if (
+  typeof scope.SharedWorkerGlobalScope === 'function' &&
+  globalThis instanceof (scope.SharedWorkerGlobalScope as typeof Object)
+) {
   scope.onconnect = (e: MessageEvent) => {
     const port = e.ports[0] as unknown as MessagePortLike
     const deliver = attach(port)

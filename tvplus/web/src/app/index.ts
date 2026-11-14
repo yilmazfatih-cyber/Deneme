@@ -14,7 +14,7 @@ export { toggleDevtoolsPanel } from './AvatarMenu'
 export { activeDesktopNav, DESKTOP_NAV, type NavEntry } from './nav'
 export { switchTitleHref, useDetailModal, type DetailModalState } from './detailModal'
 export { isDevtoolsOpen, subscribeDevtools, useDevtoolsOpen } from './devtoolsState'
-export { accessOf, decideAccess, type Access, type GuardDecision } from './guards'
+export { accessOf, decideAccess, type Access, type GuardDecision } from './access'
 export {
   buildTitleHref,
   closeTitleHref,

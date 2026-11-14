@@ -27,7 +27,9 @@ export class Timeout {
   }
 
   #start(): number {
-    return (this.#repeat ? native.setInterval(this.#fn, this.#ms) : native.setTimeout(this.#fn, this.#ms)) as unknown as number
+    return (this.#repeat
+      ? native.setInterval(this.#fn, this.#ms)
+      : native.setTimeout(this.#fn, this.#ms)) as unknown as number
   }
 
   ref(): this {

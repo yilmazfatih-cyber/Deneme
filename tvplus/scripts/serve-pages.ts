@@ -93,7 +93,12 @@ const server = createServer((req, res) => {
       hit = { mtimeMs: st.mtimeMs, body: gzipSync(readFileSync(file)) }
       gzCache.set(file, hit)
     }
-    res.writeHead(200, { ...headers, 'content-encoding': 'gzip', 'content-length': String(hit.body.length), vary: 'Accept-Encoding' })
+    res.writeHead(200, {
+      ...headers,
+      'content-encoding': 'gzip',
+      'content-length': String(hit.body.length),
+      vary: 'Accept-Encoding',
+    })
     res.end(method === 'HEAD' ? undefined : hit.body)
     return
   }

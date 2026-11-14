@@ -10,8 +10,12 @@ export const arch = (): string => 'wasm'
 export const tmpdir = (): string => '/tmp'
 export const homedir = (): string => '/'
 export const cpus = (): { model: string; speed: number }[] =>
-  Array.from({ length: Math.max(1, globalThis.navigator?.hardwareConcurrency ?? 1) }, () => ({ model: 'tarayici', speed: 0 }))
-export const totalmem = (): number => ((globalThis.navigator as Navigator & { deviceMemory?: number })?.deviceMemory ?? 2) * 2 ** 30
+  Array.from({ length: Math.max(1, globalThis.navigator?.hardwareConcurrency ?? 1) }, () => ({
+    model: 'tarayici',
+    speed: 0,
+  }))
+export const totalmem = (): number =>
+  ((globalThis.navigator as Navigator & { deviceMemory?: number })?.deviceMemory ?? 2) * 2 ** 30
 export const freemem = (): number => totalmem() / 2
 export const availableParallelism = (): number => cpus().length
 export const uptime = (): number => performance.now() / 1000

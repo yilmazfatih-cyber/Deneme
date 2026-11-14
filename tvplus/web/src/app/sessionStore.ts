@@ -17,7 +17,7 @@ import { deviceClient } from '../devices/client'
 import { devbus } from '../lib/devbus'
 import { toast } from '../ui'
 import { errorCode, requestJson, withRestFallback } from './deviceApi'
-import { afterLoginTarget, afterProfileTarget, WELCOME_PATH } from './guards'
+import { afterLoginTarget, afterProfileTarget, WELCOME_PATH } from './access'
 import {
   EMPTY_PIN_STATE,
   pinLockMessage,

@@ -347,7 +347,8 @@ export class RawResponse extends EventEmitter {
 const encoder = new TextEncoder()
 function toBytes(chunk: unknown, enc?: string): Uint8Array {
   if (chunk instanceof Uint8Array) return chunk
-  if (typeof chunk === 'string') return enc && enc !== 'utf8' && enc !== 'utf-8' ? Buffer.from(chunk, enc as 'base64') : encoder.encode(chunk)
+  if (typeof chunk === 'string')
+    return enc && enc !== 'utf8' && enc !== 'utf-8' ? Buffer.from(chunk, enc as 'base64') : encoder.encode(chunk)
   if (chunk instanceof ArrayBuffer) return new Uint8Array(chunk)
   if (ArrayBuffer.isView(chunk)) return new Uint8Array(chunk.buffer, chunk.byteOffset, chunk.byteLength)
   return encoder.encode(String(chunk))
@@ -825,11 +826,16 @@ export class FastifyHost {
   /** Paylaşılan çekirdek (alt bağlamlar prototipten devralır). */
   _core: Core
   /** Bağlama özgü ayarlar (içerik türü ayrıştırıcıları); `register` alt bağlamı kopyasını alır. */
-  _ctx: Ctx
+  _ctx: Ctx;
   [key: string]: unknown
 
   constructor(opts: { logger?: boolean | { level?: string }; bodyLimit?: number } = {}) {
-    const level = opts.logger === false || opts.logger === undefined ? 'silent' : (opts.logger === true ? 'info' : (opts.logger.level ?? 'info'))
+    const level =
+      opts.logger === false || opts.logger === undefined
+        ? 'silent'
+        : opts.logger === true
+          ? 'info'
+          : (opts.logger.level ?? 'info')
     this._core = {
       routes: [],
       hooks: new Map(),
@@ -898,7 +904,8 @@ export class FastifyHost {
       const done = (err?: Error) => (err ? reject(err) : resolve())
       try {
         const r = fn(child, opts, done)
-        if (r && typeof (r as Promise<unknown>).then === 'function') (r as Promise<unknown>).then(() => resolve(), reject)
+        if (r && typeof (r as Promise<unknown>).then === 'function')
+          (r as Promise<unknown>).then(() => resolve(), reject)
         else if (fn.length < 3) resolve()
       } catch (err) {
         reject(err as Error)
@@ -1058,7 +1065,9 @@ export class FastifyHost {
       .then(async () => {
         const list = this._core.hooks.get('onResponse') ?? []
         if (!list.length) return
-        await new Promise<void>((r) => (ex.raw.writableEnded || ex.raw.destroyed ? r() : ex.raw.once('close', () => r())))
+        await new Promise<void>((r) =>
+          ex.raw.writableEnded || ex.raw.destroyed ? r() : ex.raw.once('close', () => r()),
+        )
         for (const fn of list) await callHook(fn, [ex.req, ex.reply]).catch(() => {})
       })
       .catch((err: unknown) => this.log.error({ err }, `istek yürütülemedi (${performance.now() - started} ms)`))
@@ -1117,7 +1126,12 @@ export class FastifyHost {
 /* ───────────── varsayılan ayrıştırıcılar ───────────── */
 
 function parseJsonSafe(text: string): unknown {
-  if (text === '') throw fstError('FST_ERR_CTP_EMPTY_JSON_BODY', 400, "Body cannot be empty when content-type is set to 'application/json'")
+  if (text === '')
+    throw fstError(
+      'FST_ERR_CTP_EMPTY_JSON_BODY',
+      400,
+      "Body cannot be empty when content-type is set to 'application/json'",
+    )
   let value: unknown
   try {
     value = JSON.parse(text)
@@ -1130,7 +1144,12 @@ function parseJsonSafe(text: string): unknown {
       if (typeof v !== 'object' || v === null) return false
       if (Object.prototype.hasOwnProperty.call(v, '__proto__')) return true
       const c = (v as Record<string, unknown>).constructor
-      if (Object.prototype.hasOwnProperty.call(v, 'constructor') && typeof c === 'object' && c !== null && 'prototype' in c)
+      if (
+        Object.prototype.hasOwnProperty.call(v, 'constructor') &&
+        typeof c === 'object' &&
+        c !== null &&
+        'prototype' in c
+      )
         return true
       return Object.values(v).some(bad)
     }

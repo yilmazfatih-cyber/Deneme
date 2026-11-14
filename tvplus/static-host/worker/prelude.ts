@@ -10,4 +10,6 @@ const scope = globalThis as unknown as Record<string, unknown>
 scope.global ??= globalThis
 scope.Buffer = Buffer
 scope.process = process
+// Sunucu kodundaki `process.env` erişimleri derlemede bu ada çevrilir (bkz. vite.pages.config.ts).
+scope.__tvpProcessEnv = process.env
 installTimers(scope)

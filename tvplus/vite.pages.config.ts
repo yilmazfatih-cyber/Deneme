@@ -69,6 +69,22 @@ function pagesPlugin(): Plugin {
   }
 }
 
+/**
+ * Vite tarayıcı derlemesinde `process.env` ifadesini `{}` ile değiştirir; sunucu kodu ise ortam değişkenlerini çalışma
+ * anında okur (worker'daki `process` karşılığı: TVP_BASE_PATH vb.). Bu yüzden worker paketinde sunucu dosyalarındaki
+ * `process.env`, prelude'un tanımladığı `__tvpProcessEnv` küresel adına çevrilir (yalnız NODE_ENV derlemede sabitlenir).
+ */
+function runtimeProcessEnv(): Plugin {
+  return {
+    name: 'tvp-runtime-process-env',
+    enforce: 'pre',
+    transform(code, id) {
+      if (!/[\\/](server|shared)[\\/].*\.ts$/.test(id) || !code.includes('process.env')) return null
+      return { code: code.replace(/(?<![\w.$])process\.env\b(?!\.NODE_ENV)/g, '__tvpProcessEnv'), map: null }
+    },
+  }
+}
+
 export default defineConfig({
   root: 'web',
   base: './',
@@ -76,6 +92,7 @@ export default defineConfig({
   resolve: { alias: aliases },
   worker: {
     format: 'iife',
+    plugins: () => [runtimeProcessEnv()],
   },
   build: {
     outDir: '../dist-pages',

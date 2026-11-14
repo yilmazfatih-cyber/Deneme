@@ -1,10 +1,10 @@
 /**
- * Koruma bileşeni: guards.ts kararını uygular. Yönlendirmede gidilmek istenen adresi hatırlar
+ * Koruma bileşeni: access.ts kararını uygular. Yönlendirmede gidilmek istenen adresi hatırlar
  * (giriş / profil seçiminden sonra açılır).
  */
 import type { ReactElement, ReactNode } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
-import { accessOf, decideAccess } from './guards'
+import { accessOf, decideAccess } from './access'
 import { peekLoginTarget, rememberNextPath, useSession } from './sessionStore'
 
 export function Guard({ children }: { children: ReactNode }): ReactElement {
