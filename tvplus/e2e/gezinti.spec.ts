@@ -174,6 +174,47 @@ test.describe('Satırlar ve önizleme (masaüstü)', () => {
   })
 })
 
+test.describe('Mobil kurgu', () => {
+  test.skip(({ viewport }) => (viewport?.width ?? 0) >= 900, 'mobil alt çubuk ve ana sayfa seçicisi')
+
+  test('alt çubuk dört sekmedir; ana sayfadaki seçici Canlı TV ile dizi/film arasında geçirir', async ({ page }) => {
+    await signIn(page)
+    const tabs = page.getByRole('navigation', { name: 'Ana gezinme' })
+    await expect(tabs.getByRole('link')).toHaveText(['Ana Sayfa', 'Kısa Videolar', 'Ara', "TV+'ım"])
+    const mode = page.getByRole('navigation', { name: 'Ne izlemek istersin' })
+    await expect(mode.getByRole('link', { name: 'Dizi ve Film' })).toHaveAttribute('aria-current', 'page')
+    await mode.getByRole('link', { name: 'Canlı TV' }).click()
+    await expect(page).toHaveURL(/#\/canli/)
+    await expect(mode.getByRole('link', { name: 'Canlı TV' })).toHaveAttribute('aria-current', 'page')
+    // Canlı TV ana sayfanın içindedir: alt çubukta "Ana Sayfa" etkin kalır
+    await expect(tabs.getByRole('link', { name: 'Ana Sayfa' })).toHaveAttribute('aria-current', 'page')
+    await mode.getByRole('link', { name: 'Dizi ve Film' }).click()
+    await expect(page).toHaveURL(/#\/goz-at$/)
+    expect(await horizontalOverflow(page)).toBe(0)
+  })
+
+  test('Kısa Videolar: akış açılır, etkin öğe kaydırınca değişir, Listem düğmesi çalışır', async ({ page }) => {
+    await signIn(page)
+    await page.getByRole('navigation', { name: 'Ana gezinme' }).getByRole('link', { name: 'Kısa Videolar' }).click()
+    await expect(page).toHaveURL(/#\/kisa/)
+    const feed = page.getByRole('feed', { name: 'Kısa videolar' })
+    await expect(feed.getByRole('article').first()).toBeVisible()
+    expect(await feed.getByRole('article').count()).toBeGreaterThan(3)
+    const active = feed.locator('article.is-active')
+    await expect(active).toHaveCount(1)
+    const first = await active.getAttribute('aria-label')
+    await expect(active.getByRole('link', { name: /Oynat|Bölümleri Gör/ })).toBeVisible()
+    const list = active.getByRole('button', { name: 'Listem' })
+    await list.click()
+    await expect(list).toHaveAttribute('aria-pressed', 'true')
+    await list.click()
+    await expect(list).toHaveAttribute('aria-pressed', 'false')
+    await feed.evaluate((el) => el.scrollBy({ top: el.clientHeight }))
+    await expect.poll(async () => active.getAttribute('aria-label')).not.toBe(first)
+    expect(await horizontalOverflow(page)).toBe(0)
+  })
+})
+
 test.describe('Mobil başlık sayfası', () => {
   test.skip(({ viewport }) => (viewport?.width ?? 0) >= 900, 'detay mobilde tam sayfadır')
 

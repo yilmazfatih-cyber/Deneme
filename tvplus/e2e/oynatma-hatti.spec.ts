@@ -158,7 +158,7 @@ test.describe('oynatma hattı', () => {
     await signIn(page)
     await page.goto('/#/goz-at')
     await expect(page.getByRole('heading', { name: "Türkiye'de Bugünün Top 10 Dizi Listesi" })).toBeVisible()
-    await page.getByRole('banner').getByRole('link', { name: 'Ara', exact: true }).click()
+    await page.getByRole('navigation', { name: 'Ana gezinme' }).getByRole('link', { name: 'Ara', exact: true }).click()
     await page
       .getByRole('region', { name: 'Sana Özel Öneriler' })
       .getByRole('link', { name: 'Tears of Steel oynat' })

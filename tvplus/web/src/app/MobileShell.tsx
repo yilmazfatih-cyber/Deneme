@@ -11,7 +11,7 @@
  */
 import { lazy, Suspense, useEffect, useLayoutEffect, useRef, useState, type ReactElement } from 'react'
 import { Link, Navigate, Outlet, useLocation } from 'react-router-dom'
-import { Avatar, cx, Icon, IconButton, Logo, useScrolled, type IconName } from '../ui'
+import { Avatar, cx, Icon, Logo, useScrolled, type IconName } from '../ui'
 import { DETAIL_PARAM, TCTX_PARAM } from './links'
 import { RouteFrame } from './RouteFrame'
 import { useSession } from './sessionStore'
@@ -27,21 +27,24 @@ interface Tab {
   match: (pathname: string) => boolean
 }
 
-/** Alt sekmeler (sıra UX_SPEC §3). */
+/**
+ * Alt sekmeler: Ana Sayfa · Kısa Videolar · Ara · TV+'ım.
+ * Canlı TV, Rehber ve "Yeni ve Popüler" ana sayfanın içindedir (üstteki seçici ve haplar); o yollarda da
+ * "Ana Sayfa" sekmesi etkin kalır.
+ */
 export const MOBILE_TABS: readonly Tab[] = [
   {
     label: 'Ana Sayfa',
     to: '/goz-at',
     icon: 'home',
-    match: (p) => p === '/' || p.startsWith('/goz-at') || /^\/(tur|koleksiyon|kisi|baslik)\//.test(p),
+    match: (p) =>
+      p === '/' ||
+      p.startsWith('/goz-at') ||
+      /^\/(tur|koleksiyon|kisi|baslik)\//.test(p) ||
+      /^\/(canli|rehber|yeni-ve-populer)(\/|$)/.test(p),
   },
-  { label: 'Canlı TV', to: '/canli', icon: 'live', match: (p) => p.startsWith('/canli') || p.startsWith('/rehber') },
-  {
-    label: 'Yeni ve Popüler',
-    to: '/yeni-ve-populer',
-    icon: 'newPopular',
-    match: (p) => p.startsWith('/yeni-ve-populer'),
-  },
+  { label: 'Kısa Videolar', to: '/kisa', icon: 'shorts', match: (p) => p.startsWith('/kisa') },
+  { label: 'Ara', to: '/ara', icon: 'search', match: (p) => p.startsWith('/ara') },
   {
     label: "TV+'ım",
     to: '/tvplusim',
@@ -49,6 +52,13 @@ export const MOBILE_TABS: readonly Tab[] = [
     match: (p) => /^\/(tvplusim|listem|cihazlar|kumanda)(\/|$)/.test(p),
   },
 ]
+
+/** Ana sayfanın üstündeki seçici: bugün ne izlenecek, dizi/film mi canlı yayın mı? */
+const HOME_MODES: readonly { label: string; to: string; live?: boolean; match: (p: string) => boolean }[] = [
+  { label: 'Dizi ve Film', to: '/goz-at', match: (p) => p === '/' || p.startsWith('/goz-at') },
+  { label: 'Canlı TV', to: '/canli', live: true, match: (p) => /^\/(canli|rehber)(\/|$)/.test(p) },
+]
+const showsHomeModes = (p: string) => HOME_MODES.some((m) => m.match(p))
 
 /** Yola göre mobil üst çubuk başlığı; null → logo. */
 function defaultTitle(pathname: string, profileName: string | null): string | null {
@@ -166,9 +176,26 @@ export function MobileShell(): ReactElement {
               <Suspense fallback={null}>
                 <CastButton />
               </Suspense>
-              <IconButton icon="search" label="Ara" to="/ara" />
             </div>
           </div>
+          {showsHomeModes(pathname) ? (
+            <nav className="app-mmode" aria-label="Ne izlemek istersin">
+              {HOME_MODES.map((m) => {
+                const on = m.match(pathname)
+                return (
+                  <Link
+                    key={m.to}
+                    to={m.to}
+                    className={cx('app-mmode__item', on && 'is-active')}
+                    aria-current={on ? 'page' : undefined}
+                  >
+                    {m.live ? <span className="app-mmode__dot" aria-hidden="true" /> : null}
+                    {m.label}
+                  </Link>
+                )
+              })}
+            </nav>
+          ) : null}
           <div className="app-mtop__pills" ref={pillsRef} />
         </header>
         <main className="app-mmain" id="icerik" tabIndex={-1} ref={mainRef}>

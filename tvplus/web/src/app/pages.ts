@@ -19,6 +19,7 @@ export const MyListPage = lazy(() => import('../features/library').then((m) => (
 export const TitlePage = lazy(() => import('../features/detail').then((m) => ({ default: m.TitlePage })))
 export const AccountHubPage = lazy(() => import('../features/account').then((m) => ({ default: m.AccountHubPage })))
 export const SearchPage = lazy(() => import('../features/search').then((m) => ({ default: m.SearchPage })))
+export const ShortsPage = lazy(() => import('../features/shorts').then((m) => ({ default: m.ShortsPage })))
 export const LiveHomePage = lazy(() => import('../features/live').then((m) => ({ default: m.LiveHomePage })))
 export const GuidePage = lazy(() => import('../features/guide').then((m) => ({ default: m.GuidePage })))
 export const RemotePage = lazy(() => import('../features/remote').then((m) => ({ default: m.RemotePage })))

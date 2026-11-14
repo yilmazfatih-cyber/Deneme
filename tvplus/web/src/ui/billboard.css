@@ -249,6 +249,34 @@
 .ui-mhero__info > * {
   pointer-events: auto;
 }
+/* Yatay görselli vitrin: görsel üstte, ad ve düğmeler altında */
+.ui-mhero--wide .ui-mhero__card {
+  aspect-ratio: auto;
+  max-height: none;
+}
+.ui-mhero--wide .ui-mhero__art {
+  position: relative;
+  inset: auto;
+  aspect-ratio: 16 / 9;
+}
+.ui-mhero--wide .ui-mhero__shade {
+  background: linear-gradient(to top, var(--surface-2) 0%, rgba(0, 0, 0, 0) 38%);
+}
+.ui-mhero--wide .ui-mhero__info {
+  position: static;
+  gap: 10px;
+  padding: 2px 16px 16px;
+}
+.ui-mhero__synopsis {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  color: var(--text-2);
+  font-size: 14px;
+  line-height: 1.4;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
 .ui-mhero__logo {
   max-width: 72%;
   max-height: 96px;

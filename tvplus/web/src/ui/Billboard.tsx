@@ -186,6 +186,13 @@ export interface MobileHeroProps {
   tint?: string
   /** Logo yokken başlığı yaz (varsayılan true); görsel başlığı zaten içeriyorsa false */
   showTitle?: boolean
+  /**
+   * Yatay (16:9) görselli vitrin: görsel üstte tam görünür; ad, özet ve düğmeler altında durur.
+   * Dikey afişi olmayan içerikte kullanılır (yazılar görsele gömülmez, üst üste binmez).
+   */
+  wide?: boolean
+  /** `wide` kartta adın altında kısa özet */
+  synopsis?: string | null
   className?: string
 }
 
@@ -199,6 +206,8 @@ export function MobileHero({
   onOpen,
   tint,
   showTitle = true,
+  wide = false,
+  synopsis,
   className,
 }: MobileHeroProps): ReactElement {
   const [imgFailed, setImgFailed] = useState(false)
@@ -215,7 +224,7 @@ export function MobileHero({
   )
   return (
     <section
-      className={cx('ui-mhero', className)}
+      className={cx('ui-mhero', wide && 'ui-mhero--wide', className)}
       aria-label={`Öne çıkan: ${title}`}
       style={tint ? { ['--hero-tint' as string]: tint } : undefined}
     >
@@ -236,6 +245,7 @@ export function MobileHero({
           ) : showTitle ? (
             <h2 className="ui-mhero__title">{title}</h2>
           ) : null}
+          {wide && synopsis ? <p className="ui-mhero__synopsis">{synopsis}</p> : null}
           {tags.length > 0 && (
             <ul className="ui-dotted ui-mhero__tags">
               {tags.map((t) => (

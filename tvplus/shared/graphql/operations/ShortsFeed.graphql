@@ -1,0 +1,26 @@
+# Kısa Videolar akışı: profile göre sıralanmış başlıklar ve kısa önizlemeleri (promoVideo).
+query ShortsFeed($first: Int) {
+  shortsFeed: popularSearches(first: $first) {
+    ...CardVideo
+    isInPlaylist
+    genreTags {
+      genreId
+      name
+    }
+    moodTags {
+      id
+      displayName
+    }
+    promoVideo {
+      viewableId
+      offset
+      sourceKind
+    }
+    ... on Movie {
+      matchScore
+    }
+    ... on Show {
+      matchScore
+    }
+  }
+}

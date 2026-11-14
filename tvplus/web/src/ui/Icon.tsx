@@ -198,6 +198,13 @@ const PATHS = {
       <circle cx="12" cy="14" r="2" {...FILLED} />
     </>
   ),
+  /** Kısa Videolar: dikey ekran içinde oynat üçgeni */
+  shorts: (
+    <>
+      <rect x="6" y="2.5" width="12" height="19" rx="3" />
+      <path d="m10.5 9 4.5 3-4.5 3z" {...FILLED} />
+    </>
+  ),
   /** "Yeni ve Popüler" işareti — alevsiz: dört köşeli parıltı */
   newPopular: (
     <>

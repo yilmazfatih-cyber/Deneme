@@ -315,9 +315,11 @@ function MobileBillboard({
   }
   return (
     <MobileHero
-      image={hero.posterUrl}
+      image={hero.artUrl ?? hero.posterUrl}
       title={hero.title}
-      showTitle={false}
+      wide={!!hero.artUrl}
+      showTitle={!!hero.artUrl}
+      synopsis={hero.synopsis}
       tags={hero.tags}
       to={href(hero.videoId, hero.tctx)}
       onOpen={() => logEvent('click', { videoId: hero.videoId, action: 'detail', from: 'billboard' }, hero.tctx)}

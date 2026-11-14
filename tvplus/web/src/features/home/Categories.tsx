@@ -1,6 +1,6 @@
 /**
  * Kategori gezintisi:
- *   Mobil  — üst çubuğun altındaki haplar (UX_SPEC §3): Diziler · Filmler · Canlı TV · Kategoriler ▾; kategori
+ *   Mobil  — üst çubuğun altındaki haplar: Diziler · Filmler · Yeni ve Popüler · Kategoriler ▾; kategori
  *            seçiliyken başında ✕. "Kategoriler" türlerin listesini alt sayfada açar.
  *   Masaüstü — Diziler / Filmler sayfasının başlığı + "Türler ▾" açılır listesi (vitrinin üstünde, menünün altında).
  * Tür listesi: o kategorinin lolomo'sundaki tür satırları (sunucu en az 4 başlığı olan türleri satır yapar);
@@ -77,7 +77,7 @@ export function BrowsePills({ category }: { category: LolomoCategory }): ReactEl
                 {p.label}
               </Pill>
             ))}
-            <Pill to="/canli">Canlı TV</Pill>
+            <Pill to="/yeni-ve-populer">Yeni ve Popüler</Pill>
           </>
         )}
         <Pill caret onClick={() => setOpen(true)}>
