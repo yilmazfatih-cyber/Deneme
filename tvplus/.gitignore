@@ -1,0 +1,11 @@
+node_modules
+web/dist
+.data
+media
+test-results
+playwright-report
+*.log
+.env
+.env.*
+dist-pages
+pages-assets

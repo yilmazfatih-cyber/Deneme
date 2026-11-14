@@ -1,0 +1,6 @@
+# Oynatıcının kanal listesi (TV'de tam ekran canlı yayında OK → liste, rakamlarla numaraya geçiş)
+query PlayerChannels {
+  channels {
+    ...ChannelCard
+  }
+}

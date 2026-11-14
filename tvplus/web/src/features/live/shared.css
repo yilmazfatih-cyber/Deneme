@@ -1,0 +1,227 @@
+/* Canlı TV / Rehber / Arama ortak parçaları: kanal logosu, kart üstü düğmeler, kilit satırı, örnek akış etiketi
+   ve yayın penceresi (masaüstü Modal, mobil Sheet). Yalnız ui/tokens.css tokenları. */
+
+/* ───────────── Kanal logosu ───────────── */
+.lv-logo {
+  position: relative;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  background: var(--surface-2);
+}
+.lv-logo > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.lv-logo__text {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text-2);
+}
+
+.lv-star {
+  display: block;
+}
+
+/* ───────────── Kart üstü sakin düğme (yıldız, zil) ───────────── */
+.lv-cardtoggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(20, 20, 20, 0.6);
+  color: var(--text-1);
+  cursor: pointer;
+  transition:
+    opacity 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+.lv-cardtoggle:hover {
+  border-color: var(--text-1);
+  background: rgba(42, 42, 42, 0.85);
+}
+.lv-cardtoggle:focus-visible {
+  outline: 2px solid var(--text-1);
+  outline-offset: 2px;
+}
+.lv-cardtoggle.is-on {
+  color: var(--accent);
+  border-color: rgba(247, 216, 73, 0.7);
+}
+
+/* ───────────── Kilit / örnek akış ───────────── */
+.lv-lock {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--text-2);
+}
+.lv-sample {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 6px;
+  border: 1px solid var(--line-2);
+  border-radius: 2px;
+  font-size: 11px;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--text-3);
+  white-space: nowrap;
+}
+
+/* ───────────── Yayın penceresi ───────────── */
+.lv-win__media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  overflow: hidden;
+}
+.lv-win__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.lv-win__shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, var(--surface-1) 0%, rgba(24, 24, 24, 0.55) 30%, transparent 62%);
+  pointer-events: none;
+}
+.lv-win__badges {
+  position: absolute;
+  top: 16px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.lv-win__over {
+  position: absolute;
+  left: 32px;
+  right: 32px;
+  bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.lv-win__title {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--text-1);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+.lv-win__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.lv-win__body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 8px 32px 28px;
+}
+.lv-win__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 8px;
+  margin: 0;
+  font-size: 15px;
+  color: var(--text-3);
+}
+.lv-win__meta > strong {
+  color: var(--text-1);
+  font-weight: 700;
+}
+.lv-win__meta > * + *::before {
+  content: '·';
+  margin-right: 8px;
+  color: var(--text-4);
+}
+.lv-win__progress {
+  max-width: 320px;
+}
+.lv-win__note {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-2);
+}
+.lv-win__synopsis {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text-2);
+}
+.lv-win__sample {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-3);
+}
+
+/* Başlık görselin altında (üretilmiş kapak ya da mobil) */
+.lv-win--inline .lv-win__title {
+  font-size: 24px;
+  text-shadow: none;
+}
+.lv-win--inline .lv-win__body {
+  padding-top: 18px;
+}
+.lv-win--inline:not(.lv-win--sheet) .lv-win__shade {
+  background: linear-gradient(0deg, var(--surface-1) 0%, transparent 28%);
+}
+
+/* Mobil alt sayfa: görsel sayfanın içinde, başlık ve eylemler görselin altında */
+.lv-winsheet .ui-sheet__body {
+  padding: 0;
+}
+.lv-win--sheet .lv-win__media {
+  margin: 0 var(--gutter);
+  border-radius: var(--radius-card-mobile);
+}
+.lv-win--sheet .lv-win__shade {
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.4), transparent 50%);
+}
+.lv-win--sheet .lv-win__badges {
+  top: 10px;
+  left: 10px;
+}
+.lv-win--sheet .lv-win__body {
+  padding: 14px var(--gutter) 20px;
+}
+.lv-win--sheet .lv-win__title {
+  font-size: 20px;
+  text-shadow: none;
+}
+.lv-win__actions--sheet {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+.lv-win__actions--sheet > * {
+  width: 100%;
+  justify-content: center;
+}

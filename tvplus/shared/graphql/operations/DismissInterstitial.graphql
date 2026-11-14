@@ -1,0 +1,3 @@
+mutation DismissInterstitial($id: ID!) {
+  dismissInterstitial(id: $id)
+}

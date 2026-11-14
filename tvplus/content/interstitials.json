@@ -1,0 +1,18 @@
+[
+  {
+    "id": "i-canli-tv",
+    "location": "HOME",
+    "title": "Canlı TV'yi dene",
+    "body": "Haber ve çocuk kanallarını şimdi canlı olarak izleyebilirsin.",
+    "cta": "Canlı TV'ye geç",
+    "href": "#/canli"
+  },
+  {
+    "id": "i-film-dizi",
+    "location": "LIVE",
+    "title": "Film ve diziye göz at",
+    "body": "Açık kaynak film ve dizilerin kütüphanesi bir dokunuş uzakta.",
+    "cta": "Filmlere geç",
+    "href": "#/film-dizi"
+  }
+]

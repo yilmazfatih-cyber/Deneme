@@ -1,0 +1,54 @@
+[
+  {
+    "collectionId": 9001,
+    "slug": "blender-acik-filmler",
+    "name": "Blender Açık Filmleri",
+    "description": "Blender Foundation ve Blender Studio'nun açık kaynakla üretilmiş kısa ve uzun filmleri.",
+    "videoIds": [
+      80010001, 80010002, 80030001, 80030002, 80030003, 80030004, 80030005, 80030006, 80030007, 80030008, 80030009,
+      80030010, 80030011, 80031000
+    ]
+  },
+  {
+    "collectionId": 9002,
+    "slug": "sessiz-sinema-klasikleri",
+    "name": "Sessiz Sinema Klasikleri",
+    "description": "Kamu malı arşivlerden seçilmiş, sözsüz anlatımın ustalarına ait sessiz film klasikleri.",
+    "videoIds": [80020001, 80020002, 80020003, 80020004, 80020005, 80020006, 80020007, 80020008]
+  },
+  {
+    "collectionId": 9003,
+    "slug": "buster-keaton-koleksiyonu",
+    "name": "Buster Keaton Koleksiyonu",
+    "description": "Buster Keaton'ın tren, nehir ve dedektiflik maceralarında geçen sessiz komedileri.",
+    "videoIds": [80020004, 80020006, 80020007]
+  },
+  {
+    "collectionId": 9004,
+    "slug": "evrim-agaci-ile-bilim",
+    "name": "Evrim Ağacı ile Bilim",
+    "description": "Evrim Ağacı kanalından, günlük merakları bilimle yanıtlayan kısa anlatımlar.",
+    "videoIds": [80040001, 80040002, 80040003, 80040004, 80040005, 80040006]
+  },
+  {
+    "collectionId": 9005,
+    "slug": "trt-belgesel-seckisi",
+    "name": "TRT Belgesel Seçkisi",
+    "description": "TRT Belgesel'in yolculuk, mutfak ve yaşam dizilerinden bir seçki.",
+    "videoIds": [80041000, 80042000, 80043000, 80044000, 80040014]
+  },
+  {
+    "collectionId": 9006,
+    "slug": "uzay-ve-evren",
+    "name": "Uzay ve Evren",
+    "description": "Evrenin derinliklerine ve NASA'nın uzay çalışmalarına dair videolar.",
+    "videoIds": [80040001, 80040002, 80040010, 80040011]
+  },
+  {
+    "collectionId": 9007,
+    "slug": "cocuklar-icin",
+    "name": "Çocuklar İçin",
+    "description": "Çocuklar ve aileler için güvenle izlenebilecek animasyon ve çocuk dizileri.",
+    "videoIds": [80030001, 80030006, 80030008, 80030011, 80031000, 80033000, 80034000, 80035000]
+  }
+]

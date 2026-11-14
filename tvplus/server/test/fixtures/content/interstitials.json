@@ -1,0 +1,18 @@
+[
+  {
+    "id": "canli-tanitim",
+    "location": "HOME",
+    "title": "Canlı TV artık burada",
+    "body": "Kanallarını tek dokunuşla izle.",
+    "cta": "Canlı TV'ye geç",
+    "href": "#/canli"
+  },
+  {
+    "id": "geri-al",
+    "location": "LIVE",
+    "title": "Kaçırdığını geri al",
+    "body": "Son 7 günün yayınları seni bekliyor.",
+    "cta": "Göz at",
+    "href": "#/canli"
+  }
+]

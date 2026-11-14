@@ -1,0 +1,47 @@
+# Detay penceresinin isteğe bağlı katmanı: eşleşme yüzdesi, mikro türler, gerekçeli benzerler.
+# Ayrı sorgudur: bu alanlar hata verirse ya da null dönerse detay penceresi yalnız bu parçaları gizler.
+query DetailInsights($videoId: Int!) {
+  video(videoId: $videoId) {
+    __typename
+    videoId
+    ... on Movie {
+      matchScore
+      microgenres(first: 6) {
+        ...DetailMicrogenre
+      }
+      similarsWithReason(first: 12) {
+        ...DetailSimilar
+      }
+    }
+    ... on Show {
+      matchScore
+      microgenres(first: 6) {
+        ...DetailMicrogenre
+      }
+      similarsWithReason(first: 12) {
+        ...DetailSimilar
+      }
+    }
+  }
+}
+
+fragment DetailMicrogenre on Microgenre {
+  id
+  name
+  layer
+}
+
+fragment DetailSimilar on SimilarVideo {
+  score
+  reason
+  video {
+    ...CardVideo
+    isInPlaylist
+    ... on Movie {
+      matchScore
+    }
+    ... on Show {
+      matchScore
+    }
+  }
+}

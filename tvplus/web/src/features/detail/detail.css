@@ -1,0 +1,1029 @@
+/*
+ * Detay: masaüstü pencere (dm-*), mobil başlık sayfası (tp-*), ortak parçalar (dt-*).
+ * Ölçüler Netflix'in "Daha Fazla Bilgi" penceresi ve mobil detay ekranından; renkler tokens.css.
+ */
+
+/* ───────────── Ortak: görsel + tanıtım ───────────── */
+.dt-media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #000;
+}
+.dt-media__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.6s ease;
+}
+.dt-media__img--empty {
+  background: linear-gradient(135deg, var(--surface-3), var(--surface-1));
+}
+.dt-media__video {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+.dt-media__video > * {
+  position: absolute;
+  inset: 0;
+}
+.dt-media__video video {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+.dt-media.is-playing .dt-media__video {
+  opacity: 1;
+}
+.dt-media.is-playing .dt-media__img {
+  opacity: 0;
+}
+.dt-media__shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(0deg, var(--surface-1) 0%, rgba(24, 24, 24, 0.82) 14%, rgba(24, 24, 24, 0.35) 34%, transparent 58%),
+    linear-gradient(90deg, rgba(24, 24, 24, 0.45) 0%, transparent 45%);
+}
+
+/* ───────────── Ortak: bilgi parçaları ───────────── */
+.dt-match {
+  color: var(--positive);
+  font-weight: 700;
+}
+.dt-qbadge {
+  display: inline-flex;
+  align-items: center;
+  height: 1.35em;
+  padding: 0 0.4em;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 3px;
+  font-size: 0.75em;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--text-2);
+}
+.dt-metaline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+  color: var(--text-3);
+  font-weight: 500;
+}
+.dt-maturity {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  min-width: 0;
+}
+.dt-maturity__reasons {
+  color: var(--text-2);
+  font-size: 0.92em;
+}
+.dt-top10 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 12px 0 0;
+  font-weight: 700;
+  font-size: 1.1em;
+  color: var(--text-1);
+}
+.dt-people {
+  margin: 0 0 10px;
+  line-height: 1.45;
+  color: var(--text-1);
+  word-break: break-word;
+}
+.dt-people__label {
+  color: var(--text-4);
+}
+.dt-plink {
+  color: var(--text-1);
+  text-decoration: none;
+}
+.dt-plink:hover,
+.dt-plink:focus-visible {
+  text-decoration: underline;
+}
+.dt-more {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-style: italic;
+  cursor: pointer;
+}
+
+/* Birincil düğme: "▶ Devam Et  S1:B3" */
+.dt-play__code {
+  margin-left: 0.5em;
+  font-weight: 500;
+  opacity: 0.7;
+}
+.dt-resume {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 14px;
+}
+.dt-resume__bar {
+  flex: 0 1 220px;
+  min-width: 80px;
+  background: rgba(255, 255, 255, 0.3);
+}
+.dt-resume__text {
+  font-size: 14px;
+  color: var(--text-2);
+  white-space: nowrap;
+}
+.dt-like.is-on {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Erişim bildirimi: sakin, kırmızı yok */
+.dt-access {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  background: var(--surface-2);
+  padding: 12px 16px;
+}
+.dt-access__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.dt-access__icon {
+  color: var(--accent);
+  flex: none;
+}
+.dt-access__text {
+  flex: 1 1 200px;
+  margin: 0;
+  font-weight: 600;
+  color: var(--text-1);
+}
+.dt-access__more {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  color: var(--text-2);
+  font-size: 14px;
+}
+.dt-access__more p {
+  margin: 0 0 8px;
+}
+
+/* ───────────── Ortak: bölümler ───────────── */
+.dt-season-static {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.dt-season-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 44px;
+  padding: 0 14px 0 16px;
+  border: 1px solid #4d4d4d;
+  border-radius: var(--radius-button);
+  background: #242424;
+  color: var(--text-1);
+  font: inherit;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.dt-season-trigger:hover,
+.dt-season-trigger[aria-expanded='true'] {
+  border-color: var(--text-3);
+}
+.dt-season-count {
+  color: var(--text-3);
+  font-weight: 400;
+}
+.dt-eps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.dt-ep__link {
+  display: grid;
+  color: inherit;
+  text-decoration: none;
+  border-radius: var(--radius-card);
+}
+.dt-ep__link.is-off {
+  cursor: default;
+}
+.dt-ep__thumb {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  background: var(--surface-3);
+}
+.dt-ep__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.dt-ep__noimg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--surface-3);
+}
+.dt-ep__play {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin: -20px 0 0 -20px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  background: rgba(30, 30, 20, 0.5);
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.dt-ep__progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.3);
+}
+.dt-ep__text {
+  min-width: 0;
+}
+.dt-ep__title {
+  font-weight: 700;
+  color: var(--text-1);
+}
+.dt-ep__runtime {
+  color: var(--text-2);
+  white-space: nowrap;
+}
+.dt-ep__syn {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  color: var(--text-3);
+  font-size: 14px;
+  line-height: 1.45;
+}
+.dt-ep__status {
+  display: block;
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--text-3);
+}
+
+/* Masaüstü satırı: büyük sıra numarası · 130×73 görsel · başlık + süre · özet */
+.dt-eps--desktop .dt-ep {
+  border-bottom: 1px solid #404040;
+}
+.dt-eps--desktop .dt-ep:first-child {
+  border-top: 1px solid #404040;
+}
+.dt-eps--desktop .dt-ep__link {
+  grid-template-columns: 56px 130px minmax(0, 1fr);
+  align-items: center;
+  gap: 16px;
+  min-height: 112px;
+  padding: 16px 20px 16px 8px;
+}
+.dt-eps--desktop .dt-ep.is-current .dt-ep__link {
+  background: var(--surface-3);
+}
+.dt-eps--desktop .dt-ep__link:hover .dt-ep__play,
+.dt-eps--desktop .dt-ep__link:focus-visible .dt-ep__play {
+  opacity: 1;
+}
+.dt-eps--desktop .dt-ep__link:focus-visible {
+  outline: 2px solid var(--text-1);
+  outline-offset: -2px;
+}
+.dt-ep__num {
+  text-align: center;
+  font-size: 24px;
+  color: var(--text-3);
+}
+.dt-ep__top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+  font-size: 16px;
+}
+
+/* Mobil satır: görsel + ad/süre, altında özet */
+.dt-eps--mobile .dt-ep {
+  padding: 10px 0 14px;
+}
+.dt-eps--mobile .dt-ep__link {
+  gap: 8px;
+}
+.dt-eps--mobile .dt-ep__head {
+  display: grid;
+  grid-template-columns: 128px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+}
+.dt-eps--mobile .dt-ep__play {
+  opacity: 1;
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+}
+.dt-eps--mobile .dt-ep__title {
+  display: block;
+  font-size: 15px;
+  line-height: 1.3;
+}
+.dt-eps--mobile .dt-ep__runtime {
+  display: block;
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--text-3);
+  white-space: normal;
+}
+.dt-eps--mobile .dt-ep__syn {
+  font-size: 13px;
+}
+.dt-eps--mobile .dt-ep.is-current .dt-ep__title::after {
+  content: ' · Sıradaki';
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* ───────────── Ortak: benzerleri ───────────── */
+.dt-simgrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.dt-sim {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  background: var(--surface-3);
+}
+.dt-sim__media {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--surface-2);
+  color: inherit;
+}
+.dt-sim__media img,
+.dt-sim__media .ui-art-fallback {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.dt-sim__dur {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+}
+.dt-sim__lock {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+}
+.dt-sim__play {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  margin: -24px 0 0 -24px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  background: rgba(30, 30, 20, 0.5);
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.dt-sim__media:hover .dt-sim__play,
+.dt-sim__media:focus-visible .dt-sim__play {
+  opacity: 1;
+}
+.dt-sim__media:focus-visible {
+  outline: 2px solid var(--text-1);
+  outline-offset: -2px;
+}
+.dt-sim__body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px 16px;
+  min-height: 0;
+}
+.dt-sim__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.dt-sim__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  font-size: 14px;
+}
+.dt-sim__line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-2);
+}
+.dt-sim__title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-1);
+  text-decoration: none;
+  line-height: 1.25;
+}
+.dt-sim__title:hover {
+  text-decoration: underline;
+}
+.dt-sim__syn {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  overflow: hidden;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: #d2d2d2;
+}
+.dt-sim__reason {
+  margin: auto 0 0;
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--text-4);
+}
+
+/* Mobil afiş ızgarası (Benzerleri) */
+.dt-posters {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.dt-poster {
+  position: relative;
+  display: block;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  border-radius: var(--radius-card-mobile);
+  background: var(--surface-2);
+}
+.dt-poster img,
+.dt-poster .ui-art-fallback {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.dt-poster__lock {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+}
+
+/* ───────────── Ortak: fragmanlar ───────────── */
+.dt-extras {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.dt-extra__link {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: inherit;
+  text-decoration: none;
+}
+.dt-extra__media {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  background: var(--surface-3);
+}
+.dt-extra__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.dt-extra__play {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin: -20px 0 0 -20px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  background: rgba(30, 30, 20, 0.5);
+  color: #fff;
+}
+.dt-extra__title {
+  font-weight: 700;
+  color: var(--text-1);
+}
+.dt-extra__kind {
+  font-size: 13px;
+  color: var(--text-3);
+}
+
+/* ───────────── Ortak: hakkında ───────────── */
+.dt-about__title {
+  margin: 0 0 16px;
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--text-1);
+}
+.dt-about__title strong {
+  font-weight: 700;
+}
+.dt-about__row {
+  margin: 0 0 8px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-1);
+  word-break: break-word;
+}
+.dt-about__rating {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+}
+.dt-about__license {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  color: var(--text-3);
+}
+.dt-about__license .dt-plink {
+  color: var(--text-2);
+}
+.dt-about__src {
+  color: var(--text-3);
+}
+
+/* ───────────── Ortak: bulunamadı ───────────── */
+.dt-notfound {
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+  padding: 32px 0;
+}
+.dt-notfound__title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+/* ═════════════ Masaüstü pencere ═════════════ */
+.dm {
+  font-size: 16px;
+}
+.dm-pad {
+  padding: 72px 48px 48px;
+}
+.dm-hero {
+  position: relative;
+}
+.dm-hero--skel {
+  aspect-ratio: 16 / 9;
+}
+.dm-hero__skel {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+}
+.dm-hero__info {
+  position: absolute;
+  left: 48px;
+  right: 120px;
+  bottom: 7%;
+}
+.dm-title {
+  margin: 0 0 18px;
+  max-width: 62%;
+  font-size: clamp(28px, 3vw, 44px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--text-1);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+.dm-title.has-logo {
+  max-width: 40%;
+}
+.dm-title img {
+  display: block;
+  max-width: 100%;
+  max-height: 140px;
+  width: auto;
+  height: auto;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.45));
+}
+.dm-parent {
+  margin: -8px 0 12px;
+  color: var(--text-2);
+  font-weight: 600;
+}
+.dm-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.dm-actions .dt-play {
+  margin-right: 4px;
+}
+.dm-mute {
+  position: absolute;
+  right: 48px;
+  bottom: 7%;
+}
+.dm-body {
+  padding: 4px 48px 48px;
+}
+.dm-access-wrap {
+  margin-bottom: 20px;
+  scroll-margin-top: 24px;
+}
+.dm-info {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  column-gap: 32px;
+  row-gap: 16px;
+}
+.dm-info__left .dt-metaline {
+  font-size: 16px;
+}
+.dm-synopsis {
+  margin: 18px 0 0;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text-1);
+}
+.dm-info__right {
+  font-size: 14px;
+}
+.dm-section {
+  margin-top: 48px;
+  scroll-margin-top: 24px;
+}
+.dm-section__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.dm-section__title {
+  margin: 0 0 20px;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-1);
+}
+.dm-section__head .dm-section__title {
+  margin: 0;
+}
+.dm-season-name {
+  margin: -6px 0 16px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.dm-section--about {
+  margin-top: 48px;
+}
+
+/* Benzerleri ⌄ : ortası düğmeli ayırıcı çizgi */
+.dm-expand {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  height: 24px;
+  margin-top: 8px;
+  border-bottom: 2px solid #404040;
+}
+.dm-expand .ui-round {
+  position: absolute;
+  bottom: -20px;
+  background: rgba(42, 42, 42, 0.95);
+}
+
+/* Pencere dar ekranda (masaüstü kabuğu ama küçük pencere) */
+@media (max-width: 899px) {
+  .dm-pad,
+  .dm-body {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .dm-hero__info {
+    left: 16px;
+    right: 64px;
+  }
+  .dm-mute {
+    right: 16px;
+  }
+  .dm-info {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .dt-simgrid,
+  .dt-extras {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ═════════════ Mobil başlık sayfası ═════════════ */
+.tp {
+  padding-bottom: 24px;
+  overflow-x: hidden;
+}
+.tp--state {
+  padding: calc(56px + var(--safe-top)) var(--gutter) 24px;
+}
+.tp--state .tp-topbtns {
+  position: fixed;
+}
+.tp-media-wrap {
+  position: relative;
+  padding-top: var(--safe-top);
+  background: #000;
+}
+.tp-media .dt-media__shade {
+  background:
+    linear-gradient(0deg, var(--bg) 0%, transparent 28%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.55) 0%, transparent 30%);
+}
+.tp-media-skel {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 0;
+}
+.tp-topbtns {
+  position: absolute;
+  top: calc(8px + var(--safe-top));
+  left: 8px;
+  right: 8px;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  z-index: 2;
+}
+.tp-topbtns > * {
+  pointer-events: auto;
+  background: rgba(0, 0, 0, 0.55);
+}
+.tp-topbtns > :only-child {
+  margin-right: auto;
+}
+.tp-mute {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 2;
+}
+.tp-main {
+  padding: 10px var(--gutter) 4px;
+}
+.tp-parent {
+  display: inline-block;
+  margin-bottom: 2px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-3);
+  text-decoration: none;
+}
+.tp-title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--text-1);
+}
+.tp-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+  margin: 8px 0 0;
+  font-size: 14px;
+  color: var(--text-3);
+}
+.tp-cert {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 5px;
+  border-radius: 2px;
+  background: #4d4d4d;
+  color: var(--text-1);
+  font-size: 12px;
+  font-weight: 600;
+}
+.tp-main .dt-top10 {
+  font-size: 15px;
+}
+.tp-access {
+  margin-top: 14px;
+}
+.tp-buttons {
+  display: grid;
+  gap: 8px;
+  margin: 14px 0 10px;
+}
+.tp-buttons:empty {
+  display: none;
+}
+.tp-buttons .ui-btn {
+  height: 44px;
+  border-radius: var(--radius-button);
+}
+.tp-main .dt-resume {
+  margin: 4px 0 10px;
+}
+.tp-main .dt-resume__bar {
+  flex: 1 1 auto;
+}
+.tp-synopsis {
+  margin: 8px 0 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--text-1);
+}
+.tp-synopsis.is-clamped {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+.tp-more {
+  padding: 4px 0;
+  min-height: 32px;
+  border: 0;
+  background: none;
+  color: var(--text-3);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.tp-main .dt-people {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: var(--text-3);
+}
+.tp-main .dt-plink {
+  color: var(--text-3);
+}
+.tp-iconrow {
+  display: flex;
+  gap: 8px;
+  margin: 16px 0 4px;
+}
+.tp-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 72px;
+  min-height: 56px;
+  padding: 4px;
+  border: 0;
+  background: none;
+  color: var(--text-1);
+  font: inherit;
+  font-size: 12px;
+  color: var(--text-3);
+  cursor: pointer;
+}
+.tp-icon svg {
+  color: var(--text-1);
+}
+.tp-icon[aria-pressed='true'] span {
+  color: var(--text-1);
+}
+.tp-tabs {
+  margin-top: 8px;
+  scroll-margin-top: 8px;
+}
+.tp-tabs .ui-tabs {
+  padding: 0 var(--gutter);
+  border-top: 1px solid var(--line);
+}
+.tp-panel {
+  padding: 12px var(--gutter) 0;
+}
+.tp-season {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  margin: 4px 0 4px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: var(--radius-button);
+  background: var(--surface-3);
+  color: var(--text-1);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.tp-season--static {
+  background: none;
+  padding: 0;
+  cursor: default;
+}
+.tp-seasons {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tp-seasons__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 52px;
+  padding: 0 4px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: none;
+  color: var(--text-3);
+  font: inherit;
+  font-size: 17px;
+  cursor: pointer;
+  text-align: left;
+}
+.tp-seasons__item.is-current {
+  color: var(--text-1);
+  font-weight: 700;
+}
+.tp-seasons__count {
+  font-size: 13px;
+  color: var(--text-4);
+  font-weight: 400;
+}
+.tp .dt-extras {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.tp .dt-about__title {
+  font-size: 18px;
+}
+.tp .dt-notfound {
+  padding-top: 24px;
+}

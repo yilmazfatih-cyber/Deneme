@@ -1,0 +1,94 @@
+query PlaybackMetadata($viewableId: ID!) {
+  playbackMetadata(viewableId: $viewableId) {
+    viewableId
+    title
+    subtitle
+    live
+    creditsOffsetSec
+    access {
+      ...AccessFields
+    }
+    bookmark {
+      positionSec
+      runtimeSec
+      progress
+    }
+    video {
+      ...CardVideo
+      synopsis
+      runtimeSec
+      license {
+        name
+        attribution
+        url
+      }
+      ... on Episode {
+        number
+        seasonNumber
+        parentShow {
+          videoId
+          unifiedEntityId
+          title
+          seasons {
+            seasonId
+            number
+            numberLabel
+            title
+            episodes {
+              videoId
+              unifiedEntityId
+              title
+              number
+              seasonNumber
+              runtimeSec
+              shortSynopsis
+              isPlayable
+              bookmark {
+                positionSec
+                progress
+              }
+              still: artwork(type: STORY_ART, params: { width: 400 }) {
+                url
+                width
+                height
+              }
+            }
+          }
+        }
+      }
+    }
+    channel {
+      ...ChannelCard
+    }
+    airing {
+      ...AiringBrief
+      synopsis
+    }
+    nextEpisode {
+      ...CardVideo
+      number
+      seasonNumber
+      runtimeSec
+    }
+    previousChannel {
+      channelId
+      name
+      number
+      logo(params: { width: 128 }) {
+        url
+        width
+        height
+      }
+    }
+    nextChannel {
+      channelId
+      name
+      number
+      logo(params: { width: 128 }) {
+        url
+        width
+        height
+      }
+    }
+  }
+}

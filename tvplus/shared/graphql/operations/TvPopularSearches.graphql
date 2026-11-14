@@ -1,0 +1,6 @@
+# Arama kutusu boşken "Sana Özel Öneriler".
+query TvPopularSearches($first: Int) {
+  popularSearches(first: $first) {
+    ...CardVideo
+  }
+}

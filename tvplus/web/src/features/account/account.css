@@ -1,0 +1,293 @@
+/* TV+'ım: mobilde tam genişlik, masaüstünde ortalanmış tek sütun. */
+.ah-page {
+  width: min(760px, 100%);
+  margin: 0 auto;
+  padding: 16px var(--gutter) 32px;
+}
+@media (min-width: 900px) {
+  .ah-page {
+    padding: 40px 24px 48px;
+  }
+}
+
+/* Profil başlığı */
+.ah-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0 20px;
+  text-align: center;
+}
+.ah-profile__avatar {
+  border-radius: var(--radius-avatar);
+}
+.ah-profile__name {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text-1);
+}
+
+/* Bölümler */
+.ah-section {
+  padding: 18px 0;
+  border-top: 1px solid var(--line);
+}
+.ah-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.ah-head__icon {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--on-accent);
+  flex: none;
+}
+.ah-head__title {
+  flex: 1;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-1);
+}
+.ah-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  min-height: 40px;
+  padding: 0 4px;
+  border: 0;
+  background: none;
+  color: var(--text-3);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+.ah-all:hover {
+  color: var(--text-1);
+}
+.ah-empty {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-3);
+}
+.ah-inline {
+  color: var(--text-1);
+}
+
+/* Bildirimler */
+.ah-notifs {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ah-notif {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 4px;
+  border-radius: var(--radius-card);
+  color: inherit;
+  text-decoration: none;
+}
+a.ah-notif:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+.ah-notif__dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  margin-top: 6px;
+  border-radius: 50%;
+}
+.ah-notif__dot.is-unread {
+  background: var(--accent);
+}
+.ah-notif__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+.ah-notif__title {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text-1);
+}
+.ah-notif__body {
+  font-size: 14px;
+  color: var(--text-2);
+}
+.ah-notif__time {
+  font-size: 12px;
+  color: var(--text-4);
+}
+.ah-notif__go {
+  flex: none;
+  margin-top: 4px;
+  color: var(--text-4);
+}
+
+/* Küçük yatay şeritler (afiş 2:3) */
+.ah-shelf {
+  display: flex;
+  gap: 8px;
+  margin: 0 calc(-1 * var(--gutter));
+  padding: 0 var(--gutter) 4px;
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+}
+.ah-shelf::-webkit-scrollbar {
+  display: none;
+}
+@media (min-width: 900px) {
+  .ah-shelf {
+    margin: 0;
+    padding: 0 0 4px;
+  }
+}
+.ah-shelf__item {
+  flex: 0 0 var(--poster-w);
+  min-width: 0;
+  scroll-snap-align: start;
+}
+@media (min-width: 900px) {
+  .ah-shelf__item {
+    flex-basis: 132px;
+  }
+}
+.ah-shelf__skel {
+  flex: 0 0 var(--poster-w);
+}
+.ah-shelf__caption {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--text-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Hatırlatmalar */
+.ah-reminders {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ah-reminder {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.ah-reminder__art {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 96px;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  background: var(--surface-2);
+}
+.ah-reminder__art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.ah-reminder__art img.is-logo {
+  width: 60%;
+  height: 60%;
+  object-fit: contain;
+}
+.ah-reminder__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+.ah-reminder__title {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text-1);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ah-reminder__when {
+  font-size: 13px;
+  color: var(--text-3);
+}
+
+/* Bağlantılar */
+.ah-links ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ah-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  min-height: 56px;
+  padding: 8px 4px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: none;
+  color: var(--text-1);
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+.ah-links li:last-child .ah-link {
+  border-bottom: 0;
+}
+.ah-link:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+.ah-link:disabled {
+  opacity: 0.5;
+}
+.ah-link__icon {
+  flex: none;
+  color: var(--text-2);
+}
+.ah-link__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+.ah-link__label {
+  font-size: 16px;
+  font-weight: 600;
+}
+.ah-link__hint {
+  font-size: 13px;
+  color: var(--text-3);
+}
+.ah-link__go {
+  flex: none;
+  color: var(--text-4);
+}

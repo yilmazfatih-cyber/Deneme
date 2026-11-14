@@ -1,0 +1,814 @@
+# TV+ GraphQL şeması (yeni API sistemi). İstemci asla ham sorgu yollamaz: yalnızca kalıcı sorgu kimliği + sürüm.
+# Eski sistem (Falcor pathEvaluator) Film & Dizi ana sayfa satırlarını taşır; bkz. docs/MIMARI.md.
+
+scalar DateTime
+
+enum MembershipStatus {
+  ANONYMOUS
+  CURRENT_MEMBER
+  FORMER_MEMBER
+}
+enum WatchStatus {
+  NEVER_WATCHED
+  STARTED
+  WATCHED
+}
+enum ThumbRating {
+  THUMBS_UNRATED
+  THUMBS_DOWN
+  THUMBS_UP
+  THUMBS_WAY_UP
+}
+enum PlaylistAction {
+  ADD_TO_PLAYLIST
+  DELETE_FROM_PLAYLIST
+}
+"Etiket biçimi: BOB = önizleme kartı (kısa), ODP = detay sayfası (uzun)"
+enum TextEvidenceUiContext {
+  BOB
+  ODP
+}
+enum AccessState {
+  PLAYABLE
+  UPSELL
+  DEVICE_RESTRICTED
+  OUT_OF_WINDOW
+  BLOCKED
+}
+enum LiveState {
+  UPCOMING
+  LIVE
+  ENDED
+}
+enum EntityKind {
+  VIDEO
+  CHANNEL
+  PROGRAM_AIRING
+  PERSON
+  GENERIC_CONTAINER
+}
+enum ArtworkType {
+  "Dikey 2:3 afiş"
+  BOXART
+  "Yatay 16:9 kart"
+  STORY_ART
+  "Geniş vitrin görseli"
+  BILLBOARD
+  "Başlık logosu (şeffaf zemin)"
+  TITLE_LOGO
+  "Bölüm karesi 16:9"
+  EPISODE_STILL
+  CHANNEL_LOGO
+  AVATAR
+}
+"Oynatmanın nasıl taşındığı"
+enum SourceKind {
+  OWN_CDN
+  YOUTUBE
+  PROGRESSIVE
+}
+enum RowType {
+  LIVE_HERO
+  CHANNEL_ROW
+  TONIGHT_ROW
+  CATCHUP_ROW
+  POSTER_ROW
+  CONTINUE_ROW
+  BRIDGE
+}
+enum SearchCorrectionMode {
+  CORRECTED
+  MIXED
+}
+enum SupplementalType {
+  TRAILER
+  TEASER
+  BEHIND_THE_SCENES
+}
+enum CardBadgeKind {
+  NEW
+  NEW_EPISODE
+  EXCLUSIVE
+  LEAVING_SOON
+  TOP10
+  LIVE
+  LOCKED
+}
+
+"Görsel servisi adresi. Boyut istemciden istenir; adres imzalıdır (r=)."
+type Artwork {
+  key: String!
+  type: ArtworkType!
+  url: String!
+  width: Int!
+  height: Int!
+}
+input ArtworkParams {
+  width: Int
+  height: Int
+  "webp (varsayılan) | jpg"
+  format: String
+}
+
+type Access {
+  state: AccessState!
+  "Kullanıcıya gösterilen tek satır gerekçe; PLAYABLE ise null"
+  reasonText: String
+  requiredProduct: String
+  requiredProductName: String
+  cta: String
+}
+
+type Person {
+  personId: Int!
+  unifiedEntityId: ID!
+  name: String!
+  videos: [Video!]!
+}
+type Genre {
+  genreId: Int!
+  unifiedEntityId: ID!
+  name: String!
+  videos(first: Int = 40): [Video!]!
+}
+type MoodTag {
+  id: Int!
+  displayName: String!
+  isMood: Boolean!
+}
+"""
+Mikro tür: etiketlerden üretilen dar kategori (bkz. docs/ICERIK_ZEKASI.md §4).
+Görünen katman ana sayfada satır olur; görünmeyen katman benzerliği ve "… izlediğin için" satırlarını besler.
+"""
+type Microgenre {
+  "Kararlı kimlik, ör. mg_3fa92c1b"
+  id: ID!
+  unifiedEntityId: ID!
+  name: String!
+  layer: MicrogenreLayer!
+  size: Int!
+  "Profilin görebildiği başlıklar"
+  videos(first: Int = 40): [Video!]!
+}
+enum MicrogenreLayer {
+  VISIBLE
+  HIDDEN
+}
+"Benzer başlık ve benzerliğin nedeni"
+type SimilarVideo {
+  video: Video!
+  "0–1 harman puanı"
+  score: Float!
+  "Okunur gerekçe, ör. 'Ortak: Uzay Keşfi Hakkında Düşündürücü Belgeseller'; yoksa null"
+  reason: String
+  "Harmanı oluşturan işaretler: kunye, mikrotur, gomme"
+  signals: [SimilaritySignal!]!
+}
+type SimilaritySignal {
+  name: String!
+  value: Float!
+  weight: Float!
+}
+"RTÜK akıllı işaretleri"
+type ContentAdvisory {
+  certificationValue: String!
+  maturityLevel: Int!
+  boardName: String!
+  reasons: [String!]!
+}
+type Bookmark {
+  positionSec: Int!
+  runtimeSec: Int
+  lastModified: DateTime!
+  "0–1 arası ilerleme"
+  progress: Float!
+}
+type TextEvidence {
+  key: String!
+  text: String!
+}
+"Kart üzerindeki tek rozet (tasarım kuralı: kart başına en çok 1)"
+type CardBadge {
+  kind: CardBadgeKind!
+  text: String!
+}
+type License {
+  name: String!
+  attribution: String!
+  url: String
+}
+"Önizleme (hover) klibi: hangi oynatılabilirin kaçıncı saniyesinden"
+type PromoVideo {
+  "Oynatma servisine verilecek kimlik (manifest isteğinde promo=true ile)"
+  viewableId: ID!
+  computeId: String!
+  offset: Int!
+  sourceKind: SourceKind!
+}
+
+interface Video {
+  videoId: Int!
+  unifiedEntityId: ID!
+  title: String!
+  shortSynopsis: String!
+  synopsis: String!
+  "Bağlama göre özet (devam eden dizide sıradaki bölümün özeti vb.)"
+  contextualSynopsis: String!
+  latestYear: Int
+  isAvailable: Boolean!
+  isPlayable: Boolean!
+  access: Access!
+  artwork(type: ArtworkType!, params: ArtworkParams): Artwork!
+  genreTags: [Genre!]!
+  moodTags: [MoodTag!]!
+  contentAdvisory: ContentAdvisory!
+  playbackBadges: [String!]!
+  sourceKinds: [SourceKind!]!
+  watchStatus: WatchStatus!
+  bookmark: Bookmark
+  thumbRating: ThumbRating!
+  isInPlaylist: Boolean!
+  playlistActions: [PlaylistAction!]!
+  textEvidence(uiContext: TextEvidenceUiContext = BOB): [TextEvidence!]!
+  promoVideo: PromoVideo
+  badge: CardBadge
+  runtimeSec: Int
+  "Kart altı kısa bilgi: '1 sa 28 dk' · '2 Sezon' · 'S1 B3'"
+  displayRuntime: String!
+  license: License
+  isKids: Boolean!
+  "Bugünün Top 10 sırası (1–10) ya da null"
+  top10Rank: Int
+}
+
+type Movie implements Video {
+  videoId: Int!
+  unifiedEntityId: ID!
+  title: String!
+  shortSynopsis: String!
+  synopsis: String!
+  contextualSynopsis: String!
+  latestYear: Int
+  isAvailable: Boolean!
+  isPlayable: Boolean!
+  access: Access!
+  artwork(type: ArtworkType!, params: ArtworkParams): Artwork!
+  genreTags: [Genre!]!
+  moodTags: [MoodTag!]!
+  contentAdvisory: ContentAdvisory!
+  playbackBadges: [String!]!
+  sourceKinds: [SourceKind!]!
+  watchStatus: WatchStatus!
+  bookmark: Bookmark
+  thumbRating: ThumbRating!
+  isInPlaylist: Boolean!
+  playlistActions: [PlaylistAction!]!
+  textEvidence(uiContext: TextEvidenceUiContext = BOB): [TextEvidence!]!
+  promoVideo: PromoVideo
+  badge: CardBadge
+  runtimeSec: Int
+  displayRuntime: String!
+  license: License
+  isKids: Boolean!
+  top10Rank: Int
+  originalTitle: String
+  cast: [Person!]!
+  directors: [Person!]!
+  creators: [Person!]!
+  "Benzerler: künye benzerliği + ortak mikro türler + gömme benzerliğinin harmanı"
+  similars(first: Int = 12): [Video!]!
+  "Benzerler, nedenleriyle (detay ekranı gerekçe satırı ve Kaputun altı için)"
+  similarsWithReason(first: Int = 12): [SimilarVideo!]!
+  "Bu başlığın girdiği mikro türler: önce görünen katman, en dar olan önce"
+  microgenres(first: Int = 4): [Microgenre!]!
+  "Tahmin modelinin bu profil için eşleşme yüzdesi (0–100); model hazır değilse ya da profil hakkında işaret yoksa null"
+  matchScore: Int
+  supplementalVideos: [Supplemental!]!
+  collections: [Collection!]!
+}
+
+type Show implements Video {
+  videoId: Int!
+  unifiedEntityId: ID!
+  title: String!
+  shortSynopsis: String!
+  synopsis: String!
+  contextualSynopsis: String!
+  latestYear: Int
+  isAvailable: Boolean!
+  isPlayable: Boolean!
+  access: Access!
+  artwork(type: ArtworkType!, params: ArtworkParams): Artwork!
+  genreTags: [Genre!]!
+  moodTags: [MoodTag!]!
+  contentAdvisory: ContentAdvisory!
+  playbackBadges: [String!]!
+  sourceKinds: [SourceKind!]!
+  watchStatus: WatchStatus!
+  bookmark: Bookmark
+  thumbRating: ThumbRating!
+  isInPlaylist: Boolean!
+  playlistActions: [PlaylistAction!]!
+  textEvidence(uiContext: TextEvidenceUiContext = BOB): [TextEvidence!]!
+  promoVideo: PromoVideo
+  badge: CardBadge
+  runtimeSec: Int
+  displayRuntime: String!
+  license: License
+  isKids: Boolean!
+  top10Rank: Int
+  originalTitle: String
+  cast: [Person!]!
+  directors: [Person!]!
+  creators: [Person!]!
+  "Benzerler: künye benzerliği + ortak mikro türler + gömme benzerliğinin harmanı"
+  similars(first: Int = 12): [Video!]!
+  "Benzerler, nedenleriyle (detay ekranı gerekçe satırı ve Kaputun altı için)"
+  similarsWithReason(first: Int = 12): [SimilarVideo!]!
+  "Bu başlığın girdiği mikro türler: önce görünen katman, en dar olan önce"
+  microgenres(first: Int = 4): [Microgenre!]!
+  "Tahmin modelinin bu profil için eşleşme yüzdesi (0–100); model hazır değilse ya da profil hakkında işaret yoksa null"
+  matchScore: Int
+  supplementalVideos: [Supplemental!]!
+  collections: [Collection!]!
+  seasons: [Season!]!
+  seasonCount: Int!
+  episodeCount: Int!
+  "Kaldığı yerden devam edilecek (ya da ilk) bölüm"
+  currentEpisode: Episode!
+}
+
+type Season {
+  seasonId: ID!
+  number: Int!
+  "S1"
+  numberLabel: String!
+  title: String
+  episodes: [Episode!]!
+}
+
+type Episode implements Video {
+  videoId: Int!
+  unifiedEntityId: ID!
+  title: String!
+  shortSynopsis: String!
+  synopsis: String!
+  contextualSynopsis: String!
+  latestYear: Int
+  isAvailable: Boolean!
+  isPlayable: Boolean!
+  access: Access!
+  artwork(type: ArtworkType!, params: ArtworkParams): Artwork!
+  genreTags: [Genre!]!
+  moodTags: [MoodTag!]!
+  contentAdvisory: ContentAdvisory!
+  playbackBadges: [String!]!
+  sourceKinds: [SourceKind!]!
+  watchStatus: WatchStatus!
+  bookmark: Bookmark
+  thumbRating: ThumbRating!
+  isInPlaylist: Boolean!
+  playlistActions: [PlaylistAction!]!
+  textEvidence(uiContext: TextEvidenceUiContext = BOB): [TextEvidence!]!
+  promoVideo: PromoVideo
+  badge: CardBadge
+  runtimeSec: Int
+  displayRuntime: String!
+  license: License
+  isKids: Boolean!
+  top10Rank: Int
+  number: Int!
+  seasonNumber: Int!
+  "S1 B3"
+  numberLabel: String!
+  parentShow: Show!
+  nextEpisode: Episode
+}
+
+"Fragman ve benzeri ek videolar"
+type Supplemental implements Video {
+  videoId: Int!
+  unifiedEntityId: ID!
+  title: String!
+  shortSynopsis: String!
+  synopsis: String!
+  contextualSynopsis: String!
+  latestYear: Int
+  isAvailable: Boolean!
+  isPlayable: Boolean!
+  access: Access!
+  artwork(type: ArtworkType!, params: ArtworkParams): Artwork!
+  genreTags: [Genre!]!
+  moodTags: [MoodTag!]!
+  contentAdvisory: ContentAdvisory!
+  playbackBadges: [String!]!
+  sourceKinds: [SourceKind!]!
+  watchStatus: WatchStatus!
+  bookmark: Bookmark
+  thumbRating: ThumbRating!
+  isInPlaylist: Boolean!
+  playlistActions: [PlaylistAction!]!
+  textEvidence(uiContext: TextEvidenceUiContext = BOB): [TextEvidence!]!
+  promoVideo: PromoVideo
+  badge: CardBadge
+  runtimeSec: Int
+  displayRuntime: String!
+  license: License
+  isKids: Boolean!
+  top10Rank: Int
+  subType: SupplementalType!
+  parent: Video!
+}
+
+"Birlikte aranabilen/gezilebilen başlık grubu (Netflix Collection varlığı)"
+type Collection {
+  collectionId: Int!
+  unifiedEntityId: ID!
+  name: String!
+  description: String!
+  videos: [Video!]!
+  artwork(params: ArtworkParams): Artwork!
+}
+
+# ───────────── Canlı TV ─────────────
+
+type Channel {
+  channelId: Int!
+  unifiedEntityId: ID!
+  name: String!
+  number: Int!
+  category: String!
+  categoryName: String!
+  description: String!
+  logo(params: ArtworkParams): Artwork!
+  isHd: Boolean!
+  isFavorite: Boolean!
+  isKids: Boolean!
+  access: Access!
+  sourceKind: SourceKind!
+  "true → yayın akışı örnek veridir (gerçek kanalın gerçek akışı değildir)"
+  isSampleSchedule: Boolean!
+  now: ProgramAiring
+  next: ProgramAiring
+  airings(from: DateTime!, to: DateTime!): [ProgramAiring!]!
+}
+
+type Catchup {
+  available: Boolean!
+  until: DateTime
+}
+
+type ProgramAiring {
+  airingId: ID!
+  unifiedEntityId: ID!
+  channel: Channel!
+  title: String!
+  synopsis: String!
+  "haber | film | dizi | spor | belgesel | cocuk | program | muzik"
+  kind: String!
+  startAt: DateTime!
+  endAt: DateTime!
+  liveState: LiveState!
+  "Program başladıktan sonra baştan izlenebilir mi"
+  startOver: Boolean!
+  catchup: Catchup!
+  "Bu profil bu yayın için hatırlatma kurdu mu"
+  hasReminder: Boolean!
+  "Katalogdaki karşılığı (varsa)"
+  video: Video
+  artwork(params: ArtworkParams): Artwork!
+  access: Access!
+}
+
+# ───────────── Sayfa şeması: Page → rows[] → items[] ─────────────
+
+"Her kart hangi satırın kaçıncı sırasında gösterildiğini taşır (tctx)"
+type Track {
+  row: Int!
+  pos: Int!
+  rowId: ID!
+  trackId: Int!
+  entityId: ID!
+  tctx: String!
+}
+union RowEntity = Movie | Show | Episode | Channel | ProgramAiring | Collection
+type RowItem {
+  kind: EntityKind!
+  track: Track!
+  entity: RowEntity!
+}
+type PageRow {
+  rowId: ID!
+  type: RowType!
+  title: String
+  "Satırın yeniden çekilme süresi (canlı satırlar 30–60 sn)"
+  ttlSec: Int!
+  trackId: Int!
+  items: [RowItem!]!
+  "BRIDGE satırında hedef mod: 'film-dizi' | 'canli'"
+  bridgeTo: String
+}
+type Page {
+  id: ID!
+  expires: DateTime!
+  serverTime: DateTime!
+  rows: [PageRow!]!
+}
+"İstemci çizebildiği satır tiplerini ve varlık türlerini bildirir; sunucu tanınmayanı hiç yollamaz"
+input PageCapabilitiesInput {
+  rowTypes: [RowType!]!
+  entityKinds: [EntityKind!]!
+}
+
+# ───────────── Arama (yetenek pazarlığı) ─────────────
+
+input EntityTreatmentCapabilityInput {
+  canHandleEntityKinds: [EntityKind!]!
+}
+input EntityTreatmentCapabilitiesInput {
+  standardBoxshot: EntityTreatmentCapabilityInput
+  standardChannelTile: EntityTreatmentCapabilityInput
+  standardAiringRow: EntityTreatmentCapabilityInput
+  standardPersonChip: EntityTreatmentCapabilityInput
+  standardDestination: EntityTreatmentCapabilityInput
+  standardSuggestion: EntityTreatmentCapabilityInput
+}
+input TreatmentCapabilitiesInput {
+  capabilitiesByEntityTreatment: EntityTreatmentCapabilitiesInput!
+}
+input SectionTreatmentCapabilitiesInput {
+  standard: TreatmentCapabilitiesInput
+}
+input SectionCapabilitiesInput {
+  capabilitiesBySectionTreatment: SectionTreatmentCapabilitiesInput!
+}
+input CapabilitiesBySectionInput {
+  searchList: SectionCapabilitiesInput
+  searchGallery: SectionCapabilitiesInput
+  searchLive: SectionCapabilitiesInput
+  "Tahmin modelinin önerdiği (doğrudan eşleşmeyen) sonuçlar"
+  searchPredicted: SectionCapabilitiesInput
+}
+input SearchPageCapabilitiesInput {
+  capabilitiesBySection: CapabilitiesBySectionInput!
+}
+input SearchFiltersInput {
+  genreIds: [Int!]
+  "all | film | dizi"
+  kind: String
+  "all | 2020 | 2010 | old"
+  year: String
+  "true → yalnız paketimde olanlar"
+  entitledOnly: Boolean
+  "rel | new | az"
+  sort: String
+}
+input SearchOptionsInput {
+  pageCapabilities: SearchPageCapabilitiesInput!
+  filters: SearchFiltersInput
+  pageSize: Int
+  "true → yazım düzeltmesi yapılmaz (kullanıcı 'bunun yerine … ara' dediğinde)"
+  exactTerm: Boolean
+}
+
+type SearchEntity {
+  unifiedEntityId: ID!
+  kind: EntityKind!
+  displayString: String!
+  "Çizim biçimi: standardBoxshot | standardChannelTile | standardAiringRow | standardPersonChip | standardDestination | standardSuggestion"
+  treatment: String!
+  track: Track!
+  "Yazım düzeltmesiyle bulunduysa true"
+  fuzzy: Boolean!
+  video: Video
+  channel: Channel
+  airing: ProgramAiring
+  person: Person
+  collection: Collection
+  genre: Genre
+  "Sorgu bağlamına göre seçilmiş görsel"
+  contextualArtwork: Artwork
+  "true → metin eşleşmesiyle değil, tahmin modeliyle geldi"
+  predicted: Boolean!
+  "Modelin tıklanma olasılığı tahmini (0–1)"
+  score: Float
+  "Kullanıcıya gösterilen kısa gerekçe: 'Sana özel' · 'Sintel ile ilgili' · 'Çok arananlar'"
+  reason: String
+  "Puanın bileşenleri (Kaputun altı için)"
+  explain: [SearchFeature!]
+}
+"Tahmin modelinin bir sonuca verdiği puanın bileşeni"
+type SearchFeature {
+  "metin | begeni | populerlik | tiklanma | yenilik | devam"
+  name: String!
+  value: Float!
+  weight: Float!
+  contribution: Float!
+}
+"Yazılan önekten model tahmini sorgu tamamlaması"
+type SearchPrediction {
+  text: String!
+  "TITLE | PERSON | GENRE | COLLECTION | CHANNEL | QUERY"
+  kind: String!
+  unifiedEntityId: ID
+  score: Float!
+}
+enum SearchFeedbackAction {
+  CLICK
+  PLAY
+  ADD_TO_LIST
+  DISMISS
+}
+interface SearchSection {
+  id: ID!
+  displayString: String!
+  "Bölüm bazında yaşam süresi: katalog saatler, canlı 60 sn"
+  expires: DateTime!
+  entities: [SearchEntity!]!
+}
+"Öneri listesi ('Keşfetmeye devam et')"
+type SearchListSection implements SearchSection {
+  id: ID!
+  displayString: String!
+  expires: DateTime!
+  entities: [SearchEntity!]!
+}
+"Sonuç ızgarası ('Film ve Diziler')"
+type SearchGallerySection implements SearchSection {
+  id: ID!
+  displayString: String!
+  expires: DateTime!
+  entities: [SearchEntity!]!
+  totalCount: Int!
+}
+"Şu an canlı / yayın akışı sonuçları"
+type SearchLiveSection implements SearchSection {
+  id: ID!
+  displayString: String!
+  expires: DateTime!
+  entities: [SearchEntity!]!
+}
+"Tahmin modelinin önerileri: 'Bunlar ilgini çekebilir' · 'Sana özel öneriler' · '‹Başlık› ile ilgili'"
+type SearchPredictedSection implements SearchSection {
+  id: ID!
+  displayString: String!
+  expires: DateTime!
+  entities: [SearchEntity!]!
+}
+type SearchCorrection {
+  mode: SearchCorrectionMode!
+  originalTerm: String!
+  correctedTerm: String!
+}
+type SearchPage {
+  searchTerm: String!
+  requestId: ID!
+  trackId: Int!
+  "Tüm sayfanın yaşam süresi (en kısa bölümünki)"
+  expires: DateTime!
+  correction: SearchCorrection
+  sections: [SearchSection!]!
+  "Sonuç yoksa gösterilecek yedek bölümler (popüler + şu an canlı)"
+  isFallback: Boolean!
+  recentSearches: [String!]!
+  "Yazılan metnin model tahmini tamamlamaları"
+  predictions: [SearchPrediction!]!
+  "Sıralamayı yapan modelin sürümü ve öğrenme adımı, ör. 'lr-1 · 42 güncelleme'"
+  modelVersion: String!
+}
+
+# ───────────── Üyelik / profil ─────────────
+
+type Profile {
+  guid: ID!
+  name: String!
+  avatar(params: ArtworkParams): Artwork!
+  isKids: Boolean!
+  maturityLevel: Int!
+  isActive: Boolean!
+  avatarKey: String!
+  isLocked: Boolean!
+}
+type Account {
+  accountId: ID!
+  planName: String!
+  products: [String!]!
+  profiles: [Profile!]!
+}
+type MembershipStatusResult {
+  status: MembershipStatus!
+  account: Account
+  activeProfile: Profile
+}
+
+"Göz atma sayfası üstü duyuru (Netflix CLCS interstitial karşılığı)"
+type Interstitial {
+  id: ID!
+  location: String!
+  title: String!
+  body: String!
+  cta: String!
+  href: String!
+}
+
+type Notification {
+  id: ID!
+  kind: String!
+  title: String!
+  body: String!
+  href: String
+  createdAt: DateTime!
+  read: Boolean!
+}
+
+"Oynatıcı kabuğunun gösterdiği üst veri (akışın kendisi MSL manifest ucundan gelir)"
+type PlaybackMetadata {
+  viewableId: ID!
+  title: String!
+  "S1 B3 · Bölüm adı | kanal adı"
+  subtitle: String
+  live: Boolean!
+  video: Video
+  channel: Channel
+  airing: ProgramAiring
+  nextEpisode: Episode
+  "Jenerik başlangıcı (sn); sonraki bölüm önerisi bu andan sonra çıkar"
+  creditsOffsetSec: Int
+  bookmark: Bookmark
+  access: Access!
+  "Komşu kanallar (zap ve manifest ön hazırlığı için)"
+  previousChannel: Channel
+  nextChannel: Channel
+}
+
+type PlaylistResult {
+  video: Video!
+  isInPlaylist: Boolean!
+}
+type ThumbResult {
+  video: Video!
+  thumbRating: ThumbRating!
+}
+type BookmarkResult {
+  viewableId: ID!
+  bookmark: Bookmark
+  watchStatus: WatchStatus!
+}
+
+type Library {
+  myList: [Video!]!
+  continueWatching: [Video!]!
+  liked: [Video!]!
+  favoriteChannels: [Channel!]!
+}
+
+type Query {
+  membershipStatus: MembershipStatusResult!
+  video(videoId: Int!): Video
+  videos(videoIds: [Int!]!): [Video]!
+  collection(collectionId: Int!): Collection
+  person(personId: Int!): Person
+  genre(genreId: Int!): Genre
+  "Mikro tür sayfası (satırdaki 'Tümünü Gör')"
+  microgenre(id: ID!): Microgenre
+  channel(channelId: Int!): Channel
+  channels(category: String, favoritesOnly: Boolean): [Channel!]!
+  airing(airingId: ID!): ProgramAiring
+  "Canlı TV ana sayfası (yeni sistem). Film & Dizi satırları eski sistemden (Falcor) gelir."
+  livePage(capabilities: PageCapabilitiesInput!): Page!
+  searchPage(searchTerm: String!, options: SearchOptionsInput!): SearchPage!
+  library: Library!
+  interstitial(location: String!): Interstitial
+  notifications: [Notification!]!
+  playbackMetadata(viewableId: ID!): PlaybackMetadata
+  "Hafif tahmin ucu: TV ekran klavyesi ve mobilde yazarken tamamlamalar"
+  searchPredictions(prefix: String!, first: Int = 8): [SearchPrediction!]!
+  "Arama kutusu boşken gösterilen, profile göre tahmin edilmiş başlıklar"
+  popularSearches(first: Int = 12): [Video!]!
+  "Bu profilin kurduğu yayın hatırlatmaları"
+  reminders: [ProgramAiring!]!
+}
+
+type Mutation {
+  addToPlaylist(videoId: Int!, tctx: String): PlaylistResult!
+  removeFromPlaylist(videoId: Int!): PlaylistResult!
+  setThumbRating(videoId: Int!, rating: ThumbRating!): ThumbResult!
+  "Oynatıcı kalp atışı: konumu kaydeder, watchStatus'u günceller"
+  setBookmark(viewableId: ID!, positionSec: Int!, durationSec: Int): BookmarkResult!
+  setLastChannel(channelId: Int!): Boolean!
+  toggleFavoriteChannel(channelId: Int!): Channel!
+  dismissInterstitial(id: ID!): Boolean!
+  recordSearch(term: String!): Boolean!
+  clearRecentSearches: Boolean!
+  markNotificationsRead(ids: [ID!]): Boolean!
+  "Arama sonucuna verilen tepki; tahmin modeli bundan öğrenir"
+  recordSearchFeedback(
+    requestId: ID!
+    searchTerm: String!
+    unifiedEntityId: ID!
+    position: Int!
+    action: SearchFeedbackAction!
+  ): Boolean!
+  "Yaklaşan yayın için hatırlatma kur / kaldır; yayın başlayınca bildirim gelir"
+  setReminder(airingId: ID!, enabled: Boolean!): ProgramAiring
+}

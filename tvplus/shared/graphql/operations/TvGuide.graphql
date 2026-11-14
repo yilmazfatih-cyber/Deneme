@@ -1,0 +1,14 @@
+# TV Rehberi: kanallar + gün penceresindeki yayınlar (hatırlatma durumu ve üst şerit görseliyle).
+query TvGuide($from: DateTime!, $to: DateTime!) {
+  channels {
+    ...ChannelCard
+    airings(from: $from, to: $to) {
+      ...AiringBrief
+      synopsis
+      hasReminder
+      art: artwork(params: { width: 480 }) {
+        ...ArtworkFields
+      }
+    }
+  }
+}

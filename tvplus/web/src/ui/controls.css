@@ -1,0 +1,246 @@
+/* Sekmeler, haplar, metin alanı, PIN, anahtar (Controls.tsx). */
+
+/* ───────────── Sekmeler ───────────── */
+.ui-tabs {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  border-top: 1px solid var(--line);
+}
+.ui-tabs::-webkit-scrollbar {
+  display: none;
+}
+.ui-tab {
+  position: relative;
+  flex: none;
+  height: 48px;
+  padding: 0;
+  color: var(--text-3);
+  font-size: 15px;
+  font-weight: 700;
+}
+.ui-tab::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: transparent;
+}
+.ui-tab[aria-selected='true'] {
+  color: var(--text-1);
+}
+.ui-tab[aria-selected='true']::before {
+  background: var(--accent);
+}
+.ui-tab:hover {
+  color: var(--text-1);
+}
+
+/* ───────────── Haplar ───────────── */
+.ui-pillbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 var(--gutter);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.ui-pillbar::-webkit-scrollbar {
+  display: none;
+}
+.ui-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex: none;
+  height: 32px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--text-1);
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+.ui-pill:has(.ui-icon) {
+  padding-right: 10px;
+}
+.ui-pill.is-selected {
+  border-color: var(--text-1);
+  background: rgba(255, 255, 255, 0.16);
+}
+.ui-pill:active {
+  background: rgba(255, 255, 255, 0.12);
+}
+.ui-pill-clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 50%;
+  color: var(--text-1);
+}
+
+/* ───────────── Metin alanı ───────────── */
+.ui-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.ui-field__label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-3);
+}
+.ui-field__input {
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-button);
+  background: var(--surface-3);
+  color: var(--text-1);
+  font-size: 16px; /* iOS yakınlaştırmasın */
+}
+.ui-field__input::placeholder {
+  color: var(--text-4);
+}
+.ui-field__input:focus {
+  outline: none;
+  border-color: var(--text-1);
+}
+.ui-field.has-error .ui-field__input {
+  border-color: var(--accent);
+}
+.ui-field__note {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-3);
+}
+.ui-field.has-error .ui-field__note {
+  color: var(--accent);
+}
+
+/* ───────────── PIN ───────────── */
+.ui-pin {
+  position: relative;
+  display: inline-flex;
+  gap: clamp(10px, 1.2vw, 18px);
+  cursor: text;
+}
+.ui-pin__input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  border: 0;
+  font-size: 16px;
+  caret-color: transparent;
+  cursor: text;
+}
+.ui-pin__box {
+  position: relative;
+  width: clamp(56px, 5.5vw, 84px);
+  aspect-ratio: 1;
+  border: 1px solid var(--text-1);
+  border-radius: 2px;
+  background: transparent;
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease;
+}
+.ui-pin__box.is-filled::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 22%;
+  height: 22%;
+  border-radius: 50%;
+  background: var(--text-1);
+}
+.ui-pin:focus-within .ui-pin__box.is-current {
+  transform: scale(1.08);
+  border-width: 2px;
+}
+.ui-pin.has-error .ui-pin__box {
+  border-color: var(--accent);
+}
+.ui-pin.has-error {
+  animation: ui-shake 0.35s ease;
+}
+.ui-pin.is-disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+@keyframes ui-shake {
+  20%,
+  60% {
+    transform: translateX(-8px);
+  }
+  40%,
+  80% {
+    transform: translateX(8px);
+  }
+}
+
+/* ───────────── Anahtar ───────────── */
+.ui-switch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 48px;
+}
+.ui-switch__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.ui-switch__label {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-1);
+}
+.ui-switch__desc {
+  font-size: 13px;
+  color: var(--text-3);
+}
+.ui-switch__control {
+  position: relative;
+  flex: none;
+  width: 48px;
+  height: 28px;
+  border-radius: 14px;
+  background: #555;
+  transition: background-color 0.2s ease;
+}
+.ui-switch__thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.2s var(--ease-netflix);
+}
+.ui-switch__control[aria-checked='true'] {
+  background: var(--accent);
+}
+.ui-switch__control[aria-checked='true'] .ui-switch__thumb {
+  transform: translateX(20px);
+  background: var(--on-accent);
+}

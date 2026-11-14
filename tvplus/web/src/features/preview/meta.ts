@@ -1,0 +1,98 @@
+/**
+ * Kart ve önizleme meta satırı için saf yardımcılar: oynatma rozetleri, kaynak adı, kalan süre, yetki metni.
+ */
+import { formatRuntime, formatSeasons } from '../../ui/format'
+import type { BookmarkData, MiniModalVideo, SourceKindName } from './types'
+
+/** Oynatma rozetleri → kısa etiketler (tekrarsız, sabit sıra). */
+export function playbackBadgeLabels(badges: readonly string[]): string[] {
+  const out: string[] = []
+  const has = (b: string) => badges.includes(b)
+  if (has('VIDEO_ULTRA_HD')) out.push('4K')
+  else if (has('VIDEO_HD')) out.push('HD')
+  if (has('AUDIO_FIVE_DOT_ONE')) out.push('5.1')
+  if (has('TEXT_SUBTITLES') || has('TEXT_CLOSED_CAPTIONS')) out.push('Altyazı')
+  return out
+}
+
+const SOURCE_LABELS: Record<SourceKindName, string> = {
+  OWN_CDN: "Kendi CDN'imiz",
+  YOUTUBE: 'YouTube',
+  PROGRESSIVE: 'Tek dosya',
+}
+
+/** Kaynak türleri (ya da SOURCE_* rozetleri) → okunur adlar. */
+export function sourceLabels(kinds: readonly string[]): string[] {
+  const out: string[] = []
+  for (const raw of kinds) {
+    const k = (raw.startsWith('SOURCE_') ? raw.slice(7) : raw) as SourceKindName
+    const label = SOURCE_LABELS[k]
+    if (label && !out.includes(label)) out.push(label)
+  }
+  return out
+}
+
+/** Kalan süre: "23 dk kaldı" / "1 sa 5 dk kaldı"; bilinmiyorsa null. */
+export function remainingText(
+  positionSec: number | null | undefined,
+  runtimeSec: number | null | undefined,
+): string | null {
+  if (!runtimeSec || runtimeSec <= 0 || positionSec == null) return null
+  const m = Math.max(1, Math.round((runtimeSec - positionSec) / 60))
+  if (runtimeSec - positionSec <= 0) return null
+  if (m < 60) return `${m} dk kaldı`
+  const h = Math.floor(m / 60)
+  const r = m % 60
+  return r ? `${h} sa ${r} dk kaldı` : `${h} sa kaldı`
+}
+
+/** Yarım kalmış mı? (başlamış ve bitmemiş) */
+export function isInProgress(bookmark: Pick<BookmarkData, 'positionSec' | 'progress'> | null | undefined): boolean {
+  return !!bookmark && bookmark.positionSec > 0 && bookmark.progress < 0.95
+}
+
+/** Pakette yoksa karttaki tek satır ("Sinema Paketi ile"); oynatılabiliyorsa null. */
+export function lockedTextOf(
+  access: { state: string; reasonText: string | null } | null | undefined,
+  fallback?: string | null,
+): string | null {
+  if (!access || access.state === 'PLAYABLE') return null
+  return access.reasonText ?? fallback ?? 'Paketinde yok'
+}
+
+/** Kart rozeti: kilitliyse rozet gösterilmez (kart başına tek işaret). LOCKED türü rozet değildir. */
+export function badgeTextOf(badge: { kind: string; text: string } | null | undefined, locked: boolean): string | null {
+  if (!badge || locked || badge.kind === 'LOCKED' || badge.kind === 'TOP10') return null
+  return badge.text
+}
+
+/** Ekran okuyucu ve görünür meta için kısa satır: "2024 · 1 sa 28 dk" */
+export function joinMeta(parts: (string | number | null | undefined | false)[]): string {
+  return parts.filter((p) => p !== null && p !== undefined && p !== false && p !== '').join(' · ')
+}
+
+/**
+ * Eşleşme yüzdesi bu değerin altındaysa gösterilmez (Netflix de düşük eşleşmeyi yazmaz: "%4 Eşleşme" yeşil bir
+ * övgü gibi okunur ve yanıltır).
+ */
+export const MATCH_MIN = 50
+
+/** Eşleşme / yeni / yaş / süre / HD satırı ve etiketler için saf seçimler. */
+export function previewMeta(
+  video: Pick<
+    MiniModalVideo,
+    '__typename' | 'badge' | 'runtimeSec' | 'displayRuntime' | 'seasonCount' | 'playbackBadges' | 'matchScore'
+  >,
+): { match: string | null; isNew: boolean; length: string; quality: string | null } {
+  const match =
+    typeof video.matchScore === 'number' && Number.isFinite(video.matchScore) && video.matchScore >= MATCH_MIN
+      ? `%${Math.round(Math.min(100, video.matchScore))} Eşleşme`
+      : null
+  const isNew = video.badge?.kind === 'NEW' || video.badge?.kind === 'NEW_EPISODE'
+  const length =
+    video.__typename === 'Show'
+      ? formatSeasons(video.seasonCount) || video.displayRuntime
+      : formatRuntime(video.runtimeSec) || video.displayRuntime
+  const quality = playbackBadgeLabels(video.playbackBadges ?? []).find((b) => b === '4K' || b === 'HD') ?? null
+  return { match, isNew, length, quality }
+}

@@ -1,0 +1,226 @@
+[
+  {
+    "channelId": 1,
+    "slug": "tvplus-sinema",
+    "name": "TV+ Sinema",
+    "number": 1,
+    "category": "film-dizi",
+    "description": "Açık kaynaklı filmleri gece gündüz kesintisiz arka arkaya yayınlar.",
+    "logo": "tv-plus-kanal.png",
+    "isHd": true,
+    "favorite": true,
+    "kids": false,
+    "source": {
+      "type": "LINEAR",
+      "playlist": [80010001, 80010002]
+    },
+    "requiredProduct": null
+  },
+  {
+    "channelId": 20,
+    "slug": "trt-haber",
+    "name": "TRT Haber",
+    "number": 20,
+    "category": "haber",
+    "description": "24 saat haber yayını.",
+    "logo": "trt-haber.png",
+    "isHd": true,
+    "favorite": true,
+    "kids": false,
+    "source": {
+      "type": "YOUTUBE_LIVE",
+      "channelId": "UCBgTP2LOFVPmq15W-RH-WXA"
+    },
+    "requiredProduct": null
+  },
+  {
+    "channelId": 21,
+    "slug": "ntv",
+    "name": "NTV",
+    "number": 21,
+    "category": "haber",
+    "description": "24 saat haber yayını.",
+    "logo": "ntv.png",
+    "isHd": true,
+    "favorite": true,
+    "kids": false,
+    "source": {
+      "type": "YOUTUBE_LIVE",
+      "channelId": "UC9TDTjbOjFB9jADmPhSAPsw"
+    },
+    "requiredProduct": null
+  },
+  {
+    "channelId": 22,
+    "slug": "haberturk-tv",
+    "name": "Habertürk TV",
+    "number": 22,
+    "category": "haber",
+    "description": "24 saat haber yayını.",
+    "logo": "haberturk.png",
+    "isHd": true,
+    "favorite": true,
+    "kids": false,
+    "source": {
+      "type": "YOUTUBE_LIVE",
+      "channelId": "UCn6dNfiRE_Xunu7iMyvD7AA"
+    },
+    "requiredProduct": null
+  },
+  {
+    "channelId": 23,
+    "slug": "cnn-turk",
+    "name": "CNN Türk",
+    "number": 23,
+    "category": "haber",
+    "description": "24 saat haber yayını.",
+    "logo": "cnn-turk.png",
+    "isHd": true,
+    "favorite": true,
+    "kids": false,
+    "source": {
+      "type": "YOUTUBE_LIVE",
+      "channelId": "UCV6zcRug6Hqp1UX_FdyUeBg"
+    },
+    "requiredProduct": null
+  },
+  {
+    "channelId": 24,
+    "slug": "haber-global",
+    "name": "Haber Global",
+    "number": 24,
+    "category": "haber",
+    "description": "24 saat haber yayını.",
+    "logo": "haber-global.png",
+    "isHd": true,
+    "favorite": false,
+    "kids": false,
+    "source": {
+      "type": "YOUTUBE_LIVE",
+      "channelId": "UCtc-a9ZUIg0_5HpsPxEO7Qg"
+    },
+    "requiredProduct": null
+  },
+  {
+    "channelId": 26,
+    "slug": "sozcu-tv",
+    "name": "SÖZCÜ TV",
+    "number": 26,
+    "category": "haber",
+    "description": "24 saat haber ve yorum yayını.",
+    "logo": "szc.png",
+    "isHd": true,
+    "favorite": false,
+    "kids": false,
+    "source": {
+      "type": "YOUTUBE_LIVE",
+      "channelId": "UCOulx_rep5O4i9y6AyDqVvw",
+      "videoId": "ztmY_cCtUl0"
+    },
+    "requiredProduct": null
+  },
+  {
+    "channelId": 27,
+    "slug": "tv100",
+    "name": "tv100",
+    "number": 27,
+    "category": "haber",
+    "description": "24 saat haber yayını.",
+    "logo": "tv100.png",
+    "isHd": true,
+    "favorite": false,
+    "kids": false,
+    "source": {
+      "type": "YOUTUBE_LIVE",
+      "channelId": "UCndsdUW_oPLqpQJY9J8oIRg"
+    },
+    "requiredProduct": null
+  },
+  {
+    "channelId": 28,
+    "slug": "a-haber",
+    "name": "A Haber",
+    "number": 28,
+    "category": "haber",
+    "description": "24 saat haber yayını.",
+    "logo": "a-haber.png",
+    "isHd": true,
+    "favorite": false,
+    "kids": false,
+    "source": {
+      "type": "YOUTUBE_LIVE",
+      "channelId": "UCKQhfw-lzz0uKnE1fY1PsAA"
+    },
+    "requiredProduct": null
+  },
+  {
+    "channelId": 29,
+    "slug": "tgrt-haber",
+    "name": "TGRT Haber",
+    "number": 29,
+    "category": "haber",
+    "description": "24 saat haber yayını.",
+    "logo": null,
+    "isHd": true,
+    "favorite": false,
+    "kids": false,
+    "source": {
+      "type": "YOUTUBE_LIVE",
+      "channelId": "UCzgrZ-CndOoylh2_e72nSBQ",
+      "videoId": "WX29nlgdqho"
+    },
+    "requiredProduct": null
+  },
+  {
+    "channelId": 30,
+    "slug": "trt-world",
+    "name": "TRT World",
+    "number": 30,
+    "category": "haber",
+    "description": "İngilizce 24 saat uluslararası haber yayını.",
+    "logo": null,
+    "isHd": true,
+    "favorite": false,
+    "kids": false,
+    "source": {
+      "type": "YOUTUBE_LIVE",
+      "channelId": "UC7fWeaHhqgM4Ry-RMpM2YYw"
+    },
+    "requiredProduct": null
+  },
+  {
+    "channelId": 32,
+    "slug": "24-tv",
+    "name": "24 TV",
+    "number": 32,
+    "category": "haber",
+    "description": "24 saat haber yayını.",
+    "logo": null,
+    "isHd": true,
+    "favorite": false,
+    "kids": false,
+    "source": {
+      "type": "YOUTUBE_LIVE",
+      "channelId": "UCN7VYCsI4Lx1-J4_BtjoWUA"
+    },
+    "requiredProduct": null
+  },
+  {
+    "channelId": 60,
+    "slug": "trt-cocuk",
+    "name": "TRT Çocuk",
+    "number": 60,
+    "category": "cocuk",
+    "description": "Çocuklar için dizi, film ve eğitici programların yayını.",
+    "logo": "trt-cocuk.png",
+    "isHd": true,
+    "favorite": false,
+    "kids": true,
+    "source": {
+      "type": "YOUTUBE_LIVE",
+      "channelId": "UCrFf5dtMe6M1XJHqbKJ4X6Q",
+      "videoId": "-umyX-Oxjzk"
+    },
+    "requiredProduct": null
+  }
+]

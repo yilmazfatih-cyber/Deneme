@@ -1,0 +1,9 @@
+query GenrePage($genreId: Int!) {
+  genre(genreId: $genreId) {
+    genreId
+    name
+    videos(first: 60) {
+      ...CardVideo
+    }
+  }
+}

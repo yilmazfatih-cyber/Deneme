@@ -1,0 +1,428 @@
+/* anka — kabuklar: masaüstü üst menü (UX_SPEC §2), mobil üst çubuk + alt sekmeler (§3), odak düzeni, açılış. */
+
+.app-splash {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  background: var(--bg);
+}
+.app-skip {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: calc(var(--z-header) + 1);
+  padding: 8px 14px;
+  border-radius: var(--radius-button);
+  background: var(--text-1);
+  color: #000;
+  font-weight: 700;
+  transform: translateY(-200%);
+}
+.app-skip:focus {
+  transform: none;
+}
+.app-bare {
+  min-height: 100dvh;
+  padding-top: 48px;
+}
+
+/* ───────────── Masaüstü ───────────── */
+.app-desktop {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+.app-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-header);
+  display: flex;
+  align-items: center;
+  height: 68px;
+  padding: 0 var(--gutter);
+  background-color: transparent;
+  background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.7) 10%, transparent);
+  transition: background-color 0.4s ease;
+}
+.app-header.is-solid {
+  background-color: var(--bg);
+}
+.app-header__logo {
+  display: flex;
+  align-items: center;
+  flex: none;
+  margin-right: 25px;
+}
+.app-nav ul {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.app-nav__link {
+  display: inline-block;
+  color: var(--text-2);
+  font-size: 14px;
+  line-height: 68px;
+  white-space: nowrap;
+  transition: color 0.4s ease;
+}
+.app-nav__link:hover {
+  color: var(--text-3);
+}
+.app-nav__link.is-active {
+  color: var(--text-1);
+  font-weight: 700;
+  cursor: default;
+}
+/* Dar masaüstünde bağlantılar "Göz At ▾" menüsüne toplanır */
+.app-nav-compact {
+  display: none;
+}
+.app-nav-compact__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 68px;
+  color: var(--text-1);
+  font-size: 14px;
+  font-weight: 700;
+}
+.app-nav-compact .ui-menu__panel {
+  top: calc(100% - 8px);
+  min-width: 240px;
+  border-top: 2px solid var(--text-1);
+}
+.app-nav-compact .ui-menu__panel::before {
+  display: none;
+}
+.app-nav-compact .ui-menu__item {
+  justify-content: center;
+  color: var(--text-3);
+}
+.app-nav-compact .ui-menu__item[aria-current='true'] {
+  color: var(--text-1);
+}
+@media (max-width: 1099px) {
+  .app-nav {
+    display: none;
+  }
+  .app-nav-compact {
+    display: inline-flex;
+  }
+}
+.app-header__right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-left: auto;
+  flex: none;
+}
+.app-header__bell {
+  display: flex;
+  align-items: center;
+}
+
+/* Avatar menüsü */
+.app-avatarmenu__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 40px;
+}
+.app-avatarmenu__caret {
+  transition: transform 0.367s cubic-bezier(0.21, 0, 0.07, 1);
+}
+.app-avatarmenu__btn.is-open .app-avatarmenu__caret,
+.app-avatarmenu:hover .app-avatarmenu__caret {
+  transform: rotate(180deg);
+}
+.app-avatarmenu .ui-menu__panel {
+  top: calc(100% + 18px);
+  right: -4px;
+  width: 220px;
+}
+.app-avatarmenu .ui-menu__panel::after {
+  /* Fare tetikten panele geçerken kapanmasın: aradaki boşluğu kapatan görünmez köprü */
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -20px;
+  height: 20px;
+}
+.app-avatarmenu__name {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Arama kutusu (features/search SearchBox'ın üst menüdeki çerçevesi) */
+.app-hsearch {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.app-hsearch .app-hsearch__box.tvp-searchbox {
+  width: 280px;
+  height: 36px;
+  padding: 0 4px 0 10px;
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 0;
+  background: rgba(0, 0, 0, 0.75);
+  color: var(--text-1);
+  outline: none;
+  animation: app-hsearch-open 0.3s var(--ease-netflix);
+  transform-origin: right center;
+}
+.app-hsearch .app-hsearch__box.tvp-searchbox input {
+  font-size: 14px;
+}
+.app-hsearch .app-hsearch__box .tvp-searchbox__clear {
+  width: 28px;
+  height: 28px;
+  border-radius: 0;
+}
+@keyframes app-hsearch-open {
+  from {
+    width: 36px;
+  }
+}
+
+/* İçerik: menünün altından başlar; vitrinli sayfada menü vitrinin üstüne biner. */
+.app-main {
+  flex: 1;
+  min-width: 0;
+  padding-top: 68px;
+  padding-bottom: 48px;
+}
+.app-main:focus {
+  outline: none;
+}
+.app-desktop.is-bleed .app-main {
+  padding-top: 0;
+}
+
+.app-footer {
+  width: min(980px, 100% - 2 * var(--gutter));
+  margin: 0 auto;
+  padding: 32px 0 40px;
+  color: var(--text-4);
+  font-size: 13px;
+}
+.app-footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 32px;
+  margin: 0 0 16px;
+  padding: 0;
+  list-style: none;
+}
+.app-footer__links a,
+.app-footer__links button {
+  color: var(--text-4);
+  font-size: 13px;
+}
+.app-footer__links a:hover,
+.app-footer__links button:hover {
+  text-decoration: underline;
+}
+.app-footer__note {
+  margin: 0;
+  font-size: 12px;
+}
+
+/* ───────────── Mobil ───────────── */
+.app-mobile {
+  min-height: 100dvh;
+}
+.app-mtop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-header);
+  padding-top: var(--safe-top);
+  transition:
+    background-color 0.3s ease,
+    backdrop-filter 0.3s ease;
+}
+.app-mtop.is-clear {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.45), transparent);
+}
+.app-mtop.is-solid {
+  background: rgba(20, 20, 20, 0.88);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+}
+.app-mtop__bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 56px;
+  padding: 0 8px 0 var(--gutter);
+}
+.app-mtop__title {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.app-mtop__logo {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+.app-mtop__actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+}
+.app-mtop__actions .ui-iconbtn {
+  min-width: 44px;
+  min-height: 44px;
+}
+.app-mtop__pills {
+  overflow: hidden;
+  max-height: 56px;
+  transition:
+    max-height 0.25s var(--ease-netflix),
+    opacity 0.2s ease;
+}
+.app-mtop__pills:empty {
+  display: none;
+}
+.app-mtop__pills > .ui-pillbar {
+  padding-top: 4px;
+  padding-bottom: 12px;
+}
+.app-mtop.pills-hidden .app-mtop__pills {
+  max-height: 0;
+  opacity: 0;
+}
+.app-mmain {
+  min-width: 0;
+  padding-top: var(--app-top, calc(56px + var(--safe-top)));
+  padding-bottom: calc(var(--app-bottom, calc(56px + var(--safe-bottom))) + 24px);
+}
+.app-mmain:focus {
+  outline: none;
+}
+.app-mobile.no-topbar .app-mmain {
+  padding-top: 0;
+}
+.app-mbottom {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--z-header);
+}
+.app-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  height: calc(56px + var(--safe-bottom));
+  padding-bottom: var(--safe-bottom);
+  background: rgba(18, 18, 18, 0.94);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+.app-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  min-width: 0;
+  color: var(--text-4);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.1;
+  text-align: center;
+}
+.app-tab > span {
+  max-width: 100%;
+  padding: 0 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.app-tab.is-active {
+  color: var(--text-1);
+}
+.app-tab__avatar {
+  border-radius: 4px;
+  opacity: 0.75;
+}
+.app-tab.is-active .app-tab__avatar {
+  opacity: 1;
+  box-shadow: 0 0 0 2px var(--text-1);
+}
+
+/* ───────────── Odak düzeni (/bagla) ───────────── */
+.app-focus {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+.app-focus__head {
+  display: flex;
+  align-items: center;
+  height: 68px;
+  padding: var(--safe-top) var(--gutter) 0;
+  border-bottom: 1px solid var(--line);
+}
+.app-focus__main {
+  flex: 1;
+  padding: 24px 0 48px;
+}
+
+/* ───────────── Yer tutucu ve iskelet ───────────── */
+.app-placeholder {
+  display: flex;
+  flex-direction: column;
+  gap: var(--row-gap);
+  padding: 24px 0;
+}
+.app-placeholder__head {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.app-page-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: var(--row-gap);
+}
+.app-page-skeleton__spacer {
+  height: 24px;
+}
+
+/* ───────────── Kabuk örneği (#/_ui/kabuk) ───────────── */
+.app-demo__rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--row-gap);
+}
+
+/* "Kaputun altı" başlatıcısı (devtools/launcher.css) mobilde içerik üstünde durmaz: yalnız TV+'ım'da görünür.
+   Panelin kendisi açıkken etkilenmez. */
+@media (max-width: 899px) {
+  html[data-kaput='gizle'] .kp-launcher {
+    display: none;
+  }
+}

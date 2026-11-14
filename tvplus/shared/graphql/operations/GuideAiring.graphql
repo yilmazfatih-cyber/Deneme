@@ -1,0 +1,25 @@
+# Yayın penceresi (Rehber bloğu, Canlı TV kartı): tek yayının görseli, özeti ve hatırlatma durumu.
+query GuideAiring($airingId: ID!) {
+  airing(airingId: $airingId) {
+    ...AiringBrief
+    synopsis
+    hasReminder
+    art: artwork(params: { width: 960 }) {
+      ...ArtworkFields
+    }
+    video {
+      videoId
+    }
+    channel {
+      channelId
+      name
+      number
+      categoryName
+      sourceKind
+      isSampleSchedule
+      logo(params: { width: 128 }) {
+        ...ArtworkFields
+      }
+    }
+  }
+}
