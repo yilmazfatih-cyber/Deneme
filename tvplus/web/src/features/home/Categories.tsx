@@ -50,6 +50,39 @@ export function useGenreLinks(category: LolomoCategory): GenreLink[] {
   return links.length ? links.sort((a, b) => a.name.localeCompare(b.name, 'tr')) : ALL_GENRES
 }
 
+/**
+ * Profile özel alt türler: ana sayfa lolomo'sundaki mikro tür satırları ("Duygusal Açık Kaynak Filmler" gibi).
+ * Kategoriler listesinde türlerin üstünde ayrı bir grup olarak gösterilir.
+ */
+export function useSubgenreLinks(enabled: boolean): GenreLink[] {
+  const root = lolomoRoot('home')
+  const top = useFalcorView<{ lolomo?: { summary?: LolomoSummary } }>(enabled ? [summaryPath(root)] : [], {
+    fetch: enabled,
+  })
+  const length = top.json.lolomo?.summary?.length ?? 0
+  const all = useFalcorView<{ lolomo?: Record<string, { summary?: ListSummary }> }>(
+    enabled && length > 0 ? [[...root, { from: 0, to: length - 1 }, 'summary']] : [],
+    { fetch: enabled },
+  )
+  const node = all.json.lolomo ?? {}
+  const links: GenreLink[] = []
+  for (let i = 0; i < length; i++) {
+    const summary = node[String(i)]?.summary
+    if (summary?.microgenreId && summary.displayName && !links.some((l) => l.name === summary.displayName))
+      links.push({ to: `/tur/${encodeURIComponent(summary.microgenreId)}`, name: summary.displayName })
+  }
+  return links
+}
+
+/** Kategoriler listesinin başındaki hızlı erişim bağlantıları. */
+const QUICK_LINKS: GenreLink[] = [
+  { to: '/listem', name: 'Listem' },
+  { to: '/yeni-ve-populer', name: 'Yeni ve Popüler' },
+  { to: '/kisa', name: 'Kısa Videolar' },
+  { to: '/canli', name: 'Canlı TV' },
+  { to: '/rehber', name: 'Yayın Akışı' },
+]
+
 const CATEGORY_PILLS: { category: 'shows' | 'movies'; label: string; to: string }[] = [
   { category: 'shows', label: 'Diziler', to: '/goz-at/diziler' },
   { category: 'movies', label: 'Filmler', to: '/goz-at/filmler' },
@@ -60,6 +93,8 @@ export function BrowsePills({ category }: { category: LolomoCategory }): ReactEl
   const [open, setOpen] = useState(false)
   const genres = useGenreLinks(category)
   const selected = CATEGORY_PILLS.find((p) => p.category === category)
+  // Alt türler yalnız liste açılınca istenir: ana sayfanın ilk çizimi ek istek atmaz.
+  const subgenres = useSubgenreLinks(open && !selected)
   return (
     <>
       <ShellPills label="Kategoriler">
@@ -85,15 +120,37 @@ export function BrowsePills({ category }: { category: LolomoCategory }): ReactEl
         </Pill>
       </ShellPills>
       <Sheet open={open} onClose={() => setOpen(false)} title={selected ? `${selected.label}: Türler` : 'Kategoriler'}>
-        <nav aria-label="Türler">
+        <nav aria-label={selected ? 'Türler' : 'Tüm kategoriler'}>
+          {!selected && (
+            <>
+              <h3 className="gz-cat-group">Hızlı erişim</h3>
+              <ul className="gz-cat-list">
+                {QUICK_LINKS.map((g) => (
+                  <li key={g.to}>
+                    <Link to={g.to} className="gz-cat-list__link" onClick={() => setOpen(false)}>
+                      {g.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              {subgenres.length > 0 && (
+                <>
+                  <h3 className="gz-cat-group">Sana özel alt türler</h3>
+                  <ul className="gz-cat-list">
+                    {subgenres.map((g) => (
+                      <li key={g.to}>
+                        <Link to={g.to} className="gz-cat-list__link" onClick={() => setOpen(false)}>
+                          {g.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+              <h3 className="gz-cat-group">Türler</h3>
+            </>
+          )}
           <ul className="gz-cat-list">
-            {!selected && (
-              <li>
-                <Link to="/listem" className="gz-cat-list__link" onClick={() => setOpen(false)}>
-                  Listem
-                </Link>
-              </li>
-            )}
             {genres.map((g) => (
               <li key={g.to}>
                 <Link to={g.to} className="gz-cat-list__link" onClick={() => setOpen(false)}>

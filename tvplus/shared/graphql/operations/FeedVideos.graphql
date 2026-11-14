@@ -1,0 +1,12 @@
+# Akış kartları ("Yeni ve Popüler"): verilen başlıkların kart bilgisi, Listem durumu ve önizlemesi.
+query FeedVideos($videoIds: [Int!]!) {
+  videos(videoIds: $videoIds) {
+    ...CardVideo
+    isInPlaylist
+    promoVideo {
+      viewableId
+      offset
+      sourceKind
+    }
+  }
+}

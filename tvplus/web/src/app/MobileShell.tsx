@@ -161,7 +161,11 @@ export function MobileShell(): ReactElement {
       <div className={cx('app-mobile', !topBar && 'no-topbar')}>
         <header
           ref={topRef}
-          className={cx('app-mtop', transparent ? 'is-clear' : 'is-solid', pillsHidden && 'pills-hidden')}
+          className={cx(
+            'app-mtop',
+            transparent ? 'is-clear' : 'is-solid',
+            pillsHidden && !options.keepPills && 'pills-hidden',
+          )}
           hidden={!topBar}
         >
           <div className="app-mtop__bar">

@@ -215,6 +215,45 @@ test.describe('Mobil kurgu', () => {
   })
 })
 
+test.describe('Mobil Yeni ve Popüler ve kategoriler', () => {
+  test.skip(({ viewport }) => (viewport?.width ?? 0) >= 900, 'mobil akış')
+
+  test('Yeni ve Popüler: bölüm çipleri, büyük kartlar, Top 10 rakamları; çip bölüme götürür', async ({ page }) => {
+    await signIn(page)
+    await page.goto('/#/yeni-ve-populer')
+    const chips = page.getByRole('navigation', { name: 'Bölümler' })
+    await expect(chips.getByRole('button', { name: 'Herkes Bunları İzliyor' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Herkes Bunları İzliyor', level: 2 })).toBeVisible()
+    const top10 = page.getByRole('region', { name: "Türkiye'de Bugünün Top 10 Dizi Listesi" })
+    await expect(top10.getByRole('article').first()).toBeVisible()
+    await expect(top10.getByRole('article').first()).toHaveAttribute('aria-label', /^1\. /)
+    await expect(top10.getByText('Bugün dizilerde 1 numara')).toBeVisible()
+    await chips.getByRole('button', { name: 'Top 10 Film Listesi' }).click()
+    await expect(
+      page.getByRole('heading', { name: "Türkiye'de Bugünün Top 10 Film Listesi", level: 2 }),
+    ).toBeInViewport()
+    // Karttan Listem'e ekle / çıkar
+    const first = page.getByRole('region', { name: 'Herkes Bunları İzliyor' }).getByRole('article').first()
+    const list = first.getByRole('button', { name: 'Listem' })
+    await list.click()
+    await expect(list).toHaveAttribute('aria-pressed', 'true')
+    await list.click()
+    await expect(list).toHaveAttribute('aria-pressed', 'false')
+    expect(await horizontalOverflow(page)).toBe(0)
+  })
+
+  test('Kategoriler: hızlı erişim, sana özel alt türler ve türler grupları', async ({ page }) => {
+    await signIn(page)
+    await page.getByRole('button', { name: 'Kategoriler' }).click()
+    const nav = page.getByRole('navigation', { name: 'Tüm kategoriler' })
+    await expect(nav.getByRole('heading', { name: 'Hızlı erişim' })).toBeVisible()
+    await expect(nav.getByRole('heading', { name: 'Sana özel alt türler' })).toBeVisible()
+    await expect(nav.getByRole('heading', { name: 'Türler', exact: true })).toBeVisible()
+    await expect(nav.getByRole('link', { name: 'Kısa Videolar' })).toBeVisible()
+    expect(await nav.getByRole('link').count()).toBeGreaterThan(20)
+  })
+})
+
 test.describe('Mobil başlık sayfası', () => {
   test.skip(({ viewport }) => (viewport?.width ?? 0) >= 900, 'detay mobilde tam sayfadır')
 

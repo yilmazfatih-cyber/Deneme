@@ -36,6 +36,8 @@ export interface ShellOptions {
   mobileTitle?: string | null
   /** Mobil üst çubuk görünsün mü; varsayılan true */
   topBar?: boolean
+  /** Mobil haplar aşağı kayarken gizlenmesin (hapların kendisi sayfa içi gezinmeyse); varsayılan false */
+  keepPills?: boolean
   /** Yol değişiminde en üste kaydırma YAPILMASIN (sayfa kendi kaydırır, ör. rehber "şimdi"ye) */
   keepScroll?: boolean
 }
