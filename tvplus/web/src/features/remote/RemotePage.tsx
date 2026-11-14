@@ -31,6 +31,7 @@ import { castController } from '../../devices/runtime'
 import { useDeviceState, useTarget } from '../../devices/state'
 import { DeviceChoice, NowPlayingArt, NowPlayingText, OnlineDot, useTicker } from '../../devices/ui'
 import { ButtonLink, cx, EmptyState, Icon, Sheet, type IconName } from '../../ui'
+import { OpenOnTv } from './OpenOnTv'
 import './remote.css'
 
 const browserTimers = {
@@ -222,6 +223,8 @@ function Remote({ target }: { target: DeviceInfo }): ReactElement {
       ) : null}
 
       {playing ? <NowPlayingPanel target={target} onKeypad={showKeypad ? () => setKeypad(true) : null} /> : null}
+
+      {!playing && target.online && !typing ? <OpenOnTv deviceId={id} tvName={target.name} /> : null}
 
       {typing ? <TypeToTv deviceId={id} onClose={() => setTyping(false)} autoFocus={screen !== 'search'} /> : null}
 

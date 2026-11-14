@@ -743,3 +743,170 @@
   gap: 10px;
   flex-wrap: wrap;
 }
+
+/* ───────────── TV'de Aç (kumanda boştayken) ───────────── */
+.rm-open {
+  margin: 0 0 16px;
+  padding: 14px 0 6px;
+  border: 1px solid var(--line, rgba(255, 255, 255, 0.12));
+  border-radius: 16px;
+  background: var(--surface-1);
+}
+.rm-open__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 16px 4px;
+  color: var(--text-1);
+  font-size: 16px;
+  font-weight: 700;
+}
+.rm-open__sub {
+  margin: 12px 16px 8px;
+  color: var(--text-3);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.rm-open__row {
+  display: flex;
+  gap: 10px;
+  margin: 0;
+  padding: 0 16px 8px;
+  overflow-x: auto;
+  list-style: none;
+  scrollbar-width: none;
+  scroll-snap-type: x proximity;
+}
+.rm-open__row::-webkit-scrollbar {
+  display: none;
+}
+.rm-open__row > li {
+  flex: none;
+  scroll-snap-align: start;
+}
+.rm-tile {
+  display: block;
+  width: 168px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.rm-tile__art {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--surface-2);
+}
+.rm-tile__art img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.rm-tile__play {
+  position: absolute;
+  right: 8px;
+  bottom: 10px;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.62);
+  color: #fff;
+}
+.rm-tile__bar {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.28);
+}
+.rm-tile__bar > span {
+  display: block;
+  height: 100%;
+  background: var(--accent, #f8d846);
+}
+.rm-tile__name,
+.rm-tile__cap {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.rm-tile__name {
+  margin-top: 6px;
+  color: var(--text-1);
+  font-size: 14px;
+  font-weight: 600;
+}
+.rm-tile__cap {
+  color: var(--text-3);
+  font-size: 12px;
+}
+.rm-tile[aria-busy='true'],
+.rm-chan[aria-busy='true'] {
+  opacity: 0.55;
+}
+.rm-tile:focus-visible .rm-tile__art,
+.rm-chan:focus-visible {
+  outline: 3px solid var(--text-1);
+  outline-offset: 2px;
+}
+.rm-chan {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 196px;
+  min-height: 56px;
+  padding: 8px 12px 8px 8px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--surface-2);
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.rm-chan__logo {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-2);
+  font-weight: 700;
+}
+.rm-chan__logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.rm-chan__text {
+  min-width: 0;
+}
+.rm-chan__name,
+.rm-chan__now {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.rm-chan__name {
+  color: var(--text-1);
+  font-size: 14px;
+  font-weight: 600;
+}
+.rm-chan__now {
+  color: var(--text-3);
+  font-size: 12px;
+}
