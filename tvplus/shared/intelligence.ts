@@ -302,6 +302,131 @@ export interface CommunitiesResponse {
   items: TasteCommunity[]
 }
 
+/* ═════════════ Yönetici paneli: etkin profilin arka plandaki durumu ═════════════
+ * GET /api/studio/me/insight → ViewerInsight   (yalnız yönetici; etkin profil yoksa 409 PROFILE_REQUIRED)
+ *
+ * "Şu an hangi segmentteyim, sistem buna nasıl karar verdi?" sorusunun yanıtı: profilin izleme özeti, yerleştiği
+ * zevk topluluğu ve kararın bileşenleri, sıradaki adaylar, bu profile özel kurulan satırlar, alt tür motorunun
+ * seçtikleri, tahmin ve arama modellerinin durumu. Sayılar bu profilin kendi verisidir; topluluklar örnek veriyle
+ * hesaplandıysa `sampleData` true gelir ve arayüz bunu etiketler.
+ */
+
+export interface InsightTitle {
+  titleId: number
+  title: string
+  type: 'MOVIE' | 'SHOW'
+}
+
+/**
+ * ASSIGNED topluluk bulundu · NO_HISTORY profilin hiç izleme kaydı yok · THIN_HISTORY kayıt var ama karar için
+ * yetersiz (ilgi eşiğinin altında ya da özellik uzayıyla kesişmiyor) · NO_MODEL henüz topluluk hesabı yok
+ */
+export type SegmentStatus = 'ASSIGNED' | 'NO_HISTORY' | 'THIN_HISTORY' | 'NO_MODEL'
+
+/** Kararın bir bileşeni: izleyicinin bir özelliği ve topluluk merkeziyle çarpımı */
+export interface SegmentReason {
+  kind: CommunityFeature['kind']
+  key: string
+  name: string
+  /** İzleyici vektöründeki ağırlık (0–1, birim uzunlukta) */
+  viewerWeight: number
+  /** Topluluk merkezindeki ağırlık */
+  communityWeight: number
+  /** viewerWeight × communityWeight — katkıların toplamı benzerliğe eşittir */
+  contribution: number
+}
+
+export interface ViewerSegment {
+  communityId: string
+  name: string
+  /** 0–1 kosinüs benzerliği (izleyici vektörü · topluluk merkezi) */
+  similarity: number
+  /** true: son kümeleme çalıştırmasında üyeydi · false: çalıştırmadan sonra, en yakın merkeze göre yerleşti */
+  inRun: boolean
+  size: number
+  /** İzleyicilerdeki payı (0–1) */
+  share: number
+  /** Topluluğu genelden ayıran özellikler (en çok 6) */
+  traits: CommunityFeature[]
+  /** Katkısı en büyük bileşenler (en çok 8, büyükten küçüğe) */
+  why: SegmentReason[]
+  /** İzlediklerinden bu topluluğa en çok çeken başlıklar (en çok 6) */
+  drivers: (InsightTitle & { contribution: number; engagement: number })[]
+  /** Sıradaki en yakın topluluklar (seçilen hariç, en çok 3) */
+  alternatives: { communityId: string; name: string; similarity: number }[]
+  /** Topluluğun öne çıkardığı, profilin görebildiği ve henüz izlemediği başlıklar (en çok 8) */
+  picks: (InsightTitle & { lift: number })[]
+}
+
+/** Ana sayfada bu profil için kurulan bir satır ve dayanağı */
+export interface InsightRow {
+  /** Satır bağlamı: 'continueWatching' | 'top10' | 'becauseYouWatched' | 'gems' | 'tasteCommunity' | 'microgenre' … */
+  context: string
+  title: string
+  /** Satır neye göre kuruldu (Türkçe, kısa), ör. "İzleme geçmişine en yakın topluluğun öne çıkardıkları" */
+  basis: string
+  /** Profilin geçmişine ya da modeline göre mi kuruldu (false: herkese aynı) */
+  personal: boolean
+  size: number
+}
+
+/** Alt tür motorunun bu profilin ana sayfası için seçtiği bir alt tür */
+export interface InsightSubgenre {
+  id: string
+  name: string
+  /** Profilin görebildiği başlık sayısı */
+  size: number
+  /** Seçim puanı: izleme işaretleri + zevk yakınlığı (geçmiş yoksa 0) */
+  score: number
+  /** Tanımın okunur özeti, ör. "Belgesel · Konu: Doğa · Ton: Düşündürücü" */
+  definition: string
+  /** Profilin izlediklerinden bu alt türe girenler (en çok 4) */
+  watched: InsightTitle[]
+}
+
+export interface ViewerInsight {
+  generatedAt: string
+  profile: { guid: string; name: string; isKids: boolean }
+  /** Profilin takma izleyici kimliği (izleme deposundaki anahtar) */
+  viewerId: string
+  history: {
+    /** İzleme kaydı olan başlık sayısı */
+    titles: number
+    /** Kümelemede sayılacak kadar ilgi gösterdiği başlık sayısı */
+    engagedTitles: number
+    hours: number
+    plays: number
+    firstTs: number | null
+    lastTs: number | null
+    /** En çok ilgi gösterdiği başlıklar (en çok 8) */
+    top: (InsightTitle & { hours: number; engagement: number })[]
+  }
+  segmentStatus: SegmentStatus
+  segment: ViewerSegment | null
+  /** Toplulukların hesaplandığı çalıştırma; hiç hesap yoksa null */
+  run: ClusteringRun | null
+  /** Topluluklar örnek (SYNTHETIC) izleme verisi içeren kaynaklarla mı hesaplandı */
+  sampleData: boolean
+  rows: InsightRow[]
+  subgenres: InsightSubgenre[]
+  model: {
+    ready: boolean
+    version: string | null
+    /** Verinin kaynağı hakkında not (örnek veriyle eğitildiyse söyler) */
+    note: string | null
+    /** Modelin bu profil için ilk seçimleri ve gerekçeleri (en çok 6) */
+    picks: (InsightTitle & { match: number; reasons: string[] })[]
+  }
+  search: {
+    /** ör. 'lr-1 · 42 güncelleme' */
+    modelVersion: string
+    /** Profilin son aramaları (en yeni önce, en çok 5) */
+    recent: string[]
+    /** Sıralama modelinin özellikleri ve öğrenilmiş ağırlıkları */
+    features: { name: string; weight: number }[]
+  }
+}
+
 /* ═════════════ İçgörüler ve planlayıcı ═════════════
  * GET  /api/studio/overview                                   → StudioOverview
  * GET  /api/studio/insights/mix?type=MOVIE|SHOW&from=&to=     → CatalogMix     (from/to: 'YYYY-MM-DD', izleme penceresi)

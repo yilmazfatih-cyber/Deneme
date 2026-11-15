@@ -10,15 +10,16 @@
  *   /karsilama  /profiller  /profiller/yonet                       kabuksuz
  *   /goz-at  /goz-at/diziler  /goz-at/filmler  /yeni-ve-populer  /listem  /canli  /rehber  /ara?q=
  *   /baslik/:videoId (mobil)  /tvplusim  /kumanda  /cihazlar  /kisi/:id  /tur/:id  /koleksiyon/:id   kabuklu
+ *   /yonetici (kod girişi + Yönetici Paneli)  /studyo/* (yalnız yönetici kipinde)                     kabuklu
  *   /bagla?kod=     odak düzeni (yalnız logo; profil gerekmez)
  *   /izle/:viewableId  /vitrin  /_ui                                kabuksuz
  *   Eski yollar: /film-dizi → /goz-at · /detay/:id → ?jbv= (masaüstü) | /baslik/:id (mobil) · /kitaplik → /listem
  */
-import { Suspense, useEffect, useLayoutEffect, type ReactElement, type ReactNode } from 'react'
+import { lazy, Suspense, useEffect, useLayoutEffect, type ReactElement, type ReactNode } from 'react'
 import { HashRouter, Link, Navigate, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom'
-import { DevtoolsPanel } from '../devtools'
 import { useFormFactor, type FormFactor } from '../lib/formFactor'
 import { ErrorState, Logo, Spinner, ToastHost } from '../ui'
+import { useIsAdmin } from './admin'
 import { DesktopShell } from './DesktopShell'
 import { Guard } from './Guards'
 import { buildTitleHref } from './links'
@@ -30,6 +31,27 @@ import { RouteFrame } from './RouteFrame'
 import { useProfileServices } from './services'
 import { setSessionNavigator, useSession } from './sessionStore'
 import './shell.css'
+
+/** "Kaputun altı" paneli yalnız yönetici kipinde yüklenir ve çizilir (kip kapalıyken kodu da inmez). */
+const DevtoolsPanel = lazy(() => import('../devtools').then((m) => ({ default: m.DevtoolsPanel })))
+
+function AdminDevtools(): ReactElement | null {
+  const admin = useIsAdmin()
+  if (!admin) return null
+  return (
+    <Suspense fallback={null}>
+      <DevtoolsPanel />
+    </Suspense>
+  )
+}
+
+/** Yalnız yöneticiye açık sayfa: kip kapalıysa kod girişine yönlendirir (dönüş adresiyle). */
+function AdminOnly({ children }: { children: ReactNode }): ReactElement {
+  const admin = useIsAdmin()
+  const { pathname, search } = useLocation()
+  if (!admin) return <Navigate to={`/yonetici?sonra=${encodeURIComponent(pathname + search)}`} replace />
+  return <>{children}</>
+}
 
 /** Depo eylemlerinin (giriş, çıkış, profil) yönlendirebilmesi için. */
 function NavigatorBridge(): null {
@@ -119,7 +141,15 @@ function ShellRoutes({ formFactor }: { formFactor: 'desktop' | 'mobile' }): Reac
         <Route path="/tvplusim" element={<P.AccountHubPage />} />
         <Route path="/kumanda" element={<P.RemotePage />} />
         <Route path="/cihazlar" element={<P.DevicesPage />} />
-        <Route path="/studyo/*" element={<P.StudioPage />} />
+        <Route path="/yonetici" element={<P.AdminPage />} />
+        <Route
+          path="/studyo/*"
+          element={
+            <AdminOnly>
+              <P.StudioPage />
+            </AdminOnly>
+          }
+        />
         <Route path="/kisi/:personId" element={<P.PersonPage />} />
         <Route path="/tur/:genreId" element={<P.GenrePage />} />
         <Route path="/koleksiyon/:collectionId" element={<P.CollectionPage />} />
@@ -187,7 +217,7 @@ export function App(): ReactElement {
       <RouteEffects />
       <ShellRoutes formFactor={formFactor} />
       <ToastHost />
-      <DevtoolsPanel />
+      <AdminDevtools />
     </HashRouter>
   )
 }

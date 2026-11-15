@@ -1,5 +1,5 @@
 import type { Page } from '@playwright/test'
-import { expect, NET, offline, pageApi, signIn, test, videoState, waitPlaying } from './helpers'
+import { expect, NET, offline, pageApi, signIn, test, unlockAdmin, videoState, waitPlaying } from './helpers'
 
 /**
  * CDN koşulları: etkin düğüm yavaşlatılınca uyarlamalı akış bit hızını düşürür; etkin düğüm kapatılınca oynatıcı
@@ -30,6 +30,7 @@ test.describe('CDN koşulları', () => {
 
   test(`düğümler yavaşlayınca (Kaputun altı → CDN → Zayıf Wi-Fi 2 Mb) bit hızı düşer ${NET}`, async ({ page }) => {
     await signIn(page)
+    await unlockAdmin(page)
     await resetNodes(page)
     try {
       await page.goto('/#/izle/Video:80010001')
@@ -82,6 +83,7 @@ test.describe('CDN koşulları', () => {
 
   test(`etkin düğüm kapanınca başka düğüme geçer, yayın kesilmez ${NET}`, async ({ page, issues }) => {
     await signIn(page)
+    await unlockAdmin(page)
     await resetNodes(page)
     try {
       await page.goto('/#/izle/Video:80010001')

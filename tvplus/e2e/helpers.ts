@@ -8,7 +8,9 @@
  *   signIn / signInTv      karşılama → demo girişi → profil kapısı (web/mobil) · TV'de klavyeyle demo girişi
  *   tvKey / tvMoveTo       TV kumandası: her tuştan sonra TAM OLARAK BİR `data-focused` öğe olduğunu doğrular
  *   pageApi                sayfanın kendi oturumuyla (sanal cihaz başlığı + CSRF) REST çağrısı
- *   waitForModel           stüdyo uçlarını yoklayarak tahmin modelinin / toplulukların hazır olmasını bekler
+ *   unlockAdmin            bu cihazda yönetici kipini açar (Stüdyo, Kaputun altı, /api/studio, /api/debug)
+ *   waitForModel           stüdyo uçlarını (stüdyo anahtarıyla) yoklayarak tahmin modelinin / toplulukların hazır
+ *                          olmasını bekler; sayfanın yönetici kipini değiştirmez
  */
 import { expect, test as base, type BrowserContext, type Locator, type Page, type Response } from '@playwright/test'
 import { FORM_FACTOR_PARAM, HEADERS, VIRTUAL_DEVICE_PARAM } from '../shared/constants'
@@ -221,10 +223,12 @@ export async function pageApi<T = unknown>(
   method: string,
   path: string,
   body?: unknown,
+  opts: { studioKey?: boolean } = {},
 ): Promise<ApiResult<T>> {
   const res = await page.evaluate(
-    async ({ method, path, body, vdHeader, authHeader, vdParam }) => {
+    async ({ method, path, body, vdHeader, authHeader, vdParam, studioKey }) => {
       const headers: Record<string, string> = { accept: 'application/json' }
+      if (studioKey) headers[studioKey.header] = studioKey.value
       const vd = new URLSearchParams(location.search).get(vdParam)
       if (vd) headers[vdHeader] = vd
       const boot = (await (await fetch('/api/boot', { headers })).json()) as { authURL?: string | null }
@@ -253,9 +257,31 @@ export async function pageApi<T = unknown>(
       vdHeader: HEADERS.VIRTUAL_DEVICE,
       authHeader: HEADERS.AUTH_URL,
       vdParam: VIRTUAL_DEVICE_PARAM,
+      studioKey: opts.studioKey ? { header: HEADERS.STUDIO_KEY, value: E2E_STUDIO_KEY } : null,
     },
   )
   return res as ApiResult<T>
+}
+
+/* ───────────── Yönetici kipi ───────────── */
+
+/** Test sunucusunun yönetici kodu ve stüdyo anahtarı (playwright.config.ts → webServer.env ile aynı). */
+export const E2E_ADMIN_CODE = 'E2E-YONETICI-KODU'
+export const E2E_STUDIO_KEY = 'e2e-studyo-anahtari'
+
+/**
+ * Bu sayfanın cihazında yönetici kipini açar ve sayfayı yeniler: Stüdyo, "Kaputun altı", açıklama kipi ve
+ * /api/studio, /api/debug uçları yalnız bu kipte açıktır. Kurulum içindir; giriş ekranının kendisi yonetici.spec'te.
+ */
+export async function unlockAdmin(page: Page): Promise<void> {
+  const r = await pageApi<{ isAdmin: boolean }>(page, 'POST', '/api/admin/unlock', { code: E2E_ADMIN_CODE })
+  expect(r.status, 'yönetici kipi açılır').toBe(200)
+  await page.reload()
+  await expect
+    .poll(async () => (await pageApi<{ isAdmin: boolean }>(page, 'GET', '/api/boot')).json?.isAdmin, {
+      message: 'açılış bağlamında yönetici',
+    })
+    .toBe(true)
 }
 
 /* ───────────── Modelin hazır olmasını bekleme ───────────── */
@@ -272,7 +298,7 @@ export async function waitForModel(page: Page, timeout = 120_000): Promise<Model
   await expect
     .poll(
       async () => {
-        const r = await pageApi<ModelInfo>(page, 'GET', '/api/studio/model')
+        const r = await pageApi<ModelInfo>(page, 'GET', '/api/studio/model', undefined, { studioKey: true })
         info = r.json
         return r.status === 200 && !!r.json?.ready && r.json.run?.status === 'DONE'
       },
@@ -282,7 +308,9 @@ export async function waitForModel(page: Page, timeout = 120_000): Promise<Model
   await expect
     .poll(
       async () => {
-        const r = await pageApi<{ run: unknown; items: unknown[] }>(page, 'GET', '/api/studio/communities')
+        const r = await pageApi<{ run: unknown; items: unknown[] }>(page, 'GET', '/api/studio/communities', undefined, {
+          studioKey: true,
+        })
         return r.status === 200 && !!r.json?.run && (r.json?.items.length ?? 0) > 0
       },
       { timeout, intervals: [500, 1000, 2000], message: 'zevk toplulukları hazır' },

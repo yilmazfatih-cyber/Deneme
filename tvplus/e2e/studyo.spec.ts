@@ -1,6 +1,6 @@
 import { fileURLToPath } from 'node:url'
 import type { Page } from '@playwright/test'
-import { expect, pageApi, signIn, test, waitForModel } from './helpers'
+import { expect, pageApi, signIn, test, unlockAdmin, waitForModel } from './helpers'
 
 /**
  * Stüdyo (içerik zekâsı arka ofisi, yalnız masaüstü): profil menüsünden açılır; genel bakış, tahmin modeli (ölçüm
@@ -16,6 +16,7 @@ const trInt = (s: string) => Number(s.replace(/\./g, ''))
 
 async function openStudio(page: Page, section = ''): Promise<void> {
   await signIn(page)
+  await unlockAdmin(page)
   await waitForModel(page)
   await page.goto(`/#/studyo${section ? `/${section}` : ''}`)
 }
@@ -25,6 +26,7 @@ test.describe('Stüdyo', () => {
     page,
   }) => {
     await signIn(page)
+    await unlockAdmin(page)
     await waitForModel(page)
     await page.getByRole('button', { name: 'Profil: Deniz' }).click()
     await page.getByRole('menuitem', { name: 'Stüdyo' }).click()
@@ -152,7 +154,12 @@ test.describe('Stüdyo', () => {
     await expect(neighbours.filter({ hasText: /^Sintel / })).toHaveCount(0)
   })
 
-  test('koruma: oturumsuz /api/studio isteği 401', async ({ playwright, baseURL }) => {
+  test('koruma: oturumsuz /api/studio isteği 401; üye ama yönetici değilse 403', async ({
+    playwright,
+    baseURL,
+    page,
+    issues,
+  }) => {
     const anon = await playwright.request.newContext({ baseURL })
     try {
       for (const path of ['/api/studio/overview', '/api/studio/model', '/api/studio/tagging/queue']) {
@@ -164,5 +171,16 @@ test.describe('Stüdyo', () => {
     } finally {
       await anon.dispose()
     }
+    issues.allowHttp(/^\/api\/studio\//, [403])
+    await signIn(page)
+    for (const path of ['/api/studio/overview', '/api/studio/me/insight']) {
+      const r = await pageApi<{ error?: { code?: string } }>(page, 'GET', path)
+      expect(r.status, `üye ${path}`).toBe(403)
+      expect(r.json?.error?.code).toBe('ADMIN_REQUIRED')
+    }
+    // Stüdyo sayfası yönetici kipi kapalıyken kod girişine yönlenir
+    await page.goto('/#/studyo/topluluklar')
+    await expect(page).toHaveURL(/#\/yonetici\?sonra=/)
+    await expect(page.getByRole('heading', { name: 'Yönetici girişi', level: 1 })).toBeVisible()
   })
 })

@@ -1,10 +1,12 @@
 /**
  * Masaüstü avatar menüsü (Netflix hesap menüsü): 32 px avatar + ok; üzerine gelince ya da tıklayınca açılır.
- * Öğeler: diğer profiller (kilitli profil PIN ekranına gider) · Profilleri Yönet · Cihazlar · Kaputun altı · Çıkış.
+ * Öğeler: diğer profiller (kilitli profil PIN ekranına gider) · Profilleri Yönet · Cihazlar · TV+'ım · Çıkış.
+ * Yönetici kipinde ayrıca: Yönetici Paneli · Stüdyo · Kaputun altı (kip kapalıyken bu üçü hiç görünmez).
  */
 import type { ReactElement } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Avatar, cx, Icon, Menu, MenuItem, MenuSeparator } from '../ui'
+import { useIsAdmin } from './admin'
 import { recheckDevtools } from './devtoolsState'
 import { useSession } from './sessionStore'
 
@@ -19,6 +21,7 @@ export function AvatarMenu(): ReactElement | null {
   const switchProfile = useSession((s) => s.switchProfile)
   const logout = useSession((s) => s.logout)
   const navigate = useNavigate()
+  const admin = useIsAdmin()
   const active = boot?.activeProfile
   if (!boot || !active) return null
   const others = boot.profiles.filter((p) => p.guid !== active.guid)
@@ -64,12 +67,19 @@ export function AvatarMenu(): ReactElement | null {
       <MenuItem icon="tv" to="/cihazlar">
         Cihazlar
       </MenuItem>
-      <MenuItem icon="settings" to="/studyo">
-        Stüdyo
-      </MenuItem>
-      <MenuItem icon="settings" onSelect={toggleDevtoolsPanel}>
-        Kaputun altı
-      </MenuItem>
+      {admin && (
+        <>
+          <MenuItem icon="lock" to="/yonetici">
+            Yönetici Paneli
+          </MenuItem>
+          <MenuItem icon="settings" to="/studyo">
+            Stüdyo
+          </MenuItem>
+          <MenuItem icon="settings" onSelect={toggleDevtoolsPanel}>
+            Kaputun altı
+          </MenuItem>
+        </>
+      )}
       <MenuItem icon="user" to="/tvplusim">
         TV+'ım
       </MenuItem>

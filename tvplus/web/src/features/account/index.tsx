@@ -7,7 +7,14 @@
  */
 import { useMemo, useState, type ReactElement, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
-import { toggleDevtoolsPanel, useActiveProfile, useDocumentTitle, useSession, useTitleHref } from '../../app'
+import {
+  toggleDevtoolsPanel,
+  useActiveProfile,
+  useDocumentTitle,
+  useIsAdmin,
+  useSession,
+  useTitleHref,
+} from '../../app'
 import { useGql } from '../../api/hooks'
 import { logEvent } from '../../telemetry/logger'
 import {
@@ -394,6 +401,7 @@ function Reminders(): ReactElement {
 /* ───────────── Bağlantılar ───────────── */
 
 function Links(): ReactElement {
+  const admin = useIsAdmin()
   const logout = useSession((s) => s.logout)
   const busy = useSession((s) => s.busy)
   const row = (icon: IconName, label: string, hint?: string) => (
@@ -424,11 +432,20 @@ function Links(): ReactElement {
             {row('edit', 'Profilleri Yönet')}
           </Link>
         </li>
-        <li>
-          <button type="button" className="ah-link" onClick={toggleDevtoolsPanel}>
-            {row('settings', 'Kaputun altı', 'Ağ, önbellek ve oynatıcı olaylarını göster ya da gizle')}
-          </button>
-        </li>
+        {admin && (
+          <>
+            <li>
+              <Link className="ah-link" to="/yonetici">
+                {row('lock', 'Yönetici Paneli', 'Segmentin, kararların gerekçesi ve modeller')}
+              </Link>
+            </li>
+            <li>
+              <button type="button" className="ah-link" onClick={toggleDevtoolsPanel}>
+                {row('settings', 'Kaputun altı', 'Ağ, önbellek ve oynatıcı olaylarını göster ya da gizle')}
+              </button>
+            </li>
+          </>
+        )}
         <li>
           <button type="button" className="ah-link" disabled={busy} onClick={() => void logout()}>
             {row('logout', 'Çıkış Yap')}

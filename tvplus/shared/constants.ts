@@ -59,6 +59,8 @@ export const COOKIES = {
   DEVICE: 'tvpvdid',
   /** Netflix: profilesNewSession — profil seçimi durumu. Oturum çerezi. */
   PROFILE_GATE: 'tvpProfilesNewSession',
+  /** Yönetici kipi: bu cihazda yönetici kodu doğrulandı (imzalı, HttpOnly, 30 gün). Oturum kapanınca silinir. */
+  ADMIN: 'tvpadm',
 } as const
 
 export const ROUTES = {
@@ -92,7 +94,20 @@ export const ROUTES = {
   PROFILES: '/api/profiles',
   /** İçerik zekâsı arka ofisi: etiketleme, mikro türler, veri kaynakları, topluluklar, içgörüler, gömme */
   STUDIO: '/api/studio',
+  /** Yönetici paneli: etkin profilin segmenti ve kararların gerekçesi (STUDIO altında: aynı erişim kuralı) */
+  STUDIO_INSIGHT: '/api/studio/me/insight',
+  /** Yönetici kipini aç: POST { code } → AdminState · 403 ADMIN_CODE_INVALID · 429 ADMIN_LOCKED */
+  ADMIN_UNLOCK: '/api/admin/unlock',
+  /** Yönetici kipini kapat: POST → AdminState */
+  ADMIN_LOCK: '/api/admin/lock',
 } as const
+
+/**
+ * Yönetici kodu özeti: sha256('tvplus-admin-v1|' + düzleştirilmiş kod), onaltılık. Düzleştirme: boşluk ve tire atılır,
+ * büyük harfe çevrilir (normalizeAdminCode). Depoda kodun kendisi DEĞİL yalnız bu özet durur.
+ */
+export const ADMIN_CODE_SALT = 'tvplus-admin-v1|'
+export const normalizeAdminCode = (code: string): string => code.replace(/[\s-]+/g, '').toUpperCase()
 
 /** Kalıcı sorgu kayıt defteri sürümü (istemci her istekte yollar). */
 export const PERSISTED_QUERY_VERSION = 102

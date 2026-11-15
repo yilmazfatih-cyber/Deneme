@@ -11,6 +11,9 @@ Netflix'in web uygulamasının ağ trafiğinden çıkarılmış mimarisini
 - **İçerik zekâsı arka ucu:** etiketleme → mikro türler → izleme verisi (Mixpanel bağlantı noktası) → zevk toplulukları
   → içgörüler ve planlayıcı; çekim düzeyi gömme ve bunun üstünde eğitilmiş küçük bir çok kipli model.
 - **Kaputun altı:** her mekaniğin nasıl işlediğini canlı gösteren panel; arka ofis için **Stüdyo**.
+- **Yönetici kipi:** iç işleyiş (Yönetici Paneli, Stüdyo, Kaputun altı) yalnız yönetici kodunu giren cihazda
+  görünür; izleyiciler sade uygulamayı görür. Yönetici Paneli "şu an hangi segmentteyim, sistem nasıl karar verdi?"
+  sorusunu yanıtlar.
 
 Görünüm kuralları: [`docs/UX_SPEC.md`](docs/UX_SPEC.md) · mimari: [`docs/MIMARI.md`](docs/MIMARI.md) ·
 içerik zekâsı ve modeller: [`docs/ICERIK_ZEKASI.md`](docs/ICERIK_ZEKASI.md).
@@ -37,7 +40,8 @@ npm run dev
 | Web                                    | `http://localhost:5173/`              |
 | Mobil görünüm (masaüstü tarayıcıda)    | `http://localhost:5173/?cihaz=mobil`  |
 | TV görünümü (ok tuşları, Enter, Esc)   | `http://localhost:5173/?cihaz=tv#/tv` |
-| Stüdyo (arka ofis)                     | `http://localhost:5173/#/studyo`      |
+| Yönetici girişi ve Yönetici Paneli     | `http://localhost:5173/#/yonetici`    |
+| Stüdyo (arka ofis; yönetici kipinde)   | `http://localhost:5173/#/studyo`      |
 
 İlk açılışta sunucu arka planda **sentetik** bir izleme örneği üretir (≈1.500 izleyici), zevk topluluklarını kümeler
 ve tahmin modelini eğitir; birkaç saniye sürer, uygulama bu sırada kullanılabilir.
@@ -68,7 +72,8 @@ uygulamayı Render'ın ücretsiz katmanına tek tıkla kurar ve `https://…onre
 3. Verilen adresi telefonda açın. Telefon mobil görünümü kendiliğinden alır; TV görünümü için adresin sonuna
    `?cihaz=tv#/tv` ekleyin. TV'deki QR kodu bu adresi taşıdığı için gerçek telefonla okutulabilir.
 
-Bilinmesi gerekenler: adres herkese açıktır (yalnız demo hesabı vardır; Stüdyo da bu hesapla açılır). Ücretsiz katman
+Bilinmesi gerekenler: adres herkese açıktır (yalnız demo hesabı vardır; Stüdyo ve Yönetici Paneli yönetici kodu
+ister, kodu `TVP_ADMIN_CODE` ortam değişkeniyle kendiniz belirleyin). Ücretsiz katman
 15 dakika kullanılmayınca uyur; sonraki ilk açılış yaklaşık bir dakika sürer ve profiller, yer imleri ile eğitilmiş
 tahmin modeli sıfırdan kurulur. Bellek ayarları (`MALLOC_ARENA_MAX`, `NODE_OPTIONS`) dar belleğe göre seçilmiştir.
 
@@ -101,7 +106,8 @@ tek başına anlatır. Sayfa hiç gelmiyorsa (tarayıcının kendi "bağlanılam
 
 ## Ne denenir: kısa tur
 
-Sağ alttaki **Kaputun altı** düğmesi (ya da `Ctrl+.`) her adımı canlı gösterir.
+Önce yönetici kipini açın (`/#/yonetici`, aşağıda "Yönetici kipi"). Sonra sağ alttaki **Kaputun altı** düğmesi
+(ya da `Ctrl+.`) her adımı canlı gösterir.
 
 | Ne yapın                                                                   | Ne görürsünüz                                                                                                 |
 | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
@@ -246,10 +252,28 @@ abonelikle başka bir uygulamaya çekilmez. Resmî TV+ oynatma API'sine erişim 
 
 Ortam değişkenleri: `PORT`, `HOST` (varsayılan `127.0.0.1`), `TVP_DATA_DIR` (durum, önbellekler, eğitilmiş tahmin modeli;
 varsayılan `.data/`), `TVP_MEDIA_DIR`, `TVP_SECRET`, `TVP_OFFLINE=1` (dış ağa çıkma), `TVP_LOG_LEVEL`,
-`TVP_DEBUG=member|open|off` (hata ayıklama uçları), `TVP_STUDIO=member|open|off` ve `TVP_STUDIO_KEY` (stüdyo uçları;
-anahtar betikler içindir), `TVP_SAMPLE_VIEWING=0` (sentetik örneği üretme), `TVP_REAL_DATA_MIN_VIEWERS` (varsayılan 50),
+`TVP_ADMIN_CODE` (yönetici kodu; `off` kipi kapatır), `TVP_DEBUG=admin|member|open|off` (hata ayıklama uçları;
+varsayılan `admin`), `TVP_STUDIO=admin|member|open|off` ve `TVP_STUDIO_KEY` (stüdyo uçları; anahtar betikler
+içindir), `TVP_SAMPLE_VIEWING=0` (sentetik örneği üretme), `TVP_REAL_DATA_MIN_VIEWERS` (varsayılan 50),
 `TVP_MAX_COMMUNITIES`, `TVP_EMBEDDING_PROVIDER=taban|http|dosya` ve `TVP_EMBEDDING_URL`, `TVP_PUBLIC_ORIGIN` (QR adresi),
 `MIXPANEL_*` (yukarıda).
+
+## Yönetici kipi
+
+İzleyicinin görmemesi gereken her şey bu kipin arkasındadır: **Yönetici Paneli**, **Stüdyo**, **Kaputun altı** ve
+aramadaki puan çipleri. Kip kapalıyken bunların menü girişi de görünmez; sunucu `/api/studio` ve `/api/debug` uçlarını
+üyeye 403 ile reddeder.
+
+- **Açmak:** `/#/yonetici` adresine gidin (bağlantısı hiçbir menüde yoktur), yönetici kodunu girin. Kip o cihazda 30
+  gün açık kalır; "Yönetici kipinden çık" ya da çıkış yapmak kapatır. Beş yanlış denemeden sonra bir dakika beklenir.
+- **Kod:** `TVP_ADMIN_CODE` ortam değişkeni. Verilmezse depodaki varsayılan kodun **özeti** kullanılır (kodun kendisi
+  depoda yoktur). Kodu değiştirmek için `npm run admin:code` yeni kodu sorar ve özeti günceller; sunucusuz sürümde
+  ardından `npm run build:pages` gerekir.
+- **Yönetici Paneli** (`/#/yonetici`, kip açıkken): etkin profilin segmenti (zevk topluluğu) ve benzerliği; kararın
+  bileşenleri (hangi özellikler ve izlenen hangi başlıklar ne kadar etkiledi); sıradaki aday topluluklar; ana
+  sayfadaki her satırın neye göre kurulduğu; alt tür motorunun seçtikleri; tahmin ve arama modellerinin durumu.
+  Uç: `GET /api/studio/me/insight`.
+- Topluluklar örnek izleme verisiyle hesaplandıysa panel bunu "Örnek veri" etiketiyle belirtir.
 
 ## Klasörler
 
@@ -284,5 +308,6 @@ docs/      UX şartnamesi, mimari, içerik zekâsı, etiketleme kılavuzu, Mixpa
   protokoller kullanılmaz.
 - Kalıcı durum `.data/` altında dosyalardır; izleme deposu ve vektör dizini bellek içidir. Çok kullanıcılı gerçek bir
   kurulum için veritabanı / veri ambarı / yaklaşık en yakın komşu dizini gerekir (ilgili belgelerde yazılıdır).
-- Stüdyo erişimi üye oturumu ya da tek bir anahtarladır; gerçek kurulumda rol tabanlı yetki gerekir.
+- Yönetici kipi tek bir kodla açılır (cihaza bağlı, 30 gün); gerçek kurulumda hesap ve rol tabanlı yetki gerekir.
+  Sunucusuz (GitHub Pages) sürümde sunucu tarayıcının içinde çalıştığı için bu kip gizlemedir, güvenlik değildir.
 - Mağaza akışı yoktur; "Sinema Paketi" yalnız yetki modelini göstermek içindir.

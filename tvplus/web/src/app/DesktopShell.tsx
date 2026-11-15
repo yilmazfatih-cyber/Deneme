@@ -10,6 +10,7 @@ import { lazy, Suspense, useEffect, useState, type ReactElement } from 'react'
 import { Link, NavLink, Outlet, useLocation, useNavigationType } from 'react-router-dom'
 import { NotificationBell } from '../features/notifications'
 import { cx, Icon, Logo, Menu, MenuItem, useScrolled } from '../ui'
+import { useIsAdmin } from './admin'
 import { AvatarMenu, toggleDevtoolsPanel } from './AvatarMenu'
 import { DETAIL_PARAM } from './links'
 import { markDetailOpenedInApp } from './detailModal'
@@ -65,6 +66,7 @@ function PrimaryNav(): ReactElement {
 }
 
 function Footer(): ReactElement {
+  const admin = useIsAdmin()
   return (
     <footer className="app-footer">
       <ul className="app-footer__links">
@@ -77,14 +79,21 @@ function Footer(): ReactElement {
         <li>
           <Link to="/vitrin">Cihaz vitrini</Link>
         </li>
-        <li>
-          <button type="button" onClick={toggleDevtoolsPanel}>
-            Kaputun altı
-          </button>
-        </li>
-        <li>
-          <Link to="/_ui">Tasarım sistemi</Link>
-        </li>
+        {admin && (
+          <>
+            <li>
+              <Link to="/yonetici">Yönetici Paneli</Link>
+            </li>
+            <li>
+              <button type="button" onClick={toggleDevtoolsPanel}>
+                Kaputun altı
+              </button>
+            </li>
+            <li>
+              <Link to="/_ui">Tasarım sistemi</Link>
+            </li>
+          </>
+        )}
       </ul>
       <p className="app-footer__note">
         TV+ öğretici bir prototiptir. Gerçek hesap, ödeme ya da kişisel bilgi kullanılmaz.

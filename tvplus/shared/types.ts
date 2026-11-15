@@ -37,6 +37,11 @@ export interface BootContext {
   authURL: string | null
   persistedQueryVersion: number
   featureFlags: Record<string, boolean>
+  /**
+   * Bu cihazda yönetici kipi açık mı. Açıkken arayüz Yönetici Paneli, Stüdyo ve "Kaputun altı" girişlerini gösterir;
+   * kapalıyken hiçbiri görünmez ve sunucu o uçları reddeder.
+   */
+  isAdmin: boolean
   /** İlk satırların Falcor önbelleği (ilk boyama için); yoksa null */
   falcorCache: JsonGraph | null
 }
@@ -161,4 +166,11 @@ export interface DebugServerState {
 /** Standart REST hata gövdesi. */
 export interface ApiError {
   error: { code: string; message: string; traceId?: string }
+}
+
+/* ───────────── Yönetici kipi ───────────── */
+
+/** POST /api/admin/unlock ve /api/admin/lock yanıtı */
+export interface AdminState {
+  isAdmin: boolean
 }

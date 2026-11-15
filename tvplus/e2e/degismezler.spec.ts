@@ -1,5 +1,5 @@
 import { HEADERS } from '../shared/constants'
-import { expect, pageApi, signIn, test } from './helpers'
+import { expect, pageApi, signIn, test, unlockAdmin } from './helpers'
 
 /**
  * Kesişen değişmezler (MIMARI §4–5, UX_SPEC §7):
@@ -76,7 +76,12 @@ test.describe('değişmezler', () => {
     expect(sent.extensions?.persistedQuery?.id).toBeTruthy()
   })
 
-  test('hata ayıklama ve stüdyo uçları oturum ister', async ({ playwright, baseURL, page }) => {
+  test('hata ayıklama ve stüdyo uçları oturum ve yönetici kipi ister', async ({
+    playwright,
+    baseURL,
+    page,
+    issues,
+  }) => {
     const anon = await playwright.request.newContext({ baseURL })
     try {
       for (const path of ['/api/debug/oca', '/api/debug/state', '/api/debug/events', '/api/studio/overview']) {
@@ -89,7 +94,14 @@ test.describe('değişmezler', () => {
       await anon.dispose()
     }
 
+    // Üye ama yönetici kipi kapalı: iki uç ailesi de 403
+    issues.allowHttp(/^\/api\/(debug|studio)\//, [403])
     await signIn(page)
+    expect((await pageApi(page, 'GET', '/api/debug/oca')).status, 'üye /api/debug').toBe(403)
+    expect((await pageApi(page, 'GET', '/api/studio/overview')).status, 'üye /api/studio').toBe(403)
+
+    // Yönetici kipi açıkken
+    await unlockAdmin(page)
     const oca = await pageApi<unknown[]>(page, 'GET', '/api/debug/oca')
     expect(oca.status).toBe(200)
     expect(oca.headers[HEADERS.TRACE_ID]).toMatch(/^[0-9a-f]{32}$/)

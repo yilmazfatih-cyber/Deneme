@@ -51,7 +51,15 @@ export default defineConfig({
     url: `http://127.0.0.1:${PORT}/api/boot`,
     reuseExistingServer: false,
     timeout: 90_000,
-    env: { PORT: String(PORT), HOST: '127.0.0.1', TVP_DATA_DIR: dataDir, TVP_LOG_LEVEL: 'warn' },
+    env: {
+      PORT: String(PORT),
+      HOST: '127.0.0.1',
+      TVP_DATA_DIR: dataDir,
+      TVP_LOG_LEVEL: 'warn',
+      // Yönetici kipi ve stüdyo anahtarı: değerler yalnız bu test sunucusu için (e2e/helpers.ts ile aynı)
+      TVP_ADMIN_CODE: 'E2E-YONETICI-KODU',
+      TVP_STUDIO_KEY: 'e2e-studyo-anahtari',
+    },
   },
   projects: [
     {

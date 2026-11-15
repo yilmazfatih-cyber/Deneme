@@ -10,6 +10,7 @@
  *   Kaputun altı toggleDevtoolsPanel() · isDevtoolsOpen() · subscribeDevtools(fn) · useDevtoolsOpen()
  */
 export { App } from './App'
+export { isAdminNow, lockAdmin, unlockAdmin, useIsAdmin, type AdminUnlockResult } from './admin'
 export { toggleDevtoolsPanel } from './AvatarMenu'
 export { activeDesktopNav, DESKTOP_NAV, type NavEntry } from './nav'
 export { switchTitleHref, useDetailModal, type DetailModalState } from './detailModal'

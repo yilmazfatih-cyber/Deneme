@@ -1,5 +1,5 @@
 import type { Page } from '@playwright/test'
-import { expect, NET, offline, signIn, test, videoState, waitPlaying } from './helpers'
+import { expect, NET, offline, signIn, test, unlockAdmin, videoState, waitPlaying } from './helpers'
 
 /**
  * Oynatma hattının tamamı gerçek tarayıcıda, yeni oynatıcı arayüzüyle: ağ yoklaması (FTL) → anahtar sağlama (MSL) →
@@ -47,6 +47,8 @@ test.describe('oynatma hattı', () => {
     })
 
     await signIn(page)
+    // "Kaputun altı" yalnız yönetici kipinde yüklenir; hattın adımlarını toplayabilsin diye oynatmadan önce açılır
+    if (!isMobile(page)) await unlockAdmin(page)
     // Baştan: Deniz'in yer imi (öteki testler Sintel'i oynatır) başlangıcı değiştirmesin
     await page.goto('/#/izle/Video:80010001?baslat=bastan')
     await expect(page.getByText('Sintel').first()).toBeAttached()

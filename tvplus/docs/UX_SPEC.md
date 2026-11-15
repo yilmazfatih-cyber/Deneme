@@ -41,7 +41,8 @@ kayınca `--bg` dolgu. Sol: TV+ logosu (yükseklik 26) · bağlantılar 14 px: *
 Yeni ve Popüler · Kısa Videolar · Listem** (etkin: beyaz ve kalın; diğerleri `--text-2`). Sağ: arama simgesi (tıklayınca sola doğru
 açılan kutu: 1 px beyaz çerçeve, siyah zemin, yer tutucu "Başlıklar, kişiler, türler"; yazmaya başlanınca sayfa
 içeriği arama sonuçlarıyla değişir, kutu boşalınca önceki sayfaya dönülür) · "TV'de izle" simgesi (başka cihaz
-çevrimiçiyse) · bildirim zili · 32 px avatar + ok (menü: profiller, Profilleri Yönet, Cihazlar, Kaputun altı, Çıkış).
+çevrimiçiyse) · bildirim zili · 32 px avatar + ok (menü: profiller, Profilleri Yönet, Cihazlar, TV+'ım, Çıkış;
+yönetici kipinde ayrıca Yönetici Paneli, Stüdyo, Kaputun altı).
 
 **Vitrin (billboard).** Tam genişlik, yükseklik `56.25vw` (en çok 85 vh). Görsel/sessiz tanıtım videosu arkada; altta
 `--bg`'ye doğru karartma. Bilgi katmanı sol %4, alt ~%30: başlık logosu (en çok 36 vw) · üç satırı geçmeyen özet
@@ -174,6 +175,25 @@ rakamlar numarayla geçiş (2 sn), Geri çıkar.
 - **Cihaz vitrini (`/vitrin`):** TV, web ve mobil yan yana, her biri ayrı sanal cihaz olarak canlı çalışır; QR girişi,
   kumanda ve yansıtma aynı sayfada denenir.
 
+## 5a. Yönetici kipi ve Yönetici Paneli
+
+**Kural:** iç işleyişi gösteren her yüzey (Yönetici Paneli, Stüdyo, Kaputun altı, aramadaki puan çipleri) yalnız
+yönetici kipinde vardır. Kip kapalıyken menü girişi, başlatıcı düğme ya da ipucu görünmez.
+**Giriş** (`/yonetici`, bağlantısı yok): ortada tek kart: kilit simgesi, "Yönetici girişi", bir satır açıklama, kod
+alanı (gizli yazılır; "Kodu göster"), **Aç**. Yanlış kodda hata alanın altında; art arda yanlışta geri sayım.
+**Panel** (kip açıkken aynı adres). Mobilde tek sütun, masaüstünde iki sütun kart:
+
+- **Segmentim** (sarı çerçeveli): "Şu an bu toplulukta sayılıyorsun" · topluluk adı · benzerlik çubuğu ve yüzdesi ·
+  izleyicilerdeki payı · "Örnek veri" etiketi (topluluklar örnek veriyle hesaplandıysa) · "Net karar" / "Sıradaki adaya
+  yakın" · topluluğu ayıran özellikler (×kat) · **Sistem nasıl karar verdi?** (dört adım) · kararı en çok etkileyen
+  özellikler (çubuk + yüzde) · seni buraya çeken izlediklerin · sıradaki adaylar (seçilenle karşılaştırmalı) ·
+  topluluğunun öne çıkardıkları. Segment yoksa nedeni yazar (izleme yok / yetersiz / hesap yok).
+- **İzleme özetim:** başlık, kararda sayılan, süre, son izleme; en çok ilgi gösterilenler.
+- **Ana sayfandaki satırlar:** her satır + "Kişisel" / "Herkese aynı" + neye göre kurulduğu.
+- **Alt tür motorunun seçtikleri:** ad, tanım, puan çubuğu, izlediklerinden o alt türe girenler.
+- **Tahmin modeli** ve **Arama modeli:** sürüm, bu profil için ilk seçimler ve gerekçeleri, öğrenilmiş ağırlıklar.
+  Altta "Yönetici kipinden çık".
+
 ## 6. Sözlük
 
 Ana Sayfa · Diziler · Filmler · Yeni ve Popüler · Listem · Canlı TV · Rehber · TV+'ım · Oynat · Devam Et · Baştan
@@ -182,7 +202,8 @@ Fazlası · Hakkında · İzlemeye Devam Et · ‹Ad› için En İyi Seçimler 
 Yeni Gelenler · Son Şans · Kim izliyor? · Profilleri Yönet · Profil Ekle · TV'de İzle · Bu Cihazda Devam Et ·
 Kumanda · TV'ye Bağlan · Canlı İzle · Hatırlat · Başlıklar, kişiler, türler · Kısa Videolar · Dizi ve Film · Çok
 Yakında · Bana Hatırlat · Hatırlatma Kuruldu · Herkes Bunları İzliyor · Senin Topluluğun · Kategoriler · Hızlı erişim ·
-Sana özel alt türler · Tüm alt türler. Ton: kısa, sen dili, ünlem yok.
+Sana özel alt türler · Tüm alt türler · Yönetici girişi · Yönetici Paneli · Segmentim · Sistem nasıl karar verdi? ·
+Sıradaki adaylar · Yönetici kipinden çık. Ton: kısa, sen dili, ünlem yok.
 
 ## 7. Değişmez kurallar (denetlenir)
 

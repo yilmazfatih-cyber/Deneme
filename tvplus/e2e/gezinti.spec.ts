@@ -366,7 +366,13 @@ test.describe('Göz atma sayfaları', () => {
     let mgHref = await seeAll.getAttribute('href', { timeout: 10_000 }).catch(() => null)
     if (!mgHref) {
       // Satırda yoksa stüdyo uçlarından görünen bir mikro tür
-      const r = await pageApi<{ items: { id: string }[] }>(page, 'GET', '/api/studio/microgenres?layer=VISIBLE&first=1')
+      const r = await pageApi<{ items: { id: string }[] }>(
+        page,
+        'GET',
+        '/api/studio/microgenres?layer=VISIBLE&first=1',
+        undefined,
+        { studioKey: true },
+      )
       mgHref = `#/tur/${r.json!.items[0]!.id}`
     }
     await page.goto(`/${mgHref}`)

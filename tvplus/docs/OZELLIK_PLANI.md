@@ -18,6 +18,8 @@ Kasım 2026. Kaynak: ürün sahibinin geri bildirimi ve üç ekranın (web, mobi
 | Çok Yakında       | Canlı TV'nin sıradaki yayınları; karttan "Bana Hatırlat". Web'de satırların altında, mobilde akışın başında.                          |
 | Topluluk işareti  | "Bugün dizilerde 1 numara", "Top 10'da 4. sırada", eşleşme yüzdesi; profilin topluluğu varsa "Senin Topluluğun" bölümü.               |
 | Kategoriler       | Gruplu liste: hızlı erişim, sana özel alt türler, tüm alt türler (yeni dizin sorgusu), türler.                                        |
+| Yönetici kipi     | Yönetici Paneli, Stüdyo ve Kaputun altı yalnız yönetici kodunu giren cihazda görünür; sunucu uçları da yöneticiye açıktır.            |
+| Yönetici Paneli   | Hangi segmenttesin, sistem nasıl karar verdi, sıradaki adaylar; ana sayfadaki satırların dayanağı; alt tür ve model durumu.           |
 
 ## 2. Denetimde görülen, henüz düzeltilmemiş alanlar
 
@@ -100,7 +102,24 @@ film ve canlı yayını TV'ye yansıtma; "Bu Cihazda Devam Et"; kumandada "TV'de
 | 5    | Chromecast ve AirPlay köprüsü | TV+ uygulaması olmayan ekranlara yansıtma.                                                     |
 | 6    | Sunucusuz sitede aktarıcı     | GitHub Pages sürümünde gerçek telefon ile gerçek TV'nin eşleşebilmesi için küçük bir aktarıcı. |
 
-## 8. Öncelik önerisi
+## 8. Segmentleme ve görünürlük
+
+**Bugün:** izleyiciler ne izlediklerine göre zevk topluluklarına ayrılır (özellik uzayı + k-ortalama); profil kendi
+izleme geçmişinden en yakın topluluğa yerleşir. Yönetici Paneli bu kararı açıklar: benzerlik, özellik ve başlık
+katkıları, sıradaki adaylar. Topluluklar şimdilik örnek veriyle hesaplanır.
+
+| Sıra | Öneri                       | Ne kazandırır                                                                                   |
+| ---- | --------------------------- | ----------------------------------------------------------------------------------------------- |
+| 1    | Gerçek veriyle topluluklar  | Mixpanel verisi bağlanınca segmentler gerçek izleyiciyi anlatır; panel aynı kalır.              |
+| 2    | Segment geçmişi             | Profilin segmenti zaman içinde nasıl değişti; hangi izleme kararı değiştirdi.                   |
+| 3    | "Ya şunu izleseydim?"       | Panelde başlık ekleyip çıkararak segmentin ve önerilerin nasıl değişeceğini görmek.             |
+| 4    | Segmente göre sayfa düzeni  | Satırların sırası ve vitrin başlığı segmente göre; her segmentin kendi ilk ekranı.              |
+| 5    | Segment × arama             | Aynı sorguda segmentin tıklama eğilimi sıralamaya girer; sonuçsuz aramada segmentin sevdikleri. |
+| 6    | Segment sağlık göstergeleri | Kararsız izleyici oranı (sıradaki adaya yakın), segmentler arası geçiş, siluetin seyri.         |
+| 7    | İzleyiciye açık gerekçe     | "Neden bunu görüyorum?": sayısız, sade bir açıklama; güven artar.                               |
+| 8    | Hesap ve rol tabanlı yetki  | Tek kod yerine yönetici hesabı; kim neyi gördü kaydı.                                           |
+
+## 9. Öncelik önerisi
 
 | Ne zaman | İş                                                                                                                    |
 | -------- | --------------------------------------------------------------------------------------------------------------------- |

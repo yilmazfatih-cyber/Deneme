@@ -4,14 +4,19 @@
  * paneli değiştirebilecek tek tek olaylardan sonra (Ctrl+. / Esc, tıklama, başka sekmeden `storage`,
  * toggleDevtoolsPanel) depo bir kez yeniden okunur ve değiştiyse aboneler çağrılır. Yoklama zamanlayıcısı yok.
  *
+ * Panel yalnız yönetici kipinde çizilir (app/admin.ts); kip kapalıyken bu modül hep "kapalı" bildirir.
+ *
  *   const open = useDevtoolsOpen()          // React
  *   const off = subscribeDevtools(() => …)  // React dışı; isDevtoolsOpen() anlık değer
  */
 import { useSyncExternalStore } from 'react'
+import { onBootChange, peekBoot } from '../api/session'
 
 const PANEL_KEY = 'tvp.kaput.v1'
 
 function read(): boolean {
+  // Panel yalnız yönetici kipinde vardır: kip kapalıyken eski bir "açık" kaydı sayılmaz.
+  if (peekBoot()?.isAdmin !== true) return false
   try {
     const raw = localStorage.getItem(PANEL_KEY)
     return raw ? (JSON.parse(raw) as { open?: unknown }).open === true : false
@@ -58,6 +63,9 @@ function uninstall(): void {
   document.removeEventListener('click', recheckDevtools, true)
   window.removeEventListener('storage', recheckDevtools)
 }
+
+// Yönetici kipi açılıp kapanınca (açılış bağlamı yenilenir) durum yeniden okunur.
+onBootChange(() => recheckDevtools())
 
 export function isDevtoolsOpen(): boolean {
   if (!installed) current = read()

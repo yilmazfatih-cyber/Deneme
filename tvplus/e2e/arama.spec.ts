@@ -1,5 +1,5 @@
 import type { Page } from '@playwright/test'
-import { expect, signIn, test, watchGraphql } from './helpers'
+import { expect, signIn, test, unlockAdmin, watchGraphql } from './helpers'
 
 /**
  * Arama ve çevrimiçi öğrenen tahmin modeli: yazarken tamamlama tahminleri, doğrudan sonuç + "‹X› ile ilgili" tahmin
@@ -82,6 +82,7 @@ test.describe('Arama', () => {
       if (body?.operationName === 'RecordSearchFeedback') feedback.push(body.variables ?? {})
     })
     await signIn(page)
+    await unlockAdmin(page) // açıklama kipi (puan çipleri, model sürümü) yalnız yönetici kipinde
     await page.goto('/#/ara?q=sintel&aciklama=1')
     const results = page.getByRole('region', { name: 'Filmler ve Diziler' })
     await expect(results.getByRole('link', { name: /^Sintel/ }).first()).toBeVisible()
@@ -123,6 +124,7 @@ test.describe('Arama', () => {
         bodies.push(req.postData() ?? '')
     })
     await signIn(page)
+    await unlockAdmin(page)
     await page.goto('/#/ara?q=trt&aciklama=1')
     await expect(page.getByRole('region', { name: 'Canlı TV' })).toBeVisible()
     const before = bodies.length

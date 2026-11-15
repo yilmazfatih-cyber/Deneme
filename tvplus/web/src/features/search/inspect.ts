@@ -1,5 +1,5 @@
 /**
- * Açıklama kipi: modelin iç işleyişi yalnız istenince görünür.
+ * Açıklama kipi: modelin iç işleyişi yalnız YÖNETİCİ KİPİNDE ve istenince görünür.
  *   - "Kaputun altı" paneli açıkken (panelin kalıcı durumu: localStorage `tvp.kaput.v1`), ya da
  *   - adreste `?aciklama=1` varken.
  * Açıkken: her sonuçta puan çipi + öznitelik katkıları penceresi, sayfa altında model sürümü, yetenek bildirimi.
@@ -7,6 +7,7 @@
  */
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
+import { useIsAdmin } from '../../app/admin'
 
 const PANEL_KEY = 'tvp.kaput.v1'
 
@@ -20,6 +21,7 @@ function panelOpen(): boolean {
 }
 
 export function useInspectMode(): boolean {
+  const admin = useIsAdmin()
   const [params] = useSearchParams()
   const forced = params.get('aciklama') === '1'
   const [open, setOpen] = useState(panelOpen)
@@ -45,5 +47,5 @@ export function useInspectMode(): boolean {
     }
   }, [])
 
-  return forced || open
+  return admin && (forced || open)
 }
