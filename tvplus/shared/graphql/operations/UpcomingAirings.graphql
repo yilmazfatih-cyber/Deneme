@@ -1,0 +1,21 @@
+# Yeni ve Popüler "Çok Yakında": her kanalda sıradaki yayın (hatırlatma durumu dahil).
+query UpcomingAirings {
+  channels {
+    channelId
+    name
+    number
+    isKids
+    isSampleSchedule
+    logo(params: { width: 128 }) {
+      ...ArtworkFields
+    }
+    next {
+      ...AiringBrief
+      synopsis
+      hasReminder
+      artwork(params: { width: 640 }) {
+        ...ArtworkFields
+      }
+    }
+  }
+}

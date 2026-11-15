@@ -1,4 +1,4 @@
-# Akış kartları ("Yeni ve Popüler"): verilen başlıkların kart bilgisi, Listem durumu ve önizlemesi.
+# Akış kartları ("Yeni ve Popüler"): verilen başlıkların kart bilgisi, Listem durumu, önizlemesi ve eşleşme yüzdesi.
 query FeedVideos($videoIds: [Int!]!) {
   videos(videoIds: $videoIds) {
     ...CardVideo
@@ -7,6 +7,12 @@ query FeedVideos($videoIds: [Int!]!) {
       viewableId
       offset
       sourceKind
+    }
+    ... on Movie {
+      matchScore
+    }
+    ... on Show {
+      matchScore
     }
   }
 }

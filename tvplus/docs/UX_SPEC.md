@@ -38,7 +38,7 @@ Yazı: Manrope. En küçük 11 px (yalnız rozet). Emoji yok. Saat 24'lük. Hare
 
 **Üst menü.** Sabit, 68 px, yatay boşluk %4. En üstte saydam (`linear-gradient(#000b 10%, transparent)`), sayfa
 kayınca `--bg` dolgu. Sol: TV+ logosu (yükseklik 26) · bağlantılar 14 px: **Ana Sayfa · Canlı TV · Diziler · Filmler ·
-Yeni ve Popüler · Listem** (etkin: beyaz ve kalın; diğerleri `--text-2`). Sağ: arama simgesi (tıklayınca sola doğru
+Yeni ve Popüler · Kısa Videolar · Listem** (etkin: beyaz ve kalın; diğerleri `--text-2`). Sağ: arama simgesi (tıklayınca sola doğru
 açılan kutu: 1 px beyaz çerçeve, siyah zemin, yer tutucu "Başlıklar, kişiler, türler"; yazmaya başlanınca sayfa
 içeriği arama sonuçlarıyla değişir, kutu boşalınca önceki sayfaya dönülür) · "TV'de izle" simgesi (başka cihaz
 çevrimiçiyse) · bildirim zili · 32 px avatar + ok (menü: profiller, Profilleri Yönet, Cihazlar, Kaputun altı, Çıkış).
@@ -55,7 +55,7 @@ genişliğinde tutamaçlar (üzerine gelince ok), tıklayınca **sayfa sayfa** k
 
 **Başlık kartı.** 16:9 görsel (`STORY_ART`), sol üstte en çok bir rozet ("Yeni", "Yeni Bölüm", "Son 3 Gün",
 kilit); "İzlemeye Devam Et"te altta 3 px ilerleme çubuğu (`--accent`) ve "S1:B3 · 23 dk kaldı". Top 10 satırında
-dikey afiş + solunda dış hat rakam.
+büyük dış hat rakam + tam görünen yatay görsel + altında ad ve tür.
 
 **Önizleme kartı.** Kartın üzerinde 500 ms beklenince kart yerinde ~1.5× büyür (kenardaki kartlar içe doğru),
 `--surface-1`, gölgeli: üstte 16:9 görsel → 600 ms sonra sessiz tanıtım; altta yuvarlak düğmeler (▶ beyaz dolu ·
@@ -100,13 +100,29 @@ ses ve altyazı · hız · kaynak · TV'de izle · tam ekran. YouTube kaynaklar�
 
 ## 3. Mobil (< 900 px)
 
-**Üst çubuk** (56 px, vitrinin üstünde saydam): sol "‹Profil adı› için" ya da logo; sağ: "TV'de izle" · arama.
-Altında kategori hapları: **Diziler · Filmler · Canlı TV · Kategoriler ▾** (seçilince başında ✕).
-**Vitrin kartı:** kenarlardan 16 px içeride, ~2:3, köşe 12 px, 1 px açık çerçeve; altta başlık logosu, noktalı etiket
-satırı, kart içinde iki düğme: **▶ Oynat** (beyaz) · **＋ Listem** (`--btn-2`).
+**Üst çubuk** (56 px, vitrinin üstünde saydam): sol "‹Profil adı› için" ya da logo; sağ: "TV'de izle".
+Altında, ana sayfada ve Canlı TV'de **ne izleneceği seçimi** (iki parçalı düğme: **Dizi ve Film · Canlı TV**; canlıda
+yanıp sönen nokta), onun altında kategori hapları: **Diziler · Filmler · Yeni ve Popüler · Kategoriler ▾** (seçilince
+başında ✕). "Kategoriler" alt sayfada gruplu liste açar: **Hızlı erişim** (Listem, Yeni ve Popüler, Kısa Videolar,
+Canlı TV, Yayın Akışı) · **Sana özel alt türler** (ana sayfadaki alt tür satırları) · **Tüm alt türler** (dizin) ·
+**Türler**.
+**Vitrin kartı:** kenarlardan 16 px içeride, köşe 12 px, 1 px açık çerçeve; yatay görsel, altında arayüzün yazdığı ad,
+noktalı etiket satırı, kısa özet ve iki düğme: **▶ Oynat** (beyaz) · **＋ Listem** (`--btn-2`).
 **Satırlar:** başlık 17 px kalın; **dikey afişler** (2:3, 110 px, köşe 6 px); İzlemeye Devam Et'te ilerleme çubuğu ve
-altında ⓘ / ⋮; Top 10 rakamlı.
-**Alt sekmeler** (56 px + güvenli alan): **Ana Sayfa · Canlı TV · Yeni ve Popüler · TV+'ım**. Etkin: beyaz.
+altında ⓘ / ⋮; Top 10'da rakam + yatay görsel + ad.
+**Alt sekmeler:** kenarlardan içeride, yüzen hap biçimli çubuk: **Ana Sayfa · Kısa Videolar · Ara · TV+'ım**.
+Etkin sekme dolgulu ve beyaz. Canlı TV, Rehber ve Yeni ve Popüler "Ana Sayfa" sekmesinin altındadır.
+**Kısa Videolar** (`/kisa`): dikey, ekran ekran kayan önizleme akışı. Önizleme sessiz başlar, 30 sn sonra sıradakine
+geçer. Video kırpılmaz ve üstüne yazı ya da düğme bindirilmez; işaretler ("Top 10 · 2. sırada", "%87 eşleşme"), ad,
+etiketler, özet ve eylemler (**Oynat · Listem · ses · paylaş**) videonun altındadır.
+**Yeni ve Popüler** (mobil akış): üstte kayarken görünür kalan bölüm çipleri (simgeli): **Çok Yakında · Herkes Bunları
+İzliyor · Top 10 Dizi Listesi · Top 10 Film Listesi · Senin Topluluğun · Yeni Gelenler · Son Şans**; çip bölüme
+kaydırır, bulunulan bölümün çipi seçili görünür. Kartlar büyük: 16:9 görsel, işaret satırı ("Bugün dizilerde 1
+numara", "Top 10'da 4. sırada", "%87 eşleşme"), ad, özet, **Oynat · Listem**. Top 10 bölümlerinde kartın üstünde iki
+haneli dış hat rakam (01, 02 …). Ekranın ortasındaki kart tanıtımını sessiz oynatır (aynı anda tek kart; hareketi
+azalt ya da veri tasarrufu açıksa oynatmaz). **Çok Yakında** canlı TV'nin sıradaki yayınlarıdır: kanal, "Bugün
+21:00'de başlıyor", özet, **Bana Hatırlat** (kurulunca "Hatırlatma Kuruldu") ve Yayın Akışı bağlantısı; yayın akışı
+örnek veri olan kanallar "Örnek yayın akışı" etiketini taşır. Masaüstünde aynı bölüm satırların altında üç sütundur.
 **Detay** tam sayfa (`/baslik/:id`): üstte 16:9 tanıtım (✕ ve TV'de izle simgeleri), başlık, bilgi satırı,
 **▶ Oynat** (beyaz, tam genişlik), **TV'de İzle** (`--btn-2`, TV çevrimiçiyse), özet, oyuncular, simge sırası
 (Listem · Değerlendir · Paylaş), sekmeler **Bölümler · Benzerleri · Fragmanlar**.
@@ -164,7 +180,9 @@ Ana Sayfa · Diziler · Filmler · Yeni ve Popüler · Listem · Canlı TV · Re
 Başlat · Daha Fazla Bilgi · Listeme Ekle / Listemde · Beğen · Bölümler · Sezon 1 · Benzerleri · Fragmanlar ve Daha
 Fazlası · Hakkında · İzlemeye Devam Et · ‹Ad› için En İyi Seçimler · Türkiye'de Bugünün Top 10 Dizi Listesi ·
 Yeni Gelenler · Son Şans · Kim izliyor? · Profilleri Yönet · Profil Ekle · TV'de İzle · Bu Cihazda Devam Et ·
-Kumanda · TV'ye Bağlan · Canlı İzle · Hatırlat · Başlıklar, kişiler, türler. Ton: kısa, sen dili, ünlem yok.
+Kumanda · TV'ye Bağlan · Canlı İzle · Hatırlat · Başlıklar, kişiler, türler · Kısa Videolar · Dizi ve Film · Çok
+Yakında · Bana Hatırlat · Hatırlatma Kuruldu · Herkes Bunları İzliyor · Senin Topluluğun · Kategoriler · Hızlı erişim ·
+Sana özel alt türler · Tüm alt türler. Ton: kısa, sen dili, ünlem yok.
 
 ## 7. Değişmez kurallar (denetlenir)
 

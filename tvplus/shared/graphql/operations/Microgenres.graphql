@@ -1,0 +1,8 @@
+# Kategoriler listesindeki alt tür dizini: profilin görebildiği görünen mikro türler.
+query Microgenres($first: Int) {
+  microgenres(first: $first) {
+    id
+    name
+    size
+  }
+}

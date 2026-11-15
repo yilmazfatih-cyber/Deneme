@@ -484,7 +484,8 @@ function buildTypeLolomo(
 
 /**
  * Yeni ve Popüler: Yeni Gelenler · Top 10 Dizi · Top 10 Film · Son Şans · Herkes Bunları İzliyor (popülerlik +
- * son 24 saatin oynatmaları; iki Top 10 listesinin ilk üçü hariç).
+ * son 24 saatin oynatmaları; iki Top 10 listesinin ilk üçü hariç) · Senin Gibi İzleyenler Bunları Seviyor
+ * (profilin zevk topluluğu varsa).
  */
 function buildNewPopularLolomo(services: Partial<Services>, profile: ProfileRecord, opts: LolomoOptions): Lolomo {
   const category: LolomoCategory = 'newPopular'
@@ -523,5 +524,14 @@ function buildNewPopularLolomo(services: Partial<Services>, profile: ProfileReco
       .slice(0, 20)
       .map((x) => x.titleId),
   )
+  // Zevk topluluğu: profilin kendi izleme geçmişinden bulunan en yakın topluluğun öne çıkardıkları (geçmiş yoksa satır yok)
+  const community = communityRow(services, profile, {
+    visible,
+    watched: new Set(services.progress?.recentTitles(guid) ?? []),
+  })
+  if (community)
+    push('tasteCommunity', TEXT.tasteCommunity, community.videoIds, community.communityId, {
+      communityId: community.communityId,
+    })
   return { profileGuid: guid, category, trackId, expires: lolomoExpires(now), lists }
 }

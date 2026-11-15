@@ -1,7 +1,8 @@
 /**
  * Kategori gezintisi:
  *   Mobil  — üst çubuğun altındaki haplar: Diziler · Filmler · Yeni ve Popüler · Kategoriler ▾; kategori
- *            seçiliyken başında ✕. "Kategoriler" türlerin listesini alt sayfada açar.
+ *            seçiliyken başında ✕. "Kategoriler" alt sayfada gruplu liste açar: hızlı erişim, sana özel alt türler
+ *            (ana sayfadaki alt tür satırları), tüm alt türler (dizin) ve türler.
  *   Masaüstü — Diziler / Filmler sayfasının başlığı + "Türler ▾" açılır listesi (vitrinin üstünde, menünün altında).
  * Tür listesi: o kategorinin lolomo'sundaki tür satırları (sunucu en az 4 başlığı olan türleri satır yapar);
  * ana sayfada ya da liste gelmeden önce sabit sözlük (shared/taxonomy).
@@ -9,6 +10,7 @@
 import { useState, type ReactElement } from 'react'
 import { Link } from 'react-router-dom'
 import { GENRES } from '../../../../shared/taxonomy'
+import { useGql } from '../../api/hooks'
 import { useScrolled, Dropdown, MenuItem, Pill, PillClear, Sheet, cx } from '../../ui'
 import { ShellPills } from '../../app'
 import {
@@ -74,6 +76,16 @@ export function useSubgenreLinks(enabled: boolean): GenreLink[] {
   return links
 }
 
+/** Alt tür dizini: profilin görebildiği görünen alt türler, kalabalık olan önce (liste açılınca istenir). */
+export function useSubgenreDirectory(enabled: boolean): GenreLink[] {
+  const { data } = useGql<{ microgenres: { id: string; name: string }[] }, { first: number }>(
+    'Microgenres',
+    { first: 30 },
+    { enabled, ttlMs: 300_000 },
+  )
+  return (data?.microgenres ?? []).map((m) => ({ to: `/tur/${encodeURIComponent(m.id)}`, name: m.name }))
+}
+
 /** Kategoriler listesinin başındaki hızlı erişim bağlantıları. */
 const QUICK_LINKS: GenreLink[] = [
   { to: '/listem', name: 'Listem' },
@@ -95,6 +107,8 @@ export function BrowsePills({ category }: { category: LolomoCategory }): ReactEl
   const selected = CATEGORY_PILLS.find((p) => p.category === category)
   // Alt türler yalnız liste açılınca istenir: ana sayfanın ilk çizimi ek istek atmaz.
   const subgenres = useSubgenreLinks(open && !selected)
+  const directory = useSubgenreDirectory(open && !selected)
+  const moreSubgenres = directory.filter((d) => !subgenres.some((g) => g.to === d.to))
   return (
     <>
       <ShellPills label="Kategoriler">
@@ -138,6 +152,20 @@ export function BrowsePills({ category }: { category: LolomoCategory }): ReactEl
                   <h3 className="gz-cat-group">Sana özel alt türler</h3>
                   <ul className="gz-cat-list">
                     {subgenres.map((g) => (
+                      <li key={g.to}>
+                        <Link to={g.to} className="gz-cat-list__link" onClick={() => setOpen(false)}>
+                          {g.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+              {moreSubgenres.length > 0 && (
+                <>
+                  <h3 className="gz-cat-group">Tüm alt türler</h3>
+                  <ul className="gz-cat-list">
+                    {moreSubgenres.map((g) => (
                       <li key={g.to}>
                         <Link to={g.to} className="gz-cat-list__link" onClick={() => setOpen(false)}>
                           {g.name}

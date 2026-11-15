@@ -771,6 +771,8 @@ type Query {
   genre(genreId: Int!): Genre
   "Mikro tür sayfası (satırdaki 'Tümünü Gör')"
   microgenre(id: ID!): Microgenre
+  "Alt tür dizini: profilin görebildiği görünen katman mikro türleri, kalabalık olan önce (Kategoriler listesi)"
+  microgenres(first: Int = 24): [Microgenre!]!
   channel(channelId: Int!): Channel
   channels(category: String, favoritesOnly: Boolean): [Channel!]!
   airing(airingId: ID!): ProgramAiring

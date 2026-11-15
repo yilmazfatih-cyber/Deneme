@@ -6,6 +6,39 @@
   margin: 0;
 }
 
+/* Masaüstü: satırların altında "Çok Yakında" (ComingSoon.tsx) */
+.np-soon {
+  margin: 8px 0 48px;
+}
+.np-soon__note {
+  margin: 4px 0 14px;
+  color: var(--text-3);
+  font-size: 14px;
+}
+.np-soon__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.np-soon__grid > li,
+.np-soon__grid .npf-card {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+}
+.np-soon__grid .npf-card__box {
+  flex: 1;
+  min-width: 0;
+}
+@media (max-width: 1099px) {
+  .np-soon__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 /* ───────────── Mobil akış (Feed.tsx) ───────────── */
 .npf {
   padding: 4px var(--gutter) 24px;
@@ -45,7 +78,7 @@
 }
 /* Top 10: kartın üstünde iki haneli büyük rakam; kart rakamın alt yarısını örter */
 .npf-card--ranked {
-  padding-top: 52px;
+  padding-top: 64px;
 }
 .npf-rank {
   position: absolute;
@@ -73,6 +106,11 @@
   aspect-ratio: 16 / 9;
   background: var(--surface-2);
 }
+.npf-card__artlink {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
 .npf-card__art img,
 .npf-card__art .ui-art-fallback {
   position: absolute;
@@ -80,6 +118,90 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+/* Sessiz önizleme: görselin üstünde belirir; oynatıcının üstüne hiçbir şey bindirilmez */
+.npf-card__player {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  transition: opacity 240ms ease;
+}
+.npf-card__player.is-playing {
+  opacity: 1;
+}
+/* Kendi akışımızda (gömme oynatıcı değilken) dokunuş alttaki bağlantıya geçer */
+.npf-card__player--passthrough {
+  pointer-events: none;
+}
+/* Çok Yakında: görselin sol üstünde kanal (üretilmiş görsellerin altında yayın adı durur) */
+.npf-card__chan {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: calc(100% - 20px);
+  padding: 4px 9px 4px 4px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.72);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.npf-card__chan img {
+  position: static;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  object-fit: contain;
+  background: #fff;
+}
+.npf-sample {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  margin-left: 8px;
+  padding: 0 6px;
+  border: 1px solid var(--line-2, rgba(255, 255, 255, 0.24));
+  border-radius: 2px;
+  color: var(--text-3);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+/* Bölüm çipleri: simge + ad */
+.npf-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.npf-chip .ui-icon {
+  color: var(--accent, #f8d846);
+}
+.npf-top10 {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  background: var(--accent, #f8d846);
+  color: #111;
+  font-size: 6px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+.npf-top10 b {
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: -0.03em;
 }
 .npf-card__age {
   position: absolute;
@@ -94,6 +216,19 @@
 }
 .npf-card__body {
   padding: 14px 16px 16px;
+}
+.npf-card__signals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 8px;
+}
+.npf-card__signals .npf-card__signal {
+  margin: 0;
+}
+.npf-card__signal--match {
+  background: rgba(70, 211, 105, 0.18);
+  color: #46d369;
 }
 .npf-card__signal {
   display: inline-block;
@@ -157,8 +292,26 @@
 .npf-btn:disabled {
   opacity: 0.6;
 }
+.npf-card__actions {
+  flex-wrap: wrap;
+}
 .npf-btn:focus-visible,
-.npf-card__art:focus-visible {
+.npf-card__artlink:focus-visible {
+  outline: 3px solid var(--text-1);
+  outline-offset: 2px;
+}
+/* Bölüm sonu bağlantısı (Çok Yakında → Yayın Akışı) */
+.npf-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 44px;
+  margin-top: 10px;
+  color: var(--text-2);
+  font-size: 14px;
+  font-weight: 700;
+}
+.npf-more:focus-visible {
   outline: 3px solid var(--text-1);
   outline-offset: 2px;
 }

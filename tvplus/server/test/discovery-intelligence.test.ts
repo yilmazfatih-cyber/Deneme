@@ -55,6 +55,7 @@ const DOCS = {
   MicrogenrePage: `query MicrogenrePage($id: ID!, $first: Int) {
     microgenre(id: $id) { id unifiedEntityId name layer size videos(first: $first) { videoId title } }
   }`,
+  Microgenres: `query Microgenres($first: Int) { microgenres(first: $first) { id name layer size } }`,
 }
 const REGISTRY: PersistedRegistry = {
   version: 1,
@@ -282,6 +283,31 @@ describe('GraphQL: similarsWithReason, microgenres, Query.microgenre', () => {
     expect((await ok('MicrogenrePage', { id: 'mg_h4_gotik' })).microgenre.layer).toBe('HIDDEN')
     expect((await ok('MicrogenrePage', { id: 'mg_yok' })).microgenre).toBeNull()
   })
+
+  it('Query.microgenres (alt tür dizini): yalnız görünen katman, kalabalık olan önce, en az 3 görünür başlık', async () => {
+    installEmptyIntelligence(app)
+    expect((await ok('Microgenres', {})).microgenres).toEqual([])
+    const { microgenres } = installIntelligence(app)
+    const adult = (await ok('Microgenres', {})).microgenres
+    expect(adult.map((m: Data) => m.id)).toEqual(['mg_e_aile', 'mg_a_anim', 'mg_b_buyu', 'mg_d_klasik', 'mg_c_komedi'])
+    expect(adult.every((m: Data) => m.layer === 'VISIBLE' && m.size >= 3)).toBe(true)
+    expect((await ok('Microgenres', { first: 2 })).microgenres).toHaveLength(2)
+    // çocuk profili: yalnız görebildiği başlıklar sayılır; 3'ün altına düşen alt tür dizine girmez
+    const kid = (await ok('Microgenres', {}, passport(KID))).microgenres
+    expect(kid.map((m: Data) => m.id)).not.toContain('mg_d_klasik')
+    expect(kid.every((m: Data) => m.size >= 3)).toBe(true)
+    // aynı başlık kümesi farklı adla gelirse biri atlanır; kalabalık olan başa geçer
+    microgenres.set([
+      ...FIXTURE_MICROGENRES,
+      mg('mg_b_kopya', 'Masalsı Dünyalar', [ID.sintel, ID.spring, ID.cosmos, ID.bbb]),
+      mg('mg_z_genis', 'Kısa Yapımlar', [ID.sintel, ID.spring, ID.cosmos, ID.bbb, ID.tears]),
+    ])
+    microgenres.bump()
+    const ids = (await ok('Microgenres', {})).microgenres.map((m: Data) => m.id)
+    expect(ids[0]).toBe('mg_z_genis')
+    expect(ids).toContain('mg_b_buyu')
+    expect(ids).not.toContain('mg_b_kopya')
+  })
 })
 
 describe('ana sayfa satırları', () => {
@@ -397,6 +423,21 @@ describe('ana sayfa satırları', () => {
     // topluluk yok → satır yok
     audience.assign(ADULT.guid, null)
     expect(contexts(home())).not.toContain('tasteCommunity')
+  })
+
+  it('Yeni ve Popüler: zevk topluluğu satırı en sonda; topluluk yoksa satır yok', () => {
+    const { audience } = installIntelligence(app)
+    expect(contexts(home(ADULT, 'newPopular'))).not.toContain('tasteCommunity')
+    audience.assign(ADULT.guid, 'tc_07')
+    audience.setTop('tc_07', [ID.sintel, ID.tears, ID.nosferatu, ID.cosmos, ID.metropolis])
+    app.services.progress.setBookmark(ADULT.guid, ID.sintel, 300)
+    const l = home(ADULT, 'newPopular')
+    expect(contexts(l).at(-1)).toBe('tasteCommunity')
+    expect(byCtx(l).tasteCommunity).toMatchObject({
+      displayName: 'Senin Gibi İzleyenler Bunları Seviyor',
+      communityId: 'tc_07',
+      videoIds: [ID.tears, ID.nosferatu, ID.cosmos, ID.metropolis],
+    })
   })
 
   it('Diziler / Filmler: en çok iki satır, yalnız o türden başlıklar', () => {

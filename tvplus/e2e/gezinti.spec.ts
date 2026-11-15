@@ -39,10 +39,11 @@ test.describe('Ana sayfa', () => {
     await page.reload()
     await expect(page).toHaveURL(/#\/goz-at$/)
 
-    // Vitrin: başlık, Oynat ve (masaüstünde) Daha Fazla Bilgi
+    // Vitrin: başlık, Oynat ve (masaüstünde) Daha Fazla Bilgi. Vitrin başlığı günlük döner; o günün başlığı önceki
+    // testlerde yarım izlendiyse düğme "Devam Et" yazar.
     const billboard = page.getByRole('region', { name: /^Öne çıkan: / })
     await expect(billboard).toBeVisible()
-    await expect(billboard.getByRole('link', { name: /^Oynat/ }).first()).toBeVisible()
+    await expect(billboard.getByRole('link', { name: /^(Oynat|Devam Et)/ }).first()).toBeVisible()
     if (!isMobile(page)) await expect(billboard.getByRole('link', { name: 'Daha Fazla Bilgi' })).toBeVisible()
 
     // Sözlükteki satır adları (UX_SPEC §6)
@@ -223,6 +224,17 @@ test.describe('Mobil Yeni ve Popüler ve kategoriler', () => {
     await page.goto('/#/yeni-ve-populer')
     const chips = page.getByRole('navigation', { name: 'Bölümler' })
     await expect(chips.getByRole('button', { name: 'Herkes Bunları İzliyor' })).toBeVisible()
+    // Çok Yakında: canlı TV'nin sıradaki yayınları; karttan hatırlatma kurulur ve kaldırılır
+    await expect(chips.getByRole('button').first()).toHaveText(/Çok Yakında/)
+    const soon = page.getByRole('region', { name: 'Çok Yakında' })
+    const soonCard = soon.getByRole('article').first()
+    await expect(soonCard.getByText(/başlıyor$/)).toBeVisible()
+    await soonCard.getByRole('button', { name: 'Bana Hatırlat' }).click()
+    const reminded = soonCard.getByRole('button', { name: 'Hatırlatma Kuruldu' })
+    await expect(reminded).toHaveAttribute('aria-pressed', 'true')
+    await reminded.click()
+    await expect(soonCard.getByRole('button', { name: 'Bana Hatırlat' })).toHaveAttribute('aria-pressed', 'false')
+    expect(await soon.getByRole('article').count()).toBeLessThanOrEqual(3)
     await expect(page.getByRole('heading', { name: 'Herkes Bunları İzliyor', level: 2 })).toBeVisible()
     const top10 = page.getByRole('region', { name: "Türkiye'de Bugünün Top 10 Dizi Listesi" })
     await expect(top10.getByRole('article').first()).toBeVisible()
@@ -248,9 +260,35 @@ test.describe('Mobil Yeni ve Popüler ve kategoriler', () => {
     const nav = page.getByRole('navigation', { name: 'Tüm kategoriler' })
     await expect(nav.getByRole('heading', { name: 'Hızlı erişim' })).toBeVisible()
     await expect(nav.getByRole('heading', { name: 'Sana özel alt türler' })).toBeVisible()
+    await expect(nav.getByRole('heading', { name: 'Tüm alt türler' })).toBeVisible()
     await expect(nav.getByRole('heading', { name: 'Türler', exact: true })).toBeVisible()
     await expect(nav.getByRole('link', { name: 'Kısa Videolar' })).toBeVisible()
-    expect(await nav.getByRole('link').count()).toBeGreaterThan(20)
+    expect(await nav.getByRole('link').count()).toBeGreaterThan(30)
+    // Dizindeki bir alt tür kendi sayfasına götürür
+    await nav.locator('a[href*="/tur/mg_"]').last().click()
+    await expect(page).toHaveURL(/#\/tur\/mg_/)
+    await expect(page.getByRole('heading', { level: 1 }).first()).toBeVisible()
+  })
+})
+
+test.describe('Masaüstü Yeni ve Popüler', () => {
+  test.skip(({ viewport }) => (viewport?.width ?? 0) < 900, 'masaüstü düzeni')
+
+  test('üst menüde Kısa Videolar; satırların altında Çok Yakında ve hatırlatma', async ({ page }) => {
+    await signIn(page)
+    await page.goto('/#/yeni-ve-populer')
+    const menu = page.getByRole('navigation', { name: 'Bölümler' })
+    await expect(menu.getByRole('link', { name: 'Kısa Videolar' })).toBeVisible()
+    const soon = page.getByRole('region', { name: 'Çok Yakında' })
+    await soon.scrollIntoViewIfNeeded()
+    const card = soon.getByRole('article').first()
+    await card.getByRole('button', { name: 'Bana Hatırlat' }).click()
+    await expect(card.getByRole('button', { name: 'Hatırlatma Kuruldu' })).toBeVisible()
+    await card.getByRole('button', { name: 'Hatırlatma Kuruldu' }).click()
+    await expect(card.getByRole('button', { name: 'Bana Hatırlat' })).toBeVisible()
+    expect(await horizontalOverflow(page)).toBe(0)
+    await menu.getByRole('link', { name: 'Kısa Videolar' }).click()
+    await expect(page.getByRole('feed', { name: 'Kısa videolar' })).toBeVisible()
   })
 })
 

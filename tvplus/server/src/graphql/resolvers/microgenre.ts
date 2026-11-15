@@ -1,13 +1,13 @@
 /**
  * Görünmeyen katmanın GraphQL yüzü: `Movie/Show.similarsWithReason`, `Movie/Show.microgenres`, `Movie/Show.matchScore`,
- * `Query.microgenre`,
+ * `Query.microgenre`, `Query.microgenres` (alt tür dizini),
  * `Microgenre`, `SimilarVideo`. Üst nesne kuralı: Microgenre → { microgenreId } · Video → { videoId }.
  * Mikro tür servisleri boşken listeler boş, `Query.microgenre` null döner.
  */
 import type { ContentTitle } from '../../../../shared/content-schema'
 import type { GqlContext, ResolverFn, ResolverMap } from '../../kernel/context'
 import { blendedSimilars, type BlendedSimilar } from '../../services/discovery/blend'
-import { matchScoreOf, microgenreById, microgenresOfTitle } from '../../services/discovery/intel'
+import { intelligenceView, matchScoreOf, microgenreById, microgenresOfTitle } from '../../services/discovery/intel'
 import { memo } from '../../services/discovery/memo'
 import { guidOf, requireProfile, visible } from './util'
 import type { VideoRef } from './video'
@@ -17,6 +17,9 @@ export interface MicrogenreRef {
 }
 
 export const microgenreEntityId = (id: string) => `Microgenre:${id}`
+
+/** Dizinde yer almak için profilin görebildiği en az başlık sayısı */
+export const MICROGENRE_DIRECTORY_MIN = 3
 
 const clampFirst = (first: number | null | undefined, dflt: number, max: number) =>
   Math.max(0, Math.min(first ?? dflt, max))
@@ -88,6 +91,27 @@ export const microgenreResolvers: ResolverMap = {
       requireProfile(ctx)
       if (!microgenreById(ctx.services, a.id)) return null
       return visibleTitlesOf(ctx, a.id).length > 0 ? { microgenreId: a.id } : null
+    },
+    /**
+     * Alt tür dizini: görünen katmandan, profilin en az MICROGENRE_DIRECTORY_MIN başlığını görebildiği mikro türler;
+     * kalabalık olan önce. Görünür başlık kümesi bir öncekiyle aynı olan (yalnız adı farklı) alt tür atlanır.
+     */
+    microgenres: (_p: unknown, a: { first?: number | null }, ctx: GqlContext): MicrogenreRef[] => {
+      requireProfile(ctx)
+      const seen = new Set<string>()
+      const out: { id: string; name: string; size: number }[] = []
+      for (const m of intelligenceView(ctx.services).visibleLayer) {
+        const ids = visibleTitlesOf(ctx, m.id)
+        if (ids.length < MICROGENRE_DIRECTORY_MIN) continue
+        const key = [...ids].sort((x, y) => x - y).join(',')
+        if (seen.has(key)) continue
+        seen.add(key)
+        out.push({ id: m.id, name: m.name, size: ids.length })
+      }
+      return out
+        .sort((x, y) => y.size - x.size || x.name.localeCompare(y.name, 'tr') || (x.id < y.id ? -1 : 1))
+        .slice(0, clampFirst(a.first, 24, 60))
+        .map((x) => ({ microgenreId: x.id }))
     },
   },
 }

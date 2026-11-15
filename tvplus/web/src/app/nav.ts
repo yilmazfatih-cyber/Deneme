@@ -19,6 +19,7 @@ export const DESKTOP_NAV: readonly NavEntry[] = [
   { label: 'Diziler', to: '/goz-at/diziler', match: under('/goz-at/diziler') },
   { label: 'Filmler', to: '/goz-at/filmler', match: under('/goz-at/filmler') },
   { label: 'Yeni ve Popüler', to: '/yeni-ve-populer', match: under('/yeni-ve-populer') },
+  { label: 'Kısa Videolar', to: '/kisa', match: under('/kisa') },
   { label: 'Listem', to: '/listem', match: under('/listem') },
 ]
 

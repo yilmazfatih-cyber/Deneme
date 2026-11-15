@@ -11,6 +11,7 @@ describe('masaüstü üst menü etkin öğesi', () => {
     expect(label('/canli')).toBe('Canlı TV')
     expect(label('/rehber')).toBe('Canlı TV')
     expect(label('/yeni-ve-populer')).toBe('Yeni ve Popüler')
+    expect(label('/kisa')).toBe('Kısa Videolar')
     expect(label('/listem')).toBe('Listem')
   })
 

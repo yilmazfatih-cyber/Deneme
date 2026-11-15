@@ -12,15 +12,20 @@ Kasım 2026. Kaynak: ürün sahibinin geri bildirimi ve üç ekranın (web, mobi
 | Kumanda: TV'de Aç | TV boştayken telefon bir başlatıcıdır: kaldığın içerik ya da canlı kanal tek dokunuşla TV'de açılır.                                  |
 | Mac'te açılmama   | Aynı klasördeki `Guards.tsx` / `guards.ts` adları büyük/küçük harf ayırmayan dosya sisteminde çakışıyordu; düzeltildi, testi eklendi. |
 | Sunucusuz yayın   | Sunucu tarayıcının içinde çalışır; uygulama GitHub Pages'te `/tvplus/` altında açılır.                                                |
+| Mobil kurgu       | Alt çubuk: Ana Sayfa · Kısa Videolar · Ara · TV+'ım. Ana sayfanın başında seçim: Dizi ve Film ya da Canlı TV.                         |
+| Kısa Videolar     | Dikey, ekran ekran kayan önizleme akışı; önizleme sessiz başlar, bitince sıradakine geçer. Masaüstü menüsünde de var.                 |
+| Yeni ve Popüler   | Mobilde bölüm çipleriyle akış: Çok Yakında, Herkes Bunları İzliyor, Top 10 listeleri (01, 02 …), Yeni Gelenler; kartta önizleme.      |
+| Çok Yakında       | Canlı TV'nin sıradaki yayınları; karttan "Bana Hatırlat". Web'de satırların altında, mobilde akışın başında.                          |
+| Topluluk işareti  | "Bugün dizilerde 1 numara", "Top 10'da 4. sırada", eşleşme yüzdesi; profilin topluluğu varsa "Senin Topluluğun" bölümü.               |
+| Kategoriler       | Gruplu liste: hızlı erişim, sana özel alt türler, tüm alt türler (yeni dizin sorgusu), türler.                                        |
 
 ## 2. Denetimde görülen, henüz düzeltilmemiş alanlar
 
 | #   | Alan                       | Sorun                                                                                               | Öneri                                                                                           |
 | --- | -------------------------- | --------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
 | 1   | Mobil satırlardaki afişler | Görseller yatay olduğu için dikey afiş "bileşik" üretiliyor: görsel üstte küçük, ad görsele gömülü. | Gerçek içerikte dikey afiş varsa onu kullan; yoksa mobil satırlarda da yatay kart + altında ad. |
-| 2   | Mobil vitrin kartı         | Uzun adlarda afişe gömülü yıl ile etiket satırı üst üste biniyor.                                   | Vitrinde yatay görsel + arayüzün yazdığı ad; afişe gömülü yazıyı bırak.                         |
-| 3   | İlk açılış                 | Tahmin modeli hazır olana dek (≈20 sn) kişisel satırlar ve eşleşme yüzdesi yok.                     | Eğitilmiş modeli derlemeye göm; ilk açılışta hazır gelsin.                                      |
-| 4   | iPhone'da oynatma          | Parçalı akış iOS 17.1 altında yok; o cihazlar YouTube gömmesine düşer. Gerçek cihazda sınanmadı.    | Gerçek cihaz sınaması; HLS çıkışı.                                                              |
+| 2   | İlk açılış                 | Tahmin modeli hazır olana dek (≈20 sn) kişisel satırlar ve eşleşme yüzdesi yok.                     | Eğitilmiş modeli derlemeye göm; ilk açılışta hazır gelsin.                                      |
+| 3   | iPhone'da oynatma          | Parçalı akış iOS 17.1 altında yok; o cihazlar YouTube gömmesine düşer. Gerçek cihazda sınanmadı.    | Gerçek cihaz sınaması; HLS çıkışı.                                                              |
 
 ## 3. Arama altyapısı
 
@@ -99,6 +104,6 @@ film ve canlı yayını TV'ye yansıtma; "Bu Cihazda Devam Et"; kumandada "TV'de
 
 | Ne zaman | İş                                                                                                                    |
 | -------- | --------------------------------------------------------------------------------------------------------------------- |
-| Şimdi    | Gerçek veriyle eğitim (§5.1), gerçek cihaz sınaması (§7.1), mobil afişler (§2.1), eğitilmiş modeli göm (§2.3).        |
+| Şimdi    | Gerçek veriyle eğitim (§5.1), gerçek cihaz sınaması (§7.1), mobil afişler (§2.1), eğitilmiş modeli göm (§2.2).        |
 | Sıradaki | Anlamsal arama ve niyet çözümleme (§3.1–2), jeneriği atla ve sıradaki bölüm (§6.1), model destekli etiketleme (§4.1). |
 | Sonra    | Sayfa düzeyi sıralama, deney altyapısı, birlikte izle, Chromecast/AirPlay köprüsü.                                    |
