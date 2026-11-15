@@ -9,3 +9,6 @@ playwright-report
 .env.*
 dist-pages
 pages-assets
+
+# tsc -b ara çıktıları
+*.tsbuildinfo
