@@ -37,6 +37,7 @@ const passportOf = (profile: ProfileRecord | null): Passport => ({
   esn: 'TVPWCH-MC-TEST',
   deviceId: 'cihaz',
   authURLVerified: true,
+  isAdmin: false,
 })
 
 const access = (state: AccessDecision['state']): AccessDecision => ({

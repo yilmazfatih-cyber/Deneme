@@ -1,8 +1,8 @@
-import { createHmac, randomBytes } from 'node:crypto'
+import { createHash, createHmac, randomBytes } from 'node:crypto'
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { REGION } from '../../../shared/constants'
+import { ADMIN_CODE_SALT, normalizeAdminCode, REGION } from '../../../shared/constants'
 
 export interface AppConfig {
   host: string
@@ -26,15 +26,22 @@ export interface AppConfig {
   offline: boolean
   logLevel: 'silent' | 'error' | 'warn' | 'info' | 'debug'
   /**
-   * /api/debug/* uçlarına erişim: 'member' (varsayılan) giriş yapmış üye ister, 'open' herkese açık (yalnız testler),
-   * 'off' uçları kapatır. Bu uçlar CDN düğümlerini yavaşlatıp kapatabildiği için oturumsuz açık bırakılmaz.
+   * /api/debug/* uçlarına erişim: 'admin' (varsayılan) yönetici kipi açık üye ister, 'member' giriş yapmış her üye,
+   * 'open' herkese açık (yalnız testler), 'off' uçları kapatır (TVP_DEBUG). Bu uçlar CDN düğümlerini yavaşlatıp
+   * kapatabildiği için oturumsuz açık bırakılmaz.
    */
-  debugAccess: 'open' | 'member' | 'off'
+  debugAccess: AccessLevel
   /**
-   * /api/studio/* (içerik zekâsı arka ofisi) erişimi: 'member' (varsayılan) üye oturumu ya da stüdyo anahtarı ister,
-   * 'open' herkese açık (yalnız testler), 'off' uçları kapatır.
+   * /api/studio/* (içerik zekâsı arka ofisi) erişimi: 'admin' (varsayılan) yönetici kipi açık üye ya da stüdyo anahtarı,
+   * 'member' üye oturumu ya da stüdyo anahtarı, 'open' herkese açık (yalnız testler), 'off' uçları kapatır (TVP_STUDIO).
    */
-  studioAccess: 'open' | 'member' | 'off'
+  studioAccess: AccessLevel
+  /**
+   * Yönetici kodunun özeti: sha256(ADMIN_CODE_SALT + normalizeAdminCode(kod)), onaltılık. TVP_ADMIN_CODE verilirse
+   * ondan hesaplanır, 'off' ise null (yönetici kipi açılamaz), verilmezse depodaki varsayılan özet. Kodun kendisi
+   * hiçbir yerde saklanmaz ve günlüğe yazılmaz.
+   */
+  adminCodeHash: string | null
   /** Ayarlıysa `x-tvplus-studio-key` başlığında bu değeri taşıyan istekler oturumsuz kabul edilir (TVP_STUDIO_KEY). */
   studioKey: string | null
   /** İzleme deposu boşsa açılışta SENTETİK örnek veri üretilsin mi (geliştirmede açık; TVP_SAMPLE_VIEWING=0 kapatır). */
@@ -70,6 +77,29 @@ export interface AppConfig {
   embedding: { provider: 'taban' | 'http' | 'dosya'; url: string | null }
 }
 
+/** Arka ofis uçlarının erişim düzeyi (bkz. app.ts kancaları). */
+export type AccessLevel = 'open' | 'member' | 'admin' | 'off'
+
+/** Depodaki varsayılan yönetici kodunun özeti (kodun kendisi depoda yoktur). */
+export const DEFAULT_ADMIN_CODE_HASH = '6c7d50f6c1579ffcae6819e31c73c73246ae4ad168d1fac0fd464b1d8f97fdde'
+
+/** Yönetici kodunun özeti: sha256(ADMIN_CODE_SALT + düzleştirilmiş kod), onaltılık. */
+export const adminCodeHashOf = (code: string): string =>
+  createHash('sha256')
+    .update(ADMIN_CODE_SALT + normalizeAdminCode(code))
+    .digest('hex')
+
+/** TVP_STUDIO / TVP_DEBUG değeri: 'member' | 'open' | 'off'; başka her şey (ya da verilmemesi) 'admin'. */
+function accessFromEnv(value: string | undefined): AccessLevel {
+  return value === 'off' || value === 'open' || value === 'member' ? value : 'admin'
+}
+
+function adminCodeHashFromEnv(value: string | undefined): string | null {
+  if (value === undefined || value.trim() === '') return DEFAULT_ADMIN_CODE_HASH
+  if (value.trim().toLowerCase() === 'off') return null
+  return adminCodeHashOf(value)
+}
+
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..', '..')
 
 /** Gizli anahtar: TVP_SECRET ortam değişkeni, yoksa .data/secret dosyasında saklanan rastgele değer. */
@@ -101,8 +131,9 @@ export function loadConfig(overrides: Partial<AppConfig> = {}): AppConfig {
     isTest: false,
     offline: process.env.TVP_OFFLINE === '1',
     logLevel: (process.env.TVP_LOG_LEVEL as AppConfig['logLevel']) ?? 'info',
-    debugAccess: process.env.TVP_DEBUG === 'off' ? 'off' : process.env.TVP_DEBUG === 'open' ? 'open' : 'member',
-    studioAccess: process.env.TVP_STUDIO === 'off' ? 'off' : process.env.TVP_STUDIO === 'open' ? 'open' : 'member',
+    debugAccess: accessFromEnv(process.env.TVP_DEBUG),
+    studioAccess: accessFromEnv(process.env.TVP_STUDIO),
+    adminCodeHash: adminCodeHashFromEnv(process.env.TVP_ADMIN_CODE),
     studioKey: process.env.TVP_STUDIO_KEY || null,
     sampleViewing: process.env.TVP_SAMPLE_VIEWING !== '0',
     staticHost: process.env.TVP_STATIC_HOST === '1',

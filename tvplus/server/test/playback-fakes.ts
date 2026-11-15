@@ -33,6 +33,7 @@ export function fakePassport(overrides: Partial<Passport> = {}): Passport {
     esn: 'TVPWCH-MC-TEST-0001',
     deviceId: 'cihaz-1',
     authURLVerified: true,
+    isAdmin: false,
     ...overrides,
   }
 }

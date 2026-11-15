@@ -55,6 +55,7 @@ export function passport(p: ProfileRecord | null, account: AccountRecord | null 
     esn: 'TVPWCH-MC-TEST',
     deviceId: 'dev-test',
     authURLVerified: true,
+    isAdmin: false,
   }
 }
 

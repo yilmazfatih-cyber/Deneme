@@ -18,6 +18,8 @@ import type {
   PlanResult,
   PredictionExplanation,
   PredictionModelInfo,
+  SegmentReason,
+  SegmentStatus,
   TasteCommunity,
   Timeline,
   TitleTotals,
@@ -104,6 +106,30 @@ export interface AudienceService {
   /** Toplulukta genele göre öne çıkan başlıklar */
   topTitles(communityId: string, limit: number): { titleId: number; lift: number; reach: number }[]
   recompute(opts?: { k?: number; seed?: number }): ClusteringRun
+  /**
+   * Kararın açıklaması (Yönetici paneli). İsteğe bağlıdır: uygulamayan servis (ör. test sahtesi) için panel yalnız
+   * ofProfile sonucunu gösterir. Topluluk ve benzerlik `ofViewer` ile her zaman aynıdır.
+   */
+  explainViewer?(viewerId: string): AudienceExplanation
+}
+
+/** Bir izleyicinin topluluk kararının bileşenleri (bkz. services/audience/service.ts explainViewer). */
+export interface AudienceExplanation {
+  status: SegmentStatus
+  /** ofViewer'ın verdiği topluluk; ASSIGNED değilse null */
+  communityId: string | null
+  /** ofViewer'ın verdiği benzerlik (4 basamak); ASSIGNED değilse 0 */
+  similarity: number
+  /** İzleyici son kümeleme çalıştırmasında satır olarak vardı */
+  inRun: boolean
+  /** Kümelemede sayılan olgu sayısı (vektörü olan ve ilgi eşiğini geçen başlıklar); model yoksa null */
+  engagedTitles: number | null
+  /** Tüm topluluklara benzerlik (büyükten küçüğe; eşitlikte topluluk sırası) */
+  similarities: { communityId: string; similarity: number }[]
+  /** Seçilen merkezle sıfırdan farklı her bileşen (katkıya göre büyükten küçüğe); toplamı benzerliğe eşittir */
+  features: SegmentReason[]
+  /** İzlenen her başlığın benzerlikteki payı (büyükten küçüğe); toplamı benzerliğe eşittir */
+  titles: { titleId: number; contribution: number; engagement: number }[]
 }
 
 /* ───────────── İçgörüler ve planlayıcı ───────────── */

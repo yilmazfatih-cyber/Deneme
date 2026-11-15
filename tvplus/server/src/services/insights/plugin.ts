@@ -7,6 +7,7 @@
  *   GET  /api/studio/insights/mix?type=MOVIE|SHOW|ALL&from=&to=        → CatalogMix
  *   GET  /api/studio/insights/timeline?dimension=genre|acquisition|origin&months=12 → Timeline
  *   POST /api/studio/plan                                              gövde: PlanInput → PlanResult
+ *   GET  /api/studio/me/insight                                        → ViewerInsight (Yönetici paneli; viewer.ts)
  */
 import type { FastifyInstance } from 'fastify'
 import { ROUTES } from '../../../../shared/constants'
@@ -26,6 +27,7 @@ import { dayOf, dayStart, monthOf } from './labels'
 import { computeMix, computeTimeline, monthsEndingAt } from './mix'
 import { computeOverview } from './overview'
 import { computePlan } from './plan'
+import { registerViewerInsight } from './viewer'
 import {
   MIX_MESSAGES,
   PLAN_MESSAGES,
@@ -157,4 +159,6 @@ export default async function insightsPlugin(app: FastifyInstance): Promise<void
     await audienceReady()
     return service.plan(body)
   })
+
+  registerViewerInsight(app, audienceReady)
 }

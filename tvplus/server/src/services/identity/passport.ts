@@ -4,6 +4,7 @@
  *   TvpId    → hesap + oturum + profil GUID'i (HMAC ile korunur; bozuksa anonim + çerezler silinir)
  *   SecureTvpId → GET dışındaki isteklerde TvpId'nin MAC'i de doğrulanmalı (SameSite=Strict: CSRF kalkanı)
  *   tvpProfilesNewSession = '0' → bu tarayıcı oturumunda profil kapısı geçildi
+ *   tvpadm   → yönetici kipi (hesap + cihaza bağlı HMAC, 30 gün; bkz. admin.ts) — yalnız üyede okunur
  *
  * Sanal cihaz (cihaz vitrini): istek `x-tvplus-vd: <ad>` başlığı ya da `?vd=<ad>` sorgusu taşırsa ([a-z0-9]{1,12})
  * zincirin TÜM çerezleri `<ad>` ekiyle okunur ve yazılır (`TvpId__tv`, `tvpvdid__tv` …): tek tarayıcıda birbirinden
@@ -14,12 +15,22 @@ import type { FastifyReply, FastifyRequest } from 'fastify'
 import { COOKIES, HEADERS, VIRTUAL_DEVICE_PARAM } from '../../../../shared/constants'
 import type { AccountRecord, Passport, ProfileRecord } from '../../kernel/context'
 import { deriveEsn, parseEsn } from './esn'
-import { decodeTvpId, encodeSecure, encodeTvpId, verifyAuthURL, verifySecure, type SessionClaims } from './session'
+import {
+  decodeTvpId,
+  encodeSecure,
+  encodeTvpId,
+  verifyAdminToken,
+  verifyAuthURL,
+  verifySecure,
+  type SessionClaims,
+} from './session'
 
 export interface IdentityKeys {
   cookie: Buffer
   authUrl: Buffer
   esn: Buffer
+  /** Yönetici çerezinin MAC anahtarı: deriveKey(config, 'admin') */
+  admin: Buffer
 }
 
 export interface IdentityLookup {
@@ -63,6 +74,7 @@ export function cookieNames(req: FastifyRequest): CookieNames {
     SECURE: COOKIES.SECURE + suffix,
     DEVICE: COOKIES.DEVICE + suffix,
     PROFILE_GATE: COOKIES.PROFILE_GATE + suffix,
+    ADMIN: COOKIES.ADMIN + suffix,
   }
 }
 
@@ -73,7 +85,15 @@ function headerValue(req: FastifyRequest, name: string): string | null {
 }
 
 export function anonymousPassport(deviceId: string, esn: string): Passport {
-  return { membershipStatus: 'ANONYMOUS', account: null, profile: null, esn, deviceId, authURLVerified: false }
+  return {
+    membershipStatus: 'ANONYMOUS',
+    account: null,
+    profile: null,
+    esn,
+    deviceId,
+    authURLVerified: false,
+    isAdmin: false,
+  }
 }
 
 export function clearSessionCookies(req: FastifyRequest, reply: FastifyReply): void {
@@ -81,6 +101,8 @@ export function clearSessionCookies(req: FastifyRequest, reply: FastifyReply): v
   reply.clearCookie(names.SESSION, { path: '/' })
   reply.clearCookie(names.SECURE, { path: '/' })
   reply.clearCookie(names.PROFILE_GATE, { path: '/' })
+  // Yönetici kipi oturuma bağlıdır: oturum kapanınca (ya da geçersizleşince) o da kapanır
+  if (req.cookies?.[names.ADMIN] !== undefined) reply.clearCookie(names.ADMIN, { path: '/' })
   sessions.delete(req)
 }
 
@@ -196,6 +218,7 @@ export function resolvePassport(
     esn,
     deviceId,
     authURLVerified: false,
+    isAdmin: verifyAdminToken(keys.admin, cookies[names.ADMIN], account.accountId, deviceId),
   }
   passport.authURLVerified = checkAuthURL(req, keys, headerValue(req, HEADERS.AUTH_URL))
   return passport

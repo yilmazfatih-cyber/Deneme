@@ -196,6 +196,7 @@ export async function buildBootContext(app: FastifyInstance, req: FastifyRequest
     persistedQueryVersion: PERSISTED_QUERY_VERSION,
     // Durağan barındırma (GitHub Pages): istemci vekil/CDN yollarını kullanmaz (bkz. web/src/lib/assetBase.ts)
     featureFlags: { ...FEATURE_FLAGS, ...(app.config.staticHost ? { staticHost: true } : {}) },
+    isAdmin: passport.membershipStatus === 'CURRENT_MEMBER' && passport.isAdmin,
     falcorCache: await bootFalcorCache(app, req),
   }
 }

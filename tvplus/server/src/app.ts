@@ -5,7 +5,7 @@
  */
 import cookie from '@fastify/cookie'
 import formbody from '@fastify/formbody'
-import Fastify, { type FastifyInstance } from 'fastify'
+import Fastify, { type FastifyInstance, type FastifyReply, type FastifyRequest } from 'fastify'
 import falcorPlugin from './falcor/plugin'
 import errorsPlugin from './gateway/errors'
 import shellPlugin from './gateway/shell'
@@ -68,24 +68,39 @@ export async function buildApp(overrides: Partial<AppConfig> = {}): Promise<Fast
 
   await identityPlugin(app)
 
-  // Hata ayıklama uçları (düğüm yavaşlatma/kapama, olay dökümü) oturumsuz kullanılamaz; pasaport kancasından sonra çalışır.
-  app.addHook('onRequest', async (req, reply) => {
-    if (!req.url.startsWith(`${ROUTES.DEBUG_PREFIX}/`) || config.debugAccess === 'open') return
+  /** Üye / yönetici denetimi: geçerse null, geçmezse yanıt gönderilmiştir. */
+  const requireLevel = (req: FastifyRequest, reply: FastifyReply, level: 'member' | 'admin') => {
     const traceId = req.trace?.traceId
-    if (config.debugAccess === 'off') {
-      return reply.code(404).send({ error: { code: 'NOT_FOUND', message: 'Hata ayıklama uçları kapalı.', traceId } })
-    }
     if (req.passport?.membershipStatus !== 'CURRENT_MEMBER') {
       return reply.code(401).send({ error: { code: 'UNAUTHENTICATED', message: 'Önce giriş yapmalısınız.', traceId } })
     }
+    if (level === 'admin' && !req.passport.isAdmin) {
+      return reply
+        .code(403)
+        .send({ error: { code: 'ADMIN_REQUIRED', message: 'Bu bölüm yalnız yöneticiye açık.', traceId } })
+    }
+    return null
+  }
+
+  // Hata ayıklama uçları (düğüm yavaşlatma/kapama, olay dökümü) oturumsuz kullanılamaz; pasaport kancasından sonra çalışır.
+  // 'admin' (varsayılan): yönetici kipi açık üye · 'member': her üye · 'open': herkes · 'off': kapalı.
+  app.addHook('onRequest', async (req, reply) => {
+    if (!req.url.startsWith(`${ROUTES.DEBUG_PREFIX}/`) || config.debugAccess === 'open') return
+    if (config.debugAccess === 'off') {
+      const traceId = req.trace?.traceId
+      return reply.code(404).send({ error: { code: 'NOT_FOUND', message: 'Hata ayıklama uçları kapalı.', traceId } })
+    }
+    const denied = requireLevel(req, reply, config.debugAccess)
+    if (denied) return denied
   })
 
-  // Stüdyo (içerik zekâsı arka ofisi): üye oturumu ya da stüdyo anahtarı ister. Yazma uçları ayrıca assertStudioWrite çağırır.
+  // Stüdyo (içerik zekâsı arka ofisi): yönetici kipi ('admin', varsayılan) ya da üye oturumu ('member') ya da stüdyo
+  // anahtarı ister. Yazma uçları ayrıca assertStudioWrite çağırır.
   app.decorateRequest('studioKeyAuth', false)
   app.addHook('onRequest', async (req, reply) => {
     if (!req.url.startsWith(`${ROUTES.STUDIO}/`) || config.studioAccess === 'open') return
-    const traceId = req.trace?.traceId
     if (config.studioAccess === 'off') {
+      const traceId = req.trace?.traceId
       return reply.code(404).send({ error: { code: 'NOT_FOUND', message: 'Stüdyo uçları kapalı.', traceId } })
     }
     const key = req.headers[HEADERS.STUDIO_KEY]
@@ -93,9 +108,8 @@ export async function buildApp(overrides: Partial<AppConfig> = {}): Promise<Fast
       req.studioKeyAuth = true
       return
     }
-    if (req.passport?.membershipStatus !== 'CURRENT_MEMBER') {
-      return reply.code(401).send({ error: { code: 'UNAUTHENTICATED', message: 'Önce giriş yapmalısınız.', traceId } })
-    }
+    const denied = requireLevel(req, reply, config.studioAccess)
+    if (denied) return denied
   })
 
   await eventsPlugin(app)

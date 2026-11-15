@@ -108,6 +108,7 @@ const passportOf = (p: ProfileRecord | null): Passport => ({
   esn: 'TVPWCH-MC-TEST',
   deviceId: 'cihaz',
   authURLVerified: true,
+  isAdmin: false,
 })
 
 interface History {

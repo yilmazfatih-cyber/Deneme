@@ -10,26 +10,45 @@ import type { ApiError } from '../../../shared/types'
 export class ApiHttpError extends Error {
   statusCode: number
   code: string
-  constructor(statusCode: number, code: string, message: string) {
+  /** Gövdeye eklenen ek alanlar (ör. 429'da `retryAfterSec`); code/message/traceId'yi ezemez */
+  extra: Record<string, string | number | boolean> | undefined
+  constructor(statusCode: number, code: string, message: string, extra?: Record<string, string | number | boolean>) {
     super(message)
     this.statusCode = statusCode
     this.code = code
+    this.extra = extra
   }
 }
 
-export const httpError = (statusCode: number, code: string, message: string): ApiHttpError =>
-  new ApiHttpError(statusCode, code, message)
+export const httpError = (
+  statusCode: number,
+  code: string,
+  message: string,
+  extra?: Record<string, string | number | boolean>,
+): ApiHttpError => new ApiHttpError(statusCode, code, message, extra)
 
-export function apiErrorBody(req: FastifyRequest, code: string, message: string): ApiError {
-  return { error: { code, message, traceId: req.trace?.traceId } }
+export function apiErrorBody(
+  req: FastifyRequest,
+  code: string,
+  message: string,
+  extra?: Record<string, string | number | boolean>,
+): ApiError {
+  return { error: { ...extra, code, message, traceId: req.trace?.traceId } }
 }
 
 /** Kısayol: hata gövdesini durum koduyla yollar. */
-export function sendApiError(req: FastifyRequest, reply: FastifyReply, status: number, code: string, message: string) {
+export function sendApiError(
+  req: FastifyRequest,
+  reply: FastifyReply,
+  status: number,
+  code: string,
+  message: string,
+  extra?: Record<string, string | number | boolean>,
+) {
   return reply
     .code(status)
     .type('application/json; charset=utf-8')
-    .send(apiErrorBody(req, code, message))
+    .send(apiErrorBody(req, code, message, extra))
 }
 
 /** Bulunamayan adres için ek işleyici (SPA kabuğu). true dönerse yanıtı kendisi vermiştir. */
@@ -63,7 +82,7 @@ const FASTIFY_CODES: Record<string, { code: string; message: string }> = {
 export default async function plugin(app: FastifyInstance): Promise<void> {
   app.setErrorHandler((err: FastifyError, req, reply) => {
     if (err instanceof ApiHttpError) {
-      return sendApiError(req, reply, err.statusCode, err.code, err.message)
+      return sendApiError(req, reply, err.statusCode, err.code, err.message, err.extra)
     }
     if (err.validation) {
       return sendApiError(req, reply, 400, 'VALIDATION_FAILED', 'İstek geçersiz: alanları denetleyin.')

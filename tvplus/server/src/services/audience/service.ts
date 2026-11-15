@@ -9,10 +9,18 @@ import { createHash } from 'node:crypto'
 import type { FastifyInstance } from 'fastify'
 import type { ContentTitle } from '../../../../shared/content-schema'
 import type { ClusteringRun, TasteCommunity, ViewingFact, ViewingSource } from '../../../../shared/intelligence'
-import type { AudienceService } from '../../kernel/intelligence'
+import type { AudienceExplanation, AudienceService } from '../../kernel/intelligence'
 import { createStore, type Store } from '../../kernel/store'
 import { describe, type TitleLift } from './describe'
-import { buildFeatureSpace, buildViewerMatrix, viewerVector, type FeatureDef, type FeatureSpace } from './features'
+import {
+  buildFeatureSpace,
+  buildViewerMatrix,
+  engagedCount,
+  titleContributions,
+  viewerVector,
+  type FeatureDef,
+  type FeatureSpace,
+} from './features'
 import { cluster, round, type Work } from './kmeans'
 
 /** Sözleşmedeki ClusteringRun + tanılama alanları (atanmamış izleyici, süre, aday k'ların siluetleri). */
@@ -24,6 +32,7 @@ export interface ClusteringRunInfo extends ClusteringRun {
 }
 
 export interface AudienceImpl extends AudienceService {
+  explainViewer(viewerId: string): AudienceExplanation
   /** Olay döngüsünü kilitlemeden yeniden hesaplar (REST ucu bunu kullanır). */
   recomputeAsync(opts?: { k?: number; seed?: number }): Promise<ClusteringRunInfo>
   /** Arka plandaki hesap (varsa) bitene kadar bekler. */
@@ -308,21 +317,44 @@ export function createAudienceService(app: FastifyInstance, tuning: AudienceTuni
     return model && model.k > 0 ? model : null
   }
 
-  const nearest = (m: Model, facts: ViewingFact[]): { communityId: string; similarity: number } | null => {
-    const v = viewerVector(facts, m.space, m.idf)
-    if (!v) return null
-    let best = -1
-    let bestScore = -Infinity
+  /** İzleyici vektörünün her merkezle iç çarpımı (kosinüs: ikisi de birim uzunlukta). nearest ve explainViewer ortak. */
+  const scoreAll = (m: Model, v: { idx: number[]; val: number[] }): number[] => {
+    const out: number[] = []
     for (let j = 0; j < m.k; j++) {
       let s = 0
       for (let q = 0; q < v.idx.length; q++) s += v.val[q]! * m.ct[v.idx[q]! * m.k + j]!
-      if (s > bestScore) {
-        bestScore = s
+      out.push(s)
+    }
+    return out
+  }
+  /** En büyük skorun dizini (eşitlikte ilk); hiç topluluk yoksa -1 */
+  const argmaxOf = (scores: number[]): number => {
+    let best = -1
+    let bestScore = -Infinity
+    for (let j = 0; j < scores.length; j++) {
+      if (scores[j]! > bestScore) {
+        bestScore = scores[j]!
         best = j
       }
     }
-    if (best < 0 || bestScore <= 0) return null
-    return { communityId: m.communities[best]!.id, similarity: round(bestScore, 4) }
+    return best
+  }
+
+  const nearest = (m: Model, facts: ViewingFact[]): { communityId: string; similarity: number } | null => {
+    const v = viewerVector(facts, m.space, m.idf)
+    if (!v) return null
+    const scores = scoreAll(m, v)
+    const best = argmaxOf(scores)
+    if (best < 0 || scores[best]! <= 0) return null
+    return { communityId: m.communities[best]!.id, similarity: round(scores[best]!, 4) }
+  }
+
+  const factsOf = (viewerId: string): ViewingFact[] | null => {
+    try {
+      return svc().viewing.factsOfViewer(viewerId)
+    } catch {
+      return null
+    }
   }
 
   const ofViewer = (viewerId: string): { communityId: string; similarity: number } | null => {
@@ -332,13 +364,91 @@ export function createAudienceService(app: FastifyInstance, tuning: AudienceTuni
     if (row !== undefined) {
       return { communityId: m.communities[m.assign[row]!]!.id, similarity: round(m.sim[row]!, 4) }
     }
-    let facts: ViewingFact[] = []
-    try {
-      facts = svc().viewing.factsOfViewer(viewerId)
-    } catch {
-      return null
+    const facts = factsOf(viewerId)
+    return facts && facts.length > 0 ? nearest(m, facts) : null
+  }
+
+  /**
+   * ofViewer'ın kararını bileşenlerine ayırır; topluluk ve benzerlik ofViewer'ınkiyle aynıdır:
+   *  - çalıştırmada satırı olan izleyici: kümelemenin ataması ve benzerliği (son merkezlere göre),
+   *  - olmayan: kendi olgularından en yakın merkez (nearest ile aynı hesap).
+   * Bileşenler izleyicinin GÜNCEL olgularından kurulan vektörle hesaplanır (viewerVector):
+   *  - features: her boyutta izleyici ağırlığı × merkez ağırlığı; toplamı vektör · merkez,
+   *  - titles: titleContributions — birikim doğrusal olduğu için iç çarpım başlıklara tam ayrılır.
+   * Çalıştırmadan sonra yeni olgu gelmediyse ikisinin toplamı da bildirilen benzerliğe eşittir (float32 yuvarlaması
+   * kadar fark); geldiyse karar ve benzerlik çalıştırmanınkidir, bileşenler güncel geçmişi gösterir.
+   */
+  const explainViewer = (viewerId: string): AudienceExplanation => {
+    const empty = (status: AudienceExplanation['status'], engagedTitles: number | null): AudienceExplanation => ({
+      status,
+      communityId: null,
+      similarity: 0,
+      inRun: false,
+      engagedTitles,
+      similarities: [],
+      features: [],
+      titles: [],
+    })
+    const m = current()
+    const facts = factsOf(viewerId) ?? []
+    if (!m) return empty('NO_MODEL', null)
+    const row = m.viewerRow.get(viewerId)
+    const inRun = row !== undefined
+    const engagedTitles = engagedCount(facts, m.space)
+    const v = facts.length > 0 ? viewerVector(facts, m.space, m.idf) : null
+    const scores = v ? scoreAll(m, v) : []
+    const ranked = () =>
+      scores
+        .map((s, j) => ({ communityId: m.communities[j]!.id, similarity: round(s, 4), j }))
+        .sort((a, b) => b.similarity - a.similarity || a.j - b.j)
+        .map(({ communityId, similarity }) => ({ communityId, similarity }))
+    let chosen: number
+    let similarity: number
+    if (inRun) {
+      chosen = m.assign[row]!
+      similarity = round(m.sim[row]!, 4)
+    } else {
+      if (facts.length === 0) return empty('NO_HISTORY', 0)
+      const best = v ? argmaxOf(scores) : -1
+      if (best < 0 || scores[best]! <= 0) return { ...empty('THIN_HISTORY', engagedTitles), similarities: ranked() }
+      chosen = best
+      similarity = round(scores[best]!, 4)
     }
-    return facts.length > 0 ? nearest(m, facts) : null
+    const k = m.k
+    const features: AudienceExplanation['features'] = []
+    if (v) {
+      for (let q = 0; q < v.idx.length; q++) {
+        const d = v.idx[q]!
+        const communityWeight = m.ct[d * k + chosen]!
+        const contribution = v.val[q]! * communityWeight
+        if (contribution === 0) continue
+        const def = m.space.features[d]!
+        features.push({
+          kind: def.kind,
+          key: def.key,
+          name: def.name,
+          viewerWeight: round(v.val[q]!, 6),
+          communityWeight: round(communityWeight, 6),
+          contribution: round(contribution, 6),
+        })
+      }
+      features.sort((a, b) => b.contribution - a.contribution || (a.key < b.key ? -1 : a.key > b.key ? 1 : 0))
+    }
+    const titles = v
+      ? titleContributions(facts, m.space, m.idf, v.norm, (d) => m.ct[d * k + chosen]!)
+          .map((t) => ({ ...t, contribution: round(t.contribution, 6), engagement: round(t.engagement, 4) }))
+          .sort((a, b) => b.contribution - a.contribution || a.titleId - b.titleId)
+      : []
+    return {
+      status: 'ASSIGNED',
+      communityId: m.communities[chosen]!.id,
+      similarity,
+      inRun,
+      engagedTitles,
+      similarities: ranked(),
+      features,
+      titles,
+    }
   }
 
   const applyOptions = (opts?: { k?: number; seed?: number }) => {
@@ -355,6 +465,7 @@ export function createAudienceService(app: FastifyInstance, tuning: AudienceTuni
       return m && i !== undefined ? m.communities[i]! : null
     },
     ofViewer,
+    explainViewer,
     ofProfile: (profileGuid) => {
       let viewerId: string
       try {

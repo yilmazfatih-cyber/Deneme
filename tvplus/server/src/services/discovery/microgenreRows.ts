@@ -33,6 +33,8 @@ export interface MicrogenreRow {
   microgenre: Microgenre
   /** Görünür başlıklar, satır sırasıyla */
   videoIds: number[]
+  /** Seçim puanı (uyum); profilin sinyali yoksa 0 — yalnız gösterim için, seçimi ve sırayı etkilemez */
+  score: number
 }
 
 const byPopularity = (a: ContentTitle, b: ContentTitle) => b.popularity - a.popularity || a.videoId - b.videoId
@@ -112,6 +114,7 @@ export function pickMicrogenreRows(
   const watched = opts.watched ?? new Set<number>()
   return picked.map((c) => ({
     microgenre: c.m,
+    score: score.get(c.m.id) ?? 0,
     videoIds: [...c.titles]
       .sort((a, b) => Number(watched.has(a.videoId)) - Number(watched.has(b.videoId)) || byPopularity(a, b))
       .map((t) => t.videoId),

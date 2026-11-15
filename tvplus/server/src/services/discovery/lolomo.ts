@@ -66,6 +66,10 @@ export interface LolomoList {
   communityId?: string
   /** gems: satırı tahmin modeli mi ('model') kurallar mı ('rules') üretti ("Kaputun altı" için) */
   source?: 'model' | 'rules'
+  /** microgenre: seçim puanı (pickMicrogenreRows; Yönetici paneli için, istemciye gitmez) */
+  score?: number
+  /** microgenre: seçim profilin izleme sinyallerine mi dayandı (false: geçmiş yok, en büyük mikro türler) */
+  fromSignals?: boolean
 }
 export interface Lolomo {
   profileGuid: string
@@ -373,7 +377,11 @@ function buildHomeLolomo(services: Partial<Services>, profile: ProfileRecord, op
     genreSets,
     watched,
   }))
-    push('microgenre', r.microgenre.name, r.videoIds, r.microgenre.id, { microgenreId: r.microgenre.id })
+    push('microgenre', r.microgenre.name, r.videoIds, r.microgenre.id, {
+      microgenreId: r.microgenre.id,
+      score: r.score,
+      fromSignals: signals.length > 0,
+    })
   editorial[1]?.()
   // 9. Geçiş: Canlı TV'ye köprü (öğesiz)
   push('bridge', TEXT.bridge, [])

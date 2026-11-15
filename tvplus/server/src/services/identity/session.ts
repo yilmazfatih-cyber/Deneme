@@ -5,6 +5,7 @@
  *   TvpId       = v=1&ct=<b64url(JSON {aid,sid,iat})>&pg=<profil GUID | boş>&ch=<b64url HMAC("v|ct|pg")>
  *   SecureTvpId = v=1&mac=<b64url HMAC(TvpId değeri)>&dt=<epoch ms>
  *   authURL     = c1.<epoch ms>.<b64url HMAC("sid|ts")>   — 24 saat geçerli
+ *   tvpadm      = v=1&exp=<epoch ms>&mac=<b64url HMAC("aid|deviceId|exp")>   — yönetici kipi, 30 gün (bkz. admin.ts)
  */
 import { hmacB64, safeEqual } from './crypto'
 
@@ -87,4 +88,44 @@ export function verifyAuthURL(key: Buffer, sid: string, token: string | undefine
   if (!Number.isSafeInteger(ts)) return false
   if (now - ts > AUTH_URL_TTL_MS || ts - now > AUTH_URL_SKEW_MS) return false
   return safeEqual(hmacB64(key, `${sid}|${ts}`), m[2]!)
+}
+
+/** Yönetici kipi çerezinin ömrü */
+export const ADMIN_TTL_MS = 30 * 24 * 60 * 60 * 1000
+
+/** Yönetici çerezinin değeri (saf işlev; `now` testler için). */
+export function encodeAdminToken(
+  key: Buffer,
+  accountId: string,
+  deviceId: string,
+  now = Date.now(),
+  ttlMs = ADMIN_TTL_MS,
+): string {
+  const exp = now + ttlMs
+  return new URLSearchParams({
+    v: '1',
+    exp: String(exp),
+    mac: hmacB64(key, `${accountId}|${deviceId}|${exp}`),
+  }).toString()
+}
+
+/** Çerez bu hesap ve cihaz için verilmiş ve süresi dolmamış mı. */
+export function verifyAdminToken(
+  key: Buffer,
+  value: string | undefined | null,
+  accountId: string,
+  deviceId: string,
+  now = Date.now(),
+): boolean {
+  if (!value || value.length > 512) return false
+  let params: URLSearchParams
+  try {
+    params = new URLSearchParams(value)
+  } catch {
+    return false
+  }
+  const exp = Number(params.get('exp'))
+  const mac = params.get('mac')
+  if (params.get('v') !== '1' || !mac || !Number.isSafeInteger(exp) || exp <= now) return false
+  return safeEqual(hmacB64(key, `${accountId}|${deviceId}|${exp}`), mac)
 }

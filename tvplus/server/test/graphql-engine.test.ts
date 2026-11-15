@@ -130,6 +130,7 @@ const passport = (over: Partial<Passport> = {}): Passport => ({
   esn: 'e',
   deviceId: 'd',
   authURLVerified: true,
+  isAdmin: false,
   ...over,
 })
 const ANON = passport({ membershipStatus: 'ANONYMOUS', account: null, profile: null, authURLVerified: false })

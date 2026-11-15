@@ -204,7 +204,7 @@ function accumulateViewer(
     hours += Math.max(0, f.watchedSec) / 3600
     const tv = space.titleVecs.get(f.titleId)
     if (!tv) continue
-    const e = Math.min(1, Math.max(0, f.engagement))
+    const e = clampEngagement(f.engagement)
     titles.push(f.titleId)
     if (e < MIN_ENGAGEMENT) continue
     engaged++
@@ -343,12 +343,13 @@ export function* buildViewerMatrix(facts: ViewingFact[], space: FeatureSpace): W
   }
 }
 
-/** Tek izleyicinin vektörü (çalıştırmanın özellik uzayı ve idf'siyle); ilgi yoksa null. */
+/** Tek izleyicinin vektörü (çalıştırmanın özellik uzayı ve idf'siyle); ilgi yoksa null. `norm`: birim uzunluğa
+ * bölmeden önceki (idf'li) uzunluk — başlık katkılarını ayırmak için (bkz. titleContributions). */
 export function viewerVector(
   facts: ViewingFact[],
   space: FeatureSpace,
   idf: Float32Array,
-): { idx: number[]; val: number[] } | null {
+): { idx: number[]; val: number[]; norm: number; engaged: number } | null {
   const scratch = new Float64Array(space.features.length)
   const touched: number[] = []
   const acc = accumulateViewer([...facts].sort(byTitle), space, scratch, touched)
@@ -357,5 +358,48 @@ export function viewerVector(
   const val = touched.map((d) => scratch[d]! * idf[d]!)
   const norm = Math.sqrt(val.reduce((s, v) => s + v * v, 0))
   if (norm === 0) return null
-  return { idx: touched, val: val.map((v) => v / norm) }
+  return { idx: touched, val: val.map((v) => v / norm), norm, engaged: acc.engaged }
+}
+
+/** Kümelemede sayılan olgu sayısı: özellik uzayında vektörü olan ve ilgisi MIN_ENGAGEMENT'a ulaşan başlıklar. */
+export function engagedCount(facts: ViewingFact[], space: FeatureSpace): number {
+  let n = 0
+  for (const f of facts) if (space.titleVecs.has(f.titleId) && clampEngagement(f.engagement) >= MIN_ENGAGEMENT) n++
+  return n
+}
+
+const clampEngagement = (e: number) => Math.min(1, Math.max(0, e))
+
+/**
+ * Başlık katkıları — accumulateViewer doğrusaldır: ham[d] = Σ_t e_t · başlık_t[d], izleyici[d] = ham[d] · idf[d] / norm.
+ * Dolayısıyla herhangi bir w ağırlık vektörüyle (ör. topluluk merkezi) iç çarpım başlıklara TAM olarak ayrılır:
+ *   izleyici · w = Σ_t (e_t / norm) · Σ_d başlık_t[d] · idf[d] · w[d]
+ * Bu işlev her başlığın payını verir (aynı başlığın birden çok olgusu toplanır); payların toplamı iç çarpıma eşittir.
+ * Kurallar accumulateViewer'ınkiyle aynıdır: vektörü olmayan ya da ilgisi MIN_ENGAGEMENT altında kalan olgu katkı vermez.
+ */
+export function titleContributions(
+  facts: ViewingFact[],
+  space: FeatureSpace,
+  idf: Float32Array,
+  norm: number,
+  weightOf: (dim: number) => number,
+): { titleId: number; contribution: number; engagement: number }[] {
+  const out = new Map<number, { titleId: number; contribution: number; engagement: number }>()
+  if (!(norm > 0)) return []
+  for (const f of facts) {
+    const tv = space.titleVecs.get(f.titleId)
+    if (!tv) continue
+    const e = clampEngagement(f.engagement)
+    if (e < MIN_ENGAGEMENT) continue
+    let dot = 0
+    for (let q = 0; q < tv.idx.length; q++) {
+      const d = tv.idx[q]!
+      dot += tv.val[q]! * idf[d]! * weightOf(d)
+    }
+    const hit = out.get(f.titleId) ?? { titleId: f.titleId, contribution: 0, engagement: 0 }
+    hit.contribution += (e * dot) / norm
+    hit.engagement = Math.max(hit.engagement, e)
+    out.set(f.titleId, hit)
+  }
+  return [...out.values()]
 }

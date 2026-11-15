@@ -2,6 +2,7 @@
  * Kimlik servisi: hesap/profil kayıtları, çerez zinciri, pasaport kancası ve açılış/giriş uçları.
  * Bu ürün gerçek kimlik bilgisi toplamaz: "giriş" demo hesabına kimlik bilgisi istemeden oturum açar.
  * Sanal cihaz (`x-tvplus-vd` / `?vd=`) her yerde geçerlidir: çerez adlarını passport.ts `cookieNames` belirler.
+ * Yönetici kipi (POST /api/admin/unlock | lock) admin.ts'tedir; çıkışta yönetici çerezi de silinir.
  */
 import { randomBytes } from 'node:crypto'
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
@@ -12,6 +13,7 @@ import { deriveKey } from '../../kernel/config'
 import type { AccountRecord, ProfileRecord } from '../../kernel/context'
 import type { IdentityService } from '../../kernel/services'
 import { createStore } from '../../kernel/store'
+import { createAdminGuard, registerAdminRoutes } from './admin'
 import { buildBootContext } from './boot'
 import { stableGuid } from './crypto'
 import {
@@ -66,6 +68,7 @@ export default async function plugin(app: FastifyInstance): Promise<void> {
     cookie: deriveKey(config, 'cookie'),
     authUrl: deriveKey(config, 'authurl'),
     esn: deriveKey(config, 'esn'),
+    admin: deriveKey(config, 'admin'),
   }
 
   const store = createStore<IdentityState>(config, 'identity', seedIdentity)
@@ -179,4 +182,5 @@ export default async function plugin(app: FastifyInstance): Promise<void> {
   })
 
   registerProfileRoutes(app, { store, keys, stored, guard: createPinGuard() })
+  registerAdminRoutes(app, { key: keys.admin, guard: createAdminGuard() })
 }

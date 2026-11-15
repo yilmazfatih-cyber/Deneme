@@ -43,6 +43,8 @@ export interface Passport {
   deviceId: string
   /** İstek geçerli bir authURL taşıyor mu (Falcor gövdesi / x-tvplus-authurl) */
   authURLVerified: boolean
+  /** Bu cihazda yönetici kipi açık mı (imzalı tvpadm çerezi; yalnız CURRENT_MEMBER için true olabilir) */
+  isAdmin: boolean
 }
 
 declare module 'fastify' {
