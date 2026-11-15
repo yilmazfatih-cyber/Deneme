@@ -300,6 +300,10 @@
   outline: 3px solid var(--text-1);
   outline-offset: 2px;
 }
+/* Mobil akışta karttaki "Yayın Akışı" düğmesi yok: bölümün sonunda tek bağlantı durur */
+.npf .npf-btn--guide {
+  display: none;
+}
 /* Bölüm sonu bağlantısı (Çok Yakında → Yayın Akışı) */
 .npf-more {
   display: inline-flex;

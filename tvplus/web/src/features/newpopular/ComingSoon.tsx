@@ -128,7 +128,7 @@ export function SoonCard({ item, now }: { item: SoonItem; now: number }): ReactE
               <Icon name={r.on ? 'check' : 'bell'} size={20} />
               {r.on ? 'Hatırlatma Kuruldu' : 'Bana Hatırlat'}
             </button>
-            <Link to="/rehber" className="npf-btn">
+            <Link to="/rehber" className="npf-btn npf-btn--guide">
               <Icon name="guide" size={20} />
               Yayın Akışı
             </Link>
