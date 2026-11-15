@@ -192,8 +192,10 @@
   color: #1b7f3b;
 }
 .ui-toast__action {
+  flex: none;
   margin-left: 4px;
   padding: 6px 8px;
+  white-space: nowrap;
   border-radius: 2px;
   font-weight: 800;
   text-decoration: underline;
