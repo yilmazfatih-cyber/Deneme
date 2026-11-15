@@ -100,8 +100,9 @@ test.describe('Yönetici kipi', () => {
     await expect(page.getByRole('heading', { name: 'Yönetici Paneli', level: 1 })).toBeVisible()
     await openAccountSurface(page)
     if (isMobile(page)) {
-      await expect(page.getByRole('link', { name: /^Yönetici Paneli/ })).toBeVisible()
-      await expect(page.getByRole('button', { name: /^Kaputun altı/ })).toBeVisible()
+      const links = page.getByRole('navigation', { name: 'Hesap ve cihazlar' })
+      await expect(links.getByRole('link', { name: /^Yönetici Paneli/ })).toBeVisible()
+      await expect(links.getByRole('button', { name: /^Kaputun altı/ })).toBeVisible()
     } else {
       await expect(page.getByRole('menuitem', { name: 'Yönetici Paneli' })).toBeVisible()
       await expect(page.getByRole('menuitem', { name: 'Stüdyo' })).toBeVisible()

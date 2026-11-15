@@ -58,7 +58,8 @@ export function AdminUnlock(): ReactElement {
         <span className="ad-unlock__icon" aria-hidden="true">
           <Icon name="lock" size={28} />
         </span>
-        <h1 id="ad-unlock-h" className="ad-unlock__title">
+        {/* Mobilde sayfa adı üst çubuktadır (kabuk); burada yinelenmez */}
+        <h1 id="ad-unlock-h" className="ad-unlock__title ui-desktop-only">
           Yönetici girişi
         </h1>
         <p className="ad-unlock__text">

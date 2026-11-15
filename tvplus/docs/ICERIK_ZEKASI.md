@@ -184,7 +184,9 @@ eklenir**. Yani etiketler burada nihai sınıflandırma değil, modelin girdiler
 
 ## 10. Erişim
 
-`/api/studio/*` izleyiciye açık değildir. `TVP_STUDIO`: `member` (varsayılan; üye oturumu) · `open` (testler) · `off`.
+`/api/studio/*` izleyiciye açık değildir. `TVP_STUDIO`: `admin` (varsayılan; yönetici kipi açık üye, bkz. README
+"Yönetici kipi") · `member` (her üye) · `open` (testler) · `off`. Etkin profilin segmentini ve kararın gerekçesini
+`GET /api/studio/me/insight` verir (Yönetici Paneli; sözleşme `shared/intelligence.ts` → `ViewerInsight`).
 `TVP_STUDIO_KEY` ayarlıysa `x-tvplus-studio-key` başlığıyla oturumsuz erişilir (betikler, zamanlanmış içe aktarma).
 Yazma uçları `assertStudioWrite` çağırır: oturumla gelen istek authURL taşımalıdır. Gerçek kurulumda bunun yerini rol
 tabanlı yetki alır.

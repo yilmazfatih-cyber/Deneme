@@ -242,7 +242,7 @@ sonunda silinir.
 Etiketleme → mikro türler → izleme verisi (uygulama + Mixpanel) → zevk toplulukları → içgörüler ve planlayıcı; ayrıca
 çekim düzeyi gömme. Tam şartname: **`docs/ICERIK_ZEKASI.md`** · tel sözleşmesi `shared/intelligence.ts` · içerik
 şemaları `shared/tagging-schema.ts` · servis arayüzleri `server/src/kernel/intelligence.ts` · uçlar `/api/studio/*`
-(erişim: `TVP_STUDIO`, `TVP_STUDIO_KEY`; yazma uçlarında `assertStudioWrite`).
+(erişim: yönetici kipi ya da `TVP_STUDIO_KEY`; `TVP_STUDIO` düzeyi; yazma uçlarında `assertStudioWrite`).
 
 | Servis (`app.services.*`) | Klasör                                                                | Ne yapar                                                                              |
 | ------------------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |

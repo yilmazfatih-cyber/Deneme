@@ -24,6 +24,39 @@ const SOURCE_LABEL: Record<ViewingSource, string> = {
   TVPLUS: 'uygulama içi izleme',
 }
 
+/** Arama sıralama modelinin özellik adları (sunucudaki anahtar → okunur ad) */
+const SEARCH_FEATURE_LABEL: Record<string, string> = {
+  metin: 'Metin eşleşmesi',
+  begeni: 'Zevkine benzerlik',
+  populerlik: 'Popülerlik',
+  tiklanma: 'Bu aramada tıklanma',
+  yenilik: 'Yenilik',
+  devam: 'Yarım kalmış olması',
+}
+export const searchFeatureLabel = (name: string): string => SEARCH_FEATURE_LABEL[name] ?? name
+
+const MONTHS = ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'] as const
+
+/** İzleme süresi: bir saatin altı dakika olarak ("20 dk"), üstü saat ve dakika ("3 sa 5 dk"). */
+export function watchTime(hours: number): string {
+  if (!Number.isFinite(hours) || hours <= 0) return '0 dk'
+  const minutes = Math.round(hours * 60)
+  if (minutes < 1) return '<1 dk'
+  if (minutes < 60) return `${minutes} dk`
+  const h = Math.floor(minutes / 60)
+  const m = minutes % 60
+  return m ? `${h.toLocaleString('tr-TR')} sa ${m} dk` : `${h.toLocaleString('tr-TR')} sa`
+}
+
+/** Kısa tarih ve saat: "15 Kas 13:35"; yıl bugünkünden farklıysa eklenir (tarayıcı saatine göre). */
+export function shortDateTime(v: string | number, now: number = Date.now()): string {
+  const d = new Date(v)
+  if (Number.isNaN(d.getTime())) return '—'
+  const year = d.getFullYear() === new Date(now).getFullYear() ? '' : ` ${d.getFullYear()}`
+  const clock = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`
+  return `${d.getDate()} ${MONTHS[d.getMonth()]}${year} ${clock}`
+}
+
 const clamp01 = (x: number): number => (Number.isFinite(x) ? Math.min(1, Math.max(0, x)) : 0)
 
 /** 0–1 oranı "%72" yapar (yuvarlanmış; 0'dan büyük ama 1'in altındaysa "<%1"). */

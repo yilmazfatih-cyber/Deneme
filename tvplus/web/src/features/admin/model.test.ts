@@ -1,7 +1,19 @@
 import { describe, expect, it } from 'vitest'
 import type { ViewerInsight, ViewerSegment } from '../../../../shared/intelligence'
 import { retryAfterOf, unlockFailure } from '../../app/admin'
-import { barWidth, decisionMargin, decisionSteps, pct, personalRowCount, runLine, shareOf, statusCopy } from './model'
+import {
+  barWidth,
+  decisionMargin,
+  decisionSteps,
+  pct,
+  personalRowCount,
+  runLine,
+  searchFeatureLabel,
+  shareOf,
+  shortDateTime,
+  statusCopy,
+  watchTime,
+} from './model'
 import { safeNext } from './Unlock'
 
 const HISTORY: ViewerInsight['history'] = {
@@ -68,6 +80,30 @@ describe('yüzde ve çubuk ölçüleri', () => {
     expect(barWidth(0.001, 1)).toBe(4)
     expect(barWidth(0, 1)).toBe(0)
     expect(barWidth(1, 0)).toBe(0)
+  })
+})
+
+describe('süre, tarih ve adlar', () => {
+  it('watchTime: bir saatin altı dakika, üstü saat ve dakika', () => {
+    expect(watchTime(0)).toBe('0 dk')
+    expect(watchTime(0.005)).toBe('<1 dk')
+    expect(watchTime(1 / 3)).toBe('20 dk')
+    expect(watchTime(1)).toBe('1 sa')
+    expect(watchTime(3.08)).toBe('3 sa 5 dk')
+    expect(watchTime(Number.NaN)).toBe('0 dk')
+  })
+
+  it('shortDateTime: gün, ay, saat; yıl yalnız farklıysa', () => {
+    const now = new Date(2026, 10, 15, 14, 0).getTime()
+    expect(shortDateTime(new Date(2026, 10, 15, 13, 5).getTime(), now)).toBe('15 Kas 13:05')
+    expect(shortDateTime(new Date(2025, 0, 2, 9, 30).getTime(), now)).toBe('2 Oca 2025 09:30')
+    expect(shortDateTime('bozuk', now)).toBe('—')
+  })
+
+  it('searchFeatureLabel: bilinen anahtarlar okunur ada çevrilir, bilinmeyen olduğu gibi kalır', () => {
+    expect(searchFeatureLabel('begeni')).toBe('Zevkine benzerlik')
+    expect(searchFeatureLabel('tiklanma')).toBe('Bu aramada tıklanma')
+    expect(searchFeatureLabel('yeni-ozellik')).toBe('yeni-ozellik')
   })
 })
 

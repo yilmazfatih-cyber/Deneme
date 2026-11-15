@@ -13,6 +13,6 @@ import './admin.css'
 export function AdminPage(): ReactElement {
   const admin = useIsAdmin()
   useDocumentTitle(admin ? 'Yönetici Paneli' : 'Yönetici girişi')
-  useShellOptions({ mobileTitle: admin ? 'Yönetici Paneli' : 'Yönetici' })
+  useShellOptions({ mobileTitle: admin ? 'Yönetici Paneli' : 'Yönetici girişi' })
   return admin ? <AdminPanel /> : <AdminUnlock />
 }

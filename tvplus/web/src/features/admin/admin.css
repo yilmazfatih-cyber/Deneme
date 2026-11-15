@@ -51,7 +51,7 @@
 .ad-page {
   max-width: 1180px;
   margin: 0 auto;
-  padding: 16px var(--gutter) 40px;
+  padding: 0 var(--gutter) 40px;
 }
 .ad-head {
   display: flex;
@@ -72,7 +72,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  margin: 6px 0 0;
+  margin: 0;
   color: var(--text-3);
   font-size: 13px;
 }
@@ -173,11 +173,16 @@
 }
 
 /* Etiketler */
+.ad-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px 0 0;
+}
 .ad-tag {
   display: inline-flex;
   align-items: center;
   height: 20px;
-  margin-left: 8px;
   padding: 0 7px;
   border-radius: 4px;
   background: var(--surface-3);
@@ -253,7 +258,7 @@
   margin: 10px 0 0;
   color: var(--text-3);
   font-size: 13px;
-  line-height: 1.7;
+  line-height: 1.5;
 }
 
 /* Adımlar */
@@ -443,6 +448,10 @@
   border-top: 0;
 }
 .ad-row__title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
   color: var(--text-1);
   font-size: 14px;
   font-weight: 700;
@@ -505,6 +514,9 @@
   .ad-head__title {
     font-size: 32px;
   }
+  .ad-head__sub {
+    margin-top: 6px;
+  }
   .ad-head__link--desktop {
     display: inline;
   }
@@ -517,9 +529,6 @@
   }
   .ad-seg__name {
     font-size: 30px;
-  }
-  .ad-stats {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
   .ad-unlock {
     padding-top: 72px;

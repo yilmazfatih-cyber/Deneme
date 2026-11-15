@@ -18,7 +18,7 @@ import type { InsightTitle, ViewerInsight, ViewerSegment } from '../../../../sha
 import { lockAdmin, toggleDevtoolsPanel, useSession, useTitleHref } from '../../app'
 import { Button, cx, EmptyState, Icon, Skeleton, toast } from '../../ui'
 import { useStudio } from '../studio/api'
-import { fmtDateTime, fmtHours, fmtInt } from '../studio/format'
+import { fmtInt } from '../studio/format'
 import {
   barWidth,
   decisionMargin,
@@ -27,8 +27,11 @@ import {
   pct,
   personalRowCount,
   runLine,
+  searchFeatureLabel,
   shareOf,
+  shortDateTime,
   statusCopy,
+  watchTime,
 } from './model'
 
 /* ───────────── Küçük parçalar ───────────── */
@@ -105,7 +108,7 @@ function SegmentBody({ insight, segment }: { insight: ViewerInsight; segment: Vi
   const margin = decisionMargin(segment)
   const whyMax = Math.max(0, ...segment.why.map((w) => w.contribution))
   const driverMax = Math.max(0, ...segment.drivers.map((d) => d.contribution))
-  const run = runLine(insight.run, fmtDateTime)
+  const run = runLine(insight.run, shortDateTime)
   return (
     <>
       <p className="ad-seg__eyebrow">Şu an bu toplulukta sayılıyorsun</p>
@@ -119,9 +122,13 @@ function SegmentBody({ insight, segment }: { insight: ViewerInsight; segment: Vi
       </div>
       <p className="ad-seg__facts">
         İzleyicilerin {pct(segment.share)} kadarı bu toplulukta ({fmtInt(segment.size)} izleyici)
-        {insight.sampleData ? <SampleTag /> : null}
-        {margin ? <span className={cx('ad-tag', `ad-tag--${margin.tone}`)}>{margin.label}</span> : null}
       </p>
+      {insight.sampleData || margin ? (
+        <p className="ad-tags">
+          {insight.sampleData ? <SampleTag /> : null}
+          {margin ? <span className={cx('ad-tag', `ad-tag--${margin.tone}`)}>{margin.label}</span> : null}
+        </p>
+      ) : null}
 
       {segment.traits.length ? (
         <>
@@ -230,7 +237,7 @@ function SegmentBody({ insight, segment }: { insight: ViewerInsight; segment: Vi
 
 function SegmentCard({ insight }: { insight: ViewerInsight }): ReactElement {
   const empty = statusCopy(insight.segmentStatus, insight.history)
-  const run = runLine(insight.run, fmtDateTime)
+  const run = runLine(insight.run, shortDateTime)
   return (
     <Card id="ad-seg" title="Segmentim" className="ad-card--segment">
       {insight.segment ? (
@@ -239,10 +246,10 @@ function SegmentCard({ insight }: { insight: ViewerInsight }): ReactElement {
         <>
           <p className="ad-seg__name ad-seg__name--none">{empty?.title ?? 'Segment yok'}</p>
           <p className="ad-text">{empty?.body}</p>
-          {run ? (
-            <p className="ad-meta">
-              Topluluk hesabı: {run}
-              {insight.sampleData ? <SampleTag /> : null}
+          {run ? <p className="ad-meta">Topluluk hesabı: {run}</p> : null}
+          {insight.sampleData ? (
+            <p className="ad-tags">
+              <SampleTag />
             </p>
           ) : null}
         </>
@@ -269,11 +276,11 @@ function HistoryCard({ insight }: { insight: ViewerInsight }): ReactElement {
         </div>
         <div>
           <dt>Süre</dt>
-          <dd>{fmtHours(h.hours)}</dd>
+          <dd>{watchTime(h.hours)}</dd>
         </div>
         <div>
           <dt>Son izleme</dt>
-          <dd>{h.lastTs ? fmtDateTime(h.lastTs) : '—'}</dd>
+          <dd>{h.lastTs ? shortDateTime(h.lastTs) : '—'}</dd>
         </div>
       </dl>
       {h.top.length ? (
@@ -315,7 +322,7 @@ function RowsCard({ insight }: { insight: ViewerInsight }): ReactElement {
           {insight.rows.map((r, i) => (
             <li key={`${r.context}:${i}`} className="ad-row">
               <span className="ad-row__title">
-                {r.title}
+                <span>{r.title}</span>
                 <span className={cx('ad-tag', r.personal ? 'ad-tag--personal' : 'ad-tag--common')}>
                   {r.personal ? 'Kişisel' : 'Herkese aynı'}
                 </span>
@@ -427,7 +434,7 @@ function SearchCard({ insight }: { insight: ViewerInsight }): ReactElement {
             {s.features.map((f) => (
               <Bar
                 key={f.name}
-                label={f.name}
+                label={searchFeatureLabel(f.name)}
                 value={f.weight.toLocaleString('tr-TR', { maximumFractionDigits: 2 })}
                 width={barWidth(Math.abs(f.weight), max)}
                 tone={f.weight < 0 ? 'negative' : undefined}
@@ -498,7 +505,8 @@ export function AdminPanel(): ReactElement {
     <div className="ad-page" aria-busy={res.loading}>
       <header className="ad-head">
         <div>
-          <h1 className="ad-head__title">Yönetici Paneli</h1>
+          {/* Mobilde sayfa adı üst çubuktadır (kabuk); burada yinelenmez */}
+          <h1 className="ad-head__title ui-desktop-only">Yönetici Paneli</h1>
           <p className="ad-head__sub">
             <Icon name="lock" size={14} />
             Yalnız yönetici kipinde görünür
@@ -551,8 +559,8 @@ export function AdminPanel(): ReactElement {
 
       <footer className="ad-foot">
         <p className="ad-meta">
-          {insight ? `Bu görünüm ${fmtDateTime(insight.generatedAt)} itibarıyla. ` : ''}Yönetici kipi bu cihazda 30 gün
-          açık kalır.
+          {insight ? `Bu görünüm ${shortDateTime(insight.generatedAt)} itibarıyla. ` : ''}Yönetici kipi bu cihazda 30
+          gün açık kalır.
         </p>
         <Button size="sm" icon="logout" busy={locking} onClick={() => void onLock()}>
           Yönetici kipinden çık
