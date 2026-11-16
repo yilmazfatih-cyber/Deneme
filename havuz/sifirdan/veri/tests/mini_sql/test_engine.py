@@ -1,4 +1,5 @@
-"""mini_sql motoru: hatalar, kısıtlar, atomiklik, EXPLAIN, parametreler, volcano tembelliği, komut satırı."""
+"""mini_sql motoru: hatalar, kısıtlar, atomiklik, EXPLAIN, parametreler, volcano tembelliği, komut
+satırı."""
 
 from __future__ import annotations
 
@@ -16,9 +17,9 @@ def db() -> Database:
     database = Database()
     database.execute_script(
         """
-        CREATE TABLE kisi (id INTEGER PRIMARY KEY, ad TEXT NOT NULL, eposta TEXT UNIQUE, yas INTEGER);
-        CREATE TABLE siparis (id INTEGER PRIMARY KEY, kisi_id INTEGER, tutar REAL DEFAULT 0);
-        INSERT INTO kisi (ad, eposta, yas) VALUES ('Ayşe', 'a@x', 34), ('Mehmet', 'm@x', 41),
+        CREATE TABLE kisi (id INTEGER PRIMARY KEY, ad TEXT NOT NULL, eposta TEXT UNIQUE, yas
+        INTEGER); CREATE TABLE siparis (id INTEGER PRIMARY KEY, kisi_id INTEGER, tutar REAL DEFAULT
+        0); INSERT INTO kisi (ad, eposta, yas) VALUES ('Ayşe', 'a@x', 34), ('Mehmet', 'm@x', 41),
             ('Işıl', NULL, NULL), ('Can', NULL, 25);
         INSERT INTO siparis (kisi_id, tutar) VALUES (1, 10.5), (1, 20), (2, 7.25), (9, 1);
         """
@@ -34,7 +35,8 @@ def test_select_features(db: Database) -> None:
     assert db.query("SELECT ad AS isim FROM kisi ORDER BY isim LIMIT 1, 2") == [("Can",), ("Işıl",)]
     assert db.query("SELECT ad FROM kisi ORDER BY length(ad), ad LIMIT 2") == [("Can",), ("Ayşe",)]
     rows = db.query(
-        "SELECT k.ad, count(s.id), sum(s.tutar) FROM kisi k LEFT JOIN siparis s ON s.kisi_id = k.id "
+        "SELECT k.ad, count(s.id), sum(s.tutar) FROM kisi k "
+        "LEFT JOIN siparis s ON s.kisi_id = k.id "
         "GROUP BY k.ad HAVING count(s.id) > 0 ORDER BY 3 DESC"
     )
     assert rows == [("Ayşe", 2, 30.5), ("Mehmet", 1, 7.25)]
@@ -71,7 +73,7 @@ def test_constraints_and_statement_atomicity(db: Database) -> None:
     with pytest.raises(ConstraintError, match="UNIQUE"):
         db.execute("UPDATE kisi SET eposta = 'ayni@x'")
     assert db.query("SELECT eposta FROM kisi WHERE id = 1") == [("a@x",)]
-    with pytest.raises(ConstraintError, match="kisi.id"):
+    with pytest.raises(ConstraintError, match=r"kisi\.id"):
         db.execute("UPDATE kisi SET id = 2 WHERE id = 1")
     assert db.execute("UPDATE kisi SET id = 10 WHERE id = 1").rowcount == 1
     assert db.query("SELECT ad FROM kisi WHERE id = 10") == [("Ayşe",)]
@@ -83,17 +85,17 @@ def test_constraints_and_statement_atomicity(db: Database) -> None:
 
 def test_explain_shows_access_paths(db: Database) -> None:
     db.execute("CREATE INDEX kisi_yas ON kisi (yas)")
-    plan = [line for (line,) in db.query("EXPLAIN SELECT ad FROM kisi WHERE yas BETWEEN 20 AND 35")]
+    plan = db.explain("SELECT ad FROM kisi WHERE yas BETWEEN 20 AND 35")
     assert any("IndexScan kisi USING kisi_yas" in line for line in plan)
-    plan = [line for (line,) in db.query("EXPLAIN SELECT * FROM kisi WHERE eposta = 'a@x'")]
+    plan = db.explain("SELECT * FROM kisi WHERE eposta = 'a@x'")
     assert any("USING oto_kisi_eposta" in line for line in plan)  # UNIQUE'in kendi dizini
-    plan = [line for (line,) in db.query("EXPLAIN SELECT * FROM kisi k JOIN siparis s ON k.id = s.kisi_id")]
+    plan = db.explain("SELECT * FROM kisi k JOIN siparis s ON k.id = s.kisi_id")
     assert any(line.strip().startswith("HashJoin INNER") for line in plan)
-    plan = [line for (line,) in db.query("EXPLAIN SELECT * FROM kisi k JOIN siparis s ON k.id < s.kisi_id")]
+    plan = db.explain("SELECT * FROM kisi k JOIN siparis s ON k.id < s.kisi_id")
     assert any(line.strip().startswith("NestedLoopJoin INNER") for line in plan)
-    plan = [line for (line,) in db.query("EXPLAIN DELETE FROM kisi WHERE yas = 3")]
+    plan = db.explain("DELETE FROM kisi WHERE yas = 3")
     assert plan[0] == "Delete kisi" and "IndexScan" in plan[-1]
-    plan = [line for (line,) in db.query("EXPLAIN SELECT ad FROM kisi WHERE yas + 0 = 34")]
+    plan = db.explain("SELECT ad FROM kisi WHERE yas + 0 = 34")
     assert not any("IndexScan" in line for line in plan)  # ifade dizini kullanamaz
 
 
@@ -124,7 +126,9 @@ def test_schema_statements(db: Database) -> None:
     db.execute("DROP TABLE IF EXISTS siparis")
     with pytest.raises(SqlError, match="tablosu yok"):
         db.execute("DROP TABLE siparis")
-    db.execute("CREATE TABLE t (a INTEGER DEFAULT -1, b TEXT DEFAULT 'yok', c REAL DEFAULT (1 + 1))")
+    db.execute(
+        "CREATE TABLE t (a INTEGER DEFAULT -1, b TEXT DEFAULT 'yok', c REAL DEFAULT (1 + 1))"
+    )
     db.execute("INSERT INTO t (a) VALUES (5)")
     assert db.query("SELECT * FROM t") == [(5, "yok", 2.0)]
 

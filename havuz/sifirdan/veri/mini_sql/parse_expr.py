@@ -1,9 +1,11 @@
-"""İfade ayrıştırıcısı: belirteç akışı üstünde gezinme + öncelik basamaklı (recursive descent) ifadeler.
+"""İfade ayrıştırıcısı: belirteç akışı üstünde gezinme + öncelik basamaklı (recursive descent)
+ifadeler.
 
-Öncelik (düşükten yükseğe, SQLite ile aynı): OR · AND · NOT · (= <> IS IN LIKE BETWEEN) · (< <= > >=) ·
-(+ -) · (* / %) · || · tekli (- +) · birincil (sabit, sütun, işlev, parantez, CASE).
+Öncelik (düşükten yükseğe, SQLite ile aynı): OR · AND · NOT · (= <> IS IN LIKE BETWEEN) · (< <= >
+>=) · (+ -) · (* / %) · || · tekli (- +) · birincil (sabit, sütun, işlev, parantez, CASE).
 
-Genişletme: yeni bir işleç → uygun öncelik basamağındaki işleve bir dal; yeni ifade düğümü `syntax.py`'de.
+Genişletme: yeni bir işleç → uygun öncelik basamağındaki işleve bir dal; yeni ifade düğümü
+`syntax.py`'de.
 """
 
 from __future__ import annotations
@@ -66,7 +68,7 @@ class ExprParser:
         token = self.peek()
         if token.kind != "IDENT":
             what = "anahtar sözcük" if token.kind == "KEYWORD" else "belirteç"
-            self.fail(f"ad bekleniyordu ({what} {token.value!r}; ad olarak \"...\" içinde yazın)")
+            self.fail(f'ad bekleniyordu ({what} {token.value!r}; ad olarak "..." içinde yazın)')
         return self.advance().value
 
     def fail(self, message: str) -> None:

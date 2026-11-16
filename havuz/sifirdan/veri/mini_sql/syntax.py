@@ -1,8 +1,8 @@
 """Sözdizimi ağacı (AST): ayrıştırıcının ürettiği deyim ve ifade düğümleri.
 
-İfade düğümleri değişmez (`frozen`) ve karşılaştırılabilirdir; planlayıcı "SELECT'teki ifade GROUP BY'daki
-ifadeyle aynı mı?" sorusunu düz `==` ile yanıtlar. `to_sql` ifadeyi okunur metne çevirir (EXPLAIN ve
-sütun adları için).
+İfade düğümleri değişmez (`frozen`) ve karşılaştırılabilirdir; planlayıcı "SELECT'teki ifade GROUP
+BY'daki ifadeyle aynı mı?" sorusunu düz `==` ile yanıtlar. `to_sql` ifadeyi okunur metne çevirir
+(EXPLAIN ve sütun adları için).
 
 Genişletme: yeni ifade türü → buraya dataclass + `to_sql` dalı + `compile.py`'de değerlendirme dalı.
 """

@@ -262,4 +262,5 @@ Bilinen riskler : indirim alan müşterilerin sonraki etiketleri müdahaleden et
 - [Model kartı ve sorumlu kullanım](model-karti-ve-sorumluluk.md)
 - Taban modeller: [`ml_temel/klasik/dummy.py`](../../ml-temel/ml_temel/klasik/dummy.py)
 - CSV'den taban + model + uyarılı rapor: [`ml-temel/README.md`](../../ml-temel/README.md) (`python -m ml_temel egit`)
-- Ürün ölçümü ve A/B testi: `95-urun` ve `70-veri` kümeleri
+- Ürün tarafı: [Fikir doğrulama](../95-urun/fikir-dogrulama.md), [Ürün ölçütleri](../70-veri/urun-olcutleri.md),
+  [A/B testi](../70-veri/ab-testi.md)

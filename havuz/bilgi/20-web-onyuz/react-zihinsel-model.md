@@ -17,8 +17,8 @@ guncellik: 2026-11
   ve yalnız farkı DOM'a yazar (commit). Render bir **hesaptır**: aynı girdiye aynı çıktı, yan etki yok.
 - **Durum bir anlık görüntüdür.** Bir render içinde `count` sabittir. `setCount` o değişkeni değiştirmez; yeni bir
   render ister. Olay işleyici, kendisini oluşturan render'ın değerlerini görür.
-- **Güncellemeler kuyruğa girer ve toplanır.** Aynı olaydaki (zamanlayıcı ve Promise içindekiler dahil) bütün
-  `set` çağrıları tek render'da uygulanır.
+- **Güncellemeler kuyruğa girer ve toplanır.** Bir olay işleyicide, zamanlayıcı geri çağrısında ya da söz (Promise)
+  devamında art arda yapılan bütün `set` çağrıları tek render'da uygulanır (19.3'te `setTimeout` içinde de denendi).
 - **Kimlik = ağaçtaki yer + tür + `key`.** React durumu bileşen işlevine değil, ağaçtaki konuma bağlar. Konum ya da
   anahtar değişirse durum sıfırlanır; aynı kalırsa durum korunur (istemeseniz bile).
 - **Hesaplanabilen şey durum değildir.** Props'tan ya da başka durumdan türetilebilen değer render sırasında hesaplanır.
@@ -254,3 +254,4 @@ Geliştirmede `<StrictMode>` bileşenleri iki kez render eder ve effect'leri kur
 - [Veri getirme](veri-getirme.md) — sunucu verisi neden "durum" değil "önbellek"
 - Çalışan örnek, yerel veritabanından canlı okuma (durum kopyası yok): [`hooks.ts`](../../uygulama/web/src/lib/store/hooks.ts)
 - Dış depoya `useSyncExternalStore` ile abone olma: [`pwa.ts`](../../uygulama/web/src/lib/pwa.ts)
+- Başka kümelerde: [JavaScript çalışma zamanı](../10-diller/javascript-calisma-zamani.md) (kapanım, `Object.is`, sığ/derin kopya), [TypeScript tip sistemi](../10-diller/typescript-tip-sistemi.md) (ayrık birleşim)

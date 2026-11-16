@@ -13,6 +13,7 @@
  */
 import { AppError, webUrl, WEB_ROUTES, type Role } from '@uygulama/shared'
 import type { AppContext } from '../../context.ts'
+import { rateLimitKey } from '../../http/clientIp.ts'
 import { RATE_RULES } from '../../http/rateLimit.ts'
 import type { RequestMeta } from '../../http/meta.ts'
 import type { AuthState, AuthUser } from '../../http/types.ts'
@@ -25,6 +26,7 @@ import { createSession, type NewSession } from './session.ts'
 import {
   consumePasswordResets,
   deleteSession,
+  deleteUserPasswordResets,
   deleteUserSessions,
   findPasswordReset,
   insertPasswordReset,
@@ -90,7 +92,7 @@ export async function login(
   input: { email: string; password: string },
   meta: RequestMeta,
 ): Promise<SignedIn> {
-  ctx.limiter.consume(RATE_RULES.loginAccount, `${meta.ip}|${input.email}`)
+  ctx.limiter.consume(RATE_RULES.loginAccount, `${rateLimitKey(meta.ip)}|${input.email}`)
   const row = findUserByEmail(ctx.db, input.email)
   if (!row) {
     await ctx.hasher.burn(input.password)
@@ -168,7 +170,7 @@ export async function changePassword(
   input: { currentPassword: string; newPassword: string },
   meta: RequestMeta,
 ): Promise<void> {
-  ctx.limiter.consume(RATE_RULES.loginAccount, `${meta.ip}|${auth.user.email}`)
+  ctx.limiter.consume(RATE_RULES.loginAccount, `${rateLimitKey(meta.ip)}|${auth.user.email}`)
   const row = findUserById(ctx.db, auth.user.id)
   if (!row) throw new AppError('unauthorized')
   if (!(await ctx.hasher.verify(input.currentPassword, row.password_hash))) {
@@ -181,6 +183,9 @@ export async function changePassword(
   ctx.db.transaction(() => {
     updatePasswordHash(ctx.db, row.id, passwordHash, ctx.clock.now().toISOString())
     deleteUserSessions(ctx.db, row.id, auth.session.id)
+    // Bekleyen sıfırlama bağlantıları da düşer: kutuya bir an erişip bağlantıyı alan biri, kullanıcı şifresini
+    // değiştirdikten sonra hesabı geri alamasın.
+    deleteUserPasswordResets(ctx.db, row.id)
     ctx.audit.record({
       action: 'auth.password_changed',
       actorId: row.id,

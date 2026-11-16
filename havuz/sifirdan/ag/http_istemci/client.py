@@ -201,7 +201,9 @@ class Client:
                 attempt += 1
                 continue
             if response.status in self.retry.statuses and idempotent and attempt < self.retry.total:
-                delay = self._retry_after(response) or self.retry.backoff * 2**attempt
+                delay = self._retry_after(response)  # 0 geçerli bir değerdir: `or` kullanılmaz
+                if delay is None:
+                    delay = self.retry.backoff * 2**attempt
                 response.close()
                 self.sleep(delay)
                 attempt += 1

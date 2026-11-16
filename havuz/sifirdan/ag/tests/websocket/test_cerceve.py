@@ -48,7 +48,9 @@ def test_rfc6455_5_7_ornek_cerceveler() -> None:
     pong = b"\x8a\x85\x37\xfa\x21\x3d\x7f\x9f\x4d\x51\x58"
     assert encode_frame(Opcode.PONG, b"Hello", mask=MASK) == pong
     assert encode_frame(Opcode.BINARY, bytes(256))[:4] == b"\x82\x7e\x01\x00"
-    assert encode_frame(Opcode.BINARY, bytes(65536))[:10] == b"\x82\x7f" + (65536).to_bytes(8, "big")
+    assert encode_frame(Opcode.BINARY, bytes(65536))[:10] == b"\x82\x7f" + (65536).to_bytes(
+        8, "big"
+    )
 
 
 @pytest.mark.parametrize("size", [0, 125, 126, 65535, 65536])
@@ -110,10 +112,12 @@ def test_kodla_coz_gidis_donus(payload: bytes, fin: bool, mask: bytes) -> None:
 
 @given(st.binary(max_size=200), st.booleans())
 def test_rastgele_bayt_cozucuyu_cokertmez(data: bytes, masked: bool) -> None:
+    code = None
     try:
         parse_frame(data, expect_masked=masked, max_size=500)
     except ProtocolError as err:
-        assert err.code in (1002, 1009)
+        code = err.code
+    assert code in (None, 1002, 1009)
 
 
 def _handshake_headers(**changes: str | None) -> Headers:

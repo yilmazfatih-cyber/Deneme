@@ -1,16 +1,18 @@
-"""Yürütücü işleçleri (volcano / yineleyici modeli): her işleç alt işlecinden satır çeker, satır verir.
+"""Yürütücü işleçleri (volcano / yineleyici modeli): her işleç alt işlecinden satır çeker, satır
+verir.
 
-Her işlecin `rows()` üreteci "sıradaki satırı ver" (next) çağrısıdır; zincirin en üstü çekildikçe aşağıya
-doğru tek tek satır akar. `Sort`, `Aggregate`, `Distinct` ve birleşmelerin sağ tarafı girdiyi toplar
-(materialize). `describe()` EXPLAIN satırını üretir.
+Her işlecin `rows()` üreteci "sıradaki satırı ver" (next) çağrısıdır; zincirin en üstü çekildikçe
+aşağıya doğru tek tek satır akar. `Sort`, `Aggregate`, `Distinct` ve birleşmelerin sağ tarafı
+girdiyi toplar (materialize). `describe()` EXPLAIN satırını üretir.
 
-Genişletme: yeni işleç → `Operator`'dan türeyin, `rows`/`describe`/`children` yazın, planner'da kullanın.
+Genişletme: yeni işleç → `Operator`'dan türeyin, `rows`/`describe`/`children` yazın, planner'da
+kullanın.
 """
 
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from collections.abc import Iterator
+from collections.abc import Callable, Iterator
 
 from .compile import Evaluator, Row
 from .functions import AGGREGATES, Aggregator
@@ -202,7 +204,10 @@ class Aggregate(Operator):
         for row in self.child.rows():
             key = tuple(group(row) for group in self.groups)
             if key not in states:
-                states[key] = ([AGGREGATES[n]() for n, _, _ in self.aggregates], [set() for _ in self.aggregates])
+                states[key] = (
+                    [AGGREGATES[n]() for n, _, _ in self.aggregates],
+                    [set() for _ in self.aggregates],
+                )
             accumulators, seen = states[key]
             for position, (_, argument, distinct) in enumerate(self.aggregates):
                 value: Value = 1 if argument is None else argument(row)  # count(*): her satır
@@ -263,7 +268,7 @@ class Sort(Operator):
     def rows(self) -> Iterator[Row]:
         rows = list(self.child.rows())
         for position, descending in reversed(self.keys):  # kararlı sıralama: sondan başa
-            rows.sort(key=lambda row, p=position: sort_key(row[p]), reverse=descending)
+            rows.sort(key=_column_key(position), reverse=descending)
         yield from rows
 
     def describe(self) -> str:
@@ -273,20 +278,25 @@ class Sort(Operator):
         return [self.child]
 
 
+def _column_key(position: int) -> Callable[[Row], tuple[int, Value]]:
+    return lambda row: sort_key(row[position])
+
+
 class Limit(Operator):
     def __init__(self, child: Operator, limit: int | None, offset: int) -> None:
         self.child, self.limit, self.offset = child, limit, offset
 
     def rows(self) -> Iterator[Row]:
-        produced = skipped = 0
-        for row in self.child.rows():
-            if skipped < self.offset:
-                skipped += 1
+        if self.limit == 0:
+            return
+        produced = 0
+        for position, row in enumerate(self.child.rows()):
+            if position < self.offset:
                 continue
-            if self.limit is not None and produced >= self.limit:
-                return
-            produced += 1
             yield row
+            produced += 1
+            if self.limit is not None and produced >= self.limit:
+                return  # alt işleçten bir satır bile fazla çekilmez
 
     def describe(self) -> str:
         return f"Limit {'∞' if self.limit is None else self.limit} OFFSET {self.offset}"

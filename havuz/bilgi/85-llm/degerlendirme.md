@@ -259,5 +259,6 @@ doğrulukla birlikte okuyun: %2 daha doğru ama 5 kat yavaş sürüm çoğu iş 
   örnek kümeler [`yz/gorevler/`](../../yz/gorevler/)
 - İnce ayarlı modeli değerlendirme (taban karşılaştırması, sızıntı): [ince-ayar DEGERLENDIRME](../../ince-ayar/docs/DEGERLENDIRME.md)
 - Genel ölçütler ve önyüklemeli güven aralığı: [Değerlendirme ölçütleri](../80-ml/degerlendirme-olcutleri.md);
-  sızıntı türleri: [Veri sızıntısı](../80-ml/veri-sizintisi.md); olasılık temeli:
-  [Olasılık temelleri](../92-matematik/olasilik-temelleri.md)
+  sızıntı türleri: [Veri sızıntısı](../80-ml/veri-sizintisi.md); hataları gruplayıp okuma: [Hata analizi](../80-ml/hata-analizi.md)
+- İstatistik: [Anlamlılık ve güven aralığı](../70-veri/anlamlilik-ve-guven-araligi.md), [A/B testi](../70-veri/ab-testi.md)
+  (canlıda kullanıcıyla deney), [Olasılık temelleri](../92-matematik/olasilik-temelleri.md)

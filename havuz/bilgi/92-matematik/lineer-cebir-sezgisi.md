@@ -31,7 +31,7 @@ guncellik: 2026-11
 | Metin/gömme benzerliği                                   | Kosinüs benzerliği (ya da birim vektörde nokta çarpım) | Uzunluktan bağımsız; boyu farklı metinler kıyaslanır |
 | Fiziksel/özellik uzaklığı                                | Öklid (L2); aykırı değere dayanıklı: Manhattan (L1) | Ölçekler aynı olmalı: önce standartlaştırın            |
 | `n` denklem, `n` bilinmeyen                              | Gauss eleme (kütüphanede `solve`)               | Ters matris yavaş ve daha az doğru                       |
-| Denklem çok, bilinmeyen az (gürültülü ölçüm)             | En küçük kareler (`lstsq`, QR)                  | Tam çözüm yoktur; en yakını aranır                       |
+| Denklem çok, bilinmeyen az (gürültülü ölçüm)             | [En küçük kareler](en-kucuk-kareler.md) (`lstsq`, QR) | Tam çözüm yoktur; en yakını aranır                 |
 | Dönüşümleri birleştirme (döndür, ölçekle, kaydır)        | Matris çarpımı; sıra = sağdan sola              | `A @ B ≠ B @ A`                                          |
 | Tam sonuç gereken küçük sistem (para, oran)              | `Fraction` ile eleme                            | Yuvarlama hatası yok                                     |
 | Büyük, seyrek sistem                                     | Yinelemeli yöntem (kütüphane)                   | Bkz. [sayısal yöntemler](sayisal-yontemler.md)           |
@@ -254,7 +254,11 @@ girdideki küçük hata çözümde büyür ([sayısal yöntemler](sayisal-yontem
 ## İlgili
 
 - [Özdeğer ve ayrışımlar](ozdeger-ve-ayrisimlar.md): özvektör, SVD, PCA
+- [En küçük kareler ve eğri uydurma](en-kucuk-kareler.md): fazla denklemli sistem, izdüşüm, ridge
 - [Sayısal yöntemler](sayisal-yontemler.md): koşul sayısı, yinelemeli çözüm, tolerans
 - [Geri yayılım matematiği](geri-yayilim-matematigi.md): matris çarpımının türevi
+- [Gömmeler ve benzerlik araması](../80-ml/gommeler-ve-benzerlik.md): normalleştirme, yaklaşık komşu araması
+- Kesirlerle Gauss eleme (tekil/çelişkili sistem ayrımıyla): [`algoritma/algoritma/sayilar/gaussian_elimination.py`](../../algoritma/algoritma/sayilar/gaussian_elimination.py);
+  kısmi pivotlu LU: [`lu_decomposition.py`](../../algoritma/algoritma/sayilar/lu_decomposition.py)
 - Otomatik türevli tensör ve `matmul` işlemi: [`ml-temel/ml_temel/autograd/ops_basic.py`](../../ml-temel/ml_temel/autograd/ops_basic.py)
 - Doğrusal katman (`y = x @ W + b`): [`ml-temel/ml_temel/nn/layers.py`](../../ml-temel/ml_temel/nn/layers.py)

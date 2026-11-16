@@ -13,6 +13,7 @@
 import { Hono } from 'hono'
 import { createContext, type AppContext, type Deps } from './context.ts'
 import { bodyLimits } from './http/bodyLimit.ts'
+import { rateLimitKey } from './http/clientIp.ts'
 import { corsMiddleware } from './http/cors.ts'
 import { csrfProtection } from './http/csrf.ts'
 import { apiNotFound, createErrorHandler } from './http/errors.ts'
@@ -51,7 +52,7 @@ export function createApp(deps: Deps): ServerApp {
   if (cors) app.use('/api/*', cors)
   app.use(
     '/api/*',
-    rateLimit(ctx.limiter, RATE_RULES.general, (c) => c.get('ip')),
+    rateLimit(ctx.limiter, RATE_RULES.general, (c) => rateLimitKey(c.get('ip'))),
   )
   app.use('/api/*', bodyLimits())
   app.use(

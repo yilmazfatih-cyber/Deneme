@@ -1,0 +1,14 @@
+; Örnek bölge: python -m dns sun --bolge dns/ornek.zone --kapi 8453
+; Belgeler için ayrılmış adresler kullanılır (192.0.2.0/24, 2001:db8::/32); "test" alanı RFC 2606 gereği ayrılmıştır.
+$ORIGIN ornek.test.
+$TTL 3600
+@        IN SOA  ns1 yonetici 2026111601 7200 3600 1209600 300
+@        IN NS   ns1
+ns1      IN A    127.0.0.1
+www      300 IN A 192.0.2.10
+www      IN AAAA 2001:db8::10
+blog     IN CNAME www
+@        IN MX   10 posta
+posta    IN A    192.0.2.20
+@        IN TXT  "v=spf1 -all"
+köprü    IN A    192.0.2.30

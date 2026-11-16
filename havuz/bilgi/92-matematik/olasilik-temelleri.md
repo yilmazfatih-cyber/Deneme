@@ -228,7 +228,7 @@ isterseniz 10 000 örnek gerekir. Örnek sayısını bu hesapla seçin ([rastgel
 | Belirti                                                       | Neden                                                     | Çözüm                                                           |
 | ------------------------------------------------------------- | --------------------------------------------------------- | --------------------------------------------------------------- |
 | "Test %90 doğru, pozitif çıktı, demek %90 hasta" denmiş       | Taban oranı yok sayılmış; `P(E∣H)` ile `P(H∣E)` karışmış  | Bayes; "10 000 kişi" tablosunu kurun                            |
-| Alarm sisteminin uyarılarının çoğu boş çıkıyor                | Olay nadir; yanlış pozitif oranı küçük görünse de baskın  | Pozitif kestirim değerini hesaplayın; eşiği ona göre seçin      |
+| Alarm sisteminin uyarılarının çoğu boş çıkıyor                | Olay nadir; yanlış pozitif oranı küçük görünse de baskın  | Pozitif öngörü değerini (PPV) hesaplayın; eşiği ona göre seçin  |
 | "En az bir kez" olasılığı %100'ü aştı                         | `n · p` toplanmış                                         | `1 − (1 − p)^n`                                                 |
 | Yedekli sistem hesaptan çok daha sık birlikte çöküyor         | Ortak neden; bağımsızlık varsayımı                        | Ortak nedenleri ayrı olay olarak modelleyin                     |
 | "Beş kez kaybettim, sıradaki kesin kazanır" mantığıyla kod    | Kumarbaz yanılgısı; bağımsız denemeler belleksiz          | Geçmiş sonuçları olasılık hesabına katmayın                     |
@@ -264,4 +264,7 @@ isterseniz 10 000 örnek gerekir. Örnek sayısını bu hesapla seçin ([rastgel
 - [İstatistiksel kestirim](istatistiksel-kestirim.md): olasılığı veriden kestirmek
 - [Rastgelelik ve benzetim](rastgelelik-ve-benzetim.md): Monte Carlo ve örnek sayısı
 - [Bilgi kuramı](bilgi-kurami.md): olasılıktan bilgi miktarına
-- Model kalibrasyonu (olasılık çıktısının güvenilirliği): [`ml-temel/docs/NASIL_CALISIR.md`](../../ml-temel/docs/NASIL_CALISIR.md) → "Kalibrasyon"
+- [Betimsel istatistik](../70-veri/betimsel-istatistik.md): oranları ve büyümeleri doğru birleştirmek
+- [Korelasyon ve nedensellik](../70-veri/korelasyon-ve-nedensellik.md): karıştırıcı değişken, Simpson paradoksu
+- [Kalibrasyon ve olasılık](../80-ml/kalibrasyon-ve-olasilik.md): modelin "%80" demesi ve beklenen değerle karar
+- Kalibrasyonun gerçeklemesi: [`ml-temel/docs/NASIL_CALISIR.md`](../../ml-temel/docs/NASIL_CALISIR.md) → "Kalibrasyon"

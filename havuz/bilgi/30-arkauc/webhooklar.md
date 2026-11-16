@@ -245,3 +245,5 @@ erişimi olmayan ayrı bir çıkış vekilinden yapın.
 - HMAC ve sabit zamanlı karşılaştırma yardımcıları (Python + TypeScript, ortak sınama vektörleriyle):
   [`kutuphane/py/kutuphane/kripto.py`](../../kutuphane/py/kutuphane/kripto.py); yeniden deneme:
   [`yeniden_dene.py`](../../kutuphane/py/kutuphane/yeniden_dene.py).
+- SSRF'in ayrıntısı (DNS yeniden bağlama, çıkış vekili): [SSRF ve dış istekler](../50-guvenlik/ssrf-ve-dis-istekler.md);
+  doğru kripto ilkeli: [Kriptografi kullanımı](../50-guvenlik/kriptografi-kullanimi.md).

@@ -19,13 +19,16 @@ Kendi işleyicinizle:
 import asyncio
 from http_sunucu import HttpServer, Request, Response
 
+
 async def merhaba(istek: Request) -> Response:
-    govde = await istek.read()               # gövde gerekiyorsa (sınır: Limits.max_body)
+    govde = await istek.read()  # gövde gerekiyorsa (sınır: Limits.max_body)
     return Response.text(f"Merhaba! {istek.path} istendi.")
+
 
 async def main() -> None:
     async with HttpServer(merhaba, port=8450):
         await asyncio.Event().wait()
+
 
 asyncio.run(main())
 ```

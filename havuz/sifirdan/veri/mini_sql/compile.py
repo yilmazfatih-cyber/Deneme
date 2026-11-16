@@ -1,10 +1,11 @@
 """İfade derleyici: AST'yi `satır → değer` işlevine (closure) çevirir; ad çözümleme burada yapılır.
 
-- `Scope`: bir satırın sütun düzeni [(takma_ad, sütun_adı), ...]; `t.a` ya da `a` adını konuma çevirir.
+- `Scope`: bir satırın sütun düzeni [(takma_ad, sütun_adı), ...]; `t.a` ya da `a` adını konuma
+  çevirir.
 - `qualify`: ifadedeki her sütunu tam nitelikli yapar (`a` → `t.a`); böylece SELECT'teki `a` ile
   GROUP BY'daki `t.a` aynı ifade sayılır.
-- `Compiler(..., precomputed)`: önceden hesaplanmış ifadeler (gruplama anahtarı, kümeleme sonucu) için
-  yeniden hesaplamak yerine o konumdaki değeri okur.
+- `Compiler(..., precomputed)`: önceden hesaplanmış ifadeler (gruplama anahtarı, kümeleme sonucu)
+  için yeniden hesaplamak yerine o konumdaki değeri okur.
 
 Genişletme: yeni ifade türü → `_compile`'a bir `case` dalı (anlamı values.py'deki yardımcılarla).
 """
@@ -137,7 +138,9 @@ class Compiler:
                 return lambda row: value
             case Param(index=index):
                 if index >= len(self.params):
-                    raise SqlError(f"{index + 1}. parametre verilmedi ({len(self.params)} verildi).")
+                    raise SqlError(
+                        f"{index + 1}. parametre verilmedi ({len(self.params)} verildi)."
+                    )
                 bound = self.params[index]
                 return lambda row: bound
             case Column():
@@ -154,20 +157,20 @@ class Compiler:
             case InList(operand=operand, items=items, negated=negated):
                 return _in_list(self.compile(operand), [self.compile(i) for i in items], negated)
             case Between(operand=operand, low=low, high=high, negated=negated):
-                value, lo, hi = self.compile(operand), self.compile(low), self.compile(high)
+                subject, lo, hi = self.compile(operand), self.compile(low), self.compile(high)
                 ge, le = _COMPARISONS[">="], _COMPARISONS["<="]
 
                 def between(row: Row) -> Value:
-                    v = value(row)
+                    v = subject(row)
                     result = logical_and(_cmp(ge, v, lo(row)), _cmp(le, v, hi(row)))
                     return logical_not(result) if negated else result
 
                 return between
             case Like(operand=operand, pattern=pattern, negated=negated):
-                value, pat = self.compile(operand), self.compile(pattern)
+                text, pat = self.compile(operand), self.compile(pattern)
                 if negated:
-                    return lambda row: logical_not(like(value(row), pat(row)))
-                return lambda row: like(value(row), pat(row))
+                    return lambda row: logical_not(like(text(row), pat(row)))
+                return lambda row: like(text(row), pat(row))
             case Call():
                 return self._call(expr)
             case Case(operand=operand, whens=whens, default=default):

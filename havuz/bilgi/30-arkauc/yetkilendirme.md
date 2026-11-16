@@ -264,3 +264,5 @@ olduğunu ve öteki **her** ucun oturumsuz isteğe 401 verdiğini denetler;
 - [Kimlik doğrulama](kimlik-dogrulama.md) · [Veritabanı tasarımı](veritabani-tasarimi.md) (kısıtlar) ·
   [Veri erişim katmanı](veri-erisim-katmani.md) (kiracıyla kurulan depo)
 - Güvenlik kararlarının tamamı: [`uygulama/docs/GUVENLIK.md`](../../uygulama/docs/GUVENLIK.md) → "Yetki".
+- Saldırgan gözüyle: [Erişim denetimi açıkları](../50-guvenlik/erisim-denetimi-aciklari.md) ·
+  [Tehdit modelleme](../50-guvenlik/tehdit-modelleme.md).

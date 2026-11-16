@@ -328,3 +328,5 @@ yakalayamaz (yanlış bir şey yazılmadı); bunu ancak değerlendirme kümesind
   [`yanit.py`](../../yz/yz/rag/yanit.py); örnek belgeler ve sorular: [`gorevler/getirme/`](../../yz/gorevler/getirme/)
 - Arama ölçümü ve kip seçimi: [yz kararları](../../yz/docs/KARARLAR.md) K-08; gömme modelini alana uydurma:
   [`ince-ayar`](../../ince-ayar/README.md) (`gomme` görevi)
+- Gömme ve vektör araması: [Gömmeler ve benzerlik araması](../80-ml/gommeler-ve-benzerlik.md); veritabanında Türkçe
+  tam metin arama: [Arama](../30-arkauc/arama.md)

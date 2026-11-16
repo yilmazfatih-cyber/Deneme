@@ -7,6 +7,7 @@
  *  4. Her modül klasörünün test dosyası var.
  *  5. Her kaynak dosya Türkçe başlık yorumu ve "Genişletme:" satırıyla açılır.
  *  6. docs/API.md her ucu (ve yalnız onları) belgeler; belgedeki JSON örnekleri adlandırılan şemaya uyar.
+ *  7. IP'ye göre sayan hız sınırı anahtarı `rateLimitKey(...)`'den geçer (IPv6'da /64 bloğu tek kaynak).
  */
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
 import { join, relative } from 'node:path'
@@ -145,6 +146,24 @@ describe('kural: dosya düzeni', () => {
       const name = relative(API_DIR, path)
       expect(head.startsWith('/**'), `${name}: dosya /** … */ başlık yorumuyla başlamalı`).toBe(true)
       expect(head, `${name}: başlık yorumuna "Genişletme:" satırı ekleyin`).toContain('Genişletme:')
+    }
+  })
+})
+
+describe('kural: hız sınırı anahtarı', () => {
+  it("IP'ye göre sayan her kural anahtarı rateLimitKey(...) ile kurar (çıplak IP değil)", () => {
+    const files = walk(join(API_DIR, 'src')).filter((path) => path.endsWith('.ts'))
+    for (const path of files) {
+      readFileSync(path, 'utf8')
+        .split('\n')
+        .forEach((line, index) => {
+          if (!/(consume\(|rateLimit\()/.test(line) || !/(c\.get\('ip'\)|meta\.ip\b)/.test(line)) return
+          expect(
+            line,
+            `${relative(API_DIR, path)}:${index + 1}: IP anahtarını rateLimitKey(...) ile sarın (http/clientIp.ts); ` +
+              'yoksa IPv6 kullanan saldırgan adres değiştirerek sınırı atlatır',
+          ).toContain('rateLimitKey(')
+        })
     }
   })
 })

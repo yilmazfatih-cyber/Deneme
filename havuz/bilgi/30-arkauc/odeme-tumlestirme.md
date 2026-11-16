@@ -277,3 +277,5 @@ gece yarısına yakın ödemeler "yok" görünür. Karşılaştırmayı aynı za
 - [Webhooklar](webhooklar.md) (imza ve yineleme) · [API tasarımı](api-tasarimi.md) (idempotentlik anahtarı) ·
   [İşlemler ve eşzamanlılık](islemler-ve-eszamanlilik.md) · [Arka plan işleri](arka-plan-isleri.md) ·
   [Veritabanı tasarımı](veritabani-tasarimi.md) (para sütunu)
+- Sağlayıcı çağrılarında zaman aşımı ve yeniden deneme: [Dayanıklılık kalıpları](../40-sistem-tasarimi/dayaniklilik-kaliplari.md);
+  anahtarların saklanması: [Sır yönetimi](../50-guvenlik/sir-yonetimi.md).

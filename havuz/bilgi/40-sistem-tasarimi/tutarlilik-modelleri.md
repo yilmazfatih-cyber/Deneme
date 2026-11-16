@@ -98,43 +98,18 @@ onaylanmamış kendi değişikliklerim**dir ([`uygulama/docs/ESITLEME.md`](../..
 ## Kayıp güncelleme
 
 İki istek aynı kaydı okur, okuduğu değerden yeni değeri hesaplar ve üzerine yazar: birinin değişikliği kaybolur.
-Kopya olmasa bile, tek veritabanında olur:
+Kopya olmasa bile, tek veritabanında olur. Çareler (çalışan örnekleri:
+[İşlemler ve eşzamanlılık](../30-arkauc/islemler-ve-eszamanlilik.md) → "Kayıp güncelleme ve üç çözüm"):
 
-```python calistir
-import sqlite3
+| Çare                                    | Biçim                                                                 | Ne zaman                     |
+| --------------------------------------- | --------------------------------------------------------------------- | ---------------------------- |
+| Hesabı veritabanına yaptır              | `UPDATE stok SET adet = adet - 1 WHERE urun = ? AND adet > 0`         | Sayaç, stok, bakiye          |
+| İyimser kilit (sürüm sütunu)            | `UPDATE … SET …, surum = surum + 1 WHERE id = ? AND surum = ?`; 0 satır → "değişti" | Formla düzenleme |
+| Kötümser kilit                          | Postgres'te `SELECT … FOR UPDATE`; SQLite'ta `BEGIN IMMEDIATE`        | Kısa ve sık çakışan işlem    |
 
-db = sqlite3.connect(":memory:", isolation_level=None)
-db.execute("CREATE TABLE stok (urun TEXT PRIMARY KEY, adet INTEGER NOT NULL, surum INTEGER NOT NULL)")
-db.execute("INSERT INTO stok VALUES ('kalem', 10, 1)")
-
-
-def oku() -> tuple[int, int]:
-    return db.execute("SELECT adet, surum FROM stok WHERE urun = 'kalem'").fetchone()
-
-
-# YANLIŞ: iki satış aynı anda okur, okuduğu değerden hesaplayıp üzerine yazar
-a, b = oku(), oku()
-db.execute("UPDATE stok SET adet = ? WHERE urun = 'kalem'", (a[0] - 1,))
-db.execute("UPDATE stok SET adet = ? WHERE urun = 'kalem'", (b[0] - 1,))
-assert oku()[0] == 9  # iki satış, bir düşüş: kayıp güncelleme
-
-# DOĞRU 1: hesabı veritabanına yaptır (tek ifade, koşullu)
-db.execute("UPDATE stok SET adet = 10")
-for _ in range(2):
-    db.execute("UPDATE stok SET adet = adet - 1 WHERE urun = 'kalem' AND adet > 0")
-assert oku()[0] == 8
-
-# DOĞRU 2: iyimser kilit (sürüm sütunu): okuduğum sürüm hâlâ geçerliyse yaz
-a, b = oku(), oku()
-ilk = db.execute("UPDATE stok SET adet = ?, surum = surum + 1 WHERE urun = 'kalem' AND surum = ?", (a[0] - 1, a[1]))
-ikinci = db.execute("UPDATE stok SET adet = ?, surum = surum + 1 WHERE urun = 'kalem' AND surum = ?", (b[0] - 1, b[1]))
-assert (ilk.rowcount, ikinci.rowcount) == (1, 0)  # ikinci yazar "değişti" öğrenir: yeniden okur ya da kullanıcıya sorar
-print("kayıp güncelleme: koşullu ifade ve sürüm sütunu önledi")
-```
-
-```cikti
-kayıp güncelleme: koşullu ifade ve sürüm sütunu önledi
-```
+Sistem tasarımı açısından önemli olan: bu çareler **tek bir yazma noktası** (birincil veritabanı) varsayar. Aynı
+kayıt iki yerde yazılabiliyorsa (iki bölge, çevrimdışı cihaz) koşullu güncelleme yetmez; çakışma çözme gerekir
+([Çevrimdışı-önce ve eşitleme](cevrimdisi-once-ve-esitleme.md)).
 
 HTTP'de aynı fikir `ETag` + `If-Match` başlıklarıdır: istemci okuduğu sürümü gönderir, sunucu değişmişse 412 döner
 ([HTTP temelleri](../30-arkauc/http-temelleri.md)). Uzun formlarda (iki kişi aynı belgeyi düzenliyor) kullanıcıya
@@ -227,5 +202,7 @@ CAP'in pratik sorusu şudur: "çevrimdışıyken bu işlem yapılabilir mi?" Ayr
   [Önbellek katmanları](onbellek-katmanlari.md) (bayat önbellek) ·
   [Dağıtık sistem yanılgıları](dagitik-sistem-yanilgilari.md) (saat, bölünme, uzlaşma)
 - [Çevrimdışı-önce ve eşitleme](cevrimdisi-once-ve-esitleme.md) · [Kuyruk ve olaylar](kuyruk-ve-olaylar.md) (sıra garantisi)
+- [İşlemler ve eşzamanlılık](../30-arkauc/islemler-ve-eszamanlilik.md) (yalıtım düzeyleri, kayıp güncelleme,
+  denetle-sonra-yaz yarışı) · [Veri getirme](../20-web-onyuz/veri-getirme.md) (istemcide bayat veri ve iyimser güncelleme)
 - Havuzdaki çalışan örnek: [`uygulama/shared/src/sync.ts`](../../uygulama/shared/src/sync.ts) (`rebase`),
   [`uygulama/docs/ESITLEME.md`](../../uygulama/docs/ESITLEME.md)

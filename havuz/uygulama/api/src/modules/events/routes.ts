@@ -20,6 +20,15 @@ import { requireUser } from '../auth/session.ts'
 /** İstemcinin koptuktan sonra yeniden bağlanmadan önce bekleyeceği süre (ms). */
 export const SSE_RETRY_MS = 5000
 
+/**
+ * İstemcinin henüz okumadığı en çok olay (dürtme + nabız) sayısı. Her yazma, istemci okuyana dek sunucu
+ * belleğinde bekler; okumayan (ya da TCP penceresini kapalı tutan) bir istemcide kuyruk sınırsız büyür ve
+ * sunucuyu bellekten düşürürdü. Sınır aşılınca akış kesilir (tarayıcının EventSource'u yeniden bağlanır).
+ * Tek bir eşitleme en çok 100 alana dokunur ve dürtmeleri aynı anda kuyruğa girer: sınır bunun epey üstünde
+ * olmalı ki okuyan istemci yanlışlıkla kesilmesin.
+ */
+export const SSE_MAX_PENDING_WRITES = 256
+
 export function eventRoutes(ctx: AppContext): Hono<AppEnv> {
   const app = new Hono<AppEnv>()
 
@@ -35,18 +44,25 @@ export function eventRoutes(ctx: AppContext): Hono<AppEnv> {
       const finished = new Promise<void>((resolve) => {
         finish = resolve
       })
+      let pending = 0
+      const write = (send: () => Promise<unknown>) => {
+        if (pending >= SSE_MAX_PENDING_WRITES) {
+          stream.abort() // bekleyen kuyruğu atar ve yanıtı bitirir; onAbort → finish
+          return
+        }
+        pending += 1
+        void send().finally(() => {
+          pending -= 1
+        })
+      }
       const connection = ctx.hub.connect({
         userId: user.id,
         sessionId: session.id,
-        send: (message) => {
-          void stream.writeSSE(message)
-        },
+        send: (message) => write(() => stream.writeSSE(message)),
         close: () => finish(),
       })
       stream.onAbort(() => finish())
-      const heartbeat = setInterval(() => {
-        void stream.write(': nabız\n\n')
-      }, ctx.config.sseHeartbeatMs)
+      const heartbeat = setInterval(() => write(() => stream.write(': nabız\n\n')), ctx.config.sseHeartbeatMs)
       try {
         await stream.writeSSE({ event: 'ready', data: '{}', retry: SSE_RETRY_MS })
         await finished

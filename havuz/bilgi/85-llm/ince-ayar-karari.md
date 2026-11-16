@@ -222,4 +222,6 @@ Bu maliyet istem/RAG'da çok daha düşüktür; ince ayarı ancak ölçülmüş 
   [DENEME_KAYDI](../../ince-ayar/docs/DENEME_KAYDI.md)
 - Sıfırdan LoRA ve küçük model eğitimi: [`lora.py`](../../dil-modeli/dil_modeli/lora.py),
   [EGITIM_REHBERI](../../dil-modeli/docs/EGITIM_REHBERI.md)
-- Sızıntının genel türleri: [Veri sızıntısı](../80-ml/veri-sizintisi.md)
+- Sızıntının genel türleri: [Veri sızıntısı](../80-ml/veri-sizintisi.md); [Aşırı öğrenme](../80-ml/asiri-ogrenme.md);
+  dar sınıflandırmada klasik yol: [Metin sınıflandırma](../80-ml/metin-siniflandirma.md); yayımlarken
+  [Model kartı ve sorumlu kullanım](../80-ml/model-karti-ve-sorumluluk.md)

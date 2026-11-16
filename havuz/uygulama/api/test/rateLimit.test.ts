@@ -1,5 +1,6 @@
 import { AppError } from '@uygulama/shared'
 import { describe, expect, it } from 'vitest'
+import { rateLimitKey } from '../src/http/clientIp.ts'
 import { RateLimiter, RATE_RULES, type RateRule } from '../src/http/rateLimit.ts'
 import type { Clock } from '../src/lib/random.ts'
 
@@ -52,6 +53,22 @@ describe('hız sınırı (jeton kovası)', () => {
     clock.ms += RATE_RULES.general.windowMs
     limiter.sweep()
     expect(limiter.size).toBe(0)
+  })
+
+  it('rateLimitKey: IPv4 aynen; IPv6 /64 bloğuna iner (yazımdan bağımsız); IPv4 taşıyan biçimler toplanmaz', () => {
+    expect(rateLimitKey('203.0.113.9')).toBe('203.0.113.9')
+    expect(rateLimitKey('unknown')).toBe('unknown')
+    expect(rateLimitKey('2001:db8:aa:bb::1')).toBe('2001:db8:aa:bb::/64')
+    expect(rateLimitKey('2001:0DB8:00AA:00BB:ffff:1:2:3')).toBe('2001:db8:aa:bb::/64')
+    expect(rateLimitKey('2001:db8::1')).toBe('2001:db8:0:0::/64')
+    expect(rateLimitKey('2001:db8:1::')).toBe('2001:db8:1:0::/64')
+    expect(rateLimitKey('2001:db8:aa:bb:cc:dd:1.2.3.4')).toBe('2001:db8:aa:bb::/64')
+    // Bunlar /64'e indirilseydi ilgisiz herkes tek kovaya düşerdi:
+    expect(rateLimitKey('::1')).toBe('::1')
+    expect(rateLimitKey('::FFFF:1.2.3.4')).toBe('::ffff:1.2.3.4')
+    expect(rateLimitKey('0:0:0:0:0:ffff:1.2.3.5')).toBe('0:0:0:0:0:ffff:1.2.3.5')
+    expect(rateLimitKey('64:ff9b::198.51.100.7')).toBe('64:ff9b::198.51.100.7')
+    expect(rateLimitKey('2001:0:4136:e378:8000:63bf:3fff:fdd2')).toBe('2001:0:4136:e378:8000:63bf:3fff:fdd2')
   })
 
   it('her kuralın adı benzersizdir ve limiti pozitiftir', () => {

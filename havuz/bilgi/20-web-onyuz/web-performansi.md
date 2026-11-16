@@ -281,3 +281,4 @@ Havuzdaki site temeli üç kalemli (HTML, CSS, başlangıç betiği) bütçeyi h
 - [Vite ve derleme](vite-ve-derleme.md) — derleme çıktısını okuma, parça hataları
 - [Animasyon ve etkileşim](animasyon-ve-etkilesim.md) — hangi özellikler ucuz canlandırılır
 - [React etkileri ve kancalar](react-etkiler-ve-kancalar.md) — gereksiz `useMemo`
+- Başka kümelerde: [Performans yöntemi](../00-yontem/performans-yontemi.md) (önce ölç, tek değişiklik, yeniden ölç)

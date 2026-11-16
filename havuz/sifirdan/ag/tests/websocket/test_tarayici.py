@@ -1,7 +1,8 @@
 """Gerçek tarayıcı duman testi: başsız Chromium sayfayı açar, WebSocket ile sunucuyla konuşur.
 
-Playwright paketi gerekmez: tarayıcı doğrudan başlatılır, doğrulama SUNUCU tarafında yapılır (tarayıcının
-gönderdiği iletiler beklenenle aynı mı?). Yalnız `python scripts/check.py --uzun` ile koşar.
+Playwright paketi gerekmez: tarayıcı doğrudan başlatılır, doğrulama SUNUCU tarafında yapılır
+(tarayıcının gönderdiği iletiler beklenenle aynı mı?). Yalnız `python scripts/check.py --uzun` ile
+koşar.
 Tarayıcı yolu: PLAYWRIGHT_CHROMIUM_EXECUTABLE ortam değişkeni ya da /opt/pw-browsers/chromium.
 """
 
@@ -14,8 +15,8 @@ import threading
 from pathlib import Path
 
 import pytest
-from destek import BackgroundLoop
 
+from destek import BackgroundLoop
 from http_sunucu import HttpServer, Request, Response
 from websocket import PathRouter, WebSocket, websocket_endpoint
 
@@ -31,7 +32,9 @@ PAGE = """<!doctype html><html lang="tr"><meta charset="utf-8"><title>Duman test
 @pytest.mark.tarayici
 def test_gercek_tarayici_ile_ileti_alisverisi(loop_thread: BackgroundLoop, tmp_path: Path) -> None:
     if not Path(CHROMIUM).exists():
-        pytest.skip("Chromium bulunamadı; PLAYWRIGHT_CHROMIUM_EXECUTABLE ortam değişkenini ayarlayın.")
+        pytest.skip(
+            "Chromium bulunamadı; PLAYWRIGHT_CHROMIUM_EXECUTABLE ortam değişkenini ayarlayın."
+        )
     received: list[str | bytes] = []
     finished = threading.Event()
 

@@ -369,6 +369,7 @@ print("tamam")
 ## İlgili
 
 - [Python tuzakları](python-tuzaklar.md)
+- [Python standart kütüphanesi tuzakları](python-standart-kutuphane.md): `groupby`, `lru_cache`, `logging`, `subprocess`
 - [Python eşzamanlılık](python-eszamanlilik.md)
 - [Modül ve bağımlılık](modul-ve-bagimlilik.md): döngüsel içe aktarma, kilit dosyası, sürüm aralıkları
 - [Hata yönetimi kalıpları](hata-yonetimi-kaliplari.md)

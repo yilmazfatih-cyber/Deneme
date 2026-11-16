@@ -295,3 +295,5 @@ büyük; koyu tema ve yüksek karşıtlık; hareketi azalt açık. Uçtan uca te
 - [Ön yüz testi](onyuz-testi.md) — rol ile sorgulama, axe
 - Çalışan örnekler: [`Dialog.tsx`](../../uygulama/web/src/ui/Dialog.tsx), [`Field.tsx`](../../uygulama/web/src/ui/Field.tsx),
   [`Tabs.tsx`](../../uygulama/web/src/ui/Tabs.tsx), [`Menu.tsx`](../../uygulama/web/src/ui/Menu.tsx)
+- [Dokunma ve işaretçi olayları](dokunma-ve-isaretci-olaylari.md) — hareketlerin düğme karşılığı (WCAG 2.5.x)
+- Başka kümelerde: [Anlamsal HTML](../10-diller/html-anlamsal.md), [UX temelleri](../95-urun/ux-temelleri.md)

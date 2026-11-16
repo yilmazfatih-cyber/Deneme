@@ -196,7 +196,8 @@ await assert.rejects(rapor(sinyal), { name: 'AbortError' })
 console.log('tamam')
 ```
 
-`fetch` iki şeyi şaşırtır: HTTP hatasında (404, 500) **reddetmez**, ve hiçbir zaman aşımı yoktur. Güvenli sarmalayıcı:
+`fetch` iki şeyi şaşırtır: HTTP hatasında (404, 500) **reddetmez**, ve makul bir zaman aşımı yoktur (Node 22.23.4'te yanıt başlığı ve gövde için
+5'er dakika: paketli undici kaynağından okundu; tarayıcıda `fetch`'in kendi süresi yoktur). Güvenli sarmalayıcı:
 
 ```js calistir
 import assert from 'node:assert/strict'
@@ -338,7 +339,7 @@ eder. Hata anında durmak gerekiyorsa işçiler ortak bir `AbortSignal`'ı denet
 | Bir öğe bozukken tüm toplu iş boşa gitti                         | `Promise.all` ilk hatada reddeder                         | `allSettled` + hata raporu                                   |
 | Hata yok ama veri kaydedilmemiş                                 | Boş `catch` ya da `.catch(() => {})`                       | Bağlamla yeniden atın; yalnız sınırda yakalayın              |
 | Süreç `unhandledRejection` ile çöktü                             | Kimsenin beklemediği ve yakalamadığı Promise              | Her Promise'i `await` edin ya da `.catch` ile ele alın        |
-| İstek sonsuza kadar asılı kalıyor                               | `fetch`'in varsayılan zaman aşımı yok                     | `AbortSignal.timeout(ms)`                                    |
+| İstek dakikalarca asılı kalıyor                                 | `fetch`'in makul bir varsayılan zaman aşımı yok           | `AbortSignal.timeout(ms)`                                    |
 | 404/500 yanıtı başarılı gibi işlendi                             | `fetch` HTTP hatasında reddetmez                          | `if (!yanit.ok) throw …`                                      |
 | Arama kutusu eski sonuçları gösteriyor                          | Yavaş eski yanıt yenisinden sonra geldi                   | Sıra numarası ya da önceki isteği `abort()`                  |
 | `forEach` sonrası toplam 0 / işlem bitmeden yanıt döndü          | `forEach` async geri çağrıyı beklemez                     | `for...of` + `await` ya da `Promise.all(map)`                 |
@@ -372,5 +373,6 @@ eder. Hata anında durmak gerekiyorsa işçiler ortak bir `AbortSignal`'ı denet
 - [JavaScript çalışma zamanı](javascript-calisma-zamani.md): olay döngüsü, mikro/makro görev sırası
 - [Hata yönetimi kalıpları](hata-yonetimi-kaliplari.md): yeniden deneme, hata sarmalama
 - [Python eşzamanlılık](python-eszamanlilik.md): aynı kavramlar `asyncio`'da
+- [Veri getirme](../20-web-onyuz/veri-getirme.md): ön yüzde yükleniyor/hata durumları, yarış ve iptal
 - Yeniden deneme ve hız sınırı gerçeklemeleri: [`kutuphane/ts/src/yeniden_dene.ts`](../../kutuphane/ts/src/yeniden_dene.ts),
   [`kutuphane/ts/src/hiz_siniri.ts`](../../kutuphane/ts/src/hiz_siniri.ts)

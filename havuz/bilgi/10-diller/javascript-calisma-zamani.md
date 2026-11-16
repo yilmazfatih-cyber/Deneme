@@ -90,7 +90,7 @@ console.log('tamam')
 ```
 
 React'teki "eski durum (stale closure)" hatası aynı kökten gelir: bir geri çağrı, oluşturulduğu andaki değişkeni
-yakalar. Ayrıntısı web önyüz kümesindedir (`20-web-onyuz`).
+yakalar. Ayrıntısı: [React etkileri ve kancalar](../20-web-onyuz/react-etkiler-ve-kancalar.md).
 
 ## this
 
@@ -352,5 +352,6 @@ console.log('tamam')
 - [TypeScript tip sistemi](typescript-tip-sistemi.md): tiplerin yakalamadığı yerler
 - [Veri biçimleri](veri-bicimleri.md): JSON sayı duyarlığı, ISO 8601, saat dilimi
 - [Unicode ve kodlama](unicode-ve-kodlama.md): metin uzunluğu ve dilimleme
+- [Zaman ve saat dilimi](../30-arkauc/zaman-ve-saat-dilimi.md): an, duvar saati, takvim günü
 - Para ve tarih yardımcıları: [`kutuphane/ts/src/para.ts`](../../kutuphane/ts/src/para.ts),
   [`kutuphane/ts/src/tarih.ts`](../../kutuphane/ts/src/tarih.ts)

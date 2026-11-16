@@ -1,8 +1,9 @@
 """Belirteçleyici (lexer): SQL metnini belirteç (token) listesine çevirir.
 
-Belirteç türleri: KEYWORD, IDENT, NUMBER, STRING, PARAM (`?`), OP (`=`, `<=`, `||`, `(`, `,` ...), EOF.
-Tanımlayıcılar küçük harfe çevrilir (SQL'de büyük/küçük harf duyarsız); `"çift tırnaklı"` adlar da.
-Metin sabitleri tek tırnaklıdır, içteki `''` tek bir tırnak demektir. `--` satır sonuna dek yorumdur.
+Belirteç türleri: KEYWORD, IDENT, NUMBER, STRING, PARAM (`?`), OP (`=`, `<=`, `||`, `(`, `,` ...),
+EOF. Tanımlayıcılar küçük harfe çevrilir (SQL'de büyük/küçük harf duyarsız); `"çift tırnaklı"`
+adlar da. Metin sabitleri tek tırnaklıdır, içteki `''` tek bir tırnak demektir. `--` satır sonuna
+dek yorumdur.
 
 Genişletme: yeni anahtar sözcük → `KEYWORDS` kümesine ekleyin (ayrıştırıcıda da kullanın).
 """

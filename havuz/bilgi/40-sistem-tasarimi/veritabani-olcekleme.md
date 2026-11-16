@@ -72,7 +72,8 @@ assert once > 1_000 * sonra  # bu ortamda ~300 000'e karşı ~90
 
 Bileşik dizinde sütun sırası önemlidir: önce eşitlikle aranan sütunlar (`kullanici_id`, `durum`), sonra aralık ya
 da sıralama sütunu (`olusturma`). Dizin her yazmayı biraz yavaşlatır; yalnız gerçekten kullanılan sorgular için
-ekleyin ve kullanılmayanları silin.
+ekleyin ve kullanılmayanları silin. Dizinin kullanılmadığı durumlar, plan okuma ve imleçli sayfalama:
+[SQL performans ve işlem](../10-diller/sql-performans-ve-islem.md).
 
 **N+1 sorgu:** listeyi alıp her satır için ayrı sorgu atmak. SQLite aynı süreçte çalıştığı için bunu az hisseder;
 ağ üstündeki bir veritabanına geçince her sorgu bir gidiş-dönüş olur ve sayfa birden yavaşlar:
@@ -331,6 +332,9 @@ daha basit yol, yazmaları bellekte toplayıp saniyede bir toplu yazmaktır.
 - [Kapasite tahmini](kapasite-tahmini.md) (havuz boyu) · [Önbellek katmanları](onbellek-katmanlari.md) ·
   [Tutarlılık modelleri](tutarlilik-modelleri.md) · [Çok kiracılık](cok-kiracilik.md)
 - [Veri yaşam döngüsü](veri-yasam-dongusu.md) (bölüm silme, arşiv, yedek ↔ kopya)
+- [SQL performans ve işlem](../10-diller/sql-performans-ve-islem.md) · [Veritabanı tasarımı](../30-arkauc/veritabani-tasarimi.md) ·
+  [İşlemler ve eşzamanlılık](../30-arkauc/islemler-ve-eszamanlilik.md) ("database is locked") ·
+  [Migrasyonlar](../30-arkauc/migrasyonlar.md)
 - Havuzdaki SQLite kullanımı: [`uygulama/api/src/db/database.ts`](../../uygulama/api/src/db/database.ts),
   [`uygulama/api/KARARLAR.md`](../../uygulama/api/KARARLAR.md); sıfırdan B+ ağacı (dizinin içi):
   [`sifirdan/veri/btree/`](../../sifirdan/veri/btree/tree.py)

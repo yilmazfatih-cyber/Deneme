@@ -1,11 +1,12 @@
-"""Değer anlamı (SQLite ile aynı): üç değerli mantık, karşılaştırma, aritmetik, metin ↔ sayı, yakınlık.
+"""Değer anlamı (SQLite ile aynı): üç değerli mantık, karşılaştırma, aritmetik, metin ↔ sayı,
+yakınlık.
 
 Değerler Python'da: None (NULL), int (INTEGER), float (REAL), str (TEXT), bytes (BLOB).
 Doğruluk değerleri 1 / 0 / None olarak taşınır (SQLite gibi; `True/False` kullanılmaz).
 Sıralama: NULL < sayılar < metin < BLOB. Metin karşılaştırması ikili (BINARY) sıradır.
 
-Genişletme: yeni bir tür dönüşümü ya da işleç kuralı buraya; davranışı tests/mini_sql/test_values.py'de
-sqlite3 ile karşılaştıran bir satır ekleyin.
+Genişletme: yeni bir tür dönüşümü ya da işleç kuralı buraya; davranışı
+tests/mini_sql/test_values.py'de sqlite3 ile karşılaştıran bir satır ekleyin.
 """
 
 from __future__ import annotations

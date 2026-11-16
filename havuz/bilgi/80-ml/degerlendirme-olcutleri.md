@@ -354,6 +354,8 @@ kapsamaz.
 - [Problem çerçeveleme](problem-cerceveleme.md) — ölçütü işe bağlama
 - [Kalibrasyon ve olasılık](kalibrasyon-ve-olasilik.md) — log-kayıp, Brier, ECE, beklenen değerle karar
 - [Ayrım ve çapraz doğrulama](ayrim-ve-capraz-dogrulama.md) · [Hata analizi](hata-analizi.md)
+- İstatistik: [Anlamlılık ve güven aralığı](../70-veri/anlamlilik-ve-guven-araligi.md),
+  [Olasılık temelleri](../92-matematik/olasilik-temelleri.md)
 - Ölçütlerin numpy gerçeklemeleri: [`ml_temel/olcut/`](../../ml-temel/ml_temel/olcut/__init__.py)
   (sınıflandırma, sıralama, regresyon, olasılık; önyükleme: [`bootstrap.py`](../../ml-temel/ml_temel/olcut/bootstrap.py))
 - Ölçüt seçimi ve güven aralığı okuma: [`ml-temel/docs/DEGERLENDIRME.md`](../../ml-temel/docs/DEGERLENDIRME.md)

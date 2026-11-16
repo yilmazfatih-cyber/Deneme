@@ -301,3 +301,9 @@ Havuzdaki hesap dışa aktarımı aynı başlığı kullanır (`hesap-verileri-Y
   [Hız sınırı ve kötüye kullanım](hiz-siniri-ve-kotuye-kullanim.md) (yükleme ucu) ·
   [Yapılandırma ve sırlar](yapilandirma-ve-sirlar.md) (imza anahtarı)
 - Türkçe adın ASCII karşılığı ve katlama: [Türkçe büyük/küçük harf](../97-turkce/buyuk-kucuk-harf.md).
+- Saldırı tarafının ayrıntısı (arşiv bombası, çok dilli dosya, sunma alan adı):
+  [Dosya yükleme güvenliği](../50-guvenlik/dosya-yukleme-guvenligi.md); CSV/Excel yükleme ve indirme akışı:
+  [İçe ve dışa aktarım](ice-ve-disa-aktarim.md).
+- "Adresten yükle" (kullanıcı bir adres verir, sunucu indirir) özelliği SSRF'tir:
+  [SSRF ve dış istekler](../50-guvenlik/ssrf-ve-dis-istekler.md); yüklenen HTML/SVG'nin betik çalıştırması:
+  [XSS ve CSP](../50-guvenlik/xss-ve-csp.md).

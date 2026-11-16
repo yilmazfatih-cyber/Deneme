@@ -252,4 +252,5 @@ kalıptadır (`yz/yz/saglayici/yeniden_dene.py`; varsayılan 3 deneme, taban 0,5
 - Havuz: [`maliyet.py`](../../yz/yz/saglayici/maliyet.py), [`yeniden_dene.py`](../../yz/yz/saglayici/yeniden_dene.py),
   [`onbellek.py`](../../yz/yz/saglayici/onbellek.py), [`butce.py`](../../yz/yz/istem/butce.py); ayar örneği
   [`yz.ornek.yaml`](../../yz/yz.ornek.yaml)
-- Önbellek kararları genel olarak: [Önbellek](../30-arkauc/onbellek.md)
+- Önbellek kararları genel olarak: [Önbellek](../30-arkauc/onbellek.md); zaman aşımı, yeniden deneme ve devre kesici:
+  [Dayanıklılık kalıpları](../40-sistem-tasarimi/dayaniklilik-kaliplari.md)

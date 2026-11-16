@@ -1,19 +1,22 @@
-"""Değer anlamı: tek tek ifadeler sqlite3 ile karşılaştırılır (aritmetik, NULL mantığı, LIKE, substr, yakınlık)."""
+"""Değer anlamı: tek tek ifadeler sqlite3 ile karşılaştırılır (aritmetik, NULL mantığı, LIKE,
+substr, yakınlık)."""
 
 from __future__ import annotations
 
 import contextlib
+import random
 import sqlite3
 from collections.abc import Iterator
 
 import pytest
 
-from mini_sql import Database
+from mini_sql import Database, SqlError
 from mini_sql.functions import lower_tr, upper_tr
 
 EXPRESSIONS = [
     "7 / 2", "-7 / 2", "7 / -2", "-7 % 2", "7 % -2", "5.5 % 2", "-5.5 % 2", "7 / 0", "7 % 0",
-    "7.0 / 0", "5 / 2.0", "0.1 + 0.2", "2 * 3.5", "9223372036854775807 + 1", "-(-9223372036854775807)",
+    "7.0 / 0", "5 / 2.0", "0.1 + 0.2", "2 * 3.5", "9223372036854775807 + 1",
+    "-(-9223372036854775807)",
     "'abc' + 1", "'12abc' + 1", "' 12' + 1", "'1e2' + 0", "'x' * 2", "-'3'", "+'abc'",
     "NULL = NULL", "NULL IS NULL", "1 IS 1.0", "NULL IS NOT 1", "'a' < 'b'", "'abc' > 5", "3 = 3.0",
     "1 IN (1, NULL)", "2 IN (1, NULL)", "2 NOT IN (1, NULL)", "NULL IN (1)", "2 NOT IN (1, 3)",
@@ -25,7 +28,8 @@ EXPRESSIONS = [
     "abs(NULL)", "1 || 2", "1.0 || 'a'", "1e20 || ''", "100.0 || ''", "'a' || NULL",
     "coalesce(NULL, NULL, 3)", "ifnull(NULL, 'x')", "nullif(3, 3)", "nullif(3, 4)",
     "typeof(1 / 2)", "typeof(1.0 * 2)", "typeof('a')", "typeof(NULL)", "typeof(1 > 0)",
-    "CASE WHEN NULL THEN 1 ELSE 2 END", "CASE 1 WHEN 1 THEN 'a' END", "CASE NULL WHEN NULL THEN 1 ELSE 0 END",
+    "CASE WHEN NULL THEN 1 ELSE 2 END", "CASE 1 WHEN 1 THEN 'a' END",
+    "CASE NULL WHEN NULL THEN 1 ELSE 0 END",
     "CASE 2 WHEN 1 THEN 'a' WHEN 2 THEN 'b' END", "min(3, 1, 2)", "max('a', 'b')", "min(1, NULL)",
     "TRUE + TRUE", "-0.0 + 1", "(1 + 2) * 3 - 4 / 2 % 3", "1 + 2 || 3", "2 * 3 || ''",
 ]  # fmt: skip
@@ -61,7 +65,8 @@ def test_substr_matches_sqlite_for_all_small_arguments() -> None:
 
 def test_type_affinity_on_insert_matches_sqlite() -> None:
     script = [
-        "CREATE TABLE t (id INTEGER PRIMARY KEY, a INTEGER, b TEXT, c REAL, d, e NUMERIC, f VARCHAR(5))",
+        "CREATE TABLE t (id INTEGER PRIMARY KEY, a INTEGER, b TEXT, c REAL, d, e NUMERIC, "
+        "f VARCHAR(5))",
         "INSERT INTO t (a, b, c, d, e, f) VALUES ('12', 34, 5, '7', '3.0', 1.5)",
         "INSERT INTO t (a, b, c, d, e, f) VALUES ('x', 1.5, '2', 8, '2.5', 'yazı')",
         "INSERT INTO t (a, b, c, d, e, f) VALUES (3.0, 'q', 7, 1.5, 'abc', NULL)",
@@ -86,4 +91,52 @@ def test_turkish_case_helpers_are_correct() -> None:
     assert lower_tr("İSTANBUL IŞIK") == "istanbul ışık"
     db = Database()
     assert db.query("SELECT upper_tr('iğdır'), lower_tr('İZMİR')") == [("İĞDIR", "izmir")]
-    assert db.query("SELECT upper('iğdır')") == [("IğDIR",)]  # SQLite gibi: yalnız ASCII
+    with _sqlite() as reference:  # upper/lower SQLite gibi yalnız ASCII harfleri çevirir
+        sql = "SELECT upper('iğdır'), lower('İĞDIR')"
+        assert db.query(sql) == reference.execute(sql).fetchall() == [("IğDıR", "İĞdir")]
+
+
+def test_sum_and_avg_match_sqlite_bit_for_bit() -> None:
+    # SQLite REAL toplamında Kahan-Babuška-Neumaier dengelemesi kullanır; düz toplama son bitte
+    # ayrışır.
+    rng = random.Random(1)
+    db = Database()
+    db.execute("CREATE TABLE f (x)")
+    with _sqlite() as reference:
+        reference.execute("CREATE TABLE f (x)")
+        for _ in range(300):
+            values: list[int | float] = [
+                rng.choice([rng.uniform(-1e3, 1e3), rng.randint(-50, 50), rng.random() / 3, 1e16])
+                for _ in range(rng.randint(1, 25))
+            ]
+            for target in (db, reference):
+                target.execute("DELETE FROM f")
+                for value in values:
+                    target.execute("INSERT INTO f (x) VALUES (?)", [value])
+            sql = "SELECT sum(x), avg(x), typeof(sum(x)) FROM f"
+            assert db.query(sql) == reference.execute(sql).fetchall(), values
+
+
+@pytest.mark.parametrize(
+    "values",
+    ["'12', 3", "'abc', 3", "'3.0', 1", "'12abc', 1", "' 7 ', 1", "9223372036854775807, 1, 1.5"],
+)
+def test_sum_of_text_and_overflow_matches_sqlite(values: str) -> None:
+    sql = "SELECT sum(x), typeof(sum(x)), avg(x) FROM (SELECT x FROM v)"
+    db = Database()
+    db.execute("CREATE TABLE v (x)")
+    with _sqlite() as reference:
+        reference.execute("CREATE TABLE v (x)")
+        for value in values.split(", "):
+            db.execute(f"INSERT INTO v (x) VALUES ({value})")
+            reference.execute(f"INSERT INTO v (x) VALUES ({value})")
+        expected = reference.execute(sql.replace("(SELECT x FROM v)", "v")).fetchall()
+        assert db.query(sql.replace("(SELECT x FROM v)", "v")) == expected
+
+
+def test_sum_integer_overflow_is_an_error_like_sqlite() -> None:
+    db = Database()
+    db.execute_script("CREATE TABLE v (x); INSERT INTO v VALUES (9223372036854775807), (1)")
+    with pytest.raises(SqlError, match="taşma"):
+        db.query("SELECT sum(x) FROM v")
+    assert db.query("SELECT avg(x) FROM v") == [(4.611686018427388e18,)]

@@ -1,7 +1,7 @@
 """URL ayrıştırma ve göreli adres çözümleme (RFC 3986 §5.2) — yönlendirmeler için.
 
     "https://Köprü.örnek:8443/a b?x=ç#k"
-      → Url(scheme="https", host="xn--kpr-hoa2c.xn--rnek-zua", port=8443, path="/a%20b",
+      → Url(scheme="https", host="xn--kpr-sna6a.xn--rnek-4qa", port=8443, path="/a%20b",
             query="x=%C3%A7", fragment="k")
 Güvenlik: adreste CR/LF/NUL/sekme varsa reddedilir (istek satırına başlık enjeksiyonu);
 "kullanıcı:parola@" bölümü reddedilir (parolanın günlüklere ve yönlendirmelere sızmasını önlemek,

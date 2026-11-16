@@ -299,6 +299,8 @@ denetimi ve JSON zorunluluğudur ([Kimlik doğrulama](kimlik-dogrulama.md)). Hav
 
 - [API tasarımı](api-tasarimi.md): hata gövdesi, sayfalama, idempotentlik anahtarı, sürümleme.
 - [Önbellek](onbellek.md) · [Kimlik doğrulama](kimlik-dogrulama.md) · [Hız sınırı](hiz-siniri-ve-kotuye-kullanim.md)
+- Güvenlik tarafı: [CSRF ve CORS](../50-guvenlik/csrf-ve-cors.md); önbelleğin bütün katmanları:
+  [Önbellek katmanları](../40-sistem-tasarimi/onbellek-katmanlari.md); istemci tarafı: [Veri getirme](../20-web-onyuz/veri-getirme.md).
 - Çalışan sunucu: [`uygulama/api/src/app.ts`](../../uygulama/api/src/app.ts) (ara katman sırası),
   [`errors.ts`](../../uygulama/api/src/http/errors.ts) (kod → HTTP), uçların dökümü
   [`uygulama/docs/API.md`](../../uygulama/docs/API.md), güvenlik kararları

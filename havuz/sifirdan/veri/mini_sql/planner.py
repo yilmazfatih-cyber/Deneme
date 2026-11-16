@@ -1,8 +1,9 @@
 """SELECT planlayıcı: AST → işleç ağacı (mantıksal plan, aynı zamanda yürütülebilir plan).
 
 Sıra: kaynak (tarama/dizin) → birleşmeler → WHERE (Filter) → GROUP BY/kümeleme (Aggregate) →
-HAVING (Filter) → SELECT listesi (Project) → DISTINCT → ORDER BY (Sort) → LIMIT/OFFSET → gizli sütunları at.
-ORDER BY; konum (`ORDER BY 2`), takma ad ya da SELECT'te olmayan bir ifade olabilir (gizli sütun).
+HAVING (Filter) → SELECT listesi (Project) → DISTINCT → ORDER BY (Sort) → LIMIT/OFFSET → gizli
+sütunları at. ORDER BY; konum (`ORDER BY 2`), takma ad ya da SELECT'te olmayan bir ifade olabilir
+(gizli sütun).
 
 Genişletme: koşul aşağı itme (predicate pushdown) → WHERE parçalarını birleşmeden önceki taramalara
 taşıyın (LEFT JOIN'in sağ tarafına taşımak YANLIŞ olur, dikkat).
@@ -242,7 +243,12 @@ class SelectPlanner:
         return keys
 
     def _aggregate(
-        self, root: Operator, select: Select, items: list[Expr], aggregates: list[Call], scope: Scope
+        self,
+        root: Operator,
+        select: Select,
+        items: list[Expr],
+        aggregates: list[Call],
+        scope: Scope,
     ) -> tuple[Operator, Compiler]:
         groups: list[Expr] = []
         for expr in select.group_by:
@@ -272,7 +278,9 @@ class SelectPlanner:
         precomputed: dict[Expr, int] = {group: i for i, group in enumerate(groups)}
         for j, call in enumerate(aggregates):
             precomputed[call] = len(groups) + j
-        return Aggregate(root, group_evals, specs, text), Compiler(Scope([]), self.params, precomputed)
+        return Aggregate(root, group_evals, specs, text), Compiler(
+            Scope([]), self.params, precomputed
+        )
 
     def _limit(self, select: Select) -> tuple[int | None, int]:
         def constant(expr: Expr) -> int:

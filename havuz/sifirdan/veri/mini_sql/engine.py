@@ -67,12 +67,18 @@ class Database:
     def query(self, sql: str, params: Sequence[Value] = ()) -> list[Row]:
         return self.execute(sql, params).rows
 
+    def explain(self, sql: str, params: Sequence[Value] = ()) -> list[str]:
+        """Deyimin planı, satır satır (`EXPLAIN <sql>` ile aynı)."""
+        return [str(line) for (line,) in self.execute("EXPLAIN " + sql, params).rows]
+
     def _run(self, statement: Statement, params: Sequence[Value]) -> Result:
         if isinstance(statement, Select):
             plan = SelectPlanner(self.tables, params).plan(statement)
             return Result(plan.columns, list(plan.root.rows()))
         if isinstance(statement, Explain):
-            return Result(["plan"], [(line,) for line in self._explain(statement.statement, params)])
+            return Result(
+                ["plan"], [(line,) for line in self._explain(statement.statement, params)]
+            )
         if isinstance(statement, Insert):
             return self._insert(statement, params)
         if isinstance(statement, Update | Delete):

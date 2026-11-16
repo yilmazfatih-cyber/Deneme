@@ -3,9 +3,10 @@
 Kullanım:
     from mini_sql import Database
     db = Database()
-    db.execute_script("CREATE TABLE t (id INTEGER PRIMARY KEY, ad TEXT); INSERT INTO t (ad) VALUES ('a')")
+    db.execute("CREATE TABLE t (id INTEGER PRIMARY KEY, ad TEXT)")
+    db.execute("INSERT INTO t (ad) VALUES (?)", ["a"])
     db.query("SELECT ad, count(*) FROM t GROUP BY ad")       # [('a', 1)]
-    db.query("EXPLAIN SELECT * FROM t WHERE id = ?", [1])    # plan satırları
+    db.explain("SELECT * FROM t WHERE id = ?", [1])          # plan satırları
 
 Genişletme: yeni genel API'yi buraya ve README'deki "Dosya haritası"na ekleyin.
 """

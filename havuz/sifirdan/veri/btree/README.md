@@ -9,12 +9,12 @@ from btree import BPlusTree, check, render
 
 tree = BPlusTree.open("agac.db", page_size=4096, cache_pages=64)
 tree.put(b"elma", b"1")
-tree.get(b"elma")                 # b"1"
-list(tree.range(b"a", b"f"))      # [(b"elma", b"1")]
-tree.delete(b"elma")              # True
-check(tree)                       # değişmez bozuksa InvariantError
-print(render(tree))               # katman katman çizim
-tree.close()                      # kirli sayfalar + başlık yazılır, fsync
+tree.get(b"elma")  # b"1"
+list(tree.range(b"a", b"f"))  # [(b"elma", b"1")]
+tree.delete(b"elma")  # True
+check(tree)  # değişmez bozuksa InvariantError
+print(render(tree))  # katman katman çizim
+tree.close()  # kirli sayfalar + başlık yazılır, fsync
 ```
 
 Komut satırı (deneme için küçük sayfa boyu ağacı hızla derinleştirir):

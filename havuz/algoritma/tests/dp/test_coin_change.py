@@ -25,7 +25,8 @@ def test_hand_checked_example() -> None:
     lira_coins = [1, 5, 10, 25, 50, 100]  # kuruş
     assert min_coins(lira_coins, 185) == [100, 50, 25, 10]
     assert min_coins([1, 3, 4], 6) == [3, 3]  # açgözlü yöntem 4+1+1 verirdi
-    assert count_ways([2, 3], 7) == 2  # 2+2+3, 2+5? hayır: yalnız {2,2,3} ve {…} → 2+2+3 tek; 7=…
+    assert count_ways([2, 3], 7) == 1  # yalnız 2+2+3
+    assert count_ways([2, 3], 12) == 3  # 6×2, 3×2+2×3, 4×3
 
 
 def test_edge_cases() -> None:

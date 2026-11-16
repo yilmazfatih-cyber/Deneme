@@ -251,3 +251,4 @@ uygulayan ve "veritabanı koddan yeni" durumunu deneyen testler olsun
   [Yapılandırma ve sırlar](yapilandirma-ve-sirlar.md) (özellik bayrağıyla kod geri alma)
 - Çalışan göçler: [`uygulama/api/migrations/`](../../uygulama/api/migrations/0004_audit_and_mail.sql), koşucu
   [`migrate.ts`](../../uygulama/api/src/db/migrate.ts), göç betiği [`scripts/migrate.ts`](../../uygulama/api/scripts/migrate.ts).
+- Göçün yayın hattındaki yeri: [CI/CD](../60-devops/ci-cd.md) · [Yayın yolu seçimi](../60-devops/yayin-yolu-secimi.md).

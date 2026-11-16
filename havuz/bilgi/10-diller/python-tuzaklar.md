@@ -99,7 +99,7 @@ assert renk not in ("kırmızı", "mavi")  # DOĞRU
 # bool, int'in alt sınıfıdır: JSON'daki true bir "sayı" denetiminden geçer
 assert isinstance(True, int) and True + True == 2
 miktar = True
-assert not (type(miktar) is int)  # sayı alanında bool'u reddetmek için
+assert type(miktar) is not int  # sayı alanında bool'u reddetmek için
 print("tamam")
 ```
 
@@ -430,6 +430,7 @@ Bozuk görünen metni onarmak ve teşhis tablosu: [Unicode ve kodlama](unicode-v
 ## İlgili
 
 - [Python tipleme ve proje düzeni](python-tipleme-ve-proje.md): `ruff`, `mypy`, `pyproject.toml`
+- [Python standart kütüphanesi tuzakları](python-standart-kutuphane.md): `groupby`, `lru_cache`, `logging`, `subprocess`
 - [Python eşzamanlılık](python-eszamanlilik.md): `asyncio`, iş parçacığı, süreç
 - [Hata yönetimi kalıpları](hata-yonetimi-kaliplari.md)
 - [Unicode ve kodlama](unicode-ve-kodlama.md)

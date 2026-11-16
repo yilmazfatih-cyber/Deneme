@@ -358,6 +358,9 @@ parola** ister. Havuzdaki hesap silme ucu bunu yapar ([`docs/API.md`](../../uygu
 
 - [Yetkilendirme](yetkilendirme.md) · [Hız sınırı ve kötüye kullanım](hiz-siniri-ve-kotuye-kullanim.md) ·
   [Yapılandırma ve sırlar](yapilandirma-ve-sirlar.md) · [E-posta ve bildirim](e-posta-ve-bildirim.md)
+- Güvenlik kümesindeki eşleri: [Oturum güvenliği](../50-guvenlik/oturum-guvenligi.md),
+  [Parola ve hesap güvenliği](../50-guvenlik/parola-ve-hesap-guvenligi.md), [CSRF ve CORS](../50-guvenlik/csrf-ve-cors.md),
+  [Kriptografi kullanımı](../50-guvenlik/kriptografi-kullanimi.md).
 - Çalışan gerçekleme: [`uygulama/api/src/modules/auth/`](../../uygulama/api/src/modules/auth/service.ts),
   parola özeti [`password.ts`](../../uygulama/api/src/lib/password.ts), testler
   [`auth.test.ts`](../../uygulama/api/test/modules/auth.test.ts) ve [`security.test.ts`](../../uygulama/api/test/security.test.ts).

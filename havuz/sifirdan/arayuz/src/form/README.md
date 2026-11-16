@@ -19,7 +19,9 @@ const sema = s.object({
 const form = createForm({
   schema: sema,
   initialValues: { ad: '', eposta: '', yas: '', telefonlar: [{ numara: '' }] },
-  asyncValidators: { eposta: async (deger, { signal }) => ((await kayitliMi(deger, signal)) ? 'Bu adres kayıtlı.' : undefined) },
+  asyncValidators: {
+    eposta: async (deger, { signal }) => ((await kayitliMi(deger, signal)) ? 'Bu adres kayıtlı.' : undefined),
+  },
   onSubmit: async (deger) => kaydet(deger),
 })
 bindForm(form, document.querySelector('form')!)
@@ -70,14 +72,14 @@ Geçersiz gönderimde DOM sırasındaki ilk hatalı alana odaklanılır. `novali
 
 ## Dosya haritası
 
-| Dosya            | Sorumluluk                                                          |
-| ---------------- | ------------------------------------------------------------------- |
-| `schema.ts`      | Şema türleri ve kuralları, `parse`, grafem uzunluğu, sayı çözümleme |
-| `messages.ts`    | Türkçe ileti sözlüğü (tek yer)                                      |
+| Dosya            | Sorumluluk                                                           |
+| ---------------- | -------------------------------------------------------------------- |
+| `schema.ts`      | Şema türleri ve kuralları, `parse`, grafem uzunluğu, sayı çözümleme  |
+| `messages.ts`    | Türkçe ileti sözlüğü (tek yer)                                       |
 | `form.ts`        | Form denetleyicisi: değer, alan durumu, eşzamansız doğrulama, gönder |
-| `field_array.ts` | Dizi işlemlerinde yol kaydırma, yol deseni eşleme (`*`)             |
-| `path.ts`        | "a.b.0" yolları, değişmez okuma/yazma, derin eşitlik                |
-| `dom.ts`         | `bindForm`, `renderForm`, `focusFirstError`                         |
+| `field_array.ts` | Dizi işlemlerinde yol kaydırma, yol deseni eşleme (`*`)              |
+| `path.ts`        | "a.b.0" yolları, değişmez okuma/yazma, derin eşitlik                 |
+| `dom.ts`         | `bindForm`, `renderForm`, `focusFirstError`                          |
 
 ## Sınırlar
 

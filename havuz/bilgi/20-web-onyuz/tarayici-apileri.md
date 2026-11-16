@@ -289,3 +289,4 @@ yedeğini sunun, tıklayınca hata vermesin.
 - [Hata ve boş durumlar](hata-ve-bos-durumlar.md) — izin reddi ve aygıt hatası metinleri
 - Çalışan örnekler: [`storage.ts`](../../uygulama/web/src/lib/storage.ts) (kota ve kalıcılık),
   [`backup.ts`](../../uygulama/web/src/lib/backup.ts) (dışa aktarma)
+- Başka kümelerde: [Oturum güvenliği](../50-guvenlik/oturum-guvenligi.md) (çerez bayrakları), [JavaScript eşzamansızlık](../10-diller/javascript-async.md)

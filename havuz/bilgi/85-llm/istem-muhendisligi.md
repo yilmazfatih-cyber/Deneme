@@ -276,8 +276,8 @@ nasıl kullanıldığını söylesin. Sayısal özellikleri yalnızca aşağıda
 
 ## İlgili
 
-- [Küçük modeller için istem](kucuk-modeller-icin-istem.md) · [Yapılı çıktı](yapili-cikti.md) ·
-  [Görev bölme ve zincirler](gorev-bolme-ve-zincirler.md) · [Değerlendirme](degerlendirme.md)
+- [Küçük modeller için istem](kucuk-modeller-icin-istem.md) · [Hazır istem şablonları](istem-sablonlari.md) ·
+  [Yapılı çıktı](yapili-cikti.md) · [Görev bölme ve zincirler](gorev-bolme-ve-zincirler.md) · [Değerlendirme](degerlendirme.md)
 - [LLM güvenliği](llm-guvenligi.md) (ayraç ve enjeksiyon) · [Üretim hattı kalıpları](uretim-hatti-kaliplari.md) (sürümleme)
 - Havuzdaki şablonlar: [`sablonlar.py`](../../yz/yz/istem/sablonlar.py); az-örnek seçici:
   [`az_ornek.py`](../../yz/yz/istem/az_ornek.py); düşünce ayıklayıcı: [`dusunce.py`](../../yz/yz/saglayici/dusunce.py)

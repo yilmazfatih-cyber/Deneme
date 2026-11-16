@@ -304,6 +304,7 @@ atlar (`skipna=True`); ikisi aynı veride farklı sayı verir.
 - [Sayısal yöntemler](sayisal-yontemler.md): yıkıcı sadeleşme, koşul sayısı, durma ölçütü
 - [Finans matematiği](finans-matematigi.md): taksit planında ve KDV'de kuruş yuvarlama
 - [JavaScript çalışma zamanı](../10-diller/javascript-calisma-zamani.md): `number`, BigInt, `parseFloat` tuzakları
+- [Python tuzakları](../10-diller/python-tuzaklar.md): bankacı yuvarlaması ve Python'a özgü öteki sürprizler
 - Kuruş temelli para tipi, KDV, en büyük kalan yöntemiyle paylaştırma:
   [`kutuphane/py/kutuphane/para.py`](../../kutuphane/py/kutuphane/para.py) (TypeScript eşi
   [`para.ts`](../../kutuphane/ts/src/para.ts))

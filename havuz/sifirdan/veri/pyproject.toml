@@ -36,6 +36,7 @@ ignore = [
   "SIM108", # üçlü ifade her zaman daha okunaklı değildir
   "RET505", # erken dönüşten sonra else: okunaklılık için serbest
   "E741",   # l, I gibi adlar algoritma gösteriminde geçer
+  "SIM905", # anahtar sözcük listeleri "a b c".split() ile daha okunaklı
 ]
 
 [tool.ruff.lint.per-file-ignores]

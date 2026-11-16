@@ -17,7 +17,8 @@ guncellik: 2026-11
 Yerel çalıştırmada belleği üç şey doldurur: **ağırlıklar** (parametre × bit), **bağlam önbelleği** (KV cache;
 bağlam uzunluğuyla doğrusal büyür) ve çalıştırıcının kendi payı. **Nicemleme** (quantization) ağırlıkları daha az
 bitle saklar: bellek ve çoğu zaman hız kazanılır, kalite biraz kaybedilir; küçük modelde kayıp daha belirgindir.
-Üretim hızı büyük ölçüde bellek bant genişliğine bağlıdır: her belirteç için ağırlıkların tamamı okunur. Hız iki
+Üretim hızı büyük ölçüde bellek bant genişliğine bağlıdır: yoğun (dense) modelde her belirteç için ağırlıkların
+tamamı okunur; uzman karışımı (MoE) modelde yalnız o belirteç için seçilen uzmanlar okunur. Hız iki
 ayrı sayıdır: ilk belirtece kadar geçen süre (istem işleme) ve sonraki belirteçlerin hızı. Hepsini kendi
 makinenizde, kendi istem boyunuzla ölçün; başkasının sayısı sizin donanımınızı anlatmaz.
 
@@ -130,6 +131,8 @@ Okuma:
 - Üstüne çalıştırıcı payı ekleyin (ara bellekler, ayrıştırma); kendi makinenizde ilk koşuda ölçün. İşletim sistemi ve
   öteki uygulamalar için de yer kalsın; belleğin tamamını hesaplamayın.
 - Ad yaklaşıktır: "1.7B" adlı modelin API'den okunan parametre sayısı 2,03 milyardır. Hesabı gerçek sayıyla yapın.
+- Uzman karışımı (MoE) modelde bellek için **toplam** parametre, hız için **etkin** (belirteç başına kullanılan)
+  parametre önemlidir; model kartı ikisini ayrı verir. Bütün uzmanlar bellekte durur.
 - Bazı çalıştırıcılar bağlam önbelleğini de nicemleyebilir; kalite etkisini ölçmeden açmayın.
 - Eğitim belleği bambaşka bir hesaptır (gradyan, optimizer durumu): [ince ayar kararı](ince-ayar-karari.md).
 
@@ -263,3 +266,5 @@ parçaları belirteç saymak yaklaşıktır; sağlayıcının bildirdiği belirt
   [`ollama_yerel.py`](../../yz/ornekler/ollama_yerel.py); geliştirme sunucusu [`hf_sunucu.py`](../../yz/araclar/hf_sunucu.py)
 - İnce ayarlı modeli GGUF/ONNX'e aktarma: [`ince-ayar`](../../ince-ayar/README.md)
 - Kapasite ve eşzamanlılık hesabı: [Kapasite tahmini](../40-sistem-tasarimi/kapasite-tahmini.md)
+- KV önbelleğinin nereden geldiği: [Transformer ve dikkat](../80-ml/transformer.md); donanım seçimi:
+  [Hesaplama ve donanım](../80-ml/hesaplama-ve-donanim.md)

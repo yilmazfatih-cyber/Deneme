@@ -426,5 +426,6 @@ veritabanı bağlantısı gönderilemez. İşlevi modülün üst düzeyinde tan�
 - [Python tuzakları](python-tuzaklar.md)
 - [Hata yönetimi kalıpları](hata-yonetimi-kaliplari.md): yeniden deneme, iptal ve temizlik
 - [SQL performans ve işlem](sql-performans-ve-islem.md): kayıp güncelleme, işlem yalıtımı
+- [Arka plan işleri](../30-arkauc/arka-plan-isleri.md): uzun işi kuyruğa almak
 - Kuyruk ve hız sınırı gerçeklemeleri: [`kutuphane/py/kutuphane/kuyruk.py`](../../kutuphane/py/kutuphane/kuyruk.py),
   [`kutuphane/py/kutuphane/hiz_siniri.py`](../../kutuphane/py/kutuphane/hiz_siniri.py)

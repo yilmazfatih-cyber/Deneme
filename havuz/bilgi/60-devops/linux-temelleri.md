@@ -256,6 +256,7 @@ Sunucunun tamamında arama: `sudo find /proc/*/fd -lname '*(deleted)' 2>/dev/nul
 | Güvenlik duvarını açınca sunucuya giriş kesildi                  | SSH'a izin verilmeden `ufw enable`                       | Sağlayıcının web konsolundan girip izin ekleyin; sıra: izin → aç  |
 | Uygulama SSH oturumu kapanınca duruyor                           | Terminalde `node app.js &` ile başlatılmış               | systemd birimi ya da Docker `--restart unless-stopped`             |
 | Servis yeniden başlıyor ama değişiklik yok                       | Birim dosyası değişti, `daemon-reload` yapılmadı         | `sudo systemctl daemon-reload` sonra `restart`                     |
+| `Restart=on-failure # açıklama` yazıldı, servis hiç yeniden kalkmıyor | systemd satır sonu yorumu bilmez; `#` değere karışır, ayar yok sayılır | Yorum ayrı satırda; `systemd-analyze verify` uyarılarını okuyun (çıkış kodu 0 olsa da) |
 | `status=203/EXEC`, servis başlamıyor                             | `ExecStart` yolu yanlış; node `nvm` ile kullanıcı klasöründe | Tam yol (`command -v node`); sistem genelinde kurulu node       |
 | Servis "start request repeated too quickly" ile durdu            | Açılışta hemen çöküyor; systemd yeniden denemeyi bıraktı | `journalctl -u` ile ilk hatayı okuyun; düzeltip `reset-failed`     |
 | `systemctl stop` uzun sürüyor, sonra kesiliyor                   | Uygulama `SIGTERM`'i işlemiyor; `SIGKILL` bekleniyor     | Kapanış işleyicisi; npm/sh aracısı olmadan doğrudan node           |

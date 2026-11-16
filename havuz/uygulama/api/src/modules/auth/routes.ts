@@ -20,6 +20,7 @@ import { Hono } from 'hono'
 import type { AppContext } from '../../context.ts'
 import { readJson } from '../../http/body.ts'
 import { requestMeta } from '../../http/meta.ts'
+import { rateLimitKey } from '../../http/clientIp.ts'
 import { RATE_RULES } from '../../http/rateLimit.ts'
 import { OK } from '../../http/responses.ts'
 import { ROUTES } from '../../http/routes.ts'
@@ -32,14 +33,14 @@ export function authRoutes(ctx: AppContext): Hono<AppEnv> {
   const app = new Hono<AppEnv>()
 
   app.post(ROUTES.register, async (c) => {
-    ctx.limiter.consume(RATE_RULES.register, c.get('ip'))
+    ctx.limiter.consume(RATE_RULES.register, rateLimitKey(c.get('ip')))
     const input = await readJson(c, registerRequestSchema)
     const { user, session } = await register(ctx, input, requestMeta(c))
     return c.json({ user: toApiUser(user), ...attachSession(c, ctx, session) } satisfies AuthResponse, 201)
   })
 
   app.post(ROUTES.login, async (c) => {
-    ctx.limiter.consume(RATE_RULES.login, c.get('ip'))
+    ctx.limiter.consume(RATE_RULES.login, rateLimitKey(c.get('ip')))
     const input = await readJson(c, loginRequestSchema)
     const { user, session } = await login(ctx, input, requestMeta(c))
     return c.json({ user: toApiUser(user), ...attachSession(c, ctx, session) } satisfies AuthResponse)
@@ -71,14 +72,14 @@ export function authRoutes(ctx: AppContext): Hono<AppEnv> {
   })
 
   app.post(ROUTES.forgotPassword, async (c) => {
-    ctx.limiter.consume(RATE_RULES.forgot, c.get('ip'))
+    ctx.limiter.consume(RATE_RULES.forgot, rateLimitKey(c.get('ip')))
     const { email } = await readJson(c, forgotPasswordRequestSchema)
     forgotPassword(ctx, email, requestMeta(c))
     return c.json(OK)
   })
 
   app.post(ROUTES.resetPassword, async (c) => {
-    ctx.limiter.consume(RATE_RULES.reset, c.get('ip'))
+    ctx.limiter.consume(RATE_RULES.reset, rateLimitKey(c.get('ip')))
     const input = await readJson(c, resetPasswordRequestSchema)
     await resetPassword(ctx, input, requestMeta(c))
     return c.json(OK)

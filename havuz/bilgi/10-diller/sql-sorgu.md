@@ -373,4 +373,4 @@ SELECT 5 / 2, 5 / 2.0, 100 * 1 / 3, ROUND(100.0 * 1 / 3, 1);
 - [Veri biçimleri](veri-bicimleri.md): tarih/saat biçimi ve saat dilimi
 - [Python tuzakları](python-tuzaklar.md): Python'dan SQLite kullanırken
 - Türkçe arama için katlanmış sütun: [Türkçe büyük/küçük harf](../97-turkce/buyuk-kucuk-harf.md)
-- Analitik SQL ve veri modelleme kümesi: `70-veri`
+- [Analitik SQL kalıpları](../70-veri/analitik-sql-kaliplari.md): kohort, huni, tutma, oturumlama

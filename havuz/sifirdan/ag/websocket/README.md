@@ -17,12 +17,14 @@ Kod içinden:
 from http_sunucu import HttpServer, Request
 from websocket import WebSocket, connect, websocket_endpoint
 
+
 async def yanki(ws: WebSocket, istek: Request) -> None:
-    async for ileti in ws:          # str (metin) ya da bytes (ikili)
+    async for ileti in ws:  # str (metin) ya da bytes (ikili)
         await ws.send(ileti)
 
-sunucu = HttpServer(websocket_endpoint(yanki), port=8451)   # await sunucu.start()
-ws = await connect("ws://127.0.0.1:8451/")                   # istemci
+
+sunucu = HttpServer(websocket_endpoint(yanki), port=8451)  # await sunucu.start()
+ws = await connect("ws://127.0.0.1:8451/")  # istemci
 ```
 
 ## Nasıl çalışır

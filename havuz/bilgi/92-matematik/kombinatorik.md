@@ -280,5 +280,7 @@ kuvvet yerine akıllı arama (dinamik programlama, dal-sınır, sezgisel yöntem
 - [Ayrık matematik](ayrik-matematik.md): kümeler, modüler aritmetik, karma ve sağlama
 - [Rastgelelik ve benzetim](rastgelelik-ve-benzetim.md): kriptografik rastgele kimlik, karıştırma
 - [Bilgi kuramı](bilgi-kurami.md): sıkıştırmanın sınırı (entropi)
+- [Parola ve hesap güvenliği](../50-guvenlik/parola-ve-hesap-guvenligi.md): arama uzayı, kaba kuvvet ve hız sınırı
+- Büyük `C(n, k)` değerlerini mod p'de hesaplamak: [`algoritma/algoritma/sayilar/combinatorics_mod.py`](../../algoritma/algoritma/sayilar/combinatorics_mod.py)
 - Rastgele ve zaman sıralı kimlik üreticisi (UUIDv7, kısa kimlik, okunaklı kod):
   [`kutuphane/py/kutuphane/kimlik.py`](../../kutuphane/py/kutuphane/kimlik.py)

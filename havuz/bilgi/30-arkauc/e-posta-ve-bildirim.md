@@ -210,3 +210,4 @@ biçimde tutar.
   (sıfırlama akışı) · [Zaman ve saat dilimi](zaman-ve-saat-dilimi.md) (sessiz saatler)
 - Çalışan kod: [`uygulama/api/src/mail/`](../../uygulama/api/src/mail/mailer.ts) ve kullandığı servis
   [`auth/service.ts`](../../uygulama/api/src/modules/auth/service.ts).
+- SPF/DKIM/DMARC kayıtlarının DNS'e girilmesi: [Alan adı ve DNS](../60-devops/alan-adi-ve-dns.md).

@@ -214,3 +214,6 @@ kişi sayısı").
 - [HTTP temelleri](http-temelleri.md) · [Sunucu mimarisi](sunucu-mimarisi.md) (düzgün kapanış) ·
   [Hız sınırı ve kötüye kullanım](hiz-siniri-ve-kotuye-kullanim.md) · [API tasarımı](api-tasarimi.md) (uzun süren
   işlemin durumunu izleme)
+- İstemci tarafı (çevrimdışı, eşitleme, yeniden bağlanma): [PWA ve çevrimdışı](../20-web-onyuz/pwa-ve-cevrimdisi.md),
+  [Çevrimdışı-önce ve eşitleme](../40-sistem-tasarimi/cevrimdisi-once-ve-esitleme.md); çok kopyada olay dağıtımı:
+  [Kuyruk ve olaylar](../40-sistem-tasarimi/kuyruk-ve-olaylar.md); vekil ayarları: [Ters vekil](../60-devops/ters-vekil.md).

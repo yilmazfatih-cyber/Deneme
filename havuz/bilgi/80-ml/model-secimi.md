@@ -190,4 +190,4 @@ içeriyorsa basit model kullanılır.
 - Modellerin numpy gerçeklemeleri ve scikit-learn eşlemesi: [`ml-temel/AGENTS.md`](../../ml-temel/AGENTS.md)
   (tarif 6), hız ölçümleri: [`ml-temel/README.md`](../../ml-temel/README.md)
 - İstem mi, RAG mı, ince ayar mı: [`ince-ayar/docs/NE_ZAMAN_INCE_AYAR.md`](../../ince-ayar/docs/NE_ZAMAN_INCE_AYAR.md);
-  dil modeliyle sınıflandırma: `85-llm` kümesi
+  dil modeli tarafı: [Dil modeli seçimi](../85-llm/model-secimi.md), [İnce ayar kararı](../85-llm/ince-ayar-karari.md)

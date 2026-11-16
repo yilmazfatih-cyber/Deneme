@@ -192,7 +192,7 @@ bayat_sun:  1 veritabanı sorgusu, en uzun bekleme 0 ms
 ```
 
 - **Tek uçuş** (single-flight, istek birleştirme): aynı anahtar için süren yükleme varsa yenisi başlamaz, herkes onu
-  bekler. Havuzda hazır: [`kutuphane/ts/src/onbellek.ts`](../../kutuphane/ts/src/onbellek.ts) → `getOrSetAsync`
+  bekler. İş parçacıklı çalışan örneği: [Önbellek](../30-arkauc/onbellek.md) → "Sürü etkisi". Havuzda hazır: [`kutuphane/ts/src/onbellek.ts`](../../kutuphane/ts/src/onbellek.ts) → `getOrSetAsync`
   (Python eşi bunu yapmaz; başlığında yazar). Tek süreç içindir; çok sunucuda her sunucu bir kez yükler.
 - **Bayat-sun, arkada yenile** (stale-while-revalidate): süresi yeni dolmuş değeri hemen döndür, tek bir yenileme
   başlat. Kısa bayatlığın kabul edildiği her yerde en iyisi.
@@ -272,7 +272,9 @@ titremeli TTL: en kötü saniyede   194 anahtarın süresi doluyor
 
 - [Ölçekleme temelleri](olcekleme-temelleri.md) · [Tutarlılık modelleri](tutarlilik-modelleri.md) (bayat okuma ve
   kullanıcıya yansıması) · [Veritabanı ölçekleme](veritabani-olcekleme.md)
-- [HTTP temelleri](../30-arkauc/http-temelleri.md) → önbellek başlıkları
+- [HTTP temelleri](../30-arkauc/http-temelleri.md) → önbellek başlıkları · [Önbellek](../30-arkauc/onbellek.md)
+  (uygulama düzeyi: süre seçimi, geçersiz kılma, kişisel veriyle zehirleme) ·
+  [PWA ve çevrimdışı](../20-web-onyuz/pwa-ve-cevrimdisi.md) (servis çalışanı önbelleği)
 - Havuzdaki LRU + süre + tek uçuş: [`kutuphane/ts/src/onbellek.ts`](../../kutuphane/ts/src/onbellek.ts),
   [`kutuphane/py/kutuphane/onbellek.py`](../../kutuphane/py/kutuphane/onbellek.py); veri yapısı olarak LRU:
   [`algoritma/algoritma/veri_yapilari/lru_cache.py`](../../algoritma/algoritma/veri_yapilari/lru_cache.py)

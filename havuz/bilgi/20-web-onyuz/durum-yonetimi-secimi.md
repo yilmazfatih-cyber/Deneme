@@ -253,3 +253,4 @@ bir kanca ile okunur: [`useRemote.ts`](../../uygulama/web/src/lib/useRemote.ts).
 - [PWA ve çevrimdışı](pwa-ve-cevrimdisi.md) — IndexedDB ve şema yükseltme
 - Çalışan örnek: cihaz tercihi deposu [`appearance.ts`](../../uygulama/web/src/lib/appearance.ts)
   (`useSyncExternalStore` + şemalı localStorage)
+- Başka kümelerde: [Tutarlılık modelleri](../40-sistem-tasarimi/tutarlilik-modelleri.md) (bayat verinin arayüze yansıması), [Önbellek](../30-arkauc/onbellek.md)

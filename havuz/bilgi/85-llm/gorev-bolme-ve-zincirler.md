@@ -250,3 +250,4 @@ ile tekrarlamak aynı yanıtı verir.
   [`coklu_ajan.py`](../../yz/ornekler/coklu_ajan.py) (planla-yürüt-denetle ve ne zaman gereksiz olduğu),
   [`cikar.py`](../../yz/yz/yapili/cikar.py) (katmanlar arası geri çekilme)
 - Görev bölme tablosu: [KUCUK_MODEL_REHBERI](../../yz/docs/KUCUK_MODEL_REHBERI.md) §5
+- Genel iş bölme yöntemi: [İşi parçalama](../00-yontem/isi-parcalama.md)

@@ -29,7 +29,7 @@ guncellik: 2026-11
 | Durum                                                           | Seçim                                                    | Neden                                                    |
 | --------------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------- |
 | İş kısa (< 100 ms) ve sonucu yanıtta gerekli                     | İstek içinde yap                                         | Kuyruk yalnız karmaşıklık ekler                          |
-| İş uzun, sonucu sonra gösterilebilir; tek sunucu                 | Veritabanında iş tablosu + yoklayıcı işçi                 | Yeni altyapı yok; işlemle birlikte yazılır                |
+| İş uzun, sonucu sonra gösterilebilir; tek sunucu                 | Veritabanında iş tablosu + yoklayıcı işçi ([çalışan örnek](../30-arkauc/arka-plan-isleri.md)) | Yeni altyapı yok; işlemle birlikte yazılır |
 | Kaybolursa sorun olmayan, yan etkisi küçük iş                    | Bellek içi arka plan işi                                 | En basit; ama dağıtımda/çökmede kaybolur                 |
 | Bir olaya birden çok bağımsız iş bağlanacak                      | Olay (yayın/abone) + her iş için ayrı tüketici            | Yeni tüketici, üreticiye dokunmadan eklenir              |
 | Olay geçmişi yeniden oynatılacak, saniyede binlerce olay         | Günlük tabanlı akış (Kafka benzeri)                       | Tüketici kendi konumunu tutar; çoğu ürüne gerekmez       |
@@ -198,6 +198,8 @@ Kuyruk derinliği ve en eski mesajın yaşı **izlenir**; derinlik sürekli art�
   uzun işte kira düzenli uzatılmalıdır.
 - Hata türünü ayırın: geçici hata (zaman aşımı, 503) yeniden denenir; kalıcı hata (doğrulama, 404) hemen ölü
   mektuba gider ([Dayanıklılık kalıpları](dayaniklilik-kaliplari.md)).
+- Kiralama, yeniden teslim ve ölü mektubu SQLite üstünde kuran çalışan kuyruk:
+  [Arka plan işleri](../30-arkauc/arka-plan-isleri.md).
 
 ## Giden kutusu (outbox)
 
@@ -311,6 +313,8 @@ satırı tek IndexedDB işleminde yazılır, eşitleme motoru giden kutusunu bo�
 
 - [Dayanıklılık kalıpları](dayaniklilik-kaliplari.md) (yeniden deneme, titreme, yük atma) ·
   [Tutarlılık modelleri](tutarlilik-modelleri.md) · [Bildirim sistemi örneği](ornek-bildirim-sistemi.md)
-- [API tasarımı](../30-arkauc/api-tasarimi.md) → idempotentlik anahtarı, uzun süren işlem
+- [API tasarımı](../30-arkauc/api-tasarimi.md) → idempotentlik anahtarı, uzun süren işlem ·
+  [Arka plan işleri](../30-arkauc/arka-plan-isleri.md) · [Webhooklar](../30-arkauc/webhooklar.md) ·
+  [Gerçek zamanlı](../30-arkauc/gercek-zamanli.md)
 - Havuzda: eşzamanlılığı sınırlı görev kuyruğu [`kutuphane/py/kutuphane/kuyruk.py`](../../kutuphane/py/kutuphane/kuyruk.py),
   istemci giden kutusu [`uygulama/docs/ESITLEME.md`](../../uygulama/docs/ESITLEME.md)

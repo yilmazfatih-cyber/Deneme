@@ -46,10 +46,14 @@ def _index_on(table: Table, alias: str, expr: Expr) -> Index | None:
 def _lookup_for(
     table: Table, alias: str, part: Expr, params: Sequence[Value]
 ) -> tuple[int, Index, IndexLookup] | None:
-    """Bir AND parçası için (öncelik, dizin, arama); uygun değilse None. Küçük öncelik = daha iyi."""
+    """Bir AND parçası için (öncelik, dizin, arama); uygun değilse None. Küçük öncelik = daha
+    iyi."""
     text = to_sql(part)
     if isinstance(part, Binary) and part.op in _FLIP:
-        for column, other, op in ((part.left, part.right, part.op), (part.right, part.left, _FLIP[part.op])):
+        for column, other, op in (
+            (part.left, part.right, part.op),
+            (part.right, part.left, _FLIP[part.op]),
+        ):
             index = _index_on(table, alias, column)
             is_constant, value = _constant(other, params)
             if index is None or not is_constant:

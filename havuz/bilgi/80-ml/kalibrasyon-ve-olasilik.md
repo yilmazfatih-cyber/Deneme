@@ -291,6 +291,7 @@ Pratik karar kuralları:
 - [Değerlendirme ölçütleri](degerlendirme-olcutleri.md) — maliyetle eşik, log-kayıp
 - [Veri ve etiket kalitesi](veri-ve-etiket.md) — dengesizlik ne zaman sorun değildir
 - [Aşırı öğrenme](asiri-ogrenme.md) · [Model kartı](model-karti-ve-sorumluluk.md) — alt grup denetimi
+- [Olasılık temelleri](../92-matematik/olasilik-temelleri.md)
 - Platt, izotonik ve `CalibratedClassifierCV`: [`ml_temel/klasik/calibration.py`](../../ml-temel/ml_temel/klasik/calibration.py)
 - Log-kayıp, Brier, kalibrasyon eğrisi, ECE: [`ml_temel/olcut/probability.py`](../../ml-temel/ml_temel/olcut/probability.py)
 - Kalibrasyonun matematiği ve sızıntısız seçimi: [`ml-temel/docs/NASIL_CALISIR.md`](../../ml-temel/docs/NASIL_CALISIR.md#5-kalibrasyon)

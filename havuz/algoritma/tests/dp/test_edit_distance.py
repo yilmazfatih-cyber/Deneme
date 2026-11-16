@@ -26,7 +26,7 @@ def _recursive_distance(a: str, b: str) -> int:
 def test_hand_checked_example() -> None:
     distance, script = edit_script("pazartesi", "perşembe")
     assert distance == 7 and apply_edit_script("pazartesi", script) == "perşembe"
-    assert edit_script("ılık", "ilik")[0] == 1  # ı ve i farklı harfler
+    assert edit_script("ılık", "ilik")[0] == 2  # ı ile i farklı harfler: iki değiştirme
 
 
 def test_edge_cases() -> None:

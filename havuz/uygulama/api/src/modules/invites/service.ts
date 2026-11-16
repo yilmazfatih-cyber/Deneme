@@ -54,10 +54,17 @@ export function createInvite(
   })
 }
 
-/** Geçerli (var, kullanılmamış, süresi dolmamış) daveti bulur; yoksa `invalid_token`. */
+/**
+ * Geçerli daveti bulur; yoksa `invalid_token`. Geçerli = var, kullanılmamış, süresi dolmamış VE daveti oluşturan
+ * hâlâ alanın sahibi. Son koşul olmasa, alandan çıkarılan ya da rolü düşürülen eski bir sahip, önceden ürettiği
+ * bağlantıyla geri dönebilir ya da yetkisini büyütebilirdi (davet listesi/iptali olmadığı için başka çaresi yok).
+ */
 function usableInvite(ctx: AppContext, token: string): InviteRow {
   const invite = isTokenFormat(token) ? findInvite(ctx.db, hashToken(token)) : undefined
   if (!invite || invite.used_at !== null || invite.expires_at <= ctx.clock.now().toISOString()) {
+    throw new AppError('invalid_token')
+  }
+  if (invite.created_by === null || findRole(ctx.db, invite.workspace_id, invite.created_by) !== 'owner') {
     throw new AppError('invalid_token')
   }
   return invite

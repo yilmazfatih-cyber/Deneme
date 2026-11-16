@@ -398,3 +398,4 @@ Hazır, sınanmış gerçekleme: [`yeniden_dene.ts`](../../kutuphane/ts/src/yeni
 - Çalışan örnekler: [`api.ts`](../../uygulama/web/src/lib/api.ts) (istemci sarmalayıcısı),
   [`errors.ts`](../../uygulama/web/src/lib/errors.ts) (`NetworkError` ve ileti eşlemesi),
   [`sayfalama.ts`](../../kutuphane/ts/src/sayfalama.ts) (imleç kodlama)
+- Başka kümelerde: [HTTP temelleri](../30-arkauc/http-temelleri.md), [API tasarımı](../30-arkauc/api-tasarimi.md) (hata gövdesi, sayfalama, idempotentlik anahtarı), [Dayanıklılık kalıpları](../40-sistem-tasarimi/dayaniklilik-kaliplari.md) (zaman aşımı, yeniden deneme bütçesi), [JavaScript eşzamansızlık](../10-diller/javascript-async.md)

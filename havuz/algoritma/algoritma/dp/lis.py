@@ -17,8 +17,10 @@ Genişletme: en uzun AZALAN alt dizi için öğeleri ters işaretle (−x) verin
 Örnek:
     >>> longest_increasing_subsequence([3, 1, 4, 1, 5, 9, 2, 6])
     [1, 4, 5, 6]
-    >>> lis_indices([3, 1, 4, 1, 5, 9, 2, 6]), longest_increasing_subsequence([2, 2, 2], strict=False)
-    ([1, 2, 4, 7], [2, 2, 2])
+    >>> lis_indices([3, 1, 4, 1, 5, 9, 2, 6])
+    [1, 2, 4, 7]
+    >>> longest_increasing_subsequence([2, 2, 2], strict=False)
+    [2, 2, 2]
 """
 
 from __future__ import annotations

@@ -1,0 +1,19 @@
+# Sanal ortam ve önbellekler
+.venv/
+__pycache__/
+*.py[cod]
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+*.egg-info/
+build/
+
+# Sınavın çalışma kayıtları (hazırlık kayıtları, puanlama günlükleri, doğrulama kopyaları)
+calisma/
+
+# Sonuçlar kişiseldir; yalnız örnek dosya depoya girer
+sonuclar/*
+!sonuclar/ornek.jsonl
+
+# Görev çalışma klasörleri depo içinde açılırsa (önerilmez) yanlışlıkla kaydedilmesin
+sinav-*/

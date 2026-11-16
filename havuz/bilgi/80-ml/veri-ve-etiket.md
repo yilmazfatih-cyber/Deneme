@@ -317,3 +317,4 @@ gürültü tavanına (0,90) doğru çıkıyor. Ayrıntılı okuma: [aşırı ö�
 - Dengesiz sınıf ve küçük sınama uyarıları: [`ml_temel/tablo/checks.py`](../../ml-temel/ml_temel/tablo/checks.py)
 - Kayma ölçümü (PSI/KS): [`verihavuzu/kalite/drift.py`](../../veri/verihavuzu/kalite/drift.py)
 - Veri kartı şablonu: [`veri/docs/VERI_KARTI_SABLONU.md`](../../veri/docs/VERI_KARTI_SABLONU.md)
+- Temizlik yöntemi: [Veri temizleme](../70-veri/veri-temizleme-yontemi.md)

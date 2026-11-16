@@ -7,6 +7,8 @@
  * Kurallar ve gerekçeleri aşağıdaki RATE_RULES'tadır; değiştirirken docs/GUVENLIK.md tablosunu da güncelleyin.
  *
  * Genişletme: yeni bir uç için RATE_RULES'a kural ekleyin; işleyicide `ctx.limiter.consume(RATE_RULES.x, anahtar)`.
+ * IP'ye göre sayan kuralda anahtar HER ZAMAN `rateLimitKey(c.get('ip'))`'dir (clientIp.ts; IPv6'da /64 bloğu),
+ * çıplak `c.get('ip')` değil: yoksa IPv6 kullanan saldırgan adres değiştirerek sınırı atlatır.
  */
 import { AppError } from '@uygulama/shared'
 import type { MiddlewareHandler } from 'hono'

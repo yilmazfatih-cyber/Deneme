@@ -258,4 +258,4 @@ vardır (`ince-ayar` temeli, `gomme` görevi). RAG tasarımı ve getirme değerl
 - Gömme modeline ince ayar ve önce/sonra ölçümü: [`ince_ayar/tasks/embedding/evaluate.py`](../../ince-ayar/ince_ayar/tasks/embedding/evaluate.py),
   ölçütler: [`metrics/retrieval.py`](../../ince-ayar/ince_ayar/metrics/retrieval.py), ayarlar:
   [`ince-ayar/docs/HIPERPARAMETRE.md`](../../ince-ayar/docs/HIPERPARAMETRE.md)
-- RAG tasarımı ve getirme değerlendirmesi: `85-llm` kümesi
+- RAG: [RAG tasarımı](../85-llm/rag-tasarimi.md), [RAG değerlendirme](../85-llm/rag-degerlendirme.md)

@@ -296,6 +296,7 @@ yığın 512  gradyan tahmini sapması 0.239
 
 ## İlgili
 
+- Matematik: [Geri yayılım](../92-matematik/geri-yayilim-matematigi.md), [Optimizasyon](../92-matematik/optimizasyon.md)
 - [Eğitim hata ayıklama](egitim-hata-ayiklama.md) · [Transformer](transformer.md) · [Aşırı öğrenme](asiri-ogrenme.md) ·
   [Hesaplama ve donanım](hesaplama-ve-donanim.md)
 - Sıfırdan otomatik türev ve katmanlar: [`ml_temel/autograd/tensor.py`](../../ml-temel/ml_temel/autograd/tensor.py),

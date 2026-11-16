@@ -1,4 +1,6 @@
-"""Gerçek soketlerle sunucu ↔ istemci: gidiş-dönüş özellik testi, ping/pong, kapanış, ihlaller, oda."""
+"""Gerçek soketlerle sunucu ↔ istemci: gidiş-dönüş özellik testi, ping/pong, kapanış,
+ihlaller, oda.
+"""
 
 from __future__ import annotations
 
@@ -7,10 +9,10 @@ import http.client
 from collections.abc import Awaitable, Callable
 
 import pytest
-from destek import HOST, BackgroundLoop
 from hypothesis import given, settings
 from hypothesis import strategies as st
 
+from destek import HOST, BackgroundLoop
 from http_sunucu import HttpServer, Request
 from websocket import (
     ConnectionClosedError,
@@ -128,23 +130,35 @@ def masked(opcode: int, payload: bytes, fin: bool = True) -> bytes:
     [
         (encode_frame(Opcode.TEXT, b"maskesiz"), 1002),
         (masked(Opcode.TEXT, b"\xff\xfe"), 1007),
-        (masked(Opcode.TEXT, b"\xce\xba\xe1\xbd\xb9\xcf\x83\xce\xbc\xce\xb5\xed\xa0\x80", fin=False), 1007),
+        (
+            masked(
+                Opcode.TEXT, b"\xce\xba\xe1\xbd\xb9\xcf\x83\xce\xbc\xce\xb5\xed\xa0\x80", fin=False
+            ),
+            1007,
+        ),
         (masked(Opcode.CONTINUATION, b"devam"), 1002),
         (masked(Opcode.TEXT, b"bir", fin=False) + masked(Opcode.TEXT, b"iki"), 1002),
         (masked(Opcode.BINARY, bytes(2000)), 1009),
-        (masked(Opcode.TEXT, b"a" * 600, fin=False) + masked(Opcode.CONTINUATION, b"a" * 600), 1009),
+        (
+            masked(Opcode.TEXT, b"a" * 600, fin=False) + masked(Opcode.CONTINUATION, b"a" * 600),
+            1009,
+        ),
         (masked(Opcode.CLOSE, (1005).to_bytes(2, "big")), 1002),
         (b"\x89\xfe\x00\x7e" + KEY + bytes(126), 1002),
     ],
 )
-def test_ham_ihlaller_dogru_kodla_kapatilir(loop_thread: BackgroundLoop, frames: bytes, code: int) -> None:
+def test_ham_ihlaller_dogru_kodla_kapatilir(
+    loop_thread: BackgroundLoop, frames: bytes, code: int
+) -> None:
     async def scenario(port: int) -> None:
         reader, writer = await asyncio.open_connection(HOST, port)
         writer.write(HANDSHAKE)
         head = await reader.readuntil(b"\r\n\r\n")
         assert head.startswith(b"HTTP/1.1 101")
         writer.write(frames)
-        reply = await asyncio.wait_for(reader.read(), 5)  # sunucu kapanış çerçevesi yollayıp kapatır
+        reply = await asyncio.wait_for(
+            reader.read(), 5
+        )  # sunucu kapanış çerçevesi yollayıp kapatır
         assert reply[0] == 0x88
         assert int.from_bytes(reply[2:4], "big") == code
         writer.close()
@@ -158,7 +172,9 @@ def test_parcalara_bolunmus_gecerli_harf(loop_thread: BackgroundLoop) -> None:
         writer.write(HANDSHAKE)
         await reader.readuntil(b"\r\n\r\n")
         text = "ğ".encode()  # iki bayt: parçalar arasında bölünüyor
-        writer.write(masked(Opcode.TEXT, text[:1], fin=False) + masked(Opcode.CONTINUATION, text[1:]))
+        writer.write(
+            masked(Opcode.TEXT, text[:1], fin=False) + masked(Opcode.CONTINUATION, text[1:])
+        )
         assert await reader.readexactly(4) == b"\x81\x02" + text
         writer.close()
 
@@ -259,4 +275,3 @@ def test_baglanti_kopunca_1006(loop_thread: BackgroundLoop) -> None:
         assert info.value.code == 1006
 
     run_with_server(loop_thread, websocket_endpoint(echo), scenario)
-

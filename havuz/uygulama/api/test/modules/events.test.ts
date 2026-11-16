@@ -134,6 +134,32 @@ describe('anlık bildirim akışı (SSE)', () => {
     await third.close()
   })
 
+  it('okumayan istemcinin bekleyen olay kuyruğu sınırlıdır: sınır aşılınca bağlantı kesilir (bellek şişmez)', async () => {
+    t = createTestServer()
+    const ayse = await signUp(t)
+    // Akışı açıp HİÇ okumuyoruz: TCP penceresini kapalı tutan bir saldırgan ya da donmuş bir istemci gibi.
+    const response = await t.server.app.request(API_PATHS.events, { headers: { Cookie: ayse.client.cookie ?? '' } })
+    expect(response.status).toBe(200)
+    await eventually(() => t.ctx.hub.countFor(ayse.user.id) === 1)
+    const poke = { workspaceId: ayse.personalWorkspaceId, rev: 1, clientId: null }
+    for (let index = 0; index < 2000; index++) t.ctx.hub.poke([ayse.user.id], poke)
+    await eventually(() => t.ctx.hub.countFor(ayse.user.id) === 0)
+    await response.body?.cancel()
+  })
+
+  it('okuyan istemci aynı anda gelen çok sayıda dürtmede (100 alanlık eşitleme gibi) kesilmez', async () => {
+    t = createTestServer()
+    const ayse = await signUp(t)
+    const stream = await openEvents(ayse.client)
+    await stream.waitFor((events) => events.some((event) => event.event === 'ready'))
+    for (let index = 0; index < 150; index++) {
+      t.ctx.hub.poke([ayse.user.id], { workspaceId: ayse.personalWorkspaceId, rev: index + 1, clientId: null })
+    }
+    await stream.waitFor((events) => pokes(events).length === 150)
+    expect(t.ctx.hub.countFor(ayse.user.id)).toBe(1)
+    await stream.close()
+  })
+
   it('HEAD isteği akış açmaz (gövdesi atılan akış sızıntı olurdu)', async () => {
     t = createTestServer()
     const ayse = await signUp(t)

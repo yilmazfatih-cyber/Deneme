@@ -132,7 +132,7 @@ sorgular: list[str] = []
 db.set_trace_callback(sorgular.append)  # çalışan her ifadeyi kaydeder
 
 # YANLIŞ: N+1
-for musteri_id, ad in db.execute("SELECT id, ad FROM musteri").fetchall():
+for musteri_id, _ad in db.execute("SELECT id, ad FROM musteri").fetchall():
     db.execute("SELECT SUM(tutar) FROM siparis WHERE musteri_id = ?", (musteri_id,)).fetchone()
 assert len(sorgular) == 51
 
@@ -223,8 +223,8 @@ assert db.execute("SELECT * FROM hesap ORDER BY ad").fetchall() == [("ayse", 100
 print("tamam")
 ```
 
-Toplu ekleme de tek işlemde yapılmalıdır: her `INSERT` kendi işlemiyle diske yazılırsa binlerce satır dakikalar
-sürebilir; tek işlemde saniyenin altına iner.
+Toplu ekleme de tek işlemde yapılmalıdır: her `INSERT` kendi işlemiyle yazılırsa her satır ayrı bir diske yazma
+(`fsync`) bekler ve toplu ekleme kat kat yavaşlar; fark diskin hızına bağlıdır, kendi ortamınızda ölçün.
 
 ## Kayıp güncelleme
 
@@ -398,4 +398,5 @@ print("tamam")
 - [Python eşzamanlılık](python-eszamanlilik.md): yarış durumu ve kilit
 - [JavaScript async kalıpları](javascript-async.md): istemci tarafındaki yarış
 - Sayfalama gerçeklemesi: [`kutuphane/ts/src/sayfalama.ts`](../../kutuphane/ts/src/sayfalama.ts)
-- Veritabanı tasarımı, göç (migration), bağlantı havuzu: `30-arkauc` kümesi
+- [İşlemler ve eşzamanlılık (arka uç)](../30-arkauc/islemler-ve-eszamanlilik.md): uygulama katmanında kilit ve yarış
+- [Veritabanı tasarımı](../30-arkauc/veritabani-tasarimi.md) ve [migrasyonlar](../30-arkauc/migrasyonlar.md)

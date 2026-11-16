@@ -252,3 +252,4 @@ console.log('tamam')
 - [Animasyon ve etkileşim](animasyon-ve-etkilesim.md) — hareket belirteçleri
 - Site temelinde markadan türetilen, karşıtlığı garanti eden tema: [`theme.ts`](../../site/src/lib/theme.ts)
 - Renk dönüşümü ve karşıtlığa göre ayarlama: [`renk.ts`](../../kutuphane/ts/src/renk.ts)
+- Başka kümelerde: [UX temelleri](../95-urun/ux-temelleri.md), [CSS düzeni](../10-diller/css-duzen.md)

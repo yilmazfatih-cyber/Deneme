@@ -164,3 +164,39 @@ def test_semali_arac():
     assert semali.calistir({"q": "x"}).icerik == "sonuç" and gelen == [{"q": "x"}]
     assert semali.calistir({}).hata and "eksik argüman: q" in semali.calistir({}).icerik
     assert semali.tanim().parametreler["required"] == ["q"]
+
+
+def test_onay_kancasi_calisacak_argumanlari_gorur():
+    """Tehlikeli araçta onay, aracın GERÇEKTEN çalışacağı (düzeltilmiş) argümanlar üzerinden sorulur.
+
+    Küçük-model düzeltmesi "Yol" anahtarını "yol"a eşler ve ilk geleni seçer; kanca ham argümana bakarsa
+    "tmp/x"i onaylar ama araç "onemli.txt" ile çalışırdı.
+    """
+    silinen: list[str] = []
+
+    @arac(tehlikeli=True)
+    def dosya_sil(yol: str) -> str:
+        """Dosyayı siler."""
+        silinen.append(yol)
+        return f"silindi: {yol}"
+
+    gorulen: list[dict[str, object]] = []
+
+    def yalniz_tmp(arac_: Arac, argumanlar: dict[str, object]) -> bool:
+        gorulen.append(dict(argumanlar))
+        return str(argumanlar.get("yol", "")).startswith("tmp/")
+
+    kutu = AracKutusu([dosya_sil], onay=yalniz_tmp)
+    hileli = AracCagrisi(kimlik="1", ad="dosya_sil", argumanlar={"Yol": "onemli.txt", "yol": "tmp/x"})
+    sonuc = kutu.cagir(hileli)
+    assert silinen == [] and sonuc.hata
+    assert gorulen == [{"yol": "onemli.txt"}]
+    sarili = AracCagrisi(kimlik="2", ad="dosya_sil", argumanlar={"girdi": {"yol": "onemli.txt"}})
+    assert kutu.cagir(sarili).hata and silinen == []
+    assert kutu.cagir(AracCagrisi(kimlik="3", ad="dosya_sil", argumanlar={"yol": "tmp/a"})).icerik == (
+        "silindi: tmp/a"
+    )
+    assert silinen == ["tmp/a"]
+    # Geçersiz argümanda kanca hiç sorulmaz (onaylanacak bir şey yok).
+    gorulen.clear()
+    assert kutu.cagir(AracCagrisi(kimlik="4", ad="dosya_sil", argumanlar={})).hata and gorulen == []

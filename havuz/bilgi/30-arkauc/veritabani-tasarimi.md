@@ -297,3 +297,7 @@ Para hesabı (KDV, paylaştırma, yuvarlama): [`kutuphane/py/kutuphane/para.py`]
   [Veri erişim katmanı](veri-erisim-katmani.md) · [Zaman ve saat dilimi](zaman-ve-saat-dilimi.md)
 - Çalışan şema: [`uygulama/api/migrations/`](../../uygulama/api/migrations/0001_identity.sql) ve
   sarmalayıcı [`database.ts`](../../uygulama/api/src/db/database.ts) (WAL, yabancı anahtar, işlem kuralları).
+- SQL dilinin kendisi: [SQL sorgu yazımı](../10-diller/sql-sorgu.md); büyüyünce:
+  [Veritabanı ölçekleme](../40-sistem-tasarimi/veritabani-olcekleme.md).
+- Dizinin içi (neden UUIDv4 eklemeyi yavaşlatır, sayfa bölünmesi): sıfırdan B+ ağacı
+  [`sifirdan/veri/btree/`](../../sifirdan/veri/btree/README.md).

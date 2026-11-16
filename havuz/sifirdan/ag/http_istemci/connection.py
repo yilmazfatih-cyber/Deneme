@@ -60,6 +60,14 @@ class Connection:
         self.sock = sock
         self.file = sock.makefile("rb")
 
+    @classmethod
+    def from_socket(cls, sock: socket.socket, url: Url) -> Connection:
+        """Hazır bir soketi sarar (testler, UNIX soketleri ya da önceden kurulmuş tüneller için)."""
+        conn = cls.__new__(cls)
+        conn.origin, conn.reused, conn.sock = url.origin, False, sock
+        conn.file = sock.makefile("rb")
+        return conn
+
     def send(self, data: bytes) -> None:
         try:
             self.sock.sendall(data)

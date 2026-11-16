@@ -241,3 +241,4 @@ kazanacağını Tailwind'in ürettiği CSS'teki sıra belirler (yukarıdaki örn
 - [Web performansı](web-performansi.md) — CSS'in çizimi engellemesi
 - Çalışan örnekler: [`index.css`](../../uygulama/web/src/styles/index.css) (katmanlar, tema, belirteçler),
   [`cx.ts`](../../uygulama/web/src/ui/cx.ts)
+- Başka kümelerde: [CSS düzeni](../10-diller/css-duzen.md) (kutu modeli, yığın bağlamı, birimler)

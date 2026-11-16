@@ -278,7 +278,9 @@ Gerçek işte SVD'yi kütüphaneden alın (numpy `linalg.svd`, büyük veride ke
 ## İlgili
 
 - [Lineer cebir sezgisi](lineer-cebir-sezgisi.md): matris, dönüşüm, tekillik
+- [En küçük kareler ve eğri uydurma](en-kucuk-kareler.md): normal denklemlerin (XᵀX) aynı tuzağı, uygulamada
 - [Sayısal yöntemler](sayisal-yontemler.md): koşul sayısı ve kararlılık
 - [Veri sızıntısı](../80-ml/veri-sizintisi.md): ön işlemeyi (PCA dahil) yalnız eğitimde uydurmak
+- [Öneri sistemleri](../80-ml/oneri-sistemleri.md): kullanıcı × öğe matrisinin ayrıştırılması pratikte
 - Çalışan PCA (SVD ile, işaret kuralıyla): [`ml-temel/ml_temel/klasik/decomposition.py`](../../ml-temel/ml_temel/klasik/decomposition.py)
 - Ölçekleme + PCA + k-means örneği: [`ml-temel/ornekler/05_kmeans_pca.py`](../../ml-temel/ornekler/05_kmeans_pca.py)

@@ -1,9 +1,10 @@
 """Deyim ayrıştırıcısı: SELECT, INSERT, UPDATE, DELETE, CREATE TABLE/INDEX, DROP TABLE, EXPLAIN.
 
-`parse(sql)` tek deyim, `parse_script(sql)` `;` ile ayrılmış deyim listesi döndürür. Her deyimle birlikte
-içindeki `?` sayısı da döner (parametre sayısı denetimi için).
+`parse(sql)` tek deyim, `parse_script(sql)` `;` ile ayrılmış deyim listesi döndürür. Her deyimle
+birlikte içindeki `?` sayısı da döner (parametre sayısı denetimi için).
 
-Genişletme: yeni deyim → `syntax.py`'ye dataclass, `_statement`'a bir dal, `engine.py`'ye yürütme dalı.
+Genişletme: yeni deyim → `syntax.py`'ye dataclass, `_statement`'a bir dal, `engine.py`'ye yürütme
+dalı.
 """
 
 from __future__ import annotations
@@ -290,5 +291,7 @@ def parse(sql: str) -> tuple[Statement, int]:
     """Tek bir deyimi ayrıştırır."""
     statements = parse_script(sql)
     if len(statements) != 1:
-        raise SqlError(f"Tek deyim bekleniyordu, {len(statements)} deyim var. execute_script kullanın.")
+        raise SqlError(
+            f"Tek deyim bekleniyordu, {len(statements)} deyim var. execute_script kullanın."
+        )
     return statements[0]

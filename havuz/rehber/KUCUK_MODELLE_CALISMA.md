@@ -157,6 +157,7 @@ Sonra yeni klasörde modelinize ilk iş olarak `AGENTS.md`'yi okutun.
 
 ## İlgili
 
+- Bilgisayarınızı hazırlamak (Git, Node.js, Python): [`KURULUM.md`](KURULUM.md)
 - Hazır istemler: [`ISTEMLER.md`](ISTEMLER.md)
 - Havuzun kuralları: [`../STANDARTLAR.md`](../STANDARTLAR.md)
 - Bilgi notları: [`../bilgi/`](../bilgi/) — yöntem notları özellikle işe yarar: hata ayıklama, işi parçalama,

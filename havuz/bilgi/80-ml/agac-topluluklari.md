@@ -305,7 +305,8 @@ modelin neye dayandığını gösterir. Bir sütun beklenmedik derecede önemliy
 ## İlgili
 
 - [Model seçimi](model-secimi.md) · [Aşırı öğrenme](asiri-ogrenme.md) · [Özellik mühendisliği](ozellik-muhendisligi.md)
-- [Kalibrasyon ve olasılık](kalibrasyon-ve-olasilik.md) · [Veri sızıntısı](veri-sizintisi.md)
+- [Kalibrasyon ve olasılık](kalibrasyon-ve-olasilik.md) · [Veri sızıntısı](veri-sizintisi.md) ·
+  önem ≠ neden-sonuç: [Korelasyon ve nedensellik](../70-veri/korelasyon-ve-nedensellik.md)
 - Karar ağacı ve kesin bölme: [`ml_temel/klasik/tree.py`](../../ml-temel/ml_temel/klasik/tree.py),
   [`_cart.py`](../../ml-temel/ml_temel/klasik/_cart.py); rastgele orman (OOB):
   [`forest.py`](../../ml-temel/ml_temel/klasik/forest.py); histogram tabanlı artırma:

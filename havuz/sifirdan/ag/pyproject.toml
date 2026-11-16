@@ -38,6 +38,7 @@ include = [
 
 [tool.setuptools.package-data]
 websocket = ["*.html"]
+"web_catisi.ornek" = ["statik/*"]
 
 [tool.ruff]
 line-length = 100
@@ -62,6 +63,8 @@ ignore = [
 "scripts/**" = ["S603", "S607"]
 # SHA-1, RFC 6455 (WebSocket) ve RFC 4226/6238 (HOTP/TOTP) gereğidir; güvenlik amacıyla değil protokol için.
 "websocket/handshake.py" = ["S324"]
+# ORM: tablo/sütun adları modelden gelir, doğrulanır ve tırnaklanır; DEĞERLER her zaman `?` parametresi.
+"orm/**" = ["S608"]
 # Kabuk, tanımı gereği alt süreç çalıştırır; komutlar liste olarak verilir (shell=True yok).
 "kabuk/**" = ["S603", "S606", "S607"]
 

@@ -300,4 +300,5 @@ eğitim hesabı ≈ 6·N·D = 1.5e+20 kayan nokta işlemi (22 milyar belirteç)
   [`nn/gpt.py`](../../ml-temel/ml_temel/nn/gpt.py); çalışan örnek: [`02_minik_gpt.py`](../../ml-temel/ornekler/02_minik_gpt.py)
 - PyTorch ile LLaMA uyumlu model (RMSNorm, RoPE, GQA, KV önbelleği): [`dil_modeli/layers.py`](../../dil-modeli/dil_modeli/layers.py),
   [`model.py`](../../dil-modeli/dil_modeli/model.py); matematik ve parametre formülü: [`dil-modeli/docs/MIMARI.md`](../../dil-modeli/docs/MIMARI.md)
-- Dil modelleriyle uygulama geliştirme: `85-llm` kümesi
+- Dil modelini kullanma tarafı: [Dil modeli nasıl çalışır](../85-llm/llm-nasil-calisir.md),
+  [Yerel model çalıştırma](../85-llm/yerel-model-calistirma.md)

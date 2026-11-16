@@ -253,3 +253,5 @@ console.log('tamam')
 - [Animasyon ve etkileşim](animasyon-ve-etkilesim.md) — basılı durum, dokunma geri bildirimi
 - Çalışan örnek: telefon boyutlarında koşan uçtan uca test ayarı
   [`playwright.config.ts`](../../uygulama/playwright.config.ts)
+- [Dokunma ve işaretçi olayları](dokunma-ve-isaretci-olaylari.md) — basılı tutma, kaydırma hareketleri, `touch-action`
+- Başka kümelerde: [CSS düzeni](../10-diller/css-duzen.md) (flex/grid, birimler, kap sorguları, z-index), [Bilgi mimarisi ve akış](../95-urun/bilgi-mimarisi-ve-akis.md)

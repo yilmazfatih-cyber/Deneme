@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import itertools
-
 import pytest
 from hypothesis import given
 from hypothesis import strategies as st
@@ -10,11 +8,19 @@ from algoritma.dp.knapsack import knapsack_01, knapsack_bounded, knapsack_unboun
 
 
 def _brute_force(weights: list[int], values: list[int], limits: list[int], cap: int) -> int:
-    best = 0
-    for counts in itertools.product(*[range(k + 1) for k in limits]):
-        if sum(c * w for c, w in zip(counts, weights)) <= cap:
-            best = max(best, sum(c * v for c, v in zip(counts, values)))
-    return best
+    """Her eşyadan 0 … limit adet dener; kapasiteyi aşan dallar budanır (yine de kaba kuvvet)."""
+
+    def go(i: int, room: int) -> int:
+        if i == len(weights):
+            return 0
+        best = 0
+        for count in range(limits[i] + 1):
+            if count * weights[i] > room:
+                break
+            best = max(best, count * values[i] + go(i + 1, room - count * weights[i]))
+        return best
+
+    return go(0, cap)
 
 
 def test_hand_checked_example() -> None:

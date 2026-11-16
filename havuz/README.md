@@ -7,7 +7,7 @@ inşa etmek. Her temel tek başına kopyalanabilir; her birinin tek komutluk bir
 
 > İlk kez okuyorsanız: [`rehber/KUCUK_MODELLE_CALISMA.md`](rehber/KUCUK_MODELLE_CALISMA.md) — küçük bir modelle
 > nasıl çalışılır, neye dokundurulmaz, model yoldan çıkınca ne yapılır. Hazır istemler:
-> [`rehber/ISTEMLER.md`](rehber/ISTEMLER.md).
+> [`rehber/ISTEMLER.md`](rehber/ISTEMLER.md). Bilgisayarınızı hazırlamak: [`rehber/KURULUM.md`](rehber/KURULUM.md).
 
 ## Ne istiyorsunuz → nereden başlamalı
 

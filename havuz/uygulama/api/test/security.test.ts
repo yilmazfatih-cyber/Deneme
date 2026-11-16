@@ -191,6 +191,24 @@ describe('hız sınırı', () => {
     expect(statuses).toEqual([200, 200, 200, 429])
   })
 
+  it('IPv6: aynı /64 bloğundaki adresler tek kaynak sayılır (adres değiştirerek sınır atlatılamaz)', async () => {
+    t = createTestServer({ env: { TRUST_PROXY: '1' } })
+    const { email } = await signUp(t, { options: { ip: '203.0.113.9' } })
+    const statuses: number[] = []
+    for (let index = 0; index < 11; index++) {
+      // Tek bir sunucu/abone bütün bir /64 alır: 2^64 adres arasında gezinmek ücretsizdir.
+      const attacker = new TestClient(t, { ip: `2001:db8:aa:bb:${(index + 1).toString(16)}::7` })
+      statuses.push((await attacker.post(API_PATHS.login, { email, password: `yanlis-${index}-sifre` })).status)
+    }
+    expect(statuses.slice(0, 10)).toEqual(Array(10).fill(401))
+    expect(statuses[10]).toBe(429)
+    // Aynı blok farklı yazımla da (sıfırlar açık, büyük harf) aynı kovaya düşer; başka /64 etkilenmez.
+    const spelled = new TestClient(t, { ip: '2001:0DB8:00AA:00BB:0:0:0:99' })
+    expect((await spelled.post(API_PATHS.login, { email, password: GOOD_PASSWORD })).status).toBe(429)
+    const neighbour = new TestClient(t, { ip: '2001:db8:aa:bc::7' })
+    expect((await neighbour.post(API_PATHS.login, { email, password: GOOD_PASSWORD })).status).toBe(200)
+  })
+
   it('TRUST_PROXY kapalıyken X-Forwarded-For yok sayılır (uydurma başlıkla sınır atlatılamaz)', async () => {
     t = createTestServer()
     const { email } = await signUp(t)

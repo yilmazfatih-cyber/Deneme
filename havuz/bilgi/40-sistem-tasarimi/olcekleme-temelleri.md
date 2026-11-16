@@ -195,6 +195,9 @@ print("3 sunucu: yanlış 9 e-posta, doğru 3 e-posta")
 3 sunucu: yanlış 9 e-posta, doğru 3 e-posta
 ```
 
+Kira süreli kilitle tek çalıştırıcı seçme ve zamanlanmış işlerin öteki tuzakları:
+[Arka plan işleri](../30-arkauc/arka-plan-isleri.md) → "Zamanlanmış işler ve çifte çalışma".
+
 Havuzdaki API bu sınırları açıkça yazar: hız sınırı bellek içidir
 ([`rateLimit.ts`](../../uygulama/api/src/http/rateLimit.ts)), anlık bildirim merkezi tek süreçlidir
 ([`hub.ts`](../../uygulama/api/src/modules/events/hub.ts)), veritabanı tek SQLite dosyasıdır. Çok kopyaya geçişin
@@ -210,6 +213,9 @@ adımları: [`uygulama/docs/YAYINLAMA.md`](../../uygulama/docs/YAYINLAMA.md) →
 4. **Yük testi** gerçekçi veriyle: 100 satırlık veritabanında eksik dizin görünmez. Üretim boyutunda sentetik veri
    üretin, testi başka bir makineden koşun, kademeli artırın ve gecikmenin kırıldığı noktayı not edin.
 5. Her değişiklikten sonra aynı ölçümü yineleyin; iyileşme yoksa değişikliği geri alın.
+
+Tek bir yavaş işlevi ya da sorguyu ölçme yöntemi (profil, Amdahl yasası, ölçüm hataları):
+[Performans yöntemi](../00-yontem/performans-yontemi.md).
 
 ## Erken dağıtıklaşma tuzağı
 

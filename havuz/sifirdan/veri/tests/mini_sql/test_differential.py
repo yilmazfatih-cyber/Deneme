@@ -1,7 +1,9 @@
-"""Farksal test: rastgele şema + veri + sorgu + değiştiren deyim, mini_sql ile sqlite3 AYNI sonucu vermeli.
+"""Farksal test: rastgele şema + veri + sorgu + değiştiren deyim, mini_sql ile sqlite3 AYNI sonucu
+vermeli.
 
 Sıralı sorgular (ORDER BY bütün çıktı sütunlarında) liste olarak, sıralamasızlar çoklu küme olarak
-karşılaştırılır. Ayrıca her sorgu dizinsiz bir kopya üstünde de koşulur: dizin seçimi sonucu değiştirmemeli.
+karşılaştırılır. Ayrıca her sorgu dizinsiz bir kopya üstünde de koşulur: dizin seçimi sonucu
+değiştirmemeli.
 """
 
 from __future__ import annotations
@@ -10,6 +12,7 @@ import contextlib
 import random
 import sqlite3
 from collections import Counter
+from collections.abc import Sequence
 
 import pytest
 
@@ -18,14 +21,17 @@ from tests.mini_sql.sqlgen import SqlGen
 from tests.yardimci import seed_count
 
 
-def _same(ours: list[tuple[object, ...]], theirs: list[tuple[object, ...]], ordered: bool) -> bool:
+def _same(
+    ours: Sequence[tuple[object, ...]], theirs: Sequence[tuple[object, ...]], ordered: bool
+) -> bool:
     if ordered:
-        return ours == theirs
+        return list(ours) == list(theirs)
     return Counter(ours) == Counter(theirs)
 
 
 def run_scenario(seed: int, statements: int) -> tuple[int, int]:
-    """Bir tohumla şema kurar ve `statements` deyim dener; (sorgu sayısı, dizin kullanan) döndürür."""
+    """Bir tohumla şema kurar ve `statements` deyim dener; (sorgu sayısı, dizin kullanan)
+    döndürür."""
     with contextlib.closing(sqlite3.connect(":memory:")) as reference:
         return _run(seed, statements, reference)
 
@@ -58,7 +64,7 @@ def _run(seed: int, statements: int, reference: sqlite3.Connection) -> tuple[int
         )
         assert _same(plain.query(sql), expected, ordered), f"dizinsiz kopya farklı: {sql}"
         queries += 1
-        indexed += any("IndexScan" in line for (line,) in ours.query("EXPLAIN " + sql))
+        indexed += any("IndexScan" in line for line in ours.explain(sql))
     return queries, indexed
 
 

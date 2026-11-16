@@ -18,11 +18,15 @@ from .values import to_text
 def format_result(result: Result) -> str:
     if not result.columns:
         return f"Tamam ({result.rowcount} satır etkilendi)."
-    cells = [[to_text(value) if value is not None else "NULL" for value in row] for row in result.rows]
+    cells = [
+        [to_text(value) if value is not None else "NULL" for value in row] for row in result.rows
+    ]
     widths = [len(name) for name in result.columns]
     for row in cells:
         widths = [max(width, len(cell or "")) for width, cell in zip(widths, row, strict=True)]
-    lines = [" | ".join(name.ljust(width) for name, width in zip(result.columns, widths, strict=True))]
+    lines = [
+        " | ".join(name.ljust(width) for name, width in zip(result.columns, widths, strict=True))
+    ]
     lines.append("-+-".join("-" * width for width in widths))
     for row in cells:
         lines.append(" | ".join((c or "").ljust(w) for c, w in zip(row, widths, strict=True)))
@@ -37,7 +41,9 @@ def _dot_command(db: Database, command: str) -> bool:
     if command == ".tablolar":
         for name, table in sorted(db.tables.items()):
             columns = ", ".join(f"{c.name} {c.type_name}".strip() for c in table.columns)
-            print(f"{name} ({columns}) — {len(table.rows)} satır, dizinler: {sorted(table.indexes)}")
+            print(
+                f"{name} ({columns}) — {len(table.rows)} satır, dizinler: {sorted(table.indexes)}"
+            )
     else:
         print("Komutlar: .tablolar, .cikis")
     return True

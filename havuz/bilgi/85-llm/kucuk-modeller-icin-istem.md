@@ -248,9 +248,9 @@ Bu not, küçük modelin kendisinin başka bir küçük modele iş yaptıracağ�
 
 ## İlgili
 
-- [İstem mühendisliği](istem-muhendisligi.md) · [Yapılı çıktı](yapili-cikti.md) ·
-  [Görev bölme ve zincirler](gorev-bolme-ve-zincirler.md) · [Değerlendirme](degerlendirme.md) ·
-  [Model seçimi](model-secimi.md)
+- [İstem mühendisliği](istem-muhendisligi.md) · [Hazır istem şablonları](istem-sablonlari.md) ·
+  [Yapılı çıktı](yapili-cikti.md) · [Görev bölme ve zincirler](gorev-bolme-ve-zincirler.md) ·
+  [Değerlendirme](degerlendirme.md) · [Model seçimi](model-secimi.md)
 - Kanıt: [GERCEK_MODEL_DENEMESI](../../yz/docs/GERCEK_MODEL_DENEMESI.md); kurallar ve araçlar:
   [KUCUK_MODEL_REHBERI](../../yz/docs/KUCUK_MODEL_REHBERI.md)
 - Kod: [`sablonlar.py`](../../yz/yz/istem/sablonlar.py) (küçük model şablonları),
@@ -258,3 +258,4 @@ Bu not, küçük modelin kendisinin başka bir küçük modele iş yaptıracağ�
   [`cikar.py`](../../yz/yz/yapili/cikar.py) (katmanlı çıkarım), [`semalar.py`](../../yz/yz/yapili/semalar.py) (örnek şemalar)
 - Görev kümeleri: [`json_cikarim.yaml`](../../yz/gorevler/json_cikarim.yaml),
   [`siniflandirma.yaml`](../../yz/gorevler/siniflandirma.yaml)
+- Küçük dil modeli sınıflandırmada yetmiyorsa klasik yol: [Metin sınıflandırma](../80-ml/metin-siniflandirma.md)

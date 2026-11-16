@@ -1,0 +1,73 @@
+/* Not Defteri örneği: sade, okunaklı, telefonda da kullanılabilir. */
+:root {
+  --yazi: #1d1d1f;
+  --zemin: #fbfbf8;
+  --vurgu: #1f5fa8;
+  --tehlike: #a51d1d;
+}
+body {
+  margin: 0 auto;
+  max-width: 44rem;
+  padding: 1rem;
+  font: 1.05rem/1.5 system-ui, sans-serif;
+  color: var(--yazi);
+  background: var(--zemin);
+}
+header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+.logo {
+  font-weight: 700;
+  text-decoration: none;
+}
+nav {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+label {
+  display: block;
+  margin-top: 0.75rem;
+}
+input,
+textarea {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.5rem;
+  font: inherit;
+}
+button {
+  margin-top: 0.75rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 1rem;
+  font: inherit;
+  color: #fff;
+  background: var(--vurgu);
+  border: 0;
+  border-radius: 0.25rem;
+}
+.satir {
+  display: inline;
+}
+.satir button {
+  margin: 0;
+}
+.tehlike {
+  background: var(--tehlike);
+}
+.flas {
+  padding: 0.5rem;
+  background: #e6f0fa;
+}
+.hata {
+  padding: 0.5rem;
+  background: #fbeaea;
+}
+.metin {
+  white-space: pre-wrap;
+  font: inherit;
+}

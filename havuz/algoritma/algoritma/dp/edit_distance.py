@@ -1,4 +1,4 @@
-"""Düzenleme uzaklığı + düzenleme betiği: a'yı b'ye çeviren en az işlemi ve işlemlerin kendisini bulur.
+"""Düzenleme uzaklığı + betiği: a'yı b'ye çeviren en az işlem sayısı ve işlemlerin kendisi.
 
 Fikir:
     D[i][j] = a[:i]'yi b[:j]'ye çevirmenin en az işlem sayısı (ekle, sil, değiştir; her biri 1).
@@ -27,7 +27,9 @@ Genişletme: işlem maliyetlerini farklılaştırmak için (ör. değiştirme 2)
 
 from __future__ import annotations
 
-Operation = tuple[str, str]  # (işlem, karakter): keep/replace/insert → yeni karakter; delete → silinen
+Operation = tuple[
+    str, str
+]  # (işlem, karakter): keep/replace/insert → yeni karakter; delete → silinen
 
 
 def edit_script(a: str, b: str) -> tuple[int, list[Operation]]:

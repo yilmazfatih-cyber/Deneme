@@ -85,6 +85,11 @@ export function findPasswordReset(db: Db, tokenHash: string): PasswordResetRow |
   return db.get<PasswordResetRow>('SELECT * FROM password_resets WHERE token_hash = ?', tokenHash)
 }
 
+/** Kullanıcının bütün sıfırlama belirteçlerini siler (şifre oturumla değişince e-postadaki eski bağlantılar geçmesin). */
+export function deleteUserPasswordResets(db: Db, userId: string): void {
+  db.run('DELETE FROM password_resets WHERE user_id = ?', userId)
+}
+
 /** Belirteci kullanılmış işaretler; kullanıcının öteki bütün sıfırlama belirteçlerini siler. */
 export function consumePasswordResets(db: Db, userId: string, tokenHash: string, now: string): void {
   db.run('UPDATE password_resets SET used_at = ? WHERE token_hash = ?', now, tokenHash)

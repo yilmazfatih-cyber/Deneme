@@ -287,3 +287,5 @@ tamam
   [Yetkilendirme](yetkilendirme.md) (kiracı yalıtımı) · [İşlemler ve eşzamanlılık](islemler-ve-eszamanlilik.md)
 - Çalışan sunucu: statik dosyaların önbellek kuralları [`uygulama/api/src/http/static.ts`](../../uygulama/api/src/http/static.ts),
   gerekçeleri [`api/KARARLAR.md`](../../uygulama/api/KARARLAR.md) → "Yayın".
+- Tarayıcıdan veritabanına bütün katmanlar: [Önbellek katmanları](../40-sistem-tasarimi/onbellek-katmanlari.md);
+  ölçmeden önce: [Performans yöntemi](../00-yontem/performans-yontemi.md).

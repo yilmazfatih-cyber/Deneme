@@ -365,3 +365,8 @@ bellek içi bir işle gönderir; kalıcı kuyruk olmadığı sınırını README
   [Ödeme tümleştirme](odeme-tumlestirme.md)
 - Çalışan kod: [`uygulama/api/src/modules/sync/service.ts`](../../uygulama/api/src/modules/sync/service.ts)
   (tek `BEGIN IMMEDIATE` işlemiyle eşitleme) ve [`api/KARARLAR.md`](../../uygulama/api/KARARLAR.md).
+- Dilin ve veritabanının yanı: [SQL performans ve işlem](../10-diller/sql-performans-ve-islem.md),
+  [JavaScript async kalıpları](../10-diller/javascript-async.md), [Python eşzamanlılık](../10-diller/python-eszamanlilik.md);
+  çok sunucuda: [Tutarlılık modelleri](../40-sistem-tasarimi/tutarlilik-modelleri.md).
+- Yalıtım düzeylerinin içi: MVCC ile iki aşamalı kilitlemenin sıfırdan gerçeklemesi, kilitlenme algılama ve
+  anomalilerin belirlenimci zamanlayıcıyla kanıtı: [`sifirdan/veri/islem/`](../../sifirdan/veri/islem/README.md).

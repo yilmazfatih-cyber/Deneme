@@ -85,6 +85,41 @@ describe('davetler', () => {
     expect((await new TestClient(t).get(API_PATHS.invitePreview('kisa'))).body.error.code).toBe('invalid_token')
   })
 
+  it('daveti oluşturan artık sahip değilse davet geçersizdir (çıkarılan eski sahip geri dönemez, yetki büyütemez)', async () => {
+    t = createTestServer()
+    const ayse = await signUp(t)
+    const burak = await signUp(t)
+    const cem = await signUp(t)
+    const ws = await createShared(ayse)
+    await addMember(ayse, burak, ws, 'editor')
+    expect((await ayse.client.patch(API_PATHS.member(ws, burak.user.id), { role: 'owner' })).status).toBe(200)
+    const kept = await invite(burak, ws, 'editor') // Burak sahipken bir davet oluşturup saklar
+    const kept2 = await invite(burak, ws, 'editor')
+    const fromAyse = await invite(ayse, ws, 'viewer')
+
+    // 1) Ayşe Burak'ı alandan çıkarır: Burak eski davetiyle geri dönememeli.
+    expect((await ayse.client.delete(API_PATHS.member(ws, burak.user.id))).status).toBe(200)
+    const back = await burak.client.post(API_PATHS.acceptInvite, { token: kept })
+    expect(back.status).toBe(400)
+    expect(back.body.error.code).toBe('invalid_token')
+    expect((await new TestClient(t).get(API_PATHS.invitePreview(kept))).body.error.code).toBe('invalid_token')
+    const members = await ayse.client.get(API_PATHS.members(ws))
+    expect(members.body.members.map((member: { userId: string }) => member.userId)).toEqual([ayse.user.id])
+
+    // 2) Hâlâ sahip olan Ayşe'nin daveti çalışmaya devam eder.
+    expect((await cem.client.post(API_PATHS.acceptInvite, { token: fromAyse })).status).toBe(200)
+
+    // 3) Sahiplikten düşürülüp izleyici yapılan biri ayrılıp eski "düzenleyen" davetiyle yetkisini büyütemez.
+    await addMember(ayse, burak, ws, 'editor')
+    expect((await ayse.client.patch(API_PATHS.member(ws, burak.user.id), { role: 'owner' })).status).toBe(200)
+    const third = await invite(burak, ws, 'editor')
+    expect((await ayse.client.patch(API_PATHS.member(ws, burak.user.id), { role: 'viewer' })).status).toBe(200)
+    expect((await burak.client.delete(API_PATHS.member(ws, burak.user.id))).status).toBe(200) // ayrılır
+    const escalate = await burak.client.post(API_PATHS.acceptInvite, { token: third })
+    expect(escalate.body.error.code).toBe('invalid_token')
+    expect((await burak.client.post(API_PATHS.acceptInvite, { token: kept2 })).body.error.code).toBe('invalid_token')
+  })
+
   it('yetki: yalnız sahip davet eder; kişisel alana davet yok; davetle sahip verilmez; kabul oturum ister', async () => {
     t = createTestServer()
     const ayse = await signUp(t)

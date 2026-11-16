@@ -21,7 +21,7 @@ IndexedDB'de durur; API yanıtları servis çalışanı önbelleğine **girmez**
 
 Servis çalışanının kendi yaşam döngüsü vardır ve sayfadan bağımsızdır. Yeni sürüm yayınlandığında yeni çalışan
 kurulur ama **eski çalışan denetlediği sekmeler kapanana dek bekler**. "Neden eski sürüm görünüyor" sorusunun yanıtı
-neredeyse her zaman budur. Bu bekleme bir hata değil, aynı sayfanın yarısının eski yarısının yeni kodla çalışmasını
+neredeyse her zaman budur. Bu bekleme bir hata değil; aynı sayfanın yarısının eski, yarısının yeni kodla çalışmasını
 önleyen bir korumadır.
 
 Havuzdaki iki gerçek örnek: uygulama temeli `registerType: 'prompt'` ile "Yeni sürüm hazır · Yenile" bildirimi
@@ -228,11 +228,10 @@ uygulama açılmaz. Her yükseltmeyi eski sürümle doldurulmuş bir veritabanı
 | Konu                        | iOS / Safari                                                     |
 | --------------------------- | ---------------------------------------------------------------- |
 | Kurulum                     | Yalnız Paylaş → Ana Ekrana Ekle; `beforeinstallprompt` yok       |
-| Depolama                    | Safari sekmesi ile kurulu uygulamanın verisi ayrıdır; kurulunca veri "taşınmaz" |
+| Depolama                    | Kurulu uygulamanın verisi Safari sekmesindekinden ayrı tutulur; kurulunca veri taşınmaz (genel davranış; iOS sürümünde doğrulayın) |
 | Bildirim (push)             | Yalnız ana ekrana kurulmuş uygulamada (iOS 16.4'ten beri)        |
 | Arka plan eşitleme          | Background Sync yok; eşitlemeyi uygulama açılınca yapın          |
 | Servis çalışanı             | Arka planda erken sonlandırılabilir; uzun iş vermeyin            |
-| Kamera, mikrofon izni       | Kurulu uygulamada izinler yeniden sorulabilir                    |
 
 ## Hata ayıklama
 
@@ -292,3 +291,4 @@ uygulama açılmaz. Her yükseltmeyi eski sürümle doldurulmuş bir veritabanı
 - [Durum yönetimi seçimi](durum-yonetimi-secimi.md) — yerel-önce tek kaynak
 - Eşitleme tasarımı: [`ESITLEME.md`](../../uygulama/docs/ESITLEME.md); güncelleme bildirimi:
   [`PwaNotices.tsx`](../../uygulama/web/src/app/PwaNotices.tsx)
+- Başka kümelerde: [Tutarlılık modelleri](../40-sistem-tasarimi/tutarlilik-modelleri.md) (çevrimdışı yazma ve uzlaşma), [Yayın yolu seçimi](../60-devops/yayin-yolu-secimi.md)

@@ -1,8 +1,9 @@
-"""İşlev kayıtları: satır işlevleri (abs, length, ...) ve kümeleme işlevleri (count, sum, avg, min, max).
+"""İşlev kayıtları: satır işlevleri (abs, length, ...) ve kümeleme işlevleri (count, sum, avg, min,
+max).
 
 Satır işlevi = (en az argüman, en çok argüman, Python işlevi). Kümeleme işlevi = başlangıç durumu,
-adım ve sonuç işlevleri olan küçük bir sınıf. `lower`/`upper` SQLite gibi YALNIZ ASCII harfleri çevirir;
-Türkçe doğru büyük/küçük harf için `lower_tr`/`upper_tr` vardır ('I' → 'ı', 'i' → 'İ').
+adım ve sonuç işlevleri olan küçük bir sınıf. `lower`/`upper` SQLite gibi YALNIZ ASCII harfleri
+çevirir; Türkçe doğru büyük/küçük harf için `lower_tr`/`upper_tr` vardır ('I' → 'ı', 'i' → 'İ').
 
 Genişletme: YENİ SATIR İŞLEVİ → `SCALAR_FUNCTIONS`'a bir satır; YENİ KÜMELEME → `Aggregator`'dan bir
 sınıf ve `AGGREGATES`'e bir satır. İkisine de tests/mini_sql/test_values.py'de bir test ekleyin.
@@ -10,12 +11,14 @@ sınıf ve `AGGREGATES`'e bir satır. İkisine de tests/mini_sql/test_values.py'
 
 from __future__ import annotations
 
+import math
+import re
 from abc import ABC, abstractmethod
 from collections.abc import Callable
 
 from .errors import SqlError
 from .syntax import Value
-from .values import arithmetic, compare, sort_key, to_number, to_text
+from .values import compare, sort_key, to_number, to_text
 
 _ASCII_UPPER = str.maketrans("abcdefghijklmnopqrstuvwxyz", "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 _ASCII_LOWER = str.maketrans("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz")
@@ -142,33 +145,96 @@ class Count(Aggregator):
         return self.count
 
 
+_INTEGER_TEXT = re.compile(r"\s*[+-]?\d+\s*")
+_INT_MIN, _INT_MAX = -(2**63), 2**63 - 1
+
+
+def _numeric(value: Value) -> tuple[int | float, bool]:
+    """sqlite3_value_numeric_type gibi: (sayı, tamsayı_mı). '12' tamsayı, '3.0' ve '12abc' REAL."""
+    if isinstance(value, int):
+        return value, True
+    if isinstance(value, str) and _INTEGER_TEXT.fullmatch(value):
+        number = int(value)
+        if _INT_MIN <= number <= _INT_MAX:
+            return number, True
+    return float(to_number(value)), False
+
+
 class Sum(Aggregator):
-    """Değer yoksa NULL; tamsayılar tamsayı kalır, REAL ya da metin karışınca REAL."""
+    """SQLite'ın sum() algoritması: tamsayılar kesin toplanır; ilk REAL'da (ya da taşmada)
+    Kahan-Babuška-Neumaier dengeli toplamasına geçilir. Sonuç bit bit SQLite ile aynıdır (testli).
+    """
 
     def __init__(self) -> None:
-        self.total: Value = None
+        self.count = 0
+        self.int_sum = 0
+        self.approx = False  # REAL görüldü mü?
+        self.overflow = False
+        self.r_sum = 0.0
+        self.r_err = 0.0  # dengeleme (hata) terimi
+
+    def _kbn(self, number: float) -> None:
+        total = self.r_sum + number
+        if abs(self.r_sum) > abs(number):
+            self.r_err += (self.r_sum - total) + number
+        else:
+            self.r_err += (number - total) + self.r_sum
+        self.r_sum = total
+
+    def _kbn_int(self, number: int) -> None:
+        if abs(number) >= 2**52:  # double'a kayıpsız sığmaz: iki parçada ekle
+            small = abs(number) % 16384 * (1 if number >= 0 else -1)
+            self._kbn(float(number - small))
+            self._kbn(float(small))
+        else:
+            self._kbn(float(number))
+
+    def _switch_to_real(self) -> None:
+        self.approx = True
+        if abs(self.int_sum) >= 2**52:
+            small = abs(self.int_sum) % 16384 * (1 if self.int_sum >= 0 else -1)
+            self.r_sum, self.r_err = float(self.int_sum - small), float(small)
+        else:
+            self.r_sum, self.r_err = float(self.int_sum), 0.0
 
     def step(self, value: Value) -> None:
-        number = to_number(value)
-        if isinstance(value, str) and isinstance(number, int):
-            number = float(number)  # SQLite: metin toplanırsa sonuç REAL olur
-        self.total = number if self.total is None else arithmetic("+", self.total, number)
+        number, is_integer = _numeric(value)
+        self.count += 1
+        if self.approx:
+            if is_integer:
+                self._kbn_int(int(number))
+            else:
+                self.overflow = False
+                self._kbn(float(number))
+        elif not is_integer:
+            self._switch_to_real()
+            self._kbn(float(number))
+        elif _INT_MIN <= self.int_sum + int(number) <= _INT_MAX:
+            self.int_sum += int(number)
+        else:
+            self.overflow = True
+            self._switch_to_real()
+            self._kbn_int(int(number))
+
+    def real_total(self) -> float:
+        return self.r_sum + self.r_err if math.isfinite(self.r_err) else self.r_sum
 
     def result(self) -> Value:
-        return self.total
+        if self.count == 0:
+            return None
+        if not self.approx:
+            return self.int_sum
+        if self.overflow:
+            raise SqlError("sum(): tamsayı taşması")
+        return self.real_total()
 
 
 class Avg(Sum):
-    def __init__(self) -> None:
-        super().__init__()
-        self.count = 0
-
-    def step(self, value: Value) -> None:
-        super().step(value)
-        self.count += 1
-
     def result(self) -> Value:
-        return None if self.total is None else float(to_number(self.total)) / self.count
+        if self.count == 0:
+            return None
+        total = self.real_total() if self.approx else float(self.int_sum)
+        return total / self.count
 
 
 class Min(Aggregator):

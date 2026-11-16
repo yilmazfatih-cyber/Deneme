@@ -309,3 +309,4 @@ Para tutarını kayan noktayla toplamayın; kuruş olarak tam sayı tutun (hazı
 - [Duyarlı tasarım ve mobil](duyarli-tasarim-ve-mobil.md) — ekran klavyesi, odakta yakınlaştırma
 - Çalışan örnekler: [`Field.tsx`](../../uygulama/web/src/ui/Field.tsx), [`form.ts`](../../uygulama/web/src/lib/form.ts),
   site temelindeki iletişim formu [`contact-form.ts`](../../site/src/scripts/contact-form.ts)
+- Başka kümelerde: [Anlamsal HTML](../10-diller/html-anlamsal.md) (giriş türleri, etiket), [UX temelleri](../95-urun/ux-temelleri.md) (hata önleme ve geri alma)

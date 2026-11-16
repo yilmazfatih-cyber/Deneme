@@ -293,6 +293,8 @@ Yeniden üretilebilirlik denetim listesi:
 
 ## İlgili
 
+- Genel yöntem: [Hata ayıklama](../00-yontem/hata-ayiklama.md); türevin matematiği:
+  [Geri yayılım matematiği](../92-matematik/geri-yayilim-matematigi.md)
 - [Derin öğrenme temelleri](derin-ogrenme-temelleri.md) · [Aşırı öğrenme](asiri-ogrenme.md) ·
   [Hesaplama ve donanım](hesaplama-ve-donanim.md) · [MLOps](mlops.md) — deney kaydı
 - Sonlu farkla gradyan denetimi: [`ml_temel/autograd/gradcheck.py`](../../ml-temel/ml_temel/autograd/gradcheck.py);

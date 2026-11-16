@@ -2,11 +2,12 @@
 
 - Satırlar `rowid → tuple` sözlüğündedir; tarama rowid sırasıyladır (SQLite gibi).
 - `INTEGER PRIMARY KEY` sütunu rowid'in kendisidir; NULL verilirse en büyük rowid + 1 atanır.
-- Dizin: NULL olmayan anahtarların sıralı [(sıralama_anahtarı, rowid)] listesi; `bisect` ile eşitlik ve
-  aralık araması. UNIQUE/PRIMARY KEY sütunları otomatik bir tekil dizin alır.
+- Dizin: NULL olmayan anahtarların sıralı [(sıralama_anahtarı, rowid)] listesi; `bisect` ile
+  eşitlik ve aralık araması. UNIQUE/PRIMARY KEY sütunları otomatik bir tekil dizin alır.
 - Deyim atomikliği: `snapshot()`/`restore()`; bir kısıt bozulursa deyimin bütün etkisi geri alınır.
 
-Genişletme: çok sütunlu dizin → anahtarı değer demetinin `sort_key` demeti yapın; `lookup_*` aynı kalır.
+Genişletme: çok sütunlu dizin → anahtarı değer demetinin `sort_key` demeti yapın; `lookup_*` aynı
+kalır.
 """
 
 from __future__ import annotations
@@ -109,7 +110,9 @@ class Table:
         index = Index(name, self.name, position, self.columns[position].name, unique)
         for rowid, row in self.rows.items():
             if unique and index.lookup_eq(row[position]):
-                raise ConstraintError(f"UNIQUE dizini kurulamıyor: {self.name} yinelenen değer içeriyor")
+                raise ConstraintError(
+                    f"UNIQUE dizini kurulamıyor: {self.name} yinelenen değer içeriyor"
+                )
             index.insert(row[position], rowid)
         self.indexes[name] = index
         return index
@@ -140,14 +143,16 @@ class Table:
         if self.rowid_column is not None and row[self.rowid_column] is not None:
             rowid = row[self.rowid_column]
             if not isinstance(rowid, int):
-                raise ConstraintError(f"{self.name}: INTEGER PRIMARY KEY tamsayı olmalı ({rowid!r})")
+                raise ConstraintError(
+                    f"{self.name}: INTEGER PRIMARY KEY tamsayı olmalı ({rowid!r})"
+                )
             if rowid in self.rows:
                 column = self.columns[self.rowid_column].name
                 raise ConstraintError(f"UNIQUE kısıtı ihlal edildi: {self.name}.{column}")
         else:
             rowid = max(self.rows, default=0) + 1
             if self.rowid_column is not None:
-                row = row[: self.rowid_column] + (rowid,) + row[self.rowid_column + 1 :]
+                row = (*row[: self.rowid_column], rowid, *row[self.rowid_column + 1 :])
         self._check_unique(row, rowid)
         self.rows[rowid] = row
         for index in self.indexes.values():
@@ -161,7 +166,9 @@ class Table:
         if self.rowid_column is not None:
             candidate = row[self.rowid_column]
             if not isinstance(candidate, int):
-                raise ConstraintError(f"{self.name}: INTEGER PRIMARY KEY tamsayı olmalı ({candidate!r})")
+                raise ConstraintError(
+                    f"{self.name}: INTEGER PRIMARY KEY tamsayı olmalı ({candidate!r})"
+                )
             if candidate != rowid and candidate in self.rows:
                 column = self.columns[self.rowid_column].name
                 raise ConstraintError(f"UNIQUE kısıtı ihlal edildi: {self.name}.{column}")

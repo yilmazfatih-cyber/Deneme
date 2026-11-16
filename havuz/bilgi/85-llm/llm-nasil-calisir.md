@@ -286,3 +286,5 @@ README "Sınırlar" bölümü Hugging Face şablonundaki farkı anlatır).
   [`chat.py`](../../dil-modeli/dil_modeli/chat.py); sıfırdan belirteçleyici: [`tokenizer.py`](../../dil-modeli/dil_modeli/tokenizer.py)
 - Belirteç tahmini ve Türkçe oranı: [`metin.py`](../../yz/yz/metin.py), [yz kararları](../../yz/docs/KARARLAR.md) (K-09)
 - Gerçek küçük model gözlemleri: [GERCEK_MODEL_DENEMESI](../../yz/docs/GERCEK_MODEL_DENEMESI.md)
+- Modelin içi (dikkat, KV önbelleği): [Transformer ve dikkat](../80-ml/transformer.md); UTF-8 ve baytlar:
+  [Unicode ve kodlama](../10-diller/unicode-ve-kodlama.md); Türkçe ekler: [Ekler ve ünlü uyumu](../97-turkce/ekler-ve-unlu-uyumu.md)

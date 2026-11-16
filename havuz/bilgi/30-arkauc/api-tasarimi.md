@@ -34,7 +34,7 @@ değiştirmek kırıcıdır:
 | Zaman ISO 8601, UTC, `Z` ile                      | `"createdAt": "2026-11-16T09:00:00.000Z"`      | Saat dilimi tartışması biter                  |
 | Para: küçük birim tamsayı + para birimi           | `{"amountMinor": 15000, "currency": "TRY"}`    | Ondalık sayı yuvarlama hatası yapar           |
 | Alan adı biçimi tek (camelCase ya da snake_case)  | `createdAt` her yerde                          | İstemci dönüştürücü yazmasın                  |
-| Mantıksal değer olumlu adla                       | `"disabled": false` değil `"active": true` gibi tutarlı bir seçim | Çifte olumsuzluk hata doğurur |
+| Mantıksal alan adı tek anlamlı                    | `disabled`, `emailVerified`; `notDisabled` yok | Çifte olumsuzluk hata doğurur                 |
 
 Adres dili: kod tanımlayıcılarıyla aynı dil (havuzda İngilizce: `/api/workspaces`). Kullanıcı adresi görmez.
 
@@ -342,6 +342,7 @@ mobil ağlar bağlantıyı keser, kullanıcı tekrar basar.
   Öğe öğe ise yanıt her öğe için sonuç taşır: `{ "results": [{ "index": 0, "status": 201, "id": "…" },
   { "index": 1, "status": 400, "error": {…} }] }`. Genel durum kodu 200'dür; istemci öğelere bakar.
 - Her öğe kendi idempotentlik kimliğini taşırsa yarıda kalan toplu istek güvenle yeniden gönderilir.
+- Dosyayla toplu yükleme (CSV/Excel) ve indirme: [İçe ve dışa aktarım](ice-ve-disa-aktarim.md).
 
 ## API belgeleme
 
@@ -400,6 +401,8 @@ mobil ağlar bağlantıyı keser, kullanıcı tekrar basar.
 - [HTTP temelleri](http-temelleri.md): yöntemler, durum kodları, önbellek başlıkları.
 - [İşlemler ve eşzamanlılık](islemler-ve-eszamanlilik.md) · [Webhooklar](webhooklar.md) ·
   [Ödeme tümleştirme](odeme-tumlestirme.md) (idempotentliğin en çok gerektiği yer)
-- [Yetkilendirme](yetkilendirme.md): liste uçlarında kiracı süzgeci.
+- [Yetkilendirme](yetkilendirme.md): liste uçlarında kiracı süzgeci. Toplu atama ve IDOR'un güvenlik yüzü:
+  [Erişim denetimi açıkları](../50-guvenlik/erisim-denetimi-aciklari.md); sıralama parametresiyle enjeksiyon:
+  [Enjeksiyon](../50-guvenlik/enjeksiyon.md); API'yi tüketen taraf: [Veri getirme](../20-web-onyuz/veri-getirme.md).
 - Çalışan sözleşme: [`uygulama/shared/src/api.ts`](../../uygulama/shared/src/api.ts) (şemalar ve adresler),
   [`uygulama/docs/API.md`](../../uygulama/docs/API.md).

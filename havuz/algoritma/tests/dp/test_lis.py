@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import itertools
+
 from hypothesis import given
 from hypothesis import strategies as st
 
@@ -17,7 +19,7 @@ def _quadratic_length(seq: list[int], strict: bool) -> int:
 
 
 def test_hand_checked_example() -> None:
-    # aylık satış rakamları: kesintisiz büyüyen en uzun dönem (alt dizi, ardışık olmak zorunda değil)
+    # aylık satışlar: hep büyüyen en uzun dönem (alt dizi; aylar ardışık olmak zorunda değil)
     sales = [10, 9, 2, 5, 3, 7, 101, 18]
     assert len(longest_increasing_subsequence(sales)) == 4
     assert longest_increasing_subsequence(sales) == [2, 3, 7, 18]
@@ -37,9 +39,9 @@ def test_edge_cases() -> None:
 def test_matches_quadratic_dp(seq: list[int], strict: bool) -> None:
     indices = lis_indices(seq, strict)
     assert len(indices) == _quadratic_length(seq, strict)
-    assert all(a < b for a, b in zip(indices, indices[1:]))  # gerçekten bir alt dizi
+    assert all(a < b for a, b in itertools.pairwise(indices))  # gerçekten bir alt dizi
     values = [seq[i] for i in indices]
     if strict:
-        assert all(a < b for a, b in zip(values, values[1:]))
+        assert all(a < b for a, b in itertools.pairwise(values))
     else:
-        assert all(a <= b for a, b in zip(values, values[1:]))
+        assert all(a <= b for a, b in itertools.pairwise(values))

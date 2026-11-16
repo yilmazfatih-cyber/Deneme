@@ -116,7 +116,8 @@ telefon, kart, posta kodu gibi "rakamlardan oluşan metinler" için **kullanmay�
 | `<title>`                      | Her sayfada farklı; önce sayfa, sonra site adı                                 |
 | `description`, `theme-color`   | Arama sonucu özeti; mobil tarayıcı çubuğunun rengi                             |
 
-PWA bildirimi (`manifest`), simgeler ve sosyal önizleme etiketleri `20-web-onyuz` ve `95-urun` kümelerindedir.
+PWA bildirimi (`manifest`) ve simgeler: [PWA ve çevrimdışı](../20-web-onyuz/pwa-ve-cevrimdisi.md); başlık, açıklama ve
+önizleme etiketleri: [SEO temelleri](../95-urun/seo-temelleri.md).
 
 ## Yerleşik dialog, details, popover
 
@@ -270,7 +271,7 @@ print("tamam")
 ```
 
 Gerçek denetim için tarayıcıda axe taraması ve klavyeyle (yalnız Tab, Shift+Tab, Enter, Boşluk, Esc) gezinti şarttır;
-ayrıntısı `20-web-onyuz` kümesindeki erişilebilirlik notundadır.
+ayrıntısı: [Erişilebilirlik uygulaması](../20-web-onyuz/erisilebilirlik-uygulama.md).
 
 ## Tuzaklar
 
@@ -320,4 +321,5 @@ ayrıntısı `20-web-onyuz` kümesindeki erişilebilirlik notundadır.
 - [Türkçe büyük/küçük harf](../97-turkce/buyuk-kucuk-harf.md): `lang="tr"` ve CSS büyük harf
 - Örnek bileşenler (anlamsal HTML, erişilebilir ad): [`site/src/components/SearchDialog.astro`](../../site/src/components/SearchDialog.astro),
   [`site/src/components/ContactForm.astro`](../../site/src/components/ContactForm.astro)
-- Erişilebilirlik, formlar ve mobil web: `20-web-onyuz` kümesi
+- [Erişilebilirlik uygulaması](../20-web-onyuz/erisilebilirlik-uygulama.md): odak yönetimi, klavye kalıpları, canlı bölgeler
+- [Formlar](../20-web-onyuz/formlar.md): doğrulama zamanlaması, erişilebilir hata gösterimi

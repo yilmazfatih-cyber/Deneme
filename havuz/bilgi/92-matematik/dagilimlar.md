@@ -302,4 +302,6 @@ bir yavaş parça bütün sayfayı yavaşlatır.
 - [İstatistiksel kestirim](istatistiksel-kestirim.md): parametreyi veriden kestirme, standart hata, önyükleme
 - [Rastgelelik ve benzetim](rastgelelik-ve-benzetim.md): bu dağılımlardan örnek üretme (ters dönüşüm)
 - [Tahmin ve büyüklük sezgisi](tahmin-ve-buyukluk-sezgisi.md): kapasite ve gecikme mertebeleri
+- [Betimsel istatistik](../70-veri/betimsel-istatistik.md): ortalama, ortanca, yüzdelik; aykırı değerin etkisi
+- [Kapasite tahmini](../40-sistem-tasarimi/kapasite-tahmini.md): tepe yük, gecikme yüzdelikleri, Little yasası
 - Betimleyici istatistik (yüzdelik, çeyreklik, aykırı değer): [`kutuphane/py/kutuphane/istatistik.py`](../../kutuphane/py/kutuphane/istatistik.py)

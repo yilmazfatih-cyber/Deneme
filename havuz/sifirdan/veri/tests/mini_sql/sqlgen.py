@@ -1,10 +1,10 @@
 """Farksal test için rastgele SQL üreteci (şema + veri + dizin + sorgu + değiştiren deyim).
 
-Üretilen her şey mini_sql'in desteklediği alt kümededir ve tür olarak tutarlıdır (sayı sayıyla, metin
-metinle karşılaştırılır; böylece SQLite'ın karşılaştırmadaki tür yakınlığı dönüşümü devreye girmez).
-ORDER BY varsa çıktı sütunlarının HEPSİNE göre sıralanır: sıra tam belirlidir, liste aynen karşılaştırılır.
-Kümeleme argümanlarında `/` yoktur: SQLite REAL toplamında Kahan toplaması kullanır; argümanlar tam
-değerli (k/4) kalınca toplama sırası sonucu değiştirmez.
+Üretilen her şey mini_sql'in desteklediği alt kümededir ve tür olarak tutarlıdır (sayı sayıyla,
+metin metinle karşılaştırılır; böylece SQLite'ın karşılaştırmadaki tür yakınlığı dönüşümü devreye
+girmez). ORDER BY varsa çıktı sütunlarının HEPSİNE göre sıralanır: sıra tam belirlidir, liste aynen
+karşılaştırılır. Kümeleme argümanlarında `/` yoktur: SQLite REAL toplamında Kahan toplaması
+kullanır; argümanlar tam değerli (k/4) kalınca toplama sırası sonucu değiştirmez.
 
 Genişletme: yeni bir SQL özelliğini farksal teste katmak için ilgili `_num`/`_text`/`_bool` dalına
 olasılıklı bir seçenek ekleyin; önce sqlite3'ün aynı sorguyu kabul ettiğini görün.
@@ -130,7 +130,9 @@ class SqlGen:
         if roll < 0.92:
             fn = rng.choice(["coalesce", "ifnull", "nullif"])
             return f"{fn}({self.text(depth - 1)}, {self.text(depth - 1)})"
-        return f"CASE {self.num(depth - 1)} WHEN 1 THEN {self.text(depth - 1)} ELSE {self.text(0)} END"
+        return (
+            f"CASE {self.num(depth - 1)} WHEN 1 THEN {self.text(depth - 1)} ELSE {self.text(0)} END"
+        )
 
     def boolean(self, depth: int = 2) -> str:
         rng = self.rng
@@ -233,7 +235,9 @@ class SqlGen:
         where = f" WHERE {self.where()}" if rng.random() < 0.6 else ""
         if rng.random() < 0.35:
             return self._aggregate_query(from_clause, where)
-        items = [self.num(2) if rng.random() < 0.55 else self.text(2) for _ in range(rng.randint(1, 3))]
+        items = [
+            self.num(2) if rng.random() < 0.55 else self.text(2) for _ in range(rng.randint(1, 3))
+        ]
         if rng.random() < 0.1:
             items = ["*"]
         distinct = "DISTINCT " if rng.random() < 0.2 else ""
@@ -245,7 +249,9 @@ class SqlGen:
 
     def _aggregate_query(self, from_clause: str, where: str) -> tuple[str, bool]:
         rng = self.rng
-        groups = [self._column(rng.choice(["num", "text"])) for _ in range(rng.choice([0, 1, 1, 2]))]
+        groups = [
+            self._column(rng.choice(["num", "text"])) for _ in range(rng.choice([0, 1, 1, 2]))
+        ]
         group_exprs = [g for g in groups if g is not None]
         aggregates = []
         for _ in range(rng.randint(1, 3)):
@@ -291,7 +297,9 @@ class SqlGen:
         if roll < 0.4:
             columns = [c for c, _ in TABLES[table][1:]]
             column = rng.choice(columns)
-            value = self.text(2) if column in ("b", "y", "v") else self.num(2)
+            # exact=True: REAL sütuna yalnız tam değerler yazılır (toplam sırası sonucu
+            # değiştirmesin)
+            value = self.text(2) if column in ("b", "y", "v") else self.num(2, exact=True)
             return f"UPDATE {table} SET {column} = {value}{where}"
         if roll < 0.7:
             return f"DELETE FROM {table}{where}"

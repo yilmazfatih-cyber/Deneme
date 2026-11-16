@@ -255,3 +255,5 @@ kez: iş kaybolur). Üçüncü yol yoktur. Bu yüzden:
 - Havuzdaki bellek içi arka plan işi ve sınırı: [`uygulama/api/src/lib/background.ts`](../../uygulama/api/src/lib/background.ts)
   (README → "Sınırlar": sunucu çökerse gönderilmemiş e-posta kaybolur).
 - Süreç içi, eşzamanlılığı sınırlı görev kuyruğu (kalıcı değil): [`kutuphane/py/kutuphane/kuyruk.py`](../../kutuphane/py/kutuphane/kuyruk.py).
+- Sistem düzeyi: [Kuyruk ve olaylar](../40-sistem-tasarimi/kuyruk-ve-olaylar.md) ·
+  [Dayanıklılık kalıpları](../40-sistem-tasarimi/dayaniklilik-kaliplari.md) (yeniden deneme bütçesi, devre kesici).

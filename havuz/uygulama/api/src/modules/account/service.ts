@@ -19,6 +19,7 @@ import {
 import { z } from 'zod'
 import type { AppContext } from '../../context.ts'
 import type { RequestMeta } from '../../http/meta.ts'
+import { rateLimitKey } from '../../http/clientIp.ts'
 import { RATE_RULES } from '../../http/rateLimit.ts'
 import type { AuthState, AuthUser } from '../../http/types.ts'
 import { MESSAGES } from '../../messages.ts'
@@ -88,7 +89,7 @@ export async function deleteAccount(
   meta: RequestMeta,
 ): Promise<void> {
   const userId = auth.user.id
-  ctx.limiter.consume(RATE_RULES.loginAccount, `${meta.ip}|${auth.user.email}`)
+  ctx.limiter.consume(RATE_RULES.loginAccount, `${rateLimitKey(meta.ip)}|${auth.user.email}`)
   const row = findUserById(ctx.db, userId)
   if (!row || !(await ctx.hasher.verify(password, row.password_hash))) {
     throw new AppError('invalid_credentials', MESSAGES.wrongCurrentPassword, [

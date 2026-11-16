@@ -10,8 +10,8 @@ from anahtar_deger import KVStore, Options
 with KVStore.open("veri_klasoru", Options(sync=True)) as db:
     db.put(b"elma", b"kirmizi")
     db.write_batch([(b"armut", b"sari"), (b"kiraz", None)])  # atomik: ya hepsi ya hiçbiri
-    db.get(b"elma")                 # b"kirmizi"
-    list(db.scan(b"a", b"f"))       # [(b"armut", b"sari"), (b"elma", b"kirmizi")]
+    db.get(b"elma")  # b"kirmizi"
+    list(db.scan(b"a", b"f"))  # [(b"armut", b"sari"), (b"elma", b"kirmizi")]
 ```
 
 Komut satırı: `python -m anahtar_deger klasor yaz şehir İstanbul`, `... oku şehir`, `... tara`,

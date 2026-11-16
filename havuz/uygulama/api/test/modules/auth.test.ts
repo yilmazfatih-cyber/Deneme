@@ -291,6 +291,27 @@ describe('şifremi unuttum / sıfırla', () => {
     expect(fake.body.error.code).toBe('invalid_token')
   })
 
+  it('şifre (oturumla) değiştirilince bekleyen sıfırlama bağlantıları da geçersiz olur', async () => {
+    t = createTestServer()
+    const { client, email } = await signUp(t)
+    // Saldırgan bir an e-posta kutusuna erişip bağlantıyı aldı; kullanıcı fark edip şifresini değiştirdi.
+    const stolen = await requestReset(email)
+    const changed = await client.post(API_PATHS.changePassword, {
+      currentPassword: GOOD_PASSWORD,
+      newPassword: 'kullanicinin-yeni-sifresi-8',
+    })
+    expect(changed.status).toBe(200)
+    const takeover = await new TestClient(t).post(API_PATHS.resetPassword, {
+      token: stolen,
+      newPassword: 'saldirganin-sifresi-77',
+    })
+    expect(takeover.status).toBe(400)
+    expect(takeover.body.error.code).toBe('invalid_token')
+    expect(
+      (await new TestClient(t).post(API_PATHS.login, { email, password: 'kullanicinin-yeni-sifresi-8' })).status,
+    ).toBe(200)
+  })
+
   it('yeni sıfırlama isteği, kullanılan belirteçle birlikte eskilerini de geçersiz kılar', async () => {
     t = createTestServer()
     const { email } = await signUp(t)

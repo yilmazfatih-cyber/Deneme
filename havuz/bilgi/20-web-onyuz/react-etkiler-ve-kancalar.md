@@ -327,3 +327,4 @@ ref'te durmaz. React 19'da işlev bileşeni `ref`'i düz prop olarak alır (`for
 - [Durum yönetimi seçimi](durum-yonetimi-secimi.md) — `useSyncExternalStore` ile dış depo
 - Çalışan örnekler: [`useRemote.ts`](../../uygulama/web/src/lib/useRemote.ts) (iptal bayrağı + `useEffectEvent`),
   [`useRouteFocus.ts`](../../uygulama/web/src/app/useRouteFocus.ts) (temizlikli `requestAnimationFrame`)
+- Başka kümelerde: [JavaScript eşzamansızlık](../10-diller/javascript-async.md) (`AbortController`, eski yanıtın yenisini ezmesi), [JavaScript çalışma zamanı](../10-diller/javascript-calisma-zamani.md) (olay döngüsü, kapanım)
