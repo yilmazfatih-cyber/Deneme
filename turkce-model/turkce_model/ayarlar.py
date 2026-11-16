@@ -19,6 +19,7 @@ if sys.version_info >= (3, 11):
 else:  # pragma: no cover
     import tomli as tomllib
 
+from .moduller.ayar import ModulAyarlari, moduller_uygula
 from .tokenizer import TokenizerAyarlari
 
 KARAR_VER = "KARAR_VER"
@@ -120,7 +121,7 @@ class EgitimAyarlari:
     isinma_adimi: int = 200
     agirlik_azaltma: float = 0.1
     gradyan_kirpma: float = 1.0
-    degerlendirme_her: int = 250
+    degerlendirme_her: int = 100
     degerlendirme_yigini: int = 20
     erken_durdurma: int = 8
     """Doğrulama kaybı bu kadar değerlendirme boyunca iyileşmezse durur (0 = kapalı)."""
@@ -147,12 +148,15 @@ class Ayarlar:
     model: ModelAyarlari = field(default_factory=ModelAyarlari)
     tokenizer: TokenizerAyarlari = field(default_factory=TokenizerAyarlari)
     tdk: EgitimAyarlari = field(default_factory=EgitimAyarlari)
+    # TDK karışım yığınları tam bağlamdır: bellek aşama 1 ile aynı ölçeklenir (yigin aşama 1'inkini geçmesin).
     meb: EgitimAyarlari = field(
         default_factory=lambda: EgitimAyarlari(
-            donem=4.0, yigin=16, birikim=1, ogrenme_orani=2e-4, isinma_adimi=50, degerlendirme_her=100, erken_durdurma=6
+            donem=4.0, yigin=8, birikim=2, ogrenme_orani=2e-4, isinma_adimi=50, degerlendirme_her=100, erken_durdurma=6
         )
     )
     yollar: Yollar = field(default_factory=Yollar)
+    moduller: ModulAyarlari = field(default_factory=ModulAyarlari)
+    """İsteğe bağlı DeepSeek modülleri (``[moduller]``); varsayılan: hepsi kapalı."""
     deney: str = ""
     """Boşsa gömme kararlarından ve katman sayısından türetilir (``g384-rope-bagli-k6``)."""
     kok: Path = field(default_factory=Path.cwd)
@@ -219,7 +223,8 @@ def _bolum_uygula(nesne: Any, veriler: Any, yol: str) -> Any:
 
 TOML_IPUCLARI = (
     "İpuçları: metin değerleri tırnak içinde yazılır (konum = \"rope\"); true ve false küçük harfle yazılır; "
-    "ondalık ayırıcı noktadır (0.1, 0,1 değil); dosyayı UTF-8 olarak kaydet."
+    "ondalık ayırıcı noktadır (0.1, 0,1 değil); binlik ayırıcı kullanma (32000, 32.000 değil); dosyayı UTF-8 "
+    "olarak kaydet."
 )
 
 
@@ -273,10 +278,15 @@ def ayarlari_yukle(yol: Path | None = None, gecersiz_kilma: list[str] | None = N
             setattr(ayarlar, asama, _bolum_uygula(getattr(ayarlar, asama), egitim.pop(asama), f"egitim.{asama}"))
     if egitim:
         raise AyarHatasi(f"Bilinmeyen eğitim bölümü: {', '.join(egitim)} (geçerli: egitim.tdk, egitim.meb)")
+    if "moduller" in ham:  # [moduller], [moduller.ocr], [moduller.metin] ve --ayar moduller.ocr.model=…
+        ayarlar.moduller = moduller_uygula(ayarlar.moduller, ham.pop("moduller"))
     if "deney" in ham:
         ayarlar.deney = str(ham.pop("deney"))
     if ham:
         raise AyarHatasi(f"Bilinmeyen ayar bölümü: {', '.join(ham)}")
+    # Her komutun kullandığı bölümler hemen denetlenir: yanlış tür sonradan izleme dökümüyle çıkmasın.
+    tokenizer_dogrula(ayarlar.tokenizer)
+    yollari_dogrula(ayarlar.yollar)
     return ayarlar
 
 
@@ -407,6 +417,42 @@ def egitimi_dogrula(ea: EgitimAyarlari, asama: str) -> EgitimAyarlari:
     return ea
 
 
+def tokenizer_dogrula(t: TokenizerAyarlari) -> TokenizerAyarlari:
+    """``[tokenizer]`` ayarlarını denetler. ``boyut = 16.000`` geçerli TOML'dur ama 16.0 kesirli sayısı olur:
+    binlik ayırıcı için ipucu verilir (tokenizer-egit bütün işini yaptıktan sonra çökmesin)."""
+    hatalar: list[str] = []
+    if not _pozitif_tamsayi(t.boyut):
+        ipucu = ""
+        if _sayi(t.boyut) and 1 <= float(t.boyut) < 1000 and (float(t.boyut) * 1000).is_integer():
+            ipucu = f"; binlik ayırıcı kullanma: {round(float(t.boyut) * 1000)}"
+        hatalar.append(f"tokenizer.boyut pozitif bir tam sayı olmalı (şu an: {t.boyut!r}){ipucu}")
+    for alan in ("en_az_sayi", "em_turu"):
+        x = getattr(t, alan)
+        if not (isinstance(x, int) and not isinstance(x, bool) and x >= 0):
+            hatalar.append(f"tokenizer.{alan} 0 ya da pozitif tam sayı olmalı (şu an: {x!r})")
+    if not _sayi(t.parca_orani) or not 0 <= float(t.parca_orani) <= 1:
+        hatalar.append(f"tokenizer.parca_orani 0 ile 1 arasında olmalı (şu an: {t.parca_orani!r})")
+    for alan in ("harf_cezasi", "parca_cezasi"):
+        x = getattr(t, alan)
+        if not _sayi(x) or float(x) < 0:
+            hatalar.append(f"tokenizer.{alan} 0 ya da pozitif bir sayı olmalı (şu an: {x!r})")
+    if hatalar:
+        raise AyarHatasi("Tokenizer ayarlarında sorun var:\n  • " + "\n  • ".join(hatalar))
+    return t
+
+
+def yollari_dogrula(y: Yollar) -> Yollar:
+    """``[yollar]``: ``veri`` ve ``ciktilar`` boş olmayan birer klasör adı (göreli ya da tam yol) olmalı."""
+    hatalar = [
+        f'yollar.{alan} tırnak içinde, boş olmayan bir klasör adı olmalı (şu an: {getattr(y, alan)!r}); ör. "{alan}"'
+        for alan in ("veri", "ciktilar")
+        if not isinstance(getattr(y, alan), str) or not getattr(y, alan).strip()
+    ]
+    if hatalar:
+        raise AyarHatasi("Yol ayarlarında sorun var:\n  • " + "\n  • ".join(hatalar))
+    return y
+
+
 def gomme_uyarilari(g: GommeAyarlari) -> list[str]:
     """Hata olmayan ama sonucu etkileyen etkileşimler (kararı yine sen verirsin). Geçersiz ayarlarda boş döner;
     hatayı ``gommeyi_dogrula`` açıklar."""
@@ -440,7 +486,7 @@ def gomme_uyarilari(g: GommeAyarlari) -> list[str]:
     if g.olcek and g.cikis_baglama and g.norm == "yok":
         uyari.append(
             "olcek=true + cikis_baglama=true: giriş √boyut ile büyür, çıkış aynı tabloyu ölçeksiz kullanır; "
-            "baslatma_std seçimini buna göre yap (ör. \"otomatik\")."
+            "baslatma_std'yi bu etkileşimi düşünerek seç (GOMME_KARARLARI.md §7 ve §9)."
         )
     if float(g.dropout) > 0.2:
         uyari.append(f"Gömme dropout'u ({g.dropout}) yüksek; küçük veride faydalı olabilir ama öğrenmeyi yavaşlatır.")

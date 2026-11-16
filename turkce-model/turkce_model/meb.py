@@ -1627,7 +1627,10 @@ def pdf_ayristir(
     }
     yaz(_rapor_satiri(rapor))
     if belge.sayfa_sayisi and not any(belge.parcalar.values()):
-        yaz(f"  Uyarı: {ad} içinde hiç metin yok; taranmış (resim) bir PDF olabilir, önce OCR gerekir.")
+        yaz(
+            f"  Uyarı: {ad} içinde hiç metin yok; taranmış (resim) bir PDF olabilir. OCR ile okumak için: "
+            "python -m turkce_model meb-pdf --ocr"
+        )
     elif not anahtarlar:
         yaz(f"  Uyarı: {ad} içinde cevap anahtarı bulunamadı; bütün sorular cevapsız sayıldı.")
     elif rapor["anahtarsiz_dersler"]:
@@ -1692,6 +1695,8 @@ def pdf_klasoru_ayristir(
             f"{klasor} içinde PDF bulunamadı. Kitapçıkları tarayıcınla indirip bu klasöre koy."
         )
     _pymupdf()  # kurulu değilse her dosya için ayrı ayrı "okunamadı" demek yerine hemen dur
+    from .ayarlar import AyarHatasi  # burada: meb.py ayarlar'a bağlı olmadan da kullanılabilsin
+
     haric = tuple(haric_dersler)
     haric_anahtarlar = {k for k in map(_bolme_anahtari, haric_kokler) if k}
     tum: list[Soru] = []
@@ -1710,6 +1715,8 @@ def pdf_klasoru_ayristir(
         ad = pdf.relative_to(klasor).as_posix()
         try:
             sorular, r = (ayristirici or pdf_ayristir)(pdf, haric, yaz=lambda m: yaz("  " + m), dosya_adi=ad)
+        except AyarHatasi:  # modül hatası (sunucu kapalı, model yok…) her dosyada yinelenir: kendi iletisiyle dur
+            raise
         except Exception as e:  # noqa: BLE001 — bozuk ya da kitapçık olmayan PDF: diğerleri yine işlensin
             hatali += 1
             rapor["dosyalar"][ad] = {"hata": f"{type(e).__name__}: {e}"}

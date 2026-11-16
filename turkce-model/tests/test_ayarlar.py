@@ -5,6 +5,7 @@ import pytest
 from turkce_model.ayarlar import (
     GOMME_KARARLARI,
     KARAR_VER,
+    Ayarlar,
     AyarHatasi,
     ayarlari_yukle,
     eksik_karar_mesaji,
@@ -102,3 +103,41 @@ def test_model_ve_egitim_ayarlari_dogrulanir():
     for degisim in ("egitim.tdk.hassasiyet=float32", "egitim.tdk.kayip=hepsi", "egitim.tdk.yigin=0"):
         with pytest.raises(AyarHatasi):
             egitimi_dogrula(ayarlari_yukle(None, [degisim]).tdk, "tdk")
+
+
+def test_kod_varsayilanlari_depodaki_ayar_dosyasiyla_ayni():
+    """ayarlar.toml'suz çalışan kod (ör. testler, --ayarlar'sız betikler) depodaki dosyayla aynı ayarları kullanır."""
+    dosya, kod = ayarlari_yukle(PROJE / "ayarlar.toml"), Ayarlar()
+    for bolum in ("model", "tokenizer", "tdk", "meb", "yollar", "moduller"):
+        assert getattr(dosya, bolum) == getattr(kod, bolum), bolum
+    # Aşama 2'deki TDK karışım yığınları tam bağlamdır: bellek aşama 1'i geçmesin; adım başına yine 16 dizi.
+    assert kod.meb.yigin <= kod.tdk.yigin and kod.meb.yigin * kod.meb.birikim == 16
+    assert not kod.moduller.ocr.model and not kod.moduller.metin.model  # modüller varsayılan olarak kapalı
+
+
+def test_tokenizer_ve_yol_ayarlari_yuklenirken_dogrulanir(tmp_path):
+    dosya = tmp_path / "ayarlar.toml"
+    dosya.write_text("[tokenizer]\nboyut = 16.000\n", encoding="utf-8")  # geçerli TOML: 16.0
+    with pytest.raises(AyarHatasi, match=r"tokenizer\.boyut .*\(şu an: 16\.0\); binlik ayırıcı kullanma: 16000"):
+        ayarlari_yukle(dosya)
+    for degisim, parca in (
+        ("tokenizer.boyut=0", "tokenizer.boyut"),
+        ("tokenizer.parca_orani=1.5", "tokenizer.parca_orani"),
+        ("tokenizer.en_az_sayi=-1", "tokenizer.en_az_sayi"),
+        ("tokenizer.em_turu=1.5", "tokenizer.em_turu"),
+        ("tokenizer.harf_cezasi=-1", "tokenizer.harf_cezasi"),
+        ('tokenizer.parca_cezasi="x"', "tokenizer.parca_cezasi"),
+        ('yollar.veri=""', "yollar.veri"),
+        ("yollar.ciktilar=5", "yollar.ciktilar"),
+    ):
+        with pytest.raises(AyarHatasi, match=parca):
+            ayarlari_yukle(None, [degisim])
+    for degisim in ("tokenizer.parca_orani=0", "tokenizer.parca_orani=1", "tokenizer.em_turu=0", "yollar.veri=/tmp/veri"):
+        ayarlari_yukle(None, [degisim])  # sınırdaki değerler geçerli
+
+
+def test_baglama_ve_olcek_uyarisi_baslatma_icin_deger_onermez():
+    uyarilar = gomme_uyarilari(ayarlari_yukle(None, [*TAM, "gomme.olcek=true"]).gomme)  # bağlı, normsuz
+    uyari = next(u for u in uyarilar if "cikis_baglama=true" in u)
+    assert "GOMME_KARARLARI.md §7 ve §9" in uyari
+    assert "ör." not in uyari and "otomatik" not in uyari and "0.0" not in uyari

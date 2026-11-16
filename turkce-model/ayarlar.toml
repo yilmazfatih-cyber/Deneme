@@ -79,11 +79,26 @@ tohum = 1337
 # =============================================================================================
 [egitim.meb]
 donem = 4
-yigin = 16              # sorular kısa: bellek aşama 1'den azdır
-birikim = 1
+yigin = 8               # TDK karışım yığınları tam bağlamdır: bellek aşama 1 ile aynı ölçeklenir
+birikim = 2             # adım başına yigin × birikim = 16 dizi
 ogrenme_orani = 2e-4
 isinma_adimi = 50
 degerlendirme_her = 100
 erken_durdurma = 6
 kayip = "tum"           # "tum" (soru + cevap) | "cevap" (yalnız cevap token'ları)
 tdk_karisim = 0.25      # yığınların bu oranı TDK'den: dil bilgisini unutmayı azaltır
+
+# =============================================================================================
+# DEEPSEEK MODÜLLERİ — isteğe bağlı, varsayılan kapalı (README: "DeepSeek modülleri")
+# Bilgisayarında çalışan bir model sunucusu (ör. Ollama) gerekir; içerik bu bilgisayardan çıkmaz.
+# =============================================================================================
+[moduller]
+adres = "http://localhost:11434/v1"   # Ollama. llama.cpp: :8080, LM Studio: :1234, vLLM: :8000 (hepsi /v1)
+zaman_asimi = 900                     # saniye; ekran kartı yoksa bir sayfanın OCR'ı dakikalar sürebilir
+
+[moduller.ocr]
+model = ""                            # ör. "deepseek-ocr" (önce: ollama pull deepseek-ocr); boş = kapalı
+dpi = 150
+
+[moduller.metin]
+model = ""                            # ör. "deepseek-r1:1.5b" (kıyas satırı için); boş = kapalı
