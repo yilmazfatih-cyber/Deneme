@@ -1,0 +1,251 @@
+{
+ "tarama": {
+  "an": "2026-11-16T11:20:00+03:00",
+  "kategoriler": [
+   "sac-aksesuari",
+   "orme-atki-eldiven",
+   "sapka-bere"
+  ],
+  "not": "Günlük tarama; şapka-berede kanıtlı aday çıkmadı, takipteki kolye ve eşarp yeniden ölçüldü. (Zamanlanmış oturum push edemediği için kayıttan kurtarıldı.)",
+  "kur_usd": 50.283
+ },
+ "adaylar": [
+  {
+   "urun": "Büyük boy metal pençe toka 11 cm (altın)",
+   "kategori": "sac-aksesuari",
+   "gtip": "9615.11",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-detail/Wholesale-Korea-Elegant-High-Quality-11cm_1600914873955.html",
+    "baslik": "Wholesale Korea Elegant High Quality 11cm Large Big Metal Strong Hair Claw Clips Gold Metal Hair Claw Accessories For Women",
+    "tedarikci": "Yiwu tedarikçisi (firma adı, yıl ve doğrulama arama özetinde görünmedi)",
+    "fiyat_usd": 0.59,
+    "moq": 10,
+    "kademeler": [
+     {
+      "min_adet": 10,
+      "fiyat_usd": 0.59
+     },
+     {
+      "min_adet": 50000,
+      "fiyat_usd": 0.36
+     }
+    ],
+    "birim_agirlik_kg": 0.03,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 126.42,
+      "kaynak": "shein",
+      "url": "https://m.shein.com/tr/Hair-Claws-c-3018.html",
+      "baslik": "Bohem tarzı denizyıldızı pençe metal saç tokası, büyük boy"
+     },
+     {
+      "fiyat_tl": 86.24,
+      "kaynak": "shein",
+      "url": "https://m.shein.com/tr/Hair-Claws-c-3018.html",
+      "baslik": "1 adet jumbo metal saç kıskaç toka"
+     },
+     {
+      "fiyat_tl": 199,
+      "kaynak": "ciceksepeti",
+      "url": "https://www.ciceksepeti.com/dantel-metal-incili-seffaf-mandal-toka-gold-10-cm.-kcm53930537",
+      "baslik": "Metal gold mandal toka 10 cm"
+     }
+    ],
+    "not": "Tam eşleşen altın metal pençe toka ilanı bulunamadı; benzer büyük metal toka ilanları. Shein'de iki ilan aynı kategori sayfasında."
+   },
+   "taklit_riski": false,
+   "gerekce": "Büyük metal pençe toka kalın saçlı kadınlar için günlük kullanımda sürekli satılır; ürün hafif ve kırılmaz.",
+   "riskler": [
+    "Fiyat kademeleri arasındaki orta kademeler görülmedi",
+    "Ağırlık tahmin",
+    "Türkiye karşılaştırması tam eşleşme değil",
+    "Yakın aday: oran yaklaşık 4"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-detail/Wholesale-Korea-Elegant-High-Quality-11cm_1600914873955.html",
+    "https://m.shein.com/tr/Hair-Claws-c-3018.html"
+   ]
+  },
+  {
+   "urun": "3 mm halat zincir kolye (316L paslanmaz çelik)",
+   "kategori": "taki-bijuteri",
+   "gtip": "7117.19",
+   "alibaba": {
+    "url": "https://www.alibaba.com/showroom/316l-stainless-steel-jewelry-wholesale.html",
+    "baslik": "3mm 316L stainless steel rope chain necklace (NL2055)",
+    "tedarikci": "Yiwu Renqing Ornament Co., Ltd. (17 yıl, puan 4,4/5)",
+    "fiyat_usd": 0.5,
+    "moq": 20,
+    "kademeler": [
+     {
+      "min_adet": 20,
+      "fiyat_usd": 0.5
+     }
+    ],
+    "birim_agirlik_kg": 0.015,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 166.86,
+      "liste_fiyat_tl": 199.1,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/siya-silver-kadin-celik-kolye-x-b166426-g1-c106322",
+      "baslik": "Siya Silver kararmaz çelik İtalyan zincir kolye 60 cm 3 mm"
+     },
+     {
+      "fiyat_tl": 145.78,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/celik-rose-kolye-x-b109789-c102-a14-v740",
+      "baslik": "Rua Jewelry çelik ezme zincir kolye 3 mm"
+     },
+     {
+      "fiyat_tl": 74.99,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/stainless-steell-erkek-celik-kolye-x-b164693-g2-c106322",
+      "baslik": "MRK 316L paslanmaz çelik 45 cm zincir kolye"
+     }
+    ],
+    "not": "Halat değil, benzer 3 mm çelik zincir kolyeler; Trendyol bağlantıları marka/kategori sayfası olabilir. Yeniden ölçüm."
+   },
+   "taklit_riski": false,
+   "gerekce": "Çok hafif; çelik kolye Türkiye'de sürekli satılır.",
+   "riskler": [
+    "Eski URL showroom sayfası, ilan sayfası bulunamadı",
+    "Türkiye ilanları birebir halat zinciri değil",
+    "Ağırlık tahmin"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/showroom/316l-stainless-steel-jewelry-wholesale.html"
+   ]
+  },
+  {
+   "urun": "Dokunmatik ekran uyumlu örme kışlık eldiven",
+   "kategori": "orme-atki-eldiven",
+   "gtip": "6116",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Solid-Magic-Gloves-Capacitive-Mobile-Phone_1600094285285.html",
+    "baslik": "Solid Magic Gloves Capacitive Mobile Phone (knitted touchscreen winter gloves)",
+    "fiyat_usd": 0.66,
+    "moq": 12,
+    "kademeler": [
+     {
+      "min_adet": 12,
+      "fiyat_usd": 0.66
+     },
+     {
+      "min_adet": 36,
+      "fiyat_usd": 0.55
+     },
+     {
+      "min_adet": 60,
+      "fiyat_usd": 0.44
+     },
+     {
+      "min_adet": 120,
+      "fiyat_usd": 0.33
+     }
+    ],
+    "birim_agirlik_kg": 0.06,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 302.6,
+      "liste_fiyat_tl": 340,
+      "kaynak": "idefix",
+      "url": "https://www.idefix.com/oil-company-unisex-ruzgar-gecirmez-esnek-kislik-soft-parmak-touch-siyah-eldiven-dokunmatik-parmak-ozellikli-p-7452946",
+      "baslik": "Oil Company unisex kışlık soft parmak touch eldiven"
+     },
+     {
+      "fiyat_tl": 299,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/desenli-kadin-eldiven-x-g1-c1046-a33-v1011",
+      "baslik": "Sistem Peluş dokunmatik ekran uyumlu örgü kadın eldiveni (kategori sayfası)"
+     },
+     {
+      "fiyat_tl": 299.99,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/akrilik-defacto-eldiven-x-b37-c1046-a14-v77",
+      "baslik": "DeFacto kadın örme yarım eldiven (kategori sayfası)"
+     }
+    ],
+    "not": "Kış dokunmatik/örgü eldivenler 299-303 TL bandında; Trendyol bağlantıları kategori sayfası, ürün sayfası arama özetinde çıkmadı. Cimri'de 90 TL'lik ham örgü eldiven de var (dokunmatik doğrulanmadı), alınmadı."
+   },
+   "taklit_riski": false,
+   "gerekce": "Kış sezonunda dokunmatik parmaklı örme eldiven sürekli satar; çok hafif ve beden derdi az.",
+   "riskler": [
+    "Alibaba.com ve alibaba.co.uk sayfalarında kademeler farklı (co.uk 60 çift başlıyor): MOQ 12 doğrulanmalı",
+    "Tedarikçi adı ve ağırlık arama özetinde yok; ağırlık tahmin",
+    "Ucuz fiyatta kalite/dokunmatik iletkenlik değişken olabilir",
+    "Küçük sipariş (12 çift) test amaçlı; ana sipariş 120+ çiftte 0,33 $",
+    "Türkiye ilanlarından ikisi kategori sayfası, biri marka (DeFacto) ve dokunmatik değil; markasız dokunmatik örme eldiven fiyatı ayrıca doğrulanmalı"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Solid-Magic-Gloves-Capacitive-Mobile-Phone_1600094285285.html",
+    "https://www.idefix.com/oil-company-unisex-ruzgar-gecirmez-esnek-kislik-soft-parmak-touch-siyah-eldiven-dokunmatik-parmak-ozellikli-p-7452946"
+   ]
+  },
+  {
+   "urun": "Desenli 90x90 twill görünümlü polyester eşarp",
+   "kategori": "esarp-sal",
+   "gtip": "6214.30",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Spring-Summer-High-Quality-90x90cm-Animal_1601174536158.html",
+    "baslik": "Spring Summer High Quality 90x90cm Animal print scarf",
+    "fiyat_usd": 1.43,
+    "moq": 2,
+    "kademeler": [
+     {
+      "min_adet": 2,
+      "fiyat_usd": 1.43
+     },
+     {
+      "min_adet": 100,
+      "fiyat_usd": 1.39
+     },
+     {
+      "min_adet": 500,
+      "fiyat_usd": 1.28
+     }
+    ],
+    "birim_agirlik_kg": 0.07,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 199.9,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/tekstil-mor-esarp-x-r11-c32-a14-v3991",
+      "baslik": "Madame Polo desenli twill eşarp 90x90 (kategori sayfası)"
+     },
+     {
+      "fiyat_tl": 583.55,
+      "liste_fiyat_tl": 850,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/en/aker/tivil-scarf-polyester-twill-8263795-922-p-736043502",
+      "baslik": "Aker Tivil polyester twill eşarp 8263795-922"
+     }
+    ],
+    "not": "Takip: 90x90 polyester twill desenli eşarplar 200-640 TL; Madame Polo düşük uç, Aker üst uç. Medyan 583,55 TL (önceki ~368 TL, 6 ilan; bugün 3 ilan). Baş denetimi: 638,26 TL'lik Aker ilanı fiyatı kaynakta kesin görülemediği için çıkarıldı; kalan 583,55 TL'lik ilan bilinen marka (Aker), karşılaştırma zayıf."
+   },
+   "taklit_riski": false,
+   "gerekce": "Hafif, kargo payı düşük; tesettür ve kış kombinlerinde sürekli talep (takip kaydı).",
+   "riskler": [
+    "Bugünkü arama özeti ilan başlığını ipek saç eşarbı gibi veriyor; polyester twill olduğu doğrulanmalı",
+    "Fiyat aynı kaldı (1,43 $ / MOQ 2), indirim görülmedi",
+    "Türkiye örneği 3 ilan; Madame Polo bağlantısı kategori sayfası",
+    "Türkiye karşılaştırması yalnız 2 ilan; biri bilinen marka (Aker), markasız muadil fiyatı daha düşük olabilir"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Spring-Summer-High-Quality-90x90cm-Animal_1601174536158.html"
+   ]
+  }
+ ]
+}
