@@ -147,6 +147,8 @@ async def forward_to_server(
             masker.save()  # eşleme yalnız istemcide (mask_mappings)
     url = f"{s.server_url.rstrip('/')}/api/modules/{spec.id}/run/{action}"
     headers = {"X-AIP-User": user, "X-AIP-Forwarded-By": socket.gethostname()}
+    if s.server_token:  # sunucuda kimlik doğrulama açıksa istemci düğümü anahtarı (delegate) gerekir
+        headers["Authorization"] = f"Bearer {s.server_token}"
     try:
         async with httpx.AsyncClient(timeout=FORWARD_TIMEOUT_S, transport=FORWARD_TRANSPORT) as c:
             if files:

@@ -18,6 +18,7 @@ Mağaza → "Kur" → donanım uygunluk → pip bağımlılıkları → model in
 | Çalışma | `aiplatform serve --role server` (GPU sunucu) / `--role client` (çalışan PC) — aynı paket |
 | LLM motoru | vLLM (GPU+Docker) · Ollama · llama-server — hepsi OpenAI uyumlu `/v1` |
 | ERP | salt-okunur SQL, REST araçları (yazma = insan onayı), webhook; `POST /api/modules/{id}/run/{action}` ve `/v1/chat/completions` |
+| Erişim | rol tabanlı giriş (Kullanıcı / Onaylayıcı / Yönetici), API anahtarları, istemci düğümü anahtarı, dört göz onayı; ağa açılınca otomatik zorunlu |
 | KVKK | istemci tarafı maskeleme (TCKN/VKN/IBAN sağlama algoritmaları + GLiNER), şifreli eşleme, denetim günlüğü, onaysız yazma yok |
 
 ## Hızlı başlangıç

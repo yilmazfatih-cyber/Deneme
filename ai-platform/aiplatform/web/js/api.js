@@ -31,6 +31,10 @@ async function request(method, url, body, { quiet = false, headers = {} } = {}) 
   }
   if (!res.ok) {
     const e = (data && data.error) || {};
+    if (res.status === 401 && e.code === "unauthenticated") {
+      window.dispatchEvent(new Event("aip:unauthenticated"));
+      quiet = true; // giriş penceresi açılır; ayrıca hata bildirimi gösterme
+    }
     let message = e.message;
     if (!message && data && data.detail) {
       message = Array.isArray(data.detail) ? data.detail.map((d) => `${(d.loc || []).slice(1).join(".")}: ${d.msg}`).join("; ") : String(data.detail);
