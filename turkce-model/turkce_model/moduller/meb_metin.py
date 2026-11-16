@@ -56,18 +56,41 @@ def _tekrarlayan_kenarlar(sayfalar: list[list[str]]) -> set[str]:
     oturum başlığı, sayfa numarası. Rakamlar aynı sayılır ("Sayfa 3" = "Sayfa 4")."""
     sayac: Counter[str] = Counter()
     for satirlar in sayfalar:
-        dolu = [s for s in satirlar if s.strip()]
-        for anahtar in {_kenar_anahtari(s) for s in dolu[:2] + dolu[-2:]}:
+        dolu = [s.strip() for s in satirlar if s.strip()]
+        # Ders başlığı, soru başı ve seçenek satırları her sayfada yinelense de kenar sayılmaz.
+        adaylar = [s for s in dolu[:2] + dolu[-2:] if not _icerik_satiri_mi(s)]
+        for anahtar in {_kenar_anahtari(s) for s in adaylar}:
             sayac[anahtar] += 1
     esik = max(3, (len(sayfalar) + 1) // 2)
     return {k for k, n in sayac.items() if n >= esik}
 
 
-def _anahtar_basligi_mi(satir: str, sira: int) -> bool:
-    """"CEVAP ANAHTARI" başlığı: sayfanın ilk satırlarında ya da tamamı büyük harfli kısa bir satır."""
-    if not meb._CEVAP_ANAHTARI.search(buyuk(satir)):
+def _icerik_satiri_mi(satir: str) -> bool:
+    """Ders başlığı, seçenek ya da soru başı mı? "1. OTURUM" gibi büyük harfli numaralı satır soru başı değildir."""
+    if meb._DERS_BASLIGI.match(satir) or meb._SECENEK.match(satir):
+        return True
+    m = meb._SORU_BASI.match(satir)
+    return bool(m and m.group(2) and not meb._buyuk_harfli(m.group(2)))
+
+
+def _anahtar_basligi_mi(satir: str) -> bool:
+    """"CEVAP ANAHTARI" başlığı: bu sözü taşıyan kısa, cümle olmayan bir satır.
+
+    Kapaktaki "…cevap anahtarı kitapçığın sonundadır." gibi cümleler başlık sayılmaz; yoksa sonraki bütün
+    sayfalar cevap anahtarı sanılırdı.
+    """
+    if not meb._CEVAP_ANAHTARI.search(buyuk(satir)) or len(satir) > 60:
         return False
-    return sira < 8 or (len(satir) <= 80 and meb._buyuk_harfli(satir))
+    return not re.search(r"[.,;!?]", satir.rstrip(" :."))
+
+
+def _siradaki_soru_no(satirlar: list[str]) -> int | None:
+    """Verilen satırlardaki ilk soru başının numarası (yoksa ``None``)."""
+    for s in satirlar:
+        m = meb._SORU_BASI.match(s.strip())
+        if m:
+            return int(m.group(1))
+    return None
 
 
 def _satir(sayfa: int, y: float, metin: str) -> meb._Satir:
@@ -157,6 +180,7 @@ def metinden_ayrik(sayfalar: Iterable[str]) -> tuple[list, list, meb._Belge, dic
     soru_sayfalari: list[int] = []
     anahtar_sayfalari: list[int] = []
     anahtarda = False
+    son_baslik: str | None = None  # soru bölümünde görülen son ders başlığı
     for no, satirlar in enumerate(ham_sayfalar, 1):
         dolu = [i for i, s in enumerate(satirlar) if s.strip()]
         uc = set(dolu[:2] + dolu[-2:])
@@ -165,7 +189,6 @@ def metinden_ayrik(sayfalar: Iterable[str]) -> tuple[list, list, meb._Belge, dic
         sayfa_satirlari: list[meb._Satir] = []
         bekleyen_gorsel: float | None = None  # işaretten önceki satırın üst kenarı
         gorseller: list[tuple[float, float]] = []
-        sira = 0
         for i, metin in enumerate(satirlar):
             metin = metin.strip()
             if not metin:
@@ -178,11 +201,16 @@ def metinden_ayrik(sayfalar: Iterable[str]) -> tuple[list, list, meb._Belge, dic
                 bekleyen_gorsel = ust if bekleyen_gorsel is None else bekleyen_gorsel
                 bosluk = True
                 continue
-            if not anahtarda and _anahtar_basligi_mi(metin, sira):
+            if not anahtarda and _anahtar_basligi_mi(metin):
                 anahtarda = True
-                sira += 1
                 continue
-            sira += 1
+            if not anahtarda and meb._DERS_BASLIGI.match(metin):
+                # Her sayfanın başında yinelenen ders başlığı (üst bilgi) yeni bir ders değildir: numaralar
+                # sürüyorsa atılır. Aynı ders gerçekten yeniden başlıyorsa (sıradaki soru "1.") başlık kalır.
+                anahtar = re.sub(r"\s+", " ", buyuk(metin))
+                if anahtar == son_baslik and _siradaki_soru_no(satirlar[i + 1 :]) not in (None, 1):
+                    continue
+                son_baslik = anahtar
             for parca in _anahtar_ac(metin) if anahtarda else [metin]:
                 if bosluk and sayfa_satirlari:
                     y += BOSLUK_ARALIGI

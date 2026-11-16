@@ -177,6 +177,8 @@ def test_ocr_temizle_etiketleri_tablolari_ve_markdownu_sadelestirir():
         "- Konuşma çizgisi kalır",
     ]
     assert ocr_temizle("Düz metin\nikinci satır") == "Düz metin\nikinci satır"
+    # Eşitsizlikler HTML etiketi sanılmaz; üst/alt simge PDF yolundaki gibi yazılır.
+    assert ocr_temizle("a<b ve c>d ise x<sup>2</sup> + H<sub>2</sub>O <b>kalın</b>") == "a<b ve c>d ise x^(2) + H_(2)O kalın"
 
 
 def test_tekrar_kirp_yalniz_gercek_tekrari_kirpar():
@@ -251,6 +253,18 @@ def test_ocr_metninden_sorular_cikar_sahte_soru_baslari_birlesir():
     assert sorular["222:1"].ders.startswith("Coğrafya")
     # Sayfa başlığı ("1. OTURUM") ve sayfa numaraları hiçbir soruya karışmaz.
     assert not any("OTURUM" in s.soru or "OTURUM" in " ".join(s.secenekler) for s in sorular.values())
+
+
+def test_kapaktaki_cevap_anahtari_cumlesi_baslik_sayilmaz_ders_basligi_kenar_sayilmaz():
+    kapak = "AÇIK ÖĞRETİM SINAVI\n\nCevap anahtarı, kitapçığın son sayfasındadır.\n\nBaşarılar dileriz."
+    # Her sayfa aynı ders başlığıyla başlıyor: yinelenen satır olsa da sayfa başlığı gibi atılmamalı.
+    sayfalar = [kapak] + [
+        f"(111) TARİH - 1\n\n{no}. {no}. sorunun kökü hangisidir?\n\nA) Bir\nB) İki\nC) Üç\nD) Dört"
+        for no in (1, 2, 3)
+    ] + ["Cevap Anahtarı\n\n(111) TARİH - 1\n\n1. A\n2. B\n3. C"]
+    sorular, rapor = _sorular(sayfalar)
+    assert {k: s.cevap for k, s in sorular.items()} == {"111:1": 0, "111:2": 1, "111:3": 2}
+    assert rapor["anahtar_sayfasi"] == 1 and rapor["soru_sayfasi"] == 4
 
 
 def test_celiskili_cevap_anahtari_o_dersi_eler():

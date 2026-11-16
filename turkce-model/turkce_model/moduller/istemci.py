@@ -123,7 +123,8 @@ class YerelSunucu:
                 f"Sunucuda '{model}' modeli yok ({self.adres}). Ollama kullanıyorsan indir: `ollama pull {model}`. "
                 "Sunucudaki modelleri görmek için: python -m turkce_model modul-liste"
             )
-        return f"Yerel model sunucusu hata döndürdü (HTTP {yanit.status_code}, {self.adres}): {mesaj}"
+        ipucu = " Adres OpenAI uyumlu kökü göstermeli (çoğu sunucuda /v1 ile biter)." if yanit.status_code == 404 else ""
+        return f"Yerel model sunucusu hata döndürdü (HTTP {yanit.status_code}, {self.adres}): {mesaj}.{ipucu}"
 
     # ---------------------------------------------------------------------------------------------
     def modeller(self) -> list[str]:

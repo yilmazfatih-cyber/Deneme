@@ -39,7 +39,15 @@ _MD_GORSEL = re.compile(r"!\[[^\]\n]*\]\([^)\n]*\)")
 _HTML_TABLO = re.compile(r"<table\b.*?</table>", re.DOTALL | re.IGNORECASE)
 _HTML_SATIR = re.compile(r"<tr\b.*?</tr>", re.DOTALL | re.IGNORECASE)
 _HTML_HUCRE = re.compile(r"<t[dh]\b[^>]*>(.*?)</t[dh]>", re.DOTALL | re.IGNORECASE)
-_HTML_ETIKET = re.compile(r"</?[a-zA-Z][a-zA-Z0-9]*(?:\s[^<>\n]{0,80})?/?>")
+# Yalnız bilinen HTML etiketleri silinir ve nitelikler ad="değer" biçiminde olmalıdır: "a<b ve c>d" gibi bir
+# eşitsizlik etiket sanılmasın.
+_HTML_ETIKET = re.compile(
+    r"</?(?:br|b|i|u|em|strong|span|div|p|center|font|small|mark|del|ins|code|pre|a|img|hr|ul|ol|li|h[1-6]"
+    r"|table|thead|tbody|tfoot|tr|td|th|caption|figure|figcaption)"
+    r"""(?:\s+[a-zA-Z_:][-\w:.]*\s*=\s*(?:"[^"\n]*"|'[^'\n]*'|[^\s"'=<>`]+))*\s*/?>""",
+    re.IGNORECASE,
+)
+_HTML_US = re.compile(r"<(sup|sub)>(.*?)</\1>", re.IGNORECASE | re.DOTALL)
 _MD_TABLO_AYRACI = re.compile(r"^\s*\|?\s*:?-{2,}:?\s*(?:\|\s*:?-{2,}:?\s*)*\|?\s*$")
 _MD_BASLIK = re.compile(r"^\s{0,3}#{1,6}\s+")
 _MD_ALINTI = re.compile(r"^\s{0,3}>\s?")
@@ -113,6 +121,8 @@ def ocr_temizle(ham: str) -> str:
     m = _MD_GORSEL.sub(f"\n{GORSEL_ISARETI}\n", m)
     m = _HTML_TABLO.sub(lambda t: _tablo_satirlari(t.group()), m)
     m = re.sub(r"<br\s*/?>", "\n", m, flags=re.IGNORECASE)
+    # Üst/alt simge PDF yolundaki gibi yazılır: x<sup>2</sup> → x^(2), H<sub>2</sub>O → H_(2)O
+    m = _HTML_US.sub(lambda u: f"{'^' if u.group(1).lower() == 'sup' else '_'}({u.group(2).strip()})", m)
     m = _OZEL_TOKEN.sub("", m)
     satirlar: list[str] = []
     for satir in m.split("\n"):
