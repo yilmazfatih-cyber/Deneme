@@ -298,13 +298,19 @@ function experimentSection(r: ExperimentRun): string {
     )
     out.push(
       forest(
-        arm.metrics.map((m) => ({
-          label: `${m.role === 'birincil' ? '★ ' : m.role === 'koruma' ? '◆ ' : ''}${m.label}`,
-          mid: m.rel,
-          lo: m.relLo,
-          hi: m.relHi,
-          good: m.verdict === 'iyi' ? true : m.verdict === 'kötü' ? false : null,
-        })),
+        arm.metrics.flatMap((m) =>
+          m.rel === null || m.relLo === null || m.relHi === null
+            ? []
+            : [
+                {
+                  label: `${m.role === 'birincil' ? '★ ' : m.role === 'koruma' ? '◆ ' : ''}${m.label}`,
+                  mid: m.rel,
+                  lo: m.relLo,
+                  hi: m.relHi,
+                  good: m.verdict === 'iyi' ? true : m.verdict === 'kötü' ? false : null,
+                },
+              ],
+        ),
         false,
         (x) => rel(x),
       ),

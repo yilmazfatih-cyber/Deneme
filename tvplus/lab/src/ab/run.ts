@@ -67,6 +67,8 @@ function evaluate(
   pre?: { control: Float64Array; treatment: Float64Array; metric: string },
   exclude: readonly string[] = [],
   sequential = false,
+  /** Değeri tanımsız çıkan (ör. paydası sıfır) ölçülerin anahtarları buraya eklenir; tabloya girmezler */
+  undefinedOut: string[] = [],
 ): ExperimentMetric[] {
   const estimates: { def: MetricDef; e: Estimate }[] = []
   for (const def of METRICS) {
@@ -83,6 +85,10 @@ function evaluate(
     else if (def.kind === 'ikili') e = compareProportions(c, t)
     else if (pre && pre.metric === def.key) e = compareCuped(c, t, pre.control, pre.treatment)
     else e = compareMeans(c, t)
+    if (!Number.isFinite(e.control) || !Number.isFinite(e.treatment) || !Number.isFinite(e.diff)) {
+      if (!undefinedOut.includes(def.key)) undefinedOut.push(def.key)
+      continue
+    }
     estimates.push({ def, e })
   }
   // İkincil ve koruma ölçülerinde çoklu karşılaştırma düzeltmesi; birincil ölçü düzeltilmez
@@ -105,9 +111,9 @@ function evaluate(
         diff: e.diff,
         lo: e.lo,
         hi: e.hi,
-        rel: e.rel,
-        relLo: e.relLo,
-        relHi: e.relHi,
+        rel: finite(e.rel),
+        relLo: finite(e.relLo),
+        relHi: finite(e.relHi),
         p: e.p,
         pAdj: pa,
         probBetter: def.higherIsBetter ? e.probBetter : 1 - e.probBetter,
@@ -119,6 +125,8 @@ function evaluate(
     .sort((a, b) => rank(a.role) - rank(b.role))
 }
 const rank = (r: ExperimentMetric['role']): number => (r === 'birincil' ? 0 : r === 'koruma' ? 1 : 2)
+/** JSON'a yazılacak sayı: tanımsızsa null */
+const finite = (x: number): number | null => (Number.isFinite(x) ? x : null)
 
 /** Her an geçerli p: beklenen etki ölçeği ölçünün (etkin) standart sapmasının onda biri alınır. */
 function sequentialP(e: Estimate): number {
@@ -127,21 +135,28 @@ function sequentialP(e: Estimate): number {
   return alwaysValidP(e.diff, e.se, 0.1 * sigma)
 }
 
+/**
+ * Kolun kararı ve insan için özeti (ölçü adlarıyla). CLI aynı kararı ölçü anahtarlarıyla, kısa yazar
+ * (bkz. ab/format.ts `armSummary`).
+ */
 function decide(metrics: ExperimentMetric[]): Pick<ExperimentArm, 'decision' | 'summary'> {
   const primary = metrics.find((m) => m.role === 'birincil')
   const broken = metrics.filter((m) => m.role === 'koruma' && m.verdict === 'kötü')
-  const names = (list: ExperimentMetric[]): string => list.map((m) => m.key).join(', ')
+  const names = (list: ExperimentMetric[]): string => list.map((m) => m.label).join(', ')
   const better = metrics.filter((m) => m.role !== 'birincil' && m.verdict === 'iyi')
   const worse = metrics.filter((m) => m.role === 'ikincil' && m.verdict === 'kötü')
   const extra =
     (better.length ? ` İyileşen diğer ölçüler: ${names(better)}.` : '') +
     (worse.length ? ` Bozulan ikincil ölçüler: ${names(worse)}.` : '')
   if (primary?.verdict === 'kötü')
-    return { decision: 'zararlı', summary: `Birincil ölçü (${primary.key}) anlamlı ölçüde bozuldu.${extra}` }
+    return { decision: 'zararlı', summary: `Birincil ölçü (${primary.label}) anlamlı ölçüde bozuldu.${extra}` }
   if (broken.length) return { decision: 'riskli', summary: `Koruma ölçüsü bozuldu: ${names(broken)}.${extra}` }
   if (primary?.verdict === 'iyi')
-    return { decision: 'aday', summary: `Birincil ölçü (${primary.key}) iyileşti, koruma ölçüleri bozulmadı.${extra}` }
-  return { decision: 'etkisiz', summary: `Birincil ölçüde (${primary?.key ?? '–'}) anlamlı fark görülmedi.${extra}` }
+    return {
+      decision: 'aday',
+      summary: `Birincil ölçü (${primary.label}) iyileşti, koruma ölçüleri bozulmadı.${extra}`,
+    }
+  return { decision: 'etkisiz', summary: `Birincil ölçüde (${primary?.label ?? '–'}) anlamlı fark görülmedi.${extra}` }
 }
 
 /** Varyantın değiştirdiklerinin okunur özeti. */
@@ -230,8 +245,9 @@ export async function runSimExperiment(
       tables.push(unitsFromUniverse(r))
     }
     const roles: Roles = { primary: spec.primaryMetric, guardrails: spec.guardrails }
+    const undefinedKeys: string[] = []
     const arms: ExperimentArm[] = spec.arms.slice(1).map((arm, k) => {
-      const metrics = evaluate(tables[0], tables[k + 1], roles, true)
+      const metrics = evaluate(tables[0], tables[k + 1], roles, true, undefined, [], false, undefinedKeys)
       return {
         key: arm.key,
         name: arm.name,
@@ -248,6 +264,7 @@ export async function runSimExperiment(
         ? `Kalibrasyon: ${calibration.from} başlangıçlı ${calibration.horizon} günlük karne, puan ${calibration.score.toFixed(2)}.`
         : 'Kalibrasyon yapılmamış (sim karne): varsayılan ayarlarla koşuldu; sonuçlar yalnız yön için okunmalı.',
     ]
+    if (undefinedKeys.length) notes.push(`ölçülemeyen ölçüler (payda sıfır): ${undefinedKeys.join(', ')}`)
     return {
       key: spec.key,
       name: spec.name,
@@ -378,6 +395,7 @@ export function analyzeRealExperiment(
   // Maruz kalan herkes maruziyet günü etkindir: churn ancak pencere churn süresinden belirgin uzunsa ölçülebilir
   const churnMeasurable = window >= def.n + 7
   const exclude = churnMeasurable ? [] : ['churn']
+  const undefinedKeys: string[] = []
   const arms: ExperimentArm[] = variants
     .filter((_, i) => i !== ci)
     .map((v) => {
@@ -389,6 +407,7 @@ export function analyzeRealExperiment(
         primaryIsMean ? { control: cPre, treatment: pre(v), metric: roles.primary } : undefined,
         exclude,
         true,
+        undefinedKeys,
       )
       return {
         key: v.name,
@@ -420,6 +439,7 @@ export function analyzeRealExperiment(
       `churn ölçülmedi: pencere (${window} gün) churn süresinden (${def.n} gün) kısa. Ölçmek için: --pencere ${def.n + 14} (veri yetiyorsa).`,
     )
   else notes.push(`churn: pencerenin son ${def.n} gününde hiç gelmeyenler.`)
+  if (undefinedKeys.length) notes.push(`ölçülemeyen ölçüler (veride karşılığı yok): ${undefinedKeys.join(', ')}`)
   if (multi) notes.push(`${multi} kullanıcı birden çok kolda görüldüğü için dışarıda bırakıldı.`)
   if (late) notes.push(`${late} kullanıcının ölçüm penceresi veri bitmeden tamamlanmadığı için dışarıda bırakıldı.`)
   if (!srm.ok)

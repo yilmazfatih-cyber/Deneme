@@ -60,6 +60,34 @@ interface Predicate {
   test: (row: number) => boolean
 }
 
+/** Ölçü adı karşılaştırması: küçük harf, Türkçe harfler ASCII'ye indirgenmiş (kişi = kisi, maks = MAKS). */
+const asciiFold = (s: string): string =>
+  s
+    .toLocaleLowerCase('tr-TR')
+    .replace(/ı/g, 'i')
+    .replace(/ş/g, 's')
+    .replace(/ğ/g, 'g')
+    .replace(/ü/g, 'u')
+    .replace(/ö/g, 'o')
+    .replace(/ç/g, 'c')
+
+/**
+ * Kategorik değeri sözlükte bulur: önce birebir, sonra büyük/küçük harf duyarsız. Duyarsız karşılaştırma iki kuralla
+ * yapılır: Türkçe (İstanbul = istanbul, Iğdır = ığdır; ISTANBUL ≠ İstanbul) ve düz ASCII (lab'ın kendi kodları:
+ * MOBIL = mobil, DIGER = diger). Birden çok eşleşme belirsizdir (−2); hiç yoksa −1.
+ */
+function lookupValue(dict: readonly string[], text: string): number {
+  const exact = dict.indexOf(text)
+  if (exact >= 0) return exact
+  const tr = text.toLocaleLowerCase('tr-TR')
+  const en = text.toLowerCase()
+  const hits: number[] = []
+  dict.forEach((d, i) => {
+    if (d.toLocaleLowerCase('tr-TR') === tr || d.toLowerCase() === en) hits.push(i)
+  })
+  return hits.length === 1 ? hits[0] : hits.length > 1 ? -2 : -1
+}
+
 const colOf = (t: QueryTable, name: string): QueryColumn => {
   const c = t.cols.get(name)
   if (!c) throw new Error(`'${t.name}' tablosunda '${name}' sütunu yok. Sütunlar: ${[...t.cols.keys()].join(', ')}`)
@@ -113,7 +141,8 @@ function parseWhere(t: QueryTable, text: string): Predicate[] {
 
 function valueOf(c: QueryColumn, text: string): number {
   if (c.dict) {
-    const i = c.dict.findIndex((d) => d.toLocaleLowerCase('tr-TR') === text.toLocaleLowerCase('tr-TR'))
+    const i = lookupValue(c.dict, text)
+    if (i === -2) throw new Error(`'${c.name}' sütununda '${text}' birden çok değere uyuyor; tam yazın.`)
     if (i < 0)
       throw new Error(`'${c.name}' sütununda '${text}' değeri yok. Değerler: ${c.dict.slice(0, 20).join(', ')}`)
     return i
@@ -175,6 +204,8 @@ interface GroupAcc {
   users: Set<number>
   usersFull: boolean
   sum: Float64Array
+  /** Ölçü başına geçerli (NaN olmayan) değer sayısı */
+  cnt: Float64Array
   pos: Float64Array
   min: Float64Array
   max: Float64Array
@@ -226,6 +257,7 @@ export function runQuery(t: QueryTable, spec: QuerySpec, kAnon: number): QueryRe
         users: new Set(),
         usersFull: false,
         sum: new Float64Array(M),
+        cnt: new Float64Array(M),
         pos: new Float64Array(M),
         min: new Float64Array(M).fill(Infinity),
         max: new Float64Array(M).fill(-Infinity),
@@ -244,6 +276,7 @@ export function runQuery(t: QueryTable, spec: QuerySpec, kAnon: number): QueryRe
       const v = c.get(r)
       if (!(v === v)) continue
       acc.sum[m] += v
+      acc.cnt[m]++
       if (v > 0) acc.pos[m]++
       if (v < acc.min[m]) acc.min[m] = v
       if (v > acc.max[m]) acc.max[m] = v
@@ -265,10 +298,12 @@ export function runQuery(t: QueryTable, spec: QuerySpec, kAnon: number): QueryRe
           return acc.n
         case 'kisi':
           return t.uid ? acc.users.size : null
+        // Eksik (NaN) değerler ortalamaya girmez: payda yalnız geçerli değerlerdir
         case 'ort':
-          return acc.n ? acc.sum[k] / acc.n : null
+          return acc.cnt[k] ? acc.sum[k] / acc.cnt[k] : null
         case 'top':
           return acc.sum[k]
+        // oran(k): k > 0 olan SATIR payı (eksik değer pozitif sayılmaz)
         case 'oran':
           return acc.n ? acc.pos[k] / acc.n : null
         case 'min':
@@ -289,7 +324,8 @@ export function runQuery(t: QueryTable, spec: QuerySpec, kAnon: number): QueryRe
   if (sortKey) {
     const desc = sortKey.startsWith('-')
     const label = sortKey.replace(/^[-+]/, '')
-    const k = measures.findIndex((m) => m.label === label || m.label === label.replace('max(', 'maks('))
+    const want = asciiFold(label.replace(/\s+/g, '').replace(/^max\(/, 'maks('))
+    const k = measures.findIndex((m) => asciiFold(m.label) === want)
     if (k < 0)
       throw new Error(`Sıralama ölçüsü '${label}' ölçüler arasında yok: ${measures.map((m) => m.label).join(', ')}`)
     rows.sort((a, b) => ((a.values[k] ?? -Infinity) - (b.values[k] ?? -Infinity)) * (desc ? -1 : 1))

@@ -202,10 +202,11 @@ export async function* readEvents(
     const batch: RawEvent[] = []
     for (let line of lines) {
       if (format === null) {
+        // Windows araçlarının yazdığı bayt sırası işareti (U+FEFF): JSON.parse ve CSV başlığı onu kabul etmez
+        if (line.charCodeAt(0) === 0xfeff) line = line.slice(1)
         const t = line.trimStart()
         if (!t) continue
-        if (t.charCodeAt(0) === 0xfeff) line = t.slice(1)
-        const first = line.trimStart()[0]
+        const first = t[0]
         format = first === '{' ? 'jsonl' : first === '[' ? 'json' : 'csv'
         if (format === 'csv') {
           const tabs = (line.match(/\t/g) ?? []).length
@@ -462,10 +463,11 @@ class Transformer {
         const t = strOf(pick(props, P.contentTitle))
         if (t) c.title = t.slice(0, 160)
       }
-      if (c.klass === 0) {
-        const k = this.contentClass(pick(props, P.contentType))
-        if (k) c.klass = k
-      }
+      // Kayıt yalnız OLAYIN KENDİ taşıdığı bilgiden kurulur (sözlüğün o anki durumundan değil): aynı olay her içe
+      // almada bayt bayt aynı kaydı verir, yeniden içe alma yinelenmez. Sözlükten öğrenilenleri (tür, süre) kurma
+      // adımı uygular.
+      const ownClass = this.contentClass(pick(props, P.contentType))
+      if (c.klass === 0 && ownClass) c.klass = ownClass
       if (c.genres === undefined) {
         const g = pick(props, P.genre)
         const list = Array.isArray(g)
@@ -497,8 +499,8 @@ class Transformer {
       if (d !== null && d > 0) {
         duration = Math.min(86_400, d * scale)
         if (duration > c.dur) c.dur = duration
-      } else duration = c.dur
-      const live = rule.live || boolOf(pick(props, P.live)) === true || c.klass === 3 || c.klass === 4
+      }
+      const live = rule.live || boolOf(pick(props, P.live)) === true || ownClass === 3 || ownClass === 4
       if (live) {
         out.flags |= FLAG_LIVE
         if (c.klass === 0) c.klass = 3

@@ -318,6 +318,26 @@ export function matchRule(rules: readonly CompiledRule[], props: Record<string, 
 }
 
 /** Olay anı (epoch saniye, UTC) ya da null. */
+/**
+ * Zaman metni → ms. Saat dilimi yazılmamış biçimler ('2026-10-01', '2026-10-01 08:00:00', '2026-10-01T08:00:00.5')
+ * UTC sayılır — `Date.parse` onları makinenin yerel saatine göre okur ve aynı dosya her makinede başka sonuç verirdi.
+ * Proje saat dilimi eşlemedeki `time.offsetMinutes` ile verilir. Dilimli metin (Z, +03:00) olduğu gibi okunur.
+ */
+export function parseTimeText(text: string): number | null {
+  const s = text.trim()
+  const m = /^(\d{4})-(\d{2})-(\d{2})(?:[T ](\d{2}):(\d{2})(?::(\d{2})(?:[.,](\d{1,9}))?)?)?$/.exec(s)
+  if (m) {
+    const [y, mo, d, h, mi, se] = [m[1], m[2], m[3], m[4] ?? '0', m[5] ?? '0', m[6] ?? '0'].map(Number)
+    if (mo < 1 || mo > 12 || d < 1 || d > 31 || h > 23 || mi > 59 || se > 60) return null
+    const frac = m[7] ? Number(`0.${m[7]}`) * 1000 : 0
+    const t = Date.UTC(y, mo - 1, d, h, mi, se) + frac
+    // 31 Şubat gibi taşan tarihler reddedilir
+    return new Date(t).getUTCDate() === d ? t : null
+  }
+  const t = Date.parse(s)
+  return Number.isFinite(t) ? t : null
+}
+
 export function timeOf(
   m: CompiledMapping,
   props: Record<string, unknown>,
@@ -334,8 +354,8 @@ export function timeOf(
     const unit = m.raw.time.unit
     sec = unit === 'ms' || (unit === 'auto' && Math.abs(n) > 1e11) ? n / 1000 : n
   } else if (typeof v === 'string') {
-    const t = Date.parse(v)
-    if (Number.isFinite(t)) sec = t / 1000
+    const t = parseTimeText(v)
+    if (t !== null) sec = t / 1000
   }
   if (sec === null) return null
   sec -= m.raw.time.offsetMinutes * 60

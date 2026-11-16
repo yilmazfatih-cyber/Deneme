@@ -4,15 +4,40 @@
  * Ondalık ayırıcı noktadır (çıktıyı ajan da okur; JSON ile aynı yazım).
  */
 
+/**
+ * Ölçekleme gürültüsünü temizleyerek yuvarlama (yarım yukarı, sıfırdan uzağa): yüzdeye çevirirken 0.2345 × 100 =
+ * 23.449999… olur ve `toFixed` "23.4" verir; burada 12 anlamlı basamağa temizlenip "23.5" yuvarlanır.
+ */
+export function fixed(v: number, digits: number): string {
+  if (!Number.isFinite(v)) return String(v)
+  const clean = Number(v.toPrecision(12))
+  const text = String(Math.abs(clean))
+  if (text.includes('e')) return clean.toFixed(digits)
+  const r = Number(`${Math.round(Number(`${text}e${digits}`))}e-${digits}`)
+  return (clean < 0 && r !== 0 ? -r : r).toFixed(digits)
+}
+
+/** Üç anlamlı basamak; yuvarlama birimi taşırsa (999.5 → 1000) `null` döner, çağıran bir üst birime geçer. */
+function sig3(v: number): string | null {
+  const s = Number(v.toPrecision(3))
+  return s >= 1000 ? null : trim(s.toPrecision(3))
+}
+
 /** Kısaltılmış sayı: 1234567 → 1.23M · 12345 → 12.3K · 123.4 → 123 · 12.34 → 12.3 · 0.01234 → 0.0123 */
 export function num(x: number | null | undefined): string {
   if (x === null || x === undefined || Number.isNaN(x)) return '–'
   if (!Number.isFinite(x)) return x > 0 ? '∞' : '−∞'
   const a = Math.abs(x)
   const sign = x < 0 ? '−' : ''
-  if (a >= 1e9) return `${sign}${trim((a / 1e9).toPrecision(3))}Mr`
-  if (a >= 1e6) return `${sign}${trim((a / 1e6).toPrecision(3))}M`
-  if (a >= 1e4) return `${sign}${trim((a / 1e3).toPrecision(3))}K`
+  if (a >= 1e9) return `${sign}${sig3(a / 1e9) ?? trim((a / 1e9).toFixed(0))}Mr`
+  if (a >= 1e6) {
+    const m = sig3(a / 1e6)
+    return m === null ? `${sign}1Mr` : `${sign}${m}M`
+  }
+  if (a >= 1e4) {
+    const k = sig3(a / 1e3)
+    return k === null ? `${sign}1M` : `${sign}${k}K`
+  }
   if (Number.isInteger(x)) return `${sign}${a}`
   if (a >= 100) return `${sign}${a.toFixed(0)}`
   if (a >= 10) return `${sign}${trim(a.toFixed(1))}`
@@ -25,18 +50,18 @@ const trim = (s: string): string => (s.includes('.') && !s.includes('e') ? s.rep
 /** Oran → yüzde: 0.2345 → %23.5 */
 export function pct(x: number | null | undefined, digits = 1): string {
   if (x === null || x === undefined || Number.isNaN(x)) return '–'
-  return `%${trim((100 * x).toFixed(digits))}`
+  return `%${trim(fixed(100 * x, digits))}`
 }
 /** İşaretli yüzde puanı farkı: 0.021 → +2.1p */
 export function pp(x: number | null | undefined, digits = 1): string {
   if (x === null || x === undefined || Number.isNaN(x)) return '–'
   const v = 100 * x
-  return `${v >= 0 ? '+' : '−'}${trim(Math.abs(v).toFixed(digits))}p`
+  return `${v >= 0 ? '+' : '−'}${trim(fixed(Math.abs(v), digits))}p`
 }
 /** İşaretli göreli değişim: 0.123 → +%12.3 */
 export function rel(x: number | null | undefined, digits = 1): string {
   if (x === null || x === undefined || Number.isNaN(x)) return '–'
-  return `${x >= 0 ? '+' : '−'}%${trim(Math.abs(100 * x).toFixed(digits))}`
+  return `${x >= 0 ? '+' : '−'}%${trim(fixed(Math.abs(100 * x), digits))}`
 }
 /** Çarpan: 2.31 → 2.31x */
 export const times = (x: number | null | undefined): string =>
@@ -119,7 +144,8 @@ export function ek(text: string, kind: 'i' | 'de' | 'e' | 'den'): string {
 }
 
 /** Güven aralığı: [lo, hi] biçimleyiciyle */
-export const ci = (lo: number, hi: number, f: (x: number) => string = num): string => `[${f(lo)}, ${f(hi)}]`
+export const ci = (lo: number | null, hi: number | null, f: (x: number | null) => string = num): string =>
+  `[${f(lo)}, ${f(hi)}]`
 
 export type Fmt = 'n' | 'pct' | 'pp' | 'rel' | 'x' | 'p' | 's'
 export interface Col<T = Record<string, unknown>> {

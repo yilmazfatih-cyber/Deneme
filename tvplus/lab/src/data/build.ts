@@ -568,6 +568,10 @@ export function build(lab: Lab, opts: { onProgress?: (bucket: number, of: number
       }
       let sessDayRowOf = -1
 
+      /** Canlı yayın: olayın kendi bayrağı ya da içeriğin (tüm içe almalardan öğrenilen) türü canlı / spor */
+      const isLive = (cid: number, flags: number): boolean =>
+        (flags & FLAG_LIVE) !== 0 || (cid > 0 && (dict.contents[cid]?.klass === 3 || dict.contents[cid]?.klass === 4))
+
       const openPlay = (cid: number, ts: number, dur: number, pos: number, live: boolean): OpenPlay => {
         // Açık kalan oynatma sayısı sınırlı: en eskisi kapatılır (bitiş olayı hiç gelmeyen kaynaklar)
         if (openPlays.size >= 6) {
@@ -705,7 +709,7 @@ export function build(lab: Lab, opts: { onProgress?: (bucket: number, of: number
             for (const q of openPlays.values()) if (q.nextStart === 0) q.nextStart = ts
             const same = openPlays.get(cid)
             if (same) closePlay(same, ts)
-            const p = openPlay(cid, ts, v1, v2, (flags & FLAG_LIVE) !== 0)
+            const p = openPlay(cid, ts, v1, v2, isLive(cid, flags))
             p.events = 1
             break
           }
@@ -716,7 +720,7 @@ export function build(lab: Lab, opts: { onProgress?: (bucket: number, of: number
               // İçerik kimliği taşımayan ilerleme/bitiş: en son etkin oynatmaya yazılır
               for (const q of openPlays.values()) if (!p || q.last > p.last) p = q
             }
-            if (!p) p = openPlay(cid, ts, 0, v2, (flags & FLAG_LIVE) !== 0)
+            if (!p) p = openPlay(cid, ts, 0, v2, isLive(cid, flags))
             p.events++
             if (!(flags & FLAG_NO_V1)) {
               p.sum += v1
@@ -724,7 +728,9 @@ export function build(lab: Lab, opts: { onProgress?: (bucket: number, of: number
               p.hasV1 = true
             }
             if (v2 >= 0) {
-              if (p.pos0 < 0) p.pos0 = v2
+              // Başlangıç konumu bilinmiyorsa (çoğu kaynakta başlangıç olayı konum taşımaz) ilk bildirilen konumdan
+              // geçen süre düşülerek kestirilir: baştan izlenen oynatmada 0, kaldığı yerden devamda o yer
+              if (p.pos0 < 0) p.pos0 = Math.max(0, v2 - Math.max(0, ts - p.start))
               if (v2 > p.pos1) p.pos1 = v2
             }
             p.last = ts

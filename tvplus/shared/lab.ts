@@ -8,10 +8,13 @@
  * Gizlilik: sonuç dosyalarında kullanıcı kimliği (takma kimlik dahil) ve ham olay yoktur; yalnız toplamlar vardır
  * ve `kAnonim` eşiğinin altındaki gruplar yazılmaz.
  *
- * Uçlar (salt okunur):
+ * Uçlar (salt okunur; server/src/services/lab):
  *   GET /api/studio/lab                 → LabIndex            (hangi sonuçlar var)
- *   GET /api/studio/lab/sonuc/:ad       → LabEnvelope<…>      (ad: 'durum' | 'churn' | 'sim-kalibrasyon' | 'sim-karne' | 'deney-<anahtar>' …)
- *   GET /api/studio/lab/deneyler        → ExperimentRunSummary[]
+ *   GET /api/studio/lab/sonuc/:ad       → LabEnvelope<…>      (ad: 'durum' | 'churn' | 'churn-risk' | 'sim-karne' |
+ *                                                              'deney-<anahtar>' | 'gercek-<anahtar>' | 'demo-dogrulama')
+ *   GET /api/studio/lab/deneyler        → ExperimentRunSummary[]  (tür: shared/types.ts)
+ *
+ * JSON'da tanımsız sayı olmaz: tanımsız olabilen alanlar `number | null` olarak yazılır (ör. kontrol 0 iken göreli fark).
  */
 
 export interface LabEnvelope<T> {
@@ -402,10 +405,10 @@ export interface ExperimentMetric {
   diff: number
   lo: number
   hi: number
-  /** Göreli fark ve aralığı */
-  rel: number
-  relLo: number
-  relHi: number
+  /** Göreli fark ve aralığı; kontrol değeri 0 ise tanımsızdır (null) */
+  rel: number | null
+  relLo: number | null
+  relHi: number | null
   p: number
   /** Çoklu karşılaştırma düzeltmeli p (birincil ölçüde p'nin kendisi) */
   pAdj: number
@@ -448,8 +451,8 @@ export interface ExperimentRun {
   arms: ExperimentArm[]
   /** Simülasyon: gerçeklik karnesi puanı (yoksa null) */
   fidelity: number | null
-  /** Gerçek deney: kol büyüklükleri beklenen paylarla uyumlu mu */
-  srm: { p: number; ok: boolean } | null
+  /** Gerçek deney: kol büyüklükleri beklenen paylarla uyumlu mu (ok: p ≥ threshold; alışılmış eşik 0.001) */
+  srm: { p: number; ok: boolean; threshold?: number } | null
   notes: string[]
   caveats: string[]
   seconds: number

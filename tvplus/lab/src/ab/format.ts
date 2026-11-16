@@ -16,6 +16,28 @@ const DECISION: Record<ExperimentRun['arms'][number]['decision'], string> = {
   etkisiz: 'ETKİSİZ (fark gösterilemedi)',
 }
 
+/** Kolun özeti, ölçü anahtarlarıyla (tablodaki adlarla aynı; `arm.summary` insan için uzun adları kullanır). */
+function armSummary(arm: ExperimentRun['arms'][number]): string {
+  const keys = (list: ExperimentMetric[]): string => list.map((m) => m.key).join(', ')
+  const primary = arm.metrics.find((m) => m.role === 'birincil')
+  const broken = arm.metrics.filter((m) => m.role === 'koruma' && m.verdict === 'kötü')
+  const better = arm.metrics.filter((m) => m.role !== 'birincil' && m.verdict === 'iyi')
+  const worse = arm.metrics.filter((m) => m.role === 'ikincil' && m.verdict === 'kötü')
+  const head =
+    arm.decision === 'zararlı'
+      ? `birincil ölçü (${primary?.key ?? '–'}) anlamlı ölçüde bozuldu`
+      : arm.decision === 'riskli'
+        ? `koruma ölçüsü bozuldu: ${keys(broken)}`
+        : arm.decision === 'aday'
+          ? `birincil ölçü (${primary?.key ?? '–'}) iyileşti, koruma ölçüleri bozulmadı`
+          : `birincil ölçüde (${primary?.key ?? '–'}) anlamlı fark görülmedi`
+  return (
+    head +
+    (better.length ? ` · iyileşen: ${keys(better)}` : '') +
+    (worse.length ? ` · bozulan ikincil: ${keys(worse)}` : '')
+  )
+}
+
 export function formatExperiment(r: ExperimentRun, limit = 10): string {
   const out: string[] = []
   const size =
@@ -49,7 +71,7 @@ export function formatExperiment(r: ExperimentRun, limit = 10): string {
         { limit, more: '--limit 20' },
       ),
     )
-    out.push(`karar: ${DECISION[arm.decision]} — ${arm.summary}`)
+    out.push(`karar: ${DECISION[arm.decision]} — ${armSummary(arm)}`)
     const seq = arm.metrics.find((m) => m.pAlways !== undefined)
     if (seq?.pAlways !== undefined)
       out.push(
@@ -58,7 +80,10 @@ export function formatExperiment(r: ExperimentRun, limit = 10): string {
   }
   out.push('')
   out.push('★ birincil ölçü · ◆ koruma ölçüsü · p: ikincil ve koruma ölçülerinde çoklu karşılaştırma düzeltmeli')
-  if (r.srm) out.push(`örneklem oranı denetimi (SRM): ${r.srm.ok ? 'uyumlu' : 'UYUMSUZ'} (p ${pval(r.srm.p)})`)
+  if (r.srm)
+    out.push(
+      `örneklem oranı denetimi (SRM): ${r.srm.ok ? 'uyumlu' : 'UYUMSUZ'} (p ${pval(r.srm.p)}; eşik ${r.srm.threshold ?? 0.001} — altı atama bozukluğu sayılır)`,
+    )
   for (const n of r.notes) out.push(`not: ${n}`)
   if (r.source === 'simülasyon')
     out.push(

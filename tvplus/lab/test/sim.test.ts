@@ -121,7 +121,7 @@ describe('ikiz evren deneyi', () => {
       expect(m.p).toBeGreaterThanOrEqual(0)
       expect(m.p).toBeLessThanOrEqual(1)
       expect(m.pAdj).toBeGreaterThanOrEqual(m.role === 'birincil' ? m.p : m.p - 1e-12)
-      if (Number.isFinite(m.relLo) && Number.isFinite(m.relHi)) expect(m.relLo).toBeLessThanOrEqual(m.relHi)
+      if (m.relLo !== null && m.relHi !== null) expect(m.relLo).toBeLessThanOrEqual(m.relHi)
     }
   }, 180_000)
 

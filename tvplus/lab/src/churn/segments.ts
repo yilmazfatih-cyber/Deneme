@@ -8,7 +8,7 @@
 import type { ChurnSegments, ClusterRow, DimRow, PocketRow, ReasonFamily } from '../../../shared/lab'
 import { kmeans, silhouette } from '../core/kmeans'
 import { benjaminiHochberg, normSf, twoProportion } from '../core/stats'
-import { FEATURE_INDEX, FEATURES, type FeatureFrame } from './features'
+import { FEATURE_INDEX, type FeatureFrame, FEATURES, usersPerCode } from './features'
 import type { FittedModel } from './model'
 
 const logit = (p: number): number =>
@@ -29,7 +29,8 @@ export function scanSegments(
   for (let i = 0; i < n; i++) pos += frame.y[i]
   const base = n ? pos / n : 0
   const minBin = Math.max(opts.minBin, 20)
-  const deff = n ? n / Math.max(1, new Set(frame.uid).size) : 1
+  const totalUsers = new Set(frame.uid).size
+  const deff = n ? n / Math.max(1, totalUsers) : 1
   const shrink = 1 / Math.sqrt(Math.max(1, deff))
 
   /* ── Boyut değerleri ── */
@@ -43,8 +44,10 @@ export function scanSegments(
       cc[cat.codes[i]] += frame.y[i]
     }
     marg.push({ n: cn, c: cc })
+    // k-anonimlik TEKİL kullanıcıyla: değer ve geri kalanı en az `minBin` kullanıcı içermeli
+    const cu = usersPerCode(cat.codes, frame.uid, cat.dict.length)
     for (let k = 1; k < cat.dict.length; k++) {
-      if (cn[k] < minBin || n - cn[k] < minBin) continue
+      if (cn[k] < minBin || n - cn[k] < minBin || cu[k] < minBin || totalUsers - cu[k] < minBin) continue
       const t = twoProportion(pos - cc[k], n - cn[k], cc[k], cn[k])
       dims.push({
         dim: cat.key,
@@ -76,12 +79,21 @@ export function scanSegments(
         cn[k]++
         cc[k] += frame.y[i]
       }
+      // Aday hücrelerin tekil kullanıcıları (yalnız satır eşiğini geçenler için sayılır)
+      const cellUsers = new Map<number, Set<number>>()
+      for (let i = 0; i < n; i++) {
+        const k = A.codes[i] * nb + B.codes[i]
+        if (cn[k] < minCell) continue
+        let set = cellUsers.get(k)
+        if (!set) cellUsers.set(k, (set = new Set<number>()))
+        set.add(frame.uid[i])
+      }
       for (let ka = 1; ka < A.dict.length; ka++) {
         if (marg[a].n[ka] < minCell) continue
         for (let kb = 1; kb < nb; kb++) {
           const cell = ka * nb + kb
           const m = cn[cell]
-          if (m < minCell) continue
+          if (m < minCell || (cellUsers.get(cell)?.size ?? 0) < minBin) continue
           // Hücre, boyutlardan birinin tamamıysa birleşim yeni bilgi taşımaz
           if (m >= 0.97 * marg[a].n[ka] || m >= 0.97 * marg[b].n[kb]) continue
           const pa = marg[a].c[ka] / marg[a].n[ka]
@@ -133,6 +145,10 @@ export function scanSegments(
         let minSize = m
         for (let c = 0; c < k; c++) minSize = Math.min(minSize, km.sizes[c])
         if (minSize < Math.max(minBin, m * 0.04)) continue
+        // Her küme en az `minBin` tekil kullanıcı içermeli
+        const clusterUsers = Array.from({ length: k }, () => new Set<number>())
+        for (let r = 0; r < m; r++) clusterUsers[km.assign[r]].add(frame.uid[churners[r]])
+        if (clusterUsers.some((x) => x.size < minBin)) continue
         const s = silhouette(X, m, p, km.assign, k, 500, 5)
         if (s > bestS) {
           bestS = s

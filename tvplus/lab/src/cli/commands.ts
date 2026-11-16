@@ -498,7 +498,7 @@ function cmdQuery(ctx: CommandContext, a: Args): CommandResult {
   const r = runQuery(
     t,
     {
-      group: (flagStr(a, 'grup') ?? '').split(',').filter(Boolean),
+      group: splitGroups(flagStr(a, 'grup') ?? ''),
       measures: splitMeasures(flagStr(a, 'olc') ?? 'n'),
       where: flagStr(a, 'nerede') ?? '',
       sort: flagStr(a, 'sirala'),
@@ -507,6 +507,23 @@ function cmdQuery(ctx: CommandContext, a: Args): CommandResult {
     kAnon,
   )
   return { text: r.text, json: { headers: r.headers, rows: r.rows, matched: r.matched, hiddenGroups: r.hiddenGroups } }
+}
+
+/**
+ * "--grup a,k@0,10,60,b" → ['a', 'k@0,10,60', 'b']: elle sınırlı gruplamanın sınırları da virgülle yazıldığı için
+ * yalnız sayıdan oluşan parça, önündeki '@'li parçaya eklenir.
+ */
+export function splitGroups(text: string): string[] {
+  const out: string[] = []
+  for (const raw of text.split(',')) {
+    const part = raw.trim()
+    if (!part) continue
+    const prev = out[out.length - 1]
+    if (prev !== undefined && prev.includes('@') && /^-?\d+(\.\d+)?$/.test(part))
+      out[out.length - 1] = `${prev},${part}`
+    else out.push(part)
+  }
+  return out
 }
 
 /** "n,ort(x),oran(y)" → parçalar (parantez içindeki virgüller korunur). */
@@ -576,7 +593,7 @@ async function cmdDemo(ctx: CommandContext, a: Args): Promise<CommandResult> {
   const d = loadChurnData(lab)
   const deep = runDeep(lab, { data: d })
   const v = validateWorld(lab, loadTruth(truthPathOf(file)), d, deep.result, deep.hazard, deep.primaryOfUser)
-  writeJson(join(lab.resultDir, 'demo-dogrulama.json'), v, false)
+  saveResult(lab, 'demo-dogrulama', v, { dataRev: meta.dataRev })
   const size = statSync(file).size
   const text = [
     `DEMO HAZIR · ${headerOf(statusOf(meta))}`,
@@ -763,7 +780,14 @@ export async function execute(
     agent: opts.agent,
     progress: opts.onProgress ?? (quiet ? () => {} : (line) => process.stderr.write(`· ${line}\n`)),
   }
-  const r = await runCommand(ctx, a, extra)
+  let r: CommandResult
+  try {
+    r = await runCommand(ctx, a, extra)
+  } catch (err) {
+    // Hata iletisi de çağırana (ajana) gider: denetim günlüğünde o da görünmeli
+    audit(lab, argv.join(' '), `Hata: ${err instanceof Error ? err.message : String(err)}`)
+    throw err
+  }
   const asJson = flagBool(a, 'json') && r.json !== undefined
   let out = asJson ? JSON.stringify(r.json) : r.text
   if (opts.agent) {

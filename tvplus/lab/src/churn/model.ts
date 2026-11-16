@@ -22,7 +22,7 @@ import {
   sortedCopy,
   wilson,
 } from '../core/stats'
-import { FEATURES, type FeatureFrame } from './features'
+import { type FeatureFrame, FEATURES, usersPerCode } from './features'
 
 /* ───────────── Tek değişkenli ───────────── */
 
@@ -164,21 +164,30 @@ export function univariate(frame: FeatureFrame, minBin: number): DriverRow[] {
       cc[c.codes[i]] += frame.y[i]
     }
     const order = [...cn.keys()].filter((k) => cn[k] > 0).sort((a, b) => cn[b] - cn[a])
+    // k-anonimlik: dilim en az `minBin` TEKİL kullanıcı içermeli (satır değil); küçükler 'diğer'e katılır
+    const cu = usersPerCode(c.codes, frame.uid, c.dict.length)
     const bins: FeatureBin[] = []
+    const kept = new Uint8Array(c.dict.length)
     let on = 0
     let oc = 0
     order.forEach((k, rank) => {
-      if (cn[k] >= minBin && rank < 14) bins.push(toBin(c.dict[k] ?? String(k), cn[k], cc[k]))
-      else {
+      if (cn[k] >= minBin && cu[k] >= minBin && rank < 14) {
+        bins.push(toBin(c.dict[k] ?? String(k), cn[k], cc[k]))
+        kept[k] = 1
+      } else {
         on += cn[k]
         oc += cc[k]
       }
     })
-    if (on >= minBin) bins.push(toBin('diğer', on, oc))
+    if (on >= minBin) {
+      const others = new Set<number>()
+      for (let i = 0; i < n; i++) if (!kept[c.codes[i]]) others.add(frame.uid[i])
+      if (others.size >= minBin) bins.push(toBin('diğer', on, oc))
+    }
     if (bins.length < 2) continue
     // Kategorinin kendi oranıyla puanlama (örneklem içi; yalnız sıralama gücü için)
     const rate = new Float64Array(c.dict.length)
-    for (const k of order) rate[k] = cn[k] >= minBin ? cc[k] / cn[k] : base
+    for (const k of order) rate[k] = kept[k] ? cc[k] / cn[k] : base
     const score = new Float64Array(n)
     for (let i = 0; i < n; i++) score[i] = rate[c.codes[i]]
     const a = auc(score, frame.y)

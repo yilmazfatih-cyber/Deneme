@@ -308,14 +308,18 @@ export function compareCuped(
 }
 
 /** Örneklem oranı uyuşmazlığı (SRM): gözlenen kol büyüklükleri beklenen paylarla uyumlu mu. p < 0.001 → atama bozuk. */
-export function sampleRatioMismatch(counts: readonly number[], weights: readonly number[]): { p: number; ok: boolean } {
+export const SRM_THRESHOLD = 0.001
+export function sampleRatioMismatch(
+  counts: readonly number[],
+  weights: readonly number[],
+): { p: number; ok: boolean; threshold: number } {
   const total = counts.reduce((a, b) => a + b, 0)
   const wsum = weights.reduce((a, b) => a + b, 0)
   const r = chi2Gof(
     counts,
     weights.map((w) => (total * w) / wsum),
   )
-  return { p: r.p, ok: r.p >= 0.001 }
+  return { p: r.p, ok: r.p >= SRM_THRESHOLD, threshold: SRM_THRESHOLD }
 }
 
 /** Çoklu karşılaştırma: ikincil ölçülerin p değerleri yanlış keşif oranına göre düzeltilir. */

@@ -42,7 +42,8 @@ Kurallar kodda zorlanır:
   Şema keşfi kişisel veri benzeri özellikleri adından ve değerinden tanır, örnek değerlerini göstermez.
 - **Takma kimlik:** `distinct_id`, lab klasöründeki gizli anahtarla (`anahtar`, 0600) 64 bitlik özete çevrilir.
   Anahtar başka makinede yoksa özetler eşleştirilemez.
-- **k-anonimlik:** `sorgu` ve tüm kırılımlar en az **20** kullanıcılı grupları gösterir (`ayar --k`, alt sınır 5).
+- **k-anonimlik:** `sorgu` ve tüm kırılımlar en az **20** _tekil_ kullanıcılı grupları gösterir (`ayar --k`, alt sınır
+  5). Eşik satıra değil kullanıcıya uygulanır: bir kullanıcının birden çok satırı (gün, anlık görüntü) onu saklamaz.
 - **Ajan kipi (MCP aracı):** gizlilik ayarı değiştirilemez, depo boşaltılamaz, lab klasörü değiştirilemez; çıktı
   bütçelidir (8.000 karakter).
 - **Dışarıya istek yok.** Lab hiçbir yere veri göndermez. Tek ağ işi, siz isterseniz `cek` komutunun Mixpanel Export
@@ -105,6 +106,12 @@ LIST_REMOVE, RATING, SIGNUP, LOGIN, SUBSCRIBE, RENEW, CANCEL, EXPIRE, PAYMENT_FA
 Analizin kalitesi bu eşlemeye bağlıdır; en önemlileri oynatma olayları (süre birimi ve izlenen süre kipiyle), hata /
 takılma, arama (sonuçsuz arama işareti), abonelik olayları ve kırılım boyutlarıdır (platform, sürüm, plan, kaynak…).
 `EXPOSURE` (ör. `$experiment_started`) eşlenirse gerçek deneyler de çözümlenir. Şema: `lab/src/data/mapping.ts`.
+
+Birkaç okuma kuralı: saat dilimi yazılmamış zaman metni (`2026-10-01 08:00:00`, CSV'lerde sık) **UTC** sayılır, proje
+saat dilimi `time.offsetMinutes` ile verilir; dosya başındaki bayt sırası işareti (Excel / PowerShell) atılır; başlangıç
+olayı oynatma konumu taşımıyorsa başlangıç konumu ilk bildirilen konumdan geçen süre düşülerek kestirilir. Aynı dosyayı
+iki kez içe almak olayları çoğaltmaz (kayıt yalnız olayın kendi taşıdığından kurulur; sözlükten öğrenilenleri kurma
+adımı uygular).
 
 Ne kadar veri gerekir? En az churn süresinin (çoğu zaman 30 gün) üç katı; 90–180 gün iyidir.
 

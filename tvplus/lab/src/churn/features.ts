@@ -345,3 +345,13 @@ export function buildFrame(
     lookback,
   }
 }
+
+/**
+ * Kod başına TEKİL kullanıcı sayısı (k-anonimlik için). Anlık görüntü çerçevesinde bir kullanıcı birden çok satırdır;
+ * gizlilik eşiği satıra değil kullanıcıya uygulanır.
+ */
+export function usersPerCode(codes: ArrayLike<number>, uid: ArrayLike<number>, size: number): Float64Array {
+  const seen: Set<number>[] = Array.from({ length: size }, () => new Set<number>())
+  for (let i = 0; i < codes.length; i++) seen[codes[i]]?.add(uid[i])
+  return Float64Array.from(seen, (x) => x.size)
+}

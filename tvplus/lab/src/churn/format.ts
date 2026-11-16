@@ -238,7 +238,7 @@ export function formatDriver(r: ChurnDeep, feature: string): string {
   out.push(
     `bilgi değeri ${d.iv.toFixed(3)} · tek değişkenli AUC ${d.auc.toFixed(3)} · yön: ${d.direction}` +
       (d.oddsRatio !== null
-        ? ` · çok değişkenli OO ${d.oddsRatio.toFixed(2)} ${ci(d.orLo ?? NaN, d.orHi ?? NaN, (x) => x.toFixed(2))} p ${pval(d.p)}`
+        ? ` · çok değişkenli OO ${d.oddsRatio.toFixed(2)} ${ci(d.orLo, d.orHi, (x) => (x === null ? '–' : x.toFixed(2)))} p ${pval(d.p)}`
         : '') +
       (d.importance !== null ? ` · ağaç önemi ${d.importance.toFixed(4)}` : ''),
   )
