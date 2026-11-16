@@ -93,6 +93,9 @@ async function switchTo(jar: Jar, guid: string, opts: { vd?: Vd; pin?: string } 
   return res
 }
 
+/** '4821' tek başına (başka rakama bitişik olmadan) geçiyor mu */
+const PIN_LEAK = /(^|[^0-9])4821([^0-9]|$)/
+
 describe('sanal cihaz (x-tvplus-vd / ?vd=)', () => {
   it('iki ad alanı ve varsayılan zincir tek kavanozda birbirinden bağımsız', async () => {
     const jar = new Jar()
@@ -345,10 +348,11 @@ describe('profil yönetimi', () => {
     // Kilitle
     const locked = await req('PATCH', `/api/profiles/${ece.guid}`, { pin: '4821' })
     expect(locked.json().profile.isLocked).toBe(true)
-    expect(JSON.stringify(locked.json())).not.toContain('4821')
+    // PIN yanıtlarda geçmemeli. Rakam komşusu olmayan '4821' aranır: zaman damgaları (ör. 1794821…) yanlış alarm vermez.
+    expect(JSON.stringify(locked.json())).not.toMatch(PIN_LEAK)
     const bootNow = (await papp.inject({ url: '/api/boot', cookies: jar.cookies })).json<BootContext>()
     expect(bootNow.profiles.find((p) => p.guid === ece.guid)).toMatchObject({ isLocked: true, avatarKey: 'yuz-05' })
-    expect(JSON.stringify(bootNow)).not.toContain('4821')
+    expect(JSON.stringify(bootNow)).not.toMatch(PIN_LEAK)
 
     // Geçiş: PIN'siz → 403 PIN_REQUIRED, yanlış → PIN_INVALID, doğru → BootContext
     const noPin = await sw(ece.guid)
