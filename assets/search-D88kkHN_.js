@@ -1,0 +1,1 @@
+export{a as SearchPage}from"./main-BMFRs4K6.js";
