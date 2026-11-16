@@ -94,7 +94,8 @@ bütün puanlayıcılar geçmeli; değilse ağırlıklı ortalama ≥ eşik. Bi�
 Kurulu SDK'dan doğrulandı: `FastMCP` 2.x'te `MCPServer` oldu; istemci `mcp.Client` (URL,
 `StdioServerParameters` ya da süreç içi sunucu alır). Araç hatası `ToolError` ile yükseltilir —
 düz istisnada SDK iletiyi gizliyor ("Error executing tool"). Tehlikeli araçlar yayımlanmaz
-(MCP tarafında onay kancası yok). Ajan köprüsü arka planda olay döngüsü çalıştırır.
+(MCP tarafında onay kancası yok); yayımlananlar `readOnlyHint` ile işaretlenir. Ajan köprüsü arka
+planda olay döngüsü çalıştırır ve `readOnlyHint` demeyen uzak aracı tehlikeli sayar (onaysız çalışmaz).
 
 ## K-14 Sunucu: FastAPI, SSE, varsayılan 127.0.0.1, CORS kapalı
 API anahtarı tanımlı değilse yalnız yerel adrese açılır (komut, başka adrese anahtarsız açmayı
@@ -120,3 +121,29 @@ dosyası girmez. Sonuçlar: `docs/GERCEK_MODEL_DENEMESI.md`.
 Çekirdek: httpx, pydantic, numpy, pyyaml (YAML görev tanımı ve ayar dosyası için; ~300 satırlık
 güvenli ayrıştırıcıyı yazmaktan iyidir). Ekstralar: `sunucu` (fastapi, uvicorn, python-multipart),
 `mcp`, `belge` (pypdf), `anthropic`, `yerel` (sentence-transformers; denenmedi), `e2e` (playwright).
+
+## K-19 Sunucu ön denetimi: saf ASGI "istek kapısı" (`sunucu/kapi.py`)
+Güvenlik incelemesinde kanıtlandı: FastAPI gövdeyi (yüklenen dosya dahil) bağımlılıklardan ÖNCE okur;
+anahtar denetimi yalnız bağımlılıktayken anahtarsız 20 MB yükleme tamamen okunup sonra 401 alıyordu,
+yükleme sınırı da dosya diske yazıldıktan sonra uygulanıyordu. Ayrıca anahtarsız (yerel) kipte Host adı
+denetlenmediği için DNS yeniden bağlama ile herhangi bir site yanıtları okuyabiliyor, `multipart/form-data`
+"basit istek" olduğu için başka bir site belge yükleyebiliyordu. Karar: gövde okunmadan önce çalışan tek
+ara katman — yerel kipte Host 127.0.0.1/localhost/::1 ve değiştirici istekte Origin aynı köken ya da
+`izinli_kokenler`; anahtar kipinde anahtar; her kipte gövde boyu (Content-Length ya da okurken sayarak
+413). `anahtar_denetle` bağımlılığı ikinci savunma hattı olarak kaldı. Elendi: Starlette
+`TrustedHostMiddleware` (yalnız ad denetler, köken ve gövde sınırı yok) ve `BaseHTTPMiddleware` (gövdeyi
+akışla sayamaz).
+
+## K-20 Güvenlik incelemesi (2026-11-16): onay, MCP köprüsü, hazır araç sınırları, maskeleme
+- **Onay kancası doğrulanmış argümanı görür, araç tam onunla çalışır** (`Arac.yurut`): ham argüman
+  onaylatılıp düzeltilmişi çalıştırılınca "Yol"/"yol" anahtar oyunuyla onaylanmamış değer çalışıyordu.
+- **MCP köprüsü `readOnlyHint` demeyen uzak aracı tehlikeli sayar** (MCP'de varsayılan "yıkıcı olabilir");
+  kendi sunucumuz yayımladığı her aracı `readOnlyHint` ile işaretler.
+- **SQLite aracı: değer ≤ 256 KB, sorgu ≤ 4000 karakter, ≤ 100 sütun, okunan sonuç ≤ ~1 MB.** Zaman sınırı tek
+  adımda GB ayıran `randomblob`/`hex` çağrısını durduramıyordu (ölçüm: tek sorgu ~860 MB). Bedeli: 256 KB'tan
+  büyük saklı değer (`length()` dahil) bu araçla okunamaz; sınırlar `sqlite_araclari(...)` parametresidir.
+  Elendi: `SQLITE_LIMIT_COLUMN` (var olan geniş tabloların şemasını "bozuk" sayıyor).
+- **Hesap makinesinde `round/yuvarla` basamağı ≤ 100**: `round(5, -10**10)` 10 milyar basamaklı sayı
+  hesaplatıyordu (GIL tutulur; aracın 15 sn zaman aşımı işe yaramaz).
+- **Maskeleme her yolda**: vekil, geri gelen araç çağrısı argümanlarını; araçlı sohbet, araç çıktısını da
+  maskeler (önceden ikisi de modele düz gidiyordu).

@@ -35,7 +35,7 @@ grubun arasındaki boşluğa düşer: **ortalama kullanıcı yoktur**.
 | Kategorik veri: cihaz, şehir | Tepe değer + her kategorinin payı | Ortalama anlamsız |
 | 1–5 puan | Her puanın payı + ortanca | 3,0 hem "herkes kararsız" hem "yarısı 1, yarısı 5" olabilir |
 | İki tepeli dağılım | Grupları ayırıp ayrı özetleyin | Ortalama boşlukta kalır |
-| Segment oranlarını birleştirmek | Toplamların oranı | Oranların ortalaması küçük segmenti şişirir |
+| Segment oranlarını birleştirmek | Toplamların oranı | Oranların ortalaması küçük segmente büyükle aynı ağırlığı verir |
 | Dönem dönem büyüme oranları | Geometrik ortalama | Aritmetik ortalama bileşik büyümeyi abartır |
 | Değerler 1 TL ile 1 milyon TL arasında | Logaritmik ölçek + yüzdelikler | Doğrusal ölçekte hepsi sıfıra yapışır |
 
@@ -60,8 +60,9 @@ assert st.median(ile) - st.median(sepet) == 10
 ```
 
 Bir sipariş ortalamayı dört katına çıkardı, ortancayı 10 TL oynattı. "Ortalama sepet %338 arttı" cümlesi doğru ama
-yanıltıcıdır. Önce aykırı değerin **hata mı gerçek mi** olduğuna karar verin ([veri temizleme](veri-temizleme-yontemi.md)):
-gerçekse silmeyin; ortanca ve yüzdelikle raporlayın, büyük değeri ayrıca adıyla söyleyin.
+yanıltıcıdır. Önce aykırı değerin **hata mı gerçek mi** olduğuna karar verin
+([veri temizleme](veri-temizleme-yontemi.md)): gerçekse silmeyin; ortanca ve yüzdelikle raporlayın, büyük değeri
+ayrıca adıyla söyleyin.
 
 ## Ortalama kullanıcı yoktur
 
@@ -242,5 +243,9 @@ teslim süresi (gün): n=14 ort=74.0 std=266.2 min=-1 %25=2 %50=3 %75=4 max=999
 - [Ürün ölçütleri](urun-olcutleri.md) — oran ölçütlerinin pay ve paydası
 - Ortalama, ortanca, çeyrek (R7), std, histogram, hareketli ortalama (Python + TypeScript):
   [`kutuphane/py/kutuphane/istatistik.py`](../../kutuphane/py/kutuphane/istatistik.py)
-- Sütun profili, IQR ve sağlam z ile aykırı değer: [`veri/verihavuzu/kalite/profile.py`](../../veri/verihavuzu/kalite/profile.py)
+- Sütun profili, IQR ve sağlam z ile aykırı değer:
+  [`veri/verihavuzu/kalite/profile.py`](../../veri/verihavuzu/kalite/profile.py)
   (`python -m verihavuzu profil dosya.csv`)
+- [Olasılık dağılımları](../92-matematik/dagilimlar.md) — kalın kuyruk, merkezi limit teoremi
+- [İstatistiksel kestirim](../92-matematik/istatistiksel-kestirim.md) — n−1 bölücüsü, standart hata
+- [Keşifsel veri analizi](kesifsel-veri-analizi.md) — yeni veriye ilk bakışta tuhaf değerleri saymak

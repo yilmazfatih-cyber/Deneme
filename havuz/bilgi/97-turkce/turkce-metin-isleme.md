@@ -326,3 +326,4 @@ Türkçe: 5 sözcük, 54 karakter, 60 bayt
 - Çalışan gerçeklemeler: [turkce.py](../../kutuphane/py/kutuphane/turkce.py) (arama anahtarı, sıralama, heceleme),
   [bulanik_arama.py](../../kutuphane/py/kutuphane/bulanik_arama.py) (Damerau, trigram),
   [metin.py](../../kutuphane/py/kutuphane/metin.py) (sözcük sayımı, kısaltma).
+- Diğer kümelerden: [Arama](../30-arkauc/arama.md), [Unicode ve kodlama](../10-diller/unicode-ve-kodlama.md), [Metin sınıflandırma](../80-ml/metin-siniflandirma.md), [RAG tasarımı](../85-llm/rag-tasarimi.md).

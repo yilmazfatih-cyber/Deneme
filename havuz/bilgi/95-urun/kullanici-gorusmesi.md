@@ -34,7 +34,7 @@ görüşmeden değil, **farklı kişilerde tekrar eden** temalardan yapılır.
 | Çözüm anlaşılıyor ve isteniyor mu?       | Çözüm görüşmesi: taslak gösterilir, sonunda taahhüt istenir        | Problemi doğrulanmış kişiler                          |
 | Kullanabiliyorlar mı?                    | Görüşme değil, gözlem: [kullanılabilirlik testi](kullanilabilirlik-testi.md) | Hedef gruptan, ürünü ilk kez görenler   |
 | Ne kadar öderler?                        | Bugünkü harcamayı sormak + ön satış teklifi                        | Problemi en çok yaşayanlar                            |
-| "Yüzde kaçı böyle?"                      | Görüşme yanıtlamaz; anket ya da ölçüm                              | —                                                     |
+| "Yüzde kaçı böyle?"                      | Görüşme yanıtlamaz; [anket](../70-veri/anket-ve-orneklem.md) ya da ölçüm | —                                               |
 
 ## Görüşme planı
 
@@ -59,12 +59,14 @@ Kapanış:     "Bu konuda konuşmam gereken başka biri var mı?" + "Üç hafta 
 | "Telefonla randevu vermek sizi yoruyor, değil mi?"            | Yönlendirici; yanıtı soruda                 | "Dünkü gününüzü sabahtan anlatır mısınız?"                          |
 | "Bağlantıdan randevu almak işinizi kolaylaştırmaz mı?"        | Yönlendirici; fikri satıyor                 | "Müşteriler size bugün hangi yollardan ulaşıyor?"                   |
 | "Fikrimizi nasıl buldunuz?"                                   | Övgü dilenir; ölçülen nezakettir            | Sormayın. "Bunu çözmek için en son ne denediniz?"                   |
-| "Hangi özellikler olsun isterdiniz?"                          | Ürünü müşteriye tasarlatır                  | "Bu sorun çözülse o gün ne değişirdi? En son ne zaman bunu istediniz?" |
+| "Hangi özellikler olsun isterdiniz?"                          | Ürünü müşteriye tasarlatır                  | "Bu sorun yüzünden en son ne kaybettiniz? O gün ne yaptınız?"       |
 | "Genelde randevuları nasıl alırsınız?"                        | Genelleme; kişi ideal hâlini anlatır        | "Dün randevuları nereye yazdınız?"                                  |
 | "Neden defter kullanıyorsunuz?"                               | "Neden" savunmaya iter                      | "Deftere ne zaman başladınız? Ondan önce ne vardı?"                 |
 
 Soru listesini görüşmeden önce bu kalıplara karşı taramak işe yarar. Aşağıdaki denetleyici **kaba bir süzgeçtir**
-(her kötü soruyu yakalamaz); amacı modelin ve sizin alışkanlıkla yazdığı kalıpları göstermektir:
+(her kötü soruyu yakalamaz); amacı modelin ve sizin alışkanlıkla yazdığı kalıpları göstermektir. Ana soru listesine
+uygulayın: kapanıştaki taahhüt isteği ("taslak göstersem bakar mısınız?") bilerek sorulan bir gelecek sorusudur ve
+süzgeç onu da işaretler.
 
 ```python calistir
 import re
@@ -76,10 +78,12 @@ RULES = {
     "çözüm tasarlatma": [r"\bhangi özellik", r"\bne olsun ister"],
     "genelleme": [r"\b(genelde|genellikle|her zaman|normalde)\b"],
 }
+# "Anlatır mısınız?" gibi kibar istekler varsayım değildir
+REQUEST = re.compile(r"\b(anlat|göster|açıkla|söyle|tarif ed)\w*\s+m[ıiuü]s[ıiuü]n[ıiuü]z\b")
 
 
 def problems(question: str) -> set[str]:
-    text = question.lower()  # bu kalıplarda büyük harf yok; Türkçe küçültme gerekmiyor
+    text = REQUEST.sub("", question.lower())  # bu kalıplarda büyük I/İ yok; Türkçe küçültme gerekmiyor
     return {label for label, patterns in RULES.items() if any(re.search(p, text) for p in patterns)}
 
 
@@ -97,8 +101,8 @@ good = [
     "En son ne zaman iki müşteriye aynı saati verdiniz? Ne oldu?",
     "Müşteriler size bugün hangi yollardan ulaşıyor?",
     "Bu iş için bugün para ödediğiniz bir şey var mı?",
-    "Dün randevuları nereye yazdınız?",
-    "Bunu çözmek için en son ne denediniz? Neden bıraktınız?",
+    "Dünkü gününüzü sabahtan anlatır mısınız?",  # kibar istek: süzgeç ayırt eder
+    "Bunu çözmek için en son ne denediniz? Bıraktığınız gün ne oldu?",
 ]
 for question, label in bad.items():
     assert label in problems(question), (question, problems(question))
@@ -120,8 +124,8 @@ print(f"{len(bad)} kötü soru yakalandı, {len(good)} iyi soru temiz")
 - **Genellemeyi somuta çevirin:** "Genelde…" yanıtını "En son ne zaman? O gün ne oldu?" ile geri çağırın.
 - **Övgüyü bir kenara koyun:** "Çok güzel fikir" veri değildir. Nazikçe geri dönün: "Sağ olun. En son bu sorunla
   ne zaman karşılaştınız?"
-- **Özellik isteğinin altını kazın:** "Takvim Instagram'a bağlansın" denirse: "Bu olsaydı en son hangi gün işinize
-  yarardı? O gün ne oldu?"
+- **Özellik isteğinin altını kazın:** "Takvim Instagram'a bağlansın" denirse: "Bunu en son hangi gün istediniz? O gün
+  ne oldu?"
 - **Düzeltmeyin, satmayın:** Yanlış bildiğini düşündüğünüz şeyi düzeltmek görüşmeyi tartışmaya çevirir.
 
 **Konuşmakta zorlanan kişilerle** (afazi, ileri yaş, düşük okuryazarlık): kısa ve kapalı sorular, resimli seçenekler,
@@ -150,7 +154,8 @@ böyle yakalanır.
 
 Ses kaydı ve döküm kişisel veridir: izin alın, amacını söyleyin, notu çıkarınca silin. Dökümü bir yapay zekâ
 servisine özetletecekseniz önce ad, dükkân adı ve adresi **elle** silin; havuzdaki maskeleme araçları ([`yz`](../../yz/),
-[`veri`](../../veri/)) telefon ve kimlik numarası gibi biçimli veriyi bulur, ad ve adresi bulmaz.
+[`veri`](../../veri/)) telefon ve kimlik numarası gibi biçimli veriyi bulur, ad ve adresi bulmaz. Birkaç ayrıntının
+(semt, yaş, iş) birleşince kişiyi ele verebileceğini unutmayın ([gizlilik ve anonimleştirme](../70-veri/gizlilik-ve-anonimlestirme.md)).
 
 ## Sentez: tekrar eden temalar
 

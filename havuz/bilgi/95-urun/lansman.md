@@ -93,8 +93,9 @@ YAYINLA (2 uyarı: Durum sayfası, Tanıtım videosu)
 ```
 
 Yayın ve yedek ayrıntıları havuzdaki temellerde: [`uygulama/docs/YAYINLAMA.md`](../../uygulama/docs/YAYINLAMA.md)
-(Docker, ters vekil, yedek), [`site/docs/YAYINLAMA.md`](../../site/docs/YAYINLAMA.md); yayın yolu seçimi:
-[yayın yolu seçimi](../60-devops/yayin-yolu-secimi.md).
+(Docker, ters vekil, yedek), [`site/docs/YAYINLAMA.md`](../../site/docs/YAYINLAMA.md). Yöntem notları:
+[yayın yolu seçimi](../60-devops/yayin-yolu-secimi.md), [veritabanı yedekleme](../60-devops/veritabani-yedekleme.md)
+(geri yükleme tatbikatı), [izleme ve uyarı](../60-devops/izleme-ve-uyari.md) (sağlık denetimi, uyarı eşiği).
 
 ## Yumuşak lansman ve kademeli açılış
 
@@ -169,7 +170,8 @@ gün 3: İNCELE → hata %4.1, aktivasyon %22, destek 21
 ```
 
 Üç alarm birlikte çaldığında ortak bir neden aranır (3. günün yayını, bir dış servisin kesintisi): önce son değişiklik
-geri alınır, sonra neden aranır ([hata ayıklama](../00-yontem/hata-ayiklama.md)).
+geri alınır, sonra neden aranır ([hata ayıklama](../00-yontem/hata-ayiklama.md)). Sızıntı ya da hesap ele geçirme
+şüphesi ayrı bir yoldur: [olay müdahalesi](../50-guvenlik/olay-mudahalesi.md).
 
 ## Geri bildirim toplama
 
@@ -219,6 +221,7 @@ geri alınır, sonra neden aranır ([hata ayıklama](../00-yontem/hata-ayiklama.
 ## İlgili
 
 - [Geri bildirim ve destek](geri-bildirim-ve-destek.md): destek kanalı, yanıt şablonları, etiketleme.
+- [Geliştirme döngüsü ve kalite kapıları](gelistirme-dongusu-ve-kapilar.md): yayına gelen işin geçtiği kapılar.
 - [Ölçüm ve öğrenme](olcum-ve-ogrenme.md): aktivasyon, tutma, karar kuralı.
 - [Yasal temel belgeler](yasal-temel-belgeler.md) ve [içerik ve büyüme](icerik-ve-buyume.md).
 - [Mobil ve mağaza](mobil-ve-magaza.md): mağaza incelemesi ve kademeli yayın.

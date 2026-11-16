@@ -30,15 +30,15 @@ dolmasıdır. Değişikliğin herkese ulaşma süresi, **eski** kaydın TTL'idir
 | Tür     | Ne yapar                                         | Örnek değer                                         | Dikkat                                                        |
 | ------- | ------------------------------------------------ | --------------------------------------------------- | ------------------------------------------------------------- |
 | `A`     | Ad → IPv4 adresi                                 | `203.0.113.10`                                      | Sunucu değişince güncellenir                                  |
-| `AAAA`  | Ad → IPv6 adresi                                 | `2001:db8::10`                                      | Sunucu IPv6'da dinlemiyorsa eklemeyin: IPv6'lı kullanıcılar açamaz |
+| `AAAA`  | Ad → IPv6 adresi                                 | `2001:db8::10`                                      | Sunucu IPv6'da dinlemiyorsa eklemeyin: IPv6'lı istemcilerde gecikme ya da hata, sertifika doğrulaması başarısız |
 | `CNAME` | Ad → başka bir ad (takma ad)                     | `www` → `kullanici.github.io.`                      | Aynı adda başka kayıt olamaz; kök alanda olamaz               |
 | `MX`    | E-posta hangi sunucuya gelir (öncelik + ad)      | `10 mx1.saglayici.example.`                         | Hedef bir ad olmalı; IP ya da CNAME olamaz                    |
 | `TXT`   | Serbest metin: SPF, DMARC, DKIM, sahiplik doğrulama | `v=spf1 include:_spf.saglayici.example -all`     | Aynı adda birden çok TXT olabilir; SPF yalnız bir tane        |
 | `CAA`   | Bu ada hangi sertifika yetkilisi sertifika verebilir | `0 issue "letsencrypt.org"`                     | Platformun kullandığı yetkili listede yoksa sertifika alınamaz |
 | `NS`    | Bu alanın yetkili ad sunucuları                  | `ns1.dns-saglayici.example.`                        | Kayıt firmasında değişir; değiştirmek bütün bölgeyi taşır     |
 
-DNS panellerinde `@` kök alanı (`ornek.com`) gösterir. Ad alanına `www` yazılır; `www.ornek.com` yazılırsa çoğu panel
-alanı yeniden ekler ve kayıt `www.ornek.com.ornek.com` olur.
+DNS panellerinde `@` kök alanı (`ornek.com`) gösterir. Ad alanına `www` yazılır; `www.ornek.com` yazılırsa birçok
+panel alanı yeniden ekler ve kayıt `www.ornek.com.ornek.com` olur.
 
 ## Alan adı, alt alan ve kök
 
@@ -256,7 +256,7 @@ En can yakıcı DNS kesintisi alan adının **süresinin dolmasıdır**: site, A
 | Sunucu değişti, bazı kullanıcılar bir gün eski sunucuya gitti    | TTL düşürülmeden değişti                                      | Değişimden en az eski TTL kadar önce TTL'i düşürün                   |
 | Kök alana CNAME eklenemiyor ya da e-posta bozuldu                | Kökte CNAME diğer kayıtlarla çakışır                          | A/AAAA, ALIAS ya da `www` asıl adres                                 |
 | Kayıt `www.ornek.com.ornek.com` olarak oluşmuş                   | Panele tam ad yazıldı                                         | Ad alanına yalnız `www`                                              |
-| Bazı kullanıcılar siteyi hiç açamıyor                            | `AAAA` var ama sunucu IPv6'da dinlemiyor                       | `AAAA`'yı silin ya da IPv6'yı açın                                   |
+| Bazı kullanıcılarda site geç ya da hiç açılmıyor; sertifika alınamıyor | `AAAA` var ama sunucu IPv6'da dinlemiyor               | `AAAA`'yı silin ya da IPv6'yı açın                                   |
 | Sertifika alınamıyor, kayıtlar doğru                             | `CAA` başka bir yetkiliye izin veriyor                        | `CAA`'ya platformun yetkilisini ekleyin ya da kaydı kaldırın         |
 | Şifre sıfırlama e-postaları spam'e düşüyor                       | SPF/DKIM yok ya da DMARC eşleşmesi tutmuyor                   | Sağlayıcının alan adı doğrulamasını bitirin; üç kaydı kurun          |
 | İkinci e-posta sağlayıcısı eklenince SPF bozuldu                 | İki ayrı `v=spf1` kaydı                                       | Tek kayıt, iki `include:`                                            |

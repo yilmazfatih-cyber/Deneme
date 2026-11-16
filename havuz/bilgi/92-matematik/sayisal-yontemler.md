@@ -28,15 +28,15 @@ guncellik: 2026-11
 
 ## Karar tablosu
 
-| Durum                                                      | Yöntem                                         | Neden                                                 |
-| ---------------------------------------------------------- | ---------------------------------------------- | ----------------------------------------------------- |
-| Kök bir aralıkta, işaret değişiyor, güvenlik önemli        | İkiye bölme                                    | Her zaman yakınsar; adım sayısı önceden bilinir       |
-| Türev kolay, iyi başlangıç var, hız önemli                 | Korumalı Newton (aralık + Newton)              | Hızlı; aralık dışına çıkınca ikiye bölmeye düşer      |
-| Türev yok, fonksiyon pahalı                                | Kiriş (secant) ya da kütüphanede Brent         | Türevsiz ve hızlı                                     |
-| `x = g(x)` biçiminde denge/sabit nokta                      | Sabit nokta yinelemesi                         | `∣g'(x)∣ < 1` ise yakınsar; yavaş olabilir            |
-| Çok değişkenli denklem sistemi, en iyileme                 | Kütüphane (`scipy.optimize` gibi)              | Elle yazmak hataya açık                               |
-| Büyük seyrek doğrusal sistem                               | Yinelemeli çözücü (eşlenik gradyan vb.) + tolerans | Doğrudan çözüm bellek/zaman tüketir                |
-| Finans: iç verim oranı                                     | İkiye bölme ([finans](finans-matematigi.md))    | Garantili; birden çok kök olasılığına dikkat          |
+| Durum                                               | Yöntem                                             | Neden                                            |
+| --------------------------------------------------- | -------------------------------------------------- | ------------------------------------------------ |
+| Kök bir aralıkta, işaret değişiyor, güvenlik önemli | İkiye bölme                                        | Her zaman yakınsar; adım sayısı önceden bilinir  |
+| Türev kolay, iyi başlangıç var, hız önemli          | Korumalı Newton (aralık + Newton)                  | Hızlı; aralık dışına çıkınca ikiye bölmeye düşer |
+| Türev yok, fonksiyon pahalı                         | Kiriş (secant) ya da kütüphanede Brent             | Türevsiz ve hızlı                                |
+| `x = g(x)` biçiminde denge/sabit nokta              | Sabit nokta yinelemesi                             | `∣g'(x)∣ < 1` ise yakınsar; yavaş olabilir       |
+| Çok değişkenli denklem sistemi, en iyileme          | Kütüphane (`scipy.optimize` gibi)                  | Elle yazmak hataya açık                          |
+| Büyük seyrek doğrusal sistem                        | Yinelemeli çözücü (eşlenik gradyan vb.) + tolerans | Doğrudan çözüm bellek/zaman tüketir              |
+| Finans: iç verim oranı                              | İkiye bölme ([finans](finans-matematigi.md))       | Garantili; birden çok kök olasılığına dikkat     |
 
 ## İkiye bölme ve Newton: yakınsama hızı
 
@@ -73,12 +73,12 @@ print(["%.1e" % e for e in errors])
 assert errors[1] < 0.01 and errors[2] < 1e-5 and errors[3] < 1e-11  # 2 → 5 → 11 hane
 ```
 
-| Yöntem             | Yakınsama               | Adım başına kazanç                  |
-| ------------------ | ----------------------- | ----------------------------------- |
-| İkiye bölme        | Doğrusal, oran 1/2      | 1 bit (~0,3 ondalık hane)           |
-| Sabit nokta        | Doğrusal, oran `∣g'∣`   | `g'` küçükse hızlı, 1'e yakınsa çok yavaş |
-| Kiriş              | Üstün doğrusal (~1,6)   | Hane sayısı ~1,6 katına çıkar       |
-| Newton             | Karesel                 | Hane sayısı ~2 katına çıkar         |
+| Yöntem      | Yakınsama             | Adım başına kazanç                        |
+| ----------- | --------------------- | ----------------------------------------- |
+| İkiye bölme | Doğrusal, oran 1/2    | 1 bit (~0,3 ondalık hane)                 |
+| Sabit nokta | Doğrusal, oran `∣g'∣` | `g'` küçükse hızlı, 1'e yakınsa çok yavaş |
+| Kiriş       | Üstün doğrusal (~1,6) | Hane sayısı ~1,6 katına çıkar             |
+| Newton      | Karesel               | Hane sayısı ~2 katına çıkar               |
 
 ## Newton ne zaman bozulur, nasıl korunur
 
@@ -255,17 +255,17 @@ göre sıkı tutun ya da daha hızlı bir yönteme geçin.
 
 ## Tuzaklar
 
-| Belirti                                                       | Neden                                                         | Çözüm                                                         |
-| ------------------------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------- |
-| Döngü hiç bitmiyor                                            | `while f(x) != 0` ya da mutlak `∣f∣ < tol`; ölçek büyük       | Göreli adım toleransı + en çok adım sayısı                     |
-| Newton bazen saçma büyük sayı, bazen `ZeroDivisionError`      | Kötü başlangıç, türevin sıfır olduğu nokta                    | Aralıkla korunan Newton; türev sıfırsa ikiye bölme            |
-| Newton iki değer arasında gidip geliyor                       | Döngü (ör. `x³ − 2x + 2`, `x₀ = 0`)                           | Korumalı Newton; adım sınırı                                  |
-| İkiye bölme "işaret değişimi yok" diyor                       | Aralıkta kök yok ya da çift sayıda kök var                    | Fonksiyonu tarayıp aralığı daraltın; çizdirin                 |
-| Sonuç adım sınırında döndü, kimse fark etmedi                 | Yakınsamama sessizce yutulmuş                                 | Sınıra ulaşınca hata ya da uyarı                              |
-| Doğru formül saçma sonuç veriyor (0, ya da %25 hata)          | Yıkıcı sadeleşme                                              | Kararlı eşdeğer formül; `log1p`, `expm1`, `hypot`              |
-| Girdideki küçük değişiklik sonucu altüst ediyor               | Kötü koşullu problem (κ büyük)                                | Ölçekleme, değişken azaltma, düzenlileştirme                  |
-| Yinelemeli çözücü "yakınsadı" ama sonuç yanlış                | Küçük artık, büyük hata (κ büyük)                             | Koşul sayısını kestirin; sonucu bağımsız yolla doğrulayın     |
-| Sabit nokta yinelemesi çok yavaş                              | `∣g'∣ ≈ 1`                                                    | Newton ya da hızlandırma; toleransı sıkılaştırın              |
+| Belirti                                                  | Neden                                                   | Çözüm                                                     |
+| -------------------------------------------------------- | ------------------------------------------------------- | --------------------------------------------------------- |
+| Döngü hiç bitmiyor                                       | `while f(x) != 0` ya da mutlak `∣f∣ < tol`; ölçek büyük | Göreli adım toleransı + en çok adım sayısı                |
+| Newton bazen saçma büyük sayı, bazen `ZeroDivisionError` | Kötü başlangıç, türevin sıfır olduğu nokta              | Aralıkla korunan Newton; türev sıfırsa ikiye bölme        |
+| Newton iki değer arasında gidip geliyor                  | Döngü (ör. `x³ − 2x + 2`, `x₀ = 0`)                     | Korumalı Newton; adım sınırı                              |
+| İkiye bölme "işaret değişimi yok" diyor                  | Aralıkta kök yok ya da çift sayıda kök var              | Fonksiyonu tarayıp aralığı daraltın; çizdirin             |
+| Sonuç adım sınırında döndü, kimse fark etmedi            | Yakınsamama sessizce yutulmuş                           | Sınıra ulaşınca hata ya da uyarı                          |
+| Doğru formül saçma sonuç veriyor (0, ya da %25 hata)     | Yıkıcı sadeleşme                                        | Kararlı eşdeğer formül; `log1p`, `expm1`, `hypot`         |
+| Girdideki küçük değişiklik sonucu altüst ediyor          | Kötü koşullu problem (κ büyük)                          | Ölçekleme, değişken azaltma, düzenlileştirme              |
+| Yinelemeli çözücü "yakınsadı" ama sonuç yanlış           | Küçük artık, büyük hata (κ büyük)                       | Koşul sayısını kestirin; sonucu bağımsız yolla doğrulayın |
+| Sabit nokta yinelemesi çok yavaş                         | `∣g'∣ ≈ 1`                                              | Newton ya da hızlandırma; toleransı sıkılaştırın          |
 
 ## Denetim listesi
 

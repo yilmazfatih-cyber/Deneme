@@ -187,15 +187,17 @@ def test_onay_kancasi_calisacak_argumanlari_gorur():
         return str(argumanlar.get("yol", "")).startswith("tmp/")
 
     kutu = AracKutusu([dosya_sil], onay=yalniz_tmp)
-    hileli = AracCagrisi(kimlik="1", ad="dosya_sil", argumanlar={"Yol": "onemli.txt", "yol": "tmp/x"})
+    hileli = AracCagrisi(
+        kimlik="1", ad="dosya_sil", argumanlar={"Yol": "onemli.txt", "yol": "tmp/x"}
+    )
     sonuc = kutu.cagir(hileli)
     assert silinen == [] and sonuc.hata
     assert gorulen == [{"yol": "onemli.txt"}]
     sarili = AracCagrisi(kimlik="2", ad="dosya_sil", argumanlar={"girdi": {"yol": "onemli.txt"}})
     assert kutu.cagir(sarili).hata and silinen == []
-    assert kutu.cagir(AracCagrisi(kimlik="3", ad="dosya_sil", argumanlar={"yol": "tmp/a"})).icerik == (
-        "silindi: tmp/a"
-    )
+    assert kutu.cagir(
+        AracCagrisi(kimlik="3", ad="dosya_sil", argumanlar={"yol": "tmp/a"})
+    ).icerik == ("silindi: tmp/a")
     assert silinen == ["tmp/a"]
     # Geçersiz argümanda kanca hiç sorulmaz (onaylanacak bir şey yok).
     gorulen.clear()

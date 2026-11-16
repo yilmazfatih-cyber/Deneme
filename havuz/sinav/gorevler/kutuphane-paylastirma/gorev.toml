@@ -1,0 +1,22 @@
+kimlik = "kutuphane-paylastirma"
+baslik = "Oranla paylaştırmada artan kuruş yanlış paya gidiyor (iki dilde)"
+temel = "kutuphane"
+zorluk = "zor"
+tur = "hata"
+tahmini_sure_dk = 30
+aciklama = """`allocate` en büyük kalan yerine en KÜÇÜK kalana kuruş veriyor; toplam doğru kaldığı için gözden kaçar. \
+Hata TypeScript ve Python'da aynı; ikisi birlikte düzeltilmeli (değişmez kural). Hatayı yakalayan vektör \
+örneği ve iki özellik testi başlangıçta çıkarılmıştır; gizli testler iki dilde de geri getirir."""
+baslangic_denetimi = "yesil"
+
+[[gizli]]
+ad = "python"
+klasor = "py"
+komut = "python -m pytest tests/test_sinav_gizli_paylastirma.py -q -p no:cacheprovider"
+dosyalar = { "test_paylastirma.py" = "py/tests/test_sinav_gizli_paylastirma.py" }
+
+[[gizli]]
+ad = "typescript"
+klasor = "ts"
+komut = "npx vitest run test/sinav-gizli-paylastirma.test.ts"
+dosyalar = { "paylastirma.test.ts" = "ts/test/sinav-gizli-paylastirma.test.ts" }

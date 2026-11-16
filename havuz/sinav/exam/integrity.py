@@ -35,6 +35,8 @@ _SUSTURMA = re.compile(
     r"|//\s*harf:|#\s*harf:|pragma:\s*no cover|#\s*fmt:\s*off|prettier-ignore"
 )
 _TEST_TANIMI = re.compile(r"^\s*(?:async\s+)?def\s+(test_\w+)", re.MULTILINE)
+_IMPORT = re.compile(r"^\s*(?:import\b|from\s+\S+\s+import\b)")
+_NAME = re.compile(r"[A-Za-z_$][\w$]*")
 
 
 @dataclass(frozen=True)
@@ -86,11 +88,45 @@ def _norm(line: str) -> str:
     return line.rstrip().removesuffix(",")
 
 
+def _import_closed(text: str) -> bool:
+    return text.count("{") <= text.count("}") and text.count("(") <= text.count(")")
+
+
+def _logical_lines(lines: list[str]) -> list[str]:
+    """Birden çok satıra yayılmış içe aktarmayı (`import {` … `} from`, `from x import (` … `)`) tek satır yapar."""
+    out: list[str] = []
+    buffer: str | None = None
+    for line in lines:
+        if buffer is not None:
+            buffer += " " + line.strip()
+            if _import_closed(buffer):
+                out.append(buffer)
+                buffer = None
+        elif _IMPORT.match(line) and not _import_closed(line):
+            buffer = line.rstrip()
+        else:
+            out.append(line)
+    if buffer is not None:
+        out.append(buffer)
+    return out
+
+
+def _kept(old_line: str, new_line: str) -> bool:
+    """Eski satır yeni satırda korunmuş mu? (sona virgül eklemek ve içe aktarmaya ad eklemek serbest)"""
+    if _norm(old_line) == _norm(new_line):
+        return True
+    if _IMPORT.match(old_line) and _IMPORT.match(new_line):
+        return set(_NAME.findall(old_line)) <= set(_NAME.findall(new_line))
+    return False
+
+
 def _added_lines(old: list[str], new: list[str]) -> list[str] | None:
     """Yalnız ekleme mi? Evet ise eklenen satırlar; değilse (satır silinmiş/değişmişse) None.
 
-    Var olan satırın sonuna yalnız virgül eklenmesi (listeye öğe eklerken) ekleme sayılır.
+    Var olan satırın sonuna yalnız virgül eklenmesi (listeye öğe eklerken) ve bir içe aktarmaya yeni ad
+    eklenmesi (yeni testin ihtiyacı) ekleme sayılır.
     """
+    old, new = _logical_lines(old), _logical_lines(new)
     added: list[str] = []
     matcher = difflib.SequenceMatcher(None, old, new, autojunk=False)
     for tag, i1, i2, j1, j2 in matcher.get_opcodes():
@@ -104,7 +140,7 @@ def _added_lines(old: list[str], new: list[str]) -> list[str] | None:
         block = new[j1:j2]
         position = 0
         for old_line in old[i1:i2]:  # eski satırlar yeni blokta sırayla bulunmalı
-            while position < len(block) and _norm(block[position]) != _norm(old_line):
+            while position < len(block) and not _kept(old_line, block[position]):
                 added.append(block[position])
                 position += 1
             if position == len(block):

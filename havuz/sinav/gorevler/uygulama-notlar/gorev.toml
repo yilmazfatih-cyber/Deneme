@@ -1,0 +1,21 @@
+kimlik = "uygulama-notlar"
+baslik = "Notlar özelliği: üreteç, yeni alan ve sabitlenenler üstte"
+temel = "uygulama"
+zorluk = "orta"
+tur = "ozellik"
+tahmini_sure_dk = 30
+aciklama = """AGENTS.md tarifiyle üreteçten yeni varlık; ardından alan sınırı değiştirmek, varsayılanlı yeni alan \
+(pinned), saf sıralama işlevi ve düzenleme ekranında onay kutusu. Gizli testler şemayı, sıralamayı ve ekranı sınar."""
+baslangic_denetimi = "yesil"
+
+[[gizli]]
+ad = "sema"
+klasor = "shared"
+komut = "npx vitest run test/sinav-gizli-notlar.test.ts"
+dosyalar = { "sema.test.ts" = "shared/test/sinav-gizli-notlar.test.ts" }
+
+[[gizli]]
+ad = "ekran"
+klasor = "web"
+komut = "npx vitest run test/sinav-gizli-notlar.test.tsx"
+dosyalar = { "ekran.test.tsx" = "web/test/sinav-gizli-notlar.test.tsx" }

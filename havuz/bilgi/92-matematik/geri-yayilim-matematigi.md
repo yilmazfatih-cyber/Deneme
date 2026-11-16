@@ -29,14 +29,14 @@ guncellik: 2026-11
 
 `f(a, b, c) = (a·b + c)²`, `a = 2`, `b = −3`, `c = 10`.
 
-| Adım (ileri) | Değer | Geri: kaybın bu düğüme göre türevi        |
-| ------------ | ----- | ----------------------------------------- |
-| `u = a·b`    | −6    | `∂f/∂u = ∂f/∂v · 1 = 8`                   |
-| `v = u + c`  | 4     | `∂f/∂v = 2v = 8`                          |
-| `f = v²`     | 16    | `∂f/∂f = 1`                               |
-| `a`          | 2     | `∂f/∂a = ∂f/∂u · b = −24`                 |
-| `b`          | −3    | `∂f/∂b = ∂f/∂u · a = 16`                  |
-| `c`          | 10    | `∂f/∂c = ∂f/∂v · 1 = 8`                   |
+| Adım (ileri) | Değer | Geri: kaybın bu düğüme göre türevi |
+| ------------ | ----- | ---------------------------------- |
+| `u = a·b`    | −6    | `∂f/∂u = ∂f/∂v · 1 = 8`            |
+| `v = u + c`  | 4     | `∂f/∂v = 2v = 8`                   |
+| `f = v²`     | 16    | `∂f/∂f = 1`                        |
+| `a`          | 2     | `∂f/∂a = ∂f/∂u · b = −24`          |
+| `b`          | −3    | `∂f/∂b = ∂f/∂u · a = 16`           |
+| `c`          | 10    | `∂f/∂c = ∂f/∂v · 1 = 8`            |
 
 ```python calistir
 import math
@@ -273,17 +273,17 @@ doğrudan bir `+1` yolu açar), katman normalleştirme, dikkatli başlatma (Xavi
 
 ## Tuzaklar
 
-| Belirti                                                         | Neden                                                       | Çözüm                                                            |
-| --------------------------------------------------------------- | ----------------------------------------------------------- | ---------------------------------------------------------------- |
-| Kayıp ilk adımlarda `nan`/`inf`                                 | `exp` taşması; softmax/log ayrı ayrı; `log(0)`               | Logit alan kayıp işlevi; log-sum-exp; gerekirse kırpma           |
-| Kayıp önce düşüyor, sonra adımlar giderek büyüyor               | Gradyan sıfırlanmıyor, birikiyor                            | Her adımda `zero_grad`; biriktirme bilinçliyse kaybı bölün       |
-| Bir parametrenin gradyanı yarı değerinde                        | Biriktirme yerine atama (`=`)                               | Geri adımda hep `+=`                                             |
-| Gradyan denetimi tek bir örnekte başarısız                      | Kırık nokta (ReLU'da 0, `max`), ya da `float32`             | Kırıktan uzak nokta; `float64`; `h ≈ 1e-6`                       |
-| Derin çizgede `RecursionError`                                  | Topolojik sıralama özyinelemeli                             | Yığınla (döngüyle) gezinme                                       |
-| Gradyan şekli parametreyle uyuşmuyor                            | Yayınlanan eksen geri yolda toplanmamış                     | Yayınlanan eksenlerde toplayıp asıl şekle indirin                |
-| İlk katmanlar hiç öğrenmiyor                                    | Kaybolan gradyan (sigmoid/tanh zinciri, kötü başlatma)      | ReLU/GELU, artık bağlantı, normalleştirme, He/Xavier başlatma    |
-| Kayıp birden sıçrayıp `nan` oluyor                              | Patlayan gradyan; öğrenme oranı büyük                       | Gradyan kırpma; öğrenme oranını küçültün ([optimizasyon](optimizasyon.md)) |
-| Çıktı katmanında softmax + `CrossEntropyLoss` ile eğitim kötü    | Softmax iki kez uygulanmış                                  | Kayıp işlevine ham logit verin                                   |
+| Belirti                                                       | Neden                                                  | Çözüm                                                                      |
+| ------------------------------------------------------------- | ------------------------------------------------------ | -------------------------------------------------------------------------- |
+| Kayıp ilk adımlarda `nan`/`inf`                               | `exp` taşması; softmax/log ayrı ayrı; `log(0)`         | Logit alan kayıp işlevi; log-sum-exp; gerekirse kırpma                     |
+| Kayıp önce düşüyor, sonra adımlar giderek büyüyor             | Gradyan sıfırlanmıyor, birikiyor                       | Her adımda `zero_grad`; biriktirme bilinçliyse kaybı bölün                 |
+| Bir parametrenin gradyanı yarı değerinde                      | Biriktirme yerine atama (`=`)                          | Geri adımda hep `+=`                                                       |
+| Gradyan denetimi tek bir örnekte başarısız                    | Kırık nokta (ReLU'da 0, `max`), ya da `float32`        | Kırıktan uzak nokta; `float64`; `h ≈ 1e-6`                                 |
+| Derin çizgede `RecursionError`                                | Topolojik sıralama özyinelemeli                        | Yığınla (döngüyle) gezinme                                                 |
+| Gradyan şekli parametreyle uyuşmuyor                          | Yayınlanan eksen geri yolda toplanmamış                | Yayınlanan eksenlerde toplayıp asıl şekle indirin                          |
+| İlk katmanlar hiç öğrenmiyor                                  | Kaybolan gradyan (sigmoid/tanh zinciri, kötü başlatma) | ReLU/GELU, artık bağlantı, normalleştirme, He/Xavier başlatma              |
+| Kayıp birden sıçrayıp `nan` oluyor                            | Patlayan gradyan; öğrenme oranı büyük                  | Gradyan kırpma; öğrenme oranını küçültün ([optimizasyon](optimizasyon.md)) |
+| Çıktı katmanında softmax + `CrossEntropyLoss` ile eğitim kötü | Softmax iki kez uygulanmış                             | Kayıp işlevine ham logit verin                                             |
 
 ## Denetim listesi
 

@@ -216,7 +216,8 @@ Yanma hızı, uyarıyı doğrudan "kullanıcıya verdiğimiz söz tehlikede mi" 
 3. **Bağımlılıklar:** veritabanı sorgu süresi, dış servis başına hata/gecikme, devre kesici durumları.
 4. **Olay işaretleri:** dağıtım, yapılandırma değişikliği, yük devri (grafik üstünde dikey çizgi). Kesintilerin
    çoğu bir değişiklikten hemen sonra başlar.
-5. Her grafiğin birimi ve zaman aralığı yazılı; ortalama yerine yüzdelik.
+5. Her grafiğin birimi ve zaman aralığı yazılı; ortalama yerine yüzdelik. Panonun okuru, karşılaştırma bağlamı ve
+   aşırı yükleme tuzakları: [Pano tasarımı](../70-veri/pano-tasarimi.md).
 
 ## Günlük ve iz
 
@@ -273,7 +274,9 @@ Yanma hızı, uyarıyı doğrudan "kullanıcıya verdiğimiz söz tehlikede mi" 
 
 - [Kapasite tahmini](kapasite-tahmini.md) (yüzdelikler, Little yasası) · [Dayanıklılık kalıpları](dayaniklilik-kaliplari.md) ·
   [Kuyruk ve olaylar](kuyruk-ve-olaylar.md) (kuyruk derinliği)
-- [Hata yönetimi ve günlükleme](../30-arkauc/hata-yonetimi-ve-gunlukleme.md)
+- [Hata yönetimi ve günlükleme](../30-arkauc/hata-yonetimi-ve-gunlukleme.md) ·
+  [İzleme ve uyarı](../60-devops/izleme-ve-uyari.md) (sağlık uçları, dışarıdan izleme, günlük toplama) ·
+  [Güvenlik günlüğü](../50-guvenlik/gunluk-ve-izleme-guvenlik.md) · [Olay sonrası değerlendirme](../60-devops/olay-sonrasi-degerlendirme.md)
 - Havuzda: istek günlüğü [`uygulama/api/src/http/requestLog.ts`](../../uygulama/api/src/http/requestLog.ts),
   sağlık ucu [`uygulama/api/src/modules/health/routes.ts`](../../uygulama/api/src/modules/health/routes.ts),
   yüzdelik ve histogram [`kutuphane/py/kutuphane/istatistik.py`](../../kutuphane/py/kutuphane/istatistik.py)

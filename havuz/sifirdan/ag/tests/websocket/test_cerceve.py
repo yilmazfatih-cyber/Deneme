@@ -122,7 +122,7 @@ def test_rastgele_bayt_cozucuyu_cokertmez(data: bytes, masked: bool) -> None:
 
 def _handshake_headers(**changes: str | None) -> Headers:
     values: dict[str, str | None] = {
-        "Host": "ornek:8451",
+        "Host": "ornek:8081",
         "Upgrade": "websocket",
         "Connection": "keep-alive, Upgrade",
         "Sec-WebSocket-Key": "dGhlIHNhbXBsZSBub25jZQ==",
@@ -145,15 +145,15 @@ def _handshake_headers(**changes: str | None) -> Headers:
 )
 def test_el_sikisma_reddi(changes: dict[str, str | None], status: int) -> None:
     with pytest.raises(HandshakeError) as info:
-        check_request("GET", "HTTP/1.1", "ornek:8451", _handshake_headers(**changes))
+        check_request("GET", "HTTP/1.1", "ornek:8081", _handshake_headers(**changes))
     assert info.value.status == status
 
 
 def test_el_sikisma_koken_ve_alt_protokol() -> None:
-    same = _handshake_headers(Origin="http://ornek:8451")
-    assert check_request("GET", "HTTP/1.1", "ornek:8451", same)[1] is None
+    same = _handshake_headers(Origin="http://ornek:8081")
+    assert check_request("GET", "HTTP/1.1", "ornek:8081", same)[1] is None
     listed = _handshake_headers(Origin="https://izinli.example")
-    check_request("GET", "HTTP/1.1", "ornek:8451", listed, {"https://izinli.example"})
+    check_request("GET", "HTTP/1.1", "ornek:8081", listed, {"https://izinli.example"})
     with_proto = _handshake_headers(**{"Sec-WebSocket-Protocol": "json, sohbet.v1"})
     accept, chosen = check_request("GET", "HTTP/1.1", "x", with_proto, None, ["sohbet.v1"])
     assert (accept, chosen) == ("s3pPLMBiTxaQ9kYGzzhZRbK+xOo=", "sohbet.v1")

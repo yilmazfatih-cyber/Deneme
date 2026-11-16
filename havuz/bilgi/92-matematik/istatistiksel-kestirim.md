@@ -28,16 +28,16 @@ guncellik: 2026-11
 
 ## Karar tablosu
 
-| Ne kestiriyorsunuz                              | Kestirici                           | Belirsizlik                                           |
-| ----------------------------------------------- | ----------------------------------- | ----------------------------------------------------- |
-| Ortalama                                        | Örneklem ortalaması                 | `SE = s/√n`; çarpık veride önyükleme                  |
-| Oran (dönüşüm, hata oranı)                      | `k/n`                               | `SE = √(p(1−p)/n)`; küçük `n` ya da uç `p`'de Wilson   |
-| Hiç gözlenmemiş olay (0 hata / n deneme)        | `0` değil: üst sınır verin          | 3'ler kuralı: %95 üst sınır ≈ `3/n`                   |
-| Az veriyle oran (5 yorumda 5 yıldız)            | Yumuşatılmış `(k+1)/(n+2)`          | Önsel bilgiyle; sıralamada küçük `n`'i cezalandırır   |
-| Varyans, standart sapma                         | `n−1` bölücülü                      | Küçük `n`'de standart sapma yine biraz düşük çıkar    |
-| Ortanca, yüzdelik, oranların oranı, karmaşık ölçüt | Doğrudan hesap                  | Önyükleme yüzdelik aralığı                            |
-| Model parametresi                               | En çok olabilirlik (ya da önselli)  | Kütüphanenin standart hatası ya da önyükleme          |
-| İki grubun farkı (A/B)                          | Farkın kestirimi                    | [A/B testi](../70-veri/ab-testi.md)                   |
+| Ne kestiriyorsunuz                                 | Kestirici                          | Belirsizlik                                          |
+| -------------------------------------------------- | ---------------------------------- | ---------------------------------------------------- |
+| Ortalama                                           | Örneklem ortalaması                | `SE = s/√n`; çarpık veride önyükleme                 |
+| Oran (dönüşüm, hata oranı)                         | `k/n`                              | `SE = √(p(1−p)/n)`; küçük `n` ya da uç `p`'de Wilson |
+| Hiç gözlenmemiş olay (0 hata / n deneme)           | `0` değil: üst sınır verin         | 3'ler kuralı: %95 üst sınır ≈ `3/n`                  |
+| Az veriyle oran (5 yorumda 5 yıldız)               | Yumuşatılmış `(k+1)/(n+2)`         | Önsel bilgiyle; sıralamada küçük `n`'i cezalandırır  |
+| Varyans, standart sapma                            | `n−1` bölücülü                     | Küçük `n`'de standart sapma yine biraz düşük çıkar   |
+| Ortanca, yüzdelik, oranların oranı, karmaşık ölçüt | Doğrudan hesap                     | Önyükleme yüzdelik aralığı                           |
+| Model parametresi                                  | En çok olabilirlik (ya da önselli) | Kütüphanenin standart hatası ya da önyükleme         |
+| İki grubun farkı (A/B)                             | Farkın kestirimi                   | [A/B testi](../70-veri/ab-testi.md)                  |
 
 ## n mi, n−1 mi
 
@@ -242,16 +242,16 @@ olayları varsa satırları değil **grupları** (müşteriyi, günü, bloğu) y
 
 ## Tuzaklar
 
-| Belirti                                                          | Neden                                                       | Çözüm                                                              |
-| ---------------------------------------------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------------ |
-| İki araç aynı veride farklı standart sapma veriyor               | Biri `n`'e (numpy `ddof=0`), öteki `n−1`'e (pandas) bölüyor | Bölücüyü açıkça verin ve yazın                                     |
-| Hata çubukları "çok dar"                                         | Standart sapma yerine standart hata çizilmiş (ya da tersi)  | Grafikte hangisi olduğu yazsın                                     |
-| "5 yorumda 5 yıldız" ürün, 4,8 yıldızlı 2 000 yorumlu ürünün önünde | Az veride ham ortalama; varyans büyük                     | Yumuşatılmış ortalama ya da güven aralığının alt sınırıyla sıralama |
-| "Hiç hata görmedik, oran %0"                                     | Sıfır gözlem, sıfır olasılık değildir                       | 3'ler kuralıyla üst sınır                                          |
-| Olabilirlik hesabı 0 ya da `-inf` veriyor                        | Olasılıklar çarpıldı (alt taşma) ya da `log(0)`             | Log-olabilirlik toplamı; olasılıkları kırpın                       |
-| Önyükleme aralığı gerçek değişkenlikten çok dar                  | Satırlar bağımsız değil (aynı müşteri, aynı gün)            | Gruplu/bloklu önyükleme                                            |
-| Kalın kuyruklu veride ortalamanın aralığı tutmuyor               | Varyans sonsuz ya da çok büyük                              | Ortanca, kırpılmış ortalama; log dönüşümü ([dağılımlar](dagilimlar.md)) |
-| Yansız kestirici seçildi ama tahminler çok oynak                 | Varyans baskın                                              | Düzenlileştirme, yumuşatma, daha çok veri                          |
+| Belirti                                                             | Neden                                                       | Çözüm                                                                   |
+| ------------------------------------------------------------------- | ----------------------------------------------------------- | ----------------------------------------------------------------------- |
+| İki araç aynı veride farklı standart sapma veriyor                  | Biri `n`'e (numpy `ddof=0`), öteki `n−1`'e (pandas) bölüyor | Bölücüyü açıkça verin ve yazın                                          |
+| Hata çubukları "çok dar"                                            | Standart sapma yerine standart hata çizilmiş (ya da tersi)  | Grafikte hangisi olduğu yazsın                                          |
+| "5 yorumda 5 yıldız" ürün, 4,8 yıldızlı 2 000 yorumlu ürünün önünde | Az veride ham ortalama; varyans büyük                       | Yumuşatılmış ortalama ya da güven aralığının alt sınırıyla sıralama     |
+| "Hiç hata görmedik, oran %0"                                        | Sıfır gözlem, sıfır olasılık değildir                       | 3'ler kuralıyla üst sınır                                               |
+| Olabilirlik hesabı 0 ya da `-inf` veriyor                           | Olasılıklar çarpıldı (alt taşma) ya da `log(0)`             | Log-olabilirlik toplamı; olasılıkları kırpın                            |
+| Önyükleme aralığı gerçek değişkenlikten çok dar                     | Satırlar bağımsız değil (aynı müşteri, aynı gün)            | Gruplu/bloklu önyükleme                                                 |
+| Kalın kuyruklu veride ortalamanın aralığı tutmuyor                  | Varyans sonsuz ya da çok büyük                              | Ortanca, kırpılmış ortalama; log dönüşümü ([dağılımlar](dagilimlar.md)) |
+| Yansız kestirici seçildi ama tahminler çok oynak                    | Varyans baskın                                              | Düzenlileştirme, yumuşatma, daha çok veri                               |
 
 ## Denetim listesi
 

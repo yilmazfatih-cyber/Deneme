@@ -21,7 +21,7 @@ Hat (pipeline): **çek** (extract) → **doğrula** → **dönüştür** (transf
 2. **Durum yalnız başarıdan sonra ilerler:** yarıda kalan koşu, bir sonraki çalıştırmada aynı yerden başlar.
 
 Artımlı (incremental) yükleme bir **filigranla** (watermark: en son işlenen zaman ya da kimlik) çalışır. Geç gelen
-veri için filigranın gerisinde bir **geri bakış penceresi** bırakılır; idempotent yükleme sayesinde aynı kaydı
+veri için filigranın gerisinde bir **geri bakış penceresi** (lookback) bırakılır; idempotent yükleme sayesinde aynı kaydı
 yeniden işlemek zararsızdır. Doğrulamadan geçemeyen kayıt silinmez, **karantinaya** gider; ham veri değişmeden
 saklanır ki hata bulununca baştan işlenebilsin.
 
@@ -245,3 +245,8 @@ açıklanamayan düşüş haber verir.
 - [Analitik veri modeli](analitik-veri-modeli.md) — olay ve varış zamanı, saat dilimi
 - [Olay izleme planı](olay-izleme-plani.md) — istemcide üretilen `olay_id` ile tekilleştirme
 - [Araç seçimi](arac-secimi.md) — ham ve ara katman için dosya biçimi
+- [Kuyruk ve olaylar](../40-sistem-tasarimi/kuyruk-ve-olaylar.md) — en az bir kez teslim, idempotent tüketici
+- [Arka plan işleri](../30-arkauc/arka-plan-isleri.md) — zamanlanmış işin çalıştırılması
+- [SQL performans ve işlem](../10-diller/sql-performans-ve-islem.md) — işlem ve yalıtım
+- [İzleme ve uyarı](../60-devops/izleme-ve-uyari.md) — işin canlılığını dışarıdan izlemek
+- [MLOps](../80-ml/mlops.md) — model verisinde kayma ve eğitim-sunum çarpıklığı

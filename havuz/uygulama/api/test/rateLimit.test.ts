@@ -64,10 +64,10 @@ describe('hız sınırı (jeton kovası)', () => {
     expect(rateLimitKey('2001:db8:1::')).toBe('2001:db8:1:0::/64')
     expect(rateLimitKey('2001:db8:aa:bb:cc:dd:1.2.3.4')).toBe('2001:db8:aa:bb::/64')
     // Bunlar /64'e indirilseydi ilgisiz herkes tek kovaya düşerdi:
-    expect(rateLimitKey('::1')).toBe('::1')
-    expect(rateLimitKey('::FFFF:1.2.3.4')).toBe('::ffff:1.2.3.4')
+    expect(rateLimitKey('::1')).toBe('0:0:0:0:0:0:0:1')
+    expect(rateLimitKey('::FFFF:1.2.3.4')).toBe('0:0:0:0:0:ffff:1.2.3.4')
     expect(rateLimitKey('0:0:0:0:0:ffff:1.2.3.5')).toBe('0:0:0:0:0:ffff:1.2.3.5')
-    expect(rateLimitKey('64:ff9b::198.51.100.7')).toBe('64:ff9b::198.51.100.7')
+    expect(rateLimitKey('64:ff9b::198.51.100.7')).toBe('64:ff9b:0:0:0:0:198.51.100.7')
     expect(rateLimitKey('2001:0:4136:e378:8000:63bf:3fff:fdd2')).toBe('2001:0:4136:e378:8000:63bf:3fff:fdd2')
   })
 

@@ -23,13 +23,15 @@ from pydantic import BaseModel, Field
 
 from yz.ajan.dongu import Adim, Ajan, AjanAyari
 from yz.arac.hazir import belge_arama_araci, hesap_araci, zaman_araclari
+from yz.arac.kutu import AracKutusu
+from yz.arac.tanim import Arac, AracSonucu
 from yz.guvenlik.maske import AkisMaskeAcici, MaskeOturumu, maskele, maskeyi_ac
 from yz.hatalar import SaglayiciHatasi, YzHatasi
 from yz.istem.butce import mesajlari_sigdir
 from yz.metin import kirp
 from yz.rag.yanit import RagHatti
 from yz.saglayici.sse import sse_bicimle
-from yz.saglayici.tipler import Kullanim, Mesaj
+from yz.saglayici.tipler import AracCagrisi, Kullanim, Mesaj
 from yz.sunucu.durum import SunucuDurumu
 
 
@@ -123,11 +125,25 @@ def _rag_akisi(b: _Baglam) -> Iterator[str]:
                            "model": deger.model})  # fmt: skip
 
 
+class _MaskeliKutu(AracKutusu):
+    """Araç çıktısını modele dönmeden önce maskeler (belge_ara'nın döndürdüğü belge parçası kişisel veri
+    içerebilir; rag kipinde olduğu gibi bu kipte de modele maskeli gitmeli). Ekranda `ac` ile açılır."""
+
+    def __init__(self, araclar: list[Arac], maske: Callable[[str], str]) -> None:
+        super().__init__(araclar)
+        self._maske = maske
+
+    def cagir(self, cagri: AracCagrisi) -> AracSonucu:
+        sonuc = super().cagir(cagri)
+        return AracSonucu(self._maske(sonuc.icerik), sonuc.hata)
+
+
 def _arac_akisi(b: _Baglam) -> Iterator[str]:
     kuyruk: queue.Queue[tuple[str, Any]] = queue.Queue()
     araclar = [hesap_araci, *zaman_araclari()]
     if len(b.durum.dizin):
         araclar.append(belge_arama_araci(b.durum.dizin))
+    kutu = _MaskeliKutu(araclar, b.maskele)
 
     def adim_bildir(adim: Adim) -> None:
         if adim.tur == "arac":
@@ -136,7 +152,7 @@ def _arac_akisi(b: _Baglam) -> Iterator[str]:
 
     def calis() -> None:
         try:
-            ajan = Ajan(b.saglayici, araclar, ayar=AjanAyari(azami_adim=6), olay=adim_bildir)
+            ajan = Ajan(b.saglayici, kutu, ayar=AjanAyari(azami_adim=6), olay=adim_bildir)
             kuyruk.put(("sonuc", ajan.calistir(b.mesajlar())))
         except Exception as hata:
             kuyruk.put(("hata", hata))

@@ -11,7 +11,8 @@ Uçlar:
     GET  /api/belgeler        dizindeki belgeler
     POST /v1/chat/completions, GET /v1/models   OpenAI uyumlu vekil (sunucu/vekil.py)
 Güvenlik: API anahtarı tanımlıysa (yz.yaml sunucu.api_anahtari_ortam adlı ortam değişkeni) her
-API isteği ister; CORS varsayılan kapalıdır; yükleme boyutu sınırlıdır.
+API isteği ister; anahtar yoksa yalnız bu bilgisayarın adıyla (127.0.0.1/localhost) ve başka siteden
+gelmeyen isteklerle çalışır; CORS varsayılan kapalıdır; gövde boyu okunurken sınırlanır (sunucu/kapi.py).
 Kim kullanır: cli.py (`sun`), tests/test_sunucu.py.
 Genişletme: yeni uç → bu dosyaya `@uygulama.get/post` ekleyin; testini ASGI aktarımıyla yazın.
 """
@@ -34,6 +35,7 @@ from yz.rag.dizin import RagDizini
 from yz.rag.yanit import RagHatti
 from yz.rag.yukleyici import bayttan_yukle
 from yz.sunucu.durum import SaglayiciFabrikasi, SunucuDurumu, anahtar_denetle, guvenli_dosya_adi
+from yz.sunucu.kapi import IstekKapisi
 from yz.sunucu.sohbet_ucu import SohbetIstegiGovdesi, sohbet_akisi
 from yz.sunucu.vekil import yonlendirici as vekil
 
@@ -69,6 +71,8 @@ def uygulama_kur(
         dependencies=[Depends(anahtar_denetle)],
     )
     uygulama.state.durum = durum
+    # Ön denetim (yerel kipte ad/köken, anahtar, gövde boyu) gövde okunmadan önce; CORS bunun dışında kalır.
+    uygulama.add_middleware(IstekKapisi, durum=durum)
     if ayarlar.sunucu.izinli_kokenler:
         uygulama.add_middleware(CORSMiddleware, allow_origins=ayarlar.sunucu.izinli_kokenler,
                                 allow_methods=["GET", "POST"], allow_headers=["*"])  # fmt: skip

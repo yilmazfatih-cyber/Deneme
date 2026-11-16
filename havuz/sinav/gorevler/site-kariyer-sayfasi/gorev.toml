@@ -1,0 +1,14 @@
+kimlik = "site-kariyer-sayfasi"
+baslik = "Siteye Kariyer sayfası ve menü bağlantısı"
+temel = "site"
+zorluk = "kolay"
+tur = "ozellik"
+tahmini_sure_dk = 15
+aciklama = """AGENTS.md "Yeni sayfa" tarifi: üreteçle sayfa, ön bilgiyi kurala uygun doldurmak (açıklama 50–160), \
+taslaktan çıkarmak, menüye eklemek. Site denetimi (iki derleme + kırık bağlantı) sonucu doğrular."""
+baslangic_denetimi = "yesil"
+
+[[gizli]]
+ad = "sayfa"
+komut = "npx vitest run tests/unit/sinav-gizli-kariyer.test.ts"
+dosyalar = { "kariyer.test.ts" = "tests/unit/sinav-gizli-kariyer.test.ts" }

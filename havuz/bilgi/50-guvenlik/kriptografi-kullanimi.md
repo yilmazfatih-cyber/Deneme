@@ -352,3 +352,4 @@ tamam
   [`kutuphane/ts/src/kripto.ts`](../../kutuphane/ts/src/kripto.ts)
 - Belirteç ve özeti: [`uygulama/api/src/lib/random.ts`](../../uygulama/api/src/lib/random.ts) · Parola:
   [Parola ve hesap güvenliği](parola-ve-hesap-guvenligi.md) · Sırlar: [Sır yönetimi](sir-yonetimi.md)
+- TLS ve sertifikalar: [HTTPS ve sertifikalar](../60-devops/https-ve-sertifikalar.md)

@@ -48,15 +48,15 @@ yeri düzeltmek, aynı hatanın on başka yerde yaşamasına izin verir.
 Bir açıktan şüphelenip olay müdahalesine geçmek gerekiyorsa: [Olay müdahalesi](olay-mudahalesi.md). Yayından önce
 tek sayfa: [Yayın öncesi denetim](yayin-oncesi-guvenlik-denetimi.md).
 
-## Ayrı notu olmayan küçük sınıflar
+## Küçük sınıflar
 
 | Sınıf                                     | Belirti                                                        | Önlem                                                                                     |
 | ----------------------------------------- | -------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
 | Açık yönlendirme (open redirect)          | `?next=` ile girişten sonra başka siteye gidiliyor (oltalama)  | Yalnız kendi sitenizdeki yol; aşağıdaki örnek                                             |
-| Güvensiz seri çözme (deserialization)     | `pickle.loads`, `yaml.load`, `eval` güvenilmez veride          | Yalnız veri biçimi: JSON + şema. Python belgesi `pickle` için açıkça uyarır               |
+| Güvensiz seri çözme (deserialization)     | `pickle.loads`, `yaml.load`, `eval` güvenilmez veride          | Yalnız veri biçimi: JSON + şema. Python belgesi `pickle` için açıkça uyarır ([Seri çözme](guvensiz-seri-cozme.md)) |
 | Ayrıntılı hata iletisi                    | Yanıtta yığın izi, SQL, dosya yolu                             | İstemciye kod + kısa ileti + istek kimliği; ayrıntı günlüğe                               |
 | Düzenli ifade ile hizmet engelleme (ReDoS) | İç içe niceleyicili (`(a+)+`) ifade uzun girdide takılıyor     | Girdi uzunluğu sınırı; iç içe niceleyiciden kaçının; zaman aşımlı eşleştirici               |
-| XML dış varlık (XXE) ve "milyar gülüş"    | XML yükleme sunucu dosyasını okuyor ya da belleği tüketiyor     | Dış varlık ve DTD kapalı ayrıştırıcı; Python'da `defusedxml` (sürüme göre doğrulayın)      |
+| XML dış varlık (XXE) ve "milyar gülüş"    | XML yükleme sunucu dosyasını okuyor ya da belleği tüketiyor     | Dış varlık ve DTD kapalı ayrıştırıcı; Python'da `defusedxml` (sürüme göre doğrulayın) ([Seri çözme](guvensiz-seri-cozme.md)) |
 | Başlık/günlük enjeksiyonu (CRLF)          | Girdideki satır sonu yeni başlık ya da sahte günlük satırı yazıyor | Başlık değerinde `\r\n` reddi; yapılandırılmış (JSON) günlük                           |
 | Kaynak tüketimi                           | Tek istek dakikalarca sürüyor; `limit=1000000`                  | Gövde, sayfa, dosya, süre için üst sınır; hız sınırı                                      |
 | Prototip kirletme (JavaScript)            | `{"__proto__": …}` gövdesi bütün nesnelere alan ekliyor         | Anahtar izin listesi; özel anahtarları reddeden birleştirme ([Erişim açıkları](erisim-denetimi-aciklari.md)) |
@@ -195,6 +195,7 @@ Her bulguda sorulacak soru: "Bu satıra ulaşan veri kullanıcıdan gelebilir mi
 - **Çıktıda denetleyin:** her bulgu bir dosya ve satır gösteriyor mu; önerilen düzeltme yapısal mı (parametre,
   izin listesi, kaçış) yoksa karakter silme mi.
 - **Test isteyin:** her bulgu için "açığı gösteren girdi reddedilir" testi; yetki için iki kullanıcılı test.
+  Sınıf başına girdi kataloğu: [Güvenlik testleri](guvenlik-testleri.md).
 
 ## İlgili
 
@@ -203,3 +204,5 @@ Her bulguda sorulacak soru: "Bu satıra ulaşan veri kullanıcıdan gelebilir mi
   [Yetkilendirme](../30-arkauc/yetkilendirme.md)
 - Çalışan karşılık: [`uygulama/docs/GUVENLIK.md`](../../uygulama/docs/GUVENLIK.md) ve
   [`security.test.ts`](../../uygulama/api/test/security.test.ts)
+- İnceleme yöntemi: [Kod inceleme](../00-yontem/kod-inceleme.md) · Ön yüz: [Ön yüz güvenliği](../20-web-onyuz/onyuz-guvenligi.md) ·
+  ReDoS ölçümü: [Düzenli ifadeler](../10-diller/duzenli-ifadeler.md)

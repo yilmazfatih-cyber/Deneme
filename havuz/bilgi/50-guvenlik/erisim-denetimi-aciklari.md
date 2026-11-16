@@ -306,3 +306,5 @@ satırı `requireUser(c)` olmalı" der.
   [`rules.test.ts`](../../uygulama/api/test/rules.test.ts), [`security.test.ts`](../../uygulama/api/test/security.test.ts)
   → "başkasının alanına erişim"; tarif [`uygulama/api/TARIFLER.md`](../../uygulama/api/TARIFLER.md) → "Yeni yetki kuralı"
 - [Tehdit modelleme](tehdit-modelleme.md) (STRIDE'ın E satırı) · [OWASP özeti](owasp-ozet.md)
+- Uç düzeyinde yetki testleri: [API testleri](../30-arkauc/api-testleri.md) · Mimari:
+  [Kimlik ve yetki mimarisi](../40-sistem-tasarimi/kimlik-ve-yetki-mimarisi.md), [Çok kiracılık](../40-sistem-tasarimi/cok-kiracilik.md)

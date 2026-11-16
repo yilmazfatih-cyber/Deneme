@@ -88,5 +88,6 @@ Model için talimatlar: `AGENTS.md`. Ayar örneği: `yz.ornek.yaml`, `.env.examp
 - Vektör deposu kaba kuvvettir: ölçümle 100 bin parça × 768 boyutta arama ~22 ms, bellek ~293 MB (`scripts/olc_vektor.py`, 4 çekirdekli paylaşımlı Xeon 2,1 GHz). Yüz binlerce parçanın üstü için FAISS gibi bir dizin gerekir.
 - Araç zaman aşımı iş parçacığını durduramaz (Python sınırı); süresi dolan araç arka planda bitene dek çalışır. Gerçekten durdurulması gereken iş için ayrı süreç kullanın.
 - Belirteç sayıları sağlayıcı bildirmezse tahminidir (`tahmini=True`; Türkçe metinde Qwen belirteçleyicisiyle ölçülen ~3,2 karakter/belirteç yerine güvenli tarafta 2,6 kullanılır).
-- Sohbet arayüzü tek kullanıcılık bir geliştirme arayüzüdür (oturum/hesap yönetimi yok). Sunucu varsayılan olarak yalnız `127.0.0.1`'de dinler; başka adres için API anahtarı zorunludur.
+- Sohbet arayüzü tek kullanıcılık bir geliştirme arayüzüdür (oturum/hesap yönetimi yok). Sunucu varsayılan olarak yalnız `127.0.0.1`'de dinler; başka adres için API anahtarı zorunludur. Anahtarsız (yerel) kipte yalnız `127.0.0.1`/`localhost` adıyla açılır ve başka sitelerden gelen değiştirici istekleri reddeder (DNS yeniden bağlama ve CSRF'e karşı; `yz/sunucu/kapi.py`).
+- Hazır SQLite aracı tek değeri 256 KB, sorguyu 4000 karakter, sütunu 100, okunan sonucu ~1 MB ile sınırlar (bellek doldurmaya karşı); daha büyük değerler (`length()` dahil) bu araçla okunamaz. Sınırlar `sqlite_araclari(...)` parametreleridir.
 - PDF'ten yalnız metin katmanı okunur; taranmış (görüntü) PDF için OCR yoktur.

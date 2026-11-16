@@ -46,7 +46,7 @@ Sıralama kuralı: **önce riskli olan**, sonra değerli olan, en son süs.
 7. **Sıralayın:** bağımlılık izin verdiği ölçüde önce riskli, sonra değerli.
 8. **Ölçün:** bir dilim bir günü (modelle bir oturumu) aşıyorsa yeniden bölün.
 
-### Örnek: harcama paylaşma uygulaması
+## Örnek: harcama paylaşma uygulaması
 
 | Sıra | Dilim                         | Kullanıcı ne yapabilir                              | Risk                              |
 | ---- | ----------------------------- | --------------------------------------------------- | --------------------------------- |
@@ -60,7 +60,7 @@ Sıralama kuralı: **önce riskli olan**, sonra değerli olan, en son süs.
 
 Dikkat edin: "Veritabanı şeması" ya da "API katmanı" diye bir dilim yok. Şema, her dilimde ihtiyaç kadar büyür.
 
-### Dilimi bölme kalıpları
+## Dilimi bölme kalıpları
 
 Bir dilim büyük geldiyse şu eksenlerden birinde ikiye bölün:
 
@@ -78,7 +78,7 @@ Bir dilim büyük geldiyse şu eksenlerden birinde ikiye bölün:
 bir karardır ("CSV okunabiliyor, PDF okunamıyor → yalnız CSV desteklenecek"). Deney kodu ürüne taşınmaz; gerekirse
 dilim olarak yeniden yazılır.
 
-### Bitti tanımı şablonu
+## Bitti tanımı şablonu
 
 ```text
 Dilim:              Eşit bölüştür
@@ -185,3 +185,4 @@ gelen bir dilime çıkarın.
 - [Tahmin ve planlama](tahmin-ve-planlama.md): dilimlerin süresini aralıkla tahmin etmek.
 - [Tasarım kararı](tasarim-karari.md): deneyin sonunda verilen kararı kaydetmek.
 - [Güvenilirlik düşüncesi](guvenilirlik-dusuncesi.md): genişlet–taşı–daralt ve geri alma planı.
+- Diğer kümelerden: [MVP kapsamı](../95-urun/mvp-kapsami.md), [Migrasyonlar](../30-arkauc/migrasyonlar.md).

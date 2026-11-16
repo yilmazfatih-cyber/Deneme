@@ -294,3 +294,4 @@ tedavi değil.
 - [Güvenilirlik düşüncesi](guvenilirlik-dusuncesi.md): yeniden deneme ve idempotentlik.
 - [Yerelleştirme denetimi](../97-turkce/yerellestirme-denetimi.md): saat dilimi ve biçimler.
 - [Türkçe metin işleme](../97-turkce/turkce-metin-isleme.md): normalleştirme ve görünmez karakterler.
+- Diğer kümelerden: [Unicode ve kodlama](../10-diller/unicode-ve-kodlama.md), [Zaman ve saat dilimi](../30-arkauc/zaman-ve-saat-dilimi.md), [Sayılar ve kayan nokta](../92-matematik/sayilar-ve-kayan-nokta.md), [Python tuzakları](../10-diller/python-tuzaklar.md), [İşlemler ve eşzamanlılık](../30-arkauc/islemler-ve-eszamanlilik.md), [Önbellek katmanları](../40-sistem-tasarimi/onbellek-katmanlari.md).

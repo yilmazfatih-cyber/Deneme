@@ -319,5 +319,7 @@ dosyaları CDN'den verin.
 
 - [Ölçekleme temelleri](olcekleme-temelleri.md) (tek makine hesabı, doluluk–gecikme ilişkisi)
 - [Gözlemlenebilirlik](gozlemlenebilirlik.md) (yüzdelik ölçümü, SLO) · [Dayanıklılık kalıpları](dayaniklilik-kaliplari.md)
+- Yöntemin matematiği: [Tahmin ve büyüklük sezgisi](../92-matematik/tahmin-ve-buyukluk-sezgisi.md) (Fermi tahmini,
+  birimlerle hesap) · [Olasılık dağılımları](../92-matematik/dagilimlar.md) (Poisson gelişler, kalın kuyruk)
 - Örnek tasarımlardaki kaba hesaplar: [URL kısaltıcı](ornek-url-kisaltici.md), [Haber akışı](ornek-haber-akisi.md)
 - Havuzdaki istatistik yardımcıları (yüzdelik, histogram): [`kutuphane/py/kutuphane/istatistik.py`](../../kutuphane/py/kutuphane/istatistik.py)

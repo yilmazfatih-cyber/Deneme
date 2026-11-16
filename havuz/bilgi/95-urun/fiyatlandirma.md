@@ -146,8 +146,8 @@ satır satır net: 24.99 TL · toplamdan net: 24.98 TL
 
 Kuruş temelli, `float`suz para tipi ve KDV dâhil/hariç hesabı havuzda hazır:
 [`kutuphane/py/kutuphane/para.py`](../../kutuphane/py/kutuphane/para.py) ve
-[`kutuphane/ts/src/para.ts`](../../kutuphane/ts/src/para.ts). Ekranda gösterim biçimi ("₺1.234,56" ya da "1.234,56 TL")
-`97-turkce` kümesinin konusudur.
+[`kutuphane/ts/src/para.ts`](../../kutuphane/ts/src/para.ts). Ekranda gösterim biçimi ("₺1.234,56" ya da "1.234,56 TL"),
+ayırıcılar ve tutarın yazıyla yazılışı: [Türkçe sayı ve para](../97-turkce/turkce-sayi-ve-para.md).
 
 **Kur riski.** Maliyetin bir kısmı dövize bağlı (sunucu, yapay zekâ API'si, ileti), fiyat TL ise marj her ay erir;
 yıllık planın indirimi bu erimeyi öne çeker:
@@ -231,7 +231,9 @@ iptalin kolay olması (kurulduğu yolla sona erdirilebilmesi) beklenir; ayrınt�
 ## İlgili
 
 - [Tanıtım sayfası](tanitim-sayfasi.md): fiyat bölümünün yeri ve metni.
+- [Segment ve konumlandırma](segment-ve-konumlandirma.md): alternatiflerin bedeli fiyatın tavanını belirler.
 - [İçerik ve büyüme](icerik-ve-buyume.md): kanal başına edinme maliyeti.
 - [Ölçüm ve öğrenme](olcum-ve-ogrenme.md) ve [ürün ölçütleri](../70-veri/urun-olcutleri.md): kayıp oranı ve tutma.
+- [Tutma ve iptal akışı](tutma-ve-iptal-akisi.md): istemli ve istemsiz kayıp, ödeme hatırlatması, duraklatma.
 - [Yapay zekâ özelliği tasarlama](yapay-zeka-ozelligi-tasarlama.md): kullanım bazlı yapay zekâ maliyeti.
 - [Yasal temel belgeler](yasal-temel-belgeler.md): mesafeli satış, cayma, abonelik iptali.

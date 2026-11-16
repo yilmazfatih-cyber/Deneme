@@ -278,3 +278,5 @@ girmesini de yakalar. Mobil uygulama ikili dosyası da aynıdır: içine konan a
 - Çalışan kod: [`uygulama/api/src/config.ts`](../../uygulama/api/src/config.ts) (açılışta doğrulama),
   [`uygulama/docs/YAYINLAMA.md`](../../uygulama/docs/YAYINLAMA.md) (ortam değişkenleri tablosu); günlükte sır
   ve kişisel veri maskeleme [`yz/yz/guvenlik/maske.py`](../../yz/yz/guvenlik/maske.py)
+- Yanlışlıkla gönderilen sır, git tarafı: [Git](../10-diller/git.md) · CI sırları ve görüntüye sır sızmaması:
+  [CI/CD](../60-devops/ci-cd.md), [Docker](../60-devops/docker.md)

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import itertools
 import math
 
 from hypothesis import given
@@ -39,7 +40,7 @@ def star_polygons(draw: st.DrawFn) -> list[P]:
             by_angle.setdefault(math.atan2(y, x), (x, y))  # aynı açıda tek nokta
     polygon = [by_angle[a] for a in sorted(by_angle)]
     angles = sorted(by_angle)
-    gaps = [b - a for a, b in zip(angles, angles[1:])] + [2 * math.pi - angles[-1] + angles[0]]
+    gaps = [b - a for a, b in itertools.pairwise(angles)] + [2 * math.pi - angles[-1] + angles[0]]
     if len(polygon) < 3 or max(gaps) >= math.pi - 1e-9:
         polygon = [(5, 0), (0, 5), (-5, 0), (0, -5)]  # orijin içeride değilse yedek kare
     return polygon

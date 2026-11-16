@@ -55,7 +55,8 @@ Hacim verisi olmadan da karar verilebilir; yayından sonra arama konsolu (Google
 Tools) sitenin gerçekten göründüğü sorguları gösterir ve listeyi düzeltirsiniz.
 
 **Türkçeye özgü:** Türkçe eklemeli bir dildir ("randevu programı", "randevu programları", "randevu programını");
-arama motorları kökleri büyük ölçüde eşler. Metni doğal Türkçeyle yazın, ek çeşitlerini doldurmayın. İnsanlar
+arama motorları ek çeşitlerini çoğunlukla eşler (kesin davranışları yayımlanmaz). Metni doğal Türkçeyle yazın, ek
+çeşitlerini doldurmayın. İnsanlar
 "kuafor" diye de yazar; sonuçlar çoğunlukla benzer ama birebir aynı olmayabilir, ikisine de bakın. Adreste ASCII
 (`/blog/gelmeyen-musteri/`), metinde doğru Türkçe.
 

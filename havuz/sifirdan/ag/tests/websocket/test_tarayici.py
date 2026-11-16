@@ -67,7 +67,11 @@ def test_gercek_tarayici_ile_ileti_alisverisi(loop_thread: BackgroundLoop, tmp_p
     try:
         assert finished.wait(60), "Tarayıcı 60 saniyede iletileri tamamlamadı."
     finally:
-        os.killpg(browser.pid, signal.SIGKILL)  # tarayıcının tüm alt süreçleriyle birlikte
-        browser.wait(10)
+        browser.terminate()  # önce düzgün kapanış: tarayıcı kendi alt süreçlerini toplar
+        try:
+            browser.wait(10)
+        except subprocess.TimeoutExpired:
+            os.killpg(browser.pid, signal.SIGKILL)  # kapanmadıysa tüm süreç grubuyla birlikte
+            browser.wait(10)
         loop_thread.run(server.close(grace=1))
     assert received == ["tarayıcıdan merhaba: ğüşiöç İ", "geri:sunucudan: İstanbul 🚀"]

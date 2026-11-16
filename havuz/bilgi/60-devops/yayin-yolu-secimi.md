@@ -72,8 +72,9 @@ kayboldu", "veritabanı her sabah boş". SQLite dosyası, yüklenen dosyalar, do
 Havuzdaki uygulama tek bir SQLite dosyası kullanır; seçenekler ve diskli Render örneği
 [`uygulama/docs/YAYINLAMA.md`](../../uygulama/docs/YAYINLAMA.md) ile
 [`render.ornek.yaml`](../../uygulama/render.ornek.yaml) dosyasındadır (`disk:` bölümü). Deponun kökündeki
-[`render.yaml`](../../../render.yaml) ise veritabanı tutmayan TV+ gösterimini ücretsiz planda çalıştırır: orada
-geçici disk sorun değildir, çünkü saklanan bir şey yoktur.
+[`render.yaml`](../../../render.yaml) ise TV+ gösterimini ücretsiz planda, kalıcı disk olmadan çalıştırır; TV+'ın
+README'si servis uyuyup uyanınca profillerin, yer imlerinin ve eğitilmiş modelin sıfırdan kurulduğunu açıkça
+yazar. Bu, örnek veriyle çalışan bir gösterim için bilinçli bir ödünleşimdir; gerçek kullanıcı verisi için değil.
 
 Kalıcı disk eklemenin bedeli: birçok platformda diskli servis **tek kopya** çalışır ve dağıtımda kısa kesinti
 olabilir (disk aynı anda tek makineye bağlanır). Ayrıntıyı sağlayıcının belgesinden okuyun.

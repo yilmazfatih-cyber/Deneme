@@ -179,7 +179,7 @@ WantedBy=multi-user.target
 ```
 
 ```bash
-sudo useradd --system --home /var/lib/uygulama --shell /usr/sbin/nologin uygulama
+sudo useradd --system --home-dir /var/lib/uygulama --shell /usr/sbin/nologin uygulama
 sudo systemctl daemon-reload              # birim dosyası her değiştiğinde
 sudo systemctl enable --now uygulama      # açılışta başlasın + şimdi başlat
 systemctl status uygulama
@@ -295,5 +295,6 @@ Sunucunun tamamında arama: `sudo find /proc/*/fd -lname '*(deleted)' 2>/dev/nul
 - [Docker](docker.md) — PID 1 ve sinyallerin kapsayıcıda iletilmesi
 - [İzleme ve uyarı](izleme-ve-uyari.md) · [Veritabanı yedekleme](veritabani-yedekleme.md) (zamanlanmış yedek)
 - [Ters vekil](ters-vekil.md) — uygulamayı `127.0.0.1`'de tutup dışarıya vekili açmak
+- [Kabuk ve Bash](../10-diller/kabuk-ve-bash.md) — tırnaklama, `set -euo pipefail`, `trap` ile temizlik
 - [Hata ayıklama](../00-yontem/hata-ayiklama.md) — ortam farkını listeleme
 - Çalışan karşılık: [`uygulama/docs/YAYINLAMA.md`](../../uygulama/docs/YAYINLAMA.md) → "Süreç yöneticisiyle"

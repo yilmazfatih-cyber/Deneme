@@ -68,8 +68,9 @@ durum tablosu|3
 olay tablosu|2
 ```
 
-Olay tablosu henüz yoksa bugünden başlayın ve o güne kadar her gece bir **anlık görüntü** (kullanıcı, plan, gün)
-saklayın: geçmişi geri getiremezsiniz ama bugünden sonrasını kaybetmezsiniz.
+Olay tablosu henüz yoksa değişiklikleri bugünden itibaren olay olarak yazmaya başlayın; olay geçmişi birikene kadar
+her gece bir **anlık görüntü** (kullanıcı, plan, gün) de saklayın. Geçmişi geri getiremezsiniz ama bugünden
+sonrasını kaybetmezsiniz.
 
 ## Tanecik: şişen toplamın nedeni
 
@@ -215,13 +216,13 @@ taşıyan ham olayların saklama süresini baştan yazın ([gizlilik notu](gizli
 
 | Belirti | Neden | Çözüm |
 | --- | --- | --- |
-| "Geçen ay kaç premium vardı?" yanıtlanamıyor | Yalnız durum tablosu var; `UPDATE` geçmişi sildi | Değişiklikleri olay olarak yazın; o güne kadar gece anlık görüntü alın |
+| "Geçen ay kaç premium vardı?" yanıtlanamıyor | Yalnız durum tablosu var; `UPDATE` geçmişi sildi | Değişiklikleri olay olarak yazın; olay geçmişi birikene kadar her gece anlık görüntü alın |
 | Birleştirmeden sonra ciro 2–3 kat | Fan-out: kaba tanecikli ölçü ince tanecikle çoğaldı | Önce kendi taneciğinde özetleyin; mutabakat sorgusu |
 | Kategori kırılımının toplamı genel toplamdan az | İç birleştirme boyutta olmayan satırları attı | Dış birleştirme + "(bilinmeyen)" satırı; eşleşmeyenleri sayın |
 | Ay sonu cirosu iki raporda farklı | Biri UTC günü, biri Türkiye günü kullanıyor | Tek tanım, tek görünüm: `date(zaman, '+3 hours')` |
 | Gece 00:00–03:00 etkinliği önceki güne yazılıyor | Sunucu UTC'de; `date('now')` ya da `date(zaman)` | Gün hesabında saat dilimi düzeltmesi |
 | Zaman sıralaması tutarsız | `Z` ile `+03:00` ofsetleri karışık metin | Yazarken UTC'ye çevirin; tek biçim |
-| 2015 verisinin saatleri bir saat kayık | Sabit +3 uygulandı; o yıllarda yaz saati vardı | `zoneinfo` ile `Europe/Istanbul` |
+| 2016 öncesi kış aylarının saatleri bir saat kayık | Sabit +3 uygulandı; o yıllarda kışın UTC+2 geçerliydi | `zoneinfo` ile `Europe/Istanbul` |
 | Eski raporlar kendiliğinden değişiyor | Boyut üstüne yazıldı (tür 1) | Tür 2 ya da değeri olguya yazma |
 | Değişiklik gününde satır iki kez sayılıyor | `BETWEEN` iki ucu da kapsar | Yarı açık aralık: `>= bas AND < bit` |
 | 1970 ya da gelecek tarihli olaylar | Cihaz saati bozuk | Varış zamanını da saklayın; aralık dışını işaretleyin |
@@ -261,5 +262,12 @@ taşıyan ham olayların saklama süresini baştan yazın ([gizlilik notu](gizli
 - [Veri hattı tasarımı](veri-hatti-tasarimi.md) — geç gelen veri, idempotent ve artımlı yükleme
 - [Ürün ölçütleri](urun-olcutleri.md) — tanımı yazılı ölçütler bu modelin üstüne kurulur
 - Türkiye saati, "an" ile "takvim günü" ayrımı: [`kutuphane/py/kutuphane/tarih.py`](../../kutuphane/py/kutuphane/tarih.py)
-- Olay tablosu örneği (ofsetsiz `zaman` alanıyla): [`veri/ornekler/web_olaylari/`](../../veri/ornekler/web_olaylari/VERI_KARTI.md)
-- Yıldız şemaya benzer birleştirmeli sorgular (DuckDB): [`veri/docs/ANALIZ_TARIFLERI.md`](../../veri/docs/ANALIZ_TARIFLERI.md)
+- Olay tablosu örneği (ofsetsiz `zaman` alanıyla):
+  [`veri/ornekler/web_olaylari/`](../../veri/ornekler/web_olaylari/VERI_KARTI.md)
+- Yıldız şemaya benzer birleştirmeli sorgular (DuckDB):
+  [`veri/docs/ANALIZ_TARIFLERI.md`](../../veri/docs/ANALIZ_TARIFLERI.md)
+- [Zaman ve saat dilimi](../30-arkauc/zaman-ve-saat-dilimi.md) — an, duvar saati, takvim günü; uygulama tarafı
+- [SQL sorgu yazımı](../10-diller/sql-sorgu.md) — birleştirmede satır çoğalması, NULL mantığı
+- [Veritabanı tasarımı](../30-arkauc/veritabani-tasarimi.md) — uygulamanın (durum) şeması
+- [Veri yaşam döngüsü](../40-sistem-tasarimi/veri-yasam-dongusu.md) — saklama süresi, silme talebi
+- [Keşifsel veri analizi](kesifsel-veri-analizi.md) — tanecik ve anahtarı veride doğrulamak

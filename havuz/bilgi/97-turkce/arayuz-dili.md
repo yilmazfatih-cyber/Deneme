@@ -39,9 +39,7 @@ Metinler koda gömülmez; tek bir sözlük dosyasında durur (havuzda:
 | Yükleniyor          | Ne yükleniyor (uzun sürecekse)                  | Listeler yükleniyor…                                          |
 | Bağlantı metni      | Neyi açacağını söyler                           | Kullanım koşulları (Buraya tıklayın değil)                    |
 
-## Nasıl yazılır
-
-### Hitap ve fiil biçimi
+## Hitap ve fiil biçimi
 
 | Biçim                  | Örnek                | Kullanım                                              |
 | ---------------------- | -------------------- | ----------------------------------------------------- |
@@ -51,7 +49,9 @@ Metinler koda gömülmez; tek bir sözlük dosyasında durur (havuzda:
 | "sen" biçimi           | Gir, Dene, şifreni   | Metinde kullanmayın; markanın bilinçli sesi değilse   |
 | Edilgen geçmiş         | Kaydedildi, Silindi  | Sonuç bildirimi: kısa ve kişisiz                      |
 
-### Hata iletisi
+## Hata iletisi
+
+Kullanıcıya gösterilen hata iletisi iki cümleyle yazılır: ne oldu, ne yapılır.
 
 - Ne olduğunu kullanıcının diliyle söyleyin; teknik kod gerekiyorsa küçük ve ikincil olsun (destek için).
 - Ne yapacağını söyleyin; mümkünse bunu yapan düğmeyi koyun ("Yeniden dene").
@@ -69,7 +69,7 @@ Kötü:  Hatalı giriş yaptınız. Lütfen tekrar deneyiniz.
 İyi:   E-posta ya da şifre eşleşmedi. Yeniden deneyin ya da şifrenizi sıfırlayın.   [Şifremi unuttum]
 ```
 
-### Onay metni
+## Onay metni
 
 Önce sorun: bu işlem geri alınabilir mi? Alınabiliyorsa **onay sormayın**; işlemi yapıp "Geri al" sunun. Onay
 penceresi her gün görülünce okunmadan geçilir. Geri alınamayan işlemde:
@@ -79,7 +79,7 @@ penceresi her gün görülünce okunmadan geçilir. Geri alınamayan işlemde:
 - Birincil düğme eylemin adıdır: "Listeyi sil". İkincil: "Vazgeç". "Evet / Hayır" ve "Tamam / İptal" kullanmayın:
   "Siparişi iptal et?" penceresindeki "İptal" düğmesi neyi iptal eder?
 
-### Kısalık ve biçim
+## Kısalık ve biçim
 
 - Cümle 12–15 sözcüğü geçmesin; düğme üç sözcüğü. (Köprü gibi özel kitleye yönelik üründe daha kısa: 6 sözcük.)
 - Ünlem yok, "Lütfen" yok ya da çok seyrek, "başarıyla" yok: "Kaydedildi." yeter.
@@ -256,3 +256,4 @@ Yazılım terimlerinin genel sözlüğü: [Yazılım terimleri sözlüğü](../0
 - [Teknik yazı](../00-yontem/teknik-yazi.md): yalın yazma kuralları.
 - Havuzdaki örnek iletiler: [API iletileri](../../uygulama/api/src/messages.ts),
   [hata kodlarının iletileri](../../uygulama/shared/src/errors.ts), [site sözlüğü](../../site/src/i18n/tr.ts).
+- Diğer kümelerden: [Hata ve boş durumlar](../20-web-onyuz/hata-ve-bos-durumlar.md), [UX temelleri](../95-urun/ux-temelleri.md).

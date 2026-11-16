@@ -142,7 +142,8 @@ geçersiz olay ayrı bir "karantina" tablosuna gitsin ve sayısı panoda görün
 
 ## Kimlik birleştirme
 
-Kullanıcı önce anonim gezer, sonra giriş yapar; aynı kişi iki cihaz kullanır. "Kaç kişi?" sorusunun üç yanıtı:
+Kimlik birleştirme (identity stitching): kullanıcı önce anonim gezer, sonra giriş yapar; aynı kişi iki cihaz kullanır.
+"Kaç kişi?" sorusunun üç yanıtı:
 
 ```sql calistir
 CREATE TABLE olay (anonim_id TEXT, kullanici_id TEXT, olay TEXT, zaman TEXT);
@@ -219,8 +220,9 @@ sorguyla bulup kodda düzeltin; sorguyla gizlemeyin.
 - **Olaya kişisel veri girmez:** e-posta, telefon, ad, TCKN, adres, serbest metin. Olay verisi geniş paylaşılır,
   dışa aktarılır, yıllarca saklanır. Sayfa adresini yazarken sorgu dizgesini (query string) atın ve yol şablonunu
   yazın: `/liste/:id`. Adreste belirteç ya da e-posta olabilir.
-- **Özet (hash) gizlemez.** E-postanın SHA-256 özeti tahmin edilebilir değerler için geri bulunur
-  ([gizlilik notu](gizlilik-ve-anonimlestirme.md)); takma ad hâlâ kişisel veridir.
+- **Özet (hash) gizlemez.** Elinde e-posta listesi olan herkes aynı SHA-256 özetini hesaplayıp eşleştirir;
+  telefon ve doğum tarihi gibi değerler de denenerek geri bulunur ([gizlilik notu](gizlilik-ve-anonimlestirme.md)).
+  Takma ad hâlâ kişisel veridir.
 - Ham olayların saklama süresi ve izin (rıza) gereksinimi işin başında yazılır. Hukuki görüş yerine geçmez;
   KVKK için [`veri/docs/KVKK_NOTLARI.md`](../../veri/docs/KVKK_NOTLARI.md).
 
@@ -279,3 +281,6 @@ sorguyla bulup kodda düzeltin; sorguyla gizlemeyin.
 - Huni olaylarıyla örnek günlük: [`veri/ornekler/web_olaylari/`](../../veri/ornekler/web_olaylari/VERI_KARTI.md);
   kişisel veri tarama: [`veri/verihavuzu/kalite/pii.py`](../../veri/verihavuzu/kalite/pii.py)
 - Örnek planın uyduğu uygulama (çevrimdışı görev listesi): [`uygulama/`](../../uygulama/README.md)
+- [Ölçüm ve öğrenme](../95-urun/olcum-ve-ogrenme.md) — ölçümün ürün kararı tarafı
+- [KVKK pratiği](../50-guvenlik/kvkk-pratik.md) — veri envanteri, aydınlatma, rıza
+- [Çevrimdışı-önce ve eşitleme](../40-sistem-tasarimi/cevrimdisi-once-ve-esitleme.md) — yerel kuyruk ve saat sorunları

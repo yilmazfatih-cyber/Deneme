@@ -67,7 +67,8 @@ muaftır.
 | `rate_limited`        | 429  | Hız sınırı; `Retry-After` başlığı ve `details.retryAfter` (saniye)           |
 | `internal`            | 500  | Beklenmeyen hata (ayrıntı yalnız sunucu günlüğünde, `X-Request-Id` ile)      |
 
-**Hız sınırları** (bellek içi, tek süreç; IP `TRUST_PROXY`'ye göre bulunur):
+**Hız sınırları** (bellek içi, tek süreç; IP `TRUST_PROXY`'ye göre bulunur; IPv6'da bütün /64 bloğu tek IP
+sayılır):
 
 | Kural         | Anahtar      | Sınır                |
 | ------------- | ------------ | -------------------- |
@@ -215,8 +216,8 @@ curl -s -H "Authorization: Bearer $TOKEN" $API/api/auth/me
 
 ### POST /api/auth/password/change
 
-Şifreyi değiştirir. Oturum gerekir. Bu oturum kalır, öteki bütün oturumlar kapanır; kullanıcıya "şifreniz
-değiştirildi" e-postası gider.
+Şifreyi değiştirir. Oturum gerekir. Bu oturum kalır, öteki bütün oturumlar kapanır; bekleyen şifre sıfırlama
+bağlantıları da geçersiz olur; kullanıcıya "şifreniz değiştirildi" e-postası gider.
 
 ```json changePasswordRequestSchema
 { "currentPassword": "mavi-deniz-kenari-42", "newPassword": "yesil-orman-yolu-17" }
@@ -518,6 +519,8 @@ curl -s -b cerez.txt -X DELETE $API/api/workspaces/<alan>/members/<kullanıcı>
 ### POST /api/workspaces/:workspaceId/invites
 
 Tek kullanımlık, 7 gün geçerli davet oluşturur. Yalnız sahip; kişisel alana davet yok; davetle `owner` verilmez.
+Davet, oluşturan kişi alanın sahibi olduğu sürece geçerlidir (çıkarılır, rolü düşer ya da hesabını silerse
+bağlantısı `invalid_token` alır).
 Belirteç YALNIZ bu yanıtta görünür (sunucu özetini saklar). Bağlantıyı istemci kurar:
 `webUrl(location.origin, WEB_ROUTES.invite, { token })` → `https://ornek.com/#/davet?token=…`. `201` döner.
 
@@ -549,7 +552,8 @@ Davet önizleme. **Kimlik gerekmez** (giriş yapmamış alıcı da görür). Yan
 { "workspaceName": "Ev", "role": "editor", "invitedBy": "Ayşe Yılmaz", "expiresAt": "2026-11-23T09:00:00.000Z" }
 ```
 
-Hatalar: `400 invalid_token` (bilinmeyen, kullanılmış, süresi dolmuş — hepsi aynı).
+Hatalar: `400 invalid_token` (bilinmeyen, kullanılmış, süresi dolmuş, daveti verenin sahipliği bitmiş — hepsi
+aynı).
 
 ```bash
 curl -s $API/api/invites/<belirteç>
@@ -677,7 +681,8 @@ data: {"workspaceId":"0193a5c8-4f2e-7c00-8000-000000000001","rev":7,"clientId":"
 Bir alandaki kayıt eşitlemeyle değişince (ya da alan adı/üyelik değişince, `clientId: null`) alanın bütün
 üyelerine gider; çıkarılan üyeye de gider. `clientId` sizin cihazınızsa yok sayın. 25 sn'de bir yorum satırı
 (`: nabız`) bağlantıyı canlı tutar. Çıkış/şifre değişimi/hesap kapatılmasında sunucu akışı keser. Kullanıcı
-başına en çok 10 açık akış (aşılırsa en eskisi kapanır). Tarayıcıda `new EventSource('/api/events')`;
+başına en çok 10 açık akış (aşılırsa en eskisi kapanır). Okumayan istemcinin bağlantısı 256 okunmamış olayda
+kesilir (bellek şişmesin; EventSource yeniden bağlanır). Tarayıcıda `new EventSource('/api/events')`;
 `Authorization` başlığı gerekiyorsa EventSource kullanılamaz, akış `fetch` ile okunur.
 
 Hatalar (akış açılmadan, JSON): `401 unauthorized`, `403 account_disabled`, `429 rate_limited`.

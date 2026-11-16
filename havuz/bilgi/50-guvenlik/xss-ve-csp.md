@@ -110,46 +110,48 @@ Havuzdaki e-posta şablonları her değeri tek tek kaçışlar:
 
 Neden açık: `<a href="javascript:…">` tıklanınca betik çalışır. HTML kaçışı bunu engellemez (içinde kaçışlanacak
 karakter yoktur). Tarayıcı şemayı büyük/küçük harf duyarsız okur, baştaki boşluğu ve aradaki sekmeyi atar; bu
-yüzden dizge karşılaştırması tutmaz. Adresi **tarayıcının kullandığı ayrıştırıcıyla** (WHATWG URL) çözüp şemaya
-izin listesiyle bakın:
+yüzden `startsWith('javascript:')` gibi bir kara liste tutmaz. Adres **tarayıcının kullandığı ayrıştırıcıyla**
+(WHATWG URL, Node/tarayıcıda `new URL`) çözülür ve şemaya izin listesiyle bakılır (`http`, `https`, `mailto`).
+Çalışan JavaScript örneği ve React'in neyi engelleyip neyi engellemediği (React 19 `javascript:` adresini
+engeller, `data:` adresini engellemez): [Ön yüz güvenliği → React'in korumadığı yerler](../20-web-onyuz/onyuz-guvenligi.md).
 
-```js calistir
-import assert from 'node:assert/strict'
+İkinci ders: **doğrulama kaçışın yerini tutmaz.** Tarayıcı öznitelik değerindeki HTML varlıklarını çözer; ayrıştırıcı
+"şeması yok, göreli adres" dediği bir değer, kaçışsız basılınca tarayıcıda `javascript:` olur:
 
-// YANLIŞ: kara liste
-const hrefYanlis = (girdi) => (girdi.startsWith('javascript:') ? null : girdi)
+```python calistir
+import html
+from urllib.parse import urlsplit
 
-// DOĞRU: ayrıştır, şemaya izin listesiyle bak
-const IZINLI_SEMALAR = new Set(['http:', 'https:', 'mailto:'])
-function guvenliHref(girdi, taban = 'https://site.example/') {
-  let adres
-  try {
-    adres = new URL(girdi, taban)
-  } catch {
-    return null
-  }
-  return IZINLI_SEMALAR.has(adres.protocol) ? adres.href : null
-}
+IZINLI_SEMALAR = {"http", "https", "mailto", ""}  # "" = göreli adres (/profil)
 
-// TEST: tarayıcının "javascript:" saydığı yazılışlar
-for (const kotu of [' JaVaScRiPt:alert(1)', 'java\tscript:alert(1)', 'data:text/html,<b>x</b>']) {
-  assert.notEqual(hrefYanlis(kotu), null) // kara liste geçirdi
-  assert.equal(guvenliHref(kotu), null)
-}
-assert.equal(guvenliHref('/profil'), 'https://site.example/profil')
-assert.equal(guvenliHref('https://ornek.com/a?b=1'), 'https://ornek.com/a?b=1')
-console.log('tamam')
+
+def adres_izinli(deger: str) -> bool:
+    return urlsplit(deger).scheme.lower() in IZINLI_SEMALAR
+
+
+# Python 3.13'ün ayrıştırıcısı da baştaki boşluğu ve sekmeyi atar (eski sürümlerde sınayın)
+for kotu in [" JaVaScRiPt:alert(1)", "java\tscript:alert(1)", "data:text/html,x"]:
+    assert not adres_izinli(kotu), repr(kotu)
+
+girdi = "javascript&#58;alert(1)"
+assert adres_izinli(girdi)  # ayrıştırıcıya göre şema yok: göreli bir adres
+
+# YANLIŞ: "doğrulandı" diye kaçışsız basmak; tarayıcı özniteliği çözünce şema ortaya çıkar
+yanlis = f'<a href="{girdi}">profil</a>'
+assert html.unescape(girdi) == "javascript:alert(1)"  # tarayıcının öznitelikte yaptığı çözme
+
+# DOĞRU: doğrula VE kaçışla; tarayıcı çözünce yine zararsız göreli metin kalır
+dogru = f'<a href="{html.escape(girdi)}">profil</a>'
+assert html.unescape(html.escape(girdi)) == girdi and not html.unescape(html.escape(girdi)).startswith("javascript:")
+print("tamam")
 ```
 
 ```cikti
 tamam
 ```
 
-- Denetimi **ham** değerde yapın, sonra öznitelik kaçışı uygulayın. Kaçışlanmamış değerde HTML varlıkları
-  (`&#58;` → `:`) tarayıcıda çözülür ve denetiminizin görmediği bir şema oluşur.
-- Python'da aynı denetim: `urllib.parse.urlsplit(girdi).scheme` (Python 3.13'te baştaki boşluğu ve sekmeyi
-  tarayıcı gibi atar; eski sürümlerde atmayabilir — sürümünüzde sınayın).
-- React `href={kullaniciAdresi}` için de geçerlidir; çerçevenin uyarısına güvenmeyin, şemayı siz denetleyin.
+- Sıra: ham değeri **ayrıştırıp doğrula**, sonra **öznitelik kaçışıyla** bas. İkisi ayrı işlerdir.
+- `window.location = x`, `window.open(x)`, yönlendirme işlevleri de aynı izin listesinden geçer.
 - Kullanıcıyı başka adrese **yönlendiren** parametreler ayrı konudur: [OWASP özeti → açık yönlendirme](owasp-ozet.md).
 
 ## `<script>` içine veri
@@ -160,7 +162,7 @@ HTML ayrıştırıcı betiği ilk `</script>` görünce kapatır.
 ```python calistir
 import json
 
-durum = {"baslik": "</script><script>alert(1)</script>", "not": "satır ayırıcı"}
+durum = {"baslik": "</script><script>alert(1)</script>", "not": "satır\u2028ayırıcı"}
 
 # YANLIŞ: JSON geçerli ama HTML ayrıştırıcısı için betik burada bitiyor
 assert "</script>" in json.dumps(durum)
@@ -169,7 +171,7 @@ assert "</script>" in json.dumps(durum)
 # DOĞRU: <, >, & ve U+2028/2029 JSON kaçışıyla yazılır; JSON anlamı değişmez
 def betik_icin_json(veri: object) -> str:
     metin = json.dumps(veri, ensure_ascii=False)
-    for karakter, kacis in (("&", "\\u0026"), ("<", "\\u003c"), (">", "\\u003e"), (" ", "\\u2028"), (" ", "\\u2029")):
+    for karakter, kacis in (("&", "\\u0026"), ("<", "\\u003c"), (">", "\\u003e"), ("\u2028", "\\u2028"), ("\u2029", "\\u2029")):
         metin = metin.replace(karakter, kacis)
     return metin
 
@@ -322,20 +324,24 @@ kattır; tarayıcı desteği değişkendir, doğrulayın.
 ## Küçük modele yaptırırken
 
 - **İsteme yazın:** "Kullanıcı verisini yalnız düz metin olarak bas (JSX `{x}`, `textContent`). `innerHTML`,
-  `dangerouslySetInnerHTML` kullanma. Kullanıcı adresini `href`'e koymadan `guvenliHref` ile denetle. Satır içi
-  betik/stil ve `onclick=` yazma (CSP var)."
+  `dangerouslySetInnerHTML` kullanma. Kullanıcı adresini `href`'e koymadan şema izin listesiyle denetle
+  (`safeHref`) ve kaçışla. Satır içi betik/stil ve `onclick=` yazma (CSP var)."
 - **Modelin tipik hatası:** biçimli metin için `dangerouslySetInnerHTML`'e geçmek; "XSS'e karşı" girdiden `<`
   ve `>` silmek; `javascript:` için `startsWith` denetimi; JSON'u `<script>` içine olduğu gibi gömmek; CSP
   ihlalini "çözmek" için `'unsafe-inline'` eklemek.
 - **Çıktıda denetleyin:** yukarıdaki havuz adlarını arayın; CSP başlığında `unsafe` geçiyor mu; yeni bileşende
   kullanıcı adresi `href`'e doğrudan mı gidiyor.
 - **Test isteyin:** "Başlığı `<img src=x onerror=window.__xss=1>` olan bir kayıt oluştur, sayfayı aç,
-  `window.__xss` tanımsız ve sayfada `img` öğesi yok" uçtan uca testi; `guvenliHref` için yukarıdaki tablo testi.
+  `window.__xss` tanımsız ve sayfada `img` öğesi yok" uçtan uca testi; adres denetimi için `javascript:`,
+  `java\tscript:`, `data:` ve `javascript&#58;` girdili test.
 
 ## İlgili
 
+- Ön yüz tarafı (React'in korumadığı yerler, üçüncü taraf betik, `postMessage`, tıklama kaçırma):
+  [Ön yüz güvenliği](../20-web-onyuz/onyuz-guvenligi.md)
 - Başlık ayarlarının tamamı: [Başlıklar ve HTTPS](guvenlik-basliklari-ve-https.md) · Çerez ve belirteç saklama:
   [Oturum güvenliği](oturum-guvenligi.md)
+- Sıfırdan bir web çatısında kaçışlı şablon ve `safe_url`: [`sifirdan/ag/web_catisi/README.md`](../../sifirdan/ag/web_catisi/README.md)
 - Çalışan politika: [`uygulama/api/src/http/securityHeaders.ts`](../../uygulama/api/src/http/securityHeaders.ts)
   (`WEB_CSP`, `API_CSP`) ve testi [`security.test.ts`](../../uygulama/api/test/security.test.ts)
 - HTML kaçışı yardımcısı (iki dilde): [`kutuphane/py/kutuphane/metin.py`](../../kutuphane/py/kutuphane/metin.py)

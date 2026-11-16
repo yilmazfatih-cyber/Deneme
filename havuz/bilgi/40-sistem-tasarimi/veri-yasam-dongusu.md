@@ -14,6 +14,8 @@ guncellik: 2026-11
 
 > Hukuk notu: KVKK ve vergi/ticaret mevzuatıyla ilgili satırlar genel ilkedir, **hukuki danışmanlık değildir**.
 > Süreleri ve yükümlülükleri güncel mevzuattan ve bir hukukçudan doğrulayın (Kasım 2026, doğrulanmadı).
+> Geliştiricinin KVKK denetim listesi (envanter, aydınlatma, açık rıza, yurt dışı aktarım, başvurular):
+> [KVKK pratiği](../50-guvenlik/kvkk-pratik.md).
 
 ## Temel fikir
 
@@ -209,9 +211,10 @@ birincil 0 | kopya 0 (hata da kopyalandı) | yedek 100 (101. kayıt kayıp)
 
 - **RPO** (recovery point objective) ve **RTO** (recovery time objective) ürün kararıdır: "en çok bir saatlik veri
   kaybı ve iki saatlik kesinti kabul". RPO bir saatse günlük yedek yetmez: işlem günlüğünü sürekli dışarı akıtan
-  bir yöntem gerekir.
+  bir yöntem gerekir. Zamanlama, saklama, şifreleme ve yedeği izleme: [Veritabanı yedekleme](../60-devops/veritabani-yedekleme.md).
 - 3-2-1 kuralı: en az 3 kopya, 2 farklı ortam, 1'i başka bir yerde (başka hesap/sağlayıcı). Yedekler şifrelenir;
-  yedeği silebilen kimlik bilgisi, sunucuda duran kimlik bilgisiyle aynı olmamalıdır (fidye yazılımı yedeği de siler).
+  yedeği silebilen kimlik bilgisi, sunucuda duran kimlik bilgisiyle aynı olmamalıdır (fidye yazılımı yedeği de siler:
+  [Yedek ve fidye yazılımı](../50-guvenlik/yedek-ve-fidye-yazilimi.md)).
 - SQLite'ta tutarlı yedek: çalışan sunucuda `VACUUM INTO` ya da yedekleme arayüzü; dosyayı düz `cp` ile kopyalamak
   işlem ortasında bozuk kopya verebilir. Havuzdaki yol: `npm run backup` (`VACUUM INTO` + `PRAGMA integrity_check`):
   [`uygulama/docs/YAYINLAMA.md`](../../uygulama/docs/YAYINLAMA.md) → "Yedekleme ve geri yükleme".
@@ -270,7 +273,8 @@ Takvimde düzenli (ör. üç ayda bir) yapılır ve sonucu yazılır:
 
 - [Çevrimdışı-önce ve eşitleme](cevrimdisi-once-ve-esitleme.md) (mezar taşları) · [Veritabanı ölçekleme](veritabani-olcekleme.md)
   (bölüm düşürme, kopya) · [Çok kiracılık](cok-kiracilik.md) (kiracı başına silme ve geri yükleme)
-- [Sır yönetimi](../50-guvenlik/sir-yonetimi.md) (yedek şifreleme anahtarları) ·
-  [Hata yönetimi ve günlükleme](../30-arkauc/hata-yonetimi-ve-gunlukleme.md) (günlüğe yazılmayanlar)
+- [KVKK pratiği](../50-guvenlik/kvkk-pratik.md) · [Veritabanı yedekleme](../60-devops/veritabani-yedekleme.md) ·
+  [Yedek ve fidye yazılımı](../50-guvenlik/yedek-ve-fidye-yazilimi.md) · [Sır yönetimi](../50-guvenlik/sir-yonetimi.md)
+  (yedek şifreleme anahtarları) · [Hata yönetimi ve günlükleme](../30-arkauc/hata-yonetimi-ve-gunlukleme.md)
 - Havuzda: [`uygulama/api/src/maintenance.ts`](../../uygulama/api/src/maintenance.ts),
   [`uygulama/docs/YAYINLAMA.md`](../../uygulama/docs/YAYINLAMA.md) (§5), [`uygulama/docs/MEZAR_TASI.md`](../../uygulama/docs/MEZAR_TASI.md)

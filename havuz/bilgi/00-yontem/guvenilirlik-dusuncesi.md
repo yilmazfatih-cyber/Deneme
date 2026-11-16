@@ -235,3 +235,4 @@ Yedek:        Son yedek bu gece 03:00; geri yükleme en son 1 Kasım'da denendi 
 - [Tasarım kararı](tasarim-karari.md): dış servisleri tek modülün arkasına almak.
 - Havuzdaki örnekler: [hız sınırı](../../uygulama/api/src/http/rateLimit.ts), eşitleme protokolü
   [ESITLEME.md](../../uygulama/docs/ESITLEME.md).
+- Diğer kümelerden: [Dayanıklılık kalıpları](../40-sistem-tasarimi/dayaniklilik-kaliplari.md), [Dağıtım stratejileri](../60-devops/dagitim-stratejileri.md), [Veritabanı yedekleme](../60-devops/veritabani-yedekleme.md).

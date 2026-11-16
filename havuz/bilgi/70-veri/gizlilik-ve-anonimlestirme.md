@@ -69,9 +69,9 @@ print(f"HMAC belirteci: {belirtec} (anahtarsız denenemez; anahtarı olan geri b
 HMAC belirteci: f1a9bf07e5cc7834 (anahtarsız denenemez; anahtarı olan geri bağlar: takma ad)
 ```
 
-Yirmi bin deneme bir saniyenin çok altında biter. Telefon numarası ve TCKN gibi değerlerin uzayı da birkaç milyar
-mertebesindedir ve bir ekran kartıyla kısa sürede denenir. Kural: tahmin edilebilir değerin düz özetini paylaşmayın;
-eşleştirme gerekiyorsa gizli anahtarlı HMAC kullanın ve sonucu kişisel veri sayın.
+Yirmi bin deneme bir saniyenin çok altında biter. Cep telefonu numarası ve TCKN gibi değerlerin uzayı da yaklaşık bir
+milyar mertebesindedir ve bir ekran kartıyla kısa sürede denenir. Kural: tahmin edilebilir değerin düz özetini
+paylaşmayın; eşleştirme gerekiyorsa gizli anahtarlı HMAC kullanın ve sonucu kişisel veri sayın.
 
 ## Yeniden tanımlama: birkaç sütun yeter
 
@@ -128,14 +128,15 @@ oranı sıfırsa veri 5-anonimdir). Araçları:
 | Genelleştirme | Doğum tarihi → yaş grubu; ilçe → il; saat → gün | Analizde ayrıntı kaybı |
 | Üstten kırpma | Gelir ≥ 50.000 → "50.000+" | Uçlarda bilgi kaybı |
 | Bastırma | k'nin altındaki satırları ya da hücreleri çıkarma | Küçük gruplar görünmez olur |
-| Gürültü ekleme | Sayılara kontrollü rastgelelik (farksal gizlilik) | Doğru uygulaması uzmanlık ister |
+| Gürültü ekleme | Sayılara kontrollü rastgelelik (farksal gizlilik, differential privacy) | Doğru uygulaması uzmanlık ister |
 
 k-anonimlik sezgi için iyidir ama tek başına yetmez: bir gruptaki herkesin hassas değeri aynıysa (hepsi aynı tanı)
 kişi tanınmadan bilgi öğrenilir. Hassas sütunlu veri dışarı çıkacaksa satır düzeyi yerine toplu tablo verin.
 
 ## Toplulaştırma ve küçük hücre bastırma
 
-Küçük sayıları gizlemek yetmez; açık bırakılan toplamdan geri hesaplanırlar:
+Küçük hücre bastırma (small cell suppression): küçük sayıları gizlemek yetmez; açık bırakılan toplamdan geri
+hesaplanırlar:
 
 ```sql calistir
 CREATE TABLE talep (ilce TEXT, tur TEXT, adet INTEGER);
@@ -218,10 +219,15 @@ gösterebilir. Eşik (5 ya da 10) bir politika kararıdır; yazılır ve her rap
 
 ## İlgili
 
-- Kişisel veri bulma, maskeleme, silme ve HMAC'li takma ad: [`veri/verihavuzu/kalite/pii.py`](../../veri/verihavuzu/kalite/pii.py)
-  (`python -m verihavuzu maskele`); KVKK denetim listesi: [`veri/docs/KVKK_NOTLARI.md`](../../veri/docs/KVKK_NOTLARI.md)
-- Gösterimde maskeleme (`123******01`, `a***@ornek.com`): [`kutuphane/py/kutuphane/maske.py`](../../kutuphane/py/kutuphane/maske.py)
+- Kişisel veri bulma, maskeleme, silme ve HMAC'li takma ad:
+  [`veri/verihavuzu/kalite/pii.py`](../../veri/verihavuzu/kalite/pii.py) (`python -m verihavuzu maskele`); KVKK
+  denetim listesi: [`veri/docs/KVKK_NOTLARI.md`](../../veri/docs/KVKK_NOTLARI.md)
+- Gösterimde maskeleme (`123******01`, `a***@ornek.com`):
+  [`kutuphane/py/kutuphane/maske.py`](../../kutuphane/py/kutuphane/maske.py)
 - [Olay izleme planı](olay-izleme-plani.md) — olaya kişisel veri girmez
 - [Analitik veri modeli](analitik-veri-modeli.md) — hangi ham veri saklanır, ne kadar süre
 - [Pano tasarımı](pano-tasarimi.md) — küçük grupları panoda göstermek
 - [Veri kalitesi sözleşmeleri](veri-kalitesi-sozlesmeleri.md) — raporlara değer yazmamak
+- [KVKK pratiği](../50-guvenlik/kvkk-pratik.md) — geliştiricinin KVKK denetim listesi
+- [Veri yaşam döngüsü](../40-sistem-tasarimi/veri-yasam-dongusu.md) — saklama, silme talebi, yedek
+- [Sır yönetimi](../50-guvenlik/sir-yonetimi.md) — takma ad anahtarını saklamak ve döndürmek

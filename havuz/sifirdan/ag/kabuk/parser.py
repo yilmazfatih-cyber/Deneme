@@ -7,8 +7,10 @@ Dilbilgisi (yukarıdan aşağı, özyinelemeli iniş):
     komut     := (ATAMA)* (SÖZCÜK | yönlendirme)+    → Command
     yönlendirme := ('>' | '>>' | '<' | '2>' | '2>>' | '&>') SÖZCÜK | '2>&1'
 Örnek:  AD=x cat < a.txt | sort > b.txt && echo tamam &
-        → Item(AndOr(Pipeline([cat <a.txt, sort >b.txt]), [("&&", Pipeline([echo tamam]))]), arka plan)
-Genişletme: yeni bir yapı (ör. alt kabuk "( … )") için önce `lexer.OPERATORS`, sonra burada yeni bir kural.
+        → Item(AndOr(Pipeline([cat <a.txt, sort >b.txt]), [("&&", Pipeline([echo tamam]))]), arka
+        plan)
+Genişletme: yeni bir yapı (ör. alt kabuk "( … )") için önce `lexer.OPERATORS`, sonra burada yeni bir
+kural.
 """
 
 from __future__ import annotations

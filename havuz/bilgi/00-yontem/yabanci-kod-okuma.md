@@ -30,9 +30,7 @@ iddiayı (ör. "bu işlev veritabanına yazmaz") ancak kodu okuyarak ya da çal�
 | Performans sorunu                          | Ölçümün gösterdiği sıcak yol                              | Geri kalanı sonucu değiştirmez          |
 | Bir soruyu yanıtlamak                      | Yalnız o soruyla ilgili akış                              | Gerisi zaman kaybıdır                   |
 
-## Nasıl yapılır
-
-### 1. On beş dakikalık keşif
+## 1. On beş dakikalık keşif
 
 Sırayla bakın ve her birinden bir-iki satır not alın:
 
@@ -46,12 +44,12 @@ Sırayla bakın ve her birinden bir-iki satır not alın:
 - Testler klasörü: test adları, sistemin ne yaptığının en kısa listesidir.
 - Son değişiklikler: `git log --oneline -20`. Hangi bölge canlı, hangisi yıllardır dokunulmamış.
 
-### 2. Çalıştırın
+## 2. Çalıştırın
 
 Kurun, testleri çalıştırın, uygulamayı açın. Çalıştıramadığınız kod hakkında yalnız tahmin yürütürsünüz.
 Çalışmayan adımı not edin; çoğu zaman belgede eksik kalmış bir ön koşuldur.
 
-### 3. Bir akışı uçtan uca izleyin
+## 3. Bir akışı uçtan uca izleyin
 
 Bir kullanıcı eylemi seçin ve izini sürün: arayüz → olay işleyici → API çağrısı → yönlendirme (route) → servis →
 veri katmanı → SQL. Zinciri `dosya:satır` biçiminde yazın. Havuzdaki uygulamanın API'si bu katmanlarla kurulu:
@@ -103,7 +101,7 @@ routes.post_order
 Bu araç dinamik çağrıları (`getattr`, kayıt tabloları, metinle kurulan adlar) görmez; editörün "tanıma git" ve
 "kullanımları bul" komutları da göremez. Arama boş dönerse bu olasılığı aklınızda tutun.
 
-### 4. Arama stratejileri
+## 4. Arama stratejileri
 
 | Ne arıyorsunuz                       | Nasıl                                                                       |
 | ------------------------------------ | --------------------------------------------------------------------------- |
@@ -142,7 +140,7 @@ src/features/lists/ListPage.tsx:1:export const ListPage = ({ items }) => (items.
 src/api/lists.ts:1:export const fetchLists = () => fetch('/api/lists')
 ```
 
-### 5. Testleri belge gibi okuyun
+## 5. Testleri belge gibi okuyun
 
 - Test adları davranışın tanımıdır: "süresi dolmuş davet kabul edilmez" bir kuralı söyler.
 - Test verisi (fixture) gerçekçi veriyi gösterir: alanların biçimi, tipik değerler.
@@ -150,7 +148,7 @@ src/api/lists.ts:1:export const fetchLists = () => fetch('/api/lists')
 - **Test edilmeyen** davranış en riskli bölgedir; orayı değiştirirken önce test yazın.
 - Bir değerin gerçekte ne olduğunu merak ediyorsanız ilgili tek testi çalıştırıp içine geçici bir `print` koyun.
 
-### 6. Not çıkarın: harita
+## 6. Not çıkarın: harita
 
 ```text
 Amaç:        Ekip görev listesi; çevrimdışı çalışır, sunucuyla eşitlenir.
@@ -164,7 +162,7 @@ Açık sorular: Silinen görev kaç gün geri getirilebilir?
 
 Haritayı bir dosyada tutun ve her yeni oturumda modele verin; aynı keşfi her seferinde baştan yaptırmayın.
 
-### 7. Değiştirmeden önce
+## 7. Değiştirmeden önce
 
 En yakın örneği bulun ve onun üslubunu izleyin: dosya yeri, adlandırma, hata işleme, test biçimi. Kod tabanında
 iki farklı üslup varsa en son değiştirilmiş olanı izleyin (`git log -- yol` ile bakın).
@@ -208,3 +206,4 @@ iki farklı üslup varsa en son değiştirilmiş olanı izleyin (`git log -- yol
 - [Yeniden düzenleme](yeniden-duzenleme.md): okuduğunuz kodu güvenle değiştirmek.
 - Model için yazılmış harita örneği: [uygulama/AGENTS.md](../../uygulama/AGENTS.md),
   mimari özeti: [uygulama/docs/MIMARI.md](../../uygulama/docs/MIMARI.md).
+- Diğer kümelerden: [Git](../10-diller/git.md).

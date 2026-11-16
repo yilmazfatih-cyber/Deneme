@@ -157,7 +157,8 @@ pg_restore --no-owner --dbname="$TATBIKAT_DATABASE_URL" yedek-20261116-0317.dump
 
 - `pg_dump`'ın ana sürümü sunucununkiyle aynı ya da daha yeni olmalıdır; eskisi sürüm uyuşmazlığıyla durur.
   Kapsayıcıdaki aracı kullanmak bunu çözer (`docker compose exec -T db pg_dump …`, [Docker Compose](docker-compose.md)).
-- Roller ve izinler veritabanı yedeğine girmez; ayrıca kaydedin ya da geri yüklemede `--no-owner` kullanın.
+- Roller (veritabanı kullanıcıları) `pg_dump`'a girmez; hedefte rolleri ayrıca kurun ya da geri yüklemede
+  `--no-owner` kullanın.
 - Büyük veritabanlarında mantıksal yedek yavaşlar; fiziksel yedek ve WAL arşivi (noktasal dönüş) gerekir. Yönetilen
   serviste bu sağlayıcının işidir; geri yükleme çoğu sağlayıcıda **yeni** bir veritabanı açar ve uygulamanın
   bağlantı adresini değiştirmeniz gerekir.
@@ -348,6 +349,8 @@ izleme adresine haber verir; haber gelmezse uyarı çıkar ([İzleme ve uyarı](
 ## İlgili
 
 - [Migrasyonlar](../30-arkauc/migrasyonlar.md) — yıkıcı göçten önce yedek, geri almanın gerçeği
+- [Yedek ve fidye yazılımı](../50-guvenlik/yedek-ve-fidye-yazilimi.md) — saldırganın silemeyeceği kopya, hangi yedeğe dönülür
+- [KVKK pratik](../50-guvenlik/kvkk-pratik.md) · [Veri yaşam döngüsü](../40-sistem-tasarimi/veri-yasam-dongusu.md) — saklama süresi, silme talebi ve yedek
 - [İzleme ve uyarı](izleme-ve-uyari.md) · [Olay sonrası değerlendirme](olay-sonrasi-degerlendirme.md)
 - [Docker Compose](docker-compose.md) (`exec -T`) · [Linux temelleri](linux-temelleri.md) (systemd)
 - Çalışan karşılıklar: [`backup.ts`](../../uygulama/api/scripts/backup.ts),

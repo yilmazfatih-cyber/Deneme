@@ -193,3 +193,4 @@ hızlandırır. Önce ölçeği bilin (1000 kullanıcı × 100 kayıt = 100 bin 
 - [Performans yöntemi](performans-yontemi.md): erken en iyilemenin panzehiri.
 - [Teknik yazı](teknik-yazi.md): karar kaydını okunur yazmak.
 - Havuzdaki karar kayıtları: [uygulama/docs/KARARLAR.md](../../uygulama/docs/KARARLAR.md).
+- Diğer kümelerden: [Monolit ve servisler](../40-sistem-tasarimi/monolit-ve-servisler.md).

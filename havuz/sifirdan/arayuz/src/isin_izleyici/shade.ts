@@ -8,7 +8,22 @@
 import { EPS, normalAt, type Ray } from './geometry.ts'
 import { colorAt } from './material.ts'
 import type { Scene } from './scene.ts'
-import { add, dot, lerp, mul, neg, normalize, reflect, refract, scale, schlick, sub, vec, ZERO, type Vec3 } from './vec.ts'
+import {
+  add,
+  dot,
+  lerp,
+  mul,
+  neg,
+  normalize,
+  reflect,
+  refract,
+  scale,
+  schlick,
+  sub,
+  vec,
+  ZERO,
+  type Vec3,
+} from './vec.ts'
 
 function sky(scene: Scene, dir: Vec3): Vec3 {
   const t = 0.5 * (dir.y + 1)
@@ -58,7 +73,9 @@ export function trace(scene: Scene, ray: Ray, depth = 0): Vec3 {
     const refracted = refract(ray.dir, normal, n1 / n2)
     const kr = refracted ? schlick(cosine, n1, n2) : 1
     const reflected = trace(scene, { origin: over, dir: reflectDir }, depth + 1)
-    const through = refracted ? trace(scene, { origin: sub(point, scale(normal, EPS * 10)), dir: normalize(refracted) }, depth + 1) : ZERO
+    const through = refracted
+      ? trace(scene, { origin: sub(point, scale(normal, EPS * 10)), dir: normalize(refracted) }, depth + 1)
+      : ZERO
     const glass = add(scale(reflected, kr), scale(mul(through, lerp(vec(1, 1, 1), base, 0.15)), 1 - kr))
     color = lerp(color, glass, m.transparent)
   } else if (m.reflect > 0) {

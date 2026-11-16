@@ -6,7 +6,7 @@ Web'de her gün kullandığımız güvenlik parçalarının (parola özeti, otur
 modern şifreleme) içeride nasıl çalıştığını gösteren, baştan sona okunabilir Python. Her parça testte standart
 kitaplıkla (`hashlib`, `hmac`, `base64`) ve RFC sınama vektörleriyle birebir karşılaştırılır.
 
-## Ne var
+## Dosya haritası
 
 | Parça                        | Dosya           | Doğrulandığı kaynak                                            |
 | ---------------------------- | --------------- | -------------------------------------------------------------- |

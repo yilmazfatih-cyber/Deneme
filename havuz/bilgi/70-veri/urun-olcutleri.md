@@ -17,7 +17,7 @@ guncellik: 2026-11
 hangi saat dilimi, hangi tablo. Tanım yazılı değilse iki kişi iki sayı getirir ve ikisi de "doğru"dur.
 
 **Kuzey yıldızı ölçütü** (north star metric), ürünün kullanıcıya verdiği değeri en iyi yansıtan tek sayıdır;
-gelirin öncü göstergesidir ve ekiplerin etkileyebileceği **girdi ölçütlerine** ayrışır (**ölçüt ağacı**).
+gelirin öncü göstergesi olmalıdır ve ekiplerin etkileyebileceği **girdi ölçütlerine** ayrışır (**ölçüt ağacı**).
 Her hedef ölçütün yanında bozulmaması gereken bir **koruma ölçütü** (guardrail) durur: iptal, şikâyet, hata oranı.
 
 Hedef yapılan ölçüt bozulur: "uygulamayı açan kişi" hedeflenirse bildirim yağdırılır, sayı artar, değer artmaz.
@@ -37,7 +37,7 @@ Bu yüzden "etkin" kelimesi **çekirdek eylemle** (kullanıcının değer aldı�
 | Ölçüt sorusu | Doğru biçim | Yanlış biçim |
 | --- | --- | --- |
 | Büyüyor muyuz? | Etkin kullanıcı (çekirdek eylemle) | Toplam kayıtlı kullanıcı (yalnız artar) |
-| Kullanıcı değer buluyor mu? | Tutma eğrisi, kohortla | Ortalama oturum süresi |
+| Kullanıcı değer buluyor mu? | Tutma (retention) eğrisi, kohortla | Ortalama oturum süresi |
 | Satış sayfası işliyor mu? | Pencereli dönüşüm (7 gün içinde) | "Bugüne kadar dönüşen" (son kohortu cezalandırır) |
 | Aboneler kalıyor mu? | Dönem başı abonelerden ayrılan oranı | Ay içindeki iptaller / ay sonu abone |
 
@@ -46,17 +46,17 @@ Bu yüzden "etkin" kelimesi **çekirdek eylemle** (kullanıcının değer aldı�
 Her ölçüt panoya girmeden önce bir kart alır. Kart panoda tanım olarak da görünür ([pano tasarımı](pano-tasarimi.md)).
 
 ```markdown
-**Ad:** Haftalık etkin kullanıcı (HEK)
+**Ad:** Haftalık etkin kullanıcı (HEK, WAU)
 **Soru:** Değer alan kaç kişi var?
-**Tanım:** Son 7 Türkiye gününde en az bir `gorev_tamamlandi` olayı olan tekil kişi (kimlik birleştirmeden sonra)
+**Tanım:** Pazartesi–Pazar haftası içinde en az bir `gorev_tamamlandi` olayı olan tekil kişi (kimlik birleştirmeden sonra)
 **Hariç:** iç kullanıcılar, test hesapları, zamanı gelecekte olan olaylar
-**Saat dilimi:** Türkiye (UTC+3); hafta Pazartesi 00:00'da başlar
+**Saat dilimi:** Türkiye (UTC+3); hafta Pazartesi 00:00'da başlar, Pazar 24:00'te biter
 **Kaynak:** `olaylar_tekil` görünümü (olay_id ile tekilleştirilmiş)
 **Sahibi:** ürün sahibi · **Sürüm:** v2 (2026-11-01: "uygulama_acildi" yerine "gorev_tamamlandi")
 **Bilinen sınır:** çevrimdışı olaylar 3 güne kadar geç gelir; son 3 günün sayısı artabilir
 ```
 
-## Etkin kullanıcı: tanım sayıyı belirler
+## Etkin (aktif) kullanıcı: tanım sayıyı belirler
 
 Aynı hafta, aynı veri, dört tanım:
 
@@ -105,12 +105,12 @@ GEK ortalaması, takvimle|1.14|GEK/HEK|0.38
 ```
 
 "Etkin kullanıcı" 6, 4, 3 ya da 1. Hiçbiri yanlış değildir; yanlış olan, hangisi olduğunu yazmamaktır. GEK/HEK
-oranı (yapışkanlık, stickiness) bir etkin kullanıcının haftanın kaç gününde değer aldığını özetler; günlük ortalama
+oranı (DAU/WAU, yapışkanlık, stickiness) bir etkin kullanıcının haftanın kaç gününde değer aldığını özetler; günlük ortalama
 olaysız günleri atlarsa oran olduğundan iyi görünür.
 
 ## Dönüşüm: pencere ve olgunlaşmamış kohort
 
-Dönüşüm = pencere içinde dönüşenler / dönüşme şansı olanlar. "Bugüne kadar dönüşen" yazarsanız eski kohortlar
+Dönüşüm (conversion) = pencere içinde dönüşenler / dönüşme şansı olanlar. "Bugüne kadar dönüşen" yazarsanız eski kohortlar
 hep daha iyi görünür; son kohortun henüz zamanı olmamıştır.
 
 ```sql calistir
@@ -200,16 +200,17 @@ Kuzey yıldızı düşünce önce hangi dalın düştüğüne bakılır:
 gecen = {"hek": 1000, "kisi_basi": 5.0}
 bu = {"hek": 1100, "kisi_basi": 4.4}
 for ad in gecen:
-    print(f"{ad:10s} {gecen[ad]:>7g} → {bu[ad]:>7g}  değişim %{100 * (bu[ad] / gecen[ad] - 1):+.1f}")
+    print(f"{ad:10s} {gecen[ad]:>7g} → {bu[ad]:>7g}  değişim %{100 * (bu[ad] / gecen[ad] - 1):+.1f}".replace(".", ","))
 toplam_gecen, toplam_bu = gecen["hek"] * gecen["kisi_basi"], bu["hek"] * bu["kisi_basi"]
-print(f"{'toplam':10s} {toplam_gecen:>7g} → {toplam_bu:>7g}  değişim %{100 * (toplam_bu / toplam_gecen - 1):+.1f}")
+print(f"{'toplam':10s} {toplam_gecen:>7g} → {toplam_bu:>7g}  değişim %{100 * (toplam_bu / toplam_gecen - 1):+.1f}"
+      .replace(".", ","))
 assert round(toplam_bu) == 4840
 ```
 
 ```cikti
-hek           1000 →    1100  değişim %+10.0
-kisi_basi        5 →     4.4  değişim %-12.0
-toplam        5000 →    4840  değişim %-3.2
+hek           1000 →    1100  değişim %+10,0
+kisi_basi        5 →     4,4  değişim %-12,0
+toplam        5000 →    4840  değişim %-3,2
 ```
 
 Kullanıcı sayısı artarken kuzey yıldızı düştü: sorun yeni kullanıcı kazanmakta değil, kişi başı kullanımda. Yeni
@@ -265,3 +266,5 @@ gelenlerin daha az kullanması (karışım etkisi) bunu tek başına açıklayab
 - [Betimsel istatistik](betimsel-istatistik.md) — oranların ortalaması ile toplamların oranı
 - Kayıp oranı ve huni örnekleri (DuckDB, sınanmış): [`veri/docs/ANALIZ_TARIFLERI.md`](../../veri/docs/ANALIZ_TARIFLERI.md)
   (12–14. tarifler); örnek küme: [`veri/ornekler/churn/`](../../veri/ornekler/churn/VERI_KARTI.md)
+- [Ölçüm ve öğrenme](../95-urun/olcum-ve-ogrenme.md) — kuzey yıldızı seçimi, aktivasyon, ölçümden ürün kararına
+- [Anket ve örneklem](anket-ve-orneklem.md) — ölçülemeyeni ankette sormak, NPS

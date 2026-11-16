@@ -18,7 +18,7 @@ guncellik: 2026-11
 
 Beklentiler altı türdür: **tamlık** (zorunlu alan boş değil), **tekillik** (anahtar benzersiz), **geçerlilik**
 (tür, aralık, desen, izinli değer, yabancı anahtar), **tutarlılık** (tablolar arası: kalemlerin toplamı = sipariş
-toplamı), **tazelik** (en son kayıt ne zaman geldi), **hacim** (satır sayısı beklenen aralıkta).
+toplamı), **tazelik** (freshness: en son kayıt ne zaman geldi), **hacim** (satır sayısı beklenen aralıkta).
 
 Denetim hattın içindedir: kullanıcıya ulaşmadan önce **engelleyici**, ulaştıktan sonra **izleyici**. En taşınabilir
 denetim biçimi "**sıfır satır döndürmesi gereken sorgu**"dur. Uyarı eyleme dönüşmelidir: sahibine gider ve ne
@@ -225,3 +225,6 @@ sütundan iki farklı sayı üretir. Sözlüğü şemadan üretin; anlam değiş
 - [Veri temizleme yöntemi](veri-temizleme-yontemi.md) — kuralı yazmadan önce profil
 - [Olay izleme planı](olay-izleme-plani.md) — olay verisine sözleşme
 - [Pano tasarımı](pano-tasarimi.md) — tazeliği panoda göstermek
+- [İzleme ve uyarı](../60-devops/izleme-ve-uyari.md) — gürültüsüz uyarı eşiği
+- [Aykırı değer ve anomali tespiti](../80-ml/aykiri-deger-ve-anomali.md) — uyarı yorgunluğu, beklenene göre anomali
+- [MLOps](../80-ml/mlops.md) — kayma ve başarım izleme

@@ -89,7 +89,7 @@ olan bir ürün +2 puanlık etkiyi bile 154 günde görür: orada küçük ayarl
 kaybıdır. Süreyi her zaman **tam haftalara** yuvarlayın; hafta içi ile hafta sonu kullanıcıları farklıdır.
 
 MDE'yi yazarken mutlak mı göreli mi olduğunu açıkça söyleyin: "%10 artış" hem %10 → %11 hem %10 → %20 diye
-okunabilir; gereken örneklem 25 kat farklıdır.
+okunabilir; gereken örneklem grup başına 14.751 ile 199, yani yaklaşık 74 kat farklıdır.
 
 ## Rastgeleleştirme birimi ve atama
 
@@ -234,12 +234,13 @@ Segment sonuçları ("mobilde çok iyi") **keşif** bulgusudur; ayrı bir deneyl
 
 ## Kazananın laneti ve yenilik etkisi
 
-- **Kazananın laneti:** gücü düşük bir deneyde yalnız şansın büyüttüğü sonuçlar anlamlı çıkar; anlamlı çıkan
-  etkinin ölçülen büyüklüğü gerçeğinden büyüktür. Yayından sonra etki "küçüldüyse" nedeni çoğu zaman budur. Önlem:
-  yeterli örneklem; büyük kararlarda doğrulama deneyi ya da küçük bir kalıcı karşılaştırma grubu (holdout).
-- **Yenilik etkisi:** yeni düzen merak yüzünden ilk günlerde tıklanır, sonra söner. **Değişim direnci:** alışkın
-  kullanıcı ilk günler yeni düzeni sevmez, sonra alışır. İkisini de görmek için günlük etkiyi çizin, en az iki tam
-  hafta sürdürün ve yeni kullanıcılarla eski kullanıcıları ayrı inceleyin.
+- **Kazananın laneti** (winner's curse): gücü düşük bir deneyde yalnız şansın büyüttüğü sonuçlar anlamlı çıkar;
+  anlamlı çıkan etkinin ölçülen büyüklüğü gerçeğinden büyüktür. Yayından sonra etki "küçüldüyse" nedeni çoğu zaman
+  budur. Önlem: yeterli örneklem; büyük kararlarda doğrulama deneyi ya da küçük bir kalıcı karşılaştırma grubu
+  (holdout).
+- **Yenilik etkisi** (novelty effect): yeni düzen merak yüzünden ilk günlerde tıklanır, sonra söner. **Değişim
+  direnci:** alışkın kullanıcı ilk günler yeni düzeni sevmez, sonra alışır. İkisini de görmek için günlük etkiyi
+  çizin, en az iki tam hafta sürdürün ve yeni kullanıcılarla eski kullanıcıları ayrı inceleyin.
 
 ## Sonuç raporu
 
@@ -278,7 +279,7 @@ fark +0,9 puan (%95 GA +0,2 … +1,6), göreli +%9, p = 0,012
   fark +0,9 puan (%95 GA +0,2 … +1,6), göreli +%9, p = 0,012
 **Koruma ölçütleri:** 7. gün tutma −0,2 puan (GA −1,0 … +0,6): bozulma kanıtı yok · form hata oranı ve
   yükleme süresi değişmedi
-**Örneklem oranı:** %50,0 / %50,0, SRM p = 0,84
+**Örneklem oranı:** %50,0 / %50,0, SRM p = 0,88
 **Keşif (karar için değil):** mobil +1,2 puan, masaüstü +0,3 puan (Holm sonrası anlamlı değil)
 **Sınırlar:** yalnız yeni ziyaretçiler; bayram haftası dışında; etki büyüklüğünün alt sınırı +0,2 puan
 **Sonraki adım:** 30 gün sonra kalıcı karşılaştırma grubuyla tutmayı yeniden ölç
@@ -298,7 +299,7 @@ fark +0,9 puan (%95 GA +0,2 … +1,6), göreli +%9, p = 0,012
 | "Anlamlı değil" → "etkisi yok" denildi | Güç yetersiz; aralık sıfırı da büyük etkiyi de kapsıyor | Güven aralığıyla raporlayın: "en çok +X puan olabilir" |
 | B sayfası yavaş ama kimse görmedi | Koruma ölçütü yok | Yükleme süresi, hata oranı her deneyde koruma ölçütü |
 | Pazar yerinde iki grup aynı stoğa yarışıyor | Gruplar arası girişim | Küme ya da zaman dilimli atama |
-| "%10 artış" için örneklem 25 kat yanlış | MDE mutlak/göreli karıştı | MDE'yi iki biçimde de yazın |
+| "%10 artış" için örneklem onlarca kat yanlış | MDE mutlak/göreli karıştı | MDE'yi iki biçimde de yazın |
 
 ## Denetim listesi
 
@@ -333,4 +334,8 @@ fark +0,9 puan (%95 GA +0,2 … +1,6), göreli +%9, p = 0,012
 - [Ürün ölçütleri](urun-olcutleri.md) — birincil ve koruma ölçütü seçimi
 - [Olay izleme planı](olay-izleme-plani.md) — deney olayları (`deney_goruldu {deney, grup}`)
 - [Analiz raporu yazma](analiz-raporu-yazma.md) — yüzde ↔ yüzde puan, yuvarlama
-- Farkın güven aralığı için önyükleme (gruplu ve katmanlı): [`ml-temel/ml_temel/olcut/bootstrap.py`](../../ml-temel/ml_temel/olcut/bootstrap.py)
+- Farkın güven aralığı için önyükleme (gruplu ve katmanlı):
+  [`ml-temel/ml_temel/olcut/bootstrap.py`](../../ml-temel/ml_temel/olcut/bootstrap.py)
+- [Ölçüm ve öğrenme](../95-urun/olcum-ve-ogrenme.md) — küçük trafikte deney sonucunu ürün kararına çevirmek
+- [Fikir doğrulama](../95-urun/fikir-dogrulama.md) — deneyden önce en ucuz doğrulama
+- [İstatistiksel kestirim](../92-matematik/istatistiksel-kestirim.md) — standart hata ve örneklem dağılımı

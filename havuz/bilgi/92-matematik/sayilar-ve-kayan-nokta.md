@@ -27,15 +27,15 @@ guncellik: 2026-11
 
 ## Karar tablosu
 
-| Ne hesaplıyorsunuz                            | Ne kullanılır                                         | Neden                                                |
-| --------------------------------------------- | ----------------------------------------------------- | ---------------------------------------------------- |
-| Para, fiyat, vergi, bakiye                    | Tam sayı kuruş ya da `Decimal("12.50")`               | `float` 0,10 TL'yi tam tutamaz; kuruş farkı birikir  |
-| Ölçüm, istatistik, makine öğrenmesi           | `float` (64 bit)                                      | Hızlı; ~1e-16 göreli hata yeter                      |
-| Kesin oran, kesir (1/3), olasılık sayımı      | `fractions.Fraction`                                  | Tam sonuç; yavaştır, pay/payda büyüyebilir           |
-| İki `float` eşit mi                           | `math.isclose(a, b, rel_tol=…, abs_tol=…)`            | `==` yuvarlama yüzünden yanılır                      |
-| Çok sayıda `float` toplamı                    | `math.fsum`; başka dilde Neumaier toplamı             | `+=` döngüsü hata biriktirir                         |
-| Kimlik, sayaç (JSON ile JavaScript'e gidecek) | Tamsayı; 2^53'ü aşabilecekse **metin** olarak taşıyın | JavaScript `number` 2^53 üstünü bozar                |
-| Kullanıcıya gösterim                          | Yalnız biçimlendirme (`f"{x:.2f}"`)                    | Saklanan değer yuvarlanmaz; ekranda yuvarlanır       |
+| Ne hesaplıyorsunuz                            | Ne kullanılır                                         | Neden                                               |
+| --------------------------------------------- | ----------------------------------------------------- | --------------------------------------------------- |
+| Para, fiyat, vergi, bakiye                    | Tam sayı kuruş ya da `Decimal("12.50")`               | `float` 0,10 TL'yi tam tutamaz; kuruş farkı birikir |
+| Ölçüm, istatistik, makine öğrenmesi           | `float` (64 bit)                                      | Hızlı; ~1e-16 göreli hata yeter                     |
+| Kesin oran, kesir (1/3), olasılık sayımı      | `fractions.Fraction`                                  | Tam sonuç; yavaştır, pay/payda büyüyebilir          |
+| İki `float` eşit mi                           | `math.isclose(a, b, rel_tol=…, abs_tol=…)`            | `==` yuvarlama yüzünden yanılır                     |
+| Çok sayıda `float` toplamı                    | `math.fsum`; başka dilde Neumaier toplamı             | `+=` döngüsü hata biriktirir                        |
+| Kimlik, sayaç (JSON ile JavaScript'e gidecek) | Tamsayı; 2^53'ü aşabilecekse **metin** olarak taşıyın | JavaScript `number` 2^53 üstünü bozar               |
+| Kullanıcıya gösterim                          | Yalnız biçimlendirme (`f"{x:.2f}"`)                   | Saklanan değer yuvarlanmaz; ekranda yuvarlanır      |
 
 ## 0.1 + 0.2 neden 0.3 değil
 
@@ -75,13 +75,13 @@ assert math.isclose(1e9, 1e9 + 0.5)  # 0,5 fark bu ölçekte göreli olarak "ayn
 print("tamam")
 ```
 
-| Durum                                          | Başlangıç toleransı (göreli)                   |
-| ---------------------------------------------- | ---------------------------------------------- |
-| Birkaç işlemlik `float64` hesap                | `1e-12`                                        |
-| Uzun hesap zinciri, yinelemeli yöntem          | `1e-9` – `1e-6`                                |
-| `float32` (GPU, sinir ağı)                     | `1e-5` – `1e-3`                                |
-| Sonlu farkla türev denetimi                    | `1e-6` – `1e-4` ([kalkülüs](kalkulus-sezgisi.md)) |
-| Para                                           | Tolerans yok: tam sayı kuruş ve `==`           |
+| Durum                                 | Başlangıç toleransı (göreli)                      |
+| ------------------------------------- | ------------------------------------------------- |
+| Birkaç işlemlik `float64` hesap       | `1e-12`                                           |
+| Uzun hesap zinciri, yinelemeli yöntem | `1e-9` – `1e-6`                                   |
+| `float32` (GPU, sinir ağı)            | `1e-5` – `1e-3`                                   |
+| Sonlu farkla türev denetimi           | `1e-6` – `1e-4` ([kalkülüs](kalkulus-sezgisi.md)) |
+| Para                                  | Tolerans yok: tam sayı kuruş ve `==`              |
 
 Sıfır ya da sıfıra yakın beklenen değerde ayrıca `abs_tol` verin. Tolerans bir tahmindir; testte geçmiyorsa önce
 hesabın kendisinden şüphelenin, toleransı büyütmek son çaredir.
@@ -198,14 +198,14 @@ print("tamam")
 
 Yuvarlama kipleri (`decimal` modülündeki adlarıyla):
 
-| Kip                          | Ad              | 2,5 | 3,5 | −2,5 | Nerede                                                   |
-| ---------------------------- | --------------- | --- | --- | ---- | -------------------------------------------------------- |
-| Yarımı sıfırdan uzağa        | `ROUND_HALF_UP` | 3   | 4   | −3   | Okulda öğrenilen; fatura ve fişte yaygın beklenti        |
-| Bankacı (yarımı çifte)       | `ROUND_HALF_EVEN` | 2 | 4   | −2   | Python `round()`, `Decimal` varsayılanı, IEEE varsayılanı |
-| Sıfıra doğru (kesme)         | `ROUND_DOWN`    | 2   | 3   | −2   | `int(x)`                                                 |
-| Eksi sonsuza doğru           | `ROUND_FLOOR`   | 2   | 3   | −3   | `math.floor`, `//`                                       |
-| Artı sonsuza doğru           | `ROUND_CEILING` | 3   | 4   | −2   | `math.ceil`: "kaç kutu gerekir"                          |
-| Sıfırdan uzağa (hep)         | `ROUND_UP`      | 3   | 4   | −3   | Nadiren                                                  |
+| Kip                    | Ad                | 2,5 | 3,5 | −2,5 | Nerede                                                    |
+| ---------------------- | ----------------- | --- | --- | ---- | --------------------------------------------------------- |
+| Yarımı sıfırdan uzağa  | `ROUND_HALF_UP`   | 3   | 4   | −3   | Okulda öğrenilen; fatura ve fişte yaygın beklenti         |
+| Bankacı (yarımı çifte) | `ROUND_HALF_EVEN` | 2   | 4   | −2   | Python `round()`, `Decimal` varsayılanı, IEEE varsayılanı |
+| Sıfıra doğru (kesme)   | `ROUND_DOWN`      | 2   | 3   | −2   | `int(x)`                                                  |
+| Eksi sonsuza doğru     | `ROUND_FLOOR`     | 2   | 3   | −3   | `math.floor`, `//`                                        |
+| Artı sonsuza doğru     | `ROUND_CEILING`   | 3   | 4   | −2   | `math.ceil`: "kaç kutu gerekir"                           |
+| Sıfırdan uzağa (hep)   | `ROUND_UP`        | 3   | 4   | −3   | Nadiren                                                   |
 
 Bankacı yuvarlaması neden var: çok sayıda yarım değer yuvarlanınca "hep yukarı" kuralı toplamı şişirir.
 
@@ -258,22 +258,22 @@ atlar (`skipna=True`); ikisi aynı veride farklı sayı verir.
 
 ## Tuzaklar
 
-| Belirti                                                   | Neden                                                     | Çözüm                                                              |
-| --------------------------------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------ |
-| Ekranda `0.30000000000000004`, `59.970000000000006`       | `float` ham basılmış                                      | Para kuruşta; gösterim yalnız biçimlendirmeyle                     |
-| İki toplam kuruş farkıyla tutmuyor                        | Satır satır ve toplamda ayrı yuvarlama; ya da `float`     | Yuvarlama kuralını yazın, tek yardımcıda uygulayın; tamsayı kuruş  |
-| `round(2.675, 2)` 2.67 veriyor                            | Değer bellekte 2.67499…; ayrıca `round` bankacı kipte     | `Decimal("2.675")` + açık kip (`ROUND_HALF_UP`)                     |
-| `Decimal(0.1)` uzun kuyruklu çıkıyor                      | `Decimal` float'tan kurulmuş                              | Metinden kurun: `Decimal("0.1")`                                   |
-| Test bazen geçiyor bazen kalıyor (`x == 0.3`)             | `float` eşitliği                                          | `math.isclose`; gerekçeli tolerans                                 |
-| Sıfıra karşı `isclose` hep yanlış                         | Göreli tolerans sıfırda çalışmaz                          | `abs_tol` verin                                                    |
-| Milyonlarca küçük değerin toplamı eksik                   | Büyük toplamın yanında küçük terimler kayboldu            | `math.fsum`; başka dilde Neumaier                                  |
-| Kimlik numarasının son haneleri değişiyor                 | 2^53 üstü tamsayı JavaScript `number`'ına sığmaz          | Kimliği metin taşıyın                                              |
-| Sayaç birden eksiye döndü                                 | 32 bit taşma                                              | 64 bit sütun; sınır değeriyle test                                 |
-| Eksi sayının kalanı beklenmedik                           | Diller farklı: Python `-7 % 3 == 2`, JavaScript/C `-1`    | Dilden bağımsız: `((a % m) + m) % m`                               |
-| Ekranda `-0,00`                                           | Küçük eksi değer sıfıra yuvarlandı, işaret kaldı          | `z` biçim seçeneği ya da `round(x, 2) + 0.0`; parada kuruş tamsayı |
-| Ortalama `NaN`, ya da en büyük değer sıraya göre değişiyor | Veride NaN var                                            | Girişte `math.isfinite`; NaN'ı reddedin ya da açıkça ayıklayın     |
-| Başka sistem JSON'u okuyamıyor                            | `json.dumps` NaN/Infinity yazdı                           | `allow_nan=False`; eksik değer `null`                              |
-| Python'daki toplam ile JavaScript'teki son hanede farklı  | Python 3.12+ `sum()` telafili, JavaScript `reduce` değil  | Her iki tarafta telafili toplama; ortak test vektörü               |
+| Belirti                                                    | Neden                                                    | Çözüm                                                              |
+| ---------------------------------------------------------- | -------------------------------------------------------- | ------------------------------------------------------------------ |
+| Ekranda `0.30000000000000004`, `59.970000000000006`        | `float` ham basılmış                                     | Para kuruşta; gösterim yalnız biçimlendirmeyle                     |
+| İki toplam kuruş farkıyla tutmuyor                         | Satır satır ve toplamda ayrı yuvarlama; ya da `float`    | Yuvarlama kuralını yazın, tek yardımcıda uygulayın; tamsayı kuruş  |
+| `round(2.675, 2)` 2.67 veriyor                             | Değer bellekte 2.67499…; ayrıca `round` bankacı kipte    | `Decimal("2.675")` + açık kip (`ROUND_HALF_UP`)                    |
+| `Decimal(0.1)` uzun kuyruklu çıkıyor                       | `Decimal` float'tan kurulmuş                             | Metinden kurun: `Decimal("0.1")`                                   |
+| Test bazen geçiyor bazen kalıyor (`x == 0.3`)              | `float` eşitliği                                         | `math.isclose`; gerekçeli tolerans                                 |
+| Sıfıra karşı `isclose` hep yanlış                          | Göreli tolerans sıfırda çalışmaz                         | `abs_tol` verin                                                    |
+| Milyonlarca küçük değerin toplamı eksik                    | Büyük toplamın yanında küçük terimler kayboldu           | `math.fsum`; başka dilde Neumaier                                  |
+| Kimlik numarasının son haneleri değişiyor                  | 2^53 üstü tamsayı JavaScript `number`'ına sığmaz         | Kimliği metin taşıyın                                              |
+| Sayaç birden eksiye döndü                                  | 32 bit taşma                                             | 64 bit sütun; sınır değeriyle test                                 |
+| Eksi sayının kalanı beklenmedik                            | Diller farklı: Python `-7 % 3 == 2`, JavaScript/C `-1`   | Dilden bağımsız: `((a % m) + m) % m`                               |
+| Ekranda `-0,00`                                            | Küçük eksi değer sıfıra yuvarlandı, işaret kaldı         | `z` biçim seçeneği ya da `round(x, 2) + 0.0`; parada kuruş tamsayı |
+| Ortalama `NaN`, ya da en büyük değer sıraya göre değişiyor | Veride NaN var                                           | Girişte `math.isfinite`; NaN'ı reddedin ya da açıkça ayıklayın     |
+| Başka sistem JSON'u okuyamıyor                             | `json.dumps` NaN/Infinity yazdı                          | `allow_nan=False`; eksik değer `null`                              |
+| Python'daki toplam ile JavaScript'teki son hanede farklı   | Python 3.12+ `sum()` telafili, JavaScript `reduce` değil | Her iki tarafta telafili toplama; ortak test vektörü               |
 
 ## Denetim listesi
 
@@ -303,6 +303,7 @@ atlar (`skipna=True`); ikisi aynı veride farklı sayı verir.
 - [Kalkülüs sezgisi](kalkulus-sezgisi.md): sonlu farkta adım boyu ve yuvarlama hatası
 - [Sayısal yöntemler](sayisal-yontemler.md): yıkıcı sadeleşme, koşul sayısı, durma ölçütü
 - [Finans matematiği](finans-matematigi.md): taksit planında ve KDV'de kuruş yuvarlama
+- [Adil paylaştırma ve borç sadeleştirme](adil-paylastirma.md): en büyük kalan yöntemi, yüzdelerin toplamını 100 tutmak
 - [JavaScript çalışma zamanı](../10-diller/javascript-calisma-zamani.md): `number`, BigInt, `parseFloat` tuzakları
 - [Python tuzakları](../10-diller/python-tuzaklar.md): bankacı yuvarlaması ve Python'a özgü öteki sürprizler
 - Kuruş temelli para tipi, KDV, en büyük kalan yöntemiyle paylaştırma:

@@ -46,8 +46,9 @@ köşeli ayraçlı alanlarla ve görünür bir "şablondur" uyarısıyla gelir.
 | Kullanıcılar içerik yüklüyor ya da yorum yazıyor                   | Kullanım koşullarında içerik kuralları; şikâyet ve kaldırma yolu                  | —                                           |
 | Her durumda                                                        | İşletmenin unvanı, adresi ve iletişim bilgisi sitede kolay bulunur                 | Site alt bilgisi, Hakkında                  |
 
-İki ek soru: **VERBİS** kaydı yükümlülüğü çalışan sayısı, ciro ve faaliyete bağlıdır (eşikleri doğrulayın). Ürün
-adını seçmeden önce **marka araştırması** yapın; başkasının tescilli markası yayından sonra ad değiştirtir.
+İki ek soru: **VERBİS** kaydı yükümlülüğü çalışan sayısına, yıllık mali bilançoya ve ana faaliyetin özel nitelikli
+veri işlemek olup olmadığına bağlıdır (güncel eşikleri doğrulayın). Ürün adını seçmeden önce **marka araştırması**
+yapın; başkasının tescilli markası yayından sonra ad değiştirtir.
 
 ## Aydınlatma ile açık rıza
 
@@ -62,6 +63,8 @@ adını seçmeden önce **marka araştırması** yapın; başkasının tescilli 
 Sık hatalar: aydınlatma metninin altına "okudum, onaylıyorum" kutusu koyup bunu açık rıza saymak; sözleşme için zaten
 gerekli veriye ayrıca rıza istemek (yanıltıcıdır: rıza geri alınınca ne olacak?); bülten, analiz ve üçüncü taraf
 paylaşımını tek kutuda toplamak; aydınlatma ile rızayı tek metinde birleştirmek. Aydınlatma ve rıza ayrı tutulur.
+Geliştirici tarafı (rızanın bir kayıt olarak saklanması, veri envanteri, saklama ve silme işi, yurt dışı aktarım
+soruları): [KVKK pratiği](../50-guvenlik/kvkk-pratik.md).
 
 ## Kendi ürününüz için liste çıkarmak
 
@@ -140,8 +143,10 @@ liste kısadır çünkü veri cihazdan hiç çıkmaz; bulut yedeği ya da eşitl
 5. Formların yanına aydınlatma bağlantısı, bülten kutusuna ayrı ve işaretsiz onay koyun.
 
 Veriyle çalışırken uygulanacak pratik KVKK denetim listesi (amaç, hukuki sebep, en aza indirme, saklama, güvenlik,
-aktarım, ihlal): [`veri/docs/KVKK_NOTLARI.md`](../../veri/docs/KVKK_NOTLARI.md). Teknik güvenlik önlemleri:
-`50-guvenlik` kümesi ([tehdit modelleme](../50-guvenlik/tehdit-modelleme.md)).
+aktarım, ihlal): [`veri/docs/KVKK_NOTLARI.md`](../../veri/docs/KVKK_NOTLARI.md). Takma ad ile anonim verinin farkı:
+[gizlilik ve anonimleştirme](../70-veri/gizlilik-ve-anonimlestirme.md). Teknik güvenlik önlemleri:
+[tehdit modelleme](../50-guvenlik/tehdit-modelleme.md); ihlal anında ilk saat:
+[olay müdahalesi](../50-guvenlik/olay-mudahalesi.md).
 
 ## Ne zaman avukata gidilir
 
@@ -199,7 +204,9 @@ aktarım, ihlal): [`veri/docs/KVKK_NOTLARI.md`](../../veri/docs/KVKK_NOTLARI.md)
 
 - [Tanıtım sayfası](tanitim-sayfasi.md): formun yanında aydınlatma bağlantısı, dürüst iddialar.
 - [Fiyatlandırma](fiyatlandirma.md): KDV gösterimi, abonelik iptali.
+- [Tutma ve iptal akışı](tutma-ve-iptal-akisi.md): dürüst iptal akışı ve karanlık örüntülerden kaçınmak.
 - [İçerik ve büyüme](icerik-ve-buyume.md): ticari ileti onayı ve İYS.
 - [Yapay zekâ özelliği tasarlama](yapay-zeka-ozelligi-tasarlama.md): yapay zekâ servisine veri göndermek.
 - [Lansman](lansman.md): yayın öncesi yasal denetim maddeleri.
+- [KVKK pratiği](../50-guvenlik/kvkk-pratik.md): veri envanteri, saklama ve silme, başvurular (geliştirici tarafı).
 - Pratik KVKK denetimi ve maskeleme araçları: [`veri/docs/KVKK_NOTLARI.md`](../../veri/docs/KVKK_NOTLARI.md).

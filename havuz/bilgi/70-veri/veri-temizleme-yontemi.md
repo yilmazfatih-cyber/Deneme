@@ -235,8 +235,16 @@ eşleşmeyi engeller (bulanık eşleme öncesi açın).
   [`veri/verihavuzu/kalite/values.py`](../../veri/verihavuzu/kalite/values.py)
 - Alıştırma: kirli dosya, temiz karşılığı ve bozulma kaydı:
   [`veri/ornekler/kirli_faturalar/`](../../veri/ornekler/kirli_faturalar/VERI_KARTI.md)
-- Bulanık yineleme (Türkçe normalleştirme, kısaltma açma): [`veri/verihavuzu/kalite/dedupe.py`](../../veri/verihavuzu/kalite/dedupe.py)
+- Bulanık yineleme (Türkçe normalleştirme, kısaltma açma):
+  [`veri/verihavuzu/kalite/dedupe.py`](../../veri/verihavuzu/kalite/dedupe.py)
 - Excel-TR CSV okuma/yazma: [`kutuphane/py/kutuphane/csv.py`](../../kutuphane/py/kutuphane/csv.py)
 - [Veri kalitesi sözleşmeleri](veri-kalitesi-sozlesmeleri.md) — kuralları dosyaya yazmak ve hatta koymak
 - [Betimsel istatistik](betimsel-istatistik.md) — aykırının ortalamaya etkisi
 - [Veri ve etiket](../80-ml/veri-ve-etiket.md) — model verisinde etiket kalitesi
+- [Unicode ve kodlama](../10-diller/unicode-ve-kodlama.md) — bozuk kodlama teşhis tablosu, normalleştirme
+- [Veri biçimleri](../10-diller/veri-bicimleri.md) — CSV ve Türkçe Excel, ISO 8601
+- [Türkçe sayı ve para](../97-turkce/turkce-sayi-ve-para.md) — binlik ve ondalık ayırıcı karışıklığı
+- [Türkiye biçimleri](../97-turkce/turkiye-bicimleri.md) — TCKN, IBAN, telefon, posta kodu doğrulama
+- [Aykırı değer ve anomali tespiti](../80-ml/aykiri-deger-ve-anomali.md) — sağlam z, çarpık veride IQR
+- [İçe ve dışa aktarım](../30-arkauc/ice-ve-disa-aktarim.md) — uygulamaya dosya alırken doğrulama
+- [Keşifsel veri analizi](kesifsel-veri-analizi.md) — profil adımının altı sorusu ve veri notu

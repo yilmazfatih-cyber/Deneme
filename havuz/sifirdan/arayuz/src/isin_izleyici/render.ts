@@ -75,7 +75,8 @@ export function render(scene: Scene, options: RenderOptions): RgbaImage {
 export function tiles(width: number, height: number, size: number): Tile[] {
   const out: Tile[] = []
   for (let y = 0; y < height; y += size) {
-    for (let x = 0; x < width; x += size) out.push({ x, y, w: Math.min(size, width - x), h: Math.min(size, height - y) })
+    for (let x = 0; x < width; x += size)
+      out.push({ x, y, w: Math.min(size, width - x), h: Math.min(size, height - y) })
   }
   const cx = width / 2
   const cy = height / 2

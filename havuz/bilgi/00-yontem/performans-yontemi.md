@@ -38,9 +38,7 @@ Zamanın nereye gittiğine dair sezgi çoğu zaman yanılır; yanlış yeri hız
 | Uygulama geç başlıyor           | `python -X importtime`; paket boyutu çözümleyicisi                  | Ağır içe aktarma, büyük paket             |
 | Arada bir donma                 | Performans kaydında uzun görevler                                   | Ana iş parçacığında ağır hesap            |
 
-## Nasıl yapılır
-
-### Darboğazı ölçerek bulun, düzeltip yeniden ölçün
+## Darboğazı ölçerek bulun, düzeltip yeniden ölçün
 
 Bir rapor üç adımda üretiliyor: ayrıştır, yinelenenleri ayıkla, biçimle. Hangisi yavaş? Tahmin etmeyin, kesit
 çıkarın:
@@ -116,7 +114,7 @@ tek değişiklik: liste yerine küme; sonuç aynı, en az 5 kat hızlı
 
 Dikkat: `parse` ve `report` da zaman harcıyor; ama onları hızlandırmak toplam süreyi neredeyse hiç değiştirmezdi.
 
-### Önce payı büyük olanı hızlandırın (Amdahl yasası)
+## Önce payı büyük olanı hızlandırın (Amdahl yasası)
 
 Bir parçanın toplam süredeki payı küçükse, onu ne kadar hızlandırırsanız hızlandırın kazanç küçük kalır:
 
@@ -136,7 +134,7 @@ print("kesit çıkarıcının en üstteki satırından başlayın")
 kesit çıkarıcının en üstteki satırından başlayın
 ```
 
-### Veritabanında: sorgu planına bakın
+## Veritabanında: sorgu planına bakın
 
 ```python calistir
 import sqlite3
@@ -256,3 +254,4 @@ veri ve geçersiz kılma yükü getirir ([Hata sınıfları](hata-siniflari.md#�
 - [Hata ayıklama](hata-ayiklama.md): ölçüm de bir hipotez sınamasıdır.
 - [Test stratejisi](test-stratejisi.md): hızlı sürümü yavaş başvuruyla karşılaştırmak.
 - Web performansı ve veritabanı ayrıntıları `20-web-onyuz` ve `30-arkauc` kümelerindedir.
+- Diğer kümelerden: [Web performansı](../20-web-onyuz/web-performansi.md), [SQL performansı ve işlem](../10-diller/sql-performans-ve-islem.md), [Tahmin ve büyüklük sezgisi](../92-matematik/tahmin-ve-buyukluk-sezgisi.md).

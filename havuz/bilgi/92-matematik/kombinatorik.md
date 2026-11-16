@@ -25,20 +25,20 @@ guncellik: 2026-11
 
 ## Karar tablosu
 
-| Sıra önemli mi | Tekrar var mı | Formül                         | Python                     | Örnek                                  |
-| -------------- | ------------- | ------------------------------ | -------------------------- | -------------------------------------- |
-| Evet           | Hayır         | `n! / (n−k)!`                  | `math.perm(n, k)`          | 10 kişiden başkan, yardımcı, sekreter   |
-| Evet           | Evet          | `n^k`                          | `n ** k`                   | 4 haneli PIN, parola                    |
-| Hayır          | Hayır         | `n! / (k!·(n−k)!)`             | `math.comb(n, k)`          | 49'dan 6 sayı, 20 kişiden 3 kişilik ekip |
-| Hayır          | Evet          | `C(n+k−1, k)`                  | `math.comb(n + k - 1, k)`  | 5 çeşitten 3 top dondurma (aynısı olabilir) |
+| Sıra önemli mi | Tekrar var mı | Formül             | Python                    | Örnek                                       |
+| -------------- | ------------- | ------------------ | ------------------------- | ------------------------------------------- |
+| Evet           | Hayır         | `n! / (n−k)!`      | `math.perm(n, k)`         | 10 kişiden başkan, yardımcı, sekreter       |
+| Evet           | Evet          | `n^k`              | `n ** k`                  | 4 haneli PIN, parola                        |
+| Hayır          | Hayır         | `n! / (k!·(n−k)!)` | `math.comb(n, k)`         | 49'dan 6 sayı, 20 kişiden 3 kişilik ekip    |
+| Hayır          | Evet          | `C(n+k−1, k)`      | `math.comb(n + k - 1, k)` | 5 çeşitten 3 top dondurma (aynısı olabilir) |
 
-| Soru                                                    | Araç                                     |
-| ------------------------------------------------------- | ---------------------------------------- |
-| "Bu kadar kayıtta rastgele kimlik çakışır mı?"           | Doğum günü yaklaşımı: `1 − e^(−n²/2N)`    |
-| "Çakışma kesin olur mu?"                                | Güvercin yuvası: `n > N` ise kesin        |
-| "En az bir koşulu sağlayan kaç öğe?"                    | Dahil etme-dışlama                        |
-| "Örneklemde kusur yok; parti temiz mi?"                 | Hipergeometrik olasılık (yerine koymadan) |
-| "Bütün kombinasyonları deneyebilir miyiz?"              | Sayıyı hesaplayın; > ~10⁸ ise başka yol   |
+| Soru                                           | Araç                                      |
+| ---------------------------------------------- | ----------------------------------------- |
+| "Bu kadar kayıtta rastgele kimlik çakışır mı?" | Doğum günü yaklaşımı: `1 − e^(−n²/2N)`    |
+| "Çakışma kesin olur mu?"                       | Güvercin yuvası: `n > N` ise kesin        |
+| "En az bir koşulu sağlayan kaç öğe?"           | Dahil etme-dışlama                        |
+| "Örneklemde kusur yok; parti temiz mi?"        | Hipergeometrik olasılık (yerine koymadan) |
+| "Bütün kombinasyonları deneyebilir miyiz?"     | Sayıyı hesaplayın; > ~10⁸ ise başka yol   |
 
 ## Dört formül, kaba kuvvetle doğrulanmış
 
@@ -101,12 +101,12 @@ assert half_chance(2**122) > 2e18  # UUIDv4 (122 rastgele bit): pratikte çakı�
 print("tamam")
 ```
 
-| Değer uzayı                           | %50 çakışma eşiği    | Sonuç                                              |
-| ------------------------------------- | -------------------- | -------------------------------------------------- |
-| 32 bit (CRC32, `int32` rastgele kimlik) | ~77 bin              | Tekilleştirme ya da kimlik için **yetmez**          |
-| 6 karakter, 62 harf/rakam             | ~281 bin             | Kısa URL üretirken her kodda çakışma denetimi şart  |
-| 64 bit                                | ~5 milyar            | Orta ölçekte yeter; yine de benzersizlik kısıtı koyun |
-| 122 bit (UUIDv4), 256 bit (SHA-256)   | Astronomik           | Rastgelelik kaynağı iyiyse çakışma beklenmez        |
+| Değer uzayı                             | %50 çakışma eşiği | Sonuç                                                 |
+| --------------------------------------- | ----------------- | ----------------------------------------------------- |
+| 32 bit (CRC32, `int32` rastgele kimlik) | ~77 bin           | Tekilleştirme ya da kimlik için **yetmez**            |
+| 6 karakter, 62 harf/rakam               | ~281 bin          | Kısa URL üretirken her kodda çakışma denetimi şart    |
+| 64 bit                                  | ~5 milyar         | Orta ölçekte yeter; yine de benzersizlik kısıtı koyun |
+| 122 bit (UUIDv4), 256 bit (SHA-256)     | Astronomik        | Rastgelelik kaynağı iyiyse çakışma beklenmez          |
 
 Kural: rastgele kimlik üretiyorsanız veritabanında **benzersizlik kısıtı** ve çakışmada yeniden üretme her zaman
 olsun; olasılık hesabı kısıtın yerini tutmaz, yalnız ne sıklıkla devreye gireceğini söyler.
@@ -243,16 +243,16 @@ kuvvet yerine akıllı arama (dinamik programlama, dal-sınır, sezgisel yöntem
 
 ## Tuzaklar
 
-| Belirti                                                       | Neden                                                         | Çözüm                                                          |
-| ------------------------------------------------------------- | ------------------------------------------------------------- | -------------------------------------------------------------- |
-| Hesaplanan olasılık benzetimin tam katı (2, 6, 24…) çıkıyor   | Sıra önemsizken sıralı sayılmış (çift sayma)                  | Sıra sorusunu yeniden yanıtlayın; küçük durumda `itertools` ile sayın |
-| "Bu kadar kısa kodda çakışma olmaz" denmişti, oldu            | Doğum günü etkisi: eşik `N` değil `√N`                        | `1,1774·√N` hesabı; benzersizlik kısıtı + yeniden üretme        |
-| CRC32/kısa karma ile tekilleştirilen kayıtlar birleşti         | 32 bit, ~77 bin kayıtta %50 çakışma                           | En az 64 bit; tercihen tam karşılaştırma ya da güçlü özet      |
-| "Geçerli olana dek karıştır" döngüsü bazen uzun sürüyor       | Geçerli diziliş olasılığı ~%37 (çekiliş problemi)             | Beklenen deneme sayısını hesaplayın; gerekirse doğrudan kurun  |
-| `OverflowError: int too large to convert to float`            | Büyük tam sayı float ile çarpıldı                             | Tam sayı bölmesi, `Fraction` ya da `math.lgamma` ile logaritma |
-| "Örneklemde kusur yok" denip parti kabul edildi, kusur çıktı  | Küçük örneklemde nadir kusuru görmemek olağan                 | Hipergeometrik hesap; örnek boyunu hedef güvene göre seçin     |
-| Gece boyu süren "bütün kombinasyonları dene" işi bitmiyor     | `2^n`, `n!` patlaması                                         | Önce durum sayısını hesaplayın; ikili kapsama, örnekleme       |
-| Birleşim sayısı tek tek toplamdan küçük çıktı, "hata" sanıldı | Kesişimler iki kez sayılmıştı                                 | Dahil etme-dışlama; küme birleşimi ve kesişimiyle doğrulayın   |
+| Belirti                                                       | Neden                                             | Çözüm                                                                 |
+| ------------------------------------------------------------- | ------------------------------------------------- | --------------------------------------------------------------------- |
+| Hesaplanan olasılık benzetimin tam katı (2, 6, 24…) çıkıyor   | Sıra önemsizken sıralı sayılmış (çift sayma)      | Sıra sorusunu yeniden yanıtlayın; küçük durumda `itertools` ile sayın |
+| "Bu kadar kısa kodda çakışma olmaz" denmişti, oldu            | Doğum günü etkisi: eşik `N` değil `√N`            | `1,1774·√N` hesabı; benzersizlik kısıtı + yeniden üretme              |
+| CRC32/kısa karma ile tekilleştirilen kayıtlar birleşti        | 32 bit, ~77 bin kayıtta %50 çakışma               | En az 64 bit; tercihen tam karşılaştırma ya da güçlü özet             |
+| "Geçerli olana dek karıştır" döngüsü bazen uzun sürüyor       | Geçerli diziliş olasılığı ~%37 (çekiliş problemi) | Beklenen deneme sayısını hesaplayın; gerekirse doğrudan kurun         |
+| `OverflowError: int too large to convert to float`            | Büyük tam sayı float ile çarpıldı                 | Tam sayı bölmesi, `Fraction` ya da `math.lgamma` ile logaritma        |
+| "Örneklemde kusur yok" denip parti kabul edildi, kusur çıktı  | Küçük örneklemde nadir kusuru görmemek olağan     | Hipergeometrik hesap; örnek boyunu hedef güvene göre seçin            |
+| Gece boyu süren "bütün kombinasyonları dene" işi bitmiyor     | `2^n`, `n!` patlaması                             | Önce durum sayısını hesaplayın; ikili kapsama, örnekleme              |
+| Birleşim sayısı tek tek toplamdan küçük çıktı, "hata" sanıldı | Kesişimler iki kez sayılmıştı                     | Dahil etme-dışlama; küme birleşimi ve kesişimiyle doğrulayın          |
 
 ## Denetim listesi
 
@@ -281,6 +281,7 @@ kuvvet yerine akıllı arama (dinamik programlama, dal-sınır, sezgisel yöntem
 - [Rastgelelik ve benzetim](rastgelelik-ve-benzetim.md): kriptografik rastgele kimlik, karıştırma
 - [Bilgi kuramı](bilgi-kurami.md): sıkıştırmanın sınırı (entropi)
 - [Parola ve hesap güvenliği](../50-guvenlik/parola-ve-hesap-guvenligi.md): arama uzayı, kaba kuvvet ve hız sınırı
+- [Örnek tasarım: URL kısaltıcı](../40-sistem-tasarimi/ornek-url-kisaltici.md): kısa kod üretimi ve çakışma, uygulamada
 - Büyük `C(n, k)` değerlerini mod p'de hesaplamak: [`algoritma/algoritma/sayilar/combinatorics_mod.py`](../../algoritma/algoritma/sayilar/combinatorics_mod.py)
 - Rastgele ve zaman sıralı kimlik üreticisi (UUIDv7, kısa kimlik, okunaklı kod):
   [`kutuphane/py/kutuphane/kimlik.py`](../../kutuphane/py/kutuphane/kimlik.py)

@@ -245,6 +245,7 @@ vardır; en kısası kazanır. nginx'in `proxy_read_timeout` varsayılanı 60 sn
 
 - [HTTPS ve sertifikalar](https-ve-sertifikalar.md) · [Docker Compose](docker-compose.md) (vekil kapsayıcısı)
 - [HTTP temelleri](../30-arkauc/http-temelleri.md) — durum kodları (502, 504, 413), önbellek başlıkları
+- [Gerçek zamanlı](../30-arkauc/gercek-zamanli.md) — SSE/WebSocket seçimi, yeniden bağlanma · [Hız sınırı](../30-arkauc/hiz-siniri-ve-kotuye-kullanim.md) — IP'ye göre sınır
 - [Ölçekleme temelleri](../40-sistem-tasarimi/olcekleme-temelleri.md) — yük dengeleme ve çok kopya
 - Çalışan karşılıklar: [`clientIp.ts`](../../uygulama/api/src/http/clientIp.ts),
   [`uygulama/docs/YAYINLAMA.md`](../../uygulama/docs/YAYINLAMA.md) → "Ters vekil ve HTTPS",

@@ -1,0 +1,24 @@
+kimlik = "uygulama-gece-yarisi"
+baslik = "Gece yarısından sonra 'Bugün' bir gün kayıyor"
+temel = "uygulama"
+zorluk = "zor"
+tur = "hata"
+tahmini_sure_dk = 25
+aciklama = """Yerel günü hesaplayan yardımcı UTC gününü veriyor (saat dilimi hatası). Belirti yalnız Türkiye'de \
+gece 00.00–03.00 arasında görülür; mevcut testler bunu yakalamaz. Gizli test iki saat diliminde (İstanbul, \
+New York) sınar: "3 saat ekle" gibi yamalar geçmez."""
+baslangic_denetimi = "yesil"
+
+[[gizli]]
+ad = "istanbul"
+klasor = "web"
+komut = "npx vitest run test/sinav-gizli-gece.test.tsx"
+dosyalar = { "gece.test.tsx" = "web/test/sinav-gizli-gece.test.tsx" }
+ortam = { TZ = "Europe/Istanbul" }
+
+[[gizli]]
+ad = "new-york"
+klasor = "web"
+komut = "npx vitest run test/sinav-gizli-gece.test.tsx"
+dosyalar = { "gece.test.tsx" = "web/test/sinav-gizli-gece.test.tsx" }
+ortam = { TZ = "America/New_York" }

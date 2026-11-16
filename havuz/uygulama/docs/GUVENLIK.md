@@ -54,17 +54,19 @@ cihazındaki kötü amaçlı yazılım, dağıtık (çok IP'li) büyük ölçekl
 - Kayan süre: 30 gün (`SESSION_TTL_DAYS`); kalan süre yarıya inince istekle uzar. Kullanılmayan oturum düşer.
 - Başka alan adındaki istemci için `X-Auth-Mode: token` → belirteç gövdede döner; `Authorization: Bearer`.
 - **İptal:** şifre değişince öteki oturumlar, şifre sıfırlanınca bütün oturumlar, hesap kapatılınca/silinince
-  bütün oturumlar silinir; bu oturumların açık anlık akışları (SSE) da sunucuca kesilir.
+  bütün oturumlar silinir; bu oturumların açık anlık akışları (SSE) da sunucuca kesilir. Şifre (oturumla)
+  değişince e-postadaki bekleyen sıfırlama bağlantıları da geçersiz olur: kutuya bir an erişip bağlantıyı alan
+  biri, kullanıcı şifresini değiştirdikten sonra hesabı geri alamaz.
 
 ### Hesap varlığı sızıntısı (bilinçli seçimler)
 
-| Uç               | Davranış                                                         | Neden                                                                                                                                                                                                                                                                                                         |
-| ---------------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Giriş            | Yanlış şifre ve olmayan e-posta: aynı ileti, aynı kod, eşit süre | Parola denemesiyle hesap listesi çıkarılamasın                                                                                                                                                                                                                                                                |
-| Şifremi unuttum  | Her durumda `{ ok: true }`; e-posta arka planda                  | Yanıt ve süre hesabın varlığını söylemesin                                                                                                                                                                                                                                                                    |
-| Kayıt            | Alınmış e-postada `409 email_taken`                              | **Bilinçli ödün:** kullanıcıya "bu e-postayla hesabınız var, giriş yapın" demek kayıt akışının kullanılabilirliği için gerekli. Sızıntıyı sınırlamak için kayıt IP başına saatte 10 ile sınırlı. Gerekirse kayıt "e-postanıza bağlantı gönderdik" akışına çevrilir (e-posta doğrulama ile birlikte; bkz. §5). |
-| Davet önizleme   | Bilinmeyen/kullanılmış/süresi dolmuş: hepsi aynı `invalid_token` | Belirteç tahmini işe yaramaz (256 bit)                                                                                                                                                                                                                                                                        |
-| Başkasının alanı | Her uçta `404` (403 değil)                                       | Alanın varlığı bile sızmasın                                                                                                                                                                                                                                                                                  |
+| Uç               | Davranış                                                                                         | Neden                                                                                                                                                                                                                                                                                                         |
+| ---------------- | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Giriş            | Yanlış şifre ve olmayan e-posta: aynı ileti, aynı kod, eşit süre                                 | Parola denemesiyle hesap listesi çıkarılamasın                                                                                                                                                                                                                                                                |
+| Şifremi unuttum  | Her durumda `{ ok: true }`; e-posta arka planda                                                  | Yanıt ve süre hesabın varlığını söylemesin                                                                                                                                                                                                                                                                    |
+| Kayıt            | Alınmış e-postada `409 email_taken`                                                              | **Bilinçli ödün:** kullanıcıya "bu e-postayla hesabınız var, giriş yapın" demek kayıt akışının kullanılabilirliği için gerekli. Sızıntıyı sınırlamak için kayıt IP başına saatte 10 ile sınırlı. Gerekirse kayıt "e-postanıza bağlantı gönderdik" akışına çevrilir (e-posta doğrulama ile birlikte; bkz. §5). |
+| Davet önizleme   | Bilinmeyen/kullanılmış/süresi dolmuş/daveti verenin sahipliği bitmiş: hepsi aynı `invalid_token` | Belirteç tahmini işe yaramaz (256 bit)                                                                                                                                                                                                                                                                        |
+| Başkasının alanı | Her uçta `404` (403 değil)                                                                       | Alanın varlığı bile sızmasın                                                                                                                                                                                                                                                                                  |
 
 ### CSRF (siteler arası istek sahteciliği)
 
@@ -83,7 +85,10 @@ Varsayılan **kapalı**. `ALLOWED_ORIGINS` (virgüllü köken listesi; `*` kabul
 
 Rol tablosu ve kurallar tek dosyada: `api/src/modules/workspaces/permissions.ts`. Özet: yazma `owner`/`editor`;
 yeniden adlandırma, silme, davet, rol değiştirme, üye çıkarma yalnız `owner`; son sahip düşürülemez/ayrılamaz;
-kişisel alan silinemez, paylaşılamaz, ondan ayrılınamaz; davetle `owner` verilmez. Yönetim uçları yalnız `admin`;
+kişisel alan silinemez, paylaşılamaz, ondan ayrılınamaz; davetle `owner` verilmez. Davet yalnız onu oluşturan
+kişi alanın **sahibi olduğu sürece** geçerlidir: alandan çıkarılan, rolü düşürülen ya da hesabını silen eski
+sahibin önceden ürettiği bağlantı geçmez (yoksa çıkarılan kişi geri dönebilir, izleyici yapılan kişi ayrılıp
+"düzenleyen" davetiyle yetkisini büyütebilirdi; davet listesi/iptali olmadığı için başka çaresi yoktu). Yönetim uçları yalnız `admin`;
 yönetici kendi rolünü değiştiremez ve kendini kapatamaz. Kural testi, oturum istemeyen uçların yalnız bilinçli
 listedekiler (`PUBLIC_ROUTES`) olduğunu ve öteki her ucun oturumsuz isteğe 401 verdiğini denetler.
 
@@ -91,7 +96,10 @@ listedekiler (`PUBLIC_ROUTES`) olduğunu ve öteki her ucun oturumsuz isteğe 40
 
 Bellek içi jeton kovası; sınırlar `api/src/http/rateLimit.ts → RATE_RULES` ve `docs/API.md` tablosunda. Yanıt
 `429 rate_limited` + `Retry-After`. Giriş için iki anahtar var: IP (çok hesabı deneyen tek kaynak) ve IP+e-posta
-(tek hesaba parola deneme). **Yalnız e-postaya göre kilit bilinçli olarak YOK:** başkası sizin e-postanızla
+(tek hesaba parola deneme). IP anahtarı `rateLimitKey` ile kurulur: IPv4 adresi olduğu gibi, **IPv6'da bütün
+/64 bloğu tek kaynak** sayılır (bir abone ya da kiralık sunucu genelde bütün bir /64 alır; adrese göre saymak
+2^64 adres arasında gezinerek sınırı atlatmaya izin verirdi). Kural testi, IP'ye göre sayan her kuralın bu
+işlevden geçtiğini denetler. **Yalnız e-postaya göre kilit bilinçli olarak YOK:** başkası sizin e-postanızla
 yanlış denemeler yaparak sizi kilitleyemesin. Şifremi unuttum ayrıca e-posta başına saatte 3 ile sınırlı
 (birinin kutusunu doldurmayı önler).
 
@@ -104,6 +112,14 @@ Yanlış ayarın riski:
   Sunucu üretimde bu durumda açılışta uyarı yazar.
 - İki katmanlı vekilde (ör. Cloudflare + Render) `1` yazmak gerçek istemci yerine Cloudflare'in IP'sini verir;
   doğru sayı ortamınıza bağlıdır ve **bu ortamda hiçbir barındırıcıyla doğrulanmadı**.
+
+### Anlık akış (SSE) kaynakları
+
+Her olay, istemci okuyana dek sunucu belleğinde bekler. Okumayan (ya da TCP penceresini kapalı tutan) bir
+istemcinin kuyruğu sınırsız büyüseydi, çok alanlı bir hesapla dakikada yüz binlerce dürtme üretip sunucuyu
+bellekten düşürmek mümkündü (ölçüm: okumayan tek akışa 200 000 dürtme → yığın 16 MB'tan 328 MB'a çıktı).
+Bu yüzden bağlantı başına en çok 256 okunmamış olay bekler (`SSE_MAX_PENDING_WRITES`); aşılınca akış kesilir,
+tarayıcı yeniden bağlanır (`api/test/modules/events.test.ts`).
 
 ### Girdi ve çıktı
 
@@ -146,7 +162,9 @@ siler (bkz. docs/API.md → `DELETE /api/account`); denetim kayıtlarında silin
 - [ ] Yedek alınıyor ve bir kez **geri yükleme denendi** (docs/YAYINLAMA.md → "Yedekleme").
 - [ ] `MAIL_PROVIDER=http` ayarlı ve "Şifremi unuttum" e-postası gerçekten geliyor (spam klasörüne de bakın);
       gönderen alan adında SPF/DKIM ayarlı.
-- [ ] `ADMIN_EMAILS` yalnız sizin e-postanız; yönetici hesabının şifresi güçlü ve başka yerde kullanılmıyor.
+- [ ] `ADMIN_EMAILS` yalnız sizin e-postanız; yönetici hesabınızı sunucuyu açar açmaz **kendiniz kaydettiniz**
+      (açılış günlüğünde "ADMIN_EMAILS: … henüz hesabı yok" uyarısı YOK); şifresi güçlü ve başka yerde
+      kullanılmıyor.
 - [ ] `ALLOWED_ORIGINS` boş (ya da yalnız gerçekten gereken kökenler); `*` yok.
 - [ ] `RATE_LIMIT` satırı yok ya da `on`.
 - [ ] `.env` dosyası depoda değil (`git status` temiz); sırlar yalnız barındırıcının ayar panelinde.
@@ -172,7 +190,26 @@ siler (bkz. docs/API.md → `DELETE /api/account`); denetim kayıtlarında silin
   ve dürtmeler yalnız aynı kopyaya bağlı istemcilere gider (SQLite zaten tek kopya demektir).
 - **E-posta doğrulama yok:** `emailVerified` hep `false`; kayıt olan kişinin e-postanın sahibi olduğu
   kanıtlanmaz. Şifre sıfırlama e-postası yalnız gerçek sahibine gittiği için hesap ele geçirmeye yol açmaz, ama
-  başkasının e-postasıyla hesap açılabilir.
+  başkasının e-postasıyla hesap açılabilir. **Sonucu:** `ADMIN_EMAILS`'te olup henüz hesabı olmayan bir adresle
+  İLK kaydolan kişi yönetici olur (sahibi kaydolmadan önce ya da hesabını sildikten sonra). Sunucu açılışta
+  böyle adres varsa uyarır (adresi değil sayıyı yazar). Gerçek çözüm e-posta doğrulamasıdır.
+- **Kullanıcı başına depolama kotası ve yanıt bayt bütçesi yok:** oturumu olan herkes eşitlemeyle dakikada
+  240 × 100 kayıt yazabilir (kayıt başına protokol sınırı 64 KiB; yerleşik görev varlığında ~10 KB) ve alan
+  sayısı sınırsızdır. Tek eşitleme yanıtı alan başına 500 kayıt taşıdığı için alan sayısıyla büyür; dışa aktarma
+  hiç sayfalanmaz. Ölçüm (bu ortamda): 4 alan × 500 dolu görev, 20 yazma isteği (4,5 sn) → tek eşitleme yanıtı
+  ~11 milyon karakter (~21 MB); 100 alanda yüzlerce MB olur ve 512 MB'lık bir sunucu bellekten düşebilir, disk de
+  dolabilir. Açık kayıtlı bir yayında kota (alan sayısı, alan başına kayıt/bayt) ve yanıt bayt bütçesi ekleyin
+  (eşitleme davranışı `shared` başvuru sunucusuyla birlikte değişmeli; bkz. docs/ESITLEME.md).
+- **Davet önizleme belirteci adreste:** `GET /api/invites/:token` belirteci URL yolunda taşır; uygulamanın kendi
+  günlüğü yalnız kalıbı yazar ama önünüzdeki vekilin (nginx, Render) erişim günlüğü tam adresi yazabilir.
+  Günlüğe erişen biri kullanılmamış daveti kabul edebilir. Vekil günlüğünü kısıtlayın ya da önizlemeyi POST'a
+  taşıyın.
+- **`MAIL_PROVIDER=console` üretimde:** e-postalar gönderilmez ama sıfırlama bağlantısı (belirteç dahil)
+  `mail_outbox` tablosuna düz yazılır (7 gün). Veritabanı kopyasını alan biri 1 saatlik pencerede şifre
+  sıfırlayabilir. Üretimde `MAIL_PROVIDER=http` kullanın (sunucu zaten uyarır).
+- **Yavaş okuyan bağlantılar:** Node'un varsayılanında yanıtını okumayan bir bağlantı için yazma zaman aşımı
+  yoktur; çok sayıda böyle bağlantı dosya tanıtıcılarını tüketebilir. Önünüzde zaman aşımı olan bir ters vekil
+  (Caddy, nginx, Render) bulundurun.
 - **İki aşamalı doğrulama (2FA), "aktif cihazlarım" ekranı, hesap kilitleme bildirimi yok.**
 - **Dağıtık parola denemesi:** çok sayıda IP'den tek hesaba yavaş deneme yalnız güçlü şifre kuralıyla
   karşılanır (e-postaya göre kilit bilinçli olarak yok, bkz. §2).

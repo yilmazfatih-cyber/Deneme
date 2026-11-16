@@ -17,9 +17,10 @@ pytest.importorskip("mcp")
 from mcp import StdioServerParameters
 
 from yz.ajan import Ajan
+from yz.arac import AracKutusu
 from yz.mcp.kopru import McpKoprusu
 from yz.mcp.sunucu import mcp_sunucusu_kur
-from yz.saglayici import Sahte
+from yz.saglayici import AracCagrisi, Sahte
 
 KOK = Path(__file__).resolve().parent.parent
 BELGELER = KOK / "gorevler" / "getirme" / "belgeler"
@@ -55,6 +56,47 @@ def test_ajan_mcp_araclarini_kullanir():
         sahte = Sahte([Sahte.arac_yaniti("hesapla", {"ifade": "12*12"}), "144"])
         sonuc = Ajan(sahte, kopru.araclar()).calistir("12*12?")
     assert sonuc.yanit == "144" and sonuc.arac_cagrilari[0].icerik == "144"
+
+
+def test_kopru_salt_okunur_demeyen_uzak_araci_tehlikeli_sayar():
+    """Uzak MCP aracı "yalnız okurum" (readOnlyHint) demiyorsa tehlikeli sayılır: onaysız çalışmaz.
+
+    MCP'de ipucu yoksa varsayılan "yıkıcı olabilir"dir; köprü hepsini zararsız sayarsa, bağlanan bir dosya
+    sistemi sunucusunun silme aracı (ör. bir belgedeki istem enjeksiyonuyla) onaysız çalışırdı.
+    """
+    from mcp.server.mcpserver import MCPServer
+    from mcp.types import ToolAnnotations
+
+    uzak = MCPServer("uzak")
+    silinen: list[str] = []
+
+    def dosya_sil(yol: str) -> str:
+        """Dosyayı siler."""
+        silinen.append(yol)
+        return "silindi"
+
+    def oku(yol: str) -> str:
+        """Dosyayı okur."""
+        return f"içerik: {yol}"
+
+    uzak.add_tool(dosya_sil, name="dosya_sil", description="Dosyayı siler.")
+    uzak.add_tool(
+        oku, name="oku", description="Okur.", annotations=ToolAnnotations(read_only_hint=True)
+    )
+    with McpKoprusu(uzak) as kopru:
+        araclar = {a.ad: a for a in kopru.araclar()}
+        assert araclar["dosya_sil"].tehlikeli and not araclar["oku"].tehlikeli
+        kutu = AracKutusu(kopru.araclar())  # onay kancası yok → tehlikeli araç çalışmaz
+        assert kutu.cagir(AracCagrisi(kimlik="1", ad="dosya_sil", argumanlar={"yol": "x"})).hata
+        assert silinen == []
+        assert (
+            kutu.cagir(AracCagrisi(kimlik="2", ad="oku", argumanlar={"yol": "x"})).icerik
+            == "içerik: x"
+        )
+    with McpKoprusu(
+        mcp_sunucusu_kur(belge_klasoru=BELGELER)
+    ) as kopru:  # kendi araçlarımız yalnız okur
+        assert not any(a.tehlikeli for a in kopru.araclar())
 
 
 def test_stdio_uctan_uca():

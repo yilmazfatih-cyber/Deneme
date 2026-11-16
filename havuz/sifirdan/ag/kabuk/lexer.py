@@ -4,8 +4,8 @@
     → Word[Part('echo')]  Word[Part('Merhaba ', tırnaklı), Part('$AD', tırnaklı, açılır)]
       Word[Part('aynen $AD', tırnaklı, AÇILMAZ)] Word[Part('a'), Part(' ', kaçışlı), Part('b')]
       Word[Part('*.txt')]  Op('2>&1')  Op('|')  Word[Part('sort')]
-Neden parçalar: açılım aşamasında hangi metnin tırnaklı olduğu bilinmelidir — tırnaklı metin alanlara
-bölünmez ve glob olarak yorumlanmaz ("*.txt" ile *.txt aynı şey değildir).
+Neden parçalar: açılım aşamasında hangi metnin tırnaklı olduğu bilinmelidir — tırnaklı metin
+alanlara bölünmez ve glob olarak yorumlanmaz ("*.txt" ile *.txt aynı şey değildir).
 Genişletme: yeni bir işleç için `OPERATORS`'a ekleyin (uzun olan önce) ve ayrıştırıcıda karşılayın.
 """
 
@@ -47,7 +47,9 @@ Token = Word | Op
 
 
 def _double_quoted(line: str, start: int) -> tuple[list[Part], int]:
-    """Çift tırnak içi: $ açılır; \\ yalnız $ ` " \\ önünde kaçıştır. Kapanış tırnağının ardını döndürür."""
+    """Çift tırnak içi: $ açılır; \\ yalnız $ ` " \\ önünde kaçıştır. Kapanış tırnağının ardını
+    döndürür.
+    """
     parts: list[Part] = []
     buffer = ""
     index = start

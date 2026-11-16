@@ -24,7 +24,7 @@ from exam.integrity import rule_of
 from exam.prepare import prepare
 from exam.records import Record
 from exam.tasks import Task
-from exam.tree import restore
+from exam.tree import iter_files, restore
 
 Echo = Callable[[str], None]
 _ASSERTION = re.compile(r"^\s*(assert\b|expect\()")
@@ -150,9 +150,8 @@ def verify_task(task: Task, workdir: Path, *, fast: bool = False, keep: bool = F
             outcome.problems.append(f"çözüm '{solved.verdict}' çıktı (kalan: {solved.failed}) {details}".strip())
         echo("  (3b) genel hileler deneniyor")
         for name, cheat in _generic_cheats(record, task):
-            snapshot = record.snapshot()
+            originals = {rel: (record.copy_root / rel).read_bytes() for rel in iter_files(record.copy_root)}
             try:
-                originals = {rel: (record.copy_root / rel).read_bytes() for rel in record.manifest}
                 cheat(record.copy_root)
                 verdict = grade(folder, stop_early=True, echo=_quiet).verdict
             finally:
@@ -161,7 +160,6 @@ def verify_task(task: Task, workdir: Path, *, fast: bool = False, keep: bool = F
                     if not path.exists() or path.read_bytes() != data:
                         path.write_bytes(data)
                 shutil.rmtree(record.copy_root / "sinav_hile", ignore_errors=True)
-                snapshot.close()
             outcome.generic.append((name, verdict))
             if verdict != "gecersiz":
                 outcome.problems.append(f"genel hile '{name}' yakalanmadı ({verdict})")

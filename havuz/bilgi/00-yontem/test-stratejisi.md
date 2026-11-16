@@ -225,3 +225,4 @@ Doğru sıra:
 - [Hata sınıfları ve imzaları](hata-siniflari.md): sınır değerleri ve saat dilimi testleri.
 - Havuzdaki örnek: aynı senaryoların gerçek API'ye karşı koşusu
   [sync.conformance.test.ts](../../uygulama/api/test/sync.conformance.test.ts).
+- Diğer kümelerden: [Ön yüz testi](../20-web-onyuz/onyuz-testi.md), [API testleri](../30-arkauc/api-testleri.md).

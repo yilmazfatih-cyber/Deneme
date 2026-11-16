@@ -252,7 +252,9 @@ def _asgi_istek(
 
 def _uygulama(tmp_path, ortam=None, **sunucu):
     ayarlar = Ayarlar(veri_dizini=tmp_path, sunucu=SunucuAyari(**sunucu))
-    return uygulama_kur(ayarlar, saglayici_fabrikasi=lambda p, m: Sahte.gosterim(), ortam=ortam or {})
+    return uygulama_kur(
+        ayarlar, saglayici_fabrikasi=lambda p, m: Sahte.gosterim(), ortam=ortam or {}
+    )
 
 
 _COK_PARCALI = {"content-type": "multipart/form-data; boundary=sinir", "host": "127.0.0.1:8420"}
@@ -265,7 +267,12 @@ def test_yerel_kipte_yabanci_ad_reddedilir_dns_yeniden_baglama(tmp_path):
     "aynı köken" sanarak istek atar ve yanıtları (belgeler, model yanıtları) okur.
     """
     istemci, _ = _istemci(tmp_path)
-    for ad in ("kotu.example:8420", "kotu.example", "127.0.0.1.kotu.example:8420", "192.168.1.5:8420"):
+    for ad in (
+        "kotu.example:8420",
+        "kotu.example",
+        "127.0.0.1.kotu.example:8420",
+        "192.168.1.5:8420",
+    ):
         assert istemci.get("/api/belgeler", headers={"Host": ad}).status_code == 403, ad
     sohbet = {"messages": [{"role": "user", "content": "x"}]}
     yanit = istemci.post("/v1/chat/completions", json=sohbet, headers={"Host": "kotu.example:8420"})
@@ -290,13 +297,23 @@ def test_yerel_kipte_baska_siteden_gelen_yukleme_reddedilir_csrf(tmp_path):
         assert yanit.status_code == 403, koken
     assert istemci.get("/api/belgeler").json()["belgeler"] == []
     # Arayüzün kendisi (aynı köken) ve tarayıcı olmayan istemci (Origin yok) yükler.
-    assert istemci.post("/api/belge", files=belge, headers={"Origin": "http://127.0.0.1:8420"}).status_code == 200
+    assert (
+        istemci.post(
+            "/api/belge", files=belge, headers={"Origin": "http://127.0.0.1:8420"}
+        ).status_code
+        == 200
+    )
     ikinci = {"dosya": ("iki.md", b"# Iki\n\nmetin", "text/markdown")}
     assert istemci.post("/api/belge", files=ikinci).status_code == 200
     # İzin listesindeki köken (CORS) de yükleyebilir.
     izinli, _ = _istemci(tmp_path, izinli_kokenler=["http://localhost:5173"])
     ucuncu = {"dosya": ("uc.md", b"# Uc\n\nmetin", "text/markdown")}
-    assert izinli.post("/api/belge", files=ucuncu, headers={"Origin": "http://localhost:5173"}).status_code == 200
+    assert (
+        izinli.post(
+            "/api/belge", files=ucuncu, headers={"Origin": "http://localhost:5173"}
+        ).status_code
+        == 200
+    )
 
 
 def test_anahtarsiz_istegin_govdesi_okunmadan_reddedilir(tmp_path):
@@ -322,7 +339,12 @@ def test_openai_vekili_arac_cagrisi_argumanlarini_da_maskeler(tmp_path):
     """İstemcinin geri gönderdiği asistan araç çağrısındaki kişisel veri de modele maskeli gider."""
     sahte = Sahte(["tamam"])
     istemci, _ = _istemci(tmp_path, sahte)
-    argumanlar = {"kime": "ali@ornek.com", "kimlik": TCKN, "no": int(TCKN), "notlar": [f"TCKN {TCKN}"]}
+    argumanlar = {
+        "kime": "ali@ornek.com",
+        "kimlik": TCKN,
+        "no": int(TCKN),
+        "notlar": [f"TCKN {TCKN}"],
+    }
     mesajlar = [
         {"role": "user", "content": "Ali'ye yaz"},
         {"role": "assistant", "content": "", "tool_calls": [{"id": "c1", "type": "function",
@@ -341,7 +363,12 @@ def test_sohbet_arac_kipinde_arac_ciktisi_da_maskelenir(tmp_path):
     sahte = Sahte([Sahte.arac_yaniti("belge_ara", {"sorgu": "müşteri"}), "Bulundu."])
     istemci, _ = _istemci(tmp_path, sahte)
     belge = f"# Müşteri\n\nMüşterinin TCKN'si {TCKN}, e-postası ayse@ornek.com.".encode()
-    assert istemci.post("/api/belge", files={"dosya": ("musteri.md", belge, "text/markdown")}).status_code == 200
+    assert (
+        istemci.post(
+            "/api/belge", files={"dosya": ("musteri.md", belge, "text/markdown")}
+        ).status_code
+        == 200
+    )
     govde = {"mesajlar": [{"rol": "user", "icerik": "müşteri bilgisi"}], "kip": "arac"}
     olaylar = _olaylar(istemci.post("/api/sohbet", json=govde).text)
     gozlem = next(m for m in sahte.istekler[1].mesajlar if m.rol == "tool")
@@ -349,3 +376,21 @@ def test_sohbet_arac_kipinde_arac_ciktisi_da_maskelenir(tmp_path):
     assert "[TCKN_1]" in gozlem.icerik
     adim = next(v for ad, v in olaylar if ad == "arac")
     assert TCKN in adim["sonuc"]  # kullanıcıya kendi belgesi açık gösterilir
+
+
+def test_izinli_kokenlerde_yildiz_ve_bicimsiz_koken_reddedilir():
+    """`izinli_kokenler: ["*"]` anahtarsız yerel sunucuda her siteye belgeleri okuturdu (CORS)."""
+    from pydantic import ValidationError
+
+    for kotu in (
+        "*",
+        "https://iyi.example/",
+        "iyi.example",
+        "https://iyi.example/yol",
+        "https://*.ornek",
+    ):
+        with pytest.raises(ValidationError, match="izinli_kokenler"):
+            SunucuAyari(izinli_kokenler=[kotu])
+    assert SunucuAyari(izinli_kokenler=["http://localhost:5173"]).izinli_kokenler == [
+        "http://localhost:5173"
+    ]

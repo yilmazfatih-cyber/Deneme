@@ -1,7 +1,8 @@
 """İnsan onayı kancaları: tehlikeli (`tehlikeli=True`) araçlar çalışmadan önce sorulur.
 
-Kanca imzası: `(arac, argumanlar) -> bool` (True = çalıştır). Kanca verilmezse tehlikeli
-araçlar HİÇ çalışmaz (varsayılan güvenli taraf; arac/kutu.py).
+Kanca imzası: `(arac, argumanlar) -> bool` (True = çalıştır). `argumanlar`, aracın ÇALIŞACAĞI
+doğrulanmış değerlerdir (modelin ham yazdığı değil); araç tam olarak onaylananla çalışır. Kanca
+verilmezse tehlikeli araçlar HİÇ çalışmaz (varsayılan güvenli taraf; arac/kutu.py).
 Kim kullanır: AracKutusu(onay=...); cli.py `sohbet --arac` konsoldan sorar.
 Genişletme: web arayüzünden onay gibi başka bir yol → aynı imzada bir işlev yazın.
 """
@@ -44,7 +45,7 @@ def konsoldan_sor(
 
     def kanca(arac: Arac, argumanlar: dict[str, Any]) -> bool:
         cikti(f"\n⚠ `{arac.ad}` aracı şu argümanlarla çalışmak istiyor:")
-        cikti(json.dumps(argumanlar, ensure_ascii=False, indent=2))
+        cikti(json.dumps(argumanlar, ensure_ascii=False, indent=2, default=str))
         try:
             cevap = girdi("Onaylıyor musunuz? (e/h): ")
         except EOFError:

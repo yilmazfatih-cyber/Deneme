@@ -58,6 +58,8 @@ içinde artan bir numara verir; yanıt kaybolup aynı değişiklik yeniden gelir
 | Belirteç süresi (`exp`)                          | Duvar saati + birkaç saniyelik kayma payı           | Kayma kaçınılmaz                                 |
 | "Her gün 09:00'da"                              | Yerel saat dilimi (`Europe/Istanbul`) ile takvim    | UTC 09:00 Türkiye'de 12:00'dir                   |
 
+An, duvar saati ve takvim günü ayrımı, yaz saati tuzakları: [Zaman ve saat dilimi](../30-arkauc/zaman-ve-saat-dilimi.md).
+
 "Son yazan kazanır" kuralı cihaz saatiyle uygulanırsa saati geri olan cihaz **her zaman kaybeder**, saati ileri
 olan **her zaman kazanır**:
 
@@ -205,9 +207,9 @@ hakem gerekir.
 
 **Pratik karar:** uzlaşma gerekiyorsa onu zaten yapan sınanmış bir parçayı kullanın (veritabanının kendi
 yük devri, ya da etcd/ZooKeeper gibi koordinasyon servisleri) veya sorunu tek yazara indirin (tek birincil
-veritabanı, tek iş çalıştırıcısı). Raft'ı anlamak için sıfırdan yazılmış küçük gerçeklemeler havuzun
-`sifirdan/veri` temelindedir ([`sifirdan/veri/`](../../sifirdan/veri/pyproject.toml); Kasım 2026'da Raft modülü
-henüz yazılıyordu).
+veritabanı, tek iş çalıştırıcısı). Raft'ı anlamak için sıfırdan yazılmış, saat ve ağı dışarıdan alan belirlenimci
+gerçekleme: [`sifirdan/veri/raft/node.py`](../../sifirdan/veri/raft/node.py) (başlığında makaledeki kurallar
+madde madde yazılı).
 
 ## Tuzaklar
 
@@ -249,4 +251,6 @@ henüz yazılıyordu).
 - [Tutarlılık modelleri](tutarlilik-modelleri.md) (CAP/PACELC) · [Dayanıklılık kalıpları](dayaniklilik-kaliplari.md) ·
   [Kuyruk ve olaylar](kuyruk-ve-olaylar.md) · [Çevrimdışı-önce ve eşitleme](cevrimdisi-once-ve-esitleme.md)
 - Havuzda: sunucu sırasıyla çalışan eşitleme [`uygulama/docs/ESITLEME.md`](../../uygulama/docs/ESITLEME.md);
-  Türkiye saatiyle takvim ve iş günü [`kutuphane/py/kutuphane/tarih.py`](../../kutuphane/py/kutuphane/tarih.py)
+  sıfırdan Raft [`sifirdan/veri/raft/`](../../sifirdan/veri/raft/node.py) ve mantıksal saatler
+  [`sifirdan/veri/crdt/clock.py`](../../sifirdan/veri/crdt/clock.py); Türkiye saatiyle takvim
+  [`kutuphane/py/kutuphane/tarih.py`](../../kutuphane/py/kutuphane/tarih.py)

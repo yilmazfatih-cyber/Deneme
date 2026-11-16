@@ -183,3 +183,4 @@ util.olmayanIslev: undefined
 - [Yabancı kod okuma](yabanci-kod-okuma.md): bilinmeyen bir kod tabanında yön bulma.
 - [Hata ayıklama](hata-ayiklama.md): hata iletisini okumak.
 - Havuzun ortak sürüm ve doğrulama kuralları: [STANDARTLAR.md](../../STANDARTLAR.md) (§8).
+- Diğer kümelerden: [Dil modelleri hakkında sık yanılgılar](../85-llm/sik-yanilgilar.md).

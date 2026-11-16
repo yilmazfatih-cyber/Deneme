@@ -12,14 +12,15 @@ Genişletme: komut yerine koyma `$( … )` burada değil; önce lexer'da yeni bi
 from __future__ import annotations
 
 import glob
-import os
 import re
 from collections.abc import Callable
 from pathlib import Path
 
 from kabuk.lexer import Word
 
-_VAR_RE = re.compile(r"\$(?:\{([A-Za-z_][A-Za-z0-9_]*)(:-([^}]*))?\}|([A-Za-z_][A-Za-z0-9_]*)|([?$]))")
+_VAR_RE = re.compile(
+    r"\$(?:\{([A-Za-z_][A-Za-z0-9_]*)(:-([^}]*))?\}|([A-Za-z_][A-Za-z0-9_]*)|([?$]))"
+)
 _GLOB_CHARS = set("*?[")
 
 Lookup = Callable[[str], str | None]
@@ -50,7 +51,7 @@ def expand_word(word: Word, lookup: Lookup, cwd: Path) -> list[str]:
     for index, part in enumerate(word.parts):
         text = part.text
         if index == 0 and not part.quoted and (text == "~" or text.startswith("~/")):
-            text = (os.environ.get("HOME") or str(Path.home())) + text[1:]
+            text = (lookup("HOME") or str(Path.home())) + text[1:]  # kabuğun kendi HOME'u
         pieces = expand_text(text, lookup) if part.expand else [(text, False)]
         has_content = has_content or part.quoted  # "" bile bir (boş) değişkendir
         for value, from_expansion in pieces:

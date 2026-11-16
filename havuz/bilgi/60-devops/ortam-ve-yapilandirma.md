@@ -20,7 +20,9 @@ bir doğrulanmış ayar nesnesine bakar.
 
 Havuzdaki uygulama bunun çalışan örneğidir: [`api/src/config.ts`](../../uygulama/api/src/config.ts) değişkenleri
 Zod ile doğrular, bütün sorunları Türkçe listeler ve çıkar; değişkenlerin dökümü
-[`YAYINLAMA.md`](../../uygulama/docs/YAYINLAMA.md) → "Ortam değişkenleri".
+[`YAYINLAMA.md`](../../uygulama/docs/YAYINLAMA.md) → "Ortam değişkenleri". Bu not yayın ve ortam açısındandır; kod
+tarafı (anahtar döndürme, güvenli varsayılanlar) [Yapılandırma ve sırlar](../30-arkauc/yapilandirma-ve-sirlar.md),
+sırların güvenliği [Sır yönetimi](../50-guvenlik/sir-yonetimi.md) notundadır.
 
 ## On iki etkenin pratik özü
 
@@ -244,7 +246,8 @@ zorunlu değişkenin eksikliği ise durdursun.
 
 - [Yayın yolu seçimi](yayin-yolu-secimi.md) — durumsuz süreç, geçici disk
 - [Docker](docker.md) — sırrın imaja girmemesi · [CI/CD](ci-cd.md) — CI sırları ve ortamlar
-- [OWASP özeti](../50-guvenlik/owasp-ozet.md) — yanlış yapılandırma ve sır sızıntısı
+- [Yapılandırma ve sırlar](../30-arkauc/yapilandirma-ve-sirlar.md) · [Sır yönetimi](../50-guvenlik/sir-yonetimi.md) — sızınca sıra, sır taraması
+- [Vite ve derleme](../20-web-onyuz/vite-ve-derleme.md) — istemciye sızan ortam değişkenleri
 - Çalışan karşılıklar: [`config.ts`](../../uygulama/api/src/config.ts),
   [`uygulama/docs/YAYINLAMA.md`](../../uygulama/docs/YAYINLAMA.md) → "Ortam değişkenleri",
   [`render.ornek.yaml`](../../uygulama/render.ornek.yaml) (`sync: false` = değeri panelde girilen sır)

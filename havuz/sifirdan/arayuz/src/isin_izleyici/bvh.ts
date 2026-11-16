@@ -12,7 +12,9 @@ export interface Box {
   max: Vec3
 }
 
-type Node = { box: Box; left: Node; right: Node; items?: undefined } | { box: Box; items: number[]; left?: undefined; right?: undefined }
+type Node =
+  | { box: Box; left: Node; right: Node; items?: undefined }
+  | { box: Box; items: number[]; left?: undefined; right?: undefined }
 
 const LEAF_SIZE = 4
 
@@ -67,7 +69,13 @@ export class Bvh {
   constructor(shapes: readonly Shape[]) {
     this.shapes = shapes
     const boxes = shapes.map(shapeBox)
-    this.root = shapes.length > 0 ? this.build(shapes.map((_, i) => i), boxes) : undefined
+    this.root =
+      shapes.length > 0
+        ? this.build(
+            shapes.map((_, i) => i),
+            boxes,
+          )
+        : undefined
   }
 
   private build(items: number[], boxes: Box[]): Node {

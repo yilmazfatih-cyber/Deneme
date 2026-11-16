@@ -28,15 +28,15 @@ guncellik: 2026-11
 
 ## Karar tablosu
 
-| Durum                                                      | Yöntem                                                   | Not                                                 |
-| ---------------------------------------------------------- | -------------------------------------------------------- | --------------------------------------------------- |
-| Veri yok, karar için büyüklük lazım                        | Fermi: çarpanlara böl, her birine aralık                 | Her çarpanın kaynağını yazın (ölçüm/tahmin)         |
-| Aralıkların ortası                                         | Geometrik ortalama `√(alt·üst)`                           | Aritmetik ortalama üst değere kayar                 |
-| Sonucun belirsizliği                                       | Log uzayında birleştirme (aşağıda)                       | Uçların çarpımı aşırı geniştir                      |
-| Kapasite, istek/sn, depolama                               | Zarf arkası hesap ([kapasite tahmini](../40-sistem-tasarimi/kapasite-tahmini.md)) | Ortalamaya değil tepeye göre      |
-| Bir rapordaki sayı                                         | Sınır denetimi + bağımsız ikinci hesap (üçgenleme)       | İki yol 3 kattan fazla ayrışıyorsa bir varsayım yanlış |
-| Büyüme öngörüsü                                            | Logaritmik ölçek; ikiye katlanma süresi                  | Üstel büyümeyi doğrusal uzatmayın                   |
-| Sonucu yazarken                                            | 1–2 anlamlı hane                                         | "20 784 609 bayt" sahte kesinliktir                 |
+| Durum                               | Yöntem                                                                            | Not                                                    |
+| ----------------------------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| Veri yok, karar için büyüklük lazım | Fermi: çarpanlara böl, her birine aralık                                          | Her çarpanın kaynağını yazın (ölçüm/tahmin)            |
+| Aralıkların ortası                  | Geometrik ortalama `√(alt·üst)`                                                   | Aritmetik ortalama üst değere kayar                    |
+| Sonucun belirsizliği                | Log uzayında birleştirme (aşağıda)                                                | Uçların çarpımı aşırı geniştir                         |
+| Kapasite, istek/sn, depolama        | Zarf arkası hesap ([kapasite tahmini](../40-sistem-tasarimi/kapasite-tahmini.md)) | Ortalamaya değil tepeye göre                           |
+| Bir rapordaki sayı                  | Sınır denetimi + bağımsız ikinci hesap (üçgenleme)                                | İki yol 3 kattan fazla ayrışıyorsa bir varsayım yanlış |
+| Büyüme öngörüsü                     | Logaritmik ölçek; ikiye katlanma süresi                                           | Üstel büyümeyi doğrusal uzatmayın                      |
+| Sonucu yazarken                     | 1–2 anlamlı hane                                                                  | "20 784 609 bayt" sahte kesinliktir                    |
 
 ## Fermi tahmini: belirsizliği doğru birleştirmek
 
@@ -225,17 +225,17 @@ print("tamam")
 
 Gecikmeler (mertebe; donanıma ve ağa göre 10 kat değişebilir; kesin değer için ölçün — doğrulanmadı):
 
-| İşlem                                    | Mertebe              |
-| ---------------------------------------- | -------------------- |
-| İşlemci önbelleğinden okuma              | ~1–10 ns             |
-| Ana bellekten okuma                      | ~100 ns              |
-| Python'da tek basit işlem (yorumlayıcı)  | ~10–100 ns           |
-| SSD'den rastgele okuma                   | ~10–100 µs           |
-| Aynı veri merkezinde ağ gidiş-dönüşü     | ~0,5 ms              |
-| Dönen diskten rastgele okuma             | ~10 ms               |
-| Ülke içi internet gidiş-dönüşü           | ~10–50 ms            |
-| Kıtalar arası gidiş-dönüş                | ~100–200 ms          |
-| Kullanıcının "anında" saydığı tepki      | ~100 ms              |
+| İşlem                                   | Mertebe     |
+| --------------------------------------- | ----------- |
+| İşlemci önbelleğinden okuma             | ~1–10 ns    |
+| Ana bellekten okuma                     | ~100 ns     |
+| Python'da tek basit işlem (yorumlayıcı) | ~10–100 ns  |
+| SSD'den rastgele okuma                  | ~10–100 µs  |
+| Aynı veri merkezinde ağ gidiş-dönüşü    | ~0,5 ms     |
+| Dönen diskten rastgele okuma            | ~10 ms      |
+| Ülke içi internet gidiş-dönüşü          | ~10–50 ms   |
+| Kıtalar arası gidiş-dönüş               | ~100–200 ms |
+| Kullanıcının "anında" saydığı tepki     | ~100 ms     |
 
 ```python calistir
 import time
@@ -255,16 +255,16 @@ Tablodan çıkan kararlar: 100 ms'lik bir bütçeye kıtalar arası tek gidiş-d
 
 ## Tuzaklar
 
-| Belirti                                                     | Neden                                                          | Çözüm                                                          |
-| ----------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------- |
-| Tahmin aralığı "0,9 GB ile 480 GB arası" kadar işe yaramaz   | Uçlar çarpılmış                                                | Log uzayında birleştirme; geometrik ortalama                    |
-| İndirme süresi hesabı 8 kat iyimser                         | Mbit/sn ile MB/sn karıştı                                      | Birimleri sayıyla taşıyın; bit/bayt ayrımı                      |
-| Disk "dolmamalıydı" ama doldu                               | GB ile GiB, dizin ve kopya ek yükü unutuldu                    | ×1,5–2 ek yük payı; ikili/ondalık birimi yazın                  |
-| Zaman aşımı 1 000 kat yanlış                                | `ms` ile `sn` karıştı                                          | Ada birimi ekleyin (`timeout_ms`)                               |
-| Büyüme öngörüsü birkaç ay içinde çöktü                      | Üstel süreç doğrusal uzatıldı                                  | Logaritmik eksen; ikiye katlanma süresi                         |
-| Raporda 7 haneli kesin sayı, ama girdiler kaba tahmin       | Sahte kesinlik                                                 | 1–2 anlamlı hane ve aralık                                      |
-| Model "günlük etkin kullanıcı > aylık etkin" diyen rapor üretti | Tanımlar ya da veri karışık                                  | Sınır denetimlerini koda koyun                                  |
-| İki ekip aynı büyüklüğe 10 kat farklı tahmin veriyor        | Farklı varsayımlar, yazılmamış                                 | Çarpanları ve aralıkları yan yana yazın; farkı bulun            |
+| Belirti                                                         | Neden                                       | Çözüm                                                |
+| --------------------------------------------------------------- | ------------------------------------------- | ---------------------------------------------------- |
+| Tahmin aralığı "0,9 GB ile 480 GB arası" kadar işe yaramaz      | Uçlar çarpılmış                             | Log uzayında birleştirme; geometrik ortalama         |
+| İndirme süresi hesabı 8 kat iyimser                             | Mbit/sn ile MB/sn karıştı                   | Birimleri sayıyla taşıyın; bit/bayt ayrımı           |
+| Disk "dolmamalıydı" ama doldu                                   | GB ile GiB, dizin ve kopya ek yükü unutuldu | ×1,5–2 ek yük payı; ikili/ondalık birimi yazın       |
+| Zaman aşımı 1 000 kat yanlış                                    | `ms` ile `sn` karıştı                       | Ada birimi ekleyin (`timeout_ms`)                    |
+| Büyüme öngörüsü birkaç ay içinde çöktü                          | Üstel süreç doğrusal uzatıldı               | Logaritmik eksen; ikiye katlanma süresi              |
+| Raporda 7 haneli kesin sayı, ama girdiler kaba tahmin           | Sahte kesinlik                              | 1–2 anlamlı hane ve aralık                           |
+| Model "günlük etkin kullanıcı > aylık etkin" diyen rapor üretti | Tanımlar ya da veri karışık                 | Sınır denetimlerini koda koyun                       |
+| İki ekip aynı büyüklüğe 10 kat farklı tahmin veriyor            | Farklı varsayımlar, yazılmamış              | Çarpanları ve aralıkları yan yana yazın; farkı bulun |
 
 ## Denetim listesi
 

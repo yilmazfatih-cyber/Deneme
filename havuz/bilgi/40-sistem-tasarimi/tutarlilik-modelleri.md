@@ -133,14 +133,15 @@ HTTP'de aynı fikir `ETag` + `If-Match` başlıklarıdır: istemci okuduğu sür
 
 Tek sunuculu bir üründe "bölünme" en çok **istemci ile sunucu** arasında yaşanır: telefon çevrimdışı. Bu yüzden
 CAP'in pratik sorusu şudur: "çevrimdışıyken bu işlem yapılabilir mi?" Ayrıntı:
-[Çevrimdışı-önce ve eşitleme](cevrimdisi-once-ve-esitleme.md).
+[Çevrimdışı-önce ve eşitleme](cevrimdisi-once-ve-esitleme.md). Satış anında tutarlılığın çalışan örneği (çift
+rezervasyonu veritabanına engelletmek, süreli tutma): [Randevu sistemi örneği](ornek-randevu-sistemi.md).
 
 ## Arayüze yansıması
 
 - **İyimser güncelleme** (optimistic UI): değişikliği hemen göster, arkada gönder; başarısız olursa geri al ve
   söyle. Bu, istemci tarafında "kendi yazdığını oku"dur.
 - **Durum göstergesi:** "kaydediliyor… / kaydedildi / çevrimdışı, sonra gönderilecek / sorun var". Havuzdaki web
-  uygulaması bunu tek yerde üretir (`web/src/lib/sync/status.ts`).
+  uygulaması bunu tek yerde üretir ([`web/src/lib/sync/status.ts`](../../uygulama/web/src/lib/sync/status.ts)).
 - **Bayatlık görünür olsun:** "son eşitleme 3 dk önce", rapor üstünde "veriler 10:40 itibarıyla".
 - **Kesinlik vaat etmeyin:** sayaçlarda "1,2 B beğeni"; arama için "yeni kayıt birkaç saniye içinde görünür".
 - **Reddi sessiz yutmayın:** sunucu bir değişikliği kabul etmezse kullanıcı bunu görür ve neyin geri alındığını
@@ -205,4 +206,5 @@ CAP'in pratik sorusu şudur: "çevrimdışıyken bu işlem yapılabilir mi?" Ayr
 - [İşlemler ve eşzamanlılık](../30-arkauc/islemler-ve-eszamanlilik.md) (yalıtım düzeyleri, kayıp güncelleme,
   denetle-sonra-yaz yarışı) · [Veri getirme](../20-web-onyuz/veri-getirme.md) (istemcide bayat veri ve iyimser güncelleme)
 - Havuzdaki çalışan örnek: [`uygulama/shared/src/sync.ts`](../../uygulama/shared/src/sync.ts) (`rebase`),
-  [`uygulama/docs/ESITLEME.md`](../../uygulama/docs/ESITLEME.md)
+  [`uygulama/docs/ESITLEME.md`](../../uygulama/docs/ESITLEME.md); MVCC ve kilitlemeyle yalıtım anomalilerinin
+  sıfırdan gösterimi: [`sifirdan/veri/islem/README.md`](../../sifirdan/veri/islem/README.md)

@@ -25,16 +25,16 @@ guncellik: 2026-11
 
 ## Karar tablosu: süreçten dağılıma
 
-| Süreç                                          | Dağılım       | Parametre               | Ortalama              | Varyans        | Örnek                                     |
-| ---------------------------------------------- | ------------- | ----------------------- | --------------------- | -------------- | ----------------------------------------- |
-| Tek evet/hayır                                 | Bernoulli     | `p`                     | `p`                   | `p(1−p)`       | Bir ziyaretçi satın alır mı               |
-| `n` bağımsız evet/hayırda başarı sayısı        | Binom         | `n, p`                  | `np`                  | `np(1−p)`      | 1 000 ziyaretçiden kaçı satın alır        |
-| Sabit aralıkta bağımsız olay sayısı            | Poisson       | `λ` (aralık başına ort.) | `λ`                  | `λ`            | Dakikadaki istek, günlük hata kaydı       |
-| Olaylar arası bekleme süresi                   | Üstel         | `λ` (oran)              | `1/λ`                 | `1/λ²`         | Sıradaki isteğe kadar geçen süre          |
-| Sınırlı aralıkta eşit olası                    | Üniform       | `a, b`                  | `(a+b)/2`             | `(b−a)²/12`    | Yeniden denemede rastgele bekleme (jitter) |
-| Çok sayıda küçük etkinin toplamı               | Normal        | `μ, σ`                  | `μ`                   | `σ²`           | Ölçüm hatası, ortalamaların dağılımı      |
-| Çok sayıda küçük etkinin çarpımı               | Log-normal    | Alttaki normalin `μ, σ` | `e^(μ+σ²/2)`          | Kuyruğa duyarlı | Yanıt süresi, dosya boyutu                |
-| Birikerek büyüme, ölçeksiz                     | Güç yasası (Pareto) | `α`, en küçük `x_m` | `α>1` ise `α·x_m/(α−1)` | `α>2` ise sonlu | Sayfa trafiği, kelime sıklığı, müşteri cirosu |
+| Süreç                                   | Dağılım             | Parametre                | Ortalama                | Varyans         | Örnek                                         |
+| --------------------------------------- | ------------------- | ------------------------ | ----------------------- | --------------- | --------------------------------------------- |
+| Tek evet/hayır                          | Bernoulli           | `p`                      | `p`                     | `p(1−p)`        | Bir ziyaretçi satın alır mı                   |
+| `n` bağımsız evet/hayırda başarı sayısı | Binom               | `n, p`                   | `np`                    | `np(1−p)`       | 1 000 ziyaretçiden kaçı satın alır            |
+| Sabit aralıkta bağımsız olay sayısı     | Poisson             | `λ` (aralık başına ort.) | `λ`                     | `λ`             | Dakikadaki istek, günlük hata kaydı           |
+| Olaylar arası bekleme süresi            | Üstel               | `λ` (oran)               | `1/λ`                   | `1/λ²`          | Sıradaki isteğe kadar geçen süre              |
+| Sınırlı aralıkta eşit olası             | Üniform             | `a, b`                   | `(a+b)/2`               | `(b−a)²/12`     | Yeniden denemede rastgele bekleme (jitter)    |
+| Çok sayıda küçük etkinin toplamı        | Normal              | `μ, σ`                   | `μ`                     | `σ²`            | Ölçüm hatası, ortalamaların dağılımı          |
+| Çok sayıda küçük etkinin çarpımı        | Log-normal          | Alttaki normalin `μ, σ`  | `e^(μ+σ²/2)`            | Kuyruğa duyarlı | Yanıt süresi, dosya boyutu                    |
+| Birikerek büyüme, ölçeksiz              | Güç yasası (Pareto) | `α`, en küçük `x_m`      | `α>1` ise `α·x_m/(α−1)` | `α>2` ise sonlu | Sayfa trafiği, kelime sıklığı, müşteri cirosu |
 
 ## Binom: evet/hayır sayısı
 
@@ -255,25 +255,25 @@ bir yavaş parça bütün sayfayı yavaşlatır.
 
 ## Parametre adları: kütüphaneler aynı sayıyı farklı okur
 
-| Dağılım    | Python `random`                                         | numpy                                    | Tuzak                                                         |
-| ---------- | ------------------------------------------------------- | ---------------------------------------- | ------------------------------------------------------------- |
-| Üstel      | `expovariate(lambd)`: **oran** (1/ortalama)             | `exponential(scale)`: **ortalama**       | Aynı `2.0` biri için ortalama 0,5, öteki için 2               |
-| Normal     | `gauss(mu, sigma)`: standart sapma                      | `normal(loc, scale)`: standart sapma     | Varyans vermeyin                                              |
-| Log-normal | `lognormvariate(mu, sigma)`: alttaki normalin parametreleri | `lognormal(mean, sigma)`: aynı       | `mean` dağılımın ortalaması değildir                          |
-| Pareto     | `paretovariate(alpha)`: en küçük değer 1                | `pareto(a)`: Lomax, en küçük değer 0     | numpy sonucu = klasik Pareto − 1                              |
+| Dağılım    | Python `random`                                             | numpy                                | Tuzak                                           |
+| ---------- | ----------------------------------------------------------- | ------------------------------------ | ----------------------------------------------- |
+| Üstel      | `expovariate(lambd)`: **oran** (1/ortalama)                 | `exponential(scale)`: **ortalama**   | Aynı `2.0` biri için ortalama 0,5, öteki için 2 |
+| Normal     | `gauss(mu, sigma)`: standart sapma                          | `normal(loc, scale)`: standart sapma | Varyans vermeyin                                |
+| Log-normal | `lognormvariate(mu, sigma)`: alttaki normalin parametreleri | `lognormal(mean, sigma)`: aynı       | `mean` dağılımın ortalaması değildir            |
+| Pareto     | `paretovariate(alpha)`: en küçük değer 1                    | `pareto(a)`: Lomax, en küçük değer 0 | numpy sonucu = klasik Pareto − 1                |
 
 ## Tuzaklar
 
-| Belirti                                                          | Neden                                                    | Çözüm                                                          |
-| ---------------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------------- |
-| Kapasite ortalamaya göre kuruldu, yoğun dakikalarda taşıyor       | Ortalama değil kuyruk önemli; trafik patlamalı           | Kapasiteyi p99'a göre; varyans/ortalama oranını ölçün          |
-| "3 sigma" dışı olaylar haftada bir yaşanıyor                     | Veri normal değil, kuyruğu kalın                         | Yüzdeliklerle çalışın; normal varsayımını bırakın              |
-| Ortalama gecikme iyi, kullanıcılar yine şikâyetçi                 | Log-normal/kalın kuyruk; ortalama tipik değeri göstermez | p50, p95, p99 raporlayın                                       |
-| Aynı veriden her ay farklı "ortalama müşteri değeri"              | Güç yasası; birkaç büyük müşteri ortalamayı sürüklüyor   | Ortanca, kırpılmış ortalama, en büyükleri ayrı raporlayın      |
-| Benzetim ortalaması beklenenin iki katı/yarısı                   | Parametre adı karışmış (oran ↔ ölçek)                    | Üretilen örneğin ortalamasını teoriyle `assert` edin           |
-| Log-normal benzetimin ortalaması `mean` parametresinden büyük     | `mean/mu` alttaki normalin ortalaması                    | Ortalama `exp(μ + σ²/2)`; ortanca `exp(μ)`                     |
-| Küçük oranlarda güven aralığı eksi değere taşıyor                | `np` küçük, normal yaklaşım geçersiz                     | Tam binom ya da Wilson aralığı                                  |
-| Güven aralığı "%95" ama tutmuyor                                 | Kalın kuyruk; merkezi limit teoremi için örnek az        | Önyükleme, dönüşüm (log), ya da ortanca için aralık            |
+| Belirti                                                       | Neden                                                    | Çözüm                                                     |
+| ------------------------------------------------------------- | -------------------------------------------------------- | --------------------------------------------------------- |
+| Kapasite ortalamaya göre kuruldu, yoğun dakikalarda taşıyor   | Ortalama değil kuyruk önemli; trafik patlamalı           | Kapasiteyi p99'a göre; varyans/ortalama oranını ölçün     |
+| "3 sigma" dışı olaylar haftada bir yaşanıyor                  | Veri normal değil, kuyruğu kalın                         | Yüzdeliklerle çalışın; normal varsayımını bırakın         |
+| Ortalama gecikme iyi, kullanıcılar yine şikâyetçi             | Log-normal/kalın kuyruk; ortalama tipik değeri göstermez | p50, p95, p99 raporlayın                                  |
+| Aynı veriden her ay farklı "ortalama müşteri değeri"          | Güç yasası; birkaç büyük müşteri ortalamayı sürüklüyor   | Ortanca, kırpılmış ortalama, en büyükleri ayrı raporlayın |
+| Benzetim ortalaması beklenenin iki katı/yarısı                | Parametre adı karışmış (oran ↔ ölçek)                    | Üretilen örneğin ortalamasını teoriyle `assert` edin      |
+| Log-normal benzetimin ortalaması `mean` parametresinden büyük | `mean/mu` alttaki normalin ortalaması                    | Ortalama `exp(μ + σ²/2)`; ortanca `exp(μ)`                |
+| Küçük oranlarda güven aralığı eksi değere taşıyor             | `np` küçük, normal yaklaşım geçersiz                     | Tam binom ya da Wilson aralığı                            |
+| Güven aralığı "%95" ama tutmuyor                              | Kalın kuyruk; merkezi limit teoremi için örnek az        | Önyükleme, dönüşüm (log), ya da ortanca için aralık       |
 
 ## Denetim listesi
 

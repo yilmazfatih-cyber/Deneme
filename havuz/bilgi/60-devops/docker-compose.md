@@ -275,5 +275,5 @@ indirir: eski `SURUM` ile yeniden `up -d` ([Dağıtım stratejileri](dagitim-str
 - [Docker](docker.md) — imaj kuralları, PID 1, sağlık denetimi
 - [Ortam ve yapılandırma](ortam-ve-yapilandirma.md) · [Ters vekil](ters-vekil.md) · [HTTPS ve sertifikalar](https-ve-sertifikalar.md)
 - [Veritabanı yedekleme](veritabani-yedekleme.md) · [Linux temelleri](linux-temelleri.md) (disk doluluğu)
-- [Arka plan işleri](../30-arkauc/arka-plan-isleri.md) — yeniden deneme kuralları
+- [Arka plan işleri](../30-arkauc/arka-plan-isleri.md) · [Dayanıklılık kalıpları](../40-sistem-tasarimi/dayaniklilik-kaliplari.md) — yeniden deneme ve bütçesi
 - Çalışan karşılık: [`uygulama/docs/YAYINLAMA.md`](../../uygulama/docs/YAYINLAMA.md) → "Docker ile"

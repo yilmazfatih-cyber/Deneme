@@ -79,9 +79,10 @@ eşik  hesap  kalan: üstü  altı
 aday tanım: ilk 7 günde bağlantıdan en az 3 randevu
 ```
 
-Bu **ilişkidir, neden değildir**: zaten çok müşterisi olan kuaför hem 3 randevuyu geçer hem kalır. Adayı iki yolla
-sınayın: kalanlarla ve gidenlerle görüşün; sonra ilk kullanımı o eşiğe götüren bir değişiklik yapıp tutmanın
-değişip değişmediğine bakın. Tanımı ölçüt kartına yazın ve sürümleyin.
+Bu **ilişkidir, neden değildir**: zaten çok müşterisi olan kuaför hem 3 randevuyu geçer hem kalır (karıştırıcı
+değişken; [korelasyon ve nedensellik](../70-veri/korelasyon-ve-nedensellik.md)). Adayı iki yolla sınayın: kalanlarla
+ve gidenlerle görüşün; sonra ilk kullanımı o eşiğe götüren bir değişiklik yapıp tutmanın değişip değişmediğine bakın.
+Tanımı ölçüt kartına yazın ve sürümleyin.
 
 ## Huni: nereye çalışmalı
 
@@ -187,7 +188,7 @@ Aralıkla okuma kuralı: [fikir doğrulama](fikir-dogrulama.md) → "Sonucu okum
 **Ürün–pazar uyumu sinyalleri:** tutma eğrisinin düzleşmesi; kendiliğinden gelen tavsiyeler; etkin kullanıcılara
 sorulan "Ürünü artık kullanamasanız ne hissederdiniz?" sorusunda "çok üzülürdüm" diyenlerin payı (Sean Ellis'in
 önerdiği bu soruda yaygın eşik %40'tır; bu bir pratik kuraldır, kanıtlanmış bir sınır değildir ve küçük örneklemde
-oynaktır).
+oynaktır; anketin hata payı ve yanıt vermeme yanlılığı: [anket ve örneklem](../70-veri/anket-ve-orneklem.md)).
 
 ## İzleme yapılamayan üründe ölçmek
 
@@ -218,7 +219,7 @@ Karar:         Kalıcı. Sıradaki varsayım: hatırlatma iletisi gelmeyen müş
 
 | Belirti                                                       | Neden                                                   | Çözüm                                                                      |
 | ------------------------------------------------------------- | ------------------------------------------------------- | -------------------------------------------------------------------------- |
-| Panoda otuz sayı var, hiçbiri karar doğurmuyor                | Sayılar karar cümlesi olmadan eklendi                   | Her sayıya "X'in üstündeyse A, altındaysa B" cümlesi; yoksa silin          |
+| Panoda otuz sayı var, hiçbiri karar doğurmuyor                | Sayılar karar cümlesi olmadan eklendi                   | Her sayıya karar cümlesi; yoksa silin ([pano tasarımı](../70-veri/pano-tasarimi.md)) |
 | Kayıt sayısı artıyor, gelir yerinde sayıyor                   | Huninin başı ölçülüyor, aktivasyon ve tutma değil       | Aktivasyon ve kohort tutma                                                 |
 | "Aktif kullanıcı" uygulamayı açan kişi                        | Değer yerine açılış ölçüldü                             | Çekirdek eylemle tanım ([ürün ölçütleri](../70-veri/urun-olcutleri.md))     |
 | Aktivasyon eşiği seçildi, onu artırınca tutma değişmedi       | İlişki neden sanıldı                                    | Görüşme ve müdahaleyle sınayın; tanımı güncelleyin                         |
@@ -259,4 +260,5 @@ Karar:         Kalıcı. Sıradaki varsayım: hatırlatma iletisi gelmeyen müş
 - [Fikir doğrulama](fikir-dogrulama.md): eşiği önceden yazma ve aralıkla karar.
 - [Bilgi mimarisi ve akış](bilgi-mimarisi-ve-akis.md): ilk kullanım adımları.
 - [İçerik ve büyüme](icerik-ve-buyume.md): kanal başına huni.
+- [Tutma ve iptal akışı](tutma-ve-iptal-akisi.md): kaybı istemli ve istemsiz diye ayırıp azaltmak.
 - Hazır analiz tarifleri (huni, kayıp): [`veri/docs/ANALIZ_TARIFLERI.md`](../../veri/docs/ANALIZ_TARIFLERI.md).

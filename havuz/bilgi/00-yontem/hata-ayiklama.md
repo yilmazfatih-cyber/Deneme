@@ -245,3 +245,4 @@ değiştirmek. Bunlar belirtiyi susturur; nedeni değil.
 - [Problem çözme döngüsü](problem-cozme-dongusu.md): zaman kutusu ve varsayım sınama.
 - [Test stratejisi](test-stratejisi.md): gerileme testini doğru düzeyde yazmak.
 - [Yabancı kod okuma](yabanci-kod-okuma.md): hatanın geçtiği bilinmeyen kodda yön bulmak.
+- Diğer kümelerden: [Git](../10-diller/git.md), [Hata yönetimi ve günlükleme](../30-arkauc/hata-yonetimi-ve-gunlukleme.md), [Eğitimde hata ayıklama](../80-ml/egitim-hata-ayiklama.md).

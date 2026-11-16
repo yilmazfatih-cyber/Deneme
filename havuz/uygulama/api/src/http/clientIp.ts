@@ -41,7 +41,7 @@ export function clientIp(c: Context<AppEnv>, trustProxy: number): string {
 
 /** IPv6 adresini 8 gruba açar ("2001:DB8::1" → ["2001","db8","0",…,"1"]); gömülü IPv4 (a.b.c.d) iki grup sayılır. */
 function ipv6Groups(ip: string): string[] {
-  const [head, tail] = ip.toLowerCase().split('::')
+  const [head, tail] = ip.split('::')
   const parts = (text: string | undefined) => (text ? text.split(':') : [])
   const width = (groups: string[]) => groups.reduce((sum, group) => sum + (group.includes('.') ? 2 : 1), 0)
   const headGroups = parts(head)
@@ -61,10 +61,11 @@ function ipv6Groups(ip: string): string[] {
  */
 export function rateLimitKey(ip: string): string {
   if (!isIPv6(ip)) return ip
-  const prefix = ipv6Groups(ip).slice(0, 4)
+  const groups = ipv6Groups(ip)
+  const prefix = groups.slice(0, 4)
   const embedsIpv4 =
     prefix.every((group) => group === '0') ||
     (prefix[0] === '64' && prefix[1] === 'ff9b') ||
     (prefix[0] === '2001' && prefix[1] === '0')
-  return embedsIpv4 ? ip.toLowerCase() : `${prefix.join(':')}::/64`
+  return embedsIpv4 ? groups.join(':') : `${prefix.join(':')}::/64`
 }

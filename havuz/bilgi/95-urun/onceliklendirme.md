@@ -35,7 +35,7 @@ Yol haritası bir **sıradır**, tarih sözü değildir.
 | Bir sürümün kapsamını sınırlamak                                  | MoSCoW                                                              | "Olmazsa olmaz" ile "olsa iyi"yi ayırır        |
 | Zamana bağlı iş (sezon, bayram, sözleşme, yasal tarih, rakip)      | Gecikme maliyeti ÷ süre (CD3)                                       | Bekledikçe kaybettiren önce                    |
 | Hata ve destek talepleri                                          | Sıklık × şiddet ([geri bildirim](geri-bildirim-ve-destek.md))       | Kullanıcı acısını ölçer                        |
-| Güvenlik, veri kaybı, yasal zorunluluk, çökme                     | Puanlanmaz; hemen                                                   | Bedeli üst sınırsız                            |
+| Güvenlik, veri kaybı, yasal zorunluluk, çökme                     | Puanlanmaz; hemen                                                   | Bedeli sınırsız olabilir                       |
 | Tek müşterinin özel isteği                                        | Üç müşteri kuralı: üç bağımsız müşteri isteyene dek istek defterinde | Tek müşteriye ürün yazılmaz                   |
 | Temel beklenti mi, fark yaratan mı?                               | Önce temel beklentiler (yoksa şikâyet edilir, varsa fark edilmez)   | Temel eksikken parlak özellik değer görmez     |
 
@@ -173,7 +173,8 @@ BELKİ  (kanıt bekliyor)  Kapora · Raporlar · Takvim eşitlemesi — her biri
 
 Kurallar: tarih yalnız yakın ve küçük işe, aralıkla verilir; uzak işe tarih verilmez. Tarih sabitse kapsam
 esnektir ("15 Aralık'ta ne hazırsa o"); kapsam sabitse tarih esnektir. İkisi birden sabitlenirse kalite düşer.
-Dışarıyla paylaşılan yol haritasına "planlarımız değişebilir" yazılır ve tarih konmaz.
+Dışarıyla paylaşılan yol haritasına "planlarımız değişebilir" yazılır ve tarih konmaz. Aralıkla tahmin vermenin
+yöntemi: [tahmin ve planlama](../00-yontem/tahmin-ve-planlama.md).
 
 ## Gerekçeli "hayır"
 

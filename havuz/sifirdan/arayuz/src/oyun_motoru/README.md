@@ -54,25 +54,25 @@ hesaplanır. Testler: aynı kayıt → aynı özet; tek karelik fark → farklı
 
 ## Dosya haritası
 
-| Dosya               | Sorumluluk                                                         |
-| ------------------- | ------------------------------------------------------------------ |
-| `loop.ts`           | Sabit adımlı döngü, ara değerleme, uzun kare kırpma                |
-| `ecs.ts`            | Varlık, bileşen deposu, sorgu, ertelenmiş silme                    |
-| `input.ts`          | Eylem haritası, girdi karesi, klavye/dokunma/kol bağlayıcıları     |
-| `collision.ts`      | AABB ve daire sınamaları (manifold)                                |
-| `spatial_hash.ts`   | Uzamsal karma (geniş evre)                                         |
-| `physics.ts`        | Tümlev, sönüm, sekme                                               |
-| `tilemap.ts`        | Karo haritası, satırlardan kurma, kutu hareketi                    |
-| `camera.ts`         | İzleme, sınır, sarsıntı, dünya↔ekran                               |
-| `particles.ts`      | Sabit kapasiteli parçacık havuzu                                   |
-| `sprite.ts`         | Kare animasyonu, programla kare üretme                             |
-| `scene.ts`          | Sahne yığını                                                       |
-| `audio.ts`          | Web Audio ile programla ses                                        |
-| `replay.ts`         | Kayıt, kayıt doğrulama, durum özeti                                |
-| `rng.ts`            | Tohumlu rastgele sayı üreteci                                      |
-| `game/level.ts`     | Damla bölümü (karakterlerle harita)                                |
-| `game/droplet.ts`   | Damla oyun mantığı (başsız)                                        |
-| `game/render.ts`    | Damla çizimi (Canvas)                                              |
+| Dosya             | Sorumluluk                                                     |
+| ----------------- | -------------------------------------------------------------- |
+| `loop.ts`         | Sabit adımlı döngü, ara değerleme, uzun kare kırpma            |
+| `ecs.ts`          | Varlık, bileşen deposu, sorgu, ertelenmiş silme                |
+| `input.ts`        | Eylem haritası, girdi karesi, klavye/dokunma/kol bağlayıcıları |
+| `collision.ts`    | AABB ve daire sınamaları (manifold)                            |
+| `spatial_hash.ts` | Uzamsal karma (geniş evre)                                     |
+| `physics.ts`      | Tümlev, sönüm, sekme                                           |
+| `tilemap.ts`      | Karo haritası, satırlardan kurma, kutu hareketi                |
+| `camera.ts`       | İzleme, sınır, sarsıntı, dünya↔ekran                           |
+| `particles.ts`    | Sabit kapasiteli parçacık havuzu                               |
+| `sprite.ts`       | Kare animasyonu, programla kare üretme                         |
+| `scene.ts`        | Sahne yığını                                                   |
+| `audio.ts`        | Web Audio ile programla ses                                    |
+| `replay.ts`       | Kayıt, kayıt doğrulama, durum özeti                            |
+| `rng.ts`          | Tohumlu rastgele sayı üreteci                                  |
+| `game/level.ts`   | Damla bölümü (karakterlerle harita)                            |
+| `game/droplet.ts` | Damla oyun mantığı (başsız)                                    |
+| `game/render.ts`  | Damla çizimi (Canvas)                                          |
 
 ## Sınırlar
 

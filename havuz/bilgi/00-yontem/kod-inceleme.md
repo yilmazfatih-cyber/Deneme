@@ -213,3 +213,4 @@ Teslim etmeden önce farkı, başkasının yazdığı kod gibi okuyun:
 - [Test stratejisi](test-stratejisi.md): testin neyi kanıtladığını değerlendirmek.
 - [Teknik yazı](teknik-yazi.md): değişiklik özeti ve kayıt iletisi.
 - [Hata sınıfları ve imzaları](hata-siniflari.md): incelemede aranacak kalıplar.
+- Diğer kümelerden: [OWASP özeti](../50-guvenlik/owasp-ozet.md).

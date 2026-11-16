@@ -28,15 +28,15 @@ guncellik: 2026-11
 
 ## Karar tablosu
 
-| Problem                                                       | Yöntem                                                | Neden                                                 |
-| ------------------------------------------------------------- | ----------------------------------------------------- | ----------------------------------------------------- |
-| Türevlenebilir, dışbükey, az parametre (lojistik regresyon)   | Kütüphane çözücüsü: L-BFGS, Newton                    | Eğriliği kullanır; öğrenme oranı ayarı gerekmez      |
-| Sinir ağı, çok parametre, gürültülü küçük yığın gradyanı      | Adam/AdamW (varsayılan), ya da SGD + momentum         | Ölçeğe dayanıklı; SGD + momentum iyi ayarlanırsa genelleyebilir |
-| Türev yok ya da gürültülü, birkaç parametre (hiperparametre)  | Rastgele arama, ızgara, Bayesçi optimizasyon          | Her deneme pahalı; gradyan yok                       |
-| Doğrusal amaç + doğrusal kısıtlar (üretim, karışım, taşıma)   | Doğrusal programlama çözücüsü                         | Kesin en iyiyi hızla bulur                           |
-| Tam sayı kararlar (aç/kapa, kaç adet, hangi depo)             | Tam sayılı programlama (MILP) çözücüsü                | LP çözümünü yuvarlamak yanlış ya da geçersiz         |
-| Rota, çizelge, atama (kombinatoryal)                          | Sezgisel arama (yerel arama, tavlama) ya da MILP      | Durum sayısı patlar ([kombinatorik](kombinatorik.md)) |
-| Tek değişkenli kök ya da en küçük                             | İkiye bölme, Newton ([sayısal yöntemler](sayisal-yontemler.md)) | Basit ve garantili                         |
+| Problem                                                      | Yöntem                                                          | Neden                                                           |
+| ------------------------------------------------------------ | --------------------------------------------------------------- | --------------------------------------------------------------- |
+| Türevlenebilir, dışbükey, az parametre (lojistik regresyon)  | Kütüphane çözücüsü: L-BFGS, Newton                              | Eğriliği kullanır; öğrenme oranı ayarı gerekmez                 |
+| Sinir ağı, çok parametre, gürültülü küçük yığın gradyanı     | Adam/AdamW (varsayılan), ya da SGD + momentum                   | Ölçeğe dayanıklı; SGD + momentum iyi ayarlanırsa genelleyebilir |
+| Türev yok ya da gürültülü, birkaç parametre (hiperparametre) | Rastgele arama, ızgara, Bayesçi optimizasyon                    | Her deneme pahalı; gradyan yok                                  |
+| Doğrusal amaç + doğrusal kısıtlar (üretim, karışım, taşıma)  | Doğrusal programlama çözücüsü                                   | Kesin en iyiyi hızla bulur                                      |
+| Tam sayı kararlar (aç/kapa, kaç adet, hangi depo)            | Tam sayılı programlama (MILP) çözücüsü                          | LP çözümünü yuvarlamak yanlış ya da geçersiz                    |
+| Rota, çizelge, atama (kombinatoryal)                         | Sezgisel arama (yerel arama, tavlama) ya da MILP                | Durum sayısı patlar ([kombinatorik](kombinatorik.md))           |
+| Tek değişkenli kök ya da en küçük                            | İkiye bölme, Newton ([sayısal yöntemler](sayisal-yontemler.md)) | Basit ve garantili                                              |
 
 ## Gradyan inişi ve öğrenme oranı
 
@@ -234,17 +234,17 @@ amaç ya da tam sayı karar varsa uygun çözücü sınıfı seçilir (MILP). Py
 
 ## Tuzaklar
 
-| Belirti                                                     | Neden                                                          | Çözüm                                                               |
-| ----------------------------------------------------------- | -------------------------------------------------------------- | ------------------------------------------------------------------- |
-| Kayıp artıyor ya da `nan`                                   | Öğrenme oranı büyük (`η > 2/L`); patlayan gradyan              | `η`'yi 3–10 kat küçültün; gradyan kırpma; ısınma                     |
-| Kayıp testere dişi gibi iniyor                              | `η` sınıra yakın; dar vadi                                     | `η`'yi biraz küçültün; momentum; özellik ölçekleme                  |
-| Kayıp çok yavaş düşüyor                                     | `η` küçük ya da özellikler ölçeksiz                            | Öğrenme oranı taraması; standartlaştırma                            |
-| Kayıp hiç düşmüyor (sabit)                                  | Gradyan sıfır/kopuk, yanlış işaret, veri-etiket kayması        | Önce tek küçük yığını ezberletin; gradyanları yazdırın              |
-| Her çalıştırmada başka sonuç                                | Dışbükey olmayan amaç; başlangıca bağlı                        | Tohumu sabitleyin; birkaç başlangıçla en iyisini alın               |
-| Adam ile ağırlık küçültme beklenen etkiyi vermiyor          | Adam'a L2 eklemek uyarlamalı ölçekle bozulur                   | AdamW                                                               |
-| Eğitimi sürdürünce kayıp sıçradı                            | Optimizer durumu (`m`, `v`, adım sayısı) kaydedilmemiş          | Ağırlıklarla birlikte optimizer durumunu da kaydedin                |
-| LP çözümü yuvarlanınca kısıt çiğnendi ya da kâr düştü        | Tam sayı problemi LP gibi çözülmüş                             | MILP çözücüsü                                                       |
-| Elle "deneme yanılma" ile bulunan plan çözücüden kötü        | Köşe yerine iç nokta; kısıt etkileşimi gözden kaçtı            | Problemi değişken/amaç/kısıt diye yazıp çözücüye verin              |
+| Belirti                                               | Neden                                                   | Çözüm                                                  |
+| ----------------------------------------------------- | ------------------------------------------------------- | ------------------------------------------------------ |
+| Kayıp artıyor ya da `nan`                             | Öğrenme oranı büyük (`η > 2/L`); patlayan gradyan       | `η`'yi 3–10 kat küçültün; gradyan kırpma; ısınma       |
+| Kayıp testere dişi gibi iniyor                        | `η` sınıra yakın; dar vadi                              | `η`'yi biraz küçültün; momentum; özellik ölçekleme     |
+| Kayıp çok yavaş düşüyor                               | `η` küçük ya da özellikler ölçeksiz                     | Öğrenme oranı taraması; standartlaştırma               |
+| Kayıp hiç düşmüyor (sabit)                            | Gradyan sıfır/kopuk, yanlış işaret, veri-etiket kayması | Önce tek küçük yığını ezberletin; gradyanları yazdırın |
+| Her çalıştırmada başka sonuç                          | Dışbükey olmayan amaç; başlangıca bağlı                 | Tohumu sabitleyin; birkaç başlangıçla en iyisini alın  |
+| Adam ile ağırlık küçültme beklenen etkiyi vermiyor    | Adam'a L2 eklemek uyarlamalı ölçekle bozulur            | AdamW                                                  |
+| Eğitimi sürdürünce kayıp sıçradı                      | Optimizer durumu (`m`, `v`, adım sayısı) kaydedilmemiş  | Ağırlıklarla birlikte optimizer durumunu da kaydedin   |
+| LP çözümü yuvarlanınca kısıt çiğnendi ya da kâr düştü | Tam sayı problemi LP gibi çözülmüş                      | MILP çözücüsü                                          |
+| Elle "deneme yanılma" ile bulunan plan çözücüden kötü | Köşe yerine iç nokta; kısıt etkileşimi gözden kaçtı     | Problemi değişken/amaç/kısıt diye yazıp çözücüye verin |
 
 ## Denetim listesi
 

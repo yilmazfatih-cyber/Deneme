@@ -103,8 +103,43 @@ def _istek_cevir(
     return mesajlar, araclar, bicim, secenek
 
 
+def _deger_maskele(deger: Any, oturum: MaskeOturumu) -> Any:
+    """Araç argümanındaki her metni (ve kişisel veri olabilecek sayıyı: TCKN, telefon) maskeler."""
+    if isinstance(deger, str):
+        return maskele(deger, oturum)[0]
+    if isinstance(deger, int | float) and not isinstance(deger, bool):
+        metin = maskele(str(deger), oturum)[0]
+        return deger if metin == str(deger) else metin
+    if isinstance(deger, list):
+        return [_deger_maskele(o, oturum) for o in deger]
+    if isinstance(deger, dict):
+        return {_deger_maskele(k, oturum): _deger_maskele(v, oturum) for k, v in deger.items()}
+    return deger
+
+
 def _maskele(mesajlar: list[Mesaj], oturum: MaskeOturumu) -> list[Mesaj]:
-    return [m.model_copy(update={"icerik": maskele(m.icerik, oturum)[0]}) for m in mesajlar]
+    """Modele gidecek her metni maskeler: içerik VE geçmişteki araç çağrılarının argümanları.
+
+    İstemci, vekilin açarak verdiği araç çağrısını (gerçek e-posta, TCKN…) sonraki istekte geri yollar;
+    yalnız içerik maskelenseydi bu değerler modele düz giderdi.
+    """
+    return [
+        m.model_copy(
+            update={
+                "icerik": maskele(m.icerik, oturum)[0],
+                "arac_cagrilari": [
+                    c.model_copy(
+                        update={
+                            "argumanlar": _deger_maskele(c.argumanlar, oturum),
+                            "ham_argumanlar": None,
+                        }
+                    )
+                    for c in m.arac_cagrilari
+                ],
+            }
+        )
+        for m in mesajlar
+    ]
 
 
 def _cagri_tele(c: AracCagrisi, oturum: MaskeOturumu) -> dict[str, Any]:

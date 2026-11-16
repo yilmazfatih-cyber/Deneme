@@ -27,7 +27,7 @@ rakam yoktur; kanıt yoksa kanıt bölümü de yoktur.
 | Sayfanın amacı                 | Ana çağrı                                 | Sayfada olmalı                                              | Olmamalı                              |
 | ------------------------------ | ----------------------------------------- | ----------------------------------------------------------- | ------------------------------------- |
 | Fikir doğrulama (duman testi)  | "Erken erişime yazılın"                   | Sorun, vaat, tek alanlı form, "yapım aşamasındayız" dürüstlüğü | Fiyat tablosu, "hemen başla" yalanı |
-| Ön satış                       | "Kaparoyla yerinizi ayırtın"              | Fiyat, iade koşulu, teslim aralığı                          | Belirsiz teslim tarihi                |
+| Ön satış                       | "Kaporayla yerinizi ayırtın"              | Fiyat, iade koşulu, teslim aralığı                          | Belirsiz teslim tarihi                |
 | Deneme ya da kayıt (abonelik)  | "14 gün ücretsiz deneyin"                 | Ürün görüntüsü, nasıl çalışır, fiyat, SSS                   | Beş farklı düğme                      |
 | Tek seferlik satış             | "Satın alın"                              | Fiyat (tüketiciye vergiler dâhil), teslim, iade             | Ödeme adımında çıkan ek ücret         |
 | Uygulamaya yönlendirme         | "Ana ekrana ekleyin" ya da mağaza düğmesi | Ekran görüntüleri, gizlilik özeti                           | Uzun özellik listesi                  |
@@ -48,7 +48,8 @@ rakam yoktur; kanıt yoksa kanıt bölümü de yoktur.
 [özellik], [özellik]. [Sonuç]."
 
 **Değer önerisi** (iç belge, sayfaya aynen yazılmaz): "[Hedef müşteri] için, [bugünkü alternatif]ten farklı olarak,
-[ürün] [ana fayda] sağlar; çünkü [inanmak için neden]." Bu cümle yazılamıyorsa sayfa da yazılamaz.
+[ürün] [ana fayda] sağlar; çünkü [inanmak için neden]." Bu cümle yazılamıyorsa sayfa da yazılamaz; nasıl kurulduğu
+ve "kimin için değil" satırı: [segment ve konumlandırma](segment-ve-konumlandirma.md).
 
 **Boş sıfat testi:** "yenilikçi, lider, en iyi, akıllı çözüm, platform, dünya standartlarında" sözcüklerini silin;
 cümlenin anlamı değişmiyorsa silinmiş hâli kalsın.
@@ -97,7 +98,8 @@ bölümünü kaldırın.
   vurgusu, KDV durumu yazılı, deneme ve iptal koşulu fiyatın hemen altında. Ayrıntı: [fiyatlandırma](fiyatlandirma.md).
 - **Tek çağrı:** ana çağrı her yerde **aynı sözcüklerle** tekrar eder (ilk ekran, özelliklerden sonra, fiyatta,
   sayfa sonunda); en çok bir ikincil çağrı ("Nasıl çalışır?"). Düğme metni fiil + kazanç: "Ücretsiz deneyin";
-  "Gönder", "Tıklayın" değil. Sen ya da siz dilinden birini seçin, karıştırmayın.
+  "Gönder", "Tıklayın" değil. Sen ya da siz dilinden birini seçin, karıştırmayın
+  ([arayüz dili](../97-turkce/arayuz-dili.md)).
 
 ## Doldurulmuş örnek: duman testi sayfası
 
@@ -226,6 +228,7 @@ izinsiz ya da kimliksiz görüş: Harika bir ürün!
 ## İlgili
 
 - [Fikir doğrulama](fikir-dogrulama.md): duman testi ve sonucunu okumak.
+- [Segment ve konumlandırma](segment-ve-konumlandirma.md): başlığın dayandığı konumlandırma cümlesi.
 - [Kullanıcı görüşmesi](kullanici-gorusmesi.md): başlığın sözcükleri.
 - [SEO temelleri](seo-temelleri.md): sayfanın bulunması; başlık ve açıklama etiketi.
 - [Fiyatlandırma](fiyatlandirma.md) ve [yasal temel belgeler](yasal-temel-belgeler.md).

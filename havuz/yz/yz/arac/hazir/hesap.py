@@ -4,7 +4,8 @@
 round/yuvarla, min, max, log/ln, log10, exp, sin, cos, tan, floor, ceil.
 Türkçe yazım: "2,5 * 4" ve "1.250,50 + 10" (harf içermeyen ifadede virgül ondalıktır), "%18"
 (yüzde 18 = 0.18), "×" ve "÷" işaretleri. Sınırlar: ifade ≤ 300 karakter, ≤ 200 düğüm,
-üs ≤ 100, sonuç büyüklüğü ≤ 1e100 (aşırı büyük sayıyla bellek doldurma saldırısına karşı).
+üs ≤ 100, round/yuvarla basamak sayısı ≤ 100 (`round(5, -10**10)` 10 milyar basamaklı bir sayı
+hesaplatır), sonuç büyüklüğü ≤ 1e100 (aşırı büyük sayıyla bellek doldurma saldırısına karşı).
 Kim kullanır: ajan (hazır araç), mcp sunucusu, degerlendirme (araç kullanımı görevi).
 Genişletme: yeni işlev → `_ISLEVLER` sözlüğüne ekleyin ve tests/test_arac_hazir.py'ye örnek yazın.
 """
@@ -52,6 +53,7 @@ _ISLEVLER: dict[str, Callable[..., Any]] = {
     "log10": math.log10, "exp": math.exp, "sin": math.sin, "cos": math.cos, "tan": math.tan,
     "floor": math.floor, "ceil": math.ceil,
 }  # fmt: skip
+_YUVARLAMA = frozenset({"round", "yuvarla"})
 _SABITLER = {"pi": math.pi, "e": math.e}
 _TR_SAYI = re.compile(r"\d{1,3}(?:\.\d{3})+(?:,\d+)?|\d+,\d+")
 _YUZDE = re.compile(r"%\s*(\d+(?:[.,]\d+)?)")
@@ -90,7 +92,11 @@ def _coz(dugum: ast.AST) -> Any:
         and dugum.func.id in _ISLEVLER
         and not dugum.keywords
     ):
-        sonuc = _ISLEVLER[dugum.func.id](*[_coz(a) for a in dugum.args])
+        argumanlar = [_coz(a) for a in dugum.args]
+        # round(tam_sayı, -n) 10**n'i hesaplar (GIL tutulur, süreç donar): basamak sayısı sınırlı.
+        if dugum.func.id in _YUVARLAMA and len(argumanlar) > 1 and abs(argumanlar[1]) > AZAMI_US:
+            raise GuvenlikHatasi(f"Yuvarlama basamak sayısı çok büyük (en çok {AZAMI_US}).")
+        sonuc = _ISLEVLER[dugum.func.id](*argumanlar)
     else:
         raise GuvenlikHatasi(f"İzin verilmeyen ifade öğesi: {_ogeyi_adlandir(dugum)}")
     if isinstance(sonuc, int | float) and abs(sonuc) > AZAMI_BUYUKLUK:

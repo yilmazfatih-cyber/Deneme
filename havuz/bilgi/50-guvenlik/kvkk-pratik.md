@@ -229,3 +229,5 @@ yasal süre içinde (genel kural 30 gün olarak bilinir, doğrulanmadı) cevap v
   (özet ≠ anonim) · [YZ uygulama güvenliği](yapay-zeka-uygulama-guvenligi.md) (modele giden veri)
 - Çalışan kod: [`uygulama/api/src/maintenance.ts`](../../uygulama/api/src/maintenance.ts) (saklama süreleri),
   [`uygulama/docs/API.md`](../../uygulama/docs/API.md) (dışa aktarma ve hesap silme)
+- Saklama ve silmenin sistem tasarımı: [Veri yaşam döngüsü](../40-sistem-tasarimi/veri-yasam-dongusu.md) ·
+  Yedeklerde kalan silinmiş veri: [Yedek ve fidye yazılımı](yedek-ve-fidye-yazilimi.md)

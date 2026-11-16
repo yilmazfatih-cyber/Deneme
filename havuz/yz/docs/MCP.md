@@ -19,6 +19,7 @@ paketten doğrulandı). Kurulum: `uv pip install --python .venv/bin/python -e ".
 | `dosya_listele`, `dosya_oku` | Klasörde salt-okunur gezinme (kök dışına çıkış, gizli dosya, ikili dosya reddedilir) | `--klasor` verilirse |
 
 Tehlikeli (dünyayı değiştiren) araçlar MCP'ye yayımlanmaz; onay kancası yalnız `yz` ajanında vardır.
+Yayımlanan her araç `readOnlyHint: true` ipucuyla işaretlenir (istemciler onaysız çalıştırabilsin).
 
 ## Çalıştırma
 
@@ -103,3 +104,9 @@ Komut satırından: `python -m yz sohbet --arac --mcp "http://127.0.0.1:8421/mcp
 
 Köprü, MCP araç adlarındaki izin verilmeyen karakterleri `_` yapar; zorunlu argümanları denetler,
 tip denetimini sunucuya bırakır. Sunucunun döndürdüğü hata (`is_error`) ajana gözlem olarak gider.
+
+**Onay:** `readOnlyHint: true` ipucu taşımayan her uzak araç **tehlikeli** sayılır: onay kancası
+(`AracKutusu(..., onay=...)`) yoksa çalışmaz, varsa önce sorulur (`sohbet --arac --mcp` konsoldan sorar).
+MCP'de ipucu yoksa varsayılan "yıkıcı olabilir"dir; köprü hepsini zararsız saysaydı bağlanan bir dosya
+sistemi sunucusunun silme aracı (ör. bir belgedeki istem enjeksiyonuyla) onaysız çalışırdı. İpucu
+sunucunun kendi beyanıdır: güvenmediğiniz bir MCP sunucusuna hiç bağlanmayın.

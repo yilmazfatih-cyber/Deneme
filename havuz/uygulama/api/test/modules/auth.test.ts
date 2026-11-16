@@ -1,5 +1,6 @@
 import { API_PATHS, authResponseSchema, meResponseSchema } from '@uygulama/shared'
 import { afterEach, describe, expect, it } from 'vitest'
+import { countUnclaimedAdminEmails } from '../../src/modules/auth/userRepo.ts'
 import { GOOD_PASSWORD, signUp, TestClient, uniqueEmail } from '../support/client.ts'
 import { createTestServer, type TestServer } from '../support/harness.ts'
 
@@ -85,6 +86,15 @@ describe('kayıt', () => {
     t = createTestServer({ env: { ADMIN_EMAILS: 'patron@ornek.com' } })
     const { user } = await signUp(t, { email: 'Patron@ornek.com' })
     expect(user.role).toBe('admin')
+  })
+
+  it('ADMIN_EMAILS riski: e-posta doğrulanmadığı için adresi İLK kaydeden yönetici olur; açılış uyarısı sayar', async () => {
+    t = createTestServer({ env: { ADMIN_EMAILS: 'patron@ornek.com,ikinci@ornek.com' } })
+    expect(countUnclaimedAdminEmails(t.db, t.config.adminEmails)).toBe(2) // sunucu açılışta uyarır
+    // Sahibi henüz kaydolmadıysa adresi bilen herkes kaydolup yönetici olur (bilinen sınır; GUVENLIK.md §5).
+    const { user } = await signUp(t, { email: 'ikinci@ornek.com' })
+    expect(user.role).toBe('admin')
+    expect(countUnclaimedAdminEmails(t.db, t.config.adminEmails)).toBe(1)
   })
 })
 

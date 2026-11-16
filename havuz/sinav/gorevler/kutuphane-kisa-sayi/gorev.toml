@@ -1,0 +1,22 @@
+kimlik = "kutuphane-kisa-sayi"
+baslik = "Büyük sayıları kısaltarak yazan işlev (iki dilde + vektör)"
+temel = "kutuphane"
+zorluk = "orta"
+tur = "ozellik"
+tahmini_sure_dk = 30
+aciklama = """AGENTS.md "Var olan modüle işlev ekle (iki dilde)" tarifi: TS + Python + ortak vektör. Tuzaklar: kayan \
+noktalı yuvarlama (toFixed/round 1,15'i 1,1 yapar), bir üst basamağa taşma (999.999 → "1 milyon"), ',0' yazmamak, \
+iki dilde aynı sonuç ve adların kurala göre eşleşmesi."""
+baslangic_denetimi = "yesil"
+
+[[gizli]]
+ad = "python"
+klasor = "py"
+komut = "python -m pytest tests/test_sinav_gizli_kisa_sayi.py -q -p no:cacheprovider"
+dosyalar = { "test_kisa_sayi.py" = "py/tests/test_sinav_gizli_kisa_sayi.py" }
+
+[[gizli]]
+ad = "typescript"
+klasor = "ts"
+komut = "npx vitest run test/sinav-gizli-kisa-sayi.test.ts"
+dosyalar = { "kisa_sayi.test.ts" = "ts/test/sinav-gizli-kisa-sayi.test.ts" }

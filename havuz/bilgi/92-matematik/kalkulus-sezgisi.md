@@ -26,15 +26,15 @@ guncellik: 2026-11
 
 ## Karar tablosu
 
-| Soru                                                        | Araç                                        | Dikkat                                                  |
-| ----------------------------------------------------------- | ------------------------------------------- | ------------------------------------------------------- |
-| "x biraz artarsa y ne kadar değişir?"                       | Türev (duyarlılık): `Δy ≈ f'(x)·Δx`         | Yalnız küçük değişimde doğru; büyükte eğrilik girer     |
-| "Hangi yöne gidersem en hızlı artar/azalır?"                | Gradyan                                     | Değişkenlerin ölçeği farklıysa yön yanıltır             |
-| "Türev formülüm / otomatik türevim doğru mu?"               | Merkezi farkla karşılaştır, `h ≈ 1e-5`      | Kırık noktalardan (`abs`, ReLU'da 0) uzak durun         |
-| "Formül yok, yalnız ölçümler var; değişim hızı?"            | Sayısal türev ya da eğri uydurup türevi     | Gürültüyü büyütür; önce düzleştirin                     |
-| "Toplam ne kadar birikti?"                                  | Yamuk kuralı (ölçüm verisinde)              | Ölçüm aralıkları eşit değilse her dilimi ayrı hesaplayın |
-| "Düzgün fonksiyonun integrali, az hesapla yüksek doğruluk" | Simpson                                     | Çift sayıda aralık ister                                |
-| Sonsuz aralık, tekillik, salınan fonksiyon                  | Kütüphanenin uyarlamalı integrali           | Elle yazmayın                                           |
+| Soru                                                       | Araç                                    | Dikkat                                                   |
+| ---------------------------------------------------------- | --------------------------------------- | -------------------------------------------------------- |
+| "x biraz artarsa y ne kadar değişir?"                      | Türev (duyarlılık): `Δy ≈ f'(x)·Δx`     | Yalnız küçük değişimde doğru; büyükte eğrilik girer      |
+| "Hangi yöne gidersem en hızlı artar/azalır?"               | Gradyan                                 | Değişkenlerin ölçeği farklıysa yön yanıltır              |
+| "Türev formülüm / otomatik türevim doğru mu?"              | Merkezi farkla karşılaştır, `h ≈ 1e-5`  | Kırık noktalardan (`abs`, ReLU'da 0) uzak durun          |
+| "Formül yok, yalnız ölçümler var; değişim hızı?"           | Sayısal türev ya da eğri uydurup türevi | Gürültüyü büyütür; önce düzleştirin                      |
+| "Toplam ne kadar birikti?"                                 | Yamuk kuralı (ölçüm verisinde)          | Ölçüm aralıkları eşit değilse her dilimi ayrı hesaplayın |
+| "Düzgün fonksiyonun integrali, az hesapla yüksek doğruluk" | Simpson                                 | Çift sayıda aralık ister                                 |
+| Sonsuz aralık, tekillik, salınan fonksiyon                 | Kütüphanenin uyarlamalı integrali       | Elle yazmayın                                            |
 
 ## Sonlu farkla türev: adım boyunu seçmek
 
@@ -198,17 +198,17 @@ kayıp fonksiyonlarında sık gerekir ([sayısal yöntemler](sayisal-yontemler.m
 
 ## Tuzaklar
 
-| Belirti                                                        | Neden                                                    | Çözüm                                                           |
-| -------------------------------------------------------------- | -------------------------------------------------------- | --------------------------------------------------------------- |
-| Sayısal türev çok küçük `h` ile saçmaladı                      | Yuvarlama hatası: iki yakın sayının farkı                | Merkezi fark, `h ≈ 1e-5·max(1, ∣x∣)`; `float64`                 |
-| Türev denetimi `float32`'de hep "hatalı" diyor                 | 7 haneli duyarlıkta sonlu fark gürültülü                 | Denetimi `float64`'te yapın                                     |
-| Türev denetimi tek bir noktada başarısız                       | Kırık nokta (ReLU'da 0, `abs`, `max`)                    | Denetim noktasını kırıktan uzak seçin                           |
-| Ölçüm verisinden türev çok gürültülü                           | Fark almak gürültüyü büyütür                             | Önce düzleştirin ya da eğri uydurup onun türevini alın          |
-| Duyarlılık tahmini büyük değişimde tutmadı                     | Türev yerel bir yaklaşımdır; eğrilik var                 | Büyük değişimi doğrudan hesaplayın; ikinci türeve bakın         |
-| Simpson tek sayıda aralıkla yanlış sonuç                       | Formül çift sayıda aralık varsayar                       | `n`'i çift yapın; işlev bunu denetlesin                          |
-| Kendi yazılan integral yavaşça yanlış                          | Formül hatası                                            | Adımı yarıya indirip hata oranını sınayın (4 ya da 16)           |
-| Bileşik büyüme/limit hesabı 1 ya da saçma çıktı                | `1 + çok küçük` yuvarlandı                               | `log1p`, `expm1`                                                |
-| Gradyan yönü "yanlış" gösteriyor                               | Değişkenlerin ölçeği farklı (TL ve yüzde)                | Değişkenleri ölçekleyin ya da birimleri gözden geçirin           |
+| Belirti                                         | Neden                                     | Çözüm                                                   |
+| ----------------------------------------------- | ----------------------------------------- | ------------------------------------------------------- |
+| Sayısal türev çok küçük `h` ile saçmaladı       | Yuvarlama hatası: iki yakın sayının farkı | Merkezi fark, `h ≈ 1e-5·max(1, ∣x∣)`; `float64`         |
+| Türev denetimi `float32`'de hep "hatalı" diyor  | 7 haneli duyarlıkta sonlu fark gürültülü  | Denetimi `float64`'te yapın                             |
+| Türev denetimi tek bir noktada başarısız        | Kırık nokta (ReLU'da 0, `abs`, `max`)     | Denetim noktasını kırıktan uzak seçin                   |
+| Ölçüm verisinden türev çok gürültülü            | Fark almak gürültüyü büyütür              | Önce düzleştirin ya da eğri uydurup onun türevini alın  |
+| Duyarlılık tahmini büyük değişimde tutmadı      | Türev yerel bir yaklaşımdır; eğrilik var  | Büyük değişimi doğrudan hesaplayın; ikinci türeve bakın |
+| Simpson tek sayıda aralıkla yanlış sonuç        | Formül çift sayıda aralık varsayar        | `n`'i çift yapın; işlev bunu denetlesin                 |
+| Kendi yazılan integral yavaşça yanlış           | Formül hatası                             | Adımı yarıya indirip hata oranını sınayın (4 ya da 16)  |
+| Bileşik büyüme/limit hesabı 1 ya da saçma çıktı | `1 + çok küçük` yuvarlandı                | `log1p`, `expm1`                                        |
+| Gradyan yönü "yanlış" gösteriyor                | Değişkenlerin ölçeği farklı (TL ve yüzde) | Değişkenleri ölçekleyin ya da birimleri gözden geçirin  |
 
 ## Denetim listesi
 

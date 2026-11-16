@@ -333,3 +333,5 @@ Gerçek projede başlığı kitaplığın "yalnız başlığı oku" işlevi okur
 - Çalışan kod: statik dosya sunumunda yol geçişi ve gizli dosya reddi
   [`uygulama/api/src/http/static.ts`](../../uygulama/api/src/http/static.ts); kök dışına çıkmayan ve gizli dosya
   okumayan araç [`yz/yz/arac/hazir/dosya.py`](../../yz/yz/arac/hazir/dosya.py)
+- Örnek tasarım: [Dosya paylaşımı](../40-sistem-tasarimi/ornek-dosya-paylasimi.md) · CSV içe/dışa aktarım ve
+  formül kaçışı: [İçe ve dışa aktarım](../30-arkauc/ice-ve-disa-aktarim.md)

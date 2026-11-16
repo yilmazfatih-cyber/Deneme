@@ -272,3 +272,4 @@ Kendi küçük yardımcılarınızı ya da havuzdaki kütüphaneyi kullanın:
 - Çalışan gerçekleme: [kutuphane/py/kutuphane/tarih.py](../../kutuphane/py/kutuphane/tarih.py) ve TypeScript eşi
   [kutuphane/ts/src/tarih.ts](../../kutuphane/ts/src/tarih.ts); resmî tatil verisi
   [veri/tr/resmi_tatiller.csv](../../veri/tr/resmi_tatiller.csv).
+- Diğer kümelerden: [Zaman ve saat dilimi](../30-arkauc/zaman-ve-saat-dilimi.md), [Uluslararasılaştırma](../20-web-onyuz/uluslararasilastirma.md), [Formlar](../20-web-onyuz/formlar.md).

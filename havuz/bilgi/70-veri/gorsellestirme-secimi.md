@@ -218,3 +218,4 @@ satırı ayrık; vurgulanacak tek satır vurgulu.
 - [Ürün ölçütleri](urun-olcutleri.md) — grafikteki ölçütün tanımı
 - WCAG kontrastı, okunur metin rengi seçimi, rengi istenen kontrasta ayarlama:
   [`kutuphane/ts/src/renk.ts`](../../kutuphane/ts/src/renk.ts)
+- [Erişilebilirlik uygulaması](../20-web-onyuz/erisilebilirlik-uygulama.md) — ekran okuyucu, kontrast, odak

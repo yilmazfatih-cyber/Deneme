@@ -138,7 +138,7 @@ biçimi için: [gereksinim yazma](gereksinim-yazma.md).
 
 | Katman                    | Ne yakalar                                                            | Nasıl                                                                   |
 | ------------------------- | --------------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| Otomatik tarama (axe)     | Eksik alt metin, adsız düğme, düşük karşıtlık, geçersiz ARIA          | Uçtan uca testte; havuzdaki `site` ve `uygulama` temellerinde hazır      |
+| Otomatik tarama (axe)     | Eksik alt metin, adsız düğme, düşük karşıtlık, geçersiz ARIA          | Uçtan uca testte ([ön yüz testi](../20-web-onyuz/onyuz-testi.md)); `site` ve `uygulama` temellerinde hazır |
 | Kural testi               | Ürünün kendi alt sınırları (dokunma, karşıtlık çiftleri)               | Örnek: [`contrast.test.ts`](../../uygulama/web/test/rules/contrast.test.ts) |
 | Elle denetim              | Odak sırası, anlamsız alt metin, klavye tuzağı, yakınlaştırmada taşma | Yalnız klavye; 200 % yakınlaştırma; sistem yazı boyutu en büyük          |
 | Ekran okuyucu             | Okunuş sırası, adlar, canlı bildirimler                               | Telefonda TalkBack ya da VoiceOver ile ana akış                          |

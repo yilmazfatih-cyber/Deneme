@@ -177,6 +177,10 @@ class Arac:
         kwargs, hata_iletisi = self.hazirla(argumanlar)
         if kwargs is None:
             return AracSonucu(hata_iletisi, hata=True)
+        return self.yurut(kwargs)
+
+    def yurut(self, kwargs: dict[str, Any]) -> AracSonucu:
+        """`hazirla`dan geçmiş argümanlarla OLDUĞU GİBİ çalıştırır (onaylanan = çalışan; arac/kutu.py)."""
         sonuc: list[Any] = []
         hatalar: list[BaseException] = []
 

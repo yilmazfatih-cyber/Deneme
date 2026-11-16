@@ -109,7 +109,12 @@ function assemble(image: RgbaImage, idat: Uint8Array): Uint8Array {
   view.setUint32(0, image.width)
   view.setUint32(4, image.height)
   header.set([8, 6, 0, 0, 0], 8)
-  const parts = [new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10]), chunk('IHDR', header), chunk('IDAT', idat), chunk('IEND', new Uint8Array())]
+  const parts = [
+    new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10]),
+    chunk('IHDR', header),
+    chunk('IDAT', idat),
+    chunk('IEND', new Uint8Array()),
+  ]
   const out = new Uint8Array(parts.reduce((n, p) => n + p.length, 0))
   let o = 0
   for (const part of parts) {

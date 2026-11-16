@@ -3,7 +3,8 @@
 `cagir(cagri)` modelin araç çağrısını güvenle yürütür ve her durumda bir gözlem metni döndürür:
     bilinmeyen araç    → "böyle bir araç yok; kullanılabilenler: …"
     izin verilmeyen    → izin listesinin açıklaması
-    tehlikeli araç     → onay kancası sorulur; kanca yoksa VARSAYILAN RET (güvenli taraf)
+    tehlikeli araç     → onay kancası sorulur; kanca yoksa VARSAYILAN RET (güvenli taraf). Kanca,
+                         doğrulanmış argümanları görür; araç TAM OLARAK onaylanan argümanlarla çalışır
     hatalı argüman     → Arac.calistir'in hata iletisi (model düzeltsin diye)
 Kim kullanır: ajan/dongu.py, sunucu (araçlı sohbet), mcp/kopru.py.
 Genişletme: araç eklemek için `AracKutusu([...])` listesine ekleyin; ince izin kuralı için
@@ -72,16 +73,23 @@ class AracKutusu:
             )
         if not self.izin.izinli_mi(arac.ad):
             return AracSonucu(f"Hata: {self.izin.neden(arac.ad)}", hata=True)
-        if arac.tehlikeli:
-            if self.onay is None:
-                return AracSonucu(
-                    f"Hata: `{arac.ad}` onay gerektiren bir araç ve onay verilmedi. "
-                    "Bu araç olmadan devam et.",
-                    hata=True,
-                )
-            if not self.onay(arac, cagri.argumanlar):
-                return AracSonucu(
-                    f"Kullanıcı `{arac.ad}` aracının çalışmasını onaylamadı. Başka bir yol öner.",
-                    hata=True,
-                )
-        return arac.calistir(cagri.argumanlar)
+        if not arac.tehlikeli:
+            return arac.calistir(cagri.argumanlar)
+        if self.onay is None:
+            return AracSonucu(
+                f"Hata: `{arac.ad}` onay gerektiren bir araç ve onay verilmedi. "
+                "Bu araç olmadan devam et.",
+                hata=True,
+            )
+        # Kanca, aracın GERÇEKTEN çalışacağı (doğrulanmış, düzeltilmiş) argümanları görür ve araç tam
+        # olarak onlarla çalışır. Ham argümanı onaylatıp düzeltilmişi çalıştırmak, "Yol"/"yol" gibi
+        # anahtar oyunlarıyla onaylanmamış bir değerin çalışmasına yol açardı.
+        kwargs, hata_iletisi = arac.hazirla(cagri.argumanlar)
+        if kwargs is None:
+            return AracSonucu(hata_iletisi, hata=True)
+        if not self.onay(arac, kwargs):
+            return AracSonucu(
+                f"Kullanıcı `{arac.ad}` aracının çalışmasını onaylamadı. Başka bir yol öner.",
+                hata=True,
+            )
+        return arac.yurut(kwargs)

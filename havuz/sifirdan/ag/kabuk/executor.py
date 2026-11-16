@@ -1,12 +1,15 @@
-"""Yürütücü: AST'yi çalıştırır — boru hatları, yönlendirmeler, && || ;, arka plan işleri, yerleşikler.
+"""Yürütücü: AST'yi çalıştırır — boru hatları, yönlendirmeler, && || ;, arka plan işleri,
+yerleşikler.
 
     kabuk = Shell(cwd="/tmp/deneme")
     kabuk.run("printf 'b\\na\\n' | sort > sirali.txt && echo tamam")   → çıkış kodu
-Boru hattı: her komut `subprocess.Popen` ile, bir öncekinin stdout'u sonrakinin stdin'i olacak şekilde
-başlatılır; ebeveyn kendi kopyalarını kapatır (yoksa okuyan taraf hiç EOF görmez ve takılır).
-Çıkış kodları: komut yoksa 127, çalıştırılamıyorsa 126, sinyalle öldüyse 128+sinyal; boru hattının kodu
-son komutun kodudur. Güvenlik: komutlar her zaman argüman LİSTESİ olarak çalışır (`shell=True` yok); açılmış
-değerler yeniden yorumlanmaz (değişkene konmuş "; rm -rf /" yalnız bir metindir).
+Boru hattı: her komut `subprocess.Popen` ile, bir öncekinin stdout'u sonrakinin stdin'i olacak
+şekilde başlatılır; ebeveyn kendi kopyalarını kapatır (yoksa okuyan taraf hiç EOF görmez ve
+takılır).
+Çıkış kodları: komut yoksa 127, çalıştırılamıyorsa 126, sinyalle öldüyse 128+sinyal; boru hattının
+kodu
+son komutun kodudur. Güvenlik: komutlar her zaman argüman LİSTESİ olarak çalışır (`shell=True` yok);
+açılmış değerler yeniden yorumlanmaz (değişkene konmuş "; rm -rf /" yalnız bir metindir).
 Genişletme: yeni bir yerleşik için `_builtin_<ad>` yöntemi yazın ve `BUILTINS`'e adını ekleyin.
 """
 
@@ -18,15 +21,15 @@ import subprocess
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import IO, Any
 
 from kabuk.expand import expand_word
 from kabuk.lexer import ParseError
 from kabuk.parser import AndOr, Command, Pipeline, Redirect, parse
 
 BUILTINS = ("cd", "pwd", "export", "unset", "exit", "jobs", "wait")
-_FLAGS = {">": os.O_WRONLY | os.O_CREAT | os.O_TRUNC, "&>": os.O_WRONLY | os.O_CREAT | os.O_TRUNC}
-_FLAGS |= {">>": os.O_WRONLY | os.O_CREAT | os.O_APPEND, "2>": _FLAGS[">"], "2>>": os.O_WRONLY | os.O_CREAT | os.O_APPEND}
+_TRUNCATE = os.O_WRONLY | os.O_CREAT | os.O_TRUNC
+_APPEND = os.O_WRONLY | os.O_CREAT | os.O_APPEND
+_FLAGS = {">": _TRUNCATE, "&>": _TRUNCATE, "2>": _TRUNCATE, ">>": _APPEND, "2>>": _APPEND}
 
 
 @dataclass
@@ -45,7 +48,9 @@ def _exit_code(returncode: int) -> int:
 
 
 class Shell:
-    def __init__(self, cwd: str | os.PathLike[str] | None = None, env: dict[str, str] | None = None) -> None:
+    def __init__(
+        self, cwd: str | os.PathLike[str] | None = None, env: dict[str, str] | None = None
+    ) -> None:
         self.cwd = Path(cwd or os.getcwd()).resolve()
         self.env = dict(os.environ if env is None else env)  # dışa aktarılmış değişkenler
         self.vars: dict[str, str] = {}  # yalnız kabukta kalan değişkenler
@@ -90,24 +95,31 @@ class Shell:
 
     def _expand(self, command: Command) -> tuple[list[str], dict[str, str]]:
         argv = [arg for word in command.words for arg in expand_word(word, self.lookup, self.cwd)]
-        assigned = {name: "".join(expand_word(word, self.lookup, self.cwd)) for name, word in command.assignments}
+        assigned = {
+            name: "".join(expand_word(word, self.lookup, self.cwd))
+            for name, word in command.assignments
+        }
         return argv, assigned
 
-    def _open_redirects(self, command: Command) -> dict[int, int]:
-        """Yönlendirmeleri açar → {hedef fd: açık fd}. "2>&1" stderr'i stdout'un hedefine bağlar."""
+    def _open_redirects(self, command: Command, stdout: int | None) -> dict[int, int]:
+        """Yönlendirmeleri açar → {hedef fd: açık fd}. "2>&1" stderr'i stdout'un O ANKİ hedefine
+        bağlar (boru hattındaysa borunun yazma ucuna).
+        """
         opened: dict[int, int] = {}
         try:
             for redirect in command.redirects:
-                self._apply_redirect(redirect, opened)
+                self._apply_redirect(redirect, opened, stdout)
         except OSError:
             for fd in set(opened.values()):
                 os.close(fd)
             raise
         return opened
 
-    def _apply_redirect(self, redirect: Redirect, opened: dict[int, int]) -> None:
+    def _apply_redirect(
+        self, redirect: Redirect, opened: dict[int, int], stdout: int | None
+    ) -> None:
         if redirect.op == "2>&1":
-            opened[2] = os.dup(opened[1]) if 1 in opened else 1
+            opened[2] = os.dup(opened.get(1, stdout if stdout is not None else 1))
             return
         assert redirect.target is not None
         names = expand_word(redirect.target, self.lookup, self.cwd)
@@ -130,7 +142,9 @@ class Shell:
             last = index == len(pipeline.commands) - 1
             read_end, write_end = (None, None) if last else os.pipe()
             try:
-                status, process = self._spawn(command, previous, write_end, alone=len(pipeline.commands) == 1)
+                status, process = self._spawn(
+                    command, previous, write_end, alone=len(pipeline.commands) == 1
+                )
             finally:
                 for fd in (previous, write_end):
                     if fd is not None:
@@ -151,7 +165,7 @@ class Shell:
         """Tek komutu başlatır → (çıkış kodu ya da -1 "sürecin bitmesini bekle", süreç)."""
         try:
             argv, assigned = self._expand(command)
-            opened = self._open_redirects(command)
+            opened = self._open_redirects(command, stdout)
         except OSError as exc:
             self.write(2, f"kabuk: {exc}\n")
             return 1, None
@@ -173,7 +187,6 @@ class Shell:
                     stdin=opened.get(0, stdin),
                     stdout=opened.get(1, stdout),
                     stderr=opened.get(2),
-                    start_new_session=False,
                 )
             except FileNotFoundError:
                 self.write(opened.get(2, 2), f"kabuk: komut bulunamadı: {argv[0]}\n")
@@ -246,7 +259,9 @@ class Shell:
         number = max(self.jobs, default=0) + 1
         job = Job(number, text.strip().rstrip("&").strip())
         if body.rest:
-            self.write(2, "kabuk: arka planda && / || zinciri desteklenmiyor; yalnız ilk boru çalıştı.\n")
+            self.write(
+                2, "kabuk: arka planda && / || zinciri desteklenmiyor; yalnız ilk boru çalıştı.\n"
+            )
         self._run_pipeline(body.first, job)
         self.jobs[number] = job
         pid = job.processes[-1].pid if job.processes else 0
@@ -263,7 +278,7 @@ class Shell:
         self.jobs.clear()
 
 
-def run_lines(lines: list[str], shell: Shell, stdin: IO[Any] | None = None) -> int:
+def run_lines(lines: list[str], shell: Shell) -> int:
     """Betik dosyası satırlarını sırayla çalıştırır; `exit` gelince durur."""
     for line in lines:
         shell.run(line)

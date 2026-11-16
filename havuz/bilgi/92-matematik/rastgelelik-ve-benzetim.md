@@ -26,20 +26,21 @@ guncellik: 2026-11
 
 ## Karar tablosu
 
-| İş                                                   | Kullanın                                              | Kullanmayın                                       |
-| ---------------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------- |
-| Benzetim, test verisi, örnekleme (yeniden üretilebilir) | `random.Random(tohum)` örneği                      | Küresel `random.seed` + modül işlevleri           |
-| Parola, belirteç, oturum kimliği, doğrulama kodu      | `secrets.token_urlsafe`, `secrets.randbelow`          | `random`, `time` ile tohumlanmış her şey          |
-| Listeyi karıştırmak                                  | `rng.shuffle` (Fisher–Yates)                          | Kendi "her öğeyi rastgele yerle değiştir" döngünüz |
-| `0..n−1` arası tam sayı                              | `rng.randrange(n)`, `secrets.randbelow(n)`            | `rastgele_bayt % n` (mod sapması)                 |
-| Ağırlıklı seçim                                      | `rng.choices(..., weights=...)`                       | Elle yazılmış eşik zinciri                        |
-| Boyu bilinmeyen akıştan k örnek                      | Rezervuar örneklemesi                                 | Hepsini belleğe alıp sonra seçmek                 |
-| Düşük boyutlu düzgün integral                        | Sayısal integral ([kalkülüs](kalkulus-sezgisi.md))    | Monte Carlo (çok yavaş yakınsar)                  |
-| Yüksek boyut, karmaşık sistem, kuyruk/olasılık sorusu | Monte Carlo + hata payı                              | Hata payısız tek sayı                             |
+| İş                                                      | Kullanın                                           | Kullanmayın                                        |
+| ------------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- |
+| Benzetim, test verisi, örnekleme (yeniden üretilebilir) | `random.Random(tohum)` örneği                      | Küresel `random.seed` + modül işlevleri            |
+| Parola, belirteç, oturum kimliği, doğrulama kodu        | `secrets.token_urlsafe`, `secrets.randbelow`       | `random`, `time` ile tohumlanmış her şey           |
+| Listeyi karıştırmak                                     | `rng.shuffle` (Fisher–Yates)                       | Kendi "her öğeyi rastgele yerle değiştir" döngünüz |
+| `0..n−1` arası tam sayı                                 | `rng.randrange(n)`, `secrets.randbelow(n)`         | `rastgele_bayt % n` (mod sapması)                  |
+| Ağırlıklı seçim                                         | `rng.choices(..., weights=...)`                    | Elle yazılmış eşik zinciri                         |
+| Boyu bilinmeyen akıştan k örnek                         | Rezervuar örneklemesi                              | Hepsini belleğe alıp sonra seçmek                  |
+| Düşük boyutlu düzgün integral                           | Sayısal integral ([kalkülüs](kalkulus-sezgisi.md)) | Monte Carlo (çok yavaş yakınsar)                   |
+| Yüksek boyut, karmaşık sistem, kuyruk/olasılık sorusu   | Monte Carlo + hata payı                            | Hata payısız tek sayı                              |
 
 ## Tohum ve yeniden üretilebilirlik
 
 ```python calistir
+import os
 import random
 import subprocess
 import sys
@@ -55,7 +56,9 @@ assert [a.random() for _ in range(3)] != [b.random() for _ in range(3)]
 # Kümelerin sırası süreçten sürece değişir (metin karmaları rastgele tohumlanır)
 code = "print(list({'elma', 'armut', 'kiraz', 'muz', 'incir'}))"
 orders = {
-    subprocess.run([sys.executable, "-c", code], env={"PYTHONHASHSEED": seed}, capture_output=True, text=True).stdout
+    subprocess.run(
+        [sys.executable, "-c", code], env={**os.environ, "PYTHONHASHSEED": seed}, capture_output=True, text=True
+    ).stdout
     for seed in ("1", "2", "3")
 }
 assert len(orders) > 1  # aynı kod, farklı sıra → rng.choice(list(küme)) tohumla bile değişir
@@ -222,16 +225,16 @@ ister (6 hane = 1 milyon olasılık).
 
 ## Tuzaklar
 
-| Belirti                                                       | Neden                                                         | Çözüm                                                          |
-| ------------------------------------------------------------- | ------------------------------------------------------------- | -------------------------------------------------------------- |
-| Aynı tohumla farklı sonuç                                     | Küresel üreteci başka kod da kullanıyor; küme sırası; sürüm   | Kendi `Random(tohum)` örneği; kümeyi sıralayın                 |
-| Python sürümü yükselince testler kırıldı                      | `shuffle`/`choice` algoritması değişebilir                    | Ham çıktıyı değil özelliği sınayın                             |
-| Paralel işçilerin hepsi aynı "rastgele" sonucu üretiyor       | Süreçler aynı durumu kopyaladı (fork) ya da aynı tohum        | İşçi başına farklı tohum; `SeedSequence.spawn`                 |
-| Çekilişte bazı kişiler daha sık çıkıyor                       | Elle karıştırma ya da `% n` sapması                           | `shuffle`, `randrange`, `secrets.randbelow`                    |
-| Sıfırlama kodu/belirteç tahmin edildi                         | `random` ya da zaman tohumu                                   | `secrets`; deneme sınırı                                       |
-| `math.log(0)` hatası seyrek olarak çıkıyor                    | `random()` 0 döndürebilir                                     | `1 − random()` kullanın                                        |
-| Benzetim sonucu her çalıştırmada farklı, hangisi doğru belli değil | Hata payı hesaplanmamış                                  | `± 1,96·σ/√N` raporlayın; N'i hedef hataya göre seçin          |
-| Monte Carlo ile 1 boyutlu integral çok yavaş                  | `1/√N` yakınsama                                              | Yamuk/Simpson                                                  |
+| Belirti                                                            | Neden                                                       | Çözüm                                                 |
+| ------------------------------------------------------------------ | ----------------------------------------------------------- | ----------------------------------------------------- |
+| Aynı tohumla farklı sonuç                                          | Küresel üreteci başka kod da kullanıyor; küme sırası; sürüm | Kendi `Random(tohum)` örneği; kümeyi sıralayın        |
+| Python sürümü yükselince testler kırıldı                           | `shuffle`/`choice` algoritması değişebilir                  | Ham çıktıyı değil özelliği sınayın                    |
+| Paralel işçilerin hepsi aynı "rastgele" sonucu üretiyor            | Süreçler aynı durumu kopyaladı (fork) ya da aynı tohum      | İşçi başına farklı tohum; `SeedSequence.spawn`        |
+| Çekilişte bazı kişiler daha sık çıkıyor                            | Elle karıştırma ya da `% n` sapması                         | `shuffle`, `randrange`, `secrets.randbelow`           |
+| Sıfırlama kodu/belirteç tahmin edildi                              | `random` ya da zaman tohumu                                 | `secrets`; deneme sınırı                              |
+| `math.log(0)` hatası seyrek olarak çıkıyor                         | `random()` 0 döndürebilir                                   | `1 − random()` kullanın                               |
+| Benzetim sonucu her çalıştırmada farklı, hangisi doğru belli değil | Hata payı hesaplanmamış                                     | `± 1,96·σ/√N` raporlayın; N'i hedef hataya göre seçin |
+| Monte Carlo ile 1 boyutlu integral çok yavaş                       | `1/√N` yakınsama                                            | Yamuk/Simpson                                         |
 
 ## Denetim listesi
 

@@ -357,3 +357,5 @@ kod gibi **düşük entropili** değerde bu geçerli değildir; onlarda yavaş �
   `burn`), testleri [`password.test.ts`](../../uygulama/api/test/password.test.ts) ve
   [`security.test.ts`](../../uygulama/api/test/security.test.ts) → "hesap varlığı sızıntısı", "hız sınırı"
 - PBKDF2 ve TOTP'nin içi: [`sifirdan/ag/kripto_egitim/README.md`](../../sifirdan/ag/kripto_egitim/README.md)
+- Hız sınırı kalıpları: [Hız sınırı ve kötüye kullanım](../30-arkauc/hiz-siniri-ve-kotuye-kullanim.md) · Kimlik
+  mimarisi: [Kimlik ve yetki mimarisi](../40-sistem-tasarimi/kimlik-ve-yetki-mimarisi.md)

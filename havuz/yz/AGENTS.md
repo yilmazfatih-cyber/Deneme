@@ -46,6 +46,7 @@ Hepsi bu klasörden (`havuz/yz`) çalışır.
 | Kişisel veri maskeleme, süzgeçler | `yz/guvenlik/maske.py`, `dogrulama.py`, `suzgec.py` |
 | MCP sunucusu / köprüsü | `yz/mcp/sunucu.py`, `yz/mcp/kopru.py` |
 | Sunucu uçları | `yz/sunucu/uygulama.py`, `sohbet_ucu.py`, `vekil.py` |
+| Sunucu ön denetimi (anahtar, yerel kip ad/köken, gövde sınırı) | `yz/sunucu/kapi.py` |
 | Arayüz ve metinleri | `yz/web/index.html`, `yz/web/sozluk.json` |
 | Komut satırı | `yz/cli.py` (ayrıştırıcı), `yz/komutlar.py` (gövdeler) |
 | Türkçe harf/kök/cümle işlemleri | `yz/metin.py` |
@@ -63,7 +64,7 @@ Hepsi bu klasörden (`havuz/yz`) çalışır.
 9. Kodda model adı, fiyat, adres yok; hepsi `yz.yaml`'da. Sırlar dosyaya yazılmaz, yalnız ortam değişkeni ADI — `test_ornek_ayar_dosyalari_sir_icermez`.
 10. Günlüğe kişisel veri/sır yazılmaz (maskeli) — `tests/test_saglayici_ortak.py::test_gunluk_kisisel_veri_ve_sir_yazmaz`.
 11. Dış girdi (model çıktısı dahil) güvenilmezdir: şemayla doğrulanır; araç hataları istisna değil gözlem olur — `tests/test_arac.py`, `tests/test_ajan.py`.
-12. Tehlikeli araç onaysız çalışmaz (varsayılan ret) — `tests/test_arac.py::test_kutu_bilinmeyen_izinsiz_ve_onay`.
+12. Tehlikeli araç onaysız çalışmaz (varsayılan ret); kanca aracın ÇALIŞACAĞI doğrulanmış argümanı görür ve araç tam onunla çalışır; MCP köprüsü `readOnlyHint` demeyen uzak aracı tehlikeli sayar — `tests/test_arac.py::test_kutu_bilinmeyen_izinsiz_ve_onay`, `test_onay_kancasi_calisacak_argumanlari_gorur`, `tests/test_mcp.py::test_kopru_salt_okunur_demeyen_uzak_araci_tehlikeli_sayar`.
 13. Testler ağsız; canlı testler `YZ_CANLI=1`, tarayıcı testleri `YZ_E2E=1` olmadan atlanır.
 14. Örnek görev kümeleri 10–20 örnek ve biçim örneğidir; eğitim verisi yazılmaz — `tests/test_degerlendirme.py::test_ornek_gorev_kumeleri_gecerli`.
 
@@ -129,6 +130,7 @@ Ayrıntı: `docs/MCP.md`. Kısaca stdio: komut `<bu klasör>/.venv/bin/python`, 
 | Çıkarım "tarih YYYY-AA-GG" hatasında takılıyor | Model tarihi farklı biçimde yazıyor | `sema_araclari.tarih_iso` zaten çevirir; yeni biçimse oraya ekleyin + test |
 | `404 ... python -m yz modeller` | Model adı yanlış | `python -m yz modeller` çıktısındaki adı yz.yaml'a yazın |
 | Arayüz 401 veriyor | `YZ_SUNUCU_ANAHTARI` tanımlı | Arayüzde anahtarı girin ya da başlıkta `Authorization: Bearer <anahtar>` |
+| Sunucu 403 "yerel kipte çalışıyor" | Anahtarsız sunucuya `127.0.0.1`/`localhost` dışında bir adla (ağ IP'si, alan adı) erişildi | `http://127.0.0.1:8420` kullanın ya da `YZ_SUNUCU_ANAHTARI` verin (DNS yeniden bağlama koruması; `yz/sunucu/kapi.py`) |
 | `mypy`: "Returning Any" | `sohbet(**sozluk)` dönüşü `Any` | Değişkene tip verin: `yanit: Yanit = saglayici.sohbet(...)` |
 | RAG "belgede yok" diyor ama bilgi var | İlgililik eşiği/sözcük uyumsuzluğu | `sor --kip bm25` ve `--getirme-olc` ile ölçün; `RagHatti(asgari_benzerlik=...)` ya da `--gomme saglayici` |
 

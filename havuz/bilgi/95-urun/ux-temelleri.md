@@ -206,6 +206,7 @@ Dokunuş: bağlantı 1 + hizmet 1 + saat 1 + onay 1 = 4 (ad ve telefon yazmak ha
 - [Kullanılabilirlik testi](kullanilabilirlik-testi.md): sezgiyi kullanıcıyla sınamak.
 - [Gereksinim yazma](gereksinim-yazma.md): boş, hata ve uç durumları ölçüte çevirmek.
 - Uygulama ayrıntıları: [formlar](../20-web-onyuz/formlar.md) (doğrulama zamanı, çift gönderim, hata gösterimi),
-  [erişilebilirlik uygulaması](../20-web-onyuz/erisilebilirlik-uygulama.md) (odak, klavye, erişilebilir ad).
-  Arayüz dili ve hata iletisi yazımı: `97-turkce` kümesi.
+  [erişilebilirlik uygulaması](../20-web-onyuz/erisilebilirlik-uygulama.md) (odak, klavye, erişilebilir ad),
+  [hata ve boş durumlar](../20-web-onyuz/hata-ve-bos-durumlar.md) (hata türlerinin ayrı gösterimi, boş durum türleri).
+- [Arayüz dili](../97-turkce/arayuz-dili.md): düğme metni, hata iletisi, boş durum ve onay metninin Türkçesi.
 - Hazır bileşenler (boş durum, onay penceresi, eylemli bildirim): [`uygulama`](../../uygulama/).

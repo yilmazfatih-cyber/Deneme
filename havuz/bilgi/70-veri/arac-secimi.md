@@ -188,4 +188,7 @@ pandas 3.1.1 ile denendi (Kasım 2026):
 - DuckDB ile dosyadan okuyan, çıktısı sınanmış 15 sorgu (Excel-TR CSV ve JSONL dahil):
   [`veri/docs/ANALIZ_TARIFLERI.md`](../../veri/docs/ANALIZ_TARIFLERI.md)
 - CSV, Excel-TR CSV, JSONL, JSON ve Parquet okuma/yazma: [`veri/verihavuzu/files.py`](../../veri/verihavuzu/files.py)
-- Bağımsız Excel-TR CSV okuyucu/yazıcı (formül koruması dahil): [`kutuphane/py/kutuphane/csv.py`](../../kutuphane/py/kutuphane/csv.py)
+- Bağımsız Excel-TR CSV okuyucu/yazıcı (formül koruması dahil):
+  [`kutuphane/py/kutuphane/csv.py`](../../kutuphane/py/kutuphane/csv.py)
+- [Veri biçimleri](../10-diller/veri-bicimleri.md) — JSON, YAML, CSV ayrıntıları
+- [SQL sorgu yazımı](../10-diller/sql-sorgu.md) — SQLite örnekleriyle sorgu temelleri

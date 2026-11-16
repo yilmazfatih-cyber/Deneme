@@ -245,3 +245,4 @@ signatures`; çıktısını sürümünüzde deneyin).
 - Yayın öncesi `npm audit`: [`uygulama/docs/GUVENLIK.md`](../../uygulama/docs/GUVENLIK.md) §3 ·
   [Yayın öncesi denetim](yayin-oncesi-guvenlik-denetimi.md)
 - CI'daki sırlar: [Sır yönetimi](sir-yonetimi.md) · Görüntü kitaplıklarının güncelliği: [Dosya yükleme](dosya-yukleme-guvenligi.md)
+- [Modül ve bağımlılık](../10-diller/modul-ve-bagimlilik.md) · CI hattı: [CI/CD](../60-devops/ci-cd.md)

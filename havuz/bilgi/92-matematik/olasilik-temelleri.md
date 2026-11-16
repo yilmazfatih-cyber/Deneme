@@ -28,15 +28,15 @@ guncellik: 2026-11
 
 ## Karar tablosu
 
-| Soru                                                | Hesap                                              | Dikkat                                                  |
-| --------------------------------------------------- | -------------------------------------------------- | ------------------------------------------------------- |
-| "İkisi birden olur mu?"                             | `P(A ve B) = P(A) · P(B∣A)`; bağımsızsa `P(A)·P(B)` | Bağımsız demeden önce ortak neden arayın                |
-| "En az bir kez olur mu?"                            | `1 − (1 − p)^n`                                    | `n · p` toplamak yanlış; 1'i bile aşar                  |
-| "Biri ya da öteki"                                  | `P(A) + P(B) − P(A ve B)`                          | Kesişimi çıkarmayı unutmayın                            |
-| "Belirti görüldü; neden ne olasılıkla?"             | Bayes                                              | Taban oranı (sıklık) olmadan hesap yapılamaz            |
-| "Uzun vadede ortalama ne kazandırır/kaybettirir?"   | Beklenen değer `Σ x · P(x)`                        | Tek seferde kayıp ödenemiyorsa varyansa bakın           |
-| "Ne kadar oynak?"                                   | Varyans, standart sapma                            | Bağımsız değillerse varyanslar toplanmaz                |
-| "Ortalaması alınan sonuç güvenilir mi?"             | Büyük sayılar yasası; hata ≈ σ/√n                  | Hatayı yarıya indirmek dört kat veri ister              |
+| Soru                                              | Hesap                                               | Dikkat                                        |
+| ------------------------------------------------- | --------------------------------------------------- | --------------------------------------------- |
+| "İkisi birden olur mu?"                           | `P(A ve B) = P(A) · P(B∣A)`; bağımsızsa `P(A)·P(B)` | Bağımsız demeden önce ortak neden arayın      |
+| "En az bir kez olur mu?"                          | `1 − (1 − p)^n`                                     | `n · p` toplamak yanlış; 1'i bile aşar        |
+| "Biri ya da öteki"                                | `P(A) + P(B) − P(A ve B)`                           | Kesişimi çıkarmayı unutmayın                  |
+| "Belirti görüldü; neden ne olasılıkla?"           | Bayes                                               | Taban oranı (sıklık) olmadan hesap yapılamaz  |
+| "Uzun vadede ortalama ne kazandırır/kaybettirir?" | Beklenen değer `Σ x · P(x)`                         | Tek seferde kayıp ödenemiyorsa varyansa bakın |
+| "Ne kadar oynak?"                                 | Varyans, standart sapma                             | Bağımsız değillerse varyanslar toplanmaz      |
+| "Ortalaması alınan sonuç güvenilir mi?"           | Büyük sayılar yasası; hata ≈ σ/√n                   | Hatayı yarıya indirmek dört kat veri ister    |
 
 ## Örneklem uzayını sayın
 
@@ -225,17 +225,17 @@ isterseniz 10 000 örnek gerekir. Örnek sayısını bu hesapla seçin ([rastgel
 
 ## Tuzaklar
 
-| Belirti                                                       | Neden                                                     | Çözüm                                                           |
-| ------------------------------------------------------------- | --------------------------------------------------------- | --------------------------------------------------------------- |
-| "Test %90 doğru, pozitif çıktı, demek %90 hasta" denmiş       | Taban oranı yok sayılmış; `P(E∣H)` ile `P(H∣E)` karışmış  | Bayes; "10 000 kişi" tablosunu kurun                            |
-| Alarm sisteminin uyarılarının çoğu boş çıkıyor                | Olay nadir; yanlış pozitif oranı küçük görünse de baskın  | Pozitif öngörü değerini (PPV) hesaplayın; eşiği ona göre seçin  |
-| "En az bir kez" olasılığı %100'ü aştı                         | `n · p` toplanmış                                         | `1 − (1 − p)^n`                                                 |
-| Yedekli sistem hesaptan çok daha sık birlikte çöküyor         | Ortak neden; bağımsızlık varsayımı                        | Ortak nedenleri ayrı olay olarak modelleyin                     |
-| "Beş kez kaybettim, sıradaki kesin kazanır" mantığıyla kod    | Kumarbaz yanılgısı; bağımsız denemeler belleksiz          | Geçmiş sonuçları olasılık hesabına katmayın                     |
-| Günlük oranların ortalaması toplam orandan çok farklı         | Ağırlıksız ortalama; küçük günler büyük günle eşit sayıldı | Toplam pay / toplam payda; ya da hacimle ağırlıklandırın       |
-| Ortalama hız, ortalama gecikme hesabı tutmuyor                | `E[f(X)] ≠ f(E[X])`                                       | Önce toplamları (yol, süre) hesaplayın, sonra bölün             |
-| Beklenen değeri pozitif plan felakete yol açtı                | Varyans ve tek seferlik büyük kayıp gözden kaçtı          | Beklenen değerin yanında en kötü durum ve standart sapma        |
-| Benzetim sonucu her çalıştırmada başka                        | Örnek sayısı az; hata ≈ σ/√n                              | Hata payını raporlayın; gerekirse örneği 4 kat artırın          |
+| Belirti                                                    | Neden                                                      | Çözüm                                                          |
+| ---------------------------------------------------------- | ---------------------------------------------------------- | -------------------------------------------------------------- |
+| "Test %90 doğru, pozitif çıktı, demek %90 hasta" denmiş    | Taban oranı yok sayılmış; `P(E∣H)` ile `P(H∣E)` karışmış   | Bayes; "10 000 kişi" tablosunu kurun                           |
+| Alarm sisteminin uyarılarının çoğu boş çıkıyor             | Olay nadir; yanlış pozitif oranı küçük görünse de baskın   | Pozitif öngörü değerini (PPV) hesaplayın; eşiği ona göre seçin |
+| "En az bir kez" olasılığı %100'ü aştı                      | `n · p` toplanmış                                          | `1 − (1 − p)^n`                                                |
+| Yedekli sistem hesaptan çok daha sık birlikte çöküyor      | Ortak neden; bağımsızlık varsayımı                         | Ortak nedenleri ayrı olay olarak modelleyin                    |
+| "Beş kez kaybettim, sıradaki kesin kazanır" mantığıyla kod | Kumarbaz yanılgısı; bağımsız denemeler belleksiz           | Geçmiş sonuçları olasılık hesabına katmayın                    |
+| Günlük oranların ortalaması toplam orandan çok farklı      | Ağırlıksız ortalama; küçük günler büyük günle eşit sayıldı | Toplam pay / toplam payda; ya da hacimle ağırlıklandırın       |
+| Ortalama hız, ortalama gecikme hesabı tutmuyor             | `E[f(X)] ≠ f(E[X])`                                        | Önce toplamları (yol, süre) hesaplayın, sonra bölün            |
+| Beklenen değeri pozitif plan felakete yol açtı             | Varyans ve tek seferlik büyük kayıp gözden kaçtı           | Beklenen değerin yanında en kötü durum ve standart sapma       |
+| Benzetim sonucu her çalıştırmada başka                     | Örnek sayısı az; hata ≈ σ/√n                               | Hata payını raporlayın; gerekirse örneği 4 kat artırın         |
 
 ## Denetim listesi
 
@@ -264,6 +264,7 @@ isterseniz 10 000 örnek gerekir. Örnek sayısını bu hesapla seçin ([rastgel
 - [İstatistiksel kestirim](istatistiksel-kestirim.md): olasılığı veriden kestirmek
 - [Rastgelelik ve benzetim](rastgelelik-ve-benzetim.md): Monte Carlo ve örnek sayısı
 - [Bilgi kuramı](bilgi-kurami.md): olasılıktan bilgi miktarına
+- [Getiri ve risk ölçüleri](getiri-ve-risk.md): kayıp serileri, geriye dönük sınamada şans
 - [Betimsel istatistik](../70-veri/betimsel-istatistik.md): oranları ve büyümeleri doğru birleştirmek
 - [Korelasyon ve nedensellik](../70-veri/korelasyon-ve-nedensellik.md): karıştırıcı değişken, Simpson paradoksu
 - [Kalibrasyon ve olasılık](../80-ml/kalibrasyon-ve-olasilik.md): modelin "%80" demesi ve beklenen değerle karar

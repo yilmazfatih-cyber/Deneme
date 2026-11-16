@@ -39,15 +39,15 @@ sayısıdır**: her adım bir bırakma noktasıdır; ertelenebilen her şey erte
 
 ```text
 Ekran envanteri — Sedir kuaför uygulaması (kurgusal)
-Kimlik  Ekran              Tek işi                          Kim      Nereden gelinir             Hâller
-E1      Bugün              Günün randevularını görmek       Kuaför   açılış, alt sekme           ilk boş, yükleniyor, hata, dolu
-E2      Randevu ayrıntısı  Randevuyu iptal etmek ya da taşımak Kuaför E1                        hata
-E3      Bağlantım          Randevu bağlantısını paylaşmak   Kuaför   alt sekme, E1 ilk boş        —
-E4      Ayarlar            Saatleri ve hizmetleri değiştirmek Kuaför  alt sekme                   —
-M1      Hizmetler          Hizmet seçmek                    Müşteri  paylaşılan bağlantı          hata
-M2      Boş saatler        Saat seçmek                      Müşteri  M1                          boş (hafta dolu)
-M3      Bilgiler           Ad ve telefonla onaylamak        Müşteri  M2                          alan hatası
-M4      Onay               Takvime eklemek                  Müşteri  M3                          —
+Kimlik  Ekran              Tek işi                          Kim      Nereden gelinir         Hâller
+E1      Bugün              Günün randevularını görmek       Kuaför   açılış, alt sekme       ilk boş, yükleniyor, hata, dolu
+E2      Randevu ayrıntısı  Randevuyu iptal etmek, taşımak   Kuaför   E1                      hata
+E3      Bağlantım          Randevu bağlantısını paylaşmak   Kuaför   alt sekme, E1 ilk boş   —
+E4      Ayarlar            Saat ve hizmetleri değiştirmek   Kuaför   alt sekme               —
+M1      Hizmetler          Hizmet seçmek                    Müşteri  paylaşılan bağlantı     hata
+M2      Boş saatler        Saat seçmek                      Müşteri  M1                      boş (hafta dolu)
+M3      Bilgiler           Ad ve telefonla onaylamak        Müşteri  M2                      alan hatası
+M4      Onay               Takvime eklemek                  Müşteri  M3                      —
 ```
 
 Gerçek bir örnek: Köprü projesinin (depo kökü) `docs/PLAN.md` dosyasındaki "Modül A" tablosu (Ekran · Amaç · Temel
@@ -188,7 +188,7 @@ durumda tek düğmelik yönlendirme, en çok 3–5 maddelik "başlangıç listes
 | Tanıtım turu atlanıyor, sonra kimse özelliği bilmiyor            | Tur eylemsiz bilgi veriyor                              | İlk boş durumda tek düğmelik bağlamsal yönlendirme                        |
 | İzin ilk açılışta istendi, reddedildi, bir daha sorulamıyor      | İzin bağlamsız ve gerekçesiz istendi                    | İhtiyaç anında, nedenini söyleyerek; reddedilince özelliksiz çalışsın     |
 | Alt sekme çubuğu yedi öğeye çıktı                                | Her yeni bölüm sekme yapıldı                            | En çok beş sekme; ötekiler ana bölümlerin içine                           |
-| Geri tuşu beklenmedik yere götürüyor                             | Akışta geçmiş kaydı tutarsız                            | Her akışın testinde geri tuşunu deneyin                                   |
+| Geri tuşu beklenmedik yere götürüyor                             | Akışta geçmiş kaydı tutarsız                            | Her akışın testinde geri tuşunu deneyin ([yönlendirme ve URL](../20-web-onyuz/yonlendirme-ve-url.md)) |
 | Ana iş altı dokunuş sürüyor ve kimse fark etmedi                 | Dokunuş hedefi yazılmadı                                | Hedefi yazın; hesapla ya da uçtan uca testle koruyun                       |
 
 ## Denetim listesi

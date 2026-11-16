@@ -212,3 +212,5 @@ belirsiz ifadeler ("bir sorun yaşandı"), suçlama, doğrulanmamış tahmin.
 - KVKK genel çerçeve: [`veri/docs/KVKK_NOTLARI.md`](../../veri/docs/KVKK_NOTLARI.md) · [KVKK pratiği](kvkk-pratik.md)
 - Öncesi: [Günlük ve izleme](gunluk-ve-izleme-guvenlik.md) · [Sır yönetimi](sir-yonetimi.md) ·
   [Yedek ve fidye yazılımı](yedek-ve-fidye-yazilimi.md)
+- Yedekten dönme mekaniği: [Veritabanı yedekleme](../60-devops/veritabani-yedekleme.md) · Uyarı altyapısı:
+  [İzleme ve uyarı](../60-devops/izleme-ve-uyari.md)

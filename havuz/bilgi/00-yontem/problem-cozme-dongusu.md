@@ -204,3 +204,4 @@ hatanın nedenini değil belirtisini kovalamak; hata iletisini okumadan yeniden 
 - [Tasarım kararı](tasarim-karari.md): seçenekler arasında karar ve karar kaydı.
 - [Öğrenme ve araştırma](ogrenme-ve-arastirma.md): küçük deneyle bilgi doğrulamak.
 - Bitti tanımının işlenmiş bir örneği: [uygulama/AGENTS.md](../../uygulama/AGENTS.md) → "Bitti tanımı" bölümü.
+- Diğer kümelerden: [Gereksinim yazma](../95-urun/gereksinim-yazma.md), [Küçük modeller için istem](../85-llm/kucuk-modeller-icin-istem.md), [Kodlama için dil modeli](../85-llm/kodlama-icin-llm.md).

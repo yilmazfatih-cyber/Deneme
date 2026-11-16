@@ -48,8 +48,10 @@ def orientation(a: Point, b: Point, c: Point) -> int:
 
 def orientation_eps(a: Point, b: Point, c: Point, eps: float = 1e-9) -> int:
     """Float koordinatlar için: |cross| ≤ eps · ölçek ise doğrusal say (sezgisel güvenlik payı)."""
-    value = cross(a, b, c)
-    scale = max(abs(b[0] - a[0]) + abs(b[1] - a[1]), abs(c[0] - a[0]) + abs(c[1] - a[1]), 1)
+    value = float(cross(a, b, c))
+    span_b = abs(float(b[0] - a[0])) + abs(float(b[1] - a[1]))
+    span_c = abs(float(c[0] - a[0])) + abs(float(c[1] - a[1]))
+    scale = max(span_b, span_c, 1.0)
     if abs(value) <= eps * scale * scale:
         return 0
     return 1 if value > 0 else -1

@@ -203,5 +203,7 @@ Bu sütun, "bitti mi?" tartışmasını bitirir.
 - [MVP kapsamı](mvp-kapsami.md): hikâyelerin geldiği çekirdek akış ve yapılmayacaklar.
 - [Önceliklendirme](onceliklendirme.md): hangi hikâyenin önce yazılacağı.
 - [İşi parçalama](../00-yontem/isi-parcalama.md): dilim ve bitti tanımı şablonu.
+- [Geliştirme döngüsü ve kalite kapıları](gelistirme-dongusu-ve-kapilar.md): ölçütlerin hangi kapıda, nasıl denetlendiği.
 - [İstem mühendisliği](../85-llm/istem-muhendisligi.md) ve [küçük modeller için istem](../85-llm/kucuk-modeller-icin-istem.md).
 - Hazır istem kalıpları: [`rehber/ISTEMLER.md`](../../rehber/ISTEMLER.md).
+- [Arayüz dili](../97-turkce/arayuz-dili.md): ölçütlerdeki tırnaklı metinlerin Türkçesi.

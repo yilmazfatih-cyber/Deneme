@@ -79,7 +79,8 @@ const link = /https?:\/\/\S+/.exec(String(mail?.text_body))?.[0] // http://local
   bağlantısı geçersiz ya da kullanılmış).
 - **Davet önizleme** (`GET /api/invites/:token`) oturum İSTEMEZ ve yanıtı sarmalanmamıştır: doğrudan
   `invitePreviewSchema` (`{ workspaceName, role, invitedBy, expiresAt }`). Kabul (`POST /api/invites/accept`)
-  oturum ister, `{ workspace }` döner. Zaten üye olan biri kabul ederse davet harcanmaz.
+  oturum ister, `{ workspace }` döner. Zaten üye olan biri kabul ederse davet harcanmaz. Davet, oluşturan kişi
+  alanın sahibi olduğu sürece geçerlidir (sahipliği biterse `invalid_token`; arayüz "yeni davet isteyin" demeli).
 - **Gövde:** gövdeli her istek `Content-Type: application/json` olmalı (değilse 400 `validation`).
 - **CSRF:** çerezle yapılan değiştirici isteklerde tarayıcının gönderdiği `Origin`/`Sec-Fetch-Site` denetlenir;
   aynı köken, `APP_URL` kökeni ve `ALLOWED_ORIGINS` kabul edilir. `Authorization: Bearer` istekleri muaftır.

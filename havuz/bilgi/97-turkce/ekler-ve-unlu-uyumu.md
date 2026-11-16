@@ -248,3 +248,4 @@ Bu denetimi projenin kural testlerine ekleyin; istisna gereken kalıp için yan�
 - [Türkçe sayı ve para](turkce-sayi-ve-para.md): sayının okunuşu ve yazıyla yazılışı.
 - Tam gerçekleme ve sınama vektörleri: [kutuphane/py/kutuphane/ek.py](../../kutuphane/py/kutuphane/ek.py),
   [kutuphane/vektorler/ek.json](../../kutuphane/vektorler/ek.json).
+- Diğer kümelerden: [Uluslararasılaştırma](../20-web-onyuz/uluslararasilastirma.md).

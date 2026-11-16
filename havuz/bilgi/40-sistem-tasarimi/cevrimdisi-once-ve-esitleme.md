@@ -153,7 +153,7 @@ print("mezar taşısız silme dirildi; mezar taşıyla silme kalıcı")
 mezar taşısız silme dirildi; mezar taşıyla silme kalıcı
 ```
 
-- Mezar taşı, silmeyi **geri alınabilir** kılar ("Son silinenler") — erişilebilir ürün ilkelerinin istediği şey.
+- Mezar taşı, silmeyi **geri alınabilir** kılar ("Son silinenler"): yanlışlıkla silen kullanıcı onaysız kayıp yaşamaz.
 - Mezar taşları birikir. Temizlemek ancak **en uzun çevrimdışı süreden** sonra güvenlidir; erken temizlik
   dirilmeyi geri getirir. Güvenli yöntem (saklama süresi, alan başına ufuk, eski imleçli cihaza anlık görüntü):
   [`uygulama/docs/MEZAR_TASI.md`](../../uygulama/docs/MEZAR_TASI.md).
@@ -242,4 +242,5 @@ silinmez, türü değişmez), çünkü eski sürümlü cihazlar aylarca eşitlem
 - [PWA ve çevrimdışı](../20-web-onyuz/pwa-ve-cevrimdisi.md) (servis çalışanı, IndexedDB şema yükseltme) ·
   [Durum yönetimi seçimi](../20-web-onyuz/durum-yonetimi-secimi.md)
 - Havuz: [`uygulama/docs/ESITLEME.md`](../../uygulama/docs/ESITLEME.md), [`uygulama/docs/MIMARI.md`](../../uygulama/docs/MIMARI.md);
-  sıfırdan veri yapıları (CRDT dahil, yazılıyor): `sifirdan/veri`
+  sıfırdan CRDT'ler (sayaç, küme, kayıt, metin için RGA, nedensel teslim):
+  [`sifirdan/veri/crdt/README.md`](../../sifirdan/veri/crdt/README.md)

@@ -175,3 +175,4 @@ kabul edilir. Sprint başına tur sınırı koymak (ör. üç tur) kapsamı kesm
 - [İşi parçalama](isi-parcalama.md): tahminin girdisi olan dilimler.
 - [Teknik yazı](teknik-yazi.md): durum raporu yazımı.
 - [Problem çözme döngüsü](problem-cozme-dongusu.md): zaman kutusu.
+- Diğer kümelerden: [Tahmin ve büyüklük sezgisi](../92-matematik/tahmin-ve-buyukluk-sezgisi.md), [Önceliklendirme](../95-urun/onceliklendirme.md).

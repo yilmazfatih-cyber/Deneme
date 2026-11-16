@@ -275,3 +275,5 @@ gerekçesiyle yazın (havuzda 180 gün; [KVKK pratiği](kvkk-pratik.md)).
 - Çalışan kod: [`uygulama/api/src/lib/logger.ts`](../../uygulama/api/src/lib/logger.ts) (yasaklı alanlar),
   [`http/requestLog.ts`](../../uygulama/api/src/http/requestLog.ts) (adres kalıbı, sorgu dizgisi yok),
   [`modules/audit/repo.ts`](../../uygulama/api/src/modules/audit/repo.ts) (denetim olayları)
+- Günlük toplama ve uyarı altyapısı: [İzleme ve uyarı](../60-devops/izleme-ve-uyari.md),
+  [Gözlemlenebilirlik](../40-sistem-tasarimi/gozlemlenebilirlik.md)

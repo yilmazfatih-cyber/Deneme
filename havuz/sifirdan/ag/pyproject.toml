@@ -32,8 +32,6 @@ include = [
   "hiz_ve_vekil*",
   "eposta*",
   "sunucu_olaylari*",
-  "tls_gozlem*",
-  "p2p*",
 ]
 
 [tool.setuptools.package-data]
@@ -81,8 +79,6 @@ known-first-party = [
   "hiz_ve_vekil",
   "eposta",
   "sunucu_olaylari",
-  "tls_gozlem",
-  "p2p",
   "destek",
 ]
 
@@ -100,8 +96,6 @@ files = [
   "hiz_ve_vekil",
   "eposta",
   "sunucu_olaylari",
-  "tls_gozlem",
-  "p2p",
   "scripts",
 ]
 strict = true

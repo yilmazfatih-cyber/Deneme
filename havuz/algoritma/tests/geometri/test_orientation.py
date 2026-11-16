@@ -22,7 +22,9 @@ def test_float_pitfall_and_remedies() -> None:
     a, b, c = (0.1, 0.3), (0.2, 0.6), (0.3, 0.9)
     assert cross(a, b, c) != 0 and orientation(a, b, c) == 1  # TUZAK: aslında doğrusallar
     assert orientation_eps(a, b, c) == 0  # çare 1: ölçekli tolerans
-    exact = [(Fraction(x).limit_denominator(10), Fraction(y).limit_denominator(10)) for x, y in (a, b, c)]
+    exact = [
+        (Fraction(x).limit_denominator(10), Fraction(y).limit_denominator(10)) for x, y in (a, b, c)
+    ]
     assert orientation(*exact) == 0  # çare 2: kesin aritmetik
 
 
@@ -41,5 +43,7 @@ def test_matches_determinant_and_symmetries(
     )  # 3×3 determinant [[ax, ay, 1], [bx, by, 1], [cx, cy, 1]] açılımı
     assert orientation(a, b, c) == (det > 0) - (det < 0)
     assert orientation(a, b, c) == orientation(b, c, a) == -orientation(a, c, b)
-    between = min(a[0], b[0]) <= c[0] <= max(a[0], b[0]) and min(a[1], b[1]) <= c[1] <= max(a[1], b[1])
+    between = min(a[0], b[0]) <= c[0] <= max(a[0], b[0]) and min(a[1], b[1]) <= c[1] <= max(
+        a[1], b[1]
+    )
     assert on_segment(c, a, b) == (det == 0 and between)

@@ -107,9 +107,10 @@ RUN --mount=type=secret,id=npmrc,target=/root/.npmrc npm ci
 `docker stop` kapsayıcının **ilk sürecine** (PID 1) `SIGTERM` gönderir, bir süre bekler (varsayılan 10 sn;
 `docker stop -t`, compose'da `stop_grace_period`), sonra `SIGKILL`. İki ayrı tuzak vardır:
 
-1. **Aracı süreç:** `CMD npm start`, `CMD node server.js` (kabuk biçimi) ya da `exec`'siz giriş betiği sinyali ara
-   bir sürece (npm, `/bin/sh`) verir; uygulama sinyali hiç almaz. Debian tabanlı imajlarda `/bin/sh` (dash) tek
-   komutu bile ara süreç olarak çalıştırır (bu makinede denendi).
+1. **Aracı süreç:** kabuk biçimi `CMD node server.js` ve `exec`'siz giriş betiği uygulamayı bir kabuğun çocuğu
+   yapar; kabuk sinyali iletmez. Debian tabanlı imajlarda `/bin/sh` (dash) tek komutu bile böyle çalıştırır (bu
+   makinede denendi). `CMD ["npm", "start"]`'ta da arada npm ve bir kabuk vardır; sinyalin her ortamda uygulamaya
+   ulaşmadığı havuzdaki uygulamada gözlendi ([`YAYINLAMA.md`](../../uygulama/docs/YAYINLAMA.md) → "Süreç yöneticisiyle").
 2. **PID 1'in özel durumu:** çekirdek, PID 1'e gelen sinyalde işleyici yoksa varsayılan davranışı (sonlanmayı)
    uygulamaz. İşleyicisi olmayan node PID 1 iken `SIGTERM`'i yok sayar ve süre dolunca `SIGKILL` ile ölür: süren
    istekler yarıda kalır, veritabanı düzgün kapanmaz.
@@ -335,5 +336,6 @@ kapsayıcı `healthy` olur, `docker stop` birkaç saniyede biter, kapsayıcı si
 - [Docker Compose](docker-compose.md) — çok servisli ortam, birimler, günlük sınırı
 - [Linux temelleri](linux-temelleri.md) — sinyaller, systemd ile Docker'sız çalıştırma
 - [Yayın yolu seçimi](yayin-yolu-secimi.md) — geçici disk · [Ortam ve yapılandırma](ortam-ve-yapilandirma.md)
+- [Sır yönetimi](../50-guvenlik/sir-yonetimi.md) · [Tedarik zinciri](../50-guvenlik/tedarik-zinciri.md) — taban imaj ve bağımlılık güncelleme
 - Çalışan karşılık: [`uygulama/Dockerfile`](../../uygulama/Dockerfile),
   [`uygulama/docs/YAYINLAMA.md`](../../uygulama/docs/YAYINLAMA.md) → "Docker ile"

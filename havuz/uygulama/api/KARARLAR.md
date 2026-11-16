@@ -67,6 +67,21 @@ yalnız API'ye özgüdür.)
 - **`.env` hem çalışma klasöründe hem `havuz/uygulama/`'da aranır**: `npm run … -w` api/'den çalışır, kullanıcı
   ise dosyayı köke koyar.
 
+## Güvenlik incelemesi (2026-11-16) sonrası kararlar
+
+- **Davet, oluşturan hâlâ sahipse geçerli** (kullanımda denetlenir; çıkarma/rol düşürme anında silinmez): tek
+  yerde, bütün yollar (çıkarılma, rol düşmesi, ayrılma, hesap silme) için doğru. Bilinen sonuç: sahipliğini
+  devreden kişinin bekleyen davetleri de düşer; alıcı yeni davet ister.
+- **Hız sınırında IPv6 /64 tek kaynak** (`rateLimitKey`); günlük/denetimde tam adres kalır. IPv4 taşıyan
+  biçimler (::ffff:, NAT64, Teredo) toplanmaz. Elendi: /56 (aynı evdeki komşu alt ağları da birleştirir; çoğu
+  barındırıcı /64 verir).
+- **SSE bağlantı başına 256 okunmamış olay**: tek eşitleme en çok 100 alana dürtme üretir; sınır onun epey
+  üstünde (test: aynı anda 150 dürtme okuyan istemciyi kesmez). Elendi: bayt sayımı (dürtmeler küçük ve eşit).
+- **`ADMIN_EMAILS` davranışı korunup açılışta uyarı eklendi**: kayıtta yükseltmeyi kaldırmak saldırganın açılışta
+  yükseltilmesini engellemezdi (aynı açık); gerçek çözüm e-posta doğrulaması (kapsam dışı, docs/GUVENLIK.md §5).
+- **Kota ve yanıt bayt bütçesi eklenmedi**: eşitleme protokolü `shared` başvuru sunucusu ve uygunluk testleriyle
+  birlikte değişmeli; ürün kararı (sınır değerleri) gerektirir. docs/GUVENLIK.md §5'te ölçümüyle yazılı.
+
 ## Şartnameden sapmalar
 
 - `.env.example` dosyası yazılamadı (bu oturumda `.env*` dosyalarına yazma izin kuralıyla kapalı); içeriği

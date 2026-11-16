@@ -198,8 +198,8 @@ olduğunu bir **sınamayla** kanıtlar:
   yetkilinin **deneme (staging)** ortamını kullanın. Sertifika klasörünü kalıcı tutun (Caddy'de `/data`, certbot'ta
   `/etc/letsencrypt`); her açılışta yeniden istemek sınıra takılır.
 - `CAA` kaydı varsa yetkiliyi içermelidir ([Alan adı ve DNS](alan-adi-ve-dns.md)).
-- Sertifika yenilenir ama vekil yeniden yüklenmezse eski sertifikayı sunmaya devam eder: certbot'ta yenileme
-  sonrası `systemctl reload nginx` kancası olmalıdır.
+- Sertifika yenilenir ama vekil yeniden yüklenmezse eski sertifikayı sunmaya devam eder. certbot'un nginx eklentisi
+  yeniden yüklemeyi kendisi yapar; `certonly` ile alınan sertifikada `--deploy-hook "systemctl reload nginx"` gerekir.
 
 ## Vekilde sonlandırma
 
@@ -303,6 +303,7 @@ yol açar.
 - [Ters vekil](ters-vekil.md) — TLS sonlandırma, `X-Forwarded-Proto`
 - [Alan adı ve DNS](alan-adi-ve-dns.md) — `CAA`, ad başına kayıt
 - [İzleme ve uyarı](izleme-ve-uyari.md) — sertifika süresi izleme
-- [OWASP özeti](../50-guvenlik/owasp-ozet.md) — güvenlik başlıklarının yeri
+- [Güvenlik başlıkları ve HTTPS](../50-guvenlik/guvenlik-basliklari-ve-https.md) — başlıkların anlamı ve bir yanıtı
+  denetleyen betik · [OWASP özeti](../50-guvenlik/owasp-ozet.md)
 - Çalışan karşılıklar: [`uygulama/docs/YAYINLAMA.md`](../../uygulama/docs/YAYINLAMA.md) → "Ters vekil ve HTTPS",
   [`site/docs/YAYINLAMA.md`](../../site/docs/YAYINLAMA.md) → "Kendi alan adı" (Enforce HTTPS)

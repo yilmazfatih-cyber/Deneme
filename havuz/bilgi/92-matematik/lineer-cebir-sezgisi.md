@@ -26,15 +26,15 @@ guncellik: 2026-11
 
 ## Karar tablosu
 
-| Ne istiyorsunuz                                          | İşlem                                           | Neden                                                    |
-| -------------------------------------------------------- | ----------------------------------------------- | -------------------------------------------------------- |
-| Metin/gömme benzerliği                                   | Kosinüs benzerliği (ya da birim vektörde nokta çarpım) | Uzunluktan bağımsız; boyu farklı metinler kıyaslanır |
-| Fiziksel/özellik uzaklığı                                | Öklid (L2); aykırı değere dayanıklı: Manhattan (L1) | Ölçekler aynı olmalı: önce standartlaştırın            |
-| `n` denklem, `n` bilinmeyen                              | Gauss eleme (kütüphanede `solve`)               | Ters matris yavaş ve daha az doğru                       |
-| Denklem çok, bilinmeyen az (gürültülü ölçüm)             | [En küçük kareler](en-kucuk-kareler.md) (`lstsq`, QR) | Tam çözüm yoktur; en yakını aranır                 |
-| Dönüşümleri birleştirme (döndür, ölçekle, kaydır)        | Matris çarpımı; sıra = sağdan sola              | `A @ B ≠ B @ A`                                          |
-| Tam sonuç gereken küçük sistem (para, oran)              | `Fraction` ile eleme                            | Yuvarlama hatası yok                                     |
-| Büyük, seyrek sistem                                     | Yinelemeli yöntem (kütüphane)                   | Bkz. [sayısal yöntemler](sayisal-yontemler.md)           |
+| Ne istiyorsunuz                                   | İşlem                                                  | Neden                                                |
+| ------------------------------------------------- | ------------------------------------------------------ | ---------------------------------------------------- |
+| Metin/gömme benzerliği                            | Kosinüs benzerliği (ya da birim vektörde nokta çarpım) | Uzunluktan bağımsız; boyu farklı metinler kıyaslanır |
+| Fiziksel/özellik uzaklığı                         | Öklid (L2); aykırı değere dayanıklı: Manhattan (L1)    | Ölçekler aynı olmalı: önce standartlaştırın          |
+| `n` denklem, `n` bilinmeyen                       | Gauss eleme (kütüphanede `solve`)                      | Ters matris yavaş ve daha az doğru                   |
+| Denklem çok, bilinmeyen az (gürültülü ölçüm)      | [En küçük kareler](en-kucuk-kareler.md) (`lstsq`, QR)  | Tam çözüm yoktur; en yakını aranır                   |
+| Dönüşümleri birleştirme (döndür, ölçekle, kaydır) | Matris çarpımı; sıra = sağdan sola                     | `A @ B ≠ B @ A`                                      |
+| Tam sonuç gereken küçük sistem (para, oran)       | `Fraction` ile eleme                                   | Yuvarlama hatası yok                                 |
+| Büyük, seyrek sistem                              | Yinelemeli yöntem (kütüphane)                          | Bkz. [sayısal yöntemler](sayisal-yontemler.md)       |
 
 ## Vektörler, kosinüs ve bir yuvarlama tuzağı
 
@@ -217,18 +217,18 @@ girdideki küçük hata çözümde büyür ([sayısal yöntemler](sayisal-yontem
 
 ## Tuzaklar
 
-| Belirti                                                      | Neden                                                           | Çözüm                                                           |
-| ------------------------------------------------------------ | --------------------------------------------------------------- | --------------------------------------------------------------- |
-| `ValueError: math domain error` (`acos`)                     | Kosinüs yuvarlamayla 1'i aştı                                   | `max(-1, min(1, c))` ile sıkıştırın                             |
-| Uzun belgeler hep "daha benzer" çıkıyor                      | Ham nokta çarpım ya da Öklid; uzunluk baskın                    | Kosinüs ya da birim vektörler                                   |
-| Benzerlik araması saçma sonuç veriyor                        | Sorgu ve belgeler farklı gömme modeliyle kodlanmış              | Hepsini aynı modelle, aynı ön işlemle kodlayın                  |
-| Uzaklık tabanlı model bir özelliğe takılıyor                 | Özelliklerin ölçeği farklı (TL ile yaş)                         | Standartlaştırma; ya da kosinüs                                 |
-| numpy'de sonuç boyutu beklenmedik `(3, 3)` oldu              | `(3,)` ile `(3, 1)` yayınlandı (broadcasting)                   | Şekilleri `assert x.shape == (…)` ile denetleyin                |
-| numpy'de matris çarpımı yerine öğe öğe çarpım                | `A * B` öğe öğe, `A @ B` matris çarpımı                         | Matris çarpımında yalnız `@`                                    |
-| Dönüşüm zinciri ters sırada uygulanmış                       | `A @ B` önce `B`'yi uygular                                     | Sırayı bir birim vektörle sınayın                               |
-| Çözüm saçma büyük sayılar, ya da "singular matrix" hatası    | Tekil/neredeyse tekil sistem; bağımlı denklem                   | Bağımsız denklem ekleyin; koşul sayısına bakın                  |
-| Ters matrisle çözülen sistem kütüphane `solve`'dan farklı    | Ters alma ek yuvarlama hatası getirir                           | `solve` (eleme) kullanın; tersi açıkça istenmedikçe hesaplamayın |
-| Elle yazılmış eleme bazı girdilerde çöp sonuç veriyor        | Pivot yok ya da küçük pivot                                     | Kısmi pivotlama                                                 |
+| Belirti                                                   | Neden                                              | Çözüm                                                            |
+| --------------------------------------------------------- | -------------------------------------------------- | ---------------------------------------------------------------- |
+| `ValueError: math domain error` (`acos`)                  | Kosinüs yuvarlamayla 1'i aştı                      | `max(-1, min(1, c))` ile sıkıştırın                              |
+| Uzun belgeler hep "daha benzer" çıkıyor                   | Ham nokta çarpım ya da Öklid; uzunluk baskın       | Kosinüs ya da birim vektörler                                    |
+| Benzerlik araması saçma sonuç veriyor                     | Sorgu ve belgeler farklı gömme modeliyle kodlanmış | Hepsini aynı modelle, aynı ön işlemle kodlayın                   |
+| Uzaklık tabanlı model bir özelliğe takılıyor              | Özelliklerin ölçeği farklı (TL ile yaş)            | Standartlaştırma; ya da kosinüs                                  |
+| numpy'de sonuç boyutu beklenmedik `(3, 3)` oldu           | `(3,)` ile `(3, 1)` yayınlandı (broadcasting)      | Şekilleri `assert x.shape == (…)` ile denetleyin                 |
+| numpy'de matris çarpımı yerine öğe öğe çarpım             | `A * B` öğe öğe, `A @ B` matris çarpımı            | Matris çarpımında yalnız `@`                                     |
+| Dönüşüm zinciri ters sırada uygulanmış                    | `A @ B` önce `B`'yi uygular                        | Sırayı bir birim vektörle sınayın                                |
+| Çözüm saçma büyük sayılar, ya da "singular matrix" hatası | Tekil/neredeyse tekil sistem; bağımlı denklem      | Bağımsız denklem ekleyin; koşul sayısına bakın                   |
+| Ters matrisle çözülen sistem kütüphane `solve`'dan farklı | Ters alma ek yuvarlama hatası getirir              | `solve` (eleme) kullanın; tersi açıkça istenmedikçe hesaplamayın |
+| Elle yazılmış eleme bazı girdilerde çöp sonuç veriyor     | Pivot yok ya da küçük pivot                        | Kısmi pivotlama                                                  |
 
 ## Denetim listesi
 

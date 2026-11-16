@@ -29,16 +29,16 @@ guncellik: 2026-11
 
 ## Karar tablosu
 
-| Durum                                                    | Seçim                                              | Neden                                                    |
-| -------------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------------- |
-| Az sütun, düzgün veri, eğilim ya da ilişki               | Sıradan en küçük kareler (kütüphanede `lstsq`)     | Kapalı çözüm, hızlı                                      |
-| Büyük değerli ya da polinom sütunlar (yıl, x³)           | Önce merkezle/ölçekle, sonra uydur                 | Normal denklemlerde bilgi kaybını önler                  |
-| Birkaç aykırı değer                                      | Mutlak kayıp (L1) ya da Huber                      | Tek değer doğruyu sürükleyemez                           |
-| Birbirine çok benzeyen sütunlar                          | Ridge (L2 cezası) ya da sütun eleme                | Katsayılar kararlı; yorumlanabilir                       |
-| Üstel büyüme, güç yasası                                 | Log dönüşümü + doğru uydurma                       | Çarpımsal model doğrusal olur; geri dönüşte düzeltme gerekir |
-| Ölçümlerin güvenilirliği farklı                          | Ağırlıklı en küçük kareler                         | Gürültülü noktanın etkisi azalır                         |
-| Veri aralığının dışını tahmin (ekstrapolasyon)           | Yapmayın; yapılacaksa basit model + aralık         | Uydurma yalnız gördüğü aralıkta sınanmıştır              |
-| Sınıflandırma, olasılık                                  | En küçük kareler değil: lojistik regresyon         | Kare kayıp olasılık için yanlış ölçüdür                  |
+| Durum                                          | Seçim                                          | Neden                                                        |
+| ---------------------------------------------- | ---------------------------------------------- | ------------------------------------------------------------ |
+| Az sütun, düzgün veri, eğilim ya da ilişki     | Sıradan en küçük kareler (kütüphanede `lstsq`) | Kapalı çözüm, hızlı                                          |
+| Büyük değerli ya da polinom sütunlar (yıl, x³) | Önce merkezle/ölçekle, sonra uydur             | Normal denklemlerde bilgi kaybını önler                      |
+| Birkaç aykırı değer                            | Mutlak kayıp (L1) ya da Huber                  | Tek değer doğruyu sürükleyemez                               |
+| Birbirine çok benzeyen sütunlar                | Ridge (L2 cezası) ya da sütun eleme            | Katsayılar kararlı; yorumlanabilir                           |
+| Üstel büyüme, güç yasası                       | Log dönüşümü + doğru uydurma                   | Çarpımsal model doğrusal olur; geri dönüşte düzeltme gerekir |
+| Ölçümlerin güvenilirliği farklı                | Ağırlıklı en küçük kareler                     | Gürültülü noktanın etkisi azalır                             |
+| Veri aralığının dışını tahmin (ekstrapolasyon) | Yapmayın; yapılacaksa basit model + aralık     | Uydurma yalnız gördüğü aralıkta sınanmıştır                  |
+| Sınıflandırma, olasılık                        | En küçük kareler değil: lojistik regresyon     | Kare kayıp olasılık için yanlış ölçüdür                      |
 
 ## Doğru uydurma: artıklar ne söyler
 
@@ -223,16 +223,16 @@ mutlaka bir aralıkla ve "eğilim sürerse" koşuluyla verin; üstel büyüme so
 
 ## Tuzaklar
 
-| Belirti                                                      | Neden                                                         | Çözüm                                                        |
-| ------------------------------------------------------------ | ------------------------------------------------------------- | ------------------------------------------------------------ |
-| Polinom uydurma kütüphanede iyi, elle yazılan kodda kötü     | Normal denklemler + ham büyük sütunlar (yıl, x³)              | Merkezle/ölçekle; QR ya da `lstsq`                           |
-| Tek bir nokta doğrunun eğimini ikiye katladı                 | Kare kayıp aykırı değere duyarlı                              | Nedenini bulun; L1/Huber; aykırıları ayrıca raporlayın       |
-| Katsayılar her yeni veride işaret değiştiriyor               | Çoklu doğrusallık                                             | Korelasyona bakın; sütun birleştirme ya da ridge             |
-| R² çok yüksek ama tahminler kötü                             | Ekstrapolasyon, ya da artıklarda yapı var                     | Artıkları çizin; zaman ayrımlı doğrulama                      |
-| R² negatif çıktı                                             | Model ortalamadan bile kötü (çoğu zaman sınama verisinde)      | Modeli, özellikleri ve sızıntıyı gözden geçirin              |
-| Log uydurmalı tahminler sistematik olarak düşük              | `exp(log tahmin)` ortancadır                                  | `exp(σ²/2)` düzeltmesi                                       |
-| Sıfır ya da eksi değerde log hatası                          | `log(0)` tanımsız                                             | Sıfırları ayrı modelleyin; `log1p` yalnız bilinçli kullanın  |
-| Olasılık/evet-hayır için doğru uydurulmuş, tahmin 1'i aşıyor | Sınıflandırmada kare kayıp                                    | Lojistik regresyon                                           |
+| Belirti                                                      | Neden                                                     | Çözüm                                                       |
+| ------------------------------------------------------------ | --------------------------------------------------------- | ----------------------------------------------------------- |
+| Polinom uydurma kütüphanede iyi, elle yazılan kodda kötü     | Normal denklemler + ham büyük sütunlar (yıl, x³)          | Merkezle/ölçekle; QR ya da `lstsq`                          |
+| Tek bir nokta doğrunun eğimini ikiye katladı                 | Kare kayıp aykırı değere duyarlı                          | Nedenini bulun; L1/Huber; aykırıları ayrıca raporlayın      |
+| Katsayılar her yeni veride işaret değiştiriyor               | Çoklu doğrusallık                                         | Korelasyona bakın; sütun birleştirme ya da ridge            |
+| R² çok yüksek ama tahminler kötü                             | Ekstrapolasyon, ya da artıklarda yapı var                 | Artıkları çizin; zaman ayrımlı doğrulama                    |
+| R² negatif çıktı                                             | Model ortalamadan bile kötü (çoğu zaman sınama verisinde) | Modeli, özellikleri ve sızıntıyı gözden geçirin             |
+| Log uydurmalı tahminler sistematik olarak düşük              | `exp(log tahmin)` ortancadır                              | `exp(σ²/2)` düzeltmesi                                      |
+| Sıfır ya da eksi değerde log hatası                          | `log(0)` tanımsız                                         | Sıfırları ayrı modelleyin; `log1p` yalnız bilinçli kullanın |
+| Olasılık/evet-hayır için doğru uydurulmuş, tahmin 1'i aşıyor | Sınıflandırmada kare kayıp                                | Lojistik regresyon                                          |
 
 ## Denetim listesi
 

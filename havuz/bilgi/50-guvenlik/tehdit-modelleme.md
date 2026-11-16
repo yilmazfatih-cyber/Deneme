@@ -200,7 +200,10 @@ birikim listesine yazılır.
 
 ## İlgili
 
-- Sınıf haritası: [OWASP özeti](owasp-ozet.md) · Yayından önce: [Yayın öncesi denetim](yayin-oncesi-guvenlik-denetimi.md)
+- Sınıf haritası: [OWASP özeti](owasp-ozet.md) · Yayından önce: [Yayın öncesi denetim](yayin-oncesi-guvenlik-denetimi.md) ·
+  Önlemin testi: [Güvenlik testleri](guvenlik-testleri.md)
 - Çalışan karşılık: [`uygulama/docs/GUVENLIK.md`](../../uygulama/docs/GUVENLIK.md) (§1 tehdit modeli, §5 bilinen
   sınırlar), kural testi [`rules.test.ts`](../../uygulama/api/test/rules.test.ts)
 - Yetki modeli: [Yetkilendirme](../30-arkauc/yetkilendirme.md) · Kimlik: [Kimlik doğrulama](../30-arkauc/kimlik-dogrulama.md)
+- Kararı yazmak: [Tasarım kararı](../00-yontem/tasarim-karari.md) · Kimlik ve yetki mimarisi:
+  [Kimlik ve yetki mimarisi](../40-sistem-tasarimi/kimlik-ve-yetki-mimarisi.md)

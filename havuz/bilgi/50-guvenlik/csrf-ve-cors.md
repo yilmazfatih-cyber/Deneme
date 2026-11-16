@@ -261,3 +261,4 @@ tamam
   [Kimlik doğrulama](../30-arkauc/kimlik-dogrulama.md) (oturum mu belirteç mi)
 - [Oturum güvenliği](oturum-guvenligi.md) (çerez bayrakları) · [XSS ve CSP](xss-ve-csp.md) (XSS varsa CSRF önlemleri
   işe yaramaz: betik aynı kökenden istek atar)
+- Eşzamanlayıcı belirteç + köken denetimi, sıfırdan ve testli: [`sifirdan/ag/web_catisi/README.md`](../../sifirdan/ag/web_catisi/README.md)

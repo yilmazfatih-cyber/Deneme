@@ -12,6 +12,8 @@ P = tuple[int, int]
 
 
 def _in_triangle(p: P, a: P, b: P, c: P) -> bool:
+    if cross(a, b, c) == 0:
+        return False  # dejenere (doğrusal) üçgen; o durum `_between` ile ele alınır
     signs = [cross(a, b, p), cross(b, c, p), cross(c, a, p)]
     return all(s >= 0 for s in signs) or all(s <= 0 for s in signs)
 

@@ -271,6 +271,8 @@ yeniden başlatma sayısı, yedek tazeliği, sertifika süresi. Çıkış kodu 1
 - [Olay sonrası değerlendirme](olay-sonrasi-degerlendirme.md) — uyarıdan sonra ne yapılır
 - [Veritabanı yedekleme](veritabani-yedekleme.md) · [HTTPS ve sertifikalar](https-ve-sertifikalar.md) (süre izleme)
 - [Dağıtım stratejileri](dagitim-stratejileri.md) — dağıtım sonrası sağlık doğrulaması
+- [Gözlemlenebilirlik](../40-sistem-tasarimi/gozlemlenebilirlik.md) — SLO, hata bütçesi, yanma hızıyla uyarı
+- [Hata yönetimi ve günlükleme](../30-arkauc/hata-yonetimi-ve-gunlukleme.md) · [Günlük ve izleme güvenliği](../50-guvenlik/gunluk-ve-izleme-guvenlik.md)
 - [Ürün ölçütleri](../70-veri/urun-olcutleri.md) — iş ölçütleri
 - Çalışan karşılıklar: [`health/routes.ts`](../../uygulama/api/src/modules/health/routes.ts),
   [`requestLog.ts`](../../uygulama/api/src/http/requestLog.ts), [`uygulama/Dockerfile`](../../uygulama/Dockerfile) (`HEALTHCHECK`)

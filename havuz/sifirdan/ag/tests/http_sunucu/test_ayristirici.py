@@ -133,7 +133,7 @@ def test_hedef_bicimleri() -> None:
 
 
 def test_host_denetimi() -> None:
-    assert validate_host("HTTP/1.1", Headers([("Host", "ornek:8450")]), None) == "ornek:8450"
+    assert validate_host("HTTP/1.1", Headers([("Host", "ornek:8080")]), None) == "ornek:8080"
     assert validate_host("HTTP/1.0", Headers(), None) == ""
     for headers in (Headers(), Headers([("Host", "a"), ("Host", "b")]), Headers([("Host", "a b")])):
         with pytest.raises(HttpError):

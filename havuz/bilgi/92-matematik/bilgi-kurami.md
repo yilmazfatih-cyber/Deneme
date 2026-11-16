@@ -29,16 +29,16 @@ guncellik: 2026-11
 
 ## Karar tablosu
 
-| Soru                                                               | Ölçü                                     | Dikkat                                                        |
-| ------------------------------------------------------------------ | ---------------------------------------- | ------------------------------------------------------------- |
-| "Bu dağılım ne kadar belirsiz?"                                    | Entropi                                  | Küçük örneklemden kestirilen entropi düşük çıkar              |
-| "Modelin olasılıkları gerçeğe ne kadar yakın?"                     | Çapraz entropi / log-kayıp               | Aynı veri kümesinde karşılaştırın                             |
-| "İki dağılımın farkı?" (yön önemli)                                | KL ıraksaması                            | `q = 0` olan yerde sonsuz; yumuşatın                          |
-| "İki dağılımın farkı?" (simetrik, sınırlı)                         | Jensen–Shannon ıraksaması                | Değeri 0–1 bit arası                                          |
-| Aynı belirteçleyicili iki dil modeli                               | Şaşkınlık                                | Aynı sınama metni, aynı bağlam uzunluğu                       |
-| Farklı belirteçleyicili iki dil modeli                             | Karakter (ya da bayt) başına bit         | Şaşkınlık burada yanıltır                                     |
-| "Bu sütun hedef hakkında bilgi taşıyor mu?"                        | Karşılıklı bilgi                         | Doğrusal olmayan ilişkiyi de yakalar; korelasyondan geniş     |
-| "Bu veri ne kadar sıkışabilir?"                                    | Entropi (sembol başına bit) × uzunluk    | Bağımlılıklı veride sembol entropisi üst sınırdır, alt değil  |
+| Soru                                           | Ölçü                                  | Dikkat                                                       |
+| ---------------------------------------------- | ------------------------------------- | ------------------------------------------------------------ |
+| "Bu dağılım ne kadar belirsiz?"                | Entropi                               | Küçük örneklemden kestirilen entropi düşük çıkar             |
+| "Modelin olasılıkları gerçeğe ne kadar yakın?" | Çapraz entropi / log-kayıp            | Aynı veri kümesinde karşılaştırın                            |
+| "İki dağılımın farkı?" (yön önemli)            | KL ıraksaması                         | `q = 0` olan yerde sonsuz; yumuşatın                         |
+| "İki dağılımın farkı?" (simetrik, sınırlı)     | Jensen–Shannon ıraksaması             | Değeri 0–1 bit arası                                         |
+| Aynı belirteçleyicili iki dil modeli           | Şaşkınlık                             | Aynı sınama metni, aynı bağlam uzunluğu                      |
+| Farklı belirteçleyicili iki dil modeli         | Karakter (ya da bayt) başına bit      | Şaşkınlık burada yanıltır                                    |
+| "Bu sütun hedef hakkında bilgi taşıyor mu?"    | Karşılıklı bilgi                      | Doğrusal olmayan ilişkiyi de yakalar; korelasyondan geniş    |
+| "Bu veri ne kadar sıkışabilir?"                | Entropi (sembol başına bit) × uzunluk | Bağımlılıklı veride sembol entropisi üst sınırdır, alt değil |
 
 ## Entropi
 
@@ -254,17 +254,17 @@ Pratik sonuçlar: şifreli ya da zaten sıkıştırılmış veri (JPEG, MP4, ZIP
 
 ## Tuzaklar
 
-| Belirti                                                       | Neden                                                         | Çözüm                                                         |
-| ------------------------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------- |
-| İki raporda aynı modelin kaybı 1,44 kat farklı                | Biri bit (`log₂`), öteki nat (`ln`)                           | Birimi her sayının yanına yazın                               |
-| Yeni belirteçleyicili model şaşkınlıkta "çok daha iyi"        | Şaşkınlık belirteç başınadır; belirteçler farklı              | Karakter/bayt başına bit ile karşılaştırın                    |
-| Şaşkınlıklar farklı sınama metinlerinde karşılaştırılmış      | Metnin zorluğu farklı                                         | Aynı metin, aynı bağlam uzunluğu, aynı ön işleme              |
-| Kayıp `inf`/`nan`                                             | Modelin 0 olasılık verdiği sonuç gerçekleşti; `log(0)`        | Olasılığı kırpın ya da kaybı logit üzerinden hesaplayın       |
-| KL ıraksaması sonsuz çıktı                                    | `q`, `p`'nin desteklediği bir sonuca 0 veriyor                | Yumuşatma (Laplace), ya da Jensen–Shannon                     |
-| `KL(p‖q)` ile `KL(q‖p)` karıştırıldı                          | Simetrik değil; yönler farklı davranış ödüllendirir           | Hangisinin "gerçek" dağılım olduğunu yazın                    |
-| Küçük örneklemde entropi beklenenden düşük                    | Görülmeyen semboller hesaba girmiyor                          | Daha çok veri; yanlılık düzeltmeli kestirici                  |
-| Şifreli veriyi sıkıştırmak hiçbir şey kazandırmadı             | Şifreli veri rastgele görünür                                 | Önce sıkıştır, sonra şifrele                                   |
-| Bir sütunun hedefle karşılıklı bilgisi neredeyse `H(Y)`       | Büyük olasılıkla sızıntı                                      | Sütunun tahmin anında bilinip bilinmediğini denetleyin        |
+| Belirti                                                  | Neden                                                  | Çözüm                                                   |
+| -------------------------------------------------------- | ------------------------------------------------------ | ------------------------------------------------------- |
+| İki raporda aynı modelin kaybı 1,44 kat farklı           | Biri bit (`log₂`), öteki nat (`ln`)                    | Birimi her sayının yanına yazın                         |
+| Yeni belirteçleyicili model şaşkınlıkta "çok daha iyi"   | Şaşkınlık belirteç başınadır; belirteçler farklı       | Karakter/bayt başına bit ile karşılaştırın              |
+| Şaşkınlıklar farklı sınama metinlerinde karşılaştırılmış | Metnin zorluğu farklı                                  | Aynı metin, aynı bağlam uzunluğu, aynı ön işleme        |
+| Kayıp `inf`/`nan`                                        | Modelin 0 olasılık verdiği sonuç gerçekleşti; `log(0)` | Olasılığı kırpın ya da kaybı logit üzerinden hesaplayın |
+| KL ıraksaması sonsuz çıktı                               | `q`, `p`'nin desteklediği bir sonuca 0 veriyor         | Yumuşatma (Laplace), ya da Jensen–Shannon               |
+| `KL(p‖q)` ile `KL(q‖p)` karıştırıldı                     | Simetrik değil; yönler farklı davranış ödüllendirir    | Hangisinin "gerçek" dağılım olduğunu yazın              |
+| Küçük örneklemde entropi beklenenden düşük               | Görülmeyen semboller hesaba girmiyor                   | Daha çok veri; yanlılık düzeltmeli kestirici            |
+| Şifreli veriyi sıkıştırmak hiçbir şey kazandırmadı       | Şifreli veri rastgele görünür                          | Önce sıkıştır, sonra şifrele                            |
+| Bir sütunun hedefle karşılıklı bilgisi neredeyse `H(Y)`  | Büyük olasılıkla sızıntı                               | Sütunun tahmin anında bilinip bilinmediğini denetleyin  |
 
 ## Denetim listesi
 

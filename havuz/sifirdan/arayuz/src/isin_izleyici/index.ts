@@ -3,7 +3,16 @@
 // Web Worker girişi worker.ts'tedir (buradan dışa aktarılmaz; `new Worker(new URL(...))` ile yüklenir).
 // Ayrıntılı anlatım: README.md.
 export * from './vec.ts'
-export { EPS, intersect, intersectSphere, intersectPlane, intersectTriangle, normalAt, type Ray, type Shape } from './geometry.ts'
+export {
+  EPS,
+  intersect,
+  intersectSphere,
+  intersectPlane,
+  intersectTriangle,
+  normalAt,
+  type Ray,
+  type Shape,
+} from './geometry.ts'
 export { material, colorAt, type Material } from './material.ts'
 export { Bvh, hitBox, shapeBox, type Box } from './bvh.ts'
 export { Scene, type SceneSpec, type Light, type CameraSpec } from './scene.ts'

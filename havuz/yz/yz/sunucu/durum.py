@@ -87,20 +87,28 @@ class SunucuDurumu:
             saglayici.kapat()
 
 
+ANAHTAR_HATASI = (
+    "API anahtarı eksik ya da yanlış. Authorization: Bearer <anahtar> başlığını gönderin."
+)
+
+
+def anahtar_gecerli(basliklar: Mapping[str, str], beklenen: str) -> bool:
+    """İstek başlıklarındaki anahtar (Authorization: Bearer … ya da X-API-Key) beklenenle aynı mı?"""
+    gelen = basliklar.get("x-api-key") or ""
+    yetki = basliklar.get("authorization") or ""
+    if kucuk_ascii(yetki[:7]) == "bearer ":
+        gelen = yetki[7:].strip()
+    return hmac.compare_digest(gelen.encode(), beklenen.encode())
+
+
 def anahtar_denetle(istek: Request) -> None:
-    """API anahtarı tanımlıysa her istekte ister (Authorization: Bearer … ya da X-API-Key)."""
+    """API anahtarı tanımlıysa her istekte ister. Asıl denetim gövde okunmadan önce sunucu/kapi.py'de
+    yapılır; bu bağımlılık ikinci savunma hattıdır (uç başka bir uygulamaya bağlanırsa da korunsun)."""
     durum: SunucuDurumu = istek.app.state.durum
     if durum.api_anahtari is None or istek.url.path in ACIK_YOLLAR:
         return
-    gelen = istek.headers.get("x-api-key") or ""
-    yetki = istek.headers.get("authorization") or ""
-    if kucuk_ascii(yetki[:7]) == "bearer ":
-        gelen = yetki[7:].strip()
-    if not hmac.compare_digest(gelen.encode(), durum.api_anahtari.encode()):
-        raise HTTPException(
-            status_code=401,
-            detail="API anahtarı eksik ya da yanlış. Authorization: Bearer <anahtar> başlığını gönderin.",
-        )
+    if not anahtar_gecerli(istek.headers, durum.api_anahtari):
+        raise HTTPException(status_code=401, detail=ANAHTAR_HATASI)
 
 
 def guvenli_dosya_adi(ad: str | None) -> str:

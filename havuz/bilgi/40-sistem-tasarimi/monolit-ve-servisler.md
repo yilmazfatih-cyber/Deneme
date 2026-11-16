@@ -158,7 +158,7 @@ testiyle** korunur ([API tasarımı](../30-arkauc/api-tasarimi.md) → sürümle
 2. Modül içindeki çağrılar arayüz üstünden; öteki modüllerle iletişim olaylarla.
 3. Modül ayrı sürece taşınır; arayüz işlev çağrısından HTTP/kuyruğa döner (bu adımda yalnız taşıma katmanı değişir).
 4. Trafik kademeli yönlendirilir; eski yol bir süre yedek kalır; geri dönüş planı yazılıdır
-   ([Tasarım kararı şablonu](tasarim-karari-sablonu.md)).
+   ([Tasarım kararı şablonu](tasarim-karari-sablonu.md), [Dağıtım stratejileri](../60-devops/dagitim-stratejileri.md)).
 
 Ekip boyutu notu: sistemler, onları kuran ekiplerin iletişim yapısını kopyalar (Conway yasası). Tek bir sahip ve
 küçük bir model için doğru yapı tek bir dağıtım birimidir; servis sayısı ekip sayısını geçmemelidir.

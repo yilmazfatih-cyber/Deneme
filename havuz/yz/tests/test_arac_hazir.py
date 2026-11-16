@@ -104,6 +104,18 @@ def test_dosya_kacis_denemeleri_reddedilir(kok, yol):
     assert sonuc.hata and ("dışında" in sonuc.icerik or "Gizli" in sonuc.icerik)
 
 
+def test_dosya_listele_kok_disina_ya_da_gizliye_cikan_baglari_gostermez(kok, tmp_path):
+    """Kök dışına ya da gizli dosyaya işaret eden bağ listede görünmez (dışarıdaki dosyanın varlığı ve boyutu
+    sızmasın); kırık bağ listelemeyi bozmaz."""
+    os.symlink(tmp_path / "olmayan.txt", kok / "kirik.txt")
+    os.symlink(kok / ".env", kok / "env_bagi.txt")
+    listele, _ = dosya_araclari(kok)
+    sonuc = listele.calistir({})
+    assert not sonuc.hata and "a.txt" in sonuc.icerik
+    for ad in ("bag.txt", "kirik.txt", "env_bagi.txt"):
+        assert ad not in sonuc.icerik, ad
+
+
 def test_dosya_kok_yoksa_hata(tmp_path):
     with pytest.raises(GuvenlikHatasi):
         dosya_araclari(tmp_path / "yok")
@@ -173,11 +185,11 @@ def test_hesap_yuvarlama_basamagi_sinirli():
 
 
 def test_sqlite_dev_deger_ve_uzun_sorgu_reddedilir(veritabani):
-    """Tek sorgu yüzlerce MB ayırtamaz (randomblob/hex/printf/||); zaman sınırı bunu durduramıyordu."""
+    """Tek sorgu yüzlerce MB ayırtamaz (randomblob/zeroblob/hex/||); zaman sınırı bunu durduramıyordu."""
     _, sorgula = sqlite_araclari(veritabani)
     for sorgu in (
         "SELECT length(hex(randomblob(5000000)))",
-        "SELECT length(printf('%.*c', 3000000, 'x'))",
+        "SELECT length(hex(zeroblob(2000000)))",
         "WITH RECURSIVE r(s, n) AS (SELECT 'ab', 0 UNION ALL SELECT s || s, n + 1 FROM r WHERE n < 25)"
         " SELECT max(length(s)) FROM r",
     ):
@@ -186,15 +198,17 @@ def test_sqlite_dev_deger_ve_uzun_sorgu_reddedilir(veritabani):
     uzun = sorgula.calistir({"sorgu": "SELECT 1" + " + 1" * 3000})
     assert uzun.hata and "çok uzun" in uzun.icerik
     # Olağan sorgular etkilenmez.
-    assert "müşteri2" in sorgula.calistir({"sorgu": "SELECT musteri FROM siparis WHERE id = 2"}).icerik
+    assert (
+        "müşteri2" in sorgula.calistir({"sorgu": "SELECT musteri FROM siparis WHERE id = 2"}).icerik
+    )
 
 
 def test_sqlite_cikti_bellek_butcesiyle_kesilir(veritabani):
-    """Her biri ~1 MB'lık 50 satır (50 MB) belleğe alınmaz; bütçe dolunca okuma durur."""
+    """Her biri 200 KB'lık 30 satır (6 MB) belleğe alınmaz; ~1 MB'lık bütçe dolunca okuma durur."""
     _, sorgula = sqlite_araclari(veritabani, azami_satir=50)
-    sorgu = "SELECT id, hex(randomblob(400000)) AS veri FROM siparis"
+    sorgu = "SELECT id, hex(randomblob(100000)) AS veri FROM siparis"
     sonuc = sorgula.calistir({"sorgu": sorgu})
     assert not sonuc.hata
     _, cagrilar = sqlite_araclari(veritabani, azami_satir=50)
     ham = cagrilar.islev(sorgu=sorgu)
-    assert len(ham) < 3_000_000 and "daha fazlası var" in ham
+    assert len(ham) < 1_500_000 and "daha fazlası var" in ham

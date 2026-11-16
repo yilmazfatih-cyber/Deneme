@@ -27,17 +27,17 @@ guncellik: 2026-11
 
 ## Karar tablosu
 
-| İş                                                     | Araç                                       | Dikkat                                                 |
-| ------------------------------------------------------ | ------------------------------------------ | ------------------------------------------------------ |
-| Koşulu sadeleştirmek/yeniden yazmak                    | Doğruluk tablosuyla eşdeğerlik testi       | `not (a and b)` = `not a or not b` (De Morgan)         |
-| "Hepsi geçti mi?" denetimi                             | `all(...)` + **boş değil** denetimi        | `all([])` doğrudur                                     |
-| Yinelenenleri bulmak, iki listeyi karşılaştırmak       | Küme işlemleri                             | Kümeye girecek anahtar önce normalleştirilir           |
-| Normalleştirilmiş anahtarı benzersiz kimlik yapmak     | Birebirlik (injectivity) denetimi          | Farklı kayıtlar aynı anahtara düşebilir                |
-| Yaklaşık eşit değerleri gruplamak                      | Sabit kovalara yuvarlama ya da kümeleme    | `isclose` geçişli değil; sıraya bağlı gruplar çıkar     |
-| Gün/saat/hafta hesabı, dairesel indeks                 | `%` (Python) ya da `((a % m) + m) % m`     | JavaScript/C'de eksi kalan eksi çıkar                  |
-| Yazım hatası yakalayan kimlik/numara                   | Luhn (kart), mod 97 (IBAN), ülke algoritması | Sağlama "geçerli biçim" der, "var olan hesap" demez  |
-| Görev/paket/geçiş sırası                               | Topolojik sıralama (Kahn)                  | Döngüyü açık bir hatayla bildirin                      |
-| Ağırlıksız en kısa yol (en az adım)                    | Genişlik öncelikli arama (BFS)             | Ağırlıklı ise Dijkstra                                 |
+| İş                                                 | Araç                                         | Dikkat                                              |
+| -------------------------------------------------- | -------------------------------------------- | --------------------------------------------------- |
+| Koşulu sadeleştirmek/yeniden yazmak                | Doğruluk tablosuyla eşdeğerlik testi         | `not (a and b)` = `not a or not b` (De Morgan)      |
+| "Hepsi geçti mi?" denetimi                         | `all(...)` + **boş değil** denetimi          | `all([])` doğrudur                                  |
+| Yinelenenleri bulmak, iki listeyi karşılaştırmak   | Küme işlemleri                               | Kümeye girecek anahtar önce normalleştirilir        |
+| Normalleştirilmiş anahtarı benzersiz kimlik yapmak | Birebirlik (injectivity) denetimi            | Farklı kayıtlar aynı anahtara düşebilir             |
+| Yaklaşık eşit değerleri gruplamak                  | Sabit kovalara yuvarlama ya da kümeleme      | `isclose` geçişli değil; sıraya bağlı gruplar çıkar |
+| Gün/saat/hafta hesabı, dairesel indeks             | `%` (Python) ya da `((a % m) + m) % m`       | JavaScript/C'de eksi kalan eksi çıkar               |
+| Yazım hatası yakalayan kimlik/numara               | Luhn (kart), mod 97 (IBAN), ülke algoritması | Sağlama "geçerli biçim" der, "var olan hesap" demez |
+| Görev/paket/geçiş sırası                           | Topolojik sıralama (Kahn)                    | Döngüyü açık bir hatayla bildirin                   |
+| Ağırlıksız en kısa yol (en az adım)                | Genişlik öncelikli arama (BFS)               | Ağırlıklı ise Dijkstra                              |
 
 ## Mantık: doğruluk tablosu ve eşdeğerlik
 
@@ -345,17 +345,17 @@ zinciri) gerçekten ağaç olduğunu bu sayıyla ve döngü denetimiyle sınayab
 
 ## Tuzaklar
 
-| Belirti                                                         | Neden                                                       | Çözüm                                                        |
-| --------------------------------------------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------ |
-| Yeniden yazılan koşul bazı durumlarda ters çalışıyor            | De Morgan yanlış uygulanmış (`and` → `and`)                 | Eski ve yeni koşulu doğruluk tablosuyla karşılaştırın        |
-| CI "bütün testler geçti" diyor, hiç test koşmamış                | `all([])` doğru (boş doğruluk)                              | "En az bir sonuç var" denetimini ekleyin                     |
-| Benzersiz kısıt farklı kişileri reddediyor                      | Normalleştirme birebir değil (Ayşe = ayse = AYŞE)           | Çakışmaları önceden sayın; kural yazın                        |
-| Aynı veriyle gruplama her seferinde farklı                      | "Yaklaşık eşit" geçişli değil; sıraya bağlı                 | Sabit kovalar ya da açık kümeleme                            |
-| Gün/hafta hesabı eksi sayıda yanlış                             | JavaScript/C'de `%` eksi kalan döndürür                     | `((a % m) + m) % m`                                          |
-| Sunucu eklenince önbellek bütünüyle boşaldı                     | `karma % N` düzeni; N değişince anahtarların çoğu taşındı   | Tutarlı karma                                                |
-| Geçerli görünen kart/IBAN numarası işlemde reddedildi           | Sağlama yalnız biçimi doğrular                              | Sağlamayı ön denetim sayın; asıl doğrulama karşı sistemde    |
-| Bağımlılık sıralaması sonsuz döngüde ya da eksik çıktı          | Döngüsel bağımlılık sessizce yutulmuş                       | Sıralanamayanları listeleyen açık hata                       |
-| Derin çizgede özyinelemeli gezinti `RecursionError` verdi        | Python özyineleme sınırı                                    | Kuyruk/yığınla döngüsel gezinti                              |
+| Belirti                                                   | Neden                                                     | Çözüm                                                     |
+| --------------------------------------------------------- | --------------------------------------------------------- | --------------------------------------------------------- |
+| Yeniden yazılan koşul bazı durumlarda ters çalışıyor      | De Morgan yanlış uygulanmış (`and` → `and`)               | Eski ve yeni koşulu doğruluk tablosuyla karşılaştırın     |
+| CI "bütün testler geçti" diyor, hiç test koşmamış         | `all([])` doğru (boş doğruluk)                            | "En az bir sonuç var" denetimini ekleyin                  |
+| Benzersiz kısıt farklı kişileri reddediyor                | Normalleştirme birebir değil (Ayşe = ayse = AYŞE)         | Çakışmaları önceden sayın; kural yazın                    |
+| Aynı veriyle gruplama her seferinde farklı                | "Yaklaşık eşit" geçişli değil; sıraya bağlı               | Sabit kovalar ya da açık kümeleme                         |
+| Gün/hafta hesabı eksi sayıda yanlış                       | JavaScript/C'de `%` eksi kalan döndürür                   | `((a % m) + m) % m`                                       |
+| Sunucu eklenince önbellek bütünüyle boşaldı               | `karma % N` düzeni; N değişince anahtarların çoğu taşındı | Tutarlı karma                                             |
+| Geçerli görünen kart/IBAN numarası işlemde reddedildi     | Sağlama yalnız biçimi doğrular                            | Sağlamayı ön denetim sayın; asıl doğrulama karşı sistemde |
+| Bağımlılık sıralaması sonsuz döngüde ya da eksik çıktı    | Döngüsel bağımlılık sessizce yutulmuş                     | Sıralanamayanları listeleyen açık hata                    |
+| Derin çizgede özyinelemeli gezinti `RecursionError` verdi | Python özyineleme sınırı                                  | Kuyruk/yığınla döngüsel gezinti                           |
 
 ## Denetim listesi
 

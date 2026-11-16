@@ -16,7 +16,7 @@ import { createLogger, errorFields } from './lib/logger.ts'
 import { cryptoRandom, systemClock } from './lib/random.ts'
 import { createMailer } from './mail/mailer.ts'
 import { runMaintenance } from './maintenance.ts'
-import { promoteAdmins } from './modules/auth/userRepo.ts'
+import { countUnclaimedAdminEmails, promoteAdmins } from './modules/auth/userRepo.ts'
 
 const MAINTENANCE_INTERVAL_MS = 60 * 60_000
 const SHUTDOWN_TIMEOUT_MS = 10_000
@@ -44,6 +44,13 @@ function main(): void {
   if (migrated.applied.length > 0) logger.info('migrasyonlar uygulandı', { files: migrated.applied.join(', ') })
   const promoted = promoteAdmins(db, config.adminEmails, systemClock.now().toISOString())
   if (promoted > 0) logger.info('ADMIN_EMAILS: kullanıcılar yönetici yapıldı', { count: promoted })
+  const unclaimed = countUnclaimedAdminEmails(db, config.adminEmails)
+  if (unclaimed > 0) {
+    logger.warn(
+      'ADMIN_EMAILS: listedeki bazı adreslerin henüz hesabı yok. E-posta doğrulanmadığı için bu adresle İLK kaydolan kişi yönetici olur: hemen kendiniz kaydolun ya da adresi listeden çıkarın.',
+      { count: unclaimed },
+    )
+  }
 
   const mailer = createMailer(config, { db, clock: systemClock, logger })
   const server = createApp({ config, db, clock: systemClock, random: cryptoRandom, mailer, logger })

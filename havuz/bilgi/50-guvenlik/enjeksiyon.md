@@ -334,3 +334,4 @@ NUL → `\00`. Ayırt edici ad (DN) kaçışı başka kuraldır (RFC 4514); ikis
 - Çalışan kod: uygulamada SQL'in tamamı parametreli ([`docs/GUVENLIK.md`](../../uygulama/docs/GUVENLIK.md) →
   "Girdi ve çıktı"); güvenli imleç koşulu [`kutuphane/py/kutuphane/sayfalama.py`](../../kutuphane/py/kutuphane/sayfalama.py);
   model yazdığı SQL için motor düzeyinde koruma [`yz/yz/arac/hazir/sqlite.py`](../../yz/yz/arac/hazir/sqlite.py)
+- Kabukta tırnaklama: [Kabuk ve bash](../10-diller/kabuk-ve-bash.md) · SQL yazımı: [SQL sorgu](../10-diller/sql-sorgu.md)

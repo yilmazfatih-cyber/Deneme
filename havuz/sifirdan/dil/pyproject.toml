@@ -35,7 +35,7 @@ include = [
 
 [tool.setuptools.package-data]
 yorumlayici = ["ornekler/*.tohum", "ornekler/*.beklenen", "DIL.md"]
-test_cercevesi = ["ornekler/*.py"]
+test_cercevesi = ["ornekler/*.py", "ornekler_hatali/*.py"]
 
 [tool.ruff]
 line-length = 100

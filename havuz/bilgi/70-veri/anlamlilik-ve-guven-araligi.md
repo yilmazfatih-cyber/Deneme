@@ -18,9 +18,9 @@ guncellik: 2026-11
 şansla açıklamak zordur. Söylemedikleri: farkın büyüklüğü, önemi, "B'nin daha iyi olma olasılığı" ve sonucun
 tekrarlanacağı.
 
-**Güven aralığı (GA):** verinin desteklediği değerler aralığıdır. Aynı yöntem birçok örneklemde uygulansa
-aralıkların yaklaşık %95'i gerçek değeri kapsar. GA hem büyüklüğü hem belirsizliği gösterdiği için p değerinden
-fazlasını söyler: raporda farkın yanına GA yazılır, p değeri en çok onun yanında durur.
+**Güven aralığı (GA, confidence interval):** verinin desteklediği değerler aralığıdır. Aynı yöntem birçok örneklemde
+uygulansa aralıkların yaklaşık %95'i gerçek değeri kapsar. GA hem büyüklüğü hem belirsizliği gösterdiği için p
+değerinden fazlasını söyler: raporda farkın yanına GA yazılır, p değeri en çok onun yanında durur.
 
 **İstatistiksel anlamlılık pratik önem değildir.** Çok veride önemsiz fark anlamlı çıkar; az veride büyük fark
 anlamsız çıkabilir. Karar, GA'nın iş için önemli eşikle ilişkisinden verilir; eşik analizden önce yazılır.
@@ -279,5 +279,11 @@ Her yol tek başına makuldür; hepsini deneyip birini seçmek yanlış alarm or
 - [Betimsel istatistik](betimsel-istatistik.md) — ortalama, ortanca, çarpık dağılım
 - [Korelasyon ve nedensellik](korelasyon-ve-nedensellik.md) — anlamlı ilişki neden değildir
 - [Analiz raporu yazma](analiz-raporu-yazma.md) — belirsizliği raporda söylemek
-- Önyükleme güven aralığı (katmanlı, gruplu, iki modelin farkı): [`ml-temel/ml_temel/olcut/bootstrap.py`](../../ml-temel/ml_temel/olcut/bootstrap.py);
-  okuma kuralları: [`ml-temel/docs/DEGERLENDIRME.md`](../../ml-temel/docs/DEGERLENDIRME.md) (4. bölüm)
+- Önyükleme güven aralığı (katmanlı, gruplu, iki modelin farkı):
+  [`ml-temel/ml_temel/olcut/bootstrap.py`](../../ml-temel/ml_temel/olcut/bootstrap.py); okuma kuralları:
+  [`ml-temel/docs/DEGERLENDIRME.md`](../../ml-temel/docs/DEGERLENDIRME.md) (4. bölüm)
+- [İstatistiksel kestirim](../92-matematik/istatistiksel-kestirim.md) — standart hata, 3'ler kuralı, önyükleme
+- [Olasılık temelleri](../92-matematik/olasilik-temelleri.md) — taban oranı yanılgısı, Bayes kuralı
+- [Değerlendirme ölçütleri](../80-ml/degerlendirme-olcutleri.md) — model ölçütlerinde güven aralığı
+- [LLM değerlendirme](../85-llm/degerlendirme.md) — iki modeli ya da istemi küçük örneklemde karşılaştırmak
+- [Anket ve örneklem](anket-ve-orneklem.md) — hata payı, NPS'in belirsizliği

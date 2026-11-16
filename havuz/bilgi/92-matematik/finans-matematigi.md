@@ -30,16 +30,16 @@ guncellik: 2026-11
 
 ## Karar tablosu
 
-| Soru                                                 | Hesap                                                  | Tuzak                                                  |
-| ---------------------------------------------------- | ------------------------------------------------------ | ------------------------------------------------------ |
-| Oran iki dönem arasında ne kadar değişti             | Yüzde puan (fark) ve yüzde (göreli) **ikisi birden**   | "%5 arttı" belirsizdir                                 |
-| Ardışık zam/indirim                                  | Çarpanları çarpın: `(1 + a)(1 + b) − 1`                | Toplamak yanlış                                        |
-| Aylık oranlı teklifin yıllık maliyeti                | Efektif: `(1 + r_ay)^12 − 1`                           | `r_ay · 12` maliyeti küçük gösterir                    |
-| Getiri enflasyonu yendi mi                           | Reel: `(1 + n)/(1 + e) − 1`                            | `n − e` yüksek enflasyonda yanıltır                    |
-| Eşit taksit tutarı                                   | `A = P · r / (1 − (1 + r)^(−n))`                       | Kuruş yuvarlaması: son taksit farkı                    |
-| Yatırım kârlı mı                                     | NBD (iskonto oranıyla)                                 | Oran seçimi sonucu belirler                            |
-| Yatırımın getiri oranı                               | İç verim oranı (NBD = 0), ikiye bölmeyle               | Nakit akışı birden çok kez işaret değiştirirse birden çok kök |
-| KDV dahil fiyattan KDV hariç tutar                   | `dahil / (1 + oran)`                                   | `dahil · (1 − oran)` yanlış                            |
+| Soru                                     | Hesap                                                | Tuzak                                                         |
+| ---------------------------------------- | ---------------------------------------------------- | ------------------------------------------------------------- |
+| Oran iki dönem arasında ne kadar değişti | Yüzde puan (fark) ve yüzde (göreli) **ikisi birden** | "%5 arttı" belirsizdir                                        |
+| Ardışık zam/indirim                      | Çarpanları çarpın: `(1 + a)(1 + b) − 1`              | Toplamak yanlış                                               |
+| Aylık oranlı teklifin yıllık maliyeti    | Efektif: `(1 + r_ay)^12 − 1`                         | `r_ay · 12` maliyeti küçük gösterir                           |
+| Getiri enflasyonu yendi mi               | Reel: `(1 + n)/(1 + e) − 1`                          | `n − e` yüksek enflasyonda yanıltır                           |
+| Eşit taksit tutarı                       | `A = P · r / (1 − (1 + r)^(−n))`                     | Kuruş yuvarlaması: son taksit farkı                           |
+| Yatırım kârlı mı                         | NBD (iskonto oranıyla)                               | Oran seçimi sonucu belirler                                   |
+| Yatırımın getiri oranı                   | İç verim oranı (NBD = 0), ikiye bölmeyle             | Nakit akışı birden çok kez işaret değiştirirse birden çok kök |
+| KDV dahil fiyattan KDV hariç tutar       | `dahil / (1 + oran)`                                 | `dahil · (1 − oran)` yanlış                                   |
 
 ## Yüzde ve yüzde puan
 
@@ -224,17 +224,17 @@ yazın, tek bir yardımcıda uygulayın, toplamların eşitliğini test edin. Ha
 
 ## Tuzaklar
 
-| Belirti                                                     | Neden                                                          | Çözüm                                                           |
-| ----------------------------------------------------------- | -------------------------------------------------------------- | --------------------------------------------------------------- |
-| "Faiz %5 arttı" cümlesi iki farklı anlama çekiliyor          | Yüzde ile yüzde puan karıştı                                   | İkisini birden yazın: "5 puan (%12,5)"                         |
-| Ardışık indirim/zam sonrası fiyat beklenenden farklı        | Yüzdeler toplandı                                              | Çarpanları çarpın                                               |
-| Teklifin yıllık maliyeti bankanınkinden düşük çıktı         | Aylık oran 12 ile çarpıldı (nominal)                           | Efektif oran: `(1 + r)^12 − 1`                                  |
-| Reel getiri yüksek enflasyonda olduğundan iyi görünüyor     | `nominal − enflasyon` yaklaşımı                                | `(1 + n)/(1 + e) − 1`                                           |
-| Taksit planında toplam anapara 99 999,98 TL                 | Yuvarlama artığı kapanmamış; ya da `float`                     | Son taksitte kalanı kapatın; `Decimal`/kuruş                    |
-| Plan bankanınkiyle birkaç kuruş tutmuyor                    | Farklı yuvarlama kipi, faiz işletme günü, vergi kesintisi      | Bankanın kuralını öğrenin; birebir test                         |
-| KDV hariç tutar %4 eksik                                    | `dahil · (1 − oran)` kullanıldı                                | `dahil / (1 + oran)`                                            |
-| Fatura toplamı KDV satırlarının toplamından 1 kuruş farklı  | Satır ve toplam ayrı yuvarlandı                                | Tek kural seçin, belgeye yazın, test edin                       |
-| İç verim oranı hesabı "kök yok" diyor ya da iki farklı değer | Akış birden çok kez işaret değiştiriyor                        | NBD'yi oranlara karşı tablolayın; NBD ile karar verin           |
+| Belirti                                                      | Neden                                                     | Çözüm                                                 |
+| ------------------------------------------------------------ | --------------------------------------------------------- | ----------------------------------------------------- |
+| "Faiz %5 arttı" cümlesi iki farklı anlama çekiliyor          | Yüzde ile yüzde puan karıştı                              | İkisini birden yazın: "5 puan (%12,5)"                |
+| Ardışık indirim/zam sonrası fiyat beklenenden farklı         | Yüzdeler toplandı                                         | Çarpanları çarpın                                     |
+| Teklifin yıllık maliyeti bankanınkinden düşük çıktı          | Aylık oran 12 ile çarpıldı (nominal)                      | Efektif oran: `(1 + r)^12 − 1`                        |
+| Reel getiri yüksek enflasyonda olduğundan iyi görünüyor      | `nominal − enflasyon` yaklaşımı                           | `(1 + n)/(1 + e) − 1`                                 |
+| Taksit planında toplam anapara 99 999,98 TL                  | Yuvarlama artığı kapanmamış; ya da `float`                | Son taksitte kalanı kapatın; `Decimal`/kuruş          |
+| Plan bankanınkiyle birkaç kuruş tutmuyor                     | Farklı yuvarlama kipi, faiz işletme günü, vergi kesintisi | Bankanın kuralını öğrenin; birebir test               |
+| KDV hariç tutar %4 eksik                                     | `dahil · (1 − oran)` kullanıldı                           | `dahil / (1 + oran)`                                  |
+| Fatura toplamı KDV satırlarının toplamından 1 kuruş farklı   | Satır ve toplam ayrı yuvarlandı                           | Tek kural seçin, belgeye yazın, test edin             |
+| İç verim oranı hesabı "kök yok" diyor ya da iki farklı değer | Akış birden çok kez işaret değiştiriyor                   | NBD'yi oranlara karşı tablolayın; NBD ile karar verin |
 
 ## Denetim listesi
 
@@ -265,6 +265,8 @@ yazın, tek bir yardımcıda uygulayın, toplamların eşitliğini test edin. Ha
 - [Sayılar ve kayan nokta](sayilar-ve-kayan-nokta.md): kuruş, `Decimal`, yuvarlama kipleri
 - [Sayısal yöntemler](sayisal-yontemler.md): ikiye bölme ve durma ölçütü (iç verim oranı)
 - [Tahmin ve büyüklük sezgisi](tahmin-ve-buyukluk-sezgisi.md): "bu sayı makul mü" denetimi
+- [Getiri ve risk ölçüleri](getiri-ve-risk.md): geometrik ortalama, oynaklık, düşüş, geriye dönük sınama
+- [Adil paylaştırma ve borç sadeleştirme](adil-paylastirma.md): tutarı kuruşu kuruşuna bölmek
 - [Fiyatlandırma](../95-urun/fiyatlandirma.md): fiyat sayfasında KDV gösterimi, birim ekonomisi
 - Kuruş temelli para tipi, KDV dahil/hariç, toplamı koruyan paylaştırma:
   [`kutuphane/py/kutuphane/para.py`](../../kutuphane/py/kutuphane/para.py)

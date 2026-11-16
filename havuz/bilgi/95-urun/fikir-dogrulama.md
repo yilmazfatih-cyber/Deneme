@@ -33,7 +33,7 @@ Kod yazdırmak ucuzladı; yanlış ürüne giden haftalar, tanıtım emeği ve d
 | ----------------------------------------- | ----------------------------------------------------------------- | ----------------------------------- | ----------------------------------- |
 | Problem gerçek mi, ne sıklıkta?           | 5–10 problem görüşmesi ([görüşme notu](kullanici-gorusmesi.md))   | Sıklık, bugünkü yol, bugünkü maliyet | İlgi, ödeme isteği                  |
 | İnsanlar bunu ister mi?                   | Tanıtım sayfası + erken erişim formu ("duman testi", smoke test)  | Mesajın ilgi çekmesi                | Kullanım, ödeme                     |
-| Para öderler mi?                          | Ön satış: iadeli kaparo, ilk ayın ödemesi, imzalı niyet mektubu   | En güçlü talep sinyali              | Uzun süre kalıcılık                 |
+| Para öderler mi?                          | Ön satış: iadeli kapora, ilk ayın ödemesi, imzalı niyet mektubu   | En güçlü talep sinyali              | Uzun süre kalıcılık                 |
 | Çözüm gerçekten işe yarıyor mu?           | Elle yapılan hizmet (concierge): işi kodsuz, elle siz yaparsınız  | Değer, süreç, gerçek ihtiyaçlar     | Ölçeklenebilirlik                   |
 | Kullanıcı otomasyonu kabul eder mi?       | Önde ürün, arkada insan ("sihirbaz deneyi", Wizard of Oz)         | Deneyim ve beklenti                 | Teknik yapılabilirlik               |
 | Bu özelliği isteyen var mı?               | Sahte kapı (fake door): düğme var, tıklayınca "yakında, haber verelim mi?" | Merak ve tıklama          | Gerçek kullanım                     |
@@ -155,8 +155,10 @@ print(f"31/240 → %{100 * low:.1f} – %{100 * high:.1f}")
 31/240 → %9.3 – %17.8
 ```
 
-Bu kural istatistik dersinin yerine geçmez; iki seçeneği karşılaştıran deneyler (A/B) için `70-veri` kümesine
-bakın. Ürün kararı için yeterli olan şudur: **ölçütü önceden yaz, aralığa bak, "belirsiz"i kabul et.**
+Bu kural istatistik dersinin yerine geçmez; aralıkların ayrıntısı için
+[anlamlılık ve güven aralığı](../70-veri/anlamlilik-ve-guven-araligi.md), iki seçeneği karşılaştıran deneyler için
+[A/B testi](../70-veri/ab-testi.md). Ürün kararı için yeterli olan şudur: **ölçütü önceden yaz, aralığa bak,
+"belirsiz"i kabul et.**
 
 ### Deney türlerini doğru yapmak
 
@@ -217,6 +219,7 @@ bakın. Ürün kararı için yeterli olan şudur: **ölçütü önceden yaz, ara
 ## İlgili
 
 - [Kullanıcı görüşmesi](kullanici-gorusmesi.md): problem iddiasını sınamanın ilk yolu.
+- [Segment ve konumlandırma](segment-ve-konumlandirma.md): deneyin yapılacağı dar grubu seçmek; alternatifler tablosu.
 - [MVP kapsamı](mvp-kapsami.md): doğrulanan problemden en küçük değerli ürüne.
 - [Tanıtım sayfası](tanitim-sayfasi.md) ve [ölçüm ve öğrenme](olcum-ve-ogrenme.md): duman testini kurmak ve okumak.
 - [İşi parçalama](../00-yontem/isi-parcalama.md): teknik deneyin (spike) yeri.

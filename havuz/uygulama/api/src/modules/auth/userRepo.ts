@@ -116,6 +116,14 @@ export function deleteUser(db: Db, id: string): void {
   db.run('DELETE FROM users WHERE id = ?', id)
 }
 
+/**
+ * ADMIN_EMAILS'te olup henüz hesabı OLMAYAN adres sayısı. E-posta doğrulaması olmadığı için bu adreslerle ilk
+ * kaydolan kişi yönetici olur; sunucu açılışta bunu (adresi değil, sayıyı) uyarı olarak yazar (index.ts).
+ */
+export function countUnclaimedAdminEmails(db: Db, emails: readonly string[]): number {
+  return emails.filter((email) => !findUserByEmail(db, email)).length
+}
+
 /** ADMIN_EMAILS listesindeki kullanıcıları yönetici yapar (kimseyi düşürmez). Değişen satır sayısını döndürür. */
 export function promoteAdmins(db: Db, emails: readonly string[], now: string): number {
   return db.transaction(() => {

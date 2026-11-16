@@ -36,7 +36,7 @@ def test_edge_cases() -> None:
 
 @given(st.sets(st.tuples(st.integers(-6, 6), st.integers(-6, 6)), min_size=3, max_size=10))
 def test_pick_matches_brute_force_counts(points: set[P]) -> None:
-    polygon = convex_hull(list(points))
+    polygon = [(int(x), int(y)) for x, y in convex_hull(list(points))]
     if len(polygon) < 3:
         return
     inside = boundary = 0

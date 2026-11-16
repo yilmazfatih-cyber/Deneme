@@ -27,14 +27,14 @@ guncellik: 2026-11
 
 ## Karar tablosu
 
-| Soru                                                         | Yöntem                                      | Not                                                      |
-| ------------------------------------------------------------ | ------------------------------------------- | -------------------------------------------------------- |
-| Yalnız en baskın yön/özdeğer (sıralama, kararlı durum)       | Güç yinelemesi                              | Hız `λ₂/λ₁` oranına bağlı                                 |
-| Küçük simetrik matrisin bütün özdeğerleri                    | Kütüphanede simetrik çözücü (`eigh`)        | Genel `eig` karmaşık sayı ve sırasız sonuç verebilir     |
-| Boyut indirgeme, görselleştirme, gürültü azaltma             | PCA (SVD ile), önce merkezleme + ölçekleme  | Kaç bileşen: açıklanan varyansın birikimli eğrisi        |
-| Kullanıcı × ürün matrisinden öneri, gizli etken              | Düşük ranklı ayrışım (kesilmiş SVD, matris tamamlama) | Eksik değerlerle düz SVD yapılmaz                |
-| Doğrusal sistem çözmek                                       | Eleme/QR ([lineer cebir](lineer-cebir-sezgisi.md)) | Özdeğer ayrışımı gerekmez                          |
-| Doğrusal olmayan yapı (kıvrımlı küme) görselleştirme         | PCA yetmez; t-SNE/UMAP gibi yöntemler       | Onların eksenleri ve uzaklıkları yorumlanmaz             |
+| Soru                                                   | Yöntem                                                | Not                                                  |
+| ------------------------------------------------------ | ----------------------------------------------------- | ---------------------------------------------------- |
+| Yalnız en baskın yön/özdeğer (sıralama, kararlı durum) | Güç yinelemesi                                        | Hız `λ₂/λ₁` oranına bağlı                            |
+| Küçük simetrik matrisin bütün özdeğerleri              | Kütüphanede simetrik çözücü (`eigh`)                  | Genel `eig` karmaşık sayı ve sırasız sonuç verebilir |
+| Boyut indirgeme, görselleştirme, gürültü azaltma       | PCA (SVD ile), önce merkezleme + ölçekleme            | Kaç bileşen: açıklanan varyansın birikimli eğrisi    |
+| Kullanıcı × ürün matrisinden öneri, gizli etken        | Düşük ranklı ayrışım (kesilmiş SVD, matris tamamlama) | Eksik değerlerle düz SVD yapılmaz                    |
+| Doğrusal sistem çözmek                                 | Eleme/QR ([lineer cebir](lineer-cebir-sezgisi.md))    | Özdeğer ayrışımı gerekmez                            |
+| Doğrusal olmayan yapı (kıvrımlı küme) görselleştirme   | PCA yetmez; t-SNE/UMAP gibi yöntemler                 | Onların eksenleri ve uzaklıkları yorumlanmaz         |
 
 ## Güç yinelemesi: baskın yön ve yakınsama hızı
 
@@ -242,17 +242,17 @@ Gerçek işte SVD'yi kütüphaneden alın (numpy `linalg.svd`, büyük veride ke
 
 ## Tuzaklar
 
-| Belirti                                                       | Neden                                                         | Çözüm                                                             |
-| ------------------------------------------------------------- | ------------------------------------------------------------- | ----------------------------------------------------------------- |
-| Birinci bileşen veriyi değil ortalamayı gösteriyor            | Veri merkezlenmemiş                                           | Önce sütun ortalamalarını çıkarın (kütüphane PCA'sı yapar)        |
-| Tek bileşen "%99,9 açıklıyor" ama işe yaramıyor               | Ölçeksiz veri; en büyük birimli sütun baskın                  | `StandardScaler`; açıklanan oranı ölçekli veride okuyun           |
-| Bileşenlerin işareti çalıştırmadan çalıştırmaya değişiyor     | Özvektör `v` ve `−v` ikisi de geçerli                         | İşaret kuralı (en büyük mutlak öğe pozitif); yorumda işarete dayanmayın |
-| numpy `eigh` sonucunda ilk sütun en önemsiz bileşen            | `eigh` özdeğerleri küçükten büyüğe sıralar                    | Ters çevirin ya da `svd` kullanın (büyükten küçüğe)               |
-| Güç yinelemesi bitmiyor ya da salınıyor                       | `λ₁ ≈ λ₂`, ya da baskın özdeğer negatif                       | Kütüphane çözücüsü; durma ölçütünü vektöre koyun, adım sınırı     |
-| PageRank toplamı her adımda azalıyor                          | Dışarı bağlantısı olmayan sayfaların payı kayboluyor          | Onların payını bütün sayfalara dağıtın                            |
-| Küçük tekil değerler/özdeğerler sıfır ya da eksi çıkıyor      | AᵀA (ya da kovaryans) kurulurken bilgi yuvarlandı             | Veriye doğrudan SVD; normal denklemlerden kaçının                 |
-| PCA sonrası model daha kötü                                   | Hedefle ilgili ama varyansı küçük yön atıldı                  | PCA denetimsizdir; bileşen sayısını sonraki işin başarısıyla seçin |
-| PCA eğitim + sınama verisinin tamamında uydurulmuş             | Ön işleme sızıntısı                                           | PCA'yı yalnız eğitimde uydurun (hattın içinde)                    |
+| Belirti                                                   | Neden                                                | Çözüm                                                                   |
+| --------------------------------------------------------- | ---------------------------------------------------- | ----------------------------------------------------------------------- |
+| Birinci bileşen veriyi değil ortalamayı gösteriyor        | Veri merkezlenmemiş                                  | Önce sütun ortalamalarını çıkarın (kütüphane PCA'sı yapar)              |
+| Tek bileşen "%99,9 açıklıyor" ama işe yaramıyor           | Ölçeksiz veri; en büyük birimli sütun baskın         | `StandardScaler`; açıklanan oranı ölçekli veride okuyun                 |
+| Bileşenlerin işareti çalıştırmadan çalıştırmaya değişiyor | Özvektör `v` ve `−v` ikisi de geçerli                | İşaret kuralı (en büyük mutlak öğe pozitif); yorumda işarete dayanmayın |
+| numpy `eigh` sonucunda ilk sütun en önemsiz bileşen       | `eigh` özdeğerleri küçükten büyüğe sıralar           | Ters çevirin ya da `svd` kullanın (büyükten küçüğe)                     |
+| Güç yinelemesi bitmiyor ya da salınıyor                   | `λ₁ ≈ λ₂`, ya da baskın özdeğer negatif              | Kütüphane çözücüsü; durma ölçütünü vektöre koyun, adım sınırı           |
+| PageRank toplamı her adımda azalıyor                      | Dışarı bağlantısı olmayan sayfaların payı kayboluyor | Onların payını bütün sayfalara dağıtın                                  |
+| Küçük tekil değerler/özdeğerler sıfır ya da eksi çıkıyor  | AᵀA (ya da kovaryans) kurulurken bilgi yuvarlandı    | Veriye doğrudan SVD; normal denklemlerden kaçının                       |
+| PCA sonrası model daha kötü                               | Hedefle ilgili ama varyansı küçük yön atıldı         | PCA denetimsizdir; bileşen sayısını sonraki işin başarısıyla seçin      |
+| PCA eğitim + sınama verisinin tamamında uydurulmuş        | Ön işleme sızıntısı                                  | PCA'yı yalnız eğitimde uydurun (hattın içinde)                          |
 
 ## Denetim listesi
 

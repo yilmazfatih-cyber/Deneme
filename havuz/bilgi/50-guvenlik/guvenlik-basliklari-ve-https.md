@@ -53,18 +53,14 @@ ve [`uygulama/docs/GUVENLIK.md`](../../uygulama/docs/GUVENLIK.md) → "Güvenlik
 
 ## HSTS'i kademeli açmak
 
-HSTS geri alınması zor bir sözdür: tarayıcı `max-age` boyunca HTTP'yi denemez. Sertifika sorunu çıkarsa siteye
-o süre boyunca ulaşılamaz.
+HSTS geri alınması zor bir sözdür: tarayıcı `max-age` boyunca HTTP'yi denemez, sertifika bozulursa kullanıcı
+uyarıyı geçemez. Bu yüzden kısa süreyle (`max-age=300`) başlanır, sorunsuz geçen her aşamada uzatılır
+(bir gün → bir yıl); `includeSubDomains` yalnız **bütün** alt alan adları HTTPS ise, `preload` en son ve kalıcı
+bir karar olarak eklenir. Aşama tablosu ve geçiş koşulları: [HTTPS ve sertifikalar → HSTS'e geçiş](../60-devops/https-ve-sertifikalar.md).
+Havuzdaki uygulama üretimde `max-age=31536000` gönderir, `includeSubDomains` ve `preload`'u bilinçli olarak eklemez.
 
-1. HTTPS'in her sayfada, her alt kaynakta (görsel, betik, API) çalıştığını doğrulayın; karma içerik yok.
-2. `max-age=300` (5 dakika) ile başlayın; bir gün izleyin.
-3. `max-age=604800` (bir hafta), sonra `max-age=31536000` (bir yıl).
-4. `includeSubDomains` yalnız **bütün** alt alan adları HTTPS ise (unutulmuş eski bir alt alan adı erişilmez olur).
-   Havuzdaki uygulama bunu bilinçli olarak yazmaz.
-5. `preload` (tarayıcıların gömülü listesine girmek) aylarca geri alınamaz; ancak yukarıdakiler aylarca sorunsuzsa.
-
-HSTS yalnız HTTPS yanıtında geçerlidir; HTTP yanıtına konursa tarayıcı yok sayar. Geliştirme ortamında (`localhost`)
-yazmayın: tarayıcı o ana makineye ait başka projeleri de HTTPS'e zorlar.
+HSTS yalnız HTTPS yanıtında geçerlidir. Geliştirmede (`localhost`) göndermeyin: HSTS kapıya değil ana makineye
+bağlıdır; tarayıcı aynı makinedeki öteki projeleri de HTTPS'e zorlayabilir.
 
 ## Başlıklar nereye yazılır
 
@@ -181,14 +177,13 @@ başlıkların sessizce kaybolmasını yakalar. Uygulama içinde aynı işi biri
 
 ## HTTPS'in pratik ayrıntıları
 
-- Sertifikayı barındırıcı ya da ters vekil (ör. Caddy) otomatik alıp yenilesin; elle yenilenen sertifika bir gün
-  unutulur.
-- Uygulama vekilin arkasında düz HTTP konuşuyorsa "istek HTTPS miydi" bilgisini vekilin başlığından (`X-Forwarded-Proto`)
-  okur; bu başlığa yalnız güvenilen vekil sayısı kadar güvenilir (havuzda `TRUST_PROXY`). Yanlışsa `Secure` çerez,
-  köken denetimi ve yönlendirmeler bozulur.
-- Karma içerik (HTTPS sayfada HTTP kaynak) tarayıcıda engellenir ya da uyarı verir; kaynak adreslerini göreli ya da
-  `https://` yazın.
-- Eski TLS sürümlerini (1.0/1.1) barındırıcı ayarından kapatın; güncel öneriyi barındırıcının belgesinden doğrulayın.
+Sertifika türleri, otomatik yenileme (ACME), eksik ara sertifika ve karma içerik:
+[HTTPS ve sertifikalar](../60-devops/https-ve-sertifikalar.md). Güvenlik açısından üç kural:
+
+- Uygulama vekilin arkasında düz HTTP konuşuyorsa "istek HTTPS miydi" bilgisini vekilin başlığından
+  (`X-Forwarded-Proto`) okur; bu başlığa yalnız güvenilen vekil sayısı kadar güvenilir (havuzda `TRUST_PROXY`;
+  [Ters vekil](../60-devops/ters-vekil.md)). Yanlışsa `Secure` çerez, köken denetimi ve yönlendirmeler bozulur.
+- Elle yenilenen sertifika bir gün unutulur; yenileme otomatik ve bitiş tarihi izlenir.
 - Sunucudan dışarı istekte (API çağrısı) sertifika doğrulaması **kapatılmaz** ([Kriptografi kullanımı](kriptografi-kullanimi.md)).
 
 ## Tuzaklar
@@ -230,6 +225,8 @@ başlıkların sessizce kaybolmasını yakalar. Uygulama içinde aynı işi biri
 
 - CSP'nin kurulumu: [XSS ve CSP](xss-ve-csp.md) · Çerezler: [Oturum güvenliği](oturum-guvenligi.md) · Kullanıcı
   dosyası sunma başlıkları: [Dosya yükleme](dosya-yukleme-guvenligi.md)
-- Önbellek başlıkları ve CORS: [HTTP temelleri](../30-arkauc/http-temelleri.md)
+- Önbellek başlıkları ve CORS: [HTTP temelleri](../30-arkauc/http-temelleri.md) · Sertifika ve vekil:
+  [HTTPS ve sertifikalar](../60-devops/https-ve-sertifikalar.md), [Ters vekil](../60-devops/ters-vekil.md),
+  [Durağan site yayını](../60-devops/duragan-site-yayini.md)
 - Çalışan kod: [`uygulama/api/src/http/securityHeaders.ts`](../../uygulama/api/src/http/securityHeaders.ts);
   statik site örneği [`site/docs/yayin/_headers`](../../site/docs/yayin/_headers)

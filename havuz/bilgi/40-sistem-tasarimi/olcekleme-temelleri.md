@@ -80,9 +80,11 @@ doluluk %95: ortalama  198 ms, p99   854 ms (kuram 200 ms)
 ```
 
 Okuma: iş 10 ms olduğu hâlde %90 dolulukta kullanıcı ortalama 100 ms, her yüz istekten birinde yarım saniye bekler.
-%90'dan %95'e çıkmak gecikmeyi **ikiye katlar**. Gerçek sistemler bu modelden de kötüdür (işler eşit değildir,
-yük patlamalı gelir). Bu yüzden: CPU, veritabanı bağlantısı, işçi havuzu gibi her kaynakta hedef doluluk %60–70;
-%80'i geçen kaynak için uyarı kurulur ([Gözlemlenebilirlik](gozlemlenebilirlik.md)).
+%90'dan %95'e çıkmak gecikmeyi **ikiye katlar**. Model tek işçilidir; çok işçili kaynakta eğri daha geç ama daha
+sert kırılır (Erlang C formülüyle hesap: 16 işçide %90 dolulukta gecikme hizmet süresinin ~1,4 katı, %95'te ~2 katı,
+%100'e yaklaşınca sonsuz). Yük patlamalı gelince anlık doluluk ortalamanın çok üstüne çıkar. Bu yüzden CPU,
+veritabanı bağlantısı, işçi havuzu gibi her kaynakta ortalama doluluk hedefi %60–70; %80'i geçen kaynak için uyarı
+kurulur ([Gözlemlenebilirlik](gozlemlenebilirlik.md)).
 
 ## Tek makine ne kadar taşır: hesap
 
@@ -196,7 +198,8 @@ print("3 sunucu: yanlış 9 e-posta, doğru 3 e-posta")
 ```
 
 Kira süreli kilitle tek çalıştırıcı seçme ve zamanlanmış işlerin öteki tuzakları:
-[Arka plan işleri](../30-arkauc/arka-plan-isleri.md) → "Zamanlanmış işler ve çifte çalışma".
+[Arka plan işleri](../30-arkauc/arka-plan-isleri.md) → "Zamanlanmış işler ve çifte çalışma". Durumsuz sunucunun kod
+tarafı (bağımlılıkları dışarıdan verme, düzgün kapanış, sağlık ucu): [Sunucu mimarisi](../30-arkauc/sunucu-mimarisi.md).
 
 Havuzdaki API bu sınırları açıkça yazar: hız sınırı bellek içidir
 ([`rateLimit.ts`](../../uygulama/api/src/http/rateLimit.ts)), anlık bildirim merkezi tek süreçlidir
@@ -266,7 +269,8 @@ da kesinti kabul edilemiyorsa** eklenir. Başlangıç mimarisi: [Monolit ve serv
 
 - [Kapasite tahmini](kapasite-tahmini.md) · [Önbellek katmanları](onbellek-katmanlari.md) ·
   [Veritabanı ölçekleme](veritabani-olcekleme.md) · [Dayanıklılık kalıpları](dayaniklilik-kaliplari.md)
-- [Monolit ve servisler](monolit-ve-servisler.md) · [Gözlemlenebilirlik](gozlemlenebilirlik.md)
+- [Monolit ve servisler](monolit-ve-servisler.md) · [Gözlemlenebilirlik](gozlemlenebilirlik.md) ·
+  [Barındırma maliyeti ve kaynak](../60-devops/maliyet-ve-kaynak.md) (dikey büyütmenin bedeli, boyutlandırma)
 - Havuzdaki tek sunuculu gerçekleme ve çok kopyaya geçiş notu:
   [`uygulama/docs/YAYINLAMA.md`](../../uygulama/docs/YAYINLAMA.md) (§7),
   [`uygulama/docs/MIMARI.md`](../../uygulama/docs/MIMARI.md)

@@ -29,6 +29,16 @@ def dosya_araclari(kok: str | Path, azami_bayt: int = 200_000, azami_oge: int = 
             raise GuvenlikHatasi("Gizli dosya ve klasörler okunamaz.")
         return aday
 
+    def _gorunur(oge: Path) -> bool:
+        """Listede gösterilebilir mi: gizli değil, var ve (bağsa) hedefi de kökün içinde, gizli değil."""
+        if oge.name.startswith("."):
+            return False
+        try:
+            _guvenli_yol(str(oge.relative_to(kok_yol)))
+            return oge.exists()
+        except (GuvenlikHatasi, OSError):
+            return False
+
     def dosya_listele(klasor: str = ".") -> str:
         """İzinli klasördeki dosya ve alt klasörleri listeler (klasörler / ile biter).
 
@@ -39,7 +49,7 @@ def dosya_araclari(kok: str | Path, azami_bayt: int = 200_000, azami_oge: int = 
         if not hedef.is_dir():
             raise FileNotFoundError(f"klasör bulunamadı: {klasor}")
         ogeler = sorted(
-            (p for p in hedef.iterdir() if not p.name.startswith(".")),
+            (p for p in hedef.iterdir() if _gorunur(p)),  # kök dışına/gizliye çıkan bağ gösterilmez
             key=lambda p: (not p.is_dir(), p.name),
         )
         satirlar = [

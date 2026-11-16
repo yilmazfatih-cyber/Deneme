@@ -1,0 +1,18 @@
+{
+  "ad": "sifirdan-ag",
+  "baslik": "Sıfırdan dizisi: ağ, web sunucusu ve güvenlik temelleri",
+  "ozet": "Yalnız Python stdlib ile HTTP sunucusu/istemcisi, WebSocket, web çatısı, ORM, eğitsel kripto, DNS, kabuk, ters vekil ve e-posta — testle kanıtlanmış, okunaklı mini sistemler.",
+  "tur": "python",
+  "gereksinim": { "python": ">=3.11" },
+  "python": { "ekstra": "dev" },
+  "denetle": ["python scripts/check.py"],
+  "uzunDenetim": ["python scripts/check.py --uzun"],
+  "baslat": "python -m web_catisi.ornek --kapi 8452",
+  "yerTutucular": [
+    { "ara": "sifirdan-ag", "anlam": "paket (dağıtım) adı — pyproject.toml" },
+    { "ara": "sifirdan-istemci/0.1", "anlam": "HTTP istemcisinin User-Agent değeri" },
+    { "ara": "sifirdan-vekil", "anlam": "ters vekilin Via başlığındaki adı" },
+    { "ara": "sifirdan.yerel", "anlam": "SMTP sunucusunun karşılama adı" }
+  ],
+  "kopyalamaHaric": [".venv", "build", "*.egg-info", ".mypy_cache", ".ruff_cache", ".hypothesis", "yakalanan", "*.sqlite3"]
+}

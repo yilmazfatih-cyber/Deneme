@@ -15,8 +15,9 @@ def _cross(u: tuple[int, int], v: tuple[int, int]) -> int:
     return u[0] * v[1] - u[1] * v[0]
 
 
-def _reference(p1: P, p2: P, p3: P, p4: P) -> set[tuple[Fraction, Fraction]] | str:
-    """Başvuru: parametrik çözüm. Dönüş: kesişim noktaları kümesi ya da 'parça' (sonsuz nokta)."""
+def _reference(p1: P, p2: P, p3: P, p4: P) -> set[tuple[Fraction, Fraction]]:
+    """Başvuru: paralel değilse parametrik çözüm; paralelse yarım birimlik ızgarada ortak noktalar
+    (uçlar tam sayı olduğundan ortak parçanın uçları da bu ızgaradadır)."""
     d1 = (p2[0] - p1[0], p2[1] - p1[1])
     d2 = (p4[0] - p3[0], p4[1] - p3[1])
     w = (p3[0] - p1[0], p3[1] - p1[1])
@@ -33,14 +34,16 @@ def _reference(p1: P, p2: P, p3: P, p4: P) -> set[tuple[Fraction, Fraction]] | s
             q = (Fraction(i, 2), Fraction(j, 2))
             if _on(q, p1, p2) and _on(q, p3, p4):
                 found.add(q)
-    return "parça" if len(found) > 1 else found
+    return found
 
 
 def _on(q: tuple[Fraction, Fraction], a: P, b: P) -> bool:
     cross = (b[0] - a[0]) * (q[1] - a[1]) - (b[1] - a[1]) * (q[0] - a[0])
-    return cross == 0 and min(a[0], b[0]) <= q[0] <= max(a[0], b[0]) and min(
-        a[1], b[1]
-    ) <= q[1] <= max(a[1], b[1])
+    return (
+        cross == 0
+        and min(a[0], b[0]) <= q[0] <= max(a[0], b[0])
+        and min(a[1], b[1]) <= q[1] <= max(a[1], b[1])
+    )
 
 
 def test_hand_checked_example() -> None:
@@ -64,9 +67,8 @@ def test_matches_parametric_reference(p1: P, p2: P, p3: P, p4: P) -> None:
     expected = _reference(p1, p2, p3, p4)
     result = segment_intersection(p1, p2, p3, p4)
     assert segments_intersect(p1, p2, p3, p4) == (expected != set())
-    if expected == "parça":
-        assert result is not None and len(result) == 2
-        assert _on(result[0], p1, p2) and _on(result[1], p3, p4)  # type: ignore[arg-type]
+    if len(expected) > 1:  # üst üste binen parça: uçları ızgaradaki en küçük ve en büyük nokta
+        assert result == (min(expected), max(expected))
     elif expected:
         assert result is not None and len(result) == 1 and {result[0]} == expected
     else:

@@ -18,6 +18,7 @@ from pathlib import Path
 
 from mcp.server.mcpserver import MCPServer
 from mcp.server.mcpserver.exceptions import ToolError
+from mcp.types import ToolAnnotations
 
 from yz.arac.hazir import belge_arama_araci, dosya_araclari, hesap_araci, zaman_araclari
 from yz.arac.tanim import Arac
@@ -74,7 +75,13 @@ def mcp_sunucusu_kur(
     for arac in [*_varsayilan_araclar(klasor, dizin), *ek_araclar]:
         if arac.tehlikeli:
             continue  # onay kancası olmayan ortamda tehlikeli araç yayımlanmaz
-        sunucu.add_tool(arac_sarmala(arac), name=arac.ad, description=arac.aciklama)
+        # Yayımlanan her araç dünyayı değiştirmez: istemciler (yz köprüsü dahil) onaysız çalıştırabilsin.
+        sunucu.add_tool(
+            arac_sarmala(arac),
+            name=arac.ad,
+            description=arac.aciklama,
+            annotations=ToolAnnotations(read_only_hint=True),
+        )
     return sunucu
 
 

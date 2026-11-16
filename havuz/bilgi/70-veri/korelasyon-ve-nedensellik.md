@@ -30,8 +30,8 @@ insanlardır (daha istekli, daha deneyimli, daha çok ihtiyacı olan).
 | Elinizdeki kanıt | Söyleyebileceğiniz | Dayandığı varsayım |
 | --- | --- | --- |
 | Rastgele deney | "X, Y'yi şu kadar değiştirdi (GA ile)" | Atama gerçekten rastgele, gruplar birbirini etkilemiyor |
-| Kademeli yayın + yayın almayan karşılaştırma grubu | Farkların farkıyla etki tahmini | X olmasa iki grup aynı eğilimde giderdi (paralel eğilim) |
-| Eşik kuralı (100 TL üstü kargo bedava) | Eşiğin hemen altı ↔ hemen üstü karşılaştırması | Eşiğe yakın kişiler başka açıdan benzer |
+| Kademeli yayın + yayın almayan karşılaştırma grubu | Farkların farkıyla (difference-in-differences) etki tahmini | X olmasa iki grup aynı eğilimde giderdi (paralel eğilim) |
+| Eşik kuralı (100 TL üstü kargo bedava) | Eşiğin hemen altı ↔ hemen üstü karşılaştırması (regression discontinuity) | Eşiğe yakın kişiler başka açıdan benzer |
 | Yalnız öncesi–sonrası | "Sonra daha iyi"; neden olarak X'i söyleyemezsiniz | Mevsim, kampanya, ortalamaya dönüş elenmedi |
 | Kullananlar ↔ kullanmayanlar | "Birlikte görülüyor" | Kendi kendini seçme elenmedi |
 | Yalnız kalan müşteriler ya da anketi yanıtlayanlar | O alt grubu anlatır, bütünü değil | Hayatta kalan / seçim yanlılığı |
@@ -106,7 +106,8 @@ mobilden geliyor. Hangisi doğru? Platform, sürümün **sonucu** değil, kimin 
 
 ## Hayatta kalan ve seçim yanlılığı
 
-Ürün hiç değişmese de, mutsuz olanlar ayrıldıkça kalanların memnuniyet ortalaması yükselir:
+Hayatta kalan yanlılığı (survivorship bias): ürün hiç değişmese de, mutsuz olanlar ayrıldıkça kalanların memnuniyet
+ortalaması yükselir:
 
 ```python calistir
 import random
@@ -135,7 +136,8 @@ yapmış" (başarısız olanlar örneklemde yok); yalnız karşılama akışın�
 
 ## Ortalamaya dönüş
 
-Mağaza puanları = kalıcı kalite + o ayın şansı. Birinci ayın en kötü 10 mağazası seçilir ve **hiçbir şey yapılmaz**:
+Ortalamaya dönüş (regression to the mean). Mağaza puanları = kalıcı kalite + o ayın şansı. Birinci ayın en kötü 10
+mağazası seçilir ve **hiçbir şey yapılmaz**:
 
 ```python calistir
 import random
@@ -267,3 +269,5 @@ yaklaşık 15 puandır. Bu yalnız paralel eğilim varsayımı tutarsa doğrudur
 - [Veri sızıntısı](../80-ml/veri-sizintisi.md) — modelde "gelecekten bilgi" hatası, aynı dikkat türü
 - Gözlemsel bir karşılaştırma örneği (kampanya günleri ↔ sıradan günler):
   [`veri/docs/ANALIZ_TARIFLERI.md`](../../veri/docs/ANALIZ_TARIFLERI.md) 5. tarif
+- [Olasılık temelleri](../92-matematik/olasilik-temelleri.md) — koşullu olasılık ve Bayes kuralı
+- [Anket ve örneklem](anket-ve-orneklem.md) — yanıt vermeme yanlılığı ve ağırlıklandırma

@@ -48,7 +48,7 @@ yaz) → kullanıcıya "düzeldi" haberi. Son adım en çok atlanandır ve güve
 | Kullanım verisi                                        | Davranışı gösterir                  | Nedeni söylemez                          |
 
 Tek bir memnuniyet puanı (ör. 0–10 tavsiye puanı) küçük örneklemde oynaktır; yanına mutlaka açık uçlu "neden?"
-sorusu koyun; öğreten o metindir.
+sorusu koyun; öğreten o metindir. Puanın doğru özetlenmesi ve hata payı: [anket ve örneklem](../70-veri/anket-ve-orneklem.md).
 
 ## Etiketleme ve önceliklendirme
 
@@ -247,6 +247,7 @@ sonraki adım ya da zaman yok
 - [Kullanıcı görüşmesi](kullanici-gorusmesi.md): talebin altındaki işi sormak ve sentez.
 - [Önceliklendirme](onceliklendirme.md): istek defteri, üç müşteri kuralı, gerekçeli "hayır".
 - [Lansman](lansman.md): ilk hafta destek ve geri bildirim.
+- [Tutma ve iptal akışı](tutma-ve-iptal-akisi.md): iptal anındaki tek soru ve nedenlerin sayımı.
 - [Ölçüm ve öğrenme](olcum-ve-ogrenme.md): destek kayıtlarını ölçüm kaynağı olarak kullanmak.
 - [Yasal temel belgeler](yasal-temel-belgeler.md): veri ve gizlilik başvuruları.
-- Hata iletisi ve arayüz dili: `97-turkce` kümesi.
+- [Arayüz dili](../97-turkce/arayuz-dili.md): siz hitabı, suçlamayan hata iletisi, onay metni.

@@ -340,3 +340,6 @@ yanıtı yinelemek) ödünleşimdir, gerekçesiyle yazılır.
 - Çalışan kod: [`uygulama/api/src/modules/auth/session.ts`](../../uygulama/api/src/modules/auth/session.ts),
   [`random.ts`](../../uygulama/api/src/lib/random.ts) (belirteç ve özeti), testler
   [`security.test.ts`](../../uygulama/api/test/security.test.ts) → "oturum çerezi", "oturum iptali ve kapalı hesap"
+- Belirteci tarayıcıda saklama, ön yüz tarafı: [Ön yüz güvenliği](../20-web-onyuz/onyuz-guvenligi.md) · İmzalı çerez
+  oturumu, sabitleme ve çıkışta eski çerezin geçersizleşmesi, sıfırdan ve testli:
+  [`sifirdan/ag/web_catisi/README.md`](../../sifirdan/ag/web_catisi/README.md)

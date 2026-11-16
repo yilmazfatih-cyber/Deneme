@@ -64,7 +64,8 @@ metin ─► katman "sema"  (yanit_bicimi=şema → response_format / GBNF / Oll
 
 ```
 görev ─► [sistem istemi] ─► model (araç tanımlarıyla)
-   ├ araç çağrısı ─► AracKutusu.cagir: bilinmeyen? izinli? tehlikeli→onay? → Arac.calistir
+   ├ araç çağrısı ─► AracKutusu.cagir: bilinmeyen? izinli? tehlikeli→ doğrula → onay(doğrulanmış) →
+   │                 Arac.yurut (onaylanan argümanla) ; değilse Arac.calistir
    │                  (doğrula+düzelt → iş parçacığında zaman aşımlı çalıştır → metin; hata=gözlem)
    │  ─► tekrar sayacı (aynı ad+argüman) → sınır aşılırsa uyarı, yine tekrarsa "dongu"
    ├ metinle araç çağrısı (<tool_call>, Eylem:, hesapla(...)) ─► metin kipine geç
@@ -100,8 +101,11 @@ YAML (KosuTanimi) + JSONL (Ornek) ─► _Baglam (şema, araçlar, RAG dizini)
 ### 6. Sunucu
 
 ```
+her istek ─► IstekKapisi (gövde okunmadan: yerel kipte ad/köken, anahtar kipinde anahtar, gövde sınırı)
 tarayıcı (yz/web/index.html) ─► /api/sohbet (SSE: parca, arac, kaynaklar, son, hata)
-OpenAI istemcisi ─► /v1/chat/completions ─► maskele ─► sağlayıcı (önbellek, günlük) ─► maskeyi aç
+                                 (kip=arac: araç çıktısı da modele maskeli gider; ekranda açılır)
+OpenAI istemcisi ─► /v1/chat/completions ─► maskele (içerik + araç çağrısı argümanları) ─► sağlayıcı
+                    (önbellek, günlük) ─► maskeyi aç
                                             (akışta parçalanmış yer tutucu AkisMaskeAcici ile bekletilir)
 belge yükleme ─► /api/belge ─► dizine ekle ─► .yz/dizin'e kaydet
 ```

@@ -79,9 +79,7 @@ uzun (26 sözcük): Bu işlem, kullanılan bilgisayarın hızına…
 bürokratik kip: sürebilmektedir
 ```
 
-## Şablonlar
-
-### README
+## README şablonu
 
 ```markdown
 # Bölüş
@@ -111,7 +109,7 @@ Arkadaş gruplarında ortak harcamaları kuruşu kuruşuna bölüştürür.
 Kötü README tarihçe ve vizyonla başlar; okur üçüncü ekranda hâlâ nasıl çalıştıracağını bilmez. İyi README'de ilk
 ekran: ne yapar, nasıl çalıştırılır. **"Sınırlar" bölümü zorunludur.**
 
-### Hata raporu
+## Hata raporu şablonu
 
 ```text
 Başlık:      Harcama düzenlenince bakiye 1 kuruş kayıyor (Android, Chrome)
@@ -126,12 +124,12 @@ Etki:        Grup bakiyesi sıfırlanmıyor; kullanıcılar uygulamaya güvenmiy
 
 Kötüsü: "Bakiye bozuk, acil bakılsın!!!" Adım, beklenen ve gerçekleşen yoksa hata yeniden üretilemez.
 
-### Karar kaydı
+## Karar kaydı
 
 Bağlam, seçenekler, karar, sonuçlar, yeniden düşünme koşulu. Şablon ve dolu örnek:
 [Tasarım kararı](tasarim-karari.md#karar-kaydı-şablonu).
 
-### Kayıt (commit) iletisi
+## Kayıt (commit) iletisi
 
 Konu satırı `kapsam: ne değişti` biçiminde ve en çok 72 karakter; boş bir satır; gövdede **neden** ve **nasıl
 sınandığı**. Bu depodaki alışkanlık Türkçe ve küçük harfli kapsamdır (`tvplus: …`, `havuz: …`).
@@ -188,7 +186,7 @@ for problem in commit_problems("fix."):
 - gövde yok: neden ve nasıl sınandığını yazın
 ```
 
-### Değişiklik özeti (PR açıklaması)
+## Değişiklik özeti (PR açıklaması)
 
 ```markdown
 ## Ne
@@ -205,7 +203,7 @@ Oranlı bölüşüm bu değişiklikte yok.
 
 "Sınanmayan" başlığı dürüstlüğün sigortasıdır; boş kalacaksa "yok" yazın.
 
-### Durum raporu
+## Durum raporu
 
 Tek satırlık özet en başta: **YOLUNDA / RİSKTE / GECİKTİ** ve nedeni. Sonra biten, sıradaki, engel, risk, karar
 gereken, tahmin. Ayrıntılı kalıp: [Tahmin ve planlama](tahmin-ve-planlama.md#ilerleme-bildirimi). Kötü haber

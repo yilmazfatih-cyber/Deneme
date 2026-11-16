@@ -208,8 +208,11 @@ tanıma, bulut eşitlemesi, Türkçe dışı diller, ayrı terapist paneli, mağ
 ## İlgili
 
 - [Fikir doğrulama](fikir-dogrulama.md): MVP'den önce gelen deneyler ve elle yapılan hizmet.
+- [Segment ve konumlandırma](segment-ve-konumlandirma.md): "tek grup" seçimi ve "kimin için değil".
+- [Geliştirme döngüsü ve kalite kapıları](gelistirme-dongusu-ve-kapilar.md): MVP'yi dilim dilim, kapılarla yapmak.
 - [Gereksinim yazma](gereksinim-yazma.md): akıştaki her adımı kabul ölçütüyle yazmak.
 - [Önceliklendirme](onceliklendirme.md): MVP'den sonra gelen işleri sıralamak.
 - [Ürün belgesi şablonları](urun-belgesi-sablonlari.md): tek sayfalık plan ve karar kaydı.
 - [İşi parçalama](../00-yontem/isi-parcalama.md): dikey dilim ve yürüyen iskelet.
+- [Tahmin ve planlama](../00-yontem/tahmin-ve-planlama.md): tarih sabitken kapsam kesmek, aralıkla tahmin.
 - Hazır temeller: [`uygulama`](../../uygulama/) (hesapsız ya da hesaplı PWA), [`site`](../../site/) (tanıtım sayfası).

@@ -359,3 +359,4 @@ tanımlar; Kişisel Verilerin Korunması Kanunu (KVKK) kapsamındadır.
 - [Türkçe büyük/küçük harf](buyuk-kucuk-harf.md): neden plakada Türkçe büyütme kullanılmaz.
 - [Test stratejisi](../00-yontem/test-stratejisi.md): üreteç ve farksal test.
 - Sınama vektörleri: [kutuphane/vektorler/dogrulama.json](../../kutuphane/vektorler/dogrulama.json).
+- Diğer kümelerden: [KVKK pratiği](../50-guvenlik/kvkk-pratik.md).

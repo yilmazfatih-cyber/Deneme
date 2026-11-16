@@ -18,7 +18,8 @@ yanlış sürüm hata vermez, yalnız sayı yanlış çıkar. Aşağıdaki her b
 çıktı gerçek çıktıdır. Ortak kurallar:
 
 - Zaman metinleri tek biçimde (`YYYY-MM-DD HH:MM:SS`); aralıklar yarı açık: `>= başlangıç AND < bitiş`.
-- Oranda en az bir taraf ondalık olsun: `100.0 * a / b`. SQLite'ta `100 * 1 / 3` = 33, `1 / 2` = 0.
+- Oranda en az bir taraf ondalık olsun: `100.0 * a / b`. SQLite'ta `100 * 1 / 3` = 33, `1 / 2` = 0 (DuckDB'de
+  farklıdır; lehçe tablosu: [araç seçimi](arac-secimi.md)).
 - Eşik karşılaştırmasında saniye tam sayısı kullanın (`strftime('%s', t)`); `julianday` farkı kayan noktalıdır.
 - Henüz gözlenemeyen hücre **boş** (NULL) kalır, sıfır yazılmaz.
 
@@ -84,7 +85,7 @@ tablodan alınırsa hiç etkin olmamış üyeler (u9) kaybolur ve oranlar şişe
 
 ## 2. Sıralı huni
 
-Her olayın tekil kullanıcı sayısını ayrı saymak huni değildir: sırayı ve "önce bunu yaptı mı?" koşulunu bilmez.
+Her olayın tekil kullanıcı sayısını ayrı saymak huni (funnel) değildir: sırayı ve "önce bunu yaptı mı?" koşulunu bilmez.
 
 ```sql calistir
 CREATE TABLE olay (kullanici_id TEXT, olay TEXT, zaman TEXT);
@@ -126,13 +127,14 @@ sıralı|satin_al|1|100.0|25.0
 ```
 
 Sırasız sayımda satın alan (3) ödemeye başlayandan (2) fazla: k5 önceki adımların hiçbirinde görünmüyor (başka
-kanaldan gelmiş), k4 ürünü görüntülemeden önce sepete eklemiş (ör. eski bir sepetten). Gerçek işte her adıma bir de **pencere** koyun (ör. ilk adımdan sonraki 1 gün:
-`AND o.zaman < datetime(a1.t, '+1 day')`) ve huninin oturum mu kullanıcı mı düzeyinde olduğunu yazın.
-Sınanmış DuckDB sürümü (oturum düzeyinde, sırasız): [`veri/docs/ANALIZ_TARIFLERI.md`](../../veri/docs/ANALIZ_TARIFLERI.md) 14. tarif.
+kanaldan gelmiş), k4 ürünü görüntülemeden önce sepete eklemiş (ör. eski bir sepetten). Gerçek işte her adıma bir de
+**pencere** koyun (ör. ilk adımdan sonraki 1 gün: `AND o.zaman < datetime(a1.t, '+1 day')`) ve huninin oturum mu
+kullanıcı mı düzeyinde olduğunu yazın. Sınanmış DuckDB sürümü (oturum düzeyinde, sırasız):
+[`veri/docs/ANALIZ_TARIFLERI.md`](../../veri/docs/ANALIZ_TARIFLERI.md) 14. tarif.
 
 ## 3. Tutma eğrisi
 
-N. gün tutma = kaydın N. gününde etkin olanlar / **N. gününe ulaşmış** üyeler. Son veri günü 15 Kasım.
+N. gün tutma (retention) = kaydın N. gününde etkin olanlar / **N. gününe ulaşmış** üyeler. Son veri günü 15 Kasım.
 
 ```sql calistir
 CREATE TABLE uye (uye TEXT, kayit TEXT);
@@ -168,8 +170,8 @@ FROM bayrak GROUP BY gun ORDER BY gun;
 
 ## 4. Boşluğa göre oturumlama
 
-Aynı kullanıcının iki olayı arasında 30 dakikadan uzun boşluk varsa yeni oturum başlar. Sıra: boşluğu hesapla →
-yeni oturum işaretle → işaretlerin birikimli toplamı oturum numarasıdır.
+Oturumlama (sessionization): aynı kullanıcının iki olayı arasında 30 dakikadan uzun boşluk varsa yeni oturum başlar.
+Sıra: boşluğu hesapla → yeni oturum işaretle → işaretlerin birikimli toplamı oturum numarasıdır.
 
 ```sql calistir
 CREATE TABLE olay (kullanici_id TEXT, zaman TEXT);
@@ -207,7 +209,8 @@ bakarak seçin ve yazın. Gece yarısını aşan oturum tek oturumdur; takvim g�
 
 ## 5. Hareketli ortalama
 
-`ROWS BETWEEN 2 PRECEDING` "son üç satır" demektir, "son üç gün" değil. Eksik gün varsa pencere genişler.
+Hareketli ortalamada (moving average) `ROWS BETWEEN 2 PRECEDING` "son üç satır" demektir, "son üç gün" değil. Eksik
+gün varsa pencere genişler.
 
 ```sql calistir
 CREATE TABLE satis (gun TEXT, adet INTEGER);
@@ -245,7 +248,8 @@ tahminde geriye bakan (trailing) pencere kullanın; ortalanmış pencere gelece�
 
 ## 6. Yüzdelik
 
-Taşınabilir yol `ROW_NUMBER()` ile sıralayıp sıra numarasından okumaktır. İki yaygın tanım farklı sonuç verir:
+Yüzdelik (percentile) için taşınabilir yol `ROW_NUMBER()` ile sıralayıp sıra numarasından okumaktır. İki yaygın tanım
+farklı sonuç verir:
 
 ```sql calistir
 CREATE TABLE istek (sure_ms INTEGER);
@@ -407,4 +411,7 @@ yarı açık|2
 - [Ürün ölçütleri](urun-olcutleri.md) — tutma ve kayıp tanımları, olgunlaşmamış kohort
 - [Betimsel istatistik](betimsel-istatistik.md) — ortalama, ortanca, yüzdelik
 - [Araç seçimi](arac-secimi.md) — SQLite, DuckDB ve dataframe ne zaman
-- DuckDB ile sınanmış 15 tarif (aylık ciro, huni, kayıp oranı, ortanca): [`veri/docs/ANALIZ_TARIFLERI.md`](../../veri/docs/ANALIZ_TARIFLERI.md)
+- DuckDB ile sınanmış 15 tarif (aylık ciro, huni, kayıp oranı, ortanca):
+  [`veri/docs/ANALIZ_TARIFLERI.md`](../../veri/docs/ANALIZ_TARIFLERI.md)
+- [SQL sorgu yazımı](../10-diller/sql-sorgu.md) — birleştirme, NULL, CTE ve pencere işlevlerinin temeli
+- [SQL performans ve işlem](../10-diller/sql-performans-ve-islem.md) — büyük tabloda dizin ve sorgu planı

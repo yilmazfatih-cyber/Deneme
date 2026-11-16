@@ -269,6 +269,6 @@ GET ile anahtar sızmasını zorlaştırır ama uygulama denetiminin yerini tutm
 
 - Yapay zekâ ajanının "sayfa getir" aracı da bu kurallara uyar: [YZ uygulama güvenliği](yapay-zeka-uygulama-guvenligi.md)
 - Dosya olarak gelen içerik: [Dosya yükleme](dosya-yukleme-guvenligi.md) · XML dış varlıkları:
-  [OWASP özeti](owasp-ozet.md) → küçük sınıflar
+  [Güvensiz seri çözme](guvensiz-seri-cozme.md) · Webhook imzası: [Webhooklar](../30-arkauc/webhooklar.md)
 - Uygulamanın dış isteği yalnız e-posta sağlayıcısına (sabit adres, yapılandırmadan) gider:
   [`uygulama/api/src/mail/mailer.ts`](../../uygulama/api/src/mail/mailer.ts)

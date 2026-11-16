@@ -300,6 +300,7 @@ ise bu metin komut olur. Ortam değişkeni ise yalnız veri olarak okunur.
 - [Dağıtım stratejileri](dagitim-stratejileri.md) — geri alma, kademeli dağıtım
 - [Durağan site yayını](duragan-site-yayini.md) — Pages yayınının ayrıntısı
 - [Ortam ve yapılandırma](ortam-ve-yapilandirma.md) — sırlar ve ortamlar
-- [Test stratejisi](../00-yontem/test-stratejisi.md) — CI'da neyin koşacağı
+- [Test stratejisi](../00-yontem/test-stratejisi.md) — CI'da neyin koşacağı · [Git](../10-diller/git.md)
+- [Sır yönetimi](../50-guvenlik/sir-yonetimi.md) — CI sırları · [Tedarik zinciri](../50-guvenlik/tedarik-zinciri.md) — sürüm sabitleme ve güncelleme
 - Çalışan karşılıklar: [`ci.yml`](../../../.github/workflows/ci.yml), [`pages.yml`](../../../.github/workflows/pages.yml),
   [`havuz.yml`](../../../.github/workflows/havuz.yml), [`site/docs/yayin/github-pages.yml`](../../site/docs/yayin/github-pages.yml)

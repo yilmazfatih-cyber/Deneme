@@ -14,12 +14,13 @@ Genişletme: yeni ayar → ilgili modele varsayılanıyla alan ekleyin, yz.ornek
 from __future__ import annotations
 
 import os
+import re
 from collections.abc import Mapping
 from pathlib import Path
 from typing import Any
 
 import yaml
-from pydantic import BaseModel, ConfigDict, Field, ValidationError
+from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_validator
 
 from yz.hatalar import AyarHatasi
 
@@ -60,6 +61,18 @@ class SunucuAyari(BaseModel):
     maskele: bool = True  # kişisel veriyi modele göndermeden önce maskele
     azami_yukleme_bayt: int = Field(default=10 * 1024 * 1024, gt=0)
     izinli_kokenler: list[str] = Field(default_factory=list)  # CORS; boş = kapalı
+
+    @field_validator("izinli_kokenler")
+    @classmethod
+    def _kokenler_tek_tek(cls, kokenler: list[str]) -> list[str]:
+        # "*" anahtarsız yerel sunucuda her web sitesine belgeleri okutmak demektir (CORS).
+        for koken in kokenler:
+            if koken == "*" or not re.fullmatch(r"https?://[^/\s*]+", koken):
+                raise ValueError(
+                    f"izinli_kokenler: {koken!r} geçersiz. Kökenleri tek tek, sonda / olmadan "
+                    "yazın (ör. http://localhost:5173); * kullanılamaz."
+                )
+        return kokenler
 
 
 class Ayarlar(BaseModel):

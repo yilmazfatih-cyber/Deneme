@@ -110,11 +110,16 @@ class McpKoprusu:
             sonuc = self._gonder(self._istemci_al().call_tool(mcp_adi, argumanlar))
             return AracSonucu(_icerik_metni(sonuc), bool(getattr(sonuc, "is_error", False)))
 
+        # MCP'de ipucu yoksa araç "yıkıcı olabilir" sayılır: yalnız `readOnlyHint` diyen araç onaysız
+        # çalışır, öteki her araç tehlikelidir (onay kancası yoksa varsayılan ret; arac/kutu.py).
+        # İpucu sunucunun beyanıdır: güvenmediğiniz bir MCP sunucusuna hiç bağlanmayın.
+        salt_okunur = bool(getattr(getattr(tanim, "annotations", None), "read_only_hint", False))
         return SemaliArac(
             ad,
             str(tanim.description or ""),
             dict(tanim.input_schema or {}),
             calistirici,
+            tehlikeli=not salt_okunur,
             zaman_asimi_sn=self.zaman_asimi_sn,
         )
 
