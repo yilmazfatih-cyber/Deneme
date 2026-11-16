@@ -123,7 +123,10 @@ Her taramada 3 kategoriye bakar; 24 kategori yaklaşık 8 günde bir döner. Mev
   `raporlar/tarama-*.md` (ham aday dosyaları da `raporlar/adaylar-*.json`). Dalı `scripts/veri-dali.sh al`
   açar, `scripts/veri-dali.sh gonder` yazar; ikisi de tekrar çalıştırılabilir.
 - Yeni uygun ürün ya da süreli fırsat varsa `İthalat fırsatları — YYYY-MM-DD` başlıklı bir GitHub Issue açılır.
-- Oturumun son mesajı telefona bildirim olarak düşer.
+- Tarama sonunda telefona tek satırlık bildirim gider; ayrıntılı özet oturumun son mesajındadır.
+- **Elle ek tarama:** Claude uygulamasında "İthalat avcısı — günlük tarama oturumu"na "GÜNLÜK İTHALAT TARAMASI"
+  yazın ya da depoda `/ithalat` çalıştırın. Görevi "şimdi çalıştır" ile tetiklemeyin: elle tetikleme kalıcı
+  oturuma değil depo bağlı olmayan yeni bir oturuma gider ve push edemez.
 
 ## Bilmeniz gerekenler
 
