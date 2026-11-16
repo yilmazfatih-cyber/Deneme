@@ -1,0 +1,202 @@
+{
+ "tarama": {
+  "an": "2026-11-16T16:23:00+03:00",
+  "kategoriler": [
+   "cuzdan-kartlik",
+   "canta-suni-deri",
+   "corap"
+  ],
+  "not": "Doğrulama taraması (ana oturum, düzeltmeden sonra). Suni deri çantada Türkiye fiyatı ürün sayfasından doğrulanamadığı için aday yazılmadı; çorapta Türkiye fiyatları düşük (oran 1,5–3). Takip: eldiven ve eşarp yeniden ölçüldü, kolyenin Türkiye fiyatı doğrulanamadı."
+ },
+ "adaylar": [
+  {
+   "urun": "PU fermuarlı bozuk para cüzdanı / kartlık",
+   "kategori": "cuzdan-kartlik",
+   "gtip": "4202.32.10",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-detail/Pu-Leather-Coin-Purse-Double-Layer_1600976703666.html",
+    "baslik": "Pu Leather Coin Purse Double Layer Wallet Lady Pouch Card Holder Snap Button Key Women Zipper Wallet",
+    "tedarikci": "Shenzhen Youyue Technology Co., Ltd., 11 yıl, puan 4.0 (5 yorum)",
+    "fiyat_usd": 0.75,
+    "moq": 2,
+    "kademeler": [
+     {
+      "min_adet": 2,
+      "fiyat_usd": 0.75
+     },
+     {
+      "min_adet": 1000,
+      "fiyat_usd": 0.65
+     }
+    ],
+    "birim_agirlik_kg": 0.05,
+    "olcu_cm": [
+     10,
+     9,
+     3.5
+    ],
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 249,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/dericom/kadin-fermuarli-ve-citcitli-bozuk-para-bolmeli-sik-turuncu-cuzdan-kartlik-aksesuar-p-297437116",
+      "baslik": "dericom Kadın Fermuarlı Çıtçıtlı Bozuk Para Bölmeli Cüzdan Kartlık"
+     },
+     {
+      "fiyat_tl": 199.2,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/tonny-black/orijinal-kadin-kartlikli-bozuk-para-bolmeli-fermuarli-konfor-modeli-sik-mini-kartlik-siyah-cuzdan-p-366495295",
+      "baslik": "Tonny Black Kadın Kartlıklı Bozuk Para Bölmeli Fermuarlı Mini Cüzdan"
+     }
+    ],
+    "not": "Yalnız 2 ürün sayfası fiyatı doğrulandı (arama özeti); ayrıca ALTUNORDU 239 TL ve SHIKIRTI 199,90 TL görüldü ama ürün bağlantısı yok."
+   },
+   "taklit_riski": false,
+   "gerekce": "Küçük fermuarlı kartlıklı bozuk para cüzdanı günlük kullanım ve yılbaşı hediyesi olarak sürekli satar.",
+   "riskler": [
+    "Alibaba fiyatı tek arama özetinden; MOQ 2 ile 1 adetlik kademe çelişiyor, canlı sayfada doğrulanmalı",
+    "Ağırlık tahmin",
+    "Türkiye karşılaştırması 2 ilan",
+    "Hakiki deri etiketi iddiası olmamalı (PU)"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-detail/Pu-Leather-Coin-Purse-Double-Layer_1600976703666.html",
+    "https://www.trendyol.com/bozuk-para-cuzdani-y-s5349"
+   ]
+  },
+  {
+   "urun": "Dokunmatik ekran uyumlu örme kışlık eldiven",
+   "kategori": "orme-atki-eldiven",
+   "gtip": "",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Solid-Magic-Gloves-Capacitive-Mobile-Phone_1600094285285.html",
+    "baslik": "Solid Magic Gloves Capacitive Mobile Phone knit winter gloves",
+    "tedarikci": "bilinmiyor (ilan sayfası açılamadı)",
+    "fiyat_usd": 0.66,
+    "moq": 12,
+    "kademeler": [
+     {
+      "min_adet": 12,
+      "fiyat_usd": 0.66
+     },
+     {
+      "min_adet": 120,
+      "fiyat_usd": 0.33
+     }
+    ],
+    "birim_agirlik_kg": 0.04,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 319,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/huhulogy/unisex-siyah-dokunmatik-ozellikli-eldiven-yetiskin-p-165577155",
+      "baslik": "HUHULOGY Unisex Siyah Dokunmatik Özellikli Eldiven"
+     },
+     {
+      "fiyat_tl": 699,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/corney-design/mabel-dokunmatik-ekran-turuncu-yesil-eldiven-desenli-kadin-erkek-unisex-p-209445813",
+      "baslik": "Corney Design Mabel Dokunmatik Ekran Eldiven"
+     },
+     {
+      "fiyat_tl": 299,
+      "kaynak": "trendyol",
+      "url": "",
+      "baslik": "SİSTEM PELUŞ Dokunmatik Ekran Uyumlu Örgü Desenli Kadın Eldiveni (arama özeti)"
+     },
+     {
+      "fiyat_tl": 222.82,
+      "kaynak": "trendyol",
+      "url": "",
+      "baslik": "Betülce dokunmatik eldiven (arama özeti, ürün bağlantısı yok)"
+     },
+     {
+      "fiyat_tl": 123.74,
+      "kaynak": "trendyol",
+      "url": "",
+      "baslik": "Luminos dokunmatik eldiven (arama özeti, ürün bağlantısı yok)"
+     }
+    ],
+    "not": "Yalnız 2 ürün sayfası fiyatı var; görülen diğerleri: Luminos örme 123,74 TL, Betülce triko dokunmatik 222,82 TL (ürün bağlantısı yok). Jochie 20,55 TL hatalı görünüyor, alınmadı. Baş denetimi: avcının iki ilanı (319 ve 699 TL) üst uca yakındı; arama özetlerinde görülen 299, 222,82 ve 123,74 TL'lik dokunmatik eldivenler eklendi. Önceki ölçümle (300 TL) tutarlı."
+   },
+   "taklit_riski": false,
+   "gerekce": "Kışın ucuz, katlanabilir, bedensiz eldiven; dokunmatik özellik telefon kullanıcıları için satın alma nedeni.",
+   "riskler": [
+    "Takip: bugünkü fiyat 0,66 $ (MOQ 12) ve 0,33 $ (120+) alibaba arama özetinden, ilan sayfası açılamadı; indirim görülmedi",
+    "Aynı başlıkla farklı ilan (alibaba.co.uk 1601557781222) 0,44 $ (60-119), 0,31 $ (600+)",
+    "Ağırlık tahmin",
+    "Türkiye karşılaştırması 2 ilan"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Solid-Magic-Gloves-Capacitive-Mobile-Phone_1600094285285.html",
+    "https://www.trendyol.com/dokunmatik-ekran-eldiveni-y-s19063"
+   ]
+  },
+  {
+   "urun": "Desenli 90x90 twill görünümlü polyester eşarp",
+   "kategori": "esarp-sal",
+   "gtip": "6214.30",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Spring-Summer-High-Quality-90x90cm-Animal_1601174536158.html",
+    "baslik": "Spring Summer High Quality 90x90cm Animal Zebra Pattern Printed Women Silk Hair Scarf",
+    "tedarikci": "bilinmiyor (arama ozetinde gorunmedi)",
+    "fiyat_usd": 1.43,
+    "moq": 2,
+    "kademeler": [
+     {
+      "min_adet": 2,
+      "fiyat_usd": 1.43
+     },
+     {
+      "min_adet": 500,
+      "fiyat_usd": 1.28
+     }
+    ],
+    "birim_agirlik_kg": 0.07,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 599,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/90-x-90-levidor-sal-x-b110978-c31-a92-v1576",
+      "baslik": "Levidor Trend Polyester Twill (Tivil) Eşarp Ltd233-01 90x90 (kategori sayfası)"
+     },
+     {
+      "fiyat_tl": 420.32,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/90-x-90-giyim-x-c82-a92-v1576",
+      "baslik": "Levidor 90x90 Twill Eşarp (kategori sayfası)"
+     },
+     {
+      "fiyat_tl": 199.9,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/tekstil-mor-esarp-x-r11-c32-a14-v3991",
+      "baslik": "Madame Polo Desenli Twil Eşarp 90x90 (kategori sayfası)"
+     }
+    ],
+    "not": "Fiyatlar arama özetinden; ürün sayfası açılamadı (Trendyol 403). Aker 500-850 TL bandında; Madame Polo 199,90 TL en ucuz. Baş denetimi: 621,07 TL'lik Aker ilanı bilinen marka olduğu için çıkarıldı."
+   },
+   "taklit_riski": false,
+   "gerekce": "Twill eşarp Türkiye'de sürekli satılan tesettür ve hediyelik ürün; yerli fiyat ithal maliyetin çok üstünde.",
+   "riskler": [
+    "İlan başlığı 'silk' diyor, kumaş polyester mi doğrulanmadı",
+    "Hayvan desenli baskıda telif/marka riski düşük ama desen kontrol edilmeli",
+    "Türkiye fiyatları kategori sayfası özetinden, ürün sayfasından doğrulanmadı",
+    "Ağırlık tahmin"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Spring-Summer-High-Quality-90x90cm-Animal_1601174536158.html",
+    "https://www.trendyol.com/90-x-90-levidor-sal-x-b110978-c31-a92-v1576",
+    "https://www.trendyol.com/twill-aker-esarp-x-b661-c32-a117-v1178081"
+   ]
+  }
+ ]
+}
