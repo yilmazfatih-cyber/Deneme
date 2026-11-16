@@ -37,8 +37,8 @@ Küçük modellerde parametrelerin çoğu gömme tablosundadır. Bu yüzden bu k
 
 Son sütun yalnız ağırlıkları ve AdamW durumunu sayar. Eğitimde belleğin çoğunu aktivasyonlar ve çıkış logit'leri tutar
 (yığın × bağlam × sözlük). Sözlük 32 000, bağlam 512 ve yığın 8 ile CPU'da en yüksek bellek 128/4 için ~3,5 GB, 256/6
-için ~4,6 GB, 384/6 için ~5,5 GB ölçüldü; yığın 32 ile bunun yaklaşık dört katı gerekir. `hesapla` kendi ayarlarınla
-tahmin eder.
+için ~4,6 GB, 384/6 için ~5,5 GB ölçüldü; yığın 32 ile bunun yaklaşık dört katı gerekir. `hesapla` kendi ayarlarınla,
+iki aşama için ayrı tahmin eder.
 
 ---
 
@@ -92,8 +92,8 @@ eder (tablodaki "bağlı" ve "ayrı" sütunlarının farkı).
 tabloyu kullanırsa model hangisini yazacağını (ünlü uyumunu) ayırt edemez. `faktor_boyutu` açıkken bağlama
 `h · P · Eᵀ` olarak uygulanır (P: izdüşüm).
 
-**Bilinen modeller.** Bağlı: ilk Transformer, GPT-2, BERT, Gemma. Ayrı: LLaMA 1–2. Kaynak: Press & Wolf 2017,
-Inan vd. 2017. Bağlama küçük veride genelde yardım eder ama bu bir deney sorusudur.
+**Bilinen modeller.** Bağlı: ilk Transformer, GPT-2, BERT, Gemma. Ayrı: LLaMA 1–2. Kaynak: Inan vd. 2017. Press & Wolf
+2017 dil modellemede bağlamayla daha düşük şaşkınlık bildirdi; bu veride etkisi bir deney sorusudur.
 
 ## 4. `faktor_boyutu` — gömmeyi ikiye ayırmak (ALBERT)
 
@@ -119,7 +119,9 @@ Bir istisna var: tek harfli ekler (`-ı/-i/-u/-ü`, `-a/-e`, `-m`, `-n`, `-r` �
 vektörü bunlara "ek" değil "harf" der; bilinmeyen kelimeleri harf harf yazan token'larla aynı vektörü alırlar.
 3 bin maddelik örneklemde kelime içindeki ek konumlarının ~%23'ü böyle bir harf token'ıdır.
 
-**Neye mal olur.** 8 × boyut parametre, yani neredeyse bedava. Vektörler sıfırdan başlar; yararsızsa öyle kalır.
+**Neye mal olur.** 8 × boyut parametre, yani neredeyse bedava. Vektörler sıfırdan başlar, yani başta modeli hiç
+değiştirmez. AdamW onları gradyan gürültüsüyle de biraz oynatır; yararsız olsalar bile tam sıfırda kalmazlar ve
+büyüklükleri yararlılığın ölçüsü değildir. Etkisini BPC ile karşılaştır.
 
 **Bilinen modeller.** BERT'in "token type" gömmesine benzer bir fikirdir, ama morfolojik kategoriyle bu repoya özgü
 bir deneydir.
@@ -218,8 +220,13 @@ modelde öğrenme oranı toleransını artırabilir. Karşılığında gömme ge
    python -m turkce_model egit --asama tdk --ayar gomme.bicim_paylasimi=true --ayar gomme.cikis_baglama=false
    ```
 
+   Ctrl+C'den sonra yazılan komutlar bu `--ayar`'ları kendiliğinden tekrarlar; kopyaladığın komut aynı deneyi sürdürür.
+   `durum`'u da aynı `--ayar`'larla çalıştır: önerdiği komutlar da onları taşır.
+
 4. `ciktilar/ilerleme.md` tablosunda **BPC**'yi (karakter başına bit) karşılaştır. BPC aynı TDK doğrulama metni
    üzerinde, token sayısından ve bağlam uzunluğundan bağımsızdır; farklı sözlük boyutları ve tokenizer'lar arasında
    da adil karşılaştırma verir. `veri/ek_metin` eklemek TDK doğrulamasını değiştirmez; ek metnin BPC'si ayrı sütundadır.
+   Ama tokenizer'ı değiştirir: ek metin deneyini `[yollar] ciktilar` değeri farklı bir ayar dosyasıyla yap (README,
+   "Daha ileri gitmek").
 5. MEB aşamasından sonra doğruluğu her zaman **rastgele tahmin tabanıyla** birlikte oku. Tablo her doğruluğu kendi
    tabanıyla yazar (4 şıklı AÖL sorularında %25, 5 şıklı TurkishMMLU'da %20).

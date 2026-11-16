@@ -5,7 +5,7 @@
 #   python -m turkce_model hesapla --ayar gomme.boyut=384 --ayar model.katman=8
 # Gömme ve model ayarı farklı deneyler kendiliğinden ayrı klasörlere yazılır. Yalnız eğitim ayarı farklıysa
 # --deney <ad> ver. Tokenizer ayarı farklı bir kopyada (--ayarlar deney2.toml) [yollar] ciktilar'ı da değiştir:
-# tokenizer, hazır veri ve ilerleme tablosu o klasördedir.
+# tokenizer, hazır veri ve ilerleme tablosu o klasördedir. veri/ek_metin'e metin eklemek de tokenizer'ı değiştirir.
 
 # =============================================================================================
 # GÖMME (EMBEDDING) KARARLARI — SENİN
@@ -61,14 +61,15 @@ donem = 10              # derlemin üzerinden kaç kez geçilecek (adım sayıs�
 en_fazla_adim = 0       # 0 = sınırsız
 yigin = 8               # bir seferde kaç dizi; bellek bununla ölçeklenir (sözlük 32000, bağlam 512: dizi başına ~0,5 GB)
 birikim = 4             # gradyan biriktirme: adım başına yigin × birikim = 32 dizi. Bellek yetmezse yigin'i
-                        # küçült, birikim'i aynı oranda büyüt (sonuç değişmez); ekran kartında tersini yap
+                        # küçült, birikim'i aynı oranda büyüt (adım başına dizi sayısı ve eğitim sırasındaki
+                        # doğrulama kümesi aynı kalır); ekran kartında tersini yap
 ogrenme_orani = 6e-4
 min_oran = 0.1
 isinma_adimi = 200      # kısa eğitimde en fazla toplam adımın beşte birine iner
 agirlik_azaltma = 0.1
 gradyan_kirpma = 1.0
 degerlendirme_her = 100 # kısa eğitimde sıklaşır: en az ~10 değerlendirme olsun diye
-degerlendirme_yigini = 20
+degerlendirme_yigini = 20 # eğitim sırasındaki doğrulama: bu × birikim yığın; --devam'da değiştirilemez
 erken_durdurma = 8      # doğrulama kaybı bu kadar değerlendirme iyileşmezse dur (0 = kapalı)
 hassasiyet = "otomatik" # "otomatik" | "fp32" | "bf16" | "fp16"
 derle = false           # torch.compile (yalnız CUDA)
@@ -90,15 +91,16 @@ tdk_karisim = 0.25      # yığınların bu oranı TDK'den: dil bilgisini unutma
 
 # =============================================================================================
 # DEEPSEEK MODÜLLERİ — isteğe bağlı, varsayılan kapalı (README: "DeepSeek modülleri")
-# Bilgisayarında çalışan bir model sunucusu (ör. Ollama) gerekir; içerik bu bilgisayardan çıkmaz.
+# Bilgisayarında ya da yerel ağında çalışan bir model sunucusu (ör. Ollama) gerekir; içerik dışarı gönderilmez.
 # =============================================================================================
 [moduller]
 adres = "http://localhost:11434/v1"   # Ollama. llama.cpp: :8080, LM Studio: :1234, vLLM: :8000 (hepsi /v1)
 zaman_asimi = 900                     # saniye; ekran kartı yoksa bir sayfanın OCR'ı dakikalar sürebilir
+uzak_sunucu = false                   # false: yalnız bu bilgisayardaki ya da yerel ağdaki adresler kabul edilir
 
 [moduller.ocr]
 model = ""                            # ör. "deepseek-ocr" (önce: ollama pull deepseek-ocr); boş = kapalı
-dpi = 150
+dpi = 150                             # PDF sayfaları bu çözünürlükte görüntüye çevrilir (50–600)
 
 [moduller.metin]
 model = ""                            # ör. "deepseek-r1:1.5b" (kıyas satırı için); boş = kapalı
