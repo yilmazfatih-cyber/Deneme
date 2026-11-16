@@ -31,6 +31,10 @@ MMLU_REFERANSLARI = [
     ("Rastgele tahmin (5 şık)", 20.0),
 ]
 
+# İlerleme satırlarının ölçüm sürümü (kayıttaki "olcum"). 2: BPC akışın tamamı üzerinden, "metin" puanı harf
+# etiketi hariç. Bu alanı taşımayan ya da daha küçük taşıyan satırlar tabloda "eski ölçüm" notuyla gösterilir.
+OLCUM_SURUMU = 2
+
 
 @torch.no_grad()
 def akis_kaybi(
@@ -80,6 +84,9 @@ def secenek_puanlari(
     * ``metin``: " C)" verildikten sonra şık metninin token başına ortalama log-olasılığı (harf etiketi hariç;
       yoksa yalnız A–D ile eğitilmiş bir modelin harf önyargısı 5 şıklı sınavda E'yi bastırırdı),
     * ``harf``: yalnız " C)" kısmının log-olasılığı (şıklar istemde listelidir).
+
+    Bağlamdan uzun bir devam baştan kesilir. Harf token'larından yalnız pencerede kalanlar harf sayılır; hiçbiri
+    kalmadıysa ``harf`` puanı ``-inf`` olur (şık metninin ilk token'ları harf yerine geçmez).
     """
     from .meb import HARFLER, cevap_metni, istem
 
@@ -96,7 +103,8 @@ def secenek_puanlari(
         dizi = (on + devam)[-(baglam + 1) :]
         diziler.append(dizi)
         devam_uzunluk.append(min(len(devam), len(dizi) - 1))
-        harf_uzunluk.append(min(max(k, 1), devam_uzunluk[-1]))
+        kesilen = len(devam) - devam_uzunluk[-1]  # pencereye sığmayıp baştan kesilen devam token'ları
+        harf_uzunluk.append(min(max(max(k, 1) - kesilen, 0), devam_uzunluk[-1]))
     uzun = max(len(d) for d in diziler) - 1
     x = torch.zeros(len(diziler), uzun, dtype=torch.long)
     for r, d in enumerate(diziler):
@@ -112,7 +120,7 @@ def secenek_puanlari(
         dv = tok_logp[n - devam_uzunluk[r] :]
         metin_kismi = dv[harf_uzunluk[r] :]
         metin.append(float(metin_kismi.mean()) if len(metin_kismi) else float("-inf"))
-        harf.append(float(dv[: harf_uzunluk[r]].sum()) if len(dv) else float("-inf"))
+        harf.append(float(dv[: harf_uzunluk[r]].sum()) if harf_uzunluk[r] else float("-inf"))
     return {"metin": metin, "harf": harf}
 
 
@@ -139,7 +147,10 @@ def coktan_secmeli(
         dd["n"] += 1
         dd["rastgele"] += taban
         for yontem in ("metin", "harf"):
-            secim = max(range(len(puan[yontem])), key=lambda i: puan[yontem][i])
+            puanlar = puan[yontem]
+            if all(p == float("-inf") for p in puanlar):
+                continue  # hiçbir şıkkın puanı yok (ör. harfler pencereden taşmış): yanlış sayılır, A'ya yazılmaz
+            secim = max(range(len(puanlar)), key=puanlar.__getitem__)
             if secim == s.cevap:
                 dogru[yontem] += 1
                 dd[yontem] += 1
@@ -203,7 +214,7 @@ def ilerleme_ekle(cikti_klasoru: Path, kayit: dict) -> Path:
         "maddelerinin tamamı üzerinden hesaplanır; düştükçe model Türkçeyi daha iyi tahmin ediyor demektir ve aynı",
         "doğrulama metni üzerinde farklı tokenizer'lar arasında da karşılaştırılabilir. Doğruluklar \"metin / harf\"",
         "yöntemleriyle ve her biri kendi rastgele tahmin tabanıyla verilir (4 şıkta %25, 5 şıkta %20); n küçükken",
-        "birkaç puanlık fark gürültüdür. MEB ince ayarı yalnız A–D şıklı sorularla yapılır.",
+        "birkaç puanlık fark gürültüdür.",
         "",
         "| Zaman | Deney | Aşama | Adım | Sözlük | Parametre (gömme dışı) | Görülen token | Doğr. kaybı | BPC (TDK) "
         "| BPC (ek metin) | MEB doğrulama | MEB test | TurkishMMLU | Not |",
@@ -217,6 +228,11 @@ def ilerleme_ekle(cikti_klasoru: Path, kayit: dict) -> Path:
             notlar.append("durduruldu")
         if k.get("ek_paragraf"):
             notlar.append(f"+{k['ek_paragraf']} ek paragraf")
+        bes_sikli = (k.get("meb_secenek") or {}).get("5")
+        if bes_sikli and k.get("asama") == "meb":  # ince ayar E şıkkını da gördü: harf puanını yorumlarken bilinsin
+            notlar.append(f"MEB eğitimi: {bes_sikli} soru 5 şıklı")
+        if k.get("olcum", 1) < OLCUM_SURUMU:
+            notlar.append("eski ölçüm: yeniden değerlendir")
         satirlar.append(
             f"| {k.get('zaman', '')} | {k.get('deney', '')} | {k.get('asama', '')} | {k.get('adim', '—')} | {sozluk_metni} | "
             f"{_milyon(k.get('parametre'))} ({_milyon(k.get('parametre_gomme_disi'))}) | {_milyon(k.get('gorulen_token'))} | "

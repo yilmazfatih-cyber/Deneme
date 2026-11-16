@@ -6,6 +6,7 @@ from turkce_model.metin import (
     SATIR,
     bas_buyuk,
     baslik,
+    binlik,
     buyuk,
     harf_durumu,
     kucuk,
@@ -47,7 +48,7 @@ def test_normallestir():
 
 
 def test_normallestir_iki_kez_uygulanınca_degismez():
-    for m in ["U​̈", "a­̄", "kitap defter", "x\u0085y", "a\ud800b", "  Ev  \n\n\n\n iş "]:
+    for m in ["U​̈", "a­̄", "kitap defter", "x\u0085y", "a\ud800b", "  Ev  \n\n\n\n iş ", "i\u0345\u200b\u0307", "i\u0361\u200c\u0307"]:
         bir = normallestir(m)
         assert normallestir(bir) == bir, repr(m)
     assert normallestir("U​̈") == "Ü"
@@ -61,6 +62,28 @@ def test_normallestir_noktali_i_kalintisini_tek_seferde_temizler():
         bir = normallestir(m)
         assert "\u0307" not in bir and bir.startswith("i"), repr(m)
         assert normallestir(bir) == bir, repr(m)
+
+
+def test_normallestir_nfc_siralamasinin_yan_yana_getirdigi_noktayi_da_temizler():
+    # NFC birleşen işaretleri sınıflarına göre sıralar. Sınıfı 230'dan büyük bir işaretin (U+0345, U+0315, U+035C,
+    # U+0361…) ardındaki U+0307, aradaki sıfır genişlikli karakter ya da yumuşak tire silinince "i"nin yanına gelir;
+    # ilk geçişte kalırsa ikinci normalleştirme onu silerdi (sonuç değişirdi).
+    ornekler = [
+        "i\u0345\u200b\u0307",
+        "i\u0361\u200c\u0307",
+        "i\u0315\u00ad\u0307",
+        "i\u035c\ufeff\u0307",
+        "i\u0345\u200b\u0307\u0307",
+        "ki\u0345\u200d\u0307tap",
+    ]
+    for m in ornekler:
+        bir = normallestir(m)
+        assert "\u0307" not in bir, ascii(m)
+        assert normallestir(bir) == bir, ascii(m)
+    assert normallestir("i\u0345\u200b\u0307") == "i\u0345"
+    # Zaten eşgüçlü olan çıktılar değişmez: alt noktayla birleşen "ị" olduğu gibi kalır.
+    assert normallestir("i\u0307\u200b\u0323") == "\u1ecb"
+    assert normallestir("i\u0345\u0307") == normallestir(normallestir("i\u0345\u0307"))
 
 
 def test_on_bolutle_bosluk_bayragi():
@@ -83,6 +106,13 @@ def test_ust_simge_kelime_icinde_kalir():
     birimler = on_bolutle("x² ²")
     assert birimler[0] == (KELIME, "x²", False)  # ² Unicode'da harf-rakam sayılır (\\w); kelimeye katılır
     assert birimler[1] == (KELIME, "²", True)
+
+
+def test_binlik_duz_boslukla_ayirir():
+    assert binlik(1234567) == "1 234 567" and binlik(8090) == "8 090" and binlik(999) == "999" and binlik(0) == "0"
+    assert binlik(-1234567) == "-1 234 567" and binlik(12345.678) == "12 346"
+    # Nokta, aynı satırdaki ondalık sayılarla karışırdı ("4.452 token/sn"); dar boşluk Windows kod sayfasında yazılamaz.
+    assert "." not in binlik(10**9) and all(ord(c) < 128 for c in binlik(10**9))
 
 
 def test_unlu_uyumu_ve_siralama():

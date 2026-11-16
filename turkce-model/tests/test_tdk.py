@@ -128,3 +128,53 @@ def test_indirme_kaldigi_yerden_surer(tmp_path, monkeypatch):
         f.write('{"ara": "yarim')  # yarıda kesilmiş satır
     assert [m["madde"] for m in tdk.maddeleri_oku(cikti)] == ["kitap", "yavas"]
     assert json.loads(cikti.read_text(encoding="utf-8").splitlines()[1])["durum"] == "yok"
+
+
+def _satir(ara: str, durum: str, sonuc) -> str:
+    return json.dumps({"ara": ara, "durum": durum, "sonuc": sonuc}, ensure_ascii=False) + "\n"
+
+
+def test_indirilen_sayisi_yarim_satiri_saymaz(tmp_path):
+    cikti = tmp_path / "maddeler.jsonl"
+    tam = (
+        _satir("a", "tamam", [{"madde_id": "1", "madde": "a"}])
+        + _satir("b", "hata", "HTTP 500")
+        + _satir("b", "tamam", [])
+        + _satir("c", "yok", "Sonuç bulunamadı")
+        + _satir("d", "hata", "deneme sınırı aşıldı")
+        + _satir("a", "tamam", [])
+        + _satir('x"y\\z', "tamam", [])
+        + "[1, 2]\n"  # sözlük olmayan satır
+    )
+    yarim = '{"ara": "f", "durum": "tamam", "sonuc": [{"madde_id": "9", "ma'  # çökme ya da elektrik kesintisi
+    cikti.write_text(tam + yarim, encoding="utf-8")
+    # durum'un sayısı, indiricinin ve derlemin gördüğüyle aynı olmalı: a, b, c, x"y\z
+    assert tdk.indirilen_sayisi(cikti) == len(tdk._tamamlananlar(cikti)) == 4
+    # İndirici yarım satırı bir satır sonuyla kapatıp devam eder; o satır yine sayılmaz.
+    cikti.write_text(tam + yarim + "\n" + _satir("g", "tamam", []), encoding="utf-8")
+    assert tdk.indirilen_sayisi(cikti) == len(tdk._tamamlananlar(cikti)) == 5
+    cikti.write_text(tam.rstrip("\n"), encoding="utf-8")  # son satırın sonunda satır sonu olmasa da tam satırdır
+    assert tdk.indirilen_sayisi(cikti) == 4
+
+
+class _KesenOturum(_SahteOturum):
+    """``kesilecek`` kelimesi istenirken Ctrl+C gelir."""
+
+    kesilecek = "ev"
+
+    def get(self, url, params=None, timeout=None):
+        if params["ara"] == self.kesilecek:
+            raise KeyboardInterrupt
+        return super().get(url, params=params, timeout=timeout)
+
+
+def test_indirme_ctrl_c_ile_kesilirse_sayacta_bildirir(tmp_path, monkeypatch):
+    monkeypatch.setattr(tdk.time, "sleep", lambda s: None)
+    oturum = _KesenOturum({"kitap": [_Yanit(200, [{"madde_id": "1", "madde": "kitap"}])]})
+    satirlar: list[str] = []
+    cikti = tmp_path / "maddeler.jsonl"
+    sayac = tdk.maddeleri_indir(["kitap", "ev", "okul"], cikti, bekleme=0, oturum=oturum, yaz=satirlar.append)
+    assert sayac == {"tamam": 1, "yok": 0, "hata": 0, "atlanan": 0, "durduruldu": 1}  # komut satırı 130 ile çıkar
+    assert tdk.sayac_metni(sayac) == "indirildi 1, TDK'da yok 0, hata 0, zaten vardı 0"  # işaret sonuç metnine girmez
+    assert any("Durduruldu" in s for s in satirlar)
+    assert tdk.indirilen_sayisi(cikti) == 1

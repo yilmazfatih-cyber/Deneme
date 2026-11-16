@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import zlib
 from array import array
 from collections.abc import Iterable, Iterator
@@ -16,8 +17,22 @@ from .metin import normallestir
 from .tokenizer import PAD, TurkceTokenizer
 
 
+# Hazır verinin biçim sürümü (meta.json "surum"). 2: ek metnin doğrulama payı ayrı akışta (ek_dogrulama.bin),
+# dosya imzaları meta.json'da. Biçim ya da kodlama değişince artırılır; eski veri yeniden hazırlanmalıdır.
+VERI_SURUMU = 2
+
+
 def token_turu(sozluk_boyutu: int) -> type:
     return np.uint16 if sozluk_boyutu <= 65535 else np.uint32
+
+
+def dosya_imzasi(yol: Path) -> str:
+    """Dosya içeriğinin parmak izi (sha256'nın ilk 16 hanesi). Parça parça okur: büyük akışlar belleğe alınmaz."""
+    ozet = hashlib.sha256()
+    with Path(yol).open("rb") as f:
+        while parca := f.read(1 << 20):
+            ozet.update(parca)
+    return ozet.hexdigest()[:16]
 
 
 def tokenizer_imzasi(tok: TurkceTokenizer) -> str:
@@ -191,9 +206,16 @@ class SoruVeri:
 
 
 def meta_yaz(klasor: Path, meta: dict) -> None:
-    (klasor / "meta.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+    """``meta.json``'u önce geçici dosyaya yazar, sonra yerine taşır: yarım yazılmış bir meta kalmaz."""
+    gecici = klasor / "meta.json.yaziliyor"
+    gecici.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+    os.replace(gecici, klasor / "meta.json")
 
 
 def meta_oku(klasor: Path) -> dict | None:
-    yol = klasor / "meta.json"
-    return json.loads(yol.read_text(encoding="utf-8")) if yol.exists() else None
+    """Hazır verinin ``meta.json``'u; yoksa ya da okunamıyorsa ``None`` (veri hazırlanmamış sayılır)."""
+    try:
+        meta = json.loads((klasor / "meta.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+    return meta if isinstance(meta, dict) else None

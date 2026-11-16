@@ -221,13 +221,24 @@ def komut_tokenizer_dene(arg, ayarlar: Ayarlar) -> None:
 
 def komut_veri_hazirla(arg, ayarlar: Ayarlar) -> None:
     from .egitim import tokenizer_yukle, veri_klasoru
-    from .veri import AkisYazici, dogrulamaya_mi, ek_metin_belgeleri, meta_yaz, sorulari_kodla, tokenizer_imzasi
+    from .veri import (
+        VERI_SURUMU,
+        AkisYazici,
+        dogrulamaya_mi,
+        dosya_imzasi,
+        ek_metin_belgeleri,
+        meta_yaz,
+        sorulari_kodla,
+        tokenizer_imzasi,
+    )
 
     tok = tokenizer_yukle(ayarlar)
     hedef = veri_klasoru(ayarlar)
     derlem = _yol(ayarlar, "tdk", "derlem.jsonl")
     if not derlem.exists():
         raise AyarHatasi("TDK derlemi yok. Önce: tdk-derlem")
+    # Önce eski meta silinir: yarıda kesilirse boşaltılmış akışların yanında eski meta.json kalmaz ("Hazır veri yok").
+    (hedef / "meta.json").unlink(missing_ok=True)
     egitim, dogrulama = AkisYazici(hedef / "tdk_egitim.bin", tok), AkisYazici(hedef / "tdk_dogrulama.bin", tok)
     with derlem.open(encoding="utf-8") as f:
         for satir in f:
@@ -246,7 +257,13 @@ def komut_veri_hazirla(arg, ayarlar: Ayarlar) -> None:
             else:
                 egitim.ekle(paragraf)
             ek_sayi += 1
-    meta = {"tokenizer": tokenizer_imzasi(tok), "tdk_egitim": egitim.kapat(), "tdk_dogrulama": dogrulama.kapat(), "ek_paragraf": ek_sayi}
+    meta = {
+        "surum": VERI_SURUMU,
+        "tokenizer": tokenizer_imzasi(tok),
+        "tdk_egitim": egitim.kapat(),
+        "tdk_dogrulama": dogrulama.kapat(),
+        "ek_paragraf": ek_sayi,
+    }
     if ek_dogrulama is not None:
         meta["ek_dogrulama"] = ek_dogrulama.kapat()
     else:
@@ -277,6 +294,15 @@ def komut_veri_hazirla(arg, ayarlar: Ayarlar) -> None:
         print(f"MEB soruları: {', '.join(parcalar)}")
     else:
         print("MEB soruları henüz yok (meb-pdf). Aşama 1 için gerekmez.")
+    # Az önce yazılan dosyaların içerik imzaları: eğitim ve durum, verinin değişip değişmediğini bunlardan anlar.
+    dosyalar = {
+        "tdk_egitim": "tdk_egitim.bin",
+        "tdk_dogrulama": "tdk_dogrulama.bin",
+        "ek_dogrulama": "ek_dogrulama.bin",
+        "meb_egitim": "meb_egitim.npz",
+        "meb_dogrulama": "meb_dogrulama.npz",
+    }
+    meta["imza"] = {ad: dosya_imzasi(hedef / dosya) for ad, dosya in dosyalar.items() if (hedef / dosya).exists()}
     meta_yaz(hedef, meta)
     print(f"Hazır: {hedef}")
 

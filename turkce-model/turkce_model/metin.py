@@ -101,7 +101,14 @@ def normallestir(metin: str) -> str:
     m = re.sub(r" *\n *", "\n", m)
     m = re.sub(r"\n{3,}", "\n\n", m)
     # Sıfır genişlikli karakter ya da yumuşak tire silinince bir harf ile birleşen işaret yan yana gelebilir.
-    return unicodedata.normalize("NFC", m.strip())
+    m = unicodedata.normalize("NFC", m.strip())
+    # NFC birleşen işaretleri yeniden sıralar ve yeni bir "i + üst nokta" çifti oluşturabilir (i + U+0345 + U+0307):
+    # kalmayana kadar temizle; yoksa ikinci bir normalleştirme sonucu değiştirirdi.
+    while True:
+        y = re.sub("i\u0307+", "i", m)
+        if y == m:
+            return m
+        m = unicodedata.normalize("NFC", y)
 
 
 # Kelime karakteri: Unicode harf-rakam (\w) ama ondalık rakam ve alt çizgi değil. ², ₂, ½, Ⅻ gibi
@@ -179,8 +186,12 @@ def unlu_uyumu(son_unlu: str) -> tuple[str, str]:
 
 
 def binlik(n: int | float) -> str:
-    """Binlik ayırıcılı tam sayı, Türkçe yazımla: ``1234567 → "1.234.567"``."""
-    return f"{round(n):,}".replace(",", ".")
+    """Binlik ayırıcılı tam sayı: ``1234567 → "1 234 567"``.
+
+    Ayırıcı düz boşluktur: nokta, aynı satırdaki ondalık sayılarla ("kayıp 8.090") karışırdı; dar boşluk
+    (U+202F) ise Windows kod sayfalarında yazılamaz.
+    """
+    return f"{round(n):,}".replace(",", " ")
 
 
 def son_unlu(kelime: str) -> str | None:

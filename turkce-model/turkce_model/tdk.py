@@ -89,7 +89,7 @@ def _tamamlananlar(cikti: Path) -> set[str]:
                 kayit = json.loads(satir)
             except json.JSONDecodeError:
                 continue  # yarıda kesilmiş son satır
-            if kayit.get("durum") in ("tamam", "yok"):
+            if isinstance(kayit, dict) and kayit.get("durum") in ("tamam", "yok") and "ara" in kayit:
                 tamam.add(kayit["ara"])
     return tamam
 
@@ -100,18 +100,22 @@ _ARA_DURUM = re.compile(r'^\{"ara": ("(?:[^"\\]|\\.)*"), "durum": "(\w+)"')
 def indirilen_sayisi(cikti: Path) -> int:
     """``maddeler.jsonl``'de tamamlanmış (``tamam`` ya da ``yok``) farklı kelime sayısı.
 
-    Satırın yalnız başı okunur (``{"ara": …, "durum": …``); büyük dosyada her satırı JSON olarak çözmekten hızlıdır.
+    Tam satırların yalnız başı okunur (``{"ara": …, "durum": …``); büyük dosyada her satırı JSON olarak çözmekten
+    hızlıdır. ``}`` ile bitmeyen (yarıda kesilmiş) satırlar JSON olarak çözülür ve çözülemezse sayılmaz: indirici
+    de derlem de o satırı yok sayar.
     """
     if not cikti.exists():
         return 0
     tamam: set[str] = set()
     with cikti.open(encoding="utf-8", errors="replace") as f:
         for satir in f:
-            m = _ARA_DURUM.match(satir)
+            m = _ARA_DURUM.match(satir) if satir.endswith("}\n") else None
             if m is None:
                 try:
                     kayit = json.loads(satir)
                 except json.JSONDecodeError:
+                    continue
+                if not isinstance(kayit, dict):
                     continue
                 ara, durum = kayit.get("ara"), kayit.get("durum")
             else:
@@ -122,9 +126,9 @@ def indirilen_sayisi(cikti: Path) -> int:
 
 
 def sayac_metni(sayac: dict[str, int]) -> str:
-    """İndirme sayacını okunur Türkçe metne çevirir."""
+    """İndirme sayacını okunur Türkçe metne çevirir (``durduruldu`` bir sayı değil işarettir; yazılmaz)."""
     adlar = {"tamam": "indirildi", "yok": "TDK'da yok", "hata": "hata", "atlanan": "zaten vardı"}
-    return ", ".join(f"{adlar.get(k, k)} {v}" for k, v in sayac.items())
+    return ", ".join(f"{adlar.get(k, k)} {v}" for k, v in sayac.items() if k != "durduruldu")
 
 
 def maddeleri_indir(
@@ -142,6 +146,8 @@ def maddeleri_indir(
 
     Kaldığı yerden devam eder: ``tamam``/``yok`` durumundaki kelimeler atlanır, ``hata`` olanlar
     yeniden denenir. ``ornek`` verilirse tohumla belirlenen sabit bir rastgele alt küme indirilir.
+    Ctrl+C ile kesilirse dönen sayaçta ``"durduruldu": 1`` bulunur (yalnız o zaman); komut satırı bunu 130
+    çıkış koduna çevirir.
     """
     import requests
 
@@ -184,6 +190,7 @@ def maddeleri_indir(
                     yaz(f"  {i}/{len(hedefler)}  {hiz:.1f} madde/sn  kalan ~{_sure(kalan)}  ({sayac_metni(sayac)})")
                 time.sleep(bekleme)
     except KeyboardInterrupt:
+        sayac["durduruldu"] = 1
         yaz("\nDurduruldu. Aynı komutu yeniden çalıştırınca kaldığı yerden devam eder.")
     return sayac
 
