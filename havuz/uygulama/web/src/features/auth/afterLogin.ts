@@ -3,7 +3,8 @@
  * Bu cihazda hesapsız yazılmış kayıt varsa önce "hesabıma taşı" adımı açılır.
  */
 import { countLocalRecords, totalCount } from '../../lib/session/migrate.ts'
-import { LOCAL_DB_NAME, openDb } from '../../lib/store/db.ts'
+import { LOCAL_DB_NAME, openDb, userDbName } from '../../lib/store/db.ts'
+import { getMeta } from '../../lib/store/meta.ts'
 
 export const DEFAULT_NEXT = '/gorevler'
 
@@ -13,11 +14,15 @@ export function safeNext(value: string | null | undefined, fallback: string = DE
   return value
 }
 
-/** Giriş sonrası hedef yol. */
-export async function nextAfterLogin(next: string): Promise<string> {
+/**
+ * Giriş sonrası hedef yol. Kullanıcı bu öneriyi daha önce "Şimdi değil" diye kapattıysa yeniden sorulmaz
+ * (Ayarlar → Veri'den yine taşınabilir).
+ */
+export async function nextAfterLogin(next: string, userId: string): Promise<string> {
   const counts = await countLocalRecords(openDb(LOCAL_DB_NAME))
-  if (totalCount(counts) > 0) return `/hesaba-tasi?next=${encodeURIComponent(next)}`
-  return next
+  if (totalCount(counts) === 0) return next
+  if (await getMeta(openDb(userDbName(userId)), 'migrationDismissed')) return next
+  return `/hesaba-tasi?next=${encodeURIComponent(next)}`
 }
 
 /** Bir yolu `next` parametresiyle giriş/kayıt sayfasına taşır. */

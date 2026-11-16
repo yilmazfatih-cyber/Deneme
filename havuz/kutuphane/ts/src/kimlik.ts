@@ -65,7 +65,7 @@ function uuidFromCounter(timestampMs: number, counter: bigint): string {
 
 function counterFromBytes(random: Uint8Array): bigint {
   if (random.length < 10) throw new RangeError('UUIDv7 için en az 10 rastgele bayt gerekir.')
-  let counter = BigInt(((random[0] ?? 0) & 0x0f) << 8 | (random[1] ?? 0))
+  let counter = BigInt((((random[0] ?? 0) & 0x0f) << 8) | (random[1] ?? 0))
   counter = (counter << 6n) | BigInt((random[2] ?? 0) & 0x3f)
   for (let i = 3; i < 10; i++) counter = (counter << 8n) | BigInt(random[i] ?? 0)
   return counter
@@ -144,13 +144,13 @@ export function shortId(length = 21, options: { alphabet?: string; randomBytes?:
   const randomBytes = options.randomBytes ?? defaultRandomBytes
   const mask = (2 << (31 - Math.clz32((alphabet.length - 1) | 1))) - 1
   const step = Math.ceil((1.6 * mask * length) / alphabet.length)
-  let id = ''
+  const chars: string[] = []
   for (;;) {
     for (const byte of randomBytes(step)) {
       const index = byte & mask
       if (index < alphabet.length) {
-        id += alphabet[index]
-        if (Array.from(id).length === length) return id
+        chars.push(alphabet[index] ?? '')
+        if (chars.length === length) return chars.join('')
       }
     }
   }

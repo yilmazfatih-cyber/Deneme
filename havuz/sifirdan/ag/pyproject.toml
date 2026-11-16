@@ -14,7 +14,9 @@ dependencies = []
 
 [project.optional-dependencies]
 # Yalnız denetim araçları. hypothesis: ayrıştırıcılara rastgele girdi veren özellik testleri için.
-dev = ["pytest>=9.0", "hypothesis>=6.150", "ruff>=0.17", "mypy>=2.4"]
+# cryptography: YALNIZ testlerde başvuru gerçeklemesi (ChaCha20-Poly1305 farksal testi) ve yerel TLS testleri için
+# kendinden imzalı sertifika üretimi; hiçbir paket onu içe aktarmaz (docs/KARARLAR.md, K03).
+dev = ["pytest>=9.0", "hypothesis>=6.150", "ruff>=0.17", "mypy>=2.4", "cryptography>=44"]
 
 [tool.setuptools.packages.find]
 # YENİ MİNİ SİSTEM BURAYA: paket klasörünün adını ekleyin (ayrıca tests/test_kurallar.py içindeki listeye).
@@ -33,6 +35,9 @@ include = [
   "tls_gozlem*",
   "p2p*",
 ]
+
+[tool.setuptools.package-data]
+websocket = ["*.html"]
 
 [tool.ruff]
 line-length = 100

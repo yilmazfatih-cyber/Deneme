@@ -34,7 +34,11 @@
       { "girdi": [[7]], "cikti": [7] }
     ],
     "histogram": [
-      { "girdi": [[1, 2, 2, 3, 3, 3, 10]], "secenek": { "bins": 3 }, "cikti": { "edges": [1, 4, 7, 10], "counts": [6, 0, 1] } },
+      {
+        "girdi": [[1, 2, 2, 3, 3, 3, 10]],
+        "secenek": { "bins": 3 },
+        "cikti": { "edges": [1, 4, 7, 10], "counts": [6, 0, 1] }
+      },
       { "girdi": [[5, 5, 5]], "secenek": { "bins": 4 }, "cikti": { "edges": [5, 5], "counts": [3] } },
       {
         "girdi": [[0, 1, 2, 3, 4, 5, 6]],
@@ -43,11 +47,31 @@
       }
     ],
     "linearRegression": [
-      { "girdi": [[1, 2, 3, 4, 5], [2, 4, 5, 4, 5]], "cikti": { "slope": 0.6, "intercept": 2.2, "r2": 0.6 } },
-      { "girdi": [[1, 1], [2, 3]], "hata": true },
+      {
+        "girdi": [
+          [1, 2, 3, 4, 5],
+          [2, 4, 5, 4, 5]
+        ],
+        "cikti": { "slope": 0.6, "intercept": 2.2, "r2": 0.6 }
+      },
+      {
+        "girdi": [
+          [1, 1],
+          [2, 3]
+        ],
+        "hata": true
+      },
       { "girdi": [[1, 2], [2]], "hata": true }
     ],
-    "pearson": [{ "girdi": [[1, 2, 3, 4, 5], [2, 4, 5, 4, 5]], "cikti": 0.7745966692414834 }],
+    "pearson": [
+      {
+        "girdi": [
+          [1, 2, 3, 4, 5],
+          [2, 4, 5, 4, 5]
+        ],
+        "cikti": 0.7745966692414834
+      }
+    ],
     "movingAverage": [
       { "girdi": [[1, 2, 3, 4, 5, 6], 3], "cikti": [2, 3, 4, 5] },
       { "girdi": [[1, 2], 3], "hata": true }

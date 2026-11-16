@@ -1,0 +1,23 @@
+# Özyineleme: faktöriyel (büyük tamsayı), Hanoi kuleleri, Öklid ile EBOB
+işlev faktoriyel(n) {
+    eğer n <= 1 { döndür 1 }
+    döndür n * faktoriyel(n - 1)
+}
+yazdır(faktoriyel(20))
+yazdır(faktoriyel(30))
+
+işlev hanoi(n, kaynak, hedef, ara, hamleler) {
+    eğer n == 0 { döndür }
+    hanoi(n - 1, kaynak, ara, hedef, hamleler)
+    ekle(hamleler, kaynak + "→" + hedef)
+    hanoi(n - 1, ara, hedef, kaynak, hamleler)
+}
+değişken h = []
+hanoi(3, "A", "C", "B", h)
+yazdır(uzunluk(h), h)
+
+işlev ebob(a, b) {
+    eğer b == 0 { döndür a }
+    döndür ebob(b, a % b)
+}
+yazdır(ebob(1071, 462))

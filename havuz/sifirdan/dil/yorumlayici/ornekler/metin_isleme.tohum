@@ -1,0 +1,18 @@
+# Metin işleme: ters çevirme, palindrom, Türkçe büyük harf, parçala/birleştir
+işlev ters(s) { değişken t = ""; için h içinde s { t = h + t }; döndür t }
+
+işlev palindrom_mu(s) {
+    değişken temiz = ""
+    için h içinde küçük_harf(s) {
+        eğer h != " " { temiz += h }
+    }
+    döndür temiz == ters(temiz)
+}
+
+yazdır(ters("Köprü"))
+yazdır(palindrom_mu("Ey Edip Adanada pide ye"))
+yazdır(palindrom_mu("Köprü"))
+yazdır(büyük_harf("iyi akşamlar, ılgaz"))
+yazdır(birleştir(parçala("a,b,c", ","), " | "))
+yazdır("satır1\nsatır2")
+yazdır(uzunluk("\u{1F600}"))

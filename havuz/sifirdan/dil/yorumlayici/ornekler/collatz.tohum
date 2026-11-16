@@ -1,0 +1,18 @@
+# Collatz dizisi: `iken` döngüsü ve tam bölme (6 / 2 tamsayı verir)
+işlev collatz_adim(n) {
+    değişken adim = 0
+    iken n != 1 {
+        eğer n % 2 == 0 { n = n / 2 } değilse { n = 3 * n + 1 }
+        adim += 1
+    }
+    döndür adim
+}
+
+yazdır(collatz_adim(27))
+değişken en_uzun = 0
+değişken en_sayi = 0
+için i içinde aralık(1, 30) {
+    değişken a = collatz_adim(i)
+    eğer a > en_uzun { en_uzun = a; en_sayi = i }
+}
+yazdır(en_sayi, en_uzun)

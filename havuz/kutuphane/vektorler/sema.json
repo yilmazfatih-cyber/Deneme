@@ -4,29 +4,74 @@
   "islevler": {
     "safeParse": [
       { "girdi": [{ "tip": "string" }, "merhaba"], "cikti": { "ok": true, "value": "merhaba" } },
-      { "girdi": [{ "tip": "string" }, 5], "cikti": { "ok": false, "issues": [{ "path": [], "message": "Metin bekleniyordu." }] } },
-      { "girdi": [{ "tip": "string", "trim": true, "min": 2 }, "  a  "], "cikti": { "ok": false, "issues": [{ "path": [], "message": "En az 2 karakter olmalı." }] } },
+      {
+        "girdi": [{ "tip": "string" }, 5],
+        "cikti": { "ok": false, "issues": [{ "path": [], "message": "Metin bekleniyordu." }] }
+      },
+      {
+        "girdi": [{ "tip": "string", "trim": true, "min": 2 }, "  a  "],
+        "cikti": { "ok": false, "issues": [{ "path": [], "message": "En az 2 karakter olmalı." }] }
+      },
       { "girdi": [{ "tip": "string", "trim": true, "min": 2 }, "  ab  "], "cikti": { "ok": true, "value": "ab" } },
-      { "girdi": [{ "tip": "string", "max": 3 }, "çğış"], "cikti": { "ok": false, "issues": [{ "path": [], "message": "En çok 3 karakter olmalı." }] } },
-      { "girdi": [{ "tip": "string", "email": true }, "ayse@ornek.com"], "cikti": { "ok": true, "value": "ayse@ornek.com" } },
-      { "girdi": [{ "tip": "string", "email": true }, "ayse@ornek"], "cikti": { "ok": false, "issues": [{ "path": [], "message": "Geçerli bir e-posta adresi değil." }] } },
+      {
+        "girdi": [{ "tip": "string", "max": 3 }, "çğış"],
+        "cikti": { "ok": false, "issues": [{ "path": [], "message": "En çok 3 karakter olmalı." }] }
+      },
+      {
+        "girdi": [{ "tip": "string", "email": true }, "ayse@ornek.com"],
+        "cikti": { "ok": true, "value": "ayse@ornek.com" }
+      },
+      {
+        "girdi": [{ "tip": "string", "email": true }, "ayse@ornek"],
+        "cikti": { "ok": false, "issues": [{ "path": [], "message": "Geçerli bir e-posta adresi değil." }] }
+      },
       { "girdi": [{ "tip": "string", "regex": "^[0-9]{5}$" }, "34000"], "cikti": { "ok": true, "value": "34000" } },
-      { "girdi": [{ "tip": "string", "regex": "^[0-9]{5}$" }, "3400"], "cikti": { "ok": false, "issues": [{ "path": [], "message": "Biçim geçersiz." }] } },
+      {
+        "girdi": [{ "tip": "string", "regex": "^[0-9]{5}$" }, "3400"],
+        "cikti": { "ok": false, "issues": [{ "path": [], "message": "Biçim geçersiz." }] }
+      },
       { "girdi": [{ "tip": "number" }, 3.5], "cikti": { "ok": true, "value": 3.5 } },
-      { "girdi": [{ "tip": "number" }, "3"], "cikti": { "ok": false, "issues": [{ "path": [], "message": "Sayı bekleniyordu." }] } },
-      { "girdi": [{ "tip": "number" }, true], "cikti": { "ok": false, "issues": [{ "path": [], "message": "Sayı bekleniyordu." }] } },
+      {
+        "girdi": [{ "tip": "number" }, "3"],
+        "cikti": { "ok": false, "issues": [{ "path": [], "message": "Sayı bekleniyordu." }] }
+      },
+      {
+        "girdi": [{ "tip": "number" }, true],
+        "cikti": { "ok": false, "issues": [{ "path": [], "message": "Sayı bekleniyordu." }] }
+      },
       { "girdi": [{ "tip": "number", "coerce": true }, " 8080 "], "cikti": { "ok": true, "value": 8080 } },
-      { "girdi": [{ "tip": "number", "coerce": true }, "0x10"], "cikti": { "ok": false, "issues": [{ "path": [], "message": "Sayı bekleniyordu." }] } },
-      { "girdi": [{ "tip": "number", "integer": true, "min": 0, "max": 120 }, 30.5], "cikti": { "ok": false, "issues": [{ "path": [], "message": "Tam sayı olmalı." }] } },
-      { "girdi": [{ "tip": "number", "integer": true, "min": 0, "max": 120 }, -1], "cikti": { "ok": false, "issues": [{ "path": [], "message": "En az 0 olmalı." }] } },
-      { "girdi": [{ "tip": "number", "positive": true }, 0], "cikti": { "ok": false, "issues": [{ "path": [], "message": "Sıfırdan büyük olmalı." }] } },
-      { "girdi": [{ "tip": "boolean" }, "true"], "cikti": { "ok": false, "issues": [{ "path": [], "message": "Evet/hayır (true/false) bekleniyordu." }] } },
+      {
+        "girdi": [{ "tip": "number", "coerce": true }, "0x10"],
+        "cikti": { "ok": false, "issues": [{ "path": [], "message": "Sayı bekleniyordu." }] }
+      },
+      {
+        "girdi": [{ "tip": "number", "integer": true, "min": 0, "max": 120 }, 30.5],
+        "cikti": { "ok": false, "issues": [{ "path": [], "message": "Tam sayı olmalı." }] }
+      },
+      {
+        "girdi": [{ "tip": "number", "integer": true, "min": 0, "max": 120 }, -1],
+        "cikti": { "ok": false, "issues": [{ "path": [], "message": "En az 0 olmalı." }] }
+      },
+      {
+        "girdi": [{ "tip": "number", "positive": true }, 0],
+        "cikti": { "ok": false, "issues": [{ "path": [], "message": "Sıfırdan büyük olmalı." }] }
+      },
+      {
+        "girdi": [{ "tip": "boolean" }, "true"],
+        "cikti": { "ok": false, "issues": [{ "path": [], "message": "Evet/hayır (true/false) bekleniyordu." }] }
+      },
       { "girdi": [{ "tip": "boolean", "coerce": true }, "EVET"], "cikti": { "ok": true, "value": true } },
       { "girdi": [{ "tip": "boolean", "coerce": true }, "Hayır"], "cikti": { "ok": true, "value": false } },
       { "girdi": [{ "tip": "boolean", "coerce": true }, ""], "cikti": { "ok": true, "value": false } },
       { "girdi": [{ "tip": "literal", "value": "taslak" }, "taslak"], "cikti": { "ok": true, "value": "taslak" } },
-      { "girdi": [{ "tip": "literal", "value": 1 }, true], "cikti": { "ok": false, "issues": [{ "path": [], "message": "1 bekleniyordu." }] } },
-      { "girdi": [{ "tip": "oneOf", "values": ["taslak", "yayında"] }, "silindi"], "cikti": { "ok": false, "issues": [{ "path": [], "message": "Şunlardan biri olmalı: taslak, yayında." }] } },
+      {
+        "girdi": [{ "tip": "literal", "value": 1 }, true],
+        "cikti": { "ok": false, "issues": [{ "path": [], "message": "1 bekleniyordu." }] }
+      },
+      {
+        "girdi": [{ "tip": "oneOf", "values": ["taslak", "yayında"] }, "silindi"],
+        "cikti": { "ok": false, "issues": [{ "path": [], "message": "Şunlardan biri olmalı: taslak, yayında." }] }
+      },
       {
         "girdi": [{ "tip": "array", "item": { "tip": "number" }, "min": 1 }, [1, "x", 3, null]],
         "cikti": {
@@ -37,7 +82,10 @@
           ]
         }
       },
-      { "girdi": [{ "tip": "array", "item": { "tip": "number" }, "min": 1 }, []], "cikti": { "ok": false, "issues": [{ "path": [], "message": "En az 1 öğe olmalı." }] } },
+      {
+        "girdi": [{ "tip": "array", "item": { "tip": "number" }, "min": 1 }, []],
+        "cikti": { "ok": false, "issues": [{ "path": [], "message": "En az 1 öğe olmalı." }] }
+      },
       {
         "girdi": [
           {
@@ -56,7 +104,10 @@
         "girdi": [
           {
             "tip": "object",
-            "shape": { "ad": { "tip": "string", "min": 2 }, "adres": { "tip": "object", "shape": { "il": { "tip": "string" } } } }
+            "shape": {
+              "ad": { "tip": "string", "min": 2 },
+              "adres": { "tip": "object", "shape": { "il": { "tip": "string" } } }
+            }
           },
           { "adres": { "il": 34 } }
         ],
@@ -69,19 +120,37 @@
         }
       },
       {
-        "girdi": [{ "tip": "object", "shape": { "a": { "tip": "number" } }, "mode": "strict" }, { "a": 1, "b": 2 }],
+        "girdi": [
+          { "tip": "object", "shape": { "a": { "tip": "number" } }, "mode": "strict" },
+          { "a": 1, "b": 2 }
+        ],
         "cikti": { "ok": false, "issues": [{ "path": ["b"], "message": "Beklenmeyen alan." }] }
       },
       {
-        "girdi": [{ "tip": "object", "shape": { "a": { "tip": "number" } }, "mode": "passthrough" }, { "a": 1, "b": 2 }],
+        "girdi": [
+          { "tip": "object", "shape": { "a": { "tip": "number" } }, "mode": "passthrough" },
+          { "a": 1, "b": 2 }
+        ],
         "cikti": { "ok": true, "value": { "a": 1, "b": 2 } }
       },
-      { "girdi": [{ "tip": "object", "shape": {} }, [1]], "cikti": { "ok": false, "issues": [{ "path": [], "message": "Nesne bekleniyordu." }] } },
-      { "girdi": [{ "tip": "string", "nullable": true }, null], "cikti": { "ok": true, "value": null } },
-      { "girdi": [{ "tip": "union", "options": [{ "tip": "number" }, { "tip": "string" }] }, "x"], "cikti": { "ok": true, "value": "x" } },
-      { "girdi": [{ "tip": "union", "options": [{ "tip": "number" }, { "tip": "string" }] }, true], "cikti": { "ok": false, "issues": [{ "path": [], "message": "Seçeneklerin hiçbirine uymuyor." }] } },
       {
-        "girdi": [{ "tip": "record", "value": { "tip": "number" } }, { "elma": 3, "armut": "beş" }],
+        "girdi": [{ "tip": "object", "shape": {} }, [1]],
+        "cikti": { "ok": false, "issues": [{ "path": [], "message": "Nesne bekleniyordu." }] }
+      },
+      { "girdi": [{ "tip": "string", "nullable": true }, null], "cikti": { "ok": true, "value": null } },
+      {
+        "girdi": [{ "tip": "union", "options": [{ "tip": "number" }, { "tip": "string" }] }, "x"],
+        "cikti": { "ok": true, "value": "x" }
+      },
+      {
+        "girdi": [{ "tip": "union", "options": [{ "tip": "number" }, { "tip": "string" }] }, true],
+        "cikti": { "ok": false, "issues": [{ "path": [], "message": "Seçeneklerin hiçbirine uymuyor." }] }
+      },
+      {
+        "girdi": [
+          { "tip": "record", "value": { "tip": "number" } },
+          { "elma": 3, "armut": "beş" }
+        ],
         "cikti": { "ok": false, "issues": [{ "path": ["armut"], "message": "Sayı bekleniyordu." }] }
       }
     ]

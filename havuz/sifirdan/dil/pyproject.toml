@@ -1,0 +1,112 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sifirdan-dil"
+version = "0.1.0"
+description = "Sıfırdan dizisi, dil kolu: yorumlayıcı, sanal makine, regex, JSON, şablon, Markdown, hesap makinesi, fark/yama ve test çerçevesi — yalnız Python standart kitaplığıyla."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+# Çalışma zamanı bağımlılığı YOKTUR: her mini sistem yalnız standart kitaplığı kullanır
+# (gerekçe: docs/KARARLAR.md, K01). Bunu tests/test_kurallar.py korur.
+dependencies = []
+
+[project.optional-dependencies]
+# Yalnız denetim araçları; paketler bunları içe aktarmaz.
+# hypothesis: farksal testlerde rastgele girdi üretmek için (regex ↔ re, json ↔ json, fark gidiş-dönüş).
+dev = ["pytest>=9.0", "hypothesis>=6.150", "ruff>=0.17", "mypy>=2.4"]
+
+[tool.setuptools.packages.find]
+# YENİ MİNİ SİSTEM BURAYA: paket klasörünün adını ekleyin
+# (ayrıca aşağıdaki isort/mypy listelerine ve tests/test_kurallar.py içindeki SYSTEMS listesine).
+include = [
+  "yorumlayici*",
+  "sanal_makine*",
+  "regex*",
+  "json_ayristirici*",
+  "sablon*",
+  "markdown*",
+  "hesap*",
+  "fark*",
+  "test_cercevesi*",
+]
+
+[tool.setuptools.package-data]
+yorumlayici = ["ornekler/*.tohum", "ornekler/*.beklenen", "DIL.md"]
+test_cercevesi = ["ornekler/*.py"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = [".venv", "build"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "N", "SIM", "C4", "RUF", "PT", "S", "PIE"]
+ignore = [
+  "RUF001", # Türkçe harfler (ı, İ) "belirsiz karakter" sayılmasın
+  "RUF002",
+  "RUF003",
+  "SIM108", # üçlü ifade her zaman daha okunaklı değildir
+  "SIM102",
+  "S101",   # assert: iç değişmez denetimleri ve testler
+  "S311",   # rastgelelik kriptografi için değil, tohumlu farksal test içindir
+  "N818",   # denetim akışı sinyalleri (ReturnSignal, SkipTest) "Error" ile bitmez
+  "PT006",
+  "PT007",
+  "E741",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["N802", "PT011", "PT018", "B017", "S603", "S607"]
+"scripts/**" = ["S603", "S607"]
+# Test çerçevesi, assert ifadelerini yeniden yazıp test modülünü kendisi çalıştırır (pytest gibi);
+# exec/compile yalnız bu dosyada ve yalnız kullanıcının kendi test dosyaları için kullanılır.
+"test_cercevesi/rewrite.py" = ["S102"]
+
+[tool.ruff.lint.isort]
+known-first-party = [
+  "yorumlayici",
+  "sanal_makine",
+  "regex",
+  "json_ayristirici",
+  "sablon",
+  "markdown",
+  "hesap",
+  "fark",
+  "test_cercevesi",
+]
+
+[tool.mypy]
+python_version = "3.11"
+files = [
+  "yorumlayici",
+  "sanal_makine",
+  "regex",
+  "json_ayristirici",
+  "sablon",
+  "markdown",
+  "hesap",
+  "fark",
+  "test_cercevesi",
+  "scripts",
+  "tests",
+]
+strict = true
+warn_unused_ignores = true
+warn_unreachable = true
+
+[[tool.mypy.overrides]]
+module = ["tests.*"]
+disallow_untyped_decorators = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# importlib kipi: test klasörleri sys.path'e eklenmez; tests/regex/ gibi bir klasör gerçek `regex`
+# paketini gölgeleyemez. Test dosyası adları yine de benzersizdir (tests/test_kurallar.py denetler).
+addopts = "-q -p no:cacheprovider --strict-markers --import-mode=importlib"
+markers = [
+  "yavas: uzun süren test (hızlı denetimde atlanır; `python scripts/check.py --uzun` ile koşar)",
+]
+filterwarnings = ["error"]

@@ -186,7 +186,11 @@ export function nextRuns(
 }
 
 /** Verilen an (dakikası) ifadeye uyuyor mu? */
-export function matchesCron(expression: string | CronSchedule, at: Date | string, options: { offsetMinutes?: number } = {}): boolean {
+export function matchesCron(
+  expression: string | CronSchedule,
+  at: Date | string,
+  options: { offsetMinutes?: number } = {},
+): boolean {
   const schedule = typeof expression === 'string' ? parseCron(expression) : expression
   const local = Math.floor(toMs(at) / 60_000) + (options.offsetMinutes ?? 180)
   const day = Math.floor(local / 1440)

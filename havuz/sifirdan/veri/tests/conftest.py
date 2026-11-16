@@ -1,10 +1,11 @@
 """Bütün testlerin ortak ayarı: Hypothesis profilleri.
 
-- "hizli" (varsayılan): az örnek, belirlenimci (derandomize), süre sınırı yok (makine paylaşımlı olabilir).
+- "hizli" (varsayılan): az örnek, belirlenimci (derandomize), süre sınırı yok (makine paylaşımlı
+  olabilir).
 - "uzun": `SIFIRDAN_UZUN=1` iken (yani `python scripts/check.py --uzun`) çok daha fazla örnek.
 
-Genişletme: bir testte örnek sayısını elle sabitlemeyin; profil belirlesin. Uzun rastgele döngüler için
-`tests/yardimci.py` içindeki `seed_count` işlevini kullanın.
+Genişletme: bir testte örnek sayısını elle sabitlemeyin; profil belirlesin. Uzun rastgele döngüler
+için `tests/yardimci.py` içindeki `seed_count` işlevini kullanın.
 """
 
 from __future__ import annotations

@@ -86,7 +86,7 @@ def parse_header(docstring: str) -> tuple[str, str, dict[str, str]]:
     for raw in lines[1:]:
         stripped = raw.strip()
         head, sep, rest = raw.partition(":")
-        if sep and head in REQUIRED_FIELDS + ("Kararlılık", "Özyineleme"):
+        if sep and head in (*REQUIRED_FIELDS, "Kararlılık", "Özyineleme"):
             current = head
             fields[current] = [rest.strip()] if rest.strip() else []
         elif current is not None and stripped and raw.startswith(" "):
@@ -145,7 +145,8 @@ def render_index(modules: list[ModuleInfo]) -> str:
         "> modül başlığını değiştirin ve betiği yeniden çalıştırın. Güncelliğini",
         "> `tests/test_kurallar.py` denetler.",
         "",
-        f"Toplam **{len(modules)} modül**, {len(TOPICS)} konu. Hangisini seçeceğinizi bilmiyorsanız:",
+        f"Toplam **{len(modules)} modül**, {len(TOPICS)} konu. Hangisini seçeceğinizi "
+        "bilmiyorsanız:",
         "[NASIL_SECILIR.md](NASIL_SECILIR.md).",
         "",
     ]
@@ -158,9 +159,10 @@ def render_index(modules: list[ModuleInfo]) -> str:
         for m in rows:
             names = ", ".join(f"`{n}`" for n in m.public_names)
             label = f"**{_cell(m.title)}** — {_cell(m.summary)}" if m.summary else _cell(m.title)
+            complexity = _cell(m.fields.get("Karmaşıklık", ""))
+            when = _cell(m.fields.get("Ne zaman", ""))
             out.append(
-                f"| {label} | [`{m.name}.py`](../{m.relative}) | {names} "
-                f"| {_cell(m.fields.get('Karmaşıklık', ''))} | {_cell(m.fields.get('Ne zaman', ''))} |"
+                f"| {label} | [`{m.name}.py`](../{m.relative}) | {names} | {complexity} | {when} |"
             )
         out.append("")
     return "\n".join(out)

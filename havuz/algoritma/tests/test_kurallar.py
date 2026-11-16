@@ -140,12 +140,14 @@ def test_source_hygiene(module: ModuleInfo) -> None:
         match = _CASE_CALL.search(source)
         assert match is None, (
             f"{module.relative}: `{match.group(0) if match else ''}` yerel ayarı bilmez "
-            "(i → İ hatası). `algoritma.dizgi.turkish_text` içindeki `upper_tr`/`lower_tr` kullanın."
+            "(i → İ hatası). `algoritma.dizgi.turkish_text` içindeki `upper_tr`/`lower_tr` "
+            "kullanın."
         )
     match = _GLOBAL_RANDOM.search(source)
     assert match is None, (
-        f"{module.relative}: küresel `random` durumu kullanılıyor ({match.group(0) if match else ''}"
-        "…). Bunun yerine parametreyle `rng: random.Random` alın (belirlenimci testler için)."
+        f"{module.relative}: küresel `random` durumu kullanılıyor "
+        f"({match.group(0) if match else ''}…). Bunun yerine parametreyle "
+        "`rng: random.Random` alın (belirlenimci testler için)."
     )
     match = _UNFINISHED.search(source)
     assert match is None, (

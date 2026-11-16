@@ -66,13 +66,17 @@ export default defineConfig({
     serviceWorkers: 'block',
   },
   projects,
+  // Sunucular `npm run …` yerine doğrudan `node` ile başlar: araya giren `sh -c` katmanı kapanış sinyalini
+  // iletmez. Playwright bitişte süreç grubunu kapatır (API'ye önce SIGTERM: SQLite düzgün kapansın).
   webServer: [
     {
-      command: 'npm run start -w @uygulama/api',
+      command: 'node --disable-warning=ExperimentalWarning src/index.ts',
+      cwd: 'api',
       url: `${API}/api/health`,
       timeout: 120_000,
       reuseExistingServer: false,
       stdout: 'ignore',
+      gracefulShutdown: { signal: 'SIGTERM', timeout: 5000 },
       env: {
         NODE_ENV: 'test',
         PORT: process.env.E2E_API_PORT,
@@ -83,14 +87,16 @@ export default defineConfig({
       },
     },
     {
-      command: `npm run preview -w @uygulama/web -- --port ${process.env.E2E_WEB_PORT} --strictPort`,
+      command: `node ../node_modules/vite/bin/vite.js preview --port ${process.env.E2E_WEB_PORT} --strictPort`,
+      cwd: 'web',
       url: `${WEB}/`,
       timeout: 120_000,
       reuseExistingServer: false,
       env: { API_PROXY_TARGET: API },
     },
     {
-      command: `npm run preview -w @uygulama/web -- --mode yerel --port ${process.env.E2E_YEREL_PORT} --strictPort`,
+      command: `node ../node_modules/vite/bin/vite.js preview --mode yerel --port ${process.env.E2E_YEREL_PORT} --strictPort`,
+      cwd: 'web',
       url: `${YEREL}/`,
       timeout: 120_000,
       reuseExistingServer: false,

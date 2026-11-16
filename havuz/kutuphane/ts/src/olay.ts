@@ -76,7 +76,8 @@ export class Emitter<Events extends Record<keyof Events, unknown>> {
       }
     }
     if (errors.length === 1) throw errors[0]
-    if (errors.length > 1) throw new AggregateError(errors, `"${String(event)}" olayında ${errors.length} dinleyici hata verdi.`)
+    if (errors.length > 1)
+      throw new AggregateError(errors, `"${String(event)}" olayında ${errors.length} dinleyici hata verdi.`)
   }
 
   listenerCount(event?: keyof Events): number {

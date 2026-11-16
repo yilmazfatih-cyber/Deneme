@@ -1,0 +1,29 @@
+{
+  "ad": "kutuphane",
+  "baslik": "Tek dosyalık, bağımlılıksız, testli yardımcı modüller (TypeScript + Python)",
+  "ozet": "Türkçe metin, ek, sayı/para/tarih biçimi, kimlik doğrulama ile genel yardımcıların iki dilde, ortak sınama vektörleriyle kanıtlanmış ve dosya dosya kopyalanan hâli.",
+  "tur": "karma",
+  "gereksinim": {
+    "node": ">=22.12",
+    "python": ">=3.11"
+  },
+  "kur": ["cd ts && npm ci"],
+  "python": {
+    "ekstra": "dev",
+    "klasor": "py"
+  },
+  "denetle": ["cd ts && npm run check", "cd py && python scripts/check.py"],
+  "uzunDenetim": [],
+  "baslat": null,
+  "kopyala": {
+    "ts": "cd ts && node kopyala.mjs <modul> <hedef-klasor>",
+    "py": "cd py && python kopyala.py <modul> <hedef-klasor> [--paket paket.adi]"
+  },
+  "yerTutucular": [
+    {
+      "ara": "havuz-kutuphane",
+      "anlam": "paket adı (ts/package.json ve py/pyproject.toml)"
+    }
+  ],
+  "kopyalamaHaric": ["ts/node_modules", "py/.venv", "py/.mypy_cache", "py/.ruff_cache", "**/__pycache__"]
+}

@@ -93,3 +93,6 @@ Kısa kayıtlar: ne seçildi, neden, neyin neden elendiği. API'nin kararları: 
   dosyalar için bir tsconfig ister). Paketlerin kendi tsconfig'i vardır.
 - **Uçtan uca testler `vite preview` + vekil** ile koşar (API'nin web sunmasına bağımlı değil); kapılar boş
   kapıdan seçilir, veritabanı her koşuda yeni dosyadır ve sonda silinir.
+- **Sunucular `npm run …` ile değil doğrudan `node` ile başlatılır** (`scripts/dev.ts`, `playwright.config.ts`):
+  npm'in araya koyduğu `sh -c` kapanış sinyalini (SIGTERM) iletmiyor ve arkada sahipsiz süreç kalıyordu.
+  `dev.ts` her süreci kendi süreç grubunda açar ve kapanışta grubu kapatır; Playwright de süreç grubunu kapatır.

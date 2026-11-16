@@ -56,7 +56,10 @@ export class TaskQueue {
   }
 
   /** Görevi sıraya ekler; görevin sonucuyla çözülen bir Promise döner. */
-  add<T>(task: (signal: AbortSignal) => Promise<T> | T, options: { priority?: number; signal?: AbortSignal } = {}): Promise<T> {
+  add<T>(
+    task: (signal: AbortSignal) => Promise<T> | T,
+    options: { priority?: number; signal?: AbortSignal } = {},
+  ): Promise<T> {
     return new Promise<T>((resolve, reject) => {
       const job: Job = {
         priority: options.priority ?? 0,

@@ -1,10 +1,10 @@
 """Tek komutluk denetim: ruff (lint) + ruff (biçim) + mypy (tip) + pytest (test).
 
 Kullanım (bu temelin klasöründen, sanal ortamın Python'uyla):
-    python scripts/check.py                 hızlı denetim (uzun senaryolar atlanır; hedef < 3 dakika)
-    python scripts/check.py --uzun          uzun rastgele senaryolar dahil her şey
-    python scripts/check.py --duzelt        önce ruff'ın kendiliğinden düzeltebildiklerini düzeltir
-    python scripts/check.py --sistem raft   yalnız bir mini sistemin testleri (lint/tip yine tümü)
+    python scripts/check.py                 hızlı denetim (uzun senaryolar atlanır; hedef < 3
+    dakika) python scripts/check.py --uzun          uzun rastgele senaryolar dahil her şey python
+    scripts/check.py --duzelt        önce ruff'ın kendiliğinden düzeltebildiklerini düzeltir python
+    scripts/check.py --sistem raft   yalnız bir mini sistemin testleri (lint/tip yine tümü)
 
 Bir adım kırmızıysa iş bitmemiştir; çıkış kodu sıfırdan farklı olur.
 Genişletme: yeni bir denetim adımı eklemek için `build_steps` içindeki listeye bir satır ekleyin.

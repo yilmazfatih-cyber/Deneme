@@ -34,12 +34,19 @@ describe('ortak vektörler', () => {
 
 describe('özellikler', () => {
   it('imleçle gezinti her kaydı tam bir kez verir (eşit tarihler dahil)', () => {
-    const items = Array.from({ length: 53 }, (_, id) => ({ tarih: `2026-01-${String(1 + Math.floor(id / 4)).padStart(2, '0')}`, id }))
+    const items = Array.from({ length: 53 }, (_, id) => ({
+      tarih: `2026-01-${String(1 + Math.floor(id / 4)).padStart(2, '0')}`,
+      id,
+    }))
     for (const limit of [1, 2, 5, 10, 53, 100]) {
       const seen: number[] = []
       let cursor: string | null = null
       for (let guard = 0; guard < 100; guard++) {
-        const page: ReturnType<typeof paginate<(typeof items)[number]>> = paginate(items, { limit, cursor, sortKeys: ['tarih', 'id'] })
+        const page: ReturnType<typeof paginate<(typeof items)[number]>> = paginate(items, {
+          limit,
+          cursor,
+          sortKeys: ['tarih', 'id'],
+        })
         seen.push(...page.items.map((item) => item.id))
         cursor = page.nextCursor
         if (!page.hasMore) break

@@ -4,8 +4,9 @@ Depo (store.py) dosyalara doğrudan `open()` ile erişmez; bu küçük arayüzü
 gerçek disk yerine `sim_fs.SimFS` (bellek içi, çökme benzetimli) verebilir.
 `RealFS` gerçek diske yazar; `sync()` = `os.fsync`, `sync_dir()` = klasörün fsync'i.
 
-Genişletme: yeni bir dosya işlemi gerekiyorsa önce `FileSystem` protokolüne, sonra hem `RealFS`'e hem
-`sim_fs.SimFS`'e ekleyin; SimFS'te değiştiren her işlem `_step()` çağırmalıdır (çökme noktası olur).
+Genişletme: yeni bir dosya işlemi gerekiyorsa önce `FileSystem` protokolüne, sonra hem `RealFS`'e
+hem `sim_fs.SimFS`'e ekleyin; SimFS'te değiştiren her işlem `_step()` çağırmalıdır (çökme noktası
+olur).
 """
 
 from __future__ import annotations

@@ -35,8 +35,14 @@ export function parseApiUrl(raw: string | undefined, origin: string): ApiConfig 
 
 const pageOrigin = typeof location === 'undefined' ? 'http://localhost' : location.origin
 
+/**
+ * `--mode yerel` ile derlenince (`npm run build:yerel`) API her zaman kapalıdır. Bu kural kodda durur ki hesapsız
+ * derleme bir `.env` dosyasına bağlı olmasın (`.env*` dosyaları depoya girmez; temiz klonda da aynı sonuç çıksın).
+ */
+const rawApiUrl = import.meta.env.MODE === 'yerel' ? 'none' : import.meta.env.VITE_API_URL
+
 /** Uygulamanın kullandığı API ayarı (derleme anında sabitlenir). */
-export const API_CONFIG: ApiConfig = parseApiUrl(import.meta.env.VITE_API_URL, pageOrigin)
+export const API_CONFIG: ApiConfig = parseApiUrl(rawApiUrl, pageOrigin)
 
 /** Uygulama sürümü (package.json). */
 export const APP_VERSION: string = __APP_VERSION__

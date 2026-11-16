@@ -9,14 +9,28 @@
   paylaşımlı alanlar).
 - **Kurulabilir uygulama (PWA):** ana ekrana eklenir, internetsiz açılır, yeni sürüm hazır olunca sorar.
 
-Model için talimatlar: [`AGENTS.md`](AGENTS.md) · Mimari: [`docs/MIMARI.md`](docs/MIMARI.md) ·
-Eşitleme: [`docs/ESITLEME.md`](docs/ESITLEME.md) · Kararlar: [`docs/KARARLAR.md`](docs/KARARLAR.md) ·
-API uçları: [`docs/API.md`](docs/API.md) · Güvenlik: [`docs/GUVENLIK.md`](docs/GUVENLIK.md) ·
-Yayınlama: [`docs/YAYINLAMA.md`](docs/YAYINLAMA.md)
+## Belgeler
+
+| Belge                                      | İçinde                                                         |
+| ------------------------------------------ | -------------------------------------------------------------- |
+| [`AGENTS.md`](AGENTS.md)                   | model için: komutlar, harita, kurallar, tarifler               |
+| [`docs/MIMARI.md`](docs/MIMARI.md)         | parçalar ve veri akışı                                         |
+| [`docs/ESITLEME.md`](docs/ESITLEME.md)     | eşitleme protokolü sade Türkçeyle, sınırları                   |
+| [`docs/KARARLAR.md`](docs/KARARLAR.md)     | web ve kök araçların teknoloji kararları                       |
+| [`docs/API.md`](docs/API.md)               | bütün API uçları, örnekleriyle                                 |
+| [`docs/GUVENLIK.md`](docs/GUVENLIK.md)     | oturum, şifre, CSRF, hız sınırı, CSP                           |
+| [`docs/YAYINLAMA.md`](docs/YAYINLAMA.md)   | yayınlama (Docker, ters vekil, yedek); ortam değişkenleri §6   |
+| [`docs/MEZAR_TASI.md`](docs/MEZAR_TASI.md) | silinen kayıtların ileride güvenle temizlenmesi (tasarım notu) |
+| [`api/README.md`](api/README.md)           | API'yi tek başına çalıştırma ve komutları                      |
+| [`api/HAZIR.md`](api/HAZIR.md)             | API'yi web ve testlerle bütünleştirme notları                  |
+| [`api/TARIFLER.md`](api/TARIFLER.md)       | sunucuya uç / tablo / e-posta ekleme tarifleri                 |
+| [`api/KARARLAR.md`](api/KARARLAR.md)       | API'nin teknoloji kararları                                    |
 
 ## 5 dakikada çalıştırma
 
-Gereksinim: Node 22.18 ya da üstü (bu temel Node 22.23.4 ile denendi).
+Gereksinim: Node 22.18 ya da üstü (TypeScript'i doğrudan çalıştırır ve yerleşik SQLite'ı kullanır; bu temel
+Node 22.23.4 ile denendi). Ortam değişkenlerinin listesi: [`docs/YAYINLAMA.md`](docs/YAYINLAMA.md) §6
+(geliştirmede hiçbiri gerekmez).
 
 ```bash
 cd havuz/uygulama

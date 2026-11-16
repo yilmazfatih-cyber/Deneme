@@ -19,7 +19,11 @@
         "secenek": { "keys": ["createdAt", "id"] },
         "cikti": { "createdAt": "2026-11-16T10:00:00Z", "id": 42 }
       },
-      { "girdi": ["eyJjcmVhdGVkQXQiOiIyMDI2LTExLTE2VDEwOjAwOjAwWiIsImlkIjo0Mn0"], "secenek": { "keys": ["tarih"] }, "hata": true },
+      {
+        "girdi": ["eyJjcmVhdGVkQXQiOiIyMDI2LTExLTE2VDEwOjAwOjAwWiIsImlkIjo0Mn0"],
+        "secenek": { "keys": ["tarih"] },
+        "hata": true
+      },
       { "girdi": ["bozuk imleç"], "hata": true },
       { "girdi": ["WzEsMl0"], "hata": true, "not": "[1,2] bir nesne değil" },
       { "girdi": ["e30"], "cikti": {} }

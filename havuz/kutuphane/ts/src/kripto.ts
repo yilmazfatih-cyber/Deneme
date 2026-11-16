@@ -27,7 +27,8 @@
 
 export const DEFAULT_PASSWORD_ITERATIONS = 600_000
 
-export type VerifyResult = { ok: true; payload: Record<string, unknown> } | { ok: false; reason: 'format' | 'signature' | 'expired' }
+export type VerifyResult =
+  { ok: true; payload: Record<string, unknown> } | { ok: false; reason: 'format' | 'signature' | 'expired' }
 
 const encoder = new TextEncoder()
 const SALT_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
@@ -67,7 +68,9 @@ export async function sha256(data: string | Uint8Array, encoding: 'hex' | 'base6
 }
 
 async function hmacBytes(key: string | Uint8Array, data: string | Uint8Array): Promise<Uint8Array> {
-  const cryptoKey = await crypto.subtle.importKey('raw', toBytes(key), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign'])
+  const cryptoKey = await crypto.subtle.importKey('raw', toBytes(key), { name: 'HMAC', hash: 'SHA-256' }, false, [
+    'sign',
+  ])
   return new Uint8Array(await crypto.subtle.sign('HMAC', cryptoKey, toBytes(data)))
 }
 
@@ -113,7 +116,11 @@ export async function signToken(
 }
 
 /** Belirteci doğrular: önce imza, sonra süre. Hata fırlatmaz; nedenini döndürür. */
-export async function verifyToken(token: string, secret: string, options: { nowSeconds?: number } = {}): Promise<VerifyResult> {
+export async function verifyToken(
+  token: string,
+  secret: string,
+  options: { nowSeconds?: number } = {},
+): Promise<VerifyResult> {
   const parts = token.split('.')
   if (parts.length !== 3 || parts[0] !== 'v1') return { ok: false, reason: 'format' }
   const [, body = '', signature = ''] = parts
@@ -135,7 +142,11 @@ export async function verifyToken(token: string, secret: string, options: { nowS
 
 async function pbkdf2(password: string, salt: string, iterations: number): Promise<string> {
   const key = await crypto.subtle.importKey('raw', toBytes(password.normalize('NFC')), 'PBKDF2', false, ['deriveBits'])
-  const bits = await crypto.subtle.deriveBits({ name: 'PBKDF2', hash: 'SHA-256', salt: toBytes(salt), iterations }, key, 256)
+  const bits = await crypto.subtle.deriveBits(
+    { name: 'PBKDF2', hash: 'SHA-256', salt: toBytes(salt), iterations },
+    key,
+    256,
+  )
   return base64(new Uint8Array(bits))
 }
 
@@ -150,7 +161,10 @@ function randomSalt(length = 22): string {
 }
 
 /** Parola özeti: "pbkdf2_sha256$<tur>$<tuz>$<base64>". `salt` yalnız test için verilir. */
-export async function hashPassword(password: string, options: { iterations?: number; salt?: string } = {}): Promise<string> {
+export async function hashPassword(
+  password: string,
+  options: { iterations?: number; salt?: string } = {},
+): Promise<string> {
   const iterations = options.iterations ?? DEFAULT_PASSWORD_ITERATIONS
   if (!Number.isInteger(iterations) || iterations < 1 || iterations > MAX_ITERATIONS) {
     throw new RangeError('Tur sayısı 1 ile 100 milyon arasında tam sayı olmalı.')

@@ -1,0 +1,28 @@
+# Banka hesabı: durumu kapanımda saklayan "nesne" (sözlük + işlevler)
+işlev hesap_ac(sahip, bakiye) {
+    değişken hareketler = []
+    işlev yatir(tutar) {
+        eğer tutar <= 0 { döndür "Tutar sıfırdan büyük olmalı" }
+        bakiye += tutar
+        ekle(hareketler, "+" + metin(tutar))
+        döndür bakiye
+    }
+    işlev cek(tutar) {
+        eğer tutar > bakiye { döndür "Yetersiz bakiye" }
+        bakiye -= tutar
+        ekle(hareketler, "-" + metin(tutar))
+        döndür bakiye
+    }
+    döndür {
+        "sahip": sahip,
+        "yatir": yatir,
+        "cek": cek,
+        "hareketler": işlev() { döndür hareketler },
+    }
+}
+
+değişken h = hesap_ac("Ayşe", 1000)
+yazdır(h["yatir"](250))
+yazdır(h["cek"](2000))
+yazdır(h["cek"](300.5))
+yazdır(h["sahip"], h["hareketler"]())

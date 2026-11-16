@@ -49,9 +49,8 @@ class FuzzyResult(Generic[T]):
 
 def normalize_text(text: str) -> str:
     """Arama için normalleştirir: Türkçe küçük harf, işaretsiz, harf/rakam dışı → boşluk, tek boşluk."""
-    lower = (
-        unicodedata.normalize("NFC", text).replace("İ", "i").replace("I", "ı").lower()
-    )  # harf: İ/I elle
+    prepared = unicodedata.normalize("NFC", text).replace("İ", "i").replace("I", "ı")
+    lower = prepared.lower()  # harf: İ/I önce elle çevrildi
     out: list[str] = []
     for ch in unicodedata.normalize("NFD", lower):
         if unicodedata.category(ch).startswith("M"):

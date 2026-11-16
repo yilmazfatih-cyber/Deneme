@@ -35,7 +35,9 @@ T = TypeVar("T")
 class BinaryHeap(Generic[T]):
     """Anahtar fonksiyonlu min-heap. Karşılaştırma yalnız `key(öğe)` değerleri arasında yapılır."""
 
-    def __init__(self, items: Iterable[T] = (), key: Callable[[T], Any] = lambda item: item):
+    def __init__(
+        self, items: Iterable[T] = (), key: Callable[[T], Any] = lambda item: item
+    ) -> None:
         self._key = key
         self._items: list[T] = list(items)
         self._keys: list[Any] = [key(item) for item in self._items]

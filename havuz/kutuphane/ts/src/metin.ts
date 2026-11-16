@@ -23,7 +23,8 @@ export class TemplateError extends Error {
   override name = 'TemplateError'
 }
 
-const SPACE_CHARS = ' \t\n\r\f\v\u{a0}\u{1680}\u{2000}\u{2001}\u{2002}\u{2003}\u{2004}\u{2005}\u{2006}\u{2007}\u{2008}\u{2009}\u{200a}\u{2028}\u{2029}\u{202f}\u{205f}\u{3000}\u{feff}'
+const SPACE_CHARS =
+  ' \t\n\r\f\v\u{a0}\u{1680}\u{2000}\u{2001}\u{2002}\u{2003}\u{2004}\u{2005}\u{2006}\u{2007}\u{2008}\u{2009}\u{200a}\u{2028}\u{2029}\u{202f}\u{205f}\u{3000}\u{feff}'
 const TRAILING_PUNCTUATION = ',;:-–—'
 
 function isSpace(ch: string | undefined): boolean {
@@ -57,8 +58,13 @@ export function normalizeWhitespace(text: string): string {
  * En çok `maxLength` kod noktası olacak biçimde kısaltır ve sonuna `ellipsis` (varsayılan "…") ekler.
  * `wordBoundary` (varsayılan true) → mümkünse sözcük sınırında keser (kesilen kısım yarıdan fazla değilse).
  */
-export function truncate(text: string, maxLength: number, options: { ellipsis?: string; wordBoundary?: boolean } = {}): string {
-  if (!Number.isInteger(maxLength) || maxLength < 0) throw new RangeError('maxLength 0 veya daha büyük tam sayı olmalı.')
+export function truncate(
+  text: string,
+  maxLength: number,
+  options: { ellipsis?: string; wordBoundary?: boolean } = {},
+): string {
+  if (!Number.isInteger(maxLength) || maxLength < 0)
+    throw new RangeError('maxLength 0 veya daha büyük tam sayı olmalı.')
   const chars = Array.from(text)
   if (chars.length <= maxLength) return text
   const ellipsis = Array.from(options.ellipsis ?? '…')
@@ -81,7 +87,9 @@ export function wrap(text: string, width: number): string[] {
   if (!Number.isInteger(width) || width < 1) throw new RangeError('width 1 veya daha büyük tam sayı olmalı.')
   const lines: string[] = []
   for (const paragraph of text.replace(/\r\n?/g, '\n').split('\n')) {
-    const words = normalizeWhitespace(paragraph).split(' ').filter((word) => word !== '')
+    const words = normalizeWhitespace(paragraph)
+      .split(' ')
+      .filter((word) => word !== '')
     let line: string[] = []
     for (const word of words) {
       let chars = Array.from(word)
@@ -129,7 +137,12 @@ export function readingTime(text: string, options: { wordsPerMinute?: number } =
 
 /** HTML'de güvenle göstermek için & < > " ' kaçışı. */
 export function escapeHtml(text: string): string {
-  return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;')
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
 }
 
 function plainNumber(value: number): string {

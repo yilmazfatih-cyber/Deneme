@@ -1,10 +1,13 @@
 """Tüm testlerin ortak fikstürleri ve oturum sonu sızıntı denetimi.
 
-- `loop_thread`: arka planda asyncio döngüsü (sunucular orada koşar); test bitince bekleyen görev kalırsa test düşer.
+- `loop_thread`: arka planda asyncio döngüsü (sunucular orada koşar); test bitince bekleyen görev
+  kalırsa test düşer.
 - Oturum sonunda: dinleyen soket, canlı iş parçacığı ya da alt süreç kaldıysa oturum hata verir.
-- Hypothesis profili: belirlenimci (aynı örnekler), süre sınırı yok (paylaşımlı makinede yanlış alarm olmasın).
+- Hypothesis profili: belirlenimci (aynı örnekler), süre sınırı yok (paylaşımlı makinede yanlış
+  alarm olmasın).
 
-Genişletme: her mini sistemin kendine özgü fikstürleri `tests/<sistem>/conftest.py` dosyasına yazılır.
+Genişletme: her mini sistemin kendine özgü fikstürleri `tests/<sistem>/conftest.py` dosyasına
+yazılır.
 """
 
 from __future__ import annotations
@@ -14,8 +17,9 @@ import threading
 from collections.abc import Iterator
 
 import pytest
-from destek import BackgroundLoop, listening_sockets
 from hypothesis import HealthCheck, settings
+
+from destek import BackgroundLoop, listening_sockets
 
 settings.register_profile(
     "havuz",
@@ -36,7 +40,9 @@ def loop_thread() -> Iterator[BackgroundLoop]:
         yield background
     finally:
         leftovers = background.stop()
-    assert not leftovers, f"Test bittiğinde hâlâ çalışan görevler var (sunucu kapatılmadı mı?): {leftovers}"
+    assert not leftovers, (
+        f"Test bittiğinde hâlâ çalışan görevler var (sunucu kapatılmadı mı?): {leftovers}"
+    )
 
 
 @pytest.fixture(scope="session", autouse=True)

@@ -41,6 +41,11 @@ export interface Holiday {
   name: string
 }
 
+export interface IsoWeek {
+  year: number
+  week: number
+}
+
 export interface BusinessDayOptions {
   /** Ek tatiller (dinî bayramlar, idari izin): "YYYY-MM-DD" listesi. */
   holidays?: readonly string[]
@@ -387,7 +392,7 @@ export function ageOn(birthDate: string | Date, onDate: string | Date): number {
 }
 
 /** ISO 8601 hafta numarası: yılın ilk perşembesini içeren hafta 1. haftadır. */
-export function isoWeek(date: string | Date): { year: number; week: number } {
+export function isoWeek(date: string | Date): IsoWeek {
   const days = wallClock(date, TURKEY_OFFSET_MINUTES).days
   const thursday = days - ((((days + 3) % 7) + 7) % 7) + 3
   const [year] = civilFromDays(thursday)

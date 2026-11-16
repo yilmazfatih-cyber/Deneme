@@ -5,13 +5,16 @@ Fikir:
     çıkarmak yalnız komşularının bağlarını birbirine bağlamaktır: O(1). Uç durumları (boş liste,
     baş, son) ayrı ayrı ele almamak için listenin başına ve sonuna hiç silinmeyen bir "nöbetçi"
     düğüm konur; gerçek düğümlerin her zaman bir öncesi ve bir sonrası vardır.
-    LRU önbellek, zamanlayıcı kuyrukları gibi "ortadan O(1) sil" isteyen yapılar bunun üstüne kurulur.
+    LRU önbellek, zamanlayıcı kuyrukları gibi "ortadan O(1) sil" isteyen yapılar bunun üstüne
+    kurulur.
 
-Karmaşıklık: iki uçtan ekleme/çıkarma O(1); tutamakla silme/araya ekleme O(1); arama O(n); yer O(n)
+Karmaşıklık: iki uçtan ekleme/çıkarma O(1); tutamakla silme/araya ekleme O(1); arama O(n);
+    yer O(n)
 Ne zaman: ortadaki bir öğeyi tutamağıyla O(1) silmeniz/taşımanız gerekiyorsa.
 Ne zaman değil: yalnız iki uçtan çalışıyorsanız `collections.deque` daha hızlı ve az bellek yer.
 Bağımlılık: yok
-Genişletme: yeni işlem eklerken yalnız `_link_after` ve `unlink` üstüne kurun; bağları elle oynamayın.
+Genişletme: yeni işlem eklerken yalnız `_link_after` ve `unlink` üstüne kurun; bağlarla elle
+    oynamayın.
 
 Örnek:
     >>> lst = DoublyLinkedList([1, 2, 3])

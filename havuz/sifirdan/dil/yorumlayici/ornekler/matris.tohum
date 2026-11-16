@@ -1,0 +1,20 @@
+# Matris çarpımı: iç içe listeler ve dizinleme
+işlev matris_carp(a, b) {
+    değişken c = []
+    için i içinde aralık(uzunluk(a)) {
+        değişken satir = []
+        için j içinde aralık(uzunluk(b[0])) {
+            değişken t = 0
+            için x içinde aralık(uzunluk(b)) { t += a[i][x] * b[x][j] }
+            ekle(satir, t)
+        }
+        ekle(c, satir)
+    }
+    döndür c
+}
+
+değişken a = [[1, 2], [3, 4]]
+değişken b = [[5, 6], [7, 8]]
+yazdır(matris_carp(a, b))
+değişken birim = [[1, 0], [0, 1]]
+yazdır(matris_carp(a, birim) == a)

@@ -23,7 +23,12 @@ describe('LruCache', () => {
   it('süresi dolan öğe görünmez ve atılma nedeni bildirilir', () => {
     let now = 0
     const reasons: EvictReason[] = []
-    const cache = new LruCache<string, string>({ maxSize: 10, ttlMs: 100, now: () => now, onEvict: (_k, _v, r) => reasons.push(r) })
+    const cache = new LruCache<string, string>({
+      maxSize: 10,
+      ttlMs: 100,
+      now: () => now,
+      onEvict: (_k, _v, r) => reasons.push(r),
+    })
     cache.set('x', 'bir')
     cache.set('y', 'iki', { ttlMs: 1000 })
     now = 99

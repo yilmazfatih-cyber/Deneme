@@ -40,7 +40,11 @@ function equal(a: unknown, b: unknown, seen: Map<object, object>): boolean {
   if (a instanceof RegExp) return a.source === (b as RegExp).source && a.flags === (b as RegExp).flags
   if (ArrayBuffer.isView(a)) {
     const x = new Uint8Array(a.buffer, a.byteOffset, a.byteLength)
-    const y = new Uint8Array((b as ArrayBufferView).buffer, (b as ArrayBufferView).byteOffset, (b as ArrayBufferView).byteLength)
+    const y = new Uint8Array(
+      (b as ArrayBufferView).buffer,
+      (b as ArrayBufferView).byteOffset,
+      (b as ArrayBufferView).byteLength,
+    )
     return x.length === y.length && x.every((value, i) => value === y[i])
   }
   if (a instanceof Map) {
@@ -99,7 +103,10 @@ function clone(value: unknown, seen: Map<object, unknown>): unknown {
     return copy
   }
   if (!isPlainObject(value)) return value // sınıf örneği: başvuru paylaşılır
-  const copy: Record<string, unknown> = Object.create(Object.getPrototypeOf(value) as object | null) as Record<string, unknown>
+  const copy: Record<string, unknown> = Object.create(Object.getPrototypeOf(value) as object | null) as Record<
+    string,
+    unknown
+  >
   seen.set(value, copy)
   for (const [k, v] of Object.entries(value)) copy[k] = clone(v, seen)
   return copy

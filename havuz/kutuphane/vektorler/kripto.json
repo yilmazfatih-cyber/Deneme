@@ -71,8 +71,20 @@
       { "girdi": ["x"], "secenek": { "iterations": 1, "salt": "tuz$" }, "hata": true }
     ],
     "verifyPassword": [
-      { "girdi": ["parola123", "pbkdf2_sha256$1000$tuz1234567890abcdefghi$yZ09qb4tll3zzt93OBd8LFxXBJgfOUHmmiR8bHkTb4M="], "cikti": true },
-      { "girdi": ["parola124", "pbkdf2_sha256$1000$tuz1234567890abcdefghi$yZ09qb4tll3zzt93OBd8LFxXBJgfOUHmmiR8bHkTb4M="], "cikti": false },
+      {
+        "girdi": [
+          "parola123",
+          "pbkdf2_sha256$1000$tuz1234567890abcdefghi$yZ09qb4tll3zzt93OBd8LFxXBJgfOUHmmiR8bHkTb4M="
+        ],
+        "cikti": true
+      },
+      {
+        "girdi": [
+          "parola124",
+          "pbkdf2_sha256$1000$tuz1234567890abcdefghi$yZ09qb4tll3zzt93OBd8LFxXBJgfOUHmmiR8bHkTb4M="
+        ],
+        "cikti": false
+      },
       { "girdi": ["parola123", "md5$abc$def"], "cikti": false },
       { "girdi": ["parola123", "pbkdf2_sha256$0$tuz$abc="], "cikti": false }
     ],

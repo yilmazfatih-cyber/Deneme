@@ -6,11 +6,15 @@ Fikir:
     arkasındaki anahtarlara giden yol kopar; bunun yerine "mezar taşı" (SİLİNDİ) bırakılır.
     Dolu + mezar taşı oranı 1/2'yi geçince tablo yeniden kurulur: canlı öğe çoksa kapasite iki
     katına çıkar, değilse aynı boyutta kalıp yalnız mezar taşları temizlenir.
-    Kapasite 2'nin kuvvetidir; böylece `hash % kapasite` yerine hızlı `hash & (kapasite - 1)` yeter.
+    Kapasite 2'nin kuvvetidir; böylece `hash % kapasite` yerine hızlı `hash & (kapasite - 1)`
+    yeter.
 
-Karmaşıklık: ekleme/arama/silme ortalama O(1), en kötü O(n); yeniden boyutlama amortize O(1); yer O(n)
-Ne zaman: `dict`'in nasıl çalıştığını anlamak ya da önbellek dostu bir tabloyu başka dile taşımak için.
-Ne zaman değil: gerçek Python kodunda `dict` kullanın. Sıralı gezinme gerekiyorsa dengeli ağaç seçin.
+Karmaşıklık: ekleme/arama/silme ortalama O(1), en kötü O(n); yeniden boyutlama amortize O(1);
+    yer O(n)
+Ne zaman: `dict`'in nasıl çalıştığını anlamak ya da önbellek dostu bir tabloyu başka dile
+    taşımak için.
+Ne zaman değil: gerçek Python kodunda `dict` kullanın. Sıralı gezinme gerekiyorsa dengeli
+    ağaç seçin.
 Bağımlılık: yok
 Genişletme: sondalama düzenini değiştirmek için yalnız `_find` içindeki adım satırını düzenleyin.
 

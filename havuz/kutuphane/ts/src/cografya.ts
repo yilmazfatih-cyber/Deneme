@@ -29,6 +29,11 @@ export interface BoundingBox {
   maxLon: number
 }
 
+export interface Nearest<T> {
+  item: T
+  distance: number
+}
+
 /** Ortalama Dünya yarıçapı (IUGG, metre). */
 export const EARTH_RADIUS_M = 6_371_008.8
 
@@ -40,7 +45,8 @@ const RAD = Math.PI / 180
 
 function checkPoint(point: LatLon, label = 'nokta'): void {
   const { lat, lon } = point
-  if (!Number.isFinite(lat) || lat < -90 || lat > 90) throw new GeoError(`${label}: enlem −90 ile 90 arasında olmalı (${lat}).`)
+  if (!Number.isFinite(lat) || lat < -90 || lat > 90)
+    throw new GeoError(`${label}: enlem −90 ile 90 arasında olmalı (${lat}).`)
   if (!Number.isFinite(lon) || lon < -180 || lon > 180) {
     throw new GeoError(`${label}: boylam −180 ile 180 arasında olmalı (${lon}).`)
   }
@@ -70,11 +76,16 @@ export function initialBearing(a: LatLon, b: LatLon): number {
   const Δλ = (b.lon - a.lon) * RAD
   const y = Math.sin(Δλ) * Math.cos(φ2)
   const x = Math.cos(φ1) * Math.sin(φ2) - Math.sin(φ1) * Math.cos(φ2) * Math.cos(Δλ)
-  return ((Math.atan2(y, x) / RAD) + 360) % 360
+  return (Math.atan2(y, x) / RAD + 360) % 360
 }
 
 /** Başlangıçtan `bearing` yönünde `distance` metre ilerideki nokta. */
-export function destinationPoint(start: LatLon, bearing: number, distance: number, radius: number = EARTH_RADIUS_M): LatLon {
+export function destinationPoint(
+  start: LatLon,
+  bearing: number,
+  distance: number,
+  radius: number = EARTH_RADIUS_M,
+): LatLon {
   checkPoint(start, 'başlangıç')
   const δ = distance / radius
   const θ = bearing * RAD
@@ -122,7 +133,7 @@ export function nearest<T>(
   target: LatLon,
   items: readonly T[],
   options: { key?: (item: T) => LatLon; limit?: number } = {},
-): { item: T; distance: number }[] {
+): Nearest<T>[] {
   const key = options.key ?? ((item: T) => item as unknown as LatLon)
   return items
     .map((item, index) => ({ item, index, distance: haversineDistance(target, key(item)) }))

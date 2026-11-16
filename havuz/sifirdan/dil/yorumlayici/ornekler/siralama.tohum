@@ -1,0 +1,38 @@
+# Sıralama: araya sokma ve hızlı sıralama; yerleşik `sırala` ile karşılaştırma
+işlev araya_sokma(liste) {
+    değişken l = liste + []   # kopya: asıl liste değişmesin
+    değişken i = 1
+    iken i < uzunluk(l) {
+        değişken anahtar = l[i]
+        değişken j = i - 1
+        # kısa devre: j < 0 olunca l[j] hiç okunmaz
+        iken j >= 0 ve l[j] > anahtar {
+            l[j + 1] = l[j]
+            j -= 1
+        }
+        l[j + 1] = anahtar
+        i += 1
+    }
+    döndür l
+}
+
+işlev hizli(l) {
+    eğer uzunluk(l) <= 1 { döndür l }
+    değişken pivot = l[0]
+    değişken kucuk = []
+    değişken buyuk = []
+    değişken i = 1
+    iken i < uzunluk(l) {
+        eğer l[i] < pivot { ekle(kucuk, l[i]) } değilse { ekle(buyuk, l[i]) }
+        i += 1
+    }
+    döndür hizli(kucuk) + [pivot] + hizli(buyuk)
+}
+
+değişken veri = [38, 27, 43, 3, 9, 82, 10, 3]
+yazdır(araya_sokma(veri))
+yazdır(hizli(veri))
+yazdır(sırala(veri))
+yazdır(veri)
+# Not: dizgiler kod noktasına göre sıralanır; "ç" (U+00E7) "z"den sonra gelir.
+yazdır(sırala(["elma", "çilek", "armut", "zeytin"]))

@@ -65,7 +65,11 @@ describe('bilinen değerler', () => {
 
 describe('gidiş-dönüş ve erişilebilir renk', () => {
   const random = seededRandom(91)
-  const randomRgb = () => ({ r: Math.floor(random() * 256), g: Math.floor(random() * 256), b: Math.floor(random() * 256) })
+  const randomRgb = () => ({
+    r: Math.floor(random() * 256),
+    g: Math.floor(random() * 256),
+    b: Math.floor(random() * 256),
+  })
 
   it('RGB → HSL → RGB ve RGB → OKLCH → RGB aynı rengi verir', () => {
     for (let i = 0; i < 1000; i++) {

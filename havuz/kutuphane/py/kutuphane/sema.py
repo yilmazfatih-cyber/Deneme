@@ -67,7 +67,8 @@ class SchemaError(ValueError):
 
     def __init__(self, issues: list[Issue]) -> None:
         lines = [
-            f"{'.'.join(map(str, i['path'])) if i['path'] else '(kök)'}: {i['message']}" for i in issues
+            f"{'.'.join(map(str, i['path'])) if i['path'] else '(kök)'}: {i['message']}"
+            for i in issues
         ]
         super().__init__("\n".join(lines))
         self.issues = issues
@@ -186,17 +187,23 @@ class StringSchema(Schema):
         return self._with(lambda v: len(v) >= length, message or f"En az {length} karakter olmalı.")
 
     def max(self, length: int, message: str | None = None) -> StringSchema:
-        return self._with(lambda v: len(v) <= length, message or f"En çok {length} karakter olmalı.")
+        return self._with(
+            lambda v: len(v) <= length, message or f"En çok {length} karakter olmalı."
+        )
 
     def nonempty(self, message: str = "Boş bırakılamaz.") -> StringSchema:
         return self._with(lambda v: len(v) > 0, message)
 
-    def regex(self, pattern: str | re.Pattern[str], message: str = "Biçim geçersiz.") -> StringSchema:
+    def regex(
+        self, pattern: str | re.Pattern[str], message: str = "Biçim geçersiz."
+    ) -> StringSchema:
         compiled = re.compile(pattern)
         return self._with(lambda v: compiled.search(v) is not None, message)
 
     def email(self, message: str = "Geçerli bir e-posta adresi değil.") -> StringSchema:
-        return self._with(lambda v: re.fullmatch(r"[^\s@]+@[^\s@.]+(\.[^\s@.]+)+", v) is not None, message)
+        return self._with(
+            lambda v: re.fullmatch(r"[^\s@]+@[^\s@.]+(\.[^\s@.]+)+", v) is not None, message
+        )
 
     def one_of(self, values: Sequence[str], message: str | None = None) -> StringSchema:
         text = message or f"Şunlardan biri olmalı: {', '.join(values)}."
@@ -264,7 +271,9 @@ class ArraySchema(Schema):
             for test, message in self._checks:
                 if not test(value):
                     return _issue(issues, path, message)
-            out = [item._run(element, [*path, index], issues) for index, element in enumerate(value)]
+            out = [
+                item._run(element, [*path, index], issues) for index, element in enumerate(value)
+            ]
             return _INVALID if any(element is _INVALID for element in out) else out
 
         super().__init__(run)
@@ -400,7 +409,9 @@ def record(value_schema: Schema) -> Schema:
             return _INVALID
         if not isinstance(value, Mapping):
             return _issue(issues, path, "Nesne bekleniyordu.")
-        out = {key: value_schema._run(element, [*path, key], issues) for key, element in value.items()}
+        out = {
+            key: value_schema._run(element, [*path, key], issues) for key, element in value.items()
+        }
         return _INVALID if any(v is _INVALID for v in out.values()) else out
 
     return Schema(run)

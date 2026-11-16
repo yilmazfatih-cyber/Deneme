@@ -4,9 +4,21 @@
   "islevler": {
     "deepEqual": [
       { "girdi": [{ "a": [1, { "b": "x" }] }, { "a": [1, { "b": "x" }] }], "cikti": true },
-      { "girdi": [{ "a": 1, "b": 2 }, { "b": 2, "a": 1 }], "cikti": true },
+      {
+        "girdi": [
+          { "a": 1, "b": 2 },
+          { "b": 2, "a": 1 }
+        ],
+        "cikti": true
+      },
       { "girdi": [{ "a": 1 }, { "a": 1, "b": null }], "cikti": false },
-      { "girdi": [[1, 2], [2, 1]], "cikti": false },
+      {
+        "girdi": [
+          [1, 2],
+          [2, 1]
+        ],
+        "cikti": false
+      },
       { "girdi": [1, true], "cikti": false },
       { "girdi": [0, false], "cikti": false },
       { "girdi": [1, 1.0], "cikti": true },

@@ -5,7 +5,12 @@
 Çevrimdışı-önce bir web uygulaması (PWA) + API + ortak sözleşme. Kullanıcı her şeyi önce cihazına yazar
 (IndexedDB), uygulama bağlantı olunca sunucuyla eşitler. Hesapsız (yalnız bu cihaz) ve hesaplı (cihazlar arası,
 paylaşımlı alanlar) iki kipi vardır. Başvuru özelliği "Görevler ve Listeler"dir: yeni veri türleri onu örnek
-alarak (ya da üreteçle) eklenir. Sunucu tarafı ayrı ekibindir: `api/README.md`, `api/TARIFLER.md`.
+alarak (ya da üreteçle) eklenir.
+
+Sunucu belgeleri: `api/README.md` (çalıştırma), `api/HAZIR.md` (bütünleştirme notları), `api/TARIFLER.md`
+(sunucu tarifleri), `api/KARARLAR.md`, `docs/API.md` (uçlar), `docs/GUVENLIK.md`, `docs/YAYINLAMA.md`
+(yayın ve ortam değişkenleri §6), `docs/MEZAR_TASI.md` (silinenlerin temizliği, tasarım). Web/eşitleme:
+`docs/MIMARI.md`, `docs/ESITLEME.md`, `docs/KARARLAR.md`.
 
 ## Komutlar
 

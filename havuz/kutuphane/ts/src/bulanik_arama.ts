@@ -30,11 +30,7 @@ const FOLD: Record<string, string> = { ç: 'c', ğ: 'g', ı: 'i', ö: 'o', ş: '
 
 /** Arama için normalleştirir: Türkçe küçük harf, işaretsiz, harf/rakam dışı → boşluk, tek boşluk. */
 export function normalizeText(text: string): string {
-  const lower = text
-    .normalize('NFC')
-    .replace(/İ/g, 'i')
-    .replace(/I/g, 'ı')
-    .toLowerCase() // harf: İ/I önce elle çevrildi
+  const lower = text.normalize('NFC').replace(/İ/g, 'i').replace(/I/g, 'ı').toLowerCase() // harf: İ/I önce elle çevrildi
   let out = ''
   for (const ch of lower.normalize('NFD')) {
     if (/\p{M}/u.test(ch)) continue

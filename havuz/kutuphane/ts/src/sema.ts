@@ -68,16 +68,25 @@ export class Schema<T> {
   }
 
   optional(): Schema<T | undefined> {
-    return new Schema<T | undefined>((value, path, issues) => (value === undefined ? undefined : this.run(value, path, issues)), true)
+    return new Schema<T | undefined>(
+      (value, path, issues) => (value === undefined ? undefined : this.run(value, path, issues)),
+      true,
+    )
   }
 
   nullable(): Schema<T | null> {
-    return new Schema<T | null>((value, path, issues) => (value === null ? null : this.run(value, path, issues)), this.acceptsUndefined)
+    return new Schema<T | null>(
+      (value, path, issues) => (value === null ? null : this.run(value, path, issues)),
+      this.acceptsUndefined,
+    )
   }
 
   /** Değer yoksa (undefined) `fallback` kullanılır. */
   default(fallback: T): Schema<T> {
-    return new Schema<T>((value, path, issues) => (value === undefined ? fallback : this.run(value, path, issues)), true)
+    return new Schema<T>(
+      (value, path, issues) => (value === undefined ? fallback : this.run(value, path, issues)),
+      true,
+    )
   }
 
   /** Ek kural: `predicate` false dönerse `message` ile hata. */
@@ -359,15 +368,18 @@ export function object<S extends Shape>(shape: S): ObjectSchema<S> {
 
 /** Seçeneklerden ilk tutan; hiçbiri tutmazsa tek bir ileti. */
 export function union<T extends readonly Schema<unknown>[]>(options: T): Schema<Infer<T[number]>> {
-  return new Schema<Infer<T[number]>>((value, path, issues) => {
-    for (const option of options) {
-      const scratch: Issue[] = []
-      const out = option.run(value, path, scratch)
-      if (out !== INVALID && scratch.length === 0) return out as Infer<T[number]>
-    }
-    issues.push({ path: [...path], message: 'Seçeneklerin hiçbirine uymuyor.' })
-    return INVALID
-  }, options.some((option) => option.acceptsUndefined))
+  return new Schema<Infer<T[number]>>(
+    (value, path, issues) => {
+      for (const option of options) {
+        const scratch: Issue[] = []
+        const out = option.run(value, path, scratch)
+        if (out !== INVALID && scratch.length === 0) return out as Infer<T[number]>
+      }
+      issues.push({ path: [...path], message: 'Seçeneklerin hiçbirine uymuyor.' })
+      return INVALID
+    },
+    options.some((option) => option.acceptsUndefined),
+  )
 }
 
 /** Anahtarları metin, değerleri aynı şemaya uyan sözlük. */

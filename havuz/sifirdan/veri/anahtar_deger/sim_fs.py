@@ -1,24 +1,27 @@
 """Bellek içi, çökme benzetimli dosya sistemi (hata enjektörü).
 
 İki şeyi modeller:
-1. **Süreç ölümü:** Değiştiren her işlem (create/write/sync/rename/remove/truncate/sync_dir) bir "adım"dır.
-   `crash_at=k` verilirse k. adımda `CrashError` fırlar; yazma adımıysa verinin rastgele bir ön eki
-   yazılmış olabilir (yarım kayıt).
-2. **Güç kesintisi:** `sync()` edilmemiş baytlar ve `sync_dir()` edilmemiş klasör değişiklikleri
-   kaybolabilir. `crash_image("power")` yalnız kalıcı olduğu KESİN olanı (artı sync edilmemiş kuyruğun
-   rastgele, belki bozuk bir ön ekini) taşıyan yeni bir dosya sistemi döndürür.
+1. **Süreç ölümü:** Değiştiren her işlem (create/write/sync/rename/remove/truncate/sync_dir) bir
+   "adım"dır. `crash_at=k` verilirse k. adımda `CrashError` fırlar; yazma adımıysa verinin rastgele
+   bir ön eki yazılmış olabilir (yarım kayıt).
+2. **Güç kesintisi:** `sync()` edilmemiş baytlar kaybolabilir; son `sync_dir()`'den beri yapılan
+   klasör değişikliklerinin (create/rename/remove) HERHANGİ bir alt kümesi kalıcı olmuş olabilir
+   (sıra gözetilmez). `crash_image("power")` böyle rastgele ama olası bir disk görüntüsü döndürür.
 
 Model bilinçli olarak kötümserdir (gerçek diskler çoğu zaman daha fazlasını korur) ama şunları
-modellemez: aynı adla yeniden `create` edilen dosyanın eski içeriğinin yok olması, sektör düzeyinde
-bozulma, yalan söyleyen diskler (fsync dönüp yazmayan).
+modellemez: var olan bir dosyanın üstüne `create` edilince eski içeriğin hemen yok olması (depo bunu
+hiç yapmaz; her dosya taze adla açılır), sektör düzeyinde bozulma, yalan söyleyen diskler (fsync
+dönüp yazmayan).
 
-Genişletme: yeni bir hata türü (ör. dolu disk) için `_step` içine koşul ekleyin ve `OSError` fırlatın.
+Genişletme: yeni bir hata türü (ör. dolu disk) için `_step` içine koşul ekleyin ve `OSError`
+fırlatın.
 """
 
 from __future__ import annotations
 
 import random
 from dataclasses import dataclass, field
+from typing import Literal
 
 from .fs import WritableFile
 
@@ -55,7 +58,11 @@ class SimFS:
 
     def __init__(self, *, crash_at: int | None = None, seed: int = 0) -> None:
         self.live: dict[str, _Inode] = {}  # çalışan sürecin gördüğü klasör
-        self.durable: dict[str, _Inode] = {}  # güç kesintisinden sonra kalacak klasör
+        self.durable: dict[str, _Inode] = {}  # son sync_dir anındaki klasör (kesin kalıcı)
+        # Son sync_dir'den beri yapılan klasör işlemleri. Her işlem bir değişiklik grubudur
+        # [(ad, yeni inode ya da None = silindi), ...]; grup bütün olarak ya kalıcıdır ya değildir
+        # (yeniden adlandırma atomiktir: hem eski hem yeni adın kaybolduğu bir görüntü oluşmaz).
+        self.pending: list[list[tuple[str, _Inode | None]]] = []
         self.steps = 0
         self.crash_at = crash_at
         self.crashed = False
@@ -82,6 +89,7 @@ class SimFS:
         self._step()
         inode = _Inode()
         self.live[name] = inode
+        self.pending.append([(name, inode)])
         return _SimFile(self, inode)
 
     def open_append(self, name: str) -> WritableFile:
@@ -103,11 +111,14 @@ class SimFS:
 
     def rename(self, src: str, dst: str) -> None:
         self._step()
-        self.live[dst] = self.live.pop(src)
+        inode = self.live.pop(src)
+        self.live[dst] = inode
+        self.pending.append([(dst, inode), (src, None)])
 
     def remove(self, name: str) -> None:
         self._step()
         del self.live[name]
+        self.pending.append([(name, None)])
 
     def truncate(self, name: str, size: int) -> None:
         self._step()
@@ -118,19 +129,33 @@ class SimFS:
     def sync_dir(self) -> None:
         self._step()
         self.durable = dict(self.live)
+        self.pending = []
 
-    def crash_image(self, mode: str, seed: int = 0) -> SimFS:
+    def crash_image(self, mode: Literal["process", "power"], seed: int = 0) -> SimFS:
         """Çökmeden sonra diskte kalanı yeni bir SimFS olarak döndürür.
 
         mode="process": süreç öldü, işletim sistemi ayakta → yazılan her şey durur.
-        mode="power":   güç kesildi → yalnız sync edilenler kesin; gerisinin rastgele ön eki kalır.
+        mode="power":   güç kesildi → yalnız sync edilenler kesin; bekleyen klasör işlemlerinin
+        rastgele
+                        bir alt kümesi ve sync edilmemiş kuyruğun rastgele (belki bozuk) bir ön eki
+                        kalır.
         """
         if mode not in {"process", "power"}:
             raise ValueError("mode 'process' ya da 'power' olmalı")
         rng = random.Random(seed)
+        if mode == "process":
+            directory = dict(self.live)
+        else:
+            directory = dict(self.durable)
+            for group in self.pending:
+                if rng.random() < 0.5:  # bu klasör işlemi diske ulaşmış mı? (sıra gözetilmez)
+                    for name, inode in group:
+                        if inode is None:
+                            directory.pop(name, None)
+                        else:
+                            directory[name] = inode
         image = SimFS()
-        source = self.live if mode == "process" else self.durable
-        for name, inode in source.items():
+        for name, inode in directory.items():
             data = bytes(inode.data)
             if mode == "power":
                 tail = bytearray(data[inode.synced :])

@@ -1,19 +1,22 @@
 """SHA-256 ve SHA-1 özet işlevleri — sıfırdan (FIPS 180-4).
 
-Ne yapar: iletiyi 64 baytlık bloklara böler, her bloğu "sıkıştırma" işlevinden geçirip 256 (ya da 160) bitlik
-durumu günceller. Arayüz `hashlib` ile aynıdır (`update`, `digest`, `hexdigest`, `copy`).
+Ne yapar: iletiyi 64 baytlık bloklara böler, her bloğu "sıkıştırma" işlevinden geçirip 256 (ya da
+160) bitlik durumu günceller. Arayüz `hashlib` ile aynıdır (`update`, `digest`, `hexdigest`,
+`copy`).
 Kim kullanır: `mac.py` (HMAC), `kdf.py`, `otp.py`, `jwt.py`, `asymmetric.py`.
 EĞİTSELDİR: üretimde `hashlib.sha256` kullanın (C ile yazılmış, yüzlerce kat hızlı ve denetlenmiş).
-SHA-1 çakışmaya karşı KIRIKTIR; yalnız eski protokoller (HOTP/TOTP, WebSocket el sıkışması) için buradadır.
-Genişletme: yeni bir Merkle–Damgård özeti (ör. SHA-224) için `_BlockHash`'ten türetip başlangıç durumunu ve
-`_compress`'i tanımlayın; `tests/kripto_egitim/test_sha.py` içindeki `hashlib` karşılaştırmasına ekleyin.
+SHA-1 çakışmaya karşı KIRIKTIR; yalnız eski protokoller (HOTP/TOTP, WebSocket el sıkışması) için
+buradadır.
+Genişletme: yeni bir Merkle–Damgård özeti (ör. SHA-224) için `_BlockHash`'ten türetip başlangıç
+durumunu ve `_compress`'i tanımlayın; `tests/kripto_egitim/test_ozet_mac_kdf.py` içindeki `hashlib`
+karşılaştırmasına ekleyin.
 """
 
 from __future__ import annotations
 
 import math
 import struct
-from typing import Self
+from typing import ClassVar, Self
 
 MASK32 = 0xFFFFFFFF
 
@@ -51,11 +54,13 @@ def _icbrt(value: int) -> int:
     return low
 
 
-# "Kol yenimde bir şey yok" sabitleri: gizli bir arka kapı olmadığı görülsün diye asalların köklerinden türetilir.
-# K[i] = i. asalın küp kökünün kesir kısmının ilk 32 biti; H0[i] = i. asalın karekökünün kesir kısmının ilk 32 biti.
+# "Kol yenimde bir şey yok" sabitleri: gizli bir arka kapı olmadığı görülsün diye asalların
+# köklerinden türetilir.
+# K[i] = i. asalın küp kökünün kesir kısmının ilk 32 biti; H0[i] = i. asalın karekökünün kesir
+# kısmının ilk 32 biti.
 _K256 = [_icbrt(p << 96) & MASK32 for p in _first_primes(64)]
-_H256 = [math.isqrt(p << 64) & MASK32 for p in _first_primes(8)]
-_H1 = [0x67452301, 0xEFCDAB89, 0x98BADCFE, 0x10325476, 0xC3D2E1F0]
+_H256 = tuple(math.isqrt(p << 64) & MASK32 for p in _first_primes(8))
+_H1 = (0x67452301, 0xEFCDAB89, 0x98BADCFE, 0x10325476, 0xC3D2E1F0)
 
 
 class _BlockHash:
@@ -64,7 +69,7 @@ class _BlockHash:
     name = ""
     block_size = 64
     digest_size = 0
-    _initial: list[int] = []
+    _initial: ClassVar[tuple[int, ...]] = ()
 
     def __init__(self, data: bytes = b"") -> None:
         self._state = list(self._initial)
@@ -94,7 +99,9 @@ class _BlockHash:
         return clone
 
     def digest(self) -> bytes:
-        """Dolguyu (0x80, sıfırlar, 64 bit uzunluk) bir kopyaya uygular; asıl nesne `update` almayı sürdürebilir."""
+        """Dolguyu (0x80, sıfırlar, 64 bit uzunluk) bir kopyaya uygular; asıl nesne `update` almayı
+        sürdürebilir.
+        """
         clone = self.copy()
         zeros = (55 - self._length) % 64
         padding = b"\x80" + b"\x00" * zeros + struct.pack(">Q", self._length * 8)
@@ -129,11 +136,15 @@ class Sha256(_BlockHash):
             temp2 = (big_s0 + majority) & MASK32
             h, g, f, e = g, f, e, (d + temp1) & MASK32
             d, c, b, a = c, b, a, (temp1 + temp2) & MASK32
-        self._state = [(x + y) & MASK32 for x, y in zip(self._state, (a, b, c, d, e, f, g, h), strict=True)]
+        self._state = [
+            (x + y) & MASK32 for x, y in zip(self._state, (a, b, c, d, e, f, g, h), strict=True)
+        ]
 
 
 class Sha1(_BlockHash):
-    """SHA-1: 5 sözcüklük durum, blok başına 80 tur. Çakışmaya karşı kırıktır; yalnız eski protokoller için."""
+    """SHA-1: 5 sözcüklük durum, blok başına 80 tur. Çakışmaya karşı kırıktır; yalnız eski
+    protokoller için.
+    """
 
     name = "sha1"
     digest_size = 20

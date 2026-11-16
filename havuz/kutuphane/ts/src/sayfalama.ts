@@ -25,6 +25,26 @@
 export type CursorValue = string | number | boolean | null
 export type Cursor = Record<string, CursorValue>
 
+export interface Page<T> {
+  items: T[]
+  nextCursor: string | null
+  hasMore: boolean
+}
+
+export interface KeysetCondition {
+  clause: string
+  params: CursorValue[]
+}
+
+export interface OffsetPage {
+  page: number
+  pageSize: number
+  totalPages: number
+  offset: number
+  hasPrevious: boolean
+  hasNext: boolean
+}
+
 export class CursorError extends Error {
   override name = 'CursorError'
 }
@@ -54,11 +74,14 @@ export function decodeCursor(cursor: string, options: { keys?: readonly string[]
   let parsed: unknown
   try {
     const binary = atob(cursor.replace(/-/g, '+').replace(/_/g, '/') + '='.repeat((4 - (cursor.length % 4)) % 4))
-    parsed = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(Uint8Array.from(binary, (c) => c.charCodeAt(0))))
+    parsed = JSON.parse(
+      new TextDecoder('utf-8', { fatal: true }).decode(Uint8Array.from(binary, (c) => c.charCodeAt(0))),
+    )
   } catch {
     throw new CursorError('İmleç çözülemedi.')
   }
-  if (parsed === null || typeof parsed !== 'object' || Array.isArray(parsed)) throw new CursorError('İmleç bir nesne olmalı.')
+  if (parsed === null || typeof parsed !== 'object' || Array.isArray(parsed))
+    throw new CursorError('İmleç bir nesne olmalı.')
   const cursorObject = parsed as Cursor
   for (const key of options.keys ?? []) {
     if (!(key in cursorObject)) throw new CursorError(`İmleçte "${key}" alanı yok.`)
@@ -80,8 +103,9 @@ function compareValues(a: CursorValue | undefined, b: CursorValue | undefined): 
 export function paginate<T extends Record<string, unknown>>(
   items: readonly T[],
   options: { limit: number; cursor?: string | null; sortKeys: readonly string[] },
-): { items: T[]; nextCursor: string | null; hasMore: boolean } {
-  if (!Number.isInteger(options.limit) || options.limit < 1) throw new CursorError('limit 1 veya daha büyük tam sayı olmalı.')
+): Page<T> {
+  if (!Number.isInteger(options.limit) || options.limit < 1)
+    throw new CursorError('limit 1 veya daha büyük tam sayı olmalı.')
   let start = 0
   if (options.cursor) {
     const after = decodeCursor(options.cursor, { keys: options.sortKeys })
@@ -112,7 +136,7 @@ export function keysetWhere(
   columns: readonly string[],
   values: readonly CursorValue[],
   options: { direction?: 'asc' | 'desc'; placeholder?: (index: number) => string } = {},
-): { clause: string; params: CursorValue[] } {
+): KeysetCondition {
   if (columns.length === 0 || columns.length !== values.length) {
     throw new CursorError('Sütun ve değer sayısı eşit ve sıfırdan büyük olmalı.')
   }
@@ -138,14 +162,7 @@ export function keysetWhere(
 }
 
 /** Sayfa numaralı sayfalama hesabı; sayfa 1'den başlar ve geçerli aralığa sıkıştırılır. */
-export function offsetPagination(options: { total: number; page: number; pageSize: number }): {
-  page: number
-  pageSize: number
-  totalPages: number
-  offset: number
-  hasPrevious: boolean
-  hasNext: boolean
-} {
+export function offsetPagination(options: { total: number; page: number; pageSize: number }): OffsetPage {
   const { total, pageSize } = options
   if (!Number.isInteger(total) || total < 0) throw new CursorError('total 0 veya daha büyük tam sayı olmalı.')
   if (!Number.isInteger(pageSize) || pageSize < 1 || pageSize > 1000) {
@@ -153,5 +170,12 @@ export function offsetPagination(options: { total: number; page: number; pageSiz
   }
   const totalPages = Math.max(1, Math.ceil(total / pageSize))
   const page = Math.min(Math.max(1, Math.floor(Number.isFinite(options.page) ? options.page : 1)), totalPages)
-  return { page, pageSize, totalPages, offset: (page - 1) * pageSize, hasPrevious: page > 1, hasNext: page < totalPages }
+  return {
+    page,
+    pageSize,
+    totalPages,
+    offset: (page - 1) * pageSize,
+    hasPrevious: page > 1,
+    hasNext: page < totalPages,
+  }
 }

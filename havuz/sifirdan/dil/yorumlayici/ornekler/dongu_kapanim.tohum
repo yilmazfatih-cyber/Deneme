@@ -1,0 +1,17 @@
+# Döngü ve kapanım: her turda döngü değişkeni YENİ bir bağdır; kır ve devam
+değişken islevler = []
+için i içinde aralık(5) {
+    eğer i == 1 { devam }
+    eğer i == 4 { kır }
+    ekle(islevler, işlev() { döndür i * i })
+}
+için f içinde islevler { yazdır(f()) }
+
+değişken j = 0
+değişken liste = []
+iken j < 3 {
+    değişken kopya = j
+    ekle(liste, işlev() { döndür kopya })
+    j += 1
+}
+yazdır(liste[0](), liste[1](), liste[2]())

@@ -19,6 +19,17 @@
  * (kutuphane/istatistik.py) eklenir ve `vektorler/istatistik.json`'a örnek yazılır.
  */
 
+export interface Histogram {
+  edges: number[]
+  counts: number[]
+}
+
+export interface Regression {
+  slope: number
+  intercept: number
+  r2: number
+}
+
 export class StatsError extends Error {
   override name = 'StatsError'
 }
@@ -26,7 +37,8 @@ export class StatsError extends Error {
 function checked(values: readonly number[], minimum = 1, label = 'değer'): readonly number[] {
   if (values.length < minimum) throw new StatsError(`En az ${minimum} ${label} gerekir; ${values.length} verildi.`)
   for (const value of values) {
-    if (typeof value !== 'number' || !Number.isFinite(value)) throw new StatsError(`Sonlu sayı olmayan değer var: ${String(value)}.`)
+    if (typeof value !== 'number' || !Number.isFinite(value))
+      throw new StatsError(`Sonlu sayı olmayan değer var: ${String(value)}.`)
   }
   return values
 }
@@ -108,7 +120,7 @@ export function mode(values: readonly number[]): number[] {
 export function histogram(
   values: readonly number[],
   options: { bins?: number; min?: number; max?: number } = {},
-): { edges: number[]; counts: number[] } {
+): Histogram {
   checked(values)
   const min = options.min ?? Math.min(...values)
   const max = options.max ?? Math.max(...values)
@@ -133,7 +145,7 @@ function pairs(xs: readonly number[], ys: readonly number[]): void {
 }
 
 /** En küçük kareler doğrusu: y ≈ slope · x + intercept; r2 belirleme katsayısı. */
-export function linearRegression(xs: readonly number[], ys: readonly number[]): { slope: number; intercept: number; r2: number } {
+export function linearRegression(xs: readonly number[], ys: readonly number[]): Regression {
   pairs(xs, ys)
   const mx = mean(xs)
   const my = mean(ys)
@@ -188,7 +200,8 @@ export function movingAverage(values: readonly number[], window: number): number
 export function exponentialMovingAverage(values: readonly number[], alpha: number): number[] {
   if (!(alpha > 0 && alpha <= 1)) throw new StatsError(`alpha 0'dan büyük ve en çok 1 olmalı: ${alpha}.`)
   const out: number[] = []
-  for (const value of checked(values)) out.push(out.length === 0 ? value : alpha * value + (1 - alpha) * (out[out.length - 1] ?? 0))
+  for (const value of checked(values))
+    out.push(out.length === 0 ? value : alpha * value + (1 - alpha) * (out[out.length - 1] ?? 0))
   return out
 }
 

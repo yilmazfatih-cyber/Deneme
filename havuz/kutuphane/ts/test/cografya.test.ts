@@ -2,7 +2,16 @@
 import { existsSync, readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import * as cografya from '../src/cografya.ts'
-import { boundingBox, destinationPoint, EARTH_RADIUS_M, GeoError, haversineDistance, initialBearing, isInBoundingBox, nearest } from '../src/cografya.ts'
+import {
+  boundingBox,
+  destinationPoint,
+  EARTH_RADIUS_M,
+  GeoError,
+  haversineDistance,
+  initialBearing,
+  isInBoundingBox,
+  nearest,
+} from '../src/cografya.ts'
 
 interface VectorCase {
   girdi: unknown[]
@@ -22,7 +31,8 @@ function loadVectors(name: string): Record<string, VectorCase[]> {
 function expectClose(actual: unknown, expected: unknown, path = '$'): void {
   if (typeof expected === 'number') expect(Math.abs((actual as number) - expected), path).toBeLessThan(1e-6)
   else if (expected !== null && typeof expected === 'object') {
-    for (const [key, value] of Object.entries(expected)) expectClose((actual as Record<string, unknown>)[key], value, `${path}.${key}`)
+    for (const [key, value] of Object.entries(expected))
+      expectClose((actual as Record<string, unknown>)[key], value, `${path}.${key}`)
   } else expect(actual, path).toEqual(expected)
 }
 
@@ -59,9 +69,14 @@ describe('özellikler', () => {
       const a = point()
       const b = point()
       const rad = Math.PI / 180
-      const cosine = Math.acos(
-        Math.min(1, Math.sin(a.lat * rad) * Math.sin(b.lat * rad) + Math.cos(a.lat * rad) * Math.cos(b.lat * rad) * Math.cos((b.lon - a.lon) * rad)),
-      ) * EARTH_RADIUS_M
+      const cosine =
+        Math.acos(
+          Math.min(
+            1,
+            Math.sin(a.lat * rad) * Math.sin(b.lat * rad) +
+              Math.cos(a.lat * rad) * Math.cos(b.lat * rad) * Math.cos((b.lon - a.lon) * rad),
+          ),
+        ) * EARTH_RADIUS_M
       expect(Math.abs(haversineDistance(a, b) - cosine)).toBeLessThan(1)
     }
   })

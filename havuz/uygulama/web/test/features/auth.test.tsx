@@ -91,3 +91,13 @@ describe('Oturum', () => {
     })
   })
 })
+
+describe('giriş sonrası yönlendirme', () => {
+  it('yalnız uygulama içi yollar kabul edilir (açık yönlendirme yok)', async () => {
+    const { safeNext } = await import('../../src/features/auth/afterLogin.ts')
+    expect(safeNext('/davet?token=abc')).toBe('/davet?token=abc')
+    for (const bad of ['//kotu.site', 'https://kotu.site', '/\\kotu.site', 'gorevler', null, '']) {
+      expect(safeNext(bad)).toBe('/gorevler')
+    }
+  })
+})

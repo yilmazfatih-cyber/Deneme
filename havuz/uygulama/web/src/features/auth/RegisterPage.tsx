@@ -44,8 +44,8 @@ export function RegisterPage() {
     }
     setBusy(true)
     try {
-      await session.register(values)
-      void navigate(await nextAfterLogin(next), { replace: true })
+      const user = await session.register(values)
+      void navigate(await nextAfterLogin(next, user.id), { replace: true })
     } catch (error) {
       setBusy(false)
       const fields = fieldErrors(error)

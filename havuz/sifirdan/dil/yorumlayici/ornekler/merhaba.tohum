@@ -1,0 +1,5 @@
+# İlk program: selamlama ve Türkçe harfler
+değişken ad = "Gülşen"
+yazdır("Merhaba, " + ad + "!")
+yazdır(büyük_harf("ışık ve iğne"))
+yazdır(uzunluk("çğıöşü"))

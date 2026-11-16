@@ -1,0 +1,14 @@
+# Sözlükle kelime sayma
+değişken cumle = "bir iki üç bir iki bir"
+değişken sayim = {}
+için kelime içinde parçala(cumle) {
+    eğer içerir(sayim, kelime) {
+        sayim[kelime] += 1
+    } değilse {
+        sayim[kelime] = 1
+    }
+}
+yazdır(sayim)
+için k içinde sırala(anahtarlar(sayim)) {
+    yazdır(k, sayim[k])
+}

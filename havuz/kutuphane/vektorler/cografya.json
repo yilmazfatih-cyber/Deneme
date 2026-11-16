@@ -3,27 +3,82 @@
   "aciklama": "cografya modülünün iki dilde ortak sınama vektörleri. Kesirli değerler 1e-6 hoşgörüyle karşılaştırılır.",
   "islevler": {
     "haversineDistance": [
-      { "girdi": [{ "lat": 41.0082, "lon": 28.9784 }, { "lat": 39.9334, "lon": 32.8597 }], "cikti": 349356.22183695144 },
-      { "girdi": [{ "lat": 0, "lon": 0 }, { "lat": 0, "lon": 0 }], "cikti": 0 },
-      { "girdi": [{ "lat": 0, "lon": 0 }, { "lat": 0, "lon": 180 }], "cikti": 20015114.442035925 },
-      { "girdi": [{ "lat": 91, "lon": 0 }, { "lat": 0, "lon": 0 }], "hata": true }
+      {
+        "girdi": [
+          { "lat": 41.0082, "lon": 28.9784 },
+          { "lat": 39.9334, "lon": 32.8597 }
+        ],
+        "cikti": 349356.22183695144
+      },
+      {
+        "girdi": [
+          { "lat": 0, "lon": 0 },
+          { "lat": 0, "lon": 0 }
+        ],
+        "cikti": 0
+      },
+      {
+        "girdi": [
+          { "lat": 0, "lon": 0 },
+          { "lat": 0, "lon": 180 }
+        ],
+        "cikti": 20015114.442035925
+      },
+      {
+        "girdi": [
+          { "lat": 91, "lon": 0 },
+          { "lat": 0, "lon": 0 }
+        ],
+        "hata": true
+      }
     ],
     "initialBearing": [
-      { "girdi": [{ "lat": 41.0082, "lon": 28.9784 }, { "lat": 39.9334, "lon": 32.8597 }], "cikti": 108.73487876982102 },
-      { "girdi": [{ "lat": 0, "lon": 0 }, { "lat": 1, "lon": 0 }], "cikti": 0 },
-      { "girdi": [{ "lat": 0, "lon": 0 }, { "lat": 0, "lon": 1 }], "cikti": 90 }
+      {
+        "girdi": [
+          { "lat": 41.0082, "lon": 28.9784 },
+          { "lat": 39.9334, "lon": 32.8597 }
+        ],
+        "cikti": 108.73487876982102
+      },
+      {
+        "girdi": [
+          { "lat": 0, "lon": 0 },
+          { "lat": 1, "lon": 0 }
+        ],
+        "cikti": 0
+      },
+      {
+        "girdi": [
+          { "lat": 0, "lon": 0 },
+          { "lat": 0, "lon": 1 }
+        ],
+        "cikti": 90
+      }
     ],
     "destinationPoint": [
-      { "girdi": [{ "lat": 41, "lon": 29 }, 90, 10000], "cikti": { "lat": 40.99993864654991, "lon": 29.119161042764517 } }
+      {
+        "girdi": [{ "lat": 41, "lon": 29 }, 90, 10000],
+        "cikti": { "lat": 40.99993864654991, "lon": 29.119161042764517 }
+      }
     ],
     "boundingBox": [
       {
         "girdi": [{ "lat": 41, "lon": 29 }, 5000],
-        "cikti": { "minLat": 40.95503398181377, "minLon": 28.940419437022342, "maxLat": 41.04496601818623, "maxLon": 29.059580562977658 }
+        "cikti": {
+          "minLat": 40.95503398181377,
+          "minLon": 28.940419437022342,
+          "maxLat": 41.04496601818623,
+          "maxLon": 29.059580562977658
+        }
       },
       {
         "girdi": [{ "lat": 0, "lon": 179.99 }, 5000],
-        "cikti": { "minLat": -0.0449660181862269, "minLon": 179.94503398181382, "maxLat": 0.0449660181862269, "maxLon": -179.9650339818138 },
+        "cikti": {
+          "minLat": -0.0449660181862269,
+          "minLon": 179.94503398181382,
+          "maxLat": 0.0449660181862269,
+          "maxLon": -179.9650339818138
+        },
         "not": "180. boylamı aşan kutu: minLon > maxLon"
       },
       {
@@ -32,10 +87,34 @@
       }
     ],
     "isInBoundingBox": [
-      { "girdi": [{ "lat": 41.01, "lon": 29.01 }, { "minLat": 40.95, "minLon": 28.94, "maxLat": 41.04, "maxLon": 29.06 }], "cikti": true },
-      { "girdi": [{ "lat": 41.1, "lon": 29.01 }, { "minLat": 40.95, "minLon": 28.94, "maxLat": 41.04, "maxLon": 29.06 }], "cikti": false },
-      { "girdi": [{ "lat": 0, "lon": -179.99 }, { "minLat": -1, "minLon": 179.9, "maxLat": 1, "maxLon": -179.9 }], "cikti": true },
-      { "girdi": [{ "lat": 0, "lon": 0 }, { "minLat": -1, "minLon": 179.9, "maxLat": 1, "maxLon": -179.9 }], "cikti": false }
+      {
+        "girdi": [
+          { "lat": 41.01, "lon": 29.01 },
+          { "minLat": 40.95, "minLon": 28.94, "maxLat": 41.04, "maxLon": 29.06 }
+        ],
+        "cikti": true
+      },
+      {
+        "girdi": [
+          { "lat": 41.1, "lon": 29.01 },
+          { "minLat": 40.95, "minLon": 28.94, "maxLat": 41.04, "maxLon": 29.06 }
+        ],
+        "cikti": false
+      },
+      {
+        "girdi": [
+          { "lat": 0, "lon": -179.99 },
+          { "minLat": -1, "minLon": 179.9, "maxLat": 1, "maxLon": -179.9 }
+        ],
+        "cikti": true
+      },
+      {
+        "girdi": [
+          { "lat": 0, "lon": 0 },
+          { "minLat": -1, "minLon": 179.9, "maxLat": 1, "maxLon": -179.9 }
+        ],
+        "cikti": false
+      }
     ]
   }
 }

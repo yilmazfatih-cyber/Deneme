@@ -1,0 +1,14 @@
+# Üst düzey işlevler: işlevler değerdir; eşle / süz / indirge ve bileşke
+işlev esle(l, f) { değişken s = []; için x içinde l { ekle(s, f(x)) }; döndür s }
+işlev suz(l, f) { değişken s = []; için x içinde l { eğer f(x) { ekle(s, x) } }; döndür s }
+işlev indirge(l, f, bas) { değişken t = bas; için x içinde l { t = f(t, x) }; döndür t }
+
+değişken sayilar = aralık(1, 11)
+yazdır(esle(sayilar, işlev(x) { döndür x * x }))
+yazdır(suz(sayilar, işlev(x) { döndür x % 2 == 0 }))
+yazdır(indirge(sayilar, işlev(a, b) { döndür a + b }, 0))
+
+işlev bilesim(f, g) { döndür işlev(x) { döndür f(g(x)) } }
+değişken artir = işlev(x) { döndür x + 1 }
+değişken ikile = işlev(x) { döndür x * 2 }
+yazdır(bilesim(artir, ikile)(5), bilesim(ikile, artir)(5))

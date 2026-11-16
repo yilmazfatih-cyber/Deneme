@@ -1,0 +1,77 @@
+name: Havuz
+
+# havuz/ altındaki temelleri temiz bir makinede kurup denetler (her temelin havuz.json → denetle komutları).
+# Yalnız dosyası değişen temeller çalışır; ortak araçlar değiştiyse hepsi. Elle çalıştırırken temel seçilebilir.
+# Ayrıntı: havuz/README.md → "Sürekli denetim".
+on:
+  push:
+    paths: ['havuz/**', '.github/workflows/havuz.yml']
+  pull_request:
+    paths: ['havuz/**', '.github/workflows/havuz.yml']
+  workflow_dispatch:
+    inputs:
+      temel:
+        description: 'Temel adı (boş bırakılırsa hepsi), ör. uygulama ya da sifirdan/dil'
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+concurrency:
+  group: havuz-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      temeller: ${{ steps.sec.outputs.temeller }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Standart denetimi (zorunlu dosyalar)
+        run: python havuz/araclar/durum.py
+      - name: Bilgi notları (biçim + bağlantı + çalıştırılabilir kod)
+        run: python havuz/bilgi/araclar/dogrula.py
+      - name: Denetlenecek temelleri seç
+        id: sec
+        env:
+          OLAY: ${{ github.event_name }}
+          GIRDI: ${{ github.event.inputs.temel }}
+          ONCEKI: ${{ github.event.before }}
+          TABAN: ${{ github.event.pull_request.base.sha }}
+        run: python havuz/araclar/ci_sec.py >> "$GITHUB_OUTPUT"
+
+  denetle:
+    needs: plan
+    if: needs.plan.outputs.temeller != '[]'
+    strategy:
+      fail-fast: false
+      matrix:
+        temel: ${{ fromJSON(needs.plan.outputs.temeller) }}
+    name: ${{ matrix.temel }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: uv kur (hızlı Python paket kurucusu)
+        run: python -m pip install --quiet uv
+      - name: Kur ve denetle
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+          HF_HUB_DISABLE_XET: '1'
+        run: python havuz/araclar/denetle.py "${{ matrix.temel }}" --kur

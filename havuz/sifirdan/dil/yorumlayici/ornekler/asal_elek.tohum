@@ -1,0 +1,26 @@
+# Eratosthenes eleği: 2..n arasındaki asal sayılar
+işlev elek(n) {
+    değişken asal_mi = []
+    için i içinde aralık(n + 1) { ekle(asal_mi, doğru) }
+    asal_mi[0] = yanlış
+    asal_mi[1] = yanlış
+    değişken p = 2
+    iken p * p <= n {
+        eğer asal_mi[p] {
+            değişken k = p * p
+            iken k <= n {
+                asal_mi[k] = yanlış
+                k += p
+            }
+        }
+        p += 1
+    }
+    değişken asallar = []
+    için i içinde aralık(n + 1) {
+        eğer asal_mi[i] { ekle(asallar, i) }
+    }
+    döndür asallar
+}
+
+yazdır(elek(50))
+yazdır(uzunluk(elek(1000)))

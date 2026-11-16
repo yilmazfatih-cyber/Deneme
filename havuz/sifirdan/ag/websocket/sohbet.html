@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sohbet odası</title>
+    <style>
+      body { font-family: system-ui, sans-serif; margin: 0 auto; max-width: 40rem; padding: 1rem; }
+      #iletiler { list-style: none; padding: 0; min-height: 12rem; border: 1px solid #999; }
+      #iletiler li { padding: 0.25rem 0.5rem; border-bottom: 1px solid #ddd; }
+      form { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
+      input { flex: 1; font-size: 1.1rem; padding: 0.5rem; }
+      button { font-size: 1.1rem; padding: 0.5rem 1rem; }
+    </style>
+  </head>
+  <body>
+    <h1>Sohbet odası</h1>
+    <p id="durum" role="status">Bağlanıyor…</p>
+    <ul id="iletiler" aria-live="polite"></ul>
+    <form id="form">
+      <label for="metin" class="gizli">İleti</label>
+      <input id="metin" autocomplete="off" maxlength="500" />
+      <button type="submit">Gönder</button>
+    </form>
+    <script>
+      // İletiler textContent ile eklenir: HTML olarak yorumlanmaz (XSS'e kapalı).
+      const durum = document.getElementById('durum')
+      const liste = document.getElementById('iletiler')
+      const kanal = new WebSocket(`ws://${location.host}/oda`)
+      kanal.onopen = () => { durum.textContent = 'Bağlandı.' }
+      kanal.onclose = (olay) => { durum.textContent = `Bağlantı kapandı (${olay.code}).` }
+      kanal.onmessage = (olay) => {
+        const satir = document.createElement('li')
+        satir.textContent = olay.data
+        liste.append(satir)
+      }
+      document.getElementById('form').onsubmit = (olay) => {
+        olay.preventDefault()
+        const kutu = document.getElementById('metin')
+        if (kutu.value.trim()) kanal.send(kutu.value)
+        kutu.value = ''
+      }
+    </script>
+  </body>
+</html>

@@ -19,6 +19,11 @@ Kelime bulmakta zorlanan afazili yetişkinler için Türkçe bir web uygulaması
 >
 > **Ayrıca:** [`moda-radar/`](moda-radar/README.md) altında defilelerden sezon rengi (Pantone TCX), kumaş ve desen tahmini yapan,
 > İstanbul'u beş sosyoekonomik segmente bölen ve ürün bazlı yatırım kararı üreten **Moda Radar** tasarımı var (Fable mimar, Opus ekip).
+>
+> **Ayrıca:** [`havuz/`](havuz/README.md) altında, daha küçük bir modelin üstüne çalışabileceği **temeller havuzu** var: tam yığın
+> uygulama, web sitesi, sıfırdan dil modeli, açık model ince ayarı, dil modeli uygulamaları (RAG, ajan, yapılı çıktı), veri
+> havuzu, makine öğrenmesi, algoritmalar, "sıfırdan" mini sistemler ve konu konu bilgi notları. Küçük modelle çalışma rehberi:
+> [`havuz/rehber/KUCUK_MODELLE_CALISMA.md`](havuz/rehber/KUCUK_MODELLE_CALISMA.md).
 
 Ürün planı: [`docs/PLAN.md`](docs/PLAN.md) · Yol haritası: [`docs/ROADMAP.md`](docs/ROADMAP.md) ·
 Ekip anayasası: [`CLAUDE.md`](CLAUDE.md) · Son demo: [`docs/sprints/S01/demo.md`](docs/sprints/S01/demo.md)

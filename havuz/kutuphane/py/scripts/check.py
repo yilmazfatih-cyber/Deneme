@@ -43,23 +43,20 @@ def _venv_python() -> Path | None:
 
 
 def _ensure_tools() -> None:
-    """Araçlar yoksa `.venv` ile yeniden çalıştırır ya da ne yapılacağını söyleyip çıkar."""
-    missing = [tool for tool in TOOLS if importlib.util.find_spec(tool) is None]
-    if not missing:
-        return
+    """`.venv` varsa betiği onunla yeniden çalıştırır (kilitli araç sürümleri); yoksa eksik aracı söyler.
+
+    Sanal ortamın python'u çoğu zaman sistem python'una sembolik bağdır; bu yüzden yol değil `sys.prefix`
+    karşılaştırılır.
+    """
     venv_python = _venv_python()
-    already_in_venv = (
-        venv_python is not None and Path(sys.executable).resolve() == venv_python.resolve()
-    )
-    if (
-        venv_python is not None
-        and not already_in_venv
-        and os.environ.get("KUTUPHANE_CHECK_REEXEC") != "1"
-    ):
+    in_venv = Path(sys.prefix).resolve() == (ROOT / ".venv").resolve()
+    if venv_python is not None and not in_venv and os.environ.get("KUTUPHANE_CHECK_REEXEC") != "1":
         env = dict(os.environ, KUTUPHANE_CHECK_REEXEC="1")
         sys.exit(subprocess.call([str(venv_python), __file__, *sys.argv[1:]], cwd=ROOT, env=env))
-    print(f"Eksik araç: {', '.join(missing)}. Önce şunu çalıştırın:  python scripts/kur.py")
-    sys.exit(1)
+    missing = [tool for tool in TOOLS if importlib.util.find_spec(tool) is None]
+    if missing:
+        print(f"Eksik araç: {', '.join(missing)}. Önce şunu çalıştırın:  python scripts/kur.py")
+        sys.exit(1)
 
 
 def _run(name: str, command: list[str]) -> bool:

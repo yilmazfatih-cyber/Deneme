@@ -35,7 +35,14 @@ describe('ortak vektörler', () => {
 })
 
 describe('kaba kuvvetle karşılaştırma', () => {
-  const expressions = ['*/7 * * * *', '0 */5 * * 1-5', '15 3 1,15 * *', '0 0 1 * 1', '30 12 * NOV-DEC SAT,SUN', '*/20 9-17 * * *']
+  const expressions = [
+    '*/7 * * * *',
+    '0 */5 * * 1-5',
+    '15 3 1,15 * *',
+    '0 0 1 * 1',
+    '30 12 * NOV-DEC SAT,SUN',
+    '*/20 9-17 * * *',
+  ]
 
   it('nextRun, dakika dakika ilerleyip matchesCron ile bulunan ilk ana eşittir', () => {
     const start = Date.parse('2026-11-16T10:07:00+03:00')

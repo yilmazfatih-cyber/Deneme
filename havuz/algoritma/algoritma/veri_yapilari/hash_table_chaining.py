@@ -8,7 +8,8 @@ Fikir:
     Açık adreslemeye göre silmesi basittir (mezar taşı gerekmez) ama işaretçi izlediğinden
     önbellek dostu değildir.
 
-Karmaşıklık: ekleme/arama/silme ortalama O(1), en kötü O(n); yeniden boyutlama amortize O(1); yer O(n)
+Karmaşıklık: ekleme/arama/silme ortalama O(1), en kötü O(n); yeniden boyutlama amortize O(1);
+    yer O(n)
 Ne zaman: silmenin çok olduğu, yük oranının 1'i aşabildiği tablolar; hash tablosu öğretimi.
 Ne zaman değil: gerçek Python kodunda `dict` kullanın.
 Bağımlılık: yok

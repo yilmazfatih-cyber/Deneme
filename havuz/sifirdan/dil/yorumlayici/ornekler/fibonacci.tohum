@@ -1,0 +1,22 @@
+# Fibonacci: özyinelemeli ve döngülü iki yol aynı sonucu verir
+işlev fib(n) {
+    eğer n < 2 { döndür n }
+    döndür fib(n - 1) + fib(n - 2)
+}
+
+işlev fib_dongu(n) {
+    değişken a = 0
+    değişken b = 1
+    için i içinde aralık(n) {
+        değişken t = a + b
+        a = b
+        b = t
+    }
+    döndür a
+}
+
+değişken sonuc = []
+için i içinde aralık(15) { ekle(sonuc, fib(i)) }
+yazdır(sonuc)
+yazdır(fib_dongu(90))
+yazdır(fib(20) == fib_dongu(20))

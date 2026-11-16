@@ -29,11 +29,19 @@
       { "girdi": [""], "cikti": 0 },
       { "girdi": ["a b c d"], "secenek": { "wordsPerMinute": 2 }, "cikti": 2 }
     ],
-    "escapeHtml": [{ "girdi": ["<a href=\"x\">Ali & Veli'nin</a>"], "cikti": "&lt;a href=&quot;x&quot;&gt;Ali &amp; Veli&#39;nin&lt;/a&gt;" }],
+    "escapeHtml": [
+      {
+        "girdi": ["<a href=\"x\">Ali & Veli'nin</a>"],
+        "cikti": "&lt;a href=&quot;x&quot;&gt;Ali &amp; Veli&#39;nin&lt;/a&gt;"
+      }
+    ],
     "normalizeWhitespace": [{ "girdi": ["  çok   boşluklu \t\n metin  "], "cikti": "çok boşluklu metin" }],
     "fillTemplate": [
       {
-        "girdi": ["Merhaba {ad}, {{kod}}: {sipariş.no} {oran} {aktif}", { "ad": "Ayşe", "sipariş": { "no": 42 }, "oran": 1.5, "aktif": true }],
+        "girdi": [
+          "Merhaba {ad}, {{kod}}: {sipariş.no} {oran} {aktif}",
+          { "ad": "Ayşe", "sipariş": { "no": 42 }, "oran": 1.5, "aktif": true }
+        ],
         "cikti": "Merhaba Ayşe, {kod}: 42 1.5 true"
       },
       { "girdi": ["{ ad }", { "ad": "boşluklu ad" }], "cikti": "boşluklu ad" },

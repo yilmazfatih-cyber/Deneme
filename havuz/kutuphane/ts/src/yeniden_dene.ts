@@ -129,7 +129,11 @@ export async function retry<T>(
       const requested = options.retryAfterMs?.(error)
       const delayMs = Math.min(options.maxDelayMs ?? 30_000, requested ?? backoffDelay(attempt, options, random()))
       if (options.maxElapsedMs !== undefined && now() - started + delayMs > options.maxElapsedMs) {
-        throw new RetryError(`Süre sınırı (${options.maxElapsedMs} ms) doldu; ${attempt} deneme yapıldı.`, attempt, errors)
+        throw new RetryError(
+          `Süre sınırı (${options.maxElapsedMs} ms) doldu; ${attempt} deneme yapıldı.`,
+          attempt,
+          errors,
+        )
       }
       options.onRetry?.({ error, attempt, delayMs })
       await sleep(delayMs, options.signal)

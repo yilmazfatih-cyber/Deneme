@@ -30,7 +30,8 @@ function expectClose(actual: unknown, expected: unknown, path = '$'): void {
     expected.forEach((item, i) => expectClose((actual as unknown[])[i], item, `${path}[${i}]`))
   } else if (expected !== null && typeof expected === 'object') {
     expect(Object.keys(actual as object).sort(), path).toEqual(Object.keys(expected).sort())
-    for (const [key, value] of Object.entries(expected)) expectClose((actual as Record<string, unknown>)[key], value, `${path}.${key}`)
+    for (const [key, value] of Object.entries(expected))
+      expectClose((actual as Record<string, unknown>)[key], value, `${path}.${key}`)
   } else expect(actual, path).toEqual(expected)
 }
 

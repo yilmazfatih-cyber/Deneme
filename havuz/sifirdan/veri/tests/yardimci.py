@@ -1,7 +1,7 @@
 """Testlerin ortak yardımcıları (tohum sayısı seçimi).
 
-Genişletme: birden çok mini sistemin testinde işe yarayan küçük yardımcılar buraya eklenir; bir sisteme
-özgü olanlar o sistemin `tests/<sistem>/` klasöründe kalır.
+Genişletme: birden çok mini sistemin testinde işe yarayan küçük yardımcılar buraya eklenir; bir
+sisteme özgü olanlar o sistemin `tests/<sistem>/` klasöründe kalır.
 """
 
 from __future__ import annotations

@@ -1,0 +1,24 @@
+# Kapanım: her sayaç kendi `n` değişkenini saklar; iki işlev aynı değişkeni paylaşabilir
+işlev sayac_yap(baslangic) {
+    değişken n = baslangic
+    döndür işlev() {
+        n += 1
+        döndür n
+    }
+}
+
+değişken a = sayac_yap(0)
+değişken b = sayac_yap(100)
+a()
+a()
+yazdır(a(), b(), a(), b())
+
+işlev kutu(deger) {
+    işlev al() { döndür deger }
+    işlev koy(yeni) { deger = yeni }
+    döndür {"al": al, "koy": koy}
+}
+
+değişken k = kutu("ilk")
+k["koy"]("ikinci")
+yazdır(k["al"]())

@@ -17,7 +17,9 @@ packages = ["kutuphane"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["."]
 addopts = "-q -p no:cacheprovider"
+faulthandler_timeout = 120
 
 [tool.ruff]
 line-length = 100
@@ -36,4 +38,4 @@ ignore = [
 [tool.mypy]
 python_version = "3.11"
 strict = true
-files = ["kutuphane", "tests", "scripts"]
+files = ["kutuphane", "tests", "scripts", "kopyala.py"]

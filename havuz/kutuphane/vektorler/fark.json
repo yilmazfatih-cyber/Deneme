@@ -19,9 +19,18 @@
         ]
       },
       { "girdi": [[], []], "cikti": [] },
-      { "girdi": [[1, 2], [1, 2]], "cikti": [{ "type": "equal", "items": [1, 2] }] },
       {
-        "girdi": [[1, true], [1, 1]],
+        "girdi": [
+          [1, 2],
+          [1, 2]
+        ],
+        "cikti": [{ "type": "equal", "items": [1, 2] }]
+      },
+      {
+        "girdi": [
+          [1, true],
+          [1, 1]
+        ],
         "cikti": [
           { "type": "equal", "items": [1] },
           { "type": "delete", "items": [true] },

@@ -26,8 +26,24 @@ export interface ObjectChange {
   after?: unknown
 }
 
+export interface Changed<T> {
+  before: T
+  after: T
+}
+
+export interface ByKeyDiff<T> {
+  added: T[]
+  removed: T[]
+  changed: Changed<T>[]
+  unchanged: T[]
+}
+
 /** Myers algoritmasıyla en kısa düzenleme betiği; ardışık aynı türdeki işlemler birleştirilir. */
-export function diffSequences<T>(a: readonly T[], b: readonly T[], equals: (x: T, y: T) => boolean = Object.is): DiffOp<T>[] {
+export function diffSequences<T>(
+  a: readonly T[],
+  b: readonly T[],
+  equals: (x: T, y: T) => boolean = Object.is,
+): DiffOp<T>[] {
   const n = a.length
   const m = b.length
   const max = n + m
@@ -101,7 +117,11 @@ function range(start: number, count: number): string {
 }
 
 /** GNU biçiminde birleşik fark (unified diff); fark yoksa boş metin. */
-export function unifiedDiff(a: string, b: string, options: { context?: number; fromFile?: string; toFile?: string } = {}): string {
+export function unifiedDiff(
+  a: string,
+  b: string,
+  options: { context?: number; fromFile?: string; toFile?: string } = {},
+): string {
   const context = options.context ?? 3
   const lines: { tag: ' ' | '-' | '+'; text: string; aLine: number; bLine: number }[] = []
   let aLine = 1
@@ -138,7 +158,12 @@ export function unifiedDiff(a: string, b: string, options: { context?: number; f
 }
 
 function isPlainObject(value: unknown): value is Record<string, unknown> {
-  return value !== null && typeof value === 'object' && !Array.isArray(value) && Object.getPrototypeOf(value) === Object.prototype
+  return (
+    value !== null &&
+    typeof value === 'object' &&
+    !Array.isArray(value) &&
+    Object.getPrototypeOf(value) === Object.prototype
+  )
 }
 
 function sameLeaf(a: unknown, b: unknown): boolean {
@@ -175,10 +200,10 @@ export function diffByKey<T>(
   before: readonly T[],
   after: readonly T[],
   key: (item: T) => string | number,
-): { added: T[]; removed: T[]; changed: { before: T; after: T }[]; unchanged: T[] } {
+): ByKeyDiff<T> {
   const oldMap = new Map(before.map((item) => [key(item), item]))
   const newKeys = new Set(after.map(key))
-  const result = { added: [] as T[], removed: [] as T[], changed: [] as { before: T; after: T }[], unchanged: [] as T[] }
+  const result: ByKeyDiff<T> = { added: [], removed: [], changed: [], unchanged: [] }
   for (const item of after) {
     const old = oldMap.get(key(item))
     if (old === undefined) result.added.push(item)

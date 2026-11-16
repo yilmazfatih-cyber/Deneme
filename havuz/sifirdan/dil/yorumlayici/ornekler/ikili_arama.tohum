@@ -1,0 +1,21 @@
+# İkili arama: sıralı listede O(log n) arama; `değilse eğer` alt satırda da yazılabilir
+işlev ikili_ara(l, hedef) {
+    değişken alt = 0
+    değişken ust = uzunluk(l) - 1
+    iken alt <= ust {
+        değişken orta = taban((alt + ust) / 2)
+        eğer l[orta] == hedef {
+            döndür orta
+        }
+        değilse eğer l[orta] < hedef {
+            alt = orta + 1
+        }
+        değilse {
+            ust = orta - 1
+        }
+    }
+    döndür -1
+}
+
+değişken l = [1, 3, 5, 7, 9, 11, 13]
+yazdır(ikili_ara(l, 7), ikili_ara(l, 1), ikili_ara(l, 13), ikili_ara(l, 4))

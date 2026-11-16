@@ -38,8 +38,8 @@ export function LoginPage() {
     }
     setBusy(true)
     try {
-      await session.login({ email, password })
-      void navigate(await nextAfterLogin(next), { replace: true })
+      const user = await session.login({ email, password })
+      void navigate(await nextAfterLogin(next, user.id), { replace: true })
     } catch (error) {
       setBusy(false)
       const fields = fieldErrors(error)

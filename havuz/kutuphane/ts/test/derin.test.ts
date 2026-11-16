@@ -50,7 +50,11 @@ describe('özel durumlar', () => {
   })
 
   it('kopya bağımsızdır ve döngüler korunur', () => {
-    const original: Record<string, unknown> = { liste: [1, { iç: true }], tarih: new Date(0), harita: new Map([['k', [1]]]) }
+    const original: Record<string, unknown> = {
+      liste: [1, { iç: true }],
+      tarih: new Date(0),
+      harita: new Map([['k', [1]]]),
+    }
     original.kendisi = original
     const copy = deepClone(original)
     expect(copy).not.toBe(original)
