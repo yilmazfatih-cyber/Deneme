@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   createBrowserHistory,
   createRouter,
@@ -38,10 +38,18 @@ afterEach(() => {
   router.stop()
 })
 
+/** Tıklar; yönlendiricinin kararını (defaultPrevented) okur, sonra jsdom'un gerçek gezinmeye kalkmasını önler. */
 const click = (id: string, init: MouseEventInit = {}) => {
-  const event = new MouseEvent('click', { bubbles: true, cancelable: true, button: 0, ...init })
-  document.getElementById(id)!.dispatchEvent(event)
-  return event
+  let prevented = false
+  const after = (e: Event) => {
+    prevented = e.defaultPrevented
+    e.preventDefault()
+  }
+  window.addEventListener('click', after, { once: true })
+  document
+    .getElementById(id)!
+    .dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, button: 0, ...init }))
+  return { defaultPrevented: prevented }
 }
 
 describe('bağlantı yakalama', () => {
@@ -76,5 +84,23 @@ describe('bağlantı yakalama', () => {
       () => document.createTextNode('bulunamadı'),
     )
     expect(node.textContent).toBe('Kullanıcı 5: ayrıntılar')
+  })
+})
+
+describe('hash geçmişi', () => {
+  it('ileri gidip geri dönünce, push ile gelinmiş adrese de POP bildirilir', async () => {
+    const { createHashHistory } = await import('../../src/yonlendirici/index.ts')
+    window.history.replaceState(null, '', '/#/a')
+    const history = createHashHistory()
+    const seen: string[] = []
+    const stop = history.listen((location, action) => seen.push(`${action} ${location.pathname}`))
+    history.push('/b')
+    window.history.back()
+    await vi.waitFor(() => expect(seen).toEqual(['POP /a']))
+    history.push('/c')
+    history.push('/d')
+    window.history.back()
+    await vi.waitFor(() => expect(seen).toEqual(['POP /a', 'POP /c']))
+    stop()
   })
 })

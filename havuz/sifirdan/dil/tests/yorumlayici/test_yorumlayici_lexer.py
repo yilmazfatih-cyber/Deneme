@@ -36,7 +36,7 @@ def test_ascii_aliases_map_to_same_keyword(turkish: str, ascii_form: str) -> Non
 
 
 def test_source_is_nfc_normalized() -> None:
-    decomposed = "değişken x = 1"  # ğ ve ş birleşik işaretle yazılmış
+    decomposed = "deg\u0306is\u0327ken x = 1"  # ğ ve ş birleşik işaretle yazılmış
     assert types(decomposed)[0] is T.VAR
 
 

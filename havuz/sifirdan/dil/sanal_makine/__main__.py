@@ -3,6 +3,7 @@
     python -m sanal_makine calistir dosya.tohum    derler ve sanal makinede çalıştırır
     python -m sanal_makine dok dosya.tohum         bayt kodunu okunur biçimde döker
     python -m sanal_makine kod 'yazdır(1 + 2)'     verilen kodu çalıştırır
+    python -m sanal_makine --katla dok dosya.tohum  sabit katlamadan sonraki bayt kodu
 Çıkış kodu: 0 başarılı, 1 Tohum hatası, 2 dosya hatası.
 Genişletme: yeni alt komut için `build_parser` ve `main` içine birer dal ekleyin.
 """
@@ -16,6 +17,7 @@ from pathlib import Path
 from yorumlayici.errors import TohumError
 from yorumlayici.interp import Limits
 from yorumlayici.natives import make_builtins
+from yorumlayici.optimize import fold_constants
 from yorumlayici.parser import parse
 from yorumlayici.resolver import resolve
 
@@ -32,6 +34,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--derinlik", type=int, default=DEFAULT_LIMITS.max_depth, help="çağrı derinliği"
     )
+    parser.add_argument("--katla", action="store_true", help="derlemeden önce sabit katlama yap")
     sub = parser.add_subparsers(dest="komut", required=True)
     sub.add_parser("calistir", help="dosyayı çalıştırır").add_argument("dosya", type=Path)
     sub.add_parser("dok", help="bayt kodunu döker").add_argument("dosya", type=Path)
@@ -53,10 +56,13 @@ def main(argv: list[str] | None = None) -> int:
         if args.komut == "dok":
             program = parse(source)
             resolve(program, set(make_builtins()))
+            if args.katla:
+                program, count = fold_constants(program)
+                print(f"(sabit katlama: {count} işlem derleme öncesi hesaplandı)")
             print(disassemble(compile_program(program)))
         else:
             limits = Limits(max_steps=args.adim, max_depth=args.derinlik)
-            VM(lambda text: print(text, end=""), limits).run(source)
+            VM(lambda text: print(text, end=""), limits, optimize=args.katla).run(source)
     except TohumError as err:
         print(err.render(source), file=sys.stderr)
         return 1

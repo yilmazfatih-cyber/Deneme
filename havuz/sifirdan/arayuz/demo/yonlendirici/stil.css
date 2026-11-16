@@ -1,0 +1,35 @@
+/* Yönlendirici gösterimine özgü stiller. */
+.baglantilar {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.baglantilar a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--kenar);
+  border-radius: 999px;
+  text-decoration: none;
+}
+.baglantilar a[aria-current='page'] {
+  background: var(--birincil);
+  border-color: var(--birincil);
+  color: var(--birincil-metin);
+}
+.duzen {
+  display: grid;
+  gap: 12px;
+}
+.alt-menu {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+#sayfa h2:focus {
+  outline: none;
+}

@@ -98,5 +98,9 @@ export declare namespace h {
     interface ElementChildrenAttribute {
       children: unknown
     }
+    /** Her bileşende geçerli özel özellik: liste uzlaştırma anahtarı. */
+    interface IntrinsicAttributes {
+      key?: Key
+    }
   }
 }

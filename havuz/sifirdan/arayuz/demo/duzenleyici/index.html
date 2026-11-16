@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <title>Metin düzenleyici — sıfırdan arayüz</title>
+    <link rel="stylesheet" href="../ortak/stil.css" />
+    <link rel="stylesheet" href="./stil.css" />
+  </head>
+  <body>
+    <header class="ust">
+      <div class="kap">
+        <a class="geri" href="../../">← Tüm gösterimler</a>
+        <h1>Metin düzenleyici</h1>
+        <p class="alt-baslik">
+          contenteditable yok: metin parça tablosunda durur, satırlar ve imleçler çizilir; klavye girişi gizli bir
+          textarea köprüsünden gelir. <kbd>Ctrl</kbd>+<kbd>D</kbd> sonraki eşi seçer (çoklu imleç), <kbd>Alt</kbd>+tık
+          imleç ekler, <kbd>Ctrl</kbd>+<kbd>Z</kbd> geri alır.
+        </p>
+      </div>
+    </header>
+    <main class="kap" id="icerik">
+      <section class="panel bul" aria-labelledby="bul-baslik">
+        <h2 id="bul-baslik">Bul ve değiştir</h2>
+        <div class="izgara-2">
+          <div class="alan">
+            <label for="aranan">Bul</label>
+            <input id="aranan" value="istanbul" autocomplete="off" spellcheck="false" />
+          </div>
+          <div class="alan">
+            <label for="yerine">Değiştir</label>
+            <input id="yerine" value="İzmir" autocomplete="off" spellcheck="false" />
+          </div>
+        </div>
+        <div class="satir secenekler">
+          <label><input type="checkbox" id="duzenli" /> Düzenli ifade</label>
+          <label><input type="checkbox" id="duyarli" /> Büyük/küçük harf duyarlı</label>
+          <label><input type="checkbox" id="kelime" /> Tam kelime</label>
+        </div>
+        <div class="satir">
+          <button type="button" id="sonraki">Sonrakini seç</button>
+          <button type="button" id="degistir">Değiştir</button>
+          <button type="button" id="tumu">Tümünü değiştir</button>
+          <span class="durum" id="bul-durum" role="status"></span>
+        </div>
+      </section>
+      <div class="satir arac">
+        <button type="button" id="geri-al">Geri al</button>
+        <button type="button" id="yinele">Yinele</button>
+        <span class="durum" id="konum" role="status"></span>
+      </div>
+      <div class="duzenleyici" id="yuzey">
+        <div class="cizim" id="cizim" aria-hidden="true">
+          <div class="numaralar" id="numaralar"></div>
+          <div class="satirlar" id="satirlar"><div class="katman" id="katman"></div></div>
+        </div>
+        <textarea
+          id="girdi"
+          class="kopru"
+          aria-label="Metin düzenleyici"
+          aria-describedby="konum"
+          spellcheck="false"
+          autocapitalize="off"
+          autocomplete="off"
+        ></textarea>
+      </div>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

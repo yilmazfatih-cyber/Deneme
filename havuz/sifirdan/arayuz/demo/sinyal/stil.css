@@ -1,0 +1,43 @@
+/* Sinyal gösterimine özgü stiller. */
+.izgara-2 label {
+  display: block;
+}
+.etiket-ad {
+  font-weight: 600;
+  display: block;
+}
+#adet {
+  min-width: 3ch;
+  text-align: center;
+  font-size: 1.3rem;
+  font-variant-numeric: tabular-nums;
+}
+.dugmeler {
+  margin-top: 14px;
+}
+.hesaplar {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 14px;
+  margin: 0 0 12px;
+}
+.hesaplar dt {
+  font-weight: 600;
+}
+.hesaplar dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+.hesaplar .sayac {
+  color: var(--ikincil);
+  font-size: 0.9rem;
+}
+.toplam {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+.gunluk {
+  margin: 0;
+  padding-inline-start: 1.4em;
+  font-variant-numeric: tabular-nums;
+}

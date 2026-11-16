@@ -114,7 +114,7 @@ def is_missing_token(cell: str) -> bool:
 
 def parse_number(cell: str, decimal: str) -> float | None:
     """Hücreyi sayıya çevirir; çevrilemezse None. Binlik ayırıcıları atar ("1.234,5" → 1234.5)."""
-    value = cell.strip().replace(" ", "").replace(" ", "")
+    value = cell.strip().replace("\u00a0", "").replace(" ", "")
     if not any(char.isdigit() for char in value) or not _NUMBER_PATTERNS[decimal].match(value):
         return None
     if decimal == ",":
@@ -131,7 +131,7 @@ def parse_number(cell: str, decimal: str) -> float | None:
 def _unique_names(header: Sequence[str]) -> list[str]:
     names: list[str] = []
     for position, raw in enumerate(header):
-        base = raw.strip().lstrip("﻿") or f"sutun_{position + 1}"
+        base = raw.strip().lstrip("\ufeff") or f"sutun_{position + 1}"
         name, suffix = base, 2
         while name in names:
             name, suffix = f"{base}_{suffix}", suffix + 1

@@ -2,6 +2,7 @@
 // yansıma + kırılma (Fresnel), kenar yumuşatma, BVH, gama düzeltme, PPM ve sıfırdan PNG kodlayıcı.
 // Web Worker girişi worker.ts'tedir (buradan dışa aktarılmaz; `new Worker(new URL(...))` ile yüklenir).
 // Ayrıntılı anlatım: README.md.
+// Genişletme: yeni şekil ya da çıktı biçimi ayrı dosyada yazılıp buradan dışa aktarılır.
 export * from './vec.ts'
 export {
   EPS,

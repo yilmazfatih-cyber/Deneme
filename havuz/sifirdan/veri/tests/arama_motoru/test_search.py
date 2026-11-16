@@ -9,7 +9,7 @@ import random
 from pathlib import Path
 
 import pytest
-from hypothesis import given
+from hypothesis import example, given
 from hypothesis import strategies as st
 
 from arama_motoru import (
@@ -183,6 +183,7 @@ def _reference_osa(a: str, b: str) -> int:
 
 
 @given(st.text("abcı", max_size=7), st.text("abcı", max_size=7), st.integers(0, 3))
+@example(a="abb", b="aaaaa", limit=2)  # uzun denetimin bulduğu hata: sınır aşılınca limit + 1
 def test_edit_distance_matches_reference(a: str, b: str, limit: int) -> None:
     expected = _reference_osa(a, b)
     assert edit_distance(a, b) == expected

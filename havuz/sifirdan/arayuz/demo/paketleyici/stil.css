@@ -1,0 +1,28 @@
+/* Paketleyici gösterimine özgü stiller. */
+.moduller {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+}
+.modul {
+  display: grid;
+  gap: 4px;
+}
+.modul textarea {
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  font-size: 0.85rem;
+  min-height: 170px;
+  resize: vertical;
+  white-space: pre;
+  overflow-wrap: normal;
+}
+.kutu {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  font-weight: 400;
+}
+.sonuc {
+  font-weight: 600;
+  white-space: pre-wrap;
+}

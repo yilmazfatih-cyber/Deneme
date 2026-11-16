@@ -40,10 +40,10 @@ class FixtureScope:
 
     def __init__(self) -> None:
         self.values: dict[str, Any] = {}
-        self.finalizers: list[tuple[str, Generator[Any, None, None]]] = []
+        self.finalizers: list[tuple[str, Generator[Any, Any, Any]]] = []
 
     def teardown(self) -> list[str]:
-        """Temizlikleri ters sırayla çalıştırır; hata iletilerini toplar (hiçbiri ötekini engellemez)."""
+        """Temizlikleri ters sırayla çalıştırır; hataları toplar (biri diğerini durdurmaz)."""
         problems = []
         while self.finalizers:
             name, gen = self.finalizers.pop()
@@ -68,7 +68,9 @@ def available(module: types.ModuleType) -> dict[str, Callable[..., Any]]:
 
 
 class Resolver:
-    def __init__(self, module: types.ModuleType, module_scope: FixtureScope, test_scope: FixtureScope):
+    def __init__(
+        self, module: types.ModuleType, module_scope: FixtureScope, test_scope: FixtureScope
+    ):
         self.fixtures = available(module)
         self.module_scope = module_scope
         self.test_scope = test_scope
@@ -87,7 +89,11 @@ class Resolver:
             known = ", ".join(sorted(self.fixtures)) or "(yok)"
             raise FixtureError(f"'{name}' adlı fixture bulunamadı; mevcut: {known}")
         fn = self.fixtures[name]
-        scope = self.module_scope if getattr(fn, "__tc_fixture__", "test") == "modul" else self.test_scope
+        scope = (
+            self.module_scope
+            if getattr(fn, "__tc_fixture__", "test") == "modul"
+            else self.test_scope
+        )
         if name in scope.values:
             return scope.values[name]
         deps = {dep: self.value(dep, [*chain, name]) for dep in inspect.signature(fn).parameters}

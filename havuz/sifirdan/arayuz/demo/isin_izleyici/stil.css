@@ -1,0 +1,21 @@
+/* Işın izleyici gösterimine özgü stiller. */
+.ayarlar label {
+  margin-inline-start: 4px;
+}
+.ilerleme {
+  margin-bottom: 10px;
+}
+progress {
+  flex: 1 1 160px;
+  height: 14px;
+  accent-color: var(--birincil);
+}
+#tuval {
+  display: block;
+  width: 100%;
+  max-width: 960px;
+  border-radius: var(--yaricap);
+  border: 1px solid var(--kenar);
+  background: var(--yuzey);
+  image-rendering: pixelated;
+}

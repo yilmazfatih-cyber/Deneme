@@ -28,12 +28,13 @@ Python'dan:
 
 ```python
 from json_ayristirici import loads, dumps, iter_events, build, Options
-loads('{"ad": "Ayşe"}')                       # {'ad': 'Ayşe'}
-dumps({"ç": [1, None]}, ensure_ascii=False)   # '{"ç": [1, null]}'
+
+loads('{"ad": "Ayşe"}')  # {'ad': 'Ayşe'}
+dumps({"ç": [1, None]}, ensure_ascii=False)  # '{"ç": [1, null]}'
 with open("buyuk.json", encoding="utf-8") as f:
     for olay in iter_events(iter(lambda: f.read(65536), "")):
-        ...                                   # Event(kind=EventKind.KEY, value='ad') …
-loads('"\\ud800"', Options(allow_lone_surrogates=True))   # stdlib gibi eşsiz vekili kabul et
+        ...  # Event(kind=EventKind.KEY, value='ad') …
+loads('"\\ud800"', Options(allow_lone_surrogates=True))  # stdlib gibi eşsiz vekili kabul et
 ```
 
 ## Nasıl çalışır

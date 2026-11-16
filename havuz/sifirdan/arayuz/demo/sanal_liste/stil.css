@@ -1,0 +1,25 @@
+/* Sanal liste gösterimine özgü stiller. */
+.arac {
+  margin-bottom: 8px;
+}
+.liste {
+  height: min(65vh, 560px);
+  border: 1px solid var(--kenar);
+  border-radius: var(--yaricap);
+  background: var(--zemin);
+  overflow-anchor: none;
+}
+.mesaj {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--kenar);
+}
+.mesaj header {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--ikincil);
+  font-size: 0.85rem;
+}
+.mesaj p {
+  margin: 4px 0 0;
+}

@@ -41,7 +41,7 @@ import assert from 'node:assert/strict'
 const grafem = new Intl.Segmenter('tr', { granularity: 'grapheme' })
 const grafemSay = (s) => [...grafem.segment(s)].length
 
-const aile = '👨‍👩‍👧'
+const aile = '👨\u200d👩\u200d👧'
 assert.equal(aile.length, 8) // UTF-16 birimi
 assert.equal([...aile].length, 5) // kod noktası
 assert.equal(grafemSay(aile), 1) // insanın gördüğü
@@ -53,7 +53,7 @@ assert.equal([...'🇹🇷'].slice(0, 1).join(''), '🇹') // bayrak yarıya bö
 
 // DOĞRU: grafemle kes
 const kes = (s, n) => [...grafem.segment(s)].slice(0, n).map((p) => p.segment).join('')
-assert.equal(kes('Merhaba 👨‍👩‍👧 aile', 9), 'Merhaba 👨‍👩‍👧')
+assert.equal(kes('Merhaba 👨\u200d👩\u200d👧 aile', 9), 'Merhaba 👨\u200d👩\u200d👧')
 console.log('tamam')
 ```
 
@@ -83,13 +83,13 @@ print("tamam")
 import unicodedata
 
 birlesik = "ş"  # tek kod noktası U+015F (NFC)
-ayrik = "ş"  # s + BİRLEŞEN ÇENGEL (NFD): macOS dosya adlarında ve kopyala-yapıştırda görülür
+ayrik = "s\u0327"  # s + BİRLEŞEN ÇENGEL (NFD): macOS dosya adlarında ve kopyala-yapıştırda görülür
 assert birlesik != ayrik and len(ayrik) == 2  # göze aynı, eşit değil
 assert unicodedata.normalize("NFC", ayrik) == birlesik
 assert unicodedata.normalize("NFD", birlesik) == ayrik
 
 # Arama ve karşılaştırma öncesi iki tarafı da NFC'ye çevirin
-assert unicodedata.normalize("NFC", "Kayseri̇") != "Kayseri"  # fazladan birleşen nokta (İ küçültme artığı)
+assert unicodedata.normalize("NFC", "Kayseri\u0307") != "Kayseri"  # fazladan birleşen nokta (İ küçültme artığı)
 
 # NFKC uyumluluk dönüşümü: tam genişlikli rakam, bağlı harf → düz biçim (kimlik, arama anahtarı için)
 assert unicodedata.normalize("NFKC", "１２３ ﬁ") == "123 fi"
@@ -124,7 +124,7 @@ assert json.loads(Path("ayar.json").read_text(encoding="utf-8-sig")) == {"il": "
 print("tamam")
 ```
 
-Node'da `readFileSync(yol, 'utf8')` BOM'u (`﻿`) metinde bırakır ve `JSON.parse` `SyntaxError` verir;
+Node'da `readFileSync(yol, 'utf8')` BOM'u (`U+FEFF`) metinde bırakır ve `JSON.parse` `SyntaxError` verir;
 `new TextDecoder().decode(baytlar)` ise BOM'u atar (ikisi de Node 22.23.4 ile denendi).
 
 ## Bozuk kodlama: teşhis ve onarım

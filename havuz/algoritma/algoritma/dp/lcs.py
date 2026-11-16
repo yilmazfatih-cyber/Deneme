@@ -1,4 +1,4 @@
-"""En uzun ortak alt dizi (LCS) ve ondan türeyen satır farkı (diff).
+"""En uzun ortak alt dizi (LCS): iki dizinin ortak alt dizisi ve ondan türeyen satır farkı (diff).
 
 Fikir:
     L[i][j] = a'nın ilk i öğesi ile b'nin ilk j öğesinin LCS uzunluğu.

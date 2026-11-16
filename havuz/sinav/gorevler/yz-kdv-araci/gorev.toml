@@ -1,0 +1,15 @@
+kimlik = "yz-kdv-araci"
+baslik = "Ajana KDV hesaplayan hazır araç"
+temel = "yz"
+zorluk = "orta"
+tur = "ozellik"
+tahmini_sure_dk = 30
+aciklama = """AGENTS.md "Yeni araç ekle" tarifi + para hesabı: Türkçe tutar okuma, kuruşa yarım yukarı yuvarlama \
+(float ve round() 0,125'i 0,12 yapar), KDV dahil tutardan ayırmada toplamın korunması, hataların istisna \
+olarak gözleme dönmesi. Gizli test sonuç metnindeki üç tutarı ve hata yollarını sınar."""
+baslangic_denetimi = "yesil"
+
+[[gizli]]
+ad = "kdv"
+komut = "python -m pytest tests/test_sinav_gizli_kdv.py -q -p no:cacheprovider"
+dosyalar = { "test_kdv.py" = "tests/test_sinav_gizli_kdv.py" }

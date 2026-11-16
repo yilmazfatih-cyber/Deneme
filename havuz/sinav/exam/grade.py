@@ -94,7 +94,9 @@ def _run_hidden(
             for stale in cache.glob(f"{path.stem}.*.pyc") if cache.is_dir() else []:
                 stale.unlink()
     status = "gecti" if result.ok else "kaldi"
-    return Stage(f"gizli:{check.name}", status, result.seconds, str(log), "" if result.ok else result.tail())
+    return Stage(
+        f"gizli:{check.name}", status, result.seconds, str(log), "" if result.ok else result.tail()
+    )
 
 
 def _minutes_since(prepared_at: str, now: datetime) -> float:
@@ -122,7 +124,9 @@ def grade(
     logs = record.dir / f"puanlama-{len(list(record.dir.glob('puanlama-*'))) + 1}"
     notes: list[str] = []
     if task_digest(task) != record.task_digest:
-        notes.append("Görev tanımı hazırlıktan sonra değişmiş; sonuç eski sürümle karşılaştırılamayabilir.")
+        notes.append(
+            "Görev tanımı hazırlıktan sonra değişmiş; sonuç eski sürümle karşılaştırılamayabilir."
+        )
 
     snapshot = record.snapshot()
     try:
@@ -132,7 +136,9 @@ def grade(
     finally:
         snapshot.close()
     stages = [Stage("butunluk", "gecti" if integrity.ok else "kaldi")]
-    echo(f"  bütünlük ............ {'✓' if integrity.ok else '✗ (ihlal: ' + str(len(integrity.violations)) + ')'}")
+    echo(
+        f"  bütünlük ............ {'✓' if integrity.ok else '✗ (ihlal: ' + str(len(integrity.violations)) + ')'}"
+    )
     stop = stop_early and not integrity.ok
 
     for check in task.hidden:
@@ -141,7 +147,9 @@ def grade(
             continue
         stage = _run_hidden(check, task, folder, copy, logs / f"gizli-{check.name}.log")
         stages.append(stage)
-        echo(f"  gizli: {check.name:<12} {'✓' if stage.status == 'gecti' else '✗'} ({stage.seconds:.0f} sn)")
+        echo(
+            f"  gizli: {check.name:<12} {'✓' if stage.status == 'gecti' else '✗'} ({stage.seconds:.0f} sn)"
+        )
         stop = stop_early and stage.status == "kaldi"
 
     env = foundations.command_env(copy)
@@ -152,7 +160,9 @@ def grade(
             continue
         result = run(command, copy.yol, logs / f"denetim-{index}.log", env=env, timeout_s=1800)
         status = "gecti" if result.ok else "kaldi"
-        stages.append(Stage(name, status, result.seconds, str(result.log), "" if result.ok else result.tail()))
+        stages.append(
+            Stage(name, status, result.seconds, str(result.log), "" if result.ok else result.tail())
+        )
         echo(f"  denetim: {command} {'✓' if result.ok else '✗'} ({result.seconds:.0f} sn)")
         stop = stop_early and not result.ok
 

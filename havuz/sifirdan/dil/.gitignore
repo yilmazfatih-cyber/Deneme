@@ -1,0 +1,16 @@
+# Sanal ortam ve derleme çıktıları
+.venv/
+build/
+dist/
+*.egg-info/
+__pycache__/
+*.py[cod]
+
+# Araç önbellekleri
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+.hypothesis/
+
+# Komut satırı örneklerinin üretebileceği dosyalar
+*.html.tmp

@@ -44,10 +44,14 @@ def cmd_liste(args: argparse.Namespace) -> int:
         return 0
     print(f"{'KİMLİK':<30} {'TEMEL':<11} {'TÜR':<14} {'ZORLUK':<6} {'DK':>3}  BAŞLIK")
     for t in tasks:
-        print(f"{t.id:<30} {t.foundation:<11} {TUR_ADLARI[t.kind]:<14} {t.difficulty:<6} {t.minutes:>3}  {t.title}")
+        print(
+            f"{t.id:<30} {t.foundation:<11} {TUR_ADLARI[t.kind]:<14} {t.difficulty:<6} {t.minutes:>3}  {t.title}"
+        )
     levels = Counter(t.difficulty for t in tasks)
     kinds = Counter(TUR_ADLARI[t.kind] for t in tasks)
-    print(f"\n{len(tasks)} görev · " + " · ".join(f"{level} {levels[level]}" for level in ZORLUKLAR))
+    print(
+        f"\n{len(tasks)} görev · " + " · ".join(f"{level} {levels[level]}" for level in ZORLUKLAR)
+    )
     print("tür: " + ", ".join(f"{kind} {count}" for kind, count in sorted(kinds.items())))
     return 0
 
@@ -55,7 +59,9 @@ def cmd_liste(args: argparse.Namespace) -> int:
 def cmd_hazirla(args: argparse.Namespace) -> int:
     task = find_task(args.gorev)
     target = Path(args.klasor).expanduser().resolve()
-    print(f"Görev: {task.id} — {task.title} ({task.foundation} · {TUR_ADLARI[task.kind]} · {task.difficulty})")
+    print(
+        f"Görev: {task.id} — {task.title} ({task.foundation} · {TUR_ADLARI[task.kind]} · {task.difficulty})"
+    )
     prepare(task, target, install=not args.kurma, git=not args.gitsiz)
     print(f"""
 Hazır: {target}
@@ -63,7 +69,7 @@ Hazır: {target}
   1. Kod ajanınızı bu klasörde başlatın:  cd {target}
   2. GOREV.md'deki 1. iletiyi verin; yanıt gelince 2. iletiyi verin. Araya girmeyin (README → adil kurallar).
   3. Ajan bitirince (ya da süre dolunca) puanlayın:
-     python {Path(__file__).resolve().parent.parent / 'sinav.py'} puanla {target} --etiket <model-adı>""")
+     python {Path(__file__).resolve().parent.parent / "sinav.py"} puanla {target} --etiket <model-adı>""")
     return 0
 
 
@@ -90,8 +96,13 @@ def cmd_puanla(args: argparse.Namespace) -> int:
     result = grade(folder, stop_early=args.dur)
     _print_grade(result)
     minutes = args.sure if args.sure is not None else result.minutes
-    print(f"  süre: {minutes} dk ({'girilen' if args.sure is not None else 'hazirla → puanla arası'})")
-    print(f"\nSONUÇ: {VERDICT[result.verdict]}" + (f"  (kalan: {', '.join(result.failed)})" if result.failed else ""))
+    print(
+        f"  süre: {minutes} dk ({'girilen' if args.sure is not None else 'hazirla → puanla arası'})"
+    )
+    print(
+        f"\nSONUÇ: {VERDICT[result.verdict]}"
+        + (f"  (kalan: {', '.join(result.failed)})" if result.failed else "")
+    )
     if not args.kaydetme:
         attempt = args.deneme or results.next_attempt(args.etiket, result.task.id)
         entry = results.to_entry(
@@ -116,7 +127,11 @@ def cmd_rapor(args: argparse.Namespace) -> int:
 
 def cmd_dogrula(args: argparse.Namespace) -> int:
     tasks = [find_task(name) for name in args.gorev] if args.gorev else all_tasks()
-    workdir = Path(args.klasor).expanduser().resolve() if args.klasor else Path(tempfile.mkdtemp(prefix="sinav-dogrula-"))
+    workdir = (
+        Path(args.klasor).expanduser().resolve()
+        if args.klasor
+        else Path(tempfile.mkdtemp(prefix="sinav-dogrula-"))
+    )
     workdir.mkdir(parents=True, exist_ok=True)
     print(f"{len(tasks)} görev doğrulanıyor (çalışma klasörü: {workdir})")
     outcomes = []
@@ -124,7 +139,9 @@ def cmd_dogrula(args: argparse.Namespace) -> int:
         print(f"\n[{number}/{len(tasks)}] {task.id}")
         outcome = verify_task(task, workdir, fast=args.hizli, keep=args.birak)
         outcomes.append(outcome)
-        print(f"  → {'TAMAM' if outcome.ok else 'SORUN: ' + '; '.join(outcome.problems)} ({outcome.seconds:.0f} sn)")
+        print(
+            f"  → {'TAMAM' if outcome.ok else 'SORUN: ' + '; '.join(outcome.problems)} ({outcome.seconds:.0f} sn)"
+        )
     print("\n" + summary_table(outcomes))
     bad = [o.task_id for o in outcomes if not o.ok]
     print(f"\n{'Bütün görevler doğrulandı.' if not bad else 'Sorunlu görevler: ' + ', '.join(bad)}")
@@ -138,7 +155,9 @@ def build_parser() -> argparse.ArgumentParser:
         epilog="Adım adım kullanım: havuz/sinav/README.md",
     )
     main._positionals.title = "komutlar"
-    sub = main.add_subparsers(dest="komut", metavar="<komut>", parser_class=TurkishParser, required=True)
+    sub = main.add_subparsers(
+        dest="komut", metavar="<komut>", parser_class=TurkishParser, required=True
+    )
     p = sub.add_parser("liste", help="görevleri listele", description="Görevleri listeler.")
     p.add_argument("--json", action="store_true", help="makine okur çıktı")
     p = sub.add_parser("hazirla", help="görev klasörünü kur", description="Görev klasörünü kurar.")
@@ -146,21 +165,33 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("klasor", help="yeni (boş) klasör; deponun DIŞINDA olmalı, ör. ~/sinav/gorev-1")
     p.add_argument("--kurma", action="store_true", help="bağımlılıkları kurma (yalnız deneme için)")
     p.add_argument("--gitsiz", action="store_true", help="görev klasöründe git deposu açma")
-    p = sub.add_parser("puanla", help="ajanın işini ölç ve kaydet", description="Görev klasörünü puanlar.")
+    p = sub.add_parser(
+        "puanla", help="ajanın işini ölç ve kaydet", description="Görev klasörünü puanlar."
+    )
     p.add_argument("klasor", help="hazirla ile açılmış görev klasörü")
-    p.add_argument("--etiket", required=True, help="model adı, ör. qwen3-coder-30b (sonuç dosyası adı olur)")
+    p.add_argument(
+        "--etiket", required=True, help="model adı, ör. qwen3-coder-30b (sonuç dosyası adı olur)"
+    )
     p.add_argument("--arac", default="", help="kod ajanı aracı, ör. 'Claude Code', aider, opencode")
-    p.add_argument("--sure", type=float, help="ajanın çalıştığı süre (dakika); verilmezse hazirla→puanla arası")
+    p.add_argument(
+        "--sure", type=float, help="ajanın çalıştığı süre (dakika); verilmezse hazirla→puanla arası"
+    )
     p.add_argument("--deneme", type=int, help="deneme numarası (verilmezse sıradaki)")
     p.add_argument("--not", dest="not_", default="", help="sonuca eklenecek kısa not")
     p.add_argument("--kaydetme", action="store_true", help="sonucu dosyaya yazma (yalnız göster)")
-    p.add_argument("--dur", action="store_true", help="ilk başarısız aşamada dur (daha hızlı, daha az bilgi)")
-    p = sub.add_parser("rapor", help="modelleri karşılaştıran tablo", description="Markdown rapor üretir.")
+    p.add_argument(
+        "--dur", action="store_true", help="ilk başarısız aşamada dur (daha hızlı, daha az bilgi)"
+    )
+    p = sub.add_parser(
+        "rapor", help="modelleri karşılaştıran tablo", description="Markdown rapor üretir."
+    )
     p.add_argument("--cikti", help="raporu bu dosyaya yaz (verilmezse ekrana)")
     p.add_argument("--etiket", nargs="+", help="yalnız bu etiketler")
     p = sub.add_parser("dogrula", help="görevlerin kendisini sına", description="Sınavın sınavı.")
     p.add_argument("gorev", nargs="*", help="yalnız bu görevler (boşsa hepsi)")
-    p.add_argument("--klasor", help="geçici kopyaların klasörü (varsayılan: sistemin geçici klasörü)")
+    p.add_argument(
+        "--klasor", help="geçici kopyaların klasörü (varsayılan: sistemin geçici klasörü)"
+    )
     p.add_argument("--hizli", action="store_true", help="başlangıçta temelin denetimini koşma")
     p.add_argument("--birak", action="store_true", help="geçici kopyaları silme (inceleme için)")
     return main

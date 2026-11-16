@@ -66,7 +66,9 @@ def _pick_test_file(record: Record, task: Task) -> str | None:
 
 def _pick_strict_file(record: Record, task: Task) -> str | None:
     protection = foundations.protection_for(task.foundation, task.allowed, task.strict_extra)
-    return next((rel for rel in sorted(record.manifest) if rule_of(rel, protection) == "degismez"), None)
+    return next(
+        (rel for rel in sorted(record.manifest) if rule_of(rel, protection) == "degismez"), None
+    )
 
 
 def _generic_cheats(record: Record, task: Task) -> list[tuple[str, Callable[[Path], None]]]:
@@ -80,12 +82,19 @@ def _generic_cheats(record: Record, task: Task) -> list[tuple[str, Callable[[Pat
             (root / rel).write_text("".join(lines[:index] + lines[index + 1 :]), encoding="utf-8")
 
         def add_skip(root: Path, rel: str = test) -> None:
-            marker = "\npytestmark = pytest.mark.skip\n" if rel.endswith(".py") else "\nit.skip('x', () => {})\n"
+            marker = (
+                "\npytestmark = pytest.mark.skip\n"
+                if rel.endswith(".py")
+                else "\nit.skip('x', () => {})\n"
+            )
             with (root / rel).open("a", encoding="utf-8") as handle:
                 handle.write(marker)
 
+        def delete_test(root: Path, rel: str = test) -> None:
+            (root / rel).unlink()
+
         cheats += [
-            (f"test dosyası silindi ({test})", lambda root, rel=test: (root / rel).unlink()),
+            (f"test dosyası silindi ({test})", delete_test),
             ("test satırı silindi", drop_assertion),
             ("atlama işareti eklendi", add_skip),
         ]
@@ -98,7 +107,10 @@ def _generic_cheats(record: Record, task: Task) -> list[tuple[str, Callable[[Pat
 
         cheats.append((f"yapılandırma değişti ({strict})", touch_config))
     cheats.append(
-        ("yeni conftest.py", lambda root: _write(root / "sinav_hile" / "conftest.py", "collect_ignore = []\n"))
+        (
+            "yeni conftest.py",
+            lambda root: _write(root / "sinav_hile" / "conftest.py", "collect_ignore = []\n"),
+        )
     )
     return cheats
 
@@ -112,63 +124,81 @@ def _quiet(_: str) -> None:
     return None
 
 
-def verify_task(task: Task, workdir: Path, *, fast: bool = False, keep: bool = False, echo: Echo = print) -> Outcome:
+def verify_task(
+    task: Task, workdir: Path, *, fast: bool = False, keep: bool = False, echo: Echo = print
+) -> Outcome:
+    """Görevi doğrular; beklenmeyen hata (hazırlık, betik) da sorun olarak kaydedilir, koşu sürer."""
     outcome = Outcome(task.id)
     started = time.monotonic()
     folder = workdir / task.id
     if folder.exists():
         shutil.rmtree(folder)
-    record = prepare(task, folder, echo=_quiet)
+    record: Record | None = None
     try:
-        echo(f"  (1) başlangıç durumu puanlanıyor{'' if fast else ' (tam)'}")
-        first = grade(folder, stop_early=fast or task.initial_check is None, echo=_quiet)
-        outcome.initial = first.verdict
-        outcome.initial_check = _checks_green(first)
-        if first.verdict != "kaldi":
-            outcome.problems.append(f"başlangıç durumu '{first.verdict}' çıktı, 'kaldi' bekleniyordu")
-        if not fast and task.initial_check and outcome.initial_check != task.initial_check:
-            outcome.problems.append(
-                f"başlangıçta temelin denetimi '{outcome.initial_check}', beklenen '{task.initial_check}'"
-            )
-        if task.has_cheat:
-            echo("  (3a) görevin hilesi deneniyor (başlangıç durumuna)")
-            scripts.apply(task, "hile", record.copy_root)
-            cheated = grade(folder, stop_early=fast, echo=_quiet)
-            green = _checks_green(cheated)
-            outcome.task_cheat = f"{cheated.verdict} (denetim {green})"
-            if cheated.verdict != "gecersiz":
-                outcome.problems.append(f"görevin hilesi '{cheated.verdict}' çıktı, 'gecersiz' bekleniyordu")
-            snapshot = record.snapshot()
-            restore(record.copy_root, record.manifest, snapshot)
-            snapshot.close()
-        echo("  (2) başvuru çözümü uygulanıyor ve puanlanıyor (tam)")
-        scripts.apply(task, "cozum", record.copy_root)
-        solved = grade(folder, echo=_quiet)
-        outcome.solution = solved.verdict
-        if solved.verdict != "gecti":
-            details = "; ".join(f"{v.path}: {v.reason}" for v in solved.integrity.violations)
-            outcome.problems.append(f"çözüm '{solved.verdict}' çıktı (kalan: {solved.failed}) {details}".strip())
-        echo("  (3b) genel hileler deneniyor")
-        for name, cheat in _generic_cheats(record, task):
-            originals = {rel: (record.copy_root / rel).read_bytes() for rel in iter_files(record.copy_root)}
-            try:
-                cheat(record.copy_root)
-                verdict = grade(folder, stop_early=True, echo=_quiet).verdict
-            finally:
-                for rel, data in originals.items():
-                    path = record.copy_root / rel
-                    if not path.exists() or path.read_bytes() != data:
-                        path.write_bytes(data)
-                shutil.rmtree(record.copy_root / "sinav_hile", ignore_errors=True)
-            outcome.generic.append((name, verdict))
-            if verdict != "gecersiz":
-                outcome.problems.append(f"genel hile '{name}' yakalanmadı ({verdict})")
+        record = prepare(task, folder, echo=_quiet)
+        _verify_prepared(task, folder, record, outcome, fast, echo)
+    except Exception as error:  # her sorun rapora girsin, öteki görevler sürsün
+        outcome.problems.append(f"beklenmeyen hata: {type(error).__name__}: {error}")
     finally:
         outcome.seconds = time.monotonic() - started
         if not keep:
             shutil.rmtree(folder, ignore_errors=True)
-            shutil.rmtree(record.dir, ignore_errors=True)
+            if record is not None:
+                shutil.rmtree(record.dir, ignore_errors=True)
     return outcome
+
+
+def _verify_prepared(
+    task: Task, folder: Path, record: Record, outcome: Outcome, fast: bool, echo: Echo
+) -> None:
+    echo(f"  (1) başlangıç durumu puanlanıyor{'' if fast else ' (tam)'}")
+    first = grade(folder, stop_early=fast or task.initial_check is None, echo=_quiet)
+    outcome.initial = first.verdict
+    outcome.initial_check = _checks_green(first)
+    if first.verdict != "kaldi":
+        outcome.problems.append(f"başlangıç durumu '{first.verdict}' çıktı, 'kaldi' bekleniyordu")
+    if not fast and task.initial_check and outcome.initial_check != task.initial_check:
+        outcome.problems.append(
+            f"başlangıçta temelin denetimi '{outcome.initial_check}', beklenen '{task.initial_check}'"
+        )
+    if task.has_cheat:
+        echo("  (3a) görevin hilesi deneniyor (başlangıç durumuna)")
+        scripts.apply(task, "hile", record.copy_root)
+        cheated = grade(folder, stop_early=fast, echo=_quiet)
+        outcome.task_cheat = f"{cheated.verdict} (denetim {_checks_green(cheated)})"
+        if cheated.verdict != "gecersiz":
+            outcome.problems.append(
+                f"görevin hilesi '{cheated.verdict}' çıktı, 'gecersiz' bekleniyordu"
+            )
+        snapshot = record.snapshot()
+        restore(record.copy_root, record.manifest, snapshot)
+        snapshot.close()
+    echo("  (2) başvuru çözümü uygulanıyor ve puanlanıyor (tam)")
+    scripts.apply(task, "cozum", record.copy_root)
+    solved = grade(folder, echo=_quiet)
+    outcome.solution = solved.verdict
+    if solved.verdict != "gecti":
+        details = "; ".join(f"{v.path}: {v.reason}" for v in solved.integrity.violations)
+        outcome.problems.append(
+            f"çözüm '{solved.verdict}' çıktı (kalan: {solved.failed}) {details}".strip()
+        )
+    echo("  (3b) genel hileler deneniyor")
+    for name, cheat in _generic_cheats(record, task):
+        originals = {
+            rel: (record.copy_root / rel).read_bytes() for rel in iter_files(record.copy_root)
+        }
+        try:
+            cheat(record.copy_root)
+            verdict = grade(folder, stop_early=True, echo=_quiet).verdict
+        finally:
+            for rel, data in originals.items():
+                path = record.copy_root / rel
+                if not path.exists() or path.read_bytes() != data:
+                    path.write_bytes(data)
+            shutil.rmtree(record.copy_root / "sinav_hile", ignore_errors=True)
+        outcome.generic.append((name, verdict))
+        if verdict != "gecersiz":
+            outcome.problems.append(f"genel hile '{name}' yakalanmadı ({verdict})")
 
 
 def summary_table(outcomes: list[Outcome]) -> str:

@@ -1,16 +1,13 @@
 """Aralık DP'si: komşu yığınları birleştirme maliyeti ve en uzun palindrom alt dizi (geri izlemeli).
 
 Fikir:
-    Durum bir aralıktır: f[i][j] = yalnız i … j parçası için yanıt. Kısa aralıklar uzunlardan
-    önce çözülür; her aralık, "son adımın" nerede yapıldığı denenerek daha kısa iki aralıktan
-    kurulur.
-      Yığın birleştirme: sıradaki yığınlardan yalnız KOMŞU iki yığın birleşebilir; maliyet,
-      birleşen yığınların toplamıdır. Son birleşme i…k ile k+1…j'yi birleştirir:
+    Durum bir aralıktır: f[i][j] = yalnız i … j parçası için yanıt; kısa aralıklar önce çözülür
+    ve her aralık "son adımın" yeri denenerek iki kısa aralıktan kurulur.
+      Yığın birleştirme: yalnız KOMŞU iki yığın birleşir, maliyet toplamlarıdır:
           cost[i][j] = min_k cost[i][k] + cost[k+1][j] + toplam(i … j).
-      En uzun palindrom alt dizi: s[i] == s[j] ise ikisi de alınır (+2, içeri gir);
-      değilse bir uçtan biri atılır. Geri izleme baştan ve sondan simetrik olarak kurulur.
-    Her ikisinde de seçilen bölünme/karar saklanır ve yanıtın kendisi (birleştirme ağacı,
-    palindromun harfleri) geri izlenir.
+      En uzun palindrom alt dizi: s[i] == s[j] ise ikisi de alınır (+2), değilse bir uç atılır.
+    Seçilen bölünme/karar saklanır; yanıtın kendisi (birleştirme ağacı, palindromun harfleri)
+    geri izlenir.
 
 Karmaşıklık: birleştirme O(n³) zaman, O(n²) yer; palindrom O(n²) zaman ve yer
 Ne zaman: "bitişik parçaları birleştir/böl" türü problemler: dosya birleştirme, ifade

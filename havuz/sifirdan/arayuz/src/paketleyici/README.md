@@ -27,7 +27,7 @@ const { code, map, removed, cycles } = bundle({
 
 ```
 giriş.js ─► tokenizer.ts  (dizgi/şablon/yorum/düzenli ifade farkındalığı)
-          ─► module_parser.ts (üst düzey deyimler: import / export / bildirim / diğer + başvurulan adlar)
+          ─► module_parser.ts + statements.ts (üst düzey deyimler: import / export / bildirim / diğer + adlar)
           ─► graph.ts      (yol çözme, bağımlılık önce sıra, Tarjan ile döngüler)
           ─► shake.ts      (iş listesi: kullanılan ad → tanımlayan deyim → başvurduğu adlar → …)
           ─► emit.ts       (modül işlevleri + __require çalışma zamanı + biçim sarması)
@@ -90,6 +90,7 @@ varsayılan işlev, yan etkili modül, değişen `let`) hem Node'un kendi ESM y�
 | `sourcemap.ts`     | VLQ, harita kurma/çözme, satır içi yorum                         |
 | `bundle.ts`        | Dış yüz: hepsini birleştirir, rapor üretir                       |
 | `cli.ts`           | Komut satırı                                                     |
+| `index.ts`         | Dışa açılan tek giriş noktası                                    |
 
 ## Sınırlar
 

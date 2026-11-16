@@ -89,5 +89,11 @@ def coz(kopya: Path) -> None:
     write(py, read(py) + PY)
     replace(py, '    "decimal_to_words",\n', '    "decimal_to_words",\n    "format_compact_tr",\n')
     insert_before(kopya / "vektorler/sayi_yazi.json", '    "formatNumberTr": [', VECTORS)
-    run(["npx", "prettier", "--write", "src/sayi_yazi.ts", "../vektorler/sayi_yazi.json"], kopya / "ts")
-    run([str(kopya / "py/.venv/bin/python"), "-m", "ruff", "format", "kutuphane/sayi_yazi.py"], kopya / "py")
+    run(
+        ["npx", "prettier", "--write", "src/sayi_yazi.ts", "../vektorler/sayi_yazi.json"],
+        kopya / "ts",
+    )
+    run(
+        [str(kopya / "py/.venv/bin/python"), "-m", "ruff", "format", "kutuphane/sayi_yazi.py"],
+        kopya / "py",
+    )

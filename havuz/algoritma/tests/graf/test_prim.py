@@ -3,8 +3,7 @@ from __future__ import annotations
 from hypothesis import given
 
 from algoritma.graf.prim import prim
-from tests.graf.helpers import component_count, weighted_edge_lists
-from tests.graf.test_kruskal import brute_force_msf
+from tests.graf.helpers import brute_force_msf, component_count, weighted_edge_lists
 
 
 def test_hand_checked_example() -> None:

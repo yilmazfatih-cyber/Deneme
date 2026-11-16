@@ -1,0 +1,15 @@
+kimlik = "ml-temel-mcc"
+baslik = "Yeni ölçüt: Matthews korelasyon katsayısı"
+temel = "ml-temel"
+zorluk = "orta"
+tur = "ozellik"
+tahmini_sure_dk = 25
+aciklama = """AGENTS.md "Yeni ölçüt ekle" tarifi: ikili ve çok sınıflı MCC, payda sıfırken 0.0, ada göre puanlayıcı \
+kaydı, scikit-learn ile karşılaştıran test. Tuzak: scikit-learn'ü paket içinde kullanmak (kural testi yasaklar), \
+çok sınıfı unutmak, metin etiketler."""
+baslangic_denetimi = "yesil"
+
+[[gizli]]
+ad = "mcc"
+komut = "python -m pytest tests/test_sinav_gizli_mcc.py -q -p no:cacheprovider"
+dosyalar = { "test_mcc.py" = "tests/test_sinav_gizli_mcc.py" }

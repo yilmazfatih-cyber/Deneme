@@ -74,7 +74,7 @@ class EventParser:
                 text += self._decoder_tail.decode("utf-8", "replace")
                 self._decoder_tail = b""
         if self._first and text:
-            text, self._first = text.removeprefix("﻿"), False
+            text, self._first = text.removeprefix("\ufeff"), False
         if self._pending_cr and text.startswith("\n"):
             text = text[1:]
         self._pending_cr = text.endswith("\r")

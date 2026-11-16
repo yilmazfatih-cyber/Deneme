@@ -12,6 +12,8 @@ hata iletileri (konum dahil) karşılaştırılır.
 ```bash
 python -m sanal_makine calistir yorumlayici/ornekler/kapanim_sayac.tohum
 python -m sanal_makine dok yorumlayici/ornekler/kapanim_sayac.tohum     # bayt kodu dökümü
+printf 'değişken gun = 60 * 60 * 24\nyazdır(gun * 7)\n' > /tmp/katla.tohum
+python -m sanal_makine --katla dok /tmp/katla.tohum                     # sabit katlamadan sonra
 python -m sanal_makine kod 'değişken x = 2
 yazdır(x ** 10)'
 python -m pytest tests/sanal_makine -q
@@ -77,8 +79,9 @@ kaynak ──(yorumlayici: lexer → parser → resolver)──► AST
 
 ## Buradan nereye (küçük modele alıştırmalar)
 
-1. **Gözetleme deliği (peephole) iyileştirmesi:** `CONST a; CONST b; ADD` → tek `CONST`
-   (hata verecek işlemleri katlamayın). Farksal testler anlamın değişmediğini denetler.
+1. **Gözetleme deliği (peephole) iyileştirmesi:** sabit katlama AST'de yapılıyor
+   (`--katla`, yorumlayici/optimize.py); bayt kodunda `JUMP` → `JUMP` zincirlerini kısaltın,
+   `CONST; POP` çiftlerini silin. Farksal testler anlamın değişmediğini denetler.
 2. **Gerçek bayt dizisi:** `code`'u `bytearray` yapın, işlenenleri 2 bayt yazın; `disasm.py`'yi uyarlayın.
 3. **Bayt kodunu dosyaya kaydetme/yükleme** (`.tohumc`): sabit havuzu için küçük bir ikili biçim.
 4. **Yığın izi:** çalışma hatasında `frames` listesinden "çağrı yığını" yazdırın (işlev adları + satırlar).

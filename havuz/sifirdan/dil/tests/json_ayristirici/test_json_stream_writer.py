@@ -81,7 +81,7 @@ def test_stream_depth_limit_without_recursion() -> None:
 
 
 def test_dumps_matches_stdlib_formatting() -> None:
-    value = {"ç": [1, 2.5, None, True, "\x00\x7f 😀"], "b": {"x": []}, "a": {}}
+    value = {"ç": [1, 2.5, None, True, "\x00\x7f\u2028😀"], "b": {"x": []}, "a": {}}
     for options in [
         {},
         {"indent": 2},

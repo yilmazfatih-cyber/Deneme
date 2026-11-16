@@ -14,7 +14,7 @@ from datetime import datetime
 from pathlib import Path
 
 from exam import foundations, records, scripts
-from exam.paths import repo_root
+from exam.paths import records_dir, repo_root
 from exam.prompt import digest, start_prompt, task_file
 from exam.runner import run, run_quiet
 from exam.tasks import Task, task_digest
@@ -29,7 +29,9 @@ class PrepareError(RuntimeError):
 
 def _check_target(target: Path, allow_inside_repo: bool) -> None:
     if target.exists() and (not target.is_dir() or any(target.iterdir())):
-        raise PrepareError(f"Hedef klasör boş değil: {target}\nYeni bir klasör adı verin (ör. {target}-2).")
+        raise PrepareError(
+            f"Hedef klasör boş değil: {target}\nYeni bir klasör adı verin (ör. {target}-2)."
+        )
     root = repo_root().resolve()
     if not allow_inside_repo and (target == root or root in target.parents):
         raise PrepareError(
@@ -39,7 +41,14 @@ def _check_target(target: Path, allow_inside_repo: bool) -> None:
 
 
 def _git_init(target: Path, echo: Echo) -> bool:
-    ident = ["-c", "user.name=sinav", "-c", "user.email=sinav@example.invalid", "-c", "commit.gpgsign=false"]
+    ident = [
+        "-c",
+        "user.name=sinav",
+        "-c",
+        "user.email=sinav@example.invalid",
+        "-c",
+        "commit.gpgsign=false",
+    ]
     for command in (
         ["git", "init", "-q"],
         ["git", "add", "-A"],
@@ -69,7 +78,7 @@ def prepare(
     copy_name = foundation.yol.name
     copy_root = target / copy_name
     run_id = records.new_run_id(task.id, now())
-    record_dir = records.records_dir() / run_id
+    record_dir = records_dir() / run_id
 
     echo(f"[1/5] {foundation.goreli} kopyalanıyor → {copy_root}")
     target.mkdir(parents=True, exist_ok=True)
@@ -96,7 +105,10 @@ def prepare(
         for index, (command, cwd) in enumerate(foundations.install_commands(copy), start=1):
             result = run(command, cwd, record_dir / f"kurulum-{index}.log", env=env, timeout_s=1800)
             if not result.ok:
-                raise PrepareError(f"Kurulum başarısız: {command}\n{result.tail()}\nGünlük: {result.log}")
+                raise PrepareError(
+                    f"Kurulum başarısız: {command}\n{result.tail()}\nGünlük: {result.log}\n"
+                    f"Sorunu giderdikten sonra yarım kalan klasörü silip yeniden hazırlayın: {target}"
+                )
     else:
         echo("[4/5] Bağımlılık kurulumu atlandı (--kurma)")
 

@@ -1,9 +1,10 @@
-"""SQLite üstünde kalıcı iş kuyruğu: en az bir kez teslim, görünürlük zaman aşımı, üstel geri çekilme,
-ölü mektup, idempotentlik anahtarı, gecikmeli/öncelikli/yinelenen işler.
+"""SQLite üstünde kalıcı iş kuyruğu: en az bir kez teslim, görünürlük zaman aşımı, üstel geri
+çekilme, ölü mektup, idempotentlik anahtarı, gecikmeli/öncelikli/yinelenen işler.
 
-Tek tablo `jobs`; her işin durumu: bekliyor → isleniyor → tamam | (hata) bekliyor (geri çekilmeyle) | olu.
-`visible_at`: işin alınabileceği an. Bekleyen için "çalışma zamanı", işlenen için "kira bitişi" demektir;
-kira biten iş (işçi çöktü ya da yavaş kaldı) yeniden alınabilir → EN AZ BİR KEZ teslim.
+Tek tablo `jobs`; her işin durumu: bekliyor → isleniyor → tamam | (hata) bekliyor (geri çekilmeyle)
+| olu. `visible_at`: işin alınabileceği an. Bekleyen için "çalışma zamanı", işlenen için "kira
+bitişi" demektir; kira biten iş (işçi çöktü ya da yavaş kaldı) yeniden alınabilir → EN AZ BİR KEZ
+teslim.
 
 Aynı işi iki işçi almaz: alma işlemi `BEGIN IMMEDIATE` ile yazma kilidini alıp TEK işlemde seçer ve
 günceller. Her alma yeni bir kira jetonu üretir; ack/fail jetonu denetler → kirası düşmüş eski işçi
@@ -71,7 +72,8 @@ class Job:
 
 
 class JobQueue:
-    """Bir SQLite dosyasına bağlı kuyruk. Her iş parçacığı/süreç KENDİ JobQueue nesnesini açmalıdır."""
+    """Bir SQLite dosyasına bağlı kuyruk. Her iş parçacığı/süreç KENDİ JobQueue nesnesini
+    açmalıdır."""
 
     def __init__(
         self,
@@ -90,7 +92,9 @@ class JobQueue:
         self.backoff_base = backoff_base
         self.backoff_max = backoff_max
         self.rng = rng or random.Random()
-        self.db = sqlite3.connect(str(path), timeout=60, isolation_level=None)  # elle işlem yönetimi
+        self.db = sqlite3.connect(
+            str(path), timeout=60, isolation_level=None
+        )  # elle işlem yönetimi
         self.db.execute("PRAGMA journal_mode=WAL")
         self.db.execute("PRAGMA synchronous=FULL")  # onaylı yazma güç kesintisinde de kalsın
         self.db.executescript(_SCHEMA)
@@ -155,8 +159,8 @@ class JobQueue:
                     continue
                 token = f"{self.rng.getrandbits(64):016x}"
                 job_row = self.db.execute(
-                    "UPDATE jobs SET status = 'isleniyor', attempts = attempts + 1, lease_token = ?,"
-                    " worker = ?, visible_at = ? WHERE id = ?"
+                    "UPDATE jobs SET status = 'isleniyor', attempts = attempts + 1,"
+                    " lease_token = ?, worker = ?, visible_at = ? WHERE id = ?"
                     " RETURNING id, queue, payload, attempts, max_attempts, lease_token,"
                     " idempotency_key, priority",
                     (token, worker, now + self.visibility_timeout, job_id),
@@ -227,7 +231,8 @@ class JobQueue:
 
     def dead_letters(self, queue: str) -> list[tuple[int, dict[str, object], str]]:
         rows = self.db.execute(
-            "SELECT id, payload, last_error FROM jobs WHERE queue = ? AND status = 'olu' ORDER BY id",
+            "SELECT id, payload, last_error FROM jobs WHERE queue = ? AND status = 'olu'"
+            " ORDER BY id",
             (queue,),
         ).fetchall()
         return [(int(i), json.loads(p), str(e)) for i, p, e in rows]
@@ -258,7 +263,8 @@ class JobQueue:
         )
 
     def tick(self) -> list[int]:
-        """Zamanı gelen yinelenen işleri sıraya koyar. Aynı an için iki kez çağrılsa da (iki süreçten
+        """Zamanı gelen yinelenen işleri sıraya koyar. Aynı an için iki kez çağrılsa da (iki
+        süreçten
         bile) her zaman dilimi BİR iş üretir: idempotentlik anahtarı "cron:<ad>:<zaman>"."""
         now = self.clock()
         created: list[int] = []
@@ -267,7 +273,9 @@ class JobQueue:
         ).fetchall()
         for name, expression, queue, payload, next_run in due:
             key = f"cron:{name}:{int(next_run)}"
-            created.append(self.enqueue(queue, json.loads(payload), run_at=next_run, idempotency_key=key))
+            created.append(
+                self.enqueue(queue, json.loads(payload), run_at=next_run, idempotency_key=key)
+            )
             following = Cron.parse(expression).next_after(datetime.fromtimestamp(now, UTC))
             self.db.execute(
                 "UPDATE schedules SET next_run = ? WHERE name = ? AND next_run = ?",

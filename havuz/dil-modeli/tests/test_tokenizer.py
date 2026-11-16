@@ -21,9 +21,9 @@ SAMPLES = [
     " ",
     "Iğdır'dan İzmir'e, Çanakkale'ye; öğle üzeri şöyle güzel bir yolculuk.",
     "ıİiI ğĞ üÜ şŞ öÖ çÇ âîû",
-    "Emoji: 🙂 🇹🇷 👨‍👩‍👧 ve birleşen işaret: é ẋ",
+    "Emoji: 🙂 🇹🇷 👨\u200d👩\u200d👧 ve birleşen işaret: e\u0301 x\u0307",
     "karışık   boşluk\t\tsekme\r\nsatır\n\n\nson  ",
-    " bölünmez boşluk satır ayırıcı​sıfır genişlik",
+    "\u00a0bölünmez\u00a0boşluk\u2028satır ayırıcı\u200bsıfır genişlik",
     "1.250,75 TL %18 08:30 2024-11-16 3,14",
     "日本語 العربية Ελληνικά кириллица",
     "a" * 300 + " " + "ab" * 200,

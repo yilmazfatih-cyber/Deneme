@@ -8,7 +8,6 @@ import random
 from pathlib import Path
 
 import pytest
-
 from kutuphane import sayi_yazi
 from kutuphane.sayi_yazi import NumberFormatError
 
@@ -60,4 +59,6 @@ def test_kaba_kuvvetle_karsilastirma() -> None:
 def test_ortak_vektore_ornek_eklendi() -> None:
     path = Path(__file__).resolve().parents[2] / "vektorler" / "sayi_yazi.json"
     cases = json.loads(path.read_text(encoding="utf-8"))["islevler"].get("formatCompactTr", [])
-    assert len(cases) >= 5, "vektorler/sayi_yazi.json → islevler.formatCompactTr altına örnek ekleyin"
+    assert len(cases) >= 5, (
+        "vektorler/sayi_yazi.json → islevler.formatCompactTr altına örnek ekleyin"
+    )

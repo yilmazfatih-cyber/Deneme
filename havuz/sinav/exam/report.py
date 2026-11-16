@@ -14,7 +14,7 @@ from collections.abc import Sequence
 from datetime import datetime
 from typing import Any
 
-from exam.tasks import ZORLUKLAR, Task
+from exam.tasks import TUR_ADLARI, ZORLUKLAR, Task
 
 MARK = {"gecti": "✓", "kaldi": "✗", "gecersiz": "⚠"}
 Entry = dict[str, Any]
@@ -61,9 +61,13 @@ def _warnings(by_label: dict[str, list[Entry]], tasks: Sequence[Task]) -> list[s
         missing = sorted(task_ids - set(counts))
         single = sorted(task for task, count in counts.items() if count < 2)
         if missing:
-            notes.append(f"`{label}`: {len(missing)} görev hiç denenmemiş ({', '.join(missing[:6])}…).")
+            notes.append(
+                f"`{label}`: {len(missing)} görev hiç denenmemiş ({', '.join(missing[:6])}…)."
+            )
         if single:
-            notes.append(f"`{label}`: {len(single)} görevde 2'den az deneme var; tek deneme şansa açıktır.")
+            notes.append(
+                f"`{label}`: {len(single)} görevde 2'den az deneme var; tek deneme şansa açıktır."
+            )
     prompts = {e.get("istem_ozeti") for items in by_label.values() for e in items}
     if len(prompts) > 1:
         notes.append("Sonuçlar farklı başlangıç istemleriyle (ISTEMLER.md §1 sürümleri) alınmış.")
@@ -83,8 +87,12 @@ def _failure_lines(label: str, entries: Sequence[Entry]) -> list[str]:
         if entry["sonuc"] == "gecti":
             continue
         if entry["sonuc"] == "gecersiz":
-            reasons = "; ".join(f"{v['dosya']}: {v['neden']}" for v in entry.get("ihlaller", [])[:2])
-            lines.append(f"- `{label}` · {entry['gorev']} #{entry['deneme']} — ⚠ geçersiz: {reasons}")
+            reasons = "; ".join(
+                f"{v['dosya']}: {v['neden']}" for v in entry.get("ihlaller", [])[:2]
+            )
+            lines.append(
+                f"- `{label}` · {entry['gorev']} #{entry['deneme']} — ⚠ geçersiz: {reasons}"
+            )
         else:
             failed = ", ".join(str(name) for name in entry.get("kalan", [])[:3])
             lines.append(f"- `{label}` · {entry['gorev']} #{entry['deneme']} — ✗ kalan: {failed}")
@@ -93,11 +101,15 @@ def _failure_lines(label: str, entries: Sequence[Entry]) -> list[str]:
 
 def build_report(entries: Sequence[Entry], tasks: Sequence[Task], now: datetime) -> str:
     by_label: dict[str, list[Entry]] = defaultdict(list)
-    for entry in sorted(entries, key=lambda e: (str(e["etiket"]), str(e["gorev"]), int(e["deneme"]))):
+    for entry in sorted(
+        entries, key=lambda e: (str(e["etiket"]), str(e["gorev"]), int(e["deneme"]))
+    ):
         by_label[str(entry["etiket"])].append(entry)
     out = [f"# Sınav raporu — {now:%Y-%m-%d %H:%M}", ""]
     if not by_label:
-        out.append("Henüz sonuç yok. Önce `python havuz/sinav/sinav.py puanla <klasör> --etiket <model>`.")
+        out.append(
+            "Henüz sonuç yok. Önce `python havuz/sinav/sinav.py puanla <klasör> --etiket <model>`."
+        )
         return "\n".join(out) + "\n"
     out += [
         "## Özet",
@@ -113,26 +125,47 @@ def build_report(entries: Sequence[Entry], tasks: Sequence[Task], now: datetime)
         {str(e["gorev"]) for e in entries} | set(known),
         key=lambda t: (ZORLUKLAR.index(known[t].difficulty) if t in known else 9, t),
     )
-    out += ["", "## Görev × model", "", "✓ geçti · ✗ kaldı · ⚠ geçersiz (hile denetimi) · boş: denenmedi", ""]
+    out += [
+        "",
+        "## Görev × model",
+        "",
+        "✓ geçti · ✗ kaldı · ⚠ geçersiz (hile denetimi) · boş: denenmedi",
+        "",
+    ]
     out.append("| Görev | Temel | Tür | Zorluk | " + " | ".join(f"`{x}`" for x in labels) + " |")
     out.append("| --- | --- | --- | --- | " + " | ".join("---" for _ in labels) + " |")
     for task_id in task_ids:
         task = known.get(task_id)
         cells = []
         for label in labels:
-            marks = [MARK.get(str(e["sonuc"]), "?") for e in by_label[label] if e["gorev"] == task_id]
+            marks = [
+                MARK.get(str(e["sonuc"]), "?") for e in by_label[label] if e["gorev"] == task_id
+            ]
             cells.append("".join(marks))
-        meta = f"{task.foundation} | {task.kind} | {task.difficulty}" if task else "? | ? | ?"
+        meta = (
+            f"{task.foundation} | {TUR_ADLARI[task.kind]} | {task.difficulty}"
+            if task
+            else "? | ? | ?"
+        )
         out.append(f"| {task_id} | {meta} | " + " | ".join(cells) + " |")
     failures = [line for label, items in by_label.items() for line in _failure_lines(label, items)]
     if failures:
         out += ["", "## Kalan ve geçersiz denemeler", "", *failures]
+    warned = [
+        f"- `{label}` · {e['gorev']} #{e['deneme']} — "
+        + "; ".join(f"{w['dosya']}: {w['ayrinti'][:60]}" for w in e.get("uyarilar", [])[:2])
+        for label, items in by_label.items()
+        for e in items
+        if e.get("uyarilar")
+    ]
+    if warned:
+        out += ["", "## Susturma uyarıları (noqa, type: ignore, # tr-ok…)", "", *warned]
     notes = _warnings(by_label, tasks)
     if notes:
         out += ["", "## Adil karşılaştırma uyarıları", "", *(f"- {note}" for note in notes)]
     out += [
         "",
-        "Okuma: \"Her denemede geçen görev\" kararlılığı, \"en az bir kez geçen\" tavanı gösterir. "
+        'Okuma: "Her denemede geçen görev" kararlılığı, "en az bir kez geçen" tavanı gösterir. '
         "Geçersiz deneme, test ya da denetim gevşetilmiş demektir; o modelle çalışırken testleri koruyun.",
     ]
     return "\n".join(out) + "\n"

@@ -91,7 +91,7 @@ def test_baska_bicim_icin_donusturme_onerisi(tmp_path: Path) -> None:
 
 def test_csv_bom_ve_noktali_virgul(tmp_path: Path) -> None:
     path = tmp_path / "excel.csv"
-    path.write_bytes("﻿metin;etiket\nİade istiyorum;iade\nKargom nerede;kargo\n".encode())
+    path.write_bytes("\ufeffmetin;etiket\nİade istiyorum;iade\nKargom nerede;kargo\n".encode())
     rows = load_classification(path).rows
     assert [(r.text, r.label) for r in rows] == [
         ("İade istiyorum", "iade"),

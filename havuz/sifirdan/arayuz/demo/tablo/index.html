@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <title>E-tablo — sıfırdan arayüz</title>
+    <link rel="stylesheet" href="../ortak/stil.css" />
+    <link rel="stylesheet" href="./stil.css" />
+  </head>
+  <body>
+    <header class="ust">
+      <div class="kap">
+        <a class="geri" href="../../">← Tüm gösterimler</a>
+        <h1>E-tablo: ev bütçesi</h1>
+        <p class="alt-baslik">
+          Izgaraya odaklanıp oklarla gezin; yazmaya başlayınca formül çubuğu açılır, <kbd>Enter</kbd> kaydeder.
+          <kbd>Shift</kbd>+ok seçer, <kbd>Ctrl</kbd>+<kbd>C</kbd> / <kbd>V</kbd> kopyalar. Türkçe ve İngilizce işlev
+          adları çalışır: <code>=TOPLA(B2:B5)</code>, <code>=SUM(B2:B5)</code>.
+        </p>
+      </div>
+    </header>
+    <main class="kap" id="icerik">
+      <div class="panel arac">
+        <label for="adres" class="gizli">Etkin hücre</label>
+        <output id="adres" class="adres">A1</output>
+        <label for="formul" class="gizli">Formül ya da değer</label>
+        <input id="formul" autocomplete="off" spellcheck="false" placeholder="Değer ya da =formül" />
+      </div>
+      <div
+        id="izgara"
+        class="izgara"
+        role="grid"
+        tabindex="0"
+        aria-label="E-tablo ızgarası"
+        aria-multiselectable="true"
+      ></div>
+      <p id="durum" class="durum" aria-live="polite"></p>
+      <details class="panel">
+        <summary>Desteklenen işlevler</summary>
+        <p id="islevler" class="islevler"></p>
+      </details>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

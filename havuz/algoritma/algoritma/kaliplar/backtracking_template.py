@@ -1,21 +1,16 @@
 """Kalıp — geri izleme iskeleti: seç → ilerle → geri al; geçersiz dalı erken buda.
 
 Fikir:
-    Çözüm adım adım kurulur. Her adımda olası seçenekler denenir: seçim yapılır (durum güncellenir),
-    özyinelemeyle devam edilir, sonra seçim GERİ ALINIR (durum eski hâline döner). Kısmi çözüm
-    bir kuralı zaten bozuyorsa o dal hiç büyütülmez (budama) — kaba kuvvetten farkı budur.
-    Kopyalanacak iskelet:
-        def go(partial):
-            if tamam(partial): yanıtlara ekle; return
-            for seçenek in seçenekler(partial):
-                if uygun(partial, seçenek):
-                    partial.append(seçenek); go(partial); partial.pop()
-    Yinelenen yanıtları önlemek için seçenekler SIRALI verilir ve "aynı değeri aynı düzeyde ikinci
-    kez deneme" kuralı uygulanır; kombinasyonlarda başlangıç dizini bir sonraki çağrıya taşınır.
-    Akla gelmeli: "tümünü listele/say", permütasyon, kombinasyon, alt küme, bulmaca, yerleştirme.
+    Çözüm adım adım kurulur: seçenek seçilir (durum güncellenir), özyinelemeyle ilerlenir,
+    sonra seçim GERİ ALINIR. Kısmi çözüm bir kuralı zaten bozuyorsa dal hiç büyütülmez (budama)
+    — kaba kuvvetten farkı budur. Kopyalanacak iskelet `backtrack` işlevindedir:
+    `tamam(kısmi)` → yanıta ekle; değilse her uygun seçenek için ekle → ilerle → çıkar.
+    Yinelenen yanıtları önlemek için seçenekler SIRALI verilir; kombinasyonlarda bir sonraki
+    seçim öncekinden küçük olamaz (başlangıç dizini taşınır).
 
 Karmaşıklık: en kötü üstel (çözüm sayısı kadar iş zaten kaçınılmaz); yer O(derinlik)
-Ne zaman: tüm çözümler istendiğinde; kısıtlar kısmi çözümde erken sınanabildiğinde.
+Ne zaman: "tümünü listele/say", permütasyon, kombinasyon, alt küme, bulmaca, yerleştirme;
+    kısıtlar kısmi çözümde erken sınanabildiğinde.
 Ne zaman değil: yalnız SAYI ya da en iyi değer isteniyorsa ve alt problemler örtüşüyorsa DP
     (`dp_state_design.py`) çok daha hızlıdır.
 Bağımlılık: yok

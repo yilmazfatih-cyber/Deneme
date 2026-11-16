@@ -88,22 +88,27 @@ function createWindowHistory(
     const stored = window.history.state as StoredState
     return { ...parsePath(read()), state: stored?.usr, key: stored?.key ?? 'ilk' }
   }
+  // Bilinen son adres: popstate ve hashchange aynı değişiklik için iki kez gelebilir; ikincisi atlanır.
+  // push/replace de bunu günceller — yoksa geri tuşuyla o adrese dönüş "değişmedi" sanılıp kaçırılır.
+  let last = locationToString(current())
   return {
     kind,
     location: current,
     push(to, state) {
       window.history.pushState({ key: nextKey(), usr: state }, '', toUrl(to))
+      last = locationToString(current())
     },
     replace(to, state) {
       window.history.replaceState({ key: nextKey(), usr: state }, '', toUrl(to))
+      last = locationToString(current())
     },
     go: (delta) => window.history.go(delta),
     listen(listener) {
-      let last = locationToString(current())
+      last = locationToString(current())
       const onChange = () => {
         const location = current()
         const text = locationToString(location)
-        if (text === last) return // popstate + hashchange aynı değişiklik için iki kez gelebilir
+        if (text === last) return
         last = text
         listener(location, 'POP')
       }

@@ -1,0 +1,14 @@
+kimlik = "dil-modeli-okuma"
+baslik = "Okuma: örnekleme varsayılanları, bağlam, öğrenme oranı"
+temel = "dil-modeli"
+zorluk = "kolay"
+tur = "okuma"
+tahmini_sure_dk = 15
+aciklama = """Kod değiştirmeden okuma; beş kesin yanıtlı soru. Tuzak: top-p'nin komut satırındaki varsayılanı (0.95) \
+ile SamplingConfig'teki varsayılanı (1.0) farklıdır; yalnız birine bakan yanılır. Yanıt dosyası anahtar sözcük \
+kurallarıyla denetlenir."""
+baslangic_denetimi = "yesil"
+
+[[gizli]]
+ad = "yanit"
+komut = "{python} {gizli}/yanit_denetle.py YANIT.txt"

@@ -1,25 +1,9 @@
 from __future__ import annotations
 
-import itertools
-
 from hypothesis import given
 
 from algoritma.graf.kruskal import kruskal
-from tests.graf.helpers import component_count, weighted_edge_lists
-
-
-def brute_force_msf(n: int, edges: list[tuple[int, int, int]]) -> int:
-    """En küçük kapsayan ormanın ağırlığı: bileşen sayısını koruyan en hafif kenar alt kümesi."""
-    plain = [(u, v) for u, v, _ in edges]
-    target = component_count(n, plain)
-    size = n - target  # kapsayan ormandaki kenar sayısı
-    best = None
-    for subset in itertools.combinations(range(len(edges)), size):
-        chosen = [plain[i] for i in subset]
-        if component_count(n, chosen) == target:
-            weight = sum(edges[i][2] for i in subset)
-            best = weight if best is None else min(best, weight)
-    return best if best is not None else 0
+from tests.graf.helpers import brute_force_msf, component_count, weighted_edge_lists
 
 
 def test_hand_checked_example() -> None:

@@ -1,0 +1,39 @@
+/* Sanal DOM gösterimine özgü stiller. */
+.gorev-formu {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.gorev-formu input {
+  flex: 1 1 200px;
+}
+.gorevler {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0;
+}
+.gorev {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border: 1px solid var(--kenar);
+  border-radius: 8px;
+  margin-bottom: 6px;
+  background: var(--zemin);
+}
+.gorev label {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  font-weight: 400;
+}
+.gorev.bitti label span {
+  text-decoration: line-through;
+  color: var(--ikincil);
+}
+.gorev button {
+  padding: 0 10px;
+}

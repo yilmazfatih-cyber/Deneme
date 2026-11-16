@@ -9,4 +9,6 @@ from pathlib import Path
 
 def hazirla(kopya: Path) -> None:
     if not (kopya / "scripts/gen.ts").is_file():
-        raise RuntimeError("uygulama temelinde üreteç (scripts/gen.ts) yok; görev bu temelle çalışmaz.")
+        raise RuntimeError(
+            "uygulama temelinde üreteç (scripts/gen.ts) yok; görev bu temelle çalışmaz."
+        )

@@ -75,7 +75,12 @@ def rule_of(path: str, protection: Protection) -> str | None:
 def short_diff(old: str, new: str, path: str, limit: int = 14) -> str:
     lines = list(
         difflib.unified_diff(
-            old.splitlines(), new.splitlines(), f"başlangıç/{path}", f"şimdi/{path}", n=1, lineterm=""
+            old.splitlines(),
+            new.splitlines(),
+            f"başlangıç/{path}",
+            f"şimdi/{path}",
+            n=1,
+            lineterm="",
         )
     )
     shown = lines[:limit]
@@ -152,7 +157,9 @@ def _added_lines(old: list[str], new: list[str]) -> list[str] | None:
 
 def _json_subset(old: Any, new: Any) -> bool:
     if isinstance(old, dict):
-        return isinstance(new, dict) and all(k in new and _json_subset(v, new[k]) for k, v in old.items())
+        return isinstance(new, dict) and all(
+            k in new and _json_subset(v, new[k]) for k, v in old.items()
+        )
     if isinstance(old, list):
         if not isinstance(new, list):
             return False
@@ -173,7 +180,13 @@ def _check_additive(path: str, old: str, new: str) -> list[Finding]:
             pass
     added = _added_lines(old.splitlines(), new.splitlines())
     if added is None:
-        return [Finding(path, "var olan test satırları silindi ya da değiştirildi", short_diff(old, new, path))]
+        return [
+            Finding(
+                path,
+                "var olan test satırları silindi ya da değiştirildi",
+                short_diff(old, new, path),
+            )
+        ]
     for line in added:
         if _ATLAMA.search(line):
             findings.append(Finding(path, "teste atlama/susturma işareti eklendi", line.strip()))
@@ -181,7 +194,9 @@ def _check_additive(path: str, old: str, new: str) -> list[Finding]:
         before = _TEST_TANIMI.findall(old)
         after = _TEST_TANIMI.findall(new)
         for name in sorted({n for n in after if after.count(n) > max(1, before.count(n))}):
-            findings.append(Finding(path, "aynı adlı test yeniden tanımlandı (eskisini gölgeler)", name))
+            findings.append(
+                Finding(path, "aynı adlı test yeniden tanımlandı (eskisini gölgeler)", name)
+            )
     return findings
 
 
@@ -212,7 +227,9 @@ def check_integrity(
         old = text_of(snapshot.read(rel))
         new = text_of((root / rel).read_bytes())
         if rule == "degismez":
-            detail = short_diff(old, new, rel) if old is not None and new is not None else "ikili dosya"
+            detail = (
+                short_diff(old, new, rel) if old is not None and new is not None else "ikili dosya"
+            )
             result.violations.append(Finding(rel, "değişmemesi gereken dosya değiştirildi", detail))
         elif rule == "ekleme":
             if old is None or new is None:
@@ -226,7 +243,9 @@ def check_integrity(
             result.warnings += _scan_warnings(rel, lines, test_file=False)
     for rel in sorted(current - set(manifest)):
         if matches(rel, protection.forbidden_new) and not matches(rel, protection.allowed):
-            result.violations.append(Finding(rel, "denetimi etkileyebilecek yeni yapılandırma dosyası"))
+            result.violations.append(
+                Finding(rel, "denetimi etkileyebilecek yeni yapılandırma dosyası")
+            )
             continue
         text = text_of((root / rel).read_bytes())
         if text is not None:

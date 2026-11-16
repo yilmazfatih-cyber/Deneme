@@ -11,7 +11,7 @@ import re
 from collections.abc import Callable, Iterator, Sequence
 from contextlib import contextmanager
 from dataclasses import dataclass
-from typing import Any, TypeVar
+from typing import Any, TypeVar, overload
 
 F = TypeVar("F", bound=Callable[..., Any])
 SCOPES = ("test", "modul")
@@ -27,7 +27,15 @@ class TestTimeout(Exception):
     __test__ = False  # pytest bu sınıfı test sanmasın
 
 
-def fixture(fn: F | None = None, *, scope: str = "test") -> Any:
+@overload
+def fixture(fn: F) -> F: ...
+
+
+@overload
+def fixture(*, scope: str = "test") -> Callable[[F], F]: ...
+
+
+def fixture(fn: F | None = None, *, scope: str = "test") -> F | Callable[[F], F]:
     """Fixture işaretler. Üreteç (yield) ise yield'den sonrası temizliktir.
 
     `scope="test"`: her test için yeniden kurulur; `scope="modul"`: dosya başına bir kez.
@@ -42,13 +50,17 @@ def fixture(fn: F | None = None, *, scope: str = "test") -> Any:
     return mark(fn) if fn is not None else mark
 
 
-def parametrize(names: str, values: Sequence[Any], ids: Sequence[str] | None = None) -> Callable[[F], F]:
+def parametrize(
+    names: str, values: Sequence[Any], ids: Sequence[str] | None = None
+) -> Callable[[F], F]:
     """`@parametrize("a, b, beklenen", [(1, 2, 3), (2, 2, 4)])` — her satır ayrı bir test olur."""
     keys = [n.strip() for n in names.split(",") if n.strip()]
     rows = [tuple(v) if len(keys) > 1 else (v,) for v in values]
     for row in rows:
         if len(row) != len(keys):
-            raise ValueError(f"parametrize: {len(keys)} ad var ama {row!r} satırında {len(row)} değer")
+            raise ValueError(
+                f"parametrize: {len(keys)} ad var ama {row!r} satırında {len(row)} değer"
+            )
     if ids is not None and len(ids) != len(rows):
         raise ValueError("parametrize: ids sayısı değer satırı sayısıyla aynı olmalı")
 
@@ -97,7 +109,8 @@ def raises(kind: type[BaseException], match: str | None = None) -> Iterator[Rais
         info.value = exc
         if match is not None and not re.search(match, str(exc)):
             raise AssertionError(
-                f"{kind.__name__} oluştu ama ileti eşleşmedi:\n  desen: {match!r}\n  ileti: {str(exc)!r}"
+                f"{kind.__name__} oluştu ama ileti eşleşmedi:\n"
+                f"  desen: {match!r}\n  ileti: {str(exc)!r}"
             ) from None
         return
     raise AssertionError(f"{kind.__name__} bekleniyordu ama hiçbir hata oluşmadı")

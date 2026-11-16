@@ -32,6 +32,7 @@ AST (nodes.py)          ← `agac` komutu bunu S-ifadesi olarak döker
    │  resolver.py  her adı kapsamına bağlar (kaç ortam yukarıda?); durağan hatalar
    ▼
 AST + derinlik tablosu
+   │  optimize.py  (isteğe bağlı) sabit katlama: 60 * 60 * 24 → 86400
    │  interp.py    ağaç yürüyen yorumlayıcı: ortam zinciri, kapanımlar, adım/derinlik sınırı
    │  ops.py · values.py · natives.py   ORTAK anlam (sanal_makine de bunları kullanır)
    ▼
@@ -58,6 +59,7 @@ Neden ayrı bir çözümleyici (resolver)? Kapanımın, adı **yazıldığı yer
 | `natives.py`   | yerleşik işlevler tablosu (`TABLE`)                                    |
 | `text_tr.py`   | Türkçe büyük/küçük harf (`upper_tr`, `lower_tr`)                       |
 | `interp.py`    | `Interpreter`, `Limits`, `run()`                                       |
+| `optimize.py`  | sabit katlama (`Interpreter(optimize=True)`; anlamı değiştirmez)       |
 | `__main__.py`  | komut satırı ve REPL                                                   |
 | `DIL.md`       | dil tanımı (EBNF, anlam, yerleşikler, sınırlar)                        |
 | `ornekler/`    | 14 örnek program + beklenen çıktıları (`.beklenen`)                    |
@@ -91,6 +93,6 @@ Hepsinin testi `tests/yorumlayici/test_yorumlayici_eval.py` içindedir.
 3. **`dene { … } yakala hata { … }`** — tokens (iki anahtar sözcük), parser, resolver (yeni kapsam),
    interp (`TohumError` yakala, iletiyi dizgi olarak bağla).
 4. **Dizgi biçimlendirme** `biçimle("Merhaba {}", ad)` yerleşiği (yalnız natives.py).
-5. **Sabit katlama** — `optimize.py`: `Binary(Literal, Literal)` düğümlerini `ops.binary` ile
-   önceden hesaplayan bir geçiş (hata verecek olanları katlamayın; konumlar korunmalı).
+5. **Ölü kod atma** — `optimize.py`'ye: `eğer yanlış { … }` bloğunu ve `döndür`'den sonraki
+   deyimleri silen bir dal (çözümleyiciden sonra çalışmalı; farksal test anlamı denetler).
 6. **Türkçe alfabe sıralaması** — `sırala` için `ç`'yi `c`'den hemen sonraya koyan bir anahtar işlevi.

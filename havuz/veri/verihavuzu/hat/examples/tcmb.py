@@ -74,6 +74,12 @@ def fetch(ctx: RunContext) -> Iterator[Row]:
     while day <= end:
         if day.weekday() < 5:  # hafta sonu bülten yok; istek atılmaz
             reply = ctx.fetcher.get(bulletin_url(day))
+            if reply.status == 404 and day >= ctx.today:
+                # Bugünün bülteni gün içinde (öğleden sonra) yayımlanır: henüz yoksa bu gün
+                # "işlendi" sayılmaz, filigran ilerlemez ve sonraki koşu bu günü yeniden dener.
+                # Yoksa o günün kuru hiç çekilmezdi.
+                ctx.log(f"{day.isoformat()}: bülten henüz yayımlanmamış; sonra yeniden denenecek")
+                return
             if reply.status == 404:
                 ctx.log(f"{day.isoformat()}: bülten yok (tatil olabilir)")
             elif reply.status != 200:

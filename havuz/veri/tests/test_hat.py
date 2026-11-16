@@ -277,12 +277,45 @@ def test_tcmb_pipeline_is_idempotent_and_incremental(
     third = run_pipeline(
         tcmb.SPEC, store, fetcher, tmp_path, params={"bitis": date(2026, 11, 16)}, now=lambda: NOW
     )
-    assert third.cekilen == 0 and "bülten yok" in third.iletiler[0]  # yalnız 16 Kasım istendi
+    # Yalnız 16 Kasım (bugün) istendi ve bülteni henüz yok: gün işlenmiş sayılmaz, filigran ilerlemez.
+    assert third.cekilen == 0 and "henüz yayımlanmamış" in third.iletiler[0]
+    assert load_state(tmp_path, "tcmb_kurlari") == {"son_tarih": "2026-11-15"}
     log = [
         json.loads(line)
         for line in (tmp_path / "hat_gunlugu.jsonl").read_text(encoding="utf-8").splitlines()
     ]
     assert [entry["durum"] for entry in log] == ["basarili", "basarili", "basarili"]
+
+
+def test_tcmb_todays_missing_bulletin_is_retried_next_run(tmp_path: Path) -> None:
+    """Gerileme: bugünün bülteni sabah 404 verir; filigran ilerlerse o günün kuru bir daha hiç çekilmez."""
+    transport = _tcmb_transport()
+    fetcher = _fetcher(transport, FakeClock())
+    store = open_store("jsonl", tmp_path / "depo")
+    params = {"baslangic": date(2026, 11, 13), "bitis": date(2026, 11, 16)}
+    morning = run_pipeline(tcmb.SPEC, store, fetcher, tmp_path, params=params, now=lambda: NOW)
+    assert morning.cekilen == 22  # yalnız 13 Kasım; 14–15 hafta sonu, 16 henüz yok
+    assert load_state(tmp_path, "tcmb_kurlari") == {"son_tarih": "2026-11-15"}
+    published = (
+        (FIXTURES / "13112026.xml")
+        .read_bytes()
+        .replace(b'Tarih="13.11.2026"', b'Tarih="16.11.2026"')
+    )
+    url = tcmb.bulletin_url(date(2026, 11, 16))
+    transport.routes[url] = [ok(url, published)]
+    evening = run_pipeline(tcmb.SPEC, store, fetcher, tmp_path, params={}, now=lambda: NOW)
+    assert any(url == called for called, _ in transport.calls)
+    assert load_state(tmp_path, "tcmb_kurlari") == {"son_tarih": "2026-11-16"}
+    assert evening.cekilen == 22
+
+
+def test_tcmb_past_404_is_a_holiday_and_advances_state(tmp_path: Path) -> None:
+    fetcher = _fetcher(_tcmb_transport(), FakeClock())
+    store = open_store("jsonl", tmp_path / "depo")
+    params = {"baslangic": date(2026, 10, 29), "bitis": date(2026, 10, 29)}
+    record = run_pipeline(tcmb.SPEC, store, fetcher, tmp_path, params=params, now=lambda: NOW)
+    assert record.cekilen == 0 and "bülten yok" in record.iletiler[0]
+    assert load_state(tmp_path, "tcmb_kurlari") == {"son_tarih": "2026-10-29"}
 
 
 def test_tcmb_bad_records_go_to_quarantine(tmp_path: Path) -> None:

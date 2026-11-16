@@ -1,25 +1,21 @@
 """Monte Carlo ağaç araması (UCT, temel): rastgele oyunlarla en iyi hamleyi tahmin eder.
 
 Fikir:
-    Her yinelemede dört adım:
-      1. Seçim: kökten başlayıp, tüm çocukları açılmış düğümlerde UCT puanı en yüksek çocuğa in:
-         kazanma_oranı + c · √(ln(ebeveyn_ziyaret) / çocuk_ziyaret). İlk terim iyi bilinen hamleleri
-         (sömürü), ikincisi az denenmiş hamleleri (keşif) ödüllendirir.
-      2. Genişletme: henüz denenmemiş bir hamleyle yeni bir çocuk aç.
-      3. Benzetim: oradan oyun bitene dek RASTGELE oyna.
-      4. Geri yayma: sonucu yol boyunca her düğümün istatistiğine ekle (her düğüm, kendisine
-         hamle yapan oyuncunun bakışından kazanç tutar).
-    Sonunda kökte en çok ziyaret edilen hamle seçilir. Değerlendirme fonksiyonu GEREKMEZ.
-    Örnek oyun: "Taş alma" — yığından sırayla 1–3 taş alınır, son taşı alan kazanır.
-    Kuram: 4'ün katı yığınlar kaybettirir; doğru hamle yığını 4'ün katına indirmektir.
-    Rastgele benzetim gürültülüdür: yığın büyüdükçe gereken yineleme sayısı hızla artar
-    (ölçüm, testlerde: 15 taşa kadar 10 000 yineleme doğru hamleyi buluyor; 18–19 taşta bulamıyor).
+    Her yinelemede dört adım: (1) Seçim: tüm çocukları açılmış düğümlerde UCT puanı en yüksek
+    çocuğa in: kazanma_oranı + c · √(ln(ebeveyn_ziyaret) / çocuk_ziyaret) — ilk terim sömürü,
+    ikincisi keşif. (2) Genişletme: denenmemiş bir hamleyle yeni çocuk aç. (3) Benzetim: oyun
+    bitene dek RASTGELE oyna. (4) Geri yayma: sonucu yol boyunca istatistiklere ekle (her düğüm,
+    kendisine hamle yapan oyuncunun bakışından kazanç tutar). Sonunda kökte en çok ziyaret
+    edilen hamle seçilir; değerlendirme fonksiyonu GEREKMEZ.
+    Örnek oyun "taş alma": sırayla 1–3 taş alınır, son taşı alan kazanır; kuramsal doğru hamle
+    yığını 4'ün katına indirmektir.
 
 Karmaşıklık: zaman O(yineleme · (ağaç derinliği + benzetim uzunluğu)); yer O(açılan düğüm)
 Ne zaman: dallanması büyük ve iyi değerlendirme fonksiyonu olmayan oyunlar (Go, kart oyunları),
     planlama problemleri; "her an durdurulabilir" (anytime) karar gerektiğinde.
 Ne zaman değil: küçük oyunlarda kesin sonuç için `minimax.py`; tek oyunculu en iyilemede
-    `simulated_annealing.py` gibi yerel aramalar daha basittir.
+    `simulated_annealing.py` daha basittir. Rastgele benzetim gürültülüdür — ölçüm (testlerde):
+    taş almada 15 taşa kadar 10 000 yineleme doğru hamleyi buluyor, 18–19 taşta bulamıyor.
 Bağımlılık: yok
 Genişletme: başka oyun için `Game` protokolünü (`moves`, `play`, `winner`, `to_move`) uygulayan
     bir sınıf yazın; `TakeStones` örneğini kopyalayın.

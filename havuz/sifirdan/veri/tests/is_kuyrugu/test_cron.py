@@ -1,4 +1,5 @@
-"""Cron ifadeleri: bilinen örnekler, hatalar ve atlamalı `next_after`'ın dakika dakika aramayla aynılığı."""
+"""Cron ifadeleri: bilinen örnekler, hatalar ve atlamalı `next_after`'ın dakika dakika aramayla
+aynılığı."""
 
 from __future__ import annotations
 

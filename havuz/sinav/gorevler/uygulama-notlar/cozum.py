@@ -42,7 +42,11 @@ def ozellik(kopya: Path) -> None:
     """Özelliğin kendisi (hile.py de kullanır)."""
     run(["npm", "run", "gen", "--", "entity", "notes", "--etiket", "Not,Notlar"], kopya)
     entity = kopya / "shared/src/entities/notes.ts"
-    replace(entity, ".max(200, 'Başlık en çok 200 karakter olabilir.')", ".max(120, 'Başlık en çok 120 karakter olabilir.')")
+    replace(
+        entity,
+        ".max(200, 'Başlık en çok 200 karakter olabilir.')",
+        ".max(120, 'Başlık en çok 120 karakter olabilir.')",
+    )
     insert_before(
         entity,
         "    /** Sıralama anahtarı",
@@ -50,10 +54,18 @@ def ozellik(kopya: Path) -> None:
     )
     write(kopya / "web/src/features/notes/logic.ts", LOGIC)
     page = kopya / "web/src/features/notes/NotesPage.tsx"
-    replace(page, "const visible = (items ?? []).filter(", "const visible = sortNotes(items ?? []).filter(")
+    replace(
+        page,
+        "const visible = (items ?? []).filter(",
+        "const visible = sortNotes(items ?? []).filter(",
+    )
     insert_before(page, "\nexport function NotesPage()", "import { sortNotes } from './logic.ts'\n")
     edit = kopya / "web/src/features/notes/NotesEditPage.tsx"
-    replace(edit, "initial: { title: string; note: string }", "initial: { title: string; note: string; pinned: boolean }")
+    replace(
+        edit,
+        "initial: { title: string; note: string }",
+        "initial: { title: string; note: string; pinned: boolean }",
+    )
     replace(
         edit,
         "useState({ title: initial.title, note: initial.note })",
@@ -70,10 +82,24 @@ def ozellik(kopya: Path) -> None:
         "        onChange={(event) => setValues((current) => ({ ...current, pinned: event.target.checked }))}\n"
         "      />\n",
     )
-    replace(kopya / "web/src/i18n/tr.json", '"notes.form.note": "Not"', '"notes.form.note": "Not",\n  "notes.form.pinned": "Sabitle"')
+    replace(
+        kopya / "web/src/i18n/tr.json",
+        '"notes.form.note": "Not"',
+        '"notes.form.note": "Not",\n  "notes.form.pinned": "Sabitle"',
+    )
     replace(
         kopya / "shared/DEGISIKLIKLER.md",
         "## Günlük\n\n",
         "## Günlük\n\n- 2026-11-16 — EKLENDİ, geriye uyumlu: `notes` varlığı (title, note, pinned, order).\n",
     )
-    run(["npx", "prettier", "--write", "shared/src/entities/notes.ts", "web/src/features/notes", "web/src/i18n/tr.json"], kopya)
+    run(
+        [
+            "npx",
+            "prettier",
+            "--write",
+            "shared/src/entities/notes.ts",
+            "web/src/features/notes",
+            "web/src/i18n/tr.json",
+        ],
+        kopya,
+    )

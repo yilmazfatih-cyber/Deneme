@@ -8,7 +8,7 @@ function clock() {
 
 describe('grafem kümeleri', () => {
   it('emoji, bayrak ve birleşik işaret tek adımda geçilir ve silinir', () => {
-    const text = 'a👍🏽🇹🇷éb'
+    const text = 'a👍🏽🇹🇷e\u0301b'
     const editor = new Editor({ text })
     const stops: number[] = []
     for (let i = 0; i < 6; i++) {

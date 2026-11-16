@@ -24,7 +24,7 @@ def test_turkce_kucuk_buyuk_harf():
 
 
 def test_ayrik_yazilmis_i_harfi_birlestirilir():
-    assert kucuk_tr("İstanbul") == "istanbul"
+    assert kucuk_tr("I\u0307stanbul") == "istanbul"
 
 
 def test_sadelestir_anahtar_eslestirir():

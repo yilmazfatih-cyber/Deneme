@@ -19,7 +19,7 @@ def write(tmp_path: Path, content: str, encoding: str = "utf-8", name: str = "ve
 
 def test_turkish_excel_export(tmp_path: Path) -> None:
     content = (
-        "﻿İl;Nüfus;Ortalama gelir;Kayıt tarihi;Not\r\n"
+        "\ufeffİl;Nüfus;Ortalama gelir;Kayıt tarihi;Not\r\n"
         'İstanbul;15.655.924;12.345,67;01.02.2024;"büyük; kalabalık"\r\n'
         "Iğdır;203.594;8.100,5;15.03.2024;\r\n"
         "Şırnak;NA;7.950;;-\r\n"

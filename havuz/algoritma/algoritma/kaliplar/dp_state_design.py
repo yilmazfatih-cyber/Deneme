@@ -1,19 +1,16 @@
 """Kalıp — DP durumu tasarlama: "geleceği belirlemek için geçmişten neyi bilmem gerekiyor?"
 
 Fikir:
-    Dinamik programlamanın zor kısmı formül değil DURUM seçimidir. Tarif:
-      1. Kararları sıraya koy (gün gün, ev ev, basamak basamak).
-      2. Bir sonraki kararın geçerliliği ve maliyeti için geçmişten neyin bilinmesi gerektiğini
-         sor: "son rengi", "art arda kaç gün", "kaç basamak kaldı". Durum = (konum, o bilgi).
-      3. Geçişi yaz: durum → olası kararlar → sonraki durum. Başlangıç ve bitiş durumlarını belirle.
-      4. Durum sayısı × geçiş sayısı = karmaşıklık; çok büyükse bilgiyi sıkıştır.
-      5. Yanıtın KENDİSİ isteniyorsa her durumda seçilen kararı sakla ve sondan geri yürü.
-    Önce tanımı doğrudan özyinelemeyle (önbellekli) yazmak, sonra tabloya çevirmek güvenlidir.
-    Akla gelmeli: "kaç yolla", "en az/en çok … öyle ki komşular/art arda … olmasın", seçimler
-    birbirini yalnız sınırlı bir geçmişle etkiliyorsa.
+    DP'nin zor kısmı formül değil DURUM seçimidir. Tarif: (1) kararları sıraya koy (gün gün,
+    ev ev); (2) bir sonraki kararın geçerliliği/maliyeti için geçmişten neyin bilinmesi gerektiğini
+    sor ("son renk", "art arda kaç gün") — durum = (konum, o bilgi); (3) geçişi yaz: durum →
+    kararlar → sonraki durum; (4) durum sayısı × seçenek sayısı = karmaşıklık, büyükse bilgiyi
+    sıkıştır; (5) yanıtın KENDİSİ isteniyorsa her durumda seçilen kararı sakla, sondan geri yürü.
+    Önce tanımı önbellekli özyinelemeyle yazmak, sonra tabloya çevirmek güvenlidir.
 
 Karmaşıklık: O(durum sayısı × geçiş başına seçenek); yer O(durum sayısı) (geri izleme için)
-Ne zaman: alt problemler örtüşüyor ve en iyi çözüm alt problemlerin en iyilerinden kuruluyor.
+Ne zaman: "kaç yolla", "en az/en çok … öyle ki komşular/art arda … olmasın"; alt problemler
+    örtüşüyor ve seçimler birbirini yalnız sınırlı bir geçmişle etkiliyor.
 Ne zaman değil: durum uzayı patlıyorsa (ör. "hangi öğeleri seçtim" kümesi büyükse) ve n büyükse
     → sezgisel/yaklaşık yöntemler; tüm çözümler isteniyorsa geri izleme.
 Bağımlılık: yok

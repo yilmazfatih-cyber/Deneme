@@ -1,0 +1,94 @@
+/* Form gösterimine özgü stiller. */
+.adimlar {
+  display: flex;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 12px;
+  counter-reset: adim;
+}
+.adimlar li {
+  flex: 1;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid var(--kenar);
+  color: var(--ikincil);
+  text-align: center;
+  counter-increment: adim;
+}
+.adimlar li::before {
+  content: counter(adim) '. ';
+}
+.adimlar li[aria-current='step'] {
+  border-color: var(--vurgu);
+  color: var(--metin);
+  font-weight: 700;
+}
+fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+legend {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.alan {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 14px;
+}
+.alan-baslik {
+  font-weight: 600;
+  margin: 0;
+}
+.ipucu {
+  color: var(--ikincil);
+  font-size: 0.9rem;
+  margin: 0;
+}
+.alan-hatasi {
+  margin: 0;
+  font-size: 0.95rem;
+  min-height: 1.45em;
+}
+input[aria-invalid='true'],
+select[aria-invalid='true'] {
+  border-color: var(--hata);
+  border-width: 2px;
+}
+.telefon {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.telefon input {
+  flex: 1 1 160px;
+}
+.telefon .alan-hatasi {
+  flex-basis: 100%;
+}
+.onay {
+  grid-template-columns: auto 1fr;
+  align-items: center;
+}
+.onay .alan-hatasi {
+  grid-column: 1 / -1;
+}
+.ozet {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 12px;
+}
+.ozet dt {
+  font-weight: 600;
+}
+.ozet dd {
+  margin: 0;
+}
+.gezinme {
+  margin-top: 8px;
+}

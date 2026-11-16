@@ -7,10 +7,11 @@ Fikir:
     yani her turda en az %30 elenir: T(n) ≤ T(n/5) + T(7n/10) + O(n) = O(n).
     Kuyruk özyinelemesi döngüye çevrildi; yalnız pivot hesabı özyinelemelidir (derinlik log_5 n).
 
-Karmaşıklık: zaman en kötü O(n) (sabiti büyük: pratikte quickselect'ten ~5 kat yavaş); ek yer O(n)
+Karmaşıklık: zaman en kötü O(n); ek yer O(n). Ölçüm: 200 000 rastgele sayıda bu gerçekleme
+    `quickselect.py` ile aynı mertebede (~0.12 sn; ikisinde de bölümleme maliyeti baskın)
 Ne zaman: rakip girdiye karşı güvence gerektiğinde (ör. saldırganın seçtiği veri); introselect'in
     yedek planı; kuramsal sınır gerektiğinde.
-Ne zaman değil: sıradan veride `quickselect.py` daha hızlıdır.
+Ne zaman değil: sıradan veride `quickselect.py` daha basittir ve yeterlidir.
 Bağımlılık: yok
 Özyineleme: derinlik ≈ log_5 n (n = 10^9 için ~13); yığın taşmaz.
 Genişletme: gruplar 7'li de olabilir; 3'lü gruplar doğrusal zamanı bozar.

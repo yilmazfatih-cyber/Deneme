@@ -208,11 +208,11 @@ def test_line_documents_nfc_and_directory_input(tmp_path: Path) -> None:
     folder = tmp_path / "metinler"
     folder.mkdir()
     (folder / "a.txt").write_text("birinci satır\n\nikinci satır\n", "utf-8")
-    (folder / "b.txt").write_text("gŭzel", "utf-8")  # g + u + birleşen breve
+    (folder / "b.txt").write_text("gu\u0306zel", "utf-8")  # g + u + birleşen breve
     files = expand_inputs([folder])
     assert [f.name for f in files] == ["a.txt", "b.txt"]
     pieces = list(iter_pieces(files, CorpusOptions(line_documents=True)))
     assert [p.text for p in pieces] == ["birinci satır", "ikinci satır", "gŭzel"]
     assert all(p.first and p.last for p in pieces)
     raw = list(iter_pieces(files, CorpusOptions(line_documents=True, normalize=False)))
-    assert raw[-1].text == "gŭzel"
+    assert raw[-1].text == "gu\u0306zel"

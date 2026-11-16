@@ -1,15 +1,12 @@
 """Minimax + alfa-beta budama: iki kişilik, sıfır toplamlı oyunda en iyi hamle (örnek: XOX).
 
 Fikir:
-    Oyun ağacında X en büyüğü, O en küçüğü seçer; yaprak değerleri +1 (X kazanır), 0 (berabere),
-    −1 (O kazanır). Minimax her düğümün değerini çocuklarından bu kuralla hesaplar.
-    Alfa-beta budama: α = X'in şimdiye kadar garanti ettiği en iyi değer, β = O'nun garanti ettiği.
-    Bir düğümde α ≥ β olursa, kalan çocuklar sonucu değiştiremez (rakip bu dala hiç izin
-    vermez) ve atlanır. Sonuç minimax ile AYNIDIR, gezilen düğüm sayısı çok azalır (iyi hamle
-    sırasıyla O(b^d) yerine ~O(b^(d/2))).
-    XOX'ta boş tahtadan minimax 549 946 düğüm gezer; alfa-beta birkaç on bin. Değer 0'dır:
-    iki taraf da doğru oynarsa oyun berabere biter.
-    Tahta 9 karakterlik dizgidir: "X", "O" ya da " " (boş), satır satır.
+    Oyun ağacında X en büyüğü, O en küçüğü seçer; yapraklar +1 (X kazanır), 0, −1 (O kazanır).
+    Alfa-beta: α = X'in garanti ettiği en iyi değer, β = O'nunki. Bir düğümde α ≥ β olunca kalan
+    çocuklar sonucu değiştiremez (rakip bu dala izin vermez) ve atlanır. Sonuç minimax ile
+    AYNIDIR; iyi hamle sırasıyla gezilen düğüm O(b^d)'den ~O(b^(d/2))'ye iner.
+    Ölçüm (testte): XOX'ta boş tahtadan minimax 549 946 düğüm, alfa-beta ~18 000 düğüm gezer;
+    değer 0'dır (iki taraf doğru oynarsa berabere). Tahta 9 karakterlik dizgidir: "X", "O", " ".
 
 Karmaşıklık: minimax O(b^d), alfa-beta en iyi durumda O(b^(d/2)); yer O(d) (d = derinlik ≤ 9)
 Ne zaman: küçük, tam bilgili iki kişilik oyunlar (XOX, Connect-4'ün sınırlı derinlikte hâli,

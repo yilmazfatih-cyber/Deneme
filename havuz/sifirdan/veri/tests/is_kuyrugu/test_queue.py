@@ -1,5 +1,7 @@
-"""İş kuyruğu: kira (görünürlük zaman aşımı), geri çekilme, ölü mektup, idempotentlik, cron, eşzamanlı
-işçiler (gerçek iş parçacıkları) ve gerçek süreç çökmesi. Zaman sahte saatle yönetilir; `sleep` yok."""
+"""İş kuyruğu: kira (görünürlük zaman aşımı), geri çekilme, ölü mektup, idempotentlik, cron,
+eşzamanlı
+işçiler (gerçek iş parçacıkları) ve gerçek süreç çökmesi. Zaman sahte saatle yönetilir; `sleep`
+yok."""
 
 from __future__ import annotations
 
@@ -9,6 +11,7 @@ import random
 import subprocess
 import sys
 import threading
+from collections.abc import Iterator
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -38,9 +41,9 @@ def clock() -> FakeClock:
 
 
 @pytest.fixture
-def queue(tmp_path: Path, clock: FakeClock) -> JobQueue:
+def queue(tmp_path: Path, clock: FakeClock) -> Iterator[JobQueue]:
     created = JobQueue(tmp_path / "is.db", clock=clock, visibility_timeout=30, rng=random.Random(1))
-    yield created  # type: ignore[misc]
+    yield created
     created.close()
 
 
@@ -128,29 +131,38 @@ def test_recurring_jobs_one_per_slot_even_with_two_schedulers(
 def test_threads_never_take_the_same_job(tmp_path: Path, clock: FakeClock) -> None:
     path = tmp_path / "es.db"
     setup = JobQueue(path, clock=clock)
-    for number in range(300):
-        setup.enqueue("e", {"no": number})
-    seen: list[tuple[int, str]] = []
-    lock = threading.Lock()
+    try:
+        for number in range(300):
+            setup.enqueue("e", {"no": number})
+        seen: list[tuple[int, str]] = []
+        lock = threading.Lock()
+        start = threading.Barrier(4)
 
-    def work(name: str) -> None:
-        own = JobQueue(path, clock=clock, rng=random.Random(name))
-        while (job := own.reserve("e", name)) is not None:
-            with lock:
-                seen.append((job.id, name))
-            own.ack(job)
-        own.close()
+        def work(name: str) -> None:
+            own = JobQueue(path, clock=clock, rng=random.Random(name))
+            try:
+                start.wait()  # hepsi aynı anda yarışsın
+                for _ in range(100):  # işçi başına en çok 100 iş → en az 3 işçi katılmak ZORUNDA
+                    job = own.reserve("e", name)
+                    if job is None:
+                        break
+                    with lock:
+                        seen.append((job.id, name))
+                    own.ack(job)
+            finally:
+                own.close()
 
-    threads = [threading.Thread(target=work, args=(f"isci-{n}",)) for n in range(4)]
-    for thread in threads:
-        thread.start()
-    for thread in threads:
-        thread.join()
-    ids = [job_id for job_id, _ in seen]
-    assert len(ids) == 300 and len(set(ids)) == 300  # her iş tam bir kez alındı
-    assert len({name for _, name in seen}) > 1  # gerçekten birden çok işçi çalıştı
-    assert setup.stats("e") == {"tamam": 300}
-    setup.close()
+        threads = [threading.Thread(target=work, args=(f"isci-{n}",)) for n in range(4)]
+        for thread in threads:
+            thread.start()
+        for thread in threads:
+            thread.join()
+        ids = [job_id for job_id, _ in seen]
+        assert len(ids) == 300 and len(set(ids)) == 300  # her iş tam bir kez alındı
+        assert len({name for _, name in seen}) >= 3
+        assert setup.stats("e") == {"tamam": 300}
+    finally:
+        setup.close()
 
 
 def _child(path: Path, code: str) -> int:
@@ -234,3 +246,34 @@ def test_cli(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
     assert cli_main([db, "zamanla", "r", "61 * * * *", "e", "{}"]) == 1
     assert "0–59" in capsys.readouterr().err
     assert cli_main([db, "ekle", "e", "[1]"]) == 1
+
+
+class _CrashError(Exception):
+    pass
+
+
+class _DiesBeforeScheduleUpdate:
+    """Bağlantı sarmalayıcı: zamanlayıcı işi ekledikten sonra, next_run'ı güncelleyemeden "ölür"."""
+
+    def __init__(self, db: object) -> None:
+        self._db = db
+
+    def execute(self, sql: str, *args: object) -> object:
+        if sql.startswith("UPDATE schedules"):
+            raise _CrashError
+        return self._db.execute(sql, *args)  # type: ignore[attr-defined]
+
+
+def test_scheduler_crash_between_enqueue_and_advance_creates_no_duplicate(
+    queue: JobQueue, clock: FakeClock
+) -> None:
+    queue.schedule("rapor", "*/5 * * * *", "e", {"tur": "rapor"})
+    clock.advance(5 * 60)
+    real = queue.db
+    queue.db = _DiesBeforeScheduleUpdate(real)  # type: ignore[assignment]
+    with pytest.raises(_CrashError):
+        queue.tick()
+    queue.db = real
+    assert queue.stats("e") == {"bekliyor": 1}  # iş eklendi ama next_run ilerlemedi
+    queue.tick()  # yeniden başlayan zamanlayıcı aynı dilimi yine görür...
+    assert queue.stats("e") == {"bekliyor": 1}  # ...ama idempotentlik anahtarı ikinciyi engeller

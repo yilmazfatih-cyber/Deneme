@@ -25,7 +25,7 @@ export function setProps(dom: Element, next: Props, prev: Props, svg: boolean, r
 /** `javascript:` ile başlayan adresler (boşluk/kontrol karakteri hilelerine karşı temizlenerek) reddedilir. */
 export function isUnsafeUrl(value: string): boolean {
   // eslint-disable-next-line no-control-regex -- tarayıcının yok saydığı kontrol karakterlerini biz de atıyoruz
-  const cleaned = value.replace(/[\u0000- ]/g, '')
+  const cleaned = value.replace(/[\u0000-\u0020]/g, '')
   return /^javascript:/i.test(cleaned)
 }
 

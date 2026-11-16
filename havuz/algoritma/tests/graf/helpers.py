@@ -7,6 +7,7 @@ Genişletme: yeni bir kaba kuvvet denetimi gerekiyorsa buraya ekleyin.
 
 from __future__ import annotations
 
+import itertools
 import math
 from collections.abc import Sequence
 
@@ -88,6 +89,20 @@ def component_count(n: int, edges: Sequence[Edge], removed: int = -1) -> int:
             count += 1
             seen.update(w for w in alive if reach[v][w])
     return count
+
+
+def brute_force_msf(n: int, edges: Sequence[WEdge]) -> int:
+    """En küçük kapsayan ormanın ağırlığı: bileşen sayısını koruyan en hafif kenar alt kümesi."""
+    plain = [(u, v) for u, v, _ in edges]
+    target = component_count(n, plain)
+    size = n - target  # kapsayan ormandaki kenar sayısı
+    best = None
+    for subset in itertools.combinations(range(len(edges)), size):
+        chosen = [plain[i] for i in subset]
+        if component_count(n, chosen) == target:
+            weight = sum(edges[i][2] for i in subset)
+            best = weight if best is None else min(best, weight)
+    return best if best is not None else 0
 
 
 def all_pairs_shortest(n: int, edges: Sequence[WEdge], directed: bool) -> list[list[float]]:

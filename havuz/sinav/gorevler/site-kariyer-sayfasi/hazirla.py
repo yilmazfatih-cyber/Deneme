@@ -9,4 +9,6 @@ from pathlib import Path
 
 def hazirla(kopya: Path) -> None:
     if (kopya / "src/content/sayfalar/tr/kariyer.md").exists():
-        raise RuntimeError("site temelinde zaten bir kariyer sayfası var; görev metnini güncelleyin.")
+        raise RuntimeError(
+            "site temelinde zaten bir kariyer sayfası var; görev metnini güncelleyin."
+        )

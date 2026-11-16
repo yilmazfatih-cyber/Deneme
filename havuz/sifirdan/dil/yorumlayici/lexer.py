@@ -67,7 +67,7 @@ class Lexer:
                     and self.tokens[-1].type is not TokenType.NEWLINE
                 ):
                     self.add(TokenType.NEWLINE, "\\n", pos)
-            elif ch in " \t\r﻿":
+            elif ch in " \t\r\ufeff":
                 self.advance()
             elif ch == "#":
                 while self.i < len(self.src) and self.peek() != "\n":

@@ -1,0 +1,13 @@
+{
+  "ad": "sifirdan-arayuz",
+  "baslik": "Sıfırdan dizisi — arayüz, tarayıcı ve grafik kolu",
+  "ozet": "Bağımlılıksız TypeScript ile testle kanıtlanmış on üç mini sistem: sinyal tepkiselliği, sanal DOM, yönlendirici, durum deposu, form + şema, e-tablo motoru, metin düzenleyici, 2B oyun motoru, ışın izleyici, SVG grafik, modül paketleyici, animasyon ve sanal liste; her birinin tarayıcı gösterimi.",
+  "tur": "node",
+  "gereksinim": { "node": ">=22.12" },
+  "kur": ["npm ci"],
+  "denetle": ["npm run check"],
+  "uzunDenetim": ["npm run build", "npm run e2e"],
+  "baslat": "npm run dev",
+  "yerTutucular": [{ "ara": "havuz-sifirdan-arayuz", "anlam": "npm paket adı (package.json name)" }],
+  "kopyalamaHaric": ["node_modules", "dist", "playwright-report", "test-results", "coverage"]
+}

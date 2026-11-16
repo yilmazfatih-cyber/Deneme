@@ -115,7 +115,11 @@ Türkçe doğru `lower_tr upper_tr`; kümeleme: `count(*) count sum avg min max`
   denendi; bulunan tek fark (REAL toplamında son bit) Kahan-Babuška-Neumaier toplamasıyla giderildi.
 - **Testin dişleri:** 8 bilerek bozulmuş sürümün (taban bölme, Unicode LIKE, IN'de NULL'u yok sayma,
   NULL'u sona sıralama, LEFT JOIN'de eşsiz satırı atma, dizin aralığı sınır hatası, dizin varken
-  Filter'ı atlama, Python tarzı `%`) hepsi hızlı farksal testte yakalandı.
+  Filter'ı atlama, Python tarzı `%`) hepsi hızlı denetimde yakalandı. Dizin aralığının fazladan aday
+  vermesi sonucu bozmaz (Filter adayları yeniden süzer), bu yüzden farksal test onu göremez; onu dizin
+  aramalarını kaba kuvvetle karşılaştıran birim testi yakalar.
+- **Dizin aramaları:** `lookup_eq` ve dahil/dışlayıcı her sınır bileşimiyle `lookup_range`, NULL, tamsayı,
+  ondalık ve metin karışık anahtarlarda kaba kuvvetle birebir aynı rowid listesini verir.
 - **Tek tek ifadeler:** 85 ifadenin sonucu ve sonuç türü (`int`/`float`) sqlite3 ile aynı; `substr`
   bütün küçük argüman bileşimlerinde; `sum`/`avg` 300 rastgele REAL dizisinde bit bit aynı.
 - **Atomiklik:** çok satırlı INSERT ya da UPDATE ortasında kısıt bozulursa deyimin hiçbir etkisi kalmaz.

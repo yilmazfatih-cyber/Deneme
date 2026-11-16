@@ -46,8 +46,11 @@ _LOWER = str.maketrans({"I": "ı", "İ": "i"})
 
 def matches_keyword(test_id: str, keyword: str) -> bool:
     """`-k` süzgeci: büyük/küçük harf duyarsız, Türkçe kurallı (İ→i, I→ı)."""
-    fold = lambda text: text.translate(_LOWER).lower()  # noqa: E731  # tr-güvenli: önce çevrildi
-    return fold(keyword) in fold(test_id)
+    return fold_tr(keyword) in fold_tr(test_id)
+
+
+def fold_tr(text: str) -> str:
+    return text.translate(_LOWER).lower()  # tr-güvenli: I/İ önceden çevrildi
 
 
 def find_files(paths: list[Path]) -> list[Path]:
@@ -80,7 +83,11 @@ def on_sys_path(folder: Path) -> Iterator[None]:
 def param_id(values: tuple[Any, ...]) -> str:
     parts = []
     for value in values:
-        text = str(value) if isinstance(value, (int, float, str, bool, type(None))) else type(value).__name__
+        text = (
+            str(value)
+            if isinstance(value, (int, float, str, bool, type(None)))
+            else type(value).__name__
+        )
         parts.append(text if len(text) <= 20 else text[:19] + "…")
     return "-".join(parts)
 
@@ -93,7 +100,10 @@ def expand(fn: Callable[..., Any]) -> list[tuple[str, dict[str, Any]]]:
     options: list[list[tuple[str, dict[str, Any]]]] = []
     for keys, rows, ids in layers:
         options.append(
-            [(ids[i] if ids else param_id(row), dict(zip(keys, row, strict=True))) for i, row in enumerate(rows)]
+            [
+                (ids[i] if ids else param_id(row), dict(zip(keys, row, strict=True)))
+                for i, row in enumerate(rows)
+            ]
         )
     cases = []
     for combo in itertools.product(*reversed(options)):
@@ -117,7 +127,9 @@ def collect_module(module: types.ModuleType, display: str) -> list[TestCase]:
     return cases
 
 
-def collect(paths: list[Path], base: Path | None = None) -> tuple[list[TestCase], list[CollectionError]]:
+def collect(
+    paths: list[Path], base: Path | None = None
+) -> tuple[list[TestCase], list[CollectionError]]:
     cases: list[TestCase] = []
     errors: list[CollectionError] = []
     for path in find_files(paths):

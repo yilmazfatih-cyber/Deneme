@@ -1,7 +1,7 @@
 kimlik = "uygulama-notlar"
 baslik = "Notlar özelliği: üreteç, yeni alan ve sabitlenenler üstte"
 temel = "uygulama"
-zorluk = "orta"
+zorluk = "zor"
 tur = "ozellik"
 tahmini_sure_dk = 30
 aciklama = """AGENTS.md tarifiyle üreteçten yeni varlık; ardından alan sınırı değiştirmek, varsayılanlı yeni alan \

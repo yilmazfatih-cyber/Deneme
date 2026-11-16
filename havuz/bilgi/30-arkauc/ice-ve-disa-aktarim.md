@@ -57,7 +57,7 @@ def kurus(metin: str) -> int:  # "1.234,50" → 123450 (Türkçe yazım); kayan 
 
 
 def ice_aktar(dosya: str, deneme: bool) -> dict:
-    okuyucu = csv.DictReader(io.StringIO(dosya.lstrip("﻿")), delimiter=";")
+    okuyucu = csv.DictReader(io.StringIO(dosya.lstrip("\ufeff")), delimiter=";")
     if okuyucu.fieldnames != ["kod", "ad", "fiyat"]:
         return {"hata": f"başlık 'kod;ad;fiyat' olmalı, gelen: {okuyucu.fieldnames}"}
     gecerli, hatalar = [], []
@@ -80,13 +80,13 @@ def ice_aktar(dosya: str, deneme: bool) -> dict:
     return {"yazilacak": len(gecerli), "hatalar": [], "yazildi": True}
 
 
-bozuk = "﻿kod;ad;fiyat\r\nS1;Simit;15,00\r\nC1;Çay;on lira\r\nP1;;20\r\n"
+bozuk = "\ufeffkod;ad;fiyat\r\nS1;Simit;15,00\r\nC1;Çay;on lira\r\nP1;;20\r\n"
 assert ice_aktar(bozuk, deneme=False) == {
     "yazilacak": 1,
     "hatalar": [{"satir": 3, "neden": "fiyat 1.234,50 biçiminde olmalı"}, {"satir": 4, "neden": "kod ve ad boş olamaz"}],
     "yazildi": False,
 }
-temiz = "﻿kod;ad;fiyat\r\nS1;Simit;15,00\r\nC1;Çay;1.234,5\r\n"
+temiz = "\ufeffkod;ad;fiyat\r\nS1;Simit;15,00\r\nC1;Çay;1.234,5\r\n"
 assert ice_aktar(temiz, deneme=True)["yazildi"] is False  # önizleme: yazmaz
 for _ in range(2):  # aynı dosya iki kez yüklendi (çift tık, yeniden deneme)
     assert ice_aktar(temiz, deneme=False)["yazildi"]
@@ -137,7 +137,7 @@ def disa_aktar(satirlar):
     """Üreteç: dev tabloyu belleğe almadan parça parça yazar (yanıt akışı olarak gönderilir)."""
     tampon = io.StringIO()
     yazici = csv.writer(tampon, delimiter=";", lineterminator="\r\n")
-    yield "﻿"  # Türkçe Excel UTF-8'i BOM ile tanır
+    yield "\ufeff"  # Türkçe Excel UTF-8'i BOM ile tanır
     yazici.writerow(["Ad", "Not", "Bakiye"])
     for satir in satirlar:  # gerçekte: imleçli sorgudan gelen satırlar
         yazici.writerow([hucre(d) for d in satir])
@@ -147,9 +147,9 @@ def disa_aktar(satirlar):
     yield tampon.getvalue()  # satır hiç yoksa başlık yine yazılsın
 
 
-assert "".join(disa_aktar([])) == "﻿Ad;Not;Bakiye\r\n"  # boş liste: yalnız başlık
+assert "".join(disa_aktar([])) == "\ufeffAd;Not;Bakiye\r\n"  # boş liste: yalnız başlık
 veri = [("Ayşe", '=HYPERLINK("http://kotu.example","Tıkla")', 123450), ("Burak", "-5 indirim", -250)]
-satirlar = "".join(disa_aktar(veri)).removeprefix("﻿").split("\r\n")
+satirlar = "".join(disa_aktar(veri)).removeprefix("\ufeff").split("\r\n")
 assert satirlar[0] == "Ad;Not;Bakiye"
 assert satirlar[1] == 'Ayşe;"\'=HYPERLINK(""http://kotu.example"",""Tıkla"")";1234,50'  # formül çalışmaz
 assert satirlar[2] == "Burak;'-5 indirim;-2,50"  # metin kaçışlandı, eksi tutar sayı olarak kaldı
@@ -211,7 +211,7 @@ tamam
   vermek; `parseFloat("1.234,50")`; telefonu sayıya çevirmek; aktarım için ayrı ve süzgeçsiz sorgu; bütün satırları
   belleğe almak; formül kaçışını unutmak; kodlamayı hiç düşünmemek.
 - **Çıktıda arayın:** `parseFloat`/`float(` ile tutar okuma; içe aktarımda `ON CONFLICT`/upsert; hata raporunda satır
-  numarası; aktarım sorgusunda kiracı koşulu; yazıcıda `﻿` ve `;`.
+  numarası; aktarım sorgusunda kiracı koşulu; yazıcıda `U+FEFF` ve `;`.
 - **Test isteyin:** "aynı dosya iki kez → kayıt sayısı değişmez", "üçüncü satırdaki hatalı fiyat raporda satır 3
   olarak görünür ve hiçbir şey yazılmaz", "`=` ile başlayan not dışa aktarımda `'=` olur", "başka kiracının kaydı
   dışa aktarımda yok".

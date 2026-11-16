@@ -44,6 +44,22 @@ def test_random_expressions(seed: int) -> None:
         assert_same(f"yazdır({random_expression(rng)})")
 
 
+@pytest.mark.parametrize("seed", range(60))
+def test_constant_folding_keeps_meaning(seed: int) -> None:
+    """Katlamalı sanal makine == katlamasız yorumlayıcı (rastgele ifadeler sabit doludur)."""
+    rng = random.Random(50_000 + seed)
+    sources = [f"yazdır({random_expression(rng)})" for _ in range(10)]
+    sources.append(random_program(random.Random(seed)))
+    for source in sources:
+        out: list[str] = []
+        try:
+            VM(out.append, LIMITS, optimize=True).run(source)
+            folded: tuple[str, str | None] = ("".join(out), None)
+        except TohumError as err:
+            folded = ("".join(out), str(err))
+        assert folded == outcome(Interpreter, source), source
+
+
 @pytest.mark.yavas
 def test_many_random_programs() -> None:
     for seed in range(1_000, 4_000):

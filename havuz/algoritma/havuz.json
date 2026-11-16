@@ -1,0 +1,13 @@
+{
+  "ad": "algoritma",
+  "baslik": "Algoritmalar ve veri yapıları kütüphanesi",
+  "ozet": "138 modüllük, yalnız stdlib kullanan, her gerçeklemesi kaba kuvvet ya da stdlib ile karşılaştırılarak sınanmış, Türkçe açıklamalı algoritma ve veri yapısı kütüphanesi.",
+  "tur": "python",
+  "gereksinim": { "python": ">=3.11" },
+  "python": { "ekstra": "dev" },
+  "denetle": ["python scripts/check.py"],
+  "uzunDenetim": ["python scripts/check.py --uzun"],
+  "baslat": null,
+  "yerTutucular": [{ "ara": "havuz-algoritma", "anlam": "paket (dağıtım) adı, pyproject.toml içinde" }],
+  "kopyalamaHaric": [".venv", "__pycache__", ".mypy_cache", ".ruff_cache", ".pytest_cache", ".hypothesis", "*.egg-info", "build", "dist"]
+}

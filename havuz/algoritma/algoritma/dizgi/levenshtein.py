@@ -1,16 +1,13 @@
 """Levenshtein ve Damerau-Levenshtein uzaklıkları: az bellekli sürümler (yazım denetimi için).
 
 Fikir:
-    Levenshtein: ekle/sil/değiştir işlemleriyle a'yı b'ye çevirmenin en az adım sayısı. DP
-    tablosunun her satırı yalnız bir öncekine bağlı olduğundan iki satır yeter: bellek
-    O(min(n, m)). (İşlemlerin kendisi gerekiyorsa `algoritma/dp/edit_distance.py`.)
-    Damerau ekler: bitişik iki harfin yer değiştirmesi ("kitpa" → "kitap") TEK işlemdir.
-      * Kısıtlı sürüm (OSA, "en iyi hizalama"): bir parça yalnız bir kez düzenlenebilir.
-        Hızlı ve yaygın ama üçgen eşitsizliğini bozar: OSA("ca", "abc") = 3 iken gerçek 2'dir.
-      * Kısıtsız sürüm (gerçek Damerau-Levenshtein): her harfin en son görüldüğü satır
-        tutularak (Lowrance-Wagner) yer değiştirmenin arasına ekleme/silme de girebilir; metriktir.
-    Türkçe notu: karşılaştırma kod noktasıyladır; "ı" ile "i" farklı harftir. Harf duyarsız
-    karşılaştırma için önce `casefold_tr` uygulayın.
+    Levenshtein: ekle/sil/değiştir ile a'yı b'ye çevirmenin en az adımı. DP'nin her satırı yalnız
+    öncekine bağlı olduğundan iki satır yeter: bellek O(min(n, m)) (işlemlerin kendisi için
+    `algoritma/dp/edit_distance.py`). Damerau, bitişik iki harfin yer değiştirmesini ("kitpa" →
+    "kitap") TEK işlem sayar. Kısıtlı sürüm (OSA) her parçayı bir kez düzenler: hızlıdır ama
+    üçgen eşitsizliğini bozar (OSA("ca", "abc") = 3, gerçeği 2). Kısıtsız (gerçek) sürüm her
+    harfin son görüldüğü satırı tutar (Lowrance-Wagner) ve bir metriktir.
+    Türkçe: karşılaştırma kod noktasıyladır ("ı" ≠ "i"); harf duyarsız için önce `casefold_tr`.
 
 Karmaşıklık: Levenshtein O(n · m) zaman, O(min(n, m)) yer; OSA O(n · m) zaman, O(m) yer;
     gerçek Damerau O(n · m) zaman, O(n · m) yer

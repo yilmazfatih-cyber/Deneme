@@ -1,0 +1,89 @@
+/* Düzenleyici gösterimine özgü stiller. Yazı eş aralıklıdır ama ölçüm DOM aralıklarıyla yapıldığından
+   emoji gibi geniş karakterlerde de imleç doğru yere oturur. */
+.secenekler label {
+  font-weight: 400;
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  min-height: 44px;
+}
+.alan {
+  display: grid;
+  gap: 4px;
+}
+.arac {
+  margin-bottom: 8px;
+}
+.duzenleyici {
+  position: relative;
+  border: 1px solid var(--kenar);
+  border-radius: var(--yaricap);
+  background: var(--zemin);
+  overflow: auto;
+  max-height: 60vh;
+  cursor: text;
+}
+.duzenleyici:focus-within {
+  outline: 3px solid var(--vurgu);
+  outline-offset: 2px;
+}
+.cizim {
+  display: flex;
+  min-height: 240px;
+  font:
+    15px/24px ui-monospace,
+    'SFMono-Regular',
+    Menlo,
+    Consolas,
+    monospace;
+}
+.numaralar {
+  padding: 8px 8px 8px 10px;
+  color: var(--ikincil);
+  text-align: end;
+  user-select: none;
+  border-right: 1px solid var(--kenar);
+  min-width: 3.2em;
+}
+.satirlar {
+  position: relative;
+  padding: 8px 12px;
+  flex: 1;
+  min-width: 0;
+}
+.satir-metni {
+  white-space: pre;
+  min-height: 24px;
+}
+.katman {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.imlec {
+  position: absolute;
+  width: 2px;
+  background: var(--metin);
+}
+.secim {
+  position: absolute;
+  background: color-mix(in srgb, var(--vurgu) 35%, transparent);
+}
+.eslesme {
+  position: absolute;
+  background: color-mix(in srgb, var(--uyari) 30%, transparent);
+  border-bottom: 2px solid var(--uyari);
+}
+.kopru {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  resize: none;
+  overflow: hidden;
+}

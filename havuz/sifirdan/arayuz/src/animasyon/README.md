@@ -10,7 +10,13 @@ düzen geçişi ve `prefers-reduced-motion` saygısı.
 ```ts
 import { tween, springAnimation, timeline, flip, cubic } from './index.ts'
 
-tween({ from: '#0969da', to: '#bf3989', duration: 400, easing: cubic.out, onUpdate: (c) => (kutu.style.background = c) })
+tween({
+  from: '#0969da',
+  to: '#bf3989',
+  duration: 400,
+  easing: cubic.out,
+  onUpdate: (c) => (kutu.style.background = c),
+})
 const yay = springAnimation({ from: 0, to: 300, onUpdate: (x) => (top.style.transform = `translateX(${x}px)`) })
 yay.retarget(120) // hız korunarak yeni hedefe
 flip([...liste.children] as HTMLElement[], () => liste.append(liste.firstElementChild!))
@@ -26,11 +32,11 @@ bağımsız bir ikiye bölme çözümüyle 6 basamak örtüşür.
 **Yay (`spring.ts`).** Sönümlü harmonik salınıcı `m·x'' + c·x' + k·x = 0`; süre yoktur, hareket durulunca
 biter. Konum her karede **kapalı formülden** okunur (kare hızından bağımsız, kesin):
 
-| Sönüm oranı ζ = c / (2√(k·m)) | Davranış                     | Formül                                        |
-| ----------------------------- | ---------------------------- | --------------------------------------------- |
-| ζ < 1                         | salınır, hedefi aşar         | e^(−ζω0t)·(x0·cos ωd t + (v0+ζω0x0)/ωd·sin ωd t) |
-| ζ = 1                         | aşmadan en hızlı             | e^(−ω0t)·(x0 + (v0 + ω0x0)·t)                   |
-| ζ > 1                         | ağır, yavaş yaklaşır         | C1·e^(r1t) + C2·e^(r2t)                         |
+| Sönüm oranı ζ = c / (2√(k·m)) | Davranış             | Formül                                           |
+| ----------------------------- | -------------------- | ------------------------------------------------ |
+| ζ < 1                         | salınır, hedefi aşar | e^(−ζω0t)·(x0·cos ωd t + (v0+ζω0x0)/ωd·sin ωd t) |
+| ζ = 1                         | aşmadan en hızlı     | e^(−ω0t)·(x0 + (v0 + ω0x0)·t)                    |
+| ζ > 1                         | ağır, yavaş yaklaşır | C1·e^(r1t) + C2·e^(r2t)                          |
 
 Doğrulama: üç rejimin her biri dördüncü derece Runge-Kutta sayısal tümleviyle (dt = 0,5 ms) karşılaştırılır;
 konum 6, hız 5 basamak örtüşür. `retarget` o anki hızı koruyarak yeni hedefe yeni bir yay başlatır.
@@ -60,18 +66,18 @@ dönüşümü sıfıra oynat. Düzen hesabı yalnız iki kez yapılır, animasyo
 
 ## Dosya haritası
 
-| Dosya            | Sorumluluk                                                      |
-| ---------------- | --------------------------------------------------------------- |
-| `easing.ts`      | Eğri aileleri, cubic-bezier, steps, ad tablosu                  |
-| `spring.ts`      | Kapalı formül yay, durulma, RK4 karşılaştırma adımı             |
-| `color.ts`       | Renk ayrıştırma/biçimleme, sRGB ↔ OKLab, karıştırma             |
-| `interpolate.ts` | Türe göre ara değerleyici, birimli dizgi, dönüşüm               |
-| `ticker.ts`      | Paylaşılan kare döngüsü, el saati, sistem saati                 |
-| `player.ts`      | Oynat/duraklat/git/ters/iptal, `finished`                       |
-| `tween.ts`       | Süreli ara değerleme, yay animasyonu (`retarget`)               |
-| `timeline.ts`    | Zaman çizelgesi, konum kuralları, kademeleme                    |
-| `flip.ts`        | FLIP düzen geçişi                                               |
-| `motion.ts`      | Hareket azaltma tercihi                                         |
+| Dosya            | Sorumluluk                                          |
+| ---------------- | --------------------------------------------------- |
+| `easing.ts`      | Eğri aileleri, cubic-bezier, steps, ad tablosu      |
+| `spring.ts`      | Kapalı formül yay, durulma, RK4 karşılaştırma adımı |
+| `color.ts`       | Renk ayrıştırma/biçimleme, sRGB ↔ OKLab, karıştırma |
+| `interpolate.ts` | Türe göre ara değerleyici, birimli dizgi, dönüşüm   |
+| `ticker.ts`      | Paylaşılan kare döngüsü, el saati, sistem saati     |
+| `player.ts`      | Oynat/duraklat/git/ters/iptal, `finished`           |
+| `tween.ts`       | Süreli ara değerleme, yay animasyonu (`retarget`)   |
+| `timeline.ts`    | Zaman çizelgesi, konum kuralları, kademeleme        |
+| `flip.ts`        | FLIP düzen geçişi                                   |
+| `motion.ts`      | Hareket azaltma tercihi                             |
 
 ## Sınırlar
 

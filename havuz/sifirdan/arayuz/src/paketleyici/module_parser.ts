@@ -6,6 +6,17 @@
 // Başvuru çıkarımı bilerek "fazla"dır: `.ad` dışındaki her ad başvuru sayılır (gölgeleme izlenmez); yanlış
 // pozitif yalnız fazladan kod tutar, eksik kod üretmez.
 // Genişletme: dinamik `import()` için `kind: 'dynamic-import'` ekleyip çizgede tembel kenar olarak işleyin.
+import {
+  declarationEnd,
+  declaredNames,
+  genericEnd,
+  isPunct,
+  isWord,
+  matching,
+  parseSpecifiers,
+  refsOf,
+  unquote,
+} from './statements.ts'
 import { SyntaxErrorAt, tokenize, type Token } from './tokenizer.ts'
 
 export interface ImportSpec {
@@ -34,203 +45,6 @@ export type Statement =
   | (Base & { kind: 'declaration'; names: string[]; exported: boolean; bodyStart: number })
   | (Base & { kind: 'default'; name: string | undefined; bodyStart: number; isDeclaration: boolean })
   | (Base & { kind: 'other' })
-
-const CONTINUES = new Set([
-  '.',
-  '?.',
-  '(',
-  '[',
-  ',',
-  '=',
-  '+',
-  '-',
-  '*',
-  '/',
-  '%',
-  '**',
-  '&&',
-  '||',
-  '??',
-  '?',
-  ':',
-  '=>',
-  '===',
-  '!==',
-  '==',
-  '!=',
-  '<',
-  '>',
-  '<=',
-  '>=',
-  '&',
-  '|',
-  '^',
-  '<<',
-  '>>',
-  '>>>',
-  '+=',
-  '-=',
-  '*=',
-  '/=',
-  '%=',
-  '&=',
-  '|=',
-  '^=',
-  '**=',
-  '<<=',
-  '>>=',
-  '>>>=',
-  '&&=',
-  '||=',
-  '??=',
-  'in',
-  'instanceof',
-])
-const OPEN = new Set(['(', '[', '{'])
-const CLOSE = new Set([')', ']', '}'])
-
-const isPunct = (t: Token | undefined, value: string) => t?.type === 'punct' && t.value === value
-const isWord = (t: Token | undefined, value: string) => t?.type === 'ident' && t.value === value
-const unquote = (t: Token) => t.value.slice(1, -1)
-
-function depthDelta(t: Token): number {
-  if (t.type === 'punct') return OPEN.has(t.value) ? 1 : CLOSE.has(t.value) ? -1 : 0
-  if (t.type === 'template') return (t.value.startsWith('}') ? -1 : 0) + (t.value.endsWith('${') ? 1 : 0)
-  return 0
-}
-
-function endsExpression(t: Token): boolean {
-  if (t.type === 'punct') return [')', ']', '}', '++', '--'].includes(t.value)
-  return !(
-    t.type === 'ident' &&
-    ['return', 'typeof', 'new', 'delete', 'void', 'await', 'yield', 'throw', 'extends'].includes(t.value)
-  )
-}
-
-/** Genel deyim sonu: derinlik 0'da ";" ya da satır sonu sezgisi. */
-function genericEnd(tokens: Token[], from: number): number {
-  let depth = 0
-  for (let j = from; j < tokens.length; j++) {
-    const t = tokens[j] as Token
-    if (
-      j > from &&
-      depth === 0 &&
-      t.newlineBefore &&
-      endsExpression(tokens[j - 1] as Token) &&
-      !CONTINUES.has(t.value) &&
-      t.type !== 'template'
-    )
-      return j
-    depth += depthDelta(t)
-    if (depth === 0 && isPunct(t, ';')) return j + 1
-    if (depth < 0) throw new SyntaxErrorAt('Fazladan kapanış ayracı', t.line)
-  }
-  return tokens.length
-}
-
-/** `from` konumundaki açılış ayracının kapanışının bir sonrası. */
-function matching(tokens: Token[], from: number): number {
-  let depth = 0
-  for (let j = from; j < tokens.length; j++) {
-    depth += depthDelta(tokens[j] as Token)
-    if (depth === 0) return j + 1
-  }
-  throw new SyntaxErrorAt('Kapanmamış ayraç', tokens[from]?.line ?? 0)
-}
-
-/** function/class bildiriminin sonu (gövdenin kapanış ayracı). */
-function declarationEnd(tokens: Token[], from: number): number {
-  let j = from
-  if (isWord(tokens[j], 'async')) j++
-  if (isWord(tokens[j], 'class')) {
-    let depth = 0
-    for (j++; j < tokens.length; j++) {
-      const t = tokens[j] as Token
-      if (depth === 0 && isPunct(t, '{')) return matching(tokens, j)
-      depth += depthDelta(t)
-    }
-  } else {
-    while (j < tokens.length && !isPunct(tokens[j], '(')) j++
-    j = matching(tokens, j)
-    if (isPunct(tokens[j], '{')) return matching(tokens, j)
-  }
-  throw new SyntaxErrorAt('Bildirim gövdesi bulunamadı', tokens[from]?.line ?? 0)
-}
-
-function refsOf(tokens: Token[], from: number, to: number): Set<string> {
-  const refs = new Set<string>()
-  for (let j = from; j < to; j++) {
-    const t = tokens[j] as Token
-    if (t.type !== 'ident') continue
-    const prev = tokens[j - 1]
-    if (prev && prev.type === 'punct' && (prev.value === '.' || prev.value === '?.')) continue
-    refs.add(t.value)
-  }
-  return refs
-}
-
-/** Bağlama örüntüsündeki adlar: `a`, `{ a, b: c, d = 1, ...e }`, `[x, , y]`. */
-function bindingNames(tokens: Token[], from: number, to: number): string[] {
-  const names: string[] = []
-  let skipDepth = -1
-  let depth = 0
-  for (let j = from; j < to; j++) {
-    const t = tokens[j] as Token
-    if (skipDepth >= 0) {
-      if (depth === skipDepth && (isPunct(t, ',') || isPunct(t, '}') || isPunct(t, ']'))) skipDepth = -1
-      else {
-        depth += depthDelta(t)
-        continue
-      }
-    }
-    if (isPunct(t, '=')) {
-      skipDepth = depth
-      continue
-    }
-    depth += depthDelta(t)
-    if (t.type === 'ident' && !isPunct(tokens[j + 1], ':')) names.push(t.value)
-  }
-  return names
-}
-
-/** const/let/var bildirimindeki tüm adlar (virgülle ayrılmış çoklu bildiriciler dahil). */
-function declaredNames(tokens: Token[], from: number, to: number): string[] {
-  const names: string[] = []
-  let depth = 0
-  let start = from
-  let inInit = false
-  for (let j = from; j <= to; j++) {
-    const t = tokens[j]
-    if (j === to || (depth === 0 && isPunct(t, ','))) {
-      if (!inInit) names.push(...bindingNames(tokens, start, j))
-      start = j + 1
-      inInit = false
-      continue
-    }
-    if (depth === 0 && isPunct(t, '=') && !inInit) {
-      names.push(...bindingNames(tokens, start, j))
-      inInit = true
-    }
-    depth += depthDelta(t as Token)
-  }
-  return names
-}
-
-function parseSpecifiers(tokens: Token[], open: number): { list: { from: string; to: string }[]; next: number } {
-  const close = matching(tokens, open)
-  const list: { from: string; to: string }[] = []
-  for (let j = open + 1; j < close - 1; j++) {
-    const t = tokens[j] as Token
-    if (isPunct(t, ',')) continue
-    const name = t.type === 'string' ? unquote(t) : t.value
-    if (isWord(tokens[j + 1], 'as')) {
-      const alias = tokens[j + 2] as Token
-      list.push({ from: name, to: alias.type === 'string' ? unquote(alias) : alias.value })
-      j += 2
-    } else list.push({ from: name, to: name })
-  }
-  return { list, next: close }
-}
 
 export interface ParsedModule {
   source: string

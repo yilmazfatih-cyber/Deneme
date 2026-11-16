@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <title>Işın izleyici — sıfırdan arayüz</title>
+    <link rel="stylesheet" href="../ortak/stil.css" />
+    <link rel="stylesheet" href="./stil.css" />
+  </head>
+  <body>
+    <header class="ust">
+      <div class="kap">
+        <a class="geri" href="../../">← Tüm gösterimler</a>
+        <h1>Işın izleyici</h1>
+        <p class="alt-baslik">
+          Cam küre ışığı kırar, ayna küre çevresini yansıtır, zemin dama desenlidir. Çizim bir Web Worker'da yapılır:
+          önce kaba bloklar, sonra ortadan dışa keskin karolar gelir. Sayfa bu sırada donmaz.
+        </p>
+      </div>
+    </header>
+    <main class="kap" id="icerik">
+      <div class="panel satir ayarlar">
+        <label for="boyut">Çözünürlük</label>
+        <select id="boyut">
+          <option value="320x200">320 × 200</option>
+          <option value="480x300" selected>480 × 300</option>
+          <option value="640x400">640 × 400</option>
+        </select>
+        <label for="ornek">Kenar yumuşatma</label>
+        <select id="ornek">
+          <option value="1">Yok (1 örnek)</option>
+          <option value="2" selected>2 × 2</option>
+          <option value="3">3 × 3</option>
+        </select>
+        <button type="button" class="birincil" id="ciz">Çiz</button>
+        <button type="button" id="indir" disabled>PNG indir</button>
+      </div>
+      <div class="satir ilerleme">
+        <label for="ilerleme">İlerleme</label>
+        <progress id="ilerleme" max="100" value="0"></progress>
+        <span id="durum" class="durum" role="status"></span>
+      </div>
+      <canvas
+        id="tuval"
+        role="img"
+        aria-label="Işın izlenmiş sahne: dama desenli zemin üzerinde cam küre, ayna küre, turuncu ve yeşil mat küreler ve mavi bir piramit"
+      ></canvas>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

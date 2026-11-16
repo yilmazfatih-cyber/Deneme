@@ -71,5 +71,7 @@ def run(command: list[str], cwd: Path) -> str:
     """Çözüm betiklerinde komut (ör. üreteç) çalıştırır; başarısızsa çıktıyla birlikte hata verir."""
     done = subprocess.run(command, cwd=cwd, capture_output=True, text=True, check=False)
     if done.returncode != 0:
-        raise EditError(f"Komut başarısız: {' '.join(command)}\n{done.stdout[-2000:]}{done.stderr[-2000:]}")
+        raise EditError(
+            f"Komut başarısız: {' '.join(command)}\n{done.stdout[-2000:]}{done.stderr[-2000:]}"
+        )
     return done.stdout

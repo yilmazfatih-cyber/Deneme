@@ -1,7 +1,7 @@
 // Bul / değiştir: düz metin ya da düzenli ifade; büyük/küçük harf duyarlı ya da Türkçe kurala göre duyarsız;
 // tam kelime seçeneği. Türkçe duyarsızlık JS'nin `i` bayrağıyla yapılamaz (`/i/i` "İ" ile eşleşmez, "I" ile
 // eşleşir — Türkçede yanlış). Bunun yerine desen dönüştürülür: her harf, Türkçe büyük/küçük biçimlerini içeren
-// bir karakter sınıfına çevrilir: "i" → [iİ], "ı" → [ıI], "a" → [aA]. Kaçış dizileri (\d, ç, \p{L}),
+// bir karakter sınıfına çevrilir: "i" → [iİ], "ı" → [ıI], "a" → [aA]. Kaçış dizileri (\d, \u00e7, \p{L}),
 // adlı gruplar ve sayısal niceleyiciler dokunulmadan kopyalanır. Düz metin de önce kaçışlanıp aynı yoldan geçer.
 // Genişletme: "aksan duyarsız" (ç → c) arama için `caseVariants`'a eşdeğer harf tablosu eklenebilir.
 

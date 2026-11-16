@@ -23,7 +23,10 @@ export interface Schema<T> {
   parse(input: unknown): ParseResult<T>
   /** Boş (undefined, null, boş/boşluk dizgi) değere izin verir; sonuç undefined olur. */
   optional(): Schema<T | undefined>
-  /** Ek kural. `at`: iletinin bağlanacağı alt yol (ör. nesne düzeyinde "şifreler aynı mı" → ['sifreTekrar']). */
+  /**
+   * Ek kural. `at`: iletinin bağlanacağı alt yol (ör. nesne düzeyinde "şifreler aynı mı" → ['sifreTekrar']).
+   * `at` yoksa kural yalnız değer sorunsuzken sınanır; varsa yalnız o alanda başka ileti yokken.
+   */
   refine(test: (value: T) => boolean, message: string, at?: PathPart[]): Schema<T>
 }
 
@@ -55,7 +58,13 @@ export function makeSchema<T>(kind: string, check: Schema<T>['check']): Schema<T
       return makeSchema<T>(kind, (input, path, issues) => {
         const before = issues.length
         const value = check(input, path, issues)
-        if (issues.length === before && !test(value)) issues.push(makeIssue([...path, ...at], 'custom', { message }))
+        const target = [...path, ...at].join('.')
+        const fresh = issues.slice(before)
+        // `at` verilmediyse: değerin içinde hiç sorun yoksa sına (bozuk veride bütün-nesne kuralı yanıltır).
+        // `at` verildiyse: yalnız o alanda zaten bir ileti varsa atla (alan başına tek ileti), diğer alanların
+        // sorunları bu kuralı engellemez (ör. 2. adım boşken 1. adımdaki "şifreler aynı değil" yine görünür).
+        const blocked = at.length === 0 ? fresh.length > 0 : fresh.some((issue) => issue.path.join('.') === target)
+        if (!blocked && !test(value)) issues.push(makeIssue([...path, ...at], 'custom', { message }))
         return value
       })
     },

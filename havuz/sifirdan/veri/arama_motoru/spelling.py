@@ -31,6 +31,8 @@ def edit_distance(a: str, b: str, limit: int | None = None) -> int:
         if limit is not None and min(current) > limit:
             return limit + 1
         previous_previous, previous = previous, current
+    if limit is not None and previous[-1] > limit:
+        return limit + 1  # erken kesme tetiklenmese de sözleşme aynı: "sınırı aştı"
     return previous[-1]
 
 

@@ -23,6 +23,8 @@ import sys
 from pathlib import Path
 
 from ortak import HAVUZ, TURLER, ZORUNLU_ALANLAR, Temel, temelleri_bul
+from kacis import dosyalar as kaynak_dosyalari
+from kacis import sayac as gorunmez_sayaci
 
 KAYNAK_UZANTILARI = {".py", ".ts", ".tsx", ".js", ".mjs", ".astro", ".css", ".sql", ".html"}
 ATLANAN = {
@@ -79,6 +81,14 @@ def denetle_standart(temel: Temel) -> list[str]:
     benioku = temel.yol / "README.md"
     if benioku.exists() and "Sınırlar" not in benioku.read_text(encoding="utf-8"):
         hatalar.append("README.md'de `Sınırlar` bölümü yok (STANDARTLAR §11)")
+    gorunmez = 0
+    for dosya in kaynak_dosyalari([temel.yol]):
+        try:
+            gorunmez += gorunmez_sayaci(dosya.read_text(encoding="utf-8"), dosya.suffix)
+        except (UnicodeDecodeError, OSError):
+            continue
+    if gorunmez:
+        hatalar.append(f"kaynakta {gorunmez} görünmez karakter: python havuz/araclar/kacis.py havuz/{temel.goreli}")
     kararlar = [temel.yol / "docs" / "KARARLAR.md", temel.yol / "KARARLAR.md"]
     if not any(yol.exists() for yol in kararlar):
         hatalar.append("docs/KARARLAR.md yok (STANDARTLAR §4)")

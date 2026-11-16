@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <title>Yönlendirici — sıfırdan arayüz</title>
+    <link rel="stylesheet" href="../ortak/stil.css" />
+    <link rel="stylesheet" href="./stil.css" />
+  </head>
+  <body>
+    <header class="ust">
+      <div class="kap">
+        <a class="geri" href="../../">← Tüm gösterimler</a>
+        <h1>Yönlendirici: tek sayfada çok sayfa</h1>
+        <p class="alt-baslik">
+          Adres <code>#</code> işaretinden sonra değişir, sayfa yenilenmez. Kullanıcı sayfaları veri yükler (yapay
+          gecikme), "Yönetim" sayfası giriş ister, olmayan adres "bulunamadı" sayfasına düşer.
+        </p>
+      </div>
+    </header>
+    <main class="kap" id="icerik">
+      <nav class="panel" aria-label="Gösterim sayfaları">
+        <ul class="baglantilar">
+          <li><a href="#/">Ana sayfa</a></li>
+          <li><a href="#/kullanicilar">Kullanıcılar</a></li>
+          <li><a href="#/kullanici/2">Kullanıcı 2</a></li>
+          <li><a href="#/ayarlar/profil">Ayarlar › Profil</a></li>
+          <li><a href="#/yonetim">Yönetim</a></li>
+          <li><a href="#/olmayan/bir/yol">Olmayan sayfa</a></li>
+        </ul>
+        <div class="satir">
+          <button type="button" id="giris" aria-pressed="false">Giriş yap</button>
+          <span class="durum" id="durum" role="status"></span>
+        </div>
+      </nav>
+      <div id="sayfa" class="panel"></div>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

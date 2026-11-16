@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <title>Oyun: Damla — sıfırdan arayüz</title>
+    <link rel="stylesheet" href="../ortak/stil.css" />
+    <link rel="stylesheet" href="./stil.css" />
+  </head>
+  <body>
+    <header class="ust">
+      <div class="kap">
+        <a class="geri" href="../../">← Tüm gösterimler</a>
+        <h1>Damla</h1>
+        <p class="alt-baslik">
+          Mağaradaki tüm <strong>tohumları</strong> topla; kaynak açılınca ona ulaş. <strong>Korlar</strong> canını
+          azaltır, <strong>yağmur damlaları</strong> geri verir. Klavye: <kbd>←</kbd> <kbd>→</kbd> yürü,
+          <kbd>Boşluk</kbd> zıpla, <kbd>P</kbd> duraklat. Telefonda alttaki düğmeleri kullan.
+        </p>
+      </div>
+    </header>
+    <main class="kap" id="icerik">
+      <div class="sahne">
+        <canvas id="tuval" role="img" aria-label="Damla oyun alanı" aria-describedby="hud"></canvas>
+        <div class="kaplama" id="kaplama">
+          <p id="kaplama-metni">Hazır mısın?</p>
+          <button type="button" class="birincil" id="basla">Başla</button>
+        </div>
+      </div>
+      <p class="hud" id="hud"></p>
+      <p class="gizli" id="duyuru" aria-live="polite"></p>
+      <div class="kontroller" aria-label="Dokunmatik kontroller" role="group">
+        <button type="button" id="sol" aria-label="Sola git">◀</button>
+        <button type="button" id="zipla" aria-label="Zıpla">⤒</button>
+        <button type="button" id="sag" aria-label="Sağa git">▶</button>
+      </div>
+      <div class="satir">
+        <button type="button" id="duraklat">Duraklat</button>
+        <button type="button" id="yeniden">Yeniden başla</button>
+        <button type="button" id="tekrar" disabled>Son oyunu izle</button>
+        <button type="button" id="ses" aria-pressed="true">Ses açık</button>
+      </div>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

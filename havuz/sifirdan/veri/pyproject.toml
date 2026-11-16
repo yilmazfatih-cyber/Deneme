@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "sifirdan-veri"
 version = "0.1.0"
-description = "Sıfırdan yazılmış küçük veri ve dağıtık sistemler: LSM deposu, B+ ağacı, SQL motoru, MVCC, arama motoru, CRDT, git, Raft, iş kuyruğu, önbellek sunucusu."
+description = "Sıfırdan yazılmış küçük veri ve dağıtık sistemler: LSM deposu, B+ ağacı, SQL motoru, MVCC, arama motoru, CRDT, git, Raft, iş kuyruğu, önbellek sunucusu, akış işleme, tutarlı karma, sütun deposu."
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"

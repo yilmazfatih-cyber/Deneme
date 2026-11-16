@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <title>Grafik — sıfırdan arayüz</title>
+    <link rel="stylesheet" href="../ortak/stil.css" />
+    <link rel="stylesheet" href="./stil.css" />
+  </head>
+  <body>
+    <header class="ust">
+      <div class="kap">
+        <a class="geri" href="../../">← Tüm gösterimler</a>
+        <h1>Grafik: bağımlılıksız SVG</h1>
+        <p class="alt-baslik">
+          Grafiğe <kbd>Tab</kbd> ile odaklanın; <kbd>←</kbd> <kbd>→</kbd> noktalar, <kbd>↑</kbd> <kbd>↓</kbd> seriler
+          arasında gezer, değer ekran okuyucuya duyurulur. Her grafiğin altında veri tablosu var. Sayılar Türkçe
+          biçimde: 1.234,5 · 15,3 B · %25.
+        </p>
+        <div class="satir">
+          <button type="button" id="tema">Açık temaya geç</button>
+          <button type="button" id="svg-indir">Sütun grafiğini SVG olarak indir</button>
+        </div>
+      </div>
+    </header>
+    <main class="kap" id="icerik">
+      <div class="grafikler">
+        <section class="panel" id="cizgi"></section>
+        <section class="panel" id="sutun"></section>
+        <section class="panel" id="alan"></section>
+        <section class="panel" id="dagilim"></section>
+        <section class="panel" id="halka"></section>
+      </div>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

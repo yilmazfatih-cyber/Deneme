@@ -1,18 +1,15 @@
 """Kalıp — önek toplamı: P[i] = ilk i öğenin toplamı; her aralık toplamı P[hi] − P[lo], O(1).
 
 Fikir:
-    Bir kez O(n)'de önek toplamları hesaplanır; sonra her [lo, hi) aralığının toplamı iki sayının
-    farkıdır. Üç yaygın uzantı:
-      * Sözlük + önek: "toplamı tam k olan ardışık parça sayısı": P[j] − P[i] = k ⇔
-        P[i] = P[j] − k; o ana dek görülen önek değerleri sayılır (negatiflerde de çalışır).
+    Önek toplamları bir kez O(n)'de hesaplanır; her [lo, hi) toplamı P[hi] − P[lo]'dur. Uzantılar:
+      * Sözlük + önek: "toplamı k olan ardışık parça sayısı" — P[i] = P[j] − k olan önceki
+        önekler sayılır (negatif sayılarda da çalışır; kayan pencere çalışmaz).
       * 2B önek: S[r][c] = sol üst dikdörtgenin toplamı; her alt dikdörtgen dört terimle.
-      * Fark dizisi (tersi): "aralığa ekle" işlemleri D[lo] += x, D[hi] −= x ile O(1); sonda tek
-        bir önek toplamı tüm değerleri verir.
-    Akla gelmeli: çok sayıda aralık toplamı sorusu, "toplamı k olan alt dizi", çok sayıda aralık
-    güncellemesi ardından tek okuma.
+      * Fark dizisi: "aralığa x ekle" = D[lo] += x, D[hi] −= x (O(1)); sonda tek önek toplamı.
 
 Karmaşıklık: kurulum O(n) (2B: O(r·c)); sorgu O(1); fark dizisi: güncelleme O(1), okuma O(n)
-Ne zaman: dizi DEĞİŞMİYOR (ya da tüm güncellemeler okumadan önce geliyor).
+Ne zaman: çok sayıda aralık toplamı sorusu, "toplamı k olan alt dizi", çok sayıda aralık
+    güncellemesi ardından tek okuma — dizi sorgular sırasında DEĞİŞMİYORSA.
 Ne zaman değil: güncelleme ve sorgu iç içe geliyorsa `algoritma/veri_yapilari/fenwick_tree.py` ya da
     segment ağacı.
 Bağımlılık: yok

@@ -33,4 +33,7 @@ def coz(kopya: Path) -> None:
         "        { label: 'Hakkında', href: '/hakkinda/' },\n      ],",
         "        { label: 'Hakkında', href: '/hakkinda/' },\n        { label: 'Kariyer', href: '/kariyer/' },\n      ],",
     )
-    run(["npx", "prettier", "--write", "src/content/sayfalar/tr/kariyer.md", "src/site.config.ts"], kopya)
+    run(
+        ["npx", "prettier", "--write", "src/content/sayfalar/tr/kariyer.md", "src/site.config.ts"],
+        kopya,
+    )

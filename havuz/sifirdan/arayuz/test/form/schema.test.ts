@@ -61,6 +61,8 @@ describe('şema doğrulayıcı', () => {
       il: 'Listeden bir seçenek seçin.',
       'telefonlar.0.numara': '10 haneli numara girin.',
     })
+    const partial = schema.parse({ ad: '', il: 'İzmir', telefonlar: [], sifre: '12345678', sifreTekrar: 'farklı' })
+    expect(messagesOf(partial).sifreTekrar).toBe('Şifreler aynı değil.')
     const mismatch = schema.parse({
       ad: 'Ayşe',
       il: 'Iğdır',

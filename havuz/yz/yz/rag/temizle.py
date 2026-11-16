@@ -15,7 +15,7 @@ import re
 import unicodedata
 from collections import Counter
 
-_GORUNMEZ = re.compile("[­​‌‍⁠﻿]")
+_GORUNMEZ = re.compile("[\u00ad\u200b\u200c\u200d\u2060\ufeff]")
 _SAYFA_NO = re.compile(r"^\s*(?:sayfa\s*)?\d{1,4}\s*(?:/|-|of)?\s*\d{0,4}\s*$", re.IGNORECASE)
 _BOLUNMUS = re.compile(r"(\w)-\n[ \t]*([a-zçğıöşü])")
 
@@ -23,7 +23,7 @@ _BOLUNMUS = re.compile(r"(\w)-\n[ \t]*([a-zçğıöşü])")
 def metni_temizle(metin: str) -> str:
     """Dizinleme için metni temizler (anlamı değiştirmeden)."""
     metin = unicodedata.normalize("NFC", metin).replace("\r\n", "\n").replace("\r", "\n")
-    metin = _GORUNMEZ.sub("", metin).replace("\t", " ").replace(" ", " ")
+    metin = _GORUNMEZ.sub("", metin).replace("\t", " ").replace("\u00a0", " ")
     metin = _BOLUNMUS.sub(r"\1\2", metin)
     satirlar = metin.split("\n")
     tekrar = Counter(s.strip() for s in satirlar if len(s.strip()) > 3)

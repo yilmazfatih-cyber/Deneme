@@ -48,4 +48,6 @@ def hazirla(kopya: Path) -> None:
         "def test_vat_parts_always_add_up() -> None:",
     )
     replace(kopya / "py/tests/test_para.py", "    add_vat,\n    allocate,\n", "    add_vat,\n")
-    replace(kopya / "py/tests/test_para.py", "    remove_vat,\n    sum_money,\n)", "    remove_vat,\n)")
+    replace(
+        kopya / "py/tests/test_para.py", "    remove_vat,\n    sum_money,\n)", "    remove_vat,\n)"
+    )

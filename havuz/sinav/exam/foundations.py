@@ -23,9 +23,9 @@ from exam.paths import ARACLAR
 if str(ARACLAR) not in sys.path:  # havuz/araclar betik klasörüdür; paket değil
     sys.path.insert(0, str(ARACLAR))
 
-import denetle  # noqa: E402
-import ortak  # noqa: E402
-import yeni_proje  # noqa: E402
+import denetle
+import ortak
+import yeni_proje
 
 Temel = ortak.Temel
 
@@ -88,7 +88,9 @@ class Protection:
     allowed: tuple[str, ...] = ()
 
 
-def protection_for(foundation: str, allowed: tuple[str, ...], strict_extra: tuple[str, ...]) -> Protection:
+def protection_for(
+    foundation: str, allowed: tuple[str, ...], strict_extra: tuple[str, ...]
+) -> Protection:
     special = _OZEL.get(foundation, {})
     return Protection(
         strict=_ORTAK_DEGISMEZ + special.get("degismez", ()) + strict_extra,
@@ -155,7 +157,7 @@ def check_text_for_agent(folder_name: str, commands: list[str]) -> str:
         text = command.replace("python scripts/", ".venv/bin/python scripts/")
         if text.startswith("cd ") and " && " in text:
             sub, rest = text[3:].split(" && ", 1)
-            parts.append(f"cd {folder_name}/{sub} && {rest}")
+            parts.append(f"`cd {folder_name}/{sub} && {rest}`")
         else:
-            parts.append(f"cd {folder_name} && {text}")
+            parts.append(f"`cd {folder_name} && {text}`")
     return " ve ".join(parts)

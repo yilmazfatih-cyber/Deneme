@@ -41,7 +41,7 @@ const FOLD_MAP: Record<string, string> = {
 export function foldTr(text: string): string {
   return lowerTr(text.normalize('NFC'))
     .replace(/[çğıöşüâîû]/g, (ch) => FOLD_MAP[ch] ?? ch)
-    .replace(/̇/g, '') // "İ".toLowerCase() bazı ortamlarda "i̇" (i + birleşik nokta) üretir
+    .replace(/\u0307/g, '') // "İ".toLowerCase() bazı ortamlarda "i\u0307" (i + birleşik nokta) üretir
 }
 
 /** `text` içinde `query` geçiyor mu (büyük-küçük ve Türkçe işaret duyarsız). Boş sorgu her şeyle eşleşir. */

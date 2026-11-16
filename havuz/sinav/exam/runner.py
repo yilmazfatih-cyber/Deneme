@@ -7,6 +7,7 @@ Genişletme: yeni bir çalıştırma seçeneği (ör. bellek sınırı) için `r
 
 from __future__ import annotations
 
+import contextlib
 import os
 import signal
 import subprocess
@@ -73,10 +74,8 @@ def _kill_group(process: subprocess.Popen[bytes]) -> None:
         os.killpg(process.pid, signal.SIGTERM)
         process.wait(timeout=10)
     except (ProcessLookupError, subprocess.TimeoutExpired):
-        try:
+        with contextlib.suppress(ProcessLookupError):
             os.killpg(process.pid, signal.SIGKILL)
-        except ProcessLookupError:
-            pass
         process.wait()
 
 

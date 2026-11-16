@@ -1,0 +1,21 @@
+{
+  "ad": "sifirdan-veri",
+  "baslik": "Sıfırdan dizisi — veri ve dağıtık sistemler kolu",
+  "ozet": "Yalnız Python standart kitaplığıyla, testle kanıtlanmış on üç mini sistem: LSM anahtar-değer deposu (çökme testli), B+ ağacı, SQL motoru (sqlite3 ile farksal), MVCC + 2PL işlemler, BM25 arama motoru, CRDT'ler, git uyumlu sürüm denetimi, Raft (belirlenimci benzetim), SQLite iş kuyruğu, Redis uyumlu önbellek sunucusu, olay zamanlı akış işleme, tutarlı karma ile parçalama ve sütun tabanlı analitik depo.",
+  "tur": "python",
+  "gereksinim": { "python": ">=3.11" },
+  "python": { "ekstra": "dev" },
+  "denetle": ["python scripts/check.py"],
+  "uzunDenetim": ["python scripts/check.py --uzun"],
+  "baslat": "python -m mini_sql",
+  "kapi": 8450,
+  "yerTutucular": [
+    { "ara": "sifirdan-veri", "anlam": "dağıtım paketi adı (pyproject.toml [project] name, havuz.json ad)" },
+    { "ara": "8450", "anlam": "önbellek sunucusunun varsayılan kapısı (onbellek_sunucu/server.py DEFAULT_PORT)" }
+  ],
+  "kopyalamaHaric": [".venv", "build", "dist", "*.egg-info", "__pycache__", ".ruff_cache", ".mypy_cache", ".pytest_cache", ".hypothesis"],
+  "notlar": [
+    "mini_git'in gerçek git'le uyum testleri git kuruluysa, onbellek_sunucu'nun Redis farksal testi redis-server kuruluysa koşar; yoksa atlanır.",
+    "Uzun denetim (--uzun) bu makinede ~2,5 dakika sürer: çökme, Raft kaos ve SQL farksal testlerinin binlerce tohumlu sürümleri."
+  ]
+}

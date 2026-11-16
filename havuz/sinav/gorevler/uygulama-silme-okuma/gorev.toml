@@ -1,0 +1,14 @@
+kimlik = "uygulama-silme-okuma"
+baslik = "Okuma: bir kayıt silinince ne olur?"
+temel = "uygulama"
+zorluk = "kolay"
+tur = "okuma"
+tahmini_sure_dk = 15
+aciklama = """Kod değiştirmeden kod ve belge okuma; beş kesin yanıtlı soru (mezar taşı işareti, işlev ve dosya adları, \
+protokol sürümü). Tuzak: docs/MEZAR_TASI.md'deki "90 gün" uygulanmamış bir tasarımdır; doğru yanıt "hiç \
+temizlenmez". Yanıt dosyası anahtar sözcük kurallarıyla denetlenir."""
+baslangic_denetimi = "yesil"
+
+[[gizli]]
+ad = "yanit"
+komut = "{python} {gizli}/yanit_denetle.py YANIT.txt"

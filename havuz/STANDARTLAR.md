@@ -101,6 +101,10 @@ Kural: **Denetim yeşil değilse iş bitmemiştir.** Bir testi atlamak, devre d�
    kalan şey README'nin "Sınırlar" bölümüne yazılır.
 10. **Hata iletileri yol gösterir.** Kullanıcıya dönük hata Türkçedir, suçlamaz, ne yapılacağını söyler. Kural
     testlerinin iletisi düzeltme adımını içerir ("… bulunamadı: `npm run gen -- migration x` çalıştırın").
+11. **Görünmez karakter yok.** Kaynakta sıfır genişlikli boşluk, BOM, bölünmez boşluk, yön denetimi ya da birleşen
+    işaret gerekiyorsa kaçış dizisiyle yazılır (`"\u200b"`, `"e\u0301"`); karakterin kendisi yazılmaz. Bulan ve
+    düzelten araç: `python havuz/araclar/kacis.py <klasör>`; `durum.py` (ve CI) bunu denetler. Yorum ve belge
+    dizgisindeki görünür matematik gösterimi (x̂, ȳ) serbesttir.
 
 ## 7. Kural testleri
 

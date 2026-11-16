@@ -1,8 +1,8 @@
 """Metin çözümleme: Türkçe küçük harf, sözcüklere bölme (konum + karakter aralığı), durak sözcükler,
 basit ek kırpma ya da karakter n-gram.
 
-Türkçe tuzak: Python'da 'İ'.lower() == 'i̇' (i + birleşik nokta) ve 'I'.lower() == 'i' (yanlış: 'ı'
-olmalı). `lower_tr` önce İ → i, I → ı çevirir, sonra küçültür.
+Türkçe tuzak: Python'da 'İ'.lower() iki karakter verir ('i' + U+0307 birleşen nokta) ve
+'I'.lower() == 'i' olur (yanlış: 'ı' olmalı). `lower_tr` önce İ → i, I → ı çevirir, sonra küçültür.
 Kesme işaretinden sonrası atılır ("Ankara'ya" → "ankara"). Konumlar durak sözcükleri de sayar: "ev
 ve araba" → ev@0, araba@2. Böylece ifade araması durak sözcük atılmış olsa da doğru aralığı bilir.
 

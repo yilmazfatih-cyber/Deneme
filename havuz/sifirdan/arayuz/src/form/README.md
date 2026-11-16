@@ -67,7 +67,9 @@ giriş kutuları karışmaz.
 **Erişilebilir DOM köprüsü (`dom.ts`).** `name` özniteliği alan yoludur. Hata metni
 `[data-error-for="ad"]` öğesine (yoksa alanın arkasına açılan `<p>`'ye) yazılır; alan `aria-invalid="true"`
 alır ve hata öğesinin kimliği `aria-describedby` listesine **eklenir** (alandaki ipucu kimlikleri korunur).
-Geçersiz gönderimde DOM sırasındaki ilk hatalı alana odaklanılır. `novalidate` açılır: tarayıcının kendi
+Geçersiz gönderimde DOM sırasındaki ilk hatalı alana odaklanılır. Hata kutusu boşken de yerinde kalır (sayfada
+`min-height` verin): odaktan çıkınca beliren ileti düzeni kaydırırsa kullanıcının bastığı düğme yer değiştirir ve
+tıklama boşa gider (gösterimde bu hata gerçekten yaşandı ve böyle düzeltildi). `novalidate` açılır: tarayıcının kendi
 (İngilizce olabilen) baloncukları yerine bu iletiler kullanılır.
 
 ## Dosya haritası

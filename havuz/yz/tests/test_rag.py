@@ -83,7 +83,7 @@ def test_klasor_yukle_gizlileri_atlar(tmp_path):
 
 
 def test_temizleme():
-    ham = "Bel-\ngeler­ burada.\n\nSayfa 3 / 10\nGİZLİ\nmetin\nGİZLİ\nGİZLİ\n\n\n\nSon  satır"
+    ham = "Bel-\ngeler\u00ad burada.\n\nSayfa 3 / 10\nGİZLİ\nmetin\nGİZLİ\nGİZLİ\n\n\n\nSon  satır"
     temiz = metni_temizle(ham)
     assert "Belgeler burada." in temiz and "Sayfa 3" not in temiz and "GİZLİ" not in temiz
     assert "\n\n\n" not in temiz and "Son satır" in temiz

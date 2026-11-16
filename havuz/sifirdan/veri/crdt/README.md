@@ -32,7 +32,9 @@ rb.receive(mesaj)  # yineleme zararsız
 rb.crdt.value() == 5
 ```
 
-## Türler
+## Nasıl çalışır
+
+### Türler
 
 | Tür           | Durum                                    | Birleşim                       | Eşzamanlı çatışmada              |
 | ------------- | ---------------------------------------- | ------------------------------ | -------------------------------- |

@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <title>Çok adımlı form — sıfırdan arayüz</title>
+    <link rel="stylesheet" href="../ortak/stil.css" />
+    <link rel="stylesheet" href="./stil.css" />
+  </head>
+  <body>
+    <header class="ust">
+      <div class="kap">
+        <a class="geri" href="../../">← Tüm gösterimler</a>
+        <h1>Çok adımlı kayıt formu</h1>
+        <p class="alt-baslik">
+          Hatalar alandan çıkınca görünür ve alana bağlanır. Kullanıcı adı "sunucuda" denetlenir (alınmış adlar: admin,
+          ayse, yonetici). Telefon listesine satır ekleyip silin.
+        </p>
+      </div>
+    </header>
+    <main class="kap" id="icerik">
+      <ol class="adimlar" id="adimlar">
+        <li>Hesap</li>
+        <li>Kişisel</li>
+        <li>Onay</li>
+      </ol>
+      <p class="gizli" id="adim-duyuru" aria-live="polite"></p>
+      <form id="kayit" class="panel" novalidate>
+        <fieldset data-adim="0">
+          <legend>Hesap bilgileri</legend>
+          <div class="alan">
+            <label for="kullaniciAdi">Kullanıcı adı</label>
+            <input
+              id="kullaniciAdi"
+              name="kullaniciAdi"
+              autocomplete="username"
+              aria-describedby="kullaniciAdi-ipucu"
+            />
+            <p class="ipucu" id="kullaniciAdi-ipucu">3–20 karakter: harf, rakam ya da alt çizgi.</p>
+            <p class="ipucu" data-durum-for="kullaniciAdi" aria-live="polite"></p>
+          </div>
+          <div class="alan">
+            <label for="eposta">E-posta</label>
+            <input id="eposta" name="eposta" type="email" autocomplete="email" />
+          </div>
+          <div class="alan">
+            <label for="sifre">Şifre</label>
+            <input id="sifre" name="sifre" type="password" autocomplete="new-password" />
+          </div>
+          <div class="alan">
+            <label for="sifreTekrar">Şifre (tekrar)</label>
+            <input id="sifreTekrar" name="sifreTekrar" type="password" autocomplete="new-password" />
+          </div>
+        </fieldset>
+        <fieldset data-adim="1" hidden>
+          <legend>Kişisel bilgiler</legend>
+          <div class="alan">
+            <label for="adSoyad">Ad soyad</label>
+            <input id="adSoyad" name="adSoyad" autocomplete="name" />
+          </div>
+          <div class="alan">
+            <label for="yas">Yaş (isteğe bağlı)</label>
+            <input id="yas" name="yas" inputmode="numeric" />
+          </div>
+          <div class="alan">
+            <label for="sehir">Şehir</label>
+            <select id="sehir" name="sehir">
+              <option value="">Seçin</option>
+              <option>İstanbul</option>
+              <option>İzmir</option>
+              <option>Ankara</option>
+              <option>Iğdır</option>
+              <option>Şanlıurfa</option>
+            </select>
+          </div>
+          <div class="alan" role="group" aria-labelledby="telefon-baslik">
+            <p class="alan-baslik" id="telefon-baslik">Telefonlar</p>
+            <div id="telefonlar"></div>
+            <button type="button" id="telefon-ekle">Telefon ekle</button>
+          </div>
+        </fieldset>
+        <fieldset data-adim="2" hidden>
+          <legend>Onay</legend>
+          <dl id="ozet" class="ozet"></dl>
+          <div class="alan onay">
+            <input id="kosullar" name="kosullar" type="checkbox" />
+            <label for="kosullar">Kullanım koşullarını okudum ve kabul ediyorum</label>
+            <p class="alan-hatasi" data-error-for="kosullar" hidden></p>
+          </div>
+        </fieldset>
+        <div class="satir gezinme">
+          <button type="button" id="geri">Geri</button>
+          <button type="button" id="ileri" class="birincil">İleri</button>
+          <button type="submit" id="gonder" class="birincil" hidden>Kaydı tamamla</button>
+        </div>
+        <p id="sonuc" role="status" class="durum"></p>
+      </form>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

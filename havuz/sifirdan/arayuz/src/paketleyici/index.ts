@@ -2,6 +2,7 @@
 // döngüleri bulur, modülleri küçük bir `require` çalışma zamanıyla tek dosyaya sarar, kullanılmayan
 // dışa aktarımları atar (ağaç silkeleme) ve satır eşlemeli kaynak haritası üretir. Komut satırı: cli.ts.
 // Ayrıntılı anlatım: README.md.
+// Genişletme: yeni geçiş (ör. küçültme) ayrı dosyada yazılıp buradan dışa aktarılır.
 export { tokenize, SyntaxErrorAt, type Token, type TokenType } from './tokenizer.ts'
 export { parseModule, type ParsedModule, type Statement, type ImportSpec, type ExportSpec } from './module_parser.ts'
 export {

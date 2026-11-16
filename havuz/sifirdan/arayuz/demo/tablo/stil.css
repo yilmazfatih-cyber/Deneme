@@ -1,0 +1,85 @@
+/* E-tablo gösterimine özgü stiller. Satır yüksekliği sabittir (sanallaştırma bunu varsayar). */
+.arac {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 8px;
+}
+.adres {
+  min-width: 4.5ch;
+  font-weight: 700;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+}
+#formul {
+  flex: 1;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+}
+.izgara {
+  position: relative;
+  height: min(60vh, 520px);
+  overflow: auto;
+  border: 1px solid var(--kenar);
+  border-radius: var(--yaricap);
+  background: var(--zemin);
+  font-variant-numeric: tabular-nums;
+}
+.izgara-satir {
+  display: flex;
+  position: absolute;
+  left: 0;
+  height: 32px;
+}
+.izgara-ust {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  height: 32px;
+}
+.izgara-ust .izgara-satir {
+  position: relative;
+}
+.hucre {
+  width: 104px;
+  flex: none;
+  height: 32px;
+  line-height: 31px;
+  padding: 0 6px;
+  border-right: 1px solid var(--kenar);
+  border-bottom: 1px solid var(--kenar);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.hucre.baslik {
+  background: var(--yuzey-2);
+  color: var(--ikincil);
+  text-align: center;
+  font-weight: 600;
+}
+.hucre.satir-no {
+  width: 48px;
+  position: sticky;
+  left: 0;
+  z-index: 1;
+}
+.hucre.sayi {
+  text-align: end;
+}
+.hucre.orta {
+  text-align: center;
+}
+.hucre.hata {
+  color: var(--hata);
+}
+.hucre[aria-selected='true'] {
+  background: color-mix(in srgb, var(--vurgu) 22%, var(--zemin));
+}
+.hucre.etkin {
+  outline: 2px solid var(--vurgu);
+  outline-offset: -2px;
+}
+.islevler {
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 0.85rem;
+  line-height: 1.8;
+}

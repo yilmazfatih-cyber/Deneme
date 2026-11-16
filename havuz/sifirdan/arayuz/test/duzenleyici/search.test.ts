@@ -55,7 +55,7 @@ describe('düzenleyici özellik testi', () => {
   it('rastgele yazma/silme/hareket dizisi düz dizgi modeliyle aynı kalır; hepsi geri alınınca başa döner', () => {
     let seed = 7
     const random = () => (seed = (seed * 1103515245 + 12345) % 2 ** 31) / 2 ** 31
-    const pieces = ['a', 'ğ', '👍🏽', 'é', '\n', 'söz ', '🇹🇷']
+    const pieces = ['a', 'ğ', '👍🏽', 'e\u0301', '\n', 'söz ', '🇹🇷']
     const start = 'Başlangıç\nmetni'
     const editor = new Editor({ text: start, now: () => 0 })
     let model = start

@@ -1,0 +1,15 @@
+{
+  "ad": "sifirdan-dil",
+  "baslik": "Sıfırdan dizisi — dil ve metin işleme kolu",
+  "ozet": "Yalnız Python standart kitaplığıyla, testle kanıtlanmış dokuz mini sistem: Türkçe anahtar sözcüklü dil (yorumlayıcı + bayt kodu sanal makinesi), doğrusal zamanlı regex, RFC 8259 JSON (+ akış), kaçışlı şablon motoru, güvenli Markdown, birimli hesap makinesi, Myers farkı/yama/birleştirme ve mini test çerçevesi.",
+  "tur": "python",
+  "gereksinim": { "python": ">=3.11" },
+  "python": { "ekstra": "dev" },
+  "denetle": ["python scripts/check.py"],
+  "uzunDenetim": ["python scripts/check.py --uzun"],
+  "baslat": "python -m yorumlayici",
+  "yerTutucular": [
+    { "ara": "sifirdan-dil", "anlam": "dağıtım paketi adı (pyproject.toml [project] name, havuz.json ad)" }
+  ],
+  "kopyalamaHaric": [".venv", "build", "dist", "*.egg-info", "__pycache__", ".ruff_cache", ".mypy_cache", ".pytest_cache", ".hypothesis"]
+}

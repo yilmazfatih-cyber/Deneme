@@ -29,7 +29,11 @@ def short(value: object, limit: int = 200) -> str:
 
 
 def compare_message(op: str, left: object, right: object, source: str, extra: object) -> str:
-    lines = [f"Beklenti tutmadı: {source}", f"  sol taraf: {short(left)}", f"  sağ taraf: {short(right)}"]
+    lines = [
+        f"Beklenti tutmadı: {source}",
+        f"  sol taraf: {short(left)}",
+        f"  sağ taraf: {short(right)}",
+    ]
     if op == "==":
         lines += explain_difference(left, right)
     if extra is not None:
@@ -111,7 +115,9 @@ class AssertRewriter(ast.NodeTransformer):
             new_test: ast.expr = ast.Compare(
                 left=ast.NamedExpr(target=ast.Name(left, ast.Store()), value=test.left),
                 ops=test.ops,
-                comparators=[ast.NamedExpr(target=ast.Name(right, ast.Store()), value=test.comparators[0])],
+                comparators=[
+                    ast.NamedExpr(target=ast.Name(right, ast.Store()), value=test.comparators[0])
+                ],
             )
             message = ast.Call(
                 func=ast.Name("_tc_compare_message", ast.Load()),

@@ -5,7 +5,11 @@ import itertools
 from hypothesis import given
 from hypothesis import strategies as st
 
-from algoritma.kaliplar.two_pointers import count_close_pairs, pair_with_sum, remove_duplicates_in_place
+from algoritma.kaliplar.two_pointers import (
+    count_close_pairs,
+    pair_with_sum,
+    remove_duplicates_in_place,
+)
 
 SORTED = st.lists(st.integers(-30, 30), max_size=40).map(sorted)
 
@@ -25,7 +29,9 @@ def test_edge_cases() -> None:
 
 @given(SORTED, st.integers(-60, 60))
 def test_pair_matches_brute_force(values: list[int], target: int) -> None:
-    exists = any(values[i] + values[j] == target for i, j in itertools.combinations(range(len(values)), 2))
+    exists = any(
+        values[i] + values[j] == target for i, j in itertools.combinations(range(len(values)), 2)
+    )
     found = pair_with_sum(values, target)
     assert (found is not None) == exists
     if found is not None:

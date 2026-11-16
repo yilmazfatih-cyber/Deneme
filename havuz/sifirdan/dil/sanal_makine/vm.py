@@ -17,6 +17,7 @@ from yorumlayici import ops
 from yorumlayici.errors import Pos, limit_error
 from yorumlayici.interp import Limits
 from yorumlayici.natives import Builtin, make_builtins
+from yorumlayici.optimize import fold_constants
 from yorumlayici.parser import parse
 from yorumlayici.resolver import resolve
 from yorumlayici.values import FunctionValue, is_truthy
@@ -53,9 +54,15 @@ class Frame:
 
 
 class VM:
-    def __init__(self, write: Callable[[str], None] | None = None, limits: Limits | None = None):
+    def __init__(
+        self,
+        write: Callable[[str], None] | None = None,
+        limits: Limits | None = None,
+        optimize: bool = False,
+    ):
         self.write = write or (lambda text: print(text, end=""))
         self.limits = limits or DEFAULT_LIMITS
+        self.optimize = optimize  # True: derlemeden önce sabit katlama
         self.globals: dict[str, object] = dict(make_builtins())
         self.stack: list[object] = []
         self.open_upvalues: dict[int, Upvalue] = {}
@@ -63,6 +70,8 @@ class VM:
     def run(self, source: str) -> None:
         program = parse(source)
         resolve(program, set(self.globals))
+        if self.optimize:
+            program, _ = fold_constants(program)
         self.execute(compile_program(program))
 
     def execute(self, proto: FunctionProto) -> object:

@@ -26,8 +26,9 @@ Python'dan:
 
 ```python
 from sablon import Environment, FileLoader, DictLoader, render, Markup
-render("Merhaba {{ ad }}", ad="<b>Ali</b>")          # 'Merhaba &lt;b&gt;Ali&lt;/b&gt;'
-env = Environment(FileLoader("sablonlar"))            # strict=True: tanımsız ad hata verir
+
+render("Merhaba {{ ad }}", ad="<b>Ali</b>")  # 'Merhaba &lt;b&gt;Ali&lt;/b&gt;'
+env = Environment(FileLoader("sablonlar"))  # strict=True: tanımsız ad hata verir
 html = env.get_template("sayfa.html").render(baslik="Köprü", urunler=[...])
 ```
 
@@ -40,6 +41,7 @@ html = env.get_template("sayfa.html").render(baslik="Köprü", urunler=[...])
 parçalar
    │ compiler.py  etiket yapısı (if/for/include/set) → Renderer kapanımları: render(ctx, out)
    │ expr.py      ifade → belirteçler → öncelikli ayrıştırma → Expr kapanımları: değer = f(ctx)
+   │ runtime.py   kapanım üreticileri + güvenli öznitelik/dizin erişimi
    ▼
 kapanım ağacı (bir kez derlenir, Environment önbellekte tutar)
    │ environment.py  Context (kapsam yığını), include, yükleyiciler
@@ -65,7 +67,8 @@ HTML metni
 | ---------------- | ------------------------------------------------------------------ |
 | `markup.py`      | `Markup`, `escape`, `TemplateError`, `RenderProblem`, `Undefined`  |
 | `lexer.py`       | şablonu parçalara bölme, boşluk denetimi, konumlar                 |
-| `expr.py`        | ifade belirteçleme + ayrıştırma + kapanım üretimi, kum havuzu      |
+| `expr.py`        | ifade belirteçleme + öncelikli ayrıştırma                          |
+| `runtime.py`     | kapanım üreticileri, öznitelik/dizin erişimi (kum havuzu)          |
 | `filters.py`     | süzgeç kaydı ve uygulamaları                                       |
 | `compiler.py`    | etiketler → `Renderer` kapanımları, blok hataları                  |
 | `environment.py` | `Environment`, `Template`, `Context`, `DictLoader`, `FileLoader`   |

@@ -3,14 +3,11 @@
 Fikir:
     En az kutu sayısını bulmak NP-zordur; hızlı ve kanıtlı yakın sonuç veren sezgiseller:
       * İlk uyan (First Fit): eşyayı sığdığı İLK kutuya koy, sığmazsa yeni kutu aç.
-      * En iyi uyan (Best Fit): eşyayı sığdığı kutular arasında EN AZ boşluk bırakana koy.
-      * Azalan ilk uyan (FFD): önce eşyaları büyükten küçüğe sırala, sonra İlk uyan. Kanıtlı
-        sınır: FFD ≤ (11/9)·OPT + 6/9 kutu. Büyükleri önce yerleştirmek boşlukları küçüklerle
-        doldurmayı sağlar.
-    Alt sınır: ⌈toplam boyut / kapasite⌉ kutudan azı olanaksızdır (sezgisel ne kadar iyi?
-    sorusunun hızlı yanıtı).
-    Bu sürümler okunaklılık için kutuları doğrusal tarar (O(n · kutu)); çok büyük girdide
-    kalan kapasiteye göre dengeli ağaç / segment ağacı ile O(n log n) yapılabilir.
+      * En iyi uyan (Best Fit): sığdığı kutular arasında EN AZ boşluk bırakana koy.
+      * Azalan ilk uyan (FFD): önce büyükten küçüğe sırala, sonra İlk uyan; kanıtlı sınır
+        FFD ≤ (11/9)·OPT + 6/9 (büyükler önce yerleşir, boşlukları küçükler doldurur).
+    Alt sınır: ⌈toplam boyut / kapasite⌉ kutudan azı olanaksızdır. Okunaklılık için kutular
+    doğrusal taranır (O(n · kutu)); büyük girdide kalan kapasiteye göre dengeli ağaç kullanın.
 
 Karmaşıklık: First/Best Fit O(n · b) (b = kutu sayısı); FFD O(n log n + n · b); yer O(n)
 Ne zaman: kamyon/konteyner yükleme, depolama, sanal makine yerleştirme, dosyaları disklere bölme.

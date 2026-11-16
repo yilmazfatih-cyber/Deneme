@@ -1,4 +1,4 @@
-"""Çokgen alanı (ayakkabı bağı formülü), yön ve Pick teoremiyle kafes noktası sayımı.
+"""Çokgen alanı: ayakkabı bağı formülü, yön testi ve Pick teoremiyle kafes noktası sayımı.
 
 Fikir:
     Köşeleri sırayla (x0, y0) … (x_{n−1}, y_{n−1}) olan basit çokgenin işaretli alanının iki katı:

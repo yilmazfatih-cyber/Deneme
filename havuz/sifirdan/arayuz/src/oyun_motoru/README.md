@@ -73,6 +73,7 @@ hesaplanır. Testler: aynı kayıt → aynı özet; tek karelik fark → farklı
 | `game/level.ts`   | Damla bölümü (karakterlerle harita)                            |
 | `game/droplet.ts` | Damla oyun mantığı (başsız)                                    |
 | `game/render.ts`  | Damla çizimi (Canvas)                                          |
+| `index.ts`        | Dışa açılan tek giriş noktası                                  |
 
 ## Sınırlar
 

@@ -1,0 +1,80 @@
+[
+  {
+    "ad": "sinyal",
+    "baslik": "Sinyal",
+    "ogretir": "İnce taneli tepkisellik: yalnız etkilenen hesap, bir kez ve tutarlı yeniden çalışır.",
+    "etkilesim": "Sepette adet ve fiyat değiştir; hesaplama sayaçlarını izle."
+  },
+  {
+    "ad": "sanal_dom",
+    "baslik": "Sanal DOM",
+    "ogretir": "React benzeri çatı: fark alma, anahtarlı liste, kancalar, toplu güncelleme.",
+    "etkilesim": "Yapılacaklar listesine görev ekle, sırala; DOM işlem sayısını gör."
+  },
+  {
+    "ad": "yonlendirici",
+    "baslik": "Yönlendirici",
+    "ogretir": "İstemci yönlendirmesi: desenler, iç içe rotalar, koruma, yükleyici, kaydırma.",
+    "etkilesim": "Bağlantılarla sayfalar arasında gez; korumalı sayfaya gir."
+  },
+  {
+    "ad": "depo",
+    "baslik": "Durum deposu",
+    "ogretir": "İndirgeyici, geri al/yinele, zaman yolculuğu, kalıcılık, sekmeler arası eşitleme.",
+    "etkilesim": "Not ekle, geri al, kaydırıcıyla zamanda yolculuk yap; ikinci sekmede aç."
+  },
+  {
+    "ad": "form",
+    "baslik": "Çok adımlı form",
+    "ogretir": "Şema doğrulama, eşzamansız denetim, alan dizileri, erişilebilir hata bağlama.",
+    "etkilesim": "Adımları doldur; boş geçmeye çalış, hata iletilerini gör."
+  },
+  {
+    "ad": "tablo",
+    "baslik": "E-tablo",
+    "ogretir": "Formül ayrıştırma, bağımlılık çizgesi, yalnız etkilenen hücreleri yeniden hesaplama.",
+    "etkilesim": "Hücreye =TOPLA(B2:B6) yaz; oklarla gez, kopyala-yapıştır."
+  },
+  {
+    "ad": "duzenleyici",
+    "baslik": "Metin düzenleyici",
+    "ogretir": "Parça tablosu, çoklu imleç, gruplu geri al, Türkçe duyarsız bul/değiştir.",
+    "etkilesim": "Yaz, Ctrl+D ile çoklu seç, 'istanbul' ara."
+  },
+  {
+    "ad": "oyun_motoru",
+    "baslik": "Oyun: Damla",
+    "ogretir": "Sabit adımlı döngü, ECS, çarpışma, fizik, kamera, belirlenimci tekrar.",
+    "etkilesim": "Tohumları topla, korlardan kaç; son oyunu yeniden izle."
+  },
+  {
+    "ad": "isin_izleyici",
+    "baslik": "Işın izleyici",
+    "ogretir": "Kesişimler, gölge, yansıma, kırılma, BVH, gama; Web Worker ile aşamalı çizim.",
+    "etkilesim": "Çiz'e bas; görüntü önce kaba sonra keskin belirir; PNG indir."
+  },
+  {
+    "ad": "grafik",
+    "baslik": "Grafik",
+    "ogretir": "SVG grafik: ölçekler, güzel eksen adımları, Türkçe biçim, erişilebilirlik.",
+    "etkilesim": "Grafiğe odaklan, ok tuşlarıyla noktaları gez; veri tablosunu aç."
+  },
+  {
+    "ad": "paketleyici",
+    "baslik": "Paketleyici",
+    "ogretir": "Modül çizgesi, ağaç silkeleme, tek dosyaya sarma, kaynak haritası.",
+    "etkilesim": "Modülleri düzenle, Paketle'ye bas; atılan kodu ve sonucu gör."
+  },
+  {
+    "ad": "animasyon",
+    "baslik": "Animasyon",
+    "ogretir": "Yumuşatma, yay fiziği, OKLab renk geçişi, zaman çizelgesi, FLIP.",
+    "etkilesim": "Eğri seç, yay sertliğini değiştir, listeyi karıştır."
+  },
+  {
+    "ad": "sanal_liste",
+    "baslik": "Sanal liste",
+    "ogretir": "Değişken yükseklikli sanallaştırma: Fenwick ağacıyla O(log n) konum, kaydırma çapası.",
+    "etkilesim": "10.000 mesaj arasında 5.000.'ye atla; DOM'daki öğe sayısını izle."
+  }
+]

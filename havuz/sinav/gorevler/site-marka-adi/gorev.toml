@@ -1,0 +1,15 @@
+kimlik = "site-marka-adi"
+baslik = "Marka adı değişti: Sedir → Çınar (Türkçe eklerle)"
+temel = "site"
+zorluk = "orta"
+tur = "degisiklik"
+tahmini_sure_dk = 20
+aciklama = """Ayar dosyası + iki dilde 14 içerik dosyasına yayılan mekanik değişiklik. Tuzaklar: düz bul-değiştir \
+"Sedir'in"i "Çınar'in" yapar (doğrusu "Çınar'ın": ünlü uyumu); alan adı ve e-posta değişmemeli; testlerdeki \
+örnek "Sedir" verisi markayla ilgili değil, dokunulmamalı (dokunmak hile denetimine takılır)."""
+baslangic_denetimi = "yesil"
+
+[[gizli]]
+ad = "marka"
+komut = "npx vitest run tests/unit/sinav-gizli-marka.test.ts"
+dosyalar = { "marka.test.ts" = "tests/unit/sinav-gizli-marka.test.ts" }

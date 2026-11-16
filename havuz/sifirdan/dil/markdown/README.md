@@ -26,9 +26,10 @@ Python'dan:
 
 ```python
 from markdown import to_html, convert
-to_html("# Merhaba *dünya*")   # '<h1 id="merhaba-dunya">Merhaba <em>dünya</em></h1>\n'
-sonuc = convert(metin)          # sonuc.html, sonuc.toc (düzey, metin, kimlik)
-to_html(metin, highlight=lambda dil, kod: ...)   # kod blokları için vurgulayıcı kancası
+
+to_html("# Merhaba *dünya*")  # '<h1 id="merhaba-dunya">Merhaba <em>dünya</em></h1>\n'
+sonuc = convert(metin)  # sonuc.html, sonuc.toc (düzey, metin, kimlik)
+to_html(metin, highlight=lambda dil, kod: ...)  # kod blokları için vurgulayıcı kancası
 ```
 
 ## Nasıl çalışır

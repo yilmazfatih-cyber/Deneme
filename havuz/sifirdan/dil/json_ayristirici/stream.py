@@ -119,7 +119,7 @@ class EventParser:
     def _loop(self, events: list[Event], final: bool) -> int:
         buf, n, i = self.buf, len(self.buf), 0
         if not self.started and n:
-            if buf.startswith("﻿"):
+            if buf.startswith("\ufeff"):
                 raise bom_error()
             self.started = True
         while True:

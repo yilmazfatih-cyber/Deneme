@@ -23,7 +23,7 @@ TURKISH = "abcçdefgğhıijklmnoöprsştuüvyzABCÇDEFGĞHIİJKLMNOÖPRSŞTUÜVY
 def test_hand_checked_example() -> None:
     assert upper_tr("ılık ilik") == "ILIK İLİK"
     assert lower_tr("ILIK İLİK") == "ılık ilik"
-    assert "İ".lower() != "i"  # Python'un kendi davranışı: "i̇" (2 kod noktası) — tuzak
+    assert "İ".lower() != "i"  # Python'un kendi davranışı: "i" + U+0307 (2 kod noktası)
     assert title_tr("istanbul ılıca yolu") == "İstanbul Ilıca Yolu"
     assert equals_ignore_case_tr("İSTANBUL", "istanbul")
     assert not equals_ignore_case_tr("ISPARTA", "isparta")  # I → ı: "ısparta" ≠ "isparta"
@@ -37,7 +37,7 @@ def test_hand_checked_example() -> None:
 def test_edge_cases() -> None:
     assert upper_tr("") == lower_tr("") == capitalize_tr("") == ""
     assert utf8_length("ğ") == 2 and utf8_length("a") == 1 and utf8_length("😀") == 4
-    decomposed = "ğ"  # "g" + birleşen breve
+    decomposed = "g\u0306"  # "g" + birleşen breve
     assert decomposed != "ğ" and normalize_nfc(decomposed) == "ğ"
     assert casefold_tr("STRASSE") == casefold_tr("straße")  # casefold almanca ß'yi de açar
     assert sorted(["b2", "b10", "b 1"], key=sort_key_tr) == ["b 1", "b10", "b2"]  # sayılar metin

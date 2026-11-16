@@ -2,6 +2,7 @@
 // ara değerleme (sayı, OKLab renk, birimli dizgi, dönüşüm), zaman çizelgesi ve kademeleme, paylaşılan
 // requestAnimationFrame zamanlayıcısı (enjekte saat), FLIP düzen geçişi, prefers-reduced-motion saygısı.
 // Ayrıntılı anlatım: README.md.
+// Genişletme: yeni parça ayrı dosyada yazılıp buradan dışa aktarılır.
 export * from './easing.ts'
 export {
   springState,

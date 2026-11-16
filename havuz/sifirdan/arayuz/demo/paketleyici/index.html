@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <title>Paketleyici — sıfırdan arayüz</title>
+    <link rel="stylesheet" href="../ortak/stil.css" />
+    <link rel="stylesheet" href="./stil.css" />
+  </head>
+  <body>
+    <header class="ust">
+      <div class="kap">
+        <a class="geri" href="../../">← Tüm gösterimler</a>
+        <h1>Paketleyici: modüllerden tek dosya</h1>
+        <p class="alt-baslik">
+          Modülleri düzenleyin ve paketleyin. <code>carp</code> işlevi ve <code>gunluk.js</code> modülü hiç
+          kullanılmadığı için pakete girmez (ağaç silkeleme). Paket bu sayfada çalıştırılabilir.
+        </p>
+      </div>
+    </header>
+    <main class="kap" id="icerik">
+      <section class="panel" aria-labelledby="modul-baslik">
+        <h2 id="modul-baslik">Modüller</h2>
+        <div class="moduller" id="moduller"></div>
+      </section>
+      <div class="panel satir">
+        <label for="bicim">Biçim</label>
+        <select id="bicim">
+          <option value="iife">iife (tarayıcı)</option>
+          <option value="cjs">cjs (Node)</option>
+          <option value="esm">esm</option>
+        </select>
+        <label class="kutu"><input type="checkbox" id="silkele" checked /> Ağaç silkeleme</label>
+        <button type="button" class="birincil" id="paketle">Paketle</button>
+        <button type="button" id="calistir">Çalıştır</button>
+      </div>
+      <p id="ozet" class="durum" role="status"></p>
+      <p id="sonuc" class="sonuc" aria-live="polite"></p>
+      <h2>Paket</h2>
+      <pre class="kod" id="cikti" tabindex="0" aria-label="Paketlenmiş kod"></pre>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

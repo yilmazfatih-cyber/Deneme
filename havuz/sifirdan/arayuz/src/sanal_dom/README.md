@@ -102,6 +102,8 @@ adreslerde `javascript:` engellenir. `dangerouslySetInnerHTML` bilerek desteklen
 | `focus.ts`     | Taşıma sırasında odak ve imleç konumunu koruma                              |
 | `boundary.ts`  | `ErrorBoundary`                                                             |
 | `render.ts`    | `render`, `unmountRoot`                                                     |
+| `root.ts`      | Kök kaydı: yerleşik ağaç, kirli bileşenler, etki kuyruğu, dinleyiciler      |
+| `index.ts`     | Dışa açılan tek giriş noktası                                               |
 
 ## Sınırlar
 

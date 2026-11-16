@@ -28,7 +28,7 @@ def test_turkish_case_rules() -> None:
     assert upper_tr("ışık izmir iğne") == "IŞIK İZMİR İĞNE"
     assert lower_tr("İ") == "i"
     assert len(lower_tr("İSTANBUL")) == len("istanbul")  # ayrık nokta işareti kalmaz
-    assert lower_tr("İstanbul") == "istanbul"  # ayrık yazılmış İ (I + nokta) de doğru
+    assert lower_tr("I\u0307stanbul") == "istanbul"  # ayrık yazılmış İ (I + nokta) de doğru
     assert upper_tr(lower_tr("ÇĞIİÖŞÜ")) == "ÇĞIİÖŞÜ"
     assert lower_ascii("NaN TRUE İ") == "nan true İ"
     assert fold_ascii_tr("çğıöşü ÇĞİÖŞÜ âîû") == "cgiosu CGIOSU aiu"

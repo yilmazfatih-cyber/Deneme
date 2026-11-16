@@ -43,6 +43,7 @@ from .nodes import (
     VarDecl,
     While,
 )
+from .optimize import fold_constants
 from .parser import parse
 from .resolver import resolve
 from .values import FunctionValue, is_truthy
@@ -104,9 +105,15 @@ def recursion_room(frames: int) -> Iterator[None]:
 
 
 class Interpreter:
-    def __init__(self, write: Callable[[str], None] | None = None, limits: Limits | None = None):
+    def __init__(
+        self,
+        write: Callable[[str], None] | None = None,
+        limits: Limits | None = None,
+        optimize: bool = False,
+    ):
         self.write = write or (lambda text: print(text, end=""))
         self.limits = limits or Limits()
+        self.optimize = optimize  # True: çalıştırmadan önce sabit katlama (optimize.py)
         self.globals = Environment(None)
         self.globals.values.update(make_builtins())
         self.depths: dict[Name, int] = {}
@@ -120,6 +127,8 @@ class Interpreter:
 
     def run_program(self, program: Program) -> object:
         self.depths.update(resolve(program, set(self.globals.values)))
+        if self.optimize:
+            program, _ = fold_constants(program)
         self.steps = 0
         last: object = None
         with recursion_room(2_000 + self.limits.max_depth * 60):

@@ -1,15 +1,13 @@
 """Aralık zamanlama (açgözlü): çakışmayan en çok etkinlik seçimi ve en az salonla tüm etkinlikler.
 
 Fikir:
-    Aralıklar yarı açıktır: [başlangıç, bitiş) — biri 10'da biter, öbürü 10'da başlarsa çakışmaz.
-    En çok etkinlik: etkinlikler BİTİŞ zamanına göre sıralanır; sıradaki etkinlik son seçilenden
-    sonra başlıyorsa seçilir. Değişim argümanı: herhangi bir en iyi çözümün ilk etkinliği, en
-    erken biten etkinlikle değiştirilebilir (o daha erken bitip yer açar), çözüm kötüleşmez;
-    tümevarımla açgözlü seçim en iyidir.
-    En az salon (aralık bölümleme): etkinlikler BAŞLANGIÇA göre sıralanır; salonların boşalma
-    zamanları bir en-küçük yığında tutulur. En erken boşalan salon yeni etkinliğin başlangıcına
-    kadar boşalıyorsa ona, değilse yeni salona yerleştirilir. Gereken salon sayısı, aynı anda
-    süren en çok etkinlik sayısına (en büyük örtüşme derinliği) eşittir — daha azı olanaksızdır.
+    Aralıklar yarı açıktır: [başlangıç, bitiş) — 10'da biten ile 10'da başlayan çakışmaz.
+    En çok etkinlik: BİTİŞE göre sırala; son seçilenden sonra başlayanı seç. Değişim argümanı:
+    bir en iyi çözümün ilk etkinliği en erken bitenle değiştirilebilir (daha erken bitip yer
+    açar), çözüm kötüleşmez; tümevarımla açgözlü seçim en iyidir.
+    En az salon: BAŞLANGICA göre sırala; salonların boşalma zamanlarını en-küçük yığında tut;
+    en erken boşalan salon yetişiyorsa ona, değilse yeni salona koy. Gereken salon sayısı aynı
+    anda süren en çok etkinlik sayısıdır (daha azı olanaksız).
 
 Karmaşıklık: ikisi de O(n log n); yer O(n)
 Ne zaman: toplantı salonu, kaynak/CPU ayırma, ders programı, reklam yerleşimi.

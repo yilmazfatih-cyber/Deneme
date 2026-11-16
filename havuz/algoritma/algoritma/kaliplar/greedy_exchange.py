@@ -1,19 +1,16 @@
 """Kalıp — açgözlü + değişim argümanı: doğru sıralama ölçütünü bul, kanıtla, tek geçişte seç.
 
 Fikir:
-    Açgözlü algoritma her adımda "şu an en iyi görünen"i seçer ve geri dönmez. Çoğu zaman
-    YANLIŞTIR; doğru olduğunu göstermenin standart yolu DEĞİŞİM ARGÜMANIDIR: herhangi bir en iyi
-    çözümde açgözlünün seçmeyeceği bir sıra/seçim varsa, iki komşu öğenin yerini değiştirmenin
-    (ya da bir öğeyi açgözlünün seçtiğiyle takas etmenin) çözümü KÖTÜLEŞTİRMEDİĞİ gösterilir;
-    böylece her en iyi çözüm adım adım açgözlü çözüme dönüştürülebilir.
-    Örnek kanıt (kısa işi önce yap): a ile b yan yana ve a > b ise yer değiştirmek, a'dan sonra
-    bekleyen b'nin beklemesini a kadar azaltır, b'den sonra bekleyen a'nınkini b kadar artırır;
-    net değişim b − a < 0. Demek ki artan sıra en iyidir.
-    Akla gelmeli: "sırala ve seç" yapısı, teslim tarihi/süre/oran gibi tek bir ölçüt, yerel seçimin
-    geleceği kısıtlamadığı durumlar. Şüphedeysen küçük girdide kaba kuvvetle karşılaştır!
+    Açgözlü algoritma her adımda "şu an en iyi görünen"i seçer, geri dönmez; çoğu zaman YANLIŞTIR.
+    Doğruluğunu göstermenin yolu DEĞİŞİM ARGÜMANIDIR: açgözlünün yapmayacağı bir sıra/seçim
+    içeren her en iyi çözümde, iki öğeyi takas etmenin çözümü kötüleştirmediği gösterilir.
+    Örnek (kısa iş önce): yan yana a > b ise takas, b'nin beklemesini a azaltır, a'nınkini b
+    artırır; net b − a < 0 → artan sıra en iyidir. Şüphedeysen küçük girdide kaba kuvvetle
+    karşılaştır (bu dosyanın testleri gibi).
 
 Karmaşıklık: genelde O(n log n) (sıralama + yığın); yer O(n)
-Ne zaman: değişim argümanı kurulabiliyorsa (matroid yapısı, kesirli seçim, tek ölçütlü sıralama).
+Ne zaman: "sırala ve seç" yapısı; teslim tarihi/süre/oran gibi tek ölçüt; değişim
+    argümanı kurulabiliyor (matroid yapısı, kesirli seçim).
 Ne zaman değil: 0/1 sırt çantası, ağırlıklı aralık seçimi, madeni para (kanonik olmayan) gibi
     açgözlünün yanıldığı problemler → DP.
 Bağımlılık: yok

@@ -18,11 +18,17 @@ from .runner import ERROR, FAILED, run_all
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="python -m test_cercevesi", description="Mini test çerçevesi")
+    parser = argparse.ArgumentParser(
+        prog="python -m test_cercevesi", description="Mini test çerçevesi"
+    )
     parser.add_argument("yollar", nargs="*", type=Path, help="test dosyaları ya da klasörleri")
     parser.add_argument("-k", dest="suzgec", help="yalnız kimliğinde bu metin geçen testler")
-    parser.add_argument("-x", dest="ilk_hatada_dur", action="store_true", help="ilk kalan testte dur")
-    parser.add_argument("-v", dest="ayrintili", action="store_true", help="her testi satır satır yaz")
+    parser.add_argument(
+        "-x", dest="ilk_hatada_dur", action="store_true", help="ilk kalan testte dur"
+    )
+    parser.add_argument(
+        "-v", dest="ayrintili", action="store_true", help="her testi satır satır yaz"
+    )
     parser.add_argument("--zaman-asimi", type=float, default=None, help="test başına süre (sn)")
     return parser
 

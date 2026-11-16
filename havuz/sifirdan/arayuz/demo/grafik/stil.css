@@ -1,0 +1,73 @@
+/* Grafik gösterimine özgü stiller (grafik kütüphanesinin kendi renkleri chartCss'tedir). */
+.grafikler {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+}
+.grafik {
+  margin: 0;
+}
+.grafik figcaption {
+  display: grid;
+  gap: 2px;
+  margin-bottom: 6px;
+}
+.grafik-baslik {
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+.grafik-alt {
+  color: var(--ikincil);
+  font-size: 0.9rem;
+}
+.grafik-aciklama {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  padding: 0;
+  margin: 0 0 6px;
+  font-size: 0.9rem;
+}
+.grafik-aciklama .ek {
+  color: var(--ikincil);
+}
+.grafik-cizim {
+  position: relative;
+  border-radius: 8px;
+}
+.grafik-ipucu {
+  position: absolute;
+  transform: translate(-50%, calc(-100% - 12px));
+  background: var(--yuzey-2);
+  color: var(--metin);
+  border: 1px solid var(--kenar);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: var(--golge);
+}
+.grafik-veri summary {
+  cursor: pointer;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+.grafik-tablo {
+  font-size: 0.9rem;
+  margin-top: 6px;
+}
+.grafik-tablo td {
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+.grafik-tablo-kap {
+  overflow-x: auto;
+}
+.grafik .toplam {
+  fill: var(--metin);
+  font-size: 22px;
+  font-weight: 700;
+}

@@ -1,0 +1,15 @@
+kimlik = "site-okuma-suresi"
+baslik = "Kısa yazılarda '0 dk okuma' görünüyor"
+temel = "site"
+zorluk = "kolay"
+tur = "hata"
+tahmini_sure_dk = 10
+aciklama = """Okuma süresi hesabından 'en az 1 dakika' sınırı düşmüş; mevcut testlerden ilgili olan çıkarılmış. \
+Belirti kart ve yazı sayfasında; doğru yer ortak saf işlev (src/lib/collections.ts). Yalnız kartı yamalamak \
+gizli testi geçmez."""
+baslangic_denetimi = "yesil"
+
+[[gizli]]
+ad = "okuma-suresi"
+komut = "npx vitest run tests/unit/sinav-gizli-okuma-suresi.test.ts"
+dosyalar = { "okuma_suresi.test.ts" = "tests/unit/sinav-gizli-okuma-suresi.test.ts" }

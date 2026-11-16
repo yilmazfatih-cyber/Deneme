@@ -2,15 +2,12 @@
 
 Fikir:
     Uygun bölge bir çokyüzlüdür; doğrusal amacın en iyisi bir köşededir. Simplex köşeden komşu
-    köşeye, amacı artıran yönde yürür. "Gevşek biçim": her kısıta bir gevşek değişken eklenir
-    (Σ a_ij x_j + s_i = b_i); temel (B) değişkenler temel olmayanlar (N) cinsinden yazılır.
-    Pivot: amaç katsayısı pozitif bir N değişkeni (giren) artırılır; ona ilk sınır koyan kısıtın
-    temel değişkeni (çıkan, en küçük oran testi) sıfıra iner ve yer değiştirirler.
-    Bland kuralı (giren ve çıkanda hep en küçük dizin) döngüye girmeyi (cycling) önler.
-    b'de negatif varsa başlangıç köşesi uygun değildir: yardımcı değişken x0 ile "1. evre"
-    çözülür (en büyük −x0); en iyi değer 0 değilse problem UYGUNSUZDUR. Giren değişkenin hiçbir
-    kısıtı yoksa amaç SINIRSIZDIR.
-    Tüm aritmetik `fractions.Fraction` ile: yuvarlama hatası yok (küçük problemler içindir).
+    köşeye, amacı artıran yönde yürür. Gevşek biçimde (Σ a_ij x_j + s_i = b_i) temel değişkenler
+    temel olmayanlar cinsinden yazılır; pivot, amaç katsayısı pozitif bir değişkeni (giren)
+    artırır, en küçük oran testindeki kısıtın temel değişkeni (çıkan) sıfıra iner.
+    Bland kuralı (hep en küçük dizin) döngüye girmeyi önler. b'de negatif varsa yardımcı x0 ile
+    "1. evre" çözülür: en iyi değer 0 değilse UYGUNSUZ; giren değişkeni hiçbir kısıt
+    durdurmuyorsa SINIRSIZ. Aritmetik `fractions.Fraction` ile kesindir.
 
 Karmaşıklık: en kötü üstel (Klee-Minty), pratikte pivot sayısı ~ O(m + n); her pivot O(m · n)
     kesirli işlem; yer O(m · n)

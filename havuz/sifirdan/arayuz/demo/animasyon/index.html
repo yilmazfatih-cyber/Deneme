@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <title>Animasyon — sıfırdan arayüz</title>
+    <link rel="stylesheet" href="../ortak/stil.css" />
+    <link rel="stylesheet" href="./stil.css" />
+  </head>
+  <body>
+    <header class="ust">
+      <div class="kap">
+        <a class="geri" href="../../">← Tüm gösterimler</a>
+        <h1>Animasyon: hareketin yapı taşları</h1>
+        <p class="alt-baslik">
+          Sisteminizde "hareketi azalt" açıksa animasyonlar anında sona atlar. Aşağıdaki düğmeyle bu sayfada da
+          deneyebilirsiniz.
+        </p>
+        <button type="button" id="hareket" aria-pressed="false">Hareketi azalt</button>
+      </div>
+    </header>
+    <main class="kap" id="icerik">
+      <div class="izgara-2">
+        <section class="panel" aria-labelledby="egri-baslik">
+          <h2 id="egri-baslik">Yumuşatma eğrisi</h2>
+          <div class="satir">
+            <label for="egri">Eğri</label>
+            <select id="egri"></select>
+            <button type="button" id="egri-oynat" class="birincil">Oynat</button>
+          </div>
+          <svg class="cizim" id="egri-cizim" viewBox="-10 -40 220 260" role="img" aria-labelledby="egri-baslik"></svg>
+          <div class="ray"><div class="top" id="egri-top"></div></div>
+        </section>
+        <section class="panel" aria-labelledby="yay-baslik">
+          <h2 id="yay-baslik">Yay fiziği</h2>
+          <label for="sertlik">Sertlik: <output id="sertlik-deger" for="sertlik">170</output></label>
+          <input id="sertlik" type="range" min="40" max="400" step="10" value="170" />
+          <label for="sonum">Sönüm: <output id="sonum-deger" for="sonum">12</output></label>
+          <input id="sonum" type="range" min="2" max="60" step="1" value="12" />
+          <p class="durum" id="yay-durum"></p>
+          <svg
+            class="cizim"
+            id="yay-cizim"
+            viewBox="0 -20 300 160"
+            role="img"
+            aria-label="Yay konumunun zamana göre grafiği"
+          ></svg>
+          <div class="satir">
+            <button type="button" id="yay-oynat" class="birincil">Oynat</button>
+            <button type="button" id="yay-hedef">Hedefi değiştir</button>
+          </div>
+          <div class="ray"><div class="top" id="yay-top"></div></div>
+        </section>
+        <section class="panel" aria-labelledby="renk-baslik">
+          <h2 id="renk-baslik">Renk geçişi: OKLab ve sRGB</h2>
+          <div class="satir">
+            <label for="renk-a">Başlangıç</label>
+            <input id="renk-a" type="color" value="#1f6feb" />
+            <label for="renk-b">Bitiş</label>
+            <input id="renk-b" type="color" value="#f5d90a" />
+          </div>
+          <p class="etiket-satir">OKLab (algısal):</p>
+          <div class="serit" id="serit-oklab" role="img" aria-label="OKLab uzayında renk geçişi"></div>
+          <p class="etiket-satir">sRGB (düz):</p>
+          <div class="serit" id="serit-srgb" role="img" aria-label="sRGB uzayında renk geçişi"></div>
+        </section>
+        <section class="panel" aria-labelledby="cizelge-baslik">
+          <h2 id="cizelge-baslik">Zaman çizelgesi ve kademeleme</h2>
+          <div class="kutular" id="kutular"></div>
+          <div class="satir">
+            <button type="button" id="cizelge-oynat" class="birincil">Oynat</button>
+            <button type="button" id="cizelge-ters">Geri sar</button>
+          </div>
+        </section>
+        <section class="panel" aria-labelledby="flip-baslik">
+          <h2 id="flip-baslik">FLIP liste geçişi</h2>
+          <ul class="sehirler" id="sehirler">
+            <li>İstanbul</li>
+            <li>Ankara</li>
+            <li>İzmir</li>
+            <li>Iğdır</li>
+            <li>Şanlıurfa</li>
+            <li>Çanakkale</li>
+          </ul>
+          <button type="button" id="karistir" class="birincil">Karıştır</button>
+        </section>
+      </div>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

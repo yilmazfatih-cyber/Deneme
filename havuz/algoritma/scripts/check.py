@@ -13,6 +13,7 @@ Genişletme: yeni bir denetim adımı eklemek için `build_steps` içindeki list
 from __future__ import annotations
 
 import argparse
+import os
 import subprocess
 import sys
 import time
@@ -35,11 +36,14 @@ def build_steps(long_run: bool) -> list[tuple[str, list[str]]]:
     ]
 
 
-def run_step(name: str, command: list[str]) -> bool:
+def run_step(name: str, command: list[str], long_run: bool = False) -> bool:
     """Bir adımı çalıştırır; başarılıysa True döndürür."""
     print(f"\n=== {name} ===", flush=True)
+    env = dict(os.environ)
+    if long_run:
+        env["ALGORITMA_HYPOTHESIS"] = "uzun"  # özellik testlerinde 300 örnek (hızlıda 40)
     started = time.perf_counter()
-    result = subprocess.run(command, cwd=ROOT, check=False)
+    result = subprocess.run(command, cwd=ROOT, env=env, check=False)
     elapsed = time.perf_counter() - started
     status = "tamam" if result.returncode == 0 else "HATA"
     print(f"--- {name}: {status} ({elapsed:.1f} sn)", flush=True)
@@ -61,7 +65,8 @@ def main() -> int:
         subprocess.run([py, "scripts/build_index.py"], cwd=ROOT, check=False)
 
     started = time.perf_counter()
-    failed = [name for name, command in build_steps(args.uzun) if not run_step(name, command)]
+    steps = build_steps(args.uzun)
+    failed = [name for name, command in steps if not run_step(name, command, args.uzun)]
     total = time.perf_counter() - started
     print()
     if failed:

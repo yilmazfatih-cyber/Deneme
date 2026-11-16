@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <title>Sinyal — sıfırdan arayüz</title>
+    <link rel="stylesheet" href="../ortak/stil.css" />
+    <link rel="stylesheet" href="./stil.css" />
+  </head>
+  <body>
+    <header class="ust">
+      <div class="kap">
+        <a class="geri" href="../../">← Tüm gösterimler</a>
+        <h1>Sinyal: ince taneli tepkisellik</h1>
+        <p class="alt-baslik">
+          Fiyat ya da adet değişince yalnız ona bağlı hesaplar yeniden çalışır. "Toplam", hem indirime hem KDV'ye
+          bağlıdır (elmas bağımlılık) ama her değişiklikte tek kez hesaplanır.
+        </p>
+      </div>
+    </header>
+    <main class="kap" id="icerik">
+      <section class="panel" aria-labelledby="sepet-baslik">
+        <h2 id="sepet-baslik">Sepet</h2>
+        <div class="izgara-2">
+          <div>
+            <label for="fiyat">Birim fiyat (₺)</label>
+            <div class="satir"><input id="fiyat" type="number" inputmode="decimal" min="0" step="1" value="120" /></div>
+          </div>
+          <div>
+            <span class="etiket-ad" id="adet-ad">Adet</span>
+            <div class="satir" role="group" aria-labelledby="adet-ad">
+              <button type="button" id="azalt" aria-label="Adedi azalt">−</button>
+              <output id="adet" aria-live="polite">2</output>
+              <button type="button" id="artir" aria-label="Adedi artır">+</button>
+            </div>
+          </div>
+          <div>
+            <label for="indirim">İndirim oranı: <output id="indirim-deger" for="indirim">%10</output></label>
+            <input id="indirim" type="range" min="0" max="50" step="5" value="10" />
+          </div>
+        </div>
+        <div class="satir dugmeler">
+          <button type="button" id="toplu" class="birincil">Adet +1 ve fiyat +10 (toplu)</button>
+          <button type="button" id="ayri">Aynısını ayrı ayrı yap</button>
+        </div>
+      </section>
+      <section class="panel" aria-labelledby="hesap-baslik">
+        <h2 id="hesap-baslik">Hesaplar ve sayaçlar</h2>
+        <p class="ikincil">Her satır bir <code>computed</code>; sayaç, gerçekten kaç kez hesaplandığını gösterir.</p>
+        <dl class="hesaplar" id="hesaplar"></dl>
+        <p class="toplam" id="toplam" aria-live="polite"></p>
+      </section>
+      <section class="panel" aria-labelledby="etki-baslik">
+        <h2 id="etki-baslik">Etki günlüğü</h2>
+        <p class="ikincil">
+          Toplu güncellemede (<code>batch</code>) iki yazma tek etki çalışması üretir; ayrı ayrı yapınca iki.
+        </p>
+        <ol class="gunluk" id="gunluk"></ol>
+      </section>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

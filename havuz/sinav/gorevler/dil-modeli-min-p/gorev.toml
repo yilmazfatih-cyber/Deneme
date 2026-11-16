@@ -1,0 +1,16 @@
+kimlik = "dil-modeli-min-p"
+baslik = "Yeni örnekleme yöntemi: min-p (ayar + süzgeç + komut satırı)"
+temel = "dil-modeli"
+zorluk = "zor"
+tur = "ozellik"
+tahmini_sure_dk = 35
+aciklama = """AGENTS.md "Yeni örnekleme yöntemi ekle" tarifi: SamplingConfig'e doğrulamalı alan, toplu (B, sözlük) \
+girdide satır satır çalışan saf süzgeç, next_token'da doğru yer, iki komutun ortak seçenek yardımcıları, elle \
+hesaplanmış test. Dört dosyaya dokunur; tensör boyutları (keepdim) ve aralık denetimi küçük modellerin sık \
+yanıldığı yerlerdir."""
+baslangic_denetimi = "yesil"
+
+[[gizli]]
+ad = "min-p"
+komut = "python -m pytest tests/test_sinav_gizli_min_p.py -q -p no:cacheprovider"
+dosyalar = { "test_min_p.py" = "tests/test_sinav_gizli_min_p.py" }

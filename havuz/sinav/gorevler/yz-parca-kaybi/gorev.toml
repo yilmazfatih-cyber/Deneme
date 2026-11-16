@@ -1,0 +1,15 @@
+kimlik = "yz-parca-kaybi"
+baslik = "Noktasız uzun paragrafın sonu aramada kayboluyor (RAG)"
+temel = "yz"
+zorluk = "orta"
+tur = "hata"
+tahmini_sure_dk = 20
+aciklama = """Parçalayıcı, noktalaması olmayan çok uzun bir 'cümleyi' kelimelere bölerken artan son kelimeleri \
+atıyor (bir eksik). Mevcut testler yakalamaz; belirti 'belgede yok' yanıtıdır. Ajan belirtiden parçalayıcıya \
+inmeli; gizli test her kelimenin bir parçada kaldığını rastgele metinlerle sınar."""
+baslangic_denetimi = "yesil"
+
+[[gizli]]
+ad = "parcala"
+komut = "python -m pytest tests/test_sinav_gizli_parcala.py -q -p no:cacheprovider"
+dosyalar = { "test_parcala.py" = "tests/test_sinav_gizli_parcala.py" }

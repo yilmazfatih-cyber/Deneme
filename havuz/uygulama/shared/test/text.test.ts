@@ -16,7 +16,7 @@ describe('Türkçe metin', () => {
     expect(foldTr('İstanbul')).toBe('istanbul')
     expect(foldTr('ISPARTA')).toBe('isparta')
     expect(foldTr('Şûrâ Kâğıt')).toBe('sura kagit')
-    expect(foldTr('i̇stanbul')).toBe('istanbul')
+    expect(foldTr('i\u0307stanbul')).toBe('istanbul')
   })
 
   it('içerme araması', () => {

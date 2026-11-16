@@ -1,15 +1,22 @@
 """mini_sql motoru: hatalar, kısıtlar, atomiklik, EXPLAIN, parametreler, volcano tembelliği, komut
-satırı."""
+satırı ve dizin aramalarının kaba kuvvetle aynılığı."""
 
 from __future__ import annotations
 
 from pathlib import Path
 
 import pytest
+from hypothesis import given
+from hypothesis import strategies as st
 
 from mini_sql import ConstraintError, Database, SqlError
 from mini_sql.__main__ import main as cli_main
-from mini_sql.storage import Table
+from mini_sql.storage import Index, SortKey, Table
+from mini_sql.syntax import Value
+from mini_sql.values import sort_key
+
+KEYS = st.one_of(st.none(), st.integers(-3, 3), st.sampled_from([-0.5, 1.5, 2.0, "", "a", "b"]))
+BOUND = st.tuples(KEYS, st.booleans())  # (sınır, dahil mi)
 
 
 @pytest.fixture
@@ -17,9 +24,11 @@ def db() -> Database:
     database = Database()
     database.execute_script(
         """
-        CREATE TABLE kisi (id INTEGER PRIMARY KEY, ad TEXT NOT NULL, eposta TEXT UNIQUE, yas
-        INTEGER); CREATE TABLE siparis (id INTEGER PRIMARY KEY, kisi_id INTEGER, tutar REAL DEFAULT
-        0); INSERT INTO kisi (ad, eposta, yas) VALUES ('Ayşe', 'a@x', 34), ('Mehmet', 'm@x', 41),
+        CREATE TABLE kisi (
+            id INTEGER PRIMARY KEY, ad TEXT NOT NULL, eposta TEXT UNIQUE, yas INTEGER
+        );
+        CREATE TABLE siparis (id INTEGER PRIMARY KEY, kisi_id INTEGER, tutar REAL DEFAULT 0);
+        INSERT INTO kisi (ad, eposta, yas) VALUES ('Ayşe', 'a@x', 34), ('Mehmet', 'm@x', 41),
             ('Işıl', NULL, NULL), ('Can', NULL, 25);
         INSERT INTO siparis (kisi_id, tutar) VALUES (1, 10.5), (1, 20), (2, 7.25), (9, 1);
         """
@@ -145,3 +154,33 @@ def test_cli_runs_a_script(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -
     assert "Çiçek | text" in output and "NULL" in output and "(2 satır)" in output
     script.write_text("SELECT * FROM yok;", encoding="utf-8")
     assert cli_main([str(script)]) == 1
+
+
+@given(st.lists(KEYS, max_size=30), BOUND, BOUND)
+def test_index_lookups_match_brute_force(
+    values: list[Value], low: tuple[Value, bool], high: tuple[Value, bool]
+) -> None:
+    """Dizin Filter'dan ÖNCE aday üretir: aday fazlası sonucu bozmaz ama yavaşlatır, eksiği bozar.
+    Bu yüzden aralık araması farksal testten ayrıca, birebir doğrulanır."""
+    index = Index("i", "t", 0, "x", unique=False)
+    for rowid, value in enumerate(values):
+        index.insert(value, rowid)
+    ordered = sorted((sort_key(v), rowid) for rowid, v in enumerate(values) if v is not None)
+    (low_value, low_inclusive), (high_value, high_inclusive) = low, high
+
+    def inside(key: SortKey) -> bool:
+        if low_value is not None:
+            bound = sort_key(low_value)
+            if key < bound or (key == bound and not low_inclusive):
+                return False
+        if high_value is not None:
+            bound = sort_key(high_value)
+            if key > bound or (key == bound and not high_inclusive):
+                return False
+        return True
+
+    found = index.lookup_range(low_value, low_inclusive, high_value, high_inclusive)
+    assert found == [rowid for key, rowid in ordered if inside(key)]
+    if low_value is not None:
+        same = [rowid for key, rowid in ordered if key == sort_key(low_value)]
+        assert index.lookup_eq(low_value) == same

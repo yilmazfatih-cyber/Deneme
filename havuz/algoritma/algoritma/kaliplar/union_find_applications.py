@@ -1,18 +1,15 @@
 """Kalıp — birleşim-bul uygulamaları: bağlantılar gelirken "kaç grup var, bu ikisi bağlı mı?".
 
 Fikir:
-    Ayrık küme yapısı (bkz. `algoritma/veri_yapilari/disjoint_set.py`) iki işlem sunar:
-    find(x) → grubun temsilcisi, union(a, b) → iki grubu birleştir. Birçok soru buna indirgenir:
-      * Çevrimiçi bileşen sayısı: her yeni bağlantıda grup sayısı en çok 1 azalır.
-      * Döngü bulma: union, iki uç ZATEN aynı gruptaysa False döner → bu kenar bir döngü kurar.
-      * Eşdeğerlik sınıfları: "ortak bir özelliği paylaşan kayıtlar aynı kişidir" gibi geçişli
-        ilişkiler (a ~ b, b ~ c ⇒ a ~ c), ortak özellik üzerinden birleştirilerek gruplanır.
-    Burada küçük bir ayrık küme kopyası vardır (kopyalanabilirlik için).
-    Akla gelmeli: "bağlantılar sırayla ekleniyor", "aynı gruptalar mı", "gereksiz bağlantı",
-    "birleştir ve say", Kruskal.
+    Ayrık küme (bkz. `algoritma/veri_yapilari/disjoint_set.py`) iki işlem sunar: find(x) →
+    grubun temsilcisi, union(a, b) → birleştir. Birçok soru buna indirgenir: çevrimiçi bileşen
+    sayısı (her yeni bağlantı grubu en çok 1 azaltır), döngü bulma (iki uç zaten aynı gruptaysa
+    union False döner), eşdeğerlik sınıfları (ortak özelliği paylaşan kayıtlar aynı kişidir:
+    a ~ b, b ~ c ⇒ a ~ c). Kopyalanabilirlik için küçük bir ayrık küme kopyası içeridedir.
 
 Karmaşıklık: işlem başına amortize O(α(n)) ≈ O(1); yer O(n)
-Ne zaman: bağlantılar yalnız EKLENİYORSA (silme yok) ve gruplar soruluyorsa.
+Ne zaman: bağlantılar sırayla ekleniyor (silme yok); "aynı gruptalar mı", "kaç grup",
+    "gereksiz bağlantı", Kruskal.
 Ne zaman değil: bağlantı silme gerekiyorsa (çevrimdışı ters çevirme hilesi ya da dinamik
     bağlantılılık yapıları gerekir); en kısa yol gibi uzaklık soruları için BFS.
 Bağımlılık: yok

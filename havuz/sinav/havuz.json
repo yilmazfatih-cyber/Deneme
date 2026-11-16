@@ -1,0 +1,16 @@
+{
+  "ad": "sinav",
+  "baslik": "Kod ajanı sınavı",
+  "ozet": "Temellerin üstünde gerçekçi görevlerle (özellik, hata, değişiklik, okuma, tuzak) kod ajanı + model ikilisini ölçer: görev klasörünü hazırlar, gizli testler ve hile denetimiyle puanlar, modelleri karşılaştırır.",
+  "tur": "python",
+  "gereksinim": { "python": ">=3.11", "node": ">=22.23.4" },
+  "python": { "ekstra": "dev" },
+  "denetle": ["python scripts/check.py"],
+  "uzunDenetim": ["SINAV_TAM=1 python -m pytest tests/test_dogrulama.py -q"],
+  "baslat": "python sinav.py liste",
+  "kopyalamaHaric": [".venv", "calisma", "sonuclar", "__pycache__", ".mypy_cache", ".ruff_cache", "*.egg-info"],
+  "notlar": [
+    "Sınav havuzun temellerine bağımlıdır (görev = temel kopyası); tek başına başka projeye kopyalanmaz.",
+    "Uzun denetim her görevi baştan sona doğrular (bağımlılık kurar, temellerin denetimlerini koşar): 20–40 dk."
+  ]
+}

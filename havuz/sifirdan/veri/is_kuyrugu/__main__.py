@@ -1,7 +1,8 @@
 """Komut satırı: `python -m is_kuyrugu <veritabanı> <komut> ...`
 
     ekle <kuyruk> '<json>' [--oncelik N] [--gecikme SN] [--anahtar K]
-    durum <kuyruk> · olu <kuyruk> · yeniden <iş_no> · zamanla <ad> "<cron>" <kuyruk> '<json>' · tetikle
+    durum <kuyruk> · olu <kuyruk> · yeniden <iş_no> · zamanla <ad> "<cron>" <kuyruk> '<json>' ·
+    tetikle
 
 Genişletme: yeni komut → `_parser`'a alt komut, `main`'de bir dal.
 """
@@ -45,10 +46,14 @@ def main(argv: list[str] | None = None) -> int:
         if args.komut in ("ekle", "zamanla"):
             payload = json.loads(args.veri)
             if not isinstance(payload, dict):
-                raise ValueError("Veri bir JSON nesnesi olmalı: '{\"anahtar\": \"değer\"}'")
+                raise ValueError('Veri bir JSON nesnesi olmalı: \'{"anahtar": "değer"}\'')
         if args.komut == "ekle":
             job_id = queue.enqueue(
-                args.kuyruk, payload, priority=args.oncelik, delay=args.gecikme, idempotency_key=args.anahtar
+                args.kuyruk,
+                payload,
+                priority=args.oncelik,
+                delay=args.gecikme,
+                idempotency_key=args.anahtar,
             )
             print(job_id)
         elif args.komut == "durum":

@@ -1,11 +1,12 @@
 """Cron ifadesi: "dakika saat ayın_günü ay haftanın_günü" (5 alan, UTC).
 
-Her alan: `*`, sayı, aralık `a-b`, adım `*/n` ya da `a-b/n`, liste `a,b,c`. Haftanın günü 0–6 (0 = Pazar;
-7 de Pazar kabul edilir). Ay günü ve hafta günü İKİSİ DE kısıtlıysa (ikisi de `*` değilse) biri tutması
-yeter (Vixie cron kuralı): "0 9 1 * 1" = her ayın 1'i VE her Pazartesi 09:00.
+Her alan: `*`, sayı, aralık `a-b`, adım `*/n` ya da `a-b/n`, liste `a,b,c`. Haftanın günü 0–6 (0 =
+Pazar; 7 de Pazar kabul edilir). Ay günü ve hafta günü İKİSİ DE kısıtlıysa (ikisi de `*` değilse)
+biri tutması yeter (Vixie cron kuralı): "0 9 1 * 1" = her ayın 1'i VE her Pazartesi 09:00.
 
-Genişletme: saat dilimi için `next_after`'a `zoneinfo.ZoneInfo` alın; yaz saati geçişlerinde atlanan ve
-iki kez yaşanan saatlere dikkat (testini yazın). `@daily` gibi kısaltmalar `_ALIASES`'a eklenir.
+Genişletme: saat dilimi için `next_after`'a `zoneinfo.ZoneInfo` alın; yaz saati geçişlerinde
+atlanan ve iki kez yaşanan saatlere dikkat (testini yazın). `@daily` gibi kısaltmalar `_ALIASES`'a
+eklenir.
 """
 
 from __future__ import annotations
@@ -74,8 +75,11 @@ class Cron:
                 f"Cron ifadesi 5 alan ister (dakika saat gün ay haftagünü), {len(fields)} verildi: "
                 f"'{expression}'"
             )
-        parsed = [_parse_field(field, i) for i, field in enumerate(fields)]
-        return cls(*parsed, day_restricted=fields[2] != "*", weekday_restricted=fields[4] != "*")
+        minutes, hours, days, months, weekdays = (_parse_field(f, i) for i, f in enumerate(fields))
+        return cls(
+            minutes, hours, days, months, weekdays,
+            day_restricted=fields[2] != "*", weekday_restricted=fields[4] != "*",
+        )  # fmt: skip
 
     def matches(self, moment: datetime) -> bool:
         weekday = (moment.weekday() + 1) % 7  # Python: Pazartesi=0 → cron: Pazar=0

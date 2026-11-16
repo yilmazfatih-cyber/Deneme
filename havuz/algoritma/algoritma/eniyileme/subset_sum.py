@@ -1,22 +1,20 @@
 """Alt küme toplamı (geri izleme + budama): toplamı tam olarak hedefe eşit alt kümeleri bulur.
 
 Fikir:
-    Sayılar büyükten küçüğe sıralanır ve her sayı için iki dal açılır: al ya da alma.
-    İki budama kuralı ağacı küçültür (sayılar negatif olmadığında geçerli):
-      * kalan hedef < 0 → bu dal ölü (daha fazla almak yalnız büyütür),
-      * kalan hedef > geriye kalan sayıların toplamı → hepsini alsak bile yetmez.
-    Aynı değerdeki sayılar yan yana durduğu için "aynı değeri bu konumda ikinci kez atlayarak
-    başlatma" kuralıyla yinelenen alt kümeler (değer olarak) tekrar üretilmez.
-    Dizinler özgün sıradadır; çözüm, özgün listedeki konumlarla verilir.
-    Ondalık sayılarda "kalan == 0" denetimi yuvarlama yüzünden kaçabilir (0.1 + 0.2 ≠ 0.3):
-    tutarları kuruş gibi TAM SAYILARA çevirerek verin.
+    Sayılar büyükten küçüğe sıralanır; her sayı için iki dal: al ya da alma. Negatif olmayan
+    sayılarda iki budama: kalan hedef aşıldıysa dal ölür; kalan sayıların hepsi bile yetmiyorsa
+    dal ölür. Aynı değerli sayılar yan yana durduğundan "aynı değeri aynı konumda ikinci kez
+    deneme" kuralı değerce yinelenen çözümleri engeller. Çözüm özgün dizinlerle verilir.
+    Ondalık sayılarda "kalan == 0" yuvarlama yüzünden kaçabilir (0.1 + 0.2 ≠ 0.3): tutarları
+    kuruş gibi TAM SAYILARA çevirin.
 
 Karmaşıklık: en kötü O(2ⁿ) (NP-tam); budamayla pratikte çok daha az; yer O(n)
 Ne zaman: küçük n (≲ 40) ve büyük/ondalıklı değerler; TÜM çözümler gerekiyorsa.
 Ne zaman değil: değerler küçük tam sayılarsa DP O(n · hedef) (`algoritma/dp/knapsack.py` fikri);
     n ≈ 40 için "ortada buluşma" (iki yarının toplamları) O(2^(n/2)) daha hızlıdır.
 Bağımlılık: yok
-Özyineleme: derinlik ≤ n.
+Özyineleme: derinlik ≤ n; n ≳ 900'de Python sınırı (1000) aşılır — algoritma zaten üstel olduğundan
+    bu boyda kullanılmaz.
 Genişletme: negatif sayılar için budamayı kaldırın (yalnız tam arama kalır) ya da tüm sayılara
     sabit ekleyip hedefi ona göre kaydırın (alt küme boyunu sabitlemek gerekir).
 

@@ -2,7 +2,8 @@
 
 Nokta kipinde: `.` geçti, `K` kaldı, `A` atlandı, `H` hata. Özet Türkçe ve ondalık virgüllüdür:
 "5 geçti, 1 kaldı, 1 atlandı, 0 hata (0,12 sn)".
-Genişletme: JUnit XML gibi makine okur bir çıktı için `Result` listesini dolaşan yeni bir işlev yazın.
+Genişletme: JUnit XML gibi makine okur bir çıktı için `Result` listesini dolaşan yeni bir işlev
+yazın.
 """
 
 from __future__ import annotations
@@ -16,7 +17,7 @@ SYMBOLS = {PASSED: ".", FAILED: "K", SKIPPED: "A", ERROR: "H"}
 WORDS = {PASSED: "GEÇTİ", FAILED: "KALDI", SKIPPED: "ATLANDI", ERROR: "HATA"}
 
 
-def progress(verbose: bool, write: Callable[[str], None]) -> Callable[[Result], None]:
+def progress(verbose: bool, write: Callable[[str], object]) -> Callable[[Result], None]:
     def show(result: Result) -> None:
         if verbose:
             extra = f" ({result.message})" if result.outcome == SKIPPED and result.message else ""

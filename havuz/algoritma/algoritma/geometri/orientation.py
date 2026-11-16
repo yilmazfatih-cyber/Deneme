@@ -2,15 +2,13 @@
 
 Fikir:
     cross(o, a, b) = (a − o) × (b − o) = (a.x − o.x)(b.y − o.y) − (a.y − o.y)(b.x − o.x).
-    Pozitifse o → a → b sola döner (saat yönünün tersi), negatifse sağa, sıfırsa üçü doğrusaldır.
-    Değerin mutlak büyüklüğü üçgen alanının iki katıdır. Geometrinin hemen her algoritması
-    (dışbükey örtü, kesişim, nokta-çokgen) bu tek testin üstüne kurulur.
-    KAYAN NOKTA TUZAĞI: cross değerini float ile hesaplamak, neredeyse doğrusal noktalarda YANLIŞ
-    İŞARET verebilir (yuvarlama hatası). Sonuç: aynı üç nokta için tutarsız kararlar, döngüye
-    giren ya da çöken örtü/kesişim kodu. Çare: (1) koordinatları tam sayı ya da `Fraction`
-    tutun — bu dosyadaki işlevler onlarla KESİN çalışır; (2) float zorunluysa ölçeğe uygun bir
-    eps ile "doğrusal" bölgesi tanımlayın (`orientation_eps`) ve bunun da sezgisel olduğunu
-    bilin; (3) `==` ile float karşılaştırmayın.
+    Pozitifse o → a → b sola döner (saat yönü tersi), negatifse sağa, sıfırsa doğrusaldır;
+    mutlak değeri üçgen alanının iki katıdır. Örtü, kesişim, nokta-çokgen bunun üstüne kurulur.
+    KAYAN NOKTA TUZAĞI: float ile neredeyse doğrusal noktalarda işaret YANLIŞ çıkabilir (testte
+    (0.1, 0.3), (0.2, 0.6), (0.3, 0.9) "sola dönüş" görünür); sonuç tutarsız kararlar ve çöken
+    örtü/kesişim kodudur. Çare: koordinatları tam sayı ya da `Fraction` tutun (buradaki işlevler
+    onlarla KESİN); float zorunluysa ölçekli eps kullanın (`orientation_eps`); `==` ile float
+    karşılaştırmayın.
 
 Karmaşıklık: her test O(1); yer O(1)
 Ne zaman: her türlü 2B geometri kararında; "sol mu sağ mı", "aynı doğruda mı".

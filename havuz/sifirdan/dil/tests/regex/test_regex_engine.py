@@ -22,7 +22,7 @@ def summary(m: regex.Match | re.Match[str] | None) -> object:
         (r"[a-zçğıöşü]+", "ÇOK güzel"),
         (r"\w+", "İşçi_3 ağaç"),
         (r"\d", "²٣"),
-        (r"\s+", "a \t b"),
+        (r"\s+", "a\u00a0\t b"),
         (r"[^\d\s]+", "12 ab3"),
         (r"a.c", "a\nc abc"),
         (r"colou?r", "color colour"),

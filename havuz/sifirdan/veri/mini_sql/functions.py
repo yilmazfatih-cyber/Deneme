@@ -38,7 +38,7 @@ def upper_tr(text: str) -> str:
 
 
 def lower_tr(text: str) -> str:
-    """Türkçe küçük harf: İ → i, I → ı (str.lower() 'İ'yi 'i̇' yapar, bu yanlıştır)."""
+    """Türkçe küçük harf: İ → i, I → ı (str.lower() 'İ'yi 'i' + U+0307 yapar, bu yanlıştır)."""
     return text.replace("İ", "i").replace("I", "ı").lower()
 
 

@@ -95,7 +95,7 @@ const REGEX_AFTER_WORDS = new Set([
   'await',
 ])
 const ID_START = /[\p{L}_$]/u
-const ID_PART = /[\p{L}\p{N}_$‌‍]/u
+const ID_PART = /[\p{L}\p{N}_$\u200c\u200d]/u
 
 export class SyntaxErrorAt extends Error {
   readonly line: number

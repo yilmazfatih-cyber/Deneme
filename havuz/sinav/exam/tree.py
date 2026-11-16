@@ -94,7 +94,8 @@ class Snapshot:
     def read(self, rel: str) -> bytes | None:
         if rel not in self._cache:
             if self._archive is None:
-                self._archive = tarfile.open(self.path, "r:gz")
+                # Arşiv birçok okuma boyunca açık kalır; `close()` kapatır (bağlam yöneticisi uymaz).
+                self._archive = tarfile.open(self.path, "r:gz")  # noqa: SIM115
             try:
                 member = self._archive.getmember(rel)
             except KeyError:

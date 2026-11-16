@@ -2,6 +2,7 @@
 // çizgi/alan/sütun/dağılım/pasta-halka, eksen ve ızgara, açıklama, ipucu, duyarlı boyut, koyu/açık tema,
 // Türkçe sayı/tarih biçimi, erişilebilirlik (başlık/açıklama, veri tablosu, klavye). Tek giriş noktası.
 // Ayrıntılı anlatım: README.md.
+// Genişletme: yeni grafik türü ayrı dosyada (ör. charts/radar.ts) yazılıp buradan dışa aktarılır.
 export { tickStep, ticks, niceDomain, stepDecimals } from './ticks.ts'
 export { linearScale, niceLinear, bandScale, type LinearScale, type BandScale } from './scales.ts'
 export { timeScale, timeTicks, type TimeScale, type TimeTick } from './time.ts'

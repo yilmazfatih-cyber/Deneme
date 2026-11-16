@@ -1,16 +1,13 @@
 """Türkçe metin yardımcıları: doğru büyük/küçük harf, harf duyarsız eşitlik, alfabe sırası, NFC.
 
 Fikir:
-    Python'un `str.upper()`/`lower()` işlevleri yerel ayarı bilmez: "i".upper() → "I" (doğrusu
-    "İ"), "I".lower() → "i" (doğrusu "ı"), "İ".lower() → "i̇" (i + birleşen nokta, İKİ kod
-    noktası!).
-    Burada önce Türkçeye özgü dört harf elle eşlenir, kalanı Python'a bırakılır.
-    Karakter ≠ bayt: "ş" UTF-8'de 2 bayttır; "ş" ayrıca "s" + birleşen çengel (U+0327) olarak da
-    yazılabilir — ekranda aynı, ama `==` ile farklıdır. Karşılaştırmadan önce NFC'ye
-    normalleştirin (`normalize_nfc`). `len()` kod noktası sayar, görünen harf sayısını değil.
-    Alfabetik sıra: Python dizgileri kod noktasıyla sıralar ("ç" > "z"). `sort_key_tr` Türk
-    alfabesi sırasını (a b c ç d e f g ğ h ı i j k l m n o ö p r s ş t u ü v y z) uygular;
-    harf duyarsızdır, eşitlikte özgün metne bakar.
+    Python'un `upper()`/`lower()` işlevleri yerel ayarı bilmez: "i".upper() → "I" (doğrusu "İ"),
+    "I".lower() → "i" (doğrusu "ı"), "İ".lower() → "i\u0307" (İKİ kod noktası!). Burada önce
+    Türkçeye özgü dört harf elle eşlenir, kalanı Python'a bırakılır.
+    Karakter ≠ bayt: "ş" UTF-8'de 2 bayttır ve "s" + birleşen çengel (U+0327) olarak da yazılabilir
+    — ekranda aynı, `==` ile farklı: önce `normalize_nfc`. `len()` kod noktası sayar.
+    Alfabetik sıra: Python kod noktasıyla sıralar ("ç" > "z"); `sort_key_tr` Türk alfabesi
+    sırasını (a b c ç d … ğ h ı i … ö … ş … ü … z) harf duyarsız uygular.
 
 Karmaşıklık: tüm işlevler O(n) (n = metin uzunluğu); yer O(n)
 Ne zaman: Türkçe metinde büyük/küçük harf, arama, sıralama, tekilleştirme yapılan her yer.

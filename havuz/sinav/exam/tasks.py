@@ -209,7 +209,9 @@ def load_task(folder: Path) -> Task:
 
 def all_tasks(root: Path = GOREVLER) -> list[Task]:
     """Bütün görevler (kimliğe göre sıralı)."""
-    return [load_task(folder) for folder in sorted(root.iterdir()) if (folder / "gorev.toml").exists()]
+    return [
+        load_task(folder) for folder in sorted(root.iterdir()) if (folder / "gorev.toml").exists()
+    ]
 
 
 def find_task(task_id: str, root: Path = GOREVLER) -> Task:

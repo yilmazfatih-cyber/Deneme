@@ -42,11 +42,11 @@ alma kümesini, `mapPos` imleçlerin yeni konumunu verir.
 
 **Grafem kümeleri (`text_units.ts`).** `Intl.Segmenter` ile yalnız ilgili satır bölütlenir:
 
-| Metin    | UTF-16 birimi | Kullanıcının gördüğü | İmleç adımı |
-| -------- | ------------- | -------------------- | ----------- |
-| `👍🏽`     | 4             | 1 karakter           | tek adım    |
-| `🇹🇷`     | 4             | 1 bayrak             | tek adım    |
-| `e` + `́` | 2             | `é`                  | tek adım    |
+| Metin          | UTF-16 birimi | Kullanıcının gördüğü | İmleç adımı |
+| -------------- | ------------- | -------------------- | ----------- |
+| `👍🏽`           | 4             | 1 karakter           | tek adım    |
+| `🇹🇷`           | 4             | 1 bayrak             | tek adım    |
+| `e` + `\u0301` | 2             | `é`                  | tek adım    |
 
 Silme, sağa/sola gitme ve dikey hareketin "hedef sütunu" grafem sayısıyla hesaplanır; dışarıdan verilen konum
 (`setSelection`) kümenin başına çekilir.
@@ -59,7 +59,7 @@ verilir (`now`) ve testlerde elle ilerletilir.
 **Türkçe duyarsız arama (`search.ts`).** JS'nin `i` bayrağı Türkçeyi bilmez (`/i/i` "I" ile eşleşir, "İ" ile
 eşleşmez). Bu yüzden desen dönüştürülür: her harf Türkçe büyük/küçük biçimlerinin sınıfına çevrilir
 (`i` → `[iİ]`, `ı` → `[ıI]`, `a` → `[aA]`); karakter sınıflarına ve aralıklara (`[a-c]` → `[a-cABC]`) eşler
-eklenir. Kaçış dizileri (`\d`, `ç`, `\p{L}`), adlı gruplar (`(?<ad>…)`, `\k<ad>`) ve niceleyiciler
+eklenir. Kaçış dizileri (`\d`, `\u00e7`, `\p{L}`), adlı gruplar (`(?<ad>…)`, `\k<ad>`) ve niceleyiciler
 (`{2,3}`) olduğu gibi kalır. Düz metin önce kaçışlanıp aynı yoldan geçer. Boş eşleşmeler (`^`) sonsuz döngüye
 girmeden bir sonraki karaktere geçer. Değiştirmede `$1`, `$<ad>`, `$&`, `$$` desteklenir.
 

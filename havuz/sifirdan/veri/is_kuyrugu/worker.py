@@ -1,15 +1,18 @@
 """İşçi: kuyruktan iş alır, türüne göre işleyiciyi çağırır, sonuca göre onaylar ya da hata kaydeder.
 
-İşleyici (handler) `def isle(job: Job) -> None` biçimindedir; istisna fırlatırsa iş geri çekilmeyle yeniden
-denenir. Teslim EN AZ BİR KEZDİR: aynı iş iki kez işlenebilir (işçi onaydan hemen önce çökerse). Yan etkisi
-olan işleyiciler `job.idempotency_key` ya da iş kimliğiyle "bunu zaten yaptım mı?" diye bakmalıdır
-(örnek: tests/is_kuyrugu/test_queue.py → test_worker_crash_is_at_least_once_but_effect_once).
+İşleyici (handler) `def isle(job: Job) -> None` biçimindedir; istisna fırlatırsa iş geri çekilmeyle
+yeniden denenir. Teslim EN AZ BİR KEZDİR: aynı iş iki kez işlenebilir (işçi onaydan hemen önce
+çökerse). Yan etkisi olan işleyiciler `job.idempotency_key` ya da iş kimliğiyle "bunu zaten yaptım
+mı?" diye bakmalıdır (örnek: tests/is_kuyrugu/test_queue.py →
+test_worker_crash_is_at_least_once_but_effect_once).
 
-Genişletme: uzun işler için ayrı bir iş parçacığında `queue.extend(job)` ile kirayı yenileyen kalp atışı.
+Genişletme: uzun işler için ayrı bir iş parçacığında `queue.extend(job)` ile kirayı yenileyen kalp
+atışı.
 """
 
 from __future__ import annotations
 
+import contextlib
 from collections.abc import Callable
 
 from .queue import Job, JobQueue, LeaseLostError
@@ -36,10 +39,8 @@ class Worker:
             self.handler(job)
         except Exception as error:  # işleyicinin her hatası "yeniden dene" demektir
             self.failed += 1
-            try:
+            with contextlib.suppress(LeaseLostError):  # kira zaten düşmüşse iş başka işçide
                 self.queue.fail(job, f"{type(error).__name__}: {error}")
-            except LeaseLostError:
-                pass  # kira zaten düşmüş: iş başka işçide
             return True
         try:
             self.queue.ack(job)

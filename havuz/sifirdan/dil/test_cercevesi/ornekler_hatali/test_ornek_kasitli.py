@@ -19,7 +19,8 @@ def test_esitlik_kalir() -> None:
 
 
 def test_metin_farki() -> None:
-    assert "merhaba dünya" == "merhaba dunya"
+    selam: str = "merhaba dünya"
+    assert selam == "merhaba dunya"
 
 
 def test_liste_farki() -> None:

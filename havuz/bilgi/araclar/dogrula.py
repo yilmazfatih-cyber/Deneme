@@ -26,6 +26,7 @@ import sqlite3
 import subprocess
 import sys
 import tempfile
+import unicodedata
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -59,10 +60,18 @@ class Note:
     body_lines: list[str] = field(default_factory=list)
     blocks: list[CodeBlock] = field(default_factory=list)
     headings: list[tuple[int, str, int]] = field(default_factory=list)  # (düzey, metin, satır)
+    body_start: int = 0  # gövdenin dosyadaki ilk satırının sıfır tabanlı dizini
 
     @property
     def rel(self) -> str:
         return self.path.relative_to(ROOT).as_posix()
+
+
+def unquote(value: str) -> str:
+    """Değer iki ucundan aynı tırnakla sarılıysa tırnakları kaldırır; içerikteki tırnaklara dokunmaz."""
+    if len(value) >= 2 and value[0] == value[-1] and value[0] in "'\"":
+        return value[1:-1]
+    return value
 
 
 def parse_front_matter(lines: list[str]) -> tuple[dict[str, object], int]:
@@ -81,9 +90,9 @@ def parse_front_matter(lines: list[str]) -> tuple[dict[str, object], int]:
         key, _, raw = line.partition(":")
         value = raw.split(" #", 1)[0].strip()
         if value.startswith("[") and value.endswith("]"):
-            meta[key.strip()] = [item.strip().strip("'\"") for item in value[1:-1].split(",") if item.strip()]
+            meta[key.strip()] = [unquote(item.strip()) for item in value[1:-1].split(",") if item.strip()]
         else:
-            meta[key.strip()] = value.strip("'\"")
+            meta[key.strip()] = unquote(value)
     raise ValueError("ön bilgi kapanmamış: ikinci `---` satırı yok")
 
 
@@ -93,6 +102,7 @@ def parse_note(path: Path) -> Note:
     note = Note(path=path)
     note.meta, start = parse_front_matter(lines)
     note.body_lines = lines[start:]
+    note.body_start = start
     fence: str | None = None
     info = ""
     buffer: list[str] = []
@@ -170,6 +180,36 @@ def check_links(note: Note) -> list[str]:
             resolved = (note.path.parent / file_part).resolve()
             if not resolved.exists():
                 errors.append(f"kırık bağlantı: {target}")
+    return errors
+
+
+ZWJ = chr(0x200D)  # emoji dizilerini birleştirir; düz yazıda görünür bir emoji parçasıdır
+
+
+def check_invisible(note: Note) -> list[str]:
+    """Kod bloklarında görünmez/birleşen karakter yasak (kaçış dizisi yazılır); düz yazıda BOM, sıfır genişlikli
+    boşluk ve yön denetimi gibi biçim karakterleri yasak (`U+FEFF` diye yazılır)."""
+    errors: list[str] = []
+    in_fence = False
+    for offset, line in enumerate(note.body_lines):
+        if FENCE_RE.match(line):
+            in_fence = not in_fence
+            continue
+        number = note.body_start + offset + 1
+        for ch in line:
+            category = unicodedata.category(ch)
+            invisible = category in ("Cf", "Zl", "Zp") or (category == "Zs" and ch != " ")
+            invisible = invisible or (category == "Cc" and ch != "\t")
+            combining = category == "Mn" and 0x0300 <= ord(ch) <= 0x036F
+            if in_fence and (invisible or combining):
+                errors.append(
+                    f"{number}. satır: kod bloğunda görünmez karakter U+{ord(ch):04X}; "
+                    f"yerine kaçış dizisi yazın: \\u{ord(ch):04x}"
+                )
+                break
+            if not in_fence and category == "Cf" and ch != ZWJ:
+                errors.append(f"{number}. satır: metinde görünmez karakter U+{ord(ch):04X}; `U+{ord(ch):04X}` diye yazın")
+                break
     return errors
 
 
@@ -304,7 +344,7 @@ def main() -> int:
         try:
             note = parse_note(path)
             errors = check_meta(note)
-            errors += check_structure(note) + check_links(note)
+            errors += check_structure(note) + check_links(note) + check_invisible(note)
             if not args.kod_yok:
                 errors += check_code(note)
                 ran += sum(1 for block in note.blocks if "calistir" in block.flags)

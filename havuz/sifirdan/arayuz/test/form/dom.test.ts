@@ -39,7 +39,7 @@ describe('DOM köprüsü', () => {
     ad.dispatchEvent(new Event('input', { bubbles: true }))
     expect(ad.hasAttribute('aria-invalid')).toBe(false)
     expect(ad.getAttribute('aria-describedby')).toBe('ad-ipucu')
-    expect(error.hidden).toBe(true)
+    expect(error.textContent).toBe('')
   })
 
   it('geçersiz gönderimde ilk hatalı alana odaklanır; onay kutusu mantıksal değer verir', async () => {

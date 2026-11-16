@@ -2,14 +2,11 @@
 
 Fikir:
     best[c] = c kapasiteyle elde edilebilecek en büyük değer.
-      0/1 (her eşya en çok bir kez): eşyalar sırayla ele alınır; best[i][c] = max(best[i−1][c],
-          best[i−1][c − w_i] + v_i). Seçimi geri izlemek için i. eşyanın alınıp alınmadığı
-          ayrı bir tabloda tutulur ve son eşyadan başa yürünür.
-      Sınırsız (her eşyadan istenildiği kadar): best[c] = max(best[c − w_i] + v_i); her c için
-          seçilen son eşya saklanır, c'den geri yürünür.
-      Sınırlı (i. eşyadan en çok k_i tane): k_i adet, 1, 2, 4, …, kalan büyüklüğünde paketlere
-          bölünür (ikili bölme); her paket bir 0/1 eşyasıdır. 0…k_i arasındaki her sayı bu
-          paketlerin bir alt toplamıdır, dolayısıyla sonuç değişmez; eşya sayısı log k_i'ye iner.
+      0/1: eşyalar sırayla; best[c] = max(best[c], best[c − w_i] + v_i), c BÜYÜKTEN küçüğe
+          (eşya bir kez kullanılsın). Alınma kararı tabloda tutulur, sondan başa geri izlenir.
+      Sınırsız: c küçükten büyüğe; her c için son eklenen eşya saklanır, c'den geri yürünür.
+      Sınırlı (en çok k_i adet): k_i, 1, 2, 4, … ve kalan büyüklüğünde paketlere bölünür (ikili
+          bölme); her paket bir 0/1 eşyasıdır ve 0 … k_i'nin her değeri bir alt toplamdır.
     Ağırlıklar ve kapasite negatif olmayan TAM SAYI olmalıdır (tablo kapasiteyle dizinlenir).
 
 Karmaşıklık: 0/1 ve sınırsız O(n · C); sınırlı O(C · Σ log k_i); yer O(n · C) (geri izleme için)

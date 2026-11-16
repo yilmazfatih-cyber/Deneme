@@ -66,7 +66,9 @@ export function renderForm<T>(form: Form<T>, root: HTMLFormElement): void {
     const box = errorElement(root, field, name)
     box.id ||= `${prefix}-${safeId(name)}-hata`
     box.textContent = state.error ?? ''
-    box.hidden = !state.error
+    // Kutu boşken de yerinde kalır (CSS ile min-height): odaktan çıkınca beliren ileti düzeni kaydırırsa
+    // kullanıcının o anda bastığı düğme yer değiştirir ve tıklama boşa gider.
+    box.hidden = false
     if (state.error) field.setAttribute('aria-invalid', 'true')
     else field.removeAttribute('aria-invalid')
     link(field, box.id, Boolean(state.error))

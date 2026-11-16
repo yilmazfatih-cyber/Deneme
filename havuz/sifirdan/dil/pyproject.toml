@@ -80,6 +80,9 @@ known-first-party = [
 
 [tool.mypy]
 python_version = "3.11"
+# Çerçevenin örnek test dosyaları paket değildir ve yanlarındaki modülü düz adla içe aktarır;
+# mypy onları iki farklı adla bulmasın diye dışarıda tutulur (pytest yine de koşturur).
+exclude = ['^test_cercevesi/ornekler']
 files = [
   "yorumlayici",
   "sanal_makine",

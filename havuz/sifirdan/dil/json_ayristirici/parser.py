@@ -82,7 +82,7 @@ class Parser:
             self.i += 1
 
     def parse(self) -> object:
-        if self.text.startswith("﻿"):
+        if self.text.startswith("\ufeff"):
             raise bom_error()
         self.skip_ws()
         value = self.value(0)

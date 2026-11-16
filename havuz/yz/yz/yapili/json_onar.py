@@ -23,7 +23,7 @@ from yz.yapili.json_hosgorulu import EKSIK, Okuyucu
 Beklenen = Literal["nesne", "dizi", "herhangi"]
 
 _DUSUNCE = re.compile(r"<(think|thinking)>.*?(?:</\1>|\Z)", re.DOTALL)
-_GORUNMEZ = re.compile("[﻿​‌‍⁠]")
+_GORUNMEZ = re.compile("[\ufeff\u200b\u200c\u200d\u2060]")
 _CIT = re.compile(r"```[ \t]*([A-Za-z0-9_+-]*)[ \t]*\n?(.*?)(?:```|\Z)", re.DOTALL)
 _ACILIS = re.compile(r"[{\[]")
 _ILK_ANAHTAR = re.compile(r"[\"'][^\"'\n]{1,80}[\"']\s*:")

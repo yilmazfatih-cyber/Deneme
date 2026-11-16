@@ -1,6 +1,6 @@
 """Türkçe büyük/küçük harf dönüşümü (i ↔ İ, ı ↔ I).
 
-Python'un `str.upper()`'ı "i"yi "I" yapar, `"İ".lower()` ise "i̇" (i + birleşik nokta) verir;
+Python'un `str.upper()`'ı "i"yi "I" yapar, `"İ".lower()` ise "i\u0307" (i + birleşik nokta) verir;
 ikisi de Türkçe için yanlıştır. Bu iki işlev önce Türkçe'ye özgü harfleri çevirir, kalanını
 Python'a bırakır. Asıl kaynak: havuz STANDARTLAR.md §3 (`upper_tr`); her mini sistem kendi kopyasını
 taşır. Genişletme: Azerice gibi başka bir dil için ayrı bir tablo ekleyin.

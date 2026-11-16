@@ -41,9 +41,9 @@ MIN_MARGIN = 1e-3
 TEXTS = [
     "",
     "Iğdır'dan İzmir'e, Çanakkale'ye; öğle üzeri şöyle güzel bir yolculuk.",
-    "Emoji: 🙂 🇹🇷 👨‍👩‍👧 ve birleşen işaret: é",
+    "Emoji: 🙂 🇹🇷 👨\u200d👩\u200d👧 ve birleşen işaret: e\u0301",
     "karışık   boşluk\t\tsekme\r\nsatır\n\n\nson  ",
-    " bölünmez ayırıcı​sıfır 1.250,75 TL",
+    "\u00a0bölünmez\u2028ayırıcı\u200bsıfır 1.250,75 TL",
     "<|bas|>özel<|son|> belirteç yazısı <|asistan|>",
     "日本語 العربية кириллица don't 'll",
 ]

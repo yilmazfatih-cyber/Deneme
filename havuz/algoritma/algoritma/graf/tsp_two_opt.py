@@ -2,16 +2,18 @@
 
 Fikir:
     En yakın komşu: başlangıçtan her adımda gidilmemiş en yakın şehre gidilir (O(n²), hızlı ama
-    genelde %20–25 uzun). 2-opt bu turu iyileştirir: turdan iki kenar (a, b) ve (c, d) çıkarılıp
+    en iyiden belirgin uzun). 2-opt bu turu iyileştirir: turdan iki kenar (a, b) ve (c, d) çıkarılıp
     (a, c) ve (b, d) eklenir — bu, aradaki parçayı ters çevirmektir. Toplam uzunluk kısalıyorsa
     hamle yapılır; hiçbir hamle kısaltmayınca durulur ("2-opt yerel en iyisi"). Düzlemde
     kesişen iki kenarı olan tur hiçbir zaman 2-opt en iyisi değildir; sonuç kesişmesiz bir turdur.
     Yalnız SİMETRİK uzaklıklarda doğrudur (parçayı ters çevirmek uzunluğunu değiştirmemeli).
+    Ölçüm (11 şehirli 20 rastgele düzlem örneği, Held-Karp ile karşılaştırma): en yakın komşu
+    ortalama %12.5 (en kötü %38) uzun; 2-opt sonrası ortalama %0.9 (en kötü %5.6) uzun.
 
 Karmaşıklık: en yakın komşu O(n²); 2-opt geçişi O(n²), geçiş sayısı pratikte küçük (kuramsal
     sınır üstel); yer O(n)
 Ne zaman: n > 15 durakta "yeterince iyi" tur; kesin çözümün başlangıç noktası ya da üst sınırı.
-Ne zaman değil: kanıtlı en iyi gerekiyorsa ve n ≤ 15 ise `tsp_held_karp.py`.
+Ne zaman değil: kanıtlı en iyi gerekiyorsa ve n ≲ 18 ise `tsp_held_karp.py`.
 Bağımlılık: yok
 Genişletme: yerel en iyiden kaçmak için `algoritma/eniyileme/simulated_annealing.py` ile
     rastgele 2-opt hamleleri deneyin; Or-opt (parça taşıma) hamlesi eklemek de etkilidir.

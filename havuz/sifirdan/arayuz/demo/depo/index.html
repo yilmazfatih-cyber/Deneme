@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <title>Durum deposu — sıfırdan arayüz</title>
+    <link rel="stylesheet" href="../ortak/stil.css" />
+    <link rel="stylesheet" href="./stil.css" />
+  </head>
+  <body>
+    <header class="ust">
+      <div class="kap">
+        <a class="geri" href="../../">← Tüm gösterimler</a>
+        <h1>Durum deposu: notlar</h1>
+        <p class="alt-baslik">
+          Her değişiklik bir eylemdir. Geri al/yinele, kaydırıcıyla zaman yolculuğu, tarayıcıda kalıcılık (sayfayı
+          yenileyin) ve sekmeler arası eşitleme (bu sayfayı ikinci bir sekmede açın).
+        </p>
+      </div>
+    </header>
+    <main class="kap" id="icerik">
+      <section class="panel" aria-labelledby="not-baslik">
+        <h2 id="not-baslik">Notlar</h2>
+        <form id="not-formu" class="satir" novalidate>
+          <label class="gizli" for="not-metni">Yeni not</label>
+          <input id="not-metni" placeholder="Bir not yazın" autocomplete="off" />
+          <button type="submit" class="birincil">Ekle</button>
+        </form>
+        <ul id="notlar" class="notlar"></ul>
+        <p class="durum" id="secici"></p>
+      </section>
+      <section class="panel" aria-labelledby="zaman-baslik">
+        <h2 id="zaman-baslik">Geçmiş</h2>
+        <div class="satir">
+          <button type="button" id="geri-al">Geri al</button>
+          <button type="button" id="yinele">Yinele</button>
+          <button type="button" id="temizle">Hepsini sil</button>
+        </div>
+        <label for="zaman">Zaman yolculuğu: <output id="adim" for="zaman"></output></label>
+        <input id="zaman" type="range" min="0" max="0" value="0" />
+        <p class="durum" id="durum" role="status"></p>
+      </section>
+      <section class="panel" aria-labelledby="gunluk-baslik">
+        <h2 id="gunluk-baslik">Eylem günlüğü (ara katman)</h2>
+        <ol id="gunluk" class="gunluk"></ol>
+      </section>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

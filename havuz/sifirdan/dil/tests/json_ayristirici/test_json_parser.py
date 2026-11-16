@@ -58,7 +58,7 @@ def test_valid_documents(text: str, expected: object) -> None:
         ('{"a": [1,\n  {"b": 2}', 2, 11, "dizi kapanmadı", "satır 1, sütun 7"),
         ("", 1, 1, "değer bekleniyordu, metin bitti", "Boş metin"),
         ("[1] [2]", 1, 5, "fazladan veri", "dizi"),
-        ("﻿{}", 1, 1, "BOM", None),
+        ("\ufeff{}", 1, 1, "BOM", None),
         ("1e999", 1, 1, "ondalık aralığın dışında", None),
     ],
 )
