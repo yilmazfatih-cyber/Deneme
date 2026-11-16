@@ -3,8 +3,10 @@
  * kişiler, kanallar, yayınlar), çıktı GraphQL'e hazır düz nesnelerdir. Servislere erişim yalnızca engine.ts'tedir.
  */
 import type { ContentChannel, ContentCollection, ContentTitle } from '../../../../shared/content-schema'
+import type { TagVocabulary } from '../../../../shared/tagging-schema'
 import type { ArtworkTypeName } from '../../kernel/imageUrls'
 import type { AiringRecord } from '../../kernel/services'
+import type { TitleTagFacts } from './intent/facts'
 
 /** Şemadaki EntityKind karşılığı. */
 export type SearchEntityKind = 'VIDEO' | 'CHANNEL' | 'PROGRAM_AIRING' | 'PERSON' | 'GENERIC_CONTAINER'
@@ -35,6 +37,10 @@ export interface SearchCorpus {
   channels: ContentChannel[]
   /** Bugünün ve yaklaşan yayınlar (ayrıca şu an canlı olanlar) */
   airings: AiringRecord[]
+  /** Etiket sözlüğü (niyet sözlüğünün ton ve köken sözcükleri için; etiketleme servisi yoksa verilmez) */
+  vocabulary?: TagVocabulary | null
+  /** Başlığın geçerli etiketleri (niyet süzgeci için; yoksa yalnız künye alanları kullanılır) */
+  tagsOf?: (titleId: number) => TitleTagFacts | null
 }
 
 /* ───────────── İstek girdisi (GraphQL girdi tiplerinin aynası) ───────────── */
@@ -158,4 +164,23 @@ export interface SearchPageResult {
   predictions: SearchPredictionResult[]
   /** ör. 'lr-1 · 42 güncelleme' */
   modelVersion: string
+  /** Sorgunun nasıl anlaşıldığı; niyet yoksa ya da sorgu bir başlık/kişi aramasıysa null */
+  understanding: SearchUnderstandingResult | null
+}
+
+/** SearchIntent karşılığı */
+export interface SearchIntentResult {
+  /** GENRE | MOOD | DURATION | ERA | TYPE | ORIGIN | AUDIENCE | LIVE */
+  kind: string
+  matched: string
+  label: string
+  without: string
+}
+
+/** SearchUnderstanding karşılığı */
+export interface SearchUnderstandingResult {
+  intents: SearchIntentResult[]
+  remainder: string
+  /** Gevşetilen niyetlerin okunur adları */
+  relaxed: string[]
 }

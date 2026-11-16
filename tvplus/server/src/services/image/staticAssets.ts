@@ -8,8 +8,10 @@
  *   · yalnız Node'da sınama kolaylığı: pages-assets'teki dosyaların sunucunun durağan dosya sunucusundan verilmesi.
  */
 import type { FastifyInstance } from 'fastify'
+import type { ContentTitle } from '../../../../shared/content-schema'
 import { parseEntityId } from '../../../../shared/tctx'
 import type { ArtworkTypeName } from '../../kernel/imageUrls'
+import { canonicalVideoEntity } from '../artwork/ids'
 import { avatarKeyOf } from '../identity/avatars'
 
 /** tvplus/ altındaki önceden üretilmiş dosyaların klasörü; içindeki yollar site yollarıdır. */
@@ -27,17 +29,25 @@ interface AliasDeps {
   profileAvatar(guid: string): string | null
   airing(airingId: string): { channelId: number; title: string; videoId: number | null } | null
   hasVideo(videoId: number): boolean
+  /** Üst başlık (film/dizi) kimliğiyle; afiş çeşidinin geçerliliği için. Verilmezse çeşit kimlikleri aynen geçer. */
+  title?(videoId: number): ContentTitle | null
 }
 
 /**
  * Çalışma anında çoğalan varlıkları derlemede sayılabilen varlıklara eşler:
  *   Profile:<guid> → Avatar:<anahtar> · Airing:<id> → Video:<videoId> ya da Program:<kanal>:<ad>
+ *   Video:<id>~<anahtar> (afiş çeşidi) → kendisi; çeşit o tipte üretilmiyorsa (bilinmeyen anahtar, kişiselleşmeyen
+ *   tip, elle verilmiş boxart) Video:<id>
  * Tanınmayan her şey aynen döner.
  */
 export function createStaticAlias(deps: AliasDeps) {
-  return (entityId: string, _type: ArtworkTypeName): string => {
+  return (entityId: string, type: ArtworkTypeName): string => {
     const p = parseEntityId(entityId)
     if (!p) return entityId
+    if (p.kind === 'Video') {
+      const title = deps.title?.bind(deps)
+      return title ? canonicalVideoEntity(title, entityId, type) : entityId
+    }
     if (p.kind === 'Profile') {
       const key = deps.profileAvatar(p.id)
       return key ? `Avatar:${key}` : entityId
@@ -64,6 +74,7 @@ export function staticAliasOf(app: FastifyInstance) {
       return a ? { channelId: a.channelId, title: a.title, videoId: a.videoId } : null
     },
     hasVideo: (videoId) => !!app.services.catalog?.videoInfo(videoId),
+    title: (videoId) => app.services.catalog?.getTitle(videoId) ?? null,
   })
 }
 

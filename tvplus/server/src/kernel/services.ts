@@ -15,6 +15,7 @@ import type {
   ContentTitle,
 } from '../../../shared/content-schema'
 import type { FastifyReply, FastifyRequest } from 'fastify'
+import type { ArtworkInsight } from '../../../shared/intelligence'
 import type { BootContext, EventBatch, OcaNodeState, PushEvent } from '../../../shared/types'
 import type { AccountRecord, Passport, ProfileRecord } from './context'
 import type { ArtworkTypeName } from './imageUrls'
@@ -281,6 +282,30 @@ export interface OcaService {
   nodes(): OcaNodeState[]
 }
 
+/* ───────────── Afiş seçimi (sahibi: alan servisleri; bkz. services/artwork) ───────────── */
+export type ArtworkPickMode = 'PERSONAL' | 'EXPLORE' | 'DEFAULT'
+export interface ArtworkPick {
+  /** '' = varsayılan görsel; diğerleri içerikteki `artwork.alternates[].key` */
+  key: string
+  mode: ArtworkPickMode
+  /** Kısa Türkçe gerekçe */
+  reason: string
+}
+export interface ArtworkService {
+  /** config.artworkPersonalization */
+  enabled(): boolean
+  /** Profil + başlık için gösterilecek aday (7 gün yapışkan). Profil yok / aday yok / kapalı → varsayılan. */
+  pick(profileGuid: string | null, videoId: number): ArtworkPick
+  /** Gösterim/tıklamayı profilin o anki atamasına yazar (gösterim saat başına profil+başlık+aday için bir kez). */
+  record(profileGuid: string, videoId: number, event: 'impression' | 'click', key?: string | null): void
+  /** Yönetici paneli: tüm adaylar, puanları ve seçilen. Başlık yoksa null. */
+  explain(profileGuid: string, videoId: number): ArtworkInsight | null
+  /** Profilin kesimindeki (topluluk ya da 'all') toplam gösterim ve tıklama */
+  summary(profileGuid: string): { segment: string; impressions: number; clicks: number }
+  /** Bekleyen depo yazımlarını hemen yapar */
+  flush(): void
+}
+
 /** Altyazı kaynağı çözümü (oynatma düzlemi içi; tür paylaşımı için burada). */
 export type TimedTextSource = ContentTimedText
 
@@ -294,6 +319,7 @@ export interface Services {
   progress: ProgressService
   playback: PlaybackService
   oca: OcaService
+  artwork: ArtworkService
   /* İçerik zekâsı (sözleşme: ./intelligence.ts) */
   tagging: TaggingService
   microgenres: MicrogenreService

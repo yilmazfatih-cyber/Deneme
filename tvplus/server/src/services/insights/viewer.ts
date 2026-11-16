@@ -11,6 +11,7 @@
 import type { FastifyInstance } from 'fastify'
 import { ROUTES } from '../../../../shared/constants'
 import type {
+  ArtworkInsight,
   ClusteringRun,
   InsightRow,
   InsightSubgenre,
@@ -47,6 +48,7 @@ export const INSIGHT_LIMITS = {
   modelPicks: 6,
   recentSearches: 5,
   subgenreWatched: 4,
+  artworkTitles: 6,
 } as const
 /** Topluluk seçimleri ve model seçimleri için istenen aday sayısı (süzgeçten sonra kesilir) */
 const PICK_FETCH = 60
@@ -206,6 +208,40 @@ function historyByTitle(facts: ViewingFact[]): TitleHistory[] {
   return [...by.values()].sort((a, b) => b.engagement - a.engagement || b.hours - a.hours || a.titleId - b.titleId)
 }
 
+/* ───────────── Afiş seçimi ───────────── */
+
+/** Öğrenmenin durumu hakkında kısa not (kesimin toplam gösterim/tıklamasına göre) */
+export function artworkNote(sum: { segment: string; impressions: number; clicks: number }): string {
+  const where = sum.segment === 'all' ? 'genelde' : 'topluluğunda'
+  if (sum.impressions === 0) return 'Henüz gösterim yok: seçimler görsel üsluba dayanıyor.'
+  if (sum.impressions < 200)
+    return `Henüz ${sum.impressions} gösterim (${where}): seçimler ağırlıkla görsel üsluba dayanıyor.`
+  return `${sum.impressions} gösterim, ${sum.clicks} tıklama (${where}): tıklanma oranı seçimde belirleyici.`
+}
+
+/** Ana sayfa satırlarındaki adayı olan ilk başlıklar ve profil için seçilen görselleri */
+function artworkSection(
+  services: Partial<Services>,
+  guid: string,
+  videoIds: number[],
+): NonNullable<ViewerInsight['artwork']> | undefined {
+  const artwork = services.artwork
+  if (!artwork || !safe(() => artwork.enabled(), false)) return undefined
+  const titles: ArtworkInsight[] = []
+  const done = new Set<number>()
+  for (const id of videoIds) {
+    if (titles.length >= INSIGHT_LIMITS.artworkTitles) break
+    if (done.has(id)) continue
+    done.add(id)
+    const t = services.catalog ? safe(() => services.catalog!.getTitle(id), null) : null
+    if (!t || t.artwork.alternates.length === 0) continue
+    const x = safe(() => artwork.explain(guid, id), null)
+    if (x) titles.push(x)
+  }
+  const sum = safe(() => artwork.summary(guid), null)
+  return { enabled: true, titles, note: sum ? artworkNote(sum) : null }
+}
+
 /* ───────────── Toplama ───────────── */
 
 export function buildViewerInsight(
@@ -345,6 +381,13 @@ export function buildViewerInsight(
     features: state ? FEATURE_NAMES.map((name) => ({ name, weight: r4(state.weights[name]) })) : [],
   }
 
+  // Afiş seçimi (servis yoksa ya da kapalıysa alan gelmez)
+  const artwork = artworkSection(
+    services,
+    guid,
+    lists.flatMap((l) => l.videoIds),
+  )
+
   const hours = byTitle.reduce((s, h) => s + h.hours, 0)
   return {
     generatedAt: now.toISOString(),
@@ -377,6 +420,7 @@ export function buildViewerInsight(
       picks: modelPicks,
     },
     search,
+    ...(artwork ? { artwork } : {}),
   }
 }
 

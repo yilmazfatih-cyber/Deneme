@@ -73,7 +73,37 @@
       "boxart": null,
       "storyArt": "https://i.ytimg.com/vi/eRsGyueVLvQ/maxres1.jpg",
       "focal": "50% 30%",
-      "posterFit": "crop"
+      "posterFit": "crop",
+      "alternates": [
+        {
+          "key": "k2",
+          "storyArt": "https://i.ytimg.com/vi/eRsGyueVLvQ/maxres2.jpg",
+          "label": "Kare 2",
+          "visual": {
+            "bright": 0.423,
+            "sat": 0.523,
+            "colorful": 0.336,
+            "edges": 0.376
+          }
+        },
+        {
+          "key": "k3",
+          "storyArt": "https://i.ytimg.com/vi/eRsGyueVLvQ/maxres3.jpg",
+          "label": "Kare 3",
+          "visual": {
+            "bright": 0.093,
+            "sat": 0.217,
+            "colorful": 0.146,
+            "edges": 0.153
+          }
+        }
+      ],
+      "visual": {
+        "bright": 0.275,
+        "sat": 0.389,
+        "colorful": 0.312,
+        "edges": 0.468
+      }
     },
     "license": {
       "name": "CC BY 3.0",
@@ -170,7 +200,48 @@
       "boxart": null,
       "storyArt": "https://i.ytimg.com/vi/R6MlUcmOul8/maxresdefault.jpg",
       "focal": "50% 30%",
-      "posterFit": "crop"
+      "posterFit": "crop",
+      "alternates": [
+        {
+          "key": "k1",
+          "storyArt": "https://i.ytimg.com/vi/R6MlUcmOul8/maxres1.jpg",
+          "label": "Kare 1",
+          "visual": {
+            "bright": 0.459,
+            "sat": 0.275,
+            "colorful": 0.251,
+            "edges": 0.599
+          }
+        },
+        {
+          "key": "k2",
+          "storyArt": "https://i.ytimg.com/vi/R6MlUcmOul8/maxres2.jpg",
+          "label": "Kare 2",
+          "visual": {
+            "bright": 0.413,
+            "sat": 0.286,
+            "colorful": 0.188,
+            "edges": 0.473
+          }
+        },
+        {
+          "key": "k3",
+          "storyArt": "https://i.ytimg.com/vi/R6MlUcmOul8/maxres3.jpg",
+          "label": "Kare 3",
+          "visual": {
+            "bright": 0.27,
+            "sat": 0.444,
+            "colorful": 0.22,
+            "edges": 0.328
+          }
+        }
+      ],
+      "visual": {
+        "bright": 0.419,
+        "sat": 0.613,
+        "colorful": 0.251,
+        "edges": 0.269
+      }
     },
     "license": {
       "name": "CC BY 3.0",

@@ -17,6 +17,7 @@ import type {
   Services,
   VideoInfo,
 } from '../../kernel/services'
+import { alternateOf, artworkEntityId, isPersonalisable, parseVideoEntity } from '../artwork/ids'
 import { avatarKeyOf, avatarSourceOf, isAvatarKey } from '../identity/avatars'
 import type { ContentBundle, ContentLog } from './load'
 
@@ -178,11 +179,32 @@ export function createCatalog(bundle: ContentBundle, deps: CatalogDeps): Catalog
 
   const titleOf = (videoId: number): ContentTitle | null => info.get(videoId)?.title ?? null
 
-  /** Video görseli: tipe göre storyArt/boxart önceliği, bölüm/ek video için üst başlığa düşer. */
-  function videoArtwork(videoId: number, type: ArtworkTypeName, entityId: string): ArtworkSource | null {
+  /**
+   * Video görseli: tipe göre storyArt/boxart önceliği, bölüm/ek video için üst başlığa düşer.
+   * `variant` (afiş adayı anahtarı, bkz. services/artwork): yalnız başlığın kendisinde ve kişiselleşen tipte geçerlidir;
+   * STORY_ART adayın görselidir, BOXART (başlığın elle verilmiş boxart'ı yoksa) varsayılan gibi bu yatay görselden
+   * üretilir. Bilinmeyen anahtar varsayılan görsele düşer.
+   */
+  function videoArtwork(videoId: number, type: ArtworkTypeName, entityId: string, variant = ''): ArtworkSource | null {
     const vi = info.get(videoId)
     if (!vi) return null
     const t = vi.title
+    const alt =
+      variant && vi.kind !== 'EPISODE' && vi.kind !== 'SUPPLEMENTAL' && isPersonalisable(t, type)
+        ? alternateOf(t, variant)
+        : null
+    if (alt) {
+      return {
+        sourceUrl: alt.storyArt,
+        localFile: null,
+        title: t.title,
+        subtitle: String(t.year),
+        // Kaynak alınamazsa üretilen yedek kapak varsayılanınkiyle aynı renkte olsun
+        seed: artworkEntityId(videoId, ''),
+        focal: alt.focal ?? t.artwork.focal,
+        posterFit: t.artwork.posterFit,
+      }
+    }
     const ownRaw = vi.episode?.data.artwork ?? vi.supplemental?.artwork ?? null
     // Bölüm/ek videonun kendi görseli yoksa (boxart ve storyArt boş) üst başlığınki geçerlidir
     const own = ownRaw && (ownRaw.boxart || ownRaw.storyArt) ? ownRaw : null
@@ -199,7 +221,7 @@ export function createCatalog(bundle: ContentBundle, deps: CatalogDeps): Catalog
       localFile: null,
       title: t.title,
       subtitle,
-      seed: entityId,
+      seed: variant ? artworkEntityId(videoId, '') : entityId,
       focal: own?.focal ?? t.artwork.focal,
       posterFit: own?.posterFit ?? t.artwork.posterFit,
     }
@@ -249,8 +271,11 @@ export function createCatalog(bundle: ContentBundle, deps: CatalogDeps): Catalog
       if (!parsed) return null
       const num = Number(parsed.id)
       switch (parsed.kind) {
-        case 'Video':
-          return Number.isInteger(num) ? videoArtwork(num, type, entityId) : null
+        case 'Video': {
+          // Video:<id> ya da afiş çeşidi Video:<id>~<anahtar>
+          const v = parseVideoEntity(entityId)
+          return v ? videoArtwork(v.videoId, type, entityId, v.key) : null
+        }
         case 'Channel': {
           const ch = channels.get(num)
           if (!ch) return null

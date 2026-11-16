@@ -7,6 +7,7 @@
 import { GraphQLError } from 'graphql'
 import type { GqlContext, ResolverMap } from '../../kernel/context'
 import { buildArtwork } from '../../kernel/imageUrls'
+import { titleArtwork } from '../../services/artwork/present'
 import {
   DEFAULT_POPULAR,
   isFeedbackAction,
@@ -104,6 +105,7 @@ export const searchResolvers: ResolverMap = {
     recentSearches: (p) => (p as SearchPageResult).recentSearches,
     predictions: (p) => (p as SearchPageResult).predictions,
     modelVersion: (p) => (p as SearchPageResult).modelVersion,
+    understanding: (p) => (p as SearchPageResult).understanding ?? null,
   },
   SearchSection: {
     __resolveType: (p) => (p as SearchSectionResult).sectionType,
@@ -149,7 +151,12 @@ export const searchResolvers: ResolverMap = {
     },
     contextualArtwork: (p, _args, ctx) => {
       const e = entity(p)
-      return e.artworkType ? buildArtwork(ctx.config, e.artworkType, e.unifiedEntityId) : null
+      if (!e.artworkType) return null
+      // Başlık görselleri profilin afiş seçimine uyar (ana sayfadaki kartla aynı görsel); diğer varlıklar olduğu gibi.
+      const m = /^Video:(\d+)$/.exec(e.unifiedEntityId)
+      return m
+        ? titleArtwork(ctx, e.artworkType, Number(m[1]))
+        : buildArtwork(ctx.config, e.artworkType, e.unifiedEntityId)
     },
   },
 }

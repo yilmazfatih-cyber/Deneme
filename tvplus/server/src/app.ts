@@ -15,6 +15,7 @@ import { HEADERS, ROUTES } from '../../shared/constants'
 import { loadConfig, type AppConfig } from './kernel/config'
 import { safeEqual } from './kernel/intelligence'
 import type { Services } from './kernel/services'
+import artworkPlugin from './services/artwork/plugin'
 import audiencePlugin from './services/audience/plugin'
 import catalogPlugin from './services/catalog/plugin'
 import debugPlugin from './services/debug/plugin'
@@ -131,6 +132,8 @@ export async function buildApp(overrides: Partial<AppConfig> = {}): Promise<Fast
   await insightsPlugin(app)
   await embeddingsPlugin(app)
   await predictionsPlugin(app)
+  // Afiş seçimi: içerik zekâsından (topluluk) ve olaylardan beslenir
+  await artworkPlugin(app)
 
   await playbackPlugin(app)
   await ocaPlugin(app)

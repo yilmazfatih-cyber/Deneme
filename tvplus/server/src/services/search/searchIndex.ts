@@ -15,6 +15,8 @@ import {
 } from '../../../../shared/tctx'
 import { norm } from '../../../../shared/text'
 import type { AiringRecord } from '../../kernel/services'
+import { titleFacts, type TitleFacts, type TitleTagFacts } from './intent/facts'
+import { buildIntentLexicon, type IntentLexicon } from './intent/lexicon'
 import type { SearchCorpus } from './types'
 
 /**
@@ -67,6 +69,8 @@ export interface SearchDoc {
   titleIds: number[]
   videoId?: number
   video?: VideoMeta
+  /** Niyet süzgecinin olguları (yalnız video) */
+  facts?: TitleFacts
   channelId?: number
   channelKids?: boolean
   channelNumber?: number
@@ -89,6 +93,8 @@ export interface Vocabulary {
 export interface SearchIndex {
   docs: SearchDoc[]
   vocab: Vocabulary
+  /** Niyet sözlüğü (taksonomi + etiket sözlüğü + katalogdaki köken ülkeleri) */
+  lexicon: IntentLexicon
   builtAt: Date
 }
 
@@ -109,7 +115,7 @@ function fields(list: [FieldKind, string | null | undefined][]): IndexedField[] 
   return out
 }
 
-function videoDoc(t: ContentTitle): SearchDoc {
+function videoDoc(t: ContentTitle, tags: TitleTagFacts | null): SearchDoc {
   const list: [FieldKind, string | null | undefined][] = [
     ['name', t.title],
     ['alt', t.originalTitle && norm(t.originalTitle) !== norm(t.title) ? t.originalTitle : null],
@@ -134,6 +140,7 @@ function videoDoc(t: ContentTitle): SearchDoc {
       addedAt: t.availability.addedAt,
       title: t.title,
     },
+    facts: titleFacts(t, tags),
   }
 }
 
@@ -141,9 +148,11 @@ function videoDoc(t: ContentTitle): SearchDoc {
 export function buildSearchIndex(corpus: SearchCorpus, now: Date = new Date()): SearchIndex {
   const docs: SearchDoc[] = []
   const popById = new Map<number, number>()
+  const countries = new Set<string>()
   for (const t of corpus.titles) {
     popById.set(t.videoId, t.popularity)
-    docs.push(videoDoc(t))
+    for (const c of t.origin?.countries ?? []) countries.add(c)
+    docs.push(videoDoc(t, corpus.tagsOf?.(t.videoId) ?? null))
   }
   const maxPop = (ids: number[]) => ids.reduce((m, id) => Math.max(m, popById.get(id) ?? 0), 0)
 
@@ -230,7 +239,8 @@ export function buildSearchIndex(corpus: SearchCorpus, now: Date = new Date()): 
     })
   }
 
-  return { docs, vocab: buildVocabulary(docs), builtAt: now }
+  const lexicon = buildIntentLexicon({ vocabulary: corpus.vocabulary ?? null, countries, year: now.getUTCFullYear() })
+  return { docs, vocab: buildVocabulary(docs), lexicon, builtAt: now }
 }
 
 const BIGRAM_FIELDS: ReadonlySet<FieldKind> = new Set<FieldKind>(['name', 'alt', 'keyword', 'person'])

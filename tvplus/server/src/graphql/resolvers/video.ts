@@ -5,8 +5,9 @@
 import { GENRES } from '../../../../shared/taxonomy'
 import { personEntityId, videoEntityId } from '../../../../shared/tctx'
 import type { GqlContext, ResolverFn, ResolverMap } from '../../kernel/context'
-import { buildArtwork, type ArtworkTypeName } from '../../kernel/imageUrls'
+import type { ArtworkTypeName } from '../../kernel/imageUrls'
 import type { VideoInfo } from '../../kernel/services'
+import { titleArtwork } from '../../services/artwork/present'
 import { personIdOf } from '../../services/catalog/catalog'
 import {
   badgeOf,
@@ -74,8 +75,8 @@ const videoFields: Record<string, ResolverFn> = {
   isAvailable: (p: VideoRef, _a: unknown, ctx: GqlContext) => accessForVideo(ctx, p.videoId).state !== 'OUT_OF_WINDOW',
   isPlayable: (p: VideoRef, _a: unknown, ctx: GqlContext) => accessForVideo(ctx, p.videoId).state === 'PLAYABLE',
   access: (p: VideoRef, _a: unknown, ctx: GqlContext) => accessForVideo(ctx, p.videoId),
-  artwork: (p: VideoRef, a: ArtworkArgs, ctx: GqlContext) =>
-    buildArtwork(ctx.config, a.type, videoEntityId(p.videoId), a.params),
+  // STORY_ART / BOXART: profile seçilen afiş çeşidi (services/artwork); diğer tipler ve bölümler varsayılan
+  artwork: (p: VideoRef, a: ArtworkArgs, ctx: GqlContext) => titleArtwork(ctx, a.type, p.videoId, a.params),
   genreTags: (p: VideoRef, _a: unknown, ctx: GqlContext) =>
     infoOf(ctx, p.videoId).title.genres.map((g) => ({ genreId: GENRES[g].genreId })),
   moodTags: (p: VideoRef, _a: unknown, ctx: GqlContext) => moodTagsOf(infoOf(ctx, p.videoId).title),

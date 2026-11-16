@@ -35,7 +35,48 @@
     "artwork": {
       "boxart": null,
       "storyArt": "https://i.ytimg.com/vi/aqz-KE-bpKQ/maxresdefault.jpg",
-      "focal": "50% 40%"
+      "focal": "50% 40%",
+      "alternates": [
+        {
+          "key": "k1",
+          "storyArt": "https://i.ytimg.com/vi/aqz-KE-bpKQ/maxres1.jpg",
+          "label": "Kare 1",
+          "visual": {
+            "bright": 0.712,
+            "sat": 0.243,
+            "colorful": 0.294,
+            "edges": 0.245
+          }
+        },
+        {
+          "key": "k2",
+          "storyArt": "https://i.ytimg.com/vi/aqz-KE-bpKQ/maxres2.jpg",
+          "label": "Kare 2",
+          "visual": {
+            "bright": 0.403,
+            "sat": 0.366,
+            "colorful": 0.393,
+            "edges": 0.428
+          }
+        },
+        {
+          "key": "k3",
+          "storyArt": "https://i.ytimg.com/vi/aqz-KE-bpKQ/maxres3.jpg",
+          "label": "Kare 3",
+          "visual": {
+            "bright": 0.436,
+            "sat": 0.501,
+            "colorful": 0.535,
+            "edges": 0.305
+          }
+        }
+      ],
+      "visual": {
+        "bright": 0.681,
+        "sat": 0.309,
+        "colorful": 0.475,
+        "edges": 0.515
+      }
     },
     "license": {
       "name": "CC BY 3.0",
@@ -86,7 +127,48 @@
     "artwork": {
       "boxart": null,
       "storyArt": "https://i.ytimg.com/vi/TLkA0RELQ1g/maxresdefault.jpg",
-      "focal": "50% 40%"
+      "focal": "50% 40%",
+      "alternates": [
+        {
+          "key": "k1",
+          "storyArt": "https://i.ytimg.com/vi/TLkA0RELQ1g/maxres1.jpg",
+          "label": "Kare 1",
+          "visual": {
+            "bright": 0.103,
+            "sat": 0.26,
+            "colorful": 0.208,
+            "edges": 0.089
+          }
+        },
+        {
+          "key": "k2",
+          "storyArt": "https://i.ytimg.com/vi/TLkA0RELQ1g/maxres2.jpg",
+          "label": "Kare 2",
+          "visual": {
+            "bright": 0.178,
+            "sat": 0.166,
+            "colorful": 0.096,
+            "edges": 0.257
+          }
+        },
+        {
+          "key": "k3",
+          "storyArt": "https://i.ytimg.com/vi/TLkA0RELQ1g/maxres3.jpg",
+          "label": "Kare 3",
+          "visual": {
+            "bright": 0.256,
+            "sat": 0.384,
+            "colorful": 0.171,
+            "edges": 0.265
+          }
+        }
+      ],
+      "visual": {
+        "bright": 0.197,
+        "sat": 0.328,
+        "colorful": 0.163,
+        "edges": 0.411
+      }
     },
     "license": {
       "name": "CC BY 2.5",
@@ -137,7 +219,48 @@
     "artwork": {
       "boxart": null,
       "storyArt": "https://i.ytimg.com/vi/Y-rmzh0PI3c/maxresdefault.jpg",
-      "focal": "50% 40%"
+      "focal": "50% 40%",
+      "alternates": [
+        {
+          "key": "k1",
+          "storyArt": "https://i.ytimg.com/vi/Y-rmzh0PI3c/maxres1.jpg",
+          "label": "Kare 1",
+          "visual": {
+            "bright": 0.22,
+            "sat": 0.323,
+            "colorful": 0.211,
+            "edges": 0.207
+          }
+        },
+        {
+          "key": "k2",
+          "storyArt": "https://i.ytimg.com/vi/Y-rmzh0PI3c/maxres2.jpg",
+          "label": "Kare 2",
+          "visual": {
+            "bright": 0.225,
+            "sat": 0.456,
+            "colorful": 0.268,
+            "edges": 0.081
+          }
+        },
+        {
+          "key": "k3",
+          "storyArt": "https://i.ytimg.com/vi/Y-rmzh0PI3c/maxres3.jpg",
+          "label": "Kare 3",
+          "visual": {
+            "bright": 0.211,
+            "sat": 0.3,
+            "colorful": 0.269,
+            "edges": 0.263
+          }
+        }
+      ],
+      "visual": {
+        "bright": 0.354,
+        "sat": 0.379,
+        "colorful": 0.334,
+        "edges": 0.23
+      }
     },
     "license": {
       "name": "CC BY 3.0",
@@ -188,7 +311,48 @@
     "artwork": {
       "boxart": null,
       "storyArt": "https://i.ytimg.com/vi/lqiN98z6Dak/maxresdefault.jpg",
-      "focal": "50% 40%"
+      "focal": "50% 40%",
+      "alternates": [
+        {
+          "key": "k1",
+          "storyArt": "https://i.ytimg.com/vi/lqiN98z6Dak/maxres1.jpg",
+          "label": "Kare 1",
+          "visual": {
+            "bright": 0.418,
+            "sat": 0.44,
+            "colorful": 0.531,
+            "edges": 0.401
+          }
+        },
+        {
+          "key": "k2",
+          "storyArt": "https://i.ytimg.com/vi/lqiN98z6Dak/maxres2.jpg",
+          "label": "Kare 2",
+          "visual": {
+            "bright": 0.254,
+            "sat": 0.314,
+            "colorful": 0.481,
+            "edges": 0.482
+          }
+        },
+        {
+          "key": "k3",
+          "storyArt": "https://i.ytimg.com/vi/lqiN98z6Dak/maxres3.jpg",
+          "label": "Kare 3",
+          "visual": {
+            "bright": 0.525,
+            "sat": 0.384,
+            "colorful": 0.522,
+            "edges": 0.46
+          }
+        }
+      ],
+      "visual": {
+        "bright": 0.576,
+        "sat": 0.257,
+        "colorful": 0.422,
+        "edges": 0.472
+      }
     },
     "license": {
       "name": "CC BY 4.0",
@@ -239,7 +403,48 @@
     "artwork": {
       "boxart": null,
       "storyArt": "https://i.ytimg.com/vi/mN0zPOpADL4/maxresdefault.jpg",
-      "focal": "50% 40%"
+      "focal": "50% 40%",
+      "alternates": [
+        {
+          "key": "k1",
+          "storyArt": "https://i.ytimg.com/vi/mN0zPOpADL4/maxres1.jpg",
+          "label": "Kare 1",
+          "visual": {
+            "bright": 0.314,
+            "sat": 0.309,
+            "colorful": 0.23,
+            "edges": 0.343
+          }
+        },
+        {
+          "key": "k2",
+          "storyArt": "https://i.ytimg.com/vi/mN0zPOpADL4/maxres2.jpg",
+          "label": "Kare 2",
+          "visual": {
+            "bright": 0.2,
+            "sat": 0.34,
+            "colorful": 0.188,
+            "edges": 0.339
+          }
+        },
+        {
+          "key": "k3",
+          "storyArt": "https://i.ytimg.com/vi/mN0zPOpADL4/maxres3.jpg",
+          "label": "Kare 3",
+          "visual": {
+            "bright": 0.1,
+            "sat": 0.204,
+            "colorful": 0.093,
+            "edges": 0.065
+          }
+        }
+      ],
+      "visual": {
+        "bright": 0.337,
+        "sat": 0.62,
+        "colorful": 0.448,
+        "edges": 0.549
+      }
     },
     "license": {
       "name": "CC BY-ND",
@@ -290,7 +495,48 @@
     "artwork": {
       "boxart": null,
       "storyArt": "https://i.ytimg.com/vi/RJnKaAtBPhA/maxresdefault.jpg",
-      "focal": "50% 40%"
+      "focal": "50% 40%",
+      "alternates": [
+        {
+          "key": "k1",
+          "storyArt": "https://i.ytimg.com/vi/RJnKaAtBPhA/maxres1.jpg",
+          "label": "Kare 1",
+          "visual": {
+            "bright": 0.387,
+            "sat": 0.878,
+            "colorful": 0.852,
+            "edges": 0.151
+          }
+        },
+        {
+          "key": "k2",
+          "storyArt": "https://i.ytimg.com/vi/RJnKaAtBPhA/maxres2.jpg",
+          "label": "Kare 2",
+          "visual": {
+            "bright": 0.374,
+            "sat": 0.336,
+            "colorful": 0.34,
+            "edges": 0.239
+          }
+        },
+        {
+          "key": "k3",
+          "storyArt": "https://i.ytimg.com/vi/RJnKaAtBPhA/maxres3.jpg",
+          "label": "Kare 3",
+          "visual": {
+            "bright": 0.397,
+            "sat": 0.338,
+            "colorful": 0.348,
+            "edges": 0.32
+          }
+        }
+      ],
+      "visual": {
+        "bright": 0.342,
+        "sat": 0.351,
+        "colorful": 0.443,
+        "edges": 0.245
+      }
     },
     "license": {
       "name": "CC BY 4.0",
@@ -341,7 +587,48 @@
     "artwork": {
       "boxart": null,
       "storyArt": "https://i.ytimg.com/vi/WhWc3b3KhnY/maxresdefault.jpg",
-      "focal": "50% 40%"
+      "focal": "50% 40%",
+      "alternates": [
+        {
+          "key": "k1",
+          "storyArt": "https://i.ytimg.com/vi/WhWc3b3KhnY/maxres1.jpg",
+          "label": "Kare 1",
+          "visual": {
+            "bright": 0.258,
+            "sat": 0.402,
+            "colorful": 0.232,
+            "edges": 0.357
+          }
+        },
+        {
+          "key": "k2",
+          "storyArt": "https://i.ytimg.com/vi/WhWc3b3KhnY/maxres2.jpg",
+          "label": "Kare 2",
+          "visual": {
+            "bright": 0.179,
+            "sat": 0.548,
+            "colorful": 0.151,
+            "edges": 0.156
+          }
+        },
+        {
+          "key": "k3",
+          "storyArt": "https://i.ytimg.com/vi/WhWc3b3KhnY/maxres3.jpg",
+          "label": "Kare 3",
+          "visual": {
+            "bright": 0.255,
+            "sat": 0.296,
+            "colorful": 0.239,
+            "edges": 0.213
+          }
+        }
+      ],
+      "visual": {
+        "bright": 0.293,
+        "sat": 0.486,
+        "colorful": 0.453,
+        "edges": 0.291
+      }
     },
     "license": {
       "name": "CC BY 4.0",
@@ -392,7 +679,48 @@
     "artwork": {
       "boxart": null,
       "storyArt": "https://i.ytimg.com/vi/PVGeM40dABA/maxresdefault.jpg",
-      "focal": "50% 40%"
+      "focal": "50% 40%",
+      "alternates": [
+        {
+          "key": "k1",
+          "storyArt": "https://i.ytimg.com/vi/PVGeM40dABA/maxres1.jpg",
+          "label": "Kare 1",
+          "visual": {
+            "bright": 0.639,
+            "sat": 0.463,
+            "colorful": 0.455,
+            "edges": 0.258
+          }
+        },
+        {
+          "key": "k2",
+          "storyArt": "https://i.ytimg.com/vi/PVGeM40dABA/maxres2.jpg",
+          "label": "Kare 2",
+          "visual": {
+            "bright": 0.665,
+            "sat": 0.427,
+            "colorful": 0.464,
+            "edges": 0.236
+          }
+        },
+        {
+          "key": "k3",
+          "storyArt": "https://i.ytimg.com/vi/PVGeM40dABA/maxres3.jpg",
+          "label": "Kare 3",
+          "visual": {
+            "bright": 0.625,
+            "sat": 0.467,
+            "colorful": 0.457,
+            "edges": 0.243
+          }
+        }
+      ],
+      "visual": {
+        "bright": 0.832,
+        "sat": 0.102,
+        "colorful": 0.167,
+        "edges": 0.325
+      }
     },
     "license": {
       "name": "CC BY 4.0",
@@ -443,7 +771,48 @@
     "artwork": {
       "boxart": null,
       "storyArt": "https://i.ytimg.com/vi/_cMxraX_5RE/maxresdefault.jpg",
-      "focal": "50% 40%"
+      "focal": "50% 40%",
+      "alternates": [
+        {
+          "key": "k1",
+          "storyArt": "https://i.ytimg.com/vi/_cMxraX_5RE/maxres1.jpg",
+          "label": "Kare 1",
+          "visual": {
+            "bright": 0.306,
+            "sat": 0.579,
+            "colorful": 0.406,
+            "edges": 0.372
+          }
+        },
+        {
+          "key": "k2",
+          "storyArt": "https://i.ytimg.com/vi/_cMxraX_5RE/maxres2.jpg",
+          "label": "Kare 2",
+          "visual": {
+            "bright": 0.203,
+            "sat": 0.659,
+            "colorful": 0.269,
+            "edges": 0.332
+          }
+        },
+        {
+          "key": "k3",
+          "storyArt": "https://i.ytimg.com/vi/_cMxraX_5RE/maxres3.jpg",
+          "label": "Kare 3",
+          "visual": {
+            "bright": 0.479,
+            "sat": 0.355,
+            "colorful": 0.379,
+            "edges": 0.207
+          }
+        }
+      ],
+      "visual": {
+        "bright": 0.375,
+        "sat": 0.702,
+        "colorful": 0.796,
+        "edges": 0.576
+      }
     },
     "license": {
       "name": "CC BY 4.0",
@@ -494,7 +863,48 @@
     "artwork": {
       "boxart": null,
       "storyArt": "https://i.ytimg.com/vi/UXqq0ZvbOnk/maxresdefault.jpg",
-      "focal": "50% 40%"
+      "focal": "50% 40%",
+      "alternates": [
+        {
+          "key": "k1",
+          "storyArt": "https://i.ytimg.com/vi/UXqq0ZvbOnk/maxres1.jpg",
+          "label": "Kare 1",
+          "visual": {
+            "bright": 0.165,
+            "sat": 0.57,
+            "colorful": 0.21,
+            "edges": 0.102
+          }
+        },
+        {
+          "key": "k2",
+          "storyArt": "https://i.ytimg.com/vi/UXqq0ZvbOnk/maxres2.jpg",
+          "label": "Kare 2",
+          "visual": {
+            "bright": 0.167,
+            "sat": 0.34,
+            "colorful": 0.148,
+            "edges": 0.172
+          }
+        },
+        {
+          "key": "k3",
+          "storyArt": "https://i.ytimg.com/vi/UXqq0ZvbOnk/maxres3.jpg",
+          "label": "Kare 3",
+          "visual": {
+            "bright": 0.219,
+            "sat": 0.511,
+            "colorful": 0.357,
+            "edges": 0.15
+          }
+        }
+      ],
+      "visual": {
+        "bright": 0.256,
+        "sat": 0.654,
+        "colorful": 0.333,
+        "edges": 0.467
+      }
     },
     "license": {
       "name": "CC BY 4.0",
@@ -545,7 +955,48 @@
     "artwork": {
       "boxart": null,
       "storyArt": "https://i.ytimg.com/vi/u9lj-c29dxI/maxresdefault.jpg",
-      "focal": "50% 40%"
+      "focal": "50% 40%",
+      "alternates": [
+        {
+          "key": "k1",
+          "storyArt": "https://i.ytimg.com/vi/u9lj-c29dxI/maxres1.jpg",
+          "label": "Kare 1",
+          "visual": {
+            "bright": 0.435,
+            "sat": 0.457,
+            "colorful": 0.456,
+            "edges": 0.173
+          }
+        },
+        {
+          "key": "k2",
+          "storyArt": "https://i.ytimg.com/vi/u9lj-c29dxI/maxres2.jpg",
+          "label": "Kare 2",
+          "visual": {
+            "bright": 0.248,
+            "sat": 0.552,
+            "colorful": 0.492,
+            "edges": 0.23
+          }
+        },
+        {
+          "key": "k3",
+          "storyArt": "https://i.ytimg.com/vi/u9lj-c29dxI/maxres3.jpg",
+          "label": "Kare 3",
+          "visual": {
+            "bright": 0.33,
+            "sat": 0.357,
+            "colorful": 0.414,
+            "edges": 0.342
+          }
+        }
+      ],
+      "visual": {
+        "bright": 0.41,
+        "sat": 0.457,
+        "colorful": 0.572,
+        "edges": 0.467
+      }
     },
     "license": {
       "name": "CC BY 4.0",
@@ -651,7 +1102,48 @@
     "artwork": {
       "boxart": null,
       "storyArt": "https://i.ytimg.com/vi/SkVqJ1SGeL0/maxresdefault.jpg",
-      "focal": "50% 40%"
+      "focal": "50% 40%",
+      "alternates": [
+        {
+          "key": "k1",
+          "storyArt": "https://i.ytimg.com/vi/SkVqJ1SGeL0/maxres1.jpg",
+          "label": "Kare 1",
+          "visual": {
+            "bright": 0.597,
+            "sat": 0.434,
+            "colorful": 0.561,
+            "edges": 0.163
+          }
+        },
+        {
+          "key": "k2",
+          "storyArt": "https://i.ytimg.com/vi/SkVqJ1SGeL0/maxres2.jpg",
+          "label": "Kare 2",
+          "visual": {
+            "bright": 0.66,
+            "sat": 0.218,
+            "colorful": 0.322,
+            "edges": 0.259
+          }
+        },
+        {
+          "key": "k3",
+          "storyArt": "https://i.ytimg.com/vi/SkVqJ1SGeL0/maxres3.jpg",
+          "label": "Kare 3",
+          "visual": {
+            "bright": 0.357,
+            "sat": 0.394,
+            "colorful": 0.34,
+            "edges": 0.516
+          }
+        }
+      ],
+      "visual": {
+        "bright": 0.441,
+        "sat": 0.343,
+        "colorful": 0.406,
+        "edges": 0.46
+      }
     },
     "license": {
       "name": "CC BY",

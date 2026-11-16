@@ -7,7 +7,6 @@ import { randomUUID } from 'node:crypto'
 import type { AppConfig } from '../../kernel/config'
 import type { Passport } from '../../kernel/context'
 import type { AiringRecord, Services } from '../../kernel/services'
-import { matchDoc, tokenize } from './match'
 import { predictCompletionsPure, DEFAULT_COMPLETIONS } from './model/completions'
 import { FEATURE_NAMES, NEUTRAL, queryKey, queryKeys, type FeatureVector, type WeightedKey } from './model/features'
 import {
@@ -23,7 +22,7 @@ import {
 } from './model/model'
 import { profileSignals, rankerFor, safeCall, type ProfileSignals } from './model/ranker'
 import { recallResponse, rememberResponse, searchModel, type ServedEntity } from './model/runtime'
-import { buildSearchPage, isDocVisible, type VisibilityContext } from './page'
+import { buildSearchPage, isDocVisible, textScoreOf, type VisibilityContext } from './page'
 import { buildSearchIndex, type SearchDoc, type SearchIndex } from './searchIndex'
 import type {
   SearchCorpus,
@@ -46,10 +45,17 @@ interface EngineState {
 
 const states = new WeakMap<Services, EngineState>()
 
-function fingerprintOf(corpus: Omit<SearchCorpus, 'airings'>): string {
+function fingerprintOf(corpus: Omit<SearchCorpus, 'airings'>, tagRevision: number): string {
   let ids = 0
   for (const t of corpus.titles) ids = (ids + t.videoId * 31 + t.popularity) % 2_147_483_647
-  return [corpus.titles.length, ids, corpus.collections.length, corpus.channels.length, corpus.people.length].join('|')
+  return [
+    corpus.titles.length,
+    ids,
+    corpus.collections.length,
+    corpus.channels.length,
+    corpus.people.length,
+    tagRevision,
+  ].join('|')
 }
 
 function collectAirings(services: Services, channelIds: number[], now: Date): AiringRecord[] {
@@ -75,7 +81,10 @@ export function getSearchIndex(services: Services, now: Date = new Date()): Sear
     people: catalog.people(),
     channels: catalog.listChannels(),
   }
-  const fingerprint = fingerprintOf(base)
+  // Etiketleme servisi yoksa (ya da fırlatırsa) niyet sözlüğü yalnız taksonomiyle, süzgeç yalnız künyeyle çalışır.
+  const tagging = safeCall(() => services.tagging ?? null, null)
+  const tagRevision = tagging ? safeCall(() => tagging.revision(), 0) : 0
+  const fingerprint = fingerprintOf(base, tagRevision)
   const state = states.get(services)
   if (state && state.fingerprint === fingerprint && now.getTime() - state.index.builtAt.getTime() < REBUILD_MS)
     return state.index
@@ -87,7 +96,15 @@ export function getSearchIndex(services: Services, now: Date = new Date()): Sear
         now,
       )
     : []
-  const index = buildSearchIndex({ ...base, airings }, now)
+  const index = buildSearchIndex(
+    {
+      ...base,
+      airings,
+      vocabulary: tagging ? safeCall(() => tagging.vocabulary(), null) : null,
+      tagsOf: (titleId) => (tagging ? safeCall(() => tagging.effective(titleId), null) : null),
+    },
+    now,
+  )
   states.set(services, { index, fingerprint })
   return index
 }
@@ -284,10 +301,11 @@ export function recordSearchFeedback(
   let x = served?.entities.find((e) => e.entityId === entityId)?.x ?? null
   if (!x) {
     // Yanıt hatırlanmıyor: öznitelikleri şimdi hesapla (yalnız video belgeleri modelle puanlanır).
-    const doc = docByKey(getSearchIndex(services, now)).get(entityId)
+    const index = getSearchIndex(services, now)
+    const doc = docByKey(index).get(entityId)
     if (doc?.type === 'video') {
       const ranker = rankerFor(services, rt.store.get(), profileSignals(services, passport.profile), term, now)
-      x = ranker.scoreVideo(doc, matchDoc(doc, tokenize(term))?.score ?? 0).x
+      x = ranker.scoreVideo(doc, textScoreOf(index, doc, term)).x
     }
   }
 

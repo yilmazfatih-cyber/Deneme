@@ -6,6 +6,7 @@
  * çeşit seçemez; bu yüzden uygulamanın başvurabileceği HER çeşit burada, gerçek görsel hattıyla (render/pipeline) düz
  * dosya olarak yazılır. Yollar site yollarıdır (kök = `tvplus/pages-assets/`, Pages'te sitenin kökü):
  *   img/<tip>/<G>x<Y>/<varlık>.webp                               katalog, kanal, avatar, program görselleri
+ *                                                                  (afiş çeşitleri dahil: Video:<id>~<anahtar>)
  *   subtitles/<dosya>                                              content/subtitles altındaki yerel altyazılar
  *   api/studio/embeddings/videos/<id>/shots/<i>/keyframe.jpg       stüdyo çekim ana kareleri (paftadan kırpılır)
  * Çeşitler ve adres düzeni `server/src/kernel/imageUrls.ts` (STATIC_WIDTHS, staticArtworkPath) ile birebir aynıdır.
@@ -26,6 +27,7 @@ import { airingEntityId, channelEntityId, collectionEntityId, videoEntityId } fr
 import { buildApp } from '../server/src/app'
 import type { ArtworkSource } from '../server/src/kernel/services'
 import { STATIC_WIDTHS, normalizeSize, staticArtworkPath, type ArtworkTypeName } from '../server/src/kernel/imageUrls'
+import { artworkEntityId, isPersonalisable, PERSONALISED_TYPES } from '../server/src/services/artwork/ids'
 import { KEYFRAME_QUALITY } from '../server/src/services/embeddings/service'
 import { loadShotIndex } from '../server/src/services/embeddings/shots'
 import { AVATAR_KEYS } from '../server/src/services/identity/avatars'
@@ -182,6 +184,21 @@ export async function buildPagesAssets(opts: Options): Promise<{ missing: string
     const eid = videoEntityId(id)
     for (const type of VIDEO_TYPES) add(type, eid, () => catalog.getArtworkSource(eid, type))
   }
+  // 1b) Afiş çeşitleri (services/artwork): adayı olan başlıklarda STORY_ART ve (elle verilmiş boxart yoksa) BOXART
+  //     merdiveni; dosya adı çeşit kimliğinden (Video:<id>~<anahtar>) gelir, kaynak katalogdan aynı yolla çözülür.
+  let variants = 0
+  for (const t of catalog.allTitles()) {
+    for (const alt of t.artwork.alternates) {
+      const eid = artworkEntityId(t.videoId, alt.key)
+      for (const type of PERSONALISED_TYPES) {
+        if (!isPersonalisable(t, type)) continue
+        const before = jobs.size
+        add(type, eid, () => catalog.getArtworkSource(eid, type))
+        variants += jobs.size - before
+      }
+    }
+  }
+  log(`  afiş çeşitleri: ${variants} görsel`)
   // 2) Koleksiyonlar
   for (const c of catalog.allCollections()) {
     const eid = collectionEntityId(c.collectionId)

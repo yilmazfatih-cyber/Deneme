@@ -75,6 +75,13 @@ export interface AppConfig {
    * 'dosya' çevrimdışı üretilmiş vektörler (dataDir/embeddings/import/*.jsonl). TVP_EMBEDDING_PROVIDER ile seçilir.
    */
   embedding: { provider: 'taban' | 'http' | 'dosya'; url: string | null }
+  /**
+   * Afiş seçimi (services/artwork): aynı başlık profile göre farklı adaylarla gösterilir. Varsayılan açık;
+   * `TVP_ARTWORK=off` kapatır (testlerde varsayılan kapalı, bkz. server/test/helpers.ts).
+   */
+  artworkPersonalization: boolean
+  /** Afiş seçiminde keşif olasılığı ε (0–1; TVP_ARTWORK_EPSILON, varsayılan 0.15) */
+  artworkEpsilon: number
 }
 
 /** Arka ofis uçlarının erişim düzeyi (bkz. app.ts kancaları). */
@@ -98,6 +105,12 @@ function adminCodeHashFromEnv(value: string | undefined): string | null {
   if (value === undefined || value.trim() === '') return DEFAULT_ADMIN_CODE_HASH
   if (value.trim().toLowerCase() === 'off') return null
   return adminCodeHashOf(value)
+}
+
+/** TVP_ARTWORK_EPSILON: 0–1 arası sayı; geçersizse 0.15. */
+function epsilonFromEnv(value: string | undefined): number {
+  const n = value === undefined || value.trim() === '' ? NaN : Number(value)
+  return Number.isFinite(n) && n >= 0 && n <= 1 ? n : 0.15
 }
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..', '..')
@@ -154,6 +167,8 @@ export function loadConfig(overrides: Partial<AppConfig> = {}): AppConfig {
             : 'taban',
       url: process.env.TVP_EMBEDDING_URL || null,
     },
+    artworkPersonalization: process.env.TVP_ARTWORK !== 'off',
+    artworkEpsilon: epsilonFromEnv(process.env.TVP_ARTWORK_EPSILON),
     ...overrides,
     dataDir,
   }

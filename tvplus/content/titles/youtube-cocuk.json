@@ -252,7 +252,48 @@
     "artwork": {
       "boxart": null,
       "storyArt": "https://i.ytimg.com/vi/hdTj_6C1jPw/maxresdefault.jpg",
-      "focal": "50% 40%"
+      "focal": "50% 40%",
+      "alternates": [
+        {
+          "key": "k1",
+          "storyArt": "https://i.ytimg.com/vi/hdTj_6C1jPw/maxres1.jpg",
+          "label": "Kare 1",
+          "visual": {
+            "bright": 0.501,
+            "sat": 0.473,
+            "colorful": 0.469,
+            "edges": 0.317
+          }
+        },
+        {
+          "key": "k2",
+          "storyArt": "https://i.ytimg.com/vi/hdTj_6C1jPw/maxres2.jpg",
+          "label": "Kare 2",
+          "visual": {
+            "bright": 0.59,
+            "sat": 0.533,
+            "colorful": 0.647,
+            "edges": 0.501
+          }
+        },
+        {
+          "key": "k3",
+          "storyArt": "https://i.ytimg.com/vi/hdTj_6C1jPw/maxres3.jpg",
+          "label": "Kare 3",
+          "visual": {
+            "bright": 0.534,
+            "sat": 0.389,
+            "colorful": 0.356,
+            "edges": 0.325
+          }
+        }
+      ],
+      "visual": {
+        "bright": 0.42,
+        "sat": 0.496,
+        "colorful": 0.586,
+        "edges": 0.363
+      }
     },
     "license": {
       "name": "YouTube standart lisansı",
@@ -394,7 +435,48 @@
     "artwork": {
       "boxart": null,
       "storyArt": "https://i.ytimg.com/vi/fG3gwoDr3Pk/maxresdefault.jpg",
-      "focal": "50% 40%"
+      "focal": "50% 40%",
+      "alternates": [
+        {
+          "key": "k1",
+          "storyArt": "https://i.ytimg.com/vi/fG3gwoDr3Pk/maxres1.jpg",
+          "label": "Kare 1",
+          "visual": {
+            "bright": 0.451,
+            "sat": 0.294,
+            "colorful": 0.193,
+            "edges": 0.328
+          }
+        },
+        {
+          "key": "k2",
+          "storyArt": "https://i.ytimg.com/vi/fG3gwoDr3Pk/maxres2.jpg",
+          "label": "Kare 2",
+          "visual": {
+            "bright": 0.541,
+            "sat": 0.158,
+            "colorful": 0.173,
+            "edges": 0.343
+          }
+        },
+        {
+          "key": "k3",
+          "storyArt": "https://i.ytimg.com/vi/fG3gwoDr3Pk/maxres3.jpg",
+          "label": "Kare 3",
+          "visual": {
+            "bright": 0.542,
+            "sat": 0.146,
+            "colorful": 0.172,
+            "edges": 0.409
+          }
+        }
+      ],
+      "visual": {
+        "bright": 0.465,
+        "sat": 0.209,
+        "colorful": 0.25,
+        "edges": 0.348
+      }
     },
     "license": {
       "name": "YouTube standart lisansı",
@@ -536,7 +618,48 @@
     "artwork": {
       "boxart": null,
       "storyArt": "https://i.ytimg.com/vi/C1xjbzUDhOU/maxresdefault.jpg",
-      "focal": "50% 40%"
+      "focal": "50% 40%",
+      "alternates": [
+        {
+          "key": "k1",
+          "storyArt": "https://i.ytimg.com/vi/C1xjbzUDhOU/maxres1.jpg",
+          "label": "Kare 1",
+          "visual": {
+            "bright": 0.248,
+            "sat": 0.535,
+            "colorful": 0.356,
+            "edges": 0.342
+          }
+        },
+        {
+          "key": "k2",
+          "storyArt": "https://i.ytimg.com/vi/C1xjbzUDhOU/maxres2.jpg",
+          "label": "Kare 2",
+          "visual": {
+            "bright": 0.34,
+            "sat": 0.451,
+            "colorful": 0.44,
+            "edges": 0.594
+          }
+        },
+        {
+          "key": "k3",
+          "storyArt": "https://i.ytimg.com/vi/C1xjbzUDhOU/maxres3.jpg",
+          "label": "Kare 3",
+          "visual": {
+            "bright": 0.342,
+            "sat": 0.452,
+            "colorful": 0.448,
+            "edges": 0.574
+          }
+        }
+      ],
+      "visual": {
+        "bright": 0.264,
+        "sat": 0.587,
+        "colorful": 0.407,
+        "edges": 0.5
+      }
     },
     "license": {
       "name": "YouTube standart lisansı",

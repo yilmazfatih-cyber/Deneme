@@ -18,7 +18,8 @@ import {
   type FalcorRouteContext,
   type PathValue,
 } from '../../kernel/context'
-import { buildArtwork, type ArtworkTypeName } from '../../kernel/imageUrls'
+import type { ArtworkTypeName } from '../../kernel/imageUrls'
+import { titleArtwork } from '../../services/artwork/present'
 import {
   badgeOf,
   bookmarkOf,
@@ -183,8 +184,9 @@ export const VIDEO_FIELDS: Record<string, VideoField> = {
   },
 }
 for (const [key, spec] of Object.entries(ARTWORK_KEYS)) {
+  // boxart / storyArt: profile seçilen afiş çeşidi (services/artwork); diğer tipler ve bölümler varsayılan
   VIDEO_FIELDS[key] = (ctx, id) => {
-    const a = buildArtwork(ctx.config, spec.type, videoEntityId(id), {
+    const a = titleArtwork(ctx, spec.type, id, {
       width: spec.width,
       format: ctx.flags.webp === 'false' ? 'jpg' : 'webp',
     })

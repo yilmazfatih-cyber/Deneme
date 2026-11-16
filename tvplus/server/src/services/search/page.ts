@@ -4,8 +4,13 @@
  * Yalnızca istemcinin bildirdiği bölümler ve o bölümde çizebildiği varlıklar döner (yetenek pazarlığı).
  * Arama asla çıkmaz sokak değildir: boş terim ya da düzeltmeye rağmen sonuçsuzluk → yedek sayfa
  * ("Şu an canlı" + "Popüler", isFallback: true).
+ *
+ * Niyet çözümleme ("kısa düşündürücü bilim kurgu"): sorgu bir başlık/kişi/kanal araması değilse ve en az bir niyet
+ * çözülüyorsa galeri, tüm niyetleri karşılayan başlıklardır (azsa gevşetilir; bkz. intent/facts.ts). Kalan serbest
+ * metin yine metin eşleşmesinden geçer. Bölüm tipleri ve biçimler aynıdır; `understanding` çipleri taşır.
  */
 import { LIVE_SECTION_TTL_SEC, SEARCH_TTL_SEC } from '../../../../shared/constants'
+import { GENRES } from '../../../../shared/taxonomy'
 import { formatTctx } from '../../../../shared/tctx'
 import { norm, stableId } from '../../../../shared/text'
 import type { ArtworkTypeName } from '../../kernel/imageUrls'
@@ -17,7 +22,9 @@ import {
   type NegotiatedCapabilities,
 } from './capabilities'
 import { correctQuery, WEAK_SCORE } from './fuzzy'
-import { compareMatches, matchAll, SCORE, tokenize, type DocMatch } from './match'
+import { intentReason, matchIntents } from './intent/facts'
+import { parseQuery, type ParsedQuery } from './intent/parse'
+import { compareMatches, matchAll, matchDoc, SCORE, tokenize, type DocMatch } from './match'
 import { MODEL_ID, REASONS } from './model/model'
 import type { Scored, SearchRanker } from './model/ranker'
 import type { SearchDoc, SearchIndex } from './searchIndex'
@@ -31,6 +38,7 @@ import type {
   SearchPredictionResult,
   SearchSectionResult,
   SearchSectionType,
+  SearchUnderstandingResult,
   SectionCapabilityName,
   TreatmentName,
 } from './types'
@@ -68,6 +76,11 @@ export const PREDICTED_LIMIT = 12
 export const RELATED_CANDIDATES = 18
 /** Doğrudan video eşleşmesi bundan azsa "Bunlar ilgini çekebilir" eklenir */
 export const FEW_RESULTS = 6
+/**
+ * Niyetle gelen (kalan metni olmayan) başlığın metin puanı: tür alanında tam eşleşmeyle aynı (100 × 0.5).
+ * Hepsi eşit olduğundan sırayı model (yoksa popülerlik) belirler.
+ */
+export const INTENT_SCORE = 50
 /** Model kapalıyken (saf testler) sürüm metni */
 export const MODEL_OFF_VERSION = `${MODEL_ID} · kapalı`
 
@@ -297,6 +310,8 @@ function gallerySection(
   hits: Hit[],
   ctx: SearchRequestContext,
   artwork: (h: Hit) => ArtworkTypeName,
+  /** Niyet araması: başlığın karşıladığı niyetler ("Kısa · Düşündürücü"); null → modelin gerekçesi */
+  reasonOf?: (doc: SearchDoc) => string | null,
 ): PendingSection {
   const filteredHits = applyGalleryFilters(hits, ctx.options?.filters, ctx.isEntitled)
   const sort = ctx.options?.filters?.sort
@@ -319,7 +334,7 @@ function gallerySection(
         artworkType: artwork(hit),
         pred,
         predicted: false,
-        reason: pred && ranker ? ranker.galleryReason(pred) : null,
+        reason: reasonOf?.(hit.doc) ?? (pred && ranker ? ranker.galleryReason(pred) : null),
       }
     }),
   }
@@ -334,13 +349,14 @@ function predictedTreatment(caps: NegotiatedCapabilities): TreatmentName | null 
   return null
 }
 
+const RELATED_SUBJECTS: readonly SearchDoc['type'][] = ['video', 'person', 'genre', 'collection']
+
 /** Sorgu tek ve açık bir varlığa mı çözülüyor (başlık/kişi/tür/koleksiyon adı önek ya da tam eşleşme, rakipsiz)? */
-export function clearSubject(direct: readonly Hit[]): Hit | null {
-  const subjects = direct.filter(
-    (h) =>
-      !h.fuzzy &&
-      (h.doc.type === 'video' || h.doc.type === 'person' || h.doc.type === 'genre' || h.doc.type === 'collection'),
-  )
+export function clearSubject(
+  direct: readonly Hit[],
+  types: readonly SearchDoc['type'][] = RELATED_SUBJECTS,
+): Hit | null {
+  const subjects = direct.filter((h) => !h.fuzzy && types.includes(h.doc.type))
   const top = subjects[0]
   if (!top || !top.onTitle || top.score < SCORE.PREFIX) return null
   const second = subjects[1]
@@ -485,7 +501,12 @@ function dedupeAirings(hits: Hit[]): Hit[] {
   return [...out, ...best.values()]
 }
 
-function resultSections(hits: Hit[], caps: NegotiatedCapabilities, ctx: SearchRequestContext): PendingSection[] {
+function resultSections(
+  hits: Hit[],
+  caps: NegotiatedCapabilities,
+  ctx: SearchRequestContext,
+  reasonOf?: (doc: SearchDoc) => string | null,
+): PendingSection[] {
   const pending: PendingSection[] = []
 
   if (hasSection(caps, 'searchLive')) {
@@ -549,6 +570,7 @@ function resultSections(hits: Hit[], caps: NegotiatedCapabilities, ctx: SearchRe
         ctx,
         // Galeri 2:3 afiş hücresi çizer: bağlamsal görsel her zaman BOXART biçimli (eşleşme türünden bağımsız).
         () => 'BOXART',
+        reasonOf,
       ),
     )
   }
@@ -626,6 +648,7 @@ export function buildSearchPage(index: SearchIndex, ctx: SearchRequestContext): 
     sections: SearchSectionResult[],
     correction: SearchCorrectionResult | null,
     isFallback: boolean,
+    understanding: SearchUnderstandingResult | null = null,
   ): SearchPageResult => ({
     searchTerm: ctx.term,
     requestId: ctx.requestId,
@@ -637,6 +660,7 @@ export function buildSearchPage(index: SearchIndex, ctx: SearchRequestContext): 
     recentSearches: ctx.recentSearches,
     predictions: ctx.predictions ?? [],
     modelVersion: ctx.ranker?.modelVersion ?? MODEL_OFF_VERSION,
+    understanding,
   })
   const predictedFor = (hits: readonly Hit[]): PendingSection | null => {
     const ranker = ctx.ranker
@@ -644,12 +668,28 @@ export function buildSearchPage(index: SearchIndex, ctx: SearchRequestContext): 
     const plan = planPredicted(pool, hits, ranker, tokens.length === 0)
     return plan ? predictedSection(plan, caps, ranker) : null
   }
-  const fallback = () =>
-    page(finalizeSections(fallbackSections(pool, caps, ctx, predictedFor([])), trackId, ctx.now), null, true)
+  const fallback = (understanding: SearchUnderstandingResult | null = null) =>
+    page(
+      finalizeSections(fallbackSections(pool, caps, ctx, predictedFor([])), trackId, ctx.now),
+      null,
+      true,
+      understanding,
+    )
 
   if (tokens.length === 0) return fallback()
 
   const direct: Hit[] = matchAll(pool, tokens).map((m) => ({ ...m, fuzzy: false }))
+
+  const parsed = parseQuery(ctx.term, index.lexicon)
+  const r = parsed.intents.length > 0 && !isEntitySearch(direct) ? intentResults(pool, direct, parsed, ctx) : null
+  if (r) {
+    const pendingSections = resultSections(r.hits, caps, ctx, r.reasonOf)
+    const predicted = predictedFor(r.hits)
+    if (predicted) pendingSections.push(predicted)
+    const sections = finalizeSections(pendingSections, trackId, ctx.now)
+    return sections.length > 0 ? page(sections, null, false, r.understanding) : fallback(r.understanding)
+  }
+
   let hits = direct
   let correction: SearchCorrectionResult | null = null
 
@@ -680,4 +720,133 @@ export function buildSearchPage(index: SearchIndex, ctx: SearchRequestContext): 
   const sections = finalizeSections(pendingSections, trackId, ctx.now)
   if (sections.length === 0) return fallback()
   return page(sections, correction, false)
+}
+
+/* ───────────── Niyet araması ───────────── */
+
+/** Başlık, kişi, kanal ya da yayın adı araması: bunlarda sorgu yorumlanmaz (eski davranış). */
+const ENTITY_SUBJECTS: readonly SearchDoc['type'][] = ['video', 'person', 'channel', 'airing']
+
+/**
+ * Sorgu bir başlık/kişi/kanal adına açıkça çözülüyor mu (clearSubject kuralı)? Aynı puanda bir tür adı da eşleşiyorsa
+ * ("Komedi" türü ve "Komedi" adlı başlık) tür kazanır: sorgu yorumlanır.
+ */
+export function isEntitySearch(direct: readonly Hit[]): boolean {
+  const top = clearSubject(direct, ENTITY_SUBJECTS)
+  if (!top) return false
+  const genre = direct.find((h) => !h.fuzzy && h.doc.type === 'genre')
+  return !genre || genre.score < top.score
+}
+
+const T = 3600_000
+/** İstanbul'da (UTC+3, yaz saati yok) içinde bulunulan günün bitişi */
+function endOfDayIstanbul(now: Date): number {
+  const offset = 3 * T
+  return Math.floor((now.getTime() + offset) / (24 * T)) * 24 * T + 24 * T - offset
+}
+
+interface IntentOutcome {
+  hits: Hit[]
+  reasonOf: (doc: SearchDoc) => string | null
+  understanding: SearchUnderstandingResult
+}
+
+/**
+ * Niyet araması: (1) kalan metin bir başlıkla eşleşiyorsa adaylar onlar, eşleşmiyorsa tüm görünür başlıklar;
+ * (2) adaylardan tüm niyetleri karşılayanlar (gerekirse gevşetilerek); (3) yanına tam terimin ve kalan metnin video dışı
+ * eşleşmeleri (kanal, yayın, kişi, koleksiyon, tür) ve TÜR niyetlerinin tür sayfaları.
+ * CANLI niyeti başlık süzmez; canlı bölümü doldurur: sorgunun CANLI parçası çıkarılmış hâli ("canlı haber" → "haber")
+ * kanal ve yayınlarla eşleşirse onlar, eşleşmezse şu an (ya da "bu akşam": gün bitene dek) yayında olanlar.
+ *
+ * Gevşetmeye rağmen hiçbir başlık niyetleri karşılamıyorsa ve CANLI niyeti de yoksa null: sorgu yorumlanmaz, bugünkü
+ * metin araması aynen çalışır ("ana haber" → "Haber" türünde başlık yok → düz arama).
+ * Gerekçe: iki ya da daha çok süzen niyette başlığın karşıladıkları ("Kısa · Düşündürücü"); tek niyette sorgunun
+ * kendisini tekrarlayacağından modelin gerekçesi ("Sana özel") kalır.
+ */
+function intentResults(
+  pool: readonly SearchDoc[],
+  direct: readonly Hit[],
+  parsed: ParsedQuery,
+  ctx: SearchRequestContext,
+): IntentOutcome | null {
+  const videos = pool.filter((d) => d.type === 'video')
+  const others = pool.filter((d) => d.type !== 'video')
+  const rem = parsed.remainderTokens
+  const remVideo = new Map<string, DocMatch>()
+  const remOthers: DocMatch[] = []
+  if (rem.length > 0) {
+    for (const m of matchAll(videos, rem)) remVideo.set(m.doc.key, m)
+    remOthers.push(...matchAll(others, rem))
+  }
+  const candidates = remVideo.size > 0 ? videos.filter((d) => remVideo.has(d.key)) : videos
+  const filtering = parsed.intents.filter((i) => i.kind !== 'LIVE')
+  const live = parsed.intents.find((i) => i.kind === 'LIVE')
+  // Yalnız "canlı" / "bu akşam": başlık listesi yok (tümü olurdu); canlı bölüm ve tahminler kalır.
+  const onlyLive = filtering.length === 0 && remVideo.size === 0
+  const { matches, relaxed } = onlyLive
+    ? { matches: [], relaxed: [] }
+    : matchIntents(candidates, parsed.intents, (d) => d.facts ?? null)
+  if (matches.length === 0 && filtering.length > 0 && !live) return null
+
+  const titleHits: Hit[] = matches.map((doc) => {
+    const m = remVideo.get(doc.key)
+    return { doc, score: m?.score ?? INTENT_SCORE, onTitle: m?.onTitle ?? false, fuzzy: false }
+  })
+
+  const genreIds = new Set<number>()
+  for (const i of parsed.intents)
+    if (i.spec.kind === 'GENRE') for (const g of i.spec.genres) genreIds.add(GENRES[g].genreId)
+  const genreHits: Hit[] = others
+    .filter((d) => d.type === 'genre' && genreIds.has(d.genreId ?? 0))
+    .map((doc) => ({ doc, score: SCORE.EXACT, onTitle: true, fuzzy: false }))
+
+  const nonVideo = new Map<string, Hit>()
+  const addOther = (h: Hit) => {
+    const cur = nonVideo.get(h.doc.key)
+    if (!cur || cur.score < h.score) nonVideo.set(h.doc.key, h)
+  }
+  for (const h of direct) if (h.doc.type !== 'video') addOther(h)
+  for (const m of remOthers) addOther({ ...m, fuzzy: false })
+  for (const h of genreHits) addOther(h)
+
+  if (live?.spec.kind === 'LIVE') {
+    const now = ctx.now.getTime()
+    const until = live.spec.when === 'tonight' ? endOfDayIstanbul(ctx.now) : now
+    const onAir = others.filter(
+      (d) => d.type === 'channel' || (d.type === 'airing' && (d.airing?.startAt.getTime() ?? Infinity) <= until),
+    )
+    const rest = tokenize(live.without)
+    const matched = rest.length > 0 ? matchAll(onAir, rest) : []
+    if (matched.length > 0) for (const m of matched) addOther({ ...m, fuzzy: false })
+    else for (const doc of onAir) addOther({ doc, score: 0, onTitle: true, fuzzy: false })
+  }
+
+  const hits = [...nonVideo.values(), ...titleHits].sort(compareMatches)
+  return {
+    hits,
+    reasonOf: (doc) => (filtering.length >= 2 && doc.facts ? intentReason(filtering, doc.facts) : null),
+    understanding: {
+      intents: parsed.intents.map((i) => ({ kind: i.kind, matched: i.matched, label: i.label, without: i.without })),
+      remainder: parsed.remainder,
+      relaxed: relaxed.map((i) => i.label),
+    },
+  }
+}
+
+/**
+ * Bir belgenin bu terimdeki metin puanı, sayfanın verdiğiyle aynı kuralla (geri bildirimde yanıt hatırlanmadığında
+ * özniteliklerin yeniden hesaplanması için): başlık adı eşleşmesi → o puan; niyet araması → kalan metnin puanı ya da
+ * INTENT_SCORE; değilse düz metin puanı.
+ */
+export function textScoreOf(index: SearchIndex, doc: SearchDoc, term: string): number {
+  const full = matchDoc(doc, tokenize(term))
+  if (full && full.onTitle && full.score >= SCORE.PREFIX) return full.score
+  if (doc.type === 'video' && doc.facts) {
+    const parsed = parseQuery(term, index.lexicon)
+    if (parsed.intents.length > 0)
+      return parsed.remainderTokens.length > 0
+        ? (matchDoc(doc, parsed.remainderTokens)?.score ?? INTENT_SCORE)
+        : INTENT_SCORE
+  }
+  return full?.score ?? 0
 }
