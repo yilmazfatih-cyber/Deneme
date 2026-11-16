@@ -283,3 +283,15 @@ main:has(> .erp-shell) { max-width: 1480px; }
 .erp-shell td.nowrap, .erp-shell .nowrap { white-space: nowrap; }
 .erp-shell td.num { white-space: nowrap; }
 .drawer-body.erp-shell { font-size: 16px; }
+
+/* oturum */
+.userbox { margin-left: auto; display: flex; align-items: center; gap: .45rem; }
+.userbox[hidden] { display: none; }
+.userbox-name { font-weight: 600; max-width: 14rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.login-dialog { width: min(400px, 92vw); }
+.login-form input { width: 100%; }
+.role-help { display: grid; grid-template-columns: max-content 1fr; gap: .2rem .9rem; margin: .5rem 0 1rem; color: var(--muted); }
+.role-help dt { font-weight: 600; color: var(--text); }
+.role-help dd { margin: 0; }
+.nav a[hidden] { display: none; }
+.muted { color: var(--muted); }

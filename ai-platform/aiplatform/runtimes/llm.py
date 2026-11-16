@@ -282,7 +282,17 @@ class LLMClient:
             headers={"Authorization": f"Bearer {key}"},
         )
 
+    @staticmethod
+    def _server_headers(url: str) -> dict[str, str]:
+        """İstemci düğümü sunucuya giderken kendi API anahtarını gönderir (yerel motor kendi anahtarını alır)."""
+        s = get_settings()
+        if s.server_token and s.server_url and url.startswith(s.server_url.rstrip("/")):
+            return {"Authorization": f"Bearer {s.server_token}"}
+        return {}
+
     async def _request(self, client: httpx.AsyncClient, method: str, url: str, **kw) -> httpx.Response:
+        if extra := self._server_headers(url):
+            kw["headers"] = {**(kw.get("headers") or {}), **extra}
         try:
             return await client.request(method, url, **kw)
         except (httpx.ConnectError, httpx.ConnectTimeout) as e:
@@ -512,7 +522,12 @@ class LLMClient:
                         }
                     )
                 try:
-                    req = client.build_request("POST", f"{ep.base}/chat/completions", json=body)
+                    req = client.build_request(
+                        "POST",
+                        f"{ep.base}/chat/completions",
+                        json=body,
+                        headers=self._server_headers(ep.base) or None,
+                    )
                     resp = await client.send(req, stream=True)
                 except (httpx.ConnectError, httpx.ConnectTimeout) as e:
                     last = e

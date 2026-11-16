@@ -25,6 +25,7 @@ MODEL_MODULES = [
     "aiplatform.installer.models",  # installed_models, installed_modules, jobs
     "aiplatform.kvkk.models",  # audit_log, mask_mappings
     "aiplatform.erp.models",  # erp_connections, approvals, webhook_events
+    "aiplatform.auth.models",  # users, api_tokens
 ]
 
 

@@ -116,7 +116,7 @@ buna göre güncellenir. Motor süreci `installer/process.py` ile yönetilir (ba
 Uygulanan ek kurallar: istemci rolünde iletim, maskeleme zorunluysa **veya** zorunlu bileşenlerin hepsi sunucudaysa yapılır; iç içe tüm
 metin alanları maskelenir (base64 ve dosya alanları atlanır); yüklenen dosyalar (görüntü/ses/PDF) maskelenemez → meta `files_unmasked`
 uyarısı. Geçitte kurulu olmayan katalog modeli istenirse `auto`'ya düşülür ve `X-AIP-Model-Fallback: auto` başlığı döner. Kullanıcı
-kimliği şimdilik `X-AIP-User` başlığından okunur (kimlik doğrulama katmanı bunun yerini alacak). 202 gövdesi `{"approval_id","message","meta"}`.
+kimliği `X-AIP-User` başlığından okunur; bu başlığı kimlik ara katmanı (aşağıda) doğrulanmış kullanıcıyla yeniden yazar. 202 gövdesi `{"approval_id","message","meta"}`.
 Ek hata kodları: `module_disabled` (409), `unknown_module` / `unknown_action` (404), `blocked_by_policy` (400, ek alan `risk`), `mapping_not_found` (404).
 Veri klasörü (`AIP_DATA_DIR`) dosyaları: `platform.db`, `kvkk.key` (Fernet anahtarı), `vectors.db`, `evrak_siniflar.json`, `llm_engine.json`,
 `webhook_routes.json`, klasörler `models/`, `logs/`, `classifiers/`, `tablo_ml/`, `glossaries/`, `sozlesme_kontrol/`, `sozlesme_standartlari/`.
@@ -137,7 +137,7 @@ executed | failed` (çalışırken hata → failed, hata `result.error`). Onay k
 `{"connection_id","args"}`; katalog modülüyse modül `ctx.extra={"approved": True, "approval_id": ...}` ile yeniden çağrılır ve yalnız o zaman yazar.
 Araç adları `erp_<bağlantı>__<araç>` ve `<modül>__<eylem>`; her araçta `human_approval` ve `source`. Geçersiz imzalı webhook gövdesi saklanmaz;
 eşlenen eylem onaylıysa iş kuyruğu yerine onay kuyruğuna gider. `/api/audit` yanıtı `{items, total, limit, offset, modules, available}`.
-Kullanıcı kimliği her yerde `X-AIP-User` başlığıdır; onay kararları için gerçek kimlik doğrulama katmanı gerekir (yol haritası).
+Kullanıcı kimliği her yerde `X-AIP-User` başlığıdır ve kimlik ara katmanınca yazılır; onay kararında gövdedeki `decided_by` yalnız kimlik kapalıyken dikkate alınır.
 
 `erp/connector.py` soyut sınıf: `ERPConnector.list_tools()`, `call_tool(name, args) -> dict`, `read_only: bool`.
 Uygulamalar: `SQLReadOnlyConnector` (SQLAlchemy, yalnız beyaz liste tablolar, `SET TRANSACTION READ ONLY`/salt-okunur kullanıcı),
@@ -149,9 +149,29 @@ Sayfalar: **Mağaza** (modül kartları, uygunluk rozeti ok/warn/fail, "Kur" dü
 **Denetim** (günlük tablosu, KVKK özeti), **Onaylar** (bekleyen yazma işlemleri), **ERP** (bağlantılar, test, şema).
 Tüm metinler Türkçe. Yalnız göreli `/api/...` çağrıları.
 
+### Kimlik doğrulama (auth/)
+`AuthMiddleware` (saf ASGI) `/api/*` ve `/v1/*` isteklerinde kimliği çözer: `Authorization: Bearer aip_...` (API anahtarı) veya
+`aip_session` çerezi (tarayıcı). Rol `auth/policy.py` tablosuna göre denetlenir (yoksa 401 `unauthenticated`, yetmezse 403 `forbidden`).
+İstemcinin gönderdiği `X-AIP-User`/`X-User` başlıkları silinir, yerine doğrulanmış kullanıcı ve `X-AIP-Role` yazılır; böylece başlığı
+okuyan yönlendiriciler değişmeden güvenilir kimlik alır. İstisna: `delegate` bayraklı istemci düğümü anahtarı, gönderdiği `X-AIP-User`
+adına çalışır ama rolü her zaman `kullanici`dır. Kimliksiz uçlar: `GET /api/system/health`, `POST /api/auth/login|logout`,
+`GET /api/auth/me`, `POST /api/erp/webhooks/{source}` (HMAC). `AIP_AUTH_MODE=auto` iken yalnız loopback'e bağlı süreçte kimlik kapalıdır
+ve davranış eskisiyle aynıdır (başlıktaki ad, rol yönetici).
+
+| Yöntem | Yol | Rol |
+| --- | --- | --- |
+| POST | `/api/auth/login` `{username, password}` → HttpOnly çerez | — |
+| POST | `/api/auth/logout`, GET `/api/auth/me` (`auth_enabled`, `user`, `roles`, `needs_setup`) | — |
+| POST | `/api/auth/password` `{current_password, new_password}` | oturum sahibi |
+| GET/POST/PATCH | `/api/auth/users[/{username}]` | yönetici |
+| GET/POST/DELETE | `/api/auth/tokens[/{id}]` (`token` yalnız oluşturulurken döner) | yönetici |
+
+Dört göz: kimlik açıkken `approve` kararında `requested_by == karar veren` ise 403 `four_eyes`.
+
 ## Veritabanı tabloları
 - `installed_models(model_id, artifact_id, path, size_gb, runtime, installed_at)` ; `installed_modules(module_id, target, enabled, installed_at, config_json)` ; `jobs(...)` — cekirdek
 - `audit_log(id, ts, user, module, action, model, duration_ms, masked_entities, status, error, payload_hash)` ; `mask_mappings(mapping_id, created_at, mapping_json_encrypted)` — moduller
+- `users(username, display_name, role, password_hash, disabled, created_at, last_login_at)`, `api_tokens(id, token_hash, username, name, kind: api|session, delegate, expires_at, last_used_at, revoked)` — auth
 - `erp_connections`, `approvals(id, module, action, payload_json, requested_by, status, decided_by, decided_at, note)`, `webhook_events` — erp-web
 
 ## Test ilkeleri
