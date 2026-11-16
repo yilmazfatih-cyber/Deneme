@@ -1500,8 +1500,12 @@ def pdf_ayristir(
     haric_dersler: Iterable[str] = VARSAYILAN_HARIC_DERSLER,
     yaz: Callable[[str], object] = print,
     dosya_adi: str | None = None,
+    ayrik: tuple[list[_Bolum], list[_Bolum], _Belge, dict] | None = None,
 ) -> tuple[list[Soru], dict]:
     """Bir AÖL soru kitapçığını (sonunda cevap anahtarı olan PDF) ayrıştırır.
+
+    ``ayrik``: ``_ayristir``'ın döndürdüğü dörtlü hazır verilirse PDF okunmaz (OCR metninden kurulan satırlar:
+    ``moduller/meb_metin.py``); eleme, cevap anahtarı eşleştirme ve rapor aynı yoldan geçer.
 
     Döndürür: (tutulan sorular, rapor). Rapor: ``dosya``, ``ders_sayisi``, ``bulunan``, ``tutulan``,
     ``elenen`` (neden → sayı), ``dersler`` (ders → ``{"kod", "bulunan", "tutulan"}``) ve tanı alanları
@@ -1526,7 +1530,7 @@ def pdf_ayristir(
     kimlik_adi = _kimlik_adi(ad)
     haric = tuple(haric_dersler)
     varsayilan_haric = {buyuk(h) for h in VARSAYILAN_HARIC_DERSLER}
-    bolumler, anahtarlar, belge, bilgi = _ayristir(pdf)
+    bolumler, anahtarlar, belge, bilgi = ayrik if ayrik is not None else _ayristir(pdf)
     bilesikler = _bilesikleri_topla(bilgi["satirlar"])
 
     # Hiçbir sorusunda seçenek bulunmayan bölümler gerçek ders değildir (ör. dizin satırları); yok sayılır.
@@ -1662,8 +1666,12 @@ def pdf_klasoru_ayristir(
     yaz: Callable[[str], object] = print,
     haric_dersler: Iterable[str] = VARSAYILAN_HARIC_DERSLER,
     haric_kokler: Iterable[str] = (),
+    ayristirici: Callable[..., tuple[list[Soru], dict]] | None = None,
 ) -> dict:
     """``klasor`` altındaki bütün PDF'leri (alt klasörler dahil, sıralı) ayrıştırıp ``hedef`` JSONL'e yazar.
+
+    ``ayristirici``: her dosya için ``pdf_ayristir`` yerine çağrılacak, aynı imzalı işlev (ör. taranmış
+    kitapçıkları OCR modülüyle okuyan ``moduller.meb_metin.ocr_ayristirici``).
 
     Aynı soru birden çok kitapçıkta geçebilir (ör. farklı kitapçık türleri): normalleştirilmiş kök +
     seçeneklere göre tekrarlar atılır, ilki kalır. Kimlik ve ``ek["dosya"]`` klasöre göre göreli yolu taşır
@@ -1701,7 +1709,7 @@ def pdf_klasoru_ayristir(
     for pdf in dosyalar:
         ad = pdf.relative_to(klasor).as_posix()
         try:
-            sorular, r = pdf_ayristir(pdf, haric, yaz=lambda m: yaz("  " + m), dosya_adi=ad)
+            sorular, r = (ayristirici or pdf_ayristir)(pdf, haric, yaz=lambda m: yaz("  " + m), dosya_adi=ad)
         except Exception as e:  # noqa: BLE001 — bozuk ya da kitapçık olmayan PDF: diğerleri yine işlensin
             hatali += 1
             rapor["dosyalar"][ad] = {"hata": f"{type(e).__name__}: {e}"}
