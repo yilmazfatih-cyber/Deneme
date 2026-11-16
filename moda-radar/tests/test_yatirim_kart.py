@@ -131,3 +131,38 @@ def test_icerik_dosyalari_tutarli():
         assert s.fiyat_bandi_try["kadin_ust_alt"] <= hedef["alt"] <= hedef["ust"] <= s.fiyat_bandi_try["kadin_ust_ust"]
     assert E["marj_hedef"] == {"luks": 65, "premium": 58, "orta": 52, "deger": 45, "pazar": 35}
     assert (E["yatir_ivme"], E["dene_ivme_alt"], E["uyum_alt"], E["rakip_yogun"]) == (0.60, 0.45, 0.30, 4)
+
+
+def test_guc_farki_tek_basina_celiski_degil():
+    """Güçlü desen (0,91) ile orta renk (0,60) arasındaki fark çelişki değildir; zayıf bir eksen (< 0,45) olunca çelişkidir."""
+    from moda_radar.sema import TahminKaydi, Yon
+    from moda_radar.yatirim import ayar, kaynaklar
+
+    def t(eksen, deger, olasilik, yon=Yon.GIRIS):
+        return TahminKaydi(
+            sezon="SS27",
+            segment="orta",
+            kategori="kadin-ust",
+            nitelik_ekseni=eksen,
+            nitelik_degeri=deger,
+            olasilik=olasilik,
+            esik_raf_payi=0.04,
+            ufuk_sezon="SS27",
+            yon=yon,
+            gecikme_sezon=2,
+            gecikme_kaynagi="onsel",
+            kaynak_sayisi=2,
+            model_surumu="v0",
+            gerekce="Test.",
+        )
+
+    e = ayar.esikler()
+    guclu = {
+        "renk": t("renk", "19-4008 TCX", 0.60),
+        "siluet": t("siluet", "duz", 0.70),
+        "kumas_gorunumu": t("kumas_gorunumu", "pamuklu", 0.65),
+        "desen": t("desen", "duz", 0.91),
+    }
+    assert kaynaklar.birlestir(guclu, e)[1] == "tutarli"
+    zayif = {**guclu, "siluet": t("siluet", "oversize", 0.40)}
+    assert kaynaklar.birlestir(zayif, e)[1] == "celiskili"
