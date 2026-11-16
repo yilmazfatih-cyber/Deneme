@@ -2,7 +2,7 @@
 
 > Yatırım tavsiyesi değildir; karar satın almacınındır.
 
-Üretim tarihi 2026-11-09 · kural kural-0 · ilk 12 renk × segmentin tipik siluet / kumaş / desen değeri (bol, pamuklu, çiçekli; uzman önseli).
+Üretim tarihi 2026-11-12 · kural kural-0 · ilk 12 renk × segmentin tipik siluet / kumaş / desen değeri (bol, pamuklu, çiçekli; uzman önseli).
 
 ## Özet (beş boyut ayrı; tek skor yok)
 
@@ -43,7 +43,7 @@
 | Siluet         | bol         | 0,49     | giriş | SS28 | %4            | 1      | Podyum payı %2,0, 3 markada görüldü (düşük güvenli kaynak, etkisi kırpıldı); önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS28-Mart. Segment rafında bu değer için geçmiş kayıt yok.     |
 | Kumaş görünümü | pamuklu     | 0,62     | giriş | FW28 | %4            | 1      | Podyum payı %10,1, 3 markada görüldü (düşük güvenli kaynak, etkisi kırpıldı); önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi FW28-Ağustos. Segment rafında bu değer için geçmiş kayıt yok. |
 | Desen          | çiçekli     | 0,63     | giriş | SS27 | %4            | 1      | Podyum payı %9,8, 3 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS27-Mart. Segment rafında bu değer için geçmiş kayıt yok.                                             |
-| Detay          | detaysız    | 0,50     | düz   | SS27 | %4            | 0      | Bu nitelik için podyum sinyali yok. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS27-Mart.                                                                                                                             |
+| Detay          | detaysız    | 0,90     | giriş | SS29 | %4            | 1      | Podyum payı %55,5, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS29-Mart. Segment rafında bu değer için geçmiş kayıt yok.                                           |
 
 **Karar: YATIR**
 
@@ -51,7 +51,7 @@
 
 **Bu kararı değiştirecek sinyal:** Talep ivmesi iki hafta üst üste negatife dönerse ya da yön zirveye geçerse DENE'ye iner.
 
-**Kaynak sayısı:** 4 · **Model sürümü:** v0 · kural-0
+**Kaynak sayısı:** 5 · **Model sürümü:** v0 · kural-0
 
 > Yatırım tavsiyesi değildir; karar satın almacınındır.
 
@@ -77,7 +77,7 @@
 | Siluet         | bol         | 0,49     | giriş | SS28 | %4            | 1      | Podyum payı %2,0, 3 markada görüldü (düşük güvenli kaynak, etkisi kırpıldı); önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS28-Mart. Segment rafında bu değer için geçmiş kayıt yok.     |
 | Kumaş görünümü | pamuklu     | 0,62     | giriş | FW28 | %4            | 1      | Podyum payı %10,1, 3 markada görüldü (düşük güvenli kaynak, etkisi kırpıldı); önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi FW28-Ağustos. Segment rafında bu değer için geçmiş kayıt yok. |
 | Desen          | çiçekli     | 0,63     | giriş | SS27 | %4            | 1      | Podyum payı %9,8, 3 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS27-Mart. Segment rafında bu değer için geçmiş kayıt yok.                                             |
-| Detay          | detaysız    | 0,50     | düz   | SS27 | %4            | 0      | Bu nitelik için podyum sinyali yok. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS27-Mart.                                                                                                                             |
+| Detay          | detaysız    | 0,90     | giriş | SS29 | %4            | 1      | Podyum payı %55,5, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS29-Mart. Segment rafında bu değer için geçmiş kayıt yok.                                           |
 
 **Karar: DENE**
 
@@ -85,7 +85,7 @@
 
 **Bu kararı değiştirecek sinyal:** Deneme partisi ilk iki haftada güçlü satar ve ivme 0,60'ı geçerse YATIR'a çıkar; 0,45 altına düşerse BEKLE'ye iner.
 
-**Kaynak sayısı:** 4 · **Model sürümü:** v0 · kural-0
+**Kaynak sayısı:** 5 · **Model sürümü:** v0 · kural-0
 
 > Yatırım tavsiyesi değildir; karar satın almacınındır.
 
@@ -111,7 +111,7 @@
 | Siluet         | bol         | 0,49     | giriş | SS28 | %4            | 1      | Podyum payı %2,0, 3 markada görüldü (düşük güvenli kaynak, etkisi kırpıldı); önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS28-Mart. Segment rafında bu değer için geçmiş kayıt yok.     |
 | Kumaş görünümü | pamuklu     | 0,62     | giriş | FW28 | %4            | 1      | Podyum payı %10,1, 3 markada görüldü (düşük güvenli kaynak, etkisi kırpıldı); önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi FW28-Ağustos. Segment rafında bu değer için geçmiş kayıt yok. |
 | Desen          | çiçekli     | 0,63     | giriş | SS27 | %4            | 1      | Podyum payı %9,8, 3 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS27-Mart. Segment rafında bu değer için geçmiş kayıt yok.                                             |
-| Detay          | detaysız    | 0,50     | düz   | SS27 | %4            | 0      | Bu nitelik için podyum sinyali yok. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS27-Mart.                                                                                                                             |
+| Detay          | detaysız    | 0,90     | giriş | SS29 | %4            | 1      | Podyum payı %55,5, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS29-Mart. Segment rafında bu değer için geçmiş kayıt yok.                                           |
 
 **Karar: YATIR**
 
@@ -119,7 +119,7 @@
 
 **Bu kararı değiştirecek sinyal:** Talep ivmesi iki hafta üst üste negatife dönerse ya da yön zirveye geçerse DENE'ye iner.
 
-**Kaynak sayısı:** 4 · **Model sürümü:** v0 · kural-0
+**Kaynak sayısı:** 5 · **Model sürümü:** v0 · kural-0
 
 > Yatırım tavsiyesi değildir; karar satın almacınındır.
 
@@ -145,7 +145,7 @@
 | Siluet         | bol         | 0,49     | giriş | SS28 | %4            | 1      | Podyum payı %2,0, 3 markada görüldü (düşük güvenli kaynak, etkisi kırpıldı); önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS28-Mart. Segment rafında bu değer için geçmiş kayıt yok.     |
 | Kumaş görünümü | pamuklu     | 0,62     | giriş | FW28 | %4            | 1      | Podyum payı %10,1, 3 markada görüldü (düşük güvenli kaynak, etkisi kırpıldı); önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi FW28-Ağustos. Segment rafında bu değer için geçmiş kayıt yok. |
 | Desen          | çiçekli     | 0,63     | giriş | SS27 | %4            | 1      | Podyum payı %9,8, 3 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS27-Mart. Segment rafında bu değer için geçmiş kayıt yok.                                             |
-| Detay          | detaysız    | 0,50     | düz   | SS27 | %4            | 0      | Bu nitelik için podyum sinyali yok. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS27-Mart.                                                                                                                             |
+| Detay          | detaysız    | 0,90     | giriş | SS29 | %4            | 1      | Podyum payı %55,5, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS29-Mart. Segment rafında bu değer için geçmiş kayıt yok.                                           |
 
 **Karar: DENE**
 
@@ -153,7 +153,7 @@
 
 **Bu kararı değiştirecek sinyal:** Deneme partisi ilk iki haftada güçlü satar ve ivme 0,60'ı geçerse YATIR'a çıkar; 0,45 altına düşerse BEKLE'ye iner.
 
-**Kaynak sayısı:** 4 · **Model sürümü:** v0 · kural-0
+**Kaynak sayısı:** 5 · **Model sürümü:** v0 · kural-0
 
 > Yatırım tavsiyesi değildir; karar satın almacınındır.
 
@@ -179,7 +179,7 @@
 | Siluet         | bol         | 0,49     | giriş | SS28 | %4            | 1      | Podyum payı %2,0, 3 markada görüldü (düşük güvenli kaynak, etkisi kırpıldı); önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS28-Mart. Segment rafında bu değer için geçmiş kayıt yok.     |
 | Kumaş görünümü | pamuklu     | 0,62     | giriş | FW28 | %4            | 1      | Podyum payı %10,1, 3 markada görüldü (düşük güvenli kaynak, etkisi kırpıldı); önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi FW28-Ağustos. Segment rafında bu değer için geçmiş kayıt yok. |
 | Desen          | çiçekli     | 0,63     | giriş | SS27 | %4            | 1      | Podyum payı %9,8, 3 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS27-Mart. Segment rafında bu değer için geçmiş kayıt yok.                                             |
-| Detay          | detaysız    | 0,50     | düz   | SS27 | %4            | 0      | Bu nitelik için podyum sinyali yok. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS27-Mart.                                                                                                                             |
+| Detay          | detaysız    | 0,90     | giriş | SS29 | %4            | 1      | Podyum payı %55,5, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS29-Mart. Segment rafında bu değer için geçmiş kayıt yok.                                           |
 
 **Karar: DENE**
 
@@ -187,7 +187,7 @@
 
 **Bu kararı değiştirecek sinyal:** Deneme partisi ilk iki haftada güçlü satar ve ivme 0,60'ı geçerse YATIR'a çıkar; 0,45 altına düşerse BEKLE'ye iner.
 
-**Kaynak sayısı:** 4 · **Model sürümü:** v0 · kural-0
+**Kaynak sayısı:** 5 · **Model sürümü:** v0 · kural-0
 
 > Yatırım tavsiyesi değildir; karar satın almacınındır.
 
@@ -213,7 +213,7 @@
 | Siluet         | bol         | 0,49     | giriş | SS28 | %4            | 1      | Podyum payı %2,0, 3 markada görüldü (düşük güvenli kaynak, etkisi kırpıldı); önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS28-Mart. Segment rafında bu değer için geçmiş kayıt yok.     |
 | Kumaş görünümü | pamuklu     | 0,62     | giriş | FW28 | %4            | 1      | Podyum payı %10,1, 3 markada görüldü (düşük güvenli kaynak, etkisi kırpıldı); önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi FW28-Ağustos. Segment rafında bu değer için geçmiş kayıt yok. |
 | Desen          | çiçekli     | 0,63     | giriş | SS27 | %4            | 1      | Podyum payı %9,8, 3 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS27-Mart. Segment rafında bu değer için geçmiş kayıt yok.                                             |
-| Detay          | detaysız    | 0,50     | düz   | SS27 | %4            | 0      | Bu nitelik için podyum sinyali yok. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS27-Mart.                                                                                                                             |
+| Detay          | detaysız    | 0,90     | giriş | SS29 | %4            | 1      | Podyum payı %55,5, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS29-Mart. Segment rafında bu değer için geçmiş kayıt yok.                                           |
 
 **Karar: BEKLE**
 
@@ -221,7 +221,7 @@
 
 **Bu kararı değiştirecek sinyal:** Trend bir üst segmentin rafında görülür ve rakip sayısı azsa DENE'ye çıkar.
 
-**Kaynak sayısı:** 4 · **Model sürümü:** v0 · kural-0
+**Kaynak sayısı:** 5 · **Model sürümü:** v0 · kural-0
 
 > Yatırım tavsiyesi değildir; karar satın almacınındır.
 
@@ -247,7 +247,7 @@
 | Siluet         | bol         | 0,49     | giriş | SS28 | %4            | 1      | Podyum payı %2,0, 3 markada görüldü (düşük güvenli kaynak, etkisi kırpıldı); önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS28-Mart. Segment rafında bu değer için geçmiş kayıt yok.     |
 | Kumaş görünümü | pamuklu     | 0,62     | giriş | FW28 | %4            | 1      | Podyum payı %10,1, 3 markada görüldü (düşük güvenli kaynak, etkisi kırpıldı); önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi FW28-Ağustos. Segment rafında bu değer için geçmiş kayıt yok. |
 | Desen          | çiçekli     | 0,63     | giriş | SS27 | %4            | 1      | Podyum payı %9,8, 3 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS27-Mart. Segment rafında bu değer için geçmiş kayıt yok.                                             |
-| Detay          | detaysız    | 0,50     | düz   | SS27 | %4            | 0      | Bu nitelik için podyum sinyali yok. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS27-Mart.                                                                                                                             |
+| Detay          | detaysız    | 0,90     | giriş | SS29 | %4            | 1      | Podyum payı %55,5, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS29-Mart. Segment rafında bu değer için geçmiş kayıt yok.                                           |
 
 **Karar: DENE**
 
@@ -255,7 +255,7 @@
 
 **Bu kararı değiştirecek sinyal:** Deneme partisi ilk iki haftada güçlü satar ve ivme 0,60'ı geçerse YATIR'a çıkar; 0,45 altına düşerse BEKLE'ye iner.
 
-**Kaynak sayısı:** 4 · **Model sürümü:** v0 · kural-0
+**Kaynak sayısı:** 5 · **Model sürümü:** v0 · kural-0
 
 > Yatırım tavsiyesi değildir; karar satın almacınındır.
 
@@ -281,7 +281,7 @@
 | Siluet         | bol         | 0,49     | giriş | SS28 | %4            | 1      | Podyum payı %2,0, 3 markada görüldü (düşük güvenli kaynak, etkisi kırpıldı); önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS28-Mart. Segment rafında bu değer için geçmiş kayıt yok.     |
 | Kumaş görünümü | pamuklu     | 0,62     | giriş | FW28 | %4            | 1      | Podyum payı %10,1, 3 markada görüldü (düşük güvenli kaynak, etkisi kırpıldı); önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi FW28-Ağustos. Segment rafında bu değer için geçmiş kayıt yok. |
 | Desen          | çiçekli     | 0,63     | giriş | SS27 | %4            | 1      | Podyum payı %9,8, 3 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS27-Mart. Segment rafında bu değer için geçmiş kayıt yok.                                             |
-| Detay          | detaysız    | 0,50     | düz   | SS27 | %4            | 0      | Bu nitelik için podyum sinyali yok. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS27-Mart.                                                                                                                             |
+| Detay          | detaysız    | 0,90     | giriş | SS29 | %4            | 1      | Podyum payı %55,5, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS29-Mart. Segment rafında bu değer için geçmiş kayıt yok.                                           |
 
 **Karar: BEKLE**
 
@@ -289,7 +289,7 @@
 
 **Bu kararı değiştirecek sinyal:** Trend bir üst segmentin rafında görülür ve rakip sayısı azsa DENE'ye çıkar.
 
-**Kaynak sayısı:** 4 · **Model sürümü:** v0 · kural-0
+**Kaynak sayısı:** 5 · **Model sürümü:** v0 · kural-0
 
 > Yatırım tavsiyesi değildir; karar satın almacınındır.
 
@@ -315,7 +315,7 @@
 | Siluet         | bol         | 0,49     | giriş | SS28 | %4            | 1      | Podyum payı %2,0, 3 markada görüldü (düşük güvenli kaynak, etkisi kırpıldı); önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS28-Mart. Segment rafında bu değer için geçmiş kayıt yok.     |
 | Kumaş görünümü | pamuklu     | 0,62     | giriş | FW28 | %4            | 1      | Podyum payı %10,1, 3 markada görüldü (düşük güvenli kaynak, etkisi kırpıldı); önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi FW28-Ağustos. Segment rafında bu değer için geçmiş kayıt yok. |
 | Desen          | çiçekli     | 0,63     | giriş | SS27 | %4            | 1      | Podyum payı %9,8, 3 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS27-Mart. Segment rafında bu değer için geçmiş kayıt yok.                                             |
-| Detay          | detaysız    | 0,50     | düz   | SS27 | %4            | 0      | Bu nitelik için podyum sinyali yok. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS27-Mart.                                                                                                                             |
+| Detay          | detaysız    | 0,90     | giriş | SS29 | %4            | 1      | Podyum payı %55,5, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS29-Mart. Segment rafında bu değer için geçmiş kayıt yok.                                           |
 
 **Karar: DENE**
 
@@ -323,7 +323,7 @@
 
 **Bu kararı değiştirecek sinyal:** Deneme partisi ilk iki haftada güçlü satar ve ivme 0,60'ı geçerse YATIR'a çıkar; 0,45 altına düşerse BEKLE'ye iner.
 
-**Kaynak sayısı:** 4 · **Model sürümü:** v0 · kural-0
+**Kaynak sayısı:** 5 · **Model sürümü:** v0 · kural-0
 
 > Yatırım tavsiyesi değildir; karar satın almacınındır.
 
@@ -349,7 +349,7 @@
 | Siluet         | bol         | 0,49     | giriş | SS28 | %4            | 1      | Podyum payı %2,0, 3 markada görüldü (düşük güvenli kaynak, etkisi kırpıldı); önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS28-Mart. Segment rafında bu değer için geçmiş kayıt yok.     |
 | Kumaş görünümü | pamuklu     | 0,62     | giriş | FW28 | %4            | 1      | Podyum payı %10,1, 3 markada görüldü (düşük güvenli kaynak, etkisi kırpıldı); önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi FW28-Ağustos. Segment rafında bu değer için geçmiş kayıt yok. |
 | Desen          | çiçekli     | 0,63     | giriş | SS27 | %4            | 1      | Podyum payı %9,8, 3 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS27-Mart. Segment rafında bu değer için geçmiş kayıt yok.                                             |
-| Detay          | detaysız    | 0,50     | düz   | SS27 | %4            | 0      | Bu nitelik için podyum sinyali yok. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS27-Mart.                                                                                                                             |
+| Detay          | detaysız    | 0,90     | giriş | SS29 | %4            | 1      | Podyum payı %55,5, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS29-Mart. Segment rafında bu değer için geçmiş kayıt yok.                                           |
 
 **Karar: BEKLE**
 
@@ -357,7 +357,7 @@
 
 **Bu kararı değiştirecek sinyal:** Trend bir üst segmentin rafında görülür ve rakip sayısı azsa DENE'ye çıkar.
 
-**Kaynak sayısı:** 4 · **Model sürümü:** v0 · kural-0
+**Kaynak sayısı:** 5 · **Model sürümü:** v0 · kural-0
 
 > Yatırım tavsiyesi değildir; karar satın almacınındır.
 
@@ -383,7 +383,7 @@
 | Siluet         | bol         | 0,49     | giriş | SS28 | %4            | 1      | Podyum payı %2,0, 3 markada görüldü (düşük güvenli kaynak, etkisi kırpıldı); önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS28-Mart. Segment rafında bu değer için geçmiş kayıt yok.     |
 | Kumaş görünümü | pamuklu     | 0,62     | giriş | FW28 | %4            | 1      | Podyum payı %10,1, 3 markada görüldü (düşük güvenli kaynak, etkisi kırpıldı); önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi FW28-Ağustos. Segment rafında bu değer için geçmiş kayıt yok. |
 | Desen          | çiçekli     | 0,63     | giriş | SS27 | %4            | 1      | Podyum payı %9,8, 3 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS27-Mart. Segment rafında bu değer için geçmiş kayıt yok.                                             |
-| Detay          | detaysız    | 0,50     | düz   | SS27 | %4            | 0      | Bu nitelik için podyum sinyali yok. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS27-Mart.                                                                                                                             |
+| Detay          | detaysız    | 0,90     | giriş | SS29 | %4            | 1      | Podyum payı %55,5, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS29-Mart. Segment rafında bu değer için geçmiş kayıt yok.                                           |
 
 **Karar: BEKLE**
 
@@ -391,7 +391,7 @@
 
 **Bu kararı değiştirecek sinyal:** Trend bir üst segmentin rafında görülür ve rakip sayısı azsa DENE'ye çıkar.
 
-**Kaynak sayısı:** 4 · **Model sürümü:** v0 · kural-0
+**Kaynak sayısı:** 5 · **Model sürümü:** v0 · kural-0
 
 > Yatırım tavsiyesi değildir; karar satın almacınındır.
 
@@ -417,7 +417,7 @@
 | Siluet         | bol         | 0,49     | giriş | SS28 | %4            | 1      | Podyum payı %2,0, 3 markada görüldü (düşük güvenli kaynak, etkisi kırpıldı); önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS28-Mart. Segment rafında bu değer için geçmiş kayıt yok.     |
 | Kumaş görünümü | pamuklu     | 0,62     | giriş | FW28 | %4            | 1      | Podyum payı %10,1, 3 markada görüldü (düşük güvenli kaynak, etkisi kırpıldı); önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi FW28-Ağustos. Segment rafında bu değer için geçmiş kayıt yok. |
 | Desen          | çiçekli     | 0,63     | giriş | SS27 | %4            | 1      | Podyum payı %9,8, 3 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS27-Mart. Segment rafında bu değer için geçmiş kayıt yok.                                             |
-| Detay          | detaysız    | 0,50     | düz   | SS27 | %4            | 0      | Bu nitelik için podyum sinyali yok. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS27-Mart.                                                                                                                             |
+| Detay          | detaysız    | 0,90     | giriş | SS29 | %4            | 1      | Podyum payı %55,5, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 5,0 sezon (onsel); beklenen raf dönemi SS29-Mart. Segment rafında bu değer için geçmiş kayıt yok.                                           |
 
 **Karar: BEKLE**
 
@@ -425,7 +425,7 @@
 
 **Bu kararı değiştirecek sinyal:** Trend bir üst segmentin rafında görülür ve rakip sayısı azsa DENE'ye çıkar.
 
-**Kaynak sayısı:** 4 · **Model sürümü:** v0 · kural-0
+**Kaynak sayısı:** 5 · **Model sürümü:** v0 · kural-0
 
 > Yatırım tavsiyesi değildir; karar satın almacınındır.
 

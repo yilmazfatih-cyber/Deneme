@@ -21,7 +21,7 @@
           "sezon": "SS27"
         },
         "boyutlar": {
-          "trend_ivmesi": 0.692,
+          "trend_ivmesi": 0.789,
           "trend_yonu": "giris",
           "segment_uyumu": 0.95,
           "zamanlama": "erken",
@@ -30,9 +30,9 @@
           "rakip_sayisi": 0
         },
         "karar": "DENE",
-        "gerekce": "Trend ivmesi 0,69, yön giriş. YATIR için eksik: zamanlama erken. %10–20 deneme partisi önerilir.",
+        "gerekce": "Trend ivmesi 0,79, yön giriş. YATIR için eksik: zamanlama erken. %10–20 deneme partisi önerilir.",
         "degistirecek_sinyal": "Deneme partisi ilk iki haftada güçlü satar ve ivme 0,60'ı geçerse YATIR'a çıkar; 0,45 altına düşerse BEKLE'ye iner.",
-        "kaynak_sayisi": 3,
+        "kaynak_sayisi": 6,
         "model_surumu": "v0 · kural-0",
         "uyari": "Yatırım tavsiyesi değildir; karar satın almacınındır."
       },
@@ -81,15 +81,15 @@
             "kategori": "kadin-ust",
             "nitelik_ekseni": "siluet",
             "nitelik_degeri": "duz",
-            "olasilik": 0.636,
+            "olasilik": 0.775,
             "esik_raf_payi": 0.04,
             "ufuk_sezon": "FW28",
             "yon": "giris",
             "gecikme_sezon": 3.5,
             "gecikme_kaynagi": "onsel",
-            "kaynak_sayisi": 1,
+            "kaynak_sayisi": 2,
             "model_surumu": "v0",
-            "gerekce": "Podyum payı %10,3, 3 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
+            "gerekce": "Podyum payı %13,9, 21 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
           },
           {
             "sezon": "FW26",
@@ -109,38 +109,38 @@
             "gerekce": "Podyum payı %10,1, 3 markada görüldü (düşük güvenli kaynak, etkisi kırpıldı); önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW27-Eylül. Segment rafında bu değer için geçmiş kayıt yok."
           },
           {
-            "sezon": "FW25",
+            "sezon": "SS27",
             "ulke": "TR",
             "segment": "deger",
             "kategori": "kadin-ust",
             "nitelik_ekseni": "desen",
             "nitelik_degeri": "duz",
-            "olasilik": 0.5,
+            "olasilik": 0.9121,
             "esik_raf_payi": 0.04,
-            "ufuk_sezon": "FW26",
-            "yon": "duz",
+            "ufuk_sezon": "FW28",
+            "yon": "giris",
             "gecikme_sezon": 3.5,
             "gecikme_kaynagi": "onsel",
-            "kaynak_sayisi": 0,
+            "kaynak_sayisi": 1,
             "model_surumu": "v0",
-            "gerekce": "Bu nitelik için podyum sinyali yok. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW26-Eylül."
+            "gerekce": "Podyum payı %75,7, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
           },
           {
-            "sezon": "FW25",
+            "sezon": "SS27",
             "ulke": "TR",
             "segment": "deger",
             "kategori": "kadin-ust",
             "nitelik_ekseni": "detay",
             "nitelik_degeri": "yok",
-            "olasilik": 0.5,
+            "olasilik": 0.8963,
             "esik_raf_payi": 0.04,
-            "ufuk_sezon": "FW26",
-            "yon": "duz",
+            "ufuk_sezon": "FW28",
+            "yon": "giris",
             "gecikme_sezon": 3.5,
             "gecikme_kaynagi": "onsel",
-            "kaynak_sayisi": 0,
+            "kaynak_sayisi": 1,
             "model_surumu": "v0",
-            "gerekce": "Bu nitelik için podyum sinyali yok. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW26-Eylül."
+            "gerekce": "Podyum payı %55,5, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
           }
         ],
         "notlar": []
@@ -163,7 +163,7 @@
           "sezon": "SS27"
         },
         "boyutlar": {
-          "trend_ivmesi": 0.659,
+          "trend_ivmesi": 0.755,
           "trend_yonu": "giris",
           "segment_uyumu": 0.95,
           "zamanlama": "erken",
@@ -172,9 +172,9 @@
           "rakip_sayisi": 0
         },
         "karar": "DENE",
-        "gerekce": "Trend ivmesi 0,66, yön giriş. YATIR için eksik: zamanlama erken. %10–20 deneme partisi önerilir.",
+        "gerekce": "Trend ivmesi 0,76, yön giriş. YATIR için eksik: zamanlama erken. %10–20 deneme partisi önerilir.",
         "degistirecek_sinyal": "Deneme partisi ilk iki haftada güçlü satar ve ivme 0,60'ı geçerse YATIR'a çıkar; 0,45 altına düşerse BEKLE'ye iner.",
-        "kaynak_sayisi": 3,
+        "kaynak_sayisi": 6,
         "model_surumu": "v0 · kural-0",
         "uyari": "Yatırım tavsiyesi değildir; karar satın almacınındır."
       },
@@ -223,15 +223,15 @@
             "kategori": "kadin-ust",
             "nitelik_ekseni": "siluet",
             "nitelik_degeri": "duz",
-            "olasilik": 0.636,
+            "olasilik": 0.775,
             "esik_raf_payi": 0.04,
             "ufuk_sezon": "FW28",
             "yon": "giris",
             "gecikme_sezon": 3.5,
             "gecikme_kaynagi": "onsel",
-            "kaynak_sayisi": 1,
+            "kaynak_sayisi": 2,
             "model_surumu": "v0",
-            "gerekce": "Podyum payı %10,3, 3 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
+            "gerekce": "Podyum payı %13,9, 21 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
           },
           {
             "sezon": "FW26",
@@ -251,38 +251,38 @@
             "gerekce": "Podyum payı %10,1, 3 markada görüldü (düşük güvenli kaynak, etkisi kırpıldı); önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW27-Eylül. Segment rafında bu değer için geçmiş kayıt yok."
           },
           {
-            "sezon": "FW25",
+            "sezon": "SS27",
             "ulke": "TR",
             "segment": "deger",
             "kategori": "kadin-ust",
             "nitelik_ekseni": "desen",
             "nitelik_degeri": "duz",
-            "olasilik": 0.5,
+            "olasilik": 0.9121,
             "esik_raf_payi": 0.04,
-            "ufuk_sezon": "FW26",
-            "yon": "duz",
+            "ufuk_sezon": "FW28",
+            "yon": "giris",
             "gecikme_sezon": 3.5,
             "gecikme_kaynagi": "onsel",
-            "kaynak_sayisi": 0,
+            "kaynak_sayisi": 1,
             "model_surumu": "v0",
-            "gerekce": "Bu nitelik için podyum sinyali yok. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW26-Eylül."
+            "gerekce": "Podyum payı %75,7, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
           },
           {
-            "sezon": "FW25",
+            "sezon": "SS27",
             "ulke": "TR",
             "segment": "deger",
             "kategori": "kadin-ust",
             "nitelik_ekseni": "detay",
             "nitelik_degeri": "yok",
-            "olasilik": 0.5,
+            "olasilik": 0.8963,
             "esik_raf_payi": 0.04,
-            "ufuk_sezon": "FW26",
-            "yon": "duz",
+            "ufuk_sezon": "FW28",
+            "yon": "giris",
             "gecikme_sezon": 3.5,
             "gecikme_kaynagi": "onsel",
-            "kaynak_sayisi": 0,
+            "kaynak_sayisi": 1,
             "model_surumu": "v0",
-            "gerekce": "Bu nitelik için podyum sinyali yok. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW26-Eylül."
+            "gerekce": "Podyum payı %55,5, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
           }
         ],
         "notlar": []
@@ -305,7 +305,7 @@
           "sezon": "SS27"
         },
         "boyutlar": {
-          "trend_ivmesi": 0.656,
+          "trend_ivmesi": 0.752,
           "trend_yonu": "giris",
           "segment_uyumu": 0.95,
           "zamanlama": "erken",
@@ -314,9 +314,9 @@
           "rakip_sayisi": 0
         },
         "karar": "DENE",
-        "gerekce": "Trend ivmesi 0,66, yön giriş. YATIR için eksik: zamanlama erken. %10–20 deneme partisi önerilir.",
+        "gerekce": "Trend ivmesi 0,75, yön giriş. YATIR için eksik: zamanlama erken. %10–20 deneme partisi önerilir.",
         "degistirecek_sinyal": "Deneme partisi ilk iki haftada güçlü satar ve ivme 0,60'ı geçerse YATIR'a çıkar; 0,45 altına düşerse BEKLE'ye iner.",
-        "kaynak_sayisi": 3,
+        "kaynak_sayisi": 6,
         "model_surumu": "v0 · kural-0",
         "uyari": "Yatırım tavsiyesi değildir; karar satın almacınındır."
       },
@@ -365,15 +365,15 @@
             "kategori": "kadin-ust",
             "nitelik_ekseni": "siluet",
             "nitelik_degeri": "duz",
-            "olasilik": 0.636,
+            "olasilik": 0.775,
             "esik_raf_payi": 0.04,
             "ufuk_sezon": "FW28",
             "yon": "giris",
             "gecikme_sezon": 3.5,
             "gecikme_kaynagi": "onsel",
-            "kaynak_sayisi": 1,
+            "kaynak_sayisi": 2,
             "model_surumu": "v0",
-            "gerekce": "Podyum payı %10,3, 3 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
+            "gerekce": "Podyum payı %13,9, 21 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
           },
           {
             "sezon": "FW26",
@@ -393,38 +393,38 @@
             "gerekce": "Podyum payı %10,1, 3 markada görüldü (düşük güvenli kaynak, etkisi kırpıldı); önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW27-Eylül. Segment rafında bu değer için geçmiş kayıt yok."
           },
           {
-            "sezon": "FW25",
+            "sezon": "SS27",
             "ulke": "TR",
             "segment": "deger",
             "kategori": "kadin-ust",
             "nitelik_ekseni": "desen",
             "nitelik_degeri": "duz",
-            "olasilik": 0.5,
+            "olasilik": 0.9121,
             "esik_raf_payi": 0.04,
-            "ufuk_sezon": "FW26",
-            "yon": "duz",
+            "ufuk_sezon": "FW28",
+            "yon": "giris",
             "gecikme_sezon": 3.5,
             "gecikme_kaynagi": "onsel",
-            "kaynak_sayisi": 0,
+            "kaynak_sayisi": 1,
             "model_surumu": "v0",
-            "gerekce": "Bu nitelik için podyum sinyali yok. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW26-Eylül."
+            "gerekce": "Podyum payı %75,7, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
           },
           {
-            "sezon": "FW25",
+            "sezon": "SS27",
             "ulke": "TR",
             "segment": "deger",
             "kategori": "kadin-ust",
             "nitelik_ekseni": "detay",
             "nitelik_degeri": "yok",
-            "olasilik": 0.5,
+            "olasilik": 0.8963,
             "esik_raf_payi": 0.04,
-            "ufuk_sezon": "FW26",
-            "yon": "duz",
+            "ufuk_sezon": "FW28",
+            "yon": "giris",
             "gecikme_sezon": 3.5,
             "gecikme_kaynagi": "onsel",
-            "kaynak_sayisi": 0,
+            "kaynak_sayisi": 1,
             "model_surumu": "v0",
-            "gerekce": "Bu nitelik için podyum sinyali yok. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW26-Eylül."
+            "gerekce": "Podyum payı %55,5, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
           }
         ],
         "notlar": []
@@ -447,7 +447,7 @@
           "sezon": "SS27"
         },
         "boyutlar": {
-          "trend_ivmesi": 0.627,
+          "trend_ivmesi": 0.724,
           "trend_yonu": "giris",
           "segment_uyumu": 0.95,
           "zamanlama": "erken",
@@ -456,9 +456,9 @@
           "rakip_sayisi": 0
         },
         "karar": "DENE",
-        "gerekce": "Trend ivmesi 0,63, yön giriş. YATIR için eksik: zamanlama erken. %10–20 deneme partisi önerilir.",
+        "gerekce": "Trend ivmesi 0,72, yön giriş. YATIR için eksik: zamanlama erken. %10–20 deneme partisi önerilir.",
         "degistirecek_sinyal": "Deneme partisi ilk iki haftada güçlü satar ve ivme 0,60'ı geçerse YATIR'a çıkar; 0,45 altına düşerse BEKLE'ye iner.",
-        "kaynak_sayisi": 3,
+        "kaynak_sayisi": 6,
         "model_surumu": "v0 · kural-0",
         "uyari": "Yatırım tavsiyesi değildir; karar satın almacınındır."
       },
@@ -507,15 +507,15 @@
             "kategori": "kadin-ust",
             "nitelik_ekseni": "siluet",
             "nitelik_degeri": "duz",
-            "olasilik": 0.636,
+            "olasilik": 0.775,
             "esik_raf_payi": 0.04,
             "ufuk_sezon": "FW28",
             "yon": "giris",
             "gecikme_sezon": 3.5,
             "gecikme_kaynagi": "onsel",
-            "kaynak_sayisi": 1,
+            "kaynak_sayisi": 2,
             "model_surumu": "v0",
-            "gerekce": "Podyum payı %10,3, 3 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
+            "gerekce": "Podyum payı %13,9, 21 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
           },
           {
             "sezon": "FW26",
@@ -535,38 +535,38 @@
             "gerekce": "Podyum payı %10,1, 3 markada görüldü (düşük güvenli kaynak, etkisi kırpıldı); önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW27-Eylül. Segment rafında bu değer için geçmiş kayıt yok."
           },
           {
-            "sezon": "FW25",
+            "sezon": "SS27",
             "ulke": "TR",
             "segment": "deger",
             "kategori": "kadin-ust",
             "nitelik_ekseni": "desen",
             "nitelik_degeri": "duz",
-            "olasilik": 0.5,
+            "olasilik": 0.9121,
             "esik_raf_payi": 0.04,
-            "ufuk_sezon": "FW26",
-            "yon": "duz",
+            "ufuk_sezon": "FW28",
+            "yon": "giris",
             "gecikme_sezon": 3.5,
             "gecikme_kaynagi": "onsel",
-            "kaynak_sayisi": 0,
+            "kaynak_sayisi": 1,
             "model_surumu": "v0",
-            "gerekce": "Bu nitelik için podyum sinyali yok. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW26-Eylül."
+            "gerekce": "Podyum payı %75,7, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
           },
           {
-            "sezon": "FW25",
+            "sezon": "SS27",
             "ulke": "TR",
             "segment": "deger",
             "kategori": "kadin-ust",
             "nitelik_ekseni": "detay",
             "nitelik_degeri": "yok",
-            "olasilik": 0.5,
+            "olasilik": 0.8963,
             "esik_raf_payi": 0.04,
-            "ufuk_sezon": "FW26",
-            "yon": "duz",
+            "ufuk_sezon": "FW28",
+            "yon": "giris",
             "gecikme_sezon": 3.5,
             "gecikme_kaynagi": "onsel",
-            "kaynak_sayisi": 0,
+            "kaynak_sayisi": 1,
             "model_surumu": "v0",
-            "gerekce": "Bu nitelik için podyum sinyali yok. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW26-Eylül."
+            "gerekce": "Podyum payı %55,5, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
           }
         ],
         "notlar": []
@@ -589,7 +589,7 @@
           "sezon": "SS27"
         },
         "boyutlar": {
-          "trend_ivmesi": 0.615,
+          "trend_ivmesi": 0.711,
           "trend_yonu": "giris",
           "segment_uyumu": 0.95,
           "zamanlama": "erken",
@@ -598,9 +598,9 @@
           "rakip_sayisi": 0
         },
         "karar": "DENE",
-        "gerekce": "Trend ivmesi 0,61, yön giriş. YATIR için eksik: zamanlama erken. %10–20 deneme partisi önerilir.",
+        "gerekce": "Trend ivmesi 0,71, yön giriş. YATIR için eksik: zamanlama erken. %10–20 deneme partisi önerilir.",
         "degistirecek_sinyal": "Deneme partisi ilk iki haftada güçlü satar ve ivme 0,60'ı geçerse YATIR'a çıkar; 0,45 altına düşerse BEKLE'ye iner.",
-        "kaynak_sayisi": 3,
+        "kaynak_sayisi": 6,
         "model_surumu": "v0 · kural-0",
         "uyari": "Yatırım tavsiyesi değildir; karar satın almacınındır."
       },
@@ -649,15 +649,15 @@
             "kategori": "kadin-ust",
             "nitelik_ekseni": "siluet",
             "nitelik_degeri": "duz",
-            "olasilik": 0.636,
+            "olasilik": 0.775,
             "esik_raf_payi": 0.04,
             "ufuk_sezon": "FW28",
             "yon": "giris",
             "gecikme_sezon": 3.5,
             "gecikme_kaynagi": "onsel",
-            "kaynak_sayisi": 1,
+            "kaynak_sayisi": 2,
             "model_surumu": "v0",
-            "gerekce": "Podyum payı %10,3, 3 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
+            "gerekce": "Podyum payı %13,9, 21 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
           },
           {
             "sezon": "FW26",
@@ -677,38 +677,38 @@
             "gerekce": "Podyum payı %10,1, 3 markada görüldü (düşük güvenli kaynak, etkisi kırpıldı); önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW27-Eylül. Segment rafında bu değer için geçmiş kayıt yok."
           },
           {
-            "sezon": "FW25",
+            "sezon": "SS27",
             "ulke": "TR",
             "segment": "deger",
             "kategori": "kadin-ust",
             "nitelik_ekseni": "desen",
             "nitelik_degeri": "duz",
-            "olasilik": 0.5,
+            "olasilik": 0.9121,
             "esik_raf_payi": 0.04,
-            "ufuk_sezon": "FW26",
-            "yon": "duz",
+            "ufuk_sezon": "FW28",
+            "yon": "giris",
             "gecikme_sezon": 3.5,
             "gecikme_kaynagi": "onsel",
-            "kaynak_sayisi": 0,
+            "kaynak_sayisi": 1,
             "model_surumu": "v0",
-            "gerekce": "Bu nitelik için podyum sinyali yok. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW26-Eylül."
+            "gerekce": "Podyum payı %75,7, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
           },
           {
-            "sezon": "FW25",
+            "sezon": "SS27",
             "ulke": "TR",
             "segment": "deger",
             "kategori": "kadin-ust",
             "nitelik_ekseni": "detay",
             "nitelik_degeri": "yok",
-            "olasilik": 0.5,
+            "olasilik": 0.8963,
             "esik_raf_payi": 0.04,
-            "ufuk_sezon": "FW26",
-            "yon": "duz",
+            "ufuk_sezon": "FW28",
+            "yon": "giris",
             "gecikme_sezon": 3.5,
             "gecikme_kaynagi": "onsel",
-            "kaynak_sayisi": 0,
+            "kaynak_sayisi": 1,
             "model_surumu": "v0",
-            "gerekce": "Bu nitelik için podyum sinyali yok. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW26-Eylül."
+            "gerekce": "Podyum payı %55,5, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
           }
         ],
         "notlar": []
@@ -731,7 +731,7 @@
           "sezon": "SS27"
         },
         "boyutlar": {
-          "trend_ivmesi": 0.613,
+          "trend_ivmesi": 0.71,
           "trend_yonu": "giris",
           "segment_uyumu": 0.95,
           "zamanlama": "erken",
@@ -740,9 +740,9 @@
           "rakip_sayisi": 0
         },
         "karar": "DENE",
-        "gerekce": "Trend ivmesi 0,61, yön giriş. YATIR için eksik: zamanlama erken. %10–20 deneme partisi önerilir.",
+        "gerekce": "Trend ivmesi 0,71, yön giriş. YATIR için eksik: zamanlama erken. %10–20 deneme partisi önerilir.",
         "degistirecek_sinyal": "Deneme partisi ilk iki haftada güçlü satar ve ivme 0,60'ı geçerse YATIR'a çıkar; 0,45 altına düşerse BEKLE'ye iner.",
-        "kaynak_sayisi": 3,
+        "kaynak_sayisi": 6,
         "model_surumu": "v0 · kural-0",
         "uyari": "Yatırım tavsiyesi değildir; karar satın almacınındır."
       },
@@ -791,15 +791,15 @@
             "kategori": "kadin-ust",
             "nitelik_ekseni": "siluet",
             "nitelik_degeri": "duz",
-            "olasilik": 0.636,
+            "olasilik": 0.775,
             "esik_raf_payi": 0.04,
             "ufuk_sezon": "FW28",
             "yon": "giris",
             "gecikme_sezon": 3.5,
             "gecikme_kaynagi": "onsel",
-            "kaynak_sayisi": 1,
+            "kaynak_sayisi": 2,
             "model_surumu": "v0",
-            "gerekce": "Podyum payı %10,3, 3 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
+            "gerekce": "Podyum payı %13,9, 21 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
           },
           {
             "sezon": "FW26",
@@ -819,38 +819,38 @@
             "gerekce": "Podyum payı %10,1, 3 markada görüldü (düşük güvenli kaynak, etkisi kırpıldı); önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW27-Eylül. Segment rafında bu değer için geçmiş kayıt yok."
           },
           {
-            "sezon": "FW25",
+            "sezon": "SS27",
             "ulke": "TR",
             "segment": "deger",
             "kategori": "kadin-ust",
             "nitelik_ekseni": "desen",
             "nitelik_degeri": "duz",
-            "olasilik": 0.5,
+            "olasilik": 0.9121,
             "esik_raf_payi": 0.04,
-            "ufuk_sezon": "FW26",
-            "yon": "duz",
+            "ufuk_sezon": "FW28",
+            "yon": "giris",
             "gecikme_sezon": 3.5,
             "gecikme_kaynagi": "onsel",
-            "kaynak_sayisi": 0,
+            "kaynak_sayisi": 1,
             "model_surumu": "v0",
-            "gerekce": "Bu nitelik için podyum sinyali yok. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW26-Eylül."
+            "gerekce": "Podyum payı %75,7, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
           },
           {
-            "sezon": "FW25",
+            "sezon": "SS27",
             "ulke": "TR",
             "segment": "deger",
             "kategori": "kadin-ust",
             "nitelik_ekseni": "detay",
             "nitelik_degeri": "yok",
-            "olasilik": 0.5,
+            "olasilik": 0.8963,
             "esik_raf_payi": 0.04,
-            "ufuk_sezon": "FW26",
-            "yon": "duz",
+            "ufuk_sezon": "FW28",
+            "yon": "giris",
             "gecikme_sezon": 3.5,
             "gecikme_kaynagi": "onsel",
-            "kaynak_sayisi": 0,
+            "kaynak_sayisi": 1,
             "model_surumu": "v0",
-            "gerekce": "Bu nitelik için podyum sinyali yok. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW26-Eylül."
+            "gerekce": "Podyum payı %55,5, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
           }
         ],
         "notlar": []
@@ -873,7 +873,7 @@
           "sezon": "SS27"
         },
         "boyutlar": {
-          "trend_ivmesi": 0.613,
+          "trend_ivmesi": 0.709,
           "trend_yonu": "giris",
           "segment_uyumu": 0.95,
           "zamanlama": "erken",
@@ -882,9 +882,9 @@
           "rakip_sayisi": 0
         },
         "karar": "DENE",
-        "gerekce": "Trend ivmesi 0,61, yön giriş. YATIR için eksik: zamanlama erken. %10–20 deneme partisi önerilir.",
+        "gerekce": "Trend ivmesi 0,71, yön giriş. YATIR için eksik: zamanlama erken. %10–20 deneme partisi önerilir.",
         "degistirecek_sinyal": "Deneme partisi ilk iki haftada güçlü satar ve ivme 0,60'ı geçerse YATIR'a çıkar; 0,45 altına düşerse BEKLE'ye iner.",
-        "kaynak_sayisi": 3,
+        "kaynak_sayisi": 6,
         "model_surumu": "v0 · kural-0",
         "uyari": "Yatırım tavsiyesi değildir; karar satın almacınındır."
       },
@@ -933,15 +933,15 @@
             "kategori": "kadin-ust",
             "nitelik_ekseni": "siluet",
             "nitelik_degeri": "duz",
-            "olasilik": 0.636,
+            "olasilik": 0.775,
             "esik_raf_payi": 0.04,
             "ufuk_sezon": "FW28",
             "yon": "giris",
             "gecikme_sezon": 3.5,
             "gecikme_kaynagi": "onsel",
-            "kaynak_sayisi": 1,
+            "kaynak_sayisi": 2,
             "model_surumu": "v0",
-            "gerekce": "Podyum payı %10,3, 3 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
+            "gerekce": "Podyum payı %13,9, 21 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
           },
           {
             "sezon": "FW26",
@@ -961,38 +961,38 @@
             "gerekce": "Podyum payı %10,1, 3 markada görüldü (düşük güvenli kaynak, etkisi kırpıldı); önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW27-Eylül. Segment rafında bu değer için geçmiş kayıt yok."
           },
           {
-            "sezon": "FW25",
+            "sezon": "SS27",
             "ulke": "TR",
             "segment": "deger",
             "kategori": "kadin-ust",
             "nitelik_ekseni": "desen",
             "nitelik_degeri": "duz",
-            "olasilik": 0.5,
+            "olasilik": 0.9121,
             "esik_raf_payi": 0.04,
-            "ufuk_sezon": "FW26",
-            "yon": "duz",
+            "ufuk_sezon": "FW28",
+            "yon": "giris",
             "gecikme_sezon": 3.5,
             "gecikme_kaynagi": "onsel",
-            "kaynak_sayisi": 0,
+            "kaynak_sayisi": 1,
             "model_surumu": "v0",
-            "gerekce": "Bu nitelik için podyum sinyali yok. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW26-Eylül."
+            "gerekce": "Podyum payı %75,7, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
           },
           {
-            "sezon": "FW25",
+            "sezon": "SS27",
             "ulke": "TR",
             "segment": "deger",
             "kategori": "kadin-ust",
             "nitelik_ekseni": "detay",
             "nitelik_degeri": "yok",
-            "olasilik": 0.5,
+            "olasilik": 0.8963,
             "esik_raf_payi": 0.04,
-            "ufuk_sezon": "FW26",
-            "yon": "duz",
+            "ufuk_sezon": "FW28",
+            "yon": "giris",
             "gecikme_sezon": 3.5,
             "gecikme_kaynagi": "onsel",
-            "kaynak_sayisi": 0,
+            "kaynak_sayisi": 1,
             "model_surumu": "v0",
-            "gerekce": "Bu nitelik için podyum sinyali yok. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW26-Eylül."
+            "gerekce": "Podyum payı %55,5, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
           }
         ],
         "notlar": []
@@ -1015,7 +1015,7 @@
           "sezon": "SS27"
         },
         "boyutlar": {
-          "trend_ivmesi": 0.598,
+          "trend_ivmesi": 0.695,
           "trend_yonu": "giris",
           "segment_uyumu": 0.95,
           "zamanlama": "erken",
@@ -1024,9 +1024,9 @@
           "rakip_sayisi": 0
         },
         "karar": "DENE",
-        "gerekce": "Trend ivmesi 0,60, yön giriş. YATIR için eksik: ivme 0,60 altında, zamanlama erken. %10–20 deneme partisi önerilir.",
+        "gerekce": "Trend ivmesi 0,69, yön giriş. YATIR için eksik: zamanlama erken. %10–20 deneme partisi önerilir.",
         "degistirecek_sinyal": "Deneme partisi ilk iki haftada güçlü satar ve ivme 0,60'ı geçerse YATIR'a çıkar; 0,45 altına düşerse BEKLE'ye iner.",
-        "kaynak_sayisi": 3,
+        "kaynak_sayisi": 6,
         "model_surumu": "v0 · kural-0",
         "uyari": "Yatırım tavsiyesi değildir; karar satın almacınındır."
       },
@@ -1075,15 +1075,15 @@
             "kategori": "kadin-ust",
             "nitelik_ekseni": "siluet",
             "nitelik_degeri": "duz",
-            "olasilik": 0.636,
+            "olasilik": 0.775,
             "esik_raf_payi": 0.04,
             "ufuk_sezon": "FW28",
             "yon": "giris",
             "gecikme_sezon": 3.5,
             "gecikme_kaynagi": "onsel",
-            "kaynak_sayisi": 1,
+            "kaynak_sayisi": 2,
             "model_surumu": "v0",
-            "gerekce": "Podyum payı %10,3, 3 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
+            "gerekce": "Podyum payı %13,9, 21 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
           },
           {
             "sezon": "FW26",
@@ -1103,38 +1103,38 @@
             "gerekce": "Podyum payı %10,1, 3 markada görüldü (düşük güvenli kaynak, etkisi kırpıldı); önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW27-Eylül. Segment rafında bu değer için geçmiş kayıt yok."
           },
           {
-            "sezon": "FW25",
+            "sezon": "SS27",
             "ulke": "TR",
             "segment": "deger",
             "kategori": "kadin-ust",
             "nitelik_ekseni": "desen",
             "nitelik_degeri": "duz",
-            "olasilik": 0.5,
+            "olasilik": 0.9121,
             "esik_raf_payi": 0.04,
-            "ufuk_sezon": "FW26",
-            "yon": "duz",
+            "ufuk_sezon": "FW28",
+            "yon": "giris",
             "gecikme_sezon": 3.5,
             "gecikme_kaynagi": "onsel",
-            "kaynak_sayisi": 0,
+            "kaynak_sayisi": 1,
             "model_surumu": "v0",
-            "gerekce": "Bu nitelik için podyum sinyali yok. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW26-Eylül."
+            "gerekce": "Podyum payı %75,7, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
           },
           {
-            "sezon": "FW25",
+            "sezon": "SS27",
             "ulke": "TR",
             "segment": "deger",
             "kategori": "kadin-ust",
             "nitelik_ekseni": "detay",
             "nitelik_degeri": "yok",
-            "olasilik": 0.5,
+            "olasilik": 0.8963,
             "esik_raf_payi": 0.04,
-            "ufuk_sezon": "FW26",
-            "yon": "duz",
+            "ufuk_sezon": "FW28",
+            "yon": "giris",
             "gecikme_sezon": 3.5,
             "gecikme_kaynagi": "onsel",
-            "kaynak_sayisi": 0,
+            "kaynak_sayisi": 1,
             "model_surumu": "v0",
-            "gerekce": "Bu nitelik için podyum sinyali yok. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW26-Eylül."
+            "gerekce": "Podyum payı %55,5, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
           }
         ],
         "notlar": []
@@ -1157,18 +1157,18 @@
           "sezon": "SS27"
         },
         "boyutlar": {
-          "trend_ivmesi": 0.589,
+          "trend_ivmesi": 0.685,
           "trend_yonu": "giris",
           "segment_uyumu": 0.95,
           "zamanlama": "erken",
           "marj_yuzde": 65.7,
-          "stok_riski": "yuksek",
+          "stok_riski": "orta",
           "rakip_sayisi": 0
         },
-        "karar": "BEKLE",
-        "gerekce": "Trend ivmesi 0,59, yön giriş. Zamanlama erken ve stok riski yüksek.",
-        "degistirecek_sinyal": "Trend bir üst segmentin rafında görülür ve rakip sayısı azsa DENE'ye çıkar.",
-        "kaynak_sayisi": 3,
+        "karar": "DENE",
+        "gerekce": "Trend ivmesi 0,69, yön giriş. YATIR için eksik: zamanlama erken. %10–20 deneme partisi önerilir.",
+        "degistirecek_sinyal": "Deneme partisi ilk iki haftada güçlü satar ve ivme 0,60'ı geçerse YATIR'a çıkar; 0,45 altına düşerse BEKLE'ye iner.",
+        "kaynak_sayisi": 6,
         "model_surumu": "v0 · kural-0",
         "uyari": "Yatırım tavsiyesi değildir; karar satın almacınındır."
       },
@@ -1180,7 +1180,7 @@
         "marj_hedef": 45,
         "zamanlama_aciklama": "Trend bu segmente FW27'de varıyor, SS27'den 1 sezon sonra; podyum→raf gecikmesi 3.5 sezon (onsel).",
         "renk_ailesi": "moda",
-        "stok_aciklama": "moda rengi ve olasılık 0,59 < 0,60; rakip sayısı bilinmiyor",
+        "stok_aciklama": "moda rengi; rakip sayısı bilinmiyor",
         "rakip_bilinmiyor": true,
         "uyum_aciklama": "uzman önseli segment profili (veriyle güncellenecek)",
         "segment_adi": "Değer",
@@ -1217,15 +1217,15 @@
             "kategori": "kadin-ust",
             "nitelik_ekseni": "siluet",
             "nitelik_degeri": "duz",
-            "olasilik": 0.636,
+            "olasilik": 0.775,
             "esik_raf_payi": 0.04,
             "ufuk_sezon": "FW28",
             "yon": "giris",
             "gecikme_sezon": 3.5,
             "gecikme_kaynagi": "onsel",
-            "kaynak_sayisi": 1,
+            "kaynak_sayisi": 2,
             "model_surumu": "v0",
-            "gerekce": "Podyum payı %10,3, 3 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
+            "gerekce": "Podyum payı %13,9, 21 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
           },
           {
             "sezon": "FW26",
@@ -1245,38 +1245,38 @@
             "gerekce": "Podyum payı %10,1, 3 markada görüldü (düşük güvenli kaynak, etkisi kırpıldı); önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW27-Eylül. Segment rafında bu değer için geçmiş kayıt yok."
           },
           {
-            "sezon": "FW25",
+            "sezon": "SS27",
             "ulke": "TR",
             "segment": "deger",
             "kategori": "kadin-ust",
             "nitelik_ekseni": "desen",
             "nitelik_degeri": "duz",
-            "olasilik": 0.5,
+            "olasilik": 0.9121,
             "esik_raf_payi": 0.04,
-            "ufuk_sezon": "FW26",
-            "yon": "duz",
+            "ufuk_sezon": "FW28",
+            "yon": "giris",
             "gecikme_sezon": 3.5,
             "gecikme_kaynagi": "onsel",
-            "kaynak_sayisi": 0,
+            "kaynak_sayisi": 1,
             "model_surumu": "v0",
-            "gerekce": "Bu nitelik için podyum sinyali yok. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW26-Eylül."
+            "gerekce": "Podyum payı %75,7, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
           },
           {
-            "sezon": "FW25",
+            "sezon": "SS27",
             "ulke": "TR",
             "segment": "deger",
             "kategori": "kadin-ust",
             "nitelik_ekseni": "detay",
             "nitelik_degeri": "yok",
-            "olasilik": 0.5,
+            "olasilik": 0.8963,
             "esik_raf_payi": 0.04,
-            "ufuk_sezon": "FW26",
-            "yon": "duz",
+            "ufuk_sezon": "FW28",
+            "yon": "giris",
             "gecikme_sezon": 3.5,
             "gecikme_kaynagi": "onsel",
-            "kaynak_sayisi": 0,
+            "kaynak_sayisi": 1,
             "model_surumu": "v0",
-            "gerekce": "Bu nitelik için podyum sinyali yok. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW26-Eylül."
+            "gerekce": "Podyum payı %55,5, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
           }
         ],
         "notlar": []
@@ -1299,18 +1299,18 @@
           "sezon": "SS27"
         },
         "boyutlar": {
-          "trend_ivmesi": 0.586,
+          "trend_ivmesi": 0.682,
           "trend_yonu": "giris",
           "segment_uyumu": 0.95,
           "zamanlama": "gec",
           "marj_yuzde": 65.7,
-          "stok_riski": "yuksek",
+          "stok_riski": "orta",
           "rakip_sayisi": 0
         },
         "karar": "DENE",
-        "gerekce": "Trend ivmesi 0,59, yön giriş. YATIR için eksik: ivme 0,60 altında, zamanlama geç, stok riski yüksek. %10–20 deneme partisi önerilir.",
+        "gerekce": "Trend ivmesi 0,68, yön giriş. YATIR için eksik: zamanlama geç. %10–20 deneme partisi önerilir.",
         "degistirecek_sinyal": "Deneme partisi ilk iki haftada güçlü satar ve ivme 0,60'ı geçerse YATIR'a çıkar; 0,45 altına düşerse BEKLE'ye iner.",
-        "kaynak_sayisi": 3,
+        "kaynak_sayisi": 6,
         "model_surumu": "v0 · kural-0",
         "uyari": "Yatırım tavsiyesi değildir; karar satın almacınındır."
       },
@@ -1322,7 +1322,7 @@
         "marj_hedef": 45,
         "zamanlama_aciklama": "Trend bu segmente FW26'de vardı, SS27'den 1 sezon önce; podyum→raf gecikmesi 3.5 sezon (onsel).",
         "renk_ailesi": "moda",
-        "stok_aciklama": "moda rengi ve olasılık 0,59 < 0,60; rakip sayısı bilinmiyor",
+        "stok_aciklama": "moda rengi; rakip sayısı bilinmiyor",
         "rakip_bilinmiyor": true,
         "uyum_aciklama": "uzman önseli segment profili (veriyle güncellenecek)",
         "segment_adi": "Değer",
@@ -1359,15 +1359,15 @@
             "kategori": "kadin-ust",
             "nitelik_ekseni": "siluet",
             "nitelik_degeri": "duz",
-            "olasilik": 0.636,
+            "olasilik": 0.775,
             "esik_raf_payi": 0.04,
             "ufuk_sezon": "FW28",
             "yon": "giris",
             "gecikme_sezon": 3.5,
             "gecikme_kaynagi": "onsel",
-            "kaynak_sayisi": 1,
+            "kaynak_sayisi": 2,
             "model_surumu": "v0",
-            "gerekce": "Podyum payı %10,3, 3 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
+            "gerekce": "Podyum payı %13,9, 21 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
           },
           {
             "sezon": "FW26",
@@ -1387,38 +1387,38 @@
             "gerekce": "Podyum payı %10,1, 3 markada görüldü (düşük güvenli kaynak, etkisi kırpıldı); önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW27-Eylül. Segment rafında bu değer için geçmiş kayıt yok."
           },
           {
-            "sezon": "FW25",
+            "sezon": "SS27",
             "ulke": "TR",
             "segment": "deger",
             "kategori": "kadin-ust",
             "nitelik_ekseni": "desen",
             "nitelik_degeri": "duz",
-            "olasilik": 0.5,
+            "olasilik": 0.9121,
             "esik_raf_payi": 0.04,
-            "ufuk_sezon": "FW26",
-            "yon": "duz",
+            "ufuk_sezon": "FW28",
+            "yon": "giris",
             "gecikme_sezon": 3.5,
             "gecikme_kaynagi": "onsel",
-            "kaynak_sayisi": 0,
+            "kaynak_sayisi": 1,
             "model_surumu": "v0",
-            "gerekce": "Bu nitelik için podyum sinyali yok. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW26-Eylül."
+            "gerekce": "Podyum payı %75,7, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
           },
           {
-            "sezon": "FW25",
+            "sezon": "SS27",
             "ulke": "TR",
             "segment": "deger",
             "kategori": "kadin-ust",
             "nitelik_ekseni": "detay",
             "nitelik_degeri": "yok",
-            "olasilik": 0.5,
+            "olasilik": 0.8963,
             "esik_raf_payi": 0.04,
-            "ufuk_sezon": "FW26",
-            "yon": "duz",
+            "ufuk_sezon": "FW28",
+            "yon": "giris",
             "gecikme_sezon": 3.5,
             "gecikme_kaynagi": "onsel",
-            "kaynak_sayisi": 0,
+            "kaynak_sayisi": 1,
             "model_surumu": "v0",
-            "gerekce": "Bu nitelik için podyum sinyali yok. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW26-Eylül."
+            "gerekce": "Podyum payı %55,5, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
           }
         ],
         "notlar": []
@@ -1441,18 +1441,18 @@
           "sezon": "SS27"
         },
         "boyutlar": {
-          "trend_ivmesi": 0.586,
+          "trend_ivmesi": 0.682,
           "trend_yonu": "giris",
           "segment_uyumu": 0.95,
           "zamanlama": "erken",
           "marj_yuzde": 65.7,
-          "stok_riski": "yuksek",
+          "stok_riski": "orta",
           "rakip_sayisi": 0
         },
-        "karar": "BEKLE",
-        "gerekce": "Trend ivmesi 0,59, yön giriş. Zamanlama erken ve stok riski yüksek.",
-        "degistirecek_sinyal": "Trend bir üst segmentin rafında görülür ve rakip sayısı azsa DENE'ye çıkar.",
-        "kaynak_sayisi": 3,
+        "karar": "DENE",
+        "gerekce": "Trend ivmesi 0,68, yön giriş. YATIR için eksik: zamanlama erken. %10–20 deneme partisi önerilir.",
+        "degistirecek_sinyal": "Deneme partisi ilk iki haftada güçlü satar ve ivme 0,60'ı geçerse YATIR'a çıkar; 0,45 altına düşerse BEKLE'ye iner.",
+        "kaynak_sayisi": 6,
         "model_surumu": "v0 · kural-0",
         "uyari": "Yatırım tavsiyesi değildir; karar satın almacınındır."
       },
@@ -1464,7 +1464,7 @@
         "marj_hedef": 45,
         "zamanlama_aciklama": "Trend bu segmente FW28'de varıyor, SS27'den 3 sezon sonra; podyum→raf gecikmesi 3.5 sezon (onsel).",
         "renk_ailesi": "moda",
-        "stok_aciklama": "moda rengi ve olasılık 0,59 < 0,60; rakip sayısı bilinmiyor",
+        "stok_aciklama": "moda rengi; rakip sayısı bilinmiyor",
         "rakip_bilinmiyor": true,
         "uyum_aciklama": "uzman önseli segment profili (veriyle güncellenecek)",
         "segment_adi": "Değer",
@@ -1501,15 +1501,15 @@
             "kategori": "kadin-ust",
             "nitelik_ekseni": "siluet",
             "nitelik_degeri": "duz",
-            "olasilik": 0.636,
+            "olasilik": 0.775,
             "esik_raf_payi": 0.04,
             "ufuk_sezon": "FW28",
             "yon": "giris",
             "gecikme_sezon": 3.5,
             "gecikme_kaynagi": "onsel",
-            "kaynak_sayisi": 1,
+            "kaynak_sayisi": 2,
             "model_surumu": "v0",
-            "gerekce": "Podyum payı %10,3, 3 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
+            "gerekce": "Podyum payı %13,9, 21 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
           },
           {
             "sezon": "FW26",
@@ -1529,38 +1529,38 @@
             "gerekce": "Podyum payı %10,1, 3 markada görüldü (düşük güvenli kaynak, etkisi kırpıldı); önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW27-Eylül. Segment rafında bu değer için geçmiş kayıt yok."
           },
           {
-            "sezon": "FW25",
+            "sezon": "SS27",
             "ulke": "TR",
             "segment": "deger",
             "kategori": "kadin-ust",
             "nitelik_ekseni": "desen",
             "nitelik_degeri": "duz",
-            "olasilik": 0.5,
+            "olasilik": 0.9121,
             "esik_raf_payi": 0.04,
-            "ufuk_sezon": "FW26",
-            "yon": "duz",
+            "ufuk_sezon": "FW28",
+            "yon": "giris",
             "gecikme_sezon": 3.5,
             "gecikme_kaynagi": "onsel",
-            "kaynak_sayisi": 0,
+            "kaynak_sayisi": 1,
             "model_surumu": "v0",
-            "gerekce": "Bu nitelik için podyum sinyali yok. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW26-Eylül."
+            "gerekce": "Podyum payı %75,7, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
           },
           {
-            "sezon": "FW25",
+            "sezon": "SS27",
             "ulke": "TR",
             "segment": "deger",
             "kategori": "kadin-ust",
             "nitelik_ekseni": "detay",
             "nitelik_degeri": "yok",
-            "olasilik": 0.5,
+            "olasilik": 0.8963,
             "esik_raf_payi": 0.04,
-            "ufuk_sezon": "FW26",
-            "yon": "duz",
+            "ufuk_sezon": "FW28",
+            "yon": "giris",
             "gecikme_sezon": 3.5,
             "gecikme_kaynagi": "onsel",
-            "kaynak_sayisi": 0,
+            "kaynak_sayisi": 1,
             "model_surumu": "v0",
-            "gerekce": "Bu nitelik için podyum sinyali yok. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW26-Eylül."
+            "gerekce": "Podyum payı %55,5, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
           }
         ],
         "notlar": []
@@ -1583,7 +1583,7 @@
           "sezon": "SS27"
         },
         "boyutlar": {
-          "trend_ivmesi": 0.586,
+          "trend_ivmesi": 0.682,
           "trend_yonu": "giris",
           "segment_uyumu": 0.95,
           "zamanlama": "erken",
@@ -1592,9 +1592,9 @@
           "rakip_sayisi": 0
         },
         "karar": "DENE",
-        "gerekce": "Trend ivmesi 0,59, yön giriş. YATIR için eksik: ivme 0,60 altında, zamanlama erken. %10–20 deneme partisi önerilir.",
+        "gerekce": "Trend ivmesi 0,68, yön giriş. YATIR için eksik: zamanlama erken. %10–20 deneme partisi önerilir.",
         "degistirecek_sinyal": "Deneme partisi ilk iki haftada güçlü satar ve ivme 0,60'ı geçerse YATIR'a çıkar; 0,45 altına düşerse BEKLE'ye iner.",
-        "kaynak_sayisi": 3,
+        "kaynak_sayisi": 6,
         "model_surumu": "v0 · kural-0",
         "uyari": "Yatırım tavsiyesi değildir; karar satın almacınındır."
       },
@@ -1643,15 +1643,15 @@
             "kategori": "kadin-ust",
             "nitelik_ekseni": "siluet",
             "nitelik_degeri": "duz",
-            "olasilik": 0.636,
+            "olasilik": 0.775,
             "esik_raf_payi": 0.04,
             "ufuk_sezon": "FW28",
             "yon": "giris",
             "gecikme_sezon": 3.5,
             "gecikme_kaynagi": "onsel",
-            "kaynak_sayisi": 1,
+            "kaynak_sayisi": 2,
             "model_surumu": "v0",
-            "gerekce": "Podyum payı %10,3, 3 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
+            "gerekce": "Podyum payı %13,9, 21 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
           },
           {
             "sezon": "FW26",
@@ -1671,38 +1671,38 @@
             "gerekce": "Podyum payı %10,1, 3 markada görüldü (düşük güvenli kaynak, etkisi kırpıldı); önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW27-Eylül. Segment rafında bu değer için geçmiş kayıt yok."
           },
           {
-            "sezon": "FW25",
+            "sezon": "SS27",
             "ulke": "TR",
             "segment": "deger",
             "kategori": "kadin-ust",
             "nitelik_ekseni": "desen",
             "nitelik_degeri": "duz",
-            "olasilik": 0.5,
+            "olasilik": 0.9121,
             "esik_raf_payi": 0.04,
-            "ufuk_sezon": "FW26",
-            "yon": "duz",
+            "ufuk_sezon": "FW28",
+            "yon": "giris",
             "gecikme_sezon": 3.5,
             "gecikme_kaynagi": "onsel",
-            "kaynak_sayisi": 0,
+            "kaynak_sayisi": 1,
             "model_surumu": "v0",
-            "gerekce": "Bu nitelik için podyum sinyali yok. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW26-Eylül."
+            "gerekce": "Podyum payı %75,7, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
           },
           {
-            "sezon": "FW25",
+            "sezon": "SS27",
             "ulke": "TR",
             "segment": "deger",
             "kategori": "kadin-ust",
             "nitelik_ekseni": "detay",
             "nitelik_degeri": "yok",
-            "olasilik": 0.5,
+            "olasilik": 0.8963,
             "esik_raf_payi": 0.04,
-            "ufuk_sezon": "FW26",
-            "yon": "duz",
+            "ufuk_sezon": "FW28",
+            "yon": "giris",
             "gecikme_sezon": 3.5,
             "gecikme_kaynagi": "onsel",
-            "kaynak_sayisi": 0,
+            "kaynak_sayisi": 1,
             "model_surumu": "v0",
-            "gerekce": "Bu nitelik için podyum sinyali yok. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW26-Eylül."
+            "gerekce": "Podyum payı %55,5, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 3,5 sezon (onsel); beklenen raf dönemi FW28-Temmuz. Segment rafında bu değer için geçmiş kayıt yok."
           }
         ],
         "notlar": []

@@ -4,6 +4,10 @@ Bir (eksen, değer) için: podyumda eşiği aşan sinyal veren sezonların her b
 ilk görülme tarihinden ÖNCEKİ en yakın podyum sezonu eşleşir. Podyum tarihi `defile` tablosundaki en erken defile
 tarihidir; yoksa sezonun nominal tarihidir (SS: önceki yılın 25 Eylül'ü, FW: aynı yılın 25 Şubat'ı).
 Gecikme gün cinsinden `gecikme_olcum` tablosuna yazılır; `ozet_gecikme` medyan ve çeyrekleri verir.
+
+Sol sansür: bir markanın İLK taramasında zaten rafta olan ürünün gerçek ilk görülme tarihi bilinmez; o gün yalnız
+taramanın başladığı gündür. Bu gözlemler (kaynak türü "site", ilk görülme = markanın ilk tarama günü) ölçüme girmez;
+yoksa "gecikme" taramanın başlangıç tarihini ölçer.
 """
 
 from __future__ import annotations
@@ -36,9 +40,16 @@ def olc(
             baslangic.setdefault((s.nitelik_ekseni, s.nitelik_degeri), []).append(
                 (podyum_tarihi(depo, s.sezon), s.sezon)
             )
-    # aynı (eksen, değer) için segmentin bütün markalarındaki en erken raf görülmesi
+    gozlemler = list(depo.gozlemler(ulke, segment, kategori))
+    ilk_tarama: dict[str, date] = {}
+    for g in gozlemler:
+        if g.kaynak_turu == "site":
+            ilk_tarama[g.marka] = min(ilk_tarama.get(g.marka, g.ilk_gorulme), g.ilk_gorulme)
+    # aynı (eksen, değer) için segmentin bütün markalarındaki en erken raf görülmesi (sol sansürlüler hariç)
     raf: dict[tuple[str, str], date] = {}
-    for g in depo.gozlemler(ulke, segment, kategori):
+    for g in gozlemler:
+        if g.kaynak_turu == "site" and g.ilk_gorulme <= ilk_tarama[g.marka]:
+            continue
         a = (g.nitelik_ekseni, g.nitelik_degeri)
         raf[a] = min(raf.get(a, g.ilk_gorulme), g.ilk_gorulme)
     satirlar = []
@@ -64,6 +75,7 @@ def olc(
             }
         )
     with depo.baglanti:
+        depo.baglanti.execute("DELETE FROM gecikme_olcum WHERE segment=? AND kategori=?", (segment, kategori))
         depo.baglanti.executemany(
             "INSERT OR REPLACE INTO gecikme_olcum (segment, kategori, eksen, deger, sezon, podyum_tarihi, raf_tarihi, "
             "gecikme_gun, olcum_tarihi) VALUES (:segment, :kategori, :eksen, :deger, :sezon, :podyum_tarihi, "

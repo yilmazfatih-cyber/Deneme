@@ -9,6 +9,9 @@ podyumdan bağımsızdır. Eşleşme sayısına göre önselle birleştirilir:
 - 3 ≤ n ≤ 7 → ``w·medyan + (1 − w)·önsel_mod``, ``w = n / (n + 8)``, kaynak ``"karma"``
 - n < 3 → önselin modu, kaynak ``"onsel"``
 
+Sol sansür: kaynak türü ``site`` olan gözlemlerde, markanın ilk tarama gününde zaten rafta olan değerin gerçek ilk
+görülme tarihi bilinmez; bu gözlemler eşleşmeye girmez (yoksa gecikme taramanın başladığı günü ölçer).
+
 Sürüm 1'de bunun yerine raf payı ve podyum payı serileri arasında çapraz korelasyon kullanılacak.
 """
 
@@ -43,10 +46,16 @@ def eslesmeler(
         if onceki is None or sz.fark(s.sezon, onceki) > 0:
             ilk_sezon[anahtar] = s.sezon
 
+    secili = [g for g in gozlemler if g.segment == segment and (kategori is None or g.kategori == kategori)]
+    ilk_tarama: dict[str, object] = {}
+    for g in secili:
+        if g.kaynak_turu == "site" and (g.marka not in ilk_tarama or g.ilk_gorulme < ilk_tarama[g.marka]):
+            ilk_tarama[g.marka] = g.ilk_gorulme
+
     ilk_raf: dict[tuple[str, str], object] = {}
-    for g in gozlemler:
-        if g.segment != segment or (kategori is not None and g.kategori != kategori):
-            continue
+    for g in secili:
+        if g.kaynak_turu == "site" and g.ilk_gorulme <= ilk_tarama[g.marka]:
+            continue  # sol sansür: ilk taramada zaten raftaydı
         anahtar = (g.nitelik_ekseni, g.nitelik_degeri)
         if anahtar not in ilk_raf or g.ilk_gorulme < ilk_raf[anahtar]:
             ilk_raf[anahtar] = g.ilk_gorulme
