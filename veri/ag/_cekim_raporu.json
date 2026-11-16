@@ -1,5 +1,5 @@
 {
- "zaman": "2026-11-14T14:12",
+ "zaman": "2026-11-16T09:59",
  "rapor": {
   "tv": {
    "satir": 649,
@@ -156,7 +156,7 @@
    "zaman": "2026-11-12T11:18"
   },
   "_toplam": {
-   "sure_dk": 13.9,
+   "sure_dk": 41.9,
    "hisse": 623
   },
   "kesif": {
@@ -264,8 +264,10 @@
     "ALTIN": "boş",
     "DMLKT": "boş"
    },
-   "sure_sn": 56.2,
-   "zaman": "2026-11-14T13:59"
+   "yazilan_satir": 411820,
+   "eski_dosyadan_korunan_hisse": 0,
+   "sure_sn": 52.0,
+   "zaman": "2026-11-16T09:18"
   },
   "hisse_saatlik": {
    "sembol": 251,
@@ -278,21 +280,18 @@
    "zaman": "2026-11-12T21:01"
   },
   "isy": {
-   "hisse": 92,
-   "satir": 47441,
-   "hata_sayisi": 531,
+   "hisse": 620,
+   "satir": 413887,
+   "hata_sayisi": 3,
    "hata_ornek": {
+    "CITAS": "boş",
     "ALTIN": "boş",
-    "ATATP": "boş",
-    "ATATR": "boş",
-    "ATEKS": "boş",
-    "ATLAS": "boş",
-    "ATSYH": "boş",
-    "AVGYO": "boş",
-    "AVHOL": "boş"
+    "DMLKT": "boş"
    },
-   "sure_sn": 775.9,
-   "zaman": "2026-11-14T14:12"
+   "yazilan_satir": 413887,
+   "eski_dosyadan_korunan_hisse": 0,
+   "sure_sn": 2453.7,
+   "zaman": "2026-11-16T09:59"
   },
   "mali": {
    "hisse": 585,
@@ -1114,35 +1113,33 @@
   },
   "kap_liste": {
    "liste": {
-    "ham_satir": 634,
+    "ham_satir": 506,
     "en_buyuk_pencere": 337,
     "yanitsiz_ilk_tur": 0,
     "yanitsiz_pencere": [],
-    "en_eski_gun": "2026-11-10",
+    "en_eski_gun": "2026-11-11",
     "durum": {
      "200": 3
     },
     "sure_dk": 0.1,
-    "satir": 254,
+    "satir": 202,
     "konu": {
-     "Payların Geri Alınmasına İlişkin Bildirim": 158,
-     "Pay Alım Satım Bildirimi": 80,
+     "Payların Geri Alınmasına İlişkin Bildirim": 119,
+     "Pay Alım Satım Bildirimi": 70,
      "Kar Payı Dağıtım İşlemlerine İlişkin Bildirim": 7,
      "Fon Kurucusu Tarafından Yapılan Pay Alım Satım Bildirimi": 2,
      "Sermaye Artırımı veya Azaltımı Bildirimi": 2,
-     "Sermaye Artırımı - Azaltımı İşlemlerine İlişkin Bildirim": 2,
      "Birleşme İşlemlerine İlişkin Bildirim": 1,
-     "Geri Alınan Payların Elden Çıkarılması": 1,
-     "Halka Arz İşlemlerinde Sermaye Piyasası Aracının % 5 inden Fazlasını Satın Alanlara İlişkin Bildirim": 1
+     "Geri Alınan Payların Elden Çıkarılması": 1
     }
    },
    "artimli": {
-    "baslangic": "2026-11-10",
-    "eski_satir": 20558,
-    "toplam_satir": 20594
+    "baslangic": "2026-11-11",
+    "eski_satir": 20594,
+    "toplam_satir": 20608
    },
-   "sure_sn": 6.8,
-   "zaman": "2026-11-14T13:53"
+   "sure_sn": 5.9,
+   "zaman": "2026-11-16T09:17"
   },
   "kap_detay": {
    "aday": {
