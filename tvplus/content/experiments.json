@@ -1,0 +1,45 @@
+[
+  {
+    "key": "sayfa-siralama",
+    "name": "Ana sayfa satırlarının kişisel sıralaması",
+    "hypothesis": "Satırlar profilin tahmin puanına göre dizilirse izleyici beğeneceği satıra daha erken ulaşır; oturum başına izleme dakikası artar, boş geçen oturum azalır.",
+    "status": "DRAFT",
+    "unit": "PROFILE",
+    "traffic": 1,
+    "variants": [
+      { "key": "kontrol", "name": "Editoryal sıra", "weight": 1, "flags": {} },
+      { "key": "kisisel", "name": "Kişisel sıra", "weight": 1, "flags": { "home.pageRanker": "personal" } }
+    ],
+    "primaryMetric": "izleme_dk",
+    "guardrails": ["bos_oturum", "hata_orani"]
+  },
+  {
+    "key": "top10-yeri",
+    "name": "Top 10 satırının yeri",
+    "hypothesis": "Top 10 sayfanın üstünde kişisel satırların önüne geçiyor olabilir. Aşağı almak ya da kaldırmak kişisel satırlardan başlatmayı artırırken toplam izlemeyi düşürmemeli.",
+    "status": "DRAFT",
+    "unit": "PROFILE",
+    "traffic": 1,
+    "variants": [
+      { "key": "kontrol", "name": "Üstte (bugünkü)", "weight": 1, "flags": {} },
+      { "key": "asagida", "name": "Canlı TV'den önce", "weight": 1, "flags": { "home.top10": "low" } },
+      { "key": "yok", "name": "Top 10 yok", "weight": 1, "flags": { "home.top10": "off" } }
+    ],
+    "primaryMetric": "izleme_dk",
+    "guardrails": ["bos_oturum", "hata_orani"]
+  },
+  {
+    "key": "izledigin-icin-3",
+    "name": "Üç \"izlediğin için\" satırı",
+    "hypothesis": "Son izlenen tek başlık yerine son üç farklı başlığa dayanan satırlar, farklı ruh hâllerine seçenek sunar; izleme dakikası artar.",
+    "status": "DRAFT",
+    "unit": "PROFILE",
+    "traffic": 1,
+    "variants": [
+      { "key": "kontrol", "name": "Tek satır (bugünkü)", "weight": 1, "flags": {} },
+      { "key": "uc-satir", "name": "Üç satır", "weight": 1, "flags": { "home.becauseRows": "3" } }
+    ],
+    "primaryMetric": "izleme_dk",
+    "guardrails": ["bos_oturum", "hata_orani"]
+  }
+]

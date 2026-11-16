@@ -24,6 +24,7 @@ import embeddingsPlugin from './services/embeddings/plugin'
 import entitlementPlugin from './services/entitlement/plugin'
 import epgPlugin from './services/epg/plugin'
 import eventsPlugin from './services/events/plugin'
+import experimentsPlugin from './services/experiments/plugin'
 import ftlPlugin from './services/ftl/plugin'
 import identityPlugin from './services/identity/plugin'
 import imagePlugin from './services/image/plugin'
@@ -100,6 +101,8 @@ export async function buildApp(overrides: Partial<AppConfig> = {}): Promise<Fast
 
   await eventsPlugin(app)
   await notificationsPlugin(app)
+  // Deneyler ve özellik bayrakları: keşif ve açılış bağlamı istek anında okur
+  await experimentsPlugin(app)
 
   await catalogPlugin(app)
   await entitlementPlugin(app)

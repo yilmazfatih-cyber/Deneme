@@ -42,6 +42,7 @@ const EVENT_NAMES = [
   'playback.end',
   'preview.start',
   'notification.open',
+  'experiment.exposure',
 ] as const satisfies readonly ClientEventName[]
 
 const zEvent = z.object({

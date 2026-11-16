@@ -4,10 +4,12 @@
  */
 import type { FastifyInstance, FastifyRequest } from 'fastify'
 import { PERSISTED_QUERY_VERSION } from '../../../../shared/constants'
+import { DEFAULT_FLAGS, flagsOfExperiment, withFlags } from '../../../../shared/experiments'
 import type { BootContext, FalcorPath, JsonGraph, ProfileSummary } from '../../../../shared/types'
 import { evaluatePaths, hasRoutes } from '../../falcor/engine'
 import type { ProfileRecord } from '../../kernel/context'
 import { deriveKey } from '../../kernel/config'
+import { flagOverridesOf } from '../experiments/overrides'
 import { avatarKeyOf, profileAvatarArtwork } from './avatars'
 import { sessionOf } from './passport'
 import { issueAuthURL } from './session'
@@ -157,6 +159,34 @@ export function profileSummary(app: FastifyInstance, p: ProfileRecord): ProfileS
   }
 }
 
+/**
+ * Açılış bağlamının deney bayrakları: etkin profil (yoksa yalnız cihaz birimli deneyler) için atamalar ve
+ * geçerli bayraklar. Servis yoksa varsayılanlar. İzinliyse `x-tvplus-flags` hata ayıklama başlığı uygulanır.
+ * Maruziyet burada yazılmaz: istemci bayrakları ilk okunduğunda istemci, sunucu bayrakları lolomo kurulunca yazılır.
+ */
+export function bootExperiments(app: FastifyInstance, req: FastifyRequest): Pick<BootContext, 'flags' | 'experiments'> {
+  const overrides = flagOverridesOf(req.headers, app.config, req.passport)
+  const experiments = app.services.experiments
+  if (!experiments) return { flags: withFlags(DEFAULT_FLAGS, overrides), experiments: [] }
+  try {
+    const r = experiments.resolve(
+      { profileGuid: req.passport.profile?.guid ?? null, deviceId: req.passport.deviceId },
+      overrides ? { overrides } : undefined,
+    )
+    const defs = new Map(experiments.definitions().map((e) => [e.key, e]))
+    return {
+      flags: r.flags,
+      experiments: r.assignments.map((a) => {
+        const def = defs.get(a.experiment)
+        return { experiment: a.experiment, variant: a.variant, flags: def ? flagsOfExperiment(def) : [] }
+      }),
+    }
+  } catch (err) {
+    req.log.warn({ err }, 'deney bayrakları çözülemedi; varsayılanlar kullanılıyor')
+    return { flags: { ...DEFAULT_FLAGS }, experiments: [] }
+  }
+}
+
 async function bootFalcorCache(app: FastifyInstance, req: FastifyRequest): Promise<JsonGraph | null> {
   if (!req.passport.profile || !hasRoutes()) return null
   try {
@@ -197,5 +227,6 @@ export async function buildBootContext(app: FastifyInstance, req: FastifyRequest
     // Durağan barındırma (GitHub Pages): istemci vekil/CDN yollarını kullanmaz (bkz. web/src/lib/assetBase.ts)
     featureFlags: { ...FEATURE_FLAGS, ...(app.config.staticHost ? { staticHost: true } : {}) },
     falcorCache: await bootFalcorCache(app, req),
+    ...bootExperiments(app, req),
   }
 }

@@ -15,6 +15,7 @@ import type {
   ContentTitle,
 } from '../../../shared/content-schema'
 import type { FastifyReply, FastifyRequest } from 'fastify'
+import type { Assignment, Experiment, ExperimentState, ResolvedFlags } from '../../../shared/experiments'
 import type { BootContext, EventBatch, OcaNodeState, PushEvent } from '../../../shared/types'
 import type { AccountRecord, Passport, ProfileRecord } from './context'
 import type { ArtworkTypeName } from './imageUrls'
@@ -281,6 +282,29 @@ export interface OcaService {
   nodes(): OcaNodeState[]
 }
 
+/* ───────────── Deneyler ve özellik bayrakları (sözleşme: shared/experiments.ts) ───────────── */
+/** Atama birimi: deneyin `unit` alanına göre profil GUID'i ya da cihaz kimliği kullanılır. */
+export interface ExperimentUnit {
+  profileGuid: string | null
+  deviceId: string
+}
+export interface ExperimentsService {
+  /** Dosyadaki tanımlar + stüdyodan yapılan durum geçersiz kılmaları uygulanmış hâli */
+  definitions(): Experiment[]
+  /**
+   * Birim için bayraklar ve atamalar (yalnız RUNNING deneyler; pins uygulanır). Deney unit'i PROFILE ise profileGuid
+   * (yoksa o deneye girmez), DEVICE ise deviceId kullanılır.
+   */
+  resolve(unit: ExperimentUnit, opts?: { overrides?: Readonly<Record<string, string>> }): ResolvedFlags
+  /**
+   * Maruziyet: aynı birim + deney + kol için İstanbul gününde bir kez olay (events servisine 'experiment.exposure',
+   * data {experiment, variant}); kol başına tekil birim sayaçları kalıcıdır.
+   */
+  expose(unit: ExperimentUnit, assignments: readonly Assignment[], at?: Date): void
+  state(): ExperimentState[]
+  revision(): number
+}
+
 /** Altyazı kaynağı çözümü (oynatma düzlemi içi; tür paylaşımı için burada). */
 export type TimedTextSource = ContentTimedText
 
@@ -302,4 +326,5 @@ export interface Services {
   insights: InsightsService
   embeddings: EmbeddingService
   predictions: PredictionService
+  experiments: ExperimentsService
 }

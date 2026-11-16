@@ -8,6 +8,7 @@ import { useEffect, useLayoutEffect, useRef, useState, type ReactElement, type R
 import { useNavigate } from 'react-router-dom'
 import { falcor } from '../../api/falcor'
 import { titleHref } from '../../app'
+import { useFlag } from '../../lib/flags'
 import { PreviewPlayer } from '../../player'
 import { logEvent } from '../../telemetry/logger'
 import { AdvisoryBadge, Badge, RoundButton, Skeleton } from '../../ui'
@@ -205,14 +206,16 @@ function PreviewMedia({
   const [broken, setBroken] = useState(false)
   const [muted, setMuted] = useState(true)
   const [logoFailed, setLogoFailed] = useState(false)
+  // Deney bayrağı: 'off' iken sessiz önizleme kendiliğinden başlamaz (görselde kalır)
+  const autoplay = useFlag('preview.autoplay')
 
   useEffect(() => {
-    if (!promo || !active || prefersReducedMotion()) return
+    if (!promo || !active || autoplay === 'off' || prefersReducedMotion()) return
     const t = window.setTimeout(() => setArmed(true), PROMO_DELAY_MS)
     return () => clearTimeout(t)
-  }, [promo, active])
+  }, [promo, active, autoplay])
 
-  const live = promo && armed && active && !broken
+  const live = promo && armed && active && !broken && autoplay !== 'off'
   return (
     <div className="pv-media">
       {still ? (

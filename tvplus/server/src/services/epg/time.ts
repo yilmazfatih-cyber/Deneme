@@ -44,13 +44,22 @@ export function compactTime(d: Date): string {
   return `${pad(p.hh)}${pad(p.mm)}`
 }
 
+/** Çözülmüş tarihler (metin → an; geçersizse null). Aynı tarihler sıralama içinde binlerce kez sorulur. */
+const parsedDates = new Map<string, number | null>()
+
 /** 'YYYY-MM-DD' (yerel tarih) → o günün yerel gece yarısı; geçersizse null */
 export function parseLocalDate(s: string | null | undefined): Date | null {
   if (!s) return null
-  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s)
-  if (!m) return null
-  const t = Date.UTC(Number(m[1]), Number(m[2]) - 1, Number(m[3])) - TZ_OFFSET_MS
-  return Number.isFinite(t) ? new Date(t) : null
+  let t = parsedDates.get(s)
+  if (t === undefined) {
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s)
+    const v = m ? Date.UTC(Number(m[1]), Number(m[2]) - 1, Number(m[3])) - TZ_OFFSET_MS : NaN
+    t = Number.isFinite(v) ? v : null
+    if (parsedDates.size >= 4096) parsedDates.clear()
+    parsedDates.set(s, t)
+  }
+  // Her çağrıda yeni Date: çağıranın değiştirmesi önbelleği bozmaz
+  return t === null ? null : new Date(t)
 }
 
 /** 'YYYYMMDD' → yerel gün numarası; geçersizse null */

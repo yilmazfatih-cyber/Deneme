@@ -6,7 +6,11 @@
  * `lists[..].summary` isteğe bağlı alanları: genreId, collectionId, reason (becauseYouWatched: ortak mikro tür adı),
  * microgenreId (microgenre satırı), communityId (tasteCommunity satırı), source (gems: 'model' | 'rules') — MIMARI §10.1.
  * `videos[id].matchScore`: tahmin modelinin 0–100 eşleşme yüzdesi (film/dizi); yoksa boş atom.
+ * Deney bayrakları (shared/experiments.ts): lolomo, birimin bayraklarıyla kurulur (`experiments.resolve`); lolomo
+ * kurulduğunda istek başına bir kez sunucu bayrağı yöneten deneylerin maruziyeti yazılır. `x-tvplus-flags` hata
+ * ayıklama başlığı izin varsa bayrakların üstüne yazılır ve o istekte maruziyet yazılmaz.
  */
+import { DEFAULT_FLAGS, flagsKey, withFlags, type Flags } from '../../../../shared/experiments'
 import type { FalcorKey } from '../../../../shared/types'
 import { videoEntityId, formatTctx } from '../../../../shared/tctx'
 import {
@@ -40,6 +44,8 @@ import {
 } from '../../services/discovery/lolomo'
 import { matchScoreOf } from '../../services/discovery/intel'
 import { memo, requestCache } from '../../services/discovery/memo'
+import { flagOverridesOf } from '../../services/experiments/overrides'
+import { assignmentsForSide } from '../../services/experiments/service'
 import { top10ForType, top10RankByType, type TitleType } from '../../services/discovery/top10'
 
 /** Kişisel ve sık değişen atomların ömrü (Falcor göreli $expires) */
@@ -49,12 +55,54 @@ const nowOf = (ctx: FalcorRouteContext) =>
   memo(requestCache(ctx.req), 'now', () => ctx.services.epg?.now() ?? new Date())
 const top10Supported = (ctx: FalcorRouteContext) => ctx.flags.isTop10Supported !== 'false'
 
+interface RequestFlags {
+  flags: Flags
+  /** Hata ayıklama geçersiz kılması uygulandıysa true (maruziyet yazılmaz) */
+  overridden: boolean
+  /** Lolomo kurulunca maruziyeti yazar (istek başına bir kez) */
+  expose: () => void
+}
+
+/** İsteğin bayrakları: etkin profil + cihaz birimi için deney atamaları (+ izinliyse `x-tvplus-flags`) */
+function requestFlags(ctx: FalcorRouteContext): RequestFlags {
+  return memo(requestCache(ctx.req), 'experiments:flags', (): RequestFlags => {
+    const experiments = ctx.services.experiments
+    const overrides = flagOverridesOf(ctx.req.headers, ctx.config, ctx.passport)
+    if (!experiments) {
+      const flags = withFlags(DEFAULT_FLAGS, overrides)
+      return { flags, overridden: !!overrides, expose: () => {} }
+    }
+    const unit = { profileGuid: ctx.passport.profile?.guid ?? null, deviceId: ctx.passport.deviceId }
+    const r = experiments.resolve(unit, overrides ? { overrides } : undefined)
+    let exposed = false
+    return {
+      flags: r.flags,
+      overridden: !!overrides,
+      expose: () => {
+        if (exposed || overrides) return
+        exposed = true
+        const server = assignmentsForSide(experiments.definitions(), r.assignments, 'server')
+        if (server.length) experiments.expose(unit, server, nowOf(ctx))
+      },
+    }
+  })
+}
+
 function lolomoOf(ctx: FalcorRouteContext, category: LolomoCategory = 'home'): Lolomo | null {
   const profile = ctx.passport.profile
   if (!profile) return null
-  return memo(requestCache(ctx.req), `lolomo:${profile.guid}:${category}:${top10Supported(ctx)}`, () =>
-    buildLolomo(ctx.services, profile, { top10Supported: top10Supported(ctx), now: nowOf(ctx), category }),
-  )
+  const rf = requestFlags(ctx)
+  const key = `lolomo:${profile.guid}:${category}:${top10Supported(ctx)}:${flagsKey(rf.flags)}`
+  return memo(requestCache(ctx.req), key, () => {
+    const lolomo = buildLolomo(ctx.services, profile, {
+      top10Supported: top10Supported(ctx),
+      now: nowOf(ctx),
+      category,
+      flags: rf.flags,
+    })
+    rf.expose()
+    return lolomo
+  })
 }
 
 const noProfile = () => falcorError('Önce bir profil seç', 'PROFILE_REQUIRED')

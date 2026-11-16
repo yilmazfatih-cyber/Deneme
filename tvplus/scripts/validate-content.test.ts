@@ -279,3 +279,46 @@ describe('validateContent', () => {
       expect(formatReport(r, '/x')).toContain('BAŞARISIZ')
     })
 })
+
+describe('validateContent — deneyler (experiments.json)', () => {
+  const experiment = (key: string, status: string, flags: Record<string, string>) => ({
+    key,
+    name: `Deney ${key}`,
+    status,
+    variants: [
+      { key: 'kontrol', name: 'Kontrol' },
+      { key: 'deneme', name: 'Deneme', flags },
+    ],
+  })
+
+  it('dosya yoksa sessizce atlanır; varsa sayılır ve özet satırı yazılır', () => {
+    const none = validateWith(() => {})
+    expect(none.stats).toMatchObject({ experiments: 0, runningExperiments: 0 })
+    const r = validateWith((t) =>
+      edit(t, 'experiments.json', '', [
+        experiment('a', 'DRAFT', { 'home.top10': 'off' }),
+        experiment('b', 'RUNNING', { 'home.becauseRows': '3' }),
+      ]),
+    )
+    expect(messages(r)).toEqual([])
+    expect(r.warnings).toEqual([])
+    expect(r.stats).toMatchObject({ experiments: 2, runningExperiments: 1 })
+    expect(formatReport(r, '/x')).toContain('Deney 2 (çalışan 1)')
+  })
+
+  it('bilinmeyen bayrak, geçersiz değer ve aynı bayrağı yöneten iki RUNNING deney hatadır', () => {
+    const r = validateWith((t) =>
+      edit(t, 'experiments.json', '', [
+        experiment('a', 'RUNNING', { 'home.top10': 'low' }),
+        experiment('b', 'RUNNING', { 'home.top10': 'off' }),
+        experiment('c', 'DRAFT', { 'home.yok': 'x' }),
+        experiment('d', 'DRAFT', { 'home.top10': 'yan' }),
+      ]),
+    )
+    const m = messages(r).join('\n')
+    expect(m).toMatch(/experiments\.json .*'home\.top10' bayrağını aynı anda 'a'/)
+    expect(m).toMatch(/Bilinmeyen bayrak/)
+    expect(m).toMatch(/Geçersiz değer/)
+    expect(formatReport(r, '/x')).toContain('BAŞARISIZ')
+  })
+})

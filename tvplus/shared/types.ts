@@ -2,6 +2,7 @@
  * GraphQL dışındaki tel biçimleri: açılış bağlamı, Falcor JSON Graph, olay günlüğü, bildirim yoklaması, hata ayıklama.
  * (GraphQL biçimleri shared/graphql/schema.graphql içindedir; oynatma hattı shared/playback.ts.)
  */
+import type { FlagKey, Flags } from './experiments'
 
 export type MembershipStatus = 'ANONYMOUS' | 'CURRENT_MEMBER' | 'FORMER_MEMBER'
 
@@ -39,6 +40,10 @@ export interface BootContext {
   featureFlags: Record<string, boolean>
   /** İlk satırların Falcor önbelleği (ilk boyama için); yoksa null */
   falcorCache: JsonGraph | null
+  /** Bu birim için geçerli deney/özellik bayrakları (deney yoksa varsayılanlar; bkz. shared/experiments.ts) */
+  flags: Flags
+  /** Etkin profilin deney atamaları (profil yoksa cihaz birimli deneyler); `flags` o deneyin yönettiği bayraklar */
+  experiments: { experiment: string; variant: string; flags: FlagKey[] }[]
 }
 
 /* ───────────── Falcor (eski üye API'si) ───────────── */
@@ -86,6 +91,7 @@ export type ClientEventName =
   | 'playback.end'
   | 'preview.start'
   | 'notification.open'
+  | 'experiment.exposure' // deney maruziyeti: data { experiment, variant } (bkz. shared/experiments.ts)
 
 export interface ClientEvent {
   name: ClientEventName

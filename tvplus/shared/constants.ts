@@ -48,6 +48,11 @@ export const HEADERS = {
   VIRTUAL_DEVICE: 'x-tvplus-vd',
   /** Stüdyo (arka ofis) uçlarına oturumsuz erişim anahtarı: betikler ve zamanlanmış içe aktarma (bkz. shared/intelligence.ts). */
   STUDIO_KEY: 'x-tvplus-studio-key',
+  /**
+   * Hata ayıklama bayrak geçersiz kılması: `home.top10=off;home.rowRanker=popularity` (bkz. shared/experiments.ts).
+   * Yalnız hata ayıklama erişimi açıkken dikkate alınır; maruziyet yazılmaz.
+   */
+  FLAGS: 'x-tvplus-flags',
 } as const
 
 export const COOKIES = {

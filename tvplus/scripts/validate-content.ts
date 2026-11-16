@@ -2,6 +2,7 @@
  * İçerik doğrulayıcı (`npm run validate:content [klasör]`).
  * 1) Her içerik dosyasını zod şemasıyla okur (shared/content-schema.ts).
  * 2) Dosyalar arası tutarlılığı denetler: benzersiz kimlikler, kırık başvurular, altyazı dosyaları, çocuk içeriği.
+ * 3) `experiments.json` varsa deney tanımlarını doğrular (shared/experiments.ts zExperimentsFile); yoksa sessizce atlar.
  * Hata varsa çıkış kodu 1'dir. Eksik isteğe bağlı dosya yalnızca uyarıdır.
  */
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs'
@@ -23,6 +24,7 @@ import {
   type ContentSource,
   type ContentTitle,
 } from '../shared/content-schema'
+import { zExperimentsFile, type Experiment } from '../shared/experiments'
 import { GENRES } from '../shared/taxonomy'
 import { defaultContentDir, titleFiles } from './lib/content'
 import { isMain } from './lib/net'
@@ -47,6 +49,9 @@ export interface ContentStats {
   homeRows: number
   notifications: number
   interstitials: number
+  /** content/experiments.json: deney sayısı ve RUNNING olanlar (dosya yoksa ikisi de 0) */
+  experiments: number
+  runningExperiments: number
   /** Oynatma kaynakları türe göre (başlık/bölüm/ek video/kanal kaynakları; önizleme hariç) */
   bySourceKind: Record<string, number>
 }
@@ -55,6 +60,8 @@ export interface ContentReport {
   warnings: ContentIssue[]
   stats: ContentStats
 }
+
+export const EXPERIMENTS_FILE = 'experiments.json'
 
 type NotificationSeed = z.infer<typeof zNotificationsFile>[number]
 type Interstitial = z.infer<typeof zInterstitialsFile>[number]
@@ -86,6 +93,8 @@ export function validateContent(dir: string): ContentReport {
     homeRows: 0,
     notifications: 0,
     interstitials: 0,
+    experiments: 0,
+    runningExperiments: 0,
     bySourceKind: {},
   }
 
@@ -367,6 +376,13 @@ export function validateContent(dir: string): ContentReport {
     iIds.add(it.id)
   })
 
+  /* ───────── Deneyler (isteğe bağlı; dosya yoksa uyarı da yok) ───────── */
+  if (existsSync(join(dir, EXPERIMENTS_FILE))) {
+    const experiments = load<Experiment[]>(EXPERIMENTS_FILE, zExperimentsFile) ?? []
+    stats.experiments = experiments.length
+    stats.runningExperiments = experiments.filter((e) => e.status === 'RUNNING').length
+  }
+
   return { errors, warnings, stats }
 }
 
@@ -386,6 +402,7 @@ export function formatReport(r: ContentReport, dir: string): string {
     .map(([k, n]) => `${k} ${n}`)
     .join(' · ')
   lines.push(`  Kaynak türleri: ${kinds || '—'}`)
+  lines.push(`  Deney ${s.experiments} (çalışan ${s.runningExperiments})`)
   const issue = (i: ContentIssue) => `${i.file || '(klasör)'}${i.path ? ` ${i.path}` : ''}: ${i.message}`
   if (r.warnings.length) {
     lines.push(`Uyarılar (${r.warnings.length}):`)

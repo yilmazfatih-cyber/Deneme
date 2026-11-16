@@ -9,8 +9,13 @@
  * Kategoriler (MIMARI §9.4 `lolomoByCategory`): `home` (ana sayfa; `lolomo` ile aynı nesne), `shows` (Diziler),
  * `movies` (Filmler), `newPopular` (Yeni ve Popüler). Kategori listelerinin kimliği de profile özeldir ve kategori
  * önekini taşır: `<profil özeti>_s.genre_1365` (s: diziler, m: filmler, n: yeni ve popüler; ana sayfada önek yok).
+ *
+ * Deney bayrakları (shared/experiments.ts; `LolomoOptions.flags`): verilmezse ya da hepsi varsayılansa çıktı bugünküyle
+ * birebir aynıdır. `home.rowRanker` tüm kategorilerde satır içi sırayı, diğer `home.*` bayrakları yalnız ana sayfayı
+ * etkiler. Satır kimlikleri (listId, trackId) satırın bağlamına bağlıdır; satırın yeri değişince değişmez.
  */
 import type { ContentTitle } from '../../../../shared/content-schema'
+import { DEFAULT_FLAGS, type FlagKey, type Flags, type FlagValue } from '../../../../shared/experiments'
 import { GENRES, type GenreKey } from '../../../../shared/taxonomy'
 import { stableId } from '../../../../shared/text'
 import type { ProfileRecord } from '../../kernel/context'
@@ -134,6 +139,63 @@ export interface LolomoOptions {
   now: Date
   /** Verilmezse ana sayfa */
   category?: LolomoCategory
+  /** Deney / özellik bayrakları (eksik olan varsayılan sayılır; bkz. shared/experiments.ts) */
+  flags?: Readonly<Partial<Flags>>
+}
+
+/** Bayrağın etkin değeri (verilmemişse varsayılan) */
+export function flagOf<K extends FlagKey>(flags: Readonly<Partial<Flags>> | undefined, key: K): FlagValue<K> {
+  return (flags?.[key] as FlagValue<K> | undefined) ?? DEFAULT_FLAGS[key]
+}
+
+/** `home.pageRanker=personal`: yeri değişmeyen satırlar */
+export const PAGE_FIXED: readonly ListContext[] = [
+  'billboard',
+  'continueWatching',
+  'top10',
+  'top10Shows',
+  'top10Movies',
+  'bridge',
+]
+/** Satır puanı: ilk kaç öğeye bakılır, puanı olan en iyi kaçının ortalaması alınır */
+export const PAGE_RANK_HEAD = 10
+export const PAGE_RANK_TOP = 5
+/** `home.becauseRows=3`: en çok kaç farklı son izlenen başlık için satır */
+export const BECAUSE_ROWS_MAX = 3
+
+/** Satır puanı: ilk PAGE_RANK_HEAD öğenin puanı olanlarından en iyi PAGE_RANK_TOP'unun ortalaması; hiç yoksa −∞ */
+export function rowScore(videoIds: readonly number[], scores: Map<number, number>): number {
+  const s = videoIds
+    .slice(0, PAGE_RANK_HEAD)
+    .map((id) => scores.get(id))
+    .filter((x): x is number => typeof x === 'number' && Number.isFinite(x))
+    .sort((a, b) => b - a)
+    .slice(0, PAGE_RANK_TOP)
+  return s.length ? s.reduce((a, b) => a + b, 0) / s.length : Number.NEGATIVE_INFINITY
+}
+
+/**
+ * Kişisel sayfa sıralaması: sabit satırlar (PAGE_FIXED) yerinde kalır; diğerleri bulundukları konumlara satır puanına
+ * göre azalan sırayla (eşitlikte eski sıra) yerleşir. Puan haritası yoksa ya da boşsa liste olduğu gibi döner.
+ */
+export function rankRowsPersonal(lists: LolomoList[], scores: Map<number, number> | null): LolomoList[] {
+  if (!scores || !scores.size) return lists
+  const slots: number[] = []
+  const movable: { list: LolomoList; s: number; i: number }[] = []
+  lists.forEach((list, i) => {
+    if (PAGE_FIXED.includes(list.context)) return
+    slots.push(i)
+    movable.push({ list, s: rowScore(list.videoIds, scores), i })
+  })
+  movable.sort((a, b) => {
+    if (a.s === b.s) return a.i - b.i
+    return b.s - a.s
+  })
+  const out = [...lists]
+  slots.forEach((slot, n) => {
+    out[slot] = movable[n]!.list
+  })
+  return out
 }
 
 /**
@@ -146,7 +208,14 @@ export const MODEL_PICKS_FETCH = 60
 export const PICKS_ROW_SIZE = 20
 
 /** Satır ekleme kuralları (görünürlük, en az öğe, kimlik çakışması) tüm kategorilerde ortaktır. */
-function listBuilder(services: Partial<Services>, profile: ProfileRecord, category: LolomoCategory) {
+function listBuilder(
+  services: Partial<Services>,
+  profile: ProfileRecord,
+  category: LolomoCategory,
+  flags?: Readonly<Partial<Flags>>,
+) {
+  // 'popularity': satır içi model sıralaması yok (satırın kendi sırası)
+  const modelOrdered = flagOf(flags, 'home.rowRanker') === 'model'
   const catalog = services.catalog
   const guid = profile.guid
   const lists: LolomoList[] = []
@@ -169,7 +238,7 @@ function listBuilder(services: Partial<Services>, profile: ProfileRecord, catego
     extra?: Partial<LolomoList>,
   ): boolean => {
     let unique = [...new Set(ids)].filter(visible)
-    if (MODEL_ORDERED.includes(context)) unique = orderByScores(unique, scoresOf())
+    if (modelOrdered && MODEL_ORDERED.includes(context)) unique = orderByScores(unique, scoresOf())
     const videoIds = unique.slice(0, MAX_ROW_ITEMS)
     if (context !== 'bridge' && videoIds.length === 0) return false
     if (!EXEMPT.includes(context) && videoIds.length < MIN_ROW_ITEMS) return false
@@ -187,7 +256,7 @@ function listBuilder(services: Partial<Services>, profile: ProfileRecord, catego
     })
     return true
   }
-  return { lists, push, visible }
+  return { lists, push, visible, scoresOf }
 }
 
 const byPopularity = (a: ContentTitle, b: ContentTitle) => b.popularity - a.popularity || a.videoId - b.videoId
@@ -200,20 +269,22 @@ function lolomoExpires(now: Date): string {
 /** Bugüne kadar eklenmiş başlıklar, en yeni önce */
 function newestTitles(titles: ContentTitle[], now: Date): ContentTitle[] {
   const today = localMidnight(localDayNumber(now) + 1).getTime()
-  const added = (t: ContentTitle) => parseLocalDate(t.availability.addedAt)?.getTime() ?? 0
+  // Tarih başlık başına bir kez çözülür (sıralama karşılaştırıcısı içinde değil)
+  const at = new Map<ContentTitle, number>()
+  for (const t of titles) at.set(t, parseLocalDate(t.availability.addedAt)?.getTime() ?? 0)
+  const added = (t: ContentTitle) => at.get(t) ?? 0
   return titles.filter((t) => added(t) < today).sort((a, b) => added(b) - added(a) || byPopularity(a, b))
 }
 
 /** 30 gün içinde kalkanlar, en yakın önce */
 function leavingTitles(titles: ContentTitle[], now: Date): ContentTitle[] {
   const horizon = now.getTime() + LEAVING_WINDOW_DAYS * DAY_MS
-  const leaving = (t: ContentTitle) => parseLocalDate(t.availability.leavingAt)?.getTime() ?? null
-  return titles
-    .filter((t) => {
-      const l = leaving(t)
-      return l !== null && l > now.getTime() && l <= horizon
-    })
-    .sort((a, b) => leaving(a)! - leaving(b)!)
+  const at = new Map<ContentTitle, number>()
+  for (const t of titles) {
+    const l = parseLocalDate(t.availability.leavingAt)?.getTime() ?? null
+    if (l !== null && l > now.getTime() && l <= horizon) at.set(t, l)
+  }
+  return titles.filter((t) => at.has(t)).sort((a, b) => (at.get(a) ?? 0) - (at.get(b) ?? 0))
 }
 
 /**
@@ -245,7 +316,10 @@ function buildHomeLolomo(services: Partial<Services>, profile: ProfileRecord, op
   const progress = services.progress
   const guid = profile.guid
   const now = opts.now
-  const { lists, push, visible } = listBuilder(services, profile, 'home')
+  const flags = opts.flags
+  const { lists, push, visible, scoresOf } = listBuilder(services, profile, 'home', flags)
+  const top10Mode = flagOf(flags, 'home.top10')
+  const picksTop = flagOf(flags, 'home.picksPosition') === 'top'
 
   if (!catalog)
     return {
@@ -266,8 +340,9 @@ function buildHomeLolomo(services: Partial<Services>, profile: ProfileRecord, op
   push('continueWatching', TEXT.continueWatching, progress?.continueWatching(guid).map((c) => c.titleId) ?? [])
 
   // 3. Top 10 (yetenek bayrağı kapalıysa hiç üretilmez): iki tür listesi de doluysa dizi + film ayrı satır,
-  //    değilse tek karma liste
-  if (opts.top10Supported) {
+  //    değilse tek karma liste. Bayrak `home.top10`: 'top' burada · 'low' Canlı TV köprüsünden hemen önce · 'off' yok.
+  const pushTop10 = () => {
+    if (!opts.top10Supported) return
     const shows = top10ForType(services, profile, now, 'SHOW')
     const movies = top10ForType(services, profile, now, 'MOVIE')
     if (shows.length >= TYPED_TOP10_MIN && movies.length >= TYPED_TOP10_MIN) {
@@ -276,36 +351,9 @@ function buildHomeLolomo(services: Partial<Services>, profile: ProfileRecord, op
     } else push('top10', TEXT.top10, top10ForProfile(services, profile, now))
   }
 
-  // 4. "… izlediğin için"
+  // En İyi Seçimler (satırın yeri `home.picksPosition`'a göre aşağıda): model hazırsa ve yeterince görünür seçim
+  // verirse modelden (bitirilenler, beğenilmeyenler hariç), değilse zevk vektörüne göre kurallar (sinyal yoksa satır yok)
   const recent = (progress?.recentTitles(guid) ?? []).filter(visible)
-  const last = recent[0] !== undefined ? catalog.getTitle(recent[0]) : null
-  //    Harman benzerlikten (künye + mikro tür + gömme); gerekçe satırın çoğunun paylaştığı mikro tür
-  if (last) {
-    const items = blendedSimilars(services, last.videoId, visible).slice(0, MAX_ROW_ITEMS)
-    const reason = rowReason(services, items)
-    push(
-      'becauseYouWatched',
-      TEXT.becauseYouWatched(last.title),
-      items.map((x) => x.titleId),
-      last.videoId,
-      reason ? { reason } : undefined,
-    )
-  }
-
-  // 5. Listem
-  push('queue', TEXT.queue, progress?.myList(guid) ?? [])
-
-  // 6. Yeni gelenler
-  push(
-    'newReleases',
-    TEXT.newReleases,
-    newestTitles(titles, now)
-      .slice(0, 20)
-      .map((t) => t.videoId),
-  )
-
-  // 7. En İyi Seçimler: model hazırsa ve yeterince görünür seçim verirse modelden (bitirilenler, beğenilmeyenler
-  //    hariç), değilse zevk vektörüne göre kurallar (sinyal yoksa satır yok)
   const { signals, disliked } = profileSignals(services, guid, recent)
   const gemsIds: number[] = []
   let gemsSource: 'model' | 'rules' = 'rules'
@@ -327,6 +375,44 @@ function buildHomeLolomo(services: Partial<Services>, profile: ProfileRecord, op
         .map((x) => x.t.videoId),
     )
   }
+  const pushGems = () => push('gems', TEXT.topPicks(profile.name), gemsIds, undefined, { source: gemsSource })
+
+  if (picksTop) pushGems()
+  if (top10Mode === 'top') pushTop10()
+
+  // 4. "… izlediğin için": son izlenen başlık (bayrak `home.becauseRows=3` → son 3 farklı başlık, art arda; bir başlık
+  //    yalnız ilk girdiği satırda görünür). Harman benzerlikten (künye + mikro tür + gömme); gerekçe satırın çoğunun
+  //    paylaştığı mikro tür
+  const becauseSources = [...new Set(recent)].slice(0, flagOf(flags, 'home.becauseRows') === '3' ? BECAUSE_ROWS_MAX : 1)
+  const shownInBecause = new Set<number>()
+  for (const sourceId of becauseSources) {
+    const last = catalog.getTitle(sourceId)
+    if (!last) continue
+    const items = blendedSimilars(services, last.videoId, visible)
+      .filter((x) => !shownInBecause.has(x.titleId))
+      .slice(0, MAX_ROW_ITEMS)
+    const reason = rowReason(services, items)
+    const added = push(
+      'becauseYouWatched',
+      TEXT.becauseYouWatched(last.title),
+      items.map((x) => x.titleId),
+      last.videoId,
+      reason ? { reason } : undefined,
+    )
+    if (added) for (const x of items) shownInBecause.add(x.titleId)
+  }
+
+  // 5. Listem
+  push('queue', TEXT.queue, progress?.myList(guid) ?? [])
+
+  // 6. Yeni gelenler
+  push(
+    'newReleases',
+    TEXT.newReleases,
+    newestTitles(titles, now)
+      .slice(0, 20)
+      .map((t) => t.videoId),
+  )
 
   // 8. Editoryal satırlar
   const editorial: (() => void)[] = (layout?.rows ?? []).map((row) => () => {
@@ -351,8 +437,8 @@ function buildHomeLolomo(services: Partial<Services>, profile: ProfileRecord, op
   })
 
   editorial[0]?.()
-  // Kişisel satır: "‹Profil› için En İyi Seçimler"
-  push('gems', TEXT.topPicks(profile.name), gemsIds, undefined, { source: gemsSource })
+  // Kişisel satır: "‹Profil› için En İyi Seçimler" (bugünkü yer)
+  if (!picksTop) pushGems()
   // Görünmeyen katmanın yüzü: zevk topluluğu satırı, sonra görünen mikro tür satırları (servisler boşsa hiçbiri yok)
   const watched = new Set(progress?.recentTitles(guid) ?? [])
   const community = communityRow(services, profile, { visible, watched })
@@ -375,6 +461,7 @@ function buildHomeLolomo(services: Partial<Services>, profile: ProfileRecord, op
   }))
     push('microgenre', r.microgenre.name, r.videoIds, r.microgenre.id, { microgenreId: r.microgenre.id })
   editorial[1]?.()
+  if (top10Mode === 'low') pushTop10()
   // 9. Geçiş: Canlı TV'ye köprü (öğesiz)
   push('bridge', TEXT.bridge, [])
   push(
@@ -399,7 +486,8 @@ function buildHomeLolomo(services: Partial<Services>, profile: ProfileRecord, op
     category: 'home',
     trackId: trackIdOf(`lolomo|${guid}`),
     expires: lolomoExpires(now),
-    lists,
+    // Sayfa düzeyi kişisel sıralama (bayrak `home.pageRanker=personal`); puan yoksa editoryal sıra
+    lists: flagOf(flags, 'home.pageRanker') === 'personal' ? rankRowsPersonal(lists, scoresOf()) : lists,
   }
 }
 
@@ -417,7 +505,7 @@ function buildTypeLolomo(
   const catalog = services.catalog
   const guid = profile.guid
   const now = opts.now
-  const { lists, push, visible } = listBuilder(services, profile, category)
+  const { lists, push, visible } = listBuilder(services, profile, category, opts.flags)
   const trackId = trackIdOf(`lolomo|${guid}:${category}`)
   if (!catalog) return { profileGuid: guid, category, trackId, expires: now.toISOString(), lists }
   const ofType = (id: number) => catalog.getTitle(id)?.type === type
@@ -491,7 +579,7 @@ function buildNewPopularLolomo(services: Partial<Services>, profile: ProfileReco
   const catalog = services.catalog
   const guid = profile.guid
   const now = opts.now
-  const { lists, push, visible } = listBuilder(services, profile, category)
+  const { lists, push, visible } = listBuilder(services, profile, category, opts.flags)
   const trackId = trackIdOf(`lolomo|${guid}:${category}`)
   if (!catalog) return { profileGuid: guid, category, trackId, expires: now.toISOString(), lists }
   const titles = catalog.allTitles().filter((t) => visible(t.videoId))
