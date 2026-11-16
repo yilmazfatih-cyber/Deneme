@@ -10,15 +10,19 @@
  *   /studyo/icgoruler       Katalog payı ↔ izlenme payı, zaman çizelgesi
  *   /studyo/planlayici      İçerik karması planlayıcısı
  *   /studyo/gomme           Çekim düzeyi gömme
+ *   /studyo/kayip-analizi   Kayıp Analizi (laboratuvarın churn sonucu; salt okunur)
+ *   /studyo/deney-laboratuvari[?kosu=] Deney Laboratuvarı (gerçeklik karnesi, deney koşuları; salt okunur)
  * Her bölüm kendi verisini yükler; servisi yoksa yalnız o bölüm "henüz hazır değil" der.
  */
 import type { ReactElement, ReactNode } from 'react'
 import { NavLink, Navigate, Route, Routes } from 'react-router-dom'
 import { useDocumentTitle } from '../../app'
 import { useMediaQuery } from '../../ui'
+import { ChurnSection } from './Churn'
 import { CommunitiesSection } from './Communities'
 import { EmbeddingsSection } from './Embeddings'
 import { InsightsSection } from './Insights'
+import { LabSection } from './Lab'
 import { MicrogenresSection } from './Microgenres'
 import { ModelSection } from './Model'
 import { OverviewSection } from './Overview'
@@ -38,6 +42,8 @@ export const STUDIO_SECTIONS = [
   { path: 'icgoruler', label: 'İçgörüler', title: 'İçgörüler' },
   { path: 'planlayici', label: 'Planlayıcı', title: 'Planlayıcı' },
   { path: 'gomme', label: 'Gömme', title: 'Gömme' },
+  { path: 'kayip-analizi', label: 'Kayıp Analizi', title: 'Kayıp Analizi' },
+  { path: 'deney-laboratuvari', label: 'Deney Laboratuvarı', title: 'Deney Laboratuvarı' },
 ] as const
 
 export const studioHref = (path: string): string => (path ? `/studyo/${path}` : '/studyo')
@@ -146,6 +152,22 @@ export function StudioPage(): ReactElement {
             element={
               <Frame title="Gömme">
                 <EmbeddingsSection />
+              </Frame>
+            }
+          />
+          <Route
+            path="kayip-analizi"
+            element={
+              <Frame title="Kayıp Analizi">
+                <ChurnSection />
+              </Frame>
+            }
+          />
+          <Route
+            path="deney-laboratuvari"
+            element={
+              <Frame title="Deney Laboratuvarı">
+                <LabSection />
               </Frame>
             }
           />

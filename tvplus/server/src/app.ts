@@ -29,6 +29,7 @@ import ftlPlugin from './services/ftl/plugin'
 import identityPlugin from './services/identity/plugin'
 import imagePlugin from './services/image/plugin'
 import insightsPlugin from './services/insights/plugin'
+import labPlugin from './services/lab/plugin'
 import microgenresPlugin from './services/microgenres/plugin'
 import mixpanelPlugin from './services/mixpanel/plugin'
 import notificationsPlugin from './services/notifications/plugin'
@@ -120,6 +121,8 @@ export async function buildApp(overrides: Partial<AppConfig> = {}): Promise<Fast
   await insightsPlugin(app)
   await embeddingsPlugin(app)
   await predictionsPlugin(app)
+  // Laboratuvar (tvplus/lab) sonuç dosyaları: stüdyo için salt okunur
+  await labPlugin(app)
 
   await playbackPlugin(app)
   await ocaPlugin(app)

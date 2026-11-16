@@ -258,6 +258,7 @@ export function LineChart({
   height = 220,
   yMax,
   xLabelEvery = 1,
+  width = 680,
 }: {
   xLabels: readonly string[]
   series: readonly LineSeries[]
@@ -266,8 +267,10 @@ export function LineChart({
   height?: number
   yMax?: number
   xLabelEvery?: number
+  /** Çizim genişliği (viewBox birimi). Dar sütunda küçültülür: grafik sütuna sığarken yazılar okunur kalır. */
+  width?: number
 }): ReactElement {
-  const W = 680
+  const W = width
   const H = height
   const PAD = { l: 44, r: 150, t: 12, b: 24 }
   const iw = W - PAD.l - PAD.r

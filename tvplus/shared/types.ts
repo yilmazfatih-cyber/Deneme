@@ -3,6 +3,7 @@
  * (GraphQL biçimleri shared/graphql/schema.graphql içindedir; oynatma hattı shared/playback.ts.)
  */
 import type { FlagKey, Flags } from './experiments'
+import type { ExperimentArm, ExperimentRun } from './lab'
 
 export type MembershipStatus = 'ANONYMOUS' | 'CURRENT_MEMBER' | 'FORMER_MEMBER'
 
@@ -162,6 +163,30 @@ export interface DebugServerState {
   events: { total: number; lastBatchAt: string | null; byName: Record<string, number> }
   playback: { activeSessions: number; manifestsIssued: number; prefetchIssued: number }
   catalog: { titles: number; playables: number; channels: number; bySourceKind: Record<string, number> }
+}
+
+/* ───────────── Laboratuvar (Stüdyo; sonuç sözleşmesi shared/lab.ts) ───────────── */
+
+/**
+ * GET /api/studio/lab/deneyler → ExperimentRunSummary[] (en yeni önce): kayıtlı deney koşularının özeti.
+ * Koşunun tamamı (ExperimentRun) GET /api/studio/lab/sonuc/<name> ile okunur.
+ */
+export interface ExperimentRunSummary {
+  /** Sonuç dosyasının adı ('.json' olmadan): 'deney-<anahtar>' simülasyon koşusu, 'gercek-<anahtar>' gerçek deney */
+  name: string
+  key: string
+  /** Deneyin okunur adı (ExperimentRun.name) */
+  title: string
+  source: ExperimentRun['source']
+  design: ExperimentRun['design']
+  /** ISO an */
+  at: string
+  /** Ufuk / ölçüm penceresi (gün) */
+  days: number
+  synthetic: boolean
+  /** Simülasyon: gerçeklik karnesi puanı (yoksa null) */
+  fidelity: number | null
+  arms: Pick<ExperimentArm, 'key' | 'decision' | 'summary'>[]
 }
 
 /** Standart REST hata gövdesi. */

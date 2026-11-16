@@ -1556,3 +1556,452 @@
   margin-top: 8px;
   border-top: 1px solid var(--st-line);
 }
+
+/* ───── laboratuvar: kayıp analizi ve deney laboratuvarı ───── */
+.st-root {
+  /* Aralık grafiği işaretleri: iyi / kötü çifti renk körlüğü benzetiminde de ayrışacak biçimde seçildi */
+  --st-iv-good: #7fd49a;
+  --st-iv-bad: #f08a5d;
+  --st-iv-neutral: var(--st-base-1);
+}
+.st-dataline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 14px;
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-3);
+}
+.st-dataline strong {
+  color: var(--text-1);
+  font-weight: 600;
+}
+.st-cmd {
+  padding: 1px 6px;
+  border: 1px solid var(--st-line);
+  border-radius: 4px;
+  background: var(--surface-2);
+  color: var(--text-1);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.st-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 14px 0;
+  padding-left: 22px;
+  color: var(--text-2);
+}
+.st-steps li {
+  padding-left: 4px;
+}
+.st-steps__what {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--text-1);
+  font-weight: 600;
+}
+.st-steps__cmds {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-4);
+}
+.st-scroll {
+  overflow-x: auto;
+}
+.st-scroll--tall {
+  max-height: 420px;
+  overflow-y: auto;
+}
+.st-table--wide {
+  min-width: 860px;
+}
+/* Az sütunlu tablo: sayılar adlardan uzağa düşmesin */
+.st-table--narrow {
+  max-width: 820px;
+}
+.st-more {
+  margin: 10px 0 0;
+}
+.st-nowrap {
+  white-space: nowrap;
+}
+/* Panel başlığındaki seçim düğmeleri alt satıra kırılmaz */
+.st-labpanel .st-panel__actions {
+  flex: none;
+}
+.st-labpanel .st-seg__btn {
+  white-space: nowrap;
+}
+/* Laboratuvarın yazdığı notlar olduğu gibi görünür ("--bayrak" çizgiye dönüşmez) */
+.st-labnotes {
+  font-variant-ligatures: none;
+  font-size: 13px;
+}
+.st-stats--lab {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+@media (max-width: 1099px) {
+  .st-stats--lab {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 520px) {
+  .st-stats--lab {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.st-stats--lab .st-stat__note {
+  color: var(--text-3);
+  line-height: 1.35;
+}
+.st-stat__unit {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-3);
+}
+.st-labgrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+}
+.st-labgrid--gap {
+  gap: 8px 32px;
+  margin-top: 8px;
+}
+@media (max-width: 1099px) {
+  .st-labgrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* bulgular */
+.st-findings {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.st-finding {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: 10px;
+  padding: 8px 12px;
+  border-left: 3px solid var(--st-line);
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.02);
+}
+.st-finding--s3 {
+  border-left-color: var(--accent);
+}
+.st-finding--s2 {
+  border-left-color: var(--st-base-2);
+}
+.st-finding__rank {
+  color: var(--text-4);
+  font-weight: 700;
+  text-align: right;
+}
+.st-finding__title {
+  margin: 0 0 2px;
+  color: var(--text-1);
+  font-size: 15px;
+  font-weight: 600;
+}
+.st-finding__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: var(--text-4);
+}
+
+/* nedenler */
+.st-reasontable {
+  min-width: 620px;
+}
+.st-reasontable th,
+.st-reasontable td {
+  vertical-align: top;
+}
+.st-reasontable .st-paired__name {
+  width: 46%;
+}
+.st-reasontable .st-paired__bars {
+  padding-top: 8px;
+}
+.st-signals {
+  margin: 3px 0 0;
+  padding: 0;
+  list-style: none;
+  color: var(--text-3);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+.st-pbar__fill--rest {
+  background: var(--st-base-3);
+}
+
+/* aralık (orman) grafiği */
+.st-iv th,
+.st-iv td {
+  vertical-align: middle;
+}
+.st-iv tbody th {
+  min-width: 190px;
+}
+.st-iv .st-iv__cell {
+  position: relative;
+  width: 30%;
+  min-width: 220px;
+  height: 32px;
+  padding: 0;
+}
+.st-iv thead .st-iv__cell {
+  height: 24px;
+}
+.st-iv__plot {
+  position: absolute;
+  inset: 0 16px;
+}
+.st-iv__tick {
+  position: absolute;
+  bottom: 4px;
+  transform: translateX(-50%);
+  color: var(--text-4);
+  font-size: 11px;
+  font-weight: 400;
+  white-space: nowrap;
+}
+.st-iv__tick.is-start {
+  transform: translateX(-20%);
+}
+.st-iv__tick.is-end {
+  transform: translateX(-80%);
+}
+.st-iv__grid,
+.st-iv__ref {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.06);
+}
+.st-iv__ref {
+  background: var(--line-2);
+}
+.st-iv__whisker {
+  position: absolute;
+  top: 50%;
+  height: 2px;
+  margin-top: -1px;
+  border-radius: 1px;
+}
+.st-iv__whisker--good,
+.st-iv__arrow--good,
+.st-iv__dot--good {
+  background: var(--st-iv-good);
+}
+.st-iv__whisker--bad,
+.st-iv__arrow--bad,
+.st-iv__dot--bad {
+  background: var(--st-iv-bad);
+}
+.st-iv__whisker--neutral,
+.st-iv__arrow--neutral {
+  background: var(--st-iv-neutral);
+}
+.st-iv__dot--neutral {
+  box-sizing: border-box;
+  border: 2px solid var(--st-iv-neutral);
+  background: var(--st-panel);
+}
+.st-iv__dot {
+  position: absolute;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px var(--st-panel);
+}
+.st-iv__arrow {
+  position: absolute;
+  top: 50%;
+  width: 9px;
+  height: 12px;
+  margin-top: -6px;
+}
+.st-iv__arrow--lo {
+  left: -8px;
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
+}
+.st-iv__arrow--hi {
+  right: -8px;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+.st-iv__stub {
+  position: absolute;
+  top: 50%;
+  width: 18px;
+  height: 2px;
+  margin-top: -1px;
+}
+.st-iv__stub--lo {
+  left: 0;
+}
+.st-iv__stub--hi {
+  right: 0;
+}
+.st-iv__reading {
+  white-space: nowrap;
+}
+.st-iv__legend {
+  margin: 0 0 8px;
+}
+.st-iv__key {
+  display: inline-block;
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.st-iv__key--arrow {
+  border-radius: 0;
+  background: var(--st-iv-neutral);
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
+}
+.st-iv__key--line {
+  width: 16px;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--st-iv-neutral);
+}
+
+/* tutunma eğrisi */
+.st-surv__band {
+  fill: var(--accent);
+  fill-opacity: 0.12;
+  stroke: none;
+}
+.st-surv__dot {
+  fill: var(--accent);
+  stroke: var(--st-panel);
+  stroke-width: 2;
+}
+
+/* karne ve koşular */
+.st-table .st-grouprow th {
+  padding-top: 12px;
+  border-bottom-color: var(--line-2);
+  color: var(--text-3);
+  font-size: 12px;
+  font-weight: 600;
+}
+.st-fit {
+  white-space: nowrap;
+}
+.st-fit--ok {
+  color: var(--st-ok);
+}
+.st-fit--off {
+  color: var(--st-warn);
+  font-weight: 700;
+}
+.st-fit--fitted {
+  color: var(--text-3);
+}
+.st-warnnote {
+  margin: 12px 0;
+  padding: 8px 12px;
+  border: 1px solid var(--st-warn);
+  border-radius: 6px;
+  color: var(--text-2);
+  font-size: 13px;
+}
+.st-warnnote strong {
+  color: var(--text-1);
+}
+.st-runs th,
+.st-runs td {
+  vertical-align: middle;
+}
+.st-runs tbody tr.is-on {
+  background: var(--surface-2);
+}
+.st-runs tbody tr.is-on th {
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+.st-runs__link {
+  display: block;
+  color: var(--text-1);
+  font-weight: 600;
+  text-decoration: none;
+}
+.st-runs__link:hover {
+  text-decoration: underline;
+}
+.st-runs__name {
+  display: block;
+  font-weight: 400;
+}
+.st-banner {
+  margin: 0 0 12px;
+  padding: 10px 14px;
+  border: 1px solid var(--st-sample);
+  border-left-width: 4px;
+  border-radius: 6px;
+  background: rgba(233, 184, 114, 0.08);
+}
+.st-banner__title {
+  margin: 0 0 2px;
+  color: var(--text-1);
+  font-size: 15px;
+  font-weight: 700;
+}
+.st-srm {
+  margin: 0 0 12px;
+  color: var(--text-2);
+  font-size: 13px;
+}
+.st-arm {
+  margin: 14px 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--st-line);
+}
+.st-arm__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+.st-arm__head .st-h3 {
+  margin: 0;
+}
+.st-arm .ui-body {
+  margin: 4px 0;
+}
+.st-role {
+  color: var(--text-1);
+}
+.st-metric {
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr);
+  gap: 2px;
+}
+.st-metric__hint {
+  display: block;
+  color: var(--text-4);
+  font-size: 12px;
+  font-weight: 400;
+}
