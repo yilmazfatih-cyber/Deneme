@@ -151,6 +151,13 @@ test.describe('Yönetici kipi', () => {
     await expect(
       page.getByRole('region', { name: 'Ana sayfandaki satırlar' }).getByText('Kişisel').first(),
     ).toBeVisible()
+    // Afiş seçimi: başlık başına adaylar ve tam bir seçilen
+    const art = page.getByRole('region', { name: 'Afiş seçimi' })
+    await expect(art).toBeVisible()
+    const firstTitle = art.getByRole('list', { name: /: afiş adayları$/ }).first()
+    await expect.poll(() => firstTitle.getByRole('listitem').count()).toBeGreaterThan(1)
+    await expect(firstTitle.getByText('Seçilen', { exact: true })).toHaveCount(1)
+    await expect(firstTitle.getByText('Varsayılan', { exact: true })).toBeVisible()
     await expect(page.getByRole('region', { name: 'Alt tür motorunun seçtikleri' })).toBeVisible()
     await expect(page.getByRole('region', { name: 'Tahmin modeli' })).toBeVisible()
     await expect(page.getByRole('region', { name: 'Arama modeli' })).toBeVisible()

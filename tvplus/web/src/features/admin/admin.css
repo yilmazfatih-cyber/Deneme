@@ -585,6 +585,13 @@
   align-items: center;
   gap: 8px;
 }
+/* Tek satırlık puan çubukları: .ad-bar ızgarasının adlandırılmış alanları burada geçerli değil */
+.ad-cand__score > .ad-bar__track,
+.ad-cand__score > .ad-bar__value,
+.ad-subitem__score > .ad-bar__track,
+.ad-subitem__score > .ad-bar__value {
+  grid-area: auto;
+}
 .ad-cand__stats {
   color: var(--text-4);
   font-size: 12px;

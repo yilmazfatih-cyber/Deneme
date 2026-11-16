@@ -127,8 +127,13 @@ azalt ya da veri tasarrufu açıksa oynatmaz). **Çok Yakında** canlı TV'nin s
 **Detay** tam sayfa (`/baslik/:id`): üstte 16:9 tanıtım (✕ ve TV'de izle simgeleri), başlık, bilgi satırı,
 **▶ Oynat** (beyaz, tam genişlik), **TV'de İzle** (`--btn-2`, TV çevrimiçiyse), özet, oyuncular, simge sırası
 (Listem · Değerlendir · Paylaş), sekmeler **Bölümler · Benzerleri · Fragmanlar**.
-**Arama:** üstte girdi (36 px, `--surface-2`); yazmadan önce "Sana Özel Öneriler" dikey liste (16:9 küçük görsel +
-ad + ▶); yazarken üstte tahmin tamamlamaları (dokununca yazıya dönüşür), sonra 3 sütun afiş ızgarası.
+**Arama:** üstte girdi (36 px, `--surface-2`); yazmadan önce son aramalar, "Ad yazmadan da arayabilirsin" başlığıyla
+örnek sorgu çipleri ("kısa bilim kurgu", "ailece izlenecek animasyon" …) ve "Sana Özel Öneriler" dikey liste (16:9
+küçük görsel + ad + ▶); yazarken üstte tahmin tamamlamaları (dokununca yazıya dönüşür), sonra 3 sütun afiş ızgarası.
+**Niyet çipleri** (web ve mobil): sorgu tür, ton, süre gibi koşullara çözüldüyse sonuçların üstünde "Şöyle anladım:"
+satırı ve sarı çerçeveli çipler ("Süre: 90 dakikadan kısa ✕", "Tür: Komedi ✕"); ✕ o koşulu atıp yeniden arar.
+Çözülmeyen sözcükler gri çipte tırnak içinde durur. Az sonuç için koşul gevşetildiyse altında tek satır not. Izgaranın
+başlığı "Aramana uyanlar" olur; her kartın altında sağladığı koşullar yazar ("Ailece · Animasyon").
 **TV+'ım:** avatar + ad + profil değiştir; Bildirimler; **TV'ye Bağlan / Kumanda**; Listem; İzlemeye Devam Et;
 Beğendiklerin; Cihazlar; Çıkış.
 **"Şu an TV'de" çubuğu:** eşleşmiş bir TV oynatırken alt sekmelerin üstünde: küçük görsel, ad, ⏯, dokununca kumanda.
@@ -190,6 +195,9 @@ alanı (gizli yazılır; "Kodu göster"), **Aç**. Yanlış kodda hata alanın a
   topluluğunun öne çıkardıkları. Segment yoksa nedeni yazar (izleme yok / yetersiz / hesap yok).
 - **İzleme özetim:** başlık, kararda sayılan, süre, son izleme; en çok ilgi gösterilenler.
 - **Ana sayfandaki satırlar:** her satır + "Kişisel" / "Herkese aynı" + neye göre kurulduğu.
+- **Afiş seçimi** (tam genişlik): ana sayfadaki başlıklardan adayı olanlar; her başlıkta kip etiketi ("Zevkine göre" /
+  "Keşif denemesi" / "Varsayılan"), tek satır gerekçe, aday görselleri yan yana (seçilen sarı çerçeveli ve "Seçilen"
+  rozetli), her adayın puan çubuğu ile gösterim ve tıklama sayısı; altta seçilenin puan bileşenleri.
 - **Alt tür motorunun seçtikleri:** ad, tanım, puan çubuğu, izlediklerinden o alt türe girenler.
 - **Tahmin modeli** ve **Arama modeli:** sürüm, bu profil için ilk seçimler ve gerekçeleri, öğrenilmiş ağırlıklar.
   Altta "Yönetici kipinden çık".

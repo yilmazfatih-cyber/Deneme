@@ -147,6 +147,39 @@ test.describe('Arama', () => {
     expect(bodies.length, 'önbellekten').toBe(afterSintel)
   })
 
+  test('niyet anlayan arama: sorgu çiplere çözülür, uyan başlıklar gelir; çip kaldırılınca sorgu kısalır', async ({
+    page,
+  }) => {
+    await signIn(page)
+    await page.goto(`/#/ara?q=${encodeURIComponent('90 dakikadan kısa komedi')}`)
+    const understood = page.getByRole('region', { name: 'Aramanın nasıl anlaşıldığı' })
+    await expect(understood.getByText('Süre: 90 dakikadan kısa')).toBeVisible()
+    await expect(understood.getByText('Tür: Komedi')).toBeVisible()
+    const results = page.getByRole('region', { name: 'Aramana uyanlar' })
+    await expect(results).toBeVisible()
+    await expect.poll(() => results.getByRole('link').count()).toBeGreaterThan(2)
+    await expect(results.getByText('90 dakikadan kısa · Komedi').first()).toBeVisible()
+
+    // Çipi kaldır: kalan sorguyla yeniden aranır
+    await understood.getByRole('button', { name: 'Süre: 90 dakikadan kısa: kaldır' }).click()
+    await expect(page).toHaveURL(/#\/ara\?q=komedi$/)
+    await expect(understood.getByText('Süre: 90 dakikadan kısa')).toHaveCount(0)
+
+    // Başlık adı niyet olarak yorumlanmaz
+    await page.goto('/#/ara?q=sintel')
+    await expect(page.getByRole('link', { name: /^Sintel/ }).first()).toBeVisible()
+    await expect(page.getByRole('region', { name: 'Aramanın nasıl anlaşıldığı' })).toHaveCount(0)
+
+    // Kutu boşken örnek sorgular
+    await page.goto('/#/ara')
+    const examples = page.getByRole('region', { name: 'Ad yazmadan da arayabilirsin' })
+    await examples.getByRole('button', { name: 'ailece izlenecek animasyon' }).click()
+    await expect(page).toHaveURL(/#\/ara\?q=ailece/)
+    await expect(
+      page.getByRole('region', { name: 'Aramanın nasıl anlaşıldığı' }).getByText('Tür: Animasyon'),
+    ).toBeVisible()
+  })
+
   test('mobil arama: yazmadan önce "Sana Özel Öneriler", yazarken tahminler', async ({ page }) => {
     test.skip(!isMobile(page), 'mobil arama sayfası')
     await signIn(page)

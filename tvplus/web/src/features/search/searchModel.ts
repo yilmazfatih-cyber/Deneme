@@ -304,8 +304,8 @@ export function relaxedNote(page: Pick<SearchPageData, 'understanding'> | undefi
 /** Arama kutusu boşken gösterilen örnek sorgular: ad yazmadan, ne izlemek istediğini anlatarak arama. */
 export const EXAMPLE_QUERIES: readonly string[] = [
   'kısa bilim kurgu',
-  'ailece animasyon',
-  'düşündürücü belgesel',
+  'ailece izlenecek animasyon',
+  '90 dakikadan kısa komedi',
   'eğlenceli çocuk dizisi',
 ]
 

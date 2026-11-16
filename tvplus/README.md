@@ -265,7 +265,8 @@ içindir), `TVP_SAMPLE_VIEWING=0` (sentetik örneği üretme), `TVP_REAL_DATA_MI
 - **Afiş seçimi:** bir başlığın birden çok görsel adayı olabilir (`content/titles/*.json` → `artwork.alternates`).
   Arka uç her profil için birini seçer: profilin ilgi gösterdiği görsellerin üslubuna yakınlık + o adayın öğrenilmiş
   tıklanma oranı; küçük bir payla keşif için başka aday dener. Seçim 7 gün sabit kalır; gösterim ve tıklamalarla
-  öğrenir. Yönetici Paneli seçimi ve nedenini gösterir. `TVP_ARTWORK=off` kapatır. Örnek içerikte adaylar YouTube'un
+  öğrenir. Çocuk profillerinde ve oturumsuz ziyaretçide hep varsayılan görsel kullanılır. Yönetici Paneli seçimi ve
+  nedenini gösterir. `TVP_ARTWORK=off` kapatır. Örnek içerikte adaylar YouTube'un
   kendi kare küçük resimleridir (`npm run artwork:alternates`); gerçek katalogda resmî afişler aynı alana yazılır.
 - **Niyet anlayan arama:** "kısa düşündürücü bilim kurgu", "ailece animasyon", "90 dakikadan kısa komedi" gibi
   sorgular tür, ton, süre, dönem, tip, köken ve izleyici koşullarına çözülür; hepsine uyan başlıklar gelir, az sonuç
