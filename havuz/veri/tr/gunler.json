@@ -1,0 +1,9 @@
+[
+  {"no": 1, "ad": "Pazartesi", "kisaltma": "Pzt", "python_weekday": 0, "hafta_sonu": false},
+  {"no": 2, "ad": "Salı", "kisaltma": "Sal", "python_weekday": 1, "hafta_sonu": false},
+  {"no": 3, "ad": "Çarşamba", "kisaltma": "Çar", "python_weekday": 2, "hafta_sonu": false},
+  {"no": 4, "ad": "Perşembe", "kisaltma": "Per", "python_weekday": 3, "hafta_sonu": false},
+  {"no": 5, "ad": "Cuma", "kisaltma": "Cum", "python_weekday": 4, "hafta_sonu": false},
+  {"no": 6, "ad": "Cumartesi", "kisaltma": "Cmt", "python_weekday": 5, "hafta_sonu": true},
+  {"no": 7, "ad": "Pazar", "kisaltma": "Paz", "python_weekday": 6, "hafta_sonu": true}
+]

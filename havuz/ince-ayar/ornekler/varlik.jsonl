@@ -1,0 +1,12 @@
+{"sozcukler": ["Ayşe", "Yılmaz", "yarın", "Ankara'ya", "gidiyor", "."], "etiketler": ["B-KISI", "I-KISI", "O", "B-YER", "O", "O"]}
+{"sozcukler": ["Mehmet", "İzmir'de", "çalışıyor", "."], "etiketler": ["B-KISI", "B-YER", "O", "O"]}
+{"sozcukler": ["Toplantı", "Bursa'da", "yapılacak", "."], "etiketler": ["O", "B-YER", "O", "O"]}
+{"sozcukler": ["Zeynep", "Kaya", "raporu", "gönderdi", "."], "etiketler": ["B-KISI", "I-KISI", "O", "O", "O"]}
+{"sozcukler": ["Paket", "Adana'dan", "yola", "çıktı", "."], "etiketler": ["O", "B-YER", "O", "O", "O"]}
+{"sozcukler": ["Ali", "ile", "Elif", "Konya'da", "buluştu", "."], "etiketler": ["B-KISI", "O", "B-KISI", "B-YER", "O", "O"]}
+{"sozcukler": ["Fatura", "bugün", "kesildi", "."], "etiketler": ["O", "O", "O", "O"]}
+{"sozcukler": ["Hasan", "Demir", "Trabzon'a", "taşındı", "."], "etiketler": ["B-KISI", "I-KISI", "B-YER", "O", "O"]}
+{"sozcukler": ["Sipariş", "Antalya'ya", "ulaştı", "."], "etiketler": ["O", "B-YER", "O", "O"]}
+{"sozcukler": ["Elif", "yarın", "arayacak", "."], "etiketler": ["B-KISI", "O", "O", "O"]}
+{"sozcukler": ["Kargo", "Mersin'de", "bekliyor", "."], "etiketler": ["O", "B-YER", "O", "O"]}
+{"sozcukler": ["Deniz", "Arslan", "onay", "verdi", "."], "etiketler": ["B-KISI", "I-KISI", "O", "O", "O"]}

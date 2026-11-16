@@ -1,0 +1,34 @@
+{
+  "ad": "alfabe",
+  "baslik": "Türk alfabesi ve harf sınıfları",
+  "aciklama": "29 harf; ünlülerin kalınlık/düzlük/genişlik, ünsüzlerin sertlik/süreklilik sınıfı.",
+  "dosyalar": [
+    "alfabe.json",
+    "alfabe.csv"
+  ],
+  "kayit_sayisi": 29,
+  "alanlar": {
+    "sira": "Alfabedeki sıra (1–29).",
+    "kucuk": "Küçük harf.",
+    "buyuk": "Büyük harf (i → İ, ı → I).",
+    "tur": "ünlü ya da ünsüz.",
+    "kalinlik": "Ünlüler için: kalın (a ı o u) / ince (e i ö ü).",
+    "duzluk": "Ünlüler için: düz (a e ı i) / yuvarlak (o ö u ü).",
+    "genislik": "Ünlüler için: geniş (a e o ö) / dar (ı i u ü).",
+    "sertlik": "Ünsüzler için: sert (ç f h k p s ş t) / yumuşak.",
+    "sureklilik": "Ünsüzler için: süreksiz (b c d g p ç t k) / sürekli."
+  },
+  "kaynak": "Elle yazıldı (kapalı küme).",
+  "lisans": "Olgusal veri (telif konusu değildir); derleme ve biçim bu deponun lisansıyla dağıtılır.",
+  "dogrulama": {
+    "yontem": "bilinen-kume",
+    "tarih": "2026-11-16",
+    "aciklama": "Kapalı ve kesin bilinen küme. Testler sayıları (29 harf, 8 ünlü, 21 ünsüz, 8 sert ünsüz), sınıfların birbirini tam bölmesini ve büyük/küçük harf eşlemesinin upper_tr/lower_tr ile uyumunu denetler (tests/test_reference.py).",
+    "kaynaklar": []
+  },
+  "guven": "yüksek",
+  "notlar": [
+    "Şapkalı harfler (â, î, û) alfabede ayrı harf sayılmaz ama yazımda kullanılır.",
+    "q, w, x Türk alfabesinde yoktur; yabancı adlarda geçebilir."
+  ]
+}

@@ -1,0 +1,14 @@
+[
+  {"kod": "00010", "kisa_ad": "Ziraat Bankası", "unvan": "Türkiye Cumhuriyeti Ziraat Bankası A.Ş."},
+  {"kod": "00012", "kisa_ad": "Halkbank", "unvan": "Türkiye Halk Bankası A.Ş."},
+  {"kod": "00015", "kisa_ad": "VakıfBank", "unvan": "Türkiye Vakıflar Bankası T.A.O."},
+  {"kod": "00032", "kisa_ad": "TEB", "unvan": "Türk Ekonomi Bankası A.Ş."},
+  {"kod": "00046", "kisa_ad": "Akbank", "unvan": "Akbank T.A.Ş."},
+  {"kod": "00059", "kisa_ad": "Şekerbank", "unvan": "Şekerbank T.A.Ş."},
+  {"kod": "00062", "kisa_ad": "Garanti", "unvan": "Türkiye Garanti Bankası A.Ş."},
+  {"kod": "00064", "kisa_ad": "İş Bankası", "unvan": "Türkiye İş Bankası A.Ş."},
+  {"kod": "00067", "kisa_ad": "Yapı Kredi", "unvan": "Yapı ve Kredi Bankası A.Ş."},
+  {"kod": "00099", "kisa_ad": "ING", "unvan": "ING Bank A.Ş."},
+  {"kod": "00111", "kisa_ad": "QNB", "unvan": "QNB Finansbank A.Ş."},
+  {"kod": "00134", "kisa_ad": "DenizBank", "unvan": "Denizbank A.Ş."}
+]

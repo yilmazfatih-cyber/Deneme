@@ -1,0 +1,113 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sifirdan-ag"
+version = "0.1.0"
+description = "Sıfırdan dizisi, ağ kolu: HTTP sunucusu/istemcisi, WebSocket, web çatısı, ORM, eğitsel kripto, DNS, kabuk, ters vekil ve e-posta — yalnız Python standart kitaplığıyla."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+# Çalışma zamanı bağımlılığı YOKTUR: her mini sistem yalnız standart kitaplığı kullanır (docs/KARARLAR.md, K01).
+dependencies = []
+
+[project.optional-dependencies]
+# Yalnız denetim araçları. hypothesis: ayrıştırıcılara rastgele girdi veren özellik testleri için.
+dev = ["pytest>=9.0", "hypothesis>=6.150", "ruff>=0.17", "mypy>=2.4"]
+
+[tool.setuptools.packages.find]
+# YENİ MİNİ SİSTEM BURAYA: paket klasörünün adını ekleyin (ayrıca tests/test_kurallar.py içindeki listeye).
+include = [
+  "http_sunucu*",
+  "http_istemci*",
+  "websocket*",
+  "web_catisi*",
+  "orm*",
+  "kripto_egitim*",
+  "dns*",
+  "kabuk*",
+  "hiz_ve_vekil*",
+  "eposta*",
+  "sunucu_olaylari*",
+  "tls_gozlem*",
+  "p2p*",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = [".venv", "build"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "N", "SIM", "C4", "RUF", "PT", "S", "ASYNC"]
+ignore = [
+  "RUF001", # Türkçe harfler (ı, İ) "belirsiz karakter" sayılmasın
+  "RUF002",
+  "RUF003",
+  "SIM108", # üçlü ifade yerine açık if/else daha okunaklı
+  "SIM102",
+  "S101",   # assert: iç değişmez denetimleri ve testler
+  "E741",
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Testler: sahte parolalar, yerel soketler, alt süreçler ve bilerek geniş yakalanan hatalar olağandır.
+"tests/**" = ["S", "N802", "PT011", "PT018", "B017", "ASYNC"]
+"scripts/**" = ["S603", "S607"]
+# SHA-1, RFC 6455 (WebSocket) ve RFC 4226/6238 (HOTP/TOTP) gereğidir; güvenlik amacıyla değil protokol için.
+"websocket/handshake.py" = ["S324"]
+# Kabuk, tanımı gereği alt süreç çalıştırır; komutlar liste olarak verilir (shell=True yok).
+"kabuk/**" = ["S603", "S606", "S607"]
+
+[tool.ruff.lint.isort]
+known-first-party = [
+  "http_sunucu",
+  "http_istemci",
+  "websocket",
+  "web_catisi",
+  "orm",
+  "kripto_egitim",
+  "dns",
+  "kabuk",
+  "hiz_ve_vekil",
+  "eposta",
+  "sunucu_olaylari",
+  "tls_gozlem",
+  "p2p",
+  "destek",
+]
+
+[tool.mypy]
+python_version = "3.11"
+files = [
+  "http_sunucu",
+  "http_istemci",
+  "websocket",
+  "web_catisi",
+  "orm",
+  "kripto_egitim",
+  "dns",
+  "kabuk",
+  "hiz_ve_vekil",
+  "eposta",
+  "sunucu_olaylari",
+  "tls_gozlem",
+  "p2p",
+  "scripts",
+]
+strict = true
+warn_unused_ignores = true
+warn_unreachable = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# importlib kipi: farklı klasörlerde aynı adlı test dosyası (test_parser.py) olabilsin.
+addopts = "-q -p no:cacheprovider --strict-markers --import-mode=importlib"
+pythonpath = ["tests"]
+markers = [
+  "yavas: uzun süren test (hızlı denetimde atlanır; `python scripts/check.py --uzun` ile koşar)",
+  "tarayici: gerçek Chromium ister (PLAYWRIGHT_CHROMIUM_EXECUTABLE); yalnız `--uzun` ile koşar",
+]
+# Kapatılmamış soket/dosya (ResourceWarning) ve yakalanmamış görev hataları testi düşürür.
+filterwarnings = ["error"]

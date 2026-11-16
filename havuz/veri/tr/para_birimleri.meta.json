@@ -1,0 +1,49 @@
+{
+  "ad": "para_birimleri",
+  "baslik": "Yaygın para birimleri (ISO 4217)",
+  "aciklama": "40 yaygın para biriminin harf kodu, sayısal kodu, Türkçe adı, küsurat basamağı ve simgesi.",
+  "dosyalar": [
+    "para_birimleri.json",
+    "para_birimleri.csv"
+  ],
+  "kayit_sayisi": 40,
+  "alanlar": {
+    "kod": "ISO 4217 üç harfli kod.",
+    "sayisal_kod": "ISO 4217 üç haneli sayısal kod (baştaki sıfır korunur).",
+    "ad": "Türkçe adı (CLDR yazımı).",
+    "kusurat_basamagi": "ISO 4217 küsurat basamağı (TRY: 2, JPY: 0, KWD: 3).",
+    "simge": "Tek karakterli yaygın simge; yoksa null."
+  },
+  "kaynak": "Elle seçildi; değerler aşağıdaki kaynaklarla karşılaştırıldı.",
+  "lisans": "Olgusal veri (kodlar). Türkçe adlar Unicode CLDR yazımıyla aynıdır (Unicode License). ISO 4217 listesinin tamamının yeniden yayım koşulları belirsizdir; burada yalnız 40 kod vardır.",
+  "dogrulama": {
+    "yontem": "capraz-kaynak",
+    "tarih": "2026-11-16",
+    "aciklama": "Kod, sayısal kod ve küsurat iki kaynakla; Türkçe ad ve simge CLDR ile karşılaştırıldı.",
+    "kaynaklar": [
+      {
+        "ad": "datasets/currency-codes (ISO 4217 listesinin CSV derlemesi)",
+        "adres": "https://raw.githubusercontent.com/datasets/currency-codes/main/data/codes-all.csv",
+        "lisans": "ODC-PDDL-1.0 (yalnız derleme için)",
+        "sonuc": "40/40 kod, sayısal kod ve küsurat aynı."
+      },
+      {
+        "ad": "pycountry 26.2.16",
+        "adres": "https://pypi.org/project/pycountry/",
+        "lisans": "LGPL-2.1",
+        "sonuc": "40/40 sayısal kod aynı."
+      },
+      {
+        "ad": "Unicode CLDR (babel 2.18.0 ile gelen tr yereli)",
+        "adres": "https://pypi.org/project/Babel/",
+        "lisans": "BSD-3-Clause (babel) / Unicode License (CLDR)",
+        "sonuc": "40/40 Türkçe ad aynı; 8 simge aynı. IRR ve IQD için CLDR'nin pratik küsurat değeri 0'dır; burada ISO değeri (2 ve 3) verilmiştir."
+      }
+    ]
+  },
+  "guven": "yüksek",
+  "notlar": [
+    "BGN (Bulgar levası) bilerek yok: kaynak listede 2026-01 tarihli geri çekilme kaydı var (avroya geçiş).",
+    "Kur bilgisi içermez; günlük kur için örnek hat: python -m verihavuzu hat calistir tcmb_kurlari"
+  ]
+}

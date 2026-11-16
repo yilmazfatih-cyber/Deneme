@@ -1,0 +1,41 @@
+kod,sayisal_kod,ad,kusurat_basamagi,simge
+TRY,949,Türk lirası,2,₺
+USD,840,ABD doları,2,$
+EUR,978,Euro,2,€
+GBP,826,İngiliz sterlini,2,£
+CHF,756,İsviçre frangı,2,
+JPY,392,Japon yeni,0,¥
+CNY,156,Çin yuanı,2,
+RUB,643,Rus rublesi,2,
+SAR,682,Suudi Arabistan riyali,2,
+AED,784,Birleşik Arap Emirlikleri dirhemi,2,
+AZN,944,Azerbaycan manatı,2,
+KZT,398,Kazakistan tengesi,2,
+CAD,124,Kanada doları,2,
+AUD,036,Avustralya doları,2,
+SEK,752,İsveç kronu,2,
+NOK,578,Norveç kronu,2,
+DKK,208,Danimarka kronu,2,
+KWD,414,Kuveyt dinarı,3,
+QAR,634,Katar riyali,2,
+RON,946,Romen leyi,2,
+PLN,985,Polonya zlotisi,2,
+CZK,203,Çek korunası,2,
+HUF,348,Macar forinti,2,
+GEL,981,Gürcistan larisi,2,
+IRR,364,İran riyali,2,
+IQD,368,Irak dinarı,3,
+EGP,818,Mısır lirası,2,
+INR,356,Hindistan rupisi,2,₹
+KRW,410,Güney Kore wonu,0,₩
+UAH,980,Ukrayna grivnası,2,
+ILS,376,Yeni İsrail şekeli,2,₪
+BRL,986,Brezilya reali,2,
+MXN,484,Meksika pesosu,2,
+ZAR,710,Güney Afrika randı,2,
+SGD,702,Singapur doları,2,
+HKD,344,Hong Kong doları,2,
+NZD,554,Yeni Zelanda doları,2,
+BHD,048,Bahreyn dinarı,3,
+JOD,400,Ürdün dinarı,3,
+PKR,586,Pakistan rupisi,2,

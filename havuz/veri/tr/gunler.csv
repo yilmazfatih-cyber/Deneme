@@ -1,0 +1,8 @@
+no,ad,kisaltma,python_weekday,hafta_sonu
+1,Pazartesi,Pzt,0,false
+2,Salı,Sal,1,false
+3,Çarşamba,Çar,2,false
+4,Perşembe,Per,3,false
+5,Cuma,Cum,4,false
+6,Cumartesi,Cmt,5,true
+7,Pazar,Paz,6,true

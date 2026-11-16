@@ -1,0 +1,28 @@
+# Sanal ortam ve önbellekler
+.venv/
+__pycache__/
+*.pyc
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+*.egg-info/
+build/
+dist/
+
+# Ham ve hazırlanmış veri, eğitim çıktıları (depoya girmez)
+veri/
+calisma/
+*.bin
+*.pt
+*.gguf
+*.onnx
+*.onnx.data
+
+# Depoya bilerek giren model dosyaları (küçük; bkz. ornek-model/MODEL_KARTI.md)
+!ornek-model/tarayici/model.bin
+!tarayici/sinama/model.bin
+
+# Node (yalnız tarayıcı uçtan uca testi için)
+node_modules/
+test-results/
+playwright-report/

@@ -1,0 +1,18 @@
+# Sanal ortam ve önbellekler
+.venv/
+__pycache__/
+*.py[cod]
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.hypothesis/
+
+# Derleme çıktıları
+build/
+dist/
+*.egg-info/
+
+# Düzenleyici ve işletim sistemi
+.idea/
+.vscode/
+.DS_Store

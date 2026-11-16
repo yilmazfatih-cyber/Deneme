@@ -1,0 +1,70 @@
+{
+  "ad": "iller",
+  "baslik": "Türkiye'nin 81 ili",
+  "aciklama": "Plaka kodu, il adı, coğrafi bölge, büyükşehir olup olmadığı ve sabit hat alan kodları.",
+  "dosyalar": [
+    "iller.json",
+    "iller.csv"
+  ],
+  "kayit_sayisi": 81,
+  "alanlar": {
+    "plaka": "Plaka (trafik) kodu, 1–81. Posta kodunun ilk iki hanesi de budur.",
+    "ad": "İlin adı (yaygın resmî yazım).",
+    "bolge": "Yedi coğrafi bölgeden biri.",
+    "buyuksehir": "Büyükşehir belediyesi olan il mi (30 il)?",
+    "alan_kodlari": "Sabit hat telefon alan kodları (İstanbul: 212 Avrupa, 216 Anadolu yakası).",
+    "diger_adlar": "Aynı ilin başka yazımı ya da eski/kısa adı (eşleştirme için)."
+  },
+  "kaynak": "Elle derlendi; aşağıdaki bağımsız kaynaklarla alan alan karşılaştırıldı.",
+  "lisans": "Olgusal veri (telif konusu değildir); derleme ve biçim bu deponun lisansıyla dağıtılır.",
+  "dogrulama": {
+    "yontem": "capraz-kaynak",
+    "tarih": "2026-11-16",
+    "aciklama": "Plaka–ad eşlemesi altı kaynakta, bölge iki kaynakta, alan kodu üç kaynakta, büyükşehir bilgisi bir kaynakta denetlendi. Yeniden denetlemek için: python scripts/verify_reference.py",
+    "kaynaklar": [
+      {
+        "ad": "turkiye-api (veri kümesi 2025)",
+        "adres": "https://raw.githubusercontent.com/ubeydeozdmr/turkiye-api/main/datasets/2025/provinces.json",
+        "lisans": "MIT",
+        "sonuc": "ad 81/81, büyükşehir 81/81, alan kodu 81/81 aynı. Bölge 79/81: bu kaynak Çankırı'yı Marmara, Hakkari'yi Güneydoğu Anadolu yazıyor; ikisi de kaynağın hatası sayıldı."
+      },
+      {
+        "ad": "Memleketim (Hugging Face)",
+        "adres": "https://huggingface.co/datasets/oguzkaanatici/turkiye-81-il-973-ilce-memleketim",
+        "lisans": "MIT",
+        "sonuc": "ad 81/81, bölge 81/81 aynı (Çankırı: İç Anadolu, Hakkari: Doğu Anadolu). Alan kodu 81/81 aynı; İstanbul için yalnız 212 var."
+      },
+      {
+        "ad": "phonenumbers 9.0.43 (libphonenumber coğrafi verisi)",
+        "adres": "https://pypi.org/project/phonenumbers/",
+        "lisans": "Apache-2.0",
+        "sonuc": "82 alan kodunun 82'si aynı ile bağlı (Afyon, Eskisehir, Istanbul yazım farkıyla)."
+      },
+      {
+        "ad": "pycountry 26.2.16 (ISO 3166-2:TR)",
+        "adres": "https://pypi.org/project/pycountry/",
+        "lisans": "LGPL-2.1",
+        "sonuc": "kod–ad 81/81 aynı; tek yazım farkı Hakkâri (şapkalı). Yalnız karşılaştırma için kullanıldı."
+      },
+      {
+        "ad": "turkey-neighbourhoods 4.0.3",
+        "adres": "https://registry.npmjs.org/turkey-neighbourhoods",
+        "lisans": "MIT",
+        "sonuc": "plaka–ad 81/81 aynı; 73.305 mahalle kaydının tümünde posta kodunun ilk iki hanesi = plaka."
+      },
+      {
+        "ad": "enisbt/turkey-cities",
+        "adres": "https://raw.githubusercontent.com/enisbt/turkey-cities/master/cities.json",
+        "lisans": "MIT",
+        "sonuc": "plaka–ad 81/81 aynı."
+      }
+    ]
+  },
+  "guven": "yüksek",
+  "notlar": [
+    "Coğrafi bölge sınırları il sınırlarıyla tam örtüşmez; her il yaygın kabule göre tek bölgeye yazılmıştır.",
+    "Bu, istatistiki bölge sınıflaması (İBBS/NUTS) DEĞİLDİR.",
+    "Hakkari: TDK ve ISO 3166-2 yazımı 'Hakkâri'dir; kaynakların çoğu şapkasız yazar. İkisi de diger_adlar ile eşleşir.",
+    "Büyükşehir sayısı yasayla değişebilir; bu liste 30 ili içerir."
+  ]
+}

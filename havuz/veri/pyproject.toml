@@ -1,0 +1,79 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "verihavuzu"
+version = "0.1.0"
+description = "Türkçe başvuru verileri, sentetik veri üreteçleri, veri kalitesi araçları, veri hattı iskeleti ve açık veri kataloğu."
+readme = "README.md"
+requires-python = ">=3.11"
+# Çekirdek bağımlılık bilerek tektir: standart kitaplık + pydantic (bkz. docs/KARARLAR.md, K1).
+dependencies = ["pydantic>=2.9,<3"]
+
+[project.optional-dependencies]
+# Analiz: SQL sorguları ve Parquet çıktısı (duckdb), veri çerçevesi (pandas).
+analiz = ["duckdb>=1.1", "pandas>=2.2"]
+# Geliştirme: denetim araçları + yalnız testlerde kullanılan karşılaştırma kitaplıkları.
+dev = [
+  "pytest>=8",
+  "ruff>=0.9",
+  "mypy>=1.13",
+  "hypothesis>=6.100",
+  "python-stdnum>=1.20", # TCKN/VKN/IBAN/Luhn için bağımsız başvuru gerçeklemesi (yalnız test)
+  "pyyaml>=6",           # küçük YAML okuyucumuzu sınamak için başvuru (yalnız test)
+]
+
+[project.scripts]
+verihavuzu = "verihavuzu.cli.main:main"
+
+[tool.setuptools.packages.find]
+include = ["verihavuzu*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = [".venv", "calisma", "tests/fixtures"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "C4", "PIE", "RET", "RUF", "PTH", "S", "N"]
+ignore = [
+  "RUF001", # Türkçe metinde "ı", "İ" gibi harfler bilerek kullanılır
+  "RUF002",
+  "RUF003",
+  "S311",   # rastgelelik kriptografi için değil, tohumlu sentetik veri içindir
+  "S101",   # assert: testlerde ve iç değişmez denetimlerinde kullanılır
+  "SIM108",
+  "RET505",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S", "N802", "B011", "PTH"]
+"scripts/**" = ["S603", "S607"]
+
+[tool.ruff.lint.pep8-naming]
+# Pydantic doğrulayıcıları sınıf yöntemi gibi yazılır.
+classmethod-decorators = ["classmethod", "pydantic.field_validator", "pydantic.model_validator"]
+
+[tool.mypy]
+python_version = "3.11"
+files = ["verihavuzu", "scripts", "tests"]
+strict = true
+warn_unused_ignores = true
+plugins = ["pydantic.mypy"]
+
+[[tool.mypy.overrides]]
+module = ["yaml", "stdnum", "stdnum.*", "duckdb", "pandas", "pandas.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["tests.*"]
+disallow_untyped_decorators = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q -p no:cacheprovider --strict-markers"
+markers = [
+  "ag: gerçek ağ ister; yalnız VERIHAVUZU_AG=1 iken koşar",
+]
+filterwarnings = ["error"]

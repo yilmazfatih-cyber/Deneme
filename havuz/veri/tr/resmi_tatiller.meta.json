@@ -1,0 +1,39 @@
+{
+  "ad": "resmi_tatiller",
+  "baslik": "Sabit tarihli resmî tatiller",
+  "aciklama": "Her yıl aynı güne denk gelen ulusal bayram ve genel tatil günleri (2017 ve sonrası için).",
+  "dosyalar": [
+    "resmi_tatiller.json",
+    "resmi_tatiller.csv"
+  ],
+  "kayit_sayisi": 8,
+  "alanlar": {
+    "ay": "Ay (1–12).",
+    "gun": "Ayın günü.",
+    "ad": "Tatilin resmî adı.",
+    "tur": "tam_gun ya da yarim_gun (28 Ekim: saat 13.00'ten sonra).",
+    "ilk_yil": "Bu adla tatil olduğu ilk yıl (yalnız 2000'den sonra eklenenler için dolu)."
+  },
+  "kaynak": "Elle yazıldı (2429 sayılı Ulusal Bayram ve Genel Tatiller Hakkında Kanun'a göre).",
+  "lisans": "Olgusal veri (telif konusu değildir); derleme ve biçim bu deponun lisansıyla dağıtılır.",
+  "dogrulama": {
+    "yontem": "capraz-kaynak",
+    "tarih": "2026-11-16",
+    "aciklama": "2025–2027 yılları için holidays kitaplığının TR takvimiyle karşılaştırıldı.",
+    "kaynaklar": [
+      {
+        "ad": "holidays 0.108 (countries/turkey.py)",
+        "adres": "https://pypi.org/project/holidays/",
+        "lisans": "MIT",
+        "sonuc": "7 tam gün ve 28 Ekim yarım gün ad ve tarih olarak aynı; 1 Mayıs (2009) ve 15 Temmuz (2017) başlangıç yılları da aynı."
+      }
+    ]
+  },
+  "guven": "yüksek",
+  "notlar": [
+    "DİNÎ BAYRAMLAR YOK: Ramazan ve Kurban Bayramı tarihleri Hicrî takvime bağlıdır, her yıl yaklaşık 11 gün geri gelir ve resmî ilana dayanır. Hesapla üretilen tarih bir gün yanılabilir; yanlış veri eksik veriden kötü olduğu için bilerek dışarıda bırakıldı (bkz. docs/BASVURU_VERILERI.md).",
+    "Yalnız 2017 ve sonrası yıllar için kullanın (15 Temmuz 2017'de eklendi).",
+    "İdari izinler (köprü günleri) her yıl ayrı kararla belirlenir; burada yoktur.",
+    "Tatilin hafta sonuna denk gelmesi başka bir güne kaydırılmasına yol açmaz."
+  ]
+}

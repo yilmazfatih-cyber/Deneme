@@ -1,0 +1,43 @@
+kategori,kalip
+kargo,"Siparişim {gun} gündür kargoda, hâlâ teslim edilmedi."
+kargo,{siparis_no} numaralı siparişimin kargo takip numarası çalışmıyor.
+kargo,Kargom teslim edildi görünüyor ama elime ulaşmadı.
+kargo,{urun} siparişim yanlış adrese gönderilmiş.
+kargo,Kargo görevlisi gelmeden teslim edilemedi notu düşülmüş.
+kargo,Siparişimin teslimat tarihini değiştirmek istiyorum.
+kargo,{siparis_no} numaralı siparişim ne zaman kargoya verilecek?
+iade,"{urun} beklediğim gibi çıkmadı, iade etmek istiyorum."
+iade,İade kargo kodum {gun} gündür oluşturulmadı.
+iade,{siparis_no} numaralı siparişin iadesi onaylandı mı?
+iade,Ürünü iade ettim ama param hâlâ yatmadı.
+iade,{urun} için beden değişimi yapmak istiyorum.
+iade,İade süresi geçmeden başvurdum ama reddedildi.
+iade,Eksik gelen ürün için kısmi iade talep ediyorum.
+odeme,"Kartımdan iki kez çekim yapılmış, birinin iadesini istiyorum."
+odeme,Ödeme sayfasında {hata} hatası alıyorum.
+odeme,{siparis_no} numaralı siparişte taksit seçeneği görünmüyor.
+odeme,Havale ile ödeme yaptım ama siparişim onaylanmadı.
+odeme,İndirim kodum ödeme adımında uygulanmadı.
+odeme,Kapıda ödeme seçeneğini neden göremiyorum?
+odeme,Ödemem alındı ama sipariş oluşmadı.
+urun,{urun} kutusundan hasarlı çıktı.
+urun,Gelen {urun} sitedeki görselden farklı.
+urun,{urun} {gun} gün kullandıktan sonra bozuldu.
+urun,Sipariş ettiğim {urun} yerine başka bir ürün geldi.
+urun,{urun} paketinde eksik parça var.
+urun,{urun} için garanti belgesi gönderilmedi.
+urun,{urun} ne zaman tekrar stoğa girecek?
+hesap,Şifremi sıfırlama e-postası gelmiyor.
+hesap,Hesabıma giriş yaparken {hata} hatası alıyorum.
+hesap,Kayıtlı telefon numaramı değiştirmek istiyorum.
+hesap,Hesabımı kapatmak ve verilerimin silinmesini istiyorum.
+hesap,E-posta adresimi güncelleyemiyorum.
+hesap,Adres defterime yeni adres eklenmiyor.
+hesap,Bildirim tercihlerimi kaydedemiyorum.
+fatura,{siparis_no} numaralı siparişin faturası e-postama gelmedi.
+fatura,Faturayı şirket adına düzenletmek istiyorum.
+fatura,"Faturada adım yanlış yazılmış, düzeltilmesini rica ediyorum."
+fatura,E-arşiv faturamı nereden indirebilirim?
+fatura,Faturadaki tutar ödediğim tutarla uyuşmuyor.
+fatura,İade ettiğim ürün için iade faturası kesildi mi?
+fatura,Fatura adresimi sipariş sonrası değiştirebilir miyim?

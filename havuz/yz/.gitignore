@@ -1,0 +1,26 @@
+# Sanal ortam ve derleme çıktıları
+.venv/
+build/
+dist/
+*.egg-info/
+__pycache__/
+*.py[cod]
+
+# Araç önbellekleri
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+
+# Çalışma zamanı verileri (önbellek, günlük, dizin, rapor) — kişisel veri içerebilir
+.yz/
+*.log
+
+# Sırlar: yalnız .env.example depoya girer
+.env
+yz.yaml
+
+# Büyük dosyalar: model ağırlıkları depoya girmez
+*.safetensors
+*.gguf
+*.bin
+*.onnx

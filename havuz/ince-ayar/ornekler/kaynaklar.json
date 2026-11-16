@@ -1,0 +1,10 @@
+{
+  "aciklama": "Bu klasördeki dosyalar yalnız test ve deneme (fixture) içindir; gerçek eğitim verisi değildir.",
+  "dosyalar": {
+    "sohbet.jsonl": {"kaynak": "Bu temel için elle yazıldı (kurgusal mağaza)", "lisans": "MIT (depo lisansı)", "tarih": "2026-11-16", "satir": 12},
+    "siniflandirma.csv": {"kaynak": "Bu temel için elle yazıldı (kurgusal destek talepleri)", "lisans": "MIT (depo lisansı)", "tarih": "2026-11-16", "satir": 24},
+    "gomme.jsonl": {"kaynak": "Bu temel için elle yazıldı (kurgusal mağaza)", "lisans": "MIT (depo lisansı)", "tarih": "2026-11-16", "satir": 12},
+    "varlik.jsonl": {"kaynak": "Bu temel için elle yazıldı (kurgusal adlar)", "lisans": "MIT (depo lisansı)", "tarih": "2026-11-16", "satir": 12},
+    "tohumlar.jsonl": {"kaynak": "Bu temel için elle yazıldı (sentetik üretim hattının girdisi)", "lisans": "MIT (depo lisansı)", "tarih": "2026-11-16", "satir": 4}
+  }
+}

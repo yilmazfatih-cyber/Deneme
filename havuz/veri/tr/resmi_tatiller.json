@@ -1,0 +1,10 @@
+[
+  {"ay": 1, "gun": 1, "ad": "Yılbaşı", "tur": "tam_gun", "ilk_yil": null},
+  {"ay": 4, "gun": 23, "ad": "Ulusal Egemenlik ve Çocuk Bayramı", "tur": "tam_gun", "ilk_yil": null},
+  {"ay": 5, "gun": 1, "ad": "Emek ve Dayanışma Günü", "tur": "tam_gun", "ilk_yil": 2009},
+  {"ay": 5, "gun": 19, "ad": "Atatürk'ü Anma, Gençlik ve Spor Bayramı", "tur": "tam_gun", "ilk_yil": null},
+  {"ay": 7, "gun": 15, "ad": "Demokrasi ve Millî Birlik Günü", "tur": "tam_gun", "ilk_yil": 2017},
+  {"ay": 8, "gun": 30, "ad": "Zafer Bayramı", "tur": "tam_gun", "ilk_yil": null},
+  {"ay": 10, "gun": 28, "ad": "Cumhuriyet Bayramı (saat 13.00'ten sonra)", "tur": "yarim_gun", "ilk_yil": null},
+  {"ay": 10, "gun": 29, "ad": "Cumhuriyet Bayramı", "tur": "tam_gun", "ilk_yil": null}
+]

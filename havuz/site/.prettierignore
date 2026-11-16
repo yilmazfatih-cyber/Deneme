@@ -1,0 +1,11 @@
+node_modules
+dist
+dist-alt
+.astro
+test-results
+playwright-report
+package-lock.json
+docs/ekran
+# İçerik dosyalarının gövdesine biçimleyici dokunmaz (yazarın satır düzeni korunur).
+src/content/**/*.md
+src/content/**/*.mdx

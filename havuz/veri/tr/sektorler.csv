@@ -1,0 +1,17 @@
+kod,ad,unvan_sozcukleri
+gida,Gıda,Gıda|Tarım Ürünleri|Unlu Mamuller|Süt Ürünleri|Şarküteri
+tekstil,Tekstil,Tekstil|Konfeksiyon|Hazır Giyim|İplik|Örme
+insaat,İnşaat,İnşaat|Yapı|Mimarlık|Taahhüt|Yapı Malzemeleri
+otomotiv,Otomotiv,Otomotiv|Oto Yedek Parça|Oto Servis|Lastik
+lojistik,Lojistik,Lojistik|Nakliyat|Taşımacılık|Kargo
+bilisim,Bilişim,Bilişim|Yazılım|Teknoloji|Bilgisayar
+turizm,Turizm,Turizm|Otelcilik|Seyahat|Organizasyon
+saglik,Sağlık,Sağlık Hizmetleri|Medikal|Optik|Ecza Deposu
+egitim,Eğitim,Eğitim Kurumları|Kırtasiye|Yayıncılık|Danışmanlık
+enerji,Enerji,Enerji|Elektrik|Akaryakıt
+mobilya,Mobilya,Mobilya|Ahşap|Dekorasyon|Orman Ürünleri
+makine,Makine ve Metal,Makine|Metal|Döküm|Hırdavat
+kimya,Kimya ve Plastik,Kimya|Plastik|Boya|Ambalaj
+perakende,Perakende,Market|Mağazacılık|Züccaciye|Kuyumculuk
+tarim,Tarım ve Hayvancılık,Tarım|Hayvancılık|Seracılık|Fidancılık
+hizmet,Hizmet,Temizlik Hizmetleri|Güvenlik Hizmetleri|Sigorta Aracılık Hizmetleri|Gayrimenkul

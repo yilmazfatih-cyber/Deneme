@@ -1,0 +1,37 @@
+{
+  "name": "havuz-sifirdan-arayuz",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Sıfırdan dizisi, arayüz kolu: tepkisellik, sanal DOM, yönlendirici, e-tablo, düzenleyici, oyun motoru, ışın izleyici ve benzeri mini sistemler.",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "dev": "vite --port 8450",
+    "build": "vite build",
+    "preview": "vite preview --port 8451",
+    "typecheck": "tsc -p tsconfig.json",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "check": "npm run typecheck && npm run lint && npm run format:check && npm run test",
+    "e2e": "node scripts/e2e.ts",
+    "gen": "node scripts/gen.ts"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
+    "@eslint/js": "10.0.1",
+    "@playwright/test": "1.65.1",
+    "@types/node": "22.20.5",
+    "eslint": "10.15.0",
+    "globals": "17.14.0",
+    "jsdom": "31.0.1",
+    "prettier": "3.10.1",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "8.72.2",
+    "vite": "8.3.8",
+    "vitest": "5.1.0"
+  }
+}

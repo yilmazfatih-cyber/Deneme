@@ -1,0 +1,28 @@
+{
+  "ad": "adlar",
+  "baslik": "Yaygın Türkçe adlar (sentetik veri için)",
+  "aciklama": "Sentetik kişi üretmek için ad listesi ve adın yaygın kullanıldığı cinsiyet.",
+  "dosyalar": [
+    "adlar.json",
+    "adlar.csv"
+  ],
+  "kayit_sayisi": 282,
+  "alanlar": {
+    "ad": "Ad.",
+    "cinsiyet": "K (kadın) ya da E (erkek): adın yaygın kullanımı."
+  },
+  "kaynak": "Elle derlendi.",
+  "lisans": "Olgusal veri (telif konusu değildir); derleme ve biçim bu deponun lisansıyla dağıtılır.",
+  "dogrulama": {
+    "yontem": "bilinen-kume",
+    "tarih": "2026-11-16",
+    "aciklama": "Her girdinin Türkiye'de yaygın kullanılan bir ad olduğu derleyenin bilgisine dayanır. Yeniden dağıtıma uygun, yaygın adları içeren bağımsız bir kaynak bulunamadı: Faker 40.54 tr_TR listesi denendi ama kapsamı çok düşüktü (132 kadın adının 7'si), bu yüzden doğrulama sayılmadı.",
+    "kaynaklar": []
+  },
+  "guven": "orta",
+  "notlar": [
+    "İSTATİSTİK DEĞİLDİR: seçim ve sıra bir sıklık kaynağına dayanmaz; nüfus dağılımını yansıtmaz.",
+    "Amaç sentetik veri üretmektir; gerçek kişilerle eşleştirme ya da cinsiyet tahmini için kullanmayın.",
+    "İki cinsiyette de yaygın adlar (Deniz, Umut, Yaşar, Ege…) bilerek alınmadı."
+  ]
+}

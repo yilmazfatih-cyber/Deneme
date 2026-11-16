@@ -1,0 +1,247 @@
+{
+  "modul": "turkce",
+  "aciklama": "turkce modülünün iki dilde ortak sınama vektörleri. Biçim: islevler.<işlevAdı> = [{ girdi: [konumsal argümanlar], secenek?: {seçenekler}, cikti | hata: true }]. Python tarafı adları snake_case'e çevirir.",
+  "islevler": {
+    "upperTr": [
+      { "girdi": ["istanbul"], "cikti": "İSTANBUL" },
+      { "girdi": ["ısparta"], "cikti": "ISPARTA" },
+      { "girdi": ["Iğdır"], "cikti": "IĞDIR" },
+      { "girdi": ["çığ öğüt şiir"], "cikti": "ÇIĞ ÖĞÜT ŞİİR" },
+      { "girdi": ["i\u0307stanbul"], "cikti": "İSTANBUL", "not": "i + birleşik nokta tek harftir" },
+      { "girdi": ["abc123"], "cikti": "ABC123" },
+      { "girdi": ["Straße"], "cikti": "STRASSE" },
+      { "girdi": [""], "cikti": "" }
+    ],
+    "lowerTr": [
+      { "girdi": ["İSTANBUL"], "cikti": "istanbul" },
+      { "girdi": ["ISPARTA"], "cikti": "ısparta" },
+      { "girdi": ["IĞDIR"], "cikti": "ığdır" },
+      { "girdi": ["DİYARBAKIR"], "cikti": "diyarbakır" },
+      { "girdi": ["İ"], "cikti": "i", "not": "JS/Python yerleşik işlevi burada 2 karakter üretir" },
+      { "girdi": ["I\u0307STANBUL"], "cikti": "istanbul", "not": "ayrışık yazılmış İ" },
+      { "girdi": ["i\u0307"], "cikti": "i" },
+      { "girdi": [""], "cikti": "" }
+    ],
+    "capitalizeTr": [
+      { "girdi": ["istanbul"], "cikti": "İstanbul" },
+      { "girdi": ["ısparta"], "cikti": "Isparta" },
+      { "girdi": ["iPhone"], "cikti": "İPhone" },
+      { "girdi": ["çay"], "cikti": "Çay" },
+      { "girdi": ["ankara"], "cikti": "Ankara" },
+      { "girdi": [""], "cikti": "" }
+    ],
+    "titleCaseTr": [
+      { "girdi": ["İSTANBUL VE ANKARA"], "cikti": "İstanbul ve Ankara" },
+      { "girdi": ["ISPARTA'DA BİR GÜN"], "cikti": "Isparta'da Bir Gün" },
+      { "girdi": ["ali ile veli"], "cikti": "Ali ile Veli" },
+      { "girdi": ["ve sonra"], "cikti": "Ve Sonra" },
+      { "girdi": ["ÇANKAYA/ANKARA"], "cikti": "Çankaya/Ankara" },
+      { "girdi": ["ayşe-fatma yılmaz"], "cikti": "Ayşe-Fatma Yılmaz" },
+      { "girdi": ["ali de geldi mi"], "cikti": "Ali de Geldi mi" },
+      { "girdi": ["ali de geldi mi"], "secenek": { "smallWords": false }, "cikti": "Ali De Geldi Mi" },
+      { "girdi": ["a.ş."], "cikti": "A.Ş." },
+      { "girdi": ["3. kat"], "cikti": "3. Kat" },
+      { "girdi": ["iğne ipliğe ilişti"], "cikti": "İğne İpliğe İlişti" }
+    ],
+    "equalsIgnoreCaseTr": [
+      { "girdi": ["İSTANBUL", "istanbul"], "cikti": true },
+      { "girdi": ["ISPARTA", "ısparta"], "cikti": true },
+      { "girdi": ["ISPARTA", "isparta"], "cikti": false },
+      { "girdi": ["Çay", "çay"], "cikti": true },
+      { "girdi": ["a", "b"], "cikti": false }
+    ],
+    "asciiFold": [
+      { "girdi": ["Çağrı Öztürk Şimşek"], "cikti": "Cagri Ozturk Simsek" },
+      { "girdi": ["IĞDIR İSTANBUL ısparta"], "cikti": "IGDIR ISTANBUL isparta" },
+      { "girdi": ["hâlâ kâğıt"], "cikti": "hala kagit" },
+      { "girdi": ["café naïve"], "cikti": "cafe naive" },
+      { "girdi": ["Привет"], "cikti": "Привет" },
+      { "girdi": ["“merhaba” – dedi…"], "cikti": "\"merhaba\" - dedi..." },
+      { "girdi": ["Straße"], "cikti": "Strasse" }
+    ],
+    "normalizeForSearch": [
+      { "girdi": ["ŞİŞLİ"], "cikti": "sisli" },
+      { "girdi": ["sisli"], "cikti": "sisli" },
+      { "girdi": ["SISLI"], "cikti": "sisli" },
+      { "girdi": ["ISPARTA"], "cikti": "isparta" },
+      { "girdi": ["ısparta"], "cikti": "isparta" },
+      { "girdi": ["İsparta"], "cikti": "isparta" },
+      { "girdi": ["  Çağrı   Merkezi "], "cikti": "cagri merkezi" },
+      { "girdi": ["Kâğıt"], "cikti": "kagit" },
+      { "girdi": ["I\u0307stanbul"], "cikti": "istanbul" },
+      { "girdi": ["satır\tsonu\nyok"], "cikti": "satir sonu yok" }
+    ],
+    "slugify": [
+      { "girdi": ["Çağrı Merkezi – İletişim"], "cikti": "cagri-merkezi-iletisim" },
+      { "girdi": ["  Merhaba, Dünya!  "], "cikti": "merhaba-dunya" },
+      { "girdi": ["Ankara'nın Yolları"], "cikti": "ankaranin-yollari" },
+      { "girdi": ["ISPARTA Gülü 2026"], "cikti": "isparta-gulu-2026" },
+      { "girdi": ["a b c"], "secenek": { "separator": "_" }, "cikti": "a_b_c" },
+      { "girdi": ["uzun bir başlık örneği"], "secenek": { "maxLength": 12 }, "cikti": "uzun-bir" },
+      { "girdi": ["uzun bir başlık örneği"], "secenek": { "maxLength": 8 }, "cikti": "uzun-bir" },
+      { "girdi": ["uzun bir başlık örneği"], "secenek": { "maxLength": 3 }, "cikti": "uzu" },
+      { "girdi": ["!!!"], "cikti": "" },
+      { "girdi": [""], "cikti": "" }
+    ],
+    "sortTr": [
+      {
+        "girdi": [["zil", "çay", "cam", "şeker", "su", "ığdır", "irmik", "ağaç", "güneş", "gül"]],
+        "cikti": ["ağaç", "cam", "çay", "gül", "güneş", "ığdır", "irmik", "su", "şeker", "zil"]
+      },
+      {
+        "girdi": [
+          ["Zeynep", "ali", "Ali", "Çağla", "Can", "İpek", "Irmak", "Ömer", "Oya", "Ümit", "Ufuk", "Şule", "Selin"]
+        ],
+        "cikti": [
+          "ali",
+          "Ali",
+          "Can",
+          "Çağla",
+          "Irmak",
+          "İpek",
+          "Oya",
+          "Ömer",
+          "Selin",
+          "Şule",
+          "Ufuk",
+          "Ümit",
+          "Zeynep"
+        ]
+      },
+      {
+        "girdi": [["Sokak 10", "Sokak 2", "Sokak 1"]],
+        "secenek": { "numeric": true },
+        "cikti": ["Sokak 1", "Sokak 2", "Sokak 10"]
+      },
+      { "girdi": [["Sokak 10", "Sokak 2", "Sokak 1"]], "cikti": ["Sokak 1", "Sokak 10", "Sokak 2"] },
+      {
+        "girdi": [["kâr", "Kar", "kar"]],
+        "cikti": ["kar", "Kar", "kâr"],
+        "not": "önce şapka farkı, sonra büyük-küçük farkı"
+      },
+      { "girdi": [["aliveli", "ali veli", "ali"]], "cikti": ["ali", "ali veli", "aliveli"] },
+      { "girdi": [["b", "a", "1", "-", "Z", " "]], "cikti": [" ", "-", "1", "a", "b", "Z"] },
+      {
+        "girdi": [["Şırnak", "Sivas", "Çorum", "Çanakkale", "Iğdır", "İzmir", "Uşak", "Ünye", "Ordu", "Ödemiş"]],
+        "cikti": ["Çanakkale", "Çorum", "Iğdır", "İzmir", "Ordu", "Ödemiş", "Sivas", "Şırnak", "Uşak", "Ünye"]
+      }
+    ],
+    "compareTr": [
+      { "girdi": ["çay", "cam"], "cikti": 1 },
+      { "girdi": ["cam", "çay"], "cikti": -1 },
+      { "girdi": ["ı", "i"], "cikti": -1 },
+      { "girdi": ["I", "i"], "cikti": -1 },
+      { "girdi": ["İ", "ı"], "cikti": 1 },
+      { "girdi": ["z", "ş"], "cikti": 1 },
+      { "girdi": ["a", "a"], "cikti": 0 },
+      { "girdi": ["c", "ç"], "cikti": -1 },
+      { "girdi": ["ç", "d"], "cikti": -1 },
+      { "girdi": ["g", "ğ"], "cikti": -1 },
+      { "girdi": ["ğ", "h"], "cikti": -1 },
+      { "girdi": ["o", "ö"], "cikti": -1 },
+      { "girdi": ["ö", "p"], "cikti": -1 },
+      { "girdi": ["p", "q"], "cikti": -1 },
+      { "girdi": ["q", "r"], "cikti": -1 },
+      { "girdi": ["s", "ş"], "cikti": -1 },
+      { "girdi": ["ş", "t"], "cikti": -1 },
+      { "girdi": ["u", "ü"], "cikti": -1 },
+      { "girdi": ["ü", "v"], "cikti": -1 },
+      { "girdi": ["w", "x"], "cikti": -1 },
+      { "girdi": ["Dosya 2", "Dosya 10"], "secenek": { "numeric": true }, "cikti": -1 },
+      { "girdi": ["Dosya 2", "Dosya 10"], "cikti": 1 }
+    ],
+    "syllabify": [
+      { "girdi": ["merhaba"], "cikti": ["mer", "ha", "ba"] },
+      { "girdi": ["saat"], "cikti": ["sa", "at"] },
+      { "girdi": ["kontrol"], "cikti": ["kont", "rol"] },
+      { "girdi": ["Türkçe"], "cikti": ["Türk", "çe"] },
+      { "girdi": ["elektrik"], "cikti": ["e", "lekt", "rik"] },
+      { "girdi": ["program"], "cikti": ["prog", "ram"] },
+      { "girdi": ["İstanbul"], "cikti": ["İs", "tan", "bul"] },
+      { "girdi": ["Ankara'ya"], "cikti": ["An", "ka", "ra'", "ya"] },
+      { "girdi": ["İzmir'e"], "cikti": ["İz", "mi", "r'e"] },
+      { "girdi": ["tren"], "cikti": ["tren"] },
+      { "girdi": ["şair"], "cikti": ["şa", "ir"] },
+      { "girdi": ["altlık"], "cikti": ["alt", "lık"] },
+      { "girdi": ["dağı"], "cikti": ["da", "ğı"] },
+      { "girdi": ["ilkokul"], "cikti": ["il", "ko", "kul"] },
+      { "girdi": ["Iğdır"], "cikti": ["Iğ", "dır"] },
+      { "girdi": ["öğretmen"], "cikti": ["öğ", "ret", "men"] },
+      { "girdi": ["arabalarımızdan"], "cikti": ["a", "ra", "ba", "la", "rı", "mız", "dan"] },
+      { "girdi": ["TBMM"], "cikti": ["TBMM"] },
+      { "girdi": ["a"], "cikti": ["a"] },
+      { "girdi": [""], "cikti": [] }
+    ],
+    "hyphenate": [
+      { "girdi": ["merhaba dünya"], "cikti": "mer-ha-ba dün-ya" },
+      { "girdi": ["kitap", "·"], "cikti": "ki·tap" },
+      { "girdi": [""], "cikti": "" }
+    ],
+    "countSyllables": [
+      { "girdi": ["merhaba"], "cikti": 3 },
+      { "girdi": ["tren"], "cikti": 1 },
+      { "girdi": [""], "cikti": 0 }
+    ],
+    "isVowel": [
+      { "girdi": ["a"], "cikti": true },
+      { "girdi": ["I"], "cikti": true },
+      { "girdi": ["İ"], "cikti": true },
+      { "girdi": ["â"], "cikti": true },
+      { "girdi": ["b"], "cikti": false },
+      { "girdi": ["ğ"], "cikti": false },
+      { "girdi": [""], "cikti": false }
+    ],
+    "lastVowel": [
+      { "girdi": ["Ankara"], "cikti": "a" },
+      { "girdi": ["İzmir"], "cikti": "i" },
+      { "girdi": ["ÜSKÜDAR"], "cikti": "a" },
+      { "girdi": ["IĞDIR"], "cikti": "ı" },
+      { "girdi": ["Bolu"], "cikti": "u" },
+      { "girdi": ["Göl"], "cikti": "ö" },
+      { "girdi": ["kâr"], "cikti": "a" },
+      { "girdi": ["TBMM"], "cikti": null }
+    ],
+    "harmonyTwoWay": [
+      { "girdi": ["Ankara"], "cikti": "a" },
+      { "girdi": ["İzmir"], "cikti": "e" },
+      { "girdi": ["göl"], "cikti": "e" },
+      { "girdi": ["okul"], "cikti": "a" },
+      { "girdi": ["kız"], "cikti": "a" },
+      { "girdi": ["TBMM"], "cikti": "e" }
+    ],
+    "harmonyFourWay": [
+      { "girdi": ["Ankara"], "cikti": "ı" },
+      { "girdi": ["İzmir"], "cikti": "i" },
+      { "girdi": ["göl"], "cikti": "ü" },
+      { "girdi": ["okul"], "cikti": "u" },
+      { "girdi": ["kız"], "cikti": "ı" },
+      { "girdi": ["süt"], "cikti": "ü" },
+      { "girdi": ["ev"], "cikti": "i" },
+      { "girdi": ["yol"], "cikti": "u" }
+    ],
+    "endsWithVowel": [
+      { "girdi": ["Ankara"], "cikti": true },
+      { "girdi": ["İzmir"], "cikti": false },
+      { "girdi": ["Ayşe!"], "cikti": true },
+      { "girdi": [""], "cikti": false }
+    ],
+    "endsWithVoiceless": [
+      { "girdi": ["Zonguldak"], "cikti": true },
+      { "girdi": ["Ahmet"], "cikti": true },
+      { "girdi": ["kitap"], "cikti": true },
+      { "girdi": ["ağaç"], "cikti": true },
+      { "girdi": ["İzmir"], "cikti": false },
+      { "girdi": ["Ankara"], "cikti": false },
+      { "girdi": ["Tekirdağ"], "cikti": false }
+    ],
+    "hasVowelHarmony": [
+      { "girdi": ["okul"], "cikti": true },
+      { "girdi": ["öğretmen"], "cikti": true },
+      { "girdi": ["çiçek"], "cikti": true },
+      { "girdi": ["kitap"], "cikti": false },
+      { "girdi": ["kalem"], "cikti": false },
+      { "girdi": ["anne"], "cikti": false },
+      { "girdi": ["TBMM"], "cikti": true }
+    ]
+  }
+}

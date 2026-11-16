@@ -1,0 +1,104 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "havuz-yz"
+version = "0.1.0"
+description = "Küçük dil modelleriyle güvenilir uygulama temeli: sağlayıcı katmanı, yapılı çıktı, ajan, RAG, değerlendirme, MCP, sohbet sunucusu."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+dependencies = [
+  "httpx>=0.28,<1",
+  "pydantic>=2.9,<3",
+  "numpy>=2.0,<3",
+  "pyyaml>=6,<7",
+]
+
+[project.optional-dependencies]
+# Sohbet sunucusu ve arayüz (python -m yz sun)
+sunucu = ["fastapi>=0.115,<1", "uvicorn>=0.30,<1"]
+# Model Context Protocol sunucusu ve köprüsü (python -m yz mcp)
+mcp = ["mcp>=2,<3"]
+# PDF okuma (rag/yukleyici.py)
+belge = ["pypdf>=5,<7"]
+# Anthropic bağdaştırıcısı (saglayici/anthropic_bagdastirici.py)
+anthropic = ["anthropic>=2,<3"]
+# Yerel gömme modeli (rag/gomme.py: CumleDonusturucuGomme); torch çeker, ağırdır
+yerel = ["sentence-transformers>=3"]
+# Tarayıcıyla uçtan uca test (tests/e2e; YZ_E2E=1)
+e2e = ["playwright>=1.50", "axe-playwright-python>=0.1.4"]
+# Geliştirme: denetim (scripts/check.py) için gereken her şey
+dev = [
+  "havuz-yz[sunucu,mcp,belge,anthropic]",
+  "ruff>=0.17,<1",
+  "mypy>=2,<3",
+  "pytest>=9,<10",
+  "types-PyYAML>=6",
+]
+
+[project.scripts]
+yz = "yz.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["yz*"]
+
+[tool.setuptools.package-data]
+yz = ["web/*.html", "web/*.json", "istem/sablonlar/*.txt", "py.typed"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = [".venv", "build", "dist"]
+
+[tool.ruff.lint]
+select = [
+  "E", "F", "W",   # pycodestyle + pyflakes
+  "I",             # içe aktarma sırası
+  "UP",            # güncel sözdizimi
+  "B",             # olası hatalar
+  "SIM",           # sadeleştirme
+  "C4",            # kapsamalar
+  "RUF",           # ruff'ın kendi kuralları
+  "S",             # güvenlik (bandit)
+  "PLC2401", "PLC2403",  # ASCII olmayan ad (yanıt, araç…) yasak
+  "ANN001", "ANN201", "ANN202",  # tip imzası zorunlu
+]
+ignore = [
+  "E501",    # satır uzunluğunu biçimleyici yönetir
+  "RUF001", "RUF002", "RUF003",  # Türkçe karakterler "belirsiz" sayılmasın
+  "S101",    # assert: testlerde ve içsel değişmezlerde kullanılır
+  "SIM108",  # üçlü ifade zorlaması okunurluğu düşürüyor
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S", "ANN", "B011"]
+"araclar/**" = ["S104"]
+"scripts/**" = ["S603", "S607"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_unused_ignores = true
+warn_unreachable = true
+files = ["yz", "scripts", "tests", "ornekler"]
+exclude = ["^tests/e2e/"]
+
+[[tool.mypy.overrides]]
+module = ["sentence_transformers", "sentence_transformers.*", "pypdf", "pypdf.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["tests.*"]
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+disallow_untyped_calls = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q -p no:cacheprovider"
+markers = [
+  "canli: gerçek bir model ucuna bağlanır (YZ_CANLI=1 ile açılır)",
+  "e2e: tarayıcıyla uçtan uca (YZ_E2E=1 ile açılır)",
+]

@@ -1,0 +1,18 @@
+{
+  "name": "@uygulama/shared",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Ortak sözleşme: varlık şemaları, API şemaları, eşitleme protokolü ve saf birleştirme mantığı",
+  "exports": {
+    ".": "./src/index.ts",
+    "./testing": "./src/testing/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "zod": "^4.6.7"
+  }
+}

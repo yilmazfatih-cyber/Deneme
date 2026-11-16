@@ -1,0 +1,12 @@
+{"sorgu": "kargo kaç günde gelir", "olumlu": "Siparişler onaylandıktan sonra üç iş günü içinde teslim edilir.", "olumsuz": "Mağazamız cumartesi günleri açıktır."}
+{"sorgu": "iade süresi ne kadar", "olumlu": "Ürünü teslim aldıktan sonra on dört gün içinde iade edebilirsiniz.", "olumsuz": "Kredi kartı ve havale ile ödeme kabul edilir."}
+{"sorgu": "şifremi nasıl sıfırlarım", "olumlu": "Giriş sayfasındaki bağlantıyla e-postanıza şifre sıfırlama iletisi gönderilir."}
+{"sorgu": "fatura adresi değişikliği", "olumlu": "Fatura adresi, sipariş kargoya verilmeden önce hesap ayarlarından değiştirilebilir."}
+{"sorgu": "hangi kartlar geçerli", "olumlu": "Kredi kartı, banka kartı ve havale ile ödeme yapılabilir."}
+{"sorgu": "siparişi iptal etme", "olumlu": "Hazırlanmamış siparişler 'Siparişlerim' sayfasından iptal edilir."}
+{"sorgu": "ücretsiz kargo sınırı", "olumlu": "Beş yüz lira ve üzeri alışverişlerde kargo ücreti alınmaz."}
+{"sorgu": "hediye paketi var mı", "olumlu": "Sepet adımında hediye paketi seçeneği işaretlenebilir."}
+{"sorgu": "pazar günü açık mısınız", "olumlu": "Mağaza cumartesi açık, pazar günü kapalıdır."}
+{"sorgu": "toplu alımda indirim", "olumlu": "Elli adet ve üzeri siparişlerde yüzde on indirim yapılır."}
+{"sorgu": "eksik ürün bildirimi", "olumlu": "Eksik gelen ürün için sipariş numarasıyla destek formu doldurulur."}
+{"sorgu": "yurt dışı gönderim", "olumlu": "Gönderim yalnız Türkiye içine yapılmaktadır."}

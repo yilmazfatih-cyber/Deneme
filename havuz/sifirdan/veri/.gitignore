@@ -1,0 +1,22 @@
+# Sanal ortam ve araç önbellekleri
+.venv/
+__pycache__/
+*.py[cod]
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.hypothesis/
+*.egg-info/
+build/
+dist/
+
+# Mini sistemlerin çalışırken ürettiği yerel dosyalar (depoya girmez)
+*.sqlite
+*.sqlite3
+*.db
+*.sst
+*.log
+*.snapshot
+.minigit/
+calisma/
+.env

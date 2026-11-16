@@ -1,0 +1,23 @@
+# Sanal ortam ve önbellekler
+.venv/
+__pycache__/
+*.py[cod]
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+
+# Derleme çıktıları
+build/
+dist/
+*.egg-info/
+
+# `python -m ml_temel egit` çıktıları (model, rapor) ve ölçüm dosyaları
+ciktilar/
+*.pkl
+*.npz
+!ornekler/veri/*.npz
+
+# Düzenleyici ve işletim sistemi
+.idea/
+.vscode/
+.DS_Store

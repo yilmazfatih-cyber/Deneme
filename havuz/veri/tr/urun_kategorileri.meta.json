@@ -1,0 +1,31 @@
+{
+  "ad": "urun_kategorileri",
+  "baslik": "Ürün kategorileri (sentetik veri için)",
+  "aciklama": "Sentetik ürün kataloğu için kategori, alt kategori, ürün adları, kurgusal fiyat aralığı ve KDV grubu.",
+  "dosyalar": [
+    "urun_kategorileri.json",
+    "urun_kategorileri.csv"
+  ],
+  "kayit_sayisi": 24,
+  "alanlar": {
+    "kategori": "Üst kategori.",
+    "alt_kategori": "Alt kategori.",
+    "urun_adlari": "Bu alt kategorideki ürün adları.",
+    "kurgusal_en_az_fiyat": "KURGUSAL en düşük fiyat (TL, KDV dahil).",
+    "kurgusal_en_cok_fiyat": "KURGUSAL en yüksek fiyat (TL, KDV dahil).",
+    "kurgusal_kdv_grubu": "KURGUSAL KDV grubu: dusuk, indirimli ya da genel (oranlar üreteç ayarındadır)."
+  },
+  "kaynak": "Elle yazıldı.",
+  "lisans": "Bu depo için elle yazıldı; deponun lisansıyla dağıtılır.",
+  "dogrulama": {
+    "yontem": "tasarim",
+    "tarih": "2026-11-16",
+    "aciklama": "Olgu iddiası taşımaz: sentetik veri üretmek için yazılmış sözcük ve kalıp listesidir. Testler biçimi (boş değer, yineleme, kalıp yuvaları) denetler.",
+    "kaynaklar": []
+  },
+  "guven": "orta",
+  "notlar": [
+    "Fiyat aralıkları piyasa verisi DEĞİLDİR; yalnız makul görünen sayılar üretmek içindir.",
+    "KDV grubu ataması kurgusaldır: bir ürünün gerçek KDV oranı için mevzuata bakın."
+  ]
+}

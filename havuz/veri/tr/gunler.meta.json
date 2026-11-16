@@ -1,0 +1,34 @@
+{
+  "ad": "gunler",
+  "baslik": "Haftanın günleri",
+  "aciklama": "Gün numarası (ISO 8601: Pazartesi = 1), adı, kısaltması ve hafta sonu bilgisi.",
+  "dosyalar": [
+    "gunler.json",
+    "gunler.csv"
+  ],
+  "kayit_sayisi": 7,
+  "alanlar": {
+    "no": "ISO 8601 gün numarası: Pazartesi 1 … Pazar 7 (Python date.isoweekday()).",
+    "ad": "Günün adı.",
+    "kisaltma": "Üç harfli kısaltma.",
+    "python_weekday": "Python date.weekday() değeri: Pazartesi 0 … Pazar 6.",
+    "hafta_sonu": "Cumartesi ve Pazar için true."
+  },
+  "kaynak": "Elle yazıldı.",
+  "lisans": "Olgusal veri (telif konusu değildir); derleme ve biçim bu deponun lisansıyla dağıtılır.",
+  "dogrulama": {
+    "yontem": "capraz-kaynak",
+    "tarih": "2026-11-16",
+    "aciklama": "Adlar, kısaltmalar, haftanın ilk günü ve hafta sonu CLDR tr yereliyle karşılaştırıldı.",
+    "kaynaklar": [
+      {
+        "ad": "Unicode CLDR (babel 2.18.0 ile gelen tr yereli)",
+        "adres": "https://pypi.org/project/Babel/",
+        "lisans": "BSD-3-Clause (babel) / Unicode License (CLDR)",
+        "sonuc": "7/7 ad ve kısaltma aynı; hafta Pazartesi başlar, hafta sonu Cmt–Paz."
+      }
+    ]
+  },
+  "guven": "yüksek",
+  "notlar": []
+}

@@ -1,0 +1,55 @@
+{
+  "ad": "ilceler",
+  "baslik": "Türkiye'nin 973 ilçesi",
+  "aciklama": "Her ilçenin bağlı olduğu il (plaka ve ad) ile ilçe adı.",
+  "dosyalar": [
+    "ilceler.json",
+    "ilceler.csv"
+  ],
+  "kayit_sayisi": 973,
+  "alanlar": {
+    "plaka": "İlin plaka kodu (iller.json ile aynı).",
+    "il": "İl adı.",
+    "ilce": "İlçe adı."
+  },
+  "kaynak": "turkiye-api, datasets/2025/districts.json (veri kümesi sürümü 2025, son güncelleme 2026-05-21; kaynak olarak TÜİK MEDAS gösteriliyor). 2026-11-16'da alındı; yalnız il–ilçe adları kullanıldı.",
+  "lisans": "MIT (turkiye-api © 2022-2026 Ubeyde Emir Özdemir). Atıf metni: tr/ATIFLAR.md",
+  "dogrulama": {
+    "yontem": "capraz-kaynak",
+    "tarih": "2026-11-16",
+    "aciklama": "İl bazında ilçe adı kümeleri dört kaynakla karşılaştırıldı; ikisiyle harfi harfine aynı. Yeniden denetlemek için: python scripts/verify_reference.py",
+    "kaynaklar": [
+      {
+        "ad": "turkey-neighbourhoods 4.0.3 (PTT posta kodu listesinden)",
+        "adres": "https://registry.npmjs.org/turkey-neighbourhoods",
+        "lisans": "MIT",
+        "sonuc": "973/973 ad harfi harfine aynı."
+      },
+      {
+        "ad": "Memleketim (Hugging Face)",
+        "adres": "https://huggingface.co/datasets/oguzkaanatici/turkiye-81-il-973-ilce-memleketim",
+        "lisans": "MIT",
+        "sonuc": "973/973 ad harfi harfine aynı."
+      },
+      {
+        "ad": "turkey-location-data 1.1.1",
+        "adres": "https://registry.npmjs.org/turkey-location-data",
+        "lisans": "Apache-2.0",
+        "sonuc": "971/973 aynı; iki yazım farkı: 'Kemalpaşa (Artvin)' ve 'Bahşili' (bizde Kemalpaşa, Bahşılı)."
+      },
+      {
+        "ad": "enisbt/turkey-cities (2017)",
+        "adres": "https://raw.githubusercontent.com/enisbt/turkey-cities/master/cities.json",
+        "lisans": "MIT",
+        "sonuc": "967/973 aynı; o kaynakta Refahiye eksik ve beş yazım hatası var (gülova, yenifakıllı, sarıevliler, bahşili, gerçüş)."
+      }
+    ]
+  },
+  "guven": "yüksek",
+  "notlar": [
+    "51 ilde merkez ilçe 'Merkez' adıyla yer alır; 30 büyükşehirde 'Merkez' adlı ilçe yoktur (test bunu korur).",
+    "Aynı ad farklı illerde yinelenebilir (898 benzersiz ad); benzersiz anahtar (plaka, ilce) çiftidir.",
+    "Samsun'un '19 Mayıs' ilçesi kaynaklarda rakamla yazılır.",
+    "İlçe kurulması/kaldırılması yasayla olur; liste 2025 veri kümesine göredir."
+  ]
+}

@@ -1,0 +1,15 @@
+# Kurulum ve derleme çıktıları — depoya girmez
+node_modules/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+coverage/
+.vitest/
+*.log
+.DS_Store

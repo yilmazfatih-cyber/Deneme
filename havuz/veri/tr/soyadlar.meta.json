@@ -1,0 +1,27 @@
+{
+  "ad": "soyadlar",
+  "baslik": "Yaygın Türkçe soyadlar (sentetik veri için)",
+  "aciklama": "Sentetik kişi ve şirket unvanı üretmek için soyad listesi.",
+  "dosyalar": [
+    "soyadlar.json",
+    "soyadlar.csv"
+  ],
+  "kayit_sayisi": 253,
+  "alanlar": {
+    "soyad": "Soyad."
+  },
+  "kaynak": "Elle derlendi.",
+  "lisans": "Olgusal veri (telif konusu değildir); derleme ve biçim bu deponun lisansıyla dağıtılır.",
+  "dogrulama": {
+    "yontem": "bilinen-kume",
+    "tarih": "2026-11-16",
+    "aciklama": "Her girdinin Türkiye'de kullanılan bir soyad olduğu derleyenin bilgisine dayanır; bağımsız kaynakla doğrulanamadı (Faker tr_TR listesinde 253 soyadın 20'si var).",
+    "kaynaklar": []
+  },
+  "guven": "orta",
+  "notlar": [
+    "İSTATİSTİK DEĞİLDİR: seçim ve sıra bir sıklık kaynağına dayanmaz; nüfus dağılımını yansıtmaz.",
+    "Amaç sentetik veri üretmektir; gerçek kişilerle eşleştirme ya da cinsiyet tahmini için kullanmayın.",
+    "Liste kabaca 'sık duyulanlar başta' sıralıdır; üreteçler bu sırayı hafif ağırlık olarak kullanır."
+  ]
+}

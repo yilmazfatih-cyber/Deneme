@@ -1,0 +1,27 @@
+{
+  "ad": "sektorler",
+  "baslik": "Sektörler ve unvan sözcükleri (sentetik veri için)",
+  "aciklama": "Sentetik şirket üretmek için sektör listesi ve unvanda geçebilecek sözcükler.",
+  "dosyalar": [
+    "sektorler.json",
+    "sektorler.csv"
+  ],
+  "kayit_sayisi": 16,
+  "alanlar": {
+    "kod": "Kısa kod (ASCII).",
+    "ad": "Sektör adı.",
+    "unvan_sozcukleri": "Şirket unvanında kullanılacak sözcükler."
+  },
+  "kaynak": "Elle yazıldı.",
+  "lisans": "Bu depo için elle yazıldı; deponun lisansıyla dağıtılır.",
+  "dogrulama": {
+    "yontem": "tasarim",
+    "tarih": "2026-11-16",
+    "aciklama": "Olgu iddiası taşımaz: sentetik veri üretmek için yazılmış sözcük ve kalıp listesidir. Testler biçimi (boş değer, yineleme, kalıp yuvaları) denetler.",
+    "kaynaklar": []
+  },
+  "guven": "orta",
+  "notlar": [
+    "Resmî faaliyet sınıflaması (NACE) DEĞİLDİR; yalnız sentetik veri çeşitliliği içindir."
+  ]
+}

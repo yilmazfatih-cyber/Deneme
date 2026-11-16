@@ -1,0 +1,36 @@
+{
+  "ad": "banka_kodlari",
+  "baslik": "Bazı bankaların IBAN banka kodları",
+  "aciklama": "TR IBAN'ın 5 haneli banka kodu ile banka adı (12 büyük banka; tam liste değildir).",
+  "dosyalar": [
+    "banka_kodlari.json",
+    "banka_kodlari.csv"
+  ],
+  "kayit_sayisi": 12,
+  "alanlar": {
+    "kod": "5 haneli banka kodu (IBAN'da 5.–9. karakterler).",
+    "kisa_ad": "Yaygın kısa ad.",
+    "unvan": "Kaynaktaki tam unvan."
+  },
+  "kaynak": "Elle seçildi; kod–banka eşlemesi schwifty kaydıyla karşılaştırıldı, unvan o kayıttan alındı.",
+  "lisans": "Olgusal veri; unvan yazımı schwifty (MIT) kaydıyla aynıdır. Atıf metni: tr/ATIFLAR.md",
+  "dogrulama": {
+    "yontem": "capraz-kaynak",
+    "tarih": "2026-11-16",
+    "aciklama": "Derleyenin bildiği kodlar schwifty'nin elle derlenmiş Türkiye kaydıyla karşılaştırıldı.",
+    "kaynaklar": [
+      {
+        "ad": "schwifty 2026.11.2 (bank_registry/manual_tr.json)",
+        "adres": "https://pypi.org/project/schwifty/",
+        "lisans": "MIT",
+        "sonuc": "12/12 kod–banka eşlemesi aynı. Katılım bankaları o kayıtta olmadığı için listeye alınmadı."
+      }
+    ]
+  },
+  "guven": "orta",
+  "notlar": [
+    "Resmî listeye (TCMB/BKM) erişilemedi; bu yüzden güven 'orta' ve liste bilerek kısa.",
+    "Banka unvanları birleşme ve ad değişikliğiyle değişebilir; kısa adlar marka adı değil, tanıtıcıdır.",
+    "Sentetik IBAN üreteci bu kodları kullanır; üretilen hesap numaraları rastgeledir."
+  ]
+}

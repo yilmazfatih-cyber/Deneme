@@ -1,0 +1,25 @@
+kategori,alt_kategori,urun_adlari,kurgusal_en_az_fiyat,kurgusal_en_cok_fiyat,kurgusal_kdv_grubu
+Giyim,Gömlek,Keten Gömlek|Oxford Gömlek|Oduncu Gömlek|Poplin Gömlek,600,2500,indirimli
+Giyim,Tişört,Basic Tişört|Polo Yaka Tişört|Oversize Tişört|Baskılı Tişört,250,1200,indirimli
+Giyim,Pantolon,Kot Pantolon|Keten Pantolon|Kumaş Pantolon|Eşofman Altı,700,3000,indirimli
+Giyim,Elbise,Yazlık Elbise|Triko Elbise|Gömlek Elbise|Abiye Elbise,900,6000,indirimli
+Giyim,Dış Giyim,Şişme Mont|Kaban|Trençkot|Yağmurluk,1800,9000,indirimli
+Ayakkabı,Spor Ayakkabı,Koşu Ayakkabısı|Günlük Spor Ayakkabı|Yürüyüş Ayakkabısı,1500,7000,indirimli
+Ayakkabı,Bot,Deri Bot|Kar Botu|Yağmur Botu,2000,9000,indirimli
+Elektronik,Telefon Aksesuarı,Telefon Kılıfı|Şarj Kablosu|Kablosuz Kulaklık|Taşınabilir Şarj Cihazı,150,4000,genel
+Elektronik,Küçük Ev Aleti,Su Isıtıcı|Tost Makinesi|Blender Seti|Saç Kurutma Makinesi|Ütü,900,8000,genel
+Elektronik,Bilgisayar Çevre Birimi,Kablosuz Fare|Klavye|Web Kamerası|USB Bellek,300,5000,genel
+Ev,Mutfak,Çay Bardağı Seti|Tencere Seti|Tava|Baharat Takımı|Kesme Tahtası,200,6000,genel
+Ev,Ev Tekstili,Nevresim Takımı|Havlu Seti|Battaniye|Yastık|Perde,400,5000,indirimli
+Ev,Dekorasyon,Duvar Saati|Masa Lambası|Çerçeve Seti|Vazo|Halı,300,12000,genel
+Kozmetik,Cilt Bakımı,Nemlendirici Krem|Güneş Kremi|Yüz Temizleme Jeli|El Kremi,150,2000,genel
+Kozmetik,Saç Bakımı,Şampuan|Saç Kremi|Saç Maskesi,120,1200,genel
+Gıda,Kahvaltılık,Süzme Çiçek Balı|Siyah Zeytin|Kaşar Peyniri|Tahin Pekmez Seti|Reçel,120,1500,dusuk
+Gıda,Kuru Gıda,Kırmızı Mercimek|Nohut|Pirinç|Bulgur|Makarna,40,400,dusuk
+Gıda,İçecek,Türk Kahvesi|Siyah Çay|Bitki Çayı|Maden Suyu Paketi,60,900,indirimli
+Kırtasiye,Okul ve Ofis,Defter|Kurşun Kalem Seti|Dosya|Ajanda,50,900,genel
+Spor,Fitness,Yoga Matı|Dambıl Seti|Atlama İpi|Direnç Bandı,200,4500,genel
+Anne ve Bebek,Bebek Bakımı,Bebek Bezi|Islak Mendil|Biberon|Emzik,80,1500,indirimli
+Oyuncak,Oyun ve Hobi,Ahşap Yapboz|Peluş Oyuncak|Kutu Oyunu|Oyun Hamuru Seti,150,2500,genel
+Evcil Hayvan,Mama ve Bakım,Kedi Maması|Köpek Maması|Kedi Kumu|Tasma,150,3500,genel
+Yapı Market,El Aleti,Tornavida Seti|Matkap|Şerit Metre|Pense,100,7000,genel

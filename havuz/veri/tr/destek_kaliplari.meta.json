@@ -1,0 +1,26 @@
+{
+  "ad": "destek_kaliplari",
+  "baslik": "Destek talebi kalıpları (sentetik veri için)",
+  "aciklama": "Kategori başına kısa müşteri talebi kalıpları; {yuva} yerleri üreteç tarafından doldurulur.",
+  "dosyalar": [
+    "destek_kaliplari.json",
+    "destek_kaliplari.csv"
+  ],
+  "kayit_sayisi": 42,
+  "alanlar": {
+    "kategori": "kargo, iade, odeme, urun, hesap ya da fatura.",
+    "kalip": "Kalıp metni. Yuvalar: {gun}, {siparis_no}, {urun}, {hata}."
+  },
+  "kaynak": "Elle yazıldı.",
+  "lisans": "Bu depo için elle yazıldı; deponun lisansıyla dağıtılır.",
+  "dogrulama": {
+    "yontem": "tasarim",
+    "tarih": "2026-11-16",
+    "aciklama": "Olgu iddiası taşımaz: sentetik veri üretmek için yazılmış sözcük ve kalıp listesidir. Testler biçimi (boş değer, yineleme, kalıp yuvaları) denetler.",
+    "kaynaklar": []
+  },
+  "guven": "orta",
+  "notlar": [
+    "Amaç tablo, analiz ve arayüz denemesidir; dil modeli eğitim verisi DEĞİLDİR (az sayıda kalıptan üretilir)."
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "ad": "sayi_sozcukleri",
+  "baslik": "Sayı sözcükleri",
+  "aciklama": "Asıl sayılar (0–9, onluklar, yüz, bin, milyon…), ilk on sıra sayısı ve kesir sözcükleri.",
+  "dosyalar": [
+    "sayi_sozcukleri.json",
+    "sayi_sozcukleri.csv"
+  ],
+  "kayit_sayisi": 38,
+  "alanlar": {
+    "deger": "Sözcüğün sayısal değeri.",
+    "sozcuk": "Türkçe yazımı.",
+    "tur": "asıl (kaç?), sıra (kaçıncı?) ya da kesir."
+  },
+  "kaynak": "Elle yazıldı (kapalı küme).",
+  "lisans": "Olgusal veri (telif konusu değildir); derleme ve biçim bu deponun lisansıyla dağıtılır.",
+  "dogrulama": {
+    "yontem": "bilinen-kume",
+    "tarih": "2026-11-16",
+    "aciklama": "Kapalı ve kesin bilinen küme. verihavuzu/numwords.py aynı sözcükleri kullanır; test, sayıyı yazıya çevirip bağımsız bir çözücüyle geri okuyarak denetler (tests/test_numwords.py).",
+    "kaynaklar": []
+  },
+  "guven": "yüksek",
+  "notlar": [
+    "'buçuk' bir tam sayıdan sonra kullanılır (iki buçuk = 2,5); 'yarım' tek başına kullanılır.",
+    "100 'yüz', 1000 'bin' okunur ('bir yüz', 'bir bin' denmez); 1 000 000 'bir milyon' okunur.",
+    "num2words 0.5.14 kitaplığının Türkçe çıktısı başvuru olarak KULLANILMADI: 841235 için 'sekizyüzkırkbin…' (bir eksik) üretiyor."
+  ]
+}

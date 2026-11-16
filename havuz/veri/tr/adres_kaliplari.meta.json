@@ -1,0 +1,26 @@
+{
+  "ad": "adres_kaliplari",
+  "baslik": "Mahalle, cadde ve sokak ad kalıpları (sentetik veri için)",
+  "aciklama": "Türkiye'de sık rastlanan türden mahalle, cadde ve sokak adları; adres üretecinin sözlüğü.",
+  "dosyalar": [
+    "adres_kaliplari.json",
+    "adres_kaliplari.csv"
+  ],
+  "kayit_sayisi": 150,
+  "alanlar": {
+    "tur": "mahalle, cadde ya da sokak.",
+    "ad": "Ad ('Mahallesi', 'Caddesi', 'Sokak' eki üreteçte eklenir)."
+  },
+  "kaynak": "Elle yazıldı.",
+  "lisans": "Bu depo için elle yazıldı; deponun lisansıyla dağıtılır.",
+  "dogrulama": {
+    "yontem": "tasarim",
+    "tarih": "2026-11-16",
+    "aciklama": "Olgu iddiası taşımaz: sentetik veri üretmek için yazılmış sözcük ve kalıp listesidir. Testler biçimi (boş değer, yineleme, kalıp yuvaları) denetler.",
+    "kaynaklar": []
+  },
+  "guven": "orta",
+  "notlar": [
+    "Üretilen adresler gerçek değildir: mahalle–ilçe eşleşmesi ve kapı numaraları rastgeledir."
+  ]
+}

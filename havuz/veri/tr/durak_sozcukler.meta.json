@@ -1,0 +1,41 @@
+{
+  "ad": "durak_sozcukler",
+  "baslik": "Türkçe durak sözcükler (stopwords)",
+  "aciklama": "Metin analizinde çoğu zaman atılan işlev sözcükleri: bağlaç, ilgeç, zamir, soru eki vb.",
+  "dosyalar": [
+    "durak_sozcukler.json",
+    "durak_sozcukler.csv"
+  ],
+  "kayit_sayisi": 260,
+  "alanlar": {
+    "sozcuk": "Küçük harfli sözcük (Türkçe kurallarıyla küçültülmüş metinle eşleştirin)."
+  },
+  "kaynak": "Elle seçildi (işlev sözcükleri); açık listelerle karşılaştırıldı.",
+  "lisans": "Olgusal veri (telif konusu değildir); derleme ve biçim bu deponun lisansıyla dağıtılır.",
+  "dogrulama": {
+    "yontem": "capraz-kaynak",
+    "tarih": "2026-11-16",
+    "aciklama": "260 sözcüğün 211'i spaCy ve/veya stopwords-iso Türkçe listelerinde de var. Kalan 49'u (ör. hakkında, arasında, üzerinde, evet, hayır) bu listelerde yok ama Türkçe işlev sözcüğü oldukları kesindir. Kaynak listeler kopyalanmadı.",
+    "kaynaklar": [
+      {
+        "ad": "spaCy tr stop_words.py",
+        "adres": "https://raw.githubusercontent.com/explosion/spaCy/master/spacy/lang/tr/stop_words.py",
+        "lisans": "MIT",
+        "sonuc": "551 girdilik liste; bizim 260 sözcüğün 211'i bu ya da aşağıdaki listede var."
+      },
+      {
+        "ad": "stopwords-iso/stopwords-tr",
+        "adres": "https://raw.githubusercontent.com/stopwords-iso/stopwords-tr/master/stopwords-tr.json",
+        "lisans": "MIT",
+        "sonuc": "504 girdi; içinde bozuk kodlamalı girdiler var ('altmýþ', 'baţka'), bu yüzden doğrudan alınmadı."
+      }
+    ]
+  },
+  "guven": "orta",
+  "notlar": [
+    "Durak sözcük seçimi olgu değil, göreve bağlı bir tasarım kararıdır; listeyi işinize göre daraltın.",
+    "Duygu analizi gibi işlerde olumsuzluk sözcüklerini (değil, yok, hayır, hiç, asla) listeden çıkarın.",
+    "'hala' bilerek yok: 'hâlâ'nın şapkasız yazımı akrabalık adı 'hala' ile karışır.",
+    "Sayı sözcüklerinden yalnız 'bir' vardır (belgisiz tanımlık olarak çok sık geçer)."
+  ]
+}

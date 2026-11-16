@@ -1,0 +1,10 @@
+{
+  // Testler ve yardımcı betikler için: Node tipleri açık (dosya okuma, vitest).
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": ["node"],
+    "allowJs": true,
+    "checkJs": false
+  },
+  "include": ["src", "test", "vitest.config.ts"]
+}

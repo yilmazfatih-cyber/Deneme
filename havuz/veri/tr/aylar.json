@@ -1,0 +1,14 @@
+[
+  {"no": 1, "ad": "Ocak", "kisaltma": "Oca", "gun_sayisi": 31, "gun_sayisi_artik_yil": 31},
+  {"no": 2, "ad": "Şubat", "kisaltma": "Şub", "gun_sayisi": 28, "gun_sayisi_artik_yil": 29},
+  {"no": 3, "ad": "Mart", "kisaltma": "Mar", "gun_sayisi": 31, "gun_sayisi_artik_yil": 31},
+  {"no": 4, "ad": "Nisan", "kisaltma": "Nis", "gun_sayisi": 30, "gun_sayisi_artik_yil": 30},
+  {"no": 5, "ad": "Mayıs", "kisaltma": "May", "gun_sayisi": 31, "gun_sayisi_artik_yil": 31},
+  {"no": 6, "ad": "Haziran", "kisaltma": "Haz", "gun_sayisi": 30, "gun_sayisi_artik_yil": 30},
+  {"no": 7, "ad": "Temmuz", "kisaltma": "Tem", "gun_sayisi": 31, "gun_sayisi_artik_yil": 31},
+  {"no": 8, "ad": "Ağustos", "kisaltma": "Ağu", "gun_sayisi": 31, "gun_sayisi_artik_yil": 31},
+  {"no": 9, "ad": "Eylül", "kisaltma": "Eyl", "gun_sayisi": 30, "gun_sayisi_artik_yil": 30},
+  {"no": 10, "ad": "Ekim", "kisaltma": "Eki", "gun_sayisi": 31, "gun_sayisi_artik_yil": 31},
+  {"no": 11, "ad": "Kasım", "kisaltma": "Kas", "gun_sayisi": 30, "gun_sayisi_artik_yil": 30},
+  {"no": 12, "ad": "Aralık", "kisaltma": "Ara", "gun_sayisi": 31, "gun_sayisi_artik_yil": 31}
+]

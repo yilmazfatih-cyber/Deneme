@@ -1,0 +1,56 @@
+# Havuzun ortak yoksayma listesi: her temelin kendi .gitignore'u da vardır; bu dosya güvenlik ağıdır.
+# Bir temeli tek başına kopyalarken kendi .gitignore'unu kullanın.
+
+# Bağımlılıklar ve sanal ortamlar
+node_modules/
+.venv/
+venv/
+.uv-cache/
+
+# Derleme çıktıları ve önbellekler
+dist/
+dist-ssr/
+dev-dist/
+build/
+.astro/
+*.egg-info/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+.cache/
+coverage/
+.coverage
+*.tsbuildinfo
+
+# Test çıktıları
+test-results/
+playwright-report/
+blob-report/
+
+# Yerel veri, sırlar, günlükler
+.env
+.env.*
+!.env.example
+.data/
+*.log
+*.sqlite-journal
+*.db-wal
+*.db-shm
+.npm-kilit/
+
+# Büyük ağırlık ve ham veri (depoya bilerek konanlar kendi klasörlerinde açıkça izinlidir)
+*.gguf
+*.pt
+*.ckpt
+runs/
+wandb/
+.hf_cache/
+
+# Düzenleyici ve sistem
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json

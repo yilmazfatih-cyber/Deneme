@@ -6,7 +6,16 @@ import tseslint from 'typescript-eslint'
 
 export default tseslint.config(
   {
-    ignores: ['dist', 'dev-dist', 'node_modules', 'playwright-report', 'test-results', 'tests/shots/output', 'tvplus'],
+    ignores: [
+      'dist',
+      'dev-dist',
+      'node_modules',
+      'playwright-report',
+      'test-results',
+      'tests/shots/output',
+      'tvplus',
+      'havuz',
+    ],
   },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],

@@ -1,0 +1,12 @@
+{"messages": [{"role": "system", "content": "Bir kırtasiye mağazasının destek asistanısın. Kısa ve net yanıt ver."}, {"role": "user", "content": "Kargom ne zaman gelir?"}, {"role": "assistant", "content": "Siparişler üç iş günü içinde teslim edilir."}]}
+{"messages": [{"role": "system", "content": "Bir kırtasiye mağazasının destek asistanısın. Kısa ve net yanıt ver."}, {"role": "user", "content": "Ürünü nasıl iade ederim?"}, {"role": "assistant", "content": "On dört gün içinde hesabınızdaki iade formunu doldurmanız yeterli."}]}
+{"messages": [{"role": "user", "content": "Şifremi unuttum, ne yapmalıyım?"}, {"role": "assistant", "content": "Giriş sayfasındaki 'Şifremi unuttum' bağlantısına tıklayın; sıfırlama iletisi e-postanıza gelir."}]}
+{"messages": [{"role": "user", "content": "Fatura adresimi değiştirebilir miyim?"}, {"role": "assistant", "content": "Evet, sipariş kargoya verilmeden önce hesap ayarlarından değiştirebilirsiniz."}]}
+{"messages": [{"role": "user", "content": "Hangi ödeme yöntemleri geçerli?"}, {"role": "assistant", "content": "Kredi kartı, banka kartı ve havale ile ödeme yapabilirsiniz."}]}
+{"messages": [{"role": "user", "content": "Siparişimi iptal etmek istiyorum."}, {"role": "assistant", "content": "Sipariş hazırlanmadıysa 'Siparişlerim' sayfasından iptal edebilirsiniz."}, {"role": "user", "content": "Hazırlanmışsa ne olur?"}, {"role": "assistant", "content": "O durumda teslim aldıktan sonra iade başlatmanız gerekir."}]}
+{"messages": [{"role": "user", "content": "Kargo ücreti ne kadar?"}, {"role": "assistant", "content": "Beş yüz lira üzeri siparişlerde kargo ücretsizdir; altında sabit ücret alınır."}]}
+{"messages": [{"role": "user", "content": "Hediye paketi yapıyor musunuz?"}, {"role": "assistant", "content": "Evet, sepet adımında hediye paketi seçeneğini işaretleyebilirsiniz."}]}
+{"messages": [{"role": "user", "content": "Mağazanız hafta sonu açık mı?"}, {"role": "assistant", "content": "Cumartesi açığız, pazar günü kapalıyız."}]}
+{"messages": [{"role": "user", "content": "Toplu sipariş için indirim var mı?"}, {"role": "assistant", "content": "Elli adet ve üzeri siparişlerde yüzde on indirim uygulanır."}]}
+{"messages": [{"role": "user", "content": "Eksik ürün geldi, ne yapmalıyım?"}, {"role": "assistant", "content": "Sipariş numaranızla destek formunu doldurun; eksik ürün ayrıca gönderilir."}]}
+{"messages": [{"role": "user", "content": "Yurt dışına gönderim yapıyor musunuz?"}, {"role": "assistant", "content": "Şu an yalnız Türkiye içine gönderim yapıyoruz."}]}

@@ -1,0 +1,62 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sifirdan-veri"
+version = "0.1.0"
+description = "Sıfırdan yazılmış küçük veri ve dağıtık sistemler: LSM deposu, B+ ağacı, SQL motoru, MVCC, arama motoru, CRDT, git, Raft, iş kuyruğu, önbellek sunucusu."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+# Çalışma zamanı bağımlılığı YOKTUR: her mini sistem yalnız Python standart kitaplığını kullanır
+# (gerekçe: docs/KARARLAR.md, K01). Bunu tests/test_kurallar.py korur.
+dependencies = []
+
+[project.optional-dependencies]
+# Yalnız geliştirme ve denetim araçları; paketler bunları içe aktarmaz.
+dev = ["pytest>=9.0", "hypothesis>=6.150", "ruff>=0.17", "mypy>=2.4"]
+
+[tool.setuptools.packages.find]
+# Kökteki her klasör (tests/scripts/docs dışında) bir mini sistemdir; yenisi kendiliğinden bulunur.
+where = ["."]
+exclude = ["tests*", "scripts*", "docs*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = [".venv", "build"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "C4", "PIE", "RET", "RUF", "N"]
+ignore = [
+  "RUF001", # Türkçe metinde "ı", "İ" gibi harfler bilerek kullanılır
+  "RUF002",
+  "RUF003",
+  "SIM108", # üçlü ifade her zaman daha okunaklı değildir
+  "RET505", # erken dönüşten sonra else: okunaklılık için serbest
+  "E741",   # l, I gibi adlar algoritma gösteriminde geçer
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["N802", "B011"]
+
+[tool.mypy]
+python_version = "3.11"
+files = ["."]
+exclude = ['^\.venv/', '^build/']
+strict = true
+warn_unused_ignores = true
+warn_unreachable = true
+
+[[tool.mypy.overrides]]
+module = ["tests.*"]
+disallow_untyped_decorators = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q -p no:cacheprovider --strict-markers"
+markers = [
+  "uzun: uzun süren rastgele senaryo (hızlı denetimde atlanır; `python scripts/check.py --uzun` ile koşar)",
+]
+filterwarnings = ["error"]

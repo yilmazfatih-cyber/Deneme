@@ -1,0 +1,25 @@
+{
+  "ad": "kurgusal_markalar",
+  "baslik": "Kurgusal marka adları (sentetik veri için)",
+  "aciklama": "Sentetik ürünlere verilecek uydurma marka adları (ağaç, rüzgâr ve doğa sözcükleri).",
+  "dosyalar": [
+    "kurgusal_markalar.json",
+    "kurgusal_markalar.csv"
+  ],
+  "kayit_sayisi": 20,
+  "alanlar": {
+    "ad": "Marka adı."
+  },
+  "kaynak": "Elle yazıldı.",
+  "lisans": "Bu depo için elle yazıldı; deponun lisansıyla dağıtılır.",
+  "dogrulama": {
+    "yontem": "tasarim",
+    "tarih": "2026-11-16",
+    "aciklama": "Olgu iddiası taşımaz: sentetik veri üretmek için yazılmış sözcük ve kalıp listesidir. Testler biçimi (boş değer, yineleme, kalıp yuvaları) denetler.",
+    "kaynaklar": []
+  },
+  "guven": "orta",
+  "notlar": [
+    "Adlar gündelik sözcüklerdir; gerçek bir markayla aynı olması tesadüftür, ilgisi yoktur."
+  ]
+}

@@ -1,0 +1,25 @@
+# Sanal ortam ve önbellekler
+.venv/
+__pycache__/
+*.py[cod]
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.hypothesis/
+
+# Derleme çıktıları
+build/
+dist/
+*.egg-info/
+
+# Çalışırken üretilenler: örnek uygulamanın veritabanı, yakalanan postalar, sertifika/anahtar
+*.sqlite3
+*.db
+*.eml
+*.pem
+yakalanan/
+
+# Düzenleyici ve işletim sistemi
+.idea/
+.vscode/
+.DS_Store

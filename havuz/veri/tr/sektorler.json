@@ -1,0 +1,18 @@
+[
+  {"kod": "gida", "ad": "Gıda", "unvan_sozcukleri": ["Gıda", "Tarım Ürünleri", "Unlu Mamuller", "Süt Ürünleri", "Şarküteri"]},
+  {"kod": "tekstil", "ad": "Tekstil", "unvan_sozcukleri": ["Tekstil", "Konfeksiyon", "Hazır Giyim", "İplik", "Örme"]},
+  {"kod": "insaat", "ad": "İnşaat", "unvan_sozcukleri": ["İnşaat", "Yapı", "Mimarlık", "Taahhüt", "Yapı Malzemeleri"]},
+  {"kod": "otomotiv", "ad": "Otomotiv", "unvan_sozcukleri": ["Otomotiv", "Oto Yedek Parça", "Oto Servis", "Lastik"]},
+  {"kod": "lojistik", "ad": "Lojistik", "unvan_sozcukleri": ["Lojistik", "Nakliyat", "Taşımacılık", "Kargo"]},
+  {"kod": "bilisim", "ad": "Bilişim", "unvan_sozcukleri": ["Bilişim", "Yazılım", "Teknoloji", "Bilgisayar"]},
+  {"kod": "turizm", "ad": "Turizm", "unvan_sozcukleri": ["Turizm", "Otelcilik", "Seyahat", "Organizasyon"]},
+  {"kod": "saglik", "ad": "Sağlık", "unvan_sozcukleri": ["Sağlık Hizmetleri", "Medikal", "Optik", "Ecza Deposu"]},
+  {"kod": "egitim", "ad": "Eğitim", "unvan_sozcukleri": ["Eğitim Kurumları", "Kırtasiye", "Yayıncılık", "Danışmanlık"]},
+  {"kod": "enerji", "ad": "Enerji", "unvan_sozcukleri": ["Enerji", "Elektrik", "Akaryakıt"]},
+  {"kod": "mobilya", "ad": "Mobilya", "unvan_sozcukleri": ["Mobilya", "Ahşap", "Dekorasyon", "Orman Ürünleri"]},
+  {"kod": "makine", "ad": "Makine ve Metal", "unvan_sozcukleri": ["Makine", "Metal", "Döküm", "Hırdavat"]},
+  {"kod": "kimya", "ad": "Kimya ve Plastik", "unvan_sozcukleri": ["Kimya", "Plastik", "Boya", "Ambalaj"]},
+  {"kod": "perakende", "ad": "Perakende", "unvan_sozcukleri": ["Market", "Mağazacılık", "Züccaciye", "Kuyumculuk"]},
+  {"kod": "tarim", "ad": "Tarım ve Hayvancılık", "unvan_sozcukleri": ["Tarım", "Hayvancılık", "Seracılık", "Fidancılık"]},
+  {"kod": "hizmet", "ad": "Hizmet", "unvan_sozcukleri": ["Temizlik Hizmetleri", "Güvenlik Hizmetleri", "Sigorta Aracılık Hizmetleri", "Gayrimenkul"]}
+]

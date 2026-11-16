@@ -1,0 +1,34 @@
+{
+  "ad": "aylar",
+  "baslik": "Ayların Türkçe adları",
+  "aciklama": "Ay numarası, adı, üç harfli kısaltması ve gün sayısı.",
+  "dosyalar": [
+    "aylar.json",
+    "aylar.csv"
+  ],
+  "kayit_sayisi": 12,
+  "alanlar": {
+    "no": "1–12.",
+    "ad": "Ayın adı (cümle içinde küçük harfle yazılır: '3 mart').",
+    "kisaltma": "Üç harfli kısaltma.",
+    "gun_sayisi": "Normal yılda gün sayısı.",
+    "gun_sayisi_artik_yil": "Artık yılda gün sayısı (yalnız Şubat değişir)."
+  },
+  "kaynak": "Elle yazıldı.",
+  "lisans": "Olgusal veri (telif konusu değildir); derleme ve biçim bu deponun lisansıyla dağıtılır.",
+  "dogrulama": {
+    "yontem": "capraz-kaynak",
+    "tarih": "2026-11-16",
+    "aciklama": "Adlar ve kısaltmalar CLDR ile, gün sayıları Python calendar modülüyle karşılaştırıldı.",
+    "kaynaklar": [
+      {
+        "ad": "Unicode CLDR (babel 2.18.0 ile gelen tr yereli)",
+        "adres": "https://pypi.org/project/Babel/",
+        "lisans": "BSD-3-Clause (babel) / Unicode License (CLDR)",
+        "sonuc": "12/12 ad ve 12/12 kısaltma aynı."
+      }
+    ]
+  },
+  "guven": "yüksek",
+  "notlar": []
+}

@@ -1,0 +1,23 @@
+# Bağımlılıklar
+node_modules/
+
+# Derleme çıktıları
+dist/
+dist-alt/
+.astro/
+
+# Test çıktıları
+test-results/
+playwright-report/
+coverage/
+
+# Ortam değişkenleri (yalnız .env.example depoya girer)
+.env
+.env.*
+!.env.example
+
+# İşletim sistemi / düzenleyici
+.DS_Store
+*.log
+.vscode/
+.idea/
