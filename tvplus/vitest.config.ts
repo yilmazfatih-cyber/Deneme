@@ -9,6 +9,7 @@ export default defineConfig({
       'shared/**/*.test.ts',
       'scripts/**/*.test.ts',
       'static-host/test/**/*.test.ts',
+      'lab/test/**/*.test.ts',
     ],
     testTimeout: 20_000,
     // Her test dosyası kendi veri klasörünü kullanır (bkz. server/test/helpers.ts); paralel çalışabilir.

@@ -223,6 +223,25 @@ npm run validate:content
 abonelikle başka bir uygulamaya çekilmez. Resmî TV+ oynatma API'sine erişim olursa aynı kaynak adaptörü noktasına
 (`server/src/services/playback/sources`, `web/src/player/adapters`) yeni bir kaynak türü olarak bağlanır.
 
+## Lab: churn nedenleri, simülasyon ve A/B
+
+Mixpanel verinizle **yerelde** çalışan analiz hattı ([`docs/LAB.md`](docs/LAB.md)). Ham veri makineden çıkmaz; bir yapay
+zekâ ajanı yalnız kompakt toplam tabloları okur (az token, veri paylaşımı yok).
+
+| Parça        | Ne yapar                                                                                                                                         |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Churn motoru | Churn tanımını veriden seçer; tetikleyici deneyimleri, neden ailelerini, riskli kesimleri ve ilk hafta işaretlerini çıkarır                      |
+| Simülatör    | Gerçek kullanıcıların ikizlerini uygulamanın kendi kodu (ana sayfa, tahmin modeli, bayraklar) üzerinde yaşatır; gerçeklik karnesi                |
+| A/B          | Deney bayrakları ve atama (`shared/flags.ts`, `content/experiments.json`); simülasyonda ikiz evren deneyi; güç ve süre; gerçek deney çözümlemesi |
+| Arayüzler    | `npm run lab -- <komut>` · MCP aracı (`lab/mcp.ts`, `/tvplus-lab` becerisi) · Stüdyo → Kayıp Analizi / Deney Laboratuvarı · HTML rapor           |
+
+```bash
+npm run lab -- demo                          # sentetik veriyle tüm hattı kur, yöntemi bilinen gerçeklerle doğrula
+npm run lab -- churn                         # önem sırasıyla bulgular
+npm run lab -- sim karne                     # simülatörü kalibre et, gerçeklik karnesi
+npm run lab -- deney calistir sayfa-siralama # tanımlı deneyi simülasyonda çalıştır
+```
+
 ## Komutlar
 
 | Komut                      | Ne yapar                                                                               |
@@ -238,6 +257,7 @@ abonelikle başka bir uygulamaya çekilmez. Resmî TV+ oynatma API'sine erişim 
 | `npm run tagging:guide`    | Sözlükten etiketleme kılavuzunu üretir                                                 |
 | `npm run mixpanel:import`  | Mixpanel dışa aktarımını içe alır (`--file` ya da `--from/--to`, `--dry-run`)          |
 | `npm run sample:viewing`   | Sentetik izleme örneği üretir (Mixpanel biçiminde)                                     |
+| `npm run lab -- <komut>`   | Lab: churn analizi, simülasyon, A/B (`npm run lab -- yardim`; bkz. `docs/LAB.md`)      |
 | `npm run analyze:shots`    | Çekim çözümlemesi (ffmpeg gerekir; çıktılar depodadır, sunucu ffmpeg istemez)          |
 | `npm run embed:catalog`    | Gömme vektörlerini kurar / dışa aktarır                                                |
 | `npm run ingest:youtube`   | YouTube doğrulama / iskelet üretimi                                                    |
@@ -249,7 +269,7 @@ varsayılan `.data/`), `TVP_MEDIA_DIR`, `TVP_SECRET`, `TVP_OFFLINE=1` (dış ağ
 `TVP_DEBUG=member|open|off` (hata ayıklama uçları), `TVP_STUDIO=member|open|off` ve `TVP_STUDIO_KEY` (stüdyo uçları;
 anahtar betikler içindir), `TVP_SAMPLE_VIEWING=0` (sentetik örneği üretme), `TVP_REAL_DATA_MIN_VIEWERS` (varsayılan 50),
 `TVP_MAX_COMMUNITIES`, `TVP_EMBEDDING_PROVIDER=taban|http|dosya` ve `TVP_EMBEDDING_URL`, `TVP_PUBLIC_ORIGIN` (QR adresi),
-`MIXPANEL_*` (yukarıda).
+`MIXPANEL_*` (yukarıda), `TVP_LAB_DIR` (lab klasörü; varsayılan `TVP_DATA_DIR/lab`).
 
 ## Klasörler
 
@@ -263,6 +283,7 @@ web/       SPA: tasarım sistemi (ui), web ve mobil kabuk (app), sayfalar (featu
 ml/        çekim gömme modelinin eğitimi (Python / PyTorch): veri hattı, kodlayıcılar, eğitim, değerlendirme, dışa aktarma
 content/   başlıklar, kanallar, örnek yayın akışı, koleksiyonlar, etiketleme, çekimler, eğitilmiş vektörler
 scripts/   kalıcı sorgu derleyici, içerik doğrulama, içe alma, paketleme, çekim çözümleme, Mixpanel araçları
+lab/       yerel analiz hattı: Mixpanel içe alma, churn motoru, simülatör, A/B, komut satırı ve MCP aracı
 e2e/       gerçek tarayıcı testleri (web, mobil, TV, cihazlar arası, stüdyo)
 docs/      UX şartnamesi, mimari, içerik zekâsı, etiketleme kılavuzu, Mixpanel rehberi, başvuru belgeleri
 ```
@@ -278,6 +299,8 @@ docs/      UX şartnamesi, mimari, içerik zekâsı, etiketleme kılavuzu, Mixpa
   ve topluluklar bu yüzden bir gösterimdir; gerçek veriyle yeniden hesaplanır.
 - **Mixpanel'e bu depodan bağlanılmadı.** Bağdaştırıcı belgelenen dışa aktarım biçimine göre yazıldı, aynı biçimde
   üretilen veriyle ve sahte bir dışa aktarım sunucusuyla sınandı; gerçek proje ve kimlik bilgileriyle denenmedi.
+- **Lab simülasyonu gerçek A/B'nin yerini tutmaz:** fikirleri eler ve sıralar. Simüle edilen uygulama bu depodaki
+  örnek uygulamadır; churn nedenleri gözlemsel veriden gelir. Ayrıntı ve yöntem: `docs/LAB.md` §10.
 - **TV uygulaması** masaüstü tarayıcıda 1920×1080 ve 1280×720'de klavyeyle sınandı; gerçek TV tarayıcılarının tuş
   kodları eşlendi ama gerçek cihazda denenmedi.
 - **Cihazlar arası akış** tek sunucuya bağlı tarayıcılar arasındadır (SSE + komut ucu); Chromecast/AirPlay gibi

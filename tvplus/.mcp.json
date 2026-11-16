@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "tvplus-lab": {
+      "command": "node",
+      "args": ["node_modules/tsx/dist/cli.mjs", "lab/mcp.ts"]
+    }
+  }
+}

@@ -273,3 +273,29 @@ Görünmeyen katman keşfi besler; izleyici yalnız sonucunu görür:
   tür, mikro tür, yeni gelenler ve topluluk satırlarının iç sırası modelin puanına göredir.
 - **Satır adları** UX_SPEC §6 sözlüğündeki yazımla verilir ("İzlemeye Devam Et", "Yeni Gelenler", "Son Şans").
 - **Stüdyo** — `/studyo` (yalnız masaüstü, üst menüde değil; profil menüsünden): arka ofisin penceresi.
+
+## 11. Deneyler (A/B) ve Lab
+
+**Deney altyapısı** — sözleşme `shared/flags.ts` (bayrak sözlüğü, durumsuz atama; zod'suz, istemci de kullanır) ve
+`shared/experiments.ts` (deney şeması, çakışma denetimi). Tanımlar `content/experiments.json`'dadır;
+`npm run validate:content` doğrular.
+
+| Parça                             | Yer                                                           | Not                                                                                          |
+| --------------------------------- | ------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| Servis `app.services.experiments` | `server/src/services/experiments`                             | Tanımlar, stüdyodan durum değişikliği ve sabitleme, maruziyet sayacı (birim özetleri HMAC)   |
+| Atama                             | `assignVariant` (`shared/flags.ts`)                           | Birim kimliği + deney tuzu → kol; atama tablosu tutulmaz                                     |
+| Sunucu bayrakları                 | `services/discovery/lolomo.ts`                                | `LolomoOptions.flags`: satır ve sayfa sıralayıcı, Top 10 yeri, "izlediğin için" satır sayısı |
+| İstemci bayrakları                | açılış bağlamı (`BootContext.flags`) → `web/src/lib/flags.ts` | Önizleme otomatik oynatma gibi yalnız istemcide uygulananlar                                 |
+| Maruziyet                         | `experiment.exposure` olayı                                   | Birim bayraktan etkilenen yüzeyi gördüğünde İstanbul gününde bir kez                         |
+| Hata ayıklama                     | `x-tvplus-flags: home.top10=off`                              | Yalnız hata ayıklama erişimi açıkken; maruziyet yazılmaz                                     |
+| Stüdyo uçları                     | `/api/studio/experiments*`                                    | Okuma stüdyo kancasında, yazma `assertStudioWrite` ile                                       |
+
+**Lab** (`lab/`, belge: `docs/LAB.md`) sunucudan ayrı bir geliştirici aracıdır: kendi tsconfig'i vardır
+(`tsconfig.lab.json`), sunucu ve web **lab kodunu içe aktarmaz**. Bağlantı tek yönlüdür:
+
+- Lab → uygulama: simülatör `buildApp`'i sınama kipinde açar, kataloğu lab'ın köprüsünden yükler, izleme ve olay
+  servislerini bellek içi karşılıklarıyla değiştirir ve ana sayfayı (`buildLolomo`) deney bayraklarıyla kurdurur.
+- Uygulama → lab: yalnız sonuç dosyaları. Lab sonuçlarını `lab klasörü/sonuc/<ad>.json` altına `LabEnvelope<T>` olarak
+  yazar (`shared/lab.ts`, yalnız türler); sunucu bunları `/api/studio/lab/*` ile salt okunur verir, Stüdyo çizer.
+
+Lab'ın gizlilik kuralları (ham veri yerelde, takma kimlik, k-anonimlik, denetim günlüğü, ajan kipi) `docs/LAB.md` §1'dedir.

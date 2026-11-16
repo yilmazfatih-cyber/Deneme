@@ -87,9 +87,13 @@ const str = (el: XEl | undefined, name: string): string | undefined => {
   return v === undefined || v === null ? undefined : String(v)
 }
 const baseUrlOf = (el: XEl | undefined): string | undefined => {
-  const b = el ? (arr(el.BaseURL)[0] ?? (typeof el.BaseURL === 'string' ? el.BaseURL : undefined)) : undefined
-  if (typeof b === 'string') return b.trim()
-  if (b && typeof b === 'object' && '#text' in b) return String((b as XEl)['#text']).trim()
+  if (!el) return undefined
+  const raw = el.BaseURL
+  if (typeof raw === 'string') return raw.trim()
+  // `unknown`: dizin erişimi denetimi kapalı derlemelerde de (lab) ilk öğenin türü daraltılabilsin
+  const first: unknown = arr(raw)[0]
+  if (typeof first === 'string') return first.trim()
+  if (first && typeof first === 'object' && '#text' in first) return String((first as XEl)['#text']).trim()
   return undefined
 }
 
