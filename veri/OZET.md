@@ -4,14 +4,14 @@ Oluşturma: 2026-11-16 · şema sürümü 1
 
 | Tablo | Satır |
 | --- | ---: |
-| defile | 64 |
-| gorsel | 3859 |
+| defile | 96 |
+| gorsel | 5708 |
 | parca_nitelik | 277 |
-| parca_renk | 15436 |
-| perakende_urun | 284 |
-| perakende_gorulme | 462 |
+| parca_renk | 22832 |
+| perakende_urun | 286 |
+| perakende_gorulme | 467 |
 | perakende_nitelik | 0 |
-| perakende_renk | 1132 |
+| perakende_renk | 1140 |
 | talep | 0 |
 | sinyal | 171 |
 | gozlem | 0 |
@@ -19,15 +19,15 @@ Oluşturma: 2026-11-16 · şema sürümü 1
 
 ## Sezon dağılımı
 
-- **defile**: FW26: 32, SS27: 32
-- **gorsel**: FW26: 1976, SS27: 1883
+- **defile**: FW26: 32, SS26: 32, SS27: 32
+- **gorsel**: FW26: 1976, SS26: 1849, SS27: 1883
 - **parca_nitelik**: SS27: 277
-- **parca_renk**: FW26: 7904, SS27: 7532
+- **parca_renk**: FW26: 7904, SS26: 7396, SS27: 7532
 - **sinyal**: FW25: 24, FW26: 33, SS25: 26, SS26: 40, SS27: 48
 
 ## Segment dağılımı
 
-- **perakende_urun**: luks: 99, orta: 133, premium: 52
+- **perakende_urun**: luks: 99, orta: 135, premium: 52
 - **perakende_aktif**: luks: 96, orta: 95, premium: 40
 - **gozlem**: —
 - **gecikme_olcum**: orta: 2
