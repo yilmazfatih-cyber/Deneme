@@ -20,12 +20,11 @@ Baş kendisi uzun arama yapmaz; en fazla 5 doğrulama araması yapar.
 
    ```bash
    cd ithalat-ajani && pip install -e . -q
-   git fetch origin ithalat-ciktilari:ithalat-ciktilari 2>/dev/null \
-     || git branch ithalat-ciktilari "$(git commit-tree -m 'ithalat çıktıları: boş başlangıç' "$(git hash-object -t tree /dev/null)")"
-   git worktree add /tmp/ithalat-cikti ithalat-ciktilari
-   mkdir -p veri raporlar
-   cp /tmp/ithalat-cikti/veri/ithalat.db veri/ 2>/dev/null || echo "Önceki veritabanı yok; yenisi kurulacak"
+   scripts/veri-dali.sh al   # dalı /tmp/ithalat-cikti'ye taze açar, geçmişi veri/ithalat.db'ye kopyalar
    ```
+
+   Betik aynı makinede tekrar çalıştırılabilir (kalıcı oturumda her gün). `raporlar/` klasöründe önceki günlerin
+   dosyaları kalmış olabilir; zararsızdır, dala zaten yazılmışlardır.
 
 2. **Kur, kategori, geçmiş.**
 
@@ -67,11 +66,11 @@ Baş kendisi uzun arama yapmaz; en fazla 5 doğrulama araması yapar.
 7. **Yayınla.** Yalnız `ithalat-ciktilari` dalına yazılır; kod dallarına dokunma.
 
    ```bash
-   mkdir -p /tmp/ithalat-cikti/veri /tmp/ithalat-cikti/raporlar
-   cp veri/ithalat.db /tmp/ithalat-cikti/veri/ && cp raporlar/* /tmp/ithalat-cikti/raporlar/
-   cd /tmp/ithalat-cikti && git add -A && git commit -q -m "ithalat taraması: $(TZ=Europe/Istanbul date '+%Y-%m-%d %H:%M')"
-   git push origin ithalat-ciktilari
+   scripts/veri-dali.sh gonder   # veritabanı + raporlar → ithalat-ciktilari; commit + push
    ```
+
+   Betik push edemezse 3 koduyla çıkar ve git hatasını yazar (en sık neden: oturumda depoya yazma yetkisi yok).
+   O durumda Issue açmayı deneme; son mesaja "PUSH BAŞARISIZ" diye başla, hatayı ve raporun özetini yaz.
 
    Raporda **yeni** bir UYGUN ürün ya da **süreli fırsat** (yalnız Alibaba indirimiyle eşiği geçen) varsa GitHub
    Issue aç: başlık `İthalat fırsatları — YYYY-MM-DD`, etiket `ithalat`, gövde rapor dosyasının içeriği. Fırsat

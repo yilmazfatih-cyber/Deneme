@@ -115,10 +115,13 @@ Claude Code'da depo kökünden `/ithalat` (tam tarama), `/ithalat eşarp` (tek k
 ## Düzenli çalışma
 
 Claude Code zamanlanmış görevi her gün `TARAMA.md` akışını çalıştırır. Abonelikle çalışır, API anahtarı gerekmez.
+Görev, depoya yazma yetkisi olan kalıcı bir oturuma bağlıdır: her sabah o oturuma mesaj gelir. Kaynağı bağlı
+olmayan yeni oturumlar dala push edemez; ilk günlerdeki taramalar bu yüzden kaydedilemedi.
 Her taramada 3 kategoriye bakar; 24 kategori yaklaşık 8 günde bir döner. Mevsim dışı kategoriler sona kalır.
 
 - Çıktılar kod dallarına değil **`ithalat-ciktilari`** dalına yazılır: `veri/ithalat.db` ve
-  `raporlar/tarama-*.md` (ham aday dosyaları da `raporlar/adaylar-*.json`).
+  `raporlar/tarama-*.md` (ham aday dosyaları da `raporlar/adaylar-*.json`). Dalı `scripts/veri-dali.sh al`
+  açar, `scripts/veri-dali.sh gonder` yazar; ikisi de tekrar çalıştırılabilir.
 - Yeni uygun ürün ya da süreli fırsat varsa `İthalat fırsatları — YYYY-MM-DD` başlıklı bir GitHub Issue açılır.
 - Oturumun son mesajı telefona bildirim olarak düşer.
 
