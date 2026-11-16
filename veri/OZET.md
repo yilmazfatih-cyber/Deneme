@@ -9,7 +9,7 @@ Oluşturma: 2026-11-16 · şema sürümü 1
 | parca_nitelik | 277 |
 | parca_renk | 22832 |
 | perakende_urun | 286 |
-| perakende_gorulme | 467 |
+| perakende_gorulme | 468 |
 | perakende_nitelik | 0 |
 | perakende_renk | 1140 |
 | talep | 0 |
