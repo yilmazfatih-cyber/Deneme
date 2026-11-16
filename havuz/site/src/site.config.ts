@@ -161,7 +161,7 @@ export const siteConfig = defineSiteConfig({
 
   blog: {
     /** Blog listesinde bir sayfada kaç yazı görünsün? */
-    postsPerPage: 4,
+    postsPerPage: 3,
   },
 
   /**

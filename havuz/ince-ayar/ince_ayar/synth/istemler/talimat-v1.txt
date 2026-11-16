@@ -1,0 +1,14 @@
+Görevin: aşağıdaki konu ve belgeye dayanarak bir kullanıcının sorabileceği $sayi farklı soru ya da istek yazmak ve her birine doğru, kısa, kibar bir Türkçe yanıt vermek.
+
+Kurallar:
+- Yalnız belgede yazanlara dayan; belgede olmayan bilgiyi uydurma. Belge soruyu yanıtlamıyorsa yanıt "Bu konuda elimde bilgi yok." olsun.
+- Sorular birbirinden farklı olsun: farklı sözcükler, farklı ayrıntılar, farklı soru biçimleri.
+- Sorular günlük dilde, bir kullanıcının gerçekten yazacağı gibi olsun.
+- Yanıtlar Türkçe ve en çok üç cümle olsun.
+- Yalnız JSON yaz; JSON dışında hiçbir şey yazma. Biçim:
+{"ornekler": [{"talimat": "kullanıcının sorusu", "yanit": "asistanın yanıtı"}]}
+
+Konu: $konu
+
+Belge:
+$belge

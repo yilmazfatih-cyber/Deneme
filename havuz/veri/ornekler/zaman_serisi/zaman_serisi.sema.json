@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "zaman_serisi",
+  "description": "Günlük sentetik seri; bileşenler ve anomali etiketleri ayrı sütunlarda.",
+  "type": "object",
+  "properties": {
+    "seri_id": {
+      "type": "string",
+      "pattern": "^S\\d+$"
+    },
+    "tarih": {
+      "type": "string",
+      "format": "date"
+    },
+    "deger": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "description": "eksik anomalide boş",
+      "minimum": 0.0
+    },
+    "beklenen": {
+      "type": "number",
+      "description": "gürültüsüz, anomalisiz değer",
+      "minimum": 0.0
+    },
+    "egilim": {
+      "type": "number",
+      "description": "seviye + eğim × gün"
+    },
+    "haftalik_etki": {
+      "type": "number",
+      "minimum": 0.0
+    },
+    "yillik_etki": {
+      "type": "number",
+      "minimum": 0.0
+    },
+    "tatil": {
+      "type": "boolean"
+    },
+    "anomali": {
+      "type": "boolean"
+    },
+    "anomali_turu": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "ani_artis",
+        "ani_dusus",
+        "seviye_kaymasi",
+        "eksik",
+        null
+      ]
+    }
+  },
+  "required": [
+    "seri_id",
+    "tarih",
+    "deger",
+    "beklenen",
+    "egilim",
+    "haftalik_etki",
+    "yillik_etki",
+    "tatil",
+    "anomali",
+    "anomali_turu"
+  ],
+  "additionalProperties": false,
+  "x-birincil-anahtar": [
+    "seri_id",
+    "tarih"
+  ]
+}

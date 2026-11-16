@@ -1,0 +1,146 @@
+---
+/**
+ * Belge görünümü: solda yan menü, ortada içerik, sağda içindekiler; altta önceki/sonraki.
+ * Mobilde yan menü ve içindekiler açılır-kapanır kutulara dönüşür (JS gerekmez).
+ * Kim kullanır: src/pages/belgeler/[slug].astro ve src/pages/en/docs/[slug].astro.
+ */
+import { render } from 'astro:content'
+import Breadcrumbs from '../components/Breadcrumbs.astro'
+import DocsSidebar from '../components/DocsSidebar.astro'
+import Icon from '../components/Icon.astro'
+import Prose from '../components/Prose.astro'
+import TableOfContents from '../components/TableOfContents.astro'
+import { mdxComponents } from '../components/mdx/index.ts'
+import { useTranslations } from '../i18n/index.ts'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { groupByGroup, neighbours } from '../lib/collections.ts'
+import { alternatesOf, entryLocale, entrySlug, getAllDocs, getDocs, type Doc } from '../lib/content.ts'
+import { formatDate } from '../lib/format.ts'
+import { paths } from '../lib/routes.ts'
+import { fill } from '../lib/text.ts'
+import { link } from '../lib/url.ts'
+import { siteConfig } from '../site.config.ts'
+
+interface Props {
+  doc: Doc
+}
+
+const { doc } = Astro.props
+const locale = entryLocale(doc)
+const t = useTranslations(locale)
+const lang = siteConfig.locales[locale].lang
+const { Content, headings } = await render(doc)
+const docs = await getDocs(locale)
+const groups = groupByGroup(docs)
+const { previous, next } = neighbours(docs, doc.id)
+const path = paths.doc(locale, entrySlug(doc))
+const crumbs = [
+  { label: siteConfig.name, path: paths.home(locale) },
+  { label: t.docs.title, path: paths.docs(locale) },
+  { label: doc.data.title, path },
+]
+---
+
+<BaseLayout
+  locale={locale}
+  title={doc.data.title}
+  description={doc.data.description}
+  alternates={alternatesOf(doc, await getAllDocs(), paths.doc)}
+  breadcrumbs={crumbs}
+  searchSection={t.docs.title}
+>
+  <div class="wrap grid gap-10 py-10 lg:grid-cols-[15rem_minmax(0,1fr)] xl:grid-cols-[15rem_minmax(0,1fr)_13rem] xl:gap-12">
+    <aside class="hidden lg:block" data-search-ignore>
+      <div class="sticky top-24 max-h-[calc(100dvh-7rem)] overflow-y-auto pr-2">
+        <DocsSidebar locale={locale} groups={groups} currentId={doc.id} label={t.docs.menu} />
+      </div>
+    </aside>
+
+    <article class="min-w-0">
+      <details class="docs-menu card mb-6 px-4 py-1 lg:hidden" data-search-ignore>
+        <summary class="docs-menu-summary flex min-h-11 cursor-pointer items-center gap-2 font-semibold">
+          <Icon name="book-open" size={18} />
+          {t.docs.menu}
+          <span class="docs-menu-chevron ml-auto inline-flex text-muted">
+            <Icon name="chevron-down" size={18} />
+          </span>
+        </summary>
+        <div class="pt-2">
+          <DocsSidebar locale={locale} groups={groups} currentId={doc.id} label={t.docs.menu} />
+        </div>
+      </details>
+      <Breadcrumbs locale={locale} crumbs={crumbs} />
+      <p class="eyebrow mt-8">{doc.data.group}</p>
+      <h1 class="display mt-3 text-[clamp(2.3rem,1.6rem+2.6vw,3.3rem)]">{doc.data.title}</h1>
+      <p class="mt-4 max-w-[70ch] text-lg text-muted">{doc.data.description}</p>
+      <TableOfContents headings={headings} title={t.docs.onThisPage} collapsible class="mt-8 xl:hidden" />
+      <Prose class="mt-10">
+        <Content components={mdxComponents} />
+      </Prose>
+      {doc.data.updated && (
+        <p class="mt-12 text-sm text-muted">{fill(t.blog.updated, { date: formatDate(doc.data.updated, lang) })}</p>
+      )}
+      <nav
+        aria-label={t.docs.pager}
+        class="mt-12 grid gap-4 border-t border-line pt-8 sm:grid-cols-2"
+        data-search-ignore
+      >
+        {previous && (
+          <a href={link(paths.doc(locale, entrySlug(previous)))} class="card pager-link p-5" rel="prev">
+            <span class="flex items-center gap-1.5 text-sm text-muted">
+              <Icon name="arrow-left" size={16} />
+              {t.docs.previous}
+            </span>
+            <span class="mt-1 block font-semibold">{previous.data.title}</span>
+          </a>
+        )}
+        {next && (
+          <a
+            href={link(paths.doc(locale, entrySlug(next)))}
+            class="card pager-link p-5 text-right sm:col-start-2"
+            rel="next"
+          >
+            <span class="flex items-center justify-end gap-1.5 text-sm text-muted">
+              {t.docs.next}
+              <Icon name="arrow-right" size={16} />
+            </span>
+            <span class="mt-1 block font-semibold">{next.data.title}</span>
+          </a>
+        )}
+      </nav>
+    </article>
+
+    <aside class="hidden xl:block" data-search-ignore>
+      <div class="sticky top-24">
+        <TableOfContents headings={headings} title={t.docs.onThisPage} />
+      </div>
+    </aside>
+  </div>
+</BaseLayout>
+
+<style>
+  .docs-menu-summary {
+    list-style: none;
+  }
+
+  .docs-menu-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .docs-menu-chevron {
+    transition: transform 150ms ease;
+  }
+
+  .docs-menu[open] .docs-menu-chevron {
+    transform: rotate(180deg);
+  }
+
+  .pager-link {
+    text-decoration: none;
+    transition: border-color 150ms ease;
+  }
+
+  .pager-link:hover {
+    border-color: var(--line-strong);
+  }
+</style>

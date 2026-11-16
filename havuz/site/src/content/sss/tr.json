@@ -1,0 +1,28 @@
+{
+  "items": [
+    {
+      "question": "Kurulum ne kadar sürer?",
+      "answer": "Çoğu işletme ilk randevusunu on dakika içinde alır: hizmetlerinizi ve çalışma saatlerinizi yazmanız yeterlidir. İsterseniz ekibimiz kurulumu sizinle birlikte, ekran paylaşarak yapar."
+    },
+    {
+      "question": "Müşterilerimin uygulama indirmesi gerekir mi?",
+      "answer": "Hayır. Randevu sayfanız her telefonda tarayıcıda açılır; müşterileriniz üye olmadan, yalnız adını ve telefon numarasını yazarak randevu alır."
+    },
+    {
+      "question": "Hatırlatma iletilerinin ücreti var mı?",
+      "answer": "İşletme ve Çok şubeli paketlerde her ay 500 SMS ya da WhatsApp iletisi pakete dâhildir. Fazlası için kullandığınız kadar ödersiniz; birim fiyatlar panelde açıkça yazar."
+    },
+    {
+      "question": "Sözleşme ya da taahhüt var mı?",
+      "answer": "Yok. Aylık ödersiniz, istediğiniz ay iptal edersiniz. Yıllık ödemeyi seçerseniz iki ayı ücretsiz kullanırsınız."
+    },
+    {
+      "question": "Google Takvim ile çalışıyor mu?",
+      "answer": "Evet. Sedir takviminizi Google Takvim ve Outlook ile iki yönlü eşitler; kişisel etkinlikleriniz dolu saat olarak görünür, ayrıntıları müşterilere gösterilmez."
+    },
+    {
+      "question": "Verilerimi dışarı aktarabilir miyim?",
+      "answer": "Evet. Müşteri listenizi ve randevu geçmişinizi istediğiniz an tablo dosyası olarak indirebilirsiniz. Hesabınızı kapatırsanız verileriniz yazılı süre içinde silinir."
+    }
+  ]
+}

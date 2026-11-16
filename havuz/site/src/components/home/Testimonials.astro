@@ -1,0 +1,44 @@
+---
+/**
+ * Müşteri görüşleri. Metinler: src/content/anasayfa/<dil>.json → testimonials (başlık),
+ * src/content/referanslar/<dil>.json → items. Örnek sitedeki kişiler kurgusaldır; gerçek görüş yazmadan yayınlamayın.
+ */
+import SectionHeader from './SectionHeader.astro'
+import Avatar from '../Avatar.astro'
+import Icon from '../Icon.astro'
+import type { CollectionEntry } from 'astro:content'
+
+interface Props {
+  anchor: string
+  lang: string
+  header: CollectionEntry<'anasayfa'>['data']['testimonials']
+  items: CollectionEntry<'referanslar'>['data']['items']
+}
+
+const { anchor, lang, header, items } = Astro.props
+---
+
+<section id={anchor} aria-labelledby={`${anchor}-baslik`} class="py-20 md:py-28">
+  <div class="wrap">
+    <SectionHeader id={`${anchor}-baslik`} {...header} />
+    <ul class="mt-14 grid gap-4 md:grid-cols-3">
+      {items.map((item) => (
+        <li class="card flex flex-col p-7">
+          <figure class="flex h-full flex-col">
+            <Icon name="quote" size={26} class="text-accent-ink" />
+            <blockquote class="mt-4 flex-1 text-[1.0625rem] leading-relaxed">
+              <p>{item.quote}</p>
+            </blockquote>
+            <figcaption class="mt-6 flex items-center gap-3 border-t border-line pt-5">
+              <Avatar name={item.name} lang={lang} />
+              <span>
+                <span class="block font-semibold">{item.name}</span>
+                <span class="block text-sm text-muted">{item.role}</span>
+              </span>
+            </figcaption>
+          </figure>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

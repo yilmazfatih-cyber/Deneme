@@ -1,4 +1,4 @@
-"""Türkçe metin işleme: büyük/küçük harf, belirteçleme, TF-IDF (scikit-learn ile), karma vektörleyici."""
+"""Türkçe metin işleme: büyük/küçük harf, belirteçleme, TF-IDF (scikit-learn ile), karma."""
 
 from __future__ import annotations
 

@@ -91,7 +91,9 @@ def _labeled_text(tokenizer: Any, encoded: Any) -> str:
 
 def test_chatml_tek_tur_yalniz_yanit_etiketlenir(chatml_tokenizer: Any) -> None:
     encoded = encode_chat(chatml_tokenizer, SINGLE)
-    assert _labeled_text(chatml_tokenizer, encoded) == "Üç iş günü içinde teslim edilir.<|im_end|>\n"
+    assert (
+        _labeled_text(chatml_tokenizer, encoded) == "Üç iş günü içinde teslim edilir.<|im_end|>\n"
+    )
     assert encoded.closed
     assert encoded.stop_ids == [chatml_tokenizer.convert_tokens_to_ids("<|im_end|>")]
     assert not encoded.merged_start
@@ -213,7 +215,10 @@ def test_onceki_iletiyi_tasiyan_sablonda_da_calisir() -> None:
     tokenizer = make_chat_tokenizer(["<|u|>", "<|a|>", "<|e|>"], template, eos="<|e|>")
     messages = [{"role": "system", "content": "Kibar ol."}, *MULTI]
     encoded = encode_chat(tokenizer, messages)
-    assert _labeled_text(tokenizer, encoded) == "İyiyim, teşekkür ederim.<|e|>E-postanızı denetleyin.<|e|>"
+    assert (
+        _labeled_text(tokenizer, encoded)
+        == "İyiyim, teşekkür ederim.<|e|>E-postanızı denetleyin.<|e|>"
+    )
 
 
 def test_uretim_istemi_asistan_yanitini_icermez(chatml_tokenizer: Any) -> None:

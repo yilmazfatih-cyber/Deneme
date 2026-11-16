@@ -8,7 +8,6 @@ version = "0.1.0"
 description = "Yalnız numpy ile sıfırdan makine öğrenmesi temeli: otomatik türev, sinir ağı katmanları, klasik modeller, değerlendirme ve CSV'den modele aracı."
 readme = "README.md"
 requires-python = ">=3.11"
-license = "MIT"
 # Tek çalışma zamanı bağımlılığı numpy'dır (gerekçe: docs/KARARLAR.md, K01).
 dependencies = ["numpy>=2.1"]
 
@@ -59,7 +58,7 @@ known-first-party = ["ml_temel"]
 
 [tool.mypy]
 python_version = "3.11"
-files = ["ml_temel", "scripts"]
+files = ["ml_temel", "scripts", "ornekler"]
 disallow_untyped_defs = true
 disallow_incomplete_defs = true
 check_untyped_defs = true
@@ -76,3 +75,8 @@ markers = [
   "yavas: uzun süren test (hızlı denetimde atlanır; `python scripts/check.py --uzun` ile koşar)",
 ]
 filterwarnings = ["error::RuntimeWarning:ml_temel"]
+
+[[tool.mypy.overrides]]
+# scikit-learn yalnız karşılaştırma için (testler ve ölçüm betiği) kullanılır; tip tanımı yoktur.
+module = ["sklearn", "sklearn.*"]
+ignore_missing_imports = true

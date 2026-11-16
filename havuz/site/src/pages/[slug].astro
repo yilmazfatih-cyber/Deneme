@@ -1,0 +1,16 @@
+---
+/**
+ * Serbest sayfalar (Türkçe): /hakkinda/, /gizlilik/, … İçerik: src/content/sayfalar/tr/. Görünüm: src/views/PageView.astro.
+ * Yeni sayfa: npm run new -- sayfa "Ad"
+ */
+import type { GetStaticPaths, InferGetStaticPropsType } from 'astro'
+import { pagePaths } from '../lib/static-paths.ts'
+import PageView from '../views/PageView.astro'
+
+export const getStaticPaths = (() => pagePaths('tr')) satisfies GetStaticPaths
+type Props = InferGetStaticPropsType<typeof getStaticPaths>
+
+const { page } = Astro.props as Props
+---
+
+<PageView page={page} />

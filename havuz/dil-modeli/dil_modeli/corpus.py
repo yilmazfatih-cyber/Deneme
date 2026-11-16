@@ -86,7 +86,9 @@ def _file_documents(path: Path, handle: TextIO, opts: CorpusOptions) -> Iterator
     if path.suffix == ".jsonl":
         for number, line in enumerate(handle, start=1):
             if line.strip():
-                yield from _document_pieces(_split(_json_text(path, number, line, opts), opts), opts)
+                yield from _document_pieces(
+                    _split(_json_text(path, number, line, opts), opts), opts
+                )
     elif opts.line_documents:
         for line in handle:
             if line.strip():
@@ -151,7 +153,7 @@ def _stream_chunks(handle: TextIO, chunk_chars: int) -> Iterator[str]:
 
 
 def _cut_point(text: str, start: int, end: int) -> int:
-    """[start, end) aralığında parçanın biteceği yer: son satır sonu, yoksa son boşluk, yoksa `end`."""
+    """[start, end) içinde parçanın biteceği yer: son satır sonu, yoksa son boşluk, yoksa `end`."""
     for separator in ("\n", " "):
         index = text.rfind(separator, start, end)
         if index > start:

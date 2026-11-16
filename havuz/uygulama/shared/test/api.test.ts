@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
+  adminMetricsResponseSchema,
   adminUpdateUserRequestSchema,
   API_PATHS,
   AppError,
@@ -30,6 +31,25 @@ describe('API sözleşmesi', () => {
     expect(registerRequestSchema.safeParse({ ...base, password: 'x'.repeat(129) }).success).toBe(false)
     expect(loginRequestSchema.safeParse({ email: 'a@b.co', password: 'kısa' }).success).toBe(true)
     expect(loginRequestSchema.safeParse({ email: 'a@b.co', password: '' }).success).toBe(false)
+  })
+
+  it('yönetici ölçümleri: sayılar negatif olamaz, adres sabittir', () => {
+    const sample = {
+      version: '0.1.0',
+      time: '2026-11-16T09:00:00.000Z',
+      uptimeSeconds: 60,
+      users: 3,
+      disabledUsers: 0,
+      workspaces: 4,
+      records: 10,
+      deletedRecords: 2,
+      activeSessions: 3,
+      liveConnections: 1,
+      databaseBytes: 4096,
+    }
+    expect(adminMetricsResponseSchema.safeParse(sample).success).toBe(true)
+    expect(adminMetricsResponseSchema.safeParse({ ...sample, users: -1 }).success).toBe(false)
+    expect(API_PATHS.adminMetrics).toBe('/api/admin/metrics')
   })
 
   it('yönetici güncellemesi en az bir alan ister', () => {

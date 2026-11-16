@@ -1,0 +1,16 @@
+# Docker derlemesine girmeyecekler: bağımlılıklar görüntüde yeniden kurulur, veriler ve sırlar asla girmez.
+**/node_modules
+**/dist
+**/dev-dist
+**/.data
+**/coverage
+**/*.local
+**/.env
+.env
+.git
+.npm-kilit
+playwright-report
+test-results
+**/*.db
+**/*.db-wal
+**/*.db-shm

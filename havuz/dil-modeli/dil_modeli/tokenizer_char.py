@@ -97,7 +97,9 @@ class CharTokenizer:
     def decode_bytes(self, ids: Iterable[int], *, skip_special: bool = True) -> bytes:
         id_list = list(ids)
         if id_list and (min(id_list) < 0 or max(id_list) >= len(self._tokens)):
-            raise ValueError(f"Belirteç kimliği sözlük dışında (sözlük boyutu {len(self._tokens)}).")
+            raise ValueError(
+                f"Belirteç kimliği sözlük dışında (sözlük boyutu {len(self._tokens)})."
+            )
         tokens = self._tokens
         special = self._special_ids
         text = "".join(tokens[i] for i in id_list if not (skip_special and i in special))
@@ -116,7 +118,9 @@ class CharTokenizer:
         chars = data.get("karakterler")
         special = data.get("ozel")
         if not isinstance(chars, list) or not isinstance(special, list):
-            raise ValueError("Karakter tokenizer dosyası bozuk: 'karakterler' ve 'ozel' listeleri yok.")
+            raise ValueError(
+                "Karakter tokenizer dosyası bozuk: 'karakterler' ve 'ozel' listeleri yok."
+            )
         return cls([str(ch) for ch in chars], [str(token) for token in special])
 
     def fingerprint(self) -> str:

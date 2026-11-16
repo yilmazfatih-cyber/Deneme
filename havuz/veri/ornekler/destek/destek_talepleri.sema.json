@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "destek_talepleri",
+  "description": "Kalıptan üretilmiş kısa destek talepleri (uydurma).",
+  "type": "object",
+  "properties": {
+    "talep_id": {
+      "type": "string",
+      "pattern": "^T\\d{6}$",
+      "x-benzersiz": true
+    },
+    "musteri_id": {
+      "type": "string",
+      "pattern": "^M\\d{6}$"
+    },
+    "olusturma_zamani": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "kanal": {
+      "type": "string",
+      "enum": [
+        "e-posta",
+        "telefon",
+        "canlı destek",
+        "uygulama içi"
+      ]
+    },
+    "kategori": {
+      "type": "string",
+      "enum": [
+        "kargo",
+        "iade",
+        "odeme",
+        "urun",
+        "hesap",
+        "fatura"
+      ]
+    },
+    "oncelik": {
+      "type": "string",
+      "enum": [
+        "dusuk",
+        "normal",
+        "yuksek",
+        "acil"
+      ]
+    },
+    "metin": {
+      "type": "string",
+      "minLength": 10
+    },
+    "durum": {
+      "type": "string",
+      "enum": [
+        "acik",
+        "beklemede",
+        "cozuldu",
+        "kapandi"
+      ]
+    },
+    "cozum_suresi_saat": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0.0
+    },
+    "memnuniyet": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1.0,
+      "maximum": 5.0
+    }
+  },
+  "required": [
+    "talep_id",
+    "musteri_id",
+    "olusturma_zamani",
+    "kanal",
+    "kategori",
+    "oncelik",
+    "metin",
+    "durum",
+    "cozum_suresi_saat",
+    "memnuniyet"
+  ],
+  "additionalProperties": false,
+  "x-birincil-anahtar": [
+    "talep_id"
+  ]
+}

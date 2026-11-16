@@ -18,6 +18,7 @@ import hashlib
 import json
 import time
 from collections.abc import Callable
+from functools import partial
 from pathlib import Path
 from typing import Any, TypeVar
 
@@ -79,7 +80,7 @@ def download(out_path: Path, target_bytes: int) -> dict[str, Any]:
             if written >= target_bytes:
                 break
             table = _retry(
-                lambda group=group: parquet.read_row_group(group, columns=["id", "url", "title", "text"]),
+                partial(parquet.read_row_group, group, columns=["id", "url", "title", "text"]),
                 f"satır grubu {group}",
             )
             groups += 1
@@ -116,12 +117,16 @@ def download(out_path: Path, target_bytes: int) -> dict[str, Any]:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Örnek model için Türkçe Vikipedi metni indirir.")
-    parser.add_argument("--cikti", type=Path, default=Path("veri/ham/trwiki.jsonl"), help="çıktı .jsonl")
+    parser.add_argument(
+        "--cikti", type=Path, default=Path("veri/ham/trwiki.jsonl"), help="çıktı .jsonl"
+    )
     parser.add_argument("--hedef-mb", type=float, default=24.0, help="yaklaşık metin boyutu (MB)")
     args = parser.parse_args()
     record = download(args.cikti, int(args.hedef_mb * 1e6))
     record_path = args.cikti.with_suffix(".kaynak.json")
-    record_path.write_text(json.dumps(record, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    record_path.write_text(
+        json.dumps(record, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
     print(f"Bitti: {args.cikti} ({record['madde']} madde, {record['cikti_bayt'] / 1e6:.1f} MB)")
     print(f"Kaynak kaydı: {record_path}")
 

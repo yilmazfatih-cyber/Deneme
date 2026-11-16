@@ -1,0 +1,22 @@
+---
+/**
+ * Uyarı kutusu. MDX içinde: <Callout type="tip">Metin</Callout>  (type: note | tip | important | warning | caution)
+ * Markdown'da aynı kutu için: > [!TIP] satırıyla başlayan alıntı yazın. Başlık verilmezse türün adı kullanılır.
+ * Renkler temadan gelir (src/lib/theme.ts → calloutHues).
+ */
+import { toLocale, useTranslations } from '../i18n/index.ts'
+import type { CalloutKind } from '../lib/theme.ts'
+
+interface Props {
+  type?: CalloutKind
+  title?: string
+}
+
+const { type = 'note', title } = Astro.props
+const t = useTranslations(toLocale(Astro.currentLocale))
+---
+
+<aside class:list={['callout', `callout-${type}`]} role="note">
+  <p class="callout-title">{title ?? t.callout[type]}</p>
+  <slot />
+</aside>

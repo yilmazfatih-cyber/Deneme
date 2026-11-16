@@ -1,0 +1,62 @@
+---
+/**
+ * Serbest sayfa görünümü (Hakkında, Gizlilik, KVKK, Çerez politikası… src/content/sayfalar/).
+ * `legalTemplate: true` → başta "şablondur, hukuki danışmanlık değildir" uyarısı; `showTeam: true` → sonda ekip listesi.
+ * Kim kullanır: src/pages/[slug].astro ve src/pages/en/[slug].astro.
+ */
+import { render } from 'astro:content'
+import Breadcrumbs from '../components/Breadcrumbs.astro'
+import Callout from '../components/Callout.astro'
+import Prose from '../components/Prose.astro'
+import Team from '../components/Team.astro'
+import { mdxComponents } from '../components/mdx/index.ts'
+import { useTranslations } from '../i18n/index.ts'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { alternatesOf, entryLocale, entrySlug, getAllPages, type Page } from '../lib/content.ts'
+import { formatDate } from '../lib/format.ts'
+import { paths } from '../lib/routes.ts'
+import { fill } from '../lib/text.ts'
+import { siteConfig } from '../site.config.ts'
+
+interface Props {
+  page: Page
+}
+
+const { page } = Astro.props
+const locale = entryLocale(page)
+const t = useTranslations(locale)
+const lang = siteConfig.locales[locale].lang
+const { Content } = await render(page)
+const path = paths.page(locale, entrySlug(page))
+const crumbs = [
+  { label: siteConfig.name, path: paths.home(locale) },
+  { label: page.data.title, path },
+]
+---
+
+<BaseLayout
+  locale={locale}
+  title={page.data.title}
+  description={page.data.description}
+  alternates={alternatesOf(page, await getAllPages(), paths.page)}
+  breadcrumbs={crumbs}
+  searchSection={siteConfig.name}
+>
+  <article class="wrap-narrow py-12 md:py-16">
+    <Breadcrumbs locale={locale} crumbs={crumbs} />
+    <h1 class="display mt-8 text-[clamp(2.4rem,1.6rem+3vw,3.6rem)]">{page.data.title}</h1>
+    <p class="mt-5 text-lg text-muted">{page.data.description}</p>
+    {page.data.legalTemplate && (
+      <Callout type="warning" title={t.legal.templateTitle}>
+        <p>{t.legal.templateNotice}</p>
+      </Callout>
+    )}
+    {page.data.updated && (
+      <p class="mt-6 text-sm text-muted">{fill(t.legal.lastUpdated, { date: formatDate(page.data.updated, lang) })}</p>
+    )}
+    <Prose class="mt-10">
+      <Content components={mdxComponents} />
+    </Prose>
+    {page.data.showTeam && <Team />}
+  </article>
+</BaseLayout>

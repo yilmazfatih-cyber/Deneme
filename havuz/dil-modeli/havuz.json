@@ -1,0 +1,32 @@
+{
+  "ad": "dil-modeli",
+  "baslik": "Sıfırdan dil modeli temeli",
+  "ozet": "Bayt düzeyi BPE tokenizer, LLaMA uyumlu PyTorch modeli, sürdürülebilir eğitim, üretim, LoRA ince ayarı, Hugging Face/GGUF/tarayıcı/ONNX aktarımı, OpenAI uyumlu sunucu ve bağımlılıksız JS çalışma zamanı; minik Türkçe örnek modelle.",
+  "tur": "karma",
+  "gereksinim": { "python": ">=3.11", "node": ">=22.12" },
+  "python": { "ekstra": "dev" },
+  "kur": ["npm ci"],
+  "denetle": ["python scripts/check.py"],
+  "uzunDenetim": ["python scripts/check.py --uzun"],
+  "baslat": "python -m dil_modeli sun --model ornek-model",
+  "kapi": 8430,
+  "yerTutucular": [
+    { "ara": "dil-modeli", "anlam": "proje adı (pyproject.toml, package.json, havuz.json)" },
+    { "ara": "8430", "anlam": "sunucunun varsayılan kapısı (dil_modeli/cli_serve.py)" }
+  ],
+  "kopyalamaHaric": [
+    ".venv",
+    "node_modules",
+    "veri",
+    "calisma",
+    "test-results",
+    "dil_modeli.egg-info",
+    "__pycache__",
+    ".mypy_cache",
+    ".ruff_cache"
+  ],
+  "notlar": [
+    "Uzun denetim Chromium ister: PLAYWRIGHT_CHROMIUM_EXECUTABLE=/yol/chromium (ör. /opt/pw-browsers/chromium).",
+    "ONNX eşlik testi isteğe bağlı .[onnx] ekstrası kuruluysa koşar, yoksa atlanır."
+  ]
+}

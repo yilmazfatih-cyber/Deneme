@@ -1,0 +1,38 @@
+---
+/**
+ * Kod bloğu (.astro sayfalarında ve MDX'te). Markdown'daki ```dil çitleriyle aynı görünür: başlık + Kopyala düğmesi.
+ *   <CodeBlock lang="bash" title="Terminal" code="npm run dev" />
+ * Renklendirme Shiki ile derlemede yapılır (istemciye JS gitmez); Kopyala düğmesi src/scripts/copy-code.ts.
+ */
+import { Code } from 'astro:components'
+import { useTranslations, toLocale } from '../i18n/index.ts'
+
+interface Props {
+  code: string
+  lang?: string
+  title?: string
+}
+
+const { code, lang = 'plaintext', title } = Astro.props
+const t = useTranslations(toLocale(Astro.currentLocale))
+const caption = title ?? (lang === 'plaintext' ? '' : lang)
+---
+
+<div class="code-block">
+  <div class="code-header">
+    <span class={title ? 'code-title' : 'code-lang'}>{caption}</span>
+    <button type="button" class="code-copy" data-copy-label={t.code.copy} data-copied-label={t.code.copied}>
+      {t.code.copy}
+    </button>
+  </div>
+  <Code
+    code={code}
+    lang={lang as never}
+    themes={{ light: 'github-light-high-contrast', dark: 'github-dark-high-contrast' }}
+    defaultColor={false}
+  />
+</div>
+
+<script>
+  import '../scripts/copy-code.ts'
+</script>

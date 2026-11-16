@@ -1,0 +1,35 @@
+# Sohbet · cpu-deneme: minik rastgele model, CPU, birkaç saniye.
+# Amaç hattın (veri → maske → eğitim → değerlendirme → birleştirme) kırılmadığını görmektir;
+# model hiçbir şey öğrenmez. Gerçek bir küçük modelle denemek için:
+#   -D model.taban=HuggingFaceTB/SmolLM2-135M-Instruct
+gorev = "sohbet"
+
+[model]
+taban = "minik-rastgele"
+
+[veri]
+egitim = "ornekler/sohbet.jsonl"
+dogrulama_orani = 0.2
+azami_uzunluk = 256
+grup_alani = "grup"
+
+[lora]
+r = 8
+alpha = 16
+dropout = 0.0
+
+[egitim]
+cikti = "ciktilar/sohbet-deneme"
+azami_adim = 3
+yigin = 2
+biriktirme = 1
+degerlendirme_yigini = 2
+ogrenme_orani = 1e-3
+kayit_adimi = 1
+gradyan_denetimi = false
+ornek_uretim = 1
+is_parcacigi = 2
+
+[degerlendirme]
+azami_yeni_belirtec = 16
+ornek_sayisi = 2

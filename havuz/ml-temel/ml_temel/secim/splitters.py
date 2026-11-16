@@ -184,15 +184,34 @@ class TimeSeriesSplit(BaseEstimator):
             yield indices[train_start:train_end], indices[test_start : test_start + test_size]
 
 
+class PredefinedSplits(BaseEstimator):
+    """Önceden hazırlanmış (eğitim, sınama) indeks çiftlerini bölücü gibi sunar."""
+
+    def __init__(self, splits: list[tuple[IntArray, IntArray]]) -> None:
+        self.splits = splits
+
+    def get_n_splits(self) -> int:
+        return len(self.splits)
+
+    def split(self, X: Any, y: Any = None, groups: Any = None) -> Iterator[Split]:
+        for train, test in self.splits:
+            yield np.asarray(train, dtype=np.int64), np.asarray(test, dtype=np.int64)
+
+
 def check_cv(cv: Any, y: Any = None, classifier: bool = False) -> Any:
-    """Tam sayıyı uygun bölücüye çevirir: sınıflandırmada StratifiedKFold, yoksa KFold."""
+    """Tam sayıyı uygun bölücüye çevirir: sınıflandırmada StratifiedKFold, yoksa KFold.
+
+    Bölücü nesnesi (`split` yöntemi olan) ya da (eğitim, sınama) çiftleri listesi de verilebilir.
+    """
     if cv is None:
         cv = 5
     if isinstance(cv, (int, np.integer)):
         return StratifiedKFold(int(cv)) if classifier and y is not None else KFold(int(cv))
-    if not hasattr(cv, "split"):
-        raise TypeError(
-            "cv bir tam sayı ya da `split` yöntemi olan bir bölücü olmalı "
-            "(KFold, StratifiedKFold, GroupKFold, TimeSeriesSplit)."
-        )
-    return cv
+    if hasattr(cv, "split"):
+        return cv
+    if isinstance(cv, (list, tuple)) and all(len(pair) == 2 for pair in cv):
+        return PredefinedSplits(list(cv))
+    raise TypeError(
+        "cv bir tam sayı, `split` yöntemi olan bir bölücü (KFold, StratifiedKFold, GroupKFold, "
+        "TimeSeriesSplit) ya da (eğitim, sınama) indeks çiftleri listesi olmalı."
+    )

@@ -1,0 +1,79 @@
+---
+/**
+ * Sayfalama: Önceki / sayfa numaraları / Sonraki. Bulunulan sayfa `aria-current="page"` taşır.
+ * Kim kullanır: blog listesi. `pageUrl(n)` mantıksal yolu verir (ör. paths.blog('tr', n)).
+ */
+import Icon from './Icon.astro'
+import { useTranslations } from '../i18n/index.ts'
+import { fill } from '../lib/text.ts'
+import { link } from '../lib/url.ts'
+import type { Locale } from '../site.config.ts'
+
+interface Props {
+  locale: Locale
+  current: number
+  last: number
+  pageUrl: (page: number) => string
+}
+
+const { locale, current, last, pageUrl } = Astro.props
+const t = useTranslations(locale)
+const pages = Array.from({ length: last }, (_, index) => index + 1)
+---
+
+{last > 1 && (
+  <nav aria-label={t.a11y.pagination} class="mt-14 flex flex-wrap items-center justify-center gap-2" data-search-ignore>
+    {current > 1 ? (
+      <a href={link(pageUrl(current - 1))} class="btn btn-secondary btn-sm" rel="prev">
+        <Icon name="arrow-left" />
+        {t.pagination.previous}
+      </a>
+    ) : null}
+    <ul class="flex flex-wrap gap-1">
+      {pages.map((page) => (
+        <li>
+          <a
+            href={link(pageUrl(page))}
+            class:list={['page-number', page === current && 'is-current']}
+            aria-current={page === current ? 'page' : undefined}
+            aria-label={fill(t.pagination.page, { page })}
+          >
+            {page}
+          </a>
+        </li>
+      ))}
+    </ul>
+    {current < last ? (
+      <a href={link(pageUrl(current + 1))} class="btn btn-secondary btn-sm" rel="next">
+        {t.pagination.next}
+        <Icon name="arrow-right" />
+      </a>
+    ) : null}
+  </nav>
+)}
+
+<style>
+  .page-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--muted);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .page-number:hover {
+    border-color: var(--line-strong);
+    color: var(--ink);
+  }
+
+  .page-number.is-current {
+    border-color: var(--brand);
+    background-color: var(--brand);
+    color: var(--on-brand);
+  }
+</style>

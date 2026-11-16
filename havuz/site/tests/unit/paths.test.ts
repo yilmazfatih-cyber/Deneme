@@ -1,5 +1,13 @@
 import { describe, expect, it } from 'vitest'
-import { isExternal, isSamePage, isWithinSection, normalizeBase, stripBase, toAbsolute, withBase } from '../../src/lib/paths.ts'
+import {
+  isExternal,
+  isSamePage,
+  isWithinSection,
+  normalizeBase,
+  stripBase,
+  toAbsolute,
+  withBase,
+} from '../../src/lib/paths.ts'
 
 describe('normalizeBase', () => {
   it.each([
@@ -42,7 +50,15 @@ describe('withBase', () => {
   })
 
   it('dış adreslere, yalnız bölüm ve yalnız sorgu adreslerine dokunmaz', () => {
-    for (const href of ['https://example.com/a', 'mailto:a@b.co', 'tel:+900000000000', '//cdn.example.com/x', '#bolum', '?q=1', '']) {
+    for (const href of [
+      'https://example.com/a',
+      'mailto:a@b.co',
+      'tel:+900000000000',
+      '//cdn.example.com/x',
+      '#bolum',
+      '?q=1',
+      '',
+    ]) {
       expect(withBase(href, '/depo/')).toBe(href)
     }
   })

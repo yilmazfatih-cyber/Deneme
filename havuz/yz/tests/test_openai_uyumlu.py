@@ -10,13 +10,17 @@ import httpx
 import pytest
 
 from yz.hatalar import BaglantiHatasi, DesteklenmiyorHatasi, SaglayiciHatasi, ZamanAsimiHatasi
-from yz.saglayici import AracTanimi, Mesaj, OpenAIUyumlu, YenidenDenemeAyari
+from yz.saglayici import AracCagrisi, AracTanimi, Mesaj, OpenAIUyumlu, YenidenDenemeAyari
 from yz.saglayici.openai_uyumlu import hata_iletisi_coz, taban_url_duzelt
 
 ARAC = AracTanimi(
     ad="hesapla",
     aciklama="Aritmetik ifadeyi hesaplar.",
-    parametreler={"type": "object", "properties": {"ifade": {"type": "string"}}, "required": ["ifade"]},
+    parametreler={
+        "type": "object",
+        "properties": {"ifade": {"type": "string"}},
+        "required": ["ifade"],
+    },
 )
 
 
@@ -25,11 +29,14 @@ def _sag(isleyici, **ek) -> tuple[OpenAIUyumlu, list[httpx.Request]]:
 
     def sarili(istek: httpx.Request) -> httpx.Response:
         istekler.append(istek)
-        return isleyici(istek)
+        yanit: httpx.Response = isleyici(istek)
+        return yanit
 
     istemci = httpx.Client(transport=httpx.MockTransport(sarili))
     ek.setdefault("yeniden_deneme", YenidenDenemeAyari(azami_deneme=3, taban_sn=0.01))
-    sag = OpenAIUyumlu("http://sunucu.test", "deneme-model", istemci=istemci, uyu=lambda _: None, **ek)
+    sag = OpenAIUyumlu(
+        "http://sunucu.test", "deneme-model", istemci=istemci, uyu=lambda _: None, **ek
+    )
     return sag, istekler
 
 
@@ -39,7 +46,9 @@ def _json(veri, durum=200, **ek) -> httpx.Response:
 
 def _sse(*parcalar, bitis="data: [DONE]\n\n") -> httpx.Response:
     govde = "".join(f"data: {json.dumps(p, ensure_ascii=False)}\n\n" for p in parcalar) + bitis
-    return httpx.Response(200, content=govde.encode(), headers={"content-type": "text/event-stream"})
+    return httpx.Response(
+        200, content=govde.encode(), headers={"content-type": "text/event-stream"}
+    )
 
 
 @pytest.mark.parametrize(
@@ -66,11 +75,22 @@ def test_temel_sohbet_ve_istek_govdesi():
     yanit = {
         "id": "x",
         "model": "deneme-model-q4",
-        "choices": [{"index": 0, "message": {"role": "assistant", "content": "Merhaba!"}, "finish_reason": "stop"}],
+        "choices": [
+            {
+                "index": 0,
+                "message": {"role": "assistant", "content": "Merhaba!"},
+                "finish_reason": "stop",
+            }
+        ],
         "usage": {"prompt_tokens": 12, "completion_tokens": 3, "total_tokens": 15},
     }
     sag, istekler = _sag(lambda _: _json(yanit), api_anahtari="gizli-anahtar")
-    sonuc = sag.sohbet([Mesaj.sistem("Kısa yanıtla."), Mesaj.kullanici("Selam")], azami_belirtec=50, dur=["\n\n"], tohum=7)
+    sonuc = sag.sohbet(
+        [Mesaj.sistem("Kısa yanıtla."), Mesaj.kullanici("Selam")],
+        azami_belirtec=50,
+        dur=["\n\n"],
+        tohum=7,
+    )
     assert sonuc.metin == "Merhaba!" and sonuc.bitis_nedeni == "bitti"
     assert (sonuc.kullanim.girdi_belirteci, sonuc.kullanim.cikti_belirteci) == (12, 3)
     assert sonuc.model == "deneme-model-q4" and not sonuc.kullanim.tahmini
@@ -89,7 +109,9 @@ def test_temel_sohbet_ve_istek_govdesi():
 
 def test_eksik_alanlara_hosgoru():
     """usage, finish_reason, model yok; content None — yine de yanıt çıkar, kullanım tahmin edilir."""
-    sag, _ = _sag(lambda _: _json({"choices": [{"message": {"role": "assistant", "content": None}}]}))
+    sag, _ = _sag(
+        lambda _: _json({"choices": [{"message": {"role": "assistant", "content": None}}]})
+    )
     sonuc = sag.sohbet("Selam")
     assert sonuc.metin == "" and sonuc.model == "deneme-model"
     assert sonuc.kullanim.tahmini and sonuc.kullanim.girdi_belirteci > 0
@@ -100,7 +122,10 @@ def test_icerik_parca_listesi_ve_dusunce_alanlari():
         "choices": [
             {
                 "message": {
-                    "content": [{"type": "text", "text": "Sonuç "}, {"type": "text", "text": "42."}],
+                    "content": [
+                        {"type": "text", "text": "Sonuç "},
+                        {"type": "text", "text": "42."},
+                    ],
                     "reasoning_content": "Önce toplayayım.",
                 },
                 "finish_reason": "eos",
@@ -116,7 +141,9 @@ def test_icerik_parca_listesi_ve_dusunce_alanlari():
 
 def test_think_etiketi_metinden_ayrilir():
     icerik = "<think>\nKullanıcı selam verdi.\n</think>\n\nMerhaba!"
-    sag, _ = _sag(lambda _: _json({"choices": [{"message": {"content": icerik}, "finish_reason": "stop"}]}))
+    sag, _ = _sag(
+        lambda _: _json({"choices": [{"message": {"content": icerik}, "finish_reason": "stop"}]})
+    )
     sonuc = sag.sohbet("Selam")
     assert sonuc.metin == "Merhaba!" and sonuc.dusunce == "Kullanıcı selam verdi."
 
@@ -129,9 +156,16 @@ def test_arac_cagrisi_bicim_farklari():
                 "message": {
                     "content": "",
                     "tool_calls": [
-                        {"id": "call_1", "type": "function", "function": {"name": "hesapla", "arguments": '{"ifade": "2+2"}'}},
+                        {
+                            "id": "call_1",
+                            "type": "function",
+                            "function": {"name": "hesapla", "arguments": '{"ifade": "2+2"}'},
+                        },
                         {"function": {"name": "hesapla", "arguments": {"ifade": "3*3"}}},
-                        {"id": "call_3", "function": {"name": "hesapla", "arguments": "{'ifade': '4/2',}"}},
+                        {
+                            "id": "call_3",
+                            "function": {"name": "hesapla", "arguments": "{'ifade': '4/2',}"},
+                        },
                     ],
                 },
                 "finish_reason": "stop",
@@ -141,14 +175,27 @@ def test_arac_cagrisi_bicim_farklari():
     sag, istekler = _sag(lambda _: _json(yanit))
     sonuc = sag.sohbet("hesapla", araclar=[ARAC], arac_secimi="zorunlu")
     assert sonuc.bitis_nedeni == "arac"
-    assert [c.argumanlar for c in sonuc.arac_cagrilari] == [{"ifade": "2+2"}, {"ifade": "3*3"}, {"ifade": "4/2"}]
+    assert [c.argumanlar for c in sonuc.arac_cagrilari] == [
+        {"ifade": "2+2"},
+        {"ifade": "3*3"},
+        {"ifade": "4/2"},
+    ]
     assert [c.kimlik for c in sonuc.arac_cagrilari] == ["call_1", "cagri_2", "call_3"]
     govde = json.loads(istekler[0].content)
     assert govde["tools"][0]["function"]["name"] == "hesapla" and govde["tool_choice"] == "required"
 
 
 def test_eski_function_call_bicimi():
-    yanit = {"choices": [{"message": {"content": None, "function_call": {"name": "hesapla", "arguments": '{"ifade": "1+1"}'}}}]}
+    yanit = {
+        "choices": [
+            {
+                "message": {
+                    "content": None,
+                    "function_call": {"name": "hesapla", "arguments": '{"ifade": "1+1"}'},
+                }
+            }
+        ]
+    }
     sag, _ = _sag(lambda _: _json(yanit))
     assert sag.sohbet("x", araclar=[ARAC]).arac_cagrilari[0].argumanlar == {"ifade": "1+1"}
 
@@ -158,7 +205,9 @@ def test_arac_turu_mesajlari_tel_bicimine_cevrilir():
     ilk = sag.sohbet  # yalnız okunurluk
     gecmis = [
         Mesaj.kullanici("2+2?"),
-        Mesaj.asistan(arac_cagrilari=[{"kimlik": "c1", "ad": "hesapla", "argumanlar": {"ifade": "2+2"}}]),  # type: ignore[list-item]
+        Mesaj.asistan(
+            arac_cagrilari=[AracCagrisi(kimlik="c1", ad="hesapla", argumanlar={"ifade": "2+2"})]
+        ),
         Mesaj.arac("c1", "4", ad="hesapla"),
     ]
     ilk(gecmis, araclar=[ARAC])
@@ -177,7 +226,9 @@ def test_yapili_kipler_govdeyi_degistirir():
     beklenenler = {
         "json_sema": lambda g: g["response_format"]["json_schema"]["schema"] == sema,
         "json_nesne": lambda g: g["response_format"] == {"type": "json_object"},
-        "gbnf": lambda g: "grammar" in g and "root ::=" in g["grammar"] and "response_format" not in g,
+        "gbnf": lambda g: (
+            "grammar" in g and "root ::=" in g["grammar"] and "response_format" not in g
+        ),
         "kapali": lambda g: "response_format" not in g and "grammar" not in g,
     }
     for kip, denetim in beklenenler.items():
@@ -194,9 +245,31 @@ def test_akis_metin_arac_ve_kullanim():
         {"model": "m", "choices": [{"delta": {"role": "assistant", "content": ""}}]},
         {"choices": [{"delta": {"content": "Mer"}}]},
         {"choices": [{"delta": {"content": "haba"}}]},
-        {"choices": [{"delta": {"tool_calls": [{"index": 0, "id": "c1", "function": {"name": "hesapla", "arguments": ""}}]}}]},
-        {"choices": [{"delta": {"tool_calls": [{"index": 0, "function": {"arguments": '{"ifade":'}}]}}]},
-        {"choices": [{"delta": {"tool_calls": [{"index": 0, "function": {"arguments": ' "2+2"}'}}]}}]},
+        {
+            "choices": [
+                {
+                    "delta": {
+                        "tool_calls": [
+                            {
+                                "index": 0,
+                                "id": "c1",
+                                "function": {"name": "hesapla", "arguments": ""},
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "choices": [
+                {"delta": {"tool_calls": [{"index": 0, "function": {"arguments": '{"ifade":'}}]}}
+            ]
+        },
+        {
+            "choices": [
+                {"delta": {"tool_calls": [{"index": 0, "function": {"arguments": ' "2+2"}'}}]}}
+            ]
+        },
         {"choices": [{"delta": {}, "finish_reason": "tool_calls"}]},
         {"choices": [], "usage": {"prompt_tokens": 9, "completion_tokens": 4}},
     ]
@@ -205,8 +278,14 @@ def test_akis_metin_arac_ve_kullanim():
     assert [p.metin for p in gelen[:-1]] == ["Mer", "haba"]
     son = gelen[-1].son
     assert son is not None and son.metin == "Merhaba" and son.bitis_nedeni == "arac"
-    assert son.arac_cagrilari[0].argumanlar == {"ifade": "2+2"} and son.arac_cagrilari[0].kimlik == "c1"
-    assert (son.kullanim.girdi_belirteci, son.kullanim.cikti_belirteci) == (9, 4) and son.model == "m"
+    assert (
+        son.arac_cagrilari[0].argumanlar == {"ifade": "2+2"}
+        and son.arac_cagrilari[0].kimlik == "c1"
+    )
+    assert (son.kullanim.girdi_belirteci, son.kullanim.cikti_belirteci) == (
+        9,
+        4,
+    ) and son.model == "m"
     govde = json.loads(istekler[0].content)
     assert govde["stream"] is True and govde["stream_options"] == {"include_usage": True}
 
@@ -233,11 +312,16 @@ def test_akis_indekssiz_arac_cagrilari_ve_bozuk_satir():
         ": canli tut\n\n"
         'data: {"choices": [{"delta": {"tool_calls": [{"id": "b", "function": {"name": "hesapla", "arguments": "{\\"ifade\\": \\"2\\"}"}}]}}]}\n\n'
     )
-    yanit = httpx.Response(200, content=govde.encode(), headers={"content-type": "text/event-stream"})
+    yanit = httpx.Response(
+        200, content=govde.encode(), headers={"content-type": "text/event-stream"}
+    )
     sag, _ = _sag(lambda _: yanit)
     son = list(sag.sohbet("x", araclar=[ARAC], akis=True))[-1].son
     assert son is not None
-    assert [(c.kimlik, c.argumanlar) for c in son.arac_cagrilari] == [("a", {"ifade": "1"}), ("b", {"ifade": "2"})]
+    assert [(c.kimlik, c.argumanlar) for c in son.arac_cagrilari] == [
+        ("a", {"ifade": "1"}),
+        ("b", {"ifade": "2"}),
+    ]
 
 
 def test_akis_istegine_duz_json_donen_sunucu():
@@ -247,7 +331,11 @@ def test_akis_istegine_duz_json_donen_sunucu():
 
 
 def test_akis_ortasinda_hata_nesnesi():
-    sag, _ = _sag(lambda _: _sse({"choices": [{"delta": {"content": "ya"}}]}, {"error": {"message": "bellek bitti"}}))
+    sag, _ = _sag(
+        lambda _: _sse(
+            {"choices": [{"delta": {"content": "ya"}}]}, {"error": {"message": "bellek bitti"}}
+        )
+    )
     with pytest.raises(SaglayiciHatasi, match="bellek bitti"):
         list(sag.sohbet("x", akis=True))
 
@@ -265,7 +353,10 @@ def test_gecici_hatada_yeniden_dener_ve_retry_after():
     sag, istekler = _sag(isleyici, yeniden_deneme=YenidenDenemeAyari(azami_deneme=3, taban_sn=0.1))
     sag._uyu = beklemeler.append
     assert sag.sohbet("x").metin == "tamam"
-    assert len(istekler) == 3 and beklemeler == [2.0, 2.0]  # Retry-After üstel beklemeden uzunsa o kullanılır
+    assert len(istekler) == 3 and beklemeler == [
+        2.0,
+        2.0,
+    ]  # Retry-After üstel beklemeden uzunsa o kullanılır
 
 
 def test_yeniden_deneme_tukenince_hata_ve_4xx_denenmez():
@@ -309,7 +400,9 @@ def test_baglanti_ve_zaman_asimi_hatalari():
 
 
 def test_desteklenmeyen_ozellik_ayri_hata_turudur():
-    sag, _ = _sag(lambda _: _json({"error": {"message": "response_format json_schema is not supported"}}, 400))
+    sag, _ = _sag(
+        lambda _: _json({"error": {"message": "response_format json_schema is not supported"}}, 400)
+    )
     with pytest.raises(DesteklenmiyorHatasi):
         sag.sohbet("x", yanit_bicimi={"type": "object"})
     sag, _ = _sag(lambda _: _json({"error": {"message": "model does not support tools"}}, 400))
@@ -321,7 +414,9 @@ def test_reddedilen_istege_bagli_alan_atilip_yeniden_denenir():
     def isleyici(istek: httpx.Request):
         govde = json.loads(istek.content)
         if "stream_options" in govde:
-            return _json({"error": {"message": "Unrecognized request argument: stream_options"}}, 400)
+            return _json(
+                {"error": {"message": "Unrecognized request argument: stream_options"}}, 400
+            )
         return _sse({"choices": [{"delta": {"content": "oldu"}}]})
 
     sag, istekler = _sag(isleyici)

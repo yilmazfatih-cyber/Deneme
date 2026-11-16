@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "churn",
+  "description": "Bilinen nedensel yapılı churn kümesi. gercek_olasilik yalnız değerlendirme içindir.",
+  "type": "object",
+  "properties": {
+    "musteri_id": {
+      "type": "string",
+      "pattern": "^C\\d{6}$",
+      "x-benzersiz": true
+    },
+    "yas": {
+      "type": "integer",
+      "minimum": 18.0,
+      "maximum": 80.0
+    },
+    "bolge": {
+      "type": "string",
+      "enum": [
+        "Akdeniz",
+        "Doğu Anadolu",
+        "Ege",
+        "Güneydoğu Anadolu",
+        "İç Anadolu",
+        "Karadeniz",
+        "Marmara"
+      ]
+    },
+    "sozlesme": {
+      "type": "string",
+      "enum": [
+        "aylik",
+        "yillik",
+        "iki_yillik"
+      ]
+    },
+    "paket": {
+      "type": "string",
+      "enum": [
+        "temel",
+        "standart",
+        "premium"
+      ]
+    },
+    "kidem_ay": {
+      "type": "integer",
+      "minimum": 1.0,
+      "maximum": 72.0
+    },
+    "aylik_ucret": {
+      "type": "number",
+      "minimum": 0.0
+    },
+    "kullanim_saat": {
+      "type": "number",
+      "minimum": 0.0
+    },
+    "eposta_acma_orani": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+    "destek_talebi": {
+      "type": "integer",
+      "minimum": 0.0
+    },
+    "odeme_gecikmesi": {
+      "type": "integer",
+      "minimum": 0.0
+    },
+    "rastgele_ozellik": {
+      "type": "number",
+      "description": "saf gürültü; etkisi yok"
+    },
+    "churn": {
+      "type": "integer",
+      "description": "1: müşteri ayrıldı",
+      "enum": [
+        0,
+        1
+      ]
+    },
+    "gercek_olasilik": {
+      "type": "number",
+      "description": "EĞİTİMDE KULLANMAYIN",
+      "minimum": 0.0,
+      "maximum": 1.0
+    }
+  },
+  "required": [
+    "musteri_id",
+    "yas",
+    "bolge",
+    "sozlesme",
+    "paket",
+    "kidem_ay",
+    "aylik_ucret",
+    "kullanim_saat",
+    "eposta_acma_orani",
+    "destek_talebi",
+    "odeme_gecikmesi",
+    "rastgele_ozellik",
+    "churn",
+    "gercek_olasilik"
+  ],
+  "additionalProperties": false,
+  "x-birincil-anahtar": [
+    "musteri_id"
+  ]
+}

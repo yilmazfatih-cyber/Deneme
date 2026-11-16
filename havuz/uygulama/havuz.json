@@ -1,0 +1,19 @@
+{
+  "ad": "uygulama",
+  "baslik": "Tam yığın uygulama temeli",
+  "ozet": "Çevrimdışı-önce PWA (React + Dexie) + API (Hono + node:sqlite) + ortak şema ve eşitleme; hesapsız ve hesaplı iki kip, paylaşımlı alanlar, üreteçler.",
+  "tur": "node",
+  "gereksinim": { "node": ">=22.18" },
+  "kur": ["npm ci"],
+  "denetle": ["npm run check"],
+  "uzunDenetim": ["npm run test:gen", "npm run e2e"],
+  "baslat": "npm run dev",
+  "yerTutucular": [
+    {
+      "ara": "havuz-uygulama",
+      "anlam": "paket ve depolama öneki (küçük harf, tire): package.json ve web/src/app/config.ts → APP.id"
+    },
+    { "ara": "Yapıtaşı", "anlam": "uygulamanın görünen adı: web/src/app/config.ts → APP.name ve APP.shortName" }
+  ],
+  "kopyalamaHaric": ["node_modules", "dist", "dist-yerel", "dev-dist", ".data", "test-results", "playwright-report"]
+}

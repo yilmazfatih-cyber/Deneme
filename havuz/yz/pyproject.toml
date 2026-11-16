@@ -18,7 +18,7 @@ dependencies = [
 
 [project.optional-dependencies]
 # Sohbet sunucusu ve arayüz (python -m yz sun)
-sunucu = ["fastapi>=0.115,<1", "uvicorn>=0.30,<1"]
+sunucu = ["fastapi>=0.115,<1", "uvicorn>=0.30,<1", "python-multipart>=0.0.18"]
 # Model Context Protocol sunucusu ve köprüsü (python -m yz mcp)
 mcp = ["mcp>=2,<3"]
 # PDF okuma (rag/yukleyici.py)
@@ -28,7 +28,7 @@ anthropic = ["anthropic>=2,<3"]
 # Yerel gömme modeli (rag/gomme.py: CumleDonusturucuGomme); torch çeker, ağırdır
 yerel = ["sentence-transformers>=3"]
 # Tarayıcıyla uçtan uca test (tests/e2e; YZ_E2E=1)
-e2e = ["playwright>=1.50", "axe-playwright-python>=0.1.4"]
+e2e = ["playwright>=1.64,<1.65"]
 # Geliştirme: denetim (scripts/check.py) için gereken her şey
 dev = [
   "havuz-yz[sunucu,mcp,belge,anthropic]",
@@ -45,7 +45,7 @@ yz = "yz.cli:main"
 include = ["yz*"]
 
 [tool.setuptools.package-data]
-yz = ["web/*.html", "web/*.json", "istem/sablonlar/*.txt", "py.typed"]
+yz = ["web/*.html", "web/*.json", "py.typed"]
 
 [tool.ruff]
 line-length = 100

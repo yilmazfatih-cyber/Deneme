@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>yz sohbet</title>
+<!--
+  Tek dosyalık sohbet arayüzü: derleme adımı ve dış bağımlılık yok.
+  Metinler sozluk.json'dan gelir (data-t, data-t-ph, data-t-aria, data-t-title öznitelikleri ve t() işlevi). Model ve kullanıcı metni
+  her zaman textContent ile basılır (HTML enjeksiyonu olmaz).
+  Sunucu olayları: parca, arac, kaynaklar, son, hata (yz/sunucu/sohbet_ucu.py).
+  Genişletme: yeni metin → sozluk.json; yeni olay → `olayIsle` içine bir dal.
+-->
+<style>
+:root {
+  --zemin: #f6f6f8; --yuzey: #ffffff; --metin: #1d1d21; --soluk: #5d5d66; --cizgi: #d9d9e0;
+  --vurgu: #2453c7; --vurgu-metin: #ffffff; --kullanici: #e3ebff; --uyari: #8a4b00; --uyari-zemin: #fff3e0;
+  --hata: #a1251b;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --zemin: #141417; --yuzey: #1e1e23; --metin: #ececf1; --soluk: #a3a3ad; --cizgi: #34343c;
+    --vurgu: #7d9cff; --vurgu-metin: #10131c; --kullanici: #263252; --uyari: #ffcc80; --uyari-zemin: #3a2a12;
+    --hata: #ff8a80;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body {
+  background: var(--zemin); color: var(--metin);
+  font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  display: flex; flex-direction: column; height: 100vh; height: 100dvh; overflow: hidden;
+}
+header {
+  display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 8px 12px;
+  background: var(--yuzey); border-bottom: 1px solid var(--cizgi);
+}
+header h1 { font-size: 1.05rem; margin: 0 auto 0 0; }
+header .ayarlar { display: flex; gap: 8px; order: -1; }
+header h1 { order: -2; }
+button.simge { width: 44px; padding: 0; display: inline-flex; align-items: center; justify-content: center; }
+label.ayar { display: flex; align-items: center; gap: 6px; font-size: .9rem; color: var(--soluk); }
+select, button, input, textarea { font: inherit; color: inherit; }
+select, input[type=password] {
+  min-height: 44px; padding: 6px 8px; border: 1px solid var(--cizgi); border-radius: 8px; background: var(--zemin);
+  max-width: 46vw;
+}
+button {
+  min-height: 44px; padding: 8px 14px; border-radius: 8px; border: 1px solid var(--cizgi);
+  background: var(--yuzey); cursor: pointer;
+}
+button.birincil { background: var(--vurgu); color: var(--vurgu-metin); border-color: var(--vurgu); }
+button:disabled { opacity: .55; cursor: default; }
+button:focus-visible, select:focus-visible, textarea:focus-visible, input:focus-visible {
+  outline: 3px solid var(--vurgu); outline-offset: 2px;
+}
+main { flex: 1; overflow-y: auto; padding: 12px; }
+.liste { max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+.bos { color: var(--soluk); text-align: center; margin-top: 15vh; padding: 0 12px; }
+.mesaj { padding: 10px 14px; border-radius: 12px; max-width: 100%; overflow-wrap: anywhere; }
+.mesaj .kim { font-size: .78rem; color: var(--soluk); margin-bottom: 2px; }
+.mesaj .govde { white-space: pre-wrap; }
+.mesaj.kullanici { background: var(--kullanici); align-self: flex-end; max-width: 88%; }
+.mesaj.asistan { background: var(--yuzey); border: 1px solid var(--cizgi); }
+.mesaj.hata .govde { color: var(--hata); }
+.yaziyor { color: var(--soluk); font-style: italic; }
+details { margin-top: 8px; font-size: .9rem; }
+details summary { cursor: pointer; color: var(--soluk); min-height: 32px; }
+.kaynak, .adim { border-left: 3px solid var(--cizgi); padding: 4px 8px; margin: 6px 0; white-space: pre-wrap; }
+.kaynak b, .adim b { display: block; }
+.uyari { background: var(--uyari-zemin); color: var(--uyari); padding: 6px 10px; border-radius: 8px; margin-top: 8px; font-size: .9rem; }
+.bilgi { font-size: .78rem; color: var(--soluk); margin-top: 6px; }
+footer { background: var(--yuzey); border-top: 1px solid var(--cizgi); padding: 8px 12px calc(8px + env(safe-area-inset-bottom)); }
+form.yazma { max-width: 860px; margin: 0 auto; display: flex; gap: 8px; align-items: flex-end; }
+textarea {
+  flex: 1; min-height: 44px; max-height: 40vh; resize: none; padding: 10px; border-radius: 10px;
+  border: 1px solid var(--cizgi); background: var(--zemin);
+}
+.durum { max-width: 860px; margin: 4px auto 0; font-size: .82rem; color: var(--soluk); min-height: 1.2em; }
+.gizli { display: none !important; }
+.gorunmez { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+#anahtarKutusu { max-width: 860px; margin: 0 auto 8px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+@media (max-width: 640px) {
+  header .ayarlar { order: 1; width: 100%; }
+  header .ayarlar label.ayar { flex: 1 1 0; min-width: 0; }
+  header .ayarlar select { width: 100%; max-width: none; }
+  label.ayar span { display: none; }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1 data-t="baslik">yz sohbet</h1>
+  <button id="yeni" type="button" data-t="yeni_sohbet">Yeni sohbet</button>
+  <div class="ayarlar">
+    <label class="ayar"><span data-t="kip_etiketi">Kip</span>
+      <select id="kip" data-t-aria="kip_etiketi">
+        <option value="sohbet" data-t="kip_sohbet">Sohbet</option>
+        <option value="rag" data-t="kip_rag">Belgeye sor</option>
+        <option value="arac" data-t="kip_arac">Araçlı</option>
+      </select>
+    </label>
+    <label class="ayar"><span data-t="saglayici_etiketi">Model</span>
+      <select id="saglayici" data-t-aria="saglayici_etiketi"></select>
+    </label>
+  </div>
+</header>
+<main id="kaydirma">
+  <div class="liste" id="liste" role="log" aria-live="polite">
+    <p class="bos" id="bos" data-t="bos_durum"></p>
+  </div>
+</main>
+<footer>
+  <div id="anahtarKutusu" class="gizli">
+    <span data-t="anahtar_gerekli"></span>
+    <label class="gorunmez" for="anahtar" data-t="anahtar_etiketi"></label>
+    <input id="anahtar" type="password" autocomplete="off">
+    <button id="anahtarKaydet" type="button" data-t="anahtar_kaydet"></button>
+  </div>
+  <form class="yazma" id="form">
+    <input id="dosya" type="file" class="gorunmez" accept=".txt,.md,.markdown,.html,.htm,.pdf" tabindex="-1" data-t-aria="belge_yukle">
+    <button id="yukle" type="button" class="simge" data-t-aria="belge_yukle" data-t-title="belge_yukle">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M21 11.5l-8.6 8.6a5.5 5.5 0 0 1-7.8-7.8l8.9-8.9a3.7 3.7 0 0 1 5.2 5.2l-8.9 8.9a1.8 1.8 0 0 1-2.6-2.6l8.2-8.2"/></svg>
+    </button>
+    <label class="gorunmez" for="girdi" data-t="mesaj_etiketi">Mesaj</label>
+    <textarea id="girdi" rows="1" data-t-ph="yer_tutucu" enterkeyhint="send"></textarea>
+    <button id="gonder" class="birincil" type="submit" data-t="gonder">Gönder</button>
+  </form>
+  <div class="durum" id="durum" aria-live="polite"></div>
+</footer>
+<script>
+"use strict";
+const S = {};                       // sözlük (sozluk.json)
+const gecmis = [];                  // {rol, icerik}
+let iptal = null;                   // AbortController
+const $ = (id) => document.getElementById(id);
+
+function t(anahtar, degerler) {
+  let metin = S[anahtar] ?? anahtar;
+  for (const [k, v] of Object.entries(degerler || {})) metin = metin.replaceAll("{" + k + "}", String(v));
+  return metin;
+}
+function metinleriUygula() {
+  document.querySelectorAll("[data-t]").forEach((el) => { el.textContent = t(el.dataset.t); });
+  document.querySelectorAll("[data-t-ph]").forEach((el) => { el.placeholder = t(el.dataset.tPh); });
+  document.querySelectorAll("[data-t-aria]").forEach((el) => { el.setAttribute("aria-label", t(el.dataset.tAria)); });
+  document.querySelectorAll("[data-t-title]").forEach((el) => { el.title = t(el.dataset.tTitle); });
+  document.title = t("baslik");
+}
+function basliklar(ek) {
+  const h = Object.assign({}, ek || {});
+  let anahtar = null;
+  try { anahtar = localStorage.getItem("yz_anahtar"); } catch (_) { anahtar = null; }
+  if (anahtar) h["Authorization"] = "Bearer " + anahtar;
+  return h;
+}
+function durumYaz(metin) { $("durum").textContent = metin || ""; }
+function oge(etiket, sinif, metin) {
+  const el = document.createElement(etiket);
+  if (sinif) el.className = sinif;
+  if (metin !== undefined) el.textContent = metin;
+  return el;
+}
+function asagiKaydir() { const k = $("kaydirma"); k.scrollTop = k.scrollHeight; }
+
+async function istek(yol, secenek) {
+  const yanit = await fetch(yol, Object.assign({}, secenek, { headers: basliklar((secenek || {}).headers) }));
+  if (yanit.status === 401) { $("anahtarKutusu").classList.remove("gizli"); $("anahtar").focus(); throw new Error(t("anahtar_gerekli")); }
+  return yanit;
+}
+
+async function saglayicilariYukle() {
+  try {
+    const veri = await (await istek("/api/saglayicilar")).json();
+    const secim = $("saglayici");
+    secim.replaceChildren();
+    for (const s of veri.saglayicilar) {
+      const o = oge("option", "", s.model ? s.ad + " · " + s.model : s.ad);
+      o.value = s.ad;
+      if (s.ad === veri.varsayilan) o.selected = true;
+      secim.appendChild(o);
+    }
+  } catch (e) { durumYaz(e.message || t("hata_baglanti")); }
+}
+async function belgeSayisiniGoster() {
+  try {
+    const veri = await (await istek("/api/belgeler")).json();
+    durumYaz(veri.belgeler.length ? t("belge_sayisi", { sayi: veri.belgeler.length }) : t("belge_yok"));
+  } catch (_) { /* anahtar istenmiş olabilir; durum zaten yazıldı */ }
+}
+
+function mesajEkle(rol, icerik) {
+  $("bos")?.remove();
+  const kutu = oge("div", "mesaj " + (rol === "user" ? "kullanici" : "asistan"));
+  kutu.appendChild(oge("div", "kim", rol === "user" ? t("siz") : t("asistan")));
+  const govde = oge("div", "govde", icerik);
+  kutu.appendChild(govde);
+  $("liste").appendChild(kutu);
+  asagiKaydir();
+  return { kutu, govde };
+}
+function ayrintiEkle(kutu, baslik, ogeler) {
+  const d = oge("details");
+  d.appendChild(oge("summary", "", baslik + " (" + ogeler.length + ")"));
+  ogeler.forEach((el) => d.appendChild(el));
+  kutu.appendChild(d);
+}
+
+function olayIsle(ad, veri, hedef) {
+  if (ad === "parca") {
+    if (hedef.ilk) { hedef.govde.textContent = ""; hedef.govde.classList.remove("yaziyor"); hedef.ilk = false; }
+    hedef.govde.textContent += veri.metin;
+  } else if (ad === "kaynaklar" && veri.kaynaklar.length) {
+    ayrintiEkle(hedef.kutu, t("kaynaklar"), veri.kaynaklar.map((k) => {
+      const el = oge("div", "kaynak"); el.appendChild(oge("b", "", "[" + k.numara + "] " + k.ad)); el.appendChild(document.createTextNode(k.metin)); return el;
+    }));
+  } else if (ad === "arac") {
+    hedef.araclar.push(veri);
+  } else if (ad === "son") {
+    if (hedef.araclar.length) ayrintiEkle(hedef.kutu, t("araclar"), hedef.araclar.map((a) => {
+      const el = oge("div", "adim"); el.appendChild(oge("b", "", a.ad + " " + JSON.stringify(a.argumanlar || {}))); el.appendChild(document.createTextNode(a.sonuc)); return el;
+    }));
+    if (hedef.ilk) { hedef.govde.textContent = veri.yanit; hedef.govde.classList.remove("yaziyor"); hedef.ilk = false; }
+    for (const u of veri.uyarilar || []) hedef.kutu.appendChild(oge("div", "uyari", u));
+    const k = veri.kullanim || {};
+    const bilgi = [veri.model, t("belirtec", { girdi: k.girdi ?? 0, cikti: k.cikti ?? 0 }) + (k.tahmini ? " " + t("tahmini") : "")];
+    hedef.kutu.appendChild(oge("div", "bilgi", bilgi.filter(Boolean).join(" · ")));
+    hedef.son = veri.yanit;
+  } else if (ad === "hata") {
+    hedef.kutu.classList.add("hata");
+    hedef.govde.classList.remove("yaziyor");
+    hedef.govde.textContent = t("hata_genel", { ileti: veri.ileti });
+    hedef.ilk = false;
+  }
+  asagiKaydir();
+}
+
+// SSE ayrıştırıcı: parçalar satır ya da harf ortasından bölünebilir.
+async function akisiOku(yanit, hedef) {
+  const okuyucu = yanit.body.getReader();
+  const cozucu = new TextDecoder("utf-8");
+  let tampon = "", olayAdi = "message", veri = [];
+  for (;;) {
+    const { value, done } = await okuyucu.read();
+    tampon += cozucu.decode(value || new Uint8Array(), { stream: !done });
+    let konum;
+    while ((konum = tampon.search(/\r?\n/)) >= 0) {
+      const satir = tampon.slice(0, konum);
+      tampon = tampon.slice(konum + (tampon[konum] === "\r" ? 2 : 1));
+      if (satir === "") {
+        if (veri.length) { try { olayIsle(olayAdi, JSON.parse(veri.join("\n")), hedef); } catch (_) { /* bozuk olay */ } }
+        olayAdi = "message"; veri = [];
+      } else if (satir.startsWith("event:")) olayAdi = satir.slice(6).trim();
+      else if (satir.startsWith("data:")) veri.push(satir.slice(5).replace(/^ /, ""));
+    }
+    if (done) break;
+  }
+}
+
+async function gonder(metin) {
+  const kip = $("kip").value;
+  gecmis.push({ rol: "user", icerik: metin });
+  mesajEkle("user", metin);
+  const { kutu, govde } = mesajEkle("assistant", t("yaziyor"));
+  govde.classList.add("yaziyor");
+  const hedef = { kutu, govde, ilk: true, araclar: [], son: null };
+  iptal = new AbortController();
+  $("gonder").textContent = t("durdur");
+  try {
+    const yanit = await istek("/api/sohbet", {
+      method: "POST", signal: iptal.signal, headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ mesajlar: gecmis.slice(-20), kip, saglayici: $("saglayici").value || null }),
+    });
+    if (!yanit.ok) { const h = await yanit.json().catch(() => ({})); throw new Error(h.hata || h.detail || yanit.statusText); }
+    await akisiOku(yanit, hedef);
+    if (hedef.son !== null) gecmis.push({ rol: "assistant", icerik: hedef.son });
+  } catch (e) {
+    if (e.name === "AbortError") olayIsle("hata", { ileti: t("durduruldu") }, hedef);
+    else olayIsle("hata", { ileti: e.message || t("hata_baglanti") }, hedef);
+  } finally {
+    iptal = null;
+    $("gonder").textContent = t("gonder");
+  }
+}
+
+$("form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  if (iptal) { iptal.abort(); return; }
+  const metin = $("girdi").value.trim();
+  if (!metin) return;
+  $("girdi").value = ""; $("girdi").style.height = "";
+  gonder(metin);
+});
+$("girdi").addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !e.shiftKey && !e.isComposing) { e.preventDefault(); $("form").requestSubmit(); }
+});
+$("girdi").addEventListener("input", (e) => { e.target.style.height = ""; e.target.style.height = e.target.scrollHeight + "px"; });
+$("yeni").addEventListener("click", () => {
+  gecmis.length = 0;
+  $("liste").replaceChildren(oge("p", "bos", t("bos_durum")));
+  $("liste").lastChild.id = "bos";
+});
+$("yukle").addEventListener("click", () => $("dosya").click());
+$("dosya").addEventListener("change", async () => {
+  const dosya = $("dosya").files[0];
+  if (!dosya) return;
+  durumYaz(t("belge_yukleniyor"));
+  const form = new FormData();
+  form.append("dosya", dosya);
+  try {
+    const yanit = await istek("/api/belge", { method: "POST", body: form });
+    const veri = await yanit.json();
+    if (!yanit.ok) throw new Error(veri.hata || veri.detail || yanit.statusText);
+    durumYaz(t("belge_yuklendi", { ad: dosya.name, parca: veri.eklenen_parca }));
+    $("kip").value = "rag";
+  } catch (e) { durumYaz(t("hata_genel", { ileti: e.message })); }
+  $("dosya").value = "";
+});
+$("anahtarKaydet").addEventListener("click", () => {
+  try { localStorage.setItem("yz_anahtar", $("anahtar").value.trim()); } catch (_) { /* gizli pencere */ }
+  $("anahtarKutusu").classList.add("gizli");
+  saglayicilariYukle(); belgeSayisiniGoster();
+});
+
+(async () => {
+  try { Object.assign(S, await (await fetch("sozluk.json")).json()); } catch (_) { /* sözlük yoksa anahtarlar görünür */ }
+  metinleriUygula();
+  await saglayicilariYukle();
+  await belgeSayisiniGoster();
+  document.body.dataset.hazir = "1";
+})();
+</script>
+</body>
+</html>

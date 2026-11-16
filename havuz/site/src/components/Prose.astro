@@ -1,0 +1,19 @@
+---
+/**
+ * Uzun metin kabı: Markdown/MDX içeriğine tipografi stillerini (src/styles/global.css → .prose) uygular ve
+ * kod bloklarının Kopyala düğmesini çalıştırır. Kim kullanır: yazı, belge ve serbest sayfa görünümleri.
+ */
+interface Props {
+  class?: string
+}
+
+const { class: className } = Astro.props
+---
+
+<div class:list={['prose', className]}>
+  <slot />
+</div>
+
+<script>
+  import '../scripts/copy-code.ts'
+</script>

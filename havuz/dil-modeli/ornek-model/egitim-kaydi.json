@@ -1,0 +1,745 @@
+{
+  "model": {
+    "parametre": 1328256,
+    "yapilandirma": {
+      "vocab_size": 4096,
+      "dim": 128,
+      "n_layer": 4,
+      "n_head": 4,
+      "n_kv_head": 4,
+      "hidden_dim": 352,
+      "max_seq_len": 256,
+      "rope_base": 10000.0,
+      "norm_eps": 1e-05,
+      "tie_embeddings": true,
+      "dropout": 0.0
+    }
+  },
+  "veri": {
+    "kaynak": {
+      "veri_kumesi": "wikimedia/wikipedia",
+      "surum": "b04c8d1ceb2f5cd4588862100d08de323dccfbaa",
+      "dosya": "20231101.tr/train-00000-of-00002.parquet",
+      "dosya_bayt": 339973499,
+      "dosya_sha256": "6994014607c0920f049ff62c3ea03bfaa218848fa31fa331b6ad1e17ef8f393a",
+      "lisans": [
+        "cc-by-sa-3.0",
+        "gfdl"
+      ],
+      "atif": "Vikipedi katkıcıları, Türkçe Vikipedi (tr.wikipedia.org), 1 Kasım 2023 dökümü",
+      "okunan_satir_grubu": 3,
+      "madde": 2595,
+      "atlanan_madde": 405,
+      "suzgec": {
+        "en_az_karakter": 500,
+        "atlanan_baslik_parcalari": [
+          "(anlam ayrımı)"
+        ]
+      },
+      "cikti": "trwiki.jsonl",
+      "cikti_bayt": 28421621,
+      "cikti_sha256": "a52bf603afc9962ccee47e4ed523e41cb4920a1b4f4f0df6ea1a156d27b519b7"
+    },
+    "hazirlama": {
+      "documents": 2595,
+      "chars": 25686784,
+      "splits": {
+        "egitim": {
+          "tokens": 8010428,
+          "files": [
+            {
+              "name": "egitim-000.bin",
+              "tokens": 8010428
+            }
+          ]
+        },
+        "dogrulama": {
+          "tokens": 122972,
+          "files": [
+            {
+              "name": "dogrulama-000.bin",
+              "tokens": 122972
+            }
+          ]
+        }
+      },
+      "settings": {
+        "val_fraction": 0.02,
+        "seed": 0,
+        "fast": false
+      }
+    },
+    "tokenizer_ozeti": "88425c6770722a6e76314216393b940b7b596e6f1b411a3031be1380bf0f7fb9"
+  },
+  "egitim": {
+    "komut": "python scripts/ornek_model.py hazirla && python scripts/ornek_model.py egit",
+    "yapilandirma_dosyasi": "yapilandirma/ornek-model.toml",
+    "ayarlar": {
+      "data_dir": "veri/ornek-hazir",
+      "out_dir": "calisma/ornek-model/egitim",
+      "preset": "bebek",
+      "max_steps": 1600,
+      "batch_size": 16,
+      "seq_len": 256,
+      "learning_rate": 0.002,
+      "min_lr_ratio": 0.1,
+      "warmup_steps": 100,
+      "weight_decay": 0.1,
+      "grad_clip": 1.0,
+      "seed": 0,
+      "device": "cpu",
+      "threads": 2,
+      "max_minutes": 16,
+      "log_every": 25,
+      "eval_every": 200,
+      "eval_batches": 30,
+      "sample_tokens": 40,
+      "sample_prompt": "Türkiye"
+    },
+    "en_iyi_denetim_noktasi": {
+      "adim": 1600,
+      "en_iyi_dogrulama_kaybi": 3.965621002515157,
+      "belirtec": 6553600
+    },
+    "sureler_sn": {
+      "egitim_sn": 779.5,
+      "tokenizer_sn": 19.4,
+      "veri_hazirlama_sn": 11.0
+    },
+    "kayip_egrisi": {
+      "egitim": [
+        [
+          25,
+          8.12881
+        ],
+        [
+          50,
+          7.39494
+        ],
+        [
+          75,
+          6.96703
+        ],
+        [
+          100,
+          6.63341
+        ],
+        [
+          125,
+          6.286
+        ],
+        [
+          150,
+          5.947
+        ],
+        [
+          175,
+          5.7953
+        ],
+        [
+          200,
+          5.62675
+        ],
+        [
+          225,
+          5.43935
+        ],
+        [
+          250,
+          5.34834
+        ],
+        [
+          275,
+          5.3044
+        ],
+        [
+          300,
+          5.18623
+        ],
+        [
+          325,
+          5.10364
+        ],
+        [
+          350,
+          5.00422
+        ],
+        [
+          375,
+          4.95478
+        ],
+        [
+          400,
+          4.86484
+        ],
+        [
+          425,
+          4.87218
+        ],
+        [
+          450,
+          4.77522
+        ],
+        [
+          475,
+          4.73602
+        ],
+        [
+          500,
+          4.63195
+        ],
+        [
+          525,
+          4.68997
+        ],
+        [
+          550,
+          4.5891
+        ],
+        [
+          575,
+          4.56162
+        ],
+        [
+          600,
+          4.53822
+        ],
+        [
+          625,
+          4.48126
+        ],
+        [
+          650,
+          4.47882
+        ],
+        [
+          675,
+          4.50601
+        ],
+        [
+          700,
+          4.44529
+        ],
+        [
+          725,
+          4.46531
+        ],
+        [
+          750,
+          4.39599
+        ],
+        [
+          775,
+          4.3173
+        ],
+        [
+          800,
+          4.39925
+        ],
+        [
+          825,
+          4.30625
+        ],
+        [
+          850,
+          4.35633
+        ],
+        [
+          875,
+          4.27147
+        ],
+        [
+          900,
+          4.32597
+        ],
+        [
+          925,
+          4.31156
+        ],
+        [
+          950,
+          4.22832
+        ],
+        [
+          975,
+          4.2746
+        ],
+        [
+          1000,
+          4.27395
+        ],
+        [
+          1025,
+          4.21525
+        ],
+        [
+          1050,
+          4.18084
+        ],
+        [
+          1075,
+          4.13744
+        ],
+        [
+          1100,
+          4.22749
+        ],
+        [
+          1125,
+          4.13118
+        ],
+        [
+          1150,
+          4.15328
+        ],
+        [
+          1175,
+          4.11693
+        ],
+        [
+          1200,
+          4.14085
+        ],
+        [
+          1225,
+          4.06156
+        ],
+        [
+          1250,
+          4.14307
+        ],
+        [
+          1275,
+          4.10684
+        ],
+        [
+          1300,
+          4.05319
+        ],
+        [
+          1325,
+          4.05838
+        ],
+        [
+          1350,
+          4.06946
+        ],
+        [
+          1375,
+          4.04176
+        ],
+        [
+          1400,
+          4.02891
+        ],
+        [
+          1425,
+          4.06978
+        ],
+        [
+          1450,
+          4.12111
+        ],
+        [
+          1475,
+          4.00871
+        ],
+        [
+          1500,
+          4.00472
+        ],
+        [
+          1525,
+          4.01243
+        ],
+        [
+          1550,
+          4.01082
+        ],
+        [
+          1575,
+          3.98811
+        ],
+        [
+          1600,
+          4.02765
+        ]
+      ],
+      "dogrulama": [
+        [
+          200,
+          5.4417
+        ],
+        [
+          400,
+          4.79444
+        ],
+        [
+          600,
+          4.48291
+        ],
+        [
+          800,
+          4.309
+        ],
+        [
+          1000,
+          4.16679
+        ],
+        [
+          1200,
+          4.0792
+        ],
+        [
+          1400,
+          4.00561
+        ],
+        [
+          1600,
+          3.96562
+        ]
+      ],
+      "belirtec_per_sn": [
+        [
+          25,
+          9684.0
+        ],
+        [
+          50,
+          9465.6
+        ],
+        [
+          75,
+          9872.3
+        ],
+        [
+          100,
+          9271.7
+        ],
+        [
+          125,
+          9556.3
+        ],
+        [
+          150,
+          9179.5
+        ],
+        [
+          175,
+          9511.4
+        ],
+        [
+          200,
+          9525.2
+        ],
+        [
+          225,
+          6559.9
+        ],
+        [
+          250,
+          8747.0
+        ],
+        [
+          275,
+          8199.8
+        ],
+        [
+          300,
+          8131.4
+        ],
+        [
+          325,
+          8308.4
+        ],
+        [
+          350,
+          8845.4
+        ],
+        [
+          375,
+          8523.9
+        ],
+        [
+          400,
+          8752.1
+        ],
+        [
+          425,
+          6212.3
+        ],
+        [
+          450,
+          7987.8
+        ],
+        [
+          475,
+          8500.4
+        ],
+        [
+          500,
+          7912.0
+        ],
+        [
+          525,
+          8685.6
+        ],
+        [
+          550,
+          8503.0
+        ],
+        [
+          575,
+          8849.9
+        ],
+        [
+          600,
+          8705.9
+        ],
+        [
+          625,
+          6362.9
+        ],
+        [
+          650,
+          9229.6
+        ],
+        [
+          675,
+          8332.5
+        ],
+        [
+          700,
+          8944.5
+        ],
+        [
+          725,
+          8603.5
+        ],
+        [
+          750,
+          8678.4
+        ],
+        [
+          775,
+          8476.8
+        ],
+        [
+          800,
+          8541.9
+        ],
+        [
+          825,
+          6300.8
+        ],
+        [
+          850,
+          9126.5
+        ],
+        [
+          875,
+          9277.3
+        ],
+        [
+          900,
+          9539.1
+        ],
+        [
+          925,
+          8640.2
+        ],
+        [
+          950,
+          8664.7
+        ],
+        [
+          975,
+          9031.1
+        ],
+        [
+          1000,
+          9659.9
+        ],
+        [
+          1025,
+          6450.6
+        ],
+        [
+          1050,
+          8465.8
+        ],
+        [
+          1075,
+          8860.4
+        ],
+        [
+          1100,
+          8932.3
+        ],
+        [
+          1125,
+          9463.3
+        ],
+        [
+          1150,
+          8655.3
+        ],
+        [
+          1175,
+          9592.9
+        ],
+        [
+          1200,
+          8681.2
+        ],
+        [
+          1225,
+          6593.4
+        ],
+        [
+          1250,
+          8839.3
+        ],
+        [
+          1275,
+          9245.8
+        ],
+        [
+          1300,
+          8698.8
+        ],
+        [
+          1325,
+          8687.2
+        ],
+        [
+          1350,
+          9092.5
+        ],
+        [
+          1375,
+          8577.7
+        ],
+        [
+          1400,
+          8546.9
+        ],
+        [
+          1425,
+          6062.4
+        ],
+        [
+          1450,
+          8878.9
+        ],
+        [
+          1475,
+          9536.4
+        ],
+        [
+          1500,
+          8867.7
+        ],
+        [
+          1525,
+          8640.1
+        ],
+        [
+          1550,
+          9200.9
+        ],
+        [
+          1575,
+          8855.1
+        ],
+        [
+          1600,
+          8789.2
+        ]
+      ]
+    }
+  },
+  "ortam": {
+    "python": "3.13.18",
+    "torch": "2.15.0+cu132",
+    "isletim_sistemi": "Linux",
+    "islemci_cekirdegi_kullanilan": 2
+  },
+  "olcumler": {
+    "float32": {
+      "dogrulama_kaybi": 3.9656,
+      "kayip": 3.936012,
+      "saskinlik": 51.2139,
+      "karakter_basina_bit": 1.832484,
+      "belirtec": 122971,
+      "karakter": 381060,
+      "bayt": 5316656
+    },
+    "float16": {
+      "dogrulama_kaybi": 3.9656,
+      "kayip": 3.93601,
+      "saskinlik": 51.2138,
+      "karakter_basina_bit": 1.832483,
+      "belirtec": 122971,
+      "karakter": 381060,
+      "bayt": 2658816
+    },
+    "int8": {
+      "dogrulama_kaybi": 3.9655,
+      "kayip": 3.935883,
+      "saskinlik": 51.2073,
+      "karakter_basina_bit": 1.832424,
+      "belirtec": 122971,
+      "karakter": 381060,
+      "bayt": 1369600
+    }
+  },
+  "ornek_ciktilar": [
+    {
+      "istem": "Türkiye'nin başkenti",
+      "cikti": " Karaman Demirel\n\nTelbek - Damile ile doğdukları, 1593'ten beri bulunan Sırbistan civarında beşinci doğur).\n\nÇeşitli ve ülkenin batıda Fransız gücü sergisinde, İtalyanlar federal müf",
+      "ayarlar": "sicaklik 0.8, top_p 0.95, yineleme_cezasi 1.1, tohum 0, 60 belirtec"
+    },
+    {
+      "istem": "İstanbul",
+      "cikti": "'dır (düzüğü, kendi bölgesini)\n\nYahattinî - Baham\n\nMayıs \n\nMart \n\nÇoğunluğun İnönü \nSantık Körfezi\n\nDiyalit\n Geçif\n\n",
+      "ayarlar": "sicaklik 0.8, top_p 0.95, yineleme_cezasi 1.1, tohum 0, 60 belirtec"
+    },
+    {
+      "istem": "Osmanlı İmparatorluğu",
+      "cikti": "'nun (d. 1731)\n 18 Şubat - Eile Dahliyea, Fransız yazar ve ressam (d. 1752)\n 1824 - Benine Haprien, Amerikalı politikacı (d. 1837)\n 1596 - II. Christop",
+      "ayarlar": "sicaklik 0.8, top_p 0.95, yineleme_cezasi 1.1, tohum 0, 60 belirtec"
+    },
+    {
+      "istem": "Futbol",
+      "cikti": " sondası\n\nMÖ 3. bölgeye ile kalan ve doğusunda bulunan altı bölümü vardır. Üç iki ülke sayısı 5.400–24309). İlişkinlere şehirde ülkenin batıda mülkli, Muğa ile geleneksel olarak bilinen Ermen",
+      "ayarlar": "sicaklik 0.8, top_p 0.95, yineleme_cezasi 1.1, tohum 0, 60 belirtec"
+    }
+  ],
+  "dosyalar": {
+    "config.json": {
+      "bayt": 417,
+      "sha256": "89a67346b2a499adfd2e1a40ef684c24cc5221ad30d77c522d8bf7f31103d605"
+    },
+    "model.safetensors": {
+      "bayt": 5316656,
+      "sha256": "318c382787eb45ddc1ef5cff434adf16f5edfe4134f5e3183a484065f3716323"
+    },
+    "tarayici/manifest.json": {
+      "bayt": 6917,
+      "sha256": "3c9897246b945aea4e1e78615e725aef7679b246ac9da6db2aa52284df2106a7"
+    },
+    "tarayici/model.bin": {
+      "bayt": 1369600,
+      "sha256": "a108020e9ab301fea8ced46e6247ef25e7658bfafc41eb8d98217b99429c004d"
+    },
+    "tarayici/tokenizer.json": {
+      "bayt": 115773,
+      "sha256": "282ef28fd6ab937f89d8d782f69b5c24e60de4ef6ba84551891cb830dd33f06e"
+    },
+    "tokenizer.json": {
+      "bayt": 115773,
+      "sha256": "282ef28fd6ab937f89d8d782f69b5c24e60de4ef6ba84551891cb830dd33f06e"
+    }
+  }
+}

@@ -1,0 +1,250 @@
+---
+/**
+ * Üst menü: logo, menü bağlantıları (src/site.config.ts → nav), arama, tema, dil ve ana düğme.
+ * Mobilde "Menü" düğmesi bağlantıları açıp kapatır (Esc ile kapanır, odak düğmeye döner); JS kapalıysa
+ * bağlantılar açık liste olarak görünür. Betik: src/scripts/menu.ts.
+ * Genişletme: menüye bağlantı eklemek için bu dosyaya değil, site.config.ts'teki `nav` listesine yazın.
+ */
+import Icon from './Icon.astro'
+import Logo from './Logo.astro'
+import ThemeToggle from './ThemeToggle.astro'
+import { useTranslations } from '../i18n/index.ts'
+import { isSamePage, isWithinSection } from '../lib/paths.ts'
+import { paths, type Alternates } from '../lib/routes.ts'
+import { fill, upperFor } from '../lib/text.ts'
+import { link } from '../lib/url.ts'
+import { locales, siteConfig, type Locale } from '../site.config.ts'
+
+interface Props {
+  locale: Locale
+  /** Bulunulan sayfanın mantıksal yolu. */
+  path: string
+  alternates: Alternates
+}
+
+const { locale, path, alternates } = Astro.props
+const t = useTranslations(locale)
+const config = siteConfig.locales[locale]
+const home = paths.home(locale)
+
+/** Menü öğesi bu sayfayı mı (ya da bu bölümü mü) gösteriyor? Bölüm bağlantıları (#) hiçbir zaman "şu an" sayılmaz. */
+const currentState = (href: string): 'page' | 'location' | undefined => {
+  if (href.includes('#')) return undefined
+  if (isSamePage(path, href)) return 'page'
+  if (href !== home && isWithinSection(path, href)) return 'location'
+  return undefined
+}
+
+const languageLinks = locales
+  .filter((other) => other !== locale)
+  .map((other) => ({
+    locale: other,
+    href: alternates[other] ?? paths.home(other),
+    short: upperFor(siteConfig.locales[other].lang.slice(0, 2), 'en'),
+    label: siteConfig.locales[other].label,
+    lang: siteConfig.locales[other].lang,
+  }))
+---
+
+<header class="site-header sticky top-0 z-40 border-b border-line bg-page/90 backdrop-blur-md">
+  <div class="header-bar wrap flex min-h-16 items-center gap-2">
+    <a
+      href={link(home)}
+      class="mr-auto rounded-xl py-2 md:mr-4"
+      aria-label={fill(t.a11y.homeLink, { site: siteConfig.name })}
+    >
+      <Logo />
+    </a>
+
+    <nav aria-label={t.a11y.mainNav} class="site-nav md:mr-auto">
+      <button
+        type="button"
+        class="menu-toggle icon-btn md:hidden"
+        aria-expanded="false"
+        aria-controls="site-menu"
+        data-menu-toggle
+        hidden
+      >
+        <span class="menu-icon-open">
+          <Icon name="menu" />
+        </span>
+        <span class="menu-icon-close">
+          <Icon name="x" />
+        </span>
+        <span class="text-[0.95rem] font-semibold">{t.header.menu}</span>
+      </button>
+      <div id="site-menu" class="menu-panel" data-menu-panel>
+        <ul class="nav-list">
+          {config.nav.map((item) => (
+            <li>
+              <a href={link(item.href)} aria-current={currentState(item.href)}>
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+        <div class="menu-extras">
+          {languageLinks.map((language) => (
+            <a href={link(language.href)} hreflang={language.lang} lang={language.lang} class="btn btn-secondary">
+              <Icon name="globe" />
+              {language.label}
+            </a>
+          ))}
+          {config.cta && (
+            <a href={link(config.cta.href)} class="btn btn-primary">
+              {config.cta.label}
+            </a>
+          )}
+        </div>
+      </div>
+    </nav>
+
+    <div class="flex items-center gap-1">
+      <button
+        type="button"
+        class="icon-btn"
+        aria-haspopup="dialog"
+        aria-controls="search-dialog"
+        data-search-open
+        hidden
+      >
+        <Icon name="search" />
+        <span class="sr-only lg:not-sr-only lg:text-sm lg:font-medium lg:text-muted">{t.header.search}</span>
+        <kbd
+          class="hidden rounded-md border border-line px-1.5 font-mono text-xs text-muted lg:inline"
+          title={t.header.searchShortcut}
+          aria-hidden="true"
+        >
+          /
+        </kbd>
+      </button>
+      <ThemeToggle locale={locale} />
+      {languageLinks.map((language) => (
+        <a
+          href={link(language.href)}
+          hreflang={language.lang}
+          class="icon-btn hidden text-sm font-semibold md:inline-flex"
+          data-language-link
+        >
+          <Icon name="globe" size={18} />
+          <span>{language.short}</span>
+          <span class="sr-only" lang={language.lang}>
+            ({language.label})
+          </span>
+        </a>
+      ))}
+      {config.cta && (
+        <a href={link(config.cta.href)} class="btn btn-primary btn-sm ml-1 hidden md:inline-flex">
+          {config.cta.label}
+        </a>
+      )}
+    </div>
+  </div>
+</header>
+
+<style>
+  .nav-list a {
+    display: flex;
+    align-items: center;
+    color: var(--muted);
+    font-weight: 550;
+    text-decoration: none;
+    transition:
+      color 150ms ease,
+      background-color 150ms ease;
+  }
+
+  .nav-list a:hover,
+  .nav-list a[aria-current] {
+    background-color: var(--subtle);
+    color: var(--ink);
+  }
+
+  .menu-icon-open,
+  .menu-icon-close {
+    display: inline-flex;
+  }
+
+  .menu-icon-close,
+  .menu-toggle[aria-expanded='true'] .menu-icon-open {
+    display: none;
+  }
+
+  .menu-toggle[aria-expanded='true'] .menu-icon-close {
+    display: inline-flex;
+  }
+
+  @media (max-width: 47.999rem) {
+    .nav-list {
+      display: grid;
+      gap: 0.125rem;
+    }
+
+    .menu-extras {
+      display: grid;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--line);
+    }
+
+    .nav-list a {
+      min-height: 3rem;
+      padding-inline: 0.85rem;
+      border-radius: 0.75rem;
+      font-size: 1.0625rem;
+    }
+
+    :global(html.js) .menu-panel {
+      position: absolute;
+      inset-inline: 0;
+      top: 100%;
+      display: none;
+      padding: 0.75rem clamp(1rem, 4vw, 2rem) 1.25rem;
+      border-bottom: 1px solid var(--line);
+      background-color: var(--page);
+      box-shadow: var(--shadow-soft);
+    }
+
+    :global(html.js) .menu-panel[data-open] {
+      display: block;
+    }
+
+    :global(html:not(.js)) .header-bar {
+      flex-wrap: wrap;
+    }
+
+    :global(html:not(.js)) .site-nav {
+      order: 3;
+      width: 100%;
+      padding-bottom: 0.75rem;
+    }
+
+    :global(html:not(.js)) .site-header {
+      position: relative;
+    }
+  }
+
+  @media (min-width: 48rem) {
+    .nav-list {
+      display: flex;
+      gap: 0.125rem;
+    }
+
+    .menu-extras {
+      display: none;
+    }
+
+    .nav-list a {
+      min-height: 2.5rem;
+      padding-inline: 0.8rem;
+      border-radius: 999px;
+      font-size: 0.95rem;
+    }
+  }
+</style>
+
+<script>
+  import '../scripts/menu.ts'
+  import '../scripts/search.ts'
+</script>

@@ -1,0 +1,19 @@
+{
+  "ad": "site",
+  "baslik": "Web sitesi temeli (tanıtım + blog + belgeler + iletişim)",
+  "ozet": "Astro 7 ile statik, çok dilli, erişilebilir ve SEO denetimli site temeli; tek ayar dosyası ve içerik dosyalarıyla kişiselleştirilir.",
+  "tur": "node",
+  "gereksinim": { "node": ">=22.23.4" },
+  "kur": ["npm ci"],
+  "denetle": ["npm run check"],
+  "uzunDenetim": ["npm run e2e"],
+  "baslat": "npm run dev",
+  "yerTutucular": [
+    { "ara": "havuz-site", "anlam": "paket adı (package.json → name; küçük harf, tire)" },
+    { "ara": "Sedir", "anlam": "görünen marka adı (src/site.config.ts → name; içerik metinlerinde de geçer)" },
+    { "ara": "https://sedir.example", "anlam": "sitenin yayın adresi (src/site.config.ts → url)" },
+    { "ara": "merhaba@sedir.example", "anlam": "iletişim e-postası (src/site.config.ts → contact.email)" },
+    { "ara": "Sedir Yazılım A.Ş.", "anlam": "şirketin resmî unvanı (src/site.config.ts → organization.legalName)" }
+  ],
+  "kopyalamaHaric": ["node_modules", "dist", "dist-alt", ".astro", "test-results", "playwright-report"]
+}

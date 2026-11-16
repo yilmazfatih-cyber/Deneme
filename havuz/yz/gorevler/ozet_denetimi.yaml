@@ -1,0 +1,18 @@
+# Biçim örneği: özet kaynağa sadık mı? (uydurma denetimi; evet/hayır)
+# Çalıştırma: .venv/bin/python -m yz degerlendir gorevler/ozet_denetimi.yaml
+ad: ozet_denetimi
+aciklama: Özet yalnızca kaynaktaki bilgileri mi içeriyor? (evet/hayır)
+gorev: sohbet
+veri: ozet_denetimi.jsonl
+sistem: Özetlerin kaynağa sadık olup olmadığını denetleyen bir yardımcısın. Yalnızca evet ya da hayır yaz.
+istem: |-
+  KAYNAK:
+  {kaynak}
+
+  ÖZET:
+  {girdi}
+
+  Özetteki her bilgi kaynakta var mı? Yalnızca evet ya da hayır yaz.
+azami_belirtec: 5
+puanlayicilar:
+  - tur: tam_eslesme

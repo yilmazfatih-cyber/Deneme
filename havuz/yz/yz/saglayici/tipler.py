@@ -24,7 +24,9 @@ class AracCagrisi(BaseModel):
     kimlik: str
     ad: str
     argumanlar: dict[str, Any] = Field(default_factory=dict)
-    ham_argumanlar: str | None = None  # modelin yazdığı ham metin (ayrıştırma hatası ayıklamak için)
+    ham_argumanlar: str | None = (
+        None  # modelin yazdığı ham metin (ayrıştırma hatası ayıklamak için)
+    )
 
     def json_argumanlar(self) -> str:
         """Argümanları tel biçimi için JSON dizgisine çevirir."""
@@ -95,7 +97,7 @@ def yanit_bicimi_coz(
     if isinstance(bicim, type) and issubclass(bicim, BaseModel):
         return YanitBicimi(tur="json_sema", sema=bicim.model_json_schema(), ad=bicim.__name__)
     raise TypeError(
-        "yanit_bicimi şunlardan biri olmalı: None, \"json\", JSON şeması (dict), Pydantic sınıfı."
+        'yanit_bicimi şunlardan biri olmalı: None, "json", JSON şeması (dict), Pydantic sınıfı.'
     )
 
 

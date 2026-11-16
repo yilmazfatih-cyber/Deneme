@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "kisiler",
+  "description": "Uydurma kişiler. Gerçek kişilerle ilgisi yoktur.",
+  "type": "object",
+  "properties": {
+    "kisi_id": {
+      "type": "string",
+      "pattern": "^K\\d{6}$",
+      "x-benzersiz": true,
+      "examples": [
+        "K000001"
+      ]
+    },
+    "ad": {
+      "type": "string",
+      "minLength": 2
+    },
+    "soyad": {
+      "type": "string",
+      "minLength": 2
+    },
+    "cinsiyet": {
+      "type": "string",
+      "description": "K: kadın, E: erkek",
+      "enum": [
+        "K",
+        "E"
+      ]
+    },
+    "dogum_tarihi": {
+      "type": "string",
+      "format": "date",
+      "x-en-erken": "1930-01-01",
+      "x-en-gec": "2026-01-01"
+    },
+    "tckn": {
+      "type": "string",
+      "description": "uydurma",
+      "x-denetim": "tckn",
+      "x-benzersiz": true
+    },
+    "telefon": {
+      "type": "string",
+      "description": "uydurma cep numarası",
+      "x-denetim": "cep_tr"
+    },
+    "eposta": {
+      "type": "string",
+      "x-denetim": "eposta",
+      "x-benzersiz": true
+    },
+    "il": {
+      "type": "string",
+      "x-denetim": "il"
+    },
+    "ilce": {
+      "type": "string"
+    },
+    "plaka": {
+      "type": "integer",
+      "minimum": 1.0,
+      "maximum": 81.0
+    },
+    "posta_kodu": {
+      "type": "string",
+      "x-denetim": "posta_kodu"
+    },
+    "adres": {
+      "type": "string",
+      "description": "uydurma açık adres (mahalle, cadde/sokak, no)"
+    }
+  },
+  "required": [
+    "kisi_id",
+    "ad",
+    "soyad",
+    "cinsiyet",
+    "dogum_tarihi",
+    "tckn",
+    "telefon",
+    "eposta",
+    "il",
+    "ilce",
+    "plaka",
+    "posta_kodu",
+    "adres"
+  ],
+  "additionalProperties": false,
+  "x-birincil-anahtar": [
+    "kisi_id"
+  ]
+}

@@ -3,18 +3,27 @@
 from __future__ import annotations
 
 import math
+from typing import cast
 
 import pytest
 import torch
 from torch import Tensor
 
-from dil_modeli.config import PRESETS, ModelConfig, count_parameters, default_hidden_dim, preset_config
-from dil_modeli.layers import RMSNorm, apply_rope, rope_table
+from dil_modeli.config import (
+    PRESETS,
+    ModelConfig,
+    count_parameters,
+    default_hidden_dim,
+    preset_config,
+)
+from dil_modeli.layers import Block, RMSNorm, apply_rope, rope_table
 from dil_modeli.model import IGNORE_INDEX, LanguageModel, lm_loss
 
 TINY = ModelConfig(vocab_size=97, dim=48, n_layer=2, n_head=4, max_seq_len=32)
 GQA = ModelConfig(vocab_size=97, dim=48, n_layer=2, n_head=4, n_kv_head=2, max_seq_len=32)
-UNTIED = ModelConfig(vocab_size=97, dim=48, n_layer=2, n_head=4, max_seq_len=32, tie_embeddings=False)
+UNTIED = ModelConfig(
+    vocab_size=97, dim=48, n_layer=2, n_head=4, max_seq_len=32, tie_embeddings=False
+)
 
 
 def _model(config: ModelConfig, seed: int = 0) -> LanguageModel:
@@ -54,7 +63,9 @@ def test_kv_cache_matches_full_forward(config: ModelConfig, prefill: int) -> Non
         full = model(ids)
         cache = model.new_cache()
         pieces = [model(ids[:, :prefill], cache=cache)]
-        for t in range(prefill, ids.shape[1], 3):  # üçer üçer: çok belirteçli artımlı adım da sınansın
+        for t in range(
+            prefill, ids.shape[1], 3
+        ):  # üçer üçer: çok belirteçli artımlı adım da sınansın
             pieces.append(model(ids[:, t : t + 3], cache=cache))
     assert cache.length == ids.shape[1]
     assert torch.allclose(torch.cat(pieces, dim=1), full, atol=1e-5)
@@ -66,7 +77,9 @@ def test_left_padding_with_key_mask_matches_unpadded() -> None:
     ids = _ids(1, 10)
     pad = 5
     padded = torch.cat((torch.zeros(1, pad, dtype=torch.long), ids), dim=1)
-    key_mask = torch.cat((torch.zeros(1, pad, dtype=torch.bool), torch.ones(1, 10, dtype=torch.bool)), 1)
+    key_mask = torch.cat(
+        (torch.zeros(1, pad, dtype=torch.bool), torch.ones(1, 10, dtype=torch.bool)), 1
+    )
     with torch.no_grad():
         plain = model(ids)
         masked = model(padded, key_mask=key_mask)
@@ -83,9 +96,9 @@ def test_memorizes_a_single_batch() -> None:
     model = LanguageModel(TINY)
     ids = _ids(4, 25)
     inputs, targets = ids[:, :-1], ids[:, 1:]
-    optimizer = torch.optim.AdamW(model.parameters(), lr=3e-3, weight_decay=0.0)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=1e-2, weight_decay=0.0)
     first = lm_loss(model(inputs), targets).item()
-    for _ in range(300):
+    for _ in range(120):
         optimizer.zero_grad()
         loss = lm_loss(model(inputs), targets)
         loss.backward()
@@ -101,7 +114,9 @@ def test_loss_ignores_masked_targets() -> None:
     targets = ids[:, 1:].clone()
     full = lm_loss(logits, targets)
     targets[:, :5] = IGNORE_INDEX
-    manual = torch.nn.functional.cross_entropy(logits[:, 5:].reshape(-1, 97), ids[:, 6:].reshape(-1))
+    manual = torch.nn.functional.cross_entropy(
+        logits[:, 5:].reshape(-1, 97), ids[:, 6:].reshape(-1)
+    )
     assert lm_loss(logits, targets).item() == pytest.approx(manual.item(), rel=1e-6)
     assert lm_loss(logits, targets).item() != pytest.approx(full.item(), rel=1e-6)
 
@@ -113,8 +128,9 @@ def test_parameter_count_formula_matches_model(config: ModelConfig) -> None:
 
 def test_gqa_reduces_key_value_parameters() -> None:
     model = _model(GQA)
-    assert model.blocks[0].attn.k_proj.weight.shape == (24, 48)
-    assert model.blocks[0].attn.q_proj.weight.shape == (48, 48)
+    block = cast(Block, model.blocks[0])
+    assert block.attn.k_proj.weight.shape == (24, 48)
+    assert block.attn.q_proj.weight.shape == (48, 48)
     assert count_parameters(GQA) < count_parameters(TINY)
 
 
@@ -127,13 +143,19 @@ def test_weight_tying() -> None:
 
 def test_presets_have_expected_sizes() -> None:
     """Hazır boyutların parametre sayıları (8192 sözlükle) belgelerdeki aralıkta kalmalı."""
-    expected = {"bebek": (1.5e6, 2.2e6), "mini": (4.5e6, 6e6), "kucuk": (25e6, 35e6), "orta": (85e6, 125e6)}
+    expected = {
+        "bebek": (1.5e6, 2.2e6),
+        "mini": (4.5e6, 6e6),
+        "kucuk": (25e6, 35e6),
+        "orta": (85e6, 125e6),
+    }
     assert set(expected) == set(PRESETS)
     for name, (low, high) in expected.items():
         assert low < count_parameters(preset_config(name, vocab_size=8192)) < high, name
-    assert count_parameters(preset_config("bebek", 8192)) == LanguageModel(
-        preset_config("bebek", 8192)
-    ).num_parameters()
+    assert (
+        count_parameters(preset_config("bebek", 8192))
+        == LanguageModel(preset_config("bebek", 8192)).num_parameters()
+    )
 
 
 def test_config_validation_messages() -> None:
@@ -177,7 +199,9 @@ def test_rope_matches_explicit_rotation() -> None:
         for i in range(half):
             angle = pos * base ** (-2 * i / head_dim)
             a, b = x[0, 0, pos, i].item(), x[0, 0, pos, i + half].item()
-            assert out[0, 0, pos, i].item() == pytest.approx(a * math.cos(angle) - b * math.sin(angle), abs=1e-5)
+            assert out[0, 0, pos, i].item() == pytest.approx(
+                a * math.cos(angle) - b * math.sin(angle), abs=1e-5
+            )
             assert out[0, 0, pos, i + half].item() == pytest.approx(
                 a * math.sin(angle) + b * math.cos(angle), abs=1e-5
             )
@@ -187,14 +211,17 @@ def test_rope_scores_depend_only_on_relative_position() -> None:
     cos, sin = rope_table(8, 20, 10000.0)
     q = torch.randn(8, generator=torch.Generator().manual_seed(3))
     k = torch.randn(8, generator=torch.Generator().manual_seed(4))
-    scores = [(apply_rope(q, cos[m], sin[m]) * apply_rope(k, cos[m - 3], sin[m - 3])).sum() for m in (3, 9, 19)]
+    scores = [
+        (apply_rope(q, cos[m], sin[m]) * apply_rope(k, cos[m - 3], sin[m - 3])).sum()
+        for m in (3, 9, 19)
+    ]
     assert torch.allclose(torch.stack(scores), scores[0].expand(3), atol=1e-5)
 
 
 def test_attention_matches_naive_implementation() -> None:
     """Dikkat katmanını elle (softmax(QK^T/sqrt(d) + maske) V) hesaplayıp karşılaştırır."""
     model = _model(GQA)
-    attn = model.blocks[0].attn
+    attn = cast(Block, model.blocks[0]).attn
     x = torch.randn(2, 9, 48, generator=torch.Generator().manual_seed(5))
     cos, sin = model.rope_cos[:9], model.rope_sin[:9]
     with torch.no_grad():
@@ -206,7 +233,9 @@ def test_attention_matches_naive_implementation() -> None:
         for head in range(4):
             kv = head // 2  # GQA: sorgu başları 0-1 -> K/V başı 0, 2-3 -> 1
             scores = q[:, head] @ k[:, kv].transpose(-1, -2) / math.sqrt(12)
-            scores = scores.masked_fill(torch.triu(torch.ones(9, 9, dtype=torch.bool), 1), float("-inf"))
+            scores = scores.masked_fill(
+                torch.triu(torch.ones(9, 9, dtype=torch.bool), 1), float("-inf")
+            )
             out[:, head] = torch.softmax(scores, dim=-1) @ v[:, kv]
         slow = attn.o_proj(out.transpose(1, 2).reshape(2, 9, 48))
     assert torch.allclose(fast, slow, atol=1e-5)

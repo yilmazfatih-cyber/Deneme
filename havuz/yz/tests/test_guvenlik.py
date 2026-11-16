@@ -122,7 +122,12 @@ def test_sirlar_maskelenir():
         'ayrıca parola: "CokGizli123" token=hf_abcdefghijklmnopqrstuv'
     )
     temiz = gunluk_icin_maskele(metin)
-    for gizli in ("abcdefghijklmnopqrstuvwxyz012345", "sk-proj_ABCDEFGH12345678", "CokGizli123", "hf_abc"):
+    for gizli in (
+        "abcdefghijklmnopqrstuvwxyz012345",
+        "sk-proj_ABCDEFGH12345678",
+        "CokGizli123",
+        "hf_abc",
+    ):
         assert gizli not in temiz
     assert "[SIR_1]" in temiz
 

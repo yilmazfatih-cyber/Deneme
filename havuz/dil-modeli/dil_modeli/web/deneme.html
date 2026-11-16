@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dil modeli</title>
+    <style>
+      :root { color-scheme: light dark; --kenar: #8888; }
+      body { font: 16px/1.5 system-ui, sans-serif; max-width: 46rem; margin: 0 auto; padding: 1rem; }
+      label { display: block; margin-top: 0.75rem; font-weight: 600; }
+      textarea, select, input { width: 100%; box-sizing: border-box; font: inherit; padding: 0.5rem; }
+      .satir { display: flex; gap: 1rem; } .satir > div { flex: 1; }
+      button { min-height: 48px; min-width: 7rem; margin-top: 1rem; font: inherit; cursor: pointer; }
+      output { display: block; white-space: pre-wrap; border: 1px solid var(--kenar); padding: 0.75rem; min-height: 6rem; }
+    </style>
+  </head>
+  <body>
+    <h1 data-metin="baslik"></h1>
+    <p data-metin="aciklama"></p>
+    <form id="form">
+      <label for="kip" data-metin="kip"></label>
+      <select id="kip">
+        <option value="sohbet" data-metin="kip_sohbet"></option>
+        <option value="tamamlama" data-metin="kip_tamamlama"></option>
+      </select>
+      <label for="istem" data-metin="istem"></label>
+      <textarea id="istem" rows="4"></textarea>
+      <div class="satir">
+        <div><label for="azami" data-metin="azami"></label><input id="azami" type="number" min="1" max="512" value="80" /></div>
+        <div><label for="sicaklik" data-metin="sicaklik"></label><input id="sicaklik" type="number" min="0" max="2" step="0.1" value="0.8" /></div>
+      </div>
+      <button type="submit" id="gonder" data-metin="gonder"></button>
+      <button type="button" id="durdur" data-metin="durdur" disabled></button>
+    </form>
+    <h2 data-metin="cikti"></h2>
+    <output id="cikti" aria-live="polite"></output>
+    <p id="durum" role="status"></p>
+    <script type="module">
+      const metin = await (await fetch('/sozluk.json')).json()
+      for (const el of document.querySelectorAll('[data-metin]')) el.textContent = metin[el.dataset.metin]
+      document.title = metin.baslik
+      const $ = (id) => document.getElementById(id)
+      $('istem').value = metin.istem_ornek
+      let denetim = null
+      $('durdur').onclick = () => denetim?.abort()
+      $('form').onsubmit = async (olay) => {
+        olay.preventDefault()
+        const sohbet = $('kip').value === 'sohbet'
+        const govde = { max_tokens: Number($('azami').value), temperature: Number($('sicaklik').value), stream: true }
+        if (sohbet) govde.messages = [{ role: 'user', content: $('istem').value }]
+        else govde.prompt = $('istem').value
+        $('cikti').textContent = sohbet ? '' : $('istem').value
+        $('durum').textContent = metin.bekleniyor
+        $('gonder').disabled = true
+        $('durdur').disabled = false
+        denetim = new AbortController()
+        try {
+          const yanit = await fetch(sohbet ? '/v1/chat/completions' : '/v1/completions', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(govde), signal: denetim.signal,
+          })
+          if (!yanit.ok) throw new Error((await yanit.json()).error?.message ?? yanit.status)
+          const okuyucu = yanit.body.pipeThrough(new TextDecoderStream()).getReader()
+          let artik = ''
+          for (;;) {
+            const { value, done } = await okuyucu.read()
+            if (done) break
+            artik += value
+            const olaylar = artik.split('\n\n')
+            artik = olaylar.pop()
+            for (const satir of olaylar) {
+              const veri = satir.replace(/^data: /, '')
+              if (veri === '[DONE]') continue
+              const secim = JSON.parse(veri).choices[0]
+              $('cikti').textContent += (sohbet ? secim?.delta?.content : secim?.text) ?? ''
+            }
+          }
+          $('durum').textContent = metin.bitti
+        } catch (hata) {
+          $('durum').textContent = hata.name === 'AbortError' ? metin.bitti : metin.hata + hata.message
+        } finally {
+          $('gonder').disabled = false
+          $('durdur').disabled = true
+        }
+      }
+    </script>
+  </body>
+</html>

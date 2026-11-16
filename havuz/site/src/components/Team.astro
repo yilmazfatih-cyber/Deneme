@@ -1,0 +1,27 @@
+---
+/**
+ * Ekip listesi: src/content/ekip/<dil>.json. Hakkında sayfasında `showTeam: true` ile görünür;
+ * MDX içinde <Team /> yazarak da kullanılabilir.
+ */
+import Avatar from './Avatar.astro'
+import { toLocale } from '../i18n/index.ts'
+import { getData } from '../lib/content.ts'
+import { siteConfig } from '../site.config.ts'
+
+const locale = toLocale(Astro.currentLocale)
+const team = await getData('ekip', locale)
+const lang = siteConfig.locales[locale].lang
+---
+
+<ul class="not-prose mt-8 grid gap-4 sm:grid-cols-2">
+  {team.items.map((person) => (
+    <li class="card flex gap-4 p-5">
+      <Avatar name={person.name} lang={lang} size="lg" />
+      <div>
+        <p class="font-semibold">{person.name}</p>
+        <p class="text-sm font-medium text-brand-ink">{person.role}</p>
+        <p class="mt-2 text-[0.95rem] leading-relaxed text-muted">{person.bio}</p>
+      </div>
+    </li>
+  ))}
+</ul>

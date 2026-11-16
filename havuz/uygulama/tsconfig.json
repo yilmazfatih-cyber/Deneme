@@ -1,0 +1,10 @@
+// Kök araçların tip denetimi: scripts/ (üreteç, geliştirme sunucusu, simge), e2e/ ve Playwright ayarı.
+// Paketlerin (shared, api, web) kendi tsconfig'i vardır.
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "types": ["node"]
+  },
+  "include": ["scripts", "e2e", "playwright.config.ts"]
+}

@@ -12,16 +12,19 @@ dependencies = [
   "torch>=2.4",
   "numpy>=2.0",
   "safetensors>=0.4",
+  "pydantic>=2.7",
 ]
 
 [project.optional-dependencies]
-# Geliştirme ve hızlı denetim (python scripts/check.py) için gerekenler.
+# Geliştirme ve hızlı denetim (python scripts/check.py): bütün hızlı testlerin ihtiyacı.
 dev = [
   "pytest>=8",
   "ruff>=0.9",
   "mypy>=1.13",
   "tokenizers>=0.20",
+  "transformers>=4.45",
   "fastapi>=0.115",
+  "uvicorn>=0.30",
   "httpx>=0.27",
 ]
 # OpenAI uyumlu sunucu (python -m dil_modeli sun).
@@ -29,14 +32,19 @@ sun = [
   "fastapi>=0.115",
   "uvicorn>=0.30",
 ]
-# Hugging Face dünyası: dışa aktarım eşlik testleri, örnek veri indirme, hızlı tokenizer.
+# Hugging Face dünyası: hızlı tokenizer eğitimi, dışa aktarımı transformers ile kullanma,
+# örnek veri indirme (scripts/ornek_veri_indir.py).
 hf = [
   "transformers>=4.45",
   "tokenizers>=0.20",
   "huggingface-hub>=0.25",
   "pyarrow>=17",
 ]
-# ONNX dışa aktarım ve onnxruntime ile eşlik testi (isteğe bağlı).
+# GGUF dosyasını okuyup doğrulama (scripts/gguf_dogrula.py; docs/OLLAMA.md).
+gguf = [
+  "gguf>=0.17",
+]
+# ONNX dışa aktarım ve onnxruntime ile eşlik testi (isteğe bağlı, uzun denetim).
 onnx = [
   "onnx>=1.17",
   "onnxruntime>=1.20",
@@ -47,7 +55,7 @@ onnx = [
 packages = ["dil_modeli"]
 
 [tool.setuptools.package-data]
-dil_modeli = ["py.typed", "*.html", "*.json"]
+dil_modeli = ["py.typed", "web/*.html", "web/*.json"]
 
 [tool.ruff]
 line-length = 100
@@ -67,9 +75,11 @@ python_version = "3.11"
 strict = true
 warn_unused_ignores = true
 files = ["dil_modeli", "scripts", "tests"]
+# torch'un bazı işlevleri (ör. Tensor.backward) tip imzasız; çağrılarını tipsiz sayma.
+untyped_calls_exclude = ["torch"]
 
 [[tool.mypy.overrides]]
-module = ["safetensors.*", "tokenizers.*", "transformers.*", "pyarrow.*", "huggingface_hub.*", "onnx.*", "onnxruntime.*", "onnxscript.*", "gguf.*"]
+module = ["safetensors.*", "tokenizers.*", "transformers.*", "pyarrow.*", "huggingface_hub.*", "onnx.*", "onnxruntime.*", "onnxscript.*", "gguf.*", "conversion.*"]
 ignore_missing_imports = true
 follow_imports = "skip"
 

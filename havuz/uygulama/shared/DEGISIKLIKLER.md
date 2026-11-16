@@ -11,5 +11,8 @@ Kurallar:
 
 ## Günlük
 
+- 2026-11-16 — (api ekibi) EKLENDİ, geriye uyumlu: `adminMetricsResponseSchema` + `AdminMetricsResponse` türü ve
+  `API_PATHS.adminMetrics` (`GET /api/admin/metrics`, yalnız yönetici). Web: yönetim ekranında göstermek
+  isterseniz bu şemayla okuyun; başka bir şey yapmanız gerekmez.
 - 2026-11-16 — İlk sürüm: varlıklar (lists, tasks), API şemaları, eşitleme protokolü v1, başvuru sunucusu ve
   uygunluk testleri.

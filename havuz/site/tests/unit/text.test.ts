@@ -1,5 +1,15 @@
 import { describe, expect, it } from 'vitest'
-import { capitalizeFor, countWords, fill, lowerFor, lowerTr, markdownToPlainText, truncate, upperFor, upperTr } from '../../src/lib/text.ts'
+import {
+  capitalizeFor,
+  countWords,
+  fill,
+  lowerFor,
+  lowerTr,
+  markdownToPlainText,
+  truncate,
+  upperFor,
+  upperTr,
+} from '../../src/lib/text.ts'
 
 describe('Türkçe büyük/küçük harf', () => {
   it('i → İ ve ı → I dönüşümünü doğru yapar', () => {

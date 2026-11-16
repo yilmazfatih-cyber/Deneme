@@ -56,7 +56,9 @@ def load_tokenizer(base: str, settings: ChatModelSection | None = None) -> Any:
     try:
         tokenizer = AutoTokenizer.from_pretrained(base, **kwargs)
     except OSError as exc:
-        raise UserError(t("model.yuklenemedi", model=base, ayrinti=str(exc).splitlines()[0])) from exc
+        raise UserError(
+            t("model.yuklenemedi", model=base, ayrinti=str(exc).splitlines()[0])
+        ) from exc
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
     if settings is not None and settings.sohbet_sablonu:
@@ -83,7 +85,9 @@ def load_base_model(
     try:
         return AutoModelForCausalLM.from_pretrained(base, **kwargs)
     except OSError as exc:
-        raise UserError(t("model.yuklenemedi", model=base, ayrinti=str(exc).splitlines()[0])) from exc
+        raise UserError(
+            t("model.yuklenemedi", model=base, ayrinti=str(exc).splitlines()[0])
+        ) from exc
 
 
 def lora_config(settings: LoraSection) -> Any:
@@ -118,7 +122,9 @@ def adapter_base(adapter_dir: Path, override: str | None = None) -> str:
 
     if override:
         return override
-    recorded = str(read_json(adapter_dir / "adapter_config.json").get("base_model_name_or_path", ""))
+    recorded = str(
+        read_json(adapter_dir / "adapter_config.json").get("base_model_name_or_path", "")
+    )
     sibling = adapter_dir.parent / TINY_DIR
     if recorded and (Path(recorded).is_dir() or not sibling.is_dir()):
         return recorded
@@ -132,20 +138,21 @@ def load_for_inference(model: str, device: str = "cpu") -> tuple[Any, Any]:
     import torch
     from transformers import AutoModelForCausalLM
 
+    factory: Any = AutoModelForCausalLM  # tip denetleyicisi bu sınıfın imzasını yanlış okuyor
     path = Path(model)
     dtype = torch.float32 if device == "cpu" else torch.float16
     if not path.exists():  # Hub kimliği (ör. taban modeli karşılaştırma için değerlendirmek)
         tokenizer = load_tokenizer(model)
-        loaded = AutoModelForCausalLM.from_pretrained(model, dtype=dtype)
+        loaded = factory.from_pretrained(model, dtype=dtype)
         return loaded.to(device).eval(), tokenizer
     directory, is_adapter = find_model_dir(path)
     tokenizer = load_tokenizer(str(directory))
     if not is_adapter:
-        loaded = AutoModelForCausalLM.from_pretrained(str(directory), dtype=dtype)
+        loaded = factory.from_pretrained(str(directory), dtype=dtype)
         return loaded.to(device).eval(), tokenizer
     from peft import PeftModel
 
-    base = AutoModelForCausalLM.from_pretrained(adapter_base(directory), dtype=dtype)
+    base = factory.from_pretrained(adapter_base(directory), dtype=dtype)
     return PeftModel.from_pretrained(base, str(directory)).to(device).eval(), tokenizer
 
 

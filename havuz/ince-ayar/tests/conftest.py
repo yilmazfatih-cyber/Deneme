@@ -9,7 +9,6 @@ Genişletme: birden çok test dosyasının kullandığı yardımcıyı buraya ek
 from __future__ import annotations
 
 import os
-from collections.abc import Iterator
 from pathlib import Path
 from typing import Any
 
@@ -38,12 +37,11 @@ def pytest_collection_modifyitems(config: pytest.Config, items: list[pytest.Item
 
 
 @pytest.fixture(autouse=True)
-def _limit_threads() -> Iterator[None]:
+def _limit_threads() -> None:
     """Paylaşımlı makinede komşuları boğmamak için torch iş parçacığını kısar."""
     import torch
 
     torch.set_num_threads(2)
-    yield
 
 
 @pytest.fixture(autouse=True)
@@ -96,4 +94,6 @@ def make_chat_tokenizer(
 def chatml_tokenizer() -> Any:
     from ince_ayar.tiny import CHAT_SPECIALS, CHATML_TEMPLATE
 
-    return make_chat_tokenizer(CHAT_SPECIALS, CHATML_TEMPLATE, eos="<|im_end|>", pad="<|endoftext|>")
+    return make_chat_tokenizer(
+        CHAT_SPECIALS, CHATML_TEMPLATE, eos="<|im_end|>", pad="<|endoftext|>"
+    )

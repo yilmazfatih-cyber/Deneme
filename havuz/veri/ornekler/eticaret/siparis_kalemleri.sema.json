@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "siparis_kalemleri",
+  "description": "Sipariş kalemleri.",
+  "type": "object",
+  "properties": {
+    "kalem_id": {
+      "type": "string",
+      "pattern": "^KL\\d{8}$",
+      "x-benzersiz": true
+    },
+    "siparis_id": {
+      "type": "string",
+      "pattern": "^SP\\d{7}$"
+    },
+    "urun_id": {
+      "type": "string",
+      "pattern": "^U\\d{4}$"
+    },
+    "adet": {
+      "type": "integer",
+      "minimum": 1.0
+    },
+    "liste_fiyati": {
+      "type": "number",
+      "minimum": 0.0
+    },
+    "birim_fiyat": {
+      "type": "number",
+      "description": "indirimli satış fiyatı",
+      "minimum": 0.0
+    },
+    "tutar": {
+      "type": "number",
+      "description": "birim_fiyat × adet",
+      "minimum": 0.0
+    }
+  },
+  "required": [
+    "kalem_id",
+    "siparis_id",
+    "urun_id",
+    "adet",
+    "liste_fiyati",
+    "birim_fiyat",
+    "tutar"
+  ],
+  "additionalProperties": false,
+  "x-birincil-anahtar": [
+    "kalem_id"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "format": "dil-modeli/1",
+  "dtype": "float32",
+  "model": {
+    "vocab_size": 4096,
+    "dim": 128,
+    "n_layer": 4,
+    "n_head": 4,
+    "n_kv_head": 4,
+    "hidden_dim": 352,
+    "max_seq_len": 256,
+    "rope_base": 10000.0,
+    "norm_eps": 1e-05,
+    "tie_embeddings": true,
+    "dropout": 0.0
+  },
+  "info": {
+    "adim": 1600,
+    "en_iyi_dogrulama_kaybi": 3.965621002515157,
+    "belirtec": 6553600
+  }
+}

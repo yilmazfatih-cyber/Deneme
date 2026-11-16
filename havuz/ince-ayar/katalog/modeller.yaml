@@ -1,0 +1,368 @@
+# Model kataloğu — görev ve boyuta göre önerilen açık taban modeller.
+#
+# Her kayıt 16 Kasım 2026'da Hugging Face API'siyle doğrulandı (scripts/katalog_dogrula.py);
+# ham sonuç: katalog/dogrulama-2026-11-16.json. `lisans`, `parametre` ve `erisim` API'den okunan
+# değerlerdir; `ticari` lisans etiketinden çıkarılır (evet / kosullu / hayir, bkz. ince_ayar/catalog.py).
+# `turkce`: "kanıt: …" yalnız dil etiketlerinde Türkçe varsa ya da model kartı Türkçe'yi anıyorsa yazılır;
+# bu, modelin Türkçe'de İYİ olduğunu göstermez — yalnız Türkçe'nin kapsamda olduğunu gösterir.
+# Bu temelde hangi modelin gerçekten denendiği docs/DENEME_KAYDI.md içindedir; diğerleri DENENMEDİ.
+# Yeni kayıt ekledikten sonra: .venv/bin/python scripts/katalog_dogrula.py --yaz
+
+modeller:
+  # ───────────── Sohbet / talimat (öğrenci: ince ayarlanacak küçük model) ─────────────
+  - kimlik: HuggingFaceTB/SmolLM2-135M-Instruct
+    gorev: [sohbet]
+    boyut: 135M
+    parametre: 134515008
+    lisans: apache-2.0
+    ticari: evet
+    erisim: acik
+    turkce: kanıt yok
+    notlar: 'CPU duman testinde kullanıldı (docs/DENEME_KAYDI.md). Dil etiketi yalnız İngilizce.'
+    dogrulandi: "2026-11-16"
+  - kimlik: HuggingFaceTB/SmolLM2-360M-Instruct
+    gorev: [sohbet]
+    boyut: 362M
+    parametre: 361821120
+    lisans: apache-2.0
+    ticari: evet
+    erisim: acik
+    turkce: kanıt yok
+    notlar: ""
+    dogrulandi: "2026-11-16"
+  - kimlik: Qwen/Qwen3-0.6B
+    gorev: [sohbet, damitma]
+    boyut: 0.75B
+    parametre: 751632384
+    lisans: apache-2.0
+    ticari: evet
+    erisim: acik
+    turkce: kanıt yok
+    notlar: 'Şablon son asistan turuna boş <think> bloğu ekler; maske bunu da öğretir.'
+    dogrulandi: "2026-11-16"
+  - kimlik: Qwen/Qwen3-1.7B
+    gorev: [sohbet, damitma]
+    boyut: 2.0B
+    parametre: 2031739904
+    lisans: apache-2.0
+    ticari: evet
+    erisim: acik
+    turkce: kanıt yok
+    notlar: 'colab-t4 hazır ayarının tabanı (T4''te çalıştırılması doğrulanmadı).'
+    dogrulandi: "2026-11-16"
+  - kimlik: Qwen/Qwen3-4B
+    gorev: [sohbet]
+    boyut: 4.0B
+    parametre: 4022468096
+    lisans: apache-2.0
+    ticari: evet
+    erisim: acik
+    turkce: kanıt yok
+    notlar: 'tek-gpu-24gb hazır ayarının tabanı (GPU''da doğrulanmadı).'
+    dogrulandi: "2026-11-16"
+  - kimlik: microsoft/Phi-4-mini-instruct
+    gorev: [sohbet]
+    boyut: 3.8B
+    parametre: 3836021760
+    lisans: mit
+    ticari: evet
+    erisim: acik
+    turkce: "kanıt: dil etiketlerinde tr"
+    notlar: ""
+    dogrulandi: "2026-11-16"
+  - kimlik: ibm-granite/granite-4.0-micro
+    gorev: [sohbet]
+    boyut: 3.4B
+    parametre: 3402836480
+    lisans: apache-2.0
+    ticari: evet
+    erisim: acik
+    turkce: kanıt yok
+    notlar: ""
+    dogrulandi: "2026-11-16"
+  - kimlik: TURKCELL/Turkcell-LLM-7b-v1
+    gorev: [sohbet]
+    boyut: 7.4B
+    parametre: 7375695872
+    lisans: apache-2.0
+    ticari: evet
+    erisim: acik
+    turkce: "kanıt: dil etiketlerinde tr"
+    notlar: 'Türkçe''ye uyarlanmış; 24 GB''ta LoRA için büyük, 4-bit gerekebilir (denenmedi).'
+    dogrulandi: "2026-11-16"
+  - kimlik: google/gemma-3-270m-it
+    gorev: [sohbet]
+    boyut: 268M
+    parametre: 268098176
+    lisans: gemma
+    ticari: kosullu
+    erisim: onayli
+    turkce: kanıt yok
+    notlar: 'İndirmek için Hugging Face''te lisans onayı ve giriş gerekir.'
+    dogrulandi: "2026-11-16"
+  - kimlik: google/gemma-3-1b-it
+    gorev: [sohbet]
+    boyut: 1.0B
+    parametre: 999885952
+    lisans: gemma
+    ticari: kosullu
+    erisim: onayli
+    turkce: kanıt yok
+    notlar: 'İndirmek için lisans onayı gerekir.'
+    dogrulandi: "2026-11-16"
+  - kimlik: meta-llama/Llama-3.2-1B-Instruct
+    gorev: [sohbet]
+    boyut: 1.2B
+    parametre: 1235814400
+    lisans: llama3.2
+    ticari: kosullu
+    erisim: onayli
+    turkce: kanıt yok
+    notlar: 'Lisans koşulları ve kabul edilebilir kullanım politikası okunmalı.'
+    dogrulandi: "2026-11-16"
+  - kimlik: LiquidAI/LFM2-350M
+    gorev: [sohbet]
+    boyut: 354M
+    parametre: 354483968
+    lisans: other
+    ticari: kosullu
+    erisim: acik
+    turkce: kanıt yok
+    notlar: 'Lisans adı lfm1.0; ticari koşulları lisans metninden okuyun (doğrulanmadı).'
+    dogrulandi: "2026-11-16"
+
+  # ───────────── Kodlayıcı (sınıflandırma, varlık tanıma) ─────────────
+  - kimlik: dbmdz/electra-small-turkish-cased-discriminator
+    gorev: [siniflandirma, varlik, gomme]
+    boyut: 14M
+    parametre: 13738241
+    lisans: mit
+    ticari: evet
+    erisim: acik
+    turkce: "kanıt: dil etiketlerinde tr"
+    notlar: 'CPU duman testinde kullanıldı (docs/DENEME_KAYDI.md); çok küçük, hızlı deneme için.'
+    dogrulandi: "2026-11-16"
+  - kimlik: dbmdz/distilbert-base-turkish-cased
+    gorev: [siniflandirma, varlik]
+    boyut: 68M
+    parametre: 68122112
+    lisans: mit
+    ticari: evet
+    erisim: acik
+    turkce: "kanıt: dil etiketlerinde tr"
+    notlar: ""
+    dogrulandi: "2026-11-16"
+  - kimlik: dbmdz/bert-base-turkish-cased
+    gorev: [siniflandirma, varlik]
+    boyut: 111M
+    parametre: 111243010
+    lisans: mit
+    ticari: evet
+    erisim: acik
+    turkce: "kanıt: dil etiketlerinde tr"
+    notlar: 'colab-t4 sınıflandırma ve varlık hazır ayarlarının tabanı.'
+    dogrulandi: "2026-11-16"
+  - kimlik: dbmdz/bert-base-turkish-128k-cased
+    gorev: [siniflandirma, varlik]
+    boyut: 185M
+    parametre: 185067010
+    lisans: mit
+    ticari: evet
+    erisim: acik
+    turkce: "kanıt: dil etiketlerinde tr"
+    notlar: 'tek-gpu-24gb hazır ayarlarının tabanı.'
+    dogrulandi: "2026-11-16"
+  - kimlik: boun-tabilab/TabiBERT
+    gorev: [siniflandirma, varlik]
+    boyut: 150M
+    parametre: 149507584
+    lisans: apache-2.0
+    ticari: evet
+    erisim: acik
+    turkce: "kanıt: dil etiketlerinde tr"
+    notlar: 'Bu temelde denenmedi (ONNX aktarımı dahil).'
+    dogrulandi: "2026-11-16"
+  - kimlik: FacebookAI/xlm-roberta-base
+    gorev: [siniflandirma, varlik]
+    boyut: 279M
+    parametre: 278885778
+    lisans: mit
+    ticari: evet
+    erisim: acik
+    turkce: "kanıt: dil etiketlerinde tr"
+    notlar: 'Çok dilli.'
+    dogrulandi: "2026-11-16"
+  - kimlik: microsoft/mdeberta-v3-base
+    gorev: [siniflandirma, varlik]
+    boyut: bilinmiyor (API parametre sayısı vermedi)
+    parametre: null
+    lisans: mit
+    ticari: evet
+    erisim: acik
+    turkce: "kanıt: dil etiketlerinde tr"
+    notlar: 'Çok dilli.'
+    dogrulandi: "2026-11-16"
+
+  # ───────────── Gömme (embedding) ─────────────
+  - kimlik: intfloat/multilingual-e5-small
+    gorev: [gomme]
+    boyut: 118M
+    parametre: 117654272
+    lisans: mit
+    ticari: evet
+    erisim: acik
+    turkce: "kanıt: dil etiketlerinde tr"
+    notlar: 'Önek ister ("query: " / "passage: ").'
+    dogrulandi: "2026-11-16"
+  - kimlik: intfloat/multilingual-e5-base
+    gorev: [gomme]
+    boyut: 278M
+    parametre: 278044162
+    lisans: mit
+    ticari: evet
+    erisim: acik
+    turkce: "kanıt: dil etiketlerinde tr"
+    notlar: 'colab-t4 gömme hazır ayarının tabanı; önek ister.'
+    dogrulandi: "2026-11-16"
+  - kimlik: BAAI/bge-m3
+    gorev: [gomme]
+    boyut: bilinmiyor (API parametre sayısı vermedi)
+    parametre: null
+    lisans: mit
+    ticari: evet
+    erisim: acik
+    turkce: kanıt yok
+    notlar: 'tek-gpu-24gb gömme hazır ayarının tabanı; önek gerekmez.'
+    dogrulandi: "2026-11-16"
+  - kimlik: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+    gorev: [gomme]
+    boyut: 118M
+    parametre: 117654272
+    lisans: apache-2.0
+    ticari: evet
+    erisim: acik
+    turkce: "kanıt: dil etiketlerinde tr"
+    notlar: 'Önek gerekmez; havuz/yz ile doğrudan uyumlu.'
+    dogrulandi: "2026-11-16"
+  - kimlik: emrecan/bert-base-turkish-cased-mean-nli-stsb-tr
+    gorev: [gomme]
+    boyut: 111M
+    parametre: 110617856
+    lisans: apache-2.0
+    ticari: evet
+    erisim: acik
+    turkce: "kanıt: dil etiketlerinde tr"
+    notlar: 'Türkçe cümle benzerliğine eğitilmiş; arama için ince ayar önerilir.'
+    dogrulandi: "2026-11-16"
+  - kimlik: Alibaba-NLP/gte-multilingual-base
+    gorev: [gomme]
+    boyut: 305M
+    parametre: 305369089
+    lisans: apache-2.0
+    ticari: evet
+    erisim: acik
+    turkce: "kanıt: dil etiketlerinde tr"
+    notlar: 'Özel kod ister (`-D model.uzak_kod=true`); bu temelde denenmedi.'
+    dogrulandi: "2026-11-16"
+  - kimlik: Qwen/Qwen3-Embedding-0.6B
+    gorev: [gomme]
+    boyut: 596M
+    parametre: 595776512
+    lisans: apache-2.0
+    ticari: evet
+    erisim: acik
+    turkce: kanıt yok
+    notlar: 'Kod çözücü tabanlı gömme; bu temelde denenmedi.'
+    dogrulandi: "2026-11-16"
+  - kimlik: google/embeddinggemma-300m
+    gorev: [gomme]
+    boyut: 303M
+    parametre: 302863104
+    lisans: gemma
+    ticari: kosullu
+    erisim: onayli
+    turkce: kanıt yok
+    notlar: 'İndirmek için lisans onayı gerekir.'
+    dogrulandi: "2026-11-16"
+  - kimlik: jinaai/jina-embeddings-v3
+    gorev: [gomme]
+    boyut: 572M
+    parametre: 572310396
+    lisans: cc-by-nc-4.0
+    ticari: hayir
+    erisim: acik
+    turkce: "kanıt: dil etiketlerinde tr"
+    notlar: 'TİCARİ KULLANIMA KAPALI (CC-BY-NC-4.0). Ticari bir ürün için seçmeyin.'
+    dogrulandi: "2026-11-16"
+
+  # ───────────── Öğretmen (sentetik veri üretimi; Ollama/vLLM ile sunulur) ─────────────
+  - kimlik: Qwen/Qwen3-8B
+    gorev: [ogretmen]
+    boyut: 8.2B
+    parametre: 8190735360
+    lisans: apache-2.0
+    ticari: evet
+    erisim: acik
+    turkce: kanıt yok
+    notlar: 'yapilandirma/uret/*.toml varsayılan öğretmeni; Ollama etiketi "qwen3:8b" doğrulanmadı.'
+    dogrulandi: "2026-11-16"
+  - kimlik: Qwen/Qwen3-14B
+    gorev: [ogretmen]
+    boyut: 14.8B
+    parametre: 14768307200
+    lisans: apache-2.0
+    ticari: evet
+    erisim: acik
+    turkce: kanıt yok
+    notlar: ""
+    dogrulandi: "2026-11-16"
+  - kimlik: mistralai/Mistral-Small-3.2-24B-Instruct-2506
+    gorev: [ogretmen]
+    boyut: 24B
+    parametre: 24011361280
+    lisans: apache-2.0
+    ticari: evet
+    erisim: acik
+    turkce: "kanıt: dil etiketlerinde tr"
+    notlar: ""
+    dogrulandi: "2026-11-16"
+  - kimlik: openai/gpt-oss-20b
+    gorev: [ogretmen]
+    boyut: 21B
+    parametre: 20914757184
+    lisans: apache-2.0
+    ticari: evet
+    erisim: acik
+    turkce: kanıt yok
+    notlar: ""
+    dogrulandi: "2026-11-16"
+  - kimlik: google/gemma-4-12B-it
+    gorev: [ogretmen]
+    boyut: 12B
+    parametre: 11959730224
+    lisans: apache-2.0
+    ticari: evet
+    erisim: acik
+    turkce: kanıt yok
+    notlar: 'Çok kipli model; metin üretimi için öğretmen olarak sunulabilir (denenmedi).'
+    dogrulandi: "2026-11-16"
+  - kimlik: microsoft/phi-4
+    gorev: [ogretmen]
+    boyut: 14.7B
+    parametre: 14659507200
+    lisans: mit
+    ticari: evet
+    erisim: acik
+    turkce: kanıt yok
+    notlar: ""
+    dogrulandi: "2026-11-16"
+  - kimlik: CohereLabs/aya-expanse-8b
+    gorev: [ogretmen]
+    boyut: 8.0B
+    parametre: 8028033024
+    lisans: cc-by-nc-4.0
+    ticari: hayir
+    erisim: onayli
+    turkce: "kanıt: dil etiketlerinde tr"
+    notlar: 'TİCARİ KULLANIMA KAPALI. Ürettiği veri ticari üründe kullanılamaz; `uret` bu lisansta durur.'
+    dogrulandi: "2026-11-16"

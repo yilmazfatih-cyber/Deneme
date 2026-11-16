@@ -22,7 +22,9 @@ def pick_device(name: str = "auto") -> torch.device:
     if name != "auto":
         device = torch.device(name)
         if device.type == "cuda" and not torch.cuda.is_available():
-            raise ValueError("CUDA istendi ama bu makinede kullanılabilir GPU yok. device='auto' deneyin.")
+            raise ValueError(
+                "CUDA istendi ama bu makinede kullanılabilir GPU yok. device='auto' deneyin."
+            )
         if device.type == "mps" and not torch.backends.mps.is_available():
             raise ValueError("MPS istendi ama bu makinede kullanılamıyor. device='auto' deneyin.")
         return device
@@ -68,6 +70,4 @@ def resolve_precision(name: str, device: torch.device) -> Precision:
 
 def autocast(device: torch.device, precision: Precision) -> torch.autocast:
     """İleri geçişi saran bağlam yöneticisi; kapalıysa hiçbir şey yapmaz."""
-    return torch.autocast(
-        device_type=device.type, dtype=precision.dtype, enabled=precision.enabled
-    )
+    return torch.autocast(device_type=device.type, dtype=precision.dtype, enabled=precision.enabled)

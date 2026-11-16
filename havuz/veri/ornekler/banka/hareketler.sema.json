@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "hareketler",
+  "description": "Hesap hareketleri; tutar girişte pozitif, çıkışta negatif.",
+  "type": "object",
+  "properties": {
+    "hareket_id": {
+      "type": "string",
+      "pattern": "^HR\\d{8}$",
+      "x-benzersiz": true
+    },
+    "hesap_id": {
+      "type": "string",
+      "pattern": "^H\\d{5}$"
+    },
+    "zaman": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "tur": {
+      "type": "string",
+      "enum": [
+        "maas",
+        "kira",
+        "fatura",
+        "kart_harcamasi",
+        "atm",
+        "eft_giden",
+        "eft_gelen"
+      ]
+    },
+    "aciklama": {
+      "type": "string"
+    },
+    "tutar": {
+      "type": "number"
+    },
+    "bakiye": {
+      "type": "number",
+      "minimum": 0.0
+    },
+    "karsi_iban": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "x-denetim": "iban_tr"
+    },
+    "kanal": {
+      "type": "string",
+      "enum": [
+        "mobil",
+        "internet",
+        "atm",
+        "pos",
+        "otomatik"
+      ]
+    }
+  },
+  "required": [
+    "hareket_id",
+    "hesap_id",
+    "zaman",
+    "tur",
+    "aciklama",
+    "tutar",
+    "bakiye",
+    "karsi_iban",
+    "kanal"
+  ],
+  "additionalProperties": false,
+  "x-birincil-anahtar": [
+    "hareket_id"
+  ]
+}

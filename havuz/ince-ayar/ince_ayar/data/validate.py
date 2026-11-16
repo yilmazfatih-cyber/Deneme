@@ -133,7 +133,9 @@ def load_classification(
     """`metin` / `etiket` alanlı CSV ya da JSONL dosyasını okur ve doğrular."""
 
     def convert(line: int, model: ClassificationRow, data: dict[str, Any]) -> LabeledText:
-        return LabeledText(line, model.metin.strip(), model.etiket.strip(), _group_of(data, group_field))
+        return LabeledText(
+            line, model.metin.strip(), model.etiket.strip(), _group_of(data, group_field)
+        )
 
     loaded = _load(path, encoding, ClassificationRow, ("metin", "etiket"), convert)
     found = checks.check_classification(loaded.rows)

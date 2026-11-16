@@ -1,0 +1,16 @@
+48 ileti, 4 konu.
+Belirteçleme örneği: ['iade', 'ığdır', 'şubesine', 'verdim']
+Çapraz doğrulama doğruluğu, kelime (1-2 gram): 0.625 ± 0.072
+Çapraz doğrulama doğruluğu, karakter (2-4 gram): 0.792 ± 0.072
+
+Konu başına en belirleyici kelimeler:
+  iade       iade, değişim, istiyorum, geri
+  kargo      kargo, teslim, teslimat, yapılacak
+  memnuniyet çok, ederim, memnun, kaldım
+  odeme      ödeme, ile, seçeneği, kredi
+
+Yeni iletiler:
+  İadem ne zaman onaylanır?      → iade (0.48)
+  kargom gecikti                 → kargo (0.85)
+  Ödememi yapamadım              → odeme (0.82)
+  Çok teşekkürler!               → memnuniyet (0.92)

@@ -14,6 +14,7 @@ from ml_temel.secim.split import train_test_split
 from ml_temel.secim.splitters import (
     GroupKFold,
     KFold,
+    PredefinedSplits,
     StratifiedKFold,
     TimeSeriesSplit,
     check_cv,
@@ -25,6 +26,7 @@ __all__ = [
     "GroupKFold",
     "KFold",
     "ParameterGrid",
+    "PredefinedSplits",
     "StratifiedKFold",
     "TimeSeriesSplit",
     "check_cv",

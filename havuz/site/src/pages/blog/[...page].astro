@@ -1,0 +1,13 @@
+---
+/** Blog listesi (Türkçe): /blog/, /blog/2/, … Görünüm: src/views/BlogListView.astro. */
+import type { GetStaticPaths, InferGetStaticPropsType } from 'astro'
+import { blogPagePaths } from '../../lib/static-paths.ts'
+import BlogListView from '../../views/BlogListView.astro'
+
+export const getStaticPaths = (({ paginate }) => blogPagePaths('tr', paginate)) satisfies GetStaticPaths
+type Props = InferGetStaticPropsType<typeof getStaticPaths>
+
+const { page } = Astro.props as Props
+---
+
+<BlogListView locale="tr" page={page} />

@@ -1,0 +1,45 @@
+# Zamanlanmış veri hattı için GitHub Actions ÖRNEĞİ (kopyalanacak; bu depoda çalışmaz).
+#
+# Kullanım: bu dosyayı kendi deponuzda .github/workflows/tcmb-kurlari.yml olarak kopyalayın.
+# Ne yapar: iş günleri TCMB kurlarını çeker (bülten ~15:30 TSİ yayımlanır), artımlı olarak
+# CSV deposuna yükler ve sonucu yapıt (artifact) olarak saklar.
+# DOĞRULANMADI: bu ortamda github.com'a erişim yoktu; eylem sürümlerini (actions/checkout vb.)
+# kopyalarken güncel sürümle değiştirin. Durum dosyası (calisma/durum) koşular arasında
+# korunmadığı için örnek, her koşuda son 7 günü çeker (yükleme idempotent olduğundan zararsız).
+name: tcmb-kurlari
+
+on:
+  schedule:
+    - cron: "17 13 * * 1-5" # UTC 13:17 = TSİ 16:17, hafta içi
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  hat:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: havuz/veri
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Kur
+        run: python -m pip install -e .
+      - name: Hattı çalıştır
+        env:
+          VERIHAVUZU_KULLANICI_ARACISI: "kurum-adi-veri-hatti/1.0 (+iletisim@ornek.example)"
+        run: python -m verihavuzu hat calistir tcmb_kurlari --depo csv --depo-yolu calisma/cikti
+      - name: Sonucu sakla
+        uses: actions/upload-artifact@v4
+        with:
+          name: tcmb-kurlari
+          path: |
+            havuz/veri/calisma/cikti/
+            havuz/veri/calisma/hat_gunlugu.jsonl
+            havuz/veri/calisma/karantina/
+          if-no-files-found: warn

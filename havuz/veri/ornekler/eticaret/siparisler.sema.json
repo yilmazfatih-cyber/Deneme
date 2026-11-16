@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "siparisler",
+  "description": "Siparişler. Tutarlar TL, KDV dahil.",
+  "type": "object",
+  "properties": {
+    "siparis_id": {
+      "type": "string",
+      "pattern": "^SP\\d{7}$",
+      "x-benzersiz": true
+    },
+    "musteri_id": {
+      "type": "string",
+      "pattern": "^M\\d{6}$"
+    },
+    "siparis_zamani": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "kanal": {
+      "type": "string",
+      "enum": [
+        "mobil_uygulama",
+        "web"
+      ]
+    },
+    "odeme_yontemi": {
+      "type": "string",
+      "enum": [
+        "kredi_karti",
+        "banka_karti",
+        "havale_eft",
+        "kapida_odeme"
+      ]
+    },
+    "kampanya": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "kampanya adı ya da boş"
+    },
+    "ara_toplam": {
+      "type": "number",
+      "minimum": 0.0
+    },
+    "indirim": {
+      "type": "number",
+      "description": "liste fiyatına göre indirim",
+      "minimum": 0.0
+    },
+    "kargo_ucreti": {
+      "type": "number",
+      "minimum": 0.0
+    },
+    "toplam": {
+      "type": "number",
+      "minimum": 0.0
+    },
+    "durum": {
+      "type": "string",
+      "enum": [
+        "teslim_edildi",
+        "iptal",
+        "iade_edildi",
+        "kismi_iade"
+      ]
+    },
+    "teslim_tarihi": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date"
+    }
+  },
+  "required": [
+    "siparis_id",
+    "musteri_id",
+    "siparis_zamani",
+    "kanal",
+    "odeme_yontemi",
+    "kampanya",
+    "ara_toplam",
+    "indirim",
+    "kargo_ucreti",
+    "toplam",
+    "durum",
+    "teslim_tarihi"
+  ],
+  "additionalProperties": false,
+  "x-birincil-anahtar": [
+    "siparis_id"
+  ]
+}

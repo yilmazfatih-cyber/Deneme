@@ -24,6 +24,24 @@ const SEGMENTS: Record<Locale, Segments> = {
   en: { blog: 'blog', tag: 'tag', docs: 'docs', contact: 'contact' },
 }
 
+/**
+ * Serbest sayfa (src/content/sayfalar/) ve yazı adı olarak kullanılamayacak kısa adlar: sitenin kendi bölümleri,
+ * dil klasörleri ve derlemenin ürettiği dosya/klasör adları. Üreteç ve kural testleri bu listeyi kullanır.
+ */
+export const RESERVED_SLUGS: ReadonlySet<string> = new Set([
+  ...Object.values(SEGMENTS).flatMap((segment) => Object.values(segment)),
+  ...locales,
+  'og',
+  'pagefind',
+  '_astro',
+  '404',
+  'rss',
+  'robots',
+  'sitemap',
+  'favicon',
+  'apple-touch-icon',
+])
+
 /** Dilin adres ön eki: varsayılan dil kökte ("") yayınlanır, diğerleri kendi klasöründe ("/en"). */
 export function localePrefix(locale: Locale): string {
   return locale === defaultLocale ? '' : `/${locale}`
@@ -37,7 +55,9 @@ export function segments(locale: Locale): Segments {
 export const paths = {
   home: (locale: Locale) => `${localePrefix(locale)}/`,
   blog: (locale: Locale, page = 1) =>
-    page <= 1 ? `${localePrefix(locale)}/${SEGMENTS[locale].blog}/` : `${localePrefix(locale)}/${SEGMENTS[locale].blog}/${page}/`,
+    page <= 1
+      ? `${localePrefix(locale)}/${SEGMENTS[locale].blog}/`
+      : `${localePrefix(locale)}/${SEGMENTS[locale].blog}/${page}/`,
   post: (locale: Locale, slug: string) => `${localePrefix(locale)}/${SEGMENTS[locale].blog}/${slug}/`,
   tag: (locale: Locale, tagSlug: string) =>
     `${localePrefix(locale)}/${SEGMENTS[locale].blog}/${SEGMENTS[locale].tag}/${tagSlug}/`,
@@ -46,6 +66,12 @@ export const paths = {
   contact: (locale: Locale) => `${localePrefix(locale)}/${SEGMENTS[locale].contact}/`,
   page: (locale: Locale, slug: string) => `${localePrefix(locale)}/${slug}/`,
   rss: (locale: Locale) => `${localePrefix(locale)}/rss.xml`,
+}
+
+/** Kırıntı yolu öğesi: görünen ad + mantıksal yol ("/blog/"). */
+export interface Crumb {
+  label: string
+  path: string
 }
 
 /** Bir sayfanın bütün dillerdeki karşılığı (hreflang ve dil değiştirici için). */

@@ -22,9 +22,9 @@ AZAMI_DERINLIK = 64  # bundan derin iç içe yapı okunmaz (özyineleme taşmas�
 # Açan tırnak → onu kapatabilecek tırnaklar.
 _KAPATAN = {
     '"': '"',
-    "“": "”“\"",
-    "”": "”“\"",
-    "„": "”“\"",
+    "“": '”“"',
+    "”": '”“"',
+    "„": '”“"',
     "«": "»",
     "'": "'",
     "‘": "’‘'",
@@ -52,9 +52,7 @@ _ANAHTAR = (
 )
 # Nesne değerinin kapanış tırnağından sonra gelebilecekler:
 #   metin sonu | } ] | virgül + (son | } ] | yorum | anahtar:) | (virgül unutulmuş) anahtar:
-_DEGER_SONRASI = re.compile(
-    rf"\s*(?:$|[}}\]]|,\s*(?:$|[}}\]]|//|/\*|#|{_ANAHTAR})|{_ANAHTAR})"
-)
+_DEGER_SONRASI = re.compile(rf"\s*(?:$|[}}\]]|,\s*(?:$|[}}\]]|//|/\*|#|{_ANAHTAR})|{_ANAHTAR})")
 _SATIRDA_ANAHTAR = re.compile(rf"\s*(?:{_ANAHTAR}|[}}\]])")
 _SAYI_ARDINDAN_SAYI = re.compile(rf"{_SAYI.pattern} +[-+.\d]")
 _YALIN_ANAHTAR = re.compile(r"[^\s:,{}\[\]\"'=][^:,{}\[\]\"'\n=]{0,63}")
@@ -225,7 +223,11 @@ class Okuyucu:
         while not self._bitti() and self.s[self.i] not in ',}]\n"{[':
             if self.s.startswith(("//", "/*", " #"), self.i):
                 break
-            if baglam == "dizi_ogesi" and self.s[self.i] == " " and _SAYI_ARDINDAN_SAYI.match(self.s, bas):
+            if (
+                baglam == "dizi_ogesi"
+                and self.s[self.i] == " "
+                and _SAYI_ARDINDAN_SAYI.match(self.s, bas)
+            ):
                 break  # [1 2 3]: virgül unutulmuş sayılar ayrı öğelerdir
             self.i += 1
         ham = self.s[bas : self.i].strip()

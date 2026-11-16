@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "urunler",
+  "description": "Kurgusal ürün kataloğu (fiyatlar piyasa verisi değildir).",
+  "type": "object",
+  "properties": {
+    "urun_id": {
+      "type": "string",
+      "pattern": "^U\\d{4}$",
+      "x-benzersiz": true
+    },
+    "urun_adi": {
+      "type": "string"
+    },
+    "marka": {
+      "type": "string"
+    },
+    "kategori": {
+      "type": "string"
+    },
+    "alt_kategori": {
+      "type": "string"
+    },
+    "fiyat": {
+      "type": "number",
+      "description": "KDV dahil etiket fiyatı (TL)",
+      "minimum": 0.01
+    },
+    "kdv_grubu": {
+      "type": "string",
+      "enum": [
+        "dusuk",
+        "indirimli",
+        "genel"
+      ]
+    },
+    "kdv_orani": {
+      "type": "integer",
+      "description": "yüzde",
+      "minimum": 0.0,
+      "maximum": 100.0
+    },
+    "stok": {
+      "type": "integer",
+      "minimum": 0.0
+    },
+    "populerlik_sirasi": {
+      "type": "integer",
+      "minimum": 1.0,
+      "x-benzersiz": true
+    },
+    "aktif": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "urun_id",
+    "urun_adi",
+    "marka",
+    "kategori",
+    "alt_kategori",
+    "fiyat",
+    "kdv_grubu",
+    "kdv_orani",
+    "stok",
+    "populerlik_sirasi",
+    "aktif"
+  ],
+  "additionalProperties": false,
+  "x-birincil-anahtar": [
+    "urun_id"
+  ]
+}

@@ -1,5 +1,6 @@
 // Üç paketin (shared, api, web) ortak lint ayarı. Kurallar az ama anlamlıdır: her biri gerçek bir hata sınıfını yakalar.
 import js from '@eslint/js'
+import reactHooks from 'eslint-plugin-react-hooks'
 import globals from 'globals'
 import tseslint from 'typescript-eslint'
 
@@ -18,7 +19,16 @@ const turkishCase = [
 
 export default tseslint.config(
   {
-    ignores: ['**/dist', '**/dev-dist', '**/node_modules', '**/coverage', 'playwright-report', 'test-results', '.data'],
+    ignores: [
+      '**/dist',
+      '**/dist-yerel',
+      '**/dev-dist',
+      '**/node_modules',
+      '**/coverage',
+      'playwright-report',
+      'test-results',
+      '.data',
+    ],
   },
   {
     files: ['**/*.{ts,tsx}'],
@@ -38,6 +48,11 @@ export default tseslint.config(
       '@typescript-eslint/switch-exhaustiveness-check': 'error',
       '@typescript-eslint/require-await': 'off',
     },
+  },
+  {
+    // Web (React): kanca kuralları (React Compiler kuralları dahil: render sırasında yan etki, ref okuma vb.).
+    files: ['web/**/*.{ts,tsx}'],
+    ...reactHooks.configs.flat.recommended,
   },
   {
     // Testlerde tip güvenliği kuralları gevşetilir: sahte nesneler ve bilerek bozuk girdiler kullanılır.

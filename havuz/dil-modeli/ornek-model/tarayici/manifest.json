@@ -1,0 +1,559 @@
+{
+ "format": "dil-modeli-tarayici/1",
+ "dtype": "int8",
+ "model": {
+  "vocab_size": 4096,
+  "dim": 128,
+  "n_layer": 4,
+  "n_head": 4,
+  "n_kv_head": 4,
+  "hidden_dim": 352,
+  "max_seq_len": 256,
+  "rope_base": 10000.0,
+  "norm_eps": 1e-05,
+  "tie_embeddings": true,
+  "dropout": 0.0
+ },
+ "tensors": {
+  "embed.weight": {
+   "shape": [
+    4096,
+    128
+   ],
+   "dtype": "int8",
+   "data": [
+    0,
+    524288
+   ],
+   "scales": [
+    524288,
+    16384
+   ]
+  },
+  "blocks.0.attn_norm.weight": {
+   "shape": [
+    128
+   ],
+   "dtype": "float32",
+   "data": [
+    540672,
+    512
+   ]
+  },
+  "blocks.0.attn.q_proj.weight": {
+   "shape": [
+    128,
+    128
+   ],
+   "dtype": "int8",
+   "data": [
+    541184,
+    16384
+   ],
+   "scales": [
+    557568,
+    512
+   ]
+  },
+  "blocks.0.attn.k_proj.weight": {
+   "shape": [
+    128,
+    128
+   ],
+   "dtype": "int8",
+   "data": [
+    558080,
+    16384
+   ],
+   "scales": [
+    574464,
+    512
+   ]
+  },
+  "blocks.0.attn.v_proj.weight": {
+   "shape": [
+    128,
+    128
+   ],
+   "dtype": "int8",
+   "data": [
+    574976,
+    16384
+   ],
+   "scales": [
+    591360,
+    512
+   ]
+  },
+  "blocks.0.attn.o_proj.weight": {
+   "shape": [
+    128,
+    128
+   ],
+   "dtype": "int8",
+   "data": [
+    591872,
+    16384
+   ],
+   "scales": [
+    608256,
+    512
+   ]
+  },
+  "blocks.0.mlp_norm.weight": {
+   "shape": [
+    128
+   ],
+   "dtype": "float32",
+   "data": [
+    608768,
+    512
+   ]
+  },
+  "blocks.0.mlp.gate_proj.weight": {
+   "shape": [
+    352,
+    128
+   ],
+   "dtype": "int8",
+   "data": [
+    609280,
+    45056
+   ],
+   "scales": [
+    654336,
+    1408
+   ]
+  },
+  "blocks.0.mlp.up_proj.weight": {
+   "shape": [
+    352,
+    128
+   ],
+   "dtype": "int8",
+   "data": [
+    655744,
+    45056
+   ],
+   "scales": [
+    700800,
+    1408
+   ]
+  },
+  "blocks.0.mlp.down_proj.weight": {
+   "shape": [
+    128,
+    352
+   ],
+   "dtype": "int8",
+   "data": [
+    702208,
+    45056
+   ],
+   "scales": [
+    747264,
+    512
+   ]
+  },
+  "blocks.1.attn_norm.weight": {
+   "shape": [
+    128
+   ],
+   "dtype": "float32",
+   "data": [
+    747776,
+    512
+   ]
+  },
+  "blocks.1.attn.q_proj.weight": {
+   "shape": [
+    128,
+    128
+   ],
+   "dtype": "int8",
+   "data": [
+    748288,
+    16384
+   ],
+   "scales": [
+    764672,
+    512
+   ]
+  },
+  "blocks.1.attn.k_proj.weight": {
+   "shape": [
+    128,
+    128
+   ],
+   "dtype": "int8",
+   "data": [
+    765184,
+    16384
+   ],
+   "scales": [
+    781568,
+    512
+   ]
+  },
+  "blocks.1.attn.v_proj.weight": {
+   "shape": [
+    128,
+    128
+   ],
+   "dtype": "int8",
+   "data": [
+    782080,
+    16384
+   ],
+   "scales": [
+    798464,
+    512
+   ]
+  },
+  "blocks.1.attn.o_proj.weight": {
+   "shape": [
+    128,
+    128
+   ],
+   "dtype": "int8",
+   "data": [
+    798976,
+    16384
+   ],
+   "scales": [
+    815360,
+    512
+   ]
+  },
+  "blocks.1.mlp_norm.weight": {
+   "shape": [
+    128
+   ],
+   "dtype": "float32",
+   "data": [
+    815872,
+    512
+   ]
+  },
+  "blocks.1.mlp.gate_proj.weight": {
+   "shape": [
+    352,
+    128
+   ],
+   "dtype": "int8",
+   "data": [
+    816384,
+    45056
+   ],
+   "scales": [
+    861440,
+    1408
+   ]
+  },
+  "blocks.1.mlp.up_proj.weight": {
+   "shape": [
+    352,
+    128
+   ],
+   "dtype": "int8",
+   "data": [
+    862848,
+    45056
+   ],
+   "scales": [
+    907904,
+    1408
+   ]
+  },
+  "blocks.1.mlp.down_proj.weight": {
+   "shape": [
+    128,
+    352
+   ],
+   "dtype": "int8",
+   "data": [
+    909312,
+    45056
+   ],
+   "scales": [
+    954368,
+    512
+   ]
+  },
+  "blocks.2.attn_norm.weight": {
+   "shape": [
+    128
+   ],
+   "dtype": "float32",
+   "data": [
+    954880,
+    512
+   ]
+  },
+  "blocks.2.attn.q_proj.weight": {
+   "shape": [
+    128,
+    128
+   ],
+   "dtype": "int8",
+   "data": [
+    955392,
+    16384
+   ],
+   "scales": [
+    971776,
+    512
+   ]
+  },
+  "blocks.2.attn.k_proj.weight": {
+   "shape": [
+    128,
+    128
+   ],
+   "dtype": "int8",
+   "data": [
+    972288,
+    16384
+   ],
+   "scales": [
+    988672,
+    512
+   ]
+  },
+  "blocks.2.attn.v_proj.weight": {
+   "shape": [
+    128,
+    128
+   ],
+   "dtype": "int8",
+   "data": [
+    989184,
+    16384
+   ],
+   "scales": [
+    1005568,
+    512
+   ]
+  },
+  "blocks.2.attn.o_proj.weight": {
+   "shape": [
+    128,
+    128
+   ],
+   "dtype": "int8",
+   "data": [
+    1006080,
+    16384
+   ],
+   "scales": [
+    1022464,
+    512
+   ]
+  },
+  "blocks.2.mlp_norm.weight": {
+   "shape": [
+    128
+   ],
+   "dtype": "float32",
+   "data": [
+    1022976,
+    512
+   ]
+  },
+  "blocks.2.mlp.gate_proj.weight": {
+   "shape": [
+    352,
+    128
+   ],
+   "dtype": "int8",
+   "data": [
+    1023488,
+    45056
+   ],
+   "scales": [
+    1068544,
+    1408
+   ]
+  },
+  "blocks.2.mlp.up_proj.weight": {
+   "shape": [
+    352,
+    128
+   ],
+   "dtype": "int8",
+   "data": [
+    1069952,
+    45056
+   ],
+   "scales": [
+    1115008,
+    1408
+   ]
+  },
+  "blocks.2.mlp.down_proj.weight": {
+   "shape": [
+    128,
+    352
+   ],
+   "dtype": "int8",
+   "data": [
+    1116416,
+    45056
+   ],
+   "scales": [
+    1161472,
+    512
+   ]
+  },
+  "blocks.3.attn_norm.weight": {
+   "shape": [
+    128
+   ],
+   "dtype": "float32",
+   "data": [
+    1161984,
+    512
+   ]
+  },
+  "blocks.3.attn.q_proj.weight": {
+   "shape": [
+    128,
+    128
+   ],
+   "dtype": "int8",
+   "data": [
+    1162496,
+    16384
+   ],
+   "scales": [
+    1178880,
+    512
+   ]
+  },
+  "blocks.3.attn.k_proj.weight": {
+   "shape": [
+    128,
+    128
+   ],
+   "dtype": "int8",
+   "data": [
+    1179392,
+    16384
+   ],
+   "scales": [
+    1195776,
+    512
+   ]
+  },
+  "blocks.3.attn.v_proj.weight": {
+   "shape": [
+    128,
+    128
+   ],
+   "dtype": "int8",
+   "data": [
+    1196288,
+    16384
+   ],
+   "scales": [
+    1212672,
+    512
+   ]
+  },
+  "blocks.3.attn.o_proj.weight": {
+   "shape": [
+    128,
+    128
+   ],
+   "dtype": "int8",
+   "data": [
+    1213184,
+    16384
+   ],
+   "scales": [
+    1229568,
+    512
+   ]
+  },
+  "blocks.3.mlp_norm.weight": {
+   "shape": [
+    128
+   ],
+   "dtype": "float32",
+   "data": [
+    1230080,
+    512
+   ]
+  },
+  "blocks.3.mlp.gate_proj.weight": {
+   "shape": [
+    352,
+    128
+   ],
+   "dtype": "int8",
+   "data": [
+    1230592,
+    45056
+   ],
+   "scales": [
+    1275648,
+    1408
+   ]
+  },
+  "blocks.3.mlp.up_proj.weight": {
+   "shape": [
+    352,
+    128
+   ],
+   "dtype": "int8",
+   "data": [
+    1277056,
+    45056
+   ],
+   "scales": [
+    1322112,
+    1408
+   ]
+  },
+  "blocks.3.mlp.down_proj.weight": {
+   "shape": [
+    128,
+    352
+   ],
+   "dtype": "int8",
+   "data": [
+    1323520,
+    45056
+   ],
+   "scales": [
+    1368576,
+    512
+   ]
+  },
+  "norm.weight": {
+   "shape": [
+    128
+   ],
+   "dtype": "float32",
+   "data": [
+    1369088,
+    512
+   ]
+  }
+ },
+ "bytes": 1369600,
+ "sha256": "a108020e9ab301fea8ced46e6247ef25e7658bfafc41eb8d98217b99429c004d",
+ "files": {
+  "model": "model.bin",
+  "tokenizer": "tokenizer.json"
+ },
+ "special": {
+  "bos": 0,
+  "eos": 1,
+  "pad": 2,
+  "system": 3,
+  "user": 4,
+  "assistant": 5,
+  "end_of_turn": 6
+ }
+}

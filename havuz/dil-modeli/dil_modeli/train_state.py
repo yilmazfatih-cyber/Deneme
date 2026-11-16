@@ -1,4 +1,4 @@
-"""Eğitim durumunun diske yazılması: bire bir sürdürme için gereken her şey + JSONL günlük.
+"""Eğitim durumunun diske yazılması (bire bir sürdürme), JSONL günlük ve güvenli Ctrl+C.
 
 `egitim-durumu.pt` tek dosyadır ve tek seferde yerine konur (yarım kalmaz): model ağırlıkları,
 eniyileyici momentleri, ölçekleyici, adım sayısı, en iyi doğrulama kaybı. Yığın örneklemesi ve
@@ -13,6 +13,9 @@ from __future__ import annotations
 
 import json
 import os
+import signal
+import threading
+from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
@@ -65,4 +68,36 @@ def read_log(path: str | Path) -> list[dict[str, Any]]:
         file = file / LOG_NAME
     if not file.is_file():
         raise FileNotFoundError(f"Günlük dosyası bulunamadı: {file}")
-    return [json.loads(line) for line in file.read_text(encoding="utf-8").splitlines() if line.strip()]
+    return [
+        json.loads(line) for line in file.read_text(encoding="utf-8").splitlines() if line.strip()
+    ]
+
+
+class StopRequest:
+    """Ctrl+C'yi bayrağa çevirir: eğitim adımın ortasında değil, adım bitince durur.
+
+    İkinci Ctrl+C hemen keser. Ana iş parçacığı dışında (ör. testler) hiçbir şey yapmaz.
+    """
+
+    def __init__(self, log: Callable[[str], None]) -> None:
+        self.requested = False
+        self._log = log
+        self._previous: Any = None
+
+    def _handle(self, signum: int, frame: Any) -> None:
+        if self.requested:
+            raise KeyboardInterrupt
+        self.requested = True
+        self._log(
+            "Durdurma isteği alındı; bu adım bitince kaydedilip durulacak "
+            "(hemen kesmek için yine Ctrl+C)."
+        )
+
+    def __enter__(self) -> StopRequest:
+        if threading.current_thread() is threading.main_thread():
+            self._previous = signal.signal(signal.SIGINT, self._handle)
+        return self
+
+    def __exit__(self, *exc: object) -> None:
+        if self._previous is not None:
+            signal.signal(signal.SIGINT, self._previous)

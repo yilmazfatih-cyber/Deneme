@@ -12,13 +12,7 @@
  *
  * Genişletme: yeni bir durdurucu hata kodu → `onFailure`; yeni bir bildirim → `SyncEvent` + `report`.
  */
-import {
-  isAppError,
-  SYNC_LIMITS,
-  syncBackoffMs,
-  type SyncRequest,
-  type SyncResponse,
-} from '@uygulama/shared'
+import { isAppError, SYNC_LIMITS, syncBackoffMs, type SyncRequest, type SyncResponse } from '@uygulama/shared'
 import { t } from '../../i18n/index.ts'
 import { isNetworkError, NetworkError } from '../errors.ts'
 import type { AppDb } from '../store/db.ts'
@@ -38,6 +32,17 @@ export type SyncEvent =
 /** `POST /api/sync`. Ağ hatasında `NetworkError`, sunucu hatasında `AppError` fırlatmalıdır. */
 export type SyncSend = (request: SyncRequest, signal: AbortSignal) => Promise<SyncResponse>
 
+/** Zamanlayıcı (test için dışarıdan verilebilir; sahte zamanlayıcı IndexedDB taklidini bozmasın diye). */
+export interface Timers {
+  readonly set: (callback: () => void, ms: number) => unknown
+  readonly clear: (handle: unknown) => void
+}
+
+const realTimers: Timers = {
+  set: (callback, ms) => setTimeout(callback, ms),
+  clear: (handle) => clearTimeout(handle as ReturnType<typeof setTimeout>),
+}
+
 export interface SyncEngineOptions {
   readonly db: AppDb
   readonly send: SyncSend
@@ -46,6 +51,7 @@ export interface SyncEngineOptions {
   readonly random?: () => number
   readonly isOnline?: () => boolean
   readonly lock?: LockOptions
+  readonly timers?: Timers
 }
 
 type RoundOutcome = 'paused' | 'nothing' | ApplyOutcome
@@ -64,13 +70,14 @@ export class SyncEngine {
   private readonly random: () => number
   private readonly isOnline: () => boolean
   private readonly lock: LockOptions
+  private readonly timers: Timers
 
   private running: Promise<void> | null = null
   private wantPull = false
   private wantPush = false
   private failures = 0
   private batchSize: number = SYNC_LIMITS.maxMutationsPerRequest
-  private retryTimer: ReturnType<typeof setTimeout> | null = null
+  private retryTimer: unknown = null
   private abort: AbortController | null = null
   private stopped = false
   private halted = false
@@ -83,6 +90,7 @@ export class SyncEngine {
     this.random = options.random ?? Math.random
     this.isOnline = options.isOnline ?? browserOnline
     this.lock = options.lock ?? {}
+    this.timers = options.timers ?? realTimers
   }
 
   /**
@@ -113,11 +121,16 @@ export class SyncEngine {
     this.requestSync('pull')
   }
 
-  /** Motoru kalıcı olarak durdurur (çıkış yapıldığında). Yoldaki istek iptal edilir. */
+  /** Motoru durdurur (çıkışta, sayfa kapanırken). Yoldaki istek iptal edilir; `start` ile sürdürülebilir. */
   stop(): void {
     this.stopped = true
     this.clearRetry()
     this.abort?.abort()
+  }
+
+  /** Durdurulmuş motoru yeniden çalışır duruma getirir (eşitlemeyi tetikleyiciler başlatır). */
+  start(): void {
+    this.stopped = false
   }
 
   private ensureRunning(): Promise<void> {
@@ -232,14 +245,14 @@ export class SyncEngine {
 
   private scheduleRetry(delayMs: number): void {
     this.clearRetry()
-    this.retryTimer = setTimeout(() => {
+    this.retryTimer = this.timers.set(() => {
       this.retryTimer = null
       if (!this.stopped && !this.halted) void this.ensureRunning()
     }, delayMs)
   }
 
   private clearRetry(): void {
-    if (this.retryTimer !== null) clearTimeout(this.retryTimer)
+    if (this.retryTimer !== null) this.timers.clear(this.retryTimer)
     this.retryTimer = null
   }
 }

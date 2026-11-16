@@ -1,4 +1,5 @@
-"""Veri kalitesi araçları: şema sözleşmesi, profil, denetimler, kayma, ayırma, yineleme, kişisel veri.
+"""Veri kalitesi araçları: şema sözleşmesi, profil, denetimler, kayma, ayırma, yineleme ve
+kişisel veri.
 
 Her modül tek iş yapar ve tek başına okunabilir:
   ``validators`` tekil değer denetimleri · ``schema`` tablo sözleşmesi · ``profile`` sütun profili

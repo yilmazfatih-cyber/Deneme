@@ -1,0 +1,19 @@
+# Biçim örneği: faturadan yapılı çıkarım (katmanlı strateji + onarım döngüsü ölçülür).
+# Çalıştırma: .venv/bin/python -m yz degerlendir gorevler/json_cikarim.yaml
+ad: json_cikarim
+aciklama: Fatura metninden numara, toplam ve para birimini çıkarma (Fatura şeması).
+gorev: cikarim
+veri: json_cikarim.jsonl
+sema: yz.yapili.semalar:Fatura
+azami_belirtec: 400
+puanlayicilar:
+  - tur: json_sema
+  - tur: tam_eslesme
+    alan: fatura_no
+    buyuk_kucuk: true
+  - tur: sayisal
+    alan: toplam
+    tolerans: 0.01
+  - tur: tam_eslesme
+    alan: para_birimi
+    buyuk_kucuk: true

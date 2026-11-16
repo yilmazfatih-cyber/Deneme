@@ -36,7 +36,8 @@ class TokenData:
             path = root / entry["name"]
             if not path.is_file() or path.stat().st_size != entry["tokens"] * dtype.itemsize:
                 raise ValueError(
-                    f"{path} eksik ya da boyutu meta.json ile uyuşmuyor. Veriyi yeniden hazırlayın: "
+                    f"{path} eksik ya da boyutu meta.json ile uyuşmuyor. "
+                    "Veriyi yeniden hazırlayın: "
                     "python -m dil_modeli veri-hazirla ..."
                 )
             if entry["tokens"] > 0:

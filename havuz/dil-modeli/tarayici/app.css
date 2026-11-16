@@ -1,0 +1,103 @@
+:root {
+  color-scheme: light dark;
+  --yazi: #1f2328;
+  --zemin: #ffffff;
+  --kenar: #8c959f;
+  --vurgu: #0b57d0;
+  --ikincil: #57606a;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --yazi: #e6edf3;
+    --zemin: #0d1117;
+    --kenar: #6e7681;
+    --vurgu: #8ab4f8;
+    --ikincil: #9da7b1;
+  }
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--zemin);
+  color: var(--yazi);
+  font:
+    17px/1.55 system-ui,
+    sans-serif;
+}
+main {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 1rem;
+}
+h1 {
+  font-size: 1.5rem;
+  line-height: 1.25;
+}
+.not {
+  color: var(--ikincil);
+}
+label {
+  display: block;
+  margin-top: 0.75rem;
+  font-weight: 600;
+}
+textarea,
+input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0.6rem;
+  border: 1px solid var(--kenar);
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+.ayarlar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  align-items: end;
+  gap: 0 1rem;
+}
+.dugmeler {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+button {
+  min-height: 48px;
+  min-width: 8rem;
+  padding: 0 1.25rem;
+  border: 2px solid var(--vurgu);
+  border-radius: 6px;
+  background: var(--vurgu);
+  color: var(--zemin);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+button[type='button'] {
+  background: transparent;
+  color: var(--vurgu);
+}
+button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+:focus-visible {
+  outline: 3px solid var(--vurgu);
+  outline-offset: 2px;
+}
+output {
+  display: block;
+  min-height: 8rem;
+  padding: 0.75rem;
+  border: 1px solid var(--kenar);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+#uretilen {
+  color: var(--vurgu);
+}

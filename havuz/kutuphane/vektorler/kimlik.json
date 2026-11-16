@@ -1,0 +1,45 @@
+{
+  "modul": "kimlik",
+  "aciklama": "kimlik modülünün iki dilde ortak sınama vektörleri. Rastgele baytlar sayı listesi olarak verilir.",
+  "islevler": {
+    "uuidv7FromParts": [
+      { "girdi": [1763280000000, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]], "cikti": "019a8bad-9400-7001-8203-040506070809" },
+      {
+        "girdi": [0, [255, 255, 255, 255, 255, 255, 255, 255, 255, 255]],
+        "cikti": "00000000-0000-7fff-bfff-ffffffffffff"
+      },
+      { "girdi": [-1, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], "hata": true },
+      { "girdi": [1, [0, 0, 0]], "hata": true }
+    ],
+    "uuidv7Timestamp": [
+      { "girdi": ["019a8bad-9400-7001-8203-040506070809"], "cikti": 1763280000000 },
+      { "girdi": ["019a8bad-9400-4001-8203-040506070809"], "hata": true }
+    ],
+    "isUuid": [
+      { "girdi": ["019a8bad-9400-7001-8203-040506070809"], "cikti": true },
+      { "girdi": ["019A8BAD-9400-7001-8203-040506070809", 7], "cikti": true },
+      { "girdi": ["019a8bad-9400-4001-8203-040506070809", 7], "cikti": false },
+      { "girdi": ["019a8bad-9400-7001-c203-040506070809"], "cikti": false },
+      { "girdi": ["019a8bad94007001820304050607080"], "cikti": false }
+    ],
+    "checkCharacter": [
+      { "girdi": ["7K3M9QPX"], "cikti": "X" },
+      { "girdi": ["0000"], "cikti": "0" },
+      { "girdi": ["ZZZZ"], "cikti": "4" },
+      { "girdi": ["7k3m-9qpx"], "cikti": "X" },
+      { "girdi": ["ÇAY"], "hata": true }
+    ],
+    "normalizeReadableCode": [
+      { "girdi": ["7k3m-9qpx x"], "cikti": "7K3M9QPXX" },
+      { "girdi": ["oOiIlL ıİ"], "cikti": "00111111" }
+    ],
+    "validateReadableCode": [
+      { "girdi": ["7K3M-9QPX-X"], "cikti": true },
+      { "girdi": ["7k3m 9qpx x"], "cikti": true },
+      { "girdi": ["7K3M-9QPX-Y"], "cikti": false },
+      { "girdi": ["7K3M-9QPU"], "secenek": { "check": false }, "cikti": false },
+      { "girdi": ["7K3M-9QPX"], "secenek": { "check": false }, "cikti": true },
+      { "girdi": [""], "cikti": false }
+    ]
+  }
+}

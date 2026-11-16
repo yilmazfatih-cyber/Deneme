@@ -26,7 +26,9 @@ class Target:
     label: str
 
 
-def training_steps(examples: int, batch: int, accumulation: int, epochs: float, max_steps: int) -> int:
+def training_steps(
+    examples: int, batch: int, accumulation: int, epochs: float, max_steps: int
+) -> int:
     """Toplam güncelleme adımı (Trainer ile aynı hesap): dönem başına ⌈⌈n/yığın⌉/biriktirme⌉."""
     if max_steps > 0:
         return max_steps
@@ -42,7 +44,9 @@ def plan_target(
         mixed = precision.bf16 or precision.fp16
         return Target(True, mixed, hardware.memory_gb, hardware.name)
     if target_gb > 0:
-        return Target(True, requested_precision != "fp32", target_gb, t("plan.hedef_kart", gb=target_gb))
+        return Target(
+            True, requested_precision != "fp32", target_gb, t("plan.hedef_kart", gb=target_gb)
+        )
     return Target(False, False, None, hardware.name)
 
 
@@ -82,3 +86,29 @@ def render_plan(title: str, rows: list[tuple[str, str]], notes: list[str]) -> st
         lines.append(t("plan.uyarilar"))
         lines.extend(f"  - {note}" for note in notes)
     return "\n".join(lines)
+
+
+def encoder_memory_rows(
+    base: str,
+    hardware: Hardware,
+    precision: Precision,
+    requested_precision: str,
+    target_gb: float,
+    sequences: int,
+    length: int,
+    notes: list[str],
+) -> list[tuple[str, str]]:
+    """Kodlayıcı görevlerinin (tam ince ayar) bellek satırları; tahmin yapılamazsa not düşer.
+
+    `sequences`: bir ileri-geri geçişte aynı anda bellekte duran dizi sayısı (yığın × sütun).
+    """
+    from ince_ayar.memory import estimate_full, read_shape
+
+    target = plan_target(hardware, precision, requested_precision, target_gb)
+    try:
+        shape = read_shape(base, "encoder")
+    except Exception as exc:  # çevrimdışı Hub kimliği, bozuk yapılandırma…
+        notes.append(t("plan.bellek_yok", ayrinti=str(exc).splitlines()[0]))
+        return []
+    estimate = estimate_full(shape, sequences, length, target.mixed_precision)
+    return memory_rows(estimate, target)

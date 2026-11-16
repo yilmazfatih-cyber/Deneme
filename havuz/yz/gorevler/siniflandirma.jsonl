@@ -1,0 +1,15 @@
+{"kimlik": "s01", "girdi": "Aldığım ayakkabı küçük geldi, geri göndermek istiyorum.", "beklenen": "iade"}
+{"kimlik": "s02", "girdi": "Bu ayki faturamda iki kez ücret alınmış.", "beklenen": "fatura"}
+{"kimlik": "s03", "girdi": "Uygulamaya giriş yaparken sürekli hata alıyorum.", "beklenen": "teknik"}
+{"kimlik": "s04", "girdi": "Siparişim 5 gündür kargoda, hâlâ gelmedi.", "beklenen": "kargo"}
+{"kimlik": "s05", "girdi": "Mağazanızın çalışma saatleri nedir?", "beklenen": "diger"}
+{"kimlik": "s06", "girdi": "Ürün kutusu hasarlı geldi, paramı geri istiyorum.", "beklenen": "iade"}
+{"kimlik": "s07", "girdi": "E-fatura adresimi güncellemek istiyorum.", "beklenen": "fatura"}
+{"kimlik": "s08", "girdi": "Şifre sıfırlama e-postası bir türlü gelmiyor.", "beklenen": "teknik"}
+{"kimlik": "s09", "girdi": "Kargo takip numarası çalışmıyor, paketim nerede?", "beklenen": "kargo"}
+{"kimlik": "s10", "girdi": "Yeni şubeniz ne zaman açılıyor?", "beklenen": "diger"}
+{"kimlik": "s11", "girdi": "İade ettiğim ürünün ücreti hâlâ hesabıma yatmadı.", "beklenen": "iade"}
+{"kimlik": "s12", "girdi": "Kartımdan fazla tutar çekilmiş, faturayı kontrol eder misiniz?", "beklenen": "fatura"}
+{"kimlik": "s13", "girdi": "Mobil uygulama her açılışta kendiliğinden kapanıyor.", "beklenen": "teknik"}
+{"kimlik": "s14", "girdi": "Paketim yanlış adrese teslim edilmiş görünüyor.", "beklenen": "kargo"}
+{"kimlik": "s15", "girdi": "Ürünleriniz hakkında katalog gönderebilir misiniz?", "beklenen": "diger"}

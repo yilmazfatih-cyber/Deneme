@@ -57,11 +57,27 @@ class TrainConfig:
     max_minutes: float = 0.0  # süre sınırı (0: yok); dolunca kaydedip durur, sonra sürdürülebilir
 
     def __post_init__(self) -> None:
-        positive = ("max_steps", "batch_size", "grad_accum", "log_every", "eval_every", "eval_batches")
+        positive = (
+            "max_steps",
+            "batch_size",
+            "grad_accum",
+            "log_every",
+            "eval_every",
+            "eval_batches",
+        )
         for name in positive:
             if getattr(self, name) < 1:
-                raise ValueError(f"Eğitim ayarı '{name}' en az 1 olmalı; verilen: {getattr(self, name)}.")
-        for name in ("seq_len", "warmup_steps", "threads", "sample_tokens", "max_minutes", "grad_clip"):
+                raise ValueError(
+                    f"Eğitim ayarı '{name}' en az 1 olmalı; verilen: {getattr(self, name)}."
+                )
+        for name in (
+            "seq_len",
+            "warmup_steps",
+            "threads",
+            "sample_tokens",
+            "max_minutes",
+            "grad_clip",
+        ):
             if getattr(self, name) < 0:
                 raise ValueError(f"Eğitim ayarı '{name}' negatif olamaz.")
         if self.learning_rate <= 0:
@@ -95,7 +111,8 @@ class TrainConfig:
         """Eğitim penceresinin uzunluğu (belirteç)."""
         if self.seq_len > model_config.max_seq_len:
             raise ValueError(
-                f"'seq_len' ({self.seq_len}) modelin bağlamından ({model_config.max_seq_len}) büyük "
+                f"'seq_len' ({self.seq_len}) modelin bağlamından "
+                f"({model_config.max_seq_len}) büyük "
                 "olamaz. model.max_seq_len değerini büyütün ya da seq_len'i küçültün."
             )
         return self.seq_len or model_config.max_seq_len
@@ -119,7 +136,7 @@ def _coerce(key: str, value: Any, annotation: Any) -> Any:
 
 
 def parse_override(item: str) -> tuple[str, Any]:
-    """`anahtar=değer` yazısını ayrıştırır. Değer TOML kurallarıyla okunur; olmazsa metin sayılır."""
+    """`anahtar=değer` yazısını ayrıştırır; değer TOML kuralıyla okunur, olmazsa metin sayılır."""
     key, separator, raw = item.partition("=")
     if not separator or not key.strip():
         raise ValueError(f"--ayar '{item}' biçimi yanlış. Örnek: --ayar max_steps=500")

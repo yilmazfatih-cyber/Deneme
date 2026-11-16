@@ -1,0 +1,56 @@
+---
+/**
+ * Genel amaçlı kart: isteğe bağlı simge + başlık + metin; `href` verilirse kartın tamamı tıklanabilir olur.
+ *   <Card title="Hızlı kurulum" icon="zap">On dakikada ilk randevu.</Card>
+ *   <Card title="Belgeler" href="/belgeler/" icon="book-open">Kurulumdan yayına her adım.</Card>
+ * MDX içinde içe aktarmadan kullanılabilir (src/components/mdx/index.ts). Görünüm: global.css → .card
+ */
+import Icon from './Icon.astro'
+import type { LineIconName } from './icons.ts'
+import { link } from '../lib/url.ts'
+
+interface Props {
+  title: string
+  href?: string
+  icon?: LineIconName
+  /** Başlık düzeyi: sayfadaki başlık sırasına uyun (bölüm içinde genellikle 3). */
+  level?: 2 | 3 | 4
+}
+
+const { title, href, icon, level = 3 } = Astro.props
+const Heading = `h${level}` as 'h2' | 'h3' | 'h4'
+---
+
+<div class:list={['card not-prose relative p-6', href && 'card-link transition-colors hover:border-line-strong']}>
+  {icon && (
+    <span class="mb-4 inline-flex size-10 items-center justify-center rounded-xl border border-brand-line bg-brand-soft text-brand-ink">
+      <Icon name={icon} />
+    </span>
+  )}
+  <Heading class="font-semibold">{href ? <a href={link(href)}>{title}</a> : title}</Heading>
+  <div class="mt-2 text-[0.95rem] leading-relaxed text-muted">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .card-link a {
+    text-decoration: none;
+  }
+
+  .card-link a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+
+  .card-link a:focus-visible {
+    outline: none;
+  }
+
+  .card-link:has(a:focus-visible) {
+    outline: 2px solid var(--brand-ink);
+    outline-offset: 3px;
+  }
+</style>

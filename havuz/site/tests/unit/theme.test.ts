@@ -30,18 +30,19 @@ describe.each(brands)('tema renkleri — $name', ({ primary, accent }) => {
         failures.push(`${text} (${textColor}) / ${background} (${backgroundColor}): ${ratio.toFixed(2)} < ${minimum}`)
       }
     }
-    expect(failures, `Karşıtlık yetersiz. Renkleri src/lib/theme.ts içinde düzeltin:\n${failures.join('\n')}`).toEqual([])
+    expect(failures, `Karşıtlık yetersiz. Renkleri src/lib/theme.ts içinde düzeltin:\n${failures.join('\n')}`).toEqual(
+      [],
+    )
   })
 })
 
 describe('buildThemeCss', () => {
-  it('açık ve koyu tema bloklarını üretir', () => {
+  it('her değişkeni açık ve koyu değeriyle light-dark() olarak üretir', () => {
     const css = buildThemeCss(siteConfig.brand)
-    expect(css).toMatch(/^:root\{--page:#[0-9a-f]{6};/u)
-    expect(css).toContain("[data-theme='dark']{--page:")
-    expect(css).toContain('--brand:')
-    expect(css).toContain('--on-brand:')
-    expect(css).toContain('--caution-ink:')
+    expect(css).toMatch(/^:root\{--page:light-dark\(#[0-9a-f]{6},#[0-9a-f]{6}\);/u)
+    for (const name of ['brand', 'on-brand', 'brand-ink', 'accent', 'deep', 'caution-ink']) {
+      expect(css).toMatch(new RegExp(`--${name}:light-dark\\(#[0-9a-f]{6},#[0-9a-f]{6}\\)`, 'u'))
+    }
     expect(css).not.toContain('undefined')
   })
 })

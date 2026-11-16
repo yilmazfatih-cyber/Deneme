@@ -1,0 +1,71 @@
+---
+/**
+ * Kahraman bölümün sağındaki örnek ürün ekranı. Görsel dosyası değil HTML'dir: her iki temada keskin görünür,
+ * sayfaya bayt eklemez. Ekran okuyucu için tek bir resim gibi davranır (role="img" + açıklama).
+ * İçerik: src/content/anasayfa/<dil>.json → hero.mockup
+ */
+import Avatar from '../Avatar.astro'
+import Icon from '../Icon.astro'
+
+interface Props {
+  label: string
+  lang: string
+  mockup: {
+    title: string
+    subtitle: string
+    badge: string
+    items: { time: string; name: string; service: string; status: string; tone: 'brand' | 'accent' | 'neutral' }[]
+    footer: string
+    stat?: { value: string; label: string } | undefined
+  }
+}
+
+const { label, lang, mockup } = Astro.props
+const toneClass = { brand: 'badge', accent: 'badge badge-accent', neutral: 'badge badge-neutral' }
+---
+
+<div class="relative mx-auto w-full max-w-[30rem] lg:mr-0" role="img" aria-label={label}>
+  <div class="hero-mockup-glow" aria-hidden="true"></div>
+  <div class="card relative overflow-hidden shadow-[var(--shadow-soft)]">
+    <div class="flex items-center justify-between gap-4 border-b border-line px-5 py-4">
+      <div>
+        <p class="text-xs font-medium text-muted">{mockup.subtitle}</p>
+        <p class="text-lg font-semibold">{mockup.title}</p>
+      </div>
+      <span class="badge">{mockup.badge}</span>
+    </div>
+    <ul class="divide-y divide-line">
+      {mockup.items.map((item) => (
+        <li class="flex items-center gap-3 px-5 py-3.5">
+          <span class="w-11 shrink-0 font-mono text-sm text-muted">{item.time}</span>
+          <Avatar name={item.name} lang={lang} size="sm" />
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium">{item.name}</span>
+            <span class="block truncate text-sm text-muted">{item.service}</span>
+          </span>
+          <span class:list={[toneClass[item.tone], 'hidden shrink-0 sm:inline-flex']}>{item.status}</span>
+        </li>
+      ))}
+    </ul>
+    <div class="flex items-center gap-2 bg-subtle px-5 py-3 text-sm text-muted">
+      <Icon name="bell" size={16} class="shrink-0 text-brand-ink" />
+      <span>{mockup.footer}</span>
+    </div>
+  </div>
+  {mockup.stat && (
+    <div class="card absolute -bottom-16 left-4 flex items-center gap-3 px-4 py-3 shadow-[var(--shadow-soft)] sm:-left-8">
+      <span class="font-display text-3xl leading-none text-brand-ink">{mockup.stat.value}</span>
+      <span class="max-w-[10rem] text-sm leading-snug text-muted">{mockup.stat.label}</span>
+    </div>
+  )}
+</div>
+
+<style>
+  .hero-mockup-glow {
+    position: absolute;
+    inset: -12% -10% -14% -6%;
+    border-radius: 3rem;
+    background: radial-gradient(60% 60% at 70% 35%, var(--brand-soft), transparent 70%);
+    filter: blur(8px);
+  }
+</style>

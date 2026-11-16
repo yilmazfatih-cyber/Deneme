@@ -30,9 +30,17 @@ CONFIG_FILE = "ayar.toml"
 REPORT_FILE = "rapor.html"
 EVALUATION_FILE = "degerlendirme.json"
 PACKAGES = (
-    "torch", "transformers", "tokenizers", "datasets", "peft", "trl", "accelerate",
-    "sentence-transformers", "onnx", "onnxruntime",
-)  # fmt: skip
+    "torch",
+    "transformers",
+    "tokenizers",
+    "datasets",
+    "peft",
+    "trl",
+    "accelerate",
+    "sentence-transformers",
+    "onnx",
+    "onnxruntime",
+)
 
 
 def common_arguments(

@@ -1,6 +1,6 @@
 /**
  * Renk matematiği (saf): hex ↔ OKLCH dönüşümü ve WCAG karşıtlık oranı.
- * Kim kullanır: src/lib/brand.ts (marka tonlarını türetir), kural testleri (tema renklerinin okunabilirliğini denetler).
+ * Kim kullanır: src/lib/theme.ts (marka tonlarını türetir), tests/unit/theme.test.ts (okunabilirlik denetimi).
  * Kaynak: OKLab dönüşüm katsayıları Björn Ottosson'un "A perceptual color space for image processing" yazısındandır;
  * karşıtlık formülü WCAG 2.x'tir. Sayısal doğruluk tests/unit/color.test.ts içinde bilinen değerlerle sınanır.
  * Genişletme: yeni bir renk işlemi gerekiyorsa buraya saf bir işlev ekleyin; CSS üretimi brand.ts'in işidir.

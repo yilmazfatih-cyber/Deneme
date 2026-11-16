@@ -23,7 +23,9 @@ from ml_temel.ortak.types import Array
 
 
 def _param_names(cls: type) -> list[str]:
-    """`__init__` imzasındaki hiperparametre adları."""
+    """`__init__` imzasındaki hiperparametre adları (kendi `__init__`'i olmayan sınıfta boş)."""
+    if cls.__init__ is object.__init__:  # type: ignore[misc]
+        return []
     signature = inspect.signature(cls.__init__)  # type: ignore[misc]
     names: list[str] = []
     for name, parameter in signature.parameters.items():

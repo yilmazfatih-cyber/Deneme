@@ -4,6 +4,19 @@
   "version": "0.1.0",
   "type": "module",
   "description": "API: kimlik, çalışma alanları, eşitleme (Hono + node:sqlite)",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "dev": "node --watch --disable-warning=ExperimentalWarning src/index.ts",
+    "start": "node --disable-warning=ExperimentalWarning src/index.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "migrate": "node --disable-warning=ExperimentalWarning scripts/migrate.ts",
+    "seed": "node --disable-warning=ExperimentalWarning scripts/seed.ts",
+    "backup": "node --disable-warning=ExperimentalWarning scripts/backup.ts",
+    "create-admin": "node --disable-warning=ExperimentalWarning scripts/create-admin.ts"
+  },
   "dependencies": {
     "@hono/node-server": "^2.1.8",
     "@uygulama/shared": "*",

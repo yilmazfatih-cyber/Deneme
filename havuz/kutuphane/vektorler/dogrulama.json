@@ -1,0 +1,163 @@
+{
+  "modul": "dogrulama",
+  "aciklama": "dogrulama modülünün iki dilde ortak sınama vektörleri. Kişisel veri değildir: TCKN/VKN/IBAN örnekleri ya algoritmayla üretilmiş uydurma değerlerdir ya da kamuya açık standart örneklerdir.",
+  "islevler": {
+    "validateTckn": [
+      { "girdi": ["10000000146"], "cikti": true },
+      { "girdi": ["19090909018"], "cikti": true, "not": "7*tek - çift < 0: JS'de % negatif döner; doğru mod gerekir" },
+      { "girdi": ["55807302178"], "cikti": true },
+      { "girdi": ["10000000147"], "cikti": false },
+      { "girdi": ["00000000000"], "cikti": false },
+      { "girdi": ["01234567890"], "cikti": false },
+      { "girdi": ["1000000014"], "cikti": false },
+      { "girdi": ["100000001466"], "cikti": false },
+      { "girdi": ["1000000014a"], "cikti": false },
+      { "girdi": [" 10000000146 "], "cikti": true },
+      { "girdi": [""], "cikti": false }
+    ],
+    "validateVkn": [
+      { "girdi": ["1234567890"], "cikti": true },
+      { "girdi": ["5736819306"], "cikti": true },
+      { "girdi": ["1234567891"], "cikti": false },
+      { "girdi": ["123456789"], "cikti": false },
+      { "girdi": ["12345678901"], "cikti": false },
+      { "girdi": ["abcdefghij"], "cikti": false }
+    ],
+    "validateIban": [
+      { "girdi": ["TR330006100519786457841326"], "cikti": true },
+      { "girdi": ["TR33 0006 1005 1978 6457 8413 26"], "cikti": true },
+      { "girdi": ["tr330006100519786457841326"], "cikti": true },
+      { "girdi": ["DE89370400440532013000"], "cikti": true },
+      { "girdi": ["GB82WEST12345698765432"], "cikti": true },
+      { "girdi": ["NL91ABNA0417164300"], "cikti": true },
+      { "girdi": ["FR1420041010050500013M02606"], "cikti": true },
+      { "girdi": ["BE68539007547034"], "cikti": true },
+      { "girdi": ["NO9386011117947"], "cikti": true },
+      { "girdi": ["TR330006100519786457841327"], "cikti": false },
+      { "girdi": ["TR33000610051978645784132"], "cikti": false, "not": "TR için 26 karakter gerekir" },
+      { "girdi": ["DE8937040044053201300"], "cikti": false },
+      { "girdi": ["XX00"], "cikti": false },
+      { "girdi": [""], "cikti": false }
+    ],
+    "validateIbanTr": [
+      { "girdi": ["TR330006100519786457841326"], "cikti": true },
+      { "girdi": ["TR320010009999901234567890"], "cikti": true },
+      { "girdi": ["DE89370400440532013000"], "cikti": false },
+      { "girdi": ["TR043642602129972200332245"], "cikti": true }
+    ],
+    "normalizeIban": [{ "girdi": ["tr33 0006-1005 1978 6457 8413 26"], "cikti": "TR330006100519786457841326" }],
+    "formatIban": [
+      { "girdi": ["TR330006100519786457841326"], "cikti": "TR33 0006 1005 1978 6457 8413 26" },
+      { "girdi": ["be68539007547034"], "cikti": "BE68 5390 0754 7034" }
+    ],
+    "normalizePhoneTr": [
+      { "girdi": ["0532 123 45 67"], "cikti": "+905321234567" },
+      { "girdi": ["0 (532) 123 45 67"], "cikti": "+905321234567" },
+      { "girdi": ["+90 532 123 45 67"], "cikti": "+905321234567" },
+      { "girdi": ["+905321234567"], "cikti": "+905321234567" },
+      { "girdi": ["905321234567"], "cikti": "+905321234567" },
+      { "girdi": ["00905321234567"], "cikti": "+905321234567" },
+      { "girdi": ["5321234567"], "cikti": "+905321234567" },
+      { "girdi": ["(0312) 123-4567"], "cikti": "+903121234567" },
+      { "girdi": ["0212 123 45 67"], "cikti": "+902121234567" },
+      { "girdi": ["0850 222 0 600"], "cikti": "+908502220600" },
+      { "girdi": ["0999 123 45 67"], "cikti": null },
+      { "girdi": ["0532 123 45 6"], "cikti": null },
+      { "girdi": ["+1 212 555 0100"], "cikti": null },
+      { "girdi": ["0532-ABC-4567"], "cikti": null },
+      { "girdi": [""], "cikti": null }
+    ],
+    "phoneTypeTr": [
+      { "girdi": ["0532 123 45 67"], "cikti": "mobile" },
+      { "girdi": ["0312 123 45 67"], "cikti": "landline" },
+      { "girdi": ["0850 222 06 00"], "cikti": "special" },
+      { "girdi": ["0123 456 78 90"], "cikti": null }
+    ],
+    "formatPhoneTr": [
+      { "girdi": ["+905321234567"], "cikti": "0532 123 45 67" },
+      { "girdi": ["05321234567"], "secenek": { "international": true }, "cikti": "+90 532 123 45 67" },
+      { "girdi": ["12"], "cikti": null }
+    ],
+    "normalizePlate": [
+      { "girdi": ["34abc123"], "cikti": "34 ABC 123" },
+      { "girdi": ["34-ABC-123"], "cikti": "34 ABC 123" },
+      { "girdi": ["06 a 1234"], "cikti": "06 A 1234" },
+      { "girdi": ["06 A 12345"], "cikti": "06 A 12345" },
+      { "girdi": ["35 ab 123"], "cikti": "35 AB 123" },
+      { "girdi": ["35 AB 1234"], "cikti": "35 AB 1234" },
+      { "girdi": ["81 ABC 12"], "cikti": "81 ABC 12" },
+      { "girdi": ["34 tir 34"], "cikti": "34 TIR 34", "not": "küçük i → I (İ değil)" },
+      { "girdi": ["01 ı 1234"], "cikti": "01 I 1234" },
+      { "girdi": ["00 ABC 123"], "cikti": null },
+      { "girdi": ["82 ABC 123"], "cikti": null },
+      { "girdi": ["34 ABC 1234"], "cikti": null },
+      { "girdi": ["34 A 123"], "cikti": null },
+      { "girdi": ["34 ABCD 12"], "cikti": null },
+      { "girdi": ["34 ÇAY 12"], "cikti": null },
+      { "girdi": ["34 QW 123"], "cikti": null }
+    ],
+    "validatePostalCode": [
+      { "girdi": ["34000"], "cikti": true },
+      { "girdi": ["06100"], "cikti": true },
+      { "girdi": ["81000"], "cikti": true },
+      { "girdi": ["00100"], "cikti": false },
+      { "girdi": ["82000"], "cikti": false },
+      { "girdi": ["3400"], "cikti": false },
+      { "girdi": ["340000"], "cikti": false }
+    ],
+    "luhnCheck": [
+      { "girdi": ["4111111111111111"], "cikti": true },
+      { "girdi": ["4111111111111112"], "cikti": false },
+      { "girdi": ["79927398713"], "cikti": true },
+      { "girdi": ["0"], "cikti": false },
+      { "girdi": ["12a4"], "cikti": false }
+    ],
+    "validateCardNumber": [
+      { "girdi": ["4111 1111 1111 1111"], "cikti": true },
+      { "girdi": ["5500-0000-0000-0004"], "cikti": true },
+      { "girdi": ["378282246310005"], "cikti": true },
+      { "girdi": ["4111 1111 1111 1112"], "cikti": false },
+      { "girdi": ["41111111111"], "cikti": false },
+      { "girdi": ["41111111111111111111"], "cikti": false }
+    ],
+    "validateEmail": [
+      { "girdi": ["ayse@ornek.com.tr"], "cikti": true },
+      { "girdi": ["ali.veli+fatura@ornek.com"], "cikti": true },
+      { "girdi": ["a@b.co"], "cikti": true },
+      { "girdi": ["x@xn--rnek-zoa.com"], "cikti": true },
+      { "girdi": ["ayşe@ornek.com"], "cikti": false },
+      { "girdi": ["ayşe@örnek.com"], "secenek": { "allowUnicode": true }, "cikti": true },
+      { "girdi": ["ali..veli@ornek.com"], "cikti": false },
+      { "girdi": [".ali@ornek.com"], "cikti": false },
+      { "girdi": ["ali@ornek"], "cikti": false },
+      { "girdi": ["ali@-ornek.com"], "cikti": false },
+      { "girdi": ["ali@ornek.c"], "cikti": false },
+      { "girdi": ["ali@ornek.c0m"], "cikti": false },
+      { "girdi": ["ali ornek@ornek.com"], "cikti": false },
+      { "girdi": ["@ornek.com"], "cikti": false },
+      { "girdi": ["ali@"], "cikti": false },
+      { "girdi": ["ali@[127.0.0.1]"], "cikti": false }
+    ],
+    "normalizeEmail": [{ "girdi": ["  Ali.Veli@ORNEK.Com "], "cikti": "Ali.Veli@ornek.com" }],
+    "validateUrl": [
+      { "girdi": ["https://ornek.com"], "cikti": true },
+      { "girdi": ["http://ornek.com.tr/yol?a=1#b"], "cikti": true },
+      { "girdi": ["https://alt.ornek.com:8443/x"], "cikti": true },
+      { "girdi": ["https://örnek.com.tr"], "cikti": true },
+      { "girdi": ["https://192.168.1.10/panel"], "cikti": true },
+      { "girdi": ["http://localhost:3000"], "cikti": false },
+      { "girdi": ["http://localhost:3000"], "secenek": { "allowLocalhost": true }, "cikti": true },
+      { "girdi": ["ftp://ornek.com"], "cikti": false },
+      { "girdi": ["ftp://ornek.com"], "secenek": { "protocols": ["ftp"] }, "cikti": true },
+      { "girdi": ["https://banka.com@kotu.com"], "cikti": false },
+      { "girdi": ["https://ornek"], "cikti": false },
+      { "girdi": ["https://ornek"], "secenek": { "requireTld": false }, "cikti": true },
+      { "girdi": ["https://ornek.com/bir yol"], "cikti": false },
+      { "girdi": ["https://256.1.1.1"], "cikti": false },
+      { "girdi": ["https://ornek.com:0"], "cikti": false },
+      { "girdi": ["https://ornek.com:65536"], "cikti": false },
+      { "girdi": ["javascript:alert(1)"], "cikti": false },
+      { "girdi": ["ornek.com"], "cikti": false }
+    ]
+  }
+}

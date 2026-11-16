@@ -1,0 +1,28 @@
+{
+  "items": [
+    {
+      "question": "How long does set-up take?",
+      "answer": "Most businesses take their first booking within ten minutes: you only need to enter your services and opening hours. If you like, our team does the set-up with you on a screen share."
+    },
+    {
+      "question": "Do my customers need to install an app?",
+      "answer": "No. Your booking page opens in the browser on any phone; customers book without signing up, using only their name and phone number."
+    },
+    {
+      "question": "Do reminder messages cost extra?",
+      "answer": "The Business and Multi-location plans include 500 SMS or WhatsApp messages every month. Beyond that you pay for what you use; unit prices are shown clearly in the dashboard."
+    },
+    {
+      "question": "Is there a contract or commitment?",
+      "answer": "No. You pay monthly and can cancel in any month. If you choose yearly billing, you get two months free."
+    },
+    {
+      "question": "Does it work with Google Calendar?",
+      "answer": "Yes. Sedir syncs both ways with Google Calendar and Outlook; your personal events show up as busy time and their details are never shown to customers."
+    },
+    {
+      "question": "Can I export my data?",
+      "answer": "Yes. You can download your customer list and booking history as a spreadsheet at any time. If you close your account, your data is deleted within the stated period."
+    }
+  ]
+}

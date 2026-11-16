@@ -166,7 +166,7 @@ export async function createRecord<C extends CollectionName>(
   options: WriteOptions & { readonly id?: string } = {},
 ): Promise<string> {
   const id = options.id ?? uuidv7((options.now ?? new Date()).getTime())
-  await writeRecord(db, workspaceId, id, { op: 'put', collection, data: input as JsonObject }, options)
+  await writeRecord(db, workspaceId, id, { op: 'put', collection, data: input }, options)
   return id
 }
 
@@ -206,7 +206,7 @@ export async function updateRecord<C extends CollectionName>(
     const row = await db.records.get([workspaceId, collection, id])
     if (!row) throw new AppError('not_found')
     if (row.view.deleted) return null
-    const patch = diffPatch(collection, row.view.data, changes as JsonObject)
+    const patch = diffPatch(collection, row.view.data, changes)
     if (Object.keys(patch).length === 0) return null
     return writeInTransaction(db, workspaceId, id, { op: 'patch', collection, data: patch }, now)
   })

@@ -1,0 +1,90 @@
+{
+  "modul": "sayfalama",
+  "aciklama": "sayfalama modülünün iki dilde ortak sınama vektörleri.",
+  "islevler": {
+    "encodeCursor": [
+      {
+        "girdi": [{ "createdAt": "2026-11-16T10:00:00Z", "id": 42 }],
+        "cikti": "eyJjcmVhdGVkQXQiOiIyMDI2LTExLTE2VDEwOjAwOjAwWiIsImlkIjo0Mn0"
+      },
+      {
+        "girdi": [{ "ad": "Çağrı", "aktif": true, "silindi": null }],
+        "cikti": "eyJhZCI6IsOHYcSfcsSxIiwiYWt0aWYiOnRydWUsInNpbGluZGkiOm51bGx9"
+      },
+      { "girdi": [{ "fiyat": 1.5 }], "hata": true }
+    ],
+    "decodeCursor": [
+      {
+        "girdi": ["eyJjcmVhdGVkQXQiOiIyMDI2LTExLTE2VDEwOjAwOjAwWiIsImlkIjo0Mn0"],
+        "secenek": { "keys": ["createdAt", "id"] },
+        "cikti": { "createdAt": "2026-11-16T10:00:00Z", "id": 42 }
+      },
+      { "girdi": ["eyJjcmVhdGVkQXQiOiIyMDI2LTExLTE2VDEwOjAwOjAwWiIsImlkIjo0Mn0"], "secenek": { "keys": ["tarih"] }, "hata": true },
+      { "girdi": ["bozuk imleç"], "hata": true },
+      { "girdi": ["WzEsMl0"], "hata": true, "not": "[1,2] bir nesne değil" },
+      { "girdi": ["e30"], "cikti": {} }
+    ],
+    "keysetWhere": [
+      {
+        "girdi": [
+          ["created_at", "id"],
+          ["2026-11-16T10:00:00Z", 42]
+        ],
+        "cikti": {
+          "clause": "(created_at > ?) OR (created_at = ? AND id > ?)",
+          "params": ["2026-11-16T10:00:00Z", "2026-11-16T10:00:00Z", 42]
+        }
+      },
+      {
+        "girdi": [["t.puan"], [10]],
+        "secenek": { "direction": "desc" },
+        "cikti": { "clause": "(t.puan < ?)", "params": [10] }
+      },
+      { "girdi": [["id; DROP TABLE x"], [1]], "hata": true },
+      { "girdi": [["a", "b"], [1]], "hata": true }
+    ],
+    "offsetPagination": [
+      {
+        "girdi": [],
+        "secenek": { "total": 95, "page": 3, "pageSize": 20 },
+        "cikti": { "page": 3, "pageSize": 20, "totalPages": 5, "offset": 40, "hasPrevious": true, "hasNext": true }
+      },
+      {
+        "girdi": [],
+        "secenek": { "total": 95, "page": 99, "pageSize": 20 },
+        "cikti": { "page": 5, "pageSize": 20, "totalPages": 5, "offset": 80, "hasPrevious": true, "hasNext": false }
+      },
+      {
+        "girdi": [],
+        "secenek": { "total": 0, "page": -3, "pageSize": 10 },
+        "cikti": { "page": 1, "pageSize": 10, "totalPages": 1, "offset": 0, "hasPrevious": false, "hasNext": false }
+      },
+      { "girdi": [], "secenek": { "total": 10, "page": 1, "pageSize": 0 }, "hata": true }
+    ],
+    "paginate": [
+      {
+        "girdi": [
+          [
+            { "tarih": "2026-01-01", "id": 0 },
+            { "tarih": "2026-01-01", "id": 1 },
+            { "tarih": "2026-01-02", "id": 2 },
+            { "tarih": "2026-01-02", "id": 3 },
+            { "tarih": "2026-01-03", "id": 4 },
+            { "tarih": "2026-01-03", "id": 5 },
+            { "tarih": "2026-01-04", "id": 6 }
+          ]
+        ],
+        "secenek": { "limit": 3, "sortKeys": ["tarih", "id"], "cursor": "eyJ0YXJpaCI6IjIwMjYtMDEtMDIiLCJpZCI6Mn0" },
+        "cikti": {
+          "items": [
+            { "tarih": "2026-01-02", "id": 3 },
+            { "tarih": "2026-01-03", "id": 4 },
+            { "tarih": "2026-01-03", "id": 5 }
+          ],
+          "nextCursor": "eyJ0YXJpaCI6IjIwMjYtMDEtMDMiLCJpZCI6NX0",
+          "hasMore": true
+        }
+      }
+    ]
+  }
+}

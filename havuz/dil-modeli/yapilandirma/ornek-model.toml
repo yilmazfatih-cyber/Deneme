@@ -1,0 +1,28 @@
+# Depodaki örnek modelin (ornek-model/) eğitildiği ayarlar — bu dosyayı değiştirirseniz
+# ornek-model/MODEL_KARTI.md ile egitim-kaydi.json artık bu dosyayı yansıtmaz.
+# Çalıştırma: python scripts/ornek_model.py egit
+# Ölçüm (paylaşımlı 4 çekirdekli makine, 2 iş parçacığı): ~9.600 belirteç/sn, ~13 dk.
+
+data_dir = "veri/ornek-hazir"
+out_dir = "calisma/ornek-model/egitim"
+preset = "bebek"            # dim 128, 4 katman, 4 baş, bağlam 256 -> 4096 sözlükle 1,33 M parametre
+
+max_steps = 1600
+batch_size = 16             # 16 x 256 = 4.096 belirteç/adım -> toplam ~6,5 M belirteç (~0,8 tur)
+seq_len = 256
+learning_rate = 2e-3
+min_lr_ratio = 0.1
+warmup_steps = 100
+weight_decay = 0.1
+grad_clip = 1.0
+seed = 0
+
+device = "cpu"
+threads = 2                 # paylaşımlı makinede en çok 2 iş parçacığı
+max_minutes = 16            # güvenlik sınırı: dolarsa kaydedip durur (--surdur ile devam)
+
+log_every = 25
+eval_every = 200
+eval_batches = 30
+sample_tokens = 40
+sample_prompt = "Türkiye"

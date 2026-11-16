@@ -1,0 +1,26 @@
+# Gömme · cpu-deneme: minik rastgele BERT + ortalama havuzlama, CPU, birkaç saniye.
+gorev = "gomme"
+
+[model]
+taban = "minik-rastgele"
+sorgu_oneki = ""
+belge_oneki = ""
+
+[veri]
+egitim = "ornekler/gomme.jsonl"
+dogrulama_orani = 0.25
+azami_uzunluk = 64
+
+[egitim]
+cikti = "ciktilar/gomme-deneme"
+azami_adim = 3
+yigin = 4
+ogrenme_orani = 1e-3
+kayit_adimi = 1
+is_parcacigi = 2
+
+[degerlendirme]
+k_degerleri = [1, 3, 5]
+
+[disa_aktarim]
+int8 = true

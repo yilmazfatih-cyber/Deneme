@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "fatura_kalemleri",
+  "description": "Fatura kalemleri; kargo da bir kalemdir.",
+  "type": "object",
+  "properties": {
+    "fatura_no": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}\\d{4}\\d{9}$"
+    },
+    "sira": {
+      "type": "integer",
+      "minimum": 1.0
+    },
+    "aciklama": {
+      "type": "string"
+    },
+    "urun_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "adet": {
+      "type": "integer",
+      "minimum": 1.0
+    },
+    "birim_fiyat": {
+      "type": "number",
+      "description": "KDV dahil",
+      "minimum": 0.0
+    },
+    "kdv_orani": {
+      "type": "integer",
+      "minimum": 0.0,
+      "maximum": 100.0
+    },
+    "matrah": {
+      "type": "number",
+      "minimum": 0.0
+    },
+    "kdv_tutari": {
+      "type": "number",
+      "minimum": 0.0
+    },
+    "tutar": {
+      "type": "number",
+      "description": "KDV dahil = matrah + kdv_tutari",
+      "minimum": 0.0
+    }
+  },
+  "required": [
+    "fatura_no",
+    "sira",
+    "aciklama",
+    "urun_id",
+    "adet",
+    "birim_fiyat",
+    "kdv_orani",
+    "matrah",
+    "kdv_tutari",
+    "tutar"
+  ],
+  "additionalProperties": false,
+  "x-birincil-anahtar": [
+    "fatura_no",
+    "sira"
+  ]
+}

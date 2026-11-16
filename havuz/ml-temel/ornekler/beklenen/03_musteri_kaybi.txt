@@ -1,0 +1,19 @@
+3000 müşteri, kayıp oranı %25.1
+Sızıntı gösterimi — 'musteri_no'nun hedef ortalaması tek başına:
+  YANLIŞ (bütün veride kodlandı) ROC-AUC: 1.000   ← kusursuz görünüyor
+  DOĞRU (her katta yalnız eğitimle)  ROC-AUC: 0.500   ← gerçekte bilgi yok
+
+Çapraz doğrulama ROC-AUC: 0.766 ± 0.023
+
+Sınama (ham): ROC-AUC 0.787 (%95 GA: 0.752–0.822)
+  Brier 0.1530   ECE 0.0436
+
+Sınama (izotonik kalibrasyonlu): ROC-AUC 0.799 (%95 GA: 0.764–0.834)
+  Brier 0.1488   ECE 0.0364
+
+Kalibrasyon tablosu (tahmin edilen → gerçekleşen, satır):
+  0.10 → 0.09  (385)
+  0.28 → 0.33  (255)
+  0.48 → 0.58  (76)
+  0.68 → 0.68  (28)
+  0.84 → 0.83  (6)

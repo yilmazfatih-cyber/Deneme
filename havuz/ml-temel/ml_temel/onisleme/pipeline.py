@@ -14,7 +14,7 @@ Genişletme: yeni bir birleşik tahminleyici için `NamedSteps` karışımını 
 
 from __future__ import annotations
 
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 from typing import Any, Self
 
 from ml_temel.ortak.base import BaseEstimator
@@ -121,17 +121,30 @@ class Pipeline(NamedSteps):
             X = transformer.transform(X)
         return X
 
-    def predict(self, X: Any) -> Any:
-        return self._final.predict(self._transform_before_final(X))
+    def _delegate(self, method: str) -> Callable[[Any], Any]:
+        """Son adımın yöntemini önce dönüşümleri uygulayarak çağıran fonksiyon.
 
-    def predict_proba(self, X: Any) -> Any:
-        return self._final.predict_proba(self._transform_before_final(X))
+        Son adımda yöntem yoksa AttributeError fırlar; böylece `hasattr(hat, "predict_proba")`
+        doğru yanıt verir (scikit-learn'deki `available_if` davranışı).
+        """
+        final_method = getattr(self._final, method)
+        return lambda X: final_method(self._transform_before_final(X))
 
-    def decision_function(self, X: Any) -> Any:
-        return self._final.decision_function(self._transform_before_final(X))
+    @property
+    def predict(self) -> Callable[[Any], Any]:
+        return self._delegate("predict")
 
-    def transform(self, X: Any) -> Any:
-        return self._final.transform(self._transform_before_final(X))
+    @property
+    def predict_proba(self) -> Callable[[Any], Any]:
+        return self._delegate("predict_proba")
+
+    @property
+    def decision_function(self) -> Callable[[Any], Any]:
+        return self._delegate("decision_function")
+
+    @property
+    def transform(self) -> Callable[[Any], Any]:
+        return self._delegate("transform")
 
     def fit_transform(self, X: Any, y: Any = None) -> Any:
         transformed = self._fit_transformers(X, y)

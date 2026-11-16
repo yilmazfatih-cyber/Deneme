@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "iadeler",
+  "description": "İadeler (kalem düzeyinde).",
+  "type": "object",
+  "properties": {
+    "iade_id": {
+      "type": "string",
+      "pattern": "^IA\\d{6}$",
+      "x-benzersiz": true
+    },
+    "siparis_id": {
+      "type": "string",
+      "pattern": "^SP\\d{7}$"
+    },
+    "kalem_id": {
+      "type": "string",
+      "pattern": "^KL\\d{8}$",
+      "x-benzersiz": true
+    },
+    "iade_tarihi": {
+      "type": "string",
+      "format": "date"
+    },
+    "adet": {
+      "type": "integer",
+      "minimum": 1.0
+    },
+    "tutar": {
+      "type": "number",
+      "minimum": 0.0
+    },
+    "neden": {
+      "type": "string",
+      "enum": [
+        "beden uymadı",
+        "hasarlı ürün",
+        "beklentiyi karşılamadı",
+        "yanlış ürün",
+        "vazgeçtim"
+      ]
+    }
+  },
+  "required": [
+    "iade_id",
+    "siparis_id",
+    "kalem_id",
+    "iade_tarihi",
+    "adet",
+    "tutar",
+    "neden"
+  ],
+  "additionalProperties": false,
+  "x-birincil-anahtar": [
+    "iade_id"
+  ]
+}

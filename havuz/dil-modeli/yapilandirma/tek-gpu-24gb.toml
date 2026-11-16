@@ -1,0 +1,29 @@
+# Tek 24 GB GPU (ör. RTX 3090/4090, A10) için ayar. GPU'DA DENENMEDİ: sayılar tahmindir.
+# Çalıştırma:
+#   python -m dil_modeli egit --yapilandirma yapilandirma/tek-gpu-24gb.toml
+# Bellek yetmezse: batch_size'ı yarıya indirip grad_accum'u iki katına çıkarın (etkin yığın
+# değişmez). Veri miktarı ve süre tahmini için: docs/EGITIM_REHBERI.md.
+
+data_dir = "veri/hazir"
+out_dir = "calisma/tek-gpu"
+preset = "orta"             # dim 768, 12 katman -> ~91 M parametre (8192 sözlük)
+
+max_steps = 20000
+batch_size = 16
+seq_len = 1024
+grad_accum = 8              # etkin yığın: 16 x 8 x 1024 = 131.072 belirteç/adım (~2,6 milyar toplam)
+learning_rate = 3e-4
+min_lr_ratio = 0.1
+warmup_steps = 1000
+weight_decay = 0.1
+grad_clip = 1.0
+seed = 0
+
+device = "cuda"
+precision = "auto"          # Ampere ve sonrası: bf16
+compile = true              # PyTorch 2 derleyicisi; sorun çıkarsa false yapın
+
+log_every = 20
+eval_every = 500
+eval_batches = 100
+sample_tokens = 80

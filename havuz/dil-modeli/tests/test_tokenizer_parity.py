@@ -31,7 +31,15 @@ def reference(tokenizer: BPETokenizer, tmp_path_factory: pytest.TempPathFactory)
 
 def _texts(count: int, seed: int) -> list[str]:
     rng = random.Random(seed)
-    fixed = [fixture_text(), "a  b", "\t\tx", "a\r\n\r\nb", "Ankara'da", "aaaaaaa", "<|bas|>x<|son|>"]
+    fixed = [
+        fixture_text(),
+        "a  b",
+        "\t\tx",
+        "a\r\n\r\nb",
+        "Ankara'da",
+        "aaaaaaa",
+        "<|bas|>x<|son|>",
+    ]
     return fixed + [random_text(rng, max_len=60) for _ in range(count)]
 
 
@@ -74,7 +82,9 @@ def test_bos_template_is_understood_by_tokenizers(tokenizer: BPETokenizer, tmp_p
 
 
 @pytest.mark.parametrize(("vocab_size", "min_frequency"), [(300, 2), (600, 2), (2000, 1), (900, 5)])
-def test_pure_python_trainer_matches_tokenizers_trainer(vocab_size: int, min_frequency: int) -> None:
+def test_pure_python_trainer_matches_tokenizers_trainer(
+    vocab_size: int, min_frequency: int
+) -> None:
     corpus = [fixture_text(), *make_corpus(lines=300, seed=vocab_size)]
     ours = train_bpe(corpus, vocab_size, min_frequency=min_frequency)
     theirs = train_bpe(corpus, vocab_size, min_frequency=min_frequency, fast=True)

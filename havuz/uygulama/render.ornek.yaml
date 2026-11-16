@@ -1,0 +1,42 @@
+# Render "Blueprint" örneği (tek servis: API + web, kalıcı diskli). Kullanmak için deponun KÖKÜNE render.yaml
+# adıyla kopyalayın; uygulama depo kökünde değilse dockerfilePath/dockerContext yollarını düzeltin
+# (ör. ./havuz/uygulama/Dockerfile ve ./havuz/uygulama).
+#
+# DİKKAT: Ücretsiz (free) planda kalıcı disk YOKTUR: dosya sistemi her yeniden başlatma/dağıtımda sıfırlanır ve
+# SQLite veritabanı (bütün kullanıcılar ve kayıtlar) SİLİNİR. Kalıcı disk ücretli bir plan ister.
+# Bu dosyadaki alan adları ve plan adları Render'ın belgesinden bu ortamda DOĞRULANAMADI; kullanmadan önce
+# Render'ın güncel Blueprint belgesiyle karşılaştırın. Ayrıntı: docs/YAYINLAMA.md.
+services:
+  - type: web
+    name: uygulama
+    runtime: docker
+    plan: starter
+    region: frankfurt
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /api/health
+    disk:
+      name: veri
+      mountPath: /data
+      sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_PATH
+        value: /data/uygulama.db
+      # Render'ın verdiği adres ya da kendi alan adınız: https://uygulama.onrender.com
+      - key: APP_URL
+        sync: false
+      # Render bir ters vekilin arkasında çalışır: gerçek IP için 1 (docs/GUVENLIK.md → TRUST_PROXY).
+      - key: TRUST_PROXY
+        value: '1'
+      - key: ADMIN_EMAILS
+        sync: false
+      - key: MAIL_PROVIDER
+        value: http
+      - key: MAIL_HTTP_URL
+        sync: false
+      - key: MAIL_HTTP_KEY
+        sync: false
+      - key: MAIL_FROM
+        sync: false

@@ -1,0 +1,68 @@
+{
+  "modul": "bulanik_arama",
+  "aciklama": "bulanik_arama modülünün iki dilde ortak sınama vektörleri. Kesirli puanlar 1e-9 hoşgörüyle karşılaştırılır.",
+  "islevler": {
+    "normalizeText": [
+      { "girdi": ["  Çağrı   MERKEZİ! "], "cikti": "cagri merkezi" },
+      { "girdi": ["İSTANBUL'da"], "cikti": "istanbul da" },
+      { "girdi": ["IĞDIR"], "cikti": "igdir" },
+      { "girdi": ["ŞİŞLİ"], "cikti": "sisli" },
+      { "girdi": ["Café-Bar 2"], "cikti": "cafe bar 2" },
+      { "girdi": [""], "cikti": "" }
+    ],
+    "levenshtein": [
+      { "girdi": ["kitten", "sitting"], "cikti": 3 },
+      { "girdi": ["", "abc"], "cikti": 3 },
+      { "girdi": ["abc", "abc"], "cikti": 0 },
+      { "girdi": ["ankara", "ankra"], "cikti": 1 },
+      { "girdi": ["ab", "ba"], "cikti": 2 },
+      { "girdi": ["kitten", "sitting", 1], "cikti": 2 },
+      { "girdi": ["çay", "cay"], "cikti": 1 }
+    ],
+    "damerauLevenshtein": [
+      { "girdi": ["ab", "ba"], "cikti": 1 },
+      { "girdi": ["ankra", "ankara"], "cikti": 1 },
+      { "girdi": ["ca", "abc"], "cikti": 3, "not": "OSA; sınırsız Damerau 2 verirdi" },
+      { "girdi": ["istanbul", "itsanbul"], "cikti": 1 },
+      { "girdi": ["", ""], "cikti": 0 }
+    ],
+    "trigrams": [
+      { "girdi": ["ab"], "cikti": ["  a", " ab", "ab "] },
+      { "girdi": ["Çay Su"], "cikti": ["  c", "  s", " ca", " su", "ay ", "cay", "su "] },
+      { "girdi": [""], "cikti": [] }
+    ],
+    "trigramSimilarity": [
+      { "girdi": ["abc", "abc"], "cikti": 1 },
+      { "girdi": ["", ""], "cikti": 0 },
+      { "girdi": ["abc", "xyz"], "cikti": 0 },
+      { "girdi": ["isparta", "sparta fk"], "cikti": 0.38461538461538464 }
+    ],
+    "fuzzyScore": [
+      { "girdi": ["isparta", "Isparta"], "cikti": 1 },
+      { "girdi": ["ist", "İstanbul"], "cikti": 0.93375 },
+      { "girdi": ["kadikoy", "Kadıköy Belediyesi"], "cikti": 0.935 },
+      { "girdi": ["belediye", "Kadıköy Belediyesi"], "cikti": 0.84 },
+      { "girdi": ["koy", "Kadıköy"], "cikti": 0.7385714285714285 },
+      { "girdi": ["isparta", "Sparta FK"], "cikti": 0.6 },
+      { "girdi": ["", "x"], "cikti": 0 }
+    ],
+    "fuzzySearch": [
+      {
+        "girdi": ["isparta", ["Isparta", "Iğdır", "Sparta FK", "İzmir"]],
+        "cikti": [
+          { "item": "Isparta", "score": 1, "index": 0 },
+          { "item": "Sparta FK", "score": 0.6, "index": 2 }
+        ]
+      },
+      {
+        "girdi": ["ank", ["Ankara", "ankara", "Çankırı"]],
+        "secenek": { "limit": 2 },
+        "cikti": [
+          { "item": "Ankara", "score": 0.945, "index": 0 },
+          { "item": "ankara", "score": 0.945, "index": 1 }
+        ]
+      },
+      { "girdi": ["zzz", ["Ankara"]], "cikti": [] }
+    ]
+  }
+}

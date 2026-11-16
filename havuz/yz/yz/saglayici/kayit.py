@@ -26,7 +26,9 @@ Kurucu = Callable[[SaglayiciAyari, str | None, dict[str, Any]], Saglayici]
 
 def _openai_uyumlu(ayar: SaglayiciAyari, anahtar: str | None, ortak: dict[str, Any]) -> Saglayici:
     if not ayar.taban_url:
-        raise AyarHatasi("openai_uyumlu profili için `taban_url` gerekli (ör. http://localhost:11434/v1).")
+        raise AyarHatasi(
+            "openai_uyumlu profili için `taban_url` gerekli (ör. http://localhost:11434/v1)."
+        )
     if not ayar.model:
         raise AyarHatasi(
             "Model adı verilmemiş. yz.yaml'da `model:` yazın ya da YZ_MODEL verin. Sunucudaki "

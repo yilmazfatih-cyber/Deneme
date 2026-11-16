@@ -1,0 +1,279 @@
+{
+  "surum": "0.1.0",
+  "kumeler": [
+    {
+      "ad": "kisiler",
+      "komut": "python -m verihavuzu uret kisiler --adet 500 --tohum 42 --sema --cikti ornekler/kisiler",
+      "tohum": 42,
+      "dosyalar": [
+        {
+          "ad": "kisiler.csv",
+          "satir": 500,
+          "bayt": 76202,
+          "sha256": "126392bd7ee18b2a51f84a969af0e6792d14cb8c40a0a77ec51acca9f0e6b7ac"
+        },
+        {
+          "ad": "kisiler.sema.json",
+          "satir": 0,
+          "bayt": 1801,
+          "sha256": "7c65902a5b9eca44be8648e40b786acb861af8d50bec1bb7fffa7095320d0922"
+        }
+      ]
+    },
+    {
+      "ad": "sirketler",
+      "komut": "python -m verihavuzu uret sirketler --adet 200 --tohum 42 --sema --cikti ornekler/sirketler",
+      "tohum": 42,
+      "dosyalar": [
+        {
+          "ad": "sirketler.csv",
+          "satir": 200,
+          "bayt": 28509,
+          "sha256": "4fe159f8b12d5ae2ab9135860c4056b631ad6517ad6ff4c26fc0181dc6976df4"
+        },
+        {
+          "ad": "sirketler.sema.json",
+          "satir": 0,
+          "bayt": 1592,
+          "sha256": "8f47b72921a3852355cd85bd13aa71d8bfa882cb0cebfb6eebfa663903787954"
+        }
+      ]
+    },
+    {
+      "ad": "eticaret",
+      "komut": "python -m verihavuzu uret eticaret --adet 300 --tohum 42 --sema --cikti ornekler/eticaret",
+      "tohum": 42,
+      "dosyalar": [
+        {
+          "ad": "iadeler.csv",
+          "satir": 176,
+          "bayt": 12034,
+          "sha256": "a9eb46ff9eba135db241b1b00114a782848037782f9bfe3eb7d832968790048a"
+        },
+        {
+          "ad": "iadeler.sema.json",
+          "satir": 0,
+          "bayt": 1089,
+          "sha256": "b9c70cee1e161c95b7c1bc293404ac7e5b4df71d807018d15999c6e7ec867584"
+        },
+        {
+          "ad": "musteriler.csv",
+          "satir": 300,
+          "bayt": 49055,
+          "sha256": "718697ea7590a95fb1534e76df29c4252369be904942e365cf5e9d3901c946d1"
+        },
+        {
+          "ad": "musteriler.sema.json",
+          "satir": 0,
+          "bayt": 1866,
+          "sha256": "1aa76c1c7bff499aaea8f8cc6973f512e0a028549306ea4bbe2641b89505faed"
+        },
+        {
+          "ad": "siparis_kalemleri.csv",
+          "satir": 4330,
+          "bayt": 217883,
+          "sha256": "e577670af3d3a8308190e1461be97a10d44ebfcc32835ab6977a8f16edda36d5"
+        },
+        {
+          "ad": "siparis_kalemleri.sema.json",
+          "satir": 0,
+          "bayt": 1029,
+          "sha256": "b7a53051e21e136a955b3e34868f4f1bbacaed5d7a6e632354d3782c5c127ec7"
+        },
+        {
+          "ad": "siparisler.csv",
+          "satir": 2643,
+          "bayt": 299607,
+          "sha256": "de6eb106f30b78cf6ce1d9fe9243b95ac6728a5bfe3d7e518f099f06ed04c345"
+        },
+        {
+          "ad": "siparisler.sema.json",
+          "satir": 0,
+          "bayt": 1783,
+          "sha256": "08897c89ce57bac05b534acfcfab4c91d944949ed483dcd25ac591bac2c6f40e"
+        },
+        {
+          "ad": "urunler.csv",
+          "satir": 120,
+          "bayt": 10477,
+          "sha256": "779dd47daabe94707e45fa0d770aa6abd78008763cbd9b591cc71ea9d9fe97e3"
+        },
+        {
+          "ad": "urunler.sema.json",
+          "satir": 0,
+          "bayt": 1379,
+          "sha256": "c60460aa969ee9b9800e655ad68094a7b383397acb1414bc4f6065792f61f311"
+        }
+      ]
+    },
+    {
+      "ad": "faturalar",
+      "komut": "python -m verihavuzu uret faturalar --adet 80 --tohum 42 --excel-tr --sema --cikti ornekler/faturalar",
+      "tohum": 42,
+      "dosyalar": [
+        {
+          "ad": "fatura_kalemleri.csv",
+          "satir": 1320,
+          "bayt": 102655,
+          "sha256": "fc14254d37c8d7763c96ddf5510da057a8a26a13fe9785f195495a6b51a9b49b"
+        },
+        {
+          "ad": "fatura_kalemleri.sema.json",
+          "satir": 0,
+          "bayt": 1284,
+          "sha256": "4a6e7eff071546e7e3ecffda048ae7c15d52665a54859046bf4bcb20b26f4631"
+        },
+        {
+          "ad": "faturalar.csv",
+          "satir": 664,
+          "bayt": 105759,
+          "sha256": "499ff6c90c097df7e3da0c7da8cdffd91e000af569d1fcc44d0990bc970685ed"
+        },
+        {
+          "ad": "faturalar.sema.json",
+          "satir": 0,
+          "bayt": 1527,
+          "sha256": "24cef1186467fe4ad3bba7716c1217b48f9877ad6c87e7872dad9c90d6a38f04"
+        }
+      ]
+    },
+    {
+      "ad": "banka",
+      "komut": "python -m verihavuzu uret banka --adet 10 --tohum 42 --bicim jsonl --sema --cikti ornekler/banka",
+      "tohum": 42,
+      "dosyalar": [
+        {
+          "ad": "hareketler.jsonl",
+          "satir": 3444,
+          "bayt": 758814,
+          "sha256": "37ec5d683f8f614b4eb439d8aba56a0b2fdf992064066870e2c228e40e57121f"
+        },
+        {
+          "ad": "hareketler.sema.json",
+          "satir": 0,
+          "bayt": 1339,
+          "sha256": "909ccca004547f4bff3e2cfad5a0b407f89f950d96d17fa622b40cf55d31a403"
+        },
+        {
+          "ad": "hesaplar.jsonl",
+          "satir": 10,
+          "bayt": 1705,
+          "sha256": "23ced5764ccb6aebc948e4f5299be2dc2a2011754ec2611b33a7c37e2a0b5cde"
+        },
+        {
+          "ad": "hesaplar.sema.json",
+          "satir": 0,
+          "bayt": 860,
+          "sha256": "24c96a28c80062967d8d91f66b2226f2041f6503c3c6f11e5e9a7dddec002be3"
+        }
+      ]
+    },
+    {
+      "ad": "zaman_serisi",
+      "komut": "python -m verihavuzu uret zaman_serisi --adet 730 --tohum 42 --sema --cikti ornekler/zaman_serisi",
+      "tohum": 42,
+      "dosyalar": [
+        {
+          "ad": "zaman_serisi.csv",
+          "satir": 1460,
+          "bayt": 92909,
+          "sha256": "d4c5593b9c700704f684e33da70bc8cd4f2539ea2faf86264e4a952ec4934272"
+        },
+        {
+          "ad": "zaman_serisi.sema.json",
+          "satir": 0,
+          "bayt": 1462,
+          "sha256": "7d33b5a5c9fcae4d9ab043c4da2beda16261340fe9a11b6fe27b1375d34c0a1e"
+        }
+      ]
+    },
+    {
+      "ad": "churn",
+      "komut": "python -m verihavuzu uret churn --adet 5000 --tohum 42 --sema --cikti ornekler/churn",
+      "tohum": 42,
+      "dosyalar": [
+        {
+          "ad": "churn.csv",
+          "satir": 5000,
+          "bayt": 382313,
+          "sha256": "b50aa1e57b3409fb48eb76bd347a70eff0fcbd0e2ab48d9694282559f4869bc6"
+        },
+        {
+          "ad": "churn.sema.json",
+          "satir": 0,
+          "bayt": 2157,
+          "sha256": "3725eb59fcbf7b3249fc19d175b3bb601ad3c3d849cfaa3a80773a717c161a70"
+        }
+      ]
+    },
+    {
+      "ad": "destek",
+      "komut": "python -m verihavuzu uret destek --adet 600 --tohum 42 --sema --cikti ornekler/destek",
+      "tohum": 42,
+      "dosyalar": [
+        {
+          "ad": "destek_talepleri.csv",
+          "satir": 600,
+          "bayt": 75331,
+          "sha256": "43d5cf6586c90f7bff785d6ae687f4ee066ae6e1a14f99deb8dab42b3f448aba"
+        },
+        {
+          "ad": "destek_talepleri.sema.json",
+          "satir": 0,
+          "bayt": 1677,
+          "sha256": "8e8258d362261dc9c02ca3f5a4c4394b73f8d1b5395256962e4ec5c35cfeea8d"
+        }
+      ]
+    },
+    {
+      "ad": "web_olaylari",
+      "komut": "python -m verihavuzu uret web_olaylari --adet 800 --tohum 42 --bicim jsonl --sema --cikti ornekler/web_olaylari",
+      "tohum": 42,
+      "dosyalar": [
+        {
+          "ad": "web_olaylari.jsonl",
+          "satir": 3313,
+          "bayt": 709472,
+          "sha256": "08b6e3b38ba508aefd1e5410549b01476d210f9cc53d96e26f8af503a51d0fb5"
+        },
+        {
+          "ad": "web_olaylari.sema.json",
+          "satir": 0,
+          "bayt": 1461,
+          "sha256": "f954b64708754896acd9c4c898d9dc2386fcc5ae5888918624c3d4f743475fe2"
+        }
+      ]
+    },
+    {
+      "ad": "kirli_faturalar",
+      "komut": "python -m verihavuzu uret faturalar --adet 40 --tohum 7 --tablo faturalar --kirli --kirlilik 0.08 --sema --cikti ornekler/kirli_faturalar",
+      "tohum": 7,
+      "dosyalar": [
+        {
+          "ad": "faturalar.bozulmalar.jsonl",
+          "satir": 285,
+          "bayt": 43118,
+          "sha256": "dec8cfe0c667ba15d4736864918e9dbd436afb5e3aee09ea43d871f1d6d4b4b1"
+        },
+        {
+          "ad": "faturalar.kirli.csv",
+          "satir": 366,
+          "bayt": 59726,
+          "sha256": "f2ee10de9ccefaf6a3c23eee9ab5eea6e202da4f5d400d99028a87f913acd002"
+        },
+        {
+          "ad": "faturalar.sema.json",
+          "satir": 0,
+          "bayt": 1527,
+          "sha256": "24cef1186467fe4ad3bba7716c1217b48f9877ad6c87e7872dad9c90d6a38f04"
+        },
+        {
+          "ad": "faturalar.temiz.csv",
+          "satir": 357,
+          "bayt": 58583,
+          "sha256": "43ec85679df9c7bda665dee3869c81d565c6f40f6169fae635841f725786f140"
+        }
+      ]
+    }
+  ]
+}

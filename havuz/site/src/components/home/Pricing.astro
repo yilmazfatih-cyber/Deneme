@@ -1,0 +1,73 @@
+---
+/**
+ * Fiyat tablosu. Metinler: src/content/anasayfa/<dil>.json → pricing (başlık),
+ * src/content/fiyatlar/<dil>.json → paketler. "highlighted": true olan paket öne çıkar.
+ */
+import SectionHeader from './SectionHeader.astro'
+import Icon from '../Icon.astro'
+import LinkButton from '../LinkButton.astro'
+import { formatPrice } from '../../lib/format.ts'
+import type { CollectionEntry } from 'astro:content'
+
+interface Props {
+  anchor: string
+  lang: string
+  popularLabel: string
+  freeLabel: string
+  header: CollectionEntry<'anasayfa'>['data']['pricing']
+  pricing: CollectionEntry<'fiyatlar'>['data']
+}
+
+const { anchor, lang, popularLabel, freeLabel, header, pricing } = Astro.props
+---
+
+<section id={anchor} aria-labelledby={`${anchor}-baslik`} class="border-y border-line bg-subtle py-20 md:py-28">
+  <div class="wrap">
+    <SectionHeader
+      id={`${anchor}-baslik`}
+      eyebrow={header.eyebrow}
+      title={header.title}
+      lead={header.lead}
+      align="center"
+    />
+    <ul
+      class:list={[
+        'mx-auto mt-14 grid gap-5',
+        pricing.items.length >= 3 ? 'max-w-6xl lg:grid-cols-3' : 'max-w-4xl md:grid-cols-2',
+      ]}
+    >
+      {pricing.items.map((plan) => (
+        <li
+          class:list={[
+            'card relative flex flex-col p-7 md:p-8',
+            plan.highlighted && 'border-brand shadow-[var(--shadow-soft)] ring-1 ring-brand',
+          ]}
+        >
+          {plan.highlighted && (
+            <span class="badge absolute -top-3.5 left-7 border-brand bg-brand text-on-brand">{popularLabel}</span>
+          )}
+          <h3 class="text-lg font-semibold">{plan.name}</h3>
+          <p class="mt-2 min-h-[3rem] text-[0.95rem] text-muted">{plan.description}</p>
+          <p class="mt-6 flex items-baseline gap-1.5">
+            <span class="font-display text-5xl leading-none">
+              {plan.price === 0 ? freeLabel : formatPrice(plan.price, pricing.currency, lang)}
+            </span>
+            {plan.price > 0 && <span class="text-muted">/ {pricing.period}</span>}
+          </p>
+          <LinkButton href={plan.cta.href} variant={plan.highlighted ? 'primary' : 'secondary'} class="mt-7 w-full">
+            {plan.cta.label}
+          </LinkButton>
+          <ul class="mt-7 grid gap-3 border-t border-line pt-6 text-[0.95rem]">
+            {plan.features.map((feature) => (
+              <li class="flex gap-3">
+                <Icon name="check" size={18} class="mt-0.5 shrink-0 text-brand-ink" />
+                <span>{feature}</span>
+              </li>
+            ))}
+          </ul>
+        </li>
+      ))}
+    </ul>
+    {header.note && <p class="mx-auto mt-10 max-w-2xl text-center text-sm text-muted">{header.note}</p>}
+  </div>
+</section>

@@ -1,0 +1,16 @@
+{
+  "aciklama": "Örnek denetim dosyası: ornekler/eticaret/siparisler.csv için. hedef_dosya yolları bu dosyanın klasörüne göredir. Çalıştırma: python -m verihavuzu dogrula ornekler/eticaret/siparisler.csv --denetim docs/ornek-denetimler.json",
+  "denetimler": [
+    { "tur": "benzersiz", "sutun": "siparis_id" },
+    { "tur": "bos_olmayan", "sutun": "musteri_id" },
+    { "tur": "desen", "sutun": "siparis_id", "desen": "SP\\d{7}" },
+    { "tur": "izinli", "sutun": "durum", "degerler": ["teslim_edildi", "iptal", "iade_edildi", "kismi_iade"] },
+    { "tur": "aralik", "sutun": "toplam", "en_az": 0 },
+    {
+      "tur": "yabanci_anahtar",
+      "sutun": "musteri_id",
+      "hedef_dosya": "../ornekler/eticaret/musteriler.csv",
+      "hedef_sutun": "musteri_id"
+    }
+  ]
+}

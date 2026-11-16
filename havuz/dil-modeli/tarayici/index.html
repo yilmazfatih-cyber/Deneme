@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tarayıcıda Türkçe dil modeli</title>
+    <link rel="stylesheet" href="./app.css" />
+    <script type="module" src="./app.js"></script>
+  </head>
+  <body data-durum="yukleniyor">
+    <main>
+      <h1 data-metin="baslik"></h1>
+      <p data-metin="aciklama"></p>
+      <p class="not" data-metin="uyari"></p>
+      <form id="form">
+        <label for="istem" data-metin="istem"></label>
+        <textarea id="istem" rows="3"></textarea>
+        <div class="ayarlar">
+          <div>
+            <label for="azami" data-metin="azami"></label>
+            <input id="azami" type="number" min="1" max="1000" value="80" />
+          </div>
+          <div>
+            <label for="sicaklik" data-metin="sicaklik"></label>
+            <input id="sicaklik" type="number" min="0" max="2" step="0.1" value="0.8" />
+          </div>
+          <div>
+            <label for="top-p" data-metin="top_p"></label>
+            <input id="top-p" type="number" min="0.05" max="1" step="0.05" value="0.95" />
+          </div>
+          <div>
+            <label for="ceza" data-metin="ceza"></label>
+            <input id="ceza" type="number" min="1" max="2" step="0.05" value="1.1" />
+          </div>
+          <div>
+            <label for="tohum" data-metin="tohum"></label>
+            <input id="tohum" type="number" min="0" step="1" />
+          </div>
+        </div>
+        <div class="dugmeler">
+          <button type="submit" id="uret" data-metin="uret" disabled></button>
+          <button type="button" id="durdur" data-metin="durdur" disabled></button>
+        </div>
+      </form>
+      <h2 data-metin="cikti"></h2>
+      <output id="cikti" aria-live="polite"><span id="istem-yazisi"></span><span id="uretilen"></span></output>
+      <p id="durum" role="status"></p>
+    </main>
+  </body>
+</html>

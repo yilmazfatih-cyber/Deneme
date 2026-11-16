@@ -1,0 +1,77 @@
+---
+/**
+ * Blog listesi görünümü (sayfalı). Kim kullanır: src/pages/blog/[...page].astro ve src/pages/en/blog/[...page].astro.
+ * Bir sayfadaki yazı sayısı: src/site.config.ts → blog.postsPerPage.
+ */
+import type { Page } from 'astro'
+import PageHeader from '../components/PageHeader.astro'
+import Pagination from '../components/Pagination.astro'
+import PostCard from '../components/PostCard.astro'
+import Newsletter from '../components/Newsletter.astro'
+import { useTranslations } from '../i18n/index.ts'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { collectTags } from '../lib/collections.ts'
+import { getPosts, type Post } from '../lib/content.ts'
+import { alternatesFor, paths } from '../lib/routes.ts'
+import { fill } from '../lib/text.ts'
+import { link } from '../lib/url.ts'
+import { siteConfig, type Locale } from '../site.config.ts'
+
+interface Props {
+  locale: Locale
+  page: Page<Post>
+}
+
+const { locale, page } = Astro.props
+const t = useTranslations(locale)
+const lang = siteConfig.locales[locale].lang
+const isFirst = page.currentPage === 1
+const title = isFirst ? t.blog.title : fill(t.blog.pageTitle, { page: page.currentPage })
+const description = isFirst
+  ? t.blog.description
+  : `${t.blog.description} (${fill(t.pagination.page, { page: page.currentPage })})`
+const tags = collectTags(await getPosts(locale), lang)
+const crumbs = [
+  { label: siteConfig.name, path: paths.home(locale) },
+  { label: t.blog.title, path: paths.blog(locale) },
+]
+---
+
+<BaseLayout
+  locale={locale}
+  title={title}
+  description={description}
+  alternates={
+    isFirst ? alternatesFor((other) => paths.blog(other)) : { [locale]: paths.blog(locale, page.currentPage) }
+  }
+  breadcrumbs={crumbs}
+>
+  <PageHeader locale={locale} title={title} lead={t.blog.description} crumbs={crumbs}>
+    {tags.length > 0 && (
+      <ul class="mt-8 flex flex-wrap gap-2" aria-label={t.blog.tagsLabel}>
+        {tags.map((tag) => (
+          <li>
+            <a href={link(paths.tag(locale, tag.slug))} class="badge">
+              {tag.name}
+              <span class="text-xs opacity-75">{tag.count}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
+  </PageHeader>
+  <div class="wrap py-14">
+    <div class="grid gap-5 md:grid-cols-2">
+      {page.data.map((post) => (
+        <PostCard post={post} />
+      ))}
+    </div>
+    <Pagination
+      locale={locale}
+      current={page.currentPage}
+      last={page.lastPage}
+      pageUrl={(number) => paths.blog(locale, number)}
+    />
+    <Newsletter locale={locale} class="mt-16" />
+  </div>
+</BaseLayout>

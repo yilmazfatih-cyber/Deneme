@@ -1,0 +1,358 @@
+fatura_no,siparis_id,fatura_tarihi,alici_ad_soyad,alici_tckn,alici_il,matrah,kdv_tutari,genel_toplam,kdv_dokumu,yazi_ile
+SNT2025000000001,SP0000001,2025-01-01,Miray Işık,15569864734,Muğla,285.05,10.75,295.80,1:2.43|20:8.32,Yalnız iki yüz doksan beş lira seksen kuruş
+SNT2025000000002,SP0000002,2025-01-03,Miray Işık,15569864734,Muğla,6554.45,655.44,7209.89,10:655.44,Yalnız yedi bin iki yüz dokuz lira seksen dokuz kuruş
+SNT2025000000003,SP0000003,2025-01-04,Burcu Erol,30647216526,Ordu,11263.62,1126.36,12389.98,10:1126.36,Yalnız on iki bin üç yüz seksen dokuz lira doksan sekiz kuruş
+SNT2025000000004,SP0000004,2025-01-05,Canan Zorlu,71309776538,Hatay,7396.71,862.98,8259.69,10:616.36|20:246.62,Yalnız sekiz bin iki yüz elli dokuz lira altmış dokuz kuruş
+SNT2025000000005,SP0000005,2025-01-06,Canan Zorlu,71309776538,Hatay,323.39,36.50,359.89,10:28.18|20:8.32,Yalnız üç yüz elli dokuz lira seksen dokuz kuruş
+SNT2025000000006,SP0000006,2025-01-08,Sevda Fidan,66330854768,Gümüşhane,964.28,85.62,1049.90,1:5.64|20:79.98,Yalnız bin kırk dokuz lira doksan kuruş
+SNT2025000000007,SP0000007,2025-01-10,Berna Gürsoy,83012221526,Sinop,1172.26,234.45,1406.71,20:234.45,Yalnız bin dört yüz altı lira yetmiş bir kuruş
+SNT2025000000008,SP0000008,2025-01-11,Samet Öztürk,71643023916,Bingöl,2325.41,255.09,2580.50,10:209.99|20:45.10,Yalnız iki bin beş yüz seksen lira elli kuruş
+SNT2025000000009,SP0000009,2025-01-12,Türkan Ünal,80263572520,Kırıkkale,5108.11,500.41,5608.52,1:1.16|10:499.25,Yalnız beş bin altı yüz sekiz lira elli iki kuruş
+SNT2025000000010,SP0000010,2025-01-15,Selin Doğan,17821210754,Diyarbakır,211.88,10.02,221.90,1:1.70|20:8.32,Yalnız iki yüz yirmi bir lira doksan kuruş
+SNT2025000000011,SP0000011,2025-01-15,Türkan Ünal,80263572520,Kırıkkale,3705.29,504.69,4209.98,10:236.36|20:268.33,Yalnız dört bin iki yüz dokuz lira doksan sekiz kuruş
+SNT2025000000012,SP0000012,2025-01-16,Sefa Kara,80566497612,Konya,7755.25,724.73,8479.98,1:5.64|10:719.09,Yalnız sekiz bin dört yüz yetmiş dokuz lira doksan sekiz kuruş
+SNT2025000000013,SP0000013,2025-01-17,Burcu Erol,30647216526,Ordu,937.10,102.87,1039.97,10:84.54|20:18.33,Yalnız bin otuz dokuz lira doksan yedi kuruş
+SNT2025000000014,SP0000014,2025-01-17,Sude Karakuş,18829800084,Hatay,2087.23,268.46,2355.69,1:2.43|10:102.73|20:163.30,Yalnız iki bin üç yüz elli beş lira altmış dokuz kuruş
+SNT2025000000015,SP0000015,2025-01-18,Coşkun Yılmaz,52816101228,Diyarbakır,7190.89,719.09,7909.98,10:719.09,Yalnız yedi bin dokuz yüz dokuz lira doksan sekiz kuruş
+SNT2025000000016,SP0000016,2025-01-19,Mustafa Yılmaz,31542887446,Konya,449.83,89.97,539.80,20:89.97,Yalnız beş yüz otuz dokuz lira seksen kuruş
+SNT2025000000017,SP0000017,2025-01-21,Sefa Kara,80566497612,Konya,1341.66,268.33,1609.99,20:268.33,Yalnız bin altı yüz dokuz lira doksan dokuz kuruş
+SNT2025000000018,SP0000018,2025-01-24,Arzu Karaca,49511983808,Balıkesir,6596.88,703.01,7299.89,10:616.36|20:86.65,Yalnız yedi bin iki yüz doksan dokuz lira seksen dokuz kuruş
+SNT2025000000019,SP0000019,2025-01-24,Yunus Yıldız,38227119250,Ankara,6248.78,617.21,6865.99,1:0.85|10:616.36,Yalnız altı bin sekiz yüz altmış beş lira doksan dokuz kuruş
+SNT2025000000020,SP0000020,2025-01-25,Türkan Ünal,80263572520,Kırıkkale,1623.47,296.51,1919.98,10:28.18|20:268.33,Yalnız bin dokuz yüz on dokuz lira doksan sekiz kuruş
+SNT2025000000021,SP0000021,2025-01-26,Türkan Ünal,80263572520,Kırıkkale,4409.00,440.90,4849.90,10:440.90,Yalnız dört bin sekiz yüz kırk dokuz lira doksan kuruş
+SNT2025000000022,SP0000022,2025-01-26,Canan Zorlu,71309776538,Hatay,383.16,76.64,459.80,20:76.64,Yalnız dört yüz elli dokuz lira seksen kuruş
+SNT2025000000023,SP0000023,2025-01-29,Burcu Erol,30647216526,Ordu,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000024,SP0000024,2025-01-30,Arzu Karaca,49511983808,Balıkesir,199.90,9.90,209.80,1:1.58|20:8.32,Yalnız iki yüz dokuz lira seksen kuruş
+SNT2025000000025,SP0000025,2025-01-30,Burcu Erol,30647216526,Ordu,4383.24,876.65,5259.89,20:876.65,Yalnız beş bin iki yüz elli dokuz lira seksen dokuz kuruş
+SNT2025000000026,SP0000026,2025-02-01,Berna Gürsoy,83012221526,Sinop,13629.06,1476.91,15105.97,1:0.85|10:1232.73|20:243.33,Yalnız on beş bin yüz beş lira doksan yedi kuruş
+SNT2025000000027,SP0000027,2025-02-07,Miray Işık,15569864734,Muğla,7599.99,760.00,8359.99,10:760.00,Yalnız sekiz bin üç yüz elli dokuz lira doksan dokuz kuruş
+SNT2025000000028,SP0000028,2025-02-08,Miray Işık,15569864734,Muğla,981.64,98.16,1079.80,10:98.16,Yalnız bin yetmiş dokuz lira seksen kuruş
+SNT2025000000029,SP0000029,2025-02-11,Burcu Erol,30647216526,Ordu,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000030,SP0000030,2025-02-13,Musa Can,63879427422,Adana,432.40,47.40,479.80,10:39.08|20:8.32,Yalnız dört yüz yetmiş dokuz lira seksen kuruş
+SNT2025000000031,SP0000031,2025-02-14,Miray Işık,15569864734,Muğla,14735.49,1714.37,16449.86,10:1232.73|20:481.64,Yalnız on altı bin dört yüz kırk dokuz lira seksen altı kuruş
+SNT2025000000032,SP0000032,2025-02-16,Yiğit Özel,57630776898,Denizli,126.73,9.17,135.90,1:0.85|20:8.32,Yalnız yüz otuz beş lira doksan kuruş
+SNT2025000000033,SP0000033,2025-02-19,Canan Zorlu,71309776538,Hatay,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000034,SP0000034,2025-02-20,Türkan Ünal,80263572520,Kırıkkale,7505.29,884.69,8389.98,10:616.36|20:268.33,Yalnız sekiz bin üç yüz seksen dokuz lira doksan sekiz kuruş
+SNT2025000000035,SP0000035,2025-02-22,Samet Öztürk,71643023916,Bingöl,1616.66,323.33,1939.99,20:323.33,Yalnız bin dokuz yüz otuz dokuz lira doksan dokuz kuruş
+SNT2025000000036,SP0000036,2025-02-22,Fatma Atasoy,39254683202,Muğla,8438.55,1071.34,9509.89,10:616.36|20:454.98,Yalnız dokuz bin beş yüz dokuz lira seksen dokuz kuruş
+SNT2025000000037,SP0000037,2025-02-24,Türkan Ünal,80263572520,Kırıkkale,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000038,SP0000038,2025-02-25,Tuba Çelik,47769302648,İstanbul,487.03,12.77,499.80,1:4.45|20:8.32,Yalnız dört yüz doksan dokuz lira seksen kuruş
+SNT2025000000039,SP0000039,2025-02-25,Burcu Erol,30647216526,Ordu,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000040,SP0000040,2025-02-26,Canan Zorlu,71309776538,Hatay,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000041,SP0000041,2025-02-26,Mustafa Yılmaz,31542887446,Konya,18629.07,2476.91,21105.98,1:0.85|10:1232.73|20:1243.33,Yalnız yirmi bir bin yüz beş lira doksan sekiz kuruş
+SNT2025000000042,SP0000042,2025-02-28,Berna Gürsoy,83012221526,Sinop,722.68,7.22,729.90,1:7.22,Yalnız yedi yüz yirmi dokuz lira doksan kuruş
+SNT2025000000043,SP0000043,2025-03-03,Samet Öztürk,71643023916,Bingöl,9354.52,935.45,10289.97,10:935.45,Yalnız on bin iki yüz seksen dokuz lira doksan yedi kuruş
+SNT2025000000044,SP0000044,2025-03-03,Musa Can,63879427422,Adana,7602.26,1417.72,9019.98,10:102.73|20:1314.99,Yalnız dokuz bin on dokuz lira doksan sekiz kuruş
+SNT2025000000045,SP0000045,2025-03-08,Miray Işık,15569864734,Muğla,408.54,37.35,445.89,1:0.85|10:28.18|20:8.32,Yalnız dört yüz kırk beş lira seksen dokuz kuruş
+SNT2025000000046,SP0000046,2025-03-09,Miray Işık,15569864734,Muğla,459.58,50.12,509.70,10:41.80|20:8.32,Yalnız beş yüz dokuz lira yetmiş kuruş
+SNT2025000000047,SP0000047,2025-03-12,Canan Zorlu,71309776538,Hatay,126.73,9.17,135.90,1:0.85|20:8.32,Yalnız yüz otuz beş lira doksan kuruş
+SNT2025000000048,SP0000048,2025-03-14,Türkan Ünal,80263572520,Kırıkkale,7590.89,759.09,8349.98,10:759.09,Yalnız sekiz bin üç yüz kırk dokuz lira doksan sekiz kuruş
+SNT2025000000049,SP0000049,2025-03-16,Miray Işık,15569864734,Muğla,12327.25,1232.73,13559.98,10:1232.73,Yalnız on üç bin beş yüz elli dokuz lira doksan sekiz kuruş
+SNT2025000000050,SP0000050,2025-03-18,Yeliz Güneş,67641532048,Düzce,199.90,9.90,209.80,1:1.58|20:8.32,Yalnız iki yüz dokuz lira seksen kuruş
+SNT2025000000051,SP0000051,2025-03-18,Türkan Ünal,80263572520,Kırıkkale,126.73,9.17,135.90,1:0.85|20:8.32,Yalnız yüz otuz beş lira doksan kuruş
+SNT2025000000052,SP0000052,2025-03-21,Sena Gül,80855586218,İzmir,12643.88,1235.90,13879.78,1:3.17|10:1232.73,Yalnız on üç bin sekiz yüz yetmiş dokuz lira yetmiş sekiz kuruş
+SNT2025000000053,SP0000053,2025-03-22,Burcu Erol,30647216526,Ordu,1426.81,269.18,1695.99,1:0.85|20:268.33,Yalnız bin altı yüz doksan beş lira doksan dokuz kuruş
+SNT2025000000054,SP0000054,2025-03-23,Samet Öztürk,71643023916,Bingöl,1499.98,269.91,1769.89,1:1.58|20:268.33,Yalnız bin yedi yüz altmış dokuz lira seksen dokuz kuruş
+SNT2025000000055,SP0000055,2025-03-24,Ceren Karataş,52010921202,Bartın,7505.29,884.69,8389.98,10:616.36|20:268.33,Yalnız sekiz bin üç yüz seksen dokuz lira doksan sekiz kuruş
+SNT2025000000056,SP0000056,2025-03-24,Miray Işık,15569864734,Muğla,408.16,81.64,489.80,20:81.64,Yalnız dört yüz seksen dokuz lira seksen kuruş
+SNT2025000000057,SP0000057,2025-03-25,Coşkun Yılmaz,52816101228,Diyarbakır,12485.57,1234.31,13719.88,1:1.58|10:1232.73,Yalnız on üç bin yedi yüz on dokuz lira seksen sekiz kuruş
+SNT2025000000058,SP0000058,2025-03-25,Türkan Ünal,80263572520,Kırıkkale,5335.34,964.35,6299.69,10:102.73|20:861.62,Yalnız altı bin iki yüz doksan dokuz lira altmış dokuz kuruş
+SNT2025000000059,SP0000059,2025-03-26,Miray Işık,15569864734,Muğla,7190.89,719.09,7909.98,10:719.09,Yalnız yedi bin dokuz yüz dokuz lira doksan sekiz kuruş
+SNT2025000000060,SP0000060,2025-03-28,Canan Zorlu,71309776538,Hatay,530.60,5.30,535.90,1:5.30,Yalnız beş yüz otuz beş lira doksan kuruş
+SNT2025000000061,SP0000061,2025-03-29,Yeliz Güneş,67641532048,Düzce,383.16,76.64,459.80,20:76.64,Yalnız dört yüz elli dokuz lira seksen kuruş
+SNT2025000000062,SP0000062,2025-03-30,Türkan Ünal,80263572520,Kırıkkale,954.44,95.44,1049.88,10:95.44,Yalnız bin kırk dokuz lira seksen sekiz kuruş
+SNT2025000000063,SP0000063,2025-03-31,Berna Gürsoy,83012221526,Sinop,2383.17,476.63,2859.80,20:476.63,Yalnız iki bin sekiz yüz elli dokuz lira seksen kuruş
+SNT2025000000064,SP0000064,2025-04-02,Ceren Karataş,52010921202,Bartın,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000065,SP0000066,2025-04-04,Samet Öztürk,71643023916,Bingöl,6363.55,656.34,7019.89,10:616.36|20:39.98,Yalnız yedi bin on dokuz lira seksen dokuz kuruş
+SNT2025000000066,SP0000067,2025-04-05,Aras Bayram,80725724702,Kayseri,19518.14,1951.82,21469.96,10:1951.82,Yalnız yirmi bir bin dört yüz altmış dokuz lira doksan altı kuruş
+SNT2025000000067,SP0000068,2025-04-06,Mustafa Yılmaz,31542887446,Konya,1249.75,249.95,1499.70,20:249.95,Yalnız bin dört yüz doksan dokuz lira yetmiş kuruş
+SNT2025000000068,SP0000069,2025-04-18,Yunus Yıldız,38227119250,Ankara,5239.08,523.91,5762.99,10:523.91,Yalnız beş bin yedi yüz altmış iki lira doksan dokuz kuruş
+SNT2025000000069,SP0000070,2025-04-18,Aras Bayram,80725724702,Kayseri,9804.09,974.51,10778.60,1:0.66|10:973.85,Yalnız on bin yedi yüz yetmiş sekiz lira altmış kuruş
+SNT2025000000070,SP0000071,2025-04-24,Türkan Ünal,80263572520,Kırıkkale,4312.25,703.35,5015.60,1:8.37|20:694.98,Yalnız beş bin on beş lira altmış kuruş
+SNT2025000000071,SP0000072,2025-04-26,Miray Işık,15569864734,Muğla,7505.29,884.69,8389.98,10:616.36|20:268.33,Yalnız sekiz bin üç yüz seksen dokuz lira doksan sekiz kuruş
+SNT2025000000072,SP0000073,2025-04-27,Ceren Karataş,52010921202,Bartın,649.14,50.66,699.80,1:1.58|10:49.08,Yalnız altı yüz doksan dokuz lira seksen kuruş
+SNT2025000000073,SP0000074,2025-04-29,Samet Öztürk,71643023916,Bingöl,6354.54,635.45,6989.99,10:635.45,Yalnız altı bin dokuz yüz seksen dokuz lira doksan dokuz kuruş
+SNT2025000000074,SP0000075,2025-05-02,Ceren Karataş,52010921202,Bartın,126.73,9.17,135.90,1:0.85|20:8.32,Yalnız yüz otuz beş lira doksan kuruş
+SNT2025000000075,SP0000076,2025-05-05,Burcu Erol,30647216526,Ordu,9758.33,1951.66,11709.99,20:1951.66,Yalnız on bir bin yedi yüz dokuz lira doksan dokuz kuruş
+SNT2025000000076,SP0000077,2025-05-05,Miray Işık,15569864734,Muğla,1466.67,293.33,1760.00,20:293.33,Yalnız bin yedi yüz altmış lira
+SNT2025000000077,SP0000078,2025-05-10,Canan Zorlu,71309776538,Hatay,1427.26,142.73,1569.99,10:142.73,Yalnız bin beş yüz altmış dokuz lira doksan dokuz kuruş
+SNT2025000000078,SP0000079,2025-05-10,Sena Gül,80855586218,İzmir,2787.02,412.87,3199.89,10:144.54|20:268.33,Yalnız üç bin yüz doksan dokuz lira seksen dokuz kuruş
+SNT2025000000079,SP0000080,2025-05-10,Arzu Karaca,49511983808,Balıkesir,187.03,22.87,209.90,10:14.55|20:8.32,Yalnız iki yüz dokuz lira doksan kuruş
+SNT2025000000080,SP0000081,2025-05-11,Berna Gürsoy,83012221526,Sinop,9588.55,1301.34,10889.89,10:616.36|20:684.98,Yalnız on bin sekiz yüz seksen dokuz lira seksen dokuz kuruş
+SNT2025000000081,SP0000082,2025-05-11,Miray Işık,15569864734,Muğla,12672.54,1267.25,13939.79,10:1267.25,Yalnız on üç bin dokuz yüz otuz dokuz lira yetmiş dokuz kuruş
+SNT2025000000082,SP0000083,2025-05-12,Arzu Karaca,49511983808,Balıkesir,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000083,SP0000084,2025-05-12,Mustafa Yılmaz,31542887446,Konya,6983.92,748.06,7731.98,1:1.70|10:616.36|20:130.00,Yalnız yedi bin yedi yüz otuz bir lira doksan sekiz kuruş
+SNT2025000000084,SP0000085,2025-05-12,Fatma Atasoy,39254683202,Muğla,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000085,SP0000086,2025-05-13,Canan Zorlu,71309776538,Hatay,383.16,76.64,459.80,20:76.64,Yalnız dört yüz elli dokuz lira seksen kuruş
+SNT2025000000086,SP0000087,2025-05-13,Aras Bayram,80725724702,Kayseri,9638.55,1311.34,10949.89,10:616.36|20:694.98,Yalnız on bin dokuz yüz kırk dokuz lira seksen dokuz kuruş
+SNT2025000000087,SP0000088,2025-05-14,Sena Gül,80855586218,İzmir,715.06,114.83,829.89,10:28.18|20:86.65,Yalnız sekiz yüz yirmi dokuz lira seksen dokuz kuruş
+SNT2025000000088,SP0000089,2025-05-16,Canan Zorlu,71309776538,Hatay,824.07,125.73,949.80,10:39.08|20:86.65,Yalnız dokuz yüz kırk dokuz lira seksen kuruş
+SNT2025000000089,SP0000090,2025-05-21,Burcu Erol,30647216526,Ordu,6888.63,761.36,7649.99,10:616.36|20:145.00,Yalnız yedi bin altı yüz kırk dokuz lira doksan dokuz kuruş
+SNT2025000000090,SP0000091,2025-05-23,Hakan Koç,94808951374,Diyarbakır,1481.82,148.18,1630.00,10:148.18,Yalnız bin altı yüz otuz lira
+SNT2025000000091,SP0000092,2025-05-23,Sude Karakuş,18829800084,Hatay,433.25,86.65,519.90,20:86.65,Yalnız beş yüz on dokuz lira doksan kuruş
+SNT2025000000092,SP0000093,2025-05-24,Yunus Yıldız,38227119250,Ankara,211.88,10.02,221.90,1:1.70|20:8.32,Yalnız iki yüz yirmi bir lira doksan kuruş
+SNT2025000000093,SP0000094,2025-05-24,Sena Gül,80855586218,İzmir,341.48,38.22,379.70,1:1.58|20:36.64,Yalnız üç yüz yetmiş dokuz lira yetmiş kuruş
+SNT2025000000094,SP0000095,2025-05-30,Berna Gürsoy,83012221526,Sinop,11354.96,1654.63,13009.59,10:616.36|20:1038.27,Yalnız on üç bin dokuz lira elli dokuz kuruş
+SNT2025000000095,SP0000096,2025-05-31,Türkan Ünal,80263572520,Kırıkkale,113.31,15.49,128.80,10:7.17|20:8.32,Yalnız yüz yirmi sekiz lira seksen kuruş
+SNT2025000000096,SP0000097,2025-06-02,Samet Öztürk,71643023916,Bingöl,250.58,29.22,279.80,10:20.90|20:8.32,Yalnız iki yüz yetmiş dokuz lira seksen kuruş
+SNT2025000000097,SP0000098,2025-06-07,Miray Işık,15569864734,Muğla,441.50,88.30,529.80,20:88.30,Yalnız beş yüz yirmi dokuz lira seksen kuruş
+SNT2025000000098,SP0000099,2025-06-07,Mustafa Yılmaz,31542887446,Konya,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000099,SP0000100,2025-06-08,Samet Öztürk,71643023916,Bingöl,126.73,9.17,135.90,1:0.85|20:8.32,Yalnız yüz otuz beş lira doksan kuruş
+SNT2025000000100,SP0000101,2025-06-09,Canan Zorlu,71309776538,Hatay,18858.20,1871.57,20729.77,1:1.58|10:1869.99,Yalnız yirmi bin yedi yüz yirmi dokuz lira yetmiş yedi kuruş
+SNT2025000000101,SP0000102,2025-06-10,Sevda Fidan,66330854768,Gümüşhane,250.58,29.22,279.80,10:20.90|20:8.32,Yalnız iki yüz yetmiş dokuz lira seksen kuruş
+SNT2025000000102,SP0000103,2025-06-13,Canan Zorlu,71309776538,Hatay,2433.33,486.66,2919.99,20:486.66,Yalnız iki bin dokuz yüz on dokuz lira doksan dokuz kuruş
+SNT2025000000103,SP0000104,2025-06-14,Yunus Yıldız,38227119250,Ankara,12327.25,1232.73,13559.98,10:1232.73,Yalnız on üç bin beş yüz elli dokuz lira doksan sekiz kuruş
+SNT2025000000104,SP0000105,2025-06-16,Burcu Erol,30647216526,Ordu,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000105,SP0000106,2025-06-17,Ceren Karataş,52010921202,Bartın,6727.99,622.00,7349.99,1:5.64|10:616.36,Yalnız yedi bin üç yüz kırk dokuz lira doksan dokuz kuruş
+SNT2025000000106,SP0000107,2025-06-17,Türkan Ünal,80263572520,Kırıkkale,1445.36,144.54,1589.90,10:144.54,Yalnız bin beş yüz seksen dokuz lira doksan kuruş
+SNT2025000000107,SP0000108,2025-06-18,Miray Işık,15569864734,Muğla,1517.09,151.71,1668.80,10:151.71,Yalnız bin altı yüz altmış sekiz lira seksen kuruş
+SNT2025000000108,SP0000109,2025-06-22,Sevda Fidan,66330854768,Gümüşhane,126.73,9.17,135.90,1:0.85|20:8.32,Yalnız yüz otuz beş lira doksan kuruş
+SNT2025000000109,SP0000110,2025-06-24,Aras Bayram,80725724702,Kayseri,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000110,SP0000111,2025-06-26,Musa Can,63879427422,Adana,1027.26,102.73,1129.99,10:102.73,Yalnız bin yüz yirmi dokuz lira doksan dokuz kuruş
+SNT2025000000111,SP0000112,2025-06-27,Miray Işık,15569864734,Muğla,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000112,SP0000113,2025-06-28,Fatma Atasoy,39254683202,Muğla,3958.25,791.65,4749.90,20:791.65,Yalnız dört bin yedi yüz kırk dokuz lira doksan kuruş
+SNT2025000000113,SP0000114,2025-06-29,Burcu Erol,30647216526,Ordu,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000114,SP0000115,2025-06-30,Burcu Erol,30647216526,Ordu,6607.11,688.87,7295.98,1:0.85|10:616.36|20:71.66,Yalnız yedi bin iki yüz doksan beş lira doksan sekiz kuruş
+SNT2025000000115,SP0000116,2025-07-01,Canan Zorlu,71309776538,Hatay,408.16,81.64,489.80,20:81.64,Yalnız dört yüz seksen dokuz lira seksen kuruş
+SNT2025000000116,SP0000117,2025-07-03,Canan Zorlu,71309776538,Hatay,1616.66,323.33,1939.99,20:323.33,Yalnız bin dokuz yüz otuz dokuz lira doksan dokuz kuruş
+SNT2025000000117,SP0000118,2025-07-03,Miray Işık,15569864734,Muğla,7505.29,884.69,8389.98,10:616.36|20:268.33,Yalnız sekiz bin üç yüz seksen dokuz lira doksan sekiz kuruş
+SNT2025000000118,SP0000119,2025-07-04,Miray Işık,15569864734,Muğla,481.78,12.72,494.50,1:4.40|20:8.32,Yalnız dört yüz doksan dört lira elli kuruş
+SNT2025000000119,SP0000120,2025-07-05,Türkan Ünal,80263572520,Kırıkkale,1796.94,139.05,1935.99,1:4.51|10:134.54,Yalnız bin dokuz yüz otuz beş lira doksan dokuz kuruş
+SNT2025000000120,SP0000121,2025-07-05,Berna Gürsoy,83012221526,Sinop,6839.34,737.54,7576.88,1:4.63|10:542.40|20:190.51,Yalnız yedi bin beş yüz yetmiş altı lira seksen sekiz kuruş
+SNT2025000000121,SP0000122,2025-07-06,Türkan Ünal,80263572520,Kırıkkale,1597.85,319.57,1917.42,20:319.57,Yalnız bin dokuz yüz on yedi lira kırk iki kuruş
+SNT2025000000122,SP0000123,2025-07-06,Samet Öztürk,71643023916,Bingöl,5565.34,543.81,6109.15,1:1.41|10:542.40,Yalnız altı bin yüz dokuz lira on beş kuruş
+SNT2025000000123,SP0000124,2025-07-06,Coşkun Yılmaz,52816101228,Diyarbakır,1283.25,256.64,1539.89,20:256.64,Yalnız bin beş yüz otuz dokuz lira seksen dokuz kuruş
+SNT2025000000124,SP0000125,2025-07-07,Burcu Erol,30647216526,Ordu,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000125,SP0000126,2025-07-08,Sena Gül,80855586218,İzmir,4039.28,700.62,4739.90,1:5.64|20:694.98,Yalnız dört bin yedi yüz otuz dokuz lira doksan kuruş
+SNT2025000000126,SP0000127,2025-07-12,Arzu Karaca,49511983808,Balıkesir,433.25,86.65,519.90,20:86.65,Yalnız beş yüz on dokuz lira doksan kuruş
+SNT2025000000127,SP0000128,2025-07-12,Miray Işık,15569864734,Muğla,1341.66,268.33,1609.99,20:268.33,Yalnız bin altı yüz dokuz lira doksan dokuz kuruş
+SNT2025000000128,SP0000129,2025-07-19,Yunus Yıldız,38227119250,Ankara,6216.67,1243.33,7460.00,20:1243.33,Yalnız yedi bin dört yüz altmış lira
+SNT2025000000129,SP0000130,2025-07-20,Sena Gül,80855586218,İzmir,6618.18,661.81,7279.99,10:661.81,Yalnız yedi bin iki yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000130,SP0000131,2025-07-20,Türkan Ünal,80263572520,Kırıkkale,924.99,185.00,1109.99,20:185.00,Yalnız bin yüz dokuz lira doksan dokuz kuruş
+SNT2025000000131,SP0000132,2025-07-21,Hakan Koç,94808951374,Diyarbakır,2058.24,381.56,2439.80,1:1.58|20:379.98,Yalnız iki bin dört yüz otuz dokuz lira seksen kuruş
+SNT2025000000132,SP0000133,2025-07-22,Türkan Ünal,80263572520,Kırıkkale,1027.26,102.73,1129.99,10:102.73,Yalnız bin yüz yirmi dokuz lira doksan dokuz kuruş
+SNT2025000000133,SP0000135,2025-07-22,Selin Doğan,17821210754,Diyarbakır,563.62,56.36,619.98,10:56.36,Yalnız altı yüz on dokuz lira doksan sekiz kuruş
+SNT2025000000134,SP0000136,2025-07-23,Ceren Karataş,52010921202,Bartın,1416.58,283.31,1699.89,20:283.31,Yalnız bin altı yüz doksan dokuz lira seksen dokuz kuruş
+SNT2025000000135,SP0000137,2025-07-24,Berna Gürsoy,83012221526,Sinop,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000136,SP0000138,2025-07-24,Burcu Erol,30647216526,Ordu,126.73,9.17,135.90,1:0.85|20:8.32,Yalnız yüz otuz beş lira doksan kuruş
+SNT2025000000137,SP0000139,2025-07-26,Miray Işık,15569864734,Muğla,12327.25,1232.73,13559.98,10:1232.73,Yalnız on üç bin beş yüz elli dokuz lira doksan sekiz kuruş
+SNT2025000000138,SP0000140,2025-07-27,Mustafa Yılmaz,31542887446,Konya,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000139,SP0000141,2025-07-27,Mustafa Yılmaz,31542887446,Konya,1521.51,144.49,1666.00,1:0.85|10:143.64,Yalnız bin altı yüz altmış altı lira
+SNT2025000000140,SP0000142,2025-07-29,Samet Öztürk,71643023916,Bingöl,126.73,9.17,135.90,1:0.85|20:8.32,Yalnız yüz otuz beş lira doksan kuruş
+SNT2025000000141,SP0000143,2025-07-30,Berna Gürsoy,83012221526,Sinop,7088.62,801.36,7889.98,10:616.36|20:185.00,Yalnız yedi bin sekiz yüz seksen dokuz lira doksan sekiz kuruş
+SNT2025000000142,SP0000144,2025-07-30,Arzu Karaca,49511983808,Balıkesir,177.94,21.96,199.90,10:13.64|20:8.32,Yalnız yüz doksan dokuz lira doksan kuruş
+SNT2025000000143,SP0000145,2025-07-30,Miray Işık,15569864734,Muğla,199.90,9.90,209.80,1:1.58|20:8.32,Yalnız iki yüz dokuz lira seksen kuruş
+SNT2025000000144,SP0000146,2025-07-31,Canan Zorlu,71309776538,Hatay,2176.32,203.38,2379.70,1:1.58|10:201.80,Yalnız iki bin üç yüz yetmiş dokuz lira yetmiş kuruş
+SNT2025000000145,SP0000147,2025-08-01,Türkan Ünal,80263572520,Kırıkkale,8992.32,1037.56,10029.88,10:760.90|20:276.66,Yalnız on bin yirmi dokuz lira seksen sekiz kuruş
+SNT2025000000146,SP0000148,2025-08-02,Sevda Fidan,66330854768,Gümüşhane,564.36,5.64,570.00,1:5.64,Yalnız beş yüz yetmiş lira
+SNT2025000000147,SP0000149,2025-08-02,Samet Öztürk,71643023916,Bingöl,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000148,SP0000150,2025-08-02,Miray Işık,15569864734,Muğla,7380.29,859.69,8239.98,10:616.36|20:243.33,Yalnız sekiz bin iki yüz otuz dokuz lira doksan sekiz kuruş
+SNT2025000000149,SP0000152,2025-08-03,Hakan Koç,94808951374,Diyarbakır,126.73,9.17,135.90,1:0.85|20:8.32,Yalnız yüz otuz beş lira doksan kuruş
+SNT2025000000150,SP0000153,2025-08-04,Serdar Demir,16923779756,Muş,1128.71,11.29,1140.00,1:11.29,Yalnız bin yüz kırk lira
+SNT2025000000151,SP0000154,2025-08-04,Yunus Yıldız,38227119250,Ankara,6255.30,634.69,6889.99,10:616.36|20:18.33,Yalnız altı bin sekiz yüz seksen dokuz lira doksan dokuz kuruş
+SNT2025000000152,SP0000155,2025-08-04,Canan Zorlu,71309776538,Hatay,126.73,9.17,135.90,1:0.85|20:8.32,Yalnız yüz otuz beş lira doksan kuruş
+SNT2025000000153,SP0000156,2025-08-08,Ozan Özkan,41007790402,Kayseri,2009.72,150.18,2159.90,1:5.64|10:144.54,Yalnız iki bin yüz elli dokuz lira doksan kuruş
+SNT2025000000154,SP0000157,2025-08-09,Samet Öztürk,71643023916,Bingöl,2533.24,506.65,3039.89,20:506.65,Yalnız üç bin otuz dokuz lira seksen dokuz kuruş
+SNT2025000000155,SP0000158,2025-08-09,Aras Bayram,80725724702,Kayseri,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000156,SP0000159,2025-08-11,Kaan Aksoy,58823915742,Malatya,7480.30,879.69,8359.99,10:616.36|20:263.33,Yalnız sekiz bin üç yüz elli dokuz lira doksan dokuz kuruş
+SNT2025000000157,SP0000160,2025-08-11,Sevda Fidan,66330854768,Gümüşhane,8172.61,817.26,8989.87,10:817.26,Yalnız sekiz bin dokuz yüz seksen dokuz lira seksen yedi kuruş
+SNT2025000000158,SP0000161,2025-08-13,Musa Can,63879427422,Adana,6248.78,617.21,6865.99,1:0.85|10:616.36,Yalnız altı bin sekiz yüz altmış beş lira doksan dokuz kuruş
+SNT2025000000159,SP0000162,2025-08-13,Mustafa Yılmaz,31542887446,Konya,2851.80,554.18,3405.98,1:0.85|20:553.33,Yalnız üç bin dört yüz beş lira doksan sekiz kuruş
+SNT2025000000160,SP0000163,2025-08-13,Coşkun Yılmaz,52816101228,Diyarbakır,249.49,10.40,259.89,1:2.08|20:8.32,Yalnız iki yüz elli dokuz lira seksen dokuz kuruş
+SNT2025000000161,SP0000164,2025-08-14,Samet Öztürk,71643023916,Bingöl,1383.33,276.66,1659.99,20:276.66,Yalnız bin altı yüz elli dokuz lira doksan dokuz kuruş
+SNT2025000000162,SP0000165,2025-08-15,Miray Işık,15569864734,Muğla,3474.92,694.98,4169.90,20:694.98,Yalnız dört bin yüz altmış dokuz lira doksan kuruş
+SNT2025000000163,SP0000166,2025-08-16,Mustafa Yılmaz,31542887446,Konya,490.90,49.09,539.99,10:49.09,Yalnız beş yüz otuz dokuz lira doksan dokuz kuruş
+SNT2025000000164,SP0000167,2025-08-16,Canan Zorlu,71309776538,Hatay,6293.91,1116.06,7409.97,10:142.73|20:973.33,Yalnız yedi bin dört yüz dokuz lira doksan yedi kuruş
+SNT2025000000165,SP0000168,2025-08-17,Berna Gürsoy,83012221526,Sinop,2683.32,536.66,3219.98,20:536.66,Yalnız üç bin iki yüz on dokuz lira doksan sekiz kuruş
+SNT2025000000166,SP0000169,2025-08-17,Türkan Ünal,80263572520,Kırıkkale,1249.99,250.00,1499.99,20:250.00,Yalnız bin dört yüz doksan dokuz lira doksan dokuz kuruş
+SNT2025000000167,SP0000170,2025-08-18,Canan Zorlu,71309776538,Hatay,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000168,SP0000171,2025-08-18,Samet Öztürk,71643023916,Bingöl,8987.78,1142.10,10129.88,10:655.44|20:486.66,Yalnız on bin yüz yirmi dokuz lira seksen sekiz kuruş
+SNT2025000000169,SP0000172,2025-08-18,Berna Gürsoy,83012221526,Sinop,1833.99,315.81,2149.80,1:1.58|10:20.90|20:293.33,Yalnız iki bin yüz kırk dokuz lira seksen kuruş
+SNT2025000000170,SP0000173,2025-08-21,Yeliz Güneş,67641532048,Düzce,432.40,47.40,479.80,10:39.08|20:8.32,Yalnız dört yüz yetmiş dokuz lira seksen kuruş
+SNT2025000000171,SP0000174,2025-08-24,Arzu Karaca,49511983808,Balıkesir,9105.29,1204.69,10309.98,10:616.36|20:588.33,Yalnız on bin üç yüz dokuz lira doksan sekiz kuruş
+SNT2025000000172,SP0000175,2025-08-24,Samet Öztürk,71643023916,Bingöl,2433.33,486.66,2919.99,20:486.66,Yalnız iki bin dokuz yüz on dokuz lira doksan dokuz kuruş
+SNT2025000000173,SP0000176,2025-08-24,Berna Gürsoy,83012221526,Sinop,1185.58,104.31,1289.89,1:1.58|10:102.73,Yalnız bin iki yüz seksen dokuz lira seksen dokuz kuruş
+SNT2025000000174,SP0000177,2025-08-26,Burcu Erol,30647216526,Ordu,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000175,SP0000178,2025-08-26,Samet Öztürk,71643023916,Bingöl,11263.62,1126.36,12389.98,10:1126.36,Yalnız on iki bin üç yüz seksen dokuz lira doksan sekiz kuruş
+SNT2025000000176,SP0000179,2025-08-27,Miray Işık,15569864734,Muğla,6321.95,617.94,6939.89,1:1.58|10:616.36,Yalnız altı bin dokuz yüz otuz dokuz lira seksen dokuz kuruş
+SNT2025000000177,SP0000180,2025-08-28,Samet Öztürk,71643023916,Bingöl,9638.55,1311.34,10949.89,10:616.36|20:694.98,Yalnız on bin dokuz yüz kırk dokuz lira seksen dokuz kuruş
+SNT2025000000178,SP0000181,2025-08-28,Berna Gürsoy,83012221526,Sinop,1433.33,286.66,1719.99,20:286.66,Yalnız bin yedi yüz on dokuz lira doksan dokuz kuruş
+SNT2025000000179,SP0000182,2025-08-28,Sena Gül,80855586218,İzmir,1718.09,171.81,1889.90,10:171.81,Yalnız bin sekiz yüz seksen dokuz lira doksan kuruş
+SNT2025000000180,SP0000183,2025-08-28,Arzu Karaca,49511983808,Balıkesir,6386.97,1245.03,7632.00,1:1.70|20:1243.33,Yalnız yedi bin altı yüz otuz iki lira
+SNT2025000000181,SP0000184,2025-08-29,Aslı Ünal,34877076530,Iğdır,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000182,SP0000185,2025-08-29,Burcu Erol,30647216526,Ordu,564.36,5.64,570.00,1:5.64,Yalnız beş yüz yetmiş lira
+SNT2025000000183,SP0000186,2025-08-30,Türkan Ünal,80263572520,Kırıkkale,2768.47,537.51,3305.98,1:0.85|20:536.66,Yalnız üç bin üç yüz beş lira doksan sekiz kuruş
+SNT2025000000184,SP0000187,2025-08-30,Mustafa Yılmaz,31542887446,Konya,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000185,SP0000188,2025-08-30,Coşkun Yılmaz,52816101228,Diyarbakır,19571.18,2578.79,22149.97,10:1335.46|20:1243.33,Yalnız yirmi iki bin yüz kırk dokuz lira doksan yedi kuruş
+SNT2025000000186,SP0000189,2025-09-01,Canan Zorlu,71309776538,Hatay,323.39,36.50,359.89,10:28.18|20:8.32,Yalnız üç yüz elli dokuz lira seksen dokuz kuruş
+SNT2025000000187,SP0000190,2025-09-01,Burcu Erol,30647216526,Ordu,133.25,26.65,159.90,20:26.65,Yalnız yüz elli dokuz lira doksan kuruş
+SNT2025000000188,SP0000191,2025-09-02,Berna Gürsoy,83012221526,Sinop,199.90,9.90,209.80,1:1.58|20:8.32,Yalnız iki yüz dokuz lira seksen kuruş
+SNT2025000000189,SP0000192,2025-09-03,Arzu Karaca,49511983808,Balıkesir,6248.78,617.21,6865.99,1:0.85|10:616.36,Yalnız altı bin sekiz yüz altmış beş lira doksan dokuz kuruş
+SNT2025000000190,SP0000193,2025-09-05,Coşkun Yılmaz,52816101228,Diyarbakır,7034.98,1390.82,8425.80,1:0.85|20:1389.97,Yalnız sekiz bin dört yüz yirmi beş lira seksen kuruş
+SNT2025000000191,SP0000194,2025-09-07,Türkan Ünal,80263572520,Kırıkkale,1427.26,142.73,1569.99,10:142.73,Yalnız bin beş yüz altmış dokuz lira doksan dokuz kuruş
+SNT2025000000192,SP0000195,2025-09-08,Berna Gürsoy,83012221526,Sinop,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000193,SP0000196,2025-09-10,Sevda Fidan,66330854768,Gümüşhane,459.58,50.12,509.70,10:41.80|20:8.32,Yalnız beş yüz dokuz lira yetmiş kuruş
+SNT2025000000194,SP0000197,2025-09-10,Selin Doğan,17821210754,Diyarbakır,467.31,12.58,479.89,1:4.26|20:8.32,Yalnız dört yüz yetmiş dokuz lira seksen dokuz kuruş
+SNT2025000000195,SP0000198,2025-09-10,Mustafa Yılmaz,31542887446,Konya,199.90,9.90,209.80,1:1.58|20:8.32,Yalnız iki yüz dokuz lira seksen kuruş
+SNT2025000000196,SP0000199,2025-09-11,Burcu Erol,30647216526,Ordu,3287.78,372.10,3659.88,10:285.45|20:86.65,Yalnız üç bin altı yüz elli dokuz lira seksen sekiz kuruş
+SNT2025000000197,SP0000200,2025-09-11,Arzu Karaca,49511983808,Balıkesir,2683.32,536.66,3219.98,20:536.66,Yalnız üç bin iki yüz on dokuz lira doksan sekiz kuruş
+SNT2025000000198,SP0000201,2025-09-13,Berna Gürsoy,83012221526,Sinop,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000199,SP0000202,2025-09-13,Miray Işık,15569864734,Muğla,1433.32,286.66,1719.98,20:286.66,Yalnız bin yedi yüz on dokuz lira doksan sekiz kuruş
+SNT2025000000200,SP0000203,2025-09-15,Hakan Koç,94808951374,Diyarbakır,433.25,86.65,519.90,20:86.65,Yalnız beş yüz on dokuz lira doksan kuruş
+SNT2025000000201,SP0000204,2025-09-16,Samet Öztürk,71643023916,Bingöl,1445.36,144.54,1589.90,10:144.54,Yalnız bin beş yüz seksen dokuz lira doksan kuruş
+SNT2025000000202,SP0000205,2025-09-17,Sena Gül,80855586218,İzmir,250.58,29.22,279.80,10:20.90|20:8.32,Yalnız iki yüz yetmiş dokuz lira seksen kuruş
+SNT2025000000203,SP0000206,2025-09-19,Sefa Yavuz,44557955734,Erzincan,6363.55,656.34,7019.89,10:616.36|20:39.98,Yalnız yedi bin on dokuz lira seksen dokuz kuruş
+SNT2025000000204,SP0000207,2025-09-19,Yeliz Güneş,67641532048,Düzce,358.21,11.49,369.70,1:3.17|20:8.32,Yalnız üç yüz altmış dokuz lira yetmiş kuruş
+SNT2025000000205,SP0000208,2025-09-21,Sena Gül,80855586218,İzmir,7643.93,1386.06,9029.99,10:142.73|20:1243.33,Yalnız dokuz bin yirmi dokuz lira doksan dokuz kuruş
+SNT2025000000206,SP0000209,2025-09-22,Kaan Aksoy,58823915742,Malatya,3560.07,695.83,4255.90,1:0.85|20:694.98,Yalnız dört bin iki yüz elli beş lira doksan kuruş
+SNT2025000000207,SP0000210,2025-09-22,Türkan Ünal,80263572520,Kırıkkale,1462.95,96.95,1559.90,1:10.30|20:86.65,Yalnız bin beş yüz elli dokuz lira doksan kuruş
+SNT2025000000208,SP0000211,2025-09-22,Aras Yıldız,83208321412,Zonguldak,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000209,SP0000212,2025-09-22,Yunus Yıldız,38227119250,Ankara,9576.40,943.39,10519.79,1:1.58|10:941.81,Yalnız on bin beş yüz on dokuz lira yetmiş dokuz kuruş
+SNT2025000000210,SP0000213,2025-09-22,Hakan Koç,94808951374,Diyarbakır,6575.00,1314.99,7889.99,20:1314.99,Yalnız yedi bin sekiz yüz seksen dokuz lira doksan dokuz kuruş
+SNT2025000000211,SP0000214,2025-09-24,Berna Gürsoy,83012221526,Sinop,754.37,75.43,829.80,10:75.43,Yalnız sekiz yüz yirmi dokuz lira seksen kuruş
+SNT2025000000212,SP0000215,2025-09-27,Coşkun Yılmaz,52816101228,Diyarbakır,12327.25,1232.73,13559.98,10:1232.73,Yalnız on üç bin beş yüz elli dokuz lira doksan sekiz kuruş
+SNT2025000000213,SP0000216,2025-09-27,Sevda Fidan,66330854768,Gümüşhane,285.05,10.75,295.80,1:2.43|20:8.32,Yalnız iki yüz doksan beş lira seksen kuruş
+SNT2025000000214,SP0000217,2025-09-28,Sena Gül,80855586218,İzmir,6460.56,619.33,7079.89,1:2.97|10:616.36,Yalnız yedi bin yetmiş dokuz lira seksen dokuz kuruş
+SNT2025000000215,SP0000218,2025-09-30,Coşkun Yılmaz,52816101228,Diyarbakır,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000216,SP0000219,2025-09-30,Coşkun Yılmaz,52816101228,Diyarbakır,211.88,10.02,221.90,1:1.70|20:8.32,Yalnız iki yüz yirmi bir lira doksan kuruş
+SNT2025000000217,SP0000220,2025-09-30,Canan Zorlu,71309776538,Hatay,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000218,SP0000221,2025-10-02,Coşkun Yılmaz,52816101228,Diyarbakır,7599.99,760.00,8359.99,10:760.00,Yalnız sekiz bin üç yüz elli dokuz lira doksan dokuz kuruş
+SNT2025000000219,SP0000222,2025-10-02,Yunus Yıldız,38227119250,Ankara,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000220,SP0000223,2025-10-05,Samet Öztürk,71643023916,Bingöl,508.33,101.66,609.99,20:101.66,Yalnız altı yüz dokuz lira doksan dokuz kuruş
+SNT2025000000221,SP0000224,2025-10-05,Canan Zorlu,71309776538,Hatay,564.36,5.64,570.00,1:5.64,Yalnız beş yüz yetmiş lira
+SNT2025000000222,SP0000225,2025-10-05,Mustafa Yılmaz,31542887446,Konya,10055.21,1394.68,11449.89,10:616.36|20:778.32,Yalnız on bir bin dört yüz kırk dokuz lira seksen dokuz kuruş
+SNT2025000000223,SP0000226,2025-10-06,Aras Yıldız,83208321412,Zonguldak,433.24,86.65,519.89,20:86.65,Yalnız beş yüz on dokuz lira seksen dokuz kuruş
+SNT2025000000224,SP0000227,2025-10-06,Canan Zorlu,71309776538,Hatay,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000225,SP0000228,2025-10-07,Samet Öztürk,71643023916,Bingöl,1710.43,239.36,1949.79,10:102.73|20:136.63,Yalnız bin dokuz yüz kırk dokuz lira yetmiş dokuz kuruş
+SNT2025000000226,SP0000229,2025-10-08,Yeliz Güneş,67641532048,Düzce,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000227,SP0000230,2025-10-08,Mustafa Yılmaz,31542887446,Konya,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000228,SP0000231,2025-10-09,Selin Doğan,17821210754,Diyarbakır,8163.62,1016.36,9179.98,10:616.36|20:400.00,Yalnız dokuz bin yüz yetmiş dokuz lira doksan sekiz kuruş
+SNT2025000000229,SP0000232,2025-10-09,Coşkun Yılmaz,52816101228,Diyarbakır,15095.72,1770.24,16865.96,1:0.85|10:1232.73|20:536.66,Yalnız on altı bin sekiz yüz altmış beş lira doksan altı kuruş
+SNT2025000000230,SP0000233,2025-10-10,Aras Yıldız,83208321412,Zonguldak,3932.30,527.39,4459.69,10:259.06|20:268.33,Yalnız dört bin dört yüz elli dokuz lira altmış dokuz kuruş
+SNT2025000000231,SP0000234,2025-10-15,Canan Zorlu,71309776538,Hatay,249.91,49.99,299.90,20:49.99,Yalnız iki yüz doksan dokuz lira doksan kuruş
+SNT2025000000232,SP0000235,2025-10-15,Ceren Karataş,52010921202,Bartın,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000233,SP0000236,2025-10-15,Miray Işık,15569864734,Muğla,13668.91,1501.06,15169.97,10:1232.73|20:268.33,Yalnız on beş bin yüz altmış dokuz lira doksan yedi kuruş
+SNT2025000000234,SP0000237,2025-10-16,Ceren Karataş,52010921202,Bartın,199.90,9.90,209.80,1:1.58|20:8.32,Yalnız iki yüz dokuz lira seksen kuruş
+SNT2025000000235,SP0000238,2025-10-17,Canan Zorlu,71309776538,Hatay,7190.89,719.09,7909.98,10:719.09,Yalnız yedi bin dokuz yüz dokuz lira doksan sekiz kuruş
+SNT2025000000236,SP0000239,2025-10-17,Aras Bayram,80725724702,Kayseri,126.73,9.17,135.90,1:0.85|20:8.32,Yalnız yüz otuz beş lira doksan kuruş
+SNT2025000000237,SP0000240,2025-10-17,Aras Bayram,80725724702,Kayseri,338.51,11.29,349.80,1:2.97|20:8.32,Yalnız üç yüz kırk dokuz lira seksen kuruş
+SNT2025000000238,SP0000241,2025-10-17,Yeliz Güneş,67641532048,Düzce,1836.18,183.62,2019.80,10:183.62,Yalnız iki bin on dokuz lira seksen kuruş
+SNT2025000000239,SP0000242,2025-10-18,Miray Işık,15569864734,Muğla,6216.67,1243.33,7460.00,20:1243.33,Yalnız yedi bin dört yüz altmış lira
+SNT2025000000240,SP0000243,2025-10-18,Türkan Ünal,80263572520,Kırıkkale,323.39,36.50,359.89,10:28.18|20:8.32,Yalnız üç yüz elli dokuz lira seksen dokuz kuruş
+SNT2025000000241,SP0000244,2025-10-20,Samet Öztürk,71643023916,Bingöl,12327.25,1232.73,13559.98,10:1232.73,Yalnız on üç bin beş yüz elli dokuz lira doksan sekiz kuruş
+SNT2025000000242,SP0000245,2025-10-20,Yiğit Özel,57630776898,Denizli,1906.02,273.97,2179.99,1:5.64|20:268.33,Yalnız iki bin yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000243,SP0000246,2025-10-20,Miray Işık,15569864734,Muğla,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000244,SP0000247,2025-10-20,Samet Öztürk,71643023916,Bingöl,1739.70,166.30,1906.00,1:0.85|10:165.45,Yalnız bin dokuz yüz altı lira
+SNT2025000000245,SP0000248,2025-10-23,Burcu Erol,30647216526,Ordu,508.25,101.65,609.90,20:101.65,Yalnız altı yüz dokuz lira doksan kuruş
+SNT2025000000246,SP0000249,2025-10-23,Sefa Yavuz,44557955734,Erzincan,9883.91,1215.88,11099.79,10:760.90|20:454.98,Yalnız on bir bin doksan dokuz lira yetmiş dokuz kuruş
+SNT2025000000247,SP0000250,2025-10-23,Miray Işık,15569864734,Muğla,3474.92,694.98,4169.90,20:694.98,Yalnız dört bin yüz altmış dokuz lira doksan kuruş
+SNT2025000000248,SP0000251,2025-10-24,Fatma Atasoy,39254683202,Muğla,1833.25,366.65,2199.90,20:366.65,Yalnız iki bin yüz doksan dokuz lira doksan kuruş
+SNT2025000000249,SP0000252,2025-10-24,Sena Gül,80855586218,İzmir,6861.76,1047.83,7909.59,10:324.52|20:723.31,Yalnız yedi bin dokuz yüz dokuz lira elli dokuz kuruş
+SNT2025000000250,SP0000253,2025-10-25,Arzu Karaca,49511983808,Balıkesir,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000251,SP0000254,2025-10-26,Sena Gül,80855586218,İzmir,6301.82,1244.18,7546.00,1:0.85|20:1243.33,Yalnız yedi bin beş yüz kırk altı lira
+SNT2025000000252,SP0000256,2025-10-26,Miray Işık,15569864734,Muğla,449.82,89.97,539.79,20:89.97,Yalnız beş yüz otuz dokuz lira yetmiş dokuz kuruş
+SNT2025000000253,SP0000257,2025-10-27,Berna Gürsoy,83012221526,Sinop,648.77,57.21,705.98,1:0.85|10:56.36,Yalnız yedi yüz beş lira doksan sekiz kuruş
+SNT2025000000254,SP0000258,2025-10-30,Berna Gürsoy,83012221526,Sinop,5545.42,554.54,6099.96,10:554.54,Yalnız altı bin doksan dokuz lira doksan altı kuruş
+SNT2025000000255,SP0000259,2025-10-30,Ceren Karataş,52010921202,Bartın,12412.40,1233.58,13645.98,1:0.85|10:1232.73,Yalnız on üç bin altı yüz kırk beş lira doksan sekiz kuruş
+SNT2025000000256,SP0000260,2025-10-31,Canan Zorlu,71309776538,Hatay,6321.95,617.94,6939.89,1:1.58|10:616.36,Yalnız altı bin dokuz yüz otuz dokuz lira seksen dokuz kuruş
+SNT2025000000257,SP0000261,2025-10-31,Coşkun Yılmaz,52816101228,Diyarbakır,1341.66,268.33,1609.99,20:268.33,Yalnız bin altı yüz dokuz lira doksan dokuz kuruş
+SNT2025000000258,SP0000262,2025-11-01,Samet Öztürk,71643023916,Bingöl,1341.66,268.33,1609.99,20:268.33,Yalnız bin altı yüz dokuz lira doksan dokuz kuruş
+SNT2025000000259,SP0000263,2025-11-02,Canan Zorlu,71309776538,Hatay,383.16,76.64,459.80,20:76.64,Yalnız dört yüz elli dokuz lira seksen kuruş
+SNT2025000000260,SP0000264,2025-11-02,Miray Işık,15569864734,Muğla,4902.18,837.71,5739.89,10:142.73|20:694.98,Yalnız beş bin yedi yüz otuz dokuz lira seksen dokuz kuruş
+SNT2025000000261,SP0000265,2025-11-03,Hakan Koç,94808951374,Diyarbakır,6321.95,617.94,6939.89,1:1.58|10:616.36,Yalnız altı bin dokuz yüz otuz dokuz lira seksen dokuz kuruş
+SNT2025000000262,SP0000266,2025-11-04,Serdar Demir,16923779756,Muş,8850.74,1019.23,9869.97,10:750.90|20:268.33,Yalnız dokuz bin sekiz yüz altmış dokuz lira doksan yedi kuruş
+SNT2025000000263,SP0000267,2025-11-04,Ceren Karataş,52010921202,Bartın,6248.78,617.21,6865.99,1:0.85|10:616.36,Yalnız altı bin sekiz yüz altmış beş lira doksan dokuz kuruş
+SNT2025000000264,SP0000268,2025-11-06,Aras Bayram,80725724702,Kayseri,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000265,SP0000269,2025-11-07,Samet Öztürk,71643023916,Bingöl,18490.88,1849.09,20339.97,10:1849.09,Yalnız yirmi bin üç yüz otuz dokuz lira doksan yedi kuruş
+SNT2025000000266,SP0000270,2025-11-08,Türkan Ünal,80263572520,Kırıkkale,6248.78,617.21,6865.99,1:0.85|10:616.36,Yalnız altı bin sekiz yüz altmış beş lira doksan dokuz kuruş
+SNT2025000000267,SP0000271,2025-11-09,Aras Bayram,80725724702,Kayseri,443.48,72.51,515.99,1:0.85|20:71.66,Yalnız beş yüz on beş lira doksan dokuz kuruş
+SNT2025000000268,SP0000272,2025-11-09,Sena Gül,80855586218,İzmir,420.88,30.92,451.80,1:1.70|10:20.90|20:8.32,Yalnız dört yüz elli bir lira seksen kuruş
+SNT2025000000269,SP0000273,2025-11-10,Aras Yıldız,83208321412,Zonguldak,1796.21,313.78,2109.99,10:45.45|20:268.33,Yalnız iki bin yüz dokuz lira doksan dokuz kuruş
+SNT2025000000270,SP0000274,2025-11-10,Aras Yıldız,83208321412,Zonguldak,564.36,5.64,570.00,1:5.64,Yalnız beş yüz yetmiş lira
+SNT2025000000271,SP0000275,2025-11-11,Türkan Ünal,80263572520,Kırıkkale,564.36,5.64,570.00,1:5.64,Yalnız beş yüz yetmiş lira
+SNT2025000000272,SP0000276,2025-11-12,Sena Gül,80855586218,İzmir,22000.95,2534.92,24535.87,1:0.85|10:1849.09|20:684.98,Yalnız yirmi dört bin beş yüz otuz beş lira seksen yedi kuruş
+SNT2025000000273,SP0000277,2025-11-13,Samet Öztürk,71643023916,Bingöl,1097.60,112.29,1209.89,1:5.64|20:106.65,Yalnız bin iki yüz dokuz lira seksen dokuz kuruş
+SNT2025000000274,SP0000278,2025-11-14,Berna Gürsoy,83012221526,Sinop,183.16,36.64,219.80,20:36.64,Yalnız iki yüz on dokuz lira seksen kuruş
+SNT2025000000275,SP0000279,2025-11-15,Serdar Demir,16923779756,Muş,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000276,SP0000280,2025-11-15,Berna Gürsoy,83012221526,Sinop,3449.83,689.97,4139.80,20:689.97,Yalnız dört bin yüz otuz dokuz lira seksen kuruş
+SNT2025000000277,SP0000281,2025-11-15,Samet Öztürk,71643023916,Bingöl,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000278,SP0000282,2025-11-16,Berna Gürsoy,83012221526,Sinop,126.73,9.17,135.90,1:0.85|20:8.32,Yalnız yüz otuz beş lira doksan kuruş
+SNT2025000000279,SP0000283,2025-11-16,Miray Işık,15569864734,Muğla,4290.05,599.83,4889.88,10:258.18|20:341.65,Yalnız dört bin sekiz yüz seksen dokuz lira seksen sekiz kuruş
+SNT2025000000280,SP0000284,2025-11-16,Hakan Koç,94808951374,Diyarbakır,1409.00,140.90,1549.90,10:140.90,Yalnız bin beş yüz kırk dokuz lira doksan kuruş
+SNT2025000000281,SP0000285,2025-11-17,Songül Köse,76192700912,Ağrı,6727.99,622.00,7349.99,1:5.64|10:616.36,Yalnız yedi bin üç yüz kırk dokuz lira doksan dokuz kuruş
+SNT2025000000282,SP0000286,2025-11-17,Türkan Ünal,80263572520,Kırıkkale,6571.88,698.01,7269.89,10:616.36|20:81.65,Yalnız yedi bin iki yüz altmış dokuz lira seksen dokuz kuruş
+SNT2025000000283,SP0000287,2025-11-18,Samet Öztürk,71643023916,Bingöl,649.99,130.00,779.99,20:130.00,Yalnız yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000284,SP0000288,2025-11-19,Berna Gürsoy,83012221526,Sinop,1508.33,301.66,1809.99,20:301.66,Yalnız bin sekiz yüz dokuz lira doksan dokuz kuruş
+SNT2025000000285,SP0000289,2025-11-19,Coşkun Yılmaz,52816101228,Diyarbakır,199.90,9.90,209.80,1:1.58|20:8.32,Yalnız iki yüz dokuz lira seksen kuruş
+SNT2025000000286,SP0000291,2025-11-21,Burcu Erol,30647216526,Ordu,4024.98,804.99,4829.97,20:804.99,Yalnız dört bin sekiz yüz yirmi dokuz lira doksan yedi kuruş
+SNT2025000000287,SP0000292,2025-11-21,Aras Bayram,80725724702,Kayseri,1099.91,109.99,1209.90,10:109.99,Yalnız bin iki yüz dokuz lira doksan kuruş
+SNT2025000000288,SP0000293,2025-11-21,Berna Gürsoy,83012221526,Sinop,2890.73,289.07,3179.80,10:289.07,Yalnız üç bin yüz yetmiş dokuz lira seksen kuruş
+SNT2025000000289,SP0000294,2025-11-22,Sena Gül,80855586218,İzmir,168.23,9.59,177.82,1:1.27|20:8.32,Yalnız yüz yetmiş yedi lira seksen iki kuruş
+SNT2025000000290,SP0000295,2025-11-22,Arzu Karaca,49511983808,Balıkesir,4724.67,944.93,5669.60,20:944.93,Yalnız beş bin altı yüz altmış dokuz lira altmış kuruş
+SNT2025000000291,SP0000296,2025-11-22,Samet Öztürk,71643023916,Bingöl,6702.66,735.75,7438.41,10:604.76|20:130.99,Yalnız yedi bin dört yüz otuz sekiz lira kırk bir kuruş
+SNT2025000000292,SP0000297,2025-11-22,Berna Gürsoy,83012221526,Sinop,1774.43,354.89,2129.32,20:354.89,Yalnız iki bin yüz yirmi dokuz lira otuz iki kuruş
+SNT2025000000293,SP0000298,2025-11-22,Berna Gürsoy,83012221526,Sinop,165.07,9.55,174.62,1:1.23|20:8.32,Yalnız yüz yetmiş dört lira altmış iki kuruş
+SNT2025000000294,SP0000299,2025-11-22,Canan Zorlu,71309776538,Hatay,1244.73,124.47,1369.20,10:124.47,Yalnız bin üç yüz altmış dokuz lira yirmi kuruş
+SNT2025000000295,SP0000300,2025-11-23,Burcu Erol,30647216526,Ordu,126.73,9.17,135.90,1:0.85|20:8.32,Yalnız yüz otuz beş lira doksan kuruş
+SNT2025000000296,SP0000301,2025-11-23,Berna Gürsoy,83012221526,Sinop,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000297,SP0000302,2025-11-24,Berna Gürsoy,83012221526,Sinop,1274.36,127.44,1401.80,10:127.44,Yalnız bin dört yüz bir lira seksen kuruş
+SNT2025000000298,SP0000303,2025-11-24,Aras Yıldız,83208321412,Zonguldak,109.70,9.00,118.70,1:0.68|20:8.32,Yalnız yüz on sekiz lira yetmiş kuruş
+SNT2025000000299,SP0000304,2025-11-24,Hakan Koç,94808951374,Diyarbakır,1782.84,342.94,2125.78,10:13.64|20:329.30,Yalnız iki bin yüz yirmi beş lira yetmiş sekiz kuruş
+SNT2025000000300,SP0000305,2025-11-24,Aras Yıldız,83208321412,Zonguldak,5346.33,1069.27,6415.60,20:1069.27,Yalnız altı bin dört yüz on beş lira altmış kuruş
+SNT2025000000301,SP0000306,2025-11-24,Türkan Ünal,80263572520,Kırıkkale,4499.45,449.94,4949.39,10:449.94,Yalnız dört bin dokuz yüz kırk dokuz lira otuz dokuz kuruş
+SNT2025000000302,SP0000307,2025-11-24,Berna Gürsoy,83012221526,Sinop,676.77,6.76,683.53,1:6.76,Yalnız altı yüz seksen üç lira elli üç kuruş
+SNT2025000000303,SP0000309,2025-11-26,Türkan Ünal,80263572520,Kırıkkale,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000304,SP0000310,2025-11-28,Canan Zorlu,71309776538,Hatay,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000305,SP0000311,2025-11-28,Berna Gürsoy,83012221526,Sinop,2445.35,244.53,2689.88,10:244.53,Yalnız iki bin altı yüz seksen dokuz lira seksen sekiz kuruş
+SNT2025000000306,SP0000312,2025-11-29,Arzu Karaca,49511983808,Balıkesir,126.73,9.17,135.90,1:0.85|20:8.32,Yalnız yüz otuz beş lira doksan kuruş
+SNT2025000000307,SP0000313,2025-11-29,Burcu Erol,30647216526,Ordu,6321.95,617.94,6939.89,1:1.58|10:616.36,Yalnız altı bin dokuz yüz otuz dokuz lira seksen dokuz kuruş
+SNT2025000000308,SP0000314,2025-11-29,Tuba Çelik,47769302648,İstanbul,1341.66,268.33,1609.99,20:268.33,Yalnız bin altı yüz dokuz lira doksan dokuz kuruş
+SNT2025000000309,SP0000315,2025-11-30,Mustafa Yılmaz,31542887446,Konya,10871.78,1527.91,12399.69,1:1.58|10:616.36|20:909.97,Yalnız on iki bin üç yüz doksan dokuz lira altmış dokuz kuruş
+SNT2025000000310,SP0000316,2025-11-30,Aslı Ünal,34877076530,Iğdır,1341.66,268.33,1609.99,20:268.33,Yalnız bin altı yüz dokuz lira doksan dokuz kuruş
+SNT2025000000311,SP0000317,2025-11-30,Burcu Erol,30647216526,Ordu,2683.32,536.66,3219.98,20:536.66,Yalnız üç bin iki yüz on dokuz lira doksan sekiz kuruş
+SNT2025000000312,SP0000319,2025-11-30,Samet Öztürk,71643023916,Bingöl,1511.96,270.03,1781.99,1:1.70|20:268.33,Yalnız bin yedi yüz seksen bir lira doksan dokuz kuruş
+SNT2025000000313,SP0000320,2025-12-01,Hakan Koç,94808951374,Diyarbakır,6554.45,655.44,7209.89,10:655.44,Yalnız yedi bin iki yüz dokuz lira seksen dokuz kuruş
+SNT2025000000314,SP0000321,2025-12-01,Burcu Erol,30647216526,Ordu,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000315,SP0000322,2025-12-02,Serdar Demir,16923779756,Muş,126.73,9.17,135.90,1:0.85|20:8.32,Yalnız yüz otuz beş lira doksan kuruş
+SNT2025000000316,SP0000323,2025-12-02,Türkan Ünal,80263572520,Kırıkkale,716.65,143.33,859.98,20:143.33,Yalnız sekiz yüz elli dokuz lira doksan sekiz kuruş
+SNT2025000000317,SP0000324,2025-12-03,Yunus Yıldız,38227119250,Ankara,211.88,10.02,221.90,1:1.70|20:8.32,Yalnız iki yüz yirmi bir lira doksan kuruş
+SNT2025000000318,SP0000325,2025-12-04,Sevda Fidan,66330854768,Gümüşhane,133.25,26.65,159.90,20:26.65,Yalnız yüz elli dokuz lira doksan kuruş
+SNT2025000000319,SP0000326,2025-12-04,Türkan Ünal,80263572520,Kırıkkale,211.88,10.02,221.90,1:1.70|20:8.32,Yalnız iki yüz yirmi bir lira doksan kuruş
+SNT2025000000320,SP0000327,2025-12-05,Yeliz Güneş,67641532048,Düzce,7505.29,884.69,8389.98,10:616.36|20:268.33,Yalnız sekiz bin üç yüz seksen dokuz lira doksan sekiz kuruş
+SNT2025000000321,SP0000328,2025-12-05,Türkan Ünal,80263572520,Kırıkkale,508.33,101.66,609.99,20:101.66,Yalnız altı yüz dokuz lira doksan dokuz kuruş
+SNT2025000000322,SP0000329,2025-12-05,Hakan Koç,94808951374,Diyarbakır,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000323,SP0000330,2025-12-05,Samet Öztürk,71643023916,Bingöl,6216.67,1243.33,7460.00,20:1243.33,Yalnız yedi bin dört yüz altmış lira
+SNT2025000000324,SP0000331,2025-12-06,Türkan Ünal,80263572520,Kırıkkale,7037.01,732.77,7769.78,1:1.58|10:644.54|20:86.65,Yalnız yedi bin yedi yüz altmış dokuz lira yetmiş sekiz kuruş
+SNT2025000000325,SP0000332,2025-12-06,Miray Işık,15569864734,Muğla,1616.66,323.33,1939.99,20:323.33,Yalnız bin dokuz yüz otuz dokuz lira doksan dokuz kuruş
+SNT2025000000326,SP0000333,2025-12-06,Canan Zorlu,71309776538,Hatay,6896.87,763.01,7659.88,10:616.36|20:146.65,Yalnız yedi bin altı yüz elli dokuz lira seksen sekiz kuruş
+SNT2025000000327,SP0000334,2025-12-07,Miray Işık,15569864734,Muğla,1445.36,144.54,1589.90,10:144.54,Yalnız bin beş yüz seksen dokuz lira doksan kuruş
+SNT2025000000328,SP0000335,2025-12-08,Sevda Fidan,66330854768,Gümüşhane,487.03,12.77,499.80,1:4.45|20:8.32,Yalnız dört yüz doksan dokuz lira seksen kuruş
+SNT2025000000329,SP0000336,2025-12-08,Fatma Atasoy,39254683202,Muğla,126.73,9.17,135.90,1:0.85|20:8.32,Yalnız yüz otuz beş lira doksan kuruş
+SNT2025000000330,SP0000337,2025-12-08,Miray Işık,15569864734,Muğla,3799.90,739.98,4539.88,10:20.00|20:719.98,Yalnız dört bin beş yüz otuz dokuz lira seksen sekiz kuruş
+SNT2025000000331,SP0000338,2025-12-08,Samet Öztürk,71643023916,Bingöl,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000332,SP0000339,2025-12-10,Mustafa Yılmaz,31542887446,Konya,17838.38,2951.31,20789.69,10:616.36|20:2334.95,Yalnız yirmi bin yedi yüz seksen dokuz lira altmış dokuz kuruş
+SNT2025000000333,SP0000340,2025-12-10,Kaan Aydın,91119411894,Kocaeli,13636.32,1363.64,14999.96,10:1363.64,Yalnız on dört bin dokuz yüz doksan dokuz lira doksan altı kuruş
+SNT2025000000334,SP0000341,2025-12-10,Burcu Erol,30647216526,Ordu,6301.82,1244.18,7546.00,1:0.85|20:1243.33,Yalnız yedi bin beş yüz kırk altı lira
+SNT2025000000335,SP0000342,2025-12-11,Canan Zorlu,71309776538,Hatay,725.00,145.00,870.00,20:145.00,Yalnız sekiz yüz yetmiş lira
+SNT2025000000336,SP0000343,2025-12-12,Sena Gül,80855586218,İzmir,126.73,9.17,135.90,1:0.85|20:8.32,Yalnız yüz otuz beş lira doksan kuruş
+SNT2025000000337,SP0000344,2025-12-12,Berna Gürsoy,83012221526,Sinop,6372.63,637.26,7009.89,10:637.26,Yalnız yedi bin dokuz lira seksen dokuz kuruş
+SNT2025000000338,SP0000345,2025-12-13,Yunus Yıldız,38227119250,Ankara,7190.89,719.09,7909.98,10:719.09,Yalnız yedi bin dokuz yüz dokuz lira doksan sekiz kuruş
+SNT2025000000339,SP0000346,2025-12-13,Burcu Erol,30647216526,Ordu,6216.67,1243.33,7460.00,20:1243.33,Yalnız yedi bin dört yüz altmış lira
+SNT2025000000340,SP0000347,2025-12-14,Büşra Öner,78058629184,Mersin,2638.47,491.33,3129.80,10:36.35|20:454.98,Yalnız üç bin yüz yirmi dokuz lira seksen kuruş
+SNT2025000000341,SP0000348,2025-12-14,Samet Öztürk,71643023916,Bingöl,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş
+SNT2025000000342,SP0000349,2025-12-17,Aras Bayram,80725724702,Kayseri,323.39,36.50,359.89,10:28.18|20:8.32,Yalnız üç yüz elli dokuz lira seksen dokuz kuruş
+SNT2025000000343,SP0000350,2025-12-18,Canan Zorlu,71309776538,Hatay,564.36,5.64,570.00,1:5.64,Yalnız beş yüz yetmiş lira
+SNT2025000000344,SP0000351,2025-12-19,Türkan Ünal,80263572520,Kırıkkale,4235.13,830.84,5065.97,1:0.85|20:829.99,Yalnız beş bin altmış beş lira doksan yedi kuruş
+SNT2025000000345,SP0000352,2025-12-20,Ceren Karataş,52010921202,Bartın,6727.99,622.00,7349.99,1:5.64|10:616.36,Yalnız yedi bin üç yüz kırk dokuz lira doksan dokuz kuruş
+SNT2025000000346,SP0000353,2025-12-20,Samet Öztürk,71643023916,Bingöl,6727.99,622.00,7349.99,1:5.64|10:616.36,Yalnız yedi bin üç yüz kırk dokuz lira doksan dokuz kuruş
+SNT2025000000347,SP0000354,2025-12-21,Aras Bayram,80725724702,Kayseri,10188.61,1421.35,11609.96,10:616.36|20:804.99,Yalnız on bir bin altı yüz dokuz lira doksan altı kuruş
+SNT2025000000348,SP0000355,2025-12-25,Samet Öztürk,71643023916,Bingöl,7190.89,719.09,7909.98,10:719.09,Yalnız yedi bin dokuz yüz dokuz lira doksan sekiz kuruş
+SNT2025000000349,SP0000356,2025-12-26,Berna Gürsoy,83012221526,Sinop,1505.29,244.69,1749.98,10:56.36|20:188.33,Yalnız bin yedi yüz kırk dokuz lira doksan sekiz kuruş
+SNT2025000000350,SP0000357,2025-12-26,Yeliz Güneş,67641532048,Düzce,1341.66,268.33,1609.99,20:268.33,Yalnız bin altı yüz dokuz lira doksan dokuz kuruş
+SNT2025000000351,SP0000358,2025-12-27,Samet Öztürk,71643023916,Bingöl,508.33,101.66,609.99,20:101.66,Yalnız altı yüz dokuz lira doksan dokuz kuruş
+SNT2025000000352,SP0000359,2025-12-28,Mustafa Yılmaz,31542887446,Konya,2799.99,559.99,3359.98,20:559.99,Yalnız üç bin üç yüz elli dokuz lira doksan sekiz kuruş
+SNT2025000000353,SP0000360,2025-12-29,Coşkun Yılmaz,52816101228,Diyarbakır,432.40,47.40,479.80,10:39.08|20:8.32,Yalnız dört yüz yetmiş dokuz lira seksen kuruş
+SNT2025000000354,SP0000361,2025-12-29,Miray Işık,15569864734,Muğla,716.65,143.33,859.98,20:143.33,Yalnız sekiz yüz elli dokuz lira doksan sekiz kuruş
+SNT2025000000355,SP0000362,2025-12-30,Aras Yıldız,83208321412,Zonguldak,518.40,87.50,605.90,1:0.85|20:86.65,Yalnız altı yüz beş lira doksan kuruş
+SNT2025000000356,SP0000363,2025-12-31,Samet Öztürk,71643023916,Bingöl,1341.66,268.33,1609.99,20:268.33,Yalnız bin altı yüz dokuz lira doksan dokuz kuruş
+SNT2025000000357,SP0000364,2025-12-31,Sevda Fidan,66330854768,Gümüşhane,6163.63,616.36,6779.99,10:616.36,Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş

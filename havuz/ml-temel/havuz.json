@@ -1,0 +1,16 @@
+{
+  "ad": "ml-temel",
+  "baslik": "Yalnız numpy ile sıfırdan makine öğrenmesi temeli",
+  "ozet": "Otomatik türev, sinir ağı katmanları, scikit-learn arayüzlü klasik modeller, sızıntısız değerlendirme ve bir CSV'den tek komutla model + Türkçe rapor üreten araç; tek çalışma zamanı bağımlılığı numpy.",
+  "tur": "python",
+  "gereksinim": { "python": ">=3.11" },
+  "python": { "ekstra": "dev" },
+  "denetle": ["python scripts/check.py"],
+  "uzunDenetim": ["python scripts/check.py --uzun"],
+  "baslat": "python -m ml_temel egit --veri ornekler/veri/musteri_kaybi.csv --hedef kayip --html",
+  "yerTutucular": [
+    { "ara": "ml-temel", "anlam": "dağıtım adı (pyproject.toml, havuz.json)" },
+    { "ara": "ml_temel", "anlam": "Python paket adı (klasör ve içe aktarmalar)" }
+  ],
+  "kopyalamaHaric": [".venv", "ciktilar", "__pycache__", ".mypy_cache", ".ruff_cache", "build", "*.egg-info"]
+}

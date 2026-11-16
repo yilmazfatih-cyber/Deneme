@@ -1,0 +1,4 @@
+# Bu dosyalar bayt bayt sınanır (örnek kümelerin yeniden üretimi, kayıtlı HTTP yanıtları):
+# git satır sonlarını dönüştürmesin.
+ornekler/** -text
+tests/fixtures/** -text

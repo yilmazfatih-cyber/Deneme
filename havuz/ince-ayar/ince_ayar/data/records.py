@@ -60,7 +60,8 @@ class ChatRow(BaseModel):
             expected = "user" if (index - start) % 2 == 0 else "assistant"
             if role != expected:
                 raise PydanticCustomError(
-                    "sohbet_sira", t("veri.sohbet.sira", sira=index, beklenen=expected, bulunan=role)
+                    "sohbet_sira",
+                    t("veri.sohbet.sira", sira=index, beklenen=expected, bulunan=role),
                 )
         if roles[-1] != "assistant":
             raise PydanticCustomError("sohbet_son", t("veri.sohbet.son_asistan", bulunan=roles[-1]))
@@ -126,9 +127,13 @@ class TaggedRow(BaseModel):
         previous = "O"
         for index, tag in enumerate(self.etiketler):
             if tag != "O" and not (tag[:2] in ("B-", "I-") and len(tag) > 2):
-                raise PydanticCustomError("varlik_bicim", t("veri.varlik.bicim", sira=index, etiket=tag))
+                raise PydanticCustomError(
+                    "varlik_bicim", t("veri.varlik.bicim", sira=index, etiket=tag)
+                )
             if tag.startswith("I-") and previous[2:] != tag[2:]:
-                raise PydanticCustomError("varlik_sira", t("veri.varlik.sira", sira=index, etiket=tag))
+                raise PydanticCustomError(
+                    "varlik_sira", t("veri.varlik.sira", sira=index, etiket=tag)
+                )
             previous = tag
         return self
 

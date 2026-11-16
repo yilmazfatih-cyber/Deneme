@@ -116,7 +116,12 @@ const tables = defineHastPlugin({
     visit(node, ctx) {
       ctx.wrapNode(
         node,
-        element('div', { className: ['table-scroll'], tabIndex: 0, role: 'region', ariaLabel: labels(ctx).table.label }),
+        element('div', {
+          className: ['table-scroll'],
+          tabIndex: 0,
+          role: 'region',
+          ariaLabel: labels(ctx).table.label,
+        }),
       )
     },
   },
@@ -139,12 +144,12 @@ const alerts = defineHastPlugin({
       if (!match || marker === undefined) return
       const kind = ALERTS[marker]
       const rest = first.value.slice(match[0].length)
-      const body: HastNode[] = [
+      const body = [
         element('p', { className: ['callout-title'] }, [text(labels(ctx).callout[kind])]),
         ...node.children.map((child) =>
           child === paragraph ? { ...paragraph, children: [text(rest), ...paragraph.children.slice(1)] } : child,
         ),
-      ]
+      ] as HastNode[]
       ctx.replaceNode(node, element('aside', { className: ['callout', `callout-${kind}`], role: 'note' }, body))
     },
   },

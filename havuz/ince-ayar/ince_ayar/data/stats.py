@@ -77,15 +77,30 @@ def render_stats(stats: LengthStats, title: str) -> str:
     """İstatistikleri tablo + (gerekiyorsa) kırpma uyarısı olarak yazar."""
     table = format_table(
         ["örnek", "en az", "ortalama", "p50", "p90", "p95", "p99", "en çok"],
-        [[stats.count, stats.minimum, round(stats.mean, 1), stats.p50, stats.p90, stats.p95,
-          stats.p99, stats.maximum]],
-    )  # fmt: skip
+        [
+            [
+                stats.count,
+                stats.minimum,
+                f"{stats.mean:.1f}",
+                stats.p50,
+                stats.p90,
+                stats.p95,
+                stats.p99,
+                stats.maximum,
+            ]
+        ],
+    )
     lines = [title, table]
     if stats.limit is not None and stats.over_limit:
         lines.append(
-            t("istatistik.kirpma", sayi=stats.over_limit, oran=f"{stats.over_ratio:.1%}",
-              sinir=stats.limit, oneri=stats.suggested_limit)
-        )  # fmt: skip
+            t(
+                "istatistik.kirpma",
+                sayi=stats.over_limit,
+                oran=f"{stats.over_ratio:.1%}",
+                sinir=stats.limit,
+                oneri=stats.suggested_limit,
+            )
+        )
     elif stats.limit is not None:
         lines.append(t("istatistik.sigiyor", sinir=stats.limit))
     return "\n".join(lines)

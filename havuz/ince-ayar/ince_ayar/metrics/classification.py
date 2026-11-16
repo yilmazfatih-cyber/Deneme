@@ -20,6 +20,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 from dataclasses import dataclass
+from itertools import pairwise
 
 from ince_ayar.console import format_table
 from ince_ayar.messages import headers
@@ -124,7 +125,7 @@ def best_binary_threshold(
     if not positive_scores:
         return 0.5, 0.0
     unique = sorted(set(positive_scores))
-    candidates = [0.5] + [(low + high) / 2 for low, high in zip(unique, unique[1:], strict=False)]
+    candidates = [0.5] + [(low + high) / 2 for low, high in pairwise(unique)]
     best_threshold, best_score = 0.5, -1.0
     for threshold in sorted(candidates, key=lambda value: (abs(value - 0.5), value)):
         predicted = [1 if score >= threshold else 0 for score in positive_scores]

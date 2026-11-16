@@ -164,10 +164,11 @@ def leak_free_split(
     indices: dict[str, list[int]] = {name: [] for name in normalized}
     for group, split in assignment.items():
         indices[split].extend(members[group])
-    for name in indices:
-        indices[name].sort()
+    for rows in indices.values():
+        rows.sort()
     label_counts = {
-        name: dict(sorted(Counter(strata[i] for i in rows).items())) for name, rows in indices.items()
+        name: dict(sorted(Counter(strata[i] for i in rows).items()))
+        for name, rows in indices.items()
     }
     report = SplitReport(
         sizes={name: len(rows) for name, rows in indices.items()},

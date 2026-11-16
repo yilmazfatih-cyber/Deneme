@@ -14,6 +14,7 @@ Genişletme: yeni bir gösterim davranışı → `gosterim_kurali` içine bir da
 from __future__ import annotations
 
 import re
+import time
 from collections.abc import Callable, Iterator, Sequence
 from typing import Any, ClassVar
 
@@ -36,10 +37,12 @@ class Sahte(Saglayici):
         kural: Callable[[SohbetIstegi], str | Yanit] | None = None,
         model: str = "sahte-model",
         parca_boyu: int = 8,
+        parca_gecikmesi_sn: float = 0.0,
         gomme_boyutu: int = 256,
         **ortak: Any,
     ) -> None:
         super().__init__(model, **ortak)
+        self.parca_gecikmesi_sn = parca_gecikmesi_sn  # akışı gözle görmek için (arayüz testi)
         self._betik: list[BetikOgesi] = list(yanitlar or [])
         self._betik_verildi = yanitlar is not None
         self._kural = kural
@@ -49,7 +52,8 @@ class Sahte(Saglayici):
 
     @classmethod
     def gosterim(cls, **ortak: Any) -> Sahte:
-        """Çevrimdışı gösterim için kural tabanlı sahte sağlayıcı."""
+        """Çevrimdışı gösterim için kural tabanlı sahte sağlayıcı (akış gözle görülsün diye yavaş)."""
+        ortak.setdefault("parca_gecikmesi_sn", 0.02)
         return cls(kural=gosterim_kurali, model="sahte-gosterim", **ortak)
 
     @staticmethod
@@ -92,24 +96,29 @@ class Sahte(Saglayici):
             yanit.bitis_nedeni = "uzunluk"
         if yanit.kullanim.toplam == 0:
             girdi = sum(len(m.icerik) for m in istek.mesajlar) // 3 + 1
-            yanit.kullanim = Kullanim(girdi_belirteci=girdi, cikti_belirteci=len(yanit.metin) // 3 + 1)
+            yanit.kullanim = Kullanim(
+                girdi_belirteci=girdi, cikti_belirteci=len(yanit.metin) // 3 + 1
+            )
         yanit.model = yanit.model or self.model
         return yanit
 
     def _sohbet_akisi(self, istek: SohbetIstegi) -> Iterator[AkisParcasi]:
         yanit = self._sohbet(istek)
         for bas in range(0, len(yanit.metin), self.parca_boyu):
+            if self.parca_gecikmesi_sn:
+                time.sleep(self.parca_gecikmesi_sn)
             yield AkisParcasi(metin=yanit.metin[bas : bas + self.parca_boyu])
         yield AkisParcasi(son=yanit)
 
     def gom(self, metinler: Sequence[str]) -> list[list[float]]:
         from yz.rag.gomme import KarmaGomme  # geç içe aktarma: rag paketi saglayici'yı kullanır
 
-        return KarmaGomme(boyut=self.gomme_boyutu).gom(metinler)
+        vektorler: list[list[float]] = KarmaGomme(boyut=self.gomme_boyutu).gom(metinler).tolist()
+        return vektorler
 
 
 _ISLEM = re.compile(r"\d+(?:[.,]\d+)?(?:\s*[-+*/x×]\s*\d+(?:[.,]\d+)?)+")
-_KAYNAK = re.compile(r"\[(\d+)\][^\n]*\n(.+)")
+_KAYNAK = re.compile(r"\[(\d+)\][^\n]*\n<<<\n(.*?)\n>>>", re.DOTALL)
 
 
 def gosterim_kurali(istek: SohbetIstegi) -> str | Yanit:
@@ -124,8 +133,11 @@ def gosterim_kurali(istek: SohbetIstegi) -> str | Yanit:
         return Sahte.arac_yaniti("hesapla", {"ifade": ifade})
     kaynak = _KAYNAK.search(soru)
     if kaynak:
-        ilk_cumle = re.split(r"(?<=[.!?])\s", kaynak.group(2).strip())[0]
-        return f"Belgelere göre: {ilk_cumle} [{kaynak.group(1)}]"
+        satirlar = kaynak.group(2).strip().splitlines()
+        govde = " ".join(satirlar[1:] if len(satirlar) > 1 else satirlar)  # ilk satır başlıktır
+        cumleler = re.split(r"(?<=[.!?])\s+", " ".join(govde.split()))
+        secilen = next((c for c in cumleler if len(c.split()) >= 4), cumleler[0])
+        return f"Belgelere göre: {secilen} [{kaynak.group(1)}]"
     if istek.yanit_bicimi is not None:
         return "{}"
     kisa = soru.strip().splitlines()[-1][:200] if soru.strip() else ""

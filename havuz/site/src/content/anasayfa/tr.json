@@ -1,0 +1,76 @@
+{
+  "hero": {
+    "eyebrow": "Yeni: WhatsApp ile hatırlatma",
+    "title": "Randevular dolsun, telefon sussun.",
+    "lead": "Sedir, müşterilerinizin günün her saati kendi randevusunu almasını sağlar; hatırlatmaları gönderir, iptal edilen saati bekleme listesine açar. Siz işinize bakarsınız.",
+    "primary": { "label": "14 gün ücretsiz deneyin", "href": "/iletisim/" },
+    "secondary": { "label": "Nasıl çalışır?", "href": "/#nasil-calisir" },
+    "note": "Kredi kartı gerekmez, kurulum on dakika sürer.",
+    "mockup": {
+      "subtitle": "Salı, 17 Kasım",
+      "title": "Bugünün randevuları",
+      "badge": "6 randevu",
+      "items": [
+        { "time": "09:30", "name": "Deniz Aksoy", "service": "Saç kesimi", "status": "Onaylandı", "tone": "brand" },
+        {
+          "time": "10:15",
+          "name": "Mert Yalçın",
+          "service": "Sakal tıraşı",
+          "status": "Hatırlatıldı",
+          "tone": "accent"
+        },
+        { "time": "11:00", "name": "Selin Toprak", "service": "Boya ve fön", "status": "Onaylandı", "tone": "brand" },
+        { "time": "13:30", "name": "Burak Güneş", "service": "Saç kesimi", "status": "Yeni", "tone": "neutral" }
+      ],
+      "footer": "Yarın için 8 hatırlatma gönderilmek üzere sırada.",
+      "stat": { "value": "7/24", "label": "çevrim içi randevu, tatil günleri dâhil" }
+    }
+  },
+  "features": {
+    "eyebrow": "Özellikler",
+    "title": "Randevu işinin tamamı, tek bir sade ekranda.",
+    "lead": "Takvim, hatırlatma, bekleme listesi ve ödeme birbirini bilir; aynı bilgiyi iki kez yazmazsınız."
+  },
+  "steps": {
+    "eyebrow": "Nasıl çalışır?",
+    "title": "Üç adımda ilk randevunuzu alın.",
+    "lead": "Teknik bilgi gerekmez. Kurulumda takılırsanız ekibimiz ekran paylaşarak yanınızda olur.",
+    "items": [
+      {
+        "title": "Hizmetlerinizi ekleyin",
+        "text": "Hizmet adlarını, sürelerini ve fiyatlarını yazın; çalışma saatlerinizi ve molalarınızı işaretleyin."
+      },
+      {
+        "title": "Bağlantınızı paylaşın",
+        "text": "Size özel randevu sayfasını Instagram profilinize, Google işletme kaydınıza ve web sitenize ekleyin."
+      },
+      {
+        "title": "Randevuları izleyin",
+        "text": "Gelen randevular takviminize düşer; hatırlatmaları Sedir gönderir, siz yalnız işinize bakarsınız."
+      }
+    ]
+  },
+  "testimonials": {
+    "eyebrow": "Referanslar",
+    "title": "Telefonu bırakan işletmeler anlatıyor.",
+    "lead": "Kuaförden diş kliniğine, tek kişilik stüdyodan üç şubeli işletmeye."
+  },
+  "pricing": {
+    "eyebrow": "Fiyatlar",
+    "title": "Büyüdükçe ödeyin.",
+    "lead": "Tek başına çalışıyorsanız ücretsiz. Ekibiniz büyüdüğünde paketinizi tek tıkla değiştirin.",
+    "note": "Fiyatlara KDV dâhil değildir. Yıllık ödemede iki ay ücretsizdir; istediğiniz ay iptal edebilirsiniz."
+  },
+  "faq": {
+    "eyebrow": "Sık sorulanlar",
+    "title": "Aklınızdaki sorular",
+    "lead": "Burada yanıtını bulamadığınız soruyu bize yazın; bir iş günü içinde dönüyoruz.",
+    "contact": { "label": "Bize sorun", "href": "/iletisim/" }
+  },
+  "cta": {
+    "title": "İlk randevunuz on dakika uzakta.",
+    "lead": "14 gün boyunca bütün özellikleri ücretsiz deneyin. Beğenmezseniz hiçbir şey ödemezsiniz.",
+    "primary": { "label": "Ücretsiz deneyin", "href": "/iletisim/" },
+    "secondary": { "label": "Fiyatları görün", "href": "/#fiyatlar" }
+  }
+}

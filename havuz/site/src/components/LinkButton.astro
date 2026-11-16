@@ -1,0 +1,31 @@
+---
+/**
+ * Bağlantı düğmesi: <LinkButton href="/iletisim/">Bize yazın</LinkButton>
+ * variant: primary (dolgulu) | secondary (çerçeveli) | ghost (sade). İç adresler alt klasöre göre düzeltilir.
+ * Form düğmeleri için <button class="btn btn-primary"> kullanın.
+ */
+import Icon from './Icon.astro'
+import type { IconName } from './icons.ts'
+import { isExternal } from '../lib/paths.ts'
+import { link } from '../lib/url.ts'
+
+interface Props {
+  href: string
+  variant?: 'primary' | 'secondary' | 'ghost'
+  size?: 'md' | 'sm'
+  icon?: IconName
+  class?: string
+}
+
+const { href, variant = 'primary', size = 'md', icon, class: className } = Astro.props
+const external = isExternal(href) && !href.startsWith('mailto:') && !href.startsWith('tel:')
+---
+
+<a
+  href={link(href)}
+  class:list={['btn', `btn-${variant}`, size === 'sm' && 'btn-sm', className]}
+  rel={external ? 'noopener' : undefined}
+>
+  <slot />
+  {icon && <Icon name={icon} />}
+</a>

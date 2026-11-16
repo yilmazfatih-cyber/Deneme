@@ -1,0 +1,57 @@
+{
+  "modul": "cron",
+  "aciklama": "cron modülünün iki dilde ortak sınama vektörleri. nextRun çıktısı UTC 'YYYY-MM-DDTHH:MM:SSZ' metniyle karşılaştırılır.",
+  "islevler": {
+    "nextRun": [
+      { "girdi": ["0 9 * * 1-5", "2026-11-16T10:00:00+03:00"], "cikti": "2026-11-17T06:00:00Z" },
+      { "girdi": ["*/15 * * * *", "2026-11-16T10:07:30+03:00"], "cikti": "2026-11-16T07:15:00Z" },
+      { "girdi": ["*/15 * * * *", "2026-11-16T10:15:00+03:00"], "cikti": "2026-11-16T07:30:00Z", "not": "kesin sonraki" },
+      { "girdi": ["0 0 1 * 1", "2026-11-16T10:00:00+03:00"], "cikti": "2026-11-22T21:00:00Z", "not": "gün VEYA haftanın günü" },
+      { "girdi": ["0 0 29 2 *", "2026-11-16T10:00:00+03:00"], "cikti": "2028-02-28T21:00:00Z" },
+      { "girdi": ["@daily", "2026-11-16T21:00:00Z"], "cikti": "2026-11-17T21:00:00Z" },
+      { "girdi": ["30 8 1 * *", "2026-11-16T10:00:00+03:00"], "cikti": "2026-12-01T05:30:00Z" },
+      { "girdi": ["0 12 * JAN,DEC SUN", "2026-11-16T10:00:00+03:00"], "cikti": "2026-12-06T09:00:00Z" },
+      { "girdi": ["0 0 * * 7", "2026-11-16T10:00:00+03:00"], "cikti": "2026-11-21T21:00:00Z" },
+      { "girdi": ["0 9 * * *", "2026-11-16T10:00:00+03:00"], "secenek": { "offsetMinutes": 0 }, "cikti": "2026-11-16T09:00:00Z" },
+      { "girdi": ["0 0 30 2 *", "2026-11-16T10:00:00+03:00"], "hata": true },
+      { "girdi": ["0 9 * * *", "2026-11-16T10:00:00"], "hata": true }
+    ],
+    "parseCron": [
+      {
+        "girdi": ["*/20 9-17/4 1,15 * MON-FRI"],
+        "cikti": {
+          "minutes": [0, 20, 40],
+          "hours": [9, 13, 17],
+          "daysOfMonth": [1, 15],
+          "months": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+          "daysOfWeek": [1, 2, 3, 4, 5],
+          "domRestricted": true,
+          "dowRestricted": true
+        }
+      },
+      {
+        "girdi": ["@hourly"],
+        "cikti": {
+          "minutes": [0],
+          "hours": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
+          "daysOfMonth": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31],
+          "months": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+          "daysOfWeek": [0, 1, 2, 3, 4, 5, 6],
+          "domRestricted": false,
+          "dowRestricted": false
+        }
+      },
+      { "girdi": ["60 * * * *"], "hata": true },
+      { "girdi": ["* * * *"], "hata": true },
+      { "girdi": ["@reboot"], "hata": true },
+      { "girdi": ["5-1 * * * *"], "hata": true },
+      { "girdi": ["*/0 * * * *"], "hata": true },
+      { "girdi": ["* * * FOO *"], "hata": true }
+    ],
+    "matchesCron": [
+      { "girdi": ["30 8 1 * *", "2026-12-01T08:30:00+03:00"], "cikti": true },
+      { "girdi": ["30 8 1 * *", "2026-12-01T08:31:00+03:00"], "cikti": false },
+      { "girdi": ["0 0 * * *", "2026-11-16T21:00:00Z"], "cikti": true }
+    ]
+  }
+}

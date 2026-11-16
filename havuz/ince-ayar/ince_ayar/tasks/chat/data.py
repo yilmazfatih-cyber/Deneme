@@ -118,14 +118,25 @@ def encode_examples(
     notes: list[str] = []
     if long_lines and settings.uzun_ornek == "hata":
         raise UserError(
-            t("sohbet.uzun_hata", ad=name, sayi=len(long_lines), sinir=settings.azami_uzunluk,
-              satirlar=", ".join(str(line) for line in long_lines[:10]), oneri=stats.suggested_limit)
-        )  # fmt: skip
+            t(
+                "sohbet.uzun_hata",
+                ad=name,
+                sayi=len(long_lines),
+                sinir=settings.azami_uzunluk,
+                satirlar=", ".join(str(line) for line in long_lines[:10]),
+                oneri=stats.suggested_limit,
+            )
+        )
     if long_lines:
         notes.append(
-            t("sohbet.uzun_atildi", ad=name, sayi=len(long_lines), sinir=settings.azami_uzunluk,
-              oneri=stats.suggested_limit)
-        )  # fmt: skip
+            t(
+                "sohbet.uzun_atildi",
+                ad=name,
+                sayi=len(long_lines),
+                sinir=settings.azami_uzunluk,
+                oneri=stats.suggested_limit,
+            )
+        )
     if not encoded:
         raise UserError(t("sohbet.hepsi_uzun", ad=name, sinir=settings.azami_uzunluk))
     if any(not item.closed for item in encoded):

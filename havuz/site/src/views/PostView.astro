@@ -1,0 +1,166 @@
+---
+/**
+ * Blog yazısı görünümü: kırıntı yolu, başlık, yazar/tarih/okuma süresi, kapak, içerik + içindekiler,
+ * etiketler, ilgili yazılar. Yapısal veri: BlogPosting + BreadcrumbList.
+ * Kim kullanır: src/pages/blog/[slug].astro ve src/pages/en/blog/[slug].astro.
+ */
+import { Picture } from 'astro:assets'
+import { render } from 'astro:content'
+import Avatar from '../components/Avatar.astro'
+import Breadcrumbs from '../components/Breadcrumbs.astro'
+import Newsletter from '../components/Newsletter.astro'
+import PostCard from '../components/PostCard.astro'
+import Prose from '../components/Prose.astro'
+import TableOfContents from '../components/TableOfContents.astro'
+import { mdxComponents } from '../components/mdx/index.ts'
+import { useTranslations } from '../i18n/index.ts'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { readingMinutes, relatedEntries } from '../lib/collections.ts'
+import { alternatesOf, entryLocale, entrySlug, getAllPosts, getData, getPosts, type Post } from '../lib/content.ts'
+import { formatDate, isoDate } from '../lib/format.ts'
+import { paths } from '../lib/routes.ts'
+import { slugify } from '../lib/slug.ts'
+import { article } from '../lib/structured-data.ts'
+import { fill } from '../lib/text.ts'
+import { absoluteUrl, link, ogImagePath } from '../lib/url.ts'
+import { siteConfig } from '../site.config.ts'
+
+interface Props {
+  post: Post
+}
+
+const { post } = Astro.props
+const locale = entryLocale(post)
+const t = useTranslations(locale)
+const lang = siteConfig.locales[locale].lang
+const { Content, headings } = await render(post)
+const path = paths.post(locale, entrySlug(post))
+const minutes = readingMinutes(post.body ?? '')
+const team = await getData('ekip', locale)
+const author = team.items.find((person) => person.id === post.data.author)
+if (post.data.author !== undefined && author === undefined) {
+  throw new Error(
+    `Yazar bulunamadı: "${post.data.author}" (${post.filePath ?? post.id}). src/content/ekip/${locale}.json içindeki bir "id" yazın.`,
+  )
+}
+const related = relatedEntries(post, await getPosts(locale))
+const alternates = alternatesOf(post, await getAllPosts(), paths.post)
+const crumbs = [
+  { label: siteConfig.name, path: paths.home(locale) },
+  { label: t.blog.title, path: paths.blog(locale) },
+  { label: post.data.title, path },
+]
+const jsonLd = [
+  article({
+    url: absoluteUrl(path),
+    headline: post.data.title,
+    description: post.data.description,
+    image: absoluteUrl(ogImagePath(path)),
+    datePublished: post.data.date,
+    dateModified: post.data.updated,
+    lang,
+    keywords: post.data.tags,
+    author: author ? { name: author.name } : undefined,
+    organizationUrl: absoluteUrl('/'),
+    organizationName: siteConfig.name,
+  }),
+]
+---
+
+<BaseLayout
+  locale={locale}
+  title={post.data.title}
+  description={post.data.description}
+  alternates={alternates}
+  type="article"
+  article={{ published: post.data.date, modified: post.data.updated, tags: post.data.tags, section: t.blog.title }}
+  breadcrumbs={crumbs}
+  jsonLd={jsonLd}
+  searchSection={t.blog.title}
+>
+  <article>
+    <header class="wrap pt-10 pb-8 md:pt-14">
+      <Breadcrumbs locale={locale} crumbs={crumbs} />
+      <div class="max-w-3xl">
+        <h1 class="display mt-8 text-[clamp(2.4rem,1.5rem+3.4vw,3.9rem)]">{post.data.title}</h1>
+        <p class="mt-5 text-lg text-muted md:text-xl md:leading-relaxed">{post.data.description}</p>
+        <div class="mt-7 flex flex-wrap items-center gap-x-4 gap-y-3 text-sm text-muted" data-search-ignore>
+          {author && (
+            <span class="flex items-center gap-2.5">
+              <Avatar name={author.name} lang={lang} size="sm" />
+              <span>
+                <span class="sr-only">{t.blog.author}: </span>
+                <span class="font-semibold text-ink">{author.name}</span>
+              </span>
+            </span>
+          )}
+          <time datetime={isoDate(post.data.date)}>{formatDate(post.data.date, lang)}</time>
+          <span aria-hidden="true">·</span>
+          <span>{fill(t.blog.readingTime, { minutes })}</span>
+          {post.data.updated && (
+            <>
+              <span aria-hidden="true">·</span>
+              <span>{fill(t.blog.updated, { date: formatDate(post.data.updated, lang) })}</span>
+            </>
+          )}
+        </div>
+      </div>
+    </header>
+
+    {post.data.cover && (
+      <div class="wrap mb-12">
+        <Picture
+          src={post.data.cover}
+          alt={post.data.coverAlt ?? ''}
+          formats={['avif', 'webp']}
+          widths={[640, 960, 1280].filter((width) => width <= (post.data.cover?.width ?? 0))}
+          sizes="(min-width: 64rem) 60rem, 100vw"
+          loading="eager"
+          fetchpriority="high"
+          class="aspect-[2/1] w-full rounded-2xl border border-line object-cover"
+        />
+      </div>
+    )}
+
+    <div class="wrap grid gap-10 lg:grid-cols-[minmax(0,1fr)_15rem] lg:gap-16">
+      <div class="min-w-0">
+        <TableOfContents headings={headings} title={t.docs.onThisPage} collapsible class="mb-8 lg:hidden" />
+        <Prose>
+          <Content components={mdxComponents} />
+        </Prose>
+        {post.data.tags.length > 0 && (
+          <ul class="mt-12 flex flex-wrap gap-2" aria-label={t.blog.tagsLabel} data-search-ignore>
+            {post.data.tags.map((tag) => (
+              <li>
+                <a href={link(paths.tag(locale, slugify(tag)))} class="badge">
+                  {tag}
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+      <aside class="hidden lg:block" data-search-ignore>
+        <div class="sticky top-24">
+          <TableOfContents headings={headings} title={t.docs.onThisPage} />
+        </div>
+      </aside>
+    </div>
+  </article>
+
+  <div class="wrap mt-16" data-search-ignore>
+    <Newsletter locale={locale} />
+    {related.length > 0 && (
+      <section aria-labelledby="ilgili-yazilar" class="mt-16 border-t border-line pt-12">
+        <h2 id="ilgili-yazilar" class="display text-3xl">
+          {t.blog.related}
+        </h2>
+        <div class="mt-8 grid gap-5 md:grid-cols-3">
+          {related.map((item) => (
+            <PostCard post={item} headingLevel={3} compact />
+          ))}
+        </div>
+      </section>
+    )}
+  </div>
+</BaseLayout>

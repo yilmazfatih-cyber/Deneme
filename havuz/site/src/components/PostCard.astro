@@ -1,0 +1,89 @@
+---
+/**
+ * Blog yazısı kartı: kapak (varsa), tarih, okuma süresi, başlık, özet, etiketler. Kartın tamamı tıklanabilir.
+ * Kim kullanır: blog listesi, etiket sayfası, ilgili yazılar.
+ */
+import { Picture } from 'astro:assets'
+import { useTranslations } from '../i18n/index.ts'
+import { readingMinutes } from '../lib/collections.ts'
+import { entryLocale, entrySlug, type Post } from '../lib/content.ts'
+import { formatDate, isoDate } from '../lib/format.ts'
+import { paths } from '../lib/routes.ts'
+import { fill } from '../lib/text.ts'
+import { link } from '../lib/url.ts'
+import { siteConfig } from '../site.config.ts'
+
+interface Props {
+  post: Post
+  headingLevel?: 2 | 3
+  compact?: boolean
+}
+
+const { post, headingLevel = 2, compact = false } = Astro.props
+const locale = entryLocale(post)
+const t = useTranslations(locale)
+const lang = siteConfig.locales[locale].lang
+const Heading = headingLevel === 2 ? 'h2' : 'h3'
+const minutes = readingMinutes(post.body ?? '')
+---
+
+<article class="post-card card group relative flex flex-col overflow-hidden transition-colors hover:border-line-strong">
+  {post.data.cover && !compact && (
+    <Picture
+      src={post.data.cover}
+      alt=""
+      formats={['avif', 'webp']}
+      widths={[480, 800].filter((width) => width <= (post.data.cover?.width ?? 0))}
+      sizes="(min-width: 64rem) 36rem, 100vw"
+      class="aspect-[16/9] w-full border-b border-line object-cover"
+    />
+  )}
+  <div class:list={['flex flex-1 flex-col', compact ? 'p-5' : 'p-6 md:p-7']}>
+    <p class="text-sm text-muted">
+      <time datetime={isoDate(post.data.date)}>{formatDate(post.data.date, lang)}</time>
+      <span aria-hidden="true"> · </span>
+      {fill(t.blog.readingTime, { minutes })}
+    </p>
+    <Heading class:list={['mt-3 font-display leading-[1.15]', compact ? 'text-[1.4rem]' : 'text-[1.65rem]']}>
+      <a href={link(paths.post(locale, entrySlug(post)))} class="post-card-link">
+        {post.data.title}
+      </a>
+    </Heading>
+    {!compact && <p class="mt-3 leading-relaxed text-muted">{post.data.description}</p>}
+    {post.data.tags.length > 0 && !compact && (
+      <ul class="mt-auto flex flex-wrap gap-2 pt-5" aria-label={t.blog.tagsLabel}>
+        {post.data.tags.map((tag) => (
+          <li class="badge badge-neutral">{tag}</li>
+        ))}
+      </ul>
+    )}
+  </div>
+</article>
+
+<style>
+  .post-card-link {
+    text-decoration: none;
+  }
+
+  .post-card-link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+
+  .post-card-link:focus-visible {
+    outline: none;
+  }
+
+  .post-card:has(.post-card-link:focus-visible) {
+    outline: 2px solid var(--brand-ink);
+    outline-offset: 3px;
+  }
+
+  .post-card:hover .post-card-link {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+  }
+</style>

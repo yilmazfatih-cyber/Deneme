@@ -1,0 +1,86 @@
+---
+/**
+ * Belgeler giriş sayfası: bütün belgeler grup grup, kart olarak. Kim kullanır: src/pages/belgeler/index.astro (ve en karşılığı).
+ */
+import Icon from '../components/Icon.astro'
+import PageHeader from '../components/PageHeader.astro'
+import { useTranslations } from '../i18n/index.ts'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { entrySlug, getDocGroups } from '../lib/content.ts'
+import { alternatesFor, paths } from '../lib/routes.ts'
+import { link } from '../lib/url.ts'
+import { siteConfig, type Locale } from '../site.config.ts'
+
+interface Props {
+  locale: Locale
+}
+
+const { locale } = Astro.props
+const t = useTranslations(locale)
+const groups = await getDocGroups(locale)
+const first = groups[0]?.items[0]
+const crumbs = [
+  { label: siteConfig.name, path: paths.home(locale) },
+  { label: t.docs.title, path: paths.docs(locale) },
+]
+---
+
+<BaseLayout
+  locale={locale}
+  title={t.docs.title}
+  description={t.docs.description}
+  alternates={alternatesFor(paths.docs)}
+  breadcrumbs={crumbs}
+>
+  <PageHeader locale={locale} title={t.docs.title} lead={t.docs.description} crumbs={crumbs}>
+    {first && (
+      <a href={link(paths.doc(locale, entrySlug(first)))} class="btn btn-primary mt-8">
+        {t.docs.startHere}
+        <Icon name="arrow-right" />
+      </a>
+    )}
+  </PageHeader>
+  <div class="wrap grid gap-14 py-14">
+    {groups.map((group, index) => (
+      <section aria-labelledby={`grup-${index}`}>
+        <h2 id={`grup-${index}`} class="display text-3xl">
+          {group.group}
+        </h2>
+        <ul class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {group.items.map((doc) => (
+            <li class="card relative p-6 transition-colors hover:border-line-strong">
+              <h3 class="font-semibold">
+                <a href={link(paths.doc(locale, entrySlug(doc)))} class="doc-card-link">
+                  {doc.data.title}
+                </a>
+              </h3>
+              <p class="mt-2 text-[0.95rem] leading-relaxed text-muted">{doc.data.description}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </div>
+</BaseLayout>
+
+<style>
+  .doc-card-link {
+    text-decoration: none;
+  }
+
+  .doc-card-link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+
+  li:has(.doc-card-link:focus-visible) {
+    outline: 2px solid var(--brand-ink);
+    outline-offset: 3px;
+  }
+
+  .doc-card-link:focus-visible {
+    outline: none;
+  }
+</style>

@@ -1,0 +1,107 @@
+---
+/**
+ * Site içi arama penceresi (<dialog>). Başlıktaki "Ara" düğmesi, "/" tuşu ya da Ctrl+K ile açılır.
+ * Dizin derleme sırasında Pagefind ile üretilir (src/integrations/search-index.ts); bu yüzden arama yalnız
+ * derlenmiş sitede çalışır (npm run build && npm run preview). Betikler: src/scripts/search.ts (açma, küçük) ve
+ * src/scripts/search-ui.ts (pencere açılınca yüklenir).
+ */
+import Icon from './Icon.astro'
+import { useTranslations } from '../i18n/index.ts'
+import { siteConfig, type Locale } from '../site.config.ts'
+
+interface Props {
+  locale: Locale
+}
+
+const { locale } = Astro.props
+const t = useTranslations(locale)
+const base = import.meta.env.BASE_URL
+---
+
+<dialog
+  id="search-dialog"
+  class="search-dialog no-print"
+  aria-labelledby="search-dialog-title"
+  data-search-dialog
+  data-base={base}
+  data-lang={siteConfig.locales[locale].lang}
+  data-messages={JSON.stringify(t.search)}
+>
+  <div class="flex items-center gap-2 border-b border-line px-3">
+    <h2 id="search-dialog-title" class="sr-only">
+      {t.search.title}
+    </h2>
+    <Icon name="search" class="ml-1 shrink-0 text-muted" />
+    <label for="search-input" class="sr-only">
+      {t.search.title}
+    </label>
+    <input
+      id="search-input"
+      type="search"
+      class="min-h-14 w-full bg-transparent px-1 text-[1.0625rem] outline-none placeholder:text-muted"
+      placeholder={t.search.placeholder}
+      autocomplete="off"
+      spellcheck="false"
+      data-search-input
+    />
+    <button type="button" class="icon-btn shrink-0" data-search-close>
+      <Icon name="x" />
+      <span class="sr-only">{t.search.close}</span>
+    </button>
+  </div>
+  <div class="max-h-[min(60dvh,32rem)] overflow-y-auto p-2">
+    <p class="px-3 py-3 text-sm text-muted" role="status" aria-live="polite" data-search-status>
+      {t.search.hint}
+    </p>
+    <ul class="grid gap-1" data-search-results></ul>
+  </div>
+</dialog>
+
+<style>
+  .search-dialog {
+    width: min(42rem, calc(100vw - 2rem));
+    max-height: calc(100dvh - 4rem);
+    margin: 4rem auto auto;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 1rem;
+    background-color: var(--surface);
+    color: var(--ink);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .search-dialog::backdrop {
+    background-color: rgb(8 12 10 / 0.45);
+    backdrop-filter: blur(2px);
+  }
+
+  .search-dialog :global(.search-result) {
+    display: grid;
+    gap: 0.15rem;
+    padding: 0.7rem 0.85rem;
+    border-radius: 0.75rem;
+    text-decoration: none;
+  }
+
+  .search-dialog :global(.search-result:hover),
+  .search-dialog :global(.search-result:focus-visible) {
+    background-color: var(--subtle);
+  }
+
+  .search-dialog :global(.search-result-section) {
+    color: var(--brand-ink);
+    font-size: 0.8rem;
+    font-weight: 650;
+  }
+
+  .search-dialog :global(.search-result-title) {
+    font-weight: 600;
+  }
+
+  .search-dialog :global(.search-result-text) {
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+</style>

@@ -1,0 +1,24 @@
+---
+/**
+ * Rozet: kısa etiket. <Badge>Yeni</Badge>, <Badge tone="accent">Beta</Badge>, <Badge href="/blog/etiket/seo/">SEO</Badge>
+ */
+import { link } from '../lib/url.ts'
+
+interface Props {
+  tone?: 'brand' | 'accent' | 'neutral'
+  href?: string
+}
+
+const { tone = 'brand', href } = Astro.props
+const classes = ['badge', tone === 'accent' && 'badge-accent', tone === 'neutral' && 'badge-neutral']
+---
+
+{href ? (
+  <a href={link(href)} class:list={classes}>
+    <slot />
+  </a>
+) : (
+  <span class:list={classes}>
+    <slot />
+  </span>
+)}

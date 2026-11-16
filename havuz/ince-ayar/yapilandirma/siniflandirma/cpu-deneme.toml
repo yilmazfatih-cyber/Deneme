@@ -1,0 +1,29 @@
+# Sınıflandırma · cpu-deneme: minik rastgele BERT, CPU, birkaç saniye (model bir şey öğrenmez).
+# Gerçek küçük Türkçe kodlayıcıyla: -D model.taban=dbmdz/electra-small-turkish-cased-discriminator
+gorev = "siniflandirma"
+
+[model]
+taban = "minik-rastgele"
+
+[veri]
+egitim = "ornekler/siniflandirma.csv"
+dogrulama_orani = 0.25
+test_orani = 0.25
+azami_uzunluk = 64
+
+[egitim]
+cikti = "ciktilar/siniflandirma-deneme"
+azami_adim = 3
+yigin = 4
+degerlendirme_yigini = 8
+ogrenme_orani = 1e-3
+kayit_adimi = 1
+dengesizlik = "agirlikli-kayip"
+is_parcacigi = 2
+
+[esik]
+ikili_esik_ayari = true
+hedef_dogruluk = 0.0
+
+[disa_aktarim]
+int8 = true

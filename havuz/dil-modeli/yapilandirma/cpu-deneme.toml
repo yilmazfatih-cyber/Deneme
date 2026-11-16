@@ -1,0 +1,29 @@
+# Dizüstü bilgisayarda birkaç dakikalık deneme eğitimi (GPU gerekmez).
+# Çalıştırma:
+#   python -m dil_modeli egit --yapilandirma yapilandirma/cpu-deneme.toml
+# Kendi verinizle: önce tokenizer-egit + veri-hazirla (README "5 dakikada çalıştırma"),
+# sonra --ayar data_dir=veri/benim-verim
+# Ölçüm (4 çekirdekli paylaşımlı makine, 2 iş parçacığı, 4096 sözlük, bu ayarlar): makine boşken
+# ~7.000-8.500 belirteç/sn (300 adım ~1,5 dk); makine yüklüyken 1.500'e kadar düştü.
+# Bu sürede model yalnız harf/kelime kalıplarını öğrenir.
+
+data_dir = "veri/hazir"
+out_dir = "calisma/cpu-deneme"
+preset = "bebek"            # ~1,3 M (4096 sözlük) - ~1,9 M (8192 sözlük) parametre
+
+max_steps = 300
+batch_size = 16
+seq_len = 128               # kısa pencere: CPU'da hızlı
+learning_rate = 2e-3
+warmup_steps = 30
+weight_decay = 0.1
+grad_clip = 1.0
+seed = 0
+
+device = "auto"
+threads = 0                 # 0: bütün çekirdekler; makineyi paylaşıyorsanız 2 yazın
+
+log_every = 10
+eval_every = 100
+eval_batches = 10
+sample_tokens = 40

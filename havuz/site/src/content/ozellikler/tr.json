@@ -1,0 +1,34 @@
+{
+  "items": [
+    {
+      "icon": "calendar-check",
+      "title": "Çevrim içi randevu",
+      "text": "Müşterileriniz boş saatleri görür, iki dokunuşla randevu alır. Çalışma saatleriniz ve molalarınız kendiliğinden hesaba katılır."
+    },
+    {
+      "icon": "bell",
+      "title": "Otomatik hatırlatma",
+      "text": "Randevudan bir gün ve iki saat önce SMS ya da WhatsApp iletisi gider; unutulan randevu ve boş geçen saat azalır."
+    },
+    {
+      "icon": "repeat",
+      "title": "Bekleme listesi",
+      "text": "İptal edilen saat, bekleme listesindeki ilk müşteriye kendiliğinden önerilir. Onaylarsa takviminiz yeniden dolar."
+    },
+    {
+      "icon": "users",
+      "title": "Ekip ve şubeler",
+      "text": "Her çalışanın kendi takvimi, izinleri ve hizmetleri olur. Birden çok şubeyi tek ekrandan yönetirsiniz."
+    },
+    {
+      "icon": "credit-card",
+      "title": "Kapora ve ön ödeme",
+      "text": "Yoğun saatlerde küçük bir kapora isteyin. Ödeme güvenli bağlantıyla alınır; iptalde sizin kurallarınız uygulanır."
+    },
+    {
+      "icon": "chart-no-axes-column",
+      "title": "Sade raporlar",
+      "text": "Hangi hizmetin, hangi günün ve hangi çalışanın yoğun olduğunu tek sayfada görün; tabloyu Excel'e aktarın."
+    }
+  ]
+}

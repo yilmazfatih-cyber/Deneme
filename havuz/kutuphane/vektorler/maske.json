@@ -1,0 +1,58 @@
+{
+  "modul": "maske",
+  "aciklama": "maske modülünün iki dilde ortak sınama vektörleri (uydurma değerler).",
+  "islevler": {
+    "maskMiddle": [
+      { "girdi": ["ABC-12345"], "secenek": { "keepStart": 1, "keepEnd": 2 }, "cikti": "A**-***45" },
+      { "girdi": ["Çağrı Öz"], "secenek": { "keepStart": 1 }, "cikti": "Ç**** **" },
+      { "girdi": ["12"], "secenek": { "keepStart": 1, "keepEnd": 1 }, "cikti": "**" },
+      { "girdi": ["12345"], "secenek": { "keepEnd": 2, "char": "•" }, "cikti": "•••45" },
+      { "girdi": [""], "cikti": "" }
+    ],
+    "maskTckn": [
+      { "girdi": ["12345678901"], "cikti": "123******01" },
+      { "girdi": ["123 456 789 01"], "cikti": "123******01" },
+      { "girdi": ["1234"], "cikti": "**34" },
+      { "girdi": ["1"], "cikti": "*" }
+    ],
+    "maskVkn": [
+      { "girdi": ["1234567890"], "cikti": "12******90" },
+      { "girdi": ["123"], "cikti": "*23" }
+    ],
+    "maskEmail": [
+      { "girdi": ["ali.veli@ornek.com"], "cikti": "a***@ornek.com" },
+      { "girdi": ["a@ornek.com"], "cikti": "a***@ornek.com" },
+      { "girdi": ["Şule@ornek.com.tr"], "cikti": "Ş***@ornek.com.tr" },
+      { "girdi": ["ali.veli@ornek.com"], "secenek": { "maskDomain": true }, "cikti": "a***@o***.com" },
+      { "girdi": ["ali@localhost"], "secenek": { "maskDomain": true }, "cikti": "a***@***" },
+      { "girdi": ["eposta-degil"], "cikti": "***" },
+      { "girdi": ["@ornek.com"], "cikti": "***" }
+    ],
+    "maskIban": [
+      { "girdi": ["TR330006100519786457841326"], "cikti": "TR** **** … 1326" },
+      { "girdi": ["TR33 0006 1005 1978 6457 8413 26"], "cikti": "TR** **** … 1326" },
+      {
+        "girdi": ["TR330006100519786457841326"],
+        "secenek": { "style": "full" },
+        "cikti": "TR** **** **** **** **** **13 26"
+      },
+      { "girdi": ["TR33"], "cikti": "****" }
+    ],
+    "maskPhone": [
+      { "girdi": ["+905321234567"], "cikti": "+90 532 *** ** 67" },
+      { "girdi": ["0532 123 45 67"], "cikti": "+90 532 *** ** 67" },
+      { "girdi": ["5321234567"], "cikti": "+90 532 *** ** 67" },
+      { "girdi": ["+1 212 555 0100"], "cikti": "+1 2** *** **00" }
+    ],
+    "maskCardNumber": [
+      { "girdi": ["4111 1111 1111 1111"], "cikti": "**** **** **** 1111" },
+      { "girdi": ["378282246310005"], "cikti": "*** **** **** 0005" },
+      { "girdi": ["1234"], "cikti": "****" }
+    ],
+    "maskName": [
+      { "girdi": ["Ahmet Yılmaz"], "cikti": "A*** Y***" },
+      { "girdi": ["  İsmail   Özdemir  "], "cikti": "İ*** Ö***" },
+      { "girdi": [""], "cikti": "" }
+    ]
+  }
+}

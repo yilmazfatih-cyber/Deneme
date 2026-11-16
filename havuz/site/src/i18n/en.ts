@@ -17,9 +17,9 @@ export const en: Dictionary = {
     homeLink: '{site} home page',
   },
   header: {
-    openMenu: 'Open menu',
-    closeMenu: 'Close menu',
+    menu: 'Menu',
     search: 'Search',
+    searchShortcut: 'Shortcut: /',
   },
   theme: {
     label: 'Theme',
@@ -49,6 +49,7 @@ export const en: Dictionary = {
       pricing: 'pricing',
       faq: 'faq',
     },
+    freePlan: 'Free',
     popularPlan: 'Most popular',
     mockupLabel: 'Sample screen: today’s appointment list',
   },
@@ -59,7 +60,8 @@ export const en: Dictionary = {
     updated: 'Updated: {date}',
     tagsLabel: 'Tags',
     tagTitle: 'Posts tagged “{tag}”',
-    tagDescription: 'Every blog post we have published with the “{tag}” tag on one page: {count} in total, newest first.',
+    tagDescription:
+      'Every blog post we have published with the “{tag}” tag on one page: {count} in total, newest first.',
     allPosts: 'All posts',
     related: 'Related posts',
     pageTitle: 'Blog — Page {page}',

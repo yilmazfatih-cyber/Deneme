@@ -35,7 +35,8 @@ class LoraSection(Section):
     alpha: int = Field(32, ge=1)
     dropout: float = Field(0.05, ge=0.0, lt=1.0)
     hedef_moduller: str | list[str] = Field(
-        "all-linear", description="'all-linear' ya da modül adları listesi (ör. ['q_proj','v_proj'])"
+        "all-linear",
+        description="'all-linear' ya da modül adları listesi (ör. ['q_proj','v_proj'])",
     )
     rslora: bool = False
 
@@ -60,6 +61,6 @@ class ChatConfig(Section):
     gorev: Literal["sohbet"]
     model: ChatModelSection
     veri: ChatDataSection
-    lora: LoraSection = LoraSection()
+    lora: LoraSection = Field(default_factory=LoraSection)
     egitim: ChatTrainSection
-    degerlendirme: ChatEvalSection = ChatEvalSection()
+    degerlendirme: ChatEvalSection = Field(default_factory=ChatEvalSection)

@@ -14,11 +14,9 @@ const text = (min: number, max: number) =>
     .max(max, { error: `En fazla ${max} karakter olmalı.` })
 
 /** İç adres ("/blog/", "/#fiyatlar") ya da dış adres ("https://…", "mailto:…", "tel:…"). */
-const href = z
-  .string()
-  .regex(/^(\/|#|https?:\/\/|mailto:|tel:)\S*$/u, {
-    error: 'Adres "/" ile (iç sayfa) ya da "https://", "mailto:", "tel:" ile (dış adres) başlamalı; boşluk içeremez.',
-  })
+const href = z.string().regex(/^(\/|#|https?:\/\/|mailto:|tel:)\S*$/u, {
+  error: 'Adres "/" ile (iç sayfa) ya da "https://", "mailto:", "tel:" ile (dış adres) başlamalı; boşluk içeremez.',
+})
 
 const link = z.strictObject({ label: text(1, 40), href })
 
@@ -92,9 +90,7 @@ const siteSchema = z
     brand: z.strictObject({ primary: hexColor, accent: hexColor }),
     blog: z.strictObject({ postsPerPage: z.number().int().min(1).max(50) }),
     /** Ziyaret ölçümü. Varsayılan: null (hiçbir betik yüklenmez). */
-    analytics: z
-      .strictObject({ src: httpsUrl, attributes: z.record(z.string(), z.string()).default({}) })
-      .nullable(),
+    analytics: z.strictObject({ src: httpsUrl, attributes: z.record(z.string(), z.string()).default({}) }).nullable(),
   })
   .superRefine((config, ctx) => {
     if (!(config.defaultLocale in config.locales)) {
@@ -123,7 +119,9 @@ export type SiteConfig<L extends string = string> = Omit<ParsedSiteConfig, 'loca
 export function defineSiteConfig<const T extends SiteConfigInput>(input: T): SiteConfig<keyof T['locales'] & string> {
   const parsed = siteSchema.safeParse(input)
   if (!parsed.success) {
-    throw new Error(`src/site.config.ts hatalı:\n${formatIssues(parsed.error)}\nAlanların anlamı: AGENTS.md → "Harita".`)
+    throw new Error(
+      `src/site.config.ts hatalı:\n${formatIssues(parsed.error)}\nAlanların anlamı: AGENTS.md → "Harita".`,
+    )
   }
   return parsed.data as SiteConfig<keyof T['locales'] & string>
 }

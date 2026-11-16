@@ -18,19 +18,29 @@ from .helpers import make_corpus
 
 
 def _write_jsonl(path: Path, texts: list[str]) -> Path:
-    path.write_text("".join(json.dumps({"text": t}, ensure_ascii=False) + "\n" for t in texts), "utf-8")
+    path.write_text(
+        "".join(json.dumps({"text": t}, ensure_ascii=False) + "\n" for t in texts), "utf-8"
+    )
     return path
 
 
 def _all_tokens(data_dir: Path, split: str) -> np.ndarray:
     data = TokenData(data_dir, split)
-    return np.concatenate([np.asarray(shard) for shard in data.shards]) if data.shards else np.array([])
+    return (
+        np.concatenate([np.asarray(shard) for shard in data.shards])
+        if data.shards
+        else np.array([])
+    )
 
 
-def test_jsonl_documents_are_wrapped_and_split_by_document(tokenizer: BPETokenizer, tmp_path: Path) -> None:
+def test_jsonl_documents_are_wrapped_and_split_by_document(
+    tokenizer: BPETokenizer, tmp_path: Path
+) -> None:
     texts = make_corpus(lines=300, seed=3)
     source = _write_jsonl(tmp_path / "derlem.jsonl", texts)
-    meta = prepare_data([source], tokenizer, tmp_path / "veri", options=PrepareOptions(val_fraction=0.1))
+    meta = prepare_data(
+        [source], tokenizer, tmp_path / "veri", options=PrepareOptions(val_fraction=0.1)
+    )
     assert meta["documents"] == meta["pieces"] == 300
     train, val = _all_tokens(tmp_path / "veri", TRAIN), _all_tokens(tmp_path / "veri", VAL)
     assert len(train) == meta["splits"][TRAIN]["tokens"] > len(val) > 0
@@ -41,19 +51,27 @@ def test_jsonl_documents_are_wrapped_and_split_by_document(tokenizer: BPETokeniz
         assert (tokens == tokenizer.bos_id).sum() == (tokens == tokenizer.eos_id).sum()
     assert (train == tokenizer.bos_id).sum() + (val == tokenizer.bos_id).sum() == 300
     # Çözülen metin özgün belgelerin tamamını, hiçbiri iki bölüme bölünmeden içerir.
-    decoded = tokenizer.decode(train, skip_special=False) + tokenizer.decode(val, skip_special=False)
+    decoded = tokenizer.decode(train, skip_special=False) + tokenizer.decode(
+        val, skip_special=False
+    )
     assert sorted(decoded.replace(EOS, "").split(BOS)[1:]) == sorted(texts)
 
 
-def test_preparation_is_deterministic_and_seed_changes_split(tokenizer: BPETokenizer, tmp_path: Path) -> None:
+def test_preparation_is_deterministic_and_seed_changes_split(
+    tokenizer: BPETokenizer, tmp_path: Path
+) -> None:
     source = _write_jsonl(tmp_path / "d.jsonl", make_corpus(lines=200, seed=4))
     options = PrepareOptions(val_fraction=0.1, seed=1)
     first = prepare_data([source], tokenizer, tmp_path / "a", options=options)
     second = prepare_data([source], tokenizer, tmp_path / "b", options=options)
     other = prepare_data([source], tokenizer, tmp_path / "c", options=PrepareOptions(0.1, seed=2))
     assert first == second
-    assert (tmp_path / "a" / "egitim-000.bin").read_bytes() == (tmp_path / "b" / "egitim-000.bin").read_bytes()
-    assert (tmp_path / "a" / "egitim-000.bin").read_bytes() != (tmp_path / "c" / "egitim-000.bin").read_bytes()
+    assert (tmp_path / "a" / "egitim-000.bin").read_bytes() == (
+        tmp_path / "b" / "egitim-000.bin"
+    ).read_bytes()
+    assert (tmp_path / "a" / "egitim-000.bin").read_bytes() != (
+        tmp_path / "c" / "egitim-000.bin"
+    ).read_bytes()
     assert first["sources"][0]["bytes"] == source.stat().st_size
     assert other["splits"][TRAIN]["tokens"] + other["splits"][VAL]["tokens"] == (
         first["splits"][TRAIN]["tokens"] + first["splits"][VAL]["tokens"]
@@ -71,7 +89,9 @@ def test_big_text_file_is_streamed_in_chunks(tokenizer: BPETokenizer, tmp_path: 
     assert [p.first for p in pieces] == [True] + [False] * (len(pieces) - 1)
     assert [p.last for p in pieces] == [False] * (len(pieces) - 1) + [True]
     assert all(p.text.endswith("\n") for p in pieces[:-1])  # parçalar satır sonunda kesilir
-    meta = prepare_data([source], tokenizer, tmp_path / "veri", corpus, PrepareOptions(val_fraction=0.1))
+    meta = prepare_data(
+        [source], tokenizer, tmp_path / "veri", corpus, PrepareOptions(val_fraction=0.1)
+    )
     train, val = _all_tokens(tmp_path / "veri", TRAIN), _all_tokens(tmp_path / "veri", VAL)
     assert meta["documents"] == 1
     assert (train == tokenizer.bos_id).sum() + (val == tokenizer.bos_id).sum() == 1  # tek belge
@@ -80,12 +100,16 @@ def test_big_text_file_is_streamed_in_chunks(tokenizer: BPETokenizer, tmp_path: 
 
 def test_shards_are_split_by_token_limit(tokenizer: BPETokenizer, tmp_path: Path) -> None:
     source = _write_jsonl(tmp_path / "d.jsonl", make_corpus(lines=100, seed=6))
-    meta = prepare_data([source], tokenizer, tmp_path / "veri", options=PrepareOptions(0.1, shard_tokens=500))
+    meta = prepare_data(
+        [source], tokenizer, tmp_path / "veri", options=PrepareOptions(0.1, shard_tokens=500)
+    )
     files = meta["splits"][TRAIN]["files"]
     assert len(files) > 2
     assert all(entry["tokens"] == 500 for entry in files[:-1])
     one = prepare_data([source], tokenizer, tmp_path / "tek", options=PrepareOptions(0.1))
-    assert np.array_equal(_all_tokens(tmp_path / "veri", TRAIN), _all_tokens(tmp_path / "tek", TRAIN))
+    assert np.array_equal(
+        _all_tokens(tmp_path / "veri", TRAIN), _all_tokens(tmp_path / "tek", TRAIN)
+    )
     assert one["splits"][TRAIN]["tokens"] == meta["splits"][TRAIN]["tokens"]
 
 
@@ -105,9 +129,13 @@ def test_fast_encoding_gives_identical_files(tokenizer: BPETokenizer, tmp_path: 
     prepare_data([source], tokenizer, tmp_path / "saf", options=PrepareOptions(0.1))
     prepare_data([source], tokenizer, tmp_path / "hizli", options=PrepareOptions(0.1, fast=True))
     for split in (TRAIN, VAL):
-        assert np.array_equal(_all_tokens(tmp_path / "saf", split), _all_tokens(tmp_path / "hizli", split))
-    # Derlemdeki "<|son|>" yazısı gerçek belge sonu kimliğine dönüşmez: belge sayısı kadar <|son|> var.
-    total_eos = sum((_all_tokens(tmp_path / "saf", s) == tokenizer.eos_id).sum() for s in (TRAIN, VAL))
+        assert np.array_equal(
+            _all_tokens(tmp_path / "saf", split), _all_tokens(tmp_path / "hizli", split)
+        )
+    # Derlemdeki "<|son|>" yazısı belge sonu kimliğine dönüşmez: belge sayısı kadar <|son|> var.
+    total_eos = sum(
+        (_all_tokens(tmp_path / "saf", s) == tokenizer.eos_id).sum() for s in (TRAIN, VAL)
+    )
     assert total_eos == len(texts)
 
 
@@ -123,9 +151,13 @@ def test_corpus_with_special_token_text_cannot_teach_special_ids() -> None:
         assert tok.decode(ids) == "bir <|son|> iki"
 
 
-def test_batches_are_shifted_deterministic_and_in_range(tokenizer: BPETokenizer, tmp_path: Path) -> None:
+def test_batches_are_shifted_deterministic_and_in_range(
+    tokenizer: BPETokenizer, tmp_path: Path
+) -> None:
     source = _write_jsonl(tmp_path / "d.jsonl", make_corpus(lines=300, seed=8))
-    prepare_data([source], tokenizer, tmp_path / "veri", options=PrepareOptions(0.1, shard_tokens=700))
+    prepare_data(
+        [source], tokenizer, tmp_path / "veri", options=PrepareOptions(0.1, shard_tokens=700)
+    )
     data = TokenData(tmp_path / "veri", TRAIN)
     x, y = data.sample_batch(8, 16, np.random.default_rng(0))
     again_x, again_y = data.sample_batch(8, 16, np.random.default_rng(0))
@@ -141,7 +173,9 @@ def test_batches_are_shifted_deterministic_and_in_range(tokenizer: BPETokenizer,
     assert sum(len(bx) for bx, _ in batches) == sum((len(s) - 1) // 16 for s in val.shards)
     limited = list(val.eval_batches(4, 16, max_batches=2))
     assert len(limited) == 2
-    assert [bx.tolist() for bx, _ in limited] == [bx.tolist() for bx, _ in val.eval_batches(4, 16, 2)]
+    assert [bx.tolist() for bx, _ in limited] == [
+        bx.tolist() for bx, _ in val.eval_batches(4, 16, 2)
+    ]
 
 
 def test_helpful_errors(tokenizer: BPETokenizer, tmp_path: Path) -> None:
@@ -153,7 +187,9 @@ def test_helpful_errors(tokenizer: BPETokenizer, tmp_path: Path) -> None:
     bad.write_text('{"metin": "alan adı farklı"}\n', "utf-8")
     with pytest.raises(ValueError, match="--alan"):
         list(iter_pieces([bad]))
-    assert [p.text for p in iter_pieces([bad], CorpusOptions(text_field="metin"))] == ["alan adı farklı"]
+    assert [p.text for p in iter_pieces([bad], CorpusOptions(text_field="metin"))] == [
+        "alan adı farklı"
+    ]
     latin = tmp_path / "eski.txt"
     latin.write_bytes("çığlık ğüşiöç".encode("cp1254"))
     with pytest.raises(ValueError, match="cp1254"):

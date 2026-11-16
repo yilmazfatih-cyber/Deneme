@@ -70,7 +70,9 @@ _TANIYICILAR: tuple[Taniyici, ...] = (
         _telefon_mu,
     ),
     Taniyici("VKN", re.compile(r"(?<!\d)\d{10}(?!\d)"), vkn_gecerli),
-    Taniyici("EPOSTA", re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}")),
+    Taniyici(
+        "EPOSTA", re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}")
+    ),
     # YENİ TANIYICI BURAYA: Taniyici("TUR", re.compile(r"..."), dogrulama_islevi)
 )
 
@@ -120,7 +122,9 @@ def kisisel_veri_bul(metin: str, turler: Collection[str] | None = None) -> list[
     secili = TUM_TURLER if turler is None else frozenset(turler)
     bilinmeyen = secili - TUM_TURLER
     if bilinmeyen:
-        raise ValueError(f"Bilinmeyen tür: {sorted(bilinmeyen)}. Geçerli türler: {sorted(TUM_TURLER)}")
+        raise ValueError(
+            f"Bilinmeyen tür: {sorted(bilinmeyen)}. Geçerli türler: {sorted(TUM_TURLER)}"
+        )
     bulunan: list[Eslesme] = []
     for taniyici in _TANIYICILAR:
         if taniyici.tur not in secili:
@@ -170,3 +174,31 @@ def maskeyi_ac(metin: str, oturum: MaskeOturumu) -> str:
 def gunluk_icin_maskele(metin: str) -> str:
     """Günlüğe yazılacak metni tek yönlü maskeler (geri açma tablosu tutulmaz)."""
     return maskele(metin)[0]
+
+
+class AkisMaskeAcici:
+    """Akışlı yanıtta yer tutucuları açar; parçalara bölünmüş "[TCK" + "N_1]" gibi durumları bekletir."""
+
+    AZAMI_BEKLETME = 24  # bir yer tutucunun en uzun hâli (karakter)
+
+    def __init__(self, oturum: MaskeOturumu) -> None:
+        self.oturum = oturum
+        self._tampon = ""
+
+    def besle(self, parca: str) -> str:
+        """Yeni parçayı alır; güvenle gösterilebilecek (açılmış) metni döndürür."""
+        self._tampon += parca
+        acik = self._tampon.rfind("[")
+        if (
+            acik >= 0
+            and "]" not in self._tampon[acik:]
+            and len(self._tampon) - acik < self.AZAMI_BEKLETME
+        ):
+            hazir, self._tampon = self._tampon[:acik], self._tampon[acik:]
+        else:
+            hazir, self._tampon = self._tampon, ""
+        return maskeyi_ac(hazir, self.oturum)
+
+    def bitir(self) -> str:
+        kalan, self._tampon = self._tampon, ""
+        return maskeyi_ac(kalan, self.oturum)

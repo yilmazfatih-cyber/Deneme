@@ -76,7 +76,8 @@ def _bos_template(token: str, token_id: int) -> dict[str, Any]:
 def _fail(reason: str) -> ValueError:
     return ValueError(
         f"Bu tokenizer.json desteklenen alt kümenin dışında: {reason}. Bu paket yalnız kendi "
-        "yazdığı (ya da aynı ayarlarla `tokenizers` ile eğitilmiş) bayt düzeyi BPE dosyalarını okur."
+        "yazdığı (ya da aynı ayarlarla `tokenizers` ile eğitilmiş) bayt düzeyi BPE dosyalarını "
+        "okur."
     )
 
 
@@ -104,7 +105,9 @@ def parse_tokenizer_json(data: Any) -> tuple[dict[str, int], list[tuple[str, str
     if not isinstance(decoder, dict) or decoder.get("type") != "ByteLevel":
         raise _fail("decoder 'ByteLevel' değil")
     post = data.get("post_processor")
-    if post is not None and (not isinstance(post, dict) or post.get("type") != "TemplateProcessing"):
+    if post is not None and (
+        not isinstance(post, dict) or post.get("type") != "TemplateProcessing"
+    ):
         raise _fail("post_processor yalnız boş ya da TemplateProcessing olabilir")
 
     vocab = model.get("vocab")

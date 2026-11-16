@@ -1,0 +1,14 @@
+# Biçim örneği: hesap ve tarih aracı gerektiren sorular (ajan döngüsü ölçülür).
+# Çalıştırma: .venv/bin/python -m yz degerlendir gorevler/arac_kullanimi.yaml
+ad: arac_kullanimi
+aciklama: Hesap makinesi ve tarih araçlarıyla sayısal sorular (yanıttaki son sayı puanlanır).
+gorev: arac
+veri: arac_kullanimi.jsonl
+araclar: [hesapla, zaman]
+istem: "{girdi} Yanıtı tek bir sayı olarak ver."
+azami_belirtec: 300
+es_zamanlilik: 2
+puanlayicilar:
+  - tur: sayisal
+    tolerans: 0.01
+    konum: son          # küçük modeller soruyu tekrar edip sonucu sona yazıyor (gerçek deneme)

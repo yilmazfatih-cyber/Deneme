@@ -1,0 +1,52 @@
+{
+  "modul": "derin",
+  "aciklama": "derin modülünün iki dilde ortak sınama vektörleri (JSON değerleriyle).",
+  "islevler": {
+    "deepEqual": [
+      { "girdi": [{ "a": [1, { "b": "x" }] }, { "a": [1, { "b": "x" }] }], "cikti": true },
+      { "girdi": [{ "a": 1, "b": 2 }, { "b": 2, "a": 1 }], "cikti": true },
+      { "girdi": [{ "a": 1 }, { "a": 1, "b": null }], "cikti": false },
+      { "girdi": [[1, 2], [2, 1]], "cikti": false },
+      { "girdi": [1, true], "cikti": false },
+      { "girdi": [0, false], "cikti": false },
+      { "girdi": [1, 1.0], "cikti": true },
+      { "girdi": [null, null], "cikti": true },
+      { "girdi": ["1", 1], "cikti": false },
+      { "girdi": [[], {}], "cikti": false }
+    ],
+    "deepMerge": [
+      {
+        "girdi": [
+          { "sunucu": { "kapi": 8080, "ad": "x" }, "liste": [1, 2] },
+          { "sunucu": { "kapi": 9090 }, "liste": [3], "yeni": true }
+        ],
+        "cikti": { "sunucu": { "kapi": 9090, "ad": "x" }, "liste": [3], "yeni": true }
+      },
+      {
+        "girdi": [{ "liste": [1, 2] }, { "liste": [3] }],
+        "secenek": { "arrays": "concat" },
+        "cikti": { "liste": [1, 2, 3] }
+      },
+      {
+        "girdi": [{ "a": 1 }, { "__proto__": { "kirli": true }, "b": 2 }],
+        "cikti": { "a": 1, "b": 2 },
+        "not": "prototip kirletmeye karşı __proto__ atlanır"
+      },
+      { "girdi": [{ "a": { "b": 1 } }, { "a": 5 }], "cikti": { "a": 5 } }
+    ],
+    "getPath": [
+      { "girdi": [{ "a": { "b": [10, 20] } }, "a.b.1"], "cikti": 20 },
+      { "girdi": [{ "a": { "b": [10, 20] } }, ["a", "b", 0]], "cikti": 10 },
+      { "girdi": [{ "a": { "0": "sıfır" } }, "a.0"], "cikti": "sıfır" },
+      { "girdi": [{ "a": null }, "a.b", "yok"], "cikti": "yok" },
+      { "girdi": [{ "a": 1 }, ""], "cikti": { "a": 1 } }
+    ],
+    "setPath": [
+      { "girdi": [{ "a": { "b": 1 } }, "a.c", 2], "cikti": { "a": { "b": 1, "c": 2 } } },
+      { "girdi": [{}, ["liste", 0, "ad"], "Ayşe"], "cikti": { "liste": [{ "ad": "Ayşe" }] } },
+      { "girdi": [{ "a": [1, 2] }, "a.1", 5], "cikti": { "a": [1, 5] } },
+      { "girdi": [{ "a": 1 }, "", 7], "cikti": 7 },
+      { "girdi": [{}, "__proto__.x", 1], "hata": true }
+    ]
+  }
+}

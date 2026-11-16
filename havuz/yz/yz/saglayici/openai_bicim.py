@@ -3,7 +3,8 @@
 İstek gövdesini kurar, yanıtı ve akış parçalarını ayrıştırır. Sunucular arası farklara
 hoşgörülüdür: `content` boş/None/parça listesi olabilir; araç argümanları dizgi ya da nesne
 gelebilir (bozuk JSON onarılır); `finish_reason`, `usage`, `id`, `index` eksik olabilir;
-düşünme metni `reasoning_content`, `reasoning` ya da <think> bloğu olarak gelebilir.
+düşünme metni `reasoning_content`, `reasoning`, `thinking` (Ollama) ya da <think> bloğu olabilir.
+Ollama'nın yerel `/api/chat` yanıtı (`message` + `done_reason` + `eval_count`) da çözülür.
 Kim kullanır: saglayici/openai_uyumlu.py ve sunucu/vekil.py (ters yönde: ortak tip → OpenAI).
 Genişletme: yeni bir sunucu farkı gördüğünüzde gerçek yanıtı tests/test_openai_bicim.py'ye
 ekleyip buradaki ilgili işlevi gevşetin.
@@ -39,6 +40,11 @@ _BITIS: dict[str, BitisNedeni] = {
     "tool_use": "arac",
     "content_filter": "suzgec",
 }
+
+
+def _sozluk(deger: Any) -> dict[str, Any]:
+    """Değer sözlükse kendisini, değilse boş sözlüğü döndürür (eksik/bozuk alanlara hoşgörü)."""
+    return deger if isinstance(deger, dict) else {}
 
 
 # ----------------------------------------------------------------------------- istek
@@ -109,7 +115,7 @@ def govde_kur(
         else:
             govde["response_format"] = {
                 "type": "json_schema",
-                "json_schema": {"name": bicim.ad, "strict": True, "schema": bicim.sema},
+                "json_schema": {"name": bicim.ad, "strict": False, "schema": bicim.sema},
             }
     if akis:
         govde["stream"] = True
@@ -159,7 +165,7 @@ def _cagrilari_coz(mesaj: dict[str, Any]) -> list[AracCagrisi]:
     for sira, ham in enumerate(ham_liste):
         if not isinstance(ham, dict):
             continue
-        islev = ham.get("function") if isinstance(ham.get("function"), dict) else ham
+        islev = _sozluk(ham.get("function")) or ham
         ad = str(islev.get("name") or "")
         if not ad:
             continue
@@ -177,8 +183,8 @@ def _cagrilari_coz(mesaj: dict[str, Any]) -> list[AracCagrisi]:
 
 def kullanim_coz(veri: dict[str, Any]) -> Kullanim:
     """`usage` (ya da llama.cpp `timings`, Ollama sayaçları) alanından kullanımı okur."""
-    kullanim = veri.get("usage") if isinstance(veri.get("usage"), dict) else {}
-    zamanlama = veri.get("timings") if isinstance(veri.get("timings"), dict) else {}
+    kullanim = _sozluk(veri.get("usage"))
+    zamanlama = _sozluk(veri.get("timings"))
     girdi = (
         kullanim.get("prompt_tokens")
         or kullanim.get("input_tokens")
@@ -225,7 +231,9 @@ def yanit_coz(veri: dict[str, Any], dusunce_ayikla: bool = True) -> Yanit:
             govde=json.dumps(veri, ensure_ascii=False)[:500],
         )
     metin = icerik_metni(mesaj.get("content"))
-    dusunce = icerik_metni(mesaj.get("reasoning_content") or mesaj.get("reasoning"))
+    dusunce = icerik_metni(
+        mesaj.get("reasoning_content") or mesaj.get("reasoning") or mesaj.get("thinking")
+    )
     if dusunce_ayikla:
         metin, etiketli = dusunce_ayir(metin)
         dusunce = dusunce or etiketli
@@ -281,7 +289,9 @@ class AkisBiriktirici:
         else:
             return None
         self._cagrilari_biriktir(delta)
-        dusunce = icerik_metni(delta.get("reasoning_content") or delta.get("reasoning"))
+        dusunce = icerik_metni(
+            delta.get("reasoning_content") or delta.get("reasoning") or delta.get("thinking")
+        )
         metin = icerik_metni(delta.get("content"))
         if self._ayirici is not None and metin:
             metin, etiketli = self._ayirici.besle(metin)
@@ -303,9 +313,13 @@ class AkisBiriktirici:
             if not isinstance(sira, int):
                 kimlikler = [c["id"] for c in self._cagrilar.values()]
                 yeni_mi = bool(ham.get("id")) and ham["id"] not in kimlikler
-                sira = len(self._cagrilar) if yeni_mi or not self._cagrilar else len(self._cagrilar) - 1
+                sira = (
+                    len(self._cagrilar)
+                    if yeni_mi or not self._cagrilar
+                    else len(self._cagrilar) - 1
+                )
             kayit = self._cagrilar.setdefault(sira, {"id": "", "ad": "", "arg": ""})
-            islev = ham.get("function") if isinstance(ham.get("function"), dict) else {}
+            islev = _sozluk(ham.get("function"))
             kayit["id"] = kayit["id"] or str(ham.get("id") or "")
             kayit["ad"] = kayit["ad"] or str(islev.get("name") or "")
             parca = islev.get("arguments")
@@ -328,7 +342,9 @@ class AkisBiriktirici:
             argumanlar, ham = arguman_coz(kayit["arg"])
             kimlik = kayit["id"] or f"cagri_{sira + 1}"
             cagrilar.append(
-                AracCagrisi(kimlik=kimlik, ad=kayit["ad"], argumanlar=argumanlar, ham_argumanlar=ham)
+                AracCagrisi(
+                    kimlik=kimlik, ad=kayit["ad"], argumanlar=argumanlar, ham_argumanlar=ham
+                )
             )
         metin = "".join(self._metin)
         yanit = Yanit(

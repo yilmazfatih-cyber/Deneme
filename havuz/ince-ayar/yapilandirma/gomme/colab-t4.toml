@@ -1,0 +1,33 @@
+# Gömme · colab-t4: multilingual-e5-base (MIT). e5 ailesi "query: " / "passage: " önekini ister.
+# Önbellekli MNRL: 64'lük yığının olumsuz gücü, 16'lık parçaların belleğiyle.
+# havuz/yz gibi önek eklemeyen bir uygulamada kullanacaksanız iki öneki de "" yapıp eğitin.
+gorev = "gomme"
+
+[model]
+taban = "intfloat/multilingual-e5-base"
+sorgu_oneki = "query: "
+belge_oneki = "passage: "
+
+[veri]
+egitim = "ornekler/gomme.jsonl"
+dogrulama_orani = 0.1
+azami_uzunluk = 256
+grup_alani = "grup"
+
+[egitim]
+cikti = "ciktilar/gomme-t4"
+donem = 1.0
+yigin = 64
+ogrenme_orani = 2e-5
+isinma_orani = 0.1
+kayit_adimi = 10
+kayip = "onbellekli-mnrl"
+mini_yigin = 16
+zor_olumsuz_kaz = 0
+hedef_bellek_gb = 15.0
+
+[degerlendirme]
+k_degerleri = [1, 5, 10]
+
+[disa_aktarim]
+int8 = true

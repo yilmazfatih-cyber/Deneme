@@ -1,0 +1,30 @@
+# Google Colab ücretsiz T4 (16 GB) için başlangıç ayarı. GPU'DA DENENMEDİ: bu depo yalnız CPU'lu
+# bir makinede geliştirildi. Sayılar yaygın uygulamaya göre seçilmiş tahminlerdir; ilk 100
+# adımın belirteç/sn değerine bakıp max_steps'i süre bütçenize göre ayarlayın.
+# Çalıştırma (Colab hücresinde):
+#   !python -m dil_modeli egit --yapilandirma yapilandirma/colab-t4.toml
+# Colab oturumu kapanabilir: out_dir'i Google Drive'a yönlendirip --surdur ile devam edin.
+
+data_dir = "veri/hazir"
+out_dir = "calisma/colab-t4"
+preset = "kucuk"            # dim 512, 8 katman -> ~29,5 M parametre (8192 sözlük)
+
+max_steps = 5000
+batch_size = 16
+seq_len = 1024
+grad_accum = 4              # etkin yığın: 16 x 4 x 1024 = 65.536 belirteç/adım
+learning_rate = 6e-4
+min_lr_ratio = 0.1
+warmup_steps = 200
+weight_decay = 0.1
+grad_clip = 1.0
+seed = 0
+
+device = "cuda"
+precision = "auto"          # T4 bf16 desteklemez -> fp16 + gradyan ölçekleyici
+compile = false             # true denenebilir; ilk adımlar derleme yüzünden yavaş olur
+
+log_every = 20
+eval_every = 250
+eval_batches = 50
+sample_tokens = 60

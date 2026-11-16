@@ -1,0 +1,528 @@
+# Açık veri kümeleri kataloğu (Hugging Face).
+# Her kayıt API'yle doğrulanır: python scripts/verify_catalog.py → katalog/dogrulama-<tarih>.json
+# Alanlar: kimlik · gorev · alan · dil · boyut (HF size_categories etiketi) · lisans (HF license etiketleri)
+# ticari_kullanim (evet/hayir/belirsiz; kural: docs/LISANSLAR.md) · atif · not
+# Bu katalog hukuki danışmanlık değildir; kullanmadan önce kümenin kartını ve lisansını okuyun.
+kumeler:
+  - kimlik: wikimedia/wikipedia
+    gorev: derlem
+    alan: tr-dogal-dil
+    dil: [tr, cok-dilli]
+    boyut: "10M<n<100M"
+    lisans: "cc-by-sa-3.0, gfdl"
+    ticari_kullanim: evet
+    atif: "wikimedia · https://huggingface.co/datasets/wikimedia/wikipedia (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "Türkçe alt küme: 20231101.tr (klasör API'de doğrulandı). Çok dilli."
+  - kimlik: HuggingFaceFW/fineweb-2
+    gorev: derlem
+    alan: tr-dogal-dil
+    dil: [tr, cok-dilli]
+    boyut: "1B<n<10B"
+    lisans: odc-by
+    ticari_kullanim: belirsiz
+    atif: "HuggingFaceFW · https://huggingface.co/datasets/HuggingFaceFW/fineweb-2 (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "Türkçe alt küme: tur_Latn (yapılandırma API'de doğrulandı). Derleme ODC-BY; web metni içerir; içerikteki telif hakları ayrıca değerlendirilmeli."
+  - kimlik: uonlp/CulturaX
+    gorev: derlem
+    alan: tr-dogal-dil
+    dil: [tr, cok-dilli]
+    boyut: "1B<n<10B"
+    lisans: etiket-yok
+    ticari_kullanim: belirsiz
+    atif: "uonlp · https://huggingface.co/datasets/uonlp/CulturaX (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "Erişim için kartta form onayı gerekir (gated). Türkçe alt küme: tr. Lisans etiketi yok."
+  - kimlik: statmt/cc100
+    gorev: derlem
+    alan: tr-dogal-dil
+    dil: [tr, cok-dilli]
+    boyut: "10M<n<100M"
+    lisans: unknown
+    ticari_kullanim: belirsiz
+    atif: "statmt · https://huggingface.co/datasets/statmt/cc100 (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "Common Crawl tabanlı; web metni içerir; içerikteki telif hakları ayrıca değerlendirilmeli."
+  - kimlik: turkish-nlp-suite/BellaTurca
+    gorev: derlem
+    alan: tr-dogal-dil
+    dil: [tr]
+    boyut: "10M<n<100M"
+    lisans: cc-by-sa-4.0
+    ticari_kullanim: belirsiz
+    atif: "turkish-nlp-suite · https://huggingface.co/datasets/turkish-nlp-suite/BellaTurca (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "Temiz OSCAR ve Temiz mC4 web taramalarını da içerir (kartta belirtiliyor); web metni içerir; içerikteki telif hakları ayrıca değerlendirilmeli."
+  - kimlik: turkish-nlp-suite/OzenliDerlem
+    gorev: derlem
+    alan: tr-dogal-dil
+    dil: [tr]
+    boyut: "1M<n<10M"
+    lisans: cc-by-sa-4.0
+    ticari_kullanim: belirsiz
+    atif: "turkish-nlp-suite · https://huggingface.co/datasets/turkish-nlp-suite/OzenliDerlem (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "Seçilmiş web sitelerinden tarama (kartta belirtiliyor); web metni içerir; içerikteki telif hakları ayrıca değerlendirilmeli."
+  - kimlik: musabg/wikipedia-tr
+    gorev: derlem
+    alan: tr-dogal-dil
+    dil: [tr]
+    boyut: "100K<n<1M"
+    lisans: "cc-by-sa-3.0, gfdl"
+    ticari_kullanim: evet
+    atif: "musabg · https://huggingface.co/datasets/musabg/wikipedia-tr (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "Türkçe Vikipedi (Mayıs 2023) makaleleri."
+  - kimlik: savasy/ttc4900
+    gorev: metin-siniflandirma
+    alan: tr-dogal-dil
+    dil: [tr]
+    boyut: "1K<n<10K"
+    lisans: unknown
+    ticari_kullanim: belirsiz
+    atif: "savasy · https://huggingface.co/datasets/savasy/ttc4900 (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "7 haber kategorisi, 4900 metin; lisans 'unknown'."
+  - kimlik: winvoker/turkish-sentiment-analysis-dataset
+    gorev: duygu-analizi
+    alan: tr-dogal-dil
+    dil: [tr]
+    boyut: "100K<n<1M"
+    lisans: cc-by-sa-4.0
+    ticari_kullanim: belirsiz
+    atif: "winvoker · https://huggingface.co/datasets/winvoker/turkish-sentiment-analysis-dataset (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "Olumlu/olumsuz/nötr; birçok kaynaktan derlenmiş (kartta belirtiliyor)."
+  - kimlik: turkish-nlp-suite/vitamins-supplements-reviews
+    gorev: duygu-analizi
+    alan: tr-dogal-dil
+    dil: [tr]
+    boyut: "100K<n<1M"
+    lisans: cc-by-sa-4.0
+    ticari_kullanim: belirsiz
+    atif: "turkish-nlp-suite · https://huggingface.co/datasets/turkish-nlp-suite/vitamins-supplements-reviews (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "bir web sitesinden kazınmış (scraped) kullanıcı yorumları (kartta belirtiliyor); site koşulları ayrıca değerlendirilmeli."
+  - kimlik: turkish-nlp-suite/beyazperde-all-movie-reviews
+    gorev: duygu-analizi
+    alan: tr-dogal-dil
+    dil: [tr]
+    boyut: "10K<n<100K"
+    lisans: cc-by-sa-4.0
+    ticari_kullanim: belirsiz
+    atif: "turkish-nlp-suite · https://huggingface.co/datasets/turkish-nlp-suite/beyazperde-all-movie-reviews (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "bir web sitesinden kazınmış (scraped) kullanıcı yorumları (kartta belirtiliyor); site koşulları ayrıca değerlendirilmeli."
+  - kimlik: turkish-nlp-suite/SentiTurca
+    gorev: duygu-analizi
+    alan: tr-dogal-dil
+    dil: [tr]
+    boyut: "100K<n<1M"
+    lisans: cc-by-sa-4.0
+    ticari_kullanim: belirsiz
+    atif: "turkish-nlp-suite · https://huggingface.co/datasets/turkish-nlp-suite/SentiTurca (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "Film yorumu, nefret söylemi ve e-ticaret yorumu kümeleri; e-ticaret yorumları web sitelerinden kazınmış (kartta belirtiliyor)."
+  - kimlik: fthbrmnby/turkish_product_reviews
+    gorev: duygu-analizi
+    alan: tr-dogal-dil
+    dil: [tr]
+    boyut: "100K<n<1M"
+    lisans: unknown
+    ticari_kullanim: belirsiz
+    atif: "fthbrmnby · https://huggingface.co/datasets/fthbrmnby/turkish_product_reviews (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "Çevrim içi toplanmış ürün yorumları; lisans 'unknown'."
+  - kimlik: coltekin/offenseval2020_tr
+    gorev: saldirgan-dil
+    alan: tr-dogal-dil
+    dil: [tr]
+    boyut: "10K<n<100K"
+    lisans: cc-by-2.0
+    ticari_kullanim: belirsiz
+    atif: "coltekin · https://huggingface.co/datasets/coltekin/offenseval2020_tr (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "tweet metinleri (kartta belirtiliyor); platform koşulları ayrıca değerlendirilmeli."
+  - kimlik: Toygar/turkish-offensive-language-detection
+    gorev: saldirgan-dil
+    alan: tr-dogal-dil
+    dil: [tr]
+    boyut: "10K<n<100K"
+    lisans: cc-by-2.0
+    ticari_kullanim: belirsiz
+    atif: "Toygar · https://huggingface.co/datasets/Toygar/turkish-offensive-language-detection (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "tweet metinleri (kartta belirtiliyor); platform koşulları ayrıca değerlendirilmeli."
+  - kimlik: turkish-nlp-suite/TrGLUE
+    gorev: metin-siniflandirma
+    alan: tr-dogal-dil
+    dil: [tr]
+    boyut: "100K<n<1M"
+    lisans: cc-by-sa-4.0
+    ticari_kullanim: evet
+    atif: "turkish-nlp-suite · https://huggingface.co/datasets/turkish-nlp-suite/TrGLUE (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "GLUE benzeri Türkçe değerlendirme görevleri (çeviri olmadığı kartta belirtiliyor)."
+  - kimlik: google/xquad
+    gorev: soru-yanit
+    alan: tr-dogal-dil
+    dil: [tr, cok-dilli]
+    boyut: "10K<n<100K"
+    lisans: cc-by-sa-4.0
+    ticari_kullanim: evet
+    atif: "google · https://huggingface.co/datasets/google/xquad (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "Türkçe alt küme: xquad.tr (klasör API'de doğrulandı). Yalnız değerlendirme bölümü vardır."
+  - kimlik: apple/mkqa
+    gorev: soru-yanit
+    alan: tr-dogal-dil
+    dil: [tr, cok-dilli]
+    boyut: "10K<n<100K"
+    lisans: cc-by-3.0
+    ticari_kullanim: evet
+    atif: "apple · https://huggingface.co/datasets/apple/mkqa (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "26 dilde hizalanmış soru-yanıt; Türkçe dil etiketi var."
+  - kimlik: boun-tabi/squad_tr
+    gorev: soru-yanit
+    alan: tr-dogal-dil
+    dil: [tr]
+    boyut: "100K<n<1M"
+    lisans: cc-by-nc-nd-4.0
+    ticari_kullanim: hayir
+    atif: "boun-tabi · https://huggingface.co/datasets/boun-tabi/squad_tr (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "SQuAD'ın Türkçe sürümü; NC-ND lisansı ticari kullanıma izin vermez."
+  - kimlik: Metin/WikiRAG-TR
+    gorev: soru-yanit
+    alan: tr-dogal-dil
+    dil: [tr]
+    boyut: "1K<n<10K"
+    lisans: apache-2.0
+    ticari_kullanim: belirsiz
+    atif: "Metin · https://huggingface.co/datasets/Metin/WikiRAG-TR (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "Vikipedi girişlerinden sentetik üretilmiş soru-yanıt (kartta belirtiliyor); kaynak metin CC BY-SA, üretim koşulları ayrıca değerlendirilmeli."
+  - kimlik: AYueksel/TurkishMMLU
+    gorev: soru-yanit
+    alan: tr-dogal-dil
+    dil: [tr]
+    boyut: "1K<n<10K"
+    lisans: etiket-yok
+    ticari_kullanim: belirsiz
+    atif: "AYueksel · https://huggingface.co/datasets/AYueksel/TurkishMMLU (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "Lise müfredatı çoktan seçmeli sorular; lisans etiketi yok, kart erişim için e-posta istiyor."
+  - kimlik: csebuetnlp/xlsum
+    gorev: ozetleme
+    alan: tr-dogal-dil
+    dil: [tr, cok-dilli]
+    boyut: "1M<n<10M"
+    lisans: cc-by-nc-sa-4.0
+    ticari_kullanim: hayir
+    atif: "csebuetnlp · https://huggingface.co/datasets/csebuetnlp/xlsum (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "BBC haberleri, 45 dil; Türkçe dil etiketi var. NC lisansı."
+  - kimlik: reciTAL/mlsum
+    gorev: ozetleme
+    alan: tr-dogal-dil
+    dil: [tr, cok-dilli]
+    boyut: "100K<n<1M"
+    lisans: other
+    ticari_kullanim: belirsiz
+    atif: "reciTAL · https://huggingface.co/datasets/reciTAL/mlsum (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "Gazete haberleri, 5 dil (Türkçe dahil); lisans 'other'."
+  - kimlik: batubayk/TR-News
+    gorev: ozetleme
+    alan: tr-dogal-dil
+    dil: [tr]
+    boyut: "100K<n<1M"
+    lisans: etiket-yok
+    ticari_kullanim: belirsiz
+    atif: "batubayk · https://huggingface.co/datasets/batubayk/TR-News (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "Türkçe haber özetleme; lisans etiketi yok."
+  - kimlik: GEM/wiki_lingua
+    gorev: ozetleme
+    alan: tr-dogal-dil
+    dil: [tr, cok-dilli]
+    boyut: etiket-yok
+    lisans: cc-by-nc-sa-3.0
+    ticari_kullanim: hayir
+    atif: "GEM · https://huggingface.co/datasets/GEM/wiki_lingua (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "WikiHow tabanlı çok dilli özetleme (Türkçe dahil); NC lisansı."
+  - kimlik: Helsinki-NLP/opus-100
+    gorev: ceviri
+    alan: tr-dogal-dil
+    dil: [tr, cok-dilli]
+    boyut: "10M<n<100M"
+    lisans: unknown
+    ticari_kullanim: belirsiz
+    atif: "Helsinki-NLP · https://huggingface.co/datasets/Helsinki-NLP/opus-100 (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "Türkçe alt küme: en-tr (klasör API'de doğrulandı); lisans 'unknown'."
+  - kimlik: wmt/wmt16
+    gorev: ceviri
+    alan: tr-dogal-dil
+    dil: [tr, cok-dilli]
+    boyut: "1M<n<10M"
+    lisans: unknown
+    ticari_kullanim: belirsiz
+    atif: "wmt · https://huggingface.co/datasets/wmt/wmt16 (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "Türkçe alt küme: tr-en (klasör API'de doğrulandı); lisans 'unknown'."
+  - kimlik: Helsinki-NLP/tatoeba_mt
+    gorev: ceviri
+    alan: tr-dogal-dil
+    dil: [tr, cok-dilli]
+    boyut: etiket-yok
+    lisans: cc-by-2.0
+    ticari_kullanim: evet
+    atif: "Helsinki-NLP · https://huggingface.co/datasets/Helsinki-NLP/tatoeba_mt (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "Türkçe çiftler '*-tur' yapılandırmalarında. Kart yalnız değerlendirme amaçlı kullanımı öneriyor (eğitimde kullanmak ölçümü bozar). Erişim onayı gerekir (gated)."
+  - kimlik: openlanguagedata/flores_plus
+    gorev: ceviri
+    alan: tr-dogal-dil
+    dil: [tr, cok-dilli]
+    boyut: "100K<n<1M"
+    lisans: cc-by-sa-4.0
+    ticari_kullanim: evet
+    atif: "openlanguagedata · https://huggingface.co/datasets/openlanguagedata/flores_plus (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "Türkçe alt küme: tur_Latn. Değerlendirme kümesi. Erişim onayı gerekir (gated)."
+  - kimlik: turkish-nlp-suite/turkish-wikiNER
+    gorev: varlik-tanima
+    alan: tr-dogal-dil
+    dil: [tr]
+    boyut: "10K<n<100K"
+    lisans: cc-by-sa-4.0
+    ticari_kullanim: evet
+    atif: "turkish-nlp-suite · https://huggingface.co/datasets/turkish-nlp-suite/turkish-wikiNER (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "Vikipedi cümleleri, 20.000 cümle yeniden etiketlenmiş."
+  - kimlik: unimelb-nlp/wikiann
+    gorev: varlik-tanima
+    alan: tr-dogal-dil
+    dil: [tr, cok-dilli]
+    boyut: "1M<n<10M"
+    lisans: unknown
+    ticari_kullanim: belirsiz
+    atif: "unimelb-nlp · https://huggingface.co/datasets/unimelb-nlp/wikiann (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "Türkçe alt küme: tr (klasör API'de doğrulandı); lisans 'unknown'."
+  - kimlik: erayyildiz/turkish_ner
+    gorev: varlik-tanima
+    alan: tr-dogal-dil
+    dil: [tr]
+    boyut: "100K<n<1M"
+    lisans: cc-by-4.0
+    ticari_kullanim: evet
+    atif: "erayyildiz · https://huggingface.co/datasets/erayyildiz/turkish_ner (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "Vikipedi'den otomatik etiketlenmiş (TWNERTC); otomatik etiket gürültülü olabilir."
+  - kimlik: boun-tabi/nli_tr
+    gorev: dogal-dil-cikarimi
+    alan: tr-dogal-dil
+    dil: [tr]
+    boyut: "100K<n<1M"
+    lisans: "cc-by-3.0, cc-by-4.0, cc-by-sa-3.0, mit, other"
+    ticari_kullanim: belirsiz
+    atif: "boun-tabi · https://huggingface.co/datasets/boun-tabi/nli_tr (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "SNLI ve MNLI'nin Amazon Translate ile çevirisi (kartta belirtiliyor); karışık lisans etiketleri."
+  - kimlik: emrecan/stsb-mt-turkish
+    gorev: anlamsal-benzerlik
+    alan: tr-dogal-dil
+    dil: [tr]
+    boyut: "1K<n<10K"
+    lisans: etiket-yok
+    ticari_kullanim: belirsiz
+    atif: "emrecan · https://huggingface.co/datasets/emrecan/stsb-mt-turkish (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "STSb'nin makine çevirisi (kartta belirtiliyor); lisans etiketi yok."
+  - kimlik: facebook/xnli
+    gorev: dogal-dil-cikarimi
+    alan: tr-dogal-dil
+    dil: [tr, cok-dilli]
+    boyut: "1M<n<10M"
+    lisans: etiket-yok
+    ticari_kullanim: belirsiz
+    atif: "facebook · https://huggingface.co/datasets/facebook/xnli (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "Türkçe alt küme: tr (klasör API'de doğrulandı); lisans etiketi yok."
+  - kimlik: rajpurkar/squad
+    gorev: soru-yanit
+    alan: genel-dogal-dil
+    dil: [en]
+    boyut: "10K<n<100K"
+    lisans: cc-by-sa-4.0
+    ticari_kullanim: evet
+    atif: "rajpurkar · https://huggingface.co/datasets/rajpurkar/squad (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "İngilizce okuduğunu anlama (SQuAD 1.1)."
+  - kimlik: nyu-mll/glue
+    gorev: metin-siniflandirma
+    alan: genel-dogal-dil
+    dil: [en]
+    boyut: "1M<n<10M"
+    lisans: other
+    ticari_kullanim: belirsiz
+    atif: "nyu-mll · https://huggingface.co/datasets/nyu-mll/glue (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "İngilizce GLUE; görev başına lisans farklı ('other')."
+  - kimlik: scikit-learn/adult-census-income
+    gorev: tablo-siniflandirma
+    alan: tablo
+    dil: [yok]
+    boyut: "10K<n<100K"
+    lisans: cc0-1.0
+    ticari_kullanim: evet
+    atif: "scikit-learn · https://huggingface.co/datasets/scikit-learn/adult-census-income (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "UCI Adult; gelir sınıflandırma."
+  - kimlik: scikit-learn/iris
+    gorev: tablo-siniflandirma
+    alan: tablo
+    dil: [yok]
+    boyut: n<1K
+    lisans: cc0-1.0
+    ticari_kullanim: evet
+    atif: "scikit-learn · https://huggingface.co/datasets/scikit-learn/iris (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "150 satırlık klasik küme."
+  - kimlik: scikit-learn/churn-prediction
+    gorev: tablo-siniflandirma
+    alan: tablo
+    dil: [yok]
+    boyut: "1K<n<10K"
+    lisans: cc-by-4.0
+    ticari_kullanim: evet
+    atif: "scikit-learn · https://huggingface.co/datasets/scikit-learn/churn-prediction (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "IBM örnek verisi kaynaklı kurgusal telekom müşteri kaybı kümesi (kartta belirtiliyor)."
+  - kimlik: scikit-learn/credit-card-clients
+    gorev: tablo-siniflandirma
+    alan: tablo
+    dil: [yok]
+    boyut: "10K<n<100K"
+    lisans: cc0-1.0
+    ticari_kullanim: evet
+    atif: "scikit-learn · https://huggingface.co/datasets/scikit-learn/credit-card-clients (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "UCI kredi kartı temerrüt kümesi (Tayvan, 2005)."
+  - kimlik: inria-soda/tabular-benchmark
+    gorev: tablo-siniflandirma
+    alan: tablo
+    dil: [yok]
+    boyut: "10M<n<100M"
+    lisans: etiket-yok
+    ticari_kullanim: belirsiz
+    atif: "inria-soda · https://huggingface.co/datasets/inria-soda/tabular-benchmark (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "OpenML kümelerinden derlenmiş karşılaştırma seti; lisans etiketi yok."
+  - kimlik: codesignal/wine-quality
+    gorev: tablo-regresyon
+    alan: tablo
+    dil: [yok]
+    boyut: "1K<n<10K"
+    lisans: cc-by-4.0
+    ticari_kullanim: evet
+    atif: "codesignal · https://huggingface.co/datasets/codesignal/wine-quality (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "Şarap kalitesi (regresyon/sınıflandırma)."
+  - kimlik: scikit-learn/auto-mpg
+    gorev: tablo-regresyon
+    alan: tablo
+    dil: [yok]
+    boyut: n<1K
+    lisans: apache-2.0
+    ticari_kullanim: evet
+    atif: "scikit-learn · https://huggingface.co/datasets/scikit-learn/auto-mpg (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "UCI Auto MPG; yakıt tüketimi regresyonu."
+  - kimlik: Monash-University/monash_tsf
+    gorev: zaman-serisi-tahmini
+    alan: zaman-serisi
+    dil: [yok]
+    boyut: "1K<n<10K"
+    lisans: cc-by-4.0
+    ticari_kullanim: belirsiz
+    atif: "Monash-University · https://huggingface.co/datasets/Monash-University/monash_tsf (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "birçok kaynaktan derleme (kartta belirtiliyor); her alt kümenin lisansı ayrı denetlenmeli."
+  - kimlik: ETDataset/ett
+    gorev: zaman-serisi-tahmini
+    alan: zaman-serisi
+    dil: [yok]
+    boyut: "1K<n<10K"
+    lisans: cc-by-4.0
+    ticari_kullanim: evet
+    atif: "ETDataset · https://huggingface.co/datasets/ETDataset/ett (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "Elektrik trafosu verisi (saatlik ve 15 dakikalık)."
+  - kimlik: autogluon/chronos_datasets
+    gorev: zaman-serisi-tahmini
+    alan: zaman-serisi
+    dil: [yok]
+    boyut: "10M<n<100M"
+    lisans: other
+    ticari_kullanim: belirsiz
+    atif: "autogluon · https://huggingface.co/datasets/autogluon/chronos_datasets (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "birçok kaynaktan derleme (kartta belirtiliyor); her alt kümenin lisansı ayrı denetlenmeli; lisans 'other'."
+  - kimlik: Salesforce/GiftEval
+    gorev: zaman-serisi-tahmini
+    alan: zaman-serisi
+    dil: [yok]
+    boyut: "100K<n<1M"
+    lisans: apache-2.0
+    ticari_kullanim: belirsiz
+    atif: "Salesforce · https://huggingface.co/datasets/Salesforce/GiftEval (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "birçok kaynaktan derleme (kartta belirtiliyor); her alt kümenin lisansı ayrı denetlenmeli (23 küme)."
+  - kimlik: thuml/Time-Series-Library
+    gorev: zaman-serisi-tahmini
+    alan: zaman-serisi
+    dil: [yok]
+    boyut: "1M<n<10M"
+    lisans: cc-by-4.0
+    ticari_kullanim: belirsiz
+    atif: "thuml · https://huggingface.co/datasets/thuml/Time-Series-Library (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "birçok kaynaktan derleme (kartta belirtiliyor); her alt kümenin lisansı ayrı denetlenmeli (tahmin, eksik veri, anomali, sınıflandırma)."
+  - kimlik: ylecun/mnist
+    gorev: goruntu-siniflandirma
+    alan: goruntu
+    dil: [yok]
+    boyut: "10K<n<100K"
+    lisans: mit
+    ticari_kullanim: evet
+    atif: "ylecun · https://huggingface.co/datasets/ylecun/mnist (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "El yazısı rakamlar."
+  - kimlik: zalando-datasets/fashion_mnist
+    gorev: goruntu-siniflandirma
+    alan: goruntu
+    dil: [yok]
+    boyut: "10K<n<100K"
+    lisans: mit
+    ticari_kullanim: evet
+    atif: "zalando-datasets · https://huggingface.co/datasets/zalando-datasets/fashion_mnist (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "Giyim ürünü görüntüleri (10 sınıf)."
+  - kimlik: uoft-cs/cifar10
+    gorev: goruntu-siniflandirma
+    alan: goruntu
+    dil: [yok]
+    boyut: "10K<n<100K"
+    lisans: unknown
+    ticari_kullanim: belirsiz
+    atif: "uoft-cs · https://huggingface.co/datasets/uoft-cs/cifar10 (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "10 sınıf küçük görüntü; lisans 'unknown'."
+  - kimlik: uoft-cs/cifar100
+    gorev: goruntu-siniflandirma
+    alan: goruntu
+    dil: [yok]
+    boyut: "10K<n<100K"
+    lisans: unknown
+    ticari_kullanim: belirsiz
+    atif: "uoft-cs · https://huggingface.co/datasets/uoft-cs/cifar100 (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "100 sınıf küçük görüntü; lisans 'unknown'."
+  - kimlik: AI-Lab-Makerere/beans
+    gorev: goruntu-siniflandirma
+    alan: goruntu
+    dil: [yok]
+    boyut: "1K<n<10K"
+    lisans: mit
+    ticari_kullanim: evet
+    atif: "AI-Lab-Makerere · https://huggingface.co/datasets/AI-Lab-Makerere/beans (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "Fasulye yaprağı hastalıkları (3 sınıf)."
+  - kimlik: timm/oxford-iiit-pet
+    gorev: goruntu-siniflandirma
+    alan: goruntu
+    dil: [yok]
+    boyut: "1K<n<10K"
+    lisans: cc-by-sa-4.0
+    ticari_kullanim: evet
+    atif: "timm · https://huggingface.co/datasets/timm/oxford-iiit-pet (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "37 kedi/köpek ırkı."
+  - kimlik: ethz/food101
+    gorev: goruntu-siniflandirma
+    alan: goruntu
+    dil: [yok]
+    boyut: "100K<n<1M"
+    lisans: unknown
+    ticari_kullanim: belirsiz
+    atif: "ethz · https://huggingface.co/datasets/ethz/food101 (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "101 yemek sınıfı; lisans 'unknown'."
+  - kimlik: ILSVRC/imagenet-1k
+    gorev: goruntu-siniflandirma
+    alan: goruntu
+    dil: [yok]
+    boyut: "1M<n<10M"
+    lisans: other
+    ticari_kullanim: hayir
+    atif: "ILSVRC · https://huggingface.co/datasets/ILSVRC/imagenet-1k (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "Erişim koşulu yalnız ticari olmayan araştırma ve eğitim kullanımına izin veriyor (kartın erişim metni). Erişim onayı gerekir (gated)."
+  - kimlik: zh-plus/tiny-imagenet
+    gorev: goruntu-siniflandirma
+    alan: goruntu
+    dil: [yok]
+    boyut: "100K<n<1M"
+    lisans: etiket-yok
+    ticari_kullanim: belirsiz
+    atif: "zh-plus · https://huggingface.co/datasets/zh-plus/tiny-imagenet (bilimsel atıf: veri kartının Citation bölümü)"
+    not: "ImageNet alt kümesi; lisans etiketi yok, ImageNet koşulları ayrıca değerlendirilmeli."

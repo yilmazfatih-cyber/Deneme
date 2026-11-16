@@ -25,7 +25,7 @@ Row = dict[str, Any]
 LIST_SEPARATOR = "|"
 
 
-def _cell(value: Any, *, decimal_comma: bool) -> str:
+def cell_text(value: Any, *, decimal_comma: bool = False) -> str:
     """Tek bir hücreyi metne çevirir (None → boş; bool → true/false; liste → a|b|c)."""
     if value is None:
         return ""
@@ -37,7 +37,7 @@ def _cell(value: Any, *, decimal_comma: bool) -> str:
     if isinstance(value, datetime | date):
         return value.isoformat()
     if isinstance(value, list | tuple):
-        return LIST_SEPARATOR.join(_cell(item, decimal_comma=decimal_comma) for item in value)
+        return LIST_SEPARATOR.join(cell_text(item, decimal_comma=decimal_comma) for item in value)
     return str(value)
 
 
@@ -67,7 +67,7 @@ def csv_text(
     )
     writer.writerow(names)
     for row in rows:
-        writer.writerow([_cell(row.get(name), decimal_comma=excel_tr) for name in names])
+        writer.writerow([cell_text(row.get(name), decimal_comma=excel_tr) for name in names])
     return buffer.getvalue()
 
 
@@ -158,7 +158,11 @@ def read_json(path: Path) -> Any:
 
 
 def write_parquet(path: Path, rows: Sequence[Mapping[str, Any]]) -> None:
-    """Parquet yazar. DuckDB gerekir: ``pip install -e ".[analiz]"``."""
+    """Parquet yazar. DuckDB gerekir: ``pip install -e ".[analiz]"``.
+
+    Not: ``Decimal`` tutarlar JSON ara biçiminden geçtiği için DOUBLE olarak yazılır; kuruş
+    kesinliği gereken işte CSV/JSONL kullanın ya da okurken yuvarlayın.
+    """
     try:
         import duckdb
     except ImportError as error:  # pragma: no cover - ekstra kurulu değilse

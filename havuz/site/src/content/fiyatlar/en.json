@@ -1,0 +1,34 @@
+{
+  "currency": "USD",
+  "period": "month",
+  "items": [
+    {
+      "name": "Starter",
+      "price": 0,
+      "description": "For people who work on their own or are just starting.",
+      "features": ["1 calendar", "100 bookings a month", "Online booking page", "Email reminders"],
+      "cta": { "label": "Start free", "href": "/en/contact/" }
+    },
+    {
+      "name": "Business",
+      "price": 19,
+      "description": "For small businesses growing their team.",
+      "features": [
+        "Up to 5 team members",
+        "Unlimited bookings",
+        "SMS and WhatsApp reminders",
+        "Waiting list",
+        "Deposits and prepayment"
+      ],
+      "cta": { "label": "Try free for 14 days", "href": "/en/contact/" },
+      "highlighted": true
+    },
+    {
+      "name": "Multi-location",
+      "price": 49,
+      "description": "For businesses with more than one branch.",
+      "features": ["Unlimited staff and branches", "Cross-branch reports", "Roles and permissions", "Priority support"],
+      "cta": { "label": "Talk to us", "href": "/en/contact/" }
+    }
+  ]
+}

@@ -73,7 +73,9 @@ class TrainSection(Section):
     tohum: int = 42
     is_parcacigi: int = Field(0, ge=0, description="CPU iş parçacığı; 0: otomatik (en çok 4)")
     hedef_bellek_gb: float = Field(
-        0.0, ge=0.0, description="Hazır ayarın hedeflediği GPU belleği; kuru çalıştırmada kıyas için"
+        0.0,
+        ge=0.0,
+        description="Hazır ayarın hedeflediği GPU belleği; kuru çalıştırmada kıyas için",
     )
 
 
@@ -81,7 +83,9 @@ def preset_path(task: str, preset: str) -> Path:
     """Hazır ayar dosyasının yolu; yoksa hangi adların geçerli olduğunu söyler."""
     path = PRESET_DIR / task / f"{preset}.toml"
     if not path.is_file():
-        raise UserError(t("ayar.hazir_yok", hazir=preset, gorev=task, secenekler=", ".join(PRESETS)))
+        raise UserError(
+            t("ayar.hazir_yok", hazir=preset, gorev=task, secenekler=", ".join(PRESETS))
+        )
     return path
 
 

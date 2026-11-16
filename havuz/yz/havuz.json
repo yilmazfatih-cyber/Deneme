@@ -1,0 +1,16 @@
+{
+  "ad": "yz",
+  "baslik": "Küçük dil modelleriyle uygulama temeli",
+  "ozet": "Küçük modellerin zayıflıklarını (bozuk JSON, araç çağrısı hataları, uydurma) doğrula-onar döngüleri, sıkı şemalar ve ölçümle kapatan sağlayıcı katmanı, yapılı çıktı, ajan, RAG, değerlendirme, MCP ve sohbet sunucusu.",
+  "tur": "python",
+  "gereksinim": { "python": ">=3.11" },
+  "python": { "ekstra": "dev" },
+  "denetle": ["python scripts/check.py"],
+  "uzunDenetim": ["YZ_E2E=1 PLAYWRIGHT_CHROMIUM_EXECUTABLE=/opt/pw-browsers/chromium python -m pytest tests/e2e"],
+  "baslat": "python -m yz sun --saglayici sahte",
+  "yerTutucular": [
+    { "ara": "havuz-yz", "anlam": "dağıtım paketi adı (pyproject.toml [project] name)" },
+    { "ara": "yz sohbet", "anlam": "arayüz başlığı (yz/web/sozluk.json baslik)" }
+  ],
+  "kopyalamaHaric": [".venv", ".yz", "build", "dist", "*.egg-info", "__pycache__", ".ruff_cache", ".mypy_cache", ".pytest_cache"]
+}

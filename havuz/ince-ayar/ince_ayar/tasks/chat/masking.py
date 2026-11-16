@@ -25,7 +25,6 @@ Genişletme: araç çağrısı (tool) ve çok kipli içerik desteklenmez; eklene
 
 from __future__ import annotations
 
-import os
 import unicodedata
 from dataclasses import dataclass
 from difflib import SequenceMatcher
@@ -80,6 +79,16 @@ def _closing_when_last(tokenizer: Any, messages: Messages, index: int) -> str:
     return rendered[position + len(SENTINEL) :] if position >= 0 else ""
 
 
+def _common_prefix_length(left: str, right: str) -> int:
+    """İki metnin baştan kaç karakterinin aynı olduğu."""
+    length = 0
+    for first, second in zip(left, right, strict=False):
+        if first != second:
+            break
+        length += 1
+    return length
+
+
 def _turn_span(tokenizer: Any, messages: Messages, index: int, text: str) -> tuple[int, int]:
     """`index` numaralı asistan iletisinin tam metindeki [baş, son) karakter aralığı."""
     marked = [*messages[:index], {"role": "assistant", "content": SENTINEL}, *messages[index + 1 :]]
@@ -105,8 +114,7 @@ def _turn_span(tokenizer: Any, messages: Messages, index: int, text: str) -> tup
         raise UserError(t("sohbet.hizalama", sira=index))
     is_last = index == len(messages) - 1
     closing = tail if is_last else _closing_when_last(tokenizer, messages, index)
-    shared = os.path.commonprefix([closing, text[content_end:]])
-    return start, content_end + len(shared)
+    return start, content_end + _common_prefix_length(closing, text[content_end:])
 
 
 def assistant_spans(tokenizer: Any, messages: Messages) -> tuple[str, list[tuple[int, int]]]:

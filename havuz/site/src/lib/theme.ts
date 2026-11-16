@@ -3,7 +3,7 @@
  * - Nötr tonlar (zemin, metin, çizgi) aşağıda sabittir.
  * - Marka tonları site.config.ts → brand içindeki iki renkten türetilir; metin/zemin çiftleri WCAG AA (4.5:1)
  *   karşıtlığını sağlayacak biçimde ayarlanır. Böylece marka rengi değişse de okunabilirlik bozulmaz.
- * Kim kullanır: src/components/ThemeStyle.astro (CSS'i <head>'e yazar), tests/unit/theme.test.ts (karşıtlık denetimi).
+ * Kim kullanır: src/layouts/BaseLayout.astro (CSS'i <head>'e yazar), tests/unit/theme.test.ts (karşıtlık denetimi).
  * CSS tarafı: src/styles/global.css bu değişkenleri Tailwind renk adlarına bağlar (bg-page, text-ink, bg-brand…).
  * Genişletme: yeni bir renk değişkeni → buraya ekleyin, global.css içindeki @theme bloğuna da `--color-ad: var(--ad)` yazın.
  */
@@ -89,14 +89,20 @@ function deepTokens(primary: string, theme: ThemeName): ThemeTokens {
   const base = hexToOklch(primary)
   const deep = oklchToHex({ l: theme === 'dark' ? 0.26 : 0.3, c: Math.min(base.c, 0.075), h: base.h })
   const onDeep = '#f4f7f5'
-  const onDeepMuted = ensureContrast(oklchToHex({ l: 0.82, c: Math.min(base.c * 0.3, 0.03), h: base.h }), [deep], TARGET, 'lighter')
+  const onDeepMuted = ensureContrast(
+    oklchToHex({ l: 0.82, c: Math.min(base.c * 0.3, 0.03), h: base.h }),
+    [deep],
+    TARGET,
+    'lighter',
+  )
   return { deep, 'on-deep': onDeep, 'on-deep-muted': onDeepMuted }
 }
 
 function calloutTokens(theme: ThemeName): ThemeTokens {
   const tokens: ThemeTokens = {}
   for (const [kind, hue] of Object.entries(calloutHues)) {
-    const soft = theme === 'dark' ? oklchToHex({ l: 0.25, c: 0.035, h: hue }) : oklchToHex({ l: 0.96, c: 0.025, h: hue })
+    const soft =
+      theme === 'dark' ? oklchToHex({ l: 0.25, c: 0.035, h: hue }) : oklchToHex({ l: 0.96, c: 0.025, h: hue })
     const line = theme === 'dark' ? oklchToHex({ l: 0.4, c: 0.07, h: hue }) : oklchToHex({ l: 0.84, c: 0.07, h: hue })
     const start = theme === 'dark' ? oklchToHex({ l: 0.84, c: 0.1, h: hue }) : oklchToHex({ l: 0.45, c: 0.13, h: hue })
     tokens[`${kind}-soft`] = soft
@@ -117,13 +123,18 @@ export function buildTheme(brand: { primary: string; accent: string }, theme: Th
   }
 }
 
-/** <head>'e yazılacak CSS: açık tema `:root`, koyu tema `[data-theme='dark']` altında. */
+/**
+ * <head>'e yazılacak CSS. Her değişken `light-dark(açık, koyu)` biçimindedir: hangi tonun kullanılacağını
+ * `color-scheme` belirler. Varsayılan `light dark` (JS kapalıyken sistem temasına uyar); tema düğmesi
+ * <html data-theme="light|dark"> yazarak seçimi sabitler (src/styles/global.css).
+ */
 export function buildThemeCss(brand: { primary: string; accent: string }): string {
-  const block = (tokens: ThemeTokens) =>
-    Object.entries(tokens)
-      .map(([name, value]) => `--${name}:${value}`)
-      .join(';')
-  return `:root{${block(buildTheme(brand, 'light'))}}[data-theme='dark']{${block(buildTheme(brand, 'dark'))}}`
+  const light = buildTheme(brand, 'light')
+  const dark = buildTheme(brand, 'dark')
+  const declarations = Object.keys(light).map(
+    (name) => `--${name}:light-dark(${light[name]},${dark[name] ?? light[name]})`,
+  )
+  return `:root{${declarations.join(';')}}`
 }
 
 /**

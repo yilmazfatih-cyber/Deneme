@@ -12,11 +12,11 @@ listeye ekleyin.
 from __future__ import annotations
 
 import html
-from collections.abc import Sequence
+from collections.abc import Mapping, Sequence
 from pathlib import Path
 from typing import Any
 
-from ince_ayar.messages import headers, t
+from ince_ayar.messages import REPORT_FIELDS, headers, t
 
 WIDTH, HEIGHT, MARGIN = 720, 260, 44
 STYLE = """
@@ -34,6 +34,11 @@ th { color: var(--soft); font-weight: 600; white-space: nowrap; }
 td.text { white-space: pre-wrap; word-break: break-word; }
 svg { width: 100%; height: auto; } .note { color: var(--soft); }
 """
+
+
+def summary_rows(summary: Mapping[str, Any], keys: Sequence[str]) -> list[tuple[str, Any]]:
+    """Özet sözlüğünden rapor tablosu satırları; alan adları `messages.REPORT_FIELDS` içindedir."""
+    return [(REPORT_FIELDS.get(key, key), summary.get(key)) for key in keys]
 
 
 def _escape(value: Any) -> str:
@@ -64,7 +69,7 @@ def loss_chart(logs: Sequence[dict[str, Any]]) -> str:
     values = train + evaluation
     if not values:
         return f'<p class="note">{_escape(t("rapor.egri_yok"))}</p>'
-    x_max = max(max(x for x, _ in values), 1.0)
+    x_max = max(1.0, *(x for x, _ in values))
     y_min, y_max = min(y for _, y in values), max(y for _, y in values)
     span = (y_max - y_min) or 1.0
     y_min, y_max = y_min - 0.05 * span, y_max + 0.05 * span
@@ -74,7 +79,9 @@ def loss_chart(logs: Sequence[dict[str, Any]]) -> str:
         py = HEIGHT - MARGIN - (y - y_min) / (y_max - y_min) * (HEIGHT - 2 * MARGIN)
         return round(px, 1), round(py, 1)
 
-    parts = [f'<svg viewBox="0 0 {WIDTH} {HEIGHT}" role="img" aria-label="{_escape(t("rapor.egri"))}">']
+    parts = [
+        f'<svg viewBox="0 0 {WIDTH} {HEIGHT}" role="img" aria-label="{_escape(t("rapor.egri"))}">'
+    ]
     for tick in range(5):
         y_value = y_min + (y_max - y_min) * tick / 4
         _, py = place(0, y_value)
@@ -117,7 +124,12 @@ def build_report(
     """Raporun tam HTML metnini üretir."""
     sample_head = headers("rapor.ornek_basliklari")
     sample_rows = [
-        [row.get("adim", ""), row.get("girdi", ""), row.get("beklenen", ""), row.get("uretilen", "")]
+        [
+            row.get("adim", ""),
+            row.get("girdi", ""),
+            row.get("beklenen", ""),
+            row.get("uretilen", ""),
+        ]
         for row in samples
     ]
     sections = [

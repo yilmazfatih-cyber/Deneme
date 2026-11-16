@@ -13,6 +13,7 @@ from yz.guvenlik.dogrulama import (
 from yz.guvenlik.izin import AracIzinListesi
 from yz.guvenlik.maske import (
     TUM_TURLER,
+    AkisMaskeAcici,
     Eslesme,
     MaskeOturumu,
     gunluk_icin_maskele,
@@ -31,6 +32,7 @@ from yz.guvenlik.suzgec import (
 
 __all__ = [
     "TUM_TURLER",
+    "AkisMaskeAcici",
     "AracIzinListesi",
     "Eslesme",
     "MaskeOturumu",

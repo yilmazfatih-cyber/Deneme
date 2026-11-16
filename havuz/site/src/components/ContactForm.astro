@@ -1,0 +1,143 @@
+---
+/**
+ * İletişim formu (sunucu gerektirmez).
+ * - PUBLIC_FORM_ENDPOINT tanımlıysa ileti oraya JSON olarak gönderilir (Formspree, Web3Forms, Basin… gibi bir servis).
+ *   JS kapalıysa form aynı adrese normal biçimde gönderilir.
+ * - Tanımlı değilse ziyaretçinin e-posta uygulaması açılır (mailto:), JS kapalıyken de.
+ * Spam önlemi: görünmez bal küpü alanı + çok hızlı gönderim tuzağı. Erişilebilirlik: her alanın etiketi, alan altı hata
+ * iletisi (aria-describedby), hata özeti (role="alert"), sonuç iletisi (role="status").
+ * Betik: src/scripts/contact-form.ts. Uçtan uca testi: tests/e2e/contact.spec.ts. Tarif: AGENTS.md → "Formu bir servise bağlama".
+ */
+import { PUBLIC_FORM_ENDPOINT } from 'astro:env/client'
+import { useTranslations } from '../i18n/index.ts'
+import { fill } from '../lib/text.ts'
+import { siteConfig, type Locale } from '../site.config.ts'
+
+interface Props {
+  locale: Locale
+}
+
+const { locale } = Astro.props
+const t = useTranslations(locale)
+const form = t.contact.form
+const email = siteConfig.contact.email
+const endpoint = PUBLIC_FORM_ENDPOINT
+const limits = { name: { max: 100 }, message: { min: 10, max: 2000 } }
+const messages = {
+  ...form,
+  failure: fill(form.failure, { email }),
+  mailto: fill(form.mailto, { email }),
+  subject: fill(form.mailSubject, { site: siteConfig.name, name: '{name}' }),
+}
+---
+
+<form
+  class="card grid gap-5 p-6 md:p-8"
+  method="post"
+  action={endpoint ?? `mailto:${email}`}
+  enctype={endpoint ? undefined : 'text/plain'}
+  aria-labelledby="iletisim-formu-baslik"
+  data-contact-form
+  data-endpoint={endpoint}
+  data-email={email}
+  data-lang={siteConfig.locales[locale].lang}
+  data-min-seconds="3"
+  data-messages={JSON.stringify(messages)}
+>
+  <h2 id="iletisim-formu-baslik" class="text-xl font-semibold">
+    {form.title}
+  </h2>
+
+  <div class="notice notice-error" role="alert" data-form-summary hidden></div>
+
+  <div>
+    <label for="iletisim-ad" class="field-label">
+      {form.name}
+    </label>
+    <input
+      id="iletisim-ad"
+      name="name"
+      type="text"
+      class="field-input"
+      autocomplete="name"
+      required
+      maxlength={limits.name.max}
+      aria-describedby="iletisim-ad-hata"
+      data-rule={JSON.stringify({ required: true, maxLength: limits.name.max })}
+      data-label={form.name}
+    />
+    <p id="iletisim-ad-hata" class="field-error" data-error-for="iletisim-ad"></p>
+  </div>
+
+  <div>
+    <label for="iletisim-eposta" class="field-label">
+      {form.email}
+    </label>
+    <input
+      id="iletisim-eposta"
+      name="email"
+      type="email"
+      class="field-input"
+      autocomplete="email"
+      inputmode="email"
+      required
+      aria-describedby="iletisim-eposta-hata"
+      data-rule={JSON.stringify({ required: true, email: true })}
+      data-label={form.email}
+    />
+    <p id="iletisim-eposta-hata" class="field-error" data-error-for="iletisim-eposta"></p>
+  </div>
+
+  <div>
+    <label for="iletisim-ileti" class="field-label">
+      {form.message}
+    </label>
+    <textarea
+      id="iletisim-ileti"
+      name="message"
+      rows="6"
+      class="field-input resize-y"
+      required
+      minlength={limits.message.min}
+      maxlength={limits.message.max}
+      aria-describedby="iletisim-ileti-ipucu iletisim-ileti-hata"
+      data-rule={JSON.stringify({ required: true, minLength: limits.message.min, maxLength: limits.message.max })}
+      data-label={form.message}
+    ></textarea>
+    <p id="iletisim-ileti-ipucu" class="field-hint">
+      {form.messageHint}
+    </p>
+    <p id="iletisim-ileti-hata" class="field-error" data-error-for="iletisim-ileti"></p>
+  </div>
+
+  <div class="honeypot" aria-hidden="true">
+    <label for="iletisim-web">{form.trap}</label>
+    <input id="iletisim-web" name="_gotcha" type="text" tabindex="-1" autocomplete="off" data-honeypot />
+  </div>
+
+  <div class="flex flex-wrap items-center gap-4">
+    <button type="submit" class="btn btn-primary" data-submit-label={form.submit} data-sending-label={form.sending}>
+      {form.submit}
+    </button>
+  </div>
+
+  <div role="status" aria-live="polite" data-form-status></div>
+</form>
+
+<style>
+  .honeypot {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .field-error:empty {
+    display: none;
+  }
+</style>
+
+<script>
+  import '../scripts/contact-form.ts'
+</script>

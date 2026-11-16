@@ -1,0 +1,18 @@
+# Önbellek ve güvenlik başlıkları — KOPYALANACAK ÖRNEK (Netlify ve Cloudflare Pages okur; GitHub Pages okumaz).
+# Kullanım: bu dosyayı public/_headers olarak kopyalayın; derlemede dist/_headers olur.
+# Bu ortamda bir barındırma servisinde denenmedi.
+
+# Adında içerik özeti (hash) olan dosyalar hiç değişmez: bir yıl önbellekte kalabilir.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Paylaşım görselleri ve arama dizini derlemeyle değişir: bir gün.
+/og/*
+  Cache-Control: public, max-age=86400
+/pagefind/*
+  Cache-Control: public, max-age=86400
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()

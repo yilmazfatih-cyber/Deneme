@@ -1,0 +1,104 @@
+---
+/**
+ * Arama motoru ve paylaşım etiketleri: title, description, canonical, Open Graph, Twitter, hreflang, RSS, JSON-LD.
+ * BaseLayout tarafından çağrılır; sayfalar bu bileşeni doğrudan kullanmaz, düzene prop verir.
+ * Denetim: scripts/check-site.ts her sayfada bu etiketlerin varlığını ve doğruluğunu sınar.
+ * Genişletme: yeni bir etiket gerekiyorsa buraya ekleyin ve denetime kural yazın (scripts/audit/rules.ts).
+ */
+import type { Alternates } from '../lib/routes.ts'
+import { paths } from '../lib/routes.ts'
+import { serializeJsonLd, type JsonLd } from '../lib/structured-data.ts'
+import { absoluteUrl, link, ogImagePath } from '../lib/url.ts'
+import { useTranslations } from '../i18n/index.ts'
+import { fill } from '../lib/text.ts'
+import { defaultLocale, siteConfig, type Locale } from '../site.config.ts'
+
+export interface ArticleMeta {
+  published: Date
+  modified?: Date | undefined
+  tags: readonly string[]
+  section: string
+}
+
+interface Props {
+  locale: Locale
+  /** <title> içeriği (site adı dâhil). */
+  fullTitle: string
+  /** Paylaşım kartı başlığı (site adı olmadan). */
+  title: string
+  description: string
+  /** Sayfanın mantıksal yolu: "/blog/yazi/" */
+  path: string
+  type: 'website' | 'article'
+  article?: ArticleMeta | undefined
+  alternates: Alternates
+  noindex: boolean
+  jsonLd: JsonLd[]
+}
+
+const { locale, fullTitle, title, description, path, type, article, alternates, noindex, jsonLd } = Astro.props
+const t = useTranslations(locale)
+const localeConfig = siteConfig.locales[locale]
+const canonical = absoluteUrl(path)
+const image = absoluteUrl(ogImagePath(path))
+
+const hreflangs = Object.entries(alternates) as [Locale, string][]
+const showHreflang = hreflangs.length > 1
+const xDefault = alternates[defaultLocale]
+const otherOgLocales = hreflangs
+  .filter(([other]) => other !== locale)
+  .map(([other]) => siteConfig.locales[other].ogLocale)
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex, follow" />}
+
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content={siteConfig.name} />
+<meta property="og:locale" content={localeConfig.ogLocale} />
+{otherOgLocales.map((ogLocale) => (
+  <meta property="og:locale:alternate" content={ogLocale} />
+))}
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={image} />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={title} />
+{article && (
+  <>
+    <meta property="article:published_time" content={article.published.toISOString()} />
+    <meta property="article:modified_time" content={(article.modified ?? article.published).toISOString()} />
+    <meta property="article:section" content={article.section} />
+    {article.tags.map((tag) => (
+      <meta property="article:tag" content={tag} />
+    ))}
+  </>
+)}
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={image} />
+<meta name="twitter:image:alt" content={title} />
+
+{showHreflang &&
+  hreflangs.map(([other, href]) => (
+    <link rel="alternate" hreflang={siteConfig.locales[other].lang} href={absoluteUrl(href)} />
+  ))}
+{showHreflang && xDefault && <link rel="alternate" hreflang="x-default" href={absoluteUrl(xDefault)} />}
+
+<link
+  rel="alternate"
+  type="application/rss+xml"
+  title={fill(t.blog.feedTitle, { site: siteConfig.name })}
+  href={link(paths.rss(locale))}
+/>
+
+{jsonLd.map((data) => (
+  <script type="application/ld+json" set:html={serializeJsonLd(data)} />
+))}

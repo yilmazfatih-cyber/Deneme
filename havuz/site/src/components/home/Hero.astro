@@ -1,0 +1,69 @@
+---
+/**
+ * Kahraman bölüm: sayfanın tek h1'i, açıklama, iki düğme ve örnek ürün ekranı.
+ * Metinler: src/content/anasayfa/<dil>.json → hero
+ */
+import HeroMockup from './HeroMockup.astro'
+import Icon from '../Icon.astro'
+import LinkButton from '../LinkButton.astro'
+import type { CollectionEntry } from 'astro:content'
+
+interface Props {
+  hero: CollectionEntry<'anasayfa'>['data']['hero']
+  mockupLabel: string
+  lang: string
+}
+
+const { hero, mockupLabel, lang } = Astro.props
+---
+
+<section class="relative overflow-hidden border-b border-line">
+  <div class="hero-grid" aria-hidden="true"></div>
+  <div
+    class:list={[
+      'wrap relative grid items-center gap-14 pt-14 pb-20 md:pt-20 md:pb-28',
+      hero.mockup ? 'lg:grid-cols-[1.08fr_1fr]' : 'max-w-4xl text-center',
+    ]}
+  >
+    <div>
+      <p class:list={['badge mb-7', !hero.mockup && 'mx-auto']}>
+        <Icon name="sparkles" size={14} />
+        {hero.eyebrow}
+      </p>
+      <h1 class="display text-[clamp(2.7rem,1.5rem+4.8vw,4.9rem)] leading-[1.02]">{hero.title}</h1>
+      <p class:list={['mt-6 max-w-xl text-lg text-muted md:text-xl md:leading-relaxed', !hero.mockup && 'mx-auto']}>
+        {hero.lead}
+      </p>
+      <div class:list={['mt-9 flex flex-wrap gap-3', !hero.mockup && 'justify-center']}>
+        <LinkButton href={hero.primary.href} icon="arrow-right">
+          {hero.primary.label}
+        </LinkButton>
+        {hero.secondary && (
+          <LinkButton href={hero.secondary.href} variant="secondary">
+            {hero.secondary.label}
+          </LinkButton>
+        )}
+      </div>
+      {hero.note && (
+        <p class:list={['mt-6 flex items-center gap-2 text-sm text-muted', !hero.mockup && 'justify-center']}>
+          <Icon name="check" size={16} class="text-brand-ink" />
+          {hero.note}
+        </p>
+      )}
+    </div>
+    {hero.mockup && <HeroMockup mockup={hero.mockup} label={mockupLabel} lang={lang} />}
+  </div>
+</section>
+
+<style>
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, var(--line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--line) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, black 30%, transparent 75%);
+    opacity: 0.55;
+  }
+</style>

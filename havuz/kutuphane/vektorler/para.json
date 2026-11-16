@@ -1,0 +1,272 @@
+{
+  "modul": "para",
+  "aciklama": "para modülünün iki dilde ortak sınama vektörleri. Para değerleri { kurus, currency } nesnesiyle yazılır.",
+  "islevler": {
+    "money": [
+      { "girdi": [123456], "cikti": { "kurus": 123456, "currency": "TRY" } },
+      { "girdi": [-5, "USD"], "cikti": { "kurus": -5, "currency": "USD" } },
+      { "girdi": [1.5], "hata": true },
+      { "girdi": [100, "tl"], "hata": true }
+    ],
+    "fromDecimal": [
+      { "girdi": [12.345], "cikti": { "kurus": 1235, "currency": "TRY" } },
+      { "girdi": [0.30000000000000004], "cikti": { "kurus": 30, "currency": "TRY" } },
+      { "girdi": [1.005], "cikti": { "kurus": 101, "currency": "TRY" } },
+      { "girdi": [-0.005], "cikti": { "kurus": -1, "currency": "TRY" } },
+      { "girdi": ["1234.567"], "cikti": { "kurus": 123457, "currency": "TRY" } },
+      { "girdi": ["1234.565", "TRY", "halfEven"], "cikti": { "kurus": 123456, "currency": "TRY" } },
+      { "girdi": ["1234.575", "TRY", "halfEven"], "cikti": { "kurus": 123458, "currency": "TRY" } },
+      { "girdi": ["9.999", "EUR", "down"], "cikti": { "kurus": 999, "currency": "EUR" } },
+      { "girdi": ["9.991", "EUR", "up"], "cikti": { "kurus": 1000, "currency": "EUR" } },
+      { "girdi": [1e-7], "cikti": { "kurus": 0, "currency": "TRY" } },
+      { "girdi": ["1,5"], "hata": true }
+    ],
+    "toDecimalString": [
+      { "girdi": [{ "kurus": 123456, "currency": "TRY" }], "cikti": "1234.56" },
+      { "girdi": [{ "kurus": -5, "currency": "TRY" }], "cikti": "-0.05" },
+      { "girdi": [{ "kurus": 0, "currency": "TRY" }], "cikti": "0.00" }
+    ],
+    "parseMoney": [
+      { "girdi": ["1.234,56 TL"], "cikti": { "kurus": 123456, "currency": "TRY" } },
+      { "girdi": ["₺1.234,56"], "cikti": { "kurus": 123456, "currency": "TRY" } },
+      { "girdi": ["1234,5"], "cikti": { "kurus": 123450, "currency": "TRY" } },
+      { "girdi": ["1.234 TL"], "cikti": { "kurus": 123400, "currency": "TRY" } },
+      { "girdi": ["-₺12,30"], "cikti": { "kurus": -1230, "currency": "TRY" } },
+      { "girdi": ["₺-12,30"], "cikti": { "kurus": -1230, "currency": "TRY" } },
+      { "girdi": ["12,30TL"], "cikti": { "kurus": 1230, "currency": "TRY" } },
+      { "girdi": ["12,30 tl"], "cikti": { "kurus": 1230, "currency": "TRY" } },
+      { "girdi": ["$1.000,00"], "cikti": { "kurus": 100000, "currency": "USD" } },
+      { "girdi": ["99,90 €"], "cikti": { "kurus": 9990, "currency": "EUR" } },
+      { "girdi": ["5", "USD"], "cikti": { "kurus": 500, "currency": "USD" } },
+      { "girdi": ["0,05"], "cikti": { "kurus": 5, "currency": "TRY" } },
+      { "girdi": ["1.23 TL"], "hata": true },
+      { "girdi": ["12,345"], "hata": true },
+      { "girdi": ["12.50"], "hata": true },
+      { "girdi": ["TL"], "hata": true },
+      { "girdi": [""], "hata": true },
+      { "girdi": ["5 TL $"], "hata": true },
+      { "girdi": ["5 TL", "USD"], "hata": true }
+    ],
+    "formatMoney": [
+      { "girdi": [{ "kurus": 123456, "currency": "TRY" }], "cikti": "₺1.234,56" },
+      { "girdi": [{ "kurus": 123456, "currency": "TRY" }], "secenek": { "style": "code" }, "cikti": "1.234,56 TL" },
+      { "girdi": [{ "kurus": 123456, "currency": "TRY" }], "secenek": { "style": "plain" }, "cikti": "1.234,56" },
+      { "girdi": [{ "kurus": -5, "currency": "TRY" }], "cikti": "-₺0,05" },
+      { "girdi": [{ "kurus": 0, "currency": "TRY" }], "cikti": "₺0,00" },
+      { "girdi": [{ "kurus": 100000000, "currency": "USD" }], "cikti": "$1.000.000,00" },
+      { "girdi": [{ "kurus": 9990, "currency": "EUR" }], "secenek": { "style": "code" }, "cikti": "99,90 EUR" },
+      { "girdi": [{ "kurus": 150, "currency": "JPY" }], "cikti": "1,50 JPY" }
+    ],
+    "add": [
+      {
+        "girdi": [
+          { "kurus": 150, "currency": "TRY" },
+          { "kurus": 275, "currency": "TRY" }
+        ],
+        "cikti": { "kurus": 425, "currency": "TRY" }
+      },
+      {
+        "girdi": [
+          { "kurus": 150, "currency": "TRY" },
+          { "kurus": 275, "currency": "USD" }
+        ],
+        "hata": true
+      }
+    ],
+    "subtract": [
+      {
+        "girdi": [
+          { "kurus": 150, "currency": "TRY" },
+          { "kurus": 275, "currency": "TRY" }
+        ],
+        "cikti": { "kurus": -125, "currency": "TRY" }
+      }
+    ],
+    "compare": [
+      {
+        "girdi": [
+          { "kurus": 150, "currency": "TRY" },
+          { "kurus": 275, "currency": "TRY" }
+        ],
+        "cikti": -1
+      },
+      {
+        "girdi": [
+          { "kurus": 275, "currency": "TRY" },
+          { "kurus": 275, "currency": "TRY" }
+        ],
+        "cikti": 0
+      }
+    ],
+    "sumMoney": [
+      {
+        "girdi": [
+          [
+            { "kurus": 1, "currency": "TRY" },
+            { "kurus": 2, "currency": "TRY" },
+            { "kurus": 3, "currency": "TRY" }
+          ]
+        ],
+        "cikti": { "kurus": 6, "currency": "TRY" }
+      },
+      { "girdi": [[]], "cikti": { "kurus": 0, "currency": "TRY" } },
+      { "girdi": [[], "EUR"], "cikti": { "kurus": 0, "currency": "EUR" } }
+    ],
+    "multiply": [
+      { "girdi": [{ "kurus": 1999, "currency": "TRY" }, 3], "cikti": { "kurus": 5997, "currency": "TRY" } },
+      { "girdi": [{ "kurus": 1000, "currency": "TRY" }, "0.333"], "cikti": { "kurus": 333, "currency": "TRY" } },
+      { "girdi": [{ "kurus": 1000, "currency": "TRY" }, 0.1], "cikti": { "kurus": 100, "currency": "TRY" } },
+      { "girdi": [{ "kurus": 5, "currency": "TRY" }, 0.5], "cikti": { "kurus": 3, "currency": "TRY" } },
+      { "girdi": [{ "kurus": 5, "currency": "TRY" }, 0.5, "halfEven"], "cikti": { "kurus": 2, "currency": "TRY" } },
+      { "girdi": [{ "kurus": -5, "currency": "TRY" }, 0.5], "cikti": { "kurus": -3, "currency": "TRY" } },
+      { "girdi": [{ "kurus": 5, "currency": "TRY" }, 0.5, "down"], "cikti": { "kurus": 2, "currency": "TRY" } }
+    ],
+    "percentOf": [
+      { "girdi": [{ "kurus": 10000, "currency": "TRY" }, 18], "cikti": { "kurus": 1800, "currency": "TRY" } },
+      { "girdi": [{ "kurus": 3333, "currency": "TRY" }, 7.5], "cikti": { "kurus": 250, "currency": "TRY" } }
+    ],
+    "allocate": [
+      {
+        "girdi": [{ "kurus": 10000, "currency": "TRY" }, [1, 1, 1]],
+        "cikti": [
+          { "kurus": 3334, "currency": "TRY" },
+          { "kurus": 3333, "currency": "TRY" },
+          { "kurus": 3333, "currency": "TRY" }
+        ]
+      },
+      {
+        "girdi": [{ "kurus": 100, "currency": "TRY" }, [70, 30]],
+        "cikti": [
+          { "kurus": 70, "currency": "TRY" },
+          { "kurus": 30, "currency": "TRY" }
+        ]
+      },
+      {
+        "girdi": [{ "kurus": 5, "currency": "TRY" }, [1, 1, 1, 1, 1, 1, 1]],
+        "cikti": [
+          { "kurus": 1, "currency": "TRY" },
+          { "kurus": 1, "currency": "TRY" },
+          { "kurus": 1, "currency": "TRY" },
+          { "kurus": 1, "currency": "TRY" },
+          { "kurus": 1, "currency": "TRY" },
+          { "kurus": 0, "currency": "TRY" },
+          { "kurus": 0, "currency": "TRY" }
+        ]
+      },
+      {
+        "girdi": [{ "kurus": 1000, "currency": "TRY" }, [0.2, 0.3, "0.5"]],
+        "cikti": [
+          { "kurus": 200, "currency": "TRY" },
+          { "kurus": 300, "currency": "TRY" },
+          { "kurus": 500, "currency": "TRY" }
+        ]
+      },
+      {
+        "girdi": [{ "kurus": 100, "currency": "TRY" }, [1, 2, 3]],
+        "cikti": [
+          { "kurus": 17, "currency": "TRY" },
+          { "kurus": 33, "currency": "TRY" },
+          { "kurus": 50, "currency": "TRY" }
+        ]
+      },
+      {
+        "girdi": [{ "kurus": -100, "currency": "TRY" }, [1, 1, 1]],
+        "cikti": [
+          { "kurus": -34, "currency": "TRY" },
+          { "kurus": -33, "currency": "TRY" },
+          { "kurus": -33, "currency": "TRY" }
+        ]
+      },
+      {
+        "girdi": [{ "kurus": 100, "currency": "TRY" }, [0, 1]],
+        "cikti": [
+          { "kurus": 0, "currency": "TRY" },
+          { "kurus": 100, "currency": "TRY" }
+        ]
+      },
+      { "girdi": [{ "kurus": 100, "currency": "TRY" }, []], "hata": true },
+      { "girdi": [{ "kurus": 100, "currency": "TRY" }, [0, 0]], "hata": true },
+      { "girdi": [{ "kurus": 100, "currency": "TRY" }, [1, -1]], "hata": true }
+    ],
+    "split": [
+      {
+        "girdi": [{ "kurus": 10000, "currency": "TRY" }, 3],
+        "cikti": [
+          { "kurus": 3334, "currency": "TRY" },
+          { "kurus": 3333, "currency": "TRY" },
+          { "kurus": 3333, "currency": "TRY" }
+        ]
+      },
+      { "girdi": [{ "kurus": 100, "currency": "TRY" }, 0], "hata": true }
+    ],
+    "addVat": [
+      {
+        "girdi": [{ "kurus": 10000, "currency": "TRY" }, 20],
+        "cikti": {
+          "net": { "kurus": 10000, "currency": "TRY" },
+          "vat": { "kurus": 2000, "currency": "TRY" },
+          "gross": { "kurus": 12000, "currency": "TRY" }
+        }
+      },
+      {
+        "girdi": [{ "kurus": 999, "currency": "TRY" }, 18],
+        "cikti": {
+          "net": { "kurus": 999, "currency": "TRY" },
+          "vat": { "kurus": 180, "currency": "TRY" },
+          "gross": { "kurus": 1179, "currency": "TRY" }
+        }
+      },
+      {
+        "girdi": [{ "kurus": 125, "currency": "TRY" }, 10],
+        "cikti": {
+          "net": { "kurus": 125, "currency": "TRY" },
+          "vat": { "kurus": 13, "currency": "TRY" },
+          "gross": { "kurus": 138, "currency": "TRY" }
+        }
+      },
+      {
+        "girdi": [{ "kurus": 125, "currency": "TRY" }, 10, "halfEven"],
+        "cikti": {
+          "net": { "kurus": 125, "currency": "TRY" },
+          "vat": { "kurus": 12, "currency": "TRY" },
+          "gross": { "kurus": 137, "currency": "TRY" }
+        }
+      },
+      { "girdi": [{ "kurus": 100, "currency": "TRY" }, -1], "hata": true }
+    ],
+    "removeVat": [
+      {
+        "girdi": [{ "kurus": 10000, "currency": "TRY" }, 20],
+        "cikti": {
+          "net": { "kurus": 8333, "currency": "TRY" },
+          "vat": { "kurus": 1667, "currency": "TRY" },
+          "gross": { "kurus": 10000, "currency": "TRY" }
+        }
+      },
+      {
+        "girdi": [{ "kurus": 12000, "currency": "TRY" }, 20],
+        "cikti": {
+          "net": { "kurus": 10000, "currency": "TRY" },
+          "vat": { "kurus": 2000, "currency": "TRY" },
+          "gross": { "kurus": 12000, "currency": "TRY" }
+        }
+      },
+      {
+        "girdi": [{ "kurus": 101, "currency": "TRY" }, 1],
+        "cikti": {
+          "net": { "kurus": 100, "currency": "TRY" },
+          "vat": { "kurus": 1, "currency": "TRY" },
+          "gross": { "kurus": 101, "currency": "TRY" }
+        }
+      },
+      {
+        "girdi": [{ "kurus": 1000, "currency": "TRY" }, 0],
+        "cikti": {
+          "net": { "kurus": 1000, "currency": "TRY" },
+          "vat": { "kurus": 0, "currency": "TRY" },
+          "gross": { "kurus": 1000, "currency": "TRY" }
+        }
+      }
+    ]
+  }
+}

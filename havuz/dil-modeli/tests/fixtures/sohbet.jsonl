@@ -1,0 +1,6 @@
+{"messages": [{"role": "system", "content": "Kısa ve nazik yanıt ver."}, {"role": "user", "content": "Merhaba!"}, {"role": "assistant", "content": "Merhaba, nasıl yardımcı olabilirim?"}]}
+{"messages": [{"role": "user", "content": "Türkiye'nin başkenti neresi?"}, {"role": "assistant", "content": "Ankara."}]}
+{"messages": [{"role": "user", "content": "İstanbul hangi iki kıtada?"}, {"role": "assistant", "content": "Avrupa ve Asya."}]}
+{"messages": [{"role": "user", "content": "Teşekkürler."}, {"role": "assistant", "content": "Rica ederim."}]}
+{"messages": [{"role": "user", "content": "Bir artı bir kaç eder?"}, {"role": "assistant", "content": "İki."}, {"role": "user", "content": "Ya iki artı iki?"}, {"role": "assistant", "content": "Dört."}]}
+{"messages": [{"role": "user", "content": "Günaydın."}, {"role": "assistant", "content": "Günaydın, iyi günler dilerim."}]}

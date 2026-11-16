@@ -1,0 +1,65 @@
+---
+/**
+ * Bülten kaydı kutusu. YALNIZ PUBLIC_NEWSLETTER_ENDPOINT tanımlıysa görünür (yoksa hiçbir şey çizmez).
+ * E-posta adresi uç noktaya JSON olarak ({ email, lang }) gönderilir; JS kapalıyken form aynı adrese normal gönderilir.
+ * Betik: src/scripts/newsletter.ts. Tarif: AGENTS.md → "Formu bir servise bağlama".
+ */
+import { PUBLIC_NEWSLETTER_ENDPOINT } from 'astro:env/client'
+import { useTranslations } from '../i18n/index.ts'
+import { siteConfig, type Locale } from '../site.config.ts'
+
+interface Props {
+  locale: Locale
+  class?: string
+}
+
+const { locale, class: className } = Astro.props
+const t = useTranslations(locale)
+const endpoint = PUBLIC_NEWSLETTER_ENDPOINT
+---
+
+{endpoint && (
+  <section class:list={['card bg-subtle p-6 md:p-8', className]} aria-labelledby="bulten-baslik" data-search-ignore>
+    <div class="grid gap-6 md:grid-cols-[1fr_1.1fr] md:items-center">
+      <div>
+        <h2 id="bulten-baslik" class="display text-[1.9rem]">
+          {t.newsletter.title}
+        </h2>
+        <p class="mt-2 text-muted">{t.newsletter.description}</p>
+      </div>
+      <form
+        method="post"
+        action={endpoint}
+        class="grid gap-2"
+        data-newsletter-form
+        data-lang={siteConfig.locales[locale].lang}
+        data-messages={JSON.stringify(t.newsletter)}
+      >
+        <label for="bulten-eposta" class="field-label">
+          {t.newsletter.email}
+        </label>
+        <div class="flex flex-col gap-2 sm:flex-row">
+          <input
+            id="bulten-eposta"
+            name="email"
+            type="email"
+            class="field-input"
+            autocomplete="email"
+            inputmode="email"
+            required
+            aria-describedby="bulten-hata"
+          />
+          <button type="submit" class="btn btn-primary shrink-0">
+            {t.newsletter.submit}
+          </button>
+        </div>
+        <p id="bulten-hata" class="field-error empty:hidden" data-newsletter-error />
+        <div role="status" aria-live="polite" data-newsletter-status />
+      </form>
+    </div>
+  </section>
+)}
+
+<script>
+  import '../scripts/newsletter.ts'
+</script>

@@ -1,0 +1,34 @@
+{
+  "currency": "TRY",
+  "period": "ay",
+  "items": [
+    {
+      "name": "Başlangıç",
+      "price": 0,
+      "description": "Tek başına çalışanlar ve yeni başlayanlar için.",
+      "features": ["1 takvim", "Ayda 100 randevu", "Çevrim içi randevu sayfası", "E-posta ile hatırlatma"],
+      "cta": { "label": "Ücretsiz başlayın", "href": "/iletisim/" }
+    },
+    {
+      "name": "İşletme",
+      "price": 349,
+      "description": "Ekibiyle büyüyen küçük işletmeler için.",
+      "features": [
+        "5 çalışana kadar",
+        "Sınırsız randevu",
+        "SMS ve WhatsApp hatırlatma",
+        "Bekleme listesi",
+        "Kapora ve ön ödeme"
+      ],
+      "cta": { "label": "14 gün ücretsiz deneyin", "href": "/iletisim/" },
+      "highlighted": true
+    },
+    {
+      "name": "Çok şubeli",
+      "price": 899,
+      "description": "Birden çok şubesi olan işletmeler için.",
+      "features": ["Sınırsız çalışan ve şube", "Şubeler arası raporlar", "Yetki ve rol yönetimi", "Öncelikli destek"],
+      "cta": { "label": "Bizimle görüşün", "href": "/iletisim/" }
+    }
+  ]
+}

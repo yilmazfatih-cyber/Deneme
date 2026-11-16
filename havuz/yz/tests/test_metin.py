@@ -41,7 +41,10 @@ def test_sadelestir_anahtar_eslestirir():
         ("Fiyat 3.5 lira oldu. Zam geldi.", ["Fiyat 3.5 lira oldu.", "Zam geldi."]),
         ("Sözleşmenin 3. maddesi geçerlidir. Taraflar kabul eder.", None),
         ("T.C. Ziraat Bankası açıklama yaptı. Faiz değişmedi.", None),
-        ("A. Kaya ve B. Demir toplandı. Karar çıktı.", ["A. Kaya ve B. Demir toplandı.", "Karar çıktı."]),
+        (
+            "A. Kaya ve B. Demir toplandı. Karar çıktı.",
+            ["A. Kaya ve B. Demir toplandı.", "Karar çıktı."],
+        ),
         ("Elma, armut vb. meyveler alındı. Kasada ödendi.", None),
         ("Gerçekten mi?! Evet... Sanırım öyle.", ["Gerçekten mi?!", "Evet...", "Sanırım öyle."]),
         ('"Gel." dedi. Gittim.', ['"Gel." dedi.', "Gittim."]),
@@ -97,10 +100,20 @@ def test_kelimeler_kesme_isareti_ve_kip():
     assert kelimeler("Ankara'nın NÜFUSU", kok="yok") == ["ankara", "nüfusu"]
     assert kelimeler("İstanbul'da IŞIKLAR", kok="yok") == ["istanbul", "ışıklar"]
     assert kelimeler("faturaların toplamı", kok="onek") == ["fatur", "topla"]
-    assert kelimeler("faturaların toplamı", kok="ek") == [kok_bul("faturaların"), kok_bul("toplamı")]
+    assert kelimeler("faturaların toplamı", kok="ek") == [
+        kok_bul("faturaların"),
+        kok_bul("toplamı"),
+    ]
     assert kelimeler("2024 yılı 3. çeyrek", kok="yok") == ["2024", "yılı", "3", "çeyrek"]
     with pytest.raises(ValueError, match="kok"):
         kelimeler("x", kok="bilinmeyen")
+
+
+def test_ascii_katla():
+    from yz.metin import ascii_katla
+
+    assert ascii_katla(kucuk_tr("IŞIK Ödeme İade")) == "isik odeme iade"
+    assert ascii_katla(kucuk_tr("Invoice")) == "invoice"  # kucuk_tr tek başına "ınvoice" verir
 
 
 def test_karakter_ngramlari():

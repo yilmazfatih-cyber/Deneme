@@ -1,0 +1,121 @@
+urun_id,urun_adi,marka,kategori,alt_kategori,fiyat,kdv_grubu,kdv_orani,stok,populerlik_sirasi,aktif
+U0001,Bozkır Saç Kremi,Bozkır,Kozmetik,Saç Bakımı,330.00,genel,20,21,57,true
+U0002,Ihlamur Duvar Saati,Ihlamur,Ev,Dekorasyon,1999.90,genel,20,170,2,true
+U0003,Çisenti Yağmurluk,Çisenti,Giyim,Dış Giyim,8160.00,indirimli,10,280,42,true
+U0004,Meltem Vazo,Meltem,Ev,Dekorasyon,9299.99,genel,20,66,83,true
+U0005,Çisenti Islak Mendil,Çisenti,Anne ve Bebek,Bebek Bakımı,109.99,indirimli,10,108,34,true
+U0006,Karayel Atlama İpi,Karayel,Spor,Fitness,1549.99,genel,20,356,29,false
+U0007,Tanyeri Emzik,Tanyeri,Anne ve Bebek,Bebek Bakımı,449.99,indirimli,10,293,38,true
+U0008,İmbat Yastık,İmbat,Ev,Ev Tekstili,1129.99,indirimli,10,362,104,true
+U0009,Ardıç Ütü,Ardıç,Elektronik,Küçük Ev Aleti,3149.99,genel,20,274,102,true
+U0010,Kırağı Defter,Kırağı,Kırtasiye,Okul ve Ofis,620.00,genel,20,132,22,true
+U0011,Ihlamur Gömlek Elbise,Ihlamur,Giyim,Elbise,1050.00,indirimli,10,332,111,true
+U0012,Poyraz Dambıl Seti,Poyraz,Spor,Fitness,3210.00,genel,20,187,74,true
+U0013,Lodos Kırmızı Mercimek,Lodos,Gıda,Kuru Gıda,95.90,dusuk,1,313,1,true
+U0014,Tanyeri Köpek Maması,Tanyeri,Evcil Hayvan,Mama ve Bakım,400.00,genel,20,160,92,true
+U0015,Ladin Oversize Tişört,Ladin,Giyim,Tişört,580.00,indirimli,10,87,115,true
+U0016,Lodos Saç Kurutma Makinesi,Lodos,Elektronik,Küçük Ev Aleti,2259.99,genel,20,49,78,true
+U0017,Karayel Nemlendirici Krem,Karayel,Kozmetik,Cilt Bakımı,400.00,genel,20,102,65,true
+U0018,Yakamoz Kedi Kumu,Yakamoz,Evcil Hayvan,Mama ve Bakım,3049.90,genel,20,14,93,true
+U0019,Ladin Bitki Çayı,Ladin,Gıda,İçecek,839.90,indirimli,10,277,76,true
+U0020,Kırağı Havlu Seti,Kırağı,Ev,Ev Tekstili,2460.00,indirimli,10,318,107,true
+U0021,Meltem Poplin Gömlek,Meltem,Giyim,Gömlek,630.00,indirimli,10,226,84,true
+U0022,Kayın Dosya,Kayın,Kırtasiye,Okul ve Ofis,190.00,genel,20,378,88,true
+U0023,Ladin Gömlek Elbise,Ladin,Giyim,Elbise,1950.00,indirimli,10,340,33,true
+U0024,Tanyeri Tahin Pekmez Seti,Tanyeri,Gıda,Kahvaltılık,300.00,dusuk,1,135,24,true
+U0025,Meltem El Kremi,Meltem,Kozmetik,Cilt Bakımı,169.99,genel,20,32,82,true
+U0026,Tanyeri Gömlek Elbise,Tanyeri,Giyim,Elbise,3550.00,indirimli,10,146,30,true
+U0027,Karayel Çerçeve Seti,Karayel,Ev,Dekorasyon,499.99,genel,20,325,23,true
+U0028,Kırağı Saç Maskesi,Kırağı,Kozmetik,Saç Bakımı,859.90,genel,20,290,117,true
+U0029,Meltem Baskılı Tişört,Meltem,Giyim,Tişört,469.90,indirimli,10,174,67,true
+U0030,Poyraz Vazo,Poyraz,Ev,Dekorasyon,4119.99,genel,20,247,81,true
+U0031,Ladin Kurşun Kalem Seti,Ladin,Kırtasiye,Okul ve Ofis,339.99,genel,20,102,89,true
+U0032,Ardıç Bitki Çayı,Ardıç,Gıda,İçecek,629.90,indirimli,10,366,109,true
+U0033,Ladin Günlük Spor Ayakkabı,Ladin,Ayakkabı,Spor Ayakkabı,3039.99,indirimli,10,236,47,true
+U0034,Ardıç Poplin Gömlek,Ardıç,Giyim,Gömlek,750.00,indirimli,10,168,10,true
+U0035,Yakamoz Klavye,Yakamoz,Elektronik,Bilgisayar Çevre Birimi,2470.00,genel,20,88,32,true
+U0036,Sedir Duvar Saati,Sedir,Ev,Dekorasyon,1590.00,genel,20,70,37,true
+U0037,Meltem Kurşun Kalem Seti,Meltem,Kırtasiye,Okul ve Ofis,119.90,genel,20,188,52,true
+U0038,Ladin Kablosuz Fare,Ladin,Elektronik,Bilgisayar Çevre Birimi,570.00,genel,20,100,46,true
+U0039,Günbatımı Pirinç,Günbatımı,Gıda,Kuru Gıda,46.99,dusuk,1,309,6,true
+U0040,Günbatımı Ajanda,Günbatımı,Kırtasiye,Okul ve Ofis,160.00,genel,20,277,59,true
+U0041,Bozkır Trençkot,Bozkır,Giyim,Dış Giyim,7879.99,indirimli,10,159,49,true
+U0042,Karayel Kaşar Peyniri,Karayel,Gıda,Kahvaltılık,1199.99,dusuk,1,13,75,true
+U0043,Kırağı Pirinç,Kırağı,Gıda,Kuru Gıda,55.00,dusuk,1,381,99,true
+U0044,Yakamoz Pirinç,Yakamoz,Gıda,Kuru Gıda,110.00,dusuk,1,336,3,true
+U0045,Ardıç Nohut,Ardıç,Gıda,Kuru Gıda,50.00,dusuk,1,175,11,true
+U0046,Gürgen Islak Mendil,Gürgen,Anne ve Bebek,Bebek Bakımı,169.99,indirimli,10,348,94,true
+U0047,Lodos Bitki Çayı,Lodos,Gıda,İçecek,379.99,indirimli,10,367,51,true
+U0048,Poyraz Tahin Pekmez Seti,Poyraz,Gıda,Kahvaltılık,889.90,dusuk,1,222,112,true
+U0049,Lodos Abiye Elbise,Lodos,Giyim,Elbise,4429.90,indirimli,10,379,87,true
+U0050,Tanyeri Kaşar Peyniri,Tanyeri,Gıda,Kahvaltılık,179.99,dusuk,1,377,73,true
+U0051,Ladin Oyun Hamuru Seti,Ladin,Oyuncak,Oyun ve Hobi,219.90,genel,20,231,5,true
+U0052,Ardıç Yağmur Botu,Ardıç,Ayakkabı,Bot,5280.00,indirimli,10,79,80,false
+U0053,Kızılağaç Şampuan,Kızılağaç,Kozmetik,Saç Bakımı,810.00,genel,20,267,110,true
+U0054,Kızılağaç El Kremi,Kızılağaç,Kozmetik,Cilt Bakımı,460.00,genel,20,218,100,true
+U0055,Ladin Şarj Kablosu,Ladin,Elektronik,Telefon Aksesuarı,590.00,genel,20,349,44,true
+U0056,İmbat Kedi Maması,İmbat,Evcil Hayvan,Mama ve Bakım,289.99,genel,20,238,8,true
+U0057,Günbatımı Yastık,Günbatımı,Ev,Ev Tekstili,740.00,indirimli,10,295,120,true
+U0058,Çisenti Günlük Spor Ayakkabı,Çisenti,Ayakkabı,Spor Ayakkabı,1710.00,indirimli,10,7,114,true
+U0059,İmbat Çerçeve Seti,İmbat,Ev,Dekorasyon,680.00,genel,20,354,14,true
+U0060,Meltem Trençkot,Meltem,Giyim,Dış Giyim,6259.99,indirimli,10,259,28,true
+U0061,Çisenti Yürüyüş Ayakkabısı,Çisenti,Ayakkabı,Spor Ayakkabı,3890.00,indirimli,10,95,41,true
+U0062,Meltem Polo Yaka Tişört,Meltem,Giyim,Tişört,279.90,indirimli,10,228,35,true
+U0063,Bozkır Yürüyüş Ayakkabısı,Bozkır,Ayakkabı,Spor Ayakkabı,4619.90,indirimli,10,57,4,true
+U0064,Kayın Su Isıtıcı,Kayın,Elektronik,Küçük Ev Aleti,4480.00,genel,20,132,43,true
+U0065,Tanyeri Koşu Ayakkabısı,Tanyeri,Ayakkabı,Spor Ayakkabı,6520.00,indirimli,10,84,54,true
+U0066,Lodos Çerçeve Seti,Lodos,Ev,Dekorasyon,589.99,genel,20,392,62,true
+U0067,Günbatımı Şişme Mont,Günbatımı,Giyim,Dış Giyim,1889.99,indirimli,10,196,36,true
+U0068,Karayel Kablosuz Fare,Karayel,Elektronik,Bilgisayar Çevre Birimi,2290.00,genel,20,183,66,false
+U0069,Kayın Yoga Matı,Kayın,Spor,Fitness,979.90,genel,20,286,17,true
+U0070,Karayel Keten Gömlek,Karayel,Giyim,Gömlek,920.00,indirimli,10,108,97,true
+U0071,Bozkır Battaniye,Bozkır,Ev,Ev Tekstili,1609.99,indirimli,10,376,86,true
+U0072,Keşişleme Köpek Maması,Keşişleme,Evcil Hayvan,Mama ve Bakım,2670.00,genel,20,186,7,true
+U0073,İmbat Tava,İmbat,Ev,Mutfak,440.00,genel,20,241,39,true
+U0074,İmbat Yağmur Botu,İmbat,Ayakkabı,Bot,4810.00,indirimli,10,349,60,true
+U0075,Çisenti Perde,Çisenti,Ev,Ev Tekstili,580.00,indirimli,10,248,79,false
+U0076,Yakamoz El Kremi,Yakamoz,Kozmetik,Cilt Bakımı,200.00,genel,20,224,19,true
+U0077,Yakamoz Şampuan,Yakamoz,Kozmetik,Saç Bakımı,579.99,genel,20,45,108,true
+U0078,Poyraz Günlük Spor Ayakkabı,Poyraz,Ayakkabı,Spor Ayakkabı,1780.00,indirimli,10,216,85,true
+U0079,Ardıç Abiye Elbise,Ardıç,Giyim,Elbise,1119.90,indirimli,10,210,103,true
+U0080,Bozkır Masa Lambası,Bozkır,Ev,Dekorasyon,3349.99,genel,20,294,12,false
+U0081,Ihlamur Abiye Elbise,Ihlamur,Giyim,Elbise,1299.99,indirimli,10,363,90,true
+U0082,Karayel Kedi Kumu,Karayel,Evcil Hayvan,Mama ve Bakım,1040.00,genel,20,240,106,true
+U0083,Gürgen Taşınabilir Şarj Cihazı,Gürgen,Elektronik,Telefon Aksesuarı,459.90,genel,20,224,40,false
+U0084,Kızılağaç Halı,Kızılağaç,Ev,Dekorasyon,760.00,genel,20,200,105,true
+U0085,Keşişleme Basic Tişört,Keşişleme,Giyim,Tişört,1049.90,indirimli,10,193,69,true
+U0086,Ihlamur Emzik,Ihlamur,Anne ve Bebek,Bebek Bakımı,489.90,indirimli,10,181,119,true
+U0087,Karaçam Makarna,Karaçam,Gıda,Kuru Gıda,210.00,dusuk,1,222,26,true
+U0088,Karayel Polo Yaka Tişört,Karayel,Giyim,Tişört,259.99,indirimli,10,308,91,true
+U0089,Kayın Nemlendirici Krem,Kayın,Kozmetik,Cilt Bakımı,170.00,genel,20,393,64,true
+U0090,Kayın Ütü,Kayın,Elektronik,Küçük Ev Aleti,1030.00,genel,20,157,95,false
+U0091,Karaçam Tahin Pekmez Seti,Karaçam,Gıda,Kahvaltılık,810.00,dusuk,1,365,25,true
+U0092,Karaçam Süzme Çiçek Balı,Karaçam,Gıda,Kahvaltılık,130.00,dusuk,1,393,15,true
+U0093,Karaçam Şerit Metre,Karaçam,Yapı Market,El Aleti,269.90,genel,20,223,9,false
+U0094,Kırağı Masa Lambası,Kırağı,Ev,Dekorasyon,9280.00,genel,20,246,48,true
+U0095,Keşişleme Kaban,Keşişleme,Giyim,Dış Giyim,1830.00,indirimli,10,199,13,true
+U0096,Gürgen Yürüyüş Ayakkabısı,Gürgen,Ayakkabı,Spor Ayakkabı,4609.90,indirimli,10,305,113,true
+U0097,Yakamoz Nevresim Takımı,Yakamoz,Ev,Ev Tekstili,1960.00,indirimli,10,371,21,true
+U0098,Günbatımı Tost Makinesi,Günbatımı,Elektronik,Küçük Ev Aleti,3330.00,genel,20,249,58,true
+U0099,Tanyeri Ajanda,Tanyeri,Kırtasiye,Okul ve Ofis,229.90,genel,20,62,55,true
+U0100,Bozkır Günlük Spor Ayakkabı,Bozkır,Ayakkabı,Spor Ayakkabı,2859.90,indirimli,10,182,53,true
+U0101,Gürgen Günlük Spor Ayakkabı,Gürgen,Ayakkabı,Spor Ayakkabı,6519.99,indirimli,10,153,96,true
+U0102,Kayın Kar Botu,Kayın,Ayakkabı,Bot,2639.90,indirimli,10,336,20,true
+U0103,Tanyeri Nevresim Takımı,Tanyeri,Ev,Ev Tekstili,3319.90,indirimli,10,233,56,true
+U0104,Ardıç Bebek Bezi,Ardıç,Anne ve Bebek,Bebek Bakımı,86.90,indirimli,10,248,31,true
+U0105,Ladin Islak Mendil,Ladin,Anne ve Bebek,Bebek Bakımı,499.90,indirimli,10,217,101,true
+U0106,Karayel Halı,Karayel,Ev,Dekorasyon,2239.99,genel,20,138,50,true
+U0107,Poyraz Kumaş Pantolon,Poyraz,Giyim,Pantolon,1619.90,indirimli,10,35,72,true
+U0108,Çisenti Tahin Pekmez Seti,Çisenti,Gıda,Kahvaltılık,1129.99,dusuk,1,297,118,true
+U0109,Gürgen Siyah Çay,Gürgen,Gıda,İçecek,470.00,indirimli,10,104,18,true
+U0110,Bozkır Nevresim Takımı,Bozkır,Ev,Ev Tekstili,430.00,indirimli,10,69,68,true
+U0111,Kızılağaç Kaşar Peyniri,Kızılağaç,Gıda,Kahvaltılık,1140.00,dusuk,1,281,63,true
+U0112,Meltem Taşınabilir Şarj Cihazı,Meltem,Elektronik,Telefon Aksesuarı,640.00,genel,20,263,77,true
+U0113,Kızılağaç Polo Yaka Tişört,Kızılağaç,Giyim,Tişört,849.90,indirimli,10,383,16,true
+U0114,Kırağı Süzme Çiçek Balı,Kırağı,Gıda,Kahvaltılık,1400.00,dusuk,1,109,27,true
+U0115,Kızılağaç Su Isıtıcı,Kızılağaç,Elektronik,Küçük Ev Aleti,1519.99,genel,20,177,98,true
+U0116,Lodos Klavye,Lodos,Elektronik,Bilgisayar Çevre Birimi,310.00,genel,20,388,71,true
+U0117,Kızılağaç Vazo,Kızılağaç,Ev,Dekorasyon,2229.90,genel,20,121,45,true
+U0118,Sedir Kot Pantolon,Sedir,Giyim,Pantolon,1130.00,indirimli,10,52,116,true
+U0119,Yakamoz Masa Lambası,Yakamoz,Ev,Dekorasyon,5830.00,genel,20,20,61,true
+U0120,Lodos Atlama İpi,Lodos,Spor,Fitness,519.99,genel,20,88,70,true

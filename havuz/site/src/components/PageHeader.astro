@@ -1,0 +1,29 @@
+---
+/**
+ * Liste sayfalarının başlık bölümü: küçük etiket + h1 + açıklama (+ isteğe bağlı ek içerik).
+ * Kim kullanır: blog listesi, etiket sayfası, belgeler giriş sayfası, iletişim.
+ */
+import Breadcrumbs from './Breadcrumbs.astro'
+import type { Crumb } from '../lib/routes.ts'
+import type { Locale } from '../site.config.ts'
+
+interface Props {
+  locale: Locale
+  title: string
+  lead?: string | undefined
+  eyebrow?: string | undefined
+  crumbs?: Crumb[]
+}
+
+const { locale, title, lead, eyebrow, crumbs } = Astro.props
+---
+
+<section class="border-b border-line bg-subtle/60">
+  <div class="wrap py-12 md:py-16">
+    {crumbs && crumbs.length > 1 && <Breadcrumbs locale={locale} crumbs={crumbs} class="mb-6" />}
+    {eyebrow && <p class="eyebrow mb-3">{eyebrow}</p>}
+    <h1 class="display text-[clamp(2.4rem,1.6rem+3vw,3.6rem)]">{title}</h1>
+    {lead && <p class="mt-4 max-w-2xl text-lg text-muted">{lead}</p>}
+    <slot />
+  </div>
+</section>

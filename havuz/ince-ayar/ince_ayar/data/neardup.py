@@ -51,7 +51,7 @@ def _mix(values: np.ndarray) -> np.ndarray:
     values = values * _MIX_1
     values = values ^ (values >> np.uint64(27))
     values = values * _MIX_2
-    return values ^ (values >> np.uint64(31))
+    return np.asarray(values ^ (values >> np.uint64(31)), dtype=np.uint64)
 
 
 def shingle_hashes(folded: str, size: int = SHINGLE_SIZE) -> np.ndarray:
@@ -155,6 +155,52 @@ def find_duplicate_groups(texts: list[str], threshold: float = 0.85) -> Duplicat
     numbering: dict[int, int] = {}
     group_of = [numbering.setdefault(union.find(unique), len(numbering)) for unique in owner]
     return DuplicateGroups(group_of, exact, near)
+
+
+class NearDuplicateIndex:
+    """Artımlı yineleme dizini: metinler tek tek eklenir, her eklemede eşi var mı diye bakılır.
+
+    Sentetik veri hattı kullanır (üretilen her aday, kabul edilenlerle ve var olan veriyle
+    karşılaştırılır). Aday bulma LSH ile, doğrulama gerçek Jaccard ile yapılır.
+    """
+
+    def __init__(self, threshold: float) -> None:
+        self.threshold = threshold
+        self.rows = choose_rows(threshold)
+        self._exact: dict[str, int] = {}
+        self._sets: list[frozenset[int]] = []
+        self._buckets: dict[tuple[int, bytes], list[int]] = {}
+
+    def __len__(self) -> int:
+        return len(self._sets)
+
+    def find(self, text: str) -> int | None:
+        """Eşi (tam ya da yakın) varsa onun sıra numarasını döndürür; yoksa None. Eklemez."""
+        folded = fold_for_match(text)
+        if folded in self._exact:
+            return self._exact[folded]
+        hashes = shingle_hashes(folded)
+        candidate_set = frozenset(hashes.tolist())
+        signature = _signatures([hashes])[0]
+        for band in range(NUM_HASHES // self.rows):
+            key = (band, signature[band * self.rows : (band + 1) * self.rows].tobytes())
+            for other in self._buckets.get(key, []):
+                if jaccard(candidate_set, self._sets[other]) >= self.threshold:
+                    return other
+        return None
+
+    def add(self, text: str) -> int:
+        """Metni dizine ekler ve sıra numarasını döndürür (eş denetimi yapmaz)."""
+        folded = fold_for_match(text)
+        index = len(self._sets)
+        self._exact.setdefault(folded, index)
+        hashes = shingle_hashes(folded)
+        self._sets.append(frozenset(hashes.tolist()))
+        signature = _signatures([hashes])[0]
+        for band in range(NUM_HASHES // self.rows):
+            key = (band, signature[band * self.rows : (band + 1) * self.rows].tobytes())
+            self._buckets.setdefault(key, []).append(index)
+        return index
 
 
 def brute_force_pairs(texts: list[str], threshold: float) -> list[tuple[int, int]]:

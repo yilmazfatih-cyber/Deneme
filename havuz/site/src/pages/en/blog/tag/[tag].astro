@@ -1,0 +1,13 @@
+---
+/** Tag page (English): /en/blog/tag/<tag>/. View: src/views/TagView.astro. */
+import type { GetStaticPaths, InferGetStaticPropsType } from 'astro'
+import { tagPaths } from '../../../../lib/static-paths.ts'
+import TagView from '../../../../views/TagView.astro'
+
+export const getStaticPaths = (() => tagPaths('en')) satisfies GetStaticPaths
+type Props = InferGetStaticPropsType<typeof getStaticPaths>
+
+const { locale, tag, posts } = Astro.props as Props
+---
+
+<TagView locale={locale} tag={tag} posts={posts} />

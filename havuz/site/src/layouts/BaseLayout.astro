@@ -1,0 +1,145 @@
+---
+/**
+ * Temel düzen: her sayfanın <html>/<head> iskeleti, başlık, alt bilgi, arama penceresi.
+ * Kim kullanır: src/views/ altındaki bütün görünümler ve 404 sayfası.
+ * Önemli: <head>'in başındaki küçük betik temayı İLK BOYAMADAN ÖNCE uygular (titreme olmaz); onu dış dosyaya
+ * taşımayın. Genişletme: her sayfada olması gereken yeni bir öğe (ör. çerez bildirimi) → <body> içine ekleyin.
+ */
+import { Font } from 'astro:assets'
+import '../styles/global.css'
+import AnnouncementBar from '../components/AnnouncementBar.astro'
+import Footer from '../components/Footer.astro'
+import Header from '../components/Header.astro'
+import SearchDialog from '../components/SearchDialog.astro'
+import Seo, { type ArticleMeta } from '../components/Seo.astro'
+import { useTranslations } from '../i18n/index.ts'
+import type { Alternates, Crumb } from '../lib/routes.ts'
+import { slugify } from '../lib/slug.ts'
+import { breadcrumbList, type JsonLd } from '../lib/structured-data.ts'
+import { buildThemeCss } from '../lib/theme.ts'
+import { absoluteUrl, link, logicalPath } from '../lib/url.ts'
+import { siteConfig, type Locale } from '../site.config.ts'
+
+export interface Props {
+  locale: Locale
+  /** Sayfa başlığı. Sekme başlığına " — Site adı" eklenir. Ana sayfada `null` verin (site.config'teki başlık kullanılır). */
+  title: string | null
+  description: string
+  /** Bu sayfanın diğer dillerdeki karşılıkları (dil değiştirici ve hreflang). */
+  alternates?: Alternates
+  type?: 'website' | 'article'
+  article?: ArticleMeta
+  /** Sayfa yolu (görünür kırıntı yolu sayfanın kendisinde çizilir; burada JSON-LD için kullanılır). */
+  breadcrumbs?: Crumb[]
+  jsonLd?: JsonLd[]
+  noindex?: boolean
+  /** Site içi aramada bu sayfanın görüneceği bölüm adı ("Blog", "Belgeler"…). Verilmezse sayfa aranmaz. */
+  searchSection?: string
+}
+
+const {
+  locale,
+  title,
+  description,
+  alternates,
+  type = 'website',
+  article,
+  breadcrumbs = [],
+  jsonLd = [],
+  noindex = false,
+  searchSection,
+} = Astro.props
+
+const t = useTranslations(locale)
+const localeConfig = siteConfig.locales[locale]
+// 404 sayfası dist/404.html olarak yazılır; adresi de öyle olmalı.
+const rawPath = logicalPath(Astro.url.pathname)
+const path = rawPath === '/404/' ? '/404.html' : rawPath
+const pageTitle = title ?? localeConfig.title
+const fullTitle = title === null ? localeConfig.title : `${title} — ${siteConfig.name}`
+const structuredData = [
+  ...jsonLd,
+  ...(breadcrumbs.length > 1
+    ? [breadcrumbList(breadcrumbs.map((crumb) => ({ label: crumb.label, url: absoluteUrl(crumb.path) })))]
+    : []),
+]
+const themeCss = buildThemeCss(siteConfig.brand)
+const announcement = localeConfig.announcement
+const announcementId = announcement ? slugify(announcement.text).slice(0, 48) : ''
+const speculation = JSON.stringify({
+  prefetch: [
+    {
+      source: 'document',
+      where: {
+        and: [{ href_matches: `${import.meta.env.BASE_URL}*` }, { not: { selector_matches: '[rel~=nofollow]' } }],
+      },
+      eagerness: 'moderate',
+    },
+  ],
+})
+const analytics = siteConfig.analytics
+---
+
+<!doctype html>
+<html lang={localeConfig.lang} dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline define:vars={{ announcementId }}>
+      // Tema ve duyuru tercihini ilk boyamadan önce uygula (sayfa titremez, kaymaz). Derlenmeden çalışır: sade tutun.
+      const root = document.documentElement
+      root.classList.add('js')
+      let choice = 'system'
+      try {
+        choice = localStorage.getItem('tema') || 'system'
+      } catch {
+        choice = 'system'
+      }
+      if (choice === 'light' || choice === 'dark') root.setAttribute('data-theme', choice)
+      root.setAttribute('data-theme-choice', choice === 'light' || choice === 'dark' ? choice : 'system')
+      try {
+        if (announcementId && localStorage.getItem('duyuru-kapali') === announcementId) {
+          root.setAttribute('data-announcement-hidden', '')
+        }
+      } catch {
+        root.removeAttribute('data-announcement-hidden')
+      }
+    </script>
+    <style is:inline set:html={themeCss}></style>
+    <Font cssVariable="--font-body" preload />
+    <Font cssVariable="--font-heading" preload />
+    <Seo
+      locale={locale}
+      fullTitle={fullTitle}
+      title={pageTitle}
+      description={description}
+      path={path}
+      type={type}
+      article={article}
+      alternates={alternates ?? { [locale]: path }}
+      noindex={noindex}
+      jsonLd={structuredData}
+    />
+    <link rel="icon" href={link('/favicon.svg')} type="image/svg+xml" />
+    <link rel="apple-touch-icon" href={link('/apple-touch-icon.png')} />
+    <meta name="theme-color" content="#fbfaf7" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0d1310" media="(prefers-color-scheme: dark)" />
+    <script is:inline type="speculationrules" set:html={speculation} />
+    {analytics && <script is:inline defer src={analytics.src} {...analytics.attributes} />}
+  </head>
+  <body class="flex min-h-dvh flex-col">
+    <a
+      href="#icerik"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-full focus:bg-brand focus:px-4 focus:py-2 focus:font-semibold focus:text-on-brand"
+    >
+      {t.a11y.skipToContent}
+    </a>
+    {announcement && <AnnouncementBar locale={locale} id={announcementId} {...announcement} />}
+    <Header locale={locale} path={path} alternates={alternates ?? { [locale]: path }} />
+    <main id="icerik" tabindex="-1" class="flex-1 outline-none" data-search-section={searchSection}>
+      <slot />
+    </main>
+    <Footer locale={locale} />
+    <SearchDialog locale={locale} />
+  </body>
+</html>

@@ -1,0 +1,77 @@
+{
+  "modul": "csv",
+  "aciklama": "csv modülünün iki dilde ortak sınama vektörleri.",
+  "islevler": {
+    "parseCsv": [
+      { "girdi": ["a,b\r\nc,d"], "cikti": [["a", "b"], ["c", "d"]] },
+      { "girdi": ["ad;yaş\r\nAyşe;30"], "cikti": [["ad", "yaş"], ["Ayşe", "30"]] },
+      { "girdi": ["\ufeffad;soyad\nAli;Can\n"], "cikti": [["ad", "soyad"], ["Ali", "Can"]] },
+      { "girdi": ["\"a,b\",c\n\"d\"\"e\",f"], "cikti": [["a,b", "c"], ["d\"e", "f"]] },
+      { "girdi": ["\"çok\nsatırlı\",x"], "cikti": [["çok\nsatırlı", "x"]] },
+      { "girdi": ["a,b\n\nc,d\n"], "cikti": [["a", "b"], ["c", "d"]] },
+      { "girdi": ["a,b\n\nc,d"], "secenek": { "skipEmptyLines": false }, "cikti": [["a", "b"], [""], ["c", "d"]] },
+      { "girdi": ["\"\"\n"], "cikti": [[""]] },
+      { "girdi": ["a,"], "cikti": [["a", ""]] },
+      { "girdi": [","], "cikti": [["", ""]] },
+      { "girdi": ["a\rb\rc"], "cikti": [["a"], ["b"], ["c"]] },
+      { "girdi": ["a,\"b\"c,d"], "cikti": [["a", "bc", "d"]] },
+      { "girdi": ["a,b\"c,d"], "cikti": [["a", "b\"c", "d"]] },
+      { "girdi": ["x|y|z\n1|2|3"], "cikti": [["x", "y", "z"], ["1", "2", "3"]] },
+      { "girdi": ["a\tb"], "cikti": [["a", "b"]] },
+      { "girdi": ["a;b,c"], "secenek": { "delimiter": "," }, "cikti": [["a;b", "c"]] },
+      { "girdi": [""], "cikti": [] },
+      { "girdi": ["  a , b  "], "cikti": [["  a ", " b  "]] },
+      { "girdi": ["\"a\"\r\n\"b\""], "cikti": [["a"], ["b"]] },
+      { "girdi": ["a,\"b\"c,d"], "secenek": { "strict": true }, "hata": true },
+      { "girdi": ["a,b\"c"], "secenek": { "strict": true }, "hata": true },
+      { "girdi": ["a,\"bc"], "hata": true },
+      { "girdi": ["a,b"], "secenek": { "delimiter": ";;" }, "hata": true }
+    ],
+    "parseCsvObjects": [
+      {
+        "girdi": ["ad,yaş\nAli,40\nAyşe"],
+        "cikti": [
+          { "ad": "Ali", "yaş": "40" },
+          { "ad": "Ayşe", "yaş": "" }
+        ]
+      },
+      { "girdi": ["ad,ad\n1,2"], "hata": true },
+      { "girdi": ["ad,\n1,2"], "hata": true },
+      { "girdi": ["ad\n1,2"], "hata": true },
+      { "girdi": [""], "cikti": [] }
+    ],
+    "parseExcelCsv": [
+      { "girdi": ["\ufeffÜrün;Fiyat\r\nÇay;12,5\r\n"], "cikti": [["Ürün", "Fiyat"], ["Çay", "12,5"]] },
+      { "girdi": ["Not\r\nMerhaba, dünya"], "cikti": [["Not"], ["Merhaba, dünya"]] }
+    ],
+    "detectDelimiter": [
+      { "girdi": ["a;b;c\nx,y"], "cikti": ";" },
+      { "girdi": ["\"a;b\",c"], "cikti": "," },
+      { "girdi": ["abc"], "cikti": "," },
+      { "girdi": ["a\tb|c"], "cikti": "\t" }
+    ],
+    "toCsv": [
+      { "girdi": [[["a", "b"], ["c", "d"]]], "cikti": "a,b\r\nc,d\r\n" },
+      {
+        "girdi": [[["a,b", "say \"merhaba\"", "çok\nsatır", " boşluk"]]],
+        "cikti": "\"a,b\",\"say \"\"merhaba\"\"\",\"çok\nsatır\",\" boşluk\"\r\n"
+      },
+      { "girdi": [[[1, 2.5, -0.5, 1e21, null, true, false]]], "cikti": "1,2.5,-0.5,1000000000000000000000,,true,false\r\n" },
+      { "girdi": [[["a", "b"]]], "secenek": { "delimiter": ";", "lineEnding": "\n", "bom": true }, "cikti": "\ufeffa;b\n" },
+      {
+        "girdi": [[["=SUM(A1)", "+90", "-5", "@x", "normal"]]],
+        "secenek": { "escapeFormulas": true },
+        "cikti": "'=SUM(A1),'+90,'-5,'@x,normal\r\n"
+      },
+      { "girdi": [[[1.5, -2.25]]], "secenek": { "decimalComma": true, "delimiter": ";" }, "cikti": "1,5;-2,25\r\n" },
+      { "girdi": [[["a"]]], "secenek": { "quoteAll": true }, "cikti": "\"a\"\r\n" },
+      { "girdi": [[]], "cikti": "" }
+    ],
+    "toExcelCsv": [
+      {
+        "girdi": [[["Ürün", "Fiyat"], ["Çay", 12.5], ["=1+1", -3]]],
+        "cikti": "\ufeffÜrün;Fiyat\r\nÇay;12,5\r\n'=1+1;-3\r\n"
+      }
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+Görevin: aşağıdaki belgeyi bulmak isteyen bir kullanıcının arama kutusuna yazabileceği $sayi farklı Türkçe arama sorgusu yazmak.
+
+Kurallar:
+- Her sorgunun yanıtı belgede bulunmalı.
+- Sorgular birbirinden farklı olsun: kimi kısa anahtar sözcükler, kimi tam soru cümlesi.
+- Belgedeki cümleleri aynen kopyalama; kullanıcının kendi sözcükleriyle yaz.
+- Yalnız JSON yaz; JSON dışında hiçbir şey yazma. Biçim:
+{"sorgular": ["birinci sorgu", "ikinci sorgu"]}
+
+Konu: $konu
+
+Belge:
+$belge

@@ -109,7 +109,9 @@ class Attention(nn.Module):
         k = apply_rope(k, cos, sin)
         if cache is not None:
             k, v = cache.extend(layer, k, v)
-        if self.n_kv_head != self.n_head:  # GQA: her K/V başı ardışık birkaç sorgu başına hizmet eder
+        if (
+            self.n_kv_head != self.n_head
+        ):  # GQA: her K/V başı ardışık birkaç sorgu başına hizmet eder
             repeat = self.n_head // self.n_kv_head
             k = k.repeat_interleave(repeat, dim=1)
             v = v.repeat_interleave(repeat, dim=1)
@@ -122,7 +124,8 @@ class Attention(nn.Module):
             is_causal=causal,
         )
         out = out.transpose(1, 2).reshape(batch, length, self.n_head * self.head_dim)
-        return self.o_proj(out)
+        result: Tensor = self.o_proj(out)
+        return result
 
 
 class FeedForward(nn.Module):
@@ -135,7 +138,8 @@ class FeedForward(nn.Module):
         self.down_proj = nn.Linear(config.hidden_dim, config.dim, bias=False)
 
     def forward(self, x: Tensor) -> Tensor:
-        return self.down_proj(F.silu(self.gate_proj(x)) * self.up_proj(x))
+        result: Tensor = self.down_proj(F.silu(self.gate_proj(x)) * self.up_proj(x))
+        return result
 
 
 class Block(nn.Module):
@@ -160,4 +164,5 @@ class Block(nn.Module):
         layer: int = 0,
     ) -> Tensor:
         x = x + self.drop(self.attn(self.attn_norm(x), cos, sin, mask, causal, cache, layer))
-        return x + self.drop(self.mlp(self.mlp_norm(x)))
+        result: Tensor = x + self.drop(self.mlp(self.mlp_norm(x)))
+        return result

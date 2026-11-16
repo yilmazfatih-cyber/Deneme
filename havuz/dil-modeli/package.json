@@ -1,0 +1,20 @@
+{
+  "name": "dil-modeli",
+  "private": true,
+  "description": "dil-modeli temelinin JavaScript tarafı: tarayici/ çalışma zamanı bağımlılıksızdır; buradakiler yalnız biçim denetimi ve tarayıcı uçtan uca testi içindir.",
+  "type": "module",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "test": "node --test tarayici/",
+    "format": "prettier --write tarayici",
+    "check": "prettier --check tarayici && node --test tarayici/",
+    "e2e": "node tarayici/e2e/gosterim.e2e.js"
+  },
+  "devDependencies": {
+    "axe-core": "4.14.1",
+    "playwright-core": "1.65.1",
+    "prettier": "3.10.1"
+  }
+}

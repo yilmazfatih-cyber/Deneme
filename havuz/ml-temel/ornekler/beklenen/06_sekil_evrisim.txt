@@ -1,0 +1,11 @@
+Parametre sayısı: 947
+tur 1  ortalama kayıp 1.0023
+tur 2  ortalama kayıp 0.6953
+tur 3  ortalama kayıp 0.5400
+tur 4  ortalama kayıp 0.4104
+tur 5  ortalama kayıp 0.3175
+tur 6  ortalama kayıp 0.2351
+Sınama doğruluğu: 0.930
+  kare   0.862 (65 görüntü)
+  daire  0.984 (61 görüntü)
+  artı   0.946 (74 görüntü)

@@ -1,0 +1,45 @@
+---
+/**
+ * Sayfa sonundaki çağrı bandı (koyu zemin). Metinler: src/content/anasayfa/<dil>.json → cta
+ */
+import type { CollectionEntry } from 'astro:content'
+import { link } from '../../lib/url.ts'
+
+interface Props {
+  cta: CollectionEntry<'anasayfa'>['data']['cta']
+}
+
+const { cta } = Astro.props
+---
+
+<section aria-labelledby="cagri-baslik" class="py-6 md:py-10">
+  <div class="wrap">
+    <div class="cta-band relative overflow-hidden rounded-[2rem] bg-deep px-6 py-16 text-center text-on-deep md:px-16 md:py-20">
+      <h2 id="cagri-baslik" class="display mx-auto max-w-3xl text-[clamp(2.2rem,1.4rem+3vw,3.6rem)]">
+        {cta.title}
+      </h2>
+      <p class="mx-auto mt-5 max-w-xl text-lg text-on-deep-muted">{cta.lead}</p>
+      <div class="mt-9 flex flex-wrap justify-center gap-3">
+        <a href={link(cta.primary.href)} class="btn btn-inverse">
+          {cta.primary.label}
+        </a>
+        {cta.secondary && (
+          <a href={link(cta.secondary.href)} class="btn btn-outline-inverse">
+            {cta.secondary.label}
+          </a>
+        )}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-band::before {
+    content: '';
+    position: absolute;
+    inset: auto -20% -60% -20%;
+    height: 120%;
+    background: radial-gradient(50% 50% at 50% 50%, rgb(255 255 255 / 0.09), transparent 70%);
+    pointer-events: none;
+  }
+</style>

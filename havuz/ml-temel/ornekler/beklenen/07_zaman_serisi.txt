@@ -1,0 +1,10 @@
+364 günlük seri; son hafta: [64.7, 61.0, 63.1, 64.7, 67.5, 72.0, 66.9]
+
+Model                           MAE    RMSE   (7 günlük ufuk, 30 başlangıç)
+naif (dünü tekrarla)            3.260  3.962
+mevsimsel naif (geçen hafta)    1.608  2.023
+basit üstel düzleştirme         2.943  3.641
+Holt-Winters (eğilim + hafta)   1.307  1.652
+
+Holt-Winters parametreleri: α=0.05, β=0.15, γ=0.15
+Gelecek 7 gün: [64.7, 63.2, 63.7, 65.4, 66.7, 71.0, 68.8]

@@ -39,6 +39,15 @@ def buyuk_ascii(metin: str) -> str:
     return metin.upper()
 
 
+def ascii_katla(metin: str) -> str:
+    """Türkçe harfleri ASCII karşılığına katlar ("ışık" → "isik"). Girdi küçük harfli olmalı.
+
+    Arama ve karşılaştırma içindir (kullanıcı "odeme" yazsa da "ödeme" bulunur; İngilizce "Invoice"
+    Türkçe küçük harfte "ınvoice" olur, katlanınca "invoice" ile eşleşir). Gösterilen metinde KULLANMAYIN.
+    """
+    return metin.translate(_ASCII_TABLO)
+
+
 def sadelestir(metin: str) -> str:
     """Karşılaştırma için sadeleştirir: küçük harf, Türkçe harfler ASCII, yalnız harf/rakam.
 
@@ -58,8 +67,53 @@ def bosluk_duzelt(metin: str) -> str:
 
 # Noktadan sonra cümle BİTMEYEN kısaltmalar (küçük harf, noktasız).
 KISALTMALAR = frozenset(
-    "dr prof doç yrd av sn no vb vs bkz örn ör mah cad sok blv apt tel faks ltd şti tic san "
-    "st alb gen müh uzm op krş md sf çev haz yy mö ms tc aş ank ist thk ttk tbk hmk".split()
+    [
+        "dr",
+        "prof",
+        "doç",
+        "yrd",
+        "av",
+        "sn",
+        "no",
+        "vb",
+        "vs",
+        "bkz",
+        "örn",
+        "ör",
+        "mah",
+        "cad",
+        "sok",
+        "blv",
+        "apt",
+        "tel",
+        "faks",
+        "ltd",
+        "şti",
+        "tic",
+        "san",
+        "st",
+        "alb",
+        "gen",
+        "müh",
+        "uzm",
+        "op",
+        "krş",
+        "md",
+        "sf",
+        "çev",
+        "haz",
+        "yy",
+        "mö",
+        "ms",
+        "tc",
+        "aş",
+        "ank",
+        "ist",
+        "thk",
+        "ttk",
+        "tbk",
+        "hmk",
+    ]
 )
 _BITIS = ".!?…"
 _KAPANIS = "\"'”’»)]"
@@ -144,13 +198,71 @@ _UNLULER = frozenset("aeıioöuüâîû")
 # yeterli). Fiil ve yapım ekleri bilerek yoktur: "fatur·a" gibi kökleri fazla kırpıyorlardı.
 _EKLER: tuple[str, ...] = tuple(
     sorted(
-        (
-            "lar ler ları leri "
-            "ımız imiz umuz ümüz ınız iniz unuz ünüz sı si su sü ım im um üm "
-            "ndan nden nda nde dan den tan ten da de ta te "
-            "nın nin nun nün ın in un ün na ne ya ye yı yi yu yü nı ni nu nü "
-            "yla yle la le ki ı i u ü a e"
-        ).split(),
+        [
+            "lar",
+            "ler",
+            "ları",
+            "leri",
+            "ımız",
+            "imiz",
+            "umuz",
+            "ümüz",
+            "ınız",
+            "iniz",
+            "unuz",
+            "ünüz",
+            "sı",
+            "si",
+            "su",
+            "sü",
+            "ım",
+            "im",
+            "um",
+            "üm",
+            "ndan",
+            "nden",
+            "nda",
+            "nde",
+            "dan",
+            "den",
+            "tan",
+            "ten",
+            "da",
+            "de",
+            "ta",
+            "te",
+            "nın",
+            "nin",
+            "nun",
+            "nün",
+            "ın",
+            "in",
+            "un",
+            "ün",
+            "na",
+            "ne",
+            "ya",
+            "ye",
+            "yı",
+            "yi",
+            "yu",
+            "yü",
+            "nı",
+            "ni",
+            "nu",
+            "nü",
+            "yla",
+            "yle",
+            "la",
+            "le",
+            "ki",
+            "ı",
+            "i",
+            "u",
+            "ü",
+            "a",
+            "e",
+        ],
         key=lambda ek: (-len(ek), ek),
     )
 )
@@ -207,9 +319,13 @@ def kelimeler(metin: str, kok: str = "ek", onek_uzunlugu: int = 5) -> list[str]:
 
 
 def karakter_ngramlari(metin: str, n: int = 3) -> list[str]:
-    """Kelime sınırı işaretli karakter n-gramları ("ev" → ["_ev", "ev_"]); eklere dayanıklıdır."""
+    """Kelime sınırı işaretli karakter n-gramları ("ev" → ["_ev", "ev_"]); eklere dayanıklıdır.
+
+    Harfler ASCII'ye katlanır (`ascii_katla`): "ödeme" ile "odeme" aynı n-gramları verir.
+    """
     ngramlar: list[str] = []
-    for kelime in kelimeler(metin, kok="yok"):
+    for ham in kelimeler(metin, kok="yok"):
+        kelime = ascii_katla(ham)
         cerceveli = f"_{kelime}_"
         if len(cerceveli) <= n:
             ngramlar.append(cerceveli)

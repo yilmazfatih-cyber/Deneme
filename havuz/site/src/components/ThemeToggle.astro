@@ -1,0 +1,106 @@
+---
+/**
+ * Tema seçici: Açık / Koyu / Sistem. Seçim tarayıcıda saklanır ("tema" anahtarı). "Sistem" seçiliyken site
+ * işletim sisteminin temasını izler. İlk boyamada titreme olmaz: tema <head>'deki betikle uygulanır (BaseLayout).
+ * Betik: src/scripts/theme-toggle.ts. Uçtan uca testi: tests/e2e/theme.spec.ts.
+ */
+import Icon from './Icon.astro'
+import { useTranslations } from '../i18n/index.ts'
+import type { Locale } from '../site.config.ts'
+
+interface Props {
+  locale: Locale
+}
+
+const { locale } = Astro.props
+const t = useTranslations(locale)
+const options = [
+  { value: 'light', label: t.theme.light, icon: 'sun' },
+  { value: 'dark', label: t.theme.dark, icon: 'moon' },
+  { value: 'system', label: t.theme.system, icon: 'monitor' },
+] as const
+---
+
+<div class="relative" data-theme-toggle>
+  <button type="button" class="icon-btn" aria-expanded="false" aria-controls="theme-menu" data-theme-button hidden>
+    <span class="theme-icon theme-icon-light">
+      <Icon name="sun" />
+    </span>
+    <span class="theme-icon theme-icon-dark">
+      <Icon name="moon" />
+    </span>
+    <span class="theme-icon theme-icon-system">
+      <Icon name="monitor" />
+    </span>
+    <span class="sr-only">{t.theme.label}</span>
+  </button>
+  <div
+    id="theme-menu"
+    class="card absolute top-full right-0 z-50 mt-2 w-44 p-1.5 shadow-[var(--shadow-soft)]"
+    data-theme-menu
+    hidden
+  >
+    <p class="px-2.5 pt-1 pb-1.5 text-xs font-semibold text-muted" id="theme-menu-title">
+      {t.theme.label}
+    </p>
+    <div role="group" aria-labelledby="theme-menu-title" class="grid gap-0.5">
+      {options.map((option) => (
+        <button type="button" class="theme-option" data-theme-option={option.value} aria-pressed="false">
+          <Icon name={option.icon} size={18} />
+          <span>{option.label}</span>
+          <span class="theme-check ml-auto">
+            <Icon name="check" size={16} />
+          </span>
+        </button>
+      ))}
+    </div>
+  </div>
+</div>
+
+<style>
+  .theme-icon {
+    display: none;
+  }
+
+  :global(html[data-theme-choice='light']) .theme-icon-light,
+  :global(html[data-theme-choice='dark']) .theme-icon-dark,
+  :global(html[data-theme-choice='system']) .theme-icon-system {
+    display: inline-flex;
+  }
+
+  .theme-option {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    width: 100%;
+    min-height: 2.75rem;
+    padding-inline: 0.65rem;
+    border-radius: 0.6rem;
+    color: var(--ink);
+    font-size: 0.95rem;
+    text-align: start;
+    cursor: pointer;
+  }
+
+  .theme-option:hover {
+    background-color: var(--subtle);
+  }
+
+  .theme-option[aria-pressed='true'] {
+    background-color: var(--brand-soft);
+    color: var(--brand-ink);
+    font-weight: 600;
+  }
+
+  .theme-check {
+    visibility: hidden;
+  }
+
+  .theme-option[aria-pressed='true'] .theme-check {
+    visibility: visible;
+  }
+</style>
+
+<script>
+  import '../scripts/theme-toggle.ts'
+</script>

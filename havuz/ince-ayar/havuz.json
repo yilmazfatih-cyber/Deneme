@@ -1,0 +1,17 @@
+{
+  "ad": "ince-ayar",
+  "baslik": "Açık modelleri ince ayarlama temeli",
+  "ozet": "Sohbet (LoRA), sınıflandırma (ONNX), gömme ve varlık tanıma ince ayarı; veri araçları, sentetik veri hattı, doğrulanmış model kataloğu ve Colab defteri.",
+  "tur": "python",
+  "gereksinim": { "python": ">=3.11" },
+  "python": { "ekstra": "dev" },
+  "denetle": ["python scripts/check.py"],
+  "uzunDenetim": ["python scripts/duman_testi.py", "python scripts/katalog_dogrula.py"],
+  "baslat": "python -m ince_ayar --yardim",
+  "yerTutucular": [
+    { "ara": "ince-ayar", "anlam": "dağıtım (paket) adı ve temel klasörünün adı" },
+    { "ara": "https://github.com/yilmazfatih-cyber/Deneme", "anlam": "Colab defterinin klonladığı depo adresi" },
+    { "ara": "havuz/ince-ayar", "anlam": "depo içinde temelin bulunduğu klasör (Colab defteri)" }
+  ],
+  "kopyalamaHaric": [".venv", "ciktilar", "veri", "llama.cpp", "*.egg-info", ".mypy_cache", ".ruff_cache"]
+}

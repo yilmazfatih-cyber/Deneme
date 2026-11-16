@@ -1,0 +1,13 @@
+---
+/** Free-form pages (English): /en/about/, … Content: src/content/sayfalar/en/. View: src/views/PageView.astro. */
+import type { GetStaticPaths, InferGetStaticPropsType } from 'astro'
+import { pagePaths } from '../../lib/static-paths.ts'
+import PageView from '../../views/PageView.astro'
+
+export const getStaticPaths = (() => pagePaths('en')) satisfies GetStaticPaths
+type Props = InferGetStaticPropsType<typeof getStaticPaths>
+
+const { page } = Astro.props as Props
+---
+
+<PageView page={page} />

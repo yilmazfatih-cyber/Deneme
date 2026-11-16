@@ -1,0 +1,36 @@
+# Sohbet · tek-gpu-24gb: RTX 3090/4090/A5000 sınıfı (24 GB, bf16 var). Qwen3-4B + LoRA.
+gorev = "sohbet"
+
+[model]
+taban = "Qwen/Qwen3-4B"
+duyarlik = "oto"
+dort_bit = false
+
+[veri]
+egitim = "ornekler/sohbet.jsonl"
+dogrulama_orani = 0.1
+azami_uzunluk = 2048
+grup_alani = "grup"
+
+[lora]
+r = 16
+alpha = 32
+dropout = 0.05
+hedef_moduller = "all-linear"
+
+[egitim]
+cikti = "ciktilar/sohbet-24gb"
+donem = 2.0
+yigin = 4
+biriktirme = 4
+degerlendirme_yigini = 4
+ogrenme_orani = 2e-4
+zamanlayici = "cosine"
+isinma_orani = 0.03
+gradyan_denetimi = true
+kayit_adimi = 10
+hedef_bellek_gb = 24.0
+
+[degerlendirme]
+azami_yeni_belirtec = 256
+ornek_sayisi = 100

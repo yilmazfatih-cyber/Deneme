@@ -10,6 +10,7 @@ import { satteri } from '@astrojs/markdown-satteri'
 import sitemap from '@astrojs/sitemap'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig, envField, fontProviders } from 'astro/config'
+import { loadEnv } from 'vite'
 import { ogImages } from './src/integrations/og-images.ts'
 import { searchIndex } from './src/integrations/search-index.ts'
 import { resolveDeployTarget } from './src/lib/deploy.ts'
@@ -17,12 +18,14 @@ import { createMarkdownPlugins } from './src/markdown/plugins.ts'
 import { codeMetaTransformer } from './src/markdown/shiki.ts'
 import { defaultLocale, locales, siteConfig } from './src/site.config.ts'
 
-const { site, base } = resolveDeployTarget(process.env, siteConfig.url)
+// .env dosyası yapılandırma dosyasında kendiliğinden okunmaz; burada açıkça yüklenir (komut satırındaki değer önceliklidir).
+const env = { ...loadEnv(process.env.NODE_ENV ?? 'production', process.cwd(), ''), ...process.env }
+const { site, base } = resolveDeployTarget(env, siteConfig.url)
 
 /** Fontsource paketlerindeki alt küme → Unicode aralığı tablosu (Türkçe için "latin" + "latin-ext" gerekir). */
 const require = createRequire(import.meta.url)
 const unicodeRanges = require('@fontsource-variable/figtree/unicode.json') as Record<string, string>
-const range = (subset: 'latin' | 'latin-ext') => [unicodeRanges[subset] ?? '']
+const range = (subset: 'latin' | 'latin-ext'): [string] => [unicodeRanges[subset] ?? '']
 
 export default defineConfig({
   site,
@@ -49,7 +52,7 @@ export default defineConfig({
   markdown: {
     processor: satteri({ hastPlugins: createMarkdownPlugins({ base }) }),
     shikiConfig: {
-      themes: { light: 'github-light-high-contrast', dark: 'github-dark' },
+      themes: { light: 'github-light-high-contrast', dark: 'github-dark-high-contrast' },
       defaultColor: false,
       transformers: [codeMetaTransformer],
     },

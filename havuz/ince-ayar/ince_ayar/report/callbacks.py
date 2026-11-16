@@ -46,9 +46,14 @@ class LogCollector(TrainerCallback):  # type: ignore[misc]
         total = int(state.max_steps or 0)
         if "loss" in logs:
             console.info(
-                t("egitim.ilerleme", adim=row["adim"], toplam=total, kayip=f"{logs['loss']:.4f}",
-                  oran=f"{logs.get('learning_rate', 0.0):.2e}")
-            )  # fmt: skip
+                t(
+                    "egitim.ilerleme",
+                    adim=row["adim"],
+                    toplam=total,
+                    kayip=f"{logs['loss']:.4f}",
+                    oran=f"{logs.get('learning_rate', 0.0):.2e}",
+                )
+            )
         elif "eval_loss" in logs:
             console.info(
                 t("egitim.degerlendirme", adim=row["adim"], kayip=f"{logs['eval_loss']:.4f}")
@@ -62,13 +67,15 @@ class SampleCallback(TrainerCallback):  # type: ignore[misc]
         self.path = directory / SAMPLES_FILE
         self.produce = produce
         self.rows: list[dict[str, Any]] = []
+        self._last_step = -1
         if self.path.exists():
             self.path.unlink()
 
     def on_evaluate(self, args: Any, state: Any, control: Any, **kwargs: Any) -> None:
         model = kwargs.get("model")
-        if model is None:
-            return
+        if model is None or state.global_step == self._last_step:
+            return  # aynı adımda ikinci değerlendirme (eğitim sonu) yeni bilgi vermez
+        self._last_step = state.global_step
         was_training = bool(model.training)
         model.eval()
         try:

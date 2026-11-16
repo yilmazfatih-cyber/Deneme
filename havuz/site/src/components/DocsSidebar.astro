@@ -1,0 +1,64 @@
+---
+/**
+ * Belgeler yan menüsü: gruplar ve belgeler `order` sırasıyla. Bulunulan belge `aria-current="page"` taşır.
+ * Sıra ve gruplar belgelerin ön bilgisindeki `group` ve `order` alanlarından gelir (src/content/belgeler/).
+ */
+import type { Doc } from '../lib/content.ts'
+import { entrySlug } from '../lib/content.ts'
+import { paths } from '../lib/routes.ts'
+import { link } from '../lib/url.ts'
+import type { Locale } from '../site.config.ts'
+
+interface Props {
+  locale: Locale
+  groups: { group: string; items: Doc[] }[]
+  currentId?: string
+  label: string
+}
+
+const { locale, groups, currentId, label } = Astro.props
+---
+
+<nav aria-label={label} class="text-[0.95rem]" data-search-ignore>
+  {groups.map((group) => (
+    <div class="mb-6">
+      <p class="mb-2 px-3 text-sm font-semibold">{group.group}</p>
+      <ul class="grid gap-0.5">
+        {group.items.map((doc) => (
+          <li>
+            <a
+              href={link(paths.doc(locale, entrySlug(doc)))}
+              class="doc-link"
+              aria-current={doc.id === currentId ? 'page' : undefined}
+            >
+              {doc.data.title}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  ))}
+</nav>
+
+<style>
+  .doc-link {
+    display: flex;
+    align-items: center;
+    min-height: 2.5rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 0.6rem;
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  .doc-link:hover {
+    background-color: var(--subtle);
+    color: var(--ink);
+  }
+
+  .doc-link[aria-current='page'] {
+    background-color: var(--brand-soft);
+    color: var(--brand-ink);
+    font-weight: 600;
+  }
+</style>

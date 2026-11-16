@@ -14,6 +14,8 @@ dependencies = ["pydantic>=2.9,<3"]
 [project.optional-dependencies]
 # Analiz: SQL sorguları ve Parquet çıktısı (duckdb), veri çerçevesi (pandas).
 analiz = ["duckdb>=1.1", "pandas>=2.2"]
+# Doğrulama: scripts/verify_reference.py'nin başvuru verilerini karşılaştırdığı kitaplıklar (ağ ister).
+dogrulama = ["babel>=2.16", "holidays>=0.60", "pycountry>=24.6", "schwifty>=2024.1"]
 # Geliştirme: denetim araçları + yalnız testlerde kullanılan karşılaştırma kitaplıkları.
 dev = [
   "pytest>=8",
@@ -22,6 +24,7 @@ dev = [
   "hypothesis>=6.100",
   "python-stdnum>=1.20", # TCKN/VKN/IBAN/Luhn için bağımsız başvuru gerçeklemesi (yalnız test)
   "pyyaml>=6",           # küçük YAML okuyucumuzu sınamak için başvuru (yalnız test)
+  "jsonschema>=4.23",    # .sema.json dosyalarının standart JSON Schema olduğunu sınamak için (yalnız test)
 ]
 
 [project.scripts]
@@ -48,12 +51,13 @@ ignore = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**" = ["S", "N802", "B011", "PTH"]
+# Testlerde uzun satırlar çoğunlukla parametre tablolarıdır (bkz. docs/KARARLAR.md K9).
+"tests/**" = ["S", "N802", "B011", "PTH", "E501"]
 "scripts/**" = ["S603", "S607"]
 
 [tool.ruff.lint.pep8-naming]
 # Pydantic doğrulayıcıları sınıf yöntemi gibi yazılır.
-classmethod-decorators = ["classmethod", "pydantic.field_validator", "pydantic.model_validator"]
+classmethod-decorators = ["classmethod", "pydantic.field_validator"]
 
 [tool.mypy]
 python_version = "3.11"
@@ -63,7 +67,7 @@ warn_unused_ignores = true
 plugins = ["pydantic.mypy"]
 
 [[tool.mypy.overrides]]
-module = ["yaml", "stdnum", "stdnum.*", "duckdb", "pandas", "pandas.*"]
+module = ["yaml", "stdnum", "stdnum.*", "duckdb", "pandas", "pandas.*", "jsonschema", "jsonschema.*", "babel", "holidays", "pycountry", "schwifty"]
 ignore_missing_imports = true
 
 [[tool.mypy.overrides]]

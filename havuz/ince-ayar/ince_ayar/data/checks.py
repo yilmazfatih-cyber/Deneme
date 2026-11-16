@@ -48,7 +48,9 @@ def check_chat(rows: list[ChatExample]) -> list[Finding]:
     padded = [
         (row.line, t("veri.uyari.bosluk"))
         for row in rows
-        if any(m["role"] == "assistant" and m["content"] != m["content"].strip() for m in row.messages)
+        if any(
+            m["role"] == "assistant" and m["content"] != m["content"].strip() for m in row.messages
+        )
     ]
     return findings + _cap(padded, len(padded))
 
@@ -64,15 +66,25 @@ def check_classification(rows: list[LabeledText]) -> list[Finding]:
     if len(counts) > 1 and max(counts.values()) / min(counts.values()) >= IMBALANCE_RATIO:
         largest, smallest = counts.most_common()[0], counts.most_common()[-1]
         findings.append(
-            (0, t("veri.uyari.dengesiz", buyuk=largest[0], buyuk_sayi=largest[1],
-                  kucuk=smallest[0], kucuk_sayi=smallest[1]))
-        )  # fmt: skip
+            (
+                0,
+                t(
+                    "veri.uyari.dengesiz",
+                    buyuk=largest[0],
+                    buyuk_sayi=largest[1],
+                    kucuk=smallest[0],
+                    kucuk_sayi=smallest[1],
+                ),
+            )
+        )
     spellings: dict[str, set[str]] = defaultdict(set)
     for label in counts:
         spellings[lower_tr(label).strip()].add(label)
     for variants in spellings.values():
         if len(variants) > 1:
-            findings.append((0, t("veri.uyari.etiket_yazimi", etiketler=", ".join(sorted(variants)))))
+            findings.append(
+                (0, t("veri.uyari.etiket_yazimi", etiketler=", ".join(sorted(variants))))
+            )
     return findings + _label_conflicts(rows)
 
 
@@ -88,9 +100,16 @@ def _label_conflicts(rows: list[LabeledText]) -> list[Finding]:
         for other in group[1:]:
             if other.label != first.label:
                 conflicts.append(
-                    (other.line, t("veri.uyari.celisen_etiket", ilk=first.line,
-                                   etiket=other.label, ilk_etiket=first.label))
-                )  # fmt: skip
+                    (
+                        other.line,
+                        t(
+                            "veri.uyari.celisen_etiket",
+                            ilk=first.line,
+                            etiket=other.label,
+                            ilk_etiket=first.label,
+                        ),
+                    )
+                )
             else:
                 repeats.append((other.line, t("veri.uyari.yinelenen", ilk=first.line)))
     return _cap(conflicts, len(conflicts)) + _cap(repeats, len(repeats))
@@ -98,7 +117,10 @@ def _label_conflicts(rows: list[LabeledText]) -> list[Finding]:
 
 def check_pairs(rows: list[Pair]) -> list[Finding]:
     findings = _duplicates(
-        [(row.line, fold_for_match(row.query) + "\n" + fold_for_match(row.positive)) for row in rows]
+        [
+            (row.line, fold_for_match(row.query) + "\n" + fold_for_match(row.positive))
+            for row in rows
+        ]
     )
     same = [
         (row.line, t("veri.uyari.sorgu_esit_olumlu"))

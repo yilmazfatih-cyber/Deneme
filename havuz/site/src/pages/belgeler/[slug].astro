@@ -1,0 +1,13 @@
+---
+/** Belge (Türkçe): /belgeler/<kisa-ad>/. İçerik: src/content/belgeler/tr/. Görünüm: src/views/DocView.astro. */
+import type { GetStaticPaths, InferGetStaticPropsType } from 'astro'
+import { docPaths } from '../../lib/static-paths.ts'
+import DocView from '../../views/DocView.astro'
+
+export const getStaticPaths = (() => docPaths('tr')) satisfies GetStaticPaths
+type Props = InferGetStaticPropsType<typeof getStaticPaths>
+
+const { doc } = Astro.props as Props
+---
+
+<DocView doc={doc} />

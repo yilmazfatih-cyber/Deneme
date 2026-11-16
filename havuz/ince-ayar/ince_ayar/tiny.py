@@ -57,7 +57,15 @@ def train_chat_tokenizer(texts: Iterable[str], vocab_size: int = 384) -> Any:
 
 def train_encoder_tokenizer(texts: Iterable[str], vocab_size: int = 384) -> Any:
     """BERT tarzı WordPiece tokenizer eğitir ([CLS] metin [SEP]). Harf büyüklüğüne dokunmaz."""
-    from tokenizers import Tokenizer, decoders, models, normalizers, pre_tokenizers, processors, trainers
+    from tokenizers import (
+        Tokenizer,
+        decoders,
+        models,
+        normalizers,
+        pre_tokenizers,
+        processors,
+        trainers,
+    )
     from transformers import PreTrainedTokenizerFast
 
     tokenizer = Tokenizer(models.WordPiece(unk_token="[UNK]"))

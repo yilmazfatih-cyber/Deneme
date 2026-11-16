@@ -1,0 +1,20 @@
+{
+  "ad": "veri",
+  "baslik": "Veri havuzu",
+  "ozet": "Doğrulanmış Türkçe başvuru verileri, ilişkisel tutarlı sentetik veri üreteçleri, veri kalitesi araçları, nazik veri hattı iskeleti ve doğrulanmış açık veri kataloğu.",
+  "tur": "python",
+  "gereksinim": { "python": ">=3.11" },
+  "python": { "ekstra": "dev,analiz" },
+  "denetle": ["python scripts/check.py"],
+  "uzunDenetim": [
+    "python scripts/verify_catalog.py --denetle",
+    "VERIHAVUZU_AG=1 python -m pytest tests/test_ag.py",
+    "python scripts/verify_reference.py"
+  ],
+  "baslat": "python -m verihavuzu --help",
+  "yerTutucular": [
+    { "ara": "verihavuzu", "anlam": "Python paket adı (küçük harf)" },
+    { "ara": "Veri havuzu", "anlam": "görünen ad" }
+  ],
+  "kopyalamaHaric": [".venv", "calisma", "__pycache__", ".mypy_cache", ".ruff_cache", ".pytest_cache", ".hypothesis", "*.egg-info"]
+}

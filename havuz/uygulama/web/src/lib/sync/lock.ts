@@ -68,7 +68,7 @@ async function withLease<T>(db: AppDb, task: () => Promise<T>, options: LockOpti
 /** `task`'ı eşitleme kilidi altında koşturur; kilit başka sekmedeyse sırasını bekler. */
 export async function withSyncLock<T>(db: AppDb, task: () => Promise<T>, options: LockOptions = {}): Promise<T> {
   const locks = options.useWebLocks === false ? undefined : (globalThis.navigator as Navigator | undefined)?.locks
-  // `locks.request` geri çağrının sonucunu döndürür; DOM tipi bunu `Promise<any>` diye tanımlar.
-  if (locks) return locks.request(`${db.name}.esitleme`, () => task()) as Promise<T>
+  // `locks.request` geri çağrının sonucunu döndürür (kilit sırası gelince çalışır).
+  if (locks) return locks.request(`${db.name}.esitleme`, () => task())
   return withLease(db, task, options)
 }

@@ -1,0 +1,19 @@
+{
+  "items": [
+    {
+      "quote": "Taking bookings by phone cost me an hour a day. Now my customers book even at midnight, and I start my morning by glancing at the calendar.",
+      "name": "Gülay Erkan",
+      "role": "Hairdresser, Gülay Hair Design"
+    },
+    {
+      "quote": "Since the reminder messages started, we have far fewer empty chair hours. The waiting list fills cancelled slots on its own.",
+      "name": "Kerem Aydın",
+      "role": "Dentist, Aydın Dental Clinic"
+    },
+    {
+      "quote": "We see the calendars of all three branches on one screen. Set-up took an afternoon and the team needed no extra training.",
+      "name": "Nihan Özdemir",
+      "role": "Operations manager, Form Pilates Studio"
+    }
+  ]
+}

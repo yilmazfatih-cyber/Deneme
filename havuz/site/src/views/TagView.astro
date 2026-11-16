@@ -1,0 +1,45 @@
+---
+/**
+ * Etiket sayfası: bir etiketi taşıyan bütün yazılar. Kim kullanır: src/pages/blog/etiket/[tag].astro (ve en karşılığı).
+ */
+import PageHeader from '../components/PageHeader.astro'
+import PostCard from '../components/PostCard.astro'
+import { useTranslations } from '../i18n/index.ts'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import type { TagInfo } from '../lib/collections.ts'
+import type { Post } from '../lib/content.ts'
+import { paths } from '../lib/routes.ts'
+import { fill } from '../lib/text.ts'
+import { siteConfig, type Locale } from '../site.config.ts'
+
+interface Props {
+  locale: Locale
+  tag: TagInfo
+  posts: Post[]
+}
+
+const { locale, tag, posts } = Astro.props
+const t = useTranslations(locale)
+const title = fill(t.blog.tagTitle, { tag: tag.name })
+const crumbs = [
+  { label: siteConfig.name, path: paths.home(locale) },
+  { label: t.blog.title, path: paths.blog(locale) },
+  { label: tag.name, path: paths.tag(locale, tag.slug) },
+]
+---
+
+<BaseLayout
+  locale={locale}
+  title={title}
+  description={fill(t.blog.tagDescription, { tag: tag.name, count: posts.length })}
+  breadcrumbs={crumbs}
+>
+  <PageHeader locale={locale} title={title} crumbs={crumbs} eyebrow={t.blog.title} />
+  <div class="wrap py-14">
+    <div class="grid gap-5 md:grid-cols-2">
+      {posts.map((post) => (
+        <PostCard post={post} />
+      ))}
+    </div>
+  </div>
+</BaseLayout>

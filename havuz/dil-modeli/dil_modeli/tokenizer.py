@@ -18,7 +18,7 @@ import json
 import re
 from collections.abc import Iterable, Sequence
 from pathlib import Path
-from typing import Any
+from typing import Any, Protocol
 
 from .bytelevel import BYTE_TO_CHAR, CHAR_TO_BYTE, pretokenize, sanitize, to_bytelevel
 from .tokenizer_format import parse_tokenizer_json, tokenizer_json
@@ -248,6 +248,12 @@ class BPETokenizer:
         return hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
 
+class ByteDecoder(Protocol):
+    """Kimlikleri bayta çevirebilen her tokenizer (BPE ya da karakter)."""
+
+    def decode_bytes(self, ids: Iterable[int], *, skip_special: bool = True) -> bytes: ...
+
+
 class StreamDecoder:
     """Belirteçleri tek tek alır, tamamlanan metni verir (akışla üretim için).
 
@@ -255,7 +261,7 @@ class StreamDecoder:
     tamamlanana kadar bekletilir. `flush()` üretim bitince kalan parçayı döndürür.
     """
 
-    def __init__(self, tokenizer: BPETokenizer, *, skip_special: bool = True) -> None:
+    def __init__(self, tokenizer: ByteDecoder, *, skip_special: bool = True) -> None:
         self._tokenizer = tokenizer
         self._skip_special = skip_special
         self._decoder = codecs.getincrementaldecoder("utf-8")(errors="replace")
@@ -268,7 +274,9 @@ class StreamDecoder:
         return self._decoder.decode(b"", final=True)
 
 
-def _validate(vocab: dict[str, int], merges: Sequence[tuple[str, str]], special: Sequence[str]) -> None:
+def _validate(
+    vocab: dict[str, int], merges: Sequence[tuple[str, str]], special: Sequence[str]
+) -> None:
     """Sözlüğün tutarlı olduğunu denetler; bozuk dosya sessizce yanlış kodlamasın."""
     if sorted(vocab.values()) != list(range(len(vocab))):
         raise ValueError("Tokenizer sözlüğü bozuk: kimlikler 0'dan başlayıp boşluksuz artmalı.")

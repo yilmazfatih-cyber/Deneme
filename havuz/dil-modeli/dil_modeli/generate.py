@@ -13,7 +13,7 @@ Genişletme: Örnekleme kuralları `sampling.py` içindedir; burası yalnız dö
 
 from __future__ import annotations
 
-from collections.abc import Collection, Iterator, Sequence
+from collections.abc import Collection, Generator, Iterator, Sequence
 
 import torch
 from torch import Tensor
@@ -40,8 +40,8 @@ def generate_ids(
     *,
     stop_ids: Collection[int] = (),
     generator: torch.Generator | None = None,
-) -> Iterator[int]:
-    """İstemin devamını belirteç belirteç üretir. `stop_ids`ten biri gelince (onu vermeden) durur."""
+) -> Generator[int]:
+    """İstemin devamını tek tek üretir; `stop_ids`ten biri gelince (onu vermeden) durur."""
     limit = model.config.max_seq_len
     history = list(prompt_ids)
     if not history:
@@ -179,7 +179,9 @@ def generate_batch(
     limit = model.config.max_seq_len
     longest = max(len(prompt) for prompt in prompts)
     if longest >= limit:
-        raise ValueError(f"En uzun istem ({longest} belirteç) bağlamı ({limit}) dolduruyor; kısaltın.")
+        raise ValueError(
+            f"En uzun istem ({longest} belirteç) bağlamı ({limit}) dolduruyor; kısaltın."
+        )
     device = model.rope_cos.device
     if generator is None:
         generator = make_generator(config.seed)

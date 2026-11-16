@@ -1,0 +1,28 @@
+{
+  "items": [
+    {
+      "id": "elif-aydin",
+      "name": "Elif Aydın",
+      "role": "Kurucu ortak, ürün",
+      "bio": "On iki yıl boyunca bir kuaför zincirinde operasyon yönetti. Sedir'i, her gün yaşadığı randevu karmaşasını çözmek için başlattı."
+    },
+    {
+      "id": "can-ozturk",
+      "name": "Can Öztürk",
+      "role": "Kurucu ortak, yazılım",
+      "bio": "Ödeme ve takvim altyapıları üzerine çalışan bir yazılım mühendisi. Sedir'in hızlı, güvenilir ve sade kalmasından sorumlu."
+    },
+    {
+      "id": "zeynep-kara",
+      "name": "Zeynep Kara",
+      "role": "Müşteri deneyimi",
+      "bio": "Yeni işletmelerin kurulumuna eşlik eder. Destek taleplerinin çoğunu aynı gün içinde, telefon açmadan çözer."
+    },
+    {
+      "id": "emre-sahin",
+      "name": "Emre Şahin",
+      "role": "İçerik ve topluluk",
+      "bio": "Blogdaki yazıları hazırlar; küçük işletmelerin internetteki görünürlüğü üzerine uygulamalı atölyeler düzenler."
+    }
+  ]
+}

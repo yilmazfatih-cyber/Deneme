@@ -1,0 +1,28 @@
+{
+  "items": [
+    {
+      "id": "elif-aydin",
+      "name": "Elif Aydın",
+      "role": "Co-founder, product",
+      "bio": "Ran operations at a chain of hair salons for twelve years, and started Sedir to fix the booking chaos she lived with every day."
+    },
+    {
+      "id": "can-ozturk",
+      "name": "Can Öztürk",
+      "role": "Co-founder, engineering",
+      "bio": "A software engineer who works on payment and calendar systems, responsible for keeping Sedir fast, reliable and simple."
+    },
+    {
+      "id": "zeynep-kara",
+      "name": "Zeynep Kara",
+      "role": "Customer experience",
+      "bio": "Walks new businesses through set-up and solves most support requests on the same day, without a phone call."
+    },
+    {
+      "id": "emre-sahin",
+      "name": "Emre Şahin",
+      "role": "Content and community",
+      "bio": "Writes the articles on our blog and runs hands-on workshops about the online visibility of small businesses."
+    }
+  ]
+}

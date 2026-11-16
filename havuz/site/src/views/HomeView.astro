@@ -1,0 +1,86 @@
+---
+/**
+ * Ana sayfa görünümü (bütün diller için ortak). Bölümler yukarıdan aşağıya bu sırayla çizilir; sıralamayı ya da
+ * bölüm eklemeyi buradan yapın (AGENTS.md → "Ana sayfaya yeni bölüm"). Metinler src/content/ altındaki JSON'lardadır.
+ * Kim kullanır: src/pages/index.astro (tr) ve src/pages/en/index.astro (en).
+ */
+import CtaBand from '../components/home/CtaBand.astro'
+import Faq from '../components/home/Faq.astro'
+import Features from '../components/home/Features.astro'
+import Hero from '../components/home/Hero.astro'
+import Pricing from '../components/home/Pricing.astro'
+import Steps from '../components/home/Steps.astro'
+import Testimonials from '../components/home/Testimonials.astro'
+import { useTranslations } from '../i18n/index.ts'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { getData } from '../lib/content.ts'
+import { alternatesFor, paths } from '../lib/routes.ts'
+import { faqPage, organization, website } from '../lib/structured-data.ts'
+import { absoluteUrl } from '../lib/url.ts'
+import { siteConfig, type Locale } from '../site.config.ts'
+
+interface Props {
+  locale: Locale
+}
+
+const { locale } = Astro.props
+const t = useTranslations(locale)
+const config = siteConfig.locales[locale]
+const lang = config.lang
+const sections = t.home.sections
+const [home, features, faq, pricing, testimonials] = await Promise.all([
+  getData('anasayfa', locale),
+  getData('ozellikler', locale),
+  getData('sss', locale),
+  getData('fiyatlar', locale),
+  getData('referanslar', locale),
+])
+
+const rootUrl = absoluteUrl('/')
+const contact = siteConfig.contact
+const jsonLd = [
+  organization({
+    name: siteConfig.name,
+    legalName: siteConfig.organization.legalName,
+    url: rootUrl,
+    logo: absoluteUrl('/apple-touch-icon.png'),
+    email: contact.email,
+    telephone: contact.phone,
+    foundingYear: siteConfig.organization.foundingYear,
+    sameAs: Object.values(siteConfig.social).filter((value): value is string => value !== undefined),
+    address: contact.address,
+  }),
+  website({
+    name: siteConfig.name,
+    url: absoluteUrl(paths.home(locale)),
+    description: config.description,
+    lang,
+    organizationUrl: rootUrl,
+  }),
+  faqPage(faq.items),
+]
+---
+
+<BaseLayout
+  locale={locale}
+  title={null}
+  description={config.description}
+  alternates={alternatesFor(paths.home)}
+  jsonLd={jsonLd}
+  searchSection={siteConfig.name}
+>
+  <Hero hero={home.hero} mockupLabel={t.home.mockupLabel} lang={lang} />
+  <Features anchor={sections.features} header={home.features} items={features.items} />
+  <Steps anchor={sections.steps} steps={home.steps} />
+  <Testimonials anchor={sections.testimonials} lang={lang} header={home.testimonials} items={testimonials.items} />
+  <Pricing
+    anchor={sections.pricing}
+    lang={lang}
+    popularLabel={t.home.popularPlan}
+    freeLabel={t.home.freePlan}
+    header={home.pricing}
+    pricing={pricing}
+  />
+  <Faq anchor={sections.faq} header={home.faq} items={faq.items} />
+  <CtaBand cta={home.cta} />
+</BaseLayout>

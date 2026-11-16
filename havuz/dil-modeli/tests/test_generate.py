@@ -1,4 +1,4 @@
-"""Üretim döngüsü: önbellekli üretim kaba kuvvetle, toplu üretim tek tek üretimle karşılaştırılır."""
+"""Üretim döngüsü: önbellekli üretim kaba kuvvetle, toplu üretim tekli üretimle karşılaştırılır."""
 
 from __future__ import annotations
 
@@ -17,12 +17,16 @@ GREEDY = SamplingConfig(max_new_tokens=12, temperature=0.0)
 @pytest.fixture(scope="module")
 def model(tokenizer: BPETokenizer) -> LanguageModel:
     torch.manual_seed(0)
-    config = ModelConfig(vocab_size=tokenizer.vocab_size, dim=48, n_layer=2, n_head=4, max_seq_len=24)
+    config = ModelConfig(
+        vocab_size=tokenizer.vocab_size, dim=48, n_layer=2, n_head=4, max_seq_len=24
+    )
     return LanguageModel(config).eval()
 
 
-def _brute_force(model: LanguageModel, prompt: list[int], steps: int, penalty: float = 1.0) -> list[int]:
-    """Önbelleksiz başvuru: her adımda bütün pencereyi baştan çalıştırır, aynı kaydırma kuralıyla."""
+def _brute_force(
+    model: LanguageModel, prompt: list[int], steps: int, penalty: float = 1.0
+) -> list[int]:
+    """Önbelleksiz başvuru: her adımda bütün pencereyi baştan çalıştırır (aynı kaydırma kuralı)."""
     limit = model.config.max_seq_len
     history = list(prompt)
     window = history[-(limit - 1) :]
@@ -34,7 +38,9 @@ def _brute_force(model: LanguageModel, prompt: list[int], steps: int, penalty: f
             logits = model(torch.tensor([window]))[0, -1].clone()
         if penalty != 1.0:
             for token in set(history[-64:]):
-                logits[token] = logits[token] / penalty if logits[token] > 0 else logits[token] * penalty
+                logits[token] = (
+                    logits[token] / penalty if logits[token] > 0 else logits[token] * penalty
+                )
         token = int(logits.argmax())
         out.append(token)
         history.append(token)
@@ -95,7 +101,9 @@ def test_batch_generation_matches_single_generation(model: LanguageModel) -> Non
     assert generate_batch(model, prompts, GREEDY, pad_id=2, stop_ids=stop) == expected
     assert len(expected[1]) <= 3
     # Aynı istemden birden çok farklı örnek.
-    sampled = generate_batch(model, [[0, 40]] * 4, SamplingConfig(max_new_tokens=8, seed=1), pad_id=2)
+    sampled = generate_batch(
+        model, [[0, 40]] * 4, SamplingConfig(max_new_tokens=8, seed=1), pad_id=2
+    )
     assert len({tuple(row) for row in sampled}) > 1
     with pytest.raises(ValueError, match="bağlamı"):
         generate_batch(model, [[1] * 24], GREEDY, pad_id=2)
@@ -113,7 +121,9 @@ def test_stop_checker_holds_back_partial_matches() -> None:
     assert plain.feed("abc") == ("abc", False)
 
 
-def test_text_stream_pieces_and_finish_reason(model: LanguageModel, tokenizer: BPETokenizer) -> None:
+def test_text_stream_pieces_and_finish_reason(
+    model: LanguageModel, tokenizer: BPETokenizer
+) -> None:
     prompt = [tokenizer.bos_id, *tokenizer.encode("Korkma")]
     config = SamplingConfig(max_new_tokens=30, temperature=0.0)
     tokens = list(generate_ids(model, prompt, config, stop_ids={tokenizer.eos_id}))

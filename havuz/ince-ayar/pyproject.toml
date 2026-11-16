@@ -38,7 +38,78 @@ dev = [
   "ruff>=0.9",
   "mypy>=1.14",
   "types-PyYAML>=6.0",
+  "scikit-learn>=1.5",  # yalnız testlerde başvuru gerçeklemesi (ölçütler karşılaştırılır)
 ]
 
 [tool.setuptools.packages.find]
 include = ["ince_ayar*"]
+
+[tool.setuptools.package-data]
+ince_ayar = ["py.typed", "data/*.md", "export/ollama_sablonlari/*", "synth/istemler/*.txt"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = [".venv", "build", "ciktilar", "defterler"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "N", "SIM", "C4", "RUF", "PT", "PL"]
+ignore = [
+  "RUF001",  # Türkçe harfler (ı, İ) "belirsiz karakter" sayılmasın
+  "RUF002",
+  "RUF003",
+  "PLR0913", # eğitim işlevleri çok parametre alır (yapılandırma alanları)
+  "PLR0917",
+  "PLR2004", # küçük sabitler (0.5, 2, 1e-12) okunaklıdır
+  "PLR0912",
+  "PLR0915",
+  "PLR0911",
+  "PLC0415", # ağır kütüphaneler (torch…) bilerek fonksiyon içinde içe aktarılır: yardım anında açılsın
+  "PLW0603",
+  "SIM108",
+  "E501",    # satır uzunluğunu `ruff format` yönetir; uzun Türkçe iletiler bölünmez
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["PT011", "PLR2004", "N802", "PT006", "PT018", "RUF043"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["ince_ayar", "tests"]
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+plugins = ["pydantic.mypy"]
+warn_unused_ignores = false
+ignore_missing_imports = true
+disallow_untyped_calls = false
+disallow_subclassing_any = false
+exclude = ["^\\.venv/", "^build/", "^ciktilar/"]
+
+# Ağır kütüphanelerin içi çözümlenmez (soğuk önbellekte mypy 80 sn → birkaç sn); bizim kodumuz
+# onları zaten `Any` olarak kullanır. Kendi kodumuzun tipleri yine sıkı (strict) denetlenir.
+[[tool.mypy.overrides]]
+module = [
+  "torch", "torch.*", "transformers", "transformers.*", "datasets", "datasets.*", "peft", "peft.*",
+  "trl", "trl.*", "sentence_transformers", "sentence_transformers.*", "onnx", "onnx.*",
+  "onnxruntime", "onnxruntime.*", "tokenizers", "tokenizers.*", "huggingface_hub", "huggingface_hub.*",
+  "accelerate", "accelerate.*", "safetensors", "safetensors.*", "sklearn", "sklearn.*",
+]
+follow_imports = "skip"
+
+[[tool.mypy.overrides]]
+module = ["tests.*"]
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q -p no:cacheprovider"
+filterwarnings = [
+  "ignore::DeprecationWarning",
+  "ignore::FutureWarning",
+  "ignore:.*torchvision.*:UserWarning",
+]

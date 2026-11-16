@@ -4,7 +4,7 @@ Her kural (yineleme cezası, sıcaklık, top-k, top-p) logitleri alıp logit dö
 işlevdir; `next_token` bunları sırayla uygular. `generate.py` kullanır; tarayıcıdaki karşılığı
 `tarayici/sampler.js`.
 
-Genişletme (yeni örnekleme yöntemi): (1) `SamplingConfig`e varsayılanı "kapalı" olan bir alan,
+Genişletme: yeni örnekleme yöntemi için (1) `SamplingConfig`e varsayılanı "kapalı" olan bir alan,
 (2) `top_k_filter` örneğindeki gibi bir süzgeç işlevi, (3) `next_token` içinde
 "YENİ ÖRNEKLEME YÖNTEMİ BURAYA" satırının üstüne çağrısı, (4) tests/test_sampling.py'ye test.
 Tarif: AGENTS.md.

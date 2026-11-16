@@ -1,0 +1,2001 @@
+﻿musteri_no;kayit_tarihi;sehir;paket;sozlesme;aylik_ucret;abonelik_ay;kullanim_gb;destek_cagrisi;gecikmeli_odeme;memnuniyet;son_sikayet;kayip
+M100000;04.07.2023;İzmir;Temel;1 yıl;261,42;30;;1;0;2;bağlantı kopuyor;hayır
+M100001;04.03.2024;İstanbul;Standart;2 yıl;319,93;22;298,5;1;0;4;fatura yüksek;hayır
+M100002;02.09.2025;İstanbul;Standart;Aylık;332,56;4;166,2;1;0;3;müşteri hizmetleri ulaşılmıyor;evet
+M100003;03.08.2024;Konya;Temel;2 yıl;203,24;17;327,8;1;1;4;kurulum gecikti;hayır
+M100004;02.10.2024;Iğdır;Temel;2 yıl;211,99;15;60,4;1;0;3;bağlantı kopuyor;hayır
+M100005;03.09.2023;Antalya;Standart;2 yıl;348,83;28;255,4;1;3;4;müşteri hizmetleri ulaşılmıyor;evet
+M100006;05.03.2022;İstanbul;Premium;Aylık;416,85;46;278;0;0;4;şikâyet yok;hayır
+M100007;04.08.2022;İstanbul;Temel;1 yıl;171,99;41;191,4;1;0;4;müşteri hizmetleri ulaşılmıyor;hayır
+M100008;03.12.2023;Bursa;Standart;Aylık;350,14;25;312,4;0;0;4;şikâyet yok;hayır
+M100009;05.11.2019;İstanbul;Temel;2 yıl;150,73;74;110,6;2;1;3;müşteri hizmetleri ulaşılmıyor;hayır
+M100010;03.06.2025;Konya;Premium;Aylık;456,17;7;378,5;2;0;;müşteri hizmetleri ulaşılmıyor;hayır
+M100011;02.08.2025;Antalya;Premium;1 yıl;414,59;5;862,3;1;0;;kurulum gecikti;hayır
+M100012;01.02.2025;Konya;Standart;Aylık;286,77;11;457,9;0;1;4;şikâyet yok;evet
+M100013;03.01.2024;Ankara;Standart;Aylık;245,85;24;303,8;1;0;3;bağlantı kopuyor;evet
+M100014;03.01.2022;İstanbul;Standart;Aylık;286,15;48;;0;0;3;şikâyet yok;evet
+M100015;04.12.2022;Ankara;Premium;Aylık;396,67;37;215,8;0;0;3;şikâyet yok;hayır
+M100016;02.09.2025;Konya;Temel;Aylık;199,2;4;235,6;0;0;3;şikâyet yok;evet
+M100017;03.11.2023;Konya;Temel;1 yıl;211,85;26;262,4;0;1;2;şikâyet yok;hayır
+M100018;05.01.2018;Antalya;Temel;1 yıl;164,1;96;151,2;3;0;3;fatura yüksek;hayır
+M100019;02.02.2023;Antalya;Temel;2 yıl;225,31;35;470,9;0;0;1;şikâyet yok;hayır
+M100020;04.06.2022;Konya;Standart;2 yıl;313,71;43;164,9;2;1;3;bağlantı kopuyor;hayır
+M100021;03.08.2024;Antalya;Temel;Aylık;146,87;17;296,1;1;1;1;müşteri hizmetleri ulaşılmıyor;hayır
+M100022;06.07.2019;Diyarbakır;Standart;1 yıl;277,83;78;97,2;3;0;3;kurulum gecikti;hayır
+M100023;02.12.2025;İzmir;Temel;Aylık;180,72;1;358,8;6;1;1;müşteri hizmetleri ulaşılmıyor;evet
+M100024;02.10.2025;İstanbul;Temel;1 yıl;290,42;3;223,5;3;0;1;fatura yüksek;hayır
+M100025;06.08.2019;Diyarbakır;Temel;Aylık;200,71;77;214,5;3;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M100026;04.06.2023;Ankara;Temel;Aylık;164,85;31;163;0;0;5;şikâyet yok;hayır
+M100027;03.08.2024;İstanbul;Standart;2 yıl;294,96;17;145,3;1;2;2;internet yavaş;hayır
+M100028;04.08.2023;Antalya;Temel;1 yıl;167,27;29;222,9;0;0;4;şikâyet yok;hayır
+M100029;05.03.2020;Ankara;Temel;Aylık;181,16;70;361,8;0;0;3;şikâyet yok;hayır
+M100030;04.08.2023;İzmir;Temel;1 yıl;233,91;29;91,1;2;1;2;müşteri hizmetleri ulaşılmıyor;hayır
+M100031;02.09.2024;İzmir;Premium;Aylık;430,3;16;503,3;4;0;2;internet yavaş;evet
+M100032;03.06.2024;Antalya;Standart;1 yıl;293,39;19;218,4;1;0;;internet yavaş;hayır
+M100033;02.02.2024;Bursa;Standart;1 yıl;318,63;23;73,5;1;0;4;fatura yüksek;hayır
+M100034;03.01.2024;İzmir;Temel;Aylık;251,16;24;265,1;3;0;3;müşteri hizmetleri ulaşılmıyor;evet
+M100035;03.12.2023;İstanbul;Premium;Aylık;439,21;25;101,7;1;0;2;bağlantı kopuyor;evet
+M100036;02.11.2025;İzmir;Standart;Aylık;262,66;2;238,6;4;0;2;kurulum gecikti;evet
+M100037;02.09.2025;Konya;Temel;1 yıl;199,11;4;;0;1;4;şikâyet yok;hayır
+M100038;03.09.2023;İzmir;Premium;Aylık;438,62;28;1068,1;0;0;2;şikâyet yok;hayır
+M100039;03.01.2023;İzmir;Temel;1 yıl;196,92;36;160,2;0;0;2;şikâyet yok;hayır
+M100040;03.05.2025;İstanbul;Standart;1 yıl;307,7;8;186,6;0;0;5;şikâyet yok;hayır
+M100041;02.10.2024;Bursa;Temel;Aylık;181,89;15;138,4;2;0;2;müşteri hizmetleri ulaşılmıyor;evet
+M100042;03.05.2025;Iğdır;Temel;Aylık;247,94;8;334,3;3;0;1;kurulum gecikti;evet
+M100043;05.04.2021;İstanbul;Standart;Aylık;303,64;57;112,2;0;0;3;şikâyet yok;hayır
+M100044;03.07.2025;İzmir;Temel;1 yıl;159,32;6;168,4;3;0;3;fatura yüksek;hayır
+M100045;02.02.2023;İzmir;Standart;1 yıl;291,13;35;260,4;1;0;4;internet yavaş;hayır
+M100046;03.06.2025;İstanbul;Standart;1 yıl;309,41;7;173,2;1;1;2;fatura yüksek;hayır
+M100047;03.06.2024;Bursa;Temel;1 yıl;211,85;19;102,9;2;1;4;internet yavaş;hayır
+M100048;05.05.2023;Ankara;Standart;2 yıl;330,8;32;412,6;3;0;1;bağlantı kopuyor;hayır
+M100049;03.06.2025;İzmir;Standart;2 yıl;264,39;7;254,5;2;0;3;internet yavaş;hayır
+M100050;04.08.2023;Antalya;Standart;Aylık;250,84;29;222,9;0;0;4;şikâyet yok;hayır
+M100051;03.05.2024;İzmir;Temel;1 yıl;222,74;20;309,4;1;3;2;müşteri hizmetleri ulaşılmıyor;evet
+M100052;02.11.2024;İstanbul;Temel;1 yıl;189,73;14;104,6;0;0;1;şikâyet yok;hayır
+M100053;02.02.2023;Konya;Standart;Aylık;281,21;35;190,6;0;0;2;şikâyet yok;hayır
+M100054;04.10.2023;İstanbul;Standart;Aylık;312,46;27;296,1;0;0;4;şikâyet yok;hayır
+M100055;01.02.2025;Diyarbakır;Standart;Aylık;265,61;11;308,4;2;1;2;fatura yüksek;evet
+M100056;02.01.2025;İzmir;Standart;1 yıl;256,13;12;147,6;1;0;5;müşteri hizmetleri ulaşılmıyor;hayır
+M100057;03.05.2024;Ankara;Temel;Aylık;171,16;20;423,3;0;0;;şikâyet yok;hayır
+M100058;02.12.2024;İstanbul;Temel;1 yıl;218,65;13;237,1;0;3;5;şikâyet yok;hayır
+M100059;03.06.2024;Ankara;Standart;2 yıl;286,47;19;274,6;1;0;4;kurulum gecikti;hayır
+M100060;03.01.2021;İstanbul;Standart;1 yıl;271,27;60;202,7;2;1;2;bağlantı kopuyor;hayır
+M100061;04.10.2022;Iğdır;Temel;Aylık;146,96;39;218,3;0;0;4;şikâyet yok;hayır
+M100062;02.11.2024;Ankara;Standart;2 yıl;307,85;14;170,4;2;1;2;müşteri hizmetleri ulaşılmıyor;hayır
+M100063;05.03.2020;Ankara;Temel;1 yıl;172,72;70;270,9;2;0;4;müşteri hizmetleri ulaşılmıyor;hayır
+M100064;02.02.2024;Bursa;Premium;1 yıl;446,93;23;506,2;1;1;4;fatura yüksek;hayır
+M100065;02.12.2025;Ankara;Premium;Aylık;419,32;1;442,3;1;0;;kurulum gecikti;evet
+M100066;02.01.2025;Antalya;Temel;2 yıl;207,6;12;393,8;3;0;2;kurulum gecikti;hayır
+M100067;03.01.2024;Konya;Temel;1 yıl;181,85;24;326,2;0;0;5;şikâyet yok;hayır
+M100068;06.06.2019;Ankara;Standart;Aylık;298,75;79;222,1;1;0;1;internet yavaş;hayır
+M100069;02.10.2024;Ankara;Temel;Aylık;146,41;15;;1;0;4;internet yavaş;evet
+M100070;05.07.2021;İstanbul;Standart;Aylık;270,14;54;414,3;4;0;4;müşteri hizmetleri ulaşılmıyor;hayır
+M100071;03.07.2024;İstanbul;Temel;Aylık;213,61;18;105,7;1;3;3;kurulum gecikti;hayır
+M100072;03.11.2022;Antalya;Standart;Aylık;328,28;38;142,5;1;1;5;fatura yüksek;hayır
+M100073;02.11.2025;Ankara;Premium;Aylık;442,25;2;309,5;1;0;;fatura yüksek;evet
+M100074;02.10.2024;İzmir;Premium;2 yıl;412,26;15;579;2;0;2;fatura yüksek;hayır
+M100075;02.02.2023;İzmir;Standart;1 yıl;273,82;35;277;0;0;;şikâyet yok;hayır
+M100076;03.06.2025;Antalya;Temel;Aylık;202,42;7;523,1;0;0;5;şikâyet yok;hayır
+M100077;05.01.2018;Ankara;Premium;1 yıl;399,26;96;707;0;0;4;şikâyet yok;hayır
+M100078;02.12.2024;İstanbul;Temel;2 yıl;226,61;13;144,8;1;0;4;bağlantı kopuyor;hayır
+M100079;03.12.2023;Antalya;Temel;Aylık;251,71;25;449,8;2;0;2;fatura yüksek;hayır
+M100080;02.01.2025;İzmir;Temel;Aylık;186,88;12;287,4;0;3;;şikâyet yok;hayır
+M100081;02.12.2024;İstanbul;Standart;Aylık;232,94;13;577,2;0;0;3;şikâyet yok;hayır
+M100082;02.01.2025;Bursa;Standart;Aylık;269,89;12;89,8;1;0;5;internet yavaş;hayır
+M100083;06.08.2019;İstanbul;Temel;Aylık;194,86;77;138,1;2;0;3;internet yavaş;hayır
+M100084;04.04.2023;Antalya;Temel;1 yıl;185,58;33;229,5;1;0;5;fatura yüksek;hayır
+M100085;03.05.2024;İzmir;Standart;1 yıl;321,65;20;114,7;3;0;3;fatura yüksek;hayır
+M100086;04.03.2024;İstanbul;Standart;1 yıl;315,92;22;274,8;3;0;5;internet yavaş;hayır
+M100087;03.07.2024;İstanbul;Standart;1 yıl;268,95;18;299,8;0;2;5;şikâyet yok;hayır
+M100088;03.05.2024;İstanbul;Standart;Aylık;320,66;20;339,9;2;1;3;kurulum gecikti;evet
+M100089;05.01.2018;İzmir;Premium;1 yıl;473,12;96;236,8;2;0;2;internet yavaş;hayır
+M100090;03.04.2025;Ankara;Premium;2 yıl;387,27;9;318,8;4;0;2;müşteri hizmetleri ulaşılmıyor;evet
+M100091;03.04.2024;İstanbul;Temel;1 yıl;193,99;21;172,8;2;0;3;bağlantı kopuyor;hayır
+M100092;03.04.2024;İstanbul;Premium;1 yıl;433,26;21;373,1;2;1;2;kurulum gecikti;evet
+M100093;03.09.2022;Bursa;Standart;1 yıl;326,68;40;296;4;0;3;bağlantı kopuyor;evet
+M100094;02.01.2025;Antalya;Standart;Aylık;250,2;12;181;0;0;4;şikâyet yok;hayır
+M100095;04.08.2021;Konya;Standart;2 yıl;281,84;53;591;1;0;2;müşteri hizmetleri ulaşılmıyor;hayır
+M100096;05.03.2020;Ankara;Standart;Aylık;272,25;70;308,3;1;0;3;kurulum gecikti;hayır
+M100097;03.04.2024;İstanbul;Premium;Aylık;407,56;21;201,5;1;0;;fatura yüksek;hayır
+M100098;02.12.2025;Antalya;Temel;1 yıl;194,85;1;45,8;1;0;4;internet yavaş;hayır
+M100099;04.03.2024;İstanbul;Standart;Aylık;309,22;22;111,6;2;0;1;internet yavaş;evet
+M100100;03.08.2024;İzmir;Premium;Aylık;446,2;17;673,5;1;0;4;fatura yüksek;evet
+M100101;03.07.2025;Bursa;Temel;1 yıl;234,08;6;362,2;2;0;3;bağlantı kopuyor;hayır
+M100102;05.05.2021;Antalya;Standart;Aylık;277,22;56;393,5;5;0;2;müşteri hizmetleri ulaşılmıyor;evet
+M100103;03.01.2024;Diyarbakır;Temel;2 yıl;203,75;24;156,7;1;0;2;fatura yüksek;hayır
+M100104;03.05.2024;Iğdır;Standart;Aylık;303,52;20;208,2;0;0;2;şikâyet yok;evet
+M100105;03.06.2025;İstanbul;Temel;1 yıl;237,3;7;166,5;0;0;5;şikâyet yok;hayır
+M100106;02.12.2024;İstanbul;Standart;1 yıl;266,97;13;183,8;1;1;2;kurulum gecikti;evet
+M100107;02.01.2025;İstanbul;Premium;Aylık;430,49;12;601,7;1;0;2;internet yavaş;evet
+M100108;05.01.2019;Antalya;Standart;2 yıl;265,07;84;386,1;2;0;;kurulum gecikti;hayır
+M100109;05.05.2023;Ankara;Temel;1 yıl;209,98;32;111,3;1;0;4;bağlantı kopuyor;hayır
+M100110;02.10.2025;Bursa;Standart;1 yıl;250,46;3;89,2;3;0;4;bağlantı kopuyor;hayır
+M100111;03.07.2025;İstanbul;Temel;1 yıl;169,73;6;550,2;3;0;4;kurulum gecikti;hayır
+M100112;04.06.2022;İstanbul;Standart;1 yıl;290,64;43;246,5;1;0;4;bağlantı kopuyor;hayır
+M100113;03.01.2021;İstanbul;Temel;Aylık;171,6;60;;1;0;;internet yavaş;hayır
+M100114;01.02.2025;İstanbul;Temel;2 yıl;208;11;294,5;1;1;3;kurulum gecikti;hayır
+M100115;02.08.2025;Konya;Temel;Aylık;178,56;5;296,8;0;0;5;şikâyet yok;hayır
+M100116;03.06.2024;İzmir;Temel;Aylık;141,01;19;141,7;4;0;3;fatura yüksek;evet
+M100117;02.10.2025;Diyarbakır;Standart;Aylık;271,52;3;343,4;3;2;3;internet yavaş;evet
+M100118;03.05.2025;İstanbul;Temel;Aylık;227,26;8;120;2;1;3;kurulum gecikti;evet
+M100119;02.08.2025;Konya;Standart;2 yıl;299,9;5;330,9;2;3;3;internet yavaş;evet
+M100120;02.10.2025;Konya;Standart;Aylık;304,11;3;96,4;0;0;3;şikâyet yok;evet
+M100121;02.11.2025;Ankara;Premium;Aylık;359,58;2;155;1;0;4;bağlantı kopuyor;hayır
+M100122;04.11.2020;İstanbul;Temel;2 yıl;186,6;62;187,4;0;0;;şikâyet yok;hayır
+M100123;03.03.2025;Ankara;Temel;2 yıl;214,91;10;450,3;2;0;5;bağlantı kopuyor;hayır
+M100124;03.06.2025;İzmir;Temel;Aylık;193,19;7;170,6;4;3;2;müşteri hizmetleri ulaşılmıyor;evet
+M100125;03.04.2025;Bursa;Temel;2 yıl;220,48;9;265,2;2;0;;internet yavaş;hayır
+M100126;03.03.2025;İstanbul;Standart;Aylık;302,51;10;232,1;3;0;3;bağlantı kopuyor;evet
+M100127;03.04.2025;İzmir;Premium;1 yıl;415,83;9;210,1;1;2;5;müşteri hizmetleri ulaşılmıyor;hayır
+M100128;02.11.2025;Konya;Standart;Aylık;314,36;2;182,6;0;0;5;şikâyet yok;hayır
+M100129;02.02.2023;İstanbul;Standart;Aylık;328,04;35;248,1;2;0;2;internet yavaş;evet
+M100130;03.07.2024;Ankara;Premium;2 yıl;449,28;18;73,3;1;2;2;kurulum gecikti;hayır
+M100131;03.05.2024;İstanbul;Standart;2 yıl;306,42;20;200,2;0;0;4;şikâyet yok;hayır
+M100132;02.12.2024;İzmir;Standart;1 yıl;259,53;13;183,7;0;0;;şikâyet yok;hayır
+M100133;03.11.2023;İzmir;Premium;Aylık;433,88;26;510;2;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M100134;05.03.2021;Antalya;Temel;2 yıl;206,89;58;125,3;4;0;1;müşteri hizmetleri ulaşılmıyor;hayır
+M100135;03.04.2024;İstanbul;Standart;Aylık;264,99;21;305,6;2;0;4;fatura yüksek;hayır
+M100136;02.01.2025;Iğdır;Standart;1 yıl;281,45;12;349,7;2;0;4;kurulum gecikti;hayır
+M100137;02.12.2025;Bursa;Premium;Aylık;413,32;1;;2;0;3;müşteri hizmetleri ulaşılmıyor;evet
+M100138;03.02.2021;Konya;Temel;1 yıl;230,66;59;184,4;0;0;2;şikâyet yok;hayır
+M100139;02.12.2025;İzmir;Standart;Aylık;264,24;1;204,8;1;0;;müşteri hizmetleri ulaşılmıyor;hayır
+M100140;05.03.2020;İzmir;Standart;Aylık;295,18;70;99,9;1;0;4;fatura yüksek;hayır
+M100141;05.07.2022;Ankara;Temel;Aylık;198,74;42;231,1;3;0;;kurulum gecikti;hayır
+M100142;02.11.2024;Bursa;Temel;1 yıl;213,38;14;91,9;1;0;3;internet yavaş;hayır
+M100143;04.06.2023;Konya;Temel;1 yıl;198,61;31;151;1;0;3;fatura yüksek;hayır
+M100144;03.06.2024;İstanbul;Premium;2 yıl;407,36;19;238,5;1;0;3;fatura yüksek;hayır
+M100145;04.07.2023;İstanbul;Temel;2 yıl;206,06;30;213,8;1;0;5;internet yavaş;hayır
+M100146;02.01.2025;Bursa;Temel;Aylık;248,94;12;313,9;2;0;2;kurulum gecikti;hayır
+M100147;05.12.2019;İzmir;Temel;2 yıl;211,66;73;224,2;0;1;2;şikâyet yok;hayır
+M100148;03.12.2023;İzmir;Temel;2 yıl;226,23;25;;1;0;3;fatura yüksek;hayır
+M100149;02.10.2025;İstanbul;Temel;Aylık;159,48;3;85,6;1;0;5;kurulum gecikti;hayır
+M100150;03.03.2025;Antalya;Premium;1 yıl;475,41;10;123,6;3;0;1;internet yavaş;hayır
+M100151;02.12.2024;Diyarbakır;Temel;Aylık;230,26;13;240;0;2;4;şikâyet yok;hayır
+M100152;05.01.2018;İstanbul;Standart;Aylık;287,12;96;144,5;1;2;2;müşteri hizmetleri ulaşılmıyor;hayır
+M100153;02.11.2025;Antalya;Temel;Aylık;217,7;2;290;2;1;3;fatura yüksek;hayır
+M100154;04.02.2020;Antalya;Standart;1 yıl;333,53;71;437,6;2;3;3;kurulum gecikti;hayır
+M100155;03.06.2025;İzmir;Temel;Aylık;198,37;7;262,1;2;1;3;bağlantı kopuyor;evet
+M100156;03.05.2025;Antalya;Standart;2 yıl;262,25;8;;1;1;3;fatura yüksek;evet
+M100157;02.10.2025;İzmir;Temel;2 yıl;220,67;3;200,6;2;3;2;bağlantı kopuyor;evet
+M100158;02.09.2024;İzmir;Temel;Aylık;193,85;16;393,8;0;1;2;şikâyet yok;evet
+M100159;02.12.2024;Antalya;Standart;2 yıl;302,83;13;304,8;4;0;3;kurulum gecikti;hayır
+M100160;03.01.2024;Iğdır;Standart;1 yıl;281,81;24;56,7;0;0;4;şikâyet yok;hayır
+M100161;03.07.2024;İstanbul;Temel;Aylık;161,23;18;145,2;1;0;2;internet yavaş;hayır
+M100162;05.11.2018;Antalya;Temel;1 yıl;187,88;86;506,8;0;0;5;şikâyet yok;hayır
+M100163;02.02.2023;Ankara;Standart;Aylık;303,27;35;315,7;1;0;;müşteri hizmetleri ulaşılmıyor;hayır
+M100164;02.08.2025;Iğdır;Temel;1 yıl;171,78;5;213,4;0;0;3;şikâyet yok;hayır
+M100165;02.11.2025;İstanbul;Temel;2 yıl;241,11;2;156,4;0;3;;şikâyet yok;hayır
+M100166;02.12.2024;Ankara;Premium;Aylık;378,65;13;197,7;2;0;4;bağlantı kopuyor;hayır
+M100167;03.09.2023;İstanbul;Temel;Aylık;177,4;28;408,1;2;0;2;bağlantı kopuyor;hayır
+M100168;02.11.2024;Antalya;Temel;Aylık;206,52;14;173,8;0;0;5;şikâyet yok;hayır
+M100169;03.07.2025;Bursa;Standart;Aylık;294,58;6;205,5;1;0;2;bağlantı kopuyor;hayır
+M100170;02.12.2025;Antalya;Temel;Aylık;219,93;1;252,2;0;0;2;şikâyet yok;evet
+M100171;02.01.2025;İstanbul;Temel;1 yıl;203,94;12;539;1;0;5;fatura yüksek;hayır
+M100172;05.03.2022;Diyarbakır;Standart;Aylık;330,69;46;127,3;1;0;3;fatura yüksek;hayır
+M100173;04.06.2023;Antalya;Premium;1 yıl;417,82;31;454,2;2;0;4;fatura yüksek;hayır
+M100174;03.12.2023;Konya;Premium;Aylık;444,97;25;298,2;3;0;2;kurulum gecikti;evet
+M100175;04.06.2023;İstanbul;Temel;Aylık;183,16;31;162,4;0;0;3;şikâyet yok;hayır
+M100176;03.01.2024;İzmir;Premium;1 yıl;459,1;24;331,7;3;0;;kurulum gecikti;hayır
+M100177;03.06.2025;İstanbul;Temel;2 yıl;194,87;7;135,6;0;1;;şikâyet yok;hayır
+M100178;02.08.2025;İstanbul;Premium;Aylık;422,32;5;231,5;1;2;;fatura yüksek;evet
+M100179;04.09.2021;İzmir;Temel;Aylık;199,74;52;;0;0;3;şikâyet yok;hayır
+M100180;04.10.2023;İstanbul;Standart;1 yıl;267,01;27;162,6;0;2;3;şikâyet yok;hayır
+M100181;04.10.2023;Konya;Standart;Aylık;280,45;27;87,7;3;0;3;kurulum gecikti;evet
+M100182;04.10.2022;İstanbul;Premium;Aylık;389,72;39;280,4;2;0;3;bağlantı kopuyor;hayır
+M100183;02.12.2025;İzmir;Premium;Aylık;422,27;1;305,6;0;0;4;şikâyet yok;evet
+M100184;04.06.2021;İstanbul;Temel;Aylık;198,12;55;216,3;1;0;3;bağlantı kopuyor;hayır
+M100185;04.04.2023;İstanbul;Standart;1 yıl;306,16;33;351,6;3;0;4;fatura yüksek;hayır
+M100186;02.01.2025;Ankara;Standart;1 yıl;279,3;12;161,4;1;0;5;kurulum gecikti;hayır
+M100187;05.05.2022;İstanbul;Temel;2 yıl;167,45;44;170,4;1;0;4;fatura yüksek;hayır
+M100188;02.10.2024;İzmir;Standart;Aylık;288,82;15;169,3;0;0;4;şikâyet yok;hayır
+M100189;02.01.2025;Antalya;Temel;1 yıl;184,81;12;100,6;0;0;5;şikâyet yok;hayır
+M100190;03.08.2024;Bursa;Temel;1 yıl;176,8;17;329,6;2;0;4;bağlantı kopuyor;evet
+M100191;02.09.2024;Ankara;Standart;2 yıl;333,45;16;387,9;1;0;3;internet yavaş;hayır
+M100192;03.07.2025;İstanbul;Standart;2 yıl;283,89;6;121,2;1;0;4;fatura yüksek;hayır
+M100193;02.08.2025;Antalya;Standart;Aylık;362,6;5;171,6;1;0;4;internet yavaş;hayır
+M100194;02.08.2025;Konya;Standart;Aylık;280,83;5;255,4;3;1;5;fatura yüksek;hayır
+M100195;03.05.2024;Bursa;Standart;2 yıl;263,26;20;226,8;3;0;2;kurulum gecikti;evet
+M100196;02.10.2025;Iğdır;Premium;Aylık;423,69;3;351;0;0;3;şikâyet yok;hayır
+M100197;02.11.2025;Ankara;Temel;1 yıl;179,18;2;;2;1;2;fatura yüksek;evet
+M100198;05.07.2022;İstanbul;Temel;2 yıl;218,88;42;;1;2;2;müşteri hizmetleri ulaşılmıyor;hayır
+M100199;06.06.2019;Antalya;Temel;2 yıl;187,21;79;148;1;0;;müşteri hizmetleri ulaşılmıyor;hayır
+M100200;02.10.2025;İstanbul;Standart;Aylık;290,78;3;154,3;2;0;2;müşteri hizmetleri ulaşılmıyor;evet
+M100201;02.12.2024;Antalya;Standart;1 yıl;310,31;13;169,4;0;0;5;şikâyet yok;hayır
+M100202;02.09.2025;Ankara;Temel;Aylık;197,65;4;247,9;2;0;4;bağlantı kopuyor;hayır
+M100203;03.08.2024;İstanbul;Standart;Aylık;295,18;17;460,3;2;0;3;bağlantı kopuyor;evet
+M100204;02.09.2025;İstanbul;Standart;1 yıl;275,44;4;154,3;0;2;3;şikâyet yok;hayır
+M100205;05.03.2022;İzmir;Standart;Aylık;313,77;46;166,1;1;1;4;bağlantı kopuyor;hayır
+M100206;01.02.2025;İstanbul;Temel;1 yıl;242,56;11;;2;0;4;bağlantı kopuyor;hayır
+M100207;02.08.2025;Diyarbakır;Temel;Aylık;195,2;5;220,6;0;0;1;şikâyet yok;evet
+M100208;03.08.2024;Diyarbakır;Premium;Aylık;406,03;17;160,2;0;1;5;şikâyet yok;hayır
+M100209;02.08.2025;Konya;Premium;2 yıl;433,63;5;;0;1;;şikâyet yok;evet
+M100210;03.06.2025;İstanbul;Temel;2 yıl;244,2;7;149,7;0;0;4;şikâyet yok;hayır
+M100211;04.08.2022;Iğdır;Standart;Aylık;285,68;41;105,9;0;1;3;şikâyet yok;hayır
+M100212;01.02.2025;Bursa;Temel;1 yıl;237,44;11;165,6;1;1;3;fatura yüksek;hayır
+M100213;04.12.2020;İstanbul;Temel;Aylık;178,96;61;216;0;3;3;şikâyet yok;hayır
+M100214;02.12.2025;İzmir;Temel;Aylık;196,48;1;224,3;0;0;3;şikâyet yok;hayır
+M100215;03.05.2025;Bursa;Temel;Aylık;226,76;8;129,2;1;0;3;kurulum gecikti;hayır
+M100216;02.08.2025;İstanbul;Temel;1 yıl;207,76;5;243,2;1;0;;internet yavaş;hayır
+M100217;02.12.2025;Bursa;Premium;1 yıl;419,69;1;406,4;0;1;5;şikâyet yok;hayır
+M100218;02.09.2025;İstanbul;Standart;Aylık;334,72;4;143,9;2;0;3;fatura yüksek;evet
+M100219;02.10.2025;İzmir;Temel;Aylık;199,97;3;231,7;1;0;4;müşteri hizmetleri ulaşılmıyor;hayır
+M100220;03.05.2024;Bursa;Temel;Aylık;204;20;614,9;0;0;2;şikâyet yok;hayır
+M100221;02.10.2025;Bursa;Standart;Aylık;284,6;3;195,3;3;0;2;bağlantı kopuyor;evet
+M100222;02.09.2025;İstanbul;Standart;2 yıl;269,67;4;370,6;0;0;3;şikâyet yok;hayır
+M100223;04.08.2020;İstanbul;Standart;Aylık;295,57;65;304,3;1;0;4;kurulum gecikti;hayır
+M100224;03.06.2024;İstanbul;Temel;Aylık;233,05;19;195,9;0;0;4;şikâyet yok;hayır
+M100225;02.02.2023;Diyarbakır;Temel;2 yıl;197,74;35;325,5;1;1;3;bağlantı kopuyor;hayır
+M100226;02.10.2024;Diyarbakır;Standart;2 yıl;322;15;275,4;0;0;3;şikâyet yok;evet
+M100227;03.08.2024;İstanbul;Premium;Aylık;409,23;17;147,2;1;2;4;fatura yüksek;hayır
+M100228;02.09.2025;Bursa;Standart;Aylık;296,04;4;269,2;1;2;1;müşteri hizmetleri ulaşılmıyor;evet
+M100229;01.02.2025;Bursa;Premium;Aylık;447,27;11;181,4;2;0;2;müşteri hizmetleri ulaşılmıyor;evet
+M100230;01.02.2025;Antalya;Temel;1 yıl;213,66;11;225,8;0;1;4;şikâyet yok;hayır
+M100231;04.09.2021;Konya;Temel;Aylık;196,23;52;300,5;2;1;4;kurulum gecikti;hayır
+M100232;02.12.2024;İstanbul;Premium;Aylık;382,35;13;288,1;2;1;3;müşteri hizmetleri ulaşılmıyor;evet
+M100233;02.09.2025;Antalya;Standart;2 yıl;286,99;4;149,7;0;0;3;şikâyet yok;hayır
+M100234;03.07.2024;İzmir;Standart;Aylık;313,23;18;401,1;0;0;1;şikâyet yok;hayır
+M100235;02.10.2025;İstanbul;Temel;Aylık;216,64;3;177,4;2;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M100236;05.05.2023;Ankara;Temel;Aylık;198,04;32;;1;2;3;bağlantı kopuyor;hayır
+M100237;02.01.2025;Antalya;Standart;Aylık;324,84;12;453,2;0;0;5;şikâyet yok;hayır
+M100238;02.09.2025;İstanbul;Temel;Aylık;173,87;4;332,7;1;0;3;kurulum gecikti;evet
+M100239;03.07.2025;İstanbul;Temel;2 yıl;211,25;6;179,2;1;0;3;kurulum gecikti;hayır
+M100240;03.11.2021;Bursa;Standart;2 yıl;332,38;50;223,9;1;0;4;internet yavaş;hayır
+M100241;02.09.2024;Antalya;Premium;2 yıl;470,32;16;552,3;0;0;;şikâyet yok;hayır
+M100242;04.10.2022;İstanbul;Premium;Aylık;480,2;39;472,3;0;0;5;şikâyet yok;hayır
+M100243;02.10.2024;Ankara;Standart;2 yıl;259,73;15;224,7;0;1;4;şikâyet yok;hayır
+M100244;02.11.2025;Ankara;Temel;2 yıl;190,59;2;255,3;1;0;3;bağlantı kopuyor;hayır
+M100245;02.12.2025;İstanbul;Temel;Aylık;204,7;1;209,6;1;0;1;internet yavaş;hayır
+M100246;03.06.2025;Konya;Standart;1 yıl;311,13;7;218,2;1;0;2;bağlantı kopuyor;hayır
+M100247;03.02.2022;İzmir;Temel;1 yıl;170,87;47;377,9;2;1;3;internet yavaş;hayır
+M100248;02.10.2024;Bursa;Temel;Aylık;208,12;15;268,6;2;0;3;internet yavaş;hayır
+M100249;02.12.2024;İzmir;Temel;1 yıl;179,85;13;134,2;1;0;;internet yavaş;evet
+M100250;02.09.2024;Ankara;Premium;1 yıl;428,06;16;295,3;0;0;2;şikâyet yok;hayır
+M100251;02.11.2024;İstanbul;Temel;Aylık;160,35;14;186,4;0;0;;şikâyet yok;hayır
+M100252;03.07.2025;Antalya;Temel;1 yıl;216,5;6;119,3;0;0;5;şikâyet yok;hayır
+M100253;02.11.2025;Antalya;Premium;Aylık;382,57;2;203,1;0;2;2;şikâyet yok;hayır
+M100254;05.04.2020;İzmir;Standart;Aylık;300,48;69;221,4;1;0;3;kurulum gecikti;hayır
+M100255;05.03.2022;Diyarbakır;Standart;Aylık;259,22;46;347,8;1;2;1;kurulum gecikti;evet
+M100256;03.04.2024;Diyarbakır;Temel;Aylık;180,45;21;;1;0;4;bağlantı kopuyor;hayır
+M100257;03.09.2023;İzmir;Premium;Aylık;445,49;28;450,5;1;0;;internet yavaş;hayır
+M100258;03.08.2024;İzmir;Premium;Aylık;438,19;17;446,6;3;0;3;bağlantı kopuyor;evet
+M100259;04.10.2022;Ankara;Standart;Aylık;259,08;39;185,7;0;0;3;şikâyet yok;hayır
+M100260;04.10.2023;Ankara;Premium;Aylık;370,17;27;543,2;0;0;5;şikâyet yok;hayır
+M100261;03.12.2023;İstanbul;Standart;Aylık;295,17;25;108;0;0;2;şikâyet yok;hayır
+M100262;04.10.2022;Ankara;Temel;1 yıl;205,48;39;174,4;0;3;3;şikâyet yok;hayır
+M100263;02.12.2025;İstanbul;Standart;2 yıl;252,36;1;141;2;0;3;internet yavaş;hayır
+M100264;03.04.2025;İstanbul;Standart;Aylık;335,12;9;145,5;1;1;;kurulum gecikti;hayır
+M100265;03.07.2025;Bursa;Temel;Aylık;222,18;6;104,9;2;0;3;fatura yüksek;evet
+M100266;04.10.2023;Ankara;Standart;2 yıl;252,92;27;64,4;1;0;4;bağlantı kopuyor;evet
+M100267;05.04.2021;Bursa;Temel;Aylık;222,54;57;193;0;1;4;şikâyet yok;hayır
+M100268;02.10.2024;İzmir;Premium;1 yıl;396,15;15;861,6;2;0;3;kurulum gecikti;hayır
+M100269;03.08.2024;Bursa;Standart;1 yıl;329,47;17;243,6;2;0;2;bağlantı kopuyor;hayır
+M100270;03.09.2023;Iğdır;Temel;1 yıl;242,57;28;242,1;1;1;5;fatura yüksek;hayır
+M100271;02.09.2025;İstanbul;Premium;2 yıl;474,69;4;;0;3;3;şikâyet yok;hayır
+M100272;03.01.2024;İzmir;Premium;Aylık;398,48;24;404,9;0;0;4;şikâyet yok;hayır
+M100273;02.08.2025;İstanbul;Standart;Aylık;281,42;5;154,2;0;1;2;şikâyet yok;hayır
+M100274;03.09.2023;Diyarbakır;Temel;2 yıl;167,97;28;;1;0;5;kurulum gecikti;hayır
+M100275;02.11.2025;İstanbul;Standart;1 yıl;265,76;2;481,9;2;1;4;kurulum gecikti;hayır
+M100276;04.08.2022;Bursa;Temel;Aylık;251,84;41;187,7;2;1;;internet yavaş;hayır
+M100277;05.01.2019;Iğdır;Temel;2 yıl;203,67;84;396;0;1;3;şikâyet yok;hayır
+M100278;03.07.2025;Ankara;Temel;2 yıl;194,13;6;332,5;2;0;4;fatura yüksek;hayır
+M100279;03.02.2022;İstanbul;Temel;2 yıl;195,55;47;140,1;0;0;3;şikâyet yok;hayır
+M100280;03.06.2025;Ankara;Standart;Aylık;269,13;7;304,4;0;1;4;şikâyet yok;hayır
+M100281;02.10.2024;İzmir;Temel;Aylık;186,38;15;296,7;4;0;3;bağlantı kopuyor;evet
+M100282;03.06.2024;Antalya;Temel;2 yıl;213,31;19;317,7;5;1;2;bağlantı kopuyor;hayır
+M100283;03.01.2023;İzmir;Standart;Aylık;282,5;36;280,1;3;0;3;internet yavaş;evet
+M100284;05.04.2021;Bursa;Premium;1 yıl;420,54;57;270,4;0;0;5;şikâyet yok;hayır
+M100285;02.12.2025;Ankara;Premium;2 yıl;425,45;1;374,6;2;1;1;internet yavaş;hayır
+M100286;02.09.2025;İstanbul;Standart;1 yıl;292,69;4;181,2;2;1;;fatura yüksek;evet
+M100287;02.02.2023;Ankara;Premium;Aylık;425,84;35;213,9;0;0;3;şikâyet yok;evet
+M100288;02.12.2024;Ankara;Standart;1 yıl;277,61;13;142,2;0;0;3;şikâyet yok;hayır
+M100289;04.12.2022;Ankara;Standart;2 yıl;279,3;37;257,6;1;0;3;internet yavaş;hayır
+M100290;03.01.2024;İstanbul;Temel;Aylık;211,56;24;137,2;1;0;2;kurulum gecikti;hayır
+M100291;03.06.2024;İstanbul;Temel;Aylık;191,49;19;173,3;1;0;2;kurulum gecikti;hayır
+M100292;02.02.2024;Iğdır;Premium;1 yıl;424,83;23;596,9;2;0;4;internet yavaş;evet
+M100293;02.09.2024;İstanbul;Temel;Aylık;183,11;16;185,4;1;1;3;müşteri hizmetleri ulaşılmıyor;hayır
+M100294;04.11.2020;İzmir;Standart;Aylık;287,79;62;492;0;0;3;şikâyet yok;hayır
+M100295;01.02.2025;Iğdır;Standart;Aylık;303,3;11;221,7;1;0;4;müşteri hizmetleri ulaşılmıyor;hayır
+M100296;01.02.2025;Bursa;Temel;2 yıl;154,43;11;;0;0;3;şikâyet yok;hayır
+M100297;02.10.2024;Bursa;Temel;1 yıl;204,9;15;223,5;1;0;;müşteri hizmetleri ulaşılmıyor;hayır
+M100298;03.06.2025;İstanbul;Standart;2 yıl;306,05;7;117,1;0;0;4;şikâyet yok;hayır
+M100299;03.06.2025;Diyarbakır;Standart;Aylık;290,68;7;71,7;2;0;5;internet yavaş;hayır
+M100300;01.02.2025;Konya;Standart;Aylık;274,45;11;184,2;4;2;3;fatura yüksek;evet
+M100301;02.02.2023;Antalya;Temel;2 yıl;224,07;35;300,8;3;0;2;müşteri hizmetleri ulaşılmıyor;hayır
+M100302;02.09.2025;Konya;Temel;1 yıl;224,51;4;380,5;3;0;3;müşteri hizmetleri ulaşılmıyor;evet
+M100303;02.08.2025;İzmir;Standart;2 yıl;267,39;5;127,4;0;0;3;şikâyet yok;hayır
+M100304;03.08.2024;Bursa;Temel;Aylık;211,51;17;187,1;1;0;4;fatura yüksek;evet
+M100305;02.12.2025;Ankara;Temel;Aylık;205,77;1;274,9;0;3;5;şikâyet yok;evet
+M100306;02.08.2025;Diyarbakır;Standart;1 yıl;238,56;5;209,1;1;1;4;bağlantı kopuyor;hayır
+M100307;03.11.2023;İstanbul;Temel;Aylık;208,4;26;;1;1;4;müşteri hizmetleri ulaşılmıyor;hayır
+M100308;04.07.2023;İzmir;Standart;Aylık;254,75;30;428,7;2;1;3;fatura yüksek;hayır
+M100309;03.08.2024;İzmir;Temel;Aylık;200,67;17;246,2;2;1;2;fatura yüksek;evet
+M100310;03.05.2025;Bursa;Temel;1 yıl;162,72;8;465,9;1;1;3;fatura yüksek;hayır
+M100311;05.03.2020;İstanbul;Premium;1 yıl;443;70;183,8;1;0;3;internet yavaş;hayır
+M100312;03.05.2025;Antalya;Standart;1 yıl;349,24;8;375,9;3;1;3;bağlantı kopuyor;hayır
+M100313;04.08.2023;İstanbul;Premium;Aylık;414,05;29;212,9;0;2;;şikâyet yok;evet
+M100314;02.02.2023;İstanbul;Premium;2 yıl;406,13;35;296,7;2;1;1;bağlantı kopuyor;evet
+M100315;05.05.2022;İstanbul;Temel;2 yıl;159,46;44;352,3;1;0;5;müşteri hizmetleri ulaşılmıyor;hayır
+M100316;03.06.2025;İstanbul;Temel;1 yıl;173,96;7;460,9;0;0;3;şikâyet yok;hayır
+M100317;03.04.2025;İstanbul;Standart;1 yıl;316;9;;0;0;;şikâyet yok;hayır
+M100318;03.06.2025;Konya;Temel;Aylık;201;7;;1;0;5;fatura yüksek;evet
+M100319;02.11.2025;Ankara;Temel;1 yıl;156,52;2;315,4;1;0;2;internet yavaş;hayır
+M100320;03.06.2025;İstanbul;Premium;1 yıl;423,72;7;726,7;0;2;5;şikâyet yok;hayır
+M100321;04.09.2020;İstanbul;Premium;Aylık;420,12;64;351,6;2;0;2;fatura yüksek;hayır
+M100322;03.01.2023;Iğdır;Temel;Aylık;214,98;36;334,2;1;1;3;müşteri hizmetleri ulaşılmıyor;evet
+M100323;02.11.2025;Ankara;Standart;Aylık;277,34;2;;1;1;4;bağlantı kopuyor;hayır
+M100324;03.09.2022;İzmir;Standart;Aylık;299,78;40;272,7;1;2;2;müşteri hizmetleri ulaşılmıyor;hayır
+M100325;04.03.2024;Diyarbakır;Standart;1 yıl;287,17;22;313;1;0;2;internet yavaş;hayır
+M100326;03.03.2025;İzmir;Temel;Aylık;157,26;10;160,8;1;0;3;fatura yüksek;hayır
+M100327;04.08.2023;Konya;Standart;2 yıl;263,57;29;306,2;0;0;;şikâyet yok;hayır
+M100328;02.09.2025;Konya;Premium;Aylık;462,69;4;501,5;0;0;5;şikâyet yok;hayır
+M100329;02.12.2025;Diyarbakır;Premium;Aylık;438,84;1;507;2;1;2;fatura yüksek;hayır
+M100330;03.08.2024;İzmir;Temel;1 yıl;204,56;17;202,4;3;0;5;fatura yüksek;hayır
+M100331;02.01.2025;Ankara;Premium;1 yıl;429,35;12;539,4;2;0;1;kurulum gecikti;hayır
+M100332;02.09.2024;Antalya;Temel;2 yıl;158,75;16;455,3;1;0;4;müşteri hizmetleri ulaşılmıyor;hayır
+M100333;04.04.2023;Antalya;Standart;2 yıl;282,97;33;249,4;0;0;4;şikâyet yok;hayır
+M100334;03.06.2025;Antalya;Standart;2 yıl;300,63;7;247,4;2;2;4;bağlantı kopuyor;evet
+M100335;05.12.2018;Antalya;Temel;1 yıl;218,35;85;210,1;2;1;2;kurulum gecikti;hayır
+M100336;04.06.2022;Iğdır;Premium;1 yıl;456,2;43;398,1;2;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M100337;05.03.2023;İstanbul;Standart;Aylık;299,72;34;79,9;1;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M100338;03.05.2024;Ankara;Premium;Aylık;444,95;20;569,4;2;0;4;bağlantı kopuyor;hayır
+M100339;02.10.2024;Diyarbakır;Premium;Aylık;416,11;15;268,6;1;0;2;bağlantı kopuyor;evet
+M100340;05.05.2022;Bursa;Premium;Aylık;465,8;44;140,1;2;1;3;internet yavaş;hayır
+M100341;03.01.2023;Konya;Premium;1 yıl;406,03;36;59,5;0;0;5;şikâyet yok;hayır
+M100342;02.10.2025;Konya;Temel;Aylık;208,79;3;292,8;1;0;3;bağlantı kopuyor;evet
+M100343;03.04.2025;Ankara;Standart;1 yıl;283,93;9;351,3;0;3;4;şikâyet yok;hayır
+M100344;02.12.2025;Konya;Standart;2 yıl;322,12;1;158,1;1;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M100345;02.10.2025;Antalya;Standart;Aylık;287,07;3;169,5;3;0;3;internet yavaş;evet
+M100346;02.01.2025;İstanbul;Standart;1 yıl;309,05;12;38,2;1;0;;internet yavaş;hayır
+M100347;03.04.2024;İstanbul;Temel;Aylık;182,89;21;338,7;0;0;3;şikâyet yok;hayır
+M100348;03.07.2025;İstanbul;Temel;Aylık;230,59;6;241,1;2;0;3;müşteri hizmetleri ulaşılmıyor;evet
+M100349;02.10.2024;Ankara;Standart;Aylık;314,84;15;308;2;0;4;bağlantı kopuyor;hayır
+M100350;02.09.2024;Ankara;Temel;Aylık;240,03;16;265,9;1;0;2;internet yavaş;evet
+M100351;03.07.2025;Konya;Standart;Aylık;283,69;6;69;2;0;3;internet yavaş;hayır
+M100352;02.01.2025;Ankara;Temel;Aylık;223,83;12;113,9;0;0;3;şikâyet yok;hayır
+M100353;02.11.2024;İstanbul;Temel;1 yıl;218,97;14;197,9;1;1;1;bağlantı kopuyor;hayır
+M100354;02.11.2024;Konya;Temel;1 yıl;230,19;14;;1;0;3;bağlantı kopuyor;hayır
+M100355;02.12.2024;İstanbul;Standart;2 yıl;309,78;13;394,7;4;1;2;internet yavaş;hayır
+M100356;03.06.2025;Bursa;Temel;2 yıl;206,08;7;117;0;3;3;şikâyet yok;hayır
+M100357;02.12.2024;İstanbul;Standart;1 yıl;320,7;13;305,3;0;0;2;şikâyet yok;hayır
+M100358;05.05.2022;Ankara;Temel;1 yıl;134,23;44;283,8;2;0;2;kurulum gecikti;hayır
+M100359;04.06.2021;İstanbul;Standart;1 yıl;283,45;55;341,5;2;1;3;bağlantı kopuyor;hayır
+M100360;05.07.2021;Ankara;Standart;Aylık;270,12;54;279,2;0;0;4;şikâyet yok;hayır
+M100361;02.10.2025;İstanbul;Temel;1 yıl;230,46;3;187,9;1;0;;müşteri hizmetleri ulaşılmıyor;hayır
+M100362;02.09.2025;Antalya;Standart;1 yıl;287,01;4;179,9;1;0;2;fatura yüksek;hayır
+M100363;02.08.2025;Ankara;Standart;2 yıl;310,43;5;165,8;1;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M100364;02.08.2025;İzmir;Premium;Aylık;435,45;5;241,7;2;1;2;müşteri hizmetleri ulaşılmıyor;evet
+M100365;02.11.2025;Antalya;Temel;2 yıl;229,24;2;185,9;1;0;;internet yavaş;hayır
+M100366;03.06.2025;İzmir;Premium;Aylık;452,56;7;;0;0;4;şikâyet yok;hayır
+M100367;03.08.2024;İstanbul;Temel;Aylık;202;17;344,4;1;1;4;internet yavaş;evet
+M100368;03.12.2023;İstanbul;Premium;1 yıl;444,7;25;867,5;0;0;3;şikâyet yok;evet
+M100369;02.12.2025;İstanbul;Temel;Aylık;202,17;1;392,5;1;0;2;müşteri hizmetleri ulaşılmıyor;hayır
+M100370;04.08.2023;İstanbul;Temel;1 yıl;190,8;29;299;2;0;1;internet yavaş;hayır
+M100371;02.08.2025;Bursa;Temel;Aylık;214,62;5;77,5;4;0;3;bağlantı kopuyor;evet
+M100372;03.06.2025;İstanbul;Premium;Aylık;471,09;7;71,3;1;0;3;müşteri hizmetleri ulaşılmıyor;evet
+M100373;05.03.2021;Iğdır;Standart;2 yıl;313,69;58;255,9;1;2;3;internet yavaş;hayır
+M100374;04.08.2023;Bursa;Premium;2 yıl;412,29;29;501,3;0;2;4;şikâyet yok;hayır
+M100375;02.12.2025;İstanbul;Temel;Aylık;223,37;1;123,7;1;0;4;kurulum gecikti;hayır
+M100376;03.05.2025;Iğdır;Premium;Aylık;411,87;8;672,8;1;0;4;internet yavaş;hayır
+M100377;02.09.2024;İzmir;Temel;1 yıl;126,78;16;210,6;0;0;4;şikâyet yok;hayır
+M100378;05.01.2018;İstanbul;Temel;Aylık;177,83;96;323,4;0;0;2;şikâyet yok;hayır
+M100379;02.08.2025;Antalya;Standart;1 yıl;295,77;5;179,9;1;0;3;fatura yüksek;evet
+M100380;02.02.2023;İstanbul;Temel;2 yıl;165,27;35;352,8;2;0;5;fatura yüksek;hayır
+M100381;02.12.2025;İstanbul;Standart;2 yıl;296,28;1;168,9;1;0;4;bağlantı kopuyor;hayır
+M100382;02.01.2025;İzmir;Standart;1 yıl;320,82;12;332,4;0;3;4;şikâyet yok;evet
+M100383;03.05.2025;İzmir;Temel;1 yıl;199,54;8;83,6;2;1;2;kurulum gecikti;hayır
+M100384;04.04.2023;Ankara;Temel;Aylık;212,48;33;;1;2;5;müşteri hizmetleri ulaşılmıyor;hayır
+M100385;02.09.2024;İzmir;Temel;2 yıl;194,39;16;107,3;3;1;3;internet yavaş;hayır
+M100386;03.11.2021;İstanbul;Temel;Aylık;142,27;50;255,5;1;0;3;bağlantı kopuyor;hayır
+M100387;04.03.2024;Konya;Premium;Aylık;437,55;22;283,4;4;0;2;internet yavaş;evet
+M100388;04.09.2021;İstanbul;Standart;1 yıl;272,57;52;383,7;0;0;3;şikâyet yok;hayır
+M100389;06.08.2018;Ankara;Temel;Aylık;208,57;89;212,3;1;1;3;müşteri hizmetleri ulaşılmıyor;hayır
+M100390;03.01.2023;Ankara;Standart;2 yıl;242,26;36;418,2;1;2;3;fatura yüksek;hayır
+M100391;02.11.2024;Diyarbakır;Temel;1 yıl;205,78;14;161,7;4;0;2;müşteri hizmetleri ulaşılmıyor;evet
+M100392;05.07.2020;Ankara;Standart;2 yıl;304,75;66;420;2;0;2;kurulum gecikti;hayır
+M100393;03.07.2025;İstanbul;Temel;Aylık;236,22;6;435,8;0;0;5;şikâyet yok;evet
+M100394;03.05.2025;Antalya;Standart;1 yıl;297,02;8;286,5;0;0;;şikâyet yok;hayır
+M100395;01.02.2025;Ankara;Standart;Aylık;258,46;11;121,3;1;0;5;internet yavaş;hayır
+M100396;03.04.2025;İzmir;Temel;Aylık;202,3;9;80,6;1;0;3;internet yavaş;evet
+M100397;03.07.2025;Bursa;Premium;1 yıl;382,79;6;165,2;2;1;3;müşteri hizmetleri ulaşılmıyor;hayır
+M100398;06.10.2018;Diyarbakır;Standart;2 yıl;244,01;87;242,3;0;3;5;şikâyet yok;hayır
+M100399;05.05.2022;Bursa;Standart;Aylık;297,78;44;207,4;1;0;4;internet yavaş;hayır
+M100400;03.07.2025;İstanbul;Temel;1 yıl;215,67;6;152,7;1;0;4;fatura yüksek;hayır
+M100401;03.07.2024;İstanbul;Temel;2 yıl;207,16;18;245,7;4;0;2;fatura yüksek;hayır
+M100402;03.03.2025;İstanbul;Temel;Aylık;231,66;10;;1;0;4;internet yavaş;hayır
+M100403;03.08.2024;Bursa;Temel;2 yıl;221,93;17;454,9;2;0;3;kurulum gecikti;hayır
+M100404;02.11.2025;İstanbul;Temel;1 yıl;216,08;2;284;0;3;;şikâyet yok;hayır
+M100405;03.11.2023;Diyarbakır;Standart;1 yıl;250,53;26;230;2;0;5;fatura yüksek;hayır
+M100406;01.02.2025;Konya;Temel;Aylık;184,07;11;266,4;3;1;2;fatura yüksek;evet
+M100407;03.08.2024;İzmir;Standart;2 yıl;295,84;17;123,1;2;0;4;fatura yüksek;hayır
+M100408;03.01.2024;Konya;Temel;2 yıl;165,33;24;305,3;1;0;4;kurulum gecikti;hayır
+M100409;01.02.2025;Konya;Standart;Aylık;260,94;11;337,2;1;0;4;müşteri hizmetleri ulaşılmıyor;hayır
+M100410;04.07.2023;Iğdır;Temel;Aylık;163,19;30;250,4;0;0;3;şikâyet yok;hayır
+M100411;04.07.2023;Ankara;Premium;1 yıl;414,54;30;415,3;1;0;3;internet yavaş;hayır
+M100412;02.10.2025;İstanbul;Premium;1 yıl;435,79;3;;2;3;3;internet yavaş;evet
+M100413;03.07.2025;Antalya;Standart;Aylık;321,23;6;247,4;0;0;2;şikâyet yok;hayır
+M100414;05.03.2021;İstanbul;Temel;2 yıl;202,43;58;526,8;1;0;3;bağlantı kopuyor;hayır
+M100415;02.12.2025;Bursa;Temel;1 yıl;192,58;1;231,2;0;0;3;şikâyet yok;hayır
+M100416;05.03.2022;İstanbul;Standart;Aylık;265,26;46;182,9;0;0;2;şikâyet yok;evet
+M100417;03.07.2025;Ankara;Standart;Aylık;324,25;6;223,1;0;0;4;şikâyet yok;hayır
+M100418;03.07.2024;Ankara;Temel;1 yıl;207,75;18;215,3;1;0;2;müşteri hizmetleri ulaşılmıyor;hayır
+M100419;02.10.2025;İstanbul;Standart;Aylık;309,51;3;202,2;3;1;3;internet yavaş;evet
+M100420;02.11.2024;İstanbul;Temel;1 yıl;175,33;14;186,2;2;0;4;müşteri hizmetleri ulaşılmıyor;hayır
+M100421;05.03.2023;İstanbul;Standart;Aylık;260,04;34;305;4;0;1;müşteri hizmetleri ulaşılmıyor;evet
+M100422;03.12.2023;İzmir;Standart;Aylık;297,65;25;279,8;1;0;5;internet yavaş;hayır
+M100423;03.04.2025;Diyarbakır;Premium;2 yıl;434,13;9;372,4;0;0;4;şikâyet yok;hayır
+M100424;02.02.2024;Ankara;Temel;Aylık;231,95;23;174,5;2;0;4;bağlantı kopuyor;evet
+M100425;02.12.2025;İstanbul;Temel;1 yıl;184,79;1;459;0;0;4;şikâyet yok;hayır
+M100426;02.11.2025;İstanbul;Temel;1 yıl;195,22;2;229,4;1;2;3;müşteri hizmetleri ulaşılmıyor;hayır
+M100427;02.01.2025;İstanbul;Temel;1 yıl;188,24;12;278,6;0;0;3;şikâyet yok;hayır
+M100428;03.11.2022;İstanbul;Premium;Aylık;457,35;38;574,6;0;0;3;şikâyet yok;hayır
+M100429;03.11.2022;İstanbul;Premium;2 yıl;411,09;38;338,2;0;0;3;şikâyet yok;hayır
+M100430;04.03.2024;Diyarbakır;Standart;Aylık;310,75;22;578;3;0;;fatura yüksek;hayır
+M100431;02.10.2025;Ankara;Temel;Aylık;199,95;3;270,4;1;0;;bağlantı kopuyor;evet
+M100432;02.12.2024;Diyarbakır;Temel;Aylık;215,19;13;142,3;2;1;4;internet yavaş;hayır
+M100433;03.04.2024;Bursa;Premium;1 yıl;465,14;21;587,1;0;1;2;şikâyet yok;hayır
+M100434;05.05.2021;Iğdır;Temel;1 yıl;214,04;56;174,1;0;0;3;şikâyet yok;hayır
+M100435;02.11.2025;Konya;Temel;1 yıl;249,5;2;290,5;4;1;3;bağlantı kopuyor;evet
+M100436;02.10.2025;İzmir;Standart;2 yıl;300;3;162,8;0;1;5;şikâyet yok;hayır
+M100437;02.08.2025;İstanbul;Temel;Aylık;155,51;5;251,8;1;1;5;bağlantı kopuyor;hayır
+M100438;02.08.2025;Ankara;Temel;Aylık;210,53;5;106,5;2;0;3;kurulum gecikti;hayır
+M100439;03.01.2024;İstanbul;Temel;Aylık;195,86;24;290,9;0;0;4;şikâyet yok;hayır
+M100440;02.11.2025;Bursa;Standart;Aylık;269,36;2;222,7;0;1;2;şikâyet yok;hayır
+M100441;02.09.2024;Ankara;Standart;1 yıl;286;16;;2;0;4;fatura yüksek;hayır
+M100442;05.07.2021;Antalya;Premium;1 yıl;408,91;54;227,8;1;0;3;kurulum gecikti;evet
+M100443;03.06.2025;Konya;Standart;Aylık;301,68;7;326,3;0;0;4;şikâyet yok;hayır
+M100444;05.07.2022;Ankara;Temel;Aylık;208,01;42;473,2;0;0;1;şikâyet yok;hayır
+M100445;02.10.2024;Bursa;Temel;Aylık;223,23;15;183,1;2;0;;kurulum gecikti;evet
+M100446;02.11.2025;Konya;Standart;1 yıl;306,62;2;234,3;1;0;3;fatura yüksek;hayır
+M100447;03.04.2024;İzmir;Temel;Aylık;217,03;21;174,8;1;0;3;bağlantı kopuyor;hayır
+M100448;02.10.2025;İstanbul;Standart;1 yıl;256,23;3;270,4;3;0;4;müşteri hizmetleri ulaşılmıyor;hayır
+M100449;01.02.2025;İstanbul;Standart;Aylık;283,8;11;408,8;0;1;5;şikâyet yok;hayır
+M100450;05.05.2023;Antalya;Premium;1 yıl;381,92;32;557,4;4;3;2;internet yavaş;evet
+M100451;02.11.2025;Ankara;Temel;1 yıl;215,72;2;97,8;1;0;3;internet yavaş;hayır
+M100452;05.12.2019;Ankara;Temel;Aylık;200,61;73;217,5;1;1;3;kurulum gecikti;hayır
+M100453;03.05.2025;İzmir;Standart;1 yıl;297,5;8;223,4;1;1;3;müşteri hizmetleri ulaşılmıyor;hayır
+M100454;03.01.2024;İstanbul;Temel;Aylık;198,19;24;307,5;1;0;3;internet yavaş;evet
+M100455;03.06.2025;İstanbul;Temel;2 yıl;208,18;7;85,9;1;0;2;kurulum gecikti;evet
+M100456;02.10.2024;İstanbul;Premium;Aylık;379,49;15;;1;0;3;kurulum gecikti;evet
+M100457;04.10.2023;Ankara;Standart;Aylık;298,66;27;;2;3;4;internet yavaş;evet
+M100458;03.07.2024;Konya;Temel;Aylık;244,33;18;92,1;0;1;2;şikâyet yok;hayır
+M100459;03.06.2025;Ankara;Temel;Aylık;209,89;7;152,1;0;0;5;şikâyet yok;hayır
+M100460;03.09.2022;Ankara;Premium;1 yıl;419,16;40;274,1;2;0;;müşteri hizmetleri ulaşılmıyor;hayır
+M100461;02.02.2024;İstanbul;Standart;Aylık;323,64;23;353,6;3;0;2;müşteri hizmetleri ulaşılmıyor;evet
+M100462;04.10.2023;İstanbul;Premium;1 yıl;438,63;27;197,4;1;3;3;bağlantı kopuyor;hayır
+M100463;03.05.2025;Bursa;Standart;1 yıl;299,78;8;265,7;3;0;;internet yavaş;evet
+M100464;03.01.2024;Diyarbakır;Temel;Aylık;250,04;24;179,2;1;0;3;fatura yüksek;hayır
+M100465;05.07.2022;Konya;Temel;Aylık;212,06;42;218,1;1;0;2;internet yavaş;evet
+M100466;02.08.2025;Konya;Temel;Aylık;184,18;5;248,3;3;0;2;bağlantı kopuyor;evet
+M100467;03.08.2024;İzmir;Standart;Aylık;269,2;17;298;1;1;;kurulum gecikti;evet
+M100468;03.01.2022;İstanbul;Temel;Aylık;228,25;48;432,5;0;0;4;şikâyet yok;hayır
+M100469;05.05.2023;İstanbul;Temel;1 yıl;159,55;32;221,3;0;0;2;şikâyet yok;evet
+M100470;03.05.2024;İstanbul;Temel;Aylık;187,58;20;257,6;0;1;3;şikâyet yok;evet
+M100471;03.02.2021;Ankara;Standart;1 yıl;273,28;59;476,2;2;1;;bağlantı kopuyor;hayır
+M100472;04.08.2023;Antalya;Temel;Aylık;225,05;29;208,4;2;0;3;fatura yüksek;hayır
+M100473;07.03.2019;Antalya;Premium;2 yıl;424,94;82;647,1;1;1;2;fatura yüksek;hayır
+M100474;03.04.2025;İzmir;Temel;2 yıl;204,66;9;247,2;0;0;5;şikâyet yok;hayır
+M100475;02.09.2025;Ankara;Premium;1 yıl;383,22;4;389,8;1;0;2;bağlantı kopuyor;evet
+M100476;04.10.2023;İzmir;Premium;Aylık;417,33;27;290,5;2;0;2;bağlantı kopuyor;evet
+M100477;01.02.2025;Konya;Premium;1 yıl;429,26;11;282;2;0;5;müşteri hizmetleri ulaşılmıyor;hayır
+M100478;02.12.2025;Bursa;Temel;1 yıl;198,85;1;;0;0;3;şikâyet yok;hayır
+M100479;03.07.2025;Konya;Premium;Aylık;429,94;6;304,5;2;1;3;bağlantı kopuyor;evet
+M100480;05.03.2020;Antalya;Temel;1 yıl;214,74;70;129,3;2;0;3;kurulum gecikti;hayır
+M100481;05.05.2021;Ankara;Temel;Aylık;206,17;56;391,9;2;0;3;bağlantı kopuyor;hayır
+M100482;02.09.2025;İstanbul;Temel;Aylık;233,34;4;;3;0;3;kurulum gecikti;hayır
+M100483;03.12.2023;Ankara;Standart;Aylık;276,8;25;159,8;0;0;3;şikâyet yok;hayır
+M100484;02.10.2025;İstanbul;Temel;Aylık;196,9;3;530,5;1;0;;bağlantı kopuyor;hayır
+M100485;03.04.2024;Bursa;Premium;Aylık;418,82;21;438,2;0;0;4;şikâyet yok;hayır
+M100486;02.01.2025;Ankara;Temel;Aylık;239,01;12;405,5;0;0;4;şikâyet yok;hayır
+M100487;02.02.2024;İstanbul;Standart;Aylık;321,71;23;230,9;2;0;4;bağlantı kopuyor;hayır
+M100488;02.12.2024;İstanbul;Premium;Aylık;396,54;13;351;2;1;;fatura yüksek;hayır
+M100489;03.09.2023;İstanbul;Temel;Aylık;167,91;28;78,1;2;0;2;internet yavaş;hayır
+M100490;04.10.2023;İzmir;Standart;2 yıl;312,64;27;141;2;0;;müşteri hizmetleri ulaşılmıyor;hayır
+M100491;02.02.2023;Ankara;Standart;Aylık;315,68;35;220,9;1;0;3;fatura yüksek;evet
+M100492;04.10.2023;İstanbul;Standart;Aylık;303,36;27;118;1;0;3;müşteri hizmetleri ulaşılmıyor;evet
+M100493;02.09.2025;İstanbul;Standart;2 yıl;253,28;4;65,8;0;0;5;şikâyet yok;hayır
+M100494;04.04.2022;Iğdır;Premium;Aylık;415,66;45;265,9;1;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M100495;01.02.2025;Diyarbakır;Standart;2 yıl;273,64;11;54,7;0;2;4;şikâyet yok;hayır
+M100496;02.10.2025;İstanbul;Standart;Aylık;283,38;3;265,5;2;2;3;müşteri hizmetleri ulaşılmıyor;evet
+M100497;05.05.2023;İstanbul;Temel;2 yıl;195,33;32;180,1;1;0;3;bağlantı kopuyor;hayır
+M100498;03.12.2023;Konya;Temel;Aylık;159,15;25;514,2;0;0;4;şikâyet yok;hayır
+M100499;02.08.2025;Bursa;Temel;1 yıl;182,93;5;392,5;0;0;;şikâyet yok;evet
+M100500;02.12.2025;Diyarbakır;Premium;Aylık;416,32;1;326,6;1;0;4;bağlantı kopuyor;evet
+M100501;05.01.2018;İstanbul;Temel;Aylık;147,44;96;115,9;4;2;2;kurulum gecikti;evet
+M100502;02.10.2025;Bursa;Premium;Aylık;471,95;3;385,2;1;0;;bağlantı kopuyor;evet
+M100503;02.09.2025;İstanbul;Temel;Aylık;241,84;4;;0;0;2;şikâyet yok;hayır
+M100504;02.11.2025;İstanbul;Temel;1 yıl;178,83;2;386,8;1;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M100505;02.11.2025;Konya;Temel;1 yıl;186,5;2;332,6;5;0;1;fatura yüksek;evet
+M100506;03.06.2024;Ankara;Temel;1 yıl;187,13;19;255,9;3;3;2;internet yavaş;evet
+M100507;04.10.2022;Konya;Temel;Aylık;180,74;39;306,4;1;0;4;fatura yüksek;hayır
+M100508;01.02.2025;İzmir;Temel;Aylık;213,67;11;429,6;4;0;2;bağlantı kopuyor;evet
+M100509;02.11.2025;Ankara;Standart;1 yıl;262,67;2;333,3;0;0;4;şikâyet yok;hayır
+M100510;02.12.2024;Ankara;Temel;Aylık;223,25;13;236,3;2;1;;kurulum gecikti;evet
+M100511;05.03.2020;Ankara;Standart;2 yıl;305,59;70;221,7;0;0;5;şikâyet yok;hayır
+M100512;03.06.2025;Konya;Premium;1 yıl;429,58;7;409,8;1;1;;müşteri hizmetleri ulaşılmıyor;evet
+M100513;04.07.2023;Konya;Temel;1 yıl;248,87;30;237;0;0;5;şikâyet yok;hayır
+M100514;05.01.2019;İstanbul;Standart;Aylık;311,04;84;170,3;0;1;2;şikâyet yok;hayır
+M100515;03.07.2025;İstanbul;Premium;Aylık;420,7;6;;2;0;2;bağlantı kopuyor;evet
+M100516;05.07.2021;İstanbul;Standart;Aylık;284,98;54;463,1;3;0;3;fatura yüksek;hayır
+M100517;04.07.2023;Konya;Standart;2 yıl;319,06;30;85,6;1;0;3;fatura yüksek;hayır
+M100518;03.06.2025;İzmir;Standart;Aylık;270,49;7;399,9;2;2;2;müşteri hizmetleri ulaşılmıyor;evet
+M100519;05.03.2023;İstanbul;Temel;1 yıl;173,56;34;120,6;3;0;1;bağlantı kopuyor;hayır
+M100520;02.10.2024;Antalya;Standart;Aylık;310,48;15;259,9;5;2;3;fatura yüksek;evet
+M100521;02.11.2025;İstanbul;Premium;Aylık;448,49;2;373,9;2;0;3;müşteri hizmetleri ulaşılmıyor;evet
+M100522;01.02.2025;İstanbul;Premium;Aylık;411,66;11;901,3;0;0;5;şikâyet yok;hayır
+M100523;04.06.2023;Bursa;Standart;1 yıl;338,13;31;653,7;0;3;5;şikâyet yok;hayır
+M100524;03.04.2025;Konya;Temel;2 yıl;190,07;9;107,1;1;1;4;bağlantı kopuyor;hayır
+M100525;03.09.2022;İstanbul;Standart;Aylık;316,21;40;301,9;0;0;4;şikâyet yok;hayır
+M100526;02.10.2025;İzmir;Premium;1 yıl;442,34;3;337,8;0;1;4;şikâyet yok;hayır
+M100527;02.12.2025;İstanbul;Premium;Aylık;410,19;1;1125,8;1;0;3;bağlantı kopuyor;evet
+M100528;03.05.2024;Ankara;Temel;Aylık;197,64;20;254,9;1;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M100529;02.09.2025;İstanbul;Premium;Aylık;368,87;4;319,4;2;2;2;fatura yüksek;hayır
+M100530;03.08.2024;Konya;Standart;Aylık;315,29;17;289,5;1;0;3;kurulum gecikti;hayır
+M100531;02.09.2025;İstanbul;Premium;Aylık;432,38;4;133,9;1;1;3;internet yavaş;evet
+M100532;03.04.2024;İstanbul;Temel;1 yıl;224,67;21;199,3;1;0;4;bağlantı kopuyor;hayır
+M100533;02.11.2025;İstanbul;Premium;Aylık;409,74;2;792,8;0;0;4;şikâyet yok;hayır
+M100534;03.11.2023;Ankara;Standart;1 yıl;285,96;26;471,5;1;0;1;internet yavaş;hayır
+M100535;05.01.2018;İzmir;Temel;1 yıl;166,08;96;398,9;1;0;3;bağlantı kopuyor;hayır
+M100536;03.06.2025;İstanbul;Standart;Aylık;272,15;7;85,2;0;0;5;şikâyet yok;hayır
+M100537;05.01.2018;Ankara;Temel;2 yıl;219,97;96;80,8;1;1;2;müşteri hizmetleri ulaşılmıyor;hayır
+M100538;04.04.2023;Antalya;Standart;1 yıl;303,75;33;272,6;1;1;2;fatura yüksek;hayır
+M100539;03.01.2021;İzmir;Standart;2 yıl;324,15;60;343,1;2;0;3;fatura yüksek;hayır
+M100540;03.01.2022;İzmir;Standart;1 yıl;317,13;48;170,1;1;0;2;fatura yüksek;hayır
+M100541;02.09.2025;İstanbul;Premium;1 yıl;434,73;4;111,6;2;0;2;internet yavaş;evet
+M100542;02.10.2025;İzmir;Standart;1 yıl;227,45;3;344,5;1;0;;fatura yüksek;hayır
+M100543;02.09.2025;İzmir;Temel;2 yıl;236,83;4;;1;0;3;fatura yüksek;hayır
+M100544;02.10.2025;İstanbul;Standart;1 yıl;296,11;3;249,8;1;3;3;fatura yüksek;evet
+M100545;02.10.2025;Bursa;Standart;1 yıl;370,08;3;440,2;1;0;4;müşteri hizmetleri ulaşılmıyor;hayır
+M100546;02.12.2024;Konya;Temel;Aylık;247,79;13;217,3;2;0;2;internet yavaş;evet
+M100547;02.02.2024;Ankara;Temel;Aylık;216,97;23;203,1;1;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M100548;03.06.2025;İstanbul;Standart;1 yıl;296,94;7;437;0;0;;şikâyet yok;hayır
+M100549;03.11.2022;Diyarbakır;Premium;Aylık;423,58;38;307,7;0;0;;şikâyet yok;hayır
+M100550;03.06.2024;İstanbul;Premium;1 yıl;403,8;19;539,1;1;1;3;internet yavaş;hayır
+M100551;04.08.2023;Antalya;Temel;1 yıl;185,3;29;;1;2;3;müşteri hizmetleri ulaşılmıyor;evet
+M100552;02.11.2024;Antalya;Temel;Aylık;199,59;14;195,7;1;2;5;müşteri hizmetleri ulaşılmıyor;evet
+M100553;04.07.2023;İstanbul;Premium;Aylık;404,01;30;422,7;4;0;;fatura yüksek;hayır
+M100554;03.08.2024;İzmir;Standart;1 yıl;283,3;17;98,1;1;1;2;kurulum gecikti;hayır
+M100555;02.09.2025;Diyarbakır;Premium;Aylık;457,71;4;944,8;0;0;3;şikâyet yok;hayır
+M100556;03.01.2022;İstanbul;Standart;Aylık;265,66;48;296,5;2;0;3;bağlantı kopuyor;hayır
+M100557;03.06.2025;Iğdır;Temel;2 yıl;195,24;7;201,3;0;0;3;şikâyet yok;hayır
+M100558;03.06.2024;İstanbul;Standart;1 yıl;283,16;19;;1;1;4;kurulum gecikti;hayır
+M100559;03.07.2024;Bursa;Standart;1 yıl;294,05;18;274,6;1;1;3;internet yavaş;hayır
+M100560;03.11.2022;Antalya;Premium;1 yıl;407;38;528,4;1;1;4;internet yavaş;hayır
+M100561;02.12.2025;İstanbul;Temel;Aylık;189,58;1;264,2;2;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M100562;04.08.2022;Antalya;Temel;1 yıl;142,65;41;375,2;2;2;5;internet yavaş;hayır
+M100563;01.02.2025;Bursa;Standart;1 yıl;285,86;11;173,6;1;0;;müşteri hizmetleri ulaşılmıyor;hayır
+M100564;03.07.2024;İzmir;Temel;Aylık;217,29;18;223,3;1;0;3;fatura yüksek;hayır
+M100565;03.12.2023;Antalya;Standart;Aylık;307,38;25;155,6;0;0;4;şikâyet yok;hayır
+M100566;03.05.2025;İzmir;Premium;Aylık;458,09;8;141,2;1;0;;internet yavaş;evet
+M100567;05.06.2020;İstanbul;Standart;Aylık;264,67;67;282,5;2;0;2;fatura yüksek;hayır
+M100568;03.11.2023;İstanbul;Standart;1 yıl;297,63;26;418,9;0;0;4;şikâyet yok;hayır
+M100569;02.02.2024;İstanbul;Premium;2 yıl;433,16;23;592,8;3;1;3;fatura yüksek;evet
+M100570;02.11.2025;Diyarbakır;Standart;2 yıl;284,14;2;292,2;2;0;2;fatura yüksek;hayır
+M100571;02.10.2024;İstanbul;Premium;1 yıl;438,61;15;548,8;0;0;3;şikâyet yok;hayır
+M100572;05.11.2019;Antalya;Standart;Aylık;292,35;74;61,6;3;0;2;müşteri hizmetleri ulaşılmıyor;hayır
+M100573;02.11.2025;Bursa;Standart;Aylık;267,55;2;;2;0;3;internet yavaş;hayır
+M100574;05.03.2023;Antalya;Temel;1 yıl;241,6;34;132;1;0;2;müşteri hizmetleri ulaşılmıyor;hayır
+M100575;03.06.2025;İzmir;Temel;Aylık;240,98;7;240,6;1;0;5;müşteri hizmetleri ulaşılmıyor;hayır
+M100576;03.01.2021;İstanbul;Standart;Aylık;260,16;60;331,9;2;3;1;kurulum gecikti;evet
+M100577;02.12.2025;Bursa;Temel;1 yıl;214,94;1;178,4;1;0;4;kurulum gecikti;hayır
+M100578;05.01.2018;Antalya;Temel;Aylık;184,68;96;356,2;0;0;5;şikâyet yok;hayır
+M100579;03.06.2024;İstanbul;Standart;1 yıl;311,13;19;334,5;0;0;5;şikâyet yok;hayır
+M100580;04.04.2022;Antalya;Standart;1 yıl;271,43;45;196,1;2;1;3;fatura yüksek;hayır
+M100581;03.03.2025;Ankara;Temel;Aylık;171,7;10;44,3;3;3;2;fatura yüksek;evet
+M100582;03.12.2023;İstanbul;Temel;1 yıl;213,26;25;230,5;0;0;4;şikâyet yok;hayır
+M100583;03.09.2022;İstanbul;Standart;1 yıl;277,57;40;516,2;4;0;4;müşteri hizmetleri ulaşılmıyor;hayır
+M100584;03.04.2025;İzmir;Temel;Aylık;206,99;9;134,8;1;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M100585;02.09.2025;Bursa;Standart;Aylık;279,91;4;245;1;0;3;fatura yüksek;evet
+M100586;03.05.2025;İzmir;Temel;Aylık;173,45;8;;0;0;4;şikâyet yok;hayır
+M100587;03.05.2024;İstanbul;Premium;2 yıl;366,53;20;854,1;1;0;3;bağlantı kopuyor;hayır
+M100588;02.08.2025;Bursa;Temel;Aylık;225,62;5;205,4;2;0;5;bağlantı kopuyor;evet
+M100589;02.11.2025;İzmir;Temel;Aylık;208,85;2;272,7;1;1;;bağlantı kopuyor;evet
+M100590;02.11.2025;İstanbul;Temel;Aylık;146,98;2;155;2;0;5;bağlantı kopuyor;hayır
+M100591;02.11.2024;Bursa;Standart;Aylık;263,33;14;234,9;0;0;;şikâyet yok;hayır
+M100592;05.03.2020;Bursa;Premium;2 yıl;424,21;70;499,2;0;0;4;şikâyet yok;hayır
+M100593;05.01.2018;Ankara;Temel;Aylık;233,08;96;196,9;0;0;2;şikâyet yok;hayır
+M100594;01.02.2025;İzmir;Temel;1 yıl;217,97;11;389,7;2;0;3;fatura yüksek;hayır
+M100595;02.02.2024;İstanbul;Temel;2 yıl;220,37;23;302;0;0;2;şikâyet yok;hayır
+M100596;02.12.2025;İstanbul;Standart;Aylık;300,22;1;198,5;3;0;;kurulum gecikti;evet
+M100597;03.04.2024;İstanbul;Temel;1 yıl;200,08;21;468;0;1;5;şikâyet yok;hayır
+M100598;02.09.2024;Konya;Premium;Aylık;433,5;16;375,6;1;0;4;müşteri hizmetleri ulaşılmıyor;hayır
+M100599;03.05.2025;Bursa;Temel;Aylık;210,86;8;163;0;2;3;şikâyet yok;hayır
+M100600;04.10.2023;Ankara;Standart;Aylık;275,34;27;59,9;0;0;5;şikâyet yok;hayır
+M100601;03.11.2023;İstanbul;Standart;1 yıl;238,84;26;251,5;0;0;1;şikâyet yok;hayır
+M100602;03.03.2025;Diyarbakır;Standart;Aylık;299,51;10;120,9;2;0;3;internet yavaş;hayır
+M100603;01.02.2025;İstanbul;Temel;2 yıl;195,42;11;;4;0;2;internet yavaş;hayır
+M100604;03.11.2023;İstanbul;Premium;1 yıl;392,55;26;371;1;0;;internet yavaş;hayır
+M100605;02.10.2024;Bursa;Standart;1 yıl;284,2;15;179,1;1;0;1;fatura yüksek;evet
+M100606;03.08.2024;İstanbul;Premium;Aylık;458,67;17;504,5;3;0;3;fatura yüksek;hayır
+M100607;05.01.2018;İstanbul;Temel;1 yıl;177,61;96;127,5;0;2;4;şikâyet yok;hayır
+M100608;04.08.2022;Diyarbakır;Standart;Aylık;281,89;41;134,2;2;0;4;bağlantı kopuyor;hayır
+M100609;05.05.2023;İzmir;Standart;Aylık;278,44;32;261,8;2;1;4;fatura yüksek;evet
+M100610;02.10.2025;Antalya;Premium;Aylık;408,36;3;363,8;1;0;3;kurulum gecikti;evet
+M100611;02.10.2024;İstanbul;Temel;Aylık;182,48;15;189,9;0;0;3;şikâyet yok;hayır
+M100612;02.10.2025;İzmir;Premium;2 yıl;424,58;3;1254,4;5;0;2;bağlantı kopuyor;evet
+M100613;04.06.2021;İzmir;Standart;Aylık;311,96;55;325;1;0;4;internet yavaş;hayır
+M100614;03.05.2024;İstanbul;Premium;Aylık;432,75;20;425,7;2;0;2;internet yavaş;hayır
+M100615;02.09.2025;İstanbul;Standart;Aylık;311,28;4;;1;2;3;müşteri hizmetleri ulaşılmıyor;evet
+M100616;02.11.2025;Ankara;Standart;Aylık;284,74;2;333,7;2;2;3;müşteri hizmetleri ulaşılmıyor;evet
+M100617;03.11.2023;Ankara;Standart;1 yıl;292,14;26;437,1;1;1;5;kurulum gecikti;hayır
+M100618;02.11.2024;Ankara;Temel;Aylık;160,61;14;363,6;2;0;1;kurulum gecikti;hayır
+M100619;03.04.2024;Bursa;Temel;1 yıl;210,58;21;224,3;0;0;4;şikâyet yok;hayır
+M100620;05.03.2023;İstanbul;Standart;Aylık;312,06;34;373;0;2;4;şikâyet yok;hayır
+M100621;04.10.2023;Diyarbakır;Premium;Aylık;431,83;27;320,8;1;0;5;müşteri hizmetleri ulaşılmıyor;hayır
+M100622;02.12.2024;Konya;Premium;Aylık;455,6;13;134,9;2;2;4;müşteri hizmetleri ulaşılmıyor;evet
+M100623;03.12.2023;İzmir;Temel;Aylık;229,34;25;114,8;0;2;4;şikâyet yok;hayır
+M100624;02.10.2024;Antalya;Standart;1 yıl;293,86;15;244;1;0;3;kurulum gecikti;hayır
+M100625;04.12.2022;İstanbul;Standart;Aylık;301,69;37;186,9;2;3;3;fatura yüksek;hayır
+M100626;04.12.2021;Bursa;Temel;Aylık;248,45;49;237,7;0;0;3;şikâyet yok;hayır
+M100627;03.07.2025;İstanbul;Standart;Aylık;271,09;6;459,2;3;0;;kurulum gecikti;hayır
+M100628;05.03.2020;İstanbul;Premium;Aylık;439,96;70;386,6;1;0;4;kurulum gecikti;evet
+M100629;04.08.2023;Bursa;Temel;Aylık;245,67;29;138,1;1;0;2;fatura yüksek;hayır
+M100630;03.09.2023;Bursa;Temel;1 yıl;185,02;28;127,8;2;0;3;bağlantı kopuyor;hayır
+M100631;04.06.2022;İstanbul;Standart;2 yıl;337,23;43;271,4;1;0;5;müşteri hizmetleri ulaşılmıyor;hayır
+M100632;04.08.2023;İstanbul;Premium;Aylık;434,03;29;525,9;2;0;3;kurulum gecikti;evet
+M100633;02.09.2024;Bursa;Standart;Aylık;274,52;16;49,3;1;1;4;fatura yüksek;hayır
+M100634;02.11.2025;İstanbul;Premium;Aylık;445,71;2;373,4;2;0;4;fatura yüksek;evet
+M100635;04.10.2022;Bursa;Premium;Aylık;450,92;39;399,9;2;0;3;internet yavaş;hayır
+M100636;03.08.2024;İstanbul;Standart;2 yıl;279,85;17;99,2;1;2;3;müşteri hizmetleri ulaşılmıyor;hayır
+M100637;02.11.2024;İstanbul;Standart;Aylık;296,75;14;141,2;3;3;2;internet yavaş;evet
+M100638;03.01.2024;İstanbul;Temel;Aylık;192,54;24;190,9;0;0;4;şikâyet yok;hayır
+M100639;03.05.2025;Bursa;Temel;2 yıl;187,61;8;407,9;3;0;3;kurulum gecikti;hayır
+M100640;03.05.2025;İstanbul;Premium;1 yıl;441,15;8;418,8;4;0;3;internet yavaş;hayır
+M100641;03.04.2024;İstanbul;Temel;1 yıl;225,7;21;177,3;5;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M100642;03.09.2023;İzmir;Temel;1 yıl;181,59;28;222,5;0;1;4;şikâyet yok;hayır
+M100643;05.09.2019;İzmir;Temel;Aylık;197,59;76;167,3;1;0;5;müşteri hizmetleri ulaşılmıyor;hayır
+M100644;04.04.2023;İstanbul;Temel;1 yıl;251,6;33;220,8;1;3;2;internet yavaş;evet
+M100645;04.04.2022;İzmir;Standart;Aylık;305,9;45;295,4;3;0;5;kurulum gecikti;evet
+M100646;04.10.2020;İzmir;Premium;Aylık;395,24;63;398,3;3;0;3;internet yavaş;evet
+M100647;04.02.2020;Antalya;Temel;Aylık;220,48;71;429,8;1;0;4;müşteri hizmetleri ulaşılmıyor;hayır
+M100648;03.07.2025;İstanbul;Standart;Aylık;262,64;6;182,9;1;3;4;kurulum gecikti;evet
+M100649;02.08.2025;İstanbul;Temel;1 yıl;163,91;5;366,9;2;1;4;kurulum gecikti;hayır
+M100650;05.05.2023;İzmir;Premium;1 yıl;429,94;32;;1;0;4;müşteri hizmetleri ulaşılmıyor;hayır
+M100651;03.04.2025;İstanbul;Premium;Aylık;465,5;9;169,1;0;0;4;şikâyet yok;hayır
+M100652;05.04.2021;İzmir;Standart;1 yıl;314,68;57;208,3;0;0;3;şikâyet yok;hayır
+M100653;05.12.2019;İzmir;Standart;Aylık;326,75;73;46,4;2;3;5;fatura yüksek;hayır
+M100654;02.10.2025;Ankara;Premium;Aylık;451,84;3;308,2;0;0;3;şikâyet yok;hayır
+M100655;02.11.2024;İstanbul;Temel;1 yıl;193,15;14;213,2;1;0;3;fatura yüksek;hayır
+M100656;02.11.2025;Ankara;Premium;Aylık;444,29;2;317,1;0;0;2;şikâyet yok;hayır
+M100657;03.05.2025;Ankara;Premium;1 yıl;475,19;8;238,1;3;1;3;kurulum gecikti;hayır
+M100658;01.02.2025;İstanbul;Premium;2 yıl;481,55;11;389,6;1;3;5;fatura yüksek;hayır
+M100659;02.01.2025;Antalya;Premium;1 yıl;392,47;12;391,9;2;0;3;fatura yüksek;evet
+M100660;02.12.2024;Bursa;Standart;1 yıl;299,33;13;130,4;2;0;;bağlantı kopuyor;hayır
+M100661;02.09.2025;İstanbul;Standart;Aylık;275,12;4;366,3;1;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M100662;02.02.2024;İzmir;Standart;Aylık;315,01;23;100;1;0;3;kurulum gecikti;hayır
+M100663;03.05.2025;Antalya;Temel;Aylık;218,63;8;180,5;5;1;2;internet yavaş;evet
+M100664;02.11.2025;İstanbul;Premium;1 yıl;431,79;2;220,1;0;2;2;şikâyet yok;evet
+M100665;02.12.2024;Bursa;Temel;Aylık;184,17;13;111,6;0;0;4;şikâyet yok;hayır
+M100666;03.11.2021;İstanbul;Temel;Aylık;212,26;50;159,1;1;0;5;fatura yüksek;hayır
+M100667;02.10.2025;İstanbul;Premium;2 yıl;429,62;3;419,5;1;0;3;fatura yüksek;hayır
+M100668;04.10.2022;Antalya;Premium;Aylık;435,27;39;452,4;0;0;3;şikâyet yok;hayır
+M100669;02.11.2024;Ankara;Temel;Aylık;197,96;14;447,4;1;0;1;bağlantı kopuyor;evet
+M100670;05.03.2021;İstanbul;Premium;Aylık;439,79;58;423,2;1;0;1;müşteri hizmetleri ulaşılmıyor;evet
+M100671;03.11.2023;Diyarbakır;Premium;1 yıl;432,05;26;335,3;2;0;;kurulum gecikti;evet
+M100672;04.08.2023;İzmir;Standart;1 yıl;311,97;29;298;2;0;4;internet yavaş;hayır
+M100673;04.04.2023;Bursa;Standart;1 yıl;222,76;33;272,6;1;1;2;kurulum gecikti;hayır
+M100674;05.05.2022;İstanbul;Temel;Aylık;195,57;44;217,3;1;2;2;kurulum gecikti;evet
+M100675;02.08.2025;Konya;Temel;2 yıl;189,54;5;168,4;2;0;3;internet yavaş;hayır
+M100676;04.12.2021;Iğdır;Temel;Aylık;209,63;49;;0;0;5;şikâyet yok;hayır
+M100677;03.11.2022;Bursa;Temel;Aylık;222,73;38;175,9;1;0;3;fatura yüksek;hayır
+M100678;03.03.2025;İstanbul;Temel;1 yıl;206,95;10;57,6;1;2;2;fatura yüksek;evet
+M100679;03.07.2025;Ankara;Temel;2 yıl;203,26;6;315,5;0;0;4;şikâyet yok;hayır
+M100680;03.01.2023;İzmir;Temel;Aylık;189,37;36;347,2;3;0;;fatura yüksek;evet
+M100681;03.01.2024;İstanbul;Standart;Aylık;309,78;24;125,9;2;0;4;kurulum gecikti;hayır
+M100682;05.03.2022;Ankara;Standart;Aylık;337,16;46;116,7;1;0;4;internet yavaş;hayır
+M100683;03.04.2025;Diyarbakır;Standart;2 yıl;302,15;9;82,3;2;0;3;kurulum gecikti;hayır
+M100684;02.11.2025;Ankara;Standart;1 yıl;297,28;2;234,8;0;0;5;şikâyet yok;hayır
+M100685;03.06.2025;Ankara;Standart;1 yıl;302,26;7;290,4;1;1;5;kurulum gecikti;evet
+M100686;03.07.2024;Ankara;Premium;2 yıl;418,09;18;318,2;0;1;4;şikâyet yok;hayır
+M100687;02.01.2025;İstanbul;Temel;1 yıl;182,07;12;305,8;0;1;2;şikâyet yok;hayır
+M100688;03.06.2025;Ankara;Standart;1 yıl;270,8;7;142,1;0;1;2;şikâyet yok;hayır
+M100689;02.01.2025;Bursa;Premium;Aylık;435,75;12;;2;2;4;internet yavaş;evet
+M100690;02.11.2025;İstanbul;Temel;Aylık;219,37;2;83;3;0;4;müşteri hizmetleri ulaşılmıyor;hayır
+M100691;03.01.2023;İzmir;Standart;Aylık;298,5;36;207,8;6;1;;internet yavaş;hayır
+M100692;05.04.2021;Ankara;Standart;Aylık;283,34;57;231;1;0;3;kurulum gecikti;hayır
+M100693;02.09.2025;İstanbul;Temel;2 yıl;216,65;4;250,6;0;2;5;şikâyet yok;hayır
+M100694;04.08.2023;Iğdır;Standart;1 yıl;282,91;29;345,1;1;1;5;müşteri hizmetleri ulaşılmıyor;hayır
+M100695;02.12.2025;İzmir;Premium;1 yıl;439,5;1;;0;1;4;şikâyet yok;hayır
+M100696;03.06.2025;Konya;Standart;1 yıl;277,63;7;203,7;3;0;3;kurulum gecikti;hayır
+M100697;04.12.2020;Iğdır;Standart;1 yıl;299,94;61;168,8;4;1;2;internet yavaş;hayır
+M100698;03.01.2023;İstanbul;Standart;Aylık;268,01;36;246,7;0;0;2;şikâyet yok;hayır
+M100699;04.11.2020;Bursa;Standart;Aylık;251,37;62;110;1;0;3;fatura yüksek;hayır
+M100700;03.08.2024;Ankara;Temel;2 yıl;213,88;17;238,6;1;0;;internet yavaş;hayır
+M100701;03.03.2025;Antalya;Temel;Aylık;236,05;10;197,3;2;0;5;fatura yüksek;evet
+M100702;04.06.2021;İstanbul;Premium;Aylık;419,85;55;307,9;0;0;2;şikâyet yok;hayır
+M100703;04.12.2022;Iğdır;Standart;1 yıl;227,99;37;217,6;0;1;;şikâyet yok;hayır
+M100704;02.09.2025;İstanbul;Temel;Aylık;228,78;4;196,6;1;0;4;bağlantı kopuyor;hayır
+M100705;05.07.2022;İstanbul;Temel;Aylık;204,54;42;255,5;2;1;3;fatura yüksek;evet
+M100706;02.09.2024;Iğdır;Temel;2 yıl;258,75;16;156,6;0;0;3;şikâyet yok;hayır
+M100707;03.05.2025;İstanbul;Standart;Aylık;327,23;8;285;1;0;5;internet yavaş;hayır
+M100708;04.10.2021;İzmir;Standart;Aylık;278;51;142,8;0;0;3;şikâyet yok;hayır
+M100709;05.05.2022;Bursa;Temel;1 yıl;200,13;44;375,6;1;2;4;müşteri hizmetleri ulaşılmıyor;hayır
+M100710;04.08.2023;İstanbul;Temel;Aylık;213,44;29;160,1;2;0;4;bağlantı kopuyor;evet
+M100711;03.01.2024;Ankara;Premium;Aylık;416;24;265,2;0;0;5;şikâyet yok;hayır
+M100712;02.10.2025;İstanbul;Temel;2 yıl;240,17;3;264,7;1;1;3;bağlantı kopuyor;hayır
+M100713;02.01.2025;İstanbul;Premium;Aylık;447,53;12;307,7;1;0;3;kurulum gecikti;hayır
+M100714;02.10.2025;Ankara;Temel;2 yıl;181,88;3;365,9;1;2;3;kurulum gecikti;evet
+M100715;02.08.2025;İzmir;Standart;2 yıl;325,46;5;189,4;1;0;2;internet yavaş;hayır
+M100716;03.04.2025;Ankara;Standart;2 yıl;259,46;9;159,7;1;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M100717;02.01.2025;İstanbul;Standart;Aylık;306,17;12;;0;0;3;şikâyet yok;hayır
+M100718;02.12.2024;Ankara;Standart;Aylık;259,79;13;115,1;1;0;5;internet yavaş;hayır
+M100719;03.08.2024;İstanbul;Temel;Aylık;226,3;17;231,8;1;1;4;fatura yüksek;hayır
+M100720;03.11.2023;İzmir;Premium;1 yıl;411,19;26;266,4;0;1;3;şikâyet yok;hayır
+M100721;03.02.2022;İstanbul;Standart;1 yıl;277,82;47;295,7;1;1;3;kurulum gecikti;hayır
+M100722;02.08.2025;Ankara;Premium;2 yıl;439,03;5;266,2;2;0;3;internet yavaş;hayır
+M100723;03.11.2022;Ankara;Premium;Aylık;439,9;38;494,6;0;0;2;şikâyet yok;evet
+M100724;03.05.2025;Bursa;Standart;Aylık;300,33;8;384,3;0;0;3;şikâyet yok;evet
+M100725;03.06.2025;İstanbul;Premium;1 yıl;434,19;7;180,6;2;0;4;kurulum gecikti;hayır
+M100726;02.08.2025;Ankara;Premium;1 yıl;406,43;5;434,1;2;0;3;bağlantı kopuyor;hayır
+M100727;02.12.2025;İstanbul;Standart;Aylık;285,38;1;;1;1;4;bağlantı kopuyor;hayır
+M100728;01.02.2025;İstanbul;Standart;Aylık;290,9;11;192,4;1;0;2;kurulum gecikti;evet
+M100729;04.10.2023;İstanbul;Standart;Aylık;298,78;27;348;2;0;4;fatura yüksek;hayır
+M100730;02.11.2025;İzmir;Standart;Aylık;276,17;2;264,5;0;0;4;şikâyet yok;hayır
+M100731;03.07.2024;Ankara;Standart;Aylık;309,49;18;256,1;0;2;3;şikâyet yok;hayır
+M100732;03.04.2025;Ankara;Standart;2 yıl;279,82;9;494,8;1;0;4;müşteri hizmetleri ulaşılmıyor;hayır
+M100733;01.02.2025;Ankara;Temel;Aylık;184,4;11;160,6;2;0;;internet yavaş;hayır
+M100734;03.09.2023;İstanbul;Temel;2 yıl;176,76;28;248,6;1;2;3;müşteri hizmetleri ulaşılmıyor;hayır
+M100735;04.03.2024;Bursa;Temel;Aylık;176,16;22;223,1;0;0;5;şikâyet yok;hayır
+M100736;02.11.2025;Antalya;Temel;Aylık;174,89;2;269,4;1;0;3;müşteri hizmetleri ulaşılmıyor;evet
+M100737;02.09.2025;Iğdır;Standart;Aylık;273,96;4;134,4;4;0;3;müşteri hizmetleri ulaşılmıyor;evet
+M100738;01.02.2025;Antalya;Premium;Aylık;466,64;11;321;3;0;1;fatura yüksek;evet
+M100739;03.07.2025;Antalya;Temel;1 yıl;200,82;6;;1;1;5;internet yavaş;evet
+M100740;03.08.2024;Diyarbakır;Premium;Aylık;474,9;17;521,6;2;1;3;kurulum gecikti;evet
+M100741;03.02.2021;İstanbul;Temel;2 yıl;155,8;59;44;1;0;2;bağlantı kopuyor;hayır
+M100742;03.12.2023;İstanbul;Standart;1 yıl;310,27;25;458,2;3;2;;internet yavaş;hayır
+M100743;02.08.2025;İstanbul;Temel;Aylık;217,12;5;336,5;0;0;3;şikâyet yok;hayır
+M100744;04.03.2024;İstanbul;Standart;Aylık;248,13;22;253,7;2;3;3;kurulum gecikti;evet
+M100745;02.10.2025;İzmir;Standart;Aylık;294,57;3;408,6;1;1;3;internet yavaş;evet
+M100746;02.09.2025;Ankara;Premium;1 yıl;434,71;4;336,6;1;1;;kurulum gecikti;hayır
+M100747;04.10.2022;İstanbul;Temel;1 yıl;210,04;39;202,8;0;0;3;şikâyet yok;hayır
+M100748;02.10.2025;Iğdır;Standart;1 yıl;274,58;3;218,4;1;1;5;kurulum gecikti;hayır
+M100749;03.04.2024;İstanbul;Premium;Aylık;441,33;21;369,3;2;0;3;fatura yüksek;evet
+M100750;03.09.2023;İstanbul;Standart;2 yıl;315,75;28;241,9;2;2;2;fatura yüksek;evet
+M100751;02.10.2024;İzmir;Temel;2 yıl;174,82;15;142,8;3;2;1;fatura yüksek;evet
+M100752;04.04.2022;Ankara;Premium;1 yıl;420,36;45;;1;0;4;bağlantı kopuyor;hayır
+M100753;04.04.2023;İstanbul;Temel;Aylık;215,21;33;288;2;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M100754;03.01.2023;Antalya;Temel;Aylık;177,37;36;235,1;1;0;3;bağlantı kopuyor;hayır
+M100755;03.04.2024;İstanbul;Temel;Aylık;221,85;21;146,3;1;1;3;fatura yüksek;hayır
+M100756;05.07.2020;Antalya;Standart;Aylık;290,36;66;292,3;0;0;4;şikâyet yok;hayır
+M100757;03.07.2025;Ankara;Premium;Aylık;452,93;6;105;0;3;4;şikâyet yok;hayır
+M100758;02.12.2025;İstanbul;Premium;Aylık;354,56;1;156,1;1;0;5;müşteri hizmetleri ulaşılmıyor;hayır
+M100759;02.09.2025;İstanbul;Standart;Aylık;314,11;4;;0;0;5;şikâyet yok;hayır
+M100760;05.05.2023;Bursa;Premium;2 yıl;442,46;32;529,2;1;0;4;bağlantı kopuyor;hayır
+M100761;04.03.2024;Konya;Premium;2 yıl;446,95;22;424,1;2;0;3;bağlantı kopuyor;evet
+M100762;02.11.2025;Ankara;Standart;1 yıl;272,62;2;202,5;1;1;4;bağlantı kopuyor;hayır
+M100763;05.07.2021;Ankara;Standart;Aylık;331,95;54;;2;0;;kurulum gecikti;hayır
+M100764;04.08.2023;İstanbul;Premium;Aylık;411,31;29;664,8;3;1;3;fatura yüksek;evet
+M100765;02.11.2025;Antalya;Standart;2 yıl;313,62;2;;1;0;3;fatura yüksek;hayır
+M100766;04.10.2023;İzmir;Temel;Aylık;198,2;27;375,9;2;0;3;bağlantı kopuyor;hayır
+M100767;04.04.2022;Ankara;Premium;Aylık;382,72;45;114,7;0;0;4;şikâyet yok;hayır
+M100768;04.08.2023;İstanbul;Temel;Aylık;216,53;29;301,3;1;0;5;fatura yüksek;hayır
+M100769;02.08.2025;Ankara;Standart;Aylık;291,47;5;117;1;0;3;kurulum gecikti;hayır
+M100770;05.07.2020;İstanbul;Premium;2 yıl;411,39;66;329,6;1;0;3;bağlantı kopuyor;hayır
+M100771;04.10.2023;Ankara;Standart;2 yıl;286,27;27;165;3;1;1;internet yavaş;evet
+M100772;04.09.2021;İstanbul;Standart;Aylık;359,04;52;259,1;0;3;4;şikâyet yok;hayır
+M100773;02.10.2024;İstanbul;Standart;1 yıl;273,33;15;293,9;3;0;;fatura yüksek;hayır
+M100774;03.11.2023;Ankara;Temel;Aylık;225,23;26;80,8;1;0;4;fatura yüksek;hayır
+M100775;05.07.2021;Diyarbakır;Standart;1 yıl;286,2;54;129,2;0;0;4;şikâyet yok;hayır
+M100776;05.05.2020;Ankara;Standart;2 yıl;294,94;68;240,8;2;0;4;internet yavaş;hayır
+M100777;01.02.2025;Ankara;Standart;1 yıl;314,01;11;384,4;1;1;1;kurulum gecikti;hayır
+M100778;03.08.2024;İstanbul;Standart;Aylık;313,68;17;;2;1;3;fatura yüksek;evet
+M100779;02.02.2023;İzmir;Premium;Aylık;440,51;35;167,7;4;0;3;internet yavaş;evet
+M100780;04.12.2020;Konya;Standart;2 yıl;265,14;61;;1;1;3;müşteri hizmetleri ulaşılmıyor;hayır
+M100781;03.06.2024;İstanbul;Standart;2 yıl;297,12;19;245,2;1;1;4;müşteri hizmetleri ulaşılmıyor;hayır
+M100782;05.05.2022;Bursa;Premium;1 yıl;435,71;44;329,5;1;0;4;bağlantı kopuyor;hayır
+M100783;02.09.2025;İstanbul;Standart;2 yıl;275,07;4;160,4;3;2;;internet yavaş;hayır
+M100784;03.09.2022;İstanbul;Temel;Aylık;173,36;40;;3;0;2;internet yavaş;evet
+M100785;02.09.2025;Ankara;Standart;Aylık;320,6;4;243,9;5;0;2;bağlantı kopuyor;evet
+M100786;04.08.2023;Diyarbakır;Premium;2 yıl;401,1;29;267,7;1;1;1;bağlantı kopuyor;hayır
+M100787;04.10.2023;Diyarbakır;Premium;Aylık;447,2;27;589,4;1;0;2;müşteri hizmetleri ulaşılmıyor;hayır
+M100788;03.11.2021;Ankara;Temel;Aylık;181,41;50;126,9;1;1;4;bağlantı kopuyor;hayır
+M100789;02.02.2024;Ankara;Standart;Aylık;306,73;23;157,1;2;2;2;bağlantı kopuyor;evet
+M100790;02.12.2025;Bursa;Temel;Aylık;151,16;1;;1;0;5;internet yavaş;hayır
+M100791;03.03.2025;İstanbul;Standart;Aylık;312,02;10;148,1;1;0;;müşteri hizmetleri ulaşılmıyor;evet
+M100792;04.08.2022;İstanbul;Standart;1 yıl;282,27;41;86,4;2;1;3;kurulum gecikti;evet
+M100793;02.09.2025;İstanbul;Temel;1 yıl;176,22;4;107,7;0;0;;şikâyet yok;hayır
+M100794;03.06.2025;Konya;Premium;Aylık;479,66;7;351,1;1;0;3;internet yavaş;evet
+M100795;02.09.2024;İstanbul;Standart;Aylık;289,32;16;202,4;2;0;3;internet yavaş;evet
+M100796;05.01.2018;İstanbul;Temel;2 yıl;205,44;96;283,7;1;0;4;internet yavaş;hayır
+M100797;02.12.2024;Konya;Standart;2 yıl;294,1;13;221,4;3;0;2;bağlantı kopuyor;hayır
+M100798;02.12.2025;Antalya;Temel;Aylık;219,21;1;329,5;0;0;3;şikâyet yok;hayır
+M100799;02.12.2025;Antalya;Temel;2 yıl;186,75;1;350,1;0;0;4;şikâyet yok;hayır
+M100800;04.12.2021;Ankara;Standart;1 yıl;330,29;49;310;1;0;5;kurulum gecikti;hayır
+M100801;02.09.2025;Antalya;Standart;Aylık;270,06;4;71,9;3;0;2;bağlantı kopuyor;evet
+M100802;02.01.2025;Ankara;Standart;1 yıl;276,51;12;239,2;0;0;3;şikâyet yok;hayır
+M100803;03.07.2024;Antalya;Temel;Aylık;205,2;18;305,5;1;1;3;fatura yüksek;hayır
+M100804;02.09.2025;Konya;Temel;Aylık;253,4;4;108,4;4;1;4;fatura yüksek;evet
+M100805;03.12.2023;Konya;Temel;Aylık;188,38;25;447,5;1;2;4;fatura yüksek;evet
+M100806;02.01.2025;Ankara;Standart;1 yıl;300,17;12;92,3;2;0;3;bağlantı kopuyor;hayır
+M100807;04.03.2024;Konya;Premium;1 yıl;419,24;22;275,3;1;0;4;kurulum gecikti;hayır
+M100808;03.04.2025;İstanbul;Premium;2 yıl;411,41;9;344,8;2;3;4;bağlantı kopuyor;hayır
+M100809;02.09.2024;İstanbul;Premium;2 yıl;437,41;16;190,3;1;1;2;internet yavaş;hayır
+M100810;02.10.2024;Konya;Temel;Aylık;237,39;15;252,4;2;0;;kurulum gecikti;hayır
+M100811;02.02.2023;İzmir;Premium;2 yıl;397,43;35;352,5;1;0;3;internet yavaş;hayır
+M100812;03.07.2024;İzmir;Premium;Aylık;436,28;18;160,4;0;0;;şikâyet yok;evet
+M100813;02.11.2025;İzmir;Temel;Aylık;213,48;2;138;0;1;2;şikâyet yok;hayır
+M100814;02.10.2025;Iğdır;Temel;Aylık;194,78;3;162,1;1;0;5;kurulum gecikti;hayır
+M100815;01.02.2025;İstanbul;Temel;Aylık;192,54;11;176,8;0;0;;şikâyet yok;hayır
+M100816;05.01.2020;İstanbul;Standart;2 yıl;270,48;72;387,9;0;1;;şikâyet yok;hayır
+M100817;03.11.2023;İzmir;Premium;Aylık;419,76;26;184,9;0;0;;şikâyet yok;hayır
+M100818;03.12.2023;Antalya;Temel;Aylık;185,67;25;253,2;1;1;4;kurulum gecikti;hayır
+M100819;05.05.2023;Ankara;Premium;1 yıl;453,73;32;288,7;4;1;2;bağlantı kopuyor;evet
+M100820;04.12.2022;Bursa;Temel;2 yıl;185,1;37;281,9;3;1;3;müşteri hizmetleri ulaşılmıyor;hayır
+M100821;03.06.2025;İstanbul;Standart;Aylık;297,94;7;246,8;0;0;3;şikâyet yok;hayır
+M100822;02.01.2025;Bursa;Temel;2 yıl;231,65;12;176,4;3;0;3;kurulum gecikti;hayır
+M100823;03.11.2023;Iğdır;Standart;1 yıl;265,43;26;491,7;0;1;;şikâyet yok;hayır
+M100824;02.11.2025;Konya;Temel;Aylık;177,42;2;255,9;1;0;4;fatura yüksek;evet
+M100825;03.05.2024;Konya;Standart;1 yıl;291,24;20;283,7;2;0;2;kurulum gecikti;evet
+M100826;03.04.2024;İstanbul;Temel;Aylık;186,5;21;159,2;2;0;;kurulum gecikti;evet
+M100827;04.08.2023;Antalya;Standart;1 yıl;314,62;29;228,7;0;1;4;şikâyet yok;hayır
+M100828;04.08.2023;İzmir;Premium;Aylık;449,86;29;;0;0;4;şikâyet yok;hayır
+M100829;02.09.2024;İstanbul;Temel;Aylık;208,1;16;333,9;0;0;3;şikâyet yok;hayır
+M100830;04.12.2022;İstanbul;Premium;Aylık;460,11;37;155;1;0;2;bağlantı kopuyor;evet
+M100831;04.09.2021;Diyarbakır;Standart;Aylık;283,02;52;129,9;1;0;4;internet yavaş;hayır
+M100832;02.11.2025;Konya;Temel;2 yıl;202,98;2;341,5;2;0;1;bağlantı kopuyor;hayır
+M100833;03.02.2022;Ankara;Temel;1 yıl;229,95;47;203,4;3;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M100834;03.11.2023;İzmir;Temel;1 yıl;260,86;26;443,7;2;1;5;bağlantı kopuyor;hayır
+M100835;03.07.2024;İstanbul;Temel;Aylık;190,35;18;351,4;0;0;;şikâyet yok;hayır
+M100836;01.02.2025;İstanbul;Premium;1 yıl;422,66;11;203,9;2;1;2;kurulum gecikti;evet
+M100837;02.09.2025;Bursa;Temel;Aylık;239,76;4;191,3;0;0;4;şikâyet yok;evet
+M100838;04.03.2024;İstanbul;Standart;Aylık;292,51;22;284,3;0;1;3;şikâyet yok;hayır
+M100839;02.02.2024;Ankara;Standart;2 yıl;254,89;23;158,1;0;0;2;şikâyet yok;hayır
+M100840;04.12.2020;İstanbul;Standart;1 yıl;301,76;61;227,4;2;0;1;bağlantı kopuyor;evet
+M100841;04.10.2020;İstanbul;Standart;Aylık;290,94;63;181;0;0;3;şikâyet yok;hayır
+M100842;02.12.2025;Konya;Temel;1 yıl;204,87;1;161,9;3;3;4;kurulum gecikti;evet
+M100843;02.10.2025;İstanbul;Temel;Aylık;224,44;3;166,3;0;0;5;şikâyet yok;hayır
+M100844;03.06.2025;İstanbul;Standart;1 yıl;278,62;7;295,1;2;0;4;kurulum gecikti;hayır
+M100845;03.07.2025;Antalya;Premium;Aylık;417,23;6;469;2;0;;fatura yüksek;evet
+M100846;02.12.2025;İzmir;Standart;2 yıl;273,18;1;135,1;6;0;1;müşteri hizmetleri ulaşılmıyor;evet
+M100847;04.03.2024;Konya;Temel;2 yıl;231,71;22;224,3;1;0;4;fatura yüksek;hayır
+M100848;03.01.2022;Konya;Premium;1 yıl;439,02;48;204,4;0;0;3;şikâyet yok;hayır
+M100849;03.11.2022;İstanbul;Temel;Aylık;135,79;38;146,9;0;0;3;şikâyet yok;hayır
+M100850;02.09.2024;Iğdır;Standart;Aylık;314,96;16;500,1;1;1;4;kurulum gecikti;hayır
+M100851;03.03.2025;Ankara;Premium;Aylık;441,74;10;274,6;1;0;4;müşteri hizmetleri ulaşılmıyor;evet
+M100852;02.11.2025;Ankara;Temel;Aylık;130,69;2;96,7;1;0;3;kurulum gecikti;hayır
+M100853;01.02.2025;İstanbul;Temel;Aylık;241,99;11;174,7;0;0;4;şikâyet yok;hayır
+M100854;02.08.2025;İstanbul;Temel;1 yıl;247,5;5;98;0;3;2;şikâyet yok;evet
+M100855;02.12.2024;İzmir;Standart;Aylık;293,82;13;44,5;1;0;3;bağlantı kopuyor;evet
+M100856;02.12.2025;Antalya;Premium;Aylık;447,32;1;591,9;2;0;3;fatura yüksek;hayır
+M100857;04.08.2023;İstanbul;Standart;2 yıl;281,14;29;;1;0;3;internet yavaş;hayır
+M100858;02.08.2025;Ankara;Temel;Aylık;188,89;5;72,2;2;1;3;internet yavaş;evet
+M100859;02.08.2025;Bursa;Temel;2 yıl;230,11;5;168,5;2;0;2;müşteri hizmetleri ulaşılmıyor;hayır
+M100860;02.10.2024;Ankara;Standart;Aylık;280,02;15;163,8;0;0;4;şikâyet yok;hayır
+M100861;02.02.2023;Antalya;Standart;Aylık;279,29;35;219;1;0;;müşteri hizmetleri ulaşılmıyor;hayır
+M100862;02.12.2025;İstanbul;Temel;Aylık;212,53;1;268,5;2;1;2;internet yavaş;hayır
+M100863;03.11.2023;İstanbul;Standart;1 yıl;255,33;26;;0;0;2;şikâyet yok;hayır
+M100864;03.03.2025;Diyarbakır;Standart;2 yıl;279,54;10;143,3;4;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M100865;01.02.2025;İstanbul;Temel;Aylık;220,59;11;186,3;1;0;;kurulum gecikti;hayır
+M100866;03.08.2024;İzmir;Standart;1 yıl;245,47;17;320,9;0;2;;şikâyet yok;hayır
+M100867;04.12.2022;Ankara;Temel;Aylık;196,59;37;262,4;3;1;1;fatura yüksek;evet
+M100868;05.05.2023;İstanbul;Temel;Aylık;189,42;32;217,6;0;0;4;şikâyet yok;hayır
+M100869;02.12.2025;Ankara;Standart;Aylık;270,41;1;321,2;1;0;;bağlantı kopuyor;hayır
+M100870;02.11.2024;Ankara;Standart;Aylık;258,62;14;160,2;0;0;4;şikâyet yok;hayır
+M100871;04.06.2021;Bursa;Standart;Aylık;266;55;69;0;0;5;şikâyet yok;hayır
+M100872;04.08.2020;Bursa;Standart;Aylık;271,99;65;355,1;1;0;3;bağlantı kopuyor;evet
+M100873;02.09.2025;Konya;Temel;1 yıl;178,76;4;274,4;0;0;3;şikâyet yok;hayır
+M100874;04.03.2024;Antalya;Standart;Aylık;282,87;22;285,9;2;1;3;müşteri hizmetleri ulaşılmıyor;hayır
+M100875;02.12.2025;Iğdır;Standart;Aylık;279,12;1;125,5;1;0;4;bağlantı kopuyor;hayır
+M100876;04.07.2023;İzmir;Temel;Aylık;173,53;30;281;2;0;3;internet yavaş;evet
+M100877;02.12.2024;İstanbul;Standart;2 yıl;297,57;13;303,3;0;0;1;şikâyet yok;hayır
+M100878;03.03.2025;Ankara;Temel;Aylık;205,91;10;100,3;1;0;4;fatura yüksek;hayır
+M100879;03.05.2025;İzmir;Standart;Aylık;254,39;8;165,2;2;1;3;fatura yüksek;evet
+M100880;03.06.2024;İstanbul;Standart;Aylık;315,09;19;328,4;1;0;3;bağlantı kopuyor;evet
+M100881;05.07.2022;İzmir;Standart;1 yıl;284,58;42;475,6;2;0;4;müşteri hizmetleri ulaşılmıyor;hayır
+M100882;02.11.2025;İstanbul;Premium;Aylık;443,8;2;1185,1;1;0;3;fatura yüksek;evet
+M100883;03.06.2025;Diyarbakır;Standart;1 yıl;271,62;7;68,1;1;0;3;internet yavaş;hayır
+M100884;02.09.2025;İstanbul;Temel;1 yıl;173,12;4;110,3;1;0;2;kurulum gecikti;hayır
+M100885;02.12.2024;Antalya;Temel;Aylık;200,32;13;183;0;1;4;şikâyet yok;hayır
+M100886;03.06.2025;Konya;Temel;2 yıl;174,79;7;61,9;1;0;5;fatura yüksek;evet
+M100887;04.12.2022;Iğdır;Temel;2 yıl;224,4;37;164,9;0;0;4;şikâyet yok;hayır
+M100888;02.12.2025;İstanbul;Standart;Aylık;342,59;1;40,7;0;0;2;şikâyet yok;hayır
+M100889;02.11.2025;Iğdır;Standart;Aylık;308,39;2;25,6;1;0;4;internet yavaş;evet
+M100890;05.05.2023;İzmir;Standart;1 yıl;289,95;32;185,7;1;0;3;kurulum gecikti;evet
+M100891;02.10.2025;İstanbul;Standart;Aylık;279,51;3;272,5;4;0;;internet yavaş;evet
+M100892;03.07.2025;Ankara;Temel;2 yıl;178,97;6;298,3;2;1;1;bağlantı kopuyor;hayır
+M100893;02.01.2025;İstanbul;Premium;2 yıl;424,49;12;279,5;2;0;3;kurulum gecikti;hayır
+M100894;03.07.2024;Konya;Standart;Aylık;269,07;18;280,8;1;0;2;kurulum gecikti;hayır
+M100895;02.08.2025;Ankara;Standart;1 yıl;274,49;5;378,6;1;1;;müşteri hizmetleri ulaşılmıyor;hayır
+M100896;05.07.2021;İstanbul;Premium;Aylık;462,36;54;433,8;0;0;2;şikâyet yok;hayır
+M100897;02.12.2025;İstanbul;Standart;1 yıl;280,75;1;152,8;1;0;4;müşteri hizmetleri ulaşılmıyor;hayır
+M100898;04.06.2021;İstanbul;Standart;Aylık;308,54;55;465,1;2;0;3;kurulum gecikti;hayır
+M100899;02.08.2025;Antalya;Standart;Aylık;315,68;5;374,2;1;0;3;fatura yüksek;evet
+M100900;03.01.2024;Diyarbakır;Standart;2 yıl;293,51;24;74;1;0;;bağlantı kopuyor;hayır
+M100901;03.08.2024;Bursa;Premium;Aylık;439,33;17;169,9;0;0;4;şikâyet yok;hayır
+M100902;03.05.2025;İstanbul;Temel;2 yıl;204,16;8;412,1;0;0;4;şikâyet yok;hayır
+M100903;01.02.2025;İzmir;Temel;Aylık;179,65;11;331,5;2;0;;bağlantı kopuyor;hayır
+M100904;01.02.2025;İstanbul;Temel;2 yıl;194,04;11;344,3;0;0;5;şikâyet yok;hayır
+M100905;04.06.2023;İstanbul;Premium;Aylık;446,67;31;307,9;0;0;3;şikâyet yok;hayır
+M100906;03.04.2024;Antalya;Temel;Aylık;167,12;21;172,2;0;0;;şikâyet yok;hayır
+M100907;04.11.2020;Ankara;Premium;Aylık;417,5;62;390,8;2;0;4;kurulum gecikti;hayır
+M100908;02.01.2025;İstanbul;Temel;1 yıl;210,18;12;243,8;0;0;;şikâyet yok;hayır
+M100909;01.02.2025;İzmir;Premium;Aylık;443,94;11;529,3;0;2;3;şikâyet yok;evet
+M100910;02.02.2024;Ankara;Temel;Aylık;201,03;23;376,9;0;0;4;şikâyet yok;hayır
+M100911;03.07.2025;İstanbul;Temel;1 yıl;191,57;6;136,8;1;0;5;kurulum gecikti;hayır
+M100912;02.11.2024;İstanbul;Standart;1 yıl;300,3;14;169,5;1;0;4;bağlantı kopuyor;hayır
+M100913;02.10.2025;İzmir;Temel;Aylık;207,05;3;232,3;0;1;2;şikâyet yok;hayır
+M100914;05.03.2023;İstanbul;Temel;1 yıl;201,23;34;572,9;1;2;2;müşteri hizmetleri ulaşılmıyor;hayır
+M100915;03.07.2025;Bursa;Temel;Aylık;201,05;6;253,5;0;0;4;şikâyet yok;hayır
+M100916;04.03.2024;Diyarbakır;Temel;2 yıl;208,44;22;246,6;2;2;2;bağlantı kopuyor;hayır
+M100917;04.04.2022;Ankara;Premium;2 yıl;415,26;45;531;0;1;3;şikâyet yok;hayır
+M100918;05.07.2022;İstanbul;Standart;Aylık;315,02;42;240,2;2;0;1;internet yavaş;hayır
+M100919;02.09.2025;Ankara;Standart;1 yıl;321,94;4;531,4;1;0;3;fatura yüksek;hayır
+M100920;02.10.2025;İstanbul;Temel;Aylık;194,64;3;253,7;0;0;2;şikâyet yok;hayır
+M100921;04.07.2023;İzmir;Standart;Aylık;232,25;30;106,4;2;0;4;internet yavaş;evet
+M100922;02.11.2025;İstanbul;Premium;1 yıl;400,38;2;341,8;0;0;;şikâyet yok;evet
+M100923;02.09.2024;İstanbul;Premium;1 yıl;447,82;16;207,5;0;2;4;şikâyet yok;hayır
+M100924;02.09.2024;İstanbul;Standart;Aylık;265,78;16;265,3;1;2;5;kurulum gecikti;hayır
+M100925;02.11.2025;Diyarbakır;Standart;2 yıl;301,67;2;328,6;3;0;4;fatura yüksek;hayır
+M100926;03.11.2023;Konya;Temel;2 yıl;168,83;26;400,9;1;0;;internet yavaş;hayır
+M100927;02.08.2025;Antalya;Temel;Aylık;214,04;5;611,2;2;1;4;müşteri hizmetleri ulaşılmıyor;evet
+M100928;05.03.2022;İstanbul;Standart;Aylık;292,84;46;102,5;0;0;5;şikâyet yok;hayır
+M100929;03.03.2025;Ankara;Temel;Aylık;200,5;10;356,6;0;0;4;şikâyet yok;hayır
+M100930;03.05.2025;İstanbul;Temel;1 yıl;190;8;182,2;1;0;2;kurulum gecikti;hayır
+M100931;04.08.2023;İstanbul;Standart;Aylık;299,86;29;221,5;0;1;3;şikâyet yok;hayır
+M100932;03.01.2023;İstanbul;Temel;2 yıl;171,29;36;138,8;0;0;5;şikâyet yok;hayır
+M100933;05.01.2018;Antalya;Premium;Aylık;437,74;96;142,9;1;2;4;internet yavaş;hayır
+M100934;02.10.2024;Antalya;Temel;Aylık;193,84;15;46,6;0;0;;şikâyet yok;hayır
+M100935;02.08.2025;Ankara;Standart;2 yıl;330,5;5;186,9;3;0;3;bağlantı kopuyor;hayır
+M100936;03.05.2025;Antalya;Standart;2 yıl;239,5;8;211,7;2;0;4;internet yavaş;hayır
+M100937;03.08.2024;İzmir;Standart;Aylık;294,63;17;245,7;0;0;1;şikâyet yok;evet
+M100938;03.06.2024;Antalya;Temel;Aylık;182,49;19;105,6;2;0;4;bağlantı kopuyor;hayır
+M100939;02.11.2025;Ankara;Temel;1 yıl;212,26;2;405,2;0;0;4;şikâyet yok;hayır
+M100940;02.11.2025;İstanbul;Standart;1 yıl;313,24;2;147,9;0;0;2;şikâyet yok;hayır
+M100941;06.06.2018;İzmir;Premium;2 yıl;395,11;91;62,5;2;0;5;müşteri hizmetleri ulaşılmıyor;hayır
+M100942;03.07.2025;İstanbul;Standart;1 yıl;324,76;6;271,9;2;0;;internet yavaş;hayır
+M100943;02.09.2025;Diyarbakır;Temel;Aylık;188,66;4;394,5;0;0;4;şikâyet yok;hayır
+M100944;02.10.2025;Ankara;Temel;Aylık;193,7;3;195,2;2;0;3;internet yavaş;evet
+M100945;03.01.2024;İzmir;Temel;Aylık;181,98;24;162,6;1;0;3;bağlantı kopuyor;hayır
+M100946;03.04.2024;İstanbul;Temel;Aylık;142,86;21;487,7;0;0;4;şikâyet yok;hayır
+M100947;05.10.2019;Ankara;Temel;Aylık;186,94;75;214;0;0;;şikâyet yok;hayır
+M100948;02.12.2024;Iğdır;Premium;1 yıl;397,81;13;307,3;0;0;2;şikâyet yok;hayır
+M100949;02.01.2025;İzmir;Temel;2 yıl;157,99;12;384;1;0;4;internet yavaş;hayır
+M100950;02.11.2024;Konya;Standart;2 yıl;317,93;14;120,1;0;3;4;şikâyet yok;hayır
+M100951;04.10.2021;İzmir;Temel;Aylık;226,91;51;232,4;1;0;2;müşteri hizmetleri ulaşılmıyor;hayır
+M100952;03.06.2025;Konya;Temel;1 yıl;207,03;7;136,9;0;0;4;şikâyet yok;hayır
+M100953;02.11.2024;Ankara;Standart;Aylık;265,48;14;;0;0;;şikâyet yok;hayır
+M100954;03.12.2023;Konya;Temel;2 yıl;227,72;25;215,6;1;0;1;bağlantı kopuyor;hayır
+M100955;04.12.2022;Ankara;Temel;Aylık;201,89;37;203,3;1;0;3;fatura yüksek;evet
+M100956;03.03.2025;İstanbul;Standart;Aylık;283,08;10;;1;1;4;internet yavaş;hayır
+M100957;02.10.2025;İzmir;Premium;Aylık;408,86;3;335,1;1;0;4;internet yavaş;hayır
+M100958;03.04.2024;Antalya;Temel;1 yıl;202,36;21;204,4;2;0;5;fatura yüksek;hayır
+M100959;02.11.2024;Diyarbakır;Temel;2 yıl;193,74;14;183,4;4;0;2;bağlantı kopuyor;hayır
+M100960;03.07.2025;İzmir;Standart;2 yıl;280,7;6;;2;0;2;fatura yüksek;evet
+M100961;03.04.2024;İzmir;Standart;Aylık;280,77;21;294,4;0;0;2;şikâyet yok;hayır
+M100962;02.12.2025;Antalya;Temel;Aylık;215,53;1;96,2;1;0;3;internet yavaş;evet
+M100963;02.10.2025;İstanbul;Temel;1 yıl;213,21;3;71,5;0;0;;şikâyet yok;hayır
+M100964;03.03.2025;İstanbul;Premium;1 yıl;462,94;10;343,4;0;2;2;şikâyet yok;evet
+M100965;03.05.2025;İstanbul;Standart;2 yıl;282,12;8;202,8;0;0;4;şikâyet yok;hayır
+M100966;03.11.2023;İstanbul;Standart;1 yıl;258,97;26;215,9;2;0;;kurulum gecikti;hayır
+M100967;04.04.2023;Bursa;Temel;2 yıl;203,48;33;195,4;0;0;3;şikâyet yok;hayır
+M100968;03.01.2024;Bursa;Premium;1 yıl;388,46;24;382,7;1;0;3;bağlantı kopuyor;hayır
+M100969;05.01.2018;İzmir;Temel;Aylık;176,56;96;335,3;2;0;2;internet yavaş;hayır
+M100970;04.06.2022;Konya;Temel;2 yıl;225,31;43;198,4;1;0;2;müşteri hizmetleri ulaşılmıyor;hayır
+M100971;02.11.2025;Ankara;Standart;Aylık;329,76;2;255,6;3;2;3;internet yavaş;evet
+M100972;02.10.2025;Iğdır;Premium;Aylık;441,33;3;;1;0;3;kurulum gecikti;hayır
+M100973;02.08.2025;İstanbul;Temel;1 yıl;203,7;5;210,4;0;0;4;şikâyet yok;hayır
+M100974;03.11.2022;Antalya;Standart;1 yıl;281,46;38;133,6;0;1;4;şikâyet yok;hayır
+M100975;03.04.2025;Ankara;Temel;1 yıl;202,32;9;186,9;1;0;4;fatura yüksek;hayır
+M100976;03.04.2025;Ankara;Premium;1 yıl;430,55;9;561,4;1;3;2;internet yavaş;hayır
+M100977;03.05.2024;Ankara;Temel;Aylık;207,32;20;706,1;0;0;2;şikâyet yok;hayır
+M100978;02.11.2025;Ankara;Temel;2 yıl;179,71;2;221,8;1;0;4;kurulum gecikti;hayır
+M100979;01.02.2025;Konya;Standart;1 yıl;294,49;11;130,8;4;0;2;kurulum gecikti;hayır
+M100980;02.09.2025;Konya;Premium;Aylık;394,67;4;216,9;3;0;4;bağlantı kopuyor;evet
+M100981;03.07.2025;İstanbul;Standart;1 yıl;249,73;6;334,7;2;0;2;müşteri hizmetleri ulaşılmıyor;hayır
+M100982;04.04.2023;İstanbul;Standart;Aylık;317,52;33;190,8;1;0;3;bağlantı kopuyor;hayır
+M100983;03.06.2024;İstanbul;Temel;1 yıl;274,22;19;214,8;0;1;3;şikâyet yok;hayır
+M100984;02.10.2025;İzmir;Temel;Aylık;204,31;3;298,3;0;2;4;şikâyet yok;hayır
+M100985;03.07.2025;İzmir;Standart;Aylık;290,81;6;462,8;2;0;2;internet yavaş;evet
+M100986;04.09.2020;İstanbul;Temel;Aylık;233,49;64;210,6;2;1;1;internet yavaş;evet
+M100987;02.09.2025;İstanbul;Premium;Aylık;396,35;4;183,3;2;0;;kurulum gecikti;hayır
+M100988;03.05.2025;Ankara;Premium;1 yıl;390,41;8;114,2;0;0;5;şikâyet yok;hayır
+M100989;03.07.2024;İstanbul;Standart;Aylık;307,69;18;87,9;1;0;;internet yavaş;hayır
+M100990;02.11.2025;Iğdır;Temel;Aylık;235,13;2;144,6;1;1;3;bağlantı kopuyor;hayır
+M100991;02.02.2023;İstanbul;Premium;Aylık;444,41;35;212;0;0;;şikâyet yok;hayır
+M100992;02.09.2025;İstanbul;Standart;1 yıl;284,81;4;337,5;0;0;3;şikâyet yok;hayır
+M100993;02.12.2024;İstanbul;Standart;2 yıl;334,1;13;437,6;0;0;4;şikâyet yok;hayır
+M100994;02.12.2025;Antalya;Temel;1 yıl;186,92;1;200,4;3;0;3;fatura yüksek;hayır
+M100995;03.08.2024;İstanbul;Standart;2 yıl;286,46;17;409,2;2;0;4;kurulum gecikti;hayır
+M100996;03.11.2023;İstanbul;Premium;1 yıl;418,48;26;306,2;1;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M100997;04.11.2020;İstanbul;Temel;2 yıl;169,92;62;;2;1;;müşteri hizmetleri ulaşılmıyor;hayır
+M100998;03.04.2024;Antalya;Temel;1 yıl;194,24;21;221,9;0;0;;şikâyet yok;hayır
+M100999;04.10.2022;Ankara;Temel;2 yıl;196,63;39;314,7;0;0;4;şikâyet yok;hayır
+M101000;05.03.2022;İstanbul;Premium;Aylık;426,87;46;289;1;1;2;bağlantı kopuyor;evet
+M101001;03.12.2023;İzmir;Temel;Aylık;213,96;25;268,5;0;0;4;şikâyet yok;hayır
+M101002;04.08.2022;Konya;Standart;Aylık;275,01;41;31,2;0;3;5;şikâyet yok;hayır
+M101003;02.11.2024;Bursa;Standart;Aylık;321,47;14;281,2;1;0;4;bağlantı kopuyor;hayır
+M101004;03.07.2024;Ankara;Standart;1 yıl;282;18;94,9;1;0;4;müşteri hizmetleri ulaşılmıyor;hayır
+M101005;02.10.2025;Iğdır;Temel;Aylık;173,34;3;67,5;1;0;3;fatura yüksek;hayır
+M101006;03.05.2024;Bursa;Premium;2 yıl;401,77;20;164,5;3;1;4;bağlantı kopuyor;hayır
+M101007;03.04.2025;İstanbul;Temel;Aylık;189,3;9;176,2;3;0;2;internet yavaş;evet
+M101008;02.09.2024;İstanbul;Premium;Aylık;424,55;16;267,1;2;3;2;bağlantı kopuyor;hayır
+M101009;05.11.2018;Ankara;Temel;Aylık;209,87;86;123,6;0;2;4;şikâyet yok;hayır
+M101010;02.02.2023;Antalya;Standart;Aylık;292,88;35;65,2;2;0;4;bağlantı kopuyor;hayır
+M101011;02.08.2025;İstanbul;Temel;Aylık;227,28;5;372,5;2;0;3;müşteri hizmetleri ulaşılmıyor;evet
+M101012;02.09.2024;Ankara;Temel;Aylık;187,98;16;257,9;0;0;4;şikâyet yok;hayır
+M101013;03.09.2022;İstanbul;Premium;Aylık;446,41;40;317,9;0;0;4;şikâyet yok;hayır
+M101014;02.10.2025;Ankara;Temel;1 yıl;202,14;3;204,4;2;0;4;internet yavaş;hayır
+M101015;03.12.2023;Konya;Standart;Aylık;305,75;25;396,8;1;2;;bağlantı kopuyor;evet
+M101016;03.03.2025;Konya;Standart;Aylık;271,83;10;246,6;2;2;3;kurulum gecikti;hayır
+M101017;02.10.2025;İstanbul;Temel;1 yıl;221,64;3;239,9;2;0;2;bağlantı kopuyor;hayır
+M101018;02.12.2024;Diyarbakır;Standart;1 yıl;264,62;13;49,3;2;0;4;kurulum gecikti;hayır
+M101019;02.12.2025;İstanbul;Premium;1 yıl;484,83;1;712,9;1;1;3;internet yavaş;hayır
+M101020;03.12.2023;Antalya;Temel;Aylık;161,15;25;135,9;1;0;4;kurulum gecikti;hayır
+M101021;02.09.2025;Konya;Premium;Aylık;418,2;4;387,4;1;0;4;müşteri hizmetleri ulaşılmıyor;evet
+M101022;03.04.2024;İzmir;Temel;Aylık;197,8;21;290,7;1;1;4;kurulum gecikti;hayır
+M101023;02.12.2024;Ankara;Standart;2 yıl;327,57;13;158,4;1;0;3;kurulum gecikti;hayır
+M101024;02.11.2024;İzmir;Temel;Aylık;243,08;14;126,8;1;0;3;fatura yüksek;hayır
+M101025;02.12.2025;İzmir;Temel;2 yıl;175,05;1;221,6;1;0;;müşteri hizmetleri ulaşılmıyor;evet
+M101026;05.01.2018;İzmir;Standart;Aylık;319,91;96;596,7;4;0;3;bağlantı kopuyor;hayır
+M101027;02.10.2025;İstanbul;Temel;2 yıl;164,18;3;132,6;2;0;5;bağlantı kopuyor;hayır
+M101028;04.08.2023;İzmir;Premium;2 yıl;475,26;29;385,9;1;0;4;fatura yüksek;hayır
+M101029;03.04.2025;İzmir;Standart;1 yıl;277,85;9;104,1;2;0;2;internet yavaş;evet
+M101030;03.09.2023;Bursa;Temel;2 yıl;214,01;28;268;2;3;2;fatura yüksek;hayır
+M101031;05.03.2022;İzmir;Standart;2 yıl;295,75;46;344,5;0;0;3;şikâyet yok;hayır
+M101032;02.12.2024;Ankara;Temel;Aylık;178,65;13;264,8;2;3;4;bağlantı kopuyor;evet
+M101033;02.12.2025;İzmir;Standart;Aylık;291,62;1;54,7;2;0;3;kurulum gecikti;hayır
+M101034;04.10.2020;Ankara;Premium;2 yıl;440,39;63;254,4;2;1;1;bağlantı kopuyor;hayır
+M101035;02.12.2025;İstanbul;Premium;1 yıl;400,83;1;205,9;1;0;4;müşteri hizmetleri ulaşılmıyor;hayır
+M101036;04.02.2020;İzmir;Temel;2 yıl;209,85;71;79,7;0;0;2;şikâyet yok;hayır
+M101037;05.05.2023;İstanbul;Temel;Aylık;196,39;32;291,6;1;0;5;fatura yüksek;hayır
+M101038;03.12.2023;İstanbul;Standart;1 yıl;270,73;25;307,7;2;0;3;fatura yüksek;hayır
+M101039;03.06.2025;Diyarbakır;Temel;1 yıl;226,18;7;223,4;1;0;2;bağlantı kopuyor;hayır
+M101040;04.04.2022;İstanbul;Premium;1 yıl;412,38;45;338,3;1;0;2;bağlantı kopuyor;hayır
+M101041;05.11.2019;Ankara;Standart;2 yıl;249,02;74;142,1;1;2;5;internet yavaş;hayır
+M101042;04.06.2023;Antalya;Standart;2 yıl;307,63;31;;1;0;5;fatura yüksek;hayır
+M101043;03.07.2025;Iğdır;Standart;2 yıl;265,7;6;171,2;1;1;3;kurulum gecikti;hayır
+M101044;03.03.2025;Ankara;Premium;Aylık;432,47;10;173,6;1;1;3;kurulum gecikti;hayır
+M101045;02.12.2025;İzmir;Standart;Aylık;265,97;1;333,6;1;2;4;fatura yüksek;hayır
+M101046;01.02.2025;Antalya;Standart;Aylık;322,41;11;77,1;3;0;2;fatura yüksek;evet
+M101047;04.06.2023;Bursa;Temel;Aylık;204,37;31;140,4;2;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M101048;02.09.2025;İstanbul;Premium;1 yıl;447,66;4;305,9;1;0;5;kurulum gecikti;hayır
+M101049;03.01.2022;Ankara;Premium;Aylık;415,05;48;210,5;0;0;4;şikâyet yok;hayır
+M101050;02.10.2024;İstanbul;Temel;Aylık;175,91;15;249,2;1;0;4;internet yavaş;hayır
+M101051;02.08.2025;Ankara;Temel;2 yıl;197,83;5;149,9;0;0;3;şikâyet yok;hayır
+M101052;02.09.2024;Ankara;Premium;Aylık;445,26;16;395,5;3;0;1;kurulum gecikti;evet
+M101053;02.11.2024;İstanbul;Standart;2 yıl;305,65;14;451,4;3;2;1;kurulum gecikti;evet
+M101054;03.12.2023;Bursa;Temel;1 yıl;238,69;25;259,7;0;0;4;şikâyet yok;hayır
+M101055;03.05.2024;Ankara;Temel;Aylık;207,56;20;392,7;0;0;5;şikâyet yok;hayır
+M101056;03.04.2025;Ankara;Standart;Aylık;329,66;9;80,8;1;0;4;kurulum gecikti;hayır
+M101057;02.11.2024;Iğdır;Standart;1 yıl;262,46;14;214,4;4;0;1;kurulum gecikti;evet
+M101058;03.08.2024;Bursa;Temel;Aylık;191,28;17;119,3;2;1;2;bağlantı kopuyor;evet
+M101059;05.05.2022;İzmir;Temel;2 yıl;175,52;44;291;1;0;4;kurulum gecikti;hayır
+M101060;02.11.2025;Antalya;Premium;2 yıl;434,04;2;490,7;0;1;4;şikâyet yok;hayır
+M101061;04.12.2021;Ankara;Premium;1 yıl;406,61;49;512,2;0;0;3;şikâyet yok;hayır
+M101062;03.11.2022;İstanbul;Standart;1 yıl;302,72;38;145,2;1;0;4;internet yavaş;hayır
+M101063;03.11.2023;Diyarbakır;Premium;Aylık;430,07;26;281;1;0;4;müşteri hizmetleri ulaşılmıyor;hayır
+M101064;02.10.2025;Ankara;Standart;Aylık;296,3;3;37,7;2;0;2;bağlantı kopuyor;evet
+M101065;04.09.2021;İstanbul;Premium;1 yıl;437,58;52;392,9;1;0;;internet yavaş;hayır
+M101066;02.12.2025;İzmir;Temel;Aylık;192,53;1;94,3;1;0;;internet yavaş;hayır
+M101067;02.08.2025;İstanbul;Temel;Aylık;226,63;5;196;2;0;3;internet yavaş;evet
+M101068;02.09.2025;İstanbul;Temel;2 yıl;252,55;4;247,6;0;0;3;şikâyet yok;hayır
+M101069;03.07.2024;İzmir;Standart;Aylık;303,42;18;159,8;0;0;;şikâyet yok;hayır
+M101070;03.09.2023;Bursa;Temel;Aylık;204,77;28;258,9;0;0;2;şikâyet yok;hayır
+M101071;02.08.2025;Bursa;Premium;Aylık;444,11;5;449,7;1;0;3;bağlantı kopuyor;hayır
+M101072;03.04.2024;Bursa;Temel;Aylık;185,62;21;432,9;2;0;;kurulum gecikti;hayır
+M101073;02.01.2025;İzmir;Premium;Aylık;409,62;12;417,5;3;0;;müşteri hizmetleri ulaşılmıyor;evet
+M101074;03.12.2023;İstanbul;Temel;2 yıl;184,18;25;474,1;1;1;2;kurulum gecikti;hayır
+M101075;03.05.2025;Bursa;Temel;Aylık;212,21;8;88,4;2;0;4;müşteri hizmetleri ulaşılmıyor;evet
+M101076;04.03.2024;İstanbul;Temel;Aylık;208,41;22;157,1;3;0;3;bağlantı kopuyor;evet
+M101077;03.04.2025;Bursa;Temel;Aylık;239,63;9;448,3;3;0;3;bağlantı kopuyor;evet
+M101078;03.04.2024;İstanbul;Temel;Aylık;165,61;21;164,4;0;1;4;şikâyet yok;hayır
+M101079;03.11.2023;İstanbul;Temel;Aylık;214,13;26;168,8;1;0;5;internet yavaş;hayır
+M101080;02.02.2024;Bursa;Premium;Aylık;465,45;23;184,8;3;1;3;fatura yüksek;evet
+M101081;02.11.2025;Konya;Temel;1 yıl;170,69;2;245,7;0;1;3;şikâyet yok;hayır
+M101082;03.06.2024;Ankara;Standart;2 yıl;312,2;19;454,4;1;0;3;internet yavaş;hayır
+M101083;03.05.2025;İzmir;Temel;Aylık;214,73;8;237;0;0;2;şikâyet yok;hayır
+M101084;02.12.2025;Ankara;Temel;1 yıl;200,96;1;280,2;1;3;3;internet yavaş;hayır
+M101085;02.09.2024;Ankara;Standart;Aylık;252,4;16;94,8;3;0;4;bağlantı kopuyor;hayır
+M101086;05.05.2023;İzmir;Temel;1 yıl;182,61;32;362,8;2;0;4;internet yavaş;evet
+M101087;02.12.2024;Ankara;Temel;2 yıl;220,87;13;144,2;1;0;2;fatura yüksek;hayır
+M101088;06.07.2018;Bursa;Temel;Aylık;225,28;90;346;1;0;5;müşteri hizmetleri ulaşılmıyor;hayır
+M101089;01.02.2025;Antalya;Standart;1 yıl;287,05;11;60,2;4;1;;bağlantı kopuyor;hayır
+M101090;03.11.2022;Bursa;Premium;2 yıl;424,78;38;137,4;1;0;3;internet yavaş;hayır
+M101091;05.05.2021;Antalya;Temel;1 yıl;232,68;56;238,8;1;0;3;kurulum gecikti;hayır
+M101092;04.02.2020;Diyarbakır;Temel;Aylık;205,13;71;315,5;1;0;4;internet yavaş;hayır
+M101093;04.11.2020;İzmir;Temel;Aylık;214,99;62;343,1;1;3;5;internet yavaş;hayır
+M101094;03.08.2024;Iğdır;Temel;1 yıl;219,05;17;382,9;1;0;5;bağlantı kopuyor;hayır
+M101095;03.06.2024;Konya;Temel;1 yıl;155,24;19;173,4;0;0;5;şikâyet yok;hayır
+M101096;06.06.2018;Konya;Premium;Aylık;507,49;91;407,3;1;0;3;kurulum gecikti;hayır
+M101097;03.09.2023;Ankara;Temel;Aylık;215,67;28;250,3;2;0;4;bağlantı kopuyor;hayır
+M101098;03.08.2024;İstanbul;Premium;Aylık;478,85;17;;2;1;;bağlantı kopuyor;evet
+M101099;04.02.2019;Konya;Temel;Aylık;183,18;83;214,7;0;1;2;şikâyet yok;hayır
+M101100;02.11.2024;Diyarbakır;Standart;1 yıl;250,95;14;125,9;1;0;4;bağlantı kopuyor;hayır
+M101101;03.07.2025;Antalya;Standart;2 yıl;305,31;6;;1;1;3;kurulum gecikti;hayır
+M101102;02.10.2025;İstanbul;Temel;2 yıl;160,76;3;134,8;0;0;1;şikâyet yok;hayır
+M101103;02.11.2025;Diyarbakır;Premium;Aylık;414,55;2;884,3;3;0;3;internet yavaş;evet
+M101104;02.08.2025;Diyarbakır;Standart;2 yıl;289,14;5;;0;1;4;şikâyet yok;hayır
+M101105;05.07.2021;İstanbul;Standart;Aylık;258,73;54;211,9;1;0;1;fatura yüksek;evet
+M101106;02.11.2025;Bursa;Temel;Aylık;202,82;2;180,4;1;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M101107;02.09.2025;Ankara;Temel;Aylık;200,18;4;173,2;1;0;;kurulum gecikti;evet
+M101108;03.06.2025;Konya;Standart;Aylık;284,65;7;162,6;0;0;5;şikâyet yok;hayır
+M101109;04.10.2021;İstanbul;Temel;Aylık;187,45;51;;1;1;1;fatura yüksek;evet
+M101110;02.08.2025;Konya;Premium;2 yıl;463,75;5;639,1;2;0;4;internet yavaş;hayır
+M101111;04.02.2020;Ankara;Premium;1 yıl;431,71;71;597,1;3;2;3;bağlantı kopuyor;hayır
+M101112;04.08.2022;İstanbul;Standart;2 yıl;296,38;41;355,4;0;0;5;şikâyet yok;hayır
+M101113;02.12.2024;Antalya;Standart;1 yıl;301,18;13;249,1;1;0;4;fatura yüksek;hayır
+M101114;02.08.2025;İstanbul;Standart;2 yıl;272,82;5;246,7;0;1;2;şikâyet yok;hayır
+M101115;04.08.2023;Konya;Temel;1 yıl;194,32;29;311,1;1;0;1;kurulum gecikti;hayır
+M101116;02.10.2024;Diyarbakır;Temel;1 yıl;257,83;15;226,8;0;2;1;şikâyet yok;hayır
+M101117;04.10.2022;İstanbul;Temel;2 yıl;184,97;39;145,9;1;0;;kurulum gecikti;hayır
+M101118;04.10.2022;Konya;Standart;2 yıl;330,54;39;214,8;0;0;1;şikâyet yok;hayır
+M101119;03.03.2025;İstanbul;Standart;Aylık;246,76;10;65,7;0;1;4;şikâyet yok;evet
+M101120;03.07.2025;İstanbul;Standart;Aylık;295,94;6;294;2;1;4;bağlantı kopuyor;hayır
+M101121;05.01.2018;Konya;Temel;1 yıl;187,61;96;380;1;0;3;internet yavaş;hayır
+M101122;03.07.2024;Bursa;Premium;1 yıl;437,42;18;380,6;0;0;5;şikâyet yok;hayır
+M101123;02.12.2025;Diyarbakır;Temel;Aylık;216,74;1;;1;0;3;fatura yüksek;hayır
+M101124;03.04.2025;İstanbul;Temel;2 yıl;214,5;9;246,2;2;0;;müşteri hizmetleri ulaşılmıyor;hayır
+M101125;03.05.2024;Ankara;Temel;1 yıl;181,43;20;289,6;1;2;3;müşteri hizmetleri ulaşılmıyor;hayır
+M101126;03.04.2025;Ankara;Standart;Aylık;264,33;9;231;3;0;1;kurulum gecikti;evet
+M101127;03.11.2022;İstanbul;Premium;1 yıl;444,27;38;415,7;1;0;3;kurulum gecikti;evet
+M101128;04.07.2023;İstanbul;Standart;2 yıl;321,21;30;124,7;2;2;1;kurulum gecikti;hayır
+M101129;05.03.2023;İstanbul;Standart;Aylık;305,88;34;;1;0;;müşteri hizmetleri ulaşılmıyor;hayır
+M101130;02.02.2024;Ankara;Premium;1 yıl;465,84;23;417,7;1;0;5;kurulum gecikti;hayır
+M101131;02.12.2024;Bursa;Premium;Aylık;413,67;13;601,7;3;0;1;fatura yüksek;hayır
+M101132;03.07.2025;Iğdır;Standart;1 yıl;267,74;6;263,2;0;2;4;şikâyet yok;evet
+M101133;04.04.2023;Ankara;Standart;Aylık;280,64;33;207,6;1;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M101134;04.07.2023;İstanbul;Premium;Aylık;454,88;30;132,9;0;1;4;şikâyet yok;hayır
+M101135;03.06.2025;Diyarbakır;Temel;Aylık;192,15;7;80,1;3;1;2;bağlantı kopuyor;hayır
+M101136;04.07.2023;İstanbul;Standart;Aylık;263,41;30;;1;3;3;kurulum gecikti;evet
+M101137;04.03.2024;İzmir;Standart;Aylık;310,85;22;;2;1;3;kurulum gecikti;evet
+M101138;04.11.2020;Antalya;Standart;Aylık;276,14;62;237,1;2;0;2;bağlantı kopuyor;evet
+M101139;05.05.2022;İstanbul;Temel;1 yıl;182,69;44;184;2;0;3;fatura yüksek;hayır
+M101140;03.01.2023;İstanbul;Temel;1 yıl;167,99;36;146,2;0;0;3;şikâyet yok;hayır
+M101141;02.11.2025;İzmir;Premium;Aylık;442,95;2;368,3;1;0;3;fatura yüksek;evet
+M101142;06.04.2019;İstanbul;Premium;1 yıl;433;81;411,2;0;1;3;şikâyet yok;hayır
+M101143;04.08.2020;Ankara;Temel;Aylık;223,82;65;187,2;0;0;;şikâyet yok;hayır
+M101144;04.06.2023;İzmir;Standart;1 yıl;281,07;31;360,9;2;0;4;fatura yüksek;hayır
+M101145;02.09.2025;Ankara;Standart;1 yıl;295,44;4;98,4;2;2;3;fatura yüksek;evet
+M101146;05.05.2023;Ankara;Standart;Aylık;319,92;32;358,5;1;1;3;fatura yüksek;hayır
+M101147;02.09.2025;Konya;Temel;1 yıl;177,27;4;195,7;2;0;3;internet yavaş;hayır
+M101148;02.12.2024;Antalya;Temel;Aylık;247,43;13;276,8;1;0;;fatura yüksek;hayır
+M101149;04.06.2021;Iğdır;Standart;2 yıl;295,15;55;408,1;1;2;2;internet yavaş;hayır
+M101150;02.12.2025;Ankara;Standart;2 yıl;286,44;1;172,8;1;1;2;kurulum gecikti;hayır
+M101151;03.05.2025;İzmir;Standart;Aylık;304,13;8;116,8;1;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M101152;03.05.2025;Ankara;Standart;1 yıl;297,45;8;516,1;0;0;4;şikâyet yok;hayır
+M101153;02.02.2024;İstanbul;Premium;Aylık;422,81;23;294,6;1;0;4;internet yavaş;hayır
+M101154;02.11.2024;Ankara;Standart;1 yıl;294,63;14;220,6;2;0;3;internet yavaş;hayır
+M101155;03.07.2024;Ankara;Temel;2 yıl;220,04;18;553,3;1;0;3;bağlantı kopuyor;hayır
+M101156;03.07.2025;Konya;Temel;1 yıl;242,39;6;342,5;0;2;3;şikâyet yok;evet
+M101157;02.01.2025;İstanbul;Standart;1 yıl;320,45;12;;1;2;4;müşteri hizmetleri ulaşılmıyor;hayır
+M101158;02.09.2025;Antalya;Temel;Aylık;234,78;4;278,6;0;1;3;şikâyet yok;hayır
+M101159;02.09.2024;Diyarbakır;Standart;2 yıl;311,26;16;196,3;0;0;4;şikâyet yok;hayır
+M101160;02.11.2024;Iğdır;Temel;Aylık;203,71;14;;0;0;4;şikâyet yok;hayır
+M101161;06.05.2019;İzmir;Temel;Aylık;176,86;80;201,1;1;0;2;bağlantı kopuyor;hayır
+M101162;01.02.2025;Antalya;Temel;Aylık;195,9;11;391,5;1;2;3;kurulum gecikti;hayır
+M101163;03.02.2022;Ankara;Temel;1 yıl;185,34;47;161,6;1;0;;fatura yüksek;hayır
+M101164;03.04.2025;İzmir;Temel;Aylık;218,77;9;111,8;1;0;5;fatura yüksek;hayır
+M101165;04.08.2020;Bursa;Premium;Aylık;373,12;65;598,7;3;0;4;fatura yüksek;hayır
+M101166;04.03.2024;İzmir;Temel;1 yıl;192,13;22;336,6;2;0;5;fatura yüksek;hayır
+M101167;03.03.2025;Antalya;Premium;Aylık;444,31;10;214,6;1;0;3;bağlantı kopuyor;evet
+M101168;02.10.2025;Bursa;Temel;1 yıl;210,29;3;279,5;2;1;5;bağlantı kopuyor;evet
+M101169;02.08.2025;Ankara;Standart;1 yıl;300,53;5;46,5;1;0;3;fatura yüksek;hayır
+M101170;04.10.2021;İstanbul;Standart;Aylık;300,09;51;193;2;1;4;fatura yüksek;hayır
+M101171;03.05.2024;İstanbul;Standart;Aylık;257,54;20;188,1;0;3;3;şikâyet yok;hayır
+M101172;03.07.2024;Ankara;Premium;1 yıl;464,97;18;457,2;0;1;2;şikâyet yok;evet
+M101173;02.12.2024;İzmir;Temel;Aylık;222,65;13;402,4;1;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M101174;02.12.2025;Diyarbakır;Standart;Aylık;322,24;1;232,4;1;1;4;kurulum gecikti;evet
+M101175;04.08.2023;İstanbul;Temel;2 yıl;207,5;29;143,8;2;0;3;kurulum gecikti;hayır
+M101176;04.03.2024;Iğdır;Standart;1 yıl;282,54;22;245,4;0;1;4;şikâyet yok;hayır
+M101177;02.12.2024;Ankara;Standart;Aylık;312,95;13;205,7;3;0;1;fatura yüksek;hayır
+M101178;03.05.2025;İstanbul;Temel;Aylık;186,41;8;152;1;0;;internet yavaş;evet
+M101179;02.12.2024;İzmir;Temel;1 yıl;174,75;13;232,8;3;0;3;bağlantı kopuyor;hayır
+M101180;04.06.2021;İstanbul;Temel;1 yıl;154,43;55;319,3;2;3;2;internet yavaş;hayır
+M101181;05.03.2022;İzmir;Standart;Aylık;269,94;46;186,4;0;0;5;şikâyet yok;hayır
+M101182;04.08.2022;Iğdır;Temel;Aylık;195,99;41;66;2;0;4;internet yavaş;hayır
+M101183;03.03.2025;İstanbul;Standart;Aylık;253,12;10;230,3;0;0;4;şikâyet yok;hayır
+M101184;03.09.2023;Ankara;Standart;2 yıl;248,08;28;157,8;2;3;2;bağlantı kopuyor;hayır
+M101185;02.09.2025;Antalya;Temel;1 yıl;185,41;4;305,6;2;0;5;kurulum gecikti;hayır
+M101186;03.08.2024;İstanbul;Premium;2 yıl;455,19;17;306,9;1;3;3;fatura yüksek;hayır
+M101187;04.06.2023;İstanbul;Standart;1 yıl;282,43;31;65,6;1;0;3;bağlantı kopuyor;hayır
+M101188;02.10.2024;İstanbul;Standart;2 yıl;296,74;15;219;2;0;4;fatura yüksek;hayır
+M101189;02.12.2025;İstanbul;Temel;2 yıl;173,18;1;338,8;1;1;3;kurulum gecikti;hayır
+M101190;02.12.2025;Konya;Temel;1 yıl;203,57;1;568,3;2;0;;fatura yüksek;evet
+M101191;02.01.2025;İzmir;Temel;Aylık;213,36;12;275,1;0;0;5;şikâyet yok;hayır
+M101192;02.11.2024;Bursa;Standart;Aylık;257,47;14;154,1;0;0;;şikâyet yok;hayır
+M101193;02.12.2024;İzmir;Temel;1 yıl;187,35;13;53,2;1;0;;kurulum gecikti;hayır
+M101194;03.12.2023;Ankara;Temel;2 yıl;190,72;25;179,8;5;0;;internet yavaş;hayır
+M101195;03.07.2025;İstanbul;Standart;Aylık;299,11;6;196,8;1;3;4;müşteri hizmetleri ulaşılmıyor;evet
+M101196;04.09.2020;Bursa;Temel;1 yıl;184,85;64;147,7;1;0;4;fatura yüksek;hayır
+M101197;02.09.2025;İstanbul;Temel;Aylık;157,47;4;61,1;1;0;3;bağlantı kopuyor;hayır
+M101198;03.07.2024;Konya;Temel;1 yıl;186,27;18;531,6;1;1;4;fatura yüksek;hayır
+M101199;03.07.2025;İzmir;Temel;Aylık;235,45;6;57,4;2;0;4;fatura yüksek;hayır
+M101200;02.01.2025;İstanbul;Temel;Aylık;232,8;12;237,2;0;2;5;şikâyet yok;evet
+M101201;03.04.2025;Konya;Standart;2 yıl;275,83;9;645,1;1;0;5;müşteri hizmetleri ulaşılmıyor;hayır
+M101202;01.02.2025;Konya;Premium;1 yıl;408,84;11;425,6;2;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M101203;04.04.2023;Diyarbakır;Standart;1 yıl;265,54;33;496,3;1;0;5;bağlantı kopuyor;hayır
+M101204;02.02.2024;İzmir;Temel;Aylık;189,82;23;247,9;0;0;4;şikâyet yok;hayır
+M101205;02.11.2025;İstanbul;Standart;2 yıl;294,23;2;115,4;1;0;2;internet yavaş;hayır
+M101206;02.01.2025;İzmir;Temel;Aylık;219,33;12;439,7;1;0;3;internet yavaş;evet
+M101207;03.08.2024;Ankara;Standart;Aylık;332,02;17;202,7;0;0;5;şikâyet yok;hayır
+M101208;02.12.2024;Antalya;Temel;Aylık;195,12;13;475;2;0;;internet yavaş;hayır
+M101209;02.10.2025;Diyarbakır;Standart;Aylık;333,72;3;148,3;0;2;3;şikâyet yok;hayır
+M101210;02.01.2025;İstanbul;Premium;1 yıl;456,83;12;407;0;1;4;şikâyet yok;hayır
+M101211;02.11.2025;Bursa;Premium;2 yıl;423,66;2;311,5;1;1;3;kurulum gecikti;hayır
+M101212;04.06.2021;Diyarbakır;Standart;1 yıl;254,88;55;45,8;2;1;2;bağlantı kopuyor;hayır
+M101213;03.07.2025;Diyarbakır;Temel;Aylık;197,98;6;271,4;1;2;4;kurulum gecikti;hayır
+M101214;03.05.2024;Konya;Temel;Aylık;239,57;20;340,5;0;1;;şikâyet yok;hayır
+M101215;03.01.2021;Bursa;Temel;1 yıl;196,04;60;153,4;1;1;3;müşteri hizmetleri ulaşılmıyor;hayır
+M101216;05.05.2020;Ankara;Temel;Aylık;244,06;68;102,5;0;0;3;şikâyet yok;hayır
+M101217;05.03.2023;Diyarbakır;Temel;1 yıl;173,27;34;257,9;1;0;4;kurulum gecikti;hayır
+M101218;03.04.2025;İstanbul;Premium;Aylık;476,12;9;243,8;0;0;3;şikâyet yok;evet
+M101219;03.08.2024;İzmir;Temel;1 yıl;188,47;17;;5;0;2;bağlantı kopuyor;hayır
+M101220;05.07.2021;Ankara;Temel;1 yıl;177,58;54;203,6;2;2;5;internet yavaş;hayır
+M101221;05.07.2020;İstanbul;Premium;Aylık;417,74;66;1166,8;2;2;4;internet yavaş;hayır
+M101222;02.11.2024;İstanbul;Standart;Aylık;275,66;14;131,2;2;0;1;fatura yüksek;evet
+M101223;03.01.2022;İzmir;Temel;1 yıl;161,34;48;73,1;1;0;;bağlantı kopuyor;hayır
+M101224;03.06.2025;İstanbul;Standart;1 yıl;268,31;7;467,3;1;0;2;fatura yüksek;hayır
+M101225;01.02.2025;Diyarbakır;Standart;Aylık;232,3;11;72,1;2;0;2;bağlantı kopuyor;hayır
+M101226;02.10.2025;Iğdır;Standart;Aylık;320,85;3;255,4;4;0;2;bağlantı kopuyor;evet
+M101227;03.06.2025;İstanbul;Temel;1 yıl;215,49;7;174,7;1;0;4;müşteri hizmetleri ulaşılmıyor;hayır
+M101228;03.06.2024;İstanbul;Standart;Aylık;276,11;19;134,8;3;1;2;bağlantı kopuyor;evet
+M101229;03.09.2022;İstanbul;Temel;1 yıl;181,06;40;87,9;1;0;4;bağlantı kopuyor;hayır
+M101230;03.05.2025;İstanbul;Standart;Aylık;325,08;8;368,5;0;1;4;şikâyet yok;hayır
+M101231;03.09.2022;Ankara;Premium;1 yıl;404,68;40;570,2;0;2;5;şikâyet yok;hayır
+M101232;03.11.2023;Bursa;Temel;2 yıl;223,38;26;232;0;0;4;şikâyet yok;hayır
+M101233;02.11.2025;Ankara;Standart;Aylık;323,48;2;384,9;0;0;2;şikâyet yok;evet
+M101234;02.12.2024;Bursa;Temel;2 yıl;218,7;13;184;1;1;3;bağlantı kopuyor;hayır
+M101235;03.04.2025;İstanbul;Temel;2 yıl;200,8;9;133,2;0;0;3;şikâyet yok;hayır
+M101236;03.07.2025;Bursa;Standart;1 yıl;307,51;6;422;2;1;2;müşteri hizmetleri ulaşılmıyor;hayır
+M101237;05.05.2021;Antalya;Temel;Aylık;197,19;56;278,9;4;0;2;kurulum gecikti;evet
+M101238;03.06.2024;Bursa;Temel;2 yıl;228,36;19;290,5;1;0;4;fatura yüksek;hayır
+M101239;02.09.2024;Antalya;Standart;1 yıl;274,37;16;205,7;3;0;2;fatura yüksek;hayır
+M101240;02.10.2024;Antalya;Standart;Aylık;337,26;15;314,8;1;0;1;internet yavaş;evet
+M101241;03.05.2025;Bursa;Premium;Aylık;451,03;8;263,1;1;0;2;müşteri hizmetleri ulaşılmıyor;evet
+M101242;04.10.2022;İstanbul;Premium;Aylık;427,14;39;123,7;0;0;;şikâyet yok;hayır
+M101243;03.05.2024;İzmir;Standart;Aylık;320,14;20;193,1;2;0;3;fatura yüksek;evet
+M101244;04.10.2022;Konya;Premium;Aylık;457,32;39;;1;0;4;bağlantı kopuyor;evet
+M101245;03.07.2024;Diyarbakır;Premium;Aylık;422,8;18;387,2;2;0;4;müşteri hizmetleri ulaşılmıyor;hayır
+M101246;03.03.2025;İzmir;Standart;1 yıl;263,58;10;181,4;1;0;3;fatura yüksek;hayır
+M101247;02.09.2024;İstanbul;Temel;1 yıl;169,16;16;130,9;4;0;3;fatura yüksek;hayır
+M101248;02.10.2025;İzmir;Temel;Aylık;183,4;3;287,7;3;1;2;internet yavaş;evet
+M101249;01.02.2025;İzmir;Standart;1 yıl;284,79;11;130,7;1;1;3;internet yavaş;hayır
+M101250;01.02.2025;İstanbul;Standart;Aylık;286,9;11;202,7;1;0;4;kurulum gecikti;evet
+M101251;03.06.2025;İstanbul;Temel;Aylık;258,69;7;290,6;2;0;2;bağlantı kopuyor;hayır
+M101252;02.10.2025;Ankara;Premium;Aylık;430,66;3;202,6;2;3;5;bağlantı kopuyor;hayır
+M101253;04.11.2020;İstanbul;Standart;Aylık;294,56;62;50,4;2;2;3;bağlantı kopuyor;hayır
+M101254;03.11.2023;İzmir;Temel;Aylık;186,79;26;142,9;2;0;3;kurulum gecikti;hayır
+M101255;02.10.2024;İstanbul;Premium;1 yıl;467,06;15;399,8;1;0;2;kurulum gecikti;hayır
+M101256;03.07.2025;Ankara;Standart;Aylık;256,24;6;304,1;0;0;4;şikâyet yok;hayır
+M101257;02.01.2025;İstanbul;Temel;1 yıl;207,7;12;112,6;1;1;3;fatura yüksek;hayır
+M101258;03.06.2025;İstanbul;Standart;2 yıl;289,31;7;154,9;0;0;4;şikâyet yok;hayır
+M101259;03.06.2025;İstanbul;Standart;2 yıl;288,62;7;206,6;1;1;4;kurulum gecikti;hayır
+M101260;03.06.2025;İstanbul;Premium;Aylık;432,58;7;484,7;2;0;;bağlantı kopuyor;evet
+M101261;03.04.2025;İstanbul;Standart;1 yıl;277,48;9;148,4;1;0;4;internet yavaş;hayır
+M101262;02.11.2025;İzmir;Temel;Aylık;174,9;2;141,2;2;1;2;bağlantı kopuyor;evet
+M101263;04.04.2023;Bursa;Temel;1 yıl;227,37;33;319,6;1;0;4;kurulum gecikti;hayır
+M101264;02.08.2025;İstanbul;Temel;Aylık;235,35;5;69,3;0;1;3;şikâyet yok;hayır
+M101265;03.07.2025;Konya;Temel;Aylık;218,16;6;;1;2;;bağlantı kopuyor;evet
+M101266;02.12.2024;Antalya;Premium;2 yıl;462,87;13;1066,2;0;0;4;şikâyet yok;hayır
+M101267;02.12.2025;Bursa;Temel;Aylık;205,94;1;161,8;1;2;4;müşteri hizmetleri ulaşılmıyor;evet
+M101268;03.05.2025;Bursa;Premium;1 yıl;375,37;8;270,1;1;0;5;internet yavaş;hayır
+M101269;02.10.2024;İstanbul;Temel;1 yıl;176,32;15;;0;0;1;şikâyet yok;hayır
+M101270;01.02.2025;Antalya;Standart;1 yıl;303,73;11;246;1;2;2;bağlantı kopuyor;evet
+M101271;05.01.2018;İzmir;Temel;2 yıl;143,44;96;282,1;3;0;4;bağlantı kopuyor;hayır
+M101272;01.02.2025;Ankara;Temel;Aylık;204,99;11;300,3;1;0;3;fatura yüksek;hayır
+M101273;04.07.2023;İstanbul;Temel;Aylık;209,87;30;214,9;1;0;4;fatura yüksek;hayır
+M101274;03.07.2025;Bursa;Premium;Aylık;438,94;6;502,9;0;0;3;şikâyet yok;hayır
+M101275;05.01.2018;İstanbul;Standart;1 yıl;264,91;96;208,7;1;1;4;internet yavaş;hayır
+M101276;03.04.2024;Bursa;Temel;1 yıl;192,66;21;95,9;0;0;5;şikâyet yok;hayır
+M101277;02.09.2025;İstanbul;Temel;Aylık;193,14;4;297,1;0;0;1;şikâyet yok;hayır
+M101278;02.11.2025;İstanbul;Temel;Aylık;207,31;2;267,3;0;0;2;şikâyet yok;evet
+M101279;04.08.2023;Ankara;Standart;1 yıl;284,88;29;336,9;0;0;3;şikâyet yok;hayır
+M101280;03.12.2023;İstanbul;Premium;2 yıl;388,3;25;239,6;0;0;4;şikâyet yok;hayır
+M101281;02.12.2024;Antalya;Standart;Aylık;350,09;13;284,2;3;1;;kurulum gecikti;evet
+M101282;03.06.2024;Diyarbakır;Standart;Aylık;299,53;19;312,7;1;0;;internet yavaş;hayır
+M101283;01.02.2025;İstanbul;Temel;2 yıl;195,71;11;338;2;0;3;kurulum gecikti;hayır
+M101284;05.03.2021;İstanbul;Standart;2 yıl;278,26;58;153,9;1;0;3;internet yavaş;hayır
+M101285;01.02.2025;İstanbul;Standart;1 yıl;310,21;11;451,6;1;1;3;fatura yüksek;hayır
+M101286;03.04.2024;Diyarbakır;Standart;1 yıl;296,68;21;310,5;1;0;3;kurulum gecikti;hayır
+M101287;04.10.2020;Diyarbakır;Temel;Aylık;212,15;63;276,1;1;1;3;fatura yüksek;hayır
+M101288;02.08.2025;Antalya;Standart;1 yıl;254,32;5;200,8;1;1;3;bağlantı kopuyor;hayır
+M101289;05.01.2019;Diyarbakır;Temel;Aylık;149,96;84;356,1;1;0;4;internet yavaş;hayır
+M101290;04.04.2023;İstanbul;Temel;Aylık;234,51;33;300,6;0;0;3;şikâyet yok;hayır
+M101291;02.11.2024;Antalya;Temel;1 yıl;206,8;14;74;0;0;5;şikâyet yok;hayır
+M101292;02.01.2025;Diyarbakır;Temel;2 yıl;208,43;12;173,3;0;0;4;şikâyet yok;hayır
+M101293;03.06.2025;İstanbul;Temel;2 yıl;230,36;7;301,2;1;0;2;müşteri hizmetleri ulaşılmıyor;hayır
+M101294;03.03.2025;Ankara;Standart;Aylık;281,78;10;216,9;1;0;2;kurulum gecikti;hayır
+M101295;03.07.2024;Ankara;Standart;1 yıl;303,89;18;140,5;1;0;5;bağlantı kopuyor;hayır
+M101296;03.06.2025;İzmir;Temel;2 yıl;156,66;7;199,9;0;1;;şikâyet yok;hayır
+M101297;02.10.2025;Konya;Standart;2 yıl;289,05;3;350,9;3;0;3;internet yavaş;hayır
+M101298;04.04.2023;Ankara;Standart;Aylık;289,4;33;282,5;2;0;4;fatura yüksek;hayır
+M101299;04.04.2023;İzmir;Premium;Aylık;455,95;33;560,3;3;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M101300;04.10.2023;İstanbul;Premium;Aylık;420,17;27;;1;0;;fatura yüksek;hayır
+M101301;05.07.2021;İstanbul;Premium;Aylık;482,86;54;103,7;1;0;;fatura yüksek;hayır
+M101302;02.12.2025;İstanbul;Premium;Aylık;367,56;1;267,8;2;1;2;kurulum gecikti;evet
+M101303;02.12.2024;İstanbul;Premium;Aylık;458,07;13;275,5;2;2;2;internet yavaş;hayır
+M101304;02.12.2024;Diyarbakır;Premium;1 yıl;387,48;13;419,7;0;0;5;şikâyet yok;hayır
+M101305;04.07.2023;İstanbul;Premium;Aylık;456,02;30;358,6;1;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M101306;05.07.2022;Bursa;Temel;Aylık;221,25;42;436,3;1;0;2;fatura yüksek;hayır
+M101307;03.03.2025;Bursa;Temel;Aylık;185,05;10;148,4;3;1;2;internet yavaş;hayır
+M101308;04.12.2020;İstanbul;Premium;Aylık;421,87;61;359,9;2;0;3;bağlantı kopuyor;hayır
+M101309;03.05.2025;İstanbul;Temel;2 yıl;194,98;8;248,2;0;2;4;şikâyet yok;hayır
+M101310;05.07.2021;İstanbul;Premium;Aylık;451,08;54;570,6;2;0;4;bağlantı kopuyor;evet
+M101311;02.12.2025;İstanbul;Premium;Aylık;418,51;1;400,2;1;1;5;müşteri hizmetleri ulaşılmıyor;hayır
+M101312;04.12.2021;İstanbul;Standart;2 yıl;299,98;49;94,4;0;2;;şikâyet yok;hayır
+M101313;03.05.2024;İstanbul;Temel;Aylık;203,74;20;218,6;2;2;3;müşteri hizmetleri ulaşılmıyor;evet
+M101314;02.12.2024;İstanbul;Standart;Aylık;307,94;13;241,8;0;1;4;şikâyet yok;hayır
+M101315;03.03.2025;İzmir;Premium;2 yıl;436,47;10;260,5;0;0;;şikâyet yok;hayır
+M101316;04.12.2022;İstanbul;Temel;2 yıl;212,96;37;48,4;0;0;3;şikâyet yok;hayır
+M101317;04.10.2021;Ankara;Premium;Aylık;450,19;51;;1;0;;internet yavaş;hayır
+M101318;03.07.2025;Iğdır;Standart;2 yıl;309,46;6;229,3;0;0;3;şikâyet yok;hayır
+M101319;02.11.2024;İstanbul;Premium;Aylık;448,67;14;218;1;3;3;kurulum gecikti;evet
+M101320;02.11.2025;İstanbul;Temel;2 yıl;197,57;2;104,3;2;1;2;kurulum gecikti;evet
+M101321;04.04.2023;İzmir;Premium;2 yıl;429,58;33;506,8;1;1;1;bağlantı kopuyor;hayır
+M101322;02.12.2024;Konya;Temel;Aylık;183,41;13;242,7;1;0;5;fatura yüksek;hayır
+M101323;02.11.2025;Antalya;Standart;Aylık;307,33;2;114,4;1;0;3;kurulum gecikti;hayır
+M101324;03.06.2025;Ankara;Premium;Aylık;408,49;7;332;1;0;3;müşteri hizmetleri ulaşılmıyor;evet
+M101325;02.12.2025;Bursa;Standart;Aylık;286,16;1;59,4;1;0;4;fatura yüksek;hayır
+M101326;02.12.2025;İstanbul;Temel;Aylık;199,53;1;216,6;1;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M101327;02.11.2025;İstanbul;Premium;Aylık;446,04;2;524,9;0;0;3;şikâyet yok;evet
+M101328;02.01.2025;İzmir;Standart;Aylık;304,05;12;196,6;1;1;4;fatura yüksek;hayır
+M101329;03.07.2025;Ankara;Temel;Aylık;219,36;6;104,3;0;0;;şikâyet yok;hayır
+M101330;02.11.2025;Konya;Premium;2 yıl;437,06;2;532,7;0;0;5;şikâyet yok;hayır
+M101331;03.09.2022;İstanbul;Premium;Aylık;398,21;40;285,6;2;0;4;fatura yüksek;hayır
+M101332;05.01.2018;İstanbul;Premium;Aylık;419,91;96;349,6;1;1;3;internet yavaş;evet
+M101333;04.09.2021;Antalya;Standart;Aylık;296,16;52;350,1;1;1;;fatura yüksek;hayır
+M101334;03.06.2025;İzmir;Temel;1 yıl;210,9;7;171,8;1;0;2;fatura yüksek;hayır
+M101335;03.04.2025;İstanbul;Standart;1 yıl;273,25;9;168,4;0;2;;şikâyet yok;evet
+M101336;06.08.2018;İstanbul;Standart;Aylık;276,82;89;418,9;0;1;5;şikâyet yok;hayır
+M101337;02.09.2025;Ankara;Standart;Aylık;289,27;4;147,9;2;2;2;fatura yüksek;evet
+M101338;03.09.2022;Ankara;Temel;1 yıl;172,98;40;85,1;1;0;4;müşteri hizmetleri ulaşılmıyor;hayır
+M101339;02.10.2024;Bursa;Temel;1 yıl;197,56;15;162,8;2;0;4;kurulum gecikti;hayır
+M101340;05.03.2022;İstanbul;Temel;Aylık;229,42;46;247,3;0;0;3;şikâyet yok;hayır
+M101341;04.07.2023;Antalya;Temel;Aylık;171,49;30;;0;3;5;şikâyet yok;hayır
+M101342;03.04.2024;İstanbul;Temel;1 yıl;168,35;21;291,5;1;0;;kurulum gecikti;hayır
+M101343;03.03.2025;İstanbul;Temel;Aylık;227,08;10;169,9;2;1;;müşteri hizmetleri ulaşılmıyor;hayır
+M101344;03.03.2025;Ankara;Standart;1 yıl;288,01;10;235,5;1;2;3;bağlantı kopuyor;hayır
+M101345;02.02.2024;Iğdır;Standart;1 yıl;330,88;23;452;1;0;3;kurulum gecikti;hayır
+M101346;02.12.2025;İstanbul;Standart;1 yıl;258,79;1;92,1;2;3;3;bağlantı kopuyor;hayır
+M101347;02.01.2025;Ankara;Temel;1 yıl;226,33;12;453,6;1;1;3;bağlantı kopuyor;hayır
+M101348;02.12.2025;Ankara;Temel;2 yıl;208,63;1;166,4;3;3;2;bağlantı kopuyor;evet
+M101349;03.05.2025;Bursa;Temel;Aylık;172,54;8;171,5;1;0;4;bağlantı kopuyor;hayır
+M101350;04.10.2020;İstanbul;Temel;2 yıl;210,75;63;110,5;0;2;4;şikâyet yok;hayır
+M101351;05.07.2020;Bursa;Temel;Aylık;255,55;66;89;1;0;4;kurulum gecikti;hayır
+M101352;05.03.2023;İstanbul;Temel;Aylık;223,17;34;171,6;2;0;4;kurulum gecikti;hayır
+M101353;03.05.2025;Diyarbakır;Temel;1 yıl;207,37;8;;0;2;3;şikâyet yok;hayır
+M101354;02.12.2024;İstanbul;Temel;2 yıl;193,36;13;366,3;2;1;;müşteri hizmetleri ulaşılmıyor;hayır
+M101355;02.12.2025;Ankara;Standart;1 yıl;259,81;1;305,2;0;1;4;şikâyet yok;hayır
+M101356;02.09.2024;İstanbul;Temel;2 yıl;169,33;16;286,4;0;0;3;şikâyet yok;hayır
+M101357;02.12.2025;Antalya;Temel;Aylık;192,58;1;372,5;4;2;1;müşteri hizmetleri ulaşılmıyor;evet
+M101358;03.04.2025;İstanbul;Standart;Aylık;314,07;9;120,1;0;0;3;şikâyet yok;hayır
+M101359;02.12.2024;Bursa;Standart;1 yıl;287,98;13;315,3;1;0;4;müşteri hizmetleri ulaşılmıyor;hayır
+M101360;03.01.2023;İstanbul;Standart;Aylık;332,79;36;257,7;2;0;4;müşteri hizmetleri ulaşılmıyor;hayır
+M101361;03.07.2025;İzmir;Standart;Aylık;268,82;6;260,2;0;0;4;şikâyet yok;hayır
+M101362;03.04.2025;İstanbul;Temel;2 yıl;175,57;9;303,5;0;1;4;şikâyet yok;hayır
+M101363;01.02.2025;İstanbul;Premium;2 yıl;433,8;11;291,6;1;1;3;fatura yüksek;evet
+M101364;03.05.2024;Bursa;Standart;Aylık;290,28;20;39,1;1;1;4;bağlantı kopuyor;hayır
+M101365;02.11.2024;İstanbul;Premium;Aylık;470,04;14;625,6;1;0;3;internet yavaş;hayır
+M101366;03.09.2023;İzmir;Temel;Aylık;218,36;28;138,6;0;1;4;şikâyet yok;hayır
+M101367;02.12.2024;İzmir;Temel;2 yıl;203,45;13;257;2;0;3;fatura yüksek;hayır
+M101368;02.08.2025;İstanbul;Premium;2 yıl;413,41;5;400,5;1;0;3;kurulum gecikti;hayır
+M101369;02.10.2024;Antalya;Temel;1 yıl;219,4;15;234,3;1;0;3;fatura yüksek;hayır
+M101370;05.11.2018;İstanbul;Premium;Aylık;492,21;86;592,8;0;0;2;şikâyet yok;hayır
+M101371;02.02.2024;İzmir;Standart;Aylık;294,99;23;;2;0;5;internet yavaş;hayır
+M101372;04.12.2022;İstanbul;Temel;Aylık;171,33;37;335,4;1;1;4;kurulum gecikti;hayır
+M101373;03.01.2023;İstanbul;Standart;Aylık;253,57;36;220,8;2;0;4;internet yavaş;hayır
+M101374;02.11.2025;Bursa;Temel;2 yıl;193,76;2;209,8;1;1;2;müşteri hizmetleri ulaşılmıyor;hayır
+M101375;04.08.2023;İstanbul;Premium;Aylık;437,73;29;689,9;1;0;4;internet yavaş;hayır
+M101376;04.04.2022;İstanbul;Standart;Aylık;274,98;45;259,4;0;2;4;şikâyet yok;hayır
+M101377;02.09.2025;İzmir;Standart;Aylık;281,3;4;234,1;1;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M101378;02.11.2025;İstanbul;Temel;1 yıl;190,65;2;397,1;3;1;5;internet yavaş;hayır
+M101379;03.08.2024;İstanbul;Temel;Aylık;234,45;17;122,3;4;0;5;kurulum gecikti;hayır
+M101380;03.04.2025;İstanbul;Temel;Aylık;171,06;9;272,5;0;2;4;şikâyet yok;hayır
+M101381;03.05.2024;İstanbul;Standart;Aylık;280,5;20;117,3;3;0;;müşteri hizmetleri ulaşılmıyor;evet
+M101382;02.11.2024;Antalya;Premium;Aylık;459,2;14;439,5;1;1;;fatura yüksek;hayır
+M101383;02.12.2025;Bursa;Temel;1 yıl;240,01;1;252,6;2;0;4;bağlantı kopuyor;hayır
+M101384;05.01.2020;Bursa;Standart;Aylık;278,07;72;551,1;0;0;4;şikâyet yok;hayır
+M101385;04.08.2023;Bursa;Premium;2 yıl;428,28;29;463,1;0;0;3;şikâyet yok;hayır
+M101386;02.08.2025;Bursa;Temel;2 yıl;248,96;5;158;2;0;;müşteri hizmetleri ulaşılmıyor;hayır
+M101387;02.10.2025;Ankara;Standart;Aylık;324,79;3;;2;0;2;bağlantı kopuyor;evet
+M101388;03.12.2023;Bursa;Premium;1 yıl;413,06;25;330,1;0;0;4;şikâyet yok;hayır
+M101389;02.08.2025;Ankara;Standart;Aylık;269,14;5;438,5;1;0;4;internet yavaş;hayır
+M101390;03.08.2024;İstanbul;Temel;Aylık;206,27;17;145,5;3;0;3;bağlantı kopuyor;hayır
+M101391;04.10.2020;Antalya;Standart;Aylık;270,66;63;198,7;4;0;4;fatura yüksek;hayır
+M101392;02.08.2025;İstanbul;Temel;1 yıl;192,88;5;314,3;2;0;3;internet yavaş;hayır
+M101393;04.06.2022;İzmir;Temel;Aylık;211,94;43;110;1;0;4;fatura yüksek;hayır
+M101394;01.02.2025;İstanbul;Premium;2 yıl;392,46;11;821,4;0;1;3;şikâyet yok;hayır
+M101395;02.12.2025;Iğdır;Standart;1 yıl;299,61;1;383,5;0;3;3;şikâyet yok;evet
+M101396;03.07.2025;İstanbul;Temel;2 yıl;214,92;6;291,8;0;0;1;şikâyet yok;evet
+M101397;02.11.2024;İstanbul;Standart;2 yıl;287,65;14;85,2;3;0;;müşteri hizmetleri ulaşılmıyor;hayır
+M101398;05.01.2018;İzmir;Standart;Aylık;313,89;96;156,6;1;2;2;internet yavaş;hayır
+M101399;02.02.2023;İstanbul;Premium;2 yıl;417,55;35;445,4;0;0;5;şikâyet yok;hayır
+M101400;03.04.2025;İzmir;Standart;1 yıl;286,05;9;622,7;1;0;4;kurulum gecikti;hayır
+M101401;02.01.2025;Bursa;Premium;Aylık;388,71;12;484,5;1;0;5;müşteri hizmetleri ulaşılmıyor;hayır
+M101402;04.02.2020;İstanbul;Standart;1 yıl;219,6;71;;1;0;3;bağlantı kopuyor;hayır
+M101403;02.10.2024;Konya;Temel;Aylık;175,66;15;182;1;0;4;bağlantı kopuyor;hayır
+M101404;03.08.2024;İstanbul;Standart;Aylık;290,63;17;207,9;0;2;4;şikâyet yok;hayır
+M101405;03.06.2024;İstanbul;Temel;1 yıl;202,31;19;82,3;1;0;3;internet yavaş;hayır
+M101406;04.03.2024;İstanbul;Temel;1 yıl;194,82;22;319,3;2;1;4;internet yavaş;hayır
+M101407;02.09.2025;İstanbul;Temel;Aylık;194,9;4;385,2;2;2;3;internet yavaş;evet
+M101408;02.09.2025;Konya;Standart;1 yıl;289,19;4;319,3;1;0;3;fatura yüksek;hayır
+M101409;03.09.2023;İstanbul;Temel;Aylık;203,02;28;71,9;1;1;3;fatura yüksek;hayır
+M101410;04.09.2021;Bursa;Temel;1 yıl;182,98;52;243,1;3;0;1;fatura yüksek;hayır
+M101411;02.09.2024;İstanbul;Premium;Aylık;392,51;16;291,9;0;0;4;şikâyet yok;evet
+M101412;02.08.2025;Bursa;Temel;Aylık;217,24;5;300,5;3;0;5;müşteri hizmetleri ulaşılmıyor;hayır
+M101413;03.03.2025;Iğdır;Standart;2 yıl;258,75;10;102,2;1;1;3;bağlantı kopuyor;hayır
+M101414;04.10.2023;İstanbul;Standart;2 yıl;328,44;27;218;1;0;4;internet yavaş;hayır
+M101415;03.04.2024;İstanbul;Temel;Aylık;175,33;21;365,9;1;1;;kurulum gecikti;hayır
+M101416;02.01.2025;İzmir;Standart;Aylık;282,71;12;86,3;1;0;3;müşteri hizmetleri ulaşılmıyor;evet
+M101417;03.01.2022;Ankara;Temel;Aylık;224,5;48;152,4;0;0;4;şikâyet yok;hayır
+M101418;02.08.2025;Antalya;Premium;Aylık;419,84;5;393,1;0;1;4;şikâyet yok;hayır
+M101419;03.04.2025;İstanbul;Temel;1 yıl;171,9;9;122,6;2;1;3;kurulum gecikti;hayır
+M101420;05.03.2021;Antalya;Temel;Aylık;196,58;58;83,1;0;0;2;şikâyet yok;evet
+M101421;02.08.2025;İstanbul;Standart;2 yıl;313,71;5;344,5;3;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M101422;03.05.2025;İstanbul;Standart;1 yıl;290,82;8;462,9;0;0;;şikâyet yok;hayır
+M101423;04.10.2023;İstanbul;Premium;2 yıl;426,72;27;121,4;3;0;4;fatura yüksek;hayır
+M101424;02.11.2025;Ankara;Standart;2 yıl;288,22;2;258,6;2;0;2;bağlantı kopuyor;hayır
+M101425;02.12.2024;İzmir;Premium;1 yıl;462,24;13;276,9;2;1;1;internet yavaş;evet
+M101426;03.11.2021;Antalya;Standart;Aylık;259,62;50;119,3;0;0;3;şikâyet yok;evet
+M101427;03.02.2022;İstanbul;Premium;1 yıl;438,12;47;244;1;0;2;kurulum gecikti;hayır
+M101428;02.09.2024;Bursa;Premium;Aylık;490,4;16;273;2;0;2;müşteri hizmetleri ulaşılmıyor;evet
+M101429;02.02.2023;Konya;Premium;1 yıl;431,32;35;138;3;0;2;müşteri hizmetleri ulaşılmıyor;hayır
+M101430;05.11.2019;İstanbul;Temel;Aylık;221,58;74;125,7;1;0;1;internet yavaş;hayır
+M101431;03.03.2025;Iğdır;Premium;Aylık;413,57;10;465,8;1;0;2;bağlantı kopuyor;hayır
+M101432;03.07.2025;İzmir;Standart;Aylık;277,97;6;233,3;1;0;5;müşteri hizmetleri ulaşılmıyor;hayır
+M101433;02.10.2024;Diyarbakır;Temel;Aylık;203,08;15;231,7;0;2;4;şikâyet yok;evet
+M101434;03.09.2023;Antalya;Temel;2 yıl;199,09;28;284,3;1;0;4;fatura yüksek;hayır
+M101435;02.11.2025;Konya;Temel;Aylık;177,16;2;78,5;2;2;2;internet yavaş;evet
+M101436;03.06.2025;İstanbul;Standart;Aylık;311,33;7;194,2;2;0;2;internet yavaş;evet
+M101437;05.05.2021;İstanbul;Temel;Aylık;189,59;56;91,5;1;0;5;müşteri hizmetleri ulaşılmıyor;hayır
+M101438;03.12.2023;Antalya;Temel;1 yıl;219,05;25;197,8;1;0;3;fatura yüksek;hayır
+M101439;03.08.2024;Antalya;Temel;2 yıl;199,06;17;261,4;0;0;4;şikâyet yok;hayır
+M101440;02.11.2025;İstanbul;Temel;Aylık;235,55;2;269,1;2;0;2;internet yavaş;hayır
+M101441;02.01.2025;İzmir;Temel;Aylık;197,33;12;221;0;0;4;şikâyet yok;hayır
+M101442;03.07.2025;İstanbul;Temel;Aylık;180,23;6;190,9;1;0;2;kurulum gecikti;hayır
+M101443;03.09.2023;Ankara;Premium;2 yıl;459,54;28;592,9;3;2;3;internet yavaş;evet
+M101444;05.03.2022;Bursa;Standart;Aylık;256,84;46;79,3;0;2;4;şikâyet yok;hayır
+M101445;02.01.2025;İzmir;Standart;Aylık;282,11;12;329,4;1;0;1;internet yavaş;evet
+M101446;05.07.2022;İstanbul;Premium;Aylık;423,87;42;311,3;1;2;5;internet yavaş;evet
+M101447;05.01.2018;Diyarbakır;Standart;1 yıl;317,05;96;297,3;0;0;2;şikâyet yok;hayır
+M101448;04.10.2022;Bursa;Premium;Aylık;442,64;39;171;0;1;4;şikâyet yok;hayır
+M101449;03.06.2025;Ankara;Standart;2 yıl;295,65;7;70,1;2;0;2;internet yavaş;hayır
+M101450;04.06.2023;Ankara;Temel;1 yıl;241,47;31;220,7;0;1;3;şikâyet yok;hayır
+M101451;03.11.2023;İstanbul;Standart;1 yıl;294,06;26;442,7;0;0;3;şikâyet yok;hayır
+M101452;04.04.2023;Konya;Temel;Aylık;168,02;33;231,3;2;0;2;fatura yüksek;evet
+M101453;03.06.2024;Antalya;Temel;1 yıl;172,55;19;412,8;0;0;;şikâyet yok;hayır
+M101454;04.08.2023;İstanbul;Temel;2 yıl;165,34;29;317,2;0;0;4;şikâyet yok;hayır
+M101455;03.11.2023;Diyarbakır;Premium;2 yıl;429,83;26;214;3;0;4;bağlantı kopuyor;hayır
+M101456;03.05.2025;İstanbul;Temel;Aylık;198,59;8;233,6;0;0;3;şikâyet yok;hayır
+M101457;04.11.2020;İzmir;Premium;Aylık;439,08;62;188,2;1;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M101458;02.11.2025;Ankara;Temel;1 yıl;206,11;2;121,6;2;1;3;internet yavaş;hayır
+M101459;02.10.2025;İstanbul;Temel;Aylık;204,9;3;228,3;1;0;4;bağlantı kopuyor;hayır
+M101460;02.11.2024;Antalya;Standart;Aylık;332,57;14;253,1;1;1;3;bağlantı kopuyor;hayır
+M101461;02.09.2025;İstanbul;Temel;Aylık;208,5;4;371,2;0;0;2;şikâyet yok;evet
+M101462;03.06.2024;İstanbul;Standart;Aylık;269,5;19;489,4;1;0;2;bağlantı kopuyor;hayır
+M101463;03.04.2024;İstanbul;Temel;1 yıl;188,43;21;270,3;3;0;1;fatura yüksek;evet
+M101464;04.03.2024;Konya;Standart;Aylık;278,19;22;276,5;1;0;3;internet yavaş;hayır
+M101465;02.02.2024;İstanbul;Temel;Aylık;198,41;23;243,8;0;0;1;şikâyet yok;hayır
+M101466;03.04.2024;İzmir;Temel;Aylık;163,83;21;410;2;0;2;fatura yüksek;hayır
+M101467;03.08.2024;Iğdır;Temel;1 yıl;226,94;17;123,8;2;0;4;internet yavaş;hayır
+M101468;03.07.2024;Diyarbakır;Premium;Aylık;399,15;18;326,9;2;2;3;müşteri hizmetleri ulaşılmıyor;hayır
+M101469;04.09.2021;İstanbul;Temel;Aylık;212,42;52;166,7;3;0;;bağlantı kopuyor;hayır
+M101470;02.11.2025;İzmir;Standart;2 yıl;311,85;2;143,4;1;0;3;bağlantı kopuyor;hayır
+M101471;03.11.2023;Antalya;Temel;1 yıl;217,61;26;166,3;0;0;4;şikâyet yok;hayır
+M101472;03.09.2023;Iğdır;Temel;Aylık;204,96;28;169,1;3;0;3;bağlantı kopuyor;hayır
+M101473;03.04.2025;İstanbul;Temel;Aylık;201,79;9;133,4;3;0;;kurulum gecikti;evet
+M101474;04.06.2023;Konya;Standart;2 yıl;331,24;31;330,8;0;1;4;şikâyet yok;hayır
+M101475;05.03.2023;İstanbul;Standart;Aylık;309,6;34;427,3;0;0;5;şikâyet yok;hayır
+M101476;04.03.2024;Bursa;Premium;2 yıl;397,62;22;624,7;1;0;3;fatura yüksek;hayır
+M101477;05.01.2018;Ankara;Premium;Aylık;445,75;96;757,6;0;0;3;şikâyet yok;hayır
+M101478;02.10.2025;İzmir;Premium;1 yıl;403,44;3;335,7;1;1;5;fatura yüksek;hayır
+M101479;03.07.2025;Bursa;Temel;Aylık;220,77;6;371,5;0;0;4;şikâyet yok;hayır
+M101480;03.01.2021;İstanbul;Standart;Aylık;310,27;60;402,4;1;0;5;müşteri hizmetleri ulaşılmıyor;hayır
+M101481;02.02.2024;İstanbul;Temel;Aylık;265,35;23;321,5;1;0;4;müşteri hizmetleri ulaşılmıyor;hayır
+M101482;02.10.2024;İstanbul;Premium;1 yıl;434,85;15;171,6;2;1;4;internet yavaş;hayır
+M101483;04.12.2020;İstanbul;Temel;2 yıl;196,16;61;262,8;3;0;3;bağlantı kopuyor;hayır
+M101484;04.04.2023;Bursa;Temel;Aylık;194;33;570,6;3;0;1;fatura yüksek;evet
+M101485;04.03.2024;Ankara;Temel;Aylık;216,39;22;144,8;1;0;4;internet yavaş;hayır
+M101486;03.08.2024;İstanbul;Temel;1 yıl;214,25;17;225,5;1;0;4;müşteri hizmetleri ulaşılmıyor;hayır
+M101487;03.08.2024;Ankara;Premium;1 yıl;443,25;17;378,4;1;0;2;internet yavaş;hayır
+M101488;03.01.2024;Bursa;Standart;1 yıl;321,85;24;187,9;3;0;2;müşteri hizmetleri ulaşılmıyor;hayır
+M101489;03.08.2024;İstanbul;Standart;Aylık;304,46;17;127,1;0;1;5;şikâyet yok;evet
+M101490;03.01.2024;İstanbul;Standart;2 yıl;254,52;24;39,4;1;3;5;fatura yüksek;hayır
+M101491;05.07.2020;Diyarbakır;Standart;2 yıl;279,9;66;;2;0;3;internet yavaş;hayır
+M101492;04.08.2022;Bursa;Premium;1 yıl;434,4;41;413,4;3;3;2;kurulum gecikti;evet
+M101493;04.07.2023;İstanbul;Premium;Aylık;443,11;30;870,8;0;0;3;şikâyet yok;evet
+M101494;02.09.2025;İstanbul;Temel;1 yıl;172,39;4;235,1;1;0;2;müşteri hizmetleri ulaşılmıyor;hayır
+M101495;04.10.2021;Diyarbakır;Standart;Aylık;319,69;51;167,5;5;0;;bağlantı kopuyor;evet
+M101496;04.06.2022;İstanbul;Temel;2 yıl;192,13;43;152,1;2;0;3;kurulum gecikti;hayır
+M101497;02.09.2024;İzmir;Temel;1 yıl;224,68;16;247,6;0;2;;şikâyet yok;hayır
+M101498;02.09.2025;Ankara;Temel;Aylık;222,95;4;;1;0;3;fatura yüksek;hayır
+M101499;02.12.2025;Iğdır;Standart;Aylık;275,43;1;70,6;2;0;3;bağlantı kopuyor;hayır
+M101500;02.09.2024;İstanbul;Temel;Aylık;218,31;16;210,8;0;0;;şikâyet yok;hayır
+M101501;03.01.2022;İstanbul;Standart;2 yıl;321,15;48;416,9;1;2;2;bağlantı kopuyor;evet
+M101502;03.07.2025;İstanbul;Standart;1 yıl;295,3;6;281,9;1;0;3;fatura yüksek;hayır
+M101503;02.10.2025;Ankara;Premium;1 yıl;448,06;3;415,8;1;1;3;fatura yüksek;hayır
+M101504;01.02.2025;Diyarbakır;Premium;1 yıl;402,53;11;547,1;1;1;;kurulum gecikti;evet
+M101505;04.12.2021;Bursa;Temel;Aylık;172,09;49;668,1;1;0;3;internet yavaş;hayır
+M101506;02.11.2025;Konya;Standart;1 yıl;302,3;2;207;0;0;3;şikâyet yok;hayır
+M101507;03.09.2023;Ankara;Temel;Aylık;155,68;28;399,7;1;3;4;internet yavaş;evet
+M101508;01.02.2025;Konya;Standart;Aylık;276,03;11;537,2;0;0;2;şikâyet yok;hayır
+M101509;03.07.2025;İstanbul;Temel;Aylık;199,18;6;198,4;3;0;3;fatura yüksek;evet
+M101510;02.10.2025;İstanbul;Temel;1 yıl;218,32;3;71,6;1;0;3;bağlantı kopuyor;hayır
+M101511;04.12.2020;İstanbul;Premium;1 yıl;466,08;61;211,4;2;3;;müşteri hizmetleri ulaşılmıyor;evet
+M101512;05.05.2023;Bursa;Premium;2 yıl;456,16;32;545,9;0;0;5;şikâyet yok;hayır
+M101513;03.08.2024;Ankara;Standart;Aylık;259,57;17;489,1;1;1;4;internet yavaş;evet
+M101514;01.02.2025;Iğdır;Temel;1 yıl;193,18;11;128,9;2;3;3;fatura yüksek;hayır
+M101515;03.06.2024;Ankara;Temel;Aylık;212,25;19;274,5;1;0;2;fatura yüksek;hayır
+M101516;02.01.2025;Ankara;Temel;1 yıl;191,41;12;204,4;1;0;5;fatura yüksek;hayır
+M101517;03.11.2023;Bursa;Temel;1 yıl;212,25;26;105,4;0;0;5;şikâyet yok;hayır
+M101518;03.03.2025;Ankara;Temel;Aylık;176,37;10;335,6;2;0;2;internet yavaş;hayır
+M101519;02.08.2025;İzmir;Temel;Aylık;177,51;5;173,7;0;1;4;şikâyet yok;hayır
+M101520;03.04.2025;İzmir;Temel;Aylık;268,34;9;215,1;3;0;2;müşteri hizmetleri ulaşılmıyor;hayır
+M101521;04.10.2022;İstanbul;Temel;1 yıl;190,23;39;419,3;0;0;5;şikâyet yok;hayır
+M101522;03.06.2024;Konya;Premium;2 yıl;429,34;19;500,7;0;0;2;şikâyet yok;hayır
+M101523;02.11.2025;Bursa;Standart;Aylık;319,43;2;;0;2;4;şikâyet yok;hayır
+M101524;01.02.2025;Antalya;Standart;Aylık;291,56;11;215,2;0;2;3;şikâyet yok;hayır
+M101525;04.12.2021;Konya;Standart;1 yıl;325,83;49;307,6;1;0;4;fatura yüksek;hayır
+M101526;03.05.2024;İstanbul;Temel;Aylık;266,17;20;;0;0;2;şikâyet yok;hayır
+M101527;04.10.2021;İzmir;Standart;1 yıl;299,1;51;111,9;3;0;4;internet yavaş;hayır
+M101528;04.06.2023;Iğdır;Premium;2 yıl;508,39;31;294,9;2;0;2;fatura yüksek;hayır
+M101529;03.05.2025;Ankara;Premium;1 yıl;421,83;8;155,2;2;0;3;fatura yüksek;hayır
+M101530;02.11.2025;Ankara;Temel;2 yıl;142,17;2;240,7;1;1;5;fatura yüksek;hayır
+M101531;03.09.2022;Ankara;Premium;Aylık;441,06;40;259,2;1;2;4;internet yavaş;evet
+M101532;04.10.2020;İstanbul;Standart;1 yıl;306,76;63;226,9;2;0;4;internet yavaş;hayır
+M101533;04.06.2023;Konya;Temel;1 yıl;170,71;31;285,1;1;1;3;fatura yüksek;hayır
+M101534;03.04.2025;Bursa;Standart;1 yıl;258,58;9;116,9;0;0;3;şikâyet yok;hayır
+M101535;03.09.2023;Diyarbakır;Temel;Aylık;179,94;28;89,6;1;0;4;fatura yüksek;hayır
+M101536;03.01.2022;Antalya;Temel;Aylık;160,07;48;232,5;3;2;5;bağlantı kopuyor;evet
+M101537;02.11.2025;Ankara;Standart;1 yıl;291,76;2;167,7;2;1;4;fatura yüksek;hayır
+M101538;03.03.2025;İstanbul;Standart;Aylık;274,41;10;422,8;0;2;3;şikâyet yok;hayır
+M101539;03.11.2022;Bursa;Temel;1 yıl;244,91;38;362,2;0;1;3;şikâyet yok;hayır
+M101540;02.01.2025;İstanbul;Temel;1 yıl;229,45;12;357,4;1;0;5;müşteri hizmetleri ulaşılmıyor;hayır
+M101541;03.08.2024;İstanbul;Temel;2 yıl;195,8;17;170,9;2;0;1;müşteri hizmetleri ulaşılmıyor;evet
+M101542;01.02.2025;Antalya;Temel;2 yıl;196,64;11;165,8;1;0;;fatura yüksek;hayır
+M101543;03.07.2025;İstanbul;Standart;1 yıl;327,13;6;272,8;0;0;;şikâyet yok;hayır
+M101544;03.06.2025;Ankara;Temel;2 yıl;221,76;7;196,6;1;0;;bağlantı kopuyor;hayır
+M101545;03.05.2025;İstanbul;Standart;1 yıl;254,38;8;279,8;1;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M101546;03.09.2023;Konya;Premium;1 yıl;436,43;28;608,4;0;0;4;şikâyet yok;hayır
+M101547;03.03.2025;İstanbul;Premium;Aylık;442,67;10;185,6;0;0;2;şikâyet yok;evet
+M101548;05.03.2022;Ankara;Temel;1 yıl;207,13;46;236,3;1;0;5;bağlantı kopuyor;hayır
+M101549;03.11.2021;Diyarbakır;Temel;Aylık;225,5;50;222,2;2;2;;internet yavaş;evet
+M101550;04.03.2024;Diyarbakır;Temel;Aylık;190,5;22;360,1;2;3;3;kurulum gecikti;hayır
+M101551;04.12.2022;Konya;Temel;1 yıl;157,32;37;229,3;0;1;3;şikâyet yok;hayır
+M101552;03.07.2024;Ankara;Temel;1 yıl;228,19;18;289,6;0;1;;şikâyet yok;hayır
+M101553;03.05.2025;Konya;Standart;Aylık;265,79;8;255;1;1;;fatura yüksek;hayır
+M101554;03.05.2025;İzmir;Standart;2 yıl;280,26;8;183,9;2;0;4;bağlantı kopuyor;hayır
+M101555;03.05.2025;İzmir;Temel;1 yıl;208,22;8;242,4;2;1;2;kurulum gecikti;hayır
+M101556;04.04.2023;Diyarbakır;Temel;Aylık;166,61;33;360,7;1;1;4;fatura yüksek;evet
+M101557;03.06.2025;Ankara;Temel;1 yıl;197,53;7;;1;1;5;fatura yüksek;hayır
+M101558;02.01.2025;Iğdır;Standart;Aylık;264,52;12;97,2;0;0;3;şikâyet yok;hayır
+M101559;03.06.2025;İstanbul;Temel;1 yıl;184,04;7;91,8;1;1;2;internet yavaş;hayır
+M101560;03.04.2024;İzmir;Temel;Aylık;175,52;21;186,3;1;0;3;bağlantı kopuyor;evet
+M101561;02.10.2025;Iğdır;Standart;Aylık;260,76;3;216;0;0;3;şikâyet yok;hayır
+M101562;01.02.2025;Ankara;Temel;Aylık;221,32;11;103,8;1;0;2;internet yavaş;evet
+M101563;03.08.2024;Antalya;Standart;1 yıl;307,31;17;118;1;0;4;müşteri hizmetleri ulaşılmıyor;hayır
+M101564;02.08.2025;Diyarbakır;Temel;1 yıl;203,3;5;342,7;1;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M101565;03.01.2024;Bursa;Standart;Aylık;275,77;24;505,5;2;0;1;kurulum gecikti;evet
+M101566;05.06.2020;Diyarbakır;Temel;1 yıl;169,7;67;256,8;1;0;3;fatura yüksek;hayır
+M101567;03.04.2025;İstanbul;Temel;Aylık;136,92;9;144,2;1;2;2;müşteri hizmetleri ulaşılmıyor;evet
+M101568;04.09.2020;Antalya;Standart;Aylık;275,43;64;569,9;3;0;;müşteri hizmetleri ulaşılmıyor;hayır
+M101569;03.05.2024;İstanbul;Temel;1 yıl;191,45;20;216,5;2;2;2;müşteri hizmetleri ulaşılmıyor;evet
+M101570;03.04.2025;İstanbul;Standart;1 yıl;297,58;9;283,2;0;0;5;şikâyet yok;hayır
+M101571;04.03.2024;Iğdır;Premium;2 yıl;453,28;22;496,7;3;0;3;bağlantı kopuyor;hayır
+M101572;05.05.2021;İstanbul;Temel;Aylık;198,47;56;407,1;0;0;4;şikâyet yok;hayır
+M101573;05.05.2023;İstanbul;Standart;2 yıl;291,71;32;963,3;0;0;3;şikâyet yok;hayır
+M101574;04.10.2021;Bursa;Standart;Aylık;274,03;51;294,9;3;0;;fatura yüksek;hayır
+M101575;02.11.2024;İzmir;Temel;Aylık;195,83;14;145,6;2;0;5;müşteri hizmetleri ulaşılmıyor;hayır
+M101576;03.01.2023;İstanbul;Standart;1 yıl;302,88;36;194,1;4;1;4;internet yavaş;evet
+M101577;02.01.2025;Konya;Temel;Aylık;176,4;12;338,9;1;0;5;bağlantı kopuyor;hayır
+M101578;04.06.2023;Bursa;Temel;1 yıl;198,29;31;232,3;2;0;3;internet yavaş;evet
+M101579;02.01.2025;Bursa;Temel;Aylık;201,3;12;405,5;2;1;3;müşteri hizmetleri ulaşılmıyor;hayır
+M101580;03.07.2025;İstanbul;Standart;2 yıl;266,15;6;336,1;1;0;5;bağlantı kopuyor;hayır
+M101581;03.11.2023;İstanbul;Standart;1 yıl;261,95;26;407,2;5;0;2;fatura yüksek;evet
+M101582;04.09.2020;İstanbul;Standart;Aylık;323,82;64;74,3;0;1;3;şikâyet yok;evet
+M101583;03.11.2023;İzmir;Premium;1 yıl;449,79;26;133,5;1;0;2;kurulum gecikti;hayır
+M101584;02.09.2025;İstanbul;Premium;Aylık;421,18;4;345,5;2;1;4;bağlantı kopuyor;evet
+M101585;04.04.2022;Konya;Temel;1 yıl;198,76;45;101,6;2;1;5;kurulum gecikti;hayır
+M101586;03.07.2025;İzmir;Standart;2 yıl;309,45;6;398;0;0;3;şikâyet yok;hayır
+M101587;02.12.2025;Ankara;Temel;1 yıl;174,76;1;345,9;1;0;4;fatura yüksek;hayır
+M101588;02.12.2025;Antalya;Temel;Aylık;198,95;1;201,1;3;0;4;bağlantı kopuyor;evet
+M101589;03.02.2021;Antalya;Premium;Aylık;450,93;59;511,5;2;0;;internet yavaş;hayır
+M101590;02.09.2025;Antalya;Standart;Aylık;269,23;4;276,3;0;1;4;şikâyet yok;hayır
+M101591;03.07.2025;Antalya;Temel;1 yıl;205,41;6;214,6;2;2;4;internet yavaş;hayır
+M101592;03.05.2025;Antalya;Temel;1 yıl;151,16;8;48,2;1;0;3;kurulum gecikti;hayır
+M101593;02.02.2024;Konya;Standart;Aylık;291,6;23;189,8;0;1;3;şikâyet yok;hayır
+M101594;02.02.2024;İstanbul;Premium;Aylık;426,69;23;379,4;0;0;2;şikâyet yok;hayır
+M101595;03.11.2023;İstanbul;Standart;Aylık;337,38;26;326,2;1;0;3;internet yavaş;evet
+M101596;03.07.2024;İzmir;Standart;Aylık;295,55;18;285,4;1;0;2;bağlantı kopuyor;hayır
+M101597;03.02.2022;İstanbul;Temel;2 yıl;188,32;47;70,7;1;0;4;kurulum gecikti;hayır
+M101598;02.01.2025;İstanbul;Temel;2 yıl;213,26;12;347,4;2;0;3;fatura yüksek;hayır
+M101599;05.05.2022;İstanbul;Standart;Aylık;295,5;44;208,3;2;0;4;kurulum gecikti;hayır
+M101600;02.09.2024;Antalya;Standart;1 yıl;265,99;16;338,4;2;2;;bağlantı kopuyor;hayır
+M101601;05.10.2019;Iğdır;Temel;Aylık;200,3;75;154,4;2;0;3;bağlantı kopuyor;evet
+M101602;02.10.2025;İzmir;Temel;Aylık;248,52;3;134,3;2;0;5;müşteri hizmetleri ulaşılmıyor;hayır
+M101603;02.10.2024;Iğdır;Premium;1 yıl;440,91;15;419,3;0;1;5;şikâyet yok;hayır
+M101604;07.03.2019;Bursa;Temel;Aylık;162,58;82;133,2;1;0;3;kurulum gecikti;hayır
+M101605;03.05.2025;Antalya;Standart;Aylık;284,11;8;563,6;1;0;3;internet yavaş;hayır
+M101606;03.03.2025;İstanbul;Temel;1 yıl;209,85;10;416,3;4;0;;internet yavaş;evet
+M101607;03.01.2023;İstanbul;Premium;Aylık;427,87;36;577,7;0;1;4;şikâyet yok;evet
+M101608;03.01.2022;İstanbul;Temel;Aylık;236,17;48;132;1;1;3;fatura yüksek;hayır
+M101609;02.12.2025;İzmir;Standart;1 yıl;279,86;1;422,7;2;0;4;müşteri hizmetleri ulaşılmıyor;evet
+M101610;02.09.2024;Diyarbakır;Premium;1 yıl;471,43;16;;1;0;;fatura yüksek;hayır
+M101611;03.06.2025;Konya;Standart;2 yıl;275,07;7;315;2;0;;fatura yüksek;hayır
+M101612;02.09.2025;Diyarbakır;Temel;Aylık;200,65;4;415,4;1;0;4;fatura yüksek;hayır
+M101613;02.01.2025;Diyarbakır;Premium;2 yıl;460,18;12;179,7;1;3;2;fatura yüksek;hayır
+M101614;03.05.2024;Bursa;Premium;Aylık;390,72;20;159,1;1;1;3;bağlantı kopuyor;evet
+M101615;03.03.2025;İstanbul;Standart;1 yıl;268,4;10;165,1;1;0;3;kurulum gecikti;hayır
+M101616;03.07.2025;Diyarbakır;Temel;Aylık;214,89;6;75,2;1;0;5;kurulum gecikti;hayır
+M101617;02.08.2025;Diyarbakır;Standart;2 yıl;327,87;5;151,4;3;0;2;fatura yüksek;evet
+M101618;02.10.2024;Antalya;Premium;Aylık;413,88;15;194,1;2;0;2;fatura yüksek;evet
+M101619;03.08.2024;İzmir;Standart;Aylık;304,61;17;159,2;1;0;4;müşteri hizmetleri ulaşılmıyor;hayır
+M101620;02.09.2025;Iğdır;Temel;1 yıl;171,69;4;397;4;0;;müşteri hizmetleri ulaşılmıyor;hayır
+M101621;02.08.2025;Konya;Premium;1 yıl;444,03;5;644,7;1;1;2;kurulum gecikti;evet
+M101622;07.05.2018;İstanbul;Temel;2 yıl;239,85;92;220,8;2;1;3;bağlantı kopuyor;hayır
+M101623;02.08.2025;Konya;Temel;2 yıl;193,07;5;230,5;2;0;4;internet yavaş;hayır
+M101624;02.11.2025;İstanbul;Premium;1 yıl;418,9;2;514;0;0;2;şikâyet yok;hayır
+M101625;03.07.2025;Ankara;Standart;2 yıl;322,9;6;292,6;1;2;3;müşteri hizmetleri ulaşılmıyor;evet
+M101626;02.09.2025;İstanbul;Temel;Aylık;217,87;4;148,6;3;0;2;kurulum gecikti;evet
+M101627;03.06.2024;İstanbul;Standart;Aylık;315,33;19;565,8;1;2;2;bağlantı kopuyor;evet
+M101628;02.08.2025;Diyarbakır;Premium;Aylık;459,92;5;286;1;0;4;fatura yüksek;hayır
+M101629;03.06.2024;İzmir;Premium;1 yıl;428,01;19;170,4;1;0;;bağlantı kopuyor;hayır
+M101630;03.07.2025;İzmir;Temel;Aylık;225,4;6;185,4;4;0;3;internet yavaş;evet
+M101631;05.05.2023;İstanbul;Temel;1 yıl;245,69;32;186,3;1;3;3;bağlantı kopuyor;hayır
+M101632;03.05.2024;İstanbul;Temel;Aylık;191,28;20;252,9;0;0;3;şikâyet yok;hayır
+M101633;04.12.2022;Iğdır;Temel;2 yıl;222,77;37;;0;0;5;şikâyet yok;hayır
+M101634;02.12.2025;İstanbul;Temel;Aylık;190,05;1;137,1;2;0;4;internet yavaş;hayır
+M101635;05.05.2023;Antalya;Temel;Aylık;236,72;32;269,2;1;0;4;müşteri hizmetleri ulaşılmıyor;evet
+M101636;06.07.2019;İstanbul;Standart;Aylık;304,61;78;178;2;0;3;bağlantı kopuyor;hayır
+M101637;03.04.2025;Bursa;Standart;1 yıl;258,38;9;338,8;1;0;4;internet yavaş;hayır
+M101638;04.06.2022;İstanbul;Temel;1 yıl;205,29;43;303,9;1;2;3;fatura yüksek;hayır
+M101639;03.06.2025;İstanbul;Premium;1 yıl;417,44;7;434,9;1;0;5;internet yavaş;hayır
+M101640;05.03.2023;Bursa;Temel;Aylık;221,25;34;169,9;2;0;2;bağlantı kopuyor;hayır
+M101641;03.06.2025;İstanbul;Temel;Aylık;196,32;7;277,6;2;2;;fatura yüksek;hayır
+M101642;02.09.2024;İstanbul;Standart;Aylık;287,66;16;258,6;2;0;2;fatura yüksek;evet
+M101643;03.06.2024;Diyarbakır;Temel;Aylık;216,77;19;177,7;2;0;;müşteri hizmetleri ulaşılmıyor;hayır
+M101644;02.09.2024;İstanbul;Temel;1 yıl;188,94;16;215,7;2;2;;kurulum gecikti;hayır
+M101645;02.12.2024;Konya;Standart;2 yıl;222,61;13;176,2;3;2;2;fatura yüksek;hayır
+M101646;02.09.2025;İstanbul;Temel;Aylık;186,93;4;;3;0;3;fatura yüksek;evet
+M101647;03.12.2023;İstanbul;Standart;Aylık;275,59;25;212,1;2;0;2;müşteri hizmetleri ulaşılmıyor;evet
+M101648;05.05.2023;İzmir;Temel;2 yıl;238;32;106,5;3;1;2;fatura yüksek;hayır
+M101649;02.10.2024;Bursa;Premium;2 yıl;389,69;15;259,4;1;0;4;bağlantı kopuyor;hayır
+M101650;05.05.2023;İstanbul;Temel;Aylık;244,41;32;184,2;0;1;3;şikâyet yok;hayır
+M101651;03.06.2024;Ankara;Premium;1 yıl;433,89;19;359,8;1;0;5;internet yavaş;evet
+M101652;02.11.2025;İzmir;Standart;Aylık;300,5;2;179,9;2;0;3;fatura yüksek;evet
+M101653;03.11.2023;İstanbul;Premium;1 yıl;426,07;26;429,1;0;2;4;şikâyet yok;hayır
+M101654;02.12.2025;İstanbul;Temel;Aylık;195,7;1;204,2;0;0;3;şikâyet yok;hayır
+M101655;03.09.2023;İzmir;Temel;1 yıl;185,86;28;141,6;1;1;4;kurulum gecikti;hayır
+M101656;02.09.2024;İstanbul;Temel;Aylık;250,37;16;150,4;1;0;5;kurulum gecikti;hayır
+M101657;04.08.2021;İzmir;Premium;1 yıl;412,75;53;820,9;3;1;3;bağlantı kopuyor;hayır
+M101658;03.05.2024;Antalya;Temel;1 yıl;211,6;20;254;2;0;2;kurulum gecikti;hayır
+M101659;04.04.2022;Ankara;Temel;2 yıl;205,01;45;;1;0;4;müşteri hizmetleri ulaşılmıyor;hayır
+M101660;02.09.2024;İstanbul;Standart;Aylık;290,99;16;358,4;2;1;2;fatura yüksek;evet
+M101661;02.08.2025;İstanbul;Premium;1 yıl;454,91;5;209,8;4;0;2;fatura yüksek;evet
+M101662;03.01.2024;İzmir;Standart;Aylık;303,7;24;313,9;2;0;3;internet yavaş;hayır
+M101663;03.07.2025;İstanbul;Temel;Aylık;156,43;6;181,2;1;0;3;bağlantı kopuyor;hayır
+M101664;03.06.2025;Ankara;Temel;Aylık;158,51;7;264,9;0;0;4;şikâyet yok;hayır
+M101665;02.02.2024;Konya;Standart;Aylık;277,32;23;80,9;1;0;3;fatura yüksek;evet
+M101666;04.08.2023;Antalya;Standart;1 yıl;325,02;29;344,1;1;0;4;fatura yüksek;hayır
+M101667;03.01.2023;Diyarbakır;Temel;2 yıl;247,63;36;232,7;0;0;3;şikâyet yok;hayır
+M101668;05.05.2021;İstanbul;Temel;Aylık;191,12;56;591,8;1;0;4;müşteri hizmetleri ulaşılmıyor;evet
+M101669;04.07.2023;Ankara;Temel;Aylık;201,67;30;239;0;0;3;şikâyet yok;hayır
+M101670;02.08.2025;İstanbul;Temel;Aylık;172,02;5;137,9;2;0;4;internet yavaş;hayır
+M101671;02.10.2024;Bursa;Standart;Aylık;298,45;15;301,5;2;0;4;fatura yüksek;hayır
+M101672;03.08.2024;İstanbul;Premium;Aylık;437,77;17;521,1;0;0;5;şikâyet yok;hayır
+M101673;02.09.2025;Konya;Temel;2 yıl;184,46;4;241,6;0;0;5;şikâyet yok;hayır
+M101674;02.11.2025;İstanbul;Standart;2 yıl;287,35;2;98,4;0;0;3;şikâyet yok;hayır
+M101675;03.06.2025;İzmir;Temel;Aylık;212,28;7;157,1;2;2;1;bağlantı kopuyor;evet
+M101676;02.09.2025;Ankara;Temel;1 yıl;242,92;4;189,1;1;0;5;müşteri hizmetleri ulaşılmıyor;hayır
+M101677;03.07.2025;Ankara;Standart;Aylık;338,29;6;332,3;1;0;4;fatura yüksek;evet
+M101678;02.08.2025;İstanbul;Temel;1 yıl;265,02;5;;2;2;2;kurulum gecikti;evet
+M101679;04.08.2021;İzmir;Temel;Aylık;184,68;53;124,7;2;1;3;internet yavaş;hayır
+M101680;04.03.2024;İstanbul;Premium;2 yıl;374,69;22;419,9;2;0;2;internet yavaş;hayır
+M101681;03.03.2025;Antalya;Temel;1 yıl;202,59;10;255,4;0;0;5;şikâyet yok;hayır
+M101682;02.11.2025;İstanbul;Premium;1 yıl;401,68;2;593,5;3;0;;internet yavaş;hayır
+M101683;04.12.2022;Antalya;Temel;1 yıl;212,94;37;324,3;1;1;4;müşteri hizmetleri ulaşılmıyor;hayır
+M101684;05.10.2019;İstanbul;Temel;2 yıl;191,54;75;538,9;1;0;4;müşteri hizmetleri ulaşılmıyor;hayır
+M101685;03.04.2024;Ankara;Standart;1 yıl;271,7;21;71,5;4;0;2;müşteri hizmetleri ulaşılmıyor;hayır
+M101686;02.12.2025;İstanbul;Premium;1 yıl;428,83;1;165,4;1;0;3;kurulum gecikti;hayır
+M101687;03.12.2023;Bursa;Standart;Aylık;315,87;25;102,1;2;0;5;internet yavaş;hayır
+M101688;03.07.2025;Bursa;Temel;1 yıl;209,74;6;178,2;2;0;4;bağlantı kopuyor;hayır
+M101689;01.02.2025;İzmir;Temel;Aylık;199,91;11;201,2;0;0;3;şikâyet yok;hayır
+M101690;02.12.2025;Antalya;Temel;1 yıl;179,4;1;98,5;2;0;5;fatura yüksek;hayır
+M101691;03.11.2023;İstanbul;Temel;Aylık;172,05;26;104,8;0;0;4;şikâyet yok;hayır
+M101692;02.12.2025;İstanbul;Temel;Aylık;209,45;1;439,4;2;0;2;kurulum gecikti;hayır
+M101693;05.05.2023;Konya;Temel;Aylık;190,03;32;183,2;3;0;4;internet yavaş;hayır
+M101694;03.06.2025;İstanbul;Standart;Aylık;265,64;7;;1;0;;bağlantı kopuyor;evet
+M101695;04.03.2024;Konya;Temel;2 yıl;213,82;22;317;0;1;2;şikâyet yok;hayır
+M101696;02.09.2025;İzmir;Premium;1 yıl;430,06;4;287,6;0;0;3;şikâyet yok;hayır
+M101697;03.06.2025;Antalya;Standart;Aylık;283,07;7;502,7;2;1;2;fatura yüksek;evet
+M101698;03.04.2025;İzmir;Temel;2 yıl;239,68;9;253,5;0;0;5;şikâyet yok;hayır
+M101699;04.04.2023;Antalya;Standart;2 yıl;273,85;33;537,9;1;1;4;müşteri hizmetleri ulaşılmıyor;hayır
+M101700;02.11.2025;İstanbul;Temel;1 yıl;224,38;2;158,4;2;0;3;fatura yüksek;hayır
+M101701;05.07.2022;Ankara;Temel;Aylık;203,77;42;70,9;3;1;;internet yavaş;evet
+M101702;02.09.2025;Ankara;Temel;Aylık;211,39;4;293,5;3;0;2;internet yavaş;hayır
+M101703;02.08.2025;İstanbul;Temel;2 yıl;202,92;5;113,7;0;0;5;şikâyet yok;hayır
+M101704;05.01.2018;İstanbul;Premium;1 yıl;454,64;96;381,6;1;0;;müşteri hizmetleri ulaşılmıyor;hayır
+M101705;01.02.2025;Antalya;Temel;Aylık;238,64;11;137;1;0;4;fatura yüksek;hayır
+M101706;05.03.2022;Bursa;Standart;Aylık;257,46;46;186,8;2;0;2;kurulum gecikti;hayır
+M101707;02.10.2025;İstanbul;Temel;1 yıl;230,57;3;382,7;1;1;3;müşteri hizmetleri ulaşılmıyor;hayır
+M101708;03.07.2024;İstanbul;Standart;Aylık;283,44;18;220,2;0;2;2;şikâyet yok;hayır
+M101709;02.10.2024;Diyarbakır;Premium;1 yıl;439,35;15;86,6;1;0;2;internet yavaş;hayır
+M101710;05.07.2020;Ankara;Temel;2 yıl;207,72;66;262,5;1;0;3;kurulum gecikti;hayır
+M101711;04.12.2020;İstanbul;Temel;Aylık;187,28;61;;1;0;5;müşteri hizmetleri ulaşılmıyor;hayır
+M101712;03.05.2025;İstanbul;Standart;1 yıl;276,22;8;257,6;0;1;5;şikâyet yok;hayır
+M101713;02.10.2025;İstanbul;Temel;2 yıl;205,22;3;196;2;2;3;fatura yüksek;hayır
+M101714;02.10.2024;İzmir;Standart;1 yıl;275,23;15;120,4;0;0;;şikâyet yok;hayır
+M101715;02.09.2025;İstanbul;Premium;Aylık;447,8;4;832,4;4;1;3;bağlantı kopuyor;hayır
+M101716;03.12.2023;Bursa;Premium;Aylık;392,86;25;;2;1;4;fatura yüksek;evet
+M101717;03.04.2024;İstanbul;Standart;1 yıl;285,83;21;521,1;1;0;4;müşteri hizmetleri ulaşılmıyor;hayır
+M101718;02.08.2025;İstanbul;Temel;1 yıl;234,7;5;92;2;2;5;bağlantı kopuyor;hayır
+M101719;03.03.2025;İstanbul;Temel;1 yıl;196,01;10;258,9;0;0;2;şikâyet yok;hayır
+M101720;02.02.2024;Bursa;Premium;1 yıl;406,87;23;53,8;1;3;3;bağlantı kopuyor;evet
+M101721;03.11.2023;İstanbul;Standart;1 yıl;288,31;26;214,4;1;0;3;kurulum gecikti;hayır
+M101722;03.06.2024;Antalya;Standart;2 yıl;265,15;19;91,4;2;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M101723;03.12.2023;İstanbul;Standart;Aylık;309,78;25;368,1;3;0;2;kurulum gecikti;evet
+M101724;06.06.2019;İstanbul;Temel;1 yıl;203,13;79;292,9;0;0;2;şikâyet yok;hayır
+M101725;04.11.2020;Iğdır;Standart;2 yıl;284,12;62;184,7;2;0;4;müşteri hizmetleri ulaşılmıyor;hayır
+M101726;03.04.2025;Antalya;Standart;Aylık;307,77;9;63,6;5;3;3;kurulum gecikti;hayır
+M101727;01.02.2025;Ankara;Temel;1 yıl;198,18;11;299,1;1;0;2;internet yavaş;hayır
+M101728;02.11.2025;Antalya;Temel;Aylık;182,59;2;216,6;2;0;3;fatura yüksek;evet
+M101729;03.09.2022;İstanbul;Standart;Aylık;281,91;40;372,9;4;0;1;bağlantı kopuyor;evet
+M101730;03.07.2024;İzmir;Temel;Aylık;180,7;18;344,5;1;2;;kurulum gecikti;evet
+M101731;02.11.2024;Ankara;Temel;2 yıl;172,73;14;92,5;0;0;3;şikâyet yok;hayır
+M101732;03.06.2025;İzmir;Temel;1 yıl;215,31;7;;1;1;3;bağlantı kopuyor;evet
+M101733;03.07.2025;İstanbul;Standart;1 yıl;273,53;6;216;0;0;3;şikâyet yok;hayır
+M101734;04.03.2024;Ankara;Temel;Aylık;184,68;22;264,7;1;0;;kurulum gecikti;hayır
+M101735;04.03.2024;İstanbul;Standart;Aylık;312,37;22;137,9;2;0;4;fatura yüksek;evet
+M101736;02.10.2024;Ankara;Temel;Aylık;166,61;15;184,9;2;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M101737;03.12.2023;İstanbul;Temel;2 yıl;179,41;25;213,7;1;0;3;bağlantı kopuyor;hayır
+M101738;02.12.2024;Diyarbakır;Temel;Aylık;186,14;13;274,4;0;1;;şikâyet yok;evet
+M101739;02.01.2025;Antalya;Temel;1 yıl;239,32;12;358,6;5;1;1;bağlantı kopuyor;hayır
+M101740;02.08.2025;Konya;Premium;Aylık;425,47;5;334,6;0;0;4;şikâyet yok;hayır
+M101741;05.04.2021;İstanbul;Standart;1 yıl;294,23;57;241,1;2;0;2;fatura yüksek;evet
+M101742;03.01.2024;Ankara;Standart;2 yıl;291,43;24;392,5;1;0;3;bağlantı kopuyor;hayır
+M101743;03.08.2024;Ankara;Premium;Aylık;399,03;17;386,2;0;0;3;şikâyet yok;hayır
+M101744;03.07.2024;Antalya;Temel;1 yıl;209,25;18;295,4;3;0;2;kurulum gecikti;evet
+M101745;03.03.2025;İzmir;Standart;Aylık;311,14;10;122,1;2;0;3;kurulum gecikti;evet
+M101746;05.07.2021;İstanbul;Standart;2 yıl;332,42;54;408,6;5;0;1;fatura yüksek;hayır
+M101747;03.03.2025;Konya;Standart;2 yıl;285,01;10;306,6;0;0;4;şikâyet yok;hayır
+M101748;02.10.2025;Bursa;Premium;Aylık;444,87;3;251,5;2;0;4;internet yavaş;evet
+M101749;04.10.2023;İstanbul;Temel;Aylık;222,95;27;106,4;3;0;2;fatura yüksek;evet
+M101750;03.04.2024;İstanbul;Temel;1 yıl;201,88;21;222;3;0;3;bağlantı kopuyor;hayır
+M101751;02.10.2025;Bursa;Premium;2 yıl;482,75;3;539,9;2;0;3;kurulum gecikti;hayır
+M101752;02.11.2024;İstanbul;Temel;1 yıl;248,96;14;258,5;0;1;4;şikâyet yok;hayır
+M101753;02.10.2025;Diyarbakır;Premium;2 yıl;466,78;3;227,7;0;0;;şikâyet yok;hayır
+M101754;02.01.2025;Iğdır;Standart;2 yıl;258,9;12;372,4;2;0;5;fatura yüksek;hayır
+M101755;03.07.2025;Iğdır;Temel;Aylık;194,19;6;71,7;1;0;4;bağlantı kopuyor;hayır
+M101756;02.11.2025;Bursa;Premium;Aylık;449,8;2;490,3;4;0;2;fatura yüksek;evet
+M101757;02.11.2025;Iğdır;Standart;Aylık;292,7;2;436,5;3;1;1;kurulum gecikti;evet
+M101758;02.09.2025;Bursa;Temel;Aylık;158,13;4;161,7;1;0;5;bağlantı kopuyor;evet
+M101759;02.11.2025;İstanbul;Temel;Aylık;206,34;2;166,9;1;0;3;müşteri hizmetleri ulaşılmıyor;evet
+M101760;03.05.2024;Iğdır;Temel;2 yıl;251,16;20;110,6;3;2;1;kurulum gecikti;evet
+M101761;01.02.2025;İzmir;Premium;2 yıl;471,79;11;501,4;2;0;4;internet yavaş;hayır
+M101762;03.05.2024;İstanbul;Premium;2 yıl;452,07;20;626,9;2;0;2;müşteri hizmetleri ulaşılmıyor;evet
+M101763;02.09.2024;İstanbul;Temel;Aylık;202,89;16;272,6;0;1;3;şikâyet yok;evet
+M101764;03.04.2024;İzmir;Temel;Aylık;200,98;21;185,8;1;0;2;internet yavaş;hayır
+M101765;03.08.2024;Konya;Premium;Aylık;438,24;17;432,1;1;1;3;kurulum gecikti;evet
+M101766;03.11.2022;Antalya;Temel;Aylık;188,58;38;92,4;1;0;4;kurulum gecikti;hayır
+M101767;03.09.2023;Antalya;Temel;2 yıl;189,14;28;243,2;2;2;3;müşteri hizmetleri ulaşılmıyor;hayır
+M101768;02.11.2024;Konya;Temel;1 yıl;205,41;14;66,5;0;0;3;şikâyet yok;hayır
+M101769;02.09.2024;İstanbul;Premium;1 yıl;482,34;16;200,4;0;0;4;şikâyet yok;hayır
+M101770;04.10.2023;İzmir;Standart;2 yıl;305,44;27;135,3;4;0;3;internet yavaş;hayır
+M101771;02.10.2024;İstanbul;Temel;Aylık;207,46;15;253,4;1;0;4;bağlantı kopuyor;hayır
+M101772;05.07.2021;Bursa;Temel;2 yıl;228,35;54;113,9;4;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M101773;02.08.2025;İstanbul;Temel;2 yıl;243,05;5;280,1;0;0;2;şikâyet yok;hayır
+M101774;04.06.2023;İstanbul;Standart;Aylık;320,49;31;352,6;0;0;;şikâyet yok;hayır
+M101775;05.05.2021;İstanbul;Temel;1 yıl;175,29;56;133,9;0;1;4;şikâyet yok;evet
+M101776;04.03.2024;Ankara;Standart;1 yıl;334,38;22;246,3;0;0;4;şikâyet yok;hayır
+M101777;03.08.2024;İstanbul;Premium;Aylık;453,18;17;;2;0;2;fatura yüksek;evet
+M101778;03.12.2023;Ankara;Standart;Aylık;259,97;25;385,8;1;0;3;bağlantı kopuyor;evet
+M101779;03.02.2022;Antalya;Temel;Aylık;192,82;47;256,1;2;0;4;internet yavaş;evet
+M101780;03.11.2023;İstanbul;Temel;2 yıl;146,81;26;334,2;1;0;;fatura yüksek;hayır
+M101781;03.04.2025;Antalya;Temel;Aylık;181,04;9;104;2;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M101782;02.10.2024;İstanbul;Standart;Aylık;288,98;15;236,5;1;1;2;kurulum gecikti;evet
+M101783;02.09.2025;Konya;Temel;Aylık;208,47;4;333,1;4;1;3;fatura yüksek;evet
+M101784;02.11.2025;Konya;Temel;2 yıl;191,3;2;182,8;0;0;3;şikâyet yok;hayır
+M101785;03.07.2025;İstanbul;Standart;Aylık;295,91;6;434,3;4;0;3;fatura yüksek;evet
+M101786;06.06.2018;Antalya;Standart;Aylık;278,09;91;327;1;0;3;bağlantı kopuyor;hayır
+M101787;02.02.2024;Ankara;Standart;Aylık;301,43;23;266,1;1;0;3;kurulum gecikti;hayır
+M101788;03.12.2023;Konya;Temel;Aylık;200,58;25;393,1;1;1;4;internet yavaş;hayır
+M101789;03.05.2024;Diyarbakır;Temel;1 yıl;215,78;20;106,1;1;0;3;internet yavaş;hayır
+M101790;02.09.2025;İstanbul;Standart;Aylık;314,31;4;354,9;0;1;3;şikâyet yok;hayır
+M101791;03.06.2024;Konya;Temel;Aylık;219,36;19;479,9;0;0;4;şikâyet yok;hayır
+M101792;04.11.2020;Antalya;Temel;Aylık;194,71;62;128,1;0;0;3;şikâyet yok;hayır
+M101793;01.02.2025;Iğdır;Premium;Aylık;387,32;11;222,2;0;0;1;şikâyet yok;hayır
+M101794;03.07.2024;İstanbul;Premium;1 yıl;443,17;18;294,1;1;0;4;bağlantı kopuyor;hayır
+M101795;04.04.2022;Antalya;Standart;1 yıl;254,99;45;284,7;0;0;;şikâyet yok;hayır
+M101796;01.02.2025;Antalya;Premium;Aylık;450,23;11;779,6;3;0;2;internet yavaş;evet
+M101797;02.11.2025;Iğdır;Standart;1 yıl;320,42;2;146,5;1;0;2;kurulum gecikti;evet
+M101798;03.05.2024;İstanbul;Temel;1 yıl;225,81;20;267,6;2;0;2;internet yavaş;evet
+M101799;02.09.2024;İzmir;Premium;Aylık;461,62;16;403,9;1;0;3;bağlantı kopuyor;evet
+M101800;02.11.2025;Konya;Standart;1 yıl;317,84;2;359,7;0;0;4;şikâyet yok;hayır
+M101801;02.12.2025;Iğdır;Temel;Aylık;179,02;1;305,7;1;0;5;kurulum gecikti;hayır
+M101802;03.08.2024;Ankara;Premium;1 yıl;398,19;17;334;1;0;;fatura yüksek;hayır
+M101803;03.09.2023;İstanbul;Premium;1 yıl;375,28;28;114,3;1;0;5;kurulum gecikti;hayır
+M101804;03.08.2024;Antalya;Temel;1 yıl;203,08;17;346,4;1;0;2;internet yavaş;hayır
+M101805;03.03.2025;Konya;Temel;Aylık;212,02;10;290,3;0;0;4;şikâyet yok;hayır
+M101806;03.05.2025;Ankara;Temel;2 yıl;209,07;8;184,2;1;2;4;kurulum gecikti;hayır
+M101807;04.07.2023;İstanbul;Standart;Aylık;288,84;30;221,2;2;0;2;bağlantı kopuyor;evet
+M101808;02.09.2025;İstanbul;Temel;Aylık;224,95;4;350,3;2;0;3;fatura yüksek;hayır
+M101809;03.06.2024;İstanbul;Temel;2 yıl;207,91;19;344,6;3;0;3;kurulum gecikti;hayır
+M101810;03.07.2024;İstanbul;Premium;Aylık;390,14;18;544,5;1;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M101811;04.12.2020;İstanbul;Standart;2 yıl;255,32;61;214,9;1;0;1;müşteri hizmetleri ulaşılmıyor;hayır
+M101812;03.06.2024;Ankara;Premium;Aylık;461,29;19;132,9;0;0;4;şikâyet yok;hayır
+M101813;02.09.2024;İzmir;Standart;2 yıl;303,21;16;242,1;4;0;1;bağlantı kopuyor;evet
+M101814;04.09.2020;İstanbul;Temel;Aylık;163,75;64;385,6;1;0;3;kurulum gecikti;hayır
+M101815;05.03.2023;Ankara;Premium;2 yıl;462,7;34;265,4;2;0;3;fatura yüksek;hayır
+M101816;04.08.2023;İzmir;Temel;Aylık;189,82;29;255,8;2;0;2;internet yavaş;hayır
+M101817;05.07.2022;Diyarbakır;Premium;1 yıl;460,18;42;459;2;0;4;kurulum gecikti;hayır
+M101818;03.05.2025;İstanbul;Temel;1 yıl;189,25;8;137,2;1;0;3;internet yavaş;hayır
+M101819;03.08.2024;İzmir;Temel;Aylık;229,34;17;313,2;0;0;5;şikâyet yok;hayır
+M101820;03.07.2025;İstanbul;Standart;Aylık;309,76;6;276,4;1;1;;kurulum gecikti;hayır
+M101821;02.09.2024;Diyarbakır;Temel;Aylık;189,02;16;142,8;0;0;4;şikâyet yok;hayır
+M101822;03.11.2023;Iğdır;Temel;1 yıl;188,66;26;;1;0;3;internet yavaş;hayır
+M101823;03.07.2024;İstanbul;Temel;Aylık;234,08;18;159,4;3;0;4;bağlantı kopuyor;evet
+M101824;03.03.2025;İzmir;Temel;Aylık;209,31;10;181;2;0;3;bağlantı kopuyor;hayır
+M101825;02.11.2025;Konya;Standart;1 yıl;262,91;2;653,3;1;0;5;kurulum gecikti;hayır
+M101826;02.09.2024;Diyarbakır;Standart;1 yıl;265,71;16;217,2;1;0;5;internet yavaş;hayır
+M101827;04.06.2022;Konya;Temel;1 yıl;187,75;43;101,4;0;0;4;şikâyet yok;hayır
+M101828;03.11.2023;İzmir;Temel;Aylık;195,79;26;99,5;0;0;5;şikâyet yok;hayır
+M101829;02.11.2024;İstanbul;Temel;1 yıl;169,49;14;272,9;1;0;2;fatura yüksek;hayır
+M101830;03.07.2024;İstanbul;Temel;1 yıl;243,02;18;303,7;2;0;3;bağlantı kopuyor;evet
+M101831;04.04.2023;İzmir;Standart;1 yıl;266,37;33;245;0;0;3;şikâyet yok;hayır
+M101832;02.11.2025;Diyarbakır;Standart;1 yıl;263,89;2;224,6;1;0;4;bağlantı kopuyor;hayır
+M101833;04.07.2023;Konya;Temel;Aylık;153,61;30;89,8;0;1;4;şikâyet yok;hayır
+M101834;02.12.2024;Ankara;Temel;1 yıl;195,65;13;;1;0;2;müşteri hizmetleri ulaşılmıyor;hayır
+M101835;04.07.2023;Diyarbakır;Standart;Aylık;282,17;30;55,8;0;0;4;şikâyet yok;hayır
+M101836;03.09.2023;Antalya;Standart;Aylık;308,24;28;315,6;0;0;4;şikâyet yok;hayır
+M101837;02.11.2025;Bursa;Standart;Aylık;277,76;2;56,6;2;1;4;fatura yüksek;hayır
+M101838;03.08.2024;İzmir;Standart;Aylık;288,67;17;91,6;2;0;2;müşteri hizmetleri ulaşılmıyor;hayır
+M101839;02.09.2025;Diyarbakır;Temel;Aylık;195,84;4;;1;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M101840;02.09.2025;İzmir;Temel;Aylık;199,72;4;138,3;2;1;3;kurulum gecikti;hayır
+M101841;02.12.2025;İstanbul;Temel;Aylık;189,87;1;167,3;5;0;3;bağlantı kopuyor;evet
+M101842;02.11.2025;İstanbul;Standart;1 yıl;273,32;2;128,7;1;0;5;bağlantı kopuyor;hayır
+M101843;05.07.2021;Antalya;Temel;Aylık;204,6;54;322,5;0;1;5;şikâyet yok;evet
+M101844;04.03.2024;Bursa;Standart;1 yıl;317,68;22;368,7;4;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M101845;03.09.2023;İstanbul;Premium;2 yıl;493,37;28;410,8;1;1;;kurulum gecikti;hayır
+M101846;03.03.2025;Diyarbakır;Temel;Aylık;172,81;10;268,4;3;0;;internet yavaş;evet
+M101847;03.09.2023;İzmir;Temel;Aylık;177,04;28;164,6;1;1;4;müşteri hizmetleri ulaşılmıyor;hayır
+M101848;02.12.2024;İzmir;Standart;1 yıl;286,54;13;50,8;0;2;3;şikâyet yok;hayır
+M101849;02.11.2025;İzmir;Standart;Aylık;311,74;2;176,9;1;0;4;bağlantı kopuyor;hayır
+M101850;01.02.2025;Iğdır;Standart;1 yıl;296,06;11;186,5;0;1;;şikâyet yok;hayır
+M101851;02.11.2025;Iğdır;Temel;Aylık;184,49;2;233,7;2;1;2;kurulum gecikti;evet
+M101852;04.08.2022;İstanbul;Standart;2 yıl;311,25;41;605,9;1;0;5;internet yavaş;hayır
+M101853;03.05.2024;Ankara;Temel;2 yıl;166,34;20;250,5;2;0;4;kurulum gecikti;hayır
+M101854;03.03.2025;Antalya;Temel;Aylık;190,59;10;228,8;0;1;3;şikâyet yok;hayır
+M101855;02.11.2025;Ankara;Standart;Aylık;269,16;2;239,5;0;0;3;şikâyet yok;evet
+M101856;05.03.2023;İstanbul;Standart;1 yıl;264,66;34;493,1;1;0;3;internet yavaş;evet
+M101857;02.09.2025;İstanbul;Premium;1 yıl;396,47;4;374,5;5;3;3;fatura yüksek;evet
+M101858;03.01.2022;İzmir;Temel;2 yıl;183,23;48;154,5;1;0;5;bağlantı kopuyor;hayır
+M101859;05.11.2018;Konya;Temel;2 yıl;182,17;86;36,1;1;0;3;bağlantı kopuyor;hayır
+M101860;02.12.2025;İzmir;Temel;2 yıl;161,35;1;250,1;2;2;4;bağlantı kopuyor;hayır
+M101861;05.03.2022;İstanbul;Standart;Aylık;252,21;46;133,8;0;0;2;şikâyet yok;hayır
+M101862;02.12.2024;İzmir;Standart;1 yıl;270,13;13;217,8;1;0;3;bağlantı kopuyor;evet
+M101863;03.04.2025;İzmir;Temel;Aylık;211,57;9;277,7;0;1;4;şikâyet yok;hayır
+M101864;02.12.2024;Ankara;Premium;2 yıl;399,75;13;720,9;1;1;4;fatura yüksek;hayır
+M101865;03.01.2024;Bursa;Premium;Aylık;438,79;24;532,4;1;3;4;internet yavaş;evet
+M101866;02.10.2025;Bursa;Premium;1 yıl;429,59;3;396,1;1;0;3;internet yavaş;hayır
+M101867;02.10.2025;İstanbul;Standart;Aylık;301,27;3;242,1;0;0;3;şikâyet yok;hayır
+M101868;02.08.2025;Ankara;Temel;2 yıl;157,94;5;350,7;1;1;4;fatura yüksek;hayır
+M101869;02.09.2025;Antalya;Standart;1 yıl;267,27;4;442;2;1;5;bağlantı kopuyor;evet
+M101870;04.10.2023;İstanbul;Premium;1 yıl;444,66;27;322,8;3;0;4;bağlantı kopuyor;hayır
+M101871;04.08.2023;Ankara;Standart;Aylık;338,39;29;215,6;2;1;;bağlantı kopuyor;evet
+M101872;03.07.2025;Ankara;Temel;Aylık;183,24;6;253,3;1;0;4;fatura yüksek;hayır
+M101873;02.11.2025;İstanbul;Premium;1 yıl;386,28;2;349,2;1;1;2;kurulum gecikti;hayır
+M101874;05.03.2023;Konya;Standart;Aylık;296,85;34;114,2;1;1;3;bağlantı kopuyor;hayır
+M101875;03.12.2023;Bursa;Temel;1 yıl;234,58;25;312,8;0;0;5;şikâyet yok;hayır
+M101876;03.04.2024;Diyarbakır;Temel;1 yıl;203,72;21;221,7;1;0;;kurulum gecikti;hayır
+M101877;02.10.2025;İstanbul;Premium;Aylık;412,24;3;189,1;2;0;4;kurulum gecikti;hayır
+M101878;03.06.2025;Konya;Standart;Aylık;272,55;7;181,5;0;0;4;şikâyet yok;hayır
+M101879;02.09.2024;İstanbul;Standart;1 yıl;315,02;16;217,6;0;0;3;şikâyet yok;hayır
+M101880;03.05.2025;İstanbul;Temel;Aylık;262,21;8;86;2;1;5;kurulum gecikti;hayır
+M101881;03.03.2025;Diyarbakır;Temel;Aylık;235,14;10;247,9;0;0;3;şikâyet yok;hayır
+M101882;02.02.2023;İstanbul;Standart;1 yıl;305,53;35;146,2;1;0;3;internet yavaş;hayır
+M101883;03.07.2024;İstanbul;Temel;2 yıl;211,86;18;267,1;0;0;;şikâyet yok;hayır
+M101884;03.11.2023;Bursa;Temel;1 yıl;197,29;26;161,8;0;0;5;şikâyet yok;hayır
+M101885;02.08.2025;İzmir;Standart;1 yıl;293,14;5;258;1;0;4;fatura yüksek;hayır
+M101886;02.10.2025;İstanbul;Standart;1 yıl;286,71;3;320,6;2;1;4;internet yavaş;hayır
+M101887;02.11.2025;Bursa;Temel;2 yıl;153,89;2;192,2;2;0;3;kurulum gecikti;hayır
+M101888;02.11.2025;Diyarbakır;Temel;2 yıl;139,37;2;306,3;2;0;3;internet yavaş;hayır
+M101889;03.07.2025;Bursa;Premium;1 yıl;441,67;6;677,8;1;0;3;kurulum gecikti;evet
+M101890;04.10.2020;İstanbul;Standart;1 yıl;285,32;63;133,4;0;0;4;şikâyet yok;hayır
+M101891;03.11.2023;Ankara;Temel;Aylık;182,46;26;327,6;1;0;3;bağlantı kopuyor;hayır
+M101892;02.12.2025;Ankara;Standart;1 yıl;293,97;1;301,6;1;0;2;kurulum gecikti;hayır
+M101893;01.02.2025;İzmir;Temel;1 yıl;204,05;11;128,2;2;0;3;bağlantı kopuyor;hayır
+M101894;02.12.2024;Bursa;Standart;1 yıl;263,43;13;250,7;2;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M101895;06.10.2018;Diyarbakır;Premium;2 yıl;399,05;87;228,2;1;0;4;fatura yüksek;hayır
+M101896;04.10.2023;İzmir;Temel;2 yıl;218,14;27;290;0;2;4;şikâyet yok;hayır
+M101897;02.10.2025;İstanbul;Standart;Aylık;264,35;3;189,2;0;3;5;şikâyet yok;hayır
+M101898;02.08.2025;Bursa;Standart;1 yıl;292,39;5;55,8;2;3;3;müşteri hizmetleri ulaşılmıyor;evet
+M101899;04.07.2023;İzmir;Premium;1 yıl;430,1;30;334,1;0;0;4;şikâyet yok;hayır
+M101900;03.06.2025;İstanbul;Standart;Aylık;281,01;7;154,4;0;0;3;şikâyet yok;hayır
+M101901;02.11.2024;Ankara;Standart;2 yıl;282,29;14;81,5;1;0;3;bağlantı kopuyor;hayır
+M101902;04.06.2023;Bursa;Premium;2 yıl;427,24;31;250,8;2;0;3;kurulum gecikti;hayır
+M101903;01.02.2025;Antalya;Temel;Aylık;196,52;11;639,7;2;0;1;fatura yüksek;hayır
+M101904;03.04.2025;Ankara;Standart;Aylık;259,26;9;168;0;0;3;şikâyet yok;hayır
+M101905;04.10.2021;İstanbul;Standart;2 yıl;283,59;51;288,1;0;0;4;şikâyet yok;hayır
+M101906;03.11.2023;Konya;Temel;Aylık;215,06;26;441,3;1;0;2;bağlantı kopuyor;evet
+M101907;03.02.2021;İstanbul;Standart;Aylık;329,07;59;149,6;2;0;3;fatura yüksek;hayır
+M101908;03.04.2024;Diyarbakır;Temel;Aylık;234,6;21;141,8;0;2;3;şikâyet yok;evet
+M101909;02.01.2025;Konya;Temel;2 yıl;137,91;12;429,7;0;0;5;şikâyet yok;hayır
+M101910;02.10.2024;Diyarbakır;Temel;Aylık;223,9;15;321,1;0;0;3;şikâyet yok;hayır
+M101911;02.09.2025;Ankara;Temel;1 yıl;199,02;4;361,3;3;1;3;fatura yüksek;hayır
+M101912;02.01.2025;Ankara;Standart;Aylık;261,78;12;228,4;3;1;2;fatura yüksek;evet
+M101913;05.01.2018;İzmir;Premium;Aylık;423,48;96;261,7;0;0;3;şikâyet yok;hayır
+M101914;03.08.2024;İzmir;Temel;1 yıl;231,59;17;132,7;1;1;3;fatura yüksek;hayır
+M101915;02.11.2024;Antalya;Premium;1 yıl;433,76;14;176,7;3;0;4;müşteri hizmetleri ulaşılmıyor;hayır
+M101916;03.05.2024;İstanbul;Temel;Aylık;188,21;20;261,7;0;0;;şikâyet yok;hayır
+M101917;02.02.2024;Diyarbakır;Temel;Aylık;179,69;23;120,8;4;0;1;müşteri hizmetleri ulaşılmıyor;evet
+M101918;04.04.2023;İstanbul;Temel;Aylık;194,1;33;264,3;0;0;4;şikâyet yok;hayır
+M101919;01.02.2025;İstanbul;Temel;1 yıl;191,57;11;234,5;0;0;4;şikâyet yok;hayır
+M101920;03.06.2025;İzmir;Premium;1 yıl;404,38;7;296,2;3;0;3;internet yavaş;evet
+M101921;05.10.2019;Antalya;Standart;1 yıl;247,64;75;418,6;2;3;5;bağlantı kopuyor;hayır
+M101922;02.09.2025;Bursa;Temel;Aylık;174,18;4;180,5;1;0;2;bağlantı kopuyor;evet
+M101923;02.09.2025;İstanbul;Temel;1 yıl;205,5;4;449,5;0;0;3;şikâyet yok;hayır
+M101924;04.10.2022;İstanbul;Standart;Aylık;231,84;39;226,3;5;0;2;fatura yüksek;evet
+M101925;03.05.2025;İstanbul;Standart;Aylık;263,51;8;378,2;0;1;3;şikâyet yok;hayır
+M101926;03.05.2024;İstanbul;Standart;Aylık;348,58;20;167,9;0;0;3;şikâyet yok;hayır
+M101927;02.08.2025;Antalya;Temel;Aylık;212,16;5;203,6;1;0;3;bağlantı kopuyor;hayır
+M101928;01.02.2025;İstanbul;Standart;Aylık;336,55;11;147,1;2;0;4;kurulum gecikti;hayır
+M101929;04.08.2023;Diyarbakır;Temel;Aylık;224,69;29;206,7;1;0;;kurulum gecikti;hayır
+M101930;02.11.2025;Konya;Temel;Aylık;225,43;2;222;0;0;4;şikâyet yok;hayır
+M101931;03.04.2025;Ankara;Temel;2 yıl;218,09;9;291;1;0;3;bağlantı kopuyor;hayır
+M101932;03.06.2025;İstanbul;Standart;2 yıl;275,36;7;;3;2;2;bağlantı kopuyor;evet
+M101933;03.04.2025;İstanbul;Standart;1 yıl;295,07;9;101,6;2;0;1;internet yavaş;evet
+M101934;02.11.2025;İstanbul;Temel;Aylık;237,62;2;186,1;1;2;3;müşteri hizmetleri ulaşılmıyor;evet
+M101935;03.02.2021;Konya;Standart;Aylık;296,32;59;125,6;2;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M101936;02.10.2024;Konya;Temel;1 yıl;191,75;15;508,5;0;0;2;şikâyet yok;hayır
+M101937;01.02.2025;Bursa;Standart;Aylık;287,57;11;215,7;4;0;4;müşteri hizmetleri ulaşılmıyor;hayır
+M101938;02.11.2025;Ankara;Standart;Aylık;326,35;2;139;4;0;1;kurulum gecikti;evet
+M101939;03.12.2023;Ankara;Standart;Aylık;256,29;25;464,4;1;0;3;fatura yüksek;hayır
+M101940;02.11.2024;Iğdır;Temel;Aylık;247,04;14;184,6;1;0;2;internet yavaş;evet
+M101941;05.04.2020;İstanbul;Temel;Aylık;192,5;69;221,7;0;3;2;şikâyet yok;hayır
+M101942;02.12.2024;İzmir;Temel;2 yıl;194,37;13;155,6;1;1;3;müşteri hizmetleri ulaşılmıyor;hayır
+M101943;05.07.2022;İzmir;Standart;Aylık;277,1;42;287,3;2;0;1;müşteri hizmetleri ulaşılmıyor;hayır
+M101944;03.07.2024;Ankara;Temel;1 yıl;203,36;18;379,8;1;1;1;internet yavaş;evet
+M101945;03.05.2025;Antalya;Standart;1 yıl;291,58;8;245,1;1;2;3;kurulum gecikti;evet
+M101946;03.12.2023;İzmir;Temel;1 yıl;209,68;25;552,3;1;0;3;fatura yüksek;hayır
+M101947;04.11.2020;Diyarbakır;Temel;Aylık;188,67;62;183,8;1;0;4;müşteri hizmetleri ulaşılmıyor;hayır
+M101948;03.01.2024;Iğdır;Premium;Aylık;400,47;24;357,9;3;1;2;fatura yüksek;evet
+M101949;04.09.2021;Diyarbakır;Standart;1 yıl;272,39;52;227,3;0;0;4;şikâyet yok;hayır
+M101950;03.05.2024;İstanbul;Temel;Aylık;173,49;20;257,7;1;0;5;internet yavaş;hayır
+M101951;03.09.2023;Ankara;Premium;Aylık;392,46;28;45,9;3;0;3;kurulum gecikti;evet
+M101952;05.01.2018;İstanbul;Premium;1 yıl;440,23;96;;2;3;4;kurulum gecikti;hayır
+M101953;02.08.2025;Ankara;Standart;2 yıl;300,48;5;691;3;0;3;fatura yüksek;evet
+M101954;02.09.2025;Konya;Temel;1 yıl;152,82;4;88,5;1;0;;kurulum gecikti;hayır
+M101955;04.04.2023;Bursa;Temel;Aylık;169,06;33;142,6;1;0;;internet yavaş;hayır
+M101956;03.06.2025;Bursa;Temel;2 yıl;225;7;363,2;0;1;5;şikâyet yok;hayır
+M101957;02.01.2025;Ankara;Standart;2 yıl;302,96;12;488,4;2;1;;internet yavaş;hayır
+M101958;04.07.2023;Ankara;Temel;1 yıl;230,82;30;345,8;0;1;4;şikâyet yok;hayır
+M101959;02.09.2025;Bursa;Standart;Aylık;266,02;4;599,6;1;0;;müşteri hizmetleri ulaşılmıyor;hayır
+M101960;02.11.2024;Ankara;Premium;Aylık;369,2;14;513,1;1;0;4;kurulum gecikti;evet
+M101961;01.02.2025;İzmir;Standart;1 yıl;244,9;11;142,9;2;2;4;internet yavaş;hayır
+M101962;03.11.2022;İzmir;Temel;Aylık;206,94;38;275;0;1;4;şikâyet yok;hayır
+M101963;03.05.2025;Konya;Temel;Aylık;165,06;8;619,1;0;0;5;şikâyet yok;hayır
+M101964;04.09.2020;Konya;Temel;1 yıl;236,06;64;281,5;0;0;;şikâyet yok;hayır
+M101965;02.02.2023;Ankara;Standart;1 yıl;288,86;35;129,1;0;0;4;şikâyet yok;hayır
+M101966;02.10.2025;Konya;Temel;2 yıl;209,62;3;217,3;2;0;;müşteri hizmetleri ulaşılmıyor;hayır
+M101967;02.09.2025;İstanbul;Temel;Aylık;214,73;4;347,8;2;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M101968;02.12.2025;Diyarbakır;Temel;1 yıl;226,51;1;188,3;2;0;3;bağlantı kopuyor;hayır
+M101969;02.10.2025;Bursa;Standart;1 yıl;292,11;3;;0;0;4;şikâyet yok;hayır
+M101970;02.09.2025;İstanbul;Standart;Aylık;298,87;4;319,7;2;0;2;müşteri hizmetleri ulaşılmıyor;hayır
+M101971;02.11.2025;Konya;Standart;1 yıl;241,26;2;126,1;1;0;5;internet yavaş;hayır
+M101972;02.10.2024;Konya;Temel;1 yıl;170,12;15;113,6;1;0;4;bağlantı kopuyor;hayır
+M101973;03.09.2023;İstanbul;Standart;2 yıl;300,16;28;;1;0;2;kurulum gecikti;hayır
+M101974;05.05.2023;İstanbul;Premium;Aylık;432,56;32;354,5;1;0;4;internet yavaş;hayır
+M101975;03.11.2022;İstanbul;Premium;Aylık;419,07;38;211,6;3;2;2;fatura yüksek;evet
+M101976;04.09.2021;İstanbul;Premium;Aylık;409,32;52;267,8;3;0;1;müşteri hizmetleri ulaşılmıyor;evet
+M101977;02.09.2025;Bursa;Premium;Aylık;446,71;4;558,5;1;1;2;bağlantı kopuyor;hayır
+M101978;03.01.2023;Diyarbakır;Standart;1 yıl;294,51;36;98,7;3;0;4;bağlantı kopuyor;hayır
+M101979;02.11.2025;Diyarbakır;Temel;Aylık;189,29;2;260,7;3;0;1;bağlantı kopuyor;hayır
+M101980;01.02.2025;Antalya;Premium;1 yıl;480,52;11;443,9;1;2;3;internet yavaş;evet
+M101981;04.04.2023;Bursa;Temel;1 yıl;191,48;33;65,3;2;0;;fatura yüksek;hayır
+M101982;03.06.2025;Bursa;Temel;Aylık;180,88;7;112,2;1;0;3;fatura yüksek;hayır
+M101983;02.02.2023;Ankara;Premium;1 yıl;459,91;35;396,8;0;0;5;şikâyet yok;hayır
+M101984;02.11.2024;Ankara;Premium;Aylık;405,02;14;776,2;1;0;;fatura yüksek;hayır
+M101985;05.05.2021;Ankara;Temel;Aylık;181,24;56;161,2;1;0;4;bağlantı kopuyor;hayır
+M101986;02.11.2025;Ankara;Premium;Aylık;438,25;2;535,8;3;0;3;müşteri hizmetleri ulaşılmıyor;evet
+M101987;03.05.2025;Konya;Temel;2 yıl;241,62;8;279;1;0;3;müşteri hizmetleri ulaşılmıyor;hayır
+M101988;05.03.2023;Diyarbakır;Temel;1 yıl;187,63;34;326,5;2;0;2;müşteri hizmetleri ulaşılmıyor;hayır
+M101989;03.01.2021;Konya;Temel;Aylık;146,69;60;144;2;0;2;fatura yüksek;evet
+M101990;03.06.2024;Iğdır;Standart;Aylık;318,66;19;260,2;1;1;5;bağlantı kopuyor;hayır
+M101991;03.03.2025;Konya;Temel;Aylık;198,61;10;173,4;0;0;3;şikâyet yok;evet
+M101992;04.06.2023;İzmir;Standart;Aylık;313,69;31;346,4;1;0;4;kurulum gecikti;hayır
+M101993;03.06.2025;İstanbul;Temel;1 yıl;211,98;7;256,4;0;0;3;şikâyet yok;hayır
+M101994;03.01.2023;İstanbul;Temel;Aylık;231,91;36;134,7;2;0;4;fatura yüksek;hayır
+M101995;03.05.2025;Antalya;Standart;1 yıl;292,26;8;241,1;0;0;4;şikâyet yok;hayır
+M101996;03.11.2023;İstanbul;Standart;Aylık;243,34;26;332,1;1;1;3;internet yavaş;hayır
+M101997;03.07.2025;İzmir;Temel;1 yıl;197,01;6;303,4;0;0;2;şikâyet yok;evet
+M101998;01.02.2025;İstanbul;Temel;Aylık;238,66;11;299,5;0;0;4;şikâyet yok;evet
+M101999;05.04.2021;İstanbul;Premium;Aylık;473,96;57;245,7;1;0;3;kurulum gecikti;hayır

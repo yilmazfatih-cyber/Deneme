@@ -1,0 +1,259 @@
+/*
+ * Tasarım belirteçleri ve genel stiller. Renkler YALNIZ buradaki anlamlı adlarla kullanılır
+ * (bg-canvas, bg-surface, text-ink, text-muted, border-line, bg-accent, text-danger…); Tailwind'in hazır
+ * renk paleti bilerek kapalıdır ki açık/koyu tema ve yüksek karşıtlık her yerde tutarlı kalsın.
+ *
+ * Kural testi (test/rules/contrast.test.ts) metin/zemin çiftlerinin WCAG AA karşıtlığını açık ve koyu temada denetler.
+ * Genişletme: yeni renk → üç tema bloğuna da değişken + @theme içine `--color-…` satırı + kontrast testine çift.
+ */
+@import 'tailwindcss';
+
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+:root {
+  --canvas: #f6f4ef;
+  --surface: #ffffff;
+  --surface-2: #eeebe3;
+  --line: #ddd8cd;
+  --line-strong: #86817a;
+  --ink: #1c2220;
+  --muted: #575e5a;
+  --accent: #0e6157;
+  --accent-ink: #ffffff;
+  --accent-soft: #d9eee8;
+  --accent-text: #0b5249;
+  --danger: #b42318;
+  --danger-soft: #fdecea;
+  --warn: #8a4b00;
+  --warn-soft: #fcefd9;
+  --ok: #1e6b40;
+  --ok-soft: #e1f2e7;
+  --focus: #2257c9;
+  --list-blue: #2f6fd6;
+  --list-green: #2f8a57;
+  --list-amber: #c27c0e;
+  --list-red: #c8412f;
+  --list-violet: #7a4fd0;
+  --list-gray: #7c7f7d;
+  --bottom-nav-height: 4.5rem;
+  color-scheme: light;
+}
+
+/* Koyu tema: kullanıcı seçtiyse (data-theme) ya da betik çalışmadan önce sistem koyuysa. */
+:root[data-theme='dark'] {
+  --canvas: #111513;
+  --surface: #191e1c;
+  --surface-2: #222926;
+  --line: #2f3834;
+  --line-strong: #77827c;
+  --ink: #e8ece9;
+  --muted: #a4ada8;
+  --accent: #5cc3b2;
+  --accent-ink: #06281f;
+  --accent-soft: #163a34;
+  --accent-text: #7fd6c7;
+  --danger: #ff8b7f;
+  --danger-soft: #3b1c19;
+  --warn: #f0bf68;
+  --warn-soft: #372b12;
+  --ok: #7dd3a0;
+  --ok-soft: #16321f;
+  --focus: #8fb5ff;
+  --list-blue: #78a6f0;
+  --list-green: #6cc994;
+  --list-amber: #e8b04f;
+  --list-red: #f08b7c;
+  --list-violet: #b49af0;
+  --list-gray: #a4ada8;
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --canvas: #111513;
+    --surface: #191e1c;
+    --surface-2: #222926;
+    --line: #2f3834;
+    --line-strong: #77827c;
+    --ink: #e8ece9;
+    --muted: #a4ada8;
+    --accent: #5cc3b2;
+    --accent-ink: #06281f;
+    --accent-soft: #163a34;
+    --accent-text: #7fd6c7;
+    --danger: #ff8b7f;
+    --danger-soft: #3b1c19;
+    --warn: #f0bf68;
+    --warn-soft: #372b12;
+    --ok: #7dd3a0;
+    --ok-soft: #16321f;
+    --focus: #8fb5ff;
+    color-scheme: dark;
+  }
+}
+
+/* Yüksek karşıtlık: ikincil metin ve çizgiler ana metin kadar belirgin olur. */
+:root[data-contrast='high'] {
+  --muted: var(--ink);
+  --line: var(--line-strong);
+  --line-strong: var(--ink);
+  --surface-2: var(--surface);
+}
+
+/* Yazı boyutu: bütün ölçüler rem olduğu için kök yazı boyutu her şeyi büyütür. */
+:root[data-font='large'] {
+  font-size: 112.5%;
+}
+:root[data-font='larger'] {
+  font-size: 125%;
+}
+
+@theme {
+  --color-*: initial;
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+  --font-sans:
+    'Segoe UI Variable Text', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Roboto, 'Noto Sans', Arial,
+    sans-serif;
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-text: var(--accent-text);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-ok: var(--ok);
+  --color-ok-soft: var(--ok-soft);
+  --color-focus: var(--focus);
+}
+
+@layer base {
+  html {
+    background: var(--canvas);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    min-height: 100dvh;
+    font-feature-settings: 'ss01', 'cv11';
+  }
+
+  ::selection {
+    background: var(--accent-soft);
+    color: var(--ink);
+  }
+
+  /* Görünür odak: yalnız klavyeyle gezinirken, her öğede aynı belirgin halka. */
+  :focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+    border-radius: 0.75rem;
+  }
+
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    outline-offset: 0;
+    border-color: var(--focus);
+  }
+
+  [popover] {
+    inset: auto;
+  }
+}
+
+@layer utilities {
+  .toast-in {
+    animation: toast-in 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .menu-in {
+    animation: menu-in 120ms ease-out;
+  }
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}
+
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+/* Azaltılmış hareket: sistem ayarı ya da uygulama ayarı açıksa canlandırma ve geçişler kapanır. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+:root[data-motion='reduce'] *,
+:root[data-motion='reduce'] ::before,
+:root[data-motion='reduce'] ::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* Görev kutusu: yuvarlak, işaretlenince dolu ve tikli (yerel onay kutusu; klavye ve ekran okuyucu davranışı korunur). */
+@layer components {
+  .task-check {
+    appearance: none;
+    display: grid;
+    place-content: center;
+    width: 1.625rem;
+    height: 1.625rem;
+    border: 2px solid var(--line-strong);
+    border-radius: 999px;
+    background: var(--surface);
+    cursor: pointer;
+    transition:
+      background-color 120ms,
+      border-color 120ms;
+  }
+  .task-check:hover {
+    border-color: var(--accent);
+  }
+  .task-check:checked {
+    border-color: var(--accent);
+    background: var(--accent);
+  }
+  .task-check:checked::after {
+    content: '';
+    width: 0.8rem;
+    height: 0.45rem;
+    border-left: 2.5px solid var(--accent-ink);
+    border-bottom: 2.5px solid var(--accent-ink);
+    transform: translateY(-1px) rotate(-45deg);
+  }
+  .task-check:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+}

@@ -70,7 +70,7 @@ def prepare_data(
     options: PrepareOptions | None = None,
     progress: Callable[[int, int], None] | None = None,
 ) -> dict[str, Any]:
-    """Girdi dosyalarını belirteçlere çevirip `out_dir` içine yazar; `meta.json` içeriğini döndürür."""
+    """Girdileri belirteçlere çevirip `out_dir` içine yazar; `meta.json` içeriğini döndürür."""
     opts = options or PrepareOptions()
     if not 0.0 < opts.val_fraction < 0.5:
         raise ValueError("Doğrulama oranı 0 ile 0,5 arasında olmalı (örnek: 0.01).")
@@ -146,7 +146,9 @@ def _is_val(seed: int, index: int, fraction: float) -> bool:
 def _fast_encoder(tokenizer: Tokenizer) -> Encoder:
     """Aynı kimlikleri üreten `tokenizers` kodlayıcısı (eşlik: tests/test_data.py)."""
     if not isinstance(tokenizer, BPETokenizer):
-        raise ValueError("Hızlı kodlama yalnız BPE tokenizer ile kullanılabilir; --hizli olmadan deneyin.")
+        raise ValueError(
+            "Hızlı kodlama yalnız BPE tokenizer ile kullanılabilir; --hizli olmadan deneyin."
+        )
     try:
         import tokenizers
     except ImportError:

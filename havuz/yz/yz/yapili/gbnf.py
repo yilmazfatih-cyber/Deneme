@@ -139,7 +139,11 @@ class _Uretec:
     def _dizi(self, sema: dict[str, Any], oneri: str) -> str:
         ogeler = sema.get("items")
         self._temel("ws")
-        oge = self._ifade(ogeler, f"{oneri}-oge") if isinstance(ogeler, dict) else self._temel("value")
+        oge = (
+            self._ifade(ogeler, f"{oneri}-oge")
+            if isinstance(ogeler, dict)
+            else self._temel("value")
+        )
         if not re.fullmatch(r"[a-z][a-z0-9-]*", oge):  # satır içi ifadeyi adlandır
             ad = self._yeni_ad(f"{oneri}-oge")
             self.kurallar[ad] = oge

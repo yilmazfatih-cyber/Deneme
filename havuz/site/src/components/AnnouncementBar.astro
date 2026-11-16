@@ -1,0 +1,47 @@
+---
+/**
+ * Duyuru şeridi: sayfanın en üstünde tek satırlık duyuru + bağlantı + kapatma düğmesi.
+ * Metin: src/site.config.ts → locales.<dil>.announcement (kapatmak için null yazın).
+ * Kapatılınca tarayıcı hatırlar; duyuru metni değişince yeniden görünür (kimlik metinden üretilir).
+ */
+import Icon from './Icon.astro'
+import { useTranslations } from '../i18n/index.ts'
+import { link } from '../lib/url.ts'
+import type { Locale } from '../site.config.ts'
+
+interface Props {
+  locale: Locale
+  id: string
+  text: string
+  href: string
+  linkLabel: string
+}
+
+const { locale, id, text, href, linkLabel } = Astro.props
+const t = useTranslations(locale)
+---
+
+<div class="announcement no-print border-b border-brand-line bg-brand-soft text-ink" data-announcement={id}>
+  <div class="wrap flex min-h-11 items-center justify-center gap-3 py-1.5 text-sm">
+    <p class="text-center">
+      <span class="sr-only">{t.announcement.label}: </span>
+      {text}{' '}
+      <a href={link(href)} class="link font-semibold whitespace-nowrap">
+        {linkLabel}
+      </a>
+    </p>
+    <button
+      type="button"
+      class="icon-btn -my-1 min-h-9 min-w-9 shrink-0"
+      data-announcement-dismiss
+      aria-label={t.announcement.dismiss}
+      hidden
+    >
+      <Icon name="x" size={16} />
+    </button>
+  </div>
+</div>
+
+<script>
+  import '../scripts/announcement.ts'
+</script>

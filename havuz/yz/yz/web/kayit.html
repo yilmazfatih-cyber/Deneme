@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ajan dökümü</title>
+<!--
+  Ajan dökümü görüntüleyici (bağımlılıksız). AjanSonucu.dokum_kaydet() ile yazılan .jsonl
+  dosyasını tarayıcıda açar; dosya sunucuya gönderilmez. Sunucu üzerinden açın: /kayit.html
+  Metinler sozluk.json'dan gelir. Bütün içerik textContent ile basılır.
+-->
+<style>
+:root { --zemin: #f6f6f8; --yuzey: #fff; --metin: #1d1d21; --soluk: #5d5d66; --cizgi: #d9d9e0; --hata: #a1251b; --vurgu: #2453c7; }
+@media (prefers-color-scheme: dark) { :root { --zemin: #141417; --yuzey: #1e1e23; --metin: #ececf1; --soluk: #a3a3ad; --cizgi: #34343c; --hata: #ff8a80; --vurgu: #7d9cff; } }
+body { margin: 0; padding: 16px; background: var(--zemin); color: var(--metin); font: 16px/1.5 system-ui, sans-serif; }
+main { max-width: 860px; margin: 0 auto; }
+.adim { background: var(--yuzey); border: 1px solid var(--cizgi); border-left: 4px solid var(--vurgu); border-radius: 8px; padding: 8px 12px; margin: 8px 0; overflow-wrap: anywhere; }
+.adim.arac { border-left-color: #0a7a3e; } .adim.hata { border-left-color: var(--hata); } .adim.bilgi { border-left-color: var(--soluk); }
+.adim pre { white-space: pre-wrap; margin: 4px 0 0; font: .9rem/1.4 ui-monospace, monospace; }
+.etiket { font-size: .8rem; color: var(--soluk); }
+.gorunmez { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.dugme { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 14px; border: 1px solid var(--soluk); border-radius: 8px; background: var(--yuzey); cursor: pointer; }
+#dosya:focus-visible + .dugme { outline: 3px solid var(--vurgu); outline-offset: 2px; }
+</style>
+</head>
+<body>
+<main>
+  <h1 data-t="kayit_baslik"></h1>
+  <p data-t="kayit_aciklama"></p>
+  <input id="dosya" class="gorunmez" type="file" accept=".jsonl,.json">
+  <label class="dugme" for="dosya" data-t="kayit_dosya"></label> <span id="secilen"></span>
+  <div id="liste" aria-live="polite"></div>
+</main>
+<script>
+"use strict";
+const S = {};
+const t = (k, d) => Object.entries(d || {}).reduce((m, [a, b]) => m.replaceAll("{" + a + "}", String(b)), S[k] ?? k);
+function kutu(sinif, etiket, govde) {
+  const el = document.createElement("div"); el.className = "adim " + sinif;
+  const e = document.createElement("div"); e.className = "etiket"; e.textContent = etiket; el.appendChild(e);
+  const p = document.createElement("pre"); p.textContent = govde; el.appendChild(p);
+  return el;
+}
+document.getElementById("dosya").addEventListener("change", async (olay) => {
+  const liste = document.getElementById("liste");
+  liste.replaceChildren();
+  document.getElementById("secilen").textContent = olay.target.files[0].name;
+  const metin = await olay.target.files[0].text();
+  const satirlar = metin.split(/\r?\n/).filter((s) => s.trim()).map((s) => { try { return JSON.parse(s); } catch (_) { return null; } }).filter(Boolean);
+  if (!satirlar.length) { liste.textContent = t("kayit_bos"); return; }
+  for (const s of satirlar) {
+    if (s.tur === "sonuc") {
+      liste.appendChild(kutu("", t("kayit_sonuc") + " · " + t("kayit_durma", { neden: s.durma_nedeni }), s.yanit));
+    } else {
+      const etiket = { model: t("adim_model"), arac: t("adim_arac"), bilgi: t("adim_bilgi") }[s.tur] || s.tur;
+      const ust = s.arac ? etiket + " · " + s.arac + " " + JSON.stringify(s.argumanlar || {}) : etiket;
+      liste.appendChild(kutu(s.tur + (s.hata ? " hata" : ""), "#" + s.sira + " " + ust, s.icerik));
+    }
+  }
+});
+(async () => {
+  try { Object.assign(S, await (await fetch("sozluk.json")).json()); } catch (_) { /* sözlük yok */ }
+  document.querySelectorAll("[data-t]").forEach((el) => { el.textContent = t(el.dataset.t); });
+  document.title = t("kayit_baslik");
+})();
+</script>
+</body>
+</html>

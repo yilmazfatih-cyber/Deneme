@@ -1,0 +1,101 @@
+---
+/**
+ * İletişim sayfası: iletişim bilgileri (src/site.config.ts → contact) + iletişim formu.
+ * Kim kullanır: src/pages/iletisim.astro ve src/pages/en/contact.astro.
+ */
+import ContactForm from '../components/ContactForm.astro'
+import Icon from '../components/Icon.astro'
+import PageHeader from '../components/PageHeader.astro'
+import { useTranslations } from '../i18n/index.ts'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { alternatesFor, paths } from '../lib/routes.ts'
+import { siteConfig, type Locale } from '../site.config.ts'
+
+interface Props {
+  locale: Locale
+}
+
+const { locale } = Astro.props
+const t = useTranslations(locale)
+const contact = siteConfig.contact
+const crumbs = [
+  { label: siteConfig.name, path: paths.home(locale) },
+  { label: t.contact.title, path: paths.contact(locale) },
+]
+const phoneHref = contact.phone ? `tel:${contact.phone.replace(/[^\d+]/gu, '')}` : undefined
+---
+
+<BaseLayout
+  locale={locale}
+  title={t.contact.title}
+  description={t.contact.description}
+  alternates={alternatesFor(paths.contact)}
+  breadcrumbs={crumbs}
+  searchSection={siteConfig.name}
+>
+  <PageHeader locale={locale} title={t.contact.title} lead={t.contact.lead} crumbs={crumbs} />
+  <div class="wrap grid gap-10 py-14 lg:grid-cols-[1fr_1.5fr] lg:gap-16">
+    <section aria-labelledby="iletisim-bilgi">
+      <h2 id="iletisim-bilgi" class="display text-3xl">
+        {t.contact.infoTitle}
+      </h2>
+      <ul class="mt-8 grid gap-6">
+        <li class="flex gap-4">
+          <span class="contact-icon">
+            <Icon name="mail" />
+          </span>
+          <div>
+            <p class="text-sm text-muted">{t.contact.email}</p>
+            <a href={`mailto:${contact.email}`} class="link font-semibold">
+              {contact.email}
+            </a>
+          </div>
+        </li>
+        {contact.phone && (
+          <li class="flex gap-4">
+            <span class="contact-icon">
+              <Icon name="phone" />
+            </span>
+            <div>
+              <p class="text-sm text-muted">{t.contact.phone}</p>
+              <a href={phoneHref} class="link font-semibold">
+                {contact.phone}
+              </a>
+            </div>
+          </li>
+        )}
+        {contact.address && (
+          <li class="flex gap-4">
+            <span class="contact-icon">
+              <Icon name="map-pin" />
+            </span>
+            <div>
+              <p class="text-sm text-muted">{t.contact.address}</p>
+              <address class="not-italic">
+                {contact.address.street}
+                <br />
+                {contact.address.postalCode} {contact.address.city}
+              </address>
+            </div>
+          </li>
+        )}
+      </ul>
+    </section>
+    <ContactForm locale={locale} />
+  </div>
+</BaseLayout>
+
+<style>
+  .contact-icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 1px solid var(--brand-line);
+    border-radius: 0.75rem;
+    background-color: var(--brand-soft);
+    color: var(--brand-ink);
+  }
+</style>

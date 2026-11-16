@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "faturalar",
+  "description": "Uydurma e-arşiv benzeri faturalar (tutarlar TL).",
+  "type": "object",
+  "properties": {
+    "fatura_no": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}\\d{4}\\d{9}$",
+      "x-benzersiz": true
+    },
+    "siparis_id": {
+      "type": "string",
+      "pattern": "^SP\\d{7}$",
+      "x-benzersiz": true
+    },
+    "fatura_tarihi": {
+      "type": "string",
+      "format": "date"
+    },
+    "alici_ad_soyad": {
+      "type": "string"
+    },
+    "alici_tckn": {
+      "type": "string",
+      "description": "uydurma",
+      "x-denetim": "tckn"
+    },
+    "alici_il": {
+      "type": "string",
+      "x-denetim": "il"
+    },
+    "matrah": {
+      "type": "number",
+      "description": "KDV hariç toplam",
+      "minimum": 0.0
+    },
+    "kdv_tutari": {
+      "type": "number",
+      "minimum": 0.0
+    },
+    "genel_toplam": {
+      "type": "number",
+      "description": "KDV dahil",
+      "minimum": 0.0
+    },
+    "kdv_dokumu": {
+      "type": "string",
+      "description": "oran:tutar çiftleri, ör. '10:12.50|20:40.00'"
+    },
+    "yazi_ile": {
+      "type": "string",
+      "pattern": "^Yalnız "
+    }
+  },
+  "required": [
+    "fatura_no",
+    "siparis_id",
+    "fatura_tarihi",
+    "alici_ad_soyad",
+    "alici_tckn",
+    "alici_il",
+    "matrah",
+    "kdv_tutari",
+    "genel_toplam",
+    "kdv_dokumu",
+    "yazi_ile"
+  ],
+  "additionalProperties": false,
+  "x-birincil-anahtar": [
+    "fatura_no"
+  ]
+}

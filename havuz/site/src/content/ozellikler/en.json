@@ -1,0 +1,34 @@
+{
+  "items": [
+    {
+      "icon": "calendar-check",
+      "title": "Online booking",
+      "text": "Customers see your free slots and book in two taps. Opening hours and breaks are taken into account automatically."
+    },
+    {
+      "icon": "bell",
+      "title": "Automatic reminders",
+      "text": "An SMS or WhatsApp message goes out a day and two hours before the appointment, so fewer bookings are forgotten."
+    },
+    {
+      "icon": "repeat",
+      "title": "Waiting list",
+      "text": "A cancelled slot is offered to the first customer on the waiting list. If they accept, your calendar fills up again."
+    },
+    {
+      "icon": "users",
+      "title": "Teams and branches",
+      "text": "Every team member has their own calendar, time off and services. Manage several branches from one screen."
+    },
+    {
+      "icon": "credit-card",
+      "title": "Deposits and prepayment",
+      "text": "Ask for a small deposit at busy times. Payments go through a secure link and your own cancellation rules apply."
+    },
+    {
+      "icon": "chart-no-axes-column",
+      "title": "Simple reports",
+      "text": "See which service, day and team member is busiest on a single page, and export the table to a spreadsheet."
+    }
+  ]
+}

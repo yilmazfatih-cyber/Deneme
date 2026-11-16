@@ -1,0 +1,15 @@
+# Biçim örneği: müşteri mesajını tek kelimelik kategoriye ayırma (katı biçim ölçülür).
+# Çalıştırma: .venv/bin/python -m yz degerlendir gorevler/siniflandirma.yaml
+ad: siniflandirma
+aciklama: Müşteri mesajlarını 5 kategoriye ayırma (yalnızca kategori adı yazılmalı).
+gorev: sohbet
+veri: siniflandirma.jsonl
+sistem: Müşteri mesajlarını sınıflandıran bir yardımcısın. Yalnızca kategori adını yaz.
+istem: |-
+  Kategoriler: iade, fatura, teknik, kargo, diger
+
+  Mesaj: {girdi}
+  Kategori:
+azami_belirtec: 10
+puanlayicilar:
+  - tur: tam_eslesme

@@ -15,13 +15,19 @@
   "scripts": {
     "dev": "node scripts/dev.ts",
     "build": "npm run build -w @uygulama/web",
+    "build:yerel": "npm run build:yerel -w @uygulama/web",
     "start": "npm run start -w @uygulama/api",
-    "typecheck": "npm run typecheck --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present && tsc -p tsconfig.json --noEmit",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test": "npm run test --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present && npm run test:scripts",
+    "test:scripts": "vitest run --config scripts/vitest.config.ts",
+    "test:gen": "vitest run --config scripts/vitest.gen.config.ts",
     "check": "npm run typecheck && npm run lint && npm run format:check && npm run test",
+    "e2e": "npm run build && npm run build:yerel && playwright test --project=telefon-390 --project=telefon-360 --project=masaustu-1280 --project=yerel",
+    "shots": "npm run build && npm run build:yerel && playwright test --project=ekran",
+    "icons": "node scripts/icons.ts",
     "gen": "node scripts/gen.ts"
   },
   "devDependencies": {

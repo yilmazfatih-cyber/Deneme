@@ -1,0 +1,13 @@
+# Netlify ayar dosyası — KOPYALANACAK ÖRNEK. Deponun köküne "netlify.toml" adıyla koyun.
+# SITE_URL'i Netlify panelinden (Site configuration → Environment variables) kendi alan adınızla verin.
+# Bu dosya bu ortamda Netlify'da denenmedi; alanların anlamı için Netlify belgelerine bakın.
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  # Astro 7, Node.js 22.23.4 ya da daha yeni ister (.nvmrc de bu sürümü söyler).
+  NODE_VERSION = "22.23.4"
+
+# Bulunamayan adreslerde 404.html'i göstermek Netlify'ın varsayılan davranışıdır; ek kural gerekmez.

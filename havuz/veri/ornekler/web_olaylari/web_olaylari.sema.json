@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "web_olaylari",
+  "description": "Uydurma web olay günlüğü (oturum ve huni).",
+  "type": "object",
+  "properties": {
+    "olay_id": {
+      "type": "string",
+      "pattern": "^E\\d{7}$",
+      "x-benzersiz": true
+    },
+    "oturum_id": {
+      "type": "string",
+      "pattern": "^O\\d{6}$"
+    },
+    "kullanici_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^M\\d{6}$"
+    },
+    "zaman": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "olay": {
+      "type": "string",
+      "enum": [
+        "sayfa_goruntuleme",
+        "urun_goruntuleme",
+        "sepete_ekle",
+        "odeme_baslat",
+        "satin_al"
+      ]
+    },
+    "sayfa": {
+      "type": "string",
+      "pattern": "^/"
+    },
+    "urun_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^U\\d{4}$"
+    },
+    "cihaz": {
+      "type": "string",
+      "enum": [
+        "mobil",
+        "masaustu",
+        "tablet"
+      ]
+    },
+    "kaynak": {
+      "type": "string",
+      "enum": [
+        "organik",
+        "dogrudan",
+        "reklam",
+        "sosyal",
+        "eposta"
+      ]
+    }
+  },
+  "required": [
+    "olay_id",
+    "oturum_id",
+    "kullanici_id",
+    "zaman",
+    "olay",
+    "sayfa",
+    "urun_id",
+    "cihaz",
+    "kaynak"
+  ],
+  "additionalProperties": false,
+  "x-birincil-anahtar": [
+    "olay_id"
+  ]
+}

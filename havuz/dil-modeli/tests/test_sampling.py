@@ -1,4 +1,4 @@
-"""Örnekleme kuralları: her süzgeç bilinen küçük bir dağılım üzerinde elle hesapla karşılaştırılır."""
+"""Örnekleme kuralları: her süzgeç bilinen küçük bir dağılımda elle hesapla karşılaştırılır."""
 
 from __future__ import annotations
 
@@ -34,7 +34,10 @@ def test_top_k_keeps_the_k_largest_and_ties() -> None:
 
 def test_top_p_keeps_smallest_set_reaching_p() -> None:
     logits = _logits([0.15, 0.5, 0.05, 0.3])
-    kept = lambda p: [i for i, v in enumerate(top_p_filter(logits, p)[0].tolist()) if v != NEG_INF]  # noqa: E731
+
+    def kept(p: float) -> list[int]:
+        return [i for i, v in enumerate(top_p_filter(logits, p)[0].tolist()) if v != NEG_INF]
+
     assert kept(0.7) == [1, 3]  # 0.5 + 0.3 >= 0.7
     assert kept(0.5) == [1]  # 0.5 tek başına yeter
     assert kept(0.81) == [0, 1, 3]
@@ -74,7 +77,9 @@ def test_sampling_is_seeded_and_follows_the_distribution() -> None:
     # Sıcaklık düşünce dağılım sivrilir: p_i^(1/T) ile orantılı.
     cold = next_token(logits, history, SamplingConfig(temperature=0.5), make_generator(7))
     sharp = torch.tensor([p**2 for p in probs])
-    assert torch.allclose(torch.bincount(cold, minlength=4).float() / 20_000, sharp / sharp.sum(), atol=0.015)
+    assert torch.allclose(
+        torch.bincount(cold, minlength=4).float() / 20_000, sharp / sharp.sum(), atol=0.015
+    )
     # top_k=2: yalnız ilk iki belirteç, kendi aralarındaki oranla.
     two = next_token(logits, history, SamplingConfig(temperature=1.0, top_k=2), make_generator(7))
     assert set(two.tolist()) == {0, 1}
@@ -92,5 +97,5 @@ def test_config_validation() -> None:
         {"repetition_window": -1},
         {"stop": ("",)},
     ):
-        with pytest.raises(ValueError):
-            SamplingConfig(**bad)  # type: ignore[arg-type]
+        with pytest.raises(ValueError, match=r"olmalı|olamaz"):
+            SamplingConfig(**bad)

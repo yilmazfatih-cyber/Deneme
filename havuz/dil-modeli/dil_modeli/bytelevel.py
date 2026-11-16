@@ -12,25 +12,9 @@ sınıfı yazın (örnek: `tokenizer_char.py`).
 from __future__ import annotations
 
 import re
-import unicodedata
 from functools import lru_cache
 
-# Unicode "White_Space" özelliğini taşıyan kod noktaları. Python'un `\s` kümesi (\x1c-\x1f'yi de
-# içerir) ve JavaScript'in `\s` kümesi (U+FEFF'i içerir, U+0085'i içermez) bundan farklıdır;
-# üç dilde aynı sonucu almak için kümeyi açıkça yazıyoruz. `tokenizers` 0.23 ile bire bir
-# aynı olduğu bütün kod noktaları denenerek doğrulandı (bkz. docs/MIMARI.md).
-WHITESPACE_RANGES: tuple[tuple[int, int], ...] = (
-    (0x0009, 0x000D),
-    (0x0020, 0x0020),
-    (0x0085, 0x0085),
-    (0x00A0, 0x00A0),
-    (0x1680, 0x1680),
-    (0x2000, 0x200A),
-    (0x2028, 0x2029),
-    (0x202F, 0x202F),
-    (0x205F, 0x205F),
-    (0x3000, 0x3000),
-)
+from . import unicode_classes
 
 
 def _build_byte_to_char() -> list[str]:
@@ -55,14 +39,12 @@ BYTE_TO_CHAR: list[str] = _build_byte_to_char()
 CHAR_TO_BYTE: dict[str, int] = {ch: b for b, ch in enumerate(BYTE_TO_CHAR)}
 # latin-1 ile çözülmüş bayt dizgesini bayt-düzeyi karakterlere çeviren tablo (hızlı yol).
 _TRANSLATE = {b: ord(ch) for b, ch in enumerate(BYTE_TO_CHAR)}
-
-
 _SURROGATES = re.compile("[\ud800-\udfff]")
 
 
 def sanitize(text: str) -> str:
     """Eşsiz vekil kod noktalarını (UTF-8'e çevrilemez) U+FFFD ile değiştirir."""
-    return text if text.isascii() else _SURROGATES.sub("\ufffd", text)
+    return text if text.isascii() else _SURROGATES.sub("�", text)
 
 
 def to_bytelevel(text: str) -> str:
@@ -75,23 +57,16 @@ def from_bytelevel(token: str) -> bytes:
     return bytes(CHAR_TO_BYTE[ch] for ch in token)
 
 
-def _class_ranges(prefix: str) -> list[tuple[int, int]]:
-    """Genel kategorisi `prefix` ile başlayan (L: harf, N: sayı) kod noktası aralıkları."""
+def parse_ranges(table: str) -> list[tuple[int, int]]:
+    """'0041-005A 00AA' biçimindeki tabloyu [(0x41, 0x5A), (0xAA, 0xAA)] listesine çevirir."""
     ranges: list[tuple[int, int]] = []
-    start = -1
-    for cp in range(0x110000):
-        inside = unicodedata.category(chr(cp)).startswith(prefix)
-        if inside and start < 0:
-            start = cp
-        elif not inside and start >= 0:
-            ranges.append((start, cp - 1))
-            start = -1
-    if start >= 0:
-        ranges.append((start, 0x10FFFF))
+    for item in table.split():
+        low, _, high = item.partition("-")
+        ranges.append((int(low, 16), int(high or low, 16)))
     return ranges
 
 
-def _class_body(ranges: tuple[tuple[int, int], ...] | list[tuple[int, int]]) -> str:
+def _class_body(ranges: list[tuple[int, int]]) -> str:
     """Aralıkları düzenli ifade karakter sınıfının içine yazılacak metne çevirir."""
     parts: list[str] = []
     for lo, hi in ranges:
@@ -104,11 +79,13 @@ def pretokenize_pattern() -> re.Pattern[str]:
     """GPT-2 ön-bölme düzenli ifadesinin Python karşılığını kurar (ilk çağrıda, bir kez).
 
     Özgün ifade: 's|'t|'re|'ve|'m|'ll|'d| ?\\p{L}+| ?\\p{N}+| ?[^\\s\\p{L}\\p{N}]+|\\s+(?!\\S)|\\s+
-    Python'un `re` modülü \\p{L} bilmediği için sınıfları `unicodedata`dan üretiyoruz.
+    Python'un `re` modülü \\p{L} bilmez; ayrıca Unicode sürümü ortamdan ortama değişir. Bu yüzden
+    sınıflar `unicode_classes.py` tablolarından kurulur (tarayıcı da aynı tabloları kullanır).
+    Not: `\\s` de açıkça yazılır; Python ve JavaScript'in kendi `\\s` kümeleri farklıdır.
     """
-    letter = _class_body(_class_ranges("L"))
-    number = _class_body(_class_ranges("N"))
-    space = _class_body(WHITESPACE_RANGES)
+    letter = _class_body(parse_ranges(unicode_classes.LETTER))
+    number = _class_body(parse_ranges(unicode_classes.NUMBER))
+    space = _class_body(parse_ranges(unicode_classes.WHITESPACE))
     pattern = (
         "'s|'t|'re|'ve|'m|'ll|'d"
         f"| ?[{letter}]+"

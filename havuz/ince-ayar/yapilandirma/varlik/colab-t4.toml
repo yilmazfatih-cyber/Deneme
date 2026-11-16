@@ -1,0 +1,20 @@
+# Varlık tanıma · colab-t4: Türkçe BERT (dbmdz, MIT), T4'te fp16.
+gorev = "varlik"
+
+[model]
+taban = "dbmdz/bert-base-turkish-cased"
+
+[veri]
+egitim = "ornekler/varlik.jsonl"
+dogrulama_orani = 0.1
+azami_uzunluk = 128
+
+[egitim]
+cikti = "ciktilar/varlik-t4"
+donem = 3.0
+yigin = 32
+degerlendirme_yigini = 64
+ogrenme_orani = 5e-5
+isinma_orani = 0.1
+kayit_adimi = 20
+hedef_bellek_gb = 15.0

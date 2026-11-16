@@ -82,7 +82,7 @@ class LanguageModel(nn.Module):
         cos = self.rope_cos[past : past + length]
         sin = self.rope_sin[past : past + length]
         mask = self._attention_mask(length, past, key_mask)
-        causal = mask is None and length > 1
+        causal = mask is None and past == 0  # önbellekli tek belirteçte maske gerekmez
         x = self.drop(self.embed(ids))
         for index, block in enumerate(self.blocks):
             x = block(x, cos, sin, mask, causal, cache, index)
@@ -98,7 +98,9 @@ class LanguageModel(nn.Module):
         allowed = columns[None, :] <= rows[:, None]  # (T, geçmiş + T): geleceğe bakılmaz
         if key_mask is None:
             return allowed
-        own = columns[None, :] == rows[:, None]  # dolgu konumu en azından kendine baksın (NaN olmasın)
+        own = (
+            columns[None, :] == rows[:, None]
+        )  # dolgu konumu en azından kendine baksın (NaN olmasın)
         return (allowed[None] & (key_mask[:, None, :] | own[None]))[:, None]
 
 

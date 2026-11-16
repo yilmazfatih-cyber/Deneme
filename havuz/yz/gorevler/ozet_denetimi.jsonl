@@ -1,0 +1,12 @@
+{"kimlik": "o01", "kaynak": "Şirket 2023 yılında 120 çalışana ulaştı ve İzmir'de ikinci ofisini açtı.", "girdi": "Şirketin 2023'te 120 çalışanı vardı ve İzmir'de yeni bir ofis açtı.", "beklenen": "evet"}
+{"kimlik": "o02", "kaynak": "Şirket 2023 yılında 120 çalışana ulaştı ve İzmir'de ikinci ofisini açtı.", "girdi": "Şirket 2023'te 200 çalışana ulaştı.", "beklenen": "hayır"}
+{"kimlik": "o03", "kaynak": "Toplantı 14 Mart Perşembe saat 10:00'da yapılacak; katılım zorunludur.", "girdi": "Toplantı 14 Mart'ta saat 10'da yapılacak ve katılım zorunlu.", "beklenen": "evet"}
+{"kimlik": "o04", "kaynak": "Toplantı 14 Mart Perşembe saat 10:00'da yapılacak; katılım zorunludur.", "girdi": "Toplantı 14 Mart'ta saat 10'da, katılım isteğe bağlı.", "beklenen": "hayır"}
+{"kimlik": "o05", "kaynak": "Yeni ürün yalnızca çevrim içi mağazada satılacak, fiyatı 499 TL olacak.", "girdi": "Ürün 499 TL'ye hem mağazalarda hem internette satılacak.", "beklenen": "hayır"}
+{"kimlik": "o06", "kaynak": "Yeni ürün yalnızca çevrim içi mağazada satılacak, fiyatı 499 TL olacak.", "girdi": "Ürün yalnızca internetten 499 TL'ye satılacak.", "beklenen": "evet"}
+{"kimlik": "o07", "kaynak": "Araştırmaya 300 kişi katıldı; katılımcıların yüzde 60'ı kadındı.", "girdi": "Araştırmaya katılan 300 kişinin %60'ı kadındı.", "beklenen": "evet"}
+{"kimlik": "o08", "kaynak": "Araştırmaya 300 kişi katıldı; katılımcıların yüzde 60'ı kadındı.", "girdi": "Araştırmaya katılanların çoğu erkekti.", "beklenen": "hayır"}
+{"kimlik": "o09", "kaynak": "Kütüphane hafta içi 09:00–18:00, cumartesi 10:00–14:00 arası açıktır; pazar kapalıdır.", "girdi": "Kütüphane pazar günleri kapalıdır.", "beklenen": "evet"}
+{"kimlik": "o10", "kaynak": "Kütüphane hafta içi 09:00–18:00, cumartesi 10:00–14:00 arası açıktır; pazar kapalıdır.", "girdi": "Kütüphane her gün açıktır.", "beklenen": "hayır"}
+{"kimlik": "o11", "kaynak": "Proje bütçesi 2 milyon TL'dir ve 18 ayda tamamlanması planlanmaktadır.", "girdi": "Projenin 2 milyon TL bütçeyle 18 ayda tamamlanması planlanıyor.", "beklenen": "evet"}
+{"kimlik": "o12", "kaynak": "Proje bütçesi 2 milyon TL'dir ve 18 ayda tamamlanması planlanmaktadır.", "girdi": "Proje bütçesi 2 milyon TL'dir ve tamamı Avrupa Birliği fonundan karşılanacaktır.", "beklenen": "hayır"}

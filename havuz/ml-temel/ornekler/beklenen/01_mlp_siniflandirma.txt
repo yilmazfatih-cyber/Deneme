@@ -1,0 +1,20 @@
+Lojistik regresyon (düz çizgi) sınama doğruluğu: 0.850
+adım   0  kayıp 0.6108
+adım 100  kayıp 0.0108
+adım 200  kayıp 0.0030
+adım 300  kayıp 0.0012
+MLP sınama doğruluğu: 0.980
+
+Karar haritası (A = sınıf 0, b = sınıf 1):
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbbbbbb
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbbbbbbb
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbbbbbbbb
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbbbbbbbbb
+AAAAAAAAAAAbbbbbbAAAAAAAAAAAAAbbbbbbbbbb
+AAAAAAAAAAbbbbbbbbAAAAAAAAAAAbbbbbbbbbbb
+AAAAAAAAAAbbbbbbbbbbAAAAAAAAAbbbbbbbbbbb
+AAAAAAAAAbbbbbbbbbbbbbbAAAAbbbbbbbbbbbbb
+AAAAAAAAAbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+AAAAAAAAbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+AAAAAAAbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+AAAAAAAbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb

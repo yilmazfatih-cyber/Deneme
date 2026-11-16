@@ -1,0 +1,285 @@
+{"satir": 1, "sutun": "alici_tckn", "bozulma": "eksik", "ayrinti": "'NULL'", "temiz": "15569864734", "kirli": "NULL", "kaynak_satir": null}
+{"satir": 1, "sutun": "matrah", "bozulma": "eksik", "ayrinti": "'-'", "temiz": "285.05", "kirli": "-", "kaynak_satir": null}
+{"satir": 4, "sutun": "yazi_ile", "bozulma": "eksik", "ayrinti": "'NULL'", "temiz": "Yalnız sekiz bin iki yüz elli dokuz lira altmış dokuz kuruş", "kirli": "NULL", "kaynak_satir": null}
+{"satir": 5, "sutun": "siparis_id", "bozulma": "bosluk", "ayrinti": "nbsp", "temiz": "SP0000005", "kirli": "SP0000005 ", "kaynak_satir": null}
+{"satir": 5, "sutun": "alici_il", "bozulma": "eksik", "ayrinti": "'N/A'", "temiz": "Hatay", "kirli": "N/A", "kaynak_satir": null}
+{"satir": 6, "sutun": "kdv_dokumu", "bozulma": "yazim_hatasi", "ayrinti": "harf_tekrari", "temiz": "1:5.64|20:79.98", "kirli": "1:5.64|20:79.998", "kaynak_satir": null}
+{"satir": 7, "sutun": "alici_tckn", "bozulma": "eksik", "ayrinti": "''", "temiz": "83012221526", "kirli": "", "kaynak_satir": null}
+{"satir": 7, "sutun": "genel_toplam", "bozulma": "ondalik", "ayrinti": "bosluklu", "temiz": "1406.71", "kirli": "1 406,71", "kaynak_satir": null}
+{"satir": 12, "sutun": "yazi_ile", "bozulma": "bosluk", "ayrinti": "bas", "temiz": "Yalnız sekiz bin dört yüz yetmiş dokuz lira doksan sekiz kuruş", "kirli": " Yalnız sekiz bin dört yüz yetmiş dokuz lira doksan sekiz kuruş", "kaynak_satir": null}
+{"satir": 13, "sutun": "alici_tckn", "bozulma": "bosluk", "ayrinti": "nbsp", "temiz": "30647216526", "kirli": "30647216526 ", "kaynak_satir": null}
+{"satir": 18, "sutun": "alici_ad_soyad", "bozulma": "yazim_hatasi", "ayrinti": "harf_degisimi", "temiz": "Arzu Karaca", "kirli": "Arzu aKraca", "kaynak_satir": null}
+{"satir": 19, "sutun": "siparis_id", "bozulma": "bosluk", "ayrinti": "bas", "temiz": "SP0000019", "kirli": " SP0000019", "kaynak_satir": null}
+{"satir": 20, "sutun": "fatura_tarihi", "bozulma": "tarih_bicimi", "ayrinti": "uzun_gunlu", "temiz": "2025-01-25", "kirli": "25 Ocak 2025 Cumartesi", "kaynak_satir": null}
+{"satir": 20, "sutun": "matrah", "bozulma": "bosluk", "ayrinti": "nbsp", "temiz": "1623.47", "kirli": "1623.47 ", "kaynak_satir": null}
+{"satir": 21, "sutun": "alici_tckn", "bozulma": "eksik", "ayrinti": "'-'", "temiz": "80263572520", "kirli": "-", "kaynak_satir": null}
+{"satir": 21, "sutun": "kdv_tutari", "bozulma": "ondalik", "ayrinti": "virgul", "temiz": "440.90", "kirli": "440,90", "kaynak_satir": null}
+{"satir": 23, "sutun": null, "bozulma": "yineleme", "ayrinti": "kopya", "temiz": null, "kirli": null, "kaynak_satir": 3}
+{"satir": 23, "sutun": "siparis_id", "bozulma": "yazim_hatasi", "ayrinti": "harf_dusmesi", "temiz": "SP0000003", "kirli": "SP000003", "kaynak_satir": null}
+{"satir": 24, "sutun": "fatura_tarihi", "bozulma": "eksik", "ayrinti": "'NULL'", "temiz": "2025-01-29", "kirli": "NULL", "kaynak_satir": null}
+{"satir": 24, "sutun": "alici_tckn", "bozulma": "eksik", "ayrinti": "'NULL'", "temiz": "30647216526", "kirli": "NULL", "kaynak_satir": null}
+{"satir": 25, "sutun": "alici_il", "bozulma": "mojibake", "ayrinti": "utf8_cp1252", "temiz": "Balıkesir", "kirli": "BalÄ±kesir", "kaynak_satir": null}
+{"satir": 26, "sutun": "alici_il", "bozulma": "bosluk", "ayrinti": "nbsp", "temiz": "Ordu", "kirli": "Ordu ", "kaynak_satir": null}
+{"satir": 28, "sutun": "yazi_ile", "bozulma": "yazim_hatasi", "ayrinti": "harf_degisimi", "temiz": "Yalnız sekiz bin üç yüz elli dokuz lira doksan dokuz kuruş", "kirli": "Yalnız sekiz bin üç yüz elli dokuz lira doksan dokuz kurşu", "kaynak_satir": null}
+{"satir": 31, "sutun": "siparis_id", "bozulma": "eksik", "ayrinti": "'-'", "temiz": "SP0000030", "kirli": "-", "kaynak_satir": null}
+{"satir": 33, "sutun": "kdv_dokumu", "bozulma": "bosluk", "ayrinti": "nbsp", "temiz": "1:0.85|20:8.32", "kirli": "1:0.85|20:8.32 ", "kaynak_satir": null}
+{"satir": 36, "sutun": "alici_tckn", "bozulma": "bosluk", "ayrinti": "nbsp", "temiz": "71643023916", "kirli": "71643023916 ", "kaynak_satir": null}
+{"satir": 39, "sutun": "siparis_id", "bozulma": "eksik", "ayrinti": "''", "temiz": "SP0000038", "kirli": "", "kaynak_satir": null}
+{"satir": 39, "sutun": "alici_ad_soyad", "bozulma": "yazim_hatasi", "ayrinti": "ascii", "temiz": "Tuba Çelik", "kirli": "Tuba Celik", "kaynak_satir": null}
+{"satir": 39, "sutun": "alici_il", "bozulma": "eksik", "ayrinti": "''", "temiz": "İstanbul", "kirli": "", "kaynak_satir": null}
+{"satir": 39, "sutun": "genel_toplam", "bozulma": "bosluk", "ayrinti": "nbsp", "temiz": "499.80", "kirli": "499.80 ", "kaynak_satir": null}
+{"satir": 42, "sutun": "alici_ad_soyad", "bozulma": "yazim_hatasi", "ayrinti": "harf_tekrari", "temiz": "Mustafa Yılmaz", "kirli": "Musttafa Yılmaz", "kaynak_satir": null}
+{"satir": 44, "sutun": "genel_toplam", "bozulma": "ondalik", "ayrinti": "binlik_tr", "temiz": "10289.97", "kirli": "10.289,97", "kaynak_satir": null}
+{"satir": 46, "sutun": "kdv_tutari", "bozulma": "ondalik", "ayrinti": "virgul", "temiz": "37.35", "kirli": "37,35", "kaynak_satir": null}
+{"satir": 46, "sutun": "kdv_dokumu", "bozulma": "eksik", "ayrinti": "''", "temiz": "1:0.85|10:28.18|20:8.32", "kirli": "", "kaynak_satir": null}
+{"satir": 50, "sutun": "kdv_tutari", "bozulma": "ondalik", "ayrinti": "bosluklu", "temiz": "1232.73", "kirli": "1 232,73", "kaynak_satir": null}
+{"satir": 51, "sutun": null, "bozulma": "yineleme", "ayrinti": "kopya", "temiz": null, "kirli": null, "kaynak_satir": 32}
+{"satir": 52, "sutun": "siparis_id", "bozulma": "yazim_hatasi", "ayrinti": "harf_tekrari", "temiz": "SP0000050", "kirli": "SP00000050", "kaynak_satir": null}
+{"satir": 53, "sutun": "kdv_dokumu", "bozulma": "eksik", "ayrinti": "'N/A'", "temiz": "1:0.85|20:8.32", "kirli": "N/A", "kaynak_satir": null}
+{"satir": 54, "sutun": "alici_ad_soyad", "bozulma": "eksik", "ayrinti": "'N/A'", "temiz": "Sena Gül", "kirli": "N/A", "kaynak_satir": null}
+{"satir": 55, "sutun": "kdv_tutari", "bozulma": "ondalik", "ayrinti": "virgul", "temiz": "269.18", "kirli": "269,18", "kaynak_satir": null}
+{"satir": 56, "sutun": "kdv_tutari", "bozulma": "ondalik", "ayrinti": "virgul", "temiz": "269.91", "kirli": "269,91", "kaynak_satir": null}
+{"satir": 57, "sutun": "alici_ad_soyad", "bozulma": "yazim_hatasi", "ayrinti": "harf_degisimi", "temiz": "Ceren Karataş", "kirli": "Cere nKarataş", "kaynak_satir": null}
+{"satir": 57, "sutun": "genel_toplam", "bozulma": "ondalik", "ayrinti": "binlik_en", "temiz": "8389.98", "kirli": "8,389.98", "kaynak_satir": null}
+{"satir": 57, "sutun": "kdv_dokumu", "bozulma": "yazim_hatasi", "ayrinti": "harf_tekrari", "temiz": "10:616.36|20:268.33", "kirli": "100:616.36|20:268.33", "kaynak_satir": null}
+{"satir": 59, "sutun": "genel_toplam", "bozulma": "ondalik", "ayrinti": "virgul", "temiz": "13719.88", "kirli": "13719,88", "kaynak_satir": null}
+{"satir": 59, "sutun": "kdv_dokumu", "bozulma": "yazim_hatasi", "ayrinti": "harf_dusmesi", "temiz": "1:1.58|10:1232.73", "kirli": "1:1.58|10:123273", "kaynak_satir": null}
+{"satir": 63, "sutun": "alici_tckn", "bozulma": "eksik", "ayrinti": "'-'", "temiz": "67641532048", "kirli": "-", "kaynak_satir": null}
+{"satir": 63, "sutun": "matrah", "bozulma": "eksik", "ayrinti": "'yok'", "temiz": "383.16", "kirli": "yok", "kaynak_satir": null}
+{"satir": 65, "sutun": "matrah", "bozulma": "ondalik", "ayrinti": "binlik_en", "temiz": "2383.17", "kirli": "2,383.17", "kaynak_satir": null}
+{"satir": 66, "sutun": "fatura_tarihi", "bozulma": "bosluk", "ayrinti": "bas", "temiz": "2025-04-02", "kirli": " 2025-04-02", "kaynak_satir": null}
+{"satir": 66, "sutun": "alici_tckn", "bozulma": "eksik", "ayrinti": "''", "temiz": "52010921202", "kirli": "", "kaynak_satir": null}
+{"satir": 68, "sutun": "yazi_ile", "bozulma": "yazim_hatasi", "ayrinti": "ascii", "temiz": "Yalnız yirmi bir bin dört yüz altmış dokuz lira doksan altı kuruş", "kirli": "Yalniz yirmi bir bin dort yuz altmis dokuz lira doksan alti kurus", "kaynak_satir": null}
+{"satir": 70, "sutun": "matrah", "bozulma": "ondalik", "ayrinti": "bosluklu", "temiz": "5239.08", "kirli": "5 239,08", "kaynak_satir": null}
+{"satir": 71, "sutun": "matrah", "bozulma": "eksik", "ayrinti": "'-'", "temiz": "9804.09", "kirli": "-", "kaynak_satir": null}
+{"satir": 72, "sutun": "yazi_ile", "bozulma": "bosluk", "ayrinti": "nbsp", "temiz": "Yalnız beş bin on beş lira altmış kuruş", "kirli": "Yalnız beş bin on beş lira altmış kuruş ", "kaynak_satir": null}
+{"satir": 73, "sutun": "kdv_dokumu", "bozulma": "eksik", "ayrinti": "'-'", "temiz": "10:616.36|20:268.33", "kirli": "-", "kaynak_satir": null}
+{"satir": 77, "sutun": "alici_ad_soyad", "bozulma": "yazim_hatasi", "ayrinti": "harf_dusmesi", "temiz": "Burcu Erol", "kirli": "Brcu Erol", "kaynak_satir": null}
+{"satir": 78, "sutun": "fatura_tarihi", "bozulma": "tarih_bicimi", "ayrinti": "bitisik", "temiz": "2025-05-05", "kirli": "20250505", "kaynak_satir": null}
+{"satir": 81, "sutun": "kdv_tutari", "bozulma": "ondalik", "ayrinti": "virgul", "temiz": "22.87", "kirli": "22,87", "kaynak_satir": null}
+{"satir": 83, "sutun": "kdv_tutari", "bozulma": "eksik", "ayrinti": "'N/A'", "temiz": "1267.25", "kirli": "N/A", "kaynak_satir": null}
+{"satir": 86, "sutun": "siparis_id", "bozulma": "yazim_hatasi", "ayrinti": "harf_degisimi", "temiz": "SP0000085", "kirli": "SP0000058", "kaynak_satir": null}
+{"satir": 87, "sutun": "kdv_tutari", "bozulma": "ondalik", "ayrinti": "virgul", "temiz": "76.64", "kirli": "76,64", "kaynak_satir": null}
+{"satir": 88, "sutun": "kdv_dokumu", "bozulma": "yazim_hatasi", "ayrinti": "harf_degisimi", "temiz": "10:616.36|20:694.98", "kirli": "10:616.36|20:69.498", "kaynak_satir": null}
+{"satir": 91, "sutun": "kdv_dokumu", "bozulma": "eksik", "ayrinti": "'nan'", "temiz": "10:616.36|20:145.00", "kirli": "nan", "kaynak_satir": null}
+{"satir": 92, "sutun": "matrah", "bozulma": "bosluk", "ayrinti": "nbsp", "temiz": "1481.82", "kirli": "1481.82 ", "kaynak_satir": null}
+{"satir": 93, "sutun": "matrah", "bozulma": "bosluk", "ayrinti": "iki_yan", "temiz": "433.25", "kirli": "  433.25 ", "kaynak_satir": null}
+{"satir": 96, "sutun": "genel_toplam", "bozulma": "eksik", "ayrinti": "'yok'", "temiz": "13009.59", "kirli": "yok", "kaynak_satir": null}
+{"satir": 97, "sutun": "alici_tckn", "bozulma": "bosluk", "ayrinti": "nbsp", "temiz": "80263572520", "kirli": "80263572520 ", "kaynak_satir": null}
+{"satir": 97, "sutun": "kdv_dokumu", "bozulma": "eksik", "ayrinti": "''", "temiz": "10:7.17|20:8.32", "kirli": "", "kaynak_satir": null}
+{"satir": 98, "sutun": "alici_ad_soyad", "bozulma": "bosluk", "ayrinti": "iki_yan", "temiz": "Samet Öztürk", "kirli": "  Samet Öztürk ", "kaynak_satir": null}
+{"satir": 99, "sutun": "alici_il", "bozulma": "bosluk", "ayrinti": "iki_yan", "temiz": "Muğla", "kirli": "  Muğla ", "kaynak_satir": null}
+{"satir": 101, "sutun": "alici_tckn", "bozulma": "eksik", "ayrinti": "'yok'", "temiz": "71643023916", "kirli": "yok", "kaynak_satir": null}
+{"satir": 101, "sutun": "alici_il", "bozulma": "yazim_hatasi", "ayrinti": "buyuk_harf_hatasi", "temiz": "Bingöl", "kirli": "BINGÖL", "kaynak_satir": null}
+{"satir": 102, "sutun": "kdv_dokumu", "bozulma": "bosluk", "ayrinti": "bas", "temiz": "1:1.58|10:1869.99", "kirli": " 1:1.58|10:1869.99", "kaynak_satir": null}
+{"satir": 103, "sutun": "kdv_tutari", "bozulma": "ondalik", "ayrinti": "virgul", "temiz": "29.22", "kirli": "29,22", "kaynak_satir": null}
+{"satir": 104, "sutun": "alici_il", "bozulma": "bosluk", "ayrinti": "nbsp", "temiz": "Hatay", "kirli": "Hatay ", "kaynak_satir": null}
+{"satir": 108, "sutun": "siparis_id", "bozulma": "bosluk", "ayrinti": "bas", "temiz": "SP0000107", "kirli": " SP0000107", "kaynak_satir": null}
+{"satir": 109, "sutun": "siparis_id", "bozulma": "bosluk", "ayrinti": "bas", "temiz": "SP0000108", "kirli": " SP0000108", "kaynak_satir": null}
+{"satir": 109, "sutun": "kdv_dokumu", "bozulma": "yazim_hatasi", "ayrinti": "harf_tekrari", "temiz": "10:151.71", "kirli": "10:151.771", "kaynak_satir": null}
+{"satir": 110, "sutun": "fatura_tarihi", "bozulma": "bosluk", "ayrinti": "nbsp", "temiz": "2025-06-22", "kirli": "2025-06-22 ", "kaynak_satir": null}
+{"satir": 110, "sutun": "kdv_tutari", "bozulma": "eksik", "ayrinti": "'NULL'", "temiz": "9.17", "kirli": "NULL", "kaynak_satir": null}
+{"satir": 110, "sutun": "yazi_ile", "bozulma": "yazim_hatasi", "ayrinti": "buyuk_harf_hatasi", "temiz": "Yalnız yüz otuz beş lira doksan kuruş", "kirli": "YALNIZ YÜZ OTUZ BEŞ LIRA DOKSAN KURUŞ", "kaynak_satir": null}
+{"satir": 112, "sutun": "fatura_tarihi", "bozulma": "eksik", "ayrinti": "'nan'", "temiz": "2025-06-26", "kirli": "nan", "kaynak_satir": null}
+{"satir": 112, "sutun": "genel_toplam", "bozulma": "ondalik", "ayrinti": "binlik_en", "temiz": "1129.99", "kirli": "1,129.99", "kaynak_satir": null}
+{"satir": 113, "sutun": "fatura_tarihi", "bozulma": "tarih_bicimi", "ayrinti": "uzun", "temiz": "2025-06-27", "kirli": "27 Haziran 2025", "kaynak_satir": null}
+{"satir": 114, "sutun": "genel_toplam", "bozulma": "ondalik", "ayrinti": "virgul", "temiz": "4749.90", "kirli": "4749,90", "kaynak_satir": null}
+{"satir": 115, "sutun": "kdv_dokumu", "bozulma": "yazim_hatasi", "ayrinti": "harf_tekrari", "temiz": "10:616.36", "kirli": "10:6616.36", "kaynak_satir": null}
+{"satir": 118, "sutun": "genel_toplam", "bozulma": "ondalik", "ayrinti": "binlik_en", "temiz": "1939.99", "kirli": "1,939.99", "kaynak_satir": null}
+{"satir": 119, "sutun": "kdv_dokumu", "bozulma": "yazim_hatasi", "ayrinti": "harf_degisimi", "temiz": "10:616.36|20:268.33", "kirli": "10:616.36|202:68.33", "kaynak_satir": null}
+{"satir": 120, "sutun": "matrah", "bozulma": "eksik", "ayrinti": "'NULL'", "temiz": "481.78", "kirli": "NULL", "kaynak_satir": null}
+{"satir": 121, "sutun": "kdv_dokumu", "bozulma": "eksik", "ayrinti": "'-'", "temiz": "1:4.51|10:134.54", "kirli": "-", "kaynak_satir": null}
+{"satir": 122, "sutun": "siparis_id", "bozulma": "bosluk", "ayrinti": "bas", "temiz": "SP0000121", "kirli": " SP0000121", "kaynak_satir": null}
+{"satir": 123, "sutun": "alici_tckn", "bozulma": "eksik", "ayrinti": "'nan'", "temiz": "80263572520", "kirli": "nan", "kaynak_satir": null}
+{"satir": 123, "sutun": "kdv_dokumu", "bozulma": "yazim_hatasi", "ayrinti": "harf_tekrari", "temiz": "20:319.57", "kirli": "20:3319.57", "kaynak_satir": null}
+{"satir": 125, "sutun": "kdv_tutari", "bozulma": "bosluk", "ayrinti": "iki_yan", "temiz": "256.64", "kirli": "  256.64 ", "kaynak_satir": null}
+{"satir": 126, "sutun": "kdv_dokumu", "bozulma": "yazim_hatasi", "ayrinti": "harf_degisimi", "temiz": "10:616.36", "kirli": "10:6163.6", "kaynak_satir": null}
+{"satir": 129, "sutun": "matrah", "bozulma": "bosluk", "ayrinti": "iki_yan", "temiz": "1341.66", "kirli": "  1341.66 ", "kaynak_satir": null}
+{"satir": 131, "sutun": "alici_ad_soyad", "bozulma": "yazim_hatasi", "ayrinti": "harf_degisimi", "temiz": "Sena Gül", "kirli": "Sena Glü", "kaynak_satir": null}
+{"satir": 132, "sutun": "fatura_tarihi", "bozulma": "bosluk", "ayrinti": "iki_yan", "temiz": "2025-07-20", "kirli": "  2025-07-20 ", "kaynak_satir": null}
+{"satir": 133, "sutun": "genel_toplam", "bozulma": "eksik", "ayrinti": "'yok'", "temiz": "2439.80", "kirli": "yok", "kaynak_satir": null}
+{"satir": 133, "sutun": "yazi_ile", "bozulma": "yazim_hatasi", "ayrinti": "ascii", "temiz": "Yalnız iki bin dört yüz otuz dokuz lira seksen kuruş", "kirli": "Yalniz iki bin dort yuz otuz dokuz lira seksen kurus", "kaynak_satir": null}
+{"satir": 137, "sutun": "fatura_tarihi", "bozulma": "tarih_bicimi", "ayrinti": "uzun_gunlu", "temiz": "2025-07-24", "kirli": "24 Temmuz 2025 Perşembe", "kaynak_satir": null}
+{"satir": 139, "sutun": "alici_il", "bozulma": "bosluk", "ayrinti": "iki_yan", "temiz": "Muğla", "kirli": "  Muğla ", "kaynak_satir": null}
+{"satir": 139, "sutun": "matrah", "bozulma": "bosluk", "ayrinti": "nbsp", "temiz": "12327.25", "kirli": "12327.25 ", "kaynak_satir": null}
+{"satir": 141, "sutun": null, "bozulma": "yineleme", "ayrinti": "kopya", "temiz": null, "kirli": null, "kaynak_satir": 118}
+{"satir": 141, "sutun": "kdv_dokumu", "bozulma": "yazim_hatasi", "ayrinti": "harf_tekrari", "temiz": "20:323.33", "kirli": "20::323.33", "kaynak_satir": null}
+{"satir": 142, "sutun": "alici_ad_soyad", "bozulma": "bosluk", "ayrinti": "bas", "temiz": "Mustafa Yılmaz", "kirli": " Mustafa Yılmaz", "kaynak_satir": null}
+{"satir": 142, "sutun": "genel_toplam", "bozulma": "ondalik", "ayrinti": "binlik_tr", "temiz": "1666.00", "kirli": "1.666,00", "kaynak_satir": null}
+{"satir": 145, "sutun": "kdv_tutari", "bozulma": "eksik", "ayrinti": "'N/A'", "temiz": "21.96", "kirli": "N/A", "kaynak_satir": null}
+{"satir": 146, "sutun": "alici_ad_soyad", "bozulma": "yazim_hatasi", "ayrinti": "buyuk_harf_hatasi", "temiz": "Miray Işık", "kirli": "MIRAY IŞIK", "kaynak_satir": null}
+{"satir": 146, "sutun": "matrah", "bozulma": "ondalik", "ayrinti": "virgul", "temiz": "199.90", "kirli": "199,90", "kaynak_satir": null}
+{"satir": 148, "sutun": "kdv_tutari", "bozulma": "eksik", "ayrinti": "'N/A'", "temiz": "1037.56", "kirli": "N/A", "kaynak_satir": null}
+{"satir": 149, "sutun": "siparis_id", "bozulma": "yazim_hatasi", "ayrinti": "harf_tekrari", "temiz": "SP0000148", "kirli": "SPP0000148", "kaynak_satir": null}
+{"satir": 149, "sutun": "alici_il", "bozulma": "yazim_hatasi", "ayrinti": "harf_degisimi", "temiz": "Gümüşhane", "kirli": "Gümşühane", "kaynak_satir": null}
+{"satir": 149, "sutun": "kdv_dokumu", "bozulma": "yazim_hatasi", "ayrinti": "harf_tekrari", "temiz": "1:5.64", "kirli": "1:5.664", "kaynak_satir": null}
+{"satir": 152, "sutun": "alici_il", "bozulma": "yazim_hatasi", "ayrinti": "ascii", "temiz": "Diyarbakır", "kirli": "Diyarbakir", "kaynak_satir": null}
+{"satir": 154, "sutun": "alici_tckn", "bozulma": "bosluk", "ayrinti": "iki_yan", "temiz": "38227119250", "kirli": "  38227119250 ", "kaynak_satir": null}
+{"satir": 155, "sutun": "yazi_ile", "bozulma": "yazim_hatasi", "ayrinti": "harf_dusmesi", "temiz": "Yalnız yüz otuz beş lira doksan kuruş", "kirli": "Yalnız üz otuz beş lira doksan kuruş", "kaynak_satir": null}
+{"satir": 158, "sutun": "alici_ad_soyad", "bozulma": "bosluk", "ayrinti": "nbsp", "temiz": "Aras Bayram", "kirli": "Aras Bayram ", "kaynak_satir": null}
+{"satir": 158, "sutun": "alici_il", "bozulma": "yazim_hatasi", "ayrinti": "harf_dusmesi", "temiz": "Kayseri", "kirli": "Kaysei", "kaynak_satir": null}
+{"satir": 162, "sutun": "alici_ad_soyad", "bozulma": "mojibake", "ayrinti": "utf8_cp1252", "temiz": "Mustafa Yılmaz", "kirli": "Mustafa YÄ±lmaz", "kaynak_satir": null}
+{"satir": 162, "sutun": "genel_toplam", "bozulma": "ondalik", "ayrinti": "virgul", "temiz": "3405.98", "kirli": "3405,98", "kaynak_satir": null}
+{"satir": 164, "sutun": "siparis_id", "bozulma": "yazim_hatasi", "ayrinti": "harf_tekrari", "temiz": "SP0000164", "kirli": "SP00000164", "kaynak_satir": null}
+{"satir": 164, "sutun": "fatura_tarihi", "bozulma": "tarih_bicimi", "ayrinti": "egik", "temiz": "2025-08-14", "kirli": "14/08/2025", "kaynak_satir": null}
+{"satir": 164, "sutun": "kdv_tutari", "bozulma": "ondalik", "ayrinti": "virgul", "temiz": "276.66", "kirli": "276,66", "kaynak_satir": null}
+{"satir": 165, "sutun": "fatura_tarihi", "bozulma": "tarih_bicimi", "ayrinti": "bitisik", "temiz": "2025-08-15", "kirli": "20250815", "kaynak_satir": null}
+{"satir": 166, "sutun": "alici_il", "bozulma": "bosluk", "ayrinti": "son", "temiz": "Konya", "kirli": "Konya  ", "kaynak_satir": null}
+{"satir": 167, "sutun": "fatura_tarihi", "bozulma": "bosluk", "ayrinti": "son", "temiz": "2025-08-16", "kirli": "2025-08-16  ", "kaynak_satir": null}
+{"satir": 168, "sutun": "genel_toplam", "bozulma": "bosluk", "ayrinti": "son", "temiz": "3219.98", "kirli": "3219.98  ", "kaynak_satir": null}
+{"satir": 169, "sutun": "alici_il", "bozulma": "bosluk", "ayrinti": "son", "temiz": "Kırıkkale", "kirli": "Kırıkkale  ", "kaynak_satir": null}
+{"satir": 170, "sutun": "siparis_id", "bozulma": "yazim_hatasi", "ayrinti": "harf_tekrari", "temiz": "SP0000170", "kirli": "SP00000170", "kaynak_satir": null}
+{"satir": 172, "sutun": "alici_il", "bozulma": "yazim_hatasi", "ayrinti": "harf_dusmesi", "temiz": "Sinop", "kirli": "Sinp", "kaynak_satir": null}
+{"satir": 174, "sutun": "alici_tckn", "bozulma": "bosluk", "ayrinti": "son", "temiz": "49511983808", "kirli": "49511983808  ", "kaynak_satir": null}
+{"satir": 175, "sutun": "alici_ad_soyad", "bozulma": "yazim_hatasi", "ayrinti": "ascii", "temiz": "Samet Öztürk", "kirli": "Samet Ozturk", "kaynak_satir": null}
+{"satir": 176, "sutun": "genel_toplam", "bozulma": "ondalik", "ayrinti": "binlik_en", "temiz": "1289.89", "kirli": "1,289.89", "kaynak_satir": null}
+{"satir": 177, "sutun": "matrah", "bozulma": "bosluk", "ayrinti": "bas", "temiz": "6163.63", "kirli": " 6163.63", "kaynak_satir": null}
+{"satir": 178, "sutun": "kdv_dokumu", "bozulma": "yazim_hatasi", "ayrinti": "harf_degisimi", "temiz": "10:1126.36", "kirli": "10:1216.36", "kaynak_satir": null}
+{"satir": 180, "sutun": "alici_tckn", "bozulma": "bosluk", "ayrinti": "nbsp", "temiz": "71643023916", "kirli": "71643023916 ", "kaynak_satir": null}
+{"satir": 180, "sutun": "alici_il", "bozulma": "mojibake", "ayrinti": "utf8_cp1252", "temiz": "Bingöl", "kirli": "BingÃ¶l", "kaynak_satir": null}
+{"satir": 180, "sutun": "matrah", "bozulma": "ondalik", "ayrinti": "virgul", "temiz": "9638.55", "kirli": "9638,55", "kaynak_satir": null}
+{"satir": 181, "sutun": "kdv_tutari", "bozulma": "bosluk", "ayrinti": "bas", "temiz": "286.66", "kirli": " 286.66", "kaynak_satir": null}
+{"satir": 183, "sutun": "alici_il", "bozulma": "bosluk", "ayrinti": "bas", "temiz": "Balıkesir", "kirli": " Balıkesir", "kaynak_satir": null}
+{"satir": 183, "sutun": "genel_toplam", "bozulma": "eksik", "ayrinti": "'-'", "temiz": "7632.00", "kirli": "-", "kaynak_satir": null}
+{"satir": 184, "sutun": "alici_il", "bozulma": "yazim_hatasi", "ayrinti": "harf_tekrari", "temiz": "Iğdır", "kirli": "Iğddır", "kaynak_satir": null}
+{"satir": 186, "sutun": "fatura_tarihi", "bozulma": "eksik", "ayrinti": "''", "temiz": "2025-08-30", "kirli": "", "kaynak_satir": null}
+{"satir": 189, "sutun": "matrah", "bozulma": "ondalik", "ayrinti": "virgul", "temiz": "323.39", "kirli": "323,39", "kaynak_satir": null}
+{"satir": 190, "sutun": "alici_tckn", "bozulma": "eksik", "ayrinti": "'yok'", "temiz": "30647216526", "kirli": "yok", "kaynak_satir": null}
+{"satir": 191, "sutun": "alici_ad_soyad", "bozulma": "eksik", "ayrinti": "'-'", "temiz": "Berna Gürsoy", "kirli": "-", "kaynak_satir": null}
+{"satir": 193, "sutun": "kdv_tutari", "bozulma": "ondalik", "ayrinti": "binlik_en", "temiz": "1390.82", "kirli": "1,390.82", "kaynak_satir": null}
+{"satir": 195, "sutun": "siparis_id", "bozulma": "yazim_hatasi", "ayrinti": "harf_tekrari", "temiz": "SP0000195", "kirli": "SP00000195", "kaynak_satir": null}
+{"satir": 196, "sutun": "alici_ad_soyad", "bozulma": "yazim_hatasi", "ayrinti": "harf_dusmesi", "temiz": "Sevda Fidan", "kirli": "Sevda idan", "kaynak_satir": null}
+{"satir": 197, "sutun": "matrah", "bozulma": "eksik", "ayrinti": "'NULL'", "temiz": "467.31", "kirli": "NULL", "kaynak_satir": null}
+{"satir": 198, "sutun": "genel_toplam", "bozulma": "bosluk", "ayrinti": "iki_yan", "temiz": "209.80", "kirli": "  209.80 ", "kaynak_satir": null}
+{"satir": 199, "sutun": "alici_ad_soyad", "bozulma": "yazim_hatasi", "ayrinti": "harf_degisimi", "temiz": "Burcu Erol", "kirli": "Burcu Eorl", "kaynak_satir": null}
+{"satir": 200, "sutun": "alici_il", "bozulma": "yazim_hatasi", "ayrinti": "buyuk_harf_hatasi", "temiz": "Balıkesir", "kirli": "BALIKESIR", "kaynak_satir": null}
+{"satir": 200, "sutun": "kdv_dokumu", "bozulma": "yazim_hatasi", "ayrinti": "harf_tekrari", "temiz": "20:536.66", "kirli": "20:5536.66", "kaynak_satir": null}
+{"satir": 204, "sutun": "alici_tckn", "bozulma": "bosluk", "ayrinti": "bas", "temiz": "71643023916", "kirli": " 71643023916", "kaynak_satir": null}
+{"satir": 206, "sutun": "fatura_tarihi", "bozulma": "bosluk", "ayrinti": "iki_yan", "temiz": "2025-09-19", "kirli": "  2025-09-19 ", "kaynak_satir": null}
+{"satir": 207, "sutun": "kdv_tutari", "bozulma": "eksik", "ayrinti": "'NULL'", "temiz": "11.49", "kirli": "NULL", "kaynak_satir": null}
+{"satir": 208, "sutun": "fatura_tarihi", "bozulma": "tarih_bicimi", "ayrinti": "uzun_gunlu", "temiz": "2025-09-21", "kirli": "21 Eylül 2025 Pazar", "kaynak_satir": null}
+{"satir": 209, "sutun": "genel_toplam", "bozulma": "bosluk", "ayrinti": "iki_yan", "temiz": "4255.90", "kirli": "  4255.90 ", "kaynak_satir": null}
+{"satir": 214, "sutun": "alici_ad_soyad", "bozulma": "yazim_hatasi", "ayrinti": "harf_tekrari", "temiz": "Berna Gürsoy", "kirli": "Berna Gürssoy", "kaynak_satir": null}
+{"satir": 215, "sutun": "alici_tckn", "bozulma": "eksik", "ayrinti": "'NULL'", "temiz": "52816101228", "kirli": "NULL", "kaynak_satir": null}
+{"satir": 215, "sutun": "matrah", "bozulma": "ondalik", "ayrinti": "binlik_tr", "temiz": "12327.25", "kirli": "12.327,25", "kaynak_satir": null}
+{"satir": 217, "sutun": "matrah", "bozulma": "ondalik", "ayrinti": "virgul", "temiz": "6460.56", "kirli": "6460,56", "kaynak_satir": null}
+{"satir": 218, "sutun": "fatura_tarihi", "bozulma": "tarih_bicimi", "ayrinti": "uzun", "temiz": "2025-09-30", "kirli": "30 Eylül 2025", "kaynak_satir": null}
+{"satir": 218, "sutun": "alici_il", "bozulma": "mojibake", "ayrinti": "utf8_cp1252", "temiz": "Diyarbakır", "kirli": "DiyarbakÄ±r", "kaynak_satir": null}
+{"satir": 219, "sutun": "yazi_ile", "bozulma": "yazim_hatasi", "ayrinti": "ascii", "temiz": "Yalnız iki yüz yirmi bir lira doksan kuruş", "kirli": "Yalniz iki yuz yirmi bir lira doksan kurus", "kaynak_satir": null}
+{"satir": 220, "sutun": "yazi_ile", "bozulma": "yazim_hatasi", "ayrinti": "harf_degisimi", "temiz": "Yalnız altı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş", "kirli": "Yalnız atlı bin yedi yüz yetmiş dokuz lira doksan dokuz kuruş", "kaynak_satir": null}
+{"satir": 226, "sutun": "fatura_tarihi", "bozulma": "tarih_bicimi", "ayrinti": "uzun_gunlu", "temiz": "2025-10-06", "kirli": "6 Ekim 2025 Pazartesi", "kaynak_satir": null}
+{"satir": 226, "sutun": "matrah", "bozulma": "bosluk", "ayrinti": "bas", "temiz": "433.24", "kirli": " 433.24", "kaynak_satir": null}
+{"satir": 226, "sutun": "kdv_dokumu", "bozulma": "yazim_hatasi", "ayrinti": "harf_degisimi", "temiz": "20:86.65", "kirli": "20:8.665", "kaynak_satir": null}
+{"satir": 227, "sutun": "fatura_tarihi", "bozulma": "eksik", "ayrinti": "'N/A'", "temiz": "2025-10-06", "kirli": "N/A", "kaynak_satir": null}
+{"satir": 227, "sutun": "alici_ad_soyad", "bozulma": "bosluk", "ayrinti": "ic_cift", "temiz": "Canan Zorlu", "kirli": "Canan  Zorlu", "kaynak_satir": null}
+{"satir": 230, "sutun": "siparis_id", "bozulma": "eksik", "ayrinti": "''", "temiz": "SP0000230", "kirli": "", "kaynak_satir": null}
+{"satir": 232, "sutun": "genel_toplam", "bozulma": "ondalik", "ayrinti": "virgul", "temiz": "16865.96", "kirli": "16865,96", "kaynak_satir": null}
+{"satir": 233, "sutun": "fatura_tarihi", "bozulma": "tarih_bicimi", "ayrinti": "noktali", "temiz": "2025-10-10", "kirli": "10.10.2025", "kaynak_satir": null}
+{"satir": 233, "sutun": "alici_tckn", "bozulma": "bosluk", "ayrinti": "iki_yan", "temiz": "83208321412", "kirli": "  83208321412 ", "kaynak_satir": null}
+{"satir": 234, "sutun": "fatura_tarihi", "bozulma": "eksik", "ayrinti": "''", "temiz": "2025-10-15", "kirli": "", "kaynak_satir": null}
+{"satir": 234, "sutun": "kdv_tutari", "bozulma": "bosluk", "ayrinti": "nbsp", "temiz": "49.99", "kirli": "49.99 ", "kaynak_satir": null}
+{"satir": 236, "sutun": "alici_ad_soyad", "bozulma": "eksik", "ayrinti": "'nan'", "temiz": "Miray Işık", "kirli": "nan", "kaynak_satir": null}
+{"satir": 237, "sutun": "genel_toplam", "bozulma": "eksik", "ayrinti": "''", "temiz": "209.80", "kirli": "", "kaynak_satir": null}
+{"satir": 240, "sutun": "alici_tckn", "bozulma": "eksik", "ayrinti": "'N/A'", "temiz": "80725724702", "kirli": "N/A", "kaynak_satir": null}
+{"satir": 241, "sutun": "siparis_id", "bozulma": "eksik", "ayrinti": "'nan'", "temiz": "SP0000241", "kirli": "nan", "kaynak_satir": null}
+{"satir": 244, "sutun": "siparis_id", "bozulma": "eksik", "ayrinti": "'N/A'", "temiz": "SP0000244", "kirli": "N/A", "kaynak_satir": null}
+{"satir": 244, "sutun": "fatura_tarihi", "bozulma": "eksik", "ayrinti": "'-'", "temiz": "2025-10-20", "kirli": "-", "kaynak_satir": null}
+{"satir": 244, "sutun": "alici_il", "bozulma": "eksik", "ayrinti": "'NULL'", "temiz": "Bingöl", "kirli": "NULL", "kaynak_satir": null}
+{"satir": 245, "sutun": "matrah", "bozulma": "eksik", "ayrinti": "''", "temiz": "1906.02", "kirli": "", "kaynak_satir": null}
+{"satir": 246, "sutun": "alici_ad_soyad", "bozulma": "yazim_hatasi", "ayrinti": "harf_tekrari", "temiz": "Miray Işık", "kirli": "Miray Işşık", "kaynak_satir": null}
+{"satir": 246, "sutun": "matrah", "bozulma": "eksik", "ayrinti": "'yok'", "temiz": "6163.63", "kirli": "yok", "kaynak_satir": null}
+{"satir": 249, "sutun": "alici_ad_soyad", "bozulma": "bosluk", "ayrinti": "iki_yan", "temiz": "Sefa Yavuz", "kirli": "  Sefa Yavuz ", "kaynak_satir": null}
+{"satir": 250, "sutun": "alici_il", "bozulma": "yazim_hatasi", "ayrinti": "harf_tekrari", "temiz": "Muğla", "kirli": "Muuğla", "kaynak_satir": null}
+{"satir": 250, "sutun": "kdv_dokumu", "bozulma": "eksik", "ayrinti": "'N/A'", "temiz": "20:694.98", "kirli": "N/A", "kaynak_satir": null}
+{"satir": 251, "sutun": "matrah", "bozulma": "eksik", "ayrinti": "'N/A'", "temiz": "1833.25", "kirli": "N/A", "kaynak_satir": null}
+{"satir": 251, "sutun": "genel_toplam", "bozulma": "ondalik", "ayrinti": "virgul", "temiz": "2199.90", "kirli": "2199,90", "kaynak_satir": null}
+{"satir": 252, "sutun": "kdv_tutari", "bozulma": "ondalik", "ayrinti": "binlik_tr", "temiz": "1047.83", "kirli": "1.047,83", "kaynak_satir": null}
+{"satir": 253, "sutun": null, "bozulma": "yineleme", "ayrinti": "kopya", "temiz": null, "kirli": null, "kaynak_satir": 228}
+{"satir": 253, "sutun": "alici_tckn", "bozulma": "bosluk", "ayrinti": "son", "temiz": "71643023916", "kirli": "71643023916  ", "kaynak_satir": null}
+{"satir": 255, "sutun": "fatura_tarihi", "bozulma": "tarih_bicimi", "ayrinti": "uzun", "temiz": "2025-10-26", "kirli": "26 Ekim 2025", "kaynak_satir": null}
+{"satir": 255, "sutun": "matrah", "bozulma": "bosluk", "ayrinti": "son", "temiz": "6301.82", "kirli": "6301.82  ", "kaynak_satir": null}
+{"satir": 255, "sutun": "kdv_tutari", "bozulma": "eksik", "ayrinti": "''", "temiz": "1244.18", "kirli": "", "kaynak_satir": null}
+{"satir": 256, "sutun": "siparis_id", "bozulma": "yazim_hatasi", "ayrinti": "harf_degisimi", "temiz": "SP0000256", "kirli": "SP0000265", "kaynak_satir": null}
+{"satir": 257, "sutun": "matrah", "bozulma": "ondalik", "ayrinti": "virgul", "temiz": "648.77", "kirli": "648,77", "kaynak_satir": null}
+{"satir": 257, "sutun": "genel_toplam", "bozulma": "bosluk", "ayrinti": "nbsp", "temiz": "705.98", "kirli": "705.98 ", "kaynak_satir": null}
+{"satir": 258, "sutun": "siparis_id", "bozulma": "bosluk", "ayrinti": "iki_yan", "temiz": "SP0000258", "kirli": "  SP0000258 ", "kaynak_satir": null}
+{"satir": 259, "sutun": null, "bozulma": "yineleme", "ayrinti": "kopya", "temiz": null, "kirli": null, "kaynak_satir": 234}
+{"satir": 259, "sutun": "kdv_dokumu", "bozulma": "yazim_hatasi", "ayrinti": "harf_tekrari", "temiz": "20:49.99", "kirli": "20:449.99", "kaynak_satir": null}
+{"satir": 261, "sutun": "matrah", "bozulma": "ondalik", "ayrinti": "binlik_en", "temiz": "6321.95", "kirli": "6,321.95", "kaynak_satir": null}
+{"satir": 263, "sutun": "fatura_tarihi", "bozulma": "eksik", "ayrinti": "''", "temiz": "2025-11-01", "kirli": "", "kaynak_satir": null}
+{"satir": 264, "sutun": "kdv_tutari", "bozulma": "ondalik", "ayrinti": "virgul", "temiz": "76.64", "kirli": "76,64", "kaynak_satir": null}
+{"satir": 267, "sutun": "matrah", "bozulma": "bosluk", "ayrinti": "son", "temiz": "8850.74", "kirli": "8850.74  ", "kaynak_satir": null}
+{"satir": 267, "sutun": "kdv_dokumu", "bozulma": "yazim_hatasi", "ayrinti": "harf_tekrari", "temiz": "10:750.90|20:268.33", "kirli": "10:7550.90|20:268.33", "kaynak_satir": null}
+{"satir": 270, "sutun": "fatura_tarihi", "bozulma": "eksik", "ayrinti": "'nan'", "temiz": "2025-11-07", "kirli": "nan", "kaynak_satir": null}
+{"satir": 274, "sutun": "genel_toplam", "bozulma": "eksik", "ayrinti": "'N/A'", "temiz": "2109.99", "kirli": "N/A", "kaynak_satir": null}
+{"satir": 276, "sutun": "yazi_ile", "bozulma": "eksik", "ayrinti": "'nan'", "temiz": "Yalnız beş yüz yetmiş lira", "kirli": "nan", "kaynak_satir": null}
+{"satir": 277, "sutun": "siparis_id", "bozulma": "yazim_hatasi", "ayrinti": "harf_tekrari", "temiz": "SP0000276", "kirli": "SP00002276", "kaynak_satir": null}
+{"satir": 277, "sutun": "alici_ad_soyad", "bozulma": "bosluk", "ayrinti": "nbsp", "temiz": "Sena Gül", "kirli": "Sena Gül ", "kaynak_satir": null}
+{"satir": 277, "sutun": "kdv_tutari", "bozulma": "eksik", "ayrinti": "'NULL'", "temiz": "2534.92", "kirli": "NULL", "kaynak_satir": null}
+{"satir": 277, "sutun": "genel_toplam", "bozulma": "ondalik", "ayrinti": "binlik_en", "temiz": "24535.87", "kirli": "24,535.87", "kaynak_satir": null}
+{"satir": 278, "sutun": "fatura_tarihi", "bozulma": "tarih_bicimi", "ayrinti": "bitisik", "temiz": "2025-11-13", "kirli": "20251113", "kaynak_satir": null}
+{"satir": 279, "sutun": "alici_ad_soyad", "bozulma": "yazim_hatasi", "ayrinti": "ascii", "temiz": "Berna Gürsoy", "kirli": "Berna Gursoy", "kaynak_satir": null}
+{"satir": 280, "sutun": null, "bozulma": "yineleme", "ayrinti": "kopya", "temiz": null, "kirli": null, "kaynak_satir": 277}
+{"satir": 280, "sutun": "alici_ad_soyad", "bozulma": "yazim_hatasi", "ayrinti": "harf_tekrari", "temiz": "Sena Gül", "kirli": "Senaa Gül", "kaynak_satir": null}
+{"satir": 282, "sutun": "fatura_tarihi", "bozulma": "bosluk", "ayrinti": "son", "temiz": "2025-11-15", "kirli": "2025-11-15  ", "kaynak_satir": null}
+{"satir": 283, "sutun": "fatura_tarihi", "bozulma": "tarih_bicimi", "ayrinti": "egik", "temiz": "2025-11-15", "kirli": "15/11/2025", "kaynak_satir": null}
+{"satir": 284, "sutun": "alici_il", "bozulma": "yazim_hatasi", "ayrinti": "harf_dusmesi", "temiz": "Sinop", "kirli": "Siop", "kaynak_satir": null}
+{"satir": 285, "sutun": "kdv_tutari", "bozulma": "eksik", "ayrinti": "'yok'", "temiz": "599.83", "kirli": "yok", "kaynak_satir": null}
+{"satir": 286, "sutun": "matrah", "bozulma": "ondalik", "ayrinti": "binlik_tr", "temiz": "1409.00", "kirli": "1.409,00", "kaynak_satir": null}
+{"satir": 287, "sutun": "alici_tckn", "bozulma": "eksik", "ayrinti": "''", "temiz": "76192700912", "kirli": "", "kaynak_satir": null}
+{"satir": 297, "sutun": "siparis_id", "bozulma": "yazim_hatasi", "ayrinti": "harf_dusmesi", "temiz": "SP0000296", "kirli": "SP000296", "kaynak_satir": null}
+{"satir": 298, "sutun": "fatura_tarihi", "bozulma": "tarih_bicimi", "ayrinti": "egik", "temiz": "2025-11-22", "kirli": "22/11/2025", "kaynak_satir": null}
+{"satir": 298, "sutun": "matrah", "bozulma": "eksik", "ayrinti": "'-'", "temiz": "1774.43", "kirli": "-", "kaynak_satir": null}
+{"satir": 298, "sutun": "kdv_tutari", "bozulma": "bosluk", "ayrinti": "nbsp", "temiz": "354.89", "kirli": "354.89 ", "kaynak_satir": null}
+{"satir": 300, "sutun": "alici_tckn", "bozulma": "bosluk", "ayrinti": "bas", "temiz": "71309776538", "kirli": " 71309776538", "kaynak_satir": null}
+{"satir": 302, "sutun": "genel_toplam", "bozulma": "ondalik", "ayrinti": "virgul", "temiz": "6779.99", "kirli": "6779,99", "kaynak_satir": null}
+{"satir": 303, "sutun": "yazi_ile", "bozulma": "yazim_hatasi", "ayrinti": "harf_dusmesi", "temiz": "Yalnız bin dört yüz bir lira seksen kuruş", "kirli": "Yalnız bin ört yüz bir lira seksen kuruş", "kaynak_satir": null}
+{"satir": 304, "sutun": "siparis_id", "bozulma": "eksik", "ayrinti": "'NULL'", "temiz": "SP0000303", "kirli": "NULL", "kaynak_satir": null}
+{"satir": 304, "sutun": "matrah", "bozulma": "bosluk", "ayrinti": "son", "temiz": "109.70", "kirli": "109.70  ", "kaynak_satir": null}
+{"satir": 304, "sutun": "kdv_dokumu", "bozulma": "eksik", "ayrinti": "'nan'", "temiz": "1:0.68|20:8.32", "kirli": "nan", "kaynak_satir": null}
+{"satir": 305, "sutun": "alici_il", "bozulma": "yazim_hatasi", "ayrinti": "ascii", "temiz": "Diyarbakır", "kirli": "Diyarbakir", "kaynak_satir": null}
+{"satir": 305, "sutun": "yazi_ile", "bozulma": "mojibake", "ayrinti": "utf8_cp1252", "temiz": "Yalnız iki bin yüz yirmi beş lira yetmiş sekiz kuruş", "kirli": "YalnÄ±z iki bin yÃ¼z yirmi beÅŸ lira yetmiÅŸ sekiz kuruÅŸ", "kaynak_satir": null}
+{"satir": 307, "sutun": "fatura_tarihi", "bozulma": "eksik", "ayrinti": "'N/A'", "temiz": "2025-11-24", "kirli": "N/A", "kaynak_satir": null}
+{"satir": 307, "sutun": "matrah", "bozulma": "eksik", "ayrinti": "'N/A'", "temiz": "4499.45", "kirli": "N/A", "kaynak_satir": null}
+{"satir": 311, "sutun": "matrah", "bozulma": "ondalik", "ayrinti": "virgul", "temiz": "2445.35", "kirli": "2445,35", "kaynak_satir": null}
+{"satir": 312, "sutun": "yazi_ile", "bozulma": "eksik", "ayrinti": "''", "temiz": "Yalnız yüz otuz beş lira doksan kuruş", "kirli": "", "kaynak_satir": null}
+{"satir": 315, "sutun": "matrah", "bozulma": "bosluk", "ayrinti": "son", "temiz": "10871.78", "kirli": "10871.78  ", "kaynak_satir": null}
+{"satir": 315, "sutun": "yazi_ile", "bozulma": "yazim_hatasi", "ayrinti": "harf_dusmesi", "temiz": "Yalnız on iki bin üç yüz doksan dokuz lira altmış dokuz kuruş", "kirli": "Yalnız on iki bin üç yüzdoksan dokuz lira altmış dokuz kuruş", "kaynak_satir": null}
+{"satir": 317, "sutun": "fatura_tarihi", "bozulma": "tarih_bicimi", "ayrinti": "uzun", "temiz": "2025-11-30", "kirli": "30 Kasım 2025", "kaynak_satir": null}
+{"satir": 317, "sutun": "kdv_dokumu", "bozulma": "eksik", "ayrinti": "'nan'", "temiz": "20:536.66", "kirli": "nan", "kaynak_satir": null}
+{"satir": 321, "sutun": "siparis_id", "bozulma": "yazim_hatasi", "ayrinti": "harf_tekrari", "temiz": "SP0000322", "kirli": "SP00003222", "kaynak_satir": null}
+{"satir": 326, "sutun": "kdv_tutari", "bozulma": "ondalik", "ayrinti": "virgul", "temiz": "884.69", "kirli": "884,69", "kaynak_satir": null}
+{"satir": 327, "sutun": "kdv_tutari", "bozulma": "ondalik", "ayrinti": "virgul", "temiz": "101.66", "kirli": "101,66", "kaynak_satir": null}
+{"satir": 328, "sutun": "genel_toplam", "bozulma": "bosluk", "ayrinti": "son", "temiz": "6779.99", "kirli": "6779.99  ", "kaynak_satir": null}
+{"satir": 328, "sutun": "kdv_dokumu", "bozulma": "bosluk", "ayrinti": "nbsp", "temiz": "10:616.36", "kirli": "10:616.36 ", "kaynak_satir": null}
+{"satir": 329, "sutun": "alici_tckn", "bozulma": "bosluk", "ayrinti": "bas", "temiz": "71643023916", "kirli": " 71643023916", "kaynak_satir": null}
+{"satir": 329, "sutun": "genel_toplam", "bozulma": "eksik", "ayrinti": "'nan'", "temiz": "7460.00", "kirli": "nan", "kaynak_satir": null}
+{"satir": 330, "sutun": null, "bozulma": "yineleme", "ayrinti": "kopya", "temiz": null, "kirli": null, "kaynak_satir": 323}
+{"satir": 330, "sutun": "alici_tckn", "bozulma": "eksik", "ayrinti": "''", "temiz": "38227119250", "kirli": "", "kaynak_satir": null}
+{"satir": 331, "sutun": "siparis_id", "bozulma": "yazim_hatasi", "ayrinti": "harf_tekrari", "temiz": "SP0000331", "kirli": "SP00000331", "kaynak_satir": null}
+{"satir": 331, "sutun": "alici_tckn", "bozulma": "eksik", "ayrinti": "'nan'", "temiz": "80263572520", "kirli": "nan", "kaynak_satir": null}
+{"satir": 331, "sutun": "kdv_tutari", "bozulma": "ondalik", "ayrinti": "virgul", "temiz": "732.77", "kirli": "732,77", "kaynak_satir": null}
+{"satir": 332, "sutun": "fatura_tarihi", "bozulma": "tarih_bicimi", "ayrinti": "uzun_gunlu", "temiz": "2025-12-06", "kirli": "6 Aralık 2025 Cumartesi", "kaynak_satir": null}
+{"satir": 332, "sutun": "kdv_tutari", "bozulma": "ondalik", "ayrinti": "virgul", "temiz": "323.33", "kirli": "323,33", "kaynak_satir": null}
+{"satir": 332, "sutun": "genel_toplam", "bozulma": "ondalik", "ayrinti": "virgul", "temiz": "1939.99", "kirli": "1939,99", "kaynak_satir": null}
+{"satir": 334, "sutun": "yazi_ile", "bozulma": "yazim_hatasi", "ayrinti": "buyuk_harf_hatasi", "temiz": "Yalnız bin beş yüz seksen dokuz lira doksan kuruş", "kirli": "YALNIZ BIN BEŞ YÜZ SEKSEN DOKUZ LIRA DOKSAN KURUŞ", "kaynak_satir": null}
+{"satir": 335, "sutun": "fatura_tarihi", "bozulma": "bosluk", "ayrinti": "nbsp", "temiz": "2025-12-08", "kirli": "2025-12-08 ", "kaynak_satir": null}
+{"satir": 335, "sutun": "kdv_tutari", "bozulma": "ondalik", "ayrinti": "virgul", "temiz": "12.77", "kirli": "12,77", "kaynak_satir": null}
+{"satir": 336, "sutun": "fatura_tarihi", "bozulma": "bosluk", "ayrinti": "nbsp", "temiz": "2025-12-08", "kirli": "2025-12-08 ", "kaynak_satir": null}
+{"satir": 336, "sutun": "alici_ad_soyad", "bozulma": "eksik", "ayrinti": "'nan'", "temiz": "Fatma Atasoy", "kirli": "nan", "kaynak_satir": null}
+{"satir": 338, "sutun": "fatura_tarihi", "bozulma": "tarih_bicimi", "ayrinti": "noktali", "temiz": "2025-12-08", "kirli": "08.12.2025", "kaynak_satir": null}
+{"satir": 339, "sutun": null, "bozulma": "yineleme", "ayrinti": "kopya", "temiz": null, "kirli": null, "kaynak_satir": 331}
+{"satir": 344, "sutun": "alici_ad_soyad", "bozulma": "yazim_hatasi", "ayrinti": "harf_dusmesi", "temiz": "Sena Gül", "kirli": "Sen Gül", "kaynak_satir": null}
+{"satir": 344, "sutun": "alici_il", "bozulma": "eksik", "ayrinti": "''", "temiz": "İzmir", "kirli": "", "kaynak_satir": null}
+{"satir": 348, "sutun": "genel_toplam", "bozulma": "eksik", "ayrinti": "'nan'", "temiz": "3129.80", "kirli": "nan", "kaynak_satir": null}
+{"satir": 350, "sutun": "matrah", "bozulma": "bosluk", "ayrinti": "son", "temiz": "323.39", "kirli": "323.39  ", "kaynak_satir": null}
+{"satir": 350, "sutun": "kdv_tutari", "bozulma": "eksik", "ayrinti": "'N/A'", "temiz": "36.50", "kirli": "N/A", "kaynak_satir": null}
+{"satir": 352, "sutun": "alici_tckn", "bozulma": "bosluk", "ayrinti": "bas", "temiz": "80263572520", "kirli": " 80263572520", "kaynak_satir": null}
+{"satir": 356, "sutun": "alici_il", "bozulma": "yazim_hatasi", "ayrinti": "buyuk_harf_hatasi", "temiz": "Bingöl", "kirli": "BINGÖL", "kaynak_satir": null}
+{"satir": 357, "sutun": "yazi_ile", "bozulma": "eksik", "ayrinti": "'NULL'", "temiz": "Yalnız bin yedi yüz kırk dokuz lira doksan sekiz kuruş", "kirli": "NULL", "kaynak_satir": null}
+{"satir": 359, "sutun": "genel_toplam", "bozulma": "eksik", "ayrinti": "'-'", "temiz": "609.99", "kirli": "-", "kaynak_satir": null}
+{"satir": 362, "sutun": "genel_toplam", "bozulma": "bosluk", "ayrinti": "bas", "temiz": "859.98", "kirli": " 859.98", "kaynak_satir": null}
+{"satir": 364, "sutun": "alici_ad_soyad", "bozulma": "yazim_hatasi", "ayrinti": "harf_degisimi", "temiz": "Samet Öztürk", "kirli": "Smaet Öztürk", "kaynak_satir": null}
+{"satir": 364, "sutun": "alici_il", "bozulma": "eksik", "ayrinti": "'N/A'", "temiz": "Bingöl", "kirli": "N/A", "kaynak_satir": null}
+{"satir": 365, "sutun": "fatura_tarihi", "bozulma": "tarih_bicimi", "ayrinti": "bitisik", "temiz": "2025-12-31", "kirli": "20251231", "kaynak_satir": null}
+{"satir": 366, "sutun": null, "bozulma": "yineleme", "ayrinti": "kopya", "temiz": null, "kirli": null, "kaynak_satir": 349}

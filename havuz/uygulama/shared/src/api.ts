@@ -232,6 +232,22 @@ export type AdminUpdateUserRequest = z.input<typeof adminUpdateUserRequestSchema
 export const adminUserResponseSchema = z.object({ user: adminUserSchema })
 export type AdminUserResponse = z.infer<typeof adminUserResponseSchema>
 
+/** Yönetici ölçümleri (`GET /api/admin/metrics`): sunucunun anlık durumu. Sayılar o anki toplamlardır. */
+export const adminMetricsResponseSchema = z.object({
+  version: z.string(),
+  time: z.iso.datetime(),
+  uptimeSeconds: z.number().int().nonnegative(),
+  users: z.number().int().nonnegative(),
+  disabledUsers: z.number().int().nonnegative(),
+  workspaces: z.number().int().nonnegative(),
+  records: z.number().int().nonnegative(),
+  deletedRecords: z.number().int().nonnegative(),
+  activeSessions: z.number().int().nonnegative(),
+  liveConnections: z.number().int().nonnegative(),
+  databaseBytes: z.number().int().nonnegative(),
+})
+export type AdminMetricsResponse = z.infer<typeof adminMetricsResponseSchema>
+
 // ── Web yolları ──────────────────────────────────────────────────────────────────────────────────
 
 /**
@@ -277,5 +293,6 @@ export const API_PATHS = {
   events: '/api/events',
   adminUsers: '/api/admin/users',
   adminUser: (id: string) => `/api/admin/users/${enc(id)}`,
+  adminMetrics: '/api/admin/metrics',
   // YENİ ADRES BURAYA
 } as const

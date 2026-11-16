@@ -1,0 +1,169 @@
+{
+  "modul": "tarih",
+  "aciklama": "tarih modülünün iki dilde ortak sınama vektörleri. Takvim günleri 'YYYY-MM-DD' metniyle yazılır; anlar saat dilimli ISO metniyle.",
+  "islevler": {
+    "formatDateTr": [
+      { "girdi": ["2026-11-16", "uzun"], "cikti": "16 Kasım 2026 Pazartesi" },
+      { "girdi": ["2026-11-16"], "cikti": "16.11.2026" },
+      { "girdi": ["2026-11-16", "orta"], "cikti": "16 Kasım 2026" },
+      { "girdi": ["2026-01-05", "d MMMM yyyy"], "cikti": "5 Ocak 2026" },
+      { "girdi": ["2026-11-16T21:30:00Z", "tam"], "cikti": "17 Kasım 2026 Salı 00:30", "not": "UTC'de hâlâ 16'sı" },
+      { "girdi": ["2026-11-16T21:30:00Z", "tam", 0], "cikti": "16 Kasım 2026 Pazartesi 21:30" },
+      { "girdi": ["2026-02-28", "EEE, d MMM yy"], "cikti": "Cmt, 28 Şub 26" },
+      { "girdi": ["2026-11-16", "'Tarih:' dd/MM/yyyy"], "cikti": "Tarih: 16/11/2026" },
+      { "girdi": ["2026-11-16T09:05:07+03:00", "HH:mm:ss"], "cikti": "09:05:07" },
+      { "girdi": ["2026-11-16 09:05+03:00", "saat"], "cikti": "16.11.2026 09:05" },
+      { "girdi": ["2026-08-30", "uzun"], "cikti": "30 Ağustos 2026 Pazar" },
+      { "girdi": ["2026-13-01"], "hata": true },
+      { "girdi": ["2026-02-29"], "hata": true },
+      { "girdi": ["2026-11-16T10:00:00"], "hata": true, "not": "saat dilimi yok" },
+      { "girdi": ["16.11.2026"], "hata": true, "not": "biçimlemeye ISO verilir; Türkçe metin için parseDateTr" }
+    ],
+    "parseDateTr": [
+      { "girdi": ["16.11.2026"], "cikti": "2026-11-16" },
+      { "girdi": ["16/11/2026"], "cikti": "2026-11-16" },
+      { "girdi": ["16-11-2026"], "cikti": "2026-11-16" },
+      { "girdi": ["1.2.2026"], "cikti": "2026-02-01" },
+      { "girdi": ["16 Kasım 2026"], "cikti": "2026-11-16" },
+      { "girdi": ["16 kasım 2026 Pazartesi"], "cikti": "2026-11-16" },
+      { "girdi": ["16 KASIM 2026"], "cikti": "2026-11-16" },
+      { "girdi": ["16 Kasim 2026"], "cikti": "2026-11-16" },
+      { "girdi": ["Pazartesi, 16 Kasım 2026"], "cikti": "2026-11-16" },
+      { "girdi": ["16 Kas 2026"], "cikti": "2026-11-16" },
+      { "girdi": ["  29   Şubat 2024 "], "cikti": "2024-02-29" },
+      { "girdi": ["2026-11-16"], "cikti": "2026-11-16" },
+      { "girdi": ["16.11.26"], "hata": true },
+      { "girdi": ["31.02.2026"], "hata": true },
+      { "girdi": ["29 Şubat 2026"], "hata": true },
+      { "girdi": ["16 Kasım 2026 Salı"], "hata": true },
+      { "girdi": ["11/16/2026"], "hata": true },
+      { "girdi": ["16 Kasımm 2026"], "hata": true },
+      { "girdi": [""], "hata": true },
+      { "girdi": ["yarın"], "hata": true }
+    ],
+    "relativeTimeTr": [
+      { "girdi": ["2026-11-16T11:59:30+03:00", "2026-11-16T12:00:00+03:00"], "cikti": "şimdi" },
+      { "girdi": ["2026-11-16T11:55:00+03:00", "2026-11-16T12:00:00+03:00"], "cikti": "5 dakika önce" },
+      { "girdi": ["2026-11-16T11:59:00+03:00", "2026-11-16T12:00:00+03:00"], "cikti": "1 dakika önce" },
+      { "girdi": ["2026-11-16T14:00:00+03:00", "2026-11-16T12:00:00+03:00"], "cikti": "2 saat sonra" },
+      { "girdi": ["2026-11-15T23:30:00+03:00", "2026-11-16T12:00:00+03:00"], "cikti": "12 saat önce" },
+      { "girdi": ["2026-11-15T10:00:00+03:00", "2026-11-16T12:00:00+03:00"], "cikti": "dün" },
+      { "girdi": ["2026-11-17T13:00:00+03:00", "2026-11-16T12:00:00+03:00"], "cikti": "yarın" },
+      { "girdi": ["2026-11-13T12:00:00+03:00", "2026-11-16T12:00:00+03:00"], "cikti": "3 gün önce" },
+      { "girdi": ["2026-11-02T12:00:00+03:00", "2026-11-16T12:00:00+03:00"], "cikti": "2 hafta önce" },
+      { "girdi": ["2026-08-16T12:00:00+03:00", "2026-11-16T12:00:00+03:00"], "cikti": "3 ay önce" },
+      { "girdi": ["2027-01-16T12:00:00+03:00", "2026-11-16T12:00:00+03:00"], "cikti": "2 ay sonra" },
+      { "girdi": ["2024-11-16T12:00:00+03:00", "2026-11-16T12:00:00+03:00"], "cikti": "2 yıl önce" },
+      {
+        "girdi": ["2026-11-15T22:30:00Z", "2026-11-17T09:00:00Z"],
+        "cikti": "dün",
+        "not": "UTC'de 2 gün fark var; Türkiye takviminde 16 → 17"
+      },
+      { "girdi": ["2026-11-10", "2026-11-16T12:00:00+03:00"], "cikti": "6 gün önce" },
+      { "girdi": ["dün", "2026-11-16"], "hata": true }
+    ],
+    "toIsoDate": [
+      { "girdi": ["2026-11-16T21:30:00Z"], "cikti": "2026-11-17" },
+      { "girdi": ["2026-11-16T21:30:00Z", 0], "cikti": "2026-11-16" },
+      { "girdi": ["2026-11-16"], "cikti": "2026-11-16" }
+    ],
+    "addDays": [
+      { "girdi": ["2026-02-28", 1], "cikti": "2026-03-01" },
+      { "girdi": ["2024-02-28", 1], "cikti": "2024-02-29" },
+      { "girdi": ["2026-01-01", -1], "cikti": "2025-12-31" },
+      { "girdi": ["2026-11-16", 365], "cikti": "2027-11-16" }
+    ],
+    "dayOfWeek": [
+      { "girdi": ["2026-11-16"], "cikti": 1 },
+      { "girdi": ["2026-11-15"], "cikti": 7 },
+      { "girdi": ["1970-01-01"], "cikti": 4 },
+      { "girdi": ["1923-10-29"], "cikti": 1 }
+    ],
+    "dayNameTr": [
+      { "girdi": ["2026-11-16"], "cikti": "Pazartesi" },
+      { "girdi": ["2026-11-18"], "cikti": "Çarşamba" }
+    ],
+    "isLeapYear": [
+      { "girdi": [2000], "cikti": true },
+      { "girdi": [1900], "cikti": false },
+      { "girdi": [2024], "cikti": true },
+      { "girdi": [2026], "cikti": false }
+    ],
+    "daysInMonth": [
+      { "girdi": [2024, 2], "cikti": 29 },
+      { "girdi": [2026, 2], "cikti": 28 },
+      { "girdi": [2100, 2], "cikti": 28 },
+      { "girdi": [2026, 4], "cikti": 30 },
+      { "girdi": [2026, 12], "cikti": 31 },
+      { "girdi": [2026, 13], "hata": true }
+    ],
+    "fixedHolidaysTr": [
+      {
+        "girdi": [2026],
+        "cikti": [
+          { "date": "2026-01-01", "name": "Yılbaşı" },
+          { "date": "2026-04-23", "name": "Ulusal Egemenlik ve Çocuk Bayramı" },
+          { "date": "2026-05-01", "name": "Emek ve Dayanışma Günü" },
+          { "date": "2026-05-19", "name": "Atatürk'ü Anma, Gençlik ve Spor Bayramı" },
+          { "date": "2026-07-15", "name": "Demokrasi ve Millî Birlik Günü" },
+          { "date": "2026-08-30", "name": "Zafer Bayramı" },
+          { "date": "2026-10-29", "name": "Cumhuriyet Bayramı" }
+        ]
+      },
+      {
+        "girdi": [2008],
+        "cikti": [
+          { "date": "2008-01-01", "name": "Yılbaşı" },
+          { "date": "2008-04-23", "name": "Ulusal Egemenlik ve Çocuk Bayramı" },
+          { "date": "2008-05-19", "name": "Atatürk'ü Anma, Gençlik ve Spor Bayramı" },
+          { "date": "2008-08-30", "name": "Zafer Bayramı" },
+          { "date": "2008-10-29", "name": "Cumhuriyet Bayramı" }
+        ]
+      }
+    ],
+    "isBusinessDay": [
+      { "girdi": ["2026-11-16"], "cikti": true },
+      { "girdi": ["2026-11-14"], "cikti": false },
+      { "girdi": ["2026-10-29"], "cikti": false },
+      { "girdi": ["2026-10-28"], "cikti": true, "not": "öğleden sonra yarım gün; iş günü sayılır" },
+      { "girdi": ["2026-05-01"], "cikti": false },
+      { "girdi": ["2016-07-15"], "cikti": true, "not": "15 Temmuz 2017'den beri tatil" },
+      { "girdi": ["2019-07-15"], "cikti": false },
+      { "girdi": ["2026-03-20"], "secenek": { "holidays": ["2026-03-20"] }, "cikti": false },
+      { "girdi": ["2026-11-14"], "secenek": { "weekend": [7] }, "cikti": true },
+      { "girdi": ["2026-10-29"], "secenek": { "includeFixedHolidays": false }, "cikti": true },
+      { "girdi": ["2026-11-16T22:00:00Z"], "cikti": true, "not": "Türkiye'de 17 Kasım Salı" }
+    ],
+    "addBusinessDays": [
+      { "girdi": ["2026-11-13", 1], "cikti": "2026-11-16" },
+      { "girdi": ["2026-10-27", 2], "cikti": "2026-10-30" },
+      { "girdi": ["2026-11-16", -1], "cikti": "2026-11-13" },
+      { "girdi": ["2026-11-16", 0], "cikti": "2026-11-16" },
+      { "girdi": ["2026-11-14", 0], "cikti": "2026-11-14" },
+      { "girdi": ["2026-12-31", 1], "cikti": "2027-01-04" },
+      { "girdi": ["2026-03-19", 1], "secenek": { "holidays": ["2026-03-20"] }, "cikti": "2026-03-23" },
+      { "girdi": ["2026-11-16", 1], "secenek": { "weekend": [1, 2, 3, 4, 5, 6, 7] }, "hata": true }
+    ],
+    "businessDaysBetween": [
+      { "girdi": ["2026-11-13", "2026-11-16"], "cikti": 1 },
+      { "girdi": ["2026-11-16", "2026-11-13"], "cikti": -1 },
+      { "girdi": ["2026-11-16", "2026-11-16"], "cikti": 0 },
+      { "girdi": ["2026-10-01", "2026-11-01"], "cikti": 20 }
+    ],
+    "ageOn": [
+      { "girdi": ["1990-05-20", "2026-11-16"], "cikti": 36 },
+      { "girdi": ["1990-11-17", "2026-11-16"], "cikti": 35 },
+      { "girdi": ["1990-11-16", "2026-11-16"], "cikti": 36 },
+      { "girdi": ["2000-02-29", "2026-02-28"], "cikti": 25 },
+      { "girdi": ["2000-02-29", "2026-03-01"], "cikti": 26 },
+      { "girdi": ["2026-11-17", "2026-11-16"], "hata": true }
+    ],
+    "isoWeek": [
+      { "girdi": ["2026-11-16"], "cikti": { "year": 2026, "week": 47 } },
+      { "girdi": ["2021-01-03"], "cikti": { "year": 2020, "week": 53 } },
+      { "girdi": ["2024-12-30"], "cikti": { "year": 2025, "week": 1 } },
+      { "girdi": ["2026-01-01"], "cikti": { "year": 2026, "week": 1 } },
+      { "girdi": ["2027-01-03"], "cikti": { "year": 2026, "week": 53 } }
+    ]
+  }
+}

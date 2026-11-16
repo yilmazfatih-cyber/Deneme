@@ -1,0 +1,13 @@
+---
+/** Blog yazısı (Türkçe): /blog/<kisa-ad>/. İçerik: src/content/blog/tr/. Görünüm: src/views/PostView.astro. */
+import type { GetStaticPaths, InferGetStaticPropsType } from 'astro'
+import { postPaths } from '../../lib/static-paths.ts'
+import PostView from '../../views/PostView.astro'
+
+export const getStaticPaths = (() => postPaths('tr')) satisfies GetStaticPaths
+type Props = InferGetStaticPropsType<typeof getStaticPaths>
+
+const { post } = Astro.props as Props
+---
+
+<PostView post={post} />

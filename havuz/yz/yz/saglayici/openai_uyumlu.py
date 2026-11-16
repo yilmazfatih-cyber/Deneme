@@ -211,7 +211,9 @@ class OpenAIUyumlu(Saglayici):
                     govde=yanit.text[:500],
                 ) from hata
             if not isinstance(veri, dict):
-                raise SaglayiciHatasi("Sunucu yanıtı bir JSON nesnesi değil.", govde=yanit.text[:500])
+                raise SaglayiciHatasi(
+                    "Sunucu yanıtı bir JSON nesnesi değil.", govde=yanit.text[:500]
+                )
             return veri
 
         if govde is None:
@@ -296,7 +298,11 @@ class OpenAIUyumlu(Saglayici):
             return DesteklenmiyorHatasi(
                 f"Sunucu yapılı çıktı isteğini reddetti ({durum}): {ileti}", **ortak
             )
-        if "tools" in govde and durum in (400, 422, 501) and ("tool" in kucuk or "function" in kucuk):
+        if (
+            "tools" in govde
+            and durum in (400, 422, 501)
+            and ("tool" in kucuk or "function" in kucuk)
+        ):
             return DesteklenmiyorHatasi(
                 f"Sunucu ya da model araç çağrısını desteklemiyor ({durum}): {ileti}", **ortak
             )

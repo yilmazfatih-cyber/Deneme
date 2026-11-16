@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "sirketler",
+  "description": "Uydurma şirketler. Gerçek şirketlerle ilgisi yoktur.",
+  "type": "object",
+  "properties": {
+    "sirket_id": {
+      "type": "string",
+      "pattern": "^S\\d{5}$",
+      "x-benzersiz": true
+    },
+    "unvan": {
+      "type": "string",
+      "pattern": "(A\\.Ş\\.|Ltd\\. Şti\\.)$",
+      "x-benzersiz": true
+    },
+    "tur": {
+      "type": "string",
+      "enum": [
+        "Ltd. Şti.",
+        "A.Ş."
+      ]
+    },
+    "vkn": {
+      "type": "string",
+      "description": "uydurma",
+      "x-denetim": "vkn",
+      "x-benzersiz": true
+    },
+    "sektor": {
+      "type": "string"
+    },
+    "il": {
+      "type": "string",
+      "x-denetim": "il"
+    },
+    "ilce": {
+      "type": "string"
+    },
+    "plaka": {
+      "type": "integer",
+      "minimum": 1.0,
+      "maximum": 81.0
+    },
+    "kurulus_yili": {
+      "type": "integer",
+      "minimum": 1960.0,
+      "maximum": 2025.0
+    },
+    "calisan_sayisi": {
+      "type": "integer",
+      "minimum": 1.0
+    },
+    "telefon": {
+      "type": "string",
+      "description": "ilin alan koduyla",
+      "x-denetim": "telefon_tr"
+    },
+    "iban": {
+      "type": "string",
+      "description": "uydurma",
+      "x-denetim": "iban_tr"
+    }
+  },
+  "required": [
+    "sirket_id",
+    "unvan",
+    "tur",
+    "vkn",
+    "sektor",
+    "il",
+    "ilce",
+    "plaka",
+    "kurulus_yili",
+    "calisan_sayisi",
+    "telefon",
+    "iban"
+  ],
+  "additionalProperties": false,
+  "x-birincil-anahtar": [
+    "sirket_id"
+  ]
+}

@@ -108,14 +108,26 @@ class GridSearchCV(BaseEstimator):
             raise ValueError("refit=False ile kuruldu; tahmin için refit=True kullanın.")
         return self.best_estimator_
 
-    def predict(self, X: Any) -> Any:
-        return self._best().predict(X)
+    # Yöntemler en iyi modelde varsa görünür (`hasattr` doğru yanıt versin diye özellik olarak).
+    @property
+    def predict(self) -> Callable[[Any], Any]:
+        method: Callable[[Any], Any] = self._best().predict
+        return method
 
-    def predict_proba(self, X: Any) -> Any:
-        return self._best().predict_proba(X)
+    @property
+    def predict_proba(self) -> Callable[[Any], Any]:
+        method: Callable[[Any], Any] = self._best().predict_proba
+        return method
 
-    def transform(self, X: Any) -> Any:
-        return self._best().transform(X)
+    @property
+    def decision_function(self) -> Callable[[Any], Any]:
+        method: Callable[[Any], Any] = self._best().decision_function
+        return method
+
+    @property
+    def transform(self) -> Callable[[Any], Any]:
+        method: Callable[[Any], Any] = self._best().transform
+        return method
 
     def score(self, X: Any, y: Any) -> float:
         from ml_temel.olcut.scorers import get_scorer

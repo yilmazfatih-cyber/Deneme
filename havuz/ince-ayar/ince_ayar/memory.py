@@ -9,9 +9,9 @@ Tahmin dört kalemin toplamıdır (ayrıntı ve varsayımlar: `docs/HIPERPARAMET
 3. Etkinleştirmeler: yığın × uzunluk × gizli boyut × bayt × çarpan. Çarpan, bir katmanın geri yayılım
                      için sakladığı tensör sayısıdır (K = 8 + 3·d_ara/d). Gradyan denetimi açıksa
                      aynı anda yalnız bir katmanın içi + her katman için bir ara kayıt tutulur.
-4. Sabit pay       : CUDA bağlamı ve kütüphaneler (GPU'da ~1 GB, CPU'da ~0,5 GB).
+4. Sabit pay       : CUDA bağlamı (GPU) ya da Python + kütüphaneler (CPU): 1 GB.
 
-Sonuç ±%30 aralıkla verilir. **Bu bir ölçüm değildir**: formül CPU'da küçük bir modelle karşılaş-
+Sonuç −%25 / +%30 aralıkla verilir. **Bu bir ölçüm değildir**: formül CPU'da küçük bir modelle karşılaş-
 tırılmış (bkz. `docs/DENEME_KAYDI.md`), GPU'da doğrulanmamıştır.
 
 Genişletme: yeni bir mimari ailesi için `read_shape` içindeki alan adı eşlemelerine ekleme yapın.
@@ -28,6 +28,7 @@ LOW_FACTOR, HIGH_FACTOR = 0.75, 1.3
 FOUR_BIT_BYTES = 0.55
 TRAINABLE_BYTES = 16  # ağırlık + gradyan + AdamW momentleri (fp32)
 ATTENTION_MODULES = ("q_proj", "k_proj", "v_proj", "o_proj", "query", "key", "value")
+SOURCE_META = "ağırlıksız (meta) kurulan model: kesin sayım"
 SOURCE_FILE, SOURCE_API, SOURCE_FORMULA = "ağırlık dosyası", "Hugging Face API", "kestirim"
 
 
@@ -39,6 +40,7 @@ class ModelShape:
     intermediate: int
     vocab: int
     source: str  # parametre sayısının nereden geldiği
+    trainable: int | None = None  # LoRA verildiyse kesin eğitilen parametre sayısı
 
 
 @dataclass(frozen=True)
@@ -106,25 +108,53 @@ def _hub_parameters(base: str) -> int | None:
         return None
 
 
-def read_shape(base: str) -> ModelShape:
-    """Modelin boyutlarını yapılandırmasından, parametre sayısını en güvenilir kaynaktan okur."""
+def meta_counts(config: Any, kind: str, lora: Any | None) -> tuple[int, int | None]:
+    """Modeli ağırlıksız ("meta" aygıtında) kurup kesin parametre sayılarını verir.
+
+    Ağırlık indirilmez, bellek ayrılmaz; büyük modellerde de birkaç saniye sürer.
+    """
+    import torch
+    from transformers import AutoModel, AutoModelForCausalLM
+
+    factory = AutoModelForCausalLM if kind == "causal" else AutoModel
+    with torch.device("meta"):
+        model = factory.from_config(config)
+    total = sum(parameter.numel() for parameter in model.parameters())
+    if lora is None:
+        return total, None
+    from peft import get_peft_model
+
+    adapted = get_peft_model(model, lora)
+    return total, sum(p.numel() for p in adapted.parameters() if p.requires_grad)
+
+
+def read_shape(base: str, kind: str = "causal", lora: Any | None = None) -> ModelShape:
+    """Modelin boyutlarını yapılandırmasından, parametre sayısını en güvenilir kaynaktan okur.
+
+    Sıra: meta aygıtında kurulum (kesin) → yerel ağırlık dosyası → Hugging Face API → formül.
+    """
     from transformers import AutoConfig
 
     config = AutoConfig.from_pretrained(base)
-    config = getattr(config, "text_config", None) or config
-    hidden = _first(config, ("hidden_size", "d_model", "n_embd", "dim"), 768)
-    layers = _first(config, ("num_hidden_layers", "n_layer", "num_layers", "n_layers"), 12)
-    intermediate = _first(config, ("intermediate_size", "n_inner", "hidden_dim", "d_ff"), 4 * hidden)
-    vocab = _first(config, ("vocab_size",), 32000)
-    parameters: int | None = None
+    text = getattr(config, "text_config", None) or config
+    hidden = _first(text, ("hidden_size", "d_model", "n_embd", "dim"), 768)
+    layers = _first(text, ("num_hidden_layers", "n_layer", "num_layers", "n_layers"), 12)
+    intermediate = _first(text, ("intermediate_size", "n_inner", "hidden_dim", "d_ff"), 4 * hidden)
+    vocab = _first(text, ("vocab_size",), 32000)
+    try:
+        parameters, trainable = meta_counts(config, kind, lora)
+        return ModelShape(parameters, hidden, layers, intermediate, vocab, SOURCE_META, trainable)
+    except Exception:  # özel kodlu (trust_remote_code) ya da tanınmayan mimari: yedek kaynaklar
+        pass
+    counted: int | None = None
     source = SOURCE_FORMULA
     if Path(base).is_dir():
-        parameters, source = count_safetensors_parameters(Path(base)), SOURCE_FILE
+        counted, source = count_safetensors_parameters(Path(base)), SOURCE_FILE
     else:
-        parameters, source = _hub_parameters(base), SOURCE_API
-    if parameters is None:
-        parameters, source = formula_parameters(hidden, layers, intermediate, vocab), SOURCE_FORMULA
-    return ModelShape(parameters, hidden, layers, intermediate, vocab, source)
+        counted, source = _hub_parameters(base), SOURCE_API
+    if counted is None:
+        counted, source = formula_parameters(hidden, layers, intermediate, vocab), SOURCE_FORMULA
+    return ModelShape(counted, hidden, layers, intermediate, vocab, source)
 
 
 def lora_parameters(shape: ModelShape, rank: int, targets: str | list[str]) -> int:
@@ -138,7 +168,12 @@ def lora_parameters(shape: ModelShape, rank: int, targets: str | list[str]) -> i
 
 
 def _activation_bytes(
-    shape: ModelShape, batch: int, length: int, element_bytes: int, checkpointing: bool, extra: float
+    shape: ModelShape,
+    batch: int,
+    length: int,
+    element_bytes: int,
+    checkpointing: bool,
+    extra: float,
 ) -> float:
     multiplier = 8 + 3 * shape.intermediate / shape.hidden + extra
     per_tensor = batch * length * shape.hidden * element_bytes
@@ -157,10 +192,11 @@ def estimate_lora(
     weight_bytes: float,
     four_bit: bool,
     checkpointing: bool,
-    on_gpu: bool,
 ) -> MemoryEstimate:
     """LoRA eğitimi için bellek tahmini."""
-    trainable = lora_parameters(shape, rank, targets)
+    trainable = (
+        shape.trainable if shape.trainable is not None else lora_parameters(shape, rank, targets)
+    )
     if four_bit:
         embedding = shape.vocab * shape.hidden
         weights = embedding * 2 + max(shape.parameters - embedding, 0) * FOUR_BIT_BYTES
@@ -174,14 +210,17 @@ def estimate_lora(
         weights_gb=weights / GB,
         trainable_gb=trainable * TRAINABLE_BYTES / GB,
         activations_gb=activations / GB,
-        overhead_gb=1.0 if on_gpu else 0.5,
+        overhead_gb=1.0,  # GPU: CUDA bağlamı; CPU: Python + kütüphaneler (ölçüm: 0,88 GB)
         trainable_parameters=trainable,
-        assumptions=[f"parametre sayısı kaynağı: {shape.source}", "LoRA parametresi: kestirim"],
+        assumptions=[
+            f"parametre sayısı kaynağı: {shape.source}",
+            "LoRA parametresi: " + ("kesin" if shape.trainable is not None else "kestirim"),
+        ],
     )
 
 
 def estimate_full(
-    shape: ModelShape, batch: int, length: int, mixed_precision: bool, on_gpu: bool
+    shape: ModelShape, batch: int, length: int, mixed_precision: bool
 ) -> MemoryEstimate:
     """Tam ince ayar (bütün ağırlıklar eğitilir; kodlayıcı görevleri) için bellek tahmini."""
     activations = _activation_bytes(shape, batch, length, 2 if mixed_precision else 4, False, 0.0)
@@ -189,7 +228,7 @@ def estimate_full(
         weights_gb=0.0,  # ağırlıklar "eğitilenler" kalemindedir (16 bayt/parametre)
         trainable_gb=shape.parameters * TRAINABLE_BYTES / GB,
         activations_gb=activations / GB,
-        overhead_gb=1.0 if on_gpu else 0.5,
+        overhead_gb=1.0,  # GPU: CUDA bağlamı; CPU: Python + kütüphaneler (ölçüm: 0,88 GB)
         trainable_parameters=shape.parameters,
         assumptions=[f"parametre sayısı kaynağı: {shape.source}"],
     )

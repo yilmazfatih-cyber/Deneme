@@ -1,0 +1,32 @@
+# Sınıflandırma · colab-t4: Türkçe BERT (dbmdz, MIT), T4'te fp16, tam ince ayar.
+gorev = "siniflandirma"
+
+[model]
+taban = "dbmdz/bert-base-turkish-cased"
+duyarlik = "oto"
+
+[veri]
+egitim = "ornekler/siniflandirma.csv"
+dogrulama_orani = 0.1
+test_orani = 0.1
+azami_uzunluk = 128
+
+[egitim]
+cikti = "ciktilar/siniflandirma-t4"
+donem = 3.0
+yigin = 32
+degerlendirme_yigini = 64
+ogrenme_orani = 3e-5
+isinma_orani = 0.06
+agirlik_curumesi = 0.01
+kayit_adimi = 20
+dengesizlik = "agirlikli-kayip"
+erken_durdurma = 2
+hedef_bellek_gb = 15.0
+
+[esik]
+ikili_esik_ayari = true
+hedef_dogruluk = 0.0
+
+[disa_aktarim]
+int8 = true

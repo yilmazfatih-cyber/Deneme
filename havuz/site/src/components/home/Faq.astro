@@ -1,0 +1,56 @@
+---
+/**
+ * Sık sorulan sorular: açılır-kapanır <details> listesi (JS gerekmez, klavyeyle çalışır).
+ * Metinler: src/content/anasayfa/<dil>.json → faq (başlık), src/content/sss/<dil>.json → sorular.
+ * Aynı sorular FAQPage yapısal verisine de yazılır (src/views/HomeView.astro).
+ */
+import SectionHeader from './SectionHeader.astro'
+import Icon from '../Icon.astro'
+import { link } from '../../lib/url.ts'
+import type { CollectionEntry } from 'astro:content'
+
+interface Props {
+  anchor: string
+  header: CollectionEntry<'anasayfa'>['data']['faq']
+  items: CollectionEntry<'sss'>['data']['items']
+}
+
+const { anchor, header, items } = Astro.props
+---
+
+<section id={anchor} aria-labelledby={`${anchor}-baslik`} class="py-20 md:py-28">
+  <div class="wrap grid gap-12 lg:grid-cols-[1fr_1.45fr] lg:gap-16">
+    <div>
+      <SectionHeader id={`${anchor}-baslik`} eyebrow={header.eyebrow} title={header.title} lead={header.lead} />
+      {header.contact && (
+        <a href={link(header.contact.href)} class="link mt-6 inline-flex items-center gap-2 font-semibold">
+          {header.contact.label}
+          <Icon name="arrow-right" size={18} />
+        </a>
+      )}
+    </div>
+    <div class="divide-y divide-line border-y border-line">
+      {items.map((item) => (
+        <details class="faq-item group">
+          <summary class="flex min-h-16 cursor-pointer list-none items-center justify-between gap-6 py-4 text-left text-[1.0625rem] font-semibold">
+            <span>{item.question}</span>
+            <span class="faq-icon inline-flex size-8 shrink-0 items-center justify-center rounded-full border border-line text-muted transition-transform">
+              <Icon name="plus" size={16} />
+            </span>
+          </summary>
+          <p class="max-w-prose pb-6 leading-relaxed text-muted">{item.answer}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-item[open] .faq-icon {
+    transform: rotate(45deg);
+  }
+</style>

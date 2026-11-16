@@ -1,0 +1,665 @@
+﻿fatura_no;siparis_id;fatura_tarihi;alici_ad_soyad;alici_tckn;alici_il;matrah;kdv_tutari;genel_toplam;kdv_dokumu;yazi_ile
+SNT2025000000001;SP0000001;2025-01-01;Ezgi Acar;18930900482;Çankırı;1761,53;334,27;2095,80;1:0.95|20:333.32;Yalnız iki bin doksan beş lira seksen kuruş
+SNT2025000000002;SP0000002;2025-01-03;Ezgi Acar;18930900482;Çankırı;1761,53;334,27;2095,80;1:0.95|20:333.32;Yalnız iki bin doksan beş lira seksen kuruş
+SNT2025000000003;SP0000003;2025-01-04;Melis Başaran;55377828498;Malatya;816,58;163,32;979,90;20:163.32;Yalnız dokuz yüz yetmiş dokuz lira doksan kuruş
+SNT2025000000004;SP0000005;2025-01-06;Seda Taşkın;40099068062;Edirne;316,58;63,32;379,90;20:63.32;Yalnız üç yüz yetmiş dokuz lira doksan kuruş
+SNT2025000000005;SP0000006;2025-01-07;Coşkun Efe;79683910104;Adana;468,76;51,04;519,80;10:42.72|20:8.32;Yalnız beş yüz on dokuz lira seksen kuruş
+SNT2025000000006;SP0000007;2025-01-09;Rabia Demir;47842889998;Kırıkkale;259,40;10,50;269,90;1:2.18|20:8.32;Yalnız iki yüz altmış dokuz lira doksan kuruş
+SNT2025000000007;SP0000008;2025-01-10;Hilal Yalçın;42779181122;Mersin;80,19;8,71;88,90;1:0.39|20:8.32;Yalnız seksen sekiz lira doksan kuruş
+SNT2025000000008;SP0000010;2025-01-10;Turgut Demirel;76904347954;Balıkesir;5734,99;1147,00;6881,99;20:1147.00;Yalnız altı bin sekiz yüz seksen bir lira doksan dokuz kuruş
+SNT2025000000009;SP0000011;2025-01-11;Gizem Taş;99997043022;Isparta;656,75;65,67;722,42;10:65.67;Yalnız yedi yüz yirmi iki lira kırk iki kuruş
+SNT2025000000010;SP0000012;2025-01-11;Turgut Demirel;76904347954;Balıkesir;208,02;41,61;249,63;20:41.61;Yalnız iki yüz kırk dokuz lira altmış üç kuruş
+SNT2025000000011;SP0000013;2025-01-11;Şerife Yılmaz;54476016508;Bartın;566,67;113,33;680,00;20:113.33;Yalnız altı yüz seksen lira
+SNT2025000000012;SP0000014;2025-01-11;Berna Elmas;87483948326;Burdur;2429,09;441,48;2870,57;1:2.33|20:439.15;Yalnız iki bin sekiz yüz yetmiş lira elli yedi kuruş
+SNT2025000000013;SP0000015;2025-01-12;Zekiye Durmuş;49653580224;Malatya;631,94;96,76;728,70;1:1.56|20:95.20;Yalnız yedi yüz yirmi sekiz lira yetmiş kuruş
+SNT2025000000014;SP0000016;2025-01-12;Nuri Demirci;76191949848;Kahramanmaraş;1666,58;333,32;1999,90;20:333.32;Yalnız bin dokuz yüz doksan dokuz lira doksan kuruş
+SNT2025000000015;SP0000017;2025-01-12;Turgut Demirel;76904347954;Balıkesir;1483,08;296,62;1779,70;20:296.62;Yalnız bin yedi yüz yetmiş dokuz lira yetmiş kuruş
+SNT2025000000016;SP0000018;2025-01-12;Mustafa Kaya;64907900320;Hatay;1430,73;143,07;1573,80;10:143.07;Yalnız bin beş yüz yetmiş üç lira seksen kuruş
+SNT2025000000017;SP0000019;2025-01-12;Hilal Yalçın;42779181122;Mersin;150,49;9,41;159,90;1:1.09|20:8.32;Yalnız yüz elli dokuz lira doksan kuruş
+SNT2025000000018;SP0000020;2025-01-13;Hüseyin Aslan;43099106574;Erzurum;319,78;45,92;365,70;1:0.95|20:44.97;Yalnız üç yüz altmış beş lira yetmiş kuruş
+SNT2025000000019;SP0000021;2025-01-13;Tuncay Tekin;80454952018;Niğde;3536,36;353,64;3890,00;10:353.64;Yalnız üç bin sekiz yüz doksan lira
+SNT2025000000020;SP0000022;2025-01-13;Saadet Demir;26603917330;Mardin;1433,91;266,09;1700,00;1:1.09|20:265.00;Yalnız bin yedi yüz lira
+SNT2025000000021;SP0000023;2025-01-15;Hüseyin Aslan;43099106574;Erzurum;141,57;18,32;159,89;10:10.00|20:8.32;Yalnız yüz elli dokuz lira seksen dokuz kuruş
+SNT2025000000022;SP0000024;2025-01-15;Esra Ateş;89019300134;Samsun;174,91;34,99;209,90;20:34.99;Yalnız iki yüz dokuz lira doksan kuruş
+SNT2025000000023;SP0000025;2025-01-16;Ezgi Acar;18930900482;Çankırı;1924,91;384,99;2309,90;20:384.99;Yalnız iki bin üç yüz dokuz lira doksan kuruş
+SNT2025000000024;SP0000026;2025-01-17;İrem Çetin;41721961720;Bursa;1884,40;335,50;2219,90;1:2.18|20:333.32;Yalnız iki bin iki yüz on dokuz lira doksan kuruş
+SNT2025000000025;SP0000027;2025-01-17;Cansu Sarıkaya;77632595464;Nevşehir;224,83;44,97;269,80;20:44.97;Yalnız iki yüz altmış dokuz lira seksen kuruş
+SNT2025000000026;SP0000028;2025-01-17;Sefa Kılıç;68407965308;Adıyaman;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000027;SP0000029;2025-01-18;Hilal Yalçın;42779181122;Mersin;224,83;44,97;269,80;20:44.97;Yalnız iki yüz altmış dokuz lira seksen kuruş
+SNT2025000000028;SP0000030;2025-01-18;Tuncay Tekin;80454952018;Niğde;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000029;SP0000031;2025-01-20;Melek Türkoğlu;76468310050;Rize;266,50;53,30;319,80;20:53.30;Yalnız üç yüz on dokuz lira seksen kuruş
+SNT2025000000030;SP0000032;2025-01-20;Miraç Mert;88704969854;Kırklareli;1666,58;333,32;1999,90;20:333.32;Yalnız bin dokuz yüz doksan dokuz lira doksan kuruş
+SNT2025000000031;SP0000033;2025-01-20;Seda Taşkın;40099068062;Edirne;644,35;47,35;691,70;1:1.90|10:45.45;Yalnız altı yüz doksan bir lira yetmiş kuruş
+SNT2025000000032;SP0000034;2025-01-20;Gizem Taş;99997043022;Isparta;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000033;SP0000035;2025-01-21;Coşkun Efe;79683910104;Adana;283,24;56,65;339,89;20:56.65;Yalnız üç yüz otuz dokuz lira seksen dokuz kuruş
+SNT2025000000034;SP0000036;2025-01-21;Saadet Demir;26603917330;Mardin;885,68;70,22;955,90;1:2.04|10:68.18;Yalnız dokuz yüz elli beş lira doksan kuruş
+SNT2025000000035;SP0000037;2025-01-21;Mustafa Kaya;64907900320;Hatay;566,67;113,33;680,00;20:113.33;Yalnız altı yüz seksen lira
+SNT2025000000036;SP0000039;2025-01-22;Gizem Taş;99997043022;Isparta;1775,49;334,41;2109,90;1:1.09|20:333.32;Yalnız iki bin yüz dokuz lira doksan kuruş
+SNT2025000000037;SP0000040;2025-01-22;Tayfun Kurt;75605937440;Ağrı;954,45;95,45;1049,90;10:95.45;Yalnız bin kırk dokuz lira doksan kuruş
+SNT2025000000038;SP0000041;2025-01-22;Zerrin Özdemir;27703347980;Amasya;2541,58;508,32;3049,90;20:508.32;Yalnız üç bin kırk dokuz lira doksan kuruş
+SNT2025000000039;SP0000042;2025-01-22;İrem Çetin;41721961720;Bursa;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000040;SP0000043;2025-01-22;Cansu Sarıkaya;77632595464;Nevşehir;1058,24;211,65;1269,89;20:211.65;Yalnız bin iki yüz altmış dokuz lira seksen dokuz kuruş
+SNT2025000000041;SP0000044;2025-01-23;Zekiye Durmuş;49653580224;Malatya;2791,66;558,33;3349,99;20:558.33;Yalnız üç bin üç yüz kırk dokuz lira doksan dokuz kuruş
+SNT2025000000042;SP0000045;2025-01-23;Turgut Demirel;76904347954;Balıkesir;1846,89;203,01;2049,90;10:166.36|20:36.65;Yalnız iki bin kırk dokuz lira doksan kuruş
+SNT2025000000043;SP0000046;2025-01-24;Miraç Mert;88704969854;Kırklareli;2363,62;236,36;2599,98;10:236.36;Yalnız iki bin beş yüz doksan dokuz lira doksan sekiz kuruş
+SNT2025000000044;SP0000048;2025-01-24;Sinan Uysal;39059648734;Karabük;2058,33;411,67;2470,00;20:411.67;Yalnız iki bin dört yüz yetmiş lira
+SNT2025000000045;SP0000049;2025-01-25;Turgut Demirel;76904347954;Balıkesir;2777,28;518,60;3295,88;1:1.94|20:516.66;Yalnız üç bin iki yüz doksan beş lira seksen sekiz kuruş
+SNT2025000000046;SP0000051;2025-01-26;Ezgi Acar;18930900482;Çankırı;4294,86;420,94;4715,80;1:0.95|10:419.99;Yalnız dört bin yedi yüz on beş lira seksen kuruş
+SNT2025000000047;SP0000052;2025-01-27;Hüseyin Aslan;43099106574;Erzurum;1181,81;118,18;1299,99;10:118.18;Yalnız bin iki yüz doksan dokuz lira doksan dokuz kuruş
+SNT2025000000048;SP0000053;2025-01-28;Hüseyin Aslan;43099106574;Erzurum;10231,22;1018,67;11249,89;1:0.50|10:1018.17;Yalnız on bir bin iki yüz kırk dokuz lira seksen dokuz kuruş
+SNT2025000000049;SP0000054;2025-01-29;Gamze Gümüş;52265215132;Çankırı;881,09;8,81;889,90;1:8.81;Yalnız sekiz yüz seksen dokuz lira doksan kuruş
+SNT2025000000050;SP0000055;2025-01-30;İrem Çetin;41721961720;Bursa;1666,58;333,32;1999,90;20:333.32;Yalnız bin dokuz yüz doksan dokuz lira doksan kuruş
+SNT2025000000051;SP0000056;2025-01-30;Mustafa Kaya;64907900320;Hatay;6455,97;853,92;7309,89;10:437.27|20:416.65;Yalnız yedi bin üç yüz dokuz lira seksen dokuz kuruş
+SNT2025000000052;SP0000057;2025-01-31;Okan Karataş;83291084072;Muğla;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000053;SP0000058;2025-01-31;Tuncay Tekin;80454952018;Niğde;224,83;44,97;269,80;20:44.97;Yalnız iki yüz altmış dokuz lira seksen kuruş
+SNT2025000000054;SP0000059;2025-01-31;Ezgi Acar;18930900482;Çankırı;1761,53;334,27;2095,80;1:0.95|20:333.32;Yalnız iki bin doksan beş lira seksen kuruş
+SNT2025000000055;SP0000060;2025-01-31;Gizem Taş;99997043022;Isparta;2958,24;591,65;3549,89;20:591.65;Yalnız üç bin beş yüz kırk dokuz lira seksen dokuz kuruş
+SNT2025000000056;SP0000061;2025-02-01;Feride Parlak;91026139898;Mardin;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000057;SP0000062;2025-02-01;İrem Çetin;41721961720;Bursa;11843,42;1212,46;13055,88;1:0.95|10:1138.18|20:73.33;Yalnız on üç bin elli beş lira seksen sekiz kuruş
+SNT2025000000058;SP0000063;2025-02-04;Mustafa Kaya;64907900320;Hatay;4658,32;931,66;5589,98;20:931.66;Yalnız beş bin beş yüz seksen dokuz lira doksan sekiz kuruş
+SNT2025000000059;SP0000064;2025-02-05;Mustafa Kaya;64907900320;Hatay;843,40;106,60;950,00;1:3.27|20:103.33;Yalnız dokuz yüz elli lira
+SNT2025000000060;SP0000065;2025-02-06;Turgut Demirel;76904347954;Balıkesir;1908,33;381,67;2290,00;20:381.67;Yalnız iki bin iki yüz doksan lira
+SNT2025000000061;SP0000066;2025-02-07;Nuri Demirci;76191949848;Kahramanmaraş;861,10;98,80;959,90;1:1.09|10:52.73|20:44.98;Yalnız dokuz yüz elli dokuz lira doksan kuruş
+SNT2025000000062;SP0000067;2025-02-07;İrem Çetin;41721961720;Bursa;1875,48;344,41;2219,89;1:1.09|10:10.00|20:333.32;Yalnız iki bin iki yüz on dokuz lira seksen dokuz kuruş
+SNT2025000000063;SP0000068;2025-02-07;Zekiye Durmuş;49653580224;Malatya;4294,86;420,94;4715,80;1:0.95|10:419.99;Yalnız dört bin yedi yüz on beş lira seksen kuruş
+SNT2025000000064;SP0000069;2025-02-09;Turgut Demirel;76904347954;Balıkesir;1858,25;371,65;2229,90;20:371.65;Yalnız iki bin iki yüz yirmi dokuz lira doksan kuruş
+SNT2025000000065;SP0000070;2025-02-09;İrem Çetin;41721961720;Bursa;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000066;SP0000071;2025-02-09;Zerrin Özcan;10654307400;Tunceli;1856,48;335,22;2191,70;1:1.90|20:333.32;Yalnız iki bin yüz doksan bir lira yetmiş kuruş
+SNT2025000000067;SP0000072;2025-02-10;Seda Taşkın;40099068062;Edirne;495,94;43,95;539,89;1:1.09|10:34.54|20:8.32;Yalnız beş yüz otuz dokuz lira seksen dokuz kuruş
+SNT2025000000068;SP0000073;2025-02-10;Turgut Demirel;76904347954;Balıkesir;5481,82;548,18;6030,00;10:548.18;Yalnız altı bin otuz lira
+SNT2025000000069;SP0000074;2025-02-10;Gizem Taş;99997043022;Isparta;5918,08;591,81;6509,89;10:591.81;Yalnız altı bin beş yüz dokuz lira seksen dokuz kuruş
+SNT2025000000070;SP0000075;2025-02-11;Hilal Yalçın;42779181122;Mersin;1188,11;11,88;1199,99;1:11.88;Yalnız bin yüz doksan dokuz lira doksan dokuz kuruş
+SNT2025000000071;SP0000076;2025-02-13;Sefa Kılıç;68407965308;Adıyaman;11381,80;1138,18;12519,98;10:1138.18;Yalnız on iki bin beş yüz on dokuz lira doksan sekiz kuruş
+SNT2025000000072;SP0000077;2025-02-14;İrem Çetin;41721961720;Bursa;224,83;44,97;269,80;20:44.97;Yalnız iki yüz altmış dokuz lira seksen kuruş
+SNT2025000000073;SP0000079;2025-02-15;Gizem Taş;99997043022;Isparta;278,00;10,69;288,69;1:2.37|20:8.32;Yalnız iki yüz seksen sekiz lira altmış dokuz kuruş
+SNT2025000000074;SP0000080;2025-02-15;Berna Elmas;87483948326;Burdur;96,04;8,86;104,90;1:0.54|20:8.32;Yalnız yüz dört lira doksan kuruş
+SNT2025000000075;SP0000081;2025-02-15;Okan Karataş;83291084072;Muğla;2225,00;445,00;2670,00;20:445.00;Yalnız iki bin altı yüz yetmiş lira
+SNT2025000000076;SP0000082;2025-02-16;Gizem Taş;99997043022;Isparta;6772,48;1177,22;7949,70;10:177.27|20:999.95;Yalnız yedi bin dokuz yüz kırk dokuz lira yetmiş kuruş
+SNT2025000000077;SP0000083;2025-02-16;Hilal Yalçın;42779181122;Mersin;249,50;10,40;259,90;1:2.08|20:8.32;Yalnız iki yüz elli dokuz lira doksan kuruş
+SNT2025000000078;SP0000084;2025-02-17;Turgut Demirel;76904347954;Balıkesir;1530,59;15,31;1545,90;1:15.31;Yalnız bin beş yüz kırk beş lira doksan kuruş
+SNT2025000000079;SP0000085;2025-02-17;İrem Çetin;41721961720;Bursa;1666,58;333,32;1999,90;20:333.32;Yalnız bin dokuz yüz doksan dokuz lira doksan kuruş
+SNT2025000000080;SP0000086;2025-02-19;Berna Elmas;87483948326;Burdur;408,08;81,62;489,70;20:81.62;Yalnız dört yüz seksen dokuz lira yetmiş kuruş
+SNT2025000000081;SP0000087;2025-02-19;Esma Temiz;76326477406;Denizli;5863,27;1096,32;6959,59;10:76.34|20:1019.98;Yalnız altı bin dokuz yüz elli dokuz lira elli dokuz kuruş
+SNT2025000000082;SP0000088;2025-02-19;Sefa Kılıç;68407965308;Adıyaman;720,53;105,37;825,90;1:2.04|20:103.33;Yalnız sekiz yüz yirmi beş lira doksan kuruş
+SNT2025000000083;SP0000089;2025-02-20;Buse Türk;20125737490;Nevşehir;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000084;SP0000090;2025-02-20;Hüseyin Aslan;43099106574;Erzurum;1325,00;265,00;1590,00;20:265.00;Yalnız bin beş yüz doksan lira
+SNT2025000000085;SP0000091;2025-02-21;Zekiye Durmuş;49653580224;Malatya;120,58;16,22;136,80;10:7.90|20:8.32;Yalnız yüz otuz altı lira seksen kuruş
+SNT2025000000086;SP0000092;2025-02-22;Turgut Demirel;76904347954;Balıkesir;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000087;SP0000093;2025-02-23;Gürkan Özyurt;64400726144;Adıyaman;15469,69;1610,31;17080,00;10:1483.64|20:126.67;Yalnız on yedi bin seksen lira
+SNT2025000000088;SP0000094;2025-02-23;Ezgi Acar;18930900482;Çankırı;4894,77;480,93;5375,70;1:0.95|10:479.98;Yalnız beş bin üç yüz yetmiş beş lira yetmiş kuruş
+SNT2025000000089;SP0000095;2025-02-24;Buse Türk;20125737490;Nevşehir;392,15;57,74;449,89;1:1.09|20:56.65;Yalnız dört yüz kırk dokuz lira seksen dokuz kuruş
+SNT2025000000090;SP0000096;2025-02-26;Turgut Demirel;76904347954;Balıkesir;1666,58;333,32;1999,90;20:333.32;Yalnız bin dokuz yüz doksan dokuz lira doksan kuruş
+SNT2025000000091;SP0000097;2025-02-26;Buse Türk;20125737490;Nevşehir;283,24;56,65;339,89;20:56.65;Yalnız üç yüz otuz dokuz lira seksen dokuz kuruş
+SNT2025000000092;SP0000098;2025-02-26;Mustafa Kaya;64907900320;Hatay;4199,91;419,99;4619,90;10:419.99;Yalnız dört bin altı yüz on dokuz lira doksan kuruş
+SNT2025000000093;SP0000099;2025-02-27;Veysel Tok;91117685020;Aydın;96,04;8,86;104,90;1:0.54|20:8.32;Yalnız yüz dört lira doksan kuruş
+SNT2025000000094;SP0000100;2025-02-27;Sinan Uysal;39059648734;Karabük;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000095;SP0000101;2025-02-28;Gülsüm Kılınç;57937948608;Antalya;7702,27;817,72;8519,99;10:722.72|20:95.00;Yalnız sekiz bin beş yüz on dokuz lira doksan dokuz kuruş
+SNT2025000000096;SP0000102;2025-03-02;Gamze Gümüş;52265215132;Çankırı;8719,69;885,91;9605,60;1:0.95|10:839.98|20:44.98;Yalnız dokuz bin altı yüz beş lira altmış kuruş
+SNT2025000000097;SP0000103;2025-03-02;Mustafa Kaya;64907900320;Hatay;1666,58;333,32;1999,90;20:333.32;Yalnız bin dokuz yüz doksan dokuz lira doksan kuruş
+SNT2025000000098;SP0000104;2025-03-04;Miraç Mert;88704969854;Kırklareli;1297,75;92,14;1389,89;1:8.81|20:83.33;Yalnız bin üç yüz seksen dokuz lira seksen dokuz kuruş
+SNT2025000000099;SP0000105;2025-03-04;Gamze Gümüş;52265215132;Çankırı;15751,52;3096,18;18847,70;1:2.85|20:3093.33;Yalnız on sekiz bin sekiz yüz kırk yedi lira yetmiş kuruş
+SNT2025000000100;SP0000106;2025-03-04;Seda Taşkın;40099068062;Edirne;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000101;SP0000107;2025-03-04;Mustafa Kaya;64907900320;Hatay;424,83;84,97;509,80;20:84.97;Yalnız beş yüz dokuz lira seksen kuruş
+SNT2025000000102;SP0000108;2025-03-07;Gizem Taş;99997043022;Isparta;378,19;57,60;435,79;1:0.95|20:56.65;Yalnız dört yüz otuz beş lira yetmiş dokuz kuruş
+SNT2025000000103;SP0000109;2025-03-08;Coşkun Efe;79683910104;Adana;2997,64;522,26;3519,90;10:77.26|20:445.00;Yalnız üç bin beş yüz on dokuz lira doksan kuruş
+SNT2025000000104;SP0000110;2025-03-08;Hilal Yalçın;42779181122;Mersin;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000105;SP0000111;2025-03-08;Zekiye Durmuş;49653580224;Malatya;1350,00;270,00;1620,00;20:270.00;Yalnız bin altı yüz yirmi lira
+SNT2025000000106;SP0000112;2025-03-09;Şerife Yılmaz;54476016508;Bartın;1666,58;333,32;1999,90;20:333.32;Yalnız bin dokuz yüz doksan dokuz lira doksan kuruş
+SNT2025000000107;SP0000113;2025-03-11;Bülent Turgut;81469244020;Kars;279,20;10,70;289,90;1:2.38|20:8.32;Yalnız iki yüz seksen dokuz lira doksan kuruş
+SNT2025000000108;SP0000114;2025-03-13;Cansu Sarıkaya;77632595464;Nevşehir;150,49;9,41;159,90;1:1.09|20:8.32;Yalnız yüz elli dokuz lira doksan kuruş
+SNT2025000000109;SP0000115;2025-03-13;Esma Temiz;76326477406;Denizli;338,61;11,29;349,90;1:2.97|20:8.32;Yalnız üç yüz kırk dokuz lira doksan kuruş
+SNT2025000000110;SP0000116;2025-03-14;Mustafa Kaya;64907900320;Hatay;683,34;136,66;820,00;20:136.66;Yalnız sekiz yüz yirmi lira
+SNT2025000000111;SP0000117;2025-03-14;Veysel Sağlam;56037766662;Ankara;3180,29;359,69;3539,98;10:276.36|20:83.33;Yalnız üç bin beş yüz otuz dokuz lira doksan sekiz kuruş
+SNT2025000000112;SP0000118;2025-03-14;Veysel Tok;91117685020;Aydın;966,65;193,33;1159,98;20:193.33;Yalnız bin yüz elli dokuz lira doksan sekiz kuruş
+SNT2025000000113;SP0000119;2025-03-15;Turgut Demirel;76904347954;Balıkesir;88,10;8,79;96,89;1:0.47|20:8.32;Yalnız doksan altı lira seksen dokuz kuruş
+SNT2025000000114;SP0000120;2025-03-15;Gizem Taş;99997043022;Isparta;266,50;53,30;319,80;20:53.30;Yalnız üç yüz on dokuz lira seksen kuruş
+SNT2025000000115;SP0000122;2025-03-17;Emel Yazıcı;78882967230;Adana;266,50;53,30;319,80;20:53.30;Yalnız üç yüz on dokuz lira seksen kuruş
+SNT2025000000116;SP0000123;2025-03-17;Veysel Sağlam;56037766662;Ankara;278,00;10,69;288,69;1:2.37|20:8.32;Yalnız iki yüz seksen sekiz lira altmış dokuz kuruş
+SNT2025000000117;SP0000124;2025-03-19;Hüseyin Aslan;43099106574;Erzurum;1027,26;102,73;1129,99;10:102.73;Yalnız bin yüz yirmi dokuz lira doksan dokuz kuruş
+SNT2025000000118;SP0000125;2025-03-22;Zerrin Özdemir;27703347980;Amasya;1472,64;147,26;1619,90;10:147.26;Yalnız bin altı yüz on dokuz lira doksan kuruş
+SNT2025000000119;SP0000126;2025-03-22;Gülsüm Karaaslan;89717736884;Eskişehir;10312,17;2023,71;12335,88;1:2.04|20:2021.67;Yalnız on iki bin üç yüz otuz beş lira seksen sekiz kuruş
+SNT2025000000120;SP0000127;2025-03-22;Turgut Demirel;76904347954;Balıkesir;456,40;55,20;511,60;1:1.90|20:53.30;Yalnız beş yüz on bir lira altmış kuruş
+SNT2025000000121;SP0000128;2025-03-25;Sami Keskin;77184902536;Bayburt;3799,90;379,99;4179,89;10:379.99;Yalnız dört bin yüz yetmiş dokuz lira seksen dokuz kuruş
+SNT2025000000122;SP0000129;2025-03-26;Seda Taşkın;40099068062;Edirne;208,25;41,65;249,90;20:41.65;Yalnız iki yüz kırk dokuz lira doksan kuruş
+SNT2025000000123;SP0000130;2025-03-28;Saadet Demir;26603917330;Mardin;4450,00;890,00;5340,00;20:890.00;Yalnız beş bin üç yüz kırk lira
+SNT2025000000124;SP0000131;2025-03-30;İrem Çetin;41721961720;Bursa;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000125;SP0000132;2025-03-30;Buse Türk;20125737490;Nevşehir;1386,14;13,86;1400,00;1:13.86;Yalnız bin dört yüz lira
+SNT2025000000126;SP0000133;2025-03-31;Leyla Uçar;36640126176;Kayseri;642,40;97,58;739,98;10:30.91|20:66.67;Yalnız yedi yüz otuz dokuz lira doksan sekiz kuruş
+SNT2025000000127;SP0000134;2025-03-31;Esra Ateş;89019300134;Samsun;1761,53;334,27;2095,80;1:0.95|20:333.32;Yalnız iki bin doksan beş lira seksen kuruş
+SNT2025000000128;SP0000135;2025-03-31;Turgut Demirel;76904347954;Balıkesir;527,27;52,73;580,00;10:52.73;Yalnız beş yüz seksen lira
+SNT2025000000129;SP0000136;2025-03-31;Hüseyin Aslan;43099106574;Erzurum;769,95;135,95;905,90;1:0.95|20:135.00;Yalnız dokuz yüz beş lira doksan kuruş
+SNT2025000000130;SP0000137;2025-04-01;İrem Çetin;41721961720;Bursa;224,83;44,97;269,80;20:44.97;Yalnız iki yüz altmış dokuz lira seksen kuruş
+SNT2025000000131;SP0000138;2025-04-03;Hüseyin Aslan;43099106574;Erzurum;5016,66;1003,33;6019,99;20:1003.33;Yalnız altı bin on dokuz lira doksan dokuz kuruş
+SNT2025000000132;SP0000139;2025-04-03;Gülsüm Karaaslan;89717736884;Eskişehir;4881,73;488,17;5369,90;10:488.17;Yalnız beş bin üç yüz altmış dokuz lira doksan kuruş
+SNT2025000000133;SP0000140;2025-04-04;Sinan Uysal;39059648734;Karabük;378,19;57,60;435,79;1:0.95|20:56.65;Yalnız dört yüz otuz beş lira yetmiş dokuz kuruş
+SNT2025000000134;SP0000141;2025-04-04;Gizem Taş;99997043022;Isparta;544,78;90,92;635,70;1:0.95|20:89.97;Yalnız altı yüz otuz beş lira yetmiş kuruş
+SNT2025000000135;SP0000142;2025-04-05;Turgut Demirel;76904347954;Balıkesir;8283,25;846,65;9129,90;10:810.00|20:36.65;Yalnız dokuz bin yüz yirmi dokuz lira doksan kuruş
+SNT2025000000136;SP0000143;2025-04-05;Mustafa Kaya;64907900320;Hatay;3432,18;667,62;4099,80;1:0.99|20:666.63;Yalnız dört bin doksan dokuz lira seksen kuruş
+SNT2025000000137;SP0000144;2025-04-06;Leyla Uçar;36640126176;Kayseri;1666,58;333,32;1999,90;20:333.32;Yalnız bin dokuz yüz doksan dokuz lira doksan kuruş
+SNT2025000000138;SP0000145;2025-04-06;Turgut Demirel;76904347954;Balıkesir;224,83;44,97;269,80;20:44.97;Yalnız iki yüz altmış dokuz lira seksen kuruş
+SNT2025000000139;SP0000146;2025-04-06;İrem Çetin;41721961720;Bursa;120,58;16,22;136,80;10:7.90|20:8.32;Yalnız yüz otuz altı lira seksen kuruş
+SNT2025000000140;SP0000147;2025-04-06;Rabia Demir;47842889998;Kırıkkale;1666,58;333,32;1999,90;20:333.32;Yalnız bin dokuz yüz doksan dokuz lira doksan kuruş
+SNT2025000000141;SP0000148;2025-04-06;Ezgi Acar;18930900482;Çankırı;150,49;9,41;159,90;1:1.09|20:8.32;Yalnız yüz elli dokuz lira doksan kuruş
+SNT2025000000142;SP0000149;2025-04-07;Gülsüm Karaaslan;89717736884;Eskişehir;4403,77;422,03;4825,80;1:2.04|10:419.99;Yalnız dört bin sekiz yüz yirmi beş lira seksen kuruş
+SNT2025000000143;SP0000150;2025-04-07;Turgut Demirel;76904347954;Balıkesir;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000144;SP0000151;2025-04-08;Bülent Turgut;81469244020;Kars;3938,13;607,77;4545,90;1:0.95|10:161.82|20:445.00;Yalnız dört bin beş yüz kırk beş lira doksan kuruş
+SNT2025000000145;SP0000152;2025-04-09;Gizem Taş;99997043022;Isparta;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000146;SP0000153;2025-04-10;Arda Özkan;90114220548;Kahramanmaraş;278,00;10,69;288,69;1:2.37|20:8.32;Yalnız iki yüz seksen sekiz lira altmış dokuz kuruş
+SNT2025000000147;SP0000154;2025-04-10;Hüseyin Aslan;43099106574;Erzurum;1363,64;136,36;1500,00;10:136.36;Yalnız bin beş yüz lira
+SNT2025000000148;SP0000155;2025-04-11;Hüseyin Aslan;43099106574;Erzurum;2624,99;525,00;3149,99;20:525.00;Yalnız üç bin yüz kırk dokuz lira doksan dokuz kuruş
+SNT2025000000149;SP0000156;2025-04-11;Hüseyin Aslan;43099106574;Erzurum;7167,68;708,22;7875,90;1:0.95|10:707.27;Yalnız yedi bin sekiz yüz yetmiş beş lira doksan kuruş
+SNT2025000000150;SP0000157;2025-04-11;Turgut Demirel;76904347954;Balıkesir;150,49;9,41;159,90;1:1.09|20:8.32;Yalnız yüz elli dokuz lira doksan kuruş
+SNT2025000000151;SP0000158;2025-04-12;Sami Keskin;77184902536;Bayburt;199,99;9,91;209,90;1:1.59|20:8.32;Yalnız iki yüz dokuz lira doksan kuruş
+SNT2025000000152;SP0000159;2025-04-13;Hüseyin Aslan;43099106574;Erzurum;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000153;SP0000160;2025-04-13;Hilal Yalçın;42779181122;Mersin;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000154;SP0000161;2025-04-14;Şerife Yılmaz;54476016508;Bartın;388,20;46,60;434,80;1:1.63|20:44.97;Yalnız dört yüz otuz dört lira seksen kuruş
+SNT2025000000155;SP0000162;2025-04-15;Hilal Yalçın;42779181122;Mersin;245,44;10,36;255,80;1:2.04|20:8.32;Yalnız iki yüz elli beş lira seksen kuruş
+SNT2025000000156;SP0000163;2025-04-15;Emel Yazıcı;78882967230;Adana;215,53;17,17;232,70;1:0.95|10:7.90|20:8.32;Yalnız iki yüz otuz iki lira yetmiş kuruş
+SNT2025000000157;SP0000164;2025-04-15;Arda Özkan;90114220548;Kahramanmaraş;5430,40;455,20;5885,60;1:9.76|10:445.44;Yalnız beş bin sekiz yüz seksen beş lira altmış kuruş
+SNT2025000000158;SP0000165;2025-04-15;Zerrin Özdemir;27703347980;Amasya;375,41;54,39;429,80;1:1.09|20:53.30;Yalnız dört yüz yirmi dokuz lira seksen kuruş
+SNT2025000000159;SP0000166;2025-04-15;Turgut Demirel;76904347954;Balıkesir;644,95;110,95;755,90;1:0.95|20:110.00;Yalnız yedi yüz elli beş lira doksan kuruş
+SNT2025000000160;SP0000167;2025-04-16;Gizem Taş;99997043022;Isparta;2793,84;446,05;3239,89;10:112.73|20:333.32;Yalnız üç bin iki yüz otuz dokuz lira seksen dokuz kuruş
+SNT2025000000161;SP0000168;2025-04-17;Zerrin Özdemir;27703347980;Amasya;18899,83;3769,96;22669,79;10:10.00|20:3759.96;Yalnız yirmi iki bin altı yüz altmış dokuz lira yetmiş dokuz kuruş
+SNT2025000000162;SP0000170;2025-04-18;Ezgi Acar;18930900482;Çankırı;2238,21;280,36;2518,57;10:167.27|20:113.09;Yalnız iki bin beş yüz on sekiz lira elli yedi kuruş
+SNT2025000000163;SP0000171;2025-04-18;Esra Ateş;89019300134;Samsun;600,00;60,00;660,00;10:60.00;Yalnız altı yüz altmış lira
+SNT2025000000164;SP0000172;2025-04-19;Hüseyin Aslan;43099106574;Erzurum;2117,57;368,92;2486,49;1:1.06|10:34.54|20:333.32;Yalnız iki bin dört yüz seksen altı lira kırk dokuz kuruş
+SNT2025000000165;SP0000173;2025-04-19;İrem Çetin;41721961720;Bursa;1386,14;13,86;1400,00;1:13.86;Yalnız bin dört yüz lira
+SNT2025000000166;SP0000174;2025-04-19;Gülsüm Karaaslan;89717736884;Eskişehir;2791,66;558,33;3349,99;20:558.33;Yalnız üç bin üç yüz kırk dokuz lira doksan dokuz kuruş
+SNT2025000000167;SP0000175;2025-04-21;İsmail Ünal;95366696820;Adana;150,49;9,41;159,90;1:1.09|20:8.32;Yalnız yüz elli dokuz lira doksan kuruş
+SNT2025000000168;SP0000176;2025-04-21;Gizem Taş;99997043022;Isparta;1875,48;344,41;2219,89;1:1.09|10:10.00|20:333.32;Yalnız iki bin iki yüz on dokuz lira seksen dokuz kuruş
+SNT2025000000169;SP0000177;2025-04-21;Mustafa Kaya;64907900320;Hatay;449,83;89,97;539,80;20:89.97;Yalnız beş yüz otuz dokuz lira seksen kuruş
+SNT2025000000170;SP0000178;2025-04-22;Koray Akgül;82901086970;Samsun;5019,84;565,93;5585,77;1:0.95|10:419.99|20:144.99;Yalnız beş bin beş yüz seksen beş lira yetmiş yedi kuruş
+SNT2025000000171;SP0000179;2025-04-23;İrem Çetin;41721961720;Bursa;266,50;53,30;319,80;20:53.30;Yalnız üç yüz on dokuz lira seksen kuruş
+SNT2025000000172;SP0000180;2025-04-24;Arda Özkan;90114220548;Kahramanmaraş;373,15;38,55;411,70;1:1.90|20:36.65;Yalnız dört yüz on bir lira yetmiş kuruş
+SNT2025000000173;SP0000181;2025-04-24;Gülsüm Karaaslan;89717736884;Eskişehir;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000174;SP0000182;2025-04-24;Koray Akgül;82901086970;Samsun;1666,58;333,32;1999,90;20:333.32;Yalnız bin dokuz yüz doksan dokuz lira doksan kuruş
+SNT2025000000175;SP0000183;2025-04-25;Zekiye Durmuş;49653580224;Malatya;781,74;88,16;869,90;10:68.18|20:19.98;Yalnız sekiz yüz altmış dokuz lira doksan kuruş
+SNT2025000000176;SP0000184;2025-04-26;Saadet Demir;26603917330;Mardin;328,11;47,59;375,70;1:0.95|20:46.64;Yalnız üç yüz yetmiş beş lira yetmiş kuruş
+SNT2025000000177;SP0000185;2025-04-27;Veysel Sağlam;56037766662;Ankara;1666,58;333,32;1999,90;20:333.32;Yalnız bin dokuz yüz doksan dokuz lira doksan kuruş
+SNT2025000000178;SP0000186;2025-04-27;Mustafa Kaya;64907900320;Hatay;231,48;10,22;241,70;1:1.90|20:8.32;Yalnız iki yüz kırk bir lira yetmiş kuruş
+SNT2025000000179;SP0000187;2025-04-28;Melis Başaran;55377828498;Malatya;566,67;113,33;680,00;20:113.33;Yalnız altı yüz seksen lira
+SNT2025000000180;SP0000188;2025-04-28;Rabia Demir;47842889998;Kırıkkale;4583,16;496,64;5079,80;10:419.99|20:76.65;Yalnız beş bin yetmiş dokuz lira seksen kuruş
+SNT2025000000181;SP0000189;2025-04-28;Cansu Sarıkaya;77632595464;Nevşehir;340,39;11,31;351,70;1:2.99|20:8.32;Yalnız üç yüz elli bir lira yetmiş kuruş
+SNT2025000000182;SP0000190;2025-04-30;Büşra Vural;13529721998;Karaman;91,08;8,82;99,90;1:0.50|20:8.32;Yalnız doksan dokuz lira doksan kuruş
+SNT2025000000183;SP0000191;2025-05-01;Mustafa Kaya;64907900320;Hatay;4972,55;497,25;5469,80;10:497.25;Yalnız beş bin dört yüz altmış dokuz lira seksen kuruş
+SNT2025000000184;SP0000192;2025-05-01;Hilal Yalçın;42779181122;Mersin;91,08;8,82;99,90;1:0.50|20:8.32;Yalnız doksan dokuz lira doksan kuruş
+SNT2025000000185;SP0000193;2025-05-01;Hüseyin Aslan;43099106574;Erzurum;4308,82;421,08;4729,90;1:1.09|10:419.99;Yalnız dört bin yedi yüz yirmi dokuz lira doksan kuruş
+SNT2025000000186;SP0000194;2025-05-01;Hüseyin Aslan;43099106574;Erzurum;4199,91;419,99;4619,90;10:419.99;Yalnız dört bin altı yüz on dokuz lira doksan kuruş
+SNT2025000000187;SP0000195;2025-05-02;Zekiye Durmuş;49653580224;Malatya;4199,91;419,99;4619,90;10:419.99;Yalnız dört bin altı yüz on dokuz lira doksan kuruş
+SNT2025000000188;SP0000196;2025-05-02;Gizem Taş;99997043022;Isparta;4866,58;553,32;5419,90;10:419.99|20:133.33;Yalnız beş bin dört yüz on dokuz lira doksan kuruş
+SNT2025000000189;SP0000197;2025-05-02;Gamze Gümüş;52265215132;Çankırı;4406,05;813,93;5219,98;10:67.27|20:746.66;Yalnız beş bin iki yüz on dokuz lira doksan sekiz kuruş
+SNT2025000000190;SP0000198;2025-05-04;Bülent Turgut;81469244020;Kars;150,49;9,41;159,90;1:1.09|20:8.32;Yalnız yüz elli dokuz lira doksan kuruş
+SNT2025000000191;SP0000199;2025-05-04;Gülsüm Karaaslan;89717736884;Eskişehir;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000192;SP0000200;2025-05-04;Seda Taşkın;40099068062;Edirne;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000193;SP0000201;2025-05-05;Buse Türk;20125737490;Nevşehir;1666,58;333,32;1999,90;20:333.32;Yalnız bin dokuz yüz doksan dokuz lira doksan kuruş
+SNT2025000000194;SP0000202;2025-05-08;Miraç Mert;88704969854;Kırklareli;975,58;174,42;1150,00;1:1.09|20:173.33;Yalnız bin yüz elli lira
+SNT2025000000195;SP0000203;2025-05-08;Tuncay Tekin;80454952018;Niğde;224,83;44,97;269,80;20:44.97;Yalnız iki yüz altmış dokuz lira seksen kuruş
+SNT2025000000196;SP0000204;2025-05-08;Zerrin Özdemir;27703347980;Amasya;2881,19;28,81;2910,00;1:28.81;Yalnız iki bin dokuz yüz on lira
+SNT2025000000197;SP0000205;2025-05-09;İrem Çetin;41721961720;Bursa;1775,49;334,41;2109,90;1:1.09|20:333.32;Yalnız iki bin yüz dokuz lira doksan kuruş
+SNT2025000000198;SP0000206;2025-05-09;Aslı Demir;78774927304;Mersin;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000199;SP0000207;2025-05-09;Gülsüm Karaaslan;89717736884;Eskişehir;88,10;8,79;96,89;1:0.47|20:8.32;Yalnız doksan altı lira seksen dokuz kuruş
+SNT2025000000200;SP0000208;2025-05-09;Aslı Demir;78774927304;Mersin;88,10;8,79;96,89;1:0.47|20:8.32;Yalnız doksan altı lira seksen dokuz kuruş
+SNT2025000000201;SP0000209;2025-05-09;Hüseyin Aslan;43099106574;Erzurum;17876,77;1779,13;19655,90;1:0.95|10:1778.18;Yalnız on dokuz bin altı yüz elli beş lira doksan kuruş
+SNT2025000000202;SP0000210;2025-05-10;Turgut Demirel;76904347954;Balıkesir;150,49;9,41;159,90;1:1.09|20:8.32;Yalnız yüz elli dokuz lira doksan kuruş
+SNT2025000000203;SP0000211;2025-05-11;Hüseyin Aslan;43099106574;Erzurum;1666,58;333,32;1999,90;20:333.32;Yalnız bin dokuz yüz doksan dokuz lira doksan kuruş
+SNT2025000000204;SP0000212;2025-05-12;Nihat Aslan;41680032172;Trabzon;224,83;44,97;269,80;20:44.97;Yalnız iki yüz altmış dokuz lira seksen kuruş
+SNT2025000000205;SP0000213;2025-05-12;Turgut Demirel;76904347954;Balıkesir;11383,25;2276,65;13659,90;20:2276.65;Yalnız on üç bin altı yüz elli dokuz lira doksan kuruş
+SNT2025000000206;SP0000214;2025-05-12;Turgut Demirel;76904347954;Balıkesir;2225,00;445,00;2670,00;20:445.00;Yalnız iki bin altı yüz yetmiş lira
+SNT2025000000207;SP0000215;2025-05-13;Bülent Turgut;81469244020;Kars;1761,53;334,27;2095,80;1:0.95|20:333.32;Yalnız iki bin doksan beş lira seksen kuruş
+SNT2025000000208;SP0000216;2025-05-15;Sefa Kılıç;68407965308;Adıyaman;2274,50;445,50;2720,00;1:0.50|20:445.00;Yalnız iki bin yedi yüz yirmi lira
+SNT2025000000209;SP0000217;2025-05-16;Aslı Demir;78774927304;Mersin;6991,65;1398,33;8389,98;20:1398.33;Yalnız sekiz bin üç yüz seksen dokuz lira doksan sekiz kuruş
+SNT2025000000210;SP0000218;2025-05-17;Hilal Yalçın;42779181122;Mersin;2791,66;558,33;3349,99;20:558.33;Yalnız üç bin üç yüz kırk dokuz lira doksan dokuz kuruş
+SNT2025000000211;SP0000219;2025-05-18;Koray Akgül;82901086970;Samsun;468,10;39,50;507,60;1:2.85|20:36.65;Yalnız beş yüz yedi lira altmış kuruş
+SNT2025000000212;SP0000220;2025-05-18;Şerife Yılmaz;54476016508;Bartın;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000213;SP0000221;2025-05-18;İrem Çetin;41721961720;Bursa;4467,68;438,22;4905,90;1:0.95|10:437.27;Yalnız dört bin dokuz yüz beş lira doksan kuruş
+SNT2025000000214;SP0000222;2025-05-20;Miraç Mert;88704969854;Kırklareli;2886,61;559,28;3445,89;1:0.95|20:558.33;Yalnız üç bin dört yüz kırk beş lira seksen dokuz kuruş
+SNT2025000000215;SP0000223;2025-05-21;Aslı Demir;78774927304;Mersin;249,50;10,40;259,90;1:2.08|20:8.32;Yalnız iki yüz elli dokuz lira doksan kuruş
+SNT2025000000216;SP0000224;2025-05-22;Miraç Mert;88704969854;Kırklareli;7533,08;1086,62;8619,70;10:419.99|20:666.63;Yalnız sekiz bin altı yüz on dokuz lira yetmiş kuruş
+SNT2025000000217;SP0000226;2025-05-23;İsmail Ünal;95366696820;Adana;516,67;103,33;620,00;20:103.33;Yalnız altı yüz yirmi lira
+SNT2025000000218;SP0000227;2025-05-23;Tamer Aksoy;40594700368;Antalya;861,45;154,25;1015,70;1:0.95|20:153.30;Yalnız bin on beş lira yetmiş kuruş
+SNT2025000000219;SP0000228;2025-05-24;Seda Taşkın;40099068062;Edirne;392,15;57,74;449,89;1:1.09|20:56.65;Yalnız dört yüz kırk dokuz lira seksen dokuz kuruş
+SNT2025000000220;SP0000230;2025-05-25;Mustafa Kaya;64907900320;Hatay;5972,63;1017,25;6989,88;10:177.27|20:839.98;Yalnız altı bin dokuz yüz seksen dokuz lira seksen sekiz kuruş
+SNT2025000000221;SP0000231;2025-05-25;Bülent Turgut;81469244020;Kars;326,43;11,17;337,60;1:2.85|20:8.32;Yalnız üç yüz otuz yedi lira altmış kuruş
+SNT2025000000222;SP0000232;2025-05-26;Zerrin Özdemir;27703347980;Amasya;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000223;SP0000233;2025-05-26;Nuri Demirci;76191949848;Kahramanmaraş;449,83;89,97;539,80;20:89.97;Yalnız beş yüz otuz dokuz lira seksen kuruş
+SNT2025000000224;SP0000234;2025-05-26;Aslı Demir;78774927304;Mersin;3790,73;379,07;4169,80;10:379.07;Yalnız dört bin yüz altmış dokuz lira seksen kuruş
+SNT2025000000225;SP0000235;2025-05-28;Miraç Mert;88704969854;Kırklareli;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000226;SP0000236;2025-05-28;Ezgi Acar;18930900482;Çankırı;378,19;57,60;435,79;1:0.95|20:56.65;Yalnız dört yüz otuz beş lira yetmiş dokuz kuruş
+SNT2025000000227;SP0000237;2025-05-29;Ezgi Acar;18930900482;Çankırı;1666,58;333,32;1999,90;20:333.32;Yalnız bin dokuz yüz doksan dokuz lira doksan kuruş
+SNT2025000000228;SP0000238;2025-05-29;Aslı Demir;78774927304;Mersin;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000229;SP0000239;2025-05-30;Turgut Demirel;76904347954;Balıkesir;186,03;9,77;195,80;1:1.45|20:8.32;Yalnız yüz doksan beş lira seksen kuruş
+SNT2025000000230;SP0000240;2025-05-30;Melis Başaran;55377828498;Malatya;5111,61;1004,28;6115,89;1:0.95|20:1003.33;Yalnız altı bin yüz on beş lira seksen dokuz kuruş
+SNT2025000000231;SP0000241;2025-05-30;Zekiye Durmuş;49653580224;Malatya;2941,58;588,32;3529,90;20:588.32;Yalnız üç bin beş yüz yirmi dokuz lira doksan kuruş
+SNT2025000000232;SP0000242;2025-05-30;Sami Keskin;77184902536;Bayburt;120,58;16,22;136,80;10:7.90|20:8.32;Yalnız yüz otuz altı lira seksen kuruş
+SNT2025000000233;SP0000243;2025-05-31;Turgut Demirel;76904347954;Balıkesir;5810,43;599,37;6409,80;10:562.72|20:36.65;Yalnız altı bin dört yüz dokuz lira seksen kuruş
+SNT2025000000234;SP0000244;2025-05-31;Büşra Vural;13529721998;Karaman;424,83;84,97;509,80;20:84.97;Yalnız beş yüz dokuz lira seksen kuruş
+SNT2025000000235;SP0000245;2025-06-02;Mustafa Kaya;64907900320;Hatay;2271,52;445,47;2716,99;1:0.47|20:445.00;Yalnız iki bin yedi yüz on altı lira doksan dokuz kuruş
+SNT2025000000236;SP0000246;2025-06-02;Mustafa Kaya;64907900320;Hatay;7783,17;1556,63;9339,80;20:1556.63;Yalnız dokuz bin üç yüz otuz dokuz lira seksen kuruş
+SNT2025000000237;SP0000247;2025-06-03;Cansu Sarıkaya;77632595464;Nevşehir;374,91;74,99;449,90;20:74.99;Yalnız dört yüz kırk dokuz lira doksan kuruş
+SNT2025000000238;SP0000248;2025-06-04;Aslı Demir;78774927304;Mersin;1856,48;335,22;2191,70;1:1.90|20:333.32;Yalnız iki bin yüz doksan bir lira yetmiş kuruş
+SNT2025000000239;SP0000249;2025-06-04;Tuncay Tekin;80454952018;Niğde;485,86;40,04;525,90;1:0.95|10:39.09;Yalnız beş yüz yirmi beş lira doksan kuruş
+SNT2025000000240;SP0000250;2025-06-05;Bülent Turgut;81469244020;Kars;231,48;10,22;241,70;1:1.90|20:8.32;Yalnız iki yüz kırk bir lira yetmiş kuruş
+SNT2025000000241;SP0000251;2025-06-05;Sevim Sağlam;57773390326;Bursa;1432,95;232,83;1665,78;1:2.83|20:230.00;Yalnız bin altı yüz altmış beş lira yetmiş sekiz kuruş
+SNT2025000000242;SP0000252;2025-06-08;Aslı Demir;78774927304;Mersin;1666,58;333,32;1999,90;20:333.32;Yalnız bin dokuz yüz doksan dokuz lira doksan kuruş
+SNT2025000000243;SP0000253;2025-06-09;Sefa Kılıç;68407965308;Adıyaman;9218,00;921,80;10139,80;10:921.80;Yalnız on bin yüz otuz dokuz lira seksen kuruş
+SNT2025000000244;SP0000254;2025-06-09;Gülsüm Kılınç;57937948608;Antalya;3236,36;323,64;3560,00;10:323.64;Yalnız üç bin beş yüz altmış lira
+SNT2025000000245;SP0000255;2025-06-10;Tamer Aksoy;40594700368;Antalya;1100,00;220,00;1320,00;20:220.00;Yalnız bin üç yüz yirmi lira
+SNT2025000000246;SP0000256;2025-06-11;Gülsüm Karaaslan;89717736884;Eskişehir;1663,64;166,36;1830,00;10:166.36;Yalnız bin sekiz yüz otuz lira
+SNT2025000000247;SP0000258;2025-06-12;Mustafa Kaya;64907900320;Hatay;1761,53;334,27;2095,80;1:0.95|20:333.32;Yalnız iki bin doksan beş lira seksen kuruş
+SNT2025000000248;SP0000259;2025-06-13;Hilal Yalçın;42779181122;Mersin;283,24;56,65;339,89;20:56.65;Yalnız üç yüz otuz dokuz lira seksen dokuz kuruş
+SNT2025000000249;SP0000260;2025-06-14;Hilal Yalçın;42779181122;Mersin;296,03;33,77;329,80;10:25.45|20:8.32;Yalnız üç yüz yirmi dokuz lira seksen kuruş
+SNT2025000000250;SP0000261;2025-06-14;Miraç Mert;88704969854;Kırklareli;4208,02;758,47;4966,49;1:3.13|10:23.70|20:731.64;Yalnız dört bin dokuz yüz altmış altı lira kırk dokuz kuruş
+SNT2025000000251;SP0000262;2025-06-15;Mustafa Kaya;64907900320;Hatay;1666,58;333,32;1999,90;20:333.32;Yalnız bin dokuz yüz doksan dokuz lira doksan kuruş
+SNT2025000000252;SP0000263;2025-06-15;Saadet Demir;26603917330;Mardin;408,08;81,62;489,70;20:81.62;Yalnız dört yüz seksen dokuz lira yetmiş kuruş
+SNT2025000000253;SP0000264;2025-06-16;Ezgi Acar;18930900482;Çankırı;2933,13;559,75;3492,88;1:1.42|20:558.33;Yalnız üç bin dört yüz doksan iki lira seksen sekiz kuruş
+SNT2025000000254;SP0000265;2025-06-16;Raziye Sezer;35617118046;Bingöl;1099,83;219,97;1319,80;20:219.97;Yalnız bin üç yüz on dokuz lira seksen kuruş
+SNT2025000000255;SP0000266;2025-06-19;Şükran Şahin;41790934748;Gaziantep;2225,00;445,00;2670,00;20:445.00;Yalnız iki bin altı yüz yetmiş lira
+SNT2025000000256;SP0000267;2025-06-20;Hilal Yalçın;42779181122;Mersin;2886,61;559,28;3445,89;1:0.95|20:558.33;Yalnız üç bin dört yüz kırk beş lira seksen dokuz kuruş
+SNT2025000000257;SP0000268;2025-06-21;Turgut Demirel;76904347954;Balıkesir;1666,58;333,32;1999,90;20:333.32;Yalnız bin dokuz yüz doksan dokuz lira doksan kuruş
+SNT2025000000258;SP0000269;2025-06-21;Gülsüm Karaaslan;89717736884;Eskişehir;7628,03;1087,57;8715,60;1:0.95|10:419.99|20:666.63;Yalnız sekiz bin yedi yüz on beş lira altmış kuruş
+SNT2025000000259;SP0000270;2025-06-22;Seda Taşkın;40099068062;Edirne;1133,33;226,67;1360,00;20:226.67;Yalnız bin üç yüz altmış lira
+SNT2025000000260;SP0000271;2025-06-23;Mustafa Kaya;64907900320;Hatay;540,31;45,49;585,80;1:0.95|10:44.54;Yalnız beş yüz seksen beş lira seksen kuruş
+SNT2025000000261;SP0000272;2025-06-23;Aslı Demir;78774927304;Mersin;1666,58;333,32;1999,90;20:333.32;Yalnız bin dokuz yüz doksan dokuz lira doksan kuruş
+SNT2025000000262;SP0000273;2025-06-23;Seda Taşkın;40099068062;Edirne;1772,73;177,27;1950,00;10:177.27;Yalnız bin dokuz yüz elli lira
+SNT2025000000263;SP0000274;2025-06-25;Cansu Sarıkaya;77632595464;Nevşehir;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000264;SP0000275;2025-06-25;Şerife Yılmaz;54476016508;Bartın;5866,49;753,31;6619,80;10:419.99|20:333.32;Yalnız altı bin altı yüz on dokuz lira seksen kuruş
+SNT2025000000265;SP0000276;2025-06-26;Şükran Şahin;41790934748;Gaziantep;91,08;8,82;99,90;1:0.50|20:8.32;Yalnız doksan dokuz lira doksan kuruş
+SNT2025000000266;SP0000277;2025-06-26;Miraç Mert;88704969854;Kırklareli;7860,57;1108,11;8968,68;1:2.37|10:419.08|20:686.66;Yalnız sekiz bin dokuz yüz altmış sekiz lira altmış sekiz kuruş
+SNT2025000000267;SP0000278;2025-06-27;Miraç Mert;88704969854;Kırklareli;5863,55;586,35;6449,90;10:586.35;Yalnız altı bin dört yüz kırk dokuz lira doksan kuruş
+SNT2025000000268;SP0000279;2025-06-27;Veysel Tok;91117685020;Aydın;4199,91;419,99;4619,90;10:419.99;Yalnız dört bin altı yüz on dokuz lira doksan kuruş
+SNT2025000000269;SP0000280;2025-06-28;Buse Türk;20125737490;Nevşehir;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000270;SP0000281;2025-06-28;Miraç Mert;88704969854;Kırklareli;533,33;106,67;640,00;20:106.67;Yalnız altı yüz kırk lira
+SNT2025000000271;SP0000282;2025-06-28;Zekiye Durmuş;49653580224;Malatya;4773,34;376,65;5149,99;1:11.19|10:365.46;Yalnız beş bin yüz kırk dokuz lira doksan dokuz kuruş
+SNT2025000000272;SP0000283;2025-06-29;Mustafa Kaya;64907900320;Hatay;1663,64;166,36;1830,00;10:166.36;Yalnız bin sekiz yüz otuz lira
+SNT2025000000273;SP0000284;2025-06-29;Hilal Yalçın;42779181122;Mersin;8399,82;839,98;9239,80;10:839.98;Yalnız dokuz bin iki yüz otuz dokuz lira seksen kuruş
+SNT2025000000274;SP0000285;2025-06-29;Onur Meriç;24130926962;Sinop;1799,91;359,99;2159,90;20:359.99;Yalnız iki bin yüz elli dokuz lira doksan kuruş
+SNT2025000000275;SP0000286;2025-06-29;Zerrin Özdemir;27703347980;Amasya;1242,24;227,76;1470,00;1:1.09|20:226.67;Yalnız bin dört yüz yetmiş lira
+SNT2025000000276;SP0000287;2025-06-29;Gülsüm Kılınç;57937948608;Antalya;2083,24;416,65;2499,89;20:416.65;Yalnız iki bin dört yüz doksan dokuz lira seksen dokuz kuruş
+SNT2025000000277;SP0000288;2025-06-30;Gülsüm Karaaslan;89717736884;Eskişehir;2239,31;390,59;2629,90;10:57.27|20:333.32;Yalnız iki bin altı yüz yirmi dokuz lira doksan kuruş
+SNT2025000000278;SP0000289;2025-06-30;Gülsüm Karaaslan;89717736884;Eskişehir;5927,26;592,73;6519,99;10:592.73;Yalnız altı bin beş yüz on dokuz lira doksan dokuz kuruş
+SNT2025000000279;SP0000290;2025-07-01;Nuri Demirci;76191949848;Kahramanmaraş;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000280;SP0000291;2025-07-01;Tuncay Tekin;80454952018;Niğde;224,83;44,97;269,80;20:44.97;Yalnız iki yüz altmış dokuz lira seksen kuruş
+SNT2025000000281;SP0000292;2025-07-03;Melis Aydoğan;63295268944;Karaman;224,83;44,97;269,80;20:44.97;Yalnız iki yüz altmış dokuz lira seksen kuruş
+SNT2025000000282;SP0000293;2025-07-04;Hüseyin Aslan;43099106574;Erzurum;208,25;41,65;249,90;20:41.65;Yalnız iki yüz kırk dokuz lira doksan kuruş
+SNT2025000000283;SP0000294;2025-07-04;Cansu Sarıkaya;77632595464;Nevşehir;1034,23;85,08;1119,31;1:2.04|10:83.04;Yalnız bin yüz on dokuz lira otuz bir kuruş
+SNT2025000000284;SP0000295;2025-07-04;Gizem Taş;99997043022;Isparta;162,16;9,53;171,69;1:1.21|20:8.32;Yalnız yüz yetmiş bir lira altmış dokuz kuruş
+SNT2025000000285;SP0000296;2025-07-05;Aslı Demir;78774927304;Mersin;76,47;8,67;85,14;1:0.35|20:8.32;Yalnız seksen beş lira on dört kuruş
+SNT2025000000286;SP0000297;2025-07-05;Emine Gezer;95321255956;Elazığ;193,50;9,84;203,34;1:1.52|20:8.32;Yalnız iki yüz üç lira otuz dört kuruş
+SNT2025000000287;SP0000298;2025-07-05;Aslı Demir;78774927304;Mersin;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000288;SP0000299;2025-07-05;Gülsüm Karaaslan;89717736884;Eskişehir;468,76;51,04;519,80;10:42.72|20:8.32;Yalnız beş yüz on dokuz lira seksen kuruş
+SNT2025000000289;SP0000300;2025-07-05;Bülent Turgut;81469244020;Kars;681,82;68,18;750,00;10:68.18;Yalnız yedi yüz elli lira
+SNT2025000000290;SP0000301;2025-07-06;Koray Akgül;82901086970;Samsun;10194,91;1019,49;11214,40;10:1019.49;Yalnız on bir bin iki yüz on dört lira kırk kuruş
+SNT2025000000291;SP0000302;2025-07-06;Ezgi Acar;18930900482;Çankırı;625,84;62,58;688,42;10:62.58;Yalnız altı yüz seksen sekiz lira kırk iki kuruş
+SNT2025000000292;SP0000303;2025-07-06;Gülsüm Karaaslan;89717736884;Eskişehir;1740,64;334,06;2074,70;1:0.74|20:333.32;Yalnız iki bin yetmiş dört lira yetmiş kuruş
+SNT2025000000293;SP0000304;2025-07-06;Raziye Sezer;35617118046;Bingöl;1874,53;335,40;2209,93;1:2.08|20:333.32;Yalnız iki bin iki yüz dokuz lira doksan üç kuruş
+SNT2025000000294;SP0000305;2025-07-07;Ezgi Acar;18930900482;Çankırı;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000295;SP0000306;2025-07-07;Miraç Mert;88704969854;Kırklareli;4199,91;419,99;4619,90;10:419.99;Yalnız dört bin altı yüz on dokuz lira doksan kuruş
+SNT2025000000296;SP0000307;2025-07-08;İrem Çetin;41721961720;Bursa;283,24;56,65;339,89;20:56.65;Yalnız üç yüz otuz dokuz lira seksen dokuz kuruş
+SNT2025000000297;SP0000308;2025-07-08;Turgut Demirel;76904347954;Balıkesir;823,29;69,60;892,89;1:1.42|10:68.18;Yalnız sekiz yüz doksan iki lira seksen dokuz kuruş
+SNT2025000000298;SP0000309;2025-07-08;Hüseyin Aslan;43099106574;Erzurum;8349,73;1189,96;9539,69;10:479.98|20:709.98;Yalnız dokuz bin beş yüz otuz dokuz lira altmış dokuz kuruş
+SNT2025000000299;SP0000310;2025-07-08;Gülsüm Karaaslan;89717736884;Eskişehir;637,70;102,10;739,80;10:25.45|20:76.65;Yalnız yedi yüz otuz dokuz lira seksen kuruş
+SNT2025000000300;SP0000311;2025-07-09;Mustafa Kaya;64907900320;Hatay;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000301;SP0000313;2025-07-09;Gizem Taş;99997043022;Isparta;4199,91;419,99;4619,90;10:419.99;Yalnız dört bin altı yüz on dokuz lira doksan kuruş
+SNT2025000000302;SP0000314;2025-07-10;Şükran Şahin;41790934748;Gaziantep;772,64;77,26;849,90;10:77.26;Yalnız sekiz yüz kırk dokuz lira doksan kuruş
+SNT2025000000303;SP0000315;2025-07-10;Sevim Sağlam;57773390326;Bursa;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000304;SP0000316;2025-07-11;Ezgi Acar;18930900482;Çankırı;5927,26;592,73;6519,99;10:592.73;Yalnız altı bin beş yüz on dokuz lira doksan dokuz kuruş
+SNT2025000000305;SP0000317;2025-07-11;Aslı Demir;78774927304;Mersin;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000306;SP0000318;2025-07-11;Raziye Sezer;35617118046;Bingöl;4500,40;459,40;4959,80;1:1.09|10:419.99|20:38.32;Yalnız dört bin dokuz yüz elli dokuz lira seksen kuruş
+SNT2025000000307;SP0000319;2025-07-12;Turgut Demirel;76904347954;Balıkesir;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000308;SP0000320;2025-07-12;Zekiye Durmuş;49653580224;Malatya;1858,16;371,64;2229,80;20:371.64;Yalnız iki bin iki yüz yirmi dokuz lira seksen kuruş
+SNT2025000000309;SP0000321;2025-07-13;Mustafa Kaya;64907900320;Hatay;13318,18;1331,81;14649,99;10:1331.81;Yalnız on dört bin altı yüz kırk dokuz lira doksan dokuz kuruş
+SNT2025000000310;SP0000322;2025-07-13;Şerife Yılmaz;54476016508;Bartın;2494,86;240,94;2735,80;1:0.95|10:239.99;Yalnız iki bin yedi yüz otuz beş lira seksen kuruş
+SNT2025000000311;SP0000323;2025-07-13;Sibel Özkan;43762850858;Konya;572,64;57,26;629,90;10:57.26;Yalnız altı yüz yirmi dokuz lira doksan kuruş
+SNT2025000000312;SP0000324;2025-07-14;Raziye Sezer;35617118046;Bingöl;1363,64;136,36;1500,00;10:136.36;Yalnız bin beş yüz lira
+SNT2025000000313;SP0000325;2025-07-14;Gülşen Aslan;40986320822;Malatya;4484,76;422,84;4907,60;1:2.85|10:419.99;Yalnız dört bin dokuz yüz yedi lira altmış kuruş
+SNT2025000000314;SP0000326;2025-07-16;Rabia Demir;47842889998;Kırıkkale;1466,31;49,48;1515,79;1:12.83|20:36.65;Yalnız bin beş yüz on beş lira yetmiş dokuz kuruş
+SNT2025000000315;SP0000327;2025-07-17;Gülsüm Karaaslan;89717736884;Eskişehir;1666,58;333,32;1999,90;20:333.32;Yalnız bin dokuz yüz doksan dokuz lira doksan kuruş
+SNT2025000000316;SP0000328;2025-07-17;Gizem Taş;99997043022;Isparta;836,36;83,64;920,00;10:83.64;Yalnız dokuz yüz yirmi lira
+SNT2025000000317;SP0000329;2025-07-19;Turgut Demirel;76904347954;Balıkesir;276,10;10,67;286,77;1:2.35|20:8.32;Yalnız iki yüz seksen altı lira yetmiş yedi kuruş
+SNT2025000000318;SP0000330;2025-07-19;İrem Çetin;41721961720;Bursa;1454,54;145,46;1600,00;10:145.46;Yalnız bin altı yüz lira
+SNT2025000000319;SP0000331;2025-07-19;Gülsüm Karaaslan;89717736884;Eskişehir;1043,94;156,06;1200,00;10:52.73|20:103.33;Yalnız bin iki yüz lira
+SNT2025000000320;SP0000332;2025-07-20;Zerrin Özdemir;27703347980;Amasya;4438,64;721,36;5160,00;10:166.36|20:555.00;Yalnız beş bin yüz altmış lira
+SNT2025000000321;SP0000333;2025-07-20;Nihat Aslan;41680032172;Trabzon;475,00;95,00;570,00;20:95.00;Yalnız beş yüz yetmiş lira
+SNT2025000000322;SP0000334;2025-07-20;Tuncay Tekin;80454952018;Niğde;91,08;8,82;99,90;1:0.50|20:8.32;Yalnız doksan dokuz lira doksan kuruş
+SNT2025000000323;SP0000335;2025-07-20;Zekiye Durmuş;49653580224;Malatya;776,77;69,13;845,90;1:0.95|10:68.18;Yalnız sekiz yüz kırk beş lira doksan kuruş
+SNT2025000000324;SP0000336;2025-07-21;Gülsüm Kılınç;57937948608;Antalya;150,49;9,41;159,90;1:1.09|20:8.32;Yalnız yüz elli dokuz lira doksan kuruş
+SNT2025000000325;SP0000338;2025-07-23;Mustafa Kaya;64907900320;Hatay;1666,58;333,32;1999,90;20:333.32;Yalnız bin dokuz yüz doksan dokuz lira doksan kuruş
+SNT2025000000326;SP0000339;2025-07-24;Koray Akgül;82901086970;Samsun;2003,02;174,67;2177,69;1:2.85|10:171.82;Yalnız iki bin yüz yetmiş yedi lira altmış dokuz kuruş
+SNT2025000000327;SP0000340;2025-07-24;Gülsüm Karaaslan;89717736884;Eskişehir;3333,17;666,63;3999,80;20:666.63;Yalnız üç bin dokuz yüz doksan dokuz lira seksen kuruş
+SNT2025000000328;SP0000342;2025-07-25;Raziye Sezer;35617118046;Bingöl;1775,49;334,41;2109,90;1:1.09|20:333.32;Yalnız iki bin yüz dokuz lira doksan kuruş
+SNT2025000000329;SP0000343;2025-07-25;Mustafa Kaya;64907900320;Hatay;681,82;68,18;750,00;10:68.18;Yalnız yedi yüz elli lira
+SNT2025000000330;SP0000344;2025-07-25;Esra Ateş;89019300134;Samsun;463,26;12,54;475,80;1:4.22|20:8.32;Yalnız dört yüz yetmiş beş lira seksen kuruş
+SNT2025000000331;SP0000346;2025-07-25;Aslı Demir;78774927304;Mersin;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000332;SP0000347;2025-07-25;Sami Keskin;77184902536;Bayburt;326,43;11,17;337,60;1:2.85|20:8.32;Yalnız üç yüz otuz yedi lira altmış kuruş
+SNT2025000000333;SP0000348;2025-07-25;Hilal Yalçın;42779181122;Mersin;1666,58;333,32;1999,90;20:333.32;Yalnız bin dokuz yüz doksan dokuz lira doksan kuruş
+SNT2025000000334;SP0000349;2025-07-26;Şerife Yılmaz;54476016508;Bartın;4190,82;419,08;4609,90;10:419.08;Yalnız dört bin altı yüz dokuz lira doksan kuruş
+SNT2025000000335;SP0000350;2025-07-27;Sevim Sağlam;57773390326;Bursa;516,67;103,33;620,00;20:103.33;Yalnız altı yüz yirmi lira
+SNT2025000000336;SP0000351;2025-07-28;Miraç Mert;88704969854;Kırklareli;224,83;44,97;269,80;20:44.97;Yalnız iki yüz altmış dokuz lira seksen kuruş
+SNT2025000000337;SP0000352;2025-07-28;Ercan Yılmaz;66444900856;Malatya;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000338;SP0000353;2025-07-30;Mustafa Kaya;64907900320;Hatay;612,94;42,95;655,89;1:2.04|10:40.91;Yalnız altı yüz elli beş lira seksen dokuz kuruş
+SNT2025000000339;SP0000354;2025-07-31;Gülsüm Karaaslan;89717736884;Eskişehir;224,83;44,97;269,80;20:44.97;Yalnız iki yüz altmış dokuz lira seksen kuruş
+SNT2025000000340;SP0000355;2025-07-31;Turgut Demirel;76904347954;Balıkesir;11041,58;2208,32;13249,90;20:2208.32;Yalnız on üç bin iki yüz kırk dokuz lira doksan kuruş
+SNT2025000000341;SP0000356;2025-07-31;Nihat Aslan;41680032172;Trabzon;1666,58;333,32;1999,90;20:333.32;Yalnız bin dokuz yüz doksan dokuz lira doksan kuruş
+SNT2025000000342;SP0000357;2025-08-01;Esra Ateş;89019300134;Samsun;4199,91;419,99;4619,90;10:419.99;Yalnız dört bin altı yüz on dokuz lira doksan kuruş
+SNT2025000000343;SP0000358;2025-08-02;Sami Keskin;77184902536;Bayburt;636,18;53,82;690,00;1:1.09|10:52.73;Yalnız altı yüz doksan lira
+SNT2025000000344;SP0000359;2025-08-02;Şükran Şahin;41790934748;Gaziantep;2816,67;563,33;3380,00;20:563.33;Yalnız üç bin üç yüz seksen lira
+SNT2025000000345;SP0000360;2025-08-02;Arda Özkan;90114220548;Kahramanmaraş;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000346;SP0000361;2025-08-03;İrem Çetin;41721961720;Bursa;2083,24;416,65;2499,89;20:416.65;Yalnız iki bin dört yüz doksan dokuz lira seksen dokuz kuruş
+SNT2025000000347;SP0000362;2025-08-04;Saadet Demir;26603917330;Mardin;675,58;114,42;790,00;1:1.09|20:113.33;Yalnız yedi yüz doksan lira
+SNT2025000000348;SP0000363;2025-08-07;Esra Ateş;89019300134;Samsun;424,75;84,95;509,70;20:84.95;Yalnız beş yüz dokuz lira yetmiş kuruş
+SNT2025000000349;SP0000364;2025-08-08;Bülent Turgut;81469244020;Kars;2058,33;411,67;2470,00;20:411.67;Yalnız iki bin dört yüz yetmiş lira
+SNT2025000000350;SP0000365;2025-08-09;İrem Çetin;41721961720;Bursa;2900,57;559,42;3459,99;1:1.09|20:558.33;Yalnız üç bin dört yüz elli dokuz lira doksan dokuz kuruş
+SNT2025000000351;SP0000366;2025-08-10;Tuncay Tekin;80454952018;Niğde;4478,11;457,59;4935,70;1:0.95|10:419.99|20:36.65;Yalnız dört bin dokuz yüz otuz beş lira yetmiş kuruş
+SNT2025000000352;SP0000367;2025-08-10;Hilal Yalçın;42779181122;Mersin;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000353;SP0000368;2025-08-10;Sami Keskin;77184902536;Bayburt;8152,27;1037,73;9190,00;10:592.73|20:445.00;Yalnız dokuz bin yüz doksan lira
+SNT2025000000354;SP0000369;2025-08-11;Gülsüm Kılınç;57937948608;Antalya;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000355;SP0000370;2025-08-11;Buse Türk;20125737490;Nevşehir;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000356;SP0000371;2025-08-12;Sevim Sağlam;57773390326;Bursa;12599,73;1259,97;13859,70;10:1259.97;Yalnız on üç bin sekiz yüz elli dokuz lira yetmiş kuruş
+SNT2025000000357;SP0000372;2025-08-13;Hilal Yalçın;42779181122;Mersin;1666,58;333,32;1999,90;20:333.32;Yalnız bin dokuz yüz doksan dokuz lira doksan kuruş
+SNT2025000000358;SP0000373;2025-08-13;Mustafa Kaya;64907900320;Hatay;783,66;136,04;919,70;1:1.09|20:134.95;Yalnız dokuz yüz on dokuz lira yetmiş kuruş
+SNT2025000000359;SP0000374;2025-08-14;Şerife Yılmaz;54476016508;Bartın;1041,50;208,30;1249,80;20:208.30;Yalnız bin iki yüz kırk dokuz lira seksen kuruş
+SNT2025000000360;SP0000375;2025-08-15;İrem Çetin;41721961720;Bursa;265,24;10,56;275,80;1:2.24|20:8.32;Yalnız iki yüz yetmiş beş lira seksen kuruş
+SNT2025000000361;SP0000376;2025-08-15;İrem Çetin;41721961720;Bursa;990,18;59,72;1049,90;1:5.94|10:25.45|20:28.33;Yalnız bin kırk dokuz lira doksan kuruş
+SNT2025000000362;SP0000377;2025-08-16;Tamer Aksoy;40594700368;Antalya;527,27;52,73;580,00;10:52.73;Yalnız beş yüz seksen lira
+SNT2025000000363;SP0000378;2025-08-16;Aslı Demir;78774927304;Mersin;1666,58;333,32;1999,90;20:333.32;Yalnız bin dokuz yüz doksan dokuz lira doksan kuruş
+SNT2025000000364;SP0000379;2025-08-17;Ezgi Acar;18930900482;Çankırı;7561,62;1494,28;9055,90;1:0.95|20:1493.33;Yalnız dokuz bin elli beş lira doksan kuruş
+SNT2025000000365;SP0000380;2025-08-18;Samet Karakaya;51268321840;Bartın;2432,92;447,08;2880,00;1:2.08|20:445.00;Yalnız iki bin sekiz yüz seksen lira
+SNT2025000000366;SP0000381;2025-08-19;Gülsüm Karaaslan;89717736884;Eskişehir;1495,05;14,95;1510,00;1:14.95;Yalnız bin beş yüz on lira
+SNT2025000000367;SP0000382;2025-08-20;Gülsüm Karaaslan;89717736884;Eskişehir;772,64;77,26;849,90;10:77.26;Yalnız sekiz yüz kırk dokuz lira doksan kuruş
+SNT2025000000368;SP0000383;2025-08-20;Hilal Yalçın;42779181122;Mersin;269,86;35,94;305,80;1:0.95|20:34.99;Yalnız üç yüz beş lira seksen kuruş
+SNT2025000000369;SP0000384;2025-08-22;Gamze Gümüş;52265215132;Çankırı;681,82;68,18;750,00;10:68.18;Yalnız yedi yüz elli lira
+SNT2025000000370;SP0000385;2025-08-22;Turgut Demirel;76904347954;Balıkesir;336,96;42,94;379,90;1:1.29|20:41.65;Yalnız üç yüz yetmiş dokuz lira doksan kuruş
+SNT2025000000371;SP0000386;2025-08-23;Hüseyin Aslan;43099106574;Erzurum;266,50;53,30;319,80;20:53.30;Yalnız üç yüz on dokuz lira seksen kuruş
+SNT2025000000372;SP0000387;2025-08-23;Koray Akgül;82901086970;Samsun;10412,03;1207,87;11619,90;10:874.55|20:333.32;Yalnız on bir bin altı yüz on dokuz lira doksan kuruş
+SNT2025000000373;SP0000388;2025-08-23;Ercan Yılmaz;66444900856;Malatya;2433,90;466,09;2899,99;1:1.09|20:465.00;Yalnız iki bin sekiz yüz doksan dokuz lira doksan dokuz kuruş
+SNT2025000000374;SP0000389;2025-08-24;Hüseyin Aslan;43099106574;Erzurum;867,59;78,21;945,80;1:0.95|10:77.26;Yalnız dokuz yüz kırk beş lira seksen kuruş
+SNT2025000000375;SP0000390;2025-08-25;Ercan Yılmaz;66444900856;Malatya;1772,73;177,27;1950,00;10:177.27;Yalnız bin dokuz yüz elli lira
+SNT2025000000376;SP0000392;2025-08-29;Mustafa Kaya;64907900320;Hatay;7311,53;1444,27;8755,80;1:0.95|20:1443.32;Yalnız sekiz bin yedi yüz elli beş lira seksen kuruş
+SNT2025000000377;SP0000393;2025-08-31;Sevim Sağlam;57773390326;Bursa;338,61;11,29;349,90;1:2.97|20:8.32;Yalnız üç yüz kırk dokuz lira doksan kuruş
+SNT2025000000378;SP0000394;2025-08-31;Ezgi Acar;18930900482;Çankırı;1133,33;226,67;1360,00;20:226.67;Yalnız bin üç yüz altmış lira
+SNT2025000000379;SP0000396;2025-09-02;Miraç Mert;88704969854;Kırklareli;1808,05;334,74;2142,79;1:1.42|20:333.32;Yalnız iki bin yüz kırk iki lira yetmiş dokuz kuruş
+SNT2025000000380;SP0000397;2025-09-03;Arda Özkan;90114220548;Kahramanmaraş;5887,17;1128,70;7015,87;1:2.04|10:10.00|20:1116.66;Yalnız yedi bin on beş lira seksen yedi kuruş
+SNT2025000000381;SP0000398;2025-09-04;Arda Özkan;90114220548;Kahramanmaraş;196,12;23,77;219,89;10:15.45|20:8.32;Yalnız iki yüz on dokuz lira seksen dokuz kuruş
+SNT2025000000382;SP0000399;2025-09-04;Gizem Taş;99997043022;Isparta;1666,58;333,32;1999,90;20:333.32;Yalnız bin dokuz yüz doksan dokuz lira doksan kuruş
+SNT2025000000383;SP0000400;2025-09-05;Koray Akgül;82901086970;Samsun;8399,82;839,98;9239,80;10:839.98;Yalnız dokuz bin iki yüz otuz dokuz lira seksen kuruş
+SNT2025000000384;SP0000401;2025-09-05;Mustafa Kaya;64907900320;Hatay;954,55;95,45;1050,00;10:95.45;Yalnız bin elli lira
+SNT2025000000385;SP0000402;2025-09-06;Sibel Özkan;43762850858;Konya;816,58;163,32;979,90;20:163.32;Yalnız dokuz yüz yetmiş dokuz lira doksan kuruş
+SNT2025000000386;SP0000403;2025-09-06;Sevim Sağlam;57773390326;Bursa;4389,81;421,89;4811,70;1:1.90|10:419.99;Yalnız dört bin sekiz yüz on bir lira yetmiş kuruş
+SNT2025000000387;SP0000404;2025-09-06;Sefa Kılıç;68407965308;Adıyaman;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000388;SP0000405;2025-09-07;Seda Taşkın;40099068062;Edirne;572,09;84,89;656,98;1:1.56|20:83.33;Yalnız altı yüz elli altı lira doksan sekiz kuruş
+SNT2025000000389;SP0000406;2025-09-07;Arda Özkan;90114220548;Kahramanmaraş;481,98;43,81;525,79;1:0.95|10:34.54|20:8.32;Yalnız beş yüz yirmi beş lira yetmiş dokuz kuruş
+SNT2025000000390;SP0000407;2025-09-07;Hüseyin Aslan;43099106574;Erzurum;1761,53;334,27;2095,80;1:0.95|20:333.32;Yalnız iki bin doksan beş lira seksen kuruş
+SNT2025000000391;SP0000408;2025-09-08;Zerrin Özcan;10654307400;Tunceli;848,50;8,49;856,99;1:8.49;Yalnız sekiz yüz elli altı lira doksan dokuz kuruş
+SNT2025000000392;SP0000409;2025-09-09;Hüseyin Aslan;43099106574;Erzurum;387,03;42,86;429,89;10:34.54|20:8.32;Yalnız dört yüz yirmi dokuz lira seksen dokuz kuruş
+SNT2025000000393;SP0000410;2025-09-10;Saadet Demir;26603917330;Mardin;4713,63;776,36;5489,99;10:166.36|20:610.00;Yalnız beş bin dört yüz seksen dokuz lira doksan dokuz kuruş
+SNT2025000000394;SP0000411;2025-09-10;Gürkan Özyurt;64400726144;Adıyaman;9869,82;970,06;10839,88;1:1.88|10:968.18;Yalnız on bin sekiz yüz otuz dokuz lira seksen sekiz kuruş
+SNT2025000000395;SP0000412;2025-09-11;Turgut Demirel;76904347954;Balıkesir;6526,01;849,89;7375,90;1:0.95|10:437.27|20:411.67;Yalnız yedi bin üç yüz yetmiş beş lira doksan kuruş
+SNT2025000000396;SP0000413;2025-09-11;Ercan Yılmaz;66444900856;Malatya;2791,66;558,33;3349,99;20:558.33;Yalnız üç bin üç yüz kırk dokuz lira doksan dokuz kuruş
+SNT2025000000397;SP0000414;2025-09-13;Hüseyin Aslan;43099106574;Erzurum;528,51;13,19;541,70;1:4.87|20:8.32;Yalnız beş yüz kırk bir lira yetmiş kuruş
+SNT2025000000398;SP0000416;2025-09-15;Ezgi Acar;18930900482;Çankırı;911,53;164,27;1075,80;1:0.95|20:163.32;Yalnız bin yetmiş beş lira seksen kuruş
+SNT2025000000399;SP0000417;2025-09-15;Turgut Demirel;76904347954;Balıkesir;4122,13;403,67;4525,80;1:0.95|10:402.72;Yalnız dört bin beş yüz yirmi beş lira seksen kuruş
+SNT2025000000400;SP0000418;2025-09-16;Büşra Vural;13529721998;Karaman;803,09;115,70;918,79;1:2.37|20:113.33;Yalnız dokuz yüz on sekiz lira yetmiş dokuz kuruş
+SNT2025000000401;SP0000419;2025-09-19;Tamer Aksoy;40594700368;Antalya;5874,84;1174,96;7049,80;20:1174.96;Yalnız yedi bin kırk dokuz lira seksen kuruş
+SNT2025000000402;SP0000420;2025-09-20;Sibel Özkan;43762850858;Konya;1066,67;213,33;1280,00;20:213.33;Yalnız bin iki yüz seksen lira
+SNT2025000000403;SP0000421;2025-09-22;İrem Çetin;41721961720;Bursa;763,55;76,35;839,90;10:76.35;Yalnız sekiz yüz otuz dokuz lira doksan kuruş
+SNT2025000000404;SP0000422;2025-09-23;İrem Çetin;41721961720;Bursa;224,83;44,97;269,80;20:44.97;Yalnız iki yüz altmış dokuz lira seksen kuruş
+SNT2025000000405;SP0000423;2025-09-23;Hüseyin Aslan;43099106574;Erzurum;7783,17;1556,63;9339,80;20:1556.63;Yalnız dokuz bin üç yüz otuz dokuz lira seksen kuruş
+SNT2025000000406;SP0000424;2025-09-24;Veysel Sağlam;56037766662;Ankara;4674,91;514,99;5189,90;10:419.99|20:95.00;Yalnız beş bin yüz seksen dokuz lira doksan kuruş
+SNT2025000000407;SP0000425;2025-09-24;Turgut Demirel;76904347954;Balıkesir;1761,53;334,27;2095,80;1:0.95|20:333.32;Yalnız iki bin doksan beş lira seksen kuruş
+SNT2025000000408;SP0000426;2025-09-24;Nevzat Bektaş;98931912844;Samsun;245,44;10,36;255,80;1:2.04|20:8.32;Yalnız iki yüz elli beş lira seksen kuruş
+SNT2025000000409;SP0000427;2025-09-24;Melis Aydoğan;63295268944;Karaman;283,24;56,65;339,89;20:56.65;Yalnız üç yüz otuz dokuz lira seksen dokuz kuruş
+SNT2025000000410;SP0000428;2025-09-25;Rabia Demir;47842889998;Kırıkkale;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000411;SP0000429;2025-09-26;Nuri Demirci;76191949848;Kahramanmaraş;91,08;8,82;99,90;1:0.50|20:8.32;Yalnız doksan dokuz lira doksan kuruş
+SNT2025000000412;SP0000430;2025-09-26;Aslı Demir;78774927304;Mersin;4199,91;419,99;4619,90;10:419.99;Yalnız dört bin altı yüz on dokuz lira doksan kuruş
+SNT2025000000413;SP0000431;2025-09-27;Gamze Gümüş;52265215132;Çankırı;681,82;68,18;750,00;10:68.18;Yalnız yedi yüz elli lira
+SNT2025000000414;SP0000432;2025-09-27;Koray Akgül;82901086970;Samsun;1881,81;188,18;2069,99;10:188.18;Yalnız iki bin altmış dokuz lira doksan dokuz kuruş
+SNT2025000000415;SP0000433;2025-09-27;Şaban Gümüş;10091185746;Çanakkale;231,48;10,22;241,70;1:1.90|20:8.32;Yalnız iki yüz kırk bir lira yetmiş kuruş
+SNT2025000000416;SP0000434;2025-09-28;Turgut Demirel;76904347954;Balıkesir;7445,52;1450,37;8895,89;1:2.04|20:1448.33;Yalnız sekiz bin sekiz yüz doksan beş lira seksen dokuz kuruş
+SNT2025000000417;SP0000435;2025-09-28;Ezgi Acar;18930900482;Çankırı;88,10;8,79;96,89;1:0.47|20:8.32;Yalnız doksan altı lira seksen dokuz kuruş
+SNT2025000000418;SP0000436;2025-09-28;Ercan Yılmaz;66444900856;Malatya;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000419;SP0000437;2025-09-28;Aslı Demir;78774927304;Mersin;5083,25;1016,65;6099,90;20:1016.65;Yalnız altı bin doksan dokuz lira doksan kuruş
+SNT2025000000420;SP0000438;2025-09-29;İrem Çetin;41721961720;Bursa;4880,76;789,23;5669,99;1:8.02|10:34.54|20:746.67;Yalnız beş bin altı yüz altmış dokuz lira doksan dokuz kuruş
+SNT2025000000421;SP0000439;2025-09-29;Sevim Sağlam;57773390326;Bursa;1666,58;333,32;1999,90;20:333.32;Yalnız bin dokuz yüz doksan dokuz lira doksan kuruş
+SNT2025000000422;SP0000440;2025-09-29;Sevim Sağlam;57773390326;Bursa;5183,00;1036,60;6219,60;20:1036.60;Yalnız altı bin iki yüz on dokuz lira altmış kuruş
+SNT2025000000423;SP0000441;2025-09-30;Hilal Yalçın;42779181122;Mersin;8399,82;839,98;9239,80;10:839.98;Yalnız dokuz bin iki yüz otuz dokuz lira seksen kuruş
+SNT2025000000424;SP0000442;2025-09-30;Gülsüm Kılınç;57937948608;Antalya;2225,00;445,00;2670,00;20:445.00;Yalnız iki bin altı yüz yetmiş lira
+SNT2025000000425;SP0000443;2025-10-01;Gizem Taş;99997043022;Isparta;5558,17;1111,63;6669,80;20:1111.63;Yalnız altı bin altı yüz altmış dokuz lira seksen kuruş
+SNT2025000000426;SP0000444;2025-10-01;Sevim Sağlam;57773390326;Bursa;11936,18;1193,62;13129,80;10:1193.62;Yalnız on üç bin yüz yirmi dokuz lira seksen kuruş
+SNT2025000000427;SP0000445;2025-10-01;Buse Türk;20125737490;Nevşehir;1761,53;334,27;2095,80;1:0.95|20:333.32;Yalnız iki bin doksan beş lira seksen kuruş
+SNT2025000000428;SP0000446;2025-10-01;Aslı Demir;78774927304;Mersin;4294,86;420,94;4715,80;1:0.95|10:419.99;Yalnız dört bin yedi yüz on beş lira seksen kuruş
+SNT2025000000429;SP0000447;2025-10-02;Şerife Yılmaz;54476016508;Bartın;3986,53;779,27;4765,80;1:0.95|20:778.32;Yalnız dört bin yedi yüz altmış beş lira seksen kuruş
+SNT2025000000430;SP0000448;2025-10-02;Hüseyin Aslan;43099106574;Erzurum;3370,47;305,33;3675,80;1:3.52|10:301.81;Yalnız üç bin altı yüz yetmiş beş lira seksen kuruş
+SNT2025000000431;SP0000449;2025-10-03;Hilal Yalçın;42779181122;Mersin;88,10;8,79;96,89;1:0.47|20:8.32;Yalnız doksan altı lira seksen dokuz kuruş
+SNT2025000000432;SP0000450;2025-10-03;Mustafa Kaya;64907900320;Hatay;19363,65;2036,02;21399,67;1:27.72|10:1309.97|20:698.33;Yalnız yirmi bir bin üç yüz doksan dokuz lira altmış yedi kuruş
+SNT2025000000433;SP0000451;2025-10-03;Şerife Yılmaz;54476016508;Bartın;3733,33;746,67;4480,00;20:746.67;Yalnız dört bin dört yüz seksen lira
+SNT2025000000434;SP0000452;2025-10-04;Sevim Sağlam;57773390326;Bursa;2675,00;535,00;3210,00;20:535.00;Yalnız üç bin iki yüz on lira
+SNT2025000000435;SP0000453;2025-10-05;Sevim Sağlam;57773390326;Bursa;1758,59;167,31;1925,90;1:0.95|10:166.36;Yalnız bin dokuz yüz yirmi beş lira doksan kuruş
+SNT2025000000436;SP0000454;2025-10-06;Sefa Kılıç;68407965308;Adıyaman;468,85;51,05;519,90;10:42.73|20:8.32;Yalnız beş yüz on dokuz lira doksan kuruş
+SNT2025000000437;SP0000455;2025-10-07;Arda Özkan;90114220548;Kahramanmaraş;569,95;95,95;665,90;1:0.95|20:95.00;Yalnız altı yüz altmış beş lira doksan kuruş
+SNT2025000000438;SP0000456;2025-10-07;Okan Karataş;83291084072;Muğla;1761,53;334,27;2095,80;1:0.95|20:333.32;Yalnız iki bin doksan beş lira seksen kuruş
+SNT2025000000439;SP0000457;2025-10-07;Mustafa Kaya;64907900320;Hatay;992,08;177,72;1169,80;1:1.09|20:176.63;Yalnız bin yüz altmış dokuz lira seksen kuruş
+SNT2025000000440;SP0000458;2025-10-07;Gülsüm Karaaslan;89717736884;Eskişehir;13593,18;1406,82;15000,00;10:1311.82|20:95.00;Yalnız on beş bin lira
+SNT2025000000441;SP0000459;2025-10-09;Büşra Aktaş;44039848998;Kars;1133,33;226,67;1360,00;20:226.67;Yalnız bin üç yüz altmış lira
+SNT2025000000442;SP0000460;2025-10-10;Zerrin Özdemir;27703347980;Amasya;4383,16;456,64;4839,80;10:419.99|20:36.65;Yalnız dört bin sekiz yüz otuz dokuz lira seksen kuruş
+SNT2025000000443;SP0000461;2025-10-11;Raziye Sezer;35617118046;Bingöl;407,92;11,98;419,90;1:3.66|20:8.32;Yalnız dört yüz on dokuz lira doksan kuruş
+SNT2025000000444;SP0000462;2025-10-11;Hüseyin Aslan;43099106574;Erzurum;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000445;SP0000463;2025-10-12;Hüseyin Aslan;43099106574;Erzurum;3524,83;704,97;4229,80;20:704.97;Yalnız dört bin iki yüz yirmi dokuz lira seksen kuruş
+SNT2025000000446;SP0000464;2025-10-13;Aslı Demir;78774927304;Mersin;91,08;8,82;99,90;1:0.50|20:8.32;Yalnız doksan dokuz lira doksan kuruş
+SNT2025000000447;SP0000465;2025-10-13;Miraç Mert;88704969854;Kırklareli;141,57;18,32;159,89;10:10.00|20:8.32;Yalnız yüz elli dokuz lira seksen dokuz kuruş
+SNT2025000000448;SP0000466;2025-10-13;Şükran Şahin;41790934748;Gaziantep;4328,62;421,28;4749,90;1:1.29|10:419.99;Yalnız dört bin yedi yüz kırk dokuz lira doksan kuruş
+SNT2025000000449;SP0000467;2025-10-15;Arda Özkan;90114220548;Kahramanmaraş;245,44;10,36;255,80;1:2.04|20:8.32;Yalnız iki yüz elli beş lira seksen kuruş
+SNT2025000000450;SP0000468;2025-10-15;Şerife Yılmaz;54476016508;Bartın;2791,66;558,33;3349,99;20:558.33;Yalnız üç bin üç yüz kırk dokuz lira doksan dokuz kuruş
+SNT2025000000451;SP0000469;2025-10-15;Tamer Aksoy;40594700368;Antalya;3428,12;667,58;4095,70;1:0.95|20:666.63;Yalnız dört bin doksan beş lira yetmiş kuruş
+SNT2025000000452;SP0000471;2025-10-16;Selim Bozkurt;42193145908;Şanlıurfa;1775,49;334,41;2109,90;1:1.09|20:333.32;Yalnız iki bin yüz dokuz lira doksan kuruş
+SNT2025000000453;SP0000472;2025-10-16;Aslı Demir;78774927304;Mersin;2791,66;558,33;3349,99;20:558.33;Yalnız üç bin üç yüz kırk dokuz lira doksan dokuz kuruş
+SNT2025000000454;SP0000473;2025-10-16;Mustafa Kaya;64907900320;Hatay;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000455;SP0000474;2025-10-16;Gülsüm Karaaslan;89717736884;Eskişehir;4199,91;419,99;4619,90;10:419.99;Yalnız dört bin altı yüz on dokuz lira doksan kuruş
+SNT2025000000456;SP0000475;2025-10-17;Mustafa Kaya;64907900320;Hatay;1772,55;167,45;1940,00;1:1.09|10:166.36;Yalnız bin dokuz yüz kırk lira
+SNT2025000000457;SP0000476;2025-10-17;Gülsüm Karaaslan;89717736884;Eskişehir;775,58;114,21;889,79;10:40.91|20:73.30;Yalnız sekiz yüz seksen dokuz lira yetmiş dokuz kuruş
+SNT2025000000458;SP0000477;2025-10-18;Sevim Sağlam;57773390326;Bursa;3355,98;324,02;3680,00;1:1.29|10:322.73;Yalnız üç bin altı yüz seksen lira
+SNT2025000000459;SP0000478;2025-10-18;Zerrin Özdemir;27703347980;Amasya;2036,18;203,62;2239,80;10:203.62;Yalnız iki bin iki yüz otuz dokuz lira seksen kuruş
+SNT2025000000460;SP0000479;2025-10-18;Rabia Demir;47842889998;Kırıkkale;1856,48;335,22;2191,70;1:1.90|20:333.32;Yalnız iki bin yüz doksan bir lira yetmiş kuruş
+SNT2025000000461;SP0000481;2025-10-18;Melis Aydoğan;63295268944;Karaman;16810,16;1699,34;18509,50;10:1662.69|20:36.65;Yalnız on sekiz bin beş yüz dokuz lira elli kuruş
+SNT2025000000462;SP0000482;2025-10-20;Arda Özkan;90114220548;Kahramanmaraş;4066,49;573,31;4639,80;10:239.99|20:333.32;Yalnız dört bin altı yüz otuz dokuz lira seksen kuruş
+SNT2025000000463;SP0000483;2025-10-21;Sefa Kılıç;68407965308;Adıyaman;1666,58;333,32;1999,90;20:333.32;Yalnız bin dokuz yüz doksan dokuz lira doksan kuruş
+SNT2025000000464;SP0000484;2025-10-21;Emine Gezer;95321255956;Elazığ;468,85;51,05;519,90;10:42.73|20:8.32;Yalnız beş yüz on dokuz lira doksan kuruş
+SNT2025000000465;SP0000485;2025-10-21;Mustafa Kaya;64907900320;Hatay;11248,21;1291,48;12539,69;10:958.16|20:333.32;Yalnız on iki bin beş yüz otuz dokuz lira altmış dokuz kuruş
+SNT2025000000466;SP0000486;2025-10-21;Veysel Sağlam;56037766662;Ankara;14266,31;1593,29;15859,60;10:1259.97|20:333.32;Yalnız on beş bin sekiz yüz elli dokuz lira altmış kuruş
+SNT2025000000467;SP0000487;2025-10-22;Nazife Yılmaz;92184708346;Trabzon;1876,77;179,13;2055,90;1:0.95|10:178.18;Yalnız iki bin elli beş lira doksan kuruş
+SNT2025000000468;SP0000488;2025-10-22;Ercan Yılmaz;66444900856;Malatya;319,78;45,92;365,70;1:0.95|20:44.97;Yalnız üç yüz altmış beş lira yetmiş kuruş
+SNT2025000000469;SP0000489;2025-10-22;Zekiye Durmuş;49653580224;Malatya;1883,33;376,66;2259,99;20:376.66;Yalnız iki bin iki yüz elli dokuz lira doksan dokuz kuruş
+SNT2025000000470;SP0000490;2025-10-23;Zerrin Özdemir;27703347980;Amasya;266,50;53,30;319,80;20:53.30;Yalnız üç yüz on dokuz lira seksen kuruş
+SNT2025000000471;SP0000491;2025-10-23;Şükran Şahin;41790934748;Gaziantep;150,49;9,41;159,90;1:1.09|20:8.32;Yalnız yüz elli dokuz lira doksan kuruş
+SNT2025000000472;SP0000492;2025-10-24;Turgut Demirel;76904347954;Balıkesir;2225,00;445,00;2670,00;20:445.00;Yalnız iki bin altı yüz yetmiş lira
+SNT2025000000473;SP0000493;2025-10-24;Arda Özkan;90114220548;Kahramanmaraş;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000474;SP0000494;2025-10-24;Mustafa Kaya;64907900320;Hatay;3436,35;343,63;3779,98;10:343.63;Yalnız üç bin yedi yüz yetmiş dokuz lira doksan sekiz kuruş
+SNT2025000000475;SP0000495;2025-10-25;Buse Türk;20125737490;Nevşehir;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000476;SP0000496;2025-10-25;İrem Çetin;41721961720;Bursa;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000477;SP0000497;2025-10-28;Raziye Sezer;35617118046;Bingöl;199,99;9,91;209,90;1:1.59|20:8.32;Yalnız iki yüz dokuz lira doksan kuruş
+SNT2025000000478;SP0000498;2025-10-29;Zerrin Özcan;10654307400;Tunceli;2385,59;230,01;2615,60;1:0.95|10:229.06;Yalnız iki bin altı yüz on beş lira altmış kuruş
+SNT2025000000479;SP0000500;2025-10-30;Turgut Demirel;76904347954;Balıkesir;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000480;SP0000501;2025-10-30;İsmail Ünal;95366696820;Adana;1761,53;334,27;2095,80;1:0.95|20:333.32;Yalnız iki bin doksan beş lira seksen kuruş
+SNT2025000000481;SP0000502;2025-10-30;Nevzat Bektaş;98931912844;Samsun;266,50;53,30;319,80;20:53.30;Yalnız üç yüz on dokuz lira seksen kuruş
+SNT2025000000482;SP0000503;2025-11-01;Gülsüm Karaaslan;89717736884;Eskişehir;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000483;SP0000504;2025-11-01;Ezgi Acar;18930900482;Çankırı;231,48;10,22;241,70;1:1.90|20:8.32;Yalnız iki yüz kırk bir lira yetmiş kuruş
+SNT2025000000484;SP0000505;2025-11-01;Miraç Mert;88704969854;Kırklareli;91,08;8,82;99,90;1:0.50|20:8.32;Yalnız doksan dokuz lira doksan kuruş
+SNT2025000000485;SP0000506;2025-11-01;İsmail Ünal;95366696820;Adana;611,62;104,28;715,90;1:0.95|20:103.33;Yalnız yedi yüz on beş lira doksan kuruş
+SNT2025000000486;SP0000507;2025-11-01;Şerife Yılmaz;54476016508;Bartın;706,57;105,23;811,80;1:1.90|20:103.33;Yalnız sekiz yüz on bir lira seksen kuruş
+SNT2025000000487;SP0000508;2025-11-01;Gülsüm Kılınç;57937948608;Antalya;8130,12;979,67;9109,79;10:646.35|20:333.32;Yalnız dokuz bin yüz dokuz lira yetmiş dokuz kuruş
+SNT2025000000488;SP0000509;2025-11-01;Turgut Demirel;76904347954;Balıkesir;91,08;8,82;99,90;1:0.50|20:8.32;Yalnız doksan dokuz lira doksan kuruş
+SNT2025000000489;SP0000510;2025-11-01;Emel Yazıcı;78882967230;Adana;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000490;SP0000511;2025-11-02;Arda Özkan;90114220548;Kahramanmaraş;170,29;9,61;179,90;1:1.29|20:8.32;Yalnız yüz yetmiş dokuz lira doksan kuruş
+SNT2025000000491;SP0000512;2025-11-02;Samet Karakaya;51268321840;Bartın;283,24;56,65;339,89;20:56.65;Yalnız üç yüz otuz dokuz lira seksen dokuz kuruş
+SNT2025000000492;SP0000513;2025-11-02;Nihat Aslan;41680032172;Trabzon;326,43;11,17;337,60;1:2.85|20:8.32;Yalnız üç yüz otuz yedi lira altmış kuruş
+SNT2025000000493;SP0000514;2025-11-02;Mustafa Kaya;64907900320;Hatay;419,86;65,93;485,79;1:0.95|20:64.98;Yalnız dört yüz seksen beş lira yetmiş dokuz kuruş
+SNT2025000000494;SP0000515;2025-11-02;Hüseyin Aslan;43099106574;Erzurum;224,83;44,97;269,80;20:44.97;Yalnız iki yüz altmış dokuz lira seksen kuruş
+SNT2025000000495;SP0000516;2025-11-02;Miraç Mert;88704969854;Kırklareli;3428,12;667,58;4095,70;1:0.95|20:666.63;Yalnız dört bin doksan beş lira yetmiş kuruş
+SNT2025000000496;SP0000517;2025-11-03;Turgut Demirel;76904347954;Balıkesir;3333,17;666,63;3999,80;20:666.63;Yalnız üç bin dokuz yüz doksan dokuz lira seksen kuruş
+SNT2025000000497;SP0000518;2025-11-04;Melis Aydoğan;63295268944;Karaman;908,91;90,89;999,80;10:90.89;Yalnız dokuz yüz doksan dokuz lira seksen kuruş
+SNT2025000000498;SP0000519;2025-11-04;Berna Elmas;87483948326;Burdur;1666,58;333,32;1999,90;20:333.32;Yalnız bin dokuz yüz doksan dokuz lira doksan kuruş
+SNT2025000000499;SP0000520;2025-11-04;Hilal Yalçın;42779181122;Mersin;2225,00;445,00;2670,00;20:445.00;Yalnız iki bin altı yüz yetmiş lira
+SNT2025000000500;SP0000521;2025-11-04;Mustafa Kaya;64907900320;Hatay;1870,44;335,36;2205,80;1:2.04|20:333.32;Yalnız iki bin iki yüz beş lira seksen kuruş
+SNT2025000000501;SP0000522;2025-11-04;Turgut Demirel;76904347954;Balıkesir;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000502;SP0000523;2025-11-04;Turgut Demirel;76904347954;Balıkesir;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000503;SP0000524;2025-11-05;Raziye Sezer;35617118046;Bingöl;825,00;165,00;990,00;20:165.00;Yalnız dokuz yüz doksan lira
+SNT2025000000504;SP0000525;2025-11-06;İrem Çetin;41721961720;Bursa;3568,93;381,06;3949,99;10:332.73|20:48.33;Yalnız üç bin dokuz yüz kırk dokuz lira doksan dokuz kuruş
+SNT2025000000505;SP0000526;2025-11-06;Gizem Taş;99997043022;Isparta;1666,58;333,32;1999,90;20:333.32;Yalnız bin dokuz yüz doksan dokuz lira doksan kuruş
+SNT2025000000506;SP0000527;2025-11-07;Turgut Demirel;76904347954;Balıkesir;4430,21;609,68;5039,89;10:276.36|20:333.32;Yalnız beş bin otuz dokuz lira seksen dokuz kuruş
+SNT2025000000507;SP0000528;2025-11-07;Melis Başaran;55377828498;Malatya;224,83;44,97;269,80;20:44.97;Yalnız iki yüz altmış dokuz lira seksen kuruş
+SNT2025000000508;SP0000529;2025-11-07;Selim Bozkurt;42193145908;Şanlıurfa;361,45;54,25;415,70;1:0.95|20:53.30;Yalnız dört yüz on beş lira yetmiş kuruş
+SNT2025000000509;SP0000530;2025-11-08;Esra Ateş;89019300134;Samsun;2005,48;214,42;2219,90;1:0.50|10:177.27|20:36.65;Yalnız iki bin iki yüz on dokuz lira doksan kuruş
+SNT2025000000510;SP0000531;2025-11-09;İrem Çetin;41721961720;Bursa;1876,77;179,13;2055,90;1:0.95|10:178.18;Yalnız iki bin elli beş lira doksan kuruş
+SNT2025000000511;SP0000532;2025-11-09;Gülsüm Karaaslan;89717736884;Eskişehir;3891,58;778,32;4669,90;20:778.32;Yalnız dört bin altı yüz altmış dokuz lira doksan kuruş
+SNT2025000000512;SP0000533;2025-11-09;İsmail Ünal;95366696820;Adana;2679,45;490,45;3169,90;10:45.45|20:445.00;Yalnız üç bin yüz altmış dokuz lira doksan kuruş
+SNT2025000000513;SP0000534;2025-11-09;Aslı Demir;78774927304;Mersin;4199,91;419,99;4619,90;10:419.99;Yalnız dört bin altı yüz on dokuz lira doksan kuruş
+SNT2025000000514;SP0000535;2025-11-10;Nevzat Bektaş;98931912844;Samsun;1666,58;333,32;1999,90;20:333.32;Yalnız bin dokuz yüz doksan dokuz lira doksan kuruş
+SNT2025000000515;SP0000536;2025-11-10;Arda Özkan;90114220548;Kahramanmaraş;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000516;SP0000537;2025-11-11;Zerrin Özdemir;27703347980;Amasya;2791,66;558,33;3349,99;20:558.33;Yalnız üç bin üç yüz kırk dokuz lira doksan dokuz kuruş
+SNT2025000000517;SP0000538;2025-11-11;Selim Bozkurt;42193145908;Şanlıurfa;5961,44;754,26;6715,70;1:0.95|10:419.99|20:333.32;Yalnız altı bin yedi yüz on beş lira yetmiş kuruş
+SNT2025000000518;SP0000539;2025-11-11;Mustafa Kaya;64907900320;Hatay;4319,53;420,37;4739,90;1:1.29|10:419.08;Yalnız dört bin yedi yüz otuz dokuz lira doksan kuruş
+SNT2025000000519;SP0000540;2025-11-12;Sinan Uysal;39059648734;Karabük;1633,17;326,63;1959,80;20:326.63;Yalnız bin dokuz yüz elli dokuz lira seksen kuruş
+SNT2025000000520;SP0000541;2025-11-12;Nihat Aslan;41680032172;Trabzon;503,12;82,58;585,70;1:0.95|20:81.63;Yalnız beş yüz seksen beş lira yetmiş kuruş
+SNT2025000000521;SP0000542;2025-11-12;Tolga Sezer;23539128564;Erzincan;1128,28;207,62;1335,90;1:0.95|20:206.67;Yalnız bin üç yüz otuz beş lira doksan kuruş
+SNT2025000000522;SP0000543;2025-11-13;Hüseyin Aslan;43099106574;Erzurum;5199,91;1039,98;6239,89;20:1039.98;Yalnız altı bin iki yüz otuz dokuz lira seksen dokuz kuruş
+SNT2025000000523;SP0000544;2025-11-14;Arda Özkan;90114220548;Kahramanmaraş;3999,92;799,98;4799,90;20:799.98;Yalnız dört bin yedi yüz doksan dokuz lira doksan kuruş
+SNT2025000000524;SP0000545;2025-11-16;Nisa Sönmez;57470203110;Manisa;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000525;SP0000546;2025-11-16;Nevzat Bektaş;98931912844;Samsun;7533,08;1086,62;8619,70;10:419.99|20:666.63;Yalnız sekiz bin altı yüz on dokuz lira yetmiş kuruş
+SNT2025000000526;SP0000547;2025-11-16;Şükran Şahin;41790934748;Gaziantep;150,49;9,41;159,90;1:1.09|20:8.32;Yalnız yüz elli dokuz lira doksan kuruş
+SNT2025000000527;SP0000548;2025-11-16;Ezgi Acar;18930900482;Çankırı;5866,49;753,31;6619,80;10:419.99|20:333.32;Yalnız altı bin altı yüz on dokuz lira seksen kuruş
+SNT2025000000528;SP0000549;2025-11-17;Selim Bozkurt;42193145908;Şanlıurfa;8227,02;1322,68;9549,70;10:322.73|20:999.95;Yalnız dokuz bin beş yüz kırk dokuz lira yetmiş kuruş
+SNT2025000000529;SP0000550;2025-11-17;Sami Keskin;77184902536;Bayburt;1666,58;333,32;1999,90;20:333.32;Yalnız bin dokuz yüz doksan dokuz lira doksan kuruş
+SNT2025000000530;SP0000551;2025-11-17;İrem Çetin;41721961720;Bursa;866,65;173,33;1039,98;20:173.33;Yalnız bin otuz dokuz lira doksan sekiz kuruş
+SNT2025000000531;SP0000552;2025-11-17;Okan Karataş;83291084072;Muğla;231,48;10,22;241,70;1:1.90|20:8.32;Yalnız iki yüz kırk bir lira yetmiş kuruş
+SNT2025000000532;SP0000553;2025-11-18;Nevzat Bektaş;98931912844;Samsun;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000533;SP0000554;2025-11-19;Melek Türkoğlu;76468310050;Rize;1666,58;333,32;1999,90;20:333.32;Yalnız bin dokuz yüz doksan dokuz lira doksan kuruş
+SNT2025000000534;SP0000555;2025-11-19;Veysel Tok;91117685020;Aydın;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000535;SP0000556;2025-11-20;Zekiye Durmuş;49653580224;Malatya;5167,15;592,75;5759,90;1:1.09|10:419.99|20:171.67;Yalnız beş bin yedi yüz elli dokuz lira doksan kuruş
+SNT2025000000536;SP0000557;2025-11-20;Mustafa Kaya;64907900320;Hatay;328,11;47,59;375,70;1:0.95|20:46.64;Yalnız üç yüz yetmiş beş lira yetmiş kuruş
+SNT2025000000537;SP0000558;2025-11-21;Hüseyin Aslan;43099106574;Erzurum;432,49;47,41;479,90;10:39.09|20:8.32;Yalnız dört yüz yetmiş dokuz lira doksan kuruş
+SNT2025000000538;SP0000559;2025-11-21;Selim Bozkurt;42193145908;Şanlıurfa;4475,77;459,02;4934,79;1:0.85|10:419.99|20:38.18;Yalnız dört bin dokuz yüz otuz dört lira yetmiş dokuz kuruş
+SNT2025000000539;SP0000560;2025-11-21;Zekiye Yüksel;51806039800;Bilecik;116,59;9,07;125,66;1:0.75|20:8.32;Yalnız yüz yirmi beş lira altmış altı kuruş
+SNT2025000000540;SP0000561;2025-11-21;Neslihan Tuncer;73721038034;Erzurum;1263,43;227,97;1491,40;1:1.30|20:226.67;Yalnız bin dört yüz doksan bir lira kırk kuruş
+SNT2025000000541;SP0000562;2025-11-21;Mustafa Kaya;64907900320;Hatay;1666,58;333,32;1999,90;20:333.32;Yalnız bin dokuz yüz doksan dokuz lira doksan kuruş
+SNT2025000000542;SP0000563;2025-11-21;Şerife Yılmaz;54476016508;Bartın;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000543;SP0000564;2025-11-21;Berna Elmas;87483948326;Burdur;516,67;103,33;620,00;20:103.33;Yalnız altı yüz yirmi lira
+SNT2025000000544;SP0000565;2025-11-21;Bülent Turgut;81469244020;Kars;5327,13;772,71;6099,84;10:292.73|20:479.98;Yalnız altı bin doksan dokuz lira seksen dört kuruş
+SNT2025000000545;SP0000566;2025-11-21;Koray Akgül;82901086970;Samsun;1591,59;269,23;1860,82;1:2.58|20:266.65;Yalnız bin sekiz yüz altmış lira seksen iki kuruş
+SNT2025000000546;SP0000567;2025-11-21;Gülsüm Karaaslan;89717736884;Eskişehir;109,95;9,00;118,95;1:0.68|20:8.32;Yalnız yüz on sekiz lira doksan beş kuruş
+SNT2025000000547;SP0000568;2025-11-21;Şaban Gümüş;10091185746;Çanakkale;224,83;44,97;269,80;20:44.97;Yalnız iki yüz altmış dokuz lira seksen kuruş
+SNT2025000000548;SP0000569;2025-11-21;Gizem Taş;99997043022;Isparta;816,58;163,32;979,90;20:163.32;Yalnız dokuz yüz yetmiş dokuz lira doksan kuruş
+SNT2025000000549;SP0000570;2025-11-21;Nihat Işık;28749316640;Kahramanmaraş;1225,38;235,68;1461,06;1:0.50|20:235.18;Yalnız bin dört yüz altmış bir lira altı kuruş
+SNT2025000000550;SP0000572;2025-11-22;Turgut Demirel;76904347954;Balıkesir;1980,25;396,05;2376,30;20:396.05;Yalnız iki bin üç yüz yetmiş altı lira otuz kuruş
+SNT2025000000551;SP0000573;2025-11-22;Gülsüm Karaaslan;89717736884;Eskişehir;1086,76;202,20;1288,96;1:0.80|20:201.40;Yalnız bin iki yüz seksen sekiz lira doksan altı kuruş
+SNT2025000000552;SP0000574;2025-11-22;Zekiye Durmuş;49653580224;Malatya;296,63;10,87;307,50;1:2.55|20:8.32;Yalnız üç yüz yedi lira elli kuruş
+SNT2025000000553;SP0000575;2025-11-22;Zerrin Özdemir;27703347980;Amasya;2179,01;217,90;2396,91;10:217.90;Yalnız iki bin üç yüz doksan altı lira doksan bir kuruş
+SNT2025000000554;SP0000576;2025-11-22;Nevzat Bektaş;98931912844;Samsun;510,00;102,00;612,00;20:102.00;Yalnız altı yüz on iki lira
+SNT2025000000555;SP0000577;2025-11-22;Sevim Sağlam;57773390326;Bursa;1053,47;10,53;1064,00;1:10.53;Yalnız bin altmış dört lira
+SNT2025000000556;SP0000578;2025-11-22;Mustafa Kaya;64907900320;Hatay;332,95;46,05;379,00;1:1.08|20:44.97;Yalnız üç yüz yetmiş dokuz lira
+SNT2025000000557;SP0000579;2025-11-22;Rabia Demir;47842889998;Kırıkkale;2985,69;425,61;3411,30;1:1.99|10:133.64|20:289.98;Yalnız üç bin dört yüz on bir lira otuz kuruş
+SNT2025000000558;SP0000580;2025-11-22;Sinan Uysal;39059648734;Karabük;9726,83;1667,89;11394,72;1:7.61|10:132.89|20:1527.39;Yalnız on bir bin üç yüz doksan dört lira yetmiş iki kuruş
+SNT2025000000559;SP0000581;2025-11-23;Gülsüm Kılınç;57937948608;Antalya;10507,59;2085,83;12593,42;1:0.83|20:2085.00;Yalnız on iki bin beş yüz doksan üç lira kırk iki kuruş
+SNT2025000000560;SP0000582;2025-11-23;Sinan Uysal;39059648734;Karabük;3359,93;335,99;3695,92;10:335.99;Yalnız üç bin altı yüz doksan beş lira doksan iki kuruş
+SNT2025000000561;SP0000583;2025-11-23;İrem Çetin;41721961720;Bursa;4667,82;892,18;5560,00;1:2.18|20:890.00;Yalnız beş bin beş yüz altmış lira
+SNT2025000000562;SP0000584;2025-11-23;Veysel Tok;91117685020;Aydın;1145,27;114,53;1259,80;10:114.53;Yalnız bin iki yüz elli dokuz lira seksen kuruş
+SNT2025000000563;SP0000585;2025-11-23;İrem Çetin;41721961720;Bursa;1666,58;333,32;1999,90;20:333.32;Yalnız bin dokuz yüz doksan dokuz lira doksan kuruş
+SNT2025000000564;SP0000586;2025-11-23;Şaban Gümüş;10091185746;Çanakkale;80,66;8,71;89,37;1:0.39|20:8.32;Yalnız seksen dokuz lira otuz yedi kuruş
+SNT2025000000565;SP0000587;2025-11-23;Melis Aydoğan;63295268944;Karaman;1099,75;219,95;1319,70;20:219.95;Yalnız bin üç yüz on dokuz lira yetmiş kuruş
+SNT2025000000566;SP0000588;2025-11-23;Hüseyin Aslan;43099106574;Erzurum;2141,00;428,20;2569,20;20:428.20;Yalnız iki bin beş yüz altmış dokuz lira yirmi kuruş
+SNT2025000000567;SP0000589;2025-11-23;Efe Gül;69403575492;Bayburt;204,67;40,94;245,61;20:40.94;Yalnız iki yüz kırk beş lira altmış bir kuruş
+SNT2025000000568;SP0000590;2025-11-23;Tuncay Tekin;80454952018;Niğde;6746,22;1335,71;8081,93;1:0.71|20:1335.00;Yalnız sekiz bin seksen bir lira doksan üç kuruş
+SNT2025000000569;SP0000591;2025-11-23;Esra Ateş;89019300134;Samsun;217,91;10,08;227,99;1:1.76|20:8.32;Yalnız iki yüz yirmi yedi lira doksan dokuz kuruş
+SNT2025000000570;SP0000592;2025-11-23;Veysel Tok;91117685020;Aydın;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000571;SP0000593;2025-11-23;Gamze Gümüş;52265215132;Çankırı;6892,47;1364,96;8257,43;1:0.71|20:1364.25;Yalnız sekiz bin iki yüz elli yedi lira kırk üç kuruş
+SNT2025000000572;SP0000594;2025-11-24;Büşra Vural;13529721998;Karaman;150,49;9,41;159,90;1:1.09|20:8.32;Yalnız yüz elli dokuz lira doksan kuruş
+SNT2025000000573;SP0000595;2025-11-24;Arda Özkan;90114220548;Kahramanmaraş;1896,50;379,30;2275,80;20:379.30;Yalnız iki bin iki yüz yetmiş beş lira seksen kuruş
+SNT2025000000574;SP0000596;2025-11-24;Ezgi Acar;18930900482;Çankırı;5125,89;997,39;6123,28;1:1.46|20:995.93;Yalnız altı bin yüz yirmi üç lira yirmi sekiz kuruş
+SNT2025000000575;SP0000597;2025-11-24;Gülsüm Karaaslan;89717736884;Eskişehir;6393,67;777,18;7170,85;1:0.80|10:486.40|20:289.98;Yalnız yedi bin yüz yetmiş lira seksen beş kuruş
+SNT2025000000576;SP0000598;2025-11-24;Arda Özkan;90114220548;Kahramanmaraş;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000577;SP0000599;2025-11-24;Gizem Taş;99997043022;Isparta;1737,80;334,03;2071,83;1:0.71|20:333.32;Yalnız iki bin yetmiş bir lira seksen üç kuruş
+SNT2025000000578;SP0000600;2025-11-24;Raziye Sezer;35617118046;Bingöl;88,10;8,79;96,89;1:0.47|20:8.32;Yalnız doksan altı lira seksen dokuz kuruş
+SNT2025000000579;SP0000601;2025-11-25;Mustafa Kaya;64907900320;Hatay;2838,18;558,80;3396,98;1:0.47|20:558.33;Yalnız üç bin üç yüz doksan altı lira doksan sekiz kuruş
+SNT2025000000580;SP0000602;2025-11-25;Turgut Demirel;76904347954;Balıkesir;866,67;173,33;1040,00;20:173.33;Yalnız bin kırk lira
+SNT2025000000581;SP0000603;2025-11-26;Mustafa Kaya;64907900320;Hatay;610,52;79,38;689,90;10:42.73|20:36.65;Yalnız altı yüz seksen dokuz lira doksan kuruş
+SNT2025000000582;SP0000604;2025-11-26;Tamer Aksoy;40594700368;Antalya;456,40;55,20;511,60;1:1.90|20:53.30;Yalnız beş yüz on bir lira altmış kuruş
+SNT2025000000583;SP0000605;2025-11-27;Aslı Demir;78774927304;Mersin;266,50;53,30;319,80;20:53.30;Yalnız üç yüz on dokuz lira seksen kuruş
+SNT2025000000584;SP0000606;2025-11-27;Arda Özkan;90114220548;Kahramanmaraş;150,49;9,41;159,90;1:1.09|20:8.32;Yalnız yüz elli dokuz lira doksan kuruş
+SNT2025000000585;SP0000607;2025-11-27;Turgut Demirel;76904347954;Balıkesir;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000586;SP0000608;2025-11-29;Mustafa Kaya;64907900320;Hatay;468,76;51,04;519,80;10:42.72|20:8.32;Yalnız beş yüz on dokuz lira seksen kuruş
+SNT2025000000587;SP0000609;2025-11-29;Ezgi Acar;18930900482;Çankırı;1545,27;154,53;1699,80;10:154.53;Yalnız bin altı yüz doksan dokuz lira seksen kuruş
+SNT2025000000588;SP0000610;2025-11-30;Gürkan Özyurt;64400726144;Adıyaman;1609,08;160,91;1769,99;10:160.91;Yalnız bin yedi yüz altmış dokuz lira doksan dokuz kuruş
+SNT2025000000589;SP0000611;2025-11-30;Mustafa Kaya;64907900320;Hatay;596,08;90,62;686,70;1:1.09|10:7.90|20:81.63;Yalnız altı yüz seksen altı lira yetmiş kuruş
+SNT2025000000590;SP0000612;2025-11-30;Aslı Demir;78774927304;Mersin;2264,40;275,60;2540,00;10:177.27|20:98.33;Yalnız iki bin beş yüz kırk lira
+SNT2025000000591;SP0000613;2025-11-30;Aslı Demir;78774927304;Mersin;1761,53;334,27;2095,80;1:0.95|20:333.32;Yalnız iki bin doksan beş lira seksen kuruş
+SNT2025000000592;SP0000614;2025-11-30;Gürkan Özyurt;64400726144;Adıyaman;174,91;34,99;209,90;20:34.99;Yalnız iki yüz dokuz lira doksan kuruş
+SNT2025000000593;SP0000615;2025-11-30;Şükran Şahin;41790934748;Gaziantep;3049,78;180,22;3230,00;1:13.86|10:166.36;Yalnız üç bin iki yüz otuz lira
+SNT2025000000594;SP0000616;2025-11-30;Gülsüm Karaaslan;89717736884;Eskişehir;1666,58;333,32;1999,90;20:333.32;Yalnız bin dokuz yüz doksan dokuz lira doksan kuruş
+SNT2025000000595;SP0000617;2025-11-30;Hilal Yalçın;42779181122;Mersin;150,49;9,41;159,90;1:1.09|20:8.32;Yalnız yüz elli dokuz lira doksan kuruş
+SNT2025000000596;SP0000618;2025-12-01;İrem Çetin;41721961720;Bursa;2944,69;330,91;3275,60;1:0.95|10:239.99|20:89.97;Yalnız üç bin iki yüz yetmiş beş lira altmış kuruş
+SNT2025000000597;SP0000619;2025-12-01;Aslı Demir;78774927304;Mersin;1370,19;159,51;1529,70;10:114.53|20:44.98;Yalnız bin beş yüz yirmi dokuz lira yetmiş kuruş
+SNT2025000000598;SP0000621;2025-12-02;Hilal Yalçın;42779181122;Mersin;2399,91;239,99;2639,90;10:239.99;Yalnız iki bin altı yüz otuz dokuz lira doksan kuruş
+SNT2025000000599;SP0000622;2025-12-02;Melis Aydoğan;63295268944;Karaman;611,62;104,28;715,90;1:0.95|20:103.33;Yalnız yedi yüz on beş lira doksan kuruş
+SNT2025000000600;SP0000623;2025-12-02;Şükran Şahin;41790934748;Gaziantep;150,49;9,41;159,90;1:1.09|20:8.32;Yalnız yüz elli dokuz lira doksan kuruş
+SNT2025000000601;SP0000624;2025-12-02;Gülsüm Karaaslan;89717736884;Eskişehir;4972,55;497,25;5469,80;10:497.25;Yalnız beş bin dört yüz altmış dokuz lira seksen kuruş
+SNT2025000000602;SP0000625;2025-12-02;Hüseyin Aslan;43099106574;Erzurum;1666,58;333,32;1999,90;20:333.32;Yalnız bin dokuz yüz doksan dokuz lira doksan kuruş
+SNT2025000000603;SP0000626;2025-12-02;Aslı Demir;78774927304;Mersin;803,71;136,29;940,00;1:1.29|20:135.00;Yalnız dokuz yüz kırk lira
+SNT2025000000604;SP0000627;2025-12-03;Sibel Özkan;43762850858;Konya;2741,56;548,31;3289,87;20:548.31;Yalnız üç bin iki yüz seksen dokuz lira seksen yedi kuruş
+SNT2025000000605;SP0000629;2025-12-03;Nuri Demirci;76191949848;Kahramanmaraş;9260,44;1259,36;10519,80;10:592.73|20:666.63;Yalnız on bin beş yüz on dokuz lira seksen kuruş
+SNT2025000000606;SP0000630;2025-12-04;Zekiye Durmuş;49653580224;Malatya;776,77;69,13;845,90;1:0.95|10:68.18;Yalnız sekiz yüz kırk beş lira doksan kuruş
+SNT2025000000607;SP0000631;2025-12-06;Gülsüm Kılınç;57937948608;Antalya;278,00;10,69;288,69;1:2.37|20:8.32;Yalnız iki yüz seksen sekiz lira altmış dokuz kuruş
+SNT2025000000608;SP0000632;2025-12-08;Selim Bozkurt;42193145908;Şanlıurfa;4299,83;439,97;4739,80;10:419.99|20:19.98;Yalnız dört bin yedi yüz otuz dokuz lira seksen kuruş
+SNT2025000000609;SP0000633;2025-12-08;Aslı Demir;78774927304;Mersin;2858,58;277,31;3135,89;1:0.95|10:276.36;Yalnız üç bin yüz otuz beş lira seksen dokuz kuruş
+SNT2025000000610;SP0000634;2025-12-08;Şükran Özkan;84400981138;Kahramanmaraş;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000611;SP0000635;2025-12-09;Şerife Yılmaz;54476016508;Bartın;1999,64;180,36;2180,00;1:2.18|10:178.18;Yalnız iki bin yüz seksen lira
+SNT2025000000612;SP0000637;2025-12-09;Berna Elmas;87483948326;Burdur;4766,58;533,32;5299,90;10:419.99|20:113.33;Yalnız beş bin iki yüz doksan dokuz lira doksan kuruş
+SNT2025000000613;SP0000638;2025-12-10;Zekiye Yüksel;51806039800;Bilecik;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000614;SP0000639;2025-12-10;Mustafa Kaya;64907900320;Hatay;605,74;6,06;611,80;1:6.06;Yalnız altı yüz on bir lira seksen kuruş
+SNT2025000000615;SP0000641;2025-12-11;Aslı Demir;78774927304;Mersin;3333,17;666,63;3999,80;20:666.63;Yalnız üç bin dokuz yüz doksan dokuz lira seksen kuruş
+SNT2025000000616;SP0000642;2025-12-11;Zekiye Yüksel;51806039800;Bilecik;1866,66;373,33;2239,99;20:373.33;Yalnız iki bin iki yüz otuz dokuz lira doksan dokuz kuruş
+SNT2025000000617;SP0000643;2025-12-11;Raziye Sezer;35617118046;Bingöl;2799,91;559,99;3359,90;20:559.99;Yalnız üç bin üç yüz elli dokuz lira doksan kuruş
+SNT2025000000618;SP0000644;2025-12-11;Nazife Yılmaz;92184708346;Trabzon;444,67;44,02;488,69;1:2.37|20:41.65;Yalnız dört yüz seksen sekiz lira altmış dokuz kuruş
+SNT2025000000619;SP0000645;2025-12-11;Esma Temiz;76326477406;Denizli;2039,73;371,87;2411,60;1:1.90|20:369.97;Yalnız iki bin dört yüz on bir lira altmış kuruş
+SNT2025000000620;SP0000646;2025-12-11;Turgut Demirel;76904347954;Balıkesir;8125,16;1330,63;9455,79;1:0.95|10:276.36|20:1053.32;Yalnız dokuz bin dört yüz elli beş lira yetmiş dokuz kuruş
+SNT2025000000621;SP0000647;2025-12-12;Koray Akgül;82901086970;Samsun;224,83;44,97;269,80;20:44.97;Yalnız iki yüz altmış dokuz lira seksen kuruş
+SNT2025000000622;SP0000648;2025-12-12;Gülsüm Karaaslan;89717736884;Eskişehir;224,83;44,97;269,80;20:44.97;Yalnız iki yüz altmış dokuz lira seksen kuruş
+SNT2025000000623;SP0000649;2025-12-12;Gürkan Özyurt;64400726144;Adıyaman;3188,94;111,05;3299,99;1:27.72|20:83.33;Yalnız üç bin iki yüz doksan dokuz lira doksan dokuz kuruş
+SNT2025000000624;SP0000650;2025-12-13;Hüseyin Aslan;43099106574;Erzurum;2058,33;411,67;2470,00;20:411.67;Yalnız iki bin dört yüz yetmiş lira
+SNT2025000000625;SP0000651;2025-12-14;Gülsüm Karaaslan;89717736884;Eskişehir;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000626;SP0000652;2025-12-15;Sami Keskin;77184902536;Bayburt;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000627;SP0000653;2025-12-15;Gizem Taş;99997043022;Isparta;5561,51;1094,26;6655,77;1:0.95|20:1093.31;Yalnız altı bin altı yüz elli beş lira yetmiş yedi kuruş
+SNT2025000000628;SP0000654;2025-12-16;Şükran Özkan;84400981138;Kahramanmaraş;231,48;10,22;241,70;1:1.90|20:8.32;Yalnız iki yüz kırk bir lira yetmiş kuruş
+SNT2025000000629;SP0000655;2025-12-16;Arda Özkan;90114220548;Kahramanmaraş;424,91;84,98;509,89;20:84.98;Yalnız beş yüz dokuz lira seksen dokuz kuruş
+SNT2025000000630;SP0000656;2025-12-16;Turgut Demirel;76904347954;Balıkesir;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000631;SP0000657;2025-12-16;Sami Keskin;77184902536;Bayburt;1663,64;166,36;1830,00;10:166.36;Yalnız bin sekiz yüz otuz lira
+SNT2025000000632;SP0000658;2025-12-17;Gülşen Aslan;40986320822;Malatya;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000633;SP0000659;2025-12-18;Şeyma Akyüz;81367562592;Ordu;2624,99;525,00;3149,99;20:525.00;Yalnız üç bin yüz kırk dokuz lira doksan dokuz kuruş
+SNT2025000000634;SP0000660;2025-12-18;Ezgi Acar;18930900482;Çankırı;504,03;41,86;545,89;1:0.95|10:40.91;Yalnız beş yüz kırk beş lira seksen dokuz kuruş
+SNT2025000000635;SP0000661;2025-12-18;Aslı Demir;78774927304;Mersin;1875,41;354,39;2229,80;1:1.09|20:353.30;Yalnız iki bin iki yüz yirmi dokuz lira seksen kuruş
+SNT2025000000636;SP0000662;2025-12-19;Melis Aydoğan;63295268944;Karaman;461,45;74,25;535,70;1:0.95|20:73.30;Yalnız beş yüz otuz beş lira yetmiş kuruş
+SNT2025000000637;SP0000663;2025-12-20;Selim Bozkurt;42193145908;Şanlıurfa;911,53;164,27;1075,80;1:0.95|20:163.32;Yalnız bin yetmiş beş lira seksen kuruş
+SNT2025000000638;SP0000664;2025-12-20;Tamer Aksoy;40594700368;Antalya;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000639;SP0000665;2025-12-20;Turgut Demirel;76904347954;Balıkesir;7844,94;1550,95;9395,89;1:0.95|20:1550.00;Yalnız dokuz bin üç yüz doksan beş lira seksen dokuz kuruş
+SNT2025000000640;SP0000666;2025-12-20;Mustafa Kaya;64907900320;Hatay;2572,55;257,25;2829,80;10:257.25;Yalnız iki bin sekiz yüz yirmi dokuz lira seksen kuruş
+SNT2025000000641;SP0000667;2025-12-21;Turgut Demirel;76904347954;Balıkesir;4308,82;421,08;4729,90;1:1.09|10:419.99;Yalnız dört bin yedi yüz yirmi dokuz lira doksan kuruş
+SNT2025000000642;SP0000668;2025-12-21;Mustafa Kaya;64907900320;Hatay;1474,91;294,98;1769,89;20:294.98;Yalnız bin yedi yüz altmış dokuz lira seksen dokuz kuruş
+SNT2025000000643;SP0000669;2025-12-21;Selim Bozkurt;42193145908;Şanlıurfa;14693,75;1506,03;16199,78;10:1432.73|20:73.30;Yalnız on altı bin yüz doksan dokuz lira yetmiş sekiz kuruş
+SNT2025000000644;SP0000670;2025-12-21;Arda Özkan;90114220548;Kahramanmaraş;2607,83;242,07;2849,90;1:2.08|10:239.99;Yalnız iki bin sekiz yüz kırk dokuz lira doksan kuruş
+SNT2025000000645;SP0000671;2025-12-22;Koray Akgül;82901086970;Samsun;150,49;9,41;159,90;1:1.09|20:8.32;Yalnız yüz elli dokuz lira doksan kuruş
+SNT2025000000646;SP0000672;2025-12-23;Şerife Yılmaz;54476016508;Bartın;1666,58;333,32;1999,90;20:333.32;Yalnız bin dokuz yüz doksan dokuz lira doksan kuruş
+SNT2025000000647;SP0000673;2025-12-23;Zerrin Özcan;10654307400;Tunceli;3428,12;667,58;4095,70;1:0.95|20:666.63;Yalnız dört bin doksan beş lira yetmiş kuruş
+SNT2025000000648;SP0000674;2025-12-23;Turgut Demirel;76904347954;Balıkesir;296,03;33,77;329,80;10:25.45|20:8.32;Yalnız üç yüz yirmi dokuz lira seksen kuruş
+SNT2025000000649;SP0000675;2025-12-24;Nuri Demirci;76191949848;Kahramanmaraş;245,44;10,36;255,80;1:2.04|20:8.32;Yalnız iki yüz elli beş lira seksen kuruş
+SNT2025000000650;SP0000676;2025-12-25;Sefa Kılıç;68407965308;Adıyaman;283,24;56,65;339,89;20:56.65;Yalnız üç yüz otuz dokuz lira seksen dokuz kuruş
+SNT2025000000651;SP0000677;2025-12-25;Turgut Demirel;76904347954;Balıkesir;96,04;8,86;104,90;1:0.54|20:8.32;Yalnız yüz dört lira doksan kuruş
+SNT2025000000652;SP0000678;2025-12-25;Gülsüm Kılınç;57937948608;Antalya;319,78;45,92;365,70;1:0.95|20:44.97;Yalnız üç yüz altmış beş lira yetmiş kuruş
+SNT2025000000653;SP0000679;2025-12-26;Gizem Taş;99997043022;Isparta;1849,83;369,97;2219,80;20:369.97;Yalnız iki bin iki yüz on dokuz lira seksen kuruş
+SNT2025000000654;SP0000680;2025-12-26;Sinan Tok;62435337564;Adıyaman;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000655;SP0000681;2025-12-27;Cemal Arslan;17066732462;Amasya;763,18;143,79;906,97;1:0.47|20:143.32;Yalnız dokuz yüz altı lira doksan yedi kuruş
+SNT2025000000656;SP0000682;2025-12-27;Melis Aydoğan;63295268944;Karaman;661,62;114,28;775,90;1:0.95|20:113.33;Yalnız yedi yüz yetmiş beş lira doksan kuruş
+SNT2025000000657;SP0000683;2025-12-28;Esra Ateş;89019300134;Samsun;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000658;SP0000684;2025-12-29;Samet Karakaya;51268321840;Bartın;136,53;9,27;145,80;1:0.95|20:8.32;Yalnız yüz kırk beş lira seksen kuruş
+SNT2025000000659;SP0000685;2025-12-30;Hüseyin Aslan;43099106574;Erzurum;4199,91;419,99;4619,90;10:419.99;Yalnız dört bin altı yüz on dokuz lira doksan kuruş
+SNT2025000000660;SP0000687;2025-12-31;Turgut Demirel;76904347954;Balıkesir;150,49;9,41;159,90;1:1.09|20:8.32;Yalnız yüz elli dokuz lira doksan kuruş
+SNT2025000000661;SP0000688;2025-12-31;Berna Elmas;87483948326;Burdur;350,65;39,23;389,88;10:30.91|20:8.32;Yalnız üç yüz seksen dokuz lira seksen sekiz kuruş
+SNT2025000000662;SP0000689;2025-12-31;Arda Özkan;90114220548;Kahramanmaraş;461,62;74,28;535,90;1:0.95|20:73.33;Yalnız beş yüz otuz beş lira doksan kuruş
+SNT2025000000663;SP0000690;2025-12-31;Cemal Arslan;17066732462;Amasya;4199,91;419,99;4619,90;10:419.99;Yalnız dört bin altı yüz on dokuz lira doksan kuruş
+SNT2025000000664;SP0000691;2025-12-31;Bülent Turgut;81469244020;Kars;411,53;64,27;475,80;1:0.95|20:63.32;Yalnız dört yüz yetmiş beş lira seksen kuruş

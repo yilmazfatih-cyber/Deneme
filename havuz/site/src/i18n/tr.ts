@@ -17,9 +17,9 @@ export const tr = {
     homeLink: '{site} ana sayfası',
   },
   header: {
-    openMenu: 'Menüyü aç',
-    closeMenu: 'Menüyü kapat',
+    menu: 'Menü',
     search: 'Ara',
+    searchShortcut: 'Kısayol: /',
   },
   theme: {
     label: 'Tema',
@@ -49,6 +49,7 @@ export const tr = {
       pricing: 'fiyatlar',
       faq: 'sss',
     },
+    freePlan: 'Ücretsiz',
     popularPlan: 'En çok tercih edilen',
     mockupLabel: 'Örnek ekran: bugünün randevu listesi',
   },
@@ -60,7 +61,8 @@ export const tr = {
     updated: 'Güncellendi: {date}',
     tagsLabel: 'Etiketler',
     tagTitle: '“{tag}” etiketli yazılar',
-    tagDescription: '“{tag}” etiketiyle yayınlanmış bütün blog yazılarımız tek sayfada: {count} yazı, en yeniden eskiye sıralı.',
+    tagDescription:
+      '“{tag}” etiketiyle yayınlanmış bütün blog yazılarımız tek sayfada: {count} yazı, en yeniden eskiye sıralı.',
     allPosts: 'Tüm yazılar',
     related: 'İlgili yazılar',
     pageTitle: 'Blog — Sayfa {page}',

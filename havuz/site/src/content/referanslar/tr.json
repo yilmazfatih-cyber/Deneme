@@ -1,0 +1,19 @@
+{
+  "items": [
+    {
+      "quote": "Telefonla randevu verirken günde bir saatim gidiyordu. Şimdi müşterilerim gece yarısı bile randevu alıyor; ben sabah takvime bakıp güne başlıyorum.",
+      "name": "Gülay Erkan",
+      "role": "Kuaför, Gülay Saç Tasarım"
+    },
+    {
+      "quote": "Hatırlatma iletileri başladıktan sonra boş geçen koltuk saatleri belirgin biçimde azaldı. Bekleme listesi de iptal edilen saatleri kendisi dolduruyor.",
+      "name": "Kerem Aydın",
+      "role": "Diş hekimi, Aydın Ağız ve Diş Sağlığı"
+    },
+    {
+      "quote": "Üç şubemizin takvimini tek ekrandan görüyoruz. Kurulum bir öğleden sonra sürdü; ekibe ayrıca eğitim vermemiz gerekmedi.",
+      "name": "Nihan Özdemir",
+      "role": "İşletme müdürü, Form Pilates Stüdyosu"
+    }
+  ]
+}

@@ -35,7 +35,9 @@ def test_cok_satirli_veri_ve_alanlar():
 
 
 def test_bosluksuz_data_ve_yorumlar():
-    olaylar = _olaylar(": canli tut\n\ndata:bosluksuz\n\n: OPENROUTER PROCESSING\ndata:  iki bosluk\n\n")
+    olaylar = _olaylar(
+        ": canli tut\n\ndata:bosluksuz\n\n: OPENROUTER PROCESSING\ndata:  iki bosluk\n\n"
+    )
     assert [o.veri for o in olaylar] == ["bosluksuz", " iki bosluk"]
 
 
@@ -46,7 +48,10 @@ def test_son_olay_bos_satirsiz_biter():
 
 def test_ndjson_satirlari_olay_sayilir():
     olaylar = _olaylar('{"message": {"content": "a"}, "done": false}\n{"done": true}\n')
-    assert [o.veri for o in olaylar] == ['{"message": {"content": "a"}, "done": false}', '{"done": true}']
+    assert [o.veri for o in olaylar] == [
+        '{"message": {"content": "a"}, "done": false}',
+        '{"done": true}',
+    ]
 
 
 def test_bilinmeyen_alan_ve_ayracsiz_satir_yok_sayilir():

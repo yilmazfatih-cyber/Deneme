@@ -39,7 +39,9 @@ class ModelConfig:
             object.__setattr__(self, "hidden_dim", default_hidden_dim(self.dim))
         for name in ("vocab_size", "dim", "n_layer", "n_head", "n_kv_head", "hidden_dim"):
             if getattr(self, name) < 1:
-                raise ValueError(f"Model ayarı '{name}' en az 1 olmalı; verilen: {getattr(self, name)}.")
+                raise ValueError(
+                    f"Model ayarı '{name}' en az 1 olmalı; verilen: {getattr(self, name)}."
+                )
         if self.max_seq_len < 2:
             raise ValueError("Model ayarı 'max_seq_len' en az 2 olmalı.")
         if self.dim % self.n_head != 0:
@@ -49,7 +51,8 @@ class ModelConfig:
             )
         if self.head_dim % 2 != 0:
             raise ValueError(
-                f"Baş boyutu (dim / n_head = {self.head_dim}) çift olmalı; RoPE boyutları ikişer döndürür."
+                f"Baş boyutu (dim / n_head = {self.head_dim}) çift olmalı; "
+                "RoPE boyutları ikişer döndürür."
             )
         if self.n_head % self.n_kv_head != 0:
             raise ValueError(
@@ -72,7 +75,8 @@ class ModelConfig:
         unknown = sorted(set(data) - known)
         if unknown:
             raise ValueError(
-                f"Bilinmeyen model ayarı: {', '.join(unknown)}. Geçerli ayarlar: {', '.join(sorted(known))}."
+                f"Bilinmeyen model ayarı: {', '.join(unknown)}. "
+                f"Geçerli ayarlar: {', '.join(sorted(known))}."
             )
         if "vocab_size" not in data:
             raise ValueError("Model ayarlarında 'vocab_size' eksik.")

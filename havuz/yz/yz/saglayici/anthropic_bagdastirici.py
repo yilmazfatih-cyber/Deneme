@@ -190,7 +190,9 @@ def _yanit_coz(veri: dict[str, Any]) -> Yanit:
     bloklar = [b for b in veri.get("content") or [] if isinstance(b, dict)]
     metin = "".join(str(b.get("text", "")) for b in bloklar if b.get("type") == "text")
     dusunce = "\n".join(
-        str(b.get("thinking", "")) for b in bloklar if b.get("type") == "thinking" and b.get("thinking")
+        str(b.get("thinking", ""))
+        for b in bloklar
+        if b.get("type") == "thinking" and b.get("thinking")
     )
     cagrilar = [
         AracCagrisi(

@@ -1,0 +1,10 @@
+{"kimlik": "a01", "girdi": "1250 TL tutarın %18'i kaç TL?", "beklenen": 225}
+{"kimlik": "a02", "girdi": "Tanesi 249,90 TL olan 3 ürünün toplam fiyatı kaç TL?", "beklenen": 749.7}
+{"kimlik": "a03", "girdi": "2026-01-01 ile 2026-03-01 arasında kaç gün var?", "beklenen": 59}
+{"kimlik": "a04", "girdi": "Bir kredi 36 ay boyunca aylık 1.850 TL ödeniyor. Toplam ödeme kaç TL?", "beklenen": 66600}
+{"kimlik": "a05", "girdi": "48.000 TL yıllık gelirin aylık karşılığı kaç TL?", "beklenen": 4000}
+{"kimlik": "a06", "girdi": "2024-01-01 ile 2024-12-31 arasında kaç gün var?", "beklenen": 365}
+{"kimlik": "a07", "girdi": "800 TL'lik ürün %25 indirimle kaç TL'ye satılır?", "beklenen": 600}
+{"kimlik": "a08", "girdi": "17 ile 23'ün çarpımına 144'ün karekökünü eklersek kaç olur?", "beklenen": 403}
+{"kimlik": "a09", "girdi": "2025-03-10 ile 2025-04-22 arasında kaç gün var?", "beklenen": 43}
+{"kimlik": "a10", "girdi": "Saatte 72 km hızla giden bir araç 2,5 saatte kaç km yol alır?", "beklenen": 180}

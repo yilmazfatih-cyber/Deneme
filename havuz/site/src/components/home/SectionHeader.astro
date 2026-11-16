@@ -1,0 +1,22 @@
+---
+/**
+ * Ana sayfa bölüm başlığı: küçük etiket + h2 + açıklama. `id`, bölümün aria-labelledby bağı için başlığa verilir.
+ */
+interface Props {
+  id: string
+  eyebrow: string
+  title: string
+  lead?: string | undefined
+  align?: 'start' | 'center'
+}
+
+const { id, eyebrow, title, lead, align = 'start' } = Astro.props
+---
+
+<div class:list={['max-w-2xl', align === 'center' && 'mx-auto text-center']}>
+  <p class="eyebrow">{eyebrow}</p>
+  <h2 id={id} class="display mt-4 text-[clamp(2.1rem,1.4rem+2.6vw,3.2rem)]">
+    {title}
+  </h2>
+  {lead && <p class="mt-5 text-lg text-muted">{lead}</p>}
+</div>

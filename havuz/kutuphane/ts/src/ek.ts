@@ -10,6 +10,10 @@
  *   addSuffix('Shakespeare', 'genitive', { pronunciation: 'şekspir' })   // "Shakespeare'in"
  *   suffixOf('Zonguldak', 'ablative')                   // "tan"   (yalnız ek)
  *
+ * Ek türleri: dative (yönelme -e/-a), locative (bulunma -de/-da/-te/-ta), ablative (ayrılma -den/-tan),
+ * accusative (belirtme -i/-ı/-u/-ü), genitive (tamlayan -in/-nin), instrumental (birliktelik -le/-yla),
+ * plural (çoğul -ler/-lar), possessive (iyelik -i/-si), ordinal (sıra -inci), lik (-lik/-lık), li (-li/-lı).
+ *
  * Nasıl çalışır: Ek, metnin SON SÖZCÜĞÜNÜN OKUNUŞUNA göre seçilir (son ünlü → ünlü uyumu; son ses → kaynaştırma
  * ünsüzü ve d/t). Sayılarda okunuş hesaplanır (2026 → "altı", 40 → "kırk", 1000 → "bin", saat 09.00 → "dokuz",
  * 3,5 → "beş", 3/4 → "üç"). BÜYÜK harfli kısaltmalar harf harf okunur (TDK → "ke" → TDK'nin); sözcük gibi
@@ -18,34 +22,36 @@
  * Sınırlar (bilerek kapsam dışı):
  *  - Cins adlar ve ünsüz yumuşaması (kitap → kitabı, renk → rengi) YOK; bu modül yalnız kesmeyle ayrılan eklere bakar.
  *  - Okunuşu yazımından çıkmayan yabancı adlar ve kısaltmalar için `pronunciation` verin (Bordeaux → 'bordo',
- *    CNN → 'en', BIST → 'bist'). Son hecesi ince okunan adlarda (yerleşik listede olmayan) `front: true` verin.
+ *    CNN İngilizce okunuşla → 'en'). Son hecesi ince okunan, listede olmayan adlarda `front: true` verin.
  *  - Belirtisiz tamlama biçimindeki adlar (… Üniversitesi, Kuşadası) bir sözcük listesinden tanınır ve araya "n"
- *    alır (Üniversitesi'ne). Listede olmayanlar için `compound: true` (ör. Beylerbeyi), yanlış tanınanlar için
- *    `compound: false` verin.
- *  - Noktalı kısaltmalar (vb., Alm.), Roma rakamları ve "3,5" → "üç buçuk" okunuşu desteklenmez.
- *  - Çoğul eki özel adlarda TDK kuralınca kesmesiz yazılır (Ahmetler); sayı ve kısaltmalarda kesmelidir (1990'lar).
+ *    alır (Üniversitesi'ne). Listede olmayanlar için `compound: true`, yanlış tanınanlar için `compound: false` verin.
+ *  - ASCII ile yazılmış büyük I Türkçe kuralla "ı" okunur (BIST → 'bıst'); "İ" kastediliyorsa okunuş verin.
+ *  - Noktalı kısaltmalar (vb., A.Ş.), Roma rakamları ve "3,5" → "üç buçuk" okunuşu desteklenmez. Metni sondaki
+ *    noktalama olmadan verin. Ek her zaman küçük harfle yazılır (BÜYÜK metinde sonucu kendiniz büyütün).
+ *  - Çoğul eki özel adlarda TDK kuralınca kesmesiz yazılır (Ahmetler, Ahmetlere); sayı ve kısaltmalarda kesmelidir.
  *
  * Genişletme: Yeni ek türü `TEMPLATES`'e bir satırdır (A = e/a, I = i/ı/u/ü, D = d/t). Yeni tamlama başı
- * `HEAD_WORDS`'e, ince okunan ad `FRONT_WORDS`'e, birim `UNITS`'e eklenir. Her ekleme için
- * `vektorler/ek.json` dosyasına örnek yazın.
+ * `HEAD_WORDS`'e, ince okunan ad `FRONT_WORDS`'e, birim `UNITS`'e eklenir. Her ekleme için `vektorler/ek.json`
+ * dosyasına örnek yazın; aynı örnek Python eşini de sınar.
  */
 
 export type SuffixKind =
-  | 'dative' // yönelme: -e/-a
-  | 'locative' // bulunma: -de/-da/-te/-ta
-  | 'ablative' // ayrılma: -den/-dan/-ten/-tan
-  | 'accusative' // belirtme: -i/-ı/-u/-ü
-  | 'genitive' // tamlayan: -in/-ın/-un/-ün
-  | 'instrumental' // birliktelik: -le/-la
-  | 'plural' // çoğul: -ler/-lar
-  | 'possessive' // 3. tekil iyelik: -i/-si (%20'si, 5'i)
-  | 'ordinal' // sıra: -inci (8'inci)
-  | 'lik' // -lik (5'lik, %10'luk)
+  | 'dative'
+  | 'locative'
+  | 'ablative'
+  | 'accusative'
+  | 'genitive'
+  | 'instrumental'
+  | 'plural'
+  | 'possessive'
+  | 'ordinal'
+  | 'lik'
+  | 'li'
 
 export interface SuffixOptions {
   /** Okunuş ipucu: sözcüğün Türkçe harflerle okunuşu (yalnız sonu önemlidir). */
   pronunciation?: string
-  /** Son hece ince okunuyorsa `true` (Kemal'e, Seul'ü, saat'e gibi). */
+  /** Son hece ince okunuyorsa `true` (Kemal'e, Seul'ü). */
   front?: boolean
   /** Belirtisiz tamlama mı (… Üniversitesi'ne)? Verilmezse listeden tanınır. */
   compound?: boolean
@@ -57,7 +63,7 @@ export class SuffixError extends Error {
   override name = 'SuffixError'
 }
 
-/** [ünsüzden sonra, ünlüden sonra, iyelikten/tamlamadan sonra] — A: e/a, I: i/ı/u/ü, D: d/t */
+/** [ünsüzden sonra, ünlüden sonra, iyelik/tamlamadan sonra] — A: e/a, I: i/ı/u/ü, D: d/t */
 const TEMPLATES: Record<SuffixKind, readonly [string, string, string]> = {
   dative: ['A', 'yA', 'nA'],
   locative: ['DA', 'DA', 'ndA'],
@@ -69,6 +75,7 @@ const TEMPLATES: Record<SuffixKind, readonly [string, string, string]> = {
   possessive: ['I', 'sI', 'sI'],
   ordinal: ['IncI', 'ncI', 'ncI'],
   lik: ['lIk', 'lIk', 'lIk'],
+  li: ['lI', 'lI', 'lI'],
 }
 
 const VOWELS = 'aeıioöuüâîû'
@@ -78,29 +85,30 @@ const TENS = ['', 'on', 'yirmi', 'otuz', 'kırk', 'elli', 'altmış', 'yetmiş',
 const CURRENCIES: Record<string, string> = { '₺': 'lira', $: 'dolar', '€': 'avro', '£': 'sterlin' }
 const FRONT_OF: Record<string, string> = { a: 'e', ı: 'i', o: 'ö', u: 'ü' }
 const CLOSERS = '.,;:!?)]}"\'\u{201d}\u{2019}\u{bb}'
+const WS = /[ \t\n\r\f\v\u{a0}]+/u
 
-const words = (list: string): Set<string> => new Set(list.split(/\s+/).filter((word) => word !== ''))
+const wordSet = (list: string): Set<string> => new Set(list.split(WS).filter((word) => word !== ''))
 
 /** Son hecesi ince okunan (kalın ünlülü ama ince ek alan) adlar. */
-const FRONT_WORDS = words(`kemal cemal celal bilal hilal nihal zuhal meral şevval iclal ikbal visal zülal resul
-  istiklal alp gökalp seul ziraat saat`)
+const FRONT_WORDS = wordSet(`kemal cemal celal bilal hilal nihal zuhal iclal ikbal visal zülal şevval resul istiklal
+  alp gökalp seul ziraat saat`)
 
-/** Sözcük gibi okunan kısaltmalarda kabul edilen çift ünsüzlü bitişler (TÜRK, SWIFT…). */
-const CODAS = words(`lt lk lp lç lf ls rt rk rp rç rs rş rf rz rm rn rd nt nk nç ns nd ng mp st sk sp şt şk ft ht
+/** Sözcük gibi okunan kısaltmalarda kabul edilen çift ünsüzlü bitişler (TÜRK, BIST…). */
+const CODAS = wordSet(`lt lk lp lç lf ls rt rk rp rç rs rş rf rz rm rn rd nt nk nç ns nd ng mp st sk sp şt şk ft ht
   kt ks ps yt yk yp vk zm`)
 
 /** Birimler ve okunuşları (TDK: küçük harfli kısaltmalara ek, okunuşa göre gelir). */
 const UNITS = new Map<string, string>(
   `mm:milimetre cm:santimetre dm:desimetre m:metre km:kilometre m²:metrekare m2:metrekare km²:kilometrekare
-  km2:kilometrekare m³:metreküp m3:metreküp g:gram gr:gram mg:miligram kg:kilogram t:ton l:litre lt:litre L:litre
-  ml:mililitre mL:mililitre cl:santilitre sn:saniye dk:dakika sa:saat kr:kuruş kWh:kilovatsaat kW:kilovat W:vat
-  V:volt Hz:hertz KB:kilobayt MB:megabayt GB:gigabayt TB:terabayt ha:hektar da:dekar px:piksel °C:derece °:derece`
-    .split(/\s+/)
+  km2:kilometrekare m³:metreküp m3:metreküp g:gram gr:gram mg:miligram kg:kilogram t:ton l:litre lt:litre
+  ml:mililitre mL:mililitre cl:santilitre sn:saniye dk:dakika sa:saat kr:kuruş kWh:kilovatsaat kW:kilovat
+  Hz:hertz KB:kilobayt MB:megabayt GB:gigabayt TB:terabayt ha:hektar da:dekar px:piksel °C:derece °:derece`
+    .split(WS)
     .map((pair) => pair.split(':') as [string, string]),
 )
 
 /** Son sözcük bunlardan biriyse ad belirtisiz tamlamadır: "Ege Üniversitesi" → Üniversitesi'ne. */
-const HEAD_WORDS = words(`üniversitesi fakültesi enstitüsü yüksekokulu lisesi okulu ilkokulu ortaokulu koleji
+const HEAD_WORDS = wordSet(`üniversitesi fakültesi enstitüsü yüksekokulu lisesi okulu ilkokulu ortaokulu koleji
   akademisi kütüphanesi müzesi hastanesi kliniği eczanesi bankası bakanlığı başkanlığı cumhurbaşkanlığı müdürlüğü
   müsteşarlığı valiliği kaymakamlığı belediyesi muhtarlığı meclisi mahkemesi savcılığı barosu kurumu kurulu
   kuruluşu derneği vakfı odası birliği federasyonu konfederasyonu sendikası partisi cumhuriyeti devleti devletleri
@@ -119,11 +127,11 @@ const HEAD_WORDS = words(`üniversitesi fakültesi enstitüsü yüksekokulu lise
   kralı kraliçesi oğlu başı önü üstü ağzı suyu deresi gücü`)
 
 /** Bitişik yazılan adlarda sözcüğün SONU bunlardan biriyse tamlamadır: Kuşadası, Zeytinburnu, Davutoğlu. */
-const HEAD_ENDINGS = `oğlu adası burnu başı önü altı üstü ağzı dağı gölü pazarı hisarı limanı yolu boğazı deresi
-  suyu tepesi kapısı kalesi köprüsü birliği gücü başkanı`.split(/\s+/)
+const HEAD_ENDINGS = `oğlu adası burnu başı önü üstü ağzı dağı gölü pazarı hisarı limanı yolu boğazı deresi suyu
+  tepesi kapısı kalesi köprüsü birliği gücü başkanı`.split(WS)
 
 /** Tamlama gibi görünen ama kalıplaşmış, ek alırken düz ad gibi davranan adlar. */
-const NOT_COMPOUND = words('inönü')
+const NOT_COMPOUND = wordSet('inönü')
 
 interface Ending {
   vowel: string
@@ -131,7 +139,15 @@ interface Ending {
   voiceless: boolean
 }
 
-type TokenKind = 'word' | 'number' | 'abbreviation' | 'unit'
+interface Source {
+  kind: 'word' | 'number' | 'abbreviation' | 'unit'
+  reading: string
+  word: string
+}
+
+function strip(text: string): string {
+  return text.replace(/^[ \t\n\r\f\v\u{a0}]+|[ \t\n\r\f\v\u{a0}]+$/gu, '')
+}
 
 function lowerTr(text: string): string {
   return text
@@ -145,22 +161,23 @@ function upperTr(text: string): string {
   return text.replace(/i/g, 'İ').replace(/ı/g, 'I').toUpperCase() // harf: i/ı önce elle çevrildi
 }
 
-function lettersOf(text: string): string[] {
-  return Array.from(text).filter((ch) => /\p{L}/u.test(ch))
-}
-
 function endingOf(reading: string, front: boolean): Ending {
-  const letters = lettersOf(reading)
+  const letters = Array.from(reading).filter((ch) => /\p{L}/u.test(ch))
   const last = letters[letters.length - 1] ?? ''
   let vowel = [...letters].reverse().find((ch) => VOWELS.includes(ch)) ?? 'e'
   vowel = vowel === 'â' ? 'a' : vowel === 'î' ? 'i' : vowel === 'û' ? 'u' : vowel
   if (front) vowel = FRONT_OF[vowel] ?? vowel
-  return { vowel, endsWithVowel: VOWELS.includes(last) && last !== '', voiceless: VOICELESS.includes(last) && last !== '' }
+  return {
+    vowel,
+    endsWithVowel: last !== '' && VOWELS.includes(last),
+    voiceless: last !== '' && VOICELESS.includes(last),
+  }
 }
 
 function render(template: string, ending: Ending): string {
-  const a = 'eiöü'.includes(ending.vowel) ? 'e' : 'a'
-  const i = 'aı'.includes(ending.vowel) ? 'ı' : 'ou'.includes(ending.vowel) ? 'u' : 'öü'.includes(ending.vowel) ? 'ü' : 'i'
+  const v = ending.vowel
+  const a = 'eiöü'.includes(v) ? 'e' : 'a'
+  const i = 'aı'.includes(v) ? 'ı' : 'ou'.includes(v) ? 'u' : 'öü'.includes(v) ? 'ü' : 'i'
   return template
     .replace(/A/g, a)
     .replace(/I/g, i)
@@ -204,31 +221,33 @@ function abbreviationReading(lower: string): string {
 
 function numericReading(chunk: string): string | null {
   for (const [symbol, name] of Object.entries(CURRENCIES)) {
-    if (chunk.includes(symbol) && (/\d/.test(chunk) || chunk === symbol)) return name
+    if (chunk.includes(symbol) && (/[0-9]/.test(chunk) || chunk === symbol)) return name
   }
   const plain = chunk.replace(/%/g, '')
-  const time = /^(\d{1,2})[.:](\d{2})$/.exec(plain)
+  const time = /^([0-9]{1,2})[.:]([0-9]{2})$/.exec(plain)
   if (time) return numberWord(time[2] === '00' ? (time[1] ?? '') : (time[2] ?? ''))
-  const fraction = /^(\d+)\/(\d+)$/.exec(plain)
+  const fraction = /^([0-9]+)\/([0-9]+)$/.exec(plain)
   if (fraction) return numberWord(fraction[1] ?? '')
-  const trailing = /(\d[\d.]*)(?:,(\d+))?$/.exec(plain)
+  const trailing = /([0-9][0-9.]*)(?:,([0-9]+))?$/.exec(plain)
   if (!trailing) return null
   return numberWord(trailing[2] ?? (trailing[1] ?? '').replace(/\./g, ''))
 }
 
-function classify(text: string): { kind: TokenKind; reading: string; word: string } {
-  let chunk = text.normalize('NFC').trim().split(/\s+/).pop() ?? ''
-  while (chunk.length > 1 && CLOSERS.includes(chunk.slice(-1))) chunk = chunk.slice(0, -1)
-  const unit = UNITS.get(chunk) ?? UNITS.get(chunk.replace(/^[\d.,+\-%]+/, ''))
+function classify(text: string): Source {
+  const parts = strip(text.normalize('NFC')).split(WS)
+  let chunk = parts[parts.length - 1] ?? ''
+  while (Array.from(chunk).length > 1 && CLOSERS.includes(chunk.slice(-1))) chunk = chunk.slice(0, -1)
+  const unit = UNITS.get(chunk) ?? UNITS.get(chunk.replace(/^[0-9.,+\-%]+/, ''))
   if (unit !== undefined) return { kind: 'unit', reading: unit, word: '' }
   const numeric = numericReading(chunk)
   if (numeric !== null) return { kind: 'number', reading: numeric, word: '' }
   const token = /\p{L}+$/u.exec(chunk)?.[0] ?? ''
   if (token === '') throw new SuffixError(`"${text}" içinde ek getirilecek harf ya da rakam bulunamadı.`)
   const lower = lowerTr(token)
-  const allCaps = token === upperTr(token) && token !== lower
   if (Array.from(token).length === 1) return { kind: 'abbreviation', reading: letterName(lower), word: '' }
-  if (allCaps) return { kind: 'abbreviation', reading: abbreviationReading(lower), word: '' }
+  if (token === upperTr(token) && token !== lower) {
+    return { kind: 'abbreviation', reading: abbreviationReading(lower), word: '' }
+  }
   if (!Array.from(lower).some((ch) => VOWELS.includes(ch))) {
     return { kind: 'abbreviation', reading: letterName(lower.slice(-1)), word: '' }
   }
@@ -239,7 +258,7 @@ function isCompound(text: string, word: string): boolean {
   if (word === '' || NOT_COMPOUND.has(word)) return false
   if (HEAD_WORDS.has(word)) return true
   if (HEAD_ENDINGS.some((head) => word.length > head.length && word.endsWith(head))) return true
-  if (!/\s/.test(text.trim())) return false
+  if (!WS.test(strip(text))) return false
   const pluralPossessive = /^(.{3,})(ları|leri)$/u.exec(word) // Kaz Dağları, Türk Hava Yolları
   if (!pluralPossessive) return false
   const stemIsFront = 'eiöü'.includes(endingOf(pluralPossessive[1] ?? '', false).vowel)
@@ -247,22 +266,27 @@ function isCompound(text: string, word: string): boolean {
 }
 
 function isFront(reading: string): boolean {
-  const last = reading.trim().split(/\s+/).pop() ?? ''
+  const parts = strip(reading).split(WS)
+  const last = parts[parts.length - 1] ?? ''
   return FRONT_WORDS.has(last) || last.endsWith('saat') || /[âû]l$/.test(last)
 }
 
 /** Ekin seçilmesinde kullanılan okunuşu verir: "2026" → "altı", "TDK" → "ke", "Ankara" → "ankara". */
 export function readingForSuffix(text: string, options: SuffixOptions = {}): string {
-  const hint = options.pronunciation?.trim() ?? ''
+  const hint = strip(options.pronunciation ?? '')
   if (hint !== '') return wordReading(lowerTr(hint))
-  if (text.trim() === '') throw new SuffixError('Ek getirilecek metin boş olamaz.')
+  if (strip(text) === '') throw new SuffixError('Ek getirilecek metin boş olamaz.')
   return classify(text).reading
 }
 
-function resolve(text: string, kinds: SuffixKind | readonly SuffixKind[], options: SuffixOptions) {
-  const list = typeof kinds === 'string' ? [kinds] : kinds
+function resolve(
+  text: string,
+  kinds: SuffixKind | readonly SuffixKind[],
+  options: SuffixOptions,
+): { suffix: string; apostrophe: string } {
+  const list: readonly string[] = typeof kinds === 'string' ? [kinds] : kinds
   if (list.length === 0) throw new SuffixError('En az bir ek türü verin (örnek: "dative").')
-  if (text.trim() === '') throw new SuffixError('Ek getirilecek metin boş olamaz.')
+  if (strip(text) === '') throw new SuffixError('Ek getirilecek metin boş olamaz.')
   const source = classify(text)
   const reading = readingForSuffix(text, options)
   let ending = endingOf(reading, options.front ?? isFront(reading))
@@ -270,8 +294,11 @@ function resolve(text: string, kinds: SuffixKind | readonly SuffixKind[], option
   let suffix = ''
   for (const kind of list) {
     const template = (TEMPLATES as Record<string, readonly [string, string, string] | undefined>)[kind]
-    if (!template) throw new SuffixError(`Bilinmeyen ek türü: "${kind}". Geçerli türler: ${Object.keys(TEMPLATES).join(', ')}.`)
+    if (template === undefined) {
+      throw new SuffixError(`Bilinmeyen ek türü: "${kind}". Geçerli türler: ${Object.keys(TEMPLATES).join(', ')}.`)
+    }
     const part = render(pronominal ? template[2] : ending.endsWithVowel ? template[1] : template[0], ending)
+    if (suffix.endsWith('k') && VOWELS.includes(part[0] ?? '')) suffix = `${suffix.slice(0, -1)}ğ` // 5'liğe
     suffix += part
     ending = endingOf(part, false)
     pronominal = kind === 'possessive' // iyelik ekinden sonra araya "n" girer: %20'sini
@@ -286,7 +313,11 @@ export function suffixOf(text: string, kinds: SuffixKind | readonly SuffixKind[]
 }
 
 /** Metne kesme işaretiyle ek getirir: addSuffix('İzmir', 'dative') → "İzmir'e". */
-export function addSuffix(text: string, kinds: SuffixKind | readonly SuffixKind[], options: SuffixOptions = {}): string {
+export function addSuffix(
+  text: string,
+  kinds: SuffixKind | readonly SuffixKind[],
+  options: SuffixOptions = {},
+): string {
   const { suffix, apostrophe } = resolve(text, kinds, options)
-  return text.trimEnd() + apostrophe + suffix
+  return text.replace(/[ \t\n\r\f\v\u{a0}]+$/u, '') + apostrophe + suffix
 }

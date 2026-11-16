@@ -91,7 +91,9 @@ class Ayarlar(BaseModel):
             )
         if secilen not in self.saglayicilar:
             mevcut = ", ".join(sorted({*self.saglayicilar, "sahte"}))
-            raise AyarHatasi(f"`{secilen}` adlı sağlayıcı profili yok. Tanımlı profiller: {mevcut}.")
+            raise AyarHatasi(
+                f"`{secilen}` adlı sağlayıcı profili yok. Tanımlı profiller: {mevcut}."
+            )
         return secilen, self.saglayicilar[secilen]
 
 
@@ -128,9 +130,7 @@ def ayarlari_yukle(
     try:
         ayarlar = Ayarlar.model_validate(ham)
     except ValidationError as hata:
-        satirlar = [
-            f"  - {'.'.join(str(p) for p in h['loc'])}: {h['msg']}" for h in hata.errors()
-        ]
+        satirlar = [f"  - {'.'.join(str(p) for p in h['loc'])}: {h['msg']}" for h in hata.errors()]
         raise AyarHatasi(
             f"{dosya or 'ayarlar'} hatalı:\n" + "\n".join(satirlar) + f"\nÖrnek için: {ORNEK_DOSYA}"
         ) from hata

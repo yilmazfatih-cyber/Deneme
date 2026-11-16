@@ -1,0 +1,30 @@
+# Sentetik talimat/yanıt üretimi (sohbet verisi). Öğretmen: Ollama'da çalışan açık bir model.
+#   1) ollama pull qwen3:8b      2) ollama serve      3) aşağıdaki komut
+#   python -m ince_ayar sohbet uret --ayar yapilandirma/uret/talimat.toml --sinir 2
+# LİSANS: Üretilen veri öğretmenin lisansına tabidir. Ticari kullanım için öğretmenin lisansı
+# buna izin vermelidir (Apache-2.0/MIT gibi). Katalogda "ticari = hayir" olan modeli seçmeyin.
+tarif = "talimat"
+girdi = "ornekler/tohumlar.jsonl"
+cikti = "veri/uretilen-talimat.jsonl"
+ornek_sayisi = 3
+tohum = 42
+sistem_istemi = ""
+
+[ogretmen]
+uc_nokta = "http://localhost:11434/v1"
+model = "qwen3:8b"
+lisans = "apache-2.0"
+katalog_kimligi = "Qwen/Qwen3-8B"
+sicaklik = 0.7
+azami_belirtec = 2048
+zaman_asimi = 300.0
+yeniden_deneme = 3
+
+[suzgec]
+en_kisa_alan = 3
+en_uzun_alan = 2000
+dil = "tr"
+turkce_esik = 0.5
+yineleme_esigi = 0.85
+ret_suzgeci = true
+mevcut_veri = []

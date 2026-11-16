@@ -1,0 +1,13 @@
+---
+/** Blog post (English): /en/blog/<slug>/. Content: src/content/blog/en/. View: src/views/PostView.astro. */
+import type { GetStaticPaths, InferGetStaticPropsType } from 'astro'
+import { postPaths } from '../../../lib/static-paths.ts'
+import PostView from '../../../views/PostView.astro'
+
+export const getStaticPaths = (() => postPaths('en')) satisfies GetStaticPaths
+type Props = InferGetStaticPropsType<typeof getStaticPaths>
+
+const { post } = Astro.props as Props
+---
+
+<PostView post={post} />

@@ -1,0 +1,76 @@
+{
+  "hero": {
+    "eyebrow": "New: reminders on WhatsApp",
+    "title": "Fill the calendar, quiet the phone.",
+    "lead": "Sedir lets your customers book their own appointments around the clock, sends the reminders and offers cancelled slots to your waiting list. You get on with your work.",
+    "primary": { "label": "Try free for 14 days", "href": "/en/contact/" },
+    "secondary": { "label": "How it works", "href": "/en/#how-it-works" },
+    "note": "No credit card needed, set-up takes ten minutes.",
+    "mockup": {
+      "subtitle": "Tuesday, 17 November",
+      "title": "Today’s appointments",
+      "badge": "6 bookings",
+      "items": [
+        { "time": "09:30", "name": "Deniz Aksoy", "service": "Haircut", "status": "Confirmed", "tone": "brand" },
+        { "time": "10:15", "name": "Mert Yalçın", "service": "Beard trim", "status": "Reminded", "tone": "accent" },
+        {
+          "time": "11:00",
+          "name": "Selin Toprak",
+          "service": "Colour and blow-dry",
+          "status": "Confirmed",
+          "tone": "brand"
+        },
+        { "time": "13:30", "name": "Burak Güneş", "service": "Haircut", "status": "New", "tone": "neutral" }
+      ],
+      "footer": "8 reminders are queued for tomorrow.",
+      "stat": { "value": "24/7", "label": "online booking, holidays included" }
+    }
+  },
+  "features": {
+    "eyebrow": "Features",
+    "title": "Everything about bookings, on one calm screen.",
+    "lead": "Calendar, reminders, waiting list and payments know about each other; you never type the same thing twice."
+  },
+  "steps": {
+    "eyebrow": "How it works",
+    "title": "Take your first booking in three steps.",
+    "lead": "No technical skills needed. If you get stuck, our team joins you on a screen share.",
+    "items": [
+      {
+        "title": "Add your services",
+        "text": "Enter service names, durations and prices, then mark your opening hours and breaks."
+      },
+      {
+        "title": "Share your link",
+        "text": "Add your personal booking page to your Instagram profile, your Google business listing and your website."
+      },
+      {
+        "title": "Watch the bookings arrive",
+        "text": "New appointments land in your calendar; Sedir sends the reminders while you focus on your work."
+      }
+    ]
+  },
+  "testimonials": {
+    "eyebrow": "Testimonials",
+    "title": "Businesses that put the phone down.",
+    "lead": "From hair salons to dental clinics, from one-person studios to three-branch businesses."
+  },
+  "pricing": {
+    "eyebrow": "Pricing",
+    "title": "Pay as you grow.",
+    "lead": "Free if you work on your own. When your team grows, switch plans with a single click.",
+    "note": "Prices exclude VAT. Pay yearly and get two months free; cancel in any month."
+  },
+  "faq": {
+    "eyebrow": "FAQ",
+    "title": "Questions you may have",
+    "lead": "If your question is not answered here, write to us; we reply within one business day.",
+    "contact": { "label": "Ask us", "href": "/en/contact/" }
+  },
+  "cta": {
+    "title": "Your first booking is ten minutes away.",
+    "lead": "Try every feature free for 14 days. If it is not for you, you pay nothing.",
+    "primary": { "label": "Start free", "href": "/en/contact/" },
+    "secondary": { "label": "See pricing", "href": "/en/#pricing" }
+  }
+}

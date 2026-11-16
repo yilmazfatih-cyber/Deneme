@@ -1,0 +1,47 @@
+{
+  "modul": "metin",
+  "aciklama": "metin modülünün iki dilde ortak sınama vektörleri.",
+  "islevler": {
+    "truncate": [
+      { "girdi": ["Türkiye Büyük Millet Meclisi", 20], "cikti": "Türkiye Büyük…" },
+      { "girdi": ["abcdefghij", 5], "cikti": "abcd…" },
+      { "girdi": ["kısa", 10], "cikti": "kısa" },
+      { "girdi": ["Merhaba, dünya güzel", 12], "cikti": "Merhaba…" },
+      { "girdi": ["abc", 1], "cikti": "…" },
+      { "girdi": ["ai\u0307b", 3], "cikti": "a…", "not": "i + birleşik nokta bölünmez" },
+      { "girdi": ["abcdefghij", 6], "secenek": { "ellipsis": "...", "wordBoundary": false }, "cikti": "abc..." },
+      { "girdi": ["abc", -1], "hata": true }
+    ],
+    "wrap": [
+      { "girdi": ["Bir iki üç dört beş altı yedi", 10], "cikti": ["Bir iki üç", "dört beş", "altı yedi"] },
+      { "girdi": ["çokuzunbirsözcük var", 5], "cikti": ["çokuz", "unbir", "sözcü", "k var"] },
+      { "girdi": ["a\n\nb", 5], "cikti": ["a", "", "b"] },
+      { "girdi": ["x", 0], "hata": true }
+    ],
+    "wordCount": [
+      { "girdi": ["Ankara'ya e-posta gönderdim."], "cikti": 3 },
+      { "girdi": ["  "], "cikti": 0 },
+      { "girdi": ["3,5 kg — 'merhaba' dedi"], "cikti": 5 },
+      { "girdi": ["İstanbul’da 2026 yılında"], "cikti": 3 }
+    ],
+    "readingTime": [
+      { "girdi": ["söz "], "cikti": 1 },
+      { "girdi": [""], "cikti": 0 },
+      { "girdi": ["a b c d"], "secenek": { "wordsPerMinute": 2 }, "cikti": 2 }
+    ],
+    "escapeHtml": [{ "girdi": ["<a href=\"x\">Ali & Veli'nin</a>"], "cikti": "&lt;a href=&quot;x&quot;&gt;Ali &amp; Veli&#39;nin&lt;/a&gt;" }],
+    "normalizeWhitespace": [{ "girdi": ["  çok   boşluklu \t\n metin  "], "cikti": "çok boşluklu metin" }],
+    "fillTemplate": [
+      {
+        "girdi": ["Merhaba {ad}, {{kod}}: {sipariş.no} {oran} {aktif}", { "ad": "Ayşe", "sipariş": { "no": 42 }, "oran": 1.5, "aktif": true }],
+        "cikti": "Merhaba Ayşe, {kod}: 42 1.5 true"
+      },
+      { "girdi": ["{ ad }", { "ad": "boşluklu ad" }], "cikti": "boşluklu ad" },
+      { "girdi": ["Merhaba {ad}", {}], "hata": true },
+      { "girdi": ["Merhaba {ad}", {}], "secenek": { "missing": "keep" }, "cikti": "Merhaba {ad}" },
+      { "girdi": ["Merhaba {ad}", {}], "secenek": { "missing": "empty" }, "cikti": "Merhaba " },
+      { "girdi": ["{x}", { "x": [1, 2] }], "hata": true },
+      { "girdi": ["{x}", { "x": 2.0 }], "cikti": "2" }
+    ]
+  }
+}

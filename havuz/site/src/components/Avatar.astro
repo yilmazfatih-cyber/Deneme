@@ -1,0 +1,31 @@
+---
+/**
+ * Baş harfli yuvarlak avatar (fotoğraf gerektirmez): "Elif Aydın" → "EA". Süs amaçlıdır; adı yanında yazın.
+ */
+import { upperFor } from '../lib/text.ts'
+
+interface Props {
+  name: string
+  lang: string
+  size?: 'sm' | 'md' | 'lg'
+}
+
+const { name, lang, size = 'md' } = Astro.props
+const initials = name
+  .split(/\s+/u)
+  .filter((part) => part !== '')
+  .map((part) => [...part][0] ?? '')
+  .slice(0, 2)
+  .join('')
+const dimension = { sm: 'size-9 text-sm', md: 'size-11 text-base', lg: 'size-16 text-xl' }[size]
+---
+
+<span
+  class:list={[
+    'inline-flex shrink-0 items-center justify-center rounded-full border border-brand-line bg-brand-soft font-semibold text-brand-ink',
+    dimension,
+  ]}
+  aria-hidden="true"
+>
+  {upperFor(initials, lang)}
+</span>

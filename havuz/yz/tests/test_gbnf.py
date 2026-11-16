@@ -40,7 +40,9 @@ def _yaz(deger: object) -> str:
 
 
 def test_esleyicinin_kendisi_dogru_calisir():
-    d = Dilbilgisi('root ::= "a" [0-9]+ ("," ws [^x\\n])* k?\nws ::= " "?\nk ::= "\\"s\\"" | "son"\n')
+    d = Dilbilgisi(
+        'root ::= "a" [0-9]+ ("," ws [^x\\n])* k?\nws ::= " "?\nk ::= "\\"s\\"" | "son"\n'
+    )
     for metin in ["a1", "a12,b", "a1, b,c", 'a9"s"', "a9son"]:
         assert d.eslesir(metin), metin
     for metin in ["", "a", "b1", "a1,x", "a1,,b", "a1son!", "a1,\n"]:
@@ -57,7 +59,10 @@ def test_fatura_semasi_gecerli_ornekleri_kabul_eder():
         "toplam": 1250.5,
         "odendi": False,
         "not_": None,
-        "kalemler": [{"ad": 'Kalem "özel" baskı', "adet": 2, "birim_fiyat": 12.25}, {"ad": "Defter\n", "adet": 1, "birim_fiyat": -3e2}],
+        "kalemler": [
+            {"ad": 'Kalem "özel" baskı', "adet": 2, "birim_fiyat": 12.25},
+            {"ad": "Defter\n", "adet": 1, "birim_fiyat": -3e2},
+        ],
     }
     assert d.eslesir(_yaz(ornek))
     assert d.eslesir(json.dumps(ornek, separators=(",", ":")))  # boşluksuz yazım
@@ -120,7 +125,9 @@ def test_serbest_semalar_ve_ozel_durumlar():
     for deger in [{"a": [1, "b", None, True, {"c": 1.5}]}, [], "düz", 3, None]:
         assert herhangi.eslesir(_yaz(deger))
     assert not herhangi.eslesir("{a: 1}")
-    en_az_bir = Dilbilgisi(semadan_gbnf({"type": "array", "items": {"type": "integer"}, "minItems": 1}))
+    en_az_bir = Dilbilgisi(
+        semadan_gbnf({"type": "array", "items": {"type": "integer"}, "minItems": 1})
+    )
     assert en_az_bir.eslesir("[1, 2]") and not en_az_bir.eslesir("[]")
     cok_tipli = Dilbilgisi(semadan_gbnf({"type": ["string", "null"]}))
     assert cok_tipli.eslesir('"x"') and cok_tipli.eslesir("null") and not cok_tipli.eslesir("1")
@@ -137,7 +144,9 @@ def test_kural_adlari_gbnf_kuralina_uyar():
             "Müşteri_Adı": {"$ref": "#/$defs/İletişimBilgisi"},
             "2.adres": {"type": "array", "items": {"enum": ["ev", "iş"]}},
         },
-        "$defs": {"İletişimBilgisi": {"type": "object", "properties": {"e-posta": {"type": "string"}}}},
+        "$defs": {
+            "İletişimBilgisi": {"type": "object", "properties": {"e-posta": {"type": "string"}}}
+        },
     }
     gbnf = semadan_gbnf(sema)
     for satir in gbnf.strip().splitlines():

@@ -1,0 +1,7 @@
+{
+  "name": "dil-modeli-tarayici",
+  "private": true,
+  "description": "Bağımlılıksız tarayıcı çalışma zamanı. main: `node --test tarayici/` klasörün giriş dosyasını çalıştırır; o da bütün testleri içe aktarır.",
+  "type": "module",
+  "main": "testler.js"
+}

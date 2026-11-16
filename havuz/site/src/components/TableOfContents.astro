@@ -1,0 +1,92 @@
+---
+/**
+ * İçindekiler: Markdown başlıklarından (h2, h3) bağlantı listesi. Kenar çubuğunda okunan bölümü vurgular
+ * (src/scripts/toc.ts). `collapsible` verilirse mobil için açılır-kapanır <details> olarak çizilir (JS gerekmez).
+ */
+import type { MarkdownHeading } from 'astro'
+import Icon from './Icon.astro'
+
+interface Props {
+  headings: MarkdownHeading[]
+  title: string
+  collapsible?: boolean
+  class?: string
+}
+
+const { headings, title, collapsible = false, class: className } = Astro.props
+const items = headings.filter((heading) => heading.depth === 2 || heading.depth === 3)
+---
+
+{items.length > 1 &&
+  (collapsible ? (
+    <details class:list={['toc-mobile card px-4 py-1', className]} data-search-ignore>
+      <summary class="flex min-h-11 cursor-pointer items-center justify-between gap-3 font-semibold">
+        {title}
+        <span class="toc-chevron inline-flex text-muted">
+          <Icon name="chevron-down" size={18} />
+        </span>
+      </summary>
+      <nav aria-label={title} class="pb-3">
+        <ul class="grid gap-1 text-[0.95rem]">
+          {items.map((heading) => (
+            <li class:list={[heading.depth === 3 && 'pl-4']}>
+              <a href={`#${heading.slug}`} class="inline-flex min-h-9 items-center text-muted hover:text-ink">
+                {heading.text}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </details>
+  ) : (
+    <nav aria-label={title} class:list={['toc text-sm', className]} data-toc data-search-ignore>
+      <p class="mb-3 font-semibold" aria-hidden="true">
+        {title}
+      </p>
+      <ul class="grid gap-0.5 border-l border-line">
+        {items.map((heading) => (
+          <li>
+            <a
+              href={`#${heading.slug}`}
+              class:list={['toc-link block py-1.5 text-muted hover:text-ink', heading.depth === 3 ? 'pl-7' : 'pl-4']}
+            >
+              {heading.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  ))}
+
+<style>
+  .toc-link {
+    margin-left: -1px;
+    border-left: 2px solid transparent;
+  }
+
+  .toc-link[aria-current='true'] {
+    border-left-color: var(--brand-ink);
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .toc-mobile summary {
+    list-style: none;
+  }
+
+  .toc-mobile summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .toc-chevron {
+    transition: transform 150ms ease;
+  }
+
+  .toc-mobile[open] .toc-chevron {
+    transform: rotate(180deg);
+  }
+</style>
+
+<script>
+  import '../scripts/toc.ts'
+</script>

@@ -14,7 +14,17 @@ _BELIRTEC = re.compile(
     r'\s*(?:(?P<sabit>"(?:[^"\\]|\\.)*")|(?P<sinif>\[(?:[^\]\\]|\\.)*\])|(?P<ad>[a-z][a-z0-9-]*)'
     r"|(?P<isaret>::=|[()|?*+]))"
 )
-_KACIS = {"n": "\n", "t": "\t", "r": "\r", '"': '"', "\\": "\\", "]": "]", "[": "[", "-": "-", "^": "^"}
+_KACIS = {
+    "n": "\n",
+    "t": "\t",
+    "r": "\r",
+    '"': '"',
+    "\\": "\\",
+    "]": "]",
+    "[": "[",
+    "-": "-",
+    "^": "^",
+}
 
 
 def _coz(ham: str) -> str:
@@ -54,7 +64,9 @@ class Dilbilgisi:
             if not satir.strip() or satir.lstrip().startswith("#"):
                 continue
             ad, _, govde = satir.partition("::=")
-            belirtecler = [m.lastgroup + ":" + m.group(m.lastgroup) for m in _BELIRTEC.finditer(govde)]  # type: ignore[operator]
+            belirtecler = [
+                f"{m.lastgroup}:{m.group(m.lastgroup or 0)}" for m in _BELIRTEC.finditer(govde)
+            ]
             self._b, self._i = belirtecler, 0
             self.kurallar[ad.strip()] = self._secenekler()
             assert self._i == len(self._b), f"ayrıştırılamayan kural: {satir}"
@@ -106,7 +118,9 @@ class Dilbilgisi:
         tur = dugum[0]
         m = self._metin
         if tur == "sabit":
-            return frozenset({konum + len(dugum[1])}) if m.startswith(dugum[1], konum) else frozenset()
+            return (
+                frozenset({konum + len(dugum[1])}) if m.startswith(dugum[1], konum) else frozenset()
+            )
         if tur == "sinif":
             if konum >= len(m):
                 return frozenset()

@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "hesaplar",
+  "description": "Uydurma banka hesapları.",
+  "type": "object",
+  "properties": {
+    "hesap_id": {
+      "type": "string",
+      "pattern": "^H\\d{5}$",
+      "x-benzersiz": true
+    },
+    "ad_soyad": {
+      "type": "string"
+    },
+    "iban": {
+      "type": "string",
+      "description": "uydurma",
+      "x-denetim": "iban_tr",
+      "x-benzersiz": true
+    },
+    "banka": {
+      "type": "string"
+    },
+    "acilis_tarihi": {
+      "type": "string",
+      "format": "date"
+    },
+    "acilis_bakiyesi": {
+      "type": "number",
+      "minimum": 0.0
+    }
+  },
+  "required": [
+    "hesap_id",
+    "ad_soyad",
+    "iban",
+    "banka",
+    "acilis_tarihi",
+    "acilis_bakiyesi"
+  ],
+  "additionalProperties": false,
+  "x-birincil-anahtar": [
+    "hesap_id"
+  ]
+}

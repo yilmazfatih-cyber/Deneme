@@ -1,0 +1,39 @@
+---
+/**
+ * Kırıntı yolu: Ana sayfa › Blog › Yazı. Son öğe bulunulan sayfadır (bağlantı değildir).
+ * Aynı liste BaseLayout'a `breadcrumbs` olarak verilirse BreadcrumbList yapısal verisi de üretilir.
+ */
+import Icon from './Icon.astro'
+import { useTranslations } from '../i18n/index.ts'
+import type { Crumb } from '../lib/routes.ts'
+import { link } from '../lib/url.ts'
+import type { Locale } from '../site.config.ts'
+
+interface Props {
+  locale: Locale
+  crumbs: Crumb[]
+  class?: string
+}
+
+const { locale, crumbs, class: className } = Astro.props
+const t = useTranslations(locale)
+---
+
+<nav aria-label={t.a11y.breadcrumbs} class:list={['text-sm text-muted', className]} data-search-ignore>
+  <ol class="flex flex-wrap items-center gap-x-1.5 gap-y-1">
+    {crumbs.map((crumb, index) => (
+      <li class="flex items-center gap-1.5">
+        {index > 0 && <Icon name="chevron-right" size={14} class="opacity-60" />}
+        {index === crumbs.length - 1 ? (
+          <span aria-current="page" class="text-ink">
+            {crumb.label}
+          </span>
+        ) : (
+          <a href={link(crumb.path)} class="hover:text-ink hover:underline">
+            {crumb.label}
+          </a>
+        )}
+      </li>
+    ))}
+  </ol>
+</nav>
