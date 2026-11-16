@@ -41,9 +41,12 @@ Baş kendisi uzun arama yapmaz; en fazla 5 doğrulama araması yapar.
 3. **Avcıları dağıt.** Her kategori için bir `ithalat-avcisi` alt ajanı başlat (Agent aracı; bu tür yoksa
    `general-purpose`, `model: sonnet` ve `.claude/agents/ithalat-avcisi.md` içeriğini göreve ekle). Avcılar paralel
    çalışır. Göreve şunları yaz: kategori anahtarı, adı, GTİP önekleri, örnek ağırlık, kur, bu kategoride daha önce
-   bakılmış URL'ler (`/tmp/gorulen.json`), bu kategorinin takip listesi (`/tmp/takip.json`: son 30 günde kat ≥ 2
-   çıkan ilanlar; fiyatı yeniden ölçülür, indirime giren ya da ucuzlayan böyle yakalanır),
-   en fazla 5 aday, çıktı yolu `/tmp/ithalat/<kategori>.json`.
+   bakılmış URL'ler (`/tmp/gorulen.json`), en fazla 5 aday, çıktı yolu `/tmp/ithalat/<kategori>.json`.
+
+   **Takip her gün ölçülür:** `/tmp/takip.json` (son 30 günde kat ≥ 2 çıkan ilanlar) kategori fark etmeksizin
+   avcılara dağıtılır: katı yüksek olan önce, avcı başına en fazla 2, toplam en fazla 6. Her takip için anahtar,
+   ürün adı, URL ve son ölçüm (fiyat, MOQ, Türkiye medyanı, kat) göreve yazılır. Avcı fiyatı, indirimi ve Türkiye
+   fiyatını yeniden ölçer ve aynı URL ile yazar; indirime giren ve ucuzlayan böyle yakalanır.
 
 4. **Birleştir ve dene.** Avcı dosyalarındaki `adaylar` listelerini tek dosyada birleştir:
    `raporlar/adaylar-YYYYMMDD-HHMM.json`; `tarama.an` şimdiki zaman (+03:00), `tarama.kategoriler` seçilen

@@ -20,9 +20,9 @@ Kargo kg başına 5 $; Çin malı hazır giyimde gümrük vergisi + ilave gümr�
 - Kategori anahtarı, adı, GTİP önekleri, örnek ağırlık (`python -m ithalat_ajani kategoriler` tablosundan).
 - Güncel kur (1 USD = ? TL).
 - Daha önce bakılmış Alibaba URL'leri: takip listesinde olmayanları yeniden aday yapma.
-- Takip listesi: bu kategoride son 30 günde katı 2 ve üstü çıkmış ilanlar. Bunların fiyatını, indirimini ve Türkiye
-  fiyatını **yeniden ölç**, aynı URL ile adaylara ekle (5 aday sınırına sayılmaz, en fazla 5 takip). Böylece
-  fiyatı düşenler ve indirime girenler raporda görünür.
+- Takip ilanları (en fazla 2): son 30 günde katı 2 ve üstü çıkmış ilanlar; kategorisi seninkinden farklı
+  olabilir. Fiyatını, indirimini ve Türkiye fiyatını **yeniden ölç**, kendi kategori anahtarı ve aynı URL ile
+  adaylara ekle (5 aday sınırına sayılmaz). Böylece fiyatı düşenler ve indirime girenler raporda görünür.
 - Çıktı dosyası yolu ve en fazla aday sayısı (varsayılan 5).
 
 ## Nasıl ararsın
