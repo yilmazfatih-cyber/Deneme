@@ -77,6 +77,44 @@ export const zArtwork = z
      * olan YouTube küçük resimleri için varsayılan), 'crop' odağa göre 2:3 kırpar (yazısız, temiz kareler için).
      */
     posterFit: z.enum(['crop', 'contain']).default('contain'),
+    /**
+     * Afiş adayları: aynı başlığın başka yatay (16:9) görselleri. Afiş seçimi servisi (server/src/services/artwork)
+     * profile göre bunlardan birini ya da varsayılanı (`storyArt`) seçer; aday yoksa başlık hep varsayılanla görünür.
+     * Görüntü özellikleri yazım anında hesaplanır (`npm run artwork:alternates`): sunucu çalışırken görsel çözmez.
+     */
+    alternates: z
+      .array(
+        z.object({
+          /** Başlık içinde tekil kısa anahtar, ör. 'k1' (varlık kimliğine eklenir: `Video:<id>~k1`) */
+          key: z.string().regex(/^[a-z0-9]{1,8}$/),
+          storyArt: z.url(),
+          /** Yönetici panelinde görünen ad, ör. "Kare 1" */
+          label: z.string().min(1).max(40),
+          focal: z.string().optional(),
+          /** 0–1 görüntü özellikleri: parlaklık, doygunluk, renklilik, kenar yoğunluğu (ayrıntı), yüz/insan ağırlığı yok */
+          visual: z
+            .object({
+              bright: z.number().min(0).max(1),
+              sat: z.number().min(0).max(1),
+              colorful: z.number().min(0).max(1),
+              edges: z.number().min(0).max(1),
+            })
+            .nullable()
+            .default(null),
+        }),
+      )
+      .max(6)
+      .default([]),
+    /** Varsayılan görselin görüntü özellikleri (adaylarla aynı ölçü; hesaplanmadıysa null) */
+    visual: z
+      .object({
+        bright: z.number().min(0).max(1),
+        sat: z.number().min(0).max(1),
+        colorful: z.number().min(0).max(1),
+        edges: z.number().min(0).max(1),
+      })
+      .nullable()
+      .default(null),
   })
   .prefault({})
 

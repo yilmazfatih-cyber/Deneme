@@ -675,6 +675,29 @@ type SearchPage {
   predictions: [SearchPrediction!]!
   "Sıralamayı yapan modelin sürümü ve öğrenme adımı, ör. 'lr-1 · 42 güncelleme'"
   modelVersion: String!
+  "Sorgunun nasıl anlaşıldığı (niyet çözümleme). Sorguda çözülecek bir niyet yoksa null."
+  understanding: SearchUnderstanding
+}
+
+"Niyet çözümleme: 'kısa düşündürücü bilim kurgu' → süre + ton + tür. Arayüz bunları kaldırılabilir çipler olarak gösterir."
+type SearchUnderstanding {
+  "Çözülen parçalar, sorgudaki sırayla (en az bir tane)"
+  intents: [SearchIntent!]!
+  "Çözülenler çıkarıldıktan sonra metin eşleşmesine kalan sözcükler (boş olabilir)"
+  remainder: String!
+  "Hepsi birden sonuç vermediği için gevşetilen niyetlerin okunur adları (yoksa boş)"
+  relaxed: [String!]!
+}
+
+type SearchIntent {
+  "GENRE | MOOD | DURATION | ERA | TYPE | ORIGIN | AUDIENCE | LIVE"
+  kind: String!
+  "Sorguda eşleşen sözcükler, yazıldığı gibi: 'kısa'"
+  matched: String!
+  "Okunur karşılığı: 'Süre: 30 dakikadan kısa'"
+  label: String!
+  "Bu parça çıkarılınca oluşan sorgu (çipteki ✕ bununla arar; boş dize olabilir)"
+  without: String!
 }
 
 # ───────────── Üyelik / profil ─────────────

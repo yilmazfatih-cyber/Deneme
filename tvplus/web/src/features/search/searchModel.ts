@@ -144,6 +144,23 @@ export interface SearchPrediction {
   score: number
 }
 
+/** Sorgunun çözülen bir parçası (niyet): arayüzde kaldırılabilir çip olur. */
+export interface SearchIntent {
+  /** GENRE | MOOD | DURATION | ERA | TYPE | ORIGIN | AUDIENCE | LIVE */
+  kind: string
+  matched: string
+  /** "Süre: 40 dakikadan kısa" */
+  label: string
+  /** Bu parça çıkarılınca oluşan sorgu (boş olabilir) */
+  without: string
+}
+
+export interface SearchUnderstanding {
+  intents: SearchIntent[]
+  remainder: string
+  relaxed: string[]
+}
+
 export interface SearchPageData {
   searchTerm: string
   requestId: string
@@ -152,6 +169,8 @@ export interface SearchPageData {
   isFallback: boolean
   recentSearches: string[]
   modelVersion: string
+  /** Niyet çözümleme; sorguda çözülecek niyet yoksa (ya da sunucu göndermiyorsa) null / tanımsız */
+  understanding?: SearchUnderstanding | null
   predictions: SearchPrediction[]
   correction: SearchCorrection | null
   sections: SearchSection[]
@@ -262,6 +281,33 @@ export function suggestedQueries(
   }
   return out
 }
+
+/** Çözülen niyetler (çipler); çözümleme yoksa boş. Aynı etiket iki kez gösterilmez. */
+export function intentChips(page: Pick<SearchPageData, 'understanding'> | undefined | null): SearchIntent[] {
+  const seen = new Set<string>()
+  const out: SearchIntent[] = []
+  for (const i of page?.understanding?.intents ?? []) {
+    if (!i.label || seen.has(i.label)) continue
+    seen.add(i.label)
+    out.push(i)
+  }
+  return out
+}
+
+/** Gevşetilen koşulların cümlesi: "Hepsine uyan az olduğu için şu koşul gevşetildi: Dönem: 80'ler." Yoksa null. */
+export function relaxedNote(page: Pick<SearchPageData, 'understanding'> | undefined | null): string | null {
+  const relaxed = (page?.understanding?.relaxed ?? []).filter(Boolean)
+  if (!relaxed.length) return null
+  return `Hepsine uyan az olduğu için ${relaxed.length > 1 ? 'şu koşullar' : 'şu koşul'} gevşetildi: ${relaxed.join(', ')}.`
+}
+
+/** Arama kutusu boşken gösterilen örnek sorgular: ad yazmadan, ne izlemek istediğini anlatarak arama. */
+export const EXAMPLE_QUERIES: readonly string[] = [
+  'kısa bilim kurgu',
+  'ailece animasyon',
+  'düşündürücü belgesel',
+  'eğlenceli çocuk dizisi',
+]
 
 /** devbus `predict` · "sıralama": ilk öğelerin model puanları (MIMARI §9.3). */
 export function rankingSummary(

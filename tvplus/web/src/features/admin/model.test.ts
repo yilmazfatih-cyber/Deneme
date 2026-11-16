@@ -2,7 +2,9 @@ import { describe, expect, it } from 'vitest'
 import type { ViewerInsight, ViewerSegment } from '../../../../shared/intelligence'
 import { retryAfterOf, unlockFailure } from '../../app/admin'
 import {
+  artworkMode,
   barWidth,
+  candidateStats,
   decisionMargin,
   decisionSteps,
   pct,
@@ -174,5 +176,20 @@ describe('yönetici girişi', () => {
     expect(safeNext('https://kotu.example')).toBeNull()
     expect(safeNext('/yonetici')).toBeNull()
     expect(safeNext(null)).toBeNull()
+  })
+})
+
+describe('afiş seçimi', () => {
+  it('artworkMode: kipin okunur adı ve tonu', () => {
+    expect(artworkMode('PERSONAL')).toEqual({ label: 'Zevkine göre', tone: 'personal' })
+    expect(artworkMode('EXPLORE')).toEqual({ label: 'Keşif denemesi', tone: 'close' })
+    expect(artworkMode('DEFAULT')).toEqual({ label: 'Varsayılan', tone: 'common' })
+  })
+
+  it('candidateStats: gösterim, tıklama ve oran; gösterim yoksa söyler', () => {
+    expect(candidateStats(0, 0)).toBe('henüz gösterilmedi')
+    expect(candidateStats(12, 3)).toBe('12 gösterim · 3 tıklama (%25)')
+    expect(candidateStats(1200, 30)).toBe('1.200 gösterim · 30 tıklama (%3)')
+    expect(candidateStats(2, 5)).toBe('2 gösterim · 5 tıklama (%100)')
   })
 })

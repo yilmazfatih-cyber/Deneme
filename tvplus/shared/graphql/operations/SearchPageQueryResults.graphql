@@ -7,6 +7,16 @@ query SearchPageQueryResults($searchTerm: String!, $options: SearchOptionsInput!
     isFallback
     recentSearches
     modelVersion
+    understanding {
+      remainder
+      relaxed
+      intents {
+        kind
+        matched
+        label
+        without
+      }
+    }
     predictions {
       ...SearchPredictionFields
     }

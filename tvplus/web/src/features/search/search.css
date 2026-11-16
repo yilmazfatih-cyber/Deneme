@@ -410,3 +410,92 @@
 .sr-live--compact .sr-grid--one-row > li:nth-child(n + 3) {
   display: none;
 }
+
+/* ───────────── Sorgunun nasıl anlaşıldığı: kaldırılabilir niyet çipleri ───────────── */
+.sr-understand {
+  margin: 0 0 16px;
+}
+.sr-understand__label {
+  margin: 0 0 8px;
+  color: var(--text-3);
+  font-size: 14px;
+}
+.sr-understand__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.sr-intent {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 0 6px 0 12px;
+  border: 1px solid rgba(247, 216, 73, 0.55);
+  border-radius: 18px;
+  background: rgba(247, 216, 73, 0.1);
+  color: var(--text-1);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.sr-intent--text {
+  padding-right: 12px;
+  border-color: var(--line-2);
+  background: none;
+  color: var(--text-2);
+  font-weight: 400;
+}
+.sr-intent__remove {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--text-2);
+  cursor: pointer;
+}
+.sr-intent__remove:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--text-1);
+}
+.sr-intent__remove:focus-visible,
+.sr-example:focus-visible {
+  outline: 2px solid var(--text-1);
+  outline-offset: 2px;
+}
+.sr-understand__relaxed {
+  margin: 10px 0 0;
+  color: var(--text-3);
+  font-size: 13px;
+}
+
+/* Kutu boşken örnek sorgular */
+.sr-examples .sr-quiet {
+  margin: 0 0 10px;
+}
+.sr-examples .sr-pills {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.sr-example {
+  min-height: 36px;
+  padding: 0 14px;
+  border: 1px solid var(--line-2);
+  border-radius: 18px;
+  background: none;
+  color: var(--text-1);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+.sr-example:hover {
+  background: rgba(255, 255, 255, 0.1);
+}

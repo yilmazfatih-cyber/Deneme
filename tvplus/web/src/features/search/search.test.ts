@@ -11,10 +11,13 @@ import { FeedbackLedger, playTctxOfHref } from './feedbackLedger'
 import { foldText, highlightPrediction } from './highlight'
 import { debounceFor, initialQueryState, isCurrent, queryReducer, type QueryState } from './queryState'
 import {
+  EXAMPLE_QUERIES,
+  intentChips,
   pageParts,
   posterArtwork,
   rankingSummary,
   relatedLinks,
+  relaxedNote,
   selectBanner,
   suggestedQueries,
   type SearchEntity,
@@ -344,5 +347,44 @@ describe('sayfa seçicileri', () => {
     expect(
       posterArtwork({ contextualArtwork: { key: 's', type: 'STORY_ART', url: '/s', width: 608, height: 342 }, video }),
     ).toBe('/b')
+  })
+})
+
+describe('niyet çipleri (sorgunun nasıl anlaşıldığı)', () => {
+  const intent = (kind: string, label: string, without: string) => ({ kind, matched: label, label, without })
+
+  it('intentChips: çözümleme yoksa boş; aynı etiket bir kez', () => {
+    expect(intentChips(undefined)).toEqual([])
+    expect(intentChips({ understanding: null })).toEqual([])
+    const chips = intentChips({
+      understanding: {
+        intents: [
+          intent('DURATION', 'Süre: kısa', 'bilim kurgu'),
+          intent('GENRE', 'Tür: Bilim Kurgu', 'kısa'),
+          intent('GENRE', 'Tür: Bilim Kurgu', 'kısa'),
+        ],
+        remainder: '',
+        relaxed: [],
+      },
+    })
+    expect(chips.map((c) => c.label)).toEqual(['Süre: kısa', 'Tür: Bilim Kurgu'])
+    expect(chips[0]!.without).toBe('bilim kurgu')
+  })
+
+  it('relaxedNote: tekil ve çoğul; gevşetme yoksa null', () => {
+    const base = { intents: [], remainder: '' }
+    expect(relaxedNote({ understanding: { ...base, relaxed: [] } })).toBeNull()
+    expect(relaxedNote(null)).toBeNull()
+    expect(relaxedNote({ understanding: { ...base, relaxed: ["Dönem: 80'ler"] } })).toBe(
+      "Hepsine uyan az olduğu için şu koşul gevşetildi: Dönem: 80'ler.",
+    )
+    expect(relaxedNote({ understanding: { ...base, relaxed: ['Dönem: eski', 'Ton: Karanlık'] } })).toBe(
+      'Hepsine uyan az olduğu için şu koşullar gevşetildi: Dönem: eski, Ton: Karanlık.',
+    )
+  })
+
+  it('örnek sorgular: birden çok, yinelenmeyen', () => {
+    expect(EXAMPLE_QUERIES.length).toBeGreaterThan(2)
+    expect(new Set(EXAMPLE_QUERIES).size).toBe(EXAMPLE_QUERIES.length)
   })
 })

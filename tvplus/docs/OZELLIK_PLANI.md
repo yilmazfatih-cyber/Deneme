@@ -5,21 +5,23 @@ Kasım 2026. Kaynak: ürün sahibinin geri bildirimi ve üç ekranın (web, mobi
 
 ## 1. Bu turda yapılanlar
 
-| Konu              | Ne değişti                                                                                                                            |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| Top 10 satırları  | Adlar ve görseller görünmüyordu. Yeni kart: büyük rakam + tam görünen yatay görsel + altında ad (web, mobil, TV).                     |
-| Kart önizlemesi   | Detay penceresi kapanınca imleç kıpırdamadan açılıyordu; artık yalnız gerçek fare hareketiyle ya da klavyeyle gidince açılır.         |
-| Kumanda: TV'de Aç | TV boştayken telefon bir başlatıcıdır: kaldığın içerik ya da canlı kanal tek dokunuşla TV'de açılır.                                  |
-| Mac'te açılmama   | Aynı klasördeki `Guards.tsx` / `guards.ts` adları büyük/küçük harf ayırmayan dosya sisteminde çakışıyordu; düzeltildi, testi eklendi. |
-| Sunucusuz yayın   | Sunucu tarayıcının içinde çalışır; uygulama GitHub Pages'te `/tvplus/` altında açılır.                                                |
-| Mobil kurgu       | Alt çubuk: Ana Sayfa · Kısa Videolar · Ara · TV+'ım. Ana sayfanın başında seçim: Dizi ve Film ya da Canlı TV.                         |
-| Kısa Videolar     | Dikey, ekran ekran kayan önizleme akışı; önizleme sessiz başlar, bitince sıradakine geçer. Masaüstü menüsünde de var.                 |
-| Yeni ve Popüler   | Mobilde bölüm çipleriyle akış: Çok Yakında, Herkes Bunları İzliyor, Top 10 listeleri (01, 02 …), Yeni Gelenler; kartta önizleme.      |
-| Çok Yakında       | Canlı TV'nin sıradaki yayınları; karttan "Bana Hatırlat". Web'de satırların altında, mobilde akışın başında.                          |
-| Topluluk işareti  | "Bugün dizilerde 1 numara", "Top 10'da 4. sırada", eşleşme yüzdesi; profilin topluluğu varsa "Senin Topluluğun" bölümü.               |
-| Kategoriler       | Gruplu liste: hızlı erişim, sana özel alt türler, tüm alt türler (yeni dizin sorgusu), türler.                                        |
-| Yönetici kipi     | Yönetici Paneli, Stüdyo ve Kaputun altı yalnız yönetici kodunu giren cihazda görünür; sunucu uçları da yöneticiye açıktır.            |
-| Yönetici Paneli   | Hangi segmenttesin, sistem nasıl karar verdi, sıradaki adaylar; ana sayfadaki satırların dayanağı; alt tür ve model durumu.           |
+| Konu                | Ne değişti                                                                                                                            |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| Top 10 satırları    | Adlar ve görseller görünmüyordu. Yeni kart: büyük rakam + tam görünen yatay görsel + altında ad (web, mobil, TV).                     |
+| Kart önizlemesi     | Detay penceresi kapanınca imleç kıpırdamadan açılıyordu; artık yalnız gerçek fare hareketiyle ya da klavyeyle gidince açılır.         |
+| Kumanda: TV'de Aç   | TV boştayken telefon bir başlatıcıdır: kaldığın içerik ya da canlı kanal tek dokunuşla TV'de açılır.                                  |
+| Mac'te açılmama     | Aynı klasördeki `Guards.tsx` / `guards.ts` adları büyük/küçük harf ayırmayan dosya sisteminde çakışıyordu; düzeltildi, testi eklendi. |
+| Sunucusuz yayın     | Sunucu tarayıcının içinde çalışır; uygulama GitHub Pages'te `/tvplus/` altında açılır.                                                |
+| Mobil kurgu         | Alt çubuk: Ana Sayfa · Kısa Videolar · Ara · TV+'ım. Ana sayfanın başında seçim: Dizi ve Film ya da Canlı TV.                         |
+| Kısa Videolar       | Dikey, ekran ekran kayan önizleme akışı; önizleme sessiz başlar, bitince sıradakine geçer. Masaüstü menüsünde de var.                 |
+| Yeni ve Popüler     | Mobilde bölüm çipleriyle akış: Çok Yakında, Herkes Bunları İzliyor, Top 10 listeleri (01, 02 …), Yeni Gelenler; kartta önizleme.      |
+| Çok Yakında         | Canlı TV'nin sıradaki yayınları; karttan "Bana Hatırlat". Web'de satırların altında, mobilde akışın başında.                          |
+| Topluluk işareti    | "Bugün dizilerde 1 numara", "Top 10'da 4. sırada", eşleşme yüzdesi; profilin topluluğu varsa "Senin Topluluğun" bölümü.               |
+| Kategoriler         | Gruplu liste: hızlı erişim, sana özel alt türler, tüm alt türler (yeni dizin sorgusu), türler.                                        |
+| Yönetici kipi       | Yönetici Paneli, Stüdyo ve Kaputun altı yalnız yönetici kodunu giren cihazda görünür; sunucu uçları da yöneticiye açıktır.            |
+| Yönetici Paneli     | Hangi segmenttesin, sistem nasıl karar verdi, sıradaki adaylar; ana sayfadaki satırların dayanağı; alt tür ve model durumu.           |
+| Afiş seçimi         | Başlık başına birden çok görsel adayı; arka uç profile göre seçer, gösterim ve tıklamadan öğrenir; panel seçimi ve nedenini gösterir. |
+| Niyet anlayan arama | "kısa düşündürücü bilim kurgu" gibi ad içermeyen sorgular; arama nasıl anladığını kaldırılabilir çiplerle gösterir.                   |
 
 ## 2. Denetimde görülen, henüz düzeltilmemiş alanlar
 
@@ -119,7 +121,45 @@ katkıları, sıradaki adaylar. Topluluklar şimdilik örnek veriyle hesaplanır
 | 7    | İzleyiciye açık gerekçe     | "Neden bunu görüyorum?": sayısız, sade bir açıklama; güven artar.                               |
 | 8    | Hesap ve rol tabanlı yetki  | Tek kod yerine yönetici hesabı; kim neyi gördü kaydı.                                           |
 
-## 9. Öncelik önerisi
+## 9. Netflix'in önüne geçmek için
+
+Netflix'in üstünlüğü veri ölçeği ve içerik bütçesidir; orada yarışılmaz. Önüne geçilebilecek yer, izleyiciye **denetim
+ve açıklık** vermek ile **canlı TV ile isteğe bağlı içeriği tek deneyimde** birleştirmektir.
+
+| Sıra | Öneri                          | Netflix'te durum                       | TV+'ta ne olur                                                                                    |
+| ---- | ------------------------------ | -------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| 1    | Niyet anlayan arama (yapıldı)  | Ad, kişi ve tür sözcüğüyle arama       | Ne izlemek istediğini anlatırsın; arama nasıl anladığını gösterir, koşulu çipten atarsın.         |
+| 2    | Ruh hali direksiyonu           | Yok; sayfa yalnız geçmişe göre kurulur | Ana sayfada "Hafif · Heyecanlı · Düşündürücü · Ailece · Kısa": satırlar anında yeniden sıralanır. |
+| 3    | "Neden bunu görüyorum?"        | Yalnız "… izlediğin için" satır adı    | Her başlıkta sade gerekçe; "bunu daha az göster" ile anında geri bildirim.                        |
+| 4    | Canlı + isteğe bağlı tek arama | Canlı yayın rehberi yok                | "Bu akşam maç", "şimdi haber": yayın akışı, hatırlatma ve katalog aynı sonuçta.                   |
+| 5    | Karar yardımcısı               | "Bir Şeyler Oynat" kaldırıldı          | "Karar veremiyorum": gerekçeli üç öneri, kaydırarak seç; 20 dakikan varsa ona göre.               |
+| 6    | Birlikte karar                 | Yok                                    | Evde iki profilin ortak zevkine göre "ikimize de uyanlar" satırı.                                 |
+| 7    | Telefon ikinci ekran           | Sınırlı                                | TV oynarken telefonda oyuncu, sahne, müzik; hatırlatmadan tek dokunuşla TV'de aç.                 |
+| 8    | Afiş seçimi (yapıldı)          | Var                                    | Aynı altyapı; farkı yönetici panelinde seçimin gerekçesinin görünmesi.                            |
+
+Dürüst sınır: öneri ve arama kalitesinin Netflix'i geçtiği ancak gerçek izleme verisiyle ölçülerek söylenebilir. Bugün
+modeller örnek veriyle eğitiliyor; ilk iş gerçek veriyi bağlamak ve çevrimiçi deneyle ölçmektir (§5.1, §5.7).
+
+## 10. TV+ içeriğini bu uygulamaya getirmek
+
+Uygulama içeriği koddan ayrı tutar (`content/`); katalog değişince kod değişmez. YouTube kaynaklı örnek içerik yerine
+TV+ kataloğu şu üç parçayla gelir:
+
+| Parça           | Ne gerekir                                                                   | Uygulamada karşılığı                                       |
+| --------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| Katalog bilgisi | Resmî dışa aktarım ya da API: ad, özet, tür, oyuncu, yaş sınırı, süre, sezon | `content/titles/*.json` (şema: `shared/content-schema.ts`) |
+| Görseller       | Başlık başına afişler ve yatay görseller, kullanım izniyle                   | `artwork.storyArt`, `artwork.boxart`, `artwork.alternates` |
+| Video           | Yayın akışı adresleri ve DRM lisans sunucusu, ya da yalnız fragmanlar        | `sources` (DASH); DRM bağlantısı henüz yok                 |
+
+- Katalog bilgisi ve görseller için bir dönüştürücü yazmak küçük iştir; biçimi (CSV, JSON, API) görmek yeter.
+- Afiş seçimi gerçek anlamını burada kazanır: başlık başına birkaç resmî afiş gelirse (oyuncu ağırlıklı, tür ağırlıklı)
+  seçim "hangi kare" yerine "hangi vurgu" olur.
+- Video için üç yol var: (a) yalnız fragman, (b) "TV+'ta izle" bağlantısı, (c) gerçek yayın. (c) için oynatıcıya
+  Widevine / FairPlay lisans akışı eklenmelidir; bugünkü oynatıcı açık içerik ve YouTube gömmesi oynatır.
+- Yapılmayacak olan: TV+'ın sitesinden ya da uygulamasından içerik ve görsel kopyalamak, DRM'li yayını izinsiz
+  oynatmak. İçerik yetkili bir kaynaktan gelmelidir.
+
+## 11. Öncelik önerisi
 
 | Ne zaman | İş                                                                                                                    |
 | -------- | --------------------------------------------------------------------------------------------------------------------- |

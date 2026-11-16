@@ -3,6 +3,7 @@
  * çubuk ölçülerine çevirir. Arayüz bileşenleri yalnız çizer; kararlar burada ve birim testlidir.
  */
 import type {
+  ArtworkInsight,
   ClusteringRun,
   CommunityFeature,
   SegmentStatus,
@@ -148,4 +149,18 @@ export function runLine(run: ClusteringRun | null, fmtDateTime: (v: string) => s
 /** Kişisel satır sayısı / toplam (özet cümlesi için). */
 export function personalRowCount(rows: ViewerInsight['rows']): { personal: number; total: number } {
   return { personal: rows.filter((r) => r.personal).length, total: rows.length }
+}
+
+/** Afiş seçimi kipinin okunur adı ve etiket tonu. */
+export function artworkMode(mode: ArtworkInsight['mode']): { label: string; tone: 'personal' | 'close' | 'common' } {
+  if (mode === 'PERSONAL') return { label: 'Zevkine göre', tone: 'personal' }
+  if (mode === 'EXPLORE') return { label: 'Keşif denemesi', tone: 'close' }
+  return { label: 'Varsayılan', tone: 'common' }
+}
+
+/** Adayın ilgi özeti: "12 gösterim · 3 tıklama (%25)"; gösterim yoksa "henüz gösterilmedi". */
+export function candidateStats(impressions: number, clicks: number): string {
+  if (!(impressions > 0)) return 'henüz gösterilmedi'
+  const rate = Math.round((Math.min(clicks, impressions) / impressions) * 100)
+  return `${impressions.toLocaleString('tr-TR')} gösterim · ${clicks.toLocaleString('tr-TR')} tıklama (%${rate})`
 }

@@ -46,11 +46,14 @@ import {
 import { installFeedbackListeners, ledger, onFeedback, sendFeedback } from './feedback'
 import { useInspectMode } from './inspect'
 import {
+  EXAMPLE_QUERIES,
   FEATURE_LABEL,
+  intentChips,
   landscapeArtwork,
   pageParts,
   posterArtwork,
   predictionKindLabel,
+  relaxedNote,
   selectBanner,
   suggestedQueries,
   type SearchEntity,
@@ -387,6 +390,69 @@ function Banner({
   )
 }
 
+/* ───────────── Sorgunun nasıl anlaşıldığı (niyet çipleri) ───────────── */
+
+function Understanding({
+  data,
+  onSearch,
+}: {
+  data: SearchPageData
+  onSearch: (q: string) => void
+}): ReactElement | null {
+  const chips = intentChips(data)
+  if (!chips.length) return null
+  const rest = data.understanding?.remainder.trim() ?? ''
+  const relaxed = relaxedNote(data)
+  return (
+    <section className="sr-understand" aria-label="Aramanın nasıl anlaşıldığı">
+      <p className="sr-understand__label">Şöyle anladım:</p>
+      <ul className="sr-understand__chips">
+        {chips.map((i) => (
+          <li key={`${i.kind}:${i.label}`} className="sr-intent">
+            <span>{i.label}</span>
+            <button
+              type="button"
+              className="sr-intent__remove"
+              aria-label={`${i.label}: kaldır`}
+              onClick={() => onSearch(i.without)}
+            >
+              <Icon name="close" size={14} strokeWidth={2.4} />
+            </button>
+          </li>
+        ))}
+        {rest ? <li className="sr-intent sr-intent--text">“{rest}”</li> : null}
+      </ul>
+      {relaxed ? (
+        <p className="sr-understand__relaxed" role="status">
+          {relaxed}
+        </p>
+      ) : null}
+    </section>
+  )
+}
+
+/* ───────────── Örnek sorgular (kutu boşken) ───────────── */
+
+function ExampleQueries({ onPick }: { onPick: (q: string) => void }): ReactElement {
+  return (
+    <section className="sr-section sr-examples" aria-labelledby="sr-examples-h">
+      <h2 className="sr-row-title" id="sr-examples-h">
+        Ad yazmadan da arayabilirsin
+      </h2>
+      <p className="sr-quiet">Ne izlemek istediğini anlat: tür, ton, süre, kimle izleyeceğin.</p>
+      <ul className="sr-pills">
+        {EXAMPLE_QUERIES.map((q) => (
+          <li key={q}>
+            <button type="button" className="sr-example" onClick={() => onPick(q)}>
+              {q}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}
+
 /* ───────────── Yetenek bildirimi (açıklama kipinde) ───────────── */
 
 function CapabilitySheet({
@@ -718,6 +784,7 @@ export default function SearchPage(): ReactElement {
   )
 
   const showResults = !!data && !!term
+  const understood = showResults && intentChips(data).length > 0
   const hasLive = !!parts.live && !data?.isFallback
   const nothing =
     showResults && !parts.gallery && !parts.predicted && !parts.live && parts.related.length === 0 && !error
@@ -737,6 +804,7 @@ export default function SearchPage(): ReactElement {
       {!term && (
         <>
           <RecentSearches items={recent} onPick={pickRecent} onClear={clearRecent} mobile={mobile} />
+          <ExampleQueries onPick={(q) => goSearch(q)} />
           <section className="sr-section" aria-labelledby="sr-popular-h">
             <h2 className="sr-row-title" id="sr-popular-h">
               Sana Özel Öneriler
@@ -762,6 +830,7 @@ export default function SearchPage(): ReactElement {
       {showResults && data && (
         <div className={cx('sr-results', stale && 'is-stale')} aria-busy={loading}>
           <Banner data={data} onSearch={goSearch} />
+          <Understanding data={data} onSearch={(q) => goSearch(q)} />
           {!mobile && (
             <LinkLine label="Şunu mu arıyorsun:">
               {suggestions.map((p) => (
@@ -784,8 +853,8 @@ export default function SearchPage(): ReactElement {
           {parts.gallery && (
             <section className="sr-section" aria-labelledby="sr-gallery-h">
               {/* Netflix'te ızgaranın başlığı yok; Canlı TV satırı üstündeyse ayrılsın diye görünür başlık. */}
-              <h2 className={mobile || hasLive ? 'sr-row-title' : 'ui-sr-only'} id="sr-gallery-h">
-                {mobile || hasLive ? 'Filmler ve Diziler' : `“${term}” için sonuçlar`}
+              <h2 className={mobile || hasLive || understood ? 'sr-row-title' : 'ui-sr-only'} id="sr-gallery-h">
+                {understood ? 'Aramana uyanlar' : mobile || hasLive ? 'Filmler ve Diziler' : `“${term}” için sonuçlar`}
               </h2>
               {mobile ? (
                 <MobilePosterGrid section={parts.gallery} ctx={ctx} declaration={declaration} />

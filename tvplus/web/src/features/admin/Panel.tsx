@@ -20,7 +20,9 @@ import { Button, cx, EmptyState, Icon, Skeleton, toast } from '../../ui'
 import { useStudio } from '../studio/api'
 import { fmtInt } from '../studio/format'
 import {
+  artworkMode,
   barWidth,
+  candidateStats,
   decisionMargin,
   decisionSteps,
   KIND_LABEL,
@@ -387,6 +389,77 @@ function SubgenresCard({ insight }: { insight: ViewerInsight }): ReactElement {
   )
 }
 
+/* ───────────── Afiş seçimi ───────────── */
+
+function ArtworkCard({ insight }: { insight: ViewerInsight }): ReactElement | null {
+  const a = insight.artwork
+  if (!a) return null
+  return (
+    <Card
+      id="ad-art"
+      title="Afiş seçimi"
+      className="ad-card--wide"
+      note={
+        a.enabled
+          ? (a.note ?? 'Aynı başlık her profile farklı görselle gösterilebilir; seçim 7 gün sabit kalır.')
+          : 'Afiş seçimi bu kurulumda kapalı: her başlık varsayılan görseliyle gösterilir.'
+      }
+    >
+      {a.titles.length ? (
+        <ul className="ad-arts">
+          {a.titles.map((t) => {
+            const mode = artworkMode(t.mode)
+            const max = Math.max(0, ...t.candidates.map((c) => c.score))
+            const chosen = t.candidates.find((c) => c.chosen)
+            return (
+              <li key={t.titleId} className="ad-art">
+                <div className="ad-art__head">
+                  <TitleLink t={t} />
+                  <span className={cx('ad-tag', `ad-tag--${mode.tone}`)}>{mode.label}</span>
+                </div>
+                <p className="ad-art__why">{t.reason}</p>
+                <ul className="ad-cands" aria-label={`${t.title}: afiş adayları`}>
+                  {t.candidates.map((c) => (
+                    <li key={c.key || 'varsayilan'} className={cx('ad-cand', c.chosen && 'is-chosen')}>
+                      <span className="ad-cand__art">
+                        <img src={c.url} alt="" loading="lazy" />
+                        {c.chosen ? <span className="ad-cand__badge">Seçilen</span> : null}
+                      </span>
+                      <span className="ad-cand__label">{c.label}</span>
+                      <span className="ad-cand__score">
+                        <span className="ad-bar__track" aria-hidden="true">
+                          <span
+                            className={cx('ad-bar__fill', c.chosen && 'is-accent')}
+                            style={{ width: `${barWidth(c.score, max)}%` }}
+                          />
+                        </span>
+                        <span className="ad-bar__value">
+                          {c.score.toLocaleString('tr-TR', { maximumFractionDigits: 2 })}
+                        </span>
+                      </span>
+                      <span className="ad-cand__stats">{candidateStats(c.impressions, c.clicks)}</span>
+                    </li>
+                  ))}
+                </ul>
+                {chosen && chosen.parts.length ? (
+                  <p className="ad-art__parts">
+                    Seçilenin puanı:{' '}
+                    {chosen.parts
+                      .map((x) => `${x.name} ${x.value.toLocaleString('tr-TR', { maximumFractionDigits: 2 })}`)
+                      .join(' + ')}
+                  </p>
+                ) : null}
+              </li>
+            )
+          })}
+        </ul>
+      ) : (
+        <p className="ad-text">Ana sayfandaki başlıkların henüz birden çok görsel adayı yok.</p>
+      )}
+    </Card>
+  )
+}
+
 /* ───────────── Tahmin modeli ───────────── */
 
 function ModelCard({ insight }: { insight: ViewerInsight }): ReactElement {
@@ -549,6 +622,7 @@ export function AdminPanel(): ReactElement {
             <HistoryCard insight={insight} />
             <RowsCard insight={insight} />
           </div>
+          <ArtworkCard insight={insight} />
           <SubgenresCard insight={insight} />
           <div className="ad-col">
             <ModelCard insight={insight} />

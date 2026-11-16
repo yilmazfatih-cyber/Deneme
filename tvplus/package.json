@@ -15,6 +15,7 @@
     "build:pages": "tsx scripts/build-pages.ts",
     "serve:pages": "tsx scripts/serve-pages.ts",
     "admin:code": "tsx scripts/admin-code.ts",
+    "artwork:alternates": "tsx scripts/build-artwork-alternates.ts",
     "start": "tsx server/src/index.ts",
     "persisted": "tsx scripts/build-persisted.ts",
     "typecheck": "tsc -p tsconfig.server.json --noEmit && tsc -p tsconfig.web.json --noEmit && tsc -p tsconfig.e2e.json --noEmit && tsc -p tsconfig.static.json --noEmit",

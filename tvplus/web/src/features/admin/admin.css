@@ -495,6 +495,101 @@
   white-space: nowrap;
 }
 
+/* Afiş seçimi */
+.ad-arts {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ad-art {
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+}
+.ad-arts > li:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+.ad-art__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+  font-size: 15px;
+  font-weight: 700;
+}
+.ad-art__why,
+.ad-art__parts {
+  margin: 4px 0 0;
+  color: var(--text-3);
+  font-size: 13px;
+  line-height: 1.4;
+}
+.ad-art__parts {
+  margin-top: 10px;
+  color: var(--text-4);
+  font-size: 12px;
+}
+.ad-cands {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.ad-cand {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+.ad-cand__art {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  background: var(--surface-3);
+  overflow: hidden;
+}
+.ad-cand.is-chosen .ad-cand__art {
+  border-color: var(--accent);
+}
+.ad-cand__art img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.ad-cand__badge {
+  position: absolute;
+  left: 6px;
+  top: 6px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--accent);
+  color: #111;
+  font-size: 11px;
+  font-weight: 800;
+}
+.ad-cand__label {
+  color: var(--text-1);
+  font-size: 13px;
+  font-weight: 700;
+}
+.ad-cand__score {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+}
+.ad-cand__stats {
+  color: var(--text-4);
+  font-size: 12px;
+}
+
 .ad-foot {
   display: flex;
   flex-wrap: wrap;
@@ -526,6 +621,12 @@
   }
   .ad-card {
     padding: 22px 22px;
+  }
+  .ad-card--wide {
+    grid-column: 1 / -1;
+  }
+  .ad-cands {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
   .ad-seg__name {
     font-size: 30px;

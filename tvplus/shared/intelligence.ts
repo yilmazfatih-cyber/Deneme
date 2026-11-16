@@ -384,6 +384,36 @@ export interface InsightSubgenre {
   watched: InsightTitle[]
 }
 
+/** Bir afiş adayının bu profil için puanı ve bugüne dek gördüğü ilgi */
+export interface ArtworkCandidateInsight {
+  /** '' = varsayılan (editoryal) görsel; diğerleri içerikteki aday anahtarı */
+  key: string
+  /** "Varsayılan" · "Kare 1" … */
+  label: string
+  /** 16:9 küçük resim adresi (≈480 px) */
+  url: string
+  /** Bu profil için puan (yüksek olan seçilir) */
+  score: number
+  /** Puanın bileşenleri, ör. görsel üslup yakınlığı · öğrenilmiş tıklanma · keşif payı */
+  parts: { name: string; value: number }[]
+  /** Bu adayın topladığı gösterim ve tıklama (profilin topluluğunda; topluluk yoksa genelde) */
+  impressions: number
+  clicks: number
+  chosen: boolean
+}
+
+/** Bir başlık için afiş seçimi: adaylar, seçilen ve nedeni */
+export interface ArtworkInsight {
+  titleId: number
+  title: string
+  type: 'MOVIE' | 'SHOW'
+  /** PERSONAL zevke ve öğrenilene göre · EXPLORE keşif için denendi · DEFAULT aday ya da veri yok */
+  mode: 'PERSONAL' | 'EXPLORE' | 'DEFAULT'
+  /** Seçimin kısa gerekçesi (Türkçe) */
+  reason: string
+  candidates: ArtworkCandidateInsight[]
+}
+
 export interface ViewerInsight {
   generatedAt: string
   profile: { guid: string; name: string; isKids: boolean }
@@ -424,6 +454,16 @@ export interface ViewerInsight {
     recent: string[]
     /** Sıralama modelinin özellikleri ve öğrenilmiş ağırlıkları */
     features: { name: string; weight: number }[]
+  }
+  /**
+   * Afiş seçimi: bu profile hangi başlık hangi görselle gösteriliyor ve neden. `titles`: adayı olan, profilin ana
+   * sayfasında görünen ilk başlıklar (en çok 6). Servis kapalıysa ya da yoksa alan gelmez.
+   */
+  artwork?: {
+    enabled: boolean
+    titles: ArtworkInsight[]
+    /** Öğrenmenin durumu hakkında kısa not, ör. "Henüz 12 gösterim: seçimler ağırlıkla görsel üsluba dayanıyor" */
+    note: string | null
   }
 }
 

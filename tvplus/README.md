@@ -231,24 +231,26 @@ abonelikle başka bir uygulamaya çekilmez. Resmî TV+ oynatma API'sine erişim 
 
 ## Komutlar
 
-| Komut                      | Ne yapar                                                                               |
-| -------------------------- | -------------------------------------------------------------------------------------- |
-| `npm run dev`              | Vite (5173) + API/CDN sunucusu (8787)                                                  |
-| `npm run build`            | Kalıcı sorgu kayıt defteri + web derlemesi                                             |
-| `npm start`                | Tek kapı sunucusu (8787); `web/dist` varsa onu sunar                                   |
-| `npm run check`            | Kalıcı sorgular + tip denetimi + içerik ve etiket doğrulama + birim/bütünleşik testler |
-| `npm run e2e`              | Derler; Playwright ile gerçek tarayıcıda web, mobil ve TV turları (ağ gerekir)         |
-| `npm run test:perf`        | Ölçek testleri (kümeleme, tahmin modeli, mikro tür üretimi) — yük altında yanıltıcıdır |
-| `npm run persisted`        | `shared/graphql/operations` → kimlikli kayıt defteri; şemaya karşı doğrular            |
-| `npm run validate:content` | `content/` şema ve çapraz başvuru denetimi + etiket fişleri                            |
-| `npm run tagging:guide`    | Sözlükten etiketleme kılavuzunu üretir                                                 |
-| `npm run mixpanel:import`  | Mixpanel dışa aktarımını içe alır (`--file` ya da `--from/--to`, `--dry-run`)          |
-| `npm run sample:viewing`   | Sentetik izleme örneği üretir (Mixpanel biçiminde)                                     |
-| `npm run analyze:shots`    | Çekim çözümlemesi (ffmpeg gerekir; çıktılar depodadır, sunucu ffmpeg istemez)          |
-| `npm run embed:catalog`    | Gömme vektörlerini kurar / dışa aktarır                                                |
-| `npm run ingest:youtube`   | YouTube doğrulama / iskelet üretimi                                                    |
-| `npm run package:title`    | Yerel videoyu CDN hattı için paketler (ffmpeg gerekir)                                 |
-| `npm run format`           | Prettier                                                                               |
+| Komut                        | Ne yapar                                                                               |
+| ---------------------------- | -------------------------------------------------------------------------------------- |
+| `npm run dev`                | Vite (5173) + API/CDN sunucusu (8787)                                                  |
+| `npm run build`              | Kalıcı sorgu kayıt defteri + web derlemesi                                             |
+| `npm start`                  | Tek kapı sunucusu (8787); `web/dist` varsa onu sunar                                   |
+| `npm run check`              | Kalıcı sorgular + tip denetimi + içerik ve etiket doğrulama + birim/bütünleşik testler |
+| `npm run e2e`                | Derler; Playwright ile gerçek tarayıcıda web, mobil ve TV turları (ağ gerekir)         |
+| `npm run test:perf`          | Ölçek testleri (kümeleme, tahmin modeli, mikro tür üretimi) — yük altında yanıltıcıdır |
+| `npm run persisted`          | `shared/graphql/operations` → kimlikli kayıt defteri; şemaya karşı doğrular            |
+| `npm run validate:content`   | `content/` şema ve çapraz başvuru denetimi + etiket fişleri                            |
+| `npm run tagging:guide`      | Sözlükten etiketleme kılavuzunu üretir                                                 |
+| `npm run mixpanel:import`    | Mixpanel dışa aktarımını içe alır (`--file` ya da `--from/--to`, `--dry-run`)          |
+| `npm run sample:viewing`     | Sentetik izleme örneği üretir (Mixpanel biçiminde)                                     |
+| `npm run artwork:alternates` | YouTube kaynaklı başlıklar için afiş adaylarını bulur, görüntü özelliklerini yazar     |
+| `npm run admin:code`         | Yönetici kodunun depodaki özetini değiştirir                                           |
+| `npm run analyze:shots`      | Çekim çözümlemesi (ffmpeg gerekir; çıktılar depodadır, sunucu ffmpeg istemez)          |
+| `npm run embed:catalog`      | Gömme vektörlerini kurar / dışa aktarır                                                |
+| `npm run ingest:youtube`     | YouTube doğrulama / iskelet üretimi                                                    |
+| `npm run package:title`      | Yerel videoyu CDN hattı için paketler (ffmpeg gerekir)                                 |
+| `npm run format`             | Prettier                                                                               |
 
 Ortam değişkenleri: `PORT`, `HOST` (varsayılan `127.0.0.1`), `TVP_DATA_DIR` (durum, önbellekler, eğitilmiş tahmin modeli;
 varsayılan `.data/`), `TVP_MEDIA_DIR`, `TVP_SECRET`, `TVP_OFFLINE=1` (dış ağa çıkma), `TVP_LOG_LEVEL`,
@@ -257,6 +259,17 @@ varsayılan `admin`), `TVP_STUDIO=admin|member|open|off` ve `TVP_STUDIO_KEY` (st
 içindir), `TVP_SAMPLE_VIEWING=0` (sentetik örneği üretme), `TVP_REAL_DATA_MIN_VIEWERS` (varsayılan 50),
 `TVP_MAX_COMMUNITIES`, `TVP_EMBEDDING_PROVIDER=taban|http|dosya` ve `TVP_EMBEDDING_URL`, `TVP_PUBLIC_ORIGIN` (QR adresi),
 `MIXPANEL_*` (yukarıda).
+
+## Afiş seçimi ve niyet anlayan arama
+
+- **Afiş seçimi:** bir başlığın birden çok görsel adayı olabilir (`content/titles/*.json` → `artwork.alternates`).
+  Arka uç her profil için birini seçer: profilin ilgi gösterdiği görsellerin üslubuna yakınlık + o adayın öğrenilmiş
+  tıklanma oranı; küçük bir payla keşif için başka aday dener. Seçim 7 gün sabit kalır; gösterim ve tıklamalarla
+  öğrenir. Yönetici Paneli seçimi ve nedenini gösterir. `TVP_ARTWORK=off` kapatır. Örnek içerikte adaylar YouTube'un
+  kendi kare küçük resimleridir (`npm run artwork:alternates`); gerçek katalogda resmî afişler aynı alana yazılır.
+- **Niyet anlayan arama:** "kısa düşündürücü bilim kurgu", "ailece animasyon", "90 dakikadan kısa komedi" gibi
+  sorgular tür, ton, süre, dönem, tip, köken ve izleyici koşullarına çözülür; hepsine uyan başlıklar gelir, az sonuç
+  varsa koşullar sırayla gevşetilir. Arayüz sorguyu nasıl anladığını kaldırılabilir çiplerle gösterir.
 
 ## Yönetici kipi
 
