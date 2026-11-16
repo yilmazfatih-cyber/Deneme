@@ -24,13 +24,17 @@ from .istemci import YerelSunucu
 YONERGE = "Aşağıdaki çoktan seçmeli soruyu cevapla. Yalnızca doğru şıkkın harfini yaz."
 
 _YALNIZ_HARF = re.compile(r"^\(?([A-Ea-e])\)?[.):]?$")  # yalnız harften oluşan cevapta küçük harf de olur
-_CEVAP_IFADESI = re.compile(
-    r"(?:do[ğg]ru\s+)?(?:cevap|yan[ıi]t|answer|[şs][ıi]k)\w*\s*(?:olarak|is|:|：|=)?\s*\**\(?([A-E])\)?(?!\w)",  # "Cevap C'dir" de geçerli
+_HARF_ONCESI = r"(?<![^\W\d_])"  # önünde harf yok: "ise" içindeki "e", "ışık" içindeki "şık" sayılmaz
+_RET = r"(?!\s*[,;:]?\s*(?:değil|olamaz|yanlış|hatalı|eksik|or|veya|ya\s+da|yoksa|is\s+(?:not|incorrect|wrong))\b)"
+_CEVAP_IFADESI = re.compile(  # "Cevap C'dir" de geçerli; küçük harf yalnız "a)" biçiminde
+    _HARF_ONCESI + r"(?:do[ğg]ru\s+)?(?:cevap|yan[ıi]t|answer|[şs][ıi]k)\w*\s*(?:olarak|is\b|:|：|=)?\s*\**\(?"
+    + _HARF_ONCESI + r"((?-i:[A-E])|[a-e](?=\)))\)?(?!\w)" + _RET,
     re.IGNORECASE,
 )
-_HARF_SIKKI = re.compile(r"(?<![\w'])([A-E])\s*(?:şıkkı|seçeneği)")
+_HARF_SIKKI = re.compile(r"(?<![\w'])([A-E])\s*(?:şıkkı|seçeneği)(?!\s+(?:ise\s+)?(?:yanlış|değil|hatalı|eksik|olamaz))")
 _BASTA_HARF = re.compile(r"^\(?([A-Ea-e])\)[\s.]")
-_TEK_HARF = re.compile(r"(?<![\w'])([A-E])(?![\w'])")
+_SECENEK_ISARETI = re.compile(r"(?<![\w'])\(?[A-E]\)\s")
+_TEK_HARF = re.compile(r"(?<![\w'])([A-E])(?!\w)")  # "B'dir" de sayılır
 
 
 def soru_istemi(s: Soru) -> str:
@@ -59,9 +63,11 @@ def cevap_cikar(metin: str, secenek_sayisi: int) -> int | None:
     ifadeler = [x for x in _CEVAP_IFADESI.findall(t) if sira(x) is not None]
     if ifadeler:
         return sira(ifadeler[-1])
-    siklar = [x for x in _HARF_SIKKI.findall(t) if sira(x) is not None]
+    siklar = {x for x in _HARF_SIKKI.findall(t) if sira(x) is not None}
     if siklar:
-        return sira(siklar[-1])
+        return sira(siklar.pop()) if len(siklar) == 1 else None
+    if len(_SECENEK_ISARETI.findall(t)) >= 2:  # seçenekleri yineleyen cevap: bir harf seçilmemiş
+        return None
     m = _BASTA_HARF.match(t)
     if m:
         return sira(m.group(1))
@@ -86,7 +92,9 @@ def _dosya_adi(model: str) -> str:
 
 
 def _soru_anahtari(s: Soru, ayar: MetinAyarlari) -> str:
-    veri = json.dumps([s.kimlik, soru_istemi(s), ayar.en_fazla_token, ayar.ek_istek], sort_keys=True, ensure_ascii=False)
+    veri = json.dumps(
+        [ayar.model, s.kimlik, soru_istemi(s), ayar.en_fazla_token, ayar.ek_istek], sort_keys=True, ensure_ascii=False
+    )
     return hashlib.sha256(veri.encode("utf-8")).hexdigest()[:24]
 
 
@@ -114,8 +122,11 @@ def kiyasla(
     dosya = None
     if yol is not None:
         yol.parent.mkdir(parents=True, exist_ok=True)
+        yarim = yol.exists() and yol.stat().st_size and not yol.read_bytes().endswith(b"\n")
         dosya = yol.open("a", encoding="utf-8")
-    dogru = cevapsiz = 0
+        if yarim:  # yarıda kesilmiş son satır: yeni kayıt ona yapışmasın
+            dosya.write("\n")
+    dogru = cevapsiz = kesik = 0
     rastgele = 0.0
     ders: dict[str, dict[str, float]] = defaultdict(lambda: {"n": 0, "dogru": 0})
     sureler: list[float] = []
@@ -129,18 +140,22 @@ def kiyasla(
                     ayar.model, [{"role": "user", "content": soru_istemi(s)}], ayar.en_fazla_token, ek_istek=ayar.ek_istek
                 )
                 sureler.append(time.time() - bas)
-                kayit = {"anahtar": anahtar, "kimlik": s.kimlik, "cevap": cevap, "secim": cevap_cikar(cevap, len(s.secenekler))}
+                kayit = {
+                    "anahtar": anahtar, "kimlik": s.kimlik, "cevap": cevap, "secim": cevap_cikar(cevap, len(s.secenekler)),
+                    "kesik": getattr(sunucu, "son_bitis", None) == "length",
+                }
                 if dosya is not None:
                     dosya.write(json.dumps(kayit, ensure_ascii=False) + "\n")
                     dosya.flush()
                 if len(sureler) % 10 == 0 or i == len(sorular):
                     ort = sum(sureler) / len(sureler)
                     yaz(f"  {ad}: {i}/{len(sorular)} soru (soru başına ~{ort:.1f} sn, kalan ~{(len(sorular) - i) * ort / 60:.0f} dk)")
-            secim = kayit.get("secim")
+            secim = cevap_cikar(str(kayit.get("cevap", "")), len(s.secenekler))  # kurallar değişince eski harf kalmasın
             rastgele += 1.0 / len(s.secenekler)
             ders[s.ders]["n"] += 1
             if secim is None:
                 cevapsiz += 1
+                kesik += bool(kayit.get("kesik"))
             elif secim == s.cevap:
                 dogru += 1
                 ders[s.ders]["dogru"] += 1
@@ -152,6 +167,7 @@ def kiyasla(
         "n": n,
         "dogruluk_uretim": dogru / n,
         "cevapsiz": cevapsiz,
+        "kesik": kesik,
         "rastgele": rastgele / n,
         "dersler": {k: {"n": int(v["n"]), "dogruluk_uretim": v["dogru"] / v["n"]} for k, v in sorted(ders.items())},
     }

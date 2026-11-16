@@ -6,6 +6,7 @@ işlevlerin içinde alınır.
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass, field, fields, replace
 from typing import Any
 
@@ -92,7 +93,12 @@ def modulleri_dogrula(m: ModulAyarlari) -> None:
     hatalar: list[str] = []
     if not isinstance(m.adres, str) or not m.adres.startswith(("http://", "https://")):
         hatalar.append(f"moduller.adres http:// ile başlayan bir adres olmalı (şu an: {m.adres!r}); ör. {VARSAYILAN_ADRES}")
-    if isinstance(m.zaman_asimi, bool) or not isinstance(m.zaman_asimi, (int, float)) or m.zaman_asimi <= 0:
+    if (
+        isinstance(m.zaman_asimi, bool)
+        or not isinstance(m.zaman_asimi, (int, float))
+        or not math.isfinite(m.zaman_asimi)
+        or m.zaman_asimi <= 0
+    ):
         hatalar.append(f"moduller.zaman_asimi pozitif bir sayı (saniye) olmalı (şu an: {m.zaman_asimi!r})")
     if not isinstance(m.uzak_sunucu, bool):
         hatalar.append(f"moduller.uzak_sunucu true ya da false olmalı (şu an: {m.uzak_sunucu!r})")

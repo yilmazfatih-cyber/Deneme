@@ -21,6 +21,8 @@ from .istemci import ModulHatasi, YerelSunucu
 
 GORSEL_ISARETI = "[GÖRSEL]"
 """Modelin "burada bir şekil var" dediği yere konan satır; MEB ayrıştırıcısı o soruyu görsel gerektiren sayar."""
+KESIK_ISARETI = "[KESİK]"
+"""Sunucu çıktıyı ``en_fazla_token``'da kesti (``finish_reason = "length"``): sayfanın son sorusu eksik olabilir."""
 
 GORSEL_TURLERI = {
     ".png": "image/png",
@@ -34,6 +36,9 @@ GORSEL_TURLERI = {
 # ---- çıktı temizleme ----------------------------------------------------------------------------
 
 _REF_DET = re.compile(r"<\|ref\|>(.*?)<\|/ref\|>\s*<\|det\|>.*?<\|/det\|>", re.DOTALL)
+_REF_DET_ARTIGI = re.compile(  # sunucu özel token'ları atınca kalan: "text[[60, 100, 940, 140]]"
+    r"^[ \t]*([a-z_]+)\[\[\d+(?:\s*,\s*\d+){3}\](?:\s*,\s*\[\d+(?:\s*,\s*\d+){3}\])*\][ \t]*", re.MULTILINE
+)
 _OZEL_TOKEN = re.compile(r"<\|[^|>\n]{1,40}\|>|<｜[^｜>\n]{1,40}｜>")
 _MD_GORSEL = re.compile(r"!\[[^\]\n]*\]\([^)\n]*\)")
 _HTML_TABLO = re.compile(r"<table\b.*?</table>", re.DOTALL | re.IGNORECASE)
@@ -52,19 +57,23 @@ _MD_TABLO_AYRACI = re.compile(r"^\s*\|?\s*:?-{2,}:?\s*(?:\|\s*:?-{2,}:?\s*)*\|?\
 _MD_BASLIK = re.compile(r"^\s{0,3}#{1,6}\s+")
 _MD_ALINTI = re.compile(r"^\s{0,3}>\s?")
 _MD_LISTE = re.compile(r"^\s{0,3}[-*+]\s+(?=(?:\(?[A-E]\)|\d{1,2}[.)])\s)")  # "- A) …", "* 3. …"
-_MD_VURGU = re.compile(r"(\*\*|__)(?=\S)(.+?)(?<=\S)\1")
+_MD_VURGU = re.compile(r"(?<![\w*])(\*\*|__)(?=[^\s_*])(.+?)(?<=[^\s_*])\1(?![\w*])")
 _LATEX_KESIR = re.compile(r"\\[dt]?frac\s*\{([^{}]*)\}\s*\{([^{}]*)\}")
 _LATEX_KOK = re.compile(r"\\sqrt\s*\{([^{}]*)\}")
-_LATEX_METIN = re.compile(r"\\(?:text|mathrm|mathbf|mathit|operatorname)\s*\{([^{}]*)\}")
+_LATEX_METIN = re.compile(r"\\(?:text|mathrm|mathbf|mathit|mathbb|operatorname)\s*\{([^{}]*)\}")
 _LATEX_US = re.compile(r"([\^_])\{([^{}]*)\}")
 _LATEX_SIMGELER = {
     r"\times": "×", r"\div": "÷", r"\cdot": "·", r"\leq": "≤", r"\le": "≤", r"\geq": "≥", r"\ge": "≥",
     r"\neq": "≠", r"\ne": "≠", r"\pm": "±", r"\approx": "≈", r"\rightarrow": "→", r"\to": "→",
     r"\infty": "∞", r"\pi": "π", r"\alpha": "α", r"\beta": "β", r"\Delta": "Δ", r"\degree": "°",
     r"\%": "%", r"\,": " ", r"\;": " ", r"\!": "", r"\left": "", r"\right": "",
+    r"\circ": "°", r"\{": "{", r"\}": "}", r"\cup": "∪", r"\cap": "∩", r"\in": "∈", r"\notin": "∉",
+    r"\subset": "⊂", r"\subseteq": "⊆", r"\emptyset": "∅", r"\angle": "∠", r"\triangle": "△",
+    r"\log": "log", r"\ln": "ln", r"\sin": "sin", r"\cos": "cos", r"\tan": "tan", r"\cot": "cot",
 }
 _LATEX_SIMGE = re.compile("|".join(re.escape(k) + r"(?![a-zA-Z])" for k in sorted(_LATEX_SIMGELER, key=len, reverse=True)))
-_LATEX_SINIR = re.compile(r"\\[()\[\]]|\$\$?")
+_LATEX_SINIR = re.compile(r"\\[()\[\]]")
+_DOLAR_MATEMATIK = re.compile(r"\$\$(.+?)\$\$|(?<![\w\\$])\$(?=[^\s$])([^$\n]*?)(?<=[^\s$\\])\$(?![\w$])")
 _GORSEL_ETIKETLERI = {"image", "figure", "chart", "picture", "diagram"}
 
 
@@ -87,8 +96,25 @@ def _latex_sadelestir(s: str) -> str:
             break
         s = yeni
     s = _LATEX_US.sub(lambda m: f"{m.group(1)}({m.group(2).strip()})", s)
-    s = _LATEX_SIMGE.sub(lambda m: _LATEX_SIMGELER[m.group()], s)
+    s = _LATEX_SIMGE.sub(lambda m: _LATEX_SIMGELER[m.group()], s).replace("^(°)", "°")
+    s = _DOLAR_MATEMATIK.sub(lambda m: m.group(1) if m.group(1) is not None else m.group(2), s)
     return _LATEX_SINIR.sub("", s)
+
+
+_SECENEK_HUCRESI = re.compile(r"^\(?[A-E]\)")
+
+
+def _hucre_birlestir(hucreler: list[str]) -> str:
+    """Hücreleri " / " ile birleştirir; seçenek işaretiyle başlayan hücrenin önüne ve yalnız işaretten oluşan
+    hücrenin ardına ayraç konmaz ("A) Sevgi | B) Saygı" → "A) Sevgi B) Saygı"; PDF yolundaki kuralla aynı)."""
+    sonuc = ""
+    onceki = ""
+    for h in (h for h in hucreler if h):
+        if sonuc:
+            sonuc += " " if _SECENEK_HUCRESI.match(h) or re.fullmatch(r"\(?[A-E]\)", onceki) else " / "
+        sonuc += h
+        onceki = h
+    return sonuc
 
 
 def _hucreler(satir_html: str) -> list[str]:
@@ -98,13 +124,29 @@ def _hucreler(satir_html: str) -> list[str]:
 
 def _tablo_satirlari(tablo_html: str) -> str:
     """HTML tablosunu, her satırı ayrı paragraf olan "hücre / hücre" satırlarına çevirir."""
-    satirlar = [" / ".join(h for h in _hucreler(tr) if h) for tr in _HTML_SATIR.findall(tablo_html)]
+    satirlar = [_hucre_birlestir(_hucreler(tr)) for tr in _HTML_SATIR.findall(tablo_html)]
     return "\n\n" + "\n\n".join(s for s in satirlar if s) + "\n\n"
 
 
 def _ref_det(m: re.Match[str]) -> str:
     etiket = m.group(1).strip().lower()
     return f"\n{GORSEL_ISARETI}\n" if etiket in _GORSEL_ETIKETLERI else ""
+
+
+def _tablo_satirlari_bul(satirlar: list[str]) -> set[int]:
+    """"|" ile başlayan ardışık satır blokları içinde ayraç satırı (| --- |) olanların satır numaraları.
+
+    "|x - 2| = 5 …" gibi mutlak değerle başlayan bir satır tablo sayılmaz."""
+    sonuc: set[int] = set()
+    i = 0
+    while i < len(satirlar):
+        j = i
+        while j < len(satirlar) and satirlar[j].strip().startswith("|"):
+            j += 1
+        if j > i and any(_MD_TABLO_AYRACI.match(s) for s in satirlar[i:j]):
+            sonuc.update(range(i, j))
+        i = max(j, i + 1)
+    return sonuc
 
 
 def ocr_temizle(ham: str) -> str:
@@ -118,6 +160,7 @@ def ocr_temizle(ham: str) -> str:
     """
     m = ham.replace("\r\n", "\n").replace("\r", "\n")
     m = _REF_DET.sub(_ref_det, m)
+    m = _REF_DET_ARTIGI.sub(_ref_det, m)
     m = _MD_GORSEL.sub(f"\n{GORSEL_ISARETI}\n", m)
     m = _HTML_TABLO.sub(lambda t: _tablo_satirlari(t.group()), m)
     m = re.sub(r"<br\s*/?>", "\n", m, flags=re.IGNORECASE)
@@ -125,12 +168,14 @@ def ocr_temizle(ham: str) -> str:
     m = _HTML_US.sub(lambda u: f"{'^' if u.group(1).lower() == 'sup' else '_'}({u.group(2).strip()})", m)
     m = _OZEL_TOKEN.sub("", m)
     satirlar: list[str] = []
-    for satir in m.split("\n"):
+    ham_satirlar = m.split("\n")
+    tablo_satiri = _tablo_satirlari_bul(ham_satirlar)
+    for no, satir in enumerate(ham_satirlar):
         if "|" in satir and _MD_TABLO_AYRACI.match(satir):
             continue  # Markdown tablo ayracı: | --- | --- |
-        if satir.count("|") >= 2 and satir.strip().startswith("|"):
+        if no in tablo_satiri:
             hucreler = [h.strip() for h in satir.strip().strip("|").split("|")]
-            satir = " / ".join(h for h in hucreler if h)
+            satir = _hucre_birlestir(hucreler)
             satirlar += ["", satir, ""]
             continue
         satir = _MD_ALINTI.sub("", _MD_BASLIK.sub("", satir))
@@ -165,10 +210,24 @@ def tekrar_kirp(metin: str, en_cok: int = 6) -> tuple[str, bool]:
     metin = "\n".join(satirlar)
     m = _SATIR_ICI_TEKRAR.search(metin[-6000:])
     if m:
+        birim = m.group(1)
         bas = len(metin) - len(metin[-6000:]) + m.start()
-        metin = metin[:bas] + m.group(1)
+        while bas >= len(birim) and metin[bas - len(birim) : bas] == birim:  # döngü pencereden önce başlamış
+            bas -= len(birim)
+        metin = metin[:bas] + birim
         kirpildi = True
     return metin.rstrip(), kirpildi
+
+
+def temiz_metin(ham: str) -> tuple[str, bool]:
+    """Ham çıktının temizlenmiş, tekrarı kırpılmış metni: ``(metin, kırpıldı_mı)``. Sondaki ``[KESİK]`` işareti
+    tekrar kırpmadan önce ayrılır ve sonra yeniden eklenir (döngüye giren sayfa da ``length`` ile biter)."""
+    govde = ham.rstrip()
+    kesik = govde.endswith(KESIK_ISARETI)
+    if kesik:
+        govde = govde[: -len(KESIK_ISARETI)]
+    metin, kirpildi = tekrar_kirp(ocr_temizle(govde))
+    return (f"{metin}\n\n{KESIK_ISARETI}" if kesik else metin), kirpildi
 
 
 # ---- görüntüler ---------------------------------------------------------------------------------
@@ -182,10 +241,10 @@ def sayfa_gorselleri(pdf: Path, dpi: int = 150) -> Iterator[tuple[int, bytes]]:
     try:
         belge = pymupdf.open(pdf)
     except Exception as e:  # pymupdf bozuk dosyada kendi hata türlerini atar
-        raise ValueError(f"PDF açılamadı: {pdf} ({e})") from e
+        raise ModulHatasi(f"PDF açılamadı: {pdf} ({e})") from e
     with belge:
         if belge.needs_pass and not belge.authenticate(""):
-            raise ValueError(f"PDF parola korumalı, açılamadı: {pdf}")
+            raise ModulHatasi(f"PDF parola korumalı, açılamadı: {pdf}")
         for no, sayfa in enumerate(belge, 1):
             yield no, sayfa.get_pixmap(dpi=dpi, alpha=False).tobytes("png")
 
@@ -198,7 +257,15 @@ def gorsel_oku(yol: Path) -> tuple[bytes, str]:
         raise ModulHatasi(f"{yol}: desteklenen görüntü türleri {', '.join(sorted(GORSEL_TURLERI))} ve .pdf")
     if not yol.is_file():
         raise ModulHatasi(f"Dosya yok: {yol}")
-    return yol.read_bytes(), mime
+    veri = yol.read_bytes()
+    if mime in ("image/bmp", "image/gif"):  # Ollama yalnız JPEG, PNG ve WebP kabul eder: PNG'ye çevir
+        from ..meb import _pymupdf
+
+        try:
+            return _pymupdf().Pixmap(veri).tobytes("png"), "image/png"
+        except Exception as e:  # noqa: BLE001
+            raise ModulHatasi(f"{yol}: görüntü okunamadı ({e})") from e
+    return veri, mime
 
 
 # ---- modül --------------------------------------------------------------------------------------
@@ -225,7 +292,9 @@ class OcrModulu:
         ham = self.sunucu.gorselden_metin(
             self.ayar.model, istem, gorsel, mime, self.ayar.en_fazla_token, self.ayar.ek_istek
         )
-        if yol is not None:
+        if getattr(self.sunucu, "son_bitis", None) == "length":
+            ham += f"\n\n{KESIK_ISARETI}\n"  # önbellekte de kalsın: sayfanın sonu eksik
+        if yol is not None and ham.strip():  # boş çıktı önbelleğe alınmaz: bir sonraki çalıştırma yeniden sorar
             yol.parent.mkdir(parents=True, exist_ok=True)
             gecici = yol.with_name(yol.name + ".yaziliyor")
             gecici.write_text(ham, encoding="utf-8")
@@ -237,7 +306,7 @@ class OcrModulu:
     ) -> str:
         """Bir görüntünün temizlenmiş metni."""
         ham, _ = self.ham_oku(gorsel, mime, istem)
-        metin, kirpildi = tekrar_kirp(ocr_temizle(ham))
+        metin, kirpildi = temiz_metin(ham)
         if kirpildi and yaz is not None:
             yaz("  Uyarı: model tekrara girdi; yinelenen kısım kırpıldı (sayfayı gözle denetle).")
         return metin
@@ -252,12 +321,15 @@ class OcrModulu:
         sureler: list[float] = []
         from ..meb import _pymupdf
 
-        with _pymupdf().open(pdf) as belge:
-            toplam = belge.page_count
+        try:
+            with _pymupdf().open(pdf) as belge:
+                toplam = belge.page_count
+        except Exception as e:  # noqa: BLE001 — pymupdf bozuk dosyada kendi hata türlerini atar
+            raise ModulHatasi(f"PDF açılamadı: {pdf} ({e})") from e
         for no, png in sayfa_gorselleri(pdf, self.ayar.dpi):
             bas = time.time()
             ham, onbellekten = self.ham_oku(png, istem=istem)
-            metin, kirpildi = tekrar_kirp(ocr_temizle(ham))
+            metin, kirpildi = temiz_metin(ham)
             sayfalar.append(metin)
             if onbellekten:
                 durum = "önbellekten"
@@ -265,7 +337,9 @@ class OcrModulu:
                 sureler.append(time.time() - bas)
                 kalan = (toplam - no) * sum(sureler) / len(sureler)
                 durum = f"{sureler[-1]:.0f} sn" + (f", kalan ~{kalan / 60:.0f} dk" if no < toplam else "")
-            ek = " | tekrar kırpıldı" if kirpildi else ""
+            ek = (" | tekrar kırpıldı" if kirpildi else "") + (
+                f" | çıktı en_fazla_token ({self.ayar.en_fazla_token}) sınırında kesildi" if KESIK_ISARETI in metin else ""
+            )
             yaz(f"  OCR {Path(pdf).name}: sayfa {no}/{toplam} ({durum}, {len(metin)} karakter{ek})")
         return sayfalar
 

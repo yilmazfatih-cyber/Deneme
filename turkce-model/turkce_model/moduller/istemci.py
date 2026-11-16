@@ -11,7 +11,6 @@ import base64
 import ipaddress
 import re
 from typing import Any
-from urllib.parse import urlsplit
 
 from ..ayarlar import AyarHatasi
 
@@ -26,8 +25,13 @@ class ModulHatasi(AyarHatasi):
 
 def yerel_adres_mi(adres: str) -> bool:
     """Adres bu bilgisayarı ya da yerel ağı mı gösteriyor? (``localhost``, 127.x, 10.x, 192.168.x, ``*.local`` …)"""
-    ana = (urlsplit(adres).hostname or "").lower()
-    if not ana:
+    try:
+        from urllib3.util import parse_url  # requests bağlanırken bu ayrıştırıcıyı kullanır
+
+        ana = (parse_url(adres).host or "").strip("[]").lower()
+    except Exception:  # noqa: BLE001 — bozuk adres ("http://[::1:80/v1"): yerel sayılmaz
+        return False
+    if not ana or "\\" in adres or "@" in adres.split("//", 1)[-1].split("/", 1)[0]:
         return False
     if ana in _YEREL_ADLAR or ana.endswith((".local", ".localhost")):
         return True
@@ -75,6 +79,8 @@ class YerelSunucu:
             if yerel:
                 oturum.trust_env = False  # yerel adres için sistemdeki vekil sunucu (proxy) ayarları kullanılmaz
         self.oturum = oturum
+        self.son_bitis: str | None = None
+        """Son sohbet isteğinin ``finish_reason``'ı: ``"length"`` ise çıktı ``en_fazla_token``'da kesilmiştir."""
 
     # ---------------------------------------------------------------------------------------------
     def _istek(self, yontem: str, yol: str, govde: dict | None = None) -> dict:
@@ -82,7 +88,7 @@ class YerelSunucu:
 
         url = f"{self.adres}{yol}"
         try:
-            yanit = self.oturum.request(yontem, url, json=govde, timeout=self.zaman_asimi)
+            yanit = self.oturum.request(yontem, url, json=govde, timeout=self.zaman_asimi, allow_redirects=False)
         except requests.exceptions.Timeout as e:
             raise ModulHatasi(
                 f"Yerel model sunucusu {self.zaman_asimi:g} sn içinde cevap vermedi ({url}). Ekran kartı yoksa bir "
@@ -96,6 +102,12 @@ class YerelSunucu:
             ) from e
         except requests.exceptions.RequestException as e:
             raise ModulHatasi(f"Yerel model sunucusuna istek gönderilemedi ({url}): {e}") from e
+        if 300 <= yanit.status_code < 400:
+            raise ModulHatasi(
+                f"Yerel model sunucusu isteği başka bir adrese yönlendirdi (HTTP {yanit.status_code} → "
+                f"{yanit.headers.get('Location', '?')}). Veri dışarı gitmesin diye yönlendirme izlenmez; "
+                "ayarlar.toml'da [moduller] adres değerini sunucunun asıl /v1 köküyle değiştir."
+            )
         if yanit.status_code >= 400:
             raise ModulHatasi(self._hata_metni(yanit, govde))
         try:
@@ -118,7 +130,8 @@ class YerelSunucu:
             mesaj = yanit.text
         mesaj = str(mesaj)[:300]
         model = (govde or {}).get("model")
-        if model and (yanit.status_code == 404 or "not found" in mesaj.lower()):
+        dusuk = mesaj.lower()
+        if model and "model" in dusuk and any(k in dusuk for k in ("not found", "does not exist", "not exist")):
             return (
                 f"Sunucuda '{model}' modeli yok ({self.adres}). Ollama kullanıyorsan indir: `ollama pull {model}`. "
                 "Sunucudaki modelleri görmek için: python -m turkce_model modul-liste"
@@ -130,7 +143,10 @@ class YerelSunucu:
     def modeller(self) -> list[str]:
         """Sunucudaki modellerin adları (``GET /models``)."""
         veri = self._istek("GET", "/models")
-        return sorted(str(m.get("id")) for m in veri.get("data") or [] if isinstance(m, dict) and m.get("id"))
+        veriler = veri.get("data")
+        if not isinstance(veriler, list):
+            veriler = []
+        return sorted(str(m.get("id")) for m in veriler if isinstance(m, dict) and m.get("id"))
 
     def sohbet(
         self,
@@ -151,6 +167,7 @@ class YerelSunucu:
         }
         veri = self._istek("POST", "/chat/completions", govde)
         try:
+            self.son_bitis = veri["choices"][0].get("finish_reason")
             icerik = veri["choices"][0]["message"].get("content")
         except (KeyError, IndexError, TypeError, AttributeError) as e:
             raise ModulHatasi(f"Sunucunun cevabı beklenen biçimde değil ({self.adres}): {str(veri)[:200]!r}") from e

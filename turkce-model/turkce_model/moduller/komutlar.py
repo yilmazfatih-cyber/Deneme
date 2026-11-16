@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 import textwrap
 import time
 from collections.abc import Callable
@@ -12,10 +13,11 @@ from ..meb import HARFLER, Soru, soru_oku
 from .istemci import ModulHatasi, YerelSunucu
 from .katalog import BUYUK_MODELLER, KATALOG, ROLLER, modul_bul
 
-_ACMA_IPUCU = (
-    "Açmak için: yerel bir model sunucusu kur (ör. Ollama), modeli indir (`ollama pull {ornek}`) ve "
-    "ayarlar.toml'da [moduller.{rol}] model = \"{ornek}\" yaz. Ayrıntı: README, 'DeepSeek modülleri'."
+_ACMA_ADIMLARI = (
+    "yerel bir model sunucusu kur (ör. Ollama), modeli indir (`ollama pull {ornek}`) ve "
+    "ayarlar.toml'da [moduller.{rol}] model = \"{ornek}\" yaz"
 )
+_ACMA_IPUCU = "Açmak için: " + _ACMA_ADIMLARI + ". Ayrıntı: README, 'DeepSeek modülleri'."
 
 
 def _sunucu(ayarlar) -> YerelSunucu:
@@ -56,7 +58,7 @@ def komut_modul_liste(arg, ayarlar) -> None:
     try:
         modeller = _sunucu(ayarlar).modeller()
     except ModulHatasi as e:
-        print(f"Sunucu: ulaşılamadı — {str(e).split('. ')[0]}.")
+        print(f"Sunucu: {e}")
         return
     print(f"Sunucu: çalışıyor, {len(modeller)} model: {', '.join(modeller) or '(yok)'}")
     for rol, bolum in (("ocr", mod.ocr), ("metin", mod.metin)):
@@ -67,7 +69,8 @@ def komut_modul_liste(arg, ayarlar) -> None:
 def _model_var(model: str, modeller: list[str]) -> bool:
     """Sunucular etiketi farklı yazabilir ("deepseek-ocr" ↔ "deepseek-ocr:latest")."""
     aranan = model.lower()
-    return any(m.lower() == aranan or m.lower().split(":")[0] == aranan.split(":")[0] for m in modeller)
+    adlar = {m.lower() for m in modeller}
+    return aranan in adlar or f"{aranan}:latest" in adlar or aranan.removesuffix(":latest") in adlar
 
 
 # ---- modul-dene ---------------------------------------------------------------------------------
@@ -135,8 +138,10 @@ def komut_modul_dene(arg, ayarlar) -> int:
     roller = [arg.rol] if arg.rol else [r for r in ("ocr", "metin") if getattr(ayarlar.moduller, r).model]
     if not roller:
         raise ModulHatasi(
-            "Açık modül yok. OCR için: " + _ACMA_IPUCU.format(ornek="deepseek-ocr", rol="ocr")
-            + "\nKıyas için: [moduller.metin] model = \"deepseek-r1:1.5b\"."
+            "Açık modül yok. OCR modülünü açmak için: "
+            + _ACMA_ADIMLARI.format(ornek="deepseek-ocr", rol="ocr")
+            + ". Kıyas modülü için aynısı: `ollama pull deepseek-r1:1.5b`, [moduller.metin] model = "
+            "\"deepseek-r1:1.5b\". Ayrıntı: README, 'DeepSeek modülleri'."
         )
     tamam = True
     for rol in roller:
@@ -154,10 +159,16 @@ def komut_ocr(arg, ayarlar) -> None:
     hedef = Path(arg.cikti) if arg.cikti else ayarlar.veri_klasoru / "ocr"
     hedef.mkdir(parents=True, exist_ok=True)
     istem = modul.ayar.istem if arg.duz else None
+    kullanilan: set[str] = set()
     for dosya in arg.dosya:
         yol = Path(dosya)
         sayfalar = modul.dosya_oku(yol, print, istem)
-        cikti = hedef / f"{yol.stem}.txt"
+        ad, n = yol.stem, 1
+        while ad.lower() in kullanilan:  # aynı adlı dosyalar (2024/IMG_0001.jpg, 2025/IMG_0001.jpg) birbirini ezmesin
+            n += 1
+            ad = f"{yol.stem}-{n}"
+        kullanilan.add(ad.lower())
+        cikti = hedef / f"{ad}.txt"
         cikti.write_text("\n\n".join(s for s in sayfalar if s) + "\n", encoding="utf-8")
         print(f"{yol.name}: {len(sayfalar)} sayfa, {sum(len(s) for s in sayfalar)} karakter → {cikti}")
     print(
@@ -180,10 +191,17 @@ def meb_ayristirici(ayarlar, kip: str) -> Callable:
 def resimden_soru(yol: str, ayarlar) -> Soru:
     """``sor --resim``: bir soru fotoğrafını OCR ile okuyup ``Soru``ya çevirir (cevabı bilinmez)."""
     from .meb_metin import tek_soru
-    from .ocr import ocr_modulu
+    from .ocr import KESIK_ISARETI, ocr_modulu
 
     modul = ocr_modulu(ayarlar)
     metin = "\n\n".join(modul.dosya_oku(Path(yol), print, modul.ayar.istem))
+    if KESIK_ISARETI in metin:
+        raise ModulHatasi(
+            "OCR çıktısı [moduller.ocr] en_fazla_token sınırında kesildi; soru eksik okunmuş olabilir. "
+            "Değeri büyüt ya da fotoğrafı tek soruyu içerecek biçimde kırp."
+        )
+    if sum(1 for s in metin.split("\n") if re.match(r"\(?A\)\s", s.strip())) > 1:  # iki kez "A)": iki soru
+        raise ModulHatasi("Görüntüde birden çok soru var; fotoğrafı tek soruyu içerecek biçimde kırp.")
     soru = tek_soru(metin)
     if soru is None:
         raise ModulHatasi(
@@ -197,7 +215,7 @@ def resimden_soru(yol: str, ayarlar) -> Soru:
 
 
 def komut_modul_kiyas(arg, ayarlar) -> None:
-    from ..degerlendirme import ilerleme_ekle
+    from ..degerlendirme import OLCUM_SURUMU, ilerleme_ekle
     from .kiyas import kiyasla, ornekle
 
     ayar = _metin_ayari(ayarlar)
@@ -215,7 +233,7 @@ def komut_modul_kiyas(arg, ayarlar) -> None:
         raise AyarHatasi("Kıyaslanacak soru yok. Önce meb-mmlu (TurkishMMLU) ya da meb-pdf + veri-hazirla çalıştır.")
     sunucu = _sunucu(ayarlar)
     onbellek = ayarlar.cikti_klasoru / "moduller" / "kiyas"
-    kayit: dict = {"deney": f"modül: {ayar.model}", "asama": "kıyas", "kiyas": True}
+    kayit: dict = {"deney": f"modül: {ayar.model}", "asama": "kıyas", "kiyas": True, "olcum": OLCUM_SURUMU}
     print(f"Kıyas: {ayar.model} @ {ayarlar.moduller.adres} (cevaplar {onbellek} altında saklanır; yarıda kesilirse sürer)")
     for anahtar, ad, sorular, toplam in kumeler:
         sonuc = kiyasla(sunucu, ayar, sorular, onbellek, print, ad)
@@ -225,6 +243,11 @@ def komut_modul_kiyas(arg, ayarlar) -> None:
             f"{ad}: {sonuc['n']} soru{ornek} | doğruluk (üretimle) %{100 * sonuc['dogruluk_uretim']:.1f} | "
             f"cevapsız {sonuc['cevapsiz']} | rastgele tahmin %{100 * sonuc['rastgele']:.1f}"
         )
+        if sonuc.get("kesik"):
+            print(
+                f"  Uyarı: {sonuc['kesik']} cevap en_fazla_token ({ayar.en_fazla_token}) sınırında kesildi (model çoğu kez "
+                "düşünürken); bunlar cevapsız sayıldı. [moduller.metin] en_fazla_token değerini büyüt (ör. 4096)."
+            )
     md = ilerleme_ekle(ayarlar.cikti_klasoru, kayit)
     print(f"İlerleme tablosuna kıyas satırı eklendi: {md}")
     print(

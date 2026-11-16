@@ -196,6 +196,8 @@ def _dogruluk(d: dict) -> str:
     """"metin / harf (taban)" — her doğruluk kendi rastgele tahmin tabanıyla (4 şıkta %25, 5 şıkta %20)."""
     if not d or not d.get("n"):
         return "—"
+    if "dogruluk_uretim" in d:  # modül kıyası: cevap yazdırılarak ölçülür
+        return f"{_yuzde(d['dogruluk_uretim'])} üretimle (taban {_yuzde(d.get('rastgele'))}, n={d['n']})"
     return f"{_yuzde(d.get('dogruluk_metin'))} / {_yuzde(d.get('dogruluk_harf'))} (taban {_yuzde(d.get('rastgele'))}, n={d['n']})"
 
 

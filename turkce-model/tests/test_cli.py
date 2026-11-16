@@ -707,7 +707,7 @@ def test_modul_komutlari_kapaliyken_nasil_acilacagini_soyler(tmp_path, monkeypat
     (tmp_path / "ayarlar.toml").write_text("", encoding="utf-8")
     assert main(["modul-liste", "--ayar", f"moduller.adres={_kapali_adres()}"]) == 0
     cikti = capsys.readouterr().out
-    assert "ocr: kapalı" in cikti and "metin: kapalı" in cikti and "Sunucu: ulaşılamadı" in cikti
+    assert "ocr: kapalı" in cikti and "metin: kapalı" in cikti and "Sunucu: Yerel model sunucusuna ulaşılamadı" in cikti
     for argv, parca in (
         (["modul-dene"], "Açık modül yok"),
         (["ocr", "sayfa.png"], "OCR modülü kapalı"),
