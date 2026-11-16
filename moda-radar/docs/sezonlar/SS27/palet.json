@@ -1,6 +1,6 @@
 {
   "sezon": "SS27",
-  "onceki": null,
+  "onceki": "SS26",
   "esik_de": 6.0,
   "parca_rengi_sayisi": 7532,
   "satirlar": [
@@ -9,7 +9,7 @@
       "kume_merkezi": {
         "L": 7.020411431373517,
         "a": 1.0579887019276688,
-        "b": 0.052059789058889215
+        "b": 0.052059789058888514
       },
       "hex": "#171515",
       "pantone": {
@@ -25,8 +25,8 @@
         "ad": "Meteorite"
       },
       "podyum_payi": 0.08411413377533006,
-      "onceki_sezon_farki": 0.0,
-      "yon": "duz",
+      "onceki_sezon_farki": 0.95,
+      "yon": "zirve",
       "marka_sayisi": 29,
       "segment_raf_tahmini": {}
     },
@@ -34,7 +34,7 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 13.049106731736028,
-        "a": 2.788514081346859,
+        "a": 2.788514081346857,
         "b": 4.54933463720449
       },
       "hex": "#28201B",
@@ -51,16 +51,16 @@
         "ad": "Mole"
       },
       "podyum_payi": 0.0407904854716156,
-      "onceki_sezon_farki": 0.0,
-      "yon": "duz",
+      "onceki_sezon_farki": 1.59,
+      "yon": "yukselis",
       "marka_sayisi": 26,
       "segment_raf_tahmini": {}
     },
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 21.10081938522684,
-        "a": 2.9745561578042015,
+        "L": 21.100819385226856,
+        "a": 2.974556157804202,
         "b": 6.04827740132522
       },
       "hex": "#3B312A",
@@ -77,7 +77,7 @@
         "ad": "Demitasse"
       },
       "podyum_payi": 0.034391963046890614,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.46,
       "yon": "duz",
       "marka_sayisi": 28,
       "segment_raf_tahmini": {}
@@ -85,9 +85,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 14.653795610460163,
-        "a": 7.822430752578874,
-        "b": 11.17597558320002
+        "L": 14.653795610460165,
+        "a": 7.8224307525788745,
+        "b": 11.175975583200024
       },
       "hex": "#342116",
       "pantone": {
@@ -103,8 +103,8 @@
         "ad": "Demitasse"
       },
       "podyum_payi": 0.029535972965327617,
-      "onceki_sezon_farki": 0.0,
-      "yon": "duz",
+      "onceki_sezon_farki": -1.58,
+      "yon": "cikis",
       "marka_sayisi": 24,
       "segment_raf_tahmini": {}
     },
@@ -113,7 +113,7 @@
       "kume_merkezi": {
         "L": 85.42688876645086,
         "a": 2.1848907370129727,
-        "b": 0.9367821423548459
+        "b": 0.9367821423548449
       },
       "hex": "#DBD4D4",
       "pantone": {
@@ -129,7 +129,7 @@
         "ad": "Lilac Ash"
       },
       "podyum_payi": 0.026751984572644178,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.31,
       "yon": "duz",
       "marka_sayisi": 23,
       "segment_raf_tahmini": {}
@@ -137,9 +137,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 92.66066635398985,
-        "a": 0.39135596302815207,
-        "b": 1.5242279244291925
+        "L": 92.66066635398982,
+        "a": 0.39135596302815323,
+        "b": 1.5242279244291914
       },
       "hex": "#ECEAE7",
       "pantone": {
@@ -155,7 +155,7 @@
         "ad": "Cloud Dancer"
       },
       "podyum_payi": 0.02507124595955945,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.48,
       "yon": "duz",
       "marka_sayisi": 17,
       "segment_raf_tahmini": {}
@@ -164,7 +164,7 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 83.4593570601762,
-        "a": 0.9262089934136861,
+        "a": 0.9262089934136871,
         "b": 8.478645809917905
       },
       "hex": "#D9CFC0",
@@ -181,7 +181,7 @@
         "ad": "Almond Milk"
       },
       "podyum_payi": 0.02019121661326264,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.69,
       "yon": "duz",
       "marka_sayisi": 22,
       "segment_raf_tahmini": {}
@@ -190,8 +190,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 18.893550600681767,
-        "a": 1.5012870563469323,
-        "b": -1.7657545695047443
+        "a": 1.5012870563469318,
+        "b": -1.7657545695047459
       },
       "hex": "#2F2D30",
       "pantone": {
@@ -207,7 +207,7 @@
         "ad": "Jet Black"
       },
       "podyum_payi": 0.020067252653246093,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.82,
       "yon": "duz",
       "marka_sayisi": 21,
       "segment_raf_tahmini": {}
@@ -233,7 +233,7 @@
         "ad": "Black Ink"
       },
       "podyum_payi": 0.0198510961885657,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.24,
       "yon": "duz",
       "marka_sayisi": 25,
       "segment_raf_tahmini": {}
@@ -241,9 +241,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 35.66557564508543,
-        "a": 0.75446719430343,
-        "b": -1.2217216697204063
+        "L": 35.66557564508547,
+        "a": 0.7544671943034312,
+        "b": -1.2217216697204074
       },
       "hex": "#545456",
       "pantone": {
@@ -259,8 +259,8 @@
         "ad": "Magnet"
       },
       "podyum_payi": 0.0192745873895853,
-      "onceki_sezon_farki": 0.0,
-      "yon": "duz",
+      "onceki_sezon_farki": 1.65,
+      "yon": "yukselis",
       "marka_sayisi": 18,
       "segment_raf_tahmini": {}
     },
@@ -269,7 +269,7 @@
       "kume_merkezi": {
         "L": 72.91162790423837,
         "a": 2.1520073674791282,
-        "b": 6.774344202712753
+        "b": 6.774344202712749
       },
       "hex": "#BCB1A7",
       "pantone": {
@@ -285,7 +285,7 @@
         "ad": "Silver Gray"
       },
       "podyum_payi": 0.018791307803630787,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.76,
       "yon": "duz",
       "marka_sayisi": 26,
       "segment_raf_tahmini": {}
@@ -293,9 +293,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 51.79537422315751,
-        "a": 0.16176944269704457,
-        "b": -0.12690195799746465
+        "L": 51.79537422315752,
+        "a": 0.16176944269704482,
+        "b": -0.12690195799746437
       },
       "hex": "#7C7B7C",
       "pantone": {
@@ -311,7 +311,7 @@
         "ad": "Steeple Gray"
       },
       "podyum_payi": 0.017334661946738324,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.68,
       "yon": "duz",
       "marka_sayisi": 16,
       "segment_raf_tahmini": {}
@@ -320,8 +320,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 71.9591117934617,
-        "a": 0.7480856370714011,
-        "b": -0.19637097637662965
+        "a": 0.7480856370714009,
+        "b": -0.19637097637662942
       },
       "hex": "#B2B0B1",
       "pantone": {
@@ -337,8 +337,8 @@
         "ad": "High Rise"
       },
       "podyum_payi": 0.016659063650157978,
-      "onceki_sezon_farki": 0.0,
-      "yon": "duz",
+      "onceki_sezon_farki": 1.09,
+      "yon": "yukselis",
       "marka_sayisi": 19,
       "segment_raf_tahmini": {}
     },
@@ -363,7 +363,7 @@
         "ad": "Puce"
       },
       "podyum_payi": 0.01580016408527772,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.11,
       "yon": "duz",
       "marka_sayisi": 25,
       "segment_raf_tahmini": {}
@@ -371,7 +371,7 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 16.73603227466537,
+        "L": 16.736032274665394,
         "a": 10.725164502143317,
         "b": 8.007853065335418
       },
@@ -389,8 +389,8 @@
         "ad": "Chocolate Plum"
       },
       "podyum_payi": 0.01562563531668475,
-      "onceki_sezon_farki": 0.0,
-      "yon": "duz",
+      "onceki_sezon_farki": -2.97,
+      "yon": "cikis",
       "marka_sayisi": 21,
       "segment_raf_tahmini": {}
     },
@@ -398,8 +398,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 15.399375797583904,
-        "a": 5.485670995633607,
-        "b": 0.8636639907509591
+        "a": 5.485670995633611,
+        "b": 0.8636639907509598
       },
       "hex": "#2F2425",
       "pantone": {
@@ -415,7 +415,7 @@
         "ad": "Black Bean"
       },
       "podyum_payi": 0.014689651559181118,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.78,
       "yon": "duz",
       "marka_sayisi": 25,
       "segment_raf_tahmini": {}
@@ -423,9 +423,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 48.02491268365214,
-        "a": 1.7974452896177613,
-        "b": 7.222811866967639
+        "L": 48.02491268365216,
+        "a": 1.797445289617761,
+        "b": 7.222811866967641
       },
       "hex": "#7A7166",
       "pantone": {
@@ -441,7 +441,7 @@
         "ad": "Brindle"
       },
       "podyum_payi": 0.014601850929947863,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.61,
       "yon": "duz",
       "marka_sayisi": 21,
       "segment_raf_tahmini": {}
@@ -449,8 +449,8 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 62.77554628648581,
-        "a": 0.2321681887079635,
+        "L": 62.77554628648582,
+        "a": 0.23216818870796344,
         "b": 18.528032364309585
       },
       "hex": "#A59777",
@@ -467,7 +467,7 @@
         "ad": "Sponge"
       },
       "podyum_payi": 0.014044686724172153,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.77,
       "yon": "duz",
       "marka_sayisi": 15,
       "segment_raf_tahmini": {}
@@ -493,7 +493,7 @@
         "ad": "Roasted Cashew"
       },
       "podyum_payi": 0.014040463097678943,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.08,
       "yon": "duz",
       "marka_sayisi": 19,
       "segment_raf_tahmini": {}
@@ -501,8 +501,8 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 33.46110975707159,
-        "a": 6.482610596571838,
+        "L": 33.46110975707161,
+        "a": 6.482610596571841,
         "b": 4.158548533331153
       },
       "hex": "#5C4B48",
@@ -519,7 +519,7 @@
         "ad": "French Roast"
       },
       "podyum_payi": 0.013508733468723761,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.71,
       "yon": "duz",
       "marka_sayisi": 21,
       "segment_raf_tahmini": {}
@@ -528,8 +528,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 45.156761773611464,
-        "a": 0.6721455524404998,
-        "b": 1.462094819509736
+        "a": 0.6721455524405,
+        "b": 1.4620948195097367
       },
       "hex": "#6D6A68",
       "pantone": {
@@ -545,7 +545,7 @@
         "ad": "Gargoyle"
       },
       "podyum_payi": 0.013431570419678896,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.9,
       "yon": "duz",
       "marka_sayisi": 20,
       "segment_raf_tahmini": {}
@@ -571,7 +571,7 @@
         "ad": "Black Bean"
       },
       "podyum_payi": 0.013248901426404799,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.58,
       "yon": "duz",
       "marka_sayisi": 14,
       "segment_raf_tahmini": {}
@@ -580,7 +580,7 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 33.37072209341581,
-        "a": 0.5420141231780773,
+        "a": 0.5420141231780777,
         "b": 9.427130721554429
       },
       "hex": "#554E40",
@@ -597,8 +597,8 @@
         "ad": "Grape Leaf"
       },
       "podyum_payi": 0.012742925609209267,
-      "onceki_sezon_farki": 0.0,
-      "yon": "duz",
+      "onceki_sezon_farki": 1.04,
+      "yon": "yukselis",
       "marka_sayisi": 17,
       "segment_raf_tahmini": {}
     },
@@ -607,7 +607,7 @@
       "kume_merkezi": {
         "L": 67.03122103371295,
         "a": 4.350988623095909,
-        "b": 1.5139612711557393
+        "b": 1.5139612711557386
       },
       "hex": "#ACA0A1",
       "pantone": {
@@ -623,7 +623,7 @@
         "ad": "Opal Gray"
       },
       "podyum_payi": 0.011916196307651391,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.62,
       "yon": "duz",
       "marka_sayisi": 20,
       "segment_raf_tahmini": {}
@@ -631,7 +631,7 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 12.762648298911888,
+        "L": 12.762648298911897,
         "a": -1.5146831337762046,
         "b": -1.1714716191568122
       },
@@ -649,7 +649,7 @@
         "ad": "Caviar"
       },
       "podyum_payi": 0.011566579471885956,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.92,
       "yon": "duz",
       "marka_sayisi": 16,
       "segment_raf_tahmini": {}
@@ -657,7 +657,7 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 62.943387411403684,
+        "L": 62.9433874114037,
         "a": 1.656941749578962,
         "b": 4.7107633085083
       },
@@ -675,7 +675,7 @@
         "ad": "Atmosphere"
       },
       "podyum_payi": 0.010317453615589504,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.1,
       "yon": "duz",
       "marka_sayisi": 21,
       "segment_raf_tahmini": {}
@@ -683,9 +683,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 75.06837199256472,
-        "a": 8.64289431696995,
-        "b": 11.528602384154137
+        "L": 75.06837199256475,
+        "a": 8.642894316969942,
+        "b": 11.52860238415413
       },
       "hex": "#D1B3A4",
       "pantone": {
@@ -701,7 +701,7 @@
         "ad": "Cameo Rose"
       },
       "podyum_payi": 0.010010678157850166,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.81,
       "yon": "duz",
       "marka_sayisi": 12,
       "segment_raf_tahmini": {}
@@ -709,8 +709,8 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 39.639725937765185,
-        "a": 1.9436192656338638,
+        "L": 39.6397259377652,
+        "a": 1.9436192656338644,
         "b": 4.7306766501138915
       },
       "hex": "#645C56",
@@ -727,7 +727,7 @@
         "ad": "Falcon"
       },
       "podyum_payi": 0.009322297827775853,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.2,
       "yon": "duz",
       "marka_sayisi": 20,
       "segment_raf_tahmini": {}
@@ -736,7 +736,7 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 58.94104441731253,
-        "a": 11.935826455012668,
+        "a": 11.935826455012664,
         "b": 48.724754473035524
       },
       "hex": "#B78435",
@@ -753,7 +753,7 @@
         "ad": "Harvest Gold"
       },
       "podyum_payi": 0.009074164580137243,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.49,
       "yon": "duz",
       "marka_sayisi": 9,
       "segment_raf_tahmini": {}
@@ -762,8 +762,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 77.359876227596,
-        "a": 7.414417672963967,
-        "b": 42.96736195382266
+        "a": 7.414417672963965,
+        "b": 42.96736195382265
       },
       "hex": "#E5B86F",
       "pantone": {
@@ -779,7 +779,7 @@
         "ad": "Cornsilk"
       },
       "podyum_payi": 0.00907035429494076,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.67,
       "yon": "duz",
       "marka_sayisi": 6,
       "segment_raf_tahmini": {}
@@ -787,9 +787,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 52.80273453501023,
+        "L": 52.80273453501024,
         "a": 17.140489012645137,
-        "b": -19.252044179488788
+        "b": -19.252044179488784
       },
       "hex": "#8C759F",
       "pantone": {
@@ -805,7 +805,7 @@
         "ad": "Diffused Orchid"
       },
       "podyum_payi": 0.008699046529269581,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.81,
       "yon": "duz",
       "marka_sayisi": 2,
       "segment_raf_tahmini": {}
@@ -815,7 +815,7 @@
       "kume_merkezi": {
         "L": 70.66102707463632,
         "a": 1.3940202640841004,
-        "b": 21.906939801074717
+        "b": 21.906939801074714
       },
       "hex": "#BEAB85",
       "pantone": {
@@ -831,7 +831,7 @@
         "ad": "Croissant"
       },
       "podyum_payi": 0.008511228633064192,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.34,
       "yon": "duz",
       "marka_sayisi": 17,
       "segment_raf_tahmini": {}
@@ -840,7 +840,7 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 56.77245314026427,
-        "a": 6.959908017215706,
+        "a": 6.959908017215703,
         "b": 6.291864445400564
       },
       "hex": "#99847E",
@@ -857,7 +857,7 @@
         "ad": "Ginger Snap"
       },
       "podyum_payi": 0.00845513660550893,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.3,
       "yon": "duz",
       "marka_sayisi": 23,
       "segment_raf_tahmini": {}
@@ -865,7 +865,7 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 28.253212225513604,
+        "L": 28.253212225513614,
         "a": 33.51858150005987,
         "b": 17.322291926010138
       },
@@ -883,7 +883,7 @@
         "ad": "Merlot"
       },
       "podyum_payi": 0.008396416818391062,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.52,
       "yon": "duz",
       "marka_sayisi": 15,
       "segment_raf_tahmini": {}
@@ -893,7 +893,7 @@
       "kume_merkezi": {
         "L": 82.236843354894,
         "a": 7.7597214379762915,
-        "b": 4.3366424899024185
+        "b": 4.336642489902418
       },
       "hex": "#DFC7C5",
       "pantone": {
@@ -909,7 +909,7 @@
         "ad": "Mauve Chalk"
       },
       "podyum_payi": 0.008024404736321671,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.48,
       "yon": "duz",
       "marka_sayisi": 14,
       "segment_raf_tahmini": {}
@@ -918,8 +918,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 41.84100096193985,
-        "a": 0.12310935493594614,
-        "b": 14.277571210485243
+        "a": 0.12310935493594721,
+        "b": 14.277571210485247
       },
       "hex": "#6C624B",
       "pantone": {
@@ -935,7 +935,7 @@
         "ad": "Stone Gray"
       },
       "podyum_payi": 0.007842367652114888,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.77,
       "yon": "duz",
       "marka_sayisi": 12,
       "segment_raf_tahmini": {}
@@ -943,9 +943,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 59.59374143722684,
-        "a": 0.0596715781118738,
-        "b": -1.1418523132666816
+        "L": 59.59374143722685,
+        "a": 0.05967157811187377,
+        "b": -1.14185231326668
       },
       "hex": "#8F9091",
       "pantone": {
@@ -961,7 +961,7 @@
         "ad": "Wet Weather"
       },
       "podyum_payi": 0.007821523513508895,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.44,
       "yon": "duz",
       "marka_sayisi": 16,
       "segment_raf_tahmini": {}
@@ -969,9 +969,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 29.246303719409553,
-        "a": 10.761160184693656,
-        "b": 17.783596118402553
+        "L": 29.246303719409557,
+        "a": 10.761160184693658,
+        "b": 17.78359611840255
       },
       "hex": "#5D3E2A",
       "pantone": {
@@ -987,7 +987,7 @@
         "ad": "Fondue Fudge"
       },
       "podyum_payi": 0.00777647689718881,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.77,
       "yon": "duz",
       "marka_sayisi": 7,
       "segment_raf_tahmini": {}
@@ -996,8 +996,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 82.79074753415307,
-        "a": -4.795681917556883,
-        "b": 7.117961187126289
+        "a": -4.795681917556882,
+        "b": 7.1179611871262845
       },
       "hex": "#CBD0C1",
       "pantone": {
@@ -1013,7 +1013,7 @@
         "ad": "Almost Aqua"
       },
       "podyum_payi": 0.007261405689551833,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.32,
       "yon": "duz",
       "marka_sayisi": 11,
       "segment_raf_tahmini": {}
@@ -1021,9 +1021,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 63.074418231029505,
+        "L": 63.07441823102951,
         "a": 12.90155301842101,
-        "b": 5.89851367145673
+        "b": 5.898513671456731
       },
       "hex": "#B3908F",
       "pantone": {
@@ -1039,7 +1039,7 @@
         "ad": "Deauville Mauve"
       },
       "podyum_payi": 0.006983925657291921,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.02,
       "yon": "duz",
       "marka_sayisi": 23,
       "segment_raf_tahmini": {}
@@ -1065,7 +1065,7 @@
         "ad": "Sea Mist"
       },
       "podyum_payi": 0.006670520905045959,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.32,
       "yon": "duz",
       "marka_sayisi": 18,
       "segment_raf_tahmini": {}
@@ -1074,7 +1074,7 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 22.231855486433286,
-        "a": 3.475537996395715,
+        "a": 3.475537996395713,
         "b": -8.381192247694628
       },
       "hex": "#343442",
@@ -1091,7 +1091,7 @@
         "ad": "Graphite"
       },
       "podyum_payi": 0.006552016877796592,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.09,
       "yon": "duz",
       "marka_sayisi": 12,
       "segment_raf_tahmini": {}
@@ -1099,9 +1099,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 25.73481146691891,
+        "L": 25.734811466918913,
         "a": -2.250392758308279,
-        "b": 2.5349639344116426
+        "b": 2.534963934411643
       },
       "hex": "#3B3E39",
       "pantone": {
@@ -1117,7 +1117,7 @@
         "ad": "Pirate Black"
       },
       "podyum_payi": 0.005993231904403023,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.53,
       "yon": "duz",
       "marka_sayisi": 13,
       "segment_raf_tahmini": {}
@@ -1125,9 +1125,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 60.166890938302636,
+        "L": 60.16689093830265,
         "a": 3.9230976681562137,
-        "b": -1.1850881751803912
+        "b": -1.1850881751803906
       },
       "hex": "#978F93",
       "pantone": {
@@ -1143,7 +1143,7 @@
         "ad": "Zinc"
       },
       "podyum_payi": 0.005937036697617411,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.63,
       "yon": "duz",
       "marka_sayisi": 15,
       "segment_raf_tahmini": {}
@@ -1151,7 +1151,7 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 60.483790815615365,
+        "L": 60.48379081561537,
         "a": 20.3776335477212,
         "b": 12.638756420598646
       },
@@ -1169,7 +1169,7 @@
         "ad": "Ash Rose"
       },
       "podyum_payi": 0.0059215087942111125,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.09,
       "yon": "duz",
       "marka_sayisi": 13,
       "segment_raf_tahmini": {}
@@ -1178,7 +1178,7 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 71.33066612290058,
-        "a": 9.871935568633438,
+        "a": 9.871935568633432,
         "b": 5.069328226273265
       },
       "hex": "#C5A8A6",
@@ -1195,7 +1195,7 @@
         "ad": "Shadow Gray"
       },
       "podyum_payi": 0.005770093143104916,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.4,
       "yon": "duz",
       "marka_sayisi": 18,
       "segment_raf_tahmini": {}
@@ -1203,7 +1203,7 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 13.984708864214467,
+        "L": 13.984708864214468,
         "a": 5.214056995271095,
         "b": -5.7342389675365375
       },
@@ -1221,7 +1221,7 @@
         "ad": "Night Sky"
       },
       "podyum_payi": 0.005715444870614682,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.62,
       "yon": "duz",
       "marka_sayisi": 11,
       "segment_raf_tahmini": {}
@@ -1247,7 +1247,7 @@
         "ad": "Moth"
       },
       "podyum_payi": 0.0056205639916638754,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.39,
       "yon": "duz",
       "marka_sayisi": 10,
       "segment_raf_tahmini": {}
@@ -1273,7 +1273,7 @@
         "ad": "Nutmeg"
       },
       "podyum_payi": 0.005535873960310834,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.24,
       "yon": "duz",
       "marka_sayisi": 17,
       "segment_raf_tahmini": {}
@@ -1299,7 +1299,7 @@
         "ad": "Madder Brown"
       },
       "podyum_payi": 0.005435431434287646,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.29,
       "yon": "duz",
       "marka_sayisi": 15,
       "segment_raf_tahmini": {}
@@ -1307,8 +1307,8 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 21.846140074638146,
-        "a": -0.10667093445329003,
+        "L": 21.846140074638154,
+        "a": -0.10667093445329051,
         "b": 10.204471080643716
       },
       "hex": "#3A3425",
@@ -1325,7 +1325,7 @@
         "ad": "Forest Night"
       },
       "podyum_payi": 0.005313481427497643,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.19,
       "yon": "duz",
       "marka_sayisi": 13,
       "segment_raf_tahmini": {}
@@ -1333,9 +1333,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 51.677540686466685,
-        "a": 5.32384914887183,
-        "b": 10.639806684767546
+        "L": 51.67754068646671,
+        "a": 5.323849148871831,
+        "b": 10.639806684767548
       },
       "hex": "#8B7869",
       "pantone": {
@@ -1351,7 +1351,7 @@
         "ad": "Portabella"
       },
       "podyum_payi": 0.005299828398037485,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.44,
       "yon": "duz",
       "marka_sayisi": 14,
       "segment_raf_tahmini": {}
@@ -1359,9 +1359,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 75.23348475947674,
-        "a": -4.177664892106827,
-        "b": 5.276552893199502
+        "L": 75.23348475947677,
+        "a": -4.177664892106821,
+        "b": 5.276552893199498
       },
       "hex": "#B6BBAF",
       "pantone": {
@@ -1377,7 +1377,7 @@
         "ad": "Mercury"
       },
       "podyum_payi": 0.005288185167804222,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.53,
       "yon": "duz",
       "marka_sayisi": 8,
       "segment_raf_tahmini": {}
@@ -1385,9 +1385,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 52.40103192407809,
-        "a": -2.0197400788623927,
-        "b": 2.578023444372833
+        "L": 52.401031924078104,
+        "a": -2.019740078862394,
+        "b": 2.578023444372835
       },
       "hex": "#7B7E79",
       "pantone": {
@@ -1403,7 +1403,7 @@
         "ad": "Vetiver"
       },
       "podyum_payi": 0.0051020276093971546,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.37,
       "yon": "duz",
       "marka_sayisi": 6,
       "segment_raf_tahmini": {}
@@ -1412,7 +1412,7 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 18.840087421157765,
-        "a": 18.71070160086235,
+        "a": 18.710701600862347,
         "b": 15.899579069585336
       },
       "hex": "#4B2218",
@@ -1429,7 +1429,7 @@
         "ad": "Cherry Mahogany"
       },
       "podyum_payi": 0.00502426793284976,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.06,
       "yon": "duz",
       "marka_sayisi": 12,
       "segment_raf_tahmini": {}
@@ -1438,7 +1438,7 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 60.332750537144044,
-        "a": 14.17239791441063,
+        "a": 14.172397914410627,
         "b": -14.354989490561795
       },
       "hex": "#9F8AAB",
@@ -1455,7 +1455,7 @@
         "ad": "Regal Orchid"
       },
       "podyum_payi": 0.004986208003435335,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.48,
       "yon": "duz",
       "marka_sayisi": 2,
       "segment_raf_tahmini": {}
@@ -1463,8 +1463,8 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 50.10057684085044,
-        "a": 0.45255306255641153,
+        "L": 50.10057684085045,
+        "a": 0.452553062556413,
         "b": 16.39984637767027
       },
       "hex": "#83765B",
@@ -1481,7 +1481,7 @@
         "ad": "Aloe"
       },
       "podyum_payi": 0.0049097253444671946,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.13,
       "yon": "duz",
       "marka_sayisi": 11,
       "segment_raf_tahmini": {}
@@ -1490,8 +1490,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 38.094914782662855,
-        "a": 54.88759374843762,
-        "b": 31.18984174772471
+        "a": 54.887593748437645,
+        "b": 31.189841747724703
       },
       "hex": "#AD212B",
       "pantone": {
@@ -1507,7 +1507,7 @@
         "ad": "Salsa"
       },
       "podyum_payi": 0.004782829901391748,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.22,
       "yon": "duz",
       "marka_sayisi": 15,
       "segment_raf_tahmini": {}
@@ -1515,8 +1515,8 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 37.650814611613455,
-        "a": -1.629499744123103,
+        "L": 37.65081461161346,
+        "a": -1.6294997441231032,
         "b": 3.8243528383006846
       },
       "hex": "#595952",
@@ -1533,7 +1533,7 @@
         "ad": "Beetle"
       },
       "podyum_payi": 0.004781419484651306,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.2,
       "yon": "duz",
       "marka_sayisi": 8,
       "segment_raf_tahmini": {}
@@ -1542,7 +1542,7 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 92.9406538002601,
-        "a": -0.12512602172795076,
+        "a": -0.1251260217279491,
         "b": 11.051667198489033
       },
       "hex": "#F4EAD6",
@@ -1559,7 +1559,7 @@
         "ad": "Sweet Corn"
       },
       "podyum_payi": 0.004754796027809727,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.16,
       "yon": "duz",
       "marka_sayisi": 3,
       "segment_raf_tahmini": {}
@@ -1569,7 +1569,7 @@
       "kume_merkezi": {
         "L": 67.43228429086268,
         "a": 9.097590624695092,
-        "b": -3.038621933937104
+        "b": -3.0386219339371037
       },
       "hex": "#B39FAA",
       "pantone": {
@@ -1585,7 +1585,7 @@
         "ad": "Keepsake Lilac"
       },
       "podyum_payi": 0.004692458158700816,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.4,
       "yon": "duz",
       "marka_sayisi": 9,
       "segment_raf_tahmini": {}
@@ -1594,8 +1594,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 50.095027158216304,
-        "a": 8.450690589679589,
-        "b": 5.695965309501883
+        "a": 8.45069058967959,
+        "b": 5.6959653095018865
       },
       "hex": "#89726E",
       "pantone": {
@@ -1611,7 +1611,7 @@
         "ad": "Antler"
       },
       "podyum_payi": 0.004632793564606874,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.28,
       "yon": "duz",
       "marka_sayisi": 17,
       "segment_raf_tahmini": {}
@@ -1619,9 +1619,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 46.10761783442185,
-        "a": 59.267353369096,
-        "b": 42.83257348914059
+        "L": 46.10761783442186,
+        "a": 59.26735336909598,
+        "b": 42.83257348914061
       },
       "hex": "#CD3228",
       "pantone": {
@@ -1637,7 +1637,7 @@
         "ad": "Fiery Red"
       },
       "podyum_payi": 0.004507665974464901,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.25,
       "yon": "duz",
       "marka_sayisi": 9,
       "segment_raf_tahmini": {}
@@ -1645,9 +1645,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 86.15071566066311,
-        "a": -1.24723932579349,
-        "b": -3.5461490931731907
+        "L": 86.15071566066312,
+        "a": -1.247239325793486,
+        "b": -3.54614909317319
       },
       "hex": "#D2D8DE",
       "pantone": {
@@ -1663,7 +1663,7 @@
         "ad": "Nimbus Cloud"
       },
       "podyum_payi": 0.004414094580004433,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.17,
       "yon": "duz",
       "marka_sayisi": 8,
       "segment_raf_tahmini": {}
@@ -1673,7 +1673,7 @@
       "kume_merkezi": {
         "L": 39.91865663035591,
         "a": 5.555985304315459,
-        "b": -1.541253912610418
+        "b": -1.5412539126104186
       },
       "hex": "#665B61",
       "pantone": {
@@ -1689,7 +1689,7 @@
         "ad": "Sparrow"
       },
       "podyum_payi": 0.004306752446632816,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.28,
       "yon": "duz",
       "marka_sayisi": 11,
       "segment_raf_tahmini": {}
@@ -1697,7 +1697,7 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 29.4093522518151,
+        "L": 29.409352251815104,
         "a": -1.2437800266694898,
         "b": -4.762528244753714
       },
@@ -1715,8 +1715,8 @@
         "ad": "Ombre Blue"
       },
       "podyum_payi": 0.004283516047226606,
-      "onceki_sezon_farki": 0.0,
-      "yon": "duz",
+      "onceki_sezon_farki": -1.51,
+      "yon": "cikis",
       "marka_sayisi": 13,
       "segment_raf_tahmini": {}
     },
@@ -1741,7 +1741,7 @@
         "ad": "China Blue"
       },
       "podyum_payi": 0.0042834524537170605,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.09,
       "yon": "duz",
       "marka_sayisi": 13,
       "segment_raf_tahmini": {}
@@ -1750,8 +1750,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 46.27706960288644,
-        "a": 4.23414356539174,
-        "b": 0.7926331864931945
+        "a": 4.234143565391742,
+        "b": 0.7926331864931956
       },
       "hex": "#756B6C",
       "pantone": {
@@ -1767,7 +1767,7 @@
         "ad": "December Sky"
       },
       "podyum_payi": 0.004269726622744356,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.63,
       "yon": "duz",
       "marka_sayisi": 16,
       "segment_raf_tahmini": {}
@@ -1775,9 +1775,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 19.02614302770866,
-        "a": 27.091475368932343,
-        "b": 14.034675148748628
+        "L": 19.026143027708667,
+        "a": 27.09147536893235,
+        "b": 14.034675148748631
       },
       "hex": "#551A1B",
       "pantone": {
@@ -1793,7 +1793,7 @@
         "ad": "Cabernet"
       },
       "podyum_payi": 0.004105905860501869,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.03,
       "yon": "duz",
       "marka_sayisi": 10,
       "segment_raf_tahmini": {}
@@ -1801,9 +1801,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 46.65117216986556,
-        "a": -13.842358627393923,
-        "b": 22.919958964104943
+        "L": 46.65117216986557,
+        "a": -13.842358627393919,
+        "b": 22.919958964104946
       },
       "hex": "#657447",
       "pantone": {
@@ -1819,7 +1819,7 @@
         "ad": "Dill"
       },
       "podyum_payi": 0.004057516412133353,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.34,
       "yon": "duz",
       "marka_sayisi": 2,
       "segment_raf_tahmini": {}
@@ -1845,7 +1845,7 @@
         "ad": "Cress Green"
       },
       "podyum_payi": 0.003984333461655058,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.34,
       "yon": "duz",
       "marka_sayisi": 5,
       "segment_raf_tahmini": {}
@@ -1854,8 +1854,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 66.46608149626192,
-        "a": 6.258183383824163,
-        "b": 22.71245292763226
+        "a": 6.258183383824162,
+        "b": 22.712452927632256
       },
       "hex": "#BB9D79",
       "pantone": {
@@ -1871,7 +1871,7 @@
         "ad": "Tan"
       },
       "podyum_payi": 0.003847503240591718,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.08,
       "yon": "duz",
       "marka_sayisi": 10,
       "segment_raf_tahmini": {}
@@ -1880,7 +1880,7 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 68.2461898034446,
-        "a": 10.117655283659529,
+        "a": 10.117655283659525,
         "b": 47.927579008440446
       },
       "hex": "#D09E4E",
@@ -1897,7 +1897,7 @@
         "ad": "Honey Gold"
       },
       "podyum_payi": 0.003778752871436282,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.15,
       "yon": "duz",
       "marka_sayisi": 7,
       "segment_raf_tahmini": {}
@@ -1906,8 +1906,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 73.3328933071388,
-        "a": 7.69964737515824,
-        "b": -6.882285269636218
+        "a": 7.699647375158237,
+        "b": -6.882285269636211
       },
       "hex": "#BDB0C1",
       "pantone": {
@@ -1923,7 +1923,7 @@
         "ad": "Misty Lilac"
       },
       "podyum_payi": 0.003737924456690586,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.13,
       "yon": "duz",
       "marka_sayisi": 6,
       "segment_raf_tahmini": {}
@@ -1931,7 +1931,7 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 43.16835792409067,
+        "L": 43.16835792409068,
         "a": 26.90560477889565,
         "b": 16.36132991950838
       },
@@ -1949,7 +1949,7 @@
         "ad": "Chutney"
       },
       "podyum_payi": 0.0037281976981812957,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.09,
       "yon": "duz",
       "marka_sayisi": 15,
       "segment_raf_tahmini": {}
@@ -1959,7 +1959,7 @@
       "kume_merkezi": {
         "L": 53.29070974375459,
         "a": 31.195997416684342,
-        "b": 43.159757994847745
+        "b": 43.15975799484776
       },
       "hex": "#C06835",
       "pantone": {
@@ -1975,7 +1975,7 @@
         "ad": "Apricot Orange"
       },
       "podyum_payi": 0.0036618320016728757,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.35,
       "yon": "duz",
       "marka_sayisi": 3,
       "segment_raf_tahmini": {}
@@ -1983,7 +1983,7 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 53.162344798646835,
+        "L": 53.16234479864685,
         "a": 61.910397188683824,
         "b": 40.76509020239252
       },
@@ -2001,7 +2001,7 @@
         "ad": "Fiesta"
       },
       "podyum_payi": 0.003598406070833819,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.25,
       "yon": "duz",
       "marka_sayisi": 8,
       "segment_raf_tahmini": {}
@@ -2011,7 +2011,7 @@
       "kume_merkezi": {
         "L": 27.41322935438595,
         "a": 9.10914920574416,
-        "b": -2.559312039166925
+        "b": -2.559312039166926
       },
       "hex": "#4D3C45",
       "pantone": {
@@ -2027,7 +2027,7 @@
         "ad": "Plum Perfect"
       },
       "podyum_payi": 0.003578119798264261,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.23,
       "yon": "duz",
       "marka_sayisi": 8,
       "segment_raf_tahmini": {}
@@ -2037,7 +2037,7 @@
       "kume_merkezi": {
         "L": 74.98289604638438,
         "a": 5.770044825328577,
-        "b": 1.8032195929533805
+        "b": 1.803219592953381
       },
       "hex": "#C5B5B5",
       "pantone": {
@@ -2053,7 +2053,7 @@
         "ad": "Burnished Lilac"
       },
       "podyum_payi": 0.003430796962309942,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.16,
       "yon": "duz",
       "marka_sayisi": 16,
       "segment_raf_tahmini": {}
@@ -2061,8 +2061,8 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 35.59010499676597,
-        "a": 1.7089745956555753,
+        "L": 35.59010499676599,
+        "a": 1.7089745956555746,
         "b": 22.132078692953527
       },
       "hex": "#625230",
@@ -2079,7 +2079,7 @@
         "ad": "Dark Olive"
       },
       "podyum_payi": 0.0032858187173151064,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.09,
       "yon": "duz",
       "marka_sayisi": 4,
       "segment_raf_tahmini": {}
@@ -2088,7 +2088,7 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 38.7508200441076,
-        "a": 35.767585690151485,
+        "a": 35.767585690151506,
         "b": 21.452140623256614
       },
       "hex": "#96403A",
@@ -2105,7 +2105,7 @@
         "ad": "Barn Red"
       },
       "podyum_payi": 0.003066310703033035,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.12,
       "yon": "duz",
       "marka_sayisi": 14,
       "segment_raf_tahmini": {}
@@ -2113,7 +2113,7 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 53.972323074561245,
+        "L": 53.97232307456125,
         "a": 18.93486460928532,
         "b": 10.111822039473516
       },
@@ -2131,7 +2131,7 @@
         "ad": "Old Rose"
       },
       "podyum_payi": 0.003041075797820499,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.06,
       "yon": "duz",
       "marka_sayisi": 17,
       "segment_raf_tahmini": {}
@@ -2140,8 +2140,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 73.66902106757213,
-        "a": -1.0090516238866023,
-        "b": -7.227114347192222
+        "a": -1.0090516238866019,
+        "b": -7.227114347192218
       },
       "hex": "#ACB6C2",
       "pantone": {
@@ -2157,7 +2157,7 @@
         "ad": "Celestial Blue"
       },
       "podyum_payi": 0.002915578729465425,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.17,
       "yon": "duz",
       "marka_sayisi": 10,
       "segment_raf_tahmini": {}
@@ -2166,7 +2166,7 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 54.77112715102652,
-        "a": 27.828412417561317,
+        "a": 27.828412417561307,
         "b": 16.647806452987346
       },
       "hex": "#B87068",
@@ -2191,9 +2191,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 76.70607029352328,
-        "a": -2.0301162703530964,
-        "b": 62.31354581117332
+        "L": 76.70607029352331,
+        "a": -2.030116270353094,
+        "b": 62.3135458111733
       },
       "hex": "#DABB43",
       "pantone": {
@@ -2209,7 +2209,7 @@
         "ad": "Cream Gold"
       },
       "podyum_payi": 0.0027669927024806112,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.19,
       "yon": "duz",
       "marka_sayisi": 8,
       "segment_raf_tahmini": {}
@@ -2218,8 +2218,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 11.833049779005748,
-        "a": 9.511553547741844,
-        "b": -19.630524811484282
+        "a": 9.511553547741846,
+        "b": -19.63052481148429
       },
       "hex": "#1B1C3A",
       "pantone": {
@@ -2235,7 +2235,7 @@
         "ad": "Maritime Blue"
       },
       "podyum_payi": 0.0027624891208330535,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.22,
       "yon": "duz",
       "marka_sayisi": 9,
       "segment_raf_tahmini": {}
@@ -2244,7 +2244,7 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 23.386490826338353,
-        "a": 3.531995528508926,
+        "a": 3.531995528508925,
         "b": 16.96285901510616
       },
       "hex": "#45351E",
@@ -2261,7 +2261,7 @@
         "ad": "Desert Palm"
       },
       "podyum_payi": 0.0027577758692648186,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.24,
       "yon": "duz",
       "marka_sayisi": 11,
       "segment_raf_tahmini": {}
@@ -2269,9 +2269,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 14.396424811854404,
-        "a": 0.6061040384351047,
-        "b": -7.471739396543401
+        "L": 14.39642481185441,
+        "a": 0.6061040384351056,
+        "b": -7.471739396543402
       },
       "hex": "#1F252F",
       "pantone": {
@@ -2287,7 +2287,7 @@
         "ad": "Dark Sapphire"
       },
       "podyum_payi": 0.0026619998815779573,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.03,
       "yon": "duz",
       "marka_sayisi": 13,
       "segment_raf_tahmini": {}
@@ -2295,8 +2295,8 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 43.73708625955369,
-        "a": -8.958682951744413,
+        "L": 43.7370862595537,
+        "a": -8.958682951744416,
         "b": -22.675836067537475
       },
       "hex": "#336D8C",
@@ -2313,7 +2313,7 @@
         "ad": "Turkish Tile"
       },
       "podyum_payi": 0.0023976064962655313,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.23,
       "yon": "duz",
       "marka_sayisi": 3,
       "segment_raf_tahmini": {}
@@ -2322,8 +2322,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 45.55406123615329,
-        "a": -2.6730183590258245,
-        "b": 1.803321656699634
+        "a": -2.673018359025826,
+        "b": 1.8033216566996346
       },
       "hex": "#686D69",
       "pantone": {
@@ -2339,7 +2339,7 @@
         "ad": "Castor Gray"
       },
       "podyum_payi": 0.0023956859446601078,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.15,
       "yon": "duz",
       "marka_sayisi": 7,
       "segment_raf_tahmini": {}
@@ -2348,8 +2348,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 41.26057428871887,
-        "a": -8.899167482749647,
-        "b": -12.536587082358157
+        "a": -8.899167482749649,
+        "b": -12.536587082358167
       },
       "hex": "#416675",
       "pantone": {
@@ -2365,8 +2365,8 @@
         "ad": "Hydro"
       },
       "podyum_payi": 0.0022682130750620033,
-      "onceki_sezon_farki": 0.0,
-      "yon": "duz",
+      "onceki_sezon_farki": 0.23,
+      "yon": "giris",
       "marka_sayisi": 4,
       "segment_raf_tahmini": {}
     },
@@ -2374,7 +2374,7 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 74.85975829153973,
-        "a": 10.265296380236709,
+        "a": 10.265296380236704,
         "b": 67.96456456098525
       },
       "hex": "#E9AF30",
@@ -2391,7 +2391,7 @@
         "ad": "Old Gold"
       },
       "podyum_payi": 0.002242533986577146,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.11,
       "yon": "duz",
       "marka_sayisi": 5,
       "segment_raf_tahmini": {}
@@ -2399,9 +2399,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 52.06228702457415,
-        "a": 47.192369335011506,
-        "b": 24.350508979174062
+        "L": 52.06228702457416,
+        "a": 47.1923693350115,
+        "b": 24.350508979174066
       },
       "hex": "#CD5655",
       "pantone": {
@@ -2417,7 +2417,7 @@
         "ad": "Burnt Sienna"
       },
       "podyum_payi": 0.002219726639175553,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.39,
       "yon": "duz",
       "marka_sayisi": 11,
       "segment_raf_tahmini": {}
@@ -2426,8 +2426,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 36.1850567050951,
-        "a": 22.933387648387896,
-        "b": 10.211116923047523
+        "a": 22.9333876483879,
+        "b": 10.211116923047529
       },
       "hex": "#7C4646",
       "pantone": {
@@ -2443,8 +2443,8 @@
         "ad": "Henna"
       },
       "podyum_payi": 0.0022143678271139165,
-      "onceki_sezon_farki": 0.0,
-      "yon": "duz",
+      "onceki_sezon_farki": 0.22,
+      "yon": "giris",
       "marka_sayisi": 14,
       "segment_raf_tahmini": {}
     },
@@ -2452,8 +2452,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 19.301122386910052,
-        "a": 5.80108495406186,
-        "b": -23.59868283024216
+        "a": 5.801084954061859,
+        "b": -23.598682830242165
       },
       "hex": "#1E2E51",
       "pantone": {
@@ -2469,7 +2469,7 @@
         "ad": "Estate Blue"
       },
       "podyum_payi": 0.0021923079729220508,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.03,
       "yon": "duz",
       "marka_sayisi": 6,
       "segment_raf_tahmini": {}
@@ -2477,9 +2477,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 56.09603338199289,
+        "L": 56.096033381992896,
         "a": 4.2443031541023215,
-        "b": 24.56561980136782
+        "b": 24.565619801367824
       },
       "hex": "#9C835C",
       "pantone": {
@@ -2495,7 +2495,7 @@
         "ad": "Fennel Seed"
       },
       "podyum_payi": 0.002129213246431689,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.18,
       "yon": "duz",
       "marka_sayisi": 11,
       "segment_raf_tahmini": {}
@@ -2503,7 +2503,7 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 31.524586570607916,
+        "L": 31.524586570607923,
         "a": -9.123978892777066,
         "b": -6.1643270984284735
       },
@@ -2521,7 +2521,7 @@
         "ad": "Balsam"
       },
       "podyum_payi": 0.002122783876663071,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.19,
       "yon": "duz",
       "marka_sayisi": 3,
       "segment_raf_tahmini": {}
@@ -2530,8 +2530,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 38.1453522734625,
-        "a": 12.213259395206384,
-        "b": 21.136844617002676
+        "a": 12.213259395206391,
+        "b": 21.13684461700267
       },
       "hex": "#775238",
       "pantone": {
@@ -2547,7 +2547,7 @@
         "ad": "Dachshund"
       },
       "podyum_payi": 0.002053094031548387,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.15,
       "yon": "duz",
       "marka_sayisi": 7,
       "segment_raf_tahmini": {}
@@ -2555,9 +2555,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 92.02832908202234,
-        "a": 5.595277981556142,
-        "b": -1.5290733024327896
+        "L": 92.0283290820223,
+        "a": 5.595277981556155,
+        "b": -1.5290733024327914
       },
       "hex": "#F2E5EB",
       "pantone": {
@@ -2573,7 +2573,7 @@
         "ad": "Delicacy"
       },
       "podyum_payi": 0.0019524844944505773,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.92,
       "yon": "duz",
       "marka_sayisi": 3,
       "segment_raf_tahmini": {}
@@ -2582,8 +2582,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 7.565424973452819,
-        "a": 3.756690433193214,
-        "b": -7.625890918230593
+        "a": 3.756690433193213,
+        "b": -7.625890918230596
       },
       "hex": "#171521",
       "pantone": {
@@ -2599,7 +2599,7 @@
         "ad": "Sky Captain"
       },
       "podyum_payi": 0.0019132006616625233,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -1.0,
       "yon": "duz",
       "marka_sayisi": 8,
       "segment_raf_tahmini": {}
@@ -2608,8 +2608,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 26.4780081400381,
-        "a": 10.118226856384517,
-        "b": -33.61060322332643
+        "a": 10.118226856384513,
+        "b": -33.61060322332647
       },
       "hex": "#263C72",
       "pantone": {
@@ -2625,7 +2625,7 @@
         "ad": "Limoges"
       },
       "podyum_payi": 0.0018805716789497807,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.07,
       "yon": "duz",
       "marka_sayisi": 8,
       "segment_raf_tahmini": {}
@@ -2633,9 +2633,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 83.54147110158111,
-        "a": 3.1269673668500024,
-        "b": 39.35328220040866
+        "L": 83.54147110158108,
+        "a": 3.1269673668500015,
+        "b": 39.35328220040863
       },
       "hex": "#EFCC86",
       "pantone": {
@@ -2651,7 +2651,7 @@
         "ad": "Cornsilk"
       },
       "podyum_payi": 0.0018680594186238082,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.13,
       "yon": "duz",
       "marka_sayisi": 6,
       "segment_raf_tahmini": {}
@@ -2659,8 +2659,8 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 64.99546225600876,
-        "a": -3.7603752533715618,
+        "L": 64.99546225600879,
+        "a": -3.760375253371561,
         "b": 8.036792031222312
       },
       "hex": "#9D9F8F",
@@ -2677,7 +2677,7 @@
         "ad": "Tea"
       },
       "podyum_payi": 0.001820947298351939,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.14,
       "yon": "duz",
       "marka_sayisi": 7,
       "segment_raf_tahmini": {}
@@ -2686,8 +2686,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 33.93924364578417,
-        "a": 10.56935699768878,
-        "b": -7.285821189835096
+        "a": 10.569356997688788,
+        "b": -7.285821189835098
       },
       "hex": "#5C4B5B",
       "pantone": {
@@ -2703,7 +2703,7 @@
         "ad": "Black Plum"
       },
       "podyum_payi": 0.0016997910867699868,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.11,
       "yon": "duz",
       "marka_sayisi": 3,
       "segment_raf_tahmini": {}
@@ -2712,8 +2712,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 30.058374074947803,
-        "a": -2.4677374637161784,
-        "b": -16.232671549823866
+        "a": -2.4677374637161793,
+        "b": -16.23267154982388
       },
       "hex": "#304960",
       "pantone": {
@@ -2729,17 +2729,17 @@
         "ad": "Blue Wing Teal"
       },
       "podyum_payi": 0.0015928662231535862,
-      "onceki_sezon_farki": 0.0,
-      "yon": "duz",
+      "onceki_sezon_farki": 0.16,
+      "yon": "giris",
       "marka_sayisi": 5,
       "segment_raf_tahmini": {}
     },
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 44.21577099533913,
-        "a": 57.40193329998874,
-        "b": 28.71023088352282
+        "L": 44.21577099533914,
+        "a": 57.401933299988734,
+        "b": 28.71023088352283
       },
       "hex": "#C2313C",
       "pantone": {
@@ -2755,7 +2755,7 @@
         "ad": "Poinsettia"
       },
       "podyum_payi": 0.0014981265361155725,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.02,
       "yon": "duz",
       "marka_sayisi": 8,
       "segment_raf_tahmini": {}
@@ -2763,9 +2763,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 48.450470944976935,
-        "a": 21.89695487226586,
-        "b": 12.993937201904224
+        "L": 48.45047094497695,
+        "a": 21.896954872265866,
+        "b": 12.993937201904226
       },
       "hex": "#9D645E",
       "pantone": {
@@ -2781,7 +2781,7 @@
         "ad": "Withered Rose"
       },
       "podyum_payi": 0.0014536031895134986,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.13,
       "yon": "duz",
       "marka_sayisi": 13,
       "segment_raf_tahmini": {}
@@ -2807,7 +2807,7 @@
         "ad": "Rosette"
       },
       "podyum_payi": 0.0014341951567949658,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.17,
       "yon": "duz",
       "marka_sayisi": 9,
       "segment_raf_tahmini": {}
@@ -2816,8 +2816,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 50.87578391776265,
-        "a": 38.79414495778456,
-        "b": 43.46279347749546
+        "a": 38.79414495778455,
+        "b": 43.46279347749548
       },
       "hex": "#C25B30",
       "pantone": {
@@ -2833,7 +2833,7 @@
         "ad": "Orange Rust"
       },
       "podyum_payi": 0.0014053825804391767,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.58,
       "yon": "duz",
       "marka_sayisi": 4,
       "segment_raf_tahmini": {}
@@ -2841,9 +2841,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 31.533661112852805,
-        "a": 2.6615286870403936,
-        "b": -8.897275419155799
+        "L": 31.533661112852812,
+        "a": 2.661528687040395,
+        "b": -8.897275419155802
       },
       "hex": "#474958",
       "pantone": {
@@ -2859,7 +2859,7 @@
         "ad": "Ombre Blue"
       },
       "podyum_payi": 0.001399089753103088,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.51,
       "yon": "duz",
       "marka_sayisi": 9,
       "segment_raf_tahmini": {}
@@ -2867,7 +2867,7 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 58.61697758552473,
+        "L": 58.616977585524744,
         "a": 40.904585471817626,
         "b": 55.43841329325534
       },
@@ -2885,7 +2885,7 @@
         "ad": "Jaffa Orange"
       },
       "podyum_payi": 0.0013912649616687127,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.07,
       "yon": "duz",
       "marka_sayisi": 5,
       "segment_raf_tahmini": {}
@@ -2893,9 +2893,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 53.50269753107725,
-        "a": -6.517645219107709,
-        "b": 12.228979271595803
+        "L": 53.50269753107727,
+        "a": -6.517645219107707,
+        "b": 12.228979271595808
       },
       "hex": "#7D826B",
       "pantone": {
@@ -2920,8 +2920,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 72.23517343156543,
-        "a": -2.7475643299239083,
-        "b": 17.365973493932568
+        "a": -2.7475643299239065,
+        "b": 17.365973493932565
       },
       "hex": "#B9B291",
       "pantone": {
@@ -2937,7 +2937,7 @@
         "ad": "Pale Olive Green"
       },
       "podyum_payi": 0.0013587681008675047,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.07,
       "yon": "duz",
       "marka_sayisi": 6,
       "segment_raf_tahmini": {}
@@ -2945,9 +2945,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 58.35259992047116,
-        "a": -2.478982746462582,
-        "b": 2.8624636563931882
+        "L": 58.35259992047118,
+        "a": -2.478982746462583,
+        "b": 2.862463656393191
       },
       "hex": "#8A8D87",
       "pantone": {
@@ -2963,7 +2963,7 @@
         "ad": "Shadow"
       },
       "podyum_payi": 0.001354670871544114,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.03,
       "yon": "duz",
       "marka_sayisi": 9,
       "segment_raf_tahmini": {}
@@ -2973,7 +2973,7 @@
       "kume_merkezi": {
         "L": 18.445785342667445,
         "a": 23.105321752622615,
-        "b": 1.4287263708843296
+        "b": 1.4287263708843299
       },
       "hex": "#4B1E2C",
       "pantone": {
@@ -2989,7 +2989,7 @@
         "ad": "Port Royale"
       },
       "podyum_payi": 0.0013295213180977467,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.09,
       "yon": "duz",
       "marka_sayisi": 6,
       "segment_raf_tahmini": {}
@@ -2998,7 +2998,7 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 39.014231230639176,
-        "a": -24.34140466035399,
+        "a": -24.341404660354,
         "b": 32.14199430696338
       },
       "hex": "#436524",
@@ -3015,7 +3015,7 @@
         "ad": "Twist Of Lime"
       },
       "podyum_payi": 0.0013141008853750846,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.1,
       "yon": "duz",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
@@ -3023,9 +3023,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 47.87025184316555,
+        "L": 47.870251843165555,
         "a": 5.738610632909463,
-        "b": 18.255523772012832
+        "b": 18.255523772012843
       },
       "hex": "#866D53",
       "pantone": {
@@ -3041,7 +3041,7 @@
         "ad": "Otter"
       },
       "podyum_payi": 0.0012704578122823638,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.49,
       "yon": "duz",
       "marka_sayisi": 6,
       "segment_raf_tahmini": {}
@@ -3050,8 +3050,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 79.29874166232058,
-        "a": 17.811301179534453,
-        "b": 4.411951161319349
+        "a": 17.811301179534443,
+        "b": 4.411951161319346
       },
       "hex": "#E8B9BD",
       "pantone": {
@@ -3067,7 +3067,7 @@
         "ad": "Strawberry Cream"
       },
       "podyum_payi": 0.0012568331954028692,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.05,
       "yon": "duz",
       "marka_sayisi": 6,
       "segment_raf_tahmini": {}
@@ -3076,7 +3076,7 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 66.32222850956379,
-        "a": -3.3759761385480997,
+        "a": -3.3759761385480975,
         "b": 43.75418150082828
       },
       "hex": "#B4A151",
@@ -3093,7 +3093,7 @@
         "ad": "Cress Green"
       },
       "podyum_payi": 0.0012130621102096142,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.03,
       "yon": "duz",
       "marka_sayisi": 8,
       "segment_raf_tahmini": {}
@@ -3102,7 +3102,7 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 30.5226239795746,
-        "a": 37.76977564231064,
+        "a": 37.76977564231065,
         "b": 25.702208014905263
       },
       "hex": "#822922",
@@ -3119,7 +3119,7 @@
         "ad": "Red Dahlia"
       },
       "podyum_payi": 0.0011987212617549036,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.08,
       "yon": "duz",
       "marka_sayisi": 10,
       "segment_raf_tahmini": {}
@@ -3145,7 +3145,7 @@
         "ad": "Mineral Red"
       },
       "podyum_payi": 0.0011977220708675551,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.04,
       "yon": "duz",
       "marka_sayisi": 9,
       "segment_raf_tahmini": {}
@@ -3153,9 +3153,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 48.80296193211306,
+        "L": 48.80296193211308,
         "a": 7.925052023082564,
-        "b": 40.98557838575829
+        "b": 40.985578385758295
       },
       "hex": "#936D2C",
       "pantone": {
@@ -3171,7 +3171,7 @@
         "ad": "Cumin"
       },
       "podyum_payi": 0.0011947189595909206,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.16,
       "yon": "duz",
       "marka_sayisi": 7,
       "segment_raf_tahmini": {}
@@ -3181,7 +3181,7 @@
       "kume_merkezi": {
         "L": 28.481717055499793,
         "a": 45.583739826290945,
-        "b": 5.821088240894147
+        "b": 5.821088240894146
       },
       "hex": "#81183C",
       "pantone": {
@@ -3197,7 +3197,7 @@
         "ad": "Rumba Red"
       },
       "podyum_payi": 0.0011550083708771178,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.1,
       "yon": "duz",
       "marka_sayisi": 3,
       "segment_raf_tahmini": {}
@@ -3205,9 +3205,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 25.691002378829996,
-        "a": 6.052419559903651,
-        "b": -18.47453681829438
+        "L": 25.69100237883,
+        "a": 6.052419559903652,
+        "b": -18.474536818294386
       },
       "hex": "#363B59",
       "pantone": {
@@ -3223,7 +3223,7 @@
         "ad": "Deep Cobalt"
       },
       "podyum_payi": 0.0011352240797456081,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.07,
       "yon": "duz",
       "marka_sayisi": 7,
       "segment_raf_tahmini": {}
@@ -3231,9 +3231,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 54.929762015350995,
-        "a": 41.74256559853087,
-        "b": 5.587676341747192
+        "L": 54.92976201535101,
+        "a": 41.74256559853085,
+        "b": 5.587676341747193
       },
       "hex": "#C8647C",
       "pantone": {
@@ -3249,7 +3249,7 @@
         "ad": "Rapture Rose"
       },
       "podyum_payi": 0.0011107593764383549,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.04,
       "yon": "duz",
       "marka_sayisi": 5,
       "segment_raf_tahmini": {}
@@ -3258,8 +3258,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 64.53478014989558,
-        "a": 12.60957919709442,
-        "b": 15.014796217084847
+        "a": 12.609579197094419,
+        "b": 15.014796217084845
       },
       "hex": "#BC9482",
       "pantone": {
@@ -3275,7 +3275,7 @@
         "ad": "Cafe Creme"
       },
       "podyum_payi": 0.0011106281642800702,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.57,
       "yon": "duz",
       "marka_sayisi": 13,
       "segment_raf_tahmini": {}
@@ -3284,8 +3284,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 31.548261941716778,
-        "a": -5.350676431293451,
-        "b": 19.41381980258952
+        "a": -5.350676431293449,
+        "b": 19.413819802589515
       },
       "hex": "#4D4C2B",
       "pantone": {
@@ -3301,7 +3301,7 @@
         "ad": "Rifle Green"
       },
       "podyum_payi": 0.0011075441859248875,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.05,
       "yon": "duz",
       "marka_sayisi": 5,
       "segment_raf_tahmini": {}
@@ -3310,8 +3310,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 51.30508155927227,
-        "a": -5.217947800673899,
-        "b": -18.00458876160696
+        "a": -5.217947800673905,
+        "b": -18.00458876160695
       },
       "hex": "#5C7E99",
       "pantone": {
@@ -3327,7 +3327,7 @@
         "ad": "Blue Shadow"
       },
       "podyum_payi": 0.0010971778205011765,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.07,
       "yon": "duz",
       "marka_sayisi": 5,
       "segment_raf_tahmini": {}
@@ -3336,8 +3336,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 55.30866581600489,
-        "a": 4.546119421519776,
-        "b": 49.38766993812592
+        "a": 4.546119421519775,
+        "b": 49.387669938125924
       },
       "hex": "#A2802A",
       "pantone": {
@@ -3353,7 +3353,7 @@
         "ad": "Dried Tobacco"
       },
       "podyum_payi": 0.0010788729269643525,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.02,
       "yon": "duz",
       "marka_sayisi": 7,
       "segment_raf_tahmini": {}
@@ -3363,7 +3363,7 @@
       "kume_merkezi": {
         "L": 53.148596859349226,
         "a": 11.239615790625104,
-        "b": 18.249078244605396
+        "b": 18.24907824460541
       },
       "hex": "#9C7760",
       "pantone": {
@@ -3379,7 +3379,7 @@
         "ad": "Burro"
       },
       "podyum_payi": 0.0010702099527638393,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.02,
       "yon": "duz",
       "marka_sayisi": 10,
       "segment_raf_tahmini": {}
@@ -3388,8 +3388,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 71.04736172477176,
-        "a": -40.288789256186774,
-        "b": 4.349814277163885
+        "a": -40.28878925618677,
+        "b": 4.349814277163884
       },
       "hex": "#49C1A5",
       "pantone": {
@@ -3405,8 +3405,8 @@
         "ad": "Biscay Green"
       },
       "podyum_payi": 0.0010677288331512184,
-      "onceki_sezon_farki": 0.0,
-      "yon": "duz",
+      "onceki_sezon_farki": 0.11,
+      "yon": "giris",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
     },
@@ -3414,7 +3414,7 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 86.60559123248625,
-        "a": -6.708114970350102,
+        "a": -6.708114970350101,
         "b": 19.129631534343496
       },
       "hex": "#DBDBB4",
@@ -3431,7 +3431,7 @@
         "ad": "Garden Glade"
       },
       "podyum_payi": 0.0010615221084002747,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.07,
       "yon": "duz",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
@@ -3439,9 +3439,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 65.26766298837096,
-        "a": -3.9731020837552737,
-        "b": -16.62897471691794
+        "L": 65.26766298837097,
+        "a": -3.9731020837552697,
+        "b": -16.628974716917938
       },
       "hex": "#85A2BC",
       "pantone": {
@@ -3457,7 +3457,7 @@
         "ad": "Ashley Blue"
       },
       "podyum_payi": 0.0010430187880536906,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.1,
       "yon": "duz",
       "marka_sayisi": 4,
       "segment_raf_tahmini": {}
@@ -3465,9 +3465,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 42.48835499356286,
+        "L": 42.488354993562865,
         "a": 57.29521907612978,
-        "b": 15.020179619974847
+        "b": 15.020179619974854
       },
       "hex": "#BA2D4F",
       "pantone": {
@@ -3483,7 +3483,7 @@
         "ad": "Virtual Pink"
       },
       "podyum_payi": 0.001042662023457714,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.06,
       "yon": "duz",
       "marka_sayisi": 3,
       "segment_raf_tahmini": {}
@@ -3492,8 +3492,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 77.5759752263137,
-        "a": 15.500707071202822,
-        "b": -5.816297750110619
+        "a": 15.500707071202818,
+        "b": -5.8162977501106194
       },
       "hex": "#D8B6CB",
       "pantone": {
@@ -3509,7 +3509,7 @@
         "ad": "Fragrant Lilac"
       },
       "podyum_payi": 0.0010045153607119058,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.03,
       "yon": "duz",
       "marka_sayisi": 4,
       "segment_raf_tahmini": {}
@@ -3517,9 +3517,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 51.6298681104029,
+        "L": 51.62986811040292,
         "a": -15.060268401320018,
-        "b": 22.941883397709276
+        "b": 22.94188339770928
       },
       "hex": "#6F8153",
       "pantone": {
@@ -3535,7 +3535,7 @@
         "ad": "Calliste Green"
       },
       "podyum_payi": 0.00099160552684778,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.04,
       "yon": "duz",
       "marka_sayisi": 5,
       "segment_raf_tahmini": {}
@@ -3544,7 +3544,7 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 47.93460085239542,
-        "a": 13.630610625286792,
+        "a": 13.630610625286797,
         "b": 10.498015149696892
       },
       "hex": "#8E6961",
@@ -3561,7 +3561,7 @@
         "ad": "Clove"
       },
       "podyum_payi": 0.0009808949916099666,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.09,
       "yon": "duz",
       "marka_sayisi": 7,
       "segment_raf_tahmini": {}
@@ -3570,8 +3570,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 65.85792173781621,
-        "a": -6.951481687760808,
-        "b": -0.46830501297621
+        "a": -6.951481687760805,
+        "b": -0.4683050129762092
       },
       "hex": "#92A4A1",
       "pantone": {
@@ -3587,7 +3587,7 @@
         "ad": "Blue Surf"
       },
       "podyum_payi": 0.0009808744713988224,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.07,
       "yon": "duz",
       "marka_sayisi": 5,
       "segment_raf_tahmini": {}
@@ -3596,7 +3596,7 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 70.36236558617153,
-        "a": 38.424093525168985,
+        "a": 38.424093525168956,
         "b": 2.4241312591996373
       },
       "hex": "#EE91A9",
@@ -3613,7 +3613,7 @@
         "ad": "Morning Glory"
       },
       "podyum_payi": 0.0009518522466943722,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.08,
       "yon": "duz",
       "marka_sayisi": 3,
       "segment_raf_tahmini": {}
@@ -3621,9 +3621,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 22.761567097889408,
-        "a": -5.289761351692234,
-        "b": -11.445622667604745
+        "L": 22.76156709788941,
+        "a": -5.289761351692236,
+        "b": -11.445622667604741
       },
       "hex": "#203947",
       "pantone": {
@@ -3639,7 +3639,7 @@
         "ad": "Majolica Blue"
       },
       "podyum_payi": 0.0009370875465570834,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.03,
       "yon": "duz",
       "marka_sayisi": 4,
       "segment_raf_tahmini": {}
@@ -3647,8 +3647,8 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 73.02639384020206,
-        "a": 5.523157720003526,
+        "L": 73.02639384020208,
+        "a": 5.523157720003527,
         "b": -18.026160939978233
       },
       "hex": "#ADB1D4",
@@ -3665,7 +3665,7 @@
         "ad": "Purple Heather"
       },
       "podyum_payi": 0.0009314644690208329,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.41,
       "yon": "duz",
       "marka_sayisi": 4,
       "segment_raf_tahmini": {}
@@ -3673,9 +3673,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 58.03849249276824,
-        "a": 25.249718483586822,
-        "b": 3.6624005167742055
+        "L": 58.038492492768256,
+        "a": 25.249718483586815,
+        "b": 3.6624005167742064
       },
       "hex": "#B87B86",
       "pantone": {
@@ -3691,7 +3691,7 @@
         "ad": "Dusty Rose"
       },
       "podyum_payi": 0.0009295324331723639,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.35,
       "yon": "duz",
       "marka_sayisi": 3,
       "segment_raf_tahmini": {}
@@ -3699,9 +3699,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 48.67653745263018,
-        "a": 15.044416264534453,
-        "b": 28.356570732098312
+        "L": 48.676537452630185,
+        "a": 15.044416264534457,
+        "b": 28.356570732098316
       },
       "hex": "#996944",
       "pantone": {
@@ -3717,7 +3717,7 @@
         "ad": "Thrush"
       },
       "podyum_payi": 0.0009179214437293689,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.08,
       "yon": "duz",
       "marka_sayisi": 5,
       "segment_raf_tahmini": {}
@@ -3726,7 +3726,7 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 64.43550250856087,
-        "a": 15.92331602233517,
+        "a": 15.923316022335172,
         "b": 33.15695735673213
       },
       "hex": "#C99062",
@@ -3743,7 +3743,7 @@
         "ad": "Buckskin"
       },
       "podyum_payi": 0.0009149121504324513,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.01,
       "yon": "duz",
       "marka_sayisi": 6,
       "segment_raf_tahmini": {}
@@ -3752,7 +3752,7 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 62.990728098798314,
-        "a": 6.969185735864926,
+        "a": 6.969185735864923,
         "b": 15.94238533772922
       },
       "hex": "#AF937D",
@@ -3769,7 +3769,7 @@
         "ad": "Warm Taupe"
       },
       "podyum_payi": 0.0009111362493529487,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.06,
       "yon": "duz",
       "marka_sayisi": 9,
       "segment_raf_tahmini": {}
@@ -3777,9 +3777,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 36.051790146689946,
-        "a": -2.149821248532316,
-        "b": -25.359426750562516
+        "L": 36.05179014668995,
+        "a": -2.1498212485323087,
+        "b": -25.359426750562523
       },
       "hex": "#2F587D",
       "pantone": {
@@ -3795,7 +3795,7 @@
         "ad": "Baleine Blue"
       },
       "podyum_payi": 0.0008775855812809653,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.03,
       "yon": "duz",
       "marka_sayisi": 6,
       "segment_raf_tahmini": {}
@@ -3805,7 +3805,7 @@
       "kume_merkezi": {
         "L": 57.49675957958527,
         "a": 24.183307691733805,
-        "b": 52.04673902398452
+        "b": 52.04673902398454
       },
       "hex": "#C5782C",
       "pantone": {
@@ -3821,7 +3821,7 @@
         "ad": "Golden Oak"
       },
       "podyum_payi": 0.0008598742272449025,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.01,
       "yon": "duz",
       "marka_sayisi": 8,
       "segment_raf_tahmini": {}
@@ -3829,9 +3829,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 39.27476251660996,
-        "a": -35.00061880319226,
-        "b": 15.04865090035608
+        "L": 39.27476251660998,
+        "a": -35.00061880319225,
+        "b": 15.048650900356082
       },
       "hex": "#116A43",
       "pantone": {
@@ -3847,7 +3847,7 @@
         "ad": "Amazon"
       },
       "podyum_payi": 0.0008463506469379481,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.05,
       "yon": "duz",
       "marka_sayisi": 3,
       "segment_raf_tahmini": {}
@@ -3856,7 +3856,7 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 68.09731062932299,
-        "a": 3.184359720662514,
+        "a": 3.184359720662512,
         "b": 59.16153002737363
       },
       "hex": "#C8A134",
@@ -3873,7 +3873,7 @@
         "ad": "Oil Yellow"
       },
       "podyum_payi": 0.0008396068373890224,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.02,
       "yon": "duz",
       "marka_sayisi": 7,
       "segment_raf_tahmini": {}
@@ -3881,8 +3881,8 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 33.05014179309162,
-        "a": 42.43601187353674,
+        "L": 33.05014179309163,
+        "a": 42.43601187353675,
         "b": 16.275196857629542
       },
       "hex": "#8D2A36",
@@ -3899,7 +3899,7 @@
         "ad": "Scooter"
       },
       "podyum_payi": 0.0008363197666712787,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.23,
       "yon": "duz",
       "marka_sayisi": 10,
       "segment_raf_tahmini": {}
@@ -3925,7 +3925,7 @@
         "ad": "True Navy"
       },
       "podyum_payi": 0.0008333108864800815,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.07,
       "yon": "duz",
       "marka_sayisi": 5,
       "segment_raf_tahmini": {}
@@ -3934,8 +3934,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 69.87102558421442,
-        "a": -5.574237032739491,
-        "b": -6.574252130350005
+        "a": -5.574237032739489,
+        "b": -6.574252130350004
       },
       "hex": "#99AEB6",
       "pantone": {
@@ -3951,7 +3951,7 @@
         "ad": "Cloud Blue"
       },
       "podyum_payi": 0.0008250211197654387,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.04,
       "yon": "duz",
       "marka_sayisi": 5,
       "segment_raf_tahmini": {}
@@ -3977,7 +3977,7 @@
         "ad": "Grapeade"
       },
       "podyum_payi": 0.0008130680867227824,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.64,
       "yon": "duz",
       "marka_sayisi": 6,
       "segment_raf_tahmini": {}
@@ -4003,7 +4003,7 @@
         "ad": "Quicksilver"
       },
       "podyum_payi": 0.0008061447392985656,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.23,
       "yon": "duz",
       "marka_sayisi": 5,
       "segment_raf_tahmini": {}
@@ -4029,7 +4029,7 @@
         "ad": "Flame Orange"
       },
       "podyum_payi": 0.0008033801192918687,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.03,
       "yon": "duz",
       "marka_sayisi": 3,
       "segment_raf_tahmini": {}
@@ -4039,7 +4039,7 @@
       "kume_merkezi": {
         "L": 75.68783201179248,
         "a": -4.06209741338916,
-        "b": 33.40262265522383
+        "b": 33.402622655223816
       },
       "hex": "#C9BB7D",
       "pantone": {
@@ -4055,7 +4055,7 @@
         "ad": "Pampas"
       },
       "podyum_payi": 0.0007548880996170943,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.24,
       "yon": "duz",
       "marka_sayisi": 6,
       "segment_raf_tahmini": {}
@@ -4064,8 +4064,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 38.96848352220863,
-        "a": -9.184260089472081,
-        "b": 0.6526210132417133
+        "a": -9.184260089472083,
+        "b": 0.6526210132417121
       },
       "hex": "#4B605A",
       "pantone": {
@@ -4081,8 +4081,8 @@
         "ad": "Dark Forest"
       },
       "podyum_payi": 0.0007454234025396564,
-      "onceki_sezon_farki": 0.0,
-      "yon": "duz",
+      "onceki_sezon_farki": 0.07,
+      "yon": "giris",
       "marka_sayisi": 2,
       "segment_raf_tahmini": {}
     },
@@ -4090,7 +4090,7 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 38.122060033322185,
-        "a": 45.579573666848255,
+        "a": 45.57957366684828,
         "b": 38.48359472657705
       },
       "hex": "#A3321D",
@@ -4107,7 +4107,7 @@
         "ad": "Ketchup"
       },
       "podyum_payi": 0.0007406638445103424,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.04,
       "yon": "duz",
       "marka_sayisi": 5,
       "segment_raf_tahmini": {}
@@ -4116,7 +4116,7 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 20.11234901441363,
-        "a": 9.793433684550111,
+        "a": 9.79343368455011,
         "b": -13.117684332112473
       },
       "hex": "#352C44",
@@ -4133,7 +4133,7 @@
         "ad": "Purple Velvet"
       },
       "podyum_payi": 0.000724649316617379,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.28,
       "yon": "duz",
       "marka_sayisi": 3,
       "segment_raf_tahmini": {}
@@ -4142,8 +4142,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 83.65141358910017,
-        "a": 2.081421246138039,
-        "b": -8.756913448651444
+        "a": 2.08142124613804,
+        "b": -8.756913448651442
       },
       "hex": "#CDD0E1",
       "pantone": {
@@ -4159,7 +4159,7 @@
         "ad": "Arctic Ice"
       },
       "podyum_payi": 0.0007127174482986911,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.54,
       "yon": "duz",
       "marka_sayisi": 5,
       "segment_raf_tahmini": {}
@@ -4168,8 +4168,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 45.73304811395886,
-        "a": 3.644945633207115,
-        "b": -8.976032287728216
+        "a": 3.6449456332071133,
+        "b": -8.97603228772822
       },
       "hex": "#6B6B7B",
       "pantone": {
@@ -4185,8 +4185,8 @@
         "ad": "Blue Granite"
       },
       "podyum_payi": 0.0007118386277485684,
-      "onceki_sezon_farki": 0.0,
-      "yon": "duz",
+      "onceki_sezon_farki": 0.07,
+      "yon": "giris",
       "marka_sayisi": 3,
       "segment_raf_tahmini": {}
     },
@@ -4194,8 +4194,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 13.272974326845594,
-        "a": -0.5307950038813004,
-        "b": 11.422239009944096
+        "a": -0.5307950038813031,
+        "b": 11.422239009944098
       },
       "hex": "#272212",
       "pantone": {
@@ -4211,7 +4211,7 @@
         "ad": "Demitasse"
       },
       "podyum_payi": 0.0006642876020537326,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.27,
       "yon": "duz",
       "marka_sayisi": 4,
       "segment_raf_tahmini": {}
@@ -4219,9 +4219,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 18.715822007503505,
-        "a": 26.909593852328797,
-        "b": -41.82679466156418
+        "L": 18.71582200750351,
+        "a": 26.90959385232879,
+        "b": -41.82679466156417
       },
       "hex": "#2A226B",
       "pantone": {
@@ -4237,7 +4237,7 @@
         "ad": "Violet Indigo"
       },
       "podyum_payi": 0.0006523842088834151,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.03,
       "yon": "duz",
       "marka_sayisi": 5,
       "segment_raf_tahmini": {}
@@ -4246,8 +4246,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 71.92985942699467,
-        "a": -28.307031048378835,
-        "b": 2.7310766601743146
+        "a": -28.307031048378825,
+        "b": 2.7310766601743137
       },
       "hex": "#72BEAA",
       "pantone": {
@@ -4263,8 +4263,8 @@
         "ad": "Spearmint"
       },
       "podyum_payi": 0.0006510209781639559,
-      "onceki_sezon_farki": 0.0,
-      "yon": "duz",
+      "onceki_sezon_farki": 0.07,
+      "yon": "giris",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
     },
@@ -4273,7 +4273,7 @@
       "kume_merkezi": {
         "L": 57.638593885996464,
         "a": 14.808549349316596,
-        "b": 24.56236943929321
+        "b": 24.56236943929322
       },
       "hex": "#B18060",
       "pantone": {
@@ -4289,7 +4289,7 @@
         "ad": "Indian Tan"
       },
       "podyum_payi": 0.0006417359089952242,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.03,
       "yon": "duz",
       "marka_sayisi": 7,
       "segment_raf_tahmini": {}
@@ -4298,8 +4298,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 28.346674560143295,
-        "a": 48.773882032780385,
-        "b": -71.79405589324011
+        "a": 48.77388203278039,
+        "b": -71.79405589324013
       },
       "hex": "#3328B5",
       "pantone": {
@@ -4315,17 +4315,17 @@
         "ad": "Deep Blue"
       },
       "podyum_payi": 0.0006316751614835722,
-      "onceki_sezon_farki": 0.0,
-      "yon": "duz",
+      "onceki_sezon_farki": 0.06,
+      "yon": "giris",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
     },
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 42.548926567988275,
-        "a": -2.7956447597507226,
-        "b": 29.538711076071955
+        "L": 42.54892656798828,
+        "a": -2.7956447597507235,
+        "b": 29.538711076071962
       },
       "hex": "#706433",
       "pantone": {
@@ -4341,7 +4341,7 @@
         "ad": "Lizard"
       },
       "podyum_payi": 0.0006300172775668577,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.12,
       "yon": "duz",
       "marka_sayisi": 3,
       "segment_raf_tahmini": {}
@@ -4350,8 +4350,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 15.264736401987916,
-        "a": 13.396182966191278,
-        "b": -4.71975747680612
+        "a": 13.396182966191276,
+        "b": -4.719757476806121
       },
       "hex": "#361F2D",
       "pantone": {
@@ -4367,7 +4367,7 @@
         "ad": "Winetasting"
       },
       "podyum_payi": 0.0006260145889695783,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.25,
       "yon": "duz",
       "marka_sayisi": 3,
       "segment_raf_tahmini": {}
@@ -4375,8 +4375,8 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 65.98192602936504,
-        "a": -4.820550396010087,
+        "L": 65.98192602936506,
+        "a": -4.820550396010089,
         "b": 25.968485096625106
       },
       "hex": "#A9A172",
@@ -4393,7 +4393,7 @@
         "ad": "Leek Green"
       },
       "podyum_payi": 0.0006240355194043363,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.01,
       "yon": "duz",
       "marka_sayisi": 4,
       "segment_raf_tahmini": {}
@@ -4402,8 +4402,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 54.850764771867084,
-        "a": 5.208393474331928,
-        "b": -19.50096356903213
+        "a": 5.20839347433193,
+        "b": -19.500963569032127
       },
       "hex": "#7A82A5",
       "pantone": {
@@ -4419,7 +4419,7 @@
         "ad": "English Manor"
       },
       "podyum_payi": 0.0006062614571378151,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.2,
       "yon": "duz",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
@@ -4428,8 +4428,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 40.60869202916251,
-        "a": 2.5602086623978413,
-        "b": -14.656937104832569
+        "a": 2.56020866239784,
+        "b": -14.656937104832572
       },
       "hex": "#575F78",
       "pantone": {
@@ -4445,7 +4445,7 @@
         "ad": "Coastal Fjord"
       },
       "podyum_payi": 0.0005945811872927322,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.16,
       "yon": "duz",
       "marka_sayisi": 6,
       "segment_raf_tahmini": {}
@@ -4453,9 +4453,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 12.996673200121458,
-        "a": 15.761347184605967,
-        "b": 5.47992485896449
+        "L": 12.99667320012146,
+        "a": 15.76134718460597,
+        "b": 5.479924858964491
       },
       "hex": "#37181B",
       "pantone": {
@@ -4471,7 +4471,7 @@
         "ad": "Port Royale"
       },
       "podyum_payi": 0.0005785562641641356,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.72,
       "yon": "duz",
       "marka_sayisi": 6,
       "segment_raf_tahmini": {}
@@ -4479,9 +4479,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 30.588355057747375,
+        "L": 30.588355057747382,
         "a": 13.484209037542161,
-        "b": -16.6881538844883
+        "b": -16.688153884488305
       },
       "hex": "#504262",
       "pantone": {
@@ -4497,7 +4497,7 @@
         "ad": "Loganberry"
       },
       "podyum_payi": 0.0005437834588310467,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.04,
       "yon": "duz",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
@@ -4505,9 +4505,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 68.49679488051423,
-        "a": 16.90685393131951,
-        "b": 68.20675769895662
+        "L": 68.49679488051424,
+        "a": 16.906853931319507,
+        "b": 68.20675769895666
       },
       "hex": "#DF991C",
       "pantone": {
@@ -4523,7 +4523,7 @@
         "ad": "Golden Glow"
       },
       "podyum_payi": 0.0005435859708708466,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.05,
       "yon": "duz",
       "marka_sayisi": 3,
       "segment_raf_tahmini": {}
@@ -4531,8 +4531,8 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 62.75546096185344,
-        "a": 3.7938062141150803,
+        "L": 62.75546096185345,
+        "a": 3.79380621411509,
         "b": -13.950012746558073
       },
       "hex": "#9297B0",
@@ -4549,7 +4549,7 @@
         "ad": "Aleutian"
       },
       "podyum_payi": 0.0005213335050774133,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.05,
       "yon": "duz",
       "marka_sayisi": 5,
       "segment_raf_tahmini": {}
@@ -4558,7 +4558,7 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 79.64495829635018,
-        "a": -19.101859291103573,
+        "a": -19.101859291103576,
         "b": 20.531558217938663
       },
       "hex": "#B0CF9F",
@@ -4575,7 +4575,7 @@
         "ad": "Pistachio Green"
       },
       "podyum_payi": 0.0005139599809199739,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.03,
       "yon": "duz",
       "marka_sayisi": 2,
       "segment_raf_tahmini": {}
@@ -4583,9 +4583,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 40.03267358130558,
-        "a": 29.05972811911703,
-        "b": -5.578086452140349
+        "L": 40.032673581305595,
+        "a": 29.059728119117043,
+        "b": -5.578086452140355
       },
       "hex": "#874C68",
       "pantone": {
@@ -4601,7 +4601,7 @@
         "ad": "Violet Quartz"
       },
       "podyum_payi": 0.000503717295567264,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.02,
       "yon": "duz",
       "marka_sayisi": 4,
       "segment_raf_tahmini": {}
@@ -4609,9 +4609,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 31.573279467443705,
+        "L": 31.573279467443708,
         "a": 23.710549368342797,
-        "b": -51.357039214193286
+        "b": -51.35703921419329
       },
       "hex": "#2F429C",
       "pantone": {
@@ -4627,7 +4627,7 @@
         "ad": "Dazzling Blue"
       },
       "podyum_payi": 0.0004961882754729948,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.04,
       "yon": "duz",
       "marka_sayisi": 2,
       "segment_raf_tahmini": {}
@@ -4635,9 +4635,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 62.031582686322466,
-        "a": -12.0598716667924,
-        "b": 10.115172546780112
+        "L": 62.03158268632247,
+        "a": -12.059871666792395,
+        "b": 10.11517254678011
       },
       "hex": "#879C84",
       "pantone": {
@@ -4653,7 +4653,7 @@
         "ad": "Mistletoe"
       },
       "podyum_payi": 0.0004798890222573864,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.02,
       "yon": "duz",
       "marka_sayisi": 4,
       "segment_raf_tahmini": {}
@@ -4661,9 +4661,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 54.58554208401244,
-        "a": -7.486356500070163,
-        "b": 28.206586887205813
+        "L": 54.585542084012445,
+        "a": -7.486356500070158,
+        "b": 28.20658688720582
       },
       "hex": "#878551",
       "pantone": {
@@ -4679,7 +4679,7 @@
         "ad": "Iguana"
       },
       "podyum_payi": 0.000456945063691553,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.11,
       "yon": "duz",
       "marka_sayisi": 5,
       "segment_raf_tahmini": {}
@@ -4688,8 +4688,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 78.85269033548786,
-        "a": 5.001779929107782,
-        "b": 16.717482649733384
+        "a": 5.001779929107783,
+        "b": 16.717482649733373
       },
       "hex": "#D9BFA5",
       "pantone": {
@@ -4705,7 +4705,7 @@
         "ad": "Honey Peach"
       },
       "podyum_payi": 0.0004554515757880663,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.3,
       "yon": "duz",
       "marka_sayisi": 5,
       "segment_raf_tahmini": {}
@@ -4714,7 +4714,7 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 33.058153195975585,
-        "a": 15.084237788409778,
+        "a": 15.084237788409784,
         "b": 12.202113894951925
       },
       "hex": "#6A443B",
@@ -4731,7 +4731,7 @@
         "ad": "Cinnamon"
       },
       "podyum_payi": 0.00043717140906020333,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.21,
       "yon": "duz",
       "marka_sayisi": 7,
       "segment_raf_tahmini": {}
@@ -4739,9 +4739,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 55.33034344386858,
-        "a": 12.471614767039604,
-        "b": -2.043100405016029
+        "L": 55.33034344386859,
+        "a": 12.471614767039606,
+        "b": -2.0431004050160286
       },
       "hex": "#997D88",
       "pantone": {
@@ -4757,7 +4757,7 @@
         "ad": "Elderberry"
       },
       "podyum_payi": 0.0004325878467603906,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.61,
       "yon": "duz",
       "marka_sayisi": 4,
       "segment_raf_tahmini": {}
@@ -4766,8 +4766,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 31.4483181436668,
-        "a": 46.70737565503348,
-        "b": -12.367691576309412
+        "a": 46.707375655033495,
+        "b": -12.367691576309408
       },
       "hex": "#83225E",
       "pantone": {
@@ -4783,7 +4783,7 @@
         "ad": "Clover"
       },
       "podyum_payi": 0.0004248004869780805,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.02,
       "yon": "duz",
       "marka_sayisi": 2,
       "segment_raf_tahmini": {}
@@ -4791,8 +4791,8 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 46.53145077526744,
-        "a": 5.616847088012524,
+        "L": 46.531450775267444,
+        "a": 5.616847088012527,
         "b": -21.043350886365644
       },
       "hex": "#646D91",
@@ -4809,7 +4809,7 @@
         "ad": "Bleached Denim"
       },
       "podyum_payi": 0.0004114509612763807,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.29,
       "yon": "duz",
       "marka_sayisi": 5,
       "segment_raf_tahmini": {}
@@ -4817,9 +4817,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 62.37607949475771,
-        "a": 45.55883224990459,
-        "b": 30.107851030214213
+        "L": 62.376079494757725,
+        "a": 45.5588322499046,
+        "b": 30.10785103021421
       },
       "hex": "#EC7364",
       "pantone": {
@@ -4835,7 +4835,7 @@
         "ad": "Coral Quartz"
       },
       "podyum_payi": 0.0004103867467219853,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.11,
       "yon": "duz",
       "marka_sayisi": 3,
       "segment_raf_tahmini": {}
@@ -4843,9 +4843,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 50.76015007546455,
-        "a": -45.23211264671482,
-        "b": 25.296672822948583
+        "L": 50.760150075464566,
+        "a": -45.23211264671484,
+        "b": 25.296672822948587
       },
       "hex": "#188B4C",
       "pantone": {
@@ -4870,8 +4870,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 59.25021244953714,
-        "a": -38.39379400034945,
-        "b": 5.94381913398222
+        "a": -38.393794000349466,
+        "b": 5.943819133982218
       },
       "hex": "#2EA083",
       "pantone": {
@@ -4887,7 +4887,7 @@
         "ad": "Arcadia"
       },
       "podyum_payi": 0.00040519510047323803,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.01,
       "yon": "duz",
       "marka_sayisi": 2,
       "segment_raf_tahmini": {}
@@ -4896,8 +4896,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 66.13160453028117,
-        "a": 2.191797568221245,
-        "b": -20.770261385948228
+        "a": 2.191797568221243,
+        "b": -20.770261385948213
       },
       "hex": "#90A1C6",
       "pantone": {
@@ -4913,7 +4913,7 @@
         "ad": "Blue Heron"
       },
       "podyum_payi": 0.00039638825049047007,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.11,
       "yon": "duz",
       "marka_sayisi": 2,
       "segment_raf_tahmini": {}
@@ -4921,9 +4921,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 54.266257631522,
-        "a": 2.140941495984396,
-        "b": -37.45048213373827
+        "L": 54.266257631522016,
+        "a": 2.140941495984394,
+        "b": -37.450482133738255
       },
       "hex": "#5384C2",
       "pantone": {
@@ -4939,7 +4939,7 @@
         "ad": "Granada Sky"
       },
       "podyum_payi": 0.0003942158018261795,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.05,
       "yon": "duz",
       "marka_sayisi": 2,
       "segment_raf_tahmini": {}
@@ -4948,8 +4948,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 42.833340901792404,
-        "a": -8.78672291338277,
-        "b": 9.278087754168974
+        "a": -8.786722913382777,
+        "b": 9.278087754168979
       },
       "hex": "#5C6956",
       "pantone": {
@@ -4965,7 +4965,7 @@
         "ad": "Olivine"
       },
       "podyum_payi": 0.00038889562523084593,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.01,
       "yon": "duz",
       "marka_sayisi": 3,
       "segment_raf_tahmini": {}
@@ -4973,8 +4973,8 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 42.50119513057926,
-        "a": 3.9311330307031267,
+        "L": 42.501195130579276,
+        "a": 3.9311330307031365,
         "b": -42.648784281132734
       },
       "hex": "#2266AB",
@@ -4991,7 +4991,7 @@
         "ad": "Palace Blue"
       },
       "podyum_payi": 0.00038536749674814637,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.1,
       "yon": "duz",
       "marka_sayisi": 3,
       "segment_raf_tahmini": {}
@@ -5000,7 +5000,7 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 73.54578833609833,
-        "a": 15.572283048936889,
+        "a": 15.572283048936882,
         "b": 12.680627214832631
       },
       "hex": "#D9AA9E",
@@ -5017,7 +5017,7 @@
         "ad": "Rose Cloud"
       },
       "podyum_payi": 0.00038137539888805083,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.27,
       "yon": "duz",
       "marka_sayisi": 2,
       "segment_raf_tahmini": {}
@@ -5026,7 +5026,7 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 53.09044705796213,
-        "a": -4.686679793165158,
+        "a": -4.686679793165161,
         "b": 46.23984882243218
       },
       "hex": "#8E7F2A",
@@ -5043,7 +5043,7 @@
         "ad": "Ecru Olive"
       },
       "podyum_payi": 0.00037465080808909176,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.02,
       "yon": "duz",
       "marka_sayisi": 4,
       "segment_raf_tahmini": {}
@@ -5051,9 +5051,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 53.08088807853101,
-        "a": -13.13604845503385,
-        "b": 8.414041535073876
+        "L": 53.080888078531025,
+        "a": -13.136048455033848,
+        "b": 8.414041535073878
       },
       "hex": "#6D8570",
       "pantone": {
@@ -5069,7 +5069,7 @@
         "ad": "Loden Frost"
       },
       "podyum_payi": 0.000370610207824863,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.01,
       "yon": "duz",
       "marka_sayisi": 2,
       "segment_raf_tahmini": {}
@@ -5077,8 +5077,8 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 63.920718227138174,
-        "a": 36.05006370915608,
+        "L": 63.92071822713818,
+        "a": 36.05006370915606,
         "b": 15.134682203240136
       },
       "hex": "#DE8182",
@@ -5095,7 +5095,7 @@
         "ad": "Lantana"
       },
       "podyum_payi": 0.000342403746267414,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.2,
       "yon": "duz",
       "marka_sayisi": 5,
       "segment_raf_tahmini": {}
@@ -5121,7 +5121,7 @@
         "ad": "Ivy Green"
       },
       "podyum_payi": 0.0003416799216846998,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.03,
       "yon": "duz",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
@@ -5129,9 +5129,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 49.927748298275105,
-        "a": 22.731753992494365,
-        "b": 23.094501632338552
+        "L": 49.92774829827512,
+        "a": 22.731753992494372,
+        "b": 23.094501632338556
       },
       "hex": "#A66751",
       "pantone": {
@@ -5147,7 +5147,7 @@
         "ad": "Autumn Leaf"
       },
       "podyum_payi": 0.0003371879624499398,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.05,
       "yon": "duz",
       "marka_sayisi": 4,
       "segment_raf_tahmini": {}
@@ -5155,9 +5155,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 36.199052186695894,
+        "L": 36.1990521866959,
         "a": -16.752776024424357,
-        "b": 23.7080986148801
+        "b": 23.70809861488011
       },
       "hex": "#475C2E",
       "pantone": {
@@ -5173,7 +5173,7 @@
         "ad": "Twist Of Lime"
       },
       "podyum_payi": 0.00032957505433137396,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.02,
       "yon": "duz",
       "marka_sayisi": 3,
       "segment_raf_tahmini": {}
@@ -5181,8 +5181,8 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 29.506659266061824,
-        "a": 16.911320454742885,
+        "L": 29.506659266061828,
+        "a": 16.911320454742892,
         "b": -27.46060411237857
       },
       "hex": "#483E70",
@@ -5199,7 +5199,7 @@
         "ad": "Navy Blue"
       },
       "podyum_payi": 0.0003196311650787499,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.02,
       "yon": "duz",
       "marka_sayisi": 5,
       "segment_raf_tahmini": {}
@@ -5208,8 +5208,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 29.926561906019188,
-        "a": 28.534119116368743,
-        "b": -30.98343941551231
+        "a": 28.534119116368736,
+        "b": -30.983439415512343
       },
       "hex": "#593777",
       "pantone": {
@@ -5225,7 +5225,7 @@
         "ad": "Prism Violet"
       },
       "podyum_payi": 0.0003136225072237717,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.09,
       "yon": "duz",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
@@ -5234,8 +5234,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 71.38849921135417,
-        "a": 14.165927472688962,
-        "b": -17.182417050666338
+        "a": 14.16592747268896,
+        "b": -17.18241705066633
       },
       "hex": "#BAA7CE",
       "pantone": {
@@ -5260,8 +5260,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 69.321458514254,
-        "a": -12.090851805455179,
-        "b": -4.016313425120495
+        "a": -12.090851805455168,
+        "b": -4.01631342512049
       },
       "hex": "#8CB0B0",
       "pantone": {
@@ -5277,7 +5277,7 @@
         "ad": "Aqua Haze"
       },
       "podyum_payi": 0.0003017970093669924,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.02,
       "yon": "duz",
       "marka_sayisi": 2,
       "segment_raf_tahmini": {}
@@ -5285,9 +5285,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 45.82498211064934,
+        "L": 45.82498211064935,
         "a": -23.908246796406594,
-        "b": 16.02793195677947
+        "b": 16.027931956779472
       },
       "hex": "#4A7751",
       "pantone": {
@@ -5303,8 +5303,8 @@
         "ad": "Juniper"
       },
       "podyum_payi": 0.0003005399977130176,
-      "onceki_sezon_farki": 0.0,
-      "yon": "duz",
+      "onceki_sezon_farki": 0.03,
+      "yon": "giris",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
     },
@@ -5329,7 +5329,7 @@
         "ad": "Mustard Gold"
       },
       "podyum_payi": 0.0002847424911836373,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.12,
       "yon": "duz",
       "marka_sayisi": 3,
       "segment_raf_tahmini": {}
@@ -5338,8 +5338,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 34.666395238438156,
-        "a": -18.579559375369666,
-        "b": -9.942077272635343
+        "a": -18.579559375369673,
+        "b": -9.942077272635352
       },
       "hex": "#125A61",
       "pantone": {
@@ -5355,7 +5355,7 @@
         "ad": "Pacific"
       },
       "podyum_payi": 0.0002737836518205051,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.01,
       "yon": "duz",
       "marka_sayisi": 2,
       "segment_raf_tahmini": {}
@@ -5364,8 +5364,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 70.96368504082403,
-        "a": -41.06347936350426,
-        "b": -7.278254612686567
+        "a": -41.06347936350424,
+        "b": -7.278254612686563
       },
       "hex": "#0FC2BA",
       "pantone": {
@@ -5381,16 +5381,16 @@
         "ad": "Cockatoo"
       },
       "podyum_payi": 0.00026312897387566187,
-      "onceki_sezon_farki": 0.0,
-      "yon": "duz",
+      "onceki_sezon_farki": 0.03,
+      "yon": "giris",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
     },
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 50.695805981005485,
-        "a": -15.294520045853965,
+        "L": 50.6958059810055,
+        "a": -15.29452004585399,
         "b": -28.78271092876131
       },
       "hex": "#0A82A9",
@@ -5407,7 +5407,7 @@
         "ad": "Bluejay"
       },
       "podyum_payi": 0.0002623473181093999,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.03,
       "yon": "duz",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
@@ -5415,9 +5415,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 20.912019553937487,
+        "L": 20.912019553937494,
         "a": -13.820161695836461,
-        "b": 3.3565291945181635
+        "b": 3.356529194518164
       },
       "hex": "#1B382D",
       "pantone": {
@@ -5433,7 +5433,7 @@
         "ad": "Mountain View"
       },
       "podyum_payi": 0.00024190773893827334,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.01,
       "yon": "duz",
       "marka_sayisi": 2,
       "segment_raf_tahmini": {}
@@ -5442,8 +5442,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 56.2171740232419,
-        "a": -27.268158595084387,
-        "b": 12.835374358483847
+        "a": -27.268158595084383,
+        "b": 12.835374358483849
       },
       "hex": "#599370",
       "pantone": {
@@ -5459,8 +5459,8 @@
         "ad": "Green Spruce"
       },
       "podyum_payi": 0.00024124619338653544,
-      "onceki_sezon_farki": 0.0,
-      "yon": "duz",
+      "onceki_sezon_farki": 0.02,
+      "yon": "giris",
       "marka_sayisi": 3,
       "segment_raf_tahmini": {}
     },
@@ -5468,8 +5468,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 46.97852147194909,
-        "a": -4.843468651138183,
-        "b": 18.333831979042422
+        "a": -4.843468651138186,
+        "b": 18.33383197904243
       },
       "hex": "#737150",
       "pantone": {
@@ -5485,7 +5485,7 @@
         "ad": "Olive Drab"
       },
       "podyum_payi": 0.00023802299216703975,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.04,
       "yon": "duz",
       "marka_sayisi": 3,
       "segment_raf_tahmini": {}
@@ -5493,9 +5493,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 45.68537336649654,
+        "L": 45.685373366496556,
         "a": 20.085597176798768,
-        "b": -22.50478311207066
+        "b": -22.504783112070665
       },
       "hex": "#7C6292",
       "pantone": {
@@ -5511,7 +5511,7 @@
         "ad": "Purple Heart"
       },
       "podyum_payi": 0.00021435499320094379,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.04,
       "yon": "duz",
       "marka_sayisi": 2,
       "segment_raf_tahmini": {}
@@ -5520,8 +5520,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 86.70904162812784,
-        "a": -4.946093575846581,
-        "b": 32.548688973501555
+        "a": -4.946093575846576,
+        "b": 32.54868897350155
       },
       "hex": "#E7DA9B",
       "pantone": {
@@ -5537,7 +5537,7 @@
         "ad": "French Vanilla"
       },
       "podyum_payi": 0.000212669336444405,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.53,
       "yon": "duz",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
@@ -5545,8 +5545,8 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 58.94585472439985,
-        "a": -15.794575867044854,
+        "L": 58.94585472439986,
+        "a": -15.794575867044852,
         "b": 46.13799737525951
       },
       "hex": "#8C9438",
@@ -5563,17 +5563,17 @@
         "ad": "Golden Lime"
       },
       "podyum_payi": 0.00021185737887862924,
-      "onceki_sezon_farki": 0.0,
-      "yon": "duz",
+      "onceki_sezon_farki": 0.02,
+      "yon": "giris",
       "marka_sayisi": 3,
       "segment_raf_tahmini": {}
     },
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 52.84862901881492,
-        "a": -4.861801656178986,
-        "b": -5.3197031314935606
+        "L": 52.848629018814925,
+        "a": -4.861801656178987,
+        "b": -5.31970313149356
       },
       "hex": "#708187",
       "pantone": {
@@ -5589,16 +5589,16 @@
         "ad": "Trooper"
       },
       "podyum_payi": 0.000207925934795161,
-      "onceki_sezon_farki": 0.0,
-      "yon": "duz",
+      "onceki_sezon_farki": 0.02,
+      "yon": "giris",
       "marka_sayisi": 2,
       "segment_raf_tahmini": {}
     },
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 51.17118236474364,
-        "a": -35.45909243171497,
+        "L": 51.17118236474365,
+        "a": -35.459092431714986,
         "b": 5.468531625144975
       },
       "hex": "#208970",
@@ -5615,7 +5615,7 @@
         "ad": "Parakeet"
       },
       "podyum_payi": 0.00020744338903670937,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.01,
       "yon": "duz",
       "marka_sayisi": 2,
       "segment_raf_tahmini": {}
@@ -5623,8 +5623,8 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 58.554670169798605,
-        "a": 17.484608797152006,
+        "L": 58.55467016979861,
+        "a": 17.48460879715201,
         "b": -27.86993778344452
       },
       "hex": "#9385BE",
@@ -5641,7 +5641,7 @@
         "ad": "Bougainvillea"
       },
       "podyum_payi": 0.00020646759487306796,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.01,
       "yon": "duz",
       "marka_sayisi": 2,
       "segment_raf_tahmini": {}
@@ -5650,8 +5650,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 43.51336373732989,
-        "a": 32.317707948315906,
-        "b": 28.54810729561356
+        "a": 32.3177079483159,
+        "b": 28.548107295613566
       },
       "hex": "#A14F39",
       "pantone": {
@@ -5667,7 +5667,7 @@
         "ad": "Baked Clay"
       },
       "podyum_payi": 0.0002055197847908273,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.06,
       "yon": "duz",
       "marka_sayisi": 3,
       "segment_raf_tahmini": {}
@@ -5675,9 +5675,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 57.962135045534914,
-        "a": 62.80240288743665,
-        "b": -1.4396106750357298
+        "L": 57.96213504553492,
+        "a": 62.80240288743662,
+        "b": -1.4396106750357278
       },
       "hex": "#EA5490",
       "pantone": {
@@ -5693,7 +5693,7 @@
         "ad": "Shocking Pink"
       },
       "podyum_payi": 0.00018805243155246276,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.0,
       "yon": "duz",
       "marka_sayisi": 2,
       "segment_raf_tahmini": {}
@@ -5702,7 +5702,7 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 44.414817596331915,
-        "a": 37.66088759363114,
+        "a": 37.66088759363115,
         "b": 39.77493833119158
       },
       "hex": "#AD4C28",
@@ -5719,7 +5719,7 @@
         "ad": "Potters Clay"
       },
       "podyum_payi": 0.000184659619445271,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.31,
       "yon": "duz",
       "marka_sayisi": 5,
       "segment_raf_tahmini": {}
@@ -5728,7 +5728,7 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 58.90886686228306,
-        "a": -4.504856571036786,
+        "a": -4.504856571036791,
         "b": 17.3670449591072
       },
       "hex": "#928F6F",
@@ -5745,7 +5745,7 @@
         "ad": "Sage"
       },
       "podyum_payi": 0.00018251096110169515,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.11,
       "yon": "duz",
       "marka_sayisi": 2,
       "segment_raf_tahmini": {}
@@ -5754,8 +5754,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 47.88091427779836,
-        "a": -2.4327607046949304,
-        "b": -10.507207733155543
+        "a": -2.432760704694932,
+        "b": -10.507207733155544
       },
       "hex": "#637483",
       "pantone": {
@@ -5771,7 +5771,7 @@
         "ad": "Flint Stone"
       },
       "podyum_payi": 0.0001768113054689091,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.17,
       "yon": "duz",
       "marka_sayisi": 2,
       "segment_raf_tahmini": {}
@@ -5779,8 +5779,8 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 46.99774073331942,
-        "a": -16.860408589171875,
+        "L": 46.997740733319425,
+        "a": -16.860408589171897,
         "b": -13.167590849113239
       },
       "hex": "#377885",
@@ -5797,8 +5797,8 @@
         "ad": "Larkspur"
       },
       "podyum_payi": 0.00017405059052317672,
-      "onceki_sezon_farki": 0.0,
-      "yon": "duz",
+      "onceki_sezon_farki": 0.02,
+      "yon": "giris",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
     },
@@ -5807,7 +5807,7 @@
       "kume_merkezi": {
         "L": 81.56852045624508,
         "a": -14.323650616156952,
-        "b": 62.2895203740093
+        "b": 62.28952037400929
       },
       "hex": "#D4D04F",
       "pantone": {
@@ -5823,17 +5823,17 @@
         "ad": "Limeade"
       },
       "podyum_payi": 0.0001691414698624288,
-      "onceki_sezon_farki": 0.0,
-      "yon": "duz",
+      "onceki_sezon_farki": 0.02,
+      "yon": "giris",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
     },
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 73.1910089710491,
-        "a": -17.589112123062694,
-        "b": 9.081093016036261
+        "L": 73.19100897104911,
+        "a": -17.589112123062684,
+        "b": 9.08109301603626
       },
       "hex": "#98BDA3",
       "pantone": {
@@ -5849,7 +5849,7 @@
         "ad": "Hemlock"
       },
       "podyum_payi": 0.00016300842836681253,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": 0.01,
       "yon": "duz",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
@@ -5857,9 +5857,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 45.15912188042235,
-        "a": 23.27474457742332,
-        "b": 40.096648199479716
+        "L": 45.15912188042236,
+        "a": 23.274744577423323,
+        "b": 40.09664819947973
       },
       "hex": "#9D5A27",
       "pantone": {
@@ -5875,7 +5875,7 @@
         "ad": "Roasted Pecan"
       },
       "podyum_payi": 0.00015656898676155156,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.31,
       "yon": "duz",
       "marka_sayisi": 3,
       "segment_raf_tahmini": {}
@@ -5883,9 +5883,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 38.82963187870141,
-        "a": 28.385139149869545,
-        "b": -55.52446228428946
+        "L": 38.82963187870142,
+        "a": 28.385139149869552,
+        "b": -55.524462284289456
       },
       "hex": "#4850B7",
       "pantone": {
@@ -5901,7 +5901,7 @@
         "ad": "Amparo Blue"
       },
       "podyum_payi": 0.00015650902313439852,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.07,
       "yon": "duz",
       "marka_sayisi": 2,
       "segment_raf_tahmini": {}
@@ -5909,9 +5909,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 20.593756715848986,
+        "L": 20.59375671584899,
         "a": 35.280159869699794,
-        "b": -1.8156296148586935
+        "b": -1.8156296148586937
       },
       "hex": "#5D1535",
       "pantone": {
@@ -5935,9 +5935,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 63.683699977361016,
-        "a": -39.37788607867116,
-        "b": -3.26186292863477
+        "L": 63.68369997736103,
+        "a": -39.37788607867117,
+        "b": -3.2618629286347662
       },
       "hex": "#11AD9F",
       "pantone": {
@@ -5953,8 +5953,8 @@
         "ad": "Pool Green"
       },
       "podyum_payi": 0.0001503047776114382,
-      "onceki_sezon_farki": 0.0,
-      "yon": "duz",
+      "onceki_sezon_farki": 0.02,
+      "yon": "giris",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
     },
@@ -5962,8 +5962,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 58.11836046976232,
-        "a": 28.198512388747602,
-        "b": 34.399452108149
+        "a": 28.19851238874761,
+        "b": 34.399452108149006
       },
       "hex": "#C87751",
       "pantone": {
@@ -5979,7 +5979,7 @@
         "ad": "Caramel"
       },
       "podyum_payi": 0.00014798856355966022,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.01,
       "yon": "duz",
       "marka_sayisi": 2,
       "segment_raf_tahmini": {}
@@ -5988,8 +5988,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 43.83283349943679,
-        "a": -20.661138151894033,
-        "b": -1.0262743721133334
+        "a": -20.66113815189404,
+        "b": -1.026274372113334
       },
       "hex": "#397169",
       "pantone": {
@@ -6005,7 +6005,7 @@
         "ad": "Ivy"
       },
       "podyum_payi": 0.00013012345769177988,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.01,
       "yon": "duz",
       "marka_sayisi": 2,
       "segment_raf_tahmini": {}
@@ -6014,8 +6014,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 74.07672403752187,
-        "a": 9.084026807625873,
-        "b": 30.949102848891158
+        "a": 9.08402680762587,
+        "b": 30.949102848891147
       },
       "hex": "#D9AF7E",
       "pantone": {
@@ -6031,7 +6031,7 @@
         "ad": "Sheepskin"
       },
       "podyum_payi": 0.00013006917716221656,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.29,
       "yon": "duz",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
@@ -6039,9 +6039,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 78.25283772094782,
-        "a": -2.1773996285063473,
-        "b": -14.478651316457823
+        "L": 78.2528377209478,
+        "a": -2.177399628506349,
+        "b": -14.478651316457821
       },
       "hex": "#AEC4DC",
       "pantone": {
@@ -6057,7 +6057,7 @@
         "ad": "Angel Falls"
       },
       "podyum_payi": 0.00012757118701069742,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.11,
       "yon": "duz",
       "marka_sayisi": 2,
       "segment_raf_tahmini": {}
@@ -6066,7 +6066,7 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 65.76238877964916,
-        "a": -29.353442869448994,
+        "a": -29.353442869449,
         "b": -16.881557732376788
       },
       "hex": "#2DAFBD",
@@ -6083,7 +6083,7 @@
         "ad": "Capri"
       },
       "podyum_payi": 0.00012079129049389274,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.02,
       "yon": "duz",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
@@ -6092,8 +6092,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 83.51912433548144,
-        "a": -10.287881440663957,
-        "b": 14.413485089628827
+        "a": -10.287881440663954,
+        "b": 14.413485089628821
       },
       "hex": "#C7D5B5",
       "pantone": {
@@ -6109,7 +6109,7 @@
         "ad": "Seacrest"
       },
       "podyum_payi": 0.00011381331624151205,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.07,
       "yon": "duz",
       "marka_sayisi": 2,
       "segment_raf_tahmini": {}
@@ -6117,8 +6117,8 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 50.43345893307673,
-        "a": -10.989959676463622,
+        "L": 50.433458933076736,
+        "a": -10.989959676463627,
         "b": -2.630409693158766
       },
       "hex": "#607E7C",
@@ -6135,8 +6135,8 @@
         "ad": "Arctic"
       },
       "podyum_payi": 0.00011265554991775284,
-      "onceki_sezon_farki": 0.0,
-      "yon": "duz",
+      "onceki_sezon_farki": 0.01,
+      "yon": "giris",
       "marka_sayisi": 2,
       "segment_raf_tahmini": {}
     },
@@ -6144,8 +6144,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 38.082475926037105,
-        "a": -16.116002512896618,
-        "b": 8.885962949114239
+        "a": -16.116002512896625,
+        "b": 8.885962949114235
       },
       "hex": "#42604B",
       "pantone": {
@@ -6161,7 +6161,7 @@
         "ad": "Smoke Pine"
       },
       "podyum_payi": 0.0001093700345200633,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.01,
       "yon": "duz",
       "marka_sayisi": 2,
       "segment_raf_tahmini": {}
@@ -6170,8 +6170,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 64.89715658825031,
-        "a": -16.22647614254517,
-        "b": -31.510932914464806
+        "a": -16.226476142545174,
+        "b": -31.5109329144648
       },
       "hex": "#3CA8D5",
       "pantone": {
@@ -6187,7 +6187,7 @@
         "ad": "Norse Blue"
       },
       "podyum_payi": 0.00010710988830048244,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.12,
       "yon": "duz",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
@@ -6197,7 +6197,7 @@
       "kume_merkezi": {
         "L": 50.96170597384502,
         "a": 18.514576440791522,
-        "b": 2.007991884497288
+        "b": 2.0079918844972893
       },
       "hex": "#996E77",
       "pantone": {
@@ -6213,7 +6213,7 @@
         "ad": "Mesa Rose"
       },
       "podyum_payi": 0.00010648960332047545,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.2,
       "yon": "duz",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
@@ -6222,8 +6222,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 82.58811065575762,
-        "a": -13.055534534131,
-        "b": -8.111822420152427
+        "a": -13.055534534130993,
+        "b": -8.111822420152423
       },
       "hex": "#A9D5DC",
       "pantone": {
@@ -6239,7 +6239,7 @@
         "ad": "Iced Aqua"
       },
       "podyum_payi": 0.0001062725294072325,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.02,
       "yon": "duz",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
@@ -6248,8 +6248,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 77.73725278549355,
-        "a": -8.854014204400112,
-        "b": 1.6755781157302396
+        "a": -8.854014204400105,
+        "b": 1.6755781157302394
       },
       "hex": "#B0C5BD",
       "pantone": {
@@ -6265,7 +6265,7 @@
         "ad": "Harbor Gray"
       },
       "podyum_payi": 0.00010426201483040455,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.26,
       "yon": "duz",
       "marka_sayisi": 2,
       "segment_raf_tahmini": {}
@@ -6273,9 +6273,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 74.80448268078011,
-        "a": -31.600846050733132,
-        "b": 41.73984853394586
+        "L": 74.8044826807801,
+        "a": -31.600846050733125,
+        "b": 41.739848533945846
       },
       "hex": "#97C668",
       "pantone": {
@@ -6299,9 +6299,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 41.29091725034761,
-        "a": 11.376908556125183,
-        "b": -17.095381938746474
+        "L": 41.29091725034762,
+        "a": 11.376908556125187,
+        "b": -17.09538193874647
       },
       "hex": "#665C7D",
       "pantone": {
@@ -6317,8 +6317,8 @@
         "ad": "Grape Compote"
       },
       "podyum_payi": 9.399214823128563e-5,
-      "onceki_sezon_farki": 0.0,
-      "yon": "duz",
+      "onceki_sezon_farki": 0.01,
+      "yon": "giris",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
     },
@@ -6326,8 +6326,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 66.49723423635882,
-        "a": -12.004962203902881,
-        "b": 20.819943548679234
+        "a": -12.004962203902885,
+        "b": 20.819943548679227
       },
       "hex": "#9AA77C",
       "pantone": {
@@ -6343,7 +6343,7 @@
         "ad": "Forest Shade"
       },
       "podyum_payi": 9.245494036107885e-5,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.03,
       "yon": "duz",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
@@ -6352,7 +6352,7 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 42.96950176214866,
-        "a": 4.515537802064366,
+        "a": 4.51553780206437,
         "b": 32.1850761050627
       },
       "hex": "#7C612F",
@@ -6369,7 +6369,7 @@
         "ad": "Breen"
       },
       "podyum_payi": 8.754415287078687e-5,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.18,
       "yon": "duz",
       "marka_sayisi": 3,
       "segment_raf_tahmini": {}
@@ -6377,9 +6377,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 47.83284643405569,
+        "L": 47.83284643405571,
         "a": 49.65850283884871,
-        "b": -3.1262569598803225
+        "b": -3.1262569598803194
       },
       "hex": "#BA4A78",
       "pantone": {
@@ -6395,7 +6395,7 @@
         "ad": "Fuchsia Rose"
       },
       "podyum_payi": 8.584034376344858e-5,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.0,
       "yon": "duz",
       "marka_sayisi": 3,
       "segment_raf_tahmini": {}
@@ -6404,8 +6404,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 66.4088295657701,
-        "a": 23.943812717602626,
-        "b": -4.534487324312558
+        "a": 23.943812717602622,
+        "b": -4.534487324312549
       },
       "hex": "#C892AA",
       "pantone": {
@@ -6421,8 +6421,8 @@
         "ad": "Moonlite Mauve"
       },
       "podyum_payi": 8.221995459650233e-5,
-      "onceki_sezon_farki": 0.0,
-      "yon": "duz",
+      "onceki_sezon_farki": 0.01,
+      "yon": "giris",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
     },
@@ -6431,7 +6431,7 @@
       "kume_merkezi": {
         "L": 45.05610675076945,
         "a": -34.12691484233412,
-        "b": 24.071836403189995
+        "b": 24.07183640319
       },
       "hex": "#357841",
       "pantone": {
@@ -6447,7 +6447,7 @@
         "ad": "Mint Green"
       },
       "podyum_payi": 8.05242106524828e-5,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.02,
       "yon": "duz",
       "marka_sayisi": 2,
       "segment_raf_tahmini": {}
@@ -6455,9 +6455,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 15.132690062598236,
-        "a": -4.942386424000442,
-        "b": 4.74863965594706
+        "L": 15.132690062598243,
+        "a": -4.942386424000441,
+        "b": 4.748639655947061
       },
       "hex": "#21281F",
       "pantone": {
@@ -6473,7 +6473,7 @@
         "ad": "Scarab"
       },
       "podyum_payi": 7.992432949432339e-5,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.0,
       "yon": "duz",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
@@ -6482,7 +6482,7 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 32.124550672251424,
-        "a": -3.6442374582551302,
+        "a": -3.644237458255131,
         "b": 33.76592873771857
       },
       "hex": "#554C12",
@@ -6499,7 +6499,7 @@
         "ad": "Avocado"
       },
       "podyum_payi": 7.87932257041061e-5,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.05,
       "yon": "duz",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
@@ -6507,9 +6507,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 43.191243386181064,
+        "L": 43.19124338618107,
         "a": 18.363709846232037,
-        "b": -11.664817566098067
+        "b": -11.664817566098058
       },
       "hex": "#7C5C7A",
       "pantone": {
@@ -6525,7 +6525,7 @@
         "ad": "Grape Jam"
       },
       "podyum_payi": 7.633425192254625e-5,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.02,
       "yon": "duz",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
@@ -6533,7 +6533,7 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 77.24307411173929,
+        "L": 77.2430741117393,
         "a": -17.913621247551788,
         "b": 34.69770462625625
       },
@@ -6551,17 +6551,17 @@
         "ad": "Lettuce Green"
       },
       "podyum_payi": 7.606677823127474e-5,
-      "onceki_sezon_farki": 0.0,
-      "yon": "duz",
+      "onceki_sezon_farki": 0.01,
+      "yon": "giris",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
     },
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 75.66620849747454,
-        "a": 25.59168129839531,
-        "b": -3.9359116853353386
+        "L": 75.66620849747456,
+        "a": 25.5916812983953,
+        "b": -3.9359116853353373
       },
       "hex": "#E6AAC2",
       "pantone": {
@@ -6577,7 +6577,7 @@
         "ad": "Sweet Lilac"
       },
       "podyum_payi": 7.57244387673257e-5,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.0,
       "yon": "duz",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
@@ -6585,9 +6585,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 49.03559187822698,
-        "a": 19.52527123762106,
-        "b": -50.36598780492195
+        "L": 49.03559187822699,
+        "a": 19.525271237621073,
+        "b": -50.36598780492194
       },
       "hex": "#5A6ECA",
       "pantone": {
@@ -6603,7 +6603,7 @@
         "ad": "Wedgewood"
       },
       "podyum_payi": 7.415844079594512e-5,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.01,
       "yon": "duz",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
@@ -6611,9 +6611,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 55.21899688058359,
+        "L": 55.218996880583596,
         "a": 49.15696345779062,
-        "b": 43.58528839319799
+        "b": 43.585288393198006
       },
       "hex": "#DD5B3B",
       "pantone": {
@@ -6629,7 +6629,7 @@
         "ad": "Orangeade"
       },
       "podyum_payi": 7.347010244214059e-5,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.11,
       "yon": "duz",
       "marka_sayisi": 2,
       "segment_raf_tahmini": {}
@@ -6638,8 +6638,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 30.9536190658307,
-        "a": -9.202466281187384,
-        "b": 11.865809603256526
+        "a": -9.20246628118739,
+        "b": 11.865809603256528
       },
       "hex": "#414C36",
       "pantone": {
@@ -6655,8 +6655,8 @@
         "ad": "Rifle Green"
       },
       "podyum_payi": 7.028528218293867e-5,
-      "onceki_sezon_farki": 0.0,
-      "yon": "duz",
+      "onceki_sezon_farki": 0.01,
+      "yon": "giris",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
     },
@@ -6665,7 +6665,7 @@
       "kume_merkezi": {
         "L": 59.92638547051812,
         "a": -16.588192304441648,
-        "b": -9.242811536370318
+        "b": -9.242811536370315
       },
       "hex": "#6299A0",
       "pantone": {
@@ -6681,7 +6681,7 @@
         "ad": "Dusty Turquoise"
       },
       "podyum_payi": 6.16108245171684e-5,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.06,
       "yon": "duz",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
@@ -6689,8 +6689,8 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 25.677221367783964,
-        "a": -15.070326177504732,
+        "L": 25.677221367783968,
+        "a": -15.070326177504725,
         "b": 13.389159502818641
       },
       "hex": "#2C4228",
@@ -6707,16 +6707,16 @@
         "ad": "Greener Pastures"
       },
       "podyum_payi": 5.773165624466739e-5,
-      "onceki_sezon_farki": 0.0,
-      "yon": "duz",
+      "onceki_sezon_farki": 0.01,
+      "yon": "giris",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
     },
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 52.092081224861246,
-        "a": -26.57156719004236,
+        "L": 52.09208122486126,
+        "a": -26.571567190042373,
         "b": -11.315066561944885
       },
       "hex": "#1E898F",
@@ -6734,16 +6734,16 @@
       },
       "podyum_payi": 4.167106041874326e-5,
       "onceki_sezon_farki": 0.0,
-      "yon": "duz",
+      "yon": "giris",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
     },
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 38.093611579470384,
+        "L": 38.09361157947039,
         "a": -24.87056984120882,
-        "b": 3.878312852807442
+        "b": 3.8783128528074426
       },
       "hex": "#256453",
       "pantone": {
@@ -6759,7 +6759,7 @@
         "ad": "Cadmium Green"
       },
       "podyum_payi": 4.0694823414987494e-5,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.03,
       "yon": "duz",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
@@ -6767,9 +6767,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 53.64770821195306,
-        "a": -31.48296816858757,
-        "b": 29.00561179454023
+        "L": 53.647708211953066,
+        "a": -31.482968168587576,
+        "b": 29.005611794540236
       },
       "hex": "#568D4C",
       "pantone": {
@@ -6785,7 +6785,7 @@
         "ad": "Online Lime"
       },
       "podyum_payi": 3.760261299261044e-5,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.01,
       "yon": "duz",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
@@ -6793,9 +6793,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 65.21322209441767,
-        "a": 22.373916612850298,
-        "b": 27.004366963614103
+        "L": 65.21322209441769,
+        "a": 22.37391661285029,
+        "b": 27.0043669636141
       },
       "hex": "#D28E6F",
       "pantone": {
@@ -6811,7 +6811,7 @@
         "ad": "Sandstone"
       },
       "podyum_payi": 3.75717560585789e-5,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.12,
       "yon": "duz",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
@@ -6820,8 +6820,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 60.728086922998784,
-        "a": -7.288755526058699,
-        "b": 52.72274607764804
+        "a": -7.288755526058691,
+        "b": 52.72274607764806
       },
       "hex": "#A1942E",
       "pantone": {
@@ -6837,7 +6837,7 @@
         "ad": "Split Pea"
       },
       "podyum_payi": 3.46965603877513e-5,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.06,
       "yon": "duz",
       "marka_sayisi": 2,
       "segment_raf_tahmini": {}
@@ -6847,7 +6847,7 @@
       "kume_merkezi": {
         "L": 71.5844417533375,
         "a": -23.032538227738424,
-        "b": 51.2363023350934
+        "b": 51.23630233509341
       },
       "hex": "#A3B94D",
       "pantone": {
@@ -6863,7 +6863,7 @@
         "ad": "Bright Chartreuse"
       },
       "podyum_payi": 2.8093434022908674e-5,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.05,
       "yon": "duz",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
@@ -6872,8 +6872,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 32.15731393768389,
-        "a": 14.760980895013246,
-        "b": 28.19498750718697
+        "a": 14.760980895013253,
+        "b": 28.194987507186973
       },
       "hex": "#6C421F",
       "pantone": {
@@ -6889,7 +6889,7 @@
         "ad": "Emperador"
       },
       "podyum_payi": 2.7642060541688793e-5,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.0,
       "yon": "duz",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
@@ -6915,7 +6915,7 @@
         "ad": "Apple Green"
       },
       "podyum_payi": 2.5599532792889817e-5,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.17,
       "yon": "duz",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
@@ -6923,9 +6923,9 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 54.10578624173927,
+        "L": 54.105786241739274,
         "a": -11.109248884240856,
-        "b": -12.45920240855348
+        "b": -12.459202408553477
       },
       "hex": "#5C8896",
       "pantone": {
@@ -6941,7 +6941,7 @@
         "ad": "Smoke Blue"
       },
       "podyum_payi": 2.32631581914521e-5,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.06,
       "yon": "duz",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
@@ -6949,8 +6949,8 @@
     {
       "sezon": "SS27",
       "kume_merkezi": {
-        "L": 46.896516281042445,
-        "a": 24.055710104420335,
+        "L": 46.89651628104245,
+        "a": 24.05571010442033,
         "b": -39.76280125250162
       },
       "hex": "#7264B2",
@@ -6968,7 +6968,7 @@
       },
       "podyum_payi": 2.1442830911127327e-5,
       "onceki_sezon_farki": 0.0,
-      "yon": "duz",
+      "yon": "giris",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
     },
@@ -6976,8 +6976,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 20.681226765242506,
-        "a": -4.3129483850499835,
-        "b": 19.97781208075536
+        "a": -4.312948385049981,
+        "b": 19.977812080755367
       },
       "hex": "#353313",
       "pantone": {
@@ -6993,7 +6993,7 @@
         "ad": "Kombu Green"
       },
       "podyum_payi": 1.760444570935647e-5,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.34,
       "yon": "duz",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
@@ -7002,8 +7002,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 39.90643430908338,
-        "a": 36.11290681937122,
-        "b": 10.950413318823871
+        "a": 36.112906819371226,
+        "b": 10.950413318823879
       },
       "hex": "#97434E",
       "pantone": {
@@ -7019,7 +7019,7 @@
         "ad": "Deep Claret"
       },
       "podyum_payi": 1.5548041386402458e-5,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.03,
       "yon": "duz",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}
@@ -7028,8 +7028,8 @@
       "sezon": "SS27",
       "kume_merkezi": {
         "L": 75.62202065452233,
-        "a": 19.479820068190257,
-        "b": 38.837678876182395
+        "a": 19.47982006819024,
+        "b": 38.837678876182366
       },
       "hex": "#F1AB73",
       "pantone": {
@@ -7045,7 +7045,7 @@
         "ad": "Peach Cobbler"
       },
       "podyum_payi": 4.3396000240456525e-6,
-      "onceki_sezon_farki": 0.0,
+      "onceki_sezon_farki": -0.01,
       "yon": "duz",
       "marka_sayisi": 1,
       "segment_raf_tahmini": {}

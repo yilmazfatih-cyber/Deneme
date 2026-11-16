@@ -262,8 +262,14 @@ def yatirim(args) -> int:
             )
             kartlar.append((k, a))
 
-        # Çıkış uyarısı: sinyali olan tüm nitelik değerleri için bu segmentteki tahmin.
-        degerler = sorted({(s.nitelik_ekseni, s.nitelik_degeri) for s in sinyaller})
+        # Çıkış uyarısı: herhangi bir sezonda anlamlı podyum payı olmuş nitelik değerleri için bu segmentteki tahmin.
+        # Fotoğraf sayımı yüzlerce küçük paylı TCX kodu üretir; eşik altındakiler stok konusu değildir.
+        en_az = esikler["cikis"].get("en_az_podyum_payi", 0.0)
+        en_buyuk_pay: dict[tuple[str, str], float] = {}
+        for s in sinyaller:
+            a = (s.nitelik_ekseni, s.nitelik_degeri)
+            en_buyuk_pay[a] = max(en_buyuk_pay.get(a, 0.0), s.podyum_payi)
+        degerler = sorted(a for a, pay in en_buyuk_pay.items() if pay >= en_az)
         tahminler = []
         for eksen, deger in degerler:
             if (eksen, deger) not in onbellek:

@@ -2,60 +2,26 @@
 
 > Yatırım tavsiyesi değildir; karar satın almacınındır.
 
-Üretim tarihi 2026-11-12 · kural kural-0 · ilk 12 renk × segmentin tipik siluet / kumaş / desen değeri (yapılı omuz, ipeksi, düz; uzman önseli).
+Üretim tarihi 2026-11-16 · kural kural-0 · ilk 12 renk × segmentin tipik siluet / kumaş / desen değeri (yapılı omuz, ipeksi, düz; uzman önseli).
 
 ## Özet (beş boyut ayrı; tek skor yok)
 
 | #   | Ürün                                                                 | İvme · yön   | Uyum | Zamanlama | Marj  | Stok riski | Karar     |
 | --- | -------------------------------------------------------------------- | ------------ | ---- | --------- | ----- | ---------- | --------- |
-| 1   | Kadın üst · yapılı omuz · ipeksi · düz · 19-4008 TCX (Meteorite)     | 0,75 · giriş | 0,87 | zamanında | %84,2 | düşük      | **YATIR** |
-| 2   | Kadın üst · yapılı omuz · ipeksi · düz · 19-3911 TCX (Black Beauty)  | 0,74 · giriş | 0,87 | zamanında | %84,2 | düşük      | **YATIR** |
-| 3   | Kadın üst · yapılı omuz · ipeksi · düz · 19-0508 TCX (Peat)          | 0,70 · giriş | 0,87 | zamanında | %84,2 | düşük      | **YATIR** |
-| 4   | Kadın üst · yapılı omuz · ipeksi · düz · 14-1118 TCX (Beige)         | 0,69 · giriş | 0,87 | geç       | %84,2 | düşük      | **DENE**  |
-| 5   | Kadın üst · yapılı omuz · ipeksi · düz · 18-3633 TCX (Deep Lavender) | 0,69 · giriş | 0,87 | zamanında | %84,2 | orta       | **YATIR** |
-| 6   | Kadın üst · yapılı omuz · ipeksi · düz · 19-0303 TCX (Jet Black)     | 0,67 · çıkış | 0,87 | zamanında | %84,2 | düşük      | **GIRME** |
-| 7   | Kadın üst · yapılı omuz · ipeksi · düz · 19-1617 TCX (Burgundy)      | 0,67 · giriş | 0,87 | geç       | %84,2 | orta       | **DENE**  |
-| 8   | Kadın üst · yapılı omuz · ipeksi · düz · 12-0626 TCX (Lemon Grass)   | 0,66 · giriş | 0,87 | geç       | %84,2 | orta       | **DENE**  |
-| 9   | Kadın üst · yapılı omuz · ipeksi · düz · 12-0717 TCX (Anise Flower)  | 0,66 · giriş | 0,87 | zamanında | %84,2 | orta       | **YATIR** |
-| 10  | Kadın üst · yapılı omuz · ipeksi · düz · 16-1330 TCX (Muted Clay)    | 0,66 · giriş | 0,87 | geç       | %84,2 | düşük      | **DENE**  |
-| 11  | Kadın üst · yapılı omuz · ipeksi · düz · 16-3115 TCX (Crocus)        | 0,66 · giriş | 0,87 | geç       | %84,2 | orta       | **DENE**  |
-| 12  | Kadın üst · yapılı omuz · ipeksi · düz · 13-1011 TCX (Ivory Cream)   | 0,66 · giriş | 0,87 | zamanında | %84,2 | düşük      | **YATIR** |
+| 1   | Kadın üst · yapılı omuz · ipeksi · düz · 19-3911 TCX (Black Beauty)  | 0,71 · giriş | 0,87 | zamanında | %84,2 | düşük      | **YATIR** |
+| 2   | Kadın üst · yapılı omuz · ipeksi · düz · 14-1118 TCX (Beige)         | 0,69 · giriş | 0,87 | geç       | %84,2 | düşük      | **DENE**  |
+| 3   | Kadın üst · yapılı omuz · ipeksi · düz · 18-3633 TCX (Deep Lavender) | 0,69 · giriş | 0,87 | zamanında | %84,2 | orta       | **YATIR** |
+| 4   | Kadın üst · yapılı omuz · ipeksi · düz · 19-0303 TCX (Jet Black)     | 0,67 · çıkış | 0,87 | zamanında | %84,2 | düşük      | **GIRME** |
+| 5   | Kadın üst · yapılı omuz · ipeksi · düz · 19-4008 TCX (Meteorite)     | 0,67 · çıkış | 0,87 | zamanında | %84,2 | düşük      | **GIRME** |
+| 6   | Kadın üst · yapılı omuz · ipeksi · düz · 19-1617 TCX (Burgundy)      | 0,67 · giriş | 0,87 | geç       | %84,2 | orta       | **DENE**  |
+| 7   | Kadın üst · yapılı omuz · ipeksi · düz · 12-0626 TCX (Lemon Grass)   | 0,66 · giriş | 0,87 | geç       | %84,2 | orta       | **DENE**  |
+| 8   | Kadın üst · yapılı omuz · ipeksi · düz · 12-0717 TCX (Anise Flower)  | 0,66 · giriş | 0,87 | zamanında | %84,2 | orta       | **YATIR** |
+| 9   | Kadın üst · yapılı omuz · ipeksi · düz · 16-1330 TCX (Muted Clay)    | 0,66 · giriş | 0,87 | geç       | %84,2 | düşük      | **DENE**  |
+| 10  | Kadın üst · yapılı omuz · ipeksi · düz · 16-3115 TCX (Crocus)        | 0,66 · giriş | 0,87 | geç       | %84,2 | orta       | **DENE**  |
+| 11  | Kadın üst · yapılı omuz · ipeksi · düz · 13-1011 TCX (Ivory Cream)   | 0,66 · giriş | 0,87 | zamanında | %84,2 | düşük      | **YATIR** |
+| 12  | Kadın üst · yapılı omuz · ipeksi · düz · 19-1557 TCX (Chili Pepper)  | 0,66 · giriş | 0,87 | zamanında | %84,2 | orta       | **YATIR** |
 
 ## Kartlar
-
-## Kadın üst · yapılı omuz · ipeksi · düz · 19-4008 TCX (Meteorite)
-
-**Segment:** Lüks (`luks`) · **Sezon:** SS27 · **Ülke:** TR · **Renk hex:** #2B2929
-
-| Boyut           | Değer             | Dayanak                                                                                                                                  |
-| --------------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| Trend ivmesi    | 0,75 · giriş      | eksen ağırlıklı olasılık (renk 0,40 · siluet 0,25 · kumaş görünümü 0,20 · desen 0,15)                                                    |
-| Segment uyumu   | 0,87              | uzman önseli segment profili (veriyle güncellenecek)                                                                                     |
-| Zamanlama       | zamanında         | Trend SS27 rafıyla örtüşüyor; sipariş penceresi Eylül–Kasım 2026; podyum→raf gecikmesi 1 sezon (onsel).                                  |
-| Maliyet ve marj | %84,2 (hedef %65) | fiyat 12.000 TL (segment hedef fiyat bandının ortası (6000–18000 TL)); maliyet 1.890 TL (tahmini bant: ipeksi bandı ortası 1260–2520 TL) |
-| Stok riski      | düşük             | temel renk; rakip sayısı bilinmiyor                                                                                                      |
-
-**Eksen olasılıkları**
-
-| Eksen          | Değer       | Olasılık | Yön   | Ufuk | Eşik raf payı | Kaynak | Gerekçe                                                                                                                                                                                   |
-| -------------- | ----------- | -------- | ----- | ---- | ------------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Renk           | 19-4008 TCX | 0,78     | giriş | SS27 | %4            | 2      | Podyum payı %5,7, 18 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 1,0 sezon (onsel); beklenen raf dönemi SS27-Mart. Segment rafında bilinen son pay %6,2.            |
-| Siluet         | yapılı omuz | 0,60     | giriş | SS27 | %4            | 1      | Podyum payı %4,6, 9 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 1,0 sezon (onsel); beklenen raf dönemi SS27-Mart. Segment rafında bu değer için geçmiş kayıt yok.   |
-| Kumaş görünümü | ipeksi      | 0,74     | giriş | SS27 | %4            | 1      | Podyum payı %11,0, 18 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 1,0 sezon (onsel); beklenen raf dönemi SS27-Mart. Segment rafında bu değer için geçmiş kayıt yok. |
-| Desen          | düz         | 0,91     | giriş | SS27 | %4            | 1      | Podyum payı %75,7, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 1,0 sezon (onsel); beklenen raf dönemi SS27-Mart. Segment rafında bu değer için geçmiş kayıt yok. |
-| Detay          | detaysız    | 0,90     | giriş | SS27 | %4            | 1      | Podyum payı %55,5, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 1,0 sezon (onsel); beklenen raf dönemi SS27-Mart. Segment rafında bu değer için geçmiş kayıt yok. |
-
-**Karar: YATIR**
-
-**Gerekçe:** Trend ivmesi 0,75, yön giriş. Zamanlama uygun, marj %84 hedef %65 üstünde, stok riski düşük.
-
-**Bu kararı değiştirecek sinyal:** Talep ivmesi iki hafta üst üste negatife dönerse ya da yön zirveye geçerse DENE'ye iner.
-
-**Kaynak sayısı:** 6 · **Model sürümü:** v0 · kural-0
-
-> Yatırım tavsiyesi değildir; karar satın almacınındır.
-
----
 
 ## Kadın üst · yapılı omuz · ipeksi · düz · 19-3911 TCX (Black Beauty)
 
@@ -63,7 +29,7 @@
 
 | Boyut           | Değer             | Dayanak                                                                                                                                  |
 | --------------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| Trend ivmesi    | 0,74 · giriş      | eksen ağırlıklı olasılık (renk 0,40 · siluet 0,25 · kumaş görünümü 0,20 · desen 0,15)                                                    |
+| Trend ivmesi    | 0,71 · giriş      | eksen ağırlıklı olasılık (renk 0,40 · siluet 0,25 · kumaş görünümü 0,20 · desen 0,15)                                                    |
 | Segment uyumu   | 0,87              | uzman önseli segment profili (veriyle güncellenecek)                                                                                     |
 | Zamanlama       | zamanında         | Trend SS27 rafıyla örtüşüyor; sipariş penceresi Eylül–Kasım 2026; podyum→raf gecikmesi 1 sezon (onsel).                                  |
 | Maliyet ve marj | %84,2 (hedef %65) | fiyat 12.000 TL (segment hedef fiyat bandının ortası (6000–18000 TL)); maliyet 1.890 TL (tahmini bant: ipeksi bandı ortası 1260–2520 TL) |
@@ -73,7 +39,7 @@
 
 | Eksen          | Değer       | Olasılık | Yön   | Ufuk | Eşik raf payı | Kaynak | Gerekçe                                                                                                                                                                                   |
 | -------------- | ----------- | -------- | ----- | ---- | ------------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Renk           | 19-3911 TCX | 0,75     | giriş | SS27 | %4            | 2      | Podyum payı %9,6, 23 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 1,0 sezon (onsel); beklenen raf dönemi SS27-Mart. Segment rafında bilinen son pay %4,2.            |
+| Renk           | 19-3911 TCX | 0,69     | düz   | SS27 | %4            | 2      | Podyum payı %9,6, 23 markada görüldü; önceki sezona göre yatay seyir. Segment gecikmesi 1,0 sezon (onsel); beklenen raf dönemi SS27-Mart. Segment rafında bilinen son pay %4,2.           |
 | Siluet         | yapılı omuz | 0,60     | giriş | SS27 | %4            | 1      | Podyum payı %4,6, 9 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 1,0 sezon (onsel); beklenen raf dönemi SS27-Mart. Segment rafında bu değer için geçmiş kayıt yok.   |
 | Kumaş görünümü | ipeksi      | 0,74     | giriş | SS27 | %4            | 1      | Podyum payı %11,0, 18 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 1,0 sezon (onsel); beklenen raf dönemi SS27-Mart. Segment rafında bu değer için geçmiş kayıt yok. |
 | Desen          | düz         | 0,91     | giriş | SS27 | %4            | 1      | Podyum payı %75,7, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 1,0 sezon (onsel); beklenen raf dönemi SS27-Mart. Segment rafında bu değer için geçmiş kayıt yok. |
@@ -81,41 +47,7 @@
 
 **Karar: YATIR**
 
-**Gerekçe:** Trend ivmesi 0,74, yön giriş. Zamanlama uygun, marj %84 hedef %65 üstünde, stok riski düşük.
-
-**Bu kararı değiştirecek sinyal:** Talep ivmesi iki hafta üst üste negatife dönerse ya da yön zirveye geçerse DENE'ye iner.
-
-**Kaynak sayısı:** 6 · **Model sürümü:** v0 · kural-0
-
-> Yatırım tavsiyesi değildir; karar satın almacınındır.
-
----
-
-## Kadın üst · yapılı omuz · ipeksi · düz · 19-0508 TCX (Peat)
-
-**Segment:** Lüks (`luks`) · **Sezon:** SS27 · **Ülke:** TR · **Renk hex:** #3B3A36
-
-| Boyut           | Değer             | Dayanak                                                                                                                                  |
-| --------------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| Trend ivmesi    | 0,70 · giriş      | eksen ağırlıklı olasılık (renk 0,40 · siluet 0,25 · kumaş görünümü 0,20 · desen 0,15)                                                    |
-| Segment uyumu   | 0,87              | uzman önseli segment profili (veriyle güncellenecek)                                                                                     |
-| Zamanlama       | zamanında         | Trend SS27 rafıyla örtüşüyor; sipariş penceresi Eylül–Kasım 2026; podyum→raf gecikmesi 1 sezon (onsel).                                  |
-| Maliyet ve marj | %84,2 (hedef %65) | fiyat 12.000 TL (segment hedef fiyat bandının ortası (6000–18000 TL)); maliyet 1.890 TL (tahmini bant: ipeksi bandı ortası 1260–2520 TL) |
-| Stok riski      | düşük             | temel renk; rakip sayısı bilinmiyor                                                                                                      |
-
-**Eksen olasılıkları**
-
-| Eksen          | Değer       | Olasılık | Yön   | Ufuk | Eşik raf payı | Kaynak | Gerekçe                                                                                                                                                                                   |
-| -------------- | ----------- | -------- | ----- | ---- | ------------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Renk           | 19-0508 TCX | 0,66     | giriş | SS27 | %4            | 2      | Podyum payı %0,5, 6 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 1,0 sezon (onsel); beklenen raf dönemi SS27-Mart. Segment rafında bilinen son pay %10,4.            |
-| Siluet         | yapılı omuz | 0,60     | giriş | SS27 | %4            | 1      | Podyum payı %4,6, 9 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 1,0 sezon (onsel); beklenen raf dönemi SS27-Mart. Segment rafında bu değer için geçmiş kayıt yok.   |
-| Kumaş görünümü | ipeksi      | 0,74     | giriş | SS27 | %4            | 1      | Podyum payı %11,0, 18 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 1,0 sezon (onsel); beklenen raf dönemi SS27-Mart. Segment rafında bu değer için geçmiş kayıt yok. |
-| Desen          | düz         | 0,91     | giriş | SS27 | %4            | 1      | Podyum payı %75,7, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 1,0 sezon (onsel); beklenen raf dönemi SS27-Mart. Segment rafında bu değer için geçmiş kayıt yok. |
-| Detay          | detaysız    | 0,90     | giriş | SS27 | %4            | 1      | Podyum payı %55,5, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 1,0 sezon (onsel); beklenen raf dönemi SS27-Mart. Segment rafında bu değer için geçmiş kayıt yok. |
-
-**Karar: YATIR**
-
-**Gerekçe:** Trend ivmesi 0,70, yön giriş. Zamanlama uygun, marj %84 hedef %65 üstünde, stok riski düşük.
+**Gerekçe:** Trend ivmesi 0,71, yön giriş. Zamanlama uygun, marj %84 hedef %65 üstünde, stok riski düşük.
 
 **Bu kararı değiştirecek sinyal:** Talep ivmesi iki hafta üst üste negatife dönerse ya da yön zirveye geçerse DENE'ye iner.
 
@@ -222,6 +154,40 @@
 **Bu kararı değiştirecek sinyal:** Yön iki ardışık ölçümde yeniden yükselişe dönerse BEKLE'ye çıkar.
 
 **Kaynak sayısı:** 5 · **Model sürümü:** v0 · kural-0
+
+> Yatırım tavsiyesi değildir; karar satın almacınındır.
+
+---
+
+## Kadın üst · yapılı omuz · ipeksi · düz · 19-4008 TCX (Meteorite)
+
+**Segment:** Lüks (`luks`) · **Sezon:** SS27 · **Ülke:** TR · **Renk hex:** #2B2929
+
+| Boyut           | Değer             | Dayanak                                                                                                                                  |
+| --------------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Trend ivmesi    | 0,67 · çıkış      | eksen ağırlıklı olasılık (renk 0,40 · siluet 0,25 · kumaş görünümü 0,20 · desen 0,15)                                                    |
+| Segment uyumu   | 0,87              | uzman önseli segment profili (veriyle güncellenecek)                                                                                     |
+| Zamanlama       | zamanında         | Trend SS27 rafıyla örtüşüyor; sipariş penceresi Eylül–Kasım 2026; podyum→raf gecikmesi 1 sezon (onsel).                                  |
+| Maliyet ve marj | %84,2 (hedef %65) | fiyat 12.000 TL (segment hedef fiyat bandının ortası (6000–18000 TL)); maliyet 1.890 TL (tahmini bant: ipeksi bandı ortası 1260–2520 TL) |
+| Stok riski      | düşük             | temel renk; rakip sayısı bilinmiyor                                                                                                      |
+
+**Eksen olasılıkları**
+
+| Eksen          | Değer       | Olasılık | Yön   | Ufuk | Eşik raf payı | Kaynak | Gerekçe                                                                                                                                                                                   |
+| -------------- | ----------- | -------- | ----- | ---- | ------------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Renk           | 19-4008 TCX | 0,59     | çıkış | SS27 | %4            | 2      | Podyum payı %5,7, 18 markada görüldü; önceki sezona göre çıkış. Segment gecikmesi 1,0 sezon (onsel); beklenen raf dönemi SS27-Mart. Segment rafında bilinen son pay %6,2.                 |
+| Siluet         | yapılı omuz | 0,60     | giriş | SS27 | %4            | 1      | Podyum payı %4,6, 9 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 1,0 sezon (onsel); beklenen raf dönemi SS27-Mart. Segment rafında bu değer için geçmiş kayıt yok.   |
+| Kumaş görünümü | ipeksi      | 0,74     | giriş | SS27 | %4            | 1      | Podyum payı %11,0, 18 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 1,0 sezon (onsel); beklenen raf dönemi SS27-Mart. Segment rafında bu değer için geçmiş kayıt yok. |
+| Desen          | düz         | 0,91     | giriş | SS27 | %4            | 1      | Podyum payı %75,7, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 1,0 sezon (onsel); beklenen raf dönemi SS27-Mart. Segment rafında bu değer için geçmiş kayıt yok. |
+| Detay          | detaysız    | 0,90     | giriş | SS27 | %4            | 1      | Podyum payı %55,5, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 1,0 sezon (onsel); beklenen raf dönemi SS27-Mart. Segment rafında bu değer için geçmiş kayıt yok. |
+
+**Karar: GIRME**
+
+**Gerekçe:** Trend ivmesi 0,67, yön çıkış. Nitelik çıkış evresinde; yeni stok indirime kalır.
+
+**Bu kararı değiştirecek sinyal:** Yön iki ardışık ölçümde yeniden yükselişe dönerse BEKLE'ye çıkar.
+
+**Kaynak sayısı:** 6 · **Model sürümü:** v0 · kural-0
 
 > Yatırım tavsiyesi değildir; karar satın almacınındır.
 
@@ -431,20 +397,99 @@
 
 ---
 
+## Kadın üst · yapılı omuz · ipeksi · düz · 19-1557 TCX (Chili Pepper)
+
+**Segment:** Lüks (`luks`) · **Sezon:** SS27 · **Ülke:** TR · **Renk hex:** #9B1B30
+
+| Boyut           | Değer             | Dayanak                                                                                                                                  |
+| --------------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Trend ivmesi    | 0,66 · giriş      | eksen ağırlıklı olasılık (renk 0,40 · siluet 0,25 · kumaş görünümü 0,20 · desen 0,15)                                                    |
+| Segment uyumu   | 0,87              | uzman önseli segment profili (veriyle güncellenecek)                                                                                     |
+| Zamanlama       | zamanında         | Trend SS27 rafıyla örtüşüyor; sipariş penceresi Eylül–Kasım 2026; podyum→raf gecikmesi 1 sezon (onsel).                                  |
+| Maliyet ve marj | %84,2 (hedef %65) | fiyat 12.000 TL (segment hedef fiyat bandının ortası (6000–18000 TL)); maliyet 1.890 TL (tahmini bant: ipeksi bandı ortası 1260–2520 TL) |
+| Stok riski      | orta              | moda rengi; rakip sayısı bilinmiyor                                                                                                      |
+
+**Eksen olasılıkları**
+
+| Eksen          | Değer       | Olasılık | Yön      | Ufuk | Eşik raf payı | Kaynak | Gerekçe                                                                                                                                                                                   |
+| -------------- | ----------- | -------- | -------- | ---- | ------------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Renk           | 19-1557 TCX | 0,56     | yükseliş | SS27 | %4            | 1      | Podyum payı %4,7, 3 markada görüldü; önceki sezona göre yükseliş. Segment gecikmesi 1,0 sezon (onsel); beklenen raf dönemi SS27-Mart. Segment rafında bu değer için geçmiş kayıt yok.     |
+| Siluet         | yapılı omuz | 0,60     | giriş    | SS27 | %4            | 1      | Podyum payı %4,6, 9 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 1,0 sezon (onsel); beklenen raf dönemi SS27-Mart. Segment rafında bu değer için geçmiş kayıt yok.   |
+| Kumaş görünümü | ipeksi      | 0,74     | giriş    | SS27 | %4            | 1      | Podyum payı %11,0, 18 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 1,0 sezon (onsel); beklenen raf dönemi SS27-Mart. Segment rafında bu değer için geçmiş kayıt yok. |
+| Desen          | düz         | 0,91     | giriş    | SS27 | %4            | 1      | Podyum payı %75,7, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 1,0 sezon (onsel); beklenen raf dönemi SS27-Mart. Segment rafında bu değer için geçmiş kayıt yok. |
+| Detay          | detaysız    | 0,90     | giriş    | SS27 | %4            | 1      | Podyum payı %55,5, 32 markada görüldü; önceki sezona göre yeni giriş. Segment gecikmesi 1,0 sezon (onsel); beklenen raf dönemi SS27-Mart. Segment rafında bu değer için geçmiş kayıt yok. |
+
+**Karar: YATIR**
+
+**Gerekçe:** Trend ivmesi 0,66, yön giriş. Zamanlama uygun, marj %84 hedef %65 üstünde, stok riski orta.
+
+**Bu kararı değiştirecek sinyal:** Talep ivmesi iki hafta üst üste negatife dönerse ya da yön zirveye geçerse DENE'ye iner.
+
+**Kaynak sayısı:** 5 · **Model sürümü:** v0 · kural-0
+
+> Yatırım tavsiyesi değildir; karar satın almacınındır.
+
+---
+
 ## Çıkış uyarısı
 
 | Eksen          | Değer        | Olasılık | Ufuk | İndirim zamanı | Öneri                                                                                       |
 | -------------- | ------------ | -------- | ---- | -------------- | ------------------------------------------------------------------------------------------- |
+| renk           | 19-3922 TCX  | 0,08     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 19-1103 TCX  | 0,09     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 18-0306 TCX  | 0,10     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 14-1911 TCX  | 0,12     | FW26 | Kasım başı     | FW26: elde stok için Kasım başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 16-1620 TCX  | 0,12     | FW26 | Kasım başı     | FW26: elde stok için Kasım başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 18-1756 TCX  | 0,12     | FW26 | Kasım başı     | FW26: elde stok için Kasım başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 19-3810 TCX  | 0,12     | FW26 | Kasım başı     | FW26: elde stok için Kasım başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
 | renk           | 11-0103 TCX  | 0,12     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 17-1019 TCX  | 0,12     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
 | renk           | 18-1031 TCX  | 0,12     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 18-1551 TCX  | 0,12     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 18-1703 TCX  | 0,12     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 18-4006 TCX  | 0,12     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 18-5606 TCX  | 0,12     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 19-1321 TCX  | 0,12     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 19-1555 TCX  | 0,12     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 19-1627 TCX  | 0,12     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 19-3902 TCX  | 0,12     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 19-4020 TCX  | 0,12     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 19-3926 TCX  | 0,12     | SS26 | Mayıs başı     | SS26: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 17-4041 TCX  | 0,12     | FW26 | Kasım başı     | FW26: elde stok için Kasım başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 19-3923 TCX  | 0,14     | FW26 | Kasım başı     | FW26: elde stok için Kasım başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 15-1607 TCX  | 0,14     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 18-0403 TCX  | 0,14     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 18-5105 TCX  | 0,14     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
 | kumas_gorunumu | kadife       | 0,14     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 17-2601 TCX  | 0,14     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 19-3831 TCX  | 0,14     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 19-4205 TCX  | 0,15     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
 | renk           | 18-0601 TCX  | 0,15     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 19-1102 TCX  | 0,15     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 19-1724 TCX  | 0,15     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 18-4016 TCX  | 0,16     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 19-0201 TCX  | 0,16     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 19-1432 TCX  | 0,16     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 14-4202 TCX  | 0,16     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 19-3713 TCX  | 0,16     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 19-3815 TCX  | 0,16     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 19-2118 TCX  | 0,17     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 19-4015 TCX  | 0,17     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 19-1317 TCX  | 0,17     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 19-4305 TCX  | 0,18     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 19-0810 TCX  | 0,18     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 19-1109 TCX  | 0,18     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 19-0509 TCX  | 0,19     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 19-0000 TCX  | 0,19     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 18-4105 TCX  | 0,20     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
+| renk           | 13-0640 TCX  | 0,22     | FW26 | Kasım başı     | FW26: elde stok için Kasım başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
 | siluet         | beli vurgulu | 0,22     | SS27 | Mayıs başı     | SS27: elde stok için Mayıs başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
-| renk           | 13-0640 TCX  | 0,29     | FW26 | Kasım başı     | FW26: elde stok için Kasım başı %20 indirime gir; sezon sonunu bekleme. Yeni sipariş verme. |
 | renk           | 19-1214 TCX  | 0,35     | SS27 | Haziran ortası | SS27: Haziran ortası %20–30 indirim planla. Tekrar sipariş verme.                           |
 | desen          | soyut        | 0,38     | SS27 | Haziran ortası | SS27: Haziran ortası %20–30 indirim planla. Tekrar sipariş verme.                           |
 | desen          | çiçekli      | 0,41     | SS27 | Haziran ortası | SS27: Haziran ortası %20–30 indirim planla. Tekrar sipariş verme.                           |
+| renk           | 19-0508 TCX  | 0,44     | SS27 | Haziran ortası | SS27: Haziran ortası %20–30 indirim planla. Tekrar sipariş verme.                           |
 | kumas_gorunumu | saten        | 0,49     | SS27 | Haziran ortası | SS27: Haziran ortası %20–30 indirim planla. Tekrar sipariş verme.                           |
+| renk           | 19-4008 TCX  | 0,59     | SS27 | Temmuz         | SS27: Temmuz sezon sonu olağan oran; tekrar siparişi küçült.                                |
 | renk           | 19-0303 TCX  | 0,59     | SS27 | Temmuz         | SS27: Temmuz sezon sonu olağan oran; tekrar siparişi küçült.                                |
 
 > Yatırım tavsiyesi değildir; karar satın almacınındır.
