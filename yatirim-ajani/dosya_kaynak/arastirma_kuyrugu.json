@@ -1,10 +1,6 @@
 {
  "aciklama": "Gece araştırma kuyruğu: her gece sıradaki hisseler için 2024-01→bugün olay çizelgesi (DOSYA.md bölüm 6). 'derinlestir' = olay sayısı az olanlar.",
  "bekleyen": [
-  "AYGAZ",
-  "BINHO",
-  "BTCIM",
-  "CANTE",
   "CCOLA",
   "CVKMD",
   "CWENE",
@@ -29,8 +25,6 @@
   "TTRAK"
  ],
  "derinlestir": [
-  "AKBNK",
-  "AHGAZ",
   "ISCTR",
   "GUBRF",
   "VAKBN",
@@ -88,7 +82,11 @@
   "AKSA",
   "ALARK",
   "ALBRK",
-  "ANHYT"
+  "ANHYT",
+  "AYGAZ",
+  "BINHO",
+  "BTCIM",
+  "CANTE"
  ],
- "guncelleme": "2026-11-14"
+ "guncelleme": "2026-11-16"
 }

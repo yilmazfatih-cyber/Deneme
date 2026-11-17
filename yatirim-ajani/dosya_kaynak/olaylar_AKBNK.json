@@ -33,6 +33,254 @@
     "beklenti": null,
     "sure_ay": null
    }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AKBNK",
+   "sektor": null,
+   "baslangic": "2026-01-28",
+   "bitis": "2026-01-28",
+   "kamuya_acilma": null,
+   "tur": "derecelendirme",
+   "baslik": "Fitch, Türkiye'nin görünümünü pozitife çevirmesinin ardından Akbank'ın BB- notunun görünümünü pozitife yükseltti",
+   "anlam": "Foreks'e göre Fitch 28 Ocak 2026'da Akbank, Garanti BBVA, İş Bankası ve Yapı Kredi dahil bankaların görünümünü durağandan pozitife revize etti; uzun vadeli not BB- olarak kaldı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.8,
+   "etiketler": [
+    "Fitch",
+    "gorunum_pozitif",
+    "BB-",
+    "egemen_not"
+   ],
+   "kaynaklar": [
+    "https://www.foreks.com/haber/detay/697a3e092663b328fe31c8b4/PICNEWS/tr/fitch-turk-bankacilik-sektoru-faaliyet-ortami-notunun-gorunumunu-yukseltti-28-01-26/",
+    "https://paratic.com/fitch-akbank-icin-gorunumu-pozitife-cevirdi/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AKBNK",
+   "sektor": null,
+   "baslangic": "2026-02-24",
+   "bitis": "2026-02-24",
+   "kamuya_acilma": null,
+   "tur": "dava_ceza",
+   "baslik": "Akbank, bir grup finansal kuruluşu kapsayan işgücü piyasası rekabet soruşturmasını KAP'a bildirdi",
+   "anlam": "Finansopia/uscmarkets özetlerine göre 24 Şubat 2026 özel durum açıklaması soruşturmanın varlığını duyurdu; sonuçlanması ekim ayındaki uzlaşma ve idari ceza oldu. İlk bildirimin metni görülmedi.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.55,
+   "etiketler": [
+    "Rekabet_Kurulu",
+    "sorusturma",
+    "isgucu_piyasasi"
+   ],
+   "kaynaklar": [
+    "https://www.uscmarkets.com/haberler/akbnk-rekabet-kurulu-uzlasma-ekim-2026",
+    "https://www.finansopia.com/kap-bildirimleri/rekabet-kurulundan-akbanka-akbnk-17-milyar-tl-para-cezasi/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AKBNK",
+   "sektor": null,
+   "baslangic": "2026-03-26",
+   "bitis": "2026-03-26",
+   "kamuya_acilma": null,
+   "tur": "borclanma",
+   "baslik": "Akbank, sürdürülebilirlik temalı sendikasyon kredisini 6 dilimde toplam 700 milyon dolarla yeniledi",
+   "anlam": "Akbank haberi ve Capital'e göre nisan ayında vadesi gelen kredi 1, 2 ve 3 yıl vadeli 6 dilimle yenilendi; 1 yıllık dilimde yenileme oranı %136. Tarih haberin 26 Mart 2026 tarihine dayanıyor.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.65,
+   "etiketler": [
+    "sendikasyon",
+    "700_milyon_usd",
+    "surdurulebilirlik"
+   ],
+   "kaynaklar": [
+    "https://www.akbank.com/haberler/akbank-surdurulebilirlik-temali-sendikasyon-kredisini-rekor-oranla-yeniledi",
+    "https://www.capital.com.tr/piyasalar/borsa/akbank-sendikasyon-kredisini-uzun-vadeli-yeniledi"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 700000000,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AKBNK",
+   "sektor": null,
+   "baslangic": "2026-04-10",
+   "bitis": "2026-04-10",
+   "kamuya_acilma": null,
+   "tur": "derecelendirme",
+   "baslik": "Fitch'in Türkiye görünümünü pozitiften durağana çevirmesiyle Akbank'ın görünümü de durağana döndü",
+   "anlam": "Borsagündem ve Borsacoo özetleri, bankaların görünümünün Türkiye kararına bağlı olarak pozitiften durağana alındığını yazıyor; 10 Nisan 2026 tarihi tek kaynaktan, Fitch'in kendi duyurusu görülmedi. Fitch Haziran 2026'da notları aynen korudu.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.5,
+   "etiketler": [
+    "Fitch",
+    "gorunum_duragan",
+    "BB-",
+    "egemen_not"
+   ],
+   "kaynaklar": [
+    "https://www.borsagundem.com.tr/fitch-dort-turk-bankasinin-gorunumunu-duragana-revize-etti",
+    "https://borsacoo.com/bildirim/68382"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AKBNK",
+   "sektor": null,
+   "baslangic": "2026-07-16",
+   "bitis": "2026-07-16",
+   "kamuya_acilma": null,
+   "tur": "derecelendirme",
+   "baslik": "Moody's Akbank'ın Ba3 notunu ve durağan görünümünü teyit etti",
+   "anlam": "Midas ve Forbes Türkiye'ye göre banka 16 Temmuz 2026'da KAP'a Moody's'in uzun vadeli yabancı/yerel para mevduat ve senior notlarını Ba3'te, görünümü durağanda koruduğunu bildirdi. Teyit niteliğinde, değişiklik yok.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.7,
+   "etiketler": [
+    "Moodys",
+    "Ba3",
+    "teyit"
+   ],
+   "kaynaklar": [
+    "https://www.getmidas.com/midasin-kulaklari/moodys-akbankin-kredi-notunu-ba3-seviyesinde-ve-gorunumunu-duragan-olarak-teyit-etti-p-607821",
+    "https://www.forbes.com.tr/ekonomi/akbank-in-moody-s-notlarinda-degisiklik-olmadi"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AKBNK",
+   "sektor": null,
+   "baslangic": "2026-10-12",
+   "bitis": "2026-10-12",
+   "kamuya_acilma": null,
+   "tur": "dava_ceza",
+   "baslik": "Akbank, Rekabet Kurulu soruşturmasında uzlaşarak yaklaşık 1,71 milyar TL idari para cezası ödeyecek",
+   "anlam": "KAP açıklaması 12 Ekim 2026 tarihli (CNBC-e/Foreks): 1.713.897.558 TL ceza, Garanti BBVA da aynı soruşturmada ~1,55 milyar TL ödeyecek. Ceza yaklaşık %5'i 2026 ilk yarı kârı; üçüncü çeyrek kârında 1,7 milyar TL karşılık ayrıldı.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.85,
+   "etiketler": [
+    "Rekabet_Kurulu",
+    "uzlasma",
+    "idari_para_cezasi"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/borsa/akbanktan-kapa-rekabet-aciklamasi-171-milyar-tllik-idari-ceza-odenecek-h39308",
+    "https://www.foreks.com/haber/detay/6accfb2d24008d7d4374105d/FRKS/tr/akbank-rekabet-kurulu-sorusturmasinin-uzlasma-ile-sonuclandirilmasina-karar-verdi-12-10-26/",
+    "https://bloomberght.com/rekabet-kurulu-ndan-akbank-a-1-7-milyar-lira-para-cezasi-3791136"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 1713897558,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AKBNK",
+   "sektor": null,
+   "baslangic": "2026-10-26",
+   "bitis": "2026-10-26",
+   "kamuya_acilma": null,
+   "tur": "borclanma",
+   "baslik": "Akbank, sürdürülebilirlik temalı sendikasyonun 1 yıllık dilimini 542 milyon dolarla yeniledi, talep 891 milyon doları aştı",
+   "anlam": "Foreks haberinin tarihi 26.10.2026, 37 banka katıldı; Bloomberg HT'nin 542 milyon dolar ve Forbes TR başlıkları aynı işlemi gösteriyor. Tutar ve tarih iki kaynakla tutarlı ama KAP metni görülmedi.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.7,
+   "etiketler": [
+    "sendikasyon",
+    "542_milyon_usd",
+    "surdurulebilirlik"
+   ],
+   "kaynaklar": [
+    "https://www.foreks.com/haber/detay/6adef5079cf86f1d6d14c5b0/FRKS/tr/yenileme-akbank-sendikasyon-kredisini-891-milyon-abd-dolarini-asan-rekor-taleple-yeniledi-26-10-26/",
+    "https://www.bloomberght.com/akbank-542-milyon-dolar-sendikasyon-kredisi-aldi-3792497"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 542000000,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
   }
  ]
 }

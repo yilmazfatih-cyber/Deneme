@@ -33,6 +33,287 @@
     "beklenti": null,
     "sure_ay": null
    }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AHGAZ",
+   "sektor": null,
+   "baslangic": "2024-04-25",
+   "bitis": "2024-04-25",
+   "kamuya_acilma": null,
+   "tur": "ihale",
+   "baslik": "Ahlatcı Doğal Gaz iştiraki, EPDK'nın Çorlu doğal gaz dağıtım şebekesi ihalesini 1,48 milyar TL (KDV hariç) teklifle kazandı",
+   "anlam": "Rota Borsa/KAP özetine göre ihale 25 Nisan 2024'te yapıldı; paraajansi 30 yıllık dağıtım lisansını bildiriyor. Borsacoo'ya göre şebeke bedeli olarak 20 Mayıs 2024'te EPDK'ya 1,784 milyar TL ödendi; iki rakam arasındaki fark (KDV/devir bedeli) açıklanamadı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.75,
+   "etiketler": [
+    "Corlu",
+    "EPDK",
+    "dagitim_ihalesi",
+    "lisans"
+   ],
+   "kaynaklar": [
+    "https://rotaborsa.com/?p=163022",
+    "https://paraajansi.com.tr/gundem/enerji-sirketi-34-milyar-tllik-ihaleyi-kazandi-20139134h",
+    "https://borsacoo.com/bildirim/2135"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 1480000000,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AHGAZ",
+   "sektor": null,
+   "baslangic": "2024-10-03",
+   "bitis": "2024-10-09",
+   "kamuya_acilma": null,
+   "tur": "birlesme_devralma",
+   "baslik": "Enerya, Ahlatcı Altın İşletmeleri'nin tüm paylarını 55 milyon TL nominal bedelle devralıyor",
+   "anlam": "Arama özetine göre Enerya (AHGAZ'ın %72,86 payı) yönetimi 3 Ekim 2024'te 55 milyon TL sermayeli şirketin %100'ünü nominal değerle almayı onayladı; tescil sonrası devir tamamlandı. Satıcının Ahlatcı Holding olduğu bir kaynakta var, KAP metni görülmedi.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.65,
+   "etiketler": [
+    "Ahlatci_Altin",
+    "maden",
+    "Enerya",
+    "pay_devri"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/borsa/eneryanin-sirketi-ahlatci-altin-7-adet-altin-madeni-ruhsati-icin-98-milyon-tl-odedi-h13324",
+    "https://borsacoo.com/firma/AHGAZ/bildirimler?page=14"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 55000000,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AHGAZ",
+   "sektor": null,
+   "baslangic": "2025-03-01",
+   "bitis": "2025-03-31",
+   "kamuya_acilma": null,
+   "tur": "yatirim",
+   "baslik": "Ahlatcı Altın, 7 altın madeni ruhsatı için Madalyon Madencilik'e yaklaşık 77,6 milyon TL ödedi (toplam yaklaşık 97,6 milyon TL)",
+   "anlam": "CNBC-e ve arama özetlerine göre ödeme Mart 2025'te yapıldı, toplam 7 ruhsat için 97.627.500 TL bildirildi; kesin gün doğrulanamadı (ay başı/sonu aralığı kullanıldı).",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.4,
+   "etiketler": [
+    "maden_ruhsati",
+    "Ahlatci_Altin",
+    "tarih_dogrulanmadi"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/borsa/eneryanin-sirketi-ahlatci-altin-7-adet-altin-madeni-ruhsati-icin-98-milyon-tl-odedi-h13324"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 77609800,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AHGAZ",
+   "sektor": null,
+   "baslangic": "2025-04-15",
+   "bitis": "2025-04-30",
+   "kamuya_acilma": null,
+   "tur": "ihale",
+   "baslik": "Ahlatcı Altın, MAPEG Kütahya ihalesinde 3 maden sahasını toplam 49,9 milyon TL ile kazandı",
+   "anlam": "Arama özetine göre Nisan 2025'te kazanılan sahalarla ruhsat portföyü 12'ye çıktı; Mayıs 2025'te 9 ruhsat alımı için görüşmeler anlaşmasız bitti. Gün aralığı tahmini, tek özet kaynağı.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.35,
+   "etiketler": [
+    "maden",
+    "MAPEG",
+    "ihale",
+    "tarih_dogrulanmadi"
+   ],
+   "kaynaklar": [
+    "https://www.borsagundem.com.tr/ahlatci-dogal-gazin-dolayli-bagli-ortakligi-uc-maden-sahasinin-ihalesini-kazandi",
+    "https://www.cnbce.com/borsa/ahlatci-altinin-maden-hamlesi-askiya-alindi-ruhsat-gorusmeleri-sonucsuz-kaldi-ahlatci-hisse-ahgaz-hisse-enery-hisse-ahlatci-altin-madeni-h22314"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 49900000,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AHGAZ",
+   "sektor": null,
+   "baslangic": "2026-01-23",
+   "bitis": "2026-09-15",
+   "kamuya_acilma": null,
+   "tur": "geri_alim",
+   "baslik": "Ahlatcı Doğal Gaz, 23 Ocak 2026 geri alım programında toplam yaklaşık 827 milyon TL'ye %1,13 sermayeye denk pay aldı",
+   "anlam": "Bloomberg HT KAP haberine göre yönetim kurulu programı 15 Eylül 2026'da sonlandırdı; 29.346.813 pay, ortalama fiyat 28,18 TL. 28 Ağustos itibarıyla kümülatif geri alım sermayenin %2,91'i.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.8,
+   "etiketler": [
+    "geri_alim",
+    "826.9_milyon_TL",
+    "program_sonu"
+   ],
+   "kaynaklar": [
+    "https://www.bloomberght.com/borsa/hisse/ahlatci-dogal-ga/kap-haberi/348766",
+    "https://kap.org.tr/tr/api/BildirimPdf/1655937"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 826900000,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AHGAZ",
+   "sektor": null,
+   "baslangic": "2026-05-11",
+   "bitis": "2026-05-11",
+   "kamuya_acilma": null,
+   "tur": "haber",
+   "baslik": "SPK, Ahlatcı Doğal Gaz'ın kayıtlı sermaye tavanını 750 milyon TL'den 10 milyar TL'ye çıkarmasını onayladı",
+   "anlam": "Arama özetine göre 11.05.2026 onayı ile tavan 31.12.2030'a kadar geçerli; ödenmiş sermaye 2,6 milyar TL. İzin sonrası sermaye artırımı planı kaynaklarda yok.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.55,
+   "etiketler": [
+    "kayitli_sermaye",
+    "SPK",
+    "10_milyar_TL"
+   ],
+   "kaynaklar": [
+    "https://fintables.com/sirketler/AHGAZ/sermaye-artirimlari-temettuler",
+    "https://www.vkyanaliz.com/rap/AHGAZ_2026-07-17_92878.pdf"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 10000000000,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AHGAZ",
+   "sektor": null,
+   "baslangic": "2026-09-17",
+   "bitis": "2026-09-17",
+   "kamuya_acilma": null,
+   "tur": "geri_alim",
+   "baslik": "Ahlatcı Doğal Gaz yeni geri alım programı: en çok 50 milyon pay, 2 milyar TL fon, 1 yıl süre",
+   "anlam": "Fintables'ın KAP özetine göre program 17 Eylül 2026'da başladı; fon özkaynaklardan karşılanacak. Sonraki alımlar bu çalışmada araştırılmadı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.65,
+   "etiketler": [
+    "geri_alim",
+    "2_milyar_TL",
+    "yeni_program"
+   ],
+   "kaynaklar": [
+    "https://fintables.com/borsa-haber-akisi/18a08d91-babb-485d-ad06-8f82d6e97c8e/ahgaz-paylarin-geri-alinmasina-iliskin-bildirim"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 2000000000,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": 12
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AHGAZ",
+   "sektor": null,
+   "baslangic": "2025-08-21",
+   "bitis": "2025-08-21",
+   "kamuya_acilma": null,
+   "tur": "borclanma",
+   "baslik": "AHGAZ KAP özetinde yer alan Dünya Katılım Bankası'nın 5 milyar TL'ye kadar kira sertifikası tavanı onaylandı",
+   "anlam": "Arama özetine göre tavan başvurusu 21.08.2025'te onaylandı; ihracı yapan banka AHGAZ değil. Dünya Katılım'ın AHGAZ ile bağı ve hisseye etkisi doğrulanamadı.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.4,
+   "etiketler": [
+    "kira_sertifikasi",
+    "Dunya_Katilim",
+    "tarih_dogrulanmadi"
+   ],
+   "kaynaklar": [
+    "https://kap.org.tr/en/api/file/download/4028328d916b98a001919e46f2e02658"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 5000000000,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
   }
  ]
 }

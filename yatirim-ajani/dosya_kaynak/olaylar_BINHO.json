@@ -1,0 +1,186 @@
+{
+ "not": "ajan araştırması (web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "BINHO",
+   "sektor": null,
+   "baslangic": "2025-05-12",
+   "bitis": "2025-05-12",
+   "kamuya_acilma": null,
+   "tur": "pay_satisi",
+   "baslik": "1000 Yatırımlar Holding, Ufuk Yatırım'daki %2,79 payını Lydia Yatırım Holding'e 225 milyon TL'ye sattı",
+   "anlam": "Rota Borsa ve Bulls Yatırım'a göre 12 Mayıs 2025 KAP bildirimiyle 1.307.389 TL nominal pay nakit karşılığı devredildi; alıcı SPK düzenlemesine göre ilişkili taraf. Pay Aralık 2024'te Yıldız Holding'den alınan paketin parçasıydı.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.8,
+   "etiketler": [
+    "Ufuk_Yatirim",
+    "Lydia",
+    "iliskili_taraf",
+    "pay_satisi"
+   ],
+   "kaynaklar": [
+    "https://rotaborsa.com/?p=318848",
+    "https://bullsyatirim.com/1000-yatirimlar-holding-ufuk-yatirim-hisselerini-225-milyon-tlye-satti"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 225000000,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "BINHO",
+   "sektor": null,
+   "baslangic": "2025-09-04",
+   "bitis": "2025-09-08",
+   "kamuya_acilma": "2025-09-02 17:50",
+   "tur": "bedelsiz",
+   "baslik": "1000 Yatırımlar Holding %2645 bedelsiz sermaye artırımıyla sermayeyi 47 milyon TL'den 1,29 milyar TL'ye çıkardı",
+   "anlam": "KAP 1485555 ve Borsagündem/Paratic'e göre SPK onayı 21.08.2025 bülteninde, hak kullanım 4 Eylül, kayıt 5 Eylül, hesaplara geçiş 8 Eylül 2025; artırım tamamen iç kaynaklardan. 100 lot yaklaşık 2.745 lota çıktı.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.85,
+   "etiketler": [
+    "bedelsiz",
+    "2645",
+    "SPK",
+    "sermaye_artirimi"
+   ],
+   "kaynaklar": [
+    "https://kap.org.tr/tr/api/BildirimPdf/1485555",
+    "https://www.borsagundem.com.tr/1000-yatirimlar-holding-as-sermaye-artirimi-icin-hak-kullanim-baslangic-tarihini-acikladi",
+    "https://paratic.com/holdingden-yuzde-2645-bedelsiz-karari-lotlar-katlanacak/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": 2645,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "BINHO",
+   "sektor": null,
+   "baslangic": "2026-03-02",
+   "bitis": "2026-03-02",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "1000 Yatırımlar Holding 2025 yılını 1,46 milyar TL net kârla kapattı, dördüncü çeyrek yaklaşık 1,94 milyar TL zararlı",
+   "anlam": "Rota Borsa ve Ekofin'e göre bilanço 2 Mart 2026'da KAP'ta yayımlandı; 2024 için raporlanan zarar yaklaşık 8,96 milyar TL. Faaliyet zararı daralsa da FAVÖK negatif; kâr kalemi operasyon dışı kaynaklı olabilir, konsolide/solo rakamlar kaynaklarda farklı.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.6,
+   "etiketler": [
+    "bilanco",
+    "2025",
+    "net_kar",
+    "4Ç_zarar"
+   ],
+   "kaynaklar": [
+    "https://rotaborsa.com/?p=420328",
+    "https://ekofin.net/sirket/detay/BINHO/faaliyet-raporlari?period=2025-12"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 1461685542,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "BINHO",
+   "sektor": null,
+   "baslangic": "2026-06-18",
+   "bitis": "2026-06-18",
+   "kamuya_acilma": null,
+   "tur": "birlesme_devralma",
+   "baslik": "1000 Yatırımlar Holding, %100 iştiraki 1000 Ödeme'yi 15 milyon dolara Veridion Teknoloji'ye satıyor",
+   "anlam": "Rota Borsa'ya göre 18 Haziran 2026 KAP bildirimi: pay devri sözleşmesi imzalandı, 5 milyon dolar peşin alındı, kalan vadeli. Midas yaklaşık 422 milyon TL kâr beklendiğini yazıyor. Alıcının kuruluş tarihi kaynaklarda tutarsız.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.7,
+   "etiketler": [
+    "1000_Odeme",
+    "Veridion",
+    "pay_devri",
+    "15_milyon_usd"
+   ],
+   "kaynaklar": [
+    "https://rotaborsa.com/?p=452474",
+    "https://www.getmidas.com/midasin-kulaklari/1000-yatirimlar-holding-binho-sirket-satin-aldi-p-34579"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 15000000,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "BINHO",
+   "sektor": null,
+   "baslangic": "2026-08-04",
+   "bitis": "2026-08-04",
+   "kamuya_acilma": null,
+   "tur": "is_iliskisi",
+   "baslik": "BINHO iştiraki Meta Mobilite, Balpınar Enerji'nin tüm paylarını 23,75 milyon TL'ye alıyor (Mardin 10 MWe depolamalı GES lisansı)",
+   "anlam": "Arama özetine göre 4 Ağustos 2026 duyurusunda Meta Mobilite Balpınar Enerji paylarını 23.754.000 TL'ye aldı; santral Mardin'de 10 MWe/14,88 MWp, devreye alma 2026 son çeyrek hedefi. Yalnız bu özet ve Rota Borsa/fintables başlıkları görüldü, tarih tek kaynaklı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.5,
+   "etiketler": [
+    "Meta_Mobilite",
+    "GES",
+    "Mardin",
+    "Balpinar"
+   ],
+   "kaynaklar": [
+    "https://rotaborsa.com/?p=467170",
+    "https://fintables.com/borsa-haber-akisi/fbd54be5-7a67-4d33-b4ec-10e70bd92510/binho-ozel-durum-aciklamasi-genel"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 23754000,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

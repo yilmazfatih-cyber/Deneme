@@ -1,0 +1,253 @@
+{
+ "not": "ajan araştırması (web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "BTCIM",
+   "sektor": null,
+   "baslangic": "2025-01-09",
+   "bitis": "2025-01-14",
+   "kamuya_acilma": null,
+   "tur": "bedelsiz",
+   "baslik": "Batıçim %3000 bedelsiz sermaye artırımıyla sermayeyi 180 milyon TL'den 5,58 milyar TL'ye çıkardı",
+   "anlam": "SPK 2025/2 sayılı bülteninde (9 Ocak 2025) onayladı, bedelsiz hak kullanımı 14 Ocak 2025; 1 hisseye 30 ilave pay (100 lot 3.100 lot). Bir kaynak tescili 14 Şubat 2025 olarak veriyor, hesaplara geçiş Paratic'te 16 Ocak.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.85,
+   "etiketler": [
+    "bedelsiz",
+    "3000",
+    "SPK",
+    "sermaye_artirimi"
+   ],
+   "kaynaklar": [
+    "https://www.borsaningundemi.com/haber/spkdan-baticime-onay-ayrilma-hakki-belli-oldu-1877402",
+    "https://paraajansi.com.tr/sermaye-artirim/100-lot-3100-lot-oluyor-21471983h",
+    "https://paratic.com/10-lot-310-lota-yukseldi-tescil-islemi-tamamlandi/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": 3000,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "BTCIM",
+   "sektor": null,
+   "baslangic": "2025-06-18",
+   "bitis": "2025-06-18",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Batıçim genel kurulu 2024 dönemi için temettü dağıtılmaması önerisini onayladı",
+   "anlam": "Rota Borsa/KAP özetine göre SPK'ya göre 2024 dönem zararı 25,3 milyon TL olduğundan 18.06.2025 genel kurulunda kâr dağıtılmaması kabul edildi (başka kaynak 28,8 milyon TL net kâr yazıyor; rakamlar tutarsız). 2023 kârı da 2024'te dağıtılmamıştı.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.6,
+   "etiketler": [
+    "temettu",
+    "dagitim_yok",
+    "genel_kurul"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/baticim-btcim-temettu-verecek-mi-kapa-bildirdi/",
+    "https://rotaborsa.com/?p=329096"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 0.0,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "BTCIM",
+   "sektor": null,
+   "baslangic": "2025-12-05",
+   "bitis": "2025-12-05",
+   "kamuya_acilma": "2025-12-05 09:57",
+   "tur": "yatirim",
+   "baslik": "Batıçim, Aliağa'daki 3,5 milyon ton/yıl klinker öğütme ve paketleme tesisi için olumlu ÇED kararı aldığını duyurdu",
+   "anlam": "KAP 1523431: ÇED süreci olumlu, karar 03.12.2025 tarihli belgeyle tebliğ edildi; ilk faz 1,75 milyon ton. Projeye ilişkin 'ÇED gerekli değildir' kararı dava konusu ve Temmuz 2026 bilirkişi raporu bu kararı uygun bulmadı; hukuki durum belirsiz.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.8,
+   "etiketler": [
+    "Aligaga",
+    "ÇED",
+    "klinker_ogutme",
+    "3.5_milyon_ton"
+   ],
+   "kaynaklar": [
+    "https://kap.org.tr/en/api/BildirimPdf/1523431",
+    "https://www.yatirimx.com.tr/ekonomi/baticimin-btcim-aliaga-yatirimina-cevre-onayi-35-milyon-ton-kapasiteli-tesis-yolda/15433",
+    "https://www.evrensel.net/haber/5993038/baticim-bilirkisi-raporu-kamu-yararina-uygun-degildir"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "BTCIM",
+   "sektor": null,
+   "baslangic": "2026-03-02",
+   "bitis": "2026-03-02",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Batıçim 2025 yılında ana ortaklık payına 228,8 milyon TL net zarar açıkladı (2024: 28,8 milyon TL kâr)",
+   "anlam": "Paratic'e göre 12 aylık konsolide sonuçlar KAP'ta yayımlandı; yayın günü kaynaklarda yok, 2 Mart 2026 yalnız tahmindir. Finansman gideri 2,10 milyar TL; başka bir kaynak 450,8 milyon TL zarar yazıyor.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.35,
+   "etiketler": [
+    "bilanco",
+    "2025",
+    "net_zarar",
+    "tarih_dogrulanmadi"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/baticim-2025te-228-milyon-tl-zarar-acikladi/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": -228800000,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "BTCIM",
+   "sektor": null,
+   "baslangic": "2026-06-03",
+   "bitis": "2026-06-03",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Batıçim 2025 dönemi için temettü dağıtmama kararını 3 Haziran 2026 genel kuruluna sundu",
+   "anlam": "KAP bildirimi (4 Mayıs 2026) net dağıtılabilir kâr oluşmadığından nakit ve bedelsiz payın sıfır olduğunu gösteriyor; genel kurulun fiilen 3 Haziran'da yapıldığı sonuçlarda doğrulanmadı.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.5,
+   "etiketler": [
+    "temettu",
+    "dagitim_yok",
+    "2025_donemi"
+   ],
+   "kaynaklar": [
+    "https://bigpara.hurriyet.com.tr/haberler/kap-haberleri/btcim-baticim-bati-anadolu-cimento-sanayii-as-kar-payi-dagitim-islemlerine-iliskin-bildirim_ID3500845/",
+    "https://kap.org.tr/en/api/BildirimPdf/1633371"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 0.0,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "BTCIM",
+   "sektor": null,
+   "baslangic": "2026-06-11",
+   "bitis": "2026-06-11",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Batıçim 2026 ilk çeyrekte yaklaşık 329 milyon TL net zarar yazdı (2025 ilk çeyrek: 365 milyon TL kâr)",
+   "anlam": "Rota Borsa'ya göre bilanço 11 Haziran 2026'da yayımlandı; Vakıf Yatırım tablosu aynı dönem için -429 milyon TL gösteriyor (ana ortaklık/azınlık farkı olabilir). Satışlar 3,98'den 3,93 milyar TL'ye geriledi.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.55,
+   "etiketler": [
+    "bilanco",
+    "1Ç26",
+    "net_zarar"
+   ],
+   "kaynaklar": [
+    "https://rotaborsa.com/baticim-cimento-btcim-2026-yili-1-ceyrek-bilancosunu-acikladi-iste-detaylar/",
+    "https://www.vkyanaliz.com/rap/BTCIM_2026-06-11_77695.pdf"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": -328837061,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "BTCIM",
+   "sektor": null,
+   "baslangic": "2026-08-01",
+   "bitis": "2026-08-01",
+   "kamuya_acilma": null,
+   "tur": "haber",
+   "baslik": "Batıçim Bornova tesisinin klinker ve çimento faaliyetlerini iştiraki Batıçim Çimento'ya devretti",
+   "anlam": "Arama özetine göre KAP bildirimi faaliyetlerin 1 Ağustos 2026 itibarıyla iştirake geçtiğini bildiriyor; bildirim günü ve ayrıntılar doğrulanamadı.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.4,
+   "etiketler": [
+    "Bornova",
+    "yeniden_yapilanma",
+    "Batıçim_Çimento"
+   ],
+   "kaynaklar": [
+    "https://www.foreks.com/haber/detay/6ac2454c24008d7d4373ba7d/FRKS/tr/bati-anadolu-sirketler-toplulugu-nun-halka-acik-sirketleri-2026-yilinin-ilk-yarisinda-brut-karlarini-artirdi-04-10-26/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

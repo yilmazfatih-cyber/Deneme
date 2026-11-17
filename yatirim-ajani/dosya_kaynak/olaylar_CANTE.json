@@ -1,0 +1,150 @@
+{
+ "not": "ajan araştırması (web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "CANTE",
+   "sektor": null,
+   "baslangic": "2024-06-13",
+   "bitis": "2024-06-13",
+   "kamuya_acilma": null,
+   "tur": "bedelsiz",
+   "baslik": "SPK, Çan2 Termik'in %646,18 bedelsiz sermaye artırımına onay verdi (938 milyon TL'den 7 milyar TL'ye)",
+   "anlam": "SPK 2024/29 sayılı bülteni (13.06.2024): 1 lot için yaklaşık 6,46 lot ilave pay. Hak kullanım gününü sonuçlarda göremedim, bu nedenle bitiş tarihi onay günü olarak bırakıldı.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.75,
+   "etiketler": [
+    "bedelsiz",
+    "646",
+    "SPK",
+    "sermaye_artirimi"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/yuzde-600u-asan-bedelsiz-karariyla-hisseler-derin-uykudan-uyandi/",
+    "https://www.finansopia.com/kap-bildirimleri/can2-termik-cante-bedelsiz-sermaye-artirimi-karari-aldi-yuzde-646-bedelsiz-geliyor/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": 646.17566,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "CANTE",
+   "sektor": null,
+   "baslangic": "2025-08-19",
+   "bitis": "2025-08-19",
+   "kamuya_acilma": null,
+   "tur": "pay_satisi",
+   "baslik": "Odaş Elektrik, Çan2 Termik'teki payı Ağustos 2025 satışlarıyla %29,29'a düştü ve sermaye avansı gönderdi",
+   "anlam": "Rota Borsa'ya göre Odaş'ın payı Ağustos 2025'te %29,29'a indi; Paratic/KAP özetleri sermaye avansını 878,6 milyon TL ve 1,524 milyar TL olarak iki farklı rakamla veriyor. Satış günü ve avans tutarı doğrulanamadı (19 Ağustos avans günü tahmini).",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.35,
+   "etiketler": [
+    "Odas",
+    "pay_satisi",
+    "sermaye_avansi",
+    "tarih_dogrulanmadi"
+   ],
+   "kaynaklar": [
+    "https://rotaborsa.com/?p=349536",
+    "https://paratic.com/odas-can2-termik-sermaye-artirimina-katildi/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "CANTE",
+   "sektor": null,
+   "baslangic": "2025-10-22",
+   "bitis": "2025-10-22",
+   "kamuya_acilma": null,
+   "tur": "is_iliskisi",
+   "baslik": "Çan2 Termik, EÜAŞ ile 2029 sonuna kadar dolar bazlı, asgari 75 USD/MWh fiyat garantili elektrik satış sözleşmesi imzaladı",
+   "anlam": "KAP 1506839'a göre sözleşme 22 Ekim 2025'te imzalandı; Bulls Yatırım/hisse.net 2026-2030 için yıllık yaklaşık 1,73 milyon MWh miktar ve asgari 75 USD/MWh yazıyor. Eski EÜAŞ sözleşmesiyle ilişki belirsiz, miktar ayrıntısı ikincil kaynaktan.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.7,
+   "etiketler": [
+    "EÜAŞ",
+    "elektrik_satisi",
+    "75_usd_mwh",
+    "dolar_bazli"
+   ],
+   "kaynaklar": [
+    "https://kap.org.tr/en/api/BildirimPdf/1506839",
+    "https://www.hisse.net/haber/kap-a-bildirildi-can2-termik-ten-dev-anlasma-26335",
+    "https://bullsyatirim.com/can2-termik-euas-ile-dolar-bazli-elektrik-alim-garantili-sozlesme-imzaladi"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": 50
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "CANTE",
+   "sektor": null,
+   "baslangic": "2026-01-29",
+   "bitis": "2026-02-26",
+   "kamuya_acilma": null,
+   "tur": "bedelli",
+   "baslik": "Çan2 Termik %42,86 bedelli sermaye artırımıyla sermayeyi 7 milyar TL'den 10 milyar TL'ye çıkardı",
+   "anlam": "SPK 29 Ocak 2026 bülteninde 3 milyar TL'lik bedelli artırımı onayladı; rüçhan kullanımı 3-17 Şubat 2026, tamamlanma bildirimi 26 Şubat 2026 (Rota Borsa'ya göre 2 Nisan'da işlemler bitti). Katılım oranı kaynaklarda yok; Odaş %29,29 paylı ortak.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.8,
+   "etiketler": [
+    "bedelli",
+    "42.86",
+    "SPK",
+    "sermaye_artirimi"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/can2-termik-cante-bedelli-sermaye-artirimi-onaylandi/",
+    "https://kap.org.tr/tr/Bildirim/1516521"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 3000000000,
+    "para_birimi": "TRY",
+    "oran": 42.85714,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

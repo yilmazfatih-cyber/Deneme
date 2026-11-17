@@ -1,0 +1,219 @@
+{
+ "not": "ajan araştırması (web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "AYGAZ",
+   "sektor": null,
+   "baslangic": "2025-03-27",
+   "bitis": "2025-04-02",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Aygaz 2024 kârından hisse başına brüt 12,55 TL nakit temettü dağıtılmasına genel kurulda karar verdi",
+   "anlam": "Paraajansı ve KAP kaynaklı özetlere göre 27 Mart 2025 genel kurulu brüt 12,55 TL (net 10,6675 TL) nakit temettüyü onayladı; hak kullanım 2 Nisan, ödeme 4 Nisan 2025. Bir haberin başlığındaki farklı rakam yazım hatası gibi görünüyor.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.8,
+   "etiketler": [
+    "temettu",
+    "brut_12.55",
+    "genel_kurul"
+   ],
+   "kaynaklar": [
+    "https://paraajansi.com.tr/temettu/pay-basina-1255-lira-rekor-temettu-tarihi-aciklandi-22209944h",
+    "https://financialreports.eu/filings/aygaz-as/notice-of-dividend-amount/2025/6580189"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 12.55,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AYGAZ",
+   "sektor": null,
+   "baslangic": "2026-01-15",
+   "bitis": "2026-01-15",
+   "kamuya_acilma": null,
+   "tur": "yatirim",
+   "baslik": "Aygaz, HD Hyundai Samho'dan yaklaşık 119 milyon dolara bir VLGC LPG gemisi satın alıyor",
+   "anlam": "Paratic ve Riviera'ya göre Aygaz bir adet çift yakıtlı VLGC için HD Hyundai Samho ile sözleşme yaptı; bedel yaklaşık 119 milyon dolar, teslimat 2028 ikinci çeyrek bekleniyor. KAP yayın tarihi 15.01.2026 olarak görünüyor.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.75,
+   "etiketler": [
+    "gemi",
+    "LPG",
+    "VLGC",
+    "yatirim"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/aygazdan-119-milyon-dolarlik-stratejik-gemi-alimi/",
+    "https://www.rivieramm.com/news-content-hub/aygaz-lifts-hyundai-vlgc-orderbook-to-three-vessels-88495"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 119000000,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AYGAZ",
+   "sektor": null,
+   "baslangic": "2026-03-11",
+   "bitis": "2026-03-16",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Aygaz genel kurulu 2025 kârından hisse başına brüt 12,55 TL nakit temettü kararı aldı (toplam yaklaşık 2,76 milyar TL)",
+   "anlam": "Rota Borsa, 11 Mart 2026 KAP bildirimine dayanarak brüt 12,55 TL temettü ve 16 Mart 2026 hak kullanımını aktarıyor. Aynı brüt rakam 2025'teki ödemeyle birebir aynı olduğu için dönem karışmış olabilir; kaynaklar ödeme gününde (17/18 Mart) de çelişiyor. KAP metni doğrudan görülmedi.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.45,
+   "etiketler": [
+    "temettu",
+    "brut_12.55",
+    "dogrulanmali"
+   ],
+   "kaynaklar": [
+    "https://rotaborsa.com/?p=283928",
+    "https://paratic.com/aygaz-2025-yili-icin-kar-dagitim-politikasini-acikladi/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 12.55,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AYGAZ",
+   "sektor": null,
+   "baslangic": "2026-04-15",
+   "bitis": "2026-04-15",
+   "kamuya_acilma": null,
+   "tur": "yatirim",
+   "baslik": "Aygaz, HD Hyundai Samho'ya iki VLGC LPG gemisi için toplam yaklaşık 234 milyon dolarlık sözleşme imzaladı",
+   "anlam": "KAP maddi duran varlık alımı bildirimi 15.04.2026 tarihli (bigpara özeti); her gemi için azami 117 milyon dolar, teslimatlar 2028 son çeyrek ve 2029 ikinci çeyrek. Ödemeler teslimat öncesi taksitle.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.75,
+   "etiketler": [
+    "gemi",
+    "LPG",
+    "234_milyon_usd",
+    "yatirim"
+   ],
+   "kaynaklar": [
+    "https://bigpara.hurriyet.com.tr/haberler/kap-haberleri/aygaz-aygaz-as-maddi-duran-varlik-alimi_ID3481789/",
+    "https://www.borsagundem.com.tr/aygaz-234-milyon-dolarlik-lpg-gemisi-yatirimi-yapacak"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 234000000,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AYGAZ",
+   "sektor": null,
+   "baslangic": "2026-08-04",
+   "bitis": "2026-08-04",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Aygaz 2026 ikinci çeyrekte yaklaşık 4,28 milyar TL net kâr açıkladı, beklentinin (medyan 2,92 milyar TL) belirgin üzerinde",
+   "anlam": "Rota Borsa/Matriks anketine göre çeyrek net kârı beklentinin yaklaşık %47 üzerinde; destek LPG stok etkisi ve EYAŞ katkısından. Açıklama günü şirketin planladığı 4 Ağustos olarak alındı, gerçekleşme günü ve kaynaklardaki 4,28/4,42/4,52 milyar TL farkları doğrulanamadı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.4,
+   "etiketler": [
+    "bilanco",
+    "2Ç26",
+    "beklenti_ustu",
+    "tarih_dogrulanmadi"
+   ],
+   "kaynaklar": [
+    "https://rotaborsa.com/aygaz-2026-2-ceyrek-bilancosu-beklentiyi-karsiladi-mi/",
+    "https://paratic.com/aygaz-2026-ikinci-ceyrek-bilanco-tarihi-belli-oldu/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 4278701000,
+    "beklenti": 2920500000,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "AYGAZ",
+   "sektor": null,
+   "baslangic": "2026-11-06",
+   "bitis": "2026-11-06",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Aygaz 2026 üçüncü çeyrekte 7,22 milyar TL net kâr açıkladı, ortalama beklentinin (5,61 milyar TL) yaklaşık %29 üzerinde",
+   "anlam": "CNBC-e ve Borsagündem'e göre çeyrek net kârı 7.215.842.000 TL, dokuz aylık 11,89 milyar TL. İş Yatırım raporu 9 Kasım 2026 tarihli olduğundan açıklama bu tarihten önce yapıldı; kesin gün doğrulanamadı (6 Kasım tahmini).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.4,
+   "etiketler": [
+    "bilanco",
+    "3Ç26",
+    "beklenti_ustu",
+    "tarih_dogrulanmadi"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/sirket-bilancolari/aygazdan-aygaz-3-ceyrekte-722-milyar-tllik-kar-bilanco-beklentileri-asti-h41230",
+    "https://www.borsagundem.com.tr/aygazda-guclu-bilanco-3-araci-kurum-hedef-fiyatini-yukseltti"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 7215842000,
+    "beklenti": 5611000000,
+    "sure_ay": null
+   }
+  }
+ ]
+}
