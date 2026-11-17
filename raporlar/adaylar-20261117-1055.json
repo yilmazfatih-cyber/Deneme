@@ -1,0 +1,364 @@
+{
+ "tarama": {
+  "an": "2026-11-17T10:55:00+03:00",
+  "kategoriler": [
+   "ic-giyim-pijama",
+   "sutyen-korse",
+   "saat"
+  ],
+  "not": "Günlük tarama. alibaba.com açılmadı, Alibaba verisi arama özetlerinden. İç giyimde yeni aday yok (oran 1,5–2,7); sütyende 1, saatte 2 aday elendi. Takip: eldiven, eşarp, kolye ölçüldü; cüzdan ölçülemedi."
+ },
+ "adaylar": [
+  {
+   "urun": "Dokunmatik ekran uyumlu örme kışlık eldiven",
+   "kategori": "orme-atki-eldiven",
+   "gtip": "",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Solid-Magic-Gloves-Capacitive-Mobile-Phone_1600094285285.html",
+    "baslik": "Solid Magic Gloves Capacitive Mobile Phone touch screen knitted winter gloves",
+    "tedarikci": "bilinmiyor",
+    "fiyat_usd": 0.66,
+    "moq": 12,
+    "kademeler": [
+     {
+      "min_adet": 12,
+      "fiyat_usd": 0.66
+     },
+     {
+      "min_adet": 120,
+      "fiyat_usd": 0.33
+     }
+    ],
+    "birim_agirlik_kg": 0.06,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 299,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/desenli-kadin-eldiven-x-g1-c1046-a33-v1011",
+      "baslik": "SİSTEM PELUŞ Dokunmatik Ekran Uyumlu Örgü Desenli Kadın Eldiveni (kategori sayfası, ürün sayfası doğrulanamadı)"
+     }
+    ],
+    "not": "Yalnız 1 dokunmatik uyumlu örgü ilan doğrulandı; diğer örgü eldivenler 330-450 TL ama dokunmatik değil."
+   },
+   "taklit_riski": false,
+   "gerekce": "Kışlık, hafif, bedensiz aksesuar; telefon kullanımına uygun.",
+   "riskler": [
+    "Tedarikçi bilinmiyor",
+    "Kademeler arama özetinden, ilan sayfası açılamadı",
+    "Türkiye karşılaştırması tek ilan"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Solid-Magic-Gloves-Capacitive-Mobile-Phone_1600094285285.html",
+    "https://www.trendyol.com/desenli-kadin-eldiven-x-g1-c1046-a33-v1011"
+   ]
+  },
+  {
+   "urun": "Desenli 90x90 twill görünümlü polyester eşarp",
+   "kategori": "esarp-sal",
+   "gtip": "6214.30",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Spring-Summer-High-Quality-90x90cm-Animal_1601174536158.html",
+    "baslik": "Spring Summer High Quality 90x90cm Animal print women silk feeling scarf",
+    "tedarikci": "bilinmiyor",
+    "fiyat_usd": 1.43,
+    "moq": 2,
+    "kademeler": [
+     {
+      "min_adet": 2,
+      "fiyat_usd": 1.43
+     },
+     {
+      "min_adet": 100,
+      "fiyat_usd": 1.39
+     },
+     {
+      "min_adet": 500,
+      "fiyat_usd": 1.28
+     }
+    ],
+    "birim_agirlik_kg": 0.08,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 199.9,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/desenli-sal-ve-fular-x-c101433-a33-v1011",
+      "baslik": "Madame Polo Desenli Twill Eşarp 90x90 (kategori sayfası)"
+     },
+     {
+      "fiyat_tl": 379.9,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/desenli-sal-ve-fular-x-c101433-a33-v1011",
+      "baslik": "Armine Sport 90x90 twill eşarp 3072-09 (kategori sayfası)"
+     },
+     {
+      "fiyat_tl": 420.32,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/desenli-sal-ve-fular-x-c101433-a33-v1011",
+      "baslik": "Levidor 90x90 polyester twill eşarp (kategori sayfası)"
+     }
+    ],
+    "not": "Arama özetinden, ürün sayfası bağlantısı yok; fiyatlar doğrulanmalı. Aker 583-850 TL ve ipek 900 TL alındı."
+   },
+   "taklit_riski": false,
+   "gerekce": "Tesettür ve günlük kullanımda sürekli satan, hafif ve katlanır aksesuar.",
+   "riskler": [
+    "Elyaf ilanda net değil (polyester varsayımı)",
+    "Tedarikçi bilinmiyor",
+    "Ürün sayfası açılamadı",
+    "Hayvan deseni lisanslı/marka deseni olmamalı"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Spring-Summer-High-Quality-90x90cm-Animal_1601174536158.html",
+    "https://www.trendyol.com/desenli-sal-ve-fular-x-c101433-a33-v1011"
+   ]
+  },
+  {
+   "urun": "Dikişsiz telsiz üçgen bralet (şeffaf askılı)",
+   "kategori": "sutyen-korse",
+   "gtip": "6212.90",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Sexy-Triangle-Invisible-Bra-with-Transparent_1601417763821.html",
+    "baslik": "Sexy Triangle Invisible Wire Free Bra with Transparent Strap Matching Bra and Panty Set Breathable Bralette & Thong Set",
+    "tedarikci": "bilinmiyor (arama özetinde görünmedi)",
+    "fiyat_usd": 1.8,
+    "moq": 100,
+    "kademeler": [
+     {
+      "min_adet": 100,
+      "fiyat_usd": 1.8
+     }
+    ],
+    "birim_agirlik_kg": 0.08,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 299.9,
+      "kaynak": "cimri",
+      "url": "https://www.cimri.com/sutyen/en-ucuz-liza-iz0540s-dikissiz-jarse-siyah-toparlayici-sutyen-fiyatlari,2569567356",
+      "baslik": "Liza IZ0540S Dikişsiz Jarse Siyah Toparlayıcı Sütyen"
+     },
+     {
+      "fiyat_tl": 448.75,
+      "kaynak": "cimri",
+      "url": "https://www.cimri.com/sutyen/en-ucuz-nurteks-192-ten-sutyen-fiyatlari,2089445164",
+      "baslik": "Nurteks 192 Ten Desteksiz Straplez Dikişsiz Sütyen"
+     },
+     {
+      "fiyat_tl": 359.9,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/silikon-sutyen-x-c63-a200-v10616808",
+      "baslik": "Bernato Önden Klipsli Askısız Dikişsiz Sütyen (kategori sayfası)"
+     }
+    ],
+    "not": "Arama özetlerinden; Alibaba ilanı sütyen+külot seti, Türkiye karşılaştırması yalnız sütyen. Ilanda ağırlık yok."
+   },
+   "taklit_riski": false,
+   "gerekce": "Dikişsiz telsiz bralet günlük kullanımda sürekli satılır.",
+   "riskler": [
+    "Fiyat aralığı 1,60-1,80 $; üst uç yazıldı",
+    "Beden ve tedarikçi bilgisi doğrulanmadı",
+    "Set (sütyen+tanga) ilanı; iç giyim hijyen/etiket gereği",
+    "Ağırlık tahmini"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Sexy-Triangle-Invisible-Bra-with-Transparent_1601417763821.html"
+   ]
+  },
+  {
+   "urun": "Kadın hasır kordon minimal quartz kol saati (Japon mekanizma)",
+   "kategori": "saat",
+   "gtip": "9102.11",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/WoMaGe-1118-Japan-Quartz-Movement-Cheap_62374193471.html",
+    "baslik": "WoMaGe 1118 Japan Quartz Movement Cheap Women Mesh Bracelet Watch",
+    "tedarikci": "arama özetinde görünmüyor",
+    "fiyat_usd": 1.83,
+    "moq": 100,
+    "kademeler": [
+     {
+      "min_adet": 100,
+      "fiyat_usd": 1.83
+     },
+     {
+      "min_adet": 500,
+      "fiyat_usd": 1.76
+     },
+     {
+      "min_adet": 1000,
+      "fiyat_usd": 1.69
+     }
+    ],
+    "birim_agirlik_kg": 0.08,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 325,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/c-saat-x-c34-a1203-v10621750",
+      "baslik": "GOLDON Vintage hasır kordon kalp detaylı kol saati"
+     },
+     {
+      "fiyat_tl": 479.9,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/saat-x-c34",
+      "baslik": "Spectrum Minimal Kasa Yuvarlak Kadran Kalp Charm Detaylı Metal Kordon Kadın Kol Saati"
+     },
+     {
+      "fiyat_tl": 589,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/saat-x-c34",
+      "baslik": "Casual Seisi Kare Minimal Zarif Kol Saati"
+     }
+    ],
+    "not": "Az bilinen markalı 3 ilan; bağlantılar kategori sayfası, ürün sayfası doğrulanmadı. Hasır kordon ilanlarının çoğu markalı ve 1.400 TL üstü (Lee Cooper, Daniel Klein, Ferrucci), alınmadı."
+   },
+   "taklit_riski": false,
+   "gerekce": "Minimal metal kordonlu kadın saati hediye olarak yıl boyu satar, Kasım-Aralık yılbaşı/hediye sezonudur.",
+   "riskler": [
+    "MOQ 100",
+    "Ağırlık tahmin",
+    "Tedarikçi ve ilan başlığındaki 'WoMaGe' adı marka olabilir, logo/kadran markasız istenmeli",
+    "Alibaba verisi arama özetinden, canlı sayfa doğrulanmadı",
+    "Pil ve CE/uygunluk belgesi gerekebilir"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/WoMaGe-1118-Japan-Quartz-Movement-Cheap_62374193471.html",
+    "https://www.trendyol.com/saat-x-c34"
+   ]
+  },
+  {
+   "urun": "Minimalist analog quartz kol saati",
+   "kategori": "saat",
+   "gtip": "9102.11",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Simple-Design-Analog-Quartz-Minimalist-Watch_60596866316.html",
+    "baslik": "Simple Design Analog Quartz Minimalist Watch OEM Low MOQ",
+    "tedarikci": "arama özetinde görünmüyor",
+    "fiyat_usd": 2.97,
+    "moq": 5,
+    "kademeler": [
+     {
+      "min_adet": 5,
+      "fiyat_usd": 2.97
+     },
+     {
+      "min_adet": 20,
+      "fiyat_usd": 2.7
+     },
+     {
+      "min_adet": 100,
+      "fiyat_usd": 2.52
+     }
+    ],
+    "birim_agirlik_kg": 0.08,
+    "agirlik_kaynagi": "tahmin",
+    "indirim": {
+     "liste_fiyat_usd": 3.3,
+     "aciklama": "Ilanda ustu cizili liste fiyati gorunuyor (5-19 adet 3.30 -> 2.97); bitis tarihi bilinmiyor"
+    }
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 325,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/c-saat-x-c34-a1203-v10621750",
+      "baslik": "GOLDON Vintage hasır kordon kalp detaylı kol saati"
+     },
+     {
+      "fiyat_tl": 479.9,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/saat-x-c34",
+      "baslik": "Spectrum Minimal Kasa Yuvarlak Kadran Kalp Charm Detaylı Metal Kordon Kadın Kol Saati"
+     },
+     {
+      "fiyat_tl": 589,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/saat-x-c34",
+      "baslik": "Casual Seisi Kare Minimal Zarif Kol Saati"
+     }
+    ],
+    "not": "Aynı 3 ilan; kordon tipi (çelik/deri) ve kadın/erkek ilandan doğrulanmadı."
+   },
+   "taklit_riski": false,
+   "gerekce": "Minimal analog saat hediye ve günlük kullanımda sürekli satar; düşük MOQ ile az sermayeyle denenir.",
+   "riskler": [
+    "Kordon malzemesi ve cinsiyet belirsiz",
+    "Ağırlık tahmin",
+    "Tedarikçi bilgisi yok",
+    "Alibaba verisi arama özetinden",
+    "Pil ve uygunluk belgesi"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Simple-Design-Analog-Quartz-Minimalist-Watch_60596866316.html",
+    "https://www.trendyol.com/saat-x-c34"
+   ]
+  },
+  {
+   "urun": "3 mm halat zincir kolye (316L paslanmaz çelik)",
+   "kategori": "taki-bijuteri",
+   "gtip": "7117.19",
+   "alibaba": {
+    "url": "https://www.alibaba.com/showroom/316l-stainless-steel-jewelry-wholesale.html",
+    "baslik": "NL2055 Hiphop 3mm 316L Stainless Steel Rope Chain Necklace",
+    "tedarikci": "Yiwu Renqing Ornament Co., Ltd.",
+    "fiyat_usd": 0.5,
+    "moq": 20,
+    "kademeler": [
+     {
+      "min_adet": 20,
+      "fiyat_usd": 0.5
+     }
+    ],
+    "birim_agirlik_kg": 0.02,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 199.1,
+      "liste_fiyat_tl": 299.9,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/siya-silver-kadin-celik-kolye-x-b166426-g1-c106322",
+      "baslik": "Siya Silver Kararmaz Çelik İtalyan Zincir Kolye 60 cm 3 mm"
+     },
+     {
+      "fiyat_tl": 649,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/prestige-erkek-celik-kolye-x-b169864-g2-c106322",
+      "baslik": "Prestige 3 mm paslanmaz çelik zincir kolye"
+     },
+     {
+      "fiyat_tl": 145.78,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/erkek-celik-kolye-x-g2-c106322?pi=6",
+      "baslik": "Rua Jewelry 3 mm Elegant Ezme Zincir Kolye (arama özeti, kategori sayfası)"
+     }
+    ],
+    "not": "Birebir halat zincir ilanı bulunamadı; 3 mm çelik zincir kolyeler. Bağlantılar marka sayfası. Önceki ölçüm medyanı 145,78 TL idi. Baş doğrulaması: aynı marka sayfasından çift sayılan 799 TL çıkarıldı, önceki ölçümdeki Rua 145,78 TL ilanı geri eklendi."
+   },
+   "taklit_riski": false,
+   "gerekce": "Çelik zincir kolye hediye ve günlük takı olarak sürekli satar.",
+   "riskler": [
+    "Bağlantı ilan değil showroom; fiyat 0,5 $ yalnız arama özetinden",
+    "Türkiye karşılaştırması birebir ürün değil",
+    "Ağırlık tahmin",
+    "Nikel/alerji uygunluğu"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/showroom/316l-stainless-steel-jewelry-wholesale.html",
+    "https://www.trendyol.com/siya-silver-kadin-celik-kolye-x-b166426-g1-c106322"
+   ]
+  }
+ ]
+}
