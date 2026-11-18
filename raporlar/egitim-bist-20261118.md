@@ -1,13 +1,13 @@
 Kayma kıyası (sıralama yalnız train korelasyonuna göre; test sütunu seçimde kullanılmaz):
- kayma_dk  train_kor  train_islem train_ort_net test_ort_net(bilgi)
-       45   0.216372            0          None                None
-        0   0.157126            0          None                None
-       30   0.124063            0          None                None
-       15   0.110409            0          None                None
+ kayma_dk  train_kor  train_islem train_ort_net  test_ort_net(bilgi)
+       45   0.216218            0          None                  NaN
+        0   0.151256            0          None                  NaN
+       30   0.137518            0          None            -0.021555
+       15   0.105212            0          None                  NaN
 
 Kayma 0 dk, 39 hisse, eşik %0.50 (masraf sonrası)
-[train] karar 100559, AL 0 (0.0%) | isabet - | AL başına net - | toplam net +0.00% | Sharpe - | al-tut -32.83% | tahmin-gerçek kor. 0.050
-[test] karar 26454, AL 0 (0.0%) | isabet - | AL başına net - | toplam net +0.00% | Sharpe - | al-tut -21.54% | tahmin-gerçek kor. -0.000
+[train] karar 100827, AL 0 (0.0%) | isabet - | AL başına net - | toplam net +0.00% | Sharpe - | al-tut -34.56% | tahmin-gerçek kor. 0.050
+[test] karar 26454, AL 0 (0.0%) | isabet - | AL başına net - | toplam net +0.00% | Sharpe - | al-tut -21.54% | tahmin-gerçek kor. 0.001
 Eşik taraması (yalnız train):
   esik  islem  ort_net  toplam_net
 0.0000      0      NaN      0.0000
