@@ -1,0 +1,177 @@
+{
+ "not": "ajan araştırması (web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "CWENE",
+   "sektor": null,
+   "baslangic": "2024-12-04",
+   "bitis": "2024-12-04",
+   "kamuya_acilma": null,
+   "tur": "bedelsiz",
+   "baslik": "CW Enerji %708,08 bedelsiz sermaye artırımı (123,75 milyon TL'den 1 milyar TL'ye)",
+   "anlam": "Midas özetine göre pay hakkı 4 Aralık 2024'te başladı; başka aramada KAP'ta doğrulanamadı, tarih ve oran tek kaynak.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.4,
+   "etiketler": [
+    "bedelsiz",
+    "708.08"
+   ],
+   "kaynaklar": [
+    "https://www.getmidas.com/midasin-kulaklari/cw-enerji-cwene-70808-bedelsiz-sermaye-artirimi-nasil-gerceklesecek-p-72104"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": 708.08,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "CWENE",
+   "sektor": null,
+   "baslangic": "2025-09-27",
+   "bitis": "2025-09-27",
+   "kamuya_acilma": null,
+   "tur": "is_iliskisi",
+   "baslik": "CW Enerji yurt içi arazi tipi GES için 10,45 milyon USD'lik sözleşme duyurdu",
+   "anlam": "Arama özetine göre KDV hariç 10.450.000 USD; tarih ve ayrıntı tek özetten, KAP orijinali görülmedi.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.5,
+   "etiketler": [
+    "GES",
+    "sözleşme",
+    "USD"
+   ],
+   "kaynaklar": [
+    "https://www.borsagundem.com.tr/cw-enerji-arazi-tipi-ges-kurulumu-icin-36-milyon-dolarlik-sozlesme-imzaladi"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 10450000,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "CWENE",
+   "sektor": null,
+   "baslangic": "2025-11-06",
+   "bitis": "2025-11-06",
+   "kamuya_acilma": null,
+   "tur": "bedelsiz",
+   "baslik": "CW Enerji %7,829 bedelsiz sermaye artırımı yaptı (1 milyar TL'den 1,078 milyar TL'ye)",
+   "anlam": "SPK 30 Ekim 2025'te onayladı (bülten 2025/56), bedelsiz paylar 6 Kasım 2025'te dağıtıldı; YK kararı 4 Ağustos 2025. Kâr payından bedelsiz.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.8,
+   "etiketler": [
+    "bedelsiz",
+    "7.829",
+    "SPK"
+   ],
+   "kaynaklar": [
+    "https://www.capital.com.tr/piyasalar/borsa/cw-enerji-bedelsiz-tarihi-belli-oldu",
+    "https://www.borsamatik.com.tr/spkdan-bir-sirkete-bedelsiz-sermaye-artirimi-onayi-verildi-haber-174834"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": 7.829,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "CWENE",
+   "sektor": null,
+   "baslangic": "2026-03-15",
+   "bitis": "2026-03-15",
+   "kamuya_acilma": null,
+   "tur": "is_iliskisi",
+   "baslik": "CW Enerji yurt içi arazi tipi GES satışı için 65,46 milyon USD'lik sözleşme imzaladı",
+   "anlam": "KDV hariç 65.458.848 USD (~2,9 milyar TL), proje 2027 sonu. Haber sitelerinde imza tarihi görülmedi; Mart 2026 tahmini, tarih doğrulanamadı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.3,
+   "etiketler": [
+    "GES",
+    "sözleşme",
+    "65_milyon_USD"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/cwene-65-4-milyon-dolarlik-ges-anlasmasi-imzaladi/",
+    "https://www.cnbce.com/borsa/borsada-islem-goren-enerji-sirketinden-654-milyon-dolarlik-ges-sozlesmesi-h28165"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 65458848,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "CWENE",
+   "sektor": null,
+   "baslangic": "2026-08-25",
+   "bitis": "2026-08-25",
+   "kamuya_acilma": null,
+   "tur": "bedelsiz",
+   "baslik": "CW Enerji %53,02 bedelsiz sermaye artırımı için SPK'ya başvurdu (1,078 milyar TL'den 1,65 milyar TL'ye)",
+   "anlam": "571.709.991 TL 2025 dağıtılabilir kârdan; 28 Temmuz 2026 genel kurul kararı, SPK başvurusu 25 Ağustos 2026. Onay durumu doğrulanamadı.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.7,
+   "etiketler": [
+    "bedelsiz",
+    "53.02",
+    "SPK_başvurusu"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/borsa/borsadaki-enerji-sirketinden-bedelsiz-sermaye-artirimi-karari-h33992",
+    "https://paratic.com/cw-enerji-yuzde-53-bedelsiz-icin-spkya-basvurdu/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": 53.02,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

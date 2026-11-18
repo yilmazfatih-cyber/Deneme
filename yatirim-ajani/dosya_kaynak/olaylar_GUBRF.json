@@ -102,6 +102,112 @@
     "beklenti": null,
     "sure_ay": null
    }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "GUBRF",
+   "sektor": null,
+   "baslangic": "2026-05-14",
+   "bitis": "2026-05-14",
+   "kamuya_acilma": null,
+   "tur": "yatirim",
+   "baslik": "Gübretaş Maden, Söğüt Altın Madeni Faz-2 konsantre tesisi için inşaat sözleşmesini imzaladı (Metso ile ~70 milyon EUR)",
+   "anlam": "Sözleşme 14 Mayıs 2026'da imzalandı; Faz-1 12 ay, Faz-2 24 ayda tamamlanacak. 70 milyon EUR tutarı tek kaynakta (Metso anlaşması); ihale kazananı özetlerde farklı anılıyor.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.5,
+   "etiketler": [
+    "Söğüt_altın",
+    "maden",
+    "Faz-2",
+    "Metso"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/borsa/gubretas-maden-tesisi-yatirimlarinda-yeni-asamaya-gecti-h30009",
+    "https://www.getmidas.com/canli-borsa/gubrf-hisse/haber/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 70000000,
+    "para_birimi": "EUR",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": 24
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "GUBRF",
+   "sektor": null,
+   "baslangic": "2026-05-11",
+   "bitis": "2026-05-11",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Gübretaş 1Ç26 ana ortaklık net kârı 3,07 milyar TL (+%278); tek analist beklentisi 1,31 milyar TL",
+   "anlam": "Net satışlar 22,39 milyar TL (+%23,3). Açıklama günü doğrulanamadı (Mayıs başı-ortası); geçen yıl karşılaştırma kaynaklarda çelişkili.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.4,
+   "etiketler": [
+    "bilanço",
+    "1Ç26",
+    "beklenti_sapması"
+   ],
+   "kaynaklar": [
+    "https://www.hisse.net/haber/gubretastan-gubrf-guclu-bilanco-net-kar-yuzde-278-artti-80815",
+    "https://paratic.com/gubretastan-guclu-baslangic-net-karda-dort-kata-yakin-artis/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 3070462803,
+    "beklenti": 1306000000,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "GUBRF",
+   "sektor": null,
+   "baslangic": "2026-05-14",
+   "bitis": "2026-05-14",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Gübretaş genel kurulu 2025 net kârının tamamını olağanüstü yedeğe ayırdı, temettü dağıtılmayacak (tescil 14 Mayıs 2026)",
+   "anlam": "Midas/borsacoo özetine göre; mevcut kayıttaki Ekim 2026 temettü (brüt 4,4910 TL) ve Eylül 2026 'kâr payı teklifi' haberiyle çelişiyor, KAP orijinaliyle teyit gerekir.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.4,
+   "etiketler": [
+    "genel_kurul",
+    "temettü_yok",
+    "çelişkili"
+   ],
+   "kaynaklar": [
+    "https://www.getmidas.com/canli-borsa/gubrf-hisse/haber/",
+    "https://uzmanpara.milliyet.com.tr/raporlar-analizler/gubre-fabrikalari--kar-payi-dagitim-teklifini-kapa-bildirdi-fnc-news/3490099/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 0,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
   }
  ]
 }

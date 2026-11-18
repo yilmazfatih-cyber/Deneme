@@ -1,0 +1,179 @@
+{
+ "not": "ajan araştırması (web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "ECILC",
+   "sektor": null,
+   "baslangic": "2025-11-10",
+   "bitis": "2025-11-10",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Eczacıbaşı İlaç 9 aylık 2025 net kârı 2,57 milyar TL (3Ç25 net kâr ~495,7 milyon TL, yıllık -%51)",
+   "anlam": "Smartkarma ve rotaborsa özetlerine göre; kesin açıklama günü doğrulanamadı (Kasım 2025 varsayımı), rakamlar iki kaynakta tam örtüşmüyor.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.4,
+   "etiketler": [
+    "bilanço",
+    "3Ç25",
+    "net_kâr_düşüşü"
+   ],
+   "kaynaklar": [
+    "https://www.smartkarma.com/home/newswire/earnings-alerts/eis-eczacibasi-ilac-ve-sinai-ecilc-earnings-3q-net-income-drops-51-to-495-7m-liras-year-over-year"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 2570427000,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ECILC",
+   "sektor": null,
+   "baslangic": "2026-02-26",
+   "bitis": "2026-02-26",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Eczacıbaşı İlaç 4Ç25'te 593,6 milyon TL net zarar yazdı (beklenti 130 milyon TL kâr); 2025 net kâr 2,09 milyar TL",
+   "anlam": "Arama özetine göre çeyrek zararı tek analist beklentisinin (Pusula Yatırım) çok altında; başka kaynak 4Ç için ~-482 milyon TL hesabı veriyor, rakam tutarsız. Tarih (rapor 26 Şubat 2026 dosyasından) kesin değil.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.4,
+   "etiketler": [
+    "bilanço",
+    "4Ç25",
+    "beklenti_sapması"
+   ],
+   "kaynaklar": [
+    "https://www.eczacibasi.com.tr/assets/eng-ecilc-kons-finansal-rapor-31.12.2025.pdf",
+    "https://www.vkyanaliz.com/rap/ECILC_2026-02-26_14315.pdf"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": -593609000,
+    "beklenti": 130000000,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ECILC",
+   "sektor": null,
+   "baslangic": "2026-04-15",
+   "bitis": "2026-04-15",
+   "kamuya_acilma": null,
+   "tur": "pay_satisi",
+   "baslik": "Eczacıbaşı Holding ECILC'de %3,28 paylık hızlandırılmış talep toplama satışı yaptı (92,82 TL, ~2,1 milyar TL)",
+   "anlam": "Holding'in doğrudan payı %50,62'den %47,34'e indi; işlem 15 Nisan 2026'da tamamlanmak üzere duyuruldu. Kaynak: borsacoo KAP özetleri (iki bildirim tarihleri kısmen tutarsız).",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.5,
+   "etiketler": [
+    "blok_satış",
+    "92.82_TL",
+    "holding"
+   ],
+   "kaynaklar": [
+    "https://borsacoo.com/firma/ECILC/bildirimler",
+    "https://www.getmidas.com/canli-borsa/ecilc-hisse/haber/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 2100000000,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ECILC",
+   "sektor": null,
+   "baslangic": "2026-05-06",
+   "bitis": "2026-05-08",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Eczacıbaşı İlaç 2025 kârından %175 (hisse başına brüt ~1,75 TL, net ~1,49 TL) nakit temettü dağıttı",
+   "anlam": "Genel kurul 30 Nisan 2026; ödeme 6 Mayıs (bir kaynak 8 Mayıs). Brüt tutar %175 oranı 1 TL nominale uygulanarak türetildi; net 1,48-1,49 TL farklı özetlerde.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.6,
+   "etiketler": [
+    "temettu",
+    "brut_1.75",
+    "genel_kurul"
+   ],
+   "kaynaklar": [
+    "https://rotaborsa.com/?p=372726",
+    "https://borsacoo.com/firma/ECILC/bildirimler"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 1.75,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ECILC",
+   "sektor": null,
+   "baslangic": "2026-05-01",
+   "bitis": "2026-05-01",
+   "kamuya_acilma": null,
+   "tur": "birlesme_devralma",
+   "baslik": "Gensenta, Sanofi'nin 4 beşeri ilacını ve 7 ruhsatını devralmak için rekabet onayı aldı (3 milyon EUR + 200 milyon TL)",
+   "anlam": "KAP özetine göre bedel KDV hariç; onay günü özetlerde görülmedi (Mayıs 2026 tahmini). Tutar karma para birimli, hane'de EUR kısmı yazıldı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.3,
+   "etiketler": [
+    "Gensenta",
+    "Sanofi",
+    "ruhsat_devri"
+   ],
+   "kaynaklar": [
+    "https://borsacoo.com/firma/ECILC/bildirimler",
+    "https://www.getmidas.com/canli-borsa/ecilc-hisse/haber/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 3000000,
+    "para_birimi": "EUR",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

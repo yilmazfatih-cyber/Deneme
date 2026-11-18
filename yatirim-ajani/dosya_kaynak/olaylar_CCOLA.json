@@ -1,0 +1,215 @@
+{
+ "not": "ajan araştırması (web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "CCOLA",
+   "sektor": null,
+   "baslangic": "2025-05-26",
+   "bitis": "2025-05-26",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Coca-Cola İçecek 2024 kârından hisse başına brüt 1,0722 TL nakit temettü ödedi (toplam 3 milyar TL)",
+   "anlam": "Arama özetine göre ödeme 26 Mayıs 2025'te yapıldı; hisse başına brüt 1,0721999 TL, net 0,9113699 TL. Karar tarihi özetlerde görülmedi; kaynak iki haber sitesi.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.5,
+   "etiketler": [
+    "temettu",
+    "brut_1.07",
+    "nakit"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/coca-coladan-ccola-temettu-dagitma-karari/",
+    "https://www.hisse.net/haber/ccola-pay-basi-1-21-tl-temettu-odemesi-yapacak-73468"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 3000000000,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": 1.0722,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "CCOLA",
+   "sektor": null,
+   "baslangic": "2026-03-03",
+   "bitis": "2026-03-03",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Coca-Cola İçecek 2025 net kârı 14,07 milyar TL; 4Ç25'te 605 milyon TL net zarar (beklenti 1,22 milyar TL kâr)",
+   "anlam": "Paratic ve aracı kurum özetlerine göre yıllık net kâr 2024'teki 19,39 milyar TL'den düştü; son çeyrekte ertelenmiş vergi ve Özbekistan vergi cezası etkisiyle (~1,9 milyar TL) beklentinin altında zarar çıktı. FAVÖK konsensüsün üzerindeydi. hane: net_kar 4Ç25 çeyreklik, beklenti çeyreklik konsensüs.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.8,
+   "etiketler": [
+    "bilanço",
+    "4Ç25",
+    "beklenti_sapması",
+    "vergi"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/ccola-2025-bilancosu-aciklandi-14-milyar-tl-net-kar/",
+    "https://www.capital.com.tr/piyasalar/borsa/coca-cola-icecek-2025-yili-bilanco-tarihini-acikladi"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": -605000000,
+    "beklenti": 1220000000,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "CCOLA",
+   "sektor": null,
+   "baslangic": "2026-03-03",
+   "bitis": "2026-05-12",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Coca-Cola İçecek 2025 kârından hisse başına brüt 1,43 TL nakit temettü teklif etti (toplam ~4,0 milyar TL)",
+   "anlam": "Yönetim kurulu teklifi 3 Mart 2026 tarihli kâr dağıtım belgesine göre; genel kurulda onaylandı, ödeme 12 Mayıs 2026. C grubu paylar için %15 stopajla net 1,2155 TL. Kaynak: CNBC-e, şirket belgesi.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.8,
+   "etiketler": [
+    "temettu",
+    "brut_1.43",
+    "genel_kurul"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/borsa/coca-cola-icecek-2025-karindan-temettu-dagitmayi-planliyor-h26118",
+    "https://borsaatlas.com/2026/04/09/ccola-icin-nakit-akisi-sinavi-4-milyar-tllik-temettu-karari-onaylandi/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 4001252400,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": 1.43,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "CCOLA",
+   "sektor": null,
+   "baslangic": "2026-05-01",
+   "bitis": "2026-05-01",
+   "kamuya_acilma": null,
+   "tur": "derecelendirme",
+   "baslik": "Fitch, Coca-Cola İçecek'in uzun vadeli notunu 'BBB' stabil görünümle teyit etti",
+   "anlam": "Arama özetine göre Fitch Mayıs 2026'da BBB/stabil notunu ve AAA(tur) ulusal notu teyit etti; kesin gün özetlerde görülmedi, tarih belirsiz (ay bazlı).",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.4,
+   "etiketler": [
+    "fitch",
+    "BBB",
+    "kredi_notu"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/fitch-ratings-coca-cola-icecek-ccola-notunu-teyit-etti/",
+    "https://ccicomtrcdn.cci.com.tr/global/documents/special-case-announcements/2026/2026 Fitch Ratings Credit Rating Decision.pdf"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "CCOLA",
+   "sektor": null,
+   "baslangic": "2026-11-12",
+   "bitis": "2026-11-12",
+   "kamuya_acilma": null,
+   "tur": "derecelendirme",
+   "baslik": "S&P, Coca-Cola İçecek'in 'BB+' notunu teyit edip görünümü durağandan pozitife yükseltti",
+   "anlam": "Foreks haberine (URL tarihi 13-11-26) göre KAP bildirimi 12-13 Kasım 2026'da duyuruldu; S&P 2027-2028'de 'BBB-' (yatırım yapılabilir) not için zemin görüyor. Kesin gün 12 mi 13 mü kesin değil.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.6,
+   "etiketler": [
+    "S&P",
+    "BB+",
+    "pozitif_görünüm"
+   ],
+   "kaynaklar": [
+    "https://www.foreks.com/haber/detay/6af695434b18523914461eae/FRKS/tr/sp-global-ratings-coca-cola-icecek-in-kredi-notu-gorunumunu-yukseltti-13-11-26/",
+    "https://www.foreks.com/haber/detay/6af695cd95131d72027dcdc1/PICNEWS/tr/sp-coca-cola-icecek-in-kredi-notu-gorunumunu-yukseltti-13-11-26/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "CCOLA",
+   "sektor": null,
+   "baslangic": "2025-05-15",
+   "bitis": "2025-05-15",
+   "kamuya_acilma": null,
+   "tur": "dava_ceza",
+   "baslik": "Özbekistan vergi idaresi CCI'ın iştirakine ~314,5 milyar UZS (~25 milyon USD) ek vergi, ceza ve faiz tahakkuk ettirdi",
+   "anlam": "Kun.uz'a göre Mayıs 2025 tarihli tespit 2023-2024 temettü ödemeleriyle ilgili; iştirak davayı açtı, yönetim olumlu sonuç bekliyor. Gün tarihi doğrulanamadı (yalnız ay), ceza 2025 net kârını baskıladı.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.4,
+   "etiketler": [
+    "Özbekistan",
+    "vergi_cezası",
+    "dava"
+   ],
+   "kaynaklar": [
+    "https://kun.uz/en/news/2026/06/26/coca-colas-uzbek-subsidiary-challenges-25-million-tax-assessment-in-court-075fe1"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 25000000,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

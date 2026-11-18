@@ -67,6 +67,144 @@
     "beklenti": null,
     "sure_ay": 144
    }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ISCTR",
+   "sektor": null,
+   "baslangic": "2026-03-31",
+   "bitis": "2026-04-03",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "İş Bankası C grubu için hisse başına brüt 0,5395 TL nakit temettü; bedelsiz yok",
+   "anlam": "Genel kurul 31 Mart 2026, hak kullanım 1 Nisan, ödeme 3 Nisan 2026; toplam net ~11,46 milyar TL, dağıtılabilir net kârın %16,54'ü. Kaynak: Forbes TR, Info Yatırım, Borsagündem.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.8,
+   "etiketler": [
+    "temettu",
+    "brut_0.5395",
+    "genel_kurul"
+   ],
+   "kaynaklar": [
+    "https://www.forbes.com.tr/para-yatirim/turkiye-is-bankasi-ndan-kap-a-temettu-aciklamasi-odemeler-1-nisan-da-basliyor",
+    "https://infoyatirim.com/blog/temettu/turkiye-is-bankasi-isctr-2026-temettu-kararini-acikladi"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 0.5395209,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ISCTR",
+   "sektor": null,
+   "baslangic": "2026-05-05",
+   "bitis": "2026-05-05",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "İş Bankası 1Ç26'da 20,4 milyar TL net kâr açıkladı (konsensüs 17,7 milyar TL; ~%15 üstü)",
+   "anlam": "QNB Invest'e göre komisyon geliri artışı ve düşük ticari zarar beklenti aşımının nedenleri; ≥%20 eşiğinin altında. Açıklama günü doğrulanamadı (Mayıs başı varsayımı).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.4,
+   "etiketler": [
+    "bilanço",
+    "1Ç26",
+    "beklenti_aşımı"
+   ],
+   "kaynaklar": [
+    "https://www.qnbinvest.com.tr/investodak/qnbarastirma/is-bankasi-isctr-1c26-bilanco-analizi-beklentileri-asan-kar-guclu-temel-hikaye"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 20400000000,
+    "beklenti": 17700000000,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ISCTR",
+   "sektor": null,
+   "baslangic": "2026-07-20",
+   "bitis": "2026-07-20",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "İş Bankası 2Ç26 solo net kârı 9,66 milyar TL; beklenti ~13,1 milyar TL'nin altında (~%26 sapma)",
+   "anlam": "QNB Invest ve Info Yatırım'a göre ilk yarı net kâr ~30,0 milyar TL; beklenti düzeyi kaynaklarda farklı. Tarih yaklaşık (vkyanaliz rapor tarihi 20 Temmuz 2026).",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.4,
+   "etiketler": [
+    "bilanço",
+    "2Ç26",
+    "beklenti_sapması"
+   ],
+   "kaynaklar": [
+    "https://www.qnbinvest.com.tr/investodak/qnbarastirma/is-bankasi-isctr-2c26-bilanco-degerlendirmesi",
+    "https://infoyatirim.com/blog/bilanco-analizleri/is-bankasi-isctr-2026-ikinci-ceyrek-bilanco-analizi"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 9660000000,
+    "beklenti": 13100000000,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ISCTR",
+   "sektor": null,
+   "baslangic": "2026-06-15",
+   "bitis": "2026-06-15",
+   "kamuya_acilma": null,
+   "tur": "haber",
+   "baslik": "İş Bankası 2026 için swap-düzeltmeli net faiz marjı beklentisini %3,2-3,4'e indirdi",
+   "anlam": "Fintables analist toplantısı notlarına göre marj rehberliği aşağı yönlü revize edildi; toplantı günü doğrulanamadı (Haziran 2026 varsayımı).",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.4,
+   "etiketler": [
+    "marj_beklentisi",
+    "rehberlik",
+    "analist_toplantısı"
+   ],
+   "kaynaklar": [
+    "https://fintables.com/akademi/sirket-notlari/isctr-analist-toplantisi-notlari-2026-06"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
   }
  ]
 }

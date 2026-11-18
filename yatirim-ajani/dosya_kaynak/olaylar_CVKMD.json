@@ -1,0 +1,213 @@
+{
+ "not": "ajan araştırması (web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "CVKMD",
+   "sektor": null,
+   "baslangic": "2025-02-06",
+   "bitis": "2025-02-06",
+   "kamuya_acilma": null,
+   "tur": "bedelsiz",
+   "baslik": "CVK Maden %3.233,33 bedelsiz sermaye artırımı yaptı (42 milyon TL'den 1,4 milyar TL'ye)",
+   "anlam": "SPK onayı 30 Ocak 2025, bedelsiz payların dağıtım tarihi 6 Şubat 2025 (KAP/Paratic/Midas). Kaynak: özsermaye kalemleri; ortak işlemi gerekmedi.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.7,
+   "etiketler": [
+    "bedelsiz",
+    "3233.33",
+    "SPK"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/cvkmdden-hissedarlarina-mujde-bedelsiz-pay-dagitimi-onaylandi/",
+    "https://www.getmidas.com/midasin-kulaklari/cvk-maden-cvkmd-323333-bedelsiz-sermaye-artirimi-nasil-gerceklesecek-p-92058"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": 3233.33,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "CVKMD",
+   "sektor": null,
+   "baslangic": "2025-12-12",
+   "bitis": "2025-12-12",
+   "kamuya_acilma": null,
+   "tur": "bedelli",
+   "baslik": "CVK Maden yönetim kurulu %170 bedelli sermaye artırımı kararı aldı (2,38 milyar TL nakit)",
+   "anlam": "Sermaye 1,4 milyar TL'den 3,78 milyar TL'ye çıkacak; YK karar tarihi 12 Aralık 2025 (bir kaynak 13 Aralık, SPK başvurusu 14.12.2025). Kaynak: KAP özetleri/CNBC-e.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.6,
+   "etiketler": [
+    "bedelli",
+    "170",
+    "sermaye_artırımı"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/sirket-haberleri/cvk-madenden-yuzde-170-bedelli-sermaye-artisi-icin-spk-basvurusu-h21204",
+    "https://paratic.com/cvk-madenden-yuzde-170-bedelli-icin-spk-basvurusu/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 2380000000,
+    "para_birimi": "TRY",
+    "oran": 170,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "CVKMD",
+   "sektor": null,
+   "baslangic": "2026-07-29",
+   "bitis": "2026-08-19",
+   "kamuya_acilma": null,
+   "tur": "bedelli",
+   "baslik": "SPK CVK Maden %170 bedelli izahnamesini onayladı; rüçhan kullanımı 5-19 Ağustos 2026",
+   "anlam": "SPK 29 Temmuz 2026 kararıyla onayladı; ödeme tarihi 7 Ağustos, Tera Yatırım aracı kurum, kalan paylar için Hüseyin Çevik alım taahhüdü. Bedelli fiyatı kaynaklarda görülmedi.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.7,
+   "etiketler": [
+    "bedelli",
+    "SPK_onayı",
+    "rüçhan"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/spk-onayladi-cvk-maden-cvkmd-bedelli-sermaye-artisi-yapacak/",
+    "https://www.cnbce.com/borsa/borsadaki-dev-maden-sirketinden-170-bedelli-cvk-maden-cvkmd-ruchan-tarihleri-belli-oldu-h34386"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 2380000000,
+    "para_birimi": "TRY",
+    "oran": 170,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "CVKMD",
+   "sektor": null,
+   "baslangic": "2026-05-15",
+   "bitis": "2026-05-15",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "CVK Maden 1Ç26'da 103,3 milyon TL net kâr açıkladı; piyasa ~220 milyon TL zarar bekliyordu",
+   "anlam": "YatırımX'e göre 1Ç26 net kârı 103.266.630 TL, beklenti ~220 milyon TL zarar. Açıklama günü özetlerde görülmedi, tarih yaklaşık (Mayıs ortası varsayımı).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.4,
+   "etiketler": [
+    "bilanço",
+    "1Ç26",
+    "beklenti_sapması"
+   ],
+   "kaynaklar": [
+    "https://www.yatirimx.com.tr/sirket-haberleri/cvkmdden-103-milyonluk-net-kr-2026-ilk-ceyrek-verileri-geldi/20345"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 103266630,
+    "beklenti": -220000000,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "CVKMD",
+   "sektor": null,
+   "baslangic": "2026-08-17",
+   "bitis": "2026-08-17",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "CVK Maden 2Ç26 bilançosunu açıkladı; ilk 6 ay ana ortaklık net kârı 738,8 milyon TL",
+   "anlam": "Özetlere göre bilanço 17 Ağustos 2026'da KAP'ta paylaşıldı; 2Ç26 ana ortaklık kârı ~658 milyon TL (Ahlatcı Yatırım). Kaynak: YatırımX özeti.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.6,
+   "etiketler": [
+    "bilanço",
+    "2Ç26",
+    "net_kar"
+   ],
+   "kaynaklar": [
+    "https://www.yatirimx.com.tr/sirket-haberleri/cvkmd-2026-6-aylik-bilanco-duyurusu-net-kr-yukseliste/23581",
+    "https://paratic.com/cvk-maden-bilancosu-guclu-operasyonel-performansa-isaret-etti/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 738773376,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "CVKMD",
+   "sektor": null,
+   "baslangic": "2026-11-10",
+   "bitis": "2026-11-10",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "CVK Maden 9 aylık 2026 net kârı 1,86 milyar TL (2025 aynı dönem 509 milyon TL); satışlar %79 arttı",
+   "anlam": "Hisse.net'e göre ocak-eylül net kâr 1.858.815.905 TL, satışlar 5,58 milyar TL. Açıklama günü doğrulanamadı (Kasım 2026 başı varsayımı).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.4,
+   "etiketler": [
+    "bilanço",
+    "3Ç26",
+    "9_aylık"
+   ],
+   "kaynaklar": [
+    "https://www.hisse.net/haber/cvk-madencilik-2026-3-ceyrek-bilancosu-net-kar-265-artti-103897"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 1858815905,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}
