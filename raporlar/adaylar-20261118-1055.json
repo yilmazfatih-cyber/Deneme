@@ -1,0 +1,381 @@
+{
+ "tarama": {
+  "an": "2026-11-18T10:55:00+03:00",
+  "kategoriler": [
+   "kemer",
+   "canta-kumas",
+   "sirt-cantasi"
+  ],
+  "not": "Günlük tarama. alibaba.com açılmadı, Alibaba verisi arama özetlerinden. Kemer ve kumaş çantada eşiği geçen yok; katlanabilir sırt çantası yeni aday ama Türkiye karşılaştırması markalı ilanlara dayanıyor. Takip: kolye, eldiven, eşarp ölçüldü; saat Türkiye fiyatı ve cüzdan ölçülemedi."
+ },
+ "adaylar": [
+  {
+   "urun": "Kadin ince PU kemer, altin tokali",
+   "kategori": "kemer",
+   "gtip": "4203.30",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-detail/Women-Skinny-PU-Leather-Belt-Gold_1601391946005.html",
+    "baslik": "Women Skinny PU Leather Belt Gold Buckle Slim Narrow Belt For Dress Jeans Faux Leather Waist Belt Width 1.4 Cm",
+    "tedarikci": "Yiwu Waist Color Leather Goods",
+    "fiyat_usd": 0.79,
+    "moq": 20,
+    "kademeler": [
+     {
+      "min_adet": 20,
+      "fiyat_usd": 0.79
+     },
+     {
+      "min_adet": 120,
+      "fiyat_usd": 0.74
+     },
+     {
+      "min_adet": 300,
+      "fiyat_usd": 0.69
+     }
+    ],
+    "birim_agirlik_kg": 0.08,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 119.99,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/ince-siyah-kemer-y-s305365",
+      "baslik": "Fiori Genis Gold Tokali Ince Kadin Kemeri (kategori sayfasi gorunumu)"
+     },
+     {
+      "fiyat_tl": 149.99,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/bel-kemeri-y-s94530",
+      "baslik": "Luminos Butik Uzun Tokali Bej Ince Kadin Kemeri (kategori sayfasi gorunumu)"
+     },
+     {
+      "fiyat_tl": 174.54,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/ince-siyah-kemer-y-s305365",
+      "baslik": "Caelia Gold Tokali Siyah Kadin Kemer (kategori sayfasi gorunumu)"
+     }
+    ],
+    "not": "Tekli ince suni deri altin tokali kemerler; setler (4'lu 199,90 TL) alinmadi. Urun sayfasi (-p-) baglantisi bulunamadi, kategori sayfalari kullanildi. Hepsiburada en ucuz 119,99-134,99 TL (cimri ozeti)."
+   },
+   "taklit_riski": false,
+   "gerekce": "Ince altin tokali kemer elbise, ceket ve kaban uzerinde sezonluk surekli satan bir aksesuar.",
+   "riskler": [
+    "Ham oran yaklasik 3,8 (sinirda, yakin aday altinda olabilir)",
+    "Agirlik tahmin",
+    "MOQ ilanda 12 olarak da gorunuyor, kademe 20'den basliyor",
+    "Beden/uzunluk secenegi gerekir",
+    "Turkiye fiyatlari urun sayfasi degil kategori gorunumu"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-detail/Women-Skinny-PU-Leather-Belt-Gold_1601391946005.html",
+    "https://www.trendyol.com/ince-siyah-kemer-y-s305365",
+    "https://www.cimri.com/altin-kemer"
+   ]
+  },
+  {
+   "urun": "3 mm halat zincir kolye (316L celik)",
+   "kategori": "taki-bijuteri",
+   "gtip": "7117.19",
+   "alibaba": {
+    "url": "https://www.alibaba.com/showroom/316l-stainless-steel-jewelry-wholesale.html",
+    "baslik": "NL2055 Hiphop 3mm 316L Stainless Steel Rope Chain Necklace",
+    "tedarikci": "Yiwu Renqing Ornament Co., Ltd.",
+    "fiyat_usd": 0.5,
+    "moq": 20,
+    "kademeler": [
+     {
+      "min_adet": 20,
+      "fiyat_usd": 0.5
+     }
+    ],
+    "birim_agirlik_kg": 0.02,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 199.1,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/siya-silver-kadin-celik-kolye-x-b166426-g1-c106322",
+      "baslik": "Siya Silver 3 mm Italyan zincir celik kolye"
+     },
+     {
+      "fiyat_tl": 399.9,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/paslanmaz-celik-erkek-celik-kolye-x-g2-c106322-a14-v688",
+      "baslik": "Tixy Pixy 316L celik burgu zincir erkek kolye 60 cm (kalinlik belirsiz)"
+     },
+     {
+      "fiyat_tl": 439.99,
+      "kaynak": "ciceksepeti",
+      "url": "https://www.ciceksepeti.com/burgu-halat-model-celik-zincir-kolye-kuzey-serisi-kcm47770009",
+      "baslik": "Burgu halat model celik zincir kolye Kuzey Serisi (kalinlik belirsiz)"
+     }
+    ],
+    "not": "Birebir 3 mm celik halat Turkiye ilani bulunamadi; yakin modeller. Onceki olcumdeki Rua 145,78 TL ve Prestige 649 TL bu turda yeniden dogrulanamadi. Alibaba fiyati/MOQ aramada ayni (0,5 $, MOQ 20, 20.119 satis)."
+   },
+   "taklit_riski": false,
+   "gerekce": "Celik zincir kolye unisex, kararmaz ve hediyelik olarak surekli satar.",
+   "riskler": [
+    "Birebir TR emsali yok, medyan 399,9 TL yakin modellere dayali",
+    "Alibaba URL showroom sayfasi (ilan degil)",
+    "Agirlik tahmin",
+    "Kolye/zincir ithalatinda nikel/kalite belgesi istenebilir"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/showroom/316l-stainless-steel-jewelry-wholesale.html",
+    "https://www.trendyol.com/paslanmaz-celik-erkek-celik-kolye-x-g2-c106322-a14-v688"
+   ]
+  },
+  {
+   "urun": "Fermuarlı cepli büyük kanvas tote çanta (düz)",
+   "kategori": "canta-kumas",
+   "gtip": "4202.22.90",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/External-Large-Blank-Custom-Printed-Logo_1600943721786.html",
+    "baslik": "Custom with Logo Printing Blank Plain Pocket and Zipper Shoulder Handle Extra Large Shopping Cotton Canvas Tote Bags",
+    "tedarikci": "bilinmiyor",
+    "fiyat_usd": 0.88,
+    "moq": 1,
+    "kademeler": [
+     {
+      "min_adet": 1,
+      "fiyat_usd": 0.88
+     },
+     {
+      "min_adet": 5,
+      "fiyat_usd": 0.85
+     }
+    ],
+    "birim_agirlik_kg": 0.2,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 274,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/canta-x-c117?pi=187",
+      "baslik": "Cemira Friends Kalın Kanvas Rips Bez Çanta Omuz Çantası (kategori sayfası)"
+     },
+     {
+      "fiyat_tl": 299,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/canta-x-c117?pi=69",
+      "baslik": "Oktayusta Collection Baskılı Cepli Kanvas Çanta (kategori sayfası)"
+     },
+     {
+      "fiyat_tl": 499,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/tote-canta-y-s13491?pi=20",
+      "baslik": "Çınar Bez Çanta 3 Çıtlı Büyük Boy Kanvas (kategori sayfası)"
+     }
+    ],
+    "not": "Arama özetinden, ürün sayfası bağlantısı yok; fiyatlar doğrulanmalı. RMY Moda fermuarlı cepli kanvas 599,90 TL alınmadı."
+   },
+   "taklit_riski": false,
+   "gerekce": "Düz kanvas omuz çantası günlük alışverişte sürekli satar ve Türkiye'de 270-500 TL.",
+   "riskler": [
+    "Ağırlık tahmin; kumaş gramajı ilanda bilinmiyor, 0,88 $ ince kumaş olabilir",
+    "İki fiyat görünümü belirsiz (0,79/0,88 ve 0,76/0,85); üst uç alındı",
+    "Tedarikçi ve ilan sayfası doğrulanamadı",
+    "Logo basımı almayın, markasız düz sipariş"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/External-Large-Blank-Custom-Printed-Logo_1600943721786.html",
+    "https://www.trendyol.com/canta-x-c117?pi=187"
+   ]
+  },
+  {
+   "urun": "Dokunmatik ekran uyumlu örme kışlık eldiven",
+   "kategori": "orme-atki-eldiven",
+   "gtip": "",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Solid-Magic-Gloves-Capacitive-Mobile-Phone_1600094285285.html",
+    "baslik": "Solid Magic Gloves Capacitive Mobile Phone touch screen knitted winter gloves",
+    "tedarikci": "bilinmiyor",
+    "fiyat_usd": 0.66,
+    "moq": 12,
+    "kademeler": [
+     {
+      "min_adet": 12,
+      "fiyat_usd": 0.66
+     },
+     {
+      "min_adet": 36,
+      "fiyat_usd": 0.55
+     },
+     {
+      "min_adet": 60,
+      "fiyat_usd": 0.44
+     },
+     {
+      "min_adet": 120,
+      "fiyat_usd": 0.33
+     }
+    ],
+    "birim_agirlik_kg": 0.06,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 299,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/desenli-kadin-eldiven-x-g1-c1046-a33-v1011",
+      "baslik": "SİSTEM PELUŞ Dokunmatik Ekran Uyumlu Örgü Desenli Kadın Eldiveni (kategori sayfası)"
+     },
+     {
+      "fiyat_tl": 261.28,
+      "kaynak": "shein",
+      "url": "https://m.shein.com/tr/Gloves-c-3659.html",
+      "baslik": "Kalın örgü dokunmatik ekran uyumlu termal astarlı kadın eldiveni (kategori sayfası)"
+     }
+    ],
+    "not": "Yalnız 2 ilan; 3'e tamamlanamadı. Novon (suni deri) örgü değil, alınmadı. Shein 53,15 TL ilanı örgü olduğu doğrulanamadığı için alınmadı."
+   },
+   "taklit_riski": false,
+   "gerekce": "Kışlık, hafif, bedensiz; telefon kullanımına uygun.",
+   "riskler": [
+    "Tedarikçi bilinmiyor",
+    "Türkiye karşılaştırması yalnız 2 ilan, ürün sayfası yok",
+    "Kademeler arama özetinden"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Solid-Magic-Gloves-Capacitive-Mobile-Phone_1600094285285.html",
+    "https://www.trendyol.com/desenli-kadin-eldiven-x-g1-c1046-a33-v1011",
+    "https://m.shein.com/tr/Gloves-c-3659.html"
+   ]
+  },
+  {
+   "urun": "Desenli 90x90 twill görünümlü polyester eşarp",
+   "kategori": "esarp-sal",
+   "gtip": "6214.30",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Spring-Summer-High-Quality-90x90cm-Animal_1601174536158.html",
+    "baslik": "Spring Summer High Quality 90x90cm Animal print women silk feeling scarf",
+    "tedarikci": "bilinmiyor",
+    "fiyat_usd": 1.43,
+    "moq": 2,
+    "kademeler": [
+     {
+      "min_adet": 2,
+      "fiyat_usd": 1.43
+     },
+     {
+      "min_adet": 100,
+      "fiyat_usd": 1.39
+     },
+     {
+      "min_adet": 500,
+      "fiyat_usd": 1.28
+     }
+    ],
+    "birim_agirlik_kg": 0.08,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 199.9,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/desenli-sal-ve-fular-x-c101433-a33-v1011",
+      "baslik": "Madame Polo Desenli Twill Eşarp 90x90 (kategori sayfası)"
+     },
+     {
+      "fiyat_tl": 379.9,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/desenli-sal-ve-fular-x-c101433-a33-v1011",
+      "baslik": "Armine Sport 90x90 twill eşarp 3072-09 (kategori sayfası)"
+     },
+     {
+      "fiyat_tl": 420.32,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/desenli-sal-ve-fular-x-c101433-a33-v1011",
+      "baslik": "Levidor 90x90 polyester twill eşarp (kategori sayfası)"
+     }
+    ],
+    "not": "Türkiye fiyatları 17.11 ölçümünden aynen alındı, bugün yeniden ölçülemedi. Alibaba fiyatı değişmedi, indirim görünmüyor."
+   },
+   "taklit_riski": false,
+   "gerekce": "Tesettür ve günlük kullanımda sürekli satan, hafif ve katlanır aksesuar.",
+   "riskler": [
+    "Elyaf ilanda net değil",
+    "Tedarikçi bilinmiyor",
+    "Türkiye fiyatları yeniden ölçülmedi"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Spring-Summer-High-Quality-90x90cm-Animal_1601174536158.html",
+    "https://www.trendyol.com/desenli-sal-ve-fular-x-c101433-a33-v1011"
+   ]
+  },
+  {
+   "urun": "Katlanabilir su itici naylon günlük sırt çantası (20L)",
+   "kategori": "sirt-cantasi",
+   "gtip": "4202.92.91",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Wholesale-Waterproof-Cheaper-Small-Quantities-Can_60763012101.html",
+    "baslik": "Waterproof lightweight nylon daypack, foldable shopping backpack with custom logo options",
+    "tedarikci": "bilinmiyor (arama özetinde görünmedi)",
+    "fiyat_usd": 0.98,
+    "moq": 50,
+    "kademeler": [
+     {
+      "min_adet": 50,
+      "fiyat_usd": 0.98
+     },
+     {
+      "min_adet": 500,
+      "fiyat_usd": 0.94
+     },
+     {
+      "min_adet": 1000,
+      "fiyat_usd": 0.9
+     },
+     {
+      "min_adet": 10000,
+      "fiyat_usd": 0.68
+     }
+    ],
+    "birim_agirlik_kg": 0.2,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 830,
+      "kaynak": "decathlon",
+      "url": "https://www.decathlon.com.tr/p/outdoor-katlanabilir-sirt-cantasi-20-l-mor-travel/_/R-p-309854",
+      "baslik": "Forclaz Travel katlanabilir sırt çantası 20 L"
+     },
+     {
+      "fiyat_tl": 929.6,
+      "kaynak": "hepsiburada",
+      "url": "https://www.hepsiburada.com/pvc-ultra-hafif-tasinabilir-katlanabilir-sirt-cantasi-su-gecirmez-acik-hava-seyahati-eglence-cantasi-buyuk-kapasiteli-20l-yurt-disindan-pm-HBC00004V7TZI",
+      "baslik": "Ultra hafif katlanabilir sırt çantası 20L (yurt dışından)"
+     },
+     {
+      "fiyat_tl": 1479.9,
+      "kaynak": "haegs",
+      "url": "https://www.haegs.com.tr/HAEGS-Kucuk-Hafif-Katlanabilir-Sirt-Cantasi-20-litre-Ultra-Hafif-Seyahat-Yuruyus-Kamp-Gunluk-Kullanim-ysl,urun",
+      "baslik": "HAEGS katlanabilir sırt çantası 20 Lt (KDV hariç olabilir)"
+     }
+    ],
+    "not": "Arama özetinden; fiyatlar anlık doğrulanmadı. Decathlon ve HAEGS markalı, bu yüzden üst uç. Ucuz pazar yeri ilanları daha düşük olabilir. Baş doğrulaması (2 arama): markasız ucuz katlanabilir sırt çantası Türkiye ilanı bulunamadı; karşılaştırma markalı/yurt dışı ilanlara dayanıyor, kat iyimser olabilir."
+   },
+   "taklit_riski": false,
+   "gerekce": "Hafif, katlanabilir, bedensiz ürün; seyahat ve günlük kullanım için sürekli satar.",
+   "riskler": [
+    "Tedarikçi bilgisi ve ağırlık doğrulanmadı",
+    "Kumaş inceliği ve su itici iddiası numuneyle denenmeli",
+    "Türkiye'de çok ucuz benzerleri var",
+    "İlan sayfası ile fiyat yalnız arama özetinden"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Wholesale-Waterproof-Cheaper-Small-Quantities-Can_60763012101.html"
+   ]
+  }
+ ]
+}
