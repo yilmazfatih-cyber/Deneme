@@ -34,6 +34,7 @@ araçlar (`araclar/`). Bütün temeller aynı kurallara uyar: [`STANDARTLAR.md`]
 | `sifirdan/ag/`      | Sıfırdan: HTTP sunucu/istemci, WebSocket, web çatısı, ORM, kripto eğitimi, DNS…     |
 | `sifirdan/arayuz/`  | Sıfırdan: tepkisellik, sanal DOM, yönlendirici, e-tablo, düzenleyici, oyun motoru…  |
 | `bilgi/`            | Konu konu çalışma kâğıtları (karar tabloları, tuzaklar, denetim listeleri)          |
+| `sinav/`            | Kod ajanı sınavı: küçük modelleri bu temellerde gizli testlerle ölçen 15 görev     |
 | `rehber/`           | İnsan için: küçük modelle çalışma rehberi ve hazır istemler                         |
 | `araclar/`          | `durum.py` (envanter), `denetle.py` (kur + denetle), `yeni_proje.py` (kopyala)      |
 

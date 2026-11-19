@@ -23,7 +23,8 @@ inşa etmek. Her temel tek başına kopyalanabilir; her birinin tek komutluk bir
 | Tek dosyalık hazır yardımcılar (Türkçe, para, tarih, doğrulama…)  | [`kutuphane/`](kutuphane/README.md)     | dosyayı projenize kopyalayın                   |
 | Bir algoritma ya da veri yapısı                                   | [`algoritma/`](algoritma/README.md)     | `docs/DIZIN.md`                                |
 | "İçeride nasıl çalışır" — sıfırdan yazılmış mini sistemler        | [`sifirdan/`](#sifirdan)                | her sistemin kendi README'si                   |
-| Bir konuda karar vermek, tuzaktan kaçınmak                        | [`bilgi/`](bilgi/)                      | `python bilgi/araclar/ara.py "<soru>"`         |
+| Bir konuda karar vermek, tuzaktan kaçınmak                        | [`bilgi/`](bilgi/)                      | `python araclar/ara.py "<soru>"`               |
+| Hangi küçük modelin bu temellerde iş gördüğünü ölçmek              | [`sinav/`](sinav/README.md)             | `python sinav.py liste`                        |
 
 Python temellerinde önce sanal ortam kurulur (her temelin README'sinde yazar) ya da aşağıdaki denetim aracı
 `--kur` ile hepsini kendisi yapar.
@@ -34,14 +35,20 @@ Python temellerinde önce sanal ortam kurulur (her temelin README'sinde yazar) y
 
 | Temel | Tür | Ne işe yarar | Kaynak / test dosyası | Satır |
 | --- | --- | --- | --- | ---: |
-| [`dil-modeli`](dil-modeli/) | karma | Bayt düzeyi BPE tokenizer, LLaMA uyumlu PyTorch modeli, sürdürülebilir eğitim, üretim, LoRA ince ayarı, Hugging Face/GGUF/tarayıcı/ONNX aktarımı, OpenAI uyumlu sunucu ve bağımlılıksız JS çalışma zamanı; minik Türkçe örnek modelle. | 63 / 27 | 10.455 |
+| [`algoritma`](algoritma/) | python | 138 modüllük, yalnız stdlib kullanan, her gerçeklemesi kaba kuvvet ya da stdlib ile karşılaştırılarak sınanmış, Türkçe açıklamalı algoritma ve veri yapısı kütüphanesi. | 156 / 156 | 19.943 |
+| [`dil-modeli`](dil-modeli/) | karma | Bayt düzeyi BPE tokenizer, LLaMA uyumlu PyTorch modeli, sürdürülebilir eğitim, üretim, LoRA ince ayarı, Hugging Face/GGUF/tarayıcı/ONNX aktarımı, OpenAI uyumlu sunucu ve bağımlılıksız JS çalışma zamanı; minik Türkçe örnek modelle. | 63 / 27 | 10.468 |
 | [`ince-ayar`](ince-ayar/) | python | Sohbet (LoRA), sınıflandırma (ONNX), gömme ve varlık tanıma ince ayarı; veri araçları, sentetik veri hattı, doğrulanmış model kataloğu ve Colab defteri. | 95 / 18 | 12.364 |
 | [`kutuphane`](kutuphane/) | karma | Türkçe metin, ek, sayı/para/tarih biçimi, kimlik doğrulama ile genel yardımcıların iki dilde, ortak sınama vektörleriyle kanıtlanmış ve dosya dosya kopyalanan hâli. | 61 / 56 | 18.432 |
 | [`ml-temel`](ml-temel/) | python | Otomatik türev, sinir ağı katmanları, scikit-learn arayüzlü klasik modeller, sızıntısız değerlendirme ve bir CSV'den tek komutla model + Türkçe rapor üreten araç; tek çalışma zamanı bağımlılığı numpy. | 104 / 22 | 15.819 |
+| [`sinav`](sinav/) | python | Temellerin üstünde gerçekçi görevlerle (özellik, hata, değişiklik, okuma, tuzak) kod ajanı + model ikilisini ölçer: görev klasörünü hazırlar, gizli testler ve hile denetimiyle puanlar, modelleri karşılaştırır. | 57 / 26 | 5.350 |
 | [`site`](site/) | node | Astro 7 ile statik, çok dilli, erişilebilir ve SEO denetimli site temeli; tek ayar dosyası ve içerik dosyalarıyla kişiselleştirilir. | 119 / 34 | 11.268 |
-| [`uygulama`](uygulama/) | node | Çevrimdışı-önce PWA (React + Dexie) + API (Hono + node:sqlite) + ortak şema ve eşitleme; hesapsız ve hesaplı iki kip, paylaşımlı alanlar, üreteçler. | 186 / 80 | 24.734 |
-| [`veri`](veri/) | python | Doğrulanmış Türkçe başvuru verileri, ilişkisel tutarlı sentetik veri üreteçleri, veri kalitesi araçları, nazik veri hattı iskeleti ve doğrulanmış açık veri kataloğu. | 65 / 21 | 10.822 |
-| [`yz`](yz/) | python | Küçük modellerin zayıflıklarını (bozuk JSON, araç çağrısı hataları, uydurma) doğrula-onar döngüleri, sıkı şemalar ve ölçümle kapatan sağlayıcı katmanı, yapılı çıktı, ajan, RAG, değerlendirme, MCP ve sohbet sunucusu. | 90 / 27 | 16.112 |
+| [`uygulama`](uygulama/) | node | Çevrimdışı-önce PWA (React + Dexie) + API (Hono + node:sqlite) + ortak şema ve eşitleme; hesapsız ve hesaplı iki kip, paylaşımlı alanlar, üreteçler. | 194 / 81 | 25.167 |
+| [`veri`](veri/) | python | Doğrulanmış Türkçe başvuru verileri, ilişkisel tutarlı sentetik veri üreteçleri, veri kalitesi araçları, nazik veri hattı iskeleti ve doğrulanmış açık veri kataloğu. | 65 / 21 | 10.861 |
+| [`yz`](yz/) | python | Küçük modellerin zayıflıklarını (bozuk JSON, araç çağrısı hataları, uydurma) doğrula-onar döngüleri, sıkı şemalar ve ölçümle kapatan sağlayıcı katmanı, yapılı çıktı, ajan, RAG, değerlendirme, MCP ve sohbet sunucusu. | 91 / 27 | 16.699 |
+| [`sifirdan/ag`](sifirdan/ag/) | python | Yalnız Python stdlib ile HTTP sunucusu/istemcisi, WebSocket, web çatısı, ORM, eğitsel kripto, DNS, kabuk, ters vekil ve e-posta — testle kanıtlanmış, okunaklı mini sistemler. | 98 / 31 | 16.073 |
+| [`sifirdan/arayuz`](sifirdan/arayuz/) | node | Bağımlılıksız TypeScript ile testle kanıtlanmış on üç mini sistem: sinyal tepkiselliği, sanal DOM, yönlendirici, durum deposu, form + şema, e-tablo motoru, metin düzenleyici, 2B oyun motoru, ışın izleyici, SVG grafik, modül paketleyici, animasyon ve sanal liste; her birinin tarayıcı gösterimi. | 190 / 35 | 20.476 |
+| [`sifirdan/dil`](sifirdan/dil/) | python | Yalnız Python standart kitaplığıyla, testle kanıtlanmış dokuz mini sistem: Türkçe anahtar sözcüklü dil (yorumlayıcı + bayt kodu sanal makinesi), doğrusal zamanlı regex, RFC 8259 JSON (+ akış), kaçışlı şablon motoru, güvenli Markdown, birimli hesap makinesi, Myers farkı/yama/birleştirme ve mini test çerçevesi. | 81 / 28 | 13.692 |
+| [`sifirdan/veri`](sifirdan/veri/) | python | Yalnız Python standart kitaplığıyla, testle kanıtlanmış on üç mini sistem: LSM anahtar-değer deposu (çökme testli), B+ ağacı, SQL motoru (sqlite3 ile farksal), MVCC + 2PL işlemler, BM25 arama motoru, CRDT'ler, git uyumlu sürüm denetimi, Raft (belirlenimci benzetim), SQLite iş kuyruğu, Redis uyumlu önbellek sunucusu, olay zamanlı akış işleme, tutarlı karma ile parçalama ve sütun tabanlı analitik depo. | 91 / 50 | 15.769 |
 
 <!-- durum:son -->
 
@@ -51,16 +58,16 @@ Python temellerinde önce sanal ortam kurulur (her temelin README'sinde yazar) y
 
 Her biri tek klasör, birkaç yüz satır, bağımlılıksız ve başvuru gerçeklemesiyle karşılaştırılarak sınanmış:
 
-| Kol                                      | Sistemler                                                                                      |
-| ---------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| [`sifirdan/dil`](sifirdan/dil/)          | yorumlayıcı, bayt kodu sanal makinesi, regex motoru, JSON, şablon motoru, Markdown, ifade hesaplayıcı, metin farkı, test çerçevesi |
-| [`sifirdan/veri`](sifirdan/veri/)        | LSM anahtar-değer deposu, B+ ağacı, mini SQL, MVCC işlemleri, arama motoru, CRDT'ler, mini git, Raft, iş kuyruğu, önbellek sunucusu |
-| [`sifirdan/ag`](sifirdan/ag/)            | HTTP sunucusu ve istemcisi, WebSocket, web çatısı, ORM, kriptografi eğitimi (TOTP, JWT…), DNS, kabuk, ters vekil, e-posta |
-| [`sifirdan/arayuz`](sifirdan/arayuz/)    | sinyaller, sanal DOM, yönlendirici, durum deposu, form, e-tablo, metin düzenleyici, 2B oyun motoru, ışın izleyici, SVG grafik, paketleyici, animasyon |
+| Kol | Sistemler |
+| --- | --- |
+| [`sifirdan/dil`](sifirdan/dil/) | Türkçe anahtar sözcüklü yorumlayıcı (sabit katlamalı), bayt kodu sanal makinesi, regex motoru (Thompson NFA), JSON ayrıştırıcı, şablon motoru, Markdown, ifade hesaplayıcı, metin farkı ve yama, test çerçevesi |
+| [`sifirdan/veri`](sifirdan/veri/) | LSM anahtar-değer deposu (çökme testli), B+ ağacı, mini SQL (`sqlite3` ile farksal), MVCC ve kilitleme, arama motoru, CRDT'ler, mini git (gerçek git ile aynı özetler), Raft, iş kuyruğu, önbellek sunucusu (redis ile farksal), tutarlı karma, akış işleme, sütun deposu |
+| [`sifirdan/ag`](sifirdan/ag/) | HTTP sunucusu ve istemcisi, WebSocket, web çatısı, ORM, kriptografi eğitimi (SHA-256, HMAC, TOTP, JWT, ChaCha20-Poly1305…), DNS, kabuk, ters vekil, e-posta (MIME + SMTP), SSE |
+| [`sifirdan/arayuz`](sifirdan/arayuz/) | sinyaller, sanal DOM, yönlendirici, durum deposu, form, e-tablo, metin düzenleyici, 2B oyun motoru, ışın izleyici, SVG grafik, modül paketleyici, animasyon, sanal liste |
 
 ## Bilgi hazinesi (`bilgi/`)
 
-Konu konu **çalışma kâğıtları**: karar tabloları, tuzaklar (belirti → neden → çözüm), denetim listeleri ve "küçük
+13 kümede **250 çalışma kâğıdı**: karar tabloları, tuzaklar (belirti → neden → çözüm), denetim listeleri ve "küçük
 modele yaptırırken" bölümü. Kod örneklerinin çoğu çalıştırılarak doğrulanır. Dizin: [`bilgi/INDEX.md`](bilgi/INDEX.md).
 
 | Küme | Konu |

@@ -118,8 +118,10 @@ Bazı modeller yalnız sohbet eder; dosya okuyamaz, komut çalıştıramaz. O za
 
 ## Hangi modeli seçmeli
 
-Kod yazdıracağınız model için: havuzdan küçük ama gerçek bir görevi deneyin ve denetimin yeşil olup olmadığına bakın.
-İyi bir deneme görevi:
+Kod yazdıracağınız model için: **kod ajanı sınavını** kullanın ([`../sinav/`](../sinav/README.md)). Bu temellerde
+15 gerçekçi görev vardır; her biri gizli testlerle puanlanır ve testi gevşetmek gibi hileler geçersiz sayılır.
+Aynı görevleri her aday modele (en az iki deneme) verip `python havuz/sinav/sinav.py rapor` ile karşılaştırın.
+Hızlı bir ilk deneme isterseniz tek bir görev yeter:
 
 > `havuz/uygulama` temelinde üreteçle "notlar" varlığı ekle (`npm run gen -- entity notes --etiket Not`), not
 > başlığı ve metin alanı olsun, `npm run check` yeşil olsun.
