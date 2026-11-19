@@ -715,7 +715,7 @@ def test_modul_komutlari_kapaliyken_nasil_acilacagini_soyler(tmp_path, monkeypat
     ):
         assert main(argv) == 2, argv
         hata = capsys.readouterr().err
-        assert parca in hata and "Açmak için" in hata
+        assert parca in hata and ("Açmak için" in hata or "açmak için" in hata) and "için: Açmak" not in hata
 
 
 def test_durum_acik_modulleri_sunucuya_baglanmadan_gosterir(tmp_path, monkeypatch, capsys):
