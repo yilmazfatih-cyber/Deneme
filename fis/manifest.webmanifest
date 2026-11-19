@@ -1,0 +1,15 @@
+{
+  "name": "Fiş — masada hesap bölüşme",
+  "short_name": "Fiş",
+  "description": "Masadaki hesabı herkes kendi telefonundan bölüşür; kim eksik, hangi kalem sahipsiz, tek ekranda.",
+  "lang": "tr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "browser",
+  "background_color": "#f3f1ee",
+  "theme_color": "#8e1b2a",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}
