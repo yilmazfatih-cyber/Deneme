@@ -1,0 +1,218 @@
+{
+ "not": "ajan araştırması (web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "GLRMK",
+   "sektor": null,
+   "baslangic": "2025-01-17",
+   "bitis": "2025-01-17",
+   "kamuya_acilma": null,
+   "tur": "pay_satisi",
+   "baslik": "Gülermak halka arzı 125 TL fiyatla tamamlandı (ek satış dahil 4,845 milyar TL); paylar Yıldız Pazar'da işleme başladı",
+   "anlam": "Gedik ve Paratic özetlerine göre talep toplama 8-10 Ocak 2025, işlem 17 Ocak 2025; sermaye artırımından 2,825 milyar TL brüt gelir, halka açıklık %12,01; fiyat istikrarı gerekmedi.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "evet",
+   "guven": 0.8,
+   "etiketler": [
+    "halka_arz",
+    "125TL",
+    "yildiz_pazar"
+   ],
+   "kaynaklar": [
+    "https://gedik.com/halka-arz-aracilik-kategoriler/gecmis-halka-arzlar/gulermak-agir-sanayi",
+    "https://paratic.com/gulermak-agir-sanayi-glrmk-icin-islem-tarihi-paylasildi/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 4845000000,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "GLRMK",
+   "sektor": null,
+   "baslangic": "2025-04-25",
+   "bitis": "2025-04-25",
+   "kamuya_acilma": null,
+   "tur": "is_iliskisi",
+   "baslik": "Gülermak (YSE ortak girişimi) Sırbistan Belgrad-Niş hattı için 348,9 milyon EUR'luk demiryolu sözleşmesi imzaladı",
+   "anlam": "KAP aktarımına göre bedel 348.905.039 EUR (KDV hariç), Gülermak payı %50 (174,45 milyon EUR); Stalać-Djunis kesimi yeniden inşa ve ikinci hat. Bazı İngilizce haberler 400 milyon EUR yuvarlıyor.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.8,
+   "etiketler": [
+    "sirbistan",
+    "demiryolu",
+    "yurt_disi"
+   ],
+   "kaynaklar": [
+    "https://bullsyatirim.com/gulermaktan-sirbistan-demiryolu-ihalesinde-348-9-milyon-euroluk-sozlesme",
+    "https://paratic.com/gulermak-sirbistanda-349-milyon-euroluk-demiryolu-projesini-imzaladi/",
+    "https://www.turkiyetoday.com/business/turkish-infrastructure-firm-gulermak-wins-400m-railway-tender-in-serbia-149963"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 348905039,
+    "para_birimi": "EUR",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "GLRMK",
+   "sektor": null,
+   "baslangic": "2025-05-13",
+   "bitis": "2025-05-13",
+   "kamuya_acilma": null,
+   "tur": "ihale",
+   "baslik": "Gülermak Ankara Natoyolu-Dikimevi metro yapım sözleşmesini 14,08 milyar TL bedelle imzaladı",
+   "anlam": "KAP 13 Mayıs 2025 bildirimi (bir kaynak imzayı 12 Mayıs verir); teklif 22 Kasım 2024'te sekiz teklif arasında birinci. Sonradan bedelin ~13,87 milyar TL'ye güncellendiği tek kaynakla bildirildi. Hat 7,46 km, 8 istasyon.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.7,
+   "etiketler": [
+    "metro",
+    "ankara",
+    "belediye_ihalesi"
+   ],
+   "kaynaklar": [
+    "https://borsacoo.com/bildirim/23754",
+    "https://borsacoo.com/bildirim/18144",
+    "https://www.yeniankara.com.tr/ankara/mamak-metrosunun-ara-satirlari-santiyede-neler-oluyor-173726"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 14084200000,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "GLRMK",
+   "sektor": null,
+   "baslangic": "2025-07-10",
+   "bitis": "2025-07-10",
+   "kamuya_acilma": null,
+   "tur": "is_iliskisi",
+   "baslik": "Gülermak S.A. konsorsiyumu Polonya Szczyrzyc-Tymbark demiryolu ve tünel işi için 2,08 milyar PLN'lik sözleşme imzaladı",
+   "anlam": "Arama özetine göre PKP PLK ile sözleşme KAP'ta 10 Temmuz 2025 tarihli; bir kaynak aynı işi 6 Ekim 2025'e tarihliyor. Tarih çelişkili, tutar teklif bedeli (24 Nisan 2025). Ortaklık payı bilinmiyor. Tutar PLN cinsindendir (şemada PLN yok, para birimi boş bırakıldı).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.4,
+   "etiketler": [
+    "polonya",
+    "demiryolu",
+    "tunel"
+   ],
+   "kaynaklar": [
+    "https://www.finansopia.com/kap-bildirimleri/gulermak-agir-sanayi-glrmk-demiryolu-ihalesini-kazandi/",
+    "https://www.cnbce.com/borsa/gulermak-polonyada-demiryolu-ve-tunel-ihalesi-kazandi-h14889"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "GLRMK",
+   "sektor": null,
+   "baslangic": "2026-03-12",
+   "bitis": "2026-03-12",
+   "kamuya_acilma": null,
+   "tur": "is_iliskisi",
+   "baslik": "Gülermak S.A.-INTOP konsorsiyumu Polonya Tymbark-Limanowa demiryolu için 1,637 milyar PLN'lik sözleşme imzaladı (Gülermak payı %65)",
+   "anlam": "Gülermak'ın 12 Mart 2026 KAP bildirimi KDV dahil 1.636.744.956 PLN diyor; PLK net değeri 1,3 milyar PLN üzeri, süre 36 ay. Tutar PLN cinsindendir (şemada PLN yok, para birimi boş bırakıldı).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.8,
+   "etiketler": [
+    "polonya",
+    "demiryolu",
+    "yurt_disi"
+   ],
+   "kaynaklar": [
+    "https://gulermak.com.tr/uploads/dbb10808-70d3-4106-9af1-7274c5493595.pdf",
+    "https://rotaborsa.com/?p=425427",
+    "https://multimedia.plk-sa.pl/index.php/folder/file/5a9f810d-6348-444e-9d58-692150021a51/download"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": 65.0,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": 36
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "GLRMK",
+   "sektor": null,
+   "baslangic": "2026-01-30",
+   "bitis": "2026-01-30",
+   "kamuya_acilma": null,
+   "tur": "is_iliskisi",
+   "baslik": "Gülermak Varşova Metrosu A1 Kabaty hat genişletme işi için 33,77 milyon PLN'lik sözleşme imzaladı",
+   "anlam": "Paratic'e göre KDV dahil 33.772.110 PLN (~395,7 milyon TL); sözleşme tarihi 30.01.2026 ile 24 Şubat 2026 KAP bildirimi arasında çelişiyor. Küçük ölçekli sözleşme. Tutar PLN cinsindendir (şemada PLN yok, para birimi boş bırakıldı).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.4,
+   "etiketler": [
+    "varsova",
+    "metro",
+    "polonya"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/gulermak-varsova-metrosu-ihalesine-iliskin-sozlesme-imzaladi/",
+    "https://borsacoo.com/bildirim/59229"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

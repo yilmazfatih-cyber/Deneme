@@ -1,0 +1,284 @@
+{
+ "not": "ajan araştırması (web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "EKGYO",
+   "sektor": null,
+   "baslangic": "2025-05-14",
+   "bitis": "2025-05-14",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Emlak Konut genel kurulu 2024 kârından hisse başına brüt 0,40 TL temettüyü onayladı",
+   "anlam": "Arama özetine göre toplam 1,52 milyar TL; hak kullanım ve ödeme 16 Haziran 2025. GYO olduğu için stopaj yok (brüt=net).",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.7,
+   "etiketler": [
+    "temettu",
+    "brut_0.40",
+    "genel_kurul"
+   ],
+   "kaynaklar": [
+    "https://www.ekonomist.com.tr/borsa/emlak-konut-tan-ekgyo-kar-payi-karari-58173",
+    "https://fintables.com/sirketler/EKGYO/sermaye-artirimlari-temettuler"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 1520000000,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": 0.4,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "EKGYO",
+   "sektor": null,
+   "baslangic": "2026-06-24",
+   "bitis": "2026-06-24",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Emlak Konut 2025 kârından hisse başına brüt 0,60 TL (toplam 2,28 milyar TL) temettü ödedi",
+   "anlam": "KAP önerisi ve Fintables tablosuna göre ödeme 24.06.2026; genel kurul tarihi sonuçlarda net değil.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.7,
+   "etiketler": [
+    "temettu",
+    "brut_0.60",
+    "2025_kari"
+   ],
+   "kaynaklar": [
+    "https://fintables.com/sirketler/EKGYO/sermaye-artirimlari-temettuler",
+    "https://kap.org.tr/tr/api/BildirimPdf/1599016"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 2280000000,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": 0.6,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "EKGYO",
+   "sektor": null,
+   "baslangic": "2026-03-09",
+   "bitis": "2026-03-09",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Emlak Konut 4Ç25'te 4,78 milyar TL net zarar açıkladı (beklenti ~2,17 milyar TL kâr); 2025 net kârı %65 düşüşle 6,0 milyar TL",
+   "anlam": "Bloomberg HT 9 Mart 2026 haberi; zarar 6,6 milyar TL ertelenmiş vergi giderinden. Aracı kurum rakamları 4,29-4,78 milyar TL arasında değişiyor; asıl KAP günü bir-iki gün öncesi olabilir.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.7,
+   "etiketler": [
+    "bilanco",
+    "4Ç25",
+    "vergi_gideri",
+    "beklenti_sapmasi"
+   ],
+   "kaynaklar": [
+    "https://www.bloomberght.com/emlak-konut-2025-son-ceyrekte-zarar-acikladi-3771342",
+    "https://kuveytturkyatirim.com.tr/media/u5robqzp/ekgyo-4ç25-finansal-sonuç-değerlendirmesi.pdf",
+    "https://www.gcmyatirim.com.tr/arastirma-analiz/ozel-raporlar/2026-03-09-emlak-konut-ekgyo-2025-4-ceyrek-bilanco-analizi"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": -4784000000,
+    "beklenti": 2168000000,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "EKGYO",
+   "sektor": null,
+   "baslangic": "2026-01-23",
+   "bitis": "2026-01-23",
+   "kamuya_acilma": null,
+   "tur": "ihale",
+   "baslik": "Emlak Konut Ataşehir Küçükbakkalköy ihalesi: toplam satış geliri 30,02 milyar TL, şirket payı %45 (~13,5 milyar TL)",
+   "anlam": "CNBC-e ve Paratic'e göre 2. oturum sonucu 23 Ocak 2026 KAP bildirimiyle duyuruldu. Bir kaynak 46 milyar TL'lik teklif yazıyor; çelişki çözülemedi.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.5,
+   "etiketler": [
+    "gelir_paylasimi",
+    "atasehir",
+    "ihale"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/borsa/emlak-konuttan-atasehir-ihalesinde-30-milyar-tlyi-asan-satis-geliri-h23674",
+    "https://paratic.com/atasehir-projesinde-rekor-rakam-toplam-satis-geliri-30-milyar-tlyi-asti/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 30020000000,
+    "para_birimi": "TRY",
+    "oran": 45.0,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "EKGYO",
+   "sektor": null,
+   "baslangic": "2026-02-10",
+   "bitis": "2026-02-10",
+   "kamuya_acilma": null,
+   "tur": "is_iliskisi",
+   "baslik": "Emlak Konut Tuzla Aydınlı 1. Etap sözleşmesi imzaladı: toplam satış geliri 8,35 milyar TL, şirket payı 2,505 milyar TL",
+   "anlam": "CNBC-e'ye göre sözleşme 10 Şubat 2026'da DAĞ Mühendislik ile imzalandı; tek kaynak.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.55,
+   "etiketler": [
+    "gelir_paylasimi",
+    "tuzla",
+    "sozlesme"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/borsa/emlak-konuttan-yeni-sozlesme-satis-geliri-83-milyar-lira-ongoruluyor-ekgyo-hisse-h24921"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 8350000000,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "EKGYO",
+   "sektor": null,
+   "baslangic": "2026-04-27",
+   "bitis": "2026-04-27",
+   "kamuya_acilma": null,
+   "tur": "is_iliskisi",
+   "baslik": "Emlak Konut Eyüpsultan Kemerburgaz 1. Etap sözleşmesi: toplam satış geliri 31,25 milyar TL, şirket payı %40 (12,5 milyar TL)",
+   "anlam": "Rota Borsa 27 Nisan 2026 KAP bildirimini aktarıyor; yüklenici Kayasan-Fibey-Biroğlu adi ortaklığı. İmza günü ayrıca doğrulanmadı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.65,
+   "etiketler": [
+    "gelir_paylasimi",
+    "kemerburgaz",
+    "sozlesme"
+   ],
+   "kaynaklar": [
+    "https://rotaborsa.com/?p=437892",
+    "https://paratic.com/ekgyodan-31-25-milyar-tllik-dev-proje-sozlesmesi/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 31250000000,
+    "para_birimi": "TRY",
+    "oran": 40.0,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "EKGYO",
+   "sektor": null,
+   "baslangic": "2025-10-09",
+   "bitis": "2025-10-09",
+   "kamuya_acilma": null,
+   "tur": "is_iliskisi",
+   "baslik": "Emlak Konut Bodrum Ortakent Müskebi projesinde toplam satış geliri 17,53 milyar TL'lik gelir paylaşımı sözleşmesi imzaladı",
+   "anlam": "Borsagündem'e göre sözleşme 9 Ekim 2025'te imzalandı (yüklenici İlgın); şirket payı özetlerde görülmedi.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.5,
+   "etiketler": [
+    "gelir_paylasimi",
+    "bodrum",
+    "sozlesme"
+   ],
+   "kaynaklar": [
+    "https://www.borsagundem.com.tr/emlak-konut-gyo-bodrum-ortakent-projesinde-1753-milyar-tl-gelir-paylasimi-sozlesmesi-imzaladi"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 17530000000,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "EKGYO",
+   "sektor": null,
+   "baslangic": "2026-08-26",
+   "bitis": "2026-08-26",
+   "kamuya_acilma": null,
+   "tur": "is_iliskisi",
+   "baslik": "Emlak Konut Halkalı Batı 1. Etap sözleşmesi: toplam satış geliri 7,789 milyar TL, şirket payı %35",
+   "anlam": "Uzmanpara/FNC haberine göre KAP bildirimi 26 Ağustos 2026; bir toplayıcı %30 pay ve 2,51 milyar TL yazıyor, bu yüzden güven düşük tutuldu.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.4,
+   "etiketler": [
+    "gelir_paylasimi",
+    "halkali",
+    "sozlesme"
+   ],
+   "kaynaklar": [
+    "https://uzmanpara.milliyet.com.tr/raporlar-analizler/emlak-konutun-halkali-bati-projesi-sozlesmesinde-arsa-satisi-karsiligi-sirket-payi-gelir-orani-35-oldu-fnc-news/3487783/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 7789000000,
+    "para_birimi": "TRY",
+    "oran": 35.0,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

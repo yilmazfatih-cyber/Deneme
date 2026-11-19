@@ -1,0 +1,281 @@
+{
+ "not": "ajan araştırması (web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "EGEEN",
+   "sektor": null,
+   "baslangic": "2024-05-28",
+   "bitis": "2024-05-28",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Ege Endüstri genel kurulu 2023 kârından hisse başına brüt 103 TL (net 92,70 TL) temettüyü onayladı",
+   "anlam": "Ekonomist'e göre genel kurul 28 Mayıs 2024'te yapıldı, ödeme 29 Mayıs 2024. Tek kaynak tarihli.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.6,
+   "etiketler": [
+    "temettu",
+    "brut_103",
+    "genel_kurul"
+   ],
+   "kaynaklar": [
+    "https://www.ekonomist.com.tr/borsa/ege-endustri-den-egeen-temettu-karari-49690"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 103.0,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "EGEEN",
+   "sektor": null,
+   "baslangic": "2024-02-01",
+   "bitis": "2024-02-01",
+   "kamuya_acilma": null,
+   "tur": "is_iliskisi",
+   "baslik": "Ege Endüstri küresel ticari araç üreticisiyle 2025-2034 ihracat çerçeve sözleşmesi imzaladı; yıllık ciroya yaklaşık %20 katkı bekleniyor",
+   "anlam": "KAP metni aktarımına göre adet garantisi yok, seri üretim 2026'da başlayacak. Duyuru günü doğrulanamadı (yalnızca Şubat 2024 görüldü), bu yüzden tarih yaklaşıktır.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.4,
+   "etiketler": [
+    "cerceve_sozlesme",
+    "ihracat",
+    "ticari_arac"
+   ],
+   "kaynaklar": [
+    "https://rotaborsa.com/ege-endustri-egeen-yeni-sozlesme-acikladi/",
+    "https://paratic.com/hisse-kazanci-yuzde-160a-cikan-sirketten-uzun-vadeli-adim/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": 20.0,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": 120
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "EGEEN",
+   "sektor": null,
+   "baslangic": "2025-02-28",
+   "bitis": "2025-02-28",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Ege Endüstri 2024 net kârı %15 düşüşle 853 milyon TL oldu; satışlar 4,70 milyar TL",
+   "anlam": "KAP 4Ç24 bildirimi 28 Şubat 2025'te yapıldı (2023: 1,005 milyar TL). Sonradan enflasyon düzeltmesiyle 2024 kârı 1,117 milyar TL olarak yeniden gösterildi. Beklenti verisi bulunamadı.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.6,
+   "etiketler": [
+    "bilanco",
+    "4Ç24",
+    "net_kar_853m"
+   ],
+   "kaynaklar": [
+    "https://marbas.com.tr/assets/EGEEN-4.CEYREK-BILANCO-DEGERLENDIRMESI.pdf",
+    "https://www.ekofin.net/sirket/detay/EGEEN/faaliyet-raporlari?period=2024-12"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 853027000,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "EGEEN",
+   "sektor": null,
+   "baslangic": "2025-03-26",
+   "bitis": "2025-03-26",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Ege Endüstri 2024 kârından hisse başına brüt 53 TL (net 45,05 TL) temettü dağıttı",
+   "anlam": "Arama özetlerine göre genel kurul 26 Mart 2025'te yapıldı, net ödeme 3 Nisan 2025; bir kaynak temettü tarihini 28.03.2025 verdiği için günlük farkı doğrulanamadı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.5,
+   "etiketler": [
+    "temettu",
+    "brut_53",
+    "2024_kari"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/hisse-fiyati-8845-tl-olan-sirket-28-martta-kar-payi-dagitacak/",
+    "https://ekofin.net/sirket/detay/EGEEN/temettuler"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 53.0,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "EGEEN",
+   "sektor": null,
+   "baslangic": "2026-03-02",
+   "bitis": "2026-03-02",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Ege Endüstri 2025'te 94,9 milyon TL net zarar yazdı (2024'te 1,12 milyar TL kâr); satışlar yaklaşık %23 düştü",
+   "anlam": "Rota Borsa'ya göre satışlar 4,73 milyar TL; KAP tarihi 2 Mart 2026. Ekofin'deki -111,73 milyar rakamı birim hatası olarak değerlendirildi. KAP aslı görülmedi.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.6,
+   "etiketler": [
+    "bilanco",
+    "net_zarar",
+    "2025_sonuc"
+   ],
+   "kaynaklar": [
+    "https://rotaborsa.com/?p=420470",
+    "https://www.ekofin.net/sirket/detay/EGEEN/faaliyet-raporlari?period=2025-12"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": -94883000,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "EGEEN",
+   "sektor": null,
+   "baslangic": "2026-03-26",
+   "bitis": "2026-03-26",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Ege Endüstri genel kurulu 2025 kârından temettü dağıtmama kararı aldı; yönetime 2026 için avans yetkisi verildi",
+   "anlam": "Borsacoo ve arama özetine göre 2025 sonuçları 26 Mart 2026'da onaylandı, nakit ya da bedelsiz dağıtım yok.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.55,
+   "etiketler": [
+    "temettu_yok",
+    "genel_kurul",
+    "avans_yetkisi"
+   ],
+   "kaynaklar": [
+    "https://borsacoo.com/firma/EGEEN/bildirimler"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 0.0,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "EGEEN",
+   "sektor": null,
+   "baslangic": "2026-02-04",
+   "bitis": "2026-02-04",
+   "kamuya_acilma": null,
+   "tur": "yonetim",
+   "baslik": "Ege Endüstri bağımsız yönetim kurulu üyesi Murat Yalçıntaş istifa etti (OYAK genel müdürlüğü), yerine Mehmet Candan Günel geldi",
+   "anlam": "Arama özetinde 4 Şubat 2026 tarihli tek haber görüldü; tarih ve gerekçe başka kaynakla doğrulanmadı.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.4,
+   "etiketler": [
+    "yonetim_kurulu",
+    "bagimsiz_uye"
+   ],
+   "kaynaklar": [
+    "https://borsacoo.com/firma/EGEEN/bildirimler?page=2"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "EGEEN",
+   "sektor": null,
+   "baslangic": "2026-05-05",
+   "bitis": "2026-05-05",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Ege Endüstri 2026 ilk çeyrekte 123,6 milyon TL net zarar yazdı; tek aracı kurum beklentisi 210 milyon TL zarardı",
+   "anlam": "Arama özetine göre beklenti yalnızca Pusula Yatırım'dan geldi (tek kurum). Duyuru tarihi doğrulanamadı; 5 Mayıs 2026 tarihli bir aracı kurum raporu görüldüğü için yaklaşık alındı.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.4,
+   "etiketler": [
+    "bilanco",
+    "1Ç26",
+    "beklenti_sapmasi"
+   ],
+   "kaynaklar": [
+    "https://www.vkyanaliz.com/rap/EGEEN_2026-05-05_40665.pdf",
+    "https://www.gcmyatirim.com.tr/borsa/hisse/egeen-hisse-ege-endustri-ve-ticaret-a-s/bilanco"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": -123597000,
+    "beklenti": -210000000,
+    "sure_ay": null
+   }
+  }
+ ]
+}

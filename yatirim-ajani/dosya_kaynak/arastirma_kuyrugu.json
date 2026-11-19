@@ -1,10 +1,6 @@
 {
  "aciklama": "Gece araştırma kuyruğu: her gece sıradaki hisseler için 2024-01→bugün olay çizelgesi (DOSYA.md bölüm 6). 'derinlestir' = olay sayısı az olanlar.",
  "bekleyen": [
-  "ECZYT",
-  "EGEEN",
-  "EKGYO",
-  "GLRMK",
   "GRSEL",
   "GWIND",
   "ISDMR",
@@ -21,8 +17,6 @@
   "TTRAK"
  ],
  "derinlestir": [
-  "VAKBN",
-  "GARAN",
   "AKSEN",
   "HEKTS",
   "DOAS",
@@ -84,7 +78,11 @@
   "CCOLA",
   "CVKMD",
   "CWENE",
-  "ECILC"
+  "ECILC",
+  "ECZYT",
+  "EGEEN",
+  "EKGYO",
+  "GLRMK"
  ],
- "guncelleme": "2026-11-17"
+ "guncelleme": "2026-11-18"
 }

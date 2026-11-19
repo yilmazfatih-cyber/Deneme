@@ -100,6 +100,215 @@
     "beklenti": null,
     "sure_ay": null
    }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "GARAN",
+   "sektor": null,
+   "baslangic": "2025-03-27",
+   "bitis": "2025-03-27",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Garanti BBVA genel kurulu 2024 kârından hisse başına brüt 4,3893 TL (toplam 18,43 milyar TL) temettüyü onayladı",
+   "anlam": "Garanti BBVA IR KAP dosyası ve Finansopia'ya göre net 3,7309 TL; ödeme 3 Nisan 2025, hak sahibi tarihi 2 Nisan. 2024 konsolide net kâr 92,2 milyar TL.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.85,
+   "etiketler": [
+    "temettu",
+    "brut_4.39",
+    "genel_kurul"
+   ],
+   "kaynaklar": [
+    "https://www.garantibbvainvestorrelations.com/tr/images/pdf/20250327-KAP.pdf",
+    "https://www.finansopia.com/kap-bildirimleri/garanti-bankasi-temettu-karari-belli-oldu-garanti-bbva-ne-kadar-temettu-verecek/",
+    "https://paratic.com/garanti-yatirimcilarina-mujde-3-73-tl-temettu-onaylandi/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 18434998813,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": 4.3892854,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "GARAN",
+   "sektor": null,
+   "baslangic": "2025-07-30",
+   "bitis": "2025-07-30",
+   "kamuya_acilma": null,
+   "tur": "derecelendirme",
+   "baslik": "Moody's Garanti BBVA'nın mevduat notunu Ba3'ten Ba2'ye yükseltti",
+   "anlam": "CNBC-e/Ekonomim/Midas haberleri 30 Temmuz 2025 not artışını ve Temmuz 2026'da Ba2 teyidini aktarıyor; ana tarih özetten alındı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.7,
+   "etiketler": [
+    "kredi_notu",
+    "moodys",
+    "Ba2"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/borsa/moodys-garanti-bbvanin-kredi-notunu-teyit-etti-h33304",
+    "https://www.ekonomim.com/sirketler/moodys-garanti-bbvanin-not-kararini-acikladi-haberi-906598"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "GARAN",
+   "sektor": null,
+   "baslangic": "2026-01-28",
+   "bitis": "2026-01-28",
+   "kamuya_acilma": null,
+   "tur": "derecelendirme",
+   "baslik": "Fitch Garanti BBVA'nın BB- notunu teyit etti, görünümü durağandan pozitife çevirdi",
+   "anlam": "Garanti BBVA yatırımcı ilişkileri 29 Ocak 2026 tarihli KAP dosyasına göre karar 28 Ocak 2026'da; 14 Nisan 2026'da görünüm yeniden pozitiften durağana döndü.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.7,
+   "etiketler": [
+    "kredi_notu",
+    "fitch",
+    "gorunum_pozitif"
+   ],
+   "kaynaklar": [
+    "https://www.garantibbvainvestorrelations.com/tr/images/pdf/20260129-fitch-ratings-kredi-derecelendirme-notlari-hakkinda.pdf",
+    "https://fintables.com/borsa-haber-akisi/f501ef6a-f4d9-4efa-8919-6c85cabfa32a/garan-kredi-derecelendirmesi"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "GARAN",
+   "sektor": null,
+   "baslangic": "2026-04-14",
+   "bitis": "2026-04-14",
+   "kamuya_acilma": null,
+   "tur": "derecelendirme",
+   "baslik": "Fitch Garanti BBVA'nın BB- notunu teyit etti, görünümü pozitiften durağana indirdi",
+   "anlam": "Garanti BBVA yatırımcı ilişkileri sayfasındaki 14 Nisan 2026 tarihli Fitch KAP dosyasına göre; 18 Mayıs 2026'da yeni bir teyit daha yayımlandı.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.7,
+   "etiketler": [
+    "kredi_notu",
+    "fitch",
+    "gorunum_durağan"
+   ],
+   "kaynaklar": [
+    "https://www.garantibbvainvestorrelations.com/tr/images/pdf/2026-04-14-Fitch-ratings-kredi-derecelendirme-notlari-hakkinda.pdf",
+    "https://www.hisse.net/haber/fitch-garanti-bbva-nin-kredi-notunu-acikladi-78400"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "GARAN",
+   "sektor": null,
+   "baslangic": "2026-09-28",
+   "bitis": "2026-09-28",
+   "kamuya_acilma": null,
+   "tur": "borclanma",
+   "baslik": "Garanti BBVA IFC ve DEG konsorsiyumundan 125 milyon USD'lik sürdürülebilir Tier 2 tahvil ihracını tamamladı",
+   "anlam": "Capital ve Bloomberg HT'ye göre 10 yıl vadeli, 5. yıldan itibaren geri çağrılabilir; tarih (28 Eylül 2026) tek özetten alındı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.5,
+   "etiketler": [
+    "tier2",
+    "surdurulebilir",
+    "IFC_DEG"
+   ],
+   "kaynaklar": [
+    "https://www.capital.com.tr/finans/bankacilik/garanti-bbvadan-125-milyon-dolar-tutarinda-surdurulebilir-sermaye-benzeri-tahvil-ihraci",
+    "https://www.bloomberght.com/garanti-bbvadan-125-milyon-dolarlik-sermaye-benzeri-tahvil-ihraci-3789614"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 125000000,
+    "para_birimi": "USD",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": 120
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "GARAN",
+   "sektor": null,
+   "baslangic": "2024-08-01",
+   "bitis": "2024-08-01",
+   "kamuya_acilma": null,
+   "tur": "yonetim",
+   "baslik": "Mahmut Akten Garanti BBVA genel müdürü ve BBVA Türkiye ülke müdürü oldu",
+   "anlam": "Arama özetlerinde yalnızca 'Ağustos 2024 itibarıyla' ifadesi görüldü; kesin gün doğrulanamadı.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.4,
+   "etiketler": [
+    "genel_mudur",
+    "ust_yonetim"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/haberler/bbva-ceosu-gencten-garanti-aciklamasi-h24440"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
   }
  ]
 }

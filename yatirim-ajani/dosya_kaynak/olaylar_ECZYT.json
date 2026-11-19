@@ -1,0 +1,144 @@
+{
+ "not": "ajan araştırması (web arama özetleri)",
+ "olaylar": [
+  {
+   "kapsam": "sirket",
+   "hisse": "ECZYT",
+   "sektor": null,
+   "baslangic": "2025-05-14",
+   "bitis": "2025-05-14",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Eczacıbaşı Yatırım Holding 2024 kârından 700 milyon TL nakit temettü dağıttı; net 5,67 TL (brüt ~6,67 TL) ödeme 14 Mayıs 2025'te başladı",
+   "anlam": "Rota Borsa 2025 temettü listesine ve arama özetlerine göre toplam 700 milyon TL temettü, ödeme 14 Mayıs 2025. Brüt tutar toplamdan türetilmiş yaklaşık değerdir; genel kurul tarihi doğrulanmadı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.5,
+   "etiketler": [
+    "temettu",
+    "net_5.67",
+    "2024_kari"
+   ],
+   "kaynaklar": [
+    "https://rotaborsa.com/2025-temettu-verecek-hisseler-ve-tarihleri/",
+    "https://fintables.com/sirketler/ECZYT/sermaye-artirimlari-temettuler"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 700000000,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": 6.67,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ECZYT",
+   "sektor": null,
+   "baslangic": "2026-05-08",
+   "bitis": "2026-05-08",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "Eczacıbaşı Yatırım Holding 2025 kârından hisse başına brüt 5,7143 TL (net 4,857 TL) temettü ödedi",
+   "anlam": "Borsacoo ve CNBC-e'ye göre genel kurul onayladı; toplam yaklaşık 600 milyon TL. Hak kullanım 6 Mayıs, ödeme 8 Mayıs 2026. Bir haberdeki 6,66 TL brüt rakamı bu tutarla uyuşmadığı için dikkate alınmadı.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.75,
+   "etiketler": [
+    "temettu",
+    "brut_5.71",
+    "2025_kari"
+   ],
+   "kaynaklar": [
+    "https://borsacoo.com/firma/ECZYT/temettuler",
+    "https://www.cnbce.com/borsa/borsanin-dev-sirketinden-cifte-temettu-atagi-ne-kadar-kar-dagitacaklar-eczacibasi-ilac-temettu-eczacibasi-holding-temettu-temettu-hisseler-2026-h27483",
+    "https://rotaborsa.com/2026-temettu-verecek-hisseler-ve-tarihleri/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 600000000,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": 5.7142857,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ECZYT",
+   "sektor": null,
+   "baslangic": "2025-09-29",
+   "bitis": "2025-09-29",
+   "kamuya_acilma": null,
+   "tur": "haber",
+   "baslik": "Eczacıbaşı Yatırım Holding iştirakten 2024 kâr payı olarak 234,8 milyon TL tahsil etti",
+   "anlam": "Borsacoo özetine göre 234.839.085,99 TL tutarlı 2024 kâr payı 29.09.2025'te alındı; tek kaynak, iştirakin hangisi olduğu özette görülmedi.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.5,
+   "etiketler": [
+    "kar_payi_geliri",
+    "istirak"
+   ],
+   "kaynaklar": [
+    "https://borsacoo.com/firma/ECZYT/bildirimler?page=2"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 234839086,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "ECZYT",
+   "sektor": null,
+   "baslangic": "2026-05-08",
+   "bitis": "2026-05-08",
+   "kamuya_acilma": null,
+   "tur": "bilanco",
+   "baslik": "Eczacıbaşı Yatırım Holding 2026 ilk çeyrekte 367,2 milyon TL net zarar yazdı (önceki yıl aynı dönem 544,0 milyon TL kâr)",
+   "anlam": "Ekofin'e göre 8 Mayıs 2026 KAP bildirimi; Borsacoo rakamın konsolide olmayan rapora ait olduğunu belirtiyor. Beklenti verisi bulunamadı.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.55,
+   "etiketler": [
+    "bilanco",
+    "net_zarar",
+    "1Ç26"
+   ],
+   "kaynaklar": [
+    "https://ekofin.net/sirket/detay/ECZYT/faaliyet-raporlari",
+    "https://www.eczacibasi.com.tr/assets/eyh-faaliyet-raporu-31.03.2026_en.pdf"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": -367159109,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  }
+ ]
+}

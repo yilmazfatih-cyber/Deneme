@@ -98,6 +98,180 @@
     "beklenti": null,
     "sure_ay": null
    }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "VAKBN",
+   "sektor": null,
+   "baslangic": "2025-03-25",
+   "bitis": "2025-03-25",
+   "kamuya_acilma": null,
+   "tur": "temettu",
+   "baslik": "VakıfBank yönetim kurulu 2024 kârından nakit temettü dağıtmama teklifini açıkladı",
+   "anlam": "Paratic'e göre 25 Mart'ta KAP'tan yapılan açıklamada yıl yazmıyor, bağlamdan 2025 çıkarıldı; 2024 net kârı 40,4 milyar TL (konsolide 49,1 milyar). Genel kurul sonucu doğrulanmadı.",
+   "yon": "olumsuz",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.4,
+   "etiketler": [
+    "temettu_yok",
+    "2024_kari"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/vakifbank-vakbn-2025te-temettu-dagitacak-mi/",
+    "https://borsacoo.com/bildirim/20724"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": 0.0,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "VAKBN",
+   "sektor": null,
+   "baslangic": "2025-07-30",
+   "bitis": "2025-07-30",
+   "kamuya_acilma": null,
+   "tur": "derecelendirme",
+   "baslik": "Moody's VakıfBank'ın uzun vadeli notunu B1'den Ba3'e yükseltti",
+   "anlam": "Paratic ve Finansopia'ya göre Türkiye notu artışının ardından 30 Temmuz 2025'te not iki kademe yükseldi; görünüm pozitiften durağana çekildi. Moody's 22 Temmuz 2026'da Ba3'ü teyit etti.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.7,
+   "etiketler": [
+    "kredi_notu",
+    "moodys",
+    "Ba3"
+   ],
+   "kaynaklar": [
+    "https://paratic.com/moodys-vakifbankin-kredi-notunu-2-kademe-yukseltti/",
+    "https://www.finansopia.com/ekonomi/moodys-5-turk-bankasinin-kredi-notunu-yukseltti/"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "VAKBN",
+   "sektor": null,
+   "baslangic": "2026-04-09",
+   "bitis": "2026-04-09",
+   "kamuya_acilma": null,
+   "tur": "yonetim",
+   "baslik": "VakıfBank 72. genel kurulu sonrası genel müdürlüğe Osman Arslan geldi (Abdi Serdar Üstünsalih ayrıldı)",
+   "anlam": "Bloomberg HT ve Borsanın Gündemi'ne göre genel kurul 9 Nisan 2026'da yapıldı (karar 20 Nisan'da tescil); atamanın kesin günü genel kurul günüyle aynı mı doğrulanmadı. Kaynaklarda soyadı 'Aslan' da geçiyor.",
+   "yon": "notr",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.5,
+   "etiketler": [
+    "genel_mudur",
+    "genel_kurul",
+    "kamu_bankasi"
+   ],
+   "kaynaklar": [
+    "https://www.bloomberght.com/vakifbank-ta-yeni-yonetim-kurulu-belli-oldu-3774360",
+    "https://www.borsaningundemi.com/haber/vakifbank-ile-halkbanka-yeni-genel-mudurler-atandi-1890509"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": null,
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "VAKBN",
+   "sektor": null,
+   "baslangic": "2026-05-08",
+   "bitis": "2026-05-08",
+   "kamuya_acilma": null,
+   "tur": "borclanma",
+   "baslik": "VakıfBank 1,5 milyar EUR'luk kalkınma odaklı finansman anlaşması imzaladı",
+   "anlam": "Para Dergi 8 Mayıs 2026 haberine göre imza töreni genel merkezde yapıldı; kreditör ve vade özetlerde görülmedi. Tek kaynak.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "hayir",
+   "guven": 0.5,
+   "etiketler": [
+    "finansman",
+    "kalkinma",
+    "euro"
+   ],
+   "kaynaklar": [
+    "https://paradergi.com.tr/finans/2026/05/08/vakifbanktan-15-milyar-euro-degerinde-kalkinma-odakli-deger-bankaciligi-finansmani"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": 1500000000,
+    "para_birimi": "EUR",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": null,
+    "beklenti": null,
+    "sure_ay": null
+   }
+  },
+  {
+   "kapsam": "sirket",
+   "hisse": "VAKBN",
+   "sektor": null,
+   "baslangic": "2026-11-05",
+   "bitis": "2026-11-05",
+   "kamuya_acilma": "2026-11-05 18:54",
+   "tur": "bilanco",
+   "baslik": "VakıfBank 3Ç26'da 18,13 milyar TL net kâr açıkladı; medyan beklentinin (14,3 milyar TL) yaklaşık %25 üzerinde",
+   "anlam": "Konsolide tablo 5 Kasım 2026'da 18:54'te yayımlandı; dokuz aylık ana ortaklık kârı 51,8 milyar TL, net faiz geliri %75 artışla 69,4 milyar TL. Solo dokuz aylık kâr 45,5 milyar TL.",
+   "yon": "olumlu",
+   "yatirimci_tepkisi": "belirsiz",
+   "tepki_aciklama": "",
+   "onden_gorulebilir": "kismen",
+   "guven": 0.85,
+   "etiketler": [
+    "bilanco",
+    "3Ç26",
+    "beklenti_asti"
+   ],
+   "kaynaklar": [
+    "https://www.cnbce.com/sirket-bilancolari/vakifbanktan-vakbn-181-milyar-tl-net-kar-bilanco-beklentileri-asti-h41132",
+    "https://www.foreks.com/haber/detay/6aecaff995131d72027d7a48/FRKS/tr/vakifbank-2026-yilinin-ucuncu-ceyreginde-aktif-buyuklugunu-6-2-trilyon-tl-ye-tasidi-05-11-26/",
+    "https://www.endeks24.com/vakifbank-vakbn-3-ceyrekte-18-milyar-lira-kar-yazdi-tahmini-asti"
+   ],
+   "kaynak_tipi": "metin",
+   "hane": {
+    "tutar": null,
+    "para_birimi": "TRY",
+    "oran": null,
+    "pay_basi_tl": null,
+    "net_kar": 18133000000,
+    "beklenti": 14332000000,
+    "sure_ay": null
+   }
   }
  ]
 }
