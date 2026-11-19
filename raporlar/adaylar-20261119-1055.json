@@ -1,0 +1,122 @@
+{
+ "tarama": {
+  "an": "2026-11-19T10:55:00+03:00",
+  "kategoriler": [
+   "tisort",
+   "gomlek-bluz-tunik",
+   "sweatshirt-kazak"
+  ],
+  "not": "Günlük tarama. alibaba.com açılmadı; üç kategoride ilan sayfasına bağlanabilen fiyat bulunamadı, yeni aday yok. Takip: kolye ve eldiven ölçüldü. Sırt çantası (0,98 $, değişmedi) için markasız Türkiye ilanı bulunamadı, dünkü markalı karşılaştırma geçersiz sayıldı ve kat hesaplanmadı. Eşarp (1,43 $) ve saat (1,83 $) Alibaba fiyatı aynı, Türkiye fiyatı yeniden ölçülemedi; cüzdan ölçülmedi."
+ },
+ "adaylar": [
+  {
+   "urun": "3 mm çelik halat (rope) zincir kolye",
+   "kategori": "taki-bijuteri",
+   "gtip": "",
+   "alibaba": {
+    "url": "https://www.alibaba.com/showroom/316l-stainless-steel-jewelry-wholesale.html",
+    "baslik": "NL2055 Hiphop 3mm 316L Stainless Steel Rope Chain Necklace Gold Filled Twist Chain for Men Wholesale Price 4mm Rope Chain NL3007",
+    "tedarikci": "Yiwu Renqing Ornament Co., Ltd.; 20.119 satış, 4,4/5 (202 yorum)",
+    "fiyat_usd": 0.5,
+    "moq": 20,
+    "kademeler": [
+     {
+      "min_adet": 20,
+      "fiyat_usd": 0.5
+     }
+    ],
+    "birim_agirlik_kg": 0.03,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 199.1,
+      "liste_fiyat_tl": 299.9,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/siya-silver-kadin-celik-kolye-x-b166426-g1-c106322",
+      "baslik": "Siya Silver Kararmaz Çelik İtalyan Zincir Kolye 60 cm/3mm (marka sayfası bağlantısı; ilan sayfası bulunamadı)"
+     },
+     {
+      "fiyat_tl": 399.9,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/erkek-celik-kolye-x-g2-c106322?pi=6",
+      "baslik": "Tixy Pixy 316l Paslanmaz Çelik Burgu Zincir Gümüş Erkek Kolye 60cm (kategori sayfası bağlantısı)"
+     },
+     {
+      "fiyat_tl": 423.8,
+      "kaynak": "ciceksepeti",
+      "url": "https://www.ciceksepeti.com/316l-celik-gold-renk-60-cm-burgu-model-kadin-kolye-5886-eeeeee6446-1499-kcm81903991",
+      "baslik": "316L Çelik Gold Renk 60 cm Burgu Model Kadın Kolye (kalınlık belirtilmemiş)"
+     }
+    ],
+    "not": "Birebir 3 mm halat/burgu ilanı bulunamadı: biri 3 mm İtalyan zincir, ikisi kalınlığı belirsiz burgu. İtalyan zincir halattan farklı modeldir. Medyan ölçümden ölçüme oynuyor (146-199-400 TL); fiyatlar arama özetinden, ilan sayfası açılamadı (başka bir aramada Siya Silver 321,78 TL görünmüştü)."
+   },
+   "taklit_riski": false,
+   "gerekce": "Çelik zincir kolye günlük kullanım ve hediye olarak Türkiye'de sürekli satılır.",
+   "riskler": [
+    "Alibaba bağlantısı showroom sayfası, ilan sayfası değil; fiyat/MOQ arama özetinden",
+    "Başlık 'Gold Filled' ve 4 mm modelden de söz ediyor; 3 mm 316L olduğu ilan sayfasından doğrulanmalı",
+    "Ağırlık tahmin",
+    "Türkiye karşılaştırması birebir ürün değil, medyan oynak"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/showroom/316l-stainless-steel-jewelry-wholesale.html",
+    "https://www.trendyol.com/siya-silver-kadin-celik-kolye-x-b166426-g1-c106322",
+    "https://www.trendyol.com/erkek-celik-kolye-x-g2-c106322?pi=6",
+    "https://www.ciceksepeti.com/316l-celik-gold-renk-60-cm-burgu-model-kadin-kolye-5886-eeeeee6446-1499-kcm81903991"
+   ]
+  },
+  {
+   "urun": "Dokunmatik ekran uyumlu örme kışlık eldiven",
+   "kategori": "orme-atki-eldiven",
+   "gtip": "",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Solid-Magic-Gloves-Capacitive-Mobile-Phone_1600094285285.html",
+    "baslik": "Solid Magic Gloves Capacitive Mobile Phone knit winter gloves",
+    "tedarikci": "arama özetinde görünmedi",
+    "fiyat_usd": 0.66,
+    "moq": 12,
+    "kademeler": [
+     {
+      "min_adet": 12,
+      "fiyat_usd": 0.66
+     },
+     {
+      "min_adet": 60,
+      "fiyat_usd": 0.44
+     },
+     {
+      "min_adet": 120,
+      "fiyat_usd": 0.33
+     }
+    ],
+    "birim_agirlik_kg": 0.05,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 299,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/desenli-kadin-eldiven-x-g1-c1046-a33-v1011",
+      "baslik": "SİSTEM PELUŞ Dokunmatik Ekran Uyumlu Örgü Desenli Şık Kadın Eldiveni"
+     }
+    ],
+    "not": "Yalnız 1 ilan yeniden doğrulandı (kategori sayfası, ürün sayfası değil; kadın, desenli). Önceki Shein 261,28 TL ilanı bu taramada yeniden görülemedi, yazılmadı."
+   },
+   "taklit_riski": false,
+   "gerekce": "Kışlık dokunmatik uyumlu örgü eldiven, hafif ve beden derdi olmayan sürekli satan aksesuar.",
+   "riskler": [
+    "Türkiye karşılaştırması tek ilan, bağlantı kategori sayfası",
+    "Ağırlık tahmin",
+    "Düşük kademede (MOQ 12) fiyat 0,66 $",
+    "Tedarikçi bilgisi görülemedi"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Solid-Magic-Gloves-Capacitive-Mobile-Phone_1600094285285.html",
+    "https://www.trendyol.com/desenli-kadin-eldiven-x-g1-c1046-a33-v1011"
+   ]
+  }
+ ]
+}
