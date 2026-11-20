@@ -1,0 +1,82 @@
+{
+ "tarama": {
+  "an": "2026-11-20T10:55:00+03:00",
+  "kategoriler": [
+   "pantolon-tayt-sort",
+   "mont-ceket-yelek",
+   "canta-deri"
+  ],
+  "not": "Günlük tarama. alibaba.com açılmadı; pantolon/tayt, mont/yelek ve hakiki deri çantada ilan sayfasına bağlanan fiyatla eşiğe yaklaşan aday çıkmadı (oranlar 1–2,5). Takip: yalnız eldiven ölçüldü. Kolye (Türkiye'de URL'siz 215–348 TL görüldü; ilan başlığında 3 mm/4 mm ve 'Gold Filled' çelişkisi), saat (1,83 $ aynı; Türkiye'de URL'li tek ilan 399 TL), sırt çantası (markasız Türkiye ilanı yok), eşarp ve cüzdan bu turda yeniden ölçülemedi."
+ },
+ "adaylar": [
+  {
+   "urun": "Dokunmatik ekran uyumlu örgü kışlık eldiven",
+   "kategori": "orme-atki-eldiven",
+   "gtip": "",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Solid-Magic-Gloves-Capacitive-Mobile-Phone_1600094285285.html",
+    "baslik": "Solid Magic Gloves Capacitive Mobile Phone Smartphone Texting Touchscreen Gloves Knit Hot Winter Warm Mittens",
+    "tedarikci": "arama özetinde görünmedi",
+    "fiyat_usd": 0.66,
+    "moq": 12,
+    "kademeler": [
+     {
+      "min_adet": 12,
+      "fiyat_usd": 0.66
+     },
+     {
+      "min_adet": 36,
+      "fiyat_usd": 0.55
+     },
+     {
+      "min_adet": 60,
+      "fiyat_usd": 0.44
+     },
+     {
+      "min_adet": 120,
+      "fiyat_usd": 0.33
+     }
+    ],
+    "birim_agirlik_kg": 0.06,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 299,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/eldiven-x-c1046",
+      "baslik": "SİSTEM PELUŞ Dokunmatik Ekran Uyumlu Örgü Desenli Kadın Eldiveni (kategori sayfası, ürün sayfası bulunamadı)"
+     },
+     {
+      "fiyat_tl": 302.6,
+      "liste_fiyat_tl": 340,
+      "kaynak": "idefix",
+      "url": "https://www.idefix.com/oil-company-unisex-ruzgar-gecirmez-esnek-kislik-soft-parmak-touch-siyah-eldiven-dokunmatik-parmak-ozellikli-p-7452946",
+      "baslik": "Oil Company Unisex Rüzgar Geçirmez Kışlık Soft Parmak Touch Eldiven (örgü olmayabilir)"
+     },
+     {
+      "fiyat_tl": 280.88,
+      "kaynak": "akakce",
+      "url": "https://www.akakce.com/erkek-eldiven/erkek-dokunmatik-eldiven,2.html",
+      "baslik": "Trabig dokunmatik örgü/polar eldiven (kategori sayfası, yaklaşık fiyat)"
+     }
+    ],
+    "not": "Üç fiyat da arama özetinden; ürün sayfası yalnız İdefix için var. Akakçe özetinde 99,90 TL ve 127,50 TL'lik unisex triko dokunmatik/ham örgü ilanları da geçti ama bağlantı yok. Karşılaştırma zayıf."
+   },
+   "taklit_riski": false,
+   "gerekce": "Kış aylarında akıllı telefon kullanımına uygun, hafif ve beden derdi olmayan serbest beden aksesuar.",
+   "riskler": [
+    "Alibaba fiyatı iki ilan kopyasında çelişiyor (12-35 çift 0,66 $ ile 60+ 0,44 $ tutarlı; diğer kopyada 120+ 0,33 $, 600+ 0,31 $)",
+    "Türkiye ilanları kategori sayfası; ürün sayfasıyla doğrulanmalı",
+    "Ağırlık tahmin",
+    "Dokunmatik iletken iplik kalitesi belirsiz"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Solid-Magic-Gloves-Capacitive-Mobile-Phone_1600094285285.html",
+    "https://www.trendyol.com/eldiven-x-c1046",
+    "https://www.akakce.com/erkek-eldiven/erkek-dokunmatik-eldiven,2.html"
+   ]
+  }
+ ]
+}
