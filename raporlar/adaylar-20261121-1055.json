@@ -1,0 +1,207 @@
+{
+ "tarama": {
+  "an": "2026-11-21T10:55:00+03:00",
+  "kategoriler": [
+   "ayakkabi-terlik",
+   "esarp-sal",
+   "taki-bijuteri"
+  ],
+  "not": "Günlük tarama. alibaba.com açılmadı. Ayakkabı/terlik (peluş terlik oran ~2,4, EVA ~1,5–4), eşarp/şal ve takıda yeni aday yok. Takip: eldiven, eşarp ve sırt çantası ölçüldü; sırt çantası ilk kez markasız Türkiye ilanlarıyla kıyaslandı (önceki markalı kıyas geçersiz). Kolye (0,50 $ aynı; ilan URL'si ve bağlantılı TR ilanı yok), saat ve cüzdan ölçülemedi."
+ },
+ "adaylar": [
+  {
+   "urun": "Desenli 90x90 eşarp",
+   "kategori": "esarp-sal",
+   "gtip": "6214.30",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Spring-Summer-High-Quality-90x90cm-Animal_1601174536158.html",
+    "baslik": "Spring Summer High Quality 90x90cm Animal Zebra Pattern Printed Women Silk Hair Scarf",
+    "tedarikci": "bilinmiyor (özette görünmedi)",
+    "fiyat_usd": 1.43,
+    "moq": 2,
+    "kademeler": [
+     {
+      "min_adet": 2,
+      "fiyat_usd": 1.43
+     },
+     {
+      "min_adet": 100,
+      "fiyat_usd": 1.39
+     },
+     {
+      "min_adet": 500,
+      "fiyat_usd": 1.28
+     }
+    ],
+    "birim_agirlik_kg": 0.08,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 199.9,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/tekstil-mor-esarp-x-r11-c32-a14-v3991",
+      "baslik": "Madame Polo Desenli Twil Eşarp 90x90 cm (kategori sayfası)"
+     },
+     {
+      "fiyat_tl": 299.9,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/90-x-90-giyim-x-c82-a92-v1576",
+      "baslik": "InStyle Desenli Turuncu Soft Fular Eşarp 90x90 (kategori sayfası, kumaş belirtilmemiş)"
+     },
+     {
+      "fiyat_tl": 420.32,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/90-x-90-levidor-sal-x-b110978-c31-a92-v1576",
+      "baslik": "Levidor Polyester 90x90 Twill Eşarp (son 10 gün en düşük fiyat)"
+     }
+    ],
+    "not": "Ürün sayfaları 403; fiyatlar WebSearch özetinden, kategori sayfası bağlantılı. Levidor markalı sayılabilir. Kumaş çoğunda polyester/twill/rayon."
+   },
+   "taklit_riski": false,
+   "gerekce": "90x90 desenli polyester eşarp tesettür ve günlük kullanımda sürekli satar.",
+   "riskler": [
+    "Başlıkta 'silk' var, gerçek kumaş polyester olmalı; ilan sayfasından doğrulanamadı",
+    "Hayvan (zebra) deseni; marka deseni değil ama desen seçiminde dikkat",
+    "Türkiye karşılaştırması ürün sayfası değil kategori sayfası",
+    "Ağırlık tahmin"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Spring-Summer-High-Quality-90x90cm-Animal_1601174536158.html",
+    "https://www.trendyol.com/tekstil-mor-esarp-x-r11-c32-a14-v3991",
+    "https://www.trendyol.com/90-x-90-levidor-sal-x-b110978-c31-a92-v1576"
+   ]
+  },
+  {
+   "urun": "Dokunmatik ekran uyumlu örgü kışlık eldiven",
+   "kategori": "orme-atki-eldiven",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Solid-Magic-Gloves-Capacitive-Mobile-Phone_1600094285285.html",
+    "baslik": "Solid Magic Gloves Capacitive Mobile Phone Touch Screen Knitted Winter Gloves",
+    "tedarikci": "bilinmiyor (özette görünmedi)",
+    "fiyat_usd": 0.66,
+    "moq": 12,
+    "kademeler": [
+     {
+      "min_adet": 12,
+      "fiyat_usd": 0.66
+     },
+     {
+      "min_adet": 36,
+      "fiyat_usd": 0.55
+     },
+     {
+      "min_adet": 60,
+      "fiyat_usd": 0.44
+     },
+     {
+      "min_adet": 120,
+      "fiyat_usd": 0.33
+     }
+    ],
+    "birim_agirlik_kg": 0.05,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 299,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/eldiven-x-c1046",
+      "baslik": "SİSTEM PELUŞ dokunmatik ekran uyumlu örgü desenli kadın eldiven (kategori sayfası)"
+     },
+     {
+      "fiyat_tl": 302.6,
+      "liste_fiyat_tl": 340,
+      "kaynak": "idefix",
+      "url": "https://www.idefix.com/oil-company-unisex-ruzgar-gecirmez-esnek-kislik-soft-parmak-touch-siyah-eldiven-dokunmatik-parmak-ozellikli-p-7452946",
+      "baslik": "Oil Company Unisex Esnek Kışlık Soft Parmak Touch Eldiven (örgü olduğu doğrulanmadı)"
+     }
+    ],
+    "not": "Yalnız 2 bağlantılı ilan doğrulandı; önceki taramadaki Trabig ~280,88 TL ile 99,90/127,50 TL'lik ilanlar bağlantıyla doğrulanamadı, dahil edilmedi."
+   },
+   "taklit_riski": false,
+   "gerekce": "Telefon kullanımına izin veren ucuz örgü eldiven kışın hediyelik ve günlük ürün olarak çok satar.",
+   "riskler": [
+    "Alibaba UK sayfasında farklı kademe (0,29 $ üst kademe) görüldü; fiyat değişken",
+    "Türkiye karşılaştırması 2 ilan, 3 değil",
+    "Ağırlık tahmin; ilan içeriği boş, malzeme belirsiz",
+    "Bedeni tek ebat, kalite değişkenliği"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Solid-Magic-Gloves-Capacitive-Mobile-Phone_1600094285285.html",
+    "https://www.trendyol.com/eldiven-x-c1046",
+    "https://www.idefix.com/oil-company-unisex-ruzgar-gecirmez-esnek-kislik-soft-parmak-touch-siyah-eldiven-dokunmatik-parmak-ozellikli-p-7452946"
+   ]
+  },
+  {
+   "urun": "Katlanabilir su itici naylon günlük sırt çantası (20L)",
+   "kategori": "sirt-cantasi",
+   "gtip": "4202.92.91",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Wholesale-Waterproof-Cheaper-Small-Quantities-Can_60763012101.html",
+    "baslik": "Waterproof lightweight nylon daypack, foldable shopping backpack with custom logo options",
+    "tedarikci": "bilinmiyor (arama özetinde görünmedi)",
+    "fiyat_usd": 0.98,
+    "moq": 50,
+    "kademeler": [
+     {
+      "min_adet": 50,
+      "fiyat_usd": 0.98
+     },
+     {
+      "min_adet": 500,
+      "fiyat_usd": 0.94
+     },
+     {
+      "min_adet": 1000,
+      "fiyat_usd": 0.9
+     },
+     {
+      "min_adet": 10000,
+      "fiyat_usd": 0.68
+     }
+    ],
+    "birim_agirlik_kg": 0.2,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 677,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/alvora/su-gecirmez-katlanabilir-spor-sirt-cantasi-20l-buyuk-kapasiteli-cantasi-dayanikli-organizator-p-988973422",
+      "baslik": "Alvora su geçirmez katlanabilir spor sırt çantası 20L (ürün sayfası)"
+     },
+     {
+      "fiyat_tl": 589,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/sirt-cantasi-x-c115?pi=3",
+      "baslik": "Overbazaar Katlanabilir Sırt Çantası 20 Litre (arama özeti, kategori sayfası; su geçirmezlik belirtilmemiş)"
+     },
+     {
+      "fiyat_tl": 429.31,
+      "kaynak": "shein",
+      "url": "https://m.shein.com/tr/Men-Backpacks-c-4280.html",
+      "baslik": "Hafif, Katlanabilir Sırt Çantası (arama özeti, kategori sayfası; hacim ve su geçirmezlik doğrulanmadı)"
+     }
+    ],
+    "not": "Markasız ilanlar; önceki markalı karşılaştırma (Decathlon/HAEGS/yurt dışı, medyan 929,6 TL) geçersiz sayılıp çıkarıldı. Alvora ürün sayfası avcı aramasından, diğer ikisi baş doğrulama aramasından (özet)."
+   },
+   "taklit_riski": false,
+   "gerekce": "Hafif, katlanabilir, bedensiz ürün; seyahat ve günlük kullanım için sürekli satar.",
+   "riskler": [
+    "Tedarikçi bilgisi ve ağırlık doğrulanmadı",
+    "Kumaş inceliği ve su itici iddiası numuneyle denenmeli",
+    "Türkiye'de çok ucuz benzerleri var",
+    "İlan sayfası ile fiyat yalnız arama özetinden",
+    "Türkiye ilanlarından ikisi kategori sayfası/özet",
+    "İlan başlığı 'Foldable Shopping Backpack'; 20L ve su itici iddiası doğrulanmadı"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Wholesale-Waterproof-Cheaper-Small-Quantities-Can_60763012101.html"
+   ]
+  }
+ ]
+}
