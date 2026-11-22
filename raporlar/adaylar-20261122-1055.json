@@ -1,0 +1,145 @@
+{
+ "tarama": {
+  "an": "2026-11-22T10:55:00+03:00",
+  "kategoriler": [
+   "elbise-etek",
+   "sac-aksesuari",
+   "orme-atki-eldiven"
+  ],
+  "not": "Günlük tarama. alibaba.com açılmadı. Elbise/etek (kat ~2,5–3,5), saç aksesuarı ve örme atkıda ilan + bağlantılı Türkiye fiyatı birlikte doğrulanan yeni aday yok; inci/kelebek klips (0,62 $/set, set içeriği belirsiz) sonraki tarama için not. Takip: eldiven ve sırt çantası ölçüldü; kolye (0,50 $, ilan URL'si yok) ve saat (1,83 $, tek bağlantılı TR ilanı) yazılmadı; cüzdan aranmadı."
+ },
+ "adaylar": [
+  {
+   "urun": "Dokunmatik ekran uyumlu örgü kışlık eldiven",
+   "kategori": "orme-atki-eldiven",
+   "gtip": "6116",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Solid-Magic-Gloves-Capacitive-Mobile-Phone_1600094285285.html",
+    "baslik": "Solid Magic Gloves Capacitive Mobile Phone touch screen knitted winter gloves",
+    "tedarikci": "bilinmiyor (arama ozetinde gorunmedi)",
+    "fiyat_usd": 0.66,
+    "moq": 12,
+    "kademeler": [
+     {
+      "min_adet": 12,
+      "fiyat_usd": 0.66
+     },
+     {
+      "min_adet": 36,
+      "fiyat_usd": 0.55
+     },
+     {
+      "min_adet": 60,
+      "fiyat_usd": 0.44
+     },
+     {
+      "min_adet": 120,
+      "fiyat_usd": 0.33
+     }
+    ],
+    "birim_agirlik_kg": 0.06,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 302.6,
+      "liste_fiyat_tl": 340,
+      "kaynak": "idefix",
+      "url": "https://www.idefix.com/oil-company-unisex-ruzgar-gecirmez-esnek-kislik-soft-parmak-touch-siyah-eldiven-dokunmatik-parmak-ozellikli-p-7452946",
+      "baslik": "Oil Company Unisex Rüzgar Geçirmez Esnek Kışlık Soft Parmak Touch Siyah Eldiven"
+     },
+     {
+      "fiyat_tl": 299,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/desenli-kadin-eldiven-x-g1-c1046-a33-v1011",
+      "baslik": "SİSTEM PELUŞ Dokunmatik Ekran Uyumlu Örgü Desenli Kadın Eldiveni (kategori sayfasından, ürün sayfası bağlantısı bulunamadı)"
+     },
+     {
+      "fiyat_tl": 303.54,
+      "kaynak": "koctas",
+      "url": "https://www.koctas.com.tr/kislik-termal-eldiven-kum-unisex/p/5000733785",
+      "baslik": "Kışlık Termal Eldiven Kum Unisex (dokunmatik olduğu doğrulanmadı)"
+     }
+    ],
+    "not": "3 ilan; yalnız Idefix ürün sayfası dokunmatik ve ürün bağlantılı. Trendyol bağlantısı kategori sayfası, Koçtaş ilanı dokunmatik/örgü doğrulanmamış benzer unisex eldiven. Bağlantısız önceki 99,90/127,50/~280,88 TL ilanlar kullanılmadı. Baş: ağırlık önceki ölçümlerle tutarlı olsun diye 0,06 kg tahmine çekildi (avcı 0,12 kategori varsayılanını yazmıştı)."
+   },
+   "taklit_riski": false,
+   "gerekce": "Dokunmatik uçlu örgü eldiven kış boyunca günlük ihtiyaçtır ve Türkiye'de markasız örnekler 300 TL civarında satılır.",
+   "riskler": [
+    "Alibaba MOQ/fiyat kademeleri yalnız arama özetinden; alibaba.co.uk sürümü kademeleri farklı (60+ 0,44, 120+ 0,33)",
+    "Ağırlık tahmin",
+    "Dokunmatik parmak ucu kalitesi ve beden (tek beden) iade riski",
+    "Türkiye karşılaştırması zayıf eşleşme"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Solid-Magic-Gloves-Capacitive-Mobile-Phone_1600094285285.html",
+    "https://www.alibaba.co.uk/product-detail/Solid-Magic-Gloves-Capacitive-Mobile-Phone_1601557781222.html"
+   ]
+  },
+  {
+   "urun": "Katlanabilir su itici günlük sırt çantası 20L",
+   "kategori": "sirt-cantasi",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Wholesale-Waterproof-Cheaper-Small-Quantities-Can_60763012101.html",
+    "baslik": "Wholesale Waterproof Cheaper Small Quantities Can Foldable backpack 20L",
+    "tedarikci": "bilinmiyor",
+    "fiyat_usd": 0.98,
+    "moq": 50,
+    "kademeler": [
+     {
+      "min_adet": 50,
+      "fiyat_usd": 0.98
+     },
+     {
+      "min_adet": 500,
+      "fiyat_usd": 0.94
+     },
+     {
+      "min_adet": 1000,
+      "fiyat_usd": 0.9
+     },
+     {
+      "min_adet": 10000,
+      "fiyat_usd": 0.68
+     }
+    ],
+    "birim_agirlik_kg": 0.2,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 677,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/alvora/su-gecirmez-katlanabilir-spor-sirt-cantasi-20l-buyuk-kapasiteli-cantasi-dayanikli-organizator-p-988973422",
+      "baslik": "Alvora su geçirmez katlanabilir spor sırt çantası 20L"
+     },
+     {
+      "fiyat_tl": 902.4,
+      "kaynak": "trendyol",
+      "baslik": "Overbazaar katlanabilir sırt çantası 20L (ürün sayfası bağlantısı bulunamadı; bu taramada arama özeti 925 TL liste / 902,40 TL gösterdi, çelişkili) — bu taramadaki özet 902,40 TL (liste 925); önceki 589 TL güncel değil",
+      "liste_fiyat_tl": 925
+     },
+     {
+      "fiyat_tl": 429.31,
+      "kaynak": "shein",
+      "baslik": "Shein hafif katlanabilir sırt çantası (önceki taramadan, yeniden doğrulanamadı)"
+     }
+    ],
+    "not": "Takip: önceki taramadaki fiyatlar; yalnız Alvora bağlantılı. Overbazaar ve Shein ürün sayfası bulunamadı."
+   },
+   "taklit_riski": false,
+   "gerekce": "Hafif, katlanabilir günlük çanta; seyahat ve okul için Türkiye'de sürekli satar.",
+   "riskler": [
+    "Ağırlık ilandan görülemedi (0,2 kg tahmin; benzer 20L ürünler 70-190 g)",
+    "Tedarikçi bilgisi görülemedi",
+    "Overbazaar fiyatı çelişkili (589 vs 902-925 TL)"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Wholesale-Waterproof-Cheaper-Small-Quantities-Can_60763012101.html",
+    "https://www.trendyol.com/alvora/su-gecirmez-katlanabilir-spor-sirt-cantasi-20l-buyuk-kapasiteli-cantasi-dayanikli-organizator-p-988973422"
+   ]
+  }
+ ]
+}
