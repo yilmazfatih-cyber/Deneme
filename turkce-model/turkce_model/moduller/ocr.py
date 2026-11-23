@@ -75,6 +75,7 @@ _LATEX_SIMGELER = {
 }
 _LATEX_SIMGE = re.compile("|".join(re.escape(k) + r"(?![a-zA-Z])" for k in sorted(_LATEX_SIMGELER, key=len, reverse=True)))
 _LATEX_SINIR = re.compile(r"\\[()\[\]]")
+_LATEX_DERECE = re.compile(r"\\(?:circ|degree)(?![a-zA-Z])")
 _US_DERECE = re.compile(r"\s*\^\s*(?:\(\s*°\s*\)|°)")  # "^(°)", "^°", " ^ °": derece işareti üst simge değildir
 _DOLAR_MATEMATIK = re.compile(r"\$\$(.+?)\$\$|(?<![\w\\$])\$(?=[^\s$])([^$\n]*?)(?<=[^\s$\\])\$(?![\w$])")
 _GORSEL_ETIKETLERI = {"image", "figure", "chart", "picture", "diagram"}
@@ -91,6 +92,8 @@ def _latex_sadelestir(s: str) -> str:
     """Sık görülen LaTeX kalıplarını düz metne çevirir; tanımadığı komutlara dokunmaz."""
     if "\\" not in s and "$" not in s:
         return s
+    # Derece, "\mathrm{C}" açılmadan önce: açılınca "\circC" olur ve "\circ" artık tanınmaz ("30^\circ\mathrm{C}").
+    s = _LATEX_DERECE.sub("°", s)
     for _ in range(3):  # iç içe kesir/kök için birkaç geçiş
         yeni = _LATEX_KESIR.sub(_kesir, s)
         yeni = _LATEX_KOK.sub(lambda m: f"√({m.group(1).strip()})", yeni)

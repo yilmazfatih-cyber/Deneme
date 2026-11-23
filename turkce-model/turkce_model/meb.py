@@ -832,6 +832,8 @@ def _ders_basligi(satirlar: list[_Satir], i: int) -> tuple[str, str, int] | None
 
     Başlık "(kod) AD - düzey" biçimindedir ve büyük harfle yazılır; sığmazsa sonraki satıra taşar
     ("(532) SEÇMELİ" + "PEYGAMBERİMİZİN HAYATI - 2"). Düzey numarasına ulaşana kadar en çok iki satır eklenir.
+    Büyük harfli grup yönergesi ("1 - 2. SORULARI … CEVAPLAYINIZ.") eklenmez: düzeyi okunamamış başlık onu yutunca
+    ders adı bozuluyor, sorular parçasız kalıyordu.
     """
     s = satirlar[i]
     m = _DERS_BASLIGI.match(s.metin)
@@ -846,6 +848,8 @@ def _ders_basligi(satirlar: list[_Satir], i: int) -> tuple[str, str, int] | None
         if (t.sayfa, t.sutun) != (s.sayfa, s.sutun) or not _buyuk_harfli(t.metin):
             break
         if _SORU_BASI.match(t.metin) or _DERS_BASLIGI.match(t.metin) or _CEVAP_SATIRI.match(t.metin):
+            break
+        if _GRUP_YONERGESI.match(kucuk(t.metin)):
             break
         ad = f"{ad} {t.metin}".strip()
         n += 1

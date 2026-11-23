@@ -599,6 +599,61 @@ def test_devam_kenardaki_yarim_egitimi_geri_getirip_surdurur(calisma, duz, monke
     _ayni_egitim(duz.deney_klasoru / "tdk", klasor)  # kesintisiz eğitimle aynı yere vardı
 
 
+@pytest.mark.parametrize("nasil", ["son_pt_silindi", "kenardakiler_silinirken"])
+def test_d1_duz_egit_son_pt_siz_bitmis_egitimin_modelini_silmez(calisma, nasil):
+    # D1: son.pt'si olmayan bitmiş eğitim (kullanıcı yer açmak için sildi ya da C1'in kurtarması: --uzerine-yaz
+    # kenardakileri silerken öldürüldü, son.pt.eski gitti, model geri geldi). Eskiden --uzerine-yaz'sız egit bunu kabul
+    # eder, modeli kenara alıp ilk adımdan sonra silerdi: bitmiş model sessizce yenisiyle değişirdi (çıkış 0).
+    a = _ayarlar(calisma, f"d1_{nasil}", "egitim.tdk.en_fazla_adim=2")
+    egit(a, "tdk", cihaz="cpu", yaz=_sus)
+    klasor = a.deney_klasoru / "tdk"
+    with pytest.raises(AyarHatasi, match=r"zaten bir eğitim var\. Sürdürmek için --devam, silip baştan"):  # son.pt varken
+        egit(a, "tdk", cihaz="cpu", yaz=_sus)
+    once = _dosya_ozetleri(klasor)
+    del once["son.pt"]
+    if nasil == "son_pt_silindi":
+        (klasor / "son.pt").unlink()
+    else:
+        _olmus_uzerine_yaz(klasor)
+        (klasor / "son.pt.eski").unlink()
+    satirlar: list[str] = []
+    with pytest.raises(AyarHatasi, match=r"zaten bir eğitim var: modeli \(en_iyi\.pt\) duruyor, son\.pt'si yok\. Silip") as hata:
+        egit(a, "tdk", cihaz="cpu", yaz=satirlar.append)
+    assert "--uzerine-yaz" in str(hata.value) and "--devam" not in str(hata.value)  # --devam bunu sürdüremez
+    assert _dosya_ozetleri(klasor) == once  # model, günlük ve durum bayt bayt aynı; kenarda dosya kalmadı
+    if nasil == "kenardakiler_silinirken":
+        assert any("kenara alınmış eski eğitim geri getirildi" in s for s in satirlar)  # model de geri geldi
+    # --devam da reddeder ama artık "--devam'sız çalıştır" demez (o da reddedilir); --uzerine-yaz'ı söyler.
+    with pytest.raises(AyarHatasi, match=r"sürdürülecek eğitim yok .*; aşamanın modeli \(en_iyi\.pt\) duruyor\. Silip baştan") as hata:
+        egit(a, "tdk", devam=True, cihaz="cpu", yaz=_sus)
+    assert "--devam'sız" not in str(hata.value)
+    assert _dosya_ozetleri(klasor) == once
+    eski_kosu = egitim_durumu_oku(klasor)["kosu"]
+    egit(a, "tdk", uzerine_yaz=True, cihaz="cpu", yaz=_sus)  # bilerek baştan: --uzerine-yaz yeniden eğitir
+    assert (klasor / "son.pt").exists() and egitim_durumu_oku(klasor)["kosu"] != eski_kosu
+
+
+@pytest.mark.parametrize(("kalan", "adlar"), [(2, "durum.json, gunluk.jsonl"), (1, "durum.json")], ids=["sil2", "sil3"])
+def test_d1b_yalniz_kaydi_geri_gelen_egitimin_notu_modeli_geri_getirdi_demez(calisma, kalan, adlar):
+    # D1b: --uzerine-yaz kenardakileri silerken öldürülmüş, model (en_iyi.pt.eski) çoktan silinmiş: kenarda yalnız
+    # durum.json ve gunluk.jsonl kalmış. durum'un önerdiği düz egit eskiden "kenara alınmış eski eğitim geri getirildi"
+    # derdi; yalnız kayıt geri gelmişti.
+    a = _ayarlar(calisma, f"d1b_{kalan}", "egitim.tdk.en_fazla_adim=2")
+    egit(a, "tdk", cihaz="cpu", yaz=_sus)
+    klasor = a.deney_klasoru / "tdk"
+    _olmus_uzerine_yaz(klasor)
+    for ad in ("son.pt", "en_iyi.pt", "gunluk.jsonl", "durum.json")[: 4 - kalan]:  # silme sırası: _eskileri_sil
+        (klasor / f"{ad}.eski").unlink()
+    satirlar: list[str] = []
+    egit(a, "tdk", cihaz="cpu", yaz=satirlar.append)  # model yok: düz egit yeni eğitimi başlatır
+    notlar = [s for s in satirlar if "yarıda kalmış bir eğitim başlangıcı bulundu" in s]
+    assert notlar == [
+        f"Not: {klasor} içinde yarıda kalmış bir eğitim başlangıcı bulundu; kenara alınmış eski eğitimden yalnız kayıt "
+        f"dosyaları geri getirildi ({adlar}); eski model yok."
+    ]
+    assert not list(klasor.glob("*.eski")) and (klasor / "en_iyi.pt").exists()
+
+
 def test_veri_iletileri_veri_komut_ekini_tasir(calisma, tmp_path):
     kok = _kopya(calisma, tmp_path / "ws")
     (kok / "ciktilar" / "veri" / "meta.json").unlink()
@@ -804,7 +859,8 @@ def test_baslik_asamanin_kendi_verisini_gosterir_not_boyut_onermez(calisma):
     assert tdk[0].splitlines()[-1] == f"  Eğitim akışı {binlik(meta['tdk_egitim']['token'])} token | toplam 1 adım"
     notu = next(s for s in tdk if "parametre başına" in s)
     assert "model veriyi ezberleyebilir, doğrulama kaybını izle (erken durdurma açık)." in notu
-    assert 'GOMME_KARARLARI.md\'deki "Önce bağlam" bölümüne bak; daha fazla metin: veri/ek_metin.' in notu
+    # D5: ek metnin gerçek klasörü (çalışma klasörünün dışındaysa tam yoluyla), "veri/ek_metin" sabit yazılmaz.
+    assert f'GOMME_KARARLARI.md\'deki "Önce bağlam" bölümüne bak; daha fazla metin: {a.veri_klasoru / "ek_metin"}.' in notu
     assert "boyut" not in notu  # gömme kararı için yön göstermez
 
     satirlar: list[str] = []
@@ -844,6 +900,22 @@ def test_meb_sorulari_yoksa_ipucu_gercek_pdf_klasorunu_gosterir(calisma, tmp_pat
         with pytest.raises(AyarHatasi) as hata:
             egit(a, "meb", sifirdan=True, cihaz="cpu", yaz=_sus)
         assert f"Önce MEB kitapçıklarını {klasor} klasörüne koyup meb-pdf, sonra veri-hazirla" in str(hata.value)
+
+
+def test_d3_meb_sorulari_klasor_ile_okunduysa_ipucu_o_klasoru_okutur(calisma, tmp_path):
+    # D3: meb_pdf.jsonl "meb-pdf --klasor <klasör>" ile okunmuşsa (raporunda) ipucu o klasörü ve --klasor'u yazar; eskiden
+    # varsayılan klasörü okuyan "meb-pdf" yazardı (oradaki başka kitapçıklar --klasor'dan okunan soruların yerine geçerdi).
+    kok = _kopya(calisma, tmp_path / "ws")
+    (kok / "ciktilar" / "veri" / "meb_egitim.npz").unlink()
+    (kok / "veri" / "meb" / "meb_pdf.rapor.json").write_text(json.dumps({"ocr": None, "klasor": "eski kitaplar"}), encoding="utf-8")
+    with pytest.raises(AyarHatasi) as hata:
+        egit(_ayarlar(kok, "klasorlu"), "meb", sifirdan=True, cihaz="cpu", yaz=_sus, veri_komut_eki=" --ayarlar x.toml")
+    from turkce_model.cli import _tirnak
+
+    assert (
+        f"Önce MEB kitapçıklarını eski kitaplar klasörüne koyup meb-pdf --klasor {_tirnak('eski kitaplar')} --ayarlar "
+        "x.toml, sonra veri-hazirla --ayarlar x.toml"
+    ) in str(hata.value)
 
 
 def test_egitim_tohumunun_en_buyugu_de_calisir(calisma):

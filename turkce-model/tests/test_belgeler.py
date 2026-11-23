@@ -9,10 +9,14 @@ sunucu istekleri sahtedir; bütün veriler sentetiktir.
 from __future__ import annotations
 
 import argparse
+import contextlib
 import inspect
+import io
 import json
+import os
 import re
 import shlex
+import shutil
 import struct
 import sys
 from dataclasses import fields, replace
@@ -21,7 +25,7 @@ from types import SimpleNamespace
 
 import numpy as np
 import pytest
-from conftest import TEST_AYARLARI
+from conftest import TEST_AYARLARI, calisma_kur
 
 from turkce_model import cli, egitim, meb
 from turkce_model.ayarlar import (
@@ -34,7 +38,7 @@ from turkce_model.ayarlar import (
 )
 from turkce_model.degerlendirme import ilerleme_ekle
 from turkce_model.egitim import KILITLI_EGITIM_ALANLARI
-from turkce_model.metin import binlik
+from turkce_model.metin import binlik, buyuk
 from turkce_model.moduller import kiyas, komutlar, meb_metin, ocr
 from turkce_model.moduller.ayar import (
     EN_BUYUK_ZAMAN_ASIMI,
@@ -45,6 +49,7 @@ from turkce_model.moduller.ayar import (
     moduller_uygula,
 )
 from turkce_model.moduller.istemci import ModulHatasi, YerelSunucu, yerel_adres_mi
+from turkce_model.model import TurkceGPT
 from turkce_model.veri import AkisVeri
 
 if sys.version_info >= (3, 11):
@@ -590,7 +595,7 @@ def test_sor_resim_belgelenen_durumlarda_durur(monkeypatch, metin, ileti):
     assert kaynak.index("resimden_soru(arg.resim") < kaynak.index("_model_yukle(")
 
 
-def test_kiyas_onbellegi_ve_kesik_cevaplar_belgelendigi_gibi():
+def test_kiyas_onbellegi_ve_kesik_cevaplar_belgelendigi_gibi(tmp_path):
     bolum = _duz(_bolum(README, "Kıyas modülü"))
     # Saklanan "cevap" sunucunun içeriği değil, düşünme bloğu ayıklanmış metindir: belge "ham" demez.
     assert "(cevap metni ve çıkarılan şık)" in bolum and "ham cevap" not in bolum
@@ -598,6 +603,19 @@ def test_kiyas_onbellegi_ve_kesik_cevaplar_belgelendigi_gibi():
     assert 'secim = cevap_cikar(str(kayit.get("cevap", ""))' in inspect.getsource(kiyas.kiyasla)
     assert "return dusunmeyi_ayikla(ham)" in inspect.getsource(YerelSunucu.sohbet)
     assert "Önbellek anahtarı model adını da içerir: bu sürümden önce saklanan cevaplar bir kez yeniden sorulur." in bolum
+    # Düşünme bloğu atılır: düşüncedeki "Cevap B" harf sayılmaz, saklanmaz; ondan sonra cevap yoksa soru cevapsızdır.
+    assert "Düşünme bloğu (`<think>…</think>`) cevaptan atılır; ondan sonra cevap yazılmamışsa soru cevapsız sayılır." in bolum
+    soru = meb.Soru(kimlik="mmlu:x:2", kaynak="turkishmmlu", ders="Coğrafya", soru="Başkent hangisidir?",
+                    secenekler=["İzmir", "Ankara", "Bursa", "Konya"], cevap=1)
+    for ad, icerik, saklanan, beklenen in (  # beklenen: (cevapsız, doğruluk)
+        ("bos", "<think>Cevap B olabilir mi?</think>", "", (1, 0.0)),
+        ("sablon-bos", "Cevap B olabilir mi?</think>\n", "", (1, 0.0)),  # şablonun açtığı düşünme kapanmış, cevap yok
+        ("cevapli", "<think>Cevap A olabilir mi?</think>\nB", "B", (0, 1.0)),
+    ):
+        sonuc = kiyas.kiyasla(_sohbet_sunucusu(icerik, "stop"), MetinAyarlari(model="m"), [soru], tmp_path / ad, yaz=lambda _: None)
+        assert (sonuc["cevapsiz"], sonuc["dogruluk_uretim"]) == beklenen, ad
+        kayit = json.loads((tmp_path / ad / f"{kiyas._dosya_adi('m')}.jsonl").read_text(encoding="utf-8"))
+        assert (kayit["cevap"], kayit["secim"]) == (saklanan, None if beklenen[0] else 1), ad
     s = meb.Soru(kimlik="mmlu:x:1", kaynak="turkishmmlu", ders="Tarih", soru="Hangisi?", secenekler=["A", "B"], cevap=0)
     assert kiyas._soru_anahtari(s, MetinAyarlari(model="a")) != kiyas._soru_anahtari(s, MetinAyarlari(model="b"))
     varsayilan = MetinAyarlari().en_fazla_token
@@ -777,22 +795,33 @@ def test_modul_iletileri_ayar_dosyasini_ve_secenekleri_anar(tmp_path, monkeypatc
     requests = pytest.importorskip("requests")
     bolum = _duz(_bolum(README, "Modülleri kurmak"))
     assert (
-        "`modul-liste`, `modul-dene`, `modul-kiyas` ve `ocr` komutlarının iletileri ayar dosyası olarak `--ayarlar` ile "
-        "verdiğin dosyanın adını anar; yazdıkları komutlar (ör. `modul-liste`) çağrının `--ayarlar`, `--ayar` ve "
-        "`--deney` seçeneklerini taşır."
+        "`modul-liste`, `modul-dene`, `modul-kiyas`, `ocr`, `meb-pdf --ocr` ve `sor --resim` komutlarının iletileri ayar "
+        "dosyası olarak `--ayarlar` ile verdiğin dosyanın adını anar; yazdıkları komutlar (ör. `modul-liste`) çağrının "
+        "`--ayarlar`, `--ayar` ve `--deney` seçeneklerini taşır."
     ) in bolum
     ayar = tmp_path / "ek ayar.toml"
     ayar.write_text(AYAR_DOSYASI, encoding="utf-8")  # modüller kapalı
-    for argv, rol in ((["modul-dene"], "ocr"), (["modul-kiyas"], "metin"), (["ocr", "sayfa.png"], "ocr")):
+    _taranmis_pdf(tmp_path / "veri" / "meb" / "pdf" / "a.pdf")  # meb-pdf --ocr'ın modele okutacağı kitapçık
+    foto = tmp_path / "soru.png"
+    foto.write_bytes(b"\x89PNG-sahte-foto")
+    ocr_okuyanlar = (["meb-pdf", "--ocr"], ["sor", "--resim", str(foto)])  # ikisi de sunucuya sayfa/foto gönderir
+    for argv, rol in (
+        (["modul-dene"], "ocr"), (["modul-kiyas"], "metin"), (["ocr", "sayfa.png"], "ocr"), *((a, "ocr") for a in ocr_okuyanlar)
+    ):
         assert cli.main([*argv, "--ayarlar", str(ayar)]) == 2, argv
         assert f"ek ayar.toml'da [moduller.{rol}] model = " in capsys.readouterr().err, argv
     # Sunucu "model yok" der: ipucundaki modul-liste komutu çağrının seçeneklerini taşır.
     yok = _yanit(404, {"error": {"message": "model 'deepseek-r1:1.5b' not found"}})
     monkeypatch.setattr(requests.Session, "request", lambda *_, **__: yok)
-    argv = ["modul-dene", "metin", "--ayarlar", str(ayar), "--ayar", "moduller.metin.model=deepseek-r1:1.5b", "--deney", "d"]
-    assert cli.main(argv) == 2
-    ek = cli._komut_eki(cli.ayristirici().parse_args(argv))
-    assert capsys.readouterr().err.strip().endswith(f"Sunucudaki modelleri görmek için: python -m turkce_model modul-liste{ek}")
+    for argv in (
+        ["modul-dene", "metin", "--ayar", "moduller.metin.model=deepseek-r1:1.5b"],
+        *([*a, "--ayar", "moduller.ocr.model=deepseek-ocr"] for a in ocr_okuyanlar),
+    ):
+        argv = [*argv, "--ayarlar", str(ayar), "--deney", "d"]
+        assert cli.main(argv) == 2, argv
+        ek = cli._komut_eki(cli.ayristirici().parse_args(argv))
+        hata = capsys.readouterr().err.strip()
+        assert hata.endswith(f"Sunucudaki modelleri görmek için: python -m turkce_model modul-liste{ek}"), argv
 
     def ulasilamaz(*_, **__):
         raise requests.exceptions.ConnectionError("bağlantı reddedildi")
@@ -800,6 +829,10 @@ def test_modul_iletileri_ayar_dosyasini_ve_secenekleri_anar(tmp_path, monkeypatc
     monkeypatch.setattr(requests.Session, "request", ulasilamaz)
     assert cli.main(["modul-liste", "--ayarlar", str(ayar)]) == 0  # modul-liste sunucunun durumunu yazar, durmaz
     assert "Başka bir sunucu kullanıyorsan ek ayar.toml'da [moduller] adres değerini düzelt." in capsys.readouterr().out
+    for argv in ocr_okuyanlar:
+        assert cli.main([*argv, "--ayarlar", str(ayar), "--ayar", "moduller.ocr.model=deepseek-ocr"]) == 2, argv
+        assert "ek ayar.toml'da [moduller] adres değerini düzelt" in _duz(capsys.readouterr().err), argv
+    assert not (tmp_path / "veri" / "meb" / "meb_pdf.jsonl").exists()  # meb-pdf --ocr hiçbir şey yazmadan durdu
 
 
 class _SiraliOcrSunucusu:
@@ -857,26 +890,54 @@ def test_ocr_kapanis_satiri_belgelendigi_gibi():
     bolum = _duz(_bolum(README, "OCR modülü"))
     m = re.search(r"Testin sonundaki kapanış satırı \((.*?) gibi\) son seçeneğe eklenmez\.", bolum)
     ornekler = re.findall(r'"([^"]+)"', m.group(1)) if m else []
-    assert len(ornekler) == 3
+    assert len(ornekler) == 3 and "," in ornekler[-1]  # sonuncusu virgülle bağlanmış iki kapanış cümlesi
+    anahtar = "CEVAP ANAHTARI\n\n(111) TARİH - 1\n\n1. A\n2. B"
     for son in ornekler:
-        sorular = _ocr_ayikla(
-            "(111) TARİH - 1\n\n" + _ocr_sorusu(1) + "\n\n" + _ocr_sorusu(2) + "\n\n" + son,
-            "CEVAP ANAHTARI\n\n(111) TARİH - 1\n\n1. A\n2. B",
-        )
+        sorular = _ocr_ayikla("(111) TARİH - 1\n\n" + _ocr_sorusu(1) + "\n\n" + _ocr_sorusu(2) + "\n\n" + son, anahtar)
         assert [s.secenekler for s in sorular.values()] == [["Bir", "İki", "Üç", "Dört"]] * 2, son
-    # Satırın tamamı kapanış değilse ya da ortak metnin içindeyse metin olarak kalır.
+    # Satırın tamamı kapanış değilse; büyük harfle yazılmamışsa kökte ve ortak metinde metin olarak kalır.
+    assert '"Sınav bitti, sonuçlar…" gibi bir satır metin olarak kalır.' in bolum
     assert (
-        '"Sınav bitti, sonuçlar…" gibi bir metin satırı da, ortak metnin ("2 - 3. soruları … cevaplayınız.") içindeki '
-        "satır da metin olarak kalır."
+        'Büyük harfle yazılmamış kapanış cümlesi soru kökünde ve ortak metinde ("2 - 3. soruları … cevaplayınız.") de '
+        "metin olarak kalır; metinde boş satır varsa, seçeneğin hemen altına boş satır bırakmadan yazılmışsa "
+        "seçeneğin devamı sayılır."
     ) in bolum
-    for satir in ("Sınav bitti, sonuçlar bir hafta sonra açıklandı.", ornekler[-1]):
-        parca = ["Ayşe bütün dönem düzenli çalıştı.", satir, "Ayşe ödül kazandı."]
-        sorular = _ocr_ayikla(
-            "(111) TARİH - 1\n\n" + _ocr_sorusu(1) + "\n\n2 - 3. soruları aşağıdaki metne göre cevaplayınız.\n\n"
-            + "\n".join(parca) + "\n\n" + _ocr_sorusu(2) + "\n\n" + _ocr_sorusu(3),
-            "CEVAP ANAHTARI\n\n(111) TARİH - 1\n\n1. A\n2. B\n3. C",
-        )
-        assert all(" ".join(parca) in sorular[n].soru for n in (2, 3)), satir
+    karisik = [o for o in ornekler if not meb._buyuk_harfli(o)]
+    assert len(karisik) == 2
+    duygular = ["Sevinç", "Korku", "Öfke", "Şaşkınlık"]
+    for satir in karisik:
+        for ayrac in ("\n", "\n\n"):  # kökün satırları bitişik ya da boş satırla ayrılmış (paragraf başı)
+            kok = ["Öğretmen sınavın sonunda öğrencilere şöyle dedi:", satir, "Bu cümlede hangi duygu vardır?"]
+            sorular = _ocr_ayikla(
+                "(111) TARİH - 1\n\n" + _ocr_sorusu(1) + "\n\n2. " + ayrac.join(kok) + "\n\n"
+                + "\n".join(f"{h}) {s}" for h, s in zip("ABCD", duygular)) + "\n\n" + _ocr_sorusu(3),
+                "CEVAP ANAHTARI\n\n(111) TARİH - 1\n\n1. A\n2. B\n3. C",
+            )
+            assert (" ".join(sorular[2].soru.split()), sorular[2].secenekler) == (" ".join(kok), duygular), (satir, ayrac)
+    for satir in ("Sınav bitti, sonuçlar bir hafta sonra açıklandı.", *karisik):
+        # İkinci parça: cümle paragraf başında ve parçada seçenek işareti ("A)") geçiyor; yine kapanış sayılmaz.
+        for ilk, ayrac in (("Ayşe bütün dönem düzenli çalıştı.", "\n"), ("Ayşe testte hep A) şıkkını işaretledi.", "\n\n")):
+            parca = [ilk, satir, "Ayşe ödül kazandı."]
+            sorular = _ocr_ayikla(
+                "(111) TARİH - 1\n\n" + _ocr_sorusu(1) + "\n\n2 - 3. soruları aşağıdaki metne göre cevaplayınız.\n\n"
+                + ayrac.join(parca) + "\n\n" + _ocr_sorusu(2) + "\n\n" + _ocr_sorusu(3),
+                "CEVAP ANAHTARI\n\n(111) TARİH - 1\n\n1. A\n2. B\n3. C",
+            )
+            assert all(" ".join(parca) in " ".join(sorular[n].soru.split()) for n in (2, 3)), (satir, ilk)
+    # Seçeneğin hemen altında, boş satırsız: büyük harfle yazılmamışsa seçeneğin devamıdır. Büyük harfle yazılmışsa ya
+    # da metinde hiç boş satır yoksa kapanıştır.
+    buyuk_harfli = buyuk(karisik[0])
+    assert not meb._SINAV_SONU.match(buyuk_harfli)  # PDF yolunun büyük harfli kuralı ("TEST BİTTİ.") kapatmasın
+    for son, bosluklu, son_secenek in (
+        (karisik[-1], True, f"Dört {karisik[-1]}"),
+        (buyuk_harfli, True, "Dört"),
+        (karisik[-1], False, "Dört"),
+    ):
+        sayfalar = ["(111) TARİH - 1\n\n" + _ocr_sorusu(1) + "\n\n" + _ocr_sorusu(2) + "\n" + son, anahtar]
+        if not bosluklu:
+            sayfalar = [s.replace("\n\n", "\n") for s in sayfalar]
+        sorular = _ocr_ayikla(*sayfalar)
+        assert (sorular[1].secenekler[-1], sorular[2].secenekler[-1]) == ("Dört", son_secenek), (son, bosluklu)
 
 
 def test_zaman_asimi_ust_siniri_belgelendigi_gibi():
@@ -916,10 +977,17 @@ def test_sor_resim_soru_numarasi_ve_sayfa_basligi_belgelendigi_gibi(monkeypatch,
     assert meb_metin.tek_soru("Açık Öğretim Lisesi\n\n7) " + _FOTO_SORUSU).soru.startswith("Açık Öğretim Lisesi")
 
 
-def _sohbet_sunucusu(icerik: str, bitis: str) -> YerelSunucu:
-    """Gerçek ``YerelSunucu``; oturumu her isteğe aynı cevabı döndürür (ağa çıkılmaz)."""
+def _sohbet_sunucusu(icerik: str, bitis: str, istekler: list | None = None) -> YerelSunucu:
+    """Gerçek ``YerelSunucu``; oturumu her isteğe aynı cevabı döndürür (ağa çıkılmaz). ``istekler`` verilirse her
+    isteğin gövdesi ona eklenir."""
     veri = {"choices": [{"message": {"role": "assistant", "content": icerik}, "finish_reason": bitis}]}
-    return YerelSunucu("http://127.0.0.1:9/v1", oturum=SimpleNamespace(request=lambda *_, **__: _yanit(200, veri)))
+
+    def istek(*_, **kw):
+        if istekler is not None:
+            istekler.append(kw.get("json"))
+        return _yanit(200, veri)
+
+    return YerelSunucu("http://127.0.0.1:9/v1", oturum=SimpleNamespace(request=istek))
 
 
 def test_kiyas_olumsuz_harf_ve_dusunurken_kesilen_cevap_belgelendigi_gibi(tmp_path, monkeypatch, capsys):
@@ -949,16 +1017,31 @@ def test_kiyas_olumsuz_harf_ve_dusunurken_kesilen_cevap_belgelendigi_gibi(tmp_pa
     ):
         sonuc = kiyas.kiyasla(_sohbet_sunucusu(icerik, bitis), ayar, sorular, tmp_path / ad, yaz=lambda _: None)
         assert (sonuc["cevapsiz"], sonuc["kesik"], sonuc["dogruluk_uretim"]) == beklenen, ad
-    # Önbellekten yeniden okunurken de aynı kural (yeni istek gitmez); bilgisi olmayan eski kayıt eskisi gibi okunur.
-    sonuc = kiyas.kiyasla(_sohbet_sunucusu("A", "stop"), ayar, sorular, tmp_path / "sablon", yaz=lambda _: None)
-    assert (sonuc["cevapsiz"], sonuc["kesik"]) == (3, 3)
-    assert "Düşünmenin kapanıp kapanmadığını tutmayan eski önbellek kayıtları eskisi gibi okunur." in bolum
+    # Önbellekten yeniden okunurken de aynı kural (yeni istek gitmez).
+    istekler: list = []
+    sonuc = kiyas.kiyasla(_sohbet_sunucusu("A", "stop", istekler), ayar, sorular, tmp_path / "sablon", yaz=lambda _: None)
+    assert (sonuc["cevapsiz"], sonuc["kesik"], len(istekler)) == (3, 3, 0)
+    # Bu bilgiyi tutmayan eski kayıt: kesikse metni düşüncenin kendisi olabilir ("Cevap B olabilir mi?"), soru yeniden
+    # sorulur ve yeni kayıt onun yerini alır; kesik değilse eskisi gibi okunur.
+    assert (
+        "Düşünmenin kapanıp kapanmadığını tutmayan eski bir önbellek kaydı kesikse soru yeniden sorulur; kesik değilse "
+        "kayıt eskisi gibi okunur."
+    ) in bolum
     eski = tmp_path / "eski" / f"{kiyas._dosya_adi('m')}.jsonl"
     eski.parent.mkdir()
-    kayit = {"anahtar": kiyas._soru_anahtari(sorular[0], ayar), "kimlik": sorular[0].kimlik, "cevap": "Cevap B", "kesik": True}
-    eski.write_text(json.dumps(kayit, ensure_ascii=False) + "\n", encoding="utf-8")
-    sonuc = kiyas.kiyasla(_sohbet_sunucusu("A", "stop"), ayar, sorular[:1], eski.parent, yaz=lambda _: None)
-    assert (sonuc["cevapsiz"], sonuc["dogruluk_uretim"]) == (0, 1.0)
+    kayitlar = [
+        {"anahtar": kiyas._soru_anahtari(s, ayar), "kimlik": s.kimlik, "cevap": "Cevap B olabilir mi?", "kesik": kesik}
+        for s, kesik in zip(sorular[:2], (True, False))
+    ]
+    eski.write_text("".join(json.dumps(k, ensure_ascii=False) + "\n" for k in kayitlar), encoding="utf-8")
+    sunucu = _sohbet_sunucusu("A", "stop", istekler)
+    sonuc = kiyas.kiyasla(sunucu, ayar, sorular[:2], eski.parent, yaz=lambda _: None)
+    # Yalnız kesik kaydın sorusu soruldu (yeni cevap A, yanlış); kesik olmayanın B'si okundu: doğruluk 1/2.
+    assert (len(istekler), sonuc["cevapsiz"], sonuc["dogruluk_uretim"]) == (1, 0, 0.5)
+    yeni = json.loads(eski.read_text(encoding="utf-8").splitlines()[-1])
+    assert (yeni["kimlik"], yeni["cevap"], yeni["kesik"], yeni["dusunme_kapandi"]) == (sorular[0].kimlik, "A", False, False)
+    sonuc = kiyas.kiyasla(sunucu, ayar, sorular[:2], eski.parent, yaz=lambda _: None)
+    assert (len(istekler), sonuc["dogruluk_uretim"]) == (1, 0.5)  # ikinci çalıştırmada istek gitmez
     # modul-dene metin de aynı kuralla sınar; --adet eksi olamaz (0 = hepsi).
     assert "`modul-dene metin` de aynı kuralla sınar" in bolum
     monkeypatch.setattr(komutlar, "_sunucu", lambda *_: _sohbet_sunucusu("Soruyu düşünüyorum. Cevap B olabilir mi?", "length"))
@@ -995,3 +1078,224 @@ def test_ocr_metni_pdf_yolunun_elemelerinden_gecer():
     mesajlar: list[str] = []
     sorular, _ = meb_metin.metinden_ayristir([sayfa, "CEVAP ANAHTARI\n\n(111) TARİH - 1\n\n1. A\n2. A"], "k.pdf", yaz=mesajlar.append)
     assert not sorular and mesajlar == ["k.pdf: 1 ders, 2 soru bulundu, 0 tutuldu (elenen: secenek_eksik 2)"]
+
+
+def test_ocr_yinelenen_ders_basligi_belgelendigi_gibi():
+    bolum = _duz(_bolum(README, "OCR modülü"))
+    assert (
+        "Sayfa başında yinelenen ders başlığı atılır; iki satıra sarılmış başlığın ikinci satırı da, dersin ilk "
+        "başlığındakiyle aynı okunduysa (I/İ gibi harf işareti, boşluk ve noktalama farkı sayılmaz)."
+    ) in bolum
+    kapak = "AÇIK ÖĞRETİM LİSESİ\n\n1. OTURUM\n\nAdayların dikkatine: süre 90 dakikadır."
+    # Düzeyi okunamamış başlık sayfa başında yinelenir: yalnız başlık atılır, altına taşan seçenekler sorusunda kalır.
+    for baslik in ("(111) TARİH", "(111) TARİH - I"):
+        sorular = _ocr_ayikla(
+            kapak,
+            f"1. OTURUM\n\n{baslik}\n\n{_ocr_sorusu(1)}\n\n2. Bir sayının üç katı kaçtır?\n\nA) 30\nB) 31\n\n2",
+            f"1. OTURUM\n\n{baslik}\n\nC) 32\nD) 33\n\n{_ocr_sorusu(3)}\n\n3",
+            f"CEVAP ANAHTARI\n\n{baslik}\n\n1. A\n2. B\n3. C",
+        )
+        assert [s.secenekler for s in sorular.values()] == [
+            ["Bir", "İki", "Üç", "Dört"], ["30", "31", "32", "33"], ["Bir", "İki", "Üç", "Dört"]
+        ], baslik
+    # Sarılmış başlığın ikinci satırı sonraki sayfada I/İ, boşluk ve noktalama farkıyla okunmuş: yine başlıkla atılır,
+    # önceki sayfanın son seçeneğine eklenmez.
+    sayfalar = [kapak]
+    for p, ikinci in enumerate(("PEYGAMBERİMİZİN HAYATI", "PEYGAMBERIMIZIN  HAYATI.", "PEYGAMBERİMİZİN HAYATI")):
+        sorular_ = "\n\n".join(_ocr_sorusu(n) for n in (2 * p + 1, 2 * p + 2))
+        sayfalar.append(f"1. OTURUM\n\n(532) SEÇMELİ\n{ikinci}\n\n{sorular_}\n\n{p + 2}")
+    sayfalar.append("CEVAP ANAHTARI\n\n(532) SEÇMELİ\nPEYGAMBERİMİZİN HAYATI\n\n" + "\n".join(f"{n}. A" for n in range(1, 7)))
+    sorular, rapor = meb_metin.metinden_ayristir(sayfalar, "k.pdf", yaz=lambda _: None)
+    assert rapor["tutulan"] == 6 and {s.ders for s in sorular} == {"Seçmeli Peygamberimizin Hayatı"}
+    assert all(s.secenekler == ["Bir", "İki", "Üç", "Dört"] for s in sorular)
+
+
+# ---- durum'un değişen ayarla sürdürme komutu, modeli olan aşama, meb-pdf --klasor, ek metin klasörü ---------------
+
+
+@pytest.fixture(scope="module")
+def yarim_calisma(tmp_path_factory) -> SimpleNamespace:
+    """Tokenizer'ı ve hazır verisi olan (MEB sorusu yok) çalışma klasörü; TDK aşaması 3. adımın başında Ctrl+C ile
+    kesilmiş (``son.pt`` adım 2). ``[yollar] veri = "v2"``, ``v2/ek_metin``'de altı paragraf var. ``kok``: klasör,
+    ``cikti``: komutların (``veri-hazirla``, ``egit``) yazdıkları."""
+    kok = tmp_path_factory.mktemp("yarim")
+    calisma_kur(kok, ayarlar=TEST_AYARLARI + '\n[yollar]\nveri = "v2"\n')
+    (kok / "veri").rename(kok / "v2")
+    (kok / "v2" / "ek_metin").mkdir()
+    paragraflar = [f"Ek paragraf {i}: kitap güzel, deniz büyük." for i in range(6)]
+    (kok / "v2" / "ek_metin" / "ek.txt").write_text("\n\n".join(paragraflar), encoding="utf-8")
+    asil, sayac = TurkceGPT.forward, {"n": 0}
+
+    def ileri(self, *a, **k):
+        sonuc = asil(self, *a, **k)
+        if self.training:
+            sayac["n"] += 1
+            if sayac["n"] == 9:  # adım başına 4 mikro yığın: 3. adımın ilki
+                raise KeyboardInterrupt
+        return sonuc
+
+    cikti = io.StringIO()
+    with pytest.MonkeyPatch.context() as mp, contextlib.redirect_stdout(cikti), contextlib.redirect_stderr(cikti):
+        mp.chdir(kok)
+        for komut in ("tdk-derlem", "tokenizer-egit", "veri-hazirla"):
+            assert cli.main([komut]) == 0, komut
+        mp.setattr(TurkceGPT, "forward", ileri)
+        assert cli.main(["egit", "--asama", "tdk", "--cihaz", "cpu"]) == 130
+    return SimpleNamespace(kok=kok, cikti=cikti.getvalue())
+
+
+def _calisma_kopyasi(yarim_calisma: SimpleNamespace, tmp_path: Path, monkeypatch) -> Path:
+    """``yarim_calisma``'nın kopyası; çalışma dizini oraya alınır."""
+    kok = tmp_path / "ws"
+    shutil.copytree(yarim_calisma.kok, kok)
+    monkeypatch.chdir(kok)
+    return kok
+
+
+def _ileri_al(yol: Path, saniye: float = 10) -> Path:
+    """Dosyanın zamanını ileri alır: sonradan eklenmiş, girdiyi eskitmiş olsun."""
+    zaman = yol.stat().st_mtime + saniye
+    os.utime(yol, (zaman, zaman))
+    return yol
+
+
+def test_modeli_olan_asama_uzerine_yazsiz_yeniden_egitilmez(yarim_calisma, tmp_path, monkeypatch, capsys):
+    bolum = _duz(_bolum(README, "6. Eğitim"))
+    assert (
+        "Aynı deneyi baştan eğitmek için `--uzerine-yaz` gerekir; `son.pt`'si silinip yalnız modeli (`en_iyi.pt`) "
+        "kalmış eğitimde de."
+    ) in bolum
+    kok = _calisma_kopyasi(yarim_calisma, tmp_path, monkeypatch)
+    klasor = ayarlari_yukle(kok / "ayarlar.toml").deney_klasoru / "tdk"
+    assert cli.main(["egit", "--asama", "tdk", "--devam", "--cihaz", "cpu"]) == 0  # eğitim biter
+    for son_pt in (True, False):  # son.pt'si duran ve yer açmak için silinmiş bitmiş eğitim
+        if not son_pt:
+            (klasor / "son.pt").unlink()
+        once = _asama_dosyalari(klasor)
+        assert "en_iyi.pt" in once and ("son.pt" in once) is son_pt
+        capsys.readouterr()
+        assert cli.main(["egit", "--asama", "tdk", "--cihaz", "cpu"]) == 2, son_pt
+        assert f"{klasor} içinde zaten bir eğitim var" in capsys.readouterr().err, son_pt
+        assert _asama_dosyalari(klasor) == once, son_pt  # model bayt bayt aynı, hiçbir dosya kenara alınmadı
+
+
+def test_durum_degisen_ayarla_surdurme_komutunu_kayitli_ayarlarla_yazar(yarim_calisma, tmp_path, monkeypatch, capsys):
+    bolum = _duz(_bolum(README, "Adım adım"))
+    for cumle in (
+        "Yarıda kalan eğitimin `--devam`'da değişemeyen ayarlarından (6. adım) biri şimdi farklıysa satır \"şimdiki "
+        "ayarlar kayıtlı eğitimden farklı (…)\" der ve iki komut yazar: kayıtlı ayarlarla sürdüren `--devam` ve yeni "
+        "ayarlarla baştan başlayan `--uzerine-yaz`.",
+        "Fark ayar dosyasından geliyorsa `--devam`'a `--ayar <alan>=<kayıtlı değer>` eklenir.",
+        "Önceki sürümün yarıda bıraktığı eğitimde bu karşılaştırma yapılmaz.",
+        "seçeneklerini tekrarlar; yalnız kayıtlı eğitimle çelişen `--ayar` sürdürme komutuna yazılmaz.",
+    ):
+        assert cumle in bolum, cumle
+    assert "şimdiki ayarlar kayıtlı eğitimden farklı (" in _kaynak("cli.py")
+    kok = _calisma_kopyasi(yarim_calisma, tmp_path, monkeypatch)
+    ayar = kok / "ayarlar.toml"
+    klasor = ayarlari_yukle(ayar).deney_klasoru / "tdk"
+    kayit = json.loads((klasor / "durum.json").read_text(encoding="utf-8"))
+    # Karşılaştırılanlar 6. adımın "Kayıttakiyle aynı olmalı" listesidir: [gomme], [model] ve kilitli eğitim ayarları.
+    kilitli = kayit["kilitli"]
+    assert {a.split(".")[0] for a in kilitli} == {"gomme", "model", "egitim"}
+    assert {a.split(".")[2] for a in kilitli if a.startswith("egitim.")} == set(KILITLI_EGITIM_ALANLARI)
+    toplam, kayitli_oran = kayit["toplam_adim"], kilitli["egitim.tdk.ogrenme_orani"]
+    yeni = ("--ayar", "egitim.tdk.ogrenme_orani=0.003")
+    ek = " " + " ".join(yeni)
+
+    def durum_(*secenek: str) -> tuple[str, str]:
+        """(TDK modeli satırının notu, "Sıradaki adım"ın komutu)"""
+        assert cli.main(["durum", *secenek]) == 0
+        cikti = capsys.readouterr().out
+        satir = next(s for s in cikti.splitlines() if "Aşama 1 modeli (TDK)" in s)
+        return satir.split("(TDK)", 1)[1].strip(), cikti.split("Sıradaki adım: ", 1)[1].splitlines()[0]
+
+    # Önceki sürümün yazdığı durum.json ("kilitli" yok): karşılaştırılmaz, --devam çağrının --ayar'ını taşır.
+    ham = (klasor / "durum.json").read_text(encoding="utf-8")
+    (klasor / "durum.json").write_text(json.dumps({k: v for k, v in kayit.items() if k != "kilitli"}), encoding="utf-8")
+    assert durum_(*yeni)[0] == f"adım 2/{toplam}, bitmedi → sürdür: egit --asama tdk --devam{ek}"
+    (klasor / "durum.json").write_text(ham, encoding="utf-8")
+    # Fark ayar dosyasından geliyor: --devam kayıtlı değeri --ayar ile geri verir.
+    asil = ayar.read_text(encoding="utf-8")
+    ayar.write_text(asil.replace("[egitim.tdk]\n", "[egitim.tdk]\nogrenme_orani = 0.003\n"), encoding="utf-8")
+    satir, siradaki = durum_()
+    geri = f" --ayar egitim.tdk.ogrenme_orani={kayitli_oran}"
+    assert f"→ sürdür: egit --asama tdk --devam{geri}; yeni ayarlarla baştan: egit --asama tdk --uzerine-yaz" in satir
+    assert siradaki == f"python -m turkce_model egit --asama tdk --devam{geri}"
+    assert ayarlari_yukle(ayar, [geri.split()[1]]).tdk.ogrenme_orani == kayitli_oran
+    ayar.write_text(asil, encoding="utf-8")
+    # Fark --ayar'dan geliyor: çelişen --ayar sürdürme komutuna yazılmaz, baştan başlatan komutta kalır.
+    satir, siradaki = durum_(*yeni)
+    assert satir == (
+        f"adım 2/{toplam}, bitmedi; şimdiki ayarlar kayıtlı eğitimden farklı (egitim.tdk.ogrenme_orani) → sürdür: "
+        f"egit --asama tdk --devam; yeni ayarlarla baştan: egit --asama tdk --uzerine-yaz{ek}"
+    )
+    assert siradaki == "python -m turkce_model egit --asama tdk --devam"
+    # Yapıştırılan sürdürme komutu reddedilmez: eğitim kayıtlı ayarlarla kaldığı yerden sürer.
+    assert cli.main([*shlex.split(siradaki)[3:], "--cihaz", "cpu"]) == 0
+    assert f"Kaldığı yerden devam: adım 2/{toplam}" in capsys.readouterr().out
+
+
+def test_meb_pdf_klasoru_hatirlanir_yazilan_komutlar_onu_okutur(yarim_calisma, tmp_path, monkeypatch, capsys):
+    bolum = _duz(_bolum(README, "3. MEB soruları"))
+    assert (
+        "Kitapçıkları `meb-pdf --klasor <klasör>` ile okuduysan bu klasör hatırlanır: `durum` yeni kitapçıkları orada "
+        "arar; `meb-mmlu`, `durum` ve `egit --asama meb`'in yazdığı `meb-pdf` komutu `--klasor <klasör>`'ü taşır."
+    ) in bolum
+    kok = _calisma_kopyasi(yarim_calisma, tmp_path, monkeypatch)
+    klasor = "eski kitaplar"
+    _taranmis_pdf(kok / klasor / "a.pdf", 2)
+    sunucu = _SiraliOcrSunucusu(
+        ["(111) TARİH - 1\n\n" + _ocr_sorusu(1) + "\n\n" + _ocr_sorusu(2), "CEVAP ANAHTARI\n\n(111) TARİH - 1\n\n1. A\n2. B"]
+    )
+    monkeypatch.setattr(  # OCR modülü: sahte sunucuyla, ağa çıkılmaz
+        komutlar, "meb_ayristirici",
+        lambda ayarlar, kip, arg=None: meb_metin.ocr_ayristirici(ocr.OcrModulu(sunucu, OcrAyarlari(model="m"), None), kip),
+    )
+    monkeypatch.setattr(meb, "mmlu_indir", lambda yol, yaz=print: [])  # ağa çıkılmaz
+    assert cli.main(["meb-pdf", "--ocr", "--klasor", klasor]) == 0
+    hedef = kok / "v2" / "meb" / "meb_pdf.jsonl"
+    assert len(meb.soru_oku(hedef)) == 2
+    assert json.loads(hedef.with_suffix(".rapor.json").read_text(encoding="utf-8"))["klasor"] == klasor
+    okuma = f"meb-pdf --ocr --klasor {cli._tirnak(klasor)}"
+    capsys.readouterr()
+    assert cli.main(["meb-mmlu"]) == 0
+    satirlar = capsys.readouterr().out.splitlines()
+    i = next(i for i, s in enumerate(satirlar) if s.startswith("Not: meb_pdf.jsonl bundan önce üretilmiş."))
+    assert satirlar[i + 1] == f"  python -m turkce_model {okuma}"
+
+    def meb_satiri() -> tuple[str, str]:
+        assert cli.main(["durum"]) == 0
+        cikti = capsys.readouterr().out
+        return next(s.strip() for s in cikti.splitlines() if "MEB soruları" in s), cikti
+
+    # Varsayılan klasöre konan kitapçık soruları eskitmez; hatırlanan klasöre konan eskitir, yeniden okuma orayı okur.
+    _ileri_al(_taranmis_pdf(kok / "v2" / "meb" / "pdf" / "baska.pdf"))
+    assert meb_satiri()[0].startswith("[x]")
+    _ileri_al(_taranmis_pdf(kok / klasor / "yeni.pdf"))
+    satir, cikti = meb_satiri()
+    assert satir.startswith("[~]") and satir.endswith(f"→ yeniden: {okuma}"), satir
+    assert f"Sıradaki adım: python -m turkce_model {okuma}\n" in cikti
+    # egit --asama meb: MEB eğitim verisi hazırlanmamış; ipucu aynı klasörü okutur.
+    assert cli.main(["egit", "--asama", "meb", "--cihaz", "cpu"]) == 2
+    hata = _duz(capsys.readouterr().err)
+    assert f"Önce MEB kitapçıklarını {klasor} klasörüne koyup meb-pdf --klasor {cli._tirnak(klasor)}, sonra veri-hazirla" in hata
+
+
+def test_ek_metin_klasoru_iletilerde_gercek_klasordur(yarim_calisma, tmp_path, monkeypatch, capsys):
+    bolum = _duz(_bolum(README, "Daha ileri gitmek"))
+    assert "`[yollar] veri` değiştiyse klasör onun altındaki `ek_metin`'dir; iletiler de onu yazar." in bolum
+    klasor = str(Path("v2", "ek_metin"))  # çalışma klasörüne göre
+    # veri-hazirla'nın özeti ve egit'in notu (çalışma klasörü kurulurken yazıldı)
+    assert f"\n  {klasor}: 6 paragraf (" in yarim_calisma.cikti
+    assert f"daha fazla metin: {klasor}.\n" in yarim_calisma.cikti
+    assert "veri/ek_metin" not in yarim_calisma.cikti
+    kok = _calisma_kopyasi(yarim_calisma, tmp_path, monkeypatch)
+    sahte = SimpleNamespace(ayar=OcrAyarlari(model="m"), dosya_oku=lambda *_: ["Okunan metin."])
+    monkeypatch.setattr(ocr, "ocr_modulu", lambda *_, **__: sahte)
+    assert cli.main(["ocr", "sayfa.png"]) == 0
+    assert f".txt dosyasını {klasor} klasörüne kopyala" in capsys.readouterr().out
+    assert (kok / "v2" / "ocr" / "sayfa.txt").read_text(encoding="utf-8") == "Okunan metin.\n"
+    shutil.rmtree(kok / "v2" / "ek_metin")  # hazır veri ek metinle hazırlanmıştı: eskir
+    assert cli.main(["durum"]) == 0
+    assert f"{klasor} kaldırılmış → yeniden: veri-hazirla" in capsys.readouterr().out

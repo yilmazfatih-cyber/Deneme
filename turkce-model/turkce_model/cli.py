@@ -143,6 +143,24 @@ def komut_tdk_derlem(arg, ayarlar: Ayarlar) -> None:
     print(f"Kök sözlüğü: {_sayi(len(kokler))} biçim ({dokum}) → {_yol(ayarlar, 'tdk', 'kokler.tsv')}")
 
 
+def _pdf_klasoru(meb_pdf: Path) -> str | None:
+    """``meb_pdf.jsonl``'i üreten ``meb-pdf``in ``--klasor``'u, yazıldığı gibi (``meb_pdf.rapor.json``, "klasor");
+    varsayılan klasörden okunduysa ya da rapor bu alanı taşımıyorsa (eski sürüm) ``None``."""
+    try:
+        rapor = json.loads(meb_pdf.with_suffix(".rapor.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+    klasor = rapor.get("klasor") if isinstance(rapor, dict) else None
+    return klasor if isinstance(klasor, str) and klasor else None
+
+
+def _klasor_eki(meb_pdf: Path) -> str:
+    """Yeniden okuyan ``meb-pdf`` komutunun ``--klasor`` seçeneği (``_pdf_klasoru``); yoksa boş: yazılan komut
+    varsayılan klasörü okuyup ``--klasor`` ile okunmuş soruların yerine başkalarını yazmasın."""
+    klasor = _pdf_klasoru(meb_pdf)
+    return f" --klasor {_tirnak(klasor)}" if klasor else ""
+
+
 def komut_meb_mmlu(arg, ayarlar: Ayarlar) -> None:
     from . import meb
 
@@ -157,7 +175,7 @@ def komut_meb_mmlu(arg, ayarlar: Ayarlar) -> None:
         # onları silmemek için durur); her komut bu çağrının --ayarlar / --ayar / --deney seçeneklerini taşır.
         kip = meb.ocr_kipi(meb_pdf)
         okuma = ("meb-pdf --ocr" + (" hepsi" if kip == "hepsi" else "")) if kip else "meb-pdf"
-        komutlar = [okuma, "veri-hazirla"]
+        komutlar = [okuma + _klasor_eki(meb_pdf), "veri-hazirla"]  # --klasor ile okunduysa aynı klasör
         meb_klasoru = ayarlar.deney_klasoru / "meb"  # bu deneyin MEB modeli (.eski: yarıda kalan --uzerine-yaz'ınki)
         if any((meb_klasoru / ad).exists() for ad in ("en_iyi.pt", "son.pt", "en_iyi.pt.eski", "son.pt.eski")):
             komutlar.append("egit --asama meb --uzerine-yaz")
@@ -184,7 +202,7 @@ def komut_meb_pdf(arg, ayarlar: Ayarlar) -> None:
     if arg.ocr:  # OCR modülü kapalıysa (ya da adresi yerel değilse) burada, hiçbir şey yazılmadan durur
         from .moduller.komutlar import meb_ayristirici
 
-        ayristirici = meb_ayristirici(ayarlar, arg.ocr)
+        ayristirici = meb_ayristirici(ayarlar, arg.ocr, arg)  # ipuçları bu çağrının ayar dosyasını ve seçeneklerini anar
     hedef = _yol(ayarlar, "meb", "meb_pdf.jsonl")
     # TurkishMMLU (değerlendirme) indirilmişse onunla soru kökü aynı olan PDF soruları eğitime alınmaz.
     mmlu_yolu = _yol(ayarlar, "meb", "turkishmmlu.jsonl")
@@ -201,6 +219,8 @@ def komut_meb_pdf(arg, ayarlar: Ayarlar) -> None:
     for s in sorular:
         dagilim[s.bolum] = dagilim.get(s.bolum, 0) + 1
     rapor["ocr"] = arg.ocr  # durum, yeniden okumayı aynı kiple önersin (None: OCR'sız)
+    if arg.klasor:  # yazıldığı gibi: durum ve meb-mmlu yeniden okumayı aynı klasörle yazsın
+        rapor["klasor"] = arg.klasor
     (hedef.with_suffix(".rapor.json")).write_text(json.dumps(rapor, ensure_ascii=False, indent=2), encoding="utf-8")
     bolumler = ", ".join(f"{ad} {dagilim[b]}" for b, ad in (("egitim", "eğitim"), ("dogrulama", "doğrulama"), ("test", "test")) if b in dagilim)
     print(f"{len(sorular)} soru → {hedef} ({bolumler})")
@@ -291,7 +311,7 @@ def komut_tokenizer_dene(arg, ayarlar: Ayarlar) -> None:
 
 
 def komut_veri_hazirla(arg, ayarlar: Ayarlar) -> None:
-    from .egitim import tokenizer_yukle, veri_klasoru
+    from .egitim import gosterim_yolu, tokenizer_yukle, veri_klasoru
     from .veri import (
         VERI_SURUMU,
         AkisYazici,
@@ -346,7 +366,7 @@ def komut_veri_hazirla(arg, ayarlar: Ayarlar) -> None:
     )
     if ek_sayi:
         ek_dog = meta.get("ek_dogrulama", {}).get("belge", 0)
-        print(f"  veri/ek_metin: {ek_sayi} paragraf ({ek_sayi - ek_dog} eğitime, {ek_dog} ayrı ek doğrulamaya)")
+        print(f"  {gosterim_yolu(ek)}: {ek_sayi} paragraf ({ek_sayi - ek_dog} eğitime, {ek_dog} ayrı ek doğrulamaya)")
     meb_yolu = _yol(ayarlar, "meb", "meb_pdf.jsonl")
     for eski in ("meb_egitim.npz", "meb_dogrulama.npz", "meb_sorular.jsonl"):
         (hedef / eski).unlink(missing_ok=True)  # eski MEB verisi kalmasın
@@ -612,7 +632,7 @@ def komut_sor(arg, ayarlar: Ayarlar) -> None:
         from .moduller.komutlar import resimden_soru
 
         # Önce fotoğraf okunur: OCR modülü kapalıysa ya da sunucuya ulaşılamazsa model hiç yüklenmeden durur.
-        soru = resimden_soru(arg.resim, ayarlar)
+        soru = resimden_soru(arg.resim, ayarlar, arg)  # ipuçları bu çağrının ayar dosyasını ve seçeneklerini anar
         model, tok, cihaz = _model_yukle(arg, ayarlar)
         print(istem(soru))
         satir, secim = _olasilik_satiri(soru_cevapla(model, tok, soru, cihaz))
@@ -686,6 +706,8 @@ class _Adim:
     """Bu adım yapılacak, yeniden yapılacak ya da şu an değişiyor: ona bağlı adımlar da yenilenecek."""
     suruyor: bool = False
     """Aşama şu an bir süreçte eğitiliyor."""
+    ek: str | None = None
+    """Komutla yazılacak seçenekler; None ise ``durum`` çağrısınınkiler (``_komut_eki``)."""
 
 
 @dataclass
@@ -716,14 +738,43 @@ def _asama_kaydi(klasor: Path) -> _AsamaKaydi:
     return _AsamaKaydi(durum or {}, None, son)
 
 
+def _devam_farklari(durum: dict, ayarlar: Ayarlar, asama: str) -> list[str]:
+    """Yarıda kalan eğitimin ``--devam``'da aynı kalması gereken ayarlarından (``durum.json``, "kilitli") şimdikilerle
+    farklı olanlar (``--ayar`` adlarıyla). Bu alanı taşımayan eski kayıtta boş liste: karşılaştırılamaz."""
+    from .egitim import kilitli_ayarlar
+
+    kayitli = durum.get("kilitli")
+    if not isinstance(kayitli, dict):
+        return []
+    simdi = kilitli_ayarlar(ayarlar, asama)
+    return [ad for ad, deger in kayitli.items() if simdi.get(ad) != deger]
+
+
+def _devam_eki(arg, durum: dict, farkli: list[str], asama: str) -> str:
+    """Yarıda kalan eğitimi kayıtlı ayarlarıyla sürdüren ``--devam``'ın seçenekleri: çağrının ``--ayarlar``, ``--deney``
+    ve ``--ayar``'ları; ama kilitli bir ayarı değiştiren ``--ayar``'lar çıkarılır, ayar dosyasından gelen farklar da
+    ``--ayar <alan>=<kayıtlı değer>`` ile geri alınır. Böylece yapıştırılan komut reddedilmez."""
+    from .egitim import kilitli_ayarlar
+
+    kayitli = durum["kilitli"]
+    kalan = [a for a in getattr(arg, "ayar", None) or [] if a.split("=", 1)[0].strip() not in farkli]
+    try:
+        simdi = kilitli_ayarlar(_ayarlar(argparse.Namespace(**{**vars(arg), "ayar": kalan})), asama)
+    except AyarHatasi:  # olmamalı (aynı dosya az önce okundu); olursa her fark kayıtlı değerle verilir
+        simdi = {}
+    geri_al = [f"{ad}={_toml_degeri(kayitli[ad])}" for ad in farkli if simdi.get(ad) != kayitli[ad]]
+    return _komut_eki(argparse.Namespace(**{**vars(arg), "ayar": kalan + geri_al}))
+
+
 def komut_durum(arg, ayarlar: Ayarlar) -> None:
     """Her adımın durumu ve sıradaki komut.
 
     Eskime içerikle anlaşılır: hazır veri ve modeller, kaydettikleri tokenizer ve veri imzalarıyla şimdiki
     dosyalar karşılaştırılarak; imzası olmayan eski kayıtlarda ve ham veri adımlarında dosya zamanlarıyla. Bir
     adım yenilenecekse ona bağlı adımlar da "önceki adım yenilenecek" olur. Yazılan her komut bu çağrının
-    ``--ayarlar`` / ``--ayar`` / ``--deney`` seçeneklerini taşır. Yarıda kalmış bir ``--uzerine-yaz``ın kenara aldığı
-    eski eğitim (``*.eski``) aşamanın eğitimi sayılır ve öyle gösterilir; önerilen komut onu önce yerine koyar.
+    ``--ayarlar`` / ``--ayar`` / ``--deney`` seçeneklerini taşır; yalnız yarıda kalan eğitimin ``--devam``'ı, kayıtlı
+    eğitimle çelişen ayarları kayıtlı değerleriyle yazar (``_devam_eki``). Yarıda kalmış bir ``--uzerine-yaz``ın kenara
+    aldığı eski eğitim (``*.eski``) aşamanın eğitimi sayılır ve öyle gösterilir; önerilen komut onu önce yerine koyar.
     """
     from . import meb, tdk
     from .egitim import (
@@ -786,16 +837,23 @@ def komut_durum(arg, ayarlar: Ayarlar) -> None:
 
     # --- MEB soruları (aşama 2) --------------------------------------------------------------------
     mmlu_adimi = adim("TurkishMMLU (yalnız değerlendirme)", mmlu, "meb-mmlu", (), "  (isteğe bağlı; meb-pdf'ten önce)")
-    pdfler = meb.pdf_dosyalari(v / "meb" / "pdf")
+    # Var olan sorular meb-pdf --klasor ile okunduysa (raporunda) eskime o klasöre bakar, yeniden okuma da onu okur:
+    # yazılan komut varsayılan klasörü okuyup o soruların yerine başkalarını yazmasın.
+    kayitli_klasor = _pdf_klasoru(meb_pdf) if meb_pdf.exists() else None
+    pdf_klasoru = Path(kayitli_klasor) if kayitli_klasor else v / "meb" / "pdf"
+    klasor_eki = f" --klasor {_tirnak(kayitli_klasor)}" if kayitli_klasor else ""
+    pdfler = meb.pdf_dosyalari(pdf_klasoru)
     # TurkishMMLU sonradan indirildiyse onunla aynı sorular hâlâ eğitimdedir; sonradan eklenen kitapçık da okunmamıştır.
-    meb_pdf_adimi = adim("MEB soruları (elle indirilen PDF'ler)", meb_pdf, "meb-pdf", (mmlu, *pdfler), "  (aşama 2 için)")
+    meb_pdf_adimi = adim(
+        "MEB soruları (elle indirilen PDF'ler)", meb_pdf, "meb-pdf" + klasor_eki, (mmlu, *pdfler), "  (aşama 2 için)"
+    )
     if meb_pdf_adimi.komut and meb_pdf.exists():
         # Var olan sorular OCR ile okunduysa yeniden okuma da OCR'la (aynı kiple) önerilir: OCR'sız meb-pdf taranmış
         # kitapçıklarda soru bulamaz.
         kip = meb.ocr_kipi(meb_pdf)
         if kip:
             komut = "meb-pdf --ocr" + (" hepsi" if kip == "hepsi" else "")
-            meb_pdf_adimi = adim("MEB soruları (elle indirilen PDF'ler)", meb_pdf, komut, (mmlu, *pdfler))
+            meb_pdf_adimi = adim("MEB soruları (elle indirilen PDF'ler)", meb_pdf, komut + klasor_eki, (mmlu, *pdfler))
     meb_pdf_eski = meb_pdf_adimi.isaret == "~"
 
     # --- Tokenizer: imzası bir kez hesaplanır --------------------------------------------------------
@@ -826,7 +884,7 @@ def komut_durum(arg, ayarlar: Ayarlar) -> None:
         if _eski_mi(meta_yolu, [derlem, *_agac(ek_metin)]):
             nedenler.append("derlem ya da ek metin sonradan değişti")
         elif isinstance(meta.get("ek_paragraf"), int) and meta["ek_paragraf"] > 0 and not ek_metin.exists():
-            nedenler.append("veri/ek_metin kaldırılmış")
+            nedenler.append(f"{gosterim_yolu(ek_metin)} kaldırılmış")
         hazir_tdk = bool(nedenler)
         if _eski_mi(meta_yolu, [meb_pdf]):
             nedenler.append("MEB soruları sonradan değişti")
@@ -895,6 +953,20 @@ def komut_durum(arg, ayarlar: Ayarlar) -> None:
         if neden:
             return _Adim(ad, "~", f"{on}{neden} → yeniden: {komut} --uzerine-yaz{ek}", f"{komut} --uzerine-yaz", True)
         if durum.get("durum") in YARIM_DURUMLAR:  # "suruyor" ama kilit yok: süreç öldürülmüş
+            farkli = _devam_farklari(durum, ayarlar, asama) if son.exists() else []
+            if farkli:
+                # Şimdiki ayarlarla --devam reddedilirdi: sürdürme kayıtlı ayarlarla yazılır (yeni ayarlarla baştan
+                # başlamak bilerek seçilsin diye ayrıca söylenir).
+                devam_eki = _devam_eki(arg, durum, farkli, asama)
+                return _Adim(
+                    ad,
+                    "~",
+                    f"{on}{ilerleme}, bitmedi; şimdiki ayarlar kayıtlı eğitimden farklı ({', '.join(farkli)}) → sürdür: "
+                    f"{komut} --devam{devam_eki}; yeni ayarlarla baştan: {komut} --uzerine-yaz{ek}",
+                    f"{komut} --devam",
+                    True,
+                    ek=devam_eki,
+                )
             if son.exists():
                 return _Adim(ad, "~", f"{on}{ilerleme}, bitmedi → sürdür: {komut} --devam{ek}", f"{komut} --devam", True)
             return _Adim(
@@ -969,6 +1041,7 @@ def komut_durum(arg, ayarlar: Ayarlar) -> None:
     adaylar += ([] if meb_pdf.exists() else [mmlu_adimi]) + [meb_pdf_adimi, meb_model]
     sira = next((a for a in adaylar if a.komut), None)
     siradaki = sira.komut if sira is not None else None
+    sira_eki = sira.ek if sira is not None and sira.ek is not None else ek  # adımın kendi seçenekleri (ör. --devam)
     if siradaki == "tokenizer-egit" and not meb_pdf.exists():
         print("\nİpucu: MEB kitapçıklarını tokenizer'dan önce eklersen (meb-mmlu, meb-pdf) soru kelimeleri de sözlüğe girer.")
     eksik = ayarlar.gomme.eksikler()
@@ -991,11 +1064,11 @@ def komut_durum(arg, ayarlar: Ayarlar) -> None:
     if eksik and (siradaki is None or siradaki.startswith("egit")):
         print(f"Sıradaki adım: {ayar_yolu.name}'daki [gomme] kararlarını doldur (GOMME_KARARLARI.md)")
     elif siradaki and engel:
-        print(f"Sıradaki adım: önce süren eğitimin bitmesini bekle ({engel}); sonra: python -m turkce_model {siradaki}{ek}")
+        print(f"Sıradaki adım: önce süren eğitimin bitmesini bekle ({engel}); sonra: python -m turkce_model {siradaki}{sira_eki}")
     elif siradaki:
-        print(f"Sıradaki adım: python -m turkce_model {siradaki}{ek}")
+        print(f"Sıradaki adım: python -m turkce_model {siradaki}{sira_eki}")
         if siradaki.startswith("meb-pdf") and not pdfler:
-            print(f"  (önce MEB kitapçıklarını tarayıcıyla indirip {gosterim_yolu(v / 'meb' / 'pdf')} klasörüne koy; README, 3. adım)")
+            print(f"  (önce MEB kitapçıklarını tarayıcıyla indirip {gosterim_yolu(pdf_klasoru)} klasörüne koy; README, 3. adım)")
     elif suren_bu:
         print(f"Sıradaki adım: süren eğitimin bitmesini bekle ({', '.join(suren_bu)}); sonra yeniden: python -m turkce_model durum{ek}")
     else:

@@ -171,6 +171,7 @@ def komut_modul_dene(arg, ayarlar) -> int:
 
 
 def komut_ocr(arg, ayarlar) -> None:
+    from ..egitim import gosterim_yolu
     from .ocr import KESIK_ISARETI, ocr_modulu
 
     modul = ocr_modulu(ayarlar, **_ekler(arg))
@@ -194,8 +195,9 @@ def komut_ocr(arg, ayarlar) -> None:
                 f"  Uyarı: çıktı en_fazla_token ({modul.ayar.en_fazla_token}) sınırında kesildi; metnin sonu eksik "
                 "olabilir. [moduller.ocr] en_fazla_token değerini büyüt."
             )
+    ek_metin = gosterim_yolu(ayarlar.veri_klasoru / "ek_metin")  # [yollar] veri değişmişse gerçek klasör
     print(
-        "Not: hakkına sahip olduğun metinleri eğitime katmak için .txt dosyasını veri/ek_metin klasörüne kopyala "
+        f"Not: hakkına sahip olduğun metinleri eğitime katmak için .txt dosyasını {ek_metin} klasörüne kopyala "
         "(README, 'Daha ileri gitmek')."
     )
 

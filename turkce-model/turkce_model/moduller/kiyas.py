@@ -91,7 +91,7 @@ def dusunurken_kesildi(kesik: object, dusunme_kapandi: object) -> bool:
     """Cevap ``en_fazla_token``'da kesildi ve ham içerikte kapanan düşünme bloğu (``</think>``) yok: model düşünürken
     kesildi. Sohbet şablonu düşünmeyi kendisi açan sunucularda (vLLM, llama.cpp ``--jinja``) içerikte ``<think>``
     görünmez; metin düşüncenin kendisidir ("cevap A olabilir mi?"), içinden şık çıkarılmaz. Bu bilgiyi taşımayan eski
-    önbellek kaydında ``dusunme_kapandi`` ``None``dır: kayıt eskisi gibi okunur."""
+    önbellek kaydında ``dusunme_kapandi`` ``None``dır: ``kiyasla`` kesik eski kaydı kullanmaz, soruyu yeniden sorar."""
     return bool(kesik) and dusunme_kapandi is False
 
 
@@ -153,6 +153,10 @@ def kiyasla(
         for i, s in enumerate(sorular, 1):
             anahtar = _soru_anahtari(s, ayar)
             kayit = bilinen.get(anahtar)
+            if kayit is not None and kayit.get("kesik") and "dusunme_kapandi" not in kayit:
+                # Düşünmenin kapanıp kapanmadığını tutmayan eski kesik kayıt: cevap metni düşüncenin kendisi olabilir
+                # ("cevap A olabilir mi?"), içinden çıkan harf yanlış doğruluk verir. Soru yeniden sorulur.
+                kayit = None
             if kayit is None:
                 bas = time.time()
                 cevap = sunucu.sohbet(

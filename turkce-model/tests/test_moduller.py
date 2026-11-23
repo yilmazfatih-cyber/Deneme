@@ -1,8 +1,9 @@
 """DeepSeek modülleri: yerel sunucu istemcisi, OCR, OCR metninden MEB sorusu, kıyas, katalog.
 
 Gerçek bir model çalıştırılmaz: testler bu süreçte açılan sahte bir OpenAI uyumlu sunucuyla konuşur.
-Tüm metinler sentetiktir. Adlardaki bulgu numaraları önceki incelemelerin (M1 … M8, m1 … m13) ya da son düzeltme
-turunun (M2, M5, M6, M7, M9 … M12) bulgularıdır: aynı numara iki turda farklı kusurları gösterebilir.
+Tüm metinler sentetiktir. Adlardaki bulgu numaraları önceki incelemelerin (M1 … M8, m1 … m13), beşinci turun
+(M2, M5, M6, M7, M9 … M12) ya da altıncı turun ("6. tur" yorumlu R4, R5, R6) bulgularıdır: aynı numara iki turda
+farklı kusurları gösterebilir.
 """
 
 from __future__ import annotations
@@ -397,6 +398,10 @@ def test_B2_ozel_token_artigi_etiket_gibi_temizlenir():
         pytest.param("Bir açının ölçüsü \\( 30^{\\circ} \\) ise", "Bir açının ölçüsü 30° ise", id="m12-derece"),
         pytest.param("Bir açının ölçüsü \\( 45^\\circ \\) ise", "Bir açının ölçüsü 45° ise", id="M7-parantezsiz-derece"),
         pytest.param("\\( 45 ^ \\circ \\) ve 90^\\degree", "45° ve 90°", id="M7-bosluklu-derece"),
+        # 6. tur R5: birim "\mathrm{C}" / "\text{C}" dereceden önce açılınca "\circC" tanınmıyor, "30^\circC" kalıyordu.
+        pytest.param("Su \\( 30^\\circ\\mathrm{C} \\) sıcaklıkta", "Su 30°C sıcaklıkta", id="R5-derece-mathrm"),
+        pytest.param("\\(10^\\circ\\text{C}\\) ve \\( 5^{\\circ}\\mathrm{F} \\)", "10°C ve 5°F", id="R5-derece-text"),
+        pytest.param("\\( 20^\\degree\\mathrm{C} \\)", "20°C", id="R5-degree-mathrm"),
         pytest.param("\\( A = \\{1, 2, 3\\} \\) kümesi", "A = {1, 2, 3} kümesi", id="m12-kume"),
         pytest.param("\\( \\log_{2} 8 \\) değeri", "log_(2) 8 değeri", id="m12-log"),
         pytest.param("\\( x \\in \\mathbb{R} \\) olmak üzere", "x ∈ R olmak üzere", id="m12-mathbb"),
@@ -408,7 +413,7 @@ def test_B2_ozel_token_artigi_etiket_gibi_temizlenir():
         pytest.param("**Ankara**nın nüfusu", "Ankaranın nüfusu", id="R5-vurgu-ardinda-ek"),
     ],
 )
-def test_ocr_temizle_metni_bozmaz(ham, temiz):  # B3, M5, m12, m13, R4, R5, M7 (tur 5)
+def test_ocr_temizle_metni_bozmaz(ham, temiz):  # B3, M5, m12, m13, R4, R5, M7 (tur 5), R5 (tur 6)
     assert ocr_temizle(ham) == temiz
 
 
@@ -865,13 +870,33 @@ def test_M5_sablonun_actigi_dusunmede_kesilen_cevap_cevapsiz_sayilir(sunucu, tmp
     assert [(k["secim"], k["kesik"], k["dusunme_kapandi"]) for k in kayitlar] == [
         (None, True, False), (None, True, False), (1, False, False), (3, True, True)
     ]
-    # Önbellekten okunurken de aynı kural; bu alanı taşımayan eski kayıt eskisi gibi okunur.
+    # Önbellekten okunurken de aynı kural (bu alanı taşımayan eski kayıt: test_R4_…).
     assert kiyas.kiyasla(YerelSunucu(sunucu.adres), ayar, sorular, tmp_path / "kiyas", lambda m: None) == sonuc
     assert len(sunucu.istekler) == 4
-    eski = {"anahtar": kiyas._soru_anahtari(sorular[0], ayar), "cevap": "Cevap: A", "kesik": True}
-    (tmp_path / "eski").mkdir()
-    (tmp_path / "eski" / "deepseek-r1_1.5b.jsonl").write_text(json.dumps(eski) + "\n", encoding="utf-8")
-    assert kiyas.kiyasla(YerelSunucu(sunucu.adres), ayar, sorular[:1], tmp_path / "eski", lambda m: None)["dogruluk_uretim"] == 1.0
+
+
+def test_R4_eski_onbellekteki_kesik_kayit_yeniden_sorulur(sunucu, tmp_path):  # 6. tur R4
+    # 5. turdan önceki kayıt düşünmenin kapanıp kapanmadığını tutmaz; kesikse cevap metni düşüncenin kendisi olabilir
+    # ("cevap A olabilir mi?"): içinden çıkan A doğru sayılıyor, yanlış doğruluk eski önbellekte kalıyordu.
+    sunucu.cevapla = lambda govde: "<think>kısa</think>Cevap: B"
+    sorular = _test_sorulari(2)  # doğru cevaplar: A, B
+    ayar = MetinAyarlari(model="deepseek-r1:1.5b")
+    eski = [
+        {"anahtar": kiyas._soru_anahtari(sorular[0], ayar), "kimlik": "t:0", "cevap": M5_DUSUNCE, "kesik": True},
+        {"anahtar": kiyas._soru_anahtari(sorular[1], ayar), "kimlik": "t:1", "cevap": "Cevap: B", "kesik": False},
+    ]
+    dosya = tmp_path / "kiyas" / "deepseek-r1_1.5b.jsonl"
+    dosya.parent.mkdir()
+    dosya.write_text("".join(json.dumps(k, ensure_ascii=False) + "\n" for k in eski), encoding="utf-8")
+    sonuc = kiyas.kiyasla(YerelSunucu(sunucu.adres), ayar, sorular, tmp_path / "kiyas", lambda m: None)
+    # Yalnız kesik eski kayıt yeniden soruldu (cevap B: yanlış); kesik olmayan eski kayıt eskisi gibi okundu (B: doğru).
+    assert [_soru_no(g) for g in sunucu.istekler] == [0]
+    assert (sonuc["dogruluk_uretim"], sonuc["cevapsiz"], sonuc["kesik"]) == (0.5, 0, 0)
+    yeni = json.loads(dosya.read_text(encoding="utf-8").splitlines()[-1])
+    assert (yeni["kimlik"], yeni["secim"], yeni["kesik"], yeni["dusunme_kapandi"]) == ("t:0", 1, False, True)
+    # Tam kayıt yazıldı: sonraki çalıştırma soruyu bir daha sormaz.
+    assert kiyas.kiyasla(YerelSunucu(sunucu.adres), ayar, sorular, tmp_path / "kiyas", lambda m: None) == sonuc
+    assert len(sunucu.istekler) == 1
 
 
 def test_M5_modul_dene_metin_dusunurken_kesilen_cevabi_calisiyor_saymaz(sunucu, tmp_path, capsys):
@@ -1003,6 +1028,24 @@ def test_M8_ocr_ayni_adli_dosyalari_ayri_yazar(sunucu, tmp_path):
     cikti = ayarlar.veri_klasoru / "ocr"
     assert sorted(p.name for p in cikti.iterdir()) == ["IMG_0001-2.txt", "IMG_0001.txt", "soru-2.txt", "soru.txt"]
     assert sorted(p.read_text(encoding="utf-8").strip() for p in cikti.iterdir()) == [f"metin {i}" for i in (1, 2, 3, 4)]
+
+
+def test_R6_ocr_notu_gercek_ek_metin_klasorunu_gosterir(sunucu, tmp_path, monkeypatch, capsys):  # 6. tur R6
+    # [yollar] veri = "v2" iken not "veri/ek_metin" diyordu: oraya kopyalanan metin eğitimde hiç okunmuyordu.
+    from turkce_model.cli import main
+
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / "sayfa.png").write_bytes(b"\x89PNG-sayfa")
+    sunucu.cevapla = lambda govde: "Sayfanın metni"
+    (tmp_path / "ayarlar.toml").write_text(
+        f'[yollar]\nveri = "v2"\n[moduller]\nadres = "{sunucu.adres}"\n[moduller.ocr]\nmodel = "deepseek-ocr"\n',
+        encoding="utf-8",
+    )
+    assert main(["ocr", "sayfa.png"]) == 0
+    cikti = capsys.readouterr().out
+    assert "Not: hakkına sahip olduğun metinleri eğitime katmak için .txt dosyasını v2/ek_metin klasörüne kopyala" in cikti
+    assert "veri/ek_metin" not in cikti
+    assert (tmp_path / "v2" / "ocr" / "sayfa.txt").read_text(encoding="utf-8").strip() == "Sayfanın metni"
 
 
 def test_B1_ocr_komutu_kesik_goruntu_ciktisini_soyler(sunucu, tmp_path, capsys):
