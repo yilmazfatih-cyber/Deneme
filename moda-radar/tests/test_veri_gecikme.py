@@ -54,6 +54,7 @@ def depo(tmp_path):
         )
         d.ekle_sinyaller(
             [
+                _sinyal("SS20", "taban"),  # verinin ilk sezonu: podyum sol sansürü bu sezonda kalır
                 _sinyal("SS26", "A"),  # defile tarihi 2025-09-20
                 _sinyal("FW26", "A"),  # nominal 2026-02-25, rafa daha yakın → seçilir
                 _sinyal("SS26", "B"),
@@ -99,7 +100,7 @@ def test_ozet_bos(depo):
 def test_ilk_taramada_rafta_olan_sayilmaz(tmp_path):
     """Sol sansür: markanın ilk tarama gününde zaten rafta olan değer gecikme üretmez; sonra gelen üretir."""
     with Depo(tmp_path / "s.db") as d:
-        d.ekle_sinyaller([_sinyal("SS26", "A"), _sinyal("SS26", "B")])
+        d.ekle_sinyaller([_sinyal("SS20", "taban"), _sinyal("SS26", "A"), _sinyal("SS26", "B")])
         d.ekle_gozlemler([_gozlem("A", date(2026, 3, 1)), _gozlem("B", date(2026, 3, 22))])
         satirlar = gecikme_olc.olc(d, "orta", "kadin-ust")
         assert [r["deger"] for r in satirlar] == ["B"]

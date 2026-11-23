@@ -9,6 +9,8 @@ podyumdan bağımsızdır. Eşleşme sayısına göre önselle birleştirilir:
 - 3 ≤ n ≤ 7 → ``w·medyan + (1 − w)·önsel_mod``, ``w = n / (n + 8)``, kaynak ``"karma"``
 - n < 3 → önselin modu, kaynak ``"onsel"``
 
+Podyum tarafında da sol sansür vardır: verinin en erken sezonunda zaten görünen değer eşleşmeye girmez.
+
 Sol sansür: kaynak türü ``site`` olan gözlemlerde, markanın ilk tarama gününde zaten rafta olan değerin gerçek ilk
 görülme tarihi bilinmez; bu gözlemler eşleşmeye girmez (yoksa gecikme taramanın başladığı günü ölçer).
 
@@ -60,8 +62,13 @@ def eslesmeler(
         if anahtar not in ilk_raf or g.ilk_gorulme < ilk_raf[anahtar]:
             ilk_raf[anahtar] = g.ilk_gorulme
 
+    # Podyum tarafında sol sansür: verinin en erken sezonunda zaten görünen değerin gerçek ilk sezonu bilinmez;
+    # yoksa her yaygın renk "ilk sezon"a bağlanır ve gecikme veri penceresinin uzunluğunu ölçer.
+    en_erken = sz.sirala(ilk_sezon.values())[0] if ilk_sezon else None
     sonuc = []
     for anahtar, podyum_sezonu in ilk_sezon.items():
+        if podyum_sezonu == en_erken:
+            continue
         raf = ilk_raf.get(anahtar)
         if raf is None:
             continue

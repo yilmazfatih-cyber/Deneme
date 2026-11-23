@@ -2,10 +2,21 @@ import json
 from datetime import date
 from pathlib import Path
 
+import pytest
+
 from moda_radar.sema import SegmentDosyasi
 from moda_radar.tahmin import geriye_test as gt
+from moda_radar.tahmin import model as _md
 from moda_radar.tahmin import sentetik
+from moda_radar.tahmin import sentetik as _sentetik
 from moda_radar.tahmin import sezon as sz
+
+
+@pytest.fixture(autouse=True)
+def _sentetik_adim(monkeypatch):
+    """Sentetik dünyada eğri ardışık sezonda ilerler; gerçek veride model aynı mevsimle karşılaştırır."""
+    monkeypatch.setattr(_md, "KARSILASTIRMA_ADIMI", _sentetik.KARSILASTIRMA_ADIMI)
+
 
 SEG = SegmentDosyasi.model_validate(json.loads(Path("content/segmentler.json").read_text(encoding="utf-8")))
 SEZONLAR = [sz.ekle("SS22", i) for i in range(8)]  # SS22..FW25

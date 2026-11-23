@@ -177,6 +177,7 @@ def _tahmin(args) -> int:
 def _geriye_test(args) -> int:
     segmentler = segmentleri_oku(args.segmentler)
     if args.sentetik:
+        md.KARSILASTIRMA_ADIMI = sentetik.KARSILASTIRMA_ADIMI  # sentetik dünyanın bilinen adımı
         tanim = next(s for s in segmentler.segmentler if s.kod == args.segment)
         bas = sz.ekle(args.tahmin, -6)
         sezonlar = [sz.ekle(bas, i) for i in range(8)]

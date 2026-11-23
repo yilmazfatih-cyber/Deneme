@@ -24,6 +24,10 @@ def nominal_podyum_tarihi(sezon: str) -> date:
     return date(yil - 1, 9, 25) if sezon.startswith("SS") else date(yil, 2, 25)
 
 
+def _sezon_sira(sezon: str) -> tuple[int, int]:
+    return (int(sezon[2:]), 0 if sezon.startswith("SS") else 1)
+
+
 def podyum_tarihi(depo, sezon: str) -> date:
     tarihler = depo.defile_tarihleri(sezon)
     return min(tarihler) if tarihler else nominal_podyum_tarihi(sezon)
@@ -40,6 +44,15 @@ def olc(
             baslangic.setdefault((s.nitelik_ekseni, s.nitelik_degeri), []).append(
                 (podyum_tarihi(depo, s.sezon), s.sezon)
             )
+    # Podyum sol sansürü: verinin en erken sezonunda zaten görünen değerin gerçek ilk sezonu bilinmez.
+    tum_sezonlar = sorted({sz for adaylar in baslangic.values() for _, sz in adaylar}, key=_sezon_sira)
+    if tum_sezonlar:
+        en_erken = tum_sezonlar[0]
+        baslangic = {
+            a: adaylar
+            for a, adaylar in baslangic.items()
+            if min((sz for _, sz in adaylar), key=_sezon_sira) != en_erken
+        }
     gozlemler = list(depo.gozlemler(ulke, segment, kategori))
     ilk_tarama: dict[str, date] = {}
     for g in gozlemler:

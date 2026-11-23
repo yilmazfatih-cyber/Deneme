@@ -11,7 +11,11 @@ Logit uzayında::
 - Temel olasılık 0,5: tipik bir sinyal (pay %5, 5 marka, yön düz, segment geçmişi yok) σ(0) = 0,5 verir;
   pay ve marka çeşitliliği log ölçekte artırır, referansın altı azaltır.
 - ``g = min(1, güven / GUVEN_TAM)``: düşük güvenli (ör. yalnız rapor kaynaklı) sinyalin podyum etkisi kırpılır.
-- Yön, podyum payı zaman serisinden (önceki sezona oran) hesaplanır.
+- Yön, podyum payı zaman serisinden hesaplanır ve AYNI MEVSİMLE karşılaştırılır (SS27 ↔ SS26, FW26 ↔ FW25);
+  ardışık sezon karşılaştırması mevsim etkisini (yazın açık renk, kışın yün) trend sanıyordu.
+- Renk ekseninde yön tek TCX kodundan değil RENK AİLESİNİN toplam podyum payından hesaplanır. Geriye test
+  (SS25→SS26→SS27, 57 kod): kod düzeyinde değişimler tersine dönüyor (r = −0,59, en çok yükselen 10 kodun 1'i
+  sürdü); aile düzeyinde sürüyor (r = +0,20). Kod düzeyindeki sıçrama ortalamaya döner (docs/karne/kalicilik).
 - Segment uyumu: segmentin bilinen en son raf payı eşikteyse nötr; eşiğin iki katında +0,83, yarısında −0,83
   (raf payının sezondan sezona log ölçekte sürmesi; perakendede en güçlü tek öngörücü).
 - Sinyal yoksa olasılık 0,5, ``kaynak_sayisi = 0``.
@@ -36,6 +40,8 @@ UYUM_ALT, UYUM_UST = 0.125, 4.0
 GUVEN_TAM = 0.6
 YON_ETKISI = {Yon.GIRIS: 0.3, Yon.YUKSELIS: 0.4, Yon.ZIRVE: 0.0, Yon.DUZ: 0.0, Yon.CIKIS: -0.6}
 YUKSELIS_ORANI = 1.2
+# Yön karşılaştırma adımı (sezon): 2 = aynı mevsim (gerçek veri). Sentetik dünya ardışık sezonda ilerler (1).
+KARSILASTIRMA_ADIMI = 2
 CIKIS_ORANI = 0.8
 ALT_SINIR, UST_SINIR = 0.05, 0.95
 ESIK_RAF_PAYI = 0.04
@@ -75,11 +81,12 @@ def birlesik_sinyal(kayitlar: list[SinyalKaydi]) -> dict | None:
     }
 
 
-def yon_hesapla(seri: dict[str, float], sezon: str) -> Yon:
-    """Podyum payı serisinden (sezon → pay) hedef sezonun yönü."""
+def yon_hesapla(seri: dict[str, float], sezon: str, adim: int | None = None) -> Yon:
+    """Podyum payı serisinden (sezon → pay) hedef sezonun yönü; aynı mevsimle karşılaştırır (SS ↔ SS, FW ↔ FW)."""
     simdi = seri.get(sezon, 0.0)
-    onceki = seri.get(sz.ekle(sezon, -1), 0.0)
-    daha_onceki = seri.get(sz.ekle(sezon, -2), 0.0)
+    adim = adim or KARSILASTIRMA_ADIMI
+    onceki = seri.get(sz.ekle(sezon, -adim), 0.0)
+    daha_onceki = seri.get(sz.ekle(sezon, -2 * adim), 0.0)
     if simdi <= 0:
         return Yon.CIKIS if onceki > 0 else Yon.DUZ
     if onceki <= 0:
@@ -92,6 +99,51 @@ def yon_hesapla(seri: dict[str, float], sezon: str) -> Yon:
     if daha_onceki > 0 and onceki / daha_onceki >= YUKSELIS_ORANI:
         return Yon.ZIRVE
     return Yon.DUZ
+
+
+_AILE_ONBELLEK: dict[str, str | None] = {}
+_SERI_ONBELLEK: dict[tuple[int, int], dict[str, dict[str, float]]] = {}
+
+
+def _aile(kod: str) -> str | None:
+    if kod not in _AILE_ONBELLEK:
+        try:
+            from moda_radar.renk import pantone
+        except ImportError:  # renk modülü yoksa kod serisiyle devam
+            _AILE_ONBELLEK[kod] = None
+        else:
+            lab = pantone.kod_lab(kod)
+            _AILE_ONBELLEK[kod] = pantone.aile(lab) if lab is not None else None
+    return _AILE_ONBELLEK[kod]
+
+
+def _renk_ailesi_serisi(sinyaller: list[SinyalKaydi], kod: str) -> dict | None:
+    """Renk kodunun ailesindeki fotoğraf sayımı sinyallerinin sezon başına toplam payı; ``_aile`` anahtarı aile adı.
+
+    Yalnız görsel kaynaklı sinyaller toplanır (rapor sinyalleri pay tahminidir, toplanamaz). Aile bulunamazsa ya da
+    görsel sinyal yoksa ``None`` döner ve yön kodun kendi serisinden hesaplanır. Aile serileri sinyal listesi başına
+    bir kez hesaplanır.
+    """
+    hedef = _aile(kod)
+    if hedef is None:
+        return None
+    anahtar = (id(sinyaller), len(sinyaller))
+    if anahtar not in _SERI_ONBELLEK:
+        if len(_SERI_ONBELLEK) > 8:
+            _SERI_ONBELLEK.clear()
+        aileler: dict[str, dict[str, float]] = {}
+        for s in sinyaller:
+            if s.nitelik_ekseni != "renk" or s.kaynak_turu != "gorsel":
+                continue
+            a = _aile(s.nitelik_degeri)
+            if a is not None:
+                seri = aileler.setdefault(a, {})
+                seri[s.sezon] = seri.get(s.sezon, 0.0) + s.podyum_payi
+        _SERI_ONBELLEK[anahtar] = aileler
+    seri = _SERI_ONBELLEK[anahtar].get(hedef)
+    if not seri:
+        return None
+    return {**seri, "_aile": hedef}
 
 
 def _segment_gecmisi(gozlemler, ulke, segment, kategori, eksen, deger) -> tuple[float | None, int]:
@@ -184,7 +236,8 @@ def tahmin_et(
     for s_ in sz.sirala({s.sezon for s in degere_ait}):
         seri[s_] = birlesik_sinyal([s for s in degere_ait if s.sezon == s_])["pay"]
     b = birlesik_sinyal(bu_sezon)
-    yon = yon_hesapla(seri, sezon)
+    aile_serisi = _renk_ailesi_serisi(sinyaller, deger) if eksen == "renk" else None
+    yon = yon_hesapla(aile_serisi or seri, sezon)
     g = min(1.0, b["guven"] / GUVEN_TAM)
     podyum = K_PAY * (math.log1p(100 * b["pay"]) - math.log1p(100 * PAY_REF)) + K_MARKA * (
         math.log1p(b["marka"]) - math.log1p(MARKA_REF)
@@ -196,7 +249,11 @@ def tahmin_et(
     olasilik = min(max(_sigmoid(z), ALT_SINIR), UST_SINIR)
 
     guven_notu = " (düşük güvenli kaynak, etkisi kırpıldı)" if g < 1 else ""
-    c1 = f"Podyum payı {_yuzde(b['pay'])}, {b['marka']} markada görüldü{guven_notu}; önceki sezona göre {YON_ADI[yon]}."
+    yon_kaynagi = f"{aile_serisi['_aile']} ailesi " if aile_serisi else ""
+    c1 = (
+        f"Podyum payı {_yuzde(b['pay'])}, {b['marka']} markada görüldü{guven_notu}; "
+        f"{yon_kaynagi}aynı mevsime göre {YON_ADI[yon]}."
+    )
     c3 = (
         f"Segment rafında bilinen son pay {_yuzde(raf)}."
         if raf is not None
