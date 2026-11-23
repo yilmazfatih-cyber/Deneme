@@ -1,0 +1,1016 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#030417" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="robots" content="noindex" />
+    <meta
+      name="description"
+      content="Canlı Çeviri web deneme sürümü: karşınızdakinin konuşmasını dinler, Türkçeye çevirir ve kulaklığınızdan okur."
+    />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self'; style-src 'unsafe-inline'; img-src 'self' data:; media-src blob:; connect-src https://api.mymemory.translated.net https://voice.patientdesk.ai; base-uri 'none'; form-action 'none'"
+    />
+    <link rel="icon" type="image/png" href="./icon-180.png" />
+    <link rel="apple-touch-icon" href="./icon-180.png" />
+    <title>Canlı Çeviri</title>
+    <style>
+      /* Düzen: telefonda uygulama ekranı tüm görüş alanını kaplar; geniş ekranda gerçek boyutlu
+         iPhone çerçevesi (390×844) ve yanında kısa notlar durur.
+         Renkler iPhone uygulamasındaki Renk sabitlerinin aynısıdır; uygulama gibi yalnız koyu tema. */
+      :root {
+        --zemin: #030417;
+        --parilti: #081a45;
+        --kart: #13172e;
+        --alan: #0a0d1f;
+        --mavi: #2e7af5;
+        --koyu-mavi: #1a47b3;
+        --acik-mavi: #61ccfa;
+        --kirmizi: #eb3833;
+        --acik-kirmizi: #ff7a73;
+        --sari: #fac23d;
+        --metin: #ffffff;
+        --ikincil: rgba(235, 235, 245, 0.62);
+        --soluk: rgba(235, 235, 245, 0.32);
+        --cizgi: rgba(255, 255, 255, 0.12);
+        --ayrac: rgba(255, 255, 255, 0.14);
+        --segment: rgba(118, 118, 128, 0.24);
+        --segment-secili: #636366;
+        --menu: rgba(40, 41, 52, 0.94);
+        --golge: rgba(0, 0, 0, 0.55);
+        --sahne: #06070d;
+        --sahne-isik: rgba(46, 122, 245, 0.1);
+        --cerceve: #17181e;
+        --cerceve-kenar: #2b2c35;
+        --ada: #000000;
+        --font: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, 'Segoe UI', Roboto, sans-serif;
+        --font-buyuk: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, 'Segoe UI', Roboto, sans-serif;
+        --font-kod: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        --yan-sol: 20px;
+        --yan-sag: 20px;
+        color-scheme: dark;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        background: var(--sahne);
+        color: var(--metin);
+        font-family: var(--font);
+        font-size: 15px;
+        -webkit-font-smoothing: antialiased;
+        -webkit-text-size-adjust: 100%;
+        overscroll-behavior: none;
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      [hidden] {
+        display: none !important;
+      }
+      p,
+      h1,
+      h2,
+      h3,
+      ol,
+      ul {
+        margin: 0;
+      }
+      button {
+        font: inherit;
+        color: inherit;
+        background: none;
+        border: 0;
+        padding: 0;
+        cursor: pointer;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-user-select: none;
+        user-select: none;
+      }
+      svg {
+        display: block;
+        flex: none;
+      }
+      :focus-visible {
+        outline: 2px solid var(--acik-mavi);
+        outline-offset: 2px;
+      }
+
+      /* ---------- Sahne ---------- */
+      .sahne {
+        min-height: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 40px 64px;
+        padding: 40px 16px;
+        background: radial-gradient(circle 560px at 40% 45%, var(--sahne-isik), transparent 70%), var(--sahne);
+      }
+      .telefon {
+        flex: none;
+        width: 414px;
+        height: 868px;
+        padding: 12px;
+        border-radius: 62px;
+        background: var(--cerceve);
+        box-shadow:
+          0 0 0 1.5px var(--cerceve-kenar),
+          0 40px 90px var(--golge);
+      }
+      .ekran {
+        position: relative;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        border-radius: 50px;
+        background: radial-gradient(circle 420px at 50% 50%, var(--parilti), transparent), var(--zemin);
+      }
+      .ada {
+        position: absolute;
+        z-index: 5;
+        top: 11px;
+        left: 50%;
+        width: 124px;
+        height: 36px;
+        margin-left: -62px;
+        border-radius: 20px;
+        background: var(--ada);
+      }
+      .durum-cubugu {
+        flex: none;
+        height: 54px;
+      }
+      .ev {
+        flex: none;
+        height: 34px;
+        position: relative;
+      }
+      .ev::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        bottom: 8px;
+        width: 134px;
+        height: 5px;
+        margin-left: -67px;
+        border-radius: 3px;
+        background: var(--metin);
+      }
+
+      /* ---------- Uygulama ---------- */
+      .paneller,
+      .panel {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+      }
+      .kaydir {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+      .kaydir::-webkit-scrollbar {
+        display: none;
+      }
+      .yigin {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 12px var(--yan-sag) 20px var(--yan-sol);
+      }
+      .yigin.s16 {
+        gap: 16px;
+      }
+      .yigin.s14 {
+        gap: 14px;
+      }
+
+      .baslik {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-height: 41px;
+      }
+      .baslik h1,
+      .ayar-baslik {
+        flex: 1;
+        min-width: 0;
+        font-family: var(--font-buyuk);
+        font-size: 34px;
+        font-weight: 700;
+        line-height: 41px;
+        letter-spacing: 0.01em;
+      }
+      .baslik-simge {
+        color: var(--acik-mavi);
+      }
+      .canli {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: var(--mavi);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .dil {
+        position: relative;
+      }
+      .dil-seridi {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 20px;
+        border-radius: 24px;
+        text-align: left;
+        color: var(--metin);
+        background: linear-gradient(to bottom right, var(--mavi), var(--koyu-mavi));
+        transition: opacity 0.2s;
+      }
+      .dil-seridi[aria-disabled='true'] {
+        opacity: 0.45;
+        cursor: default;
+      }
+      .dil-metin {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .dil-ad {
+        font-family: var(--font-buyuk);
+        font-size: 22px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+      }
+      .dil-ipucu {
+        font-size: 15px;
+        opacity: 0.85;
+      }
+      .menu {
+        position: absolute;
+        z-index: 20;
+        top: calc(100% + 8px);
+        right: 0;
+        width: 240px;
+        padding-block: 6px;
+        border-radius: 14px;
+        background: var(--menu);
+        -webkit-backdrop-filter: blur(30px) saturate(1.6);
+        backdrop-filter: blur(30px) saturate(1.6);
+        box-shadow: 0 14px 44px var(--golge);
+      }
+      .menu-oge {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 11px 16px 11px 12px;
+        font-size: 17px;
+        text-align: left;
+      }
+      .menu-oge + .menu-oge {
+        border-top: 0.5px solid var(--ayrac);
+      }
+      .menu-tik {
+        visibility: hidden;
+      }
+      .menu-oge[aria-checked='true'] .menu-tik {
+        visibility: visible;
+      }
+
+      .kart {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        padding: 20px;
+        border-radius: 28px;
+        background: var(--kart);
+      }
+      .kart h2 {
+        font-family: var(--font-buyuk);
+        font-size: 22px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+      }
+      .liste {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .canli-metin {
+        font-size: 15px;
+        font-style: italic;
+        line-height: 1.35;
+        color: var(--acik-mavi);
+      }
+      .dinliyorum {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 15px;
+        color: var(--acik-mavi);
+      }
+      .satir {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .asil {
+        font-size: 15px;
+        line-height: 1.35;
+        color: var(--ikincil);
+      }
+      .ceviri {
+        font-size: 17px;
+        font-weight: 500;
+        line-height: 1.3;
+      }
+      .satir.buyuk .ceviri {
+        font-family: var(--font-buyuk);
+        font-size: 22px;
+        font-weight: 600;
+        line-height: 1.25;
+        letter-spacing: -0.01em;
+      }
+      .ipucu {
+        font-size: 15px;
+        line-height: 1.35;
+        color: var(--ikincil);
+      }
+      .ayrac {
+        height: 1px;
+        background: var(--ayrac);
+      }
+
+      .alt {
+        flex: none;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 0 var(--yan-sag) 12px var(--yan-sol);
+      }
+      .hata,
+      .not {
+        font-size: 13px;
+        line-height: 1.35;
+        text-align: center;
+      }
+      .hata {
+        color: var(--acik-kirmizi);
+      }
+      .not {
+        color: var(--ikincil);
+      }
+      .not.uyari {
+        color: var(--sari);
+      }
+      .ana-dugme {
+        height: 62px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border-radius: 22px;
+        background: var(--mavi);
+        color: var(--metin);
+        font-family: var(--font-buyuk);
+        font-size: 20px;
+        font-weight: 600;
+        transition:
+          background-color 0.2s,
+          transform 0.1s;
+      }
+      .ana-dugme:active {
+        transform: scale(0.98);
+      }
+      .ana-dugme.durdur {
+        background: var(--kirmizi);
+      }
+
+      .sekme-sarici {
+        flex: none;
+        padding: 0 28px 4px;
+      }
+      .sekmeler {
+        display: flex;
+        gap: 4px;
+        padding: 6px;
+        border-radius: 999px;
+        background: var(--kart);
+        box-shadow: inset 0 0 0 1px var(--cizgi);
+      }
+      .sekme {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        padding-block: 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .sekme[aria-current='page'] {
+        color: var(--mavi);
+        background: var(--alan);
+      }
+
+      .temizle {
+        padding: 8px 0 8px 12px;
+        color: var(--mavi);
+        font-size: 15px;
+        font-weight: 600;
+      }
+      .gecmis-liste {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .gecmis-oge {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 18px;
+        border-radius: 24px;
+        background: var(--kart);
+      }
+      .saat {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--acik-mavi);
+        font-variant-numeric: tabular-nums;
+      }
+      .bos {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
+        padding-top: 120px;
+        text-align: center;
+      }
+      .bos svg {
+        color: var(--acik-mavi);
+      }
+      .bos-baslik {
+        font-size: 20px;
+        font-weight: 600;
+      }
+      .bos-alt {
+        font-size: 15px;
+        color: var(--ikincil);
+      }
+
+      .bolum {
+        padding-top: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        color: var(--ikincil);
+      }
+      .kutu {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 18px;
+        border-radius: 24px;
+        background: var(--kart);
+      }
+      .girdi {
+        width: 100%;
+        padding: 14px;
+        border: 0;
+        border-radius: 14px;
+        background: var(--alan);
+        color: var(--metin);
+        font: inherit;
+        font-size: 17px;
+      }
+      .girdi::placeholder {
+        color: var(--soluk);
+      }
+      .dipnot {
+        font-size: 13px;
+        line-height: 1.4;
+        color: var(--ikincil);
+      }
+      .bolumlu {
+        display: flex;
+        padding: 2px;
+        border-radius: 9px;
+        background: var(--segment);
+      }
+      .bolumlu button {
+        flex: 1;
+        height: 28px;
+        border-radius: 7px;
+        font-size: 13px;
+        font-weight: 500;
+      }
+      .bolumlu button[aria-checked='true'] {
+        background: var(--segment-secili);
+        font-weight: 600;
+      }
+      .salter-satiri {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 15px;
+        line-height: 1.3;
+      }
+      .salter-satiri span {
+        flex: 1;
+      }
+      .salter {
+        position: relative;
+        flex: none;
+        width: 51px;
+        height: 31px;
+        border-radius: 999px;
+        background: var(--segment);
+        transition: background-color 0.2s;
+      }
+      .salter::after {
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 27px;
+        height: 27px;
+        border-radius: 50%;
+        background: var(--metin);
+        box-shadow: 0 2px 4px var(--golge);
+        transition: transform 0.2s;
+      }
+      .salter[aria-checked='true'] {
+        background: var(--mavi);
+      }
+      .salter[aria-checked='true']::after {
+        transform: translateX(20px);
+      }
+      .bilgi {
+        gap: 14px;
+      }
+      .bilgi-satiri {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        font-size: 15px;
+        line-height: 1.3;
+      }
+      .bilgi-simge {
+        flex: none;
+        width: 30px;
+        display: flex;
+        justify-content: center;
+        color: var(--acik-mavi);
+      }
+
+      /* ---------- Notlar (yalnız geniş ekran) ---------- */
+      .notlar {
+        max-width: 340px;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        font-size: 15px;
+        line-height: 1.55;
+        color: var(--ikincil);
+      }
+      .etiket {
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        color: var(--acik-mavi);
+      }
+      .notlar h2 {
+        font-family: var(--font-buyuk);
+        font-size: 34px;
+        font-weight: 700;
+        line-height: 1.1;
+        letter-spacing: 0.01em;
+        color: var(--metin);
+      }
+      .notlar h3 {
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        color: var(--metin);
+      }
+      .notlar b {
+        font-weight: 600;
+        color: var(--metin);
+      }
+      .akis {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px;
+      }
+      .akis li {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .akis li + li::before {
+        content: '→';
+        color: var(--soluk);
+      }
+      .adim {
+        padding: 5px 10px;
+        border-radius: 999px;
+        background: var(--kart);
+        box-shadow: inset 0 0 0 1px var(--cizgi);
+        color: var(--metin);
+        font-size: 13px;
+        font-weight: 500;
+        line-height: 1.4;
+      }
+      .farklar {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding-left: 18px;
+      }
+
+      /* ---------- Telefon ---------- */
+      @media (max-width: 520px) {
+        :root {
+          --yan-sol: max(20px, env(safe-area-inset-left, 0px));
+          --yan-sag: max(20px, env(safe-area-inset-right, 0px));
+        }
+        body {
+          overflow: hidden;
+          background: var(--zemin);
+        }
+        .sahne {
+          display: block;
+          height: 100%;
+          min-height: 0;
+          padding: 0;
+          background: none;
+        }
+        .telefon {
+          width: 100%;
+          height: 100vh;
+          height: 100dvh;
+          padding: 0;
+          border-radius: 0;
+          background: none;
+          box-shadow: none;
+        }
+        .ekran {
+          border-radius: 0;
+          padding-top: env(safe-area-inset-top, 0px);
+        }
+        .durum-cubugu,
+        .ada,
+        .ev,
+        .notlar {
+          display: none;
+        }
+        .sekme-sarici {
+          padding-bottom: max(10px, env(safe-area-inset-bottom, 0px));
+          padding-left: max(28px, env(safe-area-inset-left, 0px));
+          padding-right: max(28px, env(safe-area-inset-right, 0px));
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .dil-seridi,
+        .ana-dugme,
+        .salter,
+        .salter::after {
+          transition: none;
+        }
+        .ana-dugme:active {
+          transform: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true" focusable="false">
+      <defs>
+        <mask id="m-saat">
+          <rect width="24" height="24" fill="#fff" />
+          <path
+            d="M12 6.6V12l3.7 2.2"
+            fill="none"
+            stroke="#000"
+            stroke-width="2.1"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </mask>
+        <mask id="m-carki">
+          <rect width="24" height="24" fill="#fff" />
+          <circle cx="12" cy="12" r="3.3" fill="#000" />
+        </mask>
+      </defs>
+      <symbol id="i-dalga" viewBox="0 0 24 24">
+        <path
+          d="M3 10.5v3M6 7.5v9M9 3.5v17M12 6v12M15 9v6M18 5.5v13M21 10v4"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+      </symbol>
+      <symbol id="i-saat" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" fill="currentColor" mask="url(#m-saat)" />
+      </symbol>
+      <symbol id="i-carki" viewBox="0 0 24 24">
+        <g fill="currentColor" mask="url(#m-carki)">
+          <circle cx="12" cy="12" r="7.4" />
+          <rect x="10.3" y="1.4" width="3.4" height="5" rx="1" />
+          <rect x="10.3" y="1.4" width="3.4" height="5" rx="1" transform="rotate(45 12 12)" />
+          <rect x="10.3" y="1.4" width="3.4" height="5" rx="1" transform="rotate(90 12 12)" />
+          <rect x="10.3" y="1.4" width="3.4" height="5" rx="1" transform="rotate(135 12 12)" />
+          <rect x="10.3" y="1.4" width="3.4" height="5" rx="1" transform="rotate(180 12 12)" />
+          <rect x="10.3" y="1.4" width="3.4" height="5" rx="1" transform="rotate(225 12 12)" />
+          <rect x="10.3" y="1.4" width="3.4" height="5" rx="1" transform="rotate(270 12 12)" />
+          <rect x="10.3" y="1.4" width="3.4" height="5" rx="1" transform="rotate(315 12 12)" />
+        </g>
+      </symbol>
+      <symbol id="i-yayin" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="2.2" fill="currentColor" />
+        <path
+          d="M8.6 8.6a4.8 4.8 0 0 0 0 6.8M15.4 8.6a4.8 4.8 0 0 1 0 6.8M5.6 5.6a9 9 0 0 0 0 12.8M18.4 5.6a9 9 0 0 1 0 12.8"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+      </symbol>
+      <symbol id="i-ok" viewBox="0 0 24 24">
+        <path
+          d="M9 4.5l7.5 7.5L9 19.5"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </symbol>
+      <symbol id="i-kulak" viewBox="0 0 24 24">
+        <path
+          d="M7 9.5a5.5 5.5 0 0 1 11 0c0 2.6-1.6 3.7-2.6 4.9-.9 1.1-1 2.3-1.6 3.4a3.2 3.2 0 0 1-5.6.2M9.8 9.8a2.7 2.7 0 0 1 5.4 0c0 1.3-.9 1.8-1.6 2.6"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.9"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </symbol>
+      <symbol id="i-mikrofon" viewBox="0 0 24 24">
+        <rect x="8.6" y="2" width="6.8" height="12.2" rx="3.4" fill="currentColor" />
+        <path
+          d="M5.4 11a6.6 6.6 0 0 0 13.2 0M12 17.6v3.6"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+      </symbol>
+      <symbol id="i-dur" viewBox="0 0 24 24">
+        <rect x="5" y="5" width="14" height="14" rx="2.6" fill="currentColor" />
+      </symbol>
+      <symbol id="i-baloncuk" viewBox="0 0 24 24">
+        <path
+          d="M6 3.5h12A2.5 2.5 0 0 1 20.5 6v8.5A2.5 2.5 0 0 1 18 17h-6.2l-4.5 3.6c-.5.4-1.3 0-1.3-.6v-3H6a2.5 2.5 0 0 1-2.5-2.5V6A2.5 2.5 0 0 1 6 3.5z"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.3"
+          stroke-linejoin="round"
+        />
+        <path d="M7.5 8.3h9M7.5 12h6" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+      </symbol>
+      <symbol id="i-kulaklik" viewBox="0 0 24 24">
+        <g fill="currentColor">
+          <circle cx="7.2" cy="7.4" r="3.6" />
+          <rect x="5.6" y="8.2" width="2.6" height="11.6" rx="1.3" />
+          <circle cx="16.8" cy="7.4" r="3.6" />
+          <rect x="15.8" y="8.2" width="2.6" height="11.6" rx="1.3" />
+        </g>
+      </symbol>
+      <symbol id="i-tik" viewBox="0 0 24 24">
+        <path
+          d="M5 12.6l4.4 4.4L19 7.4"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.4"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </symbol>
+      <symbol id="i-ag" viewBox="0 0 24 24">
+        <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+          <circle cx="12" cy="12" r="9" />
+          <path d="M3 12h18M12 3c2.6 2.4 3.9 5.4 3.9 9s-1.3 6.6-3.9 9c-2.6-2.4-3.9-5.4-3.9-9s1.3-6.6 3.9-9z" />
+        </g>
+      </symbol>
+    </svg>
+
+    <main class="sahne">
+      <div class="telefon">
+        <div class="ekran">
+          <div class="ada" aria-hidden="true"></div>
+          <div class="durum-cubugu" aria-hidden="true"></div>
+
+          <div class="paneller">
+            <!-- Çeviri sekmesi -->
+            <section class="panel" data-sekme="ceviri" aria-label="Çeviri">
+              <div class="kaydir">
+                <div class="yigin">
+                  <div class="baslik">
+                    <svg class="baslik-simge" width="30" height="30" aria-hidden="true"><use href="#i-dalga" /></svg>
+                    <h1>Canlı Çeviri</h1>
+                    <span class="canli" id="canliRozet" hidden>
+                      <svg width="15" height="15" aria-hidden="true"><use href="#i-yayin" /></svg>CANLI
+                    </span>
+                  </div>
+
+                  <div class="dil">
+                    <button class="dil-seridi" id="dilSeridi" type="button" aria-haspopup="menu" aria-expanded="false">
+                      <span class="dil-metin">
+                        <span class="dil-ad" id="dilAd">İngilizce → Türkçe</span>
+                        <span class="dil-ipucu" id="dilIpucu">Kaynak dili değiştirmek için dokunun</span>
+                      </span>
+                      <svg width="20" height="20" aria-hidden="true"><use href="#i-ok" /></svg>
+                    </button>
+                    <div class="menu" id="dilMenu" role="menu" aria-label="Kaynak dil" hidden></div>
+                  </div>
+
+                  <div class="kart" aria-live="polite">
+                    <h2>Şu An</h2>
+                    <div class="liste" id="suAn"></div>
+                  </div>
+
+                  <div class="kart" id="oncekiler" hidden>
+                    <h2>Öncekiler</h2>
+                    <div class="liste" id="oncekiListe"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="alt">
+                <p class="hata" id="hata" role="alert" hidden></p>
+                <p class="not" id="not"></p>
+                <button class="ana-dugme" id="anaDugme" type="button"></button>
+              </div>
+            </section>
+
+            <!-- Geçmiş sekmesi -->
+            <section class="panel" data-sekme="gecmis" aria-label="Geçmiş" hidden>
+              <div class="kaydir">
+                <div class="yigin s16">
+                  <div class="baslik">
+                    <h1>Geçmiş</h1>
+                    <button class="temizle" id="temizle" type="button">Temizle</button>
+                  </div>
+                  <div class="gecmis-liste" id="gecmisListe"></div>
+                </div>
+              </div>
+            </section>
+
+            <!-- Ayarlar sekmesi -->
+            <section class="panel" data-sekme="ayarlar" aria-label="Ayarlar" hidden>
+              <div class="kaydir">
+                <div class="yigin s14">
+                  <h1 class="ayar-baslik">Ayarlar</h1>
+
+                  <h3 class="bolum" id="anahtarBaslik">ALANIA-2 API ANAHTARI</h3>
+                  <div class="kutu">
+                    <input
+                      class="girdi"
+                      id="anahtar"
+                      type="password"
+                      placeholder="pd_live_…"
+                      autocomplete="off"
+                      autocapitalize="off"
+                      autocorrect="off"
+                      spellcheck="false"
+                      aria-labelledby="anahtarBaslik"
+                    />
+                    <p class="dipnot">
+                      Boş bırakırsanız çeviri cihazınızın Türkçe sesiyle okunur. Anahtar yalnızca bu telefonda saklanır.
+                    </p>
+                  </div>
+
+                  <h3 class="bolum" id="sesBaslik">SES</h3>
+                  <div class="kutu">
+                    <div class="bolumlu" role="radiogroup" aria-labelledby="sesBaslik">
+                      <button type="button" role="radio" data-ses="alania2-f1">Kadın</button>
+                      <button type="button" role="radio" data-ses="alania2-oncel">Erkek</button>
+                    </div>
+                    <div class="salter-satiri">
+                      <span id="duraklatEtiket">Çeviri okunurken dinlemeyi duraklat</span>
+                      <button
+                        class="salter"
+                        id="duraklat"
+                        type="button"
+                        role="switch"
+                        aria-checked="false"
+                        aria-labelledby="duraklatEtiket"
+                      ></button>
+                    </div>
+                    <p class="dipnot">
+                      Kulaklıksız, hoparlörle deniyorsanız açın; yoksa uygulama kendi sesini duyup yeniden çevirebilir.
+                    </p>
+                  </div>
+
+                  <h3 class="bolum">WEB DENEME SÜRÜMÜ</h3>
+                  <div class="kutu bilgi">
+                    <div class="bilgi-satiri">
+                      <span class="bilgi-simge"
+                        ><svg width="22" height="22" aria-hidden="true"><use href="#i-mikrofon" /></svg
+                      ></span>
+                      Konuşmayı tarayıcınız yazıya döker
+                    </div>
+                    <div class="bilgi-satiri">
+                      <span class="bilgi-simge"
+                        ><svg width="22" height="22" aria-hidden="true"><use href="#i-ag" /></svg
+                      ></span>
+                      Çeviri internet üzerinden yapılır (MyMemory)
+                    </div>
+                    <div class="bilgi-satiri">
+                      <span class="bilgi-simge"
+                        ><svg width="22" height="22" aria-hidden="true"><use href="#i-kulaklik" /></svg
+                      ></span>
+                      Çeviri telefona bağlı kulaklıktan okunur
+                    </div>
+                    <p class="dipnot">
+                      Söylenen cümleler çevrilmek üzere MyMemory hizmetine gönderilir. iPhone uygulamasında tanıma ve
+                      çeviri cihazın içinde yapılır ve her zaman iPhone'un mikrofonu dinler; burada hangi mikrofonun
+                      dinleyeceğini tarayıcı seçer (AirPods takılıyken çoğunlukla AirPods'unki).
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <div class="sekme-sarici">
+            <nav class="sekmeler" aria-label="Sekmeler">
+              <button class="sekme" type="button" data-sekme="ceviri">
+                <svg width="22" height="22" aria-hidden="true"><use href="#i-dalga" /></svg>Çeviri
+              </button>
+              <button class="sekme" type="button" data-sekme="gecmis">
+                <svg width="22" height="22" aria-hidden="true"><use href="#i-saat" /></svg>Geçmiş
+              </button>
+              <button class="sekme" type="button" data-sekme="ayarlar">
+                <svg width="22" height="22" aria-hidden="true"><use href="#i-carki" /></svg>Ayarlar
+              </button>
+            </nav>
+          </div>
+          <div class="ev" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <aside class="notlar">
+        <p class="etiket">Web deneme sürümü</p>
+        <h2>Canlı Çeviri</h2>
+        <p>
+          Karşınızdakinin konuşmasını dinler, cümle cümle Türkçeye çevirir ve kulaklığınızdan okur. Telefonda
+          <b>Safari</b> ile açın ve AirPods'u takın.
+        </p>
+        <ol class="akis" aria-label="Akış">
+          <li><span class="adim">Mikrofon</span></li>
+          <li><span class="adim">Konuşma tanıma</span></li>
+          <li><span class="adim">Çeviri</span></li>
+          <li><span class="adim">Türkçe ses</span></li>
+          <li><span class="adim">AirPods</span></li>
+        </ol>
+        <h3>iPHONE UYGULAMASINDAN FARKI</h3>
+        <ul class="farklar">
+          <li>Çeviri internet üzerinden yapılır; cümleler MyMemory çeviri hizmetine gider.</li>
+          <li>Konuşmayı tarayıcı yazıya döker ve hangi mikrofonu dinleyeceğini kendisi seçer.</li>
+          <li>iPhone uygulamasında tanıma ve çeviri cihazda yapılır, mikrofon hep iPhone'unkidir.</li>
+        </ul>
+      </aside>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
