@@ -15,6 +15,7 @@ formlar) ve her ekranda platformun AI modüllerini düğme olarak gösteren ger�
 pip install -e '.[dev]'            # platform
 # model gerektirmeyen veya küçük modüller
 aiplatform install kvkk-kalkani finans-hesap kayit-eslestirme pdf-ayristirma
+# veya hepsini tek komutla (ortam kurulumu dahil):  ./scripts/kur.sh --demo
 # dil modeli (LLM) gerektiren düğmeler için: Qwen3.5-4B (GGUF, llama-server ile)
 aiplatform install yazma-asistani
 # isteğe bağlı: LLM kurulduktan sonra
