@@ -60,6 +60,29 @@ def expected_total_bytes(artifact: ModelArtifact) -> int:
     return sum(int(getattr(f, "size", 0) or 0) for f in files)
 
 
+# Hugging Face büyük dosyaları Xet depolamasından (cas-server / cas-bridge.xethub.hf.co) verir. Şirket güvenlik
+# duvarları çoğu zaman yalnız huggingface.co'ya izin verir; o zaman Xet kapatılınca klasik HTTP indirmesi
+# (huggingface.co → hf.co CDN) çalışır.
+_XET_MARKERS = ("xethub", "cas client", "cas-server", "cas-bridge", "file reconstruction error", "hf_xet")
+
+
+def is_xet_error(e: BaseException) -> bool:
+    text = f"{type(e).__name__}: {e}".lower()
+    return any(m in text for m in _XET_MARKERS)
+
+
+def set_xet_enabled(enabled: bool) -> bool:
+    """Xet'i süreç genelinde aç/kapat. Kapatılırken önceden açıksa True döner (yeniden denemeye değer)."""
+    os.environ["HF_HUB_DISABLE_XET"] = "0" if enabled else "1"
+    try:
+        from huggingface_hub import constants
+    except ImportError:
+        return False
+    was_disabled = bool(getattr(constants, "HF_HUB_DISABLE_XET", False))
+    constants.HF_HUB_DISABLE_XET = not enabled
+    return (not enabled) and not was_disabled
+
+
 async def download_artifact(
     model: ModelSpec, artifact: ModelArtifact, dest: Path, progress_cb: ProgressCb | None = None
 ) -> Path:
@@ -85,17 +108,33 @@ async def download_artifact(
             endpoint=s.hf_endpoint,
         )
 
-    task = asyncio.ensure_future(asyncio.to_thread(_download))
+    async def _run() -> None:
+        task = asyncio.ensure_future(asyncio.to_thread(_download))
+        try:
+            while not task.done():
+                await asyncio.wait({task}, timeout=POLL_SECONDS)
+                if progress_cb:
+                    done = await asyncio.to_thread(dir_size_bytes, dest)
+                    progress_cb(done, total)
+            await task
+        except asyncio.CancelledError:
+            task.cancel()  # thread durdurulamaz; dosyalar sonraki denemede kaldığı yerden devam eder
+            raise
+
+    if s.hf_disable_xet:
+        set_xet_enabled(False)
     try:
-        while not task.done():
-            await asyncio.wait({task}, timeout=POLL_SECONDS)
-            if progress_cb:
-                done = await asyncio.to_thread(dir_size_bytes, dest)
-                progress_cb(done, total)
-        await task
-    except asyncio.CancelledError:
-        task.cancel()  # thread durdurulamaz; dosyalar sonraki denemede kaldığı yerden devam eder
-        raise
+        await _run()
+    except Exception as e:  # yalnız Xet kaynaklı hatada yeniden denenir, diğerleri aynen yükselir
+        if not (is_xet_error(e) and set_xet_enabled(False)):
+            raise
+        log.warning(
+            "%s: Hugging Face Xet depolama sunucusuna ulaşılamadı (%s); klasik HTTP indirmeyle yeniden deneniyor. "
+            "Kalıcı yapmak için AIP_HF_DISABLE_XET=true.",
+            artifact.hf_repo,
+            str(e)[:160],
+        )
+        await _run()
     if progress_cb:
         done = dir_size_bytes(dest)
         progress_cb(done, max(total, done))
