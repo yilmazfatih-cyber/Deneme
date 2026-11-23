@@ -8,10 +8,10 @@ Oluşturma: 2026-11-23 · şema sürümü 1
 | gorsel | 9338 |
 | parca_nitelik | 535 |
 | parca_renk | 37351 |
-| perakende_urun | 313 |
-| perakende_gorulme | 699 |
+| perakende_urun | 315 |
+| perakende_gorulme | 706 |
 | perakende_nitelik | 0 |
-| perakende_renk | 1248 |
+| perakende_renk | 1256 |
 | talep | 0 |
 | sinyal | 171 |
 | gozlem | 0 |
@@ -27,7 +27,7 @@ Oluşturma: 2026-11-23 · şema sürümü 1
 
 ## Segment dağılımı
 
-- **perakende_urun**: luks: 99, orta: 155, premium: 59
+- **perakende_urun**: luks: 99, orta: 156, premium: 60
 - **perakende_aktif**: luks: 96, orta: 95, premium: 40
 - **gozlem**: —
 - **gecikme_olcum**: orta: 5
