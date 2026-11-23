@@ -1,0 +1,10 @@
+--- a/README.md
++++ b/README.md
+@@ -47,6 +47,7 @@
+ | `python -m ml_temel tahmin --model ciktilar/x/model.npz --veri yeni.csv` | `yeni_tahmin.csv`: tahmin + sınıf olasılıkları (girdiyle aynı CSV biçiminde); `--esik 0.3` ile karar eşiği |
+ | `python -m ml_temel degerlendir --model ... --veri etiketli.csv` | Yeni etiketli veride ölçütler ve %95 güven aralıkları |
+ | `python -m ml_temel rapor --model ... [--html]` | Raporu model dosyasındaki sonuçlardan yeniden yazar |
++| `python -m ml_temel sun --model ciktilar/x/model.npz` | Modeli HTTP tahmin servisi olarak sunar: `http://127.0.0.1:8445` → `GET /saglik`, `GET /sema`, `POST /tahmin` (girdi şeması doğrulamalı, pickle'sız; ağa açmak için `ML_TEMEL_ANAHTAR`) |
+ 
+ Diğer seçenekler: `--gorev siniflandirma|regresyon`, `--pozitif evet`, `--modeller dogrusal,orman,artirma`,
+ `--ayirici ';'`, `--ondalik ','`, `--tohum 0`, `--cikti klasor`. Hepsi için `python -m ml_temel egit -h`.

@@ -1,0 +1,59 @@
+--- a/docs/API.md
++++ b/docs/API.md
+@@ -80,6 +80,7 @@
+ | şifre sıfırla | IP           | 20 / 15 dakika       |
+ | eşitleme      | kullanıcı    | 240 / dakika         |
+ | anlık akış    | kullanıcı    | 30 bağlantı / dakika |
++| belgeye soru  | kullanıcı    | 20 / 10 dakika       |
+ 
+ Şifre değiştir ve hesap sil uçlarındaki şifre denetimi de "giriş (hesap)" kuralına sayılır.
+ 
+@@ -783,6 +784,48 @@
+ curl -s -b cerez.txt $API/api/admin/metrics
+ ```
+ 
++## Belgeye soru
++
++Uygulama, soruyu yerel `yz` sunucusunun RAG ucuna (`POST <YZ_URL>/api/sor`) `Authorization: Bearer <YZ_API_KEY>`
++ile iletir ve yanıtı bu sözleşmeye çevirir. Özellik yalnız `YZ_URL` ve `YZ_API_KEY` verildiğinde açıktır
++(docs/YAYINLAMA.md §6). Yanıt saklanmaz, eşitlenmez; soru metni günlüğe yazılmaz.
++
++### POST /api/sor
++
++Belgelere soru sorar. Oturum gerekir. Soru 3–1000 karakter (baştaki/sondaki boşluk kırpılır).
++
++```json askRequestSchema
++{ "question": "Ürünü kaç gün içinde iade edebilirim?" }
++```
++
++Yanıt: `answer` (atıflı yanıt), `notInDocuments` (belgelerde yoksa `true`), `citations` (yanıttaki [n]
++numaraları), `sources` (numara, belge › bölüm, alıntı; alıntı en çok 1200 karakter), `warnings` (kaynakta
++geçmeyen rakam/ad, atıfsız yanıt gibi denetlenmesi gereken durumlar).
++
++```json askResponseSchema
++{
++  "answer": "Ürünü teslimden sonraki 14 gün içinde iade edebilirsiniz. [1]",
++  "notInDocuments": false,
++  "citations": [1],
++  "sources": [
++    {
++      "number": 1,
++      "title": "iade.md › İade politikası",
++      "excerpt": "Ürünü teslimden sonraki 14 gün içinde iade edebilirsiniz. İade kargo ücreti bize aittir."
++    }
++  ],
++  "warnings": []
++}
++```
++
++Hatalar: `400 validation` (`details[0].path = "question"`), `401 unauthorized`, `404 not_found` (özellik bu
++sunucuda kapalı), `429 rate_limited` (kullanıcı sınırı ya da aynı anda çok soru; `Retry-After`), `500 internal`
++(yz'ye ulaşılamadı, zaman aşımı ya da beklenmeyen yanıt; ayrıntı sunucu günlüğünde).
++
++```bash
++curl -s -b cerez.txt -X POST $API/api/sor -H 'Content-Type: application/json' -d '{"question":"İade süresi kaç gün?"}'
++```
++
+ ## Web uygulamasının sunulması
+ 
+ `WEB_DIST` klasörü (varsayılan `web/dist`) hazırsa API dışındaki her `GET` adresi oradan sunulur: var olan dosya

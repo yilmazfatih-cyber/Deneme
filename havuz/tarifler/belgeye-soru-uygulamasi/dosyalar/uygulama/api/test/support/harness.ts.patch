@@ -1,0 +1,28 @@
+--- a/api/test/support/harness.ts
++++ b/api/test/support/harness.ts
+@@ -63,6 +63,8 @@
+   readonly db?: Db
+   readonly mailer?: Mailer
+   readonly clock?: FakeClock
++  /** Dış HTTP istekleri için sahte `fetch` (ör. yz sunucusu taklidi; test/modules/sor.test.ts). */
++  readonly fetch?: typeof fetch
+ }
+ 
+ export function testConfig(options: Pick<TestServerOptions, 'env' | 'config'> = {}): Config {
+@@ -77,7 +79,15 @@
+   runMigrations(db, { now: () => clock.now() })
+   const logger = createMemoryLogger('debug')
+   const mailer = options.mailer ?? createMailer(config, { db, clock, logger })
+-  const server = createApp({ config, db, clock, random: cryptoRandom, mailer, logger })
++  const server = createApp({
++    config,
++    db,
++    clock,
++    random: cryptoRandom,
++    mailer,
++    logger,
++    ...(options.fetch ? { fetch: options.fetch } : {}),
++  })
+   return {
+     server,
+     ctx: server.ctx,

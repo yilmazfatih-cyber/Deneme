@@ -1,0 +1,86 @@
+--- a/api/src/config.ts
++++ b/api/src/config.ts
+@@ -27,6 +27,14 @@
+ 
+ /** OWASP'ın eşdeğer scrypt seçeneklerinden en az bellek isteyeni: özet başına ~16 MiB, ~0,15 sn. */
+ export const DEFAULT_PASSWORD_HASH: PasswordHashParams = { N: 2 ** 14, r: 8, p: 5 }
++
++/** yz sunucusu (belgeye soru, modules/sor): adres, anahtar, süre ve aynı anda en çok istek. */
++export interface AiConfig {
++  readonly url: string
++  readonly apiKey: string
++  readonly timeoutMs: number
++  readonly maxConcurrent: number
++}
+ 
+ export type MailConfig =
+   | { readonly provider: 'console'; readonly from: string }
+@@ -49,6 +57,8 @@
+   readonly adminEmails: readonly string[]
+   readonly sessionTtlDays: number
+   readonly mail: MailConfig
++  /** Belgeye soru için yz sunucusu; YZ_URL verilmediyse `null` (özellik kapalı, uç 404 döner). */
++  readonly ai: AiConfig | null
+   /** Derlenmiş web uygulamasının klasörü; varsa aynı kökenden sunulur. */
+   readonly webDist: string | null
+   readonly logLevel: LogLevel
+@@ -119,6 +129,14 @@
+   WEB_DIST: z.string().optional(),
+   LOG_LEVEL: z.enum(LOG_LEVELS, { error: 'debug, info, warn ya da error olmalı.' }).optional(),
+   RATE_LIMIT: z.enum(['on', 'off'], { error: 'on ya da off olmalı.' }).default('on'),
++  YZ_URL: httpUrl('yz sunucusunun adresi olmalı (ör. YZ_URL=http://127.0.0.1:8420).').optional(),
++  YZ_API_KEY: z.string().optional(),
++  YZ_TIMEOUT_SECONDS: z
++    .string()
++    .regex(/^\d{1,3}$/, '5–600 arası saniye olmalı (ör. YZ_TIMEOUT_SECONDS=60).')
++    .transform(Number)
++    .refine((value) => value >= 5 && value <= 600, '5–600 arası saniye olmalı (ör. YZ_TIMEOUT_SECONDS=60).')
++    .optional(),
+ })
+ 
+ type RawEnv = z.output<typeof envSchema>
+@@ -173,6 +191,23 @@
+   }
+   for (const email of list(raw.ADMIN_EMAILS)) {
+     if (!emailSchema.safeParse(email).success) problems.push(`ADMIN_EMAILS: "${email}" geçerli bir e-posta değil.`)
++  }
++  if (raw.YZ_URL && !raw.YZ_API_KEY) {
++    problems.push(
++      'YZ_API_KEY: YZ_URL verildiğinde zorunludur. yz sunucusunu YZ_SUNUCU_ANAHTARI ile başlatıp aynı değeri buraya yazın.',
++    )
++  }
++  if (!raw.YZ_URL && raw.YZ_API_KEY) problems.push('YZ_URL: YZ_API_KEY verildi ama yz sunucusunun adresi yok.')
++  if (raw.YZ_API_KEY && raw.YZ_API_KEY.length < 16) {
++    problems.push('YZ_API_KEY: en az 16 karakter olmalı (rastgele üretin; ör. openssl rand -base64 32).')
++  }
++  if (production && raw.YZ_URL) {
++    const url = new URL(raw.YZ_URL)
++    if (url.protocol !== 'https:' && !isLocalHost(url)) {
++      problems.push(
++        'YZ_URL: üretimde https olmalı ya da aynı makinede (127.0.0.1) çalışmalı; anahtar ağda açık gitmesin.',
++      )
++    }
+   }
+   if (raw.MAIL_PROVIDER === 'http') {
+     if (!raw.MAIL_HTTP_URL)
+@@ -196,6 +231,12 @@
+     return { provider: 'http', from, url: raw.MAIL_HTTP_URL ?? '', apiKey: raw.MAIL_HTTP_KEY ?? '' }
+   }
+   return { provider: 'console', from }
++}
++
++function buildAi(raw: RawEnv): AiConfig | null {
++  if (!raw.YZ_URL || !raw.YZ_API_KEY) return null
++  const seconds = raw.YZ_TIMEOUT_SECONDS ?? 60
++  return { url: raw.YZ_URL.replace(/\/+$/, ''), apiKey: raw.YZ_API_KEY, timeoutMs: seconds * 1000, maxConcurrent: 2 }
+ }
+ 
+ function buildConfig(raw: RawEnv, cwd: string): Config {
+@@ -216,6 +257,7 @@
+     adminEmails: list(raw.ADMIN_EMAILS).map((email) => emailSchema.parse(email)),
+     sessionTtlDays: raw.SESSION_TTL_DAYS ?? 30,
+     mail: buildMail(raw),
++    ai: buildAi(raw),
+     webDist: raw.WEB_DIST ? resolve(cwd, raw.WEB_DIST) : DEFAULT_WEB_DIST,
+     logLevel: raw.LOG_LEVEL ?? (raw.NODE_ENV === 'test' ? 'warn' : 'info'),
+     rateLimit: raw.RATE_LIMIT === 'on',

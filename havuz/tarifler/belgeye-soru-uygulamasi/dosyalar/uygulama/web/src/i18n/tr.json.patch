@@ -1,0 +1,27 @@
+--- a/web/src/i18n/tr.json
++++ b/web/src/i18n/tr.json
+@@ -390,5 +390,23 @@
+   "catalog.description": "Arayüz bileşenlerinin canlı örnekleri. Yalnız geliştirmede görünür.",
+   "catalog.sample": "Örnek metin",
+   "catalog.sampleHint": "Açıklama satırı burada durur.",
+-  "catalog.sampleError": "Bu alanı doldurun."
++  "catalog.sampleError": "Bu alanı doldurun.",
++
++  "nav.ask": "Sor",
++  "ask.title": "Belgelere sor",
++  "ask.description": "Sorunuzu yazın; yanıt belgelerinizden, kaynağıyla gelir.",
++  "ask.question": "Sorunuz",
++  "ask.hint": "Örnek: Ürünü kaç gün içinde iade edebilirim?",
++  "ask.submit": "Sor",
++  "ask.loading": "Belgelerde aranıyor, yanıt hazırlanıyor…",
++  "ask.offline": "Çevrimdışısınız. Soru sormak için internet gerekir; bağlantı gelince yeniden deneyin.",
++  "ask.emptyTitle": "Belgelerinize bir soru sorun",
++  "ask.emptyMessage": "Yanıtlar yalnız yüklenen belgelere dayanır ve kaynak numarasıyla gösterilir.",
++  "ask.answer": "Yanıt",
++  "ask.asked": "Sorduğunuz: {question}",
++  "ask.notInDocuments": "Bu sorunun yanıtı belgelerde bulunamadı.",
++  "ask.warnings": "Denetlemeniz gerekenler",
++  "ask.sources": "Kaynaklar",
++  "ask.source": "[{number}] {title}",
++  "ask.checkHint": "Yapay zekâ yanılabilir; önemli kararlardan önce kaynağa bakın."
+ }

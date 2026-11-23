@@ -1,0 +1,11 @@
+--- a/api/src/context.ts
++++ b/api/src/context.ts
+@@ -30,6 +30,8 @@
+   readonly logger: Logger
+   /** Eşitlenen varlıklar (varsayılan: shared → ENTITIES). */
+   readonly registry?: EntityRegistry
++  /** Dışarıya giden HTTP istekleri (yz vekilliği, modules/sor); verilmezse küresel `fetch`. Testte sahte verilir. */
++  readonly fetch?: typeof fetch
+ }
+ 
+ /** Modüllere verilen bağlam: bağımlılıklar + ortak servisler. */

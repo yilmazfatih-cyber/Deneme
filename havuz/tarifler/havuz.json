@@ -1,0 +1,13 @@
+{
+  "ad": "tarifler",
+  "baslik": "Uçtan uca tarifler (temelleri birbirine bağlama)",
+  "ozet": "Havuzdaki temelleri birbirine bağlayan (uygulamaya yapay zekâ, siteyi API'ye, kendi modelini istemciye, CSV'den tahmin servisine, tek sunucuda yayına), her biri gerçekten uygulanıp uçtan uca doğrulanmış adım adım kurulumlar ve ortak çalıştırıcı.",
+  "tur": "python",
+  "gereksinim": { "python": ">=3.11", "node": ">=22.23.4" },
+  "python": { "ekstra": "dev" },
+  "denetle": ["python scripts/check.py"],
+  "uzunDenetim": ["python tarif.py dogrula --hepsi"],
+  "baslat": "python tarif.py liste",
+  "yerTutucular": [],
+  "kopyalamaHaric": [".venv", "calisma", "__pycache__", ".mypy_cache", ".ruff_cache", ".pytest_cache", "*.egg-info"]
+}

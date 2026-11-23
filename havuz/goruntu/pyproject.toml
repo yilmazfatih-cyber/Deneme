@@ -1,0 +1,113 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "goruntu"
+version = "0.1.0"
+description = "Görüntü temeli: güvenli hazırlık (EXIF/gizlilik), kopya bulma, sınıflandırma ince ayarı, ONNX, gömme ve arama."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+# Çekirdek: görüntü hazırlama, kopya bulma, ölçütler ve torch'suz ONNX çıkarımının Python tarafı.
+dependencies = [
+  "numpy>=2.0",       # np.bitwise_count (Hamming uzaklığı) 2.0 ile geldi
+  "pillow>=11.0",
+  "pydantic>=2.9",
+  "pyyaml>=6.0",      # model kataloğu (katalog/modeller.yaml); bkz. docs/KARARLAR.md K02
+]
+
+[project.optional-dependencies]
+# Sınıflandırma eğitimi (timm modelleri, torchvision veri artırma).
+egitim = ["torch>=2.6", "torchvision>=0.21", "timm>=1.0.15"]
+# Görüntü gömme ve metinle arama (CLIP / SigLIP 2, transformers üzerinden).
+gomme = ["torch>=2.6", "torchvision>=0.21", "transformers>=5.0"]
+# ONNX'e aktarım (torch gerekir) ve onnxruntime ile çıkarım.
+onnx = ["onnx>=1.17", "onnxruntime>=1.20", "onnxscript>=0.3"]
+# Yalnız çıkarım yapan uygulama: torch'suz (numpy + pillow + onnxruntime).
+cikarim = ["onnxruntime>=1.20"]
+# HTTP sunucusu (POST /siniflandir, /ara, /benzer).
+sunucu = ["fastapi>=0.115", "uvicorn>=0.30", "python-multipart>=0.0.18"]
+# Geliştirme: denetim araçları + bütün ekstralar (testler hepsini ister).
+dev = [
+  "goruntu[egitim,gomme,onnx,sunucu]",
+  "pytest>=8.3",
+  "ruff>=0.9",
+  "mypy>=1.14",
+  "types-PyYAML>=6.0",
+  "httpx>=0.27",         # sunucu testleri (ASGI aktarımı) ve katalog doğrulama betiği
+  "imagehash>=4.3",      # yalnız testlerde başvuru gerçeklemesi (aHash/dHash/pHash karşılaştırması)
+  "scikit-learn>=1.5",   # yalnız testlerde başvuru gerçeklemesi (ölçütler)
+]
+
+[tool.setuptools.packages.find]
+include = ["goruntu*"]
+
+[tool.setuptools.package-data]
+goruntu = ["py.typed", "web/*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = [".venv", "build", "ciktilar", "veri"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "N", "SIM", "C4", "RUF", "PT", "PL"]
+ignore = [
+  "RUF001",  # Türkçe harfler (ı, İ) "belirsiz karakter" sayılmasın
+  "RUF002",
+  "RUF003",
+  "PLR0913", # eğitim işlevleri çok parametre alır (yapılandırma alanları)
+  "PLR0917",
+  "PLR2004", # küçük sabitler (0.5, 2, 255) okunaklıdır
+  "PLR0912",
+  "PLR0915",
+  "PLR0911",
+  "PLC0415", # ağır kütüphaneler (torch…) bilerek fonksiyon içinde içe aktarılır: yardım anında açılsın
+  "PLW0603",
+  "SIM108",
+  "E501",    # satır uzunluğunu `ruff format` yönetir; uzun Türkçe iletiler bölünmez
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["PT011", "PLR2004", "N802", "PT006", "PT018", "RUF043"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["goruntu", "tests"]
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+plugins = ["pydantic.mypy"]
+warn_unused_ignores = false
+ignore_missing_imports = true
+disallow_untyped_calls = false
+disallow_subclassing_any = false
+exclude = ["^\\.venv/", "^build/", "^ciktilar/", "^veri/"]
+
+# Ağır kütüphanelerin içi çözümlenmez (mypy hızlı kalsın); bizim kodumuz onları `Any` olarak kullanır.
+[[tool.mypy.overrides]]
+module = [
+  "torch", "torch.*", "torchvision", "torchvision.*", "timm", "timm.*", "transformers",
+  "transformers.*", "onnx", "onnx.*", "onnxruntime", "onnxruntime.*", "onnxscript", "onnxscript.*",
+  "huggingface_hub", "huggingface_hub.*", "safetensors", "safetensors.*", "sklearn", "sklearn.*",
+  "imagehash", "imagehash.*", "uvicorn", "uvicorn.*",
+]
+follow_imports = "skip"
+
+[[tool.mypy.overrides]]
+module = ["tests.*"]
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q -p no:cacheprovider"
+filterwarnings = [
+  "ignore::DeprecationWarning",
+  "ignore::FutureWarning",
+  "ignore:.*torchvision.*:UserWarning",
+]

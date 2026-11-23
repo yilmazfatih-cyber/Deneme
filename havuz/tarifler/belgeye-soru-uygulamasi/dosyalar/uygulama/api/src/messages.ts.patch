@@ -1,0 +1,17 @@
+--- a/api/src/messages.ts
++++ b/api/src/messages.ts
+@@ -35,6 +35,14 @@
+   adminSelfLock: 'Kendi hesabınızın rolünü değiştiremez ya da onu kapatamazsınız.',
+   userNotFound: 'Kullanıcı bulunamadı.',
+ 
++  // Belgeye soru (yz vekilliği; modules/sor)
++  askDisabled: 'Belgeye soru özelliği bu sunucuda açık değil.',
++  askUnavailable: 'Yapay zekâ hizmetine şu an ulaşılamıyor. Biraz sonra yeniden deneyin.',
++  askTimeout: 'Yanıt çok uzun sürdü. Soruyu kısaltıp yeniden deneyin.',
++  askBadResponse: 'Yapay zekâ hizmetinden beklenmeyen bir yanıt geldi. Yöneticiye bildirin.',
++  askBusy: 'Şu an çok soru soruluyor. Birkaç saniye sonra yeniden deneyin.',
++  askUnsupportedClaims: 'Kaynaklarda geçmeyen ifadeler var, doğruluğunu denetleyin:',
++
+   // Eşitleme
+   mutationsOutOfOrder: 'Değişiklikler artan sıra numarasıyla gönderilmeli.',
+ } as const

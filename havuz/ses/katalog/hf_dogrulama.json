@@ -1,0 +1,183 @@
+{
+  "tarih": "2026-11-23",
+  "modeller": [
+    {
+      "ad": "tiny",
+      "hf": "Systran/faster-whisper-tiny",
+      "surum": "d90ca5fe260221311c53c58e660288d3deb8d356",
+      "surum_tarihi": "2023-11-23T10:42:55.000Z",
+      "depo_lisans_etiketi": "mit",
+      "model_karti_veri_lisansi": null,
+      "guncel_surum": "d90ca5fe260221311c53c58e660288d3deb8d356",
+      "dosyalar": [
+        {
+          "yol": "config.json",
+          "boyut": 2249,
+          "sha256": "a73a28cdfe1c43ccc7202fa333d1f89c202477271407ae9a7f19afa52039cac8",
+          "lfs": false
+        },
+        {
+          "yol": "model.bin",
+          "boyut": 75538270,
+          "sha256": "dcb76c6586fc06cbdac6dd21f14cfd129cc4cdd9dce19bf4ffa62e59cbe6e6d1",
+          "lfs": true
+        },
+        {
+          "yol": "tokenizer.json",
+          "boyut": 2203239,
+          "sha256": "fb7b63191e9bb045082c79fd742a3106a12c99513ab30df4a0d47fa6cb6fd0ab",
+          "lfs": false
+        },
+        {
+          "yol": "vocabulary.txt",
+          "boyut": 459861,
+          "sha256": "34ce3fe1c5041027b3f8d42912270993f986dbc4bb34cf27f951e34a1e453913",
+          "lfs": false
+        }
+      ],
+      "sorunlar": []
+    },
+    {
+      "ad": "base",
+      "hf": "Systran/faster-whisper-base",
+      "surum": "ebe41f70d5b6dfa9166e2c581c45c9c0cfc57b66",
+      "surum_tarihi": "2023-11-23T11:02:28.000Z",
+      "depo_lisans_etiketi": "mit",
+      "model_karti_veri_lisansi": null,
+      "guncel_surum": "ebe41f70d5b6dfa9166e2c581c45c9c0cfc57b66",
+      "dosyalar": [
+        {
+          "yol": "config.json",
+          "boyut": 2309,
+          "sha256": "56a6d8110d311f19c8f0471e562832c7527f146b567275bfca59fcf7c184da9a",
+          "lfs": false
+        },
+        {
+          "yol": "model.bin",
+          "boyut": 145217532,
+          "sha256": "d01c3014881c9c6f3133c182f3d2887eb6ca1c789a7538c5c007196857a0a6a9",
+          "lfs": true
+        },
+        {
+          "yol": "tokenizer.json",
+          "boyut": 2203239,
+          "sha256": "fb7b63191e9bb045082c79fd742a3106a12c99513ab30df4a0d47fa6cb6fd0ab",
+          "lfs": false
+        },
+        {
+          "yol": "vocabulary.txt",
+          "boyut": 459861,
+          "sha256": "34ce3fe1c5041027b3f8d42912270993f986dbc4bb34cf27f951e34a1e453913",
+          "lfs": false
+        }
+      ],
+      "sorunlar": []
+    },
+    {
+      "ad": "small",
+      "hf": "Systran/faster-whisper-small",
+      "surum": "536b0662742c02347bc0e980a01041f333bce120",
+      "surum_tarihi": "2023-11-23T10:57:09.000Z",
+      "depo_lisans_etiketi": "mit",
+      "model_karti_veri_lisansi": null,
+      "guncel_surum": "536b0662742c02347bc0e980a01041f333bce120",
+      "dosyalar": [
+        {
+          "yol": "config.json",
+          "boyut": 2370,
+          "sha256": "b55496ac7940a7ae47d2c01eab40edfd8701feec1229d9cce3b40014383fb828",
+          "lfs": false
+        },
+        {
+          "yol": "model.bin",
+          "boyut": 483546902,
+          "sha256": "3e305921506d8872816023e4c273e75d2419fb89b24da97b4fe7bce14170d671",
+          "lfs": true
+        },
+        {
+          "yol": "tokenizer.json",
+          "boyut": 2203239,
+          "sha256": "fb7b63191e9bb045082c79fd742a3106a12c99513ab30df4a0d47fa6cb6fd0ab",
+          "lfs": false
+        },
+        {
+          "yol": "vocabulary.txt",
+          "boyut": 459861,
+          "sha256": "34ce3fe1c5041027b3f8d42912270993f986dbc4bb34cf27f951e34a1e453913",
+          "lfs": false
+        }
+      ],
+      "sorunlar": []
+    },
+    {
+      "ad": "medium",
+      "hf": "Systran/faster-whisper-medium",
+      "surum": "08e178d48790749d25932bbc082711ddcfdfbc4f",
+      "surum_tarihi": "2023-11-23T11:13:59.000Z",
+      "depo_lisans_etiketi": "mit",
+      "model_karti_veri_lisansi": null,
+      "guncel_surum": "08e178d48790749d25932bbc082711ddcfdfbc4f",
+      "dosyalar": [
+        {
+          "yol": "config.json",
+          "boyut": 2257,
+          "sha256": "3622a2ddc41ec0e0fd4e68c13c6830f03b90c38d89aaad184de02c8c642cf807",
+          "lfs": false
+        },
+        {
+          "yol": "model.bin",
+          "boyut": 1527906378,
+          "sha256": "9b45e1009dcc4ab601eff815b61d80e60ce3fd8c74c1a14f4a282258286b51ae",
+          "lfs": true
+        },
+        {
+          "yol": "tokenizer.json",
+          "boyut": 2203239,
+          "sha256": "fb7b63191e9bb045082c79fd742a3106a12c99513ab30df4a0d47fa6cb6fd0ab",
+          "lfs": false
+        },
+        {
+          "yol": "vocabulary.txt",
+          "boyut": 459861,
+          "sha256": "34ce3fe1c5041027b3f8d42912270993f986dbc4bb34cf27f951e34a1e453913",
+          "lfs": false
+        }
+      ],
+      "sorunlar": []
+    },
+    {
+      "ad": "tr_TR-dfki-medium",
+      "hf": "rhasspy/piper-voices",
+      "surum": "e9c8a39444359388adaa94255becb37a5a2b8e51",
+      "surum_tarihi": "2026-11-20T21:08:54.000Z",
+      "depo_lisans_etiketi": "mit",
+      "model_karti_veri_lisansi": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+      "guncel_surum": "e9c8a39444359388adaa94255becb37a5a2b8e51",
+      "dosyalar": [
+        {
+          "yol": "tr/tr_TR/dfki/medium/MODEL_CARD",
+          "boyut": 319,
+          "sha256": "a3e08c57b9c6d428f8e4fb146512c8b1fb96a68c99d43820ed1dfea6d39cb35f",
+          "lfs": false
+        },
+        {
+          "yol": "tr/tr_TR/dfki/medium/tr_TR-dfki-medium.onnx",
+          "boyut": 63201294,
+          "sha256": "2844717f524ab965d3fe86e60562cbb601d3e456836efcc2196cc3a14112a8fb",
+          "lfs": true
+        },
+        {
+          "yol": "tr/tr_TR/dfki/medium/tr_TR-dfki-medium.onnx.json",
+          "boyut": 4960,
+          "sha256": "13ebd7810f1b61b5027583cf3131a0a233b6ea81c38f2200ebc4ff41c3cca039",
+          "lfs": false
+        }
+      ],
+      "sorunlar": []
+    }
+  ],
+  "geri_cekilenler_depoda_yok": {
+    "tr_TR-fahrettin-medium": true,
+    "tr_TR-fettah-medium": true
+  }
+}

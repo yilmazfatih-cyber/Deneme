@@ -1,0 +1,44 @@
+--- a/web/src/lib/api.ts
++++ b/web/src/lib/api.ts
+@@ -13,6 +13,7 @@
+   adminUserResponseSchema,
+   adminUsersResponseSchema,
+   API_PATHS,
++  askResponseSchema,
+   AppError,
+   authResponseSchema,
+   errorBodySchema,
+@@ -26,6 +27,7 @@
+   workspaceResponseSchema,
+   workspacesResponseSchema,
+   type AdminUpdateUserRequest,
++  type AskRequest,
+   type ChangePasswordRequest,
+   type CreateInviteRequest,
+   type ErrorCode,
+@@ -56,7 +58,13 @@
+   readonly signal?: AbortSignal
+   /** Giriş/kayıt gibi uçlarda belirteç kipini sunucuya bildir. */
+   readonly wantToken?: boolean
+-}
++  /** Bu istek için zaman aşımı (ms); verilmezse istemcinin varsayılanı (30 sn). */
++  readonly timeoutMs?: number
++}
++
++/** Belgeye soru: sunucu yz'yi en çok YZ_TIMEOUT_SECONDS (varsayılan 60 sn) bekler; istemci daha uzun bekler ki
++ * kullanıcı ağ hatası yerine sunucunun açıklayıcı iletisini görsün. */
++export const ASK_TIMEOUT_MS = 10 * 60_000
+ 
+ type Parsed<S> = S extends z.ZodType ? z.output<S> : undefined
+ 
+@@ -219,6 +227,10 @@
+   adminUpdateUser = (id: string, body: AdminUpdateUserRequest) =>
+     this.request('PATCH', API_PATHS.adminUser(id), { body, schema: adminUserResponseSchema })
+   adminMetrics = () => this.request('GET', API_PATHS.adminMetrics, { schema: adminMetricsResponseSchema })
++
++  // ── Belgeye soru (yz vekilliği) ──────────────────────────────────────────────────────────────
++  ask = (body: AskRequest) =>
++    this.request('POST', API_PATHS.ask, { body, schema: askResponseSchema, timeoutMs: ASK_TIMEOUT_MS })
+   // YENİ UÇ BURAYA
+ }
+ 

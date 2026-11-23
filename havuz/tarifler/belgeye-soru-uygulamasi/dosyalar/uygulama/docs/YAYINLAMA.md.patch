@@ -1,0 +1,48 @@
+--- a/docs/YAYINLAMA.md
++++ b/docs/YAYINLAMA.md
+@@ -132,24 +132,27 @@
+ 
+ ## 6. Ortam değişkenleri
+ 
+-| Değişken           | Varsayılan                                   | Açıklama                                                                                                |
+-| ------------------ | -------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+-| `NODE_ENV`         | `development`                                | `production`: `Secure` + `__Host-` çerez, HSTS, `APP_URL` zorunlu, `RATE_LIMIT=off` yasak               |
+-| `PORT`             | `8310`                                       | Dinlenecek kapı (`0` = boş kapı)                                                                        |
+-| `HOST`             | geliştirme `127.0.0.1`, üretim `0.0.0.0`     | Dinlenecek adres                                                                                        |
+-| `DATABASE_PATH`    | `.data/uygulama.db` (çalışma klasörüne göre) | SQLite dosyası; üretimde kalıcı diskte. `:memory:` = bellek içi (deneme)                                |
+-| `APP_URL`          | `http://localhost:5310`                      | Web uygulamasının herkese açık adresi: e-posta bağlantıları + köken denetimi. Üretimde zorunlu, `https` |
+-| `ALLOWED_ORIGINS`  | boş (CORS kapalı)                            | Başka alan adındaki istemciler, virgüllü köken listesi; `*` yasak                                       |
+-| `TRUST_PROXY`      | `0`                                          | Önünüzdeki güvenilen vekil sayısı (`true` = 1)                                                          |
+-| `ADMIN_EMAILS`     | boş                                          | Kayıtta ve sunucu açılışında yönetici yapılacak e-postalar (virgüllü)                                   |
+-| `SESSION_TTL_DAYS` | `30`                                         | Oturum süresi (1–365 gün), kullanıldıkça uzar                                                           |
+-| `MAIL_PROVIDER`    | `console`                                    | `console`: gönderilmez, `mail_outbox` tablosuna yazılır · `http`: sağlayıcıya gönderilir                |
+-| `MAIL_FROM`        | `Uygulama <bildirim@localhost>`              | Gönderen; `http` iken zorunlu                                                                           |
+-| `MAIL_HTTP_URL`    | —                                            | Sağlayıcının gönderim ucu (`http` iken zorunlu)                                                         |
+-| `MAIL_HTTP_KEY`    | —                                            | Sağlayıcının API anahtarı (`http` iken zorunlu; `Authorization: Bearer` olarak gider)                   |
+-| `WEB_DIST`         | `web/dist`                                   | Derlenmiş web klasörü; hazırsa aynı kökenden sunulur, değilse yalnız API çalışır                        |
+-| `LOG_LEVEL`        | `info` (test: `warn`)                        | `debug` · `info` · `warn` · `error`                                                                     |
+-| `RATE_LIMIT`       | `on`                                         | `off` yalnız uçtan uca testler içindir                                                                  |
++| Değişken             | Varsayılan                                   | Açıklama                                                                                                |
++| -------------------- | -------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
++| `NODE_ENV`           | `development`                                | `production`: `Secure` + `__Host-` çerez, HSTS, `APP_URL` zorunlu, `RATE_LIMIT=off` yasak               |
++| `PORT`               | `8310`                                       | Dinlenecek kapı (`0` = boş kapı)                                                                        |
++| `HOST`               | geliştirme `127.0.0.1`, üretim `0.0.0.0`     | Dinlenecek adres                                                                                        |
++| `DATABASE_PATH`      | `.data/uygulama.db` (çalışma klasörüne göre) | SQLite dosyası; üretimde kalıcı diskte. `:memory:` = bellek içi (deneme)                                |
++| `APP_URL`            | `http://localhost:5310`                      | Web uygulamasının herkese açık adresi: e-posta bağlantıları + köken denetimi. Üretimde zorunlu, `https` |
++| `ALLOWED_ORIGINS`    | boş (CORS kapalı)                            | Başka alan adındaki istemciler, virgüllü köken listesi; `*` yasak                                       |
++| `TRUST_PROXY`        | `0`                                          | Önünüzdeki güvenilen vekil sayısı (`true` = 1)                                                          |
++| `ADMIN_EMAILS`       | boş                                          | Kayıtta ve sunucu açılışında yönetici yapılacak e-postalar (virgüllü)                                   |
++| `SESSION_TTL_DAYS`   | `30`                                         | Oturum süresi (1–365 gün), kullanıldıkça uzar                                                           |
++| `MAIL_PROVIDER`      | `console`                                    | `console`: gönderilmez, `mail_outbox` tablosuna yazılır · `http`: sağlayıcıya gönderilir                |
++| `MAIL_FROM`          | `Uygulama <bildirim@localhost>`              | Gönderen; `http` iken zorunlu                                                                           |
++| `MAIL_HTTP_URL`      | —                                            | Sağlayıcının gönderim ucu (`http` iken zorunlu)                                                         |
++| `MAIL_HTTP_KEY`      | —                                            | Sağlayıcının API anahtarı (`http` iken zorunlu; `Authorization: Bearer` olarak gider)                   |
++| `WEB_DIST`           | `web/dist`                                   | Derlenmiş web klasörü; hazırsa aynı kökenden sunulur, değilse yalnız API çalışır                        |
++| `LOG_LEVEL`          | `info` (test: `warn`)                        | `debug` · `info` · `warn` · `error`                                                                     |
++| `RATE_LIMIT`         | `on`                                         | `off` yalnız uçtan uca testler içindir                                                                  |
++| `YZ_URL`             | —                                            | Belgeye soru için yz sunucusunun adresi (ör. `http://127.0.0.1:8420`); yoksa `/api/sor` kapalı (404)    |
++| `YZ_API_KEY`         | —                                            | yz sunucusunun anahtarı (yz'de `YZ_SUNUCU_ANAHTARI`); `YZ_URL` ile birlikte zorunlu, en az 16 karakter  |
++| `YZ_TIMEOUT_SECONDS` | `60`                                         | yz yanıtı için en çok bekleme (5–600 sn); CPU'da yavaş modelde artırın                                  |
+ 
+ Hatalı ya da eksik ayarda sunucu **başlamaz** ve her sorunu, değişken adı ve ne yapılacağıyla Türkçe listeler.
+ Sunucu ve betikler önce çalışma klasöründeki, yoksa `havuz/uygulama/` klasöründeki `.env` dosyasını okur

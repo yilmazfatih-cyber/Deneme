@@ -1,0 +1,32 @@
+# yz → havuz/dil-modeli bağlantı ayarı (kendi-modelinle-sohbet tarifi ekledi).
+# Kullanım: önce model sunucusunu başlatın (dil-modeli klasöründe):
+#     .venv/bin/python -m dil_modeli sun --model ornek-model          # http://127.0.0.1:8430
+# sonra yz klasöründe:
+#     .venv/bin/python -m yz sohbet --ayar yz.dil-modeli.yaml -m "Merhaba"
+#     .venv/bin/python -m yz degerlendir gorevler/siniflandirma.yaml --ayar yz.dil-modeli.yaml --sinir 5
+# SIR YAZMAYIN: sunucu DIL_MODELI_ANAHTAR ile başlatıldıysa aynı değeri DIL_MODELI_ANAHTAR ortam
+# değişkeninde verin; dosyada yalnız değişkenin ADI durur (api_anahtari_ortam).
+
+varsayilan: dil_modeli
+
+saglayicilar:
+  dil_modeli:
+    tur: openai_uyumlu
+    # localhost DEĞİL 127.0.0.1: bazı makinelerde localhost önce IPv6 (::1) adresine çözülür,
+    # dil-modeli sunucusu ise yalnız 127.0.0.1'i dinler.
+    taban_url: http://127.0.0.1:8430/v1
+    # Sunucunun /v1/models listesindeki ad (varsayılan: model klasörünün adı; `sun --ad` ile değişir).
+    model: ornek-model
+    api_anahtari_ortam: DIL_MODELI_ANAHTAR
+    # Sunucu response_format alanını SESSİZCE yok sayar (reddetmez, uygulamaz). kapali: yz bu alanı
+    # hiç göndermez. `yz cikar` yine de şema katmanından başlar (istemde şema ile 3 tur dener);
+    # katmanları seçmek için: yz cikar ... --katmanlar istem,alan
+    yapili_kip: kapali
+    # Sunucu istek başına en çok 512 belirteç üretir (sun --azami-belirtec); örnek model uzun
+    # yanıtlarda kendini tekrar eder, kısa tutmak bekleme süresini de kısaltır.
+    azami_belirtec: 64
+    zaman_asimi_sn: 120
+
+veri_dizini: .yz
+onbellek: false
+gunluk: true

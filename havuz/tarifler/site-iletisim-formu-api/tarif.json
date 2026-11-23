@@ -1,0 +1,9 @@
+{
+  "ad": "site-iletisim-formu-api",
+  "baslik": "Sitenin iletişim formu → uygulama API'si (CORS, bal küpü, hız sınırı, e-posta)",
+  "ozet": "site temelinin iletişim formunu (PUBLIC_FORM_ENDPOINT) uygulama API'sine yeni, herkese açık POST /api/iletisim ucuyla bağlar: köken izin listesi (CORS + Origin denetimi), bal küpü, IP ve toplam hız sınırı, şema doğrulaması ve yöneticiye e-posta (mail_outbox); JavaScript kapalıyken de çalışır.",
+  "temeller": ["site", "uygulama"],
+  "ekKlasorler": [],
+  "sure": "~8 dk",
+  "zorluk": "orta"
+}

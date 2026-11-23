@@ -1,0 +1,13 @@
+# Sanal ortam ve önbellekler
+.venv/
+__pycache__/
+*.py[cod]
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+*.egg-info/
+build/
+
+# Tarif denemeleri (tarif.py dogrula --calisma calisma) ve sonuç dosyaları
+calisma/
+*.sonuc.json

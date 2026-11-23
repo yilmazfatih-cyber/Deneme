@@ -1,0 +1,133 @@
+# Model ve ses kataloğu — `python -m ses indir` buradaki SABİT sürümleri indirir ve sha256'yı doğrular.
+# Doğrulama: .venv/bin/python scripts/hf_dogrula.py (ağ ister) → katalog/hf_dogrulama.json
+# Yeni kayıt: .venv/bin/python scripts/hf_dogrula.py --oneri <depo> [--klasor <alt klasör>] (AGENTS.md tarifi)
+# Lisans alanları model kartından OKUNDU; tarih aşağıda. Ayrıntı ve atıf metinleri: docs/LISANSLAR.md
+dogrulama_tarihi: "2026-11-23"
+
+modeller:
+  # --- Konuşma → yazı (faster-whisper / CTranslate2, çok dilli; Türkçe dahil) ---
+  - ad: tiny
+    tur: stt
+    hf: Systran/faster-whisper-tiny
+    surum: d90ca5fe260221311c53c58e660288d3deb8d356
+    dosyalar:
+      - yol: config.json
+        boyut: 2249
+        sha256: a73a28cdfe1c43ccc7202fa333d1f89c202477271407ae9a7f19afa52039cac8
+      - yol: model.bin
+        boyut: 75538270
+        sha256: dcb76c6586fc06cbdac6dd21f14cfd129cc4cdd9dce19bf4ffa62e59cbe6e6d1
+      - yol: tokenizer.json
+        boyut: 2203239
+        sha256: fb7b63191e9bb045082c79fd742a3106a12c99513ab30df4a0d47fa6cb6fd0ab
+      - yol: vocabulary.txt
+        boyut: 459861
+        sha256: 34ce3fe1c5041027b3f8d42912270993f986dbc4bb34cf27f951e34a1e453913
+    lisans: MIT
+    ticari: evet
+    lisans_kaynagi: "HF model kartı etiketi (license: mit); OpenAI whisper README: 'code and model weights are released under the MIT License'"
+    atif: "Whisper (OpenAI, MIT) — CTranslate2 dönüşümü: Systran/faster-whisper-tiny"
+    ornekleme: 16000
+    aciklama: "En hızlı ve en küçük (~78 MB); Türkçede hata oranı yüksek — yalnız deneme/zayıf makine."
+
+  - ad: base
+    tur: stt
+    hf: Systran/faster-whisper-base
+    surum: ebe41f70d5b6dfa9166e2c581c45c9c0cfc57b66
+    dosyalar:
+      - yol: config.json
+        boyut: 2309
+        sha256: 56a6d8110d311f19c8f0471e562832c7527f146b567275bfca59fcf7c184da9a
+      - yol: model.bin
+        boyut: 145217532
+        sha256: d01c3014881c9c6f3133c182f3d2887eb6ca1c789a7538c5c007196857a0a6a9
+      - yol: tokenizer.json
+        boyut: 2203239
+        sha256: fb7b63191e9bb045082c79fd742a3106a12c99513ab30df4a0d47fa6cb6fd0ab
+      - yol: vocabulary.txt
+        boyut: 459861
+        sha256: 34ce3fe1c5041027b3f8d42912270993f986dbc4bb34cf27f951e34a1e453913
+    lisans: MIT
+    ticari: evet
+    lisans_kaynagi: "HF model kartı etiketi (license: mit); OpenAI whisper README: 'code and model weights are released under the MIT License'"
+    atif: "Whisper (OpenAI, MIT) — CTranslate2 dönüşümü: Systran/faster-whisper-base"
+    ornekleme: 16000
+    aciklama: "Varsayılan (~148 MB): CPU'da hızlı, tiny'den belirgin iyi. Ölçüm: docs/GERCEK_MODEL_DENEMESI.md"
+
+  - ad: small
+    tur: stt
+    hf: Systran/faster-whisper-small
+    surum: 536b0662742c02347bc0e980a01041f333bce120
+    dosyalar:
+      - yol: config.json
+        boyut: 2370
+        sha256: b55496ac7940a7ae47d2c01eab40edfd8701feec1229d9cce3b40014383fb828
+      - yol: model.bin
+        boyut: 483546902
+        sha256: 3e305921506d8872816023e4c273e75d2419fb89b24da97b4fe7bce14170d671
+      - yol: tokenizer.json
+        boyut: 2203239
+        sha256: fb7b63191e9bb045082c79fd742a3106a12c99513ab30df4a0d47fa6cb6fd0ab
+      - yol: vocabulary.txt
+        boyut: 459861
+        sha256: 34ce3fe1c5041027b3f8d42912270993f986dbc4bb34cf27f951e34a1e453913
+    lisans: MIT
+    ticari: evet
+    lisans_kaynagi: "HF model kartı etiketi (license: mit); OpenAI whisper README: 'code and model weights are released under the MIT License'"
+    atif: "Whisper (OpenAI, MIT) — CTranslate2 dönüşümü: Systran/faster-whisper-small"
+    ornekleme: 16000
+    aciklama: "Daha doğru (~486 MB), CPU'da base'ten ~3 kat yavaş."
+
+  - ad: medium
+    tur: stt
+    hf: Systran/faster-whisper-medium
+    surum: 08e178d48790749d25932bbc082711ddcfdfbc4f
+    dosyalar:
+      - yol: config.json
+        boyut: 2257
+        sha256: 3622a2ddc41ec0e0fd4e68c13c6830f03b90c38d89aaad184de02c8c642cf807
+      - yol: model.bin
+        boyut: 1527906378
+        sha256: 9b45e1009dcc4ab601eff815b61d80e60ce3fd8c74c1a14f4a282258286b51ae
+      - yol: tokenizer.json
+        boyut: 2203239
+        sha256: fb7b63191e9bb045082c79fd742a3106a12c99513ab30df4a0d47fa6cb6fd0ab
+      - yol: vocabulary.txt
+        boyut: 459861
+        sha256: 34ce3fe1c5041027b3f8d42912270993f986dbc4bb34cf27f951e34a1e453913
+    lisans: MIT
+    ticari: evet
+    lisans_kaynagi: "HF model kartı etiketi (license: mit); OpenAI whisper README: 'code and model weights are released under the MIT License'"
+    atif: "Whisper (OpenAI, MIT) — CTranslate2 dönüşümü: Systran/faster-whisper-medium"
+    ornekleme: 16000
+    aciklama: "Büyük (~1,5 GB); bu ortamda İNDİRİLMEDİ ve DENENMEDİ. Güçlü bir makine için."
+
+  # --- Metin → ses (Piper). rhasspy/piper-voices'ta 2026-11-23 itibarıyla TEK Türkçe ses budur. ---
+  - ad: tr_TR-dfki-medium
+    tur: tts
+    hf: rhasspy/piper-voices
+    surum: e9c8a39444359388adaa94255becb37a5a2b8e51
+    dosyalar:
+      - yol: tr/tr_TR/dfki/medium/MODEL_CARD
+        boyut: 319
+        sha256: a3e08c57b9c6d428f8e4fb146512c8b1fb96a68c99d43820ed1dfea6d39cb35f
+      - yol: tr/tr_TR/dfki/medium/tr_TR-dfki-medium.onnx
+        boyut: 63201294
+        sha256: 2844717f524ab965d3fe86e60562cbb601d3e456836efcc2196cc3a14112a8fb
+      - yol: tr/tr_TR/dfki/medium/tr_TR-dfki-medium.onnx.json
+        boyut: 4960
+        sha256: 13ebd7810f1b61b5027583cf3131a0a233b6ea81c38f2200ebc4ff41c3cca039
+    lisans: CC-BY-NC-SA-4.0
+    ticari: hayir
+    lisans_kaynagi: "Sesin MODEL_CARD dosyası (Dataset License: creativecommons.org/licenses/by-nc-sa/4.0; Training: 'Finetuned from U.S. English lessac voice') + Piper docs/LICENSING.md ve COMMERCIAL_USE.md (lessac verisi ticari sentezi dışlar)"
+    atif: "Ses: Piper tr_TR-dfki-medium (rhasspy/piper-voices); veri: DFKI, github.com/marytts/dfki-ot-data, CC BY-NC-SA 4.0; taban ses en_US-lessac (Lessac Blizzard 2013 lisansı)"
+    ornekleme: 22050
+    aciklama: "TİCARİ KULLANIMA KAPALI (iki nedenle: veri CC BY-NC-SA, taban ses lessac). Kişisel/araştırma/deneme için."
+
+geri_cekilenler:
+  - ad: tr_TR-fahrettin-medium
+    neden: "rhasspy/piper-voices'tan 2025-12-30'da katkıcıların isteğiyle kaldırıldı (commit b145f2ac26: 'Remove fahrettin and fettah voices at request of contributors'). Başka depolardaki kopyaları KULLANMAYIN."
+    kaynak: "rhasspy/piper-voices commit b145f2ac26"
+  - ad: tr_TR-fettah-medium
+    neden: "rhasspy/piper-voices'tan 2025-12-30'da katkıcıların isteğiyle kaldırıldı (commit b145f2ac26). Başka depolardaki kopyaları KULLANMAYIN."
+    kaynak: "rhasspy/piper-voices commit b145f2ac26"

@@ -1,0 +1,12 @@
+--- a/shared/DEGISIKLIKLER.md
++++ b/shared/DEGISIKLIKLER.md
+@@ -11,6 +11,9 @@
+ 
+ ## Günlük
+ 
++- 2026-11-23 — (belgeye-soru-uygulamasi tarifi) EKLENDİ, geriye uyumlu: `askRequestSchema`,
++  `askResponseSchema`, `askSourceSchema`, `QUESTION_MIN/MAX` ve `API_PATHS.ask` (`POST /api/sor`, oturum gerekir).
++  Web: `ApiClient.ask` ile çağırın; yanıt eşitlenmez (useRemote/useState ile gösterilir).
+ - 2026-11-16 — (api ekibi) EKLENDİ, geriye uyumlu: `adminMetricsResponseSchema` + `AdminMetricsResponse` türü ve
+   `API_PATHS.adminMetrics` (`GET /api/admin/metrics`, yalnız yönetici). Web: yönetim ekranında göstermek
+   isterseniz bu şemayla okuyun; başka bir şey yapmanız gerekmez.

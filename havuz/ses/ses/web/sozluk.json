@@ -1,0 +1,21 @@
+{
+  "baslik": "Tarayıcıda Türkçe ses",
+  "aciklama": "Bu sayfa cihazınızda Türkçe konuşan bir ses var mı diye bakar. Yoksa sunucudaki sese geçer.",
+  "api_var": "Web Speech API: var",
+  "api_yok": "Web Speech API: bu tarayıcıda yok",
+  "sesler_baslik": "Cihazdaki Türkçe sesler",
+  "ses_yok": "Bu cihazda Türkçe ses bulunamadı.",
+  "cevrimdisi": "çevrimdışı çalışır",
+  "cevrimici": "ağ ister",
+  "varsayilan": "varsayılan",
+  "metin_etiket": "Okunacak metin",
+  "ornek_metin": "Saat 14:30'da ilacını aldın mı?",
+  "sunucu_etiket": "Ses sunucusu adresi (boş: bu sayfanın sunucusu)",
+  "cihaz_dugme": "Cihaz sesiyle oku",
+  "sunucu_dugme": "Sunucuyla oku",
+  "otomatik_dugme": "Otomatik oku (yedekli)",
+  "sonuc_cihaz": "Cihazın sesiyle okundu.",
+  "sonuc_sunucu": "Sunucudaki sesle okundu.",
+  "sonuc_yok": "Ses çalınamadı. Metin ekranda kalır.",
+  "bekleniyor": "Okunuyor…"
+}

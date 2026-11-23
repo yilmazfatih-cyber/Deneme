@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "havuz-tarifler"
+version = "0.1.0"
+description = "Havuzdaki temelleri birbirine bağlayan, uygulanıp doğrulanmış uçtan uca tarifler ve ortak çalıştırıcı."
+readme = "README.md"
+requires-python = ">=3.11"
+# Çalıştırıcı ve tarif betikleri YALNIZ standart kütüphaneyi kullanır (gerekçe: docs/KARARLAR.md, K01).
+dependencies = []
+
+[project.optional-dependencies]
+# Yalnız hızlı denetim (python scripts/check.py) için.
+dev = ["ruff>=0.17,<1", "mypy>=2,<3", "pytest>=9,<10"]
+
+[tool.setuptools]
+packages = ["tarifcik"]
+py-modules = ["tarif"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+# dosyalar/ altındaki kod HEDEF temelin kurallarıyla, hedefte denetlenir (tarifin dogrula.py'si).
+extend-exclude = [".venv", "build", "*/dosyalar"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "C4", "RUF", "PT", "S", "ANN001", "ANN201", "ANN202"]
+ignore = [
+  "RUF001", "RUF002", "RUF003",  # Türkçe harfler "belirsiz karakter" sayılmasın
+  "S101",                        # assert testlerde kullanılır
+  "S603", "S607",                # alt süreç çalıştırmak bu temelin işi (komutlar liste, kabuksuz)
+  "SIM108",
+  "E501",                        # satır uzunluğunu biçimleyici yönetir (uzun dizgi/yorum serbest)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S", "ANN"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["tarifcik", "tarif"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_unused_ignores = true
+warn_unreachable = true
+mypy_path = "."
+files = ["tarif.py", "tarifcik", "scripts", "tests"]
+
+[[tool.mypy.overrides]]
+module = ["tests.*"]
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q -p no:cacheprovider --strict-markers"

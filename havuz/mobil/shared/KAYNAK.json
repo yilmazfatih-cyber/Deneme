@@ -1,0 +1,22 @@
+{
+  "kaynak": "havuz/uygulama/shared/src",
+  "kopyalanma": "2026-11-23",
+  "dosyalar": {
+    "api.ts": "83779bbee46dced8f313e827b2b406fcf4dfca84823eaff3e407b0b300a64f2f",
+    "entities/index.ts": "25d4d2a7af303b93541c718ae1771033043f5273113d3c490c406d1062d5d2de",
+    "entities/lists.ts": "a943485249cf6e8dc0148d0b3c1e92e9e6b17eccbeebbac3120d1780a0d410bc",
+    "entities/tasks.ts": "26e77de0159c6ee96e5a6627d2330bb608e56c2d144199bede3611433b335494",
+    "entity.ts": "3c6816330123296bb0c1d5939b8fced212d997fcc0956036595ef4b135250e25",
+    "errors.ts": "dc76618d6dfaaa1c22d7a6cc11a8d23e83af266ac28d10f633ce1484ed4ff8b5",
+    "ids.ts": "ac4f920059a3b6b23d009bece425619d87875b6d3008f5a1d712c9c057d6bee7",
+    "index.ts": "33a141f0aec0a35422319570d3ccc865df9df28520052aa09def8436cd36f167",
+    "replica.ts": "681d9572a4a8c910fd83a7d255da0f7bc7db8ded6f8d121f960b2d95561f40f0",
+    "sync.ts": "2e009c93ac55742d7b8dd038d72efd60f6b528842f78166375f7d35a93761625",
+    "testing/conformance.ts": "404f1ad310bd1051bd3de43eacc551be3fa742d9359da291c5cafd0f93c29cd5",
+    "testing/index.ts": "65f317f4a2c6f326af52e4675023cf090346de4ad2d09ddab76c58beedbd7331",
+    "testing/memoryReplica.ts": "61cdd937529021dc440762332261541ec74d197b5205676ae6088e106a5532d6",
+    "testing/memoryServer.ts": "1eb5eb6010748fffe632deb4bcf6db01d3a2cb92358c73005e5b525bb47d004e",
+    "testing/random.ts": "4158adbb2399adf471cd0beb793c8cccdc66dd90904eab137d96be4fb539c169",
+    "text.ts": "95c81dab7c801339ddba301f1a5faecb9e70de59b48e74056f0a94138e77378c"
+  }
+}

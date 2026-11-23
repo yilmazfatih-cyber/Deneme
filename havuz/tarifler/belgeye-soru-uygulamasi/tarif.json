@@ -1,0 +1,9 @@
+{
+  "ad": "belgeye-soru-uygulamasi",
+  "baslik": "Uygulamaya \"Sor\" sayfası (uygulama API → yz RAG vekilliği)",
+  "ozet": "uygulama temeline belgeye soru sorma özelliği ekler: oturumlu, hız sınırlı, gövdesi doğrulanan POST /api/sor ucu yerel ve anahtarlı yz sunucusunun RAG ucuna vekillik eder; web'de yükleniyor, hata, boş ve çevrimdışı durumları olan erişilebilir bir Sor sayfası.",
+  "temeller": ["uygulama", "yz"],
+  "ekKlasorler": ["belgeler"],
+  "sure": "~10 dk",
+  "zorluk": "zor"
+}

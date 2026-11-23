@@ -1,0 +1,52 @@
+--- a/shared/src/api.ts
++++ b/shared/src/api.ts
+@@ -247,6 +247,42 @@
+   databaseBytes: z.number().int().nonnegative(),
+ })
+ export type AdminMetricsResponse = z.infer<typeof adminMetricsResponseSchema>
++
++// ── Belgeye soru (yz vekilliği) ──────────────────────────────────────────────────────────────────
++
++/** Soru uzunluğu: çok kısa soru anlamsız, çok uzun soru modeli yorar (yz en çok 4000 karakter kabul eder). */
++export const QUESTION_MIN = 3
++export const QUESTION_MAX = 1000
++
++export const askRequestSchema = z.object({
++  question: z
++    .string()
++    .trim()
++    .min(QUESTION_MIN, `Soru en az ${QUESTION_MIN} karakter olmalı.`)
++    .max(QUESTION_MAX, `Soru en çok ${QUESTION_MAX} karakter olabilir.`),
++})
++export type AskRequest = z.input<typeof askRequestSchema>
++
++/** Yanıtın dayandığı belge parçası. `number`, yanıttaki [n] atıflarının numarasıdır. */
++export const askSourceSchema = z.object({
++  number: z.number().int().positive(),
++  /** Belge ve bölüm adı: "iade.md › Para iadesi". */
++  title: z.string(),
++  excerpt: z.string(),
++})
++export type AskSource = z.infer<typeof askSourceSchema>
++
++export const askResponseSchema = z.object({
++  answer: z.string(),
++  /** Belgelerde yanıt bulunamadı; `answer` bunu söyleyen cümledir. */
++  notInDocuments: z.boolean(),
++  /** Yanıtta atıf olarak geçen kaynak numaraları. */
++  citations: z.array(z.number().int()),
++  sources: z.array(askSourceSchema),
++  /** Doğruluğu denetlenmesi gereken durumlar (kaynakta geçmeyen rakam/ad, atıfsız yanıt…). */
++  warnings: z.array(z.string()),
++})
++export type AskResponse = z.infer<typeof askResponseSchema>
+ 
+ // ── Web yolları ──────────────────────────────────────────────────────────────────────────────────
+ 
+@@ -294,5 +330,6 @@
+   adminUsers: '/api/admin/users',
+   adminUser: (id: string) => `/api/admin/users/${enc(id)}`,
+   adminMetrics: '/api/admin/metrics',
++  ask: '/api/sor',
+   // YENİ ADRES BURAYA
+ } as const

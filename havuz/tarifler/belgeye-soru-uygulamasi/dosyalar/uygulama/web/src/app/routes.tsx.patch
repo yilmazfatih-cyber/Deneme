@@ -1,0 +1,43 @@
+--- a/web/src/app/routes.tsx
++++ b/web/src/app/routes.tsx
+@@ -15,7 +15,16 @@
+  * Genişletme: yeni sayfa → `npm run gen -- page <ad>` ya da aşağıya bir satır ekleyin (kural testi
+  * test/rules/routes.test.ts her sayfanın burada kayıtlı olduğunu ve başlığının sözlükte bulunduğunu denetler).
+  */
+-import { House, Layers, ListChecks, Settings, Trash, UserRound, type LucideIcon } from 'lucide-react'
++import {
++  House,
++  Layers,
++  ListChecks,
++  MessageCircleQuestionMark,
++  Settings,
++  Trash,
++  UserRound,
++  type LucideIcon,
++} from 'lucide-react'
+ import type { ReactNode } from 'react'
+ import type { MessageKey } from '../i18n/index.ts'
+ import { AccountPage } from '../features/account/AccountPage.tsx'
+@@ -27,6 +36,7 @@
+ import { CatalogPage } from '../features/catalog/CatalogPage.tsx'
+ import { AdminUsersPage } from '../features/settings/AdminUsersPage.tsx'
+ import { SettingsPage } from '../features/settings/SettingsPage.tsx'
++import { SorPage } from '../features/sor/SorPage.tsx'
+ import { ListsPage } from '../features/tasks/ListsPage.tsx'
+ import { TaskEditPage } from '../features/tasks/TaskEditPage.tsx'
+ import { TasksPage } from '../features/tasks/TasksPage.tsx'
+@@ -114,6 +124,14 @@
+   },
+   { path: '/davet', title: 'page.invite', element: <InvitePage />, layout: 'plain', needsApi: true },
+   { path: '/katalog', title: 'catalog.title', element: <CatalogPage />, devOnly: true },
++  {
++    path: '/sor',
++    title: 'nav.ask',
++    element: <SorPage />,
++    access: 'account',
++    needsApi: true,
++    nav: { icon: MessageCircleQuestionMark, order: 35 },
++  },
+   // YENİ ROTA BURAYA
+ ]
+ 

@@ -1,0 +1,53 @@
+# cpu-deneme — ağsız, saniyeler süren boru hattı denemesi (model bir şey ÖĞRENMEZ, hattın çalıştığını gösterir).
+# Önce örnek veri üretin: python -m goruntu ornek-veri veri/sekiller
+# Taban "minik-rastgele": timm'in test_resnet mimarisi, rastgele ağırlık (indirme yok).
+
+[model]
+taban = "minik-rastgele"
+onceden_egitilmis = false
+girdi_boyutu = 64
+kip = "tam"
+bas_isinma_donemi = 0
+govde_oran_carpani = 1.0
+birakma = 0.0
+
+[veri]
+klasor = "veri/sekiller"
+dogrulama_orani = 0.2
+test_orani = 0.2
+kopya_yontemi = "phash"
+kopya_esigi = 8
+grup_deseni = ""
+tohum = 42
+
+[artirma]
+etkin = true
+olcek_alt = 0.6
+yatay_cevir = true
+dikey_cevir = false
+renk = 0.2
+dondurme_derece = 0.0
+
+[egitim]
+cikti = "ciktilar/cpu-deneme"
+donem = 3
+yigin = 16
+ogrenme_orani = 3e-3
+agirlik_curumesi = 0.05
+isinma_orani = 0.1
+dengesizlik = "agirlikli-kayip"
+etiket_yumusatma = 0.0
+erken_durdurma = 0
+izlenen = "makro_f1"
+duyarlik = "oto"
+is_parcacigi = 2
+isci = 0
+tohum = 42
+
+[esik]
+kalibrasyon = true
+hedef_dogruluk = 0.0
+sabit_esik = 0.0
+
+[disa_aktarim]
+int8 = true

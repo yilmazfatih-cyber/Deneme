@@ -1,0 +1,10 @@
+--- a/api/src/http/routes.ts
++++ b/api/src/http/routes.ts
+@@ -32,6 +32,7 @@
+   adminUsers: '/api/admin/users',
+   adminUser: '/api/admin/users/:userId',
+   adminMetrics: '/api/admin/metrics',
++  ask: '/api/sor',
+   // YENİ ADRES BURAYA (API_PATHS'teki adla aynı anahtar)
+ } as const satisfies Record<keyof typeof API_PATHS, string>
+ 

@@ -1,0 +1,10 @@
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -45,6 +45,7 @@
+ | Rapor / model kartı / HTML | `ml_temel/tablo/report.py`, `model_card.py`, `html_report.py` |
+ | Kullanıcıya görünen HER metin | `ml_temel/tablo/messages.py` (tek sözlük) |
+ | Komut satırı | `ml_temel/tablo/cli.py` |
++| Tahmin servisi (HTTP, `sun` komutu) | `ml_temel/tablo/serve.py` (uçlar), `serve_schema.py` (girdi doğrulama), test: `tests/test_serve.py` |
+ | Zaman serisi | `ml_temel/zaman/` |
+ | Sentetik veri | `ml_temel/veri/synthetic.py` |
+ 

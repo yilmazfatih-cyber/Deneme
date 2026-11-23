@@ -1,0 +1,18 @@
+--- a/api/src/app.ts
++++ b/api/src/app.ts
+@@ -29,6 +29,7 @@
+ import { eventRoutes } from './modules/events/routes.ts'
+ import { healthRoutes } from './modules/health/routes.ts'
+ import { inviteRoutes } from './modules/invites/routes.ts'
++import { sorRoutes } from './modules/sor/routes.ts'
+ import { syncRoutes } from './modules/sync/routes.ts'
+ import { workspaceRoutes } from './modules/workspaces/routes.ts'
+ 
+@@ -69,6 +70,7 @@
+   app.route('/', syncRoutes(ctx))
+   app.route('/', eventRoutes(ctx))
+   app.route('/', adminRoutes(ctx))
++  app.route('/', sorRoutes(ctx))
+   // YENİ MODÜL BURAYA: app.route('/', ornekRoutes(ctx))
+ 
+   const web = staticWeb(config.webDist)

@@ -1,0 +1,9 @@
+{
+  "ad": "kendi-modelinle-sohbet",
+  "baslik": "Kendi modelinle sohbet (dil-modeli sunucusu → yz istemcisi)",
+  "ozet": "dil-modeli temelinin örnek modelini OpenAI uyumlu sunucuyla başlatır, yz'nin OpenAI uyumlu sağlayıcısıyla bağlanır; yz modeller, sohbet ve degerlendir komutlarını gerçek iki süreç arasında koşar ve sunucunun sözleşmesini (akış, kullanım, araç, yapılı çıktı) denetler.",
+  "temeller": ["dil-modeli", "yz"],
+  "ekKlasorler": ["baglanti"],
+  "sure": "~3 dk",
+  "zorluk": "kolay"
+}

@@ -1,0 +1,80 @@
+--- a/ml_temel/tablo/cli.py
++++ b/ml_temel/tablo/cli.py
+@@ -1,9 +1,10 @@
+-"""Komut satırı: `python -m ml_temel egit | tahmin | degerlendir | rapor`.
++"""Komut satırı: `python -m ml_temel egit | tahmin | degerlendir | rapor | sun`.
+ 
+   egit         CSV → model.npz + rapor.md + model_karti.md + metrikler.json (+ rapor.html)
+   tahmin       model.npz + yeni CSV → tahmin sütunları eklenmiş CSV (girdiyle aynı biçimde)
+   degerlendir  model.npz + etiketli CSV → ölçütler ve güven aralıkları (Markdown)
+   rapor        model.npz → raporu yeniden yazar (dosyada saklanan sonuçlardan)
++  sun          model.npz → HTTP tahmin servisi (tablo/serve.py; varsayılan 127.0.0.1:8445)
+ Hatalar Türkçe ve yol gösterici yazılır; çıkış kodu: 0 başarı, 2 kullanıcı/veri hatası.
+ Genişletme: yeni komut = `build_parser`'a alt komut + `_cmd_<ad>` fonksiyonu + `COMMANDS` kaydı.
+ """
+@@ -13,6 +14,8 @@
+ import argparse
+ import json
+ import math
++import os
++import signal
+ import sys
+ import time
+ from collections.abc import Callable
+@@ -31,7 +34,10 @@
+ from ml_temel.tablo.model_card import render_model_card
+ from ml_temel.tablo.report import num, render_report
+ from ml_temel.tablo.schema import label_text
++from ml_temel.tablo.serve import KEY_VARIABLE, PredictionService, make_server
+ from ml_temel.tablo.training import TrainingConfig, train
++
++LOCAL_HOSTS = ("127.0.0.1", "localhost", "::1")
+ 
+ 
+ def build_parser() -> argparse.ArgumentParser:
+@@ -64,6 +70,11 @@
+     rapor.add_argument("--model", required=True, help=t("arg_model"))
+     rapor.add_argument("--cikti", help=t("arg_cikti_dosya"))
+     rapor.add_argument("--html", action="store_true", help=t("arg_html"))
++    sun = commands.add_parser("sun", help=t("cli_sun"))
++    sun.add_argument("--model", required=True, help=t("arg_model"))
++    sun.add_argument("--adres", default="127.0.0.1", help=t("arg_adres"))
++    sun.add_argument("--kapi", type=int, default=8445, help=t("arg_kapi"))
++    sun.add_argument("--esik", type=float, help=t("arg_esik"))
+     return parser
+ 
+ 
+@@ -210,11 +221,33 @@
+     return 0
+ 
+ 
++def _stop(_signum: int, _frame: object) -> None:
++    raise KeyboardInterrupt  # SIGTERM (systemd, docker stop) Ctrl+C gibi düzgün kapatsın
++
++
++def _cmd_sun(args: argparse.Namespace) -> int:
++    key = os.environ.get(KEY_VARIABLE) or None
++    if args.adres not in LOCAL_HOSTS and key is None:
++        raise ValueError(t("sunucu_anahtar_gerekli", adres=args.adres, degisken=KEY_VARIABLE))
++    service = PredictionService.from_file(args.model, args.esik)
++    server = make_server(service, args.adres, args.kapi, key)
++    print(t("sunucu_hazir", adres=args.adres, kapi=server.server_address[1]), flush=True)
++    signal.signal(signal.SIGTERM, _stop)
++    try:
++        server.serve_forever()
++    except KeyboardInterrupt:
++        pass
++    finally:
++        server.server_close()
++    return 0
++
++
+ COMMANDS: dict[str, Callable[[argparse.Namespace], int]] = {
+     "egit": _cmd_egit,
+     "tahmin": _cmd_tahmin,
+     "degerlendir": _cmd_degerlendir,
+     "rapor": _cmd_rapor,
++    "sun": _cmd_sun,
+     # YENİ KOMUT BURAYA
+ }
+ 

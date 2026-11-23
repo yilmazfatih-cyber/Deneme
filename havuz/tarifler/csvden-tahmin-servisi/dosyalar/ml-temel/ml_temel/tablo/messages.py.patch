@@ -1,0 +1,48 @@
+--- a/ml_temel/tablo/messages.py
++++ b/ml_temel/tablo/messages.py
+@@ -242,6 +242,45 @@
+     "`python -m ml_temel egit ...`.\n- Yeni etiketli veri geldikçe `degerlendir` ile ölçümü "
+     "yenileyin; başarı güven aralığının altına düşerse modeli yenileyin.",
+     "kart_hassas_yok": "(otomatik tespit edilmedi; sütun adlarını kendiniz gözden geçirin)",
++    # --- tahmin servisi (python -m ml_temel sun; tablo/serve.py, serve_schema.py) ----------
++    "cli_sun": "Kayıtlı modeli HTTP tahmin servisi olarak sunar (varsayılan: yalnız bu "
++    "bilgisayar).",
++    "arg_adres": "dinlenecek adres (varsayılan 127.0.0.1: yalnız bu bilgisayar)",
++    "arg_kapi": "dinlenecek kapı (varsayılan 8445; 0 = boş bir kapı)",
++    "sunucu_hazir": "Tahmin servisi hazır: http://{adres}:{kapi} (uçlar: /saglik, /sema, "
++    "/tahmin). Durdurmak için Ctrl+C.",
++    "sunucu_anahtar_gerekli": "{adres} adresine açmak için {degisken} ortam değişkenine bir "
++    "anahtar verin; istemci 'Authorization: Bearer <anahtar>' gönderir. Yalnız bu bilgisayar için: "
++    "--adres 127.0.0.1",
++    "sunucu_model_degil": "{yol} bir tablo modeli değil; egit komutunun yazdığı model.npz'yi "
++    "verin.",
++    "sunucu_tur_bilinmiyor": "Model dosyasında '{sutun}' sütununun türü yok; modeli bu sürümle "
++    "yeniden eğitin (python -m ml_temel egit ...).",
++    "sunucu_govde_bicimi": 'Gövde yalnız "satirlar" alanı olan bir nesne olmalı: '
++    '{"satirlar": [{...}, ...]}.',
++    "sunucu_satir_yok": '"satirlar" en az bir satır (nesne) içeren bir liste olmalı.',
++    "sunucu_cok_satir": "Bir istekte en çok {sinir} satır gönderilebilir (gelen: {sayi}); "
++    "satırları parçalara bölün.",
++    "sunucu_gecersiz": "Girdi şemaya uymuyor ({sayi} sorun). Ayrıntı 'ayrintilar' alanında; "
++    "alan adları ve türleri için GET /sema.",
++    "sunucu_satir_nesne": "Her satır alan adı → değer biçiminde bir nesne olmalı.",
++    "sunucu_bilinmeyen_alan": "Model bu alanı tanımıyor (yazım hatası olabilir; GET /sema).",
++    "sunucu_eksik_alan": "Alan eksik; değeri bilinmiyorsa null yazın.",
++    "sunucu_sayi_olmali": "Sayı olmalı (ör. 12.5); metin, true/false ya da NaN olamaz.",
++    "sunucu_metin_olmali": 'Metin olmalı (ör. "Ege").',
++    "sunucu_metin_uzun": "Metin en çok {sinir} karakter olabilir.",
++    "sunucu_tarih_olmali": "Tarih gg.aa.yyyy ya da yyyy-aa-gg biçiminde olmalı (ör. 15.03.2024).",
++    "sunucu_kimlik": "_kimlik en çok 100 karakterlik bir metin ya da tam sayı olmalı.",
++    "sunucu_anahtar": "API anahtarı eksik ya da yanlış: 'Authorization: Bearer <anahtar>' "
++    "başlığını gönderin.",
++    "sunucu_json_degil": "Gövde JSON olmalı: 'Content-Type: application/json' başlığını gönderin.",
++    "sunucu_uzunluk": "Content-Length başlığı gerekli.",
++    "sunucu_buyuk": "Gövde çok büyük (sınır {sinir} KiB); satırları parçalara bölün.",
++    "sunucu_json_bozuk": "Gövde geçerli bir UTF-8 JSON değil.",
++    "sunucu_yol_yok": "Böyle bir uç yok. Uçlar: GET /saglik, GET /sema, POST /tahmin.",
++    "sunucu_yontem": "Bu yöntem desteklenmiyor. Uçlar: GET /saglik, GET /sema, POST /tahmin.",
++    "sunucu_ic_hata": "Beklenmeyen bir sorun oldu; sunucu günlüğüne bakın.",
++    "sunucu_beklenmeyen": "Tahmin servisi hatası: {hata}",
+ }
+ 
+ 

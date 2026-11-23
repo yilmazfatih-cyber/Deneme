@@ -1,0 +1,36 @@
+# Bağımlılıklar
+node_modules/
+
+# Expo ve derleme çıktıları
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+*.tsbuildinfo
+
+# Yerel (native) klasörler: `npx expo prebuild` üretir, depoya girmez (CNG)
+/ios
+/android
+
+# İmza ve sırlar: ASLA depoya girmez
+*.jks
+*.keystore
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.pem
+google-services.json
+GoogleService-Info.plist
+.env
+.env*.local
+
+# Testler
+test-results/
+playwright-report/
+coverage/
+.metro-health-check*
+
+# Araçlar
+npm-debug.*
+.DS_Store

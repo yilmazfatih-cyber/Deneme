@@ -1,0 +1,32 @@
+{
+  "satirlar": [
+    {
+      "_kimlik": "dusuk-risk",
+      "yas": 45,
+      "bolge": "Ege",
+      "sozlesme": "iki_yillik",
+      "paket": "standart",
+      "kidem_ay": 60,
+      "aylik_ucret": 250.0,
+      "kullanim_saat": 60.0,
+      "eposta_acma_orani": 0.4,
+      "destek_talebi": 0,
+      "odeme_gecikmesi": 0,
+      "rastgele_ozellik": 0.1
+    },
+    {
+      "_kimlik": "yuksek-risk",
+      "yas": 31,
+      "bolge": "İç Anadolu",
+      "sozlesme": "aylik",
+      "paket": "premium",
+      "kidem_ay": 2,
+      "aylik_ucret": 850.0,
+      "kullanim_saat": 2.0,
+      "eposta_acma_orani": 0.05,
+      "destek_talebi": 5,
+      "odeme_gecikmesi": 3,
+      "rastgele_ozellik": null
+    }
+  ]
+}

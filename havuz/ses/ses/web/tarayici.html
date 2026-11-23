@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title data-t="baslik">Tarayıcıda Türkçe ses</title>
+    <style>
+      :root { --zemin: #fbfaf7; --yazi: #1b1b1b; --vurgu: #0b5cad; --ince: #5a5a5a; color-scheme: light dark; }
+      @media (prefers-color-scheme: dark) { :root { --zemin: #151515; --yazi: #f1f1f1; --vurgu: #7fb6ff; --ince: #b5b5b5; } }
+      * { box-sizing: border-box; }
+      body { margin: 0; padding: 16px; font: 18px/1.5 system-ui, sans-serif; background: var(--zemin); color: var(--yazi); }
+      main { max-width: 40rem; margin: 0 auto; }
+      h1 { font-size: 1.5rem; margin: 0 0 0.5rem; }
+      p, li { overflow-wrap: anywhere; }
+      .ince { color: var(--ince); }
+      label { display: block; margin-top: 1rem; font-weight: 600; }
+      textarea, input { width: 100%; font: inherit; padding: 0.6rem; border: 2px solid var(--ince); border-radius: 8px; background: transparent; color: inherit; }
+      .dugmeler { display: grid; gap: 0.75rem; margin-top: 1rem; }
+      button { min-height: 56px; font: inherit; font-weight: 600; border-radius: 10px; border: 2px solid var(--vurgu); background: var(--vurgu); color: #fff; cursor: pointer; }
+      button.ikincil { background: transparent; color: var(--vurgu); }
+      #sonuc { min-height: 2rem; margin-top: 1rem; font-weight: 600; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1 data-t="baslik">Tarayıcıda Türkçe ses</h1>
+      <p class="ince" data-t="aciklama"></p>
+      <p id="api" role="status"></p>
+      <h2 data-t="sesler_baslik">Cihazdaki Türkçe sesler</h2>
+      <ul id="sesler"></ul>
+      <label for="metin" data-t="metin_etiket">Okunacak metin</label>
+      <textarea id="metin" rows="3"></textarea>
+      <label for="sunucu" data-t="sunucu_etiket">Ses sunucusu adresi</label>
+      <input id="sunucu" type="url" inputmode="url" autocomplete="off" />
+      <div class="dugmeler">
+        <button id="otomatik" type="button" data-t="otomatik_dugme">Otomatik oku</button>
+        <button id="cihaz" class="ikincil" type="button" data-t="cihaz_dugme">Cihaz sesiyle oku</button>
+        <button id="sunucuyla" class="ikincil" type="button" data-t="sunucu_dugme">Sunucuyla oku</button>
+      </div>
+      <p id="sonuc" role="status" aria-live="polite"></p>
+    </main>
+    <script type="module">
+      import { turkceSesler, enIyiSes, cihazlaKonus, sunucuylaKonus, konus } from './konus.js'
+
+      const sozluk = await (await fetch('./sozluk.json')).json()
+      const t = (anahtar) => sozluk[anahtar] ?? anahtar
+      for (const oge of document.querySelectorAll('[data-t]')) oge.textContent = t(oge.dataset.t)
+      document.title = t('baslik')
+      const metin = document.getElementById('metin')
+      metin.value = t('ornek_metin')
+      const sonuc = document.getElementById('sonuc')
+      const sunucu = document.getElementById('sunucu')
+
+      document.getElementById('api').textContent = 'speechSynthesis' in globalThis ? t('api_var') : t('api_yok')
+      const sesler = await turkceSesler()
+      const liste = document.getElementById('sesler')
+      if (!sesler.length) {
+        const satir = document.createElement('li')
+        satir.textContent = t('ses_yok')
+        liste.append(satir)
+      }
+      for (const ses of sesler) {
+        const satir = document.createElement('li')
+        const ekler = [ses.lang, ses.localService ? t('cevrimdisi') : t('cevrimici')]
+        if (ses.default) ekler.push(t('varsayilan'))
+        satir.textContent = `${ses.name} (${ekler.join(', ')})`
+        liste.append(satir)
+      }
+
+      const yaz = (anahtar) => (sonuc.textContent = t(anahtar))
+      const secenek = () => ({ sunucu: sunucu.value.replace(/\/$/, '') })
+      document.getElementById('otomatik').addEventListener('click', async () => {
+        yaz('bekleniyor')
+        yaz({ cihaz: 'sonuc_cihaz', sunucu: 'sonuc_sunucu', yok: 'sonuc_yok' }[await konus(metin.value, secenek())])
+      })
+      document.getElementById('cihaz').addEventListener('click', async () => {
+        yaz('bekleniyor')
+        yaz((await cihazlaKonus(metin.value, enIyiSes(sesler))) ? 'sonuc_cihaz' : 'sonuc_yok')
+      })
+      document.getElementById('sunucuyla').addEventListener('click', async () => {
+        yaz('bekleniyor')
+        yaz((await sunucuylaKonus(metin.value, secenek())) ? 'sonuc_sunucu' : 'sonuc_yok')
+      })
+    </script>
+  </body>
+</html>
