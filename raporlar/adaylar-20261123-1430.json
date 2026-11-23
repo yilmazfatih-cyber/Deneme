@@ -1,0 +1,79 @@
+{
+ "tarama": {
+  "an": "2026-11-23T14:30:00+03:00",
+  "kategoriler": [
+   "sirt-cantasi",
+   "orme-atki-eldiven",
+   "saat",
+   "sac-aksesuari"
+  ],
+  "not": "Doğrulama turu (kullanıcının izniyle Alibaba ilan sayfaları doğrudan okundu). Sırt çantası: fiyat/MOQ teyit; ağırlık ilanda 350 g (önce 200 g tahmin), hacim 18 L. Eldiven: kademeler 0,66/0,55/0,44/0,33 $ ve MOQ 12 ilandan teyit, ağırlık ilanda yok. Saat: 1,83 $ MOQ 100 teyit. Klips: 0,62 $/set MOQ 10, 12 g; set içeriği belirsiz, Türkiye karşılaştırması yok. Cüzdan ilanı (1600976703666) boş sayfa döndü, kaldırılmış görünüyor. Türkiye tarafı: Trendyol 403, Hepsiburada captcha."
+ },
+ "adaylar": [
+  {
+   "urun": "Katlanabilir su itici günlük sırt çantası (18L, temel model)",
+   "kategori": "sirt-cantasi",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Wholesale-Waterproof-Cheaper-Small-Quantities-Can_60763012101.html",
+    "baslik": "Wholesale Waterproof Cheaper Small Quantities Can Custom logo Lightweight Nylon Daypack Foldable Shopping Backpack Bag",
+    "tedarikci": "bilinmiyor",
+    "fiyat_usd": 0.98,
+    "moq": 50,
+    "kademeler": [
+     {
+      "min_adet": 50,
+      "fiyat_usd": 0.98
+     },
+     {
+      "min_adet": 500,
+      "fiyat_usd": 0.94
+     },
+     {
+      "min_adet": 1000,
+      "fiyat_usd": 0.9
+     },
+     {
+      "min_adet": 10000,
+      "fiyat_usd": 0.68
+     }
+    ],
+    "birim_agirlik_kg": 0.35,
+    "agirlik_kaynagi": "ilan"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 677,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/alvora/su-gecirmez-katlanabilir-spor-sirt-cantasi-20l-buyuk-kapasiteli-cantasi-dayanikli-organizator-p-988973422",
+      "baslik": "Alvora su geçirmez katlanabilir spor sırt çantası 20L"
+     },
+     {
+      "fiyat_tl": 902.4,
+      "kaynak": "trendyol",
+      "baslik": "Overbazaar katlanabilir sırt çantası 20L (ürün sayfası bağlantısı bulunamadı; bu taramada arama özeti 925 TL liste / 902,40 TL gösterdi, çelişkili) — bu taramadaki özet 902,40 TL (liste 925); önceki 589 TL güncel değil",
+      "liste_fiyat_tl": 925
+     },
+     {
+      "fiyat_tl": 429.31,
+      "kaynak": "shein",
+      "baslik": "Shein hafif katlanabilir sırt çantası (önceki taramadan, yeniden doğrulanamadı)"
+     }
+    ],
+    "not": "Takip: önceki taramadaki fiyatlar; yalnız Alvora bağlantılı. Overbazaar ve Shein ürün sayfası bulunamadı. 23.11 doğrulaması: Türkiye fiyatları 22.11 ölçümünden taşındı (Trendyol 403, Hepsiburada captcha; yeniden ölçülemedi). Akakçe'de markasız tek katlanabilir çanta 4.052 TL (yurt dışı, aykırı) alınmadı."
+   },
+   "taklit_riski": false,
+   "gerekce": "Hafif, katlanabilir günlük çanta; seyahat ve okul için Türkiye'de sürekli satar.",
+   "riskler": [
+    "Tedarikçi bilgisi görülemedi",
+    "Overbazaar fiyatı çelişkili (589 vs 902-925 TL)",
+    "İlan karşılaştırma tablosu: temel model 350 g, 18 L, IPX4 (sıçrama korumalı); 20 L değil",
+    "Tedarikçi adı sayfada görünmedi"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Wholesale-Waterproof-Cheaper-Small-Quantities-Can_60763012101.html",
+    "https://www.trendyol.com/alvora/su-gecirmez-katlanabilir-spor-sirt-cantasi-20l-buyuk-kapasiteli-cantasi-dayanikli-organizator-p-988973422"
+   ]
+  }
+ ]
+}
