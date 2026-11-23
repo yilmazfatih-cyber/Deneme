@@ -45,7 +45,10 @@ def gliner_extract(
     from gliner import GLiNER
 
     path = model_dir(NER_MODEL)
-    model = _MODELS.get(str(path), lambda: GLiNER.from_pretrained(str(path), local_files_only=True))
+    model = _MODELS.get(
+        str(path),
+        lambda: GLiNER.from_pretrained(str(path), local_files_only=True, cache_dir=str(_hf_cache())),
+    )
     seen, out = set(), []
     for offset, part in windows(text):
         for e in model.predict_entities(part, labels, threshold=threshold):
@@ -84,3 +87,10 @@ class VarlikCikarma(BaseRuntime):
         )
         note(ctx, model=NER_MODEL)
         return {"entities": ents}
+
+
+def _hf_cache():
+    """Yardımcı depo önbelleği (kurulumda doldurulur): GLiNER tokenizer/ayarı buradan okunur, internet gerekmez."""
+    from ...installer.hf import hf_cache_dir
+
+    return hf_cache_dir()

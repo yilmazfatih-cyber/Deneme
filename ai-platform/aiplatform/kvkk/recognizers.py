@@ -11,6 +11,7 @@
 
 from __future__ import annotations
 
+import importlib.util
 import logging
 import re
 from collections.abc import Callable, Iterable
@@ -151,8 +152,12 @@ def fallback_scan(text: str, entities: Iterable[str] | None = None) -> list[Find
 
 # ----------------------------------------------------------------------------- Presidio (varsa)
 
-PRESIDIO_AVAILABLE = False
-try:  # pragma: no cover - presidio bu ortamda kurulu değil
+# Paket varlığı içe aktarmadan denetlenir: presidio_analyzer içe aktarılınca transformers/torch da yüklenir
+# (açılışta ~7 sn ve ~700 MB). Sınıflar ve içe aktarma ilk maskeleme çağrısına ertelenir.
+PRESIDIO_AVAILABLE = importlib.util.find_spec("presidio_analyzer") is not None
+
+
+def _build_presidio() -> list:  # pragma: no cover - presidio bu ortamda kurulu değil
     from presidio_analyzer import EntityRecognizer, Pattern, PatternRecognizer, RecognizerResult
     from presidio_analyzer.predefined_recognizers import EmailRecognizer
 
@@ -221,21 +226,18 @@ try:  # pragma: no cover - presidio bu ortamda kurulu değil
         def analyze(self, text, entities, nlp_artifacts=None):
             return [RecognizerResult(f.entity_type, f.start, f.end, f.score) for f in _scan_dob(text)]
 
-    def _build_presidio() -> list:
-        return [
-            TcknRecognizer(),
-            VknRecognizer(),
-            TrIbanRecognizer(),
-            TrPhoneRecognizer(),
-            TrPlateRecognizer(),
-            EmailRecognizer(supported_language="tr"),
-            DateOfBirthRecognizer(),
-        ]
+    return [
+        TcknRecognizer(),
+        VknRecognizer(),
+        TrIbanRecognizer(),
+        TrPhoneRecognizer(),
+        TrPlateRecognizer(),
+        EmailRecognizer(supported_language="tr"),
+        DateOfBirthRecognizer(),
+    ]
 
-    _PRESIDIO = LazyModel(_build_presidio, "presidio")
-    PRESIDIO_AVAILABLE = True
-except ImportError:
-    _PRESIDIO = None
+
+_PRESIDIO = LazyModel(_build_presidio, "presidio") if PRESIDIO_AVAILABLE else None
 
 
 def presidio_scan(text: str, entities: Iterable[str] | None = None) -> list[Finding] | None:
@@ -284,7 +286,7 @@ def _load_gliner():
     path = _gliner_path()
     if not path.exists():
         raise FileNotFoundError(f"GLiNER modeli kurulu değil: {path}")
-    return GLiNER.from_pretrained(str(path), local_files_only=True)
+    return GLiNER.from_pretrained(str(path), local_files_only=True, cache_dir=str(_hf_cache()))
 
 
 _GLINER = LazyModel(_load_gliner, "gliner")
@@ -382,3 +384,10 @@ __all__ = [
     "resolve_overlaps",
     "scan_text",
 ]
+
+
+def _hf_cache():
+    """Yardımcı depo önbelleği (kurulumda doldurulur): GLiNER tokenizer/ayarı buradan okunur, internet gerekmez."""
+    from ..installer.hf import hf_cache_dir
+
+    return hf_cache_dir()

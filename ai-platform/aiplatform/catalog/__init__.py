@@ -2,6 +2,7 @@ from .loader import CATALOG_DIR, get_catalog, load_catalog
 from .schema import (
     KVKK,
     Action,
+    AuxRepo,
     Catalog,
     Component,
     LicenseClass,
@@ -17,6 +18,7 @@ __all__ = [
     "CATALOG_DIR",
     "KVKK",
     "Action",
+    "AuxRepo",
     "Catalog",
     "Component",
     "LicenseClass",

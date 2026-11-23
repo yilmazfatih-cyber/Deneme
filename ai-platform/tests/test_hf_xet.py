@@ -54,6 +54,14 @@ def test_retries_without_xet_on_xet_error(monkeypatch, tmp_path, artifact):
     assert out == tmp_path
     assert calls == [False, True]  # ilk deneme Xet ile, ikincisi Xet kapalı
 
+    # Öğrenilen durum kalıcı: yeni süreçte (Xet yeniden açık) ilk deneme doğrudan Xet'siz yapılır
+    assert hf._xet_marker().exists()
+    constants.HF_HUB_DISABLE_XET = False
+    calls.clear()
+    calls.append("ilk-tur-atla")  # fake_snapshot'ın hata dalına girmemesi için
+    asyncio.run(hf.download_artifact(*artifact, tmp_path))
+    assert calls == ["ilk-tur-atla", True]
+
 
 def test_other_errors_are_not_retried(monkeypatch, tmp_path, artifact):
     calls = []
@@ -80,3 +88,22 @@ def test_setting_disables_xet_up_front(monkeypatch, tmp_path, artifact):
     monkeypatch.setattr(huggingface_hub, "snapshot_download", fake_snapshot)
     asyncio.run(hf.download_artifact(*artifact, tmp_path))
     assert seen == [True]
+
+
+def test_aux_repos_go_to_platform_cache_with_fallback(monkeypatch, tmp_path, artifact):
+    _, art = artifact
+    assert [a.repo for a in art.aux_repos] == ["microsoft/mdeberta-v3-base"]
+    seen = []
+
+    def fake_snapshot(repo_id, **kw):
+        seen.append((repo_id, kw.get("cache_dir"), kw.get("allow_patterns"), constants.HF_HUB_DISABLE_XET))
+        if len(seen) == 1:
+            raise XET_ERR
+        return str(tmp_path)
+
+    monkeypatch.setattr(huggingface_hub, "snapshot_download", fake_snapshot)
+    assert asyncio.run(hf.download_aux(art)) == ["microsoft/mdeberta-v3-base"]
+    assert len(seen) == 2
+    repo, cache, patterns, xet_off = seen[1]
+    assert repo == "microsoft/mdeberta-v3-base" and xet_off is True
+    assert cache == hf.hf_cache_dir() and "spm.model" in patterns

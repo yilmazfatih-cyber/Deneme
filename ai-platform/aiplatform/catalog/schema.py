@@ -54,6 +54,17 @@ class TurkishSupport(str, Enum):
     none = "yok"
 
 
+class AuxRepo(BaseModel):
+    """Modelin çalışma anında başka bir depodan okuduğu dosyalar (ör. GLiNER → mDeBERTa tokenizer ve ayarı).
+
+    Kurulumda platformun HF önbelleğine (models/_hf_cache) indirilir; yükleyici yalnız oradan okur, böylece
+    kurulumdan sonra internet gerekmez.
+    """
+
+    repo: str
+    files: list[str] = Field(default_factory=list, description="glob desenleri; boşsa depo tamamı")
+
+
 class ModelArtifact(BaseModel):
     """İndirilecek somut dosya kümesi. Bir modelin birden çok biçimi olabilir (GGUF Q4, safetensors...)."""
 
@@ -64,13 +75,25 @@ class ModelArtifact(BaseModel):
     hf_revision: str = "main"
     ollama_tag: str | None = Field(default=None, description="ör. 'hf.co/unsloth/Qwen3.5-4B-GGUF:Q4_K_M'")
     pip_extras: list[str] = Field(default_factory=list, description="pyproject optional-dependencies adları")
-    system_packages: list[str] = Field(default_factory=list, description="apt/brew paketleri, ör. tesseract-ocr-tur")
+    system_packages: list[str] = Field(
+        default_factory=list, description="apt/brew paketleri, ör. tesseract-ocr-tur"
+    )
     disk_gb: float = Field(ge=0, description="İndirme sonrası disk, GB")
     ram_gb: float = Field(ge=0, description="CPU'da çalışırken yaklaşık RAM, GB (ağırlık + çalışma)")
-    vram_gb: float = Field(default=0, ge=0, description="GPU'da çalışırken yaklaşık VRAM, GB; 0 = GPU kullanmaz")
+    vram_gb: float = Field(
+        default=0, ge=0, description="GPU'da çalışırken yaklaşık VRAM, GB; 0 = GPU kullanmaz"
+    )
     gpu_required: bool = Field(default=False, description="True ise CPU'da çalışmaz / kabul edilemez yavaş")
     cpu_note: str | None = Field(default=None, description="CPU'da çalıştırmanın bedeli (hız, kalite)")
     context_length: int | None = None
+    aux_repos: list[AuxRepo] = Field(
+        default_factory=list,
+        description="Çalışma anında gereken yardımcı depolar; kurulumda önbelleğe indirilir",
+    )
+    prefetch: Literal["docling"] | None = Field(
+        default=None,
+        description="Kütüphanenin kendi model indiricisiyle kurulumda önceden indirilecek varlıklar",
+    )
     notes: str | None = None
 
 
@@ -78,13 +101,18 @@ class ModelSpec(BaseModel):
     id: str = Field(pattern=r"^[a-z0-9][a-z0-9\-\.]*$", description="Katalog kimliği, ör. 'qwen3.5-4b'")
     name: str
     developer: str
-    params_b: float | None = Field(default=None, description="Toplam parametre, milyar (HF safetensors sayımı)")
+    params_b: float | None = Field(
+        default=None, description="Toplam parametre, milyar (HF safetensors sayımı)"
+    )
     active_params_b: float | None = Field(default=None, description="MoE'de aktif parametre, milyar")
     license: str
     license_class: LicenseClass
     turkish: TurkishSupport
     modalities: list[Literal["text", "image", "audio"]] = Field(default_factory=lambda: ["text"])
-    capabilities: list[str] = Field(default_factory=list, description="chat, vision, tool_calling, json, embed, rerank, ocr, asr, tts, ner, classify, forecast, translate")
+    capabilities: list[str] = Field(
+        default_factory=list,
+        description="chat, vision, tool_calling, json, embed, rerank, ocr, asr, tts, ner, classify, forecast, translate",
+    )
     verified_on: str | None = Field(default=None, description="HF API ile doğrulanma tarihi (YYYY-AA-GG)")
     source_url: str | None = None
     artifacts: list[ModelArtifact] = Field(min_length=1)
@@ -108,9 +136,14 @@ class Component(BaseModel):
 
     role: str = Field(description="Modül içindeki görevi, ör. 'llm', 'ocr', 'embedder', 'engine'")
     model: str | None = Field(default=None, description="ModelSpec.id; None ise sadece pip_extras/kütüphane")
-    artifact: str | None = Field(default=None, description="ModelArtifact.id; None ise donanıma göre otomatik seçilir")
+    artifact: str | None = Field(
+        default=None, description="ModelArtifact.id; None ise donanıma göre otomatik seçilir"
+    )
     target: Target = Target.either
-    shared: bool = Field(default=True, description="Aynı model başka modülde kuruluysa yeniden indirilmez ve bellek bir kez sayılır")
+    shared: bool = Field(
+        default=True,
+        description="Aynı model başka modülde kuruluysa yeniden indirilmez ve bellek bir kez sayılır",
+    )
     optional: bool = Field(default=False, description="Kurulmasa da modül çalışır (düşük kaliteyle)")
     pip_extras: list[str] = Field(default_factory=list)
     system_packages: list[str] = Field(default_factory=list)
@@ -131,7 +164,9 @@ class Action(BaseModel):
 
 class KVKK(BaseModel):
     data_categories: list[str] = Field(default_factory=list, description="İşlenen kişisel veri kategorileri")
-    special_categories: bool = Field(default=False, description="Özel nitelikli veri (sağlık, sendika, din...) işleyebilir mi")
+    special_categories: bool = Field(
+        default=False, description="Özel nitelikli veri (sağlık, sendika, din...) işleyebilir mi"
+    )
     masking_required: bool = Field(default=True, description="Sunucuya gitmeden önce maskeleme zorunlu mu")
     purpose: str = Field(description="İşleme amacı (VERBİS envanter kalemi)")
     retention_days: int = Field(default=30, ge=0, description="Günlüklerin saklama süresi")
@@ -150,7 +185,9 @@ class ModuleSpec(BaseModel):
     actions: list[Action] = Field(min_length=1)
     kvkk: KVKK
     depends_on: list[str] = Field(default_factory=list, description="Önce kurulması gereken modüller")
-    erp_touchpoints: list[str] = Field(default_factory=list, description="ERP ile temas noktaları: 'fatura.olustur(öneri)', 'db.readonly'")
+    erp_touchpoints: list[str] = Field(
+        default_factory=list, description="ERP ile temas noktaları: 'fatura.olustur(öneri)', 'db.readonly'"
+    )
     kpis: list[str] = Field(default_factory=list)
     status: Literal["stable", "beta", "planned"] = "beta"
 
@@ -179,7 +216,10 @@ class Catalog(BaseModel):
                             self.models[c.model].artifact(c.artifact)
                         except KeyError as e:
                             errors.append(f"{m.id}: {e}")
-                    if self.models.get(c.model) and self.models[c.model].license_class == LicenseClass.noncommercial:
+                    if (
+                        self.models.get(c.model)
+                        and self.models[c.model].license_class == LicenseClass.noncommercial
+                    ):
                         errors.append(f"{m.id}: ticari kullanımı yasak model '{c.model}' katalogda olamaz")
             for d in m.depends_on:
                 if d not in self.modules:

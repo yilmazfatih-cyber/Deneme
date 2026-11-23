@@ -560,6 +560,9 @@
       runtime: gliner
       hf_repo: urchade/gliner_multi_pii-v1
       pip_extras: [kvkk]
+      aux_repos:
+        - repo: microsoft/mdeberta-v3-base
+          files: ["config.json", "spm.model", "tokenizer_config.json"]
       disk_gb: 1.2
       ram_gb: 1.5
       gpu_required: false
@@ -579,6 +582,10 @@
     - id: default
       runtime: gliner
       hf_repo: urchade/gliner_multi-v2.1
+      hf_files: ["gliner_config.json", "model.safetensors"]
+      aux_repos:
+        - repo: microsoft/mdeberta-v3-base
+          files: ["config.json", "spm.model", "tokenizer_config.json"]
       pip_extras: [kvkk]
       disk_gb: 1.2
       ram_gb: 1.5
@@ -875,10 +882,11 @@
     - id: default
       runtime: docling
       pip_extras: [belge]
+      prefetch: docling
       disk_gb: 1
       ram_gb: 2
       gpu_required: false
-      notes: "Düzen modelleri ilk kullanımda indirilir (≈ 0.5 GB)"
+      notes: "Düzen ve tablo modelleri kurulumda models/docling/default altına indirilir (internet yalnız kurulumda)"
 
 - id: bertopic
   name: BERTopic + KeyBERT

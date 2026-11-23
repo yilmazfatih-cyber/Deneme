@@ -10,7 +10,7 @@ from __future__ import annotations
 import asyncio
 import logging
 import os
-from collections.abc import Callable
+from collections.abc import Awaitable, Callable
 from pathlib import Path
 
 from ..catalog.schema import ModelArtifact, ModelSpec
@@ -121,21 +121,110 @@ async def download_artifact(
             task.cancel()  # thread durdurulamaz; dosyalar sonraki denemede kaldığı yerden devam eder
             raise
 
-    if s.hf_disable_xet:
-        set_xet_enabled(False)
-    try:
-        await _run()
-    except Exception as e:  # yalnız Xet kaynaklı hatada yeniden denenir, diğerleri aynen yükselir
-        if not (is_xet_error(e) and set_xet_enabled(False)):
-            raise
-        log.warning(
-            "%s: Hugging Face Xet depolama sunucusuna ulaşılamadı (%s); klasik HTTP indirmeyle yeniden deneniyor. "
-            "Kalıcı yapmak için AIP_HF_DISABLE_XET=true.",
-            artifact.hf_repo,
-            str(e)[:160],
-        )
-        await _run()
+    await with_xet_fallback(artifact.hf_repo, _run)
     if progress_cb:
         done = dir_size_bytes(dest)
         progress_cb(done, max(total, done))
     return dest
+
+
+def _xet_marker() -> Path:
+    return get_settings().data_dir / "hf_xet_devre_disi"
+
+
+async def with_xet_fallback(label: str, run: Callable[[], Awaitable[object]]) -> object:
+    """`run()`'ı çalıştırır; Xet depolamasına ulaşılamazsa Xet'i kapatıp bir kez daha dener."""
+    if get_settings().hf_disable_xet or _xet_marker().exists():
+        set_xet_enabled(False)
+    try:
+        return await run()
+    except Exception as e:  # yalnız Xet kaynaklı hatada yeniden denenir, diğerleri aynen yükselir
+        if not (is_xet_error(e) and set_xet_enabled(False)):
+            raise
+        try:  # bu ağda Xet çalışmıyor: sonraki kurulumlar baştan klasik indirmeyle başlasın (~2 dk kazanç)
+            _xet_marker().write_text("Xet depolamasına ulaşılamadı; klasik HTTP indirmesi kullanılıyor.\n")
+        except OSError:
+            log.debug("Xet işareti yazılamadı", exc_info=True)
+        log.warning(
+            "%s: Hugging Face Xet depolama sunucusuna ulaşılamadı (%s); klasik HTTP indirmeyle yeniden deneniyor. "
+            "Kalıcı yapmak için AIP_HF_DISABLE_XET=true.",
+            label,
+            str(e)[:160],
+        )
+        return await run()
+
+
+# ---------------------------------------------------------------- çalışma anı varlıkları (çevrimdışı çalışma)
+
+
+def hf_cache_dir() -> Path:
+    """Yardımcı depoların indirildiği platform önbelleği. Yükleyiciler `cache_dir=` ile yalnız buradan okur."""
+    return get_settings().models_dir / "_hf_cache"
+
+
+def docling_artifacts_dir() -> Path:
+    return get_settings().models_dir / "docling" / "default"
+
+
+async def download_aux(artifact: ModelArtifact, log_cb: Callable[[str], None] | None = None) -> list[str]:
+    """Artifact'in `aux_repos` dosyalarını platform önbelleğine indirir; indirilen depo adlarını döner."""
+    if not artifact.aux_repos:
+        return []
+    from huggingface_hub import snapshot_download
+
+    s = get_settings()
+    cache = hf_cache_dir()
+    cache.mkdir(parents=True, exist_ok=True)
+    done: list[str] = []
+    for aux in artifact.aux_repos:
+        if log_cb:
+            log_cb(f"Yardımcı dosyalar indiriliyor: {aux.repo} ({', '.join(aux.files) or 'tümü'})")
+
+        def _dl(repo=aux.repo, files=aux.files) -> str:
+            return snapshot_download(
+                repo, allow_patterns=files or None, cache_dir=cache, token=s.hf_token, endpoint=s.hf_endpoint
+            )
+
+        async def _run(_dl=_dl) -> str:
+            return await asyncio.to_thread(_dl)
+
+        await with_xet_fallback(aux.repo, _run)
+        done.append(aux.repo)
+    return done
+
+
+def docling_ready() -> bool:
+    d = docling_artifacts_dir()
+    return d.is_dir() and any(d.iterdir())
+
+
+async def prefetch(artifact: ModelArtifact, log_cb: Callable[[str], None] | None = None) -> str | None:
+    """Kütüphanenin kendi indiricisiyle çalışma anı modellerini önceden indirir. Hedef klasörü döner."""
+    if artifact.prefetch != "docling":
+        return None
+    dest = docling_artifacts_dir()
+    dest.mkdir(parents=True, exist_ok=True)
+    if log_cb:
+        log_cb("Docling düzen ve tablo modelleri indiriliyor (yalnız kurulumda)")
+
+    def _dl() -> None:
+        import inspect
+
+        from docling.utils.model_downloader import download_models
+
+        wanted = {
+            "with_layout": True,
+            "with_tableformer": True,
+            "with_code_formula": False,
+            "with_picture_classifier": False,
+            "with_rapidocr": False,
+            "with_easyocr": False,
+        }
+        params = inspect.signature(download_models).parameters
+        download_models(output_dir=dest, progress=False, **{k: v for k, v in wanted.items() if k in params})
+
+    async def _run() -> None:
+        await asyncio.to_thread(_dl)
+
+    await with_xet_fallback("docling", _run)
+    return str(dest)

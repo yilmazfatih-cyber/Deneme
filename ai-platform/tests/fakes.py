@@ -13,6 +13,8 @@ class Calls:
         self.download: list[tuple[str, str]] = []
         self.pip: list[list[str]] = []
         self.start: list[tuple[str, str]] = []
+        self.aux: list[str] = []
+        self.prefetch: list[str] = []
 
 
 def install_fakes(monkeypatch, profile) -> Calls:
@@ -54,7 +56,23 @@ def install_fakes(monkeypatch, profile) -> Calls:
     async def fake_health(base_url=None, timeout=2.0):
         return {"ok": False, "url": str(base_url), "error": "sahte"}
 
+    async def fake_aux(artifact, log_cb=None):
+        repos = [a.repo for a in artifact.aux_repos]
+        calls.aux.extend(repos)
+        return repos
+
+    async def fake_prefetch(artifact, log_cb=None):
+        if not artifact.prefetch:
+            return None
+        d = hf.docling_artifacts_dir()
+        d.mkdir(parents=True, exist_ok=True)
+        (d / "model.bin").write_bytes(b"\0" * 1024)
+        calls.prefetch.append(artifact.prefetch)
+        return str(d)
+
     monkeypatch.setattr(hf, "download_artifact", fake_download)
+    monkeypatch.setattr(hf, "download_aux", fake_aux)
+    monkeypatch.setattr(hf, "prefetch", fake_prefetch)
     monkeypatch.setattr(pip_extras, "install_extras", fake_pip)
     monkeypatch.setattr(engine, "start_llm", fake_start)
     monkeypatch.setattr(engine, "wait_ready", fake_ready)
