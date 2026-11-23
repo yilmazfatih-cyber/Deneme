@@ -131,7 +131,9 @@ class YerelSunucu:
         mesaj = str(mesaj)[:300]
         model = (govde or {}).get("model")
         dusuk = mesaj.lower()
-        if model and "model" in dusuk and any(k in dusuk for k in ("not found", "does not exist", "not exist")):
+        # Yalnız modeli anan 404 "model yok" demektir ("model 'x' not found", "The model `x` does not exist");
+        # adres /v1 olmadan verilince gelen "404 page not found" değil.
+        if model and "model" in dusuk and ("not found" in dusuk or "not exist" in dusuk):
             return (
                 f"Sunucuda '{model}' modeli yok ({self.adres}). Ollama kullanıyorsan indir: `ollama pull {model}`. "
                 "Sunucudaki modelleri görmek için: python -m turkce_model modul-liste"

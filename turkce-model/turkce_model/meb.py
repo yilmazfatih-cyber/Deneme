@@ -44,6 +44,7 @@ __all__ = [
     "cevap_metni",
     "istem",
     "mmlu_indir",
+    "ocr_kipi",
     "pdf_ayristir",
     "pdf_dosyalari",
     "pdf_klasoru_ayristir",
@@ -1501,15 +1502,18 @@ def pdf_ayristir(
     yaz: Callable[[str], object] = print,
     dosya_adi: str | None = None,
     ayrik: tuple[list[_Bolum], list[_Bolum], _Belge, dict] | None = None,
+    komut_eki: str = "",
 ) -> tuple[list[Soru], dict]:
     """Bir AÖL soru kitapçığını (sonunda cevap anahtarı olan PDF) ayrıştırır.
 
     ``ayrik``: ``_ayristir``'ın döndürdüğü dörtlü hazır verilirse PDF okunmaz (OCR metninden kurulan satırlar:
     ``moduller/meb_metin.py``); eleme, cevap anahtarı eşleştirme ve rapor aynı yoldan geçer.
+    ``komut_eki``: uyarıda yazılan ``meb-pdf --ocr`` komutunun sonuna eklenen seçenekler (``cli._komut_eki``).
 
     Döndürür: (tutulan sorular, rapor). Rapor: ``dosya``, ``ders_sayisi``, ``bulunan``, ``tutulan``,
-    ``elenen`` (neden → sayı), ``dersler`` (ders → ``{"kod", "bulunan", "tutulan"}``) ve tanı alanları
-    (``anahtarsiz_dersler``, ``sorusuz_anahtarlar``, ``farkli_sayili_dersler``…).
+    ``elenen`` (neden → sayı), ``dersler`` (ders → ``{"kod", "bulunan", "tutulan"}``), ``metinsiz`` (sayfası var
+    ama hiç metni yok: taranmış kitapçık) ve tanı alanları (``anahtarsiz_dersler``, ``sorusuz_anahtarlar``,
+    ``farkli_sayili_dersler``…).
 
     ``haric_dersler``: atlanacak dersler; ders kodu ("111") ya da başlıkta veya kısaltmaları açılmış adda
     geçen parça ("İNGİLİZCE", "Din Kültürü"). ``dosya_adi``: kimlikte, ``ek["dosya"]``da ve raporda görünen ad
@@ -1616,6 +1620,7 @@ def pdf_ayristir(
         "tutulan": len(tutulan),
         "elenen": dict(sorted(elenen.items())),
         "dersler": dersler,
+        "metinsiz": bool(belge.sayfa_sayisi and not any(belge.parcalar.values())),
         "anahtarsiz_dersler": [f"({b.kod}) {b.baslik}" for b in bolumler if id(b) not in eslesme],
         # Anahtarda olup soruları bulunamayan dersler: başlığı ya da 1. sorusu okunamamış olabilir.
         "sorusuz_anahtarlar": [
@@ -1626,10 +1631,10 @@ def pdf_ayristir(
         },
     }
     yaz(_rapor_satiri(rapor))
-    if belge.sayfa_sayisi and not any(belge.parcalar.values()):
+    if rapor["metinsiz"]:
         yaz(
             f"  Uyarı: {ad} içinde hiç metin yok; taranmış (resim) bir PDF olabilir. OCR ile okumak için: "
-            "python -m turkce_model meb-pdf --ocr"
+            f"python -m turkce_model meb-pdf --ocr{komut_eki}"
         )
     elif not anahtarlar:
         yaz(f"  Uyarı: {ad} içinde cevap anahtarı bulunamadı; bütün sorular cevapsız sayıldı.")
@@ -1654,6 +1659,72 @@ def _rapor_satiri(rapor: dict) -> str:
     )
 
 
+def _ocr_ile_mi(s: Soru) -> bool:
+    return isinstance(s.ek, dict) and s.ek.get("okuma") == "ocr"
+
+
+def ocr_kipi(hedef: Path) -> str | None:
+    """``hedef``teki (``meb_pdf.jsonl``) sorular hangi OCR kipiyle okundu: ``"gerekirse"``, ``"hepsi"`` ya da
+    OCR'sız (``None``). ``durum`` ve ``meb-pdf`` yeniden okumayı aynı kiple önersin diye.
+
+    ``meb-pdf`` kipi raporuna yazar (``meb_pdf.rapor.json``, ``"ocr"``). Kipi taşımayan eski raporlarda sorulara
+    bakılır: OCR ile okunmuş soru yoksa ``None``; OCR ile okunan kitapçıklardan birinin (``veri/meb/pdf`` altında)
+    kullanılabilir metin katmanı varsa ``"hepsi"`` (``gerekirse`` onu OCR'la okumazdı); yoksa ``"gerekirse"``.
+    """
+    hedef = Path(hedef)
+    try:
+        rapor = json.loads(hedef.with_suffix(".rapor.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        rapor = None
+    if isinstance(rapor, dict) and "ocr" in rapor:
+        return rapor["ocr"] if rapor["ocr"] in ("gerekirse", "hepsi") else None
+    try:
+        sorular = [s for s in soru_oku(hedef) if _ocr_ile_mi(s)]
+    except (OSError, ValueError, TypeError):
+        return None
+    if not sorular:
+        return None
+    klasor = hedef.parent / "pdf"
+    dosyalar = sorted({s.ek["dosya"] for s in sorular if isinstance(s.ek.get("dosya"), str)})
+    try:
+        from .moduller.meb_metin import metin_katmani_var
+
+        if any((klasor / ad).is_file() and metin_katmani_var(klasor / ad) for ad in dosyalar):
+            return "hepsi"
+    except Exception:  # noqa: BLE001 — pymupdf yok, PDF bozuk…: kip anlaşılamazsa taranmışlar OCR'lansın
+        pass
+    return "gerekirse"
+
+
+def _ocrsuz_kayip_denetimi(hedef: Path, dosyalar: dict, yeni: list[Soru], komut_eki: str) -> None:
+    """OCR'sız ``meb-pdf``: metin katmanı olmayan (taranmış) kitapçıklar yüzünden ``hedef``teki sorular kaybolacaksa
+    ``RuntimeError`` (``hedef`` yazılmadan). Ya hiç soru bulunamadı ve önceki çıktı dolu; ya da önceki çıktıdaki
+    OCR ile okunmuş soruların kitapçığı bu kez metinsiz okundu (OCR'sız okuma onları silerdi)."""
+    metinsiz = sorted(ad for ad, r in dosyalar.items() if isinstance(r, dict) and r.get("metinsiz"))
+    if not metinsiz or not hedef.exists():
+        return
+    try:
+        onceki = soru_oku(hedef)
+    except (OSError, ValueError, TypeError):  # okunamayan önceki çıktı: korunacak bir şey yok
+        return
+    ocrli = [s for s in onceki if _ocr_ile_mi(s) and s.ek.get("dosya") in metinsiz]
+    if not ocrli and (yeni or not onceki):
+        return
+    adlar = ", ".join(metinsiz[:5]) + (f" (+{len(metinsiz) - 5})" if len(metinsiz) > 5 else "")
+    kip = " hepsi" if ocr_kipi(hedef) == "hepsi" else ""
+    if ocrli:
+        neden = (
+            f"{hedef} içindeki {len(ocrli)} soru bu kitapçıklardan OCR ile okunmuştu; OCR'sız okuma onları siler. "
+            "Dosya yazılmadı. Bilerek OCR'sız okumak için önce bu dosyayı sil."
+        )
+    else:
+        neden = f"Hiç soru bulunamadı; {hedef} içindeki {len(onceki)} soru silinmesin diye dosya yazılmadı."
+    raise RuntimeError(
+        f"Metin katmanı olmayan (taranmış) kitapçık var: {adlar}. {neden}\n"
+        f"OCR ile okumak için: python -m turkce_model meb-pdf --ocr{kip}{komut_eki}"
+    )
+
+
 def pdf_dosyalari(klasor: Path) -> list[Path]:
     """``klasor`` altındaki (alt klasörler dahil) PDF dosyaları, sıralı. Uzantı büyük/küçük harf duyarsız
     (".pdf", ".PDF"); klasör yoksa boş liste."""
@@ -1670,11 +1741,13 @@ def pdf_klasoru_ayristir(
     haric_dersler: Iterable[str] = VARSAYILAN_HARIC_DERSLER,
     haric_kokler: Iterable[str] = (),
     ayristirici: Callable[..., tuple[list[Soru], dict]] | None = None,
+    komut_eki: str = "",
 ) -> dict:
     """``klasor`` altındaki bütün PDF'leri (alt klasörler dahil, sıralı) ayrıştırıp ``hedef`` JSONL'e yazar.
 
     ``ayristirici``: her dosya için ``pdf_ayristir`` yerine çağrılacak, aynı imzalı işlev (ör. taranmış
-    kitapçıkları OCR modülüyle okuyan ``moduller.meb_metin.ocr_ayristirici``).
+    kitapçıkları OCR modülüyle okuyan ``moduller.meb_metin.ocr_ayristirici``). ``komut_eki``: yazılan
+    ``meb-pdf --ocr`` komutunun sonuna eklenen seçenekler (``cli._komut_eki``).
 
     Aynı soru birden çok kitapçıkta geçebilir (ör. farklı kitapçık türleri): normalleştirilmiş kök +
     seçeneklere göre tekrarlar atılır, ilki kalır. Kimlik ve ``ek["dosya"]`` klasöre göre göreli yolu taşır
@@ -1684,7 +1757,9 @@ def pdf_klasoru_ayristir(
 
     Okunamayan dosyalar atlanır ve raporda belirtilir. Klasörde PDF yoksa (``FileNotFoundError``), pymupdf
     kurulu değilse ya da hiçbir PDF okunamadıysa (``RuntimeError``) ``hedef``e dokunulmaz: önceki çıktı boş
-    bir dosyayla ezilmez.
+    bir dosyayla ezilmez. OCR'sız okumada (``ayristirici`` yok) metin katmanı olmayan (taranmış) kitapçıklar yüzünden
+    önceki çıktının soruları kaybolacaksa da öyle: hiç soru bulunamadıysa ya da önceki çıktıdaki OCR ile okunmuş
+    sorular bu kitapçıklardansa ``RuntimeError`` ``meb-pdf --ocr`` komutunu yazar.
     """
     klasor, hedef = Path(klasor), Path(hedef)
     if not klasor.is_dir():
@@ -1714,7 +1789,10 @@ def pdf_klasoru_ayristir(
     for pdf in dosyalar:
         ad = pdf.relative_to(klasor).as_posix()
         try:
-            sorular, r = (ayristirici or pdf_ayristir)(pdf, haric, yaz=lambda m: yaz("  " + m), dosya_adi=ad)
+            if ayristirici is not None:
+                sorular, r = ayristirici(pdf, haric, yaz=lambda m: yaz("  " + m), dosya_adi=ad)
+            else:
+                sorular, r = pdf_ayristir(pdf, haric, yaz=lambda m: yaz("  " + m), dosya_adi=ad, komut_eki=komut_eki)
         except AyarHatasi:  # modül hatası (sunucu kapalı, model yok…) her dosyada yinelenir: kendi iletisiyle dur
             raise
         except Exception as e:  # noqa: BLE001 — bozuk ya da kitapçık olmayan PDF: diğerleri yine işlensin
@@ -1741,6 +1819,8 @@ def pdf_klasoru_ayristir(
     cift = [k for k, n in Counter(s.kimlik for s in tum).items() if n > 1]
     if cift:  # kimlik dosya yolu + ders + numaradan kurulur; çakışma bir hata demektir
         raise RuntimeError(f"Aynı kimlikli farklı sorular: {', '.join(cift[:3])}; {hedef} yazılmadı.")
+    if ayristirici is None:
+        _ocrsuz_kayip_denetimi(hedef, rapor["dosyalar"], tum, komut_eki)
     rapor["elenen"] = dict(sorted(elenen.items()))
     rapor["hatali_dosya"] = hatali
     rapor["yazilan"] = soru_yaz(tum, hedef)

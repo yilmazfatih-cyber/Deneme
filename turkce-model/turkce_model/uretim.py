@@ -3,11 +3,16 @@
 from __future__ import annotations
 
 import contextlib
+import math
 from collections.abc import Sequence
 
 import torch
 
 from .tokenizer import EOS, SATIR_ID, TurkceTokenizer
+
+# Bundan küçük sıcaklık en olası token'ı seçmekle aynıdır (0 gibi davranır): logit / sıcaklık float32'de taşıp
+# (inf) olasılıkları bozmasın, örnekleme izleme dökümüyle çökmesin.
+EN_KUCUK_SICAKLIK = 1e-4
 
 
 def metin_uret(
@@ -27,7 +32,12 @@ def metin_uret(
     önündeki boşluğu satır başı sayıp silerdi ("Türk dili" + "▁ve" → "Türk dilive").
     ``son_ids`` istemin sonuna doğrudan eklenen token'lardır (ör. satır sonu; normalleştirme metnin sonundaki
     satır sonunu sildiği için token olarak eklenir).
+    ``sicaklik`` sonlu ve eksi olmayan bir sayı olmalı (``ValueError``); çok küçüğü 0 sayılır.
     """
+    if not math.isfinite(sicaklik) or sicaklik < 0:
+        raise ValueError(f"sıcaklık 0 ya da daha büyük bir sayı olmalı (şu an: {sicaklik})")
+    if sicaklik < EN_KUCUK_SICAKLIK:
+        sicaklik = 0.0
     ids = tok.encode(istem, bos=True) + list(son_ids)
     uretec = torch.Generator().manual_seed(tohum) if tohum is not None else None
     x = torch.tensor([ids], dtype=torch.long, device=cihaz)

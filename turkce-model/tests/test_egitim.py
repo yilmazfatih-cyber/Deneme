@@ -444,6 +444,108 @@ def test_yarim_kalmis_uzerine_yaz_sonraki_calistirmada_toparlanir(calisma):
     assert _dosya_ozetleri(klasor) == once
 
 
+def _olmus_uzerine_yaz(klasor: Path) -> None:
+    """--uzerine-yaz'ın süreci, eski eğitimi kenara alıp yeni koşunun durum.json'unu yazdıktan sonra ilk adımını
+    bitiremeden öldürülmüş gibi (kill -9, elektrik kesintisi; gerçek süreçle test_cli'de sınanır)."""
+    for ad in ("durum.json", "gunluk.jsonl", "en_iyi.pt", "son.pt"):
+        os.replace(klasor / ad, klasor / (ad + ".eski"))
+    yeni = {"durum": "suruyor", "adim": 0, "toplam_adim": 9, "kosu": "yeni0001"}
+    (klasor / "durum.json").write_text(json.dumps(yeni), encoding="utf-8")
+    (klasor / "gunluk.jsonl").write_text("", encoding="utf-8")
+
+
+def test_degerlendir_kenarda_kalan_eski_egitimi_yerine_koyar(calisma):
+    a = _ayarlar(calisma, "uz_deg", "egitim.tdk.en_fazla_adim=2")
+    egit(a, "tdk", cihaz="cpu", yaz=_sus)
+    klasor = a.deney_klasoru / "tdk"
+    once = _dosya_ozetleri(klasor)
+    for asama in ("tdk", None):  # açık aşama ve varsayılan (MEB modeli yok → TDK)
+        _olmus_uzerine_yaz(klasor)
+        satirlar: list[str] = []
+        sonuc = degerlendir(a, asama, cihaz="cpu", yaz=satirlar.append)  # eskiden "Değerlendirilecek model yok"
+        assert sonuc["asama"] == "tdk" and sonuc["adim"] == 2
+        assert any(f"{klasor} içinde yarıda kalmış" in s and "eski eğitim geri getirildi" in s for s in satirlar)
+        assert _dosya_ozetleri(klasor) == once
+
+
+def test_suren_uzerine_yazin_kenardaki_dosyalarina_dokunulmaz(calisma, capsys):
+    a = _ayarlar(calisma, "uz_suren", "egitim.tdk.en_fazla_adim=2", "egitim.meb.en_fazla_adim=2")
+    egit(a, "tdk", cihaz="cpu", yaz=_sus)
+    klasor = a.deney_klasoru / "tdk"
+    _olmus_uzerine_yaz(klasor)
+    kenarda = _dosya_ozetleri(klasor)
+    with egitim_kilidi(klasor):  # --uzerine-yaz şu an başka bir süreçte, ilk adımından önce
+        with pytest.raises(AyarHatasi, match="yeniden eğitiliyor; eski model yeni eğitimin ilk adımına kadar kenarda"):
+            degerlendir(a, "tdk", cihaz="cpu", yaz=_sus)
+        with pytest.raises(AyarHatasi, match="MEB aşaması TDK modelinden başlar.*yeniden eğitiliyor"):
+            egit(a, "meb", cihaz="cpu", yaz=_sus)
+        assert main(["uret", "kitap", "--ayarlar", str(calisma / "ayarlar.toml"), "--deney", "uz_suren"]) == 2
+        hata = capsys.readouterr().err  # "model yok" denmez: eski model kenarda, aşama yeniden eğitiliyor
+        assert "yeniden eğitiliyor" in hata and "eğitilmiş model yok" not in hata
+        assert _dosya_ozetleri(klasor) == kenarda  # kenardakiler süren eğitimindir: yerinde kaldı
+    assert not (a.deney_klasoru / "meb").exists()
+
+
+def test_meb_egitimi_kenardaki_tdk_modelinden_baslar(calisma):
+    a = _ayarlar(calisma, "uz_meb", "egitim.tdk.en_fazla_adim=2", "egitim.meb.en_fazla_adim=2")
+    egit(a, "tdk", cihaz="cpu", yaz=_sus)
+    klasor = a.deney_klasoru / "tdk"
+    tdk_kosu = egitim_durumu_oku(klasor)["kosu"]
+    _olmus_uzerine_yaz(klasor)
+    satirlar: list[str] = []
+    egit(a, "meb", cihaz="cpu", yaz=satirlar.append)  # eskiden "MEB aşaması TDK modelinden başlar ama … yok"
+    assert any("eski eğitim geri getirildi" in s for s in satirlar)
+    assert egitim_durumu_oku(a.deney_klasoru / "meb")["baslangic"] == {"kosu": tdk_kosu, "adim": 2}
+
+
+def test_devam_kenardaki_bitmis_egitimi_ayarlar_farkli_olsa_da_geri_getirir(calisma):
+    a = _ayarlar(calisma, "uz_devam", "egitim.tdk.en_fazla_adim=2")
+    egit(a, "tdk", cihaz="cpu", yaz=_sus)
+    klasor = a.deney_klasoru / "tdk"
+    once = _dosya_ozetleri(klasor)
+    _olmus_uzerine_yaz(klasor)
+    # --uzerine-yaz'ın denediği yeni ayar: --devam'da kilitli. Geri getirme yine de "zaten bitmiş" ile biter.
+    yeni = _ayarlar(calisma, "uz_devam", "egitim.tdk.en_fazla_adim=2", "egitim.tdk.yigin=8")
+    satirlar: list[str] = []
+    assert egit(yeni, "tdk", devam=True, cihaz="cpu", yaz=satirlar.append, komut_eki=" --deney uz_devam") == {
+        "zaten_bitti": True,
+        "adim": 2,
+    }
+    assert any("eski eğitim geri getirildi" in s for s in satirlar)
+    assert any(
+        "Bu eğitim zaten bitmiş (adım 2/2)" in s and "degerlendir --asama tdk --deney uz_devam" in s for s in satirlar
+    )
+    assert _dosya_ozetleri(klasor) == once
+    with pytest.raises(AyarHatasi, match="yigin"):  # geri geldikten sonra sıradan bir --devam: ayar farkı söylenir
+        egit(yeni, "tdk", devam=True, cihaz="cpu", yaz=_sus)
+
+
+def test_devam_kenardaki_yarim_egitimi_geri_getirip_surdurur(calisma, duz, monkeypatch):
+    a = _ayarlar(calisma, "uz_yarim", *KESINTI_AYARLARI)
+    _ileride_kes(monkeypatch, 9)  # 3. adımın başı: 2 adım kaydedildi
+    assert egit(a, "tdk", cihaz="cpu", yaz=_sus) == {"durduruldu": True, "adim": 2}
+    monkeypatch.undo()
+    klasor = a.deney_klasoru / "tdk"
+    _olmus_uzerine_yaz(klasor)
+    satirlar: list[str] = []
+    egit(a, "tdk", devam=True, cihaz="cpu", yaz=satirlar.append)
+    assert any("eski eğitim geri getirildi" in s for s in satirlar) and "Kaldığı yerden devam: adım 2/6" in satirlar
+    _ayni_egitim(duz.deney_klasoru / "tdk", klasor)  # kesintisiz eğitimle aynı yere vardı
+
+
+def test_veri_iletileri_veri_komut_ekini_tasir(calisma, tmp_path):
+    kok = _kopya(calisma, tmp_path / "ws")
+    (kok / "ciktilar" / "veri" / "meta.json").unlink()
+    a = _ayarlar(kok, "ek")
+    ek, veri_eki = " --ayarlar x.toml --cihaz cpu", " --ayarlar x.toml"
+    with pytest.raises(AyarHatasi, match=r"Önce: python -m turkce_model veri-hazirla --ayarlar x\.toml$"):
+        egit(a, "tdk", cihaz="cpu", yaz=_sus, komut_eki=ek, veri_komut_eki=veri_eki)
+    with pytest.raises(AyarHatasi, match=r"veri-hazirla --ayarlar x\.toml --cihaz cpu$"):  # verilmezse komut_eki
+        egit(a, "tdk", cihaz="cpu", yaz=_sus, komut_eki=ek)
+    with pytest.raises(AyarHatasi, match=r"Önce: python -m turkce_model veri-hazirla --ayarlar x\.toml$"):
+        degerlendir(a, "tdk", cihaz="cpu", yaz=_sus, komut_eki=veri_eki)
+
+
 def test_tek_adim_tamamlamayan_yeni_egitim_iz_birakmaz(calisma, monkeypatch):
     a = _ayarlar(calisma, "izsiz", "egitim.tdk.en_fazla_adim=2")
     _ileride_kes(monkeypatch, 1)

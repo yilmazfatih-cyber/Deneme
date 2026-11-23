@@ -9,6 +9,7 @@ from __future__ import annotations
 import math
 from dataclasses import dataclass, field, fields, replace
 from typing import Any
+from urllib.parse import urlsplit
 
 VARSAYILAN_ADRES = "http://localhost:11434/v1"
 """Ollama'nın OpenAI uyumlu adresi. llama.cpp: http://localhost:8080/v1, LM Studio: http://localhost:1234/v1,
@@ -89,10 +90,23 @@ def _tam_sayi(x: Any) -> bool:
     return isinstance(x, int) and not isinstance(x, bool)
 
 
+def _adres_gecerli(adres: str) -> bool:
+    """Adres ayrıştırılabiliyor mu? Kapanmamış köşeli ayraç ("http://[::1/v1"), sayı olmayan ya da aralık dışı
+    kapı, boş ya da boşluk içeren sunucu adı geçersizdir."""
+    try:
+        parca = urlsplit(adres)
+        ana, _ = parca.hostname, parca.port  # kapı okunamazsa ValueError
+    except ValueError:
+        return False
+    return bool(ana) and not any(c.isspace() for c in parca.netloc)
+
+
 def modulleri_dogrula(m: ModulAyarlari) -> None:
     hatalar: list[str] = []
     if not isinstance(m.adres, str) or not m.adres.startswith(("http://", "https://")):
         hatalar.append(f"moduller.adres http:// ile başlayan bir adres olmalı (şu an: {m.adres!r}); ör. {VARSAYILAN_ADRES}")
+    elif not _adres_gecerli(m.adres):
+        hatalar.append(f"moduller.adres geçerli bir adres değil (şu an: {m.adres!r}); ör. {VARSAYILAN_ADRES}")
     if (
         isinstance(m.zaman_asimi, bool)
         or not isinstance(m.zaman_asimi, (int, float))

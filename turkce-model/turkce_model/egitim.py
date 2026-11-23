@@ -175,26 +175,32 @@ def veri_klasoru(ayarlar: Ayarlar) -> Path:
     return ayarlar.cikti_klasoru / "veri"
 
 
-def tokenizer_yukle(ayarlar: Ayarlar) -> TurkceTokenizer:
+def tokenizer_yukle(ayarlar: Ayarlar, komut_eki: str = "") -> TurkceTokenizer:
+    """Kayıtlı tokenizer. ``komut_eki``: yazılan komutun sonuna eklenen seçenekler (``cli._komut_eki``)."""
     klasor = tokenizer_klasoru(ayarlar)
     if not (klasor / "sozcukler.tsv").exists():
-        raise AyarHatasi(f"Tokenizer bulunamadı ({klasor}). Önce: python -m turkce_model tokenizer-egit")
+        raise AyarHatasi(f"Tokenizer bulunamadı ({klasor}). Önce: python -m turkce_model tokenizer-egit{komut_eki}")
     return TurkceTokenizer.yukle(klasor)
 
 
-def hazir_veri(ayarlar: Ayarlar, tok: TurkceTokenizer) -> dict:
-    """Hazır verinin ``meta.json``'u; veri yoksa, başka tokenizer'la ya da eski biçimde hazırlanmışsa ``AyarHatasi``."""
+def hazir_veri(ayarlar: Ayarlar, tok: TurkceTokenizer, komut_eki: str = "") -> dict:
+    """Hazır verinin ``meta.json``'u; veri yoksa, başka tokenizer'la ya da eski biçimde hazırlanmışsa ``AyarHatasi``.
+
+    ``komut_eki``: yazılan ``veri-hazirla`` komutunun sonuna eklenen, çağrının ``--ayarlar`` / ``--ayar`` / ``--deney``
+    seçenekleri (``cli._komut_eki``). Böylece kopyalanan komut başka bir ayar dosyasının verisini hazırlamaz.
+    """
     klasor = veri_klasoru(ayarlar)
     meta = meta_oku(klasor)
+    komut = f"python -m turkce_model veri-hazirla{komut_eki}"
     if meta is None:
-        raise AyarHatasi(f"Hazır veri yok ({klasor}). Önce: python -m turkce_model veri-hazirla")
+        raise AyarHatasi(f"Hazır veri yok ({klasor}). Önce: {komut}")
     if meta.get("tokenizer") != tokenizer_imzasi(tok):
-        raise AyarHatasi("Veri başka bir tokenizer'la hazırlanmış. Yeniden çalıştır: python -m turkce_model veri-hazirla")
+        raise AyarHatasi(f"Veri başka bir tokenizer'la hazırlanmış. Yeniden çalıştır: {komut}")
     surum = meta.get("surum", 1)
     if not isinstance(surum, int) or surum < VERI_SURUMU:
         raise AyarHatasi(
             "Hazır veri eski bir sürümle hazırlanmış (ek metnin doğrulama payı TDK doğrulamasına karışık olabilir). "
-            "Yeniden çalıştır: python -m turkce_model veri-hazirla"
+            f"Yeniden çalıştır: {komut}"
         )
     return meta
 
@@ -250,15 +256,17 @@ def guvenli_kaydet(veri: dict, yol: Path) -> None:
     os.replace(gecici, yol)
 
 
-def egitim_durumu_oku(klasor: Path) -> dict | None:
+def egitim_durumu_oku(klasor: Path, dosya: str = "durum.json") -> dict | None:
     """Bir aşamanın ``durum.json`` dosyası; yoksa ya da okunamıyorsa ``None``. Alanlar (eski koşularda bir kısmı yok)::
 
         {"durum": "suruyor" | "bitti" | "erken_durdu" | "durduruldu", "adim": …, "toplam_adim": …, "zaman": "…",
          "kosu": "<koşu kimliği>", "en_iyi_adim": <en_iyi.pt'nin adımı | null>, "tokenizer": "<imza>",
          "veri": "<aşamanın eğitim verisinin imzası>", "baslangic": {"kosu": …, "adim": …} | null,
          "degerlendirildi": true | false}
+
+    ``dosya="durum.json.eski"``: yarıda kalmış bir ``--uzerine-yaz``ın kenara aldığı eski eğitimin kaydı.
     """
-    yol = Path(klasor) / "durum.json"
+    yol = Path(klasor) / dosya
     try:
         durum = json.loads(yol.read_text(encoding="utf-8"))
     except (OSError, ValueError):
@@ -421,6 +429,54 @@ def _yarim_uzerine_yazmayi_toparla(klasor: Path) -> bool:
     return geri
 
 
+def _geri_getirildi_notu(klasor: Path) -> str:
+    return f"Not: {klasor} içinde yarıda kalmış bir eğitim başlangıcı bulundu; kenara alınmış eski eğitim geri getirildi."
+
+
+def kenardaki_kontrol_noktasi(klasor: Path) -> Path | None:
+    """``--uzerine-yaz``ın kenara aldığı eski kontrol noktası (``en_iyi.pt.eski``, yoksa ``son.pt.eski``); yoksa ``None``.
+
+    Yeni eğitim ilk adımını tamamlayınca bunlar silinir. Süreç o adımdan önce öldürüldüyse (bellek yetmedi, elektrik
+    kesildi) kenarda kalırlar; o zaman aşamanın modeli hâlâ budur ve onu kullanan her komut yerine koyar.
+    """
+    for ad in ("en_iyi.pt", "son.pt"):
+        yol = Path(klasor) / (ad + ".eski")
+        if yol.exists():
+            return yol
+    return None
+
+
+def kenardakini_geri_getir(klasor: Path, yaz=print) -> bool:
+    """Yarıda kalmış bir ``--uzerine-yaz``ın kenara aldığı eski eğitimi (``*.eski``) yerine koyar; bir şey geri
+    getirildiyse ``True`` (ve bir not yazar).
+
+    Model yükleyen komutlar (``degerlendir``, ``uret``, ``tanimla``, ``sor``, TDK modelinden başlayan MEB eğitimi)
+    modeli aramadan önce bunu çağırır: süreç ilk adımdan önce öldürüldüyse model "yok" görünmez. Aşama kilidi içinde
+    çalışır. Aşamayı şu an bir süreç eğitiyorsa dokunmaz: o ``.eski`` dosyaları süren ``--uzerine-yaz``ındır.
+    """
+    klasor = Path(klasor)
+    if not any((klasor / (ad + ".eski")).exists() for ad in _ASAMA_DOSYALARI) or egitim_suruyor_mu(klasor):
+        return False
+    try:
+        with egitim_kilidi(klasor):
+            geri = _yarim_uzerine_yazmayi_toparla(klasor)
+    except AyarHatasi:  # tam bu anda bir eğitim başladı: dosyalar onundur
+        return False
+    if geri:
+        yaz(_geri_getirildi_notu(klasor))
+    return geri
+
+
+def yeniden_egitiliyor_notu(klasor: Path) -> str | None:
+    """Aşamanın eski modeli şu an süren bir ``--uzerine-yaz`` yüzünden kenardaysa bunu söyleyen cümle; değilse None."""
+    if kenardaki_kontrol_noktasi(klasor) is None or not egitim_suruyor_mu(klasor):
+        return None
+    return (
+        f"{klasor} şu an başka bir süreçte --uzerine-yaz ile yeniden eğitiliyor; eski model yeni eğitimin ilk adımına "
+        "kadar kenarda bekliyor, sonra silinir."
+    )
+
+
 def _gunlugu_kirp(yol: Path, son_adim: int) -> None:
     """``--devam``: ``gunluk.jsonl``'de ``son_adim``'dan sonraki (yeniden yapılacak) ve bozuk satırları atar."""
     try:
@@ -547,12 +603,14 @@ def egit(
     yaz=print,
     uzerine_yaz: bool = False,
     komut_eki: str = "",
+    veri_komut_eki: str | None = None,
 ) -> dict:
     """Bir aşamayı eğitir; eğitim biterse en iyi modeli tam değerlendirir ve sonucunu döndürür.
 
     ``komut_eki``: kullanıcıya yazılan her komutun sonuna eklenen, deneyi seçen seçenekler
     (``" --ayarlar … --ayar … --deney … --cihaz …"``); komut satırı kendi çağrısından üretir. Böylece yazılan
-    sürdürme ve değerlendirme komutları başka bir deneye gitmez.
+    sürdürme ve değerlendirme komutları başka bir deneye gitmez. ``veri_komut_eki``: yazılan veri komutlarının
+    (``veri-hazirla``, ``tokenizer-egit``, ``meb-pdf``) eki; ``--cihaz`` taşımaz. Verilmezse ``komut_eki``.
 
     Aşama klasörü eğitim boyunca (sondaki otomatik değerlendirme dahil) bu sürece kilitlidir (``egitim_kilidi``).
     """
@@ -563,8 +621,9 @@ def egit(
             "--devam ve --uzerine-yaz birlikte kullanılamaz: sürdürmek için yalnız --devam, baştan başlamak için "
             "yalnız --uzerine-yaz."
         )
+    veri_eki = komut_eki if veri_komut_eki is None else veri_komut_eki
     with contextlib.ExitStack() as kilit:  # kilit _egit içinde alınır; dönüşte ya da hatada burada bırakılır
-        return _egit(ayarlar, asama, devam, sifirdan, cihaz, yaz, uzerine_yaz, komut_eki, kilit)
+        return _egit(ayarlar, asama, devam, sifirdan, cihaz, yaz, uzerine_yaz, komut_eki, veri_eki, kilit)
 
 
 def _egit(
@@ -576,6 +635,7 @@ def _egit(
     yaz,
     uzerine_yaz: bool,
     komut_eki: str,
+    veri_eki: str,
     kilit: contextlib.ExitStack,
 ) -> dict:
     gommeyi_dogrula(ayarlar.gomme, ayarlar.model)
@@ -584,8 +644,8 @@ def _egit(
     hassasiyet = hassasiyet_sec(ea.hassasiyet, cihaz)
     ctx = baglam_yoneticisi(cihaz, hassasiyet)
 
-    tok = tokenizer_yukle(ayarlar)
-    meta = hazir_veri(ayarlar, tok)
+    tok = tokenizer_yukle(ayarlar, veri_eki)
+    meta = hazir_veri(ayarlar, tok, veri_eki)
     vk = veri_klasoru(ayarlar)
     tdk_egitim = AkisVeri(vk / "tdk_egitim.bin", tok.boyut)
     tdk_dogrulama = AkisVeri(vk / "tdk_dogrulama.bin", tok.boyut)
@@ -600,8 +660,8 @@ def _egit(
     if asama == "meb":
         if not (vk / "meb_egitim.npz").exists():
             raise AyarHatasi(
-                "MEB eğitim soruları hazırlanmamış. Önce MEB kitapçıklarını veri/meb/pdf klasörüne koyup meb-pdf, "
-                "sonra veri-hazirla çalıştır (TurkishMMLU yalnız değerlendirme içindir)."
+                f"MEB eğitim soruları hazırlanmamış. Önce MEB kitapçıklarını veri/meb/pdf klasörüne koyup meb-pdf{veri_eki}, "
+                f"sonra veri-hazirla{veri_eki} çalıştır (TurkishMMLU yalnız değerlendirme içindir)."
             )
         meb_egitim = SoruVeri(vk / "meb_egitim.npz")
         meb_dogrulama = SoruVeri(vk / "meb_dogrulama.npz") if (vk / "meb_dogrulama.npz").exists() else None
@@ -616,15 +676,30 @@ def _egit(
     # Klasör varsa içindekiler okunmadan önce kilitlenir: başka bir süreç bu aşamayı eğitiyorsa burada durulur.
     # Yoksa bütün denetimler geçtikten sonra oluşturulup kilitlenir (başlayamayan bir eğitim klasör bırakmaz).
     kilitli = klasor.is_dir()
+    geri_getirildi = False
     if kilitli:
         kilit.enter_context(egitim_kilidi(klasor))
-        if _yarim_uzerine_yazmayi_toparla(klasor):
-            yaz("Not: yarıda kalmış bir eğitim başlangıcı bulundu; kenara alınmış eski eğitim geri getirildi.")
+        geri_getirildi = _yarim_uzerine_yazmayi_toparla(klasor)
+        if geri_getirildi:
+            yaz(_geri_getirildi_notu(klasor))
     if devam and not son_yol.exists():
         raise AyarHatasi(
             f"--devam verildi ama sürdürülecek eğitim yok ({son_yol}). Yeni bir eğitim için --devam'sız çalıştır; "
             "başka bir deney için --deney <ad> ver."
         )
+    if devam and geri_getirildi:
+        # Yarıda kalan --uzerine-yaz'dan geri gelen eğitim bitmişse yapılacak bir şey yok. Bu, ayar karşılaştırmasından
+        # önce söylenir: --uzerine-yaz çoğu kez yeni ayarlarla denenmiştir; geri getirme o ayarlarla da başarılı biter.
+        eski = egitim_durumu_oku(klasor) or {}
+        if eski.get("durum") in BITMIS_DURUMLAR:
+            neden = "erken durdurmayla" if eski["durum"] == "erken_durdu" else f"adım {eski.get('adim')}/{eski.get('toplam_adim')}"
+            for yarim in klasor.glob("*.yaziliyor"):
+                yarim.unlink(missing_ok=True)
+            yaz(
+                f"Bu eğitim zaten bitmiş ({neden}); sürdürülecek adım yok.\n"
+                f"Değerlendirmek için: python -m turkce_model degerlendir --asama {asama}{komut_eki}"
+            )
+            return {"zaten_bitti": True, "adim": eski.get("adim")}
     if son_yol.exists() and not devam and not uzerine_yaz:
         raise AyarHatasi(
             f"{klasor} içinde zaten bir eğitim var. Sürdürmek için --devam, silip baştan başlamak için "
@@ -670,10 +745,15 @@ def _egit(
         bekleyen = kn.get("bekleyen") if isinstance(kn.get("bekleyen"), dict) else None
     if kn is None and asama == "meb" and not sifirdan:
         kaynak = ayarlar.deney_klasoru / "tdk" / "en_iyi.pt"
+        if not kaynak.exists():  # TDK aşamasının yarıda kalan bir --uzerine-yaz'ı modeli kenarda bırakmış olabilir
+            kenardakini_geri_getir(kaynak.parent, yaz)
         if not kaynak.exists():
+            bekliyor = yeniden_egitiliyor_notu(kaynak.parent)
+            if bekliyor:
+                raise AyarHatasi(f"MEB aşaması TDK modelinden başlar. {bekliyor} TDK eğitiminin bitmesini bekle.")
             raise AyarHatasi(
-                f"MEB aşaması TDK modelinden başlar ama {kaynak} yok. Önce 'egit --asama tdk' çalıştır "
-                "ya da bilerek sıfırdan başlamak için --sifirdan ekle."
+                f"MEB aşaması TDK modelinden başlar ama {kaynak} yok. Önce: python -m turkce_model egit --asama tdk"
+                f"{komut_eki}. Bilerek sıfırdan başlamak için --sifirdan ekle."
             )
         tdk_kn = kontrol_noktasi_yukle(kaynak, cihaz)
         tokenizer_uyumu(tdk_kn, tok, kaynak)
@@ -1046,7 +1126,7 @@ def _egit(
     try:
         yaz(f"Eğitim bitti ({(time.time() - basla) / 60:.1f} dk). En iyi model: {en_iyi_yol}")
         durum_yaz(son_durum, tamamlanan, degerlendirildi=False)  # tam değerlendirme satırı yazılana dek "değerlendirilmedi"
-        sonuc = degerlendir(ayarlar, asama, cihaz=cihaz, yaz=yaz)
+        sonuc = degerlendir(ayarlar, asama, cihaz=cihaz, yaz=yaz, komut_eki=veri_eki)
     except KeyboardInterrupt:
         yaz(
             "\nDeğerlendirme yarıda kesildi; eğitim kaydedildi. Değerlendirmek için: "
@@ -1064,34 +1144,49 @@ def degerlendir(
     cihaz: str | None = None,
     yaz=print,
     kontrol_noktasi: Path | None = None,
+    komut_eki: str = "",
 ) -> dict:
     """Bir kontrol noktasını tam değerlendirir ve ilerleme tablosuna ekler.
 
     Varsayılan: deneyin en iyi modeli; ``asama`` verilmezse MEB modeli varsa o, yoksa TDK modeli. ``kontrol_noktasi``
     verilirse aşama ve deney adı dosyanın kendi kaydından alınır; dosyanın kaydıyla çelişen bir ``asama`` hatadır.
+    Yarıda kalmış bir ``--uzerine-yaz``ın kenara aldığı model önce yerine konur (``kenardakini_geri_getir``).
+    ``komut_eki``: yazılan komutların sonuna eklenen seçenekler (``cli._komut_eki``).
     """
     cihaz = cihaz_dogrula(cihaz)
     if asama is not None and asama not in ASAMALAR:
         raise AyarHatasi(f"Aşama {asama!r} değil; şunlardan biri: {', '.join(ASAMALAR)}")
     egitimi_dogrula(ayarlar.tdk, "tdk")  # değerlendirme yığını egitim.tdk.yigin'den türer
-    tok = tokenizer_yukle(ayarlar)
-    meta = hazir_veri(ayarlar, tok)
+    tok = tokenizer_yukle(ayarlar, komut_eki)
+    meta = hazir_veri(ayarlar, tok, komut_eki)
     klasor = None
     if kontrol_noktasi is None:
+        meb_bekliyor = None
         if asama is None:
-            meb_var = any((ayarlar.deney_klasoru / "meb" / ad).exists() for ad in ("en_iyi.pt", "son.pt"))
+            meb_klasoru = ayarlar.deney_klasoru / "meb"
+            kenardakini_geri_getir(meb_klasoru, yaz)
+            meb_var = any((meb_klasoru / ad).exists() for ad in ("en_iyi.pt", "son.pt"))
             asama = "meb" if meb_var else "tdk"
+            meb_bekliyor = None if meb_var else yeniden_egitiliyor_notu(meb_klasoru)
         klasor = ayarlar.deney_klasoru / asama
+        kenardakini_geri_getir(klasor, yaz)
         yol = klasor / "en_iyi.pt"
         if not yol.exists():
             yol = klasor / "son.pt"  # hiç değerlendirme yapılmadan durdurulduysa
         if not yol.exists():
+            bekliyor = yeniden_egitiliyor_notu(klasor)
+            if bekliyor:
+                raise AyarHatasi(f"{bekliyor} Yeni eğitimin ilk kaydını bekle ya da belirli bir dosya için --model <yol> ver.")
             raise AyarHatasi(
-                f"Değerlendirilecek model yok ({klasor}). Önce 'egit --asama {asama}' çalıştır; başka bir deney için "
-                "--deney <ad>, belirli bir dosya için --model <yol> ver."
+                f"Değerlendirilecek model yok ({klasor}). Önce: python -m turkce_model egit --asama {asama}{komut_eki}. "
+                "Başka bir deney için --deney <ad>, belirli bir dosya için --model <yol> ver."
             )
+        if meb_bekliyor:
+            yaz(f"Not: {meb_bekliyor} TDK modeli değerlendiriliyor.")
     else:
         yol = Path(kontrol_noktasi)
+        if not yol.exists() and yol.name in ("en_iyi.pt", "son.pt"):  # aşama klasöründeki dosya kenarda olabilir
+            kenardakini_geri_getir(yol.parent, yaz)
     model, kn = modeli_yukle(yol, tok, cihaz)
     deney = ayarlar.deney_adi
     if kontrol_noktasi is not None:

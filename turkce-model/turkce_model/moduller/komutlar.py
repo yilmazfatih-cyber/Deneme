@@ -153,7 +153,7 @@ def komut_modul_dene(arg, ayarlar) -> int:
 
 
 def komut_ocr(arg, ayarlar) -> None:
-    from .ocr import ocr_modulu
+    from .ocr import KESIK_ISARETI, ocr_modulu
 
     modul = ocr_modulu(ayarlar)
     hedef = Path(arg.cikti) if arg.cikti else ayarlar.veri_klasoru / "ocr"
@@ -171,6 +171,11 @@ def komut_ocr(arg, ayarlar) -> None:
         cikti = hedef / f"{ad}.txt"
         cikti.write_text("\n\n".join(s for s in sayfalar if s) + "\n", encoding="utf-8")
         print(f"{yol.name}: {len(sayfalar)} sayfa, {sum(len(s) for s in sayfalar)} karakter → {cikti}")
+        if yol.suffix.lower() != ".pdf" and KESIK_ISARETI in sayfalar[0]:  # PDF'te sayfa satırı zaten söyler
+            print(
+                f"  Uyarı: çıktı en_fazla_token ({modul.ayar.en_fazla_token}) sınırında kesildi; metnin sonu eksik "
+                "olabilir. [moduller.ocr] en_fazla_token değerini büyüt."
+            )
     print(
         "Not: hakkına sahip olduğun metinleri eğitime katmak için .txt dosyasını veri/ek_metin klasörüne kopyala "
         "(README, 'Daha ileri gitmek')."

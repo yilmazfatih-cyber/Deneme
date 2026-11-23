@@ -57,7 +57,9 @@ _MD_TABLO_AYRACI = re.compile(r"^\s*\|?\s*:?-{2,}:?\s*(?:\|\s*:?-{2,}:?\s*)*\|?\
 _MD_BASLIK = re.compile(r"^\s{0,3}#{1,6}\s+")
 _MD_ALINTI = re.compile(r"^\s{0,3}>\s?")
 _MD_LISTE = re.compile(r"^\s{0,3}[-*+]\s+(?=(?:\(?[A-E]\)|\d{1,2}[.)])\s)")  # "- A) …", "* 3. …"
-_MD_VURGU = re.compile(r"(?<![\w*])(\*\*|__)(?=[^\s_*])(.+?)(?<=[^\s_*])\1(?![\w*])")
+# Vurgu: "**kalın**", "__altı çizili__". Önünde harf/rakam olan ("2**3", "____") vurgu değildir; ardından ek
+# gelebilir ("**Ankara**nın").
+_MD_VURGU = re.compile(r"(?<![\w*])(\*\*|__)(?=[^\s_*])(.+?)(?<=[^\s_*])\1(?![\d_*])")
 _LATEX_KESIR = re.compile(r"\\[dt]?frac\s*\{([^{}]*)\}\s*\{([^{}]*)\}")
 _LATEX_KOK = re.compile(r"\\sqrt\s*\{([^{}]*)\}")
 _LATEX_METIN = re.compile(r"\\(?:text|mathrm|mathbf|mathit|mathbb|operatorname)\s*\{([^{}]*)\}")
@@ -98,6 +100,7 @@ def _latex_sadelestir(s: str) -> str:
     s = _LATEX_US.sub(lambda m: f"{m.group(1)}({m.group(2).strip()})", s)
     s = _LATEX_SIMGE.sub(lambda m: _LATEX_SIMGELER[m.group()], s).replace("^(°)", "°")
     s = _DOLAR_MATEMATIK.sub(lambda m: m.group(1) if m.group(1) is not None else m.group(2), s)
+    s = s.replace("$$", "")  # satırlara bölünmüş "$$ … $$" bloğunun sınırı (tek "$" ise fiyat olabilir, kalır)
     return _LATEX_SINIR.sub("", s)
 
 

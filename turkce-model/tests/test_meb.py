@@ -595,6 +595,80 @@ def test_hicbir_pdf_okunamazsa_hedef_ezilmez(tmp_path):
     assert hedef.read_text(encoding="utf-8") == once
 
 
+def _bos_sayfali_pdf(yol: Path) -> Path:
+    """Metin katmanı olmayan PDF (taranmış kitapçık gibi)."""
+    yol.parent.mkdir(parents=True, exist_ok=True)
+    belge = pymupdf.open()
+    belge.new_page()
+    belge.save(yol)
+    belge.close()
+    return yol
+
+
+def _ocr_sorusu(dosya: str) -> Soru:
+    return Soru(
+        f"pdf:{dosya}:111:tarih-1:1", "meb-pdf", "Tarih - 1", "OCR ile okunmuş soru?", ["a", "b", "c", "d"], 0,
+        ek={"dosya": dosya, "okuma": "ocr", "ocr_model": "deepseek-ocr"},
+    )
+
+
+@pymupdf_gerekli
+def test_ocrsuz_okuma_taranmis_kitapcikta_onceki_ciktiyi_bos_dosyayla_ezmez(tmp_path):
+    klasor = tmp_path / "pdf"
+    _bos_sayfali_pdf(klasor / "taranmis.pdf")
+    hedef = tmp_path / "meb.jsonl"
+    once = _onceki_cikti(hedef)
+    with pytest.raises(RuntimeError, match="taranmış") as hata:
+        meb.pdf_klasoru_ayristir(klasor, hedef, yaz=lambda m: None, komut_eki=" --ayarlar a.toml")
+    assert "Hiç soru bulunamadı" in str(hata.value) and "1 soru silinmesin diye dosya yazılmadı" in str(hata.value)
+    assert str(hata.value).endswith("OCR ile okumak için: python -m turkce_model meb-pdf --ocr --ayarlar a.toml")
+    assert hedef.read_text(encoding="utf-8") == once
+    hedef.unlink()  # önceki çıktı yoksa korunacak bir şey yok: eskisi gibi 0 soru yazılır
+    assert meb.pdf_klasoru_ayristir(klasor, hedef, yaz=lambda m: None)["yazilan"] == 0
+
+
+@pdf_gerekli
+def test_ocrsuz_okuma_ocr_ile_okunmus_sorulari_silmez(kitapcik, tmp_path):
+    klasor = tmp_path / "pdf"
+    klasor.mkdir()
+    shutil.copy(kitapcik, klasor / "a.pdf")
+    _bos_sayfali_pdf(klasor / "taranmis.pdf")
+    hedef = tmp_path / "meb.jsonl"
+    meb.soru_yaz([_ocr_sorusu("taranmis.pdf")], hedef)
+    once = hedef.read_bytes()
+    # Metinli kitapçıktan sorular bulunsa da taranmış kitapçığın OCR soruları OCR'sız okumada kaybolurdu.
+    with pytest.raises(RuntimeError, match="1 soru bu kitapçıklardan OCR ile okunmuştu") as hata:
+        meb.pdf_klasoru_ayristir(klasor, hedef, yaz=lambda m: None)
+    assert "Bilerek OCR'sız okumak için önce bu dosyayı sil." in str(hata.value)
+    assert str(hata.value).endswith("meb-pdf --ocr")
+    assert hedef.read_bytes() == once
+    # OCR ile okunmuş soru metinli bir kitapçıktansa ("hepsi") OCR'sız okuma onu metinden yeniden okur: yazılır.
+    meb.soru_yaz([_ocr_sorusu("a.pdf")], hedef)
+    assert meb.pdf_klasoru_ayristir(klasor, hedef, yaz=lambda m: None)["yazilan"] == 6
+
+
+def test_ocr_kipi_rapordan_ya_da_sorulardan_anlasilir(tmp_path, monkeypatch):
+    from turkce_model.moduller import meb_metin
+
+    hedef = tmp_path / "meb" / "meb_pdf.jsonl"
+    rapor = hedef.with_suffix(".rapor.json")
+    meb.soru_yaz([_ocr_sorusu("taranmis.pdf")], hedef)
+    for kip in ("hepsi", "gerekirse", None):  # meb-pdf kipi raporuna yazar
+        rapor.write_text(json.dumps({"ocr": kip}), encoding="utf-8")
+        assert meb.ocr_kipi(hedef) == kip
+    rapor.write_text(json.dumps({"dosyalar": {}}), encoding="utf-8")  # kipi yazmayan eski rapor
+    (tmp_path / "meb" / "pdf").mkdir()
+    (tmp_path / "meb" / "pdf" / "taranmis.pdf").write_bytes(b"%PDF-1.4")
+    monkeypatch.setattr(meb_metin, "metin_katmani_var", lambda yol, *a, **k: False)
+    assert meb.ocr_kipi(hedef) == "gerekirse"
+    monkeypatch.setattr(meb_metin, "metin_katmani_var", lambda yol, *a, **k: True)  # gerekirse onu OCR'lamazdı
+    assert meb.ocr_kipi(hedef) == "hepsi"
+    _onceki_cikti(hedef)  # OCR ile okunmuş soru yok
+    assert meb.ocr_kipi(hedef) is None
+    hedef.write_text("bozuk\n", encoding="utf-8")
+    assert meb.ocr_kipi(hedef) is None
+
+
 def test_pymupdf_yoksa_anlasilir_hata_ve_hedef_ezilmez(tmp_path, monkeypatch):
     klasor = tmp_path / "pdf"
     klasor.mkdir()

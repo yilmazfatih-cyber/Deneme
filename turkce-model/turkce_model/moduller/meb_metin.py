@@ -8,11 +8,14 @@ Konum bilgisi olmadığı için PDF yolundan farklar:
 
 * Sütun ve girinti yoktur: rakamla başlayan bir devam satırı ("2. ayetler)", "2. Dünya Savaşı'ndan…") soru
   başı gibi görünür. ``_sahte_soru_baslarini_birlestir`` her derste, numaraları artan ve en çok sayıda
-  "seçenekleri olan soru" veren soru başı dizisini seçer; seçilmeyen satırlar önceki satıra eklenir.
-* Şekiller yalnız modelin bıraktığı ``[GÖRSEL]`` işaretinden bilinir; işaretin değdiği sorular elenir.
+  "seçenekleri olan soru" veren soru başı dizisini seçer; seçilmeyen satırlar önceki satıra eklenir. Soru başı
+  ayırt edilemiyorsa komşu sorular elenir.
+* Şekiller yalnız modelin bıraktığı ``[GÖRSEL]`` işaretinden bilinir; işaretin değdiği sorular elenir. Çıktısı
+  ``en_fazla_token``'da kesilmiş sayfanın sonundaki ``[KESİK]`` işareti de öyle.
 * Cevap anahtarında aynı dersin altında bir soru numarası iki farklı harfle okunmuşsa (yan yana sütunlar
   karışmış demektir) o dersin anahtarı güvenilmez sayılır ve dersin soruları ``cevap_yok`` ile elenir:
-  yanlış cevapla eğitmektense soruyu atmak daha iyidir.
+  yanlış cevapla eğitmektense soruyu atmak daha iyidir. Bu dersler ve başlığının altında hiç cevap okunamayan
+  dersler uyarıda adıyla anılır.
 """
 
 from __future__ import annotations
@@ -58,17 +61,19 @@ def _kenar_anahtari(satir: str) -> str:
 
 
 def _tekrarlayan_kenarlar(sayfalar: list[list[str]]) -> set[str]:
-    """Sayfaların ilk/son iki dolu satırında, sayfaların en az yarısında (ve en az 3 sayfada) yinelenen satırlar:
-    oturum başlığı, sayfa numarası. Rakamlar aynı sayılır ("Sayfa 3" = "Sayfa 4")."""
+    """Sayfaların ilk/son ``_KENAR_SATIRI`` dolu satırında yinelenen satırlar: oturum başlığı, kitapçık adı, sayfa
+    numarası. Rakamlar aynı sayılır ("Sayfa 3" = "Sayfa 4"). Eşik aşağıda; içerik satırları ve modelin
+    işaretleri (``[GÖRSEL]``, ``[KESİK]``) hiç kenar sayılmaz."""
     sayac: Counter[str] = Counter()
     kucuk_harfli: set[str] = set()
     for satirlar in sayfalar:
         dolu = [s.strip() for s in satirlar if s.strip()]
-        # Ders başlığı, soru başı, seçenek, cevap çifti, "CEVAP ANAHTARI" ve soru cümlesi ("…?") kenar sayılmaz.
+        # Ders başlığı, soru başı, seçenek, cevap çifti, "CEVAP ANAHTARI", soru cümlesi ("…?") ve işaretler kenar
+        # sayılmaz: çok sayfada yinelenen "[KESİK]" atılsaydı kesik sorular yarım seçenekle tutulurdu.
         adaylar = [
             s for s in dolu[:_KENAR_SATIRI] + dolu[-_KENAR_SATIRI:]
             if not _icerik_satiri_mi(s) and not s.endswith("?") and not _anahtar_basligi_mi(s)
-            and not _cevap_cifti_sayisi([s]) and s != GORSEL_ISARETI
+            and not _cevap_cifti_sayisi([s]) and s not in (GORSEL_ISARETI, KESIK_ISARETI)
         ]
         for s in adaylar:
             if any(c.islower() for c in s):
@@ -91,10 +96,11 @@ def _icerik_satiri_mi(satir: str) -> bool:
 
 
 def _anahtar_basligi_mi(satir: str) -> bool:
-    """"CEVAP ANAHTARI" başlığı: bu sözü taşıyan kısa, cümle olmayan bir satır.
+    """"CEVAP ANAHTARI" başlığına benzeyen satır: bu sözü taşıyan, en çok 80 karakterlik, içinde cümle noktalaması
+    olmayan satır. Sıra sayısının noktası sayılmaz ("DENEME SINAVI 1. OTURUM CEVAP ANAHTARI" başlıktır).
 
-    Kapaktaki "…cevap anahtarı kitapçığın sonundadır." gibi cümleler başlık sayılmaz; yoksa sonraki bütün
-    sayfalar cevap anahtarı sanılırdı.
+    Kapaktaki "Cevap anahtarı, kitapçığın sonundadır." başlık sayılmaz; virgülsüz yazılmışı da buna uyar, o yüzden
+    ``metinden_ayrik`` başlıktan sonra en az iki cevap çifti arar. Yoksa sonraki bütün sayfalar anahtar sanılırdı.
     """
     if not meb._CEVAP_ANAHTARI.search(buyuk(satir)) or len(satir) > 80:
         return False
@@ -137,11 +143,13 @@ def _secenek_sayisi(satirlar: list) -> int:
 
 
 def _sahte_soru_baslarini_birlestir(satirlar: list) -> list:
-    """Soru başı gibi görünen devam satırlarını önceki satıra ekler.
+    """Soru başı gibi görünen devam satırlarını önceki satıra ekler; ayırt edilemeyen soru başlarını işaretler.
 
     Her derste (iki ders başlığı arası) "N. …" ile başlayan satırlar adaydır. Numaraları artan aday
-    dizilerinden, kendi seçenekleri (en az iki) olan soru sayısı en çok olanı seçilir; eşitlikte daha çok aday
-    tutan dizi kazanır (seçenekleri okunamayan bir soru, öncekinin son seçeneğine karışmasın diye).
+    dizilerinden sırasıyla şunlarda en iyisi seçilir: kendi seçenekleri (en az iki) olan soru sayısı, paragraf
+    başındaki (boş satırdan sonra gelen) aday sayısı, tutulan aday sayısı (seçenekleri okunamayan bir soru
+    öncekinin son seçeneğine karışmasın diye). Bu puan soru başını ayırt edemiyorsa ilgili satırlara
+    ``supheli`` yazılır ve ``metinden_ayrik`` o soruları eler.
     """
     sonuc: list = []
     bolum: list = []
@@ -182,6 +190,8 @@ def _sahte_soru_baslarini_birlestir(satirlar: list) -> list:
             # (a) seçilmemiş bir aday eşit puanlı bir zincirde yer alıyor (paragraf bilgisi yokken "2. Viyana
             # Kuşatması" ile gerçek 2. soru); (b) seçilen aday seçeneksiz ve paragraf başında değil, çıkarılsa puan
             # değişmezdi (dersin son sorusunun seçeneği "6. …" diye sürüyor ya da seçenekleri okunamamış soru).
+            # Sayfa ya da sütun başı da paragraf başı sayılır; dersin son adayı orada olsa bile soru cümlesi ("…?")
+            # taşımıyorsa önceki seçeneğin devamıdır ("D) II. Mahmut ve" + sayfa başında "6. Ordu kuruluşu").
             geri: list[tuple[int, int]] = [(0, 0)] * n
             for a in reversed(range(n)):
                 en = (puan(a, n), 0)
@@ -196,7 +206,11 @@ def _sahte_soru_baslarini_birlestir(satirlar: list) -> list:
                 if toplam[x] == en_yuksek and x not in zincir:
                     supheli.update([z for z in zincir if z < x][-2:] or zincir[:1])
             for j, z in enumerate(zincir):
-                if not paragraf(z) and not puan(z, zincir[j + 1] if j + 1 < len(zincir) else n):
+                sonraki = zincir[j + 1] if j + 1 < len(zincir) else n
+                if puan(z, sonraki):
+                    continue
+                soru_cumlesiz_son = sonraki == n and not any("?" in s.metin for s in bolum[sinirlar[z] :])
+                if not paragraf(z) or soru_cumlesiz_son:
                     supheli.update(zincir[max(0, j - 1) : j + 1])
             for z in supheli:
                 bolum[adaylar[z][0]].supheli = True
@@ -340,15 +354,18 @@ def metinden_ayrik(sayfalar: Iterable[str]) -> tuple[list, list, meb._Belge, dic
             if getattr(ham.satirlar[0], "supheli", False) or any(_SECENEK_IZI.search(t) for t in metinler):
                 ham.secenekler.clear()  # soru başı belirsiz ya da metne başka bir sorunun seçenekleri karışmış: elenir
     guvenilmez: list[str] = []
-    anahtarlar = _guvenilir_anahtarlar(anahtar_satirlari, guvenilmez)
+    bos: list[str] = []
+    anahtarlar = _guvenilir_anahtarlar(anahtar_satirlari, guvenilmez, bos)
     belge = meb._Belge(parcalar, boyutlar, {no: [] for no in parcalar}, resimler, len(ham_sayfalar))
     bilgi = {"soru_sayfalari": soru_sayfalari, "anahtar_sayfalari": anahtar_sayfalari, "satirlar": soru_satirlari,
-             "guvenilmez_anahtarlar": guvenilmez}
+             "guvenilmez_anahtarlar": guvenilmez, "bos_anahtarlar": bos}
     return bolumler, anahtarlar, belge, bilgi
 
 
-def _guvenilir_anahtarlar(satirlar: list, silinen: list | None = None) -> list:
-    """Cevap anahtarı bölümleri; bir numarası çelişkili okunan dersin bütün cevapları silinir."""
+def _guvenilir_anahtarlar(satirlar: list, silinen: list | None = None, bos: list | None = None) -> list:
+    """Cevap anahtarı bölümleri. Bir numarası iki farklı harfle okunan dersin bütün cevapları silinir ve adı
+    ``silinen``e yazılır; harfinin yanında "İPTAL" de okunan soru iptal sayılır. Başlığının altında hiç cevap
+    okunamayan derslerin adı ``bos``a yazılır."""
     anahtarlar = meb._anahtari_topla(satirlar)
     okunan: dict[int, dict[int, set]] = {}
     mevcut = None
@@ -366,6 +383,10 @@ def _guvenilir_anahtarlar(satirlar: list, silinen: list | None = None) -> list:
         i += 1
     for a in anahtarlar:
         okunanlar = okunan.get(id(a), {})
+        if not a.cevaplar:
+            if bos is not None:
+                bos.append(f"({a.kod}) {a.baslik}")
+            continue
         if any(len(harfler - {None}) > 1 for harfler in okunanlar.values()):
             a.cevaplar.clear()  # iki farklı harf: yan yana sütunlar karışmış, bu dersin anahtarına güvenilmez
             if silinen is not None:
@@ -391,10 +412,17 @@ def metinden_ayristir(
     sorular, rapor = meb.pdf_ayristir(Path(dosya_adi), haric_dersler, yaz=yaz, dosya_adi=dosya_adi, ayrik=ayrik)
     rapor["okuma"] = "ocr"
     rapor["guvenilmez_anahtarlar"] = ayrik[3]["guvenilmez_anahtarlar"]
+    # Soruları hiç bulunamayan anahtar bölümleri meb.pdf_ayristir'in "soruları bulunamayan dersler" uyarısında.
+    rapor["bos_anahtarlar"] = [d for d in ayrik[3]["bos_anahtarlar"] if d not in rapor["sorusuz_anahtarlar"]]
     if rapor["guvenilmez_anahtarlar"]:
         yaz(
             "  Uyarı: cevap anahtarında aynı soru iki farklı harfle okundu (yan yana sütunlar karışmış olabilir); "
             "bu derslerin soruları cevapsız sayıldı: " + ", ".join(rapor["guvenilmez_anahtarlar"])
+        )
+    if rapor["bos_anahtarlar"]:
+        yaz(
+            "  Uyarı: cevap anahtarında ders başlığının altında cevap okunamadı; bu derslerin soruları cevapsız "
+            "sayıldı: " + ", ".join(rapor["bos_anahtarlar"])
         )
     return sorular, rapor
 
@@ -449,17 +477,38 @@ def ocr_ayristirici(modul: OcrModulu, kip: str = "gerekirse") -> Callable[..., t
     return ayristir
 
 
+def _ilk_soru_basi(satirlar: list[str]) -> int:
+    """Fotoğrafta sorunun başladığı satırın sırası. İlk soru başından ("5. …") önce yalnız sayfa başlığı (büyük
+    harfli satır, sayfa numarası) ya da önceki sorunun seçenekleri varsa o satırlar atlanır; önceki satır kökün
+    başıysa ("…hangisi" + "2. Dünya Savaşı'ndan…") hiçbir satır atlanmaz (0)."""
+    onceki: list[str] = []
+    for i, satir in enumerate(satirlar):
+        t = satir.strip()
+        if not t or t == GORSEL_ISARETI:
+            continue
+        m = meb._SORU_BASI.match(t)
+        if m and not (m.group(2) and meb._buyuk_harfli(m.group(2))):  # "1. OTURUM" soru başı değil, başlıktır
+            kalinti = any(meb._SECENEK.match(s) for s in onceki)
+            baslik = all((meb._buyuk_harfli(s) and not s.endswith("?")) or _YALNIZ_RAKAM.match(s) for s in onceki)
+            return i if kalinti or baslik else 0
+        onceki.append(t)
+    return 0
+
+
 def tek_soru(metin: str, ders: str = "Genel") -> meb.Soru | None:
     """Tek bir sorunun OCR metninden (kök + "A) …" seçenekleri) cevabı bilinmeyen bir ``Soru`` kurar.
 
-    Baştaki soru numarası ("7.") atılır. En az iki seçenek ve boş olmayan bir kök yoksa ``None``.
-    ``cevap`` 0 yazılır ve ``ek["cevap_bilinmiyor"]`` işaretlenir: bu soru eğitimde ya da ölçümde kullanılmaz.
+    Baştaki soru numarası ("7." ya da "7)") atılır; numaradan önceki sayfa başlığı ve önceki sorunun seçenekleri
+    (``_ilk_soru_basi``) okunmaz, seçeneklerden sonra başlayan ikinci soru da. En az iki seçenek ve boş olmayan
+    bir kök yoksa ``None``. ``cevap`` 0 yazılır ve ``ek["cevap_bilinmiyor"]`` işaretlenir: bu soru eğitimde ya da
+    ölçümde kullanılmaz.
     """
     ham = meb._HamSoru(no=1, sayfa=1)
     y = 0.0
     bosluk = False
     ilk = True
-    for satir in normallestir(metin).split("\n"):
+    satirlar = normallestir(metin).split("\n")
+    for satir in satirlar[_ilk_soru_basi(satirlar) :]:
         t = satir.strip()
         if not t or t == GORSEL_ISARETI:
             bosluk = True

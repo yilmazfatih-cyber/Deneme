@@ -117,13 +117,14 @@ def komut_tdk_indir(arg, ayarlar: Ayarlar) -> int | None:
 def komut_tdk_derlem(arg, ayarlar: Ayarlar) -> None:
     from . import tdk
 
+    ek = _komut_eki(arg)
     maddeler_yolu = _yol(ayarlar, "tdk", "maddeler.jsonl")
     if not maddeler_yolu.exists():
-        raise AyarHatasi("Önce TDK maddelerini indir: python -m turkce_model tdk-indir")
+        raise AyarHatasi(f"Önce TDK maddelerini indir: python -m turkce_model tdk-indir{ek}")
     kelimeler_yolu = _yol(ayarlar, "tdk", "kelimeler.txt")
     if not kelimeler_yolu.exists():  # hiçbir şey yazılmadan: derlem ile kök sözlüğü birbirinden kopmasın
         raise AyarHatasi(
-            f"TDK kelime listesi yok ({kelimeler_yolu}); kök sözlüğü ondan çıkarılır. Önce: python -m turkce_model tdk-indir"
+            f"TDK kelime listesi yok ({kelimeler_yolu}); kök sözlüğü ondan çıkarılır. Önce: python -m turkce_model tdk-indir{ek}"
         )
     maddeler = list(tdk.maddeleri_oku(maddeler_yolu))
     sayac = tdk.derlem_olustur(maddeler, _yol(ayarlar, "tdk", "derlem.jsonl"), yazar_ekle=arg.yazar)
@@ -178,14 +179,17 @@ def komut_meb_pdf(arg, ayarlar: Ayarlar) -> None:
     mmlu_yolu = _yol(ayarlar, "meb", "turkishmmlu.jsonl")
     haric_kokler = [s.soru for s in meb.soru_oku(mmlu_yolu)] if mmlu_yolu.exists() else []
     try:
-        rapor = meb.pdf_klasoru_ayristir(klasor, hedef, haric_kokler=haric_kokler, ayristirici=ayristirici)
-    except (FileNotFoundError, RuntimeError) as e:  # pymupdf yok, hiçbir PDF okunamadı…
+        rapor = meb.pdf_klasoru_ayristir(
+            klasor, hedef, haric_kokler=haric_kokler, ayristirici=ayristirici, komut_eki=_komut_eki(arg)
+        )
+    except (FileNotFoundError, RuntimeError) as e:  # pymupdf yok, hiçbir PDF okunamadı, OCR'lı sorular silinecekti…
         raise AyarHatasi(str(e)) from e
     sorular = meb.bol(meb.soru_oku(hedef))
     meb.soru_yaz(sorular, hedef)
     dagilim: dict[str, int] = {}
     for s in sorular:
         dagilim[s.bolum] = dagilim.get(s.bolum, 0) + 1
+    rapor["ocr"] = arg.ocr  # durum, yeniden okumayı aynı kiple önersin (None: OCR'sız)
     (hedef.with_suffix(".rapor.json")).write_text(json.dumps(rapor, ensure_ascii=False, indent=2), encoding="utf-8")
     bolumler = ", ".join(f"{ad} {dagilim[b]}" for b, ad in (("egitim", "eğitim"), ("dogrulama", "doğrulama"), ("test", "test")) if b in dagilim)
     print(f"{len(sorular)} soru → {hedef} ({bolumler})")
@@ -198,14 +202,14 @@ def komut_meb_pdf(arg, ayarlar: Ayarlar) -> None:
 # --------------------------------------------------------------------------------------------
 
 
-def _tokenizer_metinleri(ayarlar: Ayarlar):
+def _tokenizer_metinleri(ayarlar: Ayarlar, ek: str = ""):
     """Tokenizer'ın eğitim metinleri: yalnız eğitim bölümleri (doğrulama ve test metinleri sözlüğe sızmaz)."""
     from . import tdk
     from .veri import dogrulamaya_mi, ek_metin_belgeleri
 
     derlem = _yol(ayarlar, "tdk", "derlem.jsonl")
     if not derlem.exists():
-        raise AyarHatasi("TDK derlemi yok. Önce: tdk-indir, sonra tdk-derlem")
+        raise AyarHatasi(f"TDK derlemi yok. Önce: tdk-indir{ek}, sonra tdk-derlem{ek}")
     yield from tdk.derlem_oku(derlem, "egitim")
     meb_yolu = _yol(ayarlar, "meb", "meb_pdf.jsonl")
     if meb_yolu.exists():
@@ -226,10 +230,11 @@ def komut_tokenizer_egit(arg, ayarlar: Ayarlar) -> None:
     from .egitim import tokenizer_klasoru
     from .tokenizer import egit
 
+    ek = _komut_eki(arg)
     kok_yolu = _yol(ayarlar, "tdk", "kokler.tsv")
     if not kok_yolu.exists():
-        raise AyarHatasi("Kök sözlüğü yok. Önce: python -m turkce_model tdk-derlem")
-    tok = egit(_tokenizer_metinleri(ayarlar), tdk.kokleri_oku(kok_yolu), ayarlar.tokenizer)
+        raise AyarHatasi(f"Kök sözlüğü yok. Önce: python -m turkce_model tdk-derlem{ek}")
+    tok = egit(_tokenizer_metinleri(ayarlar, ek), tdk.kokleri_oku(kok_yolu), ayarlar.tokenizer)
     klasor = tokenizer_klasoru(ayarlar)
     tok.kaydet(klasor)
     print(f"Kaydedildi: {klasor}/sozcukler.tsv (her token'ın kimliği, kategorisi, ana biçimi)")
@@ -258,7 +263,7 @@ def komut_tokenizer_dene(arg, ayarlar: Ayarlar) -> None:
     from .egitim import tokenizer_yukle
     from .metin import normallestir
 
-    tok = tokenizer_yukle(ayarlar)
+    tok = tokenizer_yukle(ayarlar, _komut_eki(arg))
     metin = " ".join(arg.metin) if arg.metin else _standart_girdi()
     satirlar = tok.acikla(metin)
     genislik = max((len(p) for _, p, _ in satirlar), default=4)
@@ -287,11 +292,12 @@ def komut_veri_hazirla(arg, ayarlar: Ayarlar) -> None:
         tokenizer_imzasi,
     )
 
-    tok = tokenizer_yukle(ayarlar)
+    ek = _komut_eki(arg)
+    tok = tokenizer_yukle(ayarlar, ek)
     hedef = veri_klasoru(ayarlar)
     derlem = _yol(ayarlar, "tdk", "derlem.jsonl")
     if not derlem.exists():
-        raise AyarHatasi("TDK derlemi yok. Önce: tdk-derlem")
+        raise AyarHatasi(f"TDK derlemi yok. Önce: tdk-derlem{ek}")
     # Önce eski meta silinir: yarıda kesilirse boşaltılmış akışların yanında eski meta.json kalmaz ("Hazır veri yok").
     (hedef / "meta.json").unlink(missing_ok=True)
     egitim, dogrulama = AkisYazici(hedef / "tdk_egitim.bin", tok), AkisYazici(hedef / "tdk_dogrulama.bin", tok)
@@ -498,6 +504,7 @@ def komut_egit(arg, ayarlar: Ayarlar) -> int:
         cihaz=arg.cihaz,
         uzerine_yaz=arg.uzerine_yaz,
         komut_eki=_komut_eki(arg, cihaz=True),  # yazılan sürdürme/değerlendirme komutları aynı deneye gitsin
+        veri_komut_eki=_komut_eki(arg),  # veri-hazirla, tokenizer-egit… aynı ayar dosyasına gitsin (--cihaz'sız)
     )
     return 130 if sonuc.get("durduruldu") else 0
 
@@ -505,24 +512,51 @@ def komut_egit(arg, ayarlar: Ayarlar) -> int:
 def komut_degerlendir(arg, ayarlar: Ayarlar) -> None:
     from .egitim import degerlendir
 
-    degerlendir(ayarlar, arg.asama, cihaz=arg.cihaz, kontrol_noktasi=Path(arg.model) if arg.model else None)
+    degerlendir(
+        ayarlar,
+        arg.asama,
+        cihaz=arg.cihaz,
+        kontrol_noktasi=Path(arg.model) if arg.model else None,
+        komut_eki=_komut_eki(arg),  # yazılan veri-hazirla / egit komutları aynı ayar dosyasına gitsin
+    )
+
+
+def _hata_yaz(metin: str) -> None:
+    """Standart hataya yazar: ``uret`` ve ``tanimla`` çıktısı (standart çıktı) yönlendirilince yalnız metin kalsın."""
+    print(metin, file=sys.stderr)
 
 
 def _model_yukle(arg, ayarlar: Ayarlar):
-    from .egitim import cihaz_dogrula, modeli_yukle, tokenizer_yukle
+    from .egitim import cihaz_dogrula, kenardakini_geri_getir, modeli_yukle, tokenizer_yukle, yeniden_egitiliyor_notu
 
-    tok = tokenizer_yukle(ayarlar)
+    tok = tokenizer_yukle(ayarlar, _komut_eki(arg))
     cihaz = cihaz_dogrula(arg.cihaz)
     if arg.model:
         yol = Path(arg.model)
+        if not yol.exists() and yol.name in ("en_iyi.pt", "son.pt"):  # aşama klasöründeki dosya kenarda olabilir
+            kenardakini_geri_getir(yol.parent, _hata_yaz)
     else:
-        adaylar = [ayarlar.deney_klasoru / a / "en_iyi.pt" for a in ("meb", "tdk")]
-        yol = next((y for y in adaylar if y.exists()), None)
+        # Önce MEB, yoksa TDK modeli. Yarıda kalmış bir --uzerine-yaz'ın kenara aldığı model önce yerine konur;
+        # aşama şu an yeniden eğitiliyorsa (eski modeli kenarda) bu söylenir.
+        yol, bekleyenler = None, []
+        for asama in ("meb", "tdk"):
+            klasor = ayarlar.deney_klasoru / asama
+            kenardakini_geri_getir(klasor, _hata_yaz)
+            if (klasor / "en_iyi.pt").exists():
+                yol = klasor / "en_iyi.pt"
+                break
+            bekliyor = yeniden_egitiliyor_notu(klasor)
+            if bekliyor:
+                bekleyenler.append(bekliyor)
         if yol is None:
+            if bekleyenler:
+                raise AyarHatasi(" ".join(bekleyenler) + " Bitmesini bekle ya da belirli bir dosya için --model <yol> ver.")
             raise AyarHatasi(
                 f"Bu deneyde eğitilmiş model yok ({ayarlar.deney_klasoru}). Önce eğit; başka bir deney için "
                 "--deney <ad>, belirli bir dosya için --model <yol> ver."
             )
+        for bekliyor in bekleyenler:
+            _hata_yaz(f"Not: {bekliyor}")
     model, kn = modeli_yukle(yol, tok, cihaz)
     print(f"(Model: {yol}, aşama {kn.get('asama', '?')}, adım {kn.get('adim', '?')})", file=sys.stderr)
     return model, tok, cihaz
@@ -640,13 +674,42 @@ class _Adim:
     """Aşama şu an bir süreçte eğitiliyor."""
 
 
+@dataclass
+class _AsamaKaydi:
+    """Bir aşamanın ``durum``da gösterilen eğitimi: klasördeki dosyalar ya da yarıda kalmış bir ``--uzerine-yaz``ın
+    kenara aldığı eski eğitim (``*.eski``; onu kullanan her komut önce yerine koyar)."""
+
+    durum: dict
+    kayit: Path | None
+    """En iyi model, yoksa son kontrol noktası; ikisi de yoksa None."""
+    son: Path
+    kenarda: bool = False
+
+
+def _asama_kaydi(klasor: Path) -> _AsamaKaydi:
+    """Aşamayı şu an eğiten süreç yokken (kilit boş) çağrılır."""
+    from .egitim import egitim_durumu_oku, kenardaki_kontrol_noktasi
+
+    en_iyi, son = klasor / "en_iyi.pt", klasor / "son.pt"
+    durum = egitim_durumu_oku(klasor)
+    if en_iyi.exists() or son.exists():
+        if durum is None:  # kenara alma durum.json'dan hemen sonra kesilmiş: kaydı hâlâ kenarda
+            durum = egitim_durumu_oku(klasor, "durum.json.eski")
+        return _AsamaKaydi(durum or {}, en_iyi if en_iyi.exists() else son, son)
+    eski = kenardaki_kontrol_noktasi(klasor)
+    if eski is not None:  # süreç yeni eğitimin ilk adımından önce öldürülmüş: durum.json yeni koşunundur
+        return _AsamaKaydi(egitim_durumu_oku(klasor, "durum.json.eski") or {}, eski, klasor / "son.pt.eski", True)
+    return _AsamaKaydi(durum or {}, None, son)
+
+
 def komut_durum(arg, ayarlar: Ayarlar) -> None:
     """Her adımın durumu ve sıradaki komut.
 
     Eskime içerikle anlaşılır: hazır veri ve modeller, kaydettikleri tokenizer ve veri imzalarıyla şimdiki
     dosyalar karşılaştırılarak; imzası olmayan eski kayıtlarda ve ham veri adımlarında dosya zamanlarıyla. Bir
     adım yenilenecekse ona bağlı adımlar da "önceki adım yenilenecek" olur. Yazılan her komut bu çağrının
-    ``--ayarlar`` / ``--ayar`` / ``--deney`` seçeneklerini taşır.
+    ``--ayarlar`` / ``--ayar`` / ``--deney`` seçeneklerini taşır. Yarıda kalmış bir ``--uzerine-yaz``ın kenara aldığı
+    eski eğitim (``*.eski``) aşamanın eğitimi sayılır ve öyle gösterilir; önerilen komut onu önce yerine koyar.
     """
     from . import meb, tdk
     from .egitim import (
@@ -711,6 +774,13 @@ def komut_durum(arg, ayarlar: Ayarlar) -> None:
     pdfler = meb.pdf_dosyalari(v / "meb" / "pdf")
     # TurkishMMLU sonradan indirildiyse onunla aynı sorular hâlâ eğitimdedir; sonradan eklenen kitapçık da okunmamıştır.
     meb_pdf_adimi = adim("MEB soruları (elle indirilen PDF'ler)", meb_pdf, "meb-pdf", (mmlu, *pdfler), "  (aşama 2 için)")
+    if meb_pdf_adimi.komut and meb_pdf.exists():
+        # Var olan sorular OCR ile okunduysa yeniden okuma da OCR'la (aynı kiple) önerilir: OCR'sız meb-pdf taranmış
+        # kitapçıklarda soru bulamaz.
+        kip = meb.ocr_kipi(meb_pdf)
+        if kip:
+            komut = "meb-pdf --ocr" + (" hepsi" if kip == "hepsi" else "")
+            meb_pdf_adimi = adim("MEB soruları (elle indirilen PDF'ler)", meb_pdf, komut, (mmlu, *pdfler))
     meb_pdf_eski = meb_pdf_adimi.isaret == "~"
 
     # --- Tokenizer: imzası bir kez hesaplanır --------------------------------------------------------
@@ -757,7 +827,15 @@ def komut_durum(arg, ayarlar: Ayarlar) -> None:
     imzalar = meta.get("imza") if meta is not None and isinstance(meta.get("imza"), dict) else None
 
     # --- Modeller ---------------------------------------------------------------------------------
-    tdk_durumu = egitim_durumu_oku(dk / "tdk") or {}
+    # Her aşamanın gösterilen eğitimi. Süren bir eğitim yoksa ve yarıda kalmış bir --uzerine-yaz eski eğitimi kenarda
+    # bırakmışsa o eğitim (*.eski) sayılır: onu kullanan her komut önce yerine koyar.
+    kayitlar = {
+        a: _AsamaKaydi(egitim_durumu_oku(dk / a) or {}, None, dk / a / "son.pt")
+        if egitim_suruyor_mu(dk / a)
+        else _asama_kaydi(dk / a)
+        for a in ASAMALAR
+    }
+    tdk_durumu = kayitlar["tdk"].durum
 
     def icerik_eskimesi(asama: str, durum: dict, kayit: Path, baslangic: bool = True) -> str | None:
         """Model, kaydettiği tokenizer'dan, eğitim verisinden ya da (MEB) başladığı TDK modelinden farklı
@@ -773,16 +851,16 @@ def komut_durum(arg, ayarlar: Ayarlar) -> None:
             if tdk_durumu.get("kosu"):
                 if (b.get("kosu"), b.get("adim")) != (tdk_durumu.get("kosu"), tdk_durumu.get("en_iyi_adim")):
                     return "TDK modeli değişti"
-            elif _eski_mi(kayit, [dk / "tdk" / "en_iyi.pt"]):  # TDK koşusu eski sürümden: kimliği yok
-                return "TDK modeli değişti"
+            elif _eski_mi(kayit, [dk / "tdk" / ("en_iyi.pt.eski" if kayitlar["tdk"].kenarda else "en_iyi.pt")]):
+                return "TDK modeli değişti"  # TDK koşusu eski sürümden: kimliği yok
         return None
 
     def model_adimi(asama: str, ad: str) -> _Adim:
         klasor = dk / asama
         komut = f"egit --asama {asama}"
-        durum = egitim_durumu_oku(klasor) or {}
-        ilerleme = f"adım {durum.get('adim')}/{durum.get('toplam_adim')}" if durum else ""
         if egitim_suruyor_mu(klasor):  # kilit tutuluyor: bir süreç bu aşamada çalışıyor (komut önerilmez)
+            durum = egitim_durumu_oku(klasor) or {}
+            ilerleme = f"adım {durum.get('adim')}/{durum.get('toplam_adim')}" if durum else ""
             if durum.get("durum") in BITMIS_DURUMLAR:
                 metin = f"eğitim bitti ({ilerleme}), son değerlendirme şu an sürüyor"
             elif durum:
@@ -790,27 +868,40 @@ def komut_durum(arg, ayarlar: Ayarlar) -> None:
             else:  # yeni başladı: henüz durum.json yazılmadı
                 metin = "eğitim şu an başlıyor"
             return _Adim(ad, "~", metin, yenilenecek=True, suruyor=True)
-        en_iyi, son = klasor / "en_iyi.pt", klasor / "son.pt"
-        kayit = en_iyi if en_iyi.exists() else son if son.exists() else None
+        k = kayitlar[asama]
+        durum, kayit, son = k.durum, k.kayit, k.son
+        ilerleme = f"adım {durum.get('adim')}/{durum.get('toplam_adim')}" if durum else ""
         if kayit is None:
             return _Adim(ad, " ", f"{komut}{ek}", komut, yenilenecek=True)
+        # Yarıda kalan --uzerine-yaz (süreç ilk adımdan önce öldürülmüş, ör. bellek yetmedi): satır kenardaki eski
+        # eğitimi anlatır. Önerilen her komut (egit, degerlendir) onu önce yerine koyar.
+        on = "yarıda kalan --uzerine-yaz; eski eğitim kenarda: " if k.kenarda else ""
         neden = icerik_eskimesi(asama, durum, kayit)
         if neden:
-            return _Adim(ad, "~", f"{neden} → yeniden: {komut} --uzerine-yaz{ek}", f"{komut} --uzerine-yaz", True)
+            return _Adim(ad, "~", f"{on}{neden} → yeniden: {komut} --uzerine-yaz{ek}", f"{komut} --uzerine-yaz", True)
         if durum.get("durum") in YARIM_DURUMLAR:  # "suruyor" ama kilit yok: süreç öldürülmüş
             if son.exists():
-                return _Adim(ad, "~", f"{ilerleme}, bitmedi → sürdür: {komut} --devam{ek}", f"{komut} --devam", True)
+                return _Adim(ad, "~", f"{on}{ilerleme}, bitmedi → sürdür: {komut} --devam{ek}", f"{komut} --devam", True)
             return _Adim(
-                ad, "~", f"{ilerleme}, bitmedi ve son.pt yok → yeniden: {komut} --uzerine-yaz{ek}", f"{komut} --uzerine-yaz", True
+                ad,
+                "~",
+                f"{on}{ilerleme}, bitmedi ve son.pt yok → yeniden: {komut} --uzerine-yaz{ek}",
+                f"{komut} --uzerine-yaz",
+                True,
             )
         erken = " (erken durdurma)" if durum.get("durum") == "erken_durdu" else ""
         if durum.get("durum") in BITMIS_DURUMLAR and durum.get("degerlendirildi") is False:
             komut = f"degerlendir --asama {asama}"
-            return _Adim(ad, "~", f"{ilerleme}{erken}, değerlendirilmedi → {komut}{ek}", komut)
+            return _Adim(ad, "~", f"{on}{ilerleme}{erken}, değerlendirilmedi → {komut}{ek}", komut)
+        if k.kenarda:
+            # Bitmiş eski eğitim: --devam onu yerine koyar ve "zaten bitmiş" der (şimdiki ayarlar farklı olsa da).
+            # Model değişmez: ona bağlı adımlar yenilenmez.
+            bilgi = f"{on}{ilerleme}{erken}" if ilerleme else on.rstrip(": ")
+            return _Adim(ad, "~", f"{bilgi} → geri getirmek için: {komut} --devam{ek}", f"{komut} --devam")
         return _Adim(ad, "x", ilerleme + erken)
 
     tdk_model = yay(model_adimi("tdk", "Aşama 1 modeli (TDK)"), tokenizer.yenilenecek, hazir_tdk)
-    meb_durumu = egitim_durumu_oku(dk / "meb") or {}
+    meb_durumu = kayitlar["meb"].durum
     tdkye_bagli = not ("baslangic" in meb_durumu and meb_durumu["baslangic"] is None)  # --sifirdan değilse
     meb_model = yay(
         model_adimi("meb", "Aşama 2 modeli (MEB)"), tokenizer.yenilenecek, hazir_meb, tdkye_bagli and tdk_model.yenilenecek
@@ -832,23 +923,31 @@ def komut_durum(arg, ayarlar: Ayarlar) -> None:
             if egitim_suruyor_mu(klasor):
                 suren.append(f"{d.name} / {asama}")
                 continue
-            bilgi = egitim_durumu_oku(klasor) or {}
+            secenek = f" --deney {_tirnak(d.name)}{ayarlar_eki}"
+            k = _asama_kaydi(klasor)
+            bilgi = k.durum
+            ilerleme = f"adım {bilgi.get('adim')}/{bilgi.get('toplam_adim')}"
+            if k.kenarda:  # yarıda kalan --uzerine-yaz: --devam eski eğitimi yerine koyar (bitmişse "zaten bitmiş" der)
+                bas = f"  {d.name} / {asama}: yarıda kalan --uzerine-yaz; eski eğitim kenarda" + (f" ({ilerleme})" if bilgi else "")
+                neden = icerik_eskimesi(asama, bilgi, k.kayit, baslangic=False)
+                yarim.append(f"{bas}; {neden}" if neden else f"{bas} → egit --asama {asama} --devam{secenek}")
+                continue
             if bilgi.get("durum") not in YARIM_DURUMLAR or not (klasor / "son.pt").exists():
                 continue
-            ilerleme = f"adım {bilgi.get('adim')}/{bilgi.get('toplam_adim')}"
             neden = icerik_eskimesi(asama, bilgi, klasor / "son.pt", baslangic=False)
             if neden:  # --devam bu durumda reddedilir
                 yarim.append(f"  {d.name} / {asama}: {ilerleme}; {neden}, sürdürülemez")
             else:
-                yarim.append(
-                    f"  {d.name} / {asama}: {ilerleme} → egit --asama {asama} --devam --deney {_tirnak(d.name)}{ayarlar_eki}"
-                )
+                yarim.append(f"  {d.name} / {asama}: {ilerleme} → egit --asama {asama} --devam{secenek}")
     if yarim:
         print("Yarıda kalan başka deneyler:")
         print("\n".join(yarim))
 
     # --- Sıradaki adım: aşama 1 zinciri önce; TurkishMMLU yalnız meb-pdf'ten önce önerilir ------------
-    adaylar = [kelime, madde, derlem_adimi, tokenizer, hazir, tdk_model]
+    # Var olan MEB soruları yeniden okunacaksa meb-pdf, onları okuyan tokenizer-egit ve veri-hazirla'dan önce gelir:
+    # yoksa veri-hazirla meb-pdf'ten sonra bir kez daha gerekirdi.
+    meb_once = [meb_pdf_adimi] if meb_pdf.exists() and meb_pdf_adimi.komut else []
+    adaylar = [kelime, madde, derlem_adimi, *meb_once, tokenizer, hazir, tdk_model]
     adaylar += ([] if meb_pdf.exists() else [mmlu_adimi]) + [meb_pdf_adimi, meb_model]
     sira = next((a for a in adaylar if a.komut), None)
     siradaki = sira.komut if sira is not None else None
@@ -877,7 +976,7 @@ def komut_durum(arg, ayarlar: Ayarlar) -> None:
         print(f"Sıradaki adım: önce süren eğitimin bitmesini bekle ({engel}); sonra: python -m turkce_model {siradaki}{ek}")
     elif siradaki:
         print(f"Sıradaki adım: python -m turkce_model {siradaki}{ek}")
-        if siradaki == "meb-pdf" and not pdfler:
+        if siradaki.startswith("meb-pdf") and not pdfler:
             print("  (önce MEB kitapçıklarını tarayıcıyla indirip veri/meb/pdf klasörüne koy; README, 3. adım)")
     elif suren_bu:
         print(f"Sıradaki adım: süren eğitimin bitmesini bekle ({', '.join(suren_bu)}); sonra yeniden: python -m turkce_model durum{ek}")
@@ -893,17 +992,24 @@ def komut_durum(arg, ayarlar: Ayarlar) -> None:
 # --------------------------------------------------------------------------------------------
 
 
-def _sayi_turu(tur: type, en_az: int):
-    """argparse türü: ``tur``'e çevirir; ``en_az``'dan küçük ya da sonlu olmayan değeri Türkçe iletiyle reddeder
-    (argparse 2 ile çıkar; eksi sayılar izleme dökümüne dönüşmez)."""
+# Rastgelelik tohumunun üst sınırı: torch'un üreteci 64 bitlik tohum alır, büyüğü izleme dökümüyle çökerdi.
+EN_BUYUK_TOHUM = 2**64 - 1
+
+
+def _sayi_turu(tur: type, en_az: int, en_cok: float | None = None):
+    """argparse türü: ``tur``'e çevirir; ``en_az``'dan küçük, ``en_cok``'tan büyük ya da sonlu olmayan (nan, inf)
+    değeri Türkçe iletiyle reddeder (argparse 2 ile çıkar; aralık dışı sayılar izleme dökümüne dönüşmez)."""
 
     def cevir(metin: str):
         try:
             x = tur(metin)
         except ValueError:
             raise argparse.ArgumentTypeError(f"{'tam sayı' if tur is int else 'sayı'} olmalı: {metin!r}") from None
-        if not math.isfinite(x) or x < en_az:
+        # Tam sayı her zaman sonludur (çok büyüğü float'a çevrilemez; isfinite OverflowError verirdi).
+        if (tur is not int and not math.isfinite(x)) or x < en_az:
             raise argparse.ArgumentTypeError(f"{en_az} ya da daha büyük olmalı (şu an: {metin})")
+        if en_cok is not None and x > en_cok:
+            raise argparse.ArgumentTypeError(f"{en_cok} ya da daha küçük olmalı (şu an: {metin})")
         return x
 
     return cevir
@@ -925,9 +1031,11 @@ def ayristirici() -> argparse.ArgumentParser:
 
     ekle("durum", komut_durum, "Hangi adımlar tamam, sıradaki komut ne?")
     p = ekle("tdk-indir", komut_tdk_indir, "TDK kelime listesini ve madde anlamlarını indir (kaldığı yerden sürer)")
-    p.add_argument("--bekleme", type=_sayi_turu(float, 0), default=0.35, help="İstekler arası bekleme, sn (varsayılan 0.35)")
+    p.add_argument(
+        "--bekleme", type=_sayi_turu(float, 0, 3600), default=0.35, help="İstekler arası bekleme, sn (varsayılan 0.35)"
+    )
     p.add_argument("--ornek", type=_sayi_turu(int, 1), help="Yalnız N maddelik rastgele örneklem (deneme için)")
-    p.add_argument("--tohum", type=int, default=0, help="Örneklem için rastgelelik tohumu")
+    p.add_argument("--tohum", type=_sayi_turu(int, 0, EN_BUYUK_TOHUM), default=0, help="Örneklem için rastgelelik tohumu")
     p.add_argument("--liste-yenile", action="store_true", help="Kelime listesini yeniden indir")
     p = ekle("tdk-derlem", komut_tdk_derlem, "İndirilen maddelerden derlem ve kök sözlüğü üret")
     p.add_argument("--yazar", action="store_true", help="Örnek cümlelerin yazar adlarını da ekle")
@@ -970,7 +1078,10 @@ def ayristirici() -> argparse.ArgumentParser:
         p = ekle(ad, islev, yardim)
         p.add_argument("--model", help="Kontrol noktası (varsayılan: deneyin en iyi modeli; önce MEB, yoksa TDK)")
         p.add_argument(
-            "--tohum", type=int, default=None if ad != "sor" else 0, help="Rastgelelik tohumu (aynı tohum, aynı çıktı)"
+            "--tohum",
+            type=_sayi_turu(int, 0, EN_BUYUK_TOHUM),
+            default=None if ad != "sor" else 0,
+            help="Rastgelelik tohumu (aynı tohum, aynı çıktı)",
         )
         if ad == "uret":
             p.add_argument("metin", nargs="+", help="Modelin sürdüreceği başlangıç metni")
@@ -984,7 +1095,9 @@ def ayristirici() -> argparse.ArgumentParser:
             )
         else:
             p.add_argument("--uzunluk", type=_sayi_turu(int, 1), default=120, help="En fazla kaç token üretilsin (varsayılan 120)")
-            p.add_argument("--sicaklik", type=float, default=0.8, help="Örnekleme sıcaklığı; 0 en olası token (varsayılan 0.8)")
+            p.add_argument(
+                "--sicaklik", type=_sayi_turu(float, 0), default=0.8, help="Örnekleme sıcaklığı; 0 en olası token (varsayılan 0.8)"
+            )
             p.add_argument(
                 "--ust-k", type=_sayi_turu(int, 0), default=50, help="Yalnız en olası k token arasından seç; 0 = sınırsız (varsayılan 50)"
             )
@@ -995,6 +1108,19 @@ def ayristirici() -> argparse.ArgumentParser:
     return ana
 
 
+# Çıktıyı okuyan taraf erken kapanınca (ör. "| head") dönülen kod: SIGPIPE ile biten bir sürecinki gibi 128 + 13.
+BORU_KAPANDI = 141
+
+
+def _cikti_kapandi() -> None:
+    """Standart çıktıyı okuyan taraf kapandı: kalan çıktı atılır. Python çıkarken tampondakini yeniden yazmaya
+    çalışıp "Exception ignored … BrokenPipeError" basmasın diye çıktı /dev/null'a (Windows'ta NUL) bağlanır."""
+    with contextlib.suppress(OSError, ValueError, AttributeError):
+        bos = os.open(os.devnull, os.O_WRONLY)
+        os.dup2(bos, sys.stdout.fileno())
+        os.close(bos)
+
+
 def main(argv: list[str] | None = None) -> int:
     # Windows'ta çıktı dosyaya ya da boruya yönlendirilince kod sayfası (cp1254/cp1252) "→", "▁" gibi işaretleri
     # yazamaz; çökmek yerine kaçış dizisi yazılsın. Türkçe harfler cp1254'te olduğu gibi kalır.
@@ -1002,6 +1128,18 @@ def main(argv: list[str] | None = None) -> int:
     if yeniden is not None:
         with contextlib.suppress(Exception):
             yeniden(errors="backslashreplace")
+    try:
+        try:
+            return _calistir(argv)
+        finally:  # tampondaki çıktı burada yazılır: boru kapandıysa hata aşağıda yakalanır, çıkışta değil
+            if sys.stdout is not None:
+                sys.stdout.flush()
+    except BrokenPipeError:  # "python -m turkce_model … | head": izleme dökümü yazılmaz
+        _cikti_kapandi()
+        return BORU_KAPANDI
+
+
+def _calistir(argv: list[str] | None) -> int:
     arg = ayristirici().parse_args(argv)
     try:
         ayarlar = _ayarlar(arg)

@@ -32,7 +32,8 @@ MMLU_REFERANSLARI = [
 ]
 
 # İlerleme satırlarının ölçüm sürümü (kayıttaki "olcum"). 2: BPC akışın tamamı üzerinden, "metin" puanı harf
-# etiketi hariç. Bu alanı taşımayan ya da daha küçük taşıyan satırlar tabloda "eski ölçüm" notuyla gösterilir.
+# etiketi hariç. Bu alanı taşımayan ya da daha küçük taşıyan satırlar tabloda "eski ölçüm" notuyla gösterilir
+# (modül kıyası satırları hariç: onlar başka bir modelin üretimle ölçümüdür).
 OLCUM_SURUMU = 2
 
 
@@ -233,7 +234,9 @@ def ilerleme_ekle(cikti_klasoru: Path, kayit: dict) -> Path:
         bes_sikli = (k.get("meb_secenek") or {}).get("5")
         if bes_sikli and k.get("asama") == "meb":  # ince ayar E şıkkını da gördü: harf puanını yorumlarken bilinsin
             notlar.append(f"MEB eğitimi: {bes_sikli} soru 5 şıklı")
-        if k.get("olcum", 1) < OLCUM_SURUMU:
+        # Kıyas satırı başka bir modelin üretimle ölçümüdür: bu projenin ölçüm sürümünden etkilenmez ve
+        # degerlendir onu yenileyemez (sürümsüz eski kıyas satırları da işaretlenmez).
+        if not k.get("kiyas") and k.get("olcum", 1) < OLCUM_SURUMU:
             notlar.append("eski ölçüm: yeniden değerlendir")
         satirlar.append(
             f"| {k.get('zaman', '')} | {k.get('deney', '')} | {k.get('asama', '')} | {k.get('adim', '—')} | {sozluk_metni} | "

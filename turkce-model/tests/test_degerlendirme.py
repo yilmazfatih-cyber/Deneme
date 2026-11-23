@@ -123,6 +123,18 @@ def test_ilerleme_eski_olcumu_ve_bes_sikli_meb_egitimini_not_eder(tmp_path):
     assert md.count("eski ölçüm: yeniden değerlendir") == 2  # eski satırlar her yeniden yazımda işaretli kalır
 
 
+def test_M3_R6_modul_kiyasi_satiri_uretim_dogrulugunu_yazar_eski_olcum_sayilmaz(tmp_path):
+    # Modül kıyası "cevap yazdırarak" ölçer: metin/harf doğruluğu yoktur, ölçüm sürümü bu projeninkine bağlı değildir.
+    kiyas = {"n": 10, "dogruluk_uretim": 0.5, "cevapsiz": 2, "kesik": 0, "rastgele": 0.25, "dersler": {}}
+    kayit = {"deney": "modül: deepseek-r1:1.5b", "asama": "kıyas", "kiyas": True, "meb_test": kiyas}
+    ilerleme_ekle(tmp_path, kayit)  # sürümü yazılmadan önceki kıyas satırı (Y3)
+    md = ilerleme_ekle(tmp_path, {**kayit, "olcum": 2, "mmlu": {**kiyas, "n": 20, "rastgele": 0.2}}).read_text(encoding="utf-8")
+    satirlar = [s for s in md.splitlines() if "| modül: deepseek-r1:1.5b | kıyas |" in s]
+    assert len(satirlar) == 2 and all("| %50.0 üretimle (taban %25.0, n=10) |" in s for s in satirlar)
+    assert "| %50.0 üretimle (taban %20.0, n=20) |" in satirlar[1]
+    assert "eski ölçüm" not in md and "— / —" not in md
+
+
 class _SabitModel(torch.nn.Module):
     """Bağlamdan bağımsız taklit model: her konumda aynı logit vektörü, yani her token'ın log-olasılığı bilinir."""
 
