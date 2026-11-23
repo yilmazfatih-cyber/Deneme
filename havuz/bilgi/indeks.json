@@ -632,6 +632,36 @@
     ]
   },
   {
+    "dosya": "10-diller/javascript-yerlesik-apiler.md",
+    "kume": "10-diller",
+    "baslik": "JavaScript yerleşik API'leri: URL, Intl, structuredClone, crypto, AbortSignal ve yeni dizi yöntemleri",
+    "ozet": "URL ve URLSearchParams tuzakları, Intl'in Türkçede biçimleme ve ayrıştırma sınırları, structuredClone'un kopyalamadıkları, randomUUID ile Math.random, zaman aşımı hata adları ve yeni dizi yöntemlerinin desteği.",
+    "etiketler": [
+      "javascript",
+      "url",
+      "intl",
+      "structuredclone",
+      "crypto",
+      "dizi"
+    ],
+    "duzey": "orta",
+    "guncellik": "2026-11",
+    "bolumler": [
+      "Temel fikir",
+      "Karar tablosu",
+      "URL ve URLSearchParams",
+      "Intl: biçimlemenin ince yerleri",
+      "structuredClone: neyi kopyalamaz",
+      "Kimlik üretmek: randomUUID ve Math.random",
+      "AbortSignal: zaman aşımı ile iptali ayırmak",
+      "Yeni dizi ve koleksiyon yöntemleri",
+      "Tuzaklar",
+      "Denetim listesi",
+      "Küçük modele yaptırırken",
+      "İlgili"
+    ]
+  },
+  {
     "dosya": "10-diller/kabuk-ve-bash.md",
     "kume": "10-diller",
     "baslik": "Kabuk ve bash",
@@ -686,6 +716,37 @@
       "Bağımlılık eklemeden önce",
       "Güncelleme yöntemi",
       "Tek depo: npm çalışma alanları",
+      "Tuzaklar",
+      "Denetim listesi",
+      "Küçük modele yaptırırken",
+      "İlgili"
+    ]
+  },
+  {
+    "dosya": "10-diller/node-akislar-ve-dosya.md",
+    "kume": "10-diller",
+    "baslik": "Node akışları ve dosya: geri basınç, satır satır okuma, pipeline ve izleme",
+    "ozet": "Büyük dosyayı belleğe almadan işlemek; geri basınç, pipeline ile hata ve temizlik, satır satır okumada kaybolan satır ve açık kalan dosya, parça sınırında bozulan Türkçe harf, atomik yazma ve dosya izleme tuzakları.",
+    "etiketler": [
+      "node",
+      "akis",
+      "dosya",
+      "backpressure",
+      "readline",
+      "fs"
+    ],
+    "duzey": "ileri",
+    "guncellik": "2026-11",
+    "bolumler": [
+      "Temel fikir",
+      "Karar tablosu",
+      "Kodlama: parça sınırında bölünen harf",
+      "Geri basınç",
+      "pipeline: hata ve temizlik",
+      "Satır satır okuma",
+      "Atomik yazma",
+      "Dosya izleme",
+      "Çok dosya: EMFILE ve eşzamanlılık",
       "Tuzaklar",
       "Denetim listesi",
       "Küçük modele yaptırırken",
@@ -869,6 +930,36 @@
       "Pencere işlevleri",
       "DISTINCT yanılgıları",
       "Tarih ve sayı işlemleri",
+      "Tuzaklar",
+      "Denetim listesi",
+      "Küçük modele yaptırırken",
+      "İlgili"
+    ]
+  },
+  {
+    "dosya": "10-diller/sqlite-pratik.md",
+    "kume": "10-diller",
+    "baslik": "SQLite pratik: bağlantı reçetesi, STRICT tablo, işlem kipleri, WAL ve tam metin",
+    "ozet": "SQLite'ı üretimde güvenle kullanmak; hangi PRAGMA bağlantıya özel, hangisi kalıcı, STRICT tablo, BEGIN IMMEDIATE, şişen WAL, user_version ile migrasyon, FTS5 tetikleyici tuzağı ve node:sqlite ile Python sqlite3 farkları.",
+    "etiketler": [
+      "sqlite",
+      "veritabani",
+      "sql",
+      "node",
+      "python",
+      "pragma"
+    ],
+    "duzey": "orta",
+    "guncellik": "2026-11",
+    "bolumler": [
+      "Temel fikir",
+      "Bağlantı reçetesi",
+      "STRICT tablo ve tür yakınlığı",
+      "İşlem kipleri: node:sqlite ile Python sqlite3",
+      "WAL'ın büyümesi ve toplu yazma",
+      "user_version ile küçük migrasyon",
+      "FTS5: dizini güncel tutmak ve tetikleyici tuzağı",
+      "Küçük ama sık gereken kalıplar",
       "Tuzaklar",
       "Denetim listesi",
       "Küçük modele yaptırırken",
@@ -1231,6 +1322,65 @@
     ]
   },
   {
+    "dosya": "20-web-onyuz/kamera-ve-gorsel-isleme.md",
+    "kume": "20-web-onyuz",
+    "baslik": "Kamera ve görsel işleme: fotoğraf alma, küçültme, yön ve üst veri",
+    "ozet": "Dosya seçici, capture özniteliği ve getUserMedia arasında seçim; fotoğrafı tarayıcıda küçültme, EXIF yönü, HEIC, üst veriyi temizleme, yükleme öncesi sıkıştırma ve telefonda bellek tuzakları.",
+    "etiketler": [
+      "kamera",
+      "gorsel",
+      "fotograf",
+      "exif",
+      "mobil",
+      "performans"
+    ],
+    "duzey": "orta",
+    "guncellik": "2026-11",
+    "bolumler": [
+      "Temel fikir",
+      "Karar tablosu: fotoğrafı nasıl alırım",
+      "Küçültme ve yeniden kodlama",
+      "Yön (EXIF Orientation)",
+      "HEIC ve tür tanıma",
+      "Üst veri temizliği",
+      "Yüklemeden önce sıkıştırma",
+      "Bellek tuzakları",
+      "Canlı kamera (getUserMedia) kısaca",
+      "Tuzaklar",
+      "Denetim listesi",
+      "Küçük modele yaptırırken",
+      "İlgili"
+    ]
+  },
+  {
+    "dosya": "20-web-onyuz/liste-sanallastirma.md",
+    "kume": "20-web-onyuz",
+    "baslik": "Liste sanallaştırma: binlerce satırı yalnız görüneni çizerek göstermek",
+    "ozet": "Sanallaştırmanın ne zaman gerektiği ve ne zaman zarar verdiği, sabit ve değişken yükseklik, kaydırma çapası, tarayıcının yükseklik sınırı, erişilebilirlik ve sayfa içi bul (Ctrl+F) sorunları; çalışan hesaplarla.",
+    "etiketler": [
+      "performans",
+      "liste",
+      "sanallastirma",
+      "erisilebilirlik",
+      "onyuz"
+    ],
+    "duzey": "ileri",
+    "guncellik": "2026-11",
+    "bolumler": [
+      "Temel fikir",
+      "Karar tablosu",
+      "Sabit yükseklik",
+      "Değişken yükseklik: tahmin, ölçüm, çapa",
+      "Erişilebilirlik",
+      "Tarayıcı yeteneklerinin kaybı",
+      "React'te dikkat",
+      "Tuzaklar",
+      "Denetim listesi",
+      "Küçük modele yaptırırken",
+      "İlgili"
+    ]
+  },
+  {
     "dosya": "20-web-onyuz/onyuz-guvenligi.md",
     "kume": "20-web-onyuz",
     "baslik": "Ön yüz güvenliği",
@@ -1255,6 +1405,37 @@
       "Tıklama kaçırma, `target=_blank`, Referer",
       "Gizli bilgiyi istemciye koymayın",
       "`postMessage`",
+      "Tuzaklar",
+      "Denetim listesi",
+      "Küçük modele yaptırırken",
+      "İlgili"
+    ]
+  },
+  {
+    "dosya": "20-web-onyuz/onyuz-proje-yapisi.md",
+    "kume": "20-web-onyuz",
+    "baslik": "Ön yüz proje yapısı: özellik klasörleri, katmanlar ve içe aktarma kuralı",
+    "ozet": "Ön yüz kodunu özellik klasörlerine ve katmanlara ayırmak, katmanlar arası içe aktarma kuralını kural testiyle korumak, kodu ne zaman paylaşılan katmana taşımak, fıçı dosyaları ve adlandırma kuralları.",
+    "etiketler": [
+      "react",
+      "mimari",
+      "klasor-yapisi",
+      "kural-testi",
+      "adlandirma",
+      "onyuz"
+    ],
+    "duzey": "orta",
+    "guncellik": "2026-11",
+    "bolumler": [
+      "Temel fikir",
+      "Karar tablosu: bu kod nereye",
+      "Örnek düzen: havuzdaki uygulama",
+      "Katman kuralı",
+      "Kural testi (çalışan örnek)",
+      "Bir özellik klasörünün içi",
+      "Adlandırma",
+      "Paylaşılan kod: ne zaman taşınır",
+      "Fıçı (barrel) dosyaları",
       "Tuzaklar",
       "Denetim listesi",
       "Küçük modele yaptırırken",
@@ -1357,6 +1538,36 @@
     ]
   },
   {
+    "dosya": "20-web-onyuz/react-performans-profilleme.md",
+    "kume": "20-web-onyuz",
+    "baslik": "React performansı: Profiler ile ölçme ve gereksiz yeniden çizimi bulma",
+    "ozet": "React Profiler ve Performans paneliyle yavaşlığı ölçme, gereksiz yeniden çizimin kaynağını okuma, memo ve useMemo'nun gerçekten işe yaradığı yer, React Compiler kavramı, liste ve bağlam kaynaklı yavaşlık.",
+    "etiketler": [
+      "react",
+      "performans",
+      "profiler",
+      "memo",
+      "onyuz"
+    ],
+    "duzey": "ileri",
+    "guncellik": "2026-11",
+    "bolumler": [
+      "Temel fikir",
+      "Ölçme araçları",
+      "Profiler ile çalışma adımları",
+      "Ölçülmüş deney: hangi düzeltme gerçekten işe yarar",
+      "Düzeltme kalıpları (ucuzdan pahalıya)",
+      "Liste kaynaklı yavaşlık",
+      "Bağlam kaynaklı yavaşlık",
+      "React Compiler (derleyici) kavramı",
+      "Performansı testle korumak",
+      "Tuzaklar",
+      "Denetim listesi",
+      "Küçük modele yaptırırken",
+      "İlgili"
+    ]
+  },
+  {
     "dosya": "20-web-onyuz/react-zihinsel-model.md",
     "kume": "20-web-onyuz",
     "baslik": "React zihinsel modeli",
@@ -1379,6 +1590,37 @@
       "Türetilmiş durumu saklamayın",
       "Değişmezlik: yerinde değiştirmeyin",
       "Render saf olmalı: render içinde yapılmayacaklar",
+      "Tuzaklar",
+      "Denetim listesi",
+      "Küçük modele yaptırırken",
+      "İlgili"
+    ]
+  },
+  {
+    "dosya": "20-web-onyuz/ses-ve-konusma.md",
+    "kume": "20-web-onyuz",
+    "baslik": "Ses ve konuşma: sesli okuma, ses kaydı ve konuşma tanıma",
+    "ozet": "Web Speech API ile Türkçe sesli okuma ve tanıma, ses bulunamayınca hazır kayda düşme, kendiliğinden çalma kuralı, iOS sessiz düğmesi, ses biçimleri, MediaRecorder ile kayıt ve konuşan uygulama denetim listesi.",
+    "etiketler": [
+      "ses",
+      "konusma",
+      "web-speech",
+      "mediarecorder",
+      "mobil",
+      "erisilebilirlik"
+    ],
+    "duzey": "orta",
+    "guncellik": "2026-11",
+    "bolumler": [
+      "Temel fikir",
+      "Karar tablosu",
+      "Sesli okuma: ses seçimi",
+      "Sesli okuma: olaylar güvenilmez",
+      "Kendiliğinden çalma ve ses kilidi",
+      "iOS sessiz düğmesi ve ses oturumu",
+      "Ses biçimleri ve hazır dosyalar",
+      "Ses kaydı (MediaRecorder)",
+      "Konuşma tanıma (SpeechRecognition)",
       "Tuzaklar",
       "Denetim listesi",
       "Küçük modele yaptırırken",
@@ -1719,6 +1961,38 @@
     ]
   },
   {
+    "dosya": "30-arkauc/dis-api-istemcisi.md",
+    "kume": "30-arkauc",
+    "baslik": "Dış API istemcisi: toplam süre, güvenli yeniden deneme, sayfalama ve sözleşme testi",
+    "ozet": "Başka bir servisi çağıran istemciyi yazmak; toplam süre sınırı, anahtarı koruyan yeniden deneme, Retry-After ve sayfalama döngüsü, artımlı eşitlemede örtüşme, hoşgörülü şema doğrulama, sahte sunucu ve sözleşme testi.",
+    "etiketler": [
+      "api",
+      "istemci",
+      "zaman-asimi",
+      "yeniden-deneme",
+      "idempotentlik",
+      "sozlesme-testi"
+    ],
+    "duzey": "ileri",
+    "guncellik": "2026-11",
+    "bolumler": [
+      "Temel fikir",
+      "Karar tablosu: hata türüne göre ne yapılır",
+      "Bağdaştırıcının iskeleti",
+      "Zaman aşımı: kütüphanenin `timeout`'u toplam süre değildir",
+      "Yanıtı kaybolan yan etkili çağrı ve idempotentlik anahtarı",
+      "Hız sınırına uyma ve sayfalama döngüsü",
+      "Artımlı eşitleme: \"şu andan sonra değişenler\" kaçırır",
+      "Şema doğrulama: sınırda ama hoşgörülü",
+      "Yönlendirme ve kimlik başlığı",
+      "Sahte sunucu ve sözleşme testi",
+      "Tuzaklar",
+      "Denetim listesi",
+      "Küçük modele yaptırırken",
+      "İlgili"
+    ]
+  },
+  {
     "dosya": "30-arkauc/dosya-ve-medya.md",
     "kume": "30-arkauc",
     "baslik": "Dosya ve medya: güvenli yükleme, depolama, imzalı adres ve indirme",
@@ -1942,6 +2216,38 @@
     ]
   },
   {
+    "dosya": "30-arkauc/kalici-is-kuyrugu.md",
+    "kume": "30-arkauc",
+    "baslik": "Kalıcı iş kuyruğu: kira jetonu, tekil iş, yük sürümü ve işletme",
+    "ozet": "Veritabanı tablosundaki iş kuyruğunun üretimde çıkan ince yerleri; kira jetonu ve geç kalan işçi, süreci çökerten iş, bekleyen işi birleştirme, zamanlanmış dilim, yük sürümü, dizin, saklama ve izleme.",
+    "etiketler": [
+      "kuyruk",
+      "arka-plan",
+      "sqlite",
+      "idempotentlik",
+      "zamanlama",
+      "isletme"
+    ],
+    "duzey": "ileri",
+    "guncellik": "2026-11",
+    "bolumler": [
+      "Temel fikir",
+      "Karar tablosu: hangi tekilleştirme",
+      "Kira jetonu ve geç kalan işçi",
+      "Uzun iş: kalp atışı ve gönüllü bırakma",
+      "Bekleyen işi birleştirmek",
+      "Zamanlanmış işler kuyruğa nasıl girer",
+      "Yükün sürümü: dağıtım anında kuyrukta bekleyen eski işler",
+      "Tablo sağlığı: dizin, saklama, dosya boyu",
+      "Yoklama ve uyandırma",
+      "İzleme",
+      "Tuzaklar",
+      "Denetim listesi",
+      "Küçük modele yaptırırken",
+      "İlgili"
+    ]
+  },
+  {
     "dosya": "30-arkauc/kimlik-dogrulama.md",
     "kume": "30-arkauc",
     "baslik": "Kimlik doğrulama: oturum, belirteç, parola, MFA ve OAuth",
@@ -2080,6 +2386,37 @@
       "Durumsuz sunucu",
       "Düzgün kapanış",
       "Sağlık ucu",
+      "Tuzaklar",
+      "Denetim listesi",
+      "Küçük modele yaptırırken",
+      "İlgili"
+    ]
+  },
+  {
+    "dosya": "30-arkauc/veri-disa-aktarim-ve-silme.md",
+    "kume": "30-arkauc",
+    "baslik": "Veri dışa aktarma ve hesap silme: KVKK başvurusunu uçtan uca karşılamak",
+    "ozet": "Kişinin verisini dışa aktarma ve hesabını silme akışında kapsam, yeniden kimlik doğrulama, büyük paket, silmenin dış sistemlere yayılması, yedekten dönüşte silme günlüğü, makbuz ve geri alınamazlık uyarısı.",
+    "etiketler": [
+      "kvkk",
+      "gizlilik",
+      "disa-aktarim",
+      "hesap-silme",
+      "yedek",
+      "denetim"
+    ],
+    "duzey": "orta",
+    "guncellik": "2026-11",
+    "bolumler": [
+      "Temel fikir",
+      "Karar tablosu: dışa aktarım paketine ne girer",
+      "Dışa aktarma akışı",
+      "Silme akışı",
+      "Silmenin yayılması",
+      "Yedekler: silme günlüğü veritabanının dışında durur",
+      "Yabancı anahtar silmeyi nasıl taşır",
+      "Makbuz ve denetim kaydı",
+      "Geri alınamazlık uyarısı: metin şablonu",
       "Tuzaklar",
       "Denetim listesi",
       "Küçük modele yaptırırken",
@@ -2366,6 +2703,38 @@
       "Devre kesici",
       "Bölmeler (bulkhead)",
       "Zarif bozulma ve yük atma",
+      "Tuzaklar",
+      "Denetim listesi",
+      "Küçük modele yaptırırken",
+      "İlgili"
+    ]
+  },
+  {
+    "dosya": "40-sistem-tasarimi/geriye-uyumlu-degisim.md",
+    "kume": "40-sistem-tasarimi",
+    "baslik": "Geriye uyumlu değişim: eski istemciler yaşarken API, şema ve protokolü evriltmek",
+    "ozet": "Eski mobil ve çevrimdışı istemciler varken bilinmeyen alanı koruma, varsayılanı değiştirmeme, enum ekleme sırası, sürüm kapısı, eski istekleri yükseltme ve kademeli kaldırma; havuzdaki eşitleme protokolüyle.",
+    "etiketler": [
+      "geriye-uyumluluk",
+      "surumleme",
+      "api",
+      "esitleme",
+      "mobil",
+      "protokol"
+    ],
+    "duzey": "ileri",
+    "guncellik": "2026-11",
+    "bolumler": [
+      "Temel fikir",
+      "Uyum penceresi: kim ne kadar eski kalır",
+      "Karar tablosu: değişiklik türüne göre yol",
+      "Bilinmeyen alanı korumak",
+      "Varsayılanı değiştirmemek",
+      "Enum'a yeni değer: iki yayın",
+      "Sürüm kapısı ve en düşük sürüm",
+      "Eski istekleri yükseltmek ve altın örnekler",
+      "Havuzda durum",
+      "Kaldırma takvimi",
       "Tuzaklar",
       "Denetim listesi",
       "Küçük modele yaptırırken",
@@ -2706,6 +3075,39 @@
     ]
   },
   {
+    "dosya": "40-sistem-tasarimi/ornek-siparis-ve-odeme.md",
+    "kume": "40-sistem-tasarimi",
+    "baslik": "Örnek tasarım: sipariş ve ödeme",
+    "ozet": "E-ticaret siparişinin uçtan uca tasarımı; sipariş durum makinesi, stok ayırma seçenekleri, webhook ile kesinleştirme, giden kutusu, iade ve değişmez denetimleri; tohumlu benzetimle fazla satış ve kayıp sipariş.",
+    "etiketler": [
+      "ornek-tasarim",
+      "e-ticaret",
+      "odeme",
+      "stok",
+      "durum-makinesi",
+      "giden-kutusu"
+    ],
+    "duzey": "ileri",
+    "guncellik": "2026-11",
+    "bolumler": [
+      "Temel fikir",
+      "Gereksinimler",
+      "Kaba hesap",
+      "İlk tasarım: tek sunucu",
+      "Sipariş durum makinesi",
+      "Karar tablosu: stok ne zaman düşer",
+      "Benzetim: fazla satış, iade, satılmayan stok, kayıp sipariş",
+      "Geç gelen ödeme",
+      "İade",
+      "Değişmez denetimleri",
+      "Büyüyünce ne değişir",
+      "Tuzaklar",
+      "Denetim listesi",
+      "Küçük modele yaptırırken",
+      "İlgili"
+    ]
+  },
+  {
     "dosya": "40-sistem-tasarimi/ornek-sohbet-uygulamasi.md",
     "kume": "40-sistem-tasarimi",
     "baslik": "Örnek tasarım: sohbet uygulaması",
@@ -2871,6 +3273,66 @@
     ]
   },
   {
+    "dosya": "40-sistem-tasarimi/yuk-testi.md",
+    "kume": "40-sistem-tasarimi",
+    "baslik": "Yük testi: gerçekçi yük modeli, koordineli eksik ölçüm ve darboğaz okuma",
+    "ozet": "Üretimden türetilen yük modeli, açık ve kapalı model farkı, koordineli eksik ölçüm, kademeli artış, yüzdelik ve hata oranını birlikte okuma, darboğaz bulma; yerel sunucuya çalışan küçük bir yük üreteciyle.",
+    "etiketler": [
+      "yuk-testi",
+      "performans",
+      "gecikme",
+      "yuzdelik",
+      "kapasite",
+      "olcum"
+    ],
+    "duzey": "ileri",
+    "guncellik": "2026-11",
+    "bolumler": [
+      "Temel fikir",
+      "Karar tablosu: hangi test, hangi soru",
+      "Yük modeli: üretimden türetin",
+      "Açık ve kapalı model: koordineli eksik ölçüm",
+      "Kademeli artış: küçük bir yük üreteci",
+      "Ölçüm hataları",
+      "Darboğazı okumak",
+      "Nerede ve nasıl koşulur",
+      "Tuzaklar",
+      "Denetim listesi",
+      "Küçük modele yaptırırken",
+      "İlgili"
+    ]
+  },
+  {
+    "dosya": "50-guvenlik/calisan-erisimi-ve-ayrilis.md",
+    "kume": "50-guvenlik",
+    "baslik": "Çalışan erişimi ve ayrılış: en az yetki, kişisel hesap ve aynı gün kapatma",
+    "ozet": "Ekip büyürken kim neye erişir; rol başına en az yetki, paylaşılan hesap yasağı, iki aşamalı doğrulama zorunluluğu, işe girişte ve ayrılışta sıralı denetim listesi, sır döndürme ve dönemsel erişim gözden geçirmesi.",
+    "etiketler": [
+      "guvenlik",
+      "erisim",
+      "ekip",
+      "iki-asamali-dogrulama",
+      "sir-yonetimi",
+      "kvkk"
+    ],
+    "duzey": "orta",
+    "guncellik": "2026-11",
+    "bolumler": [
+      "Temel fikir",
+      "Karar tablosu: rol başına erişim (küçük ürün ekibi örneği)",
+      "Paylaşılan hesap: neden yasak, ne zaman kaçınılmaz",
+      "İki aşamalı doğrulama",
+      "İşe giriş",
+      "Ayrılış: sıralı denetim listesi",
+      "Dönemsel gözden geçirme",
+      "Sunuculardaki SSH anahtarları",
+      "Tuzaklar",
+      "Denetim listesi",
+      "Küçük modele yaptırırken",
+      "İlgili"
+    ]
+  },
+  {
     "dosya": "50-guvenlik/csrf-ve-cors.md",
     "kume": "50-guvenlik",
     "baslik": "CSRF ve CORS: çerezli kimlikte istek sahteciliği ve köken ayarları",
@@ -2919,6 +3381,36 @@
       "Arşivler: dışarı yazma ve sıkıştırma bombası",
       "Görüntü ve belge işleme",
       "Sunma: kullanıcı içeriği uygulamanın kökeninden açılmaz",
+      "Tuzaklar",
+      "Denetim listesi",
+      "Küçük modele yaptırırken",
+      "İlgili"
+    ]
+  },
+  {
+    "dosya": "50-guvenlik/e-posta-guvenligi.md",
+    "kume": "50-guvenlik",
+    "baslik": "E-posta güvenliği: gönderen doğrulama, sahtecilik, başlık enjeksiyonu ve belirteç sızıntısı",
+    "ozet": "SPF, DKIM ve DMARC'ın neyi koruyup neyi korumadığı, hizalama ve .com.tr tuzağı, görünen ad ve benzer alan adı, uygulama e-postasıyla oltalama, başlık enjeksiyonu, ek güvenliği ve belirteç sızıntısı.",
+    "etiketler": [
+      "e-posta",
+      "guvenlik",
+      "spf",
+      "dkim",
+      "dmarc",
+      "oltalama"
+    ],
+    "duzey": "orta",
+    "guncellik": "2026-11",
+    "bolumler": [
+      "Temel fikir",
+      "Karar tablosu",
+      "SPF, DKIM ve DMARC neyi denetler",
+      "Görünen ad ve benzer alan adı",
+      "Uygulamanızın e-postasıyla oltalama",
+      "Başlık enjeksiyonu",
+      "Bağlantı ve ek güvenliği",
+      "İşlemsel e-postada belirteç sızıntısı",
       "Tuzaklar",
       "Denetim listesi",
       "Küçük modele yaptırırken",
@@ -3140,6 +3632,37 @@
       "Yurt dışı aktarım: soru işareti listesi",
       "Çalışan erişimi",
       "İlgili kişi başvuruları",
+      "Tuzaklar",
+      "Denetim listesi",
+      "Küçük modele yaptırırken",
+      "İlgili"
+    ]
+  },
+  {
+    "dosya": "50-guvenlik/mobil-uygulama-guvenligi.md",
+    "kume": "50-guvenlik",
+    "baslik": "Mobil uygulama güvenliği: pakete gömülü sır, güvenli depo, derin bağlantı ve mağaza",
+    "ozet": "Paketteki her şeyin herkese açık olduğu, belirteci Keychain/Keystore'da saklama, derin bağlantı ve uygulama bağlantısı, sertifika sabitleme ödünleşimi, ekran önizlemesi, kök algılamanın sınırları ve mağaza incelemesi.",
+    "etiketler": [
+      "mobil",
+      "guvenlik",
+      "expo",
+      "derin-baglanti",
+      "depolama",
+      "magaza"
+    ],
+    "duzey": "orta",
+    "guncellik": "2026-11",
+    "bolumler": [
+      "Temel fikir",
+      "Karar tablosu",
+      "Pakete gömülü sır yanılgısı",
+      "Güvenli depo",
+      "Derin bağlantı ve uygulama bağlantısı",
+      "Sertifika sabitleme",
+      "Ekran görüntüsü, önizleme, pano ve günlük",
+      "Kök ve jailbreak algılamanın sınırları",
+      "Mağaza incelemesi",
       "Tuzaklar",
       "Denetim listesi",
       "Küçük modele yaptırırken",
@@ -3750,6 +4273,37 @@
     ]
   },
   {
+    "dosya": "60-devops/kapsayici-guvenligi.md",
+    "kume": "60-devops",
+    "baslik": "Kapsayıcı güvenliği: küçük taban, kısıtlı çalışma, tarama, SBOM ve yeniden derleme",
+    "ozet": "İmajı ve çalışan kapsayıcıyı sertleştirmek; taban imaj seçimi, kodu değiştiremeyen kök olmayan kullanıcı, salt okunur dosya sistemi, yetenek kısma, katmanda kalan sır, imaj taraması, SBOM ve yeniden derleme sıklığı.",
+    "etiketler": [
+      "docker",
+      "kapsayici",
+      "guvenlik",
+      "sbom",
+      "tedarik-zinciri",
+      "devops"
+    ],
+    "duzey": "orta",
+    "guncellik": "2026-11",
+    "bolumler": [
+      "Temel fikir",
+      "Karar tablosu: taban imaj",
+      "Kodu değiştiremeyen, kök olmayan kullanıcı",
+      "Çalışma anı kısıtları",
+      "Katmanda kalan sır",
+      "İmaj taraması",
+      "SBOM: imajın içerik listesi",
+      "Yeniden derleme sıklığı",
+      "Compose ve çalışma ayarı denetleyicisi",
+      "Tuzaklar",
+      "Denetim listesi",
+      "Küçük modele yaptırırken",
+      "İlgili"
+    ]
+  },
+  {
     "dosya": "60-devops/linux-temelleri.md",
     "kume": "60-devops",
     "baslik": "Sunucuda Linux temelleri",
@@ -3866,6 +4420,35 @@
     ]
   },
   {
+    "dosya": "60-devops/onizleme-ortamlari.md",
+    "kume": "60-devops",
+    "baslik": "Önizleme ortamları: her değişiklik için deneme adresi",
+    "ozet": "Değişiklik isteği başına kısa ömürlü önizleme ortamı; ne zaman değer, tohumlu sahte veri, sırları ve alan adını üretimden ayırma, dış geri çağrılar, erişim, maliyet sınırı ve sahipsiz ortam temizliği; çalışan örneklerle.",
+    "etiketler": [
+      "onizleme",
+      "ci-cd",
+      "ortam",
+      "tohum-veri",
+      "maliyet",
+      "devops"
+    ],
+    "duzey": "orta",
+    "guncellik": "2026-11",
+    "bolumler": [
+      "Temel fikir",
+      "Karar tablosu: hangi düzen",
+      "Yaşam döngüsü",
+      "Tohumlu sahte veri",
+      "Sırları ve adları üretimden ayırmak",
+      "Dış geri çağrılar: OAuth ve webhook",
+      "Maliyet ve temizlik",
+      "Tuzaklar",
+      "Denetim listesi",
+      "Küçük modele yaptırırken",
+      "İlgili"
+    ]
+  },
+  {
     "dosya": "60-devops/ortam-ve-yapilandirma.md",
     "kume": "60-devops",
     "baslik": "Ortam ve yapılandırma",
@@ -3887,6 +4470,34 @@
       "Ön yüz ayarı herkese açıktır",
       "Ortamlar arası fark",
       "Açılışta doğrulama",
+      "Tuzaklar",
+      "Denetim listesi",
+      "Küçük modele yaptırırken",
+      "İlgili"
+    ]
+  },
+  {
+    "dosya": "60-devops/sunucu-sertlestirme.md",
+    "kume": "60-devops",
+    "baslik": "Sunucu sertleştirme: yeni bir VPS'te ilk 30 dakika",
+    "ozet": "Yeni sunucuda sırayla kurtarma yolu, kişisel kullanıcı ve SSH anahtarı, parola ve root girişini kapatıp etkin ayarı doğrulama, güvenlik duvarı ve Docker tuzağı, otomatik güncelleme, fail2ban ve açık kapı denetimi.",
+    "etiketler": [
+      "sunucu",
+      "guvenlik",
+      "ssh",
+      "guvenlik-duvari",
+      "linux",
+      "devops"
+    ],
+    "duzey": "orta",
+    "guncellik": "2026-11",
+    "bolumler": [
+      "Temel fikir",
+      "Karar tablosu: hangi önlem, ne kadar önemli",
+      "İlk 30 dakika: sıralı adımlar",
+      "Neden ana dosya yetmez: \"ilk değer kazanır\"",
+      "Açık kapı denetleyicisi",
+      "fail2ban'ın yeri",
       "Tuzaklar",
       "Denetim listesi",
       "Küçük modele yaptırırken",
@@ -3916,6 +4527,35 @@
       "nginx",
       "X-Forwarded başlıkları ve güvenilen vekil",
       "WebSocket ve SSE: zaman aşımı ve biriktirme",
+      "Tuzaklar",
+      "Denetim listesi",
+      "Küçük modele yaptırırken",
+      "İlgili"
+    ]
+  },
+  {
+    "dosya": "60-devops/uygulama-yayin-tarifi.md",
+    "kume": "60-devops",
+    "baslik": "Uygulama yayın tarifi: havuzdaki uygulamayı bir VPS'e kurmak ve güncellemek",
+    "ozet": "Havuzdaki tam yığın uygulamayı tek sunucuya kurmanın yol haritası; tek kapsayıcı ve kalıcı birim, ters vekil ve HTTPS, ilk yönetici, yedek zamanlayıcısı, güncelleme adımları, migrasyonlu sürümde geri alma ve duman testi.",
+    "etiketler": [
+      "yayin",
+      "vps",
+      "docker",
+      "https",
+      "yedek",
+      "geri-alma"
+    ],
+    "duzey": "orta",
+    "guncellik": "2026-11",
+    "bolumler": [
+      "Temel fikir",
+      "Karar tablosu: Docker mı, systemd mi",
+      "Yol haritası: boş sunucudan yayına",
+      "Yedek zamanlayıcısı",
+      "Güncelleme adımları",
+      "Geri alma: hangi yol",
+      "Duman testi",
       "Tuzaklar",
       "Denetim listesi",
       "Küçük modele yaptırırken",
@@ -3973,6 +4613,36 @@
       "Geçici disk tuzağı",
       "Bölge ve gecikme",
       "Kilitlenme (lock-in) ve çıkış yolu",
+      "Tuzaklar",
+      "Denetim listesi",
+      "Küçük modele yaptırırken",
+      "İlgili"
+    ]
+  },
+  {
+    "dosya": "60-devops/zamanlanmis-isler.md",
+    "kume": "60-devops",
+    "baslik": "Zamanlanmış işler: cron, systemd zamanlayıcısı, CI ve platform zamanlayıcısı",
+    "ozet": "Düzenli işi nerede çalıştıracağınızın karar tablosu; çakışan çalıştırma ve bayat kilit dosyası, saat dilimi, kaçırılan çalıştırma politikası, çok kopyada çifte çalışma ve haber yokluğunu izleyen ölü adam anahtarı.",
+    "etiketler": [
+      "zamanlama",
+      "cron",
+      "systemd",
+      "izleme",
+      "devops",
+      "saat-dilimi"
+    ],
+    "duzey": "orta",
+    "guncellik": "2026-11",
+    "bolumler": [
+      "Temel fikir",
+      "Karar tablosu: iş nerede çalışmalı",
+      "Çakışan çalıştırma ve bayat kilit dosyası",
+      "systemd zamanlayıcısının inceliği",
+      "cron'un bilinen tuzakları",
+      "Saat dilimi ve yaz saati",
+      "Kaçırılan çalıştırma: politika iş başına",
+      "İzleme: ölü adam anahtarı",
       "Tuzaklar",
       "Denetim listesi",
       "Küçük modele yaptırırken",
@@ -4216,6 +4886,64 @@
     ]
   },
   {
+    "dosya": "70-veri/birim-ekonomisi-ve-ltv.md",
+    "kume": "70-veri",
+    "baslik": "Birim ekonomisi ve LTV",
+    "ozet": "Müşteri ömür değerini formülle değil kohortla hesaplamak; edinme maliyeti (kanal, emek, gecikme), geri ödeme süresi, iskonto ve ufuk, karışımın yanılttığı kayıp oranı ve çarpık ortalamalar; çalışan SQL ve Python.",
+    "etiketler": [
+      "veri",
+      "birim-ekonomisi",
+      "ltv",
+      "cac",
+      "kohort",
+      "abonelik"
+    ],
+    "duzey": "orta",
+    "guncellik": "2026-11",
+    "bolumler": [
+      "Temel fikir",
+      "Karar tablosu",
+      "Karışım: hangi kayıp oranı?",
+      "Kohortla hesap: SQL",
+      "CAC'ı doğru saymak",
+      "Çarpık dağılım: tek müşteri ortalamayı çevirir",
+      "Genişleme ve net gelir tutma",
+      "Tuzaklar",
+      "Denetim listesi",
+      "Küçük modele yaptırırken",
+      "İlgili"
+    ]
+  },
+  {
+    "dosya": "70-veri/deney-yapilamayanda-nedensellik.md",
+    "kume": "70-veri",
+    "baslik": "Deney yapılamayanda nedensellik",
+    "ozet": "Rastgele deney mümkün değilken farkların farkı (plasebo ve eğilim sınaması), eşik süreksizliği (bant ve yığılma), sentetik kontrol ve kesintili zaman serisi; varsayımları, sınamaları ve sınırları tohumlu örneklerle.",
+    "etiketler": [
+      "istatistik",
+      "nedensellik",
+      "yari-deney",
+      "farklarin-farki",
+      "zaman-serisi",
+      "analiz"
+    ],
+    "duzey": "ileri",
+    "guncellik": "2026-11",
+    "bolumler": [
+      "Temel fikir",
+      "Karar tablosu",
+      "1. Farkların farkı: plasebo ile sınamak",
+      "2. Eşik süreksizliği: bant ve yığılma",
+      "3. Sentetik kontrol: ağırlıklı karşılaştırma birimi",
+      "4. Kesintili zaman serisi",
+      "Sonuç nasıl yazılır",
+      "Tuzaklar",
+      "Denetim listesi",
+      "Küçük modele yaptırırken",
+      "İlgili"
+    ]
+  },
+  {
     "dosya": "70-veri/gizlilik-ve-anonimlestirme.md",
     "kume": "70-veri",
     "baslik": "Gizlilik ve anonimleştirme",
@@ -4381,6 +5109,33 @@
       "Filtreler",
       "Aşırı yükleme ve tanımlar",
       "Pano tasarım kartı",
+      "Tuzaklar",
+      "Denetim listesi",
+      "Küçük modele yaptırırken",
+      "İlgili"
+    ]
+  },
+  {
+    "dosya": "70-veri/segmentasyon-ve-rfm.md",
+    "kume": "70-veri",
+    "baslik": "Segmentasyon ve RFM",
+    "ozet": "Kural tabanlı RFM puanlaması (sabit analiz tarihi, NTILE eşitlik tuzağı), segment adları ve dönemler arası geçiş matrisi, kümelemeyle segmentasyon ve yorumlama, segmenti eyleme ve kontrol gruplu ölçüme bağlamak.",
+    "etiketler": [
+      "veri",
+      "segmentasyon",
+      "rfm",
+      "musteri",
+      "kumeleme",
+      "sql"
+    ],
+    "duzey": "orta",
+    "guncellik": "2026-11",
+    "bolumler": [
+      "Temel fikir",
+      "Karar tablosu",
+      "RFM: SQL ile",
+      "Kümelemeyle segmentasyon",
+      "Segmentten eyleme",
       "Tuzaklar",
       "Denetim listesi",
       "Küçük modele yaptırırken",
@@ -4731,6 +5486,65 @@
     ]
   },
   {
+    "dosya": "80-ml/etiketleme-ve-aktif-ogrenme.md",
+    "kume": "80-ml",
+    "baslik": "Etiketleme ve aktif öğrenme",
+    "ozet": "Etiket kılavuzu şablonu, çok etiketçili uyum (Fleiss ve ağırlıklı kappa), kontrol soruları ve çoğunluk oyu, etiket bütçesi hesabı, belirsizlik örneklemesiyle aktif öğrenme ve tuzakları; çalışan örneklerle.",
+    "etiketler": [
+      "makine-ogrenmesi",
+      "etiket",
+      "aktif-ogrenme",
+      "kappa",
+      "veri-kalitesi"
+    ],
+    "duzey": "orta",
+    "guncellik": "2026-11",
+    "bolumler": [
+      "Temel fikir",
+      "Karar tablosu",
+      "Etiket kılavuzu şablonu",
+      "Pilot ve uyum ölçümü",
+      "Kontrol soruları ve çoğunluk oyu",
+      "Etiket bütçesi",
+      "Aktif öğrenme: belirsizlik örneklemesi",
+      "Etiket hatası bulma",
+      "Tuzaklar",
+      "Denetim listesi",
+      "Küçük modele yaptırırken",
+      "İlgili"
+    ]
+  },
+  {
+    "dosya": "80-ml/etki-modelleme.md",
+    "kume": "80-ml",
+    "baslik": "Etki modelleme (uplift)",
+    "ozet": "\"Kim ayrılacak\" ile \"kime dokunmak sonucu değiştirir\" farkı; dört müşteri türü, deneyle veri toplama, iki model yaklaşımı, dilimle değerlendirme ve beklenen değer kararı; tohumlu benzetimlerle.",
+    "etiketler": [
+      "makine-ogrenmesi",
+      "nedensellik",
+      "uplift",
+      "kampanya",
+      "deney",
+      "karar"
+    ],
+    "duzey": "ileri",
+    "guncellik": "2026-11",
+    "bolumler": [
+      "Temel fikir",
+      "Karar tablosu",
+      "Neden risk sıralaması yanıltır: benzetim",
+      "Geçmiş kampanya verisi deney değildir",
+      "Deneyle veri toplama",
+      "Modeller",
+      "Değerlendirme: dilimle",
+      "Karar: beklenen değer",
+      "Tuzaklar",
+      "Denetim listesi",
+      "Küçük modele yaptırırken",
+      "İlgili"
+    ]
+  },
+  {
     "dosya": "80-ml/gommeler-ve-benzerlik.md",
     "kume": "80-ml",
     "baslik": "Gömmeler ve benzerlik araması",
@@ -4753,6 +5567,35 @@
       "Değerlendirme",
       "Farklı modellerin vektörlerini karıştırmak",
       "Alana uydurma",
+      "Tuzaklar",
+      "Denetim listesi",
+      "Küçük modele yaptırırken",
+      "İlgili"
+    ]
+  },
+  {
+    "dosya": "80-ml/goruntu-siniflandirma.md",
+    "kume": "80-ml",
+    "baslik": "Görüntü sınıflandırma",
+    "ozet": "Aktarım öğrenmesiyle görüntü sınıflandırma; veri hazırlığı (EXIF, NFC sınıf adı, kişisel veri), yakın kopya sızıntısı, arka plan kısayolu ve veri artırma, dengesizlik ve değerlendirme; çalışan örneklerle.",
+    "etiketler": [
+      "makine-ogrenmesi",
+      "goruntu",
+      "aktarim-ogrenmesi",
+      "veri-artirma",
+      "sizinti",
+      "degerlendirme"
+    ],
+    "duzey": "orta",
+    "guncellik": "2026-11",
+    "bolumler": [
+      "Temel fikir",
+      "Karar tablosu",
+      "Veri hazırlığı",
+      "Yakın kopya: ölçümü şişiren sızıntı",
+      "Kısayol öğrenme ve veri artırma",
+      "Aktarım öğrenmesi: kalıp",
+      "Dengesizlik ve değerlendirme",
       "Tuzaklar",
       "Denetim listesi",
       "Küçük modele yaptırırken",
@@ -4809,6 +5652,36 @@
       "Yığın boyutu ve duyarlık",
       "Ücretsiz bulut defterleriyle çalışma düzeni",
       "Kesintiye dayanıklı eğitim",
+      "Tuzaklar",
+      "Denetim listesi",
+      "Küçük modele yaptırırken",
+      "İlgili"
+    ]
+  },
+  {
+    "dosya": "80-ml/hiperparametre-arama.md",
+    "kume": "80-ml",
+    "baslik": "Hiperparametre arama",
+    "ozet": "Arama bütçesi, ızgara–rastgele–yönlü (Bayesçi) arama sezgisi, logaritmik ölçek, erken durdurma ve ardışık yarılama, doğrulamaya aşırı uyum; tohumlu çalışan karşılaştırmalarla.",
+    "etiketler": [
+      "makine-ogrenmesi",
+      "hiperparametre",
+      "capraz-dogrulama",
+      "ayar",
+      "deney"
+    ],
+    "duzey": "orta",
+    "guncellik": "2026-11",
+    "bolumler": [
+      "Temel fikir",
+      "Karar tablosu",
+      "Bütçe hesabı",
+      "Ölçek: log mu, doğrusal mı",
+      "Izgara ↔ rastgele: çalışan karşılaştırma",
+      "Önceki sonuçlardan yararlanmak: Bayesçi aramanın sezgisi",
+      "Erken durdurma ve ardışık yarılama",
+      "Doğrulamaya aşırı uyum",
+      "Kodda rastgele arama",
       "Tuzaklar",
       "Denetim listesi",
       "Küçük modele yaptırırken",
@@ -5516,6 +6389,35 @@
     ]
   },
   {
+    "dosya": "85-llm/llm-ile-veri-etiketleme.md",
+    "kume": "85-llm",
+    "baslik": "Dil modeliyle veri etiketleme",
+    "ozet": "Modeli etiketçi olarak kullanmak; kılavuzdan istem, \"emin değilim\" ve oylamayla güven, sistematik hata, altın kümede insanla uyum ve insan tavanı, katmanlı örneklemeyle denetim ve maliyet hesabı; çalışan örneklerle.",
+    "etiketler": [
+      "llm",
+      "etiket",
+      "veri-kalitesi",
+      "kappa",
+      "denetim",
+      "maliyet"
+    ],
+    "duzey": "orta",
+    "guncellik": "2026-11",
+    "bolumler": [
+      "Temel fikir",
+      "Karar tablosu",
+      "Kılavuzdan istem",
+      "Güven: oylama ve sistematik hata",
+      "İnsanla uyum: altın küme ve insan tavanı",
+      "Denetim: katmanlı örneklem",
+      "Maliyet",
+      "Tuzaklar",
+      "Denetim listesi",
+      "Küçük modele yaptırırken",
+      "İlgili"
+    ]
+  },
+  {
     "dosya": "85-llm/llm-nasil-calisir.md",
     "kume": "85-llm",
     "baslik": "Dil modeli nasıl çalışır: belirteç, bağlam, örnekleme",
@@ -5664,6 +6566,35 @@
     ]
   },
   {
+    "dosya": "85-llm/sentetik-veri-ve-damitma.md",
+    "kume": "85-llm",
+    "baslik": "Sentetik veri ve damıtma",
+    "ozet": "Öğretmen modelle veri üretiminde lisans, çeşitlilik, süzgeç sırası, yinelenme ve değerlendirme sızıntısı; çıktıyla ve olasılıkla damıtma, ne zaman işe yaradığı; havuzdaki üretim hattına bağlı, çalışan örneklerle.",
+    "etiketler": [
+      "llm",
+      "sentetik-veri",
+      "damitma",
+      "ince-ayar",
+      "lisans",
+      "veri-kalitesi"
+    ],
+    "duzey": "ileri",
+    "guncellik": "2026-11",
+    "bolumler": [
+      "Temel fikir",
+      "Karar tablosu",
+      "Lisans ve kayıt",
+      "Çeşitlilik: tasarla ve ölç",
+      "Süzgeçler ve değerlendirme sızıntısı",
+      "Damıtma: çıktıyla ve olasılıkla",
+      "Havuzdaki hat: adımlar",
+      "Tuzaklar",
+      "Denetim listesi",
+      "Küçük modele yaptırırken",
+      "İlgili"
+    ]
+  },
+  {
     "dosya": "85-llm/sik-yanilgilar.md",
     "kume": "85-llm",
     "baslik": "Dil modelleri hakkında sık yanılgılar",
@@ -5683,6 +6614,35 @@
       "Karşı örnek: sıcaklık 0 ne garanti eder, ne etmez",
       "Karşı örnek: atıf var, dayanak yok",
       "Yanılgıyı nasıl yakalarsınız",
+      "Tuzaklar",
+      "Denetim listesi",
+      "Küçük modele yaptırırken",
+      "İlgili"
+    ]
+  },
+  {
+    "dosya": "85-llm/turkce-ve-llm.md",
+    "kume": "85-llm",
+    "baslik": "Türkçe ve dil modelleri",
+    "ozet": "Türkçe'ye özgü model tuzakları tek sayfada; belirteç verimsizliğini ölçme yöntemi, ek ve büyük harf denetçisi, çeviri kokan çıktı, değerlendirmede Türkçe normalleştirme, istem dilini ölçerek seçme.",
+    "etiketler": [
+      "llm",
+      "turkce",
+      "belirtec",
+      "degerlendirme",
+      "istem",
+      "normallestirme"
+    ],
+    "duzey": "orta",
+    "guncellik": "2026-11",
+    "bolumler": [
+      "Temel fikir",
+      "Karar tablosu",
+      "1. Belirteç verimsizliğini ölçmek",
+      "2. Ek, harf ve kalıp hatalarını yakalamak",
+      "3. Çeviri kokan ve sohbet botu kalıplı çıktı",
+      "4. Değerlendirmede Türkçe normalleştirme",
+      "5. İstem dili: ölçerek seçmek",
       "Tuzaklar",
       "Denetim listesi",
       "Küçük modele yaptırırken",
@@ -5855,6 +6815,34 @@
       "Şaşkınlık ve karakter başına bit",
       "Karşılıklı bilgi: sütun hedef hakkında ne söylüyor",
       "Sıkıştırma: entropi alt sınırdır",
+      "Tuzaklar",
+      "Denetim listesi",
+      "Küçük modele yaptırırken",
+      "İlgili"
+    ]
+  },
+  {
+    "dosya": "92-matematik/cografi-hesap.md",
+    "kume": "92-matematik",
+    "baslik": "Coğrafi hesap",
+    "ozet": "Enlem-boylamla mesafe (haversine ve hatası), boylamda cos(enlem) ölçeği, sınır kutusuyla yakın nokta araması, yön ve açı sarması, koordinat sırası ve duyarlık; Türkiye koordinatlarıyla çalışan örnekler.",
+    "etiketler": [
+      "matematik",
+      "cografya",
+      "konum",
+      "mesafe",
+      "trigonometri",
+      "sql"
+    ],
+    "duzey": "orta",
+    "guncellik": "2026-11",
+    "bolumler": [
+      "Temel fikir",
+      "Karar tablosu",
+      "Mesafe: dört yöntem, bir başvuru",
+      "Yakın nokta araması: sınır kutusu + kesin mesafe",
+      "Yön ve açı sarması",
+      "Saklama, sıra ve duyarlık",
       "Tuzaklar",
       "Denetim listesi",
       "Küçük modele yaptırırken",
@@ -6150,6 +7138,33 @@
     ]
   },
   {
+    "dosya": "92-matematik/olasiliksal-veri-yapilari-boyutlandirma.md",
+    "kume": "92-matematik",
+    "baslik": "Olasılıksal veri yapılarını boyutlandırma",
+    "ozet": "Bloom süzgecinde bit ve karma sayısı, doluluk aşımında yanlış pozitifin patlaması; HyperLogLog hata payı, birleşim ve kesişim tuzağı; count-min boyutu ve hatanın toplam sayıma bağlı oluşu; çalışan hesap ve benzetimler.",
+    "etiketler": [
+      "matematik",
+      "olasilik",
+      "bloom-suzgeci",
+      "hyperloglog",
+      "count-min",
+      "veri-yapilari"
+    ],
+    "duzey": "orta",
+    "guncellik": "2026-11",
+    "bolumler": [
+      "Temel fikir",
+      "Karar tablosu",
+      "Bloom süzgeci: boyut ve doluluk",
+      "HyperLogLog: hata, bellek, birleşim ve kesişim",
+      "Count-min: hata toplama göredir",
+      "Tuzaklar",
+      "Denetim listesi",
+      "Küçük modele yaptırırken",
+      "İlgili"
+    ]
+  },
+  {
     "dosya": "92-matematik/optimizasyon.md",
     "kume": "92-matematik",
     "baslik": "Optimizasyon",
@@ -6327,6 +7342,35 @@
     ]
   },
   {
+    "dosya": "95-urun/bildirim-ve-yeniden-etkilesim.md",
+    "kume": "95-urun",
+    "baslik": "Bildirim ve yeniden etkileşim",
+    "ozet": "Bildirimi kimin yararına olduğuna göre ayırmak, izni doğru anda istemek, yorgunluğa karşı bütçe ve sıklık sınırı, sessiz saat, kanal seçimi ve bildirimin gerçek katkısını kontrol grubuyla ölçmek; çalışan örneklerle.",
+    "etiketler": [
+      "urun",
+      "bildirim",
+      "yeniden-etkilesim",
+      "olcum",
+      "izin",
+      "tutma"
+    ],
+    "duzey": "orta",
+    "guncellik": "2026-11",
+    "bolumler": [
+      "Temel fikir",
+      "Karar tablosu",
+      "İzin isteme anı",
+      "Bütçe, öncelik ve tepki vermeyen kullanıcı",
+      "Kanal seçimi",
+      "Ölçmek: atıf değil kontrol grubu",
+      "Özel kitle: suçlamayan, baskısız dil",
+      "Tuzaklar",
+      "Denetim listesi",
+      "Küçük modele yaptırırken",
+      "İlgili"
+    ]
+  },
+  {
     "dosya": "95-urun/bilgi-mimarisi-ve-akis.md",
     "kume": "95-urun",
     "baslik": "Bilgi mimarisi ve akış",
@@ -6399,6 +7443,35 @@
       "Temel fikir",
       "Karar tablosu: hangi soru için hangi deney",
       "Nasıl yapılır",
+      "Tuzaklar",
+      "Denetim listesi",
+      "Küçük modele yaptırırken",
+      "İlgili"
+    ]
+  },
+  {
+    "dosya": "95-urun/fiyat-deneyleri.md",
+    "kume": "95-urun",
+    "baslik": "Fiyat deneyleri",
+    "ozet": "Fiyatı ön satış, kademeli teklif, fiyatlı sahte kapı ve rastgele deneyle sınamak; esneklik ve kâr hesabı, ziyaretçi başı gelirin gürültüsü, abonelikte uzun vade; etik ve yasal sınırlar (genel); çalışan hesaplar.",
+    "etiketler": [
+      "urun",
+      "fiyatlandirma",
+      "deney",
+      "esneklik",
+      "olcum",
+      "etik"
+    ],
+    "duzey": "orta",
+    "guncellik": "2026-11",
+    "bolumler": [
+      "Temel fikir",
+      "Karar tablosu",
+      "Yöntemleri doğru yapmak",
+      "Esneklik ve kâr: hangi fiyat \"kazandı\"?",
+      "Gürültü ve uzun vade",
+      "Etik ve yasal sınırlar (genel)",
+      "Deney kartı",
       "Tuzaklar",
       "Denetim listesi",
       "Küçük modele yaptırırken",
@@ -7045,6 +8118,36 @@
     ]
   },
   {
+    "dosya": "97-turkce/turkce-adres-modeli.md",
+    "kume": "97-turkce",
+    "baslik": "Türkçe adres modeli: il, ilçe, mahalle, sokak ve posta kodu",
+    "ozet": "Türkiye'de adres hiyerarşisi, posta kodunun ille, ilçeyle ve mahalleyle ilişkisi, adres biçimleri, serbest metin adresi ayrıştırmanın zorluğu, konum bulma kavramı ve adres doğrulamada yapılmaması gerekenler.",
+    "etiketler": [
+      "turkce",
+      "adres",
+      "posta-kodu",
+      "form",
+      "veri-modeli",
+      "konum"
+    ],
+    "duzey": "orta",
+    "guncellik": "2026-11",
+    "bolumler": [
+      "Temel fikir",
+      "Karar tablosu",
+      "Hiyerarşi ve başvuru verisi",
+      "Posta kodu",
+      "Adres biçimleri ve kısaltmalar",
+      "Serbest metin adresi neden zor",
+      "Konum bulma (geocoding)",
+      "Doğrulamada yapılmaması gerekenler",
+      "Tuzaklar",
+      "Denetim listesi",
+      "Küçük modele yaptırırken",
+      "İlgili"
+    ]
+  },
+  {
     "dosya": "97-turkce/turkce-metin-isleme.md",
     "kume": "97-turkce",
     "baslik": "Türkçe metin işleme",
@@ -7097,6 +8200,36 @@
       "Binlik ve ondalık ayırıcı karışıklığı",
       "Kuruş yuvarlama",
       "Bölüştürme ve KDV",
+      "Tuzaklar",
+      "Denetim listesi",
+      "Küçük modele yaptırırken",
+      "İlgili"
+    ]
+  },
+  {
+    "dosya": "97-turkce/turkce-ses-ve-konusma.md",
+    "kume": "97-turkce",
+    "baslik": "Türkçe ses ve konuşma: metni seslendirmeye hazırlama, telaffuz ve tanıma hatası ölçümü",
+    "ozet": "Türkçe metni sesli okumaya hazırlarken sayı, tarih, saat, para, yüzde, telefon ve kısaltmanın okunuşu, kısaltma açılınca ek uyumu, vurgu ve telaffuz sorunları, konuşma tanımada sık hatalar ve WER/CER ölçümü.",
+    "etiketler": [
+      "turkce",
+      "ses",
+      "tts",
+      "konusma-tanima",
+      "normalizasyon",
+      "wer"
+    ],
+    "duzey": "orta",
+    "guncellik": "2026-11",
+    "bolumler": [
+      "Temel fikir",
+      "Karar tablosu: okunuş kararları",
+      "Nasıl yapılır: normalizasyon",
+      "Kısaltma açılınca ek uyumu",
+      "Harf harf okuma ve telaffuz sözlüğü",
+      "Vurgu ve telaffuz sorunları",
+      "Konuşma tanımada sık Türkçe hatalar",
+      "WER ve CER ölçümü",
       "Tuzaklar",
       "Denetim listesi",
       "Küçük modele yaptırırken",

@@ -138,3 +138,13 @@ reset ve sayfalama durumlarından geçtiği de denetlenir).
   değiştirmek eski cihazların verisini bozar (kural testi: `shared/test/entities.test.ts`).
 - **Protokol sürümü** (`PROTOCOL_VERSION`) değişirse eski istemciler `upgrade_required` alır ve "sayfayı
   yenileyin" denir; iki sürüm aynı anda desteklenmez.
+- **Reset'te "buradakini gönder" eski istemcide yeni alanları sıfırlayabilir.** Bu yol kaydın görünen hâlini `put`
+  ile yazar (`shared/src/testing/memoryReplica.ts` → `resolveReset`; web ve mobil aynı mantığı izler). Cihazdaki
+  uygulama eskiyse ve sonradan eklenmiş bir alanı tanımıyorsa, şema (`z.object`) o alanı atar ve sunucuda alan
+  varsayılan değerine döner. Gerekli koşullar seyrektir (sunucu yedekten dönmüş + eski istemci + yeni alan), ama
+  önlemi basittir: reset kararından önce uygulamayı güncelleyin ya da "sunucudakini al"ı seçin. Normal eşitlemede
+  sorun yoktur: düzenlemeler `patch` olarak yalnız değişen alanları gönderir.
+- **Protokol sürümü artarken giden kutusu göç ister.** Cihazda bekleyen değişiklikler eski biçimdedir; yeni sürüm
+  değişiklik biçimini değiştiriyorsa istemcide bir göç yazılmalıdır (web: Dexie sürüm yükseltmesi; mobil:
+  `PRAGMA user_version`). Bu inceleme bulgusu kodla değil belgeyle kapatıldı; ayrıntı:
+  `../../bilgi/40-sistem-tasarimi/geriye-uyumlu-degisim.md`.

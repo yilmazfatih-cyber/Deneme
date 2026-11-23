@@ -15,8 +15,11 @@ inşa etmek. Her temel tek başına kopyalanabilir; her birinin tek komutluk bir
 | ----------------------------------------------------------------- | --------------------------------------- | ---------------------------------------------- |
 | Telefonda çalışan, hesaplı, çok cihazlı, internetsiz uygulama     | [`uygulama/`](uygulama/README.md)       | `npm ci && npm run dev`                        |
 | Tanıtım sitesi, blog, belge sitesi                                | [`site/`](site/README.md)               | `npm ci && npm run dev`                        |
+| App Store / Google Play'e çıkabilen yerel mobil uygulama          | [`mobil/`](mobil/README.md)             | `npm ci && npm start`                          |
 | Uygulamaya yapay zekâ özelliği (belgeye soru, bilgi çıkarma, ajan) | [`yz/`](yz/README.md)                   | `python -m yz --yardim`                        |
 | Kendi dil modelini sıfırdan eğitmek                               | [`dil-modeli/`](dil-modeli/README.md)   | `python -m dil_modeli uret --model ornek-model` |
+| Türkçe konuşmayı yazıya çevirmek, metni seslendirmek, altyazı     | [`ses/`](ses/README.md)                 | `python -m ses --yardim`                       |
+| Fotoğraf sınıflandırma, benzer görüntü arama, EXIF temizliği      | [`goruntu/`](goruntu/README.md)         | `python -m goruntu --yardim`                   |
 | Açık bir modeli kendi işine uydurmak (ince ayar)                  | [`ince-ayar/`](ince-ayar/README.md)     | `python -m ince_ayar --yardim`                 |
 | Bir tablodan (CSV) tahmin modeli ve rapor                         | [`ml-temel/`](ml-temel/README.md)       | `python -m ml_temel egit --veri … --hedef …`   |
 | Türkçe başvuru verisi, sahte veri, veri temizleme ve kalite       | [`veri/`](veri/README.md)               | `python -m verihavuzu --help`                  |
@@ -25,6 +28,7 @@ inşa etmek. Her temel tek başına kopyalanabilir; her birinin tek komutluk bir
 | "İçeride nasıl çalışır" — sıfırdan yazılmış mini sistemler        | [`sifirdan/`](#sifirdan)                | her sistemin kendi README'si                   |
 | Bir konuda karar vermek, tuzaktan kaçınmak                        | [`bilgi/`](bilgi/)                      | `python araclar/ara.py "<soru>"`               |
 | Hangi küçük modelin bu temellerde iş gördüğünü ölçmek              | [`sinav/`](sinav/README.md)             | `python sinav.py liste`                        |
+| İki temeli birbirine bağlamak (ör. uygulamaya yapay zekâ özelliği) | [`tarifler/`](tarifler/README.md)       | `python tarif.py liste`                        |
 
 Python temellerinde önce sanal ortam kurulur (her temelin README'sinde yazar) ya da aşağıdaki denetim aracı
 `--kur` ile hepsini kendisi yapar.
@@ -37,11 +41,15 @@ Python temellerinde önce sanal ortam kurulur (her temelin README'sinde yazar) y
 | --- | --- | --- | --- | ---: |
 | [`algoritma`](algoritma/) | python | 138 modüllük, yalnız stdlib kullanan, her gerçeklemesi kaba kuvvet ya da stdlib ile karşılaştırılarak sınanmış, Türkçe açıklamalı algoritma ve veri yapısı kütüphanesi. | 156 / 156 | 19.943 |
 | [`dil-modeli`](dil-modeli/) | karma | Bayt düzeyi BPE tokenizer, LLaMA uyumlu PyTorch modeli, sürdürülebilir eğitim, üretim, LoRA ince ayarı, Hugging Face/GGUF/tarayıcı/ONNX aktarımı, OpenAI uyumlu sunucu ve bağımlılıksız JS çalışma zamanı; minik Türkçe örnek modelle. | 63 / 27 | 10.468 |
+| [`goruntu`](goruntu/) | python | EXIF yönü ve kişisel üst veri temizliği, sıkıştırma bombasına karşı güvenli açma, algısal özetle kopya ve sızıntı bulma, timm ile sızıntısız sınıflandırma ince ayarı (kalibrasyon, 'emin değilim'), tek dosyalık ONNX paketi, CLIP/SigLIP 2 ile görüntü ve metinle arama, HTTP sunucusu. | 64 / 19 | 9.551 |
 | [`ince-ayar`](ince-ayar/) | python | Sohbet (LoRA), sınıflandırma (ONNX), gömme ve varlık tanıma ince ayarı; veri araçları, sentetik veri hattı, doğrulanmış model kataloğu ve Colab defteri. | 95 / 18 | 12.364 |
 | [`kutuphane`](kutuphane/) | karma | Türkçe metin, ek, sayı/para/tarih biçimi, kimlik doğrulama ile genel yardımcıların iki dilde, ortak sınama vektörleriyle kanıtlanmış ve dosya dosya kopyalanan hâli. | 61 / 56 | 18.432 |
 | [`ml-temel`](ml-temel/) | python | Otomatik türev, sinir ağı katmanları, scikit-learn arayüzlü klasik modeller, sızıntısız değerlendirme ve bir CSV'den tek komutla model + Türkçe rapor üreten araç; tek çalışma zamanı bağımlılığı numpy. | 104 / 22 | 15.819 |
+| [`mobil`](mobil/) | node | Uygulama mağazalarına çıkabilen, çevrimdışı-önce Expo uygulaması: expo-sqlite deposu + havuz/uygulama API'siyle aynı eşitleme protokolü, güvenli belirteç, Türkçe ve erişilebilir ekranlar, üreteç ve mağaza hazırlığı. | 129 / 42 | 12.687 |
+| [`ses`](ses/) | python | İnternetsiz Türkçe konuşma→yazı (faster-whisper) ve metin→ses (Piper): Türkçe metin normalizasyonu, WAV/yeniden örnekleme/LUFS/VAD yardımcıları, SRT/WebVTT, WER/CER/RTF ölçümü, lisansı doğrulanmış model kataloğu ve OpenAI uyumlu sunucu. | 55 / 18 | 7.282 |
 | [`sinav`](sinav/) | python | Temellerin üstünde gerçekçi görevlerle (özellik, hata, değişiklik, okuma, tuzak) kod ajanı + model ikilisini ölçer: görev klasörünü hazırlar, gizli testler ve hile denetimiyle puanlar, modelleri karşılaştırır. | 57 / 26 | 5.350 |
 | [`site`](site/) | node | Astro 7 ile statik, çok dilli, erişilebilir ve SEO denetimli site temeli; tek ayar dosyası ve içerik dosyalarıyla kişiselleştirilir. | 119 / 34 | 11.268 |
+| [`tarifler`](tarifler/) | python | Havuzdaki temelleri birbirine bağlayan (uygulamaya yapay zekâ, siteyi API'ye, kendi modelini istemciye, CSV'den tahmin servisine, tek sunucuda yayına), her biri gerçekten uygulanıp uçtan uca doğrulanmış adım adım kurulumlar ve ortak çalıştırıcı. | 33 / 16 | 4.878 |
 | [`uygulama`](uygulama/) | node | Çevrimdışı-önce PWA (React + Dexie) + API (Hono + node:sqlite) + ortak şema ve eşitleme; hesapsız ve hesaplı iki kip, paylaşımlı alanlar, üreteçler. | 194 / 81 | 25.167 |
 | [`veri`](veri/) | python | Doğrulanmış Türkçe başvuru verileri, ilişkisel tutarlı sentetik veri üreteçleri, veri kalitesi araçları, nazik veri hattı iskeleti ve doğrulanmış açık veri kataloğu. | 65 / 21 | 10.861 |
 | [`yz`](yz/) | python | Küçük modellerin zayıflıklarını (bozuk JSON, araç çağrısı hataları, uydurma) doğrula-onar döngüleri, sıkı şemalar ve ölçümle kapatan sağlayıcı katmanı, yapılı çıktı, ajan, RAG, değerlendirme, MCP ve sohbet sunucusu. | 91 / 27 | 16.699 |
@@ -67,7 +75,7 @@ Her biri tek klasör, birkaç yüz satır, bağımlılıksız ve başvuru gerçe
 
 ## Bilgi hazinesi (`bilgi/`)
 
-13 kümede **250 çalışma kâğıdı**: karar tabloları, tuzaklar (belirti → neden → çözüm), denetim listeleri ve "küçük
+13 kümede **288 çalışma kâğıdı**: karar tabloları, tuzaklar (belirti → neden → çözüm), denetim listeleri ve "küçük
 modele yaptırırken" bölümü. Kod örneklerinin çoğu çalıştırılarak doğrulanır. Dizin: [`bilgi/INDEX.md`](bilgi/INDEX.md).
 
 | Küme | Konu |
@@ -123,3 +131,8 @@ testleri, sırların depoya girmemesi, dürüst "Sınırlar" bölümü. Modeller
 - Sürüm, model adı ve lisans bilgileri Kasım 2026 tarihlidir; katalog dosyaları doğrulama tarihini taşır.
 - Yasal sayfa şablonları, KVKK notları ve finans hesapları **danışmanlık değildir**.
 - Örnek dil modeli (`dil-modeli/ornek-model`) öğretim amaçlıdır: Türkçeye benzeyen ama anlamsız metin üretir.
+- Mobil uygulama (`mobil/`) birim testleri ve web derlemesiyle doğrulandı; bu ortamda Android SDK ve Xcode olmadığı için
+  gerçek telefonda ve mağaza derlemesiyle **denenmedi** (Expo Go ile telefonda deneme adımları README'sinde).
+- Ses ve görüntü temelleri CPU'da küçük modellerle denendi. Doğrulanabilen tek Türkçe Piper sesi
+  (`tr_TR-dfki-medium`) **ticari kullanıma kapalıdır**; ticari ürün için seçenekler `ses/docs/LISANSLAR.md`'de.
+  Konuşma tanıma modelleri (Whisper) ticari kullanıma açıktır.

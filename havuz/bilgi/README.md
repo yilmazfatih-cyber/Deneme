@@ -1,8 +1,8 @@
 # Bilgi hazinesi
 
-Yazılım, veri, makine öğrenmesi, dil modelleri, ürün ve Türkçe'ye özgü konularda **250 çalışma kâğıdı** (13 küme).
+Yazılım, veri, makine öğrenmesi, dil modelleri, ürün ve Türkçe'ye özgü konularda **288 çalışma kâğıdı** (13 küme).
 Her not bir konuyu tek sayfada toplar: karar tablosu, tuzaklar (belirti → neden → çözüm), denetim listesi ve
-"küçük modele yaptırırken" bölümü. Kod örneklerinin çoğu (817 blok) çalıştırılarak doğrulanır.
+"küçük modele yaptırırken" bölümü. Kod örneklerinin çoğu (948 blok) çalıştırılarak doğrulanır.
 
 Dizin: [`INDEX.md`](INDEX.md) · Not biçimi: [`BICIM.md`](BICIM.md) · Model talimatları: [`AGENTS.md`](AGENTS.md)
 

@@ -22,10 +22,13 @@ araçlar (`araclar/`). Bütün temeller aynı kurallara uyar: [`STANDARTLAR.md`]
 | ------------------- | ----------------------------------------------------------------------------------- |
 | `uygulama/`         | Tam yığın uygulama: çevrimdışı-önce PWA (React) + API (Hono, SQLite) + eşitleme     |
 | `site/`             | Web sitesi: tanıtım + blog + belgeler (Astro, Tailwind), SEO, arama, TR/EN          |
+| `mobil/`            | Yerel mobil uygulama (Expo/React Native): `uygulama` ile aynı API ve eşitleme       |
 | `yz/`               | Dil modeli uygulamaları: sağlayıcı katmanı, yapılı çıktı, RAG, ajan, değerlendirme   |
 | `dil-modeli/`       | Sıfırdan dil modeli: tokenizer, Transformer, eğitim, ince ayar, dışa aktarım, sunum |
 | `ince-ayar/`        | Açık modelleri ince ayarlama: sohbet, sınıflandırma, gömme, varlık tanıma           |
 | `ml-temel/`         | numpy ile sıfırdan makine öğrenmesi + CSV'den model ve rapor aracı                 |
+| `ses/`              | Türkçe konuşma tanıma (Whisper) ve seslendirme (Piper), WER/CER, ses sunucusu       |
+| `goruntu/`          | Görüntü sınıflandırma ince ayarı, gömme ve arama, kopya bulma, EXIF temizliği       |
 | `veri/`             | Türkçe başvuru verileri, sentetik veri, veri kalitesi, veri hattı, veri kataloğu    |
 | `kutuphane/`        | Tek dosyalık, bağımlılıksız yardımcılar (TypeScript + Python): Türkçe, para, tarih… |
 | `algoritma/`        | Algoritmalar ve veri yapıları (Python), kaba kuvvetle doğrulanmış                   |
@@ -35,6 +38,7 @@ araçlar (`araclar/`). Bütün temeller aynı kurallara uyar: [`STANDARTLAR.md`]
 | `sifirdan/arayuz/`  | Sıfırdan: tepkisellik, sanal DOM, yönlendirici, e-tablo, düzenleyici, oyun motoru…  |
 | `bilgi/`            | Konu konu çalışma kâğıtları (karar tabloları, tuzaklar, denetim listeleri)          |
 | `sinav/`            | Kod ajanı sınavı: küçük modelleri bu temellerde gizli testlerle ölçen 15 görev     |
+| `tarifler/`         | Temelleri birbirine bağlayan, uygulanıp test edilmiş uçtan uca tarifler            |
 | `rehber/`           | İnsan için: küçük modelle çalışma rehberi ve hazır istemler                         |
 | `araclar/`          | `durum.py` (envanter), `denetle.py` (kur + denetle), `yeni_proje.py` (kopyala)      |
 

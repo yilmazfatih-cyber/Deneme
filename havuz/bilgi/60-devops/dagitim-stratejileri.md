@@ -92,6 +92,7 @@ Dağıtımdan önce üç satır yazın: **önceki sürüm** (imaj etiketi ya da 
 | Daraltma göçü veri sildi                     | Yazmaları durdurun; yedeği yanına açıp yalnız kaybolanı taşıyın ([Yedekleme](veritabani-yedekleme.md)) |
 | Hatalı veri yazıldı                          | İleri düzeltme: düzelten bir göç ya da betik; bütün veritabanını geri yüklemeyin |
 | Riskli özellik bayrak arkasında              | Bayrağı kapatın; dağıtım gerekmez                               |
+| Migrasyonlu sürüm (havuzdaki `uygulama` gibi) | Önceki sürüm yeni veritabanını açmayı **reddeder** (bilinmeyen migrasyon). Kod geri alınamaz; ileri düzeltin. Son çare: yedekten geri yükleme (yedekten sonraki veri kaybolur) |
 | Dış etki (e-posta, bildirim, ödeme)          | Geri alınamaz: kullanıcıya açıklama, ödemede iade               |
 
 Geri almak ile ileri düzeltmek arasında karar: düzeltme küçük, testli ve dakikalar içinde yayına çıkabilecekse ileri;
