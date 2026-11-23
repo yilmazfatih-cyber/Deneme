@@ -1,5 +1,6 @@
 // Giriş noktası: yönlendirmeleri tanımlar, paneli ve bekleyen onay sayacını bağlar.
 import { api } from "./api.js";
+import { loadSession, requireLogin } from "./auth.js";
 import { closeDrawer, drawerOpen } from "./components.js";
 import { route, start } from "./router.js";
 
@@ -10,6 +11,7 @@ route("denetim", () => import("./pages/denetim.js"));
 route("onaylar", () => import("./pages/onaylar.js"));
 route("erp", () => import("./pages/erp.js"));
 route("demo", () => import("./pages/demo.js"));
+route("kullanicilar", () => import("./pages/kullanicilar.js"));
 
 document.getElementById("drawer-close").addEventListener("click", () => {
   closeDrawer();
@@ -35,7 +37,13 @@ export async function refreshPendingCount() {
   }
 }
 window.addEventListener("aip:approvals-changed", refreshPendingCount);
-refreshPendingCount();
-setInterval(refreshPendingCount, 30000);
 
-start();
+// Kimlik doğrulama açıksa önce giriş; sonra sayfalar. Oturum düşüp yeniden girilince sayfa tazelenir.
+(async () => {
+  await loadSession();
+  await requireLogin();
+  refreshPendingCount();
+  setInterval(refreshPendingCount, 30000);
+  window.addEventListener("aip:logged-in", () => { refreshPendingCount(); window.dispatchEvent(new HashChangeEvent("hashchange")); });
+  start();
+})();

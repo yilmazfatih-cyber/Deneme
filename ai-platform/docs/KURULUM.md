@@ -50,11 +50,50 @@ başlatmada okur.
 llama-server için ya `llama.cpp` ikilisini PATH'e koyun ya da `pip install "aiplatform[llamacpp]"`
 (CUDA için `CMAKE_ARGS="-DGGML_CUDA=on"`; Apple'da Metal otomatik).
 
+### Kimlik doğrulama (sunucu ağa açıldığında zorunlu)
+
+Platform yalnız `127.0.0.1`'e bağlıyken (tek kişilik laptop/demo) giriş istemez. `--host 0.0.0.0` ile ağa
+açıldığı anda (`AIP_AUTH_MODE=auto`) her `/api` ve `/v1` isteği oturum veya API anahtarı ister. İlk yöneticiyi
+sunucuda komut satırından oluşturun:
+
+```bash
+aiplatform user add fatih --role yonetici --display-name "Fatih Yılmaz"
+aiplatform serve --role server --host 0.0.0.0 --port 8080
+```
+
+Sonraki kullanıcılar arayüzdeki **Kullanıcılar** sayfasından veya `aiplatform user add` ile eklenir.
+
+| Rol | Yetki |
+| --- | --- |
+| Kullanıcı | modülleri çalıştırır, sonuçları görür, sohbet geçidini kullanır |
+| Onaylayıcı | + ERP'ye yazan işlemleri onaylar/reddeder (kendi isteğini onaylayamaz: dört göz) |
+| Yönetici | + modül kurar/kaldırır, ERP bağlantısı, kullanıcı ve anahtar yönetimi, denetim günlüğü |
+
+ERP entegrasyonu ve betikler için API anahtarı (yalnız bir kez gösterilir):
+
+```bash
+aiplatform token create --user erp-servis --name erp-entegrasyon --days 365
+curl -H "Authorization: Bearer aip_..." http://ai-sunucu:8080/api/catalog/modules
+```
+
+Parolalar scrypt ile özetlenir, anahtarlar yalnız SHA-256 özetiyle saklanır; tarayıcı oturumu HttpOnly +
+SameSite=Strict çerezdir (varsayılan 12 saat). Aynı kullanıcı adı ve IP'den 5 hatalı denemede 5 dakika kilit.
+Kullanıcı devre dışı bırakılınca açık oturumları ve anahtarları hemen geçersiz olur; her giriş, çıkış ve
+yetki değişikliği denetim günlüğüne yazılır.
+
 ## 2. Çalışan bilgisayarı
+
+Sunucuda kimlik doğrulama açıksa çalışan bilgisayarları için bir **istemci düğümü anahtarı** oluşturun. Bu
+anahtar sunucuya çalışan adına gider ama yetkisi her zaman "Kullanıcı" ile sınırlıdır:
+
+```bash
+aiplatform user add muhasebe-pc-03 --role kullanici           # sunucuda, düğüm hesabı
+aiplatform token create --user muhasebe-pc-03 --name muhasebe-pc-03 --delegate
+```
 
 ```bash
 pip install -e ".[kvkk,belge,gomme]"
-export AIP_ROLE=client AIP_SERVER_URL=http://ai-sunucu.sirket.local:8080
+export AIP_ROLE=client AIP_SERVER_URL=http://ai-sunucu.sirket.local:8080 AIP_SERVER_TOKEN=aip_...
 aiplatform install kvkk-kalkani            # Presidio + GLiNER (1,2 GB), zorunlu
 aiplatform serve --role client             # 127.0.0.1:8080
 ```
@@ -89,6 +128,10 @@ klasörden kopyalanabilir (`AIP_DATA_DIR` altındaki `models/`).
 | `AIP_ERP_API_BASE_URL`, `AIP_ERP_API_TOKEN` | — | ERP REST |
 | `AIP_ERP_WEBHOOK_SECRET` | — | HMAC sırrı |
 | `AIP_AUDIT_RETENTION_DAYS` | 30 | günlük ve eşleme saklama |
+| `AIP_AUTH_MODE` | auto | auto: 127.0.0.1'de kapalı, ağa açıkken açık; on / off: zorla |
+| `AIP_SESSION_HOURS` | 12 | tarayıcı oturumu süresi |
+| `AIP_SERVER_TOKEN` | — | client rolünde sunucuya giderken istemci düğümü anahtarı |
+| `AIP_APPROVAL_FOUR_EYES` | true | kimlik açıkken kişi kendi isteğini onaylayamaz |
 | `AIP_HF_TOKEN`, `AIP_HF_ENDPOINT` | — | gated depo / şirket içi ayna |
 
 ## 5. Doğrulama

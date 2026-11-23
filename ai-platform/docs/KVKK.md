@@ -36,6 +36,7 @@ metin ──► KVKK Kalkanı ──► maskeli metin ───► modül / ana 
 | Denetim izi | `audit_log`: zaman, kullanıcı, modül, eylem, model, süre, maskelenen varlık sayısı, durum, içerik özeti (hash). İçerik yazılmaz |
 | Saklama ve imha | Günlük ve eşlemeler süre sonunda silinir (`purge_expired`) |
 | İnsan gözetimi | ERP'ye yazan her eylem `approvals` kuyruğunda; finans hesapları deterministik kodda; ajanın yazma araçları onaylı |
+| Erişim kontrolü | Rol tabanlı yetki (Kullanıcı / Onaylayıcı / Yönetici); scrypt parola özeti, anahtarlar yalnız özetle saklanır; dört göz onayı; hatalı giriş kilidi; giriş, çıkış ve yetki değişiklikleri denetim günlüğünde |
 | Tedarik güvenliği | Katalogdaki her model HF API ile doğrulandı (`docs/model_dogrulama_2026-11-08.json`); yalnız safetensors/GGUF, pickle yok; lisans sınıfı `noncommercial` olan model kataloğa giremez (şema reddeder) |
 | Kötüye kullanım | Güvenlik Denetimi modülü (Granite Guardian) prompt injection ve politika dışı istekleri geçitte durdurur |
 

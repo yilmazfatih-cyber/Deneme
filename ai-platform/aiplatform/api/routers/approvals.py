@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Literal
 
-from fastapi import APIRouter, Header
+from fastapi import APIRouter, Header, Request
 from pydantic import BaseModel
 
 from ...erp import approvals as ap
@@ -16,7 +16,7 @@ router = APIRouter(prefix="/api/approvals", tags=["approvals"])
 class DecisionIn(BaseModel):
     decision: Literal["approve", "reject"]
     note: str | None = None
-    decided_by: str | None = None
+    decided_by: str | None = None  # yalnız kimlik doğrulama kapalıyken dikkate alınır
 
 
 @router.get("")
@@ -38,9 +38,35 @@ def get_approval(approval_id: str):
 
 
 @router.post("/{approval_id}/decide")
-async def decide(approval_id: str, body: DecisionIn, x_user: str | None = Header(default=None, alias="X-AIP-User")):
+async def decide(
+    approval_id: str,
+    body: DecisionIn,
+    request: Request,
+    x_user: str | None = Header(default=None, alias="X-AIP-User"),
+):
     """Onay: yazma işlemi çalışır, sonuç kayda yazılır. Ret: hiçbir şey çalışmaz."""
-    who = (body.decided_by or x_user or "yonetici")[:100]
+    from ...config import get_settings
+
+    s = get_settings()
+    if s.auth_enabled:
+        # Kimlik ara katmandan gelir; gövdedeki decided_by kimsenin adına karar vermeye yaramaz
+        who = (x_user or "")[:100]
+        if s.approval_four_eyes and body.decision == "approve":
+            try:
+                current = ap.get_approval(approval_id)
+            except ErpError as e:
+                return error_response(e)
+            if (current.get("requested_by") or "") == who:
+                return error_response(
+                    ErpError(
+                        "four_eyes",
+                        "Kendi isteğinizi onaylayamazsınız (dört göz ilkesi).",
+                        "Başka bir onaylayıcı veya yönetici karar vermeli.",
+                        status_code=403,
+                    )
+                )
+    else:
+        who = (body.decided_by or x_user or "yonetici")[:100]
     try:
         result = await ap.adecide(approval_id, body.decision, decided_by=who, note=body.note)
     except ErpError as e:
