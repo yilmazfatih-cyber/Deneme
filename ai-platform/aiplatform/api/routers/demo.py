@@ -351,11 +351,18 @@ def _evrak_count() -> int:
 
 
 async def run_module(
-    module_id: str, action: str, payload: dict, files: dict[str, bytes] | None = None, user: str = "demo"
+    module_id: str,
+    action: str,
+    payload: dict,
+    files: dict[str, bytes] | None = None,
+    user: str = "demo",
+    *,
+    check_only: bool = False,
 ) -> tuple[int, dict]:
     """`POST /api/modules/{id}/run/{action}` ile aynı kurallar: kurulum denetimi, istemci→sunucu iletimi, denetim günlüğü.
 
     Dönüş: (HTTP durum kodu, gövde). Gövde başarıda {"result", "meta"}, hatada {"error": {...}}.
+    check_only=True: yalnız modül var/kurulu/etkin denetimi yapılır, eylem çalıştırılmaz (200, {}).
     """
     from ...catalog import get_catalog
     from ...kvkk.audit import audit_call
@@ -389,6 +396,8 @@ async def run_module(
                 },
                 "module": module_id,
             }
+    if check_only:
+        return 200, {}
     ctx = RunContext(user=user, role=get_settings().role, files=files, request_id=uuid.uuid4().hex)
     rec = None
     server_meta: dict = {}
@@ -647,6 +656,10 @@ def _pdf_text(path: Path) -> str:
 async def evrak_ozetle(eid: int, request: Request):
     """PDF metin katmanını (AI değil, pdfplumber) okuyup özetleme modülüne verir."""
     r = await asyncio.to_thread(_evrak_row, eid)
+    # Önce modül kurulu mu: kurulu değilse PDF okumaya (ve onun bağımlılığına) hiç girmeden söyle
+    code, res = await run_module("ozetleme", "summarize", {"text": ""}, None, _user(request), check_only=True)
+    if code != 200:
+        return JSONResponse(status_code=code, content=res)
     text = await asyncio.to_thread(_pdf_text, _safe_path(r["yol"]))
     code, res = await run_module(
         "ozetleme", "summarize", {"text": text, "style": "yonetici", "max_words": 160}, None, _user(request)

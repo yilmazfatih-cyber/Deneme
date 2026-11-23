@@ -23,6 +23,18 @@ Mağaza → "Kur" → donanım uygunluk → pip bağımlılıkları → model in
 
 ## Hızlı başlangıç
 
+**Tek komut (macOS / Linux):** depo kökünde
+
+```bash
+./ai-platform/scripts/kur.sh --demo
+```
+
+Python 3.11+'yı bulur, `.venv` kurar, bağımlılıkları yükler, donanımı tarar, testleri çalıştırır, demo
+modüllerini kurar ve tarayıcıda Demo ERP'yi açar. Sonraki seferlerde: `./ai-platform/scripts/baslat.sh`.
+Bir adım hata verirse betik `ai-platform/kur.log` dosyasının son satırlarını gösterir.
+
+**Elle:**
+
 ```bash
 cd ai-platform
 python -m venv .venv && source .venv/bin/activate
