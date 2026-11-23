@@ -1,0 +1,142 @@
+{
+ "tarama": {
+  "an": "2026-11-23T10:55:00+03:00",
+  "kategoriler": [
+   "sapka-bere",
+   "cuzdan-kartlik",
+   "canta-suni-deri"
+  ],
+  "not": "Günlük tarama. alibaba.com açılmadı. Şapka/berede logosuz örgü bere eşik altı; cüzdanda zarf/mini cüzdan oranı ~1,5–1,9 (ince PU kartlık ilanı doğrulanamadı, oran ~4 olabilir); suni deri çantada kapitone kare çanta 1,75 $ ama bağlantılı TR ilanlarıyla oran ~2,3, yazılmadı. Takip: eldiven ölçüldü. Sırt çantası Alibaba fiyatı aynı (0,98 $) ama Türkiye fiyatı yeniden ölçülemedi; ilanda 20L ve su iticilik doğrulanmadı. Kolye, saat, cüzdan yazılamadı."
+ },
+ "adaylar": [
+  {
+   "urun": "Düz akrilik örgü bere (logosuz, unisex)",
+   "kategori": "sapka-bere",
+   "gtip": "6505",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/HKS0001custom-logo-Winter-Embroider-Unisex-Cheap_1601283087319.html",
+    "baslik": "HKS0001 custom logo Winter Embroider Unisex Cheap Knitted Solid Color Warm Woman Men Cap Blank Acrylic Hat Beanie",
+    "tedarikci": "bilinmiyor (özette görünmedi)",
+    "fiyat_usd": 0.99,
+    "moq": 10,
+    "kademeler": [
+     {
+      "min_adet": 10,
+      "fiyat_usd": 0.99
+     },
+     {
+      "min_adet": 50000,
+      "fiyat_usd": 0.79
+     }
+    ],
+    "birim_agirlik_kg": 0.1,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 144,
+      "kaynak": "hepsiburada",
+      "url": "https://www.hepsiburada.com/erkek-bereler-c-60004018?filtreler=renk%3ASiyah",
+      "baslik": "Unisex siyah düz basic bere (kategori sayfası, ürün sayfası değil)"
+     },
+     {
+      "fiyat_tl": 199,
+      "kaynak": "hepsiburada",
+      "url": "https://www.hepsiburada.com/erkek-bereler-c-60004018?filtreler=renk%3ASiyah",
+      "baslik": "Düz desenli akrilik unisex siyah bere (kategori sayfası; ilan 144 TL ile aynı sayfada)"
+     },
+     {
+      "fiyat_tl": 239.99,
+      "kaynak": "pazarama",
+      "url": "https://www.pazarama.com/unisex-kislik-siyah-katlamali-basic-bere-p-40146507",
+      "baslik": "Axe Sportswear unisex kışlık siyah katlamalı basic bere"
+     },
+     {
+      "fiyat_tl": 275,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/unisex-bere-y-s87355",
+      "baslik": "Nordbron unisex siyah kışlık bere (liste sayfası)"
+     }
+    ],
+    "not": "Dört markasız/az bilinen düz bere ilanı, 144-275 TL. Üçü kategori/liste sayfası, yalnız Pazarama ürün sayfası. Ürün sayfasıyla doğrulanmalı."
+   },
+   "taklit_riski": false,
+   "gerekce": "Düz siyah/renkli kışlık bere Türkiye'de her kış sürekli satan, bedeni olmayan, hafif bir ürün.",
+   "riskler": [
+    "Alibaba fiyatı ($0.99, 10-499 adet) yalnız arama özetinden; tedarikçi bilgisi yok",
+    "İlan 'custom logo' başlıklı; logosuz boş ürün fiyatı varsayıldı",
+    "Ağırlık tahmini",
+    "Oran ~4,3: yakın aday",
+    "Türkiye fiyatları çoğunlukla kategori sayfasından"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/HKS0001custom-logo-Winter-Embroider-Unisex-Cheap_1601283087319.html",
+    "https://www.pazarama.com/unisex-kislik-siyah-katlamali-basic-bere-p-40146507",
+    "https://www.trendyol.com/unisex-bere-y-s87355"
+   ]
+  },
+  {
+   "urun": "Dokunmatik ekran uyumlu örgü kışlık eldiven",
+   "kategori": "orme-atki-eldiven",
+   "alibaba": {
+    "url": "https://www.alibaba.com/product-introduction/Solid-Magic-Gloves-Capacitive-Mobile-Phone_1600094285285.html",
+    "baslik": "Solid Magic Gloves Capacitive Mobile Phone",
+    "tedarikci": "bilinmiyor (arama özetinde görünmedi)",
+    "fiyat_usd": 0.66,
+    "moq": 12,
+    "kademeler": [
+     {
+      "min_adet": 12,
+      "fiyat_usd": 0.66
+     },
+     {
+      "min_adet": 36,
+      "fiyat_usd": 0.55
+     },
+     {
+      "min_adet": 60,
+      "fiyat_usd": 0.44
+     },
+     {
+      "min_adet": 120,
+      "fiyat_usd": 0.33
+     }
+    ],
+    "birim_agirlik_kg": 0.06,
+    "agirlik_kaynagi": "tahmin"
+   },
+   "turkiye": {
+    "fiyatlar": [
+     {
+      "fiyat_tl": 302.6,
+      "liste_fiyat_tl": 340,
+      "kaynak": "idefix",
+      "url": "https://www.idefix.com/oil-company-unisex-ruzgar-gecirmez-esnek-kislik-soft-parmak-touch-siyah-eldiven-dokunmatik-parmak-ozellikli-p-7452946",
+      "baslik": "Oil Company unisex kışlık soft parmak touch eldiven (iki parmak ucu dokunmatik)"
+     },
+     {
+      "fiyat_tl": 299,
+      "kaynak": "trendyol",
+      "url": "https://www.trendyol.com/desenli-kadin-eldiven-x-g1-c1046-a33-v1011",
+      "baslik": "SİSTEM PELUŞ Dokunmatik Ekran Uyumlu Örgü Desenli Şık Kadın Eldiveni (kategori sayfası)"
+     }
+    ],
+    "not": "Yalnız 2 ilan; idefix ilanında örgü yazmıyor, Trendyol bağlantısı kategori sayfası. Koçtaş ilanı güncel fiyatı belirsiz olduğu için alınmadı."
+   },
+   "taklit_riski": false,
+   "gerekce": "Kasım-Şubat'ta günlük kullanılan, telefon kullanımına izin veren ucuz örgü eldiven.",
+   "riskler": [
+    "Alibaba fiyatı yalnız arama özetinden; alibaba.co.uk ilanında kademe farklı (MOQ 60, 0,44 $)",
+    "Ağırlık tahmin",
+    "Türkiye karşılaştırması 2 ilan, biri kategori sayfası",
+    "Dokunmatik parmak ucu gümrük/kalite kontrolü gerekebilir"
+   ],
+   "kaynaklar": [
+    "https://www.alibaba.com/product-introduction/Solid-Magic-Gloves-Capacitive-Mobile-Phone_1600094285285.html",
+    "https://www.idefix.com/oil-company-unisex-ruzgar-gecirmez-esnek-kislik-soft-parmak-touch-siyah-eldiven-dokunmatik-parmak-ozellikli-p-7452946",
+    "https://www.trendyol.com/desenli-kadin-eldiven-x-g1-c1046-a33-v1011"
+   ]
+  }
+ ]
+}
