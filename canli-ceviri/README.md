@@ -9,6 +9,36 @@ iPhone mikrofonu → konuşma tanıma (Apple) → çeviri (Apple, cihazda) → T
 Konuşma tanıma ve çeviri Apple'ın kendi çatılarıyla yapılır; dil paketi bir kez indirildikten sonra internet gerekmez.
 Alania-2 sesi isteğe bağlıdır; anahtar yoksa ya da Alania'ya ulaşılamazsa Apple'ın Türkçe sesi okur.
 
+## Web deneme sürümü (kurulumsuz)
+
+iPhone uygulaması Xcode ile yüklenir; ondan önce akışı telefonda denemek için `web/` klasöründe tarayıcıda çalışan bir
+deneme sürümü var. GitHub Pages iş akışı bu klasörü `/canli-ceviri/` altında yayınlar:
+
+**Adres:** `https://<kullanıcı>.github.io/<depo>/canli-ceviri/`
+
+iPhone'da **Safari** ile açın, AirPods'u takın, **Dinlemeyi Başlat**'a dokunup mikrofon iznini verin. Arayüz ve
+1,2 saniyelik cümle sonu kuralı uygulamayla aynıdır; farklar:
+
+|                 | iPhone uygulaması             | Web deneme sürümü                                               |
+| --------------- | ----------------------------- | --------------------------------------------------------------- |
+| Konuşma tanıma  | Cihazda (Apple Speech)        | Tarayıcının hizmeti (Safari'de Apple'ın dikte altyapısı)        |
+| Çeviri          | Cihazda (Apple Translation)   | İnternet üzerinden [MyMemory](https://mymemory.translated.net/) |
+| Mikrofon        | Her zaman iPhone'unki         | Tarayıcı seçer (AirPods takılıyken çoğunlukla AirPods'unki)     |
+| Türkçe ses      | Alania-2 ya da Apple sesi     | Alania-2 ya da cihazın Türkçe sesi                              |
+| İnternet        | Dil paketi indikten sonra yok | Gerekli                                                         |
+
+- Söylenen cümleler çevrilmek üzere MyMemory hizmetine gider; ücretsiz kullanım günde yaklaşık 5.000 karakterle sınırlıdır.
+- Konuşma tanıma Chrome'da ve ana ekrana eklenmiş hâlde çalışmayabilir; Safari'nin kendisinde açın. iPhone'da
+  **Ayarlar → Genel → Klavye → Dikteyi Etkinleştir** açık olmalıdır.
+- Kulaklıksız denerken **Ayarlar → Çeviri okunurken dinlemeyi duraklat**'ı açın; yoksa uygulama kendi sesini duyabilir.
+- Köprü daha önce aynı telefonda açıldıysa adres ilk seferde Köprü'yü gösterebilir; sayfayı bir kez yenileyin.
+
+Test (gerçek mikrofon, internet ve ses gerekmez; sahte tanıma ve sahte çeviri hizmetiyle tüm akışı dener):
+
+```bash
+node canli-ceviri/tests/web-akis.cjs
+```
+
 ## Ekranlar
 
 | Sekme   | İçerik                                                                                          |
