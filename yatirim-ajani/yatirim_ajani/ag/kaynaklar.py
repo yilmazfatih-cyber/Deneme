@@ -208,6 +208,13 @@ def mali_panel(hisseler: list[str], bas: date, bit: date, paralel: int = 6) -> t
     return df, {"hisse": int(df["hisse"].nunique()) if not df.empty else 0, "satir": int(len(df)), "hata_sayisi": len(hata)}
 
 
+def isy_ms_tarih(zaman: pd.Series) -> pd.Series:
+    """İş Yatırım grafik verisindeki milisaniye damgası İstanbul gece yarısıdır (UTC 21:00, önceki gün).
+    UTC olarak okumak tarihi bir gün geri kaydırır; İstanbul saatine çevirip tarih alınır."""
+    t = pd.to_datetime(pd.to_numeric(zaman, errors="coerce"), unit="ms", utc=True)
+    return t.dt.tz_convert("Europe/Istanbul").dt.strftime("%Y-%m-%d")
+
+
 # --- seriler (endeks, maden, küresel) ----------------------------------------------------------
 def seri_gunluk(semboller: list[str], bas: date, paralel: int = 4) -> tuple[pd.DataFrame, dict]:
     def tek(s: str) -> pd.DataFrame:
@@ -364,7 +371,7 @@ def _tefas_iste(o: requests.Session, uc: str, bas: date, bit: date, fontip: str)
 
 
 def _tefas_tarih(df: pd.DataFrame) -> pd.DataFrame:
-    df["tarih"] = pd.to_datetime(pd.to_numeric(df["TARIH"], errors="coerce"), unit="ms").dt.strftime("%Y-%m-%d")
+    df["tarih"] = isy_ms_tarih(df["TARIH"])
     return df.drop(columns=["TARIH"])
 
 
@@ -868,7 +875,7 @@ def isy_ek() -> tuple[dict[str, pd.DataFrame], dict]:
                     df = pd.DataFrame(veri, columns=["zaman", "kapanis"][: len(veri[0])] if len(veri[0]) == 2 else None)
                     df = df.iloc[:, :2]
                     df.columns = ["zaman", "kapanis"]
-                    df["tarih"] = pd.to_datetime(pd.to_numeric(df["zaman"], errors="coerce"), unit="ms").dt.strftime("%Y-%m-%d")
+                    df["tarih"] = isy_ms_tarih(df["zaman"])
                     df.insert(0, "endeks", e)
                     parcalar.append(df[["endeks", "tarih", "kapanis"]].drop_duplicates(["endeks", "tarih"], keep="last"))
                 else:

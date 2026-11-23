@@ -28,6 +28,21 @@ hiçbir model al-tutu sağlam biçimde geçmiyor. Bu yüzden:
 - **Nakit:** defterde faiz işlemez (temkinli varsayım). Gerçekte boş nakit Midas'ta para piyasası fonunda
   bekletilebilir; bu getiri rapora yazılmaz, kıyas al-tut XU100 ve "hepsi nakit" (1.000.000) ile yapılır.
 
+## 1b. Küçük hisse kolu (kullanıcı talimatı, 23 Kasım 2026)
+
+Kullanıcı: "kendini KCHOL ve AHGAZ gibi büyük firmalarla kısıtlama; riski yüksek getirisi yüksek firmalara da biraz sermaye ayırabilirsin."
+
+- **Pay:** hesabın %20'si (≈200.000 TL) küçük hisselere; kalan hisse payı büyük hisselerde, gerisi nakit. Pozisyon başına en çok %2,5.
+- **Seçim (sınanmış kural, AG.md):** BIST 100 dışı, son 60 gün ortalama günlük işlem hacmi ≥ 20 mn TL, 52 hafta zirvesine en yakın
+  beşte bir içinden en yakın 8 hisse. Kaçınma listesindekiler alınmaz: son 5 günde tavan serisi bozulan, hacmi olağanın 3 katına çıkan,
+  son gün tabanda kapanan, son 40 işlem gününde halka arz olan, son 20 işlem gününde bedelsiz ya da bedelli kararı açıklayan.
+  Tera grubu hariç.
+- **Ritim:** 20 işlem gününde bir yenilenir (alım 17:00–17:50, limit = önceki kapanış +%1; satış açılışta). Sepet dışına çıkan satılır.
+- **Risk:** pozisyon kapanışı maliyetin %12 altına inerse ertesi açılış satılır (küçük hisselerde oynaklık yüksek; %7 eşiği sık tetiklenir).
+  Kol toplamı %25 düşerse kolun tamamı kapatılır ve kullanıcıya sorulur.
+- **Kanıt (Eyl 2024–Kas 2026, 30 bp maliyet):** "zirveye yakın küçükler" yıllık %28,6, en büyük düşüş −%37,9; BIST 100 eşit ağırlık
+  yıllık %10,0, düşüş −%30,1. Hisse kısmının %20'si küçüklere: yıllık %13,6, düşüş −%31,5. Geçmiş sonuç geleceği garanti etmez.
+
 ## 2. Bot takvimi (Claude Code zamanlanmış görevleri, hafta içi, Europe/Istanbul)
 
 | Saat  | Çalışma     | Ne yapar                                                                                             |

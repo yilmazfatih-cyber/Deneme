@@ -860,6 +860,14 @@ def komut_ag_veri_cek(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
     return 0
 
 
+def komut_rejim(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
+    from .ag.rejim import calistir
+
+    calistir(a.klasor, a.defter, a.cikti)
+    print(open(a.cikti.rsplit(".", 1)[0] + ".md", encoding="utf-8").read())
+    return 0
+
+
 def komut_ag_sayfa(a: argparse.Namespace, ayarlar: Ayarlar) -> int:
     from .ag.sayfa import sayfa_yaz
 
@@ -1393,6 +1401,12 @@ def ayristirici() -> argparse.ArgumentParser:
     sp.add_argument("--arastirma", default="dosya_kaynak/ag", help="Araştırma ajanı JSON'ları")
     sp.add_argument("--yalniz-rapor", action="store_true", help="Analizi yeniden çalıştırma; kaydedilmiş JSON'lardan raporu yeniden üret")
     sp.set_defaults(islev=komut_ag_analiz)
+
+    sp = alt.add_parser("rejim", help="Nicel rejim ajanı: XU100 boğa/ayı olasılıkları (klasik tanım, koşullu sayım, gizli Markov), TL ve dolar")
+    sp.add_argument("--klasor", default="veri/ag", help="endeks_gunluk ve seriler_gunluk klasörü")
+    sp.add_argument("--defter", default="veri/defter/hafta.json", help="Son günlerin XU100 değerleri için defter")
+    sp.add_argument("--cikti", default="veri/ag/analiz/rejim.json", help="JSON çıktı (yanına .md yazılır)")
+    sp.set_defaults(islev=komut_rejim)
 
     sp = alt.add_parser("ag-sayfa", help="Ağ analizinin etkileşimli sayfası: analiz JSON'larından tek dosyalık HTML")
     sp.add_argument("--klasor", default="veri/ag")

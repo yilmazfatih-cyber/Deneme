@@ -505,3 +505,42 @@ def test_gunluk_tarama_kacinma_ve_aday():
     aday = next(iter(T["aday"].values()))
     assert aday[0][0] == "H09" and aday[0][2]["durum"].startswith("henüz fiyatlanmadı") and aday[0][2]["seans_ici"] is False
     assert T["ozet"]["kacin_hisse"] == 5 and T["ozet"]["aday"] == 1
+
+
+def test_isy_ms_tarih_istanbul_gece_yarisi():
+    from yatirim_ajani.ag.kaynaklar import isy_ms_tarih
+
+    # 12 Kasım 2026 00:00 İstanbul = 11 Kasım 21:00 UTC
+    ms = pd.Timestamp("2026-11-11 21:00", tz="UTC").value // 10**6
+    assert isy_ms_tarih(pd.Series([ms])).iloc[0] == "2026-11-12"
+
+
+def test_klasik_rejim_yuzde_yirmi():
+    from yatirim_ajani.ag.rejim import donemler, klasik_rejim
+
+    p = pd.Series([100, 110, 120, 100, 90, 95, 110, 120, 130], index=pd.date_range("2020-01-01", periods=9))
+    r = klasik_rejim(p)
+    # 120'den 90'a (−%25) ayı; 90'dan 110'a (+%22) boğa
+    assert list(r) == ["boga"] * 3 + ["ayi"] * 2 + ["boga"] * 4
+    assert list(donemler(r).rejim) == ["boga", "ayi", "boga"]
+
+
+def test_hmm_iki_durumu_ayirir():
+    import numpy as np
+
+    from yatirim_ajani.ag.rejim import hmm_kestir
+
+    rng = np.random.default_rng(1)
+    durum = np.repeat([0, 1, 0, 1, 0], 120)
+    x = np.where(durum == 1, rng.normal(-0.01, 0.04, len(durum)), rng.normal(0.004, 0.015, len(durum)))
+    m = hmm_kestir(x)
+    a = m.suz(x)[:, m.ayi]
+    assert m.mu[m.ayi] < 0 < m.mu[1 - m.ayi]
+    assert ((a > 0.5) == (durum == 1)).mean() > 0.85
+
+
+def test_jeffreys_aralik():
+    from yatirim_ajani.ag.rejim import jeffreys
+
+    m, lo, hi = jeffreys(30, 100)
+    assert lo < 0.3 < hi and abs(m - 0.302) < 0.01
