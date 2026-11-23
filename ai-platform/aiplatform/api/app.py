@@ -37,6 +37,7 @@ ROUTERS = [
     "aiplatform.api.routers.audit",
     "aiplatform.api.routers.approvals",
     "aiplatform.api.routers.demo",
+    "aiplatform.api.routers.auth",
 ]
 
 # Modül çalışma zamanlarının kayıt olması için içe aktarılır (her biri @register kullanır)
@@ -70,6 +71,10 @@ def create_app() -> FastAPI:
         description="ERP'ye eklenti olarak çalışan, modül modül kurulan, KVKK uyumlu yerel yapay zekâ platformu",
         lifespan=lifespan,
     )
+    # Kimlik: /api ve /v1 isteklerinde oturum/anahtar doğrulama + rol denetimi (auth/policy.py)
+    from ..auth.middleware import AuthMiddleware
+
+    app.add_middleware(AuthMiddleware)
     app.add_middleware(
         CORSMiddleware,
         allow_origins=["*"],  # ERP arayüzü farklı kaynaktan çağırabilir; üretimde daraltın

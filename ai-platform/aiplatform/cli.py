@@ -293,6 +293,96 @@ def cmd_catalog(a: argparse.Namespace) -> int:
     return 0
 
 
+# ------------------------------------------------------------------ kullanıcılar ve anahtarlar
+
+
+def _read_password(a: argparse.Namespace, prompt: str = "Parola: ") -> str:
+    if getattr(a, "password_stdin", False):
+        return sys.stdin.readline().rstrip("\n")
+    import getpass
+
+    p1 = getpass.getpass(prompt)
+    p2 = getpass.getpass("Parola (tekrar): ")
+    if p1 != p2:
+        raise SystemExit("Parolalar eşleşmiyor.")
+    return p1
+
+
+def cmd_user(a: argparse.Namespace) -> int:
+    from .auth import service
+    from .auth.service import AuthError
+
+    try:
+        if a.user_cmd == "add":
+            u = service.create_user(a.username, _read_password(a), a.role, a.display_name)
+            print(f"Eklendi: {u['username']} ({u['role_label']})")
+        elif a.user_cmd == "list":
+            rows = [
+                [u["username"], u["display_name"] or "", u["role_label"], "pasif" if u["disabled"] else "etkin",
+                 (u["last_login_at"] or "")[:16]]
+                for u in service.list_users()
+            ]
+            print(
+                _table(rows, ["Kullanıcı", "Görünen ad", "Rol", "Durum", "Son giriş"])
+                if rows
+                else "Kullanıcı yok. İlk yönetici: aiplatform user add <ad> --role yonetici"
+            )
+        elif a.user_cmd == "passwd":
+            service.update_user(a.username, password=_read_password(a, "Yeni parola: "))
+            print("Parola değişti; açık tarayıcı oturumları kapatıldı.")
+        elif a.user_cmd == "role":
+            u = service.update_user(a.username, role=a.role)
+            print(f"{u['username']}: {u['role_label']}")
+        elif a.user_cmd in ("disable", "enable"):
+            service.update_user(a.username, disabled=a.user_cmd == "disable")
+            print(f"{a.username}: {'devre dışı (anahtarları iptal edildi)' if a.user_cmd == 'disable' else 'etkin'}")
+    except AuthError as e:
+        print(f"Hata: {e.message}" + (f"\n  {e.hint}" if e.hint else ""), file=sys.stderr)
+        return 2
+    return 0
+
+
+def cmd_token(a: argparse.Namespace) -> int:
+    from datetime import timedelta
+
+    from .auth import service
+    from .auth.service import AuthError
+
+    try:
+        if a.token_cmd == "create":
+            raw, rec = service.create_token(
+                a.user, a.name, delegate=a.delegate, ttl=timedelta(days=a.days) if a.days else None
+            )
+            print(raw)
+            print(
+                f"\n# {rec['name']} ({rec['username']}{', istemci düğümü' if rec['delegate'] else ''}), "
+                f"son geçerlilik: {rec['expires_at'] or 'süresiz'}. Anahtar yalnız bu kez gösterilir.",
+                file=sys.stderr,
+            )
+        elif a.token_cmd == "list":
+            rows = [
+                [t["id"][:12], t["username"], t["name"], "evet" if t["delegate"] else "",
+                 (t["expires_at"] or "süresiz")[:10], (t["last_used_at"] or "")[:16]]
+                for t in service.list_tokens()
+            ]
+            print(
+                _table(rows, ["Kimlik", "Kullanıcı", "Ad", "Düğüm", "Bitiş", "Son kullanım"])
+                if rows
+                else "Etkin API anahtarı yok."
+            )
+        elif a.token_cmd == "revoke":
+            matches = [t["id"] for t in service.list_tokens() if t["id"].startswith(a.token_id)]
+            if len(matches) != 1:
+                print("Anahtar bulunamadı veya kimlik belirsiz; 'aiplatform token list' ile bakın.", file=sys.stderr)
+                return 2
+            service.revoke_token(matches[0])
+            print("İptal edildi.")
+    except AuthError as e:
+        print(f"Hata: {e.message}", file=sys.stderr)
+        return 2
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="aiplatform", description="Yerel AI platformu — kurulum ve yönetim")
     sub = p.add_subparsers(dest="cmd", required=True)
@@ -339,6 +429,37 @@ def build_parser() -> argparse.ArgumentParser:
     s = sub.add_parser("list", help="Kurulu modüller ve kapasite")
     s.add_argument("--json", action="store_true")
     s.set_defaults(func=cmd_list)
+
+    s = sub.add_parser("user", help="Kullanıcı yönetimi (kimlik doğrulama)")
+    us = s.add_subparsers(dest="user_cmd", required=True)
+    x = us.add_parser("add", help="Kullanıcı ekle")
+    x.add_argument("username")
+    x.add_argument("--role", choices=["kullanici", "onaylayici", "yonetici"], default="kullanici")
+    x.add_argument("--display-name")
+    x.add_argument("--password-stdin", action="store_true", help="parolayı standart girdiden oku")
+    us.add_parser("list", help="Kullanıcıları listele")
+    x = us.add_parser("passwd", help="Parola değiştir")
+    x.add_argument("username")
+    x.add_argument("--password-stdin", action="store_true")
+    x = us.add_parser("role", help="Rol değiştir")
+    x.add_argument("username")
+    x.add_argument("role", choices=["kullanici", "onaylayici", "yonetici"])
+    for name in ("disable", "enable"):
+        x = us.add_parser(name, help="Devre dışı bırak" if name == "disable" else "Etkinleştir")
+        x.add_argument("username")
+    s.set_defaults(func=cmd_user)
+
+    s = sub.add_parser("token", help="API anahtarları (ERP entegrasyonu, istemci düğümleri)")
+    ts = s.add_subparsers(dest="token_cmd", required=True)
+    x = ts.add_parser("create", help="Anahtar oluştur (yalnız bir kez gösterilir)")
+    x.add_argument("--user", required=True, help="anahtarın bağlı olduğu kullanıcı")
+    x.add_argument("--name", required=True, help="ör. 'erp-entegrasyon' veya 'muhasebe-pc-03'")
+    x.add_argument("--delegate", action="store_true", help="istemci düğümü: çalışan adına (yalnız kullanıcı yetkisiyle) istek atar")
+    x.add_argument("--days", type=int, default=365, help="geçerlilik (gün); 0 = süresiz")
+    ts.add_parser("list", help="Etkin anahtarlar")
+    x = ts.add_parser("revoke", help="Anahtarı iptal et")
+    x.add_argument("token_id", help="kimliğin ilk karakterleri yeterli")
+    s.set_defaults(func=cmd_token)
 
     s = sub.add_parser("catalog", help="Katalogdaki modüller")
     s.add_argument("--compat", action="store_true", help="uygunluk sütunu ekle")

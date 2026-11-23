@@ -84,6 +84,7 @@ class EsikDosyasi(BaseModel):
     rakip_yogun: int = Field(ge=1)
     deneme_partisi_yuzde: dict[Literal["alt", "ust"], float]
     celiski_olasilik_farki: float = Field(ge=0, le=1)
+    celiski_zayif_esik: float = Field(default=0.45, ge=0, le=1)
     cikis_baskin_agirlik: float = Field(ge=0, le=1)
     eksen_agirliklari: dict[str, float]
     uyum_agirliklari: dict[str, float]
